@@ -1,4 +1,4 @@
-#summary How to compile !OpenHoldem
+#summary How to compile OpenHoldem
 
 = Introduction =
 
