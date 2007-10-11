@@ -1,0 +1,18 @@
+#summary How to compile !OpenHoldem
+
+= Introduction =
+
+There are some external requirements for compiling !OpenHoldem.  This wiki page will elaborate on the steps required to compile successfully.
+
+
+= Details =
+
+You need a modern C++ compiler that supports expression templates and static polymorphism. !OpenHoldem was compiled with Visual Studio 2005.  Anything earlier likely does not provide the capabilities to compile templated C++ code properly.  Non-Microsoft compilers have not been tested and are not supported.
+
+The Boost Spirit library needs to be properly installed.  See http://boost.org for more information.
+
+If you wish to use Dan Moulding's Visual Leak Detector, then go get it from http://dmoulding.googlepages.com/vld and install it properly, otherwise comment out this line in grammar.cpp: 
+
+`   #include <vld.h>`
+
+All other code requirements are included in the downloadable archive.
