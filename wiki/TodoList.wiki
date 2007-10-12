@@ -31,8 +31,7 @@ Additionally, the following items are near-term improvements are planned to the 
 
 
 = ROR Research =
-Most of the ROR calculations have been backed into. As you can see, the mean and ror calcs are figured out, but backing into the variance calcs continues to be a problem.  Any insight on how WInHoldem is calculating variance would be helpful?  Given the question I have on ROR in general (at the bottom), the developers see little confidence that WH's calculations 
-follow the documentation very closely at all.
+Most of the ROR calculations have been backed into. As you can see, the mean and ror calcs are figured out, but backing into the variance calcs continues to be a problem.  Any insight on how !WinHoldem is calculating variance would be helpful.  Given the question the developers have on ROR in general (at the bottom), we see little confidence that WH's calculations follow the documentation very closely at all.
 
 {{{
       0.1183100000 = prwin
@@ -78,7 +77,7 @@ follow the documentation very closely at all.
       0.9212071326 = [e**(2*allimean*((0+balance)/(call+balance-call))/allivariance) - 1] / [e**(2*allimean*((balance+balance)/(call+balance-call))/allivariance) - 1]
 }}}
 
-Here are the concerns about WinHoldem's ROR calculation. "g" is defined as "gain" by WinHoldem, and the developers do not think gain==balance, but rather gain==pot.  I think the calculations should look like this:
+Here are the concerns about WinHoldem's ROR calculation. "g" is defined as "gain" by WinHoldem, and the developers do not think gain==balance, but rather gain==pot.  The developers think the calculations should look like this:
 {{{
 // ror should be:
       0.0151596061 = [e**(2*callmean*((0+pot)/(call))/callvariance) - 1] / [e**(2*callmean*((balance+pot)/(call))/callvariance) - 1]
