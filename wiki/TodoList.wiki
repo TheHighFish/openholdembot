@@ -7,12 +7,12 @@ This is a near-term to do list for !OpenHoldem.
 
 = TODO List =
 
-There are a few items that are required to move !OpenHoldem to 100% reverse compatibility with WinHoldem:
+There are a few items that are required to move !OpenHoldem to 100% reverse compatibility with !WinHoldem:
   # ROR symbols: The documentation for the ROR symbols is sparse at best.  See the bottom of this wiki entry for more information on the investigation into these symbols.  Here is the singluar documentation on these symbols: http://forum.winholdem.net/wbb/viewtopic.php?p=15147#15147 
   # Inclusion of a image (i) transform for scraper regions.  As the developer team has not yet seen a profile that includes this transform, this part of the code has not yet been created.
 
 
-Additionally, the following items are near-term improvements are planned to the base WinHoldem functionality:
+Additionally, the following items are near-term improvements are planned to the base !WinHoldem functionality:
   # Better graphic design.  Hopefully someone from the community will step up to this task.
   # tournlevel symbol
   # framedelay symbol
@@ -25,9 +25,9 @@ Additionally, the following items are near-term improvements are planned to the 
   # misscrapes of bet causes disabling of autoplay
   # more robust passing of data to DLL
   # color preferences for table display and formula editor
-  # inclusion of much of SingleMalt's DLL functionality into the core engine, including Pokertracker/Prospector database inquiries, history, current hand analysis and action symbols
+  # inclusion of much of !SingleMalt's DLL functionality into the core engine, including Pokertracker/Prospector database inquiries, history, current hand analysis and action symbols
   # alternate prwin iterators that take advantage of hand ranges
-  # 
+
 
 
 = ROR Research =
