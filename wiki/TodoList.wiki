@@ -1,0 +1,88 @@
+#summary Near-term todo list.
+
+= Introduction =
+
+This is a near-term to do list for OpenHoldem.
+
+
+= TODO List =
+
+There are a few items that are required to move OpenHoldem to 100% reverse compatibility with WinHoldem:
+  # ROR symbols: The documentation for the ROR symbols is sparse at best.  See the bottom of this wiki entry for more information on the investigation into these symbols.  Here is the singluar documentation on these symbols: http://forum.winholdem.net/wbb/viewtopic.php?p=15147#15147 
+  # Inclusion of a image (i) transform for scraper regions.  As the developer team has not yet seen a profile that includes this transform, this part of the code has not yet been created.
+
+
+Additionally, the following items are near-term improvements are planned to the base WinHoldem functionality:
+  # Better graphic design.  Hopefully someone from the community will step up to this task.
+  # tournlevel symbol
+  # framedelay symbol
+  # multi-threaded statistical sampling processing to take advantage of modern, multi-core processors
+  # handling of smoothed fonts in OCR engine
+  # additional stealth anti-detection techniques
+  # pre-action button handling in scraper engine and autoplayer engine
+  # variables/looping in scripting language
+  # exclusion parameters for interpretation of OCR'ed fields
+  # misscrapes of bet causes disabling of autoplay
+  # more robust passing of data to DLL
+  # color preferences for table display and formula editor
+  # inclusion of much of SingleMalt's DLL functionality into the core engine, including Pokertracker/Prospector database inquiries, history, current hand analysis and action symbols
+  # alternate prwin iterators that take advantage of hand ranges
+  # 
+
+
+= ROR Research =
+Most of the ROR calculations have been backed into. As you can see, the mean and ror calcs are figured out, but backing into the variance calcs continues to be a problem.  Any insight on how WInHoldem is calculating variance would be helpful?  Given the question I have on ROR in general (at the bottom), the developers see little confidence that WH's calculations 
+follow the documentation very closely at all.
+
+{{{
+      0.1183100000 = prwin
+      0.0242300000 = prtie
+      0.8574600000 = prlos
+     10.0000000000 = call
+      5.0000000000 = sblind
+     10.0000000000 = bblind
+     10.0000000000 = bet
+    125.0000000000 = pot
+    475.0000000000 = balance
+                   = bankroll
+     40.0000000000 = f$srai
+
+// mean = prwin*((pot+R)/S) + prtie*((pot+R)/2/S) - prlos*(S/S)
+      0.7728525000 = callmean
+      0.7728525000 = prwin*((pot+0)/(call+0)) + prtie*((pot+0)/2/(call+0)) - prlos*((call+0)/(call+0))
+      0.0229087500 = raismean
+      0.0229087500 = prwin*((pot+bet)/(call+bet)) + prtie*((pot+bet)/2/(call+bet)) - prlos*((call+bet)/(call+bet))
+     -0.4270575000 = sraimean
+     -0.4270575000 = prwin*((pot+f$srai)/(call+f$srai)) + prtie*((pot+f$srai)/2/(call+f$srai)) - prlos*((call+f$srai)/(call+f$srai))
+     -0.6954584211 = allimean
+     -0.6954584211 = prwin*((pot+balance-call)/(call+balance-call)) + prtie*((pot+balance-call)/2/(call+balance-call)) - prlos*((call+balance-call)/(call+balance-call))
+
+// variance = prwin*(pot_spend_units - mean)**2 + prtie*(pot_spend_units/2 - mean)**2 + prlos*(-spend_pot_units - mean)**2
+     19.6925808882 = callvariance
+     19.6925808882 = prwin*(pot/(call+0) - callmean)**2 + prtie*((pot/(call+0))/2 - callmean)**2 + prlos*(-(call+0)/(call+0) - callmean)**2
+      6.5234294079 = raisvariance
+      5.7180285316 = prwin*(pot/(call+bet) - raismean)**2 + prtie*((pot/(call+bet))/2 - raismean)**2 + prlos*(-(call+bet)/(call+bet) - raismean)**2
+      2.0294439667 = sraivariance
+      1.3632604076 = prwin*(pot/(call+f$srai) - sraimean)**2 + prtie*((pot/(call+f$srai))/2 - sraimean)**2 + prlos*(-(call+f$srai)/(call+f$srai) - sraimean)**2
+      0.5656749331 = allivariance
+      0.2048191280 = prwin*(pot/(call+balance-call) - allimean)**2 + prtie*((pot/(call+balance-call))/2 - allimean)**2 + prlos*(-(call+balance-call)/(call+balance-call) - allimean)**2
+
+// ror = [ e ** ( 2*E(0+g)/v ) - 1 ] / [ e ** ( 2*E(B+g)/v ) - 1 ] 
+      0.0234682734 = callror
+      0.0234682734 = [e**(2*callmean*((0+balance)/call)/callvariance) - 1] / [e**(2*callmean*((balance+balance)/call)/callvariance) - 1]
+      0.4583942219 = raisror
+      0.4583942219 = [e**(2*raismean*((0+balance)/(call+bet))/raisvariance) - 1] / [e**(2*raismean*((balance+balance)/(call+bet))/raisvariance) - 1]
+      0.9819817048 = srairor
+      0.9819817048 = [e**(2*sraimean*((0+balance)/(call+f$srai))/sraivariance) - 1] / [e**(2*sraimean*((balance+balance)/(call+f$srai))/sraivariance) - 1]
+      0.9212071326 = alliror
+      0.9212071326 = [e**(2*allimean*((0+balance)/(call+balance-call))/allivariance) - 1] / [e**(2*allimean*((balance+balance)/(call+balance-call))/allivariance) - 1]
+}}}
+
+Here are the concerns about WinHoldem's ROR calculation. "g" is defined as "gain" by WinHoldem, and the developers do not think gain==balance, but rather gain==pot.  I think the calculations should look like this:
+{{{
+// ror should be:
+      0.0151596061 = [e**(2*callmean*((0+pot)/(call))/callvariance) - 1] / [e**(2*callmean*((balance+pot)/(call))/callvariance) - 1]
+      0.1913235635 = [e**(2*raismean*((0+pot)/(call+bet))/raisvariance) - 1] / [e**(2*raismean*((balance+pot)/(call+bet))/raisvariance) - 1]
+      0.6550119577 = [e**(2*sraimean*((0+pot)/(call+f$srai))/sraivariance) - 1] / [e**(2*sraimean*((balance+pot)/(call+f$srai))/sraivariance) - 1]
+      0.4987576508 = [e**(2*allimean*((0+pot)/(call+balance-call))/allivariance) - 1] / [e**(2*allimean*((balance+pot)/(call+balance-call))/allivariance) - 1]
+}}}
