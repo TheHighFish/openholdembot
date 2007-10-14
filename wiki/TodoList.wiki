@@ -27,6 +27,7 @@ Additionally, the following items are near-term improvements are planned to the 
   # color preferences for table display and formula editor
   # inclusion of much of !SingleMalt's DLL functionality into the core engine, including Pokertracker/Prospector database inquiries, history, current hand analysis and action symbols
   # alternate prwin iterators that take advantage of hand ranges
+  # left-side of the equation in the script, assignment, looping, conditionals, etc
 
 
 
