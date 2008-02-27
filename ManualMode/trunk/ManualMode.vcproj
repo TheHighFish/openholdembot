@@ -251,15 +251,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\pokereval\deck_std.h"
-				>
-			</File>
-			<File
 				RelativePath=".\EditDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\pokereval\game_std.h"
 				>
 			</File>
 			<File
@@ -275,10 +267,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\pokereval\poker_defs.h"
-				>
-			</File>
-			<File
 				RelativePath=".\registry.h"
 				>
 			</File>
@@ -287,13 +275,165 @@
 				>
 			</File>
 			<File
-				RelativePath=".\pokereval\rules_std.h"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.h"
 				>
 			</File>
+			<Filter
+				Name="pokereval"
+				>
+				<File
+					RelativePath=".\pokereval\combinations.h"
+					>
+				</File>
+				<File
+					RelativePath=".\pokereval\deck.h"
+					>
+				</File>
+				<File
+					RelativePath=".\pokereval\deck_astud.h"
+					>
+				</File>
+				<File
+					RelativePath=".\pokereval\deck_joker.h"
+					>
+				</File>
+				<File
+					RelativePath=".\pokereval\deck_std.h"
+					>
+				</File>
+				<File
+					RelativePath=".\pokereval\deck_undef.h"
+					>
+				</File>
+				<File
+					RelativePath=".\pokereval\enumdefs.h"
+					>
+				</File>
+				<File
+					RelativePath=".\pokereval\enumerate.h"
+					>
+				</File>
+				<File
+					RelativePath=".\pokereval\enumord.h"
+					>
+				</File>
+				<File
+					RelativePath=".\pokereval\evx_defs.h"
+					>
+				</File>
+				<File
+					RelativePath=".\pokereval\game_astud.h"
+					>
+				</File>
+				<File
+					RelativePath=".\pokereval\game_joker.h"
+					>
+				</File>
+				<File
+					RelativePath=".\pokereval\game_std.h"
+					>
+				</File>
+				<File
+					RelativePath=".\pokereval\handval.h"
+					>
+				</File>
+				<File
+					RelativePath=".\pokereval\handval_low.h"
+					>
+				</File>
+				<File
+					RelativePath=".\pokereval\poker_config.h"
+					>
+				</File>
+				<File
+					RelativePath=".\pokereval\poker_defs.h"
+					>
+				</File>
+				<File
+					RelativePath=".\pokereval\poker_wrapper.h"
+					>
+				</File>
+				<File
+					RelativePath=".\pokereval\pokereval_export.h"
+					>
+				</File>
+				<File
+					RelativePath=".\pokereval\rules_astud.h"
+					>
+				</File>
+				<File
+					RelativePath=".\pokereval\rules_joker.h"
+					>
+				</File>
+				<File
+					RelativePath=".\pokereval\rules_std.h"
+					>
+				</File>
+				<File
+					RelativePath=".\pokereval\rules_undef.h"
+					>
+				</File>
+				<Filter
+					Name="inlines"
+					>
+					<File
+						RelativePath=".\pokereval\inlines\eval.h"
+						>
+					</File>
+					<File
+						RelativePath=".\pokereval\inlines\eval_astud.h"
+						>
+					</File>
+					<File
+						RelativePath=".\pokereval\inlines\eval_joker.h"
+						>
+					</File>
+					<File
+						RelativePath=".\pokereval\inlines\eval_joker_low.h"
+						>
+					</File>
+					<File
+						RelativePath=".\pokereval\inlines\eval_joker_low8.h"
+						>
+					</File>
+					<File
+						RelativePath=".\pokereval\inlines\eval_low.h"
+						>
+					</File>
+					<File
+						RelativePath=".\pokereval\inlines\eval_low27.h"
+						>
+					</File>
+					<File
+						RelativePath=".\pokereval\inlines\eval_low8.h"
+						>
+					</File>
+					<File
+						RelativePath=".\pokereval\inlines\eval_omaha.h"
+						>
+					</File>
+					<File
+						RelativePath=".\pokereval\inlines\eval_type.h"
+						>
+					</File>
+					<File
+						RelativePath=".\pokereval\inlines\evx5.h"
+						>
+					</File>
+					<File
+						RelativePath=".\pokereval\inlines\evx7.h"
+						>
+					</File>
+					<File
+						RelativePath=".\pokereval\inlines\evx_action.h"
+						>
+					</File>
+					<File
+						RelativePath=".\pokereval\inlines\evx_inlines.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"
