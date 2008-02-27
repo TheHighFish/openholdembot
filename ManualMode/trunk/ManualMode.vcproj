@@ -457,6 +457,14 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="libraries"
+			>
+			<File
+				RelativePath=".\lib\poker-eval.lib"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 		<Global
