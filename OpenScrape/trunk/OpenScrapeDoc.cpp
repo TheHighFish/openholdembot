@@ -73,7 +73,7 @@ BOOL COpenScrapeDoc::OnOpenDocument(LPCTSTR lpszPathName)
 
 	// Force re-draw
 	InvalidateRect(theApp.m_pMainWnd->GetSafeHwnd(), NULL, true);
-	theApp.m_TableMapDlg->Invalidate(true);
+	if (theApp.m_TableMapDlg)  theApp.m_TableMapDlg->Invalidate(true);
 
 	return valid_open;
 }
