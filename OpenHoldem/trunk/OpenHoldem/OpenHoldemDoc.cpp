@@ -254,12 +254,18 @@ BOOL COpenHoldemDoc::OnNewDocument() {
 #ifdef SEH_ENABLE
 	try {
 #endif
-		CWnd			cwnd;
 		SFunction		func;
 		CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 		if (!CDocument::OnNewDocument())
 			return FALSE;
+
+		// Kill the formula dialog, if it is open
+		if(m_formulaScintillaDlg) {
+			delete m_formulaScintillaDlg;
+			m_formulaScintillaDlg	=	NULL;
+			pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
+		}
 
 		// Clear everything
 		global.ClearFormula(&global.formula);
@@ -294,18 +300,11 @@ BOOL COpenHoldemDoc::OnNewDocument() {
 		global.create_hand_list_matrices(&global.formula);
 
 		// Create parse trees for default formula
-		cwnd.FromHandle(global.hMainFrame);
 		global.ParseAllFormula(pMyMainWnd->GetSafeHwnd(), &global.formula);
 
 		global.formula_name = "Default";
 		SetTitle("Default");
 		SetModifiedFlag(true);
-
-		// Kill the formula dialog, if it is open
-		if(m_formulaScintillaDlg) {
-			delete m_formulaScintillaDlg;
-			m_formulaScintillaDlg	=	NULL;
-		}
 
 		// Load dll, if set in preferences
 		if (global.preferences.load_dll_on_startup) {
@@ -327,7 +326,6 @@ void COpenHoldemDoc::Serialize(CArchive& ar) {
 #ifdef SEH_ENABLE
 	try {
 #endif
-		CWnd			cwnd;
 		CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 		// Writing a file
@@ -337,6 +335,13 @@ void COpenHoldemDoc::Serialize(CArchive& ar) {
 
 		// Reading a file
 		else {
+			// Kill the formula dialog, if it is open
+			if(m_formulaScintillaDlg) {
+				delete m_formulaScintillaDlg;
+				m_formulaScintillaDlg	=	NULL;
+				pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
+			}
+
 			ReadFormula(&global.formula, ar);
 			global.formula_name = ar.GetFile()->GetFileName();
 
@@ -347,14 +352,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar) {
 			global.create_hand_list_matrices(&global.formula);
 
 			// Create parse trees for newly loaded formula
-			cwnd.FromHandle(global.hMainFrame);
 			global.ParseAllFormula(pMyMainWnd->GetSafeHwnd(), &global.formula);
-
-			// Kill the formula dialog, if it is open
-			if(m_formulaScintillaDlg) {
-				delete m_formulaScintillaDlg;
-				m_formulaScintillaDlg	=	NULL;
-			}
 
 			// Load dll, if set in preferences
 			if (global.preferences.load_dll_on_startup) {
@@ -653,15 +651,6 @@ void COpenHoldemDoc::ReadFormula(SFormula *f, CArchive& ar) {
 
 			ar_whx.Close();
 			cf_whx.Close();
-
-			// Kill the formula dialog, if it is open
-			if(m_formulaScintillaDlg) {
-				//m_formulaScintillaDlg->DestroyWindow();
-				delete m_formulaScintillaDlg;
-				m_formulaScintillaDlg	=	NULL;
-				CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-				pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
-			}
 		}
 
 		//////////////////////
