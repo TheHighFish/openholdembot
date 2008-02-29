@@ -2113,8 +2113,13 @@ void CDlgTableMap::OnBnClickedCreateFont()
 		DeleteDC(hdcScreen);
 
 		// populate hexmash array
+		int hexmash_array_size = 0;
+		int sel_region_text_group = atoi(sel_region_ptr->transform.Right(1));
 		for (i=0; i<(int) pDoc->tablemap.t$.GetSize(); i++)
-			strcpy(hexmash_array[i], pDoc->tablemap.t$[i].hexmash);
+		{
+			if (pDoc->tablemap.t$[i].group == sel_region_text_group)
+				strcpy(hexmash_array[hexmash_array_size++], pDoc->tablemap.t$[i].hexmash);
+		}
 
 		// Scan through background, separate characters by looking for background bands
 		new_t$_recs.RemoveAll();
@@ -2155,7 +2160,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 
 
 			// Search for this character in the existing t$ records list
-			cresult = (char *) bsearch( hexmash, hexmash_array, pDoc->tablemap.t$.GetSize(), sizeof(hexmash_array[0]),
+			cresult = (char *) bsearch( hexmash, hexmash_array, hexmash_array_size, sizeof(hexmash_array[0]),
 										(int (*)(const void*, const void*)) compare_font);
 
 			// Populate new font record

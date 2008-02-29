@@ -1,8 +1,11 @@
-v1.1.1 2008-03-15
+v1.1.1 2008-03-07
 ================
 NEW STUFF:
 
 BUG FIXES:
+- Create Font button would not search all groups to find unknown character when it should have
+  only searched within the matching text group
+
 - Launching a .tm file from the Windows shell launches OS, which crashes immediately. (quiqsilver)
 
 
