@@ -1137,4 +1137,3 @@ Thank you to Matrix for identifying out the issue with loading DLL's.
 Any advice from MSVC 2005 code optimization experts would be appreciated, of course.
 
 NOTE:
-- The source code package is significantly smaller now.  "versus.bin" was inadvertently included in the source code package for 1.0.0.
