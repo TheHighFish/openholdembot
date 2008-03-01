@@ -22,6 +22,7 @@ s$titletext0      !
 s$titletext       Hold'em
 s$swagtextmethod  2
 s$sitename        Pacific888-10
+s$network		  pacific
 s$nchairs         10
 s$c0limits        : ^s / ^b
 

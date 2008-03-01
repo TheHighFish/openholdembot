@@ -1,6 +1,12 @@
 v1.1.1 2008-03-15
 ================
 NEW STUFF:
+- New symbol s$network is now available.  This is used to determine the appropriate
+  network to pull Poker Tracker data for when s$sitename is not a PT supported site.  OH will
+  first check s$sitename for a supported network name, then s$network.  These are the supported
+  names for both s$sitename and s$network and must be lowercase: stars, party, ultimate, absolute,
+  microgaming, ongame, cryptologic, pacific, fulltilt, b2b, tribeca, worldpex, ipoker, tain,
+  bodog, everest, boss, and betfair. (quiqsilver)
 
 BUG FIXES:
 - Create Font button would not search all groups to find unknown character when it should have
