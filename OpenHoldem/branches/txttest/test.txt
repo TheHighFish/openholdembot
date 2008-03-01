@@ -1066,3 +1066,75 @@ BUG FIX:
   
 SOURCE CODE:
 - poker-eval.lib and .h files are now included in source package, to remove external build dependency
+
+
+
+v1.0.2 2007-10-16
+-----------------
+NEW STUFF:
+- Button to lock blinds.
+- Added new symbol "version", that returns current version number of OpenHoldem.
+- GWS calls from a DLL can now be of arbitrary complexity.  We don't know exactly what use this is, but it's
+  cool nontheless.  And open source is all about "cool", so deal with it.  Example:
+  DLL code:
+  double process_query( const char* pquery ) {
+	if (pquery==NULL)
+		return 0;
+
+	if (strncmp(pquery,"dll$test",8)==0)
+		return gws("random");
+
+	if (strncmp(pquery,"dll$spend",9)==0)
+		return gws("f$spend");
+
+	if (strncmp(pquery,"dll$recurse",11)==0)
+		return gws("dll$mynumber");
+
+	if (strncmp(pquery,"dll$mynumber",12)==0)
+		return 12345.67;
+
+	if (strncmp(pquery,"dll$complex",11)==0)
+		return gws("f$spend/25 * 1.1");
+
+	return 0;
+  }
+  
+  f$debug tab:
+      0.7553 = dll$test
+      0.7553 = random
+     17.7496 = dll$spend
+     17.7496 = f$spend
+  12345.6700 = dll$recurse
+  12345.6700 = dll$mynumber
+      0.7810 = dll$complex
+      0.7810 = f$spend/25 * 1.1
+
+
+BUG FIX:  
+- Commented out some debugging code in threads.cpp that was creating "prwin algos.txt".  Lines 422-431.
+- Cycle timing on main display commented out.  This was intended for debugging purposes only.  OpenHoldemView.cpp, lines 467-470.
+- Issue with changing blinds as reported by cq123 is fixed.  Hopefully.  This was a problem with the blind inferrence code
+  in CSymbols::calc_stakes.
+- Formula editor, f$debug: error lines and comment lines did not have a linefeed at the end, giving the appearance of 
+  disappearing lines when calc/auto button is pushed.  (CDlgFormulaScintilla::create_debug_tab)
+- Formula editor: calc button result now displays with the same precision as that selected for the f$debug tab 
+  (<< and >> buttons). (CDlgFormulaScintilla::OnBnClickedCalc)
+- Formula editor, f$debug: fixed stupid bug where "calc" button was returning zero for every line. 
+  (CDlgFormulaScintilla::OnBnClickedCalc)
+- Formula editor: Versus symbols are now recognized for colorisation purposes.  
+- Autoplayer (casino, not PokerPro): added final calculation of f$alli, f$swag, f$rais, f$call, and f$play after setting
+  isfinalanswer to true, and before autoplayer acts.
+- DLL extension: gws calls now handle f$function calls correctly.
+
+
+v1.0.1 2007-10-14
+-----------------
+BUG FIX:  
+- Loading a DLL consistently causes a crash.  The OH development team has struggled with MSVC 2005's code optimization features thoughout the life of this project.  Something in the code base causes unexpected behavior when various optimization options are chosen.  For some reason, choosing "custom" optimization and manually turning every option on solves the problem.  Late in the 1.0.0 development cycle, the team decided to stay with "full" optimization, as everything appeared to be working properly.  Alas, that was clearly not the case.  The only change in this bugfix release is to use a "custom" optimization profile for "release" builds.  Debug builds are not impacted, as they use a "disabled" optimization profile.
+
+Thank you to Matrix for identifying out the issue with loading DLL's.
+
+Any advice from MSVC 2005 code optimization experts would be appreciated, of course.
+
+NOTE:
+- The source code package is significantly smaller now.  "versus.bin" was inadvertently included in the source code package for 1.0.0.
