@@ -27,3 +27,13 @@ NEW STUFF:
 
 	return 0;
   }
+  
+  f$debug tab:
+      0.7553 = dll$test
+      0.7553 = random
+     17.7496 = dll$spend
+     17.7496 = f$spend
+  12345.6700 = dll$recurse
+  12345.6700 = dll$mynumber
+      0.7810 = dll$complex
+      0.7810 = f$spend/25 * 1.1
