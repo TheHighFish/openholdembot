@@ -17,7 +17,7 @@ NEW STUFF:
 
 BUG FIXES:
 - OpenHoldem no longer performs unnecessary Poker Tracker database queries when we are not using
-  a compatible site.
+  a compatible site. (quiqsilver)
 
 
 v1.6.0 2008-02-22
@@ -1130,14 +1130,21 @@ BUG FIX:
 v1.0.1 2007-10-14
 -----------------
 BUG FIX:  
-- Loading a DLL consistently causes a crash.  The OH development team has struggled with MSVC 2005's code optimization features thoughout the life of this project.  Something in the code base causes unexpected behavior when various optimization options are chosen.  For some reason, choosing "custom" optimization and manually turning every option on solves the problem.  Late in the 1.0.0 development cycle, the team decided to stay with "full" optimization, as everything appeared to be working properly.  Alas, that was clearly not the case.  The only change in this bugfix release is to use a "custom" optimization profile for "release" builds.  Debug builds are not impacted, as they use a "disabled" optimization profile.
+- Loading a DLL consistently causes a crash.  The OH development team has struggled with MSVC 2005's code
+  optimization features thoughout the life of this project.  Something in the code base causes unexpected
+  behavior when various optimization options are chosen.  For some reason, choosing "custom" optimization
+  and manually turning every option on solves the problem.  Late in the 1.0.0 development cycle, the team
+  decided to stay with "full" optimization, as everything appeared to be working properly.  Alas, that was
+  clearly not the case.  The only change in this bugfix release is to use a "custom" optimization profile for
+  "release" builds.  Debug builds are not impacted, as they use a "disabled" optimization profile.
 
 Thank you to Matrix for identifying out the issue with loading DLL's.
 
 Any advice from MSVC 2005 code optimization experts would be appreciated, of course.
 
 NOTE:
-- The source code package is significantly smaller now.  "versus.bin" was inadvertently included in the source code package for 1.0.0.
+- The source code package is significantly smaller now.  "versus.bin" was inadvertently included in the source
+code package for 1.0.0.
 
 
 v1.0.0 2007-10-13 
