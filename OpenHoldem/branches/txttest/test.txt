@@ -1130,4 +1130,4 @@ BUG FIX:
 v1.0.1 2007-10-14
 -----------------
 BUG FIX:  
-- Loading a DLL consistently causes a crash.  The OH development team has struggled with MSVC 2005's code optimization features thoughout the life of this project.
+- Loading a DLL consistently causes a crash.  The OH development team has struggled with MSVC 2005's code optimization features thoughout the life of this project.  Something in the code base causes unexpected behavior when various optimization options are chosen.  For some reason, choosing "custom" optimization and manually turning every option on solves the problem.
