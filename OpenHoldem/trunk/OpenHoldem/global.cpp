@@ -1043,6 +1043,7 @@ void CGlobal::save_s$strings(void)
 		tablemap.num_chairs = 0;
 		tablemap.swagtextmethod = 0;
 		tablemap.sitename = "";
+		tablemap.network = "";
 		tablemap.chairconfig = "";
 		for (i=0; i<=3; i++)
 			tablemap.ttype[i] = "";
@@ -1057,6 +1058,9 @@ void CGlobal::save_s$strings(void)
 
 			if (tablemap.s$[i].name == "sitename")
 				tablemap.sitename = tablemap.s$[i].text;
+
+			if (tablemap.s$[i].name == "network")
+				tablemap.network = tablemap.s$[i].text;
 
 			if (tablemap.s$[i].name == "chairconfig")
 				tablemap.chairconfig = tablemap.s$[i].text;

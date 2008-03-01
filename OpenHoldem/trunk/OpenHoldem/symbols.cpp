@@ -3579,6 +3579,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 
 		//PROFILE
 		if (memcmp(a, "sitename$", 9)==0)									return global.tablemap.sitename.Find(&a[9])!=-1;
+		if (memcmp(a, "network$", 8)==0)									return global.tablemap.network.Find(&a[8])!=-1;
 		if (memcmp(a, "swagdelay", 9)==0 && strlen(a)==9)					return sym.swagdelay;
 		if (memcmp(a, "allidelay", 9)==0 && strlen(a)==9)					return sym.allidelay;
 		if (memcmp(a, "swagtextmethod", 14)==0 && strlen(a)==14)			return sym.swagtextmethod;

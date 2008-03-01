@@ -1,3 +1,25 @@
+v1.7.0 2008-03-15
+NEW STUFF:
+- All Poker Tracker-compatible sites are now supported by OH for pulling Poker Tracker data.
+  The table map must have s$network or s$sitename set to a supported name (see s$network below
+  for a complete list). (quiqsilver)
+
+- New symbol s$network is now available.  This is used to determine the appropriate
+  network to pull Poker Tracker data for when s$sitename is not a PT supported site.  OH will
+  first check s$sitename for a supported network name, then s$network.  These are the supported
+  names for both s$sitename and s$network and must be lowercase: stars, party, ultimate, absolute,
+  microgaming, ongame, cryptologic, pacific, fulltilt, b2b, tribeca, worldpex, ipoker, tain,
+  bodog, everest, boss, and betfair. (quiqsilver)
+
+- OpenHoldem will now use Poker Tracker data when connected to ManualMode if s$network or
+  s$sitename in ManualMode's table map is set to a Poker Tracker compatible name. (quiqsilver)
+
+
+BUG FIXES:
+- OpenHoldem no longer performs unnecessary Poker Tracker database queries when we are not using
+  a compatible site.
+
+
 v1.6.0 2008-02-22
 NEW STUFF:
 - Table maps using fuzzy fonts are now utilized correctly in the scraper engine.

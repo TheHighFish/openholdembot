@@ -42,9 +42,9 @@ private:
 
 } PT;
 
-char * const pokersiteid[] = {"", "Paradise", "Stars", 
-	"party", "Ultimate", "Absolute", "", "Hollywood", "", "Pacific", "", 
-	"FullTilt", "", "", "wsex"} ;
+char * const networkid[] = {"", "", "Stars", "Party", "Ultimate", "Absolute", "Microgaming", "Ongame",
+	"Cryptologic", "Pacific", "", "FullTilt", "B2B", "Tribeca", "Worldpex", "iPoker", "Tain", "Bodog",
+	"Everest", "Boss", "Betfair"} ;
 
 char * const stat_str[] = {
 	"pt_icon", "pt_hands", "pt_pfr", "pt_aggp", "pt_aggf", "pt_aggt", "pt_aggr", 

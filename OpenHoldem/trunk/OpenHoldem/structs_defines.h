@@ -351,6 +351,7 @@ struct STableMap
 	int		num_chairs;
 	int		swagtextmethod;
 	CString	sitename;
+	CString network;
 	CString	chairconfig;
 	CString	ttype[4];
 };

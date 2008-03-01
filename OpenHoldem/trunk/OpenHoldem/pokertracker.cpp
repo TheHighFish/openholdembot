@@ -288,12 +288,18 @@ int	PokerTracker::getsiteid (void) {
 		} 
 		else 
 		{
-			for (i=0; i<=14; i++) {
-				sym.Format("sitename$%s", pokersiteid[i]);
-				if (symbols.GetSymbolVal(sym.MakeLower().GetString(), &e) && strlen(pokersiteid[i])) { return i; }
+			//Is s$sitename one of the supported PT sites?  Return the proper site_id for db queries.
+			for (i=0; i<=20; i++) {
+					sym.Format("sitename$%s", networkid[i]);
+					if (symbols.GetSymbolVal(sym.MakeLower().GetString(), &e) && strlen(networkid[i])) { return i; }
+			}
+			//Is s$network one of the supported PT sites?  Return the proper site_id for db queries.
+			for (i=0; i<=20; i++) {
+					sym.Format("network$%s", networkid[i]);
+					if (symbols.GetSymbolVal(sym.MakeLower().GetString(), &e) && strlen(networkid[i])) { return i; }
 			}
 		}
-		return 0 ;
+		return -1 ;
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 
@@ -392,8 +398,6 @@ double PokerTracker::getstat (int m_chr, PT_Stats stat) {
 
 		if (!pokertracker_thread_alive) { return 0.0; }
 
-		if (symbols.sym.ismanual && !symbols.sym.isppro) { return 0.0; }
-
 		if (m_chr<0 || m_chr>9)  { return 0.0; }
 
 		EnterCriticalSection(&pt_cs);
@@ -418,6 +422,11 @@ double PokerTracker::update_stat (int m_chr, int stat) {
 		const char*	n;
 		double		result = -1.0;
 		char		siteidstr[5];
+		int			siteid;
+
+		//No more unnecessary queries when we don't even have a siteid to check
+		siteid = getsiteid();
+		if (siteid == -1)  return result;
 
 		if (PQstatus(pgconn) != CONNECTION_OK || !connected)  return result;
 
@@ -449,7 +458,7 @@ double PokerTracker::update_stat (int m_chr, int stat) {
 			}
 
 			// Insert the site id in the query string
-			sprintf(siteidstr, "%d", getsiteid());
+			sprintf(siteidstr, "%d", siteid);
 			strcpy(strQry1, strQry);  // move the query into temp str 1
 			while ((n=strstr(strQry1, "%SITEID%"))!=NULL) { // find the token in temp str 1
 				strcpy(strQry2, strQry1);  // move the query into temp str 2
@@ -537,12 +546,17 @@ bool PokerTracker::queryname (char * query_name, char * scraped_name, char * bes
 		char		siteidstr[5];
 		bool		result=false;
 		LDistance	myLD;
+		int siteid;
+
+		//No more unnecessary queries when we don't even have a siteid to check
+		siteid = getsiteid();
+		if (siteid == -1)  return false;
 
 		if (PQstatus(pgconn) != CONNECTION_OK || !connected)  return false;
 
 		if (strlen(query_name)==0)  return false;
 
-		sprintf(siteidstr, "%d", getsiteid());
+		sprintf(siteidstr, "%d", siteid);
 
 		strcpy(strQry, "SELECT screen_name FROM players WHERE screen_name like '");
 		strcat(strQry, query_name);
