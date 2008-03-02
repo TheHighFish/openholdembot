@@ -1722,7 +1722,7 @@ void CSymbols::calc_pokervalues(void)
 			scraper.card_player[(int) sym.userchair][1]);							// pokerval
 
 		sym.npcbits = bitcount(sym.pcbits);											// npcbits
-		phandval[(int)sym.br-1] = handval;
+		phandval[(int)sym.br-1] = (int)sym.pokerval&0xff000000; //change from previous handval assignment 2008-03-02
 		if (sym.br>1 &&	phandval[(int)sym.br-1] > phandval[(int)sym.br-2])
 			sym.ishandup = 1;														// ishandup
 
@@ -1838,7 +1838,7 @@ void CSymbols::calc_pokervalues(void)
 		}	
 		handval = Hand_EVAL_N(Cards, nCards);
 		sym.pokervalcommon = calc_pokerval(handval, nCards, &dummy, CARD_NOCARD, CARD_NOCARD);	// pokervalcommon
-		chandval[(int)sym.br-1] = handval;
+		chandval[(int)sym.br-1] = (int)sym.pokervalcommon&0xff000000; //change from previous handval assignment 2008-03-02
 		if (sym.br>1 &&	chandval[(int)sym.br-1] > chandval[(int)sym.br-2]) 
 		{
 			sym.ishandupcommon = 1;															// ishandupcommon
