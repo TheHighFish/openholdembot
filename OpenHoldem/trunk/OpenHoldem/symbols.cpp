@@ -7,7 +7,6 @@
 #include "global.h"
 #include "OpenHoldem.h"
 #include "scraper.h"
-#include "OpenHoldemDoc.h"
 #include "grammar.h"
 #include "poker_defs.h"
 #include "inlines/eval.h"
@@ -591,7 +590,7 @@ void CSymbols::CalcSymbols(void)
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Global environment symbols
-		sym.session = theApp.sessionnum;												// session
+		sym.session = global.sessionnum;												// session
 		sym.nopponentsmax = global.preferences.max_opponents;							// nopponentsmax
 		sym.swagdelay = global.preferences.swag_delay_3;								// swagdelay
 		sym.allidelay = -1;																// allidelay  (unused in OpenHoldem)

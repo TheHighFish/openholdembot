@@ -20,8 +20,6 @@
 #define new DEBUG_NEW
 #endif
 
-HWND		main_frm_hwnd;
-
 // Supports MRU
 AFX_STATIC_DATA const TCHAR _afxFileSection[] = _T("Recent File List");
 AFX_STATIC_DATA const TCHAR _afxFileEntry[] = _T("File%d");
@@ -123,7 +121,7 @@ BOOL COpenHoldemApp::InitInstance()
 		// Noew look through process list and count number of matching processes
 		EnumProcesses( aProcesses, sizeof(aProcesses), &cbNeeded );
 		cProcesses = cbNeeded / sizeof(DWORD);
-		sessionnum = 0;
+		global.sessionnum = 0;
 		for (i=0; i<(int) cProcesses; i++) 
 		{
 			hProcess = OpenProcess( PROCESS_QUERY_INFORMATION |
@@ -140,7 +138,7 @@ BOOL COpenHoldemApp::InitInstance()
 
 			if (strcmp(sCurProcessName, sProcessName)==0) 
 			{
-				sessionnum++;
+				global.sessionnum++;
 			}
 		}
 

@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "debug.h"
-#include "MainFrm.h"
 #include "global.h"
-#include "OpenHoldem.h"
 #include "symbols.h"
 #include "scraper.h"
 #include "inlines/eval.h"
@@ -83,7 +81,7 @@ void logfatal (char* fmt, ...) {
 	FILE		*fatallog;
 	char		nowtime[26];
 
-	sprintf(fatallogpath, "%s\\fatal error.log", startup_path);
+	sprintf(fatallogpath, "%s\\fatal error.log", global.startup_path);
 	fatallog = fopen(fatallogpath, "a");
 
 	va_start(ap, fmt);
@@ -193,7 +191,7 @@ LONG WINAPI MyUnHandledExceptionFilter(struct _EXCEPTION_POINTERS *lpExceptionIn
 	logfatal("########################################################################\n");
 	logfatal("########################################################################\n\n\n");
 
-	sprintf(flpath, "%s\\fatal error.log", startup_path);
+	sprintf(flpath, "%s\\fatal error.log", global.startup_path);
 	strcpy(msg, "OpenHoldem is about to crash - this is probably a developer's fault.\n");
 	strcat(msg, "If you would be so kind, please help the file named:\n");
 	strcat(msg, flpath);
@@ -314,7 +312,7 @@ void start_log(void) {
 #endif
 		if (log_fp==NULL) {
 			CString fn;
-			fn.Format("%s\\oh%d.log", startup_path, theApp.sessionnum);
+			fn.Format("%s\\oh%d.log", global.startup_path, global.sessionnum);
 			log_fp = fopen(fn.GetString(), "a");
 			write_log("! log file open\n");
 			fprintf(log_fp, "yyyy.mm.dd hh:mm:ss -  # hand commoncard rank poker  win  los  tie  P      nit bestaction - play*      call       bet       pot   balance - FCRA FCRA swag\n");

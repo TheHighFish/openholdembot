@@ -1,5 +1,4 @@
 
-void do_autoplayer(void);
 
 void heartbeat_thread(void *);
 extern	HANDLE				h_heartbeat_thread;

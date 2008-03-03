@@ -2,8 +2,6 @@
 
 #include "debug.h"
 #include "tablemap.h"
-#include "OpenHoldemDoc.h"
-#include "MainFrm.h"
 #include "structs_defines.h"
 #include "hash/lookup3.h"
 #include "global.h"
@@ -462,7 +460,7 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) {
 			tablelisthold.crect.top = crect.top;
 			tablelisthold.crect.right = crect.right;
 			tablelisthold.crect.bottom = crect.bottom;
-			g_tlist.Add(tablelisthold);
+			global.g_tlist.Add(tablelisthold);
 			profile_match = true;
 		}
 	}
@@ -479,7 +477,6 @@ bool check_window_match(STableMap *map, HWND h, RECT r, CString title) {
 #ifdef SEH_ENABLE
 	try {
 #endif
-		COpenHoldemDoc	*pDoc = COpenHoldemDoc::GetDocument();
 		int				i;
 		bool			good_size, good_pos_title, good_neg_title, good_table_points;
 		int				width, height, x, y;

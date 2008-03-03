@@ -11,8 +11,6 @@
 #include "threads.h"
 #include "grammar.h"
 #include "DialogPpro.h"
-#include "MainFrm.h"
-#include "OpenHoldem.h"
 
 class PokerPro	ppro;
 
@@ -2284,10 +2282,10 @@ void PokerPro::writehh(CString *s) {
 		FILE *hh_fp;
 
 		if (handhistory) {
-			fn.Format("%s\\ppro\\%s%d.log", startup_path, data.m_site_name, theApp.sessionnum);
+			fn.Format("%s\\ppro\\%s%d.log", global.startup_path, data.m_site_name, global.sessionnum);
 			hh_fp = fopen(fn.GetString(), "a");
 			if (hh_fp==NULL) {
-				fd.Format("%s\\ppro", startup_path);
+				fd.Format("%s\\ppro", global.startup_path);
 				CreateDirectory(fd.GetString(), NULL);
 				hh_fp = fopen(fn.GetString(), "a");
 			}

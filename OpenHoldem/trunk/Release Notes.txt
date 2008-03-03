@@ -22,6 +22,8 @@ BUG FIXES:
 - Formula Dialog stays open untill File->New and File->Open completes. Toolbar button 
   sometimes stays pressed after Formula Dialog gets closed. (jumpingfences)
   
+- Removed some circular dependences between some non-GUI modules and MainFrm and OpenHoldem 
+  by moving sessionnum, g_tlist, startup_path to CGlobal. (jumpingfences)
 
 v1.6.0 2008-02-22
 NEW STUFF:

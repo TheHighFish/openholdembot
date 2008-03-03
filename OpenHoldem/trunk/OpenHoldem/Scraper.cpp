@@ -1,7 +1,6 @@
 #include "StdAfx.h"
 
 #include "Scraper.h"
-#include "OpenHoldemDoc.h"
 #include "debug.h"
 #include "hash/lookup3.h"
 #include "poker_defs.h"

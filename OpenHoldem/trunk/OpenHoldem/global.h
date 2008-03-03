@@ -6,6 +6,7 @@
 #include "dll_extension.h"
 #include "UPDialog.h"
 
+
 // For parsing progress dialog
 struct	sData 
 {
@@ -76,6 +77,15 @@ public:
 	// Next replay frame number
 	int				next_replay_frame;
 	bool			replay_recorded_this_turn;
+
+	// instance/session number
+	int				sessionnum;
+
+	// Used for holding table list by callback function
+	CArray <STableList, STableList>		g_tlist;
+
+	// Startup path
+	char			startup_path[MAX_PATH];
 
 } global;
 

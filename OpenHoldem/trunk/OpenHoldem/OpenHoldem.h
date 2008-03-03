@@ -20,10 +20,8 @@ public:
 	virtual BOOL InitInstance();
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()
-	CMutex *m_Mutex;  // for AutoPlayer
 
 public:
-	int		sessionnum;
 	virtual int ExitInstance();
 };
 

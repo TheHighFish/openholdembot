@@ -6,11 +6,10 @@
 #include "symbols.h"
 #include "scraper.h"
 #include "tablemap.h"
-#include "OpenHoldem.h"
-#include "MainFrm.h"
 #include "DialogFormulaScintilla.h"
 #include "global.h"
 #include "threads.h"
+
 
 class CGlobal	global;
 
@@ -269,8 +268,6 @@ bool CGlobal::ParseAllFormula(HWND hwnd, SFormula *f)
 	try {
 #endif
 		sData			data;
-		CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-
 		data.all_parsed = true;
 		data.calling_hwnd = hwnd;
 		data.f = f;
@@ -279,14 +276,14 @@ bool CGlobal::ParseAllFormula(HWND hwnd, SFormula *f)
 
 		// Set busy cursor
 		global.m_WaitCursor = true;
-		pMyMainWnd->BeginWaitCursor();
+		CWnd::FromHandle(hwnd)->BeginWaitCursor();
 		if (m_formulaScintillaDlg) m_formulaScintillaDlg->BeginWaitCursor();
 
 		// Start parsing
 		dlg_progress.DoModal();
 
 		// Unset busy cursor	
-		pMyMainWnd->EndWaitCursor();
+		CWnd::FromHandle(hwnd)->EndWaitCursor();
 		if (m_formulaScintillaDlg) m_formulaScintillaDlg->EndWaitCursor();
 		global.m_WaitCursor = false;
 
@@ -1120,16 +1117,16 @@ void CGlobal::create_replay_frame(void)
 		strftime(now_time_str, 100, "%Y-%m-%d %H:%M:%S", now_time);
 
 		// Create replay/session dir if it does not exist
-		path.Format("%s\\replay\\session%d\\", startup_path, theApp.sessionnum);
+		path.Format("%s\\replay\\session%d\\", startup_path, sessionnum);
 		if (GetFileAttributes(path.GetString()) == INVALID_FILE_ATTRIBUTES)
 			SHCreateDirectoryEx(NULL, path.GetString(), NULL);
 
 		// Create bitmap file
-		path.Format("%s\\replay\\session%d\\frame%03d.bmp", startup_path, theApp.sessionnum, global.next_replay_frame);
+		path.Format("%s\\replay\\session%d\\frame%03d.bmp", startup_path, sessionnum, global.next_replay_frame);
 		CreateBMPFile(path.GetString(), scraper.entire_window_Cur);
 		
 		// Create HTML file
-		path.Format("%s\\replay\\session%d\\frame%03d.htm", startup_path, theApp.sessionnum, global.next_replay_frame);
+		path.Format("%s\\replay\\session%d\\frame%03d.htm", startup_path, sessionnum, global.next_replay_frame);
 		fp = fopen(path.GetString(), "w");
 
 		fprintf(fp, scraper.title); fprintf(fp, "\n");
@@ -1145,7 +1142,7 @@ void CGlobal::create_replay_frame(void)
 			global.next_replay_frame-1 >= 0 ? global.next_replay_frame-1 : global.preferences.replay_max_frames);
 		fprintf(fp, "<a href=\"frame%03d.htm\">NEXT</a>\n",
 			global.next_replay_frame+1 < global.preferences.replay_max_frames ? global.next_replay_frame+1 : 0);
-		fprintf(fp, " [%d.%03d] [%s]<br>\n", theApp.sessionnum, global.next_replay_frame, now_time_str);
+		fprintf(fp, " [%d.%03d] [%s]<br>\n", sessionnum, global.next_replay_frame, now_time_str);
 		fprintf(fp, "<br>\n");
 		fprintf(fp, "<table>\n");
 		fprintf(fp, "<tr>\n");

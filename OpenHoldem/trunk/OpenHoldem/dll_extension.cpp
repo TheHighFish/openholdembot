@@ -8,7 +8,6 @@
 #include "debug.h"
 #include "grammar.h"
 #include "versus.h"
-#include "MainFrm.h"
 
 CDll	cdll;
 
@@ -95,16 +94,16 @@ void CDll::load_dll(char * path) {
 
 			// Try to load dll from the ##dll## section, if it is specified
 			if (formula_dll != "") {
-				t.Format("%s\\%s", startup_path, formula_dll.GetString());
-				SetCurrentDirectory(startup_path);
+				t.Format("%s\\%s", global.startup_path, formula_dll.GetString());
+				SetCurrentDirectory(global.startup_path);
 				hMod_dll = LoadLibrary(t.GetString());
 				err1 = GetLastError();
 			}
 
 			// If dll is still not loaded, load from name in Edit/Preferences
 			if (hMod_dll==NULL) {
-				t.Format("%s\\%s", startup_path, global.preferences.dll_name.GetString());
-				SetCurrentDirectory(startup_path);
+				t.Format("%s\\%s", global.startup_path, global.preferences.dll_name.GetString());
+				SetCurrentDirectory(global.startup_path);
 				hMod_dll = LoadLibrary(t.GetString());
 				err2 = GetLastError();
 			}

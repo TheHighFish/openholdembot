@@ -37,12 +37,6 @@
 #define new DEBUG_NEW
 #endif
 
-// Used for holding table list by callback function
-CArray <STableList, STableList>		g_tlist;
-
-// Startup path
-char		startup_path[MAX_PATH];
-
 // CMainFrame
 
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
@@ -137,7 +131,7 @@ CMainFrame::CMainFrame() {
 	try {
 #endif
 		// Save startup directory
-		::GetCurrentDirectory(sizeof(startup_path) - 1, startup_path);
+		::GetCurrentDirectory(sizeof(global.startup_path) - 1, global.startup_path);
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 
@@ -662,7 +656,7 @@ void CMainFrame::OnBnClickedGreenCircle() {
 		CTime							time, latest_time;
 
 		// Clear global list for holding table candidates
-		g_tlist.RemoveAll();
+		global.g_tlist.RemoveAll();
 
 		////////////////////////////////////////////////////
 		// Load all profiles in scraper directory into array
@@ -673,7 +667,7 @@ void CMainFrame::OnBnClickedGreenCircle() {
 				maps.n_elem++;
 
 		// WinScrape converted profiles
-		path.Format("%s\\scraper\\*.ws", startup_path);
+		path.Format("%s\\scraper\\*.ws", global.startup_path);
 		bFound = hFile.FindFile(path.GetString());
 		while (bFound)
 		{
@@ -684,7 +678,7 @@ void CMainFrame::OnBnClickedGreenCircle() {
 		}
 
 		// OpenScrape table maps
-		path.Format("%s\\scraper\\*.tm", startup_path);
+		path.Format("%s\\scraper\\*.tm", global.startup_path);
 		bFound = hFile.FindFile(path.GetString());
 		while (bFound) 
 		{
@@ -699,7 +693,7 @@ void CMainFrame::OnBnClickedGreenCircle() {
 		EnumWindows(EnumProcTopLevelWindowList, (LPARAM) &maps);
 
 		// Put global candidate table list in table select dialog variables
-		N = (int) g_tlist.GetSize();
+		N = (int) global.g_tlist.GetSize();
 		if (N==0) {
 			MessageBox("No valid tables found", "Cannot find table", MB_OK);
 		}
@@ -710,13 +704,13 @@ void CMainFrame::OnBnClickedGreenCircle() {
 			}
 			else if (N>=2) {
 				for (i=0; i<N; i++) {
-					tablelisthold.hwnd = g_tlist[i].hwnd;
-					tablelisthold.title = g_tlist[i].title;
-					tablelisthold.path = g_tlist[i].path;
-					tablelisthold.crect.left = g_tlist[i].crect.left;
-					tablelisthold.crect.top = g_tlist[i].crect.top;
-					tablelisthold.crect.right = g_tlist[i].crect.right;
-					tablelisthold.crect.bottom = g_tlist[i].crect.bottom;
+					tablelisthold.hwnd = global.g_tlist[i].hwnd;
+					tablelisthold.title = global.g_tlist[i].title;
+					tablelisthold.path = global.g_tlist[i].path;
+					tablelisthold.crect.left = global.g_tlist[i].crect.left;
+					tablelisthold.crect.top = global.g_tlist[i].crect.top;
+					tablelisthold.crect.right = global.g_tlist[i].crect.right;
+					tablelisthold.crect.bottom = global.g_tlist[i].crect.bottom;
 					cstd.tlist.Add(tablelisthold);
 				}
 
@@ -726,12 +720,12 @@ void CMainFrame::OnBnClickedGreenCircle() {
 
 			if (result == IDOK) {
 				// Load correct profile, and save hwnd/rect/numchairs of table that we are "attached" to
-				global.attached_hwnd = g_tlist[cstd.selected_item].hwnd;
-				global.attached_rect.left = g_tlist[cstd.selected_item].crect.left;
-				global.attached_rect.top = g_tlist[cstd.selected_item].crect.top;
-				global.attached_rect.right = g_tlist[cstd.selected_item].crect.right;
-				global.attached_rect.bottom = g_tlist[cstd.selected_item].crect.bottom;
-				load_tablemap((char *) g_tlist[cstd.selected_item].path.GetString(), &global.tablemap, VER_OPENSCRAPE_1, false, &line);
+				global.attached_hwnd = global.g_tlist[cstd.selected_item].hwnd;
+				global.attached_rect.left = global.g_tlist[cstd.selected_item].crect.left;
+				global.attached_rect.top = global.g_tlist[cstd.selected_item].crect.top;
+				global.attached_rect.right = global.g_tlist[cstd.selected_item].crect.right;
+				global.attached_rect.bottom = global.g_tlist[cstd.selected_item].crect.bottom;
+				load_tablemap((char *) global.g_tlist[cstd.selected_item].path.GetString(), &global.tablemap, VER_OPENSCRAPE_1, false, &line);
 				global.save_r$indexes();
 				global.save_s$indexes();
 				global.save_s$strings();
@@ -773,7 +767,7 @@ void CMainFrame::OnBnClickedGreenCircle() {
 				// Find next replay frame number
 				latest_time = 0;
 				global.next_replay_frame = last_frame_num = -1;
-				path.Format("%s\\replay\\session%d\\*.bmp", startup_path, theApp.sessionnum);
+				path.Format("%s\\replay\\session%d\\*.bmp", global.startup_path, global.sessionnum);
 				bFound = hFile.FindFile(path.GetString());
 				while (bFound)
 				{
@@ -1225,7 +1219,7 @@ void CMainFrame::OnAutoplayer() {
 	try {
 #endif
 		CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-
+	
 		if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER)) {
 			// calc hand lists
 			global.create_hand_list_matrices(&global.formula);

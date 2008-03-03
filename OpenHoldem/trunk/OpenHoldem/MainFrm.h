@@ -4,11 +4,6 @@
 #include "MyCToolBar.h"
 #include "structs_defines.h"
 
-// Used for holding table list by callback function
-extern CArray <STableList, STableList>		g_tlist;
-
-// Startup path
-extern char		startup_path[MAX_PATH];
 
 #define		HWND_CHECK_TIMER				1
 #define		ENABLE_BUTTONS_TIMER			2
