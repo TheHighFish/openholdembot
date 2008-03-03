@@ -7,6 +7,16 @@ NEW STUFF:
   names for both s$sitename and s$network and must be lowercase: stars, party, ultimate, absolute,
   microgaming, ongame, cryptologic, pacific, fulltilt, b2b, tribeca, worldpex, ipoker, tain,
   bodog, everest, boss, and betfair. (quiqsilver)
+  
+- The entry window now has a status bar which displays common characters that are missing a font
+  definition on the left side, and cards that have no hash created on the right side for easy
+  reference. (Thanks, Folder and dipitlow) (quiqsilver)
+  
+- OpenScrape's behavior when creating hashes and images is now consistent with its font creation
+  behavior: 
+  - The selection will now return to the previously selected image or region respectively.
+  - When the first hash or image is created, the respective section will gain the '+' button to
+    indicate it now has a member and can be expanded. (quiqsilver)
 
 BUG FIXES:
 - Create Font button would not search all groups to find unknown character when it should have

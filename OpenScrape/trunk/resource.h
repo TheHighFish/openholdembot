@@ -19,6 +19,7 @@
 #define IDC_DRAWRECTCURSOR              143
 #define IDD_EDIT_HASH                   144
 #define IDD_EDIT_GR_HASHPOINTS          145
+#define IDC_STATUSBARCTRL				146
 #define IDC_TABLEMAP_TREE               1000
 #define IDC_LEFT                        1001
 #define IDC_CURRENTREGION               1002

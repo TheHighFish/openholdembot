@@ -56,6 +56,8 @@ protected:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg BOOL OnToolTipText(UINT id, NMHDR* pTTTStruct, LRESULT* pResult);
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg void OnSizing(UINT nSide, LPRECT lpRect);
 	COLORREF get_color_under_mouse(UINT *nFlags, CPoint *point);
 
 	CStatic				m_BitmapFrame;
@@ -77,6 +79,7 @@ protected:
 	bool				picker_cursor;
 	HCURSOR				hCurPicker, hCurStandard;
 	bool				ignore_changes;
+	CStatusBarCtrl		m_status;
 
 public:
 	virtual BOOL DestroyWindow();
@@ -85,6 +88,7 @@ public:
 	enum { IDD = IDD_TABLEMAP };
 	void create_tree(void);
 	void update_display(void);
+	void update_status(void);
 	HTREEITEM update_tree(CString node_text);
 
 	CTreeCtrl			m_TableMapTree;

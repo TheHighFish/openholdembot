@@ -167,6 +167,8 @@ BEGIN_MESSAGE_MAP(CDlgTableMap, CDialog)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_RADIUS_SPIN, &CDlgTableMap::OnDeltaposRadiusSpin)
 	ON_WM_MOUSEMOVE()
 	ON_NOTIFY_EX(TTN_NEEDTEXT, 0, OnToolTipText)
+	ON_WM_CREATE()
+	ON_WM_SIZING()
 END_MESSAGE_MAP()
 
 
@@ -302,6 +304,19 @@ BOOL CDlgTableMap::OnInitDialog()
 	max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
 	::SetWindowPos(m_hWnd, HWND_TOP, min(reg.tablemap_x, max_x), min(reg.tablemap_y, max_y),
 		reg.tablemap_dx, reg.tablemap_dy, SWP_NOCOPYBITS);
+
+	// Resize the status bar
+	m_status.SendMessage(WM_SIZE);
+
+	// Create sections for the status bar
+	const int parts = 2;
+	CRect rect;
+	m_status.GetClientRect(&rect);
+	int widths[parts] = { rect.right/2, -1 };
+	m_status.SetParts(parts, widths);
+
+	// Update the status bar text
+	update_status();
 
 	picker_cursor = false;
 	ignore_changes = false;
@@ -1753,7 +1768,6 @@ HTREEITEM CDlgTableMap::update_tree(CString node_text)
 		node = m_TableMapTree.GetNextItem(node, TVGN_NEXT);
 		text = m_TableMapTree.GetItemText(node);
 	}
-
 	return node;
 }
 
@@ -1988,13 +2002,18 @@ void CDlgTableMap::OnBnClickedCreateImage()
 	BYTE				alpha, red, green, blue;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	HTREEITEM			new_hti;
-	CString				text, node_text;
-	HTREEITEM			image_node;
+	CString				text, node_text, sel_region_name;;
+	HTREEITEM			image_node, region_node, child_node;
 	Stablemap_region	*sel_region_ptr = NULL;
 	
-	// Get pointer to selected region record
 	if (m_TableMapTree.GetSelectedItem())
-		 sel_region_ptr = (Stablemap_region *) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
+	{
+		// Get pointer to selected region record
+		sel_region_ptr = (Stablemap_region *) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
+
+		// Save currently selected region so we can reselect it at the end
+		sel_region_name = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	}
 
 	if (sel_region_ptr)
 	{
@@ -2046,8 +2065,22 @@ void CDlgTableMap::OnBnClickedCreateImage()
 				m_TableMapTree.SortChildren(image_node);
 			}
 
+			region_node = update_tree("Regions");
+
+			// Re-select previously selected region
+			child_node = m_TableMapTree.GetChildItem(region_node);
+			node_text = m_TableMapTree.GetItemText(child_node);
+			while (node_text!=sel_region_name && child_node!=NULL)
+			{
+				child_node = m_TableMapTree.GetNextItem(child_node, TVGN_NEXT);
+				node_text = m_TableMapTree.GetItemText(child_node);
+			}
+
+			if (child_node)
+				m_TableMapTree.SelectItem(child_node);
+
 			//Invalidate(false);
-			pDoc->SetModifiedFlag(true);
+			pDoc->SetModifiedFlag(true);	
 		}
 	}
 }
@@ -2283,9 +2316,15 @@ void CDlgTableMap::OnBnClickedCreateHash()
 	COpenScrapeDoc			*pDoc = COpenScrapeDoc::GetDocument();
 	CString					sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
 	HTREEITEM				parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
-	HTREEITEM				new_hti, node;
-	CString					text, node_text;
+	HTREEITEM				new_hti, node, child_node;
+	CString					text, node_text, sel_region_name;
 	int						j, new_index;
+
+	if (m_TableMapTree.GetSelectedItem())
+	{
+		// Save currently selected region so we can reselect it at the end
+		sel_region_name = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	}
 
 	// Get image name
 	j = 0;
@@ -2341,6 +2380,20 @@ void CDlgTableMap::OnBnClickedCreateHash()
 				m_TableMapTree.SetItemData(new_hti, (DWORD_PTR) &pDoc->tablemap.h$[new_index]);
 				m_TableMapTree.SortChildren(node);
 			}
+
+			node = update_tree("Images");
+
+			// Re-select previously selected image
+			child_node = m_TableMapTree.GetChildItem(node);
+			node_text = m_TableMapTree.GetItemText(child_node);
+			while (node_text!=sel_region_name && child_node!=NULL)
+			{
+				child_node = m_TableMapTree.GetNextItem(child_node, TVGN_NEXT);
+				node_text = m_TableMapTree.GetItemText(child_node);
+			}
+
+			if (child_node)
+				m_TableMapTree.SelectItem(child_node);
 
 			//Invalidate(false);
 			pDoc->SetModifiedFlag(true);
@@ -2627,6 +2680,7 @@ void CDlgTableMap::create_tree(void)
 		m_TableMapTree.SetItemData(newitem, (DWORD_PTR) &pDoc->tablemap.i$[i]);
 	}
 	m_TableMapTree.SortChildren(parent);
+	update_status();
 }
 
 void CDlgTableMap::OnBnClickedNudgeTaller()
@@ -2960,4 +3014,125 @@ BOOL CDlgTableMap::OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult)
 	SWP_NOSIZE|SWP_NOMOVE|SWP_NOOWNERZORDER);
 
 	return true;    // message was handled
+}
+void CDlgTableMap::OnSizing(UINT nSide, LPRECT lpRect)
+{
+	CDialog::OnSizing(nSide, lpRect);
+	const int parts = 2;
+	CRect rect;
+
+	m_status.GetClientRect(&rect);
+	int widths[parts] = { rect.right/2, -1 };
+	m_status.SetParts(parts, widths);
+
+	//force a status bar redraw
+	m_status.SendMessage(WM_SIZE);
+}
+
+int CDlgTableMap::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	// Create a status bar used to identify missing elements
+	m_status.Create(WS_CHILD | WS_VISIBLE | CCS_BOTTOM | SBARS_SIZEGRIP, CRect(0,0,0,0), this, IDC_STATUSBARCTRL);
+	return 0;
+}
+
+void CDlgTableMap::update_status(void)
+{
+	int			i;
+	CString		statusFonts, statusCards;
+	bool		k;
+	CString		node_text;
+	HTREEITEM	node;
+
+	const char * fontsList = "aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ0123456789.,_-$";
+	
+	const char * cardsList[] = { "2c", "2s", "2h", "2d", "3c", "3s", "3h", "3d", "4c", "4s", "4h", "4d",
+	"5c", "5s", "5h", "5d",	"6c", "6s", "6h", "6d", "7c", "7s", "7h", "7d", "8c", "8s", "8h", "8d",
+	"9c", "9s", "9h", "9d",	"Tc", "Ts", "Th", "Td", "Jc", "Js", "Jh", "Jd", "Qc", "Qs", "Qh", "Qd",
+	"Kc", "Ks", "Kh", "Kd", "Ac", "As", "Ah", "Ad", };
+
+	statusFonts = "";
+	statusCards = "";
+
+	//fonts
+	for (i=0; fontsList[i] != '\0'; i++)
+	{
+		k = true;
+			// Find root of the Fonts node
+			node = m_TableMapTree.GetChildItem(NULL);
+			node_text = m_TableMapTree.GetItemText(node);
+			while (node_text!="Fonts" && node!=NULL)
+			{
+				node = m_TableMapTree.GetNextItem(node, TVGN_NEXT);
+				node_text = m_TableMapTree.GetItemText(node);
+			}
+			// If we have fonts created...
+			if (m_TableMapTree.ItemHasChildren(node))
+			{
+				node = m_TableMapTree.GetChildItem(node);
+				node_text = m_TableMapTree.GetItemText(node);
+				// ...parse the fonts, tag created characters as false and...
+				if (strncmp (node_text, &fontsList[i], 1) == 0)
+				{
+					k = false;
+				}
+				while (node!=NULL)
+				{	
+					node = m_TableMapTree.GetNextSiblingItem(node);
+					node_text = m_TableMapTree.GetItemText(node);
+					if (strncmp (node_text, &fontsList[i], 1) == 0)
+					{
+						k = false;
+					}
+				}
+			}
+			// ...add missing characters to a missing fonts list
+			if (k)
+			{
+				statusFonts = statusFonts + fontsList[i];
+			}
+	}
+	// Set the left side of our status bar to missing fonts list
+	m_status.SetText(_T(statusFonts), 0, 0);
+
+	//card hashes
+	for (i=0; i < 52; i++)
+	{
+		k = true;
+			// Find root of the Hashes node
+			node = m_TableMapTree.GetChildItem(NULL);
+			node_text = m_TableMapTree.GetItemText(node);
+			while (node_text!="Hashes" && node!=NULL)
+			{
+				node = m_TableMapTree.GetNextItem(node, TVGN_NEXT);
+				node_text = m_TableMapTree.GetItemText(node);
+			}
+			// If we have hashes created...
+			if (m_TableMapTree.ItemHasChildren(node))
+			{
+				node = m_TableMapTree.GetChildItem(node);
+				node_text = m_TableMapTree.GetItemText(node);
+				// ...parse the fonts, tag created card hashes as false and...
+				if (strncmp (node_text, cardsList[i], 2) == 0)
+				{
+					k = false;
+				}
+				while (node!=NULL)
+				{	
+					node = m_TableMapTree.GetNextSiblingItem(node);
+					node_text = m_TableMapTree.GetItemText(node);
+					if (strncmp (node_text, cardsList[i], 2) == 0)
+					{
+						k = false;
+					}
+				}
+			}
+			// ...add missing cards to a missing cards list
+			if (k)
+			{
+				statusCards = statusCards + cardsList[i];
+			}
+	}
+	// Set the right side of our status bar to missing cards list
+	m_status.SetText(_T(statusCards), 1, 0);
 }
