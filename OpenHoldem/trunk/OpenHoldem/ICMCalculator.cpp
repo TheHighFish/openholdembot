@@ -15,11 +15,8 @@
 
 #include "stdafx.h"
 
-#include "dll_extension.h"
-#include "poker_defs.h"
 #include "symbols.h"
 #include "global.h"
-
 #include "ICMCalculator.h"
 
 

@@ -7,7 +7,6 @@
 #include "global.h"
 #include "scraper.h"
 #include "symbols.h"
-#include "poker_defs.h"
 #include "inlines/eval.h"
 
 class CVersus	versus;

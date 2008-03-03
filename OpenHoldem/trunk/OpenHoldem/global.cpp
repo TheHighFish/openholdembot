@@ -5,7 +5,6 @@
 #include "registry.h"
 #include "symbols.h"
 #include "scraper.h"
-#include "tablemap.h"
 #include "DialogFormulaScintilla.h"
 #include "global.h"
 #include "threads.h"

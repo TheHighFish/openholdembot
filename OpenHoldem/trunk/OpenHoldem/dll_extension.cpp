@@ -1,13 +1,9 @@
 #include "stdafx.h"
 
 #include "dll_extension.h"
-#include "symbols.h"
 #include "global.h"
-#include "scraper.h"
-#include "poker_defs.h"
 #include "debug.h"
 #include "grammar.h"
-#include "versus.h"
 
 CDll	cdll;
 

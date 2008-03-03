@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "GameState.h"
-#include "dll_extension.h"
 #include "debug.h"
 #include "global.h"
 #include "symbols.h"

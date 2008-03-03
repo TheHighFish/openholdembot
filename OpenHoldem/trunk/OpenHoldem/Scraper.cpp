@@ -3,7 +3,6 @@
 #include "Scraper.h"
 #include "debug.h"
 #include "hash/lookup3.h"
-#include "poker_defs.h"
 #include "global.h"
 #include "threads.h"
 #include "symbols.h"

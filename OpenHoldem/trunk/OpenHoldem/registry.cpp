@@ -2,10 +2,7 @@
 #include "stdafx.h"
 
 #include "registry.h"
-#include "stdio.h"
-#include "stdlib.h"
 #include "debug.h"
-#include "structs_defines.h"
 #include "global.h"
 
 Registry::Registry(void) 

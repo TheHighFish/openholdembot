@@ -1,5 +1,4 @@
 #include "StdAfx.h"
-#include <Math.h>
 #include "Transform.h"
 #include "hash/lookup3.h"
 

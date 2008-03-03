@@ -3,12 +3,9 @@
 #include <process.h>
 
 #include "debug.h"
-#include "structs_defines.h"
 #include "global.h"
-#include "OpenHoldem.h"
 #include "scraper.h"
 #include "grammar.h"
-#include "poker_defs.h"
 #include "inlines/eval.h"
 #include "threads.h"
 #include "versus.h"
@@ -619,8 +616,8 @@ void CSymbols::CalcSymbols(void)
 		{
 			dealerchair_last = sym.dealerchair;
 			ResetSymbolsNewHand();
-			InvalidateRect(theApp.m_pMainWnd->GetSafeHwnd(), NULL, true);
-
+			InvalidateRect(global.hMainFrame, NULL, true);
+			
 			// randoms
 			sym.randomhand = (double) rand() / (double) RAND_MAX;						// randomhand
 			sym.randomround[0] = (double) rand() / (double) RAND_MAX;					// randomround1
