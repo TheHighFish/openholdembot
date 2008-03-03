@@ -18,6 +18,9 @@ NEW STUFF:
 BUG FIXES:
 - OpenHoldem no longer performs unnecessary Poker Tracker database queries when we are not using
   a compatible site. (quiqsilver)
+
+- ishandup and ishandupcommon now determined using memories of the high bits of pokerval rather than
+  the raw return from hand_eval_N (Matrix)
   
 - Formula Dialog stays open untill File->New and File->Open completes. Toolbar button 
   sometimes stays pressed after Formula Dialog gets closed. (jumpingfences)
