@@ -63,7 +63,7 @@ protected:
 	CStatic				m_BitmapFrame;
 	CStickyButton		m_Picker;
 	CSpinButtonCtrl		m_LeftSpin, m_TopSpin, m_BottomSpin, m_RightSpin, m_RadiusSpin;
-	CComboBox			m_Transform, m_Zoom;
+	CComboBox			m_Transform, m_Zoom, m_TrackerFontSet, m_TrackerFontNum, m_TrackerCardNum;
 	CEdit				m_Alpha, m_Red, m_Green, m_Blue, m_RedAvg, m_GreenAvg, m_BlueAvg, m_Radius, m_Result, m_PixelSeparation;
 	CButton				m_New, m_Delete, m_Edit, m_CreateHash, m_CreateImage, m_CreateFont, m_FontPlus, m_FontMinus;
 	CButton				m_NudgeTaller, m_NudgeShorter, m_NudgeWider, m_NudgeNarrower, m_NudgeBigger, m_NudgeSmaller;
@@ -88,7 +88,7 @@ public:
 	enum { IDD = IDD_TABLEMAP };
 	void create_tree(void);
 	void update_display(void);
-	void update_status(void);
+	void UpdateStatus(void);
 	HTREEITEM update_tree(CString node_text);
 
 	CTreeCtrl			m_TableMapTree;

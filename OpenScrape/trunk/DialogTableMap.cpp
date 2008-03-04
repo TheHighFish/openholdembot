@@ -21,6 +21,13 @@
 #include "DialogEditHash.h"
 #include "debug.h"
 
+const char * fontsList = "aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ0123456789.,_-$";
+	
+const char * cardsList[] = { "2c", "2s", "2h", "2d", "3c", "3s", "3h", "3d", "4c", "4s", "4h", "4d",
+	"5c", "5s", "5h", "5d",	"6c", "6s", "6h", "6d", "7c", "7s", "7h", "7d", "8c", "8s", "8h", "8d",
+	"9c", "9s", "9h", "9d",	"Tc", "Ts", "Th", "Td", "Jc", "Js", "Jh", "Jd", "Qc", "Qs", "Qh", "Qd",
+	"Kc", "Ks", "Kh", "Kd", "Ac", "As", "Ah", "Ad" };
+
 // CDlgTableMap dialog
 CDlgTableMap::CDlgTableMap(CWnd* pParent /*=NULL*/)	: CDialog(CDlgTableMap::IDD, pParent)
 {
@@ -115,6 +122,9 @@ void CDlgTableMap::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_NUDGE_DOWN, m_NudgeDown);
 	DDX_Control(pDX, IDC_NUDGE_DOWNLEFT, m_NudgeDownLeft);
 	DDX_Control(pDX, IDC_NUDGE_LEFT, m_NudgeLeft);
+	DDX_Control(pDX, IDC_TRACKER_FONT_SET, m_TrackerFontSet);
+	DDX_Control(pDX, IDC_TRACKER_FONT_NUM, m_TrackerFontNum);
+	DDX_Control(pDX, IDC_TRACKER_CARD_NUM, m_TrackerCardNum);
 }
 
 
@@ -132,6 +142,9 @@ BEGIN_MESSAGE_MAP(CDlgTableMap, CDialog)
 	ON_EN_KILLFOCUS(IDC_BOTTOM, &CDlgTableMap::OnRegionChange)
 	ON_EN_KILLFOCUS(IDC_RIGHT, &CDlgTableMap::OnRegionChange)
 	ON_CBN_SELCHANGE(IDC_ZOOM, &CDlgTableMap::OnZoomChange)
+	ON_CBN_SELCHANGE(IDC_TRACKER_FONT_SET, &CDlgTableMap::UpdateStatus)
+	ON_CBN_SELCHANGE(IDC_TRACKER_FONT_NUM, &CDlgTableMap::UpdateStatus)
+	ON_CBN_SELCHANGE(IDC_TRACKER_CARD_NUM, &CDlgTableMap::UpdateStatus)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_LEFT_SPIN, &CDlgTableMap::OnDeltaposLeftSpin)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_TOP_SPIN, &CDlgTableMap::OnDeltaposTopSpin)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_BOTTOM_SPIN, &CDlgTableMap::OnDeltaposBottomSpin)
@@ -169,6 +182,7 @@ BEGIN_MESSAGE_MAP(CDlgTableMap, CDialog)
 	ON_NOTIFY_EX(TTN_NEEDTEXT, 0, OnToolTipText)
 	ON_WM_CREATE()
 	ON_WM_SIZING()
+
 END_MESSAGE_MAP()
 
 
@@ -221,6 +235,10 @@ BOOL CDlgTableMap::OnInitDialog()
 	m_Transform.AddString("Hash3");
 	m_Transform.AddString("None");
 	m_Transform.SetWindowPos(NULL, 0, 0, 72, 200, SWP_NOMOVE | SWP_NOZORDER);
+
+	m_TrackerFontSet.SetCurSel(0);
+	m_TrackerFontNum.SetCurSel(1);
+	m_TrackerCardNum.SetCurSel(1);
 
 	m_Alpha.SetWindowText("");
 	m_Red.SetWindowText("");
@@ -316,7 +334,7 @@ BOOL CDlgTableMap::OnInitDialog()
 	m_status.SetParts(parts, widths);
 
 	// Update the status bar text
-	update_status();
+	UpdateStatus();
 
 	picker_cursor = false;
 	ignore_changes = false;
@@ -882,6 +900,10 @@ void CDlgTableMap::disable_and_clear_all(void)
 	m_Picker.EnableWindow(false);
 	m_Radius.EnableWindow(false);
 	m_Radius.SetWindowText("");
+
+	m_TrackerFontSet.SetCurSel(0);
+	m_TrackerFontNum.SetCurSel(1);
+	m_TrackerCardNum.SetCurSel(1);
 
 	m_CreateImage.EnableWindow(false);
 	m_CreateFont.EnableWindow(false);
@@ -2680,7 +2702,7 @@ void CDlgTableMap::create_tree(void)
 		m_TableMapTree.SetItemData(newitem, (DWORD_PTR) &pDoc->tablemap.i$[i]);
 	}
 	m_TableMapTree.SortChildren(parent);
-	update_status();
+	UpdateStatus();
 }
 
 void CDlgTableMap::OnBnClickedNudgeTaller()
@@ -3032,65 +3054,65 @@ void CDlgTableMap::OnSizing(UINT nSide, LPRECT lpRect)
 int CDlgTableMap::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	// Create a status bar used to identify missing elements
-	m_status.Create(WS_CHILD | WS_VISIBLE | CCS_BOTTOM | SBARS_SIZEGRIP, CRect(0,0,0,0), this, IDC_STATUSBARCTRL);
+	m_status.Create(WS_CHILD | WS_VISIBLE | CCS_BOTTOM | SBARS_SIZEGRIP, CRect(0,0,0,0), this, NULL);
 	return 0;
 }
 
-void CDlgTableMap::update_status(void)
+void CDlgTableMap::UpdateStatus(void)
 {
-	int			i;
-	CString		statusFonts, statusCards;
-	bool		k;
-	CString		node_text;
+	int			i, k, fontNum, cardNum;
+	CString		statusFonts, statusCards, node_text, node_group, fontSet;
 	HTREEITEM	node;
-
-	const char * fontsList = "aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ0123456789.,_-$";
-	
-	const char * cardsList[] = { "2c", "2s", "2h", "2d", "3c", "3s", "3h", "3d", "4c", "4s", "4h", "4d",
-	"5c", "5s", "5h", "5d",	"6c", "6s", "6h", "6d", "7c", "7s", "7h", "7d", "8c", "8s", "8h", "8d",
-	"9c", "9s", "9h", "9d",	"Tc", "Ts", "Th", "Td", "Jc", "Js", "Jh", "Jd", "Qc", "Qs", "Qh", "Qd",
-	"Kc", "Ks", "Kh", "Kd", "Ac", "As", "Ah", "Ad", };
 
 	statusFonts = "";
 	statusCards = "";
 
+	fontSet.Format("%d", m_TrackerFontSet.GetCurSel());
+	fontNum = m_TrackerFontNum.GetCurSel()+1;
+	cardNum = m_TrackerCardNum.GetCurSel()+1;
+
+
 	//fonts
 	for (i=0; fontsList[i] != '\0'; i++)
 	{
-		k = true;
-			// Find root of the Fonts node
-			node = m_TableMapTree.GetChildItem(NULL);
+		k = fontNum;
+		// Find root of the Fonts node
+		node = m_TableMapTree.GetChildItem(NULL);
+		node_text = m_TableMapTree.GetItemText(node);
+		while (node_text!="Fonts" && node!=NULL)
+		{
+			node = m_TableMapTree.GetNextItem(node, TVGN_NEXT);
 			node_text = m_TableMapTree.GetItemText(node);
-			while (node_text!="Fonts" && node!=NULL)
+		}
+		// If we have fonts created...
+		if (m_TableMapTree.ItemHasChildren(node))
+		{
+			node = m_TableMapTree.GetChildItem(node);
+			node_text = m_TableMapTree.GetItemText(node);
+			node_group = node_text[3];
+			// ...and the first node is a font we need in the proper set...
+			if ((strncmp (node_text, &fontsList[i], 1) == 0) && (node_text[3] == fontSet))
 			{
-				node = m_TableMapTree.GetNextItem(node, TVGN_NEXT);
-				node_text = m_TableMapTree.GetItemText(node);
+				// ...decrement the amount missing for this font
+				k--;
 			}
-			// If we have fonts created...
-			if (m_TableMapTree.ItemHasChildren(node))
-			{
-				node = m_TableMapTree.GetChildItem(node);
+			// Parse the rest of the nodes looking for matches and decrementing
+			while (node!=NULL)
+			{	
+				node = m_TableMapTree.GetNextSiblingItem(node);
 				node_text = m_TableMapTree.GetItemText(node);
-				// ...parse the fonts, tag created characters as false and...
-				if (strncmp (node_text, &fontsList[i], 1) == 0)
+				if ((strncmp (node_text, &fontsList[i], 1) == 0) && node_text[3] == fontSet)
 				{
-					k = false;
-				}
-				while (node!=NULL)
-				{	
-					node = m_TableMapTree.GetNextSiblingItem(node);
-					node_text = m_TableMapTree.GetItemText(node);
-					if (strncmp (node_text, &fontsList[i], 1) == 0)
-					{
-						k = false;
-					}
+					k--;
 				}
 			}
-			// ...add missing characters to a missing fonts list
-			if (k)
-			{
-				statusFonts = statusFonts + fontsList[i];
-			}
+		}
+		// ...add missing characters to a missing fonts list
+		while ( k > 0 )
+		{
+			statusFonts = statusFonts + fontsList[i];
+			k--;
+		}
 	}
 	// Set the left side of our status bar to missing fonts list
 	m_status.SetText(_T(statusFonts), 0, 0);
@@ -3098,7 +3120,7 @@ void CDlgTableMap::update_status(void)
 	//card hashes
 	for (i=0; i < 52; i++)
 	{
-		k = true;
+		k = cardNum;
 			// Find root of the Hashes node
 			node = m_TableMapTree.GetChildItem(NULL);
 			node_text = m_TableMapTree.GetItemText(node);
@@ -3112,25 +3134,28 @@ void CDlgTableMap::update_status(void)
 			{
 				node = m_TableMapTree.GetChildItem(node);
 				node_text = m_TableMapTree.GetItemText(node);
-				// ...parse the fonts, tag created card hashes as false and...
+				// ...and the first node is a card in the proper set...
 				if (strncmp (node_text, cardsList[i], 2) == 0)
 				{
-					k = false;
+					// ...decrement the amount missing for this card
+					k--;
 				}
+				// Parse the rest of the nodes looking for matches and decrementing
 				while (node!=NULL)
 				{	
 					node = m_TableMapTree.GetNextSiblingItem(node);
 					node_text = m_TableMapTree.GetItemText(node);
 					if (strncmp (node_text, cardsList[i], 2) == 0)
 					{
-						k = false;
+						k--;
 					}
 				}
 			}
 			// ...add missing cards to a missing cards list
-			if (k)
+			while ( k > 0)
 			{
 				statusCards = statusCards + cardsList[i];
+				k--;
 			}
 	}
 	// Set the right side of our status bar to missing cards list

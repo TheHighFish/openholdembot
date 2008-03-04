@@ -19,7 +19,6 @@
 #define IDC_DRAWRECTCURSOR              143
 #define IDD_EDIT_HASH                   144
 #define IDD_EDIT_GR_HASHPOINTS          145
-#define IDC_STATUSBARCTRL				146
 #define IDC_TABLEMAP_TREE               1000
 #define IDC_LEFT                        1001
 #define IDC_CURRENTREGION               1002
@@ -90,7 +89,9 @@
 #define IDC_NUDGE_BIGGER                1067
 #define IDC_NUDGE_SMALLER               1068
 #define IDC_TEST                        1069
-#define IDC_BUTTON1                     1069
+#define IDC_TRACKER_FONT_SET            1077
+#define IDC_TRACKER_CARD_NUM            1078
+#define IDC_TRACKER_FONT_NUM            1079
 #define ID_MAIN_TOOLBAR_GREENCIRCLE     32771
 #define ID_VIEW_CONNECTTOWINDOW         32772
 #define ID_MAIN_TOOLBAR_REDRECTANGLE    32773
@@ -106,7 +107,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        146
 #define _APS_NEXT_COMMAND_VALUE         32779
-#define _APS_NEXT_CONTROL_VALUE         1070
+#define _APS_NEXT_CONTROL_VALUE         1081
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

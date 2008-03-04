@@ -9,9 +9,14 @@ NEW STUFF:
   bodog, everest, boss, and betfair. (quiqsilver)
   
 - The entry window now has a status bar which displays common characters that are missing a font
-  definition on the left side, and cards that have no hash created on the right side for easy
-  reference. (Thanks, Folder and dipitlow) (quiqsilver)
-  
+  definition on the left side, and cards that are missing a hash on the right side for easy
+  reference. (Thanks, Folder and dipitlow)
+  - The entry window now has a "Tracker" section to set options for what is displayed in the status
+    bar: (Thanks, Nick Coldhand)
+    - Fonts Set: Select which font set to display missing fonts for.
+    - Fonts #: Select the number of fonts desired for each character in the currently selected set.
+    - Cards #: Select the number of card hashes desired for each card. (quiqsilver)
+    
 - OpenScrape's behavior when creating hashes and images is now consistent with its font creation
   behavior: 
   - The selection will now return to the previously selected image or region respectively.
