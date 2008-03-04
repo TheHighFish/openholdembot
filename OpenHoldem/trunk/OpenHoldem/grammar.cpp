@@ -9,6 +9,8 @@
 #include "threads.h"
 #include "ICMCalculator.h"
 #include "Transform.h"
+//  2008.02.27 by THF
+#include "Perl.hpp"
 
 using namespace std;
 using namespace boost::spirit;
@@ -167,7 +169,15 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
 					*e = ERR_INVALID_DLL_SYM;
 					return 0;
 				}
+			}
 
+			//  2008.02.27 by THF
+			//  Perl symbols (starting with "pl_")
+			else if (global.the_Perl_Interpreter->is_Perl_Symbol(sym.c_str()))
+			{
+				//  Error checking is done inside the Perl class
+				//  A.t.m. creating a messagebox on serious errors.
+				return global.the_Perl_Interpreter->get_Perl_Symbol(sym.c_str());
 			}
 
 			// vs$ symbols

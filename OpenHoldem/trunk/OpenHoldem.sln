@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5BBB408A-BE3F-445E-85A4-4E677116F815}"
 	ProjectSection(SolutionItems) = preProject
 		Release Notes.txt = Release Notes.txt
@@ -28,6 +28,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SciLexer", "scintilla\vcbuild\SciLexer.vcproj", "{E757A486-9770-4DB4-8299-00E22986E604}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "poker-eval", "pokereval\poker-eval.vcproj", "{A4DEF05E-E072-493E-B282-84731D60BCF0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Perl_Callback", "Perl_Callback\Perl_Callback.vcproj", "{A99B05F1-7EAF-4BED-AB9B-35853B1ECD4D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,6 +74,12 @@ Global
 		{A4DEF05E-E072-493E-B282-84731D60BCF0}.profile|Win32.Build.0 = profile|Win32
 		{A4DEF05E-E072-493E-B282-84731D60BCF0}.Release|Win32.ActiveCfg = Release|Win32
 		{A4DEF05E-E072-493E-B282-84731D60BCF0}.Release|Win32.Build.0 = Release|Win32
+		{A99B05F1-7EAF-4BED-AB9B-35853B1ECD4D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A99B05F1-7EAF-4BED-AB9B-35853B1ECD4D}.Debug|Win32.Build.0 = Debug|Win32
+		{A99B05F1-7EAF-4BED-AB9B-35853B1ECD4D}.profile|Win32.ActiveCfg = Release|Win32
+		{A99B05F1-7EAF-4BED-AB9B-35853B1ECD4D}.profile|Win32.Build.0 = Release|Win32
+		{A99B05F1-7EAF-4BED-AB9B-35853B1ECD4D}.Release|Win32.ActiveCfg = Release|Win32
+		{A99B05F1-7EAF-4BED-AB9B-35853B1ECD4D}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

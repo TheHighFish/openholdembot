@@ -290,6 +290,10 @@ struct STableMap
 	int		r$c0cardfaceXrank_index[5];
 	int		r$c0cardfaceXsuit_index[5];
 
+	//  Chat support
+	//  2008.02.21 by THF
+    int     r$chatbox;
+
 	// player info
 	int		r$uXcardfaceY_index[10][2];
 	int		r$pXcardfaceY_index[10][2];
@@ -405,6 +409,21 @@ struct SPreferences
 	bool			replay_record;
 	bool			replay_record_every_change;
 	int				replay_max_frames;
+
+	//  2008.02.27 by THF
+	//  Perl
+	//  (same as registry keys for Perl)
+	CString			Perl_default_Formula;
+	CString			Perl_Editor;
+	bool			Perl_load_default_Formula;
+	bool			Perl_load_Interpreter;
+
+	//  2008.02.27 by THF
+	//  PokerChat
+	//  (same as registry keys for PokerChat)
+	bool			Chat_enabled;
+	int				Chat_min_Delay;
+	int				Chat_random_Delay;
 
 };
 

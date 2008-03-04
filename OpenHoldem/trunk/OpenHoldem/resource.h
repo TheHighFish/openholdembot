@@ -45,6 +45,8 @@
 #define IDD_HANDLIST                    170
 #define IDD_SAPREFS8                    171
 #define IDR_FORMULA_DIALOG_ACC          172
+#define IDD_SAPREFS9                    172
+#define IDD_SAPREFS10                   173
 #define IDC_NEW                         1006
 #define IDC_DELETE                      1007
 #define IDC_RENAME                      1013
@@ -151,6 +153,8 @@
 #define IDC_PT_PASS                     1103
 #define IDC_PT_DBNAME                   1104
 #define IDC_UPDATEDELAY                 1105
+#define IDC_PT_DBNAME2                  1105
+#define IDC_DEFAULT_PERL_FORMULA        1105
 #define IDC_UPDATEDELAY_SPIN            1106
 #define IDC_CACHEREFRESH_SPIN           1107
 #define IDC_CACHEREFRESH                1108
@@ -335,7 +339,18 @@
 #define IDC_MAXFRAMES                   1286
 #define IDC_MAXFRAMES_SPIN              1287
 #define IDC_FORMULA_TAB                 1288
+#define IDC_RECORD_FRAMES3              1288
+#define IDC_MAXFRAMES2                  1288
+#define IDC_LOAD_DEFAULT_PERL_FORMULA   1288
+#define IDC_RANDOM_DELAY                1288
+#define IDC_MAXFRAMES_SPIN2             1289
+#define IDC_RANDOM_DELAY_SPIN           1289
 #define IDC_DISABLE_CACHING             1290
+#define IDC_LOAD_PERL_INTERPRETER       1291
+#define IDC_PERL_EDITOR                 1292
+#define IDC_ENABLE_CHAT                 1293
+#define IDC_MINIMUM_DELAY               1294
+#define IDC_MINIMUM_DELAY_SPIN          1295
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -432,15 +447,18 @@
 #define ID_FORMULA_EDIT_FINDNEXT        32943
 #define ID_HELP_DOCUMENTATIONWIKI       32944
 #define ID_HELP_FORUMS                  32945
+#define ID_PERL_LOADFORMULA             32946
+#define ID_PERL_LOADSPECIFICFORMULA     32947
+#define ID_PERL_EDITMAINFORMULA         32948
 #define ID_INDICATOR_STATUS_PLCARDS     61191
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        173
-#define _APS_NEXT_COMMAND_VALUE         32946
-#define _APS_NEXT_CONTROL_VALUE         1291
+#define _APS_NEXT_RESOURCE_VALUE        175
+#define _APS_NEXT_COMMAND_VALUE         32950
+#define _APS_NEXT_CONTROL_VALUE         1296
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

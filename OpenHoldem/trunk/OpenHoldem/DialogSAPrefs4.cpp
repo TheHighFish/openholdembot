@@ -6,7 +6,6 @@
 #include "DialogSAPrefs4.h"
 #include "global.h"
 #include "Registry.h"
-#include "global.h"
 
 
 // CDlgSAPrefs4 dialog

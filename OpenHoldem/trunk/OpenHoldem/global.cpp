@@ -8,6 +8,8 @@
 #include "DialogFormulaScintilla.h"
 #include "global.h"
 #include "threads.h"
+//  2008.02.27 by THF
+#include "Perl.hpp"
 
 
 class CGlobal	global;
@@ -92,6 +94,19 @@ CGlobal::CGlobal(void)
 		preferences.replay_record_every_change = reg.replay_record_every_change;
 		preferences.replay_max_frames = reg.replay_max_frames;
 
+		//  2008.02.27 by THF
+		//  Get saved preferences for Perl
+		preferences.Perl_default_Formula = reg.Perl_default_Formula;
+		preferences.Perl_Editor = reg.Perl_Editor;
+		preferences.Perl_load_default_Formula = reg.Perl_load_default_Formula;
+		preferences.Perl_load_Interpreter = reg.Perl_load_Interpreter;
+
+		//  2008.02.27 by THF
+		//  Get saved preferences for PokerChat
+		preferences.Chat_enabled = reg.Chat_enabled;
+		preferences.Chat_min_Delay = reg.Chat_min_Delay;
+		preferences.Chat_random_Delay = reg.Chat_random_Delay;
+
 		// Check for versus.bin
 		if ((fp = fopen("versus.bin", "rb"))==NULL) 
 		{
@@ -119,6 +134,10 @@ CGlobal::CGlobal(void)
 
 		replay_recorded_this_turn = false;
 
+		//  2008.02.27 by THF
+		//  Initialize Perl interpreter
+		the_Perl_Interpreter = new Perl();		
+
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 
@@ -133,6 +152,9 @@ CGlobal::~CGlobal(void)
 #ifdef SEH_ENABLE
 	try {
 #endif
+	//  2008.02.27 by THF
+    //  Destroying the Perl interpreter
+    the_Perl_Interpreter->~Perl();
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 

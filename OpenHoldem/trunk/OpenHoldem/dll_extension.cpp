@@ -4,6 +4,9 @@
 #include "global.h"
 #include "debug.h"
 #include "grammar.h"
+//  2008.02.27 by THF
+//  PokerChat
+#include "PokerChat.hpp"
 
 CDll	cdll;
 
@@ -134,6 +137,17 @@ void CDll::load_dll(char * path) {
 
 				// pass "pfgws" message
 				(process_message) ("pfgws", GetSymbolFromDll);
+
+				//  2008.02.27 by THF
+				//
+				//  pass "p_send_chatMessage" message  				
+				//
+				//  Providing a pointer to the chat function,  
+				//    which can be used inside the dll,
+				//    similar to "pfgws".
+				//
+				(process_message)(Pointer_for__send_ChatMessage,
+					get_Pointer_to__send_ChatMessage());
 			}
 		}
 

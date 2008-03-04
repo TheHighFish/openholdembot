@@ -119,6 +119,24 @@ void Registry::read_reg(void)
 		replay_record_every_change = false;
 		replay_max_frames = 100;
 
+		//  2008.02.27 by THF
+		//  Perl
+		Perl_default_Formula = "";
+		//  Unfortunately "%SystemRoot%\\notepad.exe" does not work;
+		//    It seems, this kind of filename substitution is only
+		//    supported by the DOS shell, not by the Windows API.
+		//    Therefore we use a hardcoded filename. 
+		Perl_Editor = "C:\\Windows\\notepad.exe";
+		Perl_load_default_Formula = false;
+		Perl_load_Interpreter = false;
+
+		//  2008.02.27 by THF
+		//  PokerChat
+		Chat_enabled = false;
+		//  Just a security measure against crazy bot formulas...
+		Chat_min_Delay = 600;      //  seconds
+		Chat_random_Delay = 3000;  //  seconds;
+
 
 		hkResult = RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\OpenHoldem\\OpenHoldem", 0, KEY_READ, &hKey);
 		if (hkResult==ERROR_SUCCESS) {
@@ -442,6 +460,40 @@ void Registry::read_reg(void)
 			if ( (hkResult = RegQueryValueEx(hKey, "scraper_zoom", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
 				scraper_zoom = atoi(str);
 
+			//  2008.02.27 by THF
+			//  Perl
+			cbData = sizeof(str);
+			if ( (hkResult = RegQueryValueEx(hKey, "Perl_default_Formula", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS) {
+				Perl_default_Formula = str;
+			}
+			cbData = sizeof(str);
+			if ( (hkResult = RegQueryValueEx(hKey, "Perl_Editor", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS) {
+				Perl_Editor = str;
+			}
+			cbData = sizeof(str);
+			if ( (hkResult = RegQueryValueEx(hKey, "Perl_load_default_Formula", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS) {
+				Perl_load_default_Formula = atoi(str);
+			}
+			cbData = sizeof(str);
+			if ( (hkResult = RegQueryValueEx(hKey, "Perl_load_Interpreter", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS) {
+				Perl_load_Interpreter = atoi(str);
+			}
+
+			//  2008.02.27 by THF
+			//  PokerChat
+			// 
+			cbData = sizeof(str);
+			if ( (hkResult = RegQueryValueEx(hKey, "Chat_enabled", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS) {
+				Chat_enabled = atoi(str);
+			}
+			cbData = sizeof(str);
+			if ( (hkResult = RegQueryValueEx(hKey, "Chat_min_Delay", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS) {
+				Chat_min_Delay = atoi(str);
+			}
+			cbData = sizeof(str);
+			if ( (hkResult = RegQueryValueEx(hKey, "Chat_random_Delay", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS) {
+				Chat_random_Delay = atoi(str);
+			}
 		}
 
 		RegCloseKey(hKey);
@@ -657,6 +709,26 @@ void Registry::write_reg(void)
 		// scraper zoom level
 		sprintf(str, "%d", scraper_zoom);
 		RegSetValueEx(hKey, "scraper_zoom", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
+
+		//  2008.02.27 by THF
+		//  Perl
+		sprintf(str, "%s", Perl_default_Formula.GetString());
+		RegSetValueEx(hKey, "Perl_default_Formula", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
+		sprintf(str, "%s", Perl_Editor.GetString());
+		RegSetValueEx(hKey, "Perl_Editor", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
+		sprintf(str, "%d", Perl_load_default_Formula);
+		RegSetValueEx(hKey, "Perl_load_default_Formula", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
+		sprintf(str, "%d", Perl_load_Interpreter);
+		RegSetValueEx(hKey, "Perl_load_Interpreter", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
+
+		//  2008.02.27 by THF
+		//  PokerChat
+		sprintf(str, "%d", Chat_enabled);
+		RegSetValueEx(hKey, "Chat_enabled", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
+		sprintf(str, "%d", Chat_min_Delay);
+		RegSetValueEx(hKey, "Chat_min_Delay", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
+		sprintf(str, "%d", Chat_random_Delay);
+		RegSetValueEx(hKey, "Chat_random_Delay", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
 
 		RegCloseKey(hKey);
 #ifdef SEH_ENABLE

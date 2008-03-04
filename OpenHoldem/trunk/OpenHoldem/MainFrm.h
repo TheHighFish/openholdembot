@@ -60,6 +60,10 @@ protected: // create from serialization only
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg void OnDllLoadspecificfile();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
+	//  2008.03.03 by THF
+	afx_msg void OnPerlLoadFormula();
+	afx_msg void OnPerlLoadSpecificFormula();
+	afx_msg void OnPerlEditMainFormula();
 
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);

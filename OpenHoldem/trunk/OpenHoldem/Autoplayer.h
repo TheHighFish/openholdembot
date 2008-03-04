@@ -26,4 +26,6 @@ private:
 	void get_click_point(int x, int y, int rx, int ry, POINT *p);
 	double randomNormalScaled(double scale, double m, double s);
 	double randomNormal(double m, double s);
+	//  2008.02.27 by THF
+	void do_Chat(void);
 };

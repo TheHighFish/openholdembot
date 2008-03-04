@@ -8,6 +8,8 @@
 #include "threads.h"
 #include "grammar.h"
 #include "scraper.h"
+//  2008.02.21 by THF
+#include "PokerChat.hpp"
 
 Autoplayer::Autoplayer(void) {
 #ifdef SEH_ENABLE
@@ -35,6 +37,82 @@ Autoplayer::~Autoplayer(void) {
 	}
 	catch (...)	 { 
 		logfatal("Autoplayer::Destructor : \n"); 
+		throw;
+	}
+#endif
+}
+
+
+void Autoplayer::do_Chat(void)
+{	
+	//  PokerChat
+	//  2008.02.27 by THF
+	//
+	//  Activating the chat box by a mouse click;
+	//    then sending the message to the keyboard.
+	//
+	//  We can't use "do_click = 5", as this would lead to problems
+	//    with the default check button. Therefore we duplicated
+	//    the clicking code. :(
+	//	
+	if (symbols.f$chat == 0) 
+	{ return; }
+	INPUT			input[100] = {0};
+	POINT			pt;
+	double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1; 
+	double			fScreenHeight = ::GetSystemMetrics( SM_CYSCREEN )-1; 
+	double			fx, fy;
+	CMutex			Mutex(false, "OHAntiColl");
+	HWND			hwnd_focus = GetFocus();
+	HWND			hwnd_foreground = GetForegroundWindow();
+	HWND			hwnd_active = GetActiveWindow();
+	POINT			cur_pos;
+	GetCursorPos(&cur_pos);
+	pt = randomize_click_location(global.tablemap.r$[global.tablemap.r$chatbox].left, 
+								  global.tablemap.r$[global.tablemap.r$chatbox].top,
+		    					  global.tablemap.r$[global.tablemap.r$chatbox].right, 
+			    				  global.tablemap.r$[global.tablemap.r$chatbox].bottom);			            
+	// Translate click point to screen/mouse coords
+	ClientToScreen(global.attached_hwnd, &pt);
+	fx = pt.x*(65535.0f/fScreenWidth);
+	fy = pt.y*(65535.0f/fScreenHeight);
+	// Set up the input structure
+	ZeroMemory(&input[0],sizeof(INPUT));
+	input[0].type = INPUT_MOUSE;
+	input[0].mi.dx = fx;
+	input[0].mi.dy = fy;
+	input[0].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
+	ZeroMemory(&input[1],sizeof(INPUT));
+	input[1].type = INPUT_MOUSE;
+	input[1].mi.dx = fx;
+	input[1].mi.dy = fy;
+	input[1].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTUP;
+	// If we get a lock, do the action
+	if (Mutex.Lock(500)) 
+	{
+		SetFocus(global.attached_hwnd);
+		SetForegroundWindow(global.attached_hwnd);
+		SetActiveWindow(global.attached_hwnd);
+		SendInput(2, input, sizeof(INPUT));
+		//
+		//  Pre: f$chat > 0, 
+		//   Chatbox selected by a mouse click.
+		//
+		//  We can now "type in" the message, if there's one.
+		//					
+		send_ChatMessage_to_Keyboard();				
+		//
+		//  Restore window state
+		SetActiveWindow(hwnd_active);
+		SetForegroundWindow(hwnd_foreground);
+		SetFocus(hwnd_focus);
+		SetCursorPos(cur_pos.x, cur_pos.y);				
+		Mutex.Unlock();					
+	}	
+#ifdef SEH_ENABLE
+	}
+	catch (...)	 { 
+		logfatal("Autoplayer::do_Chat : \n"); 
 		throw;
 	}
 #endif
@@ -73,6 +151,24 @@ void Autoplayer::do_autoplayer(void) {
 
 		// Handle i86buttons
 		do_i86();
+
+		//  2007.02.27 by THF
+		//
+		//  Additional functionality: PokerChat
+		//    (Handle f$chat)
+		//  		
+		//  Selecting a chat message (or no one).
+		//    This message will then be processed by the autoplayer,
+		//    when it's time to click the buttons.
+		//	
+		symbols.f$chat = calc_f$symbol(&global.formula, "f$chat", &error);
+		register_ChatMessage(symbols.f$chat);
+		//  Avoiding unnecessary calls to do_Chat(),
+		//    especially mouse movements to the chat box.		
+		if ((symbols.f$chat != 0) && is_Chat_allowed())
+		{
+			do_Chat();
+		}
 
 		// If we are in a scrape/symbol calc cycle, then return
 		if (scrape_running) { return; }

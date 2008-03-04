@@ -28,4 +28,6 @@ public:
 	virtual BOOL OnInitDialog();
 protected:
 	virtual void OnOK();
+public:
+	afx_msg void OnEnChangeMaxopponents();
 };

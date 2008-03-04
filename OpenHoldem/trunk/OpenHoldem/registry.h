@@ -69,5 +69,17 @@ public:
 	// Scraper output dialog - zoom level
 	int				scraper_zoom;
 
+	//  2008.02.27 by THF
+	//  Preferences for Perl interpreter
+	CString			Perl_default_Formula;
+	CString			Perl_Editor;
+	bool			Perl_load_default_Formula;
+	bool			Perl_load_Interpreter;
+
+	//  2008.02.27 by THF
+	//  Preferences for PokerChat	
+	bool			Chat_enabled;
+	int				Chat_min_Delay;
+	int				Chat_random_Delay;
 };
 

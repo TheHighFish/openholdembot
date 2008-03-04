@@ -15,6 +15,11 @@
 #include "DialogSAPrefs6.h"
 #include "DialogSAPrefs7.h"
 #include "DialogSAPrefs8.h"
+//  2008.03.02 by THF
+#include "DialogSAPrefs9.h"
+#include "DialogSAPrefs10.h"
+#include <windows.h>
+
 #include "registry.h"
 #include "debug.h"
 #include "DialogSelectTable.h"
@@ -66,6 +71,10 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND(ID_VIEW_SHOOTREPLAYFRAME, &CMainFrame::OnViewShootreplayframe)
 	ON_COMMAND(ID_DLL_LOAD, &CMainFrame::OnDllLoad)
 	ON_COMMAND(ID_DLL_LOADSPECIFICFILE, &CMainFrame::OnDllLoadspecificfile)
+	//  2008.03.03 by THF
+	ON_COMMAND(ID_PERL_LOADFORMULA, &CMainFrame::OnPerlLoadFormula)
+	ON_COMMAND(ID_PERL_LOADSPECIFICFORMULA, &CMainFrame::OnPerlLoadSpecificFormula)
+	ON_COMMAND(ID_PERL_EDITMAINFORMULA, &CMainFrame::OnPerlEditMainFormula)
 
 	// Main toolbar
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_GREENCIRCLE, &CMainFrame::OnBnClickedGreenCircle)
@@ -483,17 +492,23 @@ void CMainFrame::OnEditPreferences() {
 		CDlgSAPrefs6 page6;
 		CDlgSAPrefs7 page7;
 		CDlgSAPrefs8 page8;
+		//  2008.03.02 by THF
+		CDlgSAPrefs9 page9;
+		CDlgSAPrefs10 page10;	
 
 		// add pages
+		// 2008.03.02 by THF: Perl, Chat, alphabetical order 
 		dlg.AddPage(page1, "Analyzer");
 		dlg.AddPage(page2, "Autoplayer");
-		dlg.AddPage(page3, "DLL Extension");
+		dlg.AddPage(page10, "Chat");
+		dlg.AddPage(page3, "DLL Extension");		
+		dlg.AddPage(page7, "ICM");
+		dlg.AddPage(page9, "Perl");
+		dlg.AddPage(page6, "Poker Tracker");
+		dlg.AddPage(page8, "Replay Frames");
 		dlg.AddPage(page4, "Scraper");
 		dlg.AddPage(page5, "Symbols");
-		dlg.AddPage(page6, "Poker Tracker");
-		dlg.AddPage(page7, "ICM");
-		dlg.AddPage(page8, "Replay Frames");
-
+		
 		// this one will be a child node on the tree 
 		// (&page3 specifies the parent)
 		//dlg.AddPage(dlg4, "Page 4", &page3);
@@ -1669,4 +1684,31 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
 	}
 
 	CFrameWnd::OnSysCommand(nID, lParam);
+}
+
+
+//  2008.03.03 by THF
+void CMainFrame::OnPerlLoadFormula()
+{
+	//  !!! TODO:
+	//    - Change menu text: load/unload (similar to DLL)
+	//    - Do the correct action
+	//
+	global.the_Perl_Interpreter->reload_FormulaFile();
+	// global.the_Perl_Interpreter->unload_FormulaFile();
+}
+
+
+//  2008.03.03 by THF
+void CMainFrame::OnPerlLoadSpecificFormula()
+{	
+	// !!! TODO: File selection dialog
+	global.the_Perl_Interpreter->load_FormulaFile("");
+}
+
+
+//  2008.03.03 by THF
+void CMainFrame::OnPerlEditMainFormula()
+{
+	global.the_Perl_Interpreter->edit_main_FormulaFile();
 }

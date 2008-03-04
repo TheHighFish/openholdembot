@@ -391,6 +391,9 @@ public:
 	S_symbols	sym;
 	bool		user_chair_confirmed;
 	double		f$alli, f$swag, f$rais, f$call, f$play, f$prefold;
+	//  2008.02.27 by THF
+	double f$chat;
+
 	double		bigbet;
 
 	bool		reset_stakes;				// set to true on new hand or on change in title bar text

@@ -13,6 +13,10 @@ NEW STUFF:
 
 - OpenHoldem will now use Poker Tracker data when connected to ManualMode if s$network or
   s$sitename in ManualMode's table map is set to a Poker Tracker compatible name. (quiqsilver)
+  
+- Integration of the ActiveState Perl interpreter. (TheHighFish)
+
+- Automatic poker chat for formula and DLL level. (TheHighFish)  
 
 
 BUG FIXES:
@@ -27,6 +31,8 @@ BUG FIXES:
   
 - Removed some circular dependences between some non-GUI modules and MainFrm and OpenHoldem 
   by moving sessionnum, g_tlist, startup_path to CGlobal. (jumpingfences)
+  
+- Preferences tabs sorted in alphabetical order. (TheHighFish)
 
 v1.6.0 2008-02-22
 NEW STUFF:
