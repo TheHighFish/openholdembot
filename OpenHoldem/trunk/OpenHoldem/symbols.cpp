@@ -9,7 +9,6 @@
 #include "inlines/eval.h"
 #include "threads.h"
 #include "versus.h"
-#include "PokerPro.h"
 #include "RunRon.h"
 #include "GameState.h"
 #include "pokertracker.h"
@@ -669,7 +668,7 @@ void CSymbols::CalcSymbols(void)
 		// Symbols derived from current profile/formula
 		sym.site = 1;																	// site
 		sym.nchairs = global.tablemap.num_chairs;										// nchairs
-		sym.isppro = ppro.m_socket!=INVALID_SOCKET ? 1 : 0;								// isppro
+		sym.isppro = global.ppro_isppro;												// isppro
 		sym.rake = global.formula.dRake;												// rake
 		EnterCriticalSection(&cs_prwin);
 		sym.nit = global.formula.dNit;													// nit
@@ -694,7 +693,7 @@ void CSymbols::CalcSymbols(void)
 		// Other scraped items
 		sym.handnumber = scraper.s_limit_info.handnumber;								// handnumber
 		if (reset_stakes || sym.sblind==0 || sym.bblind==0 ||
-			(global.ppro_is_connected && ppro.data.m_tinf.m_tid != 0)) 
+			(global.ppro_is_connected && global.ppro_tid != 0)) 
 		{
 			calc_stakes();	// bblind/sblind/bbet/ante/lim
 			reset_stakes = false;

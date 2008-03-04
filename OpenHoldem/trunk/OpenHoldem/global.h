@@ -68,6 +68,8 @@ public:
 
 	// Poker Pro
 	bool			ppro_is_connected;
+	int				ppro_isppro;
+	int				ppro_tid;
 
 	// Game state array
 	holdem_state	state[256];

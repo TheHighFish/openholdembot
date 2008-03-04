@@ -30,7 +30,7 @@ BUG FIXES:
   sometimes stays pressed after Formula Dialog gets closed. (jumpingfences)
   
 - Removed some circular dependences between some non-GUI modules and MainFrm and OpenHoldem 
-  by moving sessionnum, g_tlist, startup_path to CGlobal. (jumpingfences)
+  by moving sessionnum, g_tlist, startup_path to CGlobal. Uncoupled symbols from PokerPro. (jumpingfences)
   
 - Preferences tabs sorted in alphabetical order. (TheHighFish)
 

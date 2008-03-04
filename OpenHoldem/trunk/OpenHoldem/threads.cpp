@@ -259,6 +259,9 @@ void heartbeat_thread(void *)
 					}
 				}
 			}
+			global.ppro_isppro = ppro.m_socket!=INVALID_SOCKET ? 1 : 0;	
+			global.ppro_tid = ppro.data.m_tinf.m_tid;
+
 			Sleep(global.preferences.scrape_delay);
 
 			EnterCriticalSection(&cs_heartbeat);
