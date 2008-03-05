@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="8.00"
 	Name="Perl_Callback"
 	ProjectGUID="{A99B05F1-7EAF-4BED-AB9B-35853B1ECD4D}"
 	RootNamespace="Perl_Callback"
 	Keyword="MFCDLLProj"
-	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
 		<Platform

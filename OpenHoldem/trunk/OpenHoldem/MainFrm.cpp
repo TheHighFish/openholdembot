@@ -35,6 +35,7 @@
 #include "DialogScraperOutput.h"
 #include "DialogLockBlinds.h"
 #include "pokertracker.h"
+#include "Perl.hpp"
 
 #include "MainFrm.h"
 
@@ -1697,14 +1698,14 @@ void CMainFrame::OnPerlLoadFormula()
 #ifdef SEH_ENABLE
 	try {
 #endif
-	if (global.the_Perl_Interpreter->is_a_Formula_loaded())
+	if (the_Perl_Interpreter.is_a_Formula_loaded())
 	{
-		global.the_Perl_Interpreter->unload_FormulaFile();
+		the_Perl_Interpreter.unload_FormulaFile();
 	}
 	else 
 	{
 		//  Reload the most recent formula
-		global.the_Perl_Interpreter->reload_FormulaFile();
+		the_Perl_Interpreter.reload_FormulaFile();
 	}		
 #ifdef SEH_ENABLE
 	}
@@ -1728,7 +1729,7 @@ void CMainFrame::OnPerlLoadSpecificFormula()
 	{
 		cfd.m_ofn.lpstrFilter = "Perl Files (.pl)\0*.pl\0\0";
 		cfd.m_ofn.lpstrTitle = "Select Perl formula file to OPEN";
-		global.the_Perl_Interpreter->load_FormulaFile(cfd.m_ofn.lpstrFile);
+		the_Perl_Interpreter.load_FormulaFile(cfd.m_ofn.lpstrFile);
 	}
 #ifdef SEH_ENABLE
 	}
@@ -1746,7 +1747,7 @@ void CMainFrame::OnPerlEditMainFormula()
 #ifdef SEH_ENABLE
 	try {
 #endif
-	global.the_Perl_Interpreter->edit_main_FormulaFile();
+	the_Perl_Interpreter.edit_main_FormulaFile();
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 
@@ -1759,7 +1760,7 @@ void CMainFrame::OnPerlEditMainFormula()
 //  2008.03.04 by THF
 void CMainFrame::OnUpdateMenuPerlLoad(CCmdUI* pCmdUI) 
 {
-	if (global.the_Perl_Interpreter->is_a_Formula_loaded()) {
+	if (the_Perl_Interpreter.is_a_Formula_loaded()) {
 		pCmdUI->SetText("Unload Formula");
 	}
 	else {

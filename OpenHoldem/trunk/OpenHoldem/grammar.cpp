@@ -173,11 +173,11 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
 
 			//  2008.02.27 by THF
 			//  Perl symbols (starting with "pl_")
-			else if (global.the_Perl_Interpreter->is_Perl_Symbol(sym.c_str()))
+			else if (the_Perl_Interpreter.is_Perl_Symbol(sym.c_str()))
 			{
 				//  Error checking is done inside the Perl class
 				//  A.t.m. creating a messagebox on serious errors.
-				return global.the_Perl_Interpreter->get_Perl_Symbol(sym.c_str());
+				return the_Perl_Interpreter.get_Perl_Symbol(sym.c_str());
 			}
 
 			// vs$ symbols

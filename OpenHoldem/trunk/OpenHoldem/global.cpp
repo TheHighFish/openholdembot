@@ -8,9 +8,6 @@
 #include "DialogFormulaScintilla.h"
 #include "global.h"
 #include "threads.h"
-//  2008.02.27 by THF
-#include "Perl.hpp"
-
 
 class CGlobal	global;
 
@@ -132,11 +129,7 @@ CGlobal::CGlobal(void)
 
 		m_WaitCursor = false;
 
-		replay_recorded_this_turn = false;
-
-		//  2008.02.27 by THF
-		//  Initialize Perl interpreter
-		the_Perl_Interpreter = new Perl();		
+		replay_recorded_this_turn = false;	
 
 #ifdef SEH_ENABLE
 	}
@@ -152,9 +145,7 @@ CGlobal::~CGlobal(void)
 #ifdef SEH_ENABLE
 	try {
 #endif
-	//  2008.02.27 by THF
-    //  Destroying the Perl interpreter
-    the_Perl_Interpreter->~Perl();
+
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 

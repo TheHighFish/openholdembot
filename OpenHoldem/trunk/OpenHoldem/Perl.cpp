@@ -75,6 +75,7 @@ static void gws(const char *the_Symbol, double* the_Result)
 #endif
 }
 
+class Perl	the_Perl_Interpreter;
 
 void Perl::send_Callback_Pointer_to_gws()
 {

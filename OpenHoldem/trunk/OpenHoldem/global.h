@@ -7,9 +7,6 @@
 #include <boost/spirit/tree/ast.hpp>
 #include "dll_extension.h"
 #include "UPDialog.h"
-//  2008.02.27 by THF
-#include "Perl.hpp"
-
 
 // For parsing progress dialog
 struct	sData 
@@ -92,10 +89,6 @@ public:
 
 	// Startup path
 	char			startup_path[MAX_PATH];
-
-	//  2008.02.27 by THF
-	//  Perl interpreter class
-	Perl *the_Perl_Interpreter;
 
 } global;
 

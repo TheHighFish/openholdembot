@@ -10,8 +10,8 @@
 //    for OpenHoldem
 //
 //////////////////////////////////////////////////////////////////////////
-
-#pragma once
+#ifndef INC_PEARL_H
+#define INC_PEARL_H
 
 #include "stdafx.h"
 #include <String>
@@ -28,7 +28,7 @@ using namespace std;
 //
 static const unsigned int the_Size_of_ResultBuffer = 255;
 
-class Perl
+extern class Perl
 {
   private:
 	PERLEZHANDLE the_Interpreter;
@@ -57,6 +57,8 @@ class Perl
     void reload_FormulaFile();
 	void unload_FormulaFile();
 	bool is_a_Formula_loaded();
-};
+}the_Perl_Interpreter;
+
+#endif /* INC_PEARL_H */
 
 
