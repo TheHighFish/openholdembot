@@ -23,10 +23,10 @@ Netscape-style preferences dialog; Chris Losinger; http://www.codeproject.com/KB
 
 ICM calculator class; Spud & Nick Coldhand; http://maxinmontreal.com/forums
 
-Poker chat; TheHighFish; http://maxinmontreal.com/forums
-
 Embeddable Perl interpreter; ActiveState; http://www.activestate.com
 
 Perl module "Win32::API"; Aldo Calpini et. al.; http://search.cpan.org/~acalpini
+
+Poker chat; TheHighFish; http://maxinmontreal.com/forums
 
 

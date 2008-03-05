@@ -35,6 +35,7 @@ class Perl
     string the_actual_FormulaFile;
 	char the_ResultBuffer[the_Size_of_ResultBuffer];
 	bool Interpreter_not_loaded; 
+	bool Formula_loaded;
 
  private:
 	void send_Callback_Pointer_to_gws();
@@ -55,6 +56,7 @@ class Perl
     void load_FormulaFile(string the_new_FormulaFile);
     void reload_FormulaFile();
 	void unload_FormulaFile();
+	bool is_a_Formula_loaded();
 };
 
 

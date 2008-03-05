@@ -1,6 +1,8 @@
 #ifndef INC_GLOBAL_H
 #define INC_GLOBAL_H
 
+#define SEH_ENABLE
+
 #include "structs_defines.h"
 #include <boost/spirit/tree/ast.hpp>
 #include "dll_extension.h"

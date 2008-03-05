@@ -18,6 +18,7 @@
 #include <String>
 #include <windows.h>
 #include <PerlEz.h>
+#include "debug.h"
 #include "dll_extension.h"
 #include "global.h"
 #include "Perl.hpp"
@@ -116,6 +117,7 @@ Perl::Perl()
 	{
 		//  Load file and create new instance of the interpreter.
 		load_FormulaFile(string(global.preferences.Perl_default_Formula));
+		Formula_loaded = true;
 	}
 	else
 	{
@@ -124,9 +126,12 @@ Perl::Perl()
 		    (NULL,                          //  No script to load
 			NULL);                          //  Command line options
 		//  MessageBox(NULL, "No Script to load", "Perl", 0);
+		Formula_loaded = false;
 	}
 	if (the_Interpreter == NULL)
 	{
+		Formula_loaded = false;
+		Interpreter_not_loaded = true;
 		MessageBox(NULL, "Could not create Perl interpreter.", "Perl Error", MB_OK);
 	}
 	send_Callback_Pointer_to_gws();
@@ -286,8 +291,11 @@ void Perl::unload_FormulaFile()
 #ifdef SEH_ENABLE
 	try {
 #endif  
-	if (Interpreter_not_loaded) { return; }
+	if (Interpreter_not_loaded) { return; }	
 	PerlEzDelete(the_Interpreter);
+	the_Interpreter = NULL;
+	Interpreter_not_loaded = true;
+	Formula_loaded = false;
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 
@@ -311,6 +319,8 @@ void Perl::load_FormulaFile(string the_new_FormulaFile)
 		the_Interpreter = PerlEzCreate
 			(NULL,                      //  Script to load (not accessable)
 			 NULL);                     //  Command line options
+		Formula_loaded = false;
+		Interpreter_not_loaded = false;
 	}
 	else
 	{
@@ -320,6 +330,8 @@ void Perl::load_FormulaFile(string the_new_FormulaFile)
 		    NULL);                         //  Command line options	
 		//  MessageBox(NULL, the_default_Perl_Formula_File, "Perl", 0);
 		the_actual_FormulaFile = string(the_new_FormulaFile);
+		Formula_loaded = true;
+		Interpreter_not_loaded = false;
 	}	
 #ifdef SEH_ENABLE
 	}
@@ -380,6 +392,21 @@ void Perl::edit_main_FormulaFile()
 	}
 	catch (...)	 { 
 		logfatal("Perl::edit_main_FormulaFile : \n"); 
+		throw;
+	}
+#endif
+}
+
+bool Perl::is_a_Formula_loaded()
+{
+#ifdef SEH_ENABLE
+	try {
+#endif  	
+	return (!Interpreter_not_loaded && Formula_loaded);
+#ifdef SEH_ENABLE
+	}
+	catch (...)	 { 
+		logfatal("Perl::is_a_Formula_loaded : \n"); 
 		throw;
 	}
 #endif

@@ -64,6 +64,7 @@ protected: // create from serialization only
 	afx_msg void OnPerlLoadFormula();
 	afx_msg void OnPerlLoadSpecificFormula();
 	afx_msg void OnPerlEditMainFormula();
+	afx_msg void OnUpdateMenuPerlLoad(CCmdUI* pCmdUI);
 
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);

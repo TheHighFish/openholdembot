@@ -49,7 +49,7 @@ IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_CREATE()
 
-	// Menu
+	// Menu updates
 	ON_UPDATE_COMMAND_UI(ID_FILE_NEW, &CMainFrame::OnUpdateMenuFileNew)
 	ON_UPDATE_COMMAND_UI(ID_FILE_OPEN, &CMainFrame::OnUpdateMenuFileOpen)
 	ON_UPDATE_COMMAND_UI(ID_FILE_LOADTABLEMAP, &CMainFrame::OnUpdateMenuFileLoadProfile)
@@ -60,6 +60,10 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_DLL_LOAD, &CMainFrame::OnUpdateMenuDllLoad)
 	ON_UPDATE_COMMAND_UI(ID_DLL_LOADSPECIFICFILE, &CMainFrame::OnUpdateDllLoadspecificfile)
 	ON_UPDATE_COMMAND_UI(ID_POKERPRO_CONNECT, &CMainFrame::OnUpdatePokerproConnect)
+	//  2008.03.04 by THF
+	ON_UPDATE_COMMAND_UI(ID_PERL_LOADFORMULA, &CMainFrame::OnUpdateMenuPerlLoad)
+
+	//  Menu commands	
 	ON_COMMAND(ID_FILE_LOADTABLEMAP, &CMainFrame::OnFileLoadTableMap)
 	ON_COMMAND(ID_FILE_CONNECT, &CMainFrame::OnBnClickedGreenCircle)
 	ON_COMMAND(ID_EDIT_FORMULA, &CMainFrame::OnEditFormula)
@@ -1690,25 +1694,90 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
 //  2008.03.03 by THF
 void CMainFrame::OnPerlLoadFormula()
 {
-	//  !!! TODO:
-	//    - Change menu text: load/unload (similar to DLL)
-	//    - Do the correct action
-	//
-	global.the_Perl_Interpreter->reload_FormulaFile();
-	// global.the_Perl_Interpreter->unload_FormulaFile();
+#ifdef SEH_ENABLE
+	try {
+#endif
+	if (global.the_Perl_Interpreter->is_a_Formula_loaded())
+	{
+		global.the_Perl_Interpreter->unload_FormulaFile();
+	}
+	else 
+	{
+		//  Reload the most recent formula
+		global.the_Perl_Interpreter->reload_FormulaFile();
+	}		
+#ifdef SEH_ENABLE
+	}
+	catch (...)	 { 
+		logfatal("CMainFrame::OnPerlLoadFormula :\n"); 
+		throw;
+	}
+#endif
 }
 
 
 //  2008.03.03 by THF
 void CMainFrame::OnPerlLoadSpecificFormula()
 {	
-	// !!! TODO: File selection dialog
-	global.the_Perl_Interpreter->load_FormulaFile("");
+#ifdef SEH_ENABLE
+	try {
+#endif
+	CFileDialog			cfd(true);
+
+	if (cfd.DoModal() == IDOK) 
+	{
+		cfd.m_ofn.lpstrFilter = "Perl Files (.pl)\0*.pl\0\0";
+		cfd.m_ofn.lpstrTitle = "Select Perl formula file to OPEN";
+		global.the_Perl_Interpreter->load_FormulaFile(cfd.m_ofn.lpstrFile);
+	}
+#ifdef SEH_ENABLE
+	}
+	catch (...)	 { 
+		logfatal("CMainFrame::OnPerlLoadSpecificFormula :\n"); 
+		throw;
+	}
+#endif
 }
 
 
 //  2008.03.03 by THF
 void CMainFrame::OnPerlEditMainFormula()
 {
+#ifdef SEH_ENABLE
+	try {
+#endif
 	global.the_Perl_Interpreter->edit_main_FormulaFile();
+#ifdef SEH_ENABLE
+	}
+	catch (...)	 { 
+		logfatal("CMainFrame::OnPerlEditMainFormula :\n"); 
+		throw;
+	}
+#endif
+}
+
+//  2008.03.04 by THF
+void CMainFrame::OnUpdateMenuPerlLoad(CCmdUI* pCmdUI) 
+{
+	if (global.the_Perl_Interpreter->is_a_Formula_loaded()) {
+		pCmdUI->SetText("Unload Formula");
+	}
+	else {
+		pCmdUI->SetText("Load Formula");
+	}
+	//  You can now load/unload DLL's when connected to a PPro server 
+	//    if you are not sitting down.
+    //    (CMainFrame::OnUpdateMenuDllLoad) (Thanks, Matrix!)
+	//
+	//  Doing the same for Perl formulas. :)
+	//
+	//  Not connected to ppro server
+//	if (ppro.m_socket==INVALID_SOCKET) {
+//		pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
+//						!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+//	}
+	// connected to ppro server
+//	else {
+//		pCmdUI->Enable(ppro.data.m_pinf[ppro.data.m_userchair].m_isActive&0x1 ? false : true);
+//	}
 }

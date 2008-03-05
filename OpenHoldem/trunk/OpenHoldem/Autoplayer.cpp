@@ -55,6 +55,9 @@ void Autoplayer::do_Chat(void)
 	//    with the default check button. Therefore we duplicated
 	//    the clicking code. :(
 	//	
+#ifdef SEH_ENABLE
+	try {
+#endif
 	if (symbols.f$chat == 0) 
 	{ return; }
 	INPUT			input[100] = {0};

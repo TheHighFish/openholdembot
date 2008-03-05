@@ -123,6 +123,7 @@ bool is_Chat_allowed(void)
 	//  Otherwise:
 	return true;
 #ifdef SEH_ENABLE
+	}
 	catch (...)	 { 
 		logfatal("PokerChat::is_Chat_allowed  : \n"); 
 		throw;
@@ -144,6 +145,7 @@ void compute_first_possible_next_ChatTime(void)
 		//  as integer "division" would be result in zero.
 		(double(rand()) / RAND_MAX) * global.preferences.Chat_random_Delay;
 #ifdef SEH_ENABLE
+	}
 	catch (...)	 { 
 		logfatal("PokerChat::compute_first_possible_next_ChatTime  : \n"); 
 		throw;
