@@ -4,7 +4,7 @@
 //
 //  Created: 2007.12.11
 //
-//  Last change: 2008.01.29
+//  Last change: 2008.03.06
 //
 //  Description: An interface to the Perl programing 
 //    language for OpenHoldem
@@ -17,7 +17,6 @@
 #include <sstream>
 #include <String>
 #include <windows.h>
-#include "PerlEz.h"
 #include "debug.h"
 #include "dll_extension.h"
 #include "global.h"
@@ -26,11 +25,62 @@
 using namespace std;
 
 
+//  Function types in PerlEz.DLL (defined in PerlEz.h)
+//
+typedef int (*T_PerlEzCall)(PERLEZHANDLE hHandle, LPCSTR lpFunction, LPSTR lpBuffer, DWORD dwBufSize, LPCSTR lpFormat, ...);
+typedef PERLEZHANDLE (*APIENTRY T_PerlEzCreate)(LPCSTR lpFileName, LPCSTR lpOptions);
+typedef BOOL (*APIENTRY T_PerlEzDelete)(PERLEZHANDLE);
+
+//  Function pointers to the 3 functions
+//
+T_PerlEzCall P_PerlEzCall;
+T_PerlEzCreate P_PerlEzCreate;
+T_PerlEzDelete P_PerlEzDelete;
+
+
 //  File accessable?
 //  (<unistd.h> is not contained in MSCVPP)
 //
 #define F_OK 0
 
+
+//  Loading the DLL at runtime (instead of loadtime of OH)
+//    to avoid problems for people without a need for Perl.
+//  Returns false, if DLL couldn't get loaded or
+//    DLL interface is invalid.
+//
+bool load_DLL(void)
+{
+#ifdef SEH_ENABLE
+	try {
+#endif  
+	//  Load DLL
+	HINSTANCE Perl_Lib = LoadLibrary("PerlEz.dll");
+	if (Perl_Lib == NULL)
+	{
+		MessageBox(NULL, "PerlEz.DLL not found.", "Perl Error", MB_OK);
+		return false;
+	}
+	//  Load the 3 functions we need.
+	P_PerlEzCall = (T_PerlEzCall) GetProcAddress(Perl_Lib, "PerlEzCall");
+	P_PerlEzCreate = (T_PerlEzCreate) GetProcAddress(Perl_Lib, "PerlEzCreate");
+	P_PerlEzDelete = (T_PerlEzDelete) GetProcAddress(Perl_Lib, "PerlEzDelete");
+	//  Functions loaded correctly?
+	if ((P_PerlEzCall == NULL) || (P_PerlEzCreate == NULL) ||
+		(P_PerlEzDelete == NULL))
+	{
+		MessageBox(NULL, "PerlEz.DLL seems to be invalid.", "Perl Error", MB_OK);
+		return false;	
+	}
+	return true;
+#ifdef SEH_ENABLE
+	}
+	catch (...)	 { 
+		logfatal("Perl::load_DLL : \n"); 
+		throw;
+	}
+#endif
+}
 
 string toString(double d)
 {
@@ -75,7 +125,8 @@ static void gws(const char *the_Symbol, double* the_Result)
 #endif
 }
 
-class Perl	the_Perl_Interpreter;
+
+
 
 void Perl::send_Callback_Pointer_to_gws()
 {
@@ -84,7 +135,7 @@ void Perl::send_Callback_Pointer_to_gws()
 #endif  
 	//  MessageBox(NULL, "Sending pointer", "Perl", 0);
 	int the_Pointer_to_gws = (int)&gws;	
-    int the_ErrorCode = PerlEzCall(
+    int the_ErrorCode = (*P_PerlEzCall)(
 		the_Interpreter, 
 		"set_CallbackPointer_to_gws",   //  Function on Perl side
 		the_ResultBuffer,               
@@ -113,28 +164,35 @@ Perl::Perl()
 		Interpreter_not_loaded = true;
 		return;
 	}
-	Interpreter_not_loaded = false;
+	if (!load_DLL())
+	{
+		//  DLL not found or invalid
+		Interpreter_not_loaded = true;
+		return;
+	}	
 	if (global.preferences.Perl_load_default_Formula)
 	{
 		//  Load file and create new instance of the interpreter.
 		load_FormulaFile(string(global.preferences.Perl_default_Formula));
 		Formula_loaded = true;
+		Interpreter_not_loaded = false;
 	}
 	else
 	{
 		//  No script to load
-		the_Interpreter = PerlEzCreate
+		the_Interpreter = (*P_PerlEzCreate)
 		    (NULL,                          //  No script to load
 			NULL);                          //  Command line options
 		//  MessageBox(NULL, "No Script to load", "Perl", 0);
 		Formula_loaded = false;
+		Interpreter_not_loaded = false;
 	}
 	if (the_Interpreter == NULL)
 	{
 		Formula_loaded = false;
 		Interpreter_not_loaded = true;
 		MessageBox(NULL, "Could not create Perl interpreter.", "Perl Error", MB_OK);
-	}
+	}	
 	send_Callback_Pointer_to_gws();
 #ifdef SEH_ENABLE
 	}
@@ -219,7 +277,7 @@ double Perl::get_Perl_Symbol(const char *the_Symbol)
     //    for a robust behaviour. 
 	if (Interpreter_not_loaded) 
 	{ return 0.0; }
-	int the_ErrorCode = PerlEzCall(
+	int the_ErrorCode = (*P_PerlEzCall)(
 		the_Interpreter, 
 		the_Symbol,
 		the_ResultBuffer, 
@@ -286,14 +344,13 @@ void Perl::do_ErrorCheck(int the_ErrorCode)
 }
 
 
-
 void Perl::unload_FormulaFile()
 {
 #ifdef SEH_ENABLE
 	try {
 #endif  
 	if (Interpreter_not_loaded) { return; }	
-	PerlEzDelete(the_Interpreter);
+	(*P_PerlEzDelete)(the_Interpreter);
 	the_Interpreter = NULL;
 	Interpreter_not_loaded = true;
 	Formula_loaded = false;
@@ -311,13 +368,16 @@ void Perl::load_FormulaFile(string the_new_FormulaFile)
 {
 #ifdef SEH_ENABLE
 	try {
-#endif  
+#endif
+	//  Just a security measure
+    if (P_PerlEzCreate == NULL)
+	{ return; }
 	if (_access(the_new_FormulaFile.c_str(), F_OK) != 0)
 	{
 		//  Script to load not accessible
 		MessageBox(NULL, "Could not load formula file.", "Perl Error", MB_OK);
 		//  Prepare continuation without default file
-		the_Interpreter = PerlEzCreate
+		the_Interpreter = (*P_PerlEzCreate)
 			(NULL,                      //  Script to load (not accessable)
 			 NULL);                     //  Command line options
 		Formula_loaded = false;
@@ -326,7 +386,7 @@ void Perl::load_FormulaFile(string the_new_FormulaFile)
 	else
 	{
 		//  Script to load accessible
-		the_Interpreter = PerlEzCreate
+		the_Interpreter = (*P_PerlEzCreate)
 			(the_new_FormulaFile.c_str(),  //  Script to load
 		    NULL);                         //  Command line options	
 		//  MessageBox(NULL, the_default_Perl_Formula_File, "Perl", 0);
@@ -412,3 +472,8 @@ bool Perl::is_a_Formula_loaded()
 	}
 #endif
 }
+
+
+//  A single interpreter object for OH
+//
+class Perl	the_Perl_Interpreter;
