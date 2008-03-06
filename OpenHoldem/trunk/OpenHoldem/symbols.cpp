@@ -1744,10 +1744,28 @@ void CSymbols::calc_pokervalues(void)
 
 		else if (HandVal_HANDTYPE(handval) == HandType_FLUSH) 
 		{ 
-			sym.isflush = 1; 														// isflush
-			if ((int)sym.pcbits & 0x10) {
-				sym.ishiflush = 1;													// ishiflush
+			sym.isflush = 1;														// isflush
+																					// ishiflush ->
+			// If we have a pocket Ace in our flush
+			if (StdDeck_RANK(HandVal_TOP_CARD(handval)) == 12 && ((int)sym.pcbits & 0x10))
+			{
+				sym.ishiflush = 1;
 			}
+			// If we have a pocket King, and it's the second best card in our flush
+			else if (StdDeck_RANK(HandVal_SECOND_CARD(handval)) == 11 && ((int)sym.pcbits & 0x8))
+			{
+				sym.ishiflush = 1;
+			}
+			// If we have a pocket Queen, and it's the third best card in our flush
+			else if (StdDeck_RANK(HandVal_THIRD_CARD(handval)) == 10 && ((int)sym.pcbits & 0x4))
+			{
+				sym.ishiflush = 1;
+			}
+			// If we have a pocket Jack, and it's the fourth best card in our flush
+			else if (StdDeck_RANK(HandVal_FOURTH_CARD(handval)) == 9 && ((int)sym.pcbits & 0x2))
+			{
+				sym.ishiflush = 1;
+			}																		// <- ishiflush
 		}
 
 		else if (HandVal_HANDTYPE(handval) == HandType_STRAIGHT) 
