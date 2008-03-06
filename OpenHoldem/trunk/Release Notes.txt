@@ -36,6 +36,9 @@ BUG FIXES:
 
 - Detection of divide-by-zero expressions has been corrected/enhanced for situations that include invalid
   symbols (OpenHoldem)
+
+- ishiflush now properly represents having the highest possible true flush.  This does not include possible
+  straight flushes or royal flushes, since these are a different hand rank. (quiqsilver)
   
 
 v1.6.0 2008-02-22
