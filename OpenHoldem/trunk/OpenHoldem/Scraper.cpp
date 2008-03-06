@@ -327,6 +327,7 @@ void CScraper::scrape_common_cards(HDC hdcCompatible, HDC hdc)
 				trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &suitstr);
 				SelectObject(hdcCompatible, old_bitmap);
 
+				if (rankstr=="10") rankstr="T";
 				if (rankstr!="" && suitstr!="") 
 				{
 					cardstr = rankstr + suitstr;
@@ -444,6 +445,7 @@ void CScraper::scrape_player_cards(int chair, HDC hdcCompatible, HDC hdc)
 				trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &suitstr);
 				SelectObject(hdcCompatible, old_bitmap);
 
+				if (rankstr=="10") rankstr="T";
 				if (rankstr!="" && suitstr!="") 
 				{
 					cardstr = rankstr + suitstr;
