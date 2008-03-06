@@ -281,9 +281,10 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
 			}
 			else if (*i->value.begin() == '/') 
 			{
-				if (eval_expression(f, i->children.begin()+1, e) != 0)
+				unsigned long div = eval_expression(f, i->children.begin()+1, e);
+				if (div != 0)
 				{
-					result = eval_expression(f, i->children.begin(), e) / eval_expression(f, i->children.begin()+1, e);
+					result = eval_expression(f, i->children.begin(), e) / div;
 				}
 				else
 				{
@@ -295,9 +296,10 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
 			}
 			else if (*i->value.begin() == '%') 
 			{
-				if (eval_expression(f, i->children.begin()+1, e) != 0)
+				unsigned long mod = (unsigned long) eval_expression(f, i->children.begin()+1, e);
+				if (mod != 0)
 				{
-					result = (double) ((unsigned long) eval_expression(f, i->children.begin(), e) % (unsigned long) eval_expression(f, i->children.begin()+1, e));
+					result = (double) ((unsigned long) eval_expression(f, i->children.begin(), e) % mod);
 				}
 				else
 				{

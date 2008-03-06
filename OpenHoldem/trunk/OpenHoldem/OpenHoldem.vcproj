@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="OpenHoldem 1.6.0"
+	Name="OpenHoldem"
 	ProjectGUID="{4B4F8898-50C6-4F07-8771-B140482DBA69}"
 	RootNamespace="pokbot"
 	Keyword="MFCProj"
@@ -70,7 +70,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="imm32.lib psapi.lib ..\scintilla\bin\SciLexer.lib ..\pokereval\Debug\poker-eval.lib ..\lib\libpq.lib C:\Perl\lib\CORE\PerlEz.lib"
+				AdditionalDependencies="imm32.lib psapi.lib ..\scintilla\bin\SciLexer.lib ..\pokereval\Debug\poker-eval.lib ..\lib\libpq.lib ..\lib\PerlEz.lib"
 				LinkIncremental="2"
 				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames="libc.lib;libcmt.lib;msvcrt.lib;libcd.lib;msvcrtd.lib"
@@ -165,7 +165,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="imm32.lib psapi.lib ..\scintilla\bin\SciLexer.lib ..\pokereval\Release\poker-eval.lib ..\lib\libpq.lib C:\Perl\lib\CORE\PerlEz.lib"
+				AdditionalDependencies="imm32.lib psapi.lib ..\scintilla\bin\SciLexer.lib ..\pokereval\Release\poker-eval.lib ..\lib\libpq.lib ..\lib\PerlEz.lib"
 				LinkIncremental="1"
 				GenerateManifest="false"
 				GenerateDebugInformation="false"
@@ -583,6 +583,10 @@
 			</File>
 			<File
 				RelativePath=".\Perl.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\PerlEz.h"
 				>
 			</File>
 			<File

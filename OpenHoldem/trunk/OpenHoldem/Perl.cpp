@@ -17,7 +17,7 @@
 #include <sstream>
 #include <String>
 #include <windows.h>
-#include <PerlEz.h>
+#include "PerlEz.h"
 #include "debug.h"
 #include "dll_extension.h"
 #include "global.h"
