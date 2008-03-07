@@ -62,6 +62,8 @@ protected: // create from serialization only
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	//  2008.03.03 by THF
 	afx_msg void OnPerlLoadFormula();
+	//  2008.02.07  by THF
+	void OnUpdateMenuPerlLoadSpecificFormula(CCmdUI* pCmdUI);
 	afx_msg void OnPerlLoadSpecificFormula();
 	afx_msg void OnPerlEditMainFormula();
 	afx_msg void OnUpdateMenuPerlLoad(CCmdUI* pCmdUI);

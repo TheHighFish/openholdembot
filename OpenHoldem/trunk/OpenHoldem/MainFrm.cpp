@@ -63,6 +63,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_POKERPRO_CONNECT, &CMainFrame::OnUpdatePokerproConnect)
 	//  2008.03.04 by THF
 	ON_UPDATE_COMMAND_UI(ID_PERL_LOADFORMULA, &CMainFrame::OnUpdateMenuPerlLoad)
+	//  2008.03.07 by THF
+	ON_UPDATE_COMMAND_UI(ID_PERL_LOADSPECIFICFORMULA, &CMainFrame::OnUpdateMenuPerlLoadSpecificFormula)
 
 	//  Menu commands	
 	ON_COMMAND(ID_FILE_LOADTABLEMAP, &CMainFrame::OnFileLoadTableMap)
@@ -1661,6 +1663,29 @@ void CMainFrame::OnUpdateViewStatusbar(CCmdUI *pCmdUI) {
 	pCmdUI->SetCheck(m_wndStatusBar.IsVisible() ? 1 : 0);
 }
 
+
+//  2008.03.04 by THF
+void CMainFrame::OnUpdateMenuPerlLoad(CCmdUI* pCmdUI) 
+{
+	if (the_Perl_Interpreter.is_a_Formula_loaded()) {
+		pCmdUI->SetText("Unload Formula");
+	}
+	else {
+		pCmdUI->SetText("Load Formula");
+	}
+	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
+		            !m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);	
+}
+
+//  2008.02.07  by THF
+void CMainFrame::OnUpdateMenuPerlLoadSpecificFormula(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
+		            !m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);	
+}
+
+
+
 BOOL CMainFrame::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
 	if (global.m_WaitCursor)
@@ -1727,10 +1752,10 @@ void CMainFrame::OnPerlLoadSpecificFormula()
 
 	if (cfd.DoModal() == IDOK) 
 	{
-		cfd.m_ofn.lpstrFilter = "Perl Files (.pl)\0*.pl\0\0";
+		cfd.m_ofn.lpstrFilter = "Perl Files (.pl)\0*.pl\0\0";		                               
 		cfd.m_ofn.lpstrTitle = "Select Perl formula file to OPEN";
 		the_Perl_Interpreter.load_FormulaFile(cfd.m_ofn.lpstrFile);
-	}
+	} 
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 
@@ -1757,28 +1782,3 @@ void CMainFrame::OnPerlEditMainFormula()
 #endif
 }
 
-//  2008.03.04 by THF
-void CMainFrame::OnUpdateMenuPerlLoad(CCmdUI* pCmdUI) 
-{
-	if (the_Perl_Interpreter.is_a_Formula_loaded()) {
-		pCmdUI->SetText("Unload Formula");
-	}
-	else {
-		pCmdUI->SetText("Load Formula");
-	}
-	//  You can now load/unload DLL's when connected to a PPro server 
-	//    if you are not sitting down.
-    //    (CMainFrame::OnUpdateMenuDllLoad) (Thanks, Matrix!)
-	//
-	//  Doing the same for Perl formulas. :)
-	//
-	//  Not connected to ppro server
-//	if (ppro.m_socket==INVALID_SOCKET) {
-//		pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-//						!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
-//	}
-	// connected to ppro server
-//	else {
-//		pCmdUI->Enable(ppro.data.m_pinf[ppro.data.m_userchair].m_isActive&0x1 ? false : true);
-//	}
-}

@@ -27,9 +27,13 @@ using namespace std;
 
 //  Function types in PerlEz.DLL (defined in PerlEz.h)
 //
-typedef int (*T_PerlEzCall)(PERLEZHANDLE hHandle, LPCSTR lpFunction, LPSTR lpBuffer, DWORD dwBufSize, LPCSTR lpFormat, ...);
-typedef PERLEZHANDLE (*APIENTRY T_PerlEzCreate)(LPCSTR lpFileName, LPCSTR lpOptions);
-typedef BOOL (*APIENTRY T_PerlEzDelete)(PERLEZHANDLE);
+extern "C"
+{
+	typedef int(APIENTRY *T_PerlEzCall)(PERLEZHANDLE hHandle, LPCSTR lpFunction, LPSTR lpBuffer, DWORD dwBufSize, LPCSTR lpFormat, ...);
+	typedef PERLEZHANDLE (APIENTRY *APIENTRY T_PerlEzCreate)(LPCSTR lpFileName, LPCSTR lpOptions);
+	typedef BOOL (APIENTRY *T_PerlEzDelete)(PERLEZHANDLE);
+}
+
 
 //  Function pointers to the 3 functions
 //
@@ -49,7 +53,7 @@ T_PerlEzDelete P_PerlEzDelete;
 //  Returns false, if DLL couldn't get loaded or
 //    DLL interface is invalid.
 //
-bool load_DLL(void)
+bool Perl::load_DLL(void)
 {
 #ifdef SEH_ENABLE
 	try {
@@ -173,9 +177,7 @@ Perl::Perl()
 	if (global.preferences.Perl_load_default_Formula)
 	{
 		//  Load file and create new instance of the interpreter.
-		load_FormulaFile(string(global.preferences.Perl_default_Formula));
-		Formula_loaded = true;
-		Interpreter_not_loaded = false;
+		load_FormulaFile(string(global.preferences.Perl_default_Formula));		
 	}
 	else
 	{
@@ -187,7 +189,7 @@ Perl::Perl()
 		Formula_loaded = false;
 		Interpreter_not_loaded = false;
 	}
-	if (the_Interpreter == NULL)
+	if ((the_Interpreter == NULL) || Interpreter_not_loaded)
 	{
 		Formula_loaded = false;
 		Interpreter_not_loaded = true;
@@ -380,8 +382,7 @@ void Perl::load_FormulaFile(string the_new_FormulaFile)
 		the_Interpreter = (*P_PerlEzCreate)
 			(NULL,                      //  Script to load (not accessable)
 			 NULL);                     //  Command line options
-		Formula_loaded = false;
-		Interpreter_not_loaded = false;
+		Formula_loaded = false;		
 	}
 	else
 	{
@@ -392,8 +393,17 @@ void Perl::load_FormulaFile(string the_new_FormulaFile)
 		//  MessageBox(NULL, the_default_Perl_Formula_File, "Perl", 0);
 		the_actual_FormulaFile = string(the_new_FormulaFile);
 		Formula_loaded = true;
-		Interpreter_not_loaded = false;
 	}	
+	if (the_Interpreter != NULL)
+	{
+		Interpreter_not_loaded = false;
+	}
+	else
+	{
+		MessageBox(NULL, "Unable to load formula or interpreter.", "Perl Error", 0);
+		Interpreter_not_loaded = true;
+		Formula_loaded = false;
+	}
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 
@@ -429,26 +439,29 @@ void Perl::edit_main_FormulaFile()
 	CString my_favourite_Editor = global.preferences.Perl_Editor;
 	if (_access(my_favourite_Editor, F_OK) != 0) 
     {
-	   	MessageBox(NULL, my_favourite_Editor, "Perl Error", MB_OK);
+	   	MessageBox(NULL, "Could not access editor.", "Perl Error", MB_OK);
+		return;
 	}								    
-	else
+	if (the_actual_FormulaFile == "")
 	{
-	 	//  Enclose path in quotation marks, as some editors
- 		//    (e.g emacs from the Unix world) have problems 
-	    //    with spaces in (Windows-) path names.
-	    // 	  
-	    string the_File_to_edit = '"' + the_actual_FormulaFile + '"';
-        int the_Process_ID = _spawnl(
-            P_NOWAIT,                       //  asynchronous execution
-	     	my_favourite_Editor,            //  path to executable (editor)
-	     	my_favourite_Editor,            //  arg0: name of the program  
-         	the_File_to_edit.c_str(),       //  arg1: path to source file
-	     	NULL);                          //  end of parameter list
-    	if (errno == -1)
-    	{
-		    MessageBox(NULL, "Executing editor failed.", "Perl Error", MB_OK);    		  
-	    }
+		MessageBox(NULL, "Formula undefined.", "Perl Error", MB_OK);
+		return;
 	}
+ 	//  Enclose path in quotation marks, as some editors
+	//    (e.g emacs from the Unix world) have problems 
+    //    with spaces in (Windows-) path names.
+    // 	  
+    string the_File_to_edit = '"' + the_actual_FormulaFile + '"';
+    int the_Process_ID = _spawnl(
+        P_NOWAIT,                       //  asynchronous execution
+     	my_favourite_Editor,            //  path to executable (editor)
+     	my_favourite_Editor,            //  arg0: name of the program  
+       	the_File_to_edit.c_str(),       //  arg1: path to source file
+     	NULL);                          //  end of parameter list
+   	if (errno == -1)
+   	{
+	    MessageBox(NULL, "Executing editor failed.", "Perl Error", MB_OK);    		  
+    }
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 

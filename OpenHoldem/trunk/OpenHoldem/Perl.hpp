@@ -40,6 +40,7 @@ extern class Perl
  private:
 	void send_Callback_Pointer_to_gws();
 	void do_ErrorCheck(int the_ErrorCode);
+	bool load_DLL(void);
 
   public: 			  
     Perl();
