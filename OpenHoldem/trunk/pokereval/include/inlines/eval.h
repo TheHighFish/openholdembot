@@ -125,11 +125,14 @@ StdDeck_StdRules_EVAL_N( StdDeck_CardMask cards, int n_cards )
     } 
     else {
       int st;
-
       st = straightTable[ranks];
       if (st) 
         retval = HandVal_HANDTYPE_VALUE(StdRules_HandType_STRAIGHT)
-          + HandVal_TOP_CARD_VALUE(st);
+			+ HandVal_TOP_CARD_VALUE(st)
+			+ HandVal_SECOND_CARD_VALUE(st-1)
+			+ HandVal_THIRD_CARD_VALUE(st-2)
+			+ HandVal_FOURTH_CARD_VALUE(st-3)
+			+ HandVal_FIFTH_CARD_VALUE(st-4);
     };
 
     /* Another win -- if there can't be a FH/Quads (n_dups < 3), 

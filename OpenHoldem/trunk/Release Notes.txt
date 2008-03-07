@@ -37,8 +37,9 @@ BUG FIXES:
 - Detection of divide-by-zero expressions has been corrected/enhanced for situations that include invalid
   symbols (OpenHoldem)
 
-- ishiflush now properly represents having the highest possible true flush.  This does not include possible
-  straight flushes or royal flushes, since these are a different hand rank. (quiqsilver)
+- ishiflush and ishistraight now properly represent having the highest possible true hand of the respective
+  type.  This does not include hands of a different rank, such as royal flushes and straight flushes.
+  (Thanks, PokerBandit1 and Winngy) (quiqsilver)
   
 
 v1.6.0 2008-02-22
