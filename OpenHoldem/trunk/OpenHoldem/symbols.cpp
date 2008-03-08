@@ -1772,31 +1772,11 @@ void CSymbols::calc_pokervalues(void)
 		{ 
 			sym.isstraight = 1; 													// isstraight
 
-			// If we have a pocket Ace in our straight
-			if (StdDeck_RANK(HandVal_TOP_CARD(handval)) == 12 && ((int)sym.pcbits & 0x10))
+			// If it is an Ace high straight
+			if (StdDeck_RANK(HandVal_TOP_CARD(handval)) == 12 )
 			{
-				sym.ishistraight = 1;
+				sym.ishistraight = 1;												// ishistraight
 			}
-			// If we have a pocket King, and it's the second best card in our straight
-			else if (StdDeck_RANK(HandVal_SECOND_CARD(handval)) == 11 && ((int)sym.pcbits & 0x8))
-			{
-				sym.ishistraight = 1;
-			}
-			// If we have a pocket Queen, and it's the third best card in our straight
-			else if (StdDeck_RANK(HandVal_THIRD_CARD(handval)) == 10 && ((int)sym.pcbits & 0x4))
-			{
-				sym.ishistraight = 1;
-			}
-			// If we have a pocket Jack, and it's the fourth best card in our straight
-			else if (StdDeck_RANK(HandVal_FOURTH_CARD(handval)) == 9 && ((int)sym.pcbits & 0x2))
-			{
-				sym.ishistraight = 1;
-			}
-			// If we have a pocket Ten, and it's the fifth best card in our straight
-			else if (StdDeck_RANK(HandVal_FIFTH_CARD(handval)) == 8 && ((int)sym.pcbits & 0x1))
-			{
-				sym.ishistraight = 1;
-			}																		// <- ishistraight
 		}
 
 		else if (HandVal_HANDTYPE(handval) == HandType_TRIPS) 
