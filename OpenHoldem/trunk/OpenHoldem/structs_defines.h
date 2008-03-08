@@ -4,8 +4,8 @@
 #include "hash/stdint.h"
 #include <boost/spirit/tree/ast.hpp>
 
-#define VERSION_NUMBER				1.60
-#define VERSION_TEXT				"1.6.0"  // change version number in OpenHoldem.rc also, when needed
+#define VERSION_NUMBER				1.70
+#define VERSION_TEXT				"1.7.0"  // change version number in OpenHoldem.rc also, when needed
 
 // thread timeout
 #define THREAD_WAIT					3000
