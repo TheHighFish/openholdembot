@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2008
+# Visual Studio 2005
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5BBB408A-BE3F-445E-85A4-4E677116F815}"
 	ProjectSection(SolutionItems) = preProject
 		Release Notes.txt = Release Notes.txt
