@@ -717,7 +717,12 @@ void CMainFrame::OnBnClickedGreenCircle() {
 		// Put global candidate table list in table select dialog variables
 		N = (int) global.g_tlist.GetSize();
 		if (N==0) {
-			MessageBox("No valid tables found", "Cannot find table", MB_OK);
+			int cySize = GetSystemMetrics(SM_CYSIZE);
+			int cyMenuSize = GetSystemMetrics(SM_CYMENU);
+			if (cySize != 18 && cyMenuSize != 19)
+				MessageBox("Cannot find table\n\nIt appears that your settings are not configured according to OpenHoldem specifications.\nYou must ensure that XP themes are not used (Use Windows Classic style) and\nfont size is set to normal.\n\nFor more info, look at the wiki documentation and the user forums", "Cannot find table", MB_OK);
+			else
+				MessageBox("No valid tables found", "Cannot find table", MB_OK);
 		}
 		else {
 			if (N==1) {
@@ -824,6 +829,18 @@ void CMainFrame::OnBnClickedGreenCircle() {
 
 				// Start logging
 				start_log();
+
+				CWindowDC dc(NULL);
+				int nBitsPerPixel = dc.GetDeviceCaps(PLANES) * dc.GetDeviceCaps(BITSPIXEL);
+				if (nBitsPerPixel < 24) {
+					MessageBox("It appears that your Display settings are not configured according to OpenHoldem specifications.\n24 bit color or higher is needed to reliably extract information from the poker client\n\nFor more info, look at the wiki documentation and the user forums", "Caution: Color Depth Too Low", MB_OK|MB_ICONWARNING);
+				}
+
+				BOOL fontSmoothingEnabled = FALSE;
+				SystemParametersInfo(SPI_GETFONTSMOOTHING, 0, (LPVOID)&fontSmoothingEnabled, 0);
+				if (fontSmoothingEnabled) {
+					MessageBox("It appears that font smoothing is enabled. In order for OpenHoldem to reliably\nextract information from the poker client you should disable Font Smoothing", "Caution: Font smoothing is enabled", MB_OK|MB_ICONWARNING);
+				}
 
 				// log OH title bar text and table reset
 				::GetWindowText(global.attached_hwnd, title, 512);

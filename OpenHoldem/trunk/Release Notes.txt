@@ -16,7 +16,10 @@ NEW STUFF:
   
 - Integration of the ActiveState Perl interpreter. (TheHighFish)
 
-- Automatic poker chat for formula and DLL level. (TheHighFish)  
+- Automatic poker chat for formula and DLL level. (TheHighFish) 
+
+- Warnings have been added when you click the Connect button for common configuration issues.
+  Font Smoothing, 24+ Bit color, and a check for Title size to catch XP Themes and Font Size settings (Spew)
 
 
 BUG FIXES:
