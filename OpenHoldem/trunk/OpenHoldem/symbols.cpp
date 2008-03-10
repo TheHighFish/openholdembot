@@ -1071,7 +1071,9 @@ void CSymbols::calc_betbalancestack(void)
 		sym.currentbet[10] = user_chair_confirmed ?
 			scraper.playerbet[(int) sym.userchair] : 0;									// currentbet
 
-		sym.potcommon = scraper.pot[0];													// potcommon
+		sym.potcommon = 0;
+		for (i=0; i<=4; i++)
+			sym.potcommon += scraper.pot[i];											// potcommon
 		sym.potplayer=0;
 
 		for (i=0; i<sym.nchairs; i++)

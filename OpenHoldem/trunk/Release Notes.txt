@@ -43,6 +43,8 @@ BUG FIXES:
 - ishiflush and ishistraight now properly represent having the highest possible true hand of the respective
   type.  This does not include hands of a different rank, such as royal flushes and straight flushes.
   (Thanks, PokerBandit1 and Winngy) (quiqsilver)
+
+- Side pots (c0pot1-4) not added to 'pot' and 'potcommon' - fixed (Spew)
   
 
 v1.6.0 2008-02-22
