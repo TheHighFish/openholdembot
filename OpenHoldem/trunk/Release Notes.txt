@@ -46,6 +46,11 @@ BUG FIXES:
 
 - Side pots (c0pot1-4) not added to 'pot' and 'potcommon' - fixed (Spew)
   
+- Source code:  CTransform class (transform.cpp and transform.h) now live outside of the OpenHoldem and OpenScrape
+  directories, so it can be shared without manually needing to copy code from place to place.  (OpenHoldem)
+  
+- OpenHoldem's main window will now appear on top at launch.  (CMainFrame::OnCreate)  (OpenHoldem)
+  
 
 v1.6.0 2008-02-22
 NEW STUFF:

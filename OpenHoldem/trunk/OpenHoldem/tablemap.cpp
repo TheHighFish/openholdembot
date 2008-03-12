@@ -3,10 +3,10 @@
 #include "debug.h"
 #include "tablemap.h"
 #include "structs_defines.h"
-#include "hash/lookup3.h"
+#include "../../CTransform/hash/lookup3.h"
 #include "global.h"
 #include "scraper.h"
-#include "Transform.h"
+#include "../../CTransform/Transform.h"
 
 void clear_tablemap(STableMap *map) 
 {

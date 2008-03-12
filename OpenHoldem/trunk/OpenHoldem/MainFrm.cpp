@@ -202,6 +202,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 		// Start timer that attaches the OH window when the poker window moves
 		SetTimer(ATTACH_WINDOW_TIMER, 20, 0);
 
+		// Bring to top
+		SetWindowPos(FromHandle(HWND_TOP), 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
+
 		return 0;
 #ifdef SEH_ENABLE
 	}

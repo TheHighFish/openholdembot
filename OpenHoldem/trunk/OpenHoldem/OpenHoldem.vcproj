@@ -366,7 +366,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Transform.cpp"
+				RelativePath="..\..\CTransform\Transform.cpp"
 				>
 			</File>
 			<File
@@ -423,7 +423,7 @@
 				Name="hash"
 				>
 				<File
-					RelativePath=".\hash\lookup3.cpp"
+					RelativePath="..\..\CTransform\hash\lookup3.cpp"
 					>
 				</File>
 			</Filter>
@@ -646,7 +646,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Transform.h"
+				RelativePath="..\..\CTransform\Transform.h"
 				>
 			</File>
 			<File
@@ -681,11 +681,11 @@
 				Name="hash"
 				>
 				<File
-					RelativePath=".\hash\lookup3.h"
+					RelativePath="..\..\CTransform\hash\lookup3.h"
 					>
 				</File>
 				<File
-					RelativePath=".\hash\stdint.h"
+					RelativePath="..\..\CTransform\hash\stdint.h"
 					>
 				</File>
 			</Filter>

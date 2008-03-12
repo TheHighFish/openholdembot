@@ -10,7 +10,7 @@
 #include "debug.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
-#include "Transform.h"
+#include "../../CTransform/Transform.h"
 
 // CDlgScraperOutput dialog
 CDlgScraperOutput	*m_ScraperOutputDlg = NULL;

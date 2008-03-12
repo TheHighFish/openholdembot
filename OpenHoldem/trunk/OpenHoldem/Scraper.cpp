@@ -2,11 +2,11 @@
 
 #include "Scraper.h"
 #include "debug.h"
-#include "hash/lookup3.h"
+#include "../../CTransform/hash/lookup3.h"
 #include "global.h"
 #include "threads.h"
 #include "symbols.h"
-#include "Transform.h"
+#include "../../CTransform/Transform.h"
 
 // Global construction of scraper class
 class CScraper	scraper;
