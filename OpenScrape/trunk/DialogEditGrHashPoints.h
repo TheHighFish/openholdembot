@@ -1,6 +1,7 @@
 #pragma once
 #include "afxwin.h"
 #include "structs_defines.h"
+#include "../CTransform/Transform.h"
 
 // CDlgEditGrHashPoints dialog
 

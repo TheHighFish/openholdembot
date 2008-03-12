@@ -24,11 +24,19 @@ NEW STUFF:
     indicate it now has a member and can be expanded. (quiqsilver)
 
 BUG FIXES:
-- Create Font button would not search all groups to find unknown character when it should have
-  only searched within the matching text group
+- Create Font button would search all groups to find unknown character when it should have
+  only searched within the matching text group (spew)
 
 - Launching a .tm file from the Windows shell launches OS, which crashes immediately. (quiqsilver)
 
+- CTransform::h_transform; check for left>right or bottom>top added to prevent crashes.  (OpenHoldem)
+
+- CTransform::do_plain_font_scan:  fix for searching of matching fonts across groups applied to
+  CTransform class; same problem as Spew's fix above.
+
+- Source code:  CTransform class (transform.cpp and transform.h) now live outside of the OpenHoldem and OpenScrape
+  directories, so it can be shared without manually needing to copy code from place to place.  (OpenHoldem)
+    
 
 v1.1.0 2008-02-22
 ================

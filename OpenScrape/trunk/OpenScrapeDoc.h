@@ -2,6 +2,7 @@
 //
 #pragma once
 #include "structs_defines.h"
+#include "../CTransform/transform.h"
 
 int	const num_z$strings = 3;
 char * const z$strings[3] = { "clientsize", "clientsizemin", "clientsizemax" };

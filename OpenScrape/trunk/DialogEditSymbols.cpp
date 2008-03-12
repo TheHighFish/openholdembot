@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "DialogEditSymbols.h"
-#include "Transform.h"
+#include "../CTransform/Transform.h"
 
 // CDlgEditSymbols dialog
 

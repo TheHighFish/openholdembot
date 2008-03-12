@@ -9,7 +9,7 @@
 #include "OpenScrapeDoc.h"
 #include "OpenScrapeView.h"
 #include "Registry.h"
-#include "Transform.h"
+#include "../CTransform/Transform.h"
 #include "MainFrm.h"
 #include "DialogEdit.h"
 #include "DialogEditSizes.h"

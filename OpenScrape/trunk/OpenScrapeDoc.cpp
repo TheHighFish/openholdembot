@@ -6,7 +6,7 @@
 #include "MainFrm.h"
 #include "OpenScrapeDoc.h"
 #include "structs_defines.h"
-#include "hash/lookup3.h"
+#include "../CTransform/hash/lookup3.h"
 #include "DialogTableMap.h"
 #include "debug.h"
 
