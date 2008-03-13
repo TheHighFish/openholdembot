@@ -21,6 +21,8 @@ NEW STUFF:
 - Warnings have been added when you click the Connect button for common configuration issues.
   Font Smoothing, 24+ Bit color, and a check for Title size to catch XP Themes and Font Size settings (Spew)
 
+- Added a check for a card string of "10" instead of "T", to be converted to a "T", in both common and
+  player card rank fuzzy scrapes (e.g., "if (rankstr=="10") rankstr="T";"). - BillW
 
 BUG FIXES:
 - OpenHoldem no longer performs unnecessary Poker Tracker database queries when we are not using
