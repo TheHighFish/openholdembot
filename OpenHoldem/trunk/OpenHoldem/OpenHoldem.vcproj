@@ -45,7 +45,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/D &quot;_CRT_SECURE_NO_DEPRECATE&quot; /D &quot;_CRT_NON_CONFORMING_SWPRINTFS&quot; /D &quot;_SCL_SECURE_NO_DEPRECATE&quot;"
 				Optimization="0"
-				AdditionalIncludeDirectories="C:\Programme\Perl\lib\CORE;&quot;C:\Dokumente und Einstellungen\Development\Eigene Dateien\My_OpenHoldem.Release\openholdembot\boost_1_34_1&quot;;..\pokereval\include"
+				AdditionalIncludeDirectories="..\pokereval\include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;OEMRESOURCE"
 				MinimalRebuild="false"
 				ExceptionHandling="1"
