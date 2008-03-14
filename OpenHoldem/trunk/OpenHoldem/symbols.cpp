@@ -941,7 +941,7 @@ void CSymbols::calc_stakes(void)
 			return;
 
 		// if we still do not have blinds, then infer them from the posted bets
-		if (sym.br == 1) 
+		if (sym.br == 1 && (sym.sblind==0 || sym.bblind==0)) 
 		{
 			for (i=sym.dealerchair+1; i<=sym.dealerchair+global.tablemap.num_chairs; i++) 
 			{

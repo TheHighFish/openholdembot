@@ -1,3 +1,13 @@
+v1.7.1 2008-03-29
+NEW STUFF:
+
+
+BUG FIXES:
+- OH will no longer force blinds to bblind==2*sblind, when bblind!=2*sblind.  For example,
+  sblind=$0.10 and bblind=$0.25 are acceptable.  (OpenHoldem, thanks to Spud for fix).
+  
+  
+  
 v1.7.0 2008-03-15
 NEW STUFF:
 - All Poker Tracker-compatible sites are now supported by OH for pulling Poker Tracker data.
