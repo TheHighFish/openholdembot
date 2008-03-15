@@ -6,6 +6,8 @@ BUG FIXES:
 - OH will no longer force blinds to bblind==2*sblind, when bblind!=2*sblind.  For example,
   sblind=$0.10 and bblind=$0.25 are acceptable.  (OpenHoldem, thanks to Spud for fix).
   
+- Typo in CScraper::DoScrape corrected.  "if (!seated[i] & !active[i])" fixed to
+  "if (!is_string_seated(seated[i]) && !is_string_active(active[i]))" (OpenHoldem)
   
   
 v1.7.0 2008-03-15

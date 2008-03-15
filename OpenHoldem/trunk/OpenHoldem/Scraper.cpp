@@ -202,7 +202,7 @@ int CScraper::DoScrape(void)
 			scrape_bet(i, hdcCompatible, hdc);
 
 			// Clear some things if no one is at this chair
-			if (!seated[i] & !active[i]) 
+			if (!is_string_seated(seated[i]) && !is_string_active(active[i])) 
 			{
 				playername[i] = "";
 				name_good_scrape[i] = false;
