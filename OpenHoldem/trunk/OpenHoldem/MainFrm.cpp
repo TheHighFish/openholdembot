@@ -1760,7 +1760,7 @@ void CMainFrame::OnPerlLoadFormula()
 	}
 #endif
 }
-
+	
 
 //  2008.03.03 by THF
 void CMainFrame::OnPerlLoadSpecificFormula()
@@ -1769,11 +1769,10 @@ void CMainFrame::OnPerlLoadSpecificFormula()
 	try {
 #endif
 	CFileDialog			cfd(true);
-
+	cfd.m_ofn.lpstrFilter = "Perl Files (*.pl)\0*.pl\0All Files (*.*)\0*.*\0\0";		                               
+	cfd.m_ofn.lpstrTitle = "Select Perl formula file to OPEN";
 	if (cfd.DoModal() == IDOK) 
-	{
-		cfd.m_ofn.lpstrFilter = "Perl Files (.pl)\0*.pl\0\0";		                               
-		cfd.m_ofn.lpstrTitle = "Select Perl formula file to OPEN";
+	{		
 		the_Perl_Interpreter.load_FormulaFile(cfd.m_ofn.lpstrFile);
 	} 
 #ifdef SEH_ENABLE
