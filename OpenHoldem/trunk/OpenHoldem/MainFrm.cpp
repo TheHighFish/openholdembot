@@ -1769,7 +1769,7 @@ void CMainFrame::OnPerlLoadSpecificFormula()
 	try {
 #endif
 	CFileDialog			cfd(true);
-	cfd.m_ofn.lpstrFilter = "Perl Files (*.pl)\0*.pl\0All Files (*.*)\0*.*\0\0";		                               
+	cfd.m_ofn.lpstrFilter = "Perl Scripts (*.pl)\0*.pl\0Perl Modules (*.pm)\0*.pm\0All Files (*.*)\0*.*\0\0";		                               
 	cfd.m_ofn.lpstrTitle = "Select Perl formula file to OPEN";
 	if (cfd.DoModal() == IDOK) 
 	{		
