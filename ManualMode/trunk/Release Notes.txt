@@ -1,3 +1,8 @@
+v1.0.5 2008
+-----------------
+- Increment handnumber after reset.  (jumpingfences)
+
+
 v1.0.4 2008-02-08
 -----------------
 - Updated table map to correctly recognize tournament mode (Thanks Zippy & Winngy)

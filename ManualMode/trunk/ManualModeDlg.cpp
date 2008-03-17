@@ -1784,7 +1784,7 @@ void CManualModeDlg::OnAllin() {
 void CManualModeDlg::OnBnClickedReset() {
 	clear_scrape_areas();
 	istournament = false;
-	handnumber = "1";
+	handnumber.Format("%i",atoi(handnumber) + 1);
 	sblind = "5";
 	bblind = "10";
 	bbet = "20";
