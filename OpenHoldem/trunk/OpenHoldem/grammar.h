@@ -190,7 +190,7 @@ struct exec_grammar : public boost::spirit::grammar<exec_grammar> {
 
 			logical_or_expr = logical_xor_expr >> *(root_node_d[LOG_OR_OP] >> logical_xor_expr);
 
-			cond_expr = logical_or_expr >> *(root_node_d[QUEST_OP] >> expression >> COLON_OP >> cond_expr);
+			cond_expr = logical_or_expr >> *(root_node_d[QUEST_OP] >> cond_expr >> COLON_OP >> cond_expr);
 
 			expression = *(cond_expr >> expression);
 
