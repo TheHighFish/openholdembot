@@ -8,6 +8,13 @@ BUG FIXES:
   
 - Typo in CScraper::DoScrape corrected.  "if (!seated[i] & !active[i])" fixed to
   "if (!is_string_seated(seated[i]) && !is_string_active(active[i]))" (OpenHoldem)
+
+- File selection dialog for Perl fixed. The filter shows now correctly 
+  Perl scripts and modules. (TheHighFish)
+
+- Passing pointer to the callback function now everytime to Perl, 
+  when a new file gets loaded, instead of only once when the
+  interface is initilaized. (TheHighFish)
   
   
 v1.7.0 2008-03-15
