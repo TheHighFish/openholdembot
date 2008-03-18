@@ -2,17 +2,17 @@
 #include <process.h>
 
 #include "debug.h"
-#include "OpenHoldem.h"
 #include "scraper.h"
 #include "global.h"
 #include "inlines/eval.h"
-#include "autoplayer.h"
-#include "PokerPro.h"
 #include "GameState.h"
-#include "DialogScraperOutput.h"
 #include "pokertracker.h"
 #include "symbols.h"
 #include "grammar.h"
+#include "OpenHoldem.h"
+#include "autoplayer.h"
+#include "DialogScraperOutput.h"
+#include "PokerPro.h"
 #include "threads.h"
 
 HANDLE				h_heartbeat_thread;

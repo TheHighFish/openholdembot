@@ -16,6 +16,7 @@ BUG FIXES:
   when a new file gets loaded, instead of only once when the
   interface is initilaized. (TheHighFish)
   
+- Assertion failure in CFontDialog (jumpingfences)
   
 v1.7.0 2008-03-15
 NEW STUFF:

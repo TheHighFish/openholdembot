@@ -1125,7 +1125,7 @@ void CDlgFormulaScintilla::OnFont() {
 
 		editfont.GetLogFont(&curlf);
 		fontdlg.m_cf.lStructSize = sizeof(CHOOSEFONT);
-		fontdlg.m_cf.Flags = CF_EFFECTS | CF_INITTOLOGFONTSTRUCT | CF_SCREENFONTS;
+		fontdlg.m_cf.Flags |= CF_EFFECTS | CF_INITTOLOGFONTSTRUCT | CF_SCREENFONTS;
 		fontdlg.m_cf.hwndOwner = NULL;
 		fontdlg.m_cf.lpLogFont = &curlf;
 		fontdlg.m_cf.rgbColors = g_rgbText;
