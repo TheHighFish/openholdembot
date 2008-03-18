@@ -21,6 +21,7 @@ struct S_symbols {
 	double swagdelay;
 	double allidelay;
 	double swagtextmethod;
+	double potmethod;
 
 	//FORMULA FILE
 	double rake;

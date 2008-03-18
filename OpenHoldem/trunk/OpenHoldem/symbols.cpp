@@ -115,6 +115,7 @@ void CSymbols::ResetSymbolsFirstTime(void)
 		sym.swagdelay = 0;
 		sym.allidelay = 0;
 		sym.swagtextmethod = 3;
+		sym.potmethod = 1;
 
 		// formula
 		sym.rake = sym.bankroll = 0;
@@ -677,7 +678,8 @@ void CSymbols::CalcSymbols(void)
 		sym.defcon = global.formula.dDefcon;											// defcon
 		sym.isdefmode = global.formula.dDefcon == 0.0;									// isdefmode
 		sym.isaggmode = global.formula.dDefcon == 1.0;									// isaggmode
-		sym.swagtextmethod = global.tablemap.swagtextmethod;								// swagtextmethod
+		sym.swagtextmethod = global.tablemap.swagtextmethod;							// swagtextmethod
+		sym.potmethod = global.tablemap.potmethod;										// potmethod
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// calculation of userchair
@@ -1071,15 +1073,25 @@ void CSymbols::calc_betbalancestack(void)
 		sym.currentbet[10] = user_chair_confirmed ?
 			scraper.playerbet[(int) sym.userchair] : 0;									// currentbet
 
-		sym.potcommon = 0;
-		for (i=0; i<=4; i++)
-			sym.potcommon += scraper.pot[i];											// potcommon
 		sym.potplayer=0;
-
 		for (i=0; i<sym.nchairs; i++)
-			sym.potplayer += sym.currentbet[i] ;										// potplayer
+		{
+			sym.potplayer += sym.currentbet[i];											// potplayer
+		}
 
-		sym.pot = sym.potcommon + sym.potplayer;										// pot
+		if (sym.potmethod == 2)															// pot, potcommon ->
+		{
+			sym.pot = scraper.pot[0];
+			sym.potcommon = sym.pot - sym.potplayer;
+		}
+		else
+		{
+			sym.potcommon = 0;
+			for (i=0; i<=4; i++)
+				sym.potcommon += scraper.pot[i];
+
+			sym.pot = sym.potcommon + sym.potplayer;									// <- pot, potcommon
+		}
 
 #ifdef SEH_ENABLE
 	}
@@ -3601,6 +3613,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "swagdelay", 9)==0 && strlen(a)==9)					return sym.swagdelay;
 		if (memcmp(a, "allidelay", 9)==0 && strlen(a)==9)					return sym.allidelay;
 		if (memcmp(a, "swagtextmethod", 14)==0 && strlen(a)==14)			return sym.swagtextmethod;
+		if (memcmp(a, "potmethod", 9)==0 && strlen(a)==9)					return sym.potmethod;
 
 		//FORMULA FILE
 		if (memcmp(a, "rake", 4)==0 && strlen(a)==4)						return sym.rake;

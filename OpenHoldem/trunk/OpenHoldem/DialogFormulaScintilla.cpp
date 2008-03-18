@@ -27,7 +27,7 @@
 CDlgFormulaScintilla	*m_formulaScintillaDlg = NULL;
 
 char *	keywords = "ismanual isppro site nchairs isbring session handnumber "
-		"sitename$ network$ swagdelay allidelay swagtextmethod rake nit bankroll bblind sblind "
+		"sitename$ network$ swagdelay allidelay swagtextmethod potmethod rake nit bankroll bblind sblind "
 		"ante lim isnl ispl isfl sraiprev sraimin sraimax istournament handrank "
 		"handrank169 handrank2652 handrank1326 handrank1000 handrankp chair userchair "
 		"dealerchair raischair chair$ chairbit$ betround br betposition dealposition "
@@ -2977,6 +2977,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "swagdelay", "autoplayer delay in milliseconds between swag keystrokes and button click");
 	AddSymbol(parent, "allidelay", "autoplayer delay in milliseconds between alli slider jam and button click");
 	AddSymbol(parent, "swagtextmethod", "the site interpretation for swag edit text (Table Map symbol) 1=f$srai 2=f$srai+call 3=f$srai+call+currentbet");
+	AddSymbol(parent, "potmethod", "the site interpretation for the contents of c0pot0 (Table Map symbol) 1=common (default) 2=total");
 
 	mainParent = parent = AddSymbolTitle("Formula file");
 	AddSymbol(parent, "rake", "percentage amount added/subtracted to/from the pot");

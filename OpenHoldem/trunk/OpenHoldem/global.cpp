@@ -1051,6 +1051,7 @@ void CGlobal::save_s$strings(void)
 		// Clear 'em first
 		tablemap.num_chairs = 0;
 		tablemap.swagtextmethod = 0;
+		tablemap.potmethod = 0;
 		tablemap.sitename = "";
 		tablemap.network = "";
 		tablemap.chairconfig = "";
@@ -1064,6 +1065,9 @@ void CGlobal::save_s$strings(void)
 
 			if (tablemap.s$[i].name == "swagtextmethod")
 				tablemap.swagtextmethod = strtoul(tablemap.s$[i].text.GetString(), NULL, 10);
+
+			if (tablemap.s$[i].name == "potmethod")
+				tablemap.potmethod = strtoul(tablemap.s$[i].text.GetString(), NULL, 10);
 
 			if (tablemap.s$[i].name == "sitename")
 				tablemap.sitename = tablemap.s$[i].text;

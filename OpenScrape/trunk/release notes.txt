@@ -1,3 +1,13 @@
+v1.1.2 2008-03-29
+================
+NEW STUFF:
+- New symbol s$potmethod is now available.  This is used to determine the appropriate
+  site interpretation for the contents of c0pot0.  s$potmethod can be set to these values:
+  - 1: (default, legacy) Common pot
+  - 2: (new) Total pot, including current bets and side bets  (Thanks, Nick Coldhand)
+  (quiqsilver)
+
+
 v1.1.1 2008-03-15
 ================
 NEW STUFF:
