@@ -1504,7 +1504,7 @@ void Autoplayer::do_f$play(void) {
 			do_click = true;
 		}
 
-		// sit in and press auto post blinds
+		// sit in
 		else if (symbols.f$play==1 && ((sitin_but!=-1 && sitin_state==false) || (sitout_but!=-1 && sitout_state==true))) 
 		{
 			if (sitin_but!=-1 && sitin_state==false) 
@@ -1540,33 +1540,6 @@ void Autoplayer::do_f$play(void) {
 			input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTUP;
 			input_count++;
 
-			// AUTOPOST
-			if (autopost_but!=-1 && autopost_state==false) 
-			{
-				pt = randomize_click_location(global.tablemap.r$[autopost_but].left, global.tablemap.r$[autopost_but].top,
-											  global.tablemap.r$[autopost_but].right, global.tablemap.r$[autopost_but].bottom);
-
-				// Translate click point to screen/mouse coords
-				ClientToScreen(global.attached_hwnd, &pt);
-				fx = pt.x*(65535.0f/fScreenWidth);
-				fy = pt.y*(65535.0f/fScreenHeight);
-
-				// Set up the input structure
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_MOUSE;
-				input[input_count].mi.dx = fx;
-				input[input_count].mi.dy = fy;
-				input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
-				input_count++;
-
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_MOUSE;
-				input[input_count].mi.dx = fx;
-				input[input_count].mi.dy = fy;
-				input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTUP;
-				input_count++;
-			}
-
 			// Restore cursor to current location
 			fx = cur_pos.x*(65535.0f/fScreenWidth);
 			fy = cur_pos.y*(65535.0f/fScreenHeight);
@@ -1578,6 +1551,46 @@ void Autoplayer::do_f$play(void) {
 			input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
 			input_count++;
 			
+			do_click = true;
+		}
+
+		// Autopost
+		if (symbols.f$play==1 && autopost_but!=-1 && autopost_state==false)
+		{
+			pt = randomize_click_location(global.tablemap.r$[autopost_but].left, global.tablemap.r$[autopost_but].top,
+										  global.tablemap.r$[autopost_but].right, global.tablemap.r$[autopost_but].bottom);
+
+			// Translate click point to screen/mouse coords
+			ClientToScreen(global.attached_hwnd, &pt);
+			fx = pt.x*(65535.0f/fScreenWidth);
+			fy = pt.y*(65535.0f/fScreenHeight);
+
+			// Set up the input structure
+			ZeroMemory(&input[input_count],sizeof(INPUT));
+			input[input_count].type = INPUT_MOUSE;
+			input[input_count].mi.dx = fx;
+			input[input_count].mi.dy = fy;
+			input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
+			input_count++;
+
+			ZeroMemory(&input[input_count],sizeof(INPUT));
+			input[input_count].type = INPUT_MOUSE;
+			input[input_count].mi.dx = fx;
+			input[input_count].mi.dy = fy;
+			input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTUP;
+			input_count++;
+
+			// Restore cursor to current location
+			fx = cur_pos.x*(65535.0f/fScreenWidth);
+			fy = cur_pos.y*(65535.0f/fScreenHeight);
+
+			ZeroMemory(&input[input_count],sizeof(INPUT));
+			input[input_count].type = INPUT_MOUSE;
+			input[input_count].mi.dx = fx;
+			input[input_count].mi.dy = fy;
+			input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
+			input_count++;
+
 			do_click = true;
 		}
 

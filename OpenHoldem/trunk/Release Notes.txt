@@ -21,6 +21,8 @@ BUG FIXES:
   interface is initilaized. (TheHighFish)
   
 - Assertion failure in CFontDialog (jumpingfences)
+
+- Autopost will now work if the autopost button is not present while sitting out. (quiqsilver)
   
 v1.7.0 2008-03-15
 NEW STUFF:
