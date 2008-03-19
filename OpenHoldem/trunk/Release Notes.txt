@@ -52,6 +52,17 @@ BUG FIXES:
 
 - logging (oh1.log) was not used when connected to PPro (spew)
   
+- Default formula no longer sets modified flag, so you are not prompted to save it when loading
+  some other formula, or on exit. (OpenHoldem)
+  
+- Fixed code that ensures OH window is brought to top on start.  It now waits for any formula
+  loading and parsing to complete before doing so, which was the behavior prior to the 1.7.0 release.
+  (OpenHoldem)
+  
+- Hand resets are now triggered not only by a change in dealer button, but by a change in handnumber
+  or by a change in the userchair's cards from the previous hand.  (OpenHoldem)
+  
+  
 v1.7.0 2008-03-15
 NEW STUFF:
 - All Poker Tracker-compatible sites are now supported by OH for pulling Poker Tracker data.

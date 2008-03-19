@@ -202,9 +202,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 		// Start timer that attaches the OH window when the poker window moves
 		SetTimer(ATTACH_WINDOW_TIMER, 20, 0);
 
-		// Bring to top
-		SetWindowPos(FromHandle(HWND_TOP), 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
-
 		return 0;
 #ifdef SEH_ENABLE
 	}
@@ -835,20 +832,18 @@ void CMainFrame::OnBnClickedGreenCircle() {
 
 				CWindowDC dc(NULL);
 				int nBitsPerPixel = dc.GetDeviceCaps(PLANES) * dc.GetDeviceCaps(BITSPIXEL);
-				if (nBitsPerPixel < 24) {
+				if (nBitsPerPixel < 24)
 					MessageBox("It appears that your Display settings are not configured according to OpenHoldem specifications.\n24 bit color or higher is needed to reliably extract information from the poker client\n\nFor more info, look at the wiki documentation and the user forums", "Caution: Color Depth Too Low", MB_OK|MB_ICONWARNING);
-				}
 
 				BOOL fontSmoothingEnabled = FALSE;
 				SystemParametersInfo(SPI_GETFONTSMOOTHING, 0, (LPVOID)&fontSmoothingEnabled, 0);
-				if (fontSmoothingEnabled) {
+				if (fontSmoothingEnabled)
 					MessageBox("It appears that font smoothing is enabled. In order for OpenHoldem to reliably\nextract information from the poker client you should disable Font Smoothing", "Caution: Font smoothing is enabled", MB_OK|MB_ICONWARNING);
-				}
 
 				// log OH title bar text and table reset
 				::GetWindowText(global.attached_hwnd, title, 512);
-				write_log("%s - %s(%s)\n", global.formula_name.GetString(), global.tablemap.sitename.GetString(), title);
-				write_log("TABLE RESET\n*************************************************************\n");
+				write_log("\n*************************************************************\nTABLE RESET %s - %s(%s)\n*************************************************************\n", 
+					global.formula_name.GetString(), global.tablemap.sitename.GetString(), title);
 				
 			}
 		}

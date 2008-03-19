@@ -576,11 +576,14 @@ void CSymbols::CalcSymbols(void)
 #ifdef SEH_ENABLE
 	try {
 #endif
-		int					i;
-		static double		dealerchair_last = -1; 
+		static double		dealerchair_last = -1, handnumber_last = -1; 
 		static int			br_last = -1;
-		int					error;
+		static unsigned int	player_card_last[2] = {CARD_NOCARD};
+
+		int					i, error;
 		char				classname[50], title[512];
+		unsigned int		player_card_cur[2];
+		char				card0[10], card1[10];
 
 		// Clear em, before we start
 		ResetSymbolsEveryCalc();
@@ -611,10 +614,46 @@ void CSymbols::CalcSymbols(void)
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		// Things to do when we have a new hand
-		if (sym.dealerchair != dealerchair_last) 
+		// Identification of userchair
+		if (!user_chair_confirmed) 
 		{
+			user_chair_confirmed = calc_userchair();
+
+			if (user_chair_confirmed) 
+				time(&elapsedhold);
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// Things to do when we have a new hand
+
+		// Get current userchair's cards
+		if (user_chair_confirmed)
+		{
+			player_card_cur[0] = scraper.card_player[(int) sym.userchair][0];
+			player_card_cur[1] = scraper.card_player[(int) sym.userchair][1];
+		}
+		else
+		{
+			player_card_cur[0] = player_card_cur[1] = CARD_NOCARD;
+		}
+
+		// New hand is triggered by change in dealerchair (button moves), or change in userchair's cards (as long as it is not
+		// a change to nocards or cardbacks), or a change in handnumber
+		if (sym.dealerchair != dealerchair_last ||
+			player_card_cur[0]!=CARD_NOCARD && player_card_cur[0]!=CARD_BACK && player_card_cur[0]!=player_card_last[0] ||
+			player_card_cur[1]!=CARD_NOCARD && player_card_cur[1]!=CARD_BACK && player_card_cur[1]!=player_card_last[1] ||
+			sym.handnumber != handnumber_last) 
+		{
+			// Save for next pass
 			dealerchair_last = sym.dealerchair;
+			player_card_last[0] = player_card_cur[0];
+			player_card_last[1] = player_card_cur[1];
+			handnumber_last = sym.handnumber;
+
+			// Update game_state so it knows that a new hand has happened
+			game_state.new_hand = true;
+
+			// Reset symbols and display
 			ResetSymbolsNewHand();
 			InvalidateRect(global.hMainFrame, NULL, true);
 			
@@ -632,10 +671,25 @@ void CSymbols::CalcSymbols(void)
 			for (i=0; i<=9; i++)
 				stacks_at_hand_start[i] = scraper.playerbalance[i] + scraper.playerbet[i];
 
-
 			// log new hand
+			if (player_card_cur[0]==CARD_NOCARD || player_card_cur[0]==CARD_NOCARD)
+			{
+				strcpy(card0, "NONE");
+				strcpy(card1, "");
+			}
+			else if (player_card_cur[1]==CARD_BACK || player_card_cur[1]==CARD_BACK)
+			{
+				strcpy(card0, "BACKS");
+				strcpy(card1, "");
+			}
+			else
+			{
+				StdDeck_cardToString(player_card_cur[0], card0);
+				StdDeck_cardToString(player_card_cur[1], card1);
+			}
 			GetWindowText(global.attached_hwnd, title, 512);
-			write_log("HAND RESET (%.0f): %s\n*************************************************************\n", sym.handnumber, title);
+			write_log("\n*************************************************************\nHAND RESET (num:%.0f dealer:%.0f cards:%s%s): %s\n*************************************************************\n", 
+				sym.handnumber, sym.dealerchair, card0, card1, title);
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -680,16 +734,6 @@ void CSymbols::CalcSymbols(void)
 		sym.isaggmode = global.formula.dDefcon == 1.0;									// isaggmode
 		sym.swagtextmethod = global.tablemap.swagtextmethod;							// swagtextmethod
 		sym.potmethod = global.tablemap.potmethod;										// potmethod
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		// calculation of userchair
-		if (!user_chair_confirmed) 
-		{
-			user_chair_confirmed = calc_userchair();
-
-			if (user_chair_confirmed) 
-				time(&elapsedhold);
-		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Other scraped items

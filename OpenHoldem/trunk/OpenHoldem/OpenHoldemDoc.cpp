@@ -217,7 +217,8 @@ END_MESSAGE_MAP()
 
 // COpenHoldemDoc construction/destruction
 
-COpenHoldemDoc::COpenHoldemDoc() {
+COpenHoldemDoc::COpenHoldemDoc() 
+{
 #ifdef SEH_ENABLE
 	// Set exception handler
 	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
@@ -237,7 +238,8 @@ COpenHoldemDoc::COpenHoldemDoc() {
 #endif
 }
 
-COpenHoldemDoc::~COpenHoldemDoc() {
+COpenHoldemDoc::~COpenHoldemDoc() 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -250,7 +252,8 @@ COpenHoldemDoc::~COpenHoldemDoc() {
 #endif
 }
 
-BOOL COpenHoldemDoc::OnNewDocument() {
+BOOL COpenHoldemDoc::OnNewDocument() 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -261,7 +264,8 @@ BOOL COpenHoldemDoc::OnNewDocument() {
 			return FALSE;
 
 		// Kill the formula dialog, if it is open
-		if(m_formulaScintillaDlg) {
+		if(m_formulaScintillaDlg) 
+		{
 			delete m_formulaScintillaDlg;
 			m_formulaScintillaDlg	=	NULL;
 			pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
@@ -304,12 +308,11 @@ BOOL COpenHoldemDoc::OnNewDocument() {
 
 		global.formula_name = "Default";
 		SetTitle("Default");
-		SetModifiedFlag(true);
+		//SetModifiedFlag(true);
 
 		// Load dll, if set in preferences
-		if (global.preferences.load_dll_on_startup) {
+		if (global.preferences.load_dll_on_startup)
 			cdll.load_dll("");
-		}
 
 		return true;
 #ifdef SEH_ENABLE
@@ -322,21 +325,25 @@ BOOL COpenHoldemDoc::OnNewDocument() {
 }
 
 // COpenHoldemDoc serialization
-void COpenHoldemDoc::Serialize(CArchive& ar) {
+void COpenHoldemDoc::Serialize(CArchive& ar) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
 		CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 		// Writing a file
-		if (ar.IsStoring()) {
+		if (ar.IsStoring()) 
+		{
 			WriteFormula(&global.formula, ar);
 		}
 
 		// Reading a file
-		else {
+		else 
+		{
 			// Kill the formula dialog, if it is open
-			if(m_formulaScintillaDlg) {
+			if(m_formulaScintillaDlg) 
+			{
 				delete m_formulaScintillaDlg;
 				m_formulaScintillaDlg	=	NULL;
 				pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
@@ -355,9 +362,8 @@ void COpenHoldemDoc::Serialize(CArchive& ar) {
 			global.ParseAllFormula(pMyMainWnd->GetSafeHwnd(), &global.formula);
 
 			// Load dll, if set in preferences
-			if (global.preferences.load_dll_on_startup) {
+			if (global.preferences.load_dll_on_startup)
 				cdll.load_dll("");
-			}
 
 		}
 #ifdef SEH_ENABLE
@@ -369,7 +375,8 @@ void COpenHoldemDoc::Serialize(CArchive& ar) {
 #endif
 }
 
-COpenHoldemDoc * COpenHoldemDoc::GetDocument() {
+COpenHoldemDoc * COpenHoldemDoc::GetDocument() 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -385,7 +392,8 @@ COpenHoldemDoc * COpenHoldemDoc::GetDocument() {
 }
 
 
-void COpenHoldemDoc::WriteFormula(SFormula *f, CArchive& ar) {
+void COpenHoldemDoc::WriteFormula(SFormula *f, CArchive& ar) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -404,59 +412,74 @@ void COpenHoldemDoc::WriteFormula(SFormula *f, CArchive& ar) {
 		// Write the .whf file
 		s.Format("##%s##\r\n\r\n", get_time(nowtime)); ar.WriteString(s);
 		N = (int) global.formula.mFunction.GetSize();
-		for (i=0; i<N; i++) {
+		for (i=0; i<N; i++) 
+		{
 			if (f->mFunction[i].func == "notes") 
 			{ 
 				ar.WriteString("##notes##\r\n" + f->mFunction[i].func_text + "\r\n\r\n"); 
 			}
 		}
-		for (i=0; i<N; i++) {
+		for (i=0; i<N; i++) 
+		{
 			if (f->mFunction[i].func == "dll") { ar.WriteString("##dll##\r\n" + f->mFunction[i].func_text + "\r\n\r\n"); }
 		}
 		s.Format("##bankroll##\r\n%f\r\n\r\n", f->dBankroll); ar.WriteString(s);
 		s.Format("##defcon##\r\n%f\r\n\r\n", f->dDefcon); ar.WriteString(s);
 		s.Format("##rake##\r\n%f\r\n\r\n", f->dRake); ar.WriteString(s);
 		s.Format("##nit##\r\n%d\r\n\r\n", (int) f->dNit); ar.WriteString(s);
-		for (i=0; i<N; i++) {
+		for (i=0; i<N; i++) 
+		{
 			if (f->mFunction[i].func == "f$alli") { ar.WriteString("##f$alli##\r\n" + f->mFunction[i].func_text + "\r\n\r\n"); }
 		}
-		for (i=0; i<N; i++) {
+		for (i=0; i<N; i++) 
+		{
 			if (f->mFunction[i].func == "f$swag") { ar.WriteString("##f$swag##\r\n" + f->mFunction[i].func_text + "\r\n\r\n"); }
 		}
-		for (i=0; i<N; i++) {
+		for (i=0; i<N; i++) 
+		{
 			if (f->mFunction[i].func == "f$srai") { ar.WriteString("##f$srai##\r\n" + f->mFunction[i].func_text + "\r\n\r\n"); }
 		}
-		for (i=0; i<N; i++) {
+		for (i=0; i<N; i++) 
+		{
 			if (f->mFunction[i].func == "f$rais") { ar.WriteString("##f$rais##\r\n" + f->mFunction[i].func_text + "\r\n\r\n"); }
 		}
-		for (i=0; i<N; i++) {
+		for (i=0; i<N; i++) 
+		{
 			if (f->mFunction[i].func == "f$call") { ar.WriteString("##f$call##\r\n" + f->mFunction[i].func_text + "\r\n\r\n"); }
 		}
-		for (i=0; i<N; i++) {
+		for (i=0; i<N; i++) 
+		{
 			if (f->mFunction[i].func == "f$prefold") { ar.WriteString("##f$prefold##\r\n" + f->mFunction[i].func_text + "\r\n\r\n"); }
 		}
-		for (i=0; i<N; i++) {
+		for (i=0; i<N; i++) 
+		{
 			if (f->mFunction[i].func == "f$evrais") { ar.WriteString("##f$evrais##\r\n" + f->mFunction[i].func_text + "\r\n\r\n"); }
 		}
-		for (i=0; i<N; i++) {
+		for (i=0; i<N; i++) 
+		{
 			if (f->mFunction[i].func == "f$evcall") { ar.WriteString("##f$evcall##\r\n" + f->mFunction[i].func_text + "\r\n\r\n"); }
 		}
-		for (i=0; i<N; i++) {
+		for (i=0; i<N; i++) 
+		{
 			if (f->mFunction[i].func == "f$P") { ar.WriteString("##f$P##\r\n" + f->mFunction[i].func_text + "\r\n\r\n"); }
 		}
-		for (i=0; i<N; i++) {
+		for (i=0; i<N; i++) 
+		{
 			if (f->mFunction[i].func == "f$play") { ar.WriteString("##f$play##\r\n" + f->mFunction[i].func_text + "\r\n\r\n"); }
 		}
-		for (i=0; i<N; i++) {
+		for (i=0; i<N; i++) 
+		{
 			if (f->mFunction[i].func == "f$test") { ar.WriteString("##f$test##\r\n" + f->mFunction[i].func_text + "\r\n\r\n"); }
 		}
-		for (i=0; i<N; i++) {
+		for (i=0; i<N; i++) 
+		{
 			if (f->mFunction[i].func == "f$debug") { ar.WriteString("##f$debug##\r\n" + f->mFunction[i].func_text + "\r\n\r\n"); }
 		}
 
 		// handlists
 		N = (int) f->mHandList.GetSize();
-		for (i=0; i<N; i++) {
+		for (i=0; i<N; i++) 
+		{
 			ar.WriteString("##" + f->mHandList[i].list + "##\r\n" + f->mHandList[i].list_text + "\r\n\r\n");
 		}
 
@@ -465,7 +488,8 @@ void COpenHoldemDoc::WriteFormula(SFormula *f, CArchive& ar) {
 
 		// Write the .whx file
 		N = (int) global.formula.mFunction.GetSize();
-		for (i=0; i<N; i++) {
+		for (i=0; i<N; i++) 
+		{
 			if (f->mFunction[i].func != "notes" &&
 				f->mFunction[i].func != "dll" &&
 				f->mFunction[i].func != "f$alli" &&
@@ -494,7 +518,8 @@ void COpenHoldemDoc::WriteFormula(SFormula *f, CArchive& ar) {
 #endif
 }
 
-void COpenHoldemDoc::ReadFormula(SFormula *f, CArchive& ar) {
+void COpenHoldemDoc::ReadFormula(SFormula *f, CArchive& ar) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -526,19 +551,23 @@ void COpenHoldemDoc::ReadFormula(SFormula *f, CArchive& ar) {
 		strOneLine = "";
 		content = FTnone;
 		func.func = "";
-		while(ar.ReadString(strOneLine)) { 
+		while(ar.ReadString(strOneLine)) 
+		{ 
 
 			// If this line marks the beginning of a function, then save the previously
 			// collected function, and start a new one
-			if (strOneLine.Mid(0,2)=="##") {
+			if (strOneLine.Mid(0,2)=="##") 
+			{
 
 				// Save the previously collected function
-				if (content == FTlist) {
+				if (content == FTlist) 
+				{
 					// Strip the LFCR off the last line (we need to add CRLF for all but the last line)
 					list.list_text.TrimRight("\r\n");
 					f->mHandList.Add(list); 
 				}
-				else if (content == FTfunc) {
+				else if (content == FTfunc) 
+				{
 					func.func_text.TrimRight("\r\n");
 					f->mFunction.Add(func);
 				}
@@ -553,12 +582,14 @@ void COpenHoldemDoc::ReadFormula(SFormula *f, CArchive& ar) {
 				else if (strcmp(funcname, "defcon") == 0) { f->dDefcon = 0.0; content = FTdefcon; }
 				else if (strcmp(funcname, "rake") == 0) { f->dRake = 0.0; content = FTrake; }
 				else if (strcmp(funcname, "nit") == 0) { f->dNit = 0.0; content = FTnit; }
-				else if (memcmp(funcname, "list", 4) == 0) { 
+				else if (memcmp(funcname, "list", 4) == 0) 
+				{ 
 					content = FTlist;
 					list.list = funcname;
 					list.list_text = "";
 				}
-				else {
+				else 
+				{
 					content = FTfunc;
 					func.func = funcname;
 					func.func_text = "";
@@ -567,19 +598,25 @@ void COpenHoldemDoc::ReadFormula(SFormula *f, CArchive& ar) {
 			}
 
 			// Get the function content
-			else {
-				switch (content) {
+			else 
+			{
+				switch (content) 
+				{
 					 case FTbankroll:
-						 if (strOneLine.GetLength()) { f->dBankroll = atof(strOneLine.GetString()); }
+						 if (strOneLine.GetLength())
+							 f->dBankroll = atof(strOneLine.GetString());
 						 break;
 					 case FTdefcon:
-						 if (strOneLine.GetLength()) { f->dDefcon = atof(strOneLine.GetString()); }
+						 if (strOneLine.GetLength())
+							 f->dDefcon = atof(strOneLine.GetString());
 						 break;
 					 case FTrake:
-						 if (strOneLine.GetLength()) { f->dRake = atof(strOneLine.GetString()); }
+						 if (strOneLine.GetLength())
+							 f->dRake = atof(strOneLine.GetString());
 						 break;
 					 case FTnit:
-						 if (strOneLine.GetLength()) { f->dNit = atof(strOneLine.GetString()); }
+						 if (strOneLine.GetLength())
+							 f->dNit = atof(strOneLine.GetString());
 						 break;
 					 case FTlist:
 						 list.list_text.Append(strOneLine); list.list_text.Append("\r\n");
@@ -592,11 +629,13 @@ void COpenHoldemDoc::ReadFormula(SFormula *f, CArchive& ar) {
 		}  //while(ar.ReadString(strOneLine))
 
 		// Add the last list/function to the CArray on EOF, if it was a list being processed
-		if (content == FTlist) {
+		if (content == FTlist) 
+		{
 			list.list_text.TrimRight("\r\n");
 			f->mHandList.Add(list); 
 		}
-		else if (content == FTfunc) {
+		else if (content == FTfunc) 
+		{
 			func.func_text.TrimRight("\r\n");
 			f->mFunction.Add(func);
 		}
@@ -605,19 +644,23 @@ void COpenHoldemDoc::ReadFormula(SFormula *f, CArchive& ar) {
 		// Now load the associated .whx, if it exists
 		//
 		content = FTnone;
-		if (cf_whx.Open(whxpath, CFile::modeNoTruncate | CFile::modeRead)) {
+		if (cf_whx.Open(whxpath, CFile::modeNoTruncate | CFile::modeRead)) 
+		{
 			CArchive ar_whx(&cf_whx, CArchive::load);
 
 			// read data in, one line at a time 
 			strOneLine = "";
-			while(ar_whx.ReadString(strOneLine)) { 
+			while(ar_whx.ReadString(strOneLine)) 
+			{ 
 
 				// If this line marks the beginning of a function, then save the previously
 				// collected function, and start a new one
-				if (strOneLine.Mid(0,2)=="##") {
+				if (strOneLine.Mid(0,2)=="##") 
+				{
 
 					// Save the previously collected function
-					if (content == FTfunc) {
+					if (content == FTfunc) 
+					{
 						// Strip the LFCR off the last line (we need to add CRLF for all but the last line)
 						func.func_text.TrimRight("\r\n"); // Note: This will clear existing files that have had extra CRLF appended but will also strip intentional space added by users
 						f->mFunction.Add(func); 
@@ -637,13 +680,16 @@ void COpenHoldemDoc::ReadFormula(SFormula *f, CArchive& ar) {
 				}
 
 				// Get the function content
-				else if (content == FTfunc) {
-					func.func_text.Append(strOneLine.GetString());  func.func_text.Append("\r\n");
+				else if (content == FTfunc) 
+				{
+					func.func_text.Append(strOneLine.GetString());  
+					func.func_text.Append("\r\n");
 				}	
 			}  //while(ar.ReadString(strOneLine))
 
 			// Add the last list to the CArray on EOF, if it was a list being processed
-			if (content == FTfunc) {
+			if (content == FTfunc) 
+			{
 				// Strip the LFCR off the last line (we need to add CRLF for all but the last line)
 				func.func_text.TrimRight("\r\n");
 				f->mFunction.Add(func);
@@ -659,72 +705,86 @@ void COpenHoldemDoc::ReadFormula(SFormula *f, CArchive& ar) {
 
 		// notes
 		addit = true;
-		for (i=0; i<N; i++)  if (f->mFunction[i].func=="notes") addit = false;
+		for (i=0; i<N; i++)  
+			if (f->mFunction[i].func=="notes") addit = false;
 		if (addit==true)  { func.func = "notes"; func.func_text = ""; func.dirty = true; f->mFunction.Add(func); }
 
 		// dll
 		addit = true;
-		for (i=0; i<N; i++)  if (f->mFunction[i].func=="dll") addit = false;
+		for (i=0; i<N; i++)  
+			if (f->mFunction[i].func=="dll") addit = false;
 		if (addit==true)  { func.func = "dll"; func.func_text = ""; func.dirty = true; f->mFunction.Add(func); }
 
 		// f$alli
 		addit = true;
-		for (i=0; i<N; i++)  if (f->mFunction[i].func=="f$alli") addit = false;
+		for (i=0; i<N; i++)  
+			if (f->mFunction[i].func=="f$alli") addit = false;
 		if (addit==true)  { func.func = "f$alli"; func.func_text = ""; func.dirty = true; f->mFunction.Add(func); }
 
 		// f$swag
 		addit = true;
-		for (i=0; i<N; i++)  if (f->mFunction[i].func=="f$swag") addit = false;
+		for (i=0; i<N; i++)  
+			if (f->mFunction[i].func=="f$swag") addit = false;
 		if (addit==true)  { func.func = "f$swag"; func.func_text = ""; func.dirty = true; f->mFunction.Add(func); }
 
 		// f$srai
 		addit = true;
-		for (i=0; i<N; i++)  if (f->mFunction[i].func=="f$srai") addit = false;
+		for (i=0; i<N; i++)  
+			if (f->mFunction[i].func=="f$srai") addit = false;
 		if (addit==true)  { func.func = "f$srai"; func.func_text = ""; func.dirty = true; f->mFunction.Add(func); }
 
 		// f$rais
 		addit = true;
-		for (i=0; i<N; i++)  if (f->mFunction[i].func=="f$rais") addit = false;
+		for (i=0; i<N; i++)  
+			if (f->mFunction[i].func=="f$rais") addit = false;
 		if (addit==true)  { func.func = "f$rais"; func.func_text = ""; func.dirty = true; f->mFunction.Add(func); }
 
 		// f$call
 		addit = true;
-		for (i=0; i<N; i++)  if (f->mFunction[i].func=="f$call") addit = false;
+		for (i=0; i<N; i++)  
+			if (f->mFunction[i].func=="f$call") addit = false;
 		if (addit==true)  { func.func = "f$call"; func.func_text = ""; func.dirty = true; f->mFunction.Add(func); }
 
 		// f$prefold
 		addit = true;
-		for (i=0; i<N; i++)  if (f->mFunction[i].func=="f$prefold") addit = false;
+		for (i=0; i<N; i++)  
+			if (f->mFunction[i].func=="f$prefold") addit = false;
 		if (addit==true)  { func.func = "f$prefold"; func.func_text = ""; func.dirty = true; f->mFunction.Add(func); }
 
 		// f$evrais
 		addit = true;
-		for (i=0; i<N; i++)  if (f->mFunction[i].func=="f$evrais") addit = false;
+		for (i=0; i<N; i++)  
+			if (f->mFunction[i].func=="f$evrais") addit = false;
 		if (addit==true)  { func.func = "f$evrais"; func.func_text = ""; func.dirty = true; f->mFunction.Add(func); }
 
 		// f$evcall
 		addit = true;
-		for (i=0; i<N; i++)  if (f->mFunction[i].func=="f$evcall") addit = false;
+		for (i=0; i<N; i++)  
+			if (f->mFunction[i].func=="f$evcall") addit = false;
 		if (addit==true)  { func.func = "f$evcall"; func.func_text = ""; func.dirty = true; f->mFunction.Add(func); }
 
 		// f$P
 		addit = true;
-		for (i=0; i<N; i++)  if (f->mFunction[i].func=="f$P") addit = false;
+		for (i=0; i<N; i++)  
+			if (f->mFunction[i].func=="f$P") addit = false;
 		if (addit==true)  { func.func = "f$P"; func.func_text = ""; func.dirty = true; f->mFunction.Add(func); }
 
 		// f$play
 		addit = true;
-		for (i=0; i<N; i++)  if (f->mFunction[i].func=="f$play") addit = false;
+		for (i=0; i<N; i++)  
+			if (f->mFunction[i].func=="f$play") addit = false;
 		if (addit==true)  { func.func = "f$play"; func.func_text = ""; func.dirty = true; f->mFunction.Add(func); }
 
 		// f$test
 		addit = true;
-		for (i=0; i<N; i++)  if (f->mFunction[i].func=="f$test") addit = false;
+		for (i=0; i<N; i++)  
+			if (f->mFunction[i].func=="f$test") addit = false;
 		if (addit==true)  { func.func = "f$test"; func.func_text = ""; func.dirty = true; f->mFunction.Add(func); }
 
 		// f$debug
 		addit = true;
-		for (i=0; i<N; i++)  if (f->mFunction[i].func=="f$debug") addit = false;
+		for (i=0; i<N; i++)  
+			if (f->mFunction[i].func=="f$debug") addit = false;
 		if (addit==true)  { func.func = "f$debug"; func.func_text = ""; func.dirty = true; f->mFunction.Add(func); }
 
 #ifdef SEH_ENABLE

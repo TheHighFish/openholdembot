@@ -25,6 +25,7 @@ public:
 	int					oppdealt;
 	double				max_balance;
 	int					hands_played;
+	bool				new_hand;
 
 private:
 	void	dump_state(void) ;

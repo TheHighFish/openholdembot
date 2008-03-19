@@ -39,7 +39,8 @@ END_MESSAGE_MAP()
 
 
 // COpenHoldemApp construction
-COpenHoldemApp::COpenHoldemApp() {
+COpenHoldemApp::COpenHoldemApp() 
+{
 #ifdef SEH_ENABLE
 	// Set exception handler
 	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
@@ -63,7 +64,8 @@ COpenHoldemApp::COpenHoldemApp() {
 }
 
 // COpenHoldemApp destruction
-COpenHoldemApp::~COpenHoldemApp() {
+COpenHoldemApp::~COpenHoldemApp() 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -188,14 +190,17 @@ BOOL COpenHoldemApp::InitInstance()
 		// Open the most recently saved file. (First on the MRU list.) Get the last
 		// file from the registry. We need not account for cmdInfo.m_bRunAutomated and
 		// cmdInfo.m_bRunEmbedded as they are processed before we get here.
-		if (cmdInfo.m_nShellCommand == CCommandLineInfo::FileNew) {
+		if (cmdInfo.m_nShellCommand == CCommandLineInfo::FileNew) 
+		{
 			CString sLastPath(GetProfileString(_afxFileSection, "File1"));
 
-			if (! sLastPath.IsEmpty()) {
+			if (! sLastPath.IsEmpty()) 
+			{
 				CFile f;
 
 				// If file is there, set to open!
-				if (f.Open(sLastPath, CFile::modeRead)) {
+				if (f.Open(sLastPath, CFile::modeRead)) 
+				{
 					cmdInfo.m_nShellCommand = CCommandLineInfo::FileOpen;
 					cmdInfo.m_strFileName = sLastPath;
 				}
@@ -221,6 +226,12 @@ BOOL COpenHoldemApp::InitInstance()
 		LARGE_INTEGER	qpc;
 		QueryPerformanceCounter(&qpc);
 		srand(qpc.LowPart);
+
+		// Bring main window to front
+		m_pMainWnd->SetWindowPos(&CWnd::wndTop, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+		m_pMainWnd->SetActiveWindow();
+		m_pMainWnd->SetFocus();
+		m_pMainWnd->SetForegroundWindow();
 
 		return TRUE;
 #ifdef SEH_ENABLE

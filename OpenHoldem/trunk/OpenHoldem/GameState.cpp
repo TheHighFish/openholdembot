@@ -6,7 +6,8 @@
 
 GameState		game_state;
 
-GameState::GameState() {
+GameState::GameState() 
+{
 #ifdef SEH_ENABLE
 	// Set exception handler
 	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
@@ -22,6 +23,8 @@ GameState::GameState() {
 		oppdealt = 0;
 		m_game_ndx = 0;
 		m_ftr_ndx = 0;
+		new_hand = true;
+
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 
@@ -31,14 +34,17 @@ GameState::GameState() {
 #endif
 }
 
-double GameState::wh_sym_hist (char * sym, int round) {
+double GameState::wh_sym_hist (char * sym, int round) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
 		int		i;
 
-		for (i=0; i<hist_sym_count; i++) {
-			if (memcmp(sym, hist_sym_strings[i], strlen(sym))==0 && strlen(sym)==strlen(hist_sym_strings[i])) {
+		for (i=0; i<hist_sym_count; i++) 
+		{
+			if (memcmp(sym, hist_sym_strings[i], strlen(sym))==0 && strlen(sym)==strlen(hist_sym_strings[i])) 
+			{
 				return hist_sym[i][round-1];
 			}
 		}
@@ -53,7 +59,8 @@ double GameState::wh_sym_hist (char * sym, int round) {
 #endif
 }
 
-void GameState::process_game_state (holdem_state* pstate) {
+void GameState::process_game_state (holdem_state* pstate) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -64,48 +71,68 @@ void GameState::process_game_state (holdem_state* pstate) {
 		static int	dealerchair_last=-1;
 
 		// tracking of nopponentsdealt
-		if (symbols.sym.br==2 || symbols.sym.nopponentsdealt>oppdealt) {
+		if (symbols.sym.br==2 || symbols.sym.nopponentsdealt>oppdealt) 
+		{
 			oppdealt=symbols.sym.nopponentsdealt;
 		}
 
 		// Has the number of opponents changed?
-		if (symbols.sym.nopponentsplaying != nopponentsplaying_last)	{
+		if (symbols.sym.nopponentsplaying != nopponentsplaying_last)	
+		{
 			nopponentsplaying_last=symbols.sym.nopponentsplaying;
 		}
 
 		// see if the new pstate has changed in an interesting way
 		pstate_changed = false;
-		if (pstate->m_dealer_chair != m_holdem_state[(m_ndx)&0xff].m_dealer_chair)	{ pstate_changed = true; }
-		for (i=0; i<10; i++) {
-			if (pstate->m_player[i].m_balance != m_holdem_state[(m_ndx)&0xff].m_player[i].m_balance)  { pstate_changed = true; }
-			if (pstate->m_player[i].m_currentbet != m_holdem_state[(m_ndx)&0xff].m_player[i].m_currentbet)  { pstate_changed = true; }
-			if (pstate->m_player[i].m_cards[0] != m_holdem_state[(m_ndx)&0xff].m_player[i].m_cards[0])  { pstate_changed = true; }
-			if (pstate->m_player[i].m_cards[1] != m_holdem_state[(m_ndx)&0xff].m_player[i].m_cards[1])  { pstate_changed = true; }
+		if (pstate->m_dealer_chair != m_holdem_state[(m_ndx)&0xff].m_dealer_chair)
+			pstate_changed = true;
+
+		for (i=0; i<10; i++) 
+		{
+			if (pstate->m_player[i].m_balance != m_holdem_state[(m_ndx)&0xff].m_player[i].m_balance)
+				pstate_changed = true;
+
+			if (pstate->m_player[i].m_currentbet != m_holdem_state[(m_ndx)&0xff].m_player[i].m_currentbet)
+				pstate_changed = true;
+
+			if (pstate->m_player[i].m_cards[0] != m_holdem_state[(m_ndx)&0xff].m_player[i].m_cards[0])
+				pstate_changed = true;
+
+			if (pstate->m_player[i].m_cards[1] != m_holdem_state[(m_ndx)&0xff].m_player[i].m_cards[1])
+				pstate_changed = true;
+
 			if (pstate->m_player[i].m_balance_known != m_holdem_state[(m_ndx)&0xff].m_player[i].m_balance_known &&
-				pstate->m_player[i].m_cards[0] != 0 && pstate->m_player[i].m_cards[1] != 0)  { pstate_changed = true; }
+				pstate->m_player[i].m_cards[0] != 0 && pstate->m_player[i].m_cards[1] != 0)
+				pstate_changed = true;
 		}
-		for (i=0; i<5; i++)	{
-			if (pstate->m_cards[i] != m_holdem_state[(m_ndx)&0xff].m_cards[i]) { pstate_changed = true; }
+		for (i=0; i<5; i++)	
+		{
+			if (pstate->m_cards[i] != m_holdem_state[(m_ndx)&0xff].m_cards[i])
+				pstate_changed = true;
 		}
 
 		// only process wh state if something interesting within the structure changes
-		if (pstate!=NULL && (pstate_changed || symbols.sym.ismyturn)) {
+		if (pstate!=NULL && (pstate_changed || symbols.sym.ismyturn))
 			process_state_engine(pstate, pstate_changed);
-		}
 
 		// reset wh symbol GameState if button moves
-		if (symbols.sym.dealerchair != dealerchair_last) {
+		if (symbols.sym.dealerchair != dealerchair_last) 
+		{
 			dealerchair_last = symbols.sym.dealerchair;
-			for (i=0; i<hist_sym_count; i++) {
-				for (j=0; j<4; j++) {
+			for (i=0; i<hist_sym_count; i++) 
+			{
+				for (j=0; j<4; j++) 
+				{
 					hist_sym[i][j] = 0.0;
 				}
 			}
 		}
 
 		// collect symbol if it ismyturn, or if ismanual
-		if (symbols.sym.ismyturn || symbols.sym.ismanual) {
-			for (i=0; i<hist_sym_count; i++) {
+		if (symbols.sym.ismyturn || symbols.sym.ismanual) 
+		{
+			for (i=0; i<hist_sym_count; i++) 
+			{
 				e = SUCCESS;
 				hist_sym[i][(int) symbols.sym.br-1] = symbols.GetSymbolVal(hist_sym_strings[i], &e);
 			}
@@ -119,7 +146,8 @@ void GameState::process_game_state (holdem_state* pstate) {
 #endif
 }
 
-void GameState::process_ftr (holdem_state* pstate) {
+void GameState::process_ftr (holdem_state* pstate) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -133,30 +161,37 @@ void GameState::process_ftr (holdem_state* pstate) {
 #endif
 }
 
-int GameState::lastraised (int round) {
+int GameState::lastraised (int round) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
 		int lastraised=-1;
 		int i;
 
-		if (round<1 || round>4)  { return lastraised; }
+		if (round<1 || round>4) 
+			return lastraised;
 
-		for (i=m_game_state[(m_game_ndx)&0xff].m_dealer_chair+1; i<=m_game_state[(m_game_ndx)&0xff].m_dealer_chair+10; i++) {		
+		for (i=m_game_state[(m_game_ndx)&0xff].m_dealer_chair+1; i<=m_game_state[(m_game_ndx)&0xff].m_dealer_chair+10; i++) 
+		{		
 /*CString s; s.Format("%d %d > %d %d", 
 					round, i%10,
 					chair_actions[i%10][round-1][w_reraised],
 					chair_actions[i%10][round-1][w_raised]); 
 MessageBox(NULL, s, "", MB_OK); 
 */
-			if (chair_actions[i%10][round-1][w_reraised]) { 
+			if (chair_actions[i%10][round-1][w_reraised]) 
+			{ 
 				lastraised=i%10; 
 			}
 		}
 
-		if (lastraised==-1) {
-			for (i=m_game_state[(m_game_ndx)&0xff].m_dealer_chair+1; i<=m_game_state[(m_game_ndx)&0xff].m_dealer_chair+10; i++) {		
-				if (chair_actions[i%10][round-1][w_raised]) { 
+		if (lastraised==-1) 
+		{
+			for (i=m_game_state[(m_game_ndx)&0xff].m_dealer_chair+1; i<=m_game_state[(m_game_ndx)&0xff].m_dealer_chair+10; i++) 
+			{		
+				if (chair_actions[i%10][round-1][w_raised]) 
+				{ 
 					lastraised=i%10; 
 				}
 			}
@@ -172,16 +207,19 @@ MessageBox(NULL, s, "", MB_OK);
 #endif
 }
 
-int GameState::raisbits (int round) {
+int GameState::raisbits (int round) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
 		int i, bits=0;
 		static unsigned int	exponents[]={1,2,4,8,16,32,64,128,256,512,1024};
 
-		for (i=0; i<=9; i++) {
+		for (i=0; i<=9; i++) 
+		{
 			if (chair_actions[i][round-1][w_raised] || 
-				chair_actions[i][round-1][w_reraised]) {
+				chair_actions[i][round-1][w_reraised]) 
+			{
 				bits|=exponents[i]; 
 			}
 		}
@@ -195,16 +233,19 @@ int GameState::raisbits (int round) {
 #endif
 }
 
-int GameState::callbits (int round) {
+int GameState::callbits (int round) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
 		int i, bits=0;
 		static unsigned int	exponents[]={1,2,4,8,16,32,64,128,256,512,1024};
 
-		for (i=0; i<=9; i++) {
+		for (i=0; i<=9; i++) 
+		{
 				if (chair_actions[i][round-1][w_called] || 
-					chair_actions[i][round-1][w_posted_bb]) {
+					chair_actions[i][round-1][w_posted_bb]) 
+				{
 					bits|=exponents[i]; 
 				}
 			}
@@ -218,15 +259,18 @@ int GameState::callbits (int round) {
 #endif
 }
 
-int GameState::foldbits (int round) {
+int GameState::foldbits (int round) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
 		int i, bits=0;
 		static unsigned int	exponents[]={1,2,4,8,16,32,64,128,256,512,1024};
 
-		for (i=0; i<=9; i++) {
-			if (chair_actions[i][round-1][w_folded]) {
+		for (i=0; i<=9; i++) 
+		{
+			if (chair_actions[i][round-1][w_folded]) 
+			{
 				bits|=exponents[i]; 
 			}
 		}
@@ -240,7 +284,8 @@ int GameState::foldbits (int round) {
 #endif
 }
 
-double GameState::floppct (void) {
+double GameState::floppct (void) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -248,23 +293,34 @@ double GameState::floppct (void) {
 		int elapsed_start=0, num_dealt=0, hands=0, num_saw_cards=0;
 		double percent;
 
-		if (m_ftr_ndx>1) {
-			for (i=m_ftr_ndx-1; i>=1; i--) {
-				if (m_ftr[i&0xff].elapsed_time!=0 && m_ftr[i&0xff].n_pl_dealt>1) {
-					if (elapsed_start==0) { elapsed_start=m_ftr[i&0xff].elapsed_time; }
+		if (m_ftr_ndx>1) 
+		{
+			for (i=m_ftr_ndx-1; i>=1; i--) 
+			{
+				if (m_ftr[i&0xff].elapsed_time!=0 && m_ftr[i&0xff].n_pl_dealt>1) 
+				{
+					if (elapsed_start==0) 
+						elapsed_start=m_ftr[i&0xff].elapsed_time;
 
-					if (elapsed_start-m_ftr[i&0xff].elapsed_time<global.preferences.av_time*60) {
+					if (elapsed_start-m_ftr[i&0xff].elapsed_time<global.preferences.av_time*60) 
+					{
 						num_dealt+=m_ftr[i&0xff].n_pl_dealt;
 						hands++;
 						num_saw_cards+=m_ftr[i&0xff].n_pl_saw_flop;
 					}
-					else { i=0; }
+					else 
+					{ 
+						i=0; 
+					}
 				}
 			}
 		}
 
-		if (num_dealt!=0) { percent=(double) num_saw_cards/(double) num_dealt; }
-		else { percent=-1; }
+		if (num_dealt!=0)
+			percent=(double) num_saw_cards/(double) num_dealt;
+
+		else
+			percent=-1;
 
 		return percent;
 #ifdef SEH_ENABLE
@@ -276,7 +332,8 @@ double GameState::floppct (void) {
 #endif
 }
 
-double GameState::turnpct (void) {
+double GameState::turnpct (void) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -284,23 +341,34 @@ double GameState::turnpct (void) {
 		int elapsed_start=0, num_dealt=0, hands=0, num_saw_cards=0;
 		double percent;
 
-		if (m_ftr_ndx>1) {
-			for (i=m_ftr_ndx-1; i>=1; i--) {
-				if (m_ftr[i&0xff].elapsed_time!=0 && m_ftr[i&0xff].n_pl_dealt>1) {
-					if (elapsed_start==0) { elapsed_start=m_ftr[i&0xff].elapsed_time; }
+		if (m_ftr_ndx>1) 
+		{
+			for (i=m_ftr_ndx-1; i>=1; i--) 
+			{
+				if (m_ftr[i&0xff].elapsed_time!=0 && m_ftr[i&0xff].n_pl_dealt>1) 
+				{
+					if (elapsed_start==0)
+						elapsed_start=m_ftr[i&0xff].elapsed_time;
 
-					if (elapsed_start-m_ftr[i&0xff].elapsed_time<global.preferences.av_time*60) {
+					if (elapsed_start-m_ftr[i&0xff].elapsed_time<global.preferences.av_time*60) 
+					{
 						num_dealt+=m_ftr[i&0xff].n_pl_dealt;
 						hands++;
 						num_saw_cards+=m_ftr[i&0xff].n_pl_saw_turn;
 					}
-					else { i=0; }
+					else 
+					{ 
+						i=0; 
+					}
 				}
 			}
 		}
 
-		if (num_dealt!=0) { percent=(double) num_saw_cards/(double) num_dealt; }
-		else { percent=-1; }
+		if (num_dealt!=0)
+			percent=(double) num_saw_cards/(double) num_dealt;
+
+		else
+			percent=-1;
 
 		return percent;
 #ifdef SEH_ENABLE
@@ -312,7 +380,8 @@ double GameState::turnpct (void) {
 #endif
 }
 
-double GameState::riverpct (void) {
+double GameState::riverpct (void) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -320,23 +389,34 @@ double GameState::riverpct (void) {
 		int elapsed_start=0, num_dealt=0, hands=0, num_saw_cards=0;
 		double percent;
 
-		if (m_ftr_ndx>1) {
-			for (i=m_ftr_ndx-1; i>=1; i--) {
-				if (m_ftr[i&0xff].elapsed_time!=0 && m_ftr[i&0xff].n_pl_dealt>1) {
-					if (elapsed_start==0) { elapsed_start=m_ftr[i&0xff].elapsed_time; }
+		if (m_ftr_ndx>1) 
+		{
+			for (i=m_ftr_ndx-1; i>=1; i--) 
+			{
+				if (m_ftr[i&0xff].elapsed_time!=0 && m_ftr[i&0xff].n_pl_dealt>1) 
+				{
+					if (elapsed_start==0)
+						elapsed_start=m_ftr[i&0xff].elapsed_time;
 
-					if (elapsed_start-m_ftr[i&0xff].elapsed_time<global.preferences.av_time*60) {
+					if (elapsed_start-m_ftr[i&0xff].elapsed_time<global.preferences.av_time*60) 
+					{
 						num_dealt+=m_ftr[i&0xff].n_pl_dealt;
 						hands++;
 						num_saw_cards+=m_ftr[i&0xff].n_pl_saw_river;
 					}
-					else { i=0; }
+					else 
+					{
+						i=0; 
+					}
 				}
 			}
 		}
 
-		if (num_dealt!=0) { percent=(double) num_saw_cards/(double) num_dealt; }
-		else { percent=-1; }
+		if (num_dealt!=0)
+			percent=(double) num_saw_cards/(double) num_dealt;
+
+		else
+			percent=-1;
 
 		return percent;
 #ifdef SEH_ENABLE
@@ -348,7 +428,8 @@ double GameState::riverpct (void) {
 #endif
 }
 
-double GameState::avgbetspf (void) {
+double GameState::avgbetspf (void) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -356,23 +437,34 @@ double GameState::avgbetspf (void) {
 		int elapsed_start=0, num_dealt=0, hands=0, num_saw_cards=0;
 		double percent, bets_preflop=0.0;
 
-		if (m_ftr_ndx>1) {
-			for (i=m_ftr_ndx-1; i>=1; i--) {
-				if (m_ftr[i&0xff].elapsed_time!=0 && m_ftr[i&0xff].n_pl_dealt>1) {
-					if (elapsed_start==0) { elapsed_start=m_ftr[i&0xff].elapsed_time; }
+		if (m_ftr_ndx>1) 
+		{
+			for (i=m_ftr_ndx-1; i>=1; i--) 
+			{
+				if (m_ftr[i&0xff].elapsed_time!=0 && m_ftr[i&0xff].n_pl_dealt>1) 
+				{
+					if (elapsed_start==0)
+						elapsed_start=m_ftr[i&0xff].elapsed_time;
 
-					if (elapsed_start-m_ftr[i&0xff].elapsed_time<global.preferences.av_time*60) {
+					if (elapsed_start-m_ftr[i&0xff].elapsed_time<global.preferences.av_time*60) 
+					{
 						num_dealt+=m_ftr[i&0xff].n_pl_dealt;
 						hands++;
 						bets_preflop+=m_ftr[i&0xff].n_bets_preflop;
 					}
-					else { i=0; }
+					else 
+					{ 
+						i=0; 
+					}
 				}
 			}
 		}
 
-		if (num_dealt!=0) { percent=(double) bets_preflop/(double) hands; }
-		else { percent=-1; }
+		if (num_dealt!=0)
+			percent=(double) bets_preflop/(double) hands;
+
+		else
+			percent=-1;
 
 		return percent;
 #ifdef SEH_ENABLE
@@ -384,7 +476,8 @@ double GameState::avgbetspf (void) {
 #endif
 }
 
-double GameState::tablepfr (void) {
+double GameState::tablepfr (void) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -393,23 +486,37 @@ double GameState::tablepfr (void) {
 		double percent;
 
 		if (m_ftr_ndx>1) {
-			for (i=m_ftr_ndx-1; i>=1; i--) {
-				if (m_ftr[i&0xff].elapsed_time!=0 && m_ftr[i&0xff].n_pl_dealt>1) {
-					if (elapsed_start==0) { elapsed_start=m_ftr[i&0xff].elapsed_time; }
 
-					if (elapsed_start-m_ftr[i&0xff].elapsed_time<global.preferences.av_time*60) {
+			for (i=m_ftr_ndx-1; i>=1; i--) 
+			{
+				if (m_ftr[i&0xff].elapsed_time!=0 && m_ftr[i&0xff].n_pl_dealt>1) 
+				{
+					if (elapsed_start==0)
+						elapsed_start=m_ftr[i&0xff].elapsed_time;
+
+					if (elapsed_start-m_ftr[i&0xff].elapsed_time<global.preferences.av_time*60) 
+					{
 						num_dealt+=m_ftr[i&0xff].n_pl_dealt;
 						hands++;
+
 						//Either there was more than one raise or no one saw a flop (hence a raise)
-						if (m_ftr[i&0xff].n_bets_preflop > 1 || m_ftr[i&0xff].n_pl_saw_flop == 0) { bets_preflop++; }
+						if (m_ftr[i&0xff].n_bets_preflop > 1 || m_ftr[i&0xff].n_pl_saw_flop == 0) 
+							bets_preflop++;
+
 					}
-					else { i=0; }
+					else 
+					{ 
+						i=0; 
+					}
 				}
 			}
 		}
 
-		if (num_dealt!=0) { percent=(double) bets_preflop/(double) hands; }
-		else { percent=-1; }
+		if (num_dealt!=0)
+			percent=(double) bets_preflop/(double) hands;
+
+		else
+			percent=-1;
 
 		return percent;
 #ifdef SEH_ENABLE
@@ -421,7 +528,8 @@ double GameState::tablepfr (void) {
 #endif
 }
 
-void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed) {
+void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -444,16 +552,17 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed) 
 		m_holdem_state[ (++m_ndx)&0xff ] = *pstate;
 
 		// Only start processing state info, if we have one solid frame recorded (many calcs require m_ndx-1)
-		if (safe_to_process_state == false && m_ndx>1) {
+		if (safe_to_process_state == false && m_ndx>1)
 			safe_to_process_state = true;
-		}
 
 		// check if all balances are known (indicates stability of info passed to DLL)
 		balance_stability = true;
-		for (i=0; i<10; i++) {
+		for (i=0; i<10; i++) 
+		{
 			if (m_holdem_state[(m_ndx)&0xff].m_player[i].m_cards[0] != 0 && 
 				m_holdem_state[(m_ndx)&0xff].m_player[i].m_cards[1] != 0 &&
-				m_holdem_state[(m_ndx)&0xff].m_player[i].m_balance_known != 1) {
+				m_holdem_state[(m_ndx)&0xff].m_player[i].m_balance_known != 1) 
+			{
 				balance_stability = false;
 			}
 		}
@@ -461,10 +570,12 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed) 
 		// only process further if safe_to_process_state==true, userchair is identified (br!=0),
 		// and m_balance_known is true for all players with cards, and I am actually in the hand
 		if ((symbols.sym.br != 0 && safe_to_process_state && (balance_stability || symbols.sym.ismanual))
-			|| m_holdem_state[(m_ndx)&0xff].m_dealer_chair != m_holdem_state[(m_ndx-1)&0xff].m_dealer_chair) {
+			|| m_holdem_state[(m_ndx)&0xff].m_dealer_chair != m_holdem_state[(m_ndx-1)&0xff].m_dealer_chair) 
+		{
 
 			// Check for end of hand situation
-			for (i=0; i<10; i++) {
+			for (i=0; i<10; i++) 
+			{
 				// if new card fronts have appeared, then players are showing down, and its the end of the hand
 				if ( m_holdem_state[(m_ndx-1)&0xff].m_player[i%10].m_cards[0] == 255 &&		// was card backs last scrape
 					 m_holdem_state[(m_ndx-1)&0xff].m_player[i%10].m_cards[1] == 255 &&		// was card backs last scrape
@@ -473,8 +584,8 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed) 
 					 m_holdem_state[(m_ndx)&0xff].m_player[i%10].m_cards[0] != 0 &&			// is not 'no cards' this scrape
 					 m_holdem_state[(m_ndx)&0xff].m_player[i%10].m_cards[1] != 0 &&			// is not 'no cards' this scrape
 					 i != symbols.sym.userchair &&												// it's not me
-					 end_of_hand==false ) {
-
+					 end_of_hand==false ) 
+				{
 					end_of_hand = true;
 					write_log(">>> SHOWDOWN\n");
 				}
@@ -487,14 +598,15 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed) 
 			//   4. we are in manual mode
 
 			// 1. new hand has started
-			if (m_holdem_state[(m_ndx)&0xff].m_dealer_chair != m_holdem_state[(m_ndx-1)&0xff].m_dealer_chair ||
-				first_pass_capture) {
+			if (new_hand || first_pass_capture) 
+			{
 
 				// save the game state
 				m_game_state[ (++m_game_ndx)&0xff ] = *pstate;
 
 				//reset some vars
 				first_pass_capture = false;
+				new_hand = false;
 				wh_br_last=1;
 				pot_raised = false;
 				pf_limpers_n = 0;
@@ -504,14 +616,18 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed) 
 				biblind_posted = false;
 				bets_last = 0.0;
 				end_of_hand = false;
-				for (i=0; i<10; i++) {
-					for (j=0; j<4; j++) {
-						for (k=0; k<w_num_action_types; k++) { chair_actions[i][j][k] = w_noaction; }
+				for (i=0; i<10; i++) 
+				{
+					for (j=0; j<4; j++) 
+					{
+						for (k=0; k<w_num_action_types; k++)
+							chair_actions[i][j][k] = w_noaction;
 					}
 				}
 
 				// Track some stats
-				if (symbols.sym.balance[10] > max_balance) { 
+				if (symbols.sym.balance[10] > max_balance) 
+				{ 
 					max_balance = symbols.sym.balance[10] ; 
 				}
 				hands_played++;
@@ -520,7 +636,8 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed) 
 			}
 
 			// first time to act in the hand//
-			if (symbols.sym.ismyturn && my_first_action_this_hand == true) {
+			if (symbols.sym.ismyturn && my_first_action_this_hand == true) 
+			{
 				my_first_action_this_hand = false;
 			}
 
@@ -531,24 +648,28 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed) 
 				   m_holdem_state[(m_ndx)&0xff].m_player[(int) symbols.sym.userchair].m_currentbet == symbols.sym.sblind) ||
 				  (symbols.sym.br == 1 && 
 				   m_holdem_state[(m_ndx)&0xff].m_player[(int) symbols.sym.userchair].m_currentbet == symbols.sym.bblind)) &&
-					my_first_action_this_round == true) ) {
+					my_first_action_this_round == true) ) 
+			{
 
 				// save the game state
 				m_game_state[ (++m_game_ndx)&0xff ] = *pstate;
 
 				//reset some vars
 				if (m_holdem_state[(m_ndx)&0xff].m_player[(int) symbols.sym.userchair].m_cards[0] != 0 &&
-					m_holdem_state[(m_ndx)&0xff].m_player[(int) symbols.sym.userchair].m_cards[1] != 0) {
+					m_holdem_state[(m_ndx)&0xff].m_player[(int) symbols.sym.userchair].m_cards[1] != 0) 
+				{
 					process_game_state = true;
-					write_log( ">>>My turn, br=%d\n", (int) symbols.sym.br); 	
+					write_log( ">>> My turn, br=%d\n", (int) symbols.sym.br); 	
 				}
-				else {
+				else 
+				{
 					process_game_state = false;
 				}
 			}
 
 			// 3. the betting round has changed
-			if (symbols.sym.br > wh_br_last) {
+			if (symbols.sym.br > wh_br_last) 
+			{
 				// save the game state
 				m_game_state[ (++m_game_ndx)&0xff ] = *pstate;
 
@@ -562,65 +683,71 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed) 
 			}
 
 			// it's my turn, so I need to figure out what everyone did before me
-			if (process_game_state) {
+			if (process_game_state) 
+			{
 				process_game_state = false;
 				
 				// figure out how to iterate through the chairs
 				// if it is my first action this round 
-				if (my_first_action_this_round == true) {
+				if (my_first_action_this_round == true) 
+				{
 					my_first_action_this_round=false;
 
 					// if i am the sb, then iterate just mychair
 					if (symbols.sym.br == 1 && 
-						m_game_state[(m_game_ndx)&0xff].m_player[(int) symbols.sym.userchair].m_currentbet == symbols.sym.sblind) {
-
+						m_game_state[(m_game_ndx)&0xff].m_player[(int) symbols.sym.userchair].m_currentbet == symbols.sym.sblind) 
+					{
 						from_chair = symbols.sym.userchair;
 						to_chair = symbols.sym.userchair-1+10;
 					}
 
 					// if i am the bb, then iterate from dlr+1 to mychair
 					else if (symbols.sym.br == 1 && 
-						m_game_state[(m_game_ndx)&0xff].m_player[(int) symbols.sym.userchair].m_currentbet == symbols.sym.bblind) {
+						m_game_state[(m_game_ndx)&0xff].m_player[(int) symbols.sym.userchair].m_currentbet == symbols.sym.bblind) 
+					{
 
 						from_chair = m_game_state[(m_game_ndx)&0xff].m_dealer_chair+1;
 						to_chair = symbols.sym.userchair-1+10;
 					}
 
 					// if the dlr chair < mychair, then iterate from dlr+1 to mychair-1
-					else if (m_game_state[(m_game_ndx)&0xff].m_dealer_chair < symbols.sym.userchair) {
+					else if (m_game_state[(m_game_ndx)&0xff].m_dealer_chair < symbols.sym.userchair) 
+					{
 						from_chair = m_game_state[(m_game_ndx)&0xff].m_dealer_chair+1;
 						to_chair = symbols.sym.userchair-1;
 					}
 
 					// if the dlr chair >= mychair, then iterate from dlr+1 to mychair-1+10 (to loop around)
-					else {
+					else 
+					{
 						from_chair = m_game_state[(m_game_ndx)&0xff].m_dealer_chair+1;
 						to_chair = symbols.sym.userchair-1+10;
 					}
 
 				}
 				// if it is not my first action this round, then iterate from mychair+1 to mychair-1+10
-				else {
+				else 
+				{
 					from_chair = symbols.sym.userchair+1;
 					to_chair = symbols.sym.userchair-1+10;
 				}
 
 				// now iterate through the chairs and see what everybody did
-				for (i = from_chair; i <= to_chair; i++) {
+				for (i = from_chair; i <= to_chair; i++) 
+				{
 					// if the currentbet for the chair is the sb and the last bet was zero and br==1
 					// and the player has cards, then we know the chair ***POSTED THE SMALL BLIND***
 					if (m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_currentbet == symbols.sym.sblind &&
 						bets_last==0 &&
 						 m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_cards[0]!=0 &&
 						 m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_cards[1]!=0 &&
-						 symbols.sym.br == 1) {
-
+						 symbols.sym.br == 1) 
+					{
 						chair_actions[i%10][(int) symbols.sym.br-1][w_posted_sb] = true;
 						bets_last = m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_currentbet;
 						write_log(">>> Chair %d (%s) posted the sb: $%.2f\n", i%10, 
 							m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_name,
 							m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_currentbet);
-
 					}
 
 					// if the currentbet for the chair is the bb and the last bet was the sb and br==1
@@ -629,14 +756,13 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed) 
 							 bets_last == symbols.sym.sblind &&
 							 m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_cards[0]!=0 &&
 							 m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_cards[1]!=0 &&
-							 symbols.sym.br == 1) {
-
+							 symbols.sym.br == 1) 
+					{
 						chair_actions[i%10][(int) symbols.sym.br-1][w_posted_bb] = true;
 						bets_last = m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_currentbet;
 						write_log(">>> Chair %d (%s) posted the bb: $%.2f\n", i%10, 
 							m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_name, 
 							m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_currentbet);
-
 					}
 
 					// if the currentbet for the chair is greater than the last bet and it's not the end of the hand, 
@@ -644,17 +770,19 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed) 
 					else if (m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_currentbet > bets_last &&
 							 m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_cards[0]!=0 &&
 							 m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_cards[1]!=0 &&
-							 !end_of_hand) {
-
+							 !end_of_hand) 
+					{
 						bets_last = m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_currentbet;
-						if (pot_raised == false) {
+						if (pot_raised == false) 
+						{
 							chair_actions[i%10][(int) symbols.sym.br-1][w_raised] = true;
 							pot_raised = true;
 							write_log(">>> Chair %d (%s) raised to $%.2f\n", i%10, 
 								m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_name, 
 								m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_currentbet);
 						}
-						else {
+						else 
+						{
 							chair_actions[i%10][(int) symbols.sym.br-1][w_reraised] = true;
 							write_log(">>> Chair %d (%s) re-raised to $%.2f\n", i%10, 
 								m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_name, 
@@ -668,10 +796,11 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed) 
 							 m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_currentbet <= bets_last &&
 							 m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_cards[0]!=0 &&
 							 m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_cards[1]!=0 &&
-							 !end_of_hand) {
-
+							 !end_of_hand) 
+					{
 						chair_actions[i%10][(int) symbols.sym.br-1][w_called] = true;
-						if (pot_raised == false) {
+						if (pot_raised == false) 
+						{
 							pf_limpers_n += 1;
 						}
 						write_log(">>> Chair %d (%s) called\n", i%10, m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_name);
@@ -694,8 +823,8 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed) 
 								m_game_state[(m_game_ndx-1)&0xff].m_player[i%10].m_cards[0]!=0 &&		// card fronts/backs last scrape
 								m_game_state[(m_game_ndx-1)&0xff].m_player[i%10].m_cards[1]!=0 &&		// card fronts/backs last scrape
 								m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_balance==
-								   m_game_state[(m_game_ndx-1)&0xff].m_player[i%10].m_balance) ) {			
-
+								   m_game_state[(m_game_ndx-1)&0xff].m_player[i%10].m_balance) ) 
+					{			
 						chair_actions[i%10][(int) symbols.sym.br-1][w_folded] = true;
 						write_log(">>> Chair %d (%s) folded\n", i%10, 
 							m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_name);
@@ -705,12 +834,11 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed) 
 					// then we know the chair has ***CHECKED***
 					else if (symbols.sym.br!=1 && m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_currentbet == 0 &&
 							 m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_cards[0]!=0 &&
-							 m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_cards[1]!=0) {
-
+							 m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_cards[1]!=0) 
+					{
 						chair_actions[i%10][(int) symbols.sym.br-1][w_checked] = true;
 									
 						write_log( ">>> Chair %d (%s) checked\n", i%10, m_holdem_state[(m_ndx)&0xff].m_player[i%10].m_name);
-
 					}
 				}  // end of "for (i = from_chair; i <= to_chair; i++)"
 			} // end of "if (br != 0 &&..."
@@ -724,7 +852,8 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed) 
 #endif
 }
 
-void GameState::dump_state(void) {
+void GameState::dump_state(void) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -759,7 +888,8 @@ void GameState::dump_state(void) {
 #endif
 }
 
-void GameState::process_ftr_engine(holdem_state* pstate) {
+void GameState::process_ftr_engine(holdem_state* pstate) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -769,8 +899,8 @@ void GameState::process_ftr_engine(holdem_state* pstate) {
 		static int		ftr_nplayersdealt_last=0;
 
 		// if a new hand has started setup the next element in the ftr tracker array	
-		if (pstate->m_dealer_chair != ftr_dealer_chair_last) {
-
+		if (pstate->m_dealer_chair != ftr_dealer_chair_last) 
+		{
 			m_ftr_ndx++;
 			m_ftr[m_ftr_ndx&0xff].elapsed_time = symbols.sym.elapsed;
 			m_ftr[m_ftr_ndx&0xff].n_pl_dealt = 0;
@@ -786,24 +916,28 @@ void GameState::process_ftr_engine(holdem_state* pstate) {
 		// if nplayersdealt has incremented and it is br1, update the ftr tracker stats
 		if ( symbols.sym.nplayersdealt != ftr_nplayersdealt_last && 
 			 symbols.sym.nplayersdealt > ftr_nplayersdealt_last &&
-			 symbols.sym.br==1) {
-
+			 symbols.sym.br==1) 
+		{
 			m_ftr[m_ftr_ndx&0xff].n_pl_dealt = symbols.sym.nplayersdealt;
 			ftr_nplayersdealt_last = symbols.sym.nplayersdealt;
 		}
 
 		// if the betting round has changed update the ftr tracker stats 
-		if (symbols.sym.nflopc > ftr_nflopc_last) {
-			if (symbols.sym.nflopc==3 && m_ftr[m_ftr_ndx&0xff].n_pl_saw_flop==0) { 
+		if (symbols.sym.nflopc > ftr_nflopc_last) 
+		{
+			if (symbols.sym.nflopc==3 && m_ftr[m_ftr_ndx&0xff].n_pl_saw_flop==0) 
+			{ 
 				m_ftr[m_ftr_ndx&0xff].n_pl_saw_flop = symbols.sym.nplayersplaying;
 				m_ftr[m_ftr_ndx&0xff].n_bets_preflop = symbols.sym.nbetsround[0];
 			}
 
-			if (symbols.sym.nflopc==4 && m_ftr[m_ftr_ndx&0xff].n_pl_saw_turn==0) { 
+			if (symbols.sym.nflopc==4 && m_ftr[m_ftr_ndx&0xff].n_pl_saw_turn==0) 
+			{ 
 				m_ftr[m_ftr_ndx&0xff].n_pl_saw_turn = symbols.sym.nplayersplaying; 
 			}
 
-			if (symbols.sym.nflopc==5 && m_ftr[m_ftr_ndx&0xff].n_pl_saw_river==0) { 
+			if (symbols.sym.nflopc==5 && m_ftr[m_ftr_ndx&0xff].n_pl_saw_river==0) 
+			{ 
 				m_ftr[m_ftr_ndx&0xff].n_pl_saw_river = symbols.sym.nplayersplaying; 
 			}
 
@@ -818,7 +952,8 @@ void GameState::process_ftr_engine(holdem_state* pstate) {
 #endif
 }
 
-double GameState::sortedbalance(int rank) {
+double GameState::sortedbalance(int rank) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -826,14 +961,17 @@ double GameState::sortedbalance(int rank) {
 		int i, n;
 		double stacks[10];
 		double temp;
-		for (int i=0; i<=9; i++) {
+
+		for (int i=0; i<=9; i++) 
 			stacks[i] = m_holdem_state[m_ndx].m_player[i].m_balance + m_holdem_state[m_ndx].m_player[i].m_currentbet;
-		}
 
 		// bubble sort stacks
-		for (i=0; i<=8; i++) {
-			for (n=i+1; n<=9; n++) {
-				if (stacks[i] < stacks[n]) {
+		for (i=0; i<=8; i++) 
+		{
+			for (n=i+1; n<=9; n++) 
+			{
+				if (stacks[i] < stacks[n]) 
+				{
 				   temp = stacks[i];
 				   stacks[i] = stacks[n];
 				   stacks[n] = temp;

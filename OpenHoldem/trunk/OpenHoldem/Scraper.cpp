@@ -1440,7 +1440,7 @@ void CScraper::scrape_limits(HDC hdcCompatible, HDC hdc)
 
 		// log the stakes change
 		if (log_blind_change) 
-			write_log("*** alert *** NEW STAKES sb(%.2f) bb(%.2f) BB(%.2f) ante(%.2f)\n", 
+			write_log("\n*************************************************************\nNEW STAKES sb(%.2f) bb(%.2f) BB(%.2f) ante(%.2f)\n*************************************************************\n", 
 					s_limit_info.sblind, s_limit_info.bblind, s_limit_info.bbet, s_limit_info.ante);
 
 #ifdef SEH_ENABLE
