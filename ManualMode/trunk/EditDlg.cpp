@@ -10,10 +10,12 @@
 IMPLEMENT_DYNAMIC(CEditDlg, CDialog)
 
 CEditDlg::CEditDlg(CWnd* pParent /*=NULL*/)	: CDialog(CEditDlg::IDD, pParent) {
-
+	pPlacement = NULL;
 }
 
 CEditDlg::~CEditDlg() {
+	if(pPlacement != NULL)
+		free((WINDOWPLACEMENT *) pPlacement);
 }
 
 void CEditDlg::DoDataExchange(CDataExchange* pDX) {
@@ -24,6 +26,7 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX) {
 
 BEGIN_MESSAGE_MAP(CEditDlg, CDialog)
 	ON_BN_CLICKED(IDOK, &CEditDlg::OnBnClickedOk)
+	ON_BN_CLICKED(IDCANCEL, &CEditDlg::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 
@@ -36,6 +39,7 @@ BOOL CEditDlg::OnInitDialog() {
 	m_EditEntry.SetWindowText(m_result);
 	m_EditEntry.SetSel(MAKEWORD(0,-1));
 	m_EditEntry.SetFocus();
+	if (pPlacement != NULL) SetWindowPlacement(pPlacement);
 
 	return FALSE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -44,5 +48,18 @@ BOOL CEditDlg::OnInitDialog() {
 void CEditDlg::OnBnClickedOk() {
 	 m_EditEntry.GetWindowText(m_result);
 
+	if (pPlacement == NULL) 
+		pPlacement = (WINDOWPLACEMENT*) malloc(sizeof(WINDOWPLACEMENT));
+	GetWindowPlacement(pPlacement);
+
 	OnOK();
+}
+
+void CEditDlg::OnBnClickedCancel()
+{
+	if (pPlacement == NULL) 
+		pPlacement = (WINDOWPLACEMENT*) malloc(sizeof(WINDOWPLACEMENT));
+	GetWindowPlacement(pPlacement);
+
+	OnCancel();
 }

@@ -17,6 +17,8 @@ CGameInfoDlg::CGameInfoDlg(CWnd* pParent /*=NULL*/)	: CDialog(CGameInfoDlg::IDD,
 	try {
 #endif
 
+	pPlacement = NULL;
+
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 
@@ -26,6 +28,10 @@ CGameInfoDlg::CGameInfoDlg(CWnd* pParent /*=NULL*/)	: CDialog(CGameInfoDlg::IDD,
 #endif
 }
 
+CGameInfoDlg::~CGameInfoDlg() {
+	if(pPlacement != NULL)
+		free((WINDOWPLACEMENT *) pPlacement);
+}
 
 void CGameInfoDlg::DoDataExchange(CDataExchange* pDX) {
 	CDialog::DoDataExchange(pDX);
@@ -40,6 +46,7 @@ void CGameInfoDlg::DoDataExchange(CDataExchange* pDX) {
 
 BEGIN_MESSAGE_MAP(CGameInfoDlg, CDialog)
 	ON_BN_CLICKED(IDOK, &CGameInfoDlg::OnBnClickedOk)
+	ON_BN_CLICKED(IDCANCEL, &CGameInfoDlg::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 
@@ -77,6 +84,8 @@ BOOL CGameInfoDlg::OnInitDialog() {
 		m_SmallBlind.SetFocus();
 		m_SmallBlind.SetSel(MAKEWORD(0, -1));
 
+		if (pPlacement != NULL) SetWindowPlacement(pPlacement);
+
 		return false;  // return TRUE unless you set the focus to a control
 		// EXCEPTION: OCX Property Pages should return FALSE
 #ifdef SEH_ENABLE
@@ -110,6 +119,10 @@ void CGameInfoDlg::OnBnClickedOk() {
 
 		m_tournament = m_Tournament.GetCheck() & BST_CHECKED;
 
+		if (pPlacement == NULL) 
+			pPlacement = (WINDOWPLACEMENT*) malloc(sizeof(WINDOWPLACEMENT));
+		GetWindowPlacement(pPlacement);
+
 		OnOK();
 #ifdef SEH_ENABLE
 	}
@@ -118,4 +131,13 @@ void CGameInfoDlg::OnBnClickedOk() {
 		throw;
 	}
 #endif
+}
+
+void CGameInfoDlg::OnBnClickedCancel()
+{
+		if (pPlacement == NULL) 
+			pPlacement = (WINDOWPLACEMENT*) malloc(sizeof(WINDOWPLACEMENT));
+		GetWindowPlacement(pPlacement);
+
+		OnCancel();
 }

@@ -1,6 +1,8 @@
 v1.0.5 2008
 -----------------
 - Increment handnumber after reset.  (jumpingfences)
+- Allow user to drag modal dialogs away from table window so that they don't interfere 
+  with scraping and symbol calculation. (jumpingfences)
 
 
 v1.0.4 2008-02-08

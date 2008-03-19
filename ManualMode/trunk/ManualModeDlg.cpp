@@ -1184,8 +1184,6 @@ void CManualModeDlg::OnContextMenu(CWnd* pWnd, CPoint point) {
 		CMenu			contextMenu, *tracker, *subrank; 
 		MENUITEMINFO	mii;
 		int				i;
-		CEditDlg		edit;
-		CGameInfoDlg	gameinfo;
 		CPoint			point_adj;
 		Registry		reg;
 

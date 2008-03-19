@@ -8,14 +8,13 @@ class CGameInfoDlg : public CDialog {
 
 public:
 	CGameInfoDlg(CWnd* pParent = NULL);   // standard constructor
-
-// Dialog Data
-	enum { IDD = IDD_GAMEINFO };
-
+	virtual ~CGameInfoDlg();
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedOk();
+	afx_msg void OnBnClickedCancel();
 
-
+	// Dialog Data
+	enum { IDD = IDD_GAMEINFO };
 	CEdit m_SmallBlind;
 	CEdit m_BigBlind;
 	CEdit m_BigBet;
@@ -29,6 +28,7 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	WINDOWPLACEMENT *pPlacement; 
 
 	DECLARE_MESSAGE_MAP()
 };

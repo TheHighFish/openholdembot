@@ -4,6 +4,8 @@
 #pragma once
 
 #include "poker_defs.h"
+#include "EditDlg.h"
+#include "GameInfoDlg.h"
 
 // Cards
 #define CARD_BACK		0xff
@@ -71,6 +73,9 @@ protected:
 
 	// For tracking current state
 	int					ncommoncards_last;
+
+	CEditDlg		edit;
+	CGameInfoDlg	gameinfo;
 
 	// Generated message map functions
 	virtual BOOL OnInitDialog();

@@ -12,6 +12,7 @@ public:
 	virtual ~CEditDlg();
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedOk();
+	afx_msg void OnBnClickedCancel();
 
 	enum { IDD = IDD_EDITDLG };
 	CString		m_titletext;
@@ -20,6 +21,6 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
-	DECLARE_MESSAGE_MAP()
+	WINDOWPLACEMENT *pPlacement; 
+	DECLARE_MESSAGE_MAP();
 };
