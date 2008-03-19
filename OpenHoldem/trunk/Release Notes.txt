@@ -5,6 +5,30 @@ NEW STUFF:
   - 1: (default, legacy) Common pot
   - 2: (new) Total pot, including current bets and side bets  (Thanks, Nick Coldhand)
   (quiqsilver)
+  
+- Hand multiplexor symbol capability added.   The three valid hand multiplexor symbols are 
+  "f$$X", "f$$XX", and "f$$XXx".  Note that the X's and x's are not case sensitive.
+  The purpose of the hand multiplexor is to transfer control to a specific named formula 
+  based on your actual 2 card hand.
+  
+  The X's in the three symbols will be substituted with your actual hand values at time
+  of evaluation.  The first "X" will contain the the rank of your highest hole card, the 
+  second "X" will contain the rank of your lowest hole card, and the third "x" will contain
+  either a "s" or "o" depending if your hole cards have the same suit or not.  The $$ will
+  be replaced with a single dollar sign.
+  
+  For example, if my hole cards are AhKh, then "f$$X" will result in "f$A" upon evaluation
+  Similarly, "f$$XX" would result in "f$AK" and "f$$XXx" would result in "f$AKs".
+  
+  OpenHoldem will then evaluate the corresponding user defined function and return that value
+  for the hand multiplexor symbol.  If there is not a corresponding UDF defined for a given 
+  set of hole cards, then the return result is zero, not an error.
+
+  The values returned by the hand specific UDFs are entirely defined by you; one simple 
+  suggestion is to have them return 1 for call and 2 for raise; if you do this then your 
+  raise formula can do this: 
+  "|| [ f$$XXx >= 2 ] //hand specific formula calc"  
+
 
 BUG FIXES:
 - OH will no longer force blinds to bblind==2*sblind, when bblind!=2*sblind.  For example,

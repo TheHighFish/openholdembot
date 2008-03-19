@@ -768,7 +768,6 @@ void CSymbols::CalcSymbols(void)
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// dependent on prwin calulation - must come after
-		// also relies on f$srai, so we do this last
 		if (user_chair_confirmed && 
 			scraper.card_player[(int) sym.chair][0]!=CARD_NOCARD &&
 			scraper.card_player[(int) sym.chair][1]!=CARD_NOCARD &&

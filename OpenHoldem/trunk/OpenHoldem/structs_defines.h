@@ -36,6 +36,7 @@
 #define ERR_INVALID_EXPR			13
 #define ERR_INCOMPLETEMASTER		14
 #define ERR_DIV_ZERO				15
+#define ERR_INVALID_F$$_REF			16
 
 // Profile version codes
 #define VER_WINSCRAPE			".wsdb1"

@@ -127,7 +127,10 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
 #ifdef SEH_ENABLE
 	try {
 #endif
-		double	result;
+		double		result;
+		char		f$func[10];
+		const char	*ranks = "  23456789TJQKA";
+		int			rank0, rank1, rank_temp;
 
 		// Bounce errors up the stack
 		if (*e != SUCCESS)  return 0;
@@ -141,6 +144,65 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
 			if (strcmp(sym.c_str(), "e")==0) 
 			{
 				return (double) M_E;
+			}
+
+			// f$$ symbols (hand multiplexor)
+			else if (memcmp(sym.c_str(), "f$$", 3)==0) 
+			{
+				// Get our card ranks
+				rank0 = (((int)(symbols.sym.$$pc[0]))>>4)&0x0f;
+				rank1 = (((int)(symbols.sym.$$pc[1]))>>4)&0x0f;
+				
+				if (rank1>rank0)
+				{
+					rank_temp=rank0;
+					rank0=rank1;
+					rank1=rank_temp;
+				}
+
+				// Which form of f$$ is being called determines nature of resultant udf call
+				strcpy(f$func, "f$"); 
+				if (tolower(sym.c_str()[3])=='x' && 
+					strlen(sym.c_str())==4)
+				{
+					f$func[2] = ranks[rank0];
+					f$func[3] = '\0';
+				}
+				else if (tolower(sym.c_str()[3])=='x' && 
+						 tolower(sym.c_str()[4])=='x' && 
+						 strlen(sym.c_str())==5)
+				{
+					f$func[2] = ranks[rank0];
+					f$func[3] = ranks[rank1];
+					f$func[4] = '\0';
+				}
+				else if (tolower(sym.c_str()[3])=='x' && 
+						 tolower(sym.c_str()[4])=='x' && 
+						 tolower(sym.c_str()[5])=='x' && 
+						 strlen(sym.c_str())==6)
+				{
+					f$func[2] = ranks[rank0];
+					f$func[3] = ranks[rank1];
+					f$func[4] = rank0==rank1 ? 's' : 'o';
+					f$func[5] = '\0';
+				}
+				else 
+				{
+					*e = ERR_INVALID_F$$_REF;
+					return 0;
+				}
+
+				// Calculate resultant udf
+				result = calc_f$symbol(f, f$func, e);
+				if (*e == SUCCESS)
+				{
+					return result;
+				}
+				else
+				{
+					*e = SUCCESS;
+					return 0;							
+				}
 			}
 
 			// f$ symbols
