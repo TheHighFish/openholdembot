@@ -1976,8 +1976,10 @@ void PokerPro::DoScrape(void) {
 
 			scraper.dealer[i] = false;
 			scraper.playername[i] = data.m_pinf[i].m_name;
+			scraper.name_good_scrape[i] = true;
 			convert_money(money, data.m_pinf[i].m_balance);
 			scraper.playerbalance[i] = atof(money);
+			scraper.balance_good_scrape[i] = true;
 			convert_money(money, data.m_pinf[i].m_betAmount);
 			scraper.playerbet[i] = atof(money);
 			scraper.sittingout[i] = !(data.m_pinf[i].m_isPlaying&0x1);

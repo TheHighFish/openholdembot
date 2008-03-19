@@ -340,6 +340,13 @@ void CDlgPpro::OnBnClickedJointableButton() {
 
 		// I'm joined, so unjoin
 		else {
+			// log OH title bar text and table reset
+			write_log("%s - %s(NOT ATTACHED)\n", global.formula_name.GetString(), ppro.data.m_site_name);
+			write_log("TABLE RESET\n*************************************************************\n");
+
+			// Stop logging
+			stop_log();
+
 			ppro.send_goto(0);
 			ppro.reset_hand();
 			memset(&ppro.data.m_tinf, 0, sizeof(TINF));
@@ -485,7 +492,6 @@ void CDlgPpro::OnTimer(UINT nIDEvent) {
 				else {
 					m_JoinTable_Button.SetWindowTextA("Leave Table");
 				}
-
 			}
 
 			// Sit down button
@@ -720,6 +726,12 @@ void CDlgPpro::do_table_select(void) {
 					need_to_do_autochips = true;
 				}
 			}
+
+			// Start logging
+			start_log();
+
+			write_log("%s - %s(%s)\n", global.formula_name.GetString(), ppro.data.m_site_name, ppro.data.m_tinf.m_name);
+			write_log("TABLE RESET\n*************************************************************\n");
 		}
 #ifdef SEH_ENABLE
 	}
