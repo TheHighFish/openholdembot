@@ -195,6 +195,7 @@ struct STableMap
 	// player info
 	int		num_chairs;
 	int		swagtextmethod;
+	int		potmethod;
 	CString	sitename;
 	CString network;
 	CString	chairconfig;
