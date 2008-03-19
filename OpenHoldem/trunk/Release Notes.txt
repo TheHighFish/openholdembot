@@ -69,6 +69,8 @@ BUG FIXES:
 - m_name_known, m_balance_known will be properly set when connected to PPro (spew)
 
 - logging (oh1.log) was not used when connected to PPro (spew)
+
+- Better extraction of numbers with text (For example, "Pot: $1,000.00") (spew)
   
 - Default formula no longer sets modified flag, so you are not prompted to save it when loading
   some other formula, or on exit. (OpenHoldem)
