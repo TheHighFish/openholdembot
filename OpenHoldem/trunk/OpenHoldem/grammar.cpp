@@ -11,6 +11,7 @@
 #include "../../CTransform/Transform.h"
 //  2008.02.27 by THF
 #include "Perl.hpp"
+#include "action.h"
 
 using namespace std;
 using namespace boost::spirit;
@@ -253,6 +254,13 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
 			{
 				ICM		icm;
 				return icm.ProcessQueryICM(sym.c_str()+3, e);
+			}
+
+			// Action symbols
+			else if (memcmp(sym.c_str(), "ac_", 3)==0) 
+			{
+				Action	action;
+				return action.process_query(sym.c_str(), e);
 			}
 
 			// all other symbols

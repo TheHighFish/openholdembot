@@ -28,6 +28,24 @@ NEW STUFF:
   suggestion is to have them return 1 for call and 2 for raise; if you do this then your 
   raise formula can do this: 
   "|| [ f$$XXx >= 2 ] //hand specific formula calc"  
+  
+- Additional symbols from SingleMalt's DLL:
+	Action symbols
+	---------
+	ac_aggressor - which chair was aggressor (might be from previous round)
+	ac_agchair_after - does the aggressor chair act after me?
+	ac_preflop_pos - preflop position of the userchair (SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6)
+	ac_prefloprais_pos - preflop position of the raiser (SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6)
+	ac_postflop_pos - postflop position of the userchair (first=1 early=2 middle=3 late=4 last=5)
+	ac_pf_bets - returns 1 for no callers or blinds only
+						 2 for Called Pot - 1 bet to call
+						 3 for Raised Back - 1 more bet to call because someone behind you raised after you've already bet/called/raised
+						 4 for Raised Pot - 2 bets to call
+						 5 for Reraised Pot - 3+ bets to call
+						  NOTE: Only valid when br==1
+	ac_first_into_pot - returns true if you are first to act
+	ac_betposx (x=0-9) - returns bet position of specified chair
+	ac_dealposx (x=0-9) - returns deal position of specified chair
 
 
 BUG FIXES:

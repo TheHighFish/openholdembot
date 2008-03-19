@@ -174,12 +174,6 @@ int GameState::lastraised (int round)
 
 		for (i=m_game_state[(m_game_ndx)&0xff].m_dealer_chair+1; i<=m_game_state[(m_game_ndx)&0xff].m_dealer_chair+10; i++) 
 		{		
-/*CString s; s.Format("%d %d > %d %d", 
-					round, i%10,
-					chair_actions[i%10][round-1][w_reraised],
-					chair_actions[i%10][round-1][w_raised]); 
-MessageBox(NULL, s, "", MB_OK); 
-*/
 			if (chair_actions[i%10][round-1][w_reraised]) 
 			{ 
 				lastraised=i%10; 
