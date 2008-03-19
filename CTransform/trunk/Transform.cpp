@@ -1250,43 +1250,85 @@ void CTransform::parse_string_bsl(CString text, CString format, CString *results
 	}
 }
 
-double CTransform::string_to_money(CString str)
+double CTransform::string_to_money(CString inStr)
 {
-	double		number=0;
-	CString		token;
-	int			place_in_text;
-
-	str.Remove('$');
-	str.Remove(',');
-
-	place_in_text = 0;
-	token = "";
-
-	// handle numerics and decimals
-	while ( str.Mid(place_in_text,1).FindOneOf("0123456789.") != -1 && place_in_text<str.GetLength()) 
-	{
-		token.Append(str.Mid(place_in_text,1));
-		place_in_text+=1;
+	const char *str = inStr.GetString();
+	CStringArray possibleValues;
+	CArray<int, int> possibleValuesMultiplier;
+	CString activeValue;
+	int iValueWithCurrencySymbol = -1;
+	bool currencySymbol = false;
+	while (*str) {
+		switch (*str) {
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+			case '.':
+				activeValue += *str;
+				break;
+			case ',':
+				break;
+			case '$':
+			case '€':
+			case '£':
+				if (activeValue.GetLength() > 0) {
+					possibleValues.Add(activeValue);
+					possibleValuesMultiplier.Add(1);
+					activeValue.Empty();
+				}
+				currencySymbol = true;
+				break;
+			default:
+				if (activeValue.GetLength() > 0) {
+					int index = possibleValues.Add(activeValue);
+					if (currencySymbol)
+						iValueWithCurrencySymbol = index;
+					if (*str == '¢' || *str == 'c')
+						possibleValuesMultiplier.Add(-100);
+					else if (*str == 'k')
+						possibleValuesMultiplier.Add(1000);
+					else if (*str == 'm')
+						possibleValuesMultiplier.Add(1000000);
+					else
+						possibleValuesMultiplier.Add(1);
+					activeValue.Empty();
+				}
+				break;
+		}
+		str++;
+	}
+	if (activeValue.GetLength() > 0) {
+		int index = possibleValues.Add(activeValue);
+		possibleValuesMultiplier.Add(1);
+		if (currencySymbol)
+			iValueWithCurrencySymbol = index;
 	}
 
-	// convert string to number
-	number = atof(token.GetString());
+	double number = 0.0;
 
-	// Handle trailers
-	if (place_in_text < str.GetLength())
-	{
-		if (str.Mid(place_in_text,1).FindOneOf("¢c") != -1) 
-			number /= 100;
-
-		else if (str.Mid(place_in_text,1) == "k")
-			number *= 1000;
-
-		else if (str.Mid(place_in_text,1) == "m")
-			number *= 1000000;
+	int iValueToUse = -1;
+	if (possibleValues.GetSize() == 1)
+		iValueToUse = 0;
+	else if (iValueWithCurrencySymbol >= 0)
+		iValueToUse = iValueWithCurrencySymbol;
+	else if (possibleValues.GetSize() > 1)
+		iValueToUse = 0;
+	if (iValueToUse >= 0) {
+		number = atof(possibleValues[iValueToUse].GetString());
+		if (possibleValuesMultiplier[iValueToUse] < 0)
+			number /= -possibleValuesMultiplier[iValueToUse];
+		else
+			number *= possibleValuesMultiplier[iValueToUse];
 	}
 
 	return number;
-
 }
 
 // supporting functions for bsearch's
