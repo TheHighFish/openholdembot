@@ -302,6 +302,7 @@ BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
 	ON_NOTIFY(TCN_SELCHANGE, IDC_FORMULA_TAB, OnTabSelectionChange)
 	
 	ON_NOTIFY(TVN_GETINFOTIP, IDC_SYMBOL_TREE, OnSymbolTreeTipInfo)
+	ON_NOTIFY(NM_RCLICK, IDC_SYMBOL_TREE, OnSymbolContextMenu)
 
 	// Tooltips
 	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
@@ -442,8 +443,6 @@ BOOL CDlgFormulaScintilla::OnInitDialog() {
 
 		m_TabControl.InsertItem(0, "Formulas");
 		m_TabControl.InsertItem(1, "Symbols");
-
-		PopulateSymbols();
 
 		// Setup the tree
 		HTREEITEM	parent;
@@ -627,6 +626,9 @@ void CDlgFormulaScintilla::OnTabSelectionChange(NMHDR *pNMHDR, LRESULT *pResult)
 	try {
 #endif
 	bool bFormulaShowing = (m_TabControl.GetCurSel() == 0);
+	if (!bFormulaShowing)
+		PopulateSymbols();
+
 	m_FormulaTree.ShowWindow(bFormulaShowing ? SW_SHOW : SW_HIDE);
 	m_SymbolTree.ShowWindow(!bFormulaShowing ? SW_SHOW : SW_HIDE);
 	m_FormulaTree.EnableWindow(bFormulaShowing);
@@ -655,6 +657,51 @@ void CDlgFormulaScintilla::OnSymbolTreeTipInfo(NMHDR *pNMHDR, LRESULT *pResult)
 		if (description)
 			strcpy(lpGetInfoTip->pszText, description);
 	}
+
+	*pResult = 0;
+#ifdef SEH_ENABLE
+	}
+	catch (...)	 { 
+		logfatal("CDlgFormulaScintilla::OnSymbolTreeTipInfo() :\n"); 
+		throw;
+	}
+#endif
+}
+
+void CDlgFormulaScintilla::OnSymbolContextMenu(NMHDR *pNMHDR, LRESULT *pResult)
+{
+#ifdef SEH_ENABLE
+	try {
+#endif
+	CPoint cursorPos, clientPos;
+	cursorPos.x= GetCurrentMessage()->pt.x;
+	cursorPos.y= GetCurrentMessage()->pt.y;
+	clientPos = cursorPos;
+	m_SymbolTree.ScreenToClient(&clientPos);
+	HTREEITEM hItem = m_SymbolTree.HitTest(clientPos);
+
+	if (hItem != NULL && m_SymbolTree.GetChildItem(hItem) == NULL) {
+		CMenu contextMenu;
+		contextMenu.LoadMenu(IDR_FORMULA_SYMBOL_MENU);
+		int ret = contextMenu.GetSubMenu(0)->TrackPopupMenu(TPM_RIGHTBUTTON|TPM_RETURNCMD, cursorPos.x, cursorPos.y, this);
+		if (ret == ID_FORMULA_SYMBOL_COPY) {
+			if (OpenClipboard() && EmptyClipboard()) {
+				CString symbol;
+				symbol = m_SymbolTree.GetItemText(hItem);
+
+				HANDLE hMem = ::GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE , symbol.GetLength()+1);
+				if (hMem) {
+					LPSTR lpStr = (LPSTR)::GlobalLock(hMem);
+					strcpy(lpStr, symbol);
+					::GlobalUnlock(hMem);
+					if ( ::SetClipboardData( CF_TEXT, hMem ) != NULL )
+						CloseClipboard();
+				} else
+					CloseClipboard();
+			}
+		}
+	}
+
 
 	*pResult = 0;
 #ifdef SEH_ENABLE
@@ -2916,12 +2963,12 @@ HTREEITEM CDlgFormulaScintilla::AddSymbolSubTitle(HTREEITEM parentItem, const ch
 #endif
 }
 
-HTREEITEM CDlgFormulaScintilla::AddSymbolTitle(const char *title, const char *description)
+HTREEITEM CDlgFormulaScintilla::AddSymbolTitle(const char *title, const char *description, HTREEITEM parentItem)
 {
 #ifdef SEH_ENABLE
 	try {
 #endif
-	HTREEITEM ret = m_SymbolTree.InsertItem(title, NULL);
+	HTREEITEM ret = m_SymbolTree.InsertItem(title, parentItem);
 
 	m_SymbolTree.SetItemData(ret, (DWORD_PTR)description);
 	m_SymbolTree.SetItemState(ret, TVIS_BOLD, TVIS_BOLD);
@@ -2941,8 +2988,10 @@ HTREEITEM CDlgFormulaScintilla::AddSymbol(HTREEITEM parentItem, const char *symb
 #ifdef SEH_ENABLE
 	try {
 #endif
-	HTREEITEM ret = m_SymbolTree.InsertItem(symbol, parentItem);
+	HTREEITEM ret  = m_SymbolTree.InsertItem(symbol, hRawItem);
+	m_SymbolTree.SetItemData(ret, (DWORD_PTR)description);
 
+	ret = m_SymbolTree.InsertItem(symbol, parentItem);
 	m_SymbolTree.SetItemData(ret, (DWORD_PTR)description);
 
 	return ret;
@@ -2960,8 +3009,14 @@ void CDlgFormulaScintilla::PopulateSymbols()
 #ifdef SEH_ENABLE
 	try {
 #endif
+	if (m_SymbolTree.GetRootItem() != NULL)
+		return;
+
+	hRawItem = AddSymbolTitle("All Symbols", NULL, NULL);
+	hCatItem = AddSymbolTitle("Categories", NULL, NULL);
+
 	HTREEITEM mainParent, parent;
-	mainParent = parent = AddSymbolTitle("General symbols");
+	mainParent = parent = AddSymbolTitle("General symbols", NULL, hCatItem);
 	AddSymbol(parent, "ismanual", "true if you're in manual mode, false otherwise");
 	AddSymbol(parent, "isppro", "true if you're connected to a ppro server");
 	AddSymbol(parent, "site", "0=user/ppro 1=scraped");
@@ -2971,7 +3026,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "handnumber", "the site hand number if available");
 	AddSymbol(parent, "version", "returns the version number of OpenHoldem that is currently running");
 
-	mainParent = parent = AddSymbolTitle("Table Map symbols");
+	mainParent = parent = AddSymbolTitle("Table Map symbols", NULL, hCatItem);
 	AddSymbol(parent, "sitename$abc", "true if user defined string abc appears within the Table Map symbol s$sitename");
 	AddSymbol(parent, "network$def", "true if user defined string def appears within the Table Map symbol s$network");
 	AddSymbol(parent, "swagdelay", "autoplayer delay in milliseconds between swag keystrokes and button click");
@@ -2979,12 +3034,12 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "swagtextmethod", "the site interpretation for swag edit text (Table Map symbol) 1=f$srai 2=f$srai+call 3=f$srai+call+currentbet");
 	AddSymbol(parent, "potmethod", "the site interpretation for the contents of c0pot0 (Table Map symbol) 1=common (default) 2=total");
 
-	mainParent = parent = AddSymbolTitle("Formula file");
+	mainParent = parent = AddSymbolTitle("Formula file", NULL, hCatItem);
 	AddSymbol(parent, "rake", "percentage amount added/subtracted to/from the pot");
 	AddSymbol(parent, "nit", "number of iterations tested by the analyzer(s)");
 	AddSymbol(parent, "bankroll", "the user defined real world bankroll");
 
-	mainParent = parent = AddSymbolTitle("Limits");
+	mainParent = parent = AddSymbolTitle("Limits", NULL, hCatItem);
 	AddSymbol(parent, "bblind", "the big blind amount");
 	AddSymbol(parent, "sblind", "the small blind amount");
 	AddSymbol(parent, "ante", "the current pre-deal ante requirement");
@@ -2997,7 +3052,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "sraimax", "balance-call");
 	AddSymbol(parent, "istournament", "true if a tournament table is detected");
 
-	mainParent = parent = AddSymbolTitle("Hand Rank");
+	mainParent = parent = AddSymbolTitle("Hand Rank", NULL, hCatItem);
 	AddSymbol(parent, "handrank", "one of the following based on your selected option");
 	AddSymbol(parent, "handrank169", "your pocket holdem hand rank 1-169 (see table)");
 	AddSymbol(parent, "handrank2652", "your pocket holdem hand rank 12-2652 (see table)");
@@ -3005,15 +3060,16 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "handrank1000", "your pocket holdem hand rank 4-1000 (1000*handrank2652/2652)");
 	AddSymbol(parent, "handrankp", "2652 / (1+nopponents)");
 
-	mainParent = parent = AddSymbolTitle("Chairs");
+	mainParent = parent = AddSymbolTitle("Chairs", NULL, hCatItem);
 	AddSymbol(parent, "chair", "your chair number 0-9 ... 0 is usually top right");
 	AddSymbol(parent, "userchair", "user chair number (0-9)");
 	AddSymbol(parent, "dealerchair", "dealer chair number (0-9)");
 	AddSymbol(parent, "raischair", "raising chair number (0-9)");
+	AddSymbol(parent, "oppchair", "raising chair number (0-9)");
 	AddSymbol(parent, "chair$abc", "player abc chair number (0-9); -1 if not found");
 	AddSymbol(parent, "chairbit$abc", "player abc chairbit (1 << chair$abc); 0 if not found");
 
-	mainParent = parent = AddSymbolTitle("Rounds / Positions");
+	mainParent = parent = AddSymbolTitle("Rounds / Positions", NULL, hCatItem);
 	AddSymbol(parent, "betround", "betting round (1-4) 1=preflop, 2=flop, 3=turn, 4=river");
 	AddSymbol(parent, "br", "abbreviation for betround");
 	AddSymbol(parent, "betposition", "your bet position (1=sblind,2=bblind,...,nplayersdealt=dealer).  Betposition will change as players fold in front of you.");
@@ -3023,7 +3079,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "dealpositionrais", "the deal position of the raising player (1-10)");
 	AddSymbol(parent, "betpositionrais", "the bet position of the raising player (1-10)");
 
-	mainParent = parent = AddSymbolTitle("Probabilities");
+	mainParent = parent = AddSymbolTitle("Probabilities", NULL, hCatItem);
 	AddSymbol(parent, "prwin", "the probability of winning this hand (0.000 - 1.000)");
 	AddSymbol(parent, "prlos", "the probability of losing this hand (0.000 - 1.000)");
 	AddSymbol(parent, "prtie", "the probability of pushing this hand (0.000 - 1.000)");
@@ -3034,7 +3090,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "randomround", "random number between (0.000-1.000) for the current round");
 	AddSymbol(parent, "randomround1 - randomround4", "random number between (0.000-1.000) for round 1 - 4");
 
-	mainParent = parent = AddSymbolTitle("Statistics", "Note that these symbols have not been created for use in OpenHoldem yet.   Please see the to-do thread in the OpenHoldem stickies section of the forum for more information.");
+	mainParent = parent = AddSymbolTitle("Statistics", "Note that these symbols have not been created for use in OpenHoldem yet.   Please see the to-do thread in the OpenHoldem stickies section of the forum for more information.", hCatItem);
 	AddSymbol(parent, "callror", "the statistical risk of ruin for call decision");
 	AddSymbol(parent, "raisror", "the statistical risk of ruin for rais decision");
 	AddSymbol(parent, "srairor", "the statistical risk of ruin for srai decision");
@@ -3048,15 +3104,15 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "sraivariance", "the statistical variance for srai decision");
 	AddSymbol(parent, "allivariance", "the statistical variance for alli decision");
 
-	mainParent = parent = AddSymbolTitle("Formulas");
+	mainParent = parent = AddSymbolTitle("Formulas", NULL, hCatItem);
 	AddSymbol(parent, "f$name", "reference the specified formula");
 
-	mainParent = parent = AddSymbolTitle("P Formula");
+	mainParent = parent = AddSymbolTitle("P Formula", NULL, hCatItem);
 	AddSymbol(parent, "defcon", "defense level used in P formula.  Determines the number of analyzer opponents (0.000=maxoffense 1.000=maxdefense) (the defense level dialog uses values 0-10)");
 	AddSymbol(parent, "isdefmode", "true when defcon is at max");
 	AddSymbol(parent, "isaggmode", "true when defcon is at min");
 
-	mainParent = parent = AddSymbolTitle("Chip Amounts");
+	mainParent = parent = AddSymbolTitle("Chip Amounts", NULL, hCatItem);
 	AddSymbol(parent, "balance", "your balance");
 	AddSymbol(parent, "balance0 - balance9", "specific player/chair balance");
 	AddSymbol(parent, "stack0 - stack9", "sorted playersplaying balances from 0=biggest to 9=smallest");
@@ -3071,14 +3127,14 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "callshort", "total amount that will be added to the pot if all players call");
 	AddSymbol(parent, "raisshort", "callshort + bet * nplayersplaying");
 
-	mainParent = parent = AddSymbolTitle("Number of Bets");
+	mainParent = parent = AddSymbolTitle("Number of Bets", NULL, hCatItem);
 	AddSymbol(parent, "nbetstocall", "total number of additional bets required to call.");
 	AddSymbol(parent, "nbetstorais", "total number of additional bets required to raise.");
 	AddSymbol(parent, "ncurrentbets", "total number of bets currently in front of you.");
 	AddSymbol(parent, "ncallbets", "total number of bets you would have on the table if you call");
 	AddSymbol(parent, "nraisbets", "total number of bets you would have on the table if you raise");
 
-	mainParent = parent = AddSymbolTitle("List Tests");
+	mainParent = parent = AddSymbolTitle("List Tests", NULL, hCatItem);
 	AddSymbol(parent, "islist0 - islist99 ", "true if your hand is in the numbered (0-99) list");
 	AddSymbol(parent, "islistcall", "true if your hand is in list 0");
 	AddSymbol(parent, "islistrais", "true if your hand is in list 1");
@@ -3089,14 +3145,14 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "nlistmax", "highest list number in which your hand is listed");
 	AddSymbol(parent, "nlistmin", "lowest list number in which your hand is listed");
 
-	mainParent = parent = AddSymbolTitle("Poker Values");
+	mainParent = parent = AddSymbolTitle("Poker Values", NULL, hCatItem);
 	AddSymbol(parent, "pokerval", "absolute poker value for your 5 card hand");
 	AddSymbol(parent, "pokervalplayer", "absolute poker value for your 2 card pocket hand only.");
 	AddSymbol(parent, "pokervalcommon", "absolute poker value for the common cards");
 	AddSymbol(parent, "pcbits", "bit list of where your pocket cards are used in your 5 card hand");
 	AddSymbol(parent, "npcbits", "number (0-2) of your pocket cards used in your 5 card hand");
 
-	mainParent = parent = AddSymbolTitle("Poker Value Constants");
+	mainParent = parent = AddSymbolTitle("Poker Value Constants", NULL, hCatItem);
 	AddSymbol(parent, "hicard", "1<< 0 (2 ** 0)");
 	AddSymbol(parent, "onepair", "1<<24 (2 ** 24)");
 	AddSymbol(parent, "twopair", "1<<25 (2 ** 25)");
@@ -3109,7 +3165,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "royalflush", "0x800edcba");
 	AddSymbol(parent, "fiveofakind", "0xff000000");
 
-	mainParent = parent = AddSymbolTitle("Hand Tests");
+	mainParent = parent = AddSymbolTitle("Hand Tests", NULL, hCatItem);
 	AddSymbol(parent, "$CCc", "see the hand symbol reference for details");
 	AddSymbol(parent, "ishandup", "true if your hand has gone up a level (i.e. from 1 pair to 2 pair)");
 	AddSymbol(parent, "ishandupcommon", "true if common hand has gone up a level (i.e. from 1 pair to 2 pair)");
@@ -3125,19 +3181,19 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "isroyalflush", "true when you have a royal flush");
 	AddSymbol(parent, "isfiveofakind", "true when you have a five of a kind");
 
-	mainParent = parent = AddSymbolTitle("Pocket Tests");
+	mainParent = parent = AddSymbolTitle("Pocket Tests", NULL, hCatItem);
 	AddSymbol(parent, "ispair", "true when your two dealt pocket cards are rank equal (0-1)");
 	AddSymbol(parent, "issuited", "true when your two dealt pocket cards are suit equal (0-1)");
 	AddSymbol(parent, "isconnector", "true when your two dealt pocket cards are rank adjacent (0-1)");
 
-	mainParent = parent = AddSymbolTitle("Pocket/Common Tests");
+	mainParent = parent = AddSymbolTitle("Pocket/Common Tests", NULL, hCatItem);
 	AddSymbol(parent, "ishipair", "true when you have hi pair (0-1)");
 	AddSymbol(parent, "islopair", "true when you have lo pair (0-1)");
 	AddSymbol(parent, "ismidpair", "true when you have mid pair (0-1)");
 	AddSymbol(parent, "ishistraight", "true when you have the highest straight possible");
 	AddSymbol(parent, "ishiflush", "true when you have the highest flush possible");
 
-	mainParent = parent = AddSymbolTitle("Players, Friends, Opponents", "Note that the [friends] symbols are not interpreted the same way as they are in WinHoldem.  OpenHoldem does not include any automated collusion capabilities, and thus [friends] has been redefined in OpenHoldem to mean you only.  Thus if you are seated, nfriendsseated will resolve to 1. If you are not seated, nfriendsseated will resolve to zero.");
+	mainParent = parent = AddSymbolTitle("Players, Friends, Opponents", "Note that the [friends] symbols are not interpreted the same way as they are in WinHoldem.  OpenHoldem does not include any automated collusion capabilities, and thus [friends] has been redefined in OpenHoldem to mean you only.  Thus if you are seated, nfriendsseated will resolve to 1. If you are not seated, nfriendsseated will resolve to zero.", hCatItem);
 	AddSymbol(parent, "nopponents", "P formula value for the userchair iterator");
 	AddSymbol(parent, "nopponentsmax", "maximum allowable value for nopponents (1-22 default=9)");
 	AddSymbol(parent, "nplayersseated", "number of players seated (including you) (0-10)");
@@ -3179,29 +3235,29 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "friendsplayingbits", "bits 9-0: 1=playing 0=notplaying, you only");
 	AddSymbol(parent, "friendsblindbits", "bits 9-0: 1=blind 0=notblind, you only");
 
-	mainParent = parent = AddSymbolTitle("Flags");
+	mainParent = parent = AddSymbolTitle("Flags", NULL, hCatItem);
 	AddSymbol(parent, "fmax", "highest numbered flag button pressed");
 	AddSymbol(parent, "f0 - f9", "true if flag 0 - flag 9 button is pressed false otherwise");
 	AddSymbol(parent, "fbits", "flag button bits 9-0 - 1=pressed 0=notpressed");
 
-	mainParent = parent = AddSymbolTitle("Common Cards");
+	mainParent = parent = AddSymbolTitle("Common Cards", NULL, hCatItem);
 	AddSymbol(parent, "ncommoncardspresent", "number of common cards present (normal or highlighted)");
 	AddSymbol(parent, "ncommoncardsknown", "number of common cards known (normal not highlighted)");
 	AddSymbol(parent, "nflopc", "short for ncommoncardsknown");
 
-	mainParent = parent = AddSymbolTitle("(Un)known Cards");
+	mainParent = parent = AddSymbolTitle("(Un)known Cards", NULL, hCatItem);
 	AddSymbol(parent, "nouts", "the total number of unseen single cards that if dealt to the board might put your hand in the lead. to be counted as an out, the card must be able to bump your level and your new level must be higher than the resulting common level");
 	AddSymbol(parent, "ncardsknown", "total number of cards you can see (yours and commons)");
 	AddSymbol(parent, "ncardsunknown", "total number of cards you cannot see (deck and opponents)");
 	AddSymbol(parent, "ncardsbetter", "total number of single unknown cards that can beat you, e.g. if the board is four suited in hearts, and you have two spades, then ncardsbetter will be at least 9, because of the possible flush.");
 
-	mainParent = parent = AddSymbolTitle("nhands");
+	mainParent = parent = AddSymbolTitle("nhands", NULL, hCatItem);
 	AddSymbol(parent, "nhands", "total possible number of two-card hands using the unseen cards (nhandshi+nhandslo+nhandsti)");
 	AddSymbol(parent, "nhandshi", "number of hands that can beat you in a showdown right now");
 	AddSymbol(parent, "nhandslo", "number of hands that you can beat in a showdown right now");
 	AddSymbol(parent, "nhandsti", "number of hands that can tie you in a showdown right now");
 
-	mainParent = parent = AddSymbolTitle("Flushes / Straights / Sets");
+	mainParent = parent = AddSymbolTitle("Flushes / Straights / Sets", NULL, hCatItem);
 	AddSymbol(parent, "nsuited", "total number of same suited cards you have (1-7)");
 	AddSymbol(parent, "nsuitedcommon", "total number of same suited cards in the middle (1-5)");
 	AddSymbol(parent, "tsuit", "specific card suit for nsuited (1-4)");
@@ -3219,7 +3275,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "nstraightflushfill", "total number of cards needed to fill a straightflush (0-5)");
 	AddSymbol(parent, "nstraightflushfillcommon", "total number of cards needed to fill a common straightflush (0-5)");
 
-	mainParent = parent = AddSymbolTitle("Rank Bits (aces are hi and lo");
+	mainParent = parent = AddSymbolTitle("Rank Bits (aces are hi and lo", NULL, hCatItem);
 	AddSymbol(parent, "rankbits", "bit list of card ranks (yours and commons)");
 	AddSymbol(parent, "rankbitscommon", "bit list of card ranks (commons)");
 	AddSymbol(parent, "rankbitsplayer", "bit list of card ranks (yours)");
@@ -3229,7 +3285,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "srankbitsplayer", "bit list of suited card ranks (yours tsuit)");
 	AddSymbol(parent, "srankbitspoker", "bit list of suited card ranks (pokerval tsuit)");
 
-	mainParent = parent = AddSymbolTitle("Rank Hi (aces are hi");
+	mainParent = parent = AddSymbolTitle("Rank Hi (aces are hi", NULL, hCatItem);
 	AddSymbol(parent, "rankhi", "highest card rank (14-2) (yours and commons)");
 	AddSymbol(parent, "rankhicommon", "highest card rank (14-2) (commons)");
 	AddSymbol(parent, "rankhiplayer", "highest card rank (14-2) (yours)");
@@ -3239,7 +3295,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "srankhiplayer", "highest suited card rank (14-2) (yours tsuit)");
 	AddSymbol(parent, "srankhipoker", "highest suited card rank (14-2) (pokerval tsuit)");
 
-	mainParent = parent = AddSymbolTitle("Rank Lo (aces are hi)");
+	mainParent = parent = AddSymbolTitle("Rank Lo (aces are hi)", NULL, hCatItem);
 	AddSymbol(parent, "ranklo", "lowest card rank (14-2) (yours and commons)");
 	AddSymbol(parent, "ranklocommon", "lowest card rank (14-2) (commons)");
 	AddSymbol(parent, "rankloplayer", "lowest card rank (14-2) (yours)");
@@ -3249,7 +3305,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "srankloplayer", "lowest suited card rank (14-2) (yours tsuit)");
 	AddSymbol(parent, "sranklopoker", "lowest suited card rank (14-2) (pokerval tsuit)");
 
-	mainParent = parent = AddSymbolTitle("Time");
+	mainParent = parent = AddSymbolTitle("Time", NULL, hCatItem);
 	AddSymbol(parent, "elapsed", "time in seconds since sitting down");
 	AddSymbol(parent, "elapsedhand", "time in seconds since end of previous hand");
 	AddSymbol(parent, "elapsedauto", "time in seconds since autoplayer took action");
@@ -3259,7 +3315,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "nclockspersecond", "number of cpu clocks per second");
 	AddSymbol(parent, "ncps", "number of cpu clocks per second");
 
-	mainParent = parent = AddSymbolTitle("Autoplayer");
+	mainParent = parent = AddSymbolTitle("Autoplayer", NULL, hCatItem);
 	AddSymbol(parent, "myturnbits", "bits 3210 correspond to buttons ARCF (alli rais call fold)");
 	AddSymbol(parent, "ismyturn", "(myturnbits & 7) (rais or call/chec or fold)");
 	AddSymbol(parent, "issittingin", "true when you are not being dealt out");
@@ -3267,7 +3323,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "isautopost", "true when you are autoposting");
 	AddSymbol(parent, "isfinalanswer", "true when autoplayer preparing to act; false any other time.");
 
-	mainParent = parent = AddSymbolTitle("History");
+	mainParent = parent = AddSymbolTitle("History", NULL, hCatItem);
 	AddSymbol(parent, "nplayersround1 - nplayersround4", "number of players that began betting round 1 - round 4");
 	AddSymbol(parent, "nplayersround", "number of players that began the current betting round");
 	AddSymbol(parent, "prevaction", "record of previously attempted autoplayer action. (-1=fold 0=chec 1=call 2=rais 3=swag 4=alli)");
@@ -3282,7 +3338,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "didraisround1 - didraisround4", "true if userchair raised during round 1 - round 4");
 	AddSymbol(parent, "didswaground1 - didswaground4", "true if userchair swag'd during round 1 - round 4");
 
-	mainParent = parent = AddSymbolTitle("RON / RUN", "These symbols report the total number of possible river endings for the opponent (ron$) and the user (run$). A value of zero means that type of poker hand is not possible. Any non-zero value means that type of poker hand will be seen that many times.");
+	mainParent = parent = AddSymbolTitle("RON / RUN", "These symbols report the total number of possible river endings for the opponent (ron$) and the user (run$). A value of zero means that type of poker hand is not possible. Any non-zero value means that type of poker hand will be seen that many times.", hCatItem);
 	AddSymbol(parent, "ron$royfl", "river opponent number : possible royal flush");
 	AddSymbol(parent, "ron$strfl", "river opponent number : possible straight flush");
 	AddSymbol(parent, "ron$4kind", "river opponent number : possible four of a kind");
@@ -3314,7 +3370,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "run$prbest", "user chances of hitting pokervalmax on or before the river");
 	AddSymbol(parent, "run$clocks", "total number of cpu clocks used to calculate the run$ symbols");
 
-	mainParent = parent = AddSymbolTitle("Versus symbols");
+	mainParent = parent = AddSymbolTitle("Versus symbols", NULL, hCatItem);
 	AddSymbol(parent, "vs$nhands", "Total possible number of opponent hands");
 	AddSymbol(parent, "vs$nhandshi", "Number of opponent hands that have higher river chances ");
 	AddSymbol(parent, "vs$nhandsti", "Number of opponent hands that have equal river chances");
@@ -3335,7 +3391,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "vs$x$prlos", "Probability (0.000 - 1.000) of losing versus hand list x");
 	AddSymbol(parent, "vs$x$prtie", "Probability (0.000 - 1.000) of a tie versus hand list x");
 
-	mainParent = parent = AddSymbolTitle("History symbols");
+	mainParent = parent = AddSymbolTitle("History symbols", NULL, hCatItem);
 	AddSymbol(parent, "hi_<sym>x (x=1-4)", "the value of the symbol <sym> as of your last turn in betting round x.  Example: hi_prwin1 would return prwin as of your last turn in br1.");
 	/*
 	Valid values for <sym> are:
@@ -3353,14 +3409,14 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	*run$ ron$: ron$royfl, ron$strfl, ron$4kind, ron$fullh, ron$strai, ron$3kind, ron$2pair, ron$1pair, ron$hcard, ron$total, ron$pokervalmax, ron$prnuts, ron$prbest, run$royfl, run$strfl, run$4kind, run$fullh, run$strai, run$3kind, run$2pair, run$1pair, run$hcard, run$total, run$pokervalmax, run$prnuts, run$prbest
 	*/
 
-	mainParent = parent = AddSymbolTitle("Action symbols");
+	mainParent = parent = AddSymbolTitle("Action symbols", NULL, hCatItem);
 	AddSymbol(parent, "lastraisedx (x=1-4)", "which chair was the last to raise in round x");
 	AddSymbol(parent, "raisbitsx (x=1-4)", "which chairs raised in round x ");
 	AddSymbol(parent, "callbitsx (x=1-4)", "which chairs called in round x");
 	AddSymbol(parent, "foldbitsx (x=1-4)", "which chairs folded in round x");
 	AddSymbol(parent, "oppdealt", "Trailing indicator for nopponentsdealt");
 
-	mainParent = parent = AddSymbolTitle("Table stats symbols", "Note: the setting for [y minutes] can be found in Edit/Preferences, and defaults to 15 minutes.");
+	mainParent = parent = AddSymbolTitle("Table stats symbols", "Note: the setting for [y minutes] can be found in Edit/Preferences, and defaults to 15 minutes.", hCatItem);
 	AddSymbol(parent, "floppct", "percentage of players seeing the flop for the last y minutes");
 	AddSymbol(parent, "turnpct", "percentage of players seeing the turn for the last y minutes");
 	AddSymbol(parent, "riverpct", "percentage of players seeing the river for the last y minutes");
@@ -3370,7 +3426,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "handsplayed", "number of hands played this session");
 	AddSymbol(parent, "balance_rankx (x=0-9)", "ranked list of player balances (includes players not currently in hand, and includes currentbet for each player as well).  rank0 has highest balance.");
 
-	mainParent = parent = AddSymbolTitle("Poker Tracker symbols");
+	mainParent = parent = AddSymbolTitle("Poker Tracker symbols", NULL, hCatItem);
 	parent = AddSymbolSubTitle(mainParent, "Ring symbols");
 	AddSymbol(parent, "pt_iconx (x=0-9)", "Poker Tracker auto-rate icon code for chair x");
 	AddSymbol(parent, "pt_iconlastrx (x=1-4)", "Poker Tracker auto-rate icon code for the last raiser in round x");
@@ -3461,13 +3517,15 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "ptt_rfsbts", "Poker Tracker folded small blind to steal for raise chair");
 	AddSymbol(parent, "ptt_rfbbts", "Poker Tracker folded big blind to steal for raise chair");
 
-	mainParent = parent = AddSymbolTitle("ICM calculator symbols");
+	mainParent = parent = AddSymbolTitle("ICM calculator symbols", NULL, hCatItem);
 	AddSymbol(parent, "icm", "my tournament equity before any action is considered (just balances)");
 	AddSymbol(parent, "icm_fold", "my tournament equity if I fold");
 	AddSymbol(parent, "icm_callwin", "my tournament equity if I call and win");
 	AddSymbol(parent, "icm_calllose", "my tournament equity if I call and lose");
 	AddSymbol(parent, "icm_alliwin0 - icm_alliwin9", "my tournament equity if I push all-in and win against 0 - 9 callers");
 	AddSymbol(parent, "icm_allilose1 - icm_allilose9", "my tournament equity if I push all-in and lose against 0 - 9 callers ");
+
+	m_SymbolTree.SortChildren(hRawItem);
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 

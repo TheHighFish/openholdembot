@@ -47,6 +47,7 @@
 #define IDR_FORMULA_DIALOG_ACC          172
 #define IDD_SAPREFS9                    172
 #define IDD_SAPREFS10                   173
+#define IDR_FORMULA_SYMBOL_MENU         175
 #define IDC_NEW                         1006
 #define IDC_DELETE                      1007
 #define IDC_RENAME                      1013
@@ -450,6 +451,7 @@
 #define ID_PERL_LOADFORMULA             32946
 #define ID_PERL_LOADSPECIFICFORMULA     32947
 #define ID_PERL_EDITMAINFORMULA         32948
+#define ID_FORMULA_SYMBOL_COPY          32949
 #define ID_PERL_RELOADFORMULA           32950
 #define ID_PERL_COMPILEFORMULA          32951
 #define ID_Menu                         32952
@@ -460,7 +462,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        175
+#define _APS_NEXT_RESOURCE_VALUE        176
 #define _APS_NEXT_COMMAND_VALUE         32968
 #define _APS_NEXT_CONTROL_VALUE         1296
 #define _APS_NEXT_SYMED_VALUE           101

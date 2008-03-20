@@ -103,6 +103,7 @@ protected:
 	afx_msg void OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnTabSelectionChange(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnSymbolTreeTipInfo(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnSymbolContextMenu(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedCancel();
 	afx_msg void ToggleToolbar();
 	afx_msg void ToggleLineNumbers();
@@ -151,9 +152,10 @@ protected:
 	void ResizeScintillaWindows();
 
 	void PopulateSymbols();
-	HTREEITEM AddSymbolTitle(const char *title, const char *description=NULL);
+	HTREEITEM AddSymbolTitle(const char *title, const char *description=NULL, HTREEITEM parentItem=NULL);
 	HTREEITEM AddSymbolSubTitle(HTREEITEM parentItem, const char *title, const char *description=NULL);
 	HTREEITEM AddSymbol(HTREEITEM parentItem, const char *symbol, const char *description);
+	HTREEITEM hRawItem, hCatItem;
 
 	void HandleEnables(bool All);
 

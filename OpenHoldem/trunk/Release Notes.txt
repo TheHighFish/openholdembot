@@ -47,6 +47,10 @@ NEW STUFF:
 	ac_betposx (x=0-9) - returns bet position of specified chair
 	ac_dealposx (x=0-9) - returns deal position of specified chair
 
+- Formula Editor: Symbol Tree 
+      - Added a sorted list of all symbols which is in addition to the existing list of symbols grouped by category
+      - Delayed the insertion of the symbols until the user clicks on the 'Symbol' tab to avoid any performance issues
+      - Added context menu on Symbols to allow Copy-ing to the clipboard
 
 	MyHand symbols
 	---------
