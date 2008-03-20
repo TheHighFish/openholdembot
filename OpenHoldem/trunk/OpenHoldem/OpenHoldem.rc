@@ -145,13 +145,13 @@ BEGIN
         MENUITEM "&New\tCtrl+N",                ID_FILE_NEW
         MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
         MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE
-        MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
+        MENUITEM "Save &As...\tCtrl+A",         ID_FILE_SAVE_AS
         MENUITEM SEPARATOR
         MENUITEM "&Load Table Map\tCtrl+L",     ID_FILE_LOADTABLEMAP
         MENUITEM SEPARATOR
         MENUITEM "&Connect\tCtrl+T",            ID_FILE_CONNECT
         MENUITEM SEPARATOR
-        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1
         MENUITEM SEPARATOR
         MENUITEM "E&xit",                       ID_APP_EXIT
     END
@@ -166,18 +166,21 @@ BEGIN
         MENUITEM "&Flags Toolbar",              ID_VIEW_FLAGS_TOOLBAR
         MENUITEM "&Statusbar",                  ID_VIEW_STATUSBAR
         MENUITEM "S&craper Output",             ID_VIEW_SCRAPEROUTPUT
-        MENUITEM "S&hoot Replay Frame",         ID_VIEW_SHOOTREPLAYFRAME
+        MENUITEM "S&hoot Replay Frame\tF12",    ID_VIEW_SHOOTREPLAYFRAME
     END
     POPUP "&DLL"
     BEGIN
-        MENUITEM "&Load",                       ID_DLL_LOAD
-        MENUITEM "Load &Specific File",         ID_DLL_LOADSPECIFICFILE
+        MENUITEM "&Load\tF4",                   ID_DLL_LOAD
+        MENUITEM "Load &Specific File\tF5",     ID_DLL_LOADSPECIFICFILE
     END
-    POPUP "Perl"
+    POPUP "Per&l"
     BEGIN
-        MENUITEM "Load Formula",                ID_PERL_LOADFORMULA
-        MENUITEM "Load Specific Formula",       ID_PERL_LOADSPECIFICFORMULA
-        MENUITEM "Edit Main Formula",           ID_PERL_EDITMAINFORMULA
+        MENUITEM "&Load Formula\tF7",           ID_PERL_LOADFORMULA
+        MENUITEM "&Reload Formula\tF8",         ID_PERL_RELOADFORMULA
+        MENUITEM "Load &Specific Formula\tF9",  ID_PERL_LOADSPECIFICFORMULA
+        MENUITEM SEPARATOR
+        MENUITEM "Check S&yntax\tF10",          ID_PERL_CHECKSYNTAX
+        MENUITEM "&Edit Main Formula\tF11",     ID_PERL_EDITMAINFORMULA
     END
     POPUP "&PokerPro"
     BEGIN
@@ -250,6 +253,8 @@ END
 
 IDR_MAINFRAME ACCELERATORS 
 BEGIN
+    VK_F4,          ID_DLL_LOAD,            VIRTKEY, NOINVERT
+    VK_F5,          ID_DLL_LOADSPECIFICFILE, VIRTKEY, NOINVERT
     "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
     VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
     VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
@@ -273,7 +278,13 @@ BEGIN
     "A",            ID_FORMULA_EDIT_SELECTALL, VIRTKEY, CONTROL, NOINVERT
     "Z",            ID_FORMULA_EDIT_UNDO,   VIRTKEY, CONTROL, NOINVERT
     VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
+    VK_F10,         ID_PERL_CHECKSYNTAX,    VIRTKEY, NOINVERT
+    VK_F11,         ID_PERL_EDITMAINFORMULA, VIRTKEY, NOINVERT
+    VK_F7,          ID_PERL_LOADFORMULA,    VIRTKEY, NOINVERT
+    VK_F8,          ID_PERL_RELOADFORMULA,  VIRTKEY, NOINVERT
+    VK_F9,          ID_PERL_LOADSPECIFICFORMULA, VIRTKEY, NOINVERT
     VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
+    VK_F12,         ID_VIEW_SHOOTREPLAYFRAME, VIRTKEY, NOINVERT
 END
 
 

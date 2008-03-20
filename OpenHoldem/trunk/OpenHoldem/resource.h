@@ -450,6 +450,10 @@
 #define ID_PERL_LOADFORMULA             32946
 #define ID_PERL_LOADSPECIFICFORMULA     32947
 #define ID_PERL_EDITMAINFORMULA         32948
+#define ID_PERL_RELOADFORMULA           32950
+#define ID_PERL_COMPILEFORMULA          32951
+#define ID_Menu                         32952
+#define ID_PERL_CHECKSYNTAX             32953
 #define ID_INDICATOR_STATUS_PLCARDS     61191
 
 // Next default values for new objects
@@ -457,7 +461,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        175
-#define _APS_NEXT_COMMAND_VALUE         32950
+#define _APS_NEXT_COMMAND_VALUE         32968
 #define _APS_NEXT_CONTROL_VALUE         1296
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

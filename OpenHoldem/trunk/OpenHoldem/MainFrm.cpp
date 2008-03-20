@@ -65,6 +65,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_PERL_LOADFORMULA, &CMainFrame::OnUpdateMenuPerlLoad)
 	//  2008.03.07 by THF
 	ON_UPDATE_COMMAND_UI(ID_PERL_LOADSPECIFICFORMULA, &CMainFrame::OnUpdateMenuPerlLoadSpecificFormula)
+	//  2008.03.20 by THF
+	ON_UPDATE_COMMAND_UI(ID_PERL_RELOADFORMULA, &CMainFrame::OnUpdateMenuPerlReloadFormula)
 
 	//  Menu commands	
 	ON_COMMAND(ID_FILE_LOADTABLEMAP, &CMainFrame::OnFileLoadTableMap)
@@ -81,6 +83,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	//  2008.03.03 by THF
 	ON_COMMAND(ID_PERL_LOADFORMULA, &CMainFrame::OnPerlLoadFormula)
 	ON_COMMAND(ID_PERL_LOADSPECIFICFORMULA, &CMainFrame::OnPerlLoadSpecificFormula)
+	ON_COMMAND(ID_PERL_RELOADFORMULA, &CMainFrame::OnPerlReloadFormula)
+	ON_COMMAND(ID_PERL_CHECKSYNTAX, &CMainFrame::OnPerlCheckSyntax)
 	ON_COMMAND(ID_PERL_EDITMAINFORMULA, &CMainFrame::OnPerlEditMainFormula)
 
 	// Main toolbar
@@ -1632,10 +1636,10 @@ void CMainFrame::OnUpdateFileConnect(CCmdUI *pCmdUI)
 void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI) 
 {
 	if (cdll.hMod_dll!=NULL) {
-		pCmdUI->SetText("Unload");
+		pCmdUI->SetText("&Unload\tF4");
 	}
 	else {
-		pCmdUI->SetText("Load");
+		pCmdUI->SetText("&Load\tF4");
 	}
 	// Not connected to ppro server
 	if (ppro.m_socket==INVALID_SOCKET) {
@@ -1683,21 +1687,30 @@ void CMainFrame::OnUpdateViewStatusbar(CCmdUI *pCmdUI) {
 void CMainFrame::OnUpdateMenuPerlLoad(CCmdUI* pCmdUI) 
 {
 	if (the_Perl_Interpreter.is_a_Formula_loaded()) {
-		pCmdUI->SetText("Unload Formula");
+		pCmdUI->SetText("&Unload Formula\tF7");
 	}
 	else {
-		pCmdUI->SetText("Load Formula");
+		pCmdUI->SetText("&Load Formula\tF7");
 	}
 	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
 		            !m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);	
 }
 
-//  2008.02.07  by THF
+//  2008.02.07  by THF    
 void CMainFrame::OnUpdateMenuPerlLoadSpecificFormula(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
 		            !m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);	
 }
+
+
+//  2008.03.20 by THF
+void CMainFrame::OnUpdateMenuPerlReloadFormula(CCmdUI* pCmdUI) 
+{
+	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
+		            !m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);	
+}
+
 
 
 
@@ -1796,3 +1809,37 @@ void CMainFrame::OnPerlEditMainFormula()
 #endif
 }
 
+
+//  2008.03.20 by THF
+void CMainFrame::OnPerlReloadFormula()
+{
+#ifdef SEH_ENABLE
+	try {
+#endif
+		//  Reload the most recent formula
+		//    (This is a shortcut for unload + load.)
+		the_Perl_Interpreter.reload_FormulaFile();
+#ifdef SEH_ENABLE
+	}
+	catch (...)	 { 
+		logfatal("CMainFrame::OnPerlReloadFormula :\n"); 
+		throw;
+	}
+#endif
+}
+
+
+void CMainFrame::OnPerlCheckSyntax()
+{
+#ifdef SEH_ENABLE
+	try {
+#endif
+		the_Perl_Interpreter.check_Syntax();
+#ifdef SEH_ENABLE
+	}
+	catch (...)	 { 
+		logfatal("CMainFrame::OnPerlEditCheckSyntax :\n"); 
+		throw;
+	}
+#endif
+}
