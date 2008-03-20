@@ -507,6 +507,56 @@ bool Perl::is_a_Formula_loaded()
 }
 
 
+void Perl::check_Syntax()
+{
+#ifdef SEH_ENABLE
+	try {
+#endif  
+	//  Check the syntax of "the actual Formula".
+	//    We can't check "is_a_Formula_loaded()",
+	//    as this implies, the formula got loaded with success.
+	if (the_actual_FormulaFile == "")
+	{ 
+		MessageBox(NULL, "Formula undefined.", "Perl Error", MB_OK);
+		return; 
+	}
+	if (_access(the_actual_FormulaFile.c_str(), F_OK) != 0)
+	{
+		MessageBox(NULL, "Could not load Perl Formula.\nFile not found or not accessible.", 
+			"Perl Error", MB_OK);
+		return;
+	}	
+	//  Enclose path in quotation marks, as some editors
+	//    (e.g emacs from the Unix world) have problems 
+    //    with spaces in (Windows-) path names. 	  
+	string the_File_to_compile = '"' + the_actual_FormulaFile + '"';
+	//  Build command for the DOS console to execute Perl   
+	string the_Console_Command = 
+		string("/K ") +                     //  Take rest of "commandline" as command to execute,
+											//    when creating a new DOS shell.
+		string("perl ") +					//  Perl :) 
+		string("-w ") +						//  Enable warnings 
+		string("-c ") +                     //  Compile only, no execution of the script
+		the_File_to_compile;
+	ShellExecute(
+		NULL,								//  Pointer to parent window; not needed
+		"open",								//  "open" == "execute" for an executable
+		"cmd.exe",							//  DOS window
+		the_Console_Command.c_str(),		//  Command to be executed by the console			
+		"",									//  Default directory
+		SW_SHOWNORMAL);						//  Active window, default size 
+	//  Ignore return codes (errno) here.
+	//    User can see compilation status in the DOS window.  
+#ifdef SEH_ENABLE
+	}
+	catch (...)	 { 
+		logfatal("Perl::is_a_Formula_loaded : \n"); 
+		throw;
+	}
+#endif
+}
+
+
 //  A single interpreter object for OH
 //
 class Perl	the_Perl_Interpreter;

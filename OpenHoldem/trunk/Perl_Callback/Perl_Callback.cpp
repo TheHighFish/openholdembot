@@ -35,7 +35,7 @@ using namespace std;
 //    Note: Backslash is an escape char.
 //    Use two to get a single one.
 //
-#define my_LogFile "C:\\Documents\\Jeff\\Desktop\\Perl_Callback.log"
+#define my_LogFile "C:\\Dokumente und Einstellungen\\Development\\Desktop\\Perl_Callback.log"
 
 
 string toString(double d)
@@ -75,9 +75,13 @@ extern "C" void _declspec(dllexport) _stdcall get_OpenHoldem_Symbol_indirect(
 	FILE *DLL_Log = fopen(my_LogFile, APPEND_MODE);
 	//  This is for debugging only; we check the file the rude way.
 	assert(DLL_Log != NULL);
-	fprintf(DLL_Log, "Pointer: %i Symbol: %s\n", 
+	fprintf(DLL_Log, "Pointer (gws): %i Symbol: %s\n", 
 		Pointer_to_Function_get_OpenHoldem_Symbol, 
 		the_Symbol);
+	fprintf(DLL_Log, "Result pointer: %i\n",
+		(int)the_ResultString);
+	fprintf(DLL_Log, "Result buffer: %s\n",
+		the_ResultString);
 	fclose(DLL_Log);	
 #endif
 	double the_Result; 
@@ -93,7 +97,9 @@ extern "C" void _declspec(dllexport) _stdcall get_OpenHoldem_Symbol_indirect(
 	DLL_Log = fopen(my_LogFile, APPEND_MODE);
 	//  This is for debugging only; we check the file the rude way.
 	assert(DLL_Log != NULL);
-	fprintf(DLL_Log, "Result: %s\n", the_ResultString);
+
+	fprintf(DLL_Log, "Result (Double): %f\n", the_Result);
+	fprintf(DLL_Log, "Result (String): %s\n", the_ResultString);
 	fclose(DLL_Log);	
 #endif	
 }
