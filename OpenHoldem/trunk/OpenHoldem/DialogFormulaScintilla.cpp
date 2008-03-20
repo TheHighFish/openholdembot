@@ -2971,7 +2971,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "handnumber", "the site hand number if available");
 	AddSymbol(parent, "version", "returns the version number of OpenHoldem that is currently running");
 
-	mainParent = parent = AddSymbolTitle("Profile symbols");
+	mainParent = parent = AddSymbolTitle("Table Map symbols");
 	AddSymbol(parent, "sitename$abc", "true if user defined string abc appears within the Table Map symbol s$sitename");
 	AddSymbol(parent, "network$def", "true if user defined string def appears within the Table Map symbol s$network");
 	AddSymbol(parent, "swagdelay", "autoplayer delay in milliseconds between swag keystrokes and button click");
@@ -3314,7 +3314,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "run$prbest", "user chances of hitting pokervalmax on or before the river");
 	AddSymbol(parent, "run$clocks", "total number of cpu clocks used to calculate the run$ symbols");
 
-	mainParent = parent = AddSymbolTitle("Versus Symbols");
+	mainParent = parent = AddSymbolTitle("Versus symbols");
 	AddSymbol(parent, "vs$nhands", "Total possible number of opponent hands");
 	AddSymbol(parent, "vs$nhandshi", "Number of opponent hands that have higher river chances ");
 	AddSymbol(parent, "vs$nhandsti", "Number of opponent hands that have equal river chances");
