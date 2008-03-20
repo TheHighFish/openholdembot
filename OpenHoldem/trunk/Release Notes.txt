@@ -47,7 +47,29 @@ NEW STUFF:
 	ac_betposx (x=0-9) - returns bet position of specified chair
 	ac_dealposx (x=0-9) - returns deal position of specified chair
 
+	MyHand symbols
+	---------
+	mh_3straightxy (x=1 for wheel, 0 not, y=1 for broadway, 0 not) - returns true if the board 
+		has a wheel straight draw or broadway straight draw, given the wheel/broadway parameters 
+		00 - true if the board has neither a wheel straight draw nor a broadway straight draw
+		10 - true if the board has a wheel straight draw
+		01 - true if the board has a broadway straight draw
+		11 - true if the board has either a wheel straight draw or a broadway straight draw
+	mh_bottomsd - returns true if I have a bottom straight draw
+	mh_nsuitedbetter - returns the number of missing suited cards that are higher than my best suited card 
+	mh_kickerbetter - Number of cards that can beat your kicker
+	mh_kickerrank - The rank of your kicker (returns 0 if kicker is shared [board] and thus useless)
+	mh_nouts - returns number of outs (HTC's formula)  
+	mh_str_strflush - returns a value from 0-5 (5 best) of the relative strength of your straight flush
+	mh_str_quads - returns a value from 0-5 (5 best) of the relative strength of your four of a kind
+	mh_str_fullhouse - returns a value from 0-5 (5 best) of the relative strength of your full house
+	mh_str_flush - returns a value from 0-5 (5 best) of the relative strength of your flush
+	mh_str_straight - returns a value from 0-5 (5 best) of the relative strength of your straight
+	mh_str_trips - returns a value from 0-5 (5 best) of the relative strength of your three of a kind
+	mh_str_twopair - returns a value from 0-5 (5 best) of the relative strength of your two pair
+	mh_str_onepair - returns a value from 0-5 (5 best) of the relative strength of your one pair
 
+	
 BUG FIXES:
 - OH will no longer force blinds to bblind==2*sblind, when bblind!=2*sblind.  For example,
   sblind=$0.10 and bblind=$0.25 are acceptable.  (OpenHoldem, thanks to Spud for fix).
@@ -69,8 +91,6 @@ BUG FIXES:
 - m_name_known, m_balance_known will be properly set when connected to PPro (spew)
 
 - logging (oh1.log) was not used when connected to PPro (spew)
-
-- Better extraction of numbers with text (For example, "Pot: $1,000.00") (spew)
   
 - Default formula no longer sets modified flag, so you are not prompted to save it when loading
   some other formula, or on exit. (OpenHoldem)

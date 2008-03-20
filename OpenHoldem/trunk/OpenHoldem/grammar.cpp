@@ -12,6 +12,7 @@
 //  2008.02.27 by THF
 #include "Perl.hpp"
 #include "action.h"
+#include "myhand.h"
 
 using namespace std;
 using namespace boost::spirit;
@@ -261,6 +262,13 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
 			{
 				Action	action;
 				return action.process_query(sym.c_str(), e);
+			}
+
+			// MyHand symbols
+			else if (memcmp(sym.c_str(), "mh_", 3)==0) 
+			{
+				MyHand	myhand;
+				return myhand.process_query(sym.c_str(), e);
 			}
 
 			// all other symbols

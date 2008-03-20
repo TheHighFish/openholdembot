@@ -4,6 +4,8 @@ class Action
 {
 public:
 	double	process_query(const char * pquery, int *e);
+
+private:
 	int		preflop_pos(void);
 	int		prefloprais_pos(void);
 	int		postflop_pos(void);

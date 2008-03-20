@@ -5,8 +5,8 @@
 #include "structs_defines.h"
 
 // Symbol structure
-struct S_symbols {
-
+struct S_symbols 
+{
 	//General
 	double ismanual;
 	double isppro;
@@ -378,7 +378,8 @@ struct S_symbols {
 	double vs$prloslo;
 };
 
-extern class CSymbols {
+extern class CSymbols 
+{
 public:
 	CSymbols::CSymbols();
 	void ResetSymbolsFirstTime(void);
@@ -388,6 +389,7 @@ public:
 	void calc_time(void);
 	void calc_probabilities(void);
 	void get_cardstring(char *c, unsigned int c0, unsigned int c1);
+	double IsHand(const char *a);
 
 	S_symbols	sym;
 	bool		user_chair_confirmed;
@@ -405,7 +407,6 @@ public:
 
 
 private:
-	double IsHand(const char *a);
 	double Chair$(const char *a);
 	double Chairbit$(const char *a);
 	void ResetSymbolsNewHand(void);
