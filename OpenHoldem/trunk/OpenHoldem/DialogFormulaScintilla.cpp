@@ -3215,7 +3215,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "nstraightfill", "total number of cards needed to fill a straight (0-5)");
 	AddSymbol(parent, "nstraightfillcommon", "total number of cards needed to fill a common straight (0-5)");
 	AddSymbol(parent, "nstraightflush", "total number of suited connected cards you have (1-7)");
-	AddSymbol(parent, "nstraightflushcommo", "total number of suited connected common cards (1-5)");
+	AddSymbol(parent, "nstraightflushcommon", "total number of suited connected common cards (1-5)");
 	AddSymbol(parent, "nstraightflushfill", "total number of cards needed to fill a straightflush (0-5)");
 	AddSymbol(parent, "nstraightflushfillcommon", "total number of cards needed to fill a common straightflush (0-5)");
 
@@ -3277,7 +3277,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "didswag", "true if the autoplayer has swag'd during current round");
 	AddSymbol(parent, "nbetsround1 - nbetsround4", "the largest number of bets in front of any player during round 1- round 4");
 	AddSymbol(parent, "nbetsround", "the largest number of bets in front of any player right now");
-	AddSymbol(parent, "didchecround1 - didcheckround4", "true if userchair checked during round 1 - round 4");
+	AddSymbol(parent, "didchecround1 - didchecround4", "true if userchair checked during round 1 - round 4");
 	AddSymbol(parent, "didcallround1 - didcallround4", "true if userchair called during round 1 - round 4");
 	AddSymbol(parent, "didraisround1 - didraisround4", "true if userchair raised during round 1 - round 4");
 	AddSymbol(parent, "didswaground1 - didswaground4", "true if userchair swag'd during round 1 - round 4");
