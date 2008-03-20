@@ -47,6 +47,7 @@ NEW STUFF:
 	ac_betposx (x=0-9) - returns bet position of specified chair
 	ac_dealposx (x=0-9) - returns deal position of specified chair
 
+
 	MyHand symbols
 	---------
 	mh_3straightxy (x=1 for wheel, 0 not, y=1 for broadway, 0 not) - returns true if the board 
@@ -68,6 +69,16 @@ NEW STUFF:
 	mh_str_trips - returns a value from 0-5 (5 best) of the relative strength of your three of a kind
 	mh_str_twopair - returns a value from 0-5 (5 best) of the relative strength of your two pair
 	mh_str_onepair - returns a value from 0-5 (5 best) of the relative strength of your one pair
+	
+- Reload Perl Formula (menu) to avoid unload + load. (TheHighFish).
+
+- Perl syntax check. (TheHighFish). 
+
+- Added some hotkeys:
+    * F12 Shoot replay frame
+    * F4/F5 Load (specific) DLL
+    * F7..F11 Perl menu
+    (TheHighFish)
 
 	
 BUG FIXES:
