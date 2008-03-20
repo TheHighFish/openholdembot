@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="shift_jis"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="8.00"
 	Name="poker-eval"
 	ProjectGUID="{A4DEF05E-E072-493E-B282-84731D60BCF0}"
 	RootNamespace="poker-eval"
 	Keyword="AtlProj"
-	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform

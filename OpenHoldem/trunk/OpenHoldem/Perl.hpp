@@ -57,7 +57,6 @@ extern class Perl
     void load_FormulaFile(string the_new_FormulaFile);
     void reload_FormulaFile();
 	void unload_FormulaFile();
-	void check_Syntax();
 	bool is_a_Formula_loaded();
 }the_Perl_Interpreter;
 
