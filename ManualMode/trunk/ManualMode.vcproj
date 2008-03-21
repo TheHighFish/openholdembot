@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="ManualMode 1.0.4"
+	Name="ManualMode"
 	ProjectGUID="{912CBD08-CFC5-4E5C-A6B5-FD18379467F2}"
 	RootNamespace="ManualMode"
 	Keyword="MFCProj"
