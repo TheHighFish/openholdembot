@@ -22,7 +22,6 @@ struct S_symbols
 	double allidelay;
 	double swagtextmethod;
 	double potmethod;
-	double activemethod;
 
 	//FORMULA FILE
 	double rake;
