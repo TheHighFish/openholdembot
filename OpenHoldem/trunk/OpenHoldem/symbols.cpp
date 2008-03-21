@@ -116,6 +116,7 @@ void CSymbols::ResetSymbolsFirstTime(void)
 		sym.allidelay = 0;
 		sym.swagtextmethod = 3;
 		sym.potmethod = 1;
+		sym.activemethod = 1;
 
 		// formula
 		sym.rake = sym.bankroll = 0;
@@ -734,6 +735,7 @@ void CSymbols::CalcSymbols(void)
 		sym.isaggmode = global.formula.dDefcon == 1.0;									// isaggmode
 		sym.swagtextmethod = global.tablemap.swagtextmethod;							// swagtextmethod
 		sym.potmethod = global.tablemap.potmethod;										// potmethod
+		sym.activemethod = global.tablemap.activemethod;								// activemethod
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Other scraped items
@@ -3657,6 +3659,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "allidelay", 9)==0 && strlen(a)==9)					return sym.allidelay;
 		if (memcmp(a, "swagtextmethod", 14)==0 && strlen(a)==14)			return sym.swagtextmethod;
 		if (memcmp(a, "potmethod", 9)==0 && strlen(a)==9)					return sym.potmethod;
+		if (memcmp(a, "activemethod", 12)==0 && strlen(a)==12)				return sym.activemethod;
 
 		//FORMULA FILE
 		if (memcmp(a, "rake", 4)==0 && strlen(a)==4)						return sym.rake;
