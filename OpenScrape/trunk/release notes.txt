@@ -2,10 +2,10 @@ v1.1.2 2008-03-29
 ================
 NEW STUFF:
 - New symbol s$activemethod is now available.  This is used to determine how OH treats
-  information from the pXactive regions.
-  - 1: (default, legacy) Inactive unless pXactive returns true/active
-  - 2: (new) Active unless pXactive returns false/inactive/out/away  (Thanks, Nick Coldhand)
-  (quiqsilver)
+  information from the pXactive and uXactive regions.
+  - 1: (default, legacy) Inactive unless pXactive/uXactive returns true/active
+  - 2: (new) Active unless pXactive/Uxactive returns false/inactive/out/away  (Thanks,
+    Nick Coldhand)  (quiqsilver)
   
 - New symbol s$potmethod is now available.  This is used to determine the appropriate
   site interpretation for the contents of c0pot0.  s$potmethod can be set to these values:
