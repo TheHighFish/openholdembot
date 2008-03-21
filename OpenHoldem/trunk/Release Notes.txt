@@ -47,11 +47,6 @@ NEW STUFF:
 	ac_betposx (x=0-9) - returns bet position of specified chair
 	ac_dealposx (x=0-9) - returns deal position of specified chair
 
-- Formula Editor: Symbol Tree 
-      - Added a sorted list of all symbols which is in addition to the existing list of symbols grouped by category
-      - Delayed the insertion of the symbols until the user clicks on the 'Symbol' tab to avoid any performance issues
-      - Added context menu on Symbols to allow Copy-ing to the clipboard
-
 	MyHand symbols
 	---------
 	mh_3straightxy (x=1 for wheel, 0 not, y=1 for broadway, 0 not) - returns true if the board 
@@ -74,6 +69,11 @@ NEW STUFF:
 	mh_str_twopair - returns a value from 0-5 (5 best) of the relative strength of your two pair
 	mh_str_onepair - returns a value from 0-5 (5 best) of the relative strength of your one pair
 	
+- Formula Editor: Symbol Tree 
+      - Added a sorted list of all symbols which is in addition to the existing list of symbols grouped by category
+      - Delayed the insertion of the symbols until the user clicks on the 'Symbol' tab to avoid any performance issues
+      - Added context menu on Symbols to allow Copy-ing to the clipboard
+
 - Reload Perl Formula (menu) to avoid unload + load. (TheHighFish).
 
 - Perl syntax check. (TheHighFish). 

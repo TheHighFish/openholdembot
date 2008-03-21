@@ -4,8 +4,8 @@
 #include <boost/spirit/tree/ast.hpp>
 #include "../../CTransform/transform.h"
 
-#define VERSION_NUMBER				1.71
-#define VERSION_TEXT				"1.7.1"  // change version number in OpenHoldem.rc also, when needed
+#define VERSION_NUMBER				1.80
+#define VERSION_TEXT				"1.8.0"  // change version number in OpenHoldem.rc also, when needed
 
 // thread timeout
 #define THREAD_WAIT					3000
