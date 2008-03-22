@@ -359,7 +359,7 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
 			}
 			else if (*i->value.begin() == '/') 
 			{
-				unsigned long div = eval_expression(f, i->children.begin()+1, e);
+				double div = eval_expression(f, i->children.begin()+1, e);
 				if (div != 0)
 				{
 					result = eval_expression(f, i->children.begin(), e) / div;
