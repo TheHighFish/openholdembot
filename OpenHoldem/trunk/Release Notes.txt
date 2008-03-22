@@ -1,4 +1,4 @@
-v1.7.1 2008-03-29
+v1.8.0 2008-03-29
 NEW STUFF:
 - New symbol s$potmethod is now available.  This is used to determine the appropriate
   site interpretation for the contents of c0pot0.  s$potmethod can be set to these values:
@@ -116,7 +116,15 @@ BUG FIXES:
   
 - Hand resets are now triggered not only by a change in dealer button, but by a change in handnumber
   or by a change in the userchair's cards from the previous hand.  (OpenHoldem)
-  
+
+- (TheHighFish) Fixed bug with floating point division introduced by this change in 1.7.0:
+  "Detection of divide-by-zero expressions has been corrected/enhanced for situations that include 
+  invalid symbols (OpenHoldem)"
+  In grammar.cpp, changed:
+	unsigned long div = eval_expression(f, i->children.begin()+1, e);
+  To:
+	double div = eval_expression(f, i->children.begin()+1, e);
+	
   
 v1.7.0 2008-03-15
 NEW STUFF:
