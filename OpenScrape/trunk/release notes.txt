@@ -1,4 +1,4 @@
-v1.1.2 2008-03-29
+v1.1.2 2008-03-28
 ================
 NEW STUFF:
 - New symbol s$potmethod is now available.  This is used to determine the appropriate
