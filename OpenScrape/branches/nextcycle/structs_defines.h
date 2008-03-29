@@ -3,8 +3,8 @@
 
 #include "../CTransform/hash/stdint.h"
 
-#define VERSION_NUMBER				1.11
-#define VERSION_TEXT				"1.1.1"  // change version number in OpenHoldem.rc also, when needed
+#define VERSION_NUMBER				1.12
+#define VERSION_TEXT				"1.1.2"  // change version number in OpenHoldem.rc also, when needed
 
 // Error Codes
 #define SUCCESS						0
