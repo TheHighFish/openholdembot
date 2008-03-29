@@ -68,7 +68,6 @@ void GameState::process_game_state (holdem_state* pstate)
 		int			e;
 		bool		pstate_changed;
 		static int	nopponentsplaying_last=0;
-		static int	dealerchair_last=-1;
 
 		// tracking of nopponentsdealt
 		if (symbols.sym.br==2 || symbols.sym.nopponentsdealt>oppdealt) 
@@ -116,9 +115,8 @@ void GameState::process_game_state (holdem_state* pstate)
 			process_state_engine(pstate, pstate_changed);
 
 		// reset wh symbol GameState if button moves
-		if (symbols.sym.dealerchair != dealerchair_last) 
+		if (new_hand) 
 		{
-			dealerchair_last = symbols.sym.dealerchair;
 			for (i=0; i<hist_sym_count; i++) 
 			{
 				for (j=0; j<4; j++) 
@@ -127,6 +125,8 @@ void GameState::process_game_state (holdem_state* pstate)
 				}
 			}
 		}
+
+		new_hand = false;
 
 		// collect symbol if it ismyturn, or if ismanual
 		if (symbols.sym.ismyturn || symbols.sym.ismanual) 
@@ -600,7 +600,6 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed)
 
 				//reset some vars
 				first_pass_capture = false;
-				new_hand = false;
 				wh_br_last=1;
 				pot_raised = false;
 				pf_limpers_n = 0;

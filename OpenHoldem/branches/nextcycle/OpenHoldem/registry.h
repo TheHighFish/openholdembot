@@ -8,6 +8,23 @@ public:
 	bool WriteProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, CDC* pDC=NULL);
 	bool GetProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, CDC* pDC=NULL);
 
+private:
+	void init_Defaults(void);
+
+private:
+	void read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, int *RegistryValue);
+	void read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, bool *RegistryValue);
+	void read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, unsigned int *RegistryValue);
+	void read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, CString RegistryValue);
+	void read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, double *RegistryValue);
+
+private:
+	void write_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, int RegistryValue);
+	void write_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, CString RegistryValue);
+	void write_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, double RegistryValue);
+
+	
+public:
 	// Window locations and sizes
 	int main_x, main_y, main_dx, main_dy;
 	int formula_x, formula_y, formula_dx, formula_dy;
