@@ -2069,6 +2069,9 @@ void CDlgFormulaScintilla::update_debug_auto(void) {
 		int				N, i;
 		CString			Cstr;
 
+		global.m_WaitCursor = true;
+		BeginWaitCursor();
+
 		// mark symbol result cache as stale
 		for (i=0; i < (int) m_wrk_formula.mFunction.GetSize(); i++) 
 			m_wrk_formula.mFunction[i].fresh = false;
@@ -2107,6 +2110,9 @@ void CDlgFormulaScintilla::update_debug_auto(void) {
 		m_pActiveScinCtrl->SendMessage(SCI_SETTEXT,0,(LPARAM)Cstr.GetString());
 		m_pActiveScinCtrl->GotoPosition(0);
 		m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
+
+		EndWaitCursor();
+		global.m_WaitCursor = false;
 
 #ifdef SEH_ENABLE
 	}
@@ -2251,6 +2257,8 @@ void CDlgFormulaScintilla::init_debug_array(void) {
 		int					stopchar, pos;
 		CString				s;
 
+		global.m_WaitCursor = true;
+		BeginWaitCursor();
 		//
 		// Loop through each line in the debug tab and parse it
 		//
@@ -2293,6 +2301,9 @@ void CDlgFormulaScintilla::init_debug_array(void) {
 			}
 			debug_ar.Add(debug_struct);
 		}
+
+		EndWaitCursor();
+		global.m_WaitCursor = false;
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 
@@ -3275,7 +3286,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "nstraightflushfill", "total number of cards needed to fill a straightflush (0-5)");
 	AddSymbol(parent, "nstraightflushfillcommon", "total number of cards needed to fill a common straightflush (0-5)");
 
-	mainParent = parent = AddSymbolTitle("Rank Bits (aces are hi and lo", NULL, hCatItem);
+	mainParent = parent = AddSymbolTitle("Rank Bits (aces are hi and lo)", NULL, hCatItem);
 	AddSymbol(parent, "rankbits", "bit list of card ranks (yours and commons)");
 	AddSymbol(parent, "rankbitscommon", "bit list of card ranks (commons)");
 	AddSymbol(parent, "rankbitsplayer", "bit list of card ranks (yours)");
@@ -3285,7 +3296,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "srankbitsplayer", "bit list of suited card ranks (yours tsuit)");
 	AddSymbol(parent, "srankbitspoker", "bit list of suited card ranks (pokerval tsuit)");
 
-	mainParent = parent = AddSymbolTitle("Rank Hi (aces are hi", NULL, hCatItem);
+	mainParent = parent = AddSymbolTitle("Rank Hi (aces are hi)", NULL, hCatItem);
 	AddSymbol(parent, "rankhi", "highest card rank (14-2) (yours and commons)");
 	AddSymbol(parent, "rankhicommon", "highest card rank (14-2) (commons)");
 	AddSymbol(parent, "rankhiplayer", "highest card rank (14-2) (yours)");

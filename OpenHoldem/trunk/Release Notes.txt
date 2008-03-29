@@ -1,3 +1,7 @@
+v1.x.x 2008-04-11
+NEW STUFF:
+- Show wait cursor when parsing f$debug (jumpingfences)
+
 v1.8.0 2008-03-29
 NEW STUFF:
 - New symbol s$potmethod is now available.  This is used to determine the appropriate
