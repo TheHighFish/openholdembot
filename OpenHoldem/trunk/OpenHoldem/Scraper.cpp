@@ -580,8 +580,7 @@ void CScraper::scrape_active(int chair, HDC hdcCompatible, HDC hdc)
 			trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &result);
 			SelectObject(hdcCompatible, old_bitmap);
 
-			if (result!="")
-				active[chair] = result;
+			active[chair] = result;
 		}
 
 		// try p region next
@@ -593,8 +592,7 @@ void CScraper::scrape_active(int chair, HDC hdcCompatible, HDC hdc)
 			trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &result);
 			SelectObject(hdcCompatible, old_bitmap);
 
-			if (result!="")
-				active[chair] = result;
+			active[chair] = result;
 		}
 
 		if (active_last[chair] != active[chair]) 
@@ -2062,23 +2060,38 @@ bool CScraper::is_string_seated(CString s)
 
 bool CScraper::is_string_active(CString s) 
 {
-	if (s=="") 
-		return false;
-
-	if (s.MakeLower().Find("false")!=-1 ||
-		s.MakeLower().Find("inactive")!=-1 ||
-		s.MakeLower().Find("out")!=-1) 
+	// new method: active unless pXactive returns false/inactive/out/away
+	if (global.tablemap.activemethod == 2)
 	{
-		return false;
-	}
-
-	else if (s.MakeLower().Find("true")!=-1 ||
-		s.MakeLower().Find("active")!=-1) 
-	{
+		if (s.MakeLower().Find("false")!=-1 ||
+			s.MakeLower().Find("inactive")!=-1 ||
+			s.MakeLower().Find("out")!=-1 ||
+			s.MakeLower().Find("away")!=-1) 
+		{
+			return false;
+		}
+			
 		return true;
 	}
-		
-	return false;
+	// old method: inactive unless pXactive returns true/active
+	else
+	{
+		if (s=="") 
+			return false;
+
+		if (s.MakeLower().Find("inactive")!=-1) 
+		{
+			return false;
+		}
+
+		if (s.MakeLower().Find("true")!=-1 ||
+			s.MakeLower().Find("active")!=-1) 
+		{
+			return true;
+		}
+			
+		return false;
+	}
 }
 
 bool CScraper::is_string_cardback(CString s) 

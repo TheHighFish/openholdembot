@@ -2,6 +2,12 @@ v1.x.x 2008-04-11
 NEW STUFF:
 - Show wait cursor when parsing f$debug (jumpingfences)
 
+- New symbol s$activemethod is now available.  This is used to determine how OH treats
+  information from the pXactive and uXactive regions.
+  - 1: (default, legacy) Inactive unless pXactive/uXactive returns true/active
+  - 2: (new) Active unless pXactive/Uxactive returns false/inactive/out/away  (Thanks,
+    Nick Coldhand)  (quiqsilver)
+
 BUG FIXES:
 - Incorrect initialization of new hand and new betting round (jumpingfences)
 
