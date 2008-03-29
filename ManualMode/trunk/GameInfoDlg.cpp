@@ -40,6 +40,7 @@ void CGameInfoDlg::DoDataExchange(CDataExchange* pDX) {
 	DDX_Control(pDX, IDC_BIG_BET, m_BigBet);
 	DDX_Control(pDX, IDC_ANTE, m_Ante);
 	DDX_Control(pDX, IDC_GAME_TYPE, m_GameType);
+	DDX_Control(pDX, IDC_NETWORK, m_Network);
 	DDX_Control(pDX, IDC_TOURNAMENT, m_Tournament);
 }
 
@@ -68,6 +69,26 @@ BOOL CGameInfoDlg::OnInitDialog() {
 		m_GameType.AddString("Pot Limit");
 		m_GameType.AddString("No Limit");
 		m_GameType.SetWindowPos(NULL, 81, 121, 138, 75, SWP_SHOWWINDOW);
+		m_Network.AddString("Stars");
+		m_Network.AddString("Party");
+		m_Network.AddString("Ultimate");
+		m_Network.AddString("Absolute");
+		m_Network.AddString("Microgaming");
+		m_Network.AddString("Ongame");
+		m_Network.AddString("Cryptologic");
+		m_Network.AddString("Pacific");
+		m_Network.AddString("FullTilt");
+		m_Network.AddString("B2B");
+		m_Network.AddString("Tribeca");
+		m_Network.AddString("Worldpex");
+		m_Network.AddString("iPoker");
+		m_Network.AddString("Tain");
+		m_Network.AddString("Bodog");
+		m_Network.AddString("Everest");
+		m_Network.AddString("Boss");
+		m_Network.AddString("Betfair");
+
+		m_Network.SelectString(0, m_network);
 
 		if (m_gametype == LIMIT_NL)
 			m_GameType.SelectString(0, "No Limit");
@@ -116,6 +137,8 @@ void CGameInfoDlg::OnBnClickedOk() {
 		else if (m_GameType.GetCurSel()==2) {
 			m_gametype = LIMIT_NL;
 		}
+
+		m_Network.GetLBText(m_Network.GetCurSel(), m_network);
 
 		m_tournament = m_Tournament.GetCheck() & BST_CHECKED;
 

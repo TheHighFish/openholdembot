@@ -24,6 +24,8 @@
 #define IDC_BUTTON4                     1005
 #define IDC_MACRO                       1005
 #define IDC_DMINUS                      1006
+#define IDC_COMBO1                      1006
+#define IDC_NETWORK                     1006
 #define IDC_DPLUS                       1007
 #define IDC_SMALL_BLIND                 1077
 #define IDC_BIG_BLIND                   1078
@@ -126,7 +128,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        137
 #define _APS_NEXT_COMMAND_VALUE         32860
-#define _APS_NEXT_CONTROL_VALUE         1006
+#define _APS_NEXT_CONTROL_VALUE         1007
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

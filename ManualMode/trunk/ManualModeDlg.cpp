@@ -340,6 +340,7 @@ BOOL CManualModeDlg::OnInitDialog() {
 	bbet = "20";
 	ante = "0";
 	limit = LIMIT_FL;
+	network = "Stars";
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -608,7 +609,7 @@ void CManualModeDlg::draw_center_info_box(void) {
 		left = cr.right/2-60;
 		top = 4;
 		right = cr.right/2+60;
-		bottom = 67;
+		bottom = 78;
 
 		pTempPen = (CPen*)pDC->SelectObject(&black_pen);
 		oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
@@ -651,6 +652,9 @@ void CManualModeDlg::draw_center_info_box(void) {
 		else {
 			s.Format(" Pot: %.0f\n", pot[0]);
 		}
+		t.Append(s);
+
+		s.Format(" Net: %s\n", network);
 		t.Append(s);
 
 		// Draw it
@@ -1226,13 +1230,16 @@ void CManualModeDlg::OnContextMenu(CWnd* pWnd, CPoint point) {
 			gameinfo.m_bigbet = bbet;
 			gameinfo.m_ante = ante;
 			gameinfo.m_gametype = limit;
+			gameinfo.m_network = network;
 			gameinfo.m_tournament = istournament;
+
 			if (gameinfo.DoModal() == IDOK) {
 				sblind = gameinfo.m_sblind;
 				bblind = gameinfo.m_bblind;
 				bbet = gameinfo.m_bigbet;
 				ante = gameinfo.m_ante;
 				limit = gameinfo.m_gametype;
+				network = gameinfo.m_network;
 				istournament = gameinfo.m_tournament;
 				InvalidateRect(NULL, true);
 			}
@@ -1586,7 +1593,7 @@ void CManualModeDlg::get_click_loc(CPoint p) {
 
 		// see if we clicked on the center info box
 		if (p.x >= cr.right/2-60 && p.x <= cr.right/2+60 &&
-			p.y >= 4 &&	p.y <= 67) {
+			p.y >= 4 &&	p.y <= 78) {
 			click_loc = CIB;
 			click_chair = -1;
 			return;

@@ -1,8 +1,8 @@
 .osdb1
 
-// OpenScrape 1.0.4
+// OpenScrape 1.1.1
 
-// 2008-02-05 21:45:07
+// 2008-03-28 14:59:45
 // 32 bits per pixel
 
 //
@@ -132,7 +132,7 @@ r$i1button        508 320 520 332   ff0000    0 N
 r$i0state         491 331 492 332   ffffff    0 C 
 r$i0label         493 322 500 331   ffffff    0 H0
 r$i0button        491 320 503 332   ff0000    0 N 
-r$c0pot0          254  49 298  64        0    0 T0
+r$c0pot0          255  49 346  62        0    0 T0
 r$c0handnumber    271   5 309  20        0    0 T0
 r$c0cardface4     349 144 381 186        0    0 H0
 r$c0cardface3     310 144 342 186        0    0 H0
@@ -140,6 +140,7 @@ r$c0cardface2     271 144 303 186        0    0 H0
 r$c0cardface1     232 144 264 186        0    0 H0
 r$c0cardface0     193 144 225 186        0    0 H0
 r$c0istournament  247  21 254  30        0    0 H0
+r$i5state         256  62 346  77        0    0 T0
 
 //
 // fonts

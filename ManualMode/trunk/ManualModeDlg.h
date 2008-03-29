@@ -66,6 +66,7 @@ protected:
 	CString				bbet;
 	CString				ante;
 	int					limit;
+	CString				network;
 	bool				istournament;
 
 	// For tracking right click locations
