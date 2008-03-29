@@ -580,7 +580,8 @@ void CScraper::scrape_active(int chair, HDC hdcCompatible, HDC hdc)
 			trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &result);
 			SelectObject(hdcCompatible, old_bitmap);
 
-			active[chair] = result;
+			if (result!="")
+				active[chair] = result;
 		}
 
 		// try p region next
@@ -592,7 +593,8 @@ void CScraper::scrape_active(int chair, HDC hdcCompatible, HDC hdc)
 			trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &result);
 			SelectObject(hdcCompatible, old_bitmap);
 
-			active[chair] = result;
+			if (result!="")
+				active[chair] = result;
 		}
 
 		if (active_last[chair] != active[chair]) 
