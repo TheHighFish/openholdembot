@@ -18,11 +18,12 @@ public:
 	int getsiteid (void);
 	bool checkname (int m_chair);
 	double getstat (int m_chair, PT_Stats stat);	
-	double update_stat (int m_chair, int stat);	
+	double update_stat (int m_chair, int stat);
+	void clearstats(void);
 
 	bool				disable;
 	CString				conn_str, ip_addr, port, user, pass, dbname;
-	int					update_delay, cache_refresh;
+	int					update_delay, cache_refresh, last_siteid;
 	CRITICAL_SECTION	pt_cs;
 	bool				connected;
 	PGconn				*pgconn;

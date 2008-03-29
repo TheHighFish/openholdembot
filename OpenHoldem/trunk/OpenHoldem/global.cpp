@@ -519,6 +519,11 @@ void CGlobal::capture_state(const char *title)
 				playing = false;
 		}
 
+		// When using MM, grab i5state for PT network
+		if (symbols.sym.ismanual)
+		{
+			mm_network = scraper.buttonstate[5];
+		}
 
 		// Poker window title
 		strncpy(global.state[global.state_index&0xff].m_title, title, 64);

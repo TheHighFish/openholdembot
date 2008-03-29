@@ -88,6 +88,8 @@ public:
 	// Startup path
 	char			startup_path[MAX_PATH];
 
+	CString			mm_network;
+
 } global;
 
 bool parse_loop(const CUPDUPDATA* pCUPDUPData);

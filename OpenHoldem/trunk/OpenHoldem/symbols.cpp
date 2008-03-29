@@ -1010,12 +1010,21 @@ void CSymbols::calc_stakes(void)
 					else if (scraper.playerbet[i%global.tablemap.num_chairs] != 0 && found_inferred_sb && !found_inferred_bb) 
 					{
 						if (sym.bblind==0) 
-						{ 
-							sym.bblind = scraper.playerbet[i%global.tablemap.num_chairs];
+						{
+							// !heads up - normal blinds
+							if (i%global.tablemap.num_chairs != sym.dealerchair)
+							{
+								sym.bblind = scraper.playerbet[i%global.tablemap.num_chairs];
+							}
+							// heads up - reversed blinds
+							else
+							{
+								sym.bblind = sym.sblind;
+								sym.sblind = scraper.playerbet[i%global.tablemap.num_chairs];
+							}
 							found_inferred_bb = true;
 						}
 					}
-
 				}
 			}
 			

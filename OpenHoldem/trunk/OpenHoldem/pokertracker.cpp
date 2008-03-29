@@ -288,15 +288,24 @@ int	PokerTracker::getsiteid (void) {
 		} 
 		else 
 		{
-			//Is s$sitename one of the supported PT sites?  Return the proper site_id for db queries.
-			for (i=0; i<=20; i++) {
-					sym.Format("sitename$%s", networkid[i]);
-					if (symbols.GetSymbolVal(sym.MakeLower().GetString(), &e) && strlen(networkid[i])) { return i; }
+			if (symbols.sym.ismanual)
+			{
+				for (i=0; i<=20; i++) {
+						if ((global.mm_network == networkid[i]) && strlen(networkid[i])) { return i; }
+				}
 			}
-			//Is s$network one of the supported PT sites?  Return the proper site_id for db queries.
-			for (i=0; i<=20; i++) {
-					sym.Format("network$%s", networkid[i]);
-					if (symbols.GetSymbolVal(sym.MakeLower().GetString(), &e) && strlen(networkid[i])) { return i; }
+			else
+			{
+				//Is s$sitename one of the supported PT sites?  Return the proper site_id for db queries.
+				for (i=0; i<=20; i++) {
+						sym.Format("sitename$%s", networkid[i]);
+						if (symbols.GetSymbolVal(sym.MakeLower().GetString(), &e) && strlen(networkid[i])) { return i; }
+				}
+				//Is s$network one of the supported PT sites?  Return the proper site_id for db queries.
+				for (i=0; i<=20; i++) {
+						sym.Format("network$%s", networkid[i]);
+						if (symbols.GetSymbolVal(sym.MakeLower().GetString(), &e) && strlen(networkid[i])) { return i; }
+				}
 			}
 		}
 		return -1 ;
@@ -428,19 +437,26 @@ double PokerTracker::update_stat (int m_chr, int stat) {
 		siteid = getsiteid();
 		if (siteid == -1)  return result;
 
+		/*// siteid has changed -- we're using ManualMode 
+		if (siteid != last_siteid)
+		{
+			clearstats();
+			last_siteid = siteid;
+		}*/
+
 		if (PQstatus(pgconn) != CONNECTION_OK || !connected)  return result;
 
 		if (m_chr<0 || m_chr>9 || stat<pt_min || stat>pt_max)  return result;
 
-		// Only query to get stats, if the name exists in PT, and either
-		// the timeout has expired, or we don't yet have stats for this chair
-		// otherwise return the value from the cache
+		// If we already have stats cached for the player, the timeout has not expired,
+		// return the value from the cache...
 		if (symbols.sym.elapsed-player_stats[m_chr].t_elapsed[stat] < PT.cache_refresh &&
 			 player_stats[m_chr].t_elapsed[stat] != -1 &&
-			 player_stats[m_chr].stat[stat] != -1) 
+			 player_stats[m_chr].stat[stat] != -1)
 		{
 				 result = player_stats[m_chr].stat[stat];
 		}
+		// ...otherwise query the database
 		else 
 		{
 			// get query string for the requested statistic
@@ -552,6 +568,13 @@ bool PokerTracker::queryname (char * query_name, char * scraped_name, char * bes
 		siteid = getsiteid();
 		if (siteid == -1)  return false;
 
+		// siteid has changed -- we're using ManualMode
+		if (siteid != last_siteid)
+		{
+			clearstats();
+			last_siteid = siteid;
+		}
+
 		if (PQstatus(pgconn) != CONNECTION_OK || !connected)  return false;
 
 		if (strlen(query_name)==0)  return false;
@@ -620,6 +643,29 @@ bool PokerTracker::queryname (char * query_name, char * scraped_name, char * bes
 	}
 	catch (...)	 { 
 		logfatal("PokerTracker::queryname : \n"); 
+		throw;
+	}
+#endif
+}
+void PokerTracker::clearstats (void){
+#ifdef SEH_ENABLE
+	try {
+#endif
+	int		i,j;
+
+	for (i=0; i<=9; i++) {
+		for (j=pt_min; j<=pt_max; j++) {
+			player_stats[i].stat[j] = -1.0 ;
+			player_stats[i].t_elapsed[j] = -1 ;
+		}
+		player_stats[i].found = false ;
+		strcpy (player_stats[i].pt_name, "") ;
+		strcpy (player_stats[i].scraped_name, "") ;
+	}
+#ifdef SEH_ENABLE
+	}
+	catch (...)	 { 
+		logfatal("PokerTracker::cleardata : \n"); 
 		throw;
 	}
 #endif

@@ -8,8 +8,17 @@ NEW STUFF:
   - 2: (new) Active unless pXactive/Uxactive returns false/inactive/out/away  (Thanks,
     Nick Coldhand)  (quiqsilver)
 
+- When using ManualMode, the new "Network" option now available in the ManualMode interface
+  is now used as the network for Poker Tracker data.  This means s$sitename and s$network in
+  the ManualMode table map are no longer used for Poker Tracker.  (Thanks, Winngy)
+  (quiqsilver)
+
 BUG FIXES:
 - Incorrect initialization of new hand and new betting round (jumpingfences)
+
+- The correct blind size will now be inferred in a heads up situation.  (Thanks, PhunkNugget)
+  (quiqsilver)
+
 
 v1.8.0 2008-03-29
 NEW STUFF:
