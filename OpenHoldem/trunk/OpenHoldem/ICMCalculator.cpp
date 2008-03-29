@@ -83,6 +83,7 @@ double ICM::ProcessQueryICM(const char* pquery, int *e)
       if ((playersseatedbits>>i)&1)
       {
 		  stacks[i] = symbols.stacks_at_hand_start[i] - symbols.sym.currentbet[i];
+		  //ASSERT(stacks[i] >= 0.0001);
       }
    }
 
@@ -267,6 +268,7 @@ double ICM::ProcessQueryICM(const char* pquery, int *e)
             pot -= symbols.sym.currentbet[mychair];
             for (i = (ncallers -1); i>=0; i--)
             {
+			   ASSERT(biggest[i] >= 0);
                sidepots[i] = min(stacks[biggest[i]], stacks[mychair]) - mybet;
                mybet += sidepots[i];
             }
@@ -278,6 +280,7 @@ double ICM::ProcessQueryICM(const char* pquery, int *e)
 
                for (j = 0; j<=i; j++)
                {
+				  ASSERT(biggest[j] >= 0);
                   stacks[biggest[j]] += win;
                }
             }

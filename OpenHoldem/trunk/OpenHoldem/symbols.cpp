@@ -637,6 +637,8 @@ void CSymbols::CalcSymbols(void)
 			player_card_cur[0] = player_card_cur[1] = CARD_NOCARD;
 		}
 
+		sym.handnumber = scraper.s_limit_info.handnumber;								// handnumber
+
 		// New hand is triggered by change in dealerchair (button moves), or change in userchair's cards (as long as it is not
 		// a change to nocards or cardbacks), or a change in handnumber
 		if (sym.dealerchair != dealerchair_last ||
@@ -649,6 +651,7 @@ void CSymbols::CalcSymbols(void)
 			player_card_last[0] = player_card_cur[0];
 			player_card_last[1] = player_card_cur[1];
 			handnumber_last = sym.handnumber;
+			br_last = -1;	// ensure betround reset
 
 			// Update game_state so it knows that a new hand has happened
 			game_state.new_hand = true;
@@ -710,6 +713,7 @@ void CSymbols::CalcSymbols(void)
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Things to do when we have a new round
+		if (sym.betround == 0) return;
 		if (sym.betround != br_last) 
 		{
 			br_last = sym.betround;
@@ -737,7 +741,6 @@ void CSymbols::CalcSymbols(void)
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Other scraped items
-		sym.handnumber = scraper.s_limit_info.handnumber;								// handnumber
 		if (reset_stakes || sym.sblind==0 || sym.bblind==0 ||
 			(global.ppro_is_connected && global.ppro_tid != 0)) 
 		{
