@@ -321,13 +321,13 @@ BOOL CManualModeDlg::OnInitDialog() {
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
-	SetWindowPos(NULL, 0, 0, 580, 360, SWP_NOMOVE);
+	SetWindowPos(NULL, 0, 0, MM_WIDTH, MM_HEIGHT, SWP_NOMOVE);
 
 	// Restore window location and size
 	reg.read_reg();
 	max_x = GetSystemMetrics(SM_CXSCREEN) - GetSystemMetrics(SM_CXICON);
 	max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
-	SetWindowPos(NULL, min(reg.manual_x, max_x), min(reg.manual_y, max_y), 580, 360, SWP_NOCOPYBITS);
+	SetWindowPos(NULL, min(reg.manual_x, max_x), min(reg.manual_y, max_y), MM_WIDTH, MM_HEIGHT, SWP_NOCOPYBITS);
 
 	// Get last used macro
 	macro_text = reg.macro;
@@ -396,9 +396,15 @@ void CManualModeDlg::OnPaint() {
 		// Draw center info box
 		draw_center_info_box();
 
+		int shift = 0;
+		if (card[CC0+0] == CARD_NOCARD || card[CC0+1] == CARD_NOCARD || card[CC0+2] == CARD_NOCARD)
+			shift = 10;
+		else if (card[CC0+3] == CARD_NOCARD && card[CC0+4] != CARD_NOCARD)
+			shift = 10;
+
 		// Draw common cards
 		for (i=0; i<=4; i++) {
-			draw_card(card[CC0+i], cr.right/2 + cc[i][0], cr.bottom/2 + cc[i][1]);
+			draw_card(card[CC0+i], cr.right/2 + cc[i][0] , cr.bottom/2 + cc[i][1], shift);
 		}
 
 		// Draw collection of player info
@@ -755,7 +761,7 @@ void CManualModeDlg::draw_dealer_button(int chair) {
 #endif
 }
 
-void CManualModeDlg::draw_card(unsigned int card, int left, int top) {
+void CManualModeDlg::draw_card(unsigned int card, int left, int top, int shift) {
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -800,7 +806,7 @@ void CManualModeDlg::draw_card(unsigned int card, int left, int top) {
 						 StdDeck_SUIT(card) == Suit_HEARTS ? CARDSIZEY*1 :
 						 StdDeck_SUIT(card) == Suit_DIAMONDS ? CARDSIZEY*2 :
 						 StdDeck_SUIT(card) == Suit_CLUBS ? CARDSIZEY*3 : 0;
-			pDC->BitBlt(left, top, CARDSIZEX, CARDSIZEY, &compatDC, rankoffset, suitoffset, SRCCOPY);
+			pDC->BitBlt(left, top + shift, CARDSIZEX, CARDSIZEY, &compatDC, rankoffset, suitoffset, SRCCOPY);
 		}
 
 		one_card.DeleteObject();

@@ -16,6 +16,10 @@
 #define LIMIT_PL		1
 #define LIMIT_FL		2
 
+// Window Size
+#define MM_WIDTH		580
+#define MM_HEIGHT		360
+
 // Startup path
 extern char	startup_path[MAX_PATH];
 
@@ -89,7 +93,7 @@ protected:
 
 	void draw_seated_active_circle(int chair);
 	void draw_center_info_box(void);
-	void draw_card(unsigned int card, int left, int top);
+	void draw_card(unsigned int card, int left, int top, int shift = 0);
 	void draw_dealer_button(int chair); 
 	void draw_name_box(int chair); 
 	void draw_balance_box(int chair); 
