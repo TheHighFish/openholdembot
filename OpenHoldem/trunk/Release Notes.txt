@@ -23,7 +23,7 @@ BUG FIXES:
   
 - ntraightfill family calculation corrected to give correct result when straight present (Matrix)
 
-- Formula Editor dialog changed to prevent higher than list999 being referenced.
+- Formula Editor dialog changed to prevent higher than list999 being referenced (Matrix)
 
 - Autoplayer will not act if user not playing (no cards in hand) (Matrix)  
 
