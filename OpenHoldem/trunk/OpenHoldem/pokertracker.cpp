@@ -437,13 +437,6 @@ double PokerTracker::update_stat (int m_chr, int stat) {
 		siteid = getsiteid();
 		if (siteid == -1)  return result;
 
-		/*// siteid has changed -- we're using ManualMode 
-		if (siteid != last_siteid)
-		{
-			clearstats();
-			last_siteid = siteid;
-		}*/
-
 		if (PQstatus(pgconn) != CONNECTION_OK || !connected)  return result;
 
 		if (m_chr<0 || m_chr>9 || stat<pt_min || stat>pt_max)  return result;
