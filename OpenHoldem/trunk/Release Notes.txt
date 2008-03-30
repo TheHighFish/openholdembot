@@ -12,12 +12,20 @@ NEW STUFF:
   is now used as the network for Poker Tracker data.  This means s$sitename and s$network in
   the ManualMode table map are no longer used for Poker Tracker.  (Thanks, Winngy)
   (quiqsilver)
+  
+- New dll message phl1k introduced to pass address of OH handlists (Matrix)  
 
 BUG FIXES:
 - Incorrect initialization of new hand and new betting round (jumpingfences)
 
 - The correct blind size will now be inferred in a heads up situation.  (Thanks, PhunkNugget)
   (quiqsilver)
+  
+- ntraightfill family calculation corrected to give correct result when straight present (Matrix)
+
+- Formula Editor dialog changed to prevent higher than list999 being referenced.
+
+- Autoplayer will not act if user not playing (no cards in hand) (Matrix)  
 
 
 v1.8.0 2008-03-29
