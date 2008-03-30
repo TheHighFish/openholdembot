@@ -270,9 +270,10 @@ void CSymbols::ResetSymbolsFirstTime(void)
 		// flushes straights sets
 		sym.nsuited = sym.nsuitedcommon = sym.tsuit = sym.tsuitcommon = 0;
 		sym.nranked = sym.nrankedcommon = sym.trank = sym.trankcommon = 0;
-		sym.nstraight = sym.nstraightcommon = sym.nstraightfill = sym.nstraightfillcommon = 0;
-		sym.nstraightflush = sym.nstraightflushcommon = sym.nstraightflushfill = sym.nstraightflushfillcommon = 0;
-
+			//straightfill inits changed from 0 to 5; 2008-03-25 Matrix
+		sym.nstraight = sym.nstraightcommon = 0;
+		sym.nstraightflush = sym.nstraightflushcommon = 0;
+		sym.nstraightfill = sym.nstraightfillcommon = sym.nstraightflushfill = sym.nstraightflushfillcommon = 5;
 		// rank bits
 		sym.rankbits = sym.rankbitscommon = sym.rankbitsplayer = sym.rankbitspoker = 0;
 		sym.srankbits = sym.srankbitscommon = sym.srankbitsplayer = sym.srankbitspoker = 0;
@@ -529,8 +530,10 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 		// flushes straights sets
 		sym.nsuited = sym.nsuitedcommon = sym.tsuit = sym.tsuitcommon = 0;
 		sym.nranked = sym.nrankedcommon = sym.trank = sym.trankcommon = 0;
-		sym.nstraight = sym.nstraightcommon = sym.nstraightfill = sym.nstraightfillcommon = 0;
-		sym.nstraightflush = sym.nstraightflushcommon = sym.nstraightflushfill = sym.nstraightflushfillcommon = 0;
+			//straightfill inits changed from 0 to 5; 2008-03-25 Matrix
+		sym.nstraight = sym.nstraightcommon = 0;
+		sym.nstraightflush = sym.nstraightflushcommon = 0;
+		sym.nstraightfill = sym.nstraightfillcommon = sym.nstraightflushfill = sym.nstraightflushfillcommon = 5;
 
 		// rank bits
 		sym.rankbits = sym.rankbitscommon = sym.rankbitsplayer = sym.rankbitspoker = 0;
@@ -2590,7 +2593,7 @@ void CSymbols::calc_fl_str_set(void)
 				sym.nstraight = (sym.nstraight<1 ? 1 : sym.nstraight);					// nstraight
 			}
 			n = bitcount(((strbits>>i)&0x1f));
-			if (5-n < sym.nstraightfill || sym.nstraightfill==0) 
+			if (5-n < sym.nstraightfill)					// 2008-03-25 Matrix
 			{
 				sym.nstraightfill = 5-n;												// nstraightfill
 			}
@@ -2651,7 +2654,7 @@ void CSymbols::calc_fl_str_set(void)
 					sym.nstraightcommon = (sym.nstraightcommon<1 ? 1 : sym.nstraightcommon); // nstraightcommon
 				}
 				n = bitcount(((strbits>>i)&0x1f));
-				if (5-n < sym.nstraightfillcommon || sym.nstraightfillcommon==0) 
+				if (5-n < sym.nstraightfillcommon)					//2008-03-25 Matrix
 				{
 					sym.nstraightfillcommon = 5-n;										// nstraightfillcommon
 				}
@@ -2703,7 +2706,7 @@ void CSymbols::calc_fl_str_set(void)
 					sym.nstraightflush = (sym.nstraightflush<1 ? 1 : sym.nstraightflush);	// nstraightflush
 				}
 				n = bitcount(((strbits>>i)&0x1f));
-				if (5-n < sym.nstraightflushfill || sym.nstraightflushfill==0) 
+				if (5-n < sym.nstraightflushfill)						// 2008-03-25 Matrix
 				{
 					sym.nstraightflushfill = 5-n;										// nstraightflushfill
 				}
@@ -2762,7 +2765,7 @@ void CSymbols::calc_fl_str_set(void)
 							(sym.nstraightflushcommon<1 ? 1 : sym.nstraightflushcommon);		// nstraightflushcommon
 					}
 					n = bitcount(((strbits>>i)&0x1f));
-					if (5-n < sym.nstraightflushfillcommon || sym.nstraightflushfillcommon==0) 
+					if (5-n < sym.nstraightflushfillcommon )			// 2008-03-25 Matrix
 					{
 						sym.nstraightflushfillcommon = 5-n;								// nstraightflushfillcommon
 					}

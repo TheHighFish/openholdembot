@@ -1054,11 +1054,11 @@ void CMainFrame::OnTimer(UINT nIDEvent) {
 				scraper.card_player[(int) symbols.sym.userchair][0] == CARD_NOCARD ||
 				scraper.card_player[(int) symbols.sym.userchair][1] == CARD_NOCARD) 
 			{
-				playing = false;
+				symbols.sym.playing = playing = false; //2008-03-25 Matrix
 			}
 			else 
 			{
-				playing = true;
+				symbols.sym.playing = playing = true;
 			}
 
 			// Only update these things if we are not in the middle of a heartbeat update, so as to

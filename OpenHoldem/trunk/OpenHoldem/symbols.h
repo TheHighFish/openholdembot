@@ -377,6 +377,7 @@ struct S_symbols
 	double vs$prwinlo;
 	double vs$prtielo;
 	double vs$prloslo;
+	bool   playing; //2008-03-25 Matrix
 };
 
 extern class CSymbols 

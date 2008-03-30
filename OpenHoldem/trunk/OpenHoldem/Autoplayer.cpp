@@ -187,6 +187,9 @@ void Autoplayer::do_autoplayer(void) {
 		// if we have no visible buttons, then return
 		if (!symbols.sym.myturnbits) { return; }
 
+		// if we are not playing (occluded?) 2008-03-25 Matrix
+		if (!symbols.sym.playing) { return; }
+
 		// If we don't have enough stable frames, then return
 		x = count_same_scrapes();
 		if (x < (int) global.preferences.frame_delay) { return; }

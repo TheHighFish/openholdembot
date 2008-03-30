@@ -138,6 +138,10 @@ void CDll::load_dll(char * path) {
 				// pass "pfgws" message
 				(process_message) ("pfgws", GetSymbolFromDll);
 
+				//pass "phl1k" message (address of handlist arrays)
+				//  2008-03-22 Matrix
+				(process_message) ("phl1k",global.formula.inlist);
+
 				//  2008.02.27 by THF
 				//
 				//  pass "p_send_chatMessage" message  				
