@@ -27,6 +27,8 @@ BUG FIXES:
 
 - Autoplayer will not act if user not playing (no cards in hand) (Matrix)  
 
+- Fixed inconsistent Window Title after disconnecting from table (Spew)
+
 
 v1.8.0 2008-03-29
 NEW STUFF:
