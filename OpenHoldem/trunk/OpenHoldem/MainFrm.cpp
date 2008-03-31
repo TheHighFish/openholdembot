@@ -941,7 +941,7 @@ void CMainFrame::OnBnClickedRedCircle() {
 		symbols.ResetSymbolsFirstTime();
 
 		// Change window title
-		SetWindowText(global.formula_name);
+		SetWindowText(global.formula_name + " - " + m_strTitle);
 
 		// Reset Display
 		InvalidateRect(NULL, false);
