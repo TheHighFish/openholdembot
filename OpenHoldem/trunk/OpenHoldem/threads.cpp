@@ -15,12 +15,12 @@
 #include "PokerPro.h"
 #include "threads.h"
 
-HANDLE				h_heartbeat_thread;
+CWinThread			*h_heartbeat_thread=NULL;
 bool				heartbeat_thread_alive = false;
 CRITICAL_SECTION	cs_heartbeat;
 double				heartbeat_cycle_time=0;
 
-HANDLE				h_prwin_thread;
+CWinThread			*h_prwin_thread=NULL;
 bool				prwin_thread_alive = false;
 bool				prwin_thread_complete = false;
 CRITICAL_SECTION	cs_prwin;
@@ -34,7 +34,7 @@ unsigned int		prwin_run_with_commoncards[5] = {CARD_NOCARD};
 CRITICAL_SECTION	cs_updater;
 CRITICAL_SECTION	cs_calc_f$symbol;
 
-void heartbeat_thread(void *) 
+UINT __cdecl heartbeat_thread(LPVOID pParam)
 {
 #ifdef SEH_ENABLE
 	// Set exception handler
@@ -168,7 +168,8 @@ void heartbeat_thread(void *)
 			if (symbols.sym.issittingin && !pokertracker_thread_alive && !PT.disable) 
 			{
 				pokertracker_thread_alive = true;
-				h_pokertracker_thread = (HANDLE) _beginthread (pokertracker_thread, 0, 0);
+				h_pokertracker_thread = AfxBeginThread(pokertracker_thread, 0);
+
 				write_log("Started Poker Tracker thread.\n");
 			}
 
@@ -269,6 +270,11 @@ void heartbeat_thread(void *)
 			LeaveCriticalSection(&cs_heartbeat);
 
 		}
+
+		AfxEndThread(0);
+
+		return 0;
+
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 
@@ -344,8 +350,7 @@ e     1    2       3     4     handrank169 ->
   return 0; //no good
 }
 
-
-void prwin_thread(void *) 
+UINT __cdecl prwin_thread(LPVOID pParam)
 {
 #ifdef SEH_ENABLE
 	// Set exception handler
@@ -367,9 +372,6 @@ void prwin_thread(void *)
 		double			sym_nopp, sym_nit;
 		unsigned int	deck[52], x, swap;
 		int				numberOfCards;
-
-//LARGE_INTEGER bcount, ecount, lFrequency;
-//QueryPerformanceCounter(&bcount);
 
 		// player cards
 		CardMask_RESET(plCards);
@@ -576,14 +578,16 @@ void prwin_thread(void *)
 		}
 
 		EnterCriticalSection(&cs_prwin);
-		if (nit >= sym_nit) {
+		if (nit >= sym_nit) 
+		{
 			prwin_thread_complete = true;
 			symbols.sym.prwin = win / sym_nit;
 			symbols.sym.prtie = tie / sym_nit;
 			symbols.sym.prlos = los / sym_nit;
 			prwin_iterator_progress = nit;
 		}
-		else {
+		else 
+		{
 			prwin_thread_complete = false;
 			symbols.sym.prwin = 0;
 			symbols.sym.prtie = 0;
@@ -592,28 +596,21 @@ void prwin_thread(void *)
 			prwin_run_with_nit = 0;
 			prwin_run_with_f$p = 0;
 			prwin_run_with_br = 0;
-			for (i=0; i<=1; i++) {
+			for (i=0; i<=1; i++) 
+			{
 				prwin_run_with_playercards[i] = CARD_NOCARD;
 			}
-			for (i=0; i<=4; i++) {
+			for (i=0; i<=4; i++) 
+			{
 				prwin_run_with_commoncards[i] = CARD_NOCARD;
 			}
 		}
 		prwin_thread_alive = false;
 		LeaveCriticalSection(&cs_prwin);
 
+		AfxEndThread(0);
 
-//QueryPerformanceCounter(&ecount);
-//QueryPerformanceFrequency(&lFrequency);
-//CString s; s.Format("2;%d;%.0f;%.8f;%.9f;%.9f;%.9f\n", 
-//					nopp, sym_nit, ((double) (ecount.LowPart - bcount.LowPart))/((double) lFrequency.LowPart),
-//					symbols.sym.prwin, symbols.sym.prtie, symbols.sym.prlos);
-
-//FILE *fp;
-//fp = fopen("prwin algos.txt", "a");
-//fprintf(fp, s);
-//fclose(fp);
-
+		return 0;
 
 #ifdef SEH_ENABLE
 	}

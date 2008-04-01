@@ -10,11 +10,12 @@
 #include "GameState.h"
 #include "global.h"
 
-HANDLE				h_pokertracker_thread=NULL;
+CWinThread			*h_pokertracker_thread=NULL;
 bool				pokertracker_thread_alive=false;
 PokerTracker		PT;
 
-void pokertracker_thread( void * ) {
+UINT __cdecl pokertracker_thread(LPVOID pParam)
+{
 #ifdef SEH_ENABLE
 	// Set exception handler
 	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
@@ -25,20 +26,23 @@ void pokertracker_thread( void * ) {
 #endif
 		int			i, j;
 
-		while (pokertracker_thread_alive) {
+		while (pokertracker_thread_alive) 
+		{
 
-			if (!PT.connected)  PT.connect();
+			if (!PT.connected)  
+				PT.connect();
 
-			if (PQstatus(PT.pgconn) == CONNECTION_OK && PT.connected) {
+			if (PQstatus(PT.pgconn) == CONNECTION_OK && PT.connected) 
+			{
+				for (i=0; i<=9; i++) 
+				{
+					if (symbols.sym.issittingin || symbols.sym.isppro || symbols.sym.ismanual) 
+					{
+						if (PT.checkname(i)) 
+						{
 
-				for (i=0; i<=9; i++) {
-
-					if (symbols.sym.issittingin || symbols.sym.isppro || symbols.sym.ismanual) {
-
-						if (PT.checkname(i)) {
-
-							for (j=pt_min; j<=pt_max; j++) {
-
+							for (j=pt_min; j<=pt_max; j++) 
+							{
 								PT.update_stat(i, j);
 							}
 						}
@@ -46,14 +50,18 @@ void pokertracker_thread( void * ) {
 				}
 			}
 
-			for (i=0; i<PT.update_delay && pokertracker_thread_alive; i++) {
+			for (i=0; i<PT.update_delay && pokertracker_thread_alive; i++)
 				Sleep(1000);
-			}
 		}
 
 		PT.disconnect();
+
 		write_log("Stopped Poker Tracker thread.\n");
-		_endthread();
+
+		AfxEndThread(0);
+
+		return 0;
+
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 
@@ -63,7 +71,8 @@ void pokertracker_thread( void * ) {
 #endif
 }
 
-PokerTracker::PokerTracker() {
+PokerTracker::PokerTracker() 
+{
 #ifdef SEH_ENABLE
 	// Set exception handler
 	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
@@ -95,8 +104,10 @@ PokerTracker::PokerTracker() {
 		conn_str += " password=" + pass;
 		conn_str += " dbname=" + dbname;
 
-		for (i=0; i<=9; i++) {
-			for (j=pt_min; j<=pt_max; j++) {
+		for (i=0; i<=9; i++) 
+		{
+			for (j=pt_min; j<=pt_max; j++) 
+			{
 				player_stats[i].stat[j] = -1.0 ;
 				player_stats[i].t_elapsed[j] = -1 ;
 			}
@@ -116,7 +127,8 @@ PokerTracker::PokerTracker() {
 #endif
 }
 
-PokerTracker::~PokerTracker() {
+PokerTracker::~PokerTracker() 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -132,7 +144,8 @@ PokerTracker::~PokerTracker() {
 #endif
 }
 
-double PokerTracker::process_query (const char * s) {
+double PokerTracker::process_query (const char * s) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -235,17 +248,20 @@ double PokerTracker::process_query (const char * s) {
 #endif
 }
 
-void PokerTracker::connect(void) {
+void PokerTracker::connect(void) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
 		pgconn = PQconnectdb(conn_str.GetString());
 
-		if (PQstatus(pgconn) == CONNECTION_OK) {
+		if (PQstatus(pgconn) == CONNECTION_OK) 
+		{
 			write_log("PostgreSQL DB opened successfully <%s/%s/%s>\n", ip_addr, port, dbname);
 			connected = true;
 		} 
-		else {
+		else 
+		{
 			write_log("ERROR opening PostgreSQL DB: %s\n\n", PQerrorMessage(pgconn));
 			PQfinish(pgconn);
 			connected = false;
@@ -259,12 +275,14 @@ void PokerTracker::connect(void) {
 #endif
 }
 
-void PokerTracker::disconnect(void) {
+void PokerTracker::disconnect(void) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
 
-		if (PQstatus(pgconn) == CONNECTION_OK) { PQfinish(pgconn); }
+		if (PQstatus(pgconn) == CONNECTION_OK) 
+			PQfinish(pgconn);
 
 #ifdef SEH_ENABLE
 	}
@@ -275,7 +293,8 @@ void PokerTracker::disconnect(void) {
 #endif
 }
 
-int	PokerTracker::getsiteid (void) {
+int	PokerTracker::getsiteid (void) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -290,21 +309,27 @@ int	PokerTracker::getsiteid (void) {
 		{
 			if (symbols.sym.ismanual)
 			{
-				for (i=0; i<=20; i++) {
-						if ((global.mm_network == networkid[i]) && strlen(networkid[i])) { return i; }
+				for (i=0; i<=20; i++) 
+				{
+						if ((global.mm_network == networkid[i]) && strlen(networkid[i])) 
+							return i;
 				}
 			}
 			else
 			{
 				//Is s$sitename one of the supported PT sites?  Return the proper site_id for db queries.
-				for (i=0; i<=20; i++) {
+				for (i=0; i<=20; i++) 
+				{
 						sym.Format("sitename$%s", networkid[i]);
-						if (symbols.GetSymbolVal(sym.MakeLower().GetString(), &e) && strlen(networkid[i])) { return i; }
+						if (symbols.GetSymbolVal(sym.MakeLower().GetString(), &e) && strlen(networkid[i])) 
+							return i;
 				}
 				//Is s$network one of the supported PT sites?  Return the proper site_id for db queries.
-				for (i=0; i<=20; i++) {
+				for (i=0; i<=20; i++) 
+				{
 						sym.Format("network$%s", networkid[i]);
-						if (symbols.GetSymbolVal(sym.MakeLower().GetString(), &e) && strlen(networkid[i])) { return i; }
+						if (symbols.GetSymbolVal(sym.MakeLower().GetString(), &e) && strlen(networkid[i])) 
+							return i;
 				}
 			}
 		}
@@ -318,7 +343,8 @@ int	PokerTracker::getsiteid (void) {
 #endif
 }
 
-bool PokerTracker::checkname (int m_chr) {
+bool PokerTracker::checkname (int m_chr) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -326,33 +352,40 @@ bool PokerTracker::checkname (int m_chr) {
 		char		oh_scraped_name[30], best_name[30], likename[100];
 		bool		result, ok_scrape=false;
 
-		if (m_chr<0 || m_chr>9)  { return false; }
+		if (m_chr<0 || m_chr>9)  
+			return false;
 
-		if (global.state[(global.state_index-1)&0xff].m_player[m_chr].m_name_known == 0)  { return false; }
+		if (global.state[(global.state_index-1)&0xff].m_player[m_chr].m_name_known == 0)  
+			return false;
 
 		strcpy(oh_scraped_name, global.state[(global.state_index-1)&0xff].m_player[m_chr].m_name);
 
 		// Check for bad name scrape
-		for (i=0; i<(int) strlen(oh_scraped_name); i++) {
-			if (oh_scraped_name[i]!='l' && oh_scraped_name[i]!='i' && oh_scraped_name[i]!='.' && oh_scraped_name[i]!=',') {
+		for (i=0; i<(int) strlen(oh_scraped_name); i++) 
+		{
+			if (oh_scraped_name[i]!='l' && oh_scraped_name[i]!='i' && oh_scraped_name[i]!='.' && oh_scraped_name[i]!=',') 
+			{
 				ok_scrape = true;
 				i = strlen(oh_scraped_name);
 			}
 		}
-		if (!ok_scrape)  { return false; }
+		if (!ok_scrape)  
+			return false;
 
 		// We already have the name, and it has not changed since we last checked, so do nothing
-		if (player_stats[m_chr].found && strcmp(player_stats[m_chr].scraped_name, oh_scraped_name)==0) {
-				return true; 
-		}
+		if (player_stats[m_chr].found && strcmp(player_stats[m_chr].scraped_name, oh_scraped_name)==0)
+			return true; 
 		
 		// We think we have the name, but it has changed since we last checked...reset stats for this
 		// chair and search again
-		if (player_stats[m_chr].found && strcmp(player_stats[m_chr].scraped_name, oh_scraped_name)!=0) {
-			for (i=pt_min; i<=pt_max; i++) {
+		if (player_stats[m_chr].found && strcmp(player_stats[m_chr].scraped_name, oh_scraped_name)!=0) 
+		{
+			for (i=pt_min; i<=pt_max; i++) 
+			{
 				player_stats[m_chr].stat[i] = -1.0 ;
 				player_stats[m_chr].t_elapsed[i] = -1 ;
 			}
+
 			player_stats[m_chr].found = false ;
 			strcpy (player_stats[m_chr].pt_name, "") ;
 			strcpy (player_stats[m_chr].scraped_name, "") ;
@@ -363,27 +396,33 @@ bool PokerTracker::checkname (int m_chr) {
 		result = queryname(oh_scraped_name, oh_scraped_name, best_name);
 
 		// Query with "%n%a%m%e%"
-		if (!result) {
+		if (!result) 
+		{
 			likename[0]='%';
-			for (i=0; i<(int) strlen(oh_scraped_name); i++) {
+			for (i=0; i<(int) strlen(oh_scraped_name); i++) 
+			{
 				likename[i*2+1]=oh_scraped_name[i];
 				likename[i*2+2]='%';
 			}
+
 			likename[(i-1)*2+3]='\0';
 			result = queryname(likename, oh_scraped_name, best_name);
 		}
 
 		// Query with "%"
-		if (!result) {
+		if (!result) 
+		{
 			result = queryname("%", oh_scraped_name, best_name);
 		}
 
-		if (result) {	 
+		if (result) 
+		{	 
 			player_stats[m_chr].found = true;
 			strcpy(player_stats[m_chr].pt_name, best_name);
 			strcpy(player_stats[m_chr].scraped_name, oh_scraped_name);
 		}
-		else {
+		else 
+		{
 			player_stats[m_chr].found = false ;
 			strcpy (player_stats[m_chr].pt_name, "") ;
 			strcpy (player_stats[m_chr].scraped_name, "") ;
@@ -399,20 +438,25 @@ bool PokerTracker::checkname (int m_chr) {
 #endif
 }
 
-double PokerTracker::getstat (int m_chr, PT_Stats stat) {
+double PokerTracker::getstat (int m_chr, PT_Stats stat) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
 		double		x;
 
-		if (!pokertracker_thread_alive) { return 0.0; }
+		if (!pokertracker_thread_alive) 
+			return 0.0;
 
-		if (m_chr<0 || m_chr>9)  { return 0.0; }
+		if (m_chr<0 || m_chr>9)
+			return 0.0;
 
 		EnterCriticalSection(&pt_cs);
 		x = player_stats[m_chr].stat[stat];
 		LeaveCriticalSection(&pt_cs);
+
 		return x;
+
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 
@@ -422,7 +466,8 @@ double PokerTracker::getstat (int m_chr, PT_Stats stat) {
 #endif
 }
 
-double PokerTracker::update_stat (int m_chr, int stat) {
+double PokerTracker::update_stat (int m_chr, int stat) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -435,11 +480,14 @@ double PokerTracker::update_stat (int m_chr, int stat) {
 
 		//No more unnecessary queries when we don't even have a siteid to check
 		siteid = getsiteid();
-		if (siteid == -1)  return result;
+		if (siteid == -1)  
+			return result;
 
-		if (PQstatus(pgconn) != CONNECTION_OK || !connected)  return result;
+		if (PQstatus(pgconn) != CONNECTION_OK || !connected)  
+			return result;
 
-		if (m_chr<0 || m_chr>9 || stat<pt_min || stat>pt_max)  return result;
+		if (m_chr<0 || m_chr>9 || stat<pt_min || stat>pt_max)  
+			return result;
 
 		// If we already have stats cached for the player, the timeout has not expired,
 		// return the value from the cache...
@@ -449,6 +497,7 @@ double PokerTracker::update_stat (int m_chr, int stat) {
 		{
 				 result = player_stats[m_chr].stat[stat];
 		}
+
 		// ...otherwise query the database
 		else 
 		{
@@ -457,7 +506,8 @@ double PokerTracker::update_stat (int m_chr, int stat) {
 
 			// Insert the player name in the query string
 			strcpy(strQry1, strQry);  // move the query into temp str 1
-			while ((n=strstr(strQry1, "%SCREENNAME%"))!=NULL) { // find the token in temp str 1
+			while ((n=strstr(strQry1, "%SCREENNAME%"))!=NULL) // find the token in temp str 1
+			{ 
 				strcpy(strQry2, strQry1);  // move the query into temp str 2
 				strQry2[n-strQry1]='\0';  // cut off temp str 2 at the beginning of the token
 				strcat(strQry2, player_stats[m_chr].pt_name);  // append the player name to temp str 2
@@ -469,7 +519,8 @@ double PokerTracker::update_stat (int m_chr, int stat) {
 			// Insert the site id in the query string
 			sprintf(siteidstr, "%d", siteid);
 			strcpy(strQry1, strQry);  // move the query into temp str 1
-			while ((n=strstr(strQry1, "%SITEID%"))!=NULL) { // find the token in temp str 1
+			while ((n=strstr(strQry1, "%SITEID%"))!=NULL)   // find the token in temp str 1
+			{
 				strcpy(strQry2, strQry1);  // move the query into temp str 2
 				strQry2[n-strQry1]='\0';  // cut off temp str 2 at the beginning of the token
 				strcat(strQry2, siteidstr);  // append the site id to temp str 2
@@ -498,8 +549,10 @@ double PokerTracker::update_stat (int m_chr, int stat) {
 			}
 
 			// Check query return code
-			if (PQresultStatus(res) != PGRES_TUPLES_OK)	{
-				switch (PQresultStatus(res)) {
+			if (PQresultStatus(res) != PGRES_TUPLES_OK)	
+			{
+				switch (PQresultStatus(res)) 
+				{
 				case PGRES_COMMAND_OK:
 					write_log("PGRES_COMMAND_OK: %s [%s]\n", PQerrorMessage(pgconn), strQry); break;
 				case PGRES_EMPTY_QUERY:
@@ -518,8 +571,10 @@ double PokerTracker::update_stat (int m_chr, int stat) {
 					write_log("GENERIC ERROR: %s [%s]\n", PQerrorMessage(pgconn), strQry); break;
 				}
 			}
-			else {
-				if (PQgetisnull(res,0,0) != 1) { 
+			else 
+			{
+				if (PQgetisnull(res,0,0) != 1) 
+				{ 
 					result = atof(PQgetvalue(res,0,0));
 					write_log("Query %s for m_chr %d success: %f\n", stat_str[stat], m_chr, result);
 				}
@@ -545,7 +600,8 @@ double PokerTracker::update_stat (int m_chr, int stat) {
 #endif
 }
 
-bool PokerTracker::queryname (char * query_name, char * scraped_name, char * best_name) {
+bool PokerTracker::queryname (char * query_name, char * scraped_name, char * best_name) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -568,9 +624,11 @@ bool PokerTracker::queryname (char * query_name, char * scraped_name, char * bes
 			last_siteid = siteid;
 		}
 
-		if (PQstatus(pgconn) != CONNECTION_OK || !connected)  return false;
+		if (PQstatus(pgconn) != CONNECTION_OK || !connected)  
+			return false;
 
-		if (strlen(query_name)==0)  return false;
+		if (strlen(query_name)==0)  
+			return false;
 
 		sprintf(siteidstr, "%d", siteid);
 
@@ -613,19 +671,23 @@ bool PokerTracker::queryname (char * query_name, char * scraped_name, char * bes
 		else if ((PQntuples(res) > 1)) 
 		{
 			bestLD = 999;
-			for (i=0; i<PQntuples(res); i++) {
+			for (i=0; i<PQntuples(res); i++) 
+			{
 				lev_dist = myLD.LD(scraped_name, PQgetvalue(res, i, 0));
 
-				if (lev_dist<bestLD && lev_dist<(int)strlen(PQgetvalue(res, i, 0))/2 ) {
+				if (lev_dist<bestLD && lev_dist<(int)strlen(PQgetvalue(res, i, 0))/2 ) 
+				{
 					bestLD = lev_dist;
 					bestLDindex = i;
 				}
 			}
-			if (bestLD != 999) {
+			if (bestLD != 999) 
+			{
 				strcpy(best_name, PQgetvalue(res, bestLDindex, 0));
 				result = true;
 			}
-			else {
+			else 
+			{
 				result = false;
 			}
 		}
@@ -640,21 +702,26 @@ bool PokerTracker::queryname (char * query_name, char * scraped_name, char * bes
 	}
 #endif
 }
-void PokerTracker::clearstats (void){
+void PokerTracker::clearstats (void)
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
 	int		i,j;
 
-	for (i=0; i<=9; i++) {
-		for (j=pt_min; j<=pt_max; j++) {
+	for (i=0; i<=9; i++) 
+	{
+		for (j=pt_min; j<=pt_max; j++) 
+		{
 			player_stats[i].stat[j] = -1.0 ;
 			player_stats[i].t_elapsed[j] = -1 ;
 		}
+
 		player_stats[i].found = false ;
 		strcpy (player_stats[i].pt_name, "") ;
 		strcpy (player_stats[i].scraped_name, "") ;
 	}
+
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 

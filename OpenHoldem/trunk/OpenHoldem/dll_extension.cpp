@@ -10,7 +10,8 @@
 
 CDll	cdll;
 
-CDll::CDll() {
+CDll::CDll() 
+{
 #ifdef SEH_ENABLE
 	// Set exception handler
 	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
@@ -19,7 +20,9 @@ CDll::CDll() {
 #ifdef SEH_ENABLE
 	try {
 #endif
+
 		hMod_dll = NULL;
+
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 
@@ -30,14 +33,14 @@ CDll::CDll() {
 }
 
 
-void CDll::pass_state_to_dll(holdem_state *pstate) {
+void CDll::pass_state_to_dll(holdem_state *pstate) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
 
-		if (hMod_dll==NULL) {
+		if (hMod_dll==NULL)
 			return;
-		}
 
 		(process_message) ("state", pstate);
 
@@ -50,7 +53,8 @@ void CDll::pass_state_to_dll(holdem_state *pstate) {
 #endif
 }
 
-void CDll::load_dll(char * path) {
+void CDll::load_dll(char * path) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -58,9 +62,8 @@ void CDll::load_dll(char * path) {
 		int N, i;
 		DWORD err1=0, err2=0;
 
-		if (hMod_dll!=NULL) {
+		if (hMod_dll!=NULL)
 			return;
-		}
 
 		// try to load specific patch if passed in as a parameter
 		if (strlen(path))
@@ -72,7 +75,7 @@ void CDll::load_dll(char * path) {
 			if (hMod_dll==NULL) 
 			{
 				t.Format("Unable to load DLL from:%s, error=%d\n", path, err1);
-				MessageBox(NULL, t, "DLL Load Error", MB_OK);
+				MessageBox(NULL, t, "DLL Load Error", MB_OK | MB_TOPMOST);
 				return;
 			}
 		}
@@ -83,8 +86,10 @@ void CDll::load_dll(char * path) {
 			// Find DLL name to load from the formula file
 			N = global.formula.mFunction.GetSize();
 			formula_dll = "";
-			for (i=0; i<N; i++) {
-				if (global.formula.mFunction[i].func == "dll") {
+			for (i=0; i<N; i++) 
+			{
+				if (global.formula.mFunction[i].func == "dll") 
+				{
 					formula_dll = global.formula.mFunction[i].func_text;
 					i = N + 1;
 				}
@@ -92,7 +97,8 @@ void CDll::load_dll(char * path) {
 			formula_dll.Trim();
 
 			// Try to load dll from the ##dll## section, if it is specified
-			if (formula_dll != "") {
+			if (formula_dll != "") 
+			{
 				t.Format("%s\\%s", global.startup_path, formula_dll.GetString());
 				SetCurrentDirectory(global.startup_path);
 				hMod_dll = LoadLibrary(t.GetString());
@@ -100,7 +106,8 @@ void CDll::load_dll(char * path) {
 			}
 
 			// If dll is still not loaded, load from name in Edit/Preferences
-			if (hMod_dll==NULL) {
+			if (hMod_dll==NULL) 
+			{
 				t.Format("%s\\%s", global.startup_path, global.preferences.dll_name.GetString());
 				SetCurrentDirectory(global.startup_path);
 				hMod_dll = LoadLibrary(t.GetString());
@@ -113,7 +120,7 @@ void CDll::load_dll(char * path) {
 				t.Format("Unable to load DLL from:\n%s, error=%d\n-or-\n%s, error=%d", 
 					global.preferences.dll_name.GetString(), err1,
 					formula_dll.GetString(), err2);
-				MessageBox(NULL, t, "DLL Load Error", MB_OK);
+				MessageBox(NULL, t, "DLL Load Error", MB_OK | MB_TOPMOST);
 				return;
 			}
 		}
@@ -125,13 +132,15 @@ void CDll::load_dll(char * path) {
 			//global.process_message = (process_message_t) GetProcAddress(global.hMod_dll, "process_message");
 			process_message = (process_message_t) ::GetProcAddress(hMod_dll, (LPCSTR) 1);
 
-			if (process_message==NULL) {
+			if (process_message==NULL) 
+			{
 				t.Format("Unable to find process_message in dll");
-				MessageBox(NULL, t, "DLL Load Error", MB_OK);
+				MessageBox(NULL, t, "DLL Load Error", MB_OK | MB_TOPMOST);
 				FreeLibrary(hMod_dll);
 				hMod_dll = NULL;
 			}
-			else {
+			else 
+			{
 				// pass "load" message
 				(process_message) ("event", "load");
 
@@ -164,19 +173,19 @@ void CDll::load_dll(char * path) {
 #endif
 }
 
-void CDll::unload_dll(void) {
+void CDll::unload_dll(void) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
-		if (hMod_dll==NULL) {
+		if (hMod_dll==NULL) 
 			return;
-		}
 
 		(process_message) ("event", "unload");
 
-		if (FreeLibrary(hMod_dll)) {
+		if (FreeLibrary(hMod_dll))
 			hMod_dll = NULL;
-		}
+
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 
@@ -186,7 +195,8 @@ void CDll::unload_dll(void) {
 #endif
 }
 
-double GetSymbolFromDll(int chair, const char* name, bool& iserr) {
+double GetSymbolFromDll(int chair, const char* name, bool& iserr) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif
@@ -199,21 +209,23 @@ double GetSymbolFromDll(int chair, const char* name, bool& iserr) {
 		str.Format("%s", name);
 
 		result = parse(&str, &tpi, &stopchar); 
-		if (result) {
+		if (result) 
+		{
 			e = SUCCESS;
 			res = evaluate(&global.formula, tpi, &e);
 		}
-		else {
+		else 
+		{
 			res = 0;
 			e = ERR_INVALID_FUNC_SYM;
 		}
 
-		if (e == SUCCESS) {
+		if (e == SUCCESS)
 			iserr = false;
-		}
-		else {
+
+		else
 			iserr = true;
-		}
+
 
 		return res;
 

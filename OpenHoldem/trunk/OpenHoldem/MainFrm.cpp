@@ -823,7 +823,7 @@ void CMainFrame::OnBnClickedGreenCircle() {
 
 				// start heartbeat
 				heartbeat_thread_alive = true;
-				h_heartbeat_thread = (HANDLE) _beginthread (heartbeat_thread, 0, 0);
+				h_heartbeat_thread = AfxBeginThread(heartbeat_thread, 0);
 
 				// Start timer that checks for continued existence of attached HWND
 				SetTimer(HWND_CHECK_TIMER, 200, 0);

@@ -107,7 +107,7 @@ CGlobal::CGlobal(void)
 		// Check for versus.bin
 		if ((fp = fopen("versus.bin", "rb"))==NULL) 
 		{
-			MessageBox(NULL, "Could not open versus.bin.\nVersus functions will be disabled.\n", "Versus Error", MB_OK);
+			MessageBox(NULL, "Could not open versus.bin.\nVersus functions will be disabled.\n", "Versus Error", MB_OK | MB_TOPMOST);
 			versus_enabled = false;
 		}
 		else 

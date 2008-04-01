@@ -1465,7 +1465,7 @@ void CSymbols::calc_probabilities(void)
 				prwin_thread_alive = true;
 				sym.prwin = sym.prlos = sym.prtie = 0;
 				LeaveCriticalSection(&cs_prwin);
-				h_prwin_thread = (HANDLE) _beginthread (prwin_thread, 0, 0);
+				h_prwin_thread = AfxBeginThread(prwin_thread, 0);
 			}
 
 			else 
@@ -1474,7 +1474,7 @@ void CSymbols::calc_probabilities(void)
 				prwin_thread_alive = true;
 				sym.prwin = sym.prlos = sym.prtie = 0;
 				LeaveCriticalSection(&cs_prwin);
-				h_prwin_thread = (HANDLE) _beginthread (prwin_thread, 0, 0);
+				h_prwin_thread = AfxBeginThread(prwin_thread, 0);
 			}
 		}
 #ifdef SEH_ENABLE

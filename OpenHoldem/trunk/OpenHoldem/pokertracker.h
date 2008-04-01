@@ -2,8 +2,9 @@
 #include "postgres/libpq-fe.h"
 #include "structs_defines.h"
 
-void pokertracker_thread( void * ) ;
-extern	HANDLE				h_pokertracker_thread;
+UINT __cdecl pokertracker_thread(LPVOID pParam);
+
+extern	CWinThread			*h_pokertracker_thread;
 extern	bool				pokertracker_thread_alive;
 
 extern class PokerTracker 

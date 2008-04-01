@@ -316,7 +316,7 @@ void CDlgPpro::OnBnClickedConnectButton() {
 
 			 // start heartbeat thread
 			heartbeat_thread_alive = true;
-			h_heartbeat_thread = (HANDLE) _beginthread (heartbeat_thread, 0, 0);
+			h_heartbeat_thread = AfxBeginThread(heartbeat_thread, 0);
 
 		}
 

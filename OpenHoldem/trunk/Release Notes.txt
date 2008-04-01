@@ -46,6 +46,12 @@ BUG FIXES:
 
 - Fixed inconsistent Window Title after disconnecting from table (Spew)
 
+- All "MessageBox(NULL, ..." calls have had  "| MB_TOPMOST" added to ensure that these popup warnings
+  are visible and not hiding below other windows.  (OpenHoldem)
+  
+- All _beginthread calls have been replaced with AfxCreateThread for better alignment with MFC
+  standard practice (OpenHoldem)
+
 
 v1.8.0 2008-03-29
 NEW STUFF:

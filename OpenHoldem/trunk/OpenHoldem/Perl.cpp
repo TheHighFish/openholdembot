@@ -110,7 +110,7 @@ bool Perl::load_DLL(void)
 	if (Perl_Lib == NULL)
 	{
 		MessageBox(NULL, "PerlEz.DLL not found. \nPlease check your installation and your systems PATH variable", 
-			"Perl Error", MB_OK);
+			"Perl Error", MB_OK | MB_TOPMOST);
 		return false;
 	}
 	//  Load the 3 functions we need.
@@ -122,7 +122,7 @@ bool Perl::load_DLL(void)
 		(P_PerlEzDelete == NULL))
 	{
 		MessageBox(NULL, "PerlEz.DLL seems to be invalid. \nPlease check your installation.", 
-			"Perl Error", MB_OK);
+			"Perl Error", MB_OK | MB_TOPMOST);
 		return false;	
 	}
 	return true;
@@ -204,7 +204,7 @@ Perl::Perl()
 		Formula_loaded = false;
 		Interpreter_not_loaded = true;
 		MessageBox(NULL, "Could not create Perl interpreter.", 
-			"Perl Error", MB_OK);
+			"Perl Error", MB_OK | MB_TOPMOST);
 	}	
 	send_Callback_Pointer_to_gws();
 #ifdef SEH_ENABLE
@@ -350,7 +350,7 @@ void Perl::do_ErrorCheck(int the_ErrorCode)
 	case 9: the_ErrorMessage = "Perl: Cannot allocate more memory.";
 		break;
 	}
-	MessageBox(NULL, the_ErrorMessage.c_str(), "Perl Error", 0);
+	MessageBox(NULL, the_ErrorMessage.c_str(), "Perl Error", MB_OK | MB_TOPMOST);
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 
@@ -393,7 +393,7 @@ void Perl::load_FormulaFile(string the_new_FormulaFile)
 	{
 		//  Script to load not accessible
 		MessageBox(NULL, "Could not load Perl Formula.\nFile not found or not accessible.", 
-			"Perl Error", MB_OK);
+			"Perl Error", MB_OK | MB_TOPMOST);
 		//  Prepare continuation without default file
 		the_Interpreter = (*P_PerlEzCreate)
 			(EMPTY_STRING,                 //  Script to load (not accessable)
@@ -418,7 +418,7 @@ void Perl::load_FormulaFile(string the_new_FormulaFile)
 	else
 	{
 		MessageBox(NULL, "Unable to load formula.\nCould not create Perl interpreter object.\n\nProbable reasons:\n* Syntax error in your Perl file.\n* Failure at initialization.", 
-			"Perl Error", 0);
+			"Perl Error", MB_OK | MB_TOPMOST);
 		Interpreter_not_loaded = true;
 		Formula_loaded = false;
 	}
@@ -458,12 +458,12 @@ void Perl::edit_main_FormulaFile()
 	if (_access(my_favourite_Editor, F_OK) != 0) 
     {
 	   	MessageBox(NULL, "Could not start editor.\nExecutable not found or not accessible.", 
-			"Perl Error", MB_OK);
+			"Perl Error", MB_OK | MB_TOPMOST);
 		return;
 	}								    
 	if (the_actual_FormulaFile == "")
 	{
-		MessageBox(NULL, "Formula undefined.", "Perl Error", MB_OK);
+		MessageBox(NULL, "Formula undefined.", "Perl Error", MB_OK | MB_TOPMOST);
 		return;
 	}
  	//  Enclose path in quotation marks, as some editors
@@ -480,7 +480,7 @@ void Perl::edit_main_FormulaFile()
    	if (errno == -1)
    	{
 	    MessageBox(NULL, "Editor terminated with runtime error.", 
-			"Perl Error", MB_OK);    		  
+			"Perl Error", MB_OK | MB_TOPMOST);    		  
     }
 #ifdef SEH_ENABLE
 	}
@@ -517,13 +517,13 @@ void Perl::check_Syntax()
 	//    as this implies, the formula got loaded with success.
 	if (the_actual_FormulaFile == "")
 	{ 
-		MessageBox(NULL, "Formula undefined.", "Perl Error", MB_OK);
+		MessageBox(NULL, "Formula undefined.", "Perl Error", MB_OK | MB_TOPMOST);
 		return; 
 	}
 	if (_access(the_actual_FormulaFile.c_str(), F_OK) != 0)
 	{
 		MessageBox(NULL, "Could not load Perl Formula.\nFile not found or not accessible.", 
-			"Perl Error", MB_OK);
+			"Perl Error", MB_OK | MB_TOPMOST);
 		return;
 	}	
 	//  Enclose path in quotation marks, as some editors

@@ -389,7 +389,7 @@ int load_tablemap(char *filename, STableMap *map, char *version, bool check_ws_d
 
 			// Unknown line type
 			else {
-				MessageBox(NULL, strLine, "Unknown Line Type", MB_OK);
+				MessageBox(NULL, strLine, "Unknown Line Type", MB_OK | MB_TOPMOST);
 				return ERR_UNK_LN_TYPE;
 			}
 

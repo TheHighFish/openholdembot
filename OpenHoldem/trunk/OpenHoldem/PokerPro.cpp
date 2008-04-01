@@ -2178,7 +2178,7 @@ void PokerPro::publish(CString *text, int flags) {
 		m_pproDlg->messages_changed = true;
 
 		if (flags & PUBLISH_ERR) {
-			MessageBox(NULL, *text, "PPRO: ERROR", MB_OK);
+			MessageBox(NULL, *text, "PPRO: ERROR", MB_OK | MB_TOPMOST);
 		}
 
 #ifdef SEH_ENABLE

@@ -198,7 +198,7 @@ LONG WINAPI MyUnHandledExceptionFilter(struct _EXCEPTION_POINTERS *lpExceptionIn
 	strcat(msg, " (in your OpenHoldem directory, or in c:\\)\n");
 	strcat(msg, "find it's way to an OpenHoldem developer.\n");
 	strcat(msg, "\n\nOpenHoldem will shut down when you click OK.");
-	MessageBox(NULL, msg, "FATAL ERROR", MB_OK | MB_ICONEXCLAMATION);
+	MessageBox(NULL, msg, "FATAL ERROR", MB_OK | MB_ICONEXCLAMATION | MB_TOPMOST);
 
 	return EXCEPTION_EXECUTE_HANDLER;
 }
