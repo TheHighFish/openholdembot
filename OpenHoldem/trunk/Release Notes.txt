@@ -15,6 +15,23 @@ NEW STUFF:
   
 - New dll message phl1k introduced to pass address of OH handlists (Matrix)  
 
+- Added memory symbols from SM's DLL (OpenHoldem)
+	Memory symbols
+	---------
+	dll$me_st_abc_123_45 - 'dll$me_st_' stores a value "123.45" in variable "abc" 
+	   (use "_" for the decimal in values)
+	   (a function name can also be passed in, instead of a number, for example:
+		'dll$me_st_def_f$myfunc' would store the results of function f$myfunc in variable def)
+	dll$me_re_abc - 'dll$me_re_' retrieves the value from variable "abc"
+	
+	Note to testers:  In order to make this work, I had to slightly alter the grammar definition,
+	   Specifically, the definition of a SYMBOL was changed from:
+	     SYMBOL			 = leaf_node_d[ lexeme_d[ ((alpha_p | '_' | '$') >> *(alnum_p | '_' | '$')) ] ];
+	   to:
+		 SYMBOL			 = leaf_node_d[ lexeme_d[ ((alpha_p | '_' | '$') >> *(alnum_p | '_' | '$' | '.')) ] ];
+
+
+
 BUG FIXES:
 - Incorrect initialization of new hand and new betting round (jumpingfences)
 

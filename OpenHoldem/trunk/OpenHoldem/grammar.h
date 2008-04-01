@@ -62,7 +62,7 @@ struct exec_grammar : public boost::spirit::grammar<exec_grammar> {
 		{
 
 			// keywords
-			SYMBOL			 = leaf_node_d[ lexeme_d[ ((alpha_p | '_' | '$') >> *(alnum_p | '_' | '$')) ] ];
+			SYMBOL			 = leaf_node_d[ lexeme_d[ ((alpha_p | '_' | '$') >> *(alnum_p | '_' | '$' | '.')) ] ];
 
 			// constants
 			// float constant: 12345[eE][+-]123[lLfF]?

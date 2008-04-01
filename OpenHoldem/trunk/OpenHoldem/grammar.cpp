@@ -13,6 +13,7 @@
 #include "Perl.hpp"
 #include "action.h"
 #include "myhand.h"
+#include "memory.h"
 
 using namespace std;
 using namespace boost::spirit;
@@ -269,6 +270,12 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
 			{
 				MyHand	myhand;
 				return myhand.process_query(sym.c_str(), e);
+			}
+
+			// Memory symbols
+			else if (memcmp(sym.c_str(), "me_", 3)==0) 
+			{
+				return memory.process_query(sym.c_str(), e);
 			}
 
 			// all other symbols
