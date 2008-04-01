@@ -1,8 +1,14 @@
 v1.x.x 2008-04-11
 -----------------
+New stuff
+=========
 - A new "Network" option is now available which is used by OpenHoldem as the network for
   Poker Tracker data.  This means s$sitename and s$network in the ManualMode table map are
   no longer used for Poker Tracker.  (Thanks, Winngy) (quiqsilver)
+
+Bug fixes
+=========
+- Added missing keyboard accelerators for some menu items (Thanks, Winngy)  (OpenHoldem)
 
 
 v1.0.5 2008-03-28

@@ -263,7 +263,7 @@ BEGIN
             MENUITEM "&Hearts",                     ID_7_HEARTS
             MENUITEM "&Spades",                     ID_7_SPADES
         END
-        POPUP "8"
+        POPUP "&8"
         BEGIN
             MENUITEM "&Clubs",                      ID_8_CLUBS
             MENUITEM "&Diamonds",                   ID_8_DIAMONDS
@@ -367,7 +367,7 @@ BEGIN
             MENUITEM "&Hearts",                     ID_7_HEARTS
             MENUITEM "&Spades",                     ID_7_SPADES
         END
-        POPUP "8"
+        POPUP "&8"
         BEGIN
             MENUITEM "&Clubs",                      ID_8_CLUBS
             MENUITEM "&Diamonds",                   ID_8_DIAMONDS
