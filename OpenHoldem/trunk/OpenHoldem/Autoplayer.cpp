@@ -133,6 +133,7 @@ void Autoplayer::do_autoplayer(void) {
 #endif
 		bool			prwin_running, scrape_running;
 		int				x, error;
+		int				num_buttons_visible;
 
 		EnterCriticalSection(&cs_prwin);
 		prwin_running = prwin_thread_alive;
@@ -145,7 +146,7 @@ void Autoplayer::do_autoplayer(void) {
 		check_bring_keyboard();
 
 		// Get r$ indices of buttons that are visible
-		get_r$_button_indices();
+		num_buttons_visible = get_r$_button_indices();
 
 		// Handle f$play
 		error = SUCCESS;
@@ -188,7 +189,7 @@ void Autoplayer::do_autoplayer(void) {
 
 		// if we have <2 visible buttons, then return
 		// Change from only requiring one visible button (OpenHoldem 2008-04-03)
-		if (bitcount((int) symbols.sym.myturnbits) < 2)
+		if (num_buttons_visible < 2)
 			return;
 
 		// if we are not playing (occluded?) 2008-03-25 Matrix
@@ -950,7 +951,7 @@ int Autoplayer::count_same_scrapes(void) {
 }
 
 
-void Autoplayer::get_r$_button_indices(void) 
+int Autoplayer::get_r$_button_indices(void) 
 {
 #ifdef SEH_ENABLE
 	try {
@@ -958,6 +959,7 @@ void Autoplayer::get_r$_button_indices(void)
 		int				i, r$index;
 		int				button_index;
 		CString			s;
+		int				num_seen=0;
 
 		//////////////////////////////////////////////////////////
 		// find ALLIN button region from scraper
@@ -968,6 +970,7 @@ void Autoplayer::get_r$_button_indices(void)
 			{
 				button_index = i;
 				i = 10;
+				num_seen++;
 			}
 		}
 		// scraper can't find allin button
@@ -1003,6 +1006,7 @@ void Autoplayer::get_r$_button_indices(void)
 			{
 				button_index = i;
 				i = 10;
+				num_seen++;
 			}
 		}
 		// scraper can't find raise button
@@ -1036,6 +1040,7 @@ void Autoplayer::get_r$_button_indices(void)
 			if (scraper.get_button_state(i) && scraper.is_string_call(scraper.buttonlabel[i])) {
 				button_index = i;
 				i = 10;
+				num_seen++;
 			}
 		}
 		// scraper can't find call button
@@ -1062,6 +1067,7 @@ void Autoplayer::get_r$_button_indices(void)
 			if (scraper.get_button_state(i) && scraper.is_string_check(scraper.buttonlabel[i])) {
 				button_index = i;
 				i = 10;
+				num_seen++;
 			}
 		}
 		// scraper can't find check button
@@ -1088,6 +1094,7 @@ void Autoplayer::get_r$_button_indices(void)
 			if (scraper.get_button_state(i) && scraper.is_string_fold(scraper.buttonlabel[i])) {
 				button_index = i;
 				i = 10;
+				num_seen++;
 			}
 		}
 		// scraper can't find fold button
