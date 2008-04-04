@@ -30,6 +30,9 @@ NEW STUFF:
 	   to:
 		 SYMBOL			 = leaf_node_d[ lexeme_d[ ((alpha_p | '_' | '$') >> *(alnum_p | '_' | '$' | '.')) ] ];
 
+- Two visible buttons are now required to be seen by the scraper before the autoplayer will act.
+  There is no valid Texas Holdem game state where only one button is visible. (OpenHoldem)
+  
 
 
 BUG FIXES:

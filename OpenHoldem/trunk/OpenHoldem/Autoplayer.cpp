@@ -174,25 +174,31 @@ void Autoplayer::do_autoplayer(void) {
 		}
 
 		// If we are in a scrape/symbol calc cycle, then return
-		if (scrape_running) { return; }
+		if (scrape_running)
+			return;
 
 		// If prwin thread is still iterating, then return
-		if (prwin_running) { return; }
+		if (prwin_running)
+			return;
 
 		// Handle f$prefold
 		error = SUCCESS;
 		symbols.f$prefold = calc_f$symbol(&global.formula, "f$prefold", &error);
 		do_prefold();
 
-		// if we have no visible buttons, then return
-		if (!symbols.sym.myturnbits) { return; }
+		// if we have <2 visible buttons, then return
+		// Change from only requiring one visible button (OpenHoldem 2008-04-03)
+		if (bitcount((int) symbols.sym.myturnbits) < 2)
+			return;
 
 		// if we are not playing (occluded?) 2008-03-25 Matrix
-		if (!symbols.sym.playing) { return; }
+		if (!symbols.sym.playing)
+			return;
 
 		// If we don't have enough stable frames, then return
 		x = count_same_scrapes();
-		if (x < (int) global.preferences.frame_delay) { return; }
+		if (x < (int) global.preferences.frame_delay)
+			return;
 
 		// calculate f$alli, f$swag, f$rais, and f$call for autoplayer's use 
 		symbols.sym.isfinalanswer = true;
