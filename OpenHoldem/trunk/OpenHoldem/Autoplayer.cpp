@@ -1036,23 +1036,32 @@ int Autoplayer::get_r$_button_indices(void)
 		//////////////////////////////////////////////////////////
 		// find CALL button region from scraper
 		button_index = -1;
-		for (i=0; i<=9; i++) {
-			if (scraper.get_button_state(i) && scraper.is_string_call(scraper.buttonlabel[i])) {
+		for (i=0; i<=9; i++) 
+		{
+			if (scraper.get_button_state(i) && scraper.is_string_call(scraper.buttonlabel[i])) 
+			{
 				button_index = i;
 				i = 10;
 				num_seen++;
 			}
 		}
 		// scraper can't find call button
-		if (button_index == -1) { call_but = -1; }
-		else {
+		if (button_index == -1) 
+		{ 
+			call_but = -1; 
+		}
+		else 
+		{
 			// find call button region from profile
 			call_but = -1;
 			s.Format("i%dbutton", button_index);
-			for (i=0; i<=9; i++) {
+			for (i=0; i<=9; i++) 
+			{
 				r$index = global.tablemap.r$iXbutton_index[i];
-				if (r$index!=-1) {
-					if (global.tablemap.r$[r$index].name == s) {
+				if (r$index!=-1) 
+				{
+					if (global.tablemap.r$[r$index].name == s) 
+					{
 						call_but = r$index;
 						i = 10;
 					}
@@ -1063,23 +1072,32 @@ int Autoplayer::get_r$_button_indices(void)
 		//////////////////////////////////////////////////////////
 		// find CHECK button region from scraper
 		button_index = -1;
-		for (i=0; i<=9; i++) {
-			if (scraper.get_button_state(i) && scraper.is_string_check(scraper.buttonlabel[i])) {
+		for (i=0; i<=9; i++) 
+		{
+			if (scraper.get_button_state(i) && scraper.is_string_check(scraper.buttonlabel[i])) 
+			{
 				button_index = i;
 				i = 10;
 				num_seen++;
 			}
 		}
 		// scraper can't find check button
-		if (button_index == -1) { chec_but = -1; }
-		else {
+		if (button_index == -1) 
+		{ 
+			chec_but = -1; 
+		}
+		else 
+		{
 			// find check button region from profile
 			chec_but = -1;
 			s.Format("i%dbutton", button_index);
-			for (i=0; i<=9; i++) {
+			for (i=0; i<=9; i++) 
+			{
 				r$index = global.tablemap.r$iXbutton_index[i];
-				if (r$index!=-1) {
-					if (global.tablemap.r$[r$index].name == s) {
+				if (r$index!=-1) 
+				{
+					if (global.tablemap.r$[r$index].name == s) 
+					{
 						chec_but = r$index;
 						i = 10;
 					}
@@ -1090,23 +1108,32 @@ int Autoplayer::get_r$_button_indices(void)
 		//////////////////////////////////////////////////////////
 		// find FOLD button region from scraper
 		button_index = -1;
-		for (i=0; i<=9; i++) {
-			if (scraper.get_button_state(i) && scraper.is_string_fold(scraper.buttonlabel[i])) {
+		for (i=0; i<=9; i++) 
+		{
+			if (scraper.get_button_state(i) && scraper.is_string_fold(scraper.buttonlabel[i])) 
+			{
 				button_index = i;
 				i = 10;
 				num_seen++;
 			}
 		}
 		// scraper can't find fold button
-		if (button_index == -1) { fold_but = -1; }
-		else {
+		if (button_index == -1) 
+		{ 
+			fold_but = -1; 
+		}
+		else 
+		{
 			// find fold button region from profile
 			fold_but = -1;
 			s.Format("i%dbutton", button_index);
-			for (i=0; i<=9; i++) {
+			for (i=0; i<=9; i++) 
+			{
 				r$index = global.tablemap.r$iXbutton_index[i];
-				if (r$index!=-1) {
-					if (global.tablemap.r$[r$index].name == s) {
+				if (r$index!=-1) 
+				{
+					if (global.tablemap.r$[r$index].name == s) 
+					{
 						fold_but = r$index;
 						i = 10;
 					}
@@ -1118,23 +1145,32 @@ int Autoplayer::get_r$_button_indices(void)
 		// find AUTOPOST button region from scraper
 		button_index = -1;
 		autopost_state = true;
-		for (i=0; i<=9; i++) {
-			if (scraper.is_string_autopost(scraper.buttonlabel[i])) {
+		for (i=0; i<=9; i++) 
+		{
+			if (scraper.is_string_autopost(scraper.buttonlabel[i])) 
+			{
 				autopost_state = scraper.get_button_state(i);
 				button_index = i;
 				i = 10;
 			}
 		}
 		// scraper can't find autopost button
-		if (button_index == -1) { autopost_but = -1; }
-		else {
+		if (button_index == -1) 
+		{ 
+			autopost_but = -1; 
+		}
+		else 
+		{
 			// find autopost button region from profile
 			autopost_but = -1;
 			s.Format("i%dbutton", button_index);
-			for (i=0; i<=9; i++) {
+			for (i=0; i<=9; i++) 
+			{
 				r$index = global.tablemap.r$iXbutton_index[i];
-				if (r$index!=-1) {
-					if (global.tablemap.r$[r$index].name == s) {
+				if (r$index!=-1) 
+				{
+					if (global.tablemap.r$[r$index].name == s) 
+					{
 						autopost_but = r$index;
 						i = 10;
 					}
@@ -1146,23 +1182,32 @@ int Autoplayer::get_r$_button_indices(void)
 		// find SITIN button region from scraper
 		button_index = -1;
 		sitin_state = true;
-		for (i=0; i<=9; i++) {
-			if (scraper.is_string_sitin(scraper.buttonlabel[i])) {
+		for (i=0; i<=9; i++) 
+		{
+			if (scraper.is_string_sitin(scraper.buttonlabel[i])) 
+			{
 				sitin_state = scraper.get_button_state(i);
 				button_index = i;
 				i = 10;
 			}
 		}
 		// scraper can't find sitin button
-		if (button_index == -1) { sitin_but = -1; }
-		else {
+		if (button_index == -1) 
+		{ 
+			sitin_but = -1; 
+		}
+		else 
+		{
 			// find sitin button region from profile
 			sitin_but = -1;
 			s.Format("i%dbutton", button_index);
-			for (i=0; i<=9; i++) {
+			for (i=0; i<=9; i++) 
+			{
 				r$index = global.tablemap.r$iXbutton_index[i];
-				if (r$index!=-1) {
-					if (global.tablemap.r$[r$index].name == s) {
+				if (r$index!=-1) 
+				{
+					if (global.tablemap.r$[r$index].name == s) 
+					{
 						sitin_but = r$index;
 						i = 10;
 					}
@@ -1174,23 +1219,32 @@ int Autoplayer::get_r$_button_indices(void)
 		// find SITOUT button region from scraper
 		button_index = -1;
 		sitout_state = false;
-		for (i=0; i<=9; i++) {
-			if (scraper.is_string_sitout(scraper.buttonlabel[i])) {
+		for (i=0; i<=9; i++) 
+		{
+			if (scraper.is_string_sitout(scraper.buttonlabel[i])) 
+			{
 				sitout_state = scraper.get_button_state(i);
 				button_index = i;
 				i = 10;
 			}
 		}
 		// scraper can't find sitout button
-		if (button_index == -1) { sitout_but = -1; }
-		else {
+		if (button_index == -1) 
+		{ 
+			sitout_but = -1; 
+		}
+		else 
+		{
 			// find sitout button region from profile
 			sitout_but = -1;
 			s.Format("i%dbutton", button_index);
-			for (i=0; i<=9; i++) {
+			for (i=0; i<=9; i++) 
+			{
 				r$index = global.tablemap.r$iXbutton_index[i];
-				if (r$index!=-1) {
-					if (global.tablemap.r$[r$index].name == s) {
+				if (r$index!=-1) 
+				{
+					if (global.tablemap.r$[r$index].name == s) 
+					{
 						sitout_but = r$index;
 						i = 10;
 					}
@@ -1201,22 +1255,31 @@ int Autoplayer::get_r$_button_indices(void)
 		//////////////////////////////////////////////////////////
 		// find LEAVE button region from scraper
 		button_index = -1;
-		for (i=0; i<=9; i++) {
-			if (scraper.get_button_state(i) && scraper.is_string_leave(scraper.buttonlabel[i])) {
+		for (i=0; i<=9; i++) 
+		{
+			if (scraper.get_button_state(i) && scraper.is_string_leave(scraper.buttonlabel[i])) 
+			{
 				button_index = i;
 				i = 10;
 			}
 		}
 		// scraper can't find leave button
-		if (button_index == -1) { leave_but = -1; }
-		else {
+		if (button_index == -1) 
+		{ 
+			leave_but = -1; 
+		}
+		else 
+		{
 			// find leave button region from profile
 			leave_but = -1;
 			s.Format("i%dbutton", button_index);
-			for (i=0; i<=9; i++) {
+			for (i=0; i<=9; i++) 
+			{
 				r$index = global.tablemap.r$iXbutton_index[i];
-				if (r$index!=-1) {
-					if (global.tablemap.r$[r$index].name == s) {
+				if (r$index!=-1) 
+				{
+					if (global.tablemap.r$[r$index].name == s) 
+					{
 						leave_but = r$index;
 						i = 10;
 					}
@@ -1227,22 +1290,31 @@ int Autoplayer::get_r$_button_indices(void)
 		//////////////////////////////////////////////////////////
 		// find PREFOLD button region from scraper
 		button_index = -1;
-		for (i=0; i<=9; i++) {
-			if (scraper.get_button_state(i) && scraper.is_string_prefold(scraper.buttonlabel[i])) {
+		for (i=0; i<=9; i++) 
+		{
+			if (scraper.get_button_state(i) && scraper.is_string_prefold(scraper.buttonlabel[i])) 
+			{
 				button_index = i;
 				i = 10;
 			}
 		}
 		// scraper can't find prefold button
-		if (button_index == -1) { prefold_but = -1; }
-		else {
+		if (button_index == -1) 
+		{ 
+			prefold_but = -1; 
+		}
+		else 
+		{
 			// find leave button region from profile
 			prefold_but = -1;
 			s.Format("i%dbutton", button_index);
-			for (i=0; i<=9; i++) {
+			for (i=0; i<=9; i++) 
+			{
 				r$index = global.tablemap.r$iXbutton_index[i];
-				if (r$index!=-1) {
-					if (global.tablemap.r$[r$index].name == s) {
+				if (r$index!=-1) 
+				{
+					if (global.tablemap.r$[r$index].name == s) 
+					{
 						prefold_but = r$index;
 						i = 10;
 					}
@@ -1254,22 +1326,26 @@ int Autoplayer::get_r$_button_indices(void)
 		// find i86 button region from scraper
 		i86_but = -1;
 		i86_state = false;
-		if (scraper.get_button_state(86)) {
+		if (scraper.get_button_state(86)) 
+		{
 			i86_but = global.tablemap.r$i86button_index;
 			i86_state = true;
 		}
 
 		//////////////////////////////////////////////////////////
 		// find i86 button region from scraper
-		for (i=0; i<=9; i++) {
+		for (i=0; i<=9; i++) 
+		{
 			i86X_but[i] = -1;
 			i86X_state[i] = false;
-			if (scraper.get_button_state(860+i)) {
+			if (scraper.get_button_state(860+i)) 
+			{
 				i86X_but[i] = global.tablemap.r$i86Xbutton_index[i];
 				i86X_state[i] = true;
 			}
 		}
 
+		return num_seen;
 
 #ifdef SEH_ENABLE
 	}

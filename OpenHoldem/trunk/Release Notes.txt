@@ -54,6 +54,11 @@ BUG FIXES:
   
 - All _beginthread calls have been replaced with AfxCreateThread for better alignment with MFC
   standard practice (OpenHoldem)
+  
+- Fixed bug in logical OR and logical AND expression evaluation.  Was casting resultant component 
+  expressions to an unsigned long prior to doing logical evaluation.  Now comparing resultant component 
+  expressions to zero prior to doing logical evaluation.  (Thanks, CyberCriminal)  (OpenHoldem)
+  
 
 
 v1.8.0 2008-03-29

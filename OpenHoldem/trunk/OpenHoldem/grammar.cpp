@@ -466,19 +466,19 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
 		// Logical AND
 		else if (i->value.id() == exec_grammar::LOGICAL_AND_EXPR_ID) 
 		{
-			return (double) ((unsigned long) eval_expression(f, i->children.begin(), e) && (unsigned long) eval_expression(f, i->children.begin()+1, e));
+			return (double) ( eval_expression(f, i->children.begin(), e)>0 && eval_expression(f, i->children.begin()+1, e)>0 );
 		}
 
 		// Logical XOR
 		else if (i->value.id() == exec_grammar::LOGICAL_XOR_EXPR_ID) 
 		{
-			return (double) ( eval_expression(f, i->children.begin(), e) != eval_expression(f, i->children.begin()+1, e));
+			return (double) ( eval_expression(f, i->children.begin(), e) != eval_expression(f, i->children.begin()+1, e) );
 		}
 
 		// Logical OR
 		else if (i->value.id() == exec_grammar::LOGICAL_OR_EXPR_ID) 
 		{
-			return (double) ((unsigned long) eval_expression(f, i->children.begin(), e) || (unsigned long) eval_expression(f, i->children.begin()+1, e));
+			return (double) ( eval_expression(f, i->children.begin(), e)>0 || eval_expression(f, i->children.begin()+1, e)>0 );
 		}
 
 		// Conditional
