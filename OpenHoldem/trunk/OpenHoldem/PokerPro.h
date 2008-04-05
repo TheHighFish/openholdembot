@@ -44,7 +44,6 @@ public:
 	int send_action(int action, int amount);
 	void DoScrape(void);
 	void DoAutoplayer(void);
-
 	int get_random_vacant_chair(void);
 	int recv_message(const char** ppbytes, int* pnbytes);
 	void handle_message(const char* pbytes, int nbytes);
@@ -129,6 +128,7 @@ private:
 	char rank2ascii(int rank);
 	void writehh(CString *s);
 	const char* get_cardinal_suffix(int n);
+	int count_same_scrapes(void);                        // Added to handle delay  (4-3-2008)  Spektre 
 
 	WSADATA		m_wsadata;
 	char		m_data[ppsock__nmsgmax][ppsock__msgsizmax];

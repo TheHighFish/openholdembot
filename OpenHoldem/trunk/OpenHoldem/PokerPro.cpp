@@ -2050,6 +2050,75 @@ void PokerPro::DoScrape(void) {
 	}
 #endif
 }
+int PokerPro::count_same_scrapes(void) {                               // Copied from Autoplayer.cpp to be used for f$delay (4-4-2008) Spektre
+	#ifdef SEH_ENABLE
+	try {
+#endif
+		int						i;
+		static unsigned int		card_common_last[5] = {0};
+		static unsigned int		card_player_last[10][2] = {0};
+		static bool				dealer_last[10] = {0};
+		static double			playerbalance_last[10] = {0};
+		static double			playerbet_last[10] = {0};
+		static double			myturnbitslast = 0;
+		bool					same_scrape;
+		static int				num_same_scrapes=0;
+
+		// These items need to be the same to count as a identical frame:
+		// - up and down cards
+		// - button position
+		// - playerbets
+		// - playerbalances
+		// - button states
+		same_scrape = true;
+		for (i=0; i<5; i++) 
+		{
+			if (scraper.card_common[i] != card_common_last[i])  same_scrape = false;
+		}
+
+		for (i=0; i<10; i++) 
+		{
+			if (scraper.card_player[i][0] != card_player_last[i][0])  same_scrape = false;
+			if (scraper.card_player[i][1] != card_player_last[i][1])  same_scrape = false;
+			if (scraper.dealer[i] != dealer_last[i])  same_scrape = false;
+			if (scraper.playerbalance[i] != playerbalance_last[i])  same_scrape = false;
+			if (scraper.playerbet[i] != playerbet_last[i])  same_scrape = false;
+		}
+
+		if (symbols.sym.myturnbits != myturnbitslast)  same_scrape = false;
+
+		if (same_scrape) 
+		{
+			num_same_scrapes++;
+		}
+		else 
+		{
+			for (i=0; i<5; i++) 
+			{
+				card_common_last[i] = scraper.card_common[i];
+			}
+			for (i=0; i<10; i++) 
+			{
+				card_player_last[i][0] = scraper.card_player[i][0];
+				card_player_last[i][1] = scraper.card_player[i][1];
+				dealer_last[i] = scraper.dealer[i];
+				playerbalance_last[i] = scraper.playerbalance[i];
+				playerbet_last[i] = scraper.playerbet[i];
+			}
+			myturnbitslast = symbols.sym.myturnbits;
+			num_same_scrapes = 0;
+		}
+
+		return num_same_scrapes;
+#ifdef SEH_ENABLE
+	}
+	catch (...)	 { 
+		logfatal("PokerPro::count_same_scrapes :\n"); 
+		throw;
+	}
+#endif
+}
+
 
 void PokerPro::DoAutoplayer(void) {
 #ifdef SEH_ENABLE
@@ -2057,6 +2126,7 @@ void PokerPro::DoAutoplayer(void) {
 #endif
 		int				error;
 		bool			prwin_running, scrape_running;
+        int				x, delay;
 
 		EnterCriticalSection(&cs_prwin);
 		prwin_running = prwin_thread_alive;
@@ -2082,6 +2152,13 @@ void PokerPro::DoAutoplayer(void) {
 
 		// if we have no visible buttons, then return
 		if (!symbols.sym.myturnbits) { return; }
+
+		// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return (added Spektre 2008-04-03)
+		symbols.f$delay = calc_f$symbol(&global.formula, "f$delay", &error);
+		delay = symbols.f$delay / global.preferences.scrape_delay;    // scale f$delay to a number of scrapes
+		x = count_same_scrapes();
+		if (x < (int) global.preferences.frame_delay + delay)
+			return;
 
 		// calculate f$alli, f$swag, f$rais, and f$call for autoplayer's use
 		error = SUCCESS;

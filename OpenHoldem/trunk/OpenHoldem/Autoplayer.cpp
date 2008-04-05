@@ -134,6 +134,7 @@ void Autoplayer::do_autoplayer(void) {
 		bool			prwin_running, scrape_running;
 		int				x, error;
 		int				num_buttons_visible;
+		int				delay;
 
 		EnterCriticalSection(&cs_prwin);
 		prwin_running = prwin_thread_alive;
@@ -196,9 +197,11 @@ void Autoplayer::do_autoplayer(void) {
 		if (!symbols.sym.playing)
 			return;
 
-		// If we don't have enough stable frames, then return
+		// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return (modified Spektre 2008-04-03)
+		symbols.f$delay = calc_f$symbol(&global.formula, "f$delay", &error);
+		delay = symbols.f$delay / global.preferences.scrape_delay;    // scale f$delay to a number of scrapes
 		x = count_same_scrapes();
-		if (x < (int) global.preferences.frame_delay)
+		if (x < (int) global.preferences.frame_delay + delay)
 			return;
 
 		// calculate f$alli, f$swag, f$rais, and f$call for autoplayer's use 

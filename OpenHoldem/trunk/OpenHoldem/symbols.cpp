@@ -336,6 +336,10 @@ void CSymbols::ResetSymbolsFirstTime(void)
 		for (i=0; i<=9; i++)
 			stacks_at_hand_start[i] = 0;
 
+		// delay
+		f$delay = 0;
+
+
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 

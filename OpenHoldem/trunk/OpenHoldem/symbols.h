@@ -399,6 +399,9 @@ public:
 	//  2008.02.27 by THF
 	double f$chat;
 
+	//  2008.04.02 by Spektre
+	int f$delay;                             // Autoplayer delay in milliseconds
+
 	double		bigbet;
 
 	bool		reset_stakes;				// set to true on new hand or on change in title bar text
