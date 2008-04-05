@@ -709,10 +709,12 @@ void CSymbols::CalcSymbols(void)
 		}
 		sym.ncommoncardspresent = sym.nflopc;											// ncommoncardspresent
 		sym.ncommoncardsknown = sym.nflopc;												// ncommoncardsknown
-		sym.betround = sym.nflopc == 0 ? 1 :
-					   sym.nflopc == 3 ? 2 :
-					   sym.nflopc == 4 ? 3 :
-					   sym.nflopc == 5 ? 4 : 0;											// betround
+		sym.betround = scraper.card_common[4] != CARD_NOCARD ? 4 :
+					   scraper.card_common[3] != CARD_NOCARD ? 3 :
+					   scraper.card_common[2] != CARD_NOCARD ||
+					   scraper.card_common[1] != CARD_NOCARD ||
+					   scraper.card_common[0] != CARD_NOCARD ? 2 :
+					   1;																// betround
 		sym.br = sym.betround;															// br
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

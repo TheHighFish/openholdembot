@@ -1,4 +1,4 @@
-v1.x.x 2008-04-11
+v1.8.1 2008-04-11
 NEW STUFF:
 - Show wait cursor when parsing f$debug (jumpingfences)
 
@@ -59,7 +59,16 @@ BUG FIXES:
   expressions to an unsigned long prior to doing logical evaluation.  Now comparing resultant component 
   expressions to zero prior to doing logical evaluation.  (Thanks, CyberCriminal)  (OpenHoldem)
   
-
+- Betround is now identified based on the highest card seen on the board
+    if card 5 is seen, then br=4 
+    if card 4 is seen, then br=3
+    if cards 1, 2 or 3 are seen, then br=2
+    else br=1
+  (Thanks, Strom)  (OpenHoldem)
+  
+- CRunRon::get_counts has been reworked to count common cards that are visible, rather than
+  expecting them to be there based on the betting round (Thanks, Strom)  (OpenHoldem)
+  
 
 v1.8.0 2008-03-29
 NEW STUFF:

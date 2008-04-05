@@ -6,7 +6,8 @@
 #include "inlines/eval.h"
 #include "debug.h"
 
-CRunRon::CRunRon(void) {
+CRunRon::CRunRon(void) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif	
@@ -389,10 +390,12 @@ CRunRon::CRunRon(void) {
 #endif
 }
 
-CRunRon::~CRunRon(void) {
+CRunRon::~CRunRon(void) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif	
+
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 
@@ -403,7 +406,8 @@ CRunRon::~CRunRon(void) {
 }
 
 
-void CRunRon::get_counts(void) {
+void CRunRon::get_counts(void) 
+{
 #ifdef SEH_ENABLE
 	try {
 #endif	
@@ -422,11 +426,11 @@ void CRunRon::get_counts(void) {
 		LARGE_INTEGER	bcount, ecount;
 
 		// Preflop is pre-calculated
-		if (symbols.sym.br==1) {
+		if (symbols.sym.br==1) 
+		{
 
-			if (!symbols.user_chair_confirmed) {
+			if (!symbols.user_chair_confirmed)
 				return;
-			}
 
 			//////////////////////////////////////////////////////////////
 			// run symbols
@@ -441,23 +445,28 @@ void CRunRon::get_counts(void) {
 			pcard[1] = scraper.card_player[(int) symbols.sym.userchair][1];
 
 			// suited, store in hi/lo
-			if (StdDeck_SUIT(pcard[0]) == StdDeck_SUIT(pcard[1])) {
-				if (StdDeck_RANK(pcard[0]) >= StdDeck_RANK(pcard[1])) {
+			if (StdDeck_SUIT(pcard[0]) == StdDeck_SUIT(pcard[1])) 
+			{
+				if (StdDeck_RANK(pcard[0]) >= StdDeck_RANK(pcard[1])) 
+				{
 					index1 = StdDeck_RANK(pcard[0]);
 					index2 = StdDeck_RANK(pcard[1]);
 				}
-				else {
+				else 
+				{
 					index1 = StdDeck_RANK(pcard[1]);
 					index2 = StdDeck_RANK(pcard[0]);
 				}
 			}
 			// unsuited, store in lo/hi
 			else {
-				if (StdDeck_RANK(pcard[0]) >= StdDeck_RANK(pcard[1])) {
+				if (StdDeck_RANK(pcard[0]) >= StdDeck_RANK(pcard[1])) 
+				{
 					index1 = StdDeck_RANK(pcard[1]);
 					index2 = StdDeck_RANK(pcard[0]);
 				}
-				else {
+				else 
+				{
 					index1 = StdDeck_RANK(pcard[0]);
 					index2 = StdDeck_RANK(pcard[1]);
 				}
@@ -497,23 +506,30 @@ void CRunRon::get_counts(void) {
 			pcard[1] = scraper.card_player[(int) symbols.sym.userchair][1];
 
 			// suited, store in hi/lo
-			if (StdDeck_SUIT(pcard[0]) == StdDeck_SUIT(pcard[1])) {
-				if (StdDeck_RANK(pcard[0]) >= StdDeck_RANK(pcard[1])) {
+			if (StdDeck_SUIT(pcard[0]) == StdDeck_SUIT(pcard[1])) 
+			{
+				if (StdDeck_RANK(pcard[0]) >= StdDeck_RANK(pcard[1])) 
+				{
 					index1 = StdDeck_RANK(pcard[0]);
 					index2 = StdDeck_RANK(pcard[1]);
 				}
-				else {
+				else 
+				{
 					index1 = StdDeck_RANK(pcard[1]);
 					index2 = StdDeck_RANK(pcard[0]);
 				}
 			}
+
 			// unsuited, store in lo/hi
-			else {
-				if (StdDeck_RANK(pcard[0]) >= StdDeck_RANK(pcard[1])) {
+			else 
+			{
+				if (StdDeck_RANK(pcard[0]) >= StdDeck_RANK(pcard[1])) 
+				{
 					index1 = StdDeck_RANK(pcard[1]);
 					index2 = StdDeck_RANK(pcard[0]);
 				}
-				else {
+				else 
+				{
 					index1 = StdDeck_RANK(pcard[0]);
 					index2 = StdDeck_RANK(pcard[1]);
 				}
@@ -551,7 +567,8 @@ void CRunRon::get_counts(void) {
 
 
 		// Post flop is calculated on the fly
-		else if (symbols.sym.br>=2) {
+		else if (symbols.sym.br>=2) 
+		{
 			//////////////////////////////////////////////////////////////
 			// run symbols
 
@@ -561,41 +578,31 @@ void CRunRon::get_counts(void) {
 			// player cards
 			nDeadCards = nComCards = 0;
 			CardMask_RESET(DeadCards);
-			for (i=0; i<=1; i++) {
+			for (i=0; i<=1; i++) 
+			{
 				if (scraper.card_player[(int) symbols.sym.userchair][i] != CARD_BACK &&
-					scraper.card_player[(int) symbols.sym.userchair][i] != CARD_NOCARD) {
+					scraper.card_player[(int) symbols.sym.userchair][i] != CARD_NOCARD) 
+				{
 					CardMask_SET(DeadCards, scraper.card_player[(int) symbols.sym.userchair][i]);
 					nDeadCards++;
 				}
 			}
 
 			// common cards
-			if (symbols.sym.br>=2) {
-				for (i=0; i<=2; i++) {
-					if (scraper.card_common[i] != CARD_BACK && scraper.card_common[i] != CARD_NOCARD) {
-						CardMask_SET(DeadCards, scraper.card_common[i]);
-						nDeadCards++;
-						nComCards++;
-					}
-				}
-			}
-			if (symbols.sym.br>=3) {
-				if (scraper.card_common[3] != CARD_BACK && scraper.card_common[3] != CARD_NOCARD) {
-					CardMask_SET(DeadCards, scraper.card_common[3]);
-					nDeadCards++;
-					nComCards++;
-				}
-			}
-			if (symbols.sym.br>=4) {
-				if (scraper.card_common[4] != CARD_BACK && scraper.card_common[4] != CARD_NOCARD) {
-					CardMask_SET(DeadCards, scraper.card_common[4]);
+			for (i=0; i<=4; i++) 
+			{
+				if (scraper.card_common[i] != CARD_BACK && scraper.card_common[i] != CARD_NOCARD) 
+				{
+					CardMask_SET(DeadCards, scraper.card_common[i]);
 					nDeadCards++;
 					nComCards++;
 				}
 			}
 
 			// setup the counters
-			for (i=0; i<=9; i++) { hv_totals[i] = 0; }
+			for (i=0; i<=9; i++) 
+				hv_totals[i] = 0;
+
 			max_pokval = max_pokval_count = 0;
 
 			// Do the enumeration
@@ -642,9 +649,11 @@ void CRunRon::get_counts(void) {
 			// player cards
 			nDeadCards = nComCards = 0;
 			CardMask_RESET(DeadCards);
-			for (i=0; i<=1; i++) {
+			for (i=0; i<=1; i++) 
+			{
 				if (scraper.card_player[(int) symbols.sym.userchair][i] != CARD_BACK &&
-					scraper.card_player[(int) symbols.sym.userchair][i] != CARD_NOCARD) {
+					scraper.card_player[(int) symbols.sym.userchair][i] != CARD_NOCARD) 
+				{
 					CardMask_SET(DeadCards, scraper.card_player[(int) symbols.sym.userchair][i]);
 					nDeadCards++;
 				}
@@ -652,42 +661,31 @@ void CRunRon::get_counts(void) {
 
 			// common cards
 			CardMask_RESET(ComCards);
-			if (symbols.sym.br>=2) {
-				for (i=0; i<=2; i++) {
-					if (scraper.card_common[i] != CARD_BACK && scraper.card_common[i] != CARD_NOCARD) {
-						CardMask_SET(DeadCards, scraper.card_common[i]);
-						CardMask_SET(ComCards, scraper.card_common[i]);
-						nDeadCards++;
-						nComCards++;
-					}
-				}
-			}
-			if (symbols.sym.br>=3) {
-				if (scraper.card_common[3] != CARD_BACK && scraper.card_common[3] != CARD_NOCARD) {
-					CardMask_SET(DeadCards, scraper.card_common[3]);
-					CardMask_SET(ComCards, scraper.card_common[3]);
-					nDeadCards++;
-					nComCards++;
-				}
-			}
-			if (symbols.sym.br>=4) {
-				if (scraper.card_common[4] != CARD_BACK && scraper.card_common[4] != CARD_NOCARD) {
-					CardMask_SET(DeadCards, scraper.card_common[4]);
-					CardMask_SET(ComCards, scraper.card_common[4]);
+			for (i=0; i<=4; i++) 
+			{
+				if (scraper.card_common[i] != CARD_BACK && scraper.card_common[i] != CARD_NOCARD) 
+				{
+					CardMask_SET(DeadCards, scraper.card_common[i]);
+					CardMask_SET(ComCards, scraper.card_common[i]);
 					nDeadCards++;
 					nComCards++;
 				}
 			}
 
 			// setup the counters
-			for (i=0; i<=9; i++) { hv_totals[i] = 0; }
+			for (i=0; i<=9; i++)
+				hv_totals[i] = 0;
+
 			max_pokval = max_pokval_count = 0;
 
 			// Enumerate through all possible opponent hands (excludes player and common cards)
-			for (ocard[0]=0; ocard[0]<=50; ocard[0]++) {
-				for (ocard[1]=ocard[0]+1; ocard[1]<=51; ocard[1]++) {
+			for (ocard[0]=0; ocard[0]<=50; ocard[0]++) 
+			{
+				for (ocard[1]=ocard[0]+1; ocard[1]<=51; ocard[1]++) 
+				{
 					if (!CardMask_CARD_IS_SET(DeadCards, ocard[0]) &&
-						!CardMask_CARD_IS_SET(DeadCards, ocard[1])) {
+						!CardMask_CARD_IS_SET(DeadCards, ocard[1])) 
+					{
 
 						// All dead cards (includes opp cards too)
 						AllDeadCards = DeadCards;
@@ -736,28 +734,28 @@ void CRunRon::get_counts(void) {
 		}
 
 		// NUTS probabilities
-		if (run$royfl>ron$royfl) { run$prnuts+=(run$royfl-ron$royfl); }
-		else if (run$strfl>ron$strfl) { run$prnuts+=(run$strfl-ron$strfl); }
-		else if (run$4kind>ron$4kind) { run$prnuts+=(run$4kind-ron$4kind); }
-		else if (run$fullh>ron$fullh) { run$prnuts+=(run$fullh-ron$fullh); }
-		else if (run$flush>ron$flush) { run$prnuts+=(run$flush-ron$flush); }
-		else if (run$strai>ron$strai) { run$prnuts+=(run$strai-ron$strai); }
-		else if (run$3kind>ron$3kind) { run$prnuts+=(run$3kind-ron$3kind); }
-		else if (run$2pair>ron$2pair) { run$prnuts+=(run$2pair-ron$2pair); }
-		else if (run$1pair>ron$1pair) { run$prnuts+=(run$1pair-ron$1pair); }
-		else if (run$hcard>ron$hcard) { run$prnuts+=(run$hcard-ron$hcard); }
+		if (run$royfl>ron$royfl)		run$prnuts+=(run$royfl-ron$royfl);
+		else if (run$strfl>ron$strfl)	run$prnuts+=(run$strfl-ron$strfl);
+		else if (run$4kind>ron$4kind)	run$prnuts+=(run$4kind-ron$4kind);
+		else if (run$fullh>ron$fullh)	run$prnuts+=(run$fullh-ron$fullh);
+		else if (run$flush>ron$flush)	run$prnuts+=(run$flush-ron$flush);
+		else if (run$strai>ron$strai)	run$prnuts+=(run$strai-ron$strai);
+		else if (run$3kind>ron$3kind)	run$prnuts+=(run$3kind-ron$3kind);
+		else if (run$2pair>ron$2pair)	run$prnuts+=(run$2pair-ron$2pair);
+		else if (run$1pair>ron$1pair)	run$prnuts+=(run$1pair-ron$1pair);
+		else if (run$hcard>ron$hcard)	run$prnuts+=(run$hcard-ron$hcard);
 		run$prnuts = run$prnuts / run$total;
 
-		if (ron$royfl>run$royfl) { ron$prnuts+=(ron$royfl-run$royfl); }
-		else if (ron$strfl>run$strfl) { ron$prnuts+=(ron$strfl-run$strfl); }
-		else if (ron$4kind>run$4kind) { ron$prnuts+=(ron$4kind-run$4kind); }
-		else if (ron$fullh>run$fullh) { ron$prnuts+=(ron$fullh-run$fullh); }
-		else if (ron$flush>run$flush) { ron$prnuts+=(ron$flush-run$flush); }
-		else if (ron$strai>run$strai) { ron$prnuts+=(ron$strai-run$strai); }
-		else if (ron$3kind>run$3kind) { ron$prnuts+=(ron$3kind-run$3kind); }
-		else if (ron$2pair>run$2pair) { ron$prnuts+=(ron$2pair-run$2pair); }
-		else if (ron$1pair>run$1pair) { ron$prnuts+=(ron$1pair-run$1pair); }
-		else if (ron$hcard>run$hcard) { ron$prnuts+=(ron$hcard-run$hcard); }
+		if (ron$royfl>run$royfl)		ron$prnuts+=(ron$royfl-run$royfl);
+		else if (ron$strfl>run$strfl)	ron$prnuts+=(ron$strfl-run$strfl);
+		else if (ron$4kind>run$4kind)	ron$prnuts+=(ron$4kind-run$4kind);
+		else if (ron$fullh>run$fullh)	ron$prnuts+=(ron$fullh-run$fullh);
+		else if (ron$flush>run$flush)	ron$prnuts+=(ron$flush-run$flush);
+		else if (ron$strai>run$strai)	ron$prnuts+=(ron$strai-run$strai);
+		else if (ron$3kind>run$3kind)	ron$prnuts+=(ron$3kind-run$3kind);
+		else if (ron$2pair>run$2pair)	ron$prnuts+=(ron$2pair-run$2pair);
+		else if (ron$1pair>run$1pair)	ron$prnuts+=(ron$1pair-run$1pair);
+		else if (ron$hcard>run$hcard)	ron$prnuts+=(ron$hcard-run$hcard);
 		ron$prnuts = ron$prnuts / ron$total;
 
 
