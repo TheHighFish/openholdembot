@@ -54,8 +54,8 @@ void Registry::init_Defaults(void)
 	ap_auto = false;
 
 	// scraper
-	name_scrapes = 3;
-	balance_scrapes = 3;
+	name_scrapes = 1;
+	balance_scrapes = 1;
 
 	// swag
 	text_selection_method = TEXTSEL_DOUBLECLICK;

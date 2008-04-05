@@ -33,7 +33,9 @@ NEW STUFF:
 - Two visible buttons are now required to be seen by the scraper before the autoplayer will act.
   There is no valid Texas Holdem game state where only one button is visible. (OpenHoldem)
   
-
+- For scraper preferences, the number of "Scrapes to change name" and the number of "Scrapes to zero balance"
+  defaults to "1", if not already stored in the registry.  (Thanks, Nick Coldhand) (OpenHoldem)
+  
 
 BUG FIXES:
 - Incorrect initialization of new hand and new betting round (jumpingfences)
