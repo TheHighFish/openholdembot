@@ -1,4 +1,4 @@
-v1.x.x 2008-04-11
+v1.1.3 2008-04-11
 ================
 NEW STUFF:
 - New symbol s$activemethod is now available.  This is used to determine how OH treats
