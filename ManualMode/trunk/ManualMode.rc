@@ -77,7 +77,7 @@ CAPTION "About ManualMode"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
-    LTEXT           "ManualMode Version 1.0.5",IDC_STATIC,40,10,119,8,SS_NOPREFIX
+    LTEXT           "ManualMode Version 1.0.6",IDC_STATIC,40,10,119,8,SS_NOPREFIX
     LTEXT           "Licensed under GPLv3",IDC_STATIC,40,25,119,8
     DEFPUSHBUTTON   "OK",IDOK,178,7,50,16,WS_GROUP
 END
@@ -152,14 +152,14 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "TODO: <Company name>"
-            VALUE "FileDescription", "TODO: <File description>"
-            VALUE "FileVersion", "1.0.5.0"
+            VALUE "CompanyName", "OpenHoldem"
+            VALUE "FileDescription", "ManualMode"
+            VALUE "FileVersion", "1.0.6.0"
             VALUE "InternalName", "ManualMode.exe"
-            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "LegalCopyright", "Licensed under GPLv3"
             VALUE "OriginalFilename", "ManualMode.exe"
-            VALUE "ProductName", "TODO: <Product name>"
-            VALUE "ProductVersion", "1.0.5.0"
+            VALUE "ProductName", "ManualMode"
+            VALUE "ProductVersion", "1.0.6.0"
         END
     END
     BLOCK "VarFileInfo"
