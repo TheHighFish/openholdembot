@@ -397,7 +397,7 @@ BOOL CDlgFormulaScintilla::OnInitDialog() {
 		CDialog::OnInitDialog();
 
 		// Restore font of Scintilla control
-		if (!reg.GetProfileFont("Font", "Formula", editfont)) {
+		if (!Registry::GetProfileFont("Font", "Formula", editfont)) {
 			// Use 8pt Courier (monospace) default
 			editfont.CreatePointFont(100,"Courier");
 		}
@@ -1166,7 +1166,6 @@ void CDlgFormulaScintilla::OnFont() {
 #endif
 		CFontDialog fontdlg;
 		LOGFONT curlf, newlf;
-		Registry reg;
 		COLORREF g_rgbText = RGB(0, 0, 0);
 		int	i;
 
@@ -1186,7 +1185,7 @@ void CDlgFormulaScintilla::OnFont() {
 			editfont.CreateFontIndirect(&newlf);
 
 			// Save the new font
-			reg.WriteProfileFont("Font", "Formula", editfont);
+			Registry::WriteProfileFont("Font", "Formula", editfont);
 
 			// Set the new font to all Scintilla windows
 			for (int iScint=0; iScint<m_ScinArray.GetSize(); iScint++)

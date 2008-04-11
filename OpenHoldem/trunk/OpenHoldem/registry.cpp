@@ -5,6 +5,8 @@
 #include "debug.h"
 #include "global.h"
 
+#define OH_SUBKEY  "Software\\OpenHoldem\\OpenHoldem"
+
 Registry::Registry(void) 
 {
 #ifdef SEH_ENABLE
@@ -327,7 +329,7 @@ void Registry::read_reg(void)
 		LONG		hkResult;
 
 		init_Defaults();
-		hkResult = RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\OpenHoldem\\OpenHoldem", 0, KEY_READ, &hKey);
+		hkResult = RegOpenKeyEx(HKEY_CURRENT_USER, OH_SUBKEY, 0, KEY_READ, &hKey);
 		if (hkResult==ERROR_SUCCESS) {
 
 			// Main window location and size
@@ -474,7 +476,7 @@ void Registry::write_reg(void)
 		DWORD		dwDisp;
 	
 		// Settings
-		RegCreateKeyEx(HKEY_CURRENT_USER, "Software\\OpenHoldem\\OpenHoldem", 0, NULL, 
+		RegCreateKeyEx(HKEY_CURRENT_USER, OH_SUBKEY, 0, NULL, 
 		REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, &dwDisp);
 
 		// Main window location and size
@@ -657,6 +659,57 @@ bool Registry::WriteProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, C
 	}
 	catch (...)	 { 
 		logfatal("Registry::WriteProfileFont : \n"); 
+		throw;
+	}
+#endif
+}
+
+void Registry::readRegString(CString RegistryKey, char* RegistryValue)
+{
+#ifdef SEH_ENABLE
+	try {
+#endif
+	HKEY				hKey;
+	LONG				result;
+	DWORD				strSize = MAX_PATH;
+
+	result = RegOpenKeyEx(HKEY_CURRENT_USER, OH_SUBKEY, 0, KEY_READ, &hKey);
+	if (result==ERROR_SUCCESS){
+		RegQueryValueEx(hKey,RegistryKey,NULL,NULL,(LPBYTE)RegistryValue,&strSize);
+	}
+	RegCloseKey(hKey);
+
+#ifdef SEH_ENABLE
+	}
+	catch (...)	 { 
+		logfatal("Registry::readRegString :\n"); 
+		throw;
+	}
+#endif
+}
+
+void Registry::writeRegString(CString RegistryKey, CString RegistryValue)
+{
+#ifdef SEH_ENABLE
+	try {
+#endif
+
+	HKEY				hKey;
+	LONG				result;
+	char				str[MAX_PATH];
+
+	result = RegCreateKeyEx(HKEY_CURRENT_USER, OH_SUBKEY, 0, NULL, 
+	REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, NULL);
+	if (result==ERROR_SUCCESS){
+		sprintf(str, "%s", RegistryValue);
+		RegSetValueEx(hKey, RegistryKey, 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
+	}
+	RegCloseKey(hKey);
+
+#ifdef SEH_ENABLE
+	}
+	catch (...)	 { 
+		logfatal("Registry::writeRegString :\n"); 
 		throw;
 	}
 #endif

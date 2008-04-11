@@ -5,8 +5,11 @@ public:
 
 	void read_reg(void);
 	void write_reg(void);
-	bool WriteProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, CDC* pDC=NULL);
-	bool GetProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, CDC* pDC=NULL);
+	bool static WriteProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, CDC* pDC=NULL);
+	bool static GetProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, CDC* pDC=NULL);
+
+	void static readRegString(CString RegistryKey, char* RegistryValue);
+	void static writeRegString(CString RegistryKey, CString RegistryValue);
 
 private:
 	void init_Defaults(void);

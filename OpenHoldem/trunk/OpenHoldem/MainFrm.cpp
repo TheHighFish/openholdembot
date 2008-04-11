@@ -5,6 +5,7 @@
 #include <process.h>
 
 #include "OpenHoldem.h"
+#include "OpenHoldemDoc.h"
 #include "DialogFormulaScintilla.h"
 #include "SAPrefsDialog.h"
 #include "DialogSAPrefs1.h"
@@ -69,6 +70,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_PERL_RELOADFORMULA, &CMainFrame::OnUpdateMenuPerlReloadFormula)
 
 	//  Menu commands	
+	ON_COMMAND(ID_FILE_OPEN, &CMainFrame::OnFileOpen)
 	ON_COMMAND(ID_FILE_LOADTABLEMAP, &CMainFrame::OnFileLoadTableMap)
 	ON_COMMAND(ID_FILE_CONNECT, &CMainFrame::OnBnClickedGreenCircle)
 	ON_COMMAND(ID_EDIT_FORMULA, &CMainFrame::OnEditFormula)
@@ -616,6 +618,39 @@ BOOL CMainFrame::DestroyWindow() {
 #endif
 }
 
+void CMainFrame::OnFileOpen() {
+#ifdef SEH_ENABLE
+	try {
+#endif
+		CFileDialog			cfd(true);
+		CString				theKey = "DefWHFOpenLocation";
+		char				path[MAX_PATH];
+
+		Registry::readRegString(theKey, path);
+		cfd.m_ofn.lpstrInitialDir = path;
+		cfd.m_ofn.lpstrFilter = "OpenHoldem Files (.whf)\0*.whf\0All files (*.*)\0*.*\0\0";		
+		cfd.m_ofn.lpstrTitle = "Select Formula file to OPEN";
+		if (cfd.DoModal() == IDOK) 
+		{
+			CFile cf_whf;
+			cf_whf.Open(cfd.GetPathName(), CFile::modeNoTruncate | CFile::modeRead);
+			CArchive ar_whf(&cf_whf, CArchive::load);
+			COpenHoldemDoc *pDoc = (COpenHoldemDoc *)this->GetActiveDocument();
+			pDoc->Serialize(ar_whf);
+
+			Registry::writeRegString(theKey, cfd.GetPathName());
+		}
+
+#ifdef SEH_ENABLE
+	}
+	catch (...)	 { 
+		logfatal("CMainFrame::OnFileOpen :\n"); 
+		throw;
+	}
+#endif
+}
+
+
 void CMainFrame::OnFileLoadTableMap() {
 #ifdef SEH_ENABLE
 	try {
@@ -623,7 +658,11 @@ void CMainFrame::OnFileLoadTableMap() {
 		CFileDialog			cfd(true);
 		int					line, ret;
 		CString				e;
+		CString				theKey = "DefTMOpenLocation";
+		char				path[MAX_PATH];
 
+		Registry::readRegString(theKey, path);
+		cfd.m_ofn.lpstrInitialDir = path;
 		cfd.m_ofn.lpstrFilter = "OpenScrape Table Maps (.tm)\0*.tm\0All files (*.*)\0*.*\0\0";
 		cfd.m_ofn.lpstrTitle = "Select OpenScrape table map to OPEN";
 
@@ -654,6 +693,7 @@ void CMainFrame::OnFileLoadTableMap() {
 					m_ScraperOutputDlg->do_update_display();
 				}
 
+				Registry::writeRegString(theKey, cfd.GetPathName());
 			}
 		}
 #ifdef SEH_ENABLE
@@ -1341,7 +1381,11 @@ void CMainFrame::OnDllLoadspecificfile()
 	try {
 #endif
 		CFileDialog			cfd(true);
+		CString				theKey = "DefDLLOpenLocation";
+		char				path[MAX_PATH];
 
+		Registry::readRegString(theKey, path);
+		cfd.m_ofn.lpstrInitialDir = path;
 		cfd.m_ofn.lpstrFilter = "DLL Files (.dll)\0*.dll\0\0";
 		cfd.m_ofn.lpstrTitle = "Select OpenHoldem DLL file to OPEN";
 
@@ -1353,6 +1397,8 @@ void CMainFrame::OnDllLoadspecificfile()
 			{
 				cdll.load_dll(cfd.m_ofn.lpstrFile);
 			}
+
+			Registry::writeRegString(theKey, cfd.GetPathName());
 		}
 #ifdef SEH_ENABLE
 	}
@@ -1777,11 +1823,17 @@ void CMainFrame::OnPerlLoadSpecificFormula()
 	try {
 #endif
 	CFileDialog			cfd(true);
+	CString				theKey = "DefPLOpenLocation";
+	char				path[MAX_PATH];
+
+	Registry::readRegString(theKey, path);
+	cfd.m_ofn.lpstrInitialDir = path;
 	cfd.m_ofn.lpstrFilter = "Perl Scripts (*.pl)\0*.pl\0Perl Modules (*.pm)\0*.pm\0All Files (*.*)\0*.*\0\0";		                               
 	cfd.m_ofn.lpstrTitle = "Select Perl formula file to OPEN";
 	if (cfd.DoModal() == IDOK) 
 	{		
 		the_Perl_Interpreter.load_FormulaFile(cfd.m_ofn.lpstrFile);
+		Registry::writeRegString(theKey, cfd.GetPathName());
 	} 
 #ifdef SEH_ENABLE
 	}

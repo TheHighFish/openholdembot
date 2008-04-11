@@ -26,6 +26,7 @@ protected: // create from serialization only
 	int create_flags_toolbar(void);
 	void align_toolbars(void);
 	int create_status_bar(void);
+	afx_msg void OnFileOpen();
 	afx_msg void OnEditFormula();
 	afx_msg void OnScraperOutput();
 	afx_msg void OnViewShootreplayframe();
