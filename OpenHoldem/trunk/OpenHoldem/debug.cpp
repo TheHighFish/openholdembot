@@ -315,14 +315,14 @@ void start_log(void) {
 			fn.Format("%s\\oh%d.log", global.startup_path, global.sessionnum);
 			log_fp = fopen(fn.GetString(), "a");
 			write_log("! log file open\n");
-            fprintf(log_fp, "yyyy.mm.dd hh:mm:ss -  # hand commoncard rank poker  win  los  tie  P      nit bestaction - play*      call       bet       pot   balance - FCRA FCRA swag\n");
-		    fprintf(log_fp, "----------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+			fprintf(log_fp, "yyyy.mm.dd hh:mm:ss -  # hand commoncard rank poker  win  los  tie  P      nit bestaction - play*      call       bet       pot   balance - FCRA FCRA swag\n");
+			fprintf(log_fp, "----------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 			fflush(log_fp);
 		}
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 
-		logfatal("::start_log\n"); 
+		logfatal("::start_log\n");
 		throw;
 	}
 #endif
@@ -361,7 +361,7 @@ void write_log_autoplay(const char * action) {
 	try {
 #endif
 		char		nowtime[26];
-		CString		pcards, comcards, temp, rank, pokerhand, bestaction, fcra_seen, log_last;
+		CString		pcards, comcards, temp, rank, pokerhand, bestaction, fcra_seen;
 		char		*card;
 		CardMask	Cards;
 		int			i, nCards;
@@ -370,26 +370,26 @@ void write_log_autoplay(const char * action) {
 
 		if (log_fp != NULL) {
 
-            // log$ writing
-            if (global.preferences.LogSymbol_enabled)
-            {
-                int max_log = symbols.logsymbols_collection.GetCount();
+			// log$ writing
+			if (global.preferences.LogSymbol_enabled)
+			{
+				int max_log = symbols.logsymbols_collection.GetCount();
 
-                if (max_log > 0)
-                {
-                    if (max_log > global.preferences.LogSymbol_max_log)
-                    {
-                        max_log = global.preferences.LogSymbol_max_log;
-                    }
+				if (max_log > 0)
+				{
+					if (max_log > global.preferences.LogSymbol_max_log)
+					{
+						max_log = global.preferences.LogSymbol_max_log;
+					}
 
-                    write_log("*** log$ (Total: %d | Showing: %d)\n", symbols.logsymbols_collection.GetCount(), max_log);
+					write_log("*** log$ (Total: %d | Showing: %d)\n", symbols.logsymbols_collection.GetCount(), max_log);
 
-                    for (int i=0; i<max_log; i++)
-                    {
-                        write_log("***     %s\n", symbols.logsymbols_collection[i]);    
-                    }
-                }
-            }
+					for (int i=0; i<max_log; i++)
+					{
+						write_log("***     %s\n", symbols.logsymbols_collection[i]);    
+					}
+				}
+			}
 
 			CardMask_RESET(Cards);
 			nCards=0;
