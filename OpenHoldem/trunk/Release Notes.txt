@@ -18,6 +18,8 @@ NEW STUFF:
   Note: You want to use the log$ symbol at the end of a logic block,
   to make sure it only gets flagged when all the previous statements are true. (Strom)
 
+- versus.bin path registry entry (jumpingfences)
+
 v1.8.1 2008-04-11
 NEW STUFF:
 - Show wait cursor when parsing f$debug (jumpingfences)

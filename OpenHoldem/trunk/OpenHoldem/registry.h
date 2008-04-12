@@ -18,7 +18,7 @@ private:
 	void read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, int *RegistryValue);
 	void read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, bool *RegistryValue);
 	void read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, unsigned int *RegistryValue);
-	void read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, CString RegistryValue);
+	void read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, CString *RegistryValue);
 	void read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, double *RegistryValue);
 
 private:
@@ -105,5 +105,8 @@ public:
     // log$ logging
     bool            LogSymbol_enabled;
     int             LogSymbol_max_log;
+
+	// versus.bin path
+	CString			versus_path;
 };
 

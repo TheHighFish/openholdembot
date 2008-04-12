@@ -107,16 +107,25 @@ CGlobal::CGlobal(void)
         //  Get saved preferences for log$
         preferences.LogSymbol_enabled = reg.LogSymbol_enabled;
         preferences.LogSymbol_max_log = reg.LogSymbol_max_log;
-
+		
 		// Check for versus.bin
-		if ((fp = fopen("versus.bin", "rb"))==NULL) 
+		if ((fp = fopen("versus.bin", "rb"))!=NULL) 
 		{
-			MessageBox(NULL, "Could not open versus.bin.\nVersus functions will be disabled.\n", "Versus Error", MB_OK | MB_TOPMOST);
-			versus_enabled = false;
+			fclose(fp);
+			versus_path = "versus.bin";
+			versus_enabled = true;
+		}
+		else if ((fp = fopen(reg.versus_path, "rb"))!=NULL) 
+		{
+			fclose(fp);
+			versus_path = reg.versus_path;
+			versus_enabled = true;
 		}
 		else 
 		{
-			versus_enabled = true;
+			MessageBox(NULL, "Could not open versus.bin.\nVersus functions will be disabled.\n", "Versus Error", MB_OK | MB_TOPMOST);
+			versus_enabled = false;
+
 		}
 
 		state_index = 0;

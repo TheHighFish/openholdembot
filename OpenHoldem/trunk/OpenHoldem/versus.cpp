@@ -138,7 +138,7 @@ bool CVersus::get_counts(void) {
 		// PREFLOP
 		if (symbols.sym.br == 1) 
 		{
-			if ((fh = _sopen("versus.bin", _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL))==-1) 
+			if ((fh = _sopen(global.versus_path, _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL))==-1) 
 			{
 				return false;
 			}

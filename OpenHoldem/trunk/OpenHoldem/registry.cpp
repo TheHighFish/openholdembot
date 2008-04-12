@@ -138,6 +138,8 @@ void Registry::init_Defaults(void)
     // log$ loggin
     LogSymbol_enabled = false;
     LogSymbol_max_log = 5;
+
+	versus_path = "";
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 
@@ -217,7 +219,7 @@ void Registry::read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, unsigned int 
 }
 
 
-void Registry::read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey,  CString RegistryValue)
+void Registry::read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey,  CString *RegistryValue)
 {
 #ifdef SEH_ENABLE
 	try {
@@ -228,7 +230,7 @@ void Registry::read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey,  CString Regi
 
 	cbData = sizeof(str);
 	if ( (hkResult = RegQueryValueEx(hKey, RegistryKey, NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
-		 RegistryValue = str;
+		 *RegistryValue = str;
 	//  Otherwise: Keep default value.
 #ifdef SEH_ENABLE
 	}
@@ -390,7 +392,7 @@ void Registry::read_reg(void)
 			// prefs - dll extension
 			read_OH_RegistryKey(hKey, "dll_always_send_state", &dll_always_send_state);
 			read_OH_RegistryKey(hKey, "load_dll_on_startup", &load_dll_on_startup);
-			read_OH_RegistryKey(hKey, "dll_name", dll_name);
+			read_OH_RegistryKey(hKey, "dll_name", &dll_name);
 						
 			// prefs - scraper
 			read_OH_RegistryKey(hKey, "scrape_delay", &scrape_delay);
@@ -399,16 +401,16 @@ void Registry::read_reg(void)
 			
 			// prefs - symbols
 			read_OH_RegistryKey(hKey, "avtime", &avtime);
-			read_OH_RegistryKey(hKey, "handrank_value", handrank_value);
+			read_OH_RegistryKey(hKey, "handrank_value", &handrank_value);
 			read_OH_RegistryKey(hKey, "disable_caching", &disable_caching);
 			
 			// Prefs - poker tracker
 			read_OH_RegistryKey(hKey, "pt_disable", &pt_disable);
-			read_OH_RegistryKey(hKey, "pt_ip_addr", pt_ip_addr);
-			read_OH_RegistryKey(hKey, "pt_port", pt_port);
-			read_OH_RegistryKey(hKey, "pt_user", pt_user);
-			read_OH_RegistryKey(hKey, "pt_pass", pt_pass);
-			read_OH_RegistryKey(hKey, "pt_dbname", pt_dbname);
+			read_OH_RegistryKey(hKey, "pt_ip_addr", &pt_ip_addr);
+			read_OH_RegistryKey(hKey, "pt_port", &pt_port);
+			read_OH_RegistryKey(hKey, "pt_user", &pt_user);
+			read_OH_RegistryKey(hKey, "pt_pass", &pt_pass);
+			read_OH_RegistryKey(hKey, "pt_dbname", &pt_dbname);
 			read_OH_RegistryKey(hKey, "pt_updatedelay", &pt_updatedelay);
 			read_OH_RegistryKey(hKey, "pt_cacherefresh", &pt_cacherefresh);
 			
@@ -424,10 +426,10 @@ void Registry::read_reg(void)
 			read_OH_RegistryKey(hKey, "replay_max_frames", &replay_max_frames);
 			
 			// poker Pro
-			read_OH_RegistryKey(hKey, "ppro_hostname", hostname);
-			read_OH_RegistryKey(hKey, "ppro_port", port);
-			read_OH_RegistryKey(hKey, "ppro_username", username);
-			read_OH_RegistryKey(hKey, "ppro_password", password);
+			read_OH_RegistryKey(hKey, "ppro_hostname", &hostname);
+			read_OH_RegistryKey(hKey, "ppro_port", &port);
+			read_OH_RegistryKey(hKey, "ppro_username", &username);
+			read_OH_RegistryKey(hKey, "ppro_password", &password);
 			read_OH_RegistryKey(hKey, "ppro_handhistory", &handhistory);
 			read_OH_RegistryKey(hKey, "ppro_chips", &chips);
 			read_OH_RegistryKey(hKey, "ppro_autoseat", &autoseat);
@@ -448,8 +450,8 @@ void Registry::read_reg(void)
 
 			//  2008.02.27 by THF
 			//  Perl
-			read_OH_RegistryKey(hKey, "Perl_default_Formula", Perl_default_Formula);
-			read_OH_RegistryKey(hKey, "Perl_Editor", Perl_Editor);
+			read_OH_RegistryKey(hKey, "Perl_default_Formula", &Perl_default_Formula);
+			read_OH_RegistryKey(hKey, "Perl_Editor", &Perl_Editor);
 			read_OH_RegistryKey(hKey, "Perl_load_default_Formula", &Perl_load_default_Formula);
 			read_OH_RegistryKey(hKey, "Perl_load_Interpreter", &Perl_load_Interpreter);
 						
@@ -463,6 +465,8 @@ void Registry::read_reg(void)
             // log$ logging
             read_OH_RegistryKey(hKey, "LogSymbol_enabled", &LogSymbol_enabled);
             read_OH_RegistryKey(hKey, "LogSymbol_max_log", &LogSymbol_max_log);
+
+            read_OH_RegistryKey(hKey, "versus", &versus_path);
 		}
 
 		RegCloseKey(hKey);
