@@ -48,6 +48,7 @@
 #define IDD_SAPREFS9                    172
 #define IDD_SAPREFS10                   173
 #define IDR_FORMULA_SYMBOL_MENU         175
+#define IDD_SAPREFS11                   176
 #define IDC_NEW                         1006
 #define IDC_DELETE                      1007
 #define IDC_RENAME                      1013
@@ -352,6 +353,9 @@
 #define IDC_ENABLE_CHAT                 1293
 #define IDC_MINIMUM_DELAY               1294
 #define IDC_MINIMUM_DELAY_SPIN          1295
+#define IDC_ENABLE_LOG                  1296
+#define IDC_MAXIMUM_LOG                 1297
+#define IDC_MAXIMUM_LOG_SPIN            1298
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772

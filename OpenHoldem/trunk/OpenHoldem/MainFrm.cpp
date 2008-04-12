@@ -19,6 +19,7 @@
 //  2008.03.02 by THF
 #include "DialogSAPrefs9.h"
 #include "DialogSAPrefs10.h"
+#include "DialogSAPrefs11.h"
 #include <windows.h>
 
 #include "registry.h"
@@ -507,7 +508,8 @@ void CMainFrame::OnEditPreferences() {
 		CDlgSAPrefs8 page8;
 		//  2008.03.02 by THF
 		CDlgSAPrefs9 page9;
-		CDlgSAPrefs10 page10;	
+		CDlgSAPrefs10 page10;
+        CDlgSAPrefs11 page11;
 
 		// add pages
 		// 2008.03.02 by THF: Perl, Chat, alphabetical order 
@@ -516,6 +518,7 @@ void CMainFrame::OnEditPreferences() {
 		dlg.AddPage(page10, "Chat");
 		dlg.AddPage(page3, "DLL Extension");		
 		dlg.AddPage(page7, "ICM");
+        dlg.AddPage(page11, "Log Symbol");
 		dlg.AddPage(page9, "Perl");
 		dlg.AddPage(page6, "Poker Tracker");
 		dlg.AddPage(page8, "Replay Frames");

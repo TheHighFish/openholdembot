@@ -104,6 +104,10 @@ CGlobal::CGlobal(void)
 		preferences.Chat_min_Delay = reg.Chat_min_Delay;
 		preferences.Chat_random_Delay = reg.Chat_random_Delay;
 
+        //  Get saved preferences for log$
+        preferences.LogSymbol_enabled = reg.LogSymbol_enabled;
+        preferences.LogSymbol_max_log = reg.LogSymbol_max_log;
+
 		// Check for versus.bin
 		if ((fp = fopen("versus.bin", "rb"))==NULL) 
 		{

@@ -14,6 +14,7 @@
 #include "action.h"
 #include "myhand.h"
 #include "memory.h"
+#include "logsymbols.h"
 
 using namespace std;
 using namespace boost::spirit;
@@ -249,6 +250,13 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
 			else if (memcmp(sym.c_str(), "vs$", 3)==0) 
 			{
 				return versus.get_symbol(sym.c_str(), e);
+			}
+
+            // log$ symbols
+			else if (memcmp(sym.c_str(), "log$", 4)==0) 
+			{
+                LogSymbols  logsymbols;
+				return logsymbols.process_query(sym.c_str(), e);
 			}
 
 			// icm_ symbols

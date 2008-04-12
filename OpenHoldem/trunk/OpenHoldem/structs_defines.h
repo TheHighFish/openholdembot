@@ -248,6 +248,10 @@ struct SPreferences
 	int				Chat_min_Delay;
 	int				Chat_random_Delay;
 
+    // Log Symbol
+    bool            LogSymbol_enabled;
+    int             LogSymbol_max_log;
+
 };
 
 struct SDebugTabInfo 

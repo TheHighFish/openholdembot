@@ -101,5 +101,9 @@ public:
 	bool			Chat_enabled;
 	int				Chat_min_Delay;
 	int				Chat_random_Delay;
+
+    // log$ logging
+    bool            LogSymbol_enabled;
+    int             LogSymbol_max_log;
 };
 

@@ -285,6 +285,10 @@
 				RelativePath=".\levenshtein.cpp"
 				>
 			</File>
+            <File
+				RelativePath=".\logsymbols.cpp"
+				>
+			</File>
 			<File
 				RelativePath=".\MainFrm.cpp"
 				>
@@ -450,6 +454,10 @@
 					RelativePath=".\DialogSAPrefs10.cpp"
 					>
 				</File>
+                <File
+					RelativePath=".\DialogSAPrefs11.cpp"
+					>
+				</File>
 				<File
 					RelativePath=".\DialogSAPrefs2.cpp"
 					>
@@ -575,6 +583,10 @@
 			</File>
 			<File
 				RelativePath=".\levenshtein.h"
+				>
+			</File>
+            <File
+				RelativePath=".\logsymbols.h"
 				>
 			</File>
 			<File
@@ -762,6 +774,10 @@
 				</File>
 				<File
 					RelativePath=".\DialogSAPrefs10.h"
+					>
+				</File>
+                <File
+					RelativePath=".\DialogSAPrefs11.h"
 					>
 				</File>
 				<File

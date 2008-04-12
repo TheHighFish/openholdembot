@@ -134,6 +134,10 @@ void Registry::init_Defaults(void)
 	//  Just a security measure against crazy bot formulas...
 	Chat_min_Delay = 600;      //  seconds
 	Chat_random_Delay = 3000;  //  seconds;
+
+    // log$ loggin
+    LogSymbol_enabled = false;
+    LogSymbol_max_log = 5;
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 
@@ -455,6 +459,10 @@ void Registry::read_reg(void)
 			read_OH_RegistryKey(hKey, "Chat_enabled", &Chat_enabled);
 			read_OH_RegistryKey(hKey, "Chat_min_Delay", &Chat_min_Delay);
 			read_OH_RegistryKey(hKey, "Chat_random_Delay", &Chat_random_Delay);
+
+            // log$ logging
+            read_OH_RegistryKey(hKey, "LogSymbol_enabled", &LogSymbol_enabled);
+            read_OH_RegistryKey(hKey, "LogSymbol_max_log", &LogSymbol_max_log);
 		}
 
 		RegCloseKey(hKey);
@@ -595,6 +603,10 @@ void Registry::write_reg(void)
 		write_OH_RegistryKey(hKey, "Chat_enabled", Chat_enabled);
 		write_OH_RegistryKey(hKey, "Chat_min_Delay", Chat_min_Delay);
 		write_OH_RegistryKey(hKey, "Chat_random_Delay", Chat_random_Delay);
+
+        // log$ loggin
+        write_OH_RegistryKey(hKey, "LogSymbol_enabled", LogSymbol_enabled);
+        write_OH_RegistryKey(hKey, "LogSymbol_max_log", LogSymbol_max_log);
 		
 		RegCloseKey(hKey);
 #ifdef SEH_ENABLE

@@ -339,6 +339,8 @@ void CSymbols::ResetSymbolsFirstTime(void)
 		// delay
 		f$delay = 0;
 
+        // log$ symbols
+        logsymbols_collection.RemoveAll();
 
 #ifdef SEH_ENABLE
 	}
@@ -570,6 +572,10 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 		sym.vs$prwinhi = sym.vs$prtiehi = sym.vs$prloshi = 0;
 		sym.vs$prwinti = sym.vs$prtieti = sym.vs$prlosti = 0;
 		sym.vs$prwinlo = sym.vs$prtielo = sym.vs$prloslo = 0;
+
+        // log$ symbols
+        logsymbols_collection.RemoveAll();
+
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 
