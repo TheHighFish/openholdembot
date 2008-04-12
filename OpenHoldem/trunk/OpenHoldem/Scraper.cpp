@@ -532,9 +532,10 @@ void CScraper::scrape_seated(int chair, HDC hdcCompatible, HDC hdc)
 				seated[chair] = result;
 		}
 
-		// try p region next
+		// try p region next,
+		// but only if we didn't get a positive result from the u region
 		r$index = global.tablemap.r$pXseated_index[chair];
-		if (r$index!=-1) 
+		if (r$index!=-1 && !is_string_seated(seated[chair])) 
 		{
 			process_region(hdcCompatible, hdc, r$index);
 			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
@@ -584,9 +585,10 @@ void CScraper::scrape_active(int chair, HDC hdcCompatible, HDC hdc)
 				active[chair] = result;
 		}
 
-		// try p region next
+		// try p region next,
+		// but only if we didn't get a positive result from the u region
 		r$index = global.tablemap.r$pXactive_index[chair];
-		if (r$index!=-1)
+		if (r$index!=-1 && !is_string_active(active[chair]))
 		{
 			process_region(hdcCompatible, hdc, r$index);
 			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
