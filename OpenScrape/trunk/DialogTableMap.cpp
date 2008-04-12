@@ -828,7 +828,7 @@ void CDlgTableMap::update_display(void)
 			m_FontPlus.EnableWindow(true);
 			m_FontMinus.EnableWindow(true);
 			m_Delete.EnableWindow(true);
-						
+			m_Edit.EnableWindow(true);						
 			update_t$_display();
 		}
 
@@ -1800,18 +1800,25 @@ void CDlgTableMap::OnBnClickedEdit()
 	CString				sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
 	HTREEITEM			parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
 	HTREEITEM			node;
-	int					i, j;
+	int					i, j, pos, x_cnt;
 	char				title[200];
 	CDlgEditSizes		dlgsizes;
 	CDlgEditSymbols		dlgsymbols;
 	CDlgEditRegion		dlgregions;
+	CDlgEditFont		dlg_editfont;
 	CDlgEditHashPoint	dlghashpoint;
 	CDlgEditGrHashPoints	dlggrhashpoints;
 	CString				selected_parent_text = "";
+	CString				sel_region_name;
+	CString				node_text = "";
+	CArray <Stablemap_font, Stablemap_font>		new_t$_recs;
 	Stablemap_size		*sel_size_ptr = NULL;
 	Stablemap_symbol	*sel_symbol_ptr = NULL;
 	Stablemap_region	*sel_region_ptr = NULL;
+	Stablemap_font		*sel_font_ptr = NULL;
 	Stablemap_hash_point	*sel_hash_point_ptr = NULL, temp_hash_point;
+	Stablemap_font		new_font;
+
 
 	if (parent != NULL) 
 		selected_parent_text = m_TableMapTree.GetItemText(parent);
@@ -1919,7 +1926,52 @@ void CDlgTableMap::OnBnClickedEdit()
 	
 	else if (selected_parent_text == "Fonts")
 	{
-		// Not valid - should delete and add a new one using "Create Font" button
+		if (m_TableMapTree.GetSelectedItem())
+			sel_font_ptr = (Stablemap_font *) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
+
+		if (sel_font_ptr)
+		{
+			// Prep dialog
+			dlg_editfont.titletext = "Edit font character";
+			dlg_editfont.character = sel_font_ptr->ch; //new_font.ch;
+			new_font.ch = sel_font_ptr->ch;
+			new_font.group = sel_font_ptr->group;
+			pos = 0;
+			x_cnt = sel_font_ptr->x_count;
+			while (pos < x_cnt)
+			{
+				new_font.x[pos] = sel_font_ptr->x[pos];
+				pos ++;
+			}
+			new_font.x_count = x_cnt;
+			new_font.hexmash =  sel_font_ptr->hexmash;
+
+			// Insert the new record in the existing array of t$ records
+			new_t$_recs.Add(new_font);
+
+			text.Format("Type %d", sel_font_ptr->group);
+			dlg_editfont.type = text.GetString();
+
+			dlg_editfont.new_t$_recs = &new_t$_recs;
+
+			// Show dialog
+			if (dlg_editfont.DoModal() == IDOK)
+			{
+				// Edit record in internal structure
+				sel_font_ptr->ch = dlg_editfont.character.GetAt(0);
+				sel_font_ptr->group =  atoi(dlg_editfont.type.Right(1));
+				
+				// Edit record in tree
+				text.Format("%c (%s)", dlg_editfont.character.GetAt(0), dlg_editfont.type.Right(1));
+				m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), text.GetString());
+				m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
+				m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
+
+				update_display();
+				Invalidate(false);
+				pDoc->SetModifiedFlag(true);
+			}
+		}
 	}
 	
 	else if (selected_parent_text == "Hash Points" ||
