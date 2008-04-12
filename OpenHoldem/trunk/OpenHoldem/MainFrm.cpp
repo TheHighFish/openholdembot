@@ -640,7 +640,12 @@ void CMainFrame::OnFileOpen() {
 			CArchive ar_whf(&cf_whf, CArchive::load);
 			COpenHoldemDoc *pDoc = (COpenHoldemDoc *)this->GetActiveDocument();
 			pDoc->Serialize(ar_whf);
+			cf_whf.Close();
+			ar_whf.Close();
 
+			// Update MRU, window title, registry
+			((COpenHoldemApp*)AfxGetApp())->addMRU(cfd.GetPathName());
+			SetWindowText(cfd.GetFileTitle() + " - " + CString(MAKEINTRESOURCE(AFX_IDS_APP_TITLE)));
 			Registry::writeRegString(theKey, cfd.GetPathName());
 		}
 
