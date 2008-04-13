@@ -719,12 +719,28 @@ void CSymbols::CalcSymbols(void)
 		}
 		sym.ncommoncardspresent = sym.nflopc;											// ncommoncardspresent
 		sym.ncommoncardsknown = sym.nflopc;												// ncommoncardsknown
-		sym.betround = scraper.card_common[4] != CARD_NOCARD ? 4 :
-					   scraper.card_common[3] != CARD_NOCARD ? 3 :
-					   scraper.card_common[2] != CARD_NOCARD ||
-					   scraper.card_common[1] != CARD_NOCARD ||
-					   scraper.card_common[0] != CARD_NOCARD ? 2 :
-					   1;																// betround
+
+		// If no common card animation is going on
+		if (!scraper.is_common_animation())
+		{
+			sym.betround = scraper.card_common[4] != CARD_NOCARD ? 4 :
+						   scraper.card_common[3] != CARD_NOCARD ? 3 :
+						   scraper.card_common[2] != CARD_NOCARD &&
+						   scraper.card_common[1] != CARD_NOCARD &&
+						   scraper.card_common[0] != CARD_NOCARD ? 2 :
+						   1;																// betround
+		}
+		else
+		{
+			// There is a common card animation going on currently
+			// so lets not try to determine the betround,
+			// but if it's a new hand then lets default to pre-flop
+			if (br_last == -1)
+			{
+				sym.betround = 1;
+			}
+		}
+
 		sym.br = sym.betround;															// br
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

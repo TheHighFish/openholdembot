@@ -426,7 +426,8 @@ void CRunRon::get_counts(void)
 		LARGE_INTEGER	bcount, ecount;
 
 		// Preflop is pre-calculated
-		if (symbols.sym.br==1) 
+		// Also use the pre-flop code if there is a common card animation going on, to prevent freezeups
+		if (symbols.sym.br==1 || scraper.is_common_animation())
 		{
 
 			if (!symbols.user_chair_confirmed)

@@ -116,11 +116,61 @@ void CScraper::clear_scrape_areas(void)
 		handnumber_last=0;
 		strcpy(title_last, "");
 
-
 #ifdef SEH_ENABLE
 	}
 	catch (...)	 { 
 		logfatal("CScraper::clear_scrape_areas :\n"); 
+		throw;
+	}
+#endif
+}
+
+// returns true if common cards are in the middle of an animation
+bool CScraper::is_common_animation(void) 
+{
+#ifdef SEH_ENABLE
+	try {
+#endif
+		bool			animation;
+		int				flop_card_count;
+
+		animation		= false; // By default there is no animation going on
+		flop_card_count	= 0;
+
+		// Count all the flop cards
+		for (int i=0;i<3;i++) {
+			if (card_common[i] != CARD_NOCARD)
+			{
+				flop_card_count++;
+			}
+		}
+
+		// If there are some flop cards present,
+		// but not all 3 then there is an animation going on
+		if (flop_card_count > 0 && flop_card_count < 3)
+		{
+			animation = true;
+		}
+		// If the turn card is present,
+		// but not all 3 flop cards are present then there is an animation going on
+		else if (card_common[3] != CARD_NOCARD && flop_card_count != 3)
+		{
+			animation = true;
+		}
+		// If the river card is present,
+		// but the turn card isn't
+		// OR not all 3 flop cards are present then there is an animation going on
+		else if (card_common[4] != CARD_NOCARD && (card_common[3] == CARD_NOCARD || flop_card_count != 3))
+		{
+			animation = true;
+		}
+
+		return animation;
+
+#ifdef SEH_ENABLE
+	}
+	catch (...)	 { 
+		logfatal("CScraper::is_common_animation :\n"); 
 		throw;
 	}
 #endif

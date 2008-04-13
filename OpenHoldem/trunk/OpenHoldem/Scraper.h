@@ -33,6 +33,7 @@ public:
 	void create_bitmaps(void);
 	void delete_bitmaps(void);
 	bool get_button_state(int button_index);
+	bool is_common_animation(void);
 	bool is_string_allin(CString s);
 	bool is_string_raise(CString s);
 	bool is_string_call(CString s);

@@ -21,7 +21,9 @@ NEW STUFF:
 - versus.bin path registry entry (jumpingfences)
 
 BUG FIXES:
-- Fixed the uXseated and uXactive regions being ignored
+- Fixed the uXseated and uXactive regions being ignored. (Strom)
+
+- Fixed a freezing bug that was caused by common card animations and/or occlusion. (Strom)
 
 v1.8.1 2008-04-11
 NEW STUFF:
