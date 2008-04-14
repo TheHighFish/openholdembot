@@ -24,10 +24,6 @@ protected:
 public:
 	CEdit m_ScrapeDelay;
 	CSpinButtonCtrl m_ScrapeDelay_Spin;
-	CEdit m_NameScrapes;
-	CSpinButtonCtrl m_NameScrapes_Spin;
-	CEdit m_BalanceScrapes;
-	CSpinButtonCtrl m_BalanceScrapes_Spin;
 	virtual BOOL OnInitDialog();
 protected:
 	virtual void OnOK();

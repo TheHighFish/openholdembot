@@ -91,10 +91,6 @@
 #define IDC_SWAGDELAY1                  1040
 #define IDC_SCRAPEDELAY_SPIN            1041
 #define IDC_SWAGDELAY1_SPIN             1041
-#define IDC_NAMESCRAPES                 1042
-#define IDC_NAMESRAPES_SPIN             1043
-#define IDC_BALANCESCRAPES              1044
-#define IDC_BALANCESCRAPES_SPIN         1045
 #define IDC_COMBO2                      1052
 #define IDC_HANDRANKVALUE               1052
 #define IDC_LOAD_DLL_ON_STARTUP         1054

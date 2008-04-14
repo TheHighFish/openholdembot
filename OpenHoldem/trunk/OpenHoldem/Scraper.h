@@ -102,10 +102,7 @@ private:
 	unsigned int	card_common_last[5], card_player_last[10][2];
 	CString			seated_last[10], active_last[10];
 	bool			dealer_last[10];
-	int				possible_new_name_scrapes[10];
-	CString			possible_new_name[10], name_last[10];
-	int				possible_zero_balance_scrapes[10];
-	bool			possible_zero[10];
+	CString			name_last[10];
 	double			balance_last[10], playerbet_last[10];
 	CString			buttonstate_last[10], i86X_buttonstate_last[10], buttonlabel_last[10], i86_buttonstate_last;
 	double			pot_last[10];

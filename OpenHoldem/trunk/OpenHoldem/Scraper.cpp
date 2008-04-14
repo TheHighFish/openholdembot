@@ -11,7 +11,8 @@
 // Global construction of scraper class
 class CScraper	scraper;
 
-CScraper::CScraper(void) {
+CScraper::CScraper(void) 
+{
 #ifdef SEH_ENABLE
 	// Set exception handler
 	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
@@ -41,6 +42,7 @@ void CScraper::clear_scrape_areas(void)
 		int i;
 
 		EnterCriticalSection(&cs_prwin);
+
 		for (i=0; i<5; i++)
 			card_common[i] = CARD_NOCARD;
 
@@ -60,6 +62,7 @@ void CScraper::clear_scrape_areas(void)
 			pot[i] = 0;
 		}
 		i86_buttonstate = "false";
+
 		LeaveCriticalSection(&cs_prwin);
 
 		buttonlabel[0] = "fold";
@@ -92,11 +95,7 @@ void CScraper::clear_scrape_areas(void)
 			card_player_last[i][1]=CARD_NOCARD;
 			seated_last[i] = active_last[i] = "false";
 			dealer_last[i] = false;
-			possible_new_name_scrapes[i]=0;
-			possible_new_name[i]="";
 			name_last[i]="";
-			possible_zero_balance_scrapes[i]=0;
-			possible_zero[i] = false;
 			balance_last[i]=0;
 			playerbet_last[i]=0;
 			buttonstate_last[i]="";
@@ -104,6 +103,7 @@ void CScraper::clear_scrape_areas(void)
 			buttonlabel_last[i]="";
 			pot_last[i]=0;
 		}
+
 		i86_buttonstate_last = "";
 		istournament_last = false;
 		limit_last=0;
@@ -138,7 +138,8 @@ bool CScraper::is_common_animation(void)
 		flop_card_count	= 0;
 
 		// Count all the flop cards
-		for (int i=0;i<3;i++) {
+		for (int i=0;i<3;i++) 
+		{
 			if (card_common[i] != CARD_NOCARD)
 			{
 				flop_card_count++;
@@ -757,35 +758,11 @@ void CScraper::scrape_name(int chair, HDC hdcCompatible, HDC hdc) {
 		if (got_new_scrape) 
 		{ 
 			name_good_scrape[chair] = true;
-
-			if (playername[chair] == "") 
-			{
-				playername[chair] = text;
-				possible_new_name_scrapes[chair] = 0;
-				possible_new_name[chair] = "";
-			}
-
-			if (text != possible_new_name[chair]) 
-			{
-				possible_new_name[chair] = text; 
-				possible_new_name_scrapes[chair] = 0;
-			}
-			else 
-			{
-				possible_new_name_scrapes[chair]++;
-			}
+			playername[chair] = text;
 		}
 		else 
 		{
 			name_good_scrape[chair] = false;
-			possible_new_name_scrapes[chair]++;
-		}
-
-		if (possible_new_name_scrapes[chair] >= (int) global.preferences.name_scrapes && possible_new_name[chair]!="") 
-		{
-			playername[chair] = possible_new_name[chair];
-			possible_new_name_scrapes[chair] = 0;
-			possible_new_name[chair] = "";
 		}
 
 		if (name_last[chair] != playername[chair]) 
@@ -833,19 +810,20 @@ void CScraper::scrape_balance(int chair, HDC hdcCompatible, HDC hdc)
 				{ 
 					got_new_scrape = true;
 					text = "0"; 
-					possible_zero_balance_scrapes[chair] = (int) global.preferences.balance_scrapes + 1;
 				}
 				
 				else if (text.MakeLower().Find("out")!=-1) 
 				{ 
 					sittingout[chair]=true; 
 				}
+
 				else 
 				{
 					text.Remove(',');
 					text.Remove('$');
 					
-					if (text!="" && is_numeric(text)) { got_new_scrape = true; }
+					if (text!="" && is_numeric(text)) 
+						got_new_scrape = true;
 				}
 			}
 		}
@@ -864,19 +842,20 @@ void CScraper::scrape_balance(int chair, HDC hdcCompatible, HDC hdc)
 				{ 
 					got_new_scrape = true;
 					text = "0"; 
-					possible_zero_balance_scrapes[chair] = (int) global.preferences.balance_scrapes + 1;
 				}
 				
 				else if (text.MakeLower().Find("out")!=-1) 
 				{ 
 					sittingout[chair]=true; 
 				}
+
 				else 
 				{
 					text.Remove(',');
 					text.Remove('$');
 					
-					if (text!="" && is_numeric(text)) { got_new_scrape = true; }
+					if (text!="" && is_numeric(text))
+						got_new_scrape = true;
 				}
 			}
 		}
@@ -895,19 +874,20 @@ void CScraper::scrape_balance(int chair, HDC hdcCompatible, HDC hdc)
 				{ 
 					got_new_scrape = true;
 					text = "0"; 
-					possible_zero_balance_scrapes[chair] = (int) global.preferences.balance_scrapes + 1;
 				}
 				
 				else if (text.MakeLower().Find("out")!=-1) 
 				{ 
 					sittingout[chair]=true; 
 				}
+
 				else 
 				{
 					text.Remove(',');
 					text.Remove('$');
 					
-					if (text!="" && is_numeric(text)) { got_new_scrape = true; }
+					if (text!="" && is_numeric(text))
+						got_new_scrape = true;
 				}
 			}
 		}
@@ -915,33 +895,11 @@ void CScraper::scrape_balance(int chair, HDC hdcCompatible, HDC hdc)
 		if (got_new_scrape) 
 		{ 
 			balance_good_scrape[chair] = true;
-
-			if (trans.string_to_money(text) != 0) 
-			{
-				playerbalance[chair] = trans.string_to_money(text);
-				possible_zero_balance_scrapes[chair] = 0;
-				possible_zero[chair] = false;
-			}
-			else 
-			{
-				possible_zero[chair] = true;
-				possible_zero_balance_scrapes[chair]++;
-			}
+			playerbalance[chair] = trans.string_to_money(text);
 		}
 		else 
 		{
 			balance_good_scrape[chair] = false;
-			if (possible_zero[chair] == true) 
-			{
-				possible_zero_balance_scrapes[chair]++;
-			}
-		}
-
-		if (possible_zero_balance_scrapes[chair] >= (int) global.preferences.balance_scrapes) 
-		{
-			playerbalance[chair] = 0;
-			possible_zero_balance_scrapes[chair] = 0;
-			possible_zero[chair] = false;
 		}
 
 		if (balance_last[chair] != playerbalance[chair]) 

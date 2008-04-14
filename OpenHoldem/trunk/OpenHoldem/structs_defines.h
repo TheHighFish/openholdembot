@@ -4,8 +4,8 @@
 #include <boost/spirit/tree/ast.hpp>
 #include "../../CTransform/transform.h"
 
-#define VERSION_NUMBER				1.81
-#define VERSION_TEXT				"1.8.1"  // change version number in OpenHoldem.rc also, when needed
+#define VERSION_NUMBER				1.82
+#define VERSION_TEXT				"1.8.2"  // change version number in OpenHoldem.rc also, when needed
 
 // thread timeout
 #define THREAD_WAIT					3000
@@ -71,8 +71,6 @@
 #define MAX_ALLINDELAY		5000	
 #define MAX_SCRAPEDELAY		5000
 #define MIN_SCRAPEDELAY		100
-#define MAX_NAMESCRAPES		9
-#define MAX_BALANCESCRAPES	9
 
 // WH SUIT Defs
 #define WH_SUIT_CLUBS		1
@@ -214,8 +212,6 @@ struct SPreferences
 
 	// Scraper
 	unsigned int	scrape_delay;
-	unsigned int	name_scrapes;
-	unsigned int	balance_scrapes;
 
 	// Symbols
 	double			av_time;

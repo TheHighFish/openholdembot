@@ -52,12 +52,10 @@ void Registry::init_Defaults(void)
 	swag_delay_1 = 400;
 	swag_delay_2 = 400;
 	swag_delay_3 = 700;
-	scrape_delay = 750;
 	ap_auto = false;
 
 	// scraper
-	name_scrapes = 1;
-	balance_scrapes = 1;
+	scrape_delay = 750;
 
 	// swag
 	text_selection_method = TEXTSEL_DOUBLECLICK;
@@ -396,8 +394,6 @@ void Registry::read_reg(void)
 						
 			// prefs - scraper
 			read_OH_RegistryKey(hKey, "scrape_delay", &scrape_delay);
-			read_OH_RegistryKey(hKey, "name_scrapes", &name_scrapes);
-			read_OH_RegistryKey(hKey, "balance_scrapes", &balance_scrapes);
 			
 			// prefs - symbols
 			read_OH_RegistryKey(hKey, "avtime", &avtime);
@@ -544,8 +540,6 @@ void Registry::write_reg(void)
 
 		// prefs - scraper
 		write_OH_RegistryKey(hKey, "scrape_delay", int(scrape_delay));
-		write_OH_RegistryKey(hKey, "name_scrapes", int(name_scrapes));
-		write_OH_RegistryKey(hKey, "balance_scrapes", int(balance_scrapes));
 	
 		// prefs - symbols
 		write_OH_RegistryKey(hKey, "avtime", avtime);

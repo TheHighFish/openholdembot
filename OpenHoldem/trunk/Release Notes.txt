@@ -25,6 +25,11 @@ BUG FIXES:
 
 - Fixed a freezing bug that was caused by common card animations and/or occlusion. (Strom)
 
+- Removed "scrapes to name change" and "scrapes to zero balance" from scaper preferences.  For names,
+  if a good name is scraped, the name is set.  For balances, if a good number is scraped, the balance
+  is set, or if "allin" or its variants are scraped, balance is set to zero.  (OpenHoldem)
+  
+
 v1.8.1 2008-04-11
 NEW STUFF:
 - Show wait cursor when parsing f$debug (jumpingfences)

@@ -69,8 +69,6 @@ CGlobal::CGlobal(void)
 
 		// scraper
 		preferences.scrape_delay = reg.scrape_delay;
-		preferences.name_scrapes = reg.name_scrapes;
-		preferences.balance_scrapes = reg.balance_scrapes;
 
 		// symbols
 		preferences.av_time = reg.avtime;

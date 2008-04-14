@@ -53,7 +53,6 @@ public:
 
 	// prefs - scraper
 	unsigned int	scrape_delay;
-	unsigned int	name_scrapes, balance_scrapes;
 
 	// prefs - symbols
 	double			avtime;		// table percentages are averaged over this period of time
