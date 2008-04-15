@@ -886,9 +886,9 @@ bool CSymbols::calc_userchair(void)
 	try {
 #endif
 		int				i;
-		bool			button_enabled;
+		int				num_buttons_enabled;
 
-		button_enabled = false;
+		num_buttons_enabled = 0;
 		for (i=0; i<=9; i++) 
 		{
 			if (scraper.get_button_state(i) &&
@@ -899,12 +899,11 @@ bool CSymbols::calc_userchair(void)
 				 scraper.is_string_allin(scraper.buttonlabel[i]) ||
 				 scraper.buttonlabel[i].MakeLower() == "swag")) 
 			{
-				button_enabled = true;
-				i = 10;
+				num_buttons_enabled++;
 			}
 		}
 
-		if (button_enabled == true) 
+		if (num_buttons_enabled>=2) 
 		{
 			for (i=0; i<global.tablemap.num_chairs; i++) 
 			{

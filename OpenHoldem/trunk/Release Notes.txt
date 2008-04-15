@@ -25,11 +25,14 @@ BUG FIXES:
 
 - Fixed a freezing bug that was caused by common card animations and/or occlusion. (Strom)
 
-- Removed "scrapes to name change" and "scrapes to zero balance" from scaper preferences.  For names,
+- Removed "scrapes to name change" and "scrapes to zero balance" from scraper preferences.  For names,
   if a good name is scraped, the name is set.  For balances, if a good number is scraped, the balance
   is set, or if "allin" or its variants are scraped, balance is set to zero.  (OpenHoldem)
   
-
+- Userchair identification now requires 2 action buttons to be present (previously, only one needed to
+  be present).  (OpenHoldem)
+  
+  
 v1.8.1 2008-04-11
 NEW STUFF:
 - Show wait cursor when parsing f$debug (jumpingfences)
@@ -50,11 +53,11 @@ NEW STUFF:
 - Added memory symbols from SM's DLL (OpenHoldem)
 	Memory symbols
 	---------
-	dll$me_st_abc_123_45 - 'dll$me_st_' stores a value "123.45" in variable "abc" 
+	me_st_abc_123_45 - 'me_st_' stores a value "123.45" in variable "abc" 
 	   (use "_" for the decimal in values)
 	   (a function name can also be passed in, instead of a number, for example:
-		'dll$me_st_def_f$myfunc' would store the results of function f$myfunc in variable def)
-	dll$me_re_abc - 'dll$me_re_' retrieves the value from variable "abc"
+		'me_st_def_f$myfunc' would store the results of function f$myfunc in variable def)
+	me_re_abc - 'me_re_' retrieves the value from variable "abc"
 	
 	Note to testers:  In order to make this work, I had to slightly alter the grammar definition,
 	   Specifically, the definition of a SYMBOL was changed from:
