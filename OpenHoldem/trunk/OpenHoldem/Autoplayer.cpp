@@ -252,6 +252,7 @@ void Autoplayer::do_swag(void) {
 		HWND			hwnd_foreground = GetForegroundWindow();
 		HWND			hwnd_active = GetActiveWindow();
 		POINT			cur_pos;
+		bool			lost_focus=false;
 		
 		::GetCursorPos(&cur_pos);
 
@@ -351,6 +352,10 @@ void Autoplayer::do_swag(void) {
 
 				SendInput(input_count, input, sizeof(INPUT));
 
+				// Check for stolen focus, and thus misswag
+				if (GetForegroundWindow() != global.attached_hwnd)
+					lost_focus = true;
+
 				::SetCursorPos(cur_pos.x, cur_pos.y);
 
 				Sleep(global.preferences.swag_delay_1);
@@ -408,6 +413,10 @@ void Autoplayer::do_swag(void) {
 
 				SendInput(input_count, input, sizeof(INPUT));
 				
+				// Check for stolen focus, and thus misswag
+				if (GetForegroundWindow() != global.attached_hwnd)
+					lost_focus = true;
+
 				::SetCursorPos(cur_pos.x, cur_pos.y);
 
 				Sleep(global.preferences.swag_delay_2);
@@ -477,6 +486,10 @@ void Autoplayer::do_swag(void) {
 
 				SendInput(input_count, input, sizeof(INPUT));
 
+				// Check for stolen focus, and thus misswag
+				if (GetForegroundWindow() != global.attached_hwnd)
+					lost_focus = true;
+
 				::SetCursorPos(cur_pos.x, cur_pos.y);
 
 				Sleep(global.preferences.swag_delay_3);
@@ -501,7 +514,7 @@ void Autoplayer::do_swag(void) {
 					input_count++;
 				}
 
-				else if (global.preferences.bet_confirmation_method==BETCONF_CLICKBET && 
+				else if (global.preferences.bet_confirmation_method == BETCONF_CLICKBET && 
 						 (rais_but!=-1 || global.tablemap.r$iXbutton_index[3]!=-1) ) 
 				{
 					input_count = 0;
@@ -578,11 +591,25 @@ void Autoplayer::do_swag(void) {
 				}
 
 				// do it 
-				SetFocus(global.attached_hwnd);
-				SetForegroundWindow(global.attached_hwnd);
-				SetActiveWindow(global.attached_hwnd);
+				if (!lost_focus)
+				{
+					SetFocus(global.attached_hwnd);
+					SetForegroundWindow(global.attached_hwnd);
+					SetActiveWindow(global.attached_hwnd);
+					
+					SendInput(input_count, input, sizeof(INPUT));
+
+					symbols.sym.didswag[4] += 1;
+					symbols.sym.didswag[(int) symbols.sym.br-1] += 1;
+					symbols.sym.prevaction = PREVACT_SWAG;
+					global.replay_recorded_this_turn = false;
+
+					// reset elapsedauto symbol
+					time(&symbols.elapsedautohold);
 				
-				SendInput(input_count, input, sizeof(INPUT));
+					// log it
+					write_log_autoplay("SWAG");
+				}
 				
 				SetActiveWindow(hwnd_active);
 				SetForegroundWindow(hwnd_foreground);
@@ -591,17 +618,6 @@ void Autoplayer::do_swag(void) {
 				::SetCursorPos(cur_pos.x, cur_pos.y);
 
 				Mutex.Unlock();
-
-				symbols.sym.didswag[4] += 1;
-				symbols.sym.didswag[(int) symbols.sym.br-1] += 1;
-				symbols.sym.prevaction = PREVACT_SWAG;
-				global.replay_recorded_this_turn = false;
-
-				// reset elapsedauto symbol
-				time(&symbols.elapsedautohold);
-			
-				// log it
-				write_log_autoplay("SWAG");
 			}
 		}
 #ifdef SEH_ENABLE

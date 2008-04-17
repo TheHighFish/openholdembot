@@ -32,6 +32,11 @@ BUG FIXES:
 - Userchair identification now requires 2 action buttons to be present (previously, only one needed to
   be present).  (OpenHoldem)
   
+- Added sanity checks around the SWAG action stream - if focus is stolen from the target window during 
+  the four SWAG steps, then the final step (confirmation) will not be executed.  (Thanks, AndreL)  
+  (OpenHoldem)
+  
+  
   
 v1.8.1 2008-04-11
 NEW STUFF:
