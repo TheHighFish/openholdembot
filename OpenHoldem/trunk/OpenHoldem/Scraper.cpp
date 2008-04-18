@@ -13,32 +13,18 @@ class CScraper	scraper;
 
 CScraper::CScraper(void) 
 {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_HEADER
 
-#ifdef SEH_ENABLE
-	try {
-#endif
-		clear_scrape_areas();
+	clear_scrape_areas();
+	blinds_are_locked = false;
+	__SEH_LOGFATAL("CScraper::Constructor : \n"); 
 
-		blinds_are_locked = false;
-
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CScraper::Constructor : \n"); 
-		throw;
-	}
-#endif
 }
 
 void CScraper::clear_scrape_areas(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int i;
 
 		EnterCriticalSection(&cs_prwin);
@@ -116,21 +102,14 @@ void CScraper::clear_scrape_areas(void)
 		handnumber_last=0;
 		strcpy(title_last, "");
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CScraper::clear_scrape_areas :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CScraper::clear_scrape_areas :\n"); 
+
 }
 
 // returns true if common cards are in the middle of an animation
 bool CScraper::is_common_animation(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		bool			animation;
 		int				flop_card_count;
 
@@ -168,21 +147,14 @@ bool CScraper::is_common_animation(void)
 
 		return animation;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CScraper::is_common_animation :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CScraper::is_common_animation :\n"); 
+
 }
 
 // returns true if window has changed and we processed the changes, false otherwise
 int CScraper::DoScrape(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int				i;
 		CString			text;
 		
@@ -270,20 +242,14 @@ int CScraper::DoScrape(void)
 		DeleteDC(hdcScreen);
 		ReleaseDC(global.attached_hwnd, hdc);
 		return scrape_something_changed;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CScraper::DoScrape :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CScraper::DoScrape :\n"); 
+
 }
 
 bool CScraper::process_region(HDC hdcCompatible, HDC hdc, int r$index) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		HBITMAP			bitmap_last = global.tablemap.r$[r$index].last_bmp;
 		HBITMAP			bitmap_cur = global.tablemap.r$[r$index].cur_bmp;
 		int				left = global.tablemap.r$[r$index].left;
@@ -309,20 +275,14 @@ bool CScraper::process_region(HDC hdcCompatible, HDC hdc, int r$index)
 			return true;
 		}
 		return false;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CScraper::process_region:\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CScraper::process_region:\n"); 
+
 }
 
 void CScraper::scrape_common_cards(HDC hdcCompatible, HDC hdc) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int					i, r$index;
 		HBITMAP				old_bitmap;
 		unsigned int		card;
@@ -396,20 +356,14 @@ void CScraper::scrape_common_cards(HDC hdcCompatible, HDC hdc)
 			}
 
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CScraper::scrape_common_cards:\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CScraper::scrape_common_cards:\n"); 
+
 }
 
 void CScraper::scrape_player_cards(int chair, HDC hdcCompatible, HDC hdc) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int					j, r$index;
 		HBITMAP				old_bitmap;
 		unsigned int		card;
@@ -549,20 +503,14 @@ void CScraper::scrape_player_cards(int chair, HDC hdcCompatible, HDC hdc)
 				scrape_something_changed |= PL_CARD_CHANGED;
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CScraper::scrape_player_cards:\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CScraper::scrape_player_cards:\n"); 
+
 }
 
 void CScraper::scrape_seated(int chair, HDC hdcCompatible, HDC hdc) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int					r$index;
 		HBITMAP				old_bitmap;
 		CString				result;
@@ -603,20 +551,14 @@ void CScraper::scrape_seated(int chair, HDC hdcCompatible, HDC hdc)
 			scrape_something_changed |= SEATED_CHANGED;
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CScraper::scrape_seated:\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CScraper::scrape_seated:\n"); 
+
 }
 
 void CScraper::scrape_active(int chair, HDC hdcCompatible, HDC hdc) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int					r$index;
 		HBITMAP				old_bitmap;	
 		CString				result;
@@ -656,20 +598,14 @@ void CScraper::scrape_active(int chair, HDC hdcCompatible, HDC hdc)
 			scrape_something_changed |= ACTIVE_CHANGED;
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CScraper::scrape_active:\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CScraper::scrape_active:\n"); 
+
 }
 
 void CScraper::scrape_dealer(int chair, HDC hdcCompatible, HDC hdc) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int					r$index;
 		HBITMAP				old_bitmap;
 		CString				result;
@@ -696,20 +632,14 @@ void CScraper::scrape_dealer(int chair, HDC hdcCompatible, HDC hdc)
 			}
 
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CScraper::scrape_dealer:\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CScraper::scrape_dealer:\n"); 
+
 }
 
 void CScraper::scrape_name(int chair, HDC hdcCompatible, HDC hdc) {
 
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int					r$index;
 		HBITMAP				old_bitmap;
 		bool				got_new_scrape;
@@ -771,20 +701,14 @@ void CScraper::scrape_name(int chair, HDC hdcCompatible, HDC hdc) {
 			scrape_something_changed |= NAME_CHANGED;
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CScraper::scrape_name:\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CScraper::scrape_name:\n"); 
+
 }
 
 void CScraper::scrape_balance(int chair, HDC hdcCompatible, HDC hdc) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int					r$index;
 		HBITMAP				old_bitmap;
 		bool				got_new_scrape;
@@ -908,20 +832,14 @@ void CScraper::scrape_balance(int chair, HDC hdcCompatible, HDC hdc)
 			scrape_something_changed |= BALANCE_CHANGED;
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CScraper::scrape_balance:\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CScraper::scrape_balance:\n"); 
+
 }
 
 void CScraper::scrape_bet(int chair, HDC hdcCompatible, HDC hdc) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int					r$index;
 		HBITMAP				old_bitmap;
 		CString				text;
@@ -966,19 +884,13 @@ void CScraper::scrape_bet(int chair, HDC hdcCompatible, HDC hdc)
 				}
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CScraper::scrape_bet:\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CScraper::scrape_bet:\n"); 
+
 }
 
 void CScraper::scrape_buttons(HDC hdcCompatible, HDC hdc) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int					j, k, r$index;
 		HBITMAP				old_bitmap;
 		CString				text;
@@ -1091,20 +1003,14 @@ void CScraper::scrape_buttons(HDC hdcCompatible, HDC hdc) {
 				scrape_something_changed |= BUTTONSTATE_CHANGED;
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CScraper::scrape_buttons:\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CScraper::scrape_buttons:\n"); 
+
 }
 
 void CScraper::scrape_pots(HDC hdcCompatible, HDC hdc) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int					j, r$index;
 		HBITMAP				old_bitmap;
 		CString				text;
@@ -1165,20 +1071,14 @@ void CScraper::scrape_pots(HDC hdcCompatible, HDC hdc)
 			}
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CScraper::scrape_pots:\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CScraper::scrape_pots:\n"); 
+
 }
 
 void CScraper::scrape_limits(HDC hdcCompatible, HDC hdc) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int					j, r$index, s$index;
 		HBITMAP				old_bitmap;
 		CString				text;
@@ -1453,20 +1353,13 @@ void CScraper::scrape_limits(HDC hdcCompatible, HDC hdc)
 			write_log("\n*************************************************************\nNEW STAKES sb(%.2f) bb(%.2f) BB(%.2f) ante(%.2f)\n*************************************************************\n", 
 					s_limit_info.sblind, s_limit_info.bblind, s_limit_info.bbet, s_limit_info.ante);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CScraper::scrape_limits:\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CScraper::scrape_limits:\n"); 
+
 }
 
 double CScraper::get_handnum_from_string(CString t) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		char		newstr[256] = {0};
 			int			i, newpos = 0;
 			
@@ -1481,20 +1374,14 @@ double CScraper::get_handnum_from_string(CString t)
 
 			return atof(newstr);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CScraper::get_handnum_from_string:\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CScraper::get_handnum_from_string:\n"); 
+
 }
 
 
 bool CScraper::bitmaps_same(HBITMAP HBitmapLeft, HBITMAP HBitmapRight) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (HBitmapLeft == HBitmapRight)
 			return true;
 
@@ -1592,20 +1479,14 @@ bool CScraper::bitmaps_same(HBITMAP HBitmapLeft, HBITMAP HBitmapRight) {
 		ReleaseDC(NULL, hdc);
 
 		return bSame;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CScraper::bitmaps_same :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CScraper::bitmaps_same :\n"); 
+
 }
 
 void CScraper::create_bitmaps(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int			i, w, h;
 		HDC			hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL); 
 		RECT		cr;
@@ -1627,20 +1508,14 @@ void CScraper::create_bitmaps(void)
 		}
 
 		DeleteDC(hdcScreen);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CScraper::create_bitmaps :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CScraper::create_bitmaps :\n"); 
+
 }
 
 void CScraper::delete_bitmaps(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int			i;
 
 		// Whole window
@@ -1654,21 +1529,15 @@ void CScraper::delete_bitmaps(void)
 			DeleteObject(global.tablemap.r$[i].cur_bmp);
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CScraper::delete_bitmaps :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CScraper::delete_bitmaps :\n"); 
+
 }
 
 // This is the chip scrape routine
 double CScraper::do_chip_scrape(HDC hdc, int i) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int				j, stackindex, chipindex, hashindex;
 		CString			type, cstemp;
 		int				istart, ivert[10] = { -1 }, ihoriz[10] = { -1 }, index, vertcount=0, horizcount=0;
@@ -1809,20 +1678,14 @@ double CScraper::do_chip_scrape(HDC hdc, int i)
 		}
 
 		return result;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CScraper::do_chip_scrape :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CScraper::do_chip_scrape :\n"); 
+
 }
 
 bool CScraper::get_button_state(int button_index) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (button_index<=9) 
 		{
 			if (scraper.buttonstate[button_index] == "true" ||
@@ -1858,20 +1721,14 @@ bool CScraper::get_button_state(int button_index)
 		}
 
 		return false;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CScraper::get_button_state :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CScraper::get_button_state :\n"); 
+
 }
 
 bool CScraper::is_numeric(CString t) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int i;
 		for (i=0; i<t.GetLength(); i++) 
 		{
@@ -1881,13 +1738,9 @@ bool CScraper::is_numeric(CString t)
 
 		return true;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CScraper::is_numeric :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CScraper::is_numeric :\n"); 
+
 }
 
 bool CScraper::is_string_allin(CString s) 

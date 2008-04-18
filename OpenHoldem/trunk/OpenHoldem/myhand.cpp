@@ -6,9 +6,7 @@
 
 double	MyHand::process_query(const char * pquery, int *e)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (memcmp(pquery,"mh_3straight", 12) == 0)			return three_straight((pquery[12]-'0')!=0, (pquery[13]-'0')!=0);
 		if (memcmp(pquery,"mh_bottomsd", 11) == 0)			return bottomsd();
 		if (memcmp(pquery,"mh_nsuitedbetter", 16) == 0)		return nsuitedbetter();
@@ -27,20 +25,13 @@ double	MyHand::process_query(const char * pquery, int *e)
 		*e = ERR_INVALID_SYM;
 		return 0.0;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("MyHand::process_query\n"); 
-		throw; 
-	}
-#endif
+		__SEH_LOGFATAL("MyHand::process_query\n"); 
+
 }
 
 void MyHand::myhand(char * hand) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		switch ((int) symbols.sym.$$pr[0] >= (int) symbols.sym.$$pr[1] ? (int) symbols.sym.$$pr[0] : (int) symbols.sym.$$pr[1]) 
 		{
 			case 10: hand[0]='T'; break;
@@ -72,20 +63,14 @@ void MyHand::myhand(char * hand)
 			hand[3]='\0';
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("MyHand::myhand\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("MyHand::myhand\n"); 
+
 }
 
 bool MyHand::three_straight (bool wheel, bool broadway) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (bitcount(((int) symbols.sym.rankbitscommon)&0x003e)>=3)
 		{
 			if (wheel)
@@ -107,20 +92,14 @@ bool MyHand::three_straight (bool wheel, bool broadway)
 		else
 			return false ;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("MyHand::three_straight\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("MyHand::three_straight\n"); 
+
 }
 
 bool MyHand::bottomsd (void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (symbols.sym.nstraight==4 && 
 			symbols.sym.nstraightfillcommon-symbols.sym.nstraightfill==1 &&
 			( 
@@ -144,37 +123,24 @@ bool MyHand::bottomsd (void)
 
 		return false;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("MyHand::bottomsd\n"); 
-		throw; 
-	}
-#endif
+ 
+		__SEH_LOGFATAL("MyHand::bottomsd\n"); 
+
 }
 
 int MyHand::nsuitedbetter (void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
 		return bitcount((~((int) symbols.sym.srankbits)&0x7ffe)>>((int) symbols.sym.srankhiplayer));
+ 
+		__SEH_LOGFATAL("MyHand::nsuitedbetter\n"); 
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("MyHand::nsuitedbetter\n"); 
-		throw; 
-	}
-#endif
 }
 
 int MyHand::kickerbetter (void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		// quads, board quads
 		if (symbols.sym.isfourofakind && symbols.sym.nrankedcommon==4) 
 		{
@@ -258,20 +224,14 @@ int MyHand::kickerbetter (void)
 
 		return 0;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("MyHand::kickerbetter\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("MyHand::kickerbetter\n"); 
+
 }
  
 int MyHand::kickerrank (void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
 		// quads, board quads
 		if (symbols.sym.isfourofakind && symbols.sym.nrankedcommon==4) 
@@ -345,20 +305,13 @@ int MyHand::kickerrank (void)
 
 		return 0;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("MyHand::kickerrank\n"); 
-		throw; 
-	}
-#endif
+		__SEH_LOGFATAL("MyHand::kickerrank\n"); 
+
 }
 
 double MyHand::m_nouts(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		double m_nouts=0.0;
 
 		if (symbols.sym.br == 2) 
@@ -698,20 +651,15 @@ double MyHand::m_nouts(void)
 
 		return m_nouts;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("MyHand::nouts\n"); 
-		throw; 
-	}
-#endif
+ 
+		__SEH_LOGFATAL("MyHand::nouts\n"); 
+
 }
 
 bool MyHand::safeboard(void)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 
 		if (symbols.sym.nrankedcommon<=1 && symbols.sym.nsuitedcommon<=2 && symbols.sym.nstraightcommon<=2 && symbols.sym.nstraightfillcommon>=2)
 			return true;
@@ -719,20 +667,15 @@ bool MyHand::safeboard(void)
 		else
 			return false;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("MyHand::safeboard\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("MyHand::safeboard\n"); 
+
 }
 
 int MyHand::strength_straightflush(void)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 
 		int		strength=0;
 
@@ -782,20 +725,15 @@ int MyHand::strength_straightflush(void)
 
 		return strength;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("MyHand::strength_straightflush\n"); 
-		throw; 
-	}
-#endif
+ 
+		__SEH_LOGFATAL("MyHand::strength_straightflush\n"); 
+
 }
 
 int MyHand::strength_quads(void)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 
 		int		strength=0;
 
@@ -844,21 +782,15 @@ int MyHand::strength_quads(void)
 		{ strength=1; }
 
 		return strength;
+ 
+		__SEH_LOGFATAL("MyHand::strength_quads\n"); 
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("MyHand::strength_quads\n"); 
-		throw; 
-	}
-#endif
 }
 
 int MyHand::strength_fullhouse(void)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 
 		int			strength=0;
 
@@ -980,20 +912,14 @@ int MyHand::strength_fullhouse(void)
 
 		return strength;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("MyHand::strength_fullhouse\n"); 
-		throw; 
-	}
-#endif
+		__SEH_LOGFATAL("MyHand::strength_fullhouse\n"); 
+
 }
 
 int MyHand::strength_flush(void)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 
 		int		strength=0;
 
@@ -1080,20 +1006,14 @@ int MyHand::strength_flush(void)
 
 		return strength;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("MyHand::strength_flush\n"); 
-		throw; 
-	}
-#endif
+		__SEH_LOGFATAL("MyHand::strength_flush\n"); 
+
 }
 
 int MyHand::strength_straight(void)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 
 		int		strength=0;
 
@@ -1248,20 +1168,15 @@ int MyHand::strength_straight(void)
 		}
 		return strength;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("MyHand::strength_straight\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("MyHand::strength_straight\n"); 
+
 }
 
 int MyHand::strength_trips(void)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 
 		int		strength=0;
 
@@ -1348,21 +1263,15 @@ int MyHand::strength_trips(void)
 		}
 
 		return strength;
+ 
+		__SEH_LOGFATAL("MyHand::strength_trips\n"); 
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("MyHand::strength_trips\n"); 
-		throw; 
-	}
-#endif
 }
 
 int MyHand::strength_twopair(void)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 
 		int		strength=0;
 
@@ -1460,20 +1369,15 @@ int MyHand::strength_twopair(void)
 
 		return strength;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("MyHand::strength_twopair\n"); 
-		throw; 
-	}
-#endif
+ 
+		__SEH_LOGFATAL("MyHand::strength_twopair\n"); 
+
 }
 
 int MyHand::strength_onepair(void)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 
 		int		strength=0;
 
@@ -1612,11 +1516,7 @@ int MyHand::strength_onepair(void)
 
 		return strength;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("MyHand::strength_onepair\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("MyHand::strength_onepair\n"); 
+
 }

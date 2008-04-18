@@ -12,52 +12,37 @@ CDll	cdll;
 
 CDll::CDll() 
 {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
 
-#ifdef SEH_ENABLE
-	try {
-#endif
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+
+__SEH_HEADER
 
 		hMod_dll = NULL;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDll::Constructor :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDll::Constructor :\n"); 
+
 }
 
 
 void CDll::pass_state_to_dll(holdem_state *pstate) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
 		if (hMod_dll==NULL)
 			return;
 
 		(process_message) ("state", pstate);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDll::pass_state_to_dll :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDll::pass_state_to_dll :\n"); 
+
 }
 
 void CDll::load_dll(char * path) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CString t, formula_dll;
 		int N, i;
 		DWORD err1=0, err2=0;
@@ -164,20 +149,14 @@ void CDll::load_dll(char * path)
 			}
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDll::load_dll :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDll::load_dll :\n"); 
+
 }
 
 void CDll::unload_dll(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (hMod_dll==NULL) 
 			return;
 
@@ -186,20 +165,14 @@ void CDll::unload_dll(void)
 		if (FreeLibrary(hMod_dll))
 			hMod_dll = NULL;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDll::unload_dll :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDll::unload_dll :\n"); 
+
 }
 
 double GetSymbolFromDll(int chair, const char* name, bool& iserr) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int			e, stopchar;
 		double		res;
 		CString		str;
@@ -229,11 +202,7 @@ double GetSymbolFromDll(int chair, const char* name, bool& iserr)
 
 		return res;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("::GetSymbolFromDll :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("::GetSymbolFromDll :\n"); 
+
 }

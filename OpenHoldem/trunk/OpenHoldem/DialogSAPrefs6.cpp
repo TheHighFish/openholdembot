@@ -19,10 +19,9 @@ IMPLEMENT_DYNAMIC(CDlgSAPrefs6, CSAPrefsSubDlg)
 CDlgSAPrefs6::CDlgSAPrefs6(CWnd* pParent /*=NULL*/)
 	: CSAPrefsSubDlg(CDlgSAPrefs6::IDD, pParent)
 {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
+
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
 }
 
 CDlgSAPrefs6::~CDlgSAPrefs6()
@@ -122,9 +121,7 @@ void CDlgSAPrefs6::OnOK()
 
 void CDlgSAPrefs6::OnBnClickedPtTest()
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CString			conn_str, ip_addr, port, user, pass, dbname, e;
 		CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
@@ -174,11 +171,7 @@ void CDlgSAPrefs6::OnBnClickedPtTest()
 			PQfinish(pgconn);
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgSAPrefs6::OnBnClickedPtTest :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgSAPrefs6::OnBnClickedPtTest :\n"); 
+
 }

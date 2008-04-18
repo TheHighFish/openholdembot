@@ -76,29 +76,20 @@ int handrank2652[10][169] =
 
 CSymbols::CSymbols() 
 {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
 
-#ifdef SEH_ENABLE
-	try {
-#endif
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+
+__SEH_HEADER
 		ResetSymbolsFirstTime();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::Constructor : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CSymbols::Constructor : \n"); 
+
 }
 
 void CSymbols::ResetSymbolsFirstTime(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int		i;
 		
 		// general
@@ -342,20 +333,13 @@ void CSymbols::ResetSymbolsFirstTime(void)
         // log$ symbols
         logsymbols_collection.RemoveAll();
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::ResetSymbolsFirstTime : \n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CSymbols::ResetSymbolsFirstTime : \n"); 
+
 }
 
 void CSymbols::ResetSymbolsNewHand(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int		i;
 
 		// general
@@ -428,38 +412,25 @@ void CSymbols::ResetSymbolsNewHand(void)
 		for (i=0; i<=9; i++)
 			stacks_at_hand_start[i] = 0;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::ResetSymbolsNewHand : \n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CSymbols::ResetSymbolsNewHand : \n"); 
+
 }
 
 void CSymbols::ResetSymbolsNewRound(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		sym.didchec[4] = 0;
 		sym.didcall[4] = 0;
 		sym.didrais[4] = 0;
 		sym.didswag[4] = 0;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::ResetSymbolsNewRound : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CSymbols::ResetSymbolsNewRound : \n"); 
+
 }
 
 void CSymbols::ResetSymbolsEveryCalc(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int		i;
 		// general
 		sym.isbring = 0;
@@ -576,20 +547,13 @@ void CSymbols::ResetSymbolsEveryCalc(void)
         // log$ symbols
         logsymbols_collection.RemoveAll();
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::ResetSymbolsEveryCalc : \n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CSymbols::ResetSymbolsEveryCalc : \n"); 
+
 }
 
 void CSymbols::CalcSymbols(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		static double		dealerchair_last = -1, handnumber_last = -1; 
 		static int			br_last = -1;
 		static unsigned int	player_card_last[2] = {CARD_NOCARD};
@@ -871,20 +835,13 @@ void CSymbols::CalcSymbols(void)
 		error = SUCCESS;
 		symbols.f$call = calc_f$symbol(&global.formula, "f$call", &error);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::CalcSymbols :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CSymbols::CalcSymbols :\n"); 
+
 }
 
 bool CSymbols::calc_userchair(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int				i;
 		int				num_buttons_enabled;
 
@@ -919,20 +876,14 @@ bool CSymbols::calc_userchair(void)
 			}
 		}
 		return false;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_userchair :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CSymbols::calc_userchair :\n"); 
+
 }
 
 void CSymbols::calc_stakes(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int		i;
 		bool	found_inferred_sb = false, found_inferred_bb = false;
 
@@ -1066,21 +1017,15 @@ void CSymbols::calc_stakes(void)
 				sym.sblind = sym.bblind/2;
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_stakes :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CSymbols::calc_stakes :\n"); 
+
 }
 
 
 void CSymbols::calc_betbalancestack(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int				i, j, oppcount;
 		double			stack[10], temp;
 
@@ -1180,19 +1125,12 @@ void CSymbols::calc_betbalancestack(void)
 			sym.pot = sym.potcommon + sym.potplayer;									// <- pot, potcommon
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_betbalancestack :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CSymbols::calc_betbalancestack :\n"); 
+
 }
 
 void CSymbols::calc_chipamts_limits(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int				i;
 		int				next_largest_bet;
 
@@ -1223,20 +1161,13 @@ void CSymbols::calc_chipamts_limits(void) {
 		if (sym.sraimax < 0)
 			sym.sraimax = 0;															// sraimax
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_chipamts_limits :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CSymbols::calc_chipamts_limits :\n"); 
+
 }
 
 void CSymbols::calc_numbets(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (user_chair_confirmed) 
 		{
 			sym.nbetstocall = sym.call / sym.bet[4];									// nbetstocall
@@ -1248,20 +1179,13 @@ void CSymbols::calc_numbets(void)
 			sym.bet[4]==0 ? 0 : sym.currentbet[(int) sym.raischair] / sym.bet[4];		// ncallbets
 		sym.nraisbets = sym.ncallbets + 1;												// nraisbets
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_numbets :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CSymbols::calc_numbets :\n"); 
+
 }
 
 void CSymbols::calc_flags(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int			i;
 
 		for (i=0; i<10; i++) 
@@ -1275,20 +1199,14 @@ void CSymbols::calc_flags(void)
 				sym.fbits = (int) sym.fbits | (1<<i);									// fbits
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_flags :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CSymbols::calc_flags :\n"); 
+
 }
 
 void CSymbols::calc_time(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		
 		LARGE_INTEGER	lFrequency, clocksnow;
 		time_t			t_now_time, t_midnight_time;
@@ -1316,20 +1234,13 @@ void CSymbols::calc_time(void)
 		QueryPerformanceCounter(&clocksnow);
 		sym.clocks = clocksnow.LowPart - scraper.clockshold.LowPart;					// clocks
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_time :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CSymbols::calc_time :\n"); 
+
 }
 
 void CSymbols::calc_autoplayer(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int		i;
 		bool    sitin_but, sitout_but, sitin_state, sitout_state;
 
@@ -1413,21 +1324,14 @@ void CSymbols::calc_autoplayer(void)
 			sym.issittingout = 0;												// issittingout
 		}
 
+ 
+		__SEH_LOGFATAL("CSymbols::calc_autoplayer :\n"); 
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_autoplayer :\n"); 
-		throw;
-	}
-#endif
 }
 
 void CSymbols::calc_probabilities(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		double			nopp_lastrun, nit_lastrun, br_lastrun;
 		unsigned int	playercards_lastrun[2], commoncards_lastrun[5];
 		bool			need_recalc, isalive;
@@ -1504,20 +1408,14 @@ void CSymbols::calc_probabilities(void)
 				h_prwin_thread = AfxBeginThread(prwin_thread, 0);
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_probabilities :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CSymbols::calc_probabilities :\n"); 
+
 }
 
 void CSymbols::calc_playersfriendsopponents(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int				i;
 		double			lastbet;
 		bool			sblindfound, bblindfound, found_userchair;
@@ -1698,19 +1596,13 @@ void CSymbols::calc_playersfriendsopponents(void)
 				sym.nplayerscallshort += 1;												// nplayerscallshort
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_playersfriendsopponents :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CSymbols::calc_playersfriendsopponents :\n"); 
+
 }
 
 void CSymbols::calc_roundspositions(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int			i;
 
 		for (i=sym.dealerchair+1; i<=sym.dealerchair+global.tablemap.num_chairs && (i%global.tablemap.num_chairs)!=sym.userchair; i++) 
@@ -1743,20 +1635,14 @@ void CSymbols::calc_roundspositions(void) {
 				sym.dealpositionrais+=1;											// dealpositionrais
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_roundspositions :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CSymbols::calc_roundspositions :\n"); 
+
 }
 
 void CSymbols::calc_pokervalues(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int				i;
 		CardMask		Cards;
 		int				nCards;
@@ -1960,21 +1846,15 @@ void CSymbols::calc_pokervalues(void)
 		{
 			sym.ishandupcommon = 1;															// ishandupcommon
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_pokervalues :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CSymbols::calc_pokervalues :\n"); 
+
 }
 
 
 void CSymbols::calc_unknowncards(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int				i;
 		CardMask		stdCards, commonCards;
 		int				nstdCards, ncommonCards;
@@ -2045,20 +1925,14 @@ void CSymbols::calc_unknowncards(void)
 				}
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_unknowncards :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CSymbols::calc_unknowncards :\n"); 
+
 }
 
 void CSymbols::calc_handtests(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int		i;
 
 		for (i=0; i<2; i++) 
@@ -2089,20 +1963,14 @@ void CSymbols::calc_handtests(void)
 				sym.$$cs[i] = (int)sym.$$cc[i] & 0x0f;									// $$csx
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_handtests :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CSymbols::calc_handtests :\n"); 
+
 }
 
 void CSymbols::calc_pockettests(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (scraper.card_player[(int) sym.userchair][0] != CARD_NOCARD &&
 			scraper.card_player[(int) sym.userchair][0] != CARD_BACK &&
 			scraper.card_player[(int) sym.userchair][1] != CARD_NOCARD &&
@@ -2126,21 +1994,15 @@ void CSymbols::calc_pockettests(void)
 				sym.isconnector = 1;													// isconnector
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_pockettests :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CSymbols::calc_pockettests :\n"); 
+
 }
 
 
 void CSymbols::calc_listtests(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int				i, N;
 		int				listnum;
 		int				tokpos;
@@ -2224,20 +2086,14 @@ void CSymbols::calc_listtests(void)
 				}
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_listtests :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CSymbols::calc_listtests :\n"); 
+
 }
 
 void CSymbols::calc_nhands(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CardMask		plCards, comCards, oppCards, playerEvalCards, opponentEvalCards;
 		HandVal			hv_player, hv_opponent;
 		unsigned int	pl_pokval, opp_pokval;
@@ -2314,20 +2170,14 @@ void CSymbols::calc_nhands(void)
 		
 		sym.prlosnow = 1 - pow(((sym.nhandslo + sym.nhandsti)/sym.nhands), sym.nopponents);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_nhands :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CSymbols::calc_nhands :\n"); 
+
 }
 
 void CSymbols::calc_handrank(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		char		cardstr[10];
 		int			i, count;
 
@@ -2371,21 +2221,14 @@ void CSymbols::calc_handrank(void)
 		else if (global.preferences.handrank_value == "p")
 			sym.handrank = sym.handrankp;												// handrank
 
+ 
+		__SEH_LOGFATAL("CSymbols::calc_handrank :\n"); 
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_handrank :\n"); 
-		throw;
-	}
-#endif
 }
 
 void CSymbols::calc_fl_str_set(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int				i, j, n;
 		CardMask		plCards, comCards, heartsCards, diamondsCards, clubsCards, spadesCards, suittestCards; 
 		int				max;
@@ -2799,20 +2642,14 @@ void CSymbols::calc_fl_str_set(void)
 				}
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_fl_str_set :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CSymbols::calc_fl_str_set :\n"); 
+
 }
 
 void CSymbols::calc_rankbits(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int				i, c, rank, suit, plcomsuit, comsuit;
 		CardMask		plCards, comCards, plcomCards; 
 
@@ -3008,20 +2845,14 @@ void CSymbols::calc_rankbits(void)
 				i = 15;
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_rankbits :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CSymbols::calc_rankbits :\n"); 
+
 }
 
 void CSymbols::calc_history(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		double maxbet;
 		int i;
 
@@ -3046,20 +2877,14 @@ void CSymbols::calc_history(void)
 		}
 		sym.nbetsround[4] = sym.nbetsround[(int) sym.br-1];								// nbetsround
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_history :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CSymbols::calc_history :\n"); 
+
 }
 
 void CSymbols::calc_statistics(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		double	f$srai, C, R, S, B;
 		int		error;
 
@@ -3114,20 +2939,14 @@ void CSymbols::calc_statistics(void)
 						   sym.prlos*pow(-1 - sym.callmean, 2);
 		sym.alliror = pow(M_E, ( 2*sym.allimean*(0/S+sym.pot/S)/sym.allivariance ) - 1) /
 					  pow(M_E, ( 2*sym.allimean*(B/S+sym.pot/S)/sym.allivariance ) - 1);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_statistics :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CSymbols::calc_statistics :\n"); 
+
 }
 
 void CSymbols::calc_run_ron(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif	
+__SEH_HEADER	
 		CRunRon			rr;
 
 		rr.get_counts();
@@ -3171,21 +2990,14 @@ void CSymbols::calc_run_ron(void)
 		//sym.run$prnuts = totals[];
 		//sym.ron$prnuts = /run$total;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_run_ron :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CSymbols::calc_run_ron :\n"); 
+
 }
 
 
 void CSymbols::get_cardstring(char *c, unsigned int c0, unsigned int c1) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		char		card0[10], card1[10];
 
 		// figure out the card string to search for
@@ -3209,20 +3021,14 @@ void CSymbols::get_cardstring(char *c, unsigned int c0, unsigned int c1)
 			c[2] = 's';
 		}
 		c[3]='\0';
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::get_cur_pl_cardstring :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CSymbols::get_cur_pl_cardstring :\n"); 
+
 }
 
 double CSymbols::calc_pokerval(HandVal hv, int n, double *pcb, int card0, int card1) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		double			pv = 0;
 		int				i, max, c, flush_suit;
 		double			bits = 0;
@@ -3671,20 +3477,14 @@ double CSymbols::calc_pokerval(HandVal hv, int n, double *pcb, int card0, int ca
 
 		*pcb = bits;
 		return pv;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::calc_pokerval :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CSymbols::calc_pokerval :\n"); 
+
 }
 
 double CSymbols::GetSymbolVal(const char *a, int *e) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (memcmp(a, "ismanual", 8)==0 && strlen(a)==8)					return sym.ismanual;
 		if (memcmp(a, "isppro", 6)==0 && strlen(a)==6)						return sym.isppro;
 		if (memcmp(a, "site", 4)==0 && strlen(a)==4)						return sym.site;
@@ -4096,20 +3896,14 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 		*e = ERR_INVALID_SYM;
 		return 0.0;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::GetSymbolVal : <%s>\n", a); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CSymbols::GetSymbolVal : <%s>\n", a); 
+
 }
 
 double CSymbols::IsHand(const char *a) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int				cardrank[2] = {0}, temp;
 		int				suited = 0;  //0=not specified, 1=suited, 2=offsuit
 		int				i, cardcnt=0;
@@ -4210,20 +4004,14 @@ double CSymbols::IsHand(const char *a)
 		}
 
 		return 1;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::IsHand : <%s>\n", a); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CSymbols::IsHand : <%s>\n", a); 
+
 }
 
 double CSymbols::Chair$(const char *a) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int i;
 
 		for (i=0; i<global.tablemap.num_chairs; i++) 
@@ -4232,20 +4020,14 @@ double CSymbols::Chair$(const char *a)
 				return i;
 		}
 		return -1;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::Chair$ : <%s>\n", a); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CSymbols::Chair$ : <%s>\n", a); 
+
 }
 
 double CSymbols::Chairbit$(const char *a) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int i, bits=0;
 
 		for (i=0; i<global.tablemap.num_chairs; i++) 
@@ -4255,11 +4037,7 @@ double CSymbols::Chairbit$(const char *a)
 		}
 
 		return bits;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CSymbols::Chairbit$ : <%s>\n", a); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CSymbols::Chairbit$ : <%s>\n", a); 
+
 }

@@ -65,14 +65,12 @@ END_MESSAGE_MAP()
 
 // COpenHoldemView construction/destruction
 COpenHoldemView::COpenHoldemView() {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
 
-#ifdef SEH_ENABLE
-	try {
-#endif
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+
+__SEH_HEADER
+
 		black_pen.CreatePen(PS_SOLID, 1, COLOR_BLACK);
 		green_pen.CreatePen(PS_SOLID, 1, COLOR_GREEN);
 		red_pen.CreatePen(PS_SOLID, 1, COLOR_RED);
@@ -98,80 +96,55 @@ COpenHoldemView::COpenHoldemView() {
 		lf.lfPitchAndFamily = 0;
 		strcpy(lf.lfFaceName, "Times New Roman");
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemView::constructor\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("COpenHoldemView::constructor\n"); 
+
 }
 
 COpenHoldemView::~COpenHoldemView() {
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemView::Destructor\n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+
+
+		__SEH_LOGFATAL("COpenHoldemView::Destructor\n"); 
+
 }
 
 BOOL COpenHoldemView::PreCreateWindow(CREATESTRUCT& cs) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		// TODO: Modify the Window class or styles here by modifying
 		//  the CREATESTRUCT cs
 		return CView::PreCreateWindow(cs);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemView::PreCreateWindow\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("COpenHoldemView::PreCreateWindow\n"); 
+
 }
 
 void COpenHoldemView::OnInitialUpdate() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CView::OnInitialUpdate();
 
 		// Timer to check for display updates
 		SetTimer(DISPLAY_UPDATE_TIMER, 250, 0);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemView::OnInitialUpdate \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("COpenHoldemView::OnInitialUpdate \n"); 
+
 }
 
 // COpenHoldemView drawing
 void COpenHoldemView::OnDraw(CDC* pDC) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		update_display(true);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemView::OnDraw \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("COpenHoldemView::OnDraw \n"); 
+
 }
 
 void COpenHoldemView::OnTimer(UINT nIDEvent) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		bool upd;
 
 		if (nIDEvent == DISPLAY_UPDATE_TIMER) {
@@ -184,19 +157,14 @@ void COpenHoldemView::OnTimer(UINT nIDEvent) {
 		}
 
 		CView::OnTimer(nIDEvent);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemView::OnTimer :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("COpenHoldemView::OnTimer :\n"); 
+
 }
 
 void COpenHoldemView::update_display(bool update_all) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		int						i;
 
 		static double			handnumber_last, sblind_last, bblind_last, lim_last, istournament_last;
@@ -346,19 +314,14 @@ void COpenHoldemView::update_display(bool update_all) {
 		}
 
 		ReleaseDC(pDC);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemView::update_display :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("COpenHoldemView::update_display :\n"); 
+
 }
 
 void COpenHoldemView::draw_center_info_box(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CPen		*pTempPen, oldpen;
 		CBrush		*pTempBrush, oldbrush;	
 		RECT		rect;
@@ -467,20 +430,14 @@ void COpenHoldemView::draw_center_info_box(void) {
 		pDC->SelectObject(oldbrush);
 		pDC->SelectObject(oldfont);
 		cFont.DeleteObject();
-		ReleaseDC(pDC);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemView::draw_center_info_box\n"); 
-		throw;
-	}
-#endif
+	
+		__SEH_LOGFATAL("COpenHoldemView::draw_center_info_box\n"); 
+
 }
 
 void COpenHoldemView::draw_button_indicators(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		int			i;
 		bool		fold_drawn, call_drawn, check_drawn, raise_drawn, allin_drawn;
 		RECT		cr;
@@ -528,19 +485,14 @@ void COpenHoldemView::draw_button_indicators(void) {
 		if (!allin_drawn) {
 			draw_specific_button_indicator(-1, 'A', cr.right-16, cr.bottom-16, cr.right-2, cr.bottom-2);
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemView::draw_specific_button_indicators\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("COpenHoldemView::draw_specific_button_indicators\n"); 
+
 }
 
 void COpenHoldemView::draw_specific_button_indicator(int button_num, char ch, int left, int top, int right, int bottom) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CPen		*pTempPen, oldpen;
 		CBrush		*pTempBrush, oldbrush;	
 		RECT		rect;
@@ -619,19 +571,14 @@ void COpenHoldemView::draw_specific_button_indicator(int button_num, char ch, in
 		pDC->SelectObject(oldfont);
 		cFont.DeleteObject();
 		ReleaseDC(pDC);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemView::draw_specific_button_indicator\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("COpenHoldemView::draw_specific_button_indicator\n"); 
+
 }
 
 void COpenHoldemView::draw_seated_active_circle(int chair) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CPen		*pTempPen, oldpen;
 		CBrush		*pTempBrush, oldbrush;	
 		RECT		cr;
@@ -667,19 +614,14 @@ void COpenHoldemView::draw_seated_active_circle(int chair) {
 		pDC->SelectObject(oldpen);
 		pDC->SelectObject(oldbrush);
 		ReleaseDC(pDC);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemView::draw_seated_active_circle\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("COpenHoldemView::draw_seated_active_circle\n"); 
+
 }
 
 void COpenHoldemView::draw_dealer_button(int chair) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CPen		*pTempPen, oldpen;
 		CBrush		*pTempBrush, oldbrush;	
 		RECT		cr;
@@ -710,19 +652,14 @@ void COpenHoldemView::draw_dealer_button(int chair) {
 		pDC->SelectObject(oldpen);
 		pDC->SelectObject(oldbrush);
 		ReleaseDC(pDC);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemView::draw_dealer_button\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("COpenHoldemView::draw_dealer_button\n"); 
+
 }
 
 void COpenHoldemView::draw_card(unsigned int card, int left, int top, int right, int bottom, bool pl_card) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CPen		*pTempPen, oldpen;
 		CBrush		*pTempBrush, oldbrush;	
 		RECT		rrect, srect;
@@ -878,20 +815,15 @@ void COpenHoldemView::draw_card(unsigned int card, int left, int top, int right,
 		pDC->SelectObject(oldfont);
 		cFont.DeleteObject();
 		ReleaseDC(pDC);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemView::draw_card\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("COpenHoldemView::draw_card\n"); 
+
 }
 
 
 void COpenHoldemView::draw_name_box(int chair) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CPen		*pTempPen, oldpen;
 		CBrush		*pTempBrush, oldbrush;	
 		RECT		textrect, drawrect;
@@ -974,19 +906,14 @@ void COpenHoldemView::draw_name_box(int chair) {
 		pDC->SelectObject(oldfont);
 		cFont.DeleteObject();	
 		ReleaseDC(pDC);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemView::draw_name_box\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("COpenHoldemView::draw_name_box\n"); 
+
 }
 
 void COpenHoldemView::draw_balance_box(int chair) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CPen		*pTempPen, oldpen;
 		CBrush		*pTempBrush, oldbrush;	
 		RECT		textrect, drawrect;
@@ -1086,20 +1013,15 @@ void COpenHoldemView::draw_balance_box(int chair) {
 		pDC->SelectObject(oldfont);
 		cFont.DeleteObject();
 		ReleaseDC(pDC);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemView::draw_balance_box\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("COpenHoldemView::draw_balance_box\n"); 
+
 }
 
 
 void COpenHoldemView::draw_player_bet(int chair) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CPen		*pTempPen, oldpen;
 		CBrush		*pTempBrush, oldbrush;	
 		RECT		textrect, drawrect;
@@ -1189,12 +1111,8 @@ void COpenHoldemView::draw_player_bet(int chair) {
 
 		cFont.DeleteObject();
 		ReleaseDC(pDC);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemView::draw_player_bet\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("COpenHoldemView::draw_player_bet\n"); 
+
 }
 

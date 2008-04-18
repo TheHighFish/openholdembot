@@ -15,14 +15,11 @@
 class PokerPro	ppro;
 
 PokerPro::PokerPro(void) {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
 
-#ifdef SEH_ENABLE
-	try {
-#endif
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+
+__SEH_HEADER
 		Registry  reg;
 
 		reg.read_reg();
@@ -41,34 +38,22 @@ PokerPro::PokerPro(void) {
 
 		::WSAStartup( MAKEWORD(2,2), &m_wsadata );
 		m_socket = INVALID_SOCKET;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::Constructor : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::Constructor : \n"); 
+
 }
 
 
 PokerPro::~PokerPro(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		::WSACleanup();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::Destructor : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::Destructor : \n"); 
+
 }
 
 int PokerPro::connect(const char *host, const char * port) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (m_socket != INVALID_SOCKET) { return -1; }
 
 		int iresult;
@@ -93,124 +78,82 @@ int PokerPro::connect(const char *host, const char * port) {
 
 		return 1;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::connect : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::connect : \n"); 
+
 }
 
 int PokerPro::disconnect(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		::shutdown(m_socket,SD_BOTH);
 		::closesocket( m_socket );
 		m_socket = INVALID_SOCKET;
 		data.m_isauthenticated = false;
 		return 1;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::disconnect : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("PokerPro::disconnect : \n"); 
+
 }
 
 int PokerPro::send_login(const char* username, const char* password) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		PokerMessage pm;
 		pm.m_event = 'LOGI';
 		pm.m_chair = -1;
 		sassign(pm.m_name, username, sizeof(pm.m_name));
 		sassign(pm.m_pass, password, sizeof(pm.m_pass));
 		return send_message((char*)(&pm), sizeof(PokerMessage));
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::send_login : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::send_login : \n"); 
+
 }
 
 int PokerPro::send_version(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		PokerMessage pm;
 		pm.m_event = 'VERS';
 		pm.m_version = PROTOCOL_VERSION;
 		return send_message((char*)(&pm), sizeof(PokerMessage));
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::send_version : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::send_version : \n"); 
+
 }
 
 int PokerPro::send_goto(int location) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		PokerMessage pm;
 		pm.m_event		= 'GOTO';
 		pm.m_location	= location;
 		return send_message((char*)(&pm), sizeof(PokerMessage));
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::send_goto : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("PokerPro::send_goto : \n"); 
+
 }
 
 int PokerPro::send_sit(int chair) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		PokerMessage pm;
 		pm.m_event = 'PSIT';
 		pm.m_chair = (chair == -1) ? data.m_userchair : chair;
 		return send_message((char*)(&pm), sizeof(PokerMessage));
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::send_sit : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("PokerPro::send_sit : \n"); 
+
 }
 
 int PokerPro::send_stand(int chair) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		PokerMessage pm;
 		pm.m_event = 'PUNS';
 		pm.m_chair = (chair == -1) ? data.m_userchair : chair;
 		return send_message((char*)(&pm), sizeof(PokerMessage));
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::send_stand : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("PokerPro::send_stand : \n"); 
+
 }
 
 int PokerPro::send_chips(double chips) {  
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CHAT_MESSAGE	m;
 		char			msg[100];
 		sprintf(msg, "/chips %.2f", chips);
@@ -237,19 +180,13 @@ int PokerPro::send_chips(double chips) {
 
 		int result = send_message( (char*)(&m), nbytes );
 		return result;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::send_chips : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("PokerPro::send_chips : \n"); 
+
 }
 
 int PokerPro::send_deposit(double chips) {  
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CHAT_MESSAGE	m;
 		char			msg[100];
 		sprintf(msg, "/bank deposit %.2f", chips);
@@ -276,71 +213,47 @@ int PokerPro::send_deposit(double chips) {
 
 		int result = send_message( (char*)(&m), nbytes );
 		return result;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::send_deposit : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::send_deposit : \n"); 
+
 }
 
 int PokerPro::send_sitin(int chair) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		PokerMessage pm;
 		pm.m_event = 'PACT';
 		pm.m_chair = (chair == -1) ? data.m_userchair : chair;
 		return send_message((char*)(&pm), sizeof(PokerMessage));
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::send_sitin : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::send_sitin : \n"); 
+
 }
 
 int PokerPro::send_sitout(int chair) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		PokerMessage pm;
 		pm.m_event = 'PINA';
 		pm.m_chair = (chair == -1) ? data.m_userchair : chair;
 		return send_message((char*)(&pm), sizeof(PokerMessage));
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::send_sitout : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::send_sitout : \n"); 
+
 }
 
 int PokerPro::send_action(int action, int amount) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		PokerMessage pm;
 		pm.m_event = action;
 		pm.m_chair = data.m_userchair;
 		pm.m_amount = amount;
 		return send_message((char*)(&pm), sizeof(PokerMessage));
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::send_action : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("PokerPro::send_action : \n"); 
+
 }
 
 int PokerPro::resolve (const char* host, const char* port, addrinfo** ppai) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		addrinfo	hints;
 
 		memset(&hints, 0, sizeof(hints));
@@ -357,20 +270,14 @@ int PokerPro::resolve (const char* host, const char* port, addrinfo** ppai) {
 		if (pai) { *ppai = pai;	}
 
 		return true;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::resolve : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("PokerPro::resolve : \n"); 
+
 }
 
 
 void PokerPro::nolinger (SOCKET s) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		linger  _linger;
 		_linger.l_onoff         = 0;    //0=dontlinger  1=linger
 		_linger.l_linger        = 0;    //nseconds to linger
@@ -383,20 +290,14 @@ void PokerPro::nolinger (SOCKET s) {
 				(char *)&_linger,
 				sizeof(_linger)
 		);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::nolinger : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::nolinger : \n"); 
+
 }
 
 
 int PokerPro::get_random_vacant_chair(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int rc = -1;
 
 		if (data.m_location > 0)	{
@@ -409,19 +310,13 @@ int PokerPro::get_random_vacant_chair(void) {
 			if (nvacant) { rc = vacant[rand()%nvacant]; }
 		}
 		return rc;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::get_random_vacant_chair : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("PokerPro::get_random_vacant_chair : \n"); 
+
 }
 
 int PokerPro::send_message(const char* pbytes, int nbytes) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int result;
 
 		if (nbytes > ppsock__msgsizmin)	{
@@ -437,19 +332,13 @@ int PokerPro::send_message(const char* pbytes, int nbytes) {
 		result = sendbuffer(pbytes, nbytes);
 
 		return result;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::send_message : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::send_message : \n"); 
+
 }
 
 int PokerPro::recv_message(const char** ppbytes, int* pnbytes) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int nbytes = ppsock__msgsizmin;
 
 		m_nmsg += 1;
@@ -476,20 +365,14 @@ int PokerPro::recv_message(const char** ppbytes, int* pnbytes) {
 		*pnbytes = nbytes;
 
 		return 1;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::recv_message : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::recv_message : \n"); 
+
 }
 
 
 int PokerPro::sendbuffer(const char* pbytes, int nbytes) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int nbytes_sent=0;
 
 		while (nbytes_sent < nbytes) {
@@ -500,19 +383,13 @@ int PokerPro::sendbuffer(const char* pbytes, int nbytes) {
 			nbytes_sent += iresult;
 		}
 		return nbytes_sent;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::sendbuffer : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::sendbuffer : \n"); 
+
 }
 
 int PokerPro::recvbuffer (char* pbytes, int nbytes) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int nbytesrecv = 0;
 
 		while(nbytesrecv < nbytes) {
@@ -524,49 +401,31 @@ int PokerPro::recvbuffer (char* pbytes, int nbytes) {
 		}
 
 		return nbytesrecv;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::recvbuffer : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::recvbuffer : \n"); 
+
 }
 
 int PokerPro::send(const char* bytes, int nbytes) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		return ::send( m_socket, bytes, nbytes, 0 );
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::send : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::send : \n"); 
+
 }
 
 int PokerPro::recv(char* bytes, int nbytes) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		return ::recv( m_socket, bytes, nbytes, 0 );
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::recv : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::recv : \n"); 
+
 }
 
 void PokerPro::handle_message(const char* pbytes, int nbytes) {
 	PokerMessage* pm;
 
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		pm = (PokerMessage*)pbytes;
 
 		switch(pm->m_event) {
@@ -656,20 +515,14 @@ void PokerPro::handle_message(const char* pbytes, int nbytes) {
 			default		: HandleEventUnknown		(pbytes);	break;
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::handle_message : m_event>%d\n", pm->m_event); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::handle_message : m_event>%d\n", pm->m_event); 
+
 }
 
 
 void PokerPro::HandleEventUnknown(const char* pbytes) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		char stag[8];
 		stag[0] = pbytes[3];
 		stag[1] = pbytes[2];
@@ -679,62 +532,38 @@ void PokerPro::HandleEventUnknown(const char* pbytes) {
 
 		CString s; s.Format("Unknown message received (%s)...\n", stag);
 		publish(&s, PUBLISH_ERR);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventUnknown : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleEventUnknown : \n"); 
+
 }
 
 
 void PokerPro::HandleEventUserChair(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		data.m_userchair = pm->m_chair;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventUserChair : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleEventUserChair : \n"); 
+
 }
 
 void PokerPro::HandleEventPlayerPlaying(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		data.m_pinf[pm->m_chair&0x1f].m_isPlaying = 1;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventPlayerPlaying : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleEventPlayerPlaying : \n"); 
+
 }
 
 void PokerPro::HandleEventPlayerNotPlaying(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		data.m_pinf[pm->m_chair&0x1f].m_isPlaying = 0;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventPlayerNotPlaying : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleEventPlayerNotPlaying : \n"); 
+
 }
 
 void PokerPro::HandleEventPlayerActive(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
 		data.m_pinf[pm->m_chair&0x1f].m_isActive = 1;
 
@@ -742,19 +571,13 @@ void PokerPro::HandleEventPlayerActive(PokerMessage* pm) {
 			CString s; s.Format("Sitting in.\n");
 			publish(&s, 0);
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventPlayerActive : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleEventPlayerActive : \n"); 
+
 }
 
 void PokerPro::HandleEventPlayerInactive(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
 		data.m_pinf[pm->m_chair&0x1f].m_isActive = 0;
 
@@ -762,89 +585,57 @@ void PokerPro::HandleEventPlayerInactive(PokerMessage* pm) {
 			CString s; s.Format("Sitting out.\n");
 			publish(&s, 0);
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventPlayerInactive : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("PokerPro::HandleEventPlayerInactive : \n"); 
+
 }
 
 void PokerPro::HandleEventPlayerSit(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		data.m_pinf[pm->m_chair&0x1f].m_isSeated = 1;
 		CString s; s.Format("Chair %d joining table.\n", pm->m_chair&0x1f);
 		publish(&s, 0);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventPlayerSit : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleEventPlayerSit : \n"); 
+
 }
 
 void PokerPro::HandleEventPlayerUnSit(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		data.m_pinf[pm->m_chair&0x1f].m_isSeated = 0;
 		if (pm->m_chair == data.m_userchair) {
 			data.m_userchair = -1;
 		}
 		CString s; s.Format("Chair %d leaving table.\n", pm->m_chair&0x1f);
 		publish(&s, 0);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventPlayerUnSit : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleEventPlayerUnSit : \n"); 
+
 }
 
 void PokerPro::HandleEventSiteName(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
 		sassign(data.m_site_name, pm->m_text, sizeof(data.m_site_name));
 		CString s; s.Format("%s\n", pm->m_text);
 		publish(&s, 0);
+ 
+		__SEH_LOGFATAL("PokerPro::HandleEventSiteName : \n"); 
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventSiteName : \n"); 
-		throw;
-	}
-#endif
 }
 
 void PokerPro::HandleEventTableInfo(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
 		TINF* ptinf = (TINF*)pm;
 		data.m_tinf = *ptinf;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventTableInfo : \n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("PokerPro::HandleEventTableInfo : \n"); 
+
 }
 
 void PokerPro::HandleEventGameInfo(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		GINF* pginf = (GINF*)pm;
 		if (pginf->m_tid<=0 || pginf->m_tid>=MAX_TABLES) { return; }
 		data.m_ginf[pginf->m_tid] = *pginf;
@@ -870,96 +661,60 @@ void PokerPro::HandleEventGameInfo(PokerMessage* pm) {
 			pginf->m_nSeated, pginf->m_nChairs, 
 			sbs, bbs, BBs);
 		publish(&s, 0);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventGameInfo : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleEventGameInfo : \n"); 
+
 }
 
 void PokerPro::HandleEventGoto(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		data.m_location = pm->m_location;
 		CString s; s.Format("Joined table %d.\n", pm->m_location);
 		publish(&s, 0);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventGoto : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("PokerPro::HandleEventGoto : \n"); 
+
 }
 
 void PokerPro::HandleEventVersion(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventVersion : \n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+
+		__SEH_LOGFATAL("PokerPro::HandleEventVersion : \n"); 
+
 }
 
 void PokerPro::HandleEventPlayerLogout(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		data.m_isauthenticated = false;
 		CString s; s.Format("Logout complete.\n");
 		publish(&s, 0);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventPlayerLogout : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("PokerPro::HandleEventPlayerLogout : \n"); 
+
 }
 
 void PokerPro::HandleEventPlayerLogin(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		data.m_isauthenticated = true;
 		CString s; s.Format("Login complete.\n");
 		publish(&s, 0);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventPlayerLogin : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleEventPlayerLogin : \n"); 
+
 }
 
 void PokerPro::HandleEventPlayerLoginReject(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		data.m_isauthenticated = false;
 		CString s; s.Format("Login rejected.\n");
 		publish(&s, 0);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventPlayerLoginReject : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("PokerPro::HandleEventPlayerLoginReject : \n"); 
+
 }
 
 void PokerPro::HandleEventPlayerInfo(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
 		PINF* ppinf = (PINF*)pm;
 		data.m_pinf[ppinf->m_chair&0x1f] = *ppinf;
@@ -971,19 +726,13 @@ void PokerPro::HandleEventPlayerInfo(PokerMessage* pm) {
 
 		CString s; s.Format("%d %15s %s %s\n", ppinf->m_chair&0x1f, ppinf->m_name, sbal, sbet);
 		publish(&s, 0);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventPlayerInfo : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("PokerPro::HandleEventPlayerInfo : \n"); 
+
 }
 
 void PokerPro::HandleEventWPDS(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		PokerMessage PM;
 		PM.m_event = pm->m_event;			//'WPDS'
 		PM.m_lparam[1] = pm->m_lparam[1];	//hand number
@@ -994,19 +743,13 @@ void PokerPro::HandleEventWPDS(PokerMessage* pm) {
 			PM.m_cparam[8+i] = r;
 		}
 		send_message((char*)(&PM), sizeof(PokerMessage));
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventWPDS : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleEventWPDS : \n"); 
+
 }
 
 void PokerPro::HandleEventWaitPlayer(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int tag = pm->m_event;
 		int action = 0;
 		int amount = 0;
@@ -1035,19 +778,14 @@ void PokerPro::HandleEventWaitPlayer(PokerMessage* pm) {
 		}
 
 		send_action(action, amount);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventWaitPlayer : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleEventWaitPlayer : \n"); 
+
 }
 
 void PokerPro::HandleEventPlayerFold(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CString s; 
 
 		data.m_pinf[pm->m_chair&0x1f].m_card[0] = 0;
@@ -1058,20 +796,14 @@ void PokerPro::HandleEventPlayerFold(PokerMessage* pm) {
 
 		s.Format("%s FOLD\n", data.m_pinf[pm->m_chair&0x1f].m_name);
 		writehh(&s);
+ 
+		__SEH_LOGFATAL("PokerPro::HandleEventPlayerFold : \n"); 
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventPlayerFold : \n"); 
-		throw;
-	}
-#endif
 }
 
 void PokerPro::HandleEventPlayerMuck(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CString s;
 
 		data.m_pinf[pm->m_chair&0x1f].m_card[0] = 0;
@@ -1082,19 +814,13 @@ void PokerPro::HandleEventPlayerMuck(PokerMessage* pm) {
 		s.Format("%s MUCK\n", data.m_pinf[pm->m_chair&0x1f].m_name);
 		writehh(&s);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventPlayerMuck : \n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("PokerPro::HandleEventPlayerMuck : \n"); 
+
 }
 
 void PokerPro::HandleEventPlayerRefund(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CString s;
 
 		char sbet[32];
@@ -1105,19 +831,13 @@ void PokerPro::HandleEventPlayerRefund(PokerMessage* pm) {
 		s.Format("%s RFND %s\n", data.m_pinf[pm->m_chair&0x1f].m_name, sbet);
 		writehh(&s);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventPlayerRefund : \n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("PokerPro::HandleEventPlayerRefund : \n"); 
+
 }
 
 void PokerPro::HandleEventPlayerBet(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CString s, hh; 
 
 		int tag = pm->m_event;
@@ -1156,33 +876,22 @@ void PokerPro::HandleEventPlayerBet(PokerMessage* pm) {
 		publish(&s, 0);
 		writehh(&hh);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventPlayerBet : \n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("PokerPro::HandleEventPlayerBet : \n"); 
+
 }
 
 void PokerPro::HandleEventPlayerName(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		sassign(data.m_pinf[pm->m_chair&0x1f].m_name, pm->m_name, sizeof(data.m_pinf[pm->m_chair&0x1f].m_name));
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventPlayerName : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("PokerPro::HandleEventPlayerName : \n"); 
+
 }
 
 void PokerPro::HandleEventPlayerBalance(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		data.m_pinf[pm->m_chair&0x1f].m_balance = pm->m_amount;
 
 		if (pm->m_chair == data.m_userchair) {
@@ -1192,19 +901,13 @@ void PokerPro::HandleEventPlayerBalance(PokerMessage* pm) {
 			publish(&s, 0);
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventPlayerBalance : \n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("PokerPro::HandleEventPlayerBalance : \n"); 
+
 }
 
 void PokerPro::HandleEventPlayerWin(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CString s;
 
 		int chairbits = pm->m_chair;
@@ -1232,19 +935,14 @@ void PokerPro::HandleEventPlayerWin(PokerMessage* pm) {
 				writehh(&s);
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventPlayerWin : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleEventPlayerWin : \n"); 
+
 }
 
 void PokerPro::HandleEventNextDealer(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CString s;
 
 		data.m_tinf.m_activeDealer = pm->m_chair&0x1f;
@@ -1276,48 +974,33 @@ void PokerPro::HandleEventNextDealer(PokerMessage* pm) {
 			}
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventNextDealer : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleEventNextDealer : \n"); 
+
 }
 
 void PokerPro::HandleEventNextPlayer(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		data.m_tinf.m_activePlayer = pm->m_chair&0x1f;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventNextPlayer : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("PokerPro::HandleEventNextPlayer : \n"); 
+
 }
 
 void PokerPro::HandleEventNextRound(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		for (int i=0; i<=9; i++) { data.m_pinf[i].m_betAmount=0; }
 		data.m_prev_rais = 0;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventNextRound : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleEventNextRound : \n"); 
+
 }
 
 void PokerPro::HandleEventNextHand(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CString s; 
 
 		reset_hand();
@@ -1332,59 +1015,37 @@ void PokerPro::HandleEventNextHand(PokerMessage* pm) {
 		s.Format("\nHand# %d %s GMT %s\n", data.m_handnumber, buf, data.m_site_name);
 		writehh(&s);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventNextHand : \n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("PokerPro::HandleEventNextHand : \n"); 
+
 }
 
 void PokerPro::HandleEventNextGame(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventNextGame : \n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+
+		__SEH_LOGFATAL("PokerPro::HandleEventNextGame : \n"); 
+
 }
 
 void PokerPro::HandleEventNextTable(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventNextTable : \n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+
+ 
+		__SEH_LOGFATAL("PokerPro::HandleEventNextTable : \n"); 
+
 }
 
 void PokerPro::HandleEventSetPot(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		data.m_pot[pm->m_pot] = pm->m_amount;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventSetPot : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleEventSetPot : \n"); 
+
 }
 
 void PokerPro::HandleEventTotalPot(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CString s;
 
 		char spot[32];
@@ -1393,62 +1054,42 @@ void PokerPro::HandleEventTotalPot(PokerMessage* pm) {
 		s.Format("DEALER POT %s\n", spot);
 		writehh(&s);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventTotalPot : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleEventTotalPot : \n"); 
+
 }
 
 void PokerPro::HandleEventStakes(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		data.m_ginf[data.m_tinf.m_tid].m_sblind = pm->m_lparam[1];
 		data.m_ginf[data.m_tinf.m_tid].m_minbet = pm->m_lparam[2];
 		data.m_ginf[data.m_tinf.m_tid].m_maxbet = pm->m_lparam[3];
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventStakes : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleEventStakes : \n"); 
+
 }
 
 void PokerPro::HandleEventEndHand(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		reset_hand();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventEndHand : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleEventEndHand : \n"); 
+
 }
 
 void PokerPro::HandleEventEndTable(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventEndTable : \n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+
+
+		__SEH_LOGFATAL("PokerPro::HandleEventEndTable : \n"); 
+
 }
 
 void PokerPro::HandleEventDeal(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CString s; 
 
 		for (int i=0; i<10; i++) {
@@ -1463,35 +1104,25 @@ void PokerPro::HandleEventDeal(PokerMessage* pm) {
 		s.Format("DEALER DEAL\n");
 		writehh(&s);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventDeal : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleEventDeal : \n"); 
+
 }
 
 void PokerPro::HandleEventPlayerChat(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CHAT_MESSAGE *pc = (CHAT_MESSAGE*)pm;
 		CString s; s.Format("%s \"%s\"\n", pc->m_name, pc->m_text);
 		publish(&s, 0);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventPlayerChat : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleEventPlayerChat : \n"); 
+
 }
 
 void PokerPro::HandleEventPokerValue(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 
 		CString s;
 
@@ -1515,20 +1146,14 @@ void PokerPro::HandleEventPokerValue(PokerMessage* pm) {
 
 		s.Format("%s POKER %s\n", data.m_pinf[pm->m_chair&0x1f].m_name, sval);
 		writehh(&s);
+ 
+		__SEH_LOGFATAL("PokerPro::HandleEventPokerValue : \n"); 
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventPokerValue : \n"); 
-		throw;
-	}
-#endif
 }
 
 void PokerPro::HandleEventRevealCard(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CString s;
 
 		int ccard = (pm->m_lparam[2] >> 0) & 0xff;
@@ -1548,19 +1173,13 @@ void PokerPro::HandleEventRevealCard(PokerMessage* pm) {
 			writehh(&s);
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventRevealCard : \n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("PokerPro::HandleEventRevealCard : \n"); 
+
 }
 
 void PokerPro::HandleEventFlop(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		int ccard = (pm->m_lparam[2] >> 0) & 0xff;
 		int ncard = (pm->m_lparam[2] >> 8) & 0xff;
 
@@ -1597,19 +1216,13 @@ void PokerPro::HandleEventFlop(PokerMessage* pm) {
 		publish(&s, 0);
 		writehh(&hh);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventFlop : \n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("PokerPro::HandleEventFlop : \n"); 
+
 }
 
 void PokerPro::HandleEventPlayerList(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		int seatedbits	= pm->m_lparam[1];
 		int activebits	= pm->m_lparam[2];
 		int playingbits	= pm->m_lparam[3];
@@ -1619,19 +1232,14 @@ void PokerPro::HandleEventPlayerList(PokerMessage* pm) {
 			data.m_pinf[i].m_isActive = (activebits & (1<<i)) ? 1 : 0;
 			data.m_pinf[i].m_isPlaying = (playingbits & (1<<i)) ? 1 : 0;
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventPlayerList : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleEventPlayerList : \n"); 
+
 }
 
 void PokerPro::HandleAccount(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CString s;
 
 		switch (pm->m_event) {
@@ -1650,45 +1258,29 @@ void PokerPro::HandleAccount(PokerMessage* pm) {
 		s = s.MakeLower();
 		writehh(&s);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleAccount : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleAccount : \n"); 
+
 }
 
 void PokerPro::HandleEventStarted(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventStarted : \n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+
+ 
+		__SEH_LOGFATAL("PokerPro::HandleEventStarted : \n"); 
+
 }
 
 void PokerPro::HandleEventStopped(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventStopped : \n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+
+		__SEH_LOGFATAL("PokerPro::HandleEventStopped : \n"); 
+
 }
 
 void PokerPro::HandleEventTournament(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CString s;
 
 		switch (pm->m_event) {
@@ -1711,63 +1303,43 @@ void PokerPro::HandleEventTournament(PokerMessage* pm) {
 		}
 		publish(&s, 0);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventTournament : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleEventTournament : \n"); 
+
 }
 
 void PokerPro::HandleEventTableLock(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		//const char* msg = pm->m_lparam[1] ? "locked" : "unlocked";
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventTableLock : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::HandleEventTableLock : \n"); 
+
 }
 
 void PokerPro::HandleEventPing(PokerMessage* pm) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		pm->m_event = 'PONG';
 		send_message((char *) pm, sizeof(PokerMessage) );
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::HandleEventPing : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("PokerPro::HandleEventPing : \n"); 
+
 }
 char* PokerPro::sassign(char* dst, const char* src, int dstsiz) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		strncpy( dst, src, dstsiz );
 		dst[dstsiz-1]=0;
 		return dst;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::sassign : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::sassign : \n"); 
+
 }
 
 char* PokerPro::convert_money(char* text, int amount) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		int units = amount/100;
 		int cents = amount%100;
 
@@ -1788,19 +1360,14 @@ char* PokerPro::convert_money(char* text, int amount) {
 		}
 
 		return text;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::convert_money : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::convert_money : \n"); 
+
 }
 
 void PokerPro::reset_hand(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		int i;
 
 		for (i=0; i<=4; i++) { data.m_tinf.m_card[i]=0;	}
@@ -1811,52 +1378,37 @@ void PokerPro::reset_hand(void) {
 		}
 		memset(data.m_pot,0,sizeof(data.m_pot));
 		data.m_prev_rais = 0;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::reset_hand : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::reset_hand : \n"); 
+
 }
 
 int PokerPro::get_current_bet(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		int bet=0;
 		for (int i=0; i<10; i++) {
 			int _bet = data.m_pinf[i].m_betAmount;
 			if (_bet > bet) { bet = _bet; }
 		}
 		return bet;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::get_current_bet : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("PokerPro::get_current_bet : \n"); 
+
 }
 
 int PokerPro::get_betx(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		return (get_round() >= 3) ? data.m_tinf.m_betMax : data.m_tinf.m_betMin;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::get_betx : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::get_betx : \n"); 
+
 }
 
 int PokerPro::get_round(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		int round=0;
 		int ncc=get_ncc();
 		int npd=get_npd();
@@ -1871,19 +1423,14 @@ int PokerPro::get_round(void) {
 		case 5: round=4; break;
 		}
 		return round;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::get_round : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("PokerPro::get_round : \n"); 
+
 }
 
 int PokerPro::get_ncc(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		int ncc=0;
 		for (int i=0; i<5; i++) {
 			if (data.m_tinf.m_card[i]) {
@@ -1891,37 +1438,27 @@ int PokerPro::get_ncc(void) {
 			}
 		}
 		return ncc;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::get_ncc : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("PokerPro::get_ncc : \n"); 
+
 }
 
 int PokerPro::get_npd(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		int npd=0;
 		for (int i=0; i<=9; i++) {
 			if (data.m_pinf[i].m_card[0] == 0 && data.m_pinf[i].m_card[1] == 0) { continue; }
 			npd++;
 		}
 		return npd;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::get_npd : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::get_npd : \n"); 
+
 }
 void PokerPro::DoScrape(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		int			i, j;
 		int			suit, rank;
 		char		money[50];
@@ -2042,18 +1579,13 @@ void PokerPro::DoScrape(void) {
 		scraper.buttonstate[6] = (data.m_pinf[data.m_userchair].m_isActive) ? "true" : "false";
 		scraper.buttonstate[7] = "true";
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::DoScrape : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::DoScrape : \n"); 
+
 }
 int PokerPro::count_same_scrapes(void) {                               // Copied from Autoplayer.cpp to be used for f$delay (4-4-2008) Spektre
-	#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		int						i;
 		static unsigned int		card_common_last[5] = {0};
 		static unsigned int		card_player_last[10][2] = {0};
@@ -2110,20 +1642,15 @@ int PokerPro::count_same_scrapes(void) {                               // Copied
 		}
 
 		return num_same_scrapes;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::count_same_scrapes :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::count_same_scrapes :\n"); 
+
 }
 
 
 void PokerPro::DoAutoplayer(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		int				error;
 		bool			prwin_running, scrape_running;
         int				x, delay;
@@ -2227,19 +1754,14 @@ void PokerPro::DoAutoplayer(void) {
 			Sleep(500);
 			symbols.sym.prevaction = PREVACT_FOLD;
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::DoAutoplayer : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::DoAutoplayer : \n"); 
+
 }
 
 void PokerPro::publish(CString *text, int flags) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 
 		// limit size of message box to 100 lines
 		int i, count = 1;
@@ -2258,19 +1780,14 @@ void PokerPro::publish(CString *text, int flags) {
 			MessageBox(NULL, *text, "PPRO: ERROR", MB_OK | MB_TOPMOST);
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::publish : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::publish : \n"); 
+
 }
 
 const char* PokerPro::get_action(int chair, int spend) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		int current = data.m_pinf[chair].m_betAmount;
 		int round = get_round();
 		int call = get_current_bet();
@@ -2283,38 +1800,28 @@ const char* PokerPro::get_action(int chair, int spend) {
 		if (round >= 1 && current+spend > call && playerpot <= 0 && call <= 0) { return "BET"; }
 		if (round >= 1 && current+spend > call && playerpot > 0 && call > 0) { return "RAISE"; }
 		return "SPEND";
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::get_action : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("PokerPro::get_action : \n"); 
+
 }
 
 int PokerPro::get_player_pot(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		int sum=0;
 		for (int i=0; i<=9; i++) {
 			sum += data.m_pinf[i].m_betAmount;
 		}
 
 		return sum;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::get_player_pot : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("PokerPro::get_player_pot : \n"); 
+
 }
 
 char* PokerPro::card2ascii(char* text, unsigned char cc) { 
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		const char* srank = " 123456789TJQKA|";
 		const char* ssuit = " cdhs----------|";
 
@@ -2326,37 +1833,26 @@ char* PokerPro::card2ascii(char* text, unsigned char cc) {
 		text[2] = 0;
 
 		return text;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::card2ascii : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::card2ascii : \n"); 
+
 }
 
 char PokerPro::rank2ascii(int rank) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 
 	const char* srank = " 123456789TJQKA|";
 	char ascii = srank[rank];
 	return ascii;
+ 
+		__SEH_LOGFATAL("PokerPro::rank2ascii : \n"); 
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::rank2ascii : \n"); 
-		throw;
-	}
-#endif
 }
 
 void PokerPro::writehh(CString *s) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CString fn, fd;
 		FILE *hh_fp;
 
@@ -2376,19 +1872,14 @@ void PokerPro::writehh(CString *s) {
 			}
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::writehh : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::writehh : \n"); 
+
 }
 
 const char* PokerPro::get_cardinal_suffix(int n) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		switch (n%10) {
 			case 1: 
 				return "st"; 
@@ -2406,11 +1897,7 @@ const char* PokerPro::get_cardinal_suffix(int n) {
 
 		return "??";
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerPro::get_cardinal_suffix : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerPro::get_cardinal_suffix : \n"); 
+
 }

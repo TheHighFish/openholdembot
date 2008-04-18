@@ -13,14 +13,11 @@ class CGlobal	global;
 
 CGlobal::CGlobal(void) 
 {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
 
-#ifdef SEH_ENABLE
-	try {
-#endif
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+
+__SEH_HEADER
 		int			i, j;
 		Registry	reg;
 		FILE		*fp;
@@ -142,53 +139,35 @@ CGlobal::CGlobal(void)
 
 		replay_recorded_this_turn = false;	
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CGlobal::Constructor : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CGlobal::Constructor : \n"); 
+
 }
 
 CGlobal::~CGlobal(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CGlobal::Destructor : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CGlobal::Destructor : \n"); 
+
 }
 
 void CGlobal::ClearFormula(SFormula *f) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		f->dBankroll = f->dDefcon = f->dRake = f->dNit = 0.0;
 		f->mHandList.RemoveAll();
 		f->mFunction.RemoveAll();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CGlobal::ClearFormula : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CGlobal::ClearFormula : \n"); 
+
 }
 
 
 void CGlobal::CopyFormula(SFormula *f, SFormula *t) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		SHandList		list;
 		SFunction		func;
 		int				from_count, to_count, from_iter, to_iter;
@@ -275,21 +254,14 @@ void CGlobal::CopyFormula(SFormula *f, SFormula *t)
 		}
 
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CGlobal::CopyFormula :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CGlobal::CopyFormula :\n"); 
+
 }
 
 // returns true for successful parse of all trees, false otherwise
 bool CGlobal::ParseAllFormula(HWND hwnd, SFormula *f) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		sData			data;
 		data.all_parsed = true;
 		data.calling_hwnd = hwnd;
@@ -312,20 +284,14 @@ bool CGlobal::ParseAllFormula(HWND hwnd, SFormula *f)
 
 		return data.all_parsed;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CGlobal::ParseAllFormula :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CGlobal::ParseAllFormula :\n"); 
+
 }
 
 bool parse_loop(const CUPDUPDATA* pCUPDUPData) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int				N, i;
 		CString			s;
 		bool			result;
@@ -390,13 +356,9 @@ bool parse_loop(const CUPDUPDATA* pCUPDUPData)
 		}
 
 		return true;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("::parse_loop :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("::parse_loop :\n"); 
+
 }
 
 int cardIdentHelper(const char c)
@@ -412,9 +374,7 @@ int cardIdentHelper(const char c)
 
 void CGlobal::ParseHandList(CString &list_text, bool inlist[13][13])
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 	for (int i=0; i<=12; i++) 
 	{
 		for (int j=0; j<=12; j++) 
@@ -464,20 +424,15 @@ void CGlobal::ParseHandList(CString &list_text, bool inlist[13][13])
 			inlist[token_card1_rank][token_card0_rank] = true;
 		}
 	}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("ParseHandList :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("ParseHandList :\n"); 
+
+
 }
 
 void CGlobal::create_hand_list_matrices(SFormula *f) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int			listnum, i, j, N;
 		CString		token;
 
@@ -499,20 +454,13 @@ void CGlobal::create_hand_list_matrices(SFormula *f)
 			ParseHandList(f->mHandList[i].list_text, f->inlist[listnum]);
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CGlobal::create_hand_list_matrices :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CGlobal::create_hand_list_matrices :\n"); 
+
 }
 
 void CGlobal::capture_state(const char *title) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int						i, j;
 		bool					playing = true;
 		unsigned char			card;
@@ -614,21 +562,15 @@ void CGlobal::capture_state(const char *title)
 		}
 
 		global.state_index++;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 {	
-		logfatal("CGlobal::capture_state :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CGlobal::capture_state :\n"); 
+
 }
 
 
 void CGlobal::clear_r$indexes(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
 		int i,j,k;
 
@@ -711,20 +653,14 @@ void CGlobal::clear_r$indexes(void)
 		// button info
 		tablemap.r$i86state_index = -1;
 		tablemap.r$i86button_index = -1;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CGlobal::clear_r$indexes :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CGlobal::clear_r$indexes :\n"); 
+
 }
 		
 void CGlobal::save_r$indexes(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		// r$tablepointX not indexed, as it is only used for finding tables on green circle-click, and 
 		//   this function is not called until a table has been selected by the user
 
@@ -997,20 +933,14 @@ void CGlobal::save_r$indexes(void)
 			}
 
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CGlobal::save_r$indexes :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CGlobal::save_r$indexes :\n"); 
+
 }
 
 void CGlobal::save_s$indexes(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		// s$titletextX, s$!titletextX not indexed, as it is only used for finding tables on green circle-click, and 
 		//   this function is not called until a table has been selected by the user/*
 		// s$hXtype are not indexed, as those records are ignored in OH
@@ -1046,20 +976,14 @@ void CGlobal::save_s$indexes(void)
 				tablemap.s$c0limitsX_index[num] = i;
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CGlobal::save_s$indexes :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CGlobal::save_s$indexes :\n"); 
+
 }
 
 void CGlobal::save_s$strings(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		// s$reseller and s$mechanic are not saved, as they are only comments and not used in OH for any purpose
 
 		int		i;
@@ -1111,21 +1035,15 @@ void CGlobal::save_s$strings(void)
 				tablemap.ttype[3] = tablemap.s$[i].text;
 
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CGlobal::save_s$strings :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CGlobal::save_s$strings :\n"); 
+
 }
 
 
 void CGlobal::create_replay_frame(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CString			path, filename, text, fcra_seen;
 		FILE			*fp;
 		int				i;
@@ -1287,20 +1205,13 @@ void CGlobal::create_replay_frame(void)
 			global.next_replay_frame = 0;
 
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CGlobal::create_replay_frame :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CGlobal::create_replay_frame :\n"); 
+
 }
 
 CString CGlobal::get_card_html(unsigned int card)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CString suit, color, rank, final;
 
 		suit =	card == CARD_BACK ? "*" :
@@ -1340,11 +1251,6 @@ CString CGlobal::get_card_html(unsigned int card)
 
 		return final;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CGlobal::get_card_html :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CGlobal::get_card_html :\n"); 
+
 }

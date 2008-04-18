@@ -9,22 +9,14 @@
 
 // CDlgLockBlinds dialog
 CDlgLockBlinds::CDlgLockBlinds(CWnd* pParent /*=NULL*/)	: CDialog(CDlgLockBlinds::IDD, pParent) {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
-	
-#ifdef SEH_ENABLE
-	try {
-#endif
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgLockBlinds::Constructor :\n"); 
-		throw;
-	}
-#endif
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+	__SEH_HEADER
+
+
+		__SEH_LOGFATAL("CDlgLockBlinds::Constructor :\n"); 
+
 }
 
 
@@ -46,9 +38,7 @@ END_MESSAGE_MAP()
 // CDlgLockBlinds message handlers
 
 BOOL CDlgLockBlinds::OnInitDialog() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CDialog::OnInitDialog();
 
 		CString str;
@@ -76,19 +66,13 @@ BOOL CDlgLockBlinds::OnInitDialog() {
 
 		return TRUE;  // return TRUE unless you set the focus to a control
 		// EXCEPTION: OCX Property Pages should return FALSE
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgLockBlinds::OnInitDialog :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgLockBlinds::OnInitDialog :\n"); 
+
 }
 
 void CDlgLockBlinds::OnBnClickedOk() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CString str;
 
 		m_SmallBlind.GetWindowText(str);
@@ -114,11 +98,7 @@ void CDlgLockBlinds::OnBnClickedOk() {
 		}
 
 		OnOK();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgLockBlinds::OnBnClickedOk :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgLockBlinds::OnBnClickedOk :\n"); 
+
 }

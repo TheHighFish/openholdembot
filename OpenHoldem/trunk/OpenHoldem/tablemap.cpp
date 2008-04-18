@@ -10,14 +10,11 @@
 
 void clear_tablemap(STableMap *map) 
 {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
 
-#ifdef SEH_ENABLE
-	try {
-#endif
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+
+__SEH_HEADER
 		map->valid = false;
 		map->filepath = "";
 		map->z$.RemoveAll();	
@@ -27,24 +24,16 @@ void clear_tablemap(STableMap *map)
 		map->p$.RemoveAll();
 		map->h$.RemoveAll();
 		map->i$.RemoveAll();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("::clear_tablemap :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("::clear_tablemap :\n"); 
+
 }
 
 int load_tablemap(char *filename, STableMap *map, char *version, bool check_ws_date, int *linenum) {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
 
-#ifdef SEH_ENABLE
-	try {
-#endif
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+
+__SEH_HEADER
 		CString				strLine, strLineType, token, s, e, hexval, t;
 		int					i, pos, insert_point, P, j, x, y;
 		bool				supported_version;
@@ -409,13 +398,9 @@ int load_tablemap(char *filename, STableMap *map, char *version, bool check_ws_d
 
 		map->valid = true;
 		return SUCCESS;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("::load_tablemap :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("::load_tablemap :\n"); 
+
 }
 
 BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) {
@@ -469,14 +454,11 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) {
 }
 
 bool check_window_match(STableMap *map, HWND h, RECT r, CString title) {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
 
-#ifdef SEH_ENABLE
-	try {
-#endif
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+
+__SEH_HEADER
 		int				i;
 		bool			good_size, good_pos_title, good_neg_title, good_table_points;
 		int				width, height, x, y;
@@ -638,12 +620,8 @@ bool check_window_match(STableMap *map, HWND h, RECT r, CString title) {
 			return false;
 
 		return true;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("::check_window_match :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("::check_window_match :\n"); 
+
 }
 

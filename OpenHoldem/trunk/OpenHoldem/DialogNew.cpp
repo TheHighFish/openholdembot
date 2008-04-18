@@ -12,50 +12,31 @@
 IMPLEMENT_DYNAMIC(CDlgNew, CDialog)
 
 CDlgNew::CDlgNew(CWnd* pParent /*=NULL*/) : CDialog(CDlgNew::IDD, pParent) {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
+
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
 	
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgNew::Constructor :\n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+
+		__SEH_LOGFATAL("CDlgNew::Constructor :\n"); 
+
 }
 
 CDlgNew::~CDlgNew() {
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgNew::Destructor :\n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+
+		__SEH_LOGFATAL("CDlgNew::Destructor :\n"); 
+
 }
 
 void CDlgNew::DoDataExchange(CDataExchange* pDX) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CDialog::DoDataExchange(pDX);
 		DDX_Control(pDX, IDC_NEWNAME_EDIT, m_NewName);
 		DDX_Control(pDX, IDC_DESC, m_Desc);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgNew::DoDataExchange :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgNew::DoDataExchange :\n"); 
+
 }
 
 
@@ -67,9 +48,7 @@ END_MESSAGE_MAP()
 
 // CDlgNew message handlers
 BOOL CDlgNew::OnInitDialog() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CDialog::OnInitDialog();
 
 		if (type==0) {
@@ -84,19 +63,13 @@ BOOL CDlgNew::OnInitDialog() {
 		}
 
 		return TRUE;  // return TRUE unless you set the focus to a control
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgNew::OnInitDialog :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgNew::OnInitDialog :\n"); 
+
 }
 
 void CDlgNew::OnBnClickedOk() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		char str[512];
 		int i;
 
@@ -136,26 +109,16 @@ void CDlgNew::OnBnClickedOk() {
 		}
 
 		OnOK();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgNew::OnBnClickedOk :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgNew::OnBnClickedOk :\n"); 
+
 }
 
 void CDlgNew::OnBnClickedCancel() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		OnCancel();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgNew::OnBnClickedCancel : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgNew::OnBnClickedCancel : \n"); 
+
 }
 

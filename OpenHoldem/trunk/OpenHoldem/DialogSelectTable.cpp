@@ -12,51 +12,32 @@
 IMPLEMENT_DYNAMIC(CDlgSelectTable, CDialog)
 
 CDlgSelectTable::CDlgSelectTable(CWnd* pParent /*=NULL*/) : CDialog(CDlgSelectTable::IDD, pParent) {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
+
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
 	
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgSelectTable::Constructor :\n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+ 
+		__SEH_LOGFATAL("CDlgSelectTable::Constructor :\n"); 
+
 }
 
 CDlgSelectTable::~CDlgSelectTable() {
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgSelectTable::Destructor :\n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+ 
+		__SEH_LOGFATAL("CDlgSelectTable::Destructor :\n"); 
+
 }
 
 void CDlgSelectTable::DoDataExchange(CDataExchange* pDX) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CDialog::DoDataExchange(pDX);
 		//DDX_Control(pDX, IDC_LIST_SELECT_TABLE, m_List_Select_Table);
 		DDX_Control(pDX, IDC_LIST_SELECT_TABLE, m_HSLB);
 		DDX_Control(pDX, IDOK, m_OK);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgSelectTable::DoDataExchange :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgSelectTable::DoDataExchange :\n"); 
+
 }
 
 
@@ -70,24 +51,16 @@ END_MESSAGE_MAP()
 // CDlgSelectTable message handlers
 
 void CDlgSelectTable::OnBnClickedOk() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		selected_item = m_HSLB.GetCurSel();
 		OnOK();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgSelectTable::OnBnClickedOk :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgSelectTable::OnBnClickedOk :\n"); 
+
 }
 
 BOOL CDlgSelectTable::OnInitDialog() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int		i, N;
 
 		CDialog::OnInitDialog();
@@ -104,39 +77,22 @@ BOOL CDlgSelectTable::OnInitDialog() {
 
 		return TRUE;  // return TRUE unless you set the focus to a control
 		// EXCEPTION: OCX Property Pages should return FALSE
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgSelectTable::OnInitDialog :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgSelectTable::OnInitDialog :\n"); 
+
 }
 
 void CDlgSelectTable::OnLbnDblclkListSelectTable() {
-#ifdef SEH_ENABLE
-	try {
-#endif
-		OnBnClickedOk();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgSelectTable::OnLbnDblclkListSelectTable :\n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+	 
+		__SEH_LOGFATAL("CDlgSelectTable::OnLbnDblclkListSelectTable :\n"); 
+
 }
 
 void CDlgSelectTable::OnLbnSelchangeListSelectTable() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		m_OK.EnableWindow(true);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgSelectTable::OnLbnSelchangeListSelectTable :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgSelectTable::OnLbnSelchangeListSelectTable :\n"); 
+
 }

@@ -10,9 +10,7 @@ Memory		memory;
 
 Memory::Memory() 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 	int			i;
 
 		var_count=-1;
@@ -23,21 +21,15 @@ Memory::Memory()
 			var_value[i]=0.0;
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("Memory::constructor\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("Memory::constructor\n"); 
+
 }
 
 
 double Memory::process_query (const char * pquery, int *e) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
 		if (memcmp(pquery,"me_st_", 6)==0) 
 		{ 
@@ -55,21 +47,14 @@ double Memory::process_query (const char * pquery, int *e)
 		*e = ERR_INVALID_SYM;
 		return 0.0;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("Memory::process_query > %s\n", pquery); 
-		throw; 
-	}
-#endif
+		__SEH_LOGFATAL("Memory::process_query > %s\n", pquery); 
+
 }
 
 
 void Memory::store_value(const char * pquery, int *e) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int			i, index=0;
 		char		var[512], value[512];
 		double		result;
@@ -123,21 +108,14 @@ void Memory::store_value(const char * pquery, int *e)
 			strcpy(var_name[index], var);
 		}
 		
-			
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("Memory::store_value > %s\n", pquery); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("Memory::store_value > %s\n", pquery); 
+
 }
 
 double Memory::retrieve_value(const char * pquery, int *e) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int			i;
 		char		var[512];
 
@@ -154,11 +132,6 @@ double Memory::retrieve_value(const char * pquery, int *e)
 		*e = ERR_INVALID_EXPR;
 		return 0.0;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("Memory::retrieve_value > %s\n", pquery); 
-		throw; 
-	}
-#endif
+		__SEH_LOGFATAL("Memory::retrieve_value > %s\n", pquery); 
+
 }

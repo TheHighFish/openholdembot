@@ -162,14 +162,11 @@ END_WINDOW_MAP()
 
 CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) : 
 					CDialog(CDlgFormulaScintilla::IDD, pParent), m_winMgr(ScintillaFormulaMap) {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
+
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
 	
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
 		in_startup = true;
 
@@ -194,27 +191,16 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 		m_pActiveScinCtrl = NULL;
 		m_pFRDlg = NULL;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::Constructor :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CDlgFormulaScintilla::Constructor :\n"); 
+
 }
 
 CDlgFormulaScintilla::~CDlgFormulaScintilla() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::Destructor :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::Destructor :\n"); 
+
 }
 
 void CDlgFormulaScintilla::DoDataExchange(CDataExchange* pDX) {
@@ -317,9 +303,7 @@ BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
 END_MESSAGE_MAP()
 
 CScintillaWnd *CDlgFormulaScintilla::SetupScintilla(CScintillaWnd *pWnd) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 	if (!pWnd) {
 		pWnd = new CScintillaWnd();
 		m_ScinArray.Add(pWnd);
@@ -351,19 +335,13 @@ CScintillaWnd *CDlgFormulaScintilla::SetupScintilla(CScintillaWnd *pWnd) {
 	}
 
 	return pWnd;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::SetupScintilla :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::SetupScintilla :\n"); 
+
 }
 
 void CDlgFormulaScintilla::DeleteScintilla(CScintillaWnd *pWnd) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
 	for (int i=0; i<m_ScinArray.GetSize(); i++)
 	{
@@ -374,20 +352,14 @@ void CDlgFormulaScintilla::DeleteScintilla(CScintillaWnd *pWnd) {
 	pWnd->DestroyWindow();
 	delete pWnd;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::DeleteScintilla :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::DeleteScintilla :\n"); 
+
 }
 
 // CDlgFormulaScintilla message handlers
 BOOL CDlgFormulaScintilla::OnInitDialog() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int			i, N;
 		Registry	reg;
 		int			max_x, max_y;
@@ -538,13 +510,8 @@ BOOL CDlgFormulaScintilla::OnInitDialog() {
 		return TRUE;  // return TRUE unless you set the focus to a control
 					  // EXCEPTION: OCX Property Pages should return false
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnInitDialog :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnInitDialog :\n"); 
+
 }
 
 BOOL CDlgFormulaScintilla::PreTranslateMessage(MSG* pMsg)
@@ -562,9 +529,7 @@ BOOL CDlgFormulaScintilla::PreTranslateMessage(MSG* pMsg)
 }
 
 void CDlgFormulaScintilla::resize_dialog_for_control_bars(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		// Figure out how big the control bar(s) are.
 		CRect rcClientStart;
 		CRect rcClientNow;
@@ -593,38 +558,26 @@ void CDlgFormulaScintilla::resize_dialog_for_control_bars(void) {
 
 		// Position the control bar(s)
 		RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::resize_dialog_for_control_bars :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::resize_dialog_for_control_bars :\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnTvnSelchangingFormulaTree(NMHDR *pNMHDR, LRESULT *pResult) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
 		
 		LastChangeToFormula(&m_wrk_formula);
 
 		*pResult = 0;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnTvnSelchangingFormulaTree :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnTvnSelchangingFormulaTree :\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnTabSelectionChange(NMHDR *pNMHDR, LRESULT *pResult) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 	bool bFormulaShowing = (m_TabControl.GetCurSel() == 0);
 	if (!bFormulaShowing)
 		PopulateSymbols();
@@ -635,20 +588,14 @@ void CDlgFormulaScintilla::OnTabSelectionChange(NMHDR *pNMHDR, LRESULT *pResult)
 	m_SymbolTree.EnableWindow(!bFormulaShowing);
 
 	HandleEnables(true);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnTabSelectionChange() :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnTabSelectionChange() :\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnSymbolTreeTipInfo(NMHDR *pNMHDR, LRESULT *pResult) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 	LPNMTVGETINFOTIP lpGetInfoTip = (LPNMTVGETINFOTIP)pNMHDR;
 
 	if (lpGetInfoTip && lpGetInfoTip->hItem) 
@@ -659,20 +606,13 @@ void CDlgFormulaScintilla::OnSymbolTreeTipInfo(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 
 	*pResult = 0;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnSymbolTreeTipInfo() :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnSymbolTreeTipInfo() :\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnSymbolContextMenu(NMHDR *pNMHDR, LRESULT *pResult)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 	CPoint cursorPos, clientPos;
 	cursorPos.x= GetCurrentMessage()->pt.x;
 	cursorPos.y= GetCurrentMessage()->pt.y;
@@ -704,19 +644,13 @@ void CDlgFormulaScintilla::OnSymbolContextMenu(NMHDR *pNMHDR, LRESULT *pResult)
 
 
 	*pResult = 0;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnSymbolTreeTipInfo() :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnSymbolTreeTipInfo() :\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pResult) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
 		CString			s;
 		int				N, i;
@@ -845,19 +779,12 @@ void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pR
 
 		*pResult = 0;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnTvnSelchangedFormulaTree :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnTvnSelchangedFormulaTree :\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnNew() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CDlgNew newdlg;
 		SFunction Func; 
 		SHandList List;
@@ -917,19 +844,13 @@ void CDlgFormulaScintilla::OnNew() {
 			m_dirty = true;
 			HandleEnables(true);
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnNew :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnNew :\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnRename() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CDlgRename rendlg;
 		CString	s;
 		char str[512];
@@ -982,19 +903,13 @@ void CDlgFormulaScintilla::OnRename() {
 				HandleEnables(true);
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnRename :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnRename :\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnDelete() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int ret, N, i;
 		HTREEITEM h = m_FormulaTree.GetSelectedItem();
 		CString s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
@@ -1062,13 +977,9 @@ void CDlgFormulaScintilla::OnDelete() {
 			}
 		}
 		HandleEnables(true);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnDelete :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnDelete :\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnToggleBookmark()
@@ -1161,9 +1072,7 @@ void CDlgFormulaScintilla::OnFindReplaceDlg()
 }
 
 void CDlgFormulaScintilla::OnFont() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CFontDialog fontdlg;
 		LOGFONT curlf, newlf;
 		COLORREF g_rgbText = RGB(0, 0, 0);
@@ -1200,19 +1109,13 @@ void CDlgFormulaScintilla::OnFont() {
 			}
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnFont :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnFont :\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnSettings() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CDlgSettings		myDialog;
 		CMenu				*file_menu = this->GetMenu()->GetSubMenu(0);
 		COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
@@ -1232,19 +1135,13 @@ void CDlgFormulaScintilla::OnSettings() {
 			pDoc->SetModifiedFlag(true);
 			HandleEnables(true);
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnSettings :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnSettings :\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnHandList() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CDlgHandList		myDialog;
 		CString				s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
 		int					list_index, i, j;
@@ -1337,19 +1234,14 @@ void CDlgFormulaScintilla::OnHandList() {
 			m_dirty = true;
 		}
 		HandleEnables(true);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnHandList :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnHandList :\n"); 
+	
+
 }
 
 void CDlgFormulaScintilla::LastChangeToFormula(SFormula *f) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CString	s;
 		int N, i;
 
@@ -1392,21 +1284,15 @@ void CDlgFormulaScintilla::LastChangeToFormula(SFormula *f) {
 				}
 			}
 		}	
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::LastChangeToFormula :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgFormulaScintilla::LastChangeToFormula :\n"); 
+
 }
 
 
 BOOL CDlgFormulaScintilla::DestroyWindow()
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
 		CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
@@ -1426,39 +1312,27 @@ BOOL CDlgFormulaScintilla::DestroyWindow()
 		global.ClearFormula(&m_wrk_formula);
 		return CDialog::DestroyWindow();
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::DestroyWindow :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::DestroyWindow :\n"); 
+
 }
 
 void CDlgFormulaScintilla::PostNcDestroy() 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		editfont.DeleteObject();
 
 		delete m_formulaScintillaDlg;
 		m_formulaScintillaDlg	=	NULL;
 
 		CDialog::PostNcDestroy();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::PostNcDestroy :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::PostNcDestroy :\n"); 
+
 }
 
 BOOL CDlgFormulaScintilla::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		
 		NMHDR *phDR;
 		phDR = (NMHDR*)lParam;
@@ -1527,19 +1401,13 @@ BOOL CDlgFormulaScintilla::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResu
 		}
 
 		return CDialog::OnNotify(wParam, lParam, pResult);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnNotify :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnNotify :\n"); 
+
 }
 
 BOOL CDlgFormulaScintilla::OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		// allow top level routing frame to handle the message
 		if (GetRoutingFrame() != NULL)
 			return false;
@@ -1573,19 +1441,13 @@ BOOL CDlgFormulaScintilla::OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult) 
 		SWP_NOSIZE|SWP_NOMOVE|SWP_NOOWNERZORDER);
 
 		return true;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnToolTipText :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnToolTipText :\n"); 
+
 } 
 
 void CDlgFormulaScintilla::ToggleToolbar() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CMenu *view_menu = this->GetMenu()->GetSubMenu(2);
 
 		if (m_toolBar.IsWindowVisible()) {
@@ -1609,91 +1471,56 @@ void CDlgFormulaScintilla::ToggleToolbar() {
 		m_winMgr.CalcLayout(xadj, yadj, rect.right-rect.left, rect.bottom-rect.top-botadj, this);
 		m_winMgr.SetWindowPositions(this);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::ToggleToolbar :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::ToggleToolbar :\n"); 
+
 }
 
 void CDlgFormulaScintilla::ToggleLineNumbers() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		m_are_linenumbers_visible = !m_are_linenumbers_visible;
 		m_pActiveScinCtrl->SetDisplayLinenumbers(m_are_linenumbers_visible);
 
 		HandleEnables(true);
+ 
+		__SEH_LOGFATAL("CDlgFormulaScintilla::ToggleLineNumbers :\n"); 
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::ToggleLineNumbers :\n"); 
-		throw;
-	}
-#endif
 }
 
 void CDlgFormulaScintilla::ToggleSelectionMargin() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		m_is_selection_margin_visible = !m_is_selection_margin_visible;
 		m_pActiveScinCtrl->SetDisplaySelection(m_is_selection_margin_visible);
 
 		HandleEnables(true);
+ 
+		__SEH_LOGFATAL("CDlgFormulaScintilla::ToggleSelectionMargin :\n"); 
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::ToggleSelectionMargin :\n"); 
-		throw;
-	}
-#endif
 }
 
 void CDlgFormulaScintilla::ToggleFoldingMargin() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		m_is_folding_margin_visible = !m_is_folding_margin_visible;
 		m_pActiveScinCtrl->SetDisplayFolding(m_is_folding_margin_visible);
 
 		HandleEnables(true);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::ToggleFoldingMargin :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CDlgFormulaScintilla::ToggleFoldingMargin :\n"); 
+
 }
 
 void CDlgFormulaScintilla::ToggleSyntaxColoring() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		m_is_syntax_colored = !m_is_syntax_colored;
 		set_style_colors(m_pActiveScinCtrl, m_is_syntax_colored);
 
 		HandleEnables(true);
-
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::ToggleSyntaxColoring :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgFormulaScintilla::ToggleSyntaxColoring :\n"); 
 }
 
 LRESULT CDlgFormulaScintilla::OnWinMgr(WPARAM wp, LPARAM lp) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		ASSERT(lp);
 		NMWINMGR& nmw = *(NMWINMGR*)lp;
 
@@ -1724,20 +1551,14 @@ LRESULT CDlgFormulaScintilla::OnWinMgr(WPARAM wp, LPARAM lp) {
 		}
 
 		return false; // not handled
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnWinMgr :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnWinMgr :\n"); 
+
 }
 
 
 void CDlgFormulaScintilla::OnBnClickedLessPrecision() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CString s;
 
 		if (m_precision > 0) {
@@ -1747,19 +1568,13 @@ void CDlgFormulaScintilla::OnBnClickedLessPrecision() {
 			m_pActiveScinCtrl->SetText(s.GetString());
 			m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnBnClickedLessPrecision :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnBnClickedLessPrecision :\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnBnClickedMorePrecision() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CString s;
 
 		m_precision++;
@@ -1768,19 +1583,12 @@ void CDlgFormulaScintilla::OnBnClickedMorePrecision() {
 		m_pActiveScinCtrl->SetText(s.GetString());
 		m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnBnClickedMorePrecision :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnBnClickedMorePrecision :\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnBnClickedEqualLeft() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CString s;
 
 		if (m_equal > 0) {
@@ -1790,19 +1598,13 @@ void CDlgFormulaScintilla::OnBnClickedEqualLeft() {
 			m_pActiveScinCtrl->SetText(s.GetString());
 			m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnBnClickedEqualLeft :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnBnClickedEqualLeft :\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnBnClickedEqualRight() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CString s;
 
 		m_equal++;
@@ -1811,20 +1613,13 @@ void CDlgFormulaScintilla::OnBnClickedEqualRight() {
 		m_pActiveScinCtrl->SetText(s.GetString());
 		m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnBnClickedEqualRight :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnBnClickedEqualRight :\n"); 
+
 }
 
 void CDlgFormulaScintilla::ResizeScintillaWindows()
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (::IsWindow(m_EmptyScinCtrl.GetSafeHwnd())) {
 			CRect rc;
 			m_EmptyScinCtrl.GetWindowRect(rc);
@@ -1837,19 +1632,13 @@ void CDlgFormulaScintilla::ResizeScintillaWindows()
 			}
 			::EndDeferWindowPos(hdwp);
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::ResizeScintillaWindows :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::ResizeScintillaWindows :\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnSize(UINT nType, int cx, int cy) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
 		CDialog::OnSize(nType, cx, cy);
 		int xadj = 0;
@@ -1870,19 +1659,13 @@ void CDlgFormulaScintilla::OnSize(UINT nType, int cx, int cy) {
 			m_SymbolTree.SetWindowPos(NULL, rc.left,rc.top,rc.Width(),rc.Height(), SWP_NOZORDER);
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnSize :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnSize :\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnBnClickedCalc() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CString					Cstr, title, s;
 		double					ret;
 		int						error, i;
@@ -1980,20 +1763,14 @@ void CDlgFormulaScintilla::OnBnClickedCalc() {
 				}
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnBnClickedButtonCalc :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnBnClickedButtonCalc :\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnBnClickedAuto()
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (m_ButtonAuto.GetCheck() == 1)
 		{
 			boost::spirit::tree_parse_info<>	tpi;
@@ -2032,39 +1809,27 @@ void CDlgFormulaScintilla::OnBnClickedAuto()
 			m_ButtonAuto.SetWindowText("Auto");
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnBnClickedAuto :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnBnClickedAuto :\n"); 
+
 }
 
 void CDlgFormulaScintilla::StopAutoButton()
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		// If auto button is on, turn it off
 		if (m_ButtonAuto.GetCheck() == 1) {
 			m_ButtonAuto.SetCheck(0);
 			OnBnClickedAuto();
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::StopAutoButton :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::StopAutoButton :\n"); 
+
 }
 
 void CDlgFormulaScintilla::update_debug_auto(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int				N, i;
 		CString			Cstr;
 
@@ -2113,19 +1878,13 @@ void CDlgFormulaScintilla::update_debug_auto(void) {
 		EndWaitCursor();
 		global.m_WaitCursor = false;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::update_debug_auto :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::update_debug_auto :\n"); 
+
 }
 
 void CDlgFormulaScintilla::create_debug_tab(CString *cs) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int N, i, j;
 		CString newline;
 		char format[50];
@@ -2185,19 +1944,13 @@ void CDlgFormulaScintilla::create_debug_tab(CString *cs) {
 		if (cs->GetLength()>=1) {
 			*cs = cs->Mid(0, cs->GetLength()-1);
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::create_debug_tab :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::create_debug_tab :\n"); 
+
 }
 
 void CDlgFormulaScintilla::write_fdebug_log(bool write_header) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 	
 		int			N, i;
 		CString		temp, line, header;
@@ -2235,20 +1988,13 @@ void CDlgFormulaScintilla::write_fdebug_log(bool write_header) {
 		fprintf(fp, "%s\n", line.GetString());
 		fclose(fp);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::write_fdebug_log :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CDlgFormulaScintilla::write_fdebug_log :\n"); 
+
 }
 
 
 void CDlgFormulaScintilla::init_debug_array(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
 		char				buf[1000], *eq;
 		SDebugTabInfo		debug_struct;
@@ -2303,19 +2049,13 @@ void CDlgFormulaScintilla::init_debug_array(void) {
 
 		EndWaitCursor();
 		global.m_WaitCursor = false;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::init_debug_array :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgFormulaScintilla::init_debug_array :\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnBnClickedApply() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CMenu				*file_menu = this->GetMenu()->GetSubMenu(0);
 		COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
 		CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
@@ -2358,19 +2098,13 @@ void CDlgFormulaScintilla::OnBnClickedApply() {
 		m_dirty = false;
 
 		HandleEnables(true);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnBnClickedApply :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnBnClickedApply :\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnBnClickedOk() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
 		CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
@@ -2412,13 +2146,10 @@ void CDlgFormulaScintilla::OnBnClickedOk() {
 		pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
 
 		OnOK();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnBnClickedOk :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnBnClickedOk :\n"); 
+
+
 }
 
 bool CDlgFormulaScintilla::PromptToSave()
@@ -2460,9 +2191,7 @@ bool CDlgFormulaScintilla::PromptToSave()
 }
 
 void CDlgFormulaScintilla::OnBnClickedCancel() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
 		CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
@@ -2486,117 +2215,68 @@ void CDlgFormulaScintilla::OnBnClickedCancel() {
 
 			OnCancel();
 		}
+ 
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnBnClickedCancel :\n"); 
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnBnClickedCancel :\n"); 
-		throw;
-	}
-#endif
 }
 
 void CDlgFormulaScintilla::OnEditCut() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		m_pActiveScinCtrl->Cut();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnEditCut\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnEditCut\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnEditCopy() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		m_pActiveScinCtrl->Copy();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnEditCopy\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnEditCopy\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnEditPaste() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		m_pActiveScinCtrl->Paste();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnEditPaste\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnEditPaste\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnEditDeleteText() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		m_pActiveScinCtrl->SendMessage(SCI_DELETEBACK, 0, 0);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnEditDeleteText\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnEditDeleteText\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnEditUndo() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		m_pActiveScinCtrl->Undo();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnEditUndo\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnEditUndo\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnEditRedo() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		m_pActiveScinCtrl->Redo();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnEditRedo\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnEditRedo\n"); 
+
 }
 void CDlgFormulaScintilla::OnEditSelectAll() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		m_pActiveScinCtrl->SelectAll();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnEditSelectAll\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnEditSelectAll\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnTimer(UINT nIDEvent) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CMenu *edit_menu = this->GetMenu()->GetSubMenu(1);
 
 		if (nIDEvent == MENU_UPDATE_TIMER) {
@@ -2614,19 +2294,13 @@ void CDlgFormulaScintilla::OnTimer(UINT nIDEvent) {
 			LeaveCriticalSection(&cs_updater);
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnTimer :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnTimer :\n"); 
+
 }
 
 void CDlgFormulaScintilla::set_style_colors(CScintillaWnd *pWnd, bool enabled) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int i;
 
 		if (enabled) {
@@ -2657,81 +2331,51 @@ void CDlgFormulaScintilla::set_style_colors(CScintillaWnd *pWnd, bool enabled) {
 			}
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::set_style_colors :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgFormulaScintilla::set_style_colors :\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnFormulaDebugLogfdebug() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 	m_fdebuglog = !m_fdebuglog;
 
 	HandleEnables(true);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnFormulaDebugLogfdebug :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnFormulaDebugLogfdebug :\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnHelpWiki() 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
 		ShellExecute(NULL, "open", "http://www.maxinmontreal.com/wiki/index.php5?title=Main_Page", "", "", SW_SHOWDEFAULT);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnHelpWiki :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnHelpWiki :\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnHelpForums()
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
 		ShellExecute(NULL, "open", "http://www.maxinmontreal.com/forums", "", "", SW_SHOWDEFAULT);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnHelpForums :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnHelpForums :\n"); 
+
 }
 
 void CDlgFormulaScintilla::OnFormulaDebugMyturn() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 	m_fdebuglog_myturn = !m_fdebuglog_myturn;
 
 	HandleEnables(true);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::OnFormulaDebugMyturn :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CDlgFormulaScintilla::OnFormulaDebugMyturn :\n"); 
+
 }
 
 BOOL CDlgFormulaScintilla::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
@@ -2821,9 +2465,7 @@ void CDlgFormulaScintilla::save_settings_to_registry()
 
 void CDlgFormulaScintilla::HandleEnables(bool AllItems)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 	// These are what drive the enable/disable logic
 	bool bFormulaVisible = true;
 	bool bTreeHeadingSelected = false;
@@ -2944,60 +2586,42 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
 	m_toolBar.GetToolBarCtrl().EnableButton(ID_FORMULA_TOOLBAR_FONT,	true);
 	m_toolBar.GetToolBarCtrl().EnableButton(ID_FORMULA_TOOLBAR_SETTINGS, true);
 	m_toolBar.GetToolBarCtrl().EnableButton(ID_FORMULA_TOOLBAR_HANDLIST, bTreeValidLeafSelected && iWhichTypeSelected==1);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::HandleEnables() :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgFormulaScintilla::HandleEnables() :\n"); 
+
 }
 
 
 HTREEITEM CDlgFormulaScintilla::AddSymbolSubTitle(HTREEITEM parentItem, const char *title, const char *description)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 	HTREEITEM ret = m_SymbolTree.InsertItem(title, parentItem);
 
 	m_SymbolTree.SetItemData(ret, (DWORD_PTR)description);
 
 	return ret;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::AddSymbolSubTitle() :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::AddSymbolSubTitle() :\n"); 
+
 }
 
 HTREEITEM CDlgFormulaScintilla::AddSymbolTitle(const char *title, const char *description, HTREEITEM parentItem)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 	HTREEITEM ret = m_SymbolTree.InsertItem(title, parentItem);
 
 	m_SymbolTree.SetItemData(ret, (DWORD_PTR)description);
 	m_SymbolTree.SetItemState(ret, TVIS_BOLD, TVIS_BOLD);
 
 	return ret;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::AddSymbolTitle() :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::AddSymbolTitle() :\n"); 
+
 }
 
 HTREEITEM CDlgFormulaScintilla::AddSymbol(HTREEITEM parentItem, const char *symbol, const char *description)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 	HTREEITEM ret  = m_SymbolTree.InsertItem(symbol, hRawItem);
 	m_SymbolTree.SetItemData(ret, (DWORD_PTR)description);
 
@@ -3005,20 +2629,14 @@ HTREEITEM CDlgFormulaScintilla::AddSymbol(HTREEITEM parentItem, const char *symb
 	m_SymbolTree.SetItemData(ret, (DWORD_PTR)description);
 
 	return ret;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::AddSymbol() :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgFormulaScintilla::AddSymbol() :\n"); 
+
 }
 
 void CDlgFormulaScintilla::PopulateSymbols()
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 	if (m_SymbolTree.GetRootItem() != NULL)
 		return;
 
@@ -3537,11 +3155,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "icm_allilose1 - icm_allilose9", "my tournament equity if I push all-in and lose against 0 - 9 callers ");
 
 	m_SymbolTree.SortChildren(hRawItem);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgFormulaScintilla::PopulateSymbols() :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgFormulaScintilla::PopulateSymbols() :\n"); 
+
 }

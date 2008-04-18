@@ -12,52 +12,33 @@
 IMPLEMENT_DYNAMIC(CDlgSettings, CDialog)
 
 CDlgSettings::CDlgSettings(CWnd* pParent /*=NULL*/)	: CDialog(CDlgSettings::IDD, pParent) {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
+
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
 	
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgSettings::Constructor : \n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+
+		__SEH_LOGFATAL("CDlgSettings::Constructor : \n"); 
+
 }
 
 CDlgSettings::~CDlgSettings() {
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgSettings::Destructor : \n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+ 
+		__SEH_LOGFATAL("CDlgSettings::Destructor : \n"); 
+
 }
 
 void CDlgSettings::DoDataExchange(CDataExchange* pDX) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CDialog::DoDataExchange(pDX);
 		DDX_Control(pDX, IDC_EDIT_BANKROLL, m_Bankroll);
 		DDX_Control(pDX, IDC_EDIT_NIT, m_Nit);
 		DDX_Control(pDX, IDC_EDIT_DEFCON, m_Defcon);
 		DDX_Control(pDX, IDC_EDIT_RAKE, m_Rake);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgSettings::DoDataExchange : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgSettings::DoDataExchange : \n"); 
+
 }
 
 
@@ -70,9 +51,7 @@ END_MESSAGE_MAP()
 // CDlgSettings message handlers
 
 void CDlgSettings::OnBnClickedOk() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CString s;
 
 		m_Bankroll.GetWindowText(s);
@@ -85,33 +64,21 @@ void CDlgSettings::OnBnClickedOk() {
 		rake = atof(s);
 
 		OnOK();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgSettings::OnBnClickedOk : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgSettings::OnBnClickedOk : \n"); 
+
 }
 
 void CDlgSettings::OnBnClickedCancel() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		OnCancel();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgSettings::OnBnClickedCancel : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgSettings::OnBnClickedCancel : \n"); 
+
 }
 
 BOOL CDlgSettings::OnInitDialog() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CDialog::OnInitDialog();
 
 		CString s;
@@ -128,11 +95,7 @@ BOOL CDlgSettings::OnInitDialog() {
 
 		return TRUE;  // return TRUE unless you set the focus to a control
 		// EXCEPTION: OCX Property Pages should return FALSE
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgSettings::OnInitDialog : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgSettings::OnInitDialog : \n"); 
+
 }

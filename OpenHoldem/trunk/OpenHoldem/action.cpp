@@ -8,9 +8,7 @@
 
 double Action::process_query(const char * pquery, int *e) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (memcmp(pquery,"ac_aggressor",12)==0)				return aggressor_chair();
 		if (memcmp(pquery,"ac_agchair_after", 16) == 0)			return agchair_after();
 		if (memcmp(pquery,"ac_preflop_pos", 14) == 0)			return preflop_pos();
@@ -24,20 +22,14 @@ double Action::process_query(const char * pquery, int *e)
 		*e = ERR_INVALID_SYM;
 		return 0.0;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("Action::process_query > %s\n", pquery); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("Action::process_query > %s\n", pquery); 
+
 }
 
 int Action::preflop_pos (void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		//SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6
 		return
 			symbols.sym.nplayersdealt==10 ? (symbols.sym.dealposition==1 ? 1 :
@@ -100,21 +92,15 @@ int Action::preflop_pos (void)
 				// Normal blinds - dealposition==1 is BB
 				(symbols.sym.dealposition==1 ? 2 :
 				 symbols.sym.dealposition==2 ? 6 : 0)) :0;
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("Action::preflop_pos\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("Action::preflop_pos\n"); 
+
 }
 
 int Action::prefloprais_pos (void) 
 {
 	//SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		return
 			symbols.sym.nplayersdealt==10 ? (symbols.sym.dealpositionrais==1 ? 1 :
 											 symbols.sym.dealpositionrais==2 ? 2 :
@@ -176,21 +162,15 @@ int Action::prefloprais_pos (void)
 				// Normal blinds - dealposition==1 is BB
 				(symbols.sym.dealpositionrais==1 ? 2 :
 				 symbols.sym.dealpositionrais==2 ? 6 : 0)) :0;
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("Action::prefloprais_pos\n"); 
-		throw; 
-	}
-#endif
+ 
+		__SEH_LOGFATAL("Action::prefloprais_pos\n"); 
+
 }
 
 int Action::postflop_pos (void) 
 {
 	//first=1 early=2 middle=3 late=4 last=5 
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		return
 			symbols.sym.nplayersplaying==10 ? (symbols.sym.betposition==1 ? 1 :
 											   symbols.sym.betposition==2 ? 2 :
@@ -246,20 +226,14 @@ int Action::postflop_pos (void)
 											   symbols.sym.betposition==3 ? 5 : 0): 
 			symbols.sym.nplayersplaying==2  ? (symbols.sym.betposition==1 ? 1 :
 											   symbols.sym.betposition==2 ? 5 : 0): 0;
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("Action::postflop_pos\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("Action::postflop_pos\n"); 
+
 }
 
 int Action::pf_bets (void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (symbols.sym.br!=1) 
 			return 0;
 
@@ -269,35 +243,23 @@ int Action::pf_bets (void)
 											? 3 :   //Raised Back - 1 more bet to call because someone behind you raised after you've already bet/called/raised.
 			(symbols.sym.ncallbets==2)		? 4 :   //Raised Pot - 2 bets to call.
 			(symbols.sym.ncallbets>=3)		? 5 :0; //Reraised Pot - 3+ bets to call.
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("Action::pf_bets\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("Action::pf_bets\n"); 
+
 }
 
 bool Action::first_into_pot (void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		return symbols.sym.br==1 ? (symbols.sym.potplayer<=symbols.sym.sblind+symbols.sym.bblind) : symbols.sym.potplayer<=0.1 ;
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("Action::first_into_pot\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("Action::first_into_pot\n"); 
+
 }
 
 int Action::m_betposition (int chairnum) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int i;
 		int betpos = 0 ;
 
@@ -317,20 +279,14 @@ int Action::m_betposition (int chairnum)
 		}
 
 		return betpos;
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("Action::m_betposition\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("Action::m_betposition\n"); 
+
 }
 
 int Action::m_dealposition (int chairnum) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int i;
 		int dealposchair = 0 ;
 
@@ -346,20 +302,14 @@ int Action::m_dealposition (int chairnum)
 				i=99;
 		}
 		return ((((int) symbols.sym.playersdealtbits)>>chairnum)&1) ? dealposchair : 0 ;
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("Action::m_dealposition\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("Action::m_dealposition\n"); 
+
 }
 
 int Action::aggressor_chair (void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		// br1, no raises
 		if (symbols.sym.br==1 && symbols.sym.nbetsround[0]==1) 
 			return symbols.sym.raischair;
@@ -393,20 +343,14 @@ int Action::aggressor_chair (void)
 			return game_state.lastraised(4)!=-1 ? game_state.lastraised(4) : symbols.sym.raischair;
 
 		return symbols.sym.raischair;
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("Action::aggressor_chair\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("Action::aggressor_chair\n"); 
+
 }
 
 bool Action::agchair_after (void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (!symbols.user_chair_confirmed)
 			return false;
 
@@ -416,11 +360,7 @@ bool Action::agchair_after (void)
 		else
 			return false ;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("Action::agchair_after\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("Action::agchair_after\n"); 
+
 }

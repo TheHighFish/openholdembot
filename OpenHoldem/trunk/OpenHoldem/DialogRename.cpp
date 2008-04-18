@@ -12,50 +12,30 @@
 IMPLEMENT_DYNAMIC(CDlgRename, CDialog)
 
 CDlgRename::CDlgRename(CWnd* pParent /*=NULL*/) : CDialog(CDlgRename::IDD, pParent) {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
+
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
 	
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgRename::Constructor :\n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+
+		__SEH_LOGFATAL("CDlgRename::Constructor :\n"); 
+
 }
 
 CDlgRename::~CDlgRename() {
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgRename::Destructor :\n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+		__SEH_LOGFATAL("CDlgRename::Destructor :\n"); 
+
 }
 
 void CDlgRename::DoDataExchange(CDataExchange* pDX) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CDialog::DoDataExchange(pDX);
 		DDX_Control(pDX, IDC_OLDNAME_EDIT, m_OldName);
 		DDX_Control(pDX, IDC_NEWNAME_EDIT, m_NewName);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgRename::DoDataExchange :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgRename::DoDataExchange :\n"); 
+
 }
 
 
@@ -67,31 +47,23 @@ END_MESSAGE_MAP()
 
 // CDlgRename message handlers
 BOOL CDlgRename::OnInitDialog() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CDialog::OnInitDialog();
 
 		m_OldName.SetWindowText(CSoldname);
 		m_NewName.SetWindowText(CSoldname);
 
 		return TRUE;  // return TRUE unless you set the focus to a control
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgRename::OnInitDialog : <%s>\n", CSoldname.GetString()); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgRename::OnInitDialog : <%s>\n", CSoldname.GetString()); 
+
 }
 
 void CDlgRename::OnBnClickedOk() {
 	char oldstr[512], newstr[512];
 	int i;
 
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		m_NewName.GetWindowText(CSnewname);
 		strcpy(oldstr, CSoldname.GetString());
 		strcpy(newstr, CSnewname.GetString());
@@ -125,26 +97,14 @@ void CDlgRename::OnBnClickedOk() {
 		}
 
 		OnOK();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgRename::OnBnClickedOk : <%s> <%s>\n", oldstr, newstr); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgRename::OnBnClickedOk : <%s> <%s>\n", oldstr, newstr); 
+
 }
 
 void CDlgRename::OnBnClickedCancel() {
-#ifdef SEH_ENABLE
-	try {
-#endif
-		OnCancel();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgRename::OnBnClickedCancel :\n"); 
-		throw;
-	}
-#endif
+    __SEH_HEADER
+	OnCancel();
+ 	__SEH_LOGFATAL("CDlgRename::OnBnClickedCancel :\n"); 
 }
 

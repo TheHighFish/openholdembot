@@ -12,34 +12,21 @@
 IMPLEMENT_DYNAMIC(CMyToolBar, CToolBar)
 
 CMyToolBar::CMyToolBar() {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
+
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
 	
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMyToolBar::Constructor :\n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+
+		__SEH_LOGFATAL("CMyToolBar::Constructor :\n"); 
+
 }
 
 CMyToolBar::~CMyToolBar() {
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMyToolBar::Destructor :\n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+
+		__SEH_LOGFATAL("CMyToolBar::Destructor :\n"); 
+
 }
 
 BEGIN_MESSAGE_MAP(CMyToolBar, CToolBar)
@@ -48,14 +35,8 @@ END_MESSAGE_MAP()
 
 
 void CMyToolBar::OnUpdateCmdUI(CFrameWnd* pTarget, BOOL bDisableIfNoHandler) {
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMyToolBar::OnUpdateCmdUI :\n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+ 
+		__SEH_LOGFATAL("CMyToolBar::OnUpdateCmdUI :\n"); 
+
 }

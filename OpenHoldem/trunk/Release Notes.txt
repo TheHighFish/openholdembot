@@ -31,10 +31,14 @@ BUG FIXES:
   
 - Userchair identification now requires 2 action buttons to be present (previously, only one needed to
   be present).  (OpenHoldem)
-  
+
 - Added sanity checks around the SWAG action stream - if focus is stolen from the target window during 
   the four SWAG steps, then the final step (confirmation) will not be executed.  (Thanks, AndreL)  
   (OpenHoldem)
+
+MAINTENANCE:
+- Removed code-clones in registry.cpp. Replaced by functions. (TheHighFish)
+- Replaced exception handling code clones by macros. (TheHighFish)
   
   
   

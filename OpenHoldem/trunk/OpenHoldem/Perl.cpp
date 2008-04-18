@@ -4,7 +4,7 @@
 //
 //  Created: 2007.12.11
 //
-//  Last change: 2008.03.17
+//  Last change: 2008.04.06
 //
 //  Description: An interface to the Perl programing 
 //    language for OpenHoldem
@@ -35,7 +35,7 @@ extern "C"
 }
 
 
-//  Function pointers to the 3 functions
+//  Function pointers to 3 functions of the embeddable Perl interpreter
 //
 T_PerlEzCall P_PerlEzCall;
 T_PerlEzCreate P_PerlEzCreate;
@@ -47,6 +47,7 @@ T_PerlEzDelete P_PerlEzDelete;
 //
 #define F_OK 0
 
+
 //  The Perl interpreter doesn't accept a NULL pointer
 //    as an empty string when expecting command line options.
 //
@@ -55,19 +56,13 @@ T_PerlEzDelete P_PerlEzDelete;
 
 string toString(double d)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif  
+__SEH_HEADER 
     ostringstream the_Result;
     the_Result << d;    
     return the_Result.str();                       
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Perl::toString : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Perl::toString : \n"); 
+
 }
 
 
@@ -79,19 +74,23 @@ string toString(double d)
 //
 static void gws(const char *the_Symbol, double* the_Result)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif 	 
+__SEH_HEADER 	 
 	bool is_Error;
 	double my_Chair = GetSymbolFromDll(0, "userchair", is_Error);
 	*the_Result = GetSymbolFromDll(int(my_Chair), the_Symbol, is_Error);
-    #ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Perl::gws : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Perl::gws : \n"); 
+
+}
+
+
+static void gws_List(const char *the_Symbol, double* the_Result)
+{
+}
+
+
+static void get_HoldemState_Frame(const char *the_Symbol, double* the_Result)
+{
 }
 
 
@@ -102,9 +101,7 @@ static void gws(const char *the_Symbol, double* the_Result)
 //
 bool Perl::load_DLL(void)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif  
+__SEH_HEADER 
 	//  Load DLL
 	HINSTANCE Perl_Lib = LoadLibrary("PerlEz.dll");
 	if (Perl_Lib == NULL)
@@ -126,24 +123,18 @@ bool Perl::load_DLL(void)
 		return false;	
 	}
 	return true;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Perl::load_DLL : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("Perl::load_DLL : \n"); 
+
 }
 
 
-void Perl::send_Callback_Pointer_to_gws()
+void Perl::send_Callback_Pointer()
 {
-#ifdef SEH_ENABLE
-	try {
-#endif  
+__SEH_HEADER
 	if (the_Interpreter == NULL)
 	{
-		return;
+		return;		
 	}		
 	//  Send the pointer to the gws function to Perl,
 	//    typecasted to an integer, as Perl doesn't support
@@ -157,21 +148,15 @@ void Perl::send_Callback_Pointer_to_gws()
 		"i",                            //  Format string: integer       
 		the_Pointer_to_gws);            //  Callback pointer as integer
 	do_ErrorCheck(the_ErrorCode);	
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Perl::send_Callback_Pointer_to_gws : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Perl::send_Callback_Pointer_to_gws : \n"); 
+
 }
 
 
 Perl::Perl()
 {
-#ifdef SEH_ENABLE
-	try {
-#endif		
+__SEH_HEADER	
 	Formula_loaded = false;		
 	Interpreter_not_loaded = true;	
 	if (!global.preferences.Perl_load_Interpreter)
@@ -206,39 +191,27 @@ Perl::Perl()
 		MessageBox(NULL, "Could not create Perl interpreter.", 
 			"Perl Error", MB_OK | MB_TOPMOST);
 	}	
-	send_Callback_Pointer_to_gws();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Perl::Perl : \n"); 
-		throw;
-	}
-#endif 	 
+	send_Callback_Pointer();
+
+		__SEH_LOGFATAL("Perl::Perl : \n"); 
+ 
 }
 
 
 Perl::~Perl()
 {
-#ifdef SEH_ENABLE
-	try {
-#endif 
+__SEH_HEADER
     //  Unload file and destroy interpreter.
 	unload_FormulaFile();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Perl::Perl : \n"); 
-		throw;
-	}
-#endif 	
+
+		__SEH_LOGFATAL("Perl::Perl : \n"); 
+	
 }
 
 
 bool Perl::is_Perl_Symbol(const char *the_Symbol)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif 	 
+__SEH_HEADER	 
 	//  All Perl symbols for OpenHoldem have 
 	//    to begin with "pl_" (not "pl$", as
     //    perl does not allow this for identifiers
@@ -251,13 +224,9 @@ bool Perl::is_Perl_Symbol(const char *the_Symbol)
 	}		
 	return ((the_Symbol[0] == 'p') && (the_Symbol[1] == 'l') &&
 	    (the_Symbol[2] == '_'));
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Perl::is_Perl_Symbol : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Perl::is_Perl_Symbol : \n"); 
+
 }
 
 
@@ -276,9 +245,7 @@ bool Perl::is_Perl_Symbol(const char *the_Symbol)
 //
 double Perl::get_Perl_Symbol(const char *the_Symbol)
 {
-#ifdef SEH_ENABLE
-	try {	
-#endif 	    
+__SEH_HEADER 	    
 	if (!is_Perl_Symbol(the_Symbol))   
 	{
 		//  This should not happen!
@@ -308,13 +275,9 @@ double Perl::get_Perl_Symbol(const char *the_Symbol)
 	//    If not, 0.0 is returned automatically.
 	//
 	return atof(the_ResultBuffer);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Perl::get_Perl_Symbol : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Perl::get_Perl_Symbol : \n"); 
+
 }
 
 //  Error checking,
@@ -322,9 +285,7 @@ double Perl::get_Perl_Symbol(const char *the_Symbol)
 //
 void Perl::do_ErrorCheck(int the_ErrorCode)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif  
+__SEH_HEADER  
 	if (the_ErrorCode <= 0) { return; }
 	if (the_ErrorCode > 9)  { return; }
 	string the_ErrorMessage;
@@ -351,41 +312,29 @@ void Perl::do_ErrorCheck(int the_ErrorCode)
 		break;
 	}
 	MessageBox(NULL, the_ErrorMessage.c_str(), "Perl Error", MB_OK | MB_TOPMOST);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Perl::do_ErrorCheck : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("Perl::do_ErrorCheck : \n"); 
+
 }
 
 
 void Perl::unload_FormulaFile()
 {
-#ifdef SEH_ENABLE
-	try {
-#endif  
+__SEH_HEADER 
 	if (Interpreter_not_loaded) { return; }	
 	(*P_PerlEzDelete)(the_Interpreter);
 	the_Interpreter = NULL;
 	Interpreter_not_loaded = true;
 	Formula_loaded = false;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Perl::unload_FormulaFile : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("Perl::unload_FormulaFile : \n"); 
+
 }
 
 
 void Perl::load_FormulaFile(string the_new_FormulaFile)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 	//  Just a security measure
     if (P_PerlEzCreate == NULL)
 	{ return; }
@@ -410,7 +359,7 @@ void Perl::load_FormulaFile(string the_new_FormulaFile)
 		the_actual_FormulaFile = string(the_new_FormulaFile);
 		Formula_loaded = true;
 	}	
-	send_Callback_Pointer_to_gws();
+	send_Callback_Pointer();
 	if (the_Interpreter != NULL)
 	{
 		Interpreter_not_loaded = false;
@@ -422,38 +371,26 @@ void Perl::load_FormulaFile(string the_new_FormulaFile)
 		Interpreter_not_loaded = true;
 		Formula_loaded = false;
 	}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Perl::load_FormulaFile : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("Perl::load_FormulaFile : \n"); 
+
 }
 
 
 void Perl::reload_FormulaFile()
 {
-#ifdef SEH_ENABLE
-	try {
-#endif  
+__SEH_HEADER
 	unload_FormulaFile();
 	load_FormulaFile(the_actual_FormulaFile);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Perl::reload_FormulaFile : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Perl::reload_FormulaFile : \n"); 
+
 }
 
 
 void Perl::edit_main_FormulaFile()
 { 
-#ifdef SEH_ENABLE
-	try {
-#endif  	 
+__SEH_HEADER	 
 	CString my_favourite_Editor = global.preferences.Perl_Editor;
 	if (_access(my_favourite_Editor, F_OK) != 0) 
     {
@@ -482,36 +419,24 @@ void Perl::edit_main_FormulaFile()
 	    MessageBox(NULL, "Editor terminated with runtime error.", 
 			"Perl Error", MB_OK | MB_TOPMOST);    		  
     }
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Perl::edit_main_FormulaFile : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Perl::edit_main_FormulaFile : \n"); 
+
 }
 
 bool Perl::is_a_Formula_loaded()
 {
-#ifdef SEH_ENABLE
-	try {
-#endif  	
+__SEH_HEADER 	
 	return (!Interpreter_not_loaded && Formula_loaded);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Perl::is_a_Formula_loaded : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Perl::is_a_Formula_loaded : \n"); 
+
 }
 
 
 void Perl::check_Syntax()
 {
-#ifdef SEH_ENABLE
-	try {
-#endif  
+__SEH_HEADER 
 	//  Check the syntax of "the actual Formula".
 	//    We can't check "is_a_Formula_loaded()",
 	//    as this implies, the formula got loaded with success.
@@ -547,13 +472,9 @@ void Perl::check_Syntax()
 		SW_SHOWNORMAL);						//  Active window, default size 
 	//  Ignore return codes (errno) here.
 	//    User can see compilation status in the DOS window.  
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Perl::is_a_Formula_loaded : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Perl::is_a_Formula_loaded : \n"); 
+
 }
 
 

@@ -8,14 +8,11 @@ GameState		game_state;
 
 GameState::GameState() 
 {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
 
-#ifdef SEH_ENABLE
-	try {
-#endif
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+
+__SEH_HEADER
 
 		m_ndx = 0;
 		hands_played = 0;
@@ -25,20 +22,13 @@ GameState::GameState()
 		m_ftr_ndx = 0;
 		new_hand = true;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("GameState::GameState\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("GameState::GameState\n"); 
+
 }
 
 double GameState::wh_sym_hist (char * sym, int round) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int		i;
 
 		for (i=0; i<hist_sym_count; i++) 
@@ -50,20 +40,14 @@ double GameState::wh_sym_hist (char * sym, int round)
 		}
 
 		return 0.0;
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("GameState::wh_sym_hist\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("GameState::wh_sym_hist\n"); 
+
 }
 
 void GameState::process_game_state (holdem_state* pstate) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int			i, j;
 		int			e;
 		bool		pstate_changed;
@@ -137,35 +121,23 @@ void GameState::process_game_state (holdem_state* pstate)
 				hist_sym[i][(int) symbols.sym.br-1] = symbols.GetSymbolVal(hist_sym_strings[i], &e);
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("GameState::process_game_state\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("GameState::process_game_state\n"); 
+
 }
 
 void GameState::process_ftr (holdem_state* pstate) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		process_ftr_engine(pstate);
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("GameState::process_ftr\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("GameState::process_ftr\n"); 
+
 }
 
 int GameState::lastraised (int round) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int lastraised=-1;
 		int i;
 
@@ -192,20 +164,14 @@ int GameState::lastraised (int round)
 		}
 
 		return lastraised;
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("GameState::lastraised\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("GameState::lastraised\n"); 
+
 }
 
 int GameState::raisbits (int round) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int i, bits=0;
 		static unsigned int	exponents[]={1,2,4,8,16,32,64,128,256,512,1024};
 
@@ -218,20 +184,14 @@ int GameState::raisbits (int round)
 			}
 		}
 		return bits;
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("GameState::raisbits\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("GameState::raisbits\n"); 
+
 }
 
 int GameState::callbits (int round) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int i, bits=0;
 		static unsigned int	exponents[]={1,2,4,8,16,32,64,128,256,512,1024};
 
@@ -244,20 +204,14 @@ int GameState::callbits (int round)
 				}
 			}
 		return bits;
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("GameState::callbits\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("GameState::callbits\n"); 
+
 }
 
 int GameState::foldbits (int round) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int i, bits=0;
 		static unsigned int	exponents[]={1,2,4,8,16,32,64,128,256,512,1024};
 
@@ -269,20 +223,14 @@ int GameState::foldbits (int round)
 			}
 		}
 		return bits;
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("GameState::foldbits\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("GameState::foldbits\n"); 
+
 }
 
 double GameState::floppct (void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int i;
 		int elapsed_start=0, num_dealt=0, hands=0, num_saw_cards=0;
 		double percent;
@@ -317,20 +265,14 @@ double GameState::floppct (void)
 			percent=-1;
 
 		return percent;
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("GameState::floppct\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("GameState::floppct\n"); 
+
 }
 
 double GameState::turnpct (void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int i;
 		int elapsed_start=0, num_dealt=0, hands=0, num_saw_cards=0;
 		double percent;
@@ -365,20 +307,14 @@ double GameState::turnpct (void)
 			percent=-1;
 
 		return percent;
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("GameState::turnpct\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("GameState::turnpct\n"); 
+
 }
 
 double GameState::riverpct (void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int i;
 		int elapsed_start=0, num_dealt=0, hands=0, num_saw_cards=0;
 		double percent;
@@ -413,20 +349,14 @@ double GameState::riverpct (void)
 			percent=-1;
 
 		return percent;
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("GameState::riverpct\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("GameState::riverpct\n"); 
+
 }
 
 double GameState::avgbetspf (void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int i;
 		int elapsed_start=0, num_dealt=0, hands=0, num_saw_cards=0;
 		double percent, bets_preflop=0.0;
@@ -461,20 +391,14 @@ double GameState::avgbetspf (void)
 			percent=-1;
 
 		return percent;
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("GameState::avgbetspf\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("GameState::avgbetspf\n"); 
+
 }
 
 double GameState::tablepfr (void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int i;
 		int elapsed_start=0, num_dealt=0, hands=0, num_saw_cards=0, bets_preflop=0;
 		double percent;
@@ -513,20 +437,14 @@ double GameState::tablepfr (void)
 			percent=-1;
 
 		return percent;
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("GameState::tablepfr\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("GameState::tablepfr\n"); 
+
 }
 
 void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int				from_chair, to_chair;
 		bool			balance_stability;
 		int				i, j, k;
@@ -836,20 +754,14 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed)
 				}  // end of "for (i = from_chair; i <= to_chair; i++)"
 			} // end of "if (br != 0 &&..."
 		} // end of "if (process_game_state)"
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("GameState::process_state_engine\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("GameState::process_state_engine\n"); 
+
 }
 
 void GameState::dump_state(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int			i;
 	
 		write_log("m_ndx: %d\n", m_ndx);
@@ -872,20 +784,14 @@ void GameState::dump_state(void)
 			write_log("m_name_known:%d  ", m_holdem_state[(m_ndx)&0xff].m_player[i].m_name_known);
 			write_log("m_balance_known:%d\n", m_holdem_state[(m_ndx)&0xff].m_player[i].m_balance_known);
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("GameState::dump_state\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("GameState::dump_state\n"); 
+
 }
 
 void GameState::process_ftr_engine(holdem_state* pstate) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
 		static int		ftr_dealer_chair_last=0;
 		static int		ftr_nflopc_last=0;
@@ -936,20 +842,14 @@ void GameState::process_ftr_engine(holdem_state* pstate)
 
 			ftr_nflopc_last = symbols.sym.nflopc;
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("GameState::process_ftr_engine\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("GameState::process_ftr_engine\n"); 
+
 }
 
 double GameState::sortedbalance(int rank) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
 		int i, n;
 		double stacks[10];
@@ -974,11 +874,7 @@ double GameState::sortedbalance(int rank)
 
 		return stacks[rank];
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("GameState::sortedbalance\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("GameState::sortedbalance\n"); 
+
 }

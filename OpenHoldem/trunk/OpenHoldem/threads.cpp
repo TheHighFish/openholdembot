@@ -36,14 +36,11 @@ CRITICAL_SECTION	cs_calc_f$symbol;
 
 UINT __cdecl heartbeat_thread(LPVOID pParam)
 {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
 
-#ifdef SEH_ENABLE
-	try {
-#endif
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+
+	__SEH_HEADER
 		LARGE_INTEGER		cycle_start, cycle_end, lFrequency;
 		Autoplayer			ap;
 		unsigned int		new_scrape;
@@ -274,14 +271,8 @@ UINT __cdecl heartbeat_thread(LPVOID pParam)
 		AfxEndThread(0);
 
 		return 0;
-
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("::heartbeat_thread :\n"); 
-		throw;
-	}
-#endif
+	
+	__SEH_LOGFATAL("::heartbeat_thread :\n"); 
 }
 
 int inrange(int card1, int card2)
@@ -352,14 +343,11 @@ e     1    2       3     4     handrank169 ->
 
 UINT __cdecl prwin_thread(LPVOID pParam)
 {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
 
-#ifdef SEH_ENABLE
-	try {
-#endif
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+
+__SEH_HEADER
 		int				i, nit = 0;
 		CardMask		plCards, comCards, addlcomCards, evalCards, usedCards, temp_usedCards;
 		int				nplCards, ncomCards, nopp;
@@ -612,11 +600,7 @@ UINT __cdecl prwin_thread(LPVOID pParam)
 
 		return 0;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("::prwin_thread :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("::prwin_thread :\n"); 
+
 }

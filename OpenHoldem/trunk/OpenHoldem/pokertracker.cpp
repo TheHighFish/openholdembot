@@ -16,14 +16,12 @@ PokerTracker		PT;
 
 UINT __cdecl pokertracker_thread(LPVOID pParam)
 {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
 
-#ifdef SEH_ENABLE
-	try {
-#endif
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+
+__SEH_HEADER
+
 		int			i, j;
 
 		while (pokertracker_thread_alive) 
@@ -61,26 +59,19 @@ UINT __cdecl pokertracker_thread(LPVOID pParam)
 		AfxEndThread(0);
 
 		return 0;
+ 
+		__SEH_LOGFATAL("::pokertracker_thread : \n"); 
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("::pokertracker_thread : \n"); 
-		throw;
-	}
-#endif
 }
 
 PokerTracker::PokerTracker() 
 {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
 
-#ifdef SEH_ENABLE
-	try {
-#endif
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+
+__SEH_HEADER
+
 
 		int				i,j;
 		Registry		reg;
@@ -118,37 +109,25 @@ PokerTracker::PokerTracker()
 
 		connected = false;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerTracker::constructor : \n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("PokerTracker::constructor : \n"); 
+
 }
 
 PokerTracker::~PokerTracker() 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 
 		DeleteCriticalSection(&PT.pt_cs);
+ 
+		__SEH_LOGFATAL("PokerTracker::destructor : \n"); 
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerTracker::destructor : \n"); 
-		throw;
-	}
-#endif
 }
 
 double PokerTracker::process_query (const char * s) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 
 		if (PQstatus(pgconn) != CONNECTION_OK || !connected)  return 0.0;
 
@@ -239,20 +218,15 @@ double PokerTracker::process_query (const char * s)
 		else if (memcmp(s,"ptt_rfsbts",9)==0)			{ return getstat( symbols.sym.raischair, ptt_fsbts); }
 
 		else return 0.0;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerTracker::process_query : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerTracker::process_query : \n"); 
+
 }
 
 void PokerTracker::connect(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		pgconn = PQconnectdb(conn_str.GetString());
 
 		if (PQstatus(pgconn) == CONNECTION_OK) 
@@ -266,38 +240,27 @@ void PokerTracker::connect(void)
 			PQfinish(pgconn);
 			connected = false;
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerTracker::connect : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerTracker::connect : \n"); 
+
 }
 
 void PokerTracker::disconnect(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 
 		if (PQstatus(pgconn) == CONNECTION_OK) 
 			PQfinish(pgconn);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerTracker::disconnect : \n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("PokerTracker::disconnect : \n"); 
+
 }
 
 int	PokerTracker::getsiteid (void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		int			i, e;
 		CString		sym;
 
@@ -334,20 +297,15 @@ int	PokerTracker::getsiteid (void)
 			}
 		}
 		return -1 ;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerTracker::getsiteid : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerTracker::getsiteid : \n"); 
+
 }
 
 bool PokerTracker::checkname (int m_chr) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		int			i;
 		char		oh_scraped_name[30], best_name[30], likename[100];
 		bool		result, ok_scrape=false;
@@ -429,20 +387,15 @@ bool PokerTracker::checkname (int m_chr)
 		} 
 
 		return result;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerTracker::checkname : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerTracker::checkname : \n"); 
+
 }
 
 double PokerTracker::getstat (int m_chr, PT_Stats stat) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		double		x;
 
 		if (!pokertracker_thread_alive) 
@@ -457,20 +410,14 @@ double PokerTracker::getstat (int m_chr, PT_Stats stat)
 
 		return x;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerTracker::getstat : \n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("PokerTracker::getstat : \n"); 
+
 }
 
 double PokerTracker::update_stat (int m_chr, int stat) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		PGresult	*res;
 		char		strQry[2000], strQry1[2000], strQry2[2000];
 		const char*	n;
@@ -591,20 +538,15 @@ double PokerTracker::update_stat (int m_chr, int stat)
 
 		return result;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerTracker::update_stat : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerTracker::update_stat : \n"); 
+
 }
 
 bool PokerTracker::queryname (char * query_name, char * scraped_name, char * best_name) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		char		strQry[1000] = "";
 		int			i, lev_dist, bestLD, bestLDindex;
 		PGresult	*res;
@@ -694,19 +636,14 @@ bool PokerTracker::queryname (char * query_name, char * scraped_name, char * bes
 
 		PQclear(res);
 		return result; 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerTracker::queryname : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerTracker::queryname : \n"); 
+
 }
 void PokerTracker::clearstats (void)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 	int		i,j;
 
 	for (i=0; i<=9; i++) 
@@ -722,11 +659,7 @@ void PokerTracker::clearstats (void)
 		strcpy (player_stats[i].scraped_name, "") ;
 	}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("PokerTracker::cleardata : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("PokerTracker::cleardata : \n"); 
+
 }

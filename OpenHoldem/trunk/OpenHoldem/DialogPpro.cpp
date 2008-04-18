@@ -62,41 +62,26 @@ void CDlgPpro::DoDataExchange(CDataExchange* pDX) {
 }
 
 CDlgPpro::CDlgPpro(CWnd* pParent /*=NULL*/)	: CDialog(CDlgPpro::IDD, pParent) {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
 
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgPpro::Constructor : \n"); 
-		throw;
-	}
-#endif
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+
+__SEH_HEADER
+
+		__SEH_LOGFATAL("CDlgPpro::Constructor : \n"); 
+
 }
 
 CDlgPpro::~CDlgPpro() {
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgPpro::Destructor : \n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+
+		__SEH_LOGFATAL("CDlgPpro::Destructor : \n"); 
+
 }
 
 
 BOOL CDlgPpro::OnInitDialog() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int			i;
 		Registry	reg;
 		int			max_x, max_y;
@@ -149,69 +134,45 @@ BOOL CDlgPpro::OnInitDialog() {
 
 		return TRUE;  // return TRUE unless you set the focus to a control
 		// EXCEPTION: OCX Property Pages should return FALSE
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgPpro::OnInitDialog : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgPpro::OnInitDialog : \n"); 
+
 }
 
 BOOL CDlgPpro::DestroyWindow() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		KillTimer(STATE_TIMER);
 		KillTimer(AUTOSEAT_TIMER);
 		return CDialog::DestroyWindow();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgPpro::DestroyWindow : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgPpro::DestroyWindow : \n"); 
+
 }
 
 
 // CDlgPpro message handlers
 
 void CDlgPpro::OnBnClickedOk() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		save_settings_to_reg();
 		OnOK();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgPpro::OnBnClickedOk : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgPpro::OnBnClickedOk : \n"); 
+
 }
 
 void CDlgPpro::OnBnClickedCancel() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		save_settings_to_reg();
 		OnCancel();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgPpro::OnBnClickedCancel : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgPpro::OnBnClickedCancel : \n"); 
+
 }
 
 
 void CDlgPpro::OnBnClickedConnectButton() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CDlgPpro		dlgppro;
 		CString			s;
 		PokerMessage	pm;
@@ -320,19 +281,13 @@ void CDlgPpro::OnBnClickedConnectButton() {
 
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgPpro::OnBnClickedConnectButton :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgPpro::OnBnClickedConnectButton :\n"); 
+
 }
 
 void CDlgPpro::OnBnClickedJointableButton() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		// I'm not yet joined to a table, so try to join
 		if (ppro.data.m_tinf.m_tid == 0) {
 			do_table_select();
@@ -353,20 +308,12 @@ void CDlgPpro::OnBnClickedJointableButton() {
 			ppro.data.m_userchair = -1;
 			ppro.data.m_tinf.m_tid = 0;
 		}
-
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgPpro::OnBnClickedJointableButton :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgPpro::OnBnClickedJointableButton :\n"); 
 }
 
 void CDlgPpro::OnBnClickedSitdownButton() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CDlgSitDown  dlg_sit;
 
 		if (ppro.data.m_userchair==-1 && dlg_sit.DoModal() == IDOK) {
@@ -375,72 +322,47 @@ void CDlgPpro::OnBnClickedSitdownButton() {
 		else {
 			ppro.send_stand(ppro.data.m_userchair);
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgPpro::OnBnClickedSitdownButton :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgPpro::OnBnClickedSitdownButton :\n"); 
+
 }
 
 void CDlgPpro::OnBnClickedBuychipsButton() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		char		itemtext[100];
 
 		m_ChipsToBuy.GetWindowText(itemtext, 100);
 		if (atof(itemtext)>0) {
 			ppro.send_chips(atof(itemtext));
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgPpro::OnBnClickedBuychipsButton :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgPpro::OnBnClickedBuychipsButton :\n"); 
+
 }
 
 void CDlgPpro::OnBnClickedDepositButton() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		char		itemtext[100];
 
 		m_DepositAmount.GetWindowText(itemtext, 100);
 		if (atof(itemtext)>0) {
 			ppro.send_deposit(atof(itemtext));
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgPpro::OnBnClickedDepositButton :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgPpro::OnBnClickedDepositButton :\n"); 
+
 }
 
 void CDlgPpro::OnLbnDblclkTableList() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		do_table_select();
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgPpro::OnLbnDblclkTableList :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CDlgPpro::OnLbnDblclkTableList :\n"); 
+
 }
 
 void CDlgPpro::OnBnClickedSitinButton() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (ppro.data.m_userchair!=-1) {
 			if (ppro.data.m_pinf[ppro.data.m_userchair].m_isActive&0x1) {
 				ppro.send_sitout(ppro.data.m_userchair);
@@ -449,19 +371,13 @@ void CDlgPpro::OnBnClickedSitinButton() {
 				ppro.send_sitin(ppro.data.m_userchair);
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgPpro::OnBnClickedSitinButton :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgPpro::OnBnClickedSitinButton :\n"); 
+
 }
 
 void CDlgPpro::OnTimer(UINT nIDEvent) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CString			s;
 		int				n, i, j;
 		bool			found;
@@ -689,19 +605,13 @@ void CDlgPpro::OnTimer(UINT nIDEvent) {
 				need_to_do_autochips=false;
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgPpro::OnTimer :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgPpro::OnTimer :\n"); 
+
 }
 
 void CDlgPpro::do_table_select(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int		i, table;
 		char	itemtext[100];
 
@@ -733,19 +643,13 @@ void CDlgPpro::do_table_select(void) {
 			write_log("%s - %s(%s)\n", global.formula_name.GetString(), ppro.data.m_site_name, ppro.data.m_tinf.m_name);
 			write_log("TABLE RESET\n*************************************************************\n");
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgPpro::do_table_select :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgPpro::do_table_select :\n"); 
+
 }
 
 void CDlgPpro::save_settings_to_reg(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		Registry		reg;
 		CString			text;
 		WINDOWPLACEMENT	wp;
@@ -775,11 +679,7 @@ void CDlgPpro::save_settings_to_reg(void) {
 		reg.ppro_dx = wp.rcNormalPosition.right - wp.rcNormalPosition.left;
 		reg.ppro_dy = wp.rcNormalPosition.bottom - wp.rcNormalPosition.top;
 		reg.write_reg();
-	#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgPpro::save_settings_to_reg :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgPpro::save_settings_to_reg :\n"); 
+
 }

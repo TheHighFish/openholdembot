@@ -145,42 +145,27 @@ static UINT indicators[] = {
 
 // CMainFrame construction/destruction
 CMainFrame::CMainFrame() {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
+
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
 	
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		// Save startup directory
 		::GetCurrentDirectory(sizeof(global.startup_path) - 1, global.startup_path);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::Constructor :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CMainFrame::Constructor :\n"); 
+
 }
 
 CMainFrame::~CMainFrame() {
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::Destructor :\n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+
+		__SEH_LOGFATAL("CMainFrame::Destructor :\n"); 
+
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CString			t;
 		
 		if (CFrameWnd::OnCreate(lpCreateStruct) == -1) {
@@ -210,19 +195,13 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 		SetTimer(ATTACH_WINDOW_TIMER, 20, 0);
 
 		return 0;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnCreate :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CMainFrame::OnCreate :\n"); 
+
 }
 
 int CMainFrame::create_main_toolbar(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		TBBUTTONINFO	tbi;
 		tbi.cbSize = sizeof(TBBUTTONINFO);
 		tbi.dwMask = TBIF_STYLE;
@@ -263,19 +242,13 @@ int CMainFrame::create_main_toolbar(void) {
 
 		return 0;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::create_main_toolbar :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CMainFrame::create_main_toolbar :\n"); 
+
 }
 
 int CMainFrame::create_flags_toolbar(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		TBBUTTONINFO	tbi;
 		tbi.cbSize = sizeof(TBBUTTONINFO);
 		tbi.dwMask = TBIF_STYLE;
@@ -305,20 +278,14 @@ int CMainFrame::create_flags_toolbar(void) {
 		m_FlagsToolBar.SetWindowText("Flags");
 
 		return 0;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::create_flags_toolbar :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CMainFrame::create_flags_toolbar :\n"); 
+
 }
 
 
 void CMainFrame::align_toolbars(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		// Put the main toolbar and flags toolbar on the same line
 		CRect rectBar1, rectBar2;
 		RecalcLayout();
@@ -332,19 +299,13 @@ void CMainFrame::align_toolbars(void) {
 		rectBar2.right = rectBar1.right + uiBarWidth;
 		DockControlBar(&m_FlagsToolBar, AFX_IDW_DOCKBAR_TOP, rectBar2); //will be second
 		RecalcLayout();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::align_toolbars :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CMainFrame::align_toolbars :\n"); 
+
 }
 
 int CMainFrame::create_status_bar(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (!m_wndStatusBar.Create(this) || !m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT)))	{
 			TRACE0("Failed to create status bar\n");
 			return -1;      // fail to create
@@ -361,19 +322,13 @@ int CMainFrame::create_status_bar(void) {
 
 		return 0;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::create_status_bar :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CMainFrame::create_status_bar :\n"); 
+
 }
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if( !CFrameWnd::PreCreateWindow(cs) )
 			return FALSE;
 
@@ -410,21 +365,15 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
 		cs.cy = reg.main_dy;
 
 		return true;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::PreCreateWindow :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CMainFrame::PreCreateWindow :\n"); 
+
 }
 
 // CMainFrame message handlers
 
 void CMainFrame::OnEditFormula() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
 		if(m_formulaScintillaDlg) {
 			BOOL	bWasShown = ::IsWindow(m_formulaScintillaDlg->m_hWnd) && m_formulaScintillaDlg->IsWindowVisible();
@@ -446,19 +395,13 @@ void CMainFrame::OnEditFormula() {
 		m_formulaScintillaDlg->ShowWindow(SW_SHOW);
 		m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, true);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnEditFormula :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CMainFrame::OnEditFormula :\n"); 
+
 }
 
 void CMainFrame::OnScraperOutput() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
 		if(m_ScraperOutputDlg) {
 			BOOL	bWasShown = ::IsWindow(m_ScraperOutputDlg->m_hWnd) && m_ScraperOutputDlg->IsWindowVisible();
@@ -476,13 +419,9 @@ void CMainFrame::OnScraperOutput() {
 		m_ScraperOutputDlg->ShowWindow(SW_SHOW);
 		m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, true);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnScraperOutput :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CMainFrame::OnScraperOutput :\n"); 
+
 }
 
 void CMainFrame::OnViewShootreplayframe()
@@ -491,9 +430,7 @@ void CMainFrame::OnViewShootreplayframe()
 }
 
 void CMainFrame::OnEditPreferences() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		//CDlgPreferences  myDialog;
 		CSAPrefsDialog dlg;
 
@@ -544,19 +481,12 @@ void CMainFrame::OnEditPreferences() {
 			//m_csStupidCString = dlg1.m_csText;
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnEditPreferences :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CMainFrame::OnEditPreferences :\n"); 
+
 }
 
 BOOL CMainFrame::DestroyWindow() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		bool			upd = true;
 		int				updcount=0;
 		Registry		reg;
@@ -612,19 +542,13 @@ BOOL CMainFrame::DestroyWindow() {
 		reg.write_reg();
 
 		return CFrameWnd::DestroyWindow();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::DestroyWindow :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CMainFrame::DestroyWindow :\n"); 
+
 }
 
 void CMainFrame::OnFileOpen() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CFileDialog			cfd(true);
 		CString				theKey = "DefWHFOpenLocation";
 		char				path[MAX_PATH];
@@ -648,21 +572,14 @@ void CMainFrame::OnFileOpen() {
 			SetWindowText(cfd.GetFileTitle() + " - " + CString(MAKEINTRESOURCE(AFX_IDS_APP_TITLE)));
 			Registry::writeRegString(theKey, cfd.GetPathName());
 		}
+ 
+		__SEH_LOGFATAL("CMainFrame::OnFileOpen :\n"); 
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnFileOpen :\n"); 
-		throw;
-	}
-#endif
 }
 
 
 void CMainFrame::OnFileLoadTableMap() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CFileDialog			cfd(true);
 		int					line, ret;
 		CString				e;
@@ -704,19 +621,13 @@ void CMainFrame::OnFileLoadTableMap() {
 				Registry::writeRegString(theKey, cfd.GetPathName());
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnFileLoadTableMap :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CMainFrame::OnFileLoadTableMap :\n"); 
+
 }
 
 void CMainFrame::OnBnClickedGreenCircle() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int								i, N, line;
 		CDlgSelectTable					cstd;
 		STableList						tablelisthold;
@@ -899,19 +810,13 @@ void CMainFrame::OnBnClickedGreenCircle() {
 				
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnBnClickedGreenCircle :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CMainFrame::OnBnClickedGreenCircle :\n"); 
+
 }
 
 void CMainFrame::OnBnClickedRedCircle() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int			updcount;
 		bool		upd = true;
 
@@ -1008,19 +913,12 @@ void CMainFrame::OnBnClickedRedCircle() {
 		// Stop logging
 		stop_log();
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnBnClickedRedCircle :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CMainFrame::OnBnClickedRedCircle :\n"); 
+
 }
 
 void CMainFrame::OnTimer(UINT nIDEvent) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CardMask	Cards;
 		int			nCards;
 		HandVal		hv;
@@ -1260,19 +1158,13 @@ void CMainFrame::OnTimer(UINT nIDEvent) {
 			}
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnTimer :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CMainFrame::OnTimer :\n"); 
+
 }
 
 void CMainFrame::OnClickedFlags() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER0)) { global.flags[0] = true; }
 		else { global.flags[0] = false; }
 		if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER1)) { global.flags[1] = true; }
@@ -1293,20 +1185,14 @@ void CMainFrame::OnClickedFlags() {
 		else { global.flags[8] = false; }
 		if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER9)) { global.flags[9] = true; }
 		else { global.flags[9] = false; }
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnClickedFlags :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CMainFrame::OnClickedFlags :\n"); 
+
 }
 
 
 void CMainFrame::OnAutoplayer() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 	
 		if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER)) {
@@ -1331,19 +1217,13 @@ void CMainFrame::OnAutoplayer() {
 			global.autoplay = false;
 			LeaveCriticalSection(&cs_heartbeat);
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnAutoplayer :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CMainFrame::OnAutoplayer :\n"); 
+
 }
 
 void CMainFrame::OnUpdateStatus(CCmdUI *pCmdUI) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		m_wndStatusBar.SetPaneText(m_wndStatusBar.CommandToIndex(ID_INDICATOR_STATUS_PLCARDS), status_plcards);
 		m_wndStatusBar.SetPaneText(m_wndStatusBar.CommandToIndex(ID_INDICATOR_STATUS_COMCARDS), status_comcards);
 		m_wndStatusBar.SetPaneText(m_wndStatusBar.CommandToIndex(ID_INDICATOR_STATUS_POKERHAND), status_pokerhand);
@@ -1353,19 +1233,13 @@ void CMainFrame::OnUpdateStatus(CCmdUI *pCmdUI) {
 		m_wndStatusBar.SetPaneText(m_wndStatusBar.CommandToIndex(ID_INDICATOR_STATUS_NIT), status_nit);
 		m_wndStatusBar.SetPaneText(m_wndStatusBar.CommandToIndex(ID_INDICATOR_STATUS_ACTION), status_action);
 		// if action==bet ... m_wndStatusBar.GetStatusBarCtrl().SetBkColor(RGB(180,180,180));
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnUpdateStatus :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CMainFrame::OnUpdateStatus :\n"); 
+
 }
 
 void CMainFrame::OnDllLoad() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (cdll.hMod_dll!=NULL) {
 			cdll.unload_dll();
 		}
@@ -1373,21 +1247,15 @@ void CMainFrame::OnDllLoad() {
 		{
 			cdll.load_dll("");
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnDllLoad :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CMainFrame::OnDllLoad :\n"); 
+
 }
 
 
 void CMainFrame::OnDllLoadspecificfile()
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CFileDialog			cfd(true);
 		CString				theKey = "DefDLLOpenLocation";
 		char				path[MAX_PATH];
@@ -1408,20 +1276,14 @@ void CMainFrame::OnDllLoadspecificfile()
 
 			Registry::writeRegString(theKey, cfd.GetPathName());
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnDllLoadspecificfile :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CMainFrame::OnDllLoadspecificfile :\n"); 
+
 }
 
 
 void CMainFrame::OnPokerproConnect() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if(m_pproDlg) {
 			BOOL	bWasShown	=	::IsWindow(m_pproDlg->m_hWnd) && m_pproDlg->IsWindowVisible();
 
@@ -1434,19 +1296,13 @@ void CMainFrame::OnPokerproConnect() {
 		m_pproDlg = new CDlgPpro(this);
 		m_pproDlg->Create(CDlgPpro::IDD,this);
 		m_pproDlg->ShowWindow(SW_SHOW);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnPokerproConnect :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CMainFrame::OnPokerproConnect :\n"); 
+
 }
 
 void CMainFrame::OnMinMax(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		RECT		crect, wrect, rectBar1, rectBar2, statusBar;
 		POINT		pt;
 		int			tb_top, tb_bottom;
@@ -1493,19 +1349,12 @@ void CMainFrame::OnMinMax(void) {
 					   table_view_size.bottom - table_view_size.top, true);
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnMinMax :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CMainFrame::OnMinMax :\n"); 
+
 }
 
 void CMainFrame::OnAttachTop(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		RECT	att_rect, wrect;
 		::GetWindowRect(global.attached_hwnd, &att_rect);
 		GetWindowRect(&wrect);
@@ -1517,19 +1366,12 @@ void CMainFrame::OnAttachTop(void) {
 			MoveWindow(att_rect.left, att_rect.top-(wrect.bottom-wrect.top), att_rect.right-att_rect.left, wrect.bottom-wrect.top);
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnAttachTop :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CMainFrame::OnAttachTop :\n"); 
+
 }
 
 void CMainFrame::OnAttachBottom(void){
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		RECT	att_rect, wrect;
 		::GetWindowRect(global.attached_hwnd, &att_rect);
 		GetWindowRect(&wrect);
@@ -1541,19 +1383,12 @@ void CMainFrame::OnAttachBottom(void){
 			MoveWindow(att_rect.left, att_rect.bottom, att_rect.right-att_rect.left, wrect.bottom-wrect.top);
 		}
 	
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnAttachBottom :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CMainFrame::OnAttachBottom :\n"); 
+
 }
 
 void CMainFrame::OnLockBlinds(void){
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CDlgLockBlinds	lockblinds_dlg;
 		Registry reg;
 
@@ -1589,20 +1424,13 @@ void CMainFrame::OnLockBlinds(void){
 			}
 
 		}
-	
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnLockBlinds :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CMainFrame::OnLockBlinds :\n"); 
+
 }
 
 void CMainFrame::OnFormulaViewMainToolbar() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (!m_MainToolBar.IsVisible()) {
 			ShowControlBar(&m_MainToolBar, TRUE, FALSE);
 		}
@@ -1610,19 +1438,13 @@ void CMainFrame::OnFormulaViewMainToolbar() {
 			ShowControlBar(&m_MainToolBar, FALSE, FALSE);
 		}
 		RecalcLayout();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnFormulaViewMainToolbar :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CMainFrame::OnFormulaViewMainToolbar :\n"); 
+
 }
 
 void CMainFrame::OnFormulaViewFlagsToolbar() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (!m_FlagsToolBar.IsVisible()) {
 			ShowControlBar(&m_FlagsToolBar, TRUE, FALSE);
 		}
@@ -1631,19 +1453,12 @@ void CMainFrame::OnFormulaViewFlagsToolbar() {
 		}
 		RecalcLayout();
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnFormulaViewFlagsToolbar :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CMainFrame::OnFormulaViewFlagsToolbar :\n"); 
+
 }
 
 void CMainFrame::OnFormulaViewStatusbar() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (!m_wndStatusBar.IsVisible()) {
 			ShowControlBar(&m_wndStatusBar, TRUE, FALSE);
 		}
@@ -1652,13 +1467,8 @@ void CMainFrame::OnFormulaViewStatusbar() {
 		}
 		RecalcLayout();
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnFormulaViewStatusbar :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CMainFrame::OnFormulaViewStatusbar :\n"); 
+
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1802,9 +1612,7 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
 //  2008.03.03 by THF
 void CMainFrame::OnPerlLoadFormula()
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 	if (the_Perl_Interpreter.is_a_Formula_loaded())
 	{
 		the_Perl_Interpreter.unload_FormulaFile();
@@ -1814,22 +1622,16 @@ void CMainFrame::OnPerlLoadFormula()
 		//  Reload the most recent formula
 		the_Perl_Interpreter.reload_FormulaFile();
 	}		
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnPerlLoadFormula :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CMainFrame::OnPerlLoadFormula :\n"); 
+
 }
 	
 
 //  2008.03.03 by THF
 void CMainFrame::OnPerlLoadSpecificFormula()
 {	
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 	CFileDialog			cfd(true);
 	CString				theKey = "DefPLOpenLocation";
 	char				path[MAX_PATH];
@@ -1843,63 +1645,41 @@ void CMainFrame::OnPerlLoadSpecificFormula()
 		the_Perl_Interpreter.load_FormulaFile(cfd.m_ofn.lpstrFile);
 		Registry::writeRegString(theKey, cfd.GetPathName());
 	} 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnPerlLoadSpecificFormula :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CMainFrame::OnPerlLoadSpecificFormula :\n"); 
+
 }
 
 
 //  2008.03.03 by THF
 void CMainFrame::OnPerlEditMainFormula()
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 	the_Perl_Interpreter.edit_main_FormulaFile();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnPerlEditMainFormula :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CMainFrame::OnPerlEditMainFormula :\n"); 
+
 }
 
 
 //  2008.03.20 by THF
 void CMainFrame::OnPerlReloadFormula()
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		//  Reload the most recent formula
 		//    (This is a shortcut for unload + load.)
 		the_Perl_Interpreter.reload_FormulaFile();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnPerlReloadFormula :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CMainFrame::OnPerlReloadFormula :\n"); 
+
 }
 
 
 void CMainFrame::OnPerlCheckSyntax()
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		the_Perl_Interpreter.check_Syntax();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CMainFrame::OnPerlEditCheckSyntax :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CMainFrame::OnPerlEditCheckSyntax :\n"); 
+
 }

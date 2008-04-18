@@ -13,34 +13,21 @@
 IMPLEMENT_DYNAMIC(CDlgSitDown, CDialog)
 
 CDlgSitDown::CDlgSitDown(CWnd* pParent /*=NULL*/) : CDialog(CDlgSitDown::IDD, pParent) {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
 
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgSitDown::Constructor : \n"); 
-		throw;
-	}
-#endif
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+
+__SEH_HEADER
+ 
+		__SEH_LOGFATAL("CDlgSitDown::Constructor : \n"); 
+
 }
 
 CDlgSitDown::~CDlgSitDown(){
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgSitDown::Destructor : \n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+
+		__SEH_LOGFATAL("CDlgSitDown::Destructor : \n"); 
+
 }
 
 void CDlgSitDown::DoDataExchange(CDataExchange* pDX) {
@@ -59,9 +46,7 @@ END_MESSAGE_MAP()
 
 
 BOOL CDlgSitDown::OnInitDialog() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CDialog::OnInitDialog();
 		int i;
 		CString s;
@@ -76,44 +61,28 @@ BOOL CDlgSitDown::OnInitDialog() {
 
 		return TRUE;  // return TRUE unless you set the focus to a control
 		// EXCEPTION: OCX Property Pages should return FALSE
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgSitDown::OnInitDialog : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgSitDown::OnInitDialog : \n"); 
+	
 }
 
 void CDlgSitDown::OnLbnDblclkAvailablechairs() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		m_selected_chair = vacant[m_AvailableChairs.GetCurSel()];
 		OnOK();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgSitDown::OnLbnDblclkAvailablechairs : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CDlgSitDown::OnLbnDblclkAvailablechairs : \n"); 
+
 }
 
 void CDlgSitDown::OnBnClickedOk() {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		OnOK();
 		
 		m_selected_chair = vacant[m_AvailableChairs.GetCurSel()];
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CDlgSitDown::OnBnClickedOk : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("CDlgSitDown::OnBnClickedOk : \n"); 
+
 }
 
 

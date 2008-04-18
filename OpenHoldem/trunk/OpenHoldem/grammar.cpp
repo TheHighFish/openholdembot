@@ -24,9 +24,7 @@ using namespace boost::spirit;
 
 bool parse (CString *s, tree_parse_info<> *i, int *stopchar) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		exec_grammar	gram;
 		string			str;
 		skip_grammar	skip;
@@ -48,20 +46,14 @@ bool parse (CString *s, tree_parse_info<> *i, int *stopchar)
 			return false;
 		}
 		return true;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("grammar - parse\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("grammar - parse\n"); 
+
 }
 
 double calc_f$symbol(SFormula *f, char *symbol, int *e)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int		i;
 		double	ret;
 
@@ -99,38 +91,26 @@ double calc_f$symbol(SFormula *f, char *symbol, int *e)
 
 		return 0;
 		
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("grammar - calc_f$symbol\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("grammar - calc_f$symbol\n"); 
+
 }
 
 
 double evaluate(SFormula *f, tree_parse_info<> info, int *e) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
 		return eval_expression(f, info.trees.begin(), e);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("grammar - evaluate :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("grammar - evaluate :\n"); 
+
 }
 
 double eval_expression(SFormula *f, iter_t const& i, int *e) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		double		result;
 		char		f$func[10];
 		const char	*ranks = "  23456789TJQKA";
@@ -503,12 +483,7 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
 		*e = ERR_INVALID_EXPR;
 		return 0;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("grammar - eval_expression :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("grammar - eval_expression :\n"); 
+
 }
 

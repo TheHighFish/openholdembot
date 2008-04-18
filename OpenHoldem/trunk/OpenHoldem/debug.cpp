@@ -7,12 +7,12 @@
 
 //#include <vld.h>			// visual leak detector
 
+
+
 FILE *log_fp = NULL;
 
 char * get_time(char * timebuf) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		// returns current system time in WH format
 		time_t	ltime;
 		char tmptime[30];
@@ -45,19 +45,13 @@ char * get_time(char * timebuf) {
 		*(timebuf+19) = '\0';
 
 		return timebuf;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("::get_time : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("::get_time : \n"); 
+
 }
 
 char * get_now_time(char * timebuf) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		// returns current system time as a UNIX style string
 		time_t	ltime;
 	
@@ -65,13 +59,9 @@ char * get_now_time(char * timebuf) {
 		ctime_s(timebuf, 26, &ltime);
 		timebuf[24]='\0';
 		return timebuf;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("::get_now_time\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("::get_now_time\n"); 
+
 }
 
 void logfatal (char* fmt, ...) {
@@ -204,9 +194,7 @@ LONG WINAPI MyUnHandledExceptionFilter(struct _EXCEPTION_POINTERS *lpExceptionIn
 }
 
 BOOL CreateBMPFile(const char *szFile, HBITMAP hBMP) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		// Saves the hBitmap as a bitmap.
 		HDC					hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL); 
 		HDC					hdcCompatible = CreateCompatibleDC(hdcScreen); 
@@ -297,19 +285,13 @@ BOOL CreateBMPFile(const char *szFile, HBITMAP hBMP) {
 		DeleteDC(hdcScreen);
 
 		return bret;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("::CreateBMPFile\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("::CreateBMPFile\n"); 
+
 }
 
 void start_log(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (log_fp==NULL) {
 			CString fn;
 			fn.Format("%s\\oh%d.log", global.startup_path, global.sessionnum);
@@ -319,19 +301,13 @@ void start_log(void) {
 			fprintf(log_fp, "----------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 			fflush(log_fp);
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("::start_log\n");
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("::start_log\n");
+
 }
 
 void write_log(char* fmt, ...) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		char		buff[10000] ;
 		va_list		ap;
 		char		nowtime[26];
@@ -347,19 +323,13 @@ void write_log(char* fmt, ...) {
 			fflush(log_fp);
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("::write_log\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("::write_log\n"); 
+
 }
 
 void write_log_autoplay(const char * action) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		char		nowtime[26];
 		CString		pcards, comcards, temp, rank, pokerhand, bestaction, fcra_seen;
 		char		*card;
@@ -505,30 +475,19 @@ void write_log_autoplay(const char * action) {
 
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("::write_log_autoplay\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("::write_log_autoplay\n"); 
+
 }
 
 void stop_log(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		if (log_fp != NULL) {
 			write_log("! log file closed\n");
 			fclose(log_fp);
 			log_fp = NULL;
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("::stop_log\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("::stop_log\n"); 
+
 }

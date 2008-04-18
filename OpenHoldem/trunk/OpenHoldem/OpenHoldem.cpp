@@ -41,41 +41,29 @@ END_MESSAGE_MAP()
 // COpenHoldemApp construction
 COpenHoldemApp::COpenHoldemApp() 
 {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
+
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
 	
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		// Critical sections
 		InitializeCriticalSection(&cs_prwin);
 		InitializeCriticalSection(&cs_heartbeat);
 		InitializeCriticalSection(&cs_updater);		
 		InitializeCriticalSection(&cs_calc_f$symbol);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemApp::Constructor :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("COpenHoldemApp::Constructor :\n"); 
+
 }
 
 // COpenHoldemApp destruction
 COpenHoldemApp::~COpenHoldemApp() 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemApp::Destructor :\n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+
+		__SEH_LOGFATAL("COpenHoldemApp::Destructor :\n"); 
+
 }
 
 // The one and only COpenHoldemApp object
@@ -84,9 +72,8 @@ COpenHoldemApp theApp;
 // COpenHoldemApp initialization
 BOOL COpenHoldemApp::InitInstance() 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		HMODULE hMod;
 		HANDLE hProcess;
 		DWORD curprocid, aProcesses[1024], cbNeeded, cProcesses;
@@ -236,20 +223,15 @@ BOOL COpenHoldemApp::InitInstance()
 		m_pMainWnd->SetForegroundWindow();
 
 		return TRUE;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemApp::InitInstance :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("COpenHoldemApp::InitInstance :\n"); 
+
 }
 
 int COpenHoldemApp::ExitInstance()
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		bool	upd = true;
 		int		updcount=0;
 
@@ -293,13 +275,9 @@ int COpenHoldemApp::ExitInstance()
 		Scintilla_ReleaseResources();
 
 		return CWinApp::ExitInstance();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemApp::ExitInstance :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("COpenHoldemApp::ExitInstance :\n"); 
+
 }
 
 
@@ -338,9 +316,8 @@ void COpenHoldemApp::OnAppAbout() {
 
 // Added due to inability to get standard LoadStdProfileSettings working properly
 void COpenHoldemApp::MyLoadStdProfileSettings(UINT nMaxMRU) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		ASSERT_VALID(this);
 		ASSERT(m_pRecentFileList == NULL);
 
@@ -351,27 +328,18 @@ void COpenHoldemApp::MyLoadStdProfileSettings(UINT nMaxMRU) {
 		}
 		// 0 by default means not set
 		m_nNumPreviewPages = GetProfileInt(_afxPreviewSection, _afxPreviewEntry, 0);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemApp::MyLoadStdProfileSettings :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("COpenHoldemApp::MyLoadStdProfileSettings :\n"); 
+
 }
 
 void COpenHoldemApp::addMRU(CString fileName){
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 
 	m_pRecentFileList->Add(fileName);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemApp::MyLoadStdProfileSettings :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("COpenHoldemApp::MyLoadStdProfileSettings :\n"); 
+
 }

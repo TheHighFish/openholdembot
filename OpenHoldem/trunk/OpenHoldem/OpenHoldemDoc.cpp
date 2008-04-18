@@ -219,44 +219,32 @@ END_MESSAGE_MAP()
 
 COpenHoldemDoc::COpenHoldemDoc() 
 {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
 
-#ifdef SEH_ENABLE
-	try {
-#endif
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+
+__SEH_HEADER
+
 		global.ClearFormula(&global.formula);
 		global.formula_name = "";
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemDoc::Constructor : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("COpenHoldemDoc::Constructor : \n"); 
+
 }
 
 COpenHoldemDoc::~COpenHoldemDoc() 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemDoc::Destructor : \n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+
+
+		__SEH_LOGFATAL("COpenHoldemDoc::Destructor : \n"); 
+
 }
 
 BOOL COpenHoldemDoc::OnNewDocument() 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		SFunction		func;
 		CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
@@ -315,21 +303,16 @@ BOOL COpenHoldemDoc::OnNewDocument()
 			cdll.load_dll("");
 
 		return true;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemDoc::OnNewDocument : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("COpenHoldemDoc::OnNewDocument : \n"); 
+
 }
 
 // COpenHoldemDoc serialization
 void COpenHoldemDoc::Serialize(CArchive& ar) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 		// Writing a file
@@ -366,37 +349,27 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 				cdll.load_dll("");
 
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemDoc::Serialize :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("COpenHoldemDoc::Serialize :\n"); 
+
 }
 
 COpenHoldemDoc * COpenHoldemDoc::GetDocument() 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CFrameWnd * pFrame = (CFrameWnd *)(AfxGetApp()->m_pMainWnd);
 		return (COpenHoldemDoc *) pFrame->GetActiveDocument();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemDoc::GetDocument : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("COpenHoldemDoc::GetDocument : \n"); 
+
 }
 
 
 void COpenHoldemDoc::WriteFormula(SFormula *f, CArchive& ar) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CString s;
 		int N, i;
 		char nowtime[26];
@@ -509,20 +482,15 @@ void COpenHoldemDoc::WriteFormula(SFormula *f, CArchive& ar)
 		}
 		ar_whx.Close();
 		cf_whx.Close();
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemDoc::WriteFormula :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("COpenHoldemDoc::WriteFormula :\n"); 
+
 }
 
 void COpenHoldemDoc::ReadFormula(SFormula *f, CArchive& ar) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CString strOneLine; 
 		int content;
 		char funcname[256];
@@ -787,12 +755,8 @@ void COpenHoldemDoc::ReadFormula(SFormula *f, CArchive& ar)
 			if (f->mFunction[i].func=="f$debug") addit = false;
 		if (addit==true)  { func.func = "f$debug"; func.func_text = ""; func.dirty = true; f->mFunction.Add(func); }
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("COpenHoldemDoc::ReadFormula :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("COpenHoldemDoc::ReadFormula :\n"); 
+
 }
 

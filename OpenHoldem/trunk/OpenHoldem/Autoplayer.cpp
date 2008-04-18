@@ -12,34 +12,21 @@
 #include "PokerChat.hpp"
 
 Autoplayer::Autoplayer(void) {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
 
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Autoplayer::Constructor : \n"); 
-		throw;
-	}
-#endif
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+
+__SEH_HEADER
+
+		__SEH_LOGFATAL("Autoplayer::Constructor : \n"); 
+
 }
 
 Autoplayer::~Autoplayer(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Autoplayer::Destructor : \n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+
+		__SEH_LOGFATAL("Autoplayer::Destructor : \n"); 
+
 }
 
 
@@ -55,9 +42,7 @@ void Autoplayer::do_Chat(void)
 	//    with the default check button. Therefore we duplicated
 	//    the clicking code. :(
 	//	
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 	if (symbols.f$chat == 0) 
 	{ return; }
 	INPUT			input[100] = {0};
@@ -112,25 +97,17 @@ void Autoplayer::do_Chat(void)
 		SetCursorPos(cur_pos.x, cur_pos.y);				
 		Mutex.Unlock();					
 	}	
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Autoplayer::do_Chat : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Autoplayer::do_Chat : \n"); 
+
 }
 
 
 void Autoplayer::do_autoplayer(void) {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
 
-#ifdef SEH_ENABLE
-	try {
-#endif
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+__SEH_HEADER
 		bool			prwin_running, scrape_running;
 		int				x, error;
 		int				num_buttons_visible;
@@ -224,19 +201,13 @@ void Autoplayer::do_autoplayer(void) {
 			do_arccf();
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Autoplayer::do_autoplayer :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Autoplayer::do_autoplayer :\n"); 
+
 }
 
 void Autoplayer::do_swag(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
 		int				input_count, r$index;
 		POINT			pt;
@@ -620,19 +591,13 @@ void Autoplayer::do_swag(void) {
 				Mutex.Unlock();
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Autoplayer::do_swag :\n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("Autoplayer::do_swag :\n"); 
+
 }
 
 void Autoplayer::do_arccf(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int				do_click, input_count;
 		INPUT			input[100] = {0};
 		POINT			pt;
@@ -800,19 +765,13 @@ void Autoplayer::do_arccf(void) {
 				time(&symbols.elapsedautohold);
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Autoplayer::do_arccf :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Autoplayer::do_arccf :\n"); 
+
 }
 
 void Autoplayer::do_prefold(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		INPUT			input[100] = {0};
 		POINT			pt;
 		double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1; 
@@ -891,19 +850,13 @@ void Autoplayer::do_prefold(void) {
 			symbols.sym.prevaction = PREVACT_FOLD;
 			write_log_autoplay("FOLD");
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Autoplayer::do_prefold :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Autoplayer::do_prefold :\n"); 
+
 }
 
 int Autoplayer::count_same_scrapes(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int						i;
 		static unsigned int		card_common_last[5] = {0};
 		static unsigned int		card_player_last[10][2] = {0};
@@ -960,21 +913,15 @@ int Autoplayer::count_same_scrapes(void) {
 		}
 
 		return num_same_scrapes;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Autoplayer::count_same_scrapes :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Autoplayer::count_same_scrapes :\n"); 
+
 }
 
 
 int Autoplayer::get_r$_button_indices(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int				i, r$index;
 		int				button_index;
 		CString			s;
@@ -1366,19 +1313,13 @@ int Autoplayer::get_r$_button_indices(void)
 
 		return num_seen;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Autoplayer::get_r$_button_indices :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Autoplayer::get_r$_button_indices :\n"); 
+
 }
 
 void Autoplayer::check_bring_keyboard(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		HMENU			bringsysmenu;
 		MENUITEMINFO	mii;
 		int				input_count, i;
@@ -1487,19 +1428,13 @@ void Autoplayer::check_bring_keyboard(void) {
 				Mutex.Unlock();
 			}
 		}
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Autoplayer::check_bring_keyboard :\n"); 
-		throw;
-	}
-#endif
+	 
+		__SEH_LOGFATAL("Autoplayer::check_bring_keyboard :\n"); 
+
 }
 
 void Autoplayer::do_f$play(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		INPUT			input[100] = {0};
 		POINT			pt;
 		double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1; 
@@ -1728,20 +1663,13 @@ void Autoplayer::do_f$play(void) {
 
 			}
 		}
+ 
+		__SEH_LOGFATAL("Autoplayer::do_f$play :\n"); 
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Autoplayer::do_f$play :\n"); 
-		throw;
-	}
-#endif
 }
 
 void Autoplayer::do_i86(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		INPUT			input[100] = {0};
 		POINT			pt;
 		double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1; 
@@ -1871,19 +1799,12 @@ void Autoplayer::do_i86(void) {
 			}
 		}
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Autoplayer::do_i86 :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("Autoplayer::do_i86 :\n"); 
+
 }
 
 POINT Autoplayer::randomize_click_location(int left, int top, int right, int bottom) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		POINT p;
 
 		// uniform random distribution, yuck!
@@ -1894,52 +1815,34 @@ POINT Autoplayer::randomize_click_location(int left, int top, int right, int bot
 		get_click_point(left + (right-left)/2, top + (bottom-top)/2, (right-left)/2, (bottom-top)/2, &p);
 
 		return p;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Autoplayer::random_click_location :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Autoplayer::random_click_location :\n"); 
+
 }
 
 void Autoplayer::get_click_point(int x, int y, int rx, int ry, POINT *p) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		p->x = x + (int) randomNormalScaled(2*rx, 0, 1) - (rx);
 		p->y = y + (int) randomNormalScaled(2*ry, 0, 1) - (ry);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Autoplayer::get_click_point :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Autoplayer::get_click_point :\n"); 
+
 }
 
 // random number - 0 -> scale, with normal distribution
 // ignore results outside 3.5 stds from the mean
 double Autoplayer::randomNormalScaled(double scale, double m, double s) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		double res = -99;
 		while (res < -3.5 || res > 3.5) res = randomNormal(m, s);
 		return (res / 3.5*s + 1) * (scale / 2.0); 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Autoplayer::randomNormalScaled :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Autoplayer::randomNormalScaled :\n"); 
+
 }
 
 double Autoplayer::randomNormal(double m, double s) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		/* mean m, standard deviation s */
 		double x1, x2, w, y1, y2;
 		do {
@@ -1953,11 +1856,7 @@ double Autoplayer::randomNormal(double m, double s) {
 		y2 = x2 * w;
 
 		return( m + y1 * s );
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Autoplayer::randomNormal :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Autoplayer::randomNormal :\n"); 
+
 }

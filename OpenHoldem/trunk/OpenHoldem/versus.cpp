@@ -14,25 +14,16 @@ class CVersus	versus;
 CVersus::CVersus() {
 #ifdef SEH_ENABLE
 	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
 #endif
 	
-#ifdef SEH_ENABLE
-	try {
-#endif
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CVersus::Constructor :\n"); 
-		throw;
-	}
-#endif
+__SEH_HEADER
+
+__SEH_LOGFATAL("CVersus::Constructor :\n"); 
 }
 
 double CVersus::get_symbol(const char *a, int *e) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int			n;
 
 		if (!global.versus_enabled)
@@ -83,19 +74,12 @@ double CVersus::get_symbol(const char *a, int *e) {
 		*e = ERR_INVALID_SYM;
 		return 0.0;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CVersus::get_symbol :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CVersus::get_symbol :\n"); 
 }
 
 bool CVersus::get_counts(void) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		int				i, j, fh;
 		unsigned int	pcard[2];
 		CardMask		plCards, oppCards, deadCards, comCardsScrape, comCardsEnum, comCardsAll, usedCards;
@@ -357,21 +341,13 @@ bool CVersus::get_counts(void) {
 
 		return true;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CVersus::get_counts :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CVersus::get_counts :\n"); 
 }
 
 
 void CVersus::do_calc(CardMask plCards, CardMask oppCards, CardMask comCards, 
 					  unsigned int *wintemp, unsigned int *tietemp, unsigned int *lostemp) {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 		CardMask		playerEvalCards, oppEvalCards;
 		HandVal			player_hv, opp_hv;
 		unsigned int	player_pokval, opp_pokval;
@@ -395,11 +371,5 @@ void CVersus::do_calc(CardMask plCards, CardMask oppCards, CardMask comCards,
 		else 
 			*tietemp = *tietemp + 1;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CVersus::do_calc :\n"); 
-		throw;
-	}
-#endif
+		__SEH_LOGFATAL("CVersus::do_calc :\n"); 
 }

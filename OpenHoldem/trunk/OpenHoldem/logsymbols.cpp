@@ -7,9 +7,7 @@
 
 double	LogSymbols::process_query(const char * pquery, int *e)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
         if (strlen(pquery) > 4)
         {
@@ -35,11 +33,7 @@ double	LogSymbols::process_query(const char * pquery, int *e)
 		*e = ERR_INVALID_SYM;
 		return 0.0;
 
-#ifdef SEH_ENABLE
-	}
-	catch (...) { 
-		logfatal("LogSymbols::process_query\n"); 
-		throw; 
-	}
-#endif
+
+		__SEH_LOGFATAL("LogSymbols::process_query\n"); 
+
 }

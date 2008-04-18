@@ -9,18 +9,16 @@
 
 Registry::Registry(void) 
 {
-#ifdef SEH_ENABLE
-	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
+
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
 }
 
 
 void Registry::init_Defaults(void)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 	// Defaults
 	main_x = main_y = 0;
 	main_dx = 800;
@@ -138,21 +136,16 @@ void Registry::init_Defaults(void)
     LogSymbol_max_log = 5;
 
 	versus_path = "";
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Registry::init_Defaults : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Registry::init_Defaults : \n"); 
+
 }
 
 
 void Registry::read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, int *RegistryValue)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 	DWORD		dwType, cbData;
 	char		str[256];
 	LONG		hkResult;
@@ -161,21 +154,16 @@ void Registry::read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, int *Registry
 	if ( (hkResult = RegQueryValueEx(hKey, RegistryKey, NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
 		 *RegistryValue = atoi(str);
 	//  Otherwise: Keep default value.
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Registry::read_OH_RegistryKey : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Registry::read_OH_RegistryKey : \n"); 
+
 }
 
 
 void Registry::read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, bool *RegistryValue)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 	DWORD		dwType, cbData;
 	char		str[256];
 	LONG		hkResult;
@@ -184,21 +172,16 @@ void Registry::read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, bool *Registr
 	if ( (hkResult = RegQueryValueEx(hKey, RegistryKey, NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
 		 *RegistryValue = atoi(str);
 	//  Otherwise: Keep default value.
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Registry::read_OH_RegistryKey : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Registry::read_OH_RegistryKey : \n"); 
+
 }
 
 
 void Registry::read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, unsigned int *RegistryValue)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 	DWORD		dwType, cbData;
 	char		str[256];
 	LONG		hkResult;
@@ -207,21 +190,16 @@ void Registry::read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, unsigned int 
 	if ( (hkResult = RegQueryValueEx(hKey, RegistryKey, NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
 		 *RegistryValue = atoi(str);
 	//  Otherwise: Keep default value.
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Registry::read_OH_RegistryKey : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Registry::read_OH_RegistryKey : \n"); 
+
 }
 
 
 void Registry::read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey,  CString *RegistryValue)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 	DWORD		dwType, cbData;
 	char		str[256];
 	LONG		hkResult;
@@ -230,21 +208,16 @@ void Registry::read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey,  CString *Reg
 	if ( (hkResult = RegQueryValueEx(hKey, RegistryKey, NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
 		 *RegistryValue = str;
 	//  Otherwise: Keep default value.
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Registry::read_OH_RegistryKey : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("Registry::read_OH_RegistryKey : \n"); 
+
 }
 
 
 void Registry::read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, double *RegistryValue)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 	DWORD		dwType, cbData;
 	char		str[256];
 	LONG		hkResult;
@@ -253,82 +226,60 @@ void Registry::read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, double *Regis
 	if ( (hkResult = RegQueryValueEx(hKey, RegistryKey, NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
 		 *RegistryValue = atof(str);
 	//  Otherwise: Keep default value.
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Registry::read_OH_RegistryKey : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Registry::read_OH_RegistryKey : \n"); 
+
 }
 
 
 void Registry::write_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, int RegistryValue)
 //  This method is used to write unsigned ints and booleans, too.
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 	char		str[256];
 
 	sprintf(str, "%d", RegistryValue);
 	RegSetValueEx(hKey, RegistryKey, 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
-	
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Registry::write_OH_RegistryKey : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Registry::write_OH_RegistryKey : \n"); 
+
 }
 
 
 void Registry::write_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, CString RegistryValue)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 	char		str[256];
 
 	sprintf(str, "%s", RegistryValue);
 	RegSetValueEx(hKey, RegistryKey, 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
 	
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Registry::write_OH_RegistryKey : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("Registry::write_OH_RegistryKey : \n"); 
+
 }
 
 
 void Registry::write_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, double RegistryValue)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 	char		str[256];
 
 	sprintf(str, "%f", RegistryValue);
 	RegSetValueEx(hKey, RegistryKey, 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
-	
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Registry::write_OH_RegistryKey : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Registry::write_OH_RegistryKey : \n"); 
+
 }
 
 
 void Registry::read_reg(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		HKEY		hKey;
 		LONG		hkResult;
 
@@ -466,20 +417,15 @@ void Registry::read_reg(void)
 		}
 
 		RegCloseKey(hKey);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Registry::read_reg : \n"); 
-		throw;
-	}
-#endif
+ 
+		__SEH_LOGFATAL("Registry::read_reg : \n"); 
+
 }
 
 void Registry::write_reg(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		HKEY		hKey;
 		DWORD		dwDisp;
 	
@@ -607,20 +553,15 @@ void Registry::write_reg(void)
         write_OH_RegistryKey(hKey, "LogSymbol_max_log", LogSymbol_max_log);
 		
 		RegCloseKey(hKey);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Registry::write_reg : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Registry::write_reg : \n"); 
+
 }
 
 bool Registry::GetProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, CDC* pDC) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CWinApp *pApp = AfxGetApp();
 		ASSERT_VALID(pApp);
 		CString s = pApp->GetProfileString(lpszKey, lpszVal);
@@ -641,21 +582,16 @@ bool Registry::GetProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, CDC
 		lf.lfItalic = bItalic;	// because lf.lfItalic is a BYTE
 		font.DeleteObject();		// bye 
 		return font.CreateFontIndirect(&lf)!=0;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Registry::GetProfileFont : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Registry::GetProfileFont : \n"); 
+
 }
 
 
 bool Registry::WriteProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, CDC* pDC) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 		CWinApp *pApp = AfxGetApp();
 		ASSERT_VALID(pApp);
 		LOGFONT lf;
@@ -665,20 +601,15 @@ bool Registry::WriteProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, C
 		CString s;
 		s.Format("%s,%d,%d,%d", lf.lfFaceName, iPtSize, lf.lfWeight, lf.lfItalic);
 		return pApp->WriteProfileString(lpszKey, lpszVal, s)!=0;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Registry::WriteProfileFont : \n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Registry::WriteProfileFont : \n"); 
+
 }
 
 void Registry::readRegString(CString RegistryKey, char* RegistryValue)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
+
 	HKEY				hKey;
 	LONG				result;
 	DWORD				strSize = MAX_PATH;
@@ -688,21 +619,14 @@ void Registry::readRegString(CString RegistryKey, char* RegistryValue)
 		RegQueryValueEx(hKey,RegistryKey,NULL,NULL,(LPBYTE)RegistryValue,&strSize);
 	}
 	RegCloseKey(hKey);
+ 
+		__SEH_LOGFATAL("Registry::readRegString :\n"); 
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Registry::readRegString :\n"); 
-		throw;
-	}
-#endif
 }
 
 void Registry::writeRegString(CString RegistryKey, CString RegistryValue)
 {
-#ifdef SEH_ENABLE
-	try {
-#endif
+__SEH_HEADER
 
 	HKEY				hKey;
 	LONG				result;
@@ -716,11 +640,7 @@ void Registry::writeRegString(CString RegistryKey, CString RegistryValue)
 	}
 	RegCloseKey(hKey);
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("Registry::writeRegString :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("Registry::writeRegString :\n"); 
+
 }

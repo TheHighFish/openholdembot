@@ -8,10 +8,7 @@
 
 CRunRon::CRunRon(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif	
-
+__SEH_HEADER
 	//POCKET PAIRS
 	//============
 	run_count[12][12][9]=94; run_count[12][12][8]=122; run_count[12][12][7]=17848; run_count[12][12][6]=181104; run_count[12][12][5]=41562; run_count[12][12][4]=25816; run_count[12][12][3]=249458; run_count[12][12][2]=840456; run_count[12][12][1]=762300; run_count[12][12][0]=0; 
@@ -380,38 +377,22 @@ CRunRon::CRunRon(void)
 	ron_max_pokval[11][12]=2148457658; ron_max_pokval[10][12]=2148457658; ron_max_pokval[9][12]=2148457658; ron_max_pokval[8][12]=2148457658; ron_max_pokval[7][12]=2148457658; ron_max_pokval[6][12]=2148457658; ron_max_pokval[5][12]=2148457658; ron_max_pokval[4][12]=2148457658; ron_max_pokval[3][12]=2148457658; ron_max_pokval[2][12]=2148457658; ron_max_pokval[1][12]=2148457658; ron_max_pokval[0][12]=2148457658; ron_max_pokval[10][11]=2148457658; ron_max_pokval[9][11]=2148457658; ron_max_pokval[8][11]=2148457658; ron_max_pokval[7][11]=2148457658; ron_max_pokval[6][11]=2148457658; ron_max_pokval[5][11]=2148457658; ron_max_pokval[4][11]=2148457658; ron_max_pokval[3][11]=2148457658; ron_max_pokval[2][11]=2148457658; ron_max_pokval[1][11]=2148457658; ron_max_pokval[0][11]=2148457658; ron_max_pokval[9][10]=2148457658; ron_max_pokval[8][10]=2148457658; ron_max_pokval[7][10]=2148457658; ron_max_pokval[6][10]=2148457658; ron_max_pokval[5][10]=2148457658; ron_max_pokval[4][10]=2148457658; ron_max_pokval[3][10]=2148457658; ron_max_pokval[2][10]=2148457658; ron_max_pokval[1][10]=2148457658; ron_max_pokval[0][10]=2148457658; ron_max_pokval[8][9]=2148457658; ron_max_pokval[7][9]=2148457658; ron_max_pokval[6][9]=2148457658; ron_max_pokval[5][9]=2148457658; ron_max_pokval[4][9]=2148457658; ron_max_pokval[3][9]=2148457658; ron_max_pokval[2][9]=2148457658; ron_max_pokval[1][9]=2148457658; ron_max_pokval[0][9]=2148457658; ron_max_pokval[7][8]=2148457658; ron_max_pokval[6][8]=2148457658; ron_max_pokval[5][8]=2148457658; ron_max_pokval[4][8]=2148457658; ron_max_pokval[3][8]=2148457658; ron_max_pokval[2][8]=2148457658; ron_max_pokval[1][8]=2148457658; ron_max_pokval[0][8]=2148457658; ron_max_pokval[6][7]=2148457658; ron_max_pokval[5][7]=2148457658; ron_max_pokval[4][7]=2148457658; ron_max_pokval[3][7]=2148457658; ron_max_pokval[2][7]=2148457658; ron_max_pokval[1][7]=2148457658; ron_max_pokval[0][7]=2148457658; ron_max_pokval[5][6]=2148457658; ron_max_pokval[4][6]=2148457658; ron_max_pokval[3][6]=2148457658; ron_max_pokval[2][6]=2148457658; ron_max_pokval[1][6]=2148457658; ron_max_pokval[0][6]=2148457658; ron_max_pokval[4][5]=2148457658; ron_max_pokval[3][5]=2148457658; ron_max_pokval[2][5]=2148457658; ron_max_pokval[1][5]=2148457658; ron_max_pokval[0][5]=2148457658; ron_max_pokval[3][4]=2148457658; ron_max_pokval[2][4]=2148457658; ron_max_pokval[1][4]=2148457658; ron_max_pokval[0][4]=2148457658; ron_max_pokval[2][3]=2148457658; ron_max_pokval[1][3]=2148457658; ron_max_pokval[0][3]=2148457658; ron_max_pokval[1][2]=2148457658; ron_max_pokval[0][2]=2148457658; ron_max_pokval[0][1]=2148457658; 
 	ron_max_pokval_n[11][12]=41580; ron_max_pokval_n[10][12]=41580; ron_max_pokval_n[9][12]=41580; ron_max_pokval_n[8][12]=41580; ron_max_pokval_n[7][12]=62370; ron_max_pokval_n[6][12]=62370; ron_max_pokval_n[5][12]=62370; ron_max_pokval_n[4][12]=62370; ron_max_pokval_n[3][12]=62370; ron_max_pokval_n[2][12]=62370; ron_max_pokval_n[1][12]=62370; ron_max_pokval_n[0][12]=62370; ron_max_pokval_n[10][11]=41580; ron_max_pokval_n[9][11]=41580; ron_max_pokval_n[8][11]=41580; ron_max_pokval_n[7][11]=62370; ron_max_pokval_n[6][11]=62370; ron_max_pokval_n[5][11]=62370; ron_max_pokval_n[4][11]=62370; ron_max_pokval_n[3][11]=62370; ron_max_pokval_n[2][11]=62370; ron_max_pokval_n[1][11]=62370; ron_max_pokval_n[0][11]=62370; ron_max_pokval_n[9][10]=41580; ron_max_pokval_n[8][10]=41580; ron_max_pokval_n[7][10]=62370; ron_max_pokval_n[6][10]=62370; ron_max_pokval_n[5][10]=62370; ron_max_pokval_n[4][10]=62370; ron_max_pokval_n[3][10]=62370; ron_max_pokval_n[2][10]=62370; ron_max_pokval_n[1][10]=62370; ron_max_pokval_n[0][10]=62370; ron_max_pokval_n[8][9]=41580; ron_max_pokval_n[7][9]=62370; ron_max_pokval_n[6][9]=62370; ron_max_pokval_n[5][9]=62370; ron_max_pokval_n[4][9]=62370; ron_max_pokval_n[3][9]=62370; ron_max_pokval_n[2][9]=62370; ron_max_pokval_n[1][9]=62370; ron_max_pokval_n[0][9]=62370; ron_max_pokval_n[7][8]=62370; ron_max_pokval_n[6][8]=62370; ron_max_pokval_n[5][8]=62370; ron_max_pokval_n[4][8]=62370; ron_max_pokval_n[3][8]=62370; ron_max_pokval_n[2][8]=62370; ron_max_pokval_n[1][8]=62370; ron_max_pokval_n[0][8]=62370; ron_max_pokval_n[6][7]=83160; ron_max_pokval_n[5][7]=83160; ron_max_pokval_n[4][7]=83160; ron_max_pokval_n[3][7]=83160; ron_max_pokval_n[2][7]=83160; ron_max_pokval_n[1][7]=83160; ron_max_pokval_n[0][7]=83160; ron_max_pokval_n[5][6]=83160; ron_max_pokval_n[4][6]=83160; ron_max_pokval_n[3][6]=83160; ron_max_pokval_n[2][6]=83160; ron_max_pokval_n[1][6]=83160; ron_max_pokval_n[0][6]=83160; ron_max_pokval_n[4][5]=83160; ron_max_pokval_n[3][5]=83160; ron_max_pokval_n[2][5]=83160; ron_max_pokval_n[1][5]=83160; ron_max_pokval_n[0][5]=83160; ron_max_pokval_n[3][4]=83160; ron_max_pokval_n[2][4]=83160; ron_max_pokval_n[1][4]=83160; ron_max_pokval_n[0][4]=83160; ron_max_pokval_n[2][3]=83160; ron_max_pokval_n[1][3]=83160; ron_max_pokval_n[0][3]=83160; ron_max_pokval_n[1][2]=83160; ron_max_pokval_n[0][2]=83160; ron_max_pokval_n[0][1]=83160; 
 
-
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CRunRon::constructor :\n"); 
-		throw;
-	}
-#endif
+ 		__SEH_LOGFATAL("CRunRon::constructor :\n"); 
 }
+
 
 CRunRon::~CRunRon(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif	
+__SEH_HEADER
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CRunRon::destructor :\n"); 
-		throw;
-	}
-#endif
+__SEH_LOGFATAL("CRunRon::destructor :\n"); 
+
 }
 
 
 void CRunRon::get_counts(void) 
 {
-#ifdef SEH_ENABLE
-	try {
-#endif	
-
+__SEH_HEADER
 		unsigned int	pcard[2], ocard[2];
 		int				index1, index2;
 
@@ -760,11 +741,7 @@ void CRunRon::get_counts(void)
 		ron$prnuts = ron$prnuts / ron$total;
 
 
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CRunRon::get_counts :\n"); 
-		throw;
-	}
-#endif
+
+		__SEH_LOGFATAL("CRunRon::get_counts :\n"); 
+
 }
