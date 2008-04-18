@@ -47,16 +47,16 @@ IMPLEMENT_DYNCREATE(CSAPrefsSubDlg, CDialog)
 
 CSAPrefsSubDlg::CSAPrefsSubDlg()
 {
-   ASSERT(0);
-   // don't use this constructor!
+    ASSERT(0);
+    // don't use this constructor!
 }
 
 //////////////////////////////////////////////////////////////////////
 
 CSAPrefsSubDlg::CSAPrefsSubDlg(UINT nID, CWnd *pParent /*=NULL*/)
-: CDialog(nID)
+        : CDialog(nID)
 {
-   m_id = nID;
+    m_id = nID;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -68,56 +68,56 @@ CSAPrefsSubDlg::~CSAPrefsSubDlg()
 //////////////////////////////////////////////////////////////////////
 
 BEGIN_MESSAGE_MAP(CSAPrefsSubDlg, CDialog)
-	//{{AFX_MSG_MAP(CSAPrefsSubDlg)
-	//}}AFX_MSG_MAP
+    //{{AFX_MSG_MAP(CSAPrefsSubDlg)
+    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 //////////////////////////////////////////////////////////////////////
 
 void CSAPrefsSubDlg::OnOK()
 {
-   EndDialog(IDOK);
+    EndDialog(IDOK);
 }
 
 //////////////////////////////////////////////////////////////////////
 
 void CSAPrefsSubDlg::OnCancel()
 {
-   EndDialog(IDCANCEL);
+    EndDialog(IDCANCEL);
 }
 
 //////////////////////////////////////////////////////////////////////
 
-BOOL CSAPrefsSubDlg::PreTranslateMessage(MSG* pMsg) 
+BOOL CSAPrefsSubDlg::PreTranslateMessage(MSG* pMsg)
 {
-	// Don't let CDialog process the Escape key.
-	if ((pMsg->message == WM_KEYDOWN) && (pMsg->wParam == VK_ESCAPE))
-	{
-		return TRUE;
-	}
-	
-	// Don't let CDialog process the Return key, if a multi-line edit has focus
-	if ((pMsg->message == WM_KEYDOWN) && (pMsg->wParam == VK_RETURN))
-	{
-		// Special case: if control with focus is an edit control with
-		// ES_WANTRETURN style, let it handle the Return key.
+    // Don't let CDialog process the Escape key.
+    if ((pMsg->message == WM_KEYDOWN) && (pMsg->wParam == VK_ESCAPE))
+    {
+        return TRUE;
+    }
 
-		TCHAR szClass[10];
-		CWnd* pWndFocus = GetFocus();
-		if (((pWndFocus = GetFocus()) != NULL) &&
-			IsChild(pWndFocus) &&
-			(pWndFocus->GetStyle() & ES_WANTRETURN) &&
-			GetClassName(pWndFocus->m_hWnd, szClass, 10) &&
-			(lstrcmpi(szClass, _T("EDIT")) == 0))
-		{
-			pWndFocus->SendMessage(WM_CHAR, pMsg->wParam, pMsg->lParam);
-			return TRUE;
-		}
+    // Don't let CDialog process the Return key, if a multi-line edit has focus
+    if ((pMsg->message == WM_KEYDOWN) && (pMsg->wParam == VK_RETURN))
+    {
+        // Special case: if control with focus is an edit control with
+        // ES_WANTRETURN style, let it handle the Return key.
 
-		return FALSE;
-	}
+        TCHAR szClass[10];
+        CWnd* pWndFocus = GetFocus();
+        if (((pWndFocus = GetFocus()) != NULL) &&
+                IsChild(pWndFocus) &&
+                (pWndFocus->GetStyle() & ES_WANTRETURN) &&
+                GetClassName(pWndFocus->m_hWnd, szClass, 10) &&
+                (lstrcmpi(szClass, _T("EDIT")) == 0))
+        {
+            pWndFocus->SendMessage(WM_CHAR, pMsg->wParam, pMsg->lParam);
+            return TRUE;
+        }
 
-	return CDialog::PreTranslateMessage(pMsg);
+        return FALSE;
+    }
+
+    return CDialog::PreTranslateMessage(pMsg);
 }
 
 //////////////////////////////////////////////////////////////////////

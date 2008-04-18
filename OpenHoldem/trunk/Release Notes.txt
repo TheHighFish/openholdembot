@@ -39,6 +39,8 @@ BUG FIXES:
 MAINTENANCE:
 - Removed code-clones in registry.cpp. Replaced by functions. (TheHighFish)
 - Replaced exception handling code clones by macros. (TheHighFish)
+- Used a code indenter to beautify the *.cpp files. Atm *.h files still to do. 
+  Looking for an easier solution. (TheHighFish)
   
   
   
