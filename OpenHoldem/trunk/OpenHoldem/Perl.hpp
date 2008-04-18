@@ -38,7 +38,7 @@ extern class Perl
 	bool Formula_loaded;
 
  private:
-	void send_Callback_Pointer_to_gws();
+	void send_Callback_Pointer();
 	void do_ErrorCheck(int the_ErrorCode);
 	bool load_DLL(void);
 
