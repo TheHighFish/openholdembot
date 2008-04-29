@@ -334,6 +334,10 @@ void COpenHoldemView::draw_center_info_box(void) {
     RECT		cr;
     int			left, top, right, bottom;
     CDC			*pDC = GetDC();
+	int			height = 80;
+	
+	if (global.preferences.LogSymbol_enabled)
+		height += 40;
 
     // Get size of current client window
     GetClientRect(&cr);
@@ -342,7 +346,7 @@ void COpenHoldemView::draw_center_info_box(void) {
     left = cr.right/2-70;
     top = 4;
     right = cr.right/2+70;
-    bottom = 84;
+    bottom = top+height;
 
     pTempPen = (CPen*)pDC->SelectObject(&black_pen);
     oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
@@ -412,6 +416,13 @@ void COpenHoldemView::draw_center_info_box(void) {
         s.Format("  Pot: %.0f\n", symbols.sym.pot);
     }
     t.Append(s);
+	if (symbols.user_chair_confirmed && symbols.sym.playing) {
+		for (int i=0; i<min(5, symbols.logsymbols_collection.GetCount()); i++)
+		{
+			s.Format("  Log: %s\n", symbols.logsymbols_collection[i]);
+			t.Append(s);
+		}
+	}
 
     // Prwin iterator
     //EnterCriticalSection(&cs_prwin);

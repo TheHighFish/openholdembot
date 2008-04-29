@@ -36,7 +36,7 @@ public:
 
 	// formula tab
 	int precision, equal;
-	bool udf_sort, expand_std, expand_list, expand_udf;
+	bool udf_sort, udf_group, expand_std, expand_list, expand_udf;
 
 	// prefs - analyzer
 	unsigned int	max_opponents;

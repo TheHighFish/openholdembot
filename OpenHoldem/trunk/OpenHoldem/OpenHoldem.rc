@@ -231,7 +231,8 @@ BEGIN
         MENUITEM "Show &Selection Margin",      ID_FORMULA_VIEW_SHOWSELECTIONMARGIN
         MENUITEM "Show &Folding Margin",        ID_FORMULA_VIEW_SHOWFOLDINGMARGIN
         MENUITEM "Synta&x Coloring",            ID_FORMULA_VIEW_SYNTAXCOLORING
-        MENUITEM "So&rt UDF's",                 ID_FORMULA_VIEW_SORTUDF
+        MENUITEM "So&rt UDFs",                  ID_FORMULA_VIEW_SORTUDF
+        MENUITEM "&Group UDFs",                 ID_FORMULA_VIEW_GROUPUDFS
     END
     POPUP "&Debug"
     BEGIN

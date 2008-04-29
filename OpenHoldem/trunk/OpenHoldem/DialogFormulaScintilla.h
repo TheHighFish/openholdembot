@@ -40,6 +40,7 @@
 #define VIEW_FOLDINGMARGIN		3
 #define VIEW_SYNTAXCOLORING		4
 #define VIEW_SORTUDF			5
+#define VIEW_GROUPUDF			6
 
 #define DEBUG_FDEBUG_LOGGING	0
 #define DEBUG_FDEBUG_MYTURN		1
@@ -134,6 +135,7 @@ protected:
 	afx_msg void OnFormulaDebugLogfdebug();
 	afx_msg void OnFormulaDebugMyturn();
 	afx_msg void OnFormulaViewSortudf();
+	afx_msg void OnFormulaViewGroupudf();
 	afx_msg void OnHelpWiki();
 	afx_msg void OnHelpForums();
 	void sort_udf_tree();
@@ -156,6 +158,16 @@ protected:
 	HTREEITEM AddSymbolSubTitle(HTREEITEM parentItem, const char *title, const char *description=NULL);
 	HTREEITEM AddSymbol(HTREEITEM parentItem, const char *symbol, const char *description);
 	HTREEITEM hRawItem, hCatItem;
+
+	void      PopulateUDFs();
+	HTREEITEM FindUDFGroupItem(const char *groupName);
+	HTREEITEM FindUDFStartingItem(const char *groupName);
+	HTREEITEM MoveTreeItem(HTREEITEM hItem, HTREEITEM hNewParent, const char *name, bool bSelect);
+	void      GetGroupName(const char *functionName, CString &groupName);
+	void      RemoveSingleItemGroups();
+	void      GroupUDFs();
+	void      UngroupUDFs();
+	HTREEITEM hUDFItem;
 
 	void HandleEnables(bool All);
 
@@ -190,6 +202,7 @@ protected:
 	int				m_precision, m_equal;	// precision for debug tab
 	bool			m_fdebuglog, m_fdebuglog_myturn;
 	bool			m_udf_sort;				// UDF sort preference
+	bool			m_udf_group;			// UDF group preference
 	bool			m_is_toolbar_visible, m_are_linenumbers_visible, m_is_selection_margin_visible, m_is_folding_margin_visible;
 	bool			m_is_syntax_colored;
 

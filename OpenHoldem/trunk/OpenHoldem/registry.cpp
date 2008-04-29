@@ -38,7 +38,7 @@ void Registry::init_Defaults(void)
 
     precision = 4;
     equal = 12;
-    udf_sort = expand_std = expand_list = expand_udf = false;
+    udf_sort = udf_group = expand_std = expand_list = expand_udf = false;
 
     // symbols
     max_opponents = 9;
@@ -315,6 +315,7 @@ void Registry::read_reg(void)
         read_OH_RegistryKey(hKey, "precision", &precision);
         read_OH_RegistryKey(hKey, "equal", &equal);
         read_OH_RegistryKey(hKey, "udf_sort", &udf_sort);
+        read_OH_RegistryKey(hKey, "udf_group", &udf_group);
         read_OH_RegistryKey(hKey, "udf_sort", &udf_sort);
         read_OH_RegistryKey(hKey, "expand_std", &expand_std);
         read_OH_RegistryKey(hKey, "expand_list", &expand_list);
@@ -461,6 +462,7 @@ void Registry::write_reg(void)
     write_OH_RegistryKey(hKey, "precision", precision);
     write_OH_RegistryKey(hKey, "equal", equal);
     write_OH_RegistryKey(hKey, "udf_sort", udf_sort);
+    write_OH_RegistryKey(hKey, "udf_group", udf_group);
     write_OH_RegistryKey(hKey, "expand_std", expand_std);
     write_OH_RegistryKey(hKey, "expand_list", expand_list);
     write_OH_RegistryKey(hKey, "expand_udf", expand_udf);

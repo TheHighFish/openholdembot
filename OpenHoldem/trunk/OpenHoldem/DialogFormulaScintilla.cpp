@@ -185,11 +185,14 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
     m_precision = 4;
     m_equal = 12;
     m_udf_sort = false;
+	m_udf_group = false;
 
     ok_to_update_debug = false;
 
     m_pActiveScinCtrl = NULL;
     m_pFRDlg = NULL;
+
+	hUDFItem = NULL;
 
     __SEH_LOGFATAL("CDlgFormulaScintilla::Constructor :\n");
 
@@ -300,6 +303,7 @@ BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
     ON_COMMAND(ID_FORMULA_DEBUG_MYTURN, &CDlgFormulaScintilla::OnFormulaDebugMyturn)
     ON_WM_SETCURSOR()
     ON_COMMAND(ID_FORMULA_VIEW_SORTUDF, &CDlgFormulaScintilla::OnFormulaViewSortudf)
+    ON_COMMAND(ID_FORMULA_VIEW_GROUPUDFS, &CDlgFormulaScintilla::OnFormulaViewGroupudf)
 END_MESSAGE_MAP()
 
 CScintillaWnd *CDlgFormulaScintilla::SetupScintilla(CScintillaWnd *pWnd) {
@@ -443,27 +447,10 @@ BOOL CDlgFormulaScintilla::OnInitDialog() {
         m_FormulaTree.InsertItem(m_wrk_formula.mHandList[i].list, parent);
     }
 
-    parent = m_FormulaTree.InsertItem("User Defined Functions");
+	hUDFItem = parent = m_FormulaTree.InsertItem("User Defined Functions");
     m_FormulaTree.SetItemState(parent, TVIS_BOLD | (reg.expand_udf ? TVIS_EXPANDED : 0), TVIS_BOLD | (reg.expand_udf ? TVIS_EXPANDED : 0) );
-    N = (int) m_wrk_formula.mFunction.GetSize();
-    for (i=0; i<N; i++) {
-        if (m_wrk_formula.mFunction[i].func != "notes" &&
-                m_wrk_formula.mFunction[i].func != "dll" &&
-                m_wrk_formula.mFunction[i].func != "f$alli" &&
-                m_wrk_formula.mFunction[i].func != "f$swag" &&
-                m_wrk_formula.mFunction[i].func != "f$srai" &&
-                m_wrk_formula.mFunction[i].func != "f$rais" &&
-                m_wrk_formula.mFunction[i].func != "f$call" &&
-                m_wrk_formula.mFunction[i].func != "f$prefold" &&
-                m_wrk_formula.mFunction[i].func != "f$evrais" &&
-                m_wrk_formula.mFunction[i].func != "f$evcall" &&
-                m_wrk_formula.mFunction[i].func != "f$P" &&
-                m_wrk_formula.mFunction[i].func != "f$play" &&
-                m_wrk_formula.mFunction[i].func != "f$test" &&
-                m_wrk_formula.mFunction[i].func != "f$debug" ) {
-            m_FormulaTree.InsertItem(m_wrk_formula.mFunction[i].func, parent);
-        }
-    }
+    m_udf_group = reg.udf_group;
+	PopulateUDFs();
 
     SetupScintilla(&m_EmptyScinCtrl);
     m_ScinArray.Add(&m_EmptyScinCtrl);
@@ -494,7 +481,7 @@ BOOL CDlgFormulaScintilla::OnInitDialog() {
     if (m_udf_sort)
         sort_udf_tree();
 
-    HandleEnables(true);
+	HandleEnables(true);
 
     //  Set auto button state
     m_ButtonAuto.SetWindowText("Auto");
@@ -512,6 +499,122 @@ BOOL CDlgFormulaScintilla::OnInitDialog() {
 
     __SEH_LOGFATAL("CDlgFormulaScintilla::OnInitDialog :\n");
 
+}
+
+void CDlgFormulaScintilla::RemoveSingleItemGroups()
+{
+	__SEH_HEADER
+	HTREEITEM hUDFChildItem = m_FormulaTree.GetChildItem(hUDFItem);
+	HTREEITEM hNextLevelItem, hNextItem;
+	CString fnName;
+	while (hUDFChildItem != NULL)
+	{
+		if (!m_FormulaTree.ItemHasChildren(hUDFChildItem)) {
+			hUDFChildItem = m_FormulaTree.GetNextSiblingItem(hUDFChildItem);
+			continue;
+		}
+
+		hNextItem = m_FormulaTree.GetNextSiblingItem(hUDFChildItem);
+		hNextLevelItem = m_FormulaTree.GetChildItem(hUDFChildItem);
+		if (hNextLevelItem != NULL && m_FormulaTree.GetNextSiblingItem(hNextLevelItem) == NULL) {
+			MoveTreeItem(hNextLevelItem, hUDFItem, NULL, false);
+			m_FormulaTree.DeleteItem(hUDFChildItem);
+		}
+		hUDFChildItem = hNextItem;
+	}
+	__SEH_LOGFATAL("CDlgFormulaScintilla::RemoveSingleItemGroups() :\n");
+}
+
+void CDlgFormulaScintilla::GetGroupName(const char *functionName, CString &groupName)
+{
+	groupName = functionName;
+	if (groupName.Find("f$") != 0)
+		groupName.Empty();
+	else {
+		int index = groupName.Find("_");
+		if (index < 2)
+			groupName.Empty();
+		else
+			groupName = groupName.Mid(2, index-2);
+	}
+}
+
+void CDlgFormulaScintilla::GroupUDFs()
+{
+	__SEH_HEADER
+	HTREEITEM hUDFChildItem = m_FormulaTree.GetChildItem(hUDFItem);
+	HTREEITEM hNextItem;
+	CString groupName, itemText;
+	while (hUDFChildItem != NULL)
+	{
+		hNextItem = m_FormulaTree.GetNextSiblingItem(hUDFChildItem);
+		if (!m_FormulaTree.ItemHasChildren(hUDFChildItem)) {
+			itemText = m_FormulaTree.GetItemText(hUDFChildItem);
+			GetGroupName(itemText, groupName);
+			if (!groupName.IsEmpty()) {
+				HTREEITEM hExistingGroup = FindUDFGroupItem(groupName);
+				if (!hExistingGroup)
+					hExistingGroup = m_FormulaTree.InsertItem(groupName, hUDFItem);
+				MoveTreeItem(hUDFChildItem, hExistingGroup, itemText, false);
+			}
+		}
+		hUDFChildItem = hNextItem;
+	}
+	RemoveSingleItemGroups();
+	__SEH_LOGFATAL("CDlgFormulaScintilla::GroupUDFs() :\n");
+}
+
+void CDlgFormulaScintilla::UngroupUDFs()
+{
+	__SEH_HEADER
+	HTREEITEM hUDFChildItem = m_FormulaTree.GetChildItem(hUDFItem);
+	HTREEITEM hGroupedUDFItem, hNextItem;
+	while (hUDFChildItem != NULL)
+	{
+		if (!m_FormulaTree.ItemHasChildren(hUDFChildItem)) {
+			hUDFChildItem = m_FormulaTree.GetNextSiblingItem(hUDFChildItem);
+			continue;
+		}
+
+		hGroupedUDFItem = m_FormulaTree.GetChildItem(hUDFChildItem);
+		while (hGroupedUDFItem) {
+			hNextItem = m_FormulaTree.GetNextSiblingItem(hGroupedUDFItem);
+			MoveTreeItem(hGroupedUDFItem, hUDFItem, NULL, false);
+			hGroupedUDFItem = hNextItem;
+		}
+		hNextItem = m_FormulaTree.GetNextSiblingItem(hUDFChildItem);
+		m_FormulaTree.DeleteItem(hUDFChildItem);
+		hUDFChildItem = hNextItem;
+	}
+	__SEH_LOGFATAL("CDlgFormulaScintilla::UngroupUDFs() :\n");
+}
+
+void CDlgFormulaScintilla::PopulateUDFs()
+{
+    __SEH_HEADER
+	for (int i=0; i<m_wrk_formula.mFunction.GetSize(); i++) 
+	{
+        if (m_wrk_formula.mFunction[i].func != "notes" &&
+                m_wrk_formula.mFunction[i].func != "dll" &&
+                m_wrk_formula.mFunction[i].func != "f$alli" &&
+                m_wrk_formula.mFunction[i].func != "f$swag" &&
+                m_wrk_formula.mFunction[i].func != "f$srai" &&
+                m_wrk_formula.mFunction[i].func != "f$rais" &&
+                m_wrk_formula.mFunction[i].func != "f$call" &&
+                m_wrk_formula.mFunction[i].func != "f$prefold" &&
+                m_wrk_formula.mFunction[i].func != "f$evrais" &&
+                m_wrk_formula.mFunction[i].func != "f$evcall" &&
+                m_wrk_formula.mFunction[i].func != "f$P" &&
+                m_wrk_formula.mFunction[i].func != "f$play" &&
+                m_wrk_formula.mFunction[i].func != "f$test" &&
+                m_wrk_formula.mFunction[i].func != "f$debug" ) 
+		{
+			m_FormulaTree.InsertItem(m_wrk_formula.mFunction[i].func, hUDFItem);
+        }
+    }
+	if (m_udf_group)
+		GroupUDFs();
+    __SEH_LOGFATAL("CDlgFormulaScintilla::PopulateUDFs() :\n");
 }
 
 BOOL CDlgFormulaScintilla::PreTranslateMessage(MSG* pMsg)
@@ -662,8 +765,8 @@ void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pR
 
     StopAutoButton();
 
-    // A root item was selected
-    if (m_FormulaTree.GetParentItem(m_FormulaTree.GetSelectedItem()) == NULL)
+    // A root item was selected or a UDF group item
+    if (m_FormulaTree.GetParentItem(m_FormulaTree.GetSelectedItem()) == NULL || m_FormulaTree.ItemHasChildren(m_FormulaTree.GetSelectedItem()))
     {
         if (m_pActiveScinCtrl)
         {
@@ -783,6 +886,55 @@ void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pR
 
 }
 
+HTREEITEM CDlgFormulaScintilla::FindUDFGroupItem(const char *groupName)
+{
+	CString tempString;
+	HTREEITEM searchItem = m_FormulaTree.GetChildItem(hUDFItem);
+	while (searchItem) {
+		if (m_FormulaTree.ItemHasChildren(searchItem)) {
+			tempString = m_FormulaTree.GetItemText(searchItem);
+			if (!tempString.Compare(groupName))
+				return searchItem;
+		}
+		searchItem = m_FormulaTree.GetNextSiblingItem(searchItem);
+	}
+	return NULL;
+}
+
+HTREEITEM CDlgFormulaScintilla::FindUDFStartingItem(const char *groupName)
+{
+	CString searchString, tempString;
+	searchString.Format("f$%s_", groupName);
+	HTREEITEM searchItem = m_FormulaTree.GetChildItem(hUDFItem);
+	while (searchItem) {
+		if (!m_FormulaTree.ItemHasChildren(searchItem)) {
+			tempString = m_FormulaTree.GetItemText(searchItem);
+			if (tempString.Find(searchString) == 0)
+				return searchItem; 
+		}
+		searchItem = m_FormulaTree.GetNextSiblingItem(searchItem);
+	}
+	return NULL;
+}
+
+HTREEITEM CDlgFormulaScintilla::MoveTreeItem(HTREEITEM hItem, HTREEITEM hNewParent, const char *name, bool bSelect)
+{
+	HTREEITEM hMovedItem;
+	if (name)
+		hMovedItem = m_FormulaTree.InsertItem(name, hNewParent);
+	else {
+		CString itemName;
+		itemName = m_FormulaTree.GetItemText(hItem);
+		hMovedItem = m_FormulaTree.InsertItem(itemName, hNewParent);
+	}
+	m_FormulaTree.SetItemData(hMovedItem, m_FormulaTree.GetItemData(hItem));
+	m_FormulaTree.DeleteItem(hItem);
+	if (bSelect)
+		m_FormulaTree.SelectItem(hMovedItem);
+
+	return hMovedItem;
+}
+
 void CDlgFormulaScintilla::OnNew() {
     __SEH_HEADER
     CDlgNew newdlg;
@@ -826,14 +978,27 @@ void CDlgFormulaScintilla::OnNew() {
             m_wrk_formula.mFunction.Add(Func);
 
             // Add to tree
-            p = m_FormulaTree.GetParentItem(m_FormulaTree.GetSelectedItem());
-            if (p == NULL) {  // Selected item is a parent item
-                newhtitem = m_FormulaTree.InsertItem(newdlg.CSnewname, m_FormulaTree.GetSelectedItem());
-            }
-            else {
-                newhtitem = m_FormulaTree.InsertItem(newdlg.CSnewname, p);
-            }
-
+			HTREEITEM hNewParent = hUDFItem;
+			if (m_udf_group) {
+				CString tempString;
+				CString groupName;
+				GetGroupName(newdlg.CSnewname, groupName);
+				if (!groupName.IsEmpty()) {
+					// Does a group already exist?
+					HTREEITEM hExistingGroup = FindUDFGroupItem(groupName);
+					if (hExistingGroup) 
+						hNewParent = hExistingGroup;
+					else {
+						// If a group does not exist, is there another UDF to group together?
+						HTREEITEM matchingItem = FindUDFStartingItem(groupName);
+						if (matchingItem) {
+							hNewParent = m_FormulaTree.InsertItem(groupName, hUDFItem);
+							MoveTreeItem(matchingItem, hNewParent, NULL, false);
+						}
+					}
+				}
+			}
+            newhtitem = m_FormulaTree.InsertItem(newdlg.CSnewname, hNewParent);
             if (m_udf_sort)
                 sort_udf_tree();
         }
@@ -865,6 +1030,7 @@ void CDlgFormulaScintilla::OnRename() {
     rendlg.CSoldname = s;
 
     if (rendlg.DoModal() == IDOK) {
+		bool bRenameUDF = false;
         // Renaming a list
         if (memcmp(str, "list", 4) == 0) {
             // Find proper list
@@ -874,13 +1040,14 @@ void CDlgFormulaScintilla::OnRename() {
                     // Update it in the CArray working set
                     m_wrk_formula.mHandList[i].list = rendlg.CSnewname;
                     didRename = true;
-                    i=N+1; // Spew: I am not sure why the loop continues and skips over the next item on the list but it does.  I would hope that you do not have duplicate names
+					break;
                 }
             }
         }
 
         // Renaming a UDF
         else if (memcmp(str, "f$", 2) == 0) {
+			bRenameUDF = true;
             // Find proper UDF and display it
             N = (int) m_wrk_formula.mFunction.GetSize();
             for (i=0; i<N; i++) {
@@ -889,14 +1056,54 @@ void CDlgFormulaScintilla::OnRename() {
                     m_wrk_formula.mFunction[i].func = rendlg.CSnewname;
                     m_wrk_formula.mFunction[i].fresh = false;
                     didRename = true;
-                    i=N+1; // Spew: I am not sure why the loop continues and skips over the next item on the list but it does.  I would hope that you do not have duplicate names
+					break;
                 }
             }
         }
         if (didRename) {
-            m_FormulaTree.SetItemText(m_FormulaTree.GetSelectedItem(), rendlg.CSnewname);
-            if (m_udf_sort && memcmp(str, "f$", 2) == 0)
-                sort_udf_tree();
+			HTREEITEM hSelectedItem = m_FormulaTree.GetSelectedItem();
+			if (!bRenameUDF || !m_udf_group)
+				m_FormulaTree.SetItemText(hSelectedItem, rendlg.CSnewname);
+			else 
+			{
+				CString tempString, groupName = rendlg.CSnewname;
+				HTREEITEM oldParentItem = m_FormulaTree.GetParentItem(hSelectedItem);
+				HTREEITEM hNewParent = hUDFItem;
+	            CString parentName = m_FormulaTree.GetItemText(oldParentItem);
+				if (groupName.Find("f$") == 0) {
+					int index = groupName.Find("_");
+					if (index > 0) {
+						groupName = groupName.Mid(2, index-2);
+						if (parentName.Compare(groupName)) {
+							// Does a group already exist?
+							HTREEITEM hExistingGroup = FindUDFGroupItem(groupName);
+							if (hExistingGroup)
+								hNewParent = hExistingGroup;
+							else {
+								// If a group does not exist, is there another UDF to group together?
+								HTREEITEM matchingItem = FindUDFStartingItem(groupName);
+								if (matchingItem) {
+									hNewParent = m_FormulaTree.InsertItem(groupName, hUDFItem);
+									MoveTreeItem(matchingItem, hNewParent, NULL, false);
+								}
+							}
+						}
+					}
+				}
+				if (oldParentItem != hNewParent) {
+					MoveTreeItem(hSelectedItem, hNewParent, rendlg.CSnewname, true);
+					if (oldParentItem != hUDFItem) {
+						HTREEITEM hOldSiblingItem = m_FormulaTree.GetChildItem(oldParentItem);
+						if (hOldSiblingItem != NULL && m_FormulaTree.GetNextSiblingItem(hOldSiblingItem) == NULL) {
+							MoveTreeItem(hOldSiblingItem, hUDFItem, NULL, false);
+							m_FormulaTree.DeleteItem(oldParentItem);
+						}
+					}
+				} else
+					m_FormulaTree.SetItemText(hSelectedItem, rendlg.CSnewname);
+				if (m_udf_sort && memcmp(str, "f$", 2) == 0)
+					sort_udf_tree();
+			}
             SetWindowText("Formula - " + rendlg.CSnewname);
             m_FormulaTree.SetFocus();
             m_dirty = true;
@@ -911,8 +1118,8 @@ void CDlgFormulaScintilla::OnRename() {
 void CDlgFormulaScintilla::OnDelete() {
     __SEH_HEADER
     int ret, N, i;
-    HTREEITEM h = m_FormulaTree.GetSelectedItem();
-    CString s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
+    HTREEITEM hItem = m_FormulaTree.GetSelectedItem();
+    CString s = m_FormulaTree.GetItemText(hItem);
     CMenu *file_menu = this->GetMenu()->GetSubMenu(0);
 
     StopAutoButton();
@@ -941,10 +1148,19 @@ void CDlgFormulaScintilla::OnDelete() {
 
                     // Remove it from the CArray working set
                     m_wrk_formula.mFunction.RemoveAt(i, 1);
+
                     // Update the tree
-                    m_FormulaTree.DeleteItem(h);
+					HTREEITEM oldParentItem = m_FormulaTree.GetParentItem(hItem);
+                    m_FormulaTree.DeleteItem(hItem);
+					if (m_udf_group) {
+						HTREEITEM hOldSiblingItem = m_FormulaTree.GetChildItem(oldParentItem);
+						if (m_FormulaTree.GetNextSiblingItem(hOldSiblingItem) == NULL) {
+							MoveTreeItem(hOldSiblingItem, hUDFItem, NULL, true);
+							m_FormulaTree.DeleteItem(oldParentItem);
+						}
+					}
                     m_dirty = true;
-                    i=N+1;
+                    break;
                 }
             }
         }
@@ -969,9 +1185,9 @@ void CDlgFormulaScintilla::OnDelete() {
                     // Remove it from the CArray working set
                     m_wrk_formula.mHandList.RemoveAt(i, 1);
                     // Update the tree
-                    m_FormulaTree.DeleteItem(h);
+                    m_FormulaTree.DeleteItem(hItem);
                     m_dirty = true;
-                    i=N+1;
+                    break;
                 }
             }
         }
@@ -1253,7 +1469,7 @@ void CDlgFormulaScintilla::LastChangeToFormula(SFormula *f) {
     CScintillaWnd *pCurScin = reinterpret_cast<CScintillaWnd *>(m_FormulaTree.GetItemData(hSelected));
 
     // A root item was selected, do nothing
-    if (m_FormulaTree.GetParentItem(m_FormulaTree.GetSelectedItem()) == NULL)
+    if (m_FormulaTree.GetParentItem(m_FormulaTree.GetSelectedItem()) == NULL || m_FormulaTree.GetChildItem(m_FormulaTree.GetSelectedItem()) != NULL )
     {
     }
     else if (!pCurScin) {
@@ -2395,6 +2611,18 @@ BOOL CDlgFormulaScintilla::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
     return CDialog::OnSetCursor(pWnd, nHitTest, message);
 }
 
+void CDlgFormulaScintilla::OnFormulaViewGroupudf()
+{
+    m_udf_group = !m_udf_group;
+	if (m_udf_group)
+		GroupUDFs();
+	else
+		UngroupUDFs();
+    if (m_udf_sort)
+        sort_udf_tree();
+	HandleEnables(true);
+}
+
 void CDlgFormulaScintilla::OnFormulaViewSortudf()
 {
     m_udf_sort = !m_udf_sort;
@@ -2402,25 +2630,80 @@ void CDlgFormulaScintilla::OnFormulaViewSortudf()
         sort_udf_tree();
 
     HandleEnables(true);
+#if 0 // Spew's work in progress printing
+	CPrintDialog dlg(FALSE);
+	if (dlg.DoModal() == IDOK)
+	{
+		// Get a handle to the printer device context (DC).
+		HDC hdc = dlg.GetPrinterDC();
+		CDC *pPrinterDC = CDC::FromHandle(hdc);
+		ASSERT(hdc);
+
+		AfxInitRichEdit2();
+		CRichEditCtrl re;
+		CRect rect(0, 0, 100, 100);
+		re.Create(WS_CHILD|ES_MULTILINE, rect, this, 111122);
+		re.SetSel(0,1);
+		long selStart = m_pActiveScinCtrl->GetSelectionStart();
+		long selEnd = GetSelectionEnd();
+		m_pActiveScinCtrl->SelectAll();
+		m_pActiveScinCtrl->Copy();
+		m_pActiveScinCtrl->SendMessage(SCI_SETSEL, selStart, selEnd);
+		re.Paste();
+
+		CHARFORMAT2 cf;
+		re.GetDefaultCharFormat(cf);
+		cf.
+
+		DOCINFO docinfo;
+		memset(&docinfo, 0, sizeof(docinfo));
+		docinfo.cbSize = sizeof(docinfo);
+		docinfo.lpszDocName = _T("Spew Test");
+
+		if (pPrinterDC->StartDoc(&docinfo) >= 0) {
+			if (pPrinterDC->StartPage() >= 0) {
+				FORMATRANGE fr;
+				// Get the page width and height from the printer.
+				long lPageWidth = ::MulDiv(pPrinterDC->GetDeviceCaps(PHYSICALWIDTH), 1440, pPrinterDC->GetDeviceCaps(LOGPIXELSX));
+				long lPageHeight = ::MulDiv(pPrinterDC->GetDeviceCaps(PHYSICALHEIGHT), 1440, pPrinterDC->GetDeviceCaps(LOGPIXELSY));
+				CRect rcPage(0, 0, lPageWidth, lPageHeight);
+
+				// Format the text and render it to the printer.
+				fr.hdc = pPrinterDC->m_hDC;
+				fr.hdcTarget = pPrinterDC->m_hDC;
+				fr.rc = rcPage;
+				fr.rcPage = rcPage;
+				fr.chrg.cpMin = 0;
+				fr.chrg.cpMax = -1;
+				re.FormatRange(&fr, TRUE);
+
+				// Update the display with the new formatting.
+				RECT rcClient;
+				re.GetClientRect(&rcClient);
+				re.DisplayBand(&rcClient);
+				pPrinterDC->EndPage();
+			}
+			pPrinterDC->EndDoc();
+		}
+		re.DestroyWindow();
+
+	   // Clean up.
+	   pPrinterDC->DeleteDC();
+	}
+#endif
 }
 
 void CDlgFormulaScintilla::sort_udf_tree()
 {
-    HTREEITEM	hItem = m_FormulaTree.GetChildItem(NULL);
-    CString		text = "";
-
-    if (hItem != NULL)
-        text = m_FormulaTree.GetItemText(hItem);
-
-    while (hItem != NULL && text != "User Defined Functions")
-    {
-        hItem = m_FormulaTree.GetNextItem(hItem, TVGN_NEXT);
-        if (hItem != NULL)
-            text = m_FormulaTree.GetItemText(hItem);
-    }
-
-    if (hItem != NULL && text == "User Defined Functions")
-        m_FormulaTree.SortChildren(hItem);
+	if (hUDFItem != NULL) {
+        m_FormulaTree.SortChildren(hUDFItem);
+		HTREEITEM hSearchItem = m_FormulaTree.GetChildItem(hUDFItem);
+		while (hSearchItem) {
+			if (m_FormulaTree.ItemHasChildren(hSearchItem))
+		        m_FormulaTree.SortChildren(hSearchItem);
+			hSearchItem = m_FormulaTree.GetNextSiblingItem(hSearchItem);
+		}
+	}
 }
 
 void CDlgFormulaScintilla::save_settings_to_registry()
@@ -2443,6 +2726,7 @@ void CDlgFormulaScintilla::save_settings_to_registry()
     reg.fdebuglog = m_fdebuglog;
     reg.fdebuglog_myturn = m_fdebuglog_myturn;
     reg.udf_sort = m_udf_sort;
+    reg.udf_group = m_udf_group;
 
     // Tree expansion settings
     hItem = m_FormulaTree.GetChildItem(NULL);
@@ -2489,7 +2773,7 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
 
     bFindInfo = !m_FindLastSearch.IsEmpty();
     bTreeHeadingSelected = (parentItem == NULL);
-    bTreeValidLeafSelected = (!bTreeHeadingSelected && curSelected);
+    bTreeValidLeafSelected = (!bTreeHeadingSelected && curSelected && m_FormulaTree.GetChildItem(curSelected) == NULL);
     bEditorWindowActive = (m_pActiveScinCtrl && GetFocus() == m_pActiveScinCtrl);
     bFormulaVisible = (m_TabControl.GetCurSel() == 0);
 
@@ -2506,6 +2790,14 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
     if (headingText == "Standard Functions")			iWhichTypeSelected = 0;
     else if (headingText == "Hand Lists")				iWhichTypeSelected = 1;
     else if (headingText == "User Defined Functions")	iWhichTypeSelected = 2;
+	else {
+		HTREEITEM hNextLevelUp = m_FormulaTree.GetParentItem(parentItem);
+		if (hNextLevelUp != NULL) {
+			headingText = m_FormulaTree.GetItemText(hNextLevelUp);
+			if (headingText == "User Defined Functions")
+				iWhichTypeSelected = 2;
+		}
+	}
 
     // Just used to clean up the code a bit.  Basically, MenuEnableDisable[false] has the flags for disabling, and MenuEnableDisable[true] for enabling
     const int MenuEnableDisable[2] = {MF_BYPOSITION | MF_DISABLED | MF_GRAYED, MF_BYPOSITION | MF_ENABLED };
@@ -2573,6 +2865,7 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
     view_menu->CheckMenuItem(VIEW_FOLDINGMARGIN,	MenuCheckUncheck[m_is_folding_margin_visible]);
     view_menu->CheckMenuItem(VIEW_SYNTAXCOLORING,	MenuCheckUncheck[m_is_syntax_colored]);
     view_menu->CheckMenuItem(VIEW_SORTUDF,			MenuCheckUncheck[m_udf_sort]);
+    view_menu->CheckMenuItem(VIEW_GROUPUDF,			MenuCheckUncheck[m_udf_group]);
 
     // Debug Menu
     CMenu *debug_menu = this->GetMenu()->GetSubMenu(3);
