@@ -72,6 +72,10 @@ protected: // create from serialization only
 	afx_msg void OnPerlCheckSyntax();
 	afx_msg void OnPerlReloadFormula();
 	afx_msg void OnUpdateMenuPerlReloadFormula(CCmdUI* pCmdUI);
+	//  2008.04.29 by THF
+	afx_msg void OnUpdateMenuPerlCheckSyntax(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI);
+	
 
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);

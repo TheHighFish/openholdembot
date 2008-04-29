@@ -69,6 +69,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
     ON_UPDATE_COMMAND_UI(ID_PERL_LOADSPECIFICFORMULA, &CMainFrame::OnUpdateMenuPerlLoadSpecificFormula)
     //  2008.03.20 by THF
     ON_UPDATE_COMMAND_UI(ID_PERL_RELOADFORMULA, &CMainFrame::OnUpdateMenuPerlReloadFormula)
+	//  2008.04.29 by THF
+	ON_UPDATE_COMMAND_UI(ID_PERL_CHECKSYNTAX, &CMainFrame::OnUpdateMenuPerlCheckSyntax)
+	ON_UPDATE_COMMAND_UI(ID_PERL_EDITMAINFORMULA, &CMainFrame::OnUpdateMenuPerlEditMainFormula)
 
     //  Menu commands
     ON_COMMAND(ID_FILE_OPEN, &CMainFrame::OnFileOpen)
@@ -145,27 +148,24 @@ static UINT indicators[] = {
 
 // CMainFrame construction/destruction
 CMainFrame::CMainFrame() {
-
     __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
-
 
     __SEH_HEADER
     // Save startup directory
     ::GetCurrentDirectory(sizeof(global.startup_path) - 1, global.startup_path);
 
     __SEH_LOGFATAL("CMainFrame::Constructor :\n");
-
 }
 
 CMainFrame::~CMainFrame() {
     __SEH_HEADER
 
     __SEH_LOGFATAL("CMainFrame::Destructor :\n");
-
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     __SEH_HEADER
+
     CString			t;
 
     if (CFrameWnd::OnCreate(lpCreateStruct) == -1) {
@@ -197,11 +197,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     return 0;
 
     __SEH_LOGFATAL("CMainFrame::OnCreate :\n");
-
 }
 
 int CMainFrame::create_main_toolbar(void) {
     __SEH_HEADER
+
     TBBUTTONINFO	tbi;
     tbi.cbSize = sizeof(TBBUTTONINFO);
     tbi.dwMask = TBIF_STYLE;
@@ -244,11 +244,11 @@ int CMainFrame::create_main_toolbar(void) {
 
 
     __SEH_LOGFATAL("CMainFrame::create_main_toolbar :\n");
-
 }
 
 int CMainFrame::create_flags_toolbar(void) {
     __SEH_HEADER
+
     TBBUTTONINFO	tbi;
     tbi.cbSize = sizeof(TBBUTTONINFO);
     tbi.dwMask = TBIF_STYLE;
@@ -280,12 +280,12 @@ int CMainFrame::create_flags_toolbar(void) {
     return 0;
 
     __SEH_LOGFATAL("CMainFrame::create_flags_toolbar :\n");
-
 }
 
 
 void CMainFrame::align_toolbars(void) {
     __SEH_HEADER
+
     // Put the main toolbar and flags toolbar on the same line
     CRect rectBar1, rectBar2;
     RecalcLayout();
@@ -301,11 +301,11 @@ void CMainFrame::align_toolbars(void) {
     RecalcLayout();
 
     __SEH_LOGFATAL("CMainFrame::align_toolbars :\n");
-
 }
 
 int CMainFrame::create_status_bar(void) {
     __SEH_HEADER
+
     if (!m_wndStatusBar.Create(this) || !m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT)))	{
         TRACE0("Failed to create status bar\n");
         return -1;      // fail to create
@@ -320,15 +320,14 @@ int CMainFrame::create_status_bar(void) {
     m_wndStatusBar.SetPaneInfo(7, ID_INDICATOR_STATUS_NIT, NULL, 90);
     m_wndStatusBar.SetPaneInfo(8, ID_INDICATOR_STATUS_ACTION, NULL, 70);
 
-    return 0;
+	return 0;
 
-
-    __SEH_LOGFATAL("CMainFrame::create_status_bar :\n");
-
+	__SEH_LOGFATAL("CMainFrame::create_status_bar :\n");
 }
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
     __SEH_HEADER
+
     if ( !CFrameWnd::PreCreateWindow(cs) )
         return FALSE;
 
@@ -367,7 +366,6 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
     return true;
 
     __SEH_LOGFATAL("CMainFrame::PreCreateWindow :\n");
-
 }
 
 // CMainFrame message handlers
@@ -395,9 +393,7 @@ void CMainFrame::OnEditFormula() {
     m_formulaScintillaDlg->ShowWindow(SW_SHOW);
     m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, true);
 
-
     __SEH_LOGFATAL("CMainFrame::OnEditFormula :\n");
-
 }
 
 void CMainFrame::OnScraperOutput() {
@@ -421,16 +417,20 @@ void CMainFrame::OnScraperOutput() {
 
 
     __SEH_LOGFATAL("CMainFrame::OnScraperOutput :\n");
-
 }
 
 void CMainFrame::OnViewShootreplayframe()
 {
+	__SEH_HEADER
+
     global.create_replay_frame();
+
+	__SEH_LOGFATAL("CMainFrame::OnViewShootreplayframe\n")
 }
 
 void CMainFrame::OnEditPreferences() {
     __SEH_HEADER
+
     //CDlgPreferences  myDialog;
     CSAPrefsDialog dlg;
 
@@ -482,11 +482,11 @@ void CMainFrame::OnEditPreferences() {
     }
 
     __SEH_LOGFATAL("CMainFrame::OnEditPreferences :\n");
-
 }
 
 BOOL CMainFrame::DestroyWindow() {
     __SEH_HEADER
+
     bool			upd = true;
     int				updcount=0;
     Registry		reg;
@@ -544,11 +544,11 @@ BOOL CMainFrame::DestroyWindow() {
     return CFrameWnd::DestroyWindow();
 
     __SEH_LOGFATAL("CMainFrame::DestroyWindow :\n");
-
 }
 
 void CMainFrame::OnFileOpen() {
     __SEH_HEADER
+
     CFileDialog			cfd(true);
     CString				theKey = "DefWHFOpenLocation";
     char				path[MAX_PATH];
@@ -574,12 +574,12 @@ void CMainFrame::OnFileOpen() {
     }
 
     __SEH_LOGFATAL("CMainFrame::OnFileOpen :\n");
-
 }
 
 
 void CMainFrame::OnFileLoadTableMap() {
     __SEH_HEADER
+
     CFileDialog			cfd(true);
     int					line, ret;
     CString				e;
@@ -623,11 +623,11 @@ void CMainFrame::OnFileLoadTableMap() {
     }
 
     __SEH_LOGFATAL("CMainFrame::OnFileLoadTableMap :\n");
-
 }
 
 void CMainFrame::OnBnClickedGreenCircle() {
     __SEH_HEADER
+
     int								i, N, line;
     CDlgSelectTable					cstd;
     STableList						tablelisthold;
@@ -812,11 +812,11 @@ void CMainFrame::OnBnClickedGreenCircle() {
     }
 
     __SEH_LOGFATAL("CMainFrame::OnBnClickedGreenCircle :\n");
-
 }
 
 void CMainFrame::OnBnClickedRedCircle() {
     __SEH_HEADER
+
     int			updcount;
     bool		upd = true;
 
@@ -914,11 +914,11 @@ void CMainFrame::OnBnClickedRedCircle() {
     stop_log();
 
     __SEH_LOGFATAL("CMainFrame::OnBnClickedRedCircle :\n");
-
 }
 
 void CMainFrame::OnTimer(UINT nIDEvent) {
     __SEH_HEADER
+
     CardMask	Cards;
     int			nCards;
     HandVal		hv;
@@ -1158,13 +1158,12 @@ void CMainFrame::OnTimer(UINT nIDEvent) {
         }
     }
 
-
     __SEH_LOGFATAL("CMainFrame::OnTimer :\n");
-
 }
 
 void CMainFrame::OnClickedFlags() {
     __SEH_HEADER
+
     if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER0)) {
         global.flags[0] = true;
     }
@@ -1227,12 +1226,12 @@ void CMainFrame::OnClickedFlags() {
     }
 
     __SEH_LOGFATAL("CMainFrame::OnClickedFlags :\n");
-
 }
 
 
 void CMainFrame::OnAutoplayer() {
     __SEH_HEADER
+
     CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
     if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER)) {
@@ -1259,11 +1258,11 @@ void CMainFrame::OnAutoplayer() {
     }
 
     __SEH_LOGFATAL("CMainFrame::OnAutoplayer :\n");
-
 }
 
 void CMainFrame::OnUpdateStatus(CCmdUI *pCmdUI) {
     __SEH_HEADER
+
     m_wndStatusBar.SetPaneText(m_wndStatusBar.CommandToIndex(ID_INDICATOR_STATUS_PLCARDS), status_plcards);
     m_wndStatusBar.SetPaneText(m_wndStatusBar.CommandToIndex(ID_INDICATOR_STATUS_COMCARDS), status_comcards);
     m_wndStatusBar.SetPaneText(m_wndStatusBar.CommandToIndex(ID_INDICATOR_STATUS_POKERHAND), status_pokerhand);
@@ -1275,11 +1274,11 @@ void CMainFrame::OnUpdateStatus(CCmdUI *pCmdUI) {
     // if action==bet ... m_wndStatusBar.GetStatusBarCtrl().SetBkColor(RGB(180,180,180));
 
     __SEH_LOGFATAL("CMainFrame::OnUpdateStatus :\n");
-
 }
 
 void CMainFrame::OnDllLoad() {
     __SEH_HEADER
+
     if (cdll.hMod_dll!=NULL) {
         cdll.unload_dll();
     }
@@ -1289,13 +1288,13 @@ void CMainFrame::OnDllLoad() {
     }
 
     __SEH_LOGFATAL("CMainFrame::OnDllLoad :\n");
-
 }
 
 
 void CMainFrame::OnDllLoadspecificfile()
 {
     __SEH_HEADER
+
     CFileDialog			cfd(true);
     CString				theKey = "DefDLLOpenLocation";
     char				path[MAX_PATH];
@@ -1318,7 +1317,6 @@ void CMainFrame::OnDllLoadspecificfile()
     }
 
     __SEH_LOGFATAL("CMainFrame::OnDllLoadspecificfile :\n");
-
 }
 
 
@@ -1340,11 +1338,11 @@ void CMainFrame::OnPokerproConnect() {
     m_pproDlg->ShowWindow(SW_SHOW);
 
     __SEH_LOGFATAL("CMainFrame::OnPokerproConnect :\n");
-
 }
 
 void CMainFrame::OnMinMax(void) {
     __SEH_HEADER
+
     RECT		crect, wrect, rectBar1, rectBar2, statusBar;
     POINT		pt;
     int			tb_top, tb_bottom;
@@ -1400,11 +1398,11 @@ void CMainFrame::OnMinMax(void) {
     }
 
     __SEH_LOGFATAL("CMainFrame::OnMinMax :\n");
-
 }
 
 void CMainFrame::OnAttachTop(void) {
     __SEH_HEADER
+
     RECT	att_rect, wrect;
     ::GetWindowRect(global.attached_hwnd, &att_rect);
     GetWindowRect(&wrect);
@@ -1417,11 +1415,11 @@ void CMainFrame::OnAttachTop(void) {
     }
 
     __SEH_LOGFATAL("CMainFrame::OnAttachTop :\n");
-
 }
 
 void CMainFrame::OnAttachBottom(void){
     __SEH_HEADER
+
     RECT	att_rect, wrect;
     ::GetWindowRect(global.attached_hwnd, &att_rect);
     GetWindowRect(&wrect);
@@ -1434,11 +1432,11 @@ void CMainFrame::OnAttachBottom(void){
     }
 
     __SEH_LOGFATAL("CMainFrame::OnAttachBottom :\n");
-
 }
 
 void CMainFrame::OnLockBlinds(void){
     __SEH_HEADER
+
     CDlgLockBlinds	lockblinds_dlg;
     Registry reg;
 
@@ -1476,11 +1474,11 @@ void CMainFrame::OnLockBlinds(void){
     }
 
     __SEH_LOGFATAL("CMainFrame::OnLockBlinds :\n");
-
 }
 
 void CMainFrame::OnFormulaViewMainToolbar() {
     __SEH_HEADER
+
     if (!m_MainToolBar.IsVisible()) {
         ShowControlBar(&m_MainToolBar, TRUE, FALSE);
     }
@@ -1490,11 +1488,11 @@ void CMainFrame::OnFormulaViewMainToolbar() {
     RecalcLayout();
 
     __SEH_LOGFATAL("CMainFrame::OnFormulaViewMainToolbar :\n");
-
 }
 
 void CMainFrame::OnFormulaViewFlagsToolbar() {
     __SEH_HEADER
+
     if (!m_FlagsToolBar.IsVisible()) {
         ShowControlBar(&m_FlagsToolBar, TRUE, FALSE);
     }
@@ -1504,11 +1502,12 @@ void CMainFrame::OnFormulaViewFlagsToolbar() {
     RecalcLayout();
 
     __SEH_LOGFATAL("CMainFrame::OnFormulaViewFlagsToolbar :\n");
-
 }
 
-void CMainFrame::OnFormulaViewStatusbar() {
+void CMainFrame::OnFormulaViewStatusbar() 
+{
     __SEH_HEADER
+
     if (!m_wndStatusBar.IsVisible()) {
         ShowControlBar(&m_wndStatusBar, TRUE, FALSE);
     }
@@ -1518,7 +1517,6 @@ void CMainFrame::OnFormulaViewStatusbar() {
     RecalcLayout();
 
     __SEH_LOGFATAL("CMainFrame::OnFormulaViewStatusbar :\n");
-
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1526,29 +1524,47 @@ void CMainFrame::OnFormulaViewStatusbar() {
 
 void CMainFrame::OnUpdateMenuFileNew(CCmdUI* pCmdUI)
 {
+	__SEH_HEADER
+
     pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
                     !m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+
+	__SEH_LOGFATAL("CMainFrame::")
 }
 
 void CMainFrame::OnUpdateMenuFileOpen(CCmdUI* pCmdUI)
 {
+	__SEH_HEADER
+
     pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
                     !m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+
+	__SEH_LOGFATAL("CMainFrame::OnUpdateMenuFileOpen\n")
 }
 
 void CMainFrame::OnUpdateMenuFileLoadProfile(CCmdUI* pCmdUI)
 {
+	__SEH_HEADER
+
     pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
                     !m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+
+	__SEH_LOGFATAL("CMainFrame::OnUpdateMenuFileLoadProfile\n")
 }
 
 void CMainFrame::OnUpdateFileConnect(CCmdUI *pCmdUI)
 {
+	__SEH_HEADER
+
     pCmdUI->Enable(!global.attached_hwnd);
+
+	__SEH_LOGFATAL("CMainFrame::OnUpdateFileConnect\n")
 }
 
 void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI)
 {
+	__SEH_HEADER
+
     if (cdll.hMod_dll!=NULL) {
         pCmdUI->SetText("&Unload\tF4");
     }
@@ -1564,42 +1580,70 @@ void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI)
     else {
         pCmdUI->Enable(ppro.data.m_pinf[ppro.data.m_userchair].m_isActive&0x1 ? false : true);
     }
+
+	__SEH_LOGFATAL("CMainFrame::OnUpdateMenuDllLoad\n")
 }
 
 void CMainFrame::OnUpdateDllLoadspecificfile(CCmdUI *pCmdUI)
 {
+	__SEH_HEADER
+
     pCmdUI->Enable(cdll.hMod_dll ? false : true);
+
+	__SEH_LOGFATAL("CMainFrame::OnUpdateDllLoadspecificfile\n")
 }
 
 
 void CMainFrame::OnUpdatePokerproConnect(CCmdUI *pCmdUI) {
+	__SEH_HEADER
+
     pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
                     !m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) &&
                    !(ppro.m_socket!=INVALID_SOCKET) ? false : true);
+
+	__SEH_LOGFATAL("CMainFrame::OnUpdatePokerproConnect\n")
 }
 
 
 void CMainFrame::OnUpdateViewShootreplayframe(CCmdUI *pCmdUI)
 {
+	__SEH_HEADER
+
     pCmdUI->Enable(global.attached_hwnd!=NULL);
+
+	__SEH_LOGFATAL("CMainFrame::OnUpdateViewShootreplayframe\n")
 }
 
 void CMainFrame::OnUpdateViewMainToolbar(CCmdUI *pCmdUI) {
+	__SEH_HEADER
+
     pCmdUI->SetCheck(m_MainToolBar.IsVisible() ? 1 : 0);
+
+	__SEH_LOGFATAL("CMainFrame::OnUpdateViewMainToolbar\n")
 }
 
 void CMainFrame::OnUpdateViewFlagsToolbar(CCmdUI *pCmdUI) {
+	__SEH_HEADER
+
     pCmdUI->SetCheck(m_FlagsToolBar.IsVisible() ? 1 : 0);
+
+	__SEH_LOGFATAL("CMainFrame::OnUpdateViewFlagsToolbar\n")
 }
 
 void CMainFrame::OnUpdateViewStatusbar(CCmdUI *pCmdUI) {
+	__SEH_HEADER
+
     pCmdUI->SetCheck(m_wndStatusBar.IsVisible() ? 1 : 0);
+
+	__SEH_LOGFATAL("CMainFrame::OnUpdateViewStatusbar\n")
 }
 
 
 //  2008.03.04 by THF
 void CMainFrame::OnUpdateMenuPerlLoad(CCmdUI* pCmdUI)
 {
+	__SEH_HEADER
+
     if (the_Perl_Interpreter.is_a_Formula_loaded()) {
         pCmdUI->SetText("&Unload Formula\tF7");
     }
@@ -1608,21 +1652,32 @@ void CMainFrame::OnUpdateMenuPerlLoad(CCmdUI* pCmdUI)
     }
     pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
                     !m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+
+	__SEH_LOGFATAL("CMainFrame::OnUpdateMenuPerlLoad\n")
 }
 
 //  2008.02.07  by THF
 void CMainFrame::OnUpdateMenuPerlLoadSpecificFormula(CCmdUI* pCmdUI)
 {
+	__SEH_HEADER
+
     pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
                     !m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+
+	__SEH_LOGFATAL("CMainFrame::OnUpdateMenuPerlLoadSpecificFormula\n")
 }
 
 
 //  2008.03.20 by THF
 void CMainFrame::OnUpdateMenuPerlReloadFormula(CCmdUI* pCmdUI)
 {
-    pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-                    !m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+	__SEH_HEADER
+
+    pCmdUI->Enable((the_Perl_Interpreter.is_a_Formula_loaded() &&
+					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) &&
+                    m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)));
+
+	__SEH_LOGFATAL("CMainFrame::OnUpdateMenuPerlReloadFormula\n")
 }
 
 
@@ -1637,11 +1692,15 @@ BOOL CMainFrame::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
     }
 
     return CFrameWnd::OnSetCursor(pWnd, nHitTest, message);
+
+	__SEH_LOGFATAL("CMainFrame::OnSetCursor\n")
 }
 
 
 void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
 {
+	__SEH_HEADER
+
     if (nID == SC_CLOSE)
     {
         if (m_formulaScintillaDlg)
@@ -1656,13 +1715,14 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
     }
 
     CFrameWnd::OnSysCommand(nID, lParam);
+	__SEH_LOGFATAL("CMainFrame::OnSysCommand\n")
 }
 
 
 //  2008.03.03 by THF
-void CMainFrame::OnPerlLoadFormula()
-{
+void CMainFrame::OnPerlLoadFormula() {
     __SEH_HEADER
+
     if (the_Perl_Interpreter.is_a_Formula_loaded())
     {
         the_Perl_Interpreter.unload_FormulaFile();
@@ -1672,16 +1732,17 @@ void CMainFrame::OnPerlLoadFormula()
         //  Reload the most recent formula
         the_Perl_Interpreter.reload_FormulaFile();
     }
+	//  Make some noise, as there's no visible reaction
+	Beep(880, 125);	
 
     __SEH_LOGFATAL("CMainFrame::OnPerlLoadFormula :\n");
-
 }
 
 
 //  2008.03.03 by THF
-void CMainFrame::OnPerlLoadSpecificFormula()
-{
+void CMainFrame::OnPerlLoadSpecificFormula() {
     __SEH_HEADER
+
     CFileDialog			cfd(true);
     CString				theKey = "DefPLOpenLocation";
     char				path[MAX_PATH];
@@ -1697,39 +1758,56 @@ void CMainFrame::OnPerlLoadSpecificFormula()
     }
 
     __SEH_LOGFATAL("CMainFrame::OnPerlLoadSpecificFormula :\n");
-
 }
 
 
 //  2008.03.03 by THF
-void CMainFrame::OnPerlEditMainFormula()
-{
+void CMainFrame::OnPerlEditMainFormula() {
     __SEH_HEADER
+
     the_Perl_Interpreter.edit_main_FormulaFile();
 
     __SEH_LOGFATAL("CMainFrame::OnPerlEditMainFormula :\n");
-
 }
 
 
 //  2008.03.20 by THF
-void CMainFrame::OnPerlReloadFormula()
-{
+void CMainFrame::OnPerlReloadFormula() {
     __SEH_HEADER
+
     //  Reload the most recent formula
     //    (This is a shortcut for unload + load.)
     the_Perl_Interpreter.reload_FormulaFile();
+	//  Make some noise, as there's no visible reaction
+	Beep(880, 125);
 
     __SEH_LOGFATAL("CMainFrame::OnPerlReloadFormula :\n");
-
 }
 
 
-void CMainFrame::OnPerlCheckSyntax()
-{
+void CMainFrame::OnPerlCheckSyntax() {
     __SEH_HEADER
+
     the_Perl_Interpreter.check_Syntax();
 
     __SEH_LOGFATAL("CMainFrame::OnPerlEditCheckSyntax :\n");
-
 }
+
+//  2008.04.29 by THF
+void CMainFrame::OnUpdateMenuPerlCheckSyntax(CCmdUI* pCmdUI) {
+	__SEH_HEADER	
+
+	pCmdUI->Enable(the_Perl_Interpreter.is_a_Formula_loaded());
+
+	__SEH_LOGFATAL("CMainFrame::OnUpdateMenuPerlCheckSyntax")
+}
+
+
+void CMainFrame::OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI) {
+	__SEH_HEADER
+
+	pCmdUI->Enable(the_Perl_Interpreter.is_a_Formula_loaded());
+
+	__SEH_LOGFATAL("CMainFrame::OnUpdateMenuPerlEditMainFormula")
+}
+
