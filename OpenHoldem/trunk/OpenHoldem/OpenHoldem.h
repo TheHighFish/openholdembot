@@ -17,7 +17,6 @@ public:
 	COpenHoldemApp();
 	~COpenHoldemApp();
 	void MyLoadStdProfileSettings(UINT nMaxMRU);
-	void addMRU(CString fileName);
 	virtual BOOL InitInstance();
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()

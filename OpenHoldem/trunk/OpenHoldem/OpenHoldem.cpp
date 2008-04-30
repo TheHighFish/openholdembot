@@ -192,7 +192,6 @@ BOOL COpenHoldemApp::InitInstance()
                 cmdInfo.m_strFileName = sLastPath;
                 f.Close();
             }
-            ;
         }
     }
 
@@ -328,17 +327,6 @@ void COpenHoldemApp::MyLoadStdProfileSettings(UINT nMaxMRU) {
     }
     // 0 by default means not set
     m_nNumPreviewPages = GetProfileInt(_afxPreviewSection, _afxPreviewEntry, 0);
-
-    __SEH_LOGFATAL("COpenHoldemApp::MyLoadStdProfileSettings :\n");
-
-}
-
-void COpenHoldemApp::addMRU(CString fileName){
-    __SEH_HEADER
-
-
-    m_pRecentFileList->Add(fileName);
-
 
     __SEH_LOGFATAL("COpenHoldemApp::MyLoadStdProfileSettings :\n");
 
