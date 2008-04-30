@@ -8,7 +8,8 @@ NEW STUFF:
 
 BUG FIXES:
 - Perl menu: "Reload" command was active, even when no formula was loaded (Thank you, JumpingFences).
-  Same for "Edit" and "Check syntax". Fixed in rev. 283 (TheHighFish)	
+  Same for "Edit" and "Check syntax". Fixed in rev. 283 (TheHighFish)
+- Formula gets saved under wrong file name rev. 286 (jumpingfenses) 	
   
 
 MAINTENANCE:
