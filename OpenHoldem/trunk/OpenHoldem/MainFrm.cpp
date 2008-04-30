@@ -559,14 +559,9 @@ void CMainFrame::OnFileOpen() {
     cfd.m_ofn.lpstrTitle = "Select Formula file to OPEN";
     if (cfd.DoModal() == IDOK)
     {
-        CFile cf_whf;
-        cf_whf.Open(cfd.GetPathName(), CFile::modeNoTruncate | CFile::modeRead);
-        CArchive ar_whf(&cf_whf, CArchive::load);
         COpenHoldemDoc *pDoc = (COpenHoldemDoc *)this->GetActiveDocument();
-        pDoc->Serialize(ar_whf);
+		pDoc->OnOpenDocument(cfd.GetPathName());
 		pDoc->SetPathName(cfd.GetPathName());
-        cf_whf.Close();
-        ar_whf.Close();
 
         // Update window title, registry
         SetWindowText(cfd.GetFileTitle() + " - " + CString(MAKEINTRESOURCE(AFX_IDS_APP_TITLE)));
