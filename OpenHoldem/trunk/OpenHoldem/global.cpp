@@ -355,6 +355,8 @@ bool parse_loop(const CUPDUPDATA* pCUPDUPData)
         }
     }
 
+	pCUPDUPData->SetProgress("", 100, true);
+
     return true;
 
     __SEH_LOGFATAL("::parse_loop :\n");
