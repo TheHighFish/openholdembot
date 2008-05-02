@@ -217,6 +217,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OptionsDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\registry.cpp"
 				>
 			</File>
@@ -264,6 +268,10 @@
 			</File>
 			<File
 				RelativePath=".\ManualModeDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OptionsDlg.h"
 				>
 			</File>
 			<File

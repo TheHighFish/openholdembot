@@ -6,6 +6,8 @@
 #include "stdlib.h"
 #include "debug.h"
 
+#define MM_SUBKEY  "Software\\OpenHoldem\\ManualMode"
+
 Registry::Registry(void) {
 #ifdef SEH_ENABLE
 	// Set exception handler
@@ -25,9 +27,10 @@ void Registry::read_reg(void) {
 		// Defaults
 		manual_x = manual_y = 0;
 		macro = "RPPPPPPPPPPbB";
+		unobstructivePopup = false;
 
 		// Manual Mode Settings
-		hkResult = RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\OpenHoldem\\OpenHoldem", 0, KEY_READ, &hKey);
+		hkResult = RegOpenKeyEx(HKEY_CURRENT_USER, MM_SUBKEY, 0, KEY_READ, &hKey);
 		if (hkResult==ERROR_SUCCESS) {
 
 			// Window location
@@ -47,6 +50,11 @@ void Registry::read_reg(void) {
 				macro = str;
 			}
 
+			// Popup location
+			cbData = sizeof(str);
+			if ( (hkResult = RegQueryValueEx(hKey, "unobstructivePopup", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS) {
+				unobstructivePopup = atoi(str);
+			}
 		}
 
 		RegCloseKey(hKey);
@@ -68,7 +76,7 @@ void Registry::write_reg(void) {
 		char		str[256];
 
 		// Settings
-		RegCreateKeyEx(HKEY_CURRENT_USER, "Software\\OpenHoldem\\OpenHoldem", 0, NULL, 
+		RegCreateKeyEx(HKEY_CURRENT_USER, MM_SUBKEY, 0, NULL, 
 		REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, &dwDisp);
 
 		// Window location and size
@@ -81,6 +89,10 @@ void Registry::write_reg(void) {
 		// Macro
 		sprintf(str, "%s", macro.GetString());
 		RegSetValueEx(hKey, "macro", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
+
+		// Popup location
+		sprintf(str, "%d", unobstructivePopup);
+		RegSetValueEx(hKey, "unobstructivePopup", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
 
 		RegCloseKey(hKey);
 

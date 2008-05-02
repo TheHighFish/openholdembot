@@ -1,3 +1,11 @@
+
+v1.0.7 2008-05-16
+-----------------
+New stuff
+=========
+- Options dialog box with popup menu location setting (jumpingfences)
+
+
 v1.0.6 2008-04-11
 -----------------
 New stuff

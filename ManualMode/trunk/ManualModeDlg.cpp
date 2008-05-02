@@ -152,6 +152,7 @@ BOOL CManualModeDlg::DestroyWindow() {
 	GetWindowPlacement(&wp);
 	reg.manual_x = wp.rcNormalPosition.left;
 	reg.manual_y = wp.rcNormalPosition.top;
+	reg.unobstructivePopup = dlgOptions.m_unobstructivePopup;
 	reg.write_reg();
 
 	all_cards.DeleteObject();
@@ -306,8 +307,17 @@ BOOL CManualModeDlg::OnInitDialog() {
 	CMenu* pSysMenu = GetSystemMenu(FALSE);
 	if (pSysMenu != NULL)
 	{
+		CString strOptions;
 		CString strAboutMenu;
+
+		strOptions.LoadString(IDS_OPTIONS);
 		strAboutMenu.LoadString(IDS_ABOUTBOX);
+
+		if (!strOptions.IsEmpty())
+		{
+			pSysMenu->AppendMenu(MF_SEPARATOR);
+			pSysMenu->AppendMenu(MF_STRING, IDM_OPTIONS, strOptions);
+		}
 		if (!strAboutMenu.IsEmpty())
 		{
 			pSysMenu->AppendMenu(MF_SEPARATOR);
@@ -329,6 +339,8 @@ BOOL CManualModeDlg::OnInitDialog() {
 	max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
 	SetWindowPos(NULL, min(reg.manual_x, max_x), min(reg.manual_y, max_y), MM_WIDTH, MM_HEIGHT, SWP_NOCOPYBITS);
 
+	dlgOptions.m_unobstructivePopup = reg.unobstructivePopup;
+
 	// Get last used macro
 	macro_text = reg.macro;
 
@@ -349,6 +361,9 @@ void CManualModeDlg::OnSysCommand(UINT nID, LPARAM lParam) {
 	if ((nID & 0xFFF0) == IDM_ABOUTBOX)	{
 		CAboutDlg dlgAbout;
 		dlgAbout.DoModal();
+	}
+	else if (nID  == IDM_OPTIONS){
+		dlgOptions.DoModal();
 	}
 	else {
 		CDialog::OnSysCommand(nID, lParam);
@@ -1330,7 +1345,9 @@ void CManualModeDlg::OnContextMenu(CWnd* pWnd, CPoint point) {
 			tracker->SetMenuItemInfo(14, &mii, true);
 
 			// Display the context menu
-			tracker->TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON, point.x, point.y, this);
+			tracker->TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON, 
+				point.x + dlgOptions.m_unobstructivePopup * (MM_WIDTH - point_adj.x), 
+				point.y, this);
 		}
 
 		//////////////////////////////////////////////////////////////
@@ -1403,7 +1420,9 @@ void CManualModeDlg::OnContextMenu(CWnd* pWnd, CPoint point) {
 			tracker->SetMenuItemInfo(19, &mii, true);
 
 			// Display the context menu
-			tracker->TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON, point.x, point.y, this);
+			tracker->TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON, 
+				point.x + dlgOptions.m_unobstructivePopup * (MM_WIDTH - point_adj.x), 
+				point.y, this);
 		}
 
 
