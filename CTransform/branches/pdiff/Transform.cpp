@@ -2,6 +2,8 @@
 #include <Math.h>
 #include "Transform.h"
 #include "hash/lookup3.h"
+#include "pdiff/CompareArgs.h"
+#include "pdiff/Metric.h"
 
 CTransform::CTransform(void)
 {
@@ -23,7 +25,7 @@ int CTransform::do_transform(STableMap *map, Stablemap_region *region, HDC hdc, 
 			break;
 		
 		case 'I':
-			return i_transform(region, hdc, text);
+			return i_transform(map, region, hdc, text);
 			break;
 		
 		case 'H':
@@ -119,10 +121,137 @@ int CTransform::c_transform(Stablemap_region *region, HDC hdc, CString *text, CO
 	return ERR_GOOD_SCRAPE_GENERAL;
 }
 
-int CTransform::i_transform(Stablemap_region *region, HDC hdc, CString *text) 
+int CTransform::i_transform(STableMap *map, Stablemap_region *region, HDC hdc, CString *text) 
 {
-	*text = "";
-	return ERR_NO_IMAGE_MATCH;
+	int					width, height, x, y, i, best_match, result;
+	unsigned int		smallest_pix_diff;
+	int					retval=ERR_NOTHING_TO_SCRAPE;
+	HBITMAP				hbm;
+	BYTE				*pBits, alpha, red, green, blue;
+	CompareArgs			args;
+	CString				s;
+
+
+	// Allocate heap space for BITMAPINFO
+	BITMAPINFO	*bmi;
+	int			info_len = sizeof(BITMAPINFOHEADER) + 1024;
+	bmi = (BITMAPINFO *) ::HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, info_len);
+
+	width = region->right - region->left;
+	height = region->bottom - region->top;
+	
+	// See if region size is too large
+	if (width >= MAX_IMAGE_WIDTH || height>=MAX_IMAGE_HEIGHT) 
+	{
+		HeapFree(GetProcessHeap(), NULL, bmi);
+		return ERR_FIELD_TOO_LARGE;
+	}
+
+	// If width or height is negative (left>right or bottom>top), then return
+	if (width<0 || height<0)
+	{
+		HeapFree(GetProcessHeap(), NULL, bmi);
+		return ERR_NOTHING_TO_SCRAPE;
+	}
+
+	// Set threshhold to 25% of available pixels
+	args.ThresholdPixels = (width * height * 0.25) + 0.5;
+
+	// Get pixels
+	// Populate BITMAPINFOHEADER
+	hbm = (HBITMAP) GetCurrentObject(hdc, OBJ_BITMAP);
+	bmi->bmiHeader.biSize = sizeof(bmi->bmiHeader);
+	bmi->bmiHeader.biBitCount = 0;
+	::GetDIBits(hdc, hbm, 0, 0, NULL, bmi, DIB_RGB_COLORS);
+
+	// Get the actual argb bit information
+	bmi->bmiHeader.biHeight = -bmi->bmiHeader.biHeight;
+	pBits = new BYTE[bmi->bmiHeader.biSizeImage];
+	::GetDIBits(hdc, hbm, 0, height, pBits, bmi, DIB_RGB_COLORS);
+
+
+	// load ImgA with current pixels from region
+	args.ImgA = new RGBAImage(width, height, "imga.ppm");
+	for (y = 0; y < height; y++) 
+	{
+		for (x = 0; x < width; x++) 
+		{
+			alpha = pBits[y*width*4 + x*4 + 3];
+			red = pBits[y*width*4 + x*4 + 2];
+			green = pBits[y*width*4 + x*4 + 1];
+			blue = pBits[y*width*4 + x*4 + 0];
+			args.ImgA->Set(red, green, blue, alpha, x + y * width);
+		}
+	}
+
+	// scan through all i$ records and find the one that has the smallest pixel difference
+	best_match = -1;
+	smallest_pix_diff = 0xffffffff;
+	for (i=0; i<(int) map->i$.GetSize(); i++)
+	{	
+		if (map->i$[i].width == width && map->i$[i].height == height)
+		{
+			// load ImgB with pixels from i$ record
+			if (args.ImgB)
+				delete args.ImgB;
+
+			args.ImgB = new RGBAImage(map->i$[i].width, map->i$[i].height, "imgb.ppm");
+
+			for (y = 0; y < (int) map->i$[i].height; y++) 
+			{
+				for (x = 0; x < (int) map->i$[i].width; x++) 
+				{
+					// i$ records are stored internally in ABGR format
+					alpha = (map->i$[i].pixel[x + y * width] >> 24) & 0xff;
+					red =   (map->i$[i].pixel[x + y * width] >>  0) & 0xff;
+					green = (map->i$[i].pixel[x + y * width] >>  8) & 0xff;
+					blue =  (map->i$[i].pixel[x + y * width] >> 16) & 0xff;
+					args.ImgB->Set(red, green, blue, alpha, x + y * map->i$[i].width);
+				}
+			}
+//args.ImgA->WritePPM();
+//args.ImgB->WritePPM();
+//MessageBox(NULL, "ppms written", "", MB_OK);
+
+			// Compare the two images
+			result = Yee_Compare(args);
+			if (args.PixelsFailed==0)
+			{
+				best_match = i;
+				smallest_pix_diff = 0;
+				break;
+			}
+
+			if (args.PixelsFailed < smallest_pix_diff)
+			{
+				best_match = i;
+				smallest_pix_diff = args.PixelsFailed;
+			}
+		}
+	}
+
+
+	// return the i$ record text, if the smallest pixel difference is less than the threshold
+//s.Format("Best Match: %d (%d pix diff)", best_match, smallest_pix_diff);
+//MessageBox(NULL, s, "", MB_OK);
+
+//	if (smallest_pix_diff<args.ThresholdPixels)
+//	{
+		*text = map->i$[best_match].name.GetString();
+		retval = ERR_GOOD_SCRAPE_GENERAL;
+//	}
+//	else
+//	{
+//		*text = "";
+//		retval = ERR_NO_IMAGE_MATCH;
+//	}
+
+	// Clean up
+	HeapFree(GetProcessHeap(), NULL, bmi);
+	delete []pBits;
+
+	return retval;
+
 }
 
 int CTransform::h_transform(STableMap *map, Stablemap_region *region, HDC hdc, CString *text) 
@@ -147,14 +276,18 @@ int CTransform::h_transform(STableMap *map, Stablemap_region *region, HDC hdc, C
 	hash_type = region->transform.GetString()[1] - '0';
 	
 	// See if region size is too large
-	if (width >= MAX_HASH_WIDTH || height>=MAX_HASH_HEIGHT) {
+	if (width >= MAX_HASH_WIDTH || height>=MAX_HASH_HEIGHT) 
+	{
 		HeapFree(GetProcessHeap(), NULL, bmi);
 		return ERR_FIELD_TOO_LARGE;
 	}
 
 	// If width or height is negative (left>right or bottom>top), then return
 	if (width<0 || height<0)
+	{
+		HeapFree(GetProcessHeap(), NULL, bmi);
 		return ERR_NOTHING_TO_SCRAPE;
+	}
 
 	// Get pixels
 	// Populate BITMAPINFOHEADER
