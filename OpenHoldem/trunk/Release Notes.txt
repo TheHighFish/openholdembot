@@ -1,4 +1,4 @@
-v1.8.3 2008-05-9/16
+v1.8.3 2008-05-16
 NEW STUFF:
 - Group UDFs - The formula dialog will now place functions whose name match up to the first "_" together in the left tree. 
   For example, f$river_raise, f$river_call will be grouped under the group named "river".  
@@ -8,8 +8,12 @@ NEW STUFF:
 
 BUG FIXES:
 - Perl menu: "Reload" command was active, even when no formula was loaded (Thank you, JumpingFences).
-  Same for "Edit" and "Check syntax". Fixed in rev. 283 (TheHighFish)
+  Same for "Edit" and "Check syntax". Fixed in rev. 283 (TheHighFish)	
+
+- Added an "OnBnClickedOk();" accidentally deleted in rev. 278. (TheHighFish)	
+
 - Formula gets saved under wrong file name (jumpingfences) 	
+
 - OH opens not on top and not in focus (jumpingfences)
 
 MAINTENANCE:
