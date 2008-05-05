@@ -302,6 +302,26 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="pdiff"
+				>
+				<File
+					RelativePath="..\CTransform\pdiff\CompareArgs.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\CTransform\pdiff\LPyramid.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\CTransform\pdiff\Metric.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\CTransform\pdiff\RGBAImage.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -409,6 +429,26 @@
 				>
 				<File
 					RelativePath=".\hscroll-list-box\HScrollListBox.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="pdiff"
+				>
+				<File
+					RelativePath="..\CTransform\pdiff\CompareArgs.h"
+					>
+				</File>
+				<File
+					RelativePath="..\CTransform\pdiff\LPyramid.h"
+					>
+				</File>
+				<File
+					RelativePath="..\CTransform\pdiff\Metric.h"
+					>
+				</File>
+				<File
+					RelativePath="..\CTransform\pdiff\RGBAImage.h"
 					>
 				</File>
 			</Filter>
