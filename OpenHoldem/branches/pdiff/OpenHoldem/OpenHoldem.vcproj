@@ -285,7 +285,7 @@
 				RelativePath=".\levenshtein.cpp"
 				>
 			</File>
-            <File
+			<File
 				RelativePath=".\logsymbols.cpp"
 				>
 			</File>
@@ -454,7 +454,7 @@
 					RelativePath=".\DialogSAPrefs10.cpp"
 					>
 				</File>
-                <File
+				<File
 					RelativePath=".\DialogSAPrefs11.cpp"
 					>
 				</File>
@@ -500,6 +500,26 @@
 				</File>
 				<File
 					RelativePath=".\SAPrefsSubDlg.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="pdiff"
+				>
+				<File
+					RelativePath="..\..\CTransform\pdiff\CompareArgs.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\CTransform\pdiff\LPyramid.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\CTransform\pdiff\Metric.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\CTransform\pdiff\RGBAImage.cpp"
 					>
 				</File>
 			</Filter>
@@ -585,7 +605,7 @@
 				RelativePath=".\levenshtein.h"
 				>
 			</File>
-            <File
+			<File
 				RelativePath=".\logsymbols.h"
 				>
 			</File>
@@ -776,7 +796,7 @@
 					RelativePath=".\DialogSAPrefs10.h"
 					>
 				</File>
-                <File
+				<File
 					RelativePath=".\DialogSAPrefs11.h"
 					>
 				</File>
@@ -834,6 +854,26 @@
 				</File>
 				<File
 					RelativePath=".\postgres\postgres_ext.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="pdiff"
+				>
+				<File
+					RelativePath="..\..\CTransform\pdiff\CompareArgs.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\CTransform\pdiff\LPyramid.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\CTransform\pdiff\Metric.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\CTransform\pdiff\RGBAImage.h"
 					>
 				</File>
 			</Filter>

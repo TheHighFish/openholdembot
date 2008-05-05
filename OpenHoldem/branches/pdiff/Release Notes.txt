@@ -1,4 +1,11 @@
+v1.x.x 2008-05-xx
+=================
+NEW STUFF:
+- Added image transform capability with perceptual difference algorithm
+
+
 v1.8.2 2008-04-25
+=================
 NEW STUFF:
 - Make CFileDialog open in the most recently accessed directory in the context of 
   file type (.whf, .tm, .dll, .pl) (jumpingfences)
@@ -45,6 +52,7 @@ MAINTENANCE:
   
   
 v1.8.1 2008-04-11
+=================
 NEW STUFF:
 - Show wait cursor when parsing f$debug (jumpingfences)
 
@@ -119,6 +127,7 @@ BUG FIXES:
   
 
 v1.8.0 2008-03-29
+=================
 NEW STUFF:
 - New symbol s$potmethod is now available.  This is used to determine the appropriate
   site interpretation for the contents of c0pot0.  s$potmethod can be set to these values:
@@ -247,6 +256,7 @@ BUG FIXES:
 	
   
 v1.7.0 2008-03-15
+=================
 NEW STUFF:
 - All Poker Tracker-compatible sites are now supported by OH for pulling Poker Tracker data.
   The table map must have s$network or s$sitename set to a supported name (see s$network below
@@ -303,6 +313,7 @@ BUG FIXES:
   
 
 v1.6.0 2008-02-22
+=================
 NEW STUFF:
 - Table maps using fuzzy fonts are now utilized correctly in the scraper engine.
 
@@ -353,6 +364,7 @@ BUG FIXES:
   
 
 v1.5.1 2008-02-15
+=================
 NEW STUFF:
 - "File/Load Profile" menu item changed to "File/Load Table Map" (Oops) (Thanks, Folder)
 
@@ -373,6 +385,7 @@ BUG FIXES:
   
 
 v1.5.0 2008-02-08
+=================
 NEW STUFF:
 - Formula Editor (Code by Spew)
   - Added Find Next/Prev to the Edit menu
@@ -446,6 +459,7 @@ pl_pokval = calc_pokerval(hv_player, nplCards+ncomCards, &dummy, CARD_NOCARD, CA
 
 
 v1.4.4 2008-02-01
+=================
 NEW STUFF:
 - Hand Lists can now contain comments.  Comment lines are prefaced with the standard double forward 
   slash "//".  The hand list parsing function has been made more efficient in its processing and by 
@@ -517,6 +531,7 @@ BUG FIXES:
   
 
 v1.4.3 2008-01-25
+=================
 NEW STUFF:
 - Added File/Connect menu option.  This performs the same function as clicking on the
   green button.  (Thanks, Nick Coldhand)
@@ -566,6 +581,7 @@ BUG FIXES:
   
   
 v1.4.2 2008-01-18
+=================
 NEW STUFF:
 - Added hand list editor dialog to Formula Editor.  (Thanks, SingleMalt, for the code)
 
@@ -595,6 +611,7 @@ BUG FIXES:
 
 
 v1.4.1 2008-01-11
+=================
 NEW STUFF:
 - Logging; on a hand reset, the title text from the table is now recorded in the log.  This
   should help identify the proper log entries, especially if you do not have a casino/table map
@@ -632,6 +649,7 @@ BUG FIXES:
     
 
 v1.4.0 2008-01-04
+=================
 NEW STUFF:
 - File/Convert Profile (Ctrl R) has been removed from OpenHoldem.  Please use
   OpenScrape to convert your WinScrape profiles to OpenScrape table maps for
@@ -740,6 +758,7 @@ BUG FIXES:
   
 
 v1.3.1 2007-12-28
+=================
 NEW STUFF:
 - Support for reading OpenScrape table maps added.  
   Note:  As of next week's release, support for converting WinScrape profiles will be 
@@ -781,6 +800,7 @@ BUG FIXES:
 
 
 v1.3.0 2007-12-21
+=================
 NEW STUFF:
 - Added busy cursor for long running operations, such as loading a very large formula set.
 
@@ -942,6 +962,7 @@ BUG FIXES:
   
 
 v1.2.2 2007-12-14
+=================
 NEW STUFF:
 - You might notice some PokerTracker capabilities starting to show up in various places.  Please
   ignore these features for this release as they are not fully baked and tested yet.  This is expected
@@ -960,6 +981,7 @@ BUG FIXES:
   
 
 v1.2.1 2007-12-07
+=================
 NEW STUFF:
 - Added "caching" for f$ symbols.
   OH will now cache f$ symbol results, and refer to the cache for queries to the same symbol in 
@@ -1024,7 +1046,7 @@ BUG FIXES:
   
 
 v1.2.0 2007-11-30
------------------
+=================
 IMPORTANT: Version 1.2.0 and higher of OpenHoldem require a reconversion of existing
            profiles.  Profile hashes have been changed to support the "new" WinScrape
            regions and features.  Please reconvert your master profiles using 
@@ -1075,7 +1097,7 @@ BUG FIXES:
   
 
 v1.1.1 2007-11-23
------------------
+=================
 NEW STUFF:
 - Profile conversion - a check has been added to ensure that profiles being converted from
   WinScrape masters are of the "old" version (2006 Aug 7 13:11:37).  New WinScrape versions
@@ -1104,7 +1126,7 @@ BUG FIXES:
   
 
 v1.1.0 2007-11-16
------------------
+=================
 NEW STUFF:
 - Formula Editor: New menu items ("Debug/Log f$debug" and "Debug/Only when it's my turn") 
   added to formula editor dialog.  If "Log f$debug" is checked, *AND* the "Auto" button 
@@ -1199,7 +1221,7 @@ BUG FIXES:
 
 
 v1.0.6 2007-11-09
------------------
+=================
 NEW STUFF:
 - Nil.
 
@@ -1220,7 +1242,7 @@ BUG FIX:
 
 
 v1.0.5 2007-11-02
------------------
+=================
 NEW STUFF:
 - Nil.
 
@@ -1297,7 +1319,7 @@ BEHAVIOR CHANGE:
    
    
 v1.0.4 2007-10-26
------------------
+=================
 NEW STUFF:
 - Nil.
 
@@ -1313,7 +1335,7 @@ BUG FIX:
 
 
 v1.0.3 2007-10-23
------------------
+=================
 NEW STUFF:
 - Nil.
 
@@ -1352,7 +1374,7 @@ SOURCE CODE:
 
 
 v1.0.2 2007-10-16
------------------
+=================
 NEW STUFF:
 - Button to lock blinds.
 - Added new symbol "version", that returns current version number of OpenHoldem.
@@ -1410,7 +1432,7 @@ BUG FIX:
 
 
 v1.0.1 2007-10-14
------------------
+=================
 BUG FIX:  
 - Loading a DLL consistently causes a crash.  The OH development team has struggled with MSVC 2005's code
   optimization features thoughout the life of this project.  Something in the code base causes unexpected
@@ -1430,5 +1452,5 @@ code package for 1.0.0.
 
 
 v1.0.0 2007-10-13 
------------------
+=================
 Initial public release
