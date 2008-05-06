@@ -717,23 +717,23 @@ int COpenScrapeDoc::ConvertTableMap(void) {
 
 	// Loop through all the region (r$) records, and look for i3slider or i3handle
 	// Warn if these are found and remove them
-	warning_displayed = false;
-	for (regionloop=0; regionloop<(int) tablemap.r$.GetSize(); regionloop++) {
-		if (tablemap.r$[regionloop].name == "i3slider" ||
-			tablemap.r$[regionloop].name == "i3handle")
-		{
-			if (!warning_displayed)
-			{
-				MessageBox(pMyMainWnd->GetSafeHwnd(), "This WinScrape 'profile' contains either a 'r$i3slider'\n"\
-													  "or 'r$i3handle' region definition.  OpenScrape/OpenHoldem\n"\
-													  "do not make use of these region types and they will not be\n"\
-													  "saved in the OpenScrape table map format.", "'Profile' Warning", MB_OK);
-				warning_displayed = true;
-			}
+	//warning_displayed = false;
+	//for (regionloop=0; regionloop<(int) tablemap.r$.GetSize(); regionloop++) {
+	//	if (tablemap.r$[regionloop].name == "i3slider" ||
+	//		tablemap.r$[regionloop].name == "i3handle")
+	//	{
+	//		if (!warning_displayed)
+	//		{
+	//			MessageBox(pMyMainWnd->GetSafeHwnd(), "This WinScrape 'profile' contains either a 'r$i3slider'\n"\
+	//												  "or 'r$i3handle' region definition.  OpenScrape/OpenHoldem\n"\
+	//												  "do not make use of these region types and they will not be\n"\
+	//												  "saved in the OpenScrape table map format.", "'Profile' Warning", MB_OK);
+	//			warning_displayed = true;
+	//		}
 
-			tablemap.r$.RemoveAt(regionloop);
-		}
-	}
+	//		tablemap.r$.RemoveAt(regionloop);
+	//	}
+	//}
 
 	// Loop through all the hash (h$) records, and check for a corresponding image (i$) record
 	all_i$_found = true;

@@ -19,9 +19,9 @@ char * const s$strings[58] = { "titletext", "titletext0", "titletext1", "titlete
 							   "sitename", "network", "nchairs", "reseller", "mechanic", "chairconfig", "swagtextmethod", "potmethod", "activemethod", 
 							   "defaultlabels", "t0type", "t1type", "t2type", "t3type" };
 
-int	const num_r$strings = 337;
+int	const num_r$strings = 339;
 // r$tablepointXXX is a special case, as XXX can be anything in any order - it will always show up in the drop down list
-char * const r$strings[337] = { "c0cardface0", "c0cardface1", "c0cardface2", "c0cardface3", "c0cardface4", 
+char * const r$strings[339] = { "c0cardface0", "c0cardface1", "c0cardface2", "c0cardface3", "c0cardface4", 
 								"c0cardface0rank", "c0cardface1rank", "c0cardface2rank", "c0cardface3rank", "c0cardface4rank", 
 								"c0cardface0suit", "c0cardface1suit", "c0cardface2suit", "c0cardface3suit", "c0cardface4suit", 
 								"c0handnumber", "c0handnumber1", "c0handnumber2", "c0handnumber3", "c0handnumber4", "c0handnumber5", "c0handnumber6",
@@ -42,6 +42,7 @@ char * const r$strings[337] = { "c0cardface0", "c0cardface1", "c0cardface2", "c0
 								"i8label", "i9label", 
 								"i0state", "i1state", "i2state", "i3state", "i4state", "i5state", "i6state", "i7state", 
 								"i8state", "i9state", 
+								"i3handle", "i3slider",
 								//41
 								"r$i3edit",
 								"i86button", "i860button", "i861button", "i862button", "i863button", "i864button", "i865button", "i866button", 

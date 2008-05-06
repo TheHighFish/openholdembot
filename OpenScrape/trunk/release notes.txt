@@ -2,7 +2,8 @@ v1.1.5 2008-05-16
 ================
 NEW STUFF:
 - Added image ("I") transform capability with perceptual difference algorithm
-
+- Removed warning and region removal for handle and slider regions, to support the
+  addition of slider jamming code into OH. (BillW)
 
 v1.1.4 2008-04-25
 ================
