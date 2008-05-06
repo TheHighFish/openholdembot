@@ -1,6 +1,7 @@
 #pragma once
 
 #include "hash/stdint.h"
+#include "pdiff/RGBAImage.h"
 
 ///////////////////////////////
 // defines
@@ -12,6 +13,9 @@
 
 #define MAX_HASH_WIDTH		200
 #define MAX_HASH_HEIGHT		150
+
+#define MAX_IMAGE_WIDTH		200
+#define MAX_IMAGE_HEIGHT	150
 
 #define MAX_SINGLE_CHAR_WIDTH	31
 #define MAX_SINGLE_CHAR_HEIGHT	32
@@ -103,7 +107,8 @@ struct Stablemap_image
 	CString			name;
 	unsigned int	width;
 	unsigned int	height;
-	uint32_t		pixel[200*150];
+	uint32_t		pixel[MAX_HASH_WIDTH*MAX_HASH_HEIGHT];
+//	RGBAImage		image;
 };
 
 struct STableMap 
@@ -231,7 +236,7 @@ public:
 
 protected:
 	int c_transform(Stablemap_region *region, HDC hdc, CString *text, COLORREF *cr_avg);
-	int i_transform(Stablemap_region *region, HDC hdc, CString *text);
+	int i_transform(STableMap *map, Stablemap_region *region, HDC hdc, CString *text);
 	int h_transform(STableMap *map, Stablemap_region *region, HDC hdc, CString *text);
 	int do_plain_font_scan(STableMap *map, Stablemap_region *region, int width, int height, 
 						   bool bg[], bool (*ch)[MAX_CHAR_HEIGHT], CString *text);
