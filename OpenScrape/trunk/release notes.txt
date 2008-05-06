@@ -6,6 +6,10 @@ NEW STUFF:
   addition of slider jamming code into OH. (BillW)
   
 
+BUG FIXES:
+- Removed the statusbar of the tablemap dialog, which caused mispositioning and flickering.
+  Displaying the information about unscraped cards and fonts now in 2 text fields. (TheHighFish)
+
 v1.1.4 2008-04-25
 ================
 NEW STUFF:

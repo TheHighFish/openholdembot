@@ -79,7 +79,7 @@ protected:
 	bool				picker_cursor;
 	HCURSOR				hCurPicker, hCurStandard;
 	bool				ignore_changes;
-	CStatusBarCtrl		m_status;
+	CStatic				m_status_cards, m_status_fonts;
 
 public:
 	virtual BOOL DestroyWindow();
@@ -96,6 +96,7 @@ public:
 	CStickyButton		m_DrawRect;
 
 	DECLARE_MESSAGE_MAP()
+	afx_msg void OnStnClickedMissingCards();
 };
 
 

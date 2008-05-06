@@ -125,6 +125,8 @@ void CDlgTableMap::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TRACKER_FONT_SET, m_TrackerFontSet);
 	DDX_Control(pDX, IDC_TRACKER_FONT_NUM, m_TrackerFontNum);
 	DDX_Control(pDX, IDC_TRACKER_CARD_NUM, m_TrackerCardNum);
+	DDX_Control(pDX, IDC_MISSING_CARDS, m_status_cards);
+	DDX_Control(pDX, IDC_MISSING_FONTS, m_status_fonts);
 }
 
 
@@ -183,6 +185,7 @@ BEGIN_MESSAGE_MAP(CDlgTableMap, CDialog)
 	ON_WM_CREATE()
 	ON_WM_SIZING()
 
+	ON_STN_CLICKED(IDC_MISSING_CARDS, &CDlgTableMap::OnStnClickedMissingCards)
 END_MESSAGE_MAP()
 
 
@@ -323,17 +326,7 @@ BOOL CDlgTableMap::OnInitDialog()
 	::SetWindowPos(m_hWnd, HWND_TOP, min(reg.tablemap_x, max_x), min(reg.tablemap_y, max_y),
 		reg.tablemap_dx, reg.tablemap_dy, SWP_NOCOPYBITS);
 
-	// Resize the status bar
-	m_status.SendMessage(WM_SIZE);
-
-	// Create sections for the status bar
-	const int parts = 2;
-	CRect rect;
-	m_status.GetClientRect(&rect);
-	int widths[parts] = { rect.right/2, -1 };
-	m_status.SetParts(parts, widths);
-
-	// Update the status bar text
+	//  Display missing cards and fonts
 	UpdateStatus();
 
 	picker_cursor = false;
@@ -3094,19 +3087,10 @@ void CDlgTableMap::OnSizing(UINT nSide, LPRECT lpRect)
 	CDialog::OnSizing(nSide, lpRect);
 	const int parts = 2;
 	CRect rect;
-
-	m_status.GetClientRect(&rect);
-	int widths[parts] = { rect.right/2, -1 };
-	m_status.SetParts(parts, widths);
-
-	//force a status bar redraw
-	m_status.SendMessage(WM_SIZE);
 }
 
 int CDlgTableMap::OnCreate(LPCREATESTRUCT lpCreateStruct)
-{
-	// Create a status bar used to identify missing elements
-	m_status.Create(WS_CHILD | WS_VISIBLE | CCS_BOTTOM | SBARS_SIZEGRIP, CRect(0,0,0,0), this, NULL);
+{	
 	return 0;
 }
 
@@ -3166,8 +3150,8 @@ void CDlgTableMap::UpdateStatus(void)
 			k--;
 		}
 	}
-	// Set the left side of our status bar to missing fonts list
-	m_status.SetText(_T(statusFonts), 0, 0);
+	//  Display missing fonts 
+	m_status_fonts.SetWindowTextA(_T(statusFonts));
 
 	//card hashes
 	for (i=0; i < 52; i++)
@@ -3210,6 +3194,11 @@ void CDlgTableMap::UpdateStatus(void)
 				k--;
 			}
 	}
-	// Set the right side of our status bar to missing cards list
-	m_status.SetText(_T(statusCards), 1, 0);
+	//  Display missing cards
+	m_status_cards.SetWindowTextA(_T(statusCards));
+}
+
+void CDlgTableMap::OnStnClickedMissingCards()
+{
+	// TODO: Add your control notification handler code here
 }

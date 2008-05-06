@@ -23,8 +23,8 @@ void Registry::read_reg(void)
 	main_dy = 400;
 
 	tablemap_x = tablemap_y = 0;
-	tablemap_dx = 520;
-	tablemap_dy = 490;
+	tablemap_dx = 600;
+	tablemap_dy = 750;
 
 	grhash_x = grhash_y = 0;
 	grhash_dx = 380;
