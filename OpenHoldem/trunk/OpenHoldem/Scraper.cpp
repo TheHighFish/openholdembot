@@ -895,6 +895,8 @@ void CScraper::scrape_buttons(HDC hdcCompatible, HDC hdc) {
     HBITMAP				old_bitmap;
     CString				text;
     CTransform			trans;
+	Stablemap_region	handle, slider;
+
 
     buttonlabel[0] = "fold";
     buttonlabel[1] = "call";
@@ -1002,6 +1004,36 @@ void CScraper::scrape_buttons(HDC hdcCompatible, HDC hdc) {
             i86_buttonstate_last = i86_buttonstate;
             scrape_something_changed |= BUTTONSTATE_CHANGED;
         }
+    }
+
+    // find handle
+    r$index = global.tablemap.r$iXhandle_index[3];
+    if (r$index!=-1 && global.tablemap.r$iXslider_index[3] != -1 && buttonstate[3] !=  "false")
+    {
+		handle = global.tablemap.r$[global.tablemap.r$iXhandle_index[3]];
+		slider = global.tablemap.r$[global.tablemap.r$iXslider_index[3]];
+        process_region(hdcCompatible, hdc, r$index);
+        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
+		j=slider.right-handle.left;
+		text="";
+		handle_found_at_xy = false;
+        for (k=0; k<=j; k++)
+		{
+			handle.left += k;
+			handle.right += k;
+			trans.do_transform(&global.tablemap, &handle, hdcCompatible, &text);
+			handle.left -= k;
+			handle.right -= k;
+			if (text == "handle" || text == "true") break;
+		}
+		if (text!="" && k <= j)
+		{
+			handle_found_at_xy = true;
+			handle_xy.x=handle.left + k;
+			handle_xy.y=handle.top;
+		}
+			SelectObject(hdcCompatible, old_bitmap);
+
     }
 
     __SEH_LOGFATAL("CScraper::scrape_buttons:\n");

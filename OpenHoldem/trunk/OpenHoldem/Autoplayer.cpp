@@ -200,7 +200,8 @@ void Autoplayer::do_autoplayer(void) {
         do_swag();
     }
     else {
-        do_arccf();
+		if (symbols.f$alli) do_slider();
+		else do_arccf();
     }
 
 
@@ -765,6 +766,159 @@ void Autoplayer::do_arccf(void) {
 
             // reset elapsedauto symbol
             time(&symbols.elapsedautohold);
+        }
+    }
+
+    __SEH_LOGFATAL("Autoplayer::do_arccf :\n");
+
+}
+
+void Autoplayer::do_slider(void) {
+    __SEH_HEADER
+    int				do_drag, input_count,  x, y, x2;
+    INPUT			input[100] = {0};
+    POINT			pt, pt2;
+    double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
+    double			fScreenHeight = ::GetSystemMetrics( SM_CYSCREEN )-1;
+    double			fx = 0;
+	double			fy = 0;
+	double			fx2 = 0;
+	double			fy2 = 0;
+    CMutex			Mutex(false, "OHAntiColl");
+    HWND			hwnd_focus = GetFocus();
+    HWND			hwnd_foreground = GetForegroundWindow();
+    HWND			hwnd_active = GetActiveWindow();
+    POINT			cur_pos;
+	Stablemap_region handle, slider;
+	CTransform		trans;
+
+    ::GetCursorPos(&cur_pos);
+
+
+    do_drag = -1;
+
+    // ALLIN
+    if (symbols.sym.ismyturn && global.tablemap.r$iXslider_index[3]!=-1 && global.tablemap.r$iXhandle_index[3]!=-1 &&
+		scraper.handle_found_at_xy)
+    {
+		handle = global.tablemap.r$[global.tablemap.r$iXhandle_index[3]];
+		slider = global.tablemap.r$[global.tablemap.r$iXslider_index[3]];
+		x = scraper.handle_xy.x;
+		y = scraper.handle_xy.y;
+		x2 = slider.right-slider.left;
+		pt = randomize_click_location(x, y, x + (handle.right-handle.left), handle.bottom);
+		pt2.x = pt.x+x2;
+		pt2.y = pt.y;
+        do_drag = 1;
+    }
+
+
+    if (do_drag=1)
+    {
+
+        // Translate click point to screen/mouse coords
+        ClientToScreen(global.attached_hwnd, &pt);
+        fx = pt.x*(65535.0f/fScreenWidth);
+        fy = pt.y*(65535.0f/fScreenHeight);
+        ClientToScreen(global.attached_hwnd, &pt2);
+        fx2 = pt2.x*(65535.0f/fScreenWidth);
+        fy2 = pt2.y*(65535.0f/fScreenHeight);
+		write_log("*** Jam from %d,%d to %d,%d \n", fx, fy, fx2, fy2);
+
+        if (Mutex.Lock(500))
+        {
+            SetFocus(global.attached_hwnd);
+            SetForegroundWindow(global.attached_hwnd);
+            SetActiveWindow(global.attached_hwnd);
+			// Move to handle & click & hold button
+			input_count = 0;
+			ZeroMemory(&input[input_count],sizeof(INPUT));
+			input[input_count].type = INPUT_MOUSE;
+			input[input_count].mi.dx = fx;
+			input[input_count].mi.dy = fy;
+			input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
+			input_count++;
+            SendInput(input_count, input, sizeof(INPUT));
+			Sleep(200);
+			// Move the mouse
+			input_count = 0;
+			ZeroMemory(&input[input_count],sizeof(INPUT));
+			input[input_count].type = INPUT_MOUSE;
+			input[input_count].mi.dx = fx2;
+			input[input_count].mi.dy = fy2;
+			input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
+			input_count++;
+            SendInput(input_count, input, sizeof(INPUT));
+			Sleep(200);
+			// Release the button
+			input_count = 0;
+			ZeroMemory(&input[input_count],sizeof(INPUT));
+			input[input_count].type = INPUT_MOUSE;
+			input[input_count].mi.dx = fx2;
+			input[input_count].mi.dy = fy2;
+			input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTUP;
+			input_count++;
+            SendInput(input_count, input, sizeof(INPUT));
+			Sleep(100);
+            SetActiveWindow(hwnd_active);
+            SetForegroundWindow(hwnd_foreground);
+            SetFocus(hwnd_focus);
+            Mutex.Unlock();
+		}
+		if (symbols.f$alli && alli_but!=-1)
+		{
+			pt = randomize_click_location(global.tablemap.r$[alli_but].left, global.tablemap.r$[alli_but].top,
+										  global.tablemap.r$[alli_but].right, global.tablemap.r$[alli_but].bottom);
+			ClientToScreen(global.attached_hwnd, &pt);
+			fx = pt.x*(65535.0f/fScreenWidth);
+			fy = pt.y*(65535.0f/fScreenHeight);
+			// Click button
+			input_count = 0;
+			ZeroMemory(&input[input_count],sizeof(INPUT));
+			input[input_count].type = INPUT_MOUSE;
+			input[input_count].mi.dx = fx;
+			input[input_count].mi.dy = fy;
+			input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP;
+			input_count++;
+			SendInput(input_count, input, sizeof(INPUT));
+			Sleep(200);
+		}
+        // Restore cursor to current location
+        fx = cur_pos.x*(65535.0f/fScreenWidth);
+        fy = cur_pos.y*(65535.0f/fScreenHeight);
+
+        input_count = 0;
+        ZeroMemory(&input[input_count],sizeof(INPUT));
+        input[input_count].type = INPUT_MOUSE;
+        input[input_count].mi.dx = fx;
+        input[input_count].mi.dy = fy;
+        input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
+        input_count++;
+
+        // If we get a lock, do the action
+        if (Mutex.Lock(500))
+        {
+            SetFocus(global.attached_hwnd);
+            SetForegroundWindow(global.attached_hwnd);
+            SetActiveWindow(global.attached_hwnd);
+
+            SendInput(input_count, input, sizeof(INPUT));
+
+            SetActiveWindow(hwnd_active);
+            SetForegroundWindow(hwnd_foreground);
+            SetFocus(hwnd_focus);
+
+			::SetCursorPos(cur_pos.x, cur_pos.y);
+
+            Mutex.Unlock();
+
+            write_log_autoplay("JAM");
+
+			write_log("*** Jam complete \n", fx, fy, fx2, fy2);
+
+            // reset elapsedauto symbol
+            time(&symbols.elapsedautohold);
+			Sleep(1200);
         }
     }
 

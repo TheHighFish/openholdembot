@@ -67,6 +67,8 @@ public:
 	CString				buttonlabel[10];
 	int					scrape_something_changed;
 	unsigned int		card_player_for_display[2];
+	bool                handle_found_at_xy;
+	POINT				handle_xy;
 
 	struct SLimitInfo	s_limit_info;
 

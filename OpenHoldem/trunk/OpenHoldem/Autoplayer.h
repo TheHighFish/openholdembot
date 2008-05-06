@@ -17,6 +17,7 @@ private:
 	int count_same_scrapes(void);
 	void do_swag(void);
 	void do_arccf(void);
+	void do_slider(void);
 	void do_prefold(void);
 	int get_r$_button_indices(void);
 	void check_bring_keyboard(void);
