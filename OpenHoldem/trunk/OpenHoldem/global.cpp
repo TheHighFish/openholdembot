@@ -11,13 +11,21 @@
 
 class CGlobal	global;
 
+
+//  Sanity check: enough disk-space for a replay frame?
+//    We assume, 10 MB are enough
+//      - a large table of 1000x1000 pixels a 4 byte
+//      - some KB for the HTML file.
+//      - some space for other processes	
+const unsigned int FREE_SPACE_NEEDED_FOR_REPLAYFRAME = 10000000;  
+
+
 CGlobal::CGlobal(void)
 {
-
     __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
 
-
     __SEH_HEADER
+
     int			i, j;
     Registry	reg;
     FILE		*fp;
@@ -139,35 +147,32 @@ CGlobal::CGlobal(void)
 
     replay_recorded_this_turn = false;
 
-
     __SEH_LOGFATAL("CGlobal::Constructor : \n");
-
 }
 
 CGlobal::~CGlobal(void)
 {
     __SEH_HEADER
 
-
     __SEH_LOGFATAL("CGlobal::Destructor : \n");
-
 }
 
 void CGlobal::ClearFormula(SFormula *f)
 {
     __SEH_HEADER
+
     f->dBankroll = f->dDefcon = f->dRake = f->dNit = 0.0;
     f->mHandList.RemoveAll();
     f->mFunction.RemoveAll();
 
     __SEH_LOGFATAL("CGlobal::ClearFormula : \n");
-
 }
 
 
 void CGlobal::CopyFormula(SFormula *f, SFormula *t)
 {
     __SEH_HEADER
+
     SHandList		list;
     SFunction		func;
     int				from_count, to_count, from_iter, to_iter;
@@ -253,15 +258,14 @@ void CGlobal::CopyFormula(SFormula *f, SFormula *t)
         t->mHandList.Add(list);
     }
 
-
     __SEH_LOGFATAL("CGlobal::CopyFormula :\n");
-
 }
 
 // returns true for successful parse of all trees, false otherwise
 bool CGlobal::ParseAllFormula(HWND hwnd, SFormula *f)
 {
     __SEH_HEADER
+
     sData			data;
     data.all_parsed = true;
     data.calling_hwnd = hwnd;
@@ -284,14 +288,13 @@ bool CGlobal::ParseAllFormula(HWND hwnd, SFormula *f)
 
     return data.all_parsed;
 
-
     __SEH_LOGFATAL("CGlobal::ParseAllFormula :\n");
-
 }
 
 bool parse_loop(const CUPDUPDATA* pCUPDUPData)
 {
     __SEH_HEADER
+
     int				N, i;
     CString			s;
     bool			result;
@@ -360,11 +363,12 @@ bool parse_loop(const CUPDUPDATA* pCUPDUPData)
     return true;
 
     __SEH_LOGFATAL("::parse_loop :\n");
-
 }
 
 int cardIdentHelper(const char c)
 {
+	__SEH_HEADER
+
     if (c>='2' && c<='9') {
         return c - '0' - 2;
     }
@@ -384,11 +388,14 @@ int cardIdentHelper(const char c)
         return 12;
     }
     return -1;
+
+	__SEH_LOGFATAL("cardIdentHelper :\n");
 }
 
 void CGlobal::ParseHandList(CString &list_text, bool inlist[13][13])
 {
     __SEH_HEADER
+
     for (int i=0; i<=12; i++)
     {
         for (int j=0; j<=12; j++)
@@ -440,13 +447,12 @@ void CGlobal::ParseHandList(CString &list_text, bool inlist[13][13])
     }
 
     __SEH_LOGFATAL("ParseHandList :\n");
-
-
 }
 
 void CGlobal::create_hand_list_matrices(SFormula *f)
 {
     __SEH_HEADER
+
     int			listnum, i, j, N;
     CString		token;
 
@@ -469,12 +475,12 @@ void CGlobal::create_hand_list_matrices(SFormula *f)
     }
 
     __SEH_LOGFATAL("CGlobal::create_hand_list_matrices :\n");
-
 }
 
 void CGlobal::capture_state(const char *title)
 {
     __SEH_HEADER
+
     int						i, j;
     bool					playing = true;
     unsigned char			card;
@@ -578,7 +584,6 @@ void CGlobal::capture_state(const char *title)
     global.state_index++;
 
     __SEH_LOGFATAL("CGlobal::capture_state :\n");
-
 }
 
 
@@ -669,12 +674,12 @@ void CGlobal::clear_r$indexes(void)
     tablemap.r$i86button_index = -1;
 
     __SEH_LOGFATAL("CGlobal::clear_r$indexes :\n");
-
 }
 
 void CGlobal::save_r$indexes(void)
 {
     __SEH_HEADER
+
     // r$tablepointX not indexed, as it is only used for finding tables on green circle-click, and
     //   this function is not called until a table has been selected by the user
 
@@ -949,12 +954,12 @@ void CGlobal::save_r$indexes(void)
     }
 
     __SEH_LOGFATAL("CGlobal::save_r$indexes :\n");
-
 }
 
 void CGlobal::save_s$indexes(void)
 {
     __SEH_HEADER
+
     // s$titletextX, s$!titletextX not indexed, as it is only used for finding tables on green circle-click, and
     //   this function is not called until a table has been selected by the user/*
     // s$hXtype are not indexed, as those records are ignored in OH
@@ -992,12 +997,12 @@ void CGlobal::save_s$indexes(void)
     }
 
     __SEH_LOGFATAL("CGlobal::save_s$indexes :\n");
-
 }
 
 void CGlobal::save_s$strings(void)
 {
     __SEH_HEADER
+
     // s$reseller and s$mechanic are not saved, as they are only comments and not used in OH for any purpose
 
     int		i;
@@ -1051,13 +1056,13 @@ void CGlobal::save_s$strings(void)
     }
 
     __SEH_LOGFATAL("CGlobal::save_s$strings :\n");
-
 }
 
 
 void CGlobal::create_replay_frame(void)
 {
     __SEH_HEADER
+
     CString			path, filename, text, fcra_seen;
     FILE			*fp;
     int				i;
@@ -1065,7 +1070,22 @@ void CGlobal::create_replay_frame(void)
     struct tm		*now_time;
     char			now_time_str[100];
     bool			scrape_running;
+	ULARGE_INTEGER free_bytes_for_user_on_disk, 
+					total_bytes_on_disk, 
+					free_bytes_total_on_disk;
 
+	//  Sanity check: Enough disk-space for replay frame?	
+	GetDiskFreeSpaceEx(
+		startup_path,                  //  Directory on disk of interest
+		&free_bytes_for_user_on_disk,  
+		&total_bytes_on_disk,	
+		&free_bytes_total_on_disk);
+	if (free_bytes_for_user_on_disk.QuadPart < FREE_SPACE_NEEDED_FOR_REPLAYFRAME) 
+	{
+		MessageBox(NULL, "Not enough disk space to create replay-frame.", 
+				"ERROR", 0);	
+		return;
+	}
 
     // Wait for scrape cycle to finish before saving frame
     scrape_running = true;
@@ -1219,14 +1239,13 @@ void CGlobal::create_replay_frame(void)
     if (global.next_replay_frame >= global.preferences.replay_max_frames)
         global.next_replay_frame = 0;
 
-
     __SEH_LOGFATAL("CGlobal::create_replay_frame :\n");
-
 }
 
 CString CGlobal::get_card_html(unsigned int card)
 {
     __SEH_HEADER
+
     CString suit, color, rank, final;
 
     suit =	card == CARD_BACK ? "*" :
@@ -1267,5 +1286,4 @@ CString CGlobal::get_card_html(unsigned int card)
     return final;
 
     __SEH_LOGFATAL("CGlobal::get_card_html :\n");
-
 }

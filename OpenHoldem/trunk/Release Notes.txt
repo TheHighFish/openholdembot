@@ -1,20 +1,26 @@
 v1.8.3 2008-05-16
 =================
 NEW STUFF:
-- Group UDFs - The formula dialog will now place functions whose name match up to the first "_" together in the left tree. 
+- Group UDFs - The formula dialog will now place functions whose name match up to the 
+  first "_" together in the left tree. 
   For example, f$river_raise, f$river_call will be grouped under the group named "river".  
   This is optional and can be turned on under View->Group UDFs menu
-- Display Log symbol on OH screen.  If log symbol are enabled in OH preferences, the information box will be enlarge to allow
-  for 4 log symbols to be displayed while OH is running
-- Added image transform capability with perceptual difference algorithm (OpenHoldem)
-- Added support for jamming the slider handle, but only when both an i3handle and an i3slider are defined in the TM. Also
-  required; f4alli must be true, ismyturn must be true, and scraper must have found i3handle on the i3slider path. The 
-  handle will be grabbed and pulled to the extent of slider, and i3button or whatever is defined as alli_but will be depressed.
-  
-BUG FIXES:
-- Perl menu: "Reload" command was active, even when no formula was loaded (Thank you, JumpingFences).
-  Same for "Edit" and "Check syntax". Fixed in rev. 283 (TheHighFish)	
 
+- Display Log symbol on OH screen.  If log symbol are enabled in OH preferences, 
+  the information box will be enlarge to allow
+  for 4 log symbols to be displayed while OH is running
+
+- Added image transform capability with perceptual difference algorithm (OpenHoldem)
+
+- Added support for jamming the slider handle, but only when both an i3handle and an i3slider 
+  are defined in the TM. Also
+  required; f4alli must be true, ismyturn must be true, and scraper must have found i3handle 
+  on the i3slider path. The 
+  handle will be grabbed and pulled to the extent of slider, and i3button or whatever 
+  is defined as alli_but will be depressed.
+
+- Check for enough disk space, when shooting replay frames (min. 10 MB). (TheHighFish)
+  
 BUG FIXES:
 - Perl menu: "Reload" command was active, even when no formula was loaded (Thank you, JumpingFences).
   Same for "Edit" and "Check syntax". Fixed in rev. 283 (TheHighFish)	
