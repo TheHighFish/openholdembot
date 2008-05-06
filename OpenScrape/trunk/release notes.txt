@@ -1,4 +1,4 @@
-v1.x.x 2008-05-xx
+v1.1.5 2008-05-16
 ================
 NEW STUFF:
 - Added image ("I") transform capability with perceptual difference algorithm
