@@ -13,13 +13,12 @@ NEW STUFF:
 - Added image transform capability with perceptual difference algorithm (OpenHoldem)
 
 - Added support for jamming the slider handle, but only when both an i3handle and an i3slider 
-  are defined in the TM. Also
-  required; f4alli must be true, ismyturn must be true, and scraper must have found i3handle 
-  on the i3slider path. The 
-  handle will be grabbed and pulled to the extent of slider, and i3button or whatever 
-  is defined as alli_but will be depressed.
+  are defined in the TM. Also required; f$alli must be true, ismyturn must be true, and scraper 
+  must have found i3handle on the i3slider path. The handle will be grabbed and pulled to the 
+  extent of slider, and i3button or whatever is defined as alli_but will be depressed.
 
 - Check for enough disk space, when shooting replay frames (min. 10 MB). (TheHighFish)
+
   
 BUG FIXES:
 - Perl menu: "Reload" command was active, even when no formula was loaded (Thank you, JumpingFences).
@@ -33,8 +32,8 @@ BUG FIXES:
 
 - uXactive fix in 1.8.2 is now compatible with activemethod.  (quiqsilver)
 
-MAINTENANCE:
 
+MAINTENANCE:
 - Active and seated scraping now evaluates p first for efficiency.  (quiqsilver)
 
 
