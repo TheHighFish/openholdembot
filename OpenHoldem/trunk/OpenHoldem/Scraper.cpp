@@ -518,8 +518,8 @@ void CScraper::scrape_seated(int chair, HDC hdcCompatible, HDC hdc)
 
     seated[chair] = "false";
 
-    // try u region first
-    r$index = global.tablemap.r$uXseated_index[chair];
+    // try p region first
+    r$index = global.tablemap.r$pXseated_index[chair];
     if (r$index!=-1)
     {
         process_region(hdcCompatible, hdc, r$index);
@@ -531,9 +531,9 @@ void CScraper::scrape_seated(int chair, HDC hdcCompatible, HDC hdc)
             seated[chair] = result;
     }
 
-    // try p region next,
-    // but only if we didn't get a positive result from the u region
-    r$index = global.tablemap.r$pXseated_index[chair];
+    // try u region next,
+    // but only if we didn't get a positive result from the p region
+    r$index = global.tablemap.r$uXseated_index[chair];
     if (r$index!=-1 && !is_string_seated(seated[chair]))
     {
         process_region(hdcCompatible, hdc, r$index);
@@ -564,9 +564,10 @@ void CScraper::scrape_active(int chair, HDC hdcCompatible, HDC hdc)
     CString				result;
     CTransform			trans;
 
-    // try u region first
-    active[chair] = "false";
-    r$index = global.tablemap.r$uXactive_index[chair];
+	active[chair] = "false";
+
+    // try p region first
+    r$index = global.tablemap.r$pXactive_index[chair];
     if (r$index!=-1)
     {
         process_region(hdcCompatible, hdc, r$index);
@@ -574,22 +575,20 @@ void CScraper::scrape_active(int chair, HDC hdcCompatible, HDC hdc)
         trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &result);
         SelectObject(hdcCompatible, old_bitmap);
 
-        if (result!="")
-            active[chair] = result;
+        active[chair] = result;
     }
 
-    // try p region next,
-    // but only if we didn't get a positive result from the u region
-    r$index = global.tablemap.r$pXactive_index[chair];
-    if (r$index!=-1 && !is_string_active(active[chair]))
+    // try u region next, but only if we didn't get a key result from the p region
+    r$index = global.tablemap.r$uXactive_index[chair];
+    if (r$index!=-1 && ((!is_string_active(active[chair]) && global.tablemap.activemethod != 2) ||
+		(is_string_active(active[chair]) && global.tablemap.activemethod == 2)))
     {
         process_region(hdcCompatible, hdc, r$index);
         old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
         trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &result);
         SelectObject(hdcCompatible, old_bitmap);
 
-        if (result!="")
-            active[chair] = result;
+        active[chair] = result;
     }
 
     if (active_last[chair] != active[chair])

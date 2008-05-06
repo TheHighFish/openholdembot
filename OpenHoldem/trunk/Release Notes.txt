@@ -31,7 +31,11 @@ BUG FIXES:
 
 - OH opens not on top and not in focus (jumpingfences)
 
+- uXactive fix in 1.8.2 is now compatible with activemethod.  (quiqsilver)
+
 MAINTENANCE:
+
+- Active and seated scraping now evaluates p first for efficiency.  (quiqsilver)
 
 
 v1.8.2 2008-04-25
@@ -87,7 +91,7 @@ NEW STUFF:
 - New symbol s$activemethod is now available.  This is used to determine how OH treats
   information from the pXactive and uXactive regions.
   - 1: (default, legacy) Inactive unless pXactive/uXactive returns true/active
-  - 2: (new) Active unless pXactive/Uxactive returns false/inactive/out/away  (Thanks,
+  - 2: (new) Active unless pXactive/uXactive returns false/inactive/out/away  (Thanks,
     Nick Coldhand)  (quiqsilver)
 
 - When using ManualMode, the new "Network" option now available in the ManualMode interface
