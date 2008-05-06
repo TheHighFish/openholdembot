@@ -1,10 +1,16 @@
 v1.8.3 2008-05-16
+=================
 NEW STUFF:
 - Group UDFs - The formula dialog will now place functions whose name match up to the first "_" together in the left tree. 
   For example, f$river_raise, f$river_call will be grouped under the group named "river".  
   This is optional and can be turned on under View->Group UDFs menu
 - Display Log symbol on OH screen.  If log symbol are enabled in OH preferences, the information box will be enlarge to allow
   for 4 log symbols to be displayed while OH is running
+- Added image transform capability with perceptual difference algorithm (OpenHoldem)
+
+BUG FIXES:
+- Perl menu: "Reload" command was active, even when no formula was loaded (Thank you, JumpingFences).
+  Same for "Edit" and "Check syntax". Fixed in rev. 283 (TheHighFish)	
 
 BUG FIXES:
 - Perl menu: "Reload" command was active, even when no formula was loaded (Thank you, JumpingFences).
