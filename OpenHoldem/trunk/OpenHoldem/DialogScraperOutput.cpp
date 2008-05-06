@@ -286,7 +286,14 @@ void CDlgScraperOutput::do_bitblt(HBITMAP bitmap, int r$index)
     CString		res;
     CTransform	trans;
 
-    if (in_startup)  return;
+    if (in_startup) 	
+	{
+		DeleteDC(hdcCompat1);
+		DeleteDC(hdcCompat2);
+		DeleteDC(hdcScreen);
+		ReleaseDC(pDC);
+		return;
+	}
 
     m_ScraperBitmap.GetWindowRect(&rect);
 
@@ -302,7 +309,14 @@ void CDlgScraperOutput::do_bitblt(HBITMAP bitmap, int r$index)
     pDC->SelectObject(oldpen);
 
     // return if all we needed to do was erase display
-    if (r$index == -1)  return;
+    if (r$index == -1)
+	{
+		DeleteDC(hdcCompat1);
+		DeleteDC(hdcCompat2);
+		DeleteDC(hdcScreen);
+		ReleaseDC(pDC);
+		return;
+	}
 
     // load bitmap into 1st DC and stretchblt to 2nd DC
     old_bitmap1 = (HBITMAP) SelectObject(hdcCompat1, bitmap);

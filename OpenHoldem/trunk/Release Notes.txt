@@ -32,6 +32,9 @@ BUG FIXES:
 
 - uXactive fix in 1.8.2 is now compatible with activemethod.  (quiqsilver)
 
+- Closed DC/GDI leakages as identified by ZooBoy here: http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=4398
+  (OpenHoldem)
+
 
 MAINTENANCE:
 - Active and seated scraping now evaluates p first for efficiency.  (quiqsilver)

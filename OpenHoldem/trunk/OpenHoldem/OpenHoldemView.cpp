@@ -15,7 +15,9 @@
 #include "structs_defines.h"
 
 // Table layouts
-int		cc[5][2] = { {-(CARDSIZEX*2 + 3*2 + CARDSIZEX/2), -(CARDSIZEY/2)},	// absolutes
+int		cc[5][2] = 
+{ 
+	{-(CARDSIZEX*2 + 3*2 + CARDSIZEX/2), -(CARDSIZEY/2)},	// absolutes
     {-(CARDSIZEX*1 + 3*1 + CARDSIZEX/2), -(CARDSIZEY/2)},
     {-(CARDSIZEX*0 + 3*0 + CARDSIZEX/2), -(CARDSIZEY/2)},
     {+(CARDSIZEX*0 + 3*1 + CARDSIZEX/2), -(CARDSIZEY/2)},
@@ -24,7 +26,8 @@ int		cc[5][2] = { {-(CARDSIZEX*2 + 3*2 + CARDSIZEX/2), -(CARDSIZEY/2)},	// absol
 
 // Player locations as a percentage of width/height
 // [nplayers][chairnum][x/y]
-double	pc[11][10][2] = {
+double	pc[11][10][2] = 
+{
     { {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0} },	// 0 players
     { {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0} },	// 1 player
     { {.95,.47}, {.05,.47}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0} },	// 2 players
@@ -41,7 +44,8 @@ double	pc[11][10][2] = {
 // Player bet locations relative to player locations above
 // numbers are in pixel units
 // [nplayers][chairnum][x/y]
-int pcbet[11][10][2] = {
+int pcbet[11][10][2] = 
+{
     { {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0} },	// 0 players
     { {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0} },	// 1 player
     { {-40,+0}, {+40,+0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0} },	// 2 players
@@ -64,7 +68,8 @@ BEGIN_MESSAGE_MAP(COpenHoldemView, CView)
 END_MESSAGE_MAP()
 
 // COpenHoldemView construction/destruction
-COpenHoldemView::COpenHoldemView() {
+COpenHoldemView::COpenHoldemView() 
+{
 
     __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
 
@@ -101,7 +106,8 @@ COpenHoldemView::COpenHoldemView() {
 
 }
 
-COpenHoldemView::~COpenHoldemView() {
+COpenHoldemView::~COpenHoldemView() 
+{
     __SEH_HEADER
 
 
@@ -109,7 +115,8 @@ COpenHoldemView::~COpenHoldemView() {
 
 }
 
-BOOL COpenHoldemView::PreCreateWindow(CREATESTRUCT& cs) {
+BOOL COpenHoldemView::PreCreateWindow(CREATESTRUCT& cs) 
+{
     __SEH_HEADER
 
     // TODO: Modify the Window class or styles here by modifying
@@ -120,7 +127,8 @@ BOOL COpenHoldemView::PreCreateWindow(CREATESTRUCT& cs) {
 
 }
 
-void COpenHoldemView::OnInitialUpdate() {
+void COpenHoldemView::OnInitialUpdate() 
+{
     __SEH_HEADER
 
     CView::OnInitialUpdate();
@@ -133,7 +141,8 @@ void COpenHoldemView::OnInitialUpdate() {
 }
 
 // COpenHoldemView drawing
-void COpenHoldemView::OnDraw(CDC* pDC) {
+void COpenHoldemView::OnDraw(CDC* pDC) 
+{
     __SEH_HEADER
 
     update_display(true);
@@ -142,16 +151,19 @@ void COpenHoldemView::OnDraw(CDC* pDC) {
 
 }
 
-void COpenHoldemView::OnTimer(UINT nIDEvent) {
+void COpenHoldemView::OnTimer(UINT nIDEvent) 
+{
     __SEH_HEADER
 
     bool upd;
 
-    if (nIDEvent == DISPLAY_UPDATE_TIMER) {
+    if (nIDEvent == DISPLAY_UPDATE_TIMER) 
+	{
         EnterCriticalSection(&cs_updater);
         upd = global.update_in_process;
         LeaveCriticalSection(&cs_updater);
-        if (!upd) {
+        if (!upd) 
+		{
             update_display(false);
         }
     }
@@ -162,7 +174,8 @@ void COpenHoldemView::OnTimer(UINT nIDEvent) {
 
 }
 
-void COpenHoldemView::update_display(bool update_all) {
+void COpenHoldemView::update_display(bool update_all) 
+{
     __SEH_HEADER
 
     int						i;
@@ -186,7 +199,8 @@ void COpenHoldemView::update_display(bool update_all) {
     GetClientRect(&cr);
 
     // Set background color (light gray)
-    if (update_all) {
+    if (update_all) 
+	{
         CBrush backBrush(COLOR_GRAY);
         CBrush* pOldBrush = pDC->SelectObject(&backBrush);
         pDC->PatBlt(cr.left, cr.top, cr.right-cr.left, cr.bottom-cr.top, PATCOPY);
@@ -195,31 +209,38 @@ void COpenHoldemView::update_display(bool update_all) {
 
     // Draw center info box
     update_it = false;
-    if (handnumber_last != symbols.sym.handnumber) {
+    if (handnumber_last != symbols.sym.handnumber) 
+	{
         handnumber_last = symbols.sym.handnumber;
         update_it = true;
     }
-    if (sblind_last != symbols.sym.sblind) {
+    if (sblind_last != symbols.sym.sblind) 
+	{
         sblind_last = symbols.sym.sblind;
         update_it = true;
     }
-    if (bblind_last != symbols.sym.bblind) {
+    if (bblind_last != symbols.sym.bblind) 
+	{
         bblind_last = symbols.sym.bblind;
         update_it = true;
     }
-    if (lim_last != symbols.sym.lim) {
+    if (lim_last != symbols.sym.lim) 
+	{
         lim_last = symbols.sym.lim;
         update_it = true;
     }
-    if (istournament_last != symbols.sym.istournament) {
+    if (istournament_last != symbols.sym.istournament) 
+	{
         istournament_last = symbols.sym.istournament;
         update_it = true;
     }
-    if (ante_last != symbols.sym.ante != 0) {
+    if (ante_last != symbols.sym.ante != 0) 
+	{
         ante_last = symbols.sym.ante;
         update_it = true;
     }
-    if (pot_last != symbols.sym.pot) {
+    if (pot_last != symbols.sym.pot) 
+	{
         pot_last = symbols.sym.pot;
         update_it = true;
     }
@@ -227,11 +248,13 @@ void COpenHoldemView::update_display(bool update_all) {
     //	prwin_iterator_progress_last = prwin_iterator_progress;
     //	update_it = true;
     //}
-    if (heartbeat_cycle_time_last != heartbeat_cycle_time){
+    if (heartbeat_cycle_time_last != heartbeat_cycle_time)
+	{
         heartbeat_cycle_time_last = heartbeat_cycle_time;
         update_it = true;
     }
-    if (update_it || update_all) {
+    if (update_it || update_all) 
+	{
         draw_center_info_box();
     }
 
@@ -239,8 +262,10 @@ void COpenHoldemView::update_display(bool update_all) {
     draw_button_indicators();
 
     // Draw common cards
-    for (i=0; i<5; i++) {
-        if (card_common_last[i] != scraper.card_common[i] || update_all) {
+    for (i=0; i<5; i++) 
+	{
+        if (card_common_last[i] != scraper.card_common[i] || update_all) 
+		{
             card_common_last[i] = scraper.card_common[i];
             draw_card(scraper.card_common[i],
                       cr.right/2 + cc[i][0], cr.bottom/2 + cc[i][1],
@@ -250,42 +275,51 @@ void COpenHoldemView::update_display(bool update_all) {
     }
 
     // Draw collection of player info
-    for (i=0; i<global.tablemap.num_chairs; i++) {
+    for (i=0; i<global.tablemap.num_chairs; i++) 
+	{
 
         // Figure out if we need to redraw this seat
         update_it = false;
         if (seated_last[i] != scraper.seated[i] ||
-                active_last[i] != scraper.active[i]) {
+                active_last[i] != scraper.active[i]) 
+		{
             seated_last[i] = scraper.seated[i];
             active_last[i] = scraper.active[i];
             update_it = true;
         }
         if (card_player_last[i][0] != scraper.card_player[i][0] ||
-                card_player_last[i][1] != scraper.card_player[i][1]) {
+                card_player_last[i][1] != scraper.card_player[i][1]) 
+		{
             card_player_last[i][0] = scraper.card_player[i][0];
             card_player_last[i][1] = scraper.card_player[i][1];
             update_it = true;
         }
-        if (dealer_last[i] != scraper.dealer[i]) {
+        if (dealer_last[i] != scraper.dealer[i]) 
+		{
             dealer_last[i] = scraper.dealer[i];
             update_it = true;
         }
-        if (playername_last[i] != scraper.playername[i]) {
+        if (playername_last[i] != scraper.playername[i]) 
+		{
             playername_last[i] = scraper.playername[i];
             update_it = true;
         }
-        if (playerbalance_last[i] != scraper.playerbalance[i]) {
+        if (playerbalance_last[i] != scraper.playerbalance[i]) 
+		{
             playerbalance_last[i] = scraper.playerbalance[i];
             update_it = true;
         }
-        if (playerbet_last[i] != scraper.playerbet[i]) {
+        if (playerbet_last[i] != scraper.playerbet[i]) 
+		{
             playerbet_last[i] = scraper.playerbet[i];
             update_it = true;
         }
 
-        if (update_it || update_all) {
+        if (update_it || update_all) 
+		{
             // Draw active circle
-            if (scraper.is_string_seated(scraper.seated[i])) {
+            if (scraper.is_string_seated(scraper.seated[i])) 
+			{
                 draw_seated_active_circle(i);
             }
 
@@ -304,9 +338,8 @@ void COpenHoldemView::update_display(bool update_all) {
                       true);
 
             // Draw dealer button
-            if (scraper.dealer[i]) {
+            if (scraper.dealer[i])
                 draw_dealer_button(i);
-            }
 
             // Draw name and balance boxes
             draw_name_box(i);
@@ -323,7 +356,8 @@ void COpenHoldemView::update_display(bool update_all) {
 
 }
 
-void COpenHoldemView::draw_center_info_box(void) {
+void COpenHoldemView::draw_center_info_box(void) 
+{
     __SEH_HEADER
 
     CPen		*pTempPen, oldpen;
@@ -371,24 +405,28 @@ void COpenHoldemView::draw_center_info_box(void) {
 
     t = "";
     // handnumber
-    if (symbols.sym.handnumber != 0) {
+    if (symbols.sym.handnumber != 0) 
+	{
         s.Format("  Hand #: %.0f\n", symbols.sym.handnumber);
     }
-    else {
+    else 
+	{
         s.Format("  Hand #: -\n");
     }
     t.Append(s);
 
     // blinds/type
     if ((int) symbols.sym.sblind != symbols.sym.sblind ||
-            (int) symbols.sym.bblind != symbols.sym.bblind) {
+            (int) symbols.sym.bblind != symbols.sym.bblind) 
+	{
         s.Format("  %s%s %.2f/%.2f/%.2f\n",
                  (symbols.sym.lim == LIMIT_NL ? "NL" : symbols.sym.lim == LIMIT_PL ? "PL" :
                   symbols.sym.lim == LIMIT_FL ? "FL" : "?L"),
                  (symbols.sym.istournament ? "T" : ""),
                  symbols.sym.sblind, symbols.sym.bblind, symbols.bigbet);
     }
-    else {
+    else 
+	{
         s.Format("  %s%s %.0f/%.0f/%.0f\n",
                  (symbols.sym.lim == LIMIT_NL ? "NL" : symbols.sym.lim == LIMIT_PL ? "PL" :
                   symbols.sym.lim == LIMIT_FL ? "FL" : "?L"),
@@ -398,25 +436,30 @@ void COpenHoldemView::draw_center_info_box(void) {
     t.Append(s);
 
     // ante
-    if (symbols.sym.ante != 0) {
-        if ((int) symbols.sym.ante != symbols.sym.ante) {
+    if (symbols.sym.ante != 0) 
+	{
+        if ((int) symbols.sym.ante != symbols.sym.ante) 
+		{
             s.Format("  Ante: %.2f\n", symbols.sym.ante);
         }
-        else {
+        else 
+		{
             s.Format("  Ante: %.0f\n", symbols.sym.ante);
         }
         t.Append(s);
     }
 
     // Pot
-    if ((int) symbols.sym.pot != symbols.sym.pot) {
+    if ((int) symbols.sym.pot != symbols.sym.pot) 
         s.Format("  Pot: %.2f\n", symbols.sym.pot);
-    }
-    else {
+
+	else 
         s.Format("  Pot: %.0f\n", symbols.sym.pot);
-    }
-    t.Append(s);
-	if (symbols.user_chair_confirmed && symbols.sym.playing) {
+
+	t.Append(s);
+
+	if (symbols.user_chair_confirmed && symbols.sym.playing) 
+	{
 		for (int i=0; i<min(5, symbols.logsymbols_collection.GetCount()); i++)
 		{
 			s.Format("  Log: %s\n", symbols.logsymbols_collection[i]);
@@ -445,12 +488,14 @@ void COpenHoldemView::draw_center_info_box(void) {
     pDC->SelectObject(oldbrush);
     pDC->SelectObject(oldfont);
     cFont.DeleteObject();
+    ReleaseDC(pDC);
 
     __SEH_LOGFATAL("COpenHoldemView::draw_center_info_box\n");
 
 }
 
-void COpenHoldemView::draw_button_indicators(void) {
+void COpenHoldemView::draw_button_indicators(void) 
+{
     __SEH_HEADER
 
     int			i;
@@ -461,51 +506,58 @@ void COpenHoldemView::draw_button_indicators(void) {
     GetClientRect(&cr);
 
     fold_drawn = call_drawn = check_drawn = raise_drawn = allin_drawn = false;
-    for (i=0; i<10; i++) {
-        if (scraper.get_button_state(i)) {
-            if (scraper.is_string_fold(scraper.buttonlabel[i])) {
+    for (i=0; i<10; i++) 
+	{
+        if (scraper.get_button_state(i)) 
+		{
+            if (scraper.is_string_fold(scraper.buttonlabel[i])) 
+			{
                 draw_specific_button_indicator(i, 'F', cr.right-84, cr.bottom-16, cr.right-70, cr.bottom-2);
                 fold_drawn = true;
             }
-            else if (scraper.is_string_call(scraper.buttonlabel[i])) {
+            else if (scraper.is_string_call(scraper.buttonlabel[i])) 
+			{
                 draw_specific_button_indicator(i, 'C', cr.right-67, cr.bottom-16, cr.right-53, cr.bottom-2);
                 call_drawn = true;
             }
-            else if (scraper.is_string_check(scraper.buttonlabel[i])) {
+            else if (scraper.is_string_check(scraper.buttonlabel[i])) 
+			{
                 draw_specific_button_indicator(i, 'K', cr.right-50, cr.bottom-16, cr.right-36, cr.bottom-2);
                 check_drawn = true;
             }
-            else if (scraper.is_string_raise(scraper.buttonlabel[i])) {
+            else if (scraper.is_string_raise(scraper.buttonlabel[i])) 
+			{
                 draw_specific_button_indicator(i, 'R', cr.right-33, cr.bottom-16, cr.right-19, cr.bottom-2);
                 raise_drawn = true;
             }
-            else if (scraper.is_string_allin(scraper.buttonlabel[i])) {
+            else if (scraper.is_string_allin(scraper.buttonlabel[i])) 
+			{
                 draw_specific_button_indicator(i, 'A', cr.right-16, cr.bottom-16, cr.right-2, cr.bottom-2);
                 allin_drawn = true;
             }
         }
     }
-    if (!fold_drawn) {
+    if (!fold_drawn) 
         draw_specific_button_indicator(-1, 'F', cr.right-84, cr.bottom-16, cr.right-70, cr.bottom-2);
-    }
-    if (!call_drawn) {
+
+	if (!call_drawn) 
         draw_specific_button_indicator(-1, 'C', cr.right-67, cr.bottom-16, cr.right-53, cr.bottom-2);
-    }
-    if (!check_drawn) {
+
+	if (!check_drawn)
         draw_specific_button_indicator(-1, 'K', cr.right-50, cr.bottom-16, cr.right-36, cr.bottom-2);
-    }
-    if (!raise_drawn) {
+
+	if (!raise_drawn)
         draw_specific_button_indicator(-1, 'R', cr.right-33, cr.bottom-16, cr.right-19, cr.bottom-2);
-    }
-    if (!allin_drawn) {
+
+	if (!allin_drawn)
         draw_specific_button_indicator(-1, 'A', cr.right-16, cr.bottom-16, cr.right-2, cr.bottom-2);
-    }
 
     __SEH_LOGFATAL("COpenHoldemView::draw_specific_button_indicators\n");
 
 }
 
-void COpenHoldemView::draw_specific_button_indicator(int button_num, char ch, int left, int top, int right, int bottom) {
+void COpenHoldemView::draw_specific_button_indicator(int button_num, char ch, int left, int top, int right, int bottom) 
+{
     __SEH_HEADER
 
     CPen		*pTempPen, oldpen;
@@ -524,40 +576,49 @@ void COpenHoldemView::draw_specific_button_indicator(int button_num, char ch, in
     // Background color
     pDC->SetBkColor(COLOR_GRAY);
 
-    if (button_num == -1) {
+    if (button_num == -1) 
+	{
         pTempPen = (CPen*)pDC->SelectObject(&white_dot_pen);
         pTempBrush = (CBrush*)pDC->SelectObject(&gray_brush);
         pDC->SetTextColor(COLOR_WHITE);
     }
-    else {
-        if (scraper.get_button_state(button_num)) {
-            if (ch=='F') {
+    else 
+	{
+        if (scraper.get_button_state(button_num)) 
+		{
+            if (ch=='F') 
+			{
                 pTempPen = (CPen*)pDC->SelectObject(&red_pen);
                 pTempBrush = (CBrush*)pDC->SelectObject(&white_brush);
                 pDC->SetTextColor(COLOR_RED);
             }
-            else if (ch=='C') {
+            else if (ch=='C') 
+			{
                 pTempPen = (CPen*)pDC->SelectObject(&blue_pen);
                 pTempBrush = (CBrush*)pDC->SelectObject(&white_brush);
                 pDC->SetTextColor(COLOR_BLUE);
             }
-            else if (ch=='K') {
+            else if (ch=='K') 
+			{
                 pTempPen = (CPen*)pDC->SelectObject(&blue_pen);
                 pTempBrush = (CBrush*)pDC->SelectObject(&white_brush);
                 pDC->SetTextColor(COLOR_BLUE);
             }
-            else if (ch=='R') {
+            else if (ch=='R') 
+			{
                 pTempPen = (CPen*)pDC->SelectObject(&green_pen);
                 pTempBrush = (CBrush*)pDC->SelectObject(&white_brush);
                 pDC->SetTextColor(COLOR_GREEN);
             }
-            else if (ch=='A') {
+            else if (ch=='A') 
+			{
                 pTempPen = (CPen*)pDC->SelectObject(&black_pen);
                 pTempBrush = (CBrush*)pDC->SelectObject(&white_brush);
                 pDC->SetTextColor(COLOR_BLACK);
             }
         }
-        else {
+        else 
+		{
             pTempPen = (CPen*)pDC->SelectObject(&white_dot_pen);
             pTempBrush = (CBrush*)pDC->SelectObject(&gray_brush);
             pDC->SetTextColor(COLOR_WHITE);
@@ -591,7 +652,8 @@ void COpenHoldemView::draw_specific_button_indicator(int button_num, char ch, in
 
 }
 
-void COpenHoldemView::draw_seated_active_circle(int chair) {
+void COpenHoldemView::draw_seated_active_circle(int chair) 
+{
     __SEH_HEADER
 
     CPen		*pTempPen, oldpen;
@@ -615,10 +677,12 @@ void COpenHoldemView::draw_seated_active_circle(int chair) {
     pTempPen = (CPen*)pDC->SelectObject(&black_pen);
     oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
 
-    if (scraper.is_string_active(scraper.active[chair])) {
+    if (scraper.is_string_active(scraper.active[chair])) 
+	{
         pTempBrush = (CBrush*)pDC->SelectObject(&white_brush);
     }
-    else {
+    else 
+	{
         pTempBrush = (CBrush*)pDC->SelectObject(&gray_brush);
     }
     oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush
@@ -634,7 +698,8 @@ void COpenHoldemView::draw_seated_active_circle(int chair) {
 
 }
 
-void COpenHoldemView::draw_dealer_button(int chair) {
+void COpenHoldemView::draw_dealer_button(int chair) 
+{
     __SEH_HEADER
 
     CPen		*pTempPen, oldpen;
@@ -672,7 +737,8 @@ void COpenHoldemView::draw_dealer_button(int chair) {
 
 }
 
-void COpenHoldemView::draw_card(unsigned int card, int left, int top, int right, int bottom, bool pl_card) {
+void COpenHoldemView::draw_card(unsigned int card, int left, int top, int right, int bottom, bool pl_card) 
+{
     __SEH_HEADER
 
     CPen		*pTempPen, oldpen;
@@ -691,7 +757,8 @@ void COpenHoldemView::draw_card(unsigned int card, int left, int top, int right,
     pDC->SetBkColor(COLOR_GRAY);
 
     // CARD BACK
-    if (card == CARD_BACK) {
+    if (card == CARD_BACK) 
+	{
         pTempPen = (CPen*)pDC->SelectObject(&black_pen);
         oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
         pTempBrush = (CBrush*)pDC->SelectObject(&yellow_brush);
@@ -706,7 +773,8 @@ void COpenHoldemView::draw_card(unsigned int card, int left, int top, int right,
     }
 
     // NO CARD
-    else if (card == CARD_NOCARD) {
+    else if (card == CARD_NOCARD) 
+	{
         pTempPen = (CPen*)pDC->SelectObject(&white_dot_pen);
         oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
         pTempBrush = (CBrush*)pDC->SelectObject(&gray_brush);
@@ -721,7 +789,8 @@ void COpenHoldemView::draw_card(unsigned int card, int left, int top, int right,
     }
 
     // NORMAL CARD
-    else {
+    else 
+	{
         // Rect for rank and suit location
         rrect.left = left;
         rrect.top = top;
@@ -737,26 +806,27 @@ void COpenHoldemView::draw_card(unsigned int card, int left, int top, int right,
         oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush
 
         // Set colors
-        switch (StdDeck_SUIT(card)) {
-        case Suit_CLUBS:
-            pDC->SetTextColor(COLOR_GREEN);
-            pTempPen = (CPen*)pDC->SelectObject(&green_pen);
-            break;
-        case Suit_DIAMONDS:
-            pDC->SetTextColor(COLOR_BLUE);
-            pTempPen = (CPen*)pDC->SelectObject(&blue_pen);
-            break;
-        case Suit_HEARTS:
-            pDC->SetTextColor(COLOR_RED);
-            pTempPen = (CPen*)pDC->SelectObject(&red_pen);
-            break;
-        case Suit_SPADES:
-            pDC->SetTextColor(COLOR_BLACK);
-            pTempPen = (CPen*)pDC->SelectObject(&black_pen);
-            break;
-        default:
-            pTempPen = (CPen*)pDC->GetCurrentPen();
-            break;
+        switch (StdDeck_SUIT(card)) 
+		{
+			case Suit_CLUBS:
+				pDC->SetTextColor(COLOR_GREEN);
+				pTempPen = (CPen*)pDC->SelectObject(&green_pen);
+				break;
+			case Suit_DIAMONDS:
+				pDC->SetTextColor(COLOR_BLUE);
+				pTempPen = (CPen*)pDC->SelectObject(&blue_pen);
+				break;
+			case Suit_HEARTS:
+				pDC->SetTextColor(COLOR_RED);
+				pTempPen = (CPen*)pDC->SelectObject(&red_pen);
+				break;
+			case Suit_SPADES:
+				pDC->SetTextColor(COLOR_BLACK);
+				pTempPen = (CPen*)pDC->SelectObject(&black_pen);
+				break;
+			default:
+				pTempPen = (CPen*)pDC->GetCurrentPen();
+				break;
         }
         oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
 
@@ -764,63 +834,65 @@ void COpenHoldemView::draw_card(unsigned int card, int left, int top, int right,
         pDC->SetBkMode(OPAQUE);
         pDC->RoundRect(left, top, right, bottom, 5, 5);
         pDC->SetBkMode(TRANSPARENT);
-        switch (StdDeck_SUIT(card)) {
-        case Suit_CLUBS:
-            pDC->DrawText("C", -1, &srect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-            break;
-        case Suit_DIAMONDS:
-            pDC->DrawText("D", -1, &srect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-            break;
-        case Suit_HEARTS:
-            pDC->DrawText("H", -1, &srect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-            break;
-        case Suit_SPADES:
-            pDC->DrawText("S", -1, &srect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-            break;
+        switch (StdDeck_SUIT(card)) 
+		{
+			case Suit_CLUBS:
+				pDC->DrawText("C", -1, &srect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
+				break;
+			case Suit_DIAMONDS:
+				pDC->DrawText("D", -1, &srect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
+				break;
+			case Suit_HEARTS:
+				pDC->DrawText("H", -1, &srect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
+				break;
+			case Suit_SPADES:
+				pDC->DrawText("S", -1, &srect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
+				break;
         }
 
 
         // Draw card rank
-        switch (StdDeck_RANK(card)) {
-        case Rank_2:
-            pDC->DrawText("2", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-            break;
-        case Rank_3:
-            pDC->DrawText("3", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-            break;
-        case Rank_4:
-            pDC->DrawText("4", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-            break;
-        case Rank_5:
-            pDC->DrawText("5", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-            break;
-        case Rank_6:
-            pDC->DrawText("6", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-            break;
-        case Rank_7:
-            pDC->DrawText("7", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-            break;
-        case Rank_8:
-            pDC->DrawText("8", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-            break;
-        case Rank_9:
-            pDC->DrawText("9", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-            break;
-        case Rank_TEN:
-            pDC->DrawText("T", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-            break;
-        case Rank_JACK:
-            pDC->DrawText("J", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-            break;
-        case Rank_QUEEN:
-            pDC->DrawText("Q", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-            break;
-        case Rank_KING:
-            pDC->DrawText("K", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-            break;
-        case Rank_ACE:
-            pDC->DrawText("A", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-            break;
+        switch (StdDeck_RANK(card)) 
+		{
+			case Rank_2:
+				pDC->DrawText("2", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
+				break;
+			case Rank_3:
+				pDC->DrawText("3", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
+				break;
+			case Rank_4:
+				pDC->DrawText("4", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
+				break;
+			case Rank_5:
+				pDC->DrawText("5", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
+				break;
+			case Rank_6:
+				pDC->DrawText("6", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
+				break;
+			case Rank_7:
+				pDC->DrawText("7", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
+				break;
+			case Rank_8:
+				pDC->DrawText("8", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
+				break;
+			case Rank_9:
+				pDC->DrawText("9", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
+				break;
+			case Rank_TEN:
+				pDC->DrawText("T", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
+				break;
+			case Rank_JACK:
+				pDC->DrawText("J", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
+				break;
+			case Rank_QUEEN:
+				pDC->DrawText("Q", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
+				break;
+			case Rank_KING:
+				pDC->DrawText("K", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
+				break;
+			case Rank_ACE:
+				pDC->DrawText("A", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
+				break;
         }
 
         // Restore original pen and brush
@@ -836,7 +908,8 @@ void COpenHoldemView::draw_card(unsigned int card, int left, int top, int right,
 }
 
 
-void COpenHoldemView::draw_name_box(int chair) {
+void COpenHoldemView::draw_name_box(int chair) 
+{
     __SEH_HEADER
 
     CPen		*pTempPen, oldpen;
@@ -869,7 +942,8 @@ void COpenHoldemView::draw_name_box(int chair) {
 
     if (scraper.is_string_seated(scraper.seated[chair]) || scraper.is_string_active(scraper.active[chair]) ||
             (global.tablemap.r$pXseated_index[chair] == -1 && global.tablemap.r$uXseated_index[chair] == -1 &&
-             global.tablemap.r$pXactive_index[chair] == -1 && global.tablemap.r$uXactive_index[chair] == -1) ) {
+             global.tablemap.r$pXactive_index[chair] == -1 && global.tablemap.r$uXactive_index[chair] == -1) ) 
+	{
 
         pTempPen = (CPen*)pDC->SelectObject(&black_pen);
         oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
@@ -890,7 +964,8 @@ void COpenHoldemView::draw_name_box(int chair) {
         drawrect.bottom = bottom;
 
         // Invalidate everything if the name has decreased in width
-        if (name_rect_last[chair].right - name_rect_last[chair].left != drawrect.right - drawrect.left) {
+        if (name_rect_last[chair].right - name_rect_last[chair].left != drawrect.right - drawrect.left) 
+		{
             InvalidateRect(NULL, true);
         }
 
@@ -905,7 +980,8 @@ void COpenHoldemView::draw_name_box(int chair) {
         name_rect_last[chair].right = drawrect.right;
         name_rect_last[chair].bottom = drawrect.bottom;
     }
-    else {
+    else 
+	{
         pTempPen = (CPen*)pDC->SelectObject(&white_dot_pen);
         oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
         pTempBrush = (CBrush*)pDC->SelectObject(&gray_brush);
@@ -926,7 +1002,8 @@ void COpenHoldemView::draw_name_box(int chair) {
 
 }
 
-void COpenHoldemView::draw_balance_box(int chair) {
+void COpenHoldemView::draw_balance_box(int chair) 
+{
     __SEH_HEADER
 
     CPen		*pTempPen, oldpen;
@@ -960,7 +1037,8 @@ void COpenHoldemView::draw_balance_box(int chair) {
 
     if (scraper.is_string_seated(scraper.seated[chair]) || scraper.is_string_active(scraper.active[chair]) ||
             (global.tablemap.r$pXseated_index[chair] == -1 && global.tablemap.r$uXseated_index[chair] == -1 &&
-             global.tablemap.r$pXactive_index[chair] == -1 && global.tablemap.r$uXactive_index[chair] == -1) ) {
+             global.tablemap.r$pXactive_index[chair] == -1 && global.tablemap.r$uXactive_index[chair] == -1) ) 
+	{
 
         pTempPen = (CPen*)pDC->SelectObject(&black_pen);
         oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
@@ -969,23 +1047,29 @@ void COpenHoldemView::draw_balance_box(int chair) {
 
         // Format Text
         if (!scraper.sittingout[chair]) {
-            if ((int) scraper.playerbalance[chair] != scraper.playerbalance[chair]) {
+            if ((int) scraper.playerbalance[chair] != scraper.playerbalance[chair]) 
+			{
                 t.Format("%.2f", scraper.playerbalance[chair]);
             }
-            else {
+            else 
+			{
                 t.Format("%d", (int) scraper.playerbalance[chair]);
             }
         }
-        else {
-            if ((int) scraper.playerbalance[chair] != scraper.playerbalance[chair]) {
+        else 
+		{
+            if ((int) scraper.playerbalance[chair] != scraper.playerbalance[chair]) 
+			{
                 t.Format("Out (%.2f)", scraper.playerbalance[chair]);
             }
-            else {
+            else 
+			{
                 t.Format("Out (%d)", (int) scraper.playerbalance[chair]);
             }
         }
     }
-    else {
+    else 
+	{
         pTempPen = (CPen*)pDC->SelectObject(&white_dot_pen);
         oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
         pTempBrush = (CBrush*)pDC->SelectObject(&gray_brush);
@@ -1008,7 +1092,8 @@ void COpenHoldemView::draw_balance_box(int chair) {
     drawrect.bottom = bottom;
 
     // Invalidate everything if the balance has decreased in width
-    if (balance_rect_last[chair].right - balance_rect_last[chair].left != drawrect.right - drawrect.left) {
+    if (balance_rect_last[chair].right - balance_rect_last[chair].left != drawrect.right - drawrect.left) 
+	{
         InvalidateRect(NULL, true);
     }
 
@@ -1034,7 +1119,8 @@ void COpenHoldemView::draw_balance_box(int chair) {
 }
 
 
-void COpenHoldemView::draw_player_bet(int chair) {
+void COpenHoldemView::draw_player_bet(int chair) 
+{
     __SEH_HEADER
 
     CPen		*pTempPen, oldpen;
@@ -1077,15 +1163,19 @@ void COpenHoldemView::draw_player_bet(int chair) {
     pDC->SetTextColor(COLOR_WHITE);
 
     // Format text
-    if (scraper.playerbet[chair] != 0) {
-        if ((int) scraper.playerbet[chair] != scraper.playerbet[chair]) {
+    if (scraper.playerbet[chair] != 0) 
+	{
+        if ((int) scraper.playerbet[chair] != scraper.playerbet[chair]) 
+		{
             t.Format("%.2f", scraper.playerbet[chair]);
         }
-        else {
+        else 
+		{
             t.Format("%d", (int) scraper.playerbet[chair]);
         }
     }
-    else {
+    else 
+	{
         t = "";
     }
 
@@ -1097,19 +1187,22 @@ void COpenHoldemView::draw_player_bet(int chair) {
     pDC->DrawText(t.GetString(), t.GetLength(), &textrect, DT_CALCRECT);
 
     // Figure out placement of rectangle
-    if (xadj<0) {
+    if (xadj<0) 
+	{
         drawrect.left = xcenter + xadj - textrect.right;
         drawrect.top = ycenter + yadj - textrect.bottom/2;
         drawrect.right = xcenter + xadj;
         drawrect.bottom = ycenter + yadj + textrect.bottom/2;
     }
-    else if (xadj>0) {
+    else if (xadj>0) 
+	{
         drawrect.left = xcenter + xadj;
         drawrect.top = ycenter + yadj - textrect.bottom/2;
         drawrect.right = xcenter + xadj + textrect.right;
         drawrect.bottom = ycenter + yadj + textrect.bottom/2;
     }
-    else {  // xadj==0
+    else	// xadj==0
+	{  
         drawrect.left = xcenter + xadj - textrect.right/2;
         drawrect.top = ycenter + yadj - textrect.bottom/2;
         drawrect.right = xcenter + xadj + textrect.right/2;
