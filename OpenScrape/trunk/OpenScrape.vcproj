@@ -306,19 +306,19 @@
 				Name="pdiff"
 				>
 				<File
-					RelativePath="..\CTransform\pdiff\CompareArgs.cpp"
+					RelativePath="..\ctransform\pdiff\CompareArgs.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\CTransform\pdiff\LPyramid.cpp"
+					RelativePath="..\ctransform\pdiff\LPyramid.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\CTransform\pdiff\Metric.cpp"
+					RelativePath="..\ctransform\pdiff\Metric.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\CTransform\pdiff\RGBAImage.cpp"
+					RelativePath="..\ctransform\pdiff\RGBAImage.cpp"
 					>
 				</File>
 			</Filter>
@@ -436,19 +436,19 @@
 				Name="pdiff"
 				>
 				<File
-					RelativePath="..\CTransform\pdiff\CompareArgs.h"
+					RelativePath="..\ctransform\pdiff\CompareArgs.h"
 					>
 				</File>
 				<File
-					RelativePath="..\CTransform\pdiff\LPyramid.h"
+					RelativePath="..\ctransform\pdiff\LPyramid.h"
 					>
 				</File>
 				<File
-					RelativePath="..\CTransform\pdiff\Metric.h"
+					RelativePath="..\ctransform\pdiff\Metric.h"
 					>
 				</File>
 				<File
-					RelativePath="..\CTransform\pdiff\RGBAImage.h"
+					RelativePath="..\ctransform\pdiff\RGBAImage.h"
 					>
 				</File>
 			</Filter>
