@@ -92,6 +92,9 @@
 #define IDC_TRACKER_FONT_SET            1077
 #define IDC_TRACKER_CARD_NUM            1078
 #define IDC_TRACKER_FONT_NUM            1079
+#define IDC_                            1085
+#define IDC_MISSING_CARDS               1089
+#define IDC_MISSING_FONTS               1092
 #define ID_MAIN_TOOLBAR_GREENCIRCLE     32771
 #define ID_VIEW_CONNECTTOWINDOW         32772
 #define ID_MAIN_TOOLBAR_REDRECTANGLE    32773
@@ -107,7 +110,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        146
 #define _APS_NEXT_COMMAND_VALUE         32779
-#define _APS_NEXT_CONTROL_VALUE         1081
+#define _APS_NEXT_CONTROL_VALUE         1090
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
