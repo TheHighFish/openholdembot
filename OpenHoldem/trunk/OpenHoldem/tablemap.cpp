@@ -35,8 +35,9 @@ int load_tablemap(char *filename, STableMap *map, char *version, bool check_ws_d
 
     __SEH_HEADER
     CString				strLine, strLineType, token, s, e, hexval, t;
-    int					i, pos, insert_point, P, j, x, y;
+    int					i, pos, insert_point, P, j, x, y, new_elem;
     bool				supported_version;
+	BYTE				alpha, red, green, blue;
 
     // temp
     Stablemap_size			hold_size;
@@ -60,24 +61,26 @@ int load_tablemap(char *filename, STableMap *map, char *version, bool check_ws_d
     // Read the first line of the CArchive into strLine
     strLine = "";
     *linenum = 1;
-    if (!ar.ReadString(strLine)) {
-        // Failed, so quit
+
+	// Failed, so quit
+    if (!ar.ReadString(strLine))
         return ERR_EOF;
-    }
 
     // skip any blank lines
-    while (strLine.GetLength() == 0) {
+    while (strLine.GetLength() == 0) 
+	{
         linenum++;
-        if (!ar.ReadString(strLine))  {
-            // Failed, so quit
+
+		// Failed, so quit
+        if (!ar.ReadString(strLine)) 
             return ERR_EOF;
-        }
     }
 
     //
     // Validate WinScrape file version, if passed in
     // check the ".wsdb1"/".ohdb1"/".ohdb2"/".osdb1" line
-    if (strlen(version)) {
+    if (strlen(version)) 
+	{
         if (memcmp(version, VER_OPENSCRAPE_1, strlen(version)) == 0)
         {
             if (memcmp(strLine.GetString(), VER_OPENHOLDEM_2, strlen(VER_OPENHOLDEM_2)) != 0 &&
@@ -96,20 +99,23 @@ int load_tablemap(char *filename, STableMap *map, char *version, bool check_ws_d
     }
 
     // check the date line
-    if (check_ws_date) {
+    if (check_ws_date) 
+	{
         supported_version = false;
-        do {
+        do 
+		{
             if (strLine.Find(VER_WINSCRAPE_DATE1) != -1 ||
                     strLine.Find(VER_WINSCRAPE_DATE2) != -1 ||
                     strLine.Find(VER_WINSCRAPE_DATE3) != -1 ||
-                    strLine.Find(VER_WINSCRAPE_DATE4) != -1) {
+                    strLine.Find(VER_WINSCRAPE_DATE4) != -1) 
+			{
                 supported_version = true;
             }
         }
         while (ar.ReadString(strLine) && !supported_version);
-        if (!supported_version) {
+
+        if (!supported_version) 
             return ERR_VERSION;
-        }
     }
 
     // Repeat while there are lines in the file left to process
@@ -118,60 +124,60 @@ int load_tablemap(char *filename, STableMap *map, char *version, bool check_ws_d
         strLine.Trim();
 
         // If the line is empty, skip it
-        if (strLine.GetLength() == 0) {
+        if (strLine.GetLength() == 0)
             continue;
-        }
 
         // Extract the line type
         pos=0;
         strLineType = strLine.Tokenize(" \t", pos);
 
         // Skip comment lines
-        if (strLineType.Left(2) == "//") {
+        if (strLineType.Left(2) == "//")
             continue;
-        }
 
         // Skip version lines
         if (strLineType == VER_WINSCRAPE ||
                 strLineType == VER_OPENHOLDEM_1 ||
                 strLineType == VER_OPENHOLDEM_2 ||
-                strLineType == VER_OPENSCRAPE_1) {
+                strLineType == VER_OPENSCRAPE_1) 
+		{
             continue;
         }
 
         // Handle z$ lines (sizes)
-        if (strLineType.Left(2) == "z$") {
+        if (strLineType.Left(2) == "z$") 
+		{
             // name
             hold_size.name = strLineType.Mid(2);
 
             // width
             token = strLine.Tokenize(" \t", pos);
-            if (token.GetLength()==0) {
+            if (token.GetLength()==0)
                 return ERR_SYNTAX;
-            }
-            hold_size.width = atol(token.GetString());
+
+			hold_size.width = atol(token.GetString());
 
             // height
             token = strLine.Tokenize(" \t", pos);
-            if (token.GetLength()==0) {
+            if (token.GetLength()==0)
                 return ERR_SYNTAX;
-            }
-            hold_size.height = atol(token.GetString());
+
+			hold_size.height = atol(token.GetString());
 
             map->z$.Add(hold_size);
         }
 
         // Handle s$ lines (symbols/string)
-        else if (strLineType.Left(2) == "s$") {
+        else if (strLineType.Left(2) == "s$") 
+		{
             // name
             hold_symbol.name = strLineType.Mid(2);
 
             // text
             hold_symbol.text = strLine.Mid(strLineType.GetLength());
             hold_symbol.text.Trim();
-            if (hold_symbol.text.GetLength()==0) {
+            if (hold_symbol.text.GetLength()==0)
                 return ERR_SYNTAX;
-            }
 
             // Skip s$hXtype lines
             if (strLineType.Left(3) == "s$h" && strLineType.Mid(4,4) == "type")
@@ -184,57 +190,57 @@ int load_tablemap(char *filename, STableMap *map, char *version, bool check_ws_d
         }
 
         // Handle r$ lines (regions)
-        else if (strLineType.Left(2) == "r$") {
+        else if (strLineType.Left(2) == "r$") 
+		{
             // name
             hold_region.name = strLineType.Mid(2);
 
             // left
             token = strLine.Tokenize(" \t", pos);
-            if (token.GetLength()==0) {
+            if (token.GetLength()==0)
                 return ERR_SYNTAX;
-            }
-            hold_region.left = atol(token.GetString());
+
+			hold_region.left = atol(token.GetString());
 
             // top
             token = strLine.Tokenize(" \t", pos);
-            if (token.GetLength()==0) {
+            if (token.GetLength()==0)
                 return ERR_SYNTAX;
-            }
-            hold_region.top = atol(token.GetString());
+
+			hold_region.top = atol(token.GetString());
 
             // right
             token = strLine.Tokenize(" \t", pos);
-            if (token.GetLength()==0) {
+            if (token.GetLength()==0)
                 return ERR_SYNTAX;
-            }
-            hold_region.right = atol(token.GetString());
+
+			hold_region.right = atol(token.GetString());
 
             // bottom
             token = strLine.Tokenize(" \t", pos);
-            if (token.GetLength()==0) {
+            if (token.GetLength()==0)
                 return ERR_SYNTAX;
-            }
-            hold_region.bottom = atol(token.GetString());
+
+			hold_region.bottom = atol(token.GetString());
 
             // color
             token = strLine.Tokenize(" \t", pos);
-            if (token.GetLength()==0) {
+            if (token.GetLength()==0)
                 return ERR_SYNTAX;
-            }
-            hold_region.color = strtoul(token.GetString(), 0, 16);
+
+			hold_region.color = strtoul(token.GetString(), 0, 16);
 
             // radius
             token = strLine.Tokenize(" \t", pos);
-            if (token.GetLength()==0) {
+            if (token.GetLength()==0)
                 return ERR_SYNTAX;
-            }
-            hold_region.radius = atol(token.GetString());
+
+			hold_region.radius = atol(token.GetString());
 
             // transform
             hold_region.transform = strLine.Tokenize(" \t", pos);
-            if (hold_region.transform.GetLength()==0) {
+            if (hold_region.transform.GetLength()==0)
                 return ERR_SYNTAX;
-            }
 
             // flags
             //token = strLine.Tokenize(" \t", pos);
@@ -249,16 +255,19 @@ int load_tablemap(char *filename, STableMap *map, char *version, bool check_ws_d
                  (strLineType.Left(1) == 't' &&
                   strLineType.Mid(1,1) >= "0" &&
                   strLineType.Mid(1,1) <= "9" &&
-                  strLineType.Mid(2,1) == "$")) {
+                  strLineType.Mid(2,1) == "$")) 
+		{
 
             // Old style t$ records (no font groups) - pre "2007 Nov 1 08:32:55" WinScrape release
-            if (strLineType.Left(2) == "t$") {
+            if (strLineType.Left(2) == "t$") 
+			{
                 t = strLineType.Mid(2,1);
                 hold_font.ch = t.GetString()[0];
                 hold_font.group = 0;
             }
             // New style t$ records (font groups 0-3) - "2007 Nov 1 08:32:55" WinScrape release and later
-            else {
+            else 
+			{
                 t = strLineType.Mid(3,1);
                 hold_font.ch = t.GetString()[0];
                 hold_font.group = strLineType.GetString()[1] - '0';
@@ -266,7 +275,8 @@ int load_tablemap(char *filename, STableMap *map, char *version, bool check_ws_d
 
             i = 0;
             hold_font.hexmash = "";
-            while ((token = strLine.Tokenize(" \t", pos))!="" && i<=30 && pos!=-1) {
+            while ((token = strLine.Tokenize(" \t", pos))!="" && i<=30 && pos!=-1) 
+			{
                 hold_font.x[i++] = strtoul(token, 0, 16);
                 hold_font.hexmash.Append(token);
             }
@@ -275,48 +285,50 @@ int load_tablemap(char *filename, STableMap *map, char *version, bool check_ws_d
             // Insert into array so it is sorted alphabetically
             P = (int) map->t$.GetSize();
             insert_point = -1;
-            for (j=0; j<P; j++) {
+            for (j=0; j<P; j++) 
+			{
                 if (hold_font.hexmash < map->t$[j].hexmash)
                 {
                     insert_point = j;
                     j=P+1;
                 }
             }
-            if (insert_point==-1) {
+            if (insert_point==-1)
                 map->t$.Add(hold_font);
-            }
-            else {
+
+			else
                 map->t$.InsertAt(insert_point, hold_font);
-            }
         }
 
         // Handle p$ lines (hash points)
         else if (strLineType.Left(1) == "p" &&
                  strLineType.Mid(1,1) >= "0" &&
                  strLineType.Mid(1,1) <= "9" &&
-                 strLineType.Mid(2,1) == "$") {
+                 strLineType.Mid(2,1) == "$") 
+		{
             // number
             token = strLineType.Mid(1,1);
             hold_hash_point.number = atol(token);
 
             // x
             token = strLine.Tokenize(" \t", pos);
-            if (token.GetLength()==0) {
+            if (token.GetLength()==0)
                 return ERR_SYNTAX;
-            }
-            hold_hash_point.x = atol(token.GetString());
+
+			hold_hash_point.x = atol(token.GetString());
 
             // y
-            if (token.GetLength()==0) {
+            if (token.GetLength()==0)
                 return ERR_SYNTAX;
-            }
-            token = strLine.Tokenize(" \t", pos);
+
+			token = strLine.Tokenize(" \t", pos);
             hold_hash_point.y = atol(token.GetString());
 
             // Find the right spot to insert this p$ record (so list is sorted - needed for binary searches)
             P = (int) map->p$.GetSize();
             insert_point = -1;
-            for (j=0; j<P; j++) {
+            for (j=0; j<P; j++) 
+			{
                 if ( hold_hash_point.number == map->p$[j].number &&
                         ((hold_hash_point.x == map->p$[j].x && hold_hash_point.y < map->p$[j].y) ||
                          (hold_hash_point.x < map->p$[j].x)) )
@@ -325,19 +337,19 @@ int load_tablemap(char *filename, STableMap *map, char *version, bool check_ws_d
                     j=P+1;
                 }
             }
-            if (insert_point==-1) {
+            if (insert_point==-1)
                 map->p$.Add(hold_hash_point);
-            }
-            else {
+
+			else
                 map->p$.InsertAt(insert_point, hold_hash_point);
-            }
         }
 
         // Handle h$ lines (hash values)
         else if (strLineType.Left(1) == "h" &&
                  strLineType.Mid(1,1) >= "0" &&
                  strLineType.Mid(1,1) <= "9" &&
-                 strLineType.Mid(2,1) == "$") {
+                 strLineType.Mid(2,1) == "$") 
+		{
             // number
             hold_hash_value.number = strLineType.GetString()[1] - '0';
 
@@ -346,72 +358,86 @@ int load_tablemap(char *filename, STableMap *map, char *version, bool check_ws_d
 
             // value
             token = strLine.Tokenize(" \t", pos);
-            if (token.GetLength()==0) {
+            if (token.GetLength()==0)
                 return ERR_SYNTAX;
-            }
-            hold_hash_value.hash = strtoul(token.GetString(), 0, 16);
+
+			hold_hash_value.hash = strtoul(token.GetString(), 0, 16);
 
             // Insert into array so it is sorted
             P = (int) map->h$.GetSize();
             insert_point = -1;
-            for (j=0; j<P; j++) {
+            for (j=0; j<P; j++) 
+			{
                 if (hold_hash_value.hash < map->h$[j].hash)
                 {
                     insert_point = j;
                     j=P+1;
                 }
             }
-            if (insert_point==-1) {
+            if (insert_point==-1)
                 map->h$.Add(hold_hash_value);
-            }
-            else {
+
+			else
                 map->h$.InsertAt(insert_point, hold_hash_value);
-            }
         }
 
         // Handle i$ lines (images)
-        else if (strLineType.Left(2) == "i$") {
+        else if (strLineType.Left(2) == "i$") 
+		{
             // name
             hold_image.name = strLineType.Mid(2);
 
             // width
             token = strLine.Tokenize(" \t", pos);
-            if (token.GetLength()==0) {
+            if (token.GetLength()==0)
                 return ERR_SYNTAX;
-            }
-            hold_image.width = atol(token.GetString());
+
+			hold_image.width = atol(token.GetString());
 
             // height
             token = strLine.Tokenize(" \t", pos);
-            if (token.GetLength()==0) {
+            if (token.GetLength()==0)
                 return ERR_SYNTAX;
-            }
-            hold_image.height = atol(token.GetString());
+
+			hold_image.height = atol(token.GetString());
 
             // Check size of region
-            if (hold_image.width * hold_image.height > 200*150) {
+            if (hold_image.width * hold_image.height > MAX_IMAGE_WIDTH*MAX_IMAGE_HEIGHT)
                 return ERR_REGION_SIZE;
-            }
 
-            //new_elem = (int) map->i$.Add(hold_image);
+			// Add the new i$ record to the internal array
+            new_elem = (int) map->i$.Add(hold_image);
+
+			// Allocate space for "RGBAImage"
+			t = map->i$[new_elem].name + ".ppm";
+			map->i$[new_elem].image = new RGBAImage(map->i$[new_elem].width, map->i$[new_elem].height, t.GetString());
 
             // read next "height" lines
-            for (x=0; x < (int) hold_image.height; x++) {
+            for (y=0; y < (int) map->i$[new_elem].height; y++) 
+			{
                 linenum++;
-                if (!ar.ReadString(strLine)) {
+                if (!ar.ReadString(strLine)) 
+				{
                     return ERR_SYNTAX;
                 }
                 // scan across "width" of line to get values
-                for (y=0; y < (int) hold_image.width; y++) {
+                for (x=0; x < (int) map->i$[new_elem].width; x++) 
+				{
                     // unreverse bgra to abgr
-                    hexval = strLine.Mid(y*8+6, 2) + strLine.Mid(y*8, 6);
-                    //map->i$[new_elem].pixel[x*map->i$[new_elem].width + y] = strtoul(hexval, 0, 16);
-                }
+                    hexval = strLine.Mid(x*8+6, 2) + strLine.Mid(x*8, 6);
+                    map->i$[new_elem].pixel[y*map->i$[new_elem].width + x] = strtoul(hexval, 0, 16);
+					alpha = (map->i$[new_elem].pixel[y*map->i$[new_elem].width + x] >> 24) &0xff;
+					blue =  (map->i$[new_elem].pixel[y*map->i$[new_elem].width + x] >> 16) &0xff;
+					green = (map->i$[new_elem].pixel[y*map->i$[new_elem].width + x] >>  8) &0xff;
+					red =   (map->i$[new_elem].pixel[y*map->i$[new_elem].width + x] >>  0) &0xff;
+					map->i$[new_elem].image->Set(red, green, blue, alpha, y*map->i$[new_elem].width + x);
+				}
             }
         }
 
         // Unknown line type
-        else {
+        else 
+		{
             MessageBox(NULL, strLine, "Unknown Line Type", MB_OK | MB_TOPMOST);
             return ERR_UNK_LN_TYPE;
         }
