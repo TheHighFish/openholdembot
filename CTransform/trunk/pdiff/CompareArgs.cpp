@@ -44,7 +44,7 @@ CompareArgs::CompareArgs()
 {
 	ImgA = NULL;
 	ImgB = NULL;
-	ImgDiff = NULL;
+//	ImgDiff = NULL;
 	Verbose = false;
 	FieldOfView = 45.0f;
 	Gamma = 2.2f;
@@ -57,7 +57,7 @@ CompareArgs::~CompareArgs()
 {
 	if (ImgA) delete ImgA;
 	if (ImgB) delete ImgB;
-	if (ImgDiff) delete ImgDiff;
+//	if (ImgDiff) delete ImgDiff;
 }
 
 #ifdef NOT_OPENHOLDEM

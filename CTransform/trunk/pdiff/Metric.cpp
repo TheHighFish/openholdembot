@@ -267,13 +267,13 @@ bool Yee_Compare(CompareArgs &args)
 		}
 		if (!pass) {
 			pixels_failed++;
-			if (args.ImgDiff) {
-				args.ImgDiff->Set(255, 0, 0, 255, index);
-			}
+//			if (args.ImgDiff) {
+//				args.ImgDiff->Set(255, 0, 0, 255, index);
+//			}
 		} else {
-			if (args.ImgDiff) {
-				args.ImgDiff->Set(0, 0, 0, 255, index);
-			}
+//			if (args.ImgDiff) {
+//				args.ImgDiff->Set(0, 0, 0, 255, index);
+//			}
 		}
 	  }
 	}

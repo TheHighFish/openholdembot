@@ -35,7 +35,7 @@ public:
 	
 	RGBAImage		*ImgA;				// Image A
 	RGBAImage		*ImgB;				// Image B
-	RGBAImage		*ImgDiff;			// Diff image
+//	RGBAImage		*ImgDiff;			// Diff image
 	bool			Verbose;			// Print lots of text or not
 	float			FieldOfView;		// Field of view in degrees
 	float			Gamma;				// The gamma to convert to linear color space

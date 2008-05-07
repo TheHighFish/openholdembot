@@ -108,7 +108,7 @@ struct Stablemap_image
 	unsigned int	width;
 	unsigned int	height;
 	uint32_t		pixel[MAX_HASH_WIDTH*MAX_HASH_HEIGHT];
-//	RGBAImage		image;
+	RGBAImage		*image;
 };
 
 struct STableMap 

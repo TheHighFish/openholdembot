@@ -191,27 +191,8 @@ int CTransform::i_transform(STableMap *map, Stablemap_region *region, HDC hdc, C
 	{	
 		if (map->i$[i].width == width && map->i$[i].height == height)
 		{
-			// load ImgB with pixels from i$ record
-			if (args.ImgB)
-				delete args.ImgB;
-
-			args.ImgB = new RGBAImage(map->i$[i].width, map->i$[i].height, "imgb.ppm");
-
-			for (y = 0; y < (int) map->i$[i].height; y++) 
-			{
-				for (x = 0; x < (int) map->i$[i].width; x++) 
-				{
-					// i$ records are stored internally in ABGR format
-					alpha = (map->i$[i].pixel[x + y * width] >> 24) & 0xff;
-					red =   (map->i$[i].pixel[x + y * width] >>  0) & 0xff;
-					green = (map->i$[i].pixel[x + y * width] >>  8) & 0xff;
-					blue =  (map->i$[i].pixel[x + y * width] >> 16) & 0xff;
-					args.ImgB->Set(red, green, blue, alpha, x + y * map->i$[i].width);
-				}
-			}
-//args.ImgA->WritePPM();
-//args.ImgB->WritePPM();
-//MessageBox(NULL, "ppms written", "", MB_OK);
+			// point ImgB to i$ record that was populated on table map load
+			args.ImgB = map->i$[i].image;
 
 			// Compare the two images
 			result = Yee_Compare(args);
@@ -230,11 +211,10 @@ int CTransform::i_transform(STableMap *map, Stablemap_region *region, HDC hdc, C
 		}
 	}
 
+	// Null ImgB so it is not deleted when args calls its destructor
+	args.ImgB = NULL;
 
 	// return the i$ record text, if the smallest pixel difference is less than the threshold
-//s.Format("Best Match: %d (%d pix diff)", best_match, smallest_pix_diff);
-//MessageBox(NULL, s, "", MB_OK);
-
 	if (smallest_pix_diff<args.ThresholdPixels)
 	{
 		*text = map->i$[best_match].name.GetString();
