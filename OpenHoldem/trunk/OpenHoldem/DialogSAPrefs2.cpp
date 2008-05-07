@@ -24,20 +24,21 @@ CDlgSAPrefs2::~CDlgSAPrefs2()
 
 void CDlgSAPrefs2::DoDataExchange(CDataExchange* pDX)
 {
-    CSAPrefsSubDlg::DoDataExchange(pDX);
-    DDX_Control(pDX, IDC_FRAMEDELAY, m_FrameDelay);
-    DDX_Control(pDX, IDC_FRAMEDELAY_SPIN, m_FrameDelay_Spin);
-    DDX_Control(pDX, IDC_SWAGDELAY1, m_SwagDelay1);
-    DDX_Control(pDX, IDC_SWAGDELAY1_SPIN, m_SwagDelay1_Spin);
-    DDX_Control(pDX, IDC_SWAGDELAY2, m_SwagDelay2);
-    DDX_Control(pDX, IDC_SWAGDELAY2_SPIN, m_SwagDelay2_Spin);
-    DDX_Control(pDX, IDC_SWAGDELAY3, m_SwagDelay3);
-    DDX_Control(pDX, IDC_SWAGDELAY3_SPIN, m_SwagDelay3_Spin);
-    DDX_Control(pDX, IDC_TEXTSELECTION, m_TextSelection);
-    DDX_Control(pDX, IDC_TEXTDELETION, m_TextDeletion);
-    DDX_Control(pDX, IDC_BETCONFIRMATION, m_BetConfirmation);
-    DDX_Control(pDX, IDC_BUTTONCLICKING, m_ButtonClicking);
-    DDX_Control(pDX, IDC_AUTO_AP, m_AutoAP);
+	CSAPrefsSubDlg::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_FRAMEDELAY, m_FrameDelay);
+	DDX_Control(pDX, IDC_FRAMEDELAY_SPIN, m_FrameDelay_Spin);
+	DDX_Control(pDX, IDC_SWAGDELAY1, m_SwagDelay1);
+	DDX_Control(pDX, IDC_SWAGDELAY1_SPIN, m_SwagDelay1_Spin);
+	DDX_Control(pDX, IDC_SWAGDELAY2, m_SwagDelay2);
+	DDX_Control(pDX, IDC_SWAGDELAY2_SPIN, m_SwagDelay2_Spin);
+	DDX_Control(pDX, IDC_SWAGDELAY3, m_SwagDelay3);
+	DDX_Control(pDX, IDC_SWAGDELAY3_SPIN, m_SwagDelay3_Spin);
+	DDX_Control(pDX, IDC_TEXTSELECTION, m_TextSelection);
+	DDX_Control(pDX, IDC_TEXTDELETION, m_TextDeletion);
+	DDX_Control(pDX, IDC_BETCONFIRMATION, m_BetConfirmation);
+	DDX_Control(pDX, IDC_BUTTONCLICKING, m_ButtonClicking);
+	DDX_Control(pDX, IDC_AUTO_AP, m_AutoAP);
+	DDX_Control(pDX, IDC_FOCUSDETECT, m_FocusDetect);
 }
 
 
@@ -109,6 +110,7 @@ BOOL CDlgSAPrefs2::OnInitDialog()
 
     m_AutoAP.SetCheck(global.preferences.ap_auto ? BST_CHECKED : BST_UNCHECKED);
 
+    m_FocusDetect.SetCheck(global.preferences.focus_detect ? BST_CHECKED : BST_UNCHECKED);
 
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
@@ -171,6 +173,7 @@ void CDlgSAPrefs2::OnOK()
         global.preferences.button_click_method = BUTTON_DOUBLECLICK;
 
     global.preferences.ap_auto = m_AutoAP.GetCheck()==BST_CHECKED ? true : false;
+    global.preferences.focus_detect = m_FocusDetect.GetCheck()==BST_CHECKED ? true : false;
 
     reg.read_reg();
     reg.frame_delay = global.preferences.frame_delay;
@@ -182,6 +185,8 @@ void CDlgSAPrefs2::OnOK()
     reg.bet_confirmation_method = global.preferences.bet_confirmation_method;
     reg.button_click_method = global.preferences.button_click_method;
     reg.ap_auto = global.preferences.ap_auto;
+    reg.focus_detect = global.preferences.focus_detect;
+
     reg.write_reg();
 
     CSAPrefsSubDlg::OnOK();

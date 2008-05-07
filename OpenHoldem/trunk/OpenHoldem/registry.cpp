@@ -51,6 +51,7 @@ void Registry::init_Defaults(void)
     swag_delay_2 = 400;
     swag_delay_3 = 700;
     ap_auto = false;
+	focus_detect = false;
 
     // scraper
     scrape_delay = 750;
@@ -338,6 +339,7 @@ void Registry::read_reg(void)
         read_OH_RegistryKey(hKey, "swag_bet_confirmation", &bet_confirmation_method);
         read_OH_RegistryKey(hKey, "button_click_method", &button_click_method);
         read_OH_RegistryKey(hKey, "ap_auto", &ap_auto);
+        read_OH_RegistryKey(hKey, "focus_detect", &focus_detect);
 
         // prefs - dll extension
         read_OH_RegistryKey(hKey, "dll_always_send_state", &dll_always_send_state);
@@ -480,6 +482,7 @@ void Registry::write_reg(void)
     write_OH_RegistryKey(hKey, "swag_bet_confirmation", int(bet_confirmation_method));
     write_OH_RegistryKey(hKey, "button_click_method", int(button_click_method));
     write_OH_RegistryKey(hKey, "ap_auto", ap_auto);
+    write_OH_RegistryKey(hKey, "focus_detect", focus_detect);
 
     // prefs - dll extension
     write_OH_RegistryKey(hKey, "dll_always_send_state", dll_always_send_state);

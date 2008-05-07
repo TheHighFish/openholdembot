@@ -35,7 +35,13 @@ BUG FIXES:
 - Closed DC/GDI leakages as identified by ZooBoy here: http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=4398
   (OpenHoldem)
 
-
+- Version 1.8.2 added this feature: "Added sanity checks around the SWAG action stream - if focus is 
+  stolen from the target window during the four SWAG steps, then the final step (confirmation) will 
+  not be executed."  This has been added as a setting in this version.  The setting defaults to "Off"
+  initially (but will be saved if set), so make sure and select it if you need it 
+  (Edit/Preferences/Autoplayer).  (OpenHoldem)
+  
+  
 MAINTENANCE:
 - Active and seated scraping now evaluates p first for efficiency.  (quiqsilver)
 

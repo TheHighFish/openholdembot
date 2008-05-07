@@ -66,6 +66,7 @@ CGlobal::CGlobal(void)
     preferences.button_click_method = reg.button_click_method;
     preferences.ap_auto = reg.ap_auto;
     auto_autoplay_pressed = false;
+    preferences.focus_detect = reg.focus_detect;
 
     // dll extension
     preferences.dll_always_send_state = reg.dll_always_send_state;

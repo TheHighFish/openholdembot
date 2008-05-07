@@ -565,7 +565,7 @@ void Autoplayer::do_swag(void) {
             }
 
             // do it
-            if (!lost_focus)
+			if (!lost_focus || !global.preferences.focus_detect)
             {
                 SetFocus(global.attached_hwnd);
                 SetForegroundWindow(global.attached_hwnd);

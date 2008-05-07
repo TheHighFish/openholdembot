@@ -204,6 +204,7 @@ struct SPreferences
 	unsigned int	bet_confirmation_method;
 	unsigned int	button_click_method;
 	bool			ap_auto;
+	bool			focus_detect;
 
 	// Dll extension
 	bool			dll_always_send_state;

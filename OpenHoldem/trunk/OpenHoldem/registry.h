@@ -44,7 +44,7 @@ public:
 	// prefs - autoplayer
 	unsigned int	frame_delay, swag_delay_1, swag_delay_2, swag_delay_3;
 	unsigned int	text_selection_method, text_deletion_method, bet_confirmation_method, button_click_method;
-	bool			ap_auto;
+	bool			ap_auto, focus_detect;
 
 	// prefs - dll extension
 	bool			dll_always_send_state;
