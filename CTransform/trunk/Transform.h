@@ -3,9 +3,56 @@
 #include "hash/stdint.h"
 #include "pdiff/RGBAImage.h"
 
+// SEH #define support
+#ifdef SEH_ENABLE
+#define __SEH_HEADER try {
+#else
+#define __SEH_HEADER
+#endif
+
+#ifdef SEH_ENABLE
+#define __SEH_LOGFATAL(__VA_ARGS__) } \
+	catch (...) \
+	{ \
+	    logfatal(__VA_ARGS__); \
+		throw; \
+	}
+#else
+#define __SEH_LOGFATAL(__VA_ARGS__)
+#endif
+
+#ifdef SEH_ENABLE
+#define __SEH_SET_EXCEPTION_HANDLER($1) SetUnhandledExceptionFilter($1);
+#else
+#define __SEH_SET_EXCEPTION_HANDLER($1)
+#endif
+
+
 ///////////////////////////////
 // defines
 ///////////////////////////////
+// Error Codes
+#define SUCCESS						0
+#define ERR_EOF						1
+#define ERR_SYNTAX					2
+#define ERR_VERSION					3
+#define ERR_NOTMASTER				4
+#define ERR_HASH_COLL				5
+#define ERR_REGION_SIZE				6
+#define ERR_UNK_LN_TYPE				7
+#define ERR_INV_HASH_TYPE			8
+#define ERR_INCOMPLETEMASTER		9
+
+// Profile version codes
+#define VER_WINSCRAPE			".wsdb1"
+#define VER_OPENHOLDEM_1		".ohdb1"  // no longer valid, due to changing of hash keys for types 1-3
+#define VER_OPENHOLDEM_2		".ohdb2"  // legacy version, still supported, although openscrape table maps are preferred
+#define VER_OPENSCRAPE_1		".osdb1"
+#define VER_WINSCRAPE_DATE1		"2006 Aug 7 13:11:37"
+#define VER_WINSCRAPE_DATE2		"2007 Nov 1 08:32:55"
+#define VER_WINSCRAPE_DATE3		"2007 Nov 3 09:54:04"
+#define VER_WINSCRAPE_DATE4		"2007 Nov 6 11:52:24"
+
 #define DEFAULT_FUZZY_TOLERANCE	0.25
 
 #define MAX_CHAR_WIDTH		200
@@ -217,9 +264,15 @@ class CTransform
 public:
 	CTransform(void);
 	~CTransform(void);
-	int do_transform(STableMap *map, Stablemap_region *region, HDC hdc, CString *text, 
+	void clear_tablemap();
+	int load_tablemap(char *filename, char *version, bool check_ws_date, int *linenum, CString *loaded_version=NULL);
+	int save_tablemap(CArchive& ar, char *version_text);
+	int convert_tablemap(HWND hwnd=NULL, char *startup_path="");
+	int update_hashes(HWND hwnd, char *startup_path);
+
+	int do_transform(Stablemap_region *region, HDC hdc, CString *text, 
 					 CString *separation=NULL, COLORREF *cr_avg=0);
-	int t_transform(STableMap *map, Stablemap_region *region, HDC hdc, CString *text, 
+	int t_transform(Stablemap_region *region, HDC hdc, CString *text, 
 					CString *separation, bool background[], bool character[][MAX_CHAR_HEIGHT]);
 	void parse_string_bsl(CString text, CString format, CString *results=NULL, 	
 		double *handnumber=NULL, double *sblind=NULL, double *bblind=NULL, double *bbet=NULL, 
@@ -234,17 +287,21 @@ public:
 	void calc_hexmash(int left, int right, int top, int bottom, bool (*ch)[MAX_CHAR_HEIGHT], char *hexmash, bool withspace=false);
 	double string_to_money(CString str);
 
+	STableMap		map;
+
 protected:
 	int c_transform(Stablemap_region *region, HDC hdc, CString *text, COLORREF *cr_avg);
-	int i_transform(STableMap *map, Stablemap_region *region, HDC hdc, CString *text);
-	int h_transform(STableMap *map, Stablemap_region *region, HDC hdc, CString *text);
-	int do_plain_font_scan(STableMap *map, Stablemap_region *region, int width, int height, 
+	int i_transform(Stablemap_region *region, HDC hdc, CString *text);
+	int h_transform(Stablemap_region *region, HDC hdc, CString *text);
+	int do_plain_font_scan(Stablemap_region *region, int width, int height, 
 						   bool bg[], bool (*ch)[MAX_CHAR_HEIGHT], CString *text);
-	int do_fuzzy_font_scan(STableMap *map, Stablemap_region *region, int width, int height, 
+	int do_fuzzy_font_scan(Stablemap_region *region, int width, int height, 
 						   bool bg[], bool (*ch)[MAX_CHAR_HEIGHT], double tolerance, CString *text);
-	int get_best_hd(STableMap *map, Stablemap_region *region, int width, int height, bool bg[], 
+	int get_best_hd(Stablemap_region *region, int width, int height, bool bg[], 
 					bool (*ch)[MAX_CHAR_HEIGHT], int left, double tolerance);
 	int hamdist(unsigned int x, unsigned int y);
+	char * get_time(char * timebuf);
+	char * get_now_time(char * timebuf);
 };
 
 int compare_font( char *hexmash1, char *hexmash2);
