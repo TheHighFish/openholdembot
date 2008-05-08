@@ -348,7 +348,7 @@ UINT __cdecl prwin_thread(LPVOID pParam)
 
 
     __SEH_HEADER
-    int				i, nit = 0;
+    int				i,j,k,randfix, nit = 0; //modified by Matrix 2008-05-08
     CardMask		plCards, comCards, addlcomCards, evalCards, usedCards, temp_usedCards;
     int				nplCards, ncomCards, nopp;
     extern int		willplay,wontplay,mustplay,topclip;
@@ -426,106 +426,156 @@ UINT __cdecl prwin_thread(LPVOID pParam)
         nopp = sym_nopp < MAX_OPPONENTS ? sym_nopp : MAX_OPPONENTS;
         CardMask_OR(usedCards, plCards, comCards);
         if (willplay&&(willplay<nopp+1))willplay=nopp+1; //too low a value can give lockup
+		if ((symbols.prw1326.useme==1326)&&((symbols.sym.br!=1)||(symbols.prw1326.preflop==1326)))
+		{
+			//prw1326 active  Matrix 2008-05-08
+			k=nopp=0; //k is used as an index into ocard[] 
+			for(i=0;i<10;i++) // loop through active opponents
+			{
+				if(i==symbols.sym.userchair)continue; //skip our own chair!
+				if(!((int)symbols.sym.playersplayingbits & (1<<i)))continue; //skip inactive chairs
+				nopp++; //we have to use actual opponents for prw1326 calculations
+				for(;;)
+				{ //find a possible hand for this chair
+					randfix=(RAND_MAX/symbols.prw1326.chair[i].limit)*symbols.prw1326.chair[i].limit;
+					do {
+						j=rand();
+					} while (j>=randfix);
+					j=j%symbols.prw1326.chair[i].limit; //j is now any one of the allowed hands
+					if(CardMask_CARD_IS_SET(usedCards,symbols.prw1326.chair[i].rankhi[j] ))continue; //hand contains dead card
+					if(CardMask_CARD_IS_SET(usedCards,symbols.prw1326.chair[i].ranklo[j] ))continue; //hand contains dead card
+					if(symbols.prw1326.chair[i].ignore)break; //chair marked as not to be weighted
+					if(symbols.prw1326.chair[i].level<=symbols.prw1326.chair[i].weight[j])break; //hand marked as always uae
+					//check if we want a player who is BB and has not VPIP'd to be analysed further
+					if(symbols.prw1326.bblimp)
+					{
+				    if ((symbols.sym.nbetsround[0]<1.1) && ((int)symbols.sym.bblindbits&(1<<i)))break;
+					}
+					//we should really do a 'randfix' here for the case where RAND_MAX is not an integral
+					//multiple of .level, but the bias introduced is trivial compared to other uncertainties.
+					if(rand()%symbols.prw1326.chair[i].level<=symbols.prw1326.chair[i].weight[j])break; //allowable
+					//if we reach here we will loop again to find a suitable hand
+				} //end of possible hand find
+				ocard[k++]=symbols.prw1326.chair[i].rankhi[j];
+				ocard[k++]=symbols.prw1326.chair[i].ranklo[j];
+				CardMask_SET(usedCards, ocard[k-2]);
+				CardMask_SET(usedCards, ocard[k-1]);
+			} //end of active opponent loop
 
-        // if f$P<=13 then deal with random replacement algorithm,
-        // otherwise deal with swap algorithm
-        if (nopp <= 13)
-        {
-            // random replacement algorithm
-            // opponent cards
-            for (i=0; i<nopp*2; i+=2)
-            {
-                temp_usedCards=usedCards;
-                do
-                {
-                    usedCards=temp_usedCards; //reset the card mask to clear settings from failed card assignments
-
-                    do {
-                        card = rand() & 63;
-                    }
-                    while (card>51 || CardMask_CARD_IS_SET(usedCards, card));
-                    CardMask_SET(usedCards, card);
-                    ocard[i] = card;
-
-                    do {
-                        card = rand() & 63;
-                    }
-                    while (card>51 || CardMask_CARD_IS_SET(usedCards, card));
-                    CardMask_SET(usedCards, card);
-                    ocard[i+1] = card;
-
-                    if (!willplay)
-                        break; //0 disables weighting
-
-                    //put break for i=0 and opponent unraised BB case (cannot assume anything about his cards)
-                    //In round 1 we should really do an analysis of chairs to find out how many have still to
-                    //place a bet. Not implemented since accuracy of prwin pre-flop is less critical.
-                    if (!i)
-                    {
-                        //if we called then we are not BB, BB limped to flop,
-                        //BB still playing, so do not weight his cards
-                        if (symbols.sym.nbetsround[0]<1.1 &&
-                                symbols.sym.didcall[0] &&
-                                ((int)symbols.sym.playersplayingbits & (int)symbols.sym.bblindbits))
-                        {
-                            break;
-                        }
-                    }
-                }
-                while (!inrange(ocard[i],ocard[i+1]));
-            }
-            // additional common cards
+			// additional common cards
             CardMask_RESET(addlcomCards);
-            for (i=0; i<5-ncomCards; i++)
-            {
-                do {
-                    card = rand() & 63;
+	        for (i=0; i<5-ncomCards; i++)
+		    {
+			    do {
+				    card = rand() & 63;
                 }
-                while (card>51 ||CardMask_CARD_IS_SET(usedCards, card));
-                CardMask_SET(usedCards, card);
-                CardMask_SET(addlcomCards, card);
+	            while (card>51 ||CardMask_CARD_IS_SET(usedCards, card));
+		        CardMask_SET(usedCards, card);
+			    CardMask_SET(addlcomCards, card);
             }
-        }
-        else
-        {
-            // swap alogorithm
-            //weighted prwin not implemented for this case
-            numberOfCards=52;
-            for (i=0; i<numberOfCards; i++)  {
-                deck[i] = i;
-            }
-            while (numberOfCards>=1)
-            {
-                x = rand() % numberOfCards;
-                numberOfCards--;
-                if (x != numberOfCards)
-                {
-                    swap = deck[x];
-                    deck[x] = deck[numberOfCards];
-                    deck[numberOfCards] = swap;
-                }
-            }
+		} //end of prw1326 code
+		else
+		{ //normal prwin opponent card selection
+	      // if f$P<=13 then deal with random replacement algorithm,
+		    // otherwise deal with swap algorithm
+			if (nopp <= 13)
+			{
+	            // random replacement algorithm
+	            // opponent cards
+	            for (i=0; i<nopp*2; i+=2)
+	            {
+	                temp_usedCards=usedCards;
+	                do
+	                {
+	                    usedCards=temp_usedCards; //reset the card mask to clear settings from failed card assignments
 
-            // opponent cards
-            x = 0;
-            for (i=0; i<nopp*2; i++)
-            {
-                while (CardMask_CARD_IS_SET(usedCards, deck[x]) && x<=51) {
-                    x++;
-                }
-                ocard[i] = deck[x++];
-            }
+	                    do {
+	                        card = rand() & 63;
+	                    }
+	                    while (card>51 || CardMask_CARD_IS_SET(usedCards, card));
+	                    CardMask_SET(usedCards, card);
+	                    ocard[i] = card;
 
-            // additional common cards
-            CardMask_RESET(addlcomCards);
-            for (i=0; i<5-ncomCards; i++)
-            {
-                while (CardMask_CARD_IS_SET(usedCards, deck[x]) && x<=51) {
-                    x++;
-                }
-                CardMask_SET(addlcomCards, deck[x++]);
-            }
-        }
+	                    do {
+		                    card = rand() & 63;
+			            }
+				        while (card>51 || CardMask_CARD_IS_SET(usedCards, card));
+					    CardMask_SET(usedCards, card);
+	                    ocard[i+1] = card;
+
+		                if (!willplay)
+			                break; //0 disables weighting
+
+				        //put break for i=0 and opponent unraised BB case (cannot assume anything about his cards)
+					    //In round 1 we should really do an analysis of chairs to find out how many have still to
+	                    //place a bet. Not implemented since accuracy of prwin pre-flop is less critical.
+		                if (!i)
+			            {
+				            //if we called then we are not BB, BB limped to flop,
+					        //BB still playing, so do not weight his cards
+						    if (symbols.sym.nbetsround[0]<1.1 &&
+	                                symbols.sym.didcall[0] &&
+		                            ((int)symbols.sym.playersplayingbits & (int)symbols.sym.bblindbits))
+			                {
+				                break;
+					        }
+						}
+	                }
+		            while (!inrange(ocard[i],ocard[i+1]));
+			    }
+				// additional common cards
+	            CardMask_RESET(addlcomCards);
+		        for (i=0; i<5-ncomCards; i++)
+			    {
+				    do {
+					    card = rand() & 63;
+	                }
+		            while (card>51 ||CardMask_CARD_IS_SET(usedCards, card));
+			        CardMask_SET(usedCards, card);
+				    CardMask_SET(addlcomCards, card);
+	            }
+		    }
+			else
+	        {
+		        // swap alogorithm
+			    //weighted prwin not implemented for this case
+	            numberOfCards=52;
+		        for (i=0; i<numberOfCards; i++)  {
+			        deck[i] = i;
+				}
+	            while (numberOfCards>=1)
+		        {
+			        x = rand() % numberOfCards;
+				    numberOfCards--;
+					if (x != numberOfCards)
+	                {
+		                swap = deck[x];
+			            deck[x] = deck[numberOfCards];
+				        deck[numberOfCards] = swap;
+					}
+	            }
+
+		        // opponent cards
+			    x = 0;
+				for (i=0; i<nopp*2; i++)
+	            {
+		            while (CardMask_CARD_IS_SET(usedCards, deck[x]) && x<=51) {
+			            x++;
+				    }
+					ocard[i] = deck[x++];
+	            }
+
+		        // additional common cards
+			    CardMask_RESET(addlcomCards);
+				for (i=0; i<5-ncomCards; i++)
+				{
+					while (CardMask_CARD_IS_SET(usedCards, deck[x]) && x<=51) {
+	                    x++;
+		            }
+			        CardMask_SET(addlcomCards, deck[x++]);
+				}
+			}
+		}
 
         // Get my handval/pokerval
         CardMask_OR(evalCards, plCards, comCards);

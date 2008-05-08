@@ -413,6 +413,8 @@ public:
     CArray <CString, CString>   logsymbols_collection;    // Used to track the log$ symbols
     CArray <CString, CString>   symboltrace_collection;    // Used to trace function execution
 
+	sprw1326	prw1326;					//prwin 1326 data structure Matrix 2008-04-29
+
 private:
 	double Chair$(const char *a);
 	double Chairbit$(const char *a);

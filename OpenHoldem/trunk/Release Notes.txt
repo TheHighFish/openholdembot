@@ -22,6 +22,10 @@ NEW STUFF:
 
 - Check for enough disk space, when shooting replay frames (min. 10 MB). (TheHighFish)
 
+- prw1326, Facility for a dll to activate and control individual chair handlists which are then
+  used in the OH prwin calculation. Unless explicitly activated from the dll normal prwin logic 
+  is applied. (Matrix)
+
   
 BUG FIXES:
 - Perl menu: "Reload" command was active, even when no formula was loaded (Thank you, JumpingFences).

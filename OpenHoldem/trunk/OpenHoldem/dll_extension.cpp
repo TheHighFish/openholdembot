@@ -7,6 +7,7 @@
 //  2008.02.27 by THF
 //  PokerChat
 #include "PokerChat.hpp"
+#include "symbols.h" //2008-05-08 Matrix (for prw1326 mesage)
 
 CDll	cdll;
 
@@ -135,6 +136,10 @@ void CDll::load_dll(char * path)
             //pass "phl1k" message (address of handlist arrays)
             //  2008-03-22 Matrix
             (process_message) ("phl1k",global.formula.inlist);
+
+			//pass "prw1326" message (address of prw1326 structure)
+			//  2008-05-08 Matrix
+            (process_message) ("prw1326",&symbols.prw1326);
 
             //  2008.02.27 by THF
             //

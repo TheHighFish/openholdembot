@@ -27,6 +27,7 @@ CGlobal::CGlobal(void)
     __SEH_HEADER
 
     int			i, j;
+	int			k, vndx; //Matrix 2008-05-08
     Registry	reg;
     FILE		*fp;
 
@@ -138,14 +139,97 @@ CGlobal::CGlobal(void)
     state_index = 0;
 
     //Initialise the handrank tables used by prwin
+	vndx=0; //used to provide an offset into the vanilla table
     for (i=0;i<169;i++)
     {
+		//normal weighted prwin table
         ptr=prwhandrank169[i];
         j=(strchr(ctonum,*ptr)-ctonum)*13 + (strchr(ctonum,*(ptr+1))-ctonum);
         if (*(ptr+2)=='s')pair2ranks[j]=i+1;
         else pair2ranko[j]=i+1;
-        //end of handrank initialisation
+		//prw1326 vanilla table
+        j=strchr(ctonum,*ptr)-ctonum;
+		k=strchr(ctonum,*(ptr+1))-ctonum;
+		for(;;)
+		{
+			//I originally had an algorithm to do this, but it was obscure and impenetrable
+			//so now I have switched to the clumsy but simple approach.
+		if(j==k)//pair
+		{
+			symbols.prw1326.vanilla_chair.rankhi[vndx]=j;	//h
+			symbols.prw1326.vanilla_chair.rankhi[vndx+1]=j;	//h
+			symbols.prw1326.vanilla_chair.rankhi[vndx+2]=j; //h
+			symbols.prw1326.vanilla_chair.rankhi[vndx+3]=j+13; //d
+			symbols.prw1326.vanilla_chair.rankhi[vndx+4]=j+13; //d
+			symbols.prw1326.vanilla_chair.rankhi[vndx+5]=j+26; //c
+			symbols.prw1326.vanilla_chair.ranklo[vndx]=k+13;	//d
+			symbols.prw1326.vanilla_chair.ranklo[vndx+1]=k+26;	//c
+			symbols.prw1326.vanilla_chair.ranklo[vndx+2]=k+39;	//s
+			symbols.prw1326.vanilla_chair.ranklo[vndx+3]=k+26;	//c	
+			symbols.prw1326.vanilla_chair.ranklo[vndx+4]=k+39;	//s
+			symbols.prw1326.vanilla_chair.ranklo[vndx+5]=k+39;	//s
+			vndx+=6;
+			break;
+		}
+		if (*(ptr+2)=='s') //suited
+		{
+			symbols.prw1326.vanilla_chair.rankhi[vndx]=j;		//h
+			symbols.prw1326.vanilla_chair.rankhi[vndx+1]=j+13;	//d
+			symbols.prw1326.vanilla_chair.rankhi[vndx+2]=j+26;	//c
+			symbols.prw1326.vanilla_chair.rankhi[vndx+3]=j+39;	//s
+			symbols.prw1326.vanilla_chair.ranklo[vndx]=k;		//h
+			symbols.prw1326.vanilla_chair.ranklo[vndx+1]=k+13;	//d
+			symbols.prw1326.vanilla_chair.ranklo[vndx+2]=k+26;	//c
+			symbols.prw1326.vanilla_chair.ranklo[vndx+3]=k+39;	//s
+			vndx+=4;
+			break;
+		}
+		//only unsuited non-pairs left
+			symbols.prw1326.vanilla_chair.rankhi[vndx]=j;		//h
+			symbols.prw1326.vanilla_chair.rankhi[vndx+1]=j;		//h
+			symbols.prw1326.vanilla_chair.rankhi[vndx+2]=j;		//h
+			symbols.prw1326.vanilla_chair.rankhi[vndx+3]=j+13;	//d
+			symbols.prw1326.vanilla_chair.rankhi[vndx+4]=j+13;	//d
+			symbols.prw1326.vanilla_chair.rankhi[vndx+5]=j+13;	//d
+			symbols.prw1326.vanilla_chair.rankhi[vndx+6]=j+26;	//c
+			symbols.prw1326.vanilla_chair.rankhi[vndx+7]=j+26;	//c
+			symbols.prw1326.vanilla_chair.rankhi[vndx+8]=j+26;	//c
+			symbols.prw1326.vanilla_chair.rankhi[vndx+9]=j+39;	//s
+			symbols.prw1326.vanilla_chair.rankhi[vndx+10]=j+39;	//s
+			symbols.prw1326.vanilla_chair.rankhi[vndx+11]=j+38; //s
+			symbols.prw1326.vanilla_chair.ranklo[vndx]=k+13;	//d
+			symbols.prw1326.vanilla_chair.ranklo[vndx+1]=k+26;	//c
+			symbols.prw1326.vanilla_chair.ranklo[vndx+2]=k+39;	//s
+			symbols.prw1326.vanilla_chair.ranklo[vndx+3]=k;		//h
+			symbols.prw1326.vanilla_chair.ranklo[vndx+4]=k+26;	//c
+			symbols.prw1326.vanilla_chair.ranklo[vndx+5]=k+39;	//s
+			symbols.prw1326.vanilla_chair.ranklo[vndx+6]=k;		//h
+			symbols.prw1326.vanilla_chair.ranklo[vndx+7]=k+13;	//d
+			symbols.prw1326.vanilla_chair.ranklo[vndx+8]=k+39;	//s
+			symbols.prw1326.vanilla_chair.ranklo[vndx+9]=k;		//h
+			symbols.prw1326.vanilla_chair.ranklo[vndx+10]=k+13;	//d
+			symbols.prw1326.vanilla_chair.ranklo[vndx+11]=k+26;	//c
+			vndx+=12;
+			break;
+		}
     }
+	symbols.prw1326.vanilla_chair.level=1024;
+	symbols.prw1326.vanilla_chair.limit=820; //cut off a little early, since 820-884 very improbable
+	// now assign a weight table. Assume upper third fully probable, next third reducing
+	// probability, lowest third not played.
+	for(i=0;i<442;i++)
+		symbols.prw1326.vanilla_chair.weight[i]=symbols.prw1326.vanilla_chair.level;
+	for(i=442;i<884;i++)
+		symbols.prw1326.vanilla_chair.weight[i]=symbols.prw1326.vanilla_chair.level*(884-i)/442;
+	for(i=884;i<1326;i++)
+		symbols.prw1326.vanilla_chair.weight[i]=0;
+
+	//finally copy the vanilla to all user chairs so that someone who just turns on prw1326
+	//experimentally does not cause a crash
+	for(i=0;i<10;i++)
+		symbols.prw1326.chair[i]=symbols.prw1326.vanilla_chair ;
+
+	//end of handrank initialisation
 
     m_WaitCursor = false;
 

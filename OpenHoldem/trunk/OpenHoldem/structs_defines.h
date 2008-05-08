@@ -273,6 +273,33 @@ struct ftr_info
 };
 
 
+//prwin 1326 chair structure    Matrix 2008-04-29
+
+struct sprw1326_chair
+{
+	int			level;			//indicates significance level for 'always consider'
+	int			limit;			//max index into significance array - used for computational efficiency
+	int			ignore;			//if non-zero no weighting will be applied to this chair
+	int			rankhi[1326];	//hi card number in pocket cards
+	int			ranklo[1326];	//lo card number in pocket cards
+	int			weight[1326];	//the significance value for this hand
+	double		scratch;		//for future reference
+
+};
+
+//prwin 1326 structure			Matrix 2008-04-29
+
+struct sprw1326
+{
+	int			useme;			//unless set to 1326 the normal OH prwin will be used
+	int			preflop;		//unless set to 1326 the normal OH prwin will be used pre-flop
+	int			usecallback;	//unless set to 1326 the callback function will not be invoked
+	double		(*prw_callback)(void); //if enabled will be invoked before the prwin calculation pass
+	double		scratch;		//for future reference
+	int			bblimp;			//if non-zero no weighting will be applied if a chair has put nothing in the pot
+	sprw1326_chair	vanilla_chair;	   //will be precalculated by OH at startup - convenience values
+	sprw1326_chair  chair[10];  //structures for each chair
+};
 // PokerTracker support
 enum PT_Stats 
 {
