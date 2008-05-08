@@ -374,10 +374,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\tablemap.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\threads.cpp"
 				>
 			</File>
@@ -691,10 +687,6 @@
 			</File>
 			<File
 				RelativePath=".\symbols.h"
-				>
-			</File>
-			<File
-				RelativePath=".\tablemap.h"
 				>
 			</File>
 			<File

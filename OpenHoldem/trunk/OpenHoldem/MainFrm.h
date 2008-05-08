@@ -84,4 +84,7 @@ public:
 	CMyToolBar		m_MainToolBar;
 };
 
+BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam);
+bool check_window_match(STableMap *map, HWND h, RECT r, CString title);
+
 #endif /* INC_MAINFRM_H */

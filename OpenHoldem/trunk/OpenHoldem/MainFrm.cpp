@@ -26,7 +26,6 @@
 #include "debug.h"
 #include "DialogSelectTable.h"
 #include "scraper.h"
-#include "tablemap.h"
 #include "threads.h"
 #include "global.h"
 #include "symbols.h"
@@ -131,7 +130,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
     ON_UPDATE_COMMAND_UI(ID_VIEW_SHOOTREPLAYFRAME, &CMainFrame::OnUpdateViewShootreplayframe)
 END_MESSAGE_MAP()
 
-static UINT indicators[] = {
+static UINT indicators[] = 
+{
     ID_SEPARATOR,           // status line indicator
 //	ID_INDICATOR_CAPS,
 //	ID_INDICATOR_NUM,
@@ -147,7 +147,8 @@ static UINT indicators[] = {
 };
 
 // CMainFrame construction/destruction
-CMainFrame::CMainFrame() {
+CMainFrame::CMainFrame() 
+{
     __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
 
     __SEH_HEADER
@@ -157,20 +158,21 @@ CMainFrame::CMainFrame() {
     __SEH_LOGFATAL("CMainFrame::Constructor :\n");
 }
 
-CMainFrame::~CMainFrame() {
+CMainFrame::~CMainFrame() 
+{
     __SEH_HEADER
 
     __SEH_LOGFATAL("CMainFrame::Destructor :\n");
 }
 
-int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
+int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+{
     __SEH_HEADER
 
     CString			t;
 
-    if (CFrameWnd::OnCreate(lpCreateStruct) == -1) {
+    if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
         return -1;
-    }
 
     // Create toolbars
     EnableDocking(CBRS_ALIGN_ANY);
@@ -199,7 +201,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     __SEH_LOGFATAL("CMainFrame::OnCreate :\n");
 }
 
-int CMainFrame::create_main_toolbar(void) {
+int CMainFrame::create_main_toolbar(void) 
+{
     __SEH_HEADER
 
     TBBUTTONINFO	tbi;
@@ -246,7 +249,8 @@ int CMainFrame::create_main_toolbar(void) {
     __SEH_LOGFATAL("CMainFrame::create_main_toolbar :\n");
 }
 
-int CMainFrame::create_flags_toolbar(void) {
+int CMainFrame::create_flags_toolbar(void) 
+{
     __SEH_HEADER
 
     TBBUTTONINFO	tbi;
@@ -283,7 +287,8 @@ int CMainFrame::create_flags_toolbar(void) {
 }
 
 
-void CMainFrame::align_toolbars(void) {
+void CMainFrame::align_toolbars(void) 
+{
     __SEH_HEADER
 
     // Put the main toolbar and flags toolbar on the same line
@@ -303,10 +308,12 @@ void CMainFrame::align_toolbars(void) {
     __SEH_LOGFATAL("CMainFrame::align_toolbars :\n");
 }
 
-int CMainFrame::create_status_bar(void) {
+int CMainFrame::create_status_bar(void) 
+{
     __SEH_HEADER
 
-    if (!m_wndStatusBar.Create(this) || !m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT)))	{
+    if (!m_wndStatusBar.Create(this) || !m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT)))	
+	{
         TRACE0("Failed to create status bar\n");
         return -1;      // fail to create
     }
@@ -325,7 +332,8 @@ int CMainFrame::create_status_bar(void) {
 	__SEH_LOGFATAL("CMainFrame::create_status_bar :\n");
 }
 
-BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
+BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) 
+{
     __SEH_HEADER
 
     if ( !CFrameWnd::PreCreateWindow(cs) )
@@ -370,10 +378,12 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
 
 // CMainFrame message handlers
 
-void CMainFrame::OnEditFormula() {
+void CMainFrame::OnEditFormula() 
+{
     __SEH_HEADER
 
-    if (m_formulaScintillaDlg) {
+    if (m_formulaScintillaDlg) 
+	{
         BOOL	bWasShown = ::IsWindow(m_formulaScintillaDlg->m_hWnd) && m_formulaScintillaDlg->IsWindowVisible();
 
         if (!m_formulaScintillaDlg->DestroyWindow())
@@ -396,10 +406,12 @@ void CMainFrame::OnEditFormula() {
     __SEH_LOGFATAL("CMainFrame::OnEditFormula :\n");
 }
 
-void CMainFrame::OnScraperOutput() {
+void CMainFrame::OnScraperOutput() 
+{
     __SEH_HEADER
 
-    if (m_ScraperOutputDlg) {
+    if (m_ScraperOutputDlg) 
+	{
         BOOL	bWasShown = ::IsWindow(m_ScraperOutputDlg->m_hWnd) && m_ScraperOutputDlg->IsWindowVisible();
 
         m_ScraperOutputDlg->DestroyWindow();
@@ -428,7 +440,8 @@ void CMainFrame::OnViewShootreplayframe()
 	__SEH_LOGFATAL("CMainFrame::OnViewShootreplayframe\n")
 }
 
-void CMainFrame::OnEditPreferences() {
+void CMainFrame::OnEditPreferences() 
+{
     __SEH_HEADER
 
     //CDlgPreferences  myDialog;
@@ -484,7 +497,8 @@ void CMainFrame::OnEditPreferences() {
     __SEH_LOGFATAL("CMainFrame::OnEditPreferences :\n");
 }
 
-BOOL CMainFrame::DestroyWindow() {
+BOOL CMainFrame::DestroyWindow() 
+{
     __SEH_HEADER
 
     bool			upd = true;
@@ -503,7 +517,8 @@ BOOL CMainFrame::DestroyWindow() {
     }
 
     // Stop heartbeat thread
-    if (heartbeat_thread_alive) {
+    if (heartbeat_thread_alive) 
+	{
         heartbeat_thread_alive = false;
         WaitForSingleObject(h_heartbeat_thread, THREAD_WAIT);
     }
@@ -525,7 +540,8 @@ BOOL CMainFrame::DestroyWindow() {
 
     // Save window position
     reg.read_reg();
-    if (!m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_MINMAX)) {
+    if (!m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_MINMAX)) 
+	{
         GetWindowPlacement(&wp);
 
         reg.main_x = wp.rcNormalPosition.left;
@@ -533,7 +549,8 @@ BOOL CMainFrame::DestroyWindow() {
         reg.main_dx = wp.rcNormalPosition.right - wp.rcNormalPosition.left;
         reg.main_dy = wp.rcNormalPosition.bottom - wp.rcNormalPosition.top;
     }
-    else {
+    else 
+	{
         reg.main_x = table_view_size.left;
         reg.main_y = table_view_size.top;
         reg.main_dx = table_view_size.right - table_view_size.left;
@@ -546,7 +563,8 @@ BOOL CMainFrame::DestroyWindow() {
     __SEH_LOGFATAL("CMainFrame::DestroyWindow :\n");
 }
 
-void CMainFrame::OnFileOpen() {
+void CMainFrame::OnFileOpen() 
+{
     __SEH_HEADER
 
     CFileDialog			cfd(true);
@@ -577,7 +595,8 @@ void CMainFrame::OnFileOpen() {
 }
 
 
-void CMainFrame::OnFileLoadTableMap() {
+void CMainFrame::OnFileLoadTableMap() 
+{
     __SEH_HEADER
 
     CFileDialog			cfd(true);
@@ -593,7 +612,7 @@ void CMainFrame::OnFileLoadTableMap() {
 
     if (cfd.DoModal() == IDOK)
     {
-        ret = load_tablemap(cfd.m_ofn.lpstrFile, &global.tablemap, VER_OPENSCRAPE_1, false, &line);
+        ret = global.trans.load_tablemap(cfd.m_ofn.lpstrFile, VER_OPENSCRAPE_1, false, &line);
         if (ret == ERR_VERSION)
         {
             e.Format("This is an OpenHoldem v1 profile (.ohdb1).\n"\
@@ -613,7 +632,8 @@ void CMainFrame::OnFileLoadTableMap() {
             global.save_s$strings();
 
             // Reset "ScraperOutput" dialog, if it is live
-            if (m_ScraperOutputDlg) {
+            if (m_ScraperOutputDlg) 
+			{
                 m_ScraperOutputDlg->add_listbox_items();
                 m_ScraperOutputDlg->do_update_display();
             }
@@ -625,10 +645,11 @@ void CMainFrame::OnFileLoadTableMap() {
     __SEH_LOGFATAL("CMainFrame::OnFileLoadTableMap :\n");
 }
 
-void CMainFrame::OnBnClickedGreenCircle() {
+void CMainFrame::OnBnClickedGreenCircle() 
+{
     __SEH_HEADER
 
-    int								i, N, line;
+    int								i, N, line, ret;
     CDlgSelectTable					cstd;
     STableList						tablelisthold;
     int								result;
@@ -636,31 +657,15 @@ void CMainFrame::OnBnClickedGreenCircle() {
     CFileFind						hFile;
     CString							path, filename;
     BOOL							bFound;
-    s_tablemaps						maps;
     int								last_frame_num, frame_num;
     CTime							time, latest_time;
 
     // Clear global list for holding table candidates
     global.g_tlist.RemoveAll();
 
-    ////////////////////////////////////////////////////
-    // Load all profiles in scraper directory into array
-    maps.n_elem = 0;
-
-    if (global.tablemap.valid && maps.n_elem<MAX_MAPS_IN_STABLEMAPS)
-        if (load_tablemap((char *) global.tablemap.filepath.GetString(), &maps.tablemap[maps.n_elem], VER_OPENSCRAPE_1, false, &line) == SUCCESS)
-            maps.n_elem++;
-
-    // WinScrape converted profiles
-    path.Format("%s\\scraper\\*.ws", global.startup_path);
-    bFound = hFile.FindFile(path.GetString());
-    while (bFound)
-    {
-        bFound = hFile.FindNextFile();
-        if (!hFile.IsDots() && !hFile.IsDirectory() && hFile.GetFilePath()!=global.tablemap.filepath && maps.n_elem<MAX_MAPS_IN_STABLEMAPS)
-            if (load_tablemap((char *) hFile.GetFilePath().GetString(), &maps.tablemap[maps.n_elem], VER_OPENSCRAPE_1, false, &line) == SUCCESS)
-                maps.n_elem++;
-    }
+    // First check explicitly loaded/last used tablemap
+    if (global.trans.map.valid)
+	    EnumWindows(EnumProcTopLevelWindowList, (LPARAM) &global.trans.map);
 
     // OpenScrape table maps
     path.Format("%s\\scraper\\*.tm", global.startup_path);
@@ -668,18 +673,32 @@ void CMainFrame::OnBnClickedGreenCircle() {
     while (bFound)
     {
         bFound = hFile.FindNextFile();
-        if (!hFile.IsDots() && !hFile.IsDirectory() && hFile.GetFilePath()!=global.tablemap.filepath && maps.n_elem<MAX_MAPS_IN_STABLEMAPS)
-            if (load_tablemap((char *) hFile.GetFilePath().GetString(), &maps.tablemap[maps.n_elem], VER_OPENSCRAPE_1, false, &line) == SUCCESS)
-                maps.n_elem++;
+        if (!hFile.IsDots() && !hFile.IsDirectory() && hFile.GetFilePath()!=global.trans.map.filepath)
+		{
+			ret = global.trans.load_tablemap((char *) hFile.GetFilePath().GetString(), VER_OPENSCRAPE_1, false, &line);
+            if (ret == SUCCESS)
+			    EnumWindows(EnumProcTopLevelWindowList, (LPARAM) &global.trans.map);
+		}
     }
 
-    ////////////////////////////////////////////////
-    // Populate global candidate table list
-    EnumWindows(EnumProcTopLevelWindowList, (LPARAM) &maps);
+	// WinScrape converted profiles
+    path.Format("%s\\scraper\\*.ws", global.startup_path);
+    bFound = hFile.FindFile(path.GetString());
+    while (bFound)
+    {
+        bFound = hFile.FindNextFile();
+        if (!hFile.IsDots() && !hFile.IsDirectory() && hFile.GetFilePath()!=global.trans.map.filepath )
+		{
+			ret = global.trans.load_tablemap((char *) hFile.GetFilePath().GetString(), VER_OPENSCRAPE_1, false, &line);
+            if (ret == SUCCESS)
+			    EnumWindows(EnumProcTopLevelWindowList, (LPARAM) &global.trans.map);
+		}
+    }
 
     // Put global candidate table list in table select dialog variables
-    N = (int) global.g_tlist.GetSize();
-    if (N==0) {
+	N = (int) global.g_tlist.GetSize();
+    if (N == 0) 
+	{
         int cySize = GetSystemMetrics(SM_CYSIZE);
         int cyMenuSize = GetSystemMetrics(SM_CYMENU);
         if (cySize != 18 && cyMenuSize != 19)
@@ -687,13 +706,17 @@ void CMainFrame::OnBnClickedGreenCircle() {
         else
             MessageBox("No valid tables found", "Cannot find table", MB_OK);
     }
-    else {
-        if (N==1) {
+    else 
+	{
+        if (N==1) 
+		{
             result = IDOK;
             cstd.selected_item = 0;
         }
-        else if (N>=2) {
-            for (i=0; i<N; i++) {
+        else if (N>=2) 
+		{
+            for (i=0; i<N; i++) 
+			{
                 tablelisthold.hwnd = global.g_tlist[i].hwnd;
                 tablelisthold.title = global.g_tlist[i].title;
                 tablelisthold.path = global.g_tlist[i].path;
@@ -708,14 +731,15 @@ void CMainFrame::OnBnClickedGreenCircle() {
             result = cstd.DoModal();
         }
 
-        if (result == IDOK) {
-            // Load correct profile, and save hwnd/rect/numchairs of table that we are "attached" to
+        if (result == IDOK) 
+		{
+            // Load correct tablemap, and save hwnd/rect/numchairs of table that we are "attached" to
             global.attached_hwnd = global.g_tlist[cstd.selected_item].hwnd;
             global.attached_rect.left = global.g_tlist[cstd.selected_item].crect.left;
             global.attached_rect.top = global.g_tlist[cstd.selected_item].crect.top;
             global.attached_rect.right = global.g_tlist[cstd.selected_item].crect.right;
             global.attached_rect.bottom = global.g_tlist[cstd.selected_item].crect.bottom;
-            load_tablemap((char *) global.g_tlist[cstd.selected_item].path.GetString(), &global.tablemap, VER_OPENSCRAPE_1, false, &line);
+            global.trans.load_tablemap((char *) global.g_tlist[cstd.selected_item].path.GetString(), VER_OPENSCRAPE_1, false, &line);
             global.save_r$indexes();
             global.save_s$indexes();
             global.save_s$strings();
@@ -730,7 +754,8 @@ void CMainFrame::OnBnClickedGreenCircle() {
             symbols.ResetSymbolsFirstTime();
 
             // Reset "ScraperOutput" dialog, if it is live
-            if (m_ScraperOutputDlg) {
+            if (m_ScraperOutputDlg) 
+			{
                 m_ScraperOutputDlg->add_listbox_items();
                 m_ScraperOutputDlg->do_update_display();
             }
@@ -806,7 +831,7 @@ void CMainFrame::OnBnClickedGreenCircle() {
             // log OH title bar text and table reset
             ::GetWindowText(global.attached_hwnd, title, 512);
             write_log("\n*************************************************************\nTABLE RESET %s - %s(%s)\n*************************************************************\n",
-                      global.formula_name.GetString(), global.tablemap.sitename.GetString(), title);
+                      global.formula_name.GetString(), global.trans.map.sitename.GetString(), title);
 
         }
     }
@@ -814,7 +839,8 @@ void CMainFrame::OnBnClickedGreenCircle() {
     __SEH_LOGFATAL("CMainFrame::OnBnClickedGreenCircle :\n");
 }
 
-void CMainFrame::OnBnClickedRedCircle() {
+void CMainFrame::OnBnClickedRedCircle() 
+{
     __SEH_HEADER
 
     int			updcount;
@@ -822,7 +848,8 @@ void CMainFrame::OnBnClickedRedCircle() {
 
     // wait for an update cycle to finish, if necessary
     updcount = 0;
-    while (upd && updcount<20) {
+    while (upd && updcount<20) 
+	{
         EnterCriticalSection(&cs_updater);
         upd = global.update_in_process;
         LeaveCriticalSection(&cs_updater);
@@ -831,7 +858,8 @@ void CMainFrame::OnBnClickedRedCircle() {
     }
 
     // Stop heartbeat thread
-    if (heartbeat_thread_alive) {
+    if (heartbeat_thread_alive) 
+	{
         heartbeat_thread_alive = false;
         WaitForSingleObject(h_heartbeat_thread, THREAD_WAIT);
     }
@@ -866,12 +894,11 @@ void CMainFrame::OnBnClickedRedCircle() {
     KillTimer(HWND_CHECK_TIMER);
 
     // Unattach OH from any poker window
-    if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_TOP)) {
+    if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_TOP))
         m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_ATTACH_TOP, false);
-    }
-    if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_BOTTOM)) {
+    
+	if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_BOTTOM))
         m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, false);
-    }
 
     // Reset toolbar/menu button state
     m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
@@ -907,7 +934,7 @@ void CMainFrame::OnBnClickedRedCircle() {
     }
 
     // log OH title bar text and table reset
-    write_log("%s - %s(NOT ATTACHED)\n", global.formula_name.GetString(), global.tablemap.sitename.GetString());
+    write_log("%s - %s(NOT ATTACHED)\n", global.formula_name.GetString(), global.trans.map.sitename.GetString());
     write_log("TABLE RESET\n*************************************************************\n");
 
     // Stop logging
@@ -916,7 +943,8 @@ void CMainFrame::OnBnClickedRedCircle() {
     __SEH_LOGFATAL("CMainFrame::OnBnClickedRedCircle :\n");
 }
 
-void CMainFrame::OnTimer(UINT nIDEvent) {
+void CMainFrame::OnTimer(UINT nIDEvent) 
+{
     __SEH_HEADER
 
     CardMask	Cards;
@@ -985,7 +1013,8 @@ void CMainFrame::OnTimer(UINT nIDEvent) {
 
     }
 
-    else if (nIDEvent == UPDATE_STATUS_BAR_TIMER) {
+    else if (nIDEvent == UPDATE_STATUS_BAR_TIMER) 
+	{
         // Don't update certain items if prwin iterator or scrape/symbol calc is in progress
         EnterCriticalSection(&cs_prwin);
         prwin_running = prwin_thread_alive;
@@ -1016,11 +1045,14 @@ void CMainFrame::OnTimer(UINT nIDEvent) {
 
             // Player cards
             status_plcards = "";
-            if (symbols.user_chair_confirmed && playing) {
-                for (i=0; i<=1; i++) {
+            if (symbols.user_chair_confirmed && playing) 
+			{
+                for (i=0; i<=1; i++) 
+				{
                     // player cards
                     if (scraper.card_player[(int) symbols.sym.userchair][i] != CARD_BACK &&
-                            scraper.card_player[(int) symbols.sym.userchair][i] != CARD_NOCARD) {
+                            scraper.card_player[(int) symbols.sym.userchair][i] != CARD_NOCARD) 
+					{
                         card = StdDeck_cardString(scraper.card_player[(int) symbols.sym.userchair][i]);
                         temp.Format("%s ", card);
                         status_plcards.Append(temp);
@@ -1029,15 +1061,18 @@ void CMainFrame::OnTimer(UINT nIDEvent) {
                     }
                 }
             }
-            else {
-                if (scraper.card_player_for_display[0] != CARD_BACK && scraper.card_player_for_display[0] != CARD_NOCARD) {
+            else 
+			{
+                if (scraper.card_player_for_display[0] != CARD_BACK && scraper.card_player_for_display[0] != CARD_NOCARD) 
+				{
                     card = StdDeck_cardString(scraper.card_player_for_display[0]);
                     temp.Format("%s ", card);
                     status_plcards.Append(temp);
                     CardMask_SET(Cards, scraper.card_player_for_display[0]);
                     nCards++;
                 }
-                if (scraper.card_player_for_display[1] != CARD_BACK && scraper.card_player_for_display[1] != CARD_NOCARD) {
+                if (scraper.card_player_for_display[1] != CARD_BACK && scraper.card_player_for_display[1] != CARD_NOCARD) 
+				{
                     card = StdDeck_cardString(scraper.card_player_for_display[1]);
                     temp.Format("%s ", card);
                     status_plcards.Append(temp);
@@ -1048,9 +1083,11 @@ void CMainFrame::OnTimer(UINT nIDEvent) {
 
             // Common cards
             status_comcards = "";
-            for (i=0; i<=4; i++) {
+            for (i=0; i<=4; i++) 
+			{
                 if (scraper.card_common[i] != CARD_BACK &&
-                        scraper.card_common[i] != CARD_NOCARD) {
+                        scraper.card_common[i] != CARD_NOCARD) 
+				{
                     card = StdDeck_cardString(scraper.card_common[i]);
                     temp.Format("%s ", card);
                     status_comcards.Append(temp);
@@ -1066,29 +1103,27 @@ void CMainFrame::OnTimer(UINT nIDEvent) {
             status_pokerhand = status_pokerhand.Mid(0, status_pokerhand.Find(" "));
 
             // handrank
-            if (global.preferences.handrank_value == "169") {
+            if (global.preferences.handrank_value == "169")
                 status_handrank.Format("%.0f/169", symbols.sym.handrank169);
-            }
-            else if (global.preferences.handrank_value == "1000") {
+
+			else if (global.preferences.handrank_value == "1000")
                 status_handrank.Format("%.0f/1000", symbols.sym.handrank1000);
-            }
-            else if (global.preferences.handrank_value == "1326") {
+
+			else if (global.preferences.handrank_value == "1326")
                 status_handrank.Format("%.0f/1326", symbols.sym.handrank1326);
-            }
-            else if (global.preferences.handrank_value == "2652") {
+
+			else if (global.preferences.handrank_value == "2652")
                 status_handrank.Format("%.0f/2652", symbols.sym.handrank2652);
-            }
-            else if (global.preferences.handrank_value == "p") {
+
+			else if (global.preferences.handrank_value == "p")
                 status_handrank.Format("%.2f/2652", symbols.sym.handrankp);
-            }
 
             // nopponents
-            if (playing) {
+            if (playing)
                 status_nopp.Format("%d", (int) symbols.sym.nopponents);
-            }
-            else {
+
+			else
                 status_nopp = "";
-            }
         }
 
         // Always update prwin/nit
@@ -1161,97 +1196,92 @@ void CMainFrame::OnTimer(UINT nIDEvent) {
     __SEH_LOGFATAL("CMainFrame::OnTimer :\n");
 }
 
-void CMainFrame::OnClickedFlags() {
+void CMainFrame::OnClickedFlags() 
+{
     __SEH_HEADER
 
-    if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER0)) {
+    if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER0))
         global.flags[0] = true;
-    }
-    else {
+    else
         global.flags[0] = false;
-    }
-    if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER1)) {
+
+	if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER1))
         global.flags[1] = true;
-    }
-    else {
+    else
         global.flags[1] = false;
-    }
-    if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER2)) {
+
+	if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER2))
         global.flags[2] = true;
-    }
-    else {
+    else
         global.flags[2] = false;
-    }
-    if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER3)) {
+
+	if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER3))
         global.flags[3] = true;
-    }
-    else {
+    else
         global.flags[3] = false;
-    }
-    if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER4)) {
+
+	if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER4))
         global.flags[4] = true;
-    }
-    else {
+    else
         global.flags[4] = false;
-    }
-    if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER5)) {
+
+	if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER5))
         global.flags[5] = true;
-    }
-    else {
+    else
         global.flags[5] = false;
-    }
-    if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER6)) {
+
+	if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER6))
         global.flags[6] = true;
-    }
-    else {
+    else
         global.flags[6] = false;
-    }
-    if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER7)) {
+
+	if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER7))
         global.flags[7] = true;
-    }
-    else {
+    else
         global.flags[7] = false;
-    }
-    if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER8)) {
+
+	if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER8))
         global.flags[8] = true;
-    }
-    else {
+    else
         global.flags[8] = false;
-    }
-    if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER9)) {
+
+	if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER9))
         global.flags[9] = true;
-    }
-    else {
+    else
         global.flags[9] = false;
-    }
 
     __SEH_LOGFATAL("CMainFrame::OnClickedFlags :\n");
 }
 
 
-void CMainFrame::OnAutoplayer() {
+void CMainFrame::OnAutoplayer() 
+{
     __SEH_HEADER
 
     CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
-    if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER)) {
+    if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER)) 
+	{
         // calc hand lists
         global.create_hand_list_matrices(&global.formula);
 
         // one last parse - do not engage if parse fails
-        if (global.ParseAllFormula(pMyMainWnd->GetSafeHwnd(), &global.formula)) {
+        if (global.ParseAllFormula(pMyMainWnd->GetSafeHwnd(), &global.formula)) 
+		{
             EnterCriticalSection(&cs_heartbeat);
             global.autoplay = true;
             LeaveCriticalSection(&cs_heartbeat);
         }
-        else {
+        else 
+		{
             EnterCriticalSection(&cs_heartbeat);
             global.autoplay = false;
             LeaveCriticalSection(&cs_heartbeat);
             m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
         }
     }
-    else {
+    else 
+	{
         EnterCriticalSection(&cs_heartbeat);
         global.autoplay = false;
         LeaveCriticalSection(&cs_heartbeat);
@@ -1260,7 +1290,8 @@ void CMainFrame::OnAutoplayer() {
     __SEH_LOGFATAL("CMainFrame::OnAutoplayer :\n");
 }
 
-void CMainFrame::OnUpdateStatus(CCmdUI *pCmdUI) {
+void CMainFrame::OnUpdateStatus(CCmdUI *pCmdUI) 
+{
     __SEH_HEADER
 
     m_wndStatusBar.SetPaneText(m_wndStatusBar.CommandToIndex(ID_INDICATOR_STATUS_PLCARDS), status_plcards);
@@ -1276,16 +1307,15 @@ void CMainFrame::OnUpdateStatus(CCmdUI *pCmdUI) {
     __SEH_LOGFATAL("CMainFrame::OnUpdateStatus :\n");
 }
 
-void CMainFrame::OnDllLoad() {
+void CMainFrame::OnDllLoad() 
+{
     __SEH_HEADER
 
-    if (cdll.hMod_dll!=NULL) {
+    if (cdll.hMod_dll!=NULL)
         cdll.unload_dll();
-    }
-    else
-    {
+
+	else
         cdll.load_dll("");
-    }
 
     __SEH_LOGFATAL("CMainFrame::OnDllLoad :\n");
 }
@@ -1304,14 +1334,13 @@ void CMainFrame::OnDllLoadspecificfile()
     cfd.m_ofn.lpstrFilter = "DLL Files (.dll)\0*.dll\0\0";
     cfd.m_ofn.lpstrTitle = "Select OpenHoldem DLL file to OPEN";
 
-    if (cfd.DoModal() == IDOK) {
-        if (cdll.hMod_dll!=NULL) {
+    if (cfd.DoModal() == IDOK) 
+	{
+        if (cdll.hMod_dll!=NULL) 
             cdll.unload_dll();
-        }
-        else
-        {
+
+		else
             cdll.load_dll(cfd.m_ofn.lpstrFile);
-        }
 
         Registry::writeRegString(theKey, cfd.GetPathName());
     }
@@ -1320,18 +1349,19 @@ void CMainFrame::OnDllLoadspecificfile()
 }
 
 
-void CMainFrame::OnPokerproConnect() {
+void CMainFrame::OnPokerproConnect() 
+{
     __SEH_HEADER
-    if (m_pproDlg) {
+    if (m_pproDlg) 
+	{
         BOOL	bWasShown	=	::IsWindow(m_pproDlg->m_hWnd) && m_pproDlg->IsWindowVisible();
 
         m_pproDlg->DestroyWindow();
         delete m_pproDlg;
         m_pproDlg = NULL;
 
-        if (bWasShown) {
+        if (bWasShown)
             return;
-        }
     }
     m_pproDlg = new CDlgPpro(this);
     m_pproDlg->Create(CDlgPpro::IDD,this);
@@ -1340,7 +1370,8 @@ void CMainFrame::OnPokerproConnect() {
     __SEH_LOGFATAL("CMainFrame::OnPokerproConnect :\n");
 }
 
-void CMainFrame::OnMinMax(void) {
+void CMainFrame::OnMinMax(void) 
+{
     __SEH_HEADER
 
     RECT		crect, wrect, rectBar1, rectBar2, statusBar;
@@ -1350,7 +1381,8 @@ void CMainFrame::OnMinMax(void) {
     GetWindowRect(&wrect);
 
 
-    if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_MINMAX)) {
+    if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_MINMAX)) 
+	{
         GetWindowRect(&table_view_size);
         m_MainToolBar.GetWindowRect(&rectBar1);
         m_FlagsToolBar.GetWindowRect(&rectBar2);
@@ -1358,28 +1390,36 @@ void CMainFrame::OnMinMax(void) {
 
         // figure out size of toolbars
         if (m_MainToolBar.IsFloating() && m_FlagsToolBar.IsFloating()) {
+
             tb_top = 0;
             tb_bottom = 0;
         }
-        else if (!m_MainToolBar.IsFloating() && m_FlagsToolBar.IsFloating()) {
+        else if (!m_MainToolBar.IsFloating() && m_FlagsToolBar.IsFloating()) 
+		{
             tb_top = rectBar1.top;
             tb_bottom = rectBar1.bottom;
         }
-        else if (m_MainToolBar.IsFloating() && !m_FlagsToolBar.IsFloating()) {
+        else if (m_MainToolBar.IsFloating() && !m_FlagsToolBar.IsFloating()) 
+		{
             tb_top = rectBar2.top;
             tb_bottom = rectBar2.bottom;
         }
-        else {
-            if (rectBar1.top <= rectBar2.top) {
+        else 
+		{
+            if (rectBar1.top <= rectBar2.top) 
+			{
                 tb_top = rectBar1.top;
             }
-            else {
+            else 
+			{
                 tb_top = rectBar2.top;
             }
-            if (rectBar1.bottom >= rectBar2.bottom) {
+            if (rectBar1.bottom >= rectBar2.bottom) 
+			{
                 tb_bottom = rectBar1.bottom;
             }
-            else {
+            else 
+			{
                 tb_bottom = rectBar2.bottom;
             }
         }
@@ -1391,7 +1431,8 @@ void CMainFrame::OnMinMax(void) {
                    pt.y + (tb_bottom-tb_top) + (statusBar.bottom-statusBar.top) - 2,
                    true);
     }
-    else {
+    else 
+	{
         MoveWindow(table_view_size.left, table_view_size.top,
                    table_view_size.right - table_view_size.left,
                    table_view_size.bottom - table_view_size.top, true);
@@ -1400,14 +1441,16 @@ void CMainFrame::OnMinMax(void) {
     __SEH_LOGFATAL("CMainFrame::OnMinMax :\n");
 }
 
-void CMainFrame::OnAttachTop(void) {
+void CMainFrame::OnAttachTop(void) 
+{
     __SEH_HEADER
 
     RECT	att_rect, wrect;
     ::GetWindowRect(global.attached_hwnd, &att_rect);
     GetWindowRect(&wrect);
 
-    if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_TOP)) {
+    if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_TOP)) 
+	{
         // uncheck attach_bottom, if necessary
         m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, false);
 
@@ -1417,14 +1460,16 @@ void CMainFrame::OnAttachTop(void) {
     __SEH_LOGFATAL("CMainFrame::OnAttachTop :\n");
 }
 
-void CMainFrame::OnAttachBottom(void){
+void CMainFrame::OnAttachBottom(void)
+{
     __SEH_HEADER
 
     RECT	att_rect, wrect;
     ::GetWindowRect(global.attached_hwnd, &att_rect);
     GetWindowRect(&wrect);
 
-    if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_BOTTOM)) {
+    if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_BOTTOM)) 
+	{
         // uncheck attach_top, if necessary
         m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_ATTACH_TOP, false);
 
@@ -1434,13 +1479,15 @@ void CMainFrame::OnAttachBottom(void){
     __SEH_LOGFATAL("CMainFrame::OnAttachBottom :\n");
 }
 
-void CMainFrame::OnLockBlinds(void){
+void CMainFrame::OnLockBlinds(void)
+{
     __SEH_HEADER
 
     CDlgLockBlinds	lockblinds_dlg;
     Registry reg;
 
-    if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_LOCK_BLINDS)) {
+    if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_LOCK_BLINDS)) 
+	{
         reg.read_reg();
 
         lockblinds_dlg.sblind = reg.sblind;
@@ -1449,7 +1496,8 @@ void CMainFrame::OnLockBlinds(void){
         lockblinds_dlg.ante = reg.ante;
         lockblinds_dlg.gametype = reg.gametype;
 
-        if (lockblinds_dlg.DoModal() == IDOK) {
+        if (lockblinds_dlg.DoModal() == IDOK) 
+		{
             scraper.locked_sblind = lockblinds_dlg.sblind;
             scraper.locked_bblind = lockblinds_dlg.bblind;
             scraper.locked_bbet = lockblinds_dlg.bbet;
@@ -1466,7 +1514,8 @@ void CMainFrame::OnLockBlinds(void){
             reg.write_reg();
 
         }
-        else {
+        else 
+		{
             m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_LOCK_BLINDS, false);
             scraper.blinds_are_locked = false;
         }
@@ -1476,30 +1525,32 @@ void CMainFrame::OnLockBlinds(void){
     __SEH_LOGFATAL("CMainFrame::OnLockBlinds :\n");
 }
 
-void CMainFrame::OnFormulaViewMainToolbar() {
+void CMainFrame::OnFormulaViewMainToolbar() 
+{
     __SEH_HEADER
 
-    if (!m_MainToolBar.IsVisible()) {
+    if (!m_MainToolBar.IsVisible())
         ShowControlBar(&m_MainToolBar, TRUE, FALSE);
-    }
-    else {
+
+	else
         ShowControlBar(&m_MainToolBar, FALSE, FALSE);
-    }
-    RecalcLayout();
+
+	RecalcLayout();
 
     __SEH_LOGFATAL("CMainFrame::OnFormulaViewMainToolbar :\n");
 }
 
-void CMainFrame::OnFormulaViewFlagsToolbar() {
+void CMainFrame::OnFormulaViewFlagsToolbar() 
+{
     __SEH_HEADER
 
-    if (!m_FlagsToolBar.IsVisible()) {
+    if (!m_FlagsToolBar.IsVisible())
         ShowControlBar(&m_FlagsToolBar, TRUE, FALSE);
-    }
-    else {
+
+	else
         ShowControlBar(&m_FlagsToolBar, FALSE, FALSE);
-    }
-    RecalcLayout();
+
+	RecalcLayout();
 
     __SEH_LOGFATAL("CMainFrame::OnFormulaViewFlagsToolbar :\n");
 }
@@ -1508,13 +1559,13 @@ void CMainFrame::OnFormulaViewStatusbar()
 {
     __SEH_HEADER
 
-    if (!m_wndStatusBar.IsVisible()) {
+    if (!m_wndStatusBar.IsVisible())
         ShowControlBar(&m_wndStatusBar, TRUE, FALSE);
-    }
-    else {
+
+	else
         ShowControlBar(&m_wndStatusBar, FALSE, FALSE);
-    }
-    RecalcLayout();
+
+	RecalcLayout();
 
     __SEH_LOGFATAL("CMainFrame::OnFormulaViewStatusbar :\n");
 }
@@ -1565,19 +1616,21 @@ void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI)
 {
 	__SEH_HEADER
 
-    if (cdll.hMod_dll!=NULL) {
+    if (cdll.hMod_dll!=NULL)
         pCmdUI->SetText("&Unload\tF4");
-    }
-    else {
+
+	else
         pCmdUI->SetText("&Load\tF4");
-    }
-    // Not connected to ppro server
-    if (ppro.m_socket==INVALID_SOCKET) {
+
+	// Not connected to ppro server
+    if (ppro.m_socket==INVALID_SOCKET) 
+	{
         pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
                         !m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
     }
     // connected to ppro server
-    else {
+    else 
+	{
         pCmdUI->Enable(ppro.data.m_pinf[ppro.data.m_userchair].m_isActive&0x1 ? false : true);
     }
 
@@ -1614,7 +1667,8 @@ void CMainFrame::OnUpdateViewShootreplayframe(CCmdUI *pCmdUI)
 	__SEH_LOGFATAL("CMainFrame::OnUpdateViewShootreplayframe\n")
 }
 
-void CMainFrame::OnUpdateViewMainToolbar(CCmdUI *pCmdUI) {
+void CMainFrame::OnUpdateViewMainToolbar(CCmdUI *pCmdUI) 
+{
 	__SEH_HEADER
 
     pCmdUI->SetCheck(m_MainToolBar.IsVisible() ? 1 : 0);
@@ -1622,7 +1676,8 @@ void CMainFrame::OnUpdateViewMainToolbar(CCmdUI *pCmdUI) {
 	__SEH_LOGFATAL("CMainFrame::OnUpdateViewMainToolbar\n")
 }
 
-void CMainFrame::OnUpdateViewFlagsToolbar(CCmdUI *pCmdUI) {
+void CMainFrame::OnUpdateViewFlagsToolbar(CCmdUI *pCmdUI) 
+{
 	__SEH_HEADER
 
     pCmdUI->SetCheck(m_FlagsToolBar.IsVisible() ? 1 : 0);
@@ -1630,7 +1685,8 @@ void CMainFrame::OnUpdateViewFlagsToolbar(CCmdUI *pCmdUI) {
 	__SEH_LOGFATAL("CMainFrame::OnUpdateViewFlagsToolbar\n")
 }
 
-void CMainFrame::OnUpdateViewStatusbar(CCmdUI *pCmdUI) {
+void CMainFrame::OnUpdateViewStatusbar(CCmdUI *pCmdUI) 
+{
 	__SEH_HEADER
 
     pCmdUI->SetCheck(m_wndStatusBar.IsVisible() ? 1 : 0);
@@ -1644,12 +1700,12 @@ void CMainFrame::OnUpdateMenuPerlLoad(CCmdUI* pCmdUI)
 {
 	__SEH_HEADER
 
-    if (the_Perl_Interpreter.is_a_Formula_loaded()) {
+    if (the_Perl_Interpreter.is_a_Formula_loaded()) 
         pCmdUI->SetText("&Unload Formula\tF7");
-    }
-    else {
+
+	else 
         pCmdUI->SetText("&Load Formula\tF7");
-    }
+
     pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
                     !m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
 
@@ -1720,7 +1776,8 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
 
 
 //  2008.03.03 by THF
-void CMainFrame::OnPerlLoadFormula() {
+void CMainFrame::OnPerlLoadFormula() 
+{
     __SEH_HEADER
 
     if (the_Perl_Interpreter.is_a_Formula_loaded())
@@ -1740,7 +1797,8 @@ void CMainFrame::OnPerlLoadFormula() {
 
 
 //  2008.03.03 by THF
-void CMainFrame::OnPerlLoadSpecificFormula() {
+void CMainFrame::OnPerlLoadSpecificFormula() 
+{
     __SEH_HEADER
 
     CFileDialog			cfd(true);
@@ -1762,7 +1820,8 @@ void CMainFrame::OnPerlLoadSpecificFormula() {
 
 
 //  2008.03.03 by THF
-void CMainFrame::OnPerlEditMainFormula() {
+void CMainFrame::OnPerlEditMainFormula() 
+{
     __SEH_HEADER
 
     the_Perl_Interpreter.edit_main_FormulaFile();
@@ -1772,7 +1831,8 @@ void CMainFrame::OnPerlEditMainFormula() {
 
 
 //  2008.03.20 by THF
-void CMainFrame::OnPerlReloadFormula() {
+void CMainFrame::OnPerlReloadFormula() 
+{
     __SEH_HEADER
 
     //  Reload the most recent formula
@@ -1785,7 +1845,8 @@ void CMainFrame::OnPerlReloadFormula() {
 }
 
 
-void CMainFrame::OnPerlCheckSyntax() {
+void CMainFrame::OnPerlCheckSyntax() 
+{
     __SEH_HEADER
 
     the_Perl_Interpreter.check_Syntax();
@@ -1794,7 +1855,8 @@ void CMainFrame::OnPerlCheckSyntax() {
 }
 
 //  2008.04.29 by THF
-void CMainFrame::OnUpdateMenuPerlCheckSyntax(CCmdUI* pCmdUI) {
+void CMainFrame::OnUpdateMenuPerlCheckSyntax(CCmdUI* pCmdUI) 
+{
 	__SEH_HEADER	
 
 	pCmdUI->Enable(the_Perl_Interpreter.is_a_Formula_loaded());
@@ -1803,7 +1865,8 @@ void CMainFrame::OnUpdateMenuPerlCheckSyntax(CCmdUI* pCmdUI) {
 }
 
 
-void CMainFrame::OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI) {
+void CMainFrame::OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI) 
+{
 	__SEH_HEADER
 
 	pCmdUI->Enable(the_Perl_Interpreter.is_a_Formula_loaded());
@@ -1811,3 +1874,216 @@ void CMainFrame::OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI) {
 	__SEH_LOGFATAL("CMainFrame::OnUpdateMenuPerlEditMainFormula")
 }
 
+BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) 
+{
+    CString				title, winclass;
+    char				text[512];
+    RECT				crect;
+    STableList			tablelisthold;
+    STableMap			*map = (STableMap *) (lparam);
+
+    // If this is not a top level window, then return
+    if (GetParent(hwnd) != NULL)
+        return true;
+
+    // If this window is not visible, then return
+    if (!IsWindowVisible(hwnd))
+        return true;
+
+    // If there is no caption on this window, then return
+    GetWindowText(hwnd, text, sizeof(text));
+    if (strlen(text)==0)
+        return true;
+ 
+    title = text;
+
+    // Found a candidate window, get client area rect
+    GetClientRect(hwnd, &crect);
+
+    // See if it matches the currently loaded table map
+    if (check_window_match(map, hwnd, crect, title))
+    {
+        tablelisthold.hwnd = hwnd;
+        tablelisthold.title = title;
+        tablelisthold.path = map->filepath;
+        tablelisthold.crect.left = crect.left;
+        tablelisthold.crect.top = crect.top;
+        tablelisthold.crect.right = crect.right;
+        tablelisthold.crect.bottom = crect.bottom;
+        global.g_tlist.Add(tablelisthold);
+    }
+
+    return true;  // keep processing through entire list of windows
+}
+
+bool check_window_match(STableMap *map, HWND h, RECT r, CString title) 
+{
+
+    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+
+    __SEH_HEADER
+    int				i;
+    bool			good_size, good_pos_title, good_neg_title, good_table_points;
+    int				width, height, x, y;
+    HDC				hdcScreen, hdcCompatible;
+    HBITMAP			hbmScreen, hOldScreenBitmap;
+    BYTE			*pBits, alpha, red, green, blue;
+    int				exact_width, exact_height, min_width, min_height, max_width, max_height;
+
+    exact_width = exact_height = min_width = min_height = max_width = max_height = 0;
+    for (i=0; i<(int) map->z$.GetSize(); i++)
+    {
+        if (map->z$[i].name == "clientsize")
+        {
+            exact_width = map->z$[i].width;
+            exact_height = map->z$[i].height;
+        }
+        else if (map->z$[i].name == "clientsizemin")
+        {
+            min_width = map->z$[i].width;
+            min_height = map->z$[i].height;
+        }
+        else if (map->z$[i].name == "clientsizemax")
+        {
+            max_width = map->z$[i].width;
+            max_height = map->z$[i].height;
+        }
+    }
+
+    // Check for exact match on client size
+    good_size = false;
+    if (r.right == exact_width && r.bottom == exact_height)
+    {
+        good_size = true;
+    }
+
+    // Check for client size that falls within min/max
+    if (min_width != 0 && min_height != 0 && max_width != 0 &&  max_height != 0 &&
+            r.right >= (int) min_width && r.right <= (int) max_width &&
+            r.bottom >= (int) min_height && r.bottom <= (int) max_height)
+    {
+        good_size = true;
+    }
+
+    if (!good_size)
+        return false;
+
+    // Check title text for match
+    good_pos_title = false;
+    for (i=0; i<(int) map->s$.GetSize(); i++)
+    {
+        if (map->s$[i].name.Left(9) == "titletext"  && title.Find(map->s$[i].text)!=-1)
+        {
+            good_pos_title = true;
+            i=(int) map->s$.GetSize()+1;
+        }
+    }
+
+    if (!good_pos_title)
+        return false;
+
+    // Check for no negative title text matches
+    good_neg_title = true;
+    for (i=0; i<(int) map->s$.GetSize(); i++)
+    {
+        if (map->s$[i].name.Left(10) == "!titletext" && title.Find(map->s$[i].text)!=-1)
+        {
+            good_neg_title = false;
+            i=(int) map->s$.GetSize()+1;
+        }
+    }
+
+    if (!good_neg_title)
+        return false;
+
+    // Allocate heap space for BITMAPINFO
+    BITMAPINFO	*bmi;
+    int			info_len = sizeof(BITMAPINFOHEADER) + 1024;
+    bmi = (BITMAPINFO *) HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, info_len);
+
+    // Check table points for match
+    width = r.right - r.left;
+    height = r.bottom - r.top;
+    hdcScreen = GetDC(h);
+    hdcCompatible = CreateCompatibleDC(hdcScreen);
+    hbmScreen = CreateCompatibleBitmap(hdcScreen, width, height);
+    hOldScreenBitmap = (HBITMAP) SelectObject(hdcCompatible, hbmScreen);
+    BitBlt(hdcCompatible, 0, 0, width, height, hdcScreen, 0, 0, SRCCOPY);
+
+    // Populate BITMAPINFOHEADER
+    bmi->bmiHeader.biSize = sizeof(bmi->bmiHeader);
+    bmi->bmiHeader.biBitCount = 0;
+    GetDIBits(hdcCompatible, hbmScreen, 0, 0, NULL, bmi, DIB_RGB_COLORS);
+
+    // Get the actual argb bit information
+    bmi->bmiHeader.biHeight = -bmi->bmiHeader.biHeight;
+    pBits = new BYTE[bmi->bmiHeader.biSizeImage];
+    GetDIBits(hdcCompatible, hbmScreen, 0, height, pBits, bmi, DIB_RGB_COLORS);
+
+    good_table_points = true;
+    for (i=0; i<(int) map->r$.GetSize(); i++)
+    {
+        if (map->r$[i].name.Find("tablepoint") != -1 &&
+                map->r$[i].right - map->r$[i].left == 1 &&
+                map->r$[i].bottom - map->r$[i].top == 1 &&
+                map->r$[i].transform == "C")
+        {
+
+            x = map->r$[i].left;
+            y = map->r$[i].top;
+
+            int pbits_loc = y*width*4 + x*4;
+            alpha = pBits[pbits_loc + 3];
+            red = pBits[pbits_loc + 2];
+            green = pBits[pbits_loc + 1];
+            blue = pBits[pbits_loc + 0];
+
+            // positive radius
+            if (map->r$[i].radius >= 0)
+            {
+                if (!global.trans.is_in_ARGB_color_cube((map->r$[i].color>>24)&0xff,
+                                                 GetRValue(map->r$[i].color),
+                                                 GetGValue(map->r$[i].color),
+                                                 GetBValue(map->r$[i].color),
+                                                 map->r$[i].radius,
+                                                 alpha, red, green, blue))
+                {
+                    good_table_points = false;
+                    i=(int) map->r$.GetSize()+1;
+                }
+            }
+            // negative radius (logical not)
+            else
+            {
+                if (global.trans.is_in_ARGB_color_cube((map->r$[i].color>>24)&0xff,
+                                                GetRValue(map->r$[i].color),
+                                                GetGValue(map->r$[i].color),
+                                                GetBValue(map->r$[i].color),
+                                                -map->r$[i].radius,
+                                                alpha, red, green, blue))
+                {
+                    good_table_points = false;
+                    i=(int) map->r$.GetSize()+1;
+                }
+            }
+
+        }
+    }
+
+    // Clean up
+    HeapFree(GetProcessHeap(), NULL, bmi);
+    delete []pBits;
+    SelectObject(hdcCompatible, hOldScreenBitmap);
+    DeleteObject(hbmScreen);
+    DeleteDC(hdcCompatible);
+    ReleaseDC(h, hdcScreen);
+
+    if (!good_table_points)
+        return false;
+
+    return true;
+
+    __SEH_LOGFATAL("::check_window_match :\n");
+
+}

@@ -560,7 +560,7 @@ void write_log_autoplay(const char * action) {
                                    symbols.f$rais ? "R" : ".",
                                    symbols.f$alli ? "A" : ".");
 
-        fprintf(log_fp, "%s - %1d ", get_time(nowtime), global.tablemap.num_chairs);
+        fprintf(log_fp, "%s - %1d ", get_time(nowtime), global.trans.map.num_chairs);
         fprintf(log_fp, "%4s %10s %4s %5s ", pcards.GetString(), comcards.GetString(), rank.GetString(), pokerhand.GetString());
         fprintf(log_fp, "%4d %4d %4d ", (int) (symbols.sym.prwin*1000),(int) (symbols.sym.prlos*1000), (int) (symbols.sym.prtie*1000));
         fprintf(log_fp, "%2d %8d %-10s - ", (int) symbols.sym.nopponents, (int) symbols.sym.nit, bestaction.GetString());

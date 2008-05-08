@@ -33,12 +33,12 @@ public:
 	void create_replay_frame(void);
 	CString get_card_html(unsigned int card);
 
+	// Table map and transformation engine
+    CTransform		trans;
+
 	// Formula being used for execution
 	SFormula		formula;
 	CString			formula_name;
-
-	// Profile being used for execution
-	STableMap		tablemap;
 
 	// Table that we are attached to
 	HWND			attached_hwnd;

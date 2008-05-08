@@ -23,20 +23,11 @@ typedef boost::spirit::node_val_data_factory<const char *> int_factory_t;
 
 // Error Codes
 #define SUCCESS						0
-#define ERR_EOF						1
-#define ERR_SYNTAX					2
-#define ERR_VERSION					3
-#define ERR_NOTMASTER				4
-#define ERR_HASH_COLL				5
-#define ERR_REGION_SIZE				6
-#define ERR_UNK_LN_TYPE				7
-#define ERR_INV_HASH_TYPE			8
 #define ERR_DEBUG_NOEQ				9
 #define ERR_INVALID_SYM				10
 #define ERR_INVALID_FUNC_SYM		11
 #define ERR_INVALID_DLL_SYM			12
 #define ERR_INVALID_EXPR			13
-#define ERR_INCOMPLETEMASTER		14
 #define ERR_DIV_ZERO				15
 #define ERR_INVALID_F$$_REF			16
 
@@ -281,13 +272,6 @@ struct ftr_info
 	double			n_bets_preflop;         //number of bets preflop (1-4)
 };
 
-
-struct s_tablemaps								// used to pass loaded profiles to enumwindows callback
-{
-	STableMap	tablemap[15];
-	int			n_elem;
-};
-#define	MAX_MAPS_IN_STABLEMAPS  15
 
 // PokerTracker support
 enum PT_Stats 

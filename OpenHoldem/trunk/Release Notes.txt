@@ -48,6 +48,10 @@ BUG FIXES:
 MAINTENANCE:
 - Active and seated scraping now evaluates p first for efficiency.  (quiqsilver)
 
+- As part of the pdiff implementation and tuning, I got tired of updating the table map load/save
+  code in two places, and have moved this code to the CTransform class where it belongs.  A great
+  deal of code was touched (more than I anticipated), so please test carefully.  (OpenHoldem)
+
 
 v1.8.2 2008-04-25
 NEW STUFF:

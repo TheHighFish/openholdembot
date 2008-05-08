@@ -6,7 +6,6 @@
 #include "global.h"
 #include "threads.h"
 #include "symbols.h"
-#include "../../CTransform/Transform.h"
 
 // Global construction of scraper class
 class CScraper	scraper;
@@ -250,12 +249,12 @@ int CScraper::DoScrape(void)
 bool CScraper::process_region(HDC hdcCompatible, HDC hdc, int r$index)
 {
     __SEH_HEADER
-    HBITMAP			bitmap_last = global.tablemap.r$[r$index].last_bmp;
-    HBITMAP			bitmap_cur = global.tablemap.r$[r$index].cur_bmp;
-    int				left = global.tablemap.r$[r$index].left;
-    int				top = global.tablemap.r$[r$index].top;
-    int				right = global.tablemap.r$[r$index].right;
-    int				bottom = global.tablemap.r$[r$index].bottom;
+    HBITMAP			bitmap_last = global.trans.map.r$[r$index].last_bmp;
+    HBITMAP			bitmap_cur = global.trans.map.r$[r$index].cur_bmp;
+    int				left = global.trans.map.r$[r$index].left;
+    int				top = global.trans.map.r$[r$index].top;
+    int				right = global.trans.map.r$[r$index].right;
+    int				bottom = global.trans.map.r$[r$index].bottom;
     HBITMAP			old_bitmap;
 
     // Get "current" bitmap
@@ -287,19 +286,18 @@ void CScraper::scrape_common_cards(HDC hdcCompatible, HDC hdc)
     HBITMAP				old_bitmap;
     unsigned int		card;
     CString				cardstr, rankstr, suitstr;
-    CTransform			trans;
 
     for (i=0; i<=4; i++)
     {
         card = CARD_NOCARD;
 
         // try r$c0cardfaceX region first
-        r$index = global.tablemap.r$c0cardfaceX_index[i];
+        r$index = global.trans.map.r$c0cardfaceX_index[i];
         if (r$index != -1)
         {
             process_region(hdcCompatible, hdc, r$index);
-            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-            trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &cardstr);
+            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+            global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &cardstr);
             SelectObject(hdcCompatible, old_bitmap);
 
             if (cardstr!="")
@@ -319,23 +317,23 @@ void CScraper::scrape_common_cards(HDC hdcCompatible, HDC hdc)
         }
 
         // try r$c0cardfaceXrank/r$c0cardfaceXsuit region next
-        if (global.tablemap.r$c0cardfaceXrank_index[i] != -1 &&
-                global.tablemap.r$c0cardfaceXsuit_index[i] != -1 &&
+        if (global.trans.map.r$c0cardfaceXrank_index[i] != -1 &&
+                global.trans.map.r$c0cardfaceXsuit_index[i] != -1 &&
                 card==CARD_NOCARD)
         {
 
             // Get rank
-            r$index = global.tablemap.r$c0cardfaceXrank_index[i];
+            r$index = global.trans.map.r$c0cardfaceXrank_index[i];
             process_region(hdcCompatible, hdc, r$index);
-            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-            trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &rankstr);
+            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+            global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &rankstr);
             SelectObject(hdcCompatible, old_bitmap);
 
             // Get suit
-            r$index = global.tablemap.r$c0cardfaceXsuit_index[i];
+            r$index = global.trans.map.r$c0cardfaceXsuit_index[i];
             process_region(hdcCompatible, hdc, r$index);
-            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-            trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &suitstr);
+            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+            global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &suitstr);
             SelectObject(hdcCompatible, old_bitmap);
 
             if (rankstr=="10") rankstr="T";
@@ -369,7 +367,6 @@ void CScraper::scrape_player_cards(int chair, HDC hdcCompatible, HDC hdc)
     unsigned int		card;
     bool				got_new_scrape;
     CString				cardstr, rankstr, suitstr;
-    CTransform			trans;
 
     // Player cards
     got_new_scrape = false;
@@ -378,12 +375,12 @@ void CScraper::scrape_player_cards(int chair, HDC hdcCompatible, HDC hdc)
         card = CARD_NOCARD;
 
         // try r$uXcardfaceY region first
-        r$index = global.tablemap.r$uXcardfaceY_index[chair][j];
+        r$index = global.trans.map.r$uXcardfaceY_index[chair][j];
         if (r$index!=-1)
         {
             process_region(hdcCompatible, hdc, r$index);
-            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-            trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &cardstr);
+            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+            global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &cardstr);
             SelectObject(hdcCompatible, old_bitmap);
             if (cardstr!="")
             {
@@ -404,12 +401,12 @@ void CScraper::scrape_player_cards(int chair, HDC hdcCompatible, HDC hdc)
         }
 
         // try r$pXcardfaceY region next
-        r$index = global.tablemap.r$pXcardfaceY_index[chair][j];
+        r$index = global.trans.map.r$pXcardfaceY_index[chair][j];
         if (r$index!=-1 && card==CARD_NOCARD)
         {
             process_region(hdcCompatible, hdc, r$index);
-            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-            int res = trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &cardstr);
+            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+            int res = global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &cardstr);
             SelectObject(hdcCompatible, old_bitmap);
 
             if (cardstr!="")
@@ -431,23 +428,23 @@ void CScraper::scrape_player_cards(int chair, HDC hdcCompatible, HDC hdc)
         }
 
         // try r$pXcardfaceYrank/r$pXcardfaceYsuit regions next
-        if (global.tablemap.r$pXcardfaceYrank_index[chair][j] != -1 &&
-                global.tablemap.r$pXcardfaceYsuit_index[chair][j] != -1 &&
+        if (global.trans.map.r$pXcardfaceYrank_index[chair][j] != -1 &&
+                global.trans.map.r$pXcardfaceYsuit_index[chair][j] != -1 &&
                 card==CARD_NOCARD)
         {
 
             // Get rank
-            r$index = global.tablemap.r$pXcardfaceYrank_index[chair][j];
+            r$index = global.trans.map.r$pXcardfaceYrank_index[chair][j];
             process_region(hdcCompatible, hdc, r$index);
-            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-            trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &rankstr);
+            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+            global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &rankstr);
             SelectObject(hdcCompatible, old_bitmap);
 
             // Get suit
-            r$index = global.tablemap.r$pXcardfaceYsuit_index[chair][j];
+            r$index = global.trans.map.r$pXcardfaceYsuit_index[chair][j];
             process_region(hdcCompatible, hdc, r$index);
-            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-            trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &suitstr);
+            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+            global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &suitstr);
             SelectObject(hdcCompatible, old_bitmap);
 
             if (rankstr=="10") rankstr="T";
@@ -474,12 +471,12 @@ void CScraper::scrape_player_cards(int chair, HDC hdcCompatible, HDC hdc)
     }
 
     // Player card backs
-    r$index = global.tablemap.r$pXcardback_index[chair];
+    r$index = global.trans.map.r$pXcardback_index[chair];
     if (r$index!=-1 && card==CARD_NOCARD)
     {
         process_region(hdcCompatible, hdc, r$index);
-        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-        trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &cardstr);
+        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+        global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &cardstr);
         SelectObject(hdcCompatible, old_bitmap);
         if (is_string_cardback(cardstr))
         {
@@ -514,17 +511,16 @@ void CScraper::scrape_seated(int chair, HDC hdcCompatible, HDC hdc)
     int					r$index;
     HBITMAP				old_bitmap;
     CString				result;
-    CTransform			trans;
 
     seated[chair] = "false";
 
     // try p region first
-    r$index = global.tablemap.r$pXseated_index[chair];
+    r$index = global.trans.map.r$pXseated_index[chair];
     if (r$index!=-1)
     {
         process_region(hdcCompatible, hdc, r$index);
-        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-        trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &result);
+        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+        global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &result);
         SelectObject(hdcCompatible, old_bitmap);
 
         if (result!="")
@@ -533,12 +529,12 @@ void CScraper::scrape_seated(int chair, HDC hdcCompatible, HDC hdc)
 
     // try u region next,
     // but only if we didn't get a positive result from the p region
-    r$index = global.tablemap.r$uXseated_index[chair];
+    r$index = global.trans.map.r$uXseated_index[chair];
     if (r$index!=-1 && !is_string_seated(seated[chair]))
     {
         process_region(hdcCompatible, hdc, r$index);
-        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-        trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &result);
+        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+        global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &result);
         SelectObject(hdcCompatible, old_bitmap);
 
         if (result!="")
@@ -562,30 +558,29 @@ void CScraper::scrape_active(int chair, HDC hdcCompatible, HDC hdc)
     int					r$index;
     HBITMAP				old_bitmap;
     CString				result;
-    CTransform			trans;
 
 	active[chair] = "false";
 
     // try p region first
-    r$index = global.tablemap.r$pXactive_index[chair];
+    r$index = global.trans.map.r$pXactive_index[chair];
     if (r$index!=-1)
     {
         process_region(hdcCompatible, hdc, r$index);
-        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-        trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &result);
+        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+        global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &result);
         SelectObject(hdcCompatible, old_bitmap);
 
         active[chair] = result;
     }
 
     // try u region next, but only if we didn't get a key result from the p region
-    r$index = global.tablemap.r$uXactive_index[chair];
-    if (r$index!=-1 && ((!is_string_active(active[chair]) && global.tablemap.activemethod != 2) ||
-		(is_string_active(active[chair]) && global.tablemap.activemethod == 2)))
+    r$index = global.trans.map.r$uXactive_index[chair];
+    if (r$index!=-1 && ((!is_string_active(active[chair]) && global.trans.map.activemethod != 2) ||
+		(is_string_active(active[chair]) && global.trans.map.activemethod == 2)))
     {
         process_region(hdcCompatible, hdc, r$index);
-        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-        trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &result);
+        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+        global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &result);
         SelectObject(hdcCompatible, old_bitmap);
 
         active[chair] = result;
@@ -608,15 +603,14 @@ void CScraper::scrape_dealer(int chair, HDC hdcCompatible, HDC hdc)
     int					r$index;
     HBITMAP				old_bitmap;
     CString				result;
-    CTransform			trans;
 
     // Dealer button
-    r$index = global.tablemap.r$pXdealer_index[chair];
+    r$index = global.trans.map.r$pXdealer_index[chair];
     if (r$index!=-1)
     {
         process_region(hdcCompatible, hdc, r$index);
-        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-        trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &result);
+        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+        global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &result);
         SelectObject(hdcCompatible, old_bitmap);
 
         if (is_string_dealer(result))
@@ -644,40 +638,39 @@ void CScraper::scrape_name(int chair, HDC hdcCompatible, HDC hdc) {
     bool				got_new_scrape;
     CString				text;
     int					ret;
-    CTransform			trans;
 
     // Player name
     got_new_scrape = false;
-    r$index = global.tablemap.r$uname_index;
+    r$index = global.trans.map.r$uname_index;
     if (r$index!=-1 && symbols.user_chair_confirmed && chair==symbols.sym.chair && seated[chair])
     {
         process_region(hdcCompatible, hdc, r$index);
-        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-        ret = trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &text);
+        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+        ret = global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &text);
         SelectObject(hdcCompatible, old_bitmap);
 
         if (ret==ERR_GOOD_SCRAPE_GENERAL && text!="")
             got_new_scrape = true;
     }
 
-    r$index = global.tablemap.r$uXname_index[chair];
+    r$index = global.trans.map.r$uXname_index[chair];
     if (r$index!=-1 && !got_new_scrape && symbols.user_chair_confirmed && chair==symbols.sym.chair && seated[chair])
     {
         process_region(hdcCompatible, hdc, r$index);
-        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-        ret = trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &text);
+        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+        ret = global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &text);
         SelectObject(hdcCompatible, old_bitmap);
 
         if (ret==ERR_GOOD_SCRAPE_GENERAL && text!="")
             got_new_scrape = true;
     }
 
-    r$index = global.tablemap.r$pXname_index[chair];
+    r$index = global.trans.map.r$pXname_index[chair];
     if (r$index!=-1 && !got_new_scrape && seated[chair])
     {
         process_region(hdcCompatible, hdc, r$index);
-        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-        ret = trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &text);
+        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+        ret = global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &text);
         SelectObject(hdcCompatible, old_bitmap);
 
         if (ret==ERR_GOOD_SCRAPE_GENERAL && text!="")
@@ -713,18 +706,17 @@ void CScraper::scrape_balance(int chair, HDC hdcCompatible, HDC hdc)
     bool				got_new_scrape;
     CString				text;
     int					ret;
-    CTransform			trans;
 
     // Player balance
     got_new_scrape = false;
     sittingout[chair] = false;
 
-    r$index = global.tablemap.r$ubalance_index;
+    r$index = global.trans.map.r$ubalance_index;
     if (r$index!=-1 && symbols.user_chair_confirmed && chair==symbols.sym.chair && seated[chair])
     {
         process_region(hdcCompatible, hdc, r$index);
-        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-        ret = trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &text);
+        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+        ret = global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &text);
         SelectObject(hdcCompatible, old_bitmap);
 
         if (ret == ERR_GOOD_SCRAPE_GENERAL)
@@ -751,12 +743,12 @@ void CScraper::scrape_balance(int chair, HDC hdcCompatible, HDC hdc)
         }
     }
 
-    r$index = global.tablemap.r$uXbalance_index[chair];
+    r$index = global.trans.map.r$uXbalance_index[chair];
     if (r$index!=-1 && !got_new_scrape && symbols.user_chair_confirmed && chair==symbols.sym.chair && seated[chair])
     {
         process_region(hdcCompatible, hdc, r$index);
-        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-        ret = trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &text);
+        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+        ret = global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &text);
         SelectObject(hdcCompatible, old_bitmap);
 
         if (ret == ERR_GOOD_SCRAPE_GENERAL)
@@ -783,12 +775,12 @@ void CScraper::scrape_balance(int chair, HDC hdcCompatible, HDC hdc)
         }
     }
 
-    r$index = global.tablemap.r$pXbalance_index[chair];
+    r$index = global.trans.map.r$pXbalance_index[chair];
     if (r$index!=-1 && !got_new_scrape && seated[chair])
     {
         process_region(hdcCompatible, hdc, r$index);
-        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-        ret = trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &text);
+        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+        ret = global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &text);
         SelectObject(hdcCompatible, old_bitmap);
 
         if (ret == ERR_GOOD_SCRAPE_GENERAL)
@@ -818,7 +810,7 @@ void CScraper::scrape_balance(int chair, HDC hdcCompatible, HDC hdc)
     if (got_new_scrape)
     {
         balance_good_scrape[chair] = true;
-        playerbalance[chair] = trans.string_to_money(text);
+        playerbalance[chair] = global.trans.string_to_money(text);
     }
     else
     {
@@ -842,24 +834,23 @@ void CScraper::scrape_bet(int chair, HDC hdcCompatible, HDC hdc)
     int					r$index;
     HBITMAP				old_bitmap;
     CString				text;
-    CTransform			trans;
 
     // Player bet
     playerbet[chair] = 0;
 
-    r$index = global.tablemap.r$pXbet_index[chair];
+    r$index = global.trans.map.r$pXbet_index[chair];
     if (r$index!=-1)
     {
         process_region(hdcCompatible, hdc, r$index);
-        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-        trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &text);
+        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+        global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &text);
         SelectObject(hdcCompatible, old_bitmap);
         text.Remove(',');
         text.Remove('$');
 
         if (text!="")
         {
-            playerbet[chair] = trans.string_to_money(text);
+            playerbet[chair] = global.trans.string_to_money(text);
             if (playerbet_last[chair] != playerbet[chair])
             {
                 playerbet_last[chair] = playerbet[chair];
@@ -870,7 +861,7 @@ void CScraper::scrape_bet(int chair, HDC hdcCompatible, HDC hdc)
 
     if (playerbet[chair] == 0)
     {
-        r$index = global.tablemap.r$pXchip_index[chair][0][0];
+        r$index = global.trans.map.r$pXchip_index[chair][0][0];
         if (r$index!=-1)
         {
             old_bitmap = (HBITMAP) SelectObject(hdcCompatible, entire_window_Cur);
@@ -893,7 +884,6 @@ void CScraper::scrape_buttons(HDC hdcCompatible, HDC hdc) {
     int					j, k, r$index;
     HBITMAP				old_bitmap;
     CString				text;
-    CTransform			trans;
 	Stablemap_region	handle, slider;
 
 
@@ -908,12 +898,12 @@ void CScraper::scrape_buttons(HDC hdcCompatible, HDC hdc) {
     {
         // Button state
         buttonstate[j] = "false";
-        r$index = global.tablemap.r$iXstate_index[j];
+        r$index = global.trans.map.r$iXstate_index[j];
         if (r$index!=-1)
         {
             process_region(hdcCompatible, hdc, r$index);
-            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-            trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &text);
+            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+            global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &text);
             SelectObject(hdcCompatible, old_bitmap);
 
             if (text!="")
@@ -928,12 +918,12 @@ void CScraper::scrape_buttons(HDC hdcCompatible, HDC hdc) {
 
         // i86X button state
         i86X_buttonstate[j] = "false";
-        r$index = global.tablemap.r$i86Xstate_index[j];
+        r$index = global.trans.map.r$i86Xstate_index[j];
         if (r$index!=-1)
         {
             process_region(hdcCompatible, hdc, r$index);
-            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-            trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &text);
+            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+            global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &text);
             SelectObject(hdcCompatible, old_bitmap);
 
             if (text!="")
@@ -949,12 +939,12 @@ void CScraper::scrape_buttons(HDC hdcCompatible, HDC hdc) {
         // Button label
         // First check iXlabel
         text = "";
-        r$index = global.tablemap.r$iXlabel_index[j];
+        r$index = global.trans.map.r$iXlabel_index[j];
         if (r$index!=-1)
         {
             process_region(hdcCompatible, hdc, r$index);
-            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-            trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &text);
+            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+            global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &text);
             SelectObject(hdcCompatible, old_bitmap);
 
             if (text!="")
@@ -964,12 +954,12 @@ void CScraper::scrape_buttons(HDC hdcCompatible, HDC hdc) {
         // Second check iXlabelY
         for (k=0; k<=9 && text == ""; k++)
         {
-            r$index = global.tablemap.r$iXlabelY_index[j][k];
+            r$index = global.trans.map.r$iXlabelY_index[j][k];
             if (r$index!=-1)
             {
                 process_region(hdcCompatible, hdc, r$index);
-                old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-                trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &text);
+                old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+                global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &text);
                 SelectObject(hdcCompatible, old_bitmap);
 
                 if (text!="")
@@ -985,12 +975,12 @@ void CScraper::scrape_buttons(HDC hdcCompatible, HDC hdc) {
     }
 
     // i86 button state
-    r$index = global.tablemap.r$i86state_index;
+    r$index = global.trans.map.r$i86state_index;
     if (r$index!=-1)
     {
         process_region(hdcCompatible, hdc, r$index);
-        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-        trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &text);
+        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+        global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &text);
         SelectObject(hdcCompatible, old_bitmap);
 
         if (text!="")
@@ -1006,13 +996,13 @@ void CScraper::scrape_buttons(HDC hdcCompatible, HDC hdc) {
     }
 
     // find handle
-    r$index = global.tablemap.r$iXhandle_index[3];
-    if (r$index!=-1 && global.tablemap.r$iXslider_index[3] != -1 && buttonstate[3] !=  "false")
+    r$index = global.trans.map.r$iXhandle_index[3];
+    if (r$index!=-1 && global.trans.map.r$iXslider_index[3] != -1 && buttonstate[3] !=  "false")
     {
-		handle = global.tablemap.r$[global.tablemap.r$iXhandle_index[3]];
-		slider = global.tablemap.r$[global.tablemap.r$iXslider_index[3]];
+		handle = global.trans.map.r$[global.trans.map.r$iXhandle_index[3]];
+		slider = global.trans.map.r$[global.trans.map.r$iXslider_index[3]];
         process_region(hdcCompatible, hdc, r$index);
-        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
+        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
 		j=slider.right-handle.left;
 		text="";
 		handle_found_at_xy = false;
@@ -1020,7 +1010,7 @@ void CScraper::scrape_buttons(HDC hdcCompatible, HDC hdc) {
 		{
 			handle.left += k;
 			handle.right += k;
-			trans.do_transform(&global.tablemap, &handle, hdcCompatible, &text);
+			global.trans.do_transform(&handle, hdcCompatible, &text);
 			handle.left -= k;
 			handle.right -= k;
 			if (text == "handle" || text == "true") break;
@@ -1045,26 +1035,25 @@ void CScraper::scrape_pots(HDC hdcCompatible, HDC hdc)
     int					j, r$index;
     HBITMAP				old_bitmap;
     CString				text;
-    CTransform			trans;
 
     for (j=0; j<=4; j++)
     {
         pot[j] = 0;
 
         // r$c0potX
-        r$index = global.tablemap.r$c0potX_index[j];
+        r$index = global.trans.map.r$c0potX_index[j];
         if (r$index!=-1)
         {
             process_region(hdcCompatible, hdc, r$index);
-            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-            trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &text);
+            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+            global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &text);
             SelectObject(hdcCompatible, old_bitmap);
             text.Remove(',');
             text.Remove('$');
 
             if (text!="")
             {
-                pot[j] = trans.string_to_money(text);
+                pot[j] = global.trans.string_to_money(text);
                 if (pot_last[j] != pot[j])
                 {
                     pot_last[j] = pot[j];
@@ -1075,7 +1064,7 @@ void CScraper::scrape_pots(HDC hdcCompatible, HDC hdc)
         // r$c0potXchipYZ_index
         if (pot[j] == 0)
         {
-            r$index = global.tablemap.r$c0potXchipYZ_index[j][0][0];
+            r$index = global.trans.map.r$c0potXchipYZ_index[j][0][0];
             if (r$index!=-1)
             {
                 process_region(hdcCompatible, hdc, r$index);	//update bitmap for scraper output window
@@ -1091,12 +1080,12 @@ void CScraper::scrape_pots(HDC hdcCompatible, HDC hdc)
             }
 
             // update the bitmap for second chip position in the first stack
-            r$index = global.tablemap.r$c0potXchipYZ_index[j][0][1];
+            r$index = global.trans.map.r$c0potXchipYZ_index[j][0][1];
             if (r$index!=-1)
                 process_region(hdcCompatible, hdc, r$index);
 
             // update the bitmap for first chip position in the second stack
-            r$index = global.tablemap.r$c0potXchipYZ_index[j][1][0];
+            r$index = global.trans.map.r$c0potXchipYZ_index[j][1][0];
             if (r$index!=-1)
                 process_region(hdcCompatible, hdc, r$index);
         }
@@ -1116,19 +1105,18 @@ void CScraper::scrape_limits(HDC hdcCompatible, HDC hdc)
     CString				titletext;
     char				c_titletext[128];
     bool				got_new_scrape, log_blind_change;
-    CTransform			trans;
 
     s_limit_info.found_handnumber = s_limit_info.found_sblind = s_limit_info.found_bblind = false;
     s_limit_info.found_bbet = s_limit_info.found_ante = s_limit_info.found_limit = false;
     s_limit_info.found_sb_bb = s_limit_info.found_bb_BB = false;
 
     // istournament
-    r$index = global.tablemap.r$c0istournament_index;
+    r$index = global.trans.map.r$c0istournament_index;
     if (r$index!=-1)
     {
         process_region(hdcCompatible, hdc, r$index);
-        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-        trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &text);
+        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+        global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &text);
         SelectObject(hdcCompatible, old_bitmap);
 
         if (text!="")
@@ -1145,12 +1133,12 @@ void CScraper::scrape_limits(HDC hdcCompatible, HDC hdc)
 
     // r$c0handnumber
     got_new_scrape = false;
-    r$index = global.tablemap.r$c0handnumber_index;
+    r$index = global.trans.map.r$c0handnumber_index;
     if (r$index!=-1)
     {
         process_region(hdcCompatible, hdc, r$index);
-        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-        trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &text);
+        old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+        global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &text);
         SelectObject(hdcCompatible, old_bitmap);
         text.Remove(',');
         if (text!="")
@@ -1162,12 +1150,12 @@ void CScraper::scrape_limits(HDC hdcCompatible, HDC hdc)
     for (j=0; j<=9; j++)
     {
         // r$c0handnumberX
-        r$index = global.tablemap.r$c0handnumberX_index[j];
+        r$index = global.trans.map.r$c0handnumberX_index[j];
         if (r$index!=-1 && !got_new_scrape)
         {
             process_region(hdcCompatible, hdc, r$index);
-            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-            trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &text);
+            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+            global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &text);
             SelectObject(hdcCompatible, old_bitmap);
             if (text!="")
             {
@@ -1180,12 +1168,12 @@ void CScraper::scrape_limits(HDC hdcCompatible, HDC hdc)
     if (!blinds_are_locked)
     {
         // s$ttlimits - Scrape blinds/stakes/limit info from title text
-        s$index = global.tablemap.s$ttlimits_index;
+        s$index = global.trans.map.s$ttlimits_index;
         if (s$index!=-1)
         {
             GetWindowText(global.attached_hwnd, c_titletext, 128);
             titletext = c_titletext;
-            trans.parse_string_bsl(titletext, global.tablemap.s$[s$index].text, NULL,
+            global.trans.parse_string_bsl(titletext, global.trans.map.s$[s$index].text, NULL,
                                    &s_limit_info.handnumber, &s_limit_info.sblind, &s_limit_info.bblind, &s_limit_info.bbet,
                                    &s_limit_info.ante, &s_limit_info.limit, &s_limit_info.sb_bb, &s_limit_info.bb_BB,
                                    &s_limit_info.istournament,
@@ -1197,12 +1185,12 @@ void CScraper::scrape_limits(HDC hdcCompatible, HDC hdc)
         // s$ttlimitsX - Scrape blinds/stakes/limit info from title text
         for (j=0; j<=4; j++)
         {
-            s$index = global.tablemap.s$ttlimitsX_index[j];
+            s$index = global.trans.map.s$ttlimitsX_index[j];
             if (s$index!=-1)
             {
                 GetWindowText(global.attached_hwnd, c_titletext, 128);
                 titletext = c_titletext;
-                trans.parse_string_bsl(titletext, global.tablemap.s$[s$index].text, NULL,
+                global.trans.parse_string_bsl(titletext, global.trans.map.s$[s$index].text, NULL,
                                        &s_limit_info.handnumber, &s_limit_info.sblind, &s_limit_info.bblind, &s_limit_info.bbet,
                                        &s_limit_info.ante, &s_limit_info.limit, &s_limit_info.sb_bb, &s_limit_info.bb_BB,
                                        &s_limit_info.istournament,
@@ -1213,16 +1201,16 @@ void CScraper::scrape_limits(HDC hdcCompatible, HDC hdc)
         }
 
         // r$c0limits, s$c0limits
-        r$index = global.tablemap.r$c0limits_index;
-        s$index = global.tablemap.s$c0limits_index;
+        r$index = global.trans.map.r$c0limits_index;
+        s$index = global.trans.map.s$c0limits_index;
         if (r$index!=-1 && s$index!=-1)
         {
             process_region(hdcCompatible, hdc, r$index);
-            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-            trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &text);
+            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+            global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &text);
             SelectObject(hdcCompatible, old_bitmap);
             if (text!="")
-                trans.parse_string_bsl(text, global.tablemap.s$[s$index].text, NULL,
+                global.trans.parse_string_bsl(text, global.trans.map.s$[s$index].text, NULL,
                                        &s_limit_info.handnumber, &s_limit_info.sblind, &s_limit_info.bblind, &s_limit_info.bbet,
                                        &s_limit_info.ante, &s_limit_info.limit, &s_limit_info.sb_bb, &s_limit_info.bb_BB,
                                        &s_limit_info.istournament,
@@ -1234,17 +1222,17 @@ void CScraper::scrape_limits(HDC hdcCompatible, HDC hdc)
         for (j=0; j<=9; j++)
         {
             // r$c0limitsX, s$c0limitsX
-            r$index = global.tablemap.r$c0limitsX_index[j];
-            s$index = global.tablemap.s$c0limitsX_index[j];
+            r$index = global.trans.map.r$c0limitsX_index[j];
+            s$index = global.trans.map.s$c0limitsX_index[j];
             if (r$index!=-1 && s$index!=-1)
             {
                 process_region(hdcCompatible, hdc, r$index);
-                old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-                trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &text);
+                old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+                global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &text);
                 SelectObject(hdcCompatible, old_bitmap);
 
                 if (text!="")
-                    trans.parse_string_bsl(text, global.tablemap.s$[s$index].text, NULL,
+                    global.trans.parse_string_bsl(text, global.trans.map.s$[s$index].text, NULL,
                                            &s_limit_info.handnumber, &s_limit_info.sblind, &s_limit_info.bblind, &s_limit_info.bbet,
                                            &s_limit_info.ante, &s_limit_info.limit, &s_limit_info.sb_bb, &s_limit_info.bb_BB,
                                            &s_limit_info.istournament,
@@ -1255,63 +1243,63 @@ void CScraper::scrape_limits(HDC hdcCompatible, HDC hdc)
         }
 
         // r$c0sblind
-        r$index = global.tablemap.r$c0sblind_index;
+        r$index = global.trans.map.r$c0sblind_index;
         if (r$index!=-1 && !s_limit_info.found_sblind)
         {
             process_region(hdcCompatible, hdc, r$index);
-            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-            trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &text);
+            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+            global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &text);
             SelectObject(hdcCompatible, old_bitmap);
             text.Remove(',');
             text.Remove('$');
 
             if (text!="")
-                s_limit_info.sblind = trans.string_to_money(text);
+                s_limit_info.sblind = global.trans.string_to_money(text);
         }
 
         // r$c0bblind
-        r$index = global.tablemap.r$c0bblind_index;
+        r$index = global.trans.map.r$c0bblind_index;
         if (r$index!=-1 && !s_limit_info.found_bblind)
         {
             process_region(hdcCompatible, hdc, r$index);
-            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-            trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &text);
+            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+            global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &text);
             SelectObject(hdcCompatible, old_bitmap);
             text.Remove(',');
             text.Remove('$');
 
             if (text!="")
-                s_limit_info.bblind = trans.string_to_money(text);
+                s_limit_info.bblind = global.trans.string_to_money(text);
         }
 
         // r$c0bigbet
-        r$index = global.tablemap.r$c0bigbet_index;
+        r$index = global.trans.map.r$c0bigbet_index;
         if (r$index!=-1 && !s_limit_info.found_bbet)
         {
             process_region(hdcCompatible, hdc, r$index);
-            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-            trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &text);
+            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+            global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &text);
             SelectObject(hdcCompatible, old_bitmap);
             text.Remove(',');
             text.Remove('$');
 
             if (text!="")
-                s_limit_info.bbet = trans.string_to_money(text);
+                s_limit_info.bbet = global.trans.string_to_money(text);
         }
 
         // r$c0ante
-        r$index = global.tablemap.r$c0ante_index;
+        r$index = global.trans.map.r$c0ante_index;
         if (r$index!=-1 && !s_limit_info.found_ante)
         {
             process_region(hdcCompatible, hdc, r$index);
-            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.tablemap.r$[r$index].cur_bmp);
-            trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompatible, &text);
+            old_bitmap = (HBITMAP) SelectObject(hdcCompatible, global.trans.map.r$[r$index].cur_bmp);
+            global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompatible, &text);
             SelectObject(hdcCompatible, old_bitmap);
             text.Remove(',');
             text.Remove('$');
 
             if (text!="")
-                s_limit_info.ante = trans.string_to_money(text);
+                s_limit_info.ante = global.trans.string_to_money(text);
         }
 
     }
@@ -1530,12 +1518,12 @@ void CScraper::create_bitmaps(void)
     entire_window_Cur = CreateCompatibleBitmap(hdcScreen, w, h);
 
     // r$regions
-    for (i=0; i<(int) global.tablemap.r$.GetSize(); i++)
+    for (i=0; i<(int) global.trans.map.r$.GetSize(); i++)
     {
-        w = global.tablemap.r$[i].right - global.tablemap.r$[i].left;
-        h = global.tablemap.r$[i].bottom - global.tablemap.r$[i].top;
-        global.tablemap.r$[i].last_bmp = CreateCompatibleBitmap(hdcScreen, w, h);
-        global.tablemap.r$[i].cur_bmp = CreateCompatibleBitmap(hdcScreen, w, h);
+        w = global.trans.map.r$[i].right - global.trans.map.r$[i].left;
+        h = global.trans.map.r$[i].bottom - global.trans.map.r$[i].top;
+        global.trans.map.r$[i].last_bmp = CreateCompatibleBitmap(hdcScreen, w, h);
+        global.trans.map.r$[i].cur_bmp = CreateCompatibleBitmap(hdcScreen, w, h);
     }
 
     DeleteDC(hdcScreen);
@@ -1554,10 +1542,10 @@ void CScraper::delete_bitmaps(void)
     DeleteObject(entire_window_Cur);
 
     // Common cards
-    for (i=0; i<(int) global.tablemap.r$.GetSize(); i++)
+    for (i=0; i<(int) global.trans.map.r$.GetSize(); i++)
     {
-        DeleteObject(global.tablemap.r$[i].last_bmp);
-        DeleteObject(global.tablemap.r$[i].cur_bmp);
+        DeleteObject(global.trans.map.r$[i].last_bmp);
+        DeleteObject(global.trans.map.r$[i].cur_bmp);
     }
 
 
@@ -1580,38 +1568,38 @@ double CScraper::do_chip_scrape(HDC hdc, int i)
     CString			resstring;
 
     // figure out if we are dealing with a pot or playerbet here
-    if (global.tablemap.r$[i].name.Mid(0,5)=="c0pot" && global.tablemap.r$[i].name.Mid(6,4)=="chip")
-        type = global.tablemap.r$[i].name.Mid(0,10);
+    if (global.trans.map.r$[i].name.Mid(0,5)=="c0pot" && global.trans.map.r$[i].name.Mid(6,4)=="chip")
+        type = global.trans.map.r$[i].name.Mid(0,10);
 
-    else if (global.tablemap.r$[i].name.Mid(0,1)=="p" && global.tablemap.r$[i].name.Mid(2,4)=="chip")
-        type = global.tablemap.r$[i].name.Mid(0,6);
+    else if (global.trans.map.r$[i].name.Mid(0,1)=="p" && global.trans.map.r$[i].name.Mid(2,4)=="chip")
+        type = global.trans.map.r$[i].name.Mid(0,6);
 
     else
         return 0;
 
     // find index of start, vert stride, and horiz stride regions
-    for (j=0; j<(int) global.tablemap.r$.GetSize(); j++)
+    for (j=0; j<(int) global.trans.map.r$.GetSize(); j++)
     {
-        if (global.tablemap.r$[j].name.Find(type + "00")!=-1)
+        if (global.trans.map.r$[j].name.Find(type + "00")!=-1)
         {
             istart = j;
         }
-        else if (global.tablemap.r$[j].name.Find(type + "0")!=-1)
+        else if (global.trans.map.r$[j].name.Find(type + "0")!=-1)
         {
             cstemp = type + "0";
-            index = global.tablemap.r$[j].name.Mid(cstemp.GetLength(), 1).GetString()[0] - '0';
+            index = global.trans.map.r$[j].name.Mid(cstemp.GetLength(), 1).GetString()[0] - '0';
             ivert[index] = j;
             vertcount++;
         }
-        else if (global.tablemap.r$[j].name.Find(type)!=-1)
+        else if (global.trans.map.r$[j].name.Find(type)!=-1)
         {
-            index = global.tablemap.r$[j].name.Mid(type.GetLength(), 1).GetString()[0] - '0';
+            index = global.trans.map.r$[j].name.Mid(type.GetLength(), 1).GetString()[0] - '0';
             ihoriz[index] = j;
             horizcount++;
         }
     }
 
-    hash_type = global.tablemap.r$[istart].transform.GetString()[1] - '0';
+    hash_type = global.trans.map.r$[istart].transform.GetString()[1] - '0';
 
     stop_loop = false;
     // loop through horizontal stacks
@@ -1624,10 +1612,10 @@ double CScraper::do_chip_scrape(HDC hdc, int i)
             // figure out left, right, top, bottom of next chip to be scraped
             if (vertcount==1)
             {
-                top = global.tablemap.r$[istart].top +
-                      chipindex*(global.tablemap.r$[ivert[1]].top - global.tablemap.r$[istart].top);
-                bottom = global.tablemap.r$[istart].bottom +
-                         chipindex*(global.tablemap.r$[ivert[1]].bottom - global.tablemap.r$[istart].bottom);
+                top = global.trans.map.r$[istart].top +
+                      chipindex*(global.trans.map.r$[ivert[1]].top - global.trans.map.r$[istart].top);
+                bottom = global.trans.map.r$[istart].bottom +
+                         chipindex*(global.trans.map.r$[ivert[1]].bottom - global.trans.map.r$[istart].bottom);
             }
             else
             {
@@ -1637,16 +1625,16 @@ double CScraper::do_chip_scrape(HDC hdc, int i)
                 }
                 else
                 {
-                    top = global.tablemap.r$[ivert[chipindex]].top;
-                    bottom = global.tablemap.r$[ivert[chipindex]].bottom;
+                    top = global.trans.map.r$[ivert[chipindex]].top;
+                    bottom = global.trans.map.r$[ivert[chipindex]].bottom;
                 }
             }
             if (horizcount==1)
             {
-                left = global.tablemap.r$[istart].left +
-                       stackindex*(global.tablemap.r$[ihoriz[1]].left - global.tablemap.r$[istart].left);
-                right = global.tablemap.r$[istart].right +
-                        stackindex*(global.tablemap.r$[ihoriz[1]].right - global.tablemap.r$[istart].right);
+                left = global.trans.map.r$[istart].left +
+                       stackindex*(global.trans.map.r$[ihoriz[1]].left - global.trans.map.r$[istart].left);
+                right = global.trans.map.r$[istart].right +
+                        stackindex*(global.trans.map.r$[ihoriz[1]].right - global.trans.map.r$[istart].right);
             }
             else
             {
@@ -1656,8 +1644,8 @@ double CScraper::do_chip_scrape(HDC hdc, int i)
                 }
                 else
                 {
-                    left = global.tablemap.r$[ihoriz[stackindex]].left;
-                    right = global.tablemap.r$[ihoriz[stackindex]].right;
+                    left = global.trans.map.r$[ihoriz[stackindex]].left;
+                    right = global.trans.map.r$[ihoriz[stackindex]].right;
                 }
             }
 
@@ -1669,13 +1657,13 @@ double CScraper::do_chip_scrape(HDC hdc, int i)
                 // calculate hash
                 if (hash_type>=1 && hash_type<=3)
                 {
-                    num_precs = (int) global.tablemap.p$.GetSize();
+                    num_precs = (int) global.trans.map.p$.GetSize();
                     pixcount = 0;
                     for (j=0; j<num_precs; j++)
                     {
-                        if (global.tablemap.p$[j].number == hash_type)
+                        if (global.trans.map.p$[j].number == hash_type)
                         {
-                            pix[pixcount++] = GetPixel(hdc, left + global.tablemap.p$[j].x, top + global.tablemap.p$[j].y);
+                            pix[pixcount++] = GetPixel(hdc, left + global.trans.map.p$[j].x, top + global.trans.map.p$[j].y);
                         }
                     }
 
@@ -1685,7 +1673,7 @@ double CScraper::do_chip_scrape(HDC hdc, int i)
                 }
 
                 // bsearch h$ for hash
-                uresult = (uint32_t *) bsearch(&hash, &global.tablemap.hashes, global.tablemap.h$.GetSize(),
+                uresult = (uint32_t *) bsearch(&hash, &global.trans.map.hashes, global.trans.map.h$.GetSize(),
                                                sizeof(uint32_t),
                                                (int (*)(const void*, const void*)) compare_hash);
 
@@ -1698,8 +1686,8 @@ double CScraper::do_chip_scrape(HDC hdc, int i)
                 // hash match found
                 else
                 {
-                    hashindex = ((long) uresult - (long) global.tablemap.hashes)/sizeof(uint32_t);
-                    resstring = global.tablemap.h$[hashindex].name;
+                    hashindex = ((long) uresult - (long) global.trans.map.hashes)/sizeof(uint32_t);
+                    resstring = global.trans.map.h$[hashindex].name;
                     resstring.Remove(',');
                     resstring.Remove('$');
                     result += atof(resstring.GetString());
@@ -1957,7 +1945,7 @@ bool CScraper::is_string_seated(CString s)
 bool CScraper::is_string_active(CString s)
 {
     // new method: active unless pXactive returns false/inactive/out/away
-    if (global.tablemap.activemethod == 2)
+    if (global.trans.map.activemethod == 2)
     {
         if (s.MakeLower().Find("false")!=-1 ||
                 s.MakeLower().Find("inactive")!=-1 ||

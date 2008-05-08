@@ -41,7 +41,7 @@ CGlobal::CGlobal(void)
 
     clear_r$indexes();
 
-    tablemap.num_chairs = 10;
+    trans.map.num_chairs = 10;
 
     attached_hwnd = NULL;
 
@@ -601,81 +601,81 @@ void CGlobal::clear_r$indexes(void)
     for (i=0; i<=4; i++)
     {
         // common card info
-        tablemap.r$c0cardfaceX_index[i] = -1;
-        tablemap.r$c0cardfaceXrank_index[i] = -1;
-        tablemap.r$c0cardfaceXsuit_index[i] = -1;
+        trans.map.r$c0cardfaceX_index[i] = -1;
+        trans.map.r$c0cardfaceXrank_index[i] = -1;
+        trans.map.r$c0cardfaceXsuit_index[i] = -1;
 
         // pots
         for (j=0; j<=9; j++)
             for (k=0; k<=9; k++)
-                tablemap.r$c0potXchipYZ_index[i][j][k] = -1;
+                trans.map.r$c0potXchipYZ_index[i][j][k] = -1;
     }
 
     for (i=0; i<=9; i++)
     {
         // player info
-        tablemap.r$pXcardfaceY_index[i][0] = -1;
-        tablemap.r$pXcardfaceY_index[i][1] = -1;
-        tablemap.r$pXcardfaceYrank_index[i][0] = -1;
-        tablemap.r$pXcardfaceYrank_index[i][1] = -1;
-        tablemap.r$pXcardfaceYsuit_index[i][0] = -1;
-        tablemap.r$pXcardfaceYsuit_index[i][1] = -1;
-        tablemap.r$uXcardfaceY_index[i][0] = -1;
-        tablemap.r$uXcardfaceY_index[i][1] = -1;
-        tablemap.r$pXcardback_index[i] = -1;
-        tablemap.r$pXseated_index[i] = -1;
-        tablemap.r$uXseated_index[i] = -1;
-        tablemap.r$pXactive_index[i] = -1;
-        tablemap.r$uXactive_index[i] = -1;
-        tablemap.r$pXdealer_index[i] = -1;
-        tablemap.r$pXname_index[i] = -1;
-        tablemap.r$uXname_index[i] = -1;
-        tablemap.r$pXbalance_index[i] = -1;
-        tablemap.r$uXbalance_index[i] = -1;
-        tablemap.r$pXbet_index[i] = -1;
+        trans.map.r$pXcardfaceY_index[i][0] = -1;
+        trans.map.r$pXcardfaceY_index[i][1] = -1;
+        trans.map.r$pXcardfaceYrank_index[i][0] = -1;
+        trans.map.r$pXcardfaceYrank_index[i][1] = -1;
+        trans.map.r$pXcardfaceYsuit_index[i][0] = -1;
+        trans.map.r$pXcardfaceYsuit_index[i][1] = -1;
+        trans.map.r$uXcardfaceY_index[i][0] = -1;
+        trans.map.r$uXcardfaceY_index[i][1] = -1;
+        trans.map.r$pXcardback_index[i] = -1;
+        trans.map.r$pXseated_index[i] = -1;
+        trans.map.r$uXseated_index[i] = -1;
+        trans.map.r$pXactive_index[i] = -1;
+        trans.map.r$uXactive_index[i] = -1;
+        trans.map.r$pXdealer_index[i] = -1;
+        trans.map.r$pXname_index[i] = -1;
+        trans.map.r$uXname_index[i] = -1;
+        trans.map.r$pXbalance_index[i] = -1;
+        trans.map.r$uXbalance_index[i] = -1;
+        trans.map.r$pXbet_index[i] = -1;
 
         for (j=0; j<=9; j++)
             for (k=0; k<=9; k++)
-                tablemap.r$pXchip_index[i][j][k] = -1;
+                trans.map.r$pXchip_index[i][j][k] = -1;
 
         // button info
-        tablemap.r$iXbutton_index[i] = -1;
-        tablemap.r$iXstate_index[i] = -1;
-        tablemap.r$iXlabel_index[i] = -1;
+        trans.map.r$iXbutton_index[i] = -1;
+        trans.map.r$iXstate_index[i] = -1;
+        trans.map.r$iXlabel_index[i] = -1;
 
         for (j=0; j<=9; j++)
-            tablemap.r$iXlabelY_index[i][j] = -1;
+            trans.map.r$iXlabelY_index[i][j] = -1;
 
-        tablemap.r$iXslider_index[i] = -1;
-        tablemap.r$iXhandle_index[i] = -1;
-        tablemap.r$iXedit_index[i] = -1;
-        tablemap.r$i86Xstate_index[i] = -1;
-        tablemap.r$i86Xbutton_index[i] = -1;
+        trans.map.r$iXslider_index[i] = -1;
+        trans.map.r$iXhandle_index[i] = -1;
+        trans.map.r$iXedit_index[i] = -1;
+        trans.map.r$i86Xstate_index[i] = -1;
+        trans.map.r$i86Xbutton_index[i] = -1;
 
         // limits
-        tablemap.r$c0limitsX_index[i] = -1;
-        tablemap.r$c0handnumberX_index[i] = -1;
+        trans.map.r$c0limitsX_index[i] = -1;
+        trans.map.r$c0handnumberX_index[i] = -1;
 
         // pots
-        tablemap.r$c0potX_index[i] = -1;
+        trans.map.r$c0potX_index[i] = -1;
     }
 
     // limits
-    tablemap.r$c0limits_index = -1;
-    tablemap.r$c0istournament_index = -1;
-    tablemap.r$c0sblind_index = -1;
-    tablemap.r$c0bblind_index = -1;
-    tablemap.r$c0bigbet_index = -1;
-    tablemap.r$c0ante_index = -1;
-    tablemap.r$c0handnumber_index = -1;
+    trans.map.r$c0limits_index = -1;
+    trans.map.r$c0istournament_index = -1;
+    trans.map.r$c0sblind_index = -1;
+    trans.map.r$c0bblind_index = -1;
+    trans.map.r$c0bigbet_index = -1;
+    trans.map.r$c0ante_index = -1;
+    trans.map.r$c0handnumber_index = -1;
 
     // player info
-    tablemap.r$uname_index = -1;
-    tablemap.r$ubalance_index = -1;
+    trans.map.r$uname_index = -1;
+    trans.map.r$ubalance_index = -1;
 
     // button info
-    tablemap.r$i86state_index = -1;
-    tablemap.r$i86button_index = -1;
+    trans.map.r$i86state_index = -1;
+    trans.map.r$i86button_index = -1;
 
     __SEH_LOGFATAL("CGlobal::clear_r$indexes :\n");
 }
@@ -692,267 +692,267 @@ void CGlobal::save_r$indexes(void)
 
     clear_r$indexes();
 
-    N = tablemap.r$.GetCount();
+    N = trans.map.r$.GetCount();
     for (i=0; i<N; i++)
     {
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Player info
         // Player cards, r$pXcardfaceYrank, r$pXcardfaceYsuit
-        if (tablemap.r$[i].name.Mid(0,1)=="p" &&
-                tablemap.r$[i].name.Mid(2,8)=="cardface" &&
-                tablemap.r$[i].name.Mid(11,4)=="rank")
+        if (trans.map.r$[i].name.Mid(0,1)=="p" &&
+                trans.map.r$[i].name.Mid(2,8)=="cardface" &&
+                trans.map.r$[i].name.Mid(11,4)=="rank")
         {
-            seatnum = tablemap.r$[i].name.GetString()[1] - '0';
-            cardnum = tablemap.r$[i].name.GetString()[10] - '0';
-            tablemap.r$pXcardfaceYrank_index[seatnum][cardnum] = i;
+            seatnum = trans.map.r$[i].name.GetString()[1] - '0';
+            cardnum = trans.map.r$[i].name.GetString()[10] - '0';
+            trans.map.r$pXcardfaceYrank_index[seatnum][cardnum] = i;
         }
-        else if (tablemap.r$[i].name.Mid(0,1)=="p" &&
-                 tablemap.r$[i].name.Mid(2,8)=="cardface" &&
-                 tablemap.r$[i].name.Mid(11,4)=="suit")
+        else if (trans.map.r$[i].name.Mid(0,1)=="p" &&
+                 trans.map.r$[i].name.Mid(2,8)=="cardface" &&
+                 trans.map.r$[i].name.Mid(11,4)=="suit")
         {
-            seatnum = tablemap.r$[i].name.GetString()[1] - '0';
-            cardnum = tablemap.r$[i].name.GetString()[10] - '0';
-            tablemap.r$pXcardfaceYsuit_index[seatnum][cardnum] = i;
+            seatnum = trans.map.r$[i].name.GetString()[1] - '0';
+            cardnum = trans.map.r$[i].name.GetString()[10] - '0';
+            trans.map.r$pXcardfaceYsuit_index[seatnum][cardnum] = i;
         }
 
         // Player cards, r$pXcardfaceY, r$uXcardfaceY
-        else if (tablemap.r$[i].name.Mid(0,1)=="p" && tablemap.r$[i].name.Mid(2,8)=="cardface")
+        else if (trans.map.r$[i].name.Mid(0,1)=="p" && trans.map.r$[i].name.Mid(2,8)=="cardface")
         {
-            seatnum = tablemap.r$[i].name.GetString()[1] - '0';
-            cardnum = tablemap.r$[i].name.GetString()[10] - '0';
-            tablemap.r$pXcardfaceY_index[seatnum][cardnum] = i;
+            seatnum = trans.map.r$[i].name.GetString()[1] - '0';
+            cardnum = trans.map.r$[i].name.GetString()[10] - '0';
+            trans.map.r$pXcardfaceY_index[seatnum][cardnum] = i;
         }
-        else if (tablemap.r$[i].name.Mid(0,1)=="u" && tablemap.r$[i].name.Mid(2,8)=="cardface")
+        else if (trans.map.r$[i].name.Mid(0,1)=="u" && trans.map.r$[i].name.Mid(2,8)=="cardface")
         {
-            seatnum = tablemap.r$[i].name.GetString()[1] - '0';
-            cardnum = tablemap.r$[i].name.GetString()[10] - '0';
-            tablemap.r$uXcardfaceY_index[seatnum][cardnum] = i;
+            seatnum = trans.map.r$[i].name.GetString()[1] - '0';
+            cardnum = trans.map.r$[i].name.GetString()[10] - '0';
+            trans.map.r$uXcardfaceY_index[seatnum][cardnum] = i;
         }
 
         // Player card backs, r$pXcardback
-        else if (tablemap.r$[i].name.Mid(0,1)=="p" && tablemap.r$[i].name.Mid(2,8)=="cardback")
+        else if (trans.map.r$[i].name.Mid(0,1)=="p" && trans.map.r$[i].name.Mid(2,8)=="cardback")
         {
-            seatnum = tablemap.r$[i].name.GetString()[1] - '0';
-            tablemap.r$pXcardback_index[seatnum] = i;
+            seatnum = trans.map.r$[i].name.GetString()[1] - '0';
+            trans.map.r$pXcardback_index[seatnum] = i;
         }
 
         // Seated, r$pXseated, r$uXseated
-        else if (tablemap.r$[i].name.Mid(0,1)=="p" && tablemap.r$[i].name.Mid(2,6)=="seated")
+        else if (trans.map.r$[i].name.Mid(0,1)=="p" && trans.map.r$[i].name.Mid(2,6)=="seated")
         {
-            seatnum = tablemap.r$[i].name.GetString()[1] - '0';
-            tablemap.r$pXseated_index[seatnum] = i;
+            seatnum = trans.map.r$[i].name.GetString()[1] - '0';
+            trans.map.r$pXseated_index[seatnum] = i;
         }
-        else if (tablemap.r$[i].name.Mid(0,1)=="u" && tablemap.r$[i].name.Mid(2,6)=="seated")
+        else if (trans.map.r$[i].name.Mid(0,1)=="u" && trans.map.r$[i].name.Mid(2,6)=="seated")
         {
-            seatnum = tablemap.r$[i].name.GetString()[1] - '0';
-            tablemap.r$uXseated_index[seatnum] = i;
+            seatnum = trans.map.r$[i].name.GetString()[1] - '0';
+            trans.map.r$uXseated_index[seatnum] = i;
         }
 
         // Active, r$pXactive, r$uXactive
-        else if (tablemap.r$[i].name.Mid(0,1)=="p" && tablemap.r$[i].name.Mid(2,6)=="active")
+        else if (trans.map.r$[i].name.Mid(0,1)=="p" && trans.map.r$[i].name.Mid(2,6)=="active")
         {
-            seatnum = tablemap.r$[i].name.GetString()[1] - '0';
-            tablemap.r$pXactive_index[seatnum] = i;
+            seatnum = trans.map.r$[i].name.GetString()[1] - '0';
+            trans.map.r$pXactive_index[seatnum] = i;
         }
-        else if (tablemap.r$[i].name.Mid(0,1)=="u" && tablemap.r$[i].name.Mid(2,6)=="active")
+        else if (trans.map.r$[i].name.Mid(0,1)=="u" && trans.map.r$[i].name.Mid(2,6)=="active")
         {
-            seatnum = tablemap.r$[i].name.GetString()[1] - '0';
-            tablemap.r$uXactive_index[seatnum] = i;
+            seatnum = trans.map.r$[i].name.GetString()[1] - '0';
+            trans.map.r$uXactive_index[seatnum] = i;
         }
 
         // Dealer button, r$pXdealer
-        else if (tablemap.r$[i].name.Mid(0,1)=="p" && tablemap.r$[i].name.Mid(2,6)=="dealer")
+        else if (trans.map.r$[i].name.Mid(0,1)=="p" && trans.map.r$[i].name.Mid(2,6)=="dealer")
         {
-            seatnum = tablemap.r$[i].name.GetString()[1] - '0';
-            tablemap.r$pXdealer_index[seatnum] = i;
+            seatnum = trans.map.r$[i].name.GetString()[1] - '0';
+            trans.map.r$pXdealer_index[seatnum] = i;
         }
 
         // Player name r$pXname, r$uXname, r$uname
-        else if (tablemap.r$[i].name.Mid(0,1)=="p" && tablemap.r$[i].name.Mid(2,4)=="name")
+        else if (trans.map.r$[i].name.Mid(0,1)=="p" && trans.map.r$[i].name.Mid(2,4)=="name")
         {
-            seatnum = tablemap.r$[i].name.GetString()[1] - '0';
-            tablemap.r$pXname_index[seatnum] = i;
+            seatnum = trans.map.r$[i].name.GetString()[1] - '0';
+            trans.map.r$pXname_index[seatnum] = i;
         }
-        else if (tablemap.r$[i].name.Mid(0,1)=="u" && tablemap.r$[i].name.Mid(2,4)=="name")
+        else if (trans.map.r$[i].name.Mid(0,1)=="u" && trans.map.r$[i].name.Mid(2,4)=="name")
         {
-            seatnum = tablemap.r$[i].name.GetString()[1] - '0';
-            tablemap.r$uXname_index[seatnum] = i;
+            seatnum = trans.map.r$[i].name.GetString()[1] - '0';
+            trans.map.r$uXname_index[seatnum] = i;
         }
-        else if (tablemap.r$[i].name=="uname")
+        else if (trans.map.r$[i].name=="uname")
         {
-            tablemap.r$uname_index = i;
+            trans.map.r$uname_index = i;
         }
 
         // Player balance, r$pXbalance, r$uXbalance, r$ubalance
-        else if (tablemap.r$[i].name.Mid(0,1)=="p" && tablemap.r$[i].name.Mid(2,7)=="balance")
+        else if (trans.map.r$[i].name.Mid(0,1)=="p" && trans.map.r$[i].name.Mid(2,7)=="balance")
         {
-            seatnum = tablemap.r$[i].name.GetString()[1] - '0';
-            tablemap.r$pXbalance_index[seatnum] = i;
+            seatnum = trans.map.r$[i].name.GetString()[1] - '0';
+            trans.map.r$pXbalance_index[seatnum] = i;
         }
-        else if (tablemap.r$[i].name.Mid(0,1)=="u" && tablemap.r$[i].name.Mid(2,7)=="balance")
+        else if (trans.map.r$[i].name.Mid(0,1)=="u" && trans.map.r$[i].name.Mid(2,7)=="balance")
         {
-            seatnum = tablemap.r$[i].name.GetString()[1] - '0';
-            tablemap.r$uXbalance_index[seatnum] = i;
+            seatnum = trans.map.r$[i].name.GetString()[1] - '0';
+            trans.map.r$uXbalance_index[seatnum] = i;
         }
-        else if (tablemap.r$[i].name=="ubalance")
+        else if (trans.map.r$[i].name=="ubalance")
         {
-            tablemap.r$ubalance_index = i;
+            trans.map.r$ubalance_index = i;
         }
 
         // Player bet, r$pXbet, r$pXchipYZ
-        else if (tablemap.r$[i].name.Mid(0,1)=="p" && tablemap.r$[i].name.Mid(2,3)=="bet")
+        else if (trans.map.r$[i].name.Mid(0,1)=="p" && trans.map.r$[i].name.Mid(2,3)=="bet")
         {
-            seatnum = tablemap.r$[i].name.GetString()[1] - '0';
-            tablemap.r$pXbet_index[seatnum] = i;
+            seatnum = trans.map.r$[i].name.GetString()[1] - '0';
+            trans.map.r$pXbet_index[seatnum] = i;
         }
-        else if (tablemap.r$[i].name.Mid(0,1)=="p" && tablemap.r$[i].name.Mid(2,4)=="chip")
+        else if (trans.map.r$[i].name.Mid(0,1)=="p" && trans.map.r$[i].name.Mid(2,4)=="chip")
         {
-            seatnum = tablemap.r$[i].name.GetString()[1] - '0';
-            vertstride = tablemap.r$[i].name.GetString()[6] - '0';
-            horizstride = tablemap.r$[i].name.GetString()[7] - '0';
-            tablemap.r$pXchip_index[seatnum][vertstride][horizstride] = i;
+            seatnum = trans.map.r$[i].name.GetString()[1] - '0';
+            vertstride = trans.map.r$[i].name.GetString()[6] - '0';
+            horizstride = trans.map.r$[i].name.GetString()[7] - '0';
+            trans.map.r$pXchip_index[seatnum][vertstride][horizstride] = i;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Common card info
         // Common cards, r$c0cardfaceXrank, r$c0cardfaceXsuit
-        else if (tablemap.r$[i].name.Mid(0,10)=="c0cardface" && tablemap.r$[i].name.Mid(11,4)=="rank")
+        else if (trans.map.r$[i].name.Mid(0,10)=="c0cardface" && trans.map.r$[i].name.Mid(11,4)=="rank")
         {
-            cardnum = tablemap.r$[i].name.GetString()[10] - '0';
-            tablemap.r$c0cardfaceXrank_index[cardnum] = i;
+            cardnum = trans.map.r$[i].name.GetString()[10] - '0';
+            trans.map.r$c0cardfaceXrank_index[cardnum] = i;
         }
-        else if (tablemap.r$[i].name.Mid(0,10)=="c0cardface" && tablemap.r$[i].name.Mid(11,4)=="suit")
+        else if (trans.map.r$[i].name.Mid(0,10)=="c0cardface" && trans.map.r$[i].name.Mid(11,4)=="suit")
         {
-            cardnum = tablemap.r$[i].name.GetString()[10] - '0';
-            tablemap.r$c0cardfaceXsuit_index[cardnum] = i;
+            cardnum = trans.map.r$[i].name.GetString()[10] - '0';
+            trans.map.r$c0cardfaceXsuit_index[cardnum] = i;
         }
         // Common cards, r$c0cardfaceX
-        else if (tablemap.r$[i].name.Mid(0,10)=="c0cardface")
+        else if (trans.map.r$[i].name.Mid(0,10)=="c0cardface")
         {
-            cardnum = tablemap.r$[i].name.GetString()[10] - '0';
-            tablemap.r$c0cardfaceX_index[cardnum] = i;
+            cardnum = trans.map.r$[i].name.GetString()[10] - '0';
+            trans.map.r$c0cardfaceX_index[cardnum] = i;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Button info
         // r$iXbutton, r$iXstate, r$iXlabel, r$iXslider, r$iXhandle, r$iXedit, r$i86Xstate, r$i86Xbutton,
         // r$i86state, r$i86button
-        else if (tablemap.r$[i].name.Mid(0,1)=="i" && tablemap.r$[i].name.Mid(2,6)=="button")
+        else if (trans.map.r$[i].name.Mid(0,1)=="i" && trans.map.r$[i].name.Mid(2,6)=="button")
         {
-            buttonnum = tablemap.r$[i].name.GetString()[1] - '0';
-            tablemap.r$iXbutton_index[buttonnum] = i;
+            buttonnum = trans.map.r$[i].name.GetString()[1] - '0';
+            trans.map.r$iXbutton_index[buttonnum] = i;
         }
-        else if (tablemap.r$[i].name.Mid(0,1)=="i" && tablemap.r$[i].name.Mid(2,5)=="state")
+        else if (trans.map.r$[i].name.Mid(0,1)=="i" && trans.map.r$[i].name.Mid(2,5)=="state")
         {
-            buttonnum = tablemap.r$[i].name.GetString()[1] - '0';
-            tablemap.r$iXstate_index[buttonnum] = i;
+            buttonnum = trans.map.r$[i].name.GetString()[1] - '0';
+            trans.map.r$iXstate_index[buttonnum] = i;
         }
-        else if (tablemap.r$[i].name.Mid(0,1)=="i" && tablemap.r$[i].name.Mid(2,5)=="label" && tablemap.r$[i].name.GetLength()==7)
+        else if (trans.map.r$[i].name.Mid(0,1)=="i" && trans.map.r$[i].name.Mid(2,5)=="label" && trans.map.r$[i].name.GetLength()==7)
         {
-            buttonnum = tablemap.r$[i].name.GetString()[1] - '0';
-            tablemap.r$iXlabel_index[buttonnum] = i;
+            buttonnum = trans.map.r$[i].name.GetString()[1] - '0';
+            trans.map.r$iXlabel_index[buttonnum] = i;
         }
-        else if (tablemap.r$[i].name.Mid(0,1)=="i" && tablemap.r$[i].name.Mid(2,5)=="label" && tablemap.r$[i].name.GetLength()==8)
+        else if (trans.map.r$[i].name.Mid(0,1)=="i" && trans.map.r$[i].name.Mid(2,5)=="label" && trans.map.r$[i].name.GetLength()==8)
         {
-            buttonnum = tablemap.r$[i].name.GetString()[1] - '0';
-            indexnum = tablemap.r$[i].name.GetString()[7] - '0';
-            tablemap.r$iXlabelY_index[buttonnum][indexnum] = i;
+            buttonnum = trans.map.r$[i].name.GetString()[1] - '0';
+            indexnum = trans.map.r$[i].name.GetString()[7] - '0';
+            trans.map.r$iXlabelY_index[buttonnum][indexnum] = i;
         }
-        else if (tablemap.r$[i].name.Mid(0,1)=="i" && tablemap.r$[i].name.Mid(2,6)=="slider")
+        else if (trans.map.r$[i].name.Mid(0,1)=="i" && trans.map.r$[i].name.Mid(2,6)=="slider")
         {
-            buttonnum = tablemap.r$[i].name.GetString()[1] - '0';
-            tablemap.r$iXslider_index[buttonnum] = i;
+            buttonnum = trans.map.r$[i].name.GetString()[1] - '0';
+            trans.map.r$iXslider_index[buttonnum] = i;
         }
-        else if (tablemap.r$[i].name.Mid(0,1)=="i" && tablemap.r$[i].name.Mid(2,6)=="handle")
+        else if (trans.map.r$[i].name.Mid(0,1)=="i" && trans.map.r$[i].name.Mid(2,6)=="handle")
         {
-            buttonnum = tablemap.r$[i].name.GetString()[1] - '0';
-            tablemap.r$iXhandle_index[buttonnum] = i;
+            buttonnum = trans.map.r$[i].name.GetString()[1] - '0';
+            trans.map.r$iXhandle_index[buttonnum] = i;
         }
-        else if (tablemap.r$[i].name.Mid(0,1)=="i" && tablemap.r$[i].name.Mid(2,4)=="edit")
+        else if (trans.map.r$[i].name.Mid(0,1)=="i" && trans.map.r$[i].name.Mid(2,4)=="edit")
         {
-            buttonnum = tablemap.r$[i].name.GetString()[1] - '0';
-            tablemap.r$iXedit_index[buttonnum] = i;
+            buttonnum = trans.map.r$[i].name.GetString()[1] - '0';
+            trans.map.r$iXedit_index[buttonnum] = i;
         }
-        else if (tablemap.r$[i].name=="r$i86button")
+        else if (trans.map.r$[i].name=="r$i86button")
         {
-            tablemap.r$i86button_index = i;
+            trans.map.r$i86button_index = i;
         }
-        else if (tablemap.r$[i].name.Mid(0,3)=="i86" && tablemap.r$[i].name.Mid(4,6)=="button")
+        else if (trans.map.r$[i].name.Mid(0,3)=="i86" && trans.map.r$[i].name.Mid(4,6)=="button")
         {
-            buttonnum = tablemap.r$[i].name.GetString()[3] - '0';
-            tablemap.r$i86Xbutton_index[buttonnum] = i;
+            buttonnum = trans.map.r$[i].name.GetString()[3] - '0';
+            trans.map.r$i86Xbutton_index[buttonnum] = i;
         }
-        else if (tablemap.r$[i].name=="r$i86state")
+        else if (trans.map.r$[i].name=="r$i86state")
         {
-            tablemap.r$i86state_index = i;
+            trans.map.r$i86state_index = i;
         }
-        else if (tablemap.r$[i].name.Mid(0,3)=="i86" && tablemap.r$[i].name.Mid(4,5)=="state")
+        else if (trans.map.r$[i].name.Mid(0,3)=="i86" && trans.map.r$[i].name.Mid(4,5)=="state")
         {
-            buttonnum = tablemap.r$[i].name.GetString()[3] - '0';
-            tablemap.r$i86Xstate_index[buttonnum] = i;
+            buttonnum = trans.map.r$[i].name.GetString()[3] - '0';
+            trans.map.r$i86Xstate_index[buttonnum] = i;
         }
 
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Pots
         // Pots, r$c0potX, r$c0potXchipYZ
-        else if (tablemap.r$[i].name.Mid(0,5)=="c0pot" && tablemap.r$[i].name.Find("chip")==-1)
+        else if (trans.map.r$[i].name.Mid(0,5)=="c0pot" && trans.map.r$[i].name.Find("chip")==-1)
         {
-            potnum = tablemap.r$[i].name.GetString()[5] - '0';
-            tablemap.r$c0potX_index[potnum] = i;
+            potnum = trans.map.r$[i].name.GetString()[5] - '0';
+            trans.map.r$c0potX_index[potnum] = i;
         }
-        else if (tablemap.r$[i].name.Mid(0,5)=="c0pot" && tablemap.r$[i].name.Mid(6,4)=="chip")
+        else if (trans.map.r$[i].name.Mid(0,5)=="c0pot" && trans.map.r$[i].name.Mid(6,4)=="chip")
         {
-            potnum = tablemap.r$[i].name.GetString()[5] - '0';
-            vertstride = tablemap.r$[i].name.GetString()[10] - '0';
-            horizstride = tablemap.r$[i].name.GetString()[11] - '0';
-            tablemap.r$c0potXchipYZ_index[potnum][vertstride][horizstride] = i;
+            potnum = trans.map.r$[i].name.GetString()[5] - '0';
+            vertstride = trans.map.r$[i].name.GetString()[10] - '0';
+            horizstride = trans.map.r$[i].name.GetString()[11] - '0';
+            trans.map.r$c0potXchipYZ_index[potnum][vertstride][horizstride] = i;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Limits
         // r$c0limits, r$c0limitsX
-        else if (tablemap.r$[i].name=="c0limits")
+        else if (trans.map.r$[i].name=="c0limits")
         {
-            tablemap.r$c0limits_index = i;
+            trans.map.r$c0limits_index = i;
         }
-        else if (tablemap.r$[i].name.Mid(0,8)=="c0limits")
+        else if (trans.map.r$[i].name.Mid(0,8)=="c0limits")
         {
-            limitnum = tablemap.r$[i].name.GetString()[8] - '0';
-            tablemap.r$c0limitsX_index[limitnum] = i;
+            limitnum = trans.map.r$[i].name.GetString()[8] - '0';
+            trans.map.r$c0limitsX_index[limitnum] = i;
         }
 
         // r$c0istournament
-        else if (tablemap.r$[i].name == "c0istournament")
+        else if (trans.map.r$[i].name == "c0istournament")
         {
-            tablemap.r$c0istournament_index = i;
+            trans.map.r$c0istournament_index = i;
         }
 
         // r$c0sblind, r$c0bblind, r$c0bigbet, r$c0ante, r$c0handnumberX, r$c0handnumber
-        else if (tablemap.r$[i].name == "c0sblind")
+        else if (trans.map.r$[i].name == "c0sblind")
         {
-            tablemap.r$c0sblind_index = i;
+            trans.map.r$c0sblind_index = i;
         }
-        else if (tablemap.r$[i].name == "c0bblind")
+        else if (trans.map.r$[i].name == "c0bblind")
         {
-            tablemap.r$c0bblind_index = i;
+            trans.map.r$c0bblind_index = i;
         }
-        else if (tablemap.r$[i].name == "c0bigbet")
+        else if (trans.map.r$[i].name == "c0bigbet")
         {
-            tablemap.r$c0bigbet_index = i;
+            trans.map.r$c0bigbet_index = i;
         }
-        else if (tablemap.r$[i].name == "c0ante")
+        else if (trans.map.r$[i].name == "c0ante")
         {
-            tablemap.r$c0ante_index = i;
+            trans.map.r$c0ante_index = i;
         }
-        else if (tablemap.r$[i].name=="c0handnumber")
+        else if (trans.map.r$[i].name=="c0handnumber")
         {
-            tablemap.r$c0handnumber_index = i;
+            trans.map.r$c0handnumber_index = i;
         }
-        else if (tablemap.r$[i].name.Mid(0,12)=="c0handnumber")
+        else if (trans.map.r$[i].name.Mid(0,12)=="c0handnumber")
         {
-            handnum = tablemap.r$[i].name.GetString()[12] - '0';
-            tablemap.r$c0handnumberX_index[handnum] = i;
+            handnum = trans.map.r$[i].name.GetString()[12] - '0';
+            trans.map.r$c0handnumberX_index[handnum] = i;
         }
 
     }
@@ -972,31 +972,31 @@ void CGlobal::save_s$indexes(void)
 
     // Clear 'em first
     for (i=0; i<=9; i++)
-        tablemap.s$ttlimitsX_index[i] = -1;
+        trans.map.s$ttlimitsX_index[i] = -1;
 
-    tablemap.s$ttlimits_index = -1;
+    trans.map.s$ttlimits_index = -1;
 
-    for (i=0; i<(int) tablemap.s$.GetSize(); i++)
+    for (i=0; i<(int) trans.map.s$.GetSize(); i++)
     {
 
         // s$ttlimits, s$ttlimitsX
-        if (tablemap.s$[i].name=="ttlimits")
+        if (trans.map.s$[i].name=="ttlimits")
         {
-            tablemap.s$ttlimits_index = i;
+            trans.map.s$ttlimits_index = i;
         }
-        else if (tablemap.s$[i].name.Mid(0,8)=="ttlimits")
+        else if (trans.map.s$[i].name.Mid(0,8)=="ttlimits")
         {
-            num = tablemap.s$[i].name.GetString()[8] - '0';
-            tablemap.s$ttlimitsX_index[num] = i;
+            num = trans.map.s$[i].name.GetString()[8] - '0';
+            trans.map.s$ttlimitsX_index[num] = i;
         }
-        else if (tablemap.s$[i].name=="c0limits")
+        else if (trans.map.s$[i].name=="c0limits")
         {
-            tablemap.s$c0limits_index = i;
+            trans.map.s$c0limits_index = i;
         }
-        else if (tablemap.s$[i].name.Mid(0,8)=="c0limits")
+        else if (trans.map.s$[i].name.Mid(0,8)=="c0limits")
         {
-            num = tablemap.s$[i].name.GetString()[8] - '0';
-            tablemap.s$c0limitsX_index[num] = i;
+            num = trans.map.s$[i].name.GetString()[8] - '0';
+            trans.map.s$c0limitsX_index[num] = i;
         }
     }
 
@@ -1012,50 +1012,50 @@ void CGlobal::save_s$strings(void)
     int		i;
 
     // Clear 'em first
-    tablemap.num_chairs = 0;
-    tablemap.swagtextmethod = 0;
-    tablemap.potmethod = 0;
-    tablemap.activemethod = 0;
-    tablemap.sitename = "";
-    tablemap.network = "";
-    tablemap.chairconfig = "";
+    trans.map.num_chairs = 0;
+    trans.map.swagtextmethod = 0;
+    trans.map.potmethod = 0;
+    trans.map.activemethod = 0;
+    trans.map.sitename = "";
+    trans.map.network = "";
+    trans.map.chairconfig = "";
     for (i=0; i<=3; i++)
-        tablemap.ttype[i] = "";
+        trans.map.ttype[i] = "";
 
-    for (i=0; i<(int) tablemap.s$.GetSize(); i++)
+    for (i=0; i<(int) trans.map.s$.GetSize(); i++)
     {
-        if (tablemap.s$[i].name == "nchairs")
-            tablemap.num_chairs = strtoul(tablemap.s$[i].text.GetString(), NULL, 10);
+        if (trans.map.s$[i].name == "nchairs")
+            trans.map.num_chairs = strtoul(trans.map.s$[i].text.GetString(), NULL, 10);
 
-        if (tablemap.s$[i].name == "swagtextmethod")
-            tablemap.swagtextmethod = strtoul(tablemap.s$[i].text.GetString(), NULL, 10);
+        if (trans.map.s$[i].name == "swagtextmethod")
+            trans.map.swagtextmethod = strtoul(trans.map.s$[i].text.GetString(), NULL, 10);
 
-        if (tablemap.s$[i].name == "potmethod")
-            tablemap.potmethod = strtoul(tablemap.s$[i].text.GetString(), NULL, 10);
+        if (trans.map.s$[i].name == "potmethod")
+            trans.map.potmethod = strtoul(trans.map.s$[i].text.GetString(), NULL, 10);
 
-        if (tablemap.s$[i].name == "activemethod")
-            tablemap.activemethod = strtoul(tablemap.s$[i].text.GetString(), NULL, 10);
+        if (trans.map.s$[i].name == "activemethod")
+            trans.map.activemethod = strtoul(trans.map.s$[i].text.GetString(), NULL, 10);
 
-        if (tablemap.s$[i].name == "sitename")
-            tablemap.sitename = tablemap.s$[i].text;
+        if (trans.map.s$[i].name == "sitename")
+            trans.map.sitename = trans.map.s$[i].text;
 
-        if (tablemap.s$[i].name == "network")
-            tablemap.network = tablemap.s$[i].text;
+        if (trans.map.s$[i].name == "network")
+            trans.map.network = trans.map.s$[i].text;
 
-        if (tablemap.s$[i].name == "chairconfig")
-            tablemap.chairconfig = tablemap.s$[i].text;
+        if (trans.map.s$[i].name == "chairconfig")
+            trans.map.chairconfig = trans.map.s$[i].text;
 
-        if (tablemap.s$[i].name == "t0type")
-            tablemap.ttype[0] = tablemap.s$[i].text;
+        if (trans.map.s$[i].name == "t0type")
+            trans.map.ttype[0] = trans.map.s$[i].text;
 
-        if (tablemap.s$[i].name == "t1type")
-            tablemap.ttype[1] = tablemap.s$[i].text;
+        if (trans.map.s$[i].name == "t1type")
+            trans.map.ttype[1] = trans.map.s$[i].text;
 
-        if (tablemap.s$[i].name == "t2type")
-            tablemap.ttype[2] = tablemap.s$[i].text;
+        if (trans.map.s$[i].name == "t2type")
+            trans.map.ttype[2] = trans.map.s$[i].text;
 
-        if (tablemap.s$[i].name == "t3type")
-            tablemap.ttype[3] = tablemap.s$[i].text;
+        if (trans.map.s$[i].name == "t3type")
+            trans.map.ttype[3] = trans.map.s$[i].text;
 
     }
 
@@ -1151,7 +1151,7 @@ void CGlobal::create_replay_frame(void)
     fprintf(fp, "<th>balance</th>\n");
     fprintf(fp, "<th>name</th>\n");
     fprintf(fp, "</tr>\n");
-    for (i=0; i<global.tablemap.num_chairs; i++)
+    for (i=0; i<global.trans.map.num_chairs; i++)
     {
 
         fprintf(fp, "<tr>\n");

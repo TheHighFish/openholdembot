@@ -11,7 +11,8 @@
 
 IMPLEMENT_DYNAMIC(CDlgSelectTable, CDialog)
 
-CDlgSelectTable::CDlgSelectTable(CWnd* pParent /*=NULL*/) : CDialog(CDlgSelectTable::IDD, pParent) {
+CDlgSelectTable::CDlgSelectTable(CWnd* pParent /*=NULL*/) : CDialog(CDlgSelectTable::IDD, pParent) 
+{
     __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
 
     __SEH_HEADER
@@ -19,13 +20,15 @@ CDlgSelectTable::CDlgSelectTable(CWnd* pParent /*=NULL*/) : CDialog(CDlgSelectTa
     __SEH_LOGFATAL("CDlgSelectTable::Constructor :\n");
 }
 
-CDlgSelectTable::~CDlgSelectTable() {
+CDlgSelectTable::~CDlgSelectTable() 
+{
     __SEH_HEADER
 
     __SEH_LOGFATAL("CDlgSelectTable::Destructor :\n");
 }
 
-void CDlgSelectTable::DoDataExchange(CDataExchange* pDX) {
+void CDlgSelectTable::DoDataExchange(CDataExchange* pDX) 
+{
     __SEH_HEADER
 
     CDialog::DoDataExchange(pDX);
@@ -46,7 +49,8 @@ END_MESSAGE_MAP()
 
 // CDlgSelectTable message handlers
 
-void CDlgSelectTable::OnBnClickedOk() {
+void CDlgSelectTable::OnBnClickedOk() 
+{
     __SEH_HEADER
 
     selected_item = m_HSLB.GetCurSel();
@@ -55,19 +59,24 @@ void CDlgSelectTable::OnBnClickedOk() {
     __SEH_LOGFATAL("CDlgSelectTable::OnBnClickedOk :\n");
 }
 
-BOOL CDlgSelectTable::OnInitDialog() {
+BOOL CDlgSelectTable::OnInitDialog() 
+{
     __SEH_HEADER
 
-    int		i, N;
-    CDialog::OnInitDialog();
+    int			i, N;
+	CString		t;
+
+	CDialog::OnInitDialog();
 
     selected_item = -1;
 
     // Populate listbox
     N = (int) tlist.GetSize();
-    for (i=0; i<N; i++) {
-        m_HSLB.AddString(tlist[i].title);
-    }
+    for (i=0; i<N; i++)
+	{
+		t = tlist[i].title + " {" + tlist[i].path + "}";
+        m_HSLB.AddString(t);
+	}
 
     m_OK.EnableWindow(false);
 
@@ -78,7 +87,8 @@ BOOL CDlgSelectTable::OnInitDialog() {
 
 }
 
-void CDlgSelectTable::OnLbnDblclkListSelectTable() {
+void CDlgSelectTable::OnLbnDblclkListSelectTable() 
+{
     __SEH_HEADER
 
 	OnBnClickedOk();
@@ -87,7 +97,8 @@ void CDlgSelectTable::OnLbnDblclkListSelectTable() {
 
 }
 
-void CDlgSelectTable::OnLbnSelchangeListSelectTable() {
+void CDlgSelectTable::OnLbnSelchangeListSelectTable() 
+{
     __SEH_HEADER
 
     m_OK.EnableWindow(true);

@@ -58,10 +58,10 @@ void Autoplayer::do_Chat(void)
     HWND			hwnd_active = GetActiveWindow();
     POINT			cur_pos;
     GetCursorPos(&cur_pos);
-    pt = randomize_click_location(global.tablemap.r$[global.tablemap.r$chatbox].left,
-                                  global.tablemap.r$[global.tablemap.r$chatbox].top,
-                                  global.tablemap.r$[global.tablemap.r$chatbox].right,
-                                  global.tablemap.r$[global.tablemap.r$chatbox].bottom);
+    pt = randomize_click_location(global.trans.map.r$[global.trans.map.r$chatbox].left,
+                                  global.trans.map.r$[global.trans.map.r$chatbox].top,
+                                  global.trans.map.r$[global.trans.map.r$chatbox].right,
+                                  global.trans.map.r$[global.trans.map.r$chatbox].bottom);
     // Translate click point to screen/mouse coords
     ClientToScreen(global.attached_hwnd, &pt);
     fx = pt.x*(65535.0f/fScreenWidth);
@@ -231,7 +231,7 @@ void Autoplayer::do_swag(void) {
     ::GetCursorPos(&cur_pos);
 
     // swag buttons are hard coded as #3 now.  Can they be different?
-    if (scraper.get_button_state(3) && global.tablemap.r$iXedit_index[3]!=-1)
+    if (scraper.get_button_state(3) && global.trans.map.r$iXedit_index[3]!=-1)
     {
 
         // If we get a lock, do the action
@@ -244,9 +244,9 @@ void Autoplayer::do_swag(void) {
                 input_count = 0;
 
                 // Double click in edit box
-                r$index = global.tablemap.r$iXedit_index[3];
-                pt = randomize_click_location(global.tablemap.r$[r$index].left, global.tablemap.r$[r$index].top,
-                                              global.tablemap.r$[r$index].right, global.tablemap.r$[r$index].bottom);
+                r$index = global.trans.map.r$iXedit_index[3];
+                pt = randomize_click_location(global.trans.map.r$[r$index].left, global.trans.map.r$[r$index].top,
+                                              global.trans.map.r$[r$index].right, global.trans.map.r$[r$index].bottom);
                 ClientToScreen(global.attached_hwnd, &pt);
                 fx = pt.x*(65535.0f/fScreenWidth);
                 fy = pt.y*(65535.0f/fScreenHeight);
@@ -281,9 +281,9 @@ void Autoplayer::do_swag(void) {
                 input_count = 0;
 
                 // left click, drag to left, un-left click
-                r$index = global.tablemap.r$iXedit_index[3];
-                pt.x = global.tablemap.r$[r$index].right;
-                pt.y = global.tablemap.r$[r$index].top + (global.tablemap.r$[r$index].bottom-global.tablemap.r$[r$index].top)/2;
+                r$index = global.trans.map.r$iXedit_index[3];
+                pt.x = global.trans.map.r$[r$index].right;
+                pt.y = global.trans.map.r$[r$index].top + (global.trans.map.r$[r$index].bottom-global.trans.map.r$[r$index].top)/2;
                 ClientToScreen(global.attached_hwnd, &pt);
                 fx = pt.x*(65535.0f/fScreenWidth);
                 fy = pt.y*(65535.0f/fScreenHeight);
@@ -295,8 +295,8 @@ void Autoplayer::do_swag(void) {
                 input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
                 input_count++;
 
-                pt.x = global.tablemap.r$[r$index].left;
-                pt.y = global.tablemap.r$[r$index].top + (global.tablemap.r$[r$index].bottom-global.tablemap.r$[r$index].top)/2;
+                pt.x = global.trans.map.r$[r$index].left;
+                pt.y = global.trans.map.r$[r$index].top + (global.trans.map.r$[r$index].bottom-global.trans.map.r$[r$index].top)/2;
                 ClientToScreen(global.attached_hwnd, &pt);
                 fx = pt.x*(65535.0f/fScreenWidth);
                 fy = pt.y*(65535.0f/fScreenHeight);
@@ -401,9 +401,9 @@ void Autoplayer::do_swag(void) {
             input_count = 0;
 
             // Click in edit box
-            r$index = global.tablemap.r$iXedit_index[3];
-            pt = randomize_click_location(global.tablemap.r$[r$index].left, global.tablemap.r$[r$index].top,
-                                          global.tablemap.r$[r$index].right, global.tablemap.r$[r$index].bottom);
+            r$index = global.trans.map.r$iXedit_index[3];
+            pt = randomize_click_location(global.trans.map.r$[r$index].left, global.trans.map.r$[r$index].top,
+                                          global.trans.map.r$[r$index].right, global.trans.map.r$[r$index].bottom);
             ClientToScreen(global.attached_hwnd, &pt);
             fx = pt.x*(65535.0f/fScreenWidth);
             fy = pt.y*(65535.0f/fScreenHeight);
@@ -489,24 +489,24 @@ void Autoplayer::do_swag(void) {
             }
 
             else if (global.preferences.bet_confirmation_method == BETCONF_CLICKBET &&
-                     (rais_but!=-1 || global.tablemap.r$iXbutton_index[3]!=-1) )
+                     (rais_but!=-1 || global.trans.map.r$iXbutton_index[3]!=-1) )
             {
                 input_count = 0;
 
                 // Click on bet/raise button
                 // use i3button region it it exists, otherwise use the bet/raise button region
-                if (global.tablemap.r$iXbutton_index[3]!=-1)
+                if (global.trans.map.r$iXbutton_index[3]!=-1)
                 {
-                    pt = randomize_click_location(global.tablemap.r$[global.tablemap.r$iXbutton_index[3]].left,
-                                                  global.tablemap.r$[global.tablemap.r$iXbutton_index[3]].top,
-                                                  global.tablemap.r$[global.tablemap.r$iXbutton_index[3]].right,
-                                                  global.tablemap.r$[global.tablemap.r$iXbutton_index[3]].bottom);
+                    pt = randomize_click_location(global.trans.map.r$[global.trans.map.r$iXbutton_index[3]].left,
+                                                  global.trans.map.r$[global.trans.map.r$iXbutton_index[3]].top,
+                                                  global.trans.map.r$[global.trans.map.r$iXbutton_index[3]].right,
+                                                  global.trans.map.r$[global.trans.map.r$iXbutton_index[3]].bottom);
                 }
 
                 else
                 {
-                    pt = randomize_click_location(global.tablemap.r$[rais_but].left, global.tablemap.r$[rais_but].top,
-                                                  global.tablemap.r$[rais_but].right, global.tablemap.r$[rais_but].bottom);
+                    pt = randomize_click_location(global.trans.map.r$[rais_but].left, global.trans.map.r$[rais_but].top,
+                                                  global.trans.map.r$[rais_but].right, global.trans.map.r$[rais_but].bottom);
                 }
 
                 // Click on button
@@ -621,24 +621,24 @@ void Autoplayer::do_arccf(void) {
     // ALLIN
     if (symbols.f$alli && (int) symbols.sym.myturnbits&0x8 && alli_but!=-1)
     {
-        pt = randomize_click_location(global.tablemap.r$[alli_but].left, global.tablemap.r$[alli_but].top,
-                                      global.tablemap.r$[alli_but].right, global.tablemap.r$[alli_but].bottom);
+        pt = randomize_click_location(global.trans.map.r$[alli_but].left, global.trans.map.r$[alli_but].top,
+                                      global.trans.map.r$[alli_but].right, global.trans.map.r$[alli_but].bottom);
         do_click = 4;
     }
 
     // RAISE
     else if (symbols.f$rais && (int) symbols.sym.myturnbits&0x4 && rais_but!=-1)
     {
-        pt = randomize_click_location(global.tablemap.r$[rais_but].left, global.tablemap.r$[rais_but].top,
-                                      global.tablemap.r$[rais_but].right, global.tablemap.r$[rais_but].bottom);
+        pt = randomize_click_location(global.trans.map.r$[rais_but].left, global.trans.map.r$[rais_but].top,
+                                      global.trans.map.r$[rais_but].right, global.trans.map.r$[rais_but].bottom);
         do_click = 3;
     }
 
     // CALL
     else if (symbols.f$call && (int) symbols.sym.myturnbits&0x1 && call_but!=-1)
     {
-        pt = randomize_click_location(global.tablemap.r$[call_but].left, global.tablemap.r$[call_but].top,
-                                      global.tablemap.r$[call_but].right, global.tablemap.r$[call_but].bottom);
+        pt = randomize_click_location(global.trans.map.r$[call_but].left, global.trans.map.r$[call_but].top,
+                                      global.trans.map.r$[call_but].right, global.trans.map.r$[call_but].bottom);
         do_click = 2;
     }
 
@@ -647,8 +647,8 @@ void Autoplayer::do_arccf(void) {
     // these actions can be found. If there is a check button, then click it.
     else if (chec_but!=-1)
     {
-        pt = randomize_click_location(global.tablemap.r$[chec_but].left, global.tablemap.r$[chec_but].top,
-                                      global.tablemap.r$[chec_but].right, global.tablemap.r$[chec_but].bottom);
+        pt = randomize_click_location(global.trans.map.r$[chec_but].left, global.trans.map.r$[chec_but].top,
+                                      global.trans.map.r$[chec_but].right, global.trans.map.r$[chec_but].bottom);
         do_click = 1;
     }
 
@@ -657,8 +657,8 @@ void Autoplayer::do_arccf(void) {
     // these actions can be found. If there is a fold button, then click it, otherwise we have a serious problem.
     else if (fold_but!=-1)
     {
-        pt = randomize_click_location(global.tablemap.r$[fold_but].left, global.tablemap.r$[fold_but].top,
-                                      global.tablemap.r$[fold_but].right, global.tablemap.r$[fold_but].bottom);
+        pt = randomize_click_location(global.trans.map.r$[fold_but].left, global.trans.map.r$[fold_but].top,
+                                      global.trans.map.r$[fold_but].right, global.trans.map.r$[fold_but].bottom);
         do_click = 0;
     }
 
@@ -790,7 +790,6 @@ void Autoplayer::do_slider(void) {
     HWND			hwnd_active = GetActiveWindow();
     POINT			cur_pos;
 	Stablemap_region handle, slider;
-	CTransform		trans;
 
     ::GetCursorPos(&cur_pos);
 
@@ -798,11 +797,11 @@ void Autoplayer::do_slider(void) {
     do_drag = -1;
 
     // ALLIN
-    if (symbols.sym.ismyturn && global.tablemap.r$iXslider_index[3]!=-1 && global.tablemap.r$iXhandle_index[3]!=-1 &&
+    if (symbols.sym.ismyturn && global.trans.map.r$iXslider_index[3]!=-1 && global.trans.map.r$iXhandle_index[3]!=-1 &&
 		scraper.handle_found_at_xy)
     {
-		handle = global.tablemap.r$[global.tablemap.r$iXhandle_index[3]];
-		slider = global.tablemap.r$[global.tablemap.r$iXslider_index[3]];
+		handle = global.trans.map.r$[global.trans.map.r$iXhandle_index[3]];
+		slider = global.trans.map.r$[global.trans.map.r$iXslider_index[3]];
 		x = scraper.handle_xy.x;
 		y = scraper.handle_xy.y;
 		x2 = slider.right-slider.left;
@@ -867,8 +866,8 @@ void Autoplayer::do_slider(void) {
 		}
 		if (symbols.f$alli && alli_but!=-1)
 		{
-			pt = randomize_click_location(global.tablemap.r$[alli_but].left, global.tablemap.r$[alli_but].top,
-										  global.tablemap.r$[alli_but].right, global.tablemap.r$[alli_but].bottom);
+			pt = randomize_click_location(global.trans.map.r$[alli_but].left, global.trans.map.r$[alli_but].top,
+										  global.trans.map.r$[alli_but].right, global.trans.map.r$[alli_but].bottom);
 			ClientToScreen(global.attached_hwnd, &pt);
 			fx = pt.x*(65535.0f/fScreenWidth);
 			fy = pt.y*(65535.0f/fScreenHeight);
@@ -946,8 +945,8 @@ void Autoplayer::do_prefold(void) {
     if (prefold_but == -1)  return;
 
     // Randomize click location
-    pt = randomize_click_location(global.tablemap.r$[prefold_but].left, global.tablemap.r$[prefold_but].top,
-                                  global.tablemap.r$[prefold_but].right, global.tablemap.r$[prefold_but].bottom);
+    pt = randomize_click_location(global.trans.map.r$[prefold_but].left, global.trans.map.r$[prefold_but].top,
+                                  global.trans.map.r$[prefold_but].right, global.trans.map.r$[prefold_but].bottom);
 
 
     input_count = 0;
@@ -1107,10 +1106,10 @@ int Autoplayer::get_r$_button_indices(void)
         s.Format("i%dbutton", button_index);
         for (i=0; i<=9; i++)
         {
-            r$index = global.tablemap.r$iXbutton_index[i];
+            r$index = global.trans.map.r$iXbutton_index[i];
             if (r$index!=-1)
             {
-                if (global.tablemap.r$[r$index].name == s)
+                if (global.trans.map.r$[r$index].name == s)
                 {
                     alli_but = r$index;
                     i = 10;
@@ -1143,10 +1142,10 @@ int Autoplayer::get_r$_button_indices(void)
         s.Format("i%dbutton", button_index);
         for (i=0; i<=9; i++)
         {
-            r$index = global.tablemap.r$iXbutton_index[i];
+            r$index = global.trans.map.r$iXbutton_index[i];
             if (r$index!=-1)
             {
-                if (global.tablemap.r$[r$index].name == s)
+                if (global.trans.map.r$[r$index].name == s)
                 {
                     rais_but = r$index;
                     i = 10;
@@ -1179,10 +1178,10 @@ int Autoplayer::get_r$_button_indices(void)
         s.Format("i%dbutton", button_index);
         for (i=0; i<=9; i++)
         {
-            r$index = global.tablemap.r$iXbutton_index[i];
+            r$index = global.trans.map.r$iXbutton_index[i];
             if (r$index!=-1)
             {
-                if (global.tablemap.r$[r$index].name == s)
+                if (global.trans.map.r$[r$index].name == s)
                 {
                     call_but = r$index;
                     i = 10;
@@ -1215,10 +1214,10 @@ int Autoplayer::get_r$_button_indices(void)
         s.Format("i%dbutton", button_index);
         for (i=0; i<=9; i++)
         {
-            r$index = global.tablemap.r$iXbutton_index[i];
+            r$index = global.trans.map.r$iXbutton_index[i];
             if (r$index!=-1)
             {
-                if (global.tablemap.r$[r$index].name == s)
+                if (global.trans.map.r$[r$index].name == s)
                 {
                     chec_but = r$index;
                     i = 10;
@@ -1251,10 +1250,10 @@ int Autoplayer::get_r$_button_indices(void)
         s.Format("i%dbutton", button_index);
         for (i=0; i<=9; i++)
         {
-            r$index = global.tablemap.r$iXbutton_index[i];
+            r$index = global.trans.map.r$iXbutton_index[i];
             if (r$index!=-1)
             {
-                if (global.tablemap.r$[r$index].name == s)
+                if (global.trans.map.r$[r$index].name == s)
                 {
                     fold_but = r$index;
                     i = 10;
@@ -1288,10 +1287,10 @@ int Autoplayer::get_r$_button_indices(void)
         s.Format("i%dbutton", button_index);
         for (i=0; i<=9; i++)
         {
-            r$index = global.tablemap.r$iXbutton_index[i];
+            r$index = global.trans.map.r$iXbutton_index[i];
             if (r$index!=-1)
             {
-                if (global.tablemap.r$[r$index].name == s)
+                if (global.trans.map.r$[r$index].name == s)
                 {
                     autopost_but = r$index;
                     i = 10;
@@ -1325,10 +1324,10 @@ int Autoplayer::get_r$_button_indices(void)
         s.Format("i%dbutton", button_index);
         for (i=0; i<=9; i++)
         {
-            r$index = global.tablemap.r$iXbutton_index[i];
+            r$index = global.trans.map.r$iXbutton_index[i];
             if (r$index!=-1)
             {
-                if (global.tablemap.r$[r$index].name == s)
+                if (global.trans.map.r$[r$index].name == s)
                 {
                     sitin_but = r$index;
                     i = 10;
@@ -1362,10 +1361,10 @@ int Autoplayer::get_r$_button_indices(void)
         s.Format("i%dbutton", button_index);
         for (i=0; i<=9; i++)
         {
-            r$index = global.tablemap.r$iXbutton_index[i];
+            r$index = global.trans.map.r$iXbutton_index[i];
             if (r$index!=-1)
             {
-                if (global.tablemap.r$[r$index].name == s)
+                if (global.trans.map.r$[r$index].name == s)
                 {
                     sitout_but = r$index;
                     i = 10;
@@ -1397,10 +1396,10 @@ int Autoplayer::get_r$_button_indices(void)
         s.Format("i%dbutton", button_index);
         for (i=0; i<=9; i++)
         {
-            r$index = global.tablemap.r$iXbutton_index[i];
+            r$index = global.trans.map.r$iXbutton_index[i];
             if (r$index!=-1)
             {
-                if (global.tablemap.r$[r$index].name == s)
+                if (global.trans.map.r$[r$index].name == s)
                 {
                     leave_but = r$index;
                     i = 10;
@@ -1432,10 +1431,10 @@ int Autoplayer::get_r$_button_indices(void)
         s.Format("i%dbutton", button_index);
         for (i=0; i<=9; i++)
         {
-            r$index = global.tablemap.r$iXbutton_index[i];
+            r$index = global.trans.map.r$iXbutton_index[i];
             if (r$index!=-1)
             {
-                if (global.tablemap.r$[r$index].name == s)
+                if (global.trans.map.r$[r$index].name == s)
                 {
                     prefold_but = r$index;
                     i = 10;
@@ -1450,7 +1449,7 @@ int Autoplayer::get_r$_button_indices(void)
     i86_state = false;
     if (scraper.get_button_state(86))
     {
-        i86_but = global.tablemap.r$i86button_index;
+        i86_but = global.trans.map.r$i86button_index;
         i86_state = true;
     }
 
@@ -1462,7 +1461,7 @@ int Autoplayer::get_r$_button_indices(void)
         i86X_state[i] = false;
         if (scraper.get_button_state(860+i))
         {
-            i86X_but[i] = global.tablemap.r$i86Xbutton_index[i];
+            i86X_but[i] = global.trans.map.r$i86Xbutton_index[i];
             i86X_state[i] = true;
         }
     }
@@ -1611,8 +1610,8 @@ void Autoplayer::do_f$play(void) {
     // leave table
     if (symbols.f$play==-2 && leave_but!=-1)
     {
-        pt = randomize_click_location(global.tablemap.r$[leave_but].left, global.tablemap.r$[leave_but].top,
-                                      global.tablemap.r$[leave_but].right, global.tablemap.r$[leave_but].bottom);
+        pt = randomize_click_location(global.trans.map.r$[leave_but].left, global.trans.map.r$[leave_but].top,
+                                      global.trans.map.r$[leave_but].right, global.trans.map.r$[leave_but].bottom);
 
         input_count = 0;
 
@@ -1661,13 +1660,13 @@ void Autoplayer::do_f$play(void) {
 
         if (sitout_but!=-1 && sitout_state==false)
         {
-            pt = randomize_click_location(global.tablemap.r$[sitout_but].left, global.tablemap.r$[sitout_but].top,
-                                          global.tablemap.r$[sitout_but].right, global.tablemap.r$[sitout_but].bottom);
+            pt = randomize_click_location(global.trans.map.r$[sitout_but].left, global.trans.map.r$[sitout_but].top,
+                                          global.trans.map.r$[sitout_but].right, global.trans.map.r$[sitout_but].bottom);
         }
         else if (sitin_but!=-1 && sitin_state==true)
         {
-            pt = randomize_click_location(global.tablemap.r$[sitin_but].left, global.tablemap.r$[sitin_but].top,
-                                          global.tablemap.r$[sitin_but].right, global.tablemap.r$[sitin_but].bottom);
+            pt = randomize_click_location(global.trans.map.r$[sitin_but].left, global.trans.map.r$[sitin_but].top,
+                                          global.trans.map.r$[sitin_but].right, global.trans.map.r$[sitin_but].bottom);
         }
 
         input_count = 0;
@@ -1711,13 +1710,13 @@ void Autoplayer::do_f$play(void) {
     {
         if (sitin_but!=-1 && sitin_state==false)
         {
-            pt = randomize_click_location(global.tablemap.r$[sitin_but].left, global.tablemap.r$[sitin_but].top,
-                                          global.tablemap.r$[sitin_but].right, global.tablemap.r$[sitin_but].bottom);
+            pt = randomize_click_location(global.trans.map.r$[sitin_but].left, global.trans.map.r$[sitin_but].top,
+                                          global.trans.map.r$[sitin_but].right, global.trans.map.r$[sitin_but].bottom);
         }
         else if (sitout_but!=-1 && sitout_state==true)
         {
-            pt = randomize_click_location(global.tablemap.r$[sitout_but].left, global.tablemap.r$[sitout_but].top,
-                                          global.tablemap.r$[sitout_but].right, global.tablemap.r$[sitout_but].bottom);
+            pt = randomize_click_location(global.trans.map.r$[sitout_but].left, global.trans.map.r$[sitout_but].top,
+                                          global.trans.map.r$[sitout_but].right, global.trans.map.r$[sitout_but].bottom);
         }
 
         input_count = 0;
@@ -1759,8 +1758,8 @@ void Autoplayer::do_f$play(void) {
     // Autopost
     if (symbols.f$play==1 && autopost_but!=-1 && autopost_state==false)
     {
-        pt = randomize_click_location(global.tablemap.r$[autopost_but].left, global.tablemap.r$[autopost_but].top,
-                                      global.tablemap.r$[autopost_but].right, global.tablemap.r$[autopost_but].bottom);
+        pt = randomize_click_location(global.trans.map.r$[autopost_but].left, global.trans.map.r$[autopost_but].top,
+                                      global.trans.map.r$[autopost_but].right, global.trans.map.r$[autopost_but].bottom);
 
         // Translate click point to screen/mouse coords
         ClientToScreen(global.attached_hwnd, &pt);
@@ -1845,8 +1844,8 @@ void Autoplayer::do_i86(void) {
     do_click = false;
     if (i86_but!=-1 && i86_state)
     {
-        pt = randomize_click_location(global.tablemap.r$[i86_but].left, global.tablemap.r$[i86_but].top,
-                                      global.tablemap.r$[i86_but].right, global.tablemap.r$[i86_but].bottom);
+        pt = randomize_click_location(global.trans.map.r$[i86_but].left, global.trans.map.r$[i86_but].top,
+                                      global.trans.map.r$[i86_but].right, global.trans.map.r$[i86_but].bottom);
 
         input_count = 0;
 
@@ -1890,8 +1889,8 @@ void Autoplayer::do_i86(void) {
         {
             if (i86X_but[i]!=-1 && i86X_state[i])
             {
-                pt = randomize_click_location(global.tablemap.r$[i86X_but[i]].left, global.tablemap.r$[i86X_but[i]].top,
-                                              global.tablemap.r$[i86X_but[i]].right, global.tablemap.r$[i86X_but[i]].bottom);
+                pt = randomize_click_location(global.trans.map.r$[i86X_but[i]].left, global.trans.map.r$[i86X_but[i]].top,
+                                              global.trans.map.r$[i86X_but[i]].right, global.trans.map.r$[i86X_but[i]].bottom);
 
                 input_count = 0;
 

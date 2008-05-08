@@ -10,7 +10,6 @@
 #include "debug.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
-#include "../../CTransform/Transform.h"
 
 // CDlgScraperOutput dialog
 CDlgScraperOutput	*m_ScraperOutputDlg = NULL;
@@ -163,19 +162,23 @@ void CDlgScraperOutput::PostNcDestroy()
     CDialog::PostNcDestroy();
 }
 
-LRESULT CDlgScraperOutput::OnWinMgr(WPARAM wp, LPARAM lp) {
+LRESULT CDlgScraperOutput::OnWinMgr(WPARAM wp, LPARAM lp) 
+{
     NMWINMGR& nmw = *(NMWINMGR*)lp;
     RECT		rect;
 
-    if (nmw.code==NMWINMGR::GET_SIZEINFO) {
-        if (wp==(WORD)GetDlgCtrlID()) {
+    if (nmw.code==NMWINMGR::GET_SIZEINFO) 
+	{
+        if (wp==(WORD)GetDlgCtrlID()) 
+		{
             // Parent frame is requesting my size info. Report min size.
             m_winMgr.GetMinMaxInfo(this, nmw.sizeinfo);
             return true; // handled--important!
         }
     }
 
-    else if (nmw.code==NMWINMGR::SIZEBAR_MOVED) {
+    else if (nmw.code==NMWINMGR::SIZEBAR_MOVED) 
+	{
         // User moved a sizer bar: call WinMgr to do it!
         m_winMgr.MoveRect(wp, nmw.sizebar.ptMoved, this);
         m_winMgr.SetWindowPositions(this);
@@ -215,10 +218,10 @@ void CDlgScraperOutput::add_listbox_items()
     m_RegionList.ResetContent();
     m_RegionList.SetCurSel(-1);
 
-    N = global.tablemap.r$.GetSize();
+    N = global.trans.map.r$.GetSize();
     for (i=0; i<N; i++)
     {
-        m_RegionList.AddString(global.tablemap.r$[i].name);
+        m_RegionList.AddString(global.trans.map.r$[i].name);
     }
 }
 
@@ -254,13 +257,13 @@ void CDlgScraperOutput::do_update_display()
 
     m_RegionList.GetText(m_RegionList.GetCurSel(), curtext);
 
-    N = global.tablemap.r$.GetSize();
+    N = global.trans.map.r$.GetSize();
     found_match = false;
     for (i=0; i<N && !found_match; i++)
     {
-        if (global.tablemap.r$[i].name == curtext)
+        if (global.trans.map.r$[i].name == curtext)
         {
-            do_bitblt(global.tablemap.r$[i].last_bmp, i);
+            do_bitblt(global.trans.map.r$[i].last_bmp, i);
             found_match = true;
         }
     }
@@ -284,7 +287,6 @@ void CDlgScraperOutput::do_bitblt(HBITMAP bitmap, int r$index)
     CBrush		gray_brush, *pTempBrush, oldbrush;
     CPen		null_pen, *pTempPen, oldpen;
     CString		res;
-    CTransform	trans;
 
     if (in_startup) 	
 	{
@@ -326,15 +328,15 @@ void CDlgScraperOutput::do_bitblt(HBITMAP bitmap, int r$index)
            m_Zoom.GetCurSel()==3 ? 8 :
            m_Zoom.GetCurSel()==4 ? 16 : 1;
 
-    w = (global.tablemap.r$[r$index].right - global.tablemap.r$[r$index].left) * zoom;
-    h = (global.tablemap.r$[r$index].bottom - global.tablemap.r$[r$index].top) * zoom;
+    w = (global.trans.map.r$[r$index].right - global.trans.map.r$[r$index].left) * zoom;
+    h = (global.trans.map.r$[r$index].bottom - global.trans.map.r$[r$index].top) * zoom;
 
     hbm2 = CreateCompatibleBitmap(hdcScreen, w, h);
     old_bitmap2 = (HBITMAP) SelectObject(hdcCompat2, hbm2);
     StretchBlt(	hdcCompat2, 0, 0, w, h,
                 hdcCompat1, 0, 0,
-                global.tablemap.r$[r$index].right - global.tablemap.r$[r$index].left,
-                global.tablemap.r$[r$index].bottom - global.tablemap.r$[r$index].top,
+                global.trans.map.r$[r$index].right - global.trans.map.r$[r$index].left,
+                global.trans.map.r$[r$index].bottom - global.trans.map.r$[r$index].top,
                 SRCCOPY );
 
     // Copy 2nd DC to control
@@ -342,7 +344,7 @@ void CDlgScraperOutput::do_bitblt(HBITMAP bitmap, int r$index)
             hdcCompat2, 0, 0, SRCCOPY );
 
     // Output result
-    trans.do_transform(&global.tablemap, &global.tablemap.r$[r$index], hdcCompat1, &res);
+    global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompat1, &res);
     m_ScraperResult.SetWindowText(res);
 
     // Clean up

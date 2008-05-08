@@ -84,7 +84,7 @@ UINT __cdecl heartbeat_thread(LPVOID pParam)
         if (!global.ppro_is_connected)
         {
             GetWindowText(global.attached_hwnd, title, 512);
-            theApp.m_pMainWnd->SetWindowText(global.formula_name + " - " + global.tablemap.sitename + "(" + title + ")");
+            theApp.m_pMainWnd->SetWindowText(global.formula_name + " - " + global.trans.map.sitename + "(" + title + ")");
         }
         else
         {
@@ -97,7 +97,7 @@ UINT __cdecl heartbeat_thread(LPVOID pParam)
             else
                 _snprintf_s(title, _countof(title), _TRUNCATE, "%s - %s", ppro.data.m_site_name, ppro.data.m_tinf.m_name);
 
-            theApp.m_pMainWnd->SetWindowText(global.formula_name + " - " + global.tablemap.sitename +  "(" + title + ")");
+            theApp.m_pMainWnd->SetWindowText(global.formula_name + " - " + global.trans.map.sitename +  "(" + title + ")");
         }
 
 

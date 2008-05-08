@@ -12,7 +12,6 @@
 #include "RunRon.h"
 #include "GameState.h"
 #include "pokertracker.h"
-#include "../../CTransform/Transform.h"
 
 #include "symbols.h"
 
@@ -586,12 +585,12 @@ void CSymbols::CalcSymbols(void)
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Identification of dealerchair
-    for (i=0; i < global.tablemap.num_chairs; i++)
+    for (i=0; i < global.trans.map.num_chairs; i++)
     {
         if (scraper.dealer[i])
         {
             sym.dealerchair = i;													// dealerchair
-            i = global.tablemap.num_chairs + 1;
+            i = global.trans.map.num_chairs + 1;
         }
     }
 
@@ -726,7 +725,7 @@ void CSymbols::CalcSymbols(void)
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Symbols derived from current profile/formula
     sym.site = 1;																	// site
-    sym.nchairs = global.tablemap.num_chairs;										// nchairs
+    sym.nchairs = global.trans.map.num_chairs;										// nchairs
     sym.isppro = global.ppro_isppro;												// isppro
     sym.rake = global.formula.dRake;												// rake
     EnterCriticalSection(&cs_prwin);
@@ -736,9 +735,9 @@ void CSymbols::CalcSymbols(void)
     sym.defcon = global.formula.dDefcon;											// defcon
     sym.isdefmode = global.formula.dDefcon == 0.0;									// isdefmode
     sym.isaggmode = global.formula.dDefcon == 1.0;									// isaggmode
-    sym.swagtextmethod = global.tablemap.swagtextmethod;							// swagtextmethod
-    sym.potmethod = global.tablemap.potmethod;										// potmethod
-    sym.activemethod = global.tablemap.activemethod;								// activemethod
+    sym.swagtextmethod = global.trans.map.swagtextmethod;							// swagtextmethod
+    sym.potmethod = global.trans.map.potmethod;										// potmethod
+    sym.activemethod = global.trans.map.activemethod;								// activemethod
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Other scraped items
@@ -866,7 +865,7 @@ bool CSymbols::calc_userchair(void)
 
     if (num_buttons_enabled>=2)
     {
-        for (i=0; i<global.tablemap.num_chairs; i++)
+        for (i=0; i<global.trans.map.num_chairs; i++)
         {
             if (scraper.card_player[i][0] != CARD_NOCARD &&
                     scraper.card_player[i][0] != CARD_BACK &&
@@ -978,34 +977,34 @@ void CSymbols::calc_stakes(void)
     // if we still do not have blinds, then infer them from the posted bets
     if (sym.br == 1 && (sym.sblind==0 || sym.bblind==0))
     {
-        for (i=sym.dealerchair+1; i<=sym.dealerchair+global.tablemap.num_chairs; i++)
+        for (i=sym.dealerchair+1; i<=sym.dealerchair+global.trans.map.num_chairs; i++)
         {
-            if (scraper.card_player[i%global.tablemap.num_chairs][0] != CARD_NOCARD &&
-                    scraper.card_player[i%global.tablemap.num_chairs][1] != CARD_NOCARD)
+            if (scraper.card_player[i%global.trans.map.num_chairs][0] != CARD_NOCARD &&
+                    scraper.card_player[i%global.trans.map.num_chairs][1] != CARD_NOCARD)
             {
-                if (scraper.playerbet[i%global.tablemap.num_chairs] != 0 && !found_inferred_sb)
+                if (scraper.playerbet[i%global.trans.map.num_chairs] != 0 && !found_inferred_sb)
                 {
                     if (sym.sblind==0)
                     {
-                        sym.sblind = scraper.playerbet[i%global.tablemap.num_chairs];
+                        sym.sblind = scraper.playerbet[i%global.trans.map.num_chairs];
                         found_inferred_sb = true;
                     }
                 }
 
-                else if (scraper.playerbet[i%global.tablemap.num_chairs] != 0 && found_inferred_sb && !found_inferred_bb)
+                else if (scraper.playerbet[i%global.trans.map.num_chairs] != 0 && found_inferred_sb && !found_inferred_bb)
                 {
                     if (sym.bblind==0)
                     {
                         // !heads up - normal blinds
-                        if (i%global.tablemap.num_chairs != sym.dealerchair)
+                        if (i%global.trans.map.num_chairs != sym.dealerchair)
                         {
-                            sym.bblind = scraper.playerbet[i%global.tablemap.num_chairs];
+                            sym.bblind = scraper.playerbet[i%global.trans.map.num_chairs];
                         }
                         // heads up - reversed blinds
                         else
                         {
                             sym.bblind = sym.sblind;
-                            sym.sblind = scraper.playerbet[i%global.tablemap.num_chairs];
+                            sym.sblind = scraper.playerbet[i%global.trans.map.num_chairs];
                         }
                         found_inferred_bb = true;
                     }
@@ -1140,18 +1139,18 @@ void CSymbols::calc_chipamts_limits(void) {
 
     sym.call = user_chair_confirmed ?
                sym.currentbet[(int) sym.raischair] - sym.currentbet[(int) sym.userchair] : 0; // call
-    for (i=sym.raischair+1; i<sym.raischair+global.tablemap.num_chairs; i++)
+    for (i=sym.raischair+1; i<sym.raischair+global.trans.map.num_chairs; i++)
     {
-        if ((int) sym.playersplayingbits & (1<<(i%global.tablemap.num_chairs)))
+        if ((int) sym.playersplayingbits & (1<<(i%global.trans.map.num_chairs)))
         {
             sym.callshort +=
-                (sym.currentbet[(int) sym.raischair] - sym.currentbet[(i%global.tablemap.num_chairs)]);	// callshort
+                (sym.currentbet[(int) sym.raischair] - sym.currentbet[(i%global.trans.map.num_chairs)]);	// callshort
         }
     }
     sym.raisshort = sym.callshort + sym.bet[4] * sym.nplayersplaying;				// raisshort
 
     next_largest_bet = 0;
-    for (i=0; i<global.tablemap.num_chairs; i++)
+    for (i=0; i<global.trans.map.num_chairs; i++)
     {
         if (sym.currentbet[i] != sym.currentbet[(int) sym.raischair] && sym.currentbet[i]>next_largest_bet)
         {
@@ -1427,44 +1426,44 @@ void CSymbols::calc_playersfriendsopponents(void)
     lastbet = 0;
     sblindfound = false;
     bblindfound = false;
-    for (i=sym.dealerchair+1; i<=sym.dealerchair+global.tablemap.num_chairs; i++)
+    for (i=sym.dealerchair+1; i<=sym.dealerchair+global.trans.map.num_chairs; i++)
     {
-        if (scraper.playerbet[i%global.tablemap.num_chairs] > lastbet)
+        if (scraper.playerbet[i%global.trans.map.num_chairs] > lastbet)
         {
-            lastbet = scraper.playerbet[i%global.tablemap.num_chairs];
-            sym.raischair = i%global.tablemap.num_chairs;									// raischair
+            lastbet = scraper.playerbet[i%global.trans.map.num_chairs];
+            sym.raischair = i%global.trans.map.num_chairs;									// raischair
         }
 
-        if (!sblindfound && scraper.playerbet[i%global.tablemap.num_chairs]<=sym.sblind)
+        if (!sblindfound && scraper.playerbet[i%global.trans.map.num_chairs]<=sym.sblind)
         {
             sblindfound = true;
             sym.playersblindbits =
-                (int) sym.playersblindbits | (1<<(i%global.tablemap.num_chairs));			// playersblindbits
-            if (user_chair_confirmed && (i%global.tablemap.num_chairs) != sym.userchair)
+                (int) sym.playersblindbits | (1<<(i%global.trans.map.num_chairs));			// playersblindbits
+            if (user_chair_confirmed && (i%global.trans.map.num_chairs) != sym.userchair)
             {
                 sym.opponentsblindbits =
-                    (int) sym.opponentsblindbits | (1<<(i%global.tablemap.num_chairs));		// opponentsblindbits
+                    (int) sym.opponentsblindbits | (1<<(i%global.trans.map.num_chairs));		// opponentsblindbits
             }
 
-            if (user_chair_confirmed && (i%global.tablemap.num_chairs) == sym.userchair)
+            if (user_chair_confirmed && (i%global.trans.map.num_chairs) == sym.userchair)
             {
                 sym.friendsblindbits =
-                    (int) sym.friendsblindbits | (1<<(i%global.tablemap.num_chairs));		// friendsblindbits
+                    (int) sym.friendsblindbits | (1<<(i%global.trans.map.num_chairs));		// friendsblindbits
             }
         }
 
-        else if (!bblindfound && scraper.playerbet[i%global.tablemap.num_chairs]<=sym.bblind)
+        else if (!bblindfound && scraper.playerbet[i%global.trans.map.num_chairs]<=sym.bblind)
         {
             bblindfound = true;
             sym.bblindbits = 0; //prwin change
             sym.playersblindbits =
-                (int) sym.playersblindbits | (1<<(i%global.tablemap.num_chairs));			// playersblindbits
-            if (user_chair_confirmed && (i%global.tablemap.num_chairs) != sym.userchair)
+                (int) sym.playersblindbits | (1<<(i%global.trans.map.num_chairs));			// playersblindbits
+            if (user_chair_confirmed && (i%global.trans.map.num_chairs) != sym.userchair)
             {
                 sym.opponentsblindbits =
-                    (int) sym.opponentsblindbits | (1<<(i%global.tablemap.num_chairs));		// opponentsblindbits
+                    (int) sym.opponentsblindbits | (1<<(i%global.trans.map.num_chairs));		// opponentsblindbits
                 sym.bblindbits =  //prwin change
-                    (int) sym.bblindbits | (1<<(i%global.tablemap.num_chairs));		// big blind bit
+                    (int) sym.bblindbits | (1<<(i%global.trans.map.num_chairs));		// big blind bit
             }
         }
     }
@@ -1473,7 +1472,7 @@ void CSymbols::calc_playersfriendsopponents(void)
     sym.nopponentsblind = bitcount(sym.opponentsblindbits);							// nopponentsblind
     sym.nfriendsblind = bitcount(sym.friendsblindbits);								// nfriendsblind
 
-    for (i=0; i<global.tablemap.num_chairs; i++)
+    for (i=0; i<global.trans.map.num_chairs; i++)
     {
         if (scraper.card_player[i][0] != CARD_NOCARD &&
                 scraper.card_player[i][1] != CARD_NOCARD)
@@ -1537,14 +1536,14 @@ void CSymbols::calc_playersfriendsopponents(void)
 
     found_userchair = false;
     lastbet = 0;
-    for (i=sym.dealerchair+1; i<=sym.dealerchair+global.tablemap.num_chairs && user_chair_confirmed; i++)
+    for (i=sym.dealerchair+1; i<=sym.dealerchair+global.trans.map.num_chairs && user_chair_confirmed; i++)
     {
-        if ((i%global.tablemap.num_chairs) == sym.userchair)
+        if ((i%global.trans.map.num_chairs) == sym.userchair)
             found_userchair = true;
 
         else
         {
-            if ((int) sym.playersdealtbits & (1<<(i%global.tablemap.num_chairs)))
+            if ((int) sym.playersdealtbits & (1<<(i%global.trans.map.num_chairs)))
             {
                 if (!found_userchair)
                     sym.nchairsdealtright += 1;										// nchairsdealtright
@@ -1555,47 +1554,47 @@ void CSymbols::calc_playersfriendsopponents(void)
             }
         }
 
-        if (scraper.playerbet[i%global.tablemap.num_chairs] > lastbet &&
-                scraper.playerbet[i%global.tablemap.num_chairs] != 0)
+        if (scraper.playerbet[i%global.trans.map.num_chairs] > lastbet &&
+                scraper.playerbet[i%global.trans.map.num_chairs] != 0)
         {
-            lastbet = scraper.playerbet[i%global.tablemap.num_chairs];
+            lastbet = scraper.playerbet[i%global.trans.map.num_chairs];
 
-            if ((i%global.tablemap.num_chairs) != sym.userchair)
+            if ((i%global.trans.map.num_chairs) != sym.userchair)
                 sym.nopponentsraising += 1;											// nopponentsraising
         }
 
-        else if ((i%global.tablemap.num_chairs) != sym.userchair &&
-                 scraper.playerbet[i%global.tablemap.num_chairs] == lastbet &&
+        else if ((i%global.trans.map.num_chairs) != sym.userchair &&
+                 scraper.playerbet[i%global.trans.map.num_chairs] == lastbet &&
                  lastbet != 0)
         {
             sym.nopponentscalling += 1;												// nopponentscalling
         }
 
-        if ((i%global.tablemap.num_chairs) != sym.userchair &&
-                scraper.playerbet[i%global.tablemap.num_chairs] > 0)
+        if ((i%global.trans.map.num_chairs) != sym.userchair &&
+                scraper.playerbet[i%global.trans.map.num_chairs] > 0)
         {
             sym.nopponentsbetting += 1;												// nopponentsbetting
         }
 
-        if ((i%global.tablemap.num_chairs) != sym.userchair &&
-                (int) sym.playersdealtbits & (1<<(i%global.tablemap.num_chairs)) &&
-                (scraper.card_player[i%global.tablemap.num_chairs][0] == CARD_NOCARD ||
-                 scraper.card_player[i%global.tablemap.num_chairs][1] == CARD_NOCARD))
+        if ((i%global.trans.map.num_chairs) != sym.userchair &&
+                (int) sym.playersdealtbits & (1<<(i%global.trans.map.num_chairs)) &&
+                (scraper.card_player[i%global.trans.map.num_chairs][0] == CARD_NOCARD ||
+                 scraper.card_player[i%global.trans.map.num_chairs][1] == CARD_NOCARD))
         {
             sym.nopponentsfolded += 1;												// nopponentsfolded
         }
 
-        if ((i%global.tablemap.num_chairs) != sym.userchair &&
-                scraper.card_player[i%global.tablemap.num_chairs][0] != CARD_NOCARD &&
-                scraper.card_player[i%global.tablemap.num_chairs][1] != CARD_NOCARD &&
-                scraper.playerbet[i%global.tablemap.num_chairs] == 0)
+        if ((i%global.trans.map.num_chairs) != sym.userchair &&
+                scraper.card_player[i%global.trans.map.num_chairs][0] != CARD_NOCARD &&
+                scraper.card_player[i%global.trans.map.num_chairs][1] != CARD_NOCARD &&
+                scraper.playerbet[i%global.trans.map.num_chairs] == 0)
         {
             sym.nopponentschecking += 1;											// nopponentschecking
         }
 
-        if (scraper.playerbet[i%global.tablemap.num_chairs] < sym.currentbet[(int) sym.raischair] &&
-                scraper.card_player[i%global.tablemap.num_chairs][0] != CARD_NOCARD &&
-                scraper.card_player[i%global.tablemap.num_chairs][1] != CARD_NOCARD)
+        if (scraper.playerbet[i%global.trans.map.num_chairs] < sym.currentbet[(int) sym.raischair] &&
+                scraper.card_player[i%global.trans.map.num_chairs][0] != CARD_NOCARD &&
+                scraper.card_player[i%global.trans.map.num_chairs][1] != CARD_NOCARD)
         {
             sym.nplayerscallshort += 1;												// nplayerscallshort
         }
@@ -1609,33 +1608,33 @@ void CSymbols::calc_roundspositions(void) {
     __SEH_HEADER
     int			i;
 
-    for (i=sym.dealerchair+1; i<=sym.dealerchair+global.tablemap.num_chairs && (i%global.tablemap.num_chairs)!=sym.userchair; i++)
+    for (i=sym.dealerchair+1; i<=sym.dealerchair+global.trans.map.num_chairs && (i%global.trans.map.num_chairs)!=sym.userchair; i++)
     {
-        if ((int)sym.playersplayingbits & (1<<(i%global.tablemap.num_chairs)))
+        if ((int)sym.playersplayingbits & (1<<(i%global.trans.map.num_chairs)))
             sym.betposition+=1;													// betposition
 
-        if ((int)sym.playersdealtbits & (1<<(i%global.tablemap.num_chairs)))
+        if ((int)sym.playersdealtbits & (1<<(i%global.trans.map.num_chairs)))
             sym.dealposition+=1;												// dealposition
     }
 
-    for (i=sym.raischair+1; i<=sym.raischair+global.tablemap.num_chairs && (i%global.tablemap.num_chairs)!=sym.userchair; i++)
+    for (i=sym.raischair+1; i<=sym.raischair+global.trans.map.num_chairs && (i%global.trans.map.num_chairs)!=sym.userchair; i++)
     {
-        if ((int)sym.playersplayingbits & (1<<(i%global.tablemap.num_chairs)))
+        if ((int)sym.playersplayingbits & (1<<(i%global.trans.map.num_chairs)))
             sym.callposition+=1;												// callposition
     }
 
-    for (i=sym.dealerchair+1; i<=sym.dealerchair+global.tablemap.num_chairs && (i%global.tablemap.num_chairs)!=sym.userchair; i++)
+    for (i=sym.dealerchair+1; i<=sym.dealerchair+global.trans.map.num_chairs && (i%global.trans.map.num_chairs)!=sym.userchair; i++)
     {
-        if ((int)sym.playersseatedbits & (1<<(i%global.tablemap.num_chairs)))
+        if ((int)sym.playersseatedbits & (1<<(i%global.trans.map.num_chairs)))
             sym.seatposition+=1;												// seatposition
     }
 
-    for (i=sym.dealerchair+1; i<=sym.dealerchair+global.tablemap.num_chairs && (i%global.tablemap.num_chairs)!=sym.raischair; i++)
+    for (i=sym.dealerchair+1; i<=sym.dealerchair+global.trans.map.num_chairs && (i%global.trans.map.num_chairs)!=sym.raischair; i++)
     {
-        if ((int)sym.playersplayingbits & (1<<(i%global.tablemap.num_chairs)))
+        if ((int)sym.playersplayingbits & (1<<(i%global.trans.map.num_chairs)))
             sym.betpositionrais+=1;												// betpositionrais
 
-        if ((int)sym.playersdealtbits & (1<<(i%global.tablemap.num_chairs)))
+        if ((int)sym.playersdealtbits & (1<<(i%global.trans.map.num_chairs)))
             sym.dealpositionrais+=1;											// dealpositionrais
     }
 
@@ -2867,7 +2866,7 @@ void CSymbols::calc_history(void)
     sym.nplayersround[4] = sym.nplayersround[(int) sym.br-1];						// nplayersround
 
     maxbet = 0;
-    for (i=0; i<global.tablemap.num_chairs; i++)
+    for (i=0; i<global.trans.map.num_chairs; i++)
     {
         if (sym.currentbet[i] > maxbet)
         {
@@ -3499,8 +3498,8 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
     if (memcmp(a, "version", 7)==0 && strlen(a)==7)						return sym.version;
 
     //PROFILE
-    if (memcmp(a, "sitename$", 9)==0)									return global.tablemap.sitename.Find(&a[9])!=-1;
-    if (memcmp(a, "network$", 8)==0)									return global.tablemap.network.Find(&a[8])!=-1;
+    if (memcmp(a, "sitename$", 9)==0)									return global.trans.map.sitename.Find(&a[9])!=-1;
+    if (memcmp(a, "network$", 8)==0)									return global.trans.map.network.Find(&a[8])!=-1;
     if (memcmp(a, "swagdelay", 9)==0 && strlen(a)==9)					return sym.swagdelay;
     if (memcmp(a, "allidelay", 9)==0 && strlen(a)==9)					return sym.allidelay;
     if (memcmp(a, "swagtextmethod", 14)==0 && strlen(a)==14)			return sym.swagtextmethod;
@@ -4018,7 +4017,7 @@ double CSymbols::Chair$(const char *a)
     __SEH_HEADER
     int i;
 
-    for (i=0; i<global.tablemap.num_chairs; i++)
+    for (i=0; i<global.trans.map.num_chairs; i++)
     {
         if (scraper.playername[i].Find(&a[6])!=-1)
             return i;
@@ -4034,7 +4033,7 @@ double CSymbols::Chairbit$(const char *a)
     __SEH_HEADER
     int i, bits=0;
 
-    for (i=0; i<global.tablemap.num_chairs; i++)
+    for (i=0; i<global.trans.map.num_chairs; i++)
     {
         if (scraper.playername[i].Find(&a[9])!=-1)
             bits |= (1<<i);
