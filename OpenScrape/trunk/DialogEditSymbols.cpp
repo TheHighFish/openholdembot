@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "DialogEditSymbols.h"
-#include "../CTransform/Transform.h"
+#include "OpenScrapeDoc.h"
 
 // CDlgEditSymbols dialog
 
@@ -75,13 +75,13 @@ void CDlgEditSymbols::OnBnClickedOk()
 
 void CDlgEditSymbols::OnBnClickedParsebutton()
 {
-	CTransform	 ctrans;
-	CString		results, text, format;
+	CString				results, text, format;
+	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 
 	m_Titletext.GetWindowText(text);
 	m_Value.GetWindowText(format);
 	
-	ctrans.parse_string_bsl(text, format, &results);
+	pDoc->trans.parse_string_bsl(text, format, &results);
 
 	m_ParseResults.SetWindowText(results.GetString());
 }

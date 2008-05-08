@@ -16,18 +16,6 @@
 #define ERR_REGION_SIZE				6
 #define ERR_UNK_LN_TYPE				7
 #define ERR_INV_HASH_TYPE			8
-#define ERR_INCOMPLETEMASTER		9
-
-// Table map version codes
-#define VER_WINSCRAPE			".wsdb1"
-#define VER_OPENHOLDEM_1		".ohdb1"
-#define VER_OPENHOLDEM_2		".ohdb2"
-#define VER_OPENSCRAPE_1		".osdb1"
-#define VER_WINSCRAPE_DATE1		"2006 Aug 7 13:11:37"
-#define VER_WINSCRAPE_DATE2		"2007 Oct 25 19:26:57"
-#define VER_WINSCRAPE_DATE3		"2007 Nov 1 08:32:55"
-#define VER_WINSCRAPE_DATE4		"2007 Nov 3 09:54:04"
-#define VER_WINSCRAPE_DATE5		"2007 Nov 6 11:52:24"
 
 // WH SUIT Defs
 #define WH_SUIT_CLUBS		1

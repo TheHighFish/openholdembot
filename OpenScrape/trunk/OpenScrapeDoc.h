@@ -118,17 +118,12 @@ public:
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
 	virtual ~COpenScrapeDoc();
-	void ClearTableMap(void);
-	int LoadTableMap(CArchive& ar, CString *version);
-	int SaveTableMap(CArchive& ar);
-	int ConvertTableMap(void);
-	int UpdateHashes(void);
+
+	// Contains the table map and the transform engine
+	CTransform		trans;
 
 	// Blink state
 	bool		blink_on;
-
-	// The table map being worked on
-	STableMap	tablemap;
 
 	// Window that we are attached to
 	HWND		attached_hwnd;

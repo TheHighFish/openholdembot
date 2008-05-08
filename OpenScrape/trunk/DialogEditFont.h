@@ -2,7 +2,6 @@
 #include "afxwin.h"
 #include "resource.h"
 #include "structs_defines.h"
-#include "../CTransform/Transform.h"
 
 // CDlgEditFont dialog
 

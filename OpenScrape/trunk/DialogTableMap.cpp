@@ -9,7 +9,6 @@
 #include "OpenScrapeDoc.h"
 #include "OpenScrapeView.h"
 #include "Registry.h"
-#include "../CTransform/Transform.h"
 #include "MainFrm.h"
 #include "DialogEdit.h"
 #include "DialogEditSizes.h"
@@ -938,7 +937,6 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 	CDC					*pDC;
 	HDC					hdcControl, hdcScreen, hdc_bitmap_orig, hdc_bitmap_transform;
 	HBITMAP				old_bitmap_orig, bitmap_transform, old_bitmap_transform;
-	CTransform			ctrans;
 	COLORREF			cr_avg;
 	Stablemap_region	*sel_region_ptr = NULL;
 	
@@ -1053,7 +1051,7 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 			   SRCCOPY);
 
 		// result field
-		int ret = ctrans.do_transform(&pDoc->tablemap, sel_region_ptr, hdc_bitmap_transform, &text, &separation, &cr_avg);
+		int ret = pDoc->trans.do_transform(sel_region_ptr, hdc_bitmap_transform, &text, &separation, &cr_avg);
 		if (ret != ERR_GOOD_SCRAPE_GENERAL)
 		{
 			switch (ret)
@@ -1335,8 +1333,8 @@ void CDlgTableMap::OnBnClickedNew()
 		for (i=0; i<num_z$strings; i++)
 		{
 			used_string = false;
-			for (j=0; j<pDoc->tablemap.z$.GetCount(); j++)
-				if (pDoc->tablemap.z$[j].name == z$strings[i])  
+			for (j=0; j<pDoc->trans.map.z$.GetCount(); j++)
+				if (pDoc->trans.map.z$[j].name == z$strings[i])  
 					used_string=true;
 
 			if (!used_string)
@@ -1357,11 +1355,11 @@ void CDlgTableMap::OnBnClickedNew()
 				new_size.name = dlgsizes.name;
 				new_size.width = dlgsizes.width;
 				new_size.height = dlgsizes.height;
-				new_index = (int) pDoc->tablemap.z$.Add(new_size);
+				new_index = (int) pDoc->trans.map.z$.Add(new_size);
 
 				// Add new record to tree
 				new_hti = m_TableMapTree.InsertItem(dlgsizes.name, parent ? parent : m_TableMapTree.GetSelectedItem());
-				m_TableMapTree.SetItemData(new_hti, (DWORD_PTR) &pDoc->tablemap.z$[new_index]);
+				m_TableMapTree.SetItemData(new_hti, (DWORD_PTR) &pDoc->trans.map.z$[new_index]);
 				m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
 				m_TableMapTree.SelectItem(new_hti);
 
@@ -1384,8 +1382,8 @@ void CDlgTableMap::OnBnClickedNew()
 		for (i=0; i<num_s$strings; i++)
 		{
 			used_string = false;
-			for (j=0; j<pDoc->tablemap.s$.GetCount(); j++)
-				if (pDoc->tablemap.s$[j].name == s$strings[i])  
+			for (j=0; j<pDoc->trans.map.s$.GetCount(); j++)
+				if (pDoc->trans.map.s$[j].name == s$strings[i])  
 					used_string=true;
 
 			if (!used_string)
@@ -1404,11 +1402,11 @@ void CDlgTableMap::OnBnClickedNew()
 				// Add new record to internal structure
 				new_symbol.name = dlgsymbols.name;
 				new_symbol.text = dlgsymbols.value;
-				new_index = (int) pDoc->tablemap.s$.Add(new_symbol);
+				new_index = (int) pDoc->trans.map.s$.Add(new_symbol);
 
 				// Add new record to tree
 				new_hti = m_TableMapTree.InsertItem(new_symbol.name, parent ? parent : m_TableMapTree.GetSelectedItem());
-				m_TableMapTree.SetItemData(new_hti, (DWORD_PTR) &pDoc->tablemap.s$[new_index]);
+				m_TableMapTree.SetItemData(new_hti, (DWORD_PTR) &pDoc->trans.map.s$[new_index]);
 				m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
 				m_TableMapTree.SelectItem(new_hti);
 
@@ -1427,8 +1425,8 @@ void CDlgTableMap::OnBnClickedNew()
 		for (i=0; i<num_r$strings; i++)
 		{
 			used_string = false;
-			for (j=0; j<pDoc->tablemap.r$.GetCount(); j++)
-				if (pDoc->tablemap.r$[j].name == r$strings[i] && r$strings[i] != "tablepoint")  
+			for (j=0; j<pDoc->trans.map.r$.GetCount(); j++)
+				if (pDoc->trans.map.r$[j].name == r$strings[i] && r$strings[i] != "tablepoint")  
 					used_string=true;
 
 			if (!used_string)
@@ -1453,11 +1451,11 @@ void CDlgTableMap::OnBnClickedNew()
 				new_region.color = 0;
 				new_region.radius = 0;
 				new_region.transform = "N";
-				new_index = (int) pDoc->tablemap.r$.Add(new_region);
+				new_index = (int) pDoc->trans.map.r$.Add(new_region);
 
 				// Add new record to tree
 				new_hti = m_TableMapTree.InsertItem(new_region.name, parent ? parent : m_TableMapTree.GetSelectedItem());
-				m_TableMapTree.SetItemData(new_hti, (DWORD_PTR) &pDoc->tablemap.r$[new_index]);
+				m_TableMapTree.SetItemData(new_hti, (DWORD_PTR) &pDoc->trans.map.r$[new_index]);
 				m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
 				m_TableMapTree.SelectItem(new_hti);
 
@@ -1487,12 +1485,12 @@ void CDlgTableMap::OnBnClickedNew()
 			new_hashpoint.number = atoi(dlghashpoint.type.Mid(5,1).GetString());
 			new_hashpoint.x = dlghashpoint.x;
 			new_hashpoint.y = dlghashpoint.y;
-			new_index = (int) pDoc->tablemap.p$.Add(new_hashpoint);
+			new_index = (int) pDoc->trans.map.p$.Add(new_hashpoint);
 
 			// Add new record to tree
 			text.Format("%d (%d, %d)", new_hashpoint.number, new_hashpoint.x, new_hashpoint.y);
 			new_hti = m_TableMapTree.InsertItem(text.GetString(), parent ? parent : m_TableMapTree.GetSelectedItem());
-			m_TableMapTree.SetItemData(new_hti, (DWORD_PTR) &pDoc->tablemap.p$[new_index]);
+			m_TableMapTree.SetItemData(new_hti, (DWORD_PTR) &pDoc->trans.map.p$[new_index]);
 			m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
 			m_TableMapTree.SelectItem(new_hti);
 
@@ -1545,15 +1543,15 @@ void CDlgTableMap::OnBnClickedDelete()
 			{
 				// Delete record from internal structure and update tree
 				del_index = -1;
-				for (i=0; i<pDoc->tablemap.z$.GetSize() && del_index==-1; i++)
+				for (i=0; i<pDoc->trans.map.z$.GetSize() && del_index==-1; i++)
 				{
-					if (&pDoc->tablemap.z$[i] == sel_size_ptr)
+					if (&pDoc->trans.map.z$[i] == sel_size_ptr)
 						del_index = i;
 				}
 
 				if (del_index != -1)
 				{
-					pDoc->tablemap.z$.RemoveAt(del_index, 1);
+					pDoc->trans.map.z$.RemoveAt(del_index, 1);
 					node = update_tree("Sizes");
 					if (node!=NULL)				
 						m_TableMapTree.SelectItem(node);
@@ -1577,13 +1575,13 @@ void CDlgTableMap::OnBnClickedDelete()
 			{
 				// Delete record from internal structure and update tree
 				del_index = -1;
-				for (i=0; i<pDoc->tablemap.s$.GetSize() && del_index==-1; i++)
-					if (&pDoc->tablemap.s$[i] == sel_symbol_ptr)
+				for (i=0; i<pDoc->trans.map.s$.GetSize() && del_index==-1; i++)
+					if (&pDoc->trans.map.s$[i] == sel_symbol_ptr)
 						del_index = i;
 
 				if (del_index != -1)
 				{
-					pDoc->tablemap.s$.RemoveAt(del_index, 1);
+					pDoc->trans.map.s$.RemoveAt(del_index, 1);
 					node = update_tree("Symbols");
 					if (node!=NULL)				
 						m_TableMapTree.SelectItem(node);
@@ -1607,13 +1605,13 @@ void CDlgTableMap::OnBnClickedDelete()
 			{
 				// Delete record from internal structure and update tree
 				del_index = -1;
-				for (i=0; i<pDoc->tablemap.r$.GetSize() && del_index==-1; i++)
-					if (&pDoc->tablemap.r$[i] == sel_region_ptr)
+				for (i=0; i<pDoc->trans.map.r$.GetSize() && del_index==-1; i++)
+					if (&pDoc->trans.map.r$[i] == sel_region_ptr)
 						del_index = i;
 
 				if (del_index != -1)
 				{
-					pDoc->tablemap.r$.RemoveAt(del_index, 1);
+					pDoc->trans.map.r$.RemoveAt(del_index, 1);
 					node = update_tree("Regions");
 					if (node!=NULL)				
 						m_TableMapTree.SelectItem(node);
@@ -1637,13 +1635,13 @@ void CDlgTableMap::OnBnClickedDelete()
 			{
 				// Delete record from internal structure and update tree
 				del_index = -1;
-				for (i=0; i<pDoc->tablemap.t$.GetSize() && del_index==-1; i++)
-					if (&pDoc->tablemap.t$[i] == sel_font_ptr)
+				for (i=0; i<pDoc->trans.map.t$.GetSize() && del_index==-1; i++)
+					if (&pDoc->trans.map.t$[i] == sel_font_ptr)
 						del_index = i;
 
 				if (del_index != -1)
 				{
-					pDoc->tablemap.t$.RemoveAt(del_index, 1);
+					pDoc->trans.map.t$.RemoveAt(del_index, 1);
 					node = update_tree("Fonts");
 					if (node!=NULL)				
 						m_TableMapTree.SelectItem(node);
@@ -1667,13 +1665,13 @@ void CDlgTableMap::OnBnClickedDelete()
 			{
 				// Delete record from internal structure and update tree
 				del_index = -1;
-				for (i=0; i<pDoc->tablemap.p$.GetSize() && del_index==-1; i++)
-					if (&pDoc->tablemap.p$[i] == sel_hash_point_ptr)
+				for (i=0; i<pDoc->trans.map.p$.GetSize() && del_index==-1; i++)
+					if (&pDoc->trans.map.p$[i] == sel_hash_point_ptr)
 						del_index = i;
 
 				if (del_index != -1)
 				{
-					pDoc->tablemap.p$.RemoveAt(del_index, 1);
+					pDoc->trans.map.p$.RemoveAt(del_index, 1);
 					node = update_tree("Hash Points");
 					if (node!=NULL)				
 						m_TableMapTree.SelectItem(node);
@@ -1697,13 +1695,13 @@ void CDlgTableMap::OnBnClickedDelete()
 			{
 				// Delete record from internal structure and update tree
 				del_index = -1;
-				for (i=0; i<pDoc->tablemap.h$.GetSize() && del_index==-1; i++)
-					if (&pDoc->tablemap.h$[i] == sel_hash_value_ptr)
+				for (i=0; i<pDoc->trans.map.h$.GetSize() && del_index==-1; i++)
+					if (&pDoc->trans.map.h$[i] == sel_hash_value_ptr)
 						del_index = i;
 
 				if (del_index != -1)
 				{
-					pDoc->tablemap.h$.RemoveAt(del_index, 1);
+					pDoc->trans.map.h$.RemoveAt(del_index, 1);
 					node = update_tree("Hashes");
 					if (node!=NULL)				
 						m_TableMapTree.SelectItem(node);
@@ -1727,13 +1725,13 @@ void CDlgTableMap::OnBnClickedDelete()
 			{
 				// Delete record from internal structure and update tree
 				del_index = -1;
-				for (i=0; i<pDoc->tablemap.i$.GetSize() && del_index==-1; i++)
-					if (&pDoc->tablemap.i$[i] == sel_image_ptr)
+				for (i=0; i<pDoc->trans.map.i$.GetSize() && del_index==-1; i++)
+					if (&pDoc->trans.map.i$[i] == sel_image_ptr)
 						del_index = i;
 
 				if (del_index != -1)
 				{
-					pDoc->tablemap.i$.RemoveAt(del_index, 1);
+					pDoc->trans.map.i$.RemoveAt(del_index, 1);
 					node = update_tree("Images");
 					if (node!=NULL)				
 						m_TableMapTree.SelectItem(node);
@@ -1974,11 +1972,11 @@ void CDlgTableMap::OnBnClickedEdit()
 		if (parent==NULL)
 		{
 			// Prep dialog
-			for (i=0; i<pDoc->tablemap.p$.GetCount(); i++)
+			for (i=0; i<pDoc->trans.map.p$.GetCount(); i++)
 			{
-				temp_hash_point.number = pDoc->tablemap.p$[i].number;
-				temp_hash_point.x = pDoc->tablemap.p$[i].x;
-				temp_hash_point.y = pDoc->tablemap.p$[i].y;
+				temp_hash_point.number = pDoc->trans.map.p$[i].number;
+				temp_hash_point.x = pDoc->trans.map.p$[i].x;
+				temp_hash_point.y = pDoc->trans.map.p$[i].y;
 				dlggrhashpoints.working_hash_points.Add(temp_hash_point);
 			}
 
@@ -1986,7 +1984,7 @@ void CDlgTableMap::OnBnClickedEdit()
 			if (dlggrhashpoints.DoModal() == IDOK)
 			{
 				// Clear all existing hash points
-				pDoc->tablemap.p$.RemoveAll();
+				pDoc->trans.map.p$.RemoveAll();
 
 				// Load new has points from dialog into internal structure
 				for (i=0; i<dlggrhashpoints.working_hash_points.GetSize(); i++)
@@ -1994,7 +1992,7 @@ void CDlgTableMap::OnBnClickedEdit()
 					temp_hash_point.number = dlggrhashpoints.working_hash_points[i].number;
 					temp_hash_point.x = dlggrhashpoints.working_hash_points[i].x;
 					temp_hash_point.y = dlggrhashpoints.working_hash_points[i].y;
-					pDoc->tablemap.p$.Add(temp_hash_point);
+					pDoc->trans.map.p$.Add(temp_hash_point);
 				}
 
 				// Rebuild tree
@@ -2111,7 +2109,7 @@ void CDlgTableMap::OnBnClickedCreateImage()
 			}
 
 			// Insert the new record in the existing array of i$ records
-			new_index = (int) pDoc->tablemap.i$.Add(new_image);
+			new_index = (int) pDoc->trans.map.i$.Add(new_image);
 
 			// Find root of the Images node
 			image_node = m_TableMapTree.GetChildItem(NULL);
@@ -2128,7 +2126,7 @@ void CDlgTableMap::OnBnClickedCreateImage()
 			{
 				text.Format("%s (%dx%d)", new_image.name, new_image.width, new_image.height);
 				new_hti = m_TableMapTree.InsertItem(text.GetString(), image_node);
-				m_TableMapTree.SetItemData(new_hti, (DWORD_PTR) &pDoc->tablemap.i$[new_index]);
+				m_TableMapTree.SetItemData(new_hti, (DWORD_PTR) &pDoc->trans.map.i$[new_index]);
 				m_TableMapTree.SortChildren(image_node);
 			}
 
@@ -2161,7 +2159,6 @@ void CDlgTableMap::OnBnClickedCreateFont()
 	int					width, height, pos, x_cnt, scan_pos;
 	HDC					hdcScreen, hdc, hdc_region;
 	HBITMAP				old_bitmap, old_bitmap2, bitmap_region;
-	CTransform			trans;
 	bool				character[MAX_CHAR_WIDTH][MAX_CHAR_HEIGHT], background[MAX_CHAR_WIDTH];
 	char				*cresult, hexmash[MAX_CHAR_WIDTH*16];
 	int					char_field_x_begin, char_field_x_end, char_field_y_begin, char_field_y_end;
@@ -2201,7 +2198,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 		BitBlt(hdc_region, 0, 0, width, height, hdc, sel_region_ptr->left, sel_region_ptr->top, SRCCOPY);
 
 		// Get the pixels
-		trans.t_transform(&pDoc->tablemap, sel_region_ptr, hdc_region, &text, &separation, background, character);
+		pDoc->trans.t_transform(sel_region_ptr, hdc_region, &text, &separation, background, character);
 
 		// Clean up
 		SelectObject(hdc_region, old_bitmap2);
@@ -2215,10 +2212,10 @@ void CDlgTableMap::OnBnClickedCreateFont()
 		// populate hexmash array
 		int hexmash_array_size = 0;
 		int sel_region_text_group = atoi(sel_region_ptr->transform.Right(1));
-		for (i=0; i<(int) pDoc->tablemap.t$.GetSize(); i++)
+		for (i=0; i<(int) pDoc->trans.map.t$.GetSize(); i++)
 		{
-			if (pDoc->tablemap.t$[i].group == sel_region_text_group)
-				strcpy(hexmash_array[hexmash_array_size++], pDoc->tablemap.t$[i].hexmash);
+			if (pDoc->trans.map.t$[i].group == sel_region_text_group)
+				strcpy(hexmash_array[hexmash_array_size++], pDoc->trans.map.t$[i].hexmash);
 		}
 
 		// Scan through background, separate characters by looking for background bands
@@ -2239,11 +2236,13 @@ void CDlgTableMap::OnBnClickedCreateFont()
 				scan_pos++;
 
 			// We got a background bar, add element to array
-			trans.get_shift_left_down_indexes(start, scan_pos-start, height, background, character, 
-											  &char_field_x_begin, &char_field_x_end, &char_field_y_begin, &char_field_y_end);
+			pDoc->trans.get_shift_left_down_indexes(start, scan_pos-start, height, background, character, 
+												    &char_field_x_begin, &char_field_x_end, &char_field_y_begin, &char_field_y_end);
 
 			// Get individual hex values
-			trans.calc_hexmash(char_field_x_begin, char_field_x_end, char_field_y_begin, char_field_y_end, character, hexmash, true);
+			pDoc->trans.calc_hexmash(char_field_x_begin, char_field_x_end, char_field_y_begin, char_field_y_end, 
+									 character, hexmash, true);
+
 			hex.Format("%s", hexmash);
 			pos = x_cnt = 0;
 			num = hex.Tokenize(" ", pos);
@@ -2255,7 +2254,9 @@ void CDlgTableMap::OnBnClickedCreateFont()
 			new_font.x_count = x_cnt;
 
 			// Get whole hexmash
-			trans.calc_hexmash(char_field_x_begin, char_field_x_end, char_field_y_begin, char_field_y_end, character, hexmash, false);
+			pDoc->trans.calc_hexmash(char_field_x_begin, char_field_x_end, char_field_y_begin, char_field_y_end, 
+									 character, hexmash, false);
+
 			new_font.hexmash.Format("%s", hexmash);
 
 
@@ -2266,8 +2267,8 @@ void CDlgTableMap::OnBnClickedCreateFont()
 			// Populate new font record
 			if (cresult!=NULL) 
 			{
-				//new_font.ch = pDoc->tablemap.t$[((long)cresult - (long)hexmash_array[0]) / sizeof(hexmash_array[0])].ch;
-				//new_font.group = pDoc->tablemap.t$[((long)cresult - (long)hexmash_array[0]) / sizeof(hexmash_array[0])].group;
+				//new_font.ch = pDoc->trans.map.t$[((long)cresult - (long)hexmash_array[0]) / sizeof(hexmash_array[0])].ch;
+				//new_font.group = pDoc->trans.map.t$[((long)cresult - (long)hexmash_array[0]) / sizeof(hexmash_array[0])].group;
 
 				// Insert the new record in the existing array of i$ records
 				//new_t$_recs.Add(new_font);
@@ -2323,21 +2324,21 @@ void CDlgTableMap::OnBnClickedCreateFont()
 
 					// Insert into internal structure so it is sorted alphabetically by hexmash
 					insert_point = -1;
-					for (j=0; j<(int) pDoc->tablemap.t$.GetSize(); j++) 
+					for (j=0; j<(int) pDoc->trans.map.t$.GetSize(); j++) 
 					{
-						if (new_font.hexmash < pDoc->tablemap.t$[j].hexmash) 
+						if (new_font.hexmash < pDoc->trans.map.t$[j].hexmash) 
 						{
 							insert_point = j;
-							j=(int) pDoc->tablemap.t$.GetSize() + 1;
+							j=(int) pDoc->trans.map.t$.GetSize() + 1;
 						}
 					}
 					if (insert_point==-1) 
 					{
-						new_index = (int) pDoc->tablemap.t$.Add(new_font);
+						new_index = (int) pDoc->trans.map.t$.Add(new_font);
 					}
 					else 
 					{
-						pDoc->tablemap.t$.InsertAt(insert_point, new_font);
+						pDoc->trans.map.t$.InsertAt(insert_point, new_font);
 						new_index = insert_point;
 					}
 
@@ -2347,7 +2348,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 						// Insert the new records into the tree
 						text.Format("%c (%d)", new_font.ch, new_font.group);
 						new_hti = m_TableMapTree.InsertItem(text.GetString(), font_node);
-						m_TableMapTree.SetItemData(new_hti, (DWORD_PTR) &pDoc->tablemap.t$[new_index]);
+						m_TableMapTree.SetItemData(new_hti, (DWORD_PTR) &pDoc->trans.map.t$[new_index]);
 					}
 				}
 
@@ -2398,9 +2399,9 @@ void CDlgTableMap::OnBnClickedCreateHash()
 	sel = sel.Tokenize(" ", j);
 
 	// See which hash types are already present for this image
-	for (j=0; j<pDoc->tablemap.h$.GetSize(); j++)
-		if (pDoc->tablemap.h$[j].name == sel)
-			t[pDoc->tablemap.h$[j].number] = true;
+	for (j=0; j<pDoc->trans.map.h$.GetSize(); j++)
+		if (pDoc->trans.map.h$[j].name == sel)
+			t[pDoc->trans.map.h$[j].number] = true;
 
 	// Prepare dialog
 	dlghash.titletext = "Name of new font character";
@@ -2423,7 +2424,7 @@ void CDlgTableMap::OnBnClickedCreateHash()
 			new_hash.name = sel;
 			new_hash.number = atoi(dlghash.type.Mid(5,1).GetString());
 			new_hash.hash = 0;
-			new_index = (int) pDoc->tablemap.h$.Add(new_hash);
+			new_index = (int) pDoc->trans.map.h$.Add(new_hash);
 
 			// Warn to update hashes
 			//MessageBox("Hash record created.  Don't forget to 'Edit/Update Hashes'.");
@@ -2444,7 +2445,7 @@ void CDlgTableMap::OnBnClickedCreateHash()
 				// Add new record to tree
 				text.Format("%s (%d)", new_hash.name, new_hash.number);
 				new_hti = m_TableMapTree.InsertItem(text.GetString(), node);
-				m_TableMapTree.SetItemData(new_hti, (DWORD_PTR) &pDoc->tablemap.h$[new_index]);
+				m_TableMapTree.SetItemData(new_hti, (DWORD_PTR) &pDoc->trans.map.h$[new_index]);
 				m_TableMapTree.SortChildren(node);
 			}
 
@@ -2677,74 +2678,74 @@ void CDlgTableMap::create_tree(void)
 	// z$ records
 	parent = m_TableMapTree.InsertItem("Sizes");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
-	for (i=0; i<pDoc->tablemap.z$.GetSize(); i++) 
+	for (i=0; i<pDoc->trans.map.z$.GetSize(); i++) 
 	{
-		newitem = m_TableMapTree.InsertItem(pDoc->tablemap.z$[i].name, parent);
-		m_TableMapTree.SetItemData(newitem, (DWORD_PTR) &pDoc->tablemap.z$[i]);
+		newitem = m_TableMapTree.InsertItem(pDoc->trans.map.z$[i].name, parent);
+		m_TableMapTree.SetItemData(newitem, (DWORD_PTR) &pDoc->trans.map.z$[i]);
 	}
 	m_TableMapTree.SortChildren(parent);
 
 	// s$ records
 	parent = m_TableMapTree.InsertItem("Symbols");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
-	for (i=0; i<pDoc->tablemap.s$.GetSize(); i++) 
+	for (i=0; i<pDoc->trans.map.s$.GetSize(); i++) 
 	{
-		newitem = m_TableMapTree.InsertItem(pDoc->tablemap.s$[i].name, parent);
-		m_TableMapTree.SetItemData(newitem, (DWORD_PTR) &pDoc->tablemap.s$[i]);
+		newitem = m_TableMapTree.InsertItem(pDoc->trans.map.s$[i].name, parent);
+		m_TableMapTree.SetItemData(newitem, (DWORD_PTR) &pDoc->trans.map.s$[i]);
 	}
 	m_TableMapTree.SortChildren(parent);
 
 	// r$ records
 	parent = m_TableMapTree.InsertItem("Regions");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
-	for (i=0; i<pDoc->tablemap.r$.GetSize(); i++) 
+	for (i=0; i<pDoc->trans.map.r$.GetSize(); i++) 
 	{
-		newitem = m_TableMapTree.InsertItem(pDoc->tablemap.r$[i].name, parent);
-		m_TableMapTree.SetItemData(newitem, (DWORD_PTR) &pDoc->tablemap.r$[i]);
+		newitem = m_TableMapTree.InsertItem(pDoc->trans.map.r$[i].name, parent);
+		m_TableMapTree.SetItemData(newitem, (DWORD_PTR) &pDoc->trans.map.r$[i]);
 	}
 	m_TableMapTree.SortChildren(parent);
 
 	// t$ records
 	parent = m_TableMapTree.InsertItem("Fonts");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
-	for (i=0; i<pDoc->tablemap.t$.GetSize(); i++) 
+	for (i=0; i<pDoc->trans.map.t$.GetSize(); i++) 
 	{
-		text.Format("%c (%d)", pDoc->tablemap.t$[i].ch, pDoc->tablemap.t$[i].group);
+		text.Format("%c (%d)", pDoc->trans.map.t$[i].ch, pDoc->trans.map.t$[i].group);
 		newitem = m_TableMapTree.InsertItem(text, parent);
-		m_TableMapTree.SetItemData(newitem, (DWORD_PTR) &pDoc->tablemap.t$[i]);
+		m_TableMapTree.SetItemData(newitem, (DWORD_PTR) &pDoc->trans.map.t$[i]);
 	}
 	m_TableMapTree.SortChildren(parent);
 
 	// p$ records
 	parent = m_TableMapTree.InsertItem("Hash Points");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
-	for (i=0; i<pDoc->tablemap.p$.GetSize(); i++) 
+	for (i=0; i<pDoc->trans.map.p$.GetSize(); i++) 
 	{
-		text.Format("%d (%d, %d)", pDoc->tablemap.p$[i].number, pDoc->tablemap.p$[i].x, pDoc->tablemap.p$[i].y);
+		text.Format("%d (%d, %d)", pDoc->trans.map.p$[i].number, pDoc->trans.map.p$[i].x, pDoc->trans.map.p$[i].y);
 		newitem = m_TableMapTree.InsertItem(text, parent);
-		m_TableMapTree.SetItemData(newitem, (DWORD_PTR) &pDoc->tablemap.p$[i]);
+		m_TableMapTree.SetItemData(newitem, (DWORD_PTR) &pDoc->trans.map.p$[i]);
 	}
 	m_TableMapTree.SortChildren(parent);
 
 	// h$ records
 	parent = m_TableMapTree.InsertItem("Hashes");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
-	for (i=0; i<pDoc->tablemap.h$.GetSize(); i++) 
+	for (i=0; i<pDoc->trans.map.h$.GetSize(); i++) 
 	{
-		text.Format("%s (%d)", pDoc->tablemap.h$[i].name, pDoc->tablemap.h$[i].number);
+		text.Format("%s (%d)", pDoc->trans.map.h$[i].name, pDoc->trans.map.h$[i].number);
 		newitem = m_TableMapTree.InsertItem(text, parent);
-		m_TableMapTree.SetItemData(newitem, (DWORD_PTR) &pDoc->tablemap.h$[i]);
+		m_TableMapTree.SetItemData(newitem, (DWORD_PTR) &pDoc->trans.map.h$[i]);
 	}
 	m_TableMapTree.SortChildren(parent);
 
 	// i$ records
 	parent = m_TableMapTree.InsertItem("Images");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
-	for (i=0; i<pDoc->tablemap.i$.GetSize(); i++) 
+	for (i=0; i<pDoc->trans.map.i$.GetSize(); i++) 
 	{
-		text.Format("%s (%dx%d)", pDoc->tablemap.i$[i].name, pDoc->tablemap.i$[i].width, pDoc->tablemap.i$[i].height);
+		text.Format("%s (%dx%d)", pDoc->trans.map.i$[i].name, pDoc->trans.map.i$[i].width, pDoc->trans.map.i$[i].height);
 		newitem = m_TableMapTree.InsertItem(text, parent);
-		m_TableMapTree.SetItemData(newitem, (DWORD_PTR) &pDoc->tablemap.i$[i]);
+		m_TableMapTree.SetItemData(newitem, (DWORD_PTR) &pDoc->trans.map.i$[i]);
 	}
 	m_TableMapTree.SortChildren(parent);
 	UpdateStatus();

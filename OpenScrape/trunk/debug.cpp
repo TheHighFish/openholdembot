@@ -42,7 +42,8 @@ char * get_time(char * timebuf) {
 	return timebuf;
 }
 
-char * get_now_time(char * timebuf) {
+char * get_now_time(char * timebuf) 
+{
 	// returns current system time as a UNIX style string
 	time_t	ltime;
 

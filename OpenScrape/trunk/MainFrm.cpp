@@ -264,9 +264,18 @@ void CMainFrame::OnViewShowregionboxes()
 
 void CMainFrame::OnEditUpdatehashes()
 {
-	COpenScrapeDoc	*pDoc = COpenScrapeDoc::GetDocument();
+	int		ret;
 
-	if (pDoc->UpdateHashes() == SUCCESS)  MessageBox("Hashes updated successfully.", "Success", MB_OK);
+	COpenScrapeDoc	*pDoc = COpenScrapeDoc::GetDocument();
+	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
+
+	ret = pDoc->trans.update_hashes(pMyMainWnd->GetSafeHwnd(), startup_path);
+
+	// Redraw the tree
+	theApp.m_TableMapDlg->update_tree("");
+
+	if (ret == SUCCESS)  
+		MessageBox("Hashes updated successfully.", "Success", MB_OK);
 }
 
 void CMainFrame::OnTimer(UINT_PTR nIDEvent)

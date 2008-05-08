@@ -10,6 +10,12 @@ BUG FIXES:
 - Removed the statusbar of the tablemap dialog, which caused mispositioning and flickering.
   Displaying the information about unscraped cards and fonts now in 2 text fields. (TheHighFish)
 
+MAINTENANCE:
+- As part of the pdiff implementation and tuning, I got tired of updating the table map load/save
+  code in two places, and have moved this code to the CTransform class where it belongs.  A great
+  deal of code was touched (more than I anticipated), so please test carefully.  (OpenHoldem)
+  
+  
 v1.1.4 2008-04-25
 ================
 NEW STUFF:

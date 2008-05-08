@@ -4,9 +4,9 @@
 #include "stdafx.h"
 #include "resource.h"
 
-#include "DialogEditGrHashPoints.h"
 #include "OpenScrapeDoc.h"
 #include "registry.h"
+#include "DialogEditGrHashPoints.h"
 
 // CDlgEditGrHashPoints dialog
 CDlgEditGrHashPoints::CDlgEditGrHashPoints(CWnd* pParent /*=NULL*/)
@@ -61,11 +61,11 @@ BOOL CDlgEditGrHashPoints::OnInitDialog()
 
 	// Sample image list
 	m_Sample_Image.SetWindowPos(NULL, 0, 0, 86, 200, SWP_NOMOVE | SWP_NOZORDER);
-	for (i=0; i<pDoc->tablemap.i$.GetSize(); i++)
+	for (i=0; i<pDoc->trans.map.i$.GetSize(); i++)
 	{
-		text.Format("%s (%dx%d)", pDoc->tablemap.i$[i].name, pDoc->tablemap.i$[i].width, pDoc->tablemap.i$[i].height);
+		text.Format("%s (%dx%d)", pDoc->trans.map.i$[i].name, pDoc->trans.map.i$[i].width, pDoc->trans.map.i$[i].height);
 		new_item = m_Sample_Image.AddString(text.GetString());
-		m_Sample_Image.SetItemData(new_item, (DWORD_PTR) &pDoc->tablemap.i$[i]);
+		m_Sample_Image.SetItemData(new_item, (DWORD_PTR) &pDoc->trans.map.i$[i]);
 
 	}
 

@@ -4,8 +4,8 @@
 #include "stdafx.h"
 #include <math.h>
 
-#include "DialogEditFont.h"
 #include "OpenScrapeDoc.h"
+#include "DialogEditFont.h"
 
 // CDlgEditFont dialog
 
