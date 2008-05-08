@@ -136,6 +136,9 @@ void Registry::init_Defaults(void)
     LogSymbol_enabled = false;
     LogSymbol_max_log = 5;
 
+	Trace_enabled = false;
+	memset(Trace_functions, false, sizeof(bool)*nTraceFunctions);
+
     versus_path = "";
 
     __SEH_LOGFATAL("Registry::init_Defaults : \n");
@@ -416,6 +419,13 @@ void Registry::read_reg(void)
         read_OH_RegistryKey(hKey, "LogSymbol_enabled", &LogSymbol_enabled);
         read_OH_RegistryKey(hKey, "LogSymbol_max_log", &LogSymbol_max_log);
 
+        read_OH_RegistryKey(hKey, "Trace_enabled", &Trace_enabled);
+        read_OH_RegistryKey(hKey, "Trace_functions1", &Trace_functions[0]);
+        read_OH_RegistryKey(hKey, "Trace_functions2", &Trace_functions[1]);
+        read_OH_RegistryKey(hKey, "Trace_functions3", &Trace_functions[2]);
+        read_OH_RegistryKey(hKey, "Trace_functions4", &Trace_functions[3]);
+        read_OH_RegistryKey(hKey, "Trace_functions5", &Trace_functions[4]);
+
         read_OH_RegistryKey(hKey, "versus", &versus_path);
     }
 
@@ -556,6 +566,13 @@ void Registry::write_reg(void)
     // log$ loggin
     write_OH_RegistryKey(hKey, "LogSymbol_enabled", LogSymbol_enabled);
     write_OH_RegistryKey(hKey, "LogSymbol_max_log", LogSymbol_max_log);
+
+    write_OH_RegistryKey(hKey, "Trace_enabled", Trace_enabled);
+    write_OH_RegistryKey(hKey, "Trace_functions1", Trace_functions[0]);
+    write_OH_RegistryKey(hKey, "Trace_functions2", Trace_functions[1]);
+    write_OH_RegistryKey(hKey, "Trace_functions3", Trace_functions[2]);
+    write_OH_RegistryKey(hKey, "Trace_functions4", Trace_functions[3]);
+    write_OH_RegistryKey(hKey, "Trace_functions5", Trace_functions[4]);
 
     RegCloseKey(hKey);
 

@@ -4,6 +4,8 @@
 #include <boost/spirit/tree/ast.hpp>
 #include "../../CTransform/transform.h"
 
+typedef boost::spirit::node_val_data_factory<const char *> int_factory_t;
+
 #define VERSION_NUMBER				1.82
 #define VERSION_TEXT				"1.8.2"  // change version number in OpenHoldem.rc also, when needed
 
@@ -163,7 +165,7 @@ struct SFunction
 	CString		func;
 	CString		func_text;
 	bool		dirty;
-	boost::spirit::tree_parse_info<>	tpi;
+	boost::spirit::tree_parse_info<const char *, int_factory_t>	tpi;
 	bool		fresh;
 	double		cache;
 };
@@ -189,6 +191,12 @@ struct STableList
 	RECT		crect;
 };
 
+#define nTraceFunctions 5
+#define nTraceAlli 0
+#define nTraceSwag 1
+#define nTraceRais 2
+#define nTraceCall 3
+#define nTracePlay 4
 struct SPreferences 
 {
 	// Analyzer
@@ -249,6 +257,9 @@ struct SPreferences
     bool            LogSymbol_enabled;
     int             LogSymbol_max_log;
 
+    // Tracing
+	bool			Trace_enabled;
+	bool			Trace_functions[nTraceFunctions];
 };
 
 struct SDebugTabInfo 
@@ -256,7 +267,7 @@ struct SDebugTabInfo
 	bool				valid;
 	int					error;
 	CString				exp;
-	boost::spirit::tree_parse_info<>	tree;
+	boost::spirit::tree_parse_info<const char *, int_factory_t>	tree;
 	double				ret;
 };
 

@@ -176,7 +176,7 @@ double GetSymbolFromDll(int chair, const char* name, bool& iserr)
     int			e, stopchar;
     double		res;
     CString		str;
-    boost::spirit::tree_parse_info<>	tpi;
+    boost::spirit::tree_parse_info<const char *, int_factory_t>	tpi;
     bool		result;
 
     str.Format("%s", name);
@@ -185,7 +185,8 @@ double GetSymbolFromDll(int chair, const char* name, bool& iserr)
     if (result)
     {
         e = SUCCESS;
-        res = evaluate(&global.formula, tpi, &e);
+		int offset;
+        res = evaluate(&global.formula, tpi, NULL, &e);
     }
     else
     {

@@ -1,3 +1,4 @@
+#define nTraceFunctions 5
 
 class Registry {
 public:
@@ -104,6 +105,10 @@ public:
     // log$ logging
     bool            LogSymbol_enabled;
     int             LogSymbol_max_log;
+
+    // Tracing
+    bool            Trace_enabled;
+	bool			Trace_functions[nTraceFunctions];
 
 	// versus.bin path
 	CString			versus_path;

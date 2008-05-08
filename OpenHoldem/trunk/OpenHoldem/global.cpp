@@ -112,6 +112,9 @@ CGlobal::CGlobal(void)
     preferences.LogSymbol_enabled = reg.LogSymbol_enabled;
     preferences.LogSymbol_max_log = reg.LogSymbol_max_log;
 
+    preferences.Trace_enabled = reg.Trace_enabled;
+    memcpy(preferences.Trace_functions, reg.Trace_functions, sizeof(bool)*nTraceFunctions);
+
     // Check for versus.bin
     if ((fp = fopen("versus.bin", "rb"))!=NULL)
     {

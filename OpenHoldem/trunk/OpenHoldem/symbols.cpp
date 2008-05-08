@@ -333,6 +333,8 @@ void CSymbols::ResetSymbolsFirstTime(void)
     // log$ symbols
     logsymbols_collection.RemoveAll();
 
+	symboltrace_collection.RemoveAll();
+
     __SEH_LOGFATAL("CSymbols::ResetSymbolsFirstTime : \n");
 
 }
@@ -546,6 +548,8 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 
     // log$ symbols
     logsymbols_collection.RemoveAll();
+
+	symboltrace_collection.RemoveAll();
 
     __SEH_LOGFATAL("CSymbols::ResetSymbolsEveryCalc : \n");
 

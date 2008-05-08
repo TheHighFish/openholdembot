@@ -411,6 +411,7 @@ public:
 	time_t	elapsedautohold;				// The time since autoplayer acted
 
     CArray <CString, CString>   logsymbols_collection;    // Used to track the log$ symbols
+    CArray <CString, CString>   symboltrace_collection;    // Used to trace function execution
 
 private:
 	double Chair$(const char *a);

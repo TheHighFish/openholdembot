@@ -16,26 +16,51 @@
 #include "memory.h"
 #include "logsymbols.h"
 
-using namespace std;
-using namespace boost::spirit;
 //#include <boost/spirit/tree/tree_to_xml.hpp>
 
 ////////////////////////////////////////////////////////////////////////////
 
-bool parse (CString *s, tree_parse_info<> *i, int *stopchar)
+
+void SetPosition(parse_tree_match_t::node_t &node, 
+						const char *begin, 
+						const char *end)
+{
+	node.value.value(begin);
+}
+
+void setOffsets(iter_t &i, const char *start)
+{
+    __SEH_HEADER
+	if (i->value.value() != NULL)
+		i->value.value((const char *)(i->value.value()-start));
+	iter_t &cur = i->children.begin();
+	iter_t &end = i->children.end();
+	for (; cur != end; ++cur)
+		setOffsets(cur, start);
+    __SEH_LOGFATAL("grammar - setOffsets\n");
+}
+
+bool parse (CString *s, tree_parse_info<const char *, int_factory_t> *i, int *stopchar)
 {
     __SEH_HEADER
     exec_grammar	gram;
     string			str;
     skip_grammar	skip;
 
-    str = s->GetString();
+	str = s->GetString();
+	const char *last = str.c_str();
+    while (*last) last++;
+	
+    *i = ast_parse<int_factory_t>(str.c_str(), last, gram, skip, int_factory_t());
 
-    *i = ast_parse(str.c_str(), gram, skip);
-
-    if (i->full)
+	if (i->full)
     {
-        // parsing succeeded
+		iter_t &cur = i->trees.begin();
+		iter_t &end = i->trees.end();
+		for (; cur != end; ++cur)
+			setOffsets(cur, str.c_str());
+
+		// parsing succeeded
         *stopchar = -1;
         return true;
     }
@@ -48,10 +73,8 @@ bool parse (CString *s, tree_parse_info<> *i, int *stopchar)
     return true;
 
     __SEH_LOGFATAL("grammar - parse\n");
-
 }
-
-double calc_f$symbol(SFormula *f, char *symbol, int *e)
+double do_calc_f$symbol(SFormula *f, char *symbol, CEvalInfoFunction **logCallingFunction, bool skipCache, int *e)
 {
     __SEH_HEADER
     int		i;
@@ -67,15 +90,41 @@ double calc_f$symbol(SFormula *f, char *symbol, int *e)
         {
             if (strcmp(f->mFunction[i].func, symbol)==0)
             {
-                if (f->mFunction[i].fresh == true && !global.preferences.disable_caching)
+                if (f->mFunction[i].fresh == true && !global.preferences.disable_caching && !skipCache)
                 {
                     ret = f->mFunction[i].cache;
+					if (logCallingFunction && *logCallingFunction) {
+						if (!(*logCallingFunction)->m_CalledFunctions.FindFunction(symbol))
+							(*logCallingFunction)->m_CalledFunctions.Add(new CEvalInfoFunction(symbol, true, ret));
+					} else if (logCallingFunction && !*logCallingFunction)
+						*logCallingFunction = new CEvalInfoFunction(symbol, true, ret);
                     LeaveCriticalSection(&cs_calc_f$symbol);
                     return ret;
                 }
                 else
                 {
-                    ret = evaluate(f, f->mFunction[i].tpi, e);
+					CEvalInfoFunction *newFunc = NULL;
+					if (logCallingFunction)
+						newFunc = new CEvalInfoFunction(symbol);
+
+                    ret = evaluate(f, f->mFunction[i].tpi, newFunc, e);
+
+					if (newFunc) {
+						newFunc->m_Line = newFunc->m_Column = 1;
+						for (int c=0; c<newFunc->m_Offset; c++)
+						{
+							if (f->mFunction[i].func_text.Mid(c, 1)=="\n") {
+								newFunc->m_Line++;
+								newFunc->m_Column = 1;
+							} else
+								newFunc->m_Column++;
+						}
+						newFunc->m_Result = ret;
+						if (*logCallingFunction)
+							(*logCallingFunction)->m_CalledFunctions.Add(newFunc);
+						else
+							(*logCallingFunction) = newFunc;
+					}
                     f->mFunction[i].cache = ret;
                     if (*e == SUCCESS)
                         f->mFunction[i].fresh = true;
@@ -91,24 +140,37 @@ double calc_f$symbol(SFormula *f, char *symbol, int *e)
 
     return 0;
 
-
-    __SEH_LOGFATAL("grammar - calc_f$symbol\n");
-
+	__SEH_LOGFATAL("grammar - do_calc_f$symbol\n");
 }
 
+double calc_f$symbol(SFormula *f, char *symbol, int *e)
+{ 
+	return calc_f$symbol(f, symbol, false, e); 
+}
 
-double evaluate(SFormula *f, tree_parse_info<> info, int *e)
+double calc_f$symbol(SFormula *f, char *symbol, bool log, int *e)
 {
     __SEH_HEADER
+	CEvalInfoFunction *logCallingFunction = NULL;
+	double ret = do_calc_f$symbol(f, symbol, (log ? &logCallingFunction : NULL), log, e);
 
-    return eval_expression(f, info.trees.begin(), e);
+	if (logCallingFunction) {
+		logCallingFunction->DumpFunction(0);
+		delete logCallingFunction;
+	}
 
-
-    __SEH_LOGFATAL("grammar - evaluate :\n");
-
+	return ret;
+    __SEH_LOGFATAL("grammar - calc_f$symbol\n");
 }
 
-double eval_expression(SFormula *f, iter_t const& i, int *e)
+double evaluate(SFormula *f, tree_parse_info<const char *, int_factory_t> info, CEvalInfoFunction *logCallingFunction, int *e)
+{
+    __SEH_HEADER
+    return eval_expression(f, info.trees.begin(), logCallingFunction, e);
+    __SEH_LOGFATAL("grammar - evaluate\n");
+}
+
+double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction *logCallingFunction, int *e)
 {
     __SEH_HEADER
     double		result;
@@ -118,6 +180,9 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
 
     // Bounce errors up the stack
     if (*e != SUCCESS)  return 0;
+
+	if (logCallingFunction && logCallingFunction->m_Offset < (int)i->value.value())
+		logCallingFunction->m_Offset = (int)i->value.value();
 
     // Symbols
     if (i->value.id()==exec_grammar::SYMBOL_ID)
@@ -177,7 +242,7 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
             }
 
             // Calculate resultant udf
-            result = calc_f$symbol(f, f$func, e);
+            result = do_calc_f$symbol(f, f$func, &logCallingFunction, false, e);
             if (*e == SUCCESS)
             {
                 return result;
@@ -192,7 +257,7 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
         // f$ symbols
         else if (memcmp(sym.c_str(), "f$", 2)==0 && strcmp(sym.c_str(), "f$debug") != 0)
         {
-            return calc_f$symbol(f, (char *) sym.c_str(), e);
+            return do_calc_f$symbol(f, (char *) sym.c_str(), &logCallingFunction, false, e);
         }
 
         // dll$ symbols
@@ -322,10 +387,10 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
     {
         string type(i->value.begin(), i->value.end());
         if (memcmp(type.c_str(), "**", 2) == 0)
-            return pow(eval_expression(f, i->children.begin(), e), eval_expression(f, i->children.begin()+1, e));
+            return pow(eval_expression(f, i->children.begin(), logCallingFunction, e), eval_expression(f, i->children.begin()+1, logCallingFunction, e));
 
         else if (memcmp(type.c_str(), "ln", 2) == 0)
-            return log(eval_expression(f, i->children.begin(), e));
+            return log(eval_expression(f, i->children.begin(), logCallingFunction, e));
 
     }
 
@@ -333,16 +398,16 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
     else if (i->value.id() == exec_grammar::UNARY_EXPR_ID)
     {
         if (*i->value.begin() == '!')
-            return ! eval_expression(f, i->children.begin(), e);
+            return ! eval_expression(f, i->children.begin(), logCallingFunction, e);
 
         else if (*i->value.begin() == '~')
-            return ~ ((unsigned long) eval_expression(f, i->children.begin(), e));
+            return ~ ((unsigned long) eval_expression(f, i->children.begin(), logCallingFunction, e));
 
         else if (*i->value.begin() == '-')
-            return - eval_expression(f, i->children.begin(), e);
+            return - eval_expression(f, i->children.begin(), logCallingFunction, e);
 
         else if (*i->value.begin() == '`')
-            return bitcount((unsigned long) eval_expression(f, i->children.begin(), e));
+            return bitcount((unsigned long) eval_expression(f, i->children.begin(), logCallingFunction, e));
     }
 
     // Multiplicative
@@ -350,14 +415,14 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
     {
         if (*i->value.begin() == '*')
         {
-            return eval_expression(f, i->children.begin(), e) * eval_expression(f, i->children.begin()+1, e);
+            return eval_expression(f, i->children.begin(), logCallingFunction, e) * eval_expression(f, i->children.begin()+1, logCallingFunction, e);
         }
         else if (*i->value.begin() == '/')
         {
-            double div = eval_expression(f, i->children.begin()+1, e);
+            double div = eval_expression(f, i->children.begin()+1, logCallingFunction, e);
             if (div != 0)
             {
-                result = eval_expression(f, i->children.begin(), e) / div;
+                result = eval_expression(f, i->children.begin(), logCallingFunction, e) / div;
             }
             else
             {
@@ -369,10 +434,10 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
         }
         else if (*i->value.begin() == '%')
         {
-            unsigned long mod = (unsigned long) eval_expression(f, i->children.begin()+1, e);
+            unsigned long mod = (unsigned long) eval_expression(f, i->children.begin()+1, logCallingFunction, e);
             if (mod != 0)
             {
-                result = (double) ((unsigned long) eval_expression(f, i->children.begin(), e) % mod);
+                result = (double) ((unsigned long) eval_expression(f, i->children.begin(), logCallingFunction, e) % mod);
             }
             else
             {
@@ -388,10 +453,10 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
     else if (i->value.id() == exec_grammar::ADD_EXPR_ID)
     {
         if (*i->value.begin() == '+')
-            return eval_expression(f, i->children.begin(), e) + eval_expression(f, i->children.begin()+1, e);
+            return eval_expression(f, i->children.begin(), logCallingFunction, e) + eval_expression(f, i->children.begin()+1, logCallingFunction, e);
 
         else if (*i->value.begin() == '-')
-            return eval_expression(f, i->children.begin(), e) - eval_expression(f, i->children.begin()+1, e);
+            return eval_expression(f, i->children.begin(), logCallingFunction, e) - eval_expression(f, i->children.begin()+1, logCallingFunction, e);
     }
 
     // Shift
@@ -399,10 +464,10 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
     {
         string type(i->value.begin(), i->value.end());
         if (memcmp(type.c_str(), "<<", 2) == 0)
-            return (double) ((unsigned long) eval_expression(f, i->children.begin(), e) << (unsigned long) eval_expression(f, i->children.begin()+1, e));
+            return (double) ((unsigned long) eval_expression(f, i->children.begin(), logCallingFunction, e) << (unsigned long) eval_expression(f, i->children.begin()+1, logCallingFunction, e));
 
         else if (memcmp(type.c_str(), ">>", 2) == 0)
-            return (double) ((unsigned long) eval_expression(f, i->children.begin(), e) >> (unsigned long) eval_expression(f, i->children.begin()+1, e));
+            return (double) ((unsigned long) eval_expression(f, i->children.begin(), logCallingFunction, e) >> (unsigned long) eval_expression(f, i->children.begin()+1, logCallingFunction, e));
     }
 
     // Relational
@@ -410,16 +475,16 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
     {
         string type(i->value.begin(), i->value.end());
         if (memcmp(type.c_str(), "<=", 2) == 0)
-            return eval_expression(f, i->children.begin(), e) <= eval_expression(f, i->children.begin()+1, e);
+            return eval_expression(f, i->children.begin(), logCallingFunction, e) <= eval_expression(f, i->children.begin()+1, logCallingFunction, e);
 
         else if (memcmp(type.c_str(), ">=", 2) == 0)
-            return eval_expression(f, i->children.begin(), e) >= eval_expression(f, i->children.begin()+1, e);
+            return eval_expression(f, i->children.begin(), logCallingFunction, e) >= eval_expression(f, i->children.begin()+1, logCallingFunction, e);
 
         else if (memcmp(type.c_str(), "<", 1) == 0)
-            return eval_expression(f, i->children.begin(), e) < eval_expression(f, i->children.begin()+1, e);
+            return eval_expression(f, i->children.begin(), logCallingFunction, e) < eval_expression(f, i->children.begin()+1, logCallingFunction, e);
 
         else if (memcmp(type.c_str(), ">", 1) == 0)
-            return eval_expression(f, i->children.begin(), e) > eval_expression(f, i->children.begin()+1, e);
+            return eval_expression(f, i->children.begin(), logCallingFunction, e) > eval_expression(f, i->children.begin()+1, logCallingFunction, e);
     }
 
     // Equality
@@ -427,63 +492,141 @@ double eval_expression(SFormula *f, iter_t const& i, int *e)
     {
         string type(i->value.begin(), i->value.end());
         if (memcmp(type.c_str(), "==", 2) == 0)
-            return eval_expression(f, i->children.begin(), e) == eval_expression(f, i->children.begin()+1, e);
+            return eval_expression(f, i->children.begin(), logCallingFunction, e) == eval_expression(f, i->children.begin()+1, logCallingFunction, e);
 
         else if (memcmp(type.c_str(), "!=", 2) == 0)
-            return eval_expression(f, i->children.begin(), e) != eval_expression(f, i->children.begin()+1, e);
+            return eval_expression(f, i->children.begin(), logCallingFunction, e) != eval_expression(f, i->children.begin()+1, logCallingFunction, e);
     }
 
     // Binary AND
     else if (i->value.id() == exec_grammar::BINARY_AND_EXPR_ID)
     {
-        return (double) ((unsigned long) eval_expression(f, i->children.begin(), e) & (unsigned long) eval_expression(f, i->children.begin()+1, e));
+        return (double) ((unsigned long) eval_expression(f, i->children.begin(), logCallingFunction, e) & (unsigned long) eval_expression(f, i->children.begin()+1, logCallingFunction, e));
     }
 
     // Binary XOR
     else if (i->value.id() == exec_grammar::BINARY_XOR_EXPR_ID)
     {
-        return (double) ((unsigned long) eval_expression(f, i->children.begin(), e) ^ (unsigned long) eval_expression(f, i->children.begin()+1, e));
+        return (double) ((unsigned long) eval_expression(f, i->children.begin(), logCallingFunction, e) ^ (unsigned long) eval_expression(f, i->children.begin()+1, logCallingFunction, e));
     }
 
     // Binary OR
     else if (i->value.id() == exec_grammar::BINARY_OR_EXPR_ID)
     {
-        return (double) ((unsigned long) eval_expression(f, i->children.begin(), e) | (unsigned long) eval_expression(f, i->children.begin()+1, e));
+        return (double) ((unsigned long) eval_expression(f, i->children.begin(), logCallingFunction, e) | (unsigned long) eval_expression(f, i->children.begin()+1, logCallingFunction, e));
     }
 
     // Logical AND
     else if (i->value.id() == exec_grammar::LOGICAL_AND_EXPR_ID)
     {
-        return (double) ( eval_expression(f, i->children.begin(), e)>0 && eval_expression(f, i->children.begin()+1, e)>0 );
+        return (double) ( eval_expression(f, i->children.begin(), logCallingFunction, e)>0 && eval_expression(f, i->children.begin()+1, logCallingFunction, e)>0 );
     }
 
     // Logical XOR
     else if (i->value.id() == exec_grammar::LOGICAL_XOR_EXPR_ID)
     {
-        return (double) ( eval_expression(f, i->children.begin(), e) != eval_expression(f, i->children.begin()+1, e) );
+        return (double) ( eval_expression(f, i->children.begin(), logCallingFunction, e) != eval_expression(f, i->children.begin()+1, logCallingFunction, e) );
     }
 
     // Logical OR
     else if (i->value.id() == exec_grammar::LOGICAL_OR_EXPR_ID)
     {
-        return (double) ( eval_expression(f, i->children.begin(), e)>0 || eval_expression(f, i->children.begin()+1, e)>0 );
+        return (double) ( eval_expression(f, i->children.begin(), logCallingFunction, e)>0 || eval_expression(f, i->children.begin()+1, logCallingFunction, e)>0 );
     }
 
     // Conditional
     else if (i->value.id() == exec_grammar::COND_EXPR_ID)
     {
-        if (eval_expression(f, i->children.begin(), e))
-            return eval_expression(f, i->children.begin()+1, e);
+        if (eval_expression(f, i->children.begin(), logCallingFunction, e))
+            return eval_expression(f, i->children.begin()+1, logCallingFunction, e);
 
         else
-            return eval_expression(f, i->children.begin()+3, e);
+            return eval_expression(f, i->children.begin()+3, logCallingFunction, e);
     }
 
     // Error
     *e = ERR_INVALID_EXPR;
     return 0;
 
-    __SEH_LOGFATAL("grammar - eval_expression :\n");
-
+    __SEH_LOGFATAL("grammar - do_eval_expression :\n");
 }
 
+double eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction *logCallingFunction, int *e)
+{
+    __SEH_HEADER
+    string sym(i->value.begin(), i->value.end());
+	parser_id tp = i->value.id();
+
+	double ret = do_eval_expression(f, i, logCallingFunction, e);
+
+	if (logCallingFunction && tp == exec_grammar::SYMBOL_ID) {
+		if (!logCallingFunction->m_SymbolsUsed.FindSymbol(sym.c_str()) && !logCallingFunction->m_CalledFunctions.FindFunction(sym.c_str()))
+			logCallingFunction->m_SymbolsUsed.Add(new CEvalInfoSymbol(sym.c_str(), ret));
+	}
+
+	return ret;
+    __SEH_LOGFATAL("grammar - eval_expression\n");
+}
+
+
+void CEvalInfoFunctionArray::DumpFunctionArray(int indent)
+{
+    __SEH_HEADER
+	indent++;
+	for (int i=0;i<GetSize();i++)
+		GetAt(i)->DumpFunction(indent);
+    __SEH_LOGFATAL("CEvalInfoFunctionArray::DumpFunctionArray\n");
+}
+
+void CEvalInfoSymbol::DumpSymbol(int indent)
+{
+    __SEH_HEADER
+	CString message, format;
+	if (indent > 0) {
+		format.Format("%%%ds%%s=%%.2f", indent*3);
+		message.Format(format, "", m_Symbol, m_Value);
+	} else
+		message.Format("%s=%.2f", m_Symbol, m_Value);
+    symbols.symboltrace_collection.Add(message);
+	OutputDebugString(message);
+    __SEH_LOGFATAL("CEvalInfoSymbol::DumpSymbol\n");
+};
+void CEvalInfoSymbolArray::DumpSymbolArray(int indent)
+{
+    __SEH_HEADER
+	indent++;
+	for (int i=0;i<GetSize();i++)
+		GetAt(i)->DumpSymbol(indent);
+    __SEH_LOGFATAL("CEvalInfoSymbolArray::DumpSymbolArray\n");
+}
+
+void CEvalInfoFunction::DumpFunction(int indent)
+{
+    __SEH_HEADER
+	CString message, format, space;
+	if (indent > 0) {
+		format.Format("%%%ds", indent*3);
+		space.Format(format, "");
+	}
+	if (m_Cached)
+		message.Format("%s%s=%.2f [Cached]", space, m_FunctionName, m_Result);
+	else
+		message.Format("%s%s=%.2f [Line: %d, Col: %d]", space, m_FunctionName, m_Result, m_Line, m_Column);
+    symbols.symboltrace_collection.Add(message);
+	OutputDebugString(message);
+
+	m_CalledFunctions.DumpFunctionArray(indent+1);
+	m_SymbolsUsed.DumpSymbolArray(indent+1);
+    __SEH_LOGFATAL("CEvalInfoFunction::DumpFunction\n");
+}
+
+CEvalInfoFunction *CEvalInfoFunctionArray::FindFunction(const char *name) 
+{
+    __SEH_HEADER
+	for (int i=0;i<GetSize();i++) {
+		if (!GetAt(i)->m_FunctionName.Compare(name))
+			return GetAt(i);
+	}
+	return NULL;
+    __SEH_LOGFATAL("CEvalInfoFunctionArray::FindFunction\n");
+}

@@ -455,7 +455,7 @@ void CMainFrame::OnEditPreferences() {
     dlg.AddPage(page10, "Chat");
     dlg.AddPage(page3, "DLL Extension");
     dlg.AddPage(page7, "ICM");
-    dlg.AddPage(page11, "Log Symbol");
+    dlg.AddPage(page11, "Logging");
     dlg.AddPage(page9, "Perl");
     dlg.AddPage(page6, "Poker Tracker");
     dlg.AddPage(page8, "Replay Frames");
@@ -559,11 +559,16 @@ void CMainFrame::OnFileOpen() {
     cfd.m_ofn.lpstrTitle = "Select Formula file to OPEN";
     if (cfd.DoModal() == IDOK)
     {
+        CFile cf_whf;
+        cf_whf.Open(cfd.GetPathName(), CFile::modeNoTruncate | CFile::modeRead);
+        CArchive ar_whf(&cf_whf, CArchive::load);
         COpenHoldemDoc *pDoc = (COpenHoldemDoc *)this->GetActiveDocument();
-		pDoc->OnOpenDocument(cfd.GetPathName());
-		pDoc->SetPathName(cfd.GetPathName());
+        pDoc->Serialize(ar_whf);
+        cf_whf.Close();
+        ar_whf.Close();
 
-        // Update window title, registry
+        // Update MRU, window title, registry
+        // ((COpenHoldemApp*)AfxGetApp())->addMRU(cfd.GetPathName());
         SetWindowText(cfd.GetFileTitle() + " - " + CString(MAKEINTRESOURCE(AFX_IDS_APP_TITLE)));
         Registry::writeRegString(theKey, cfd.GetPathName());
     }

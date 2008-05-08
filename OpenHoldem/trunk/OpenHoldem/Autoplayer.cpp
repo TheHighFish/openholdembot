@@ -130,7 +130,7 @@ void Autoplayer::do_autoplayer(void) {
 
     // Handle f$play
     error = SUCCESS;
-    symbols.f$play = calc_f$symbol(&global.formula, "f$play", &error);
+	symbols.f$play = calc_f$symbol(&global.formula, "f$play", global.preferences.Trace_functions[nTracePlay], &error);
     do_f$play();
 
     // Handle i86buttons
@@ -186,13 +186,13 @@ void Autoplayer::do_autoplayer(void) {
     // calculate f$alli, f$swag, f$rais, and f$call for autoplayer's use
     symbols.sym.isfinalanswer = true;
     error = SUCCESS;
-    symbols.f$alli = calc_f$symbol(&global.formula, "f$alli", &error);
+	symbols.f$alli = calc_f$symbol(&global.formula, "f$alli", global.preferences.Trace_functions[nTraceAlli], &error);
     error = SUCCESS;
-    symbols.f$swag = calc_f$symbol(&global.formula, "f$swag", &error);
+    symbols.f$swag = calc_f$symbol(&global.formula, "f$swag", global.preferences.Trace_functions[nTraceSwag], &error);
     error = SUCCESS;
-    symbols.f$rais = calc_f$symbol(&global.formula, "f$rais", &error);
+    symbols.f$rais = calc_f$symbol(&global.formula, "f$rais", global.preferences.Trace_functions[nTraceRais], &error);
     error = SUCCESS;
-    symbols.f$call = calc_f$symbol(&global.formula, "f$call", &error);
+    symbols.f$call = calc_f$symbol(&global.formula, "f$call", global.preferences.Trace_functions[nTraceCall], &error);
     symbols.sym.isfinalanswer = false;
 
     // do swag first since it is the odd one

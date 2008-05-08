@@ -371,6 +371,27 @@ void write_log(char* fmt, ...) {
 
 }
 
+void write_log_nostamp(char* fmt, ...) {
+    __SEH_HEADER
+    char		buff[10000] ;
+    va_list		ap;
+
+    if (log_fp != NULL) {
+
+        va_start(ap, fmt);
+        vsprintf(buff, fmt, ap);
+        fprintf(log_fp, "%s", buff);
+
+        va_end(ap);
+
+        fflush(log_fp);
+    }
+
+
+    __SEH_LOGFATAL("::write_log_nostamp\n");
+
+}
+
 void write_log_autoplay(const char * action) {
     __SEH_HEADER
     char		nowtime[26];
@@ -545,14 +566,20 @@ void write_log_autoplay(const char * action) {
         fprintf(log_fp, "%2d %8d %-10s - ", (int) symbols.sym.nopponents, (int) symbols.sym.nit, bestaction.GetString());
         fprintf(log_fp, "%-5s %9.2f %9.2f %9.2f ", action, symbols.sym.call, symbols.sym.bet[4], symbols.sym.pot);
         fprintf(log_fp, "%9.2f - %s %s %.2f\n", symbols.sym.balance[10], fcra_seen.GetString(), fcra_formula_status.GetString(), symbols.f$swag);
-
+        if (global.preferences.Trace_enabled && symbols.symboltrace_collection.GetSize() > 0)
+        {
+            write_log_nostamp("***** Autoplayer Trace ****\n");
+            for (int i=0; i<symbols.symboltrace_collection.GetSize(); i++)
+            {
+                write_log_nostamp("%s\n", symbols.symboltrace_collection[i]);
+            }
+            write_log_nostamp("***********************\n");
+		}
         fflush(log_fp);
 
     }
 
-
-    __SEH_LOGFATAL("::write_log_autoplay\n");
-
+	__SEH_LOGFATAL("::write_log_autoplay\n");
 }
 
 void stop_log(void) {

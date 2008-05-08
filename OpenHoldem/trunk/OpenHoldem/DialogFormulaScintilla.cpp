@@ -1991,7 +1991,7 @@ void CDlgFormulaScintilla::OnBnClickedAuto()
     __SEH_HEADER
     if (m_ButtonAuto.GetCheck() == 1)
     {
-        boost::spirit::tree_parse_info<>	tpi;
+        boost::spirit::tree_parse_info<const char *, int_factory_t>	tpi;
         CString  s;
 
         ok_to_update_debug = false;
@@ -2064,7 +2064,7 @@ void CDlgFormulaScintilla::update_debug_auto(void) {
     for (i=0; i<N; i++) {
         if (debug_ar[i].valid) {
             debug_ar[i].error = SUCCESS;
-            debug_ar[i].ret = evaluate(&m_wrk_formula, debug_ar[i].tree, &debug_ar[i].error);
+            debug_ar[i].ret = evaluate(&m_wrk_formula, debug_ar[i].tree, NULL, &debug_ar[i].error);
         }
         else {
             debug_ar[i].ret = 0;

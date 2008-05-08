@@ -23,7 +23,9 @@ protected:
 
 public:
 	CButton m_EnableLog;
+	CButton m_EnableTrace;
     CEdit m_MaximumLog;
+	CCheckListBox m_TraceList;
 	CSpinButtonCtrl m_MaximumLog_Spin;
 	virtual BOOL OnInitDialog();
 protected:

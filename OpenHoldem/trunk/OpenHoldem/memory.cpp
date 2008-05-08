@@ -84,7 +84,7 @@ void Memory::store_value(const char * pquery, int *e)
     if (memcmp(value,"f$",2)==0)
     {
         *e = SUCCESS;
-        result = calc_f$symbol(&global.formula, value, e);
+        result = calc_f$symbol(&global.formula, value, true, e);
 
         if (*e==SUCCESS)
         {
