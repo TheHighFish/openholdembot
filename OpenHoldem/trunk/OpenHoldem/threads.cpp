@@ -420,6 +420,10 @@ UINT __cdecl prwin_thread(LPVOID pParam)
     error = SUCCESS;
     topclip = (int) calc_f$symbol(&global.formula, "f$topclip", &error);
 
+	if ((symbols.prw1326.useme==1326)&&(symbols.prw1326.usecallback==1326)&&((symbols.sym.br!=1)||(symbols.prw1326.preflop==1326)))
+		(*symbols.prw1326.prw_callback)(); //Matrix 2008-05-09
+
+
     for (nit=0; nit < sym_nit && prwin_thread_alive; nit++)
     {
 
