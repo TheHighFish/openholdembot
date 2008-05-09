@@ -587,7 +587,6 @@ void CEvalInfoSymbol::DumpSymbol(int indent)
 	} else
 		message.Format("%s=%.2f", m_Symbol, m_Value);
     symbols.symboltrace_collection.Add(message);
-	OutputDebugString(message);
     __SEH_LOGFATAL("CEvalInfoSymbol::DumpSymbol\n");
 };
 void CEvalInfoSymbolArray::DumpSymbolArray(int indent)
@@ -612,7 +611,6 @@ void CEvalInfoFunction::DumpFunction(int indent)
 	else
 		message.Format("%s%s=%.2f [Line: %d, Col: %d]", space, m_FunctionName, m_Result, m_Line, m_Column);
     symbols.symboltrace_collection.Add(message);
-	OutputDebugString(message);
 
 	m_CalledFunctions.DumpFunctionArray(indent+1);
 	m_SymbolsUsed.DumpSymbolArray(indent+1);
