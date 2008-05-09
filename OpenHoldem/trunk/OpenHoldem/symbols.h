@@ -65,6 +65,7 @@ struct S_symbols
 	double seatposition;
 	double dealpositionrais;
 	double betpositionrais;
+	double originaldealposition; //Matrix 2008-05-09
 
 	//PROBABILITIES
 	double prwin;

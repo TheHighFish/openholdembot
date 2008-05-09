@@ -447,6 +447,7 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 
     // rounds positions
     sym.betposition = sym.dealposition = sym.callposition = sym.seatposition = 1;
+//	if(sym.playing)sym.dealposition = 1; //Matrix 2008-05-08 didn't work
     sym.dealpositionrais = sym.betpositionrais = 1;
 
     // statistics
@@ -782,6 +783,8 @@ void CSymbols::CalcSymbols(void)
         calc_fl_str_set();				// flushes, straights, sets
         calc_rankbits();				// rankbits, rankhi, ranklo
         versus.get_counts();			// calculate versus values
+
+		sym.originaldealposition = sym.dealposition; //remember dealposition Matrix 2008-05-09
     }
 
     calc_history();						// history symbols
@@ -3549,6 +3552,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
     if (memcmp(a, "seatposition", 12)==0 && strlen(a)==12)				return sym.seatposition;
     if (memcmp(a, "dealpositionrais", 16)==0 && strlen(a)==16)			return sym.dealpositionrais;
     if (memcmp(a, "betpositionrais", 15)==0 && strlen(a)==15)			return sym.betpositionrais;
+    if (memcmp(a, "originaldealposition", 20)==0 && strlen(a)==20)		return sym.originaldealposition; //Matrix 2008-05-09
 
     //PROBABILITIES
     if (memcmp(a, "prwin", 5)==0 && strlen(a)==5)						return sym.prwin;
