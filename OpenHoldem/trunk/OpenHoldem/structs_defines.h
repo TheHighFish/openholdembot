@@ -6,8 +6,8 @@
 
 typedef boost::spirit::node_val_data_factory<const char *> int_factory_t;
 
-#define VERSION_NUMBER				1.83
-#define VERSION_TEXT				"1.8.3"  // change version number in OpenHoldem.rc also, when needed
+#define VERSION_NUMBER				1.90
+#define VERSION_TEXT				"1.9.0"  // change version number in OpenHoldem.rc also, when needed
 
 // thread timeout
 #define THREAD_WAIT					3000

@@ -1,4 +1,4 @@
-v1.8.3 2008-05-16
+v1.9.0 2008-05-16
 =================
 NEW STUFF:
 - Autoplayer Tracing - In Edit->Preferences,Logging you can now enable tracing of specific
