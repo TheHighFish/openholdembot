@@ -50,6 +50,9 @@ BUG FIXES:
   
 - New variable originaldealposition added which remembers dealposition even when the user has folded
   a hand. (Matrix)
+
+- Fix in Autoplayer::check_bring_keyboard to correctly enumerate bring system menu items (Thanks,
+  AndreL for the fix) (OpenHoldem)
   
   
 MAINTENANCE:

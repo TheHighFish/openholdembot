@@ -1497,10 +1497,11 @@ void Autoplayer::check_bring_keyboard(void) {
     mii.fMask = MIIM_STRING;
     mii.fType = MFT_STRING;
     mii.dwTypeData = temp;
-    mii.cch = 256;
     keybd_item_pos = -1;
     for (i=GetMenuItemCount(bringsysmenu)-1; i>=0; i--) {
-        // Get the text of this menu item
+	    mii.cch = 256;
+    
+		// Get the text of this menu item
         GetMenuItemInfo(bringsysmenu, i, true, &mii);
         c_text = temp;
 
