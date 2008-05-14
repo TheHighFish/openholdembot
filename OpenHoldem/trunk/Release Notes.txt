@@ -54,6 +54,9 @@ BUG FIXES:
 - Fix in Autoplayer::check_bring_keyboard to correctly enumerate bring system menu items (Thanks,
   AndreL for the fix) (OpenHoldem)
   
+- Fix to count_same_scrapes() location in Autoplayer::do_autoplayer, so that it is updated for every 
+  frame and not only for the ones where 2 buttons are visible.  (Thanks Spud) (OpenHoldem)
+  
   
 MAINTENANCE:
 - Active and seated scraping now evaluates p first for efficiency.  (quiqsilver)

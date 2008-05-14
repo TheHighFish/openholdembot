@@ -154,6 +154,9 @@ void Autoplayer::do_autoplayer(void) {
         do_Chat();
     }
 
+	// Get count of stable frames for use a little bit further down
+    x = count_same_scrapes();
+
     // If we are in a scrape/symbol calc cycle, then return
     if (scrape_running)
         return;
@@ -179,8 +182,8 @@ void Autoplayer::do_autoplayer(void) {
     // If we don't have enough stable frames, or have not waited f$delay milliseconds, then return (modified Spektre 2008-04-03)
     symbols.f$delay = calc_f$symbol(&global.formula, "f$delay", &error);
     delay = symbols.f$delay / global.preferences.scrape_delay;    // scale f$delay to a number of scrapes
-    x = count_same_scrapes();
-    if (x < (int) global.preferences.frame_delay + delay)
+
+	if (x < (int) global.preferences.frame_delay + delay)
         return;
 
     // calculate f$alli, f$swag, f$rais, and f$call for autoplayer's use
@@ -196,10 +199,12 @@ void Autoplayer::do_autoplayer(void) {
     symbols.sym.isfinalanswer = false;
 
     // do swag first since it is the odd one
-    if (symbols.f$swag && !symbols.f$alli && scraper.get_button_state(3)) {
+    if (symbols.f$swag && !symbols.f$alli && scraper.get_button_state(3)) 
+	{
         do_swag();
     }
-    else {
+    else 
+	{
 		if (symbols.f$alli) do_slider();
 		else do_arccf();
     }
