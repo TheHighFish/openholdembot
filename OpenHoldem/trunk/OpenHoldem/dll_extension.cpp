@@ -164,7 +164,7 @@ void CDll::unload_dll(void)
     __SEH_HEADER
     if (hMod_dll==NULL)
         return;
-
+	symbols.prw1326.useme=0;
     (process_message) ("event", "unload");
 
     if (FreeLibrary(hMod_dll))
