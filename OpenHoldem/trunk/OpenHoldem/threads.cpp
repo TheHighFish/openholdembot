@@ -439,22 +439,41 @@ UINT __cdecl prwin_thread(LPVOID pParam)
 				if(i==symbols.sym.userchair)continue; //skip our own chair!
 				if(!((int)symbols.sym.playersplayingbits & (1<<i)))continue; //skip inactive chairs
 				nopp++; //we have to use actual opponents for prw1326 calculations
+				//first deal with the special non-weighted cases
+				//player who is marked 'ignore' or one who is BB and has not VPIP'd
+				if(symbols.prw1326.chair[i].ignore || (symbols.prw1326.bblimp && (symbols.sym.nbetsround[0]<1.1) && ((int)symbols.sym.bblindbits&(1<<i))))
+				{
+                    do {
+                        card = rand() & 63;
+                    }
+                    while (card>51 || CardMask_CARD_IS_SET(usedCards, card));
+                    CardMask_SET(usedCards, card);
+                    ocard[k++] = card;
+
+                    do {
+	                    card = rand() & 63;
+		            }
+			        while (card>51 || CardMask_CARD_IS_SET(usedCards, card));
+				    CardMask_SET(usedCards, card);
+                    ocard[k++] = card;
+					continue;
+				} // end of special non-weighted cases
+				randfix=(RAND_MAX/symbols.prw1326.chair[i].limit)*symbols.prw1326.chair[i].limit;
 				for(;;)
-				{ //find a possible hand for this chair
-					randfix=(RAND_MAX/symbols.prw1326.chair[i].limit)*symbols.prw1326.chair[i].limit;
+				{ //find a possible hand for this chair NOTE: may want to put in loop limits to prevent hanging
 					do {
 						j=rand();
 					} while (j>=randfix);
 					j=j%symbols.prw1326.chair[i].limit; //j is now any one of the allowed hands
 					if(CardMask_CARD_IS_SET(usedCards,symbols.prw1326.chair[i].rankhi[j] ))continue; //hand contains dead card
 					if(CardMask_CARD_IS_SET(usedCards,symbols.prw1326.chair[i].ranklo[j] ))continue; //hand contains dead card
-					if(symbols.prw1326.chair[i].ignore)break; //chair marked as not to be weighted
+//					if(symbols.prw1326.chair[i].ignore)break; //chair marked as not to be weighted
 					if(symbols.prw1326.chair[i].level<=symbols.prw1326.chair[i].weight[j])break; //hand marked as always uae
 					//check if we want a player who is BB and has not VPIP'd to be analysed further
-					if(symbols.prw1326.bblimp)
-					{
-				    if ((symbols.sym.nbetsround[0]<1.1) && ((int)symbols.sym.bblindbits&(1<<i)))break;
-					}
+//					if(symbols.prw1326.bblimp)
+//					{
+//				    if ((symbols.sym.nbetsround[0]<1.1) && ((int)symbols.sym.bblindbits&(1<<i)))break;
+//					}
 					//we should really do a 'randfix' here for the case where RAND_MAX is not an integral
 					//multiple of .level, but the bias introduced is trivial compared to other uncertainties.
 					if(rand()%symbols.prw1326.chair[i].level<=symbols.prw1326.chair[i].weight[j])break; //allowable
