@@ -2117,9 +2117,11 @@ void CDlgTableMap::OnBnClickedCreateImage()
 					blue = pDoc->attached_pBits[y*width*4 + x*4 + 0];
 
 					// image record is stored internally in ABGR format
-					pDoc->trans.map.i$[new_index].pixel[pix_cnt++] = (alpha<<24) + (blue<<16) + (green<<8) + red;
+					pDoc->trans.map.i$[new_index].pixel[pix_cnt] = (alpha<<24) + (blue<<16) + (green<<8) + red;
 
-					pDoc->trans.map.i$[new_index].image->Set(red, green, blue, alpha, y*pDoc->trans.map.i$[new_index].width + x);
+					pDoc->trans.map.i$[new_index].image->Set(red, green, blue, alpha, pix_cnt);
+
+					pix_cnt++;
 				}
 			}
 
