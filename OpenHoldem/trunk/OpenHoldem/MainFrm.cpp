@@ -650,7 +650,7 @@ void CMainFrame::OnBnClickedGreenCircle()
     int								result;
     char							title[512];
     CFileFind						hFile;
-    CString							path, filename;
+    CString							path, filename, current_path;
     BOOL							bFound;
     int								last_frame_num, frame_num;
     CTime							time, latest_time;
@@ -659,8 +659,12 @@ void CMainFrame::OnBnClickedGreenCircle()
     global.g_tlist.RemoveAll();
 
     // First check explicitly loaded/last used tablemap
+	current_path = "";
     if (global.trans.map.valid)
+	{
 	    EnumWindows(EnumProcTopLevelWindowList, (LPARAM) &global.trans.map);
+		current_path = global.trans.map.filepath;
+	}
 
     // OpenScrape table maps
     path.Format("%s\\scraper\\*.tm", global.startup_path);
@@ -668,7 +672,7 @@ void CMainFrame::OnBnClickedGreenCircle()
     while (bFound)
     {
         bFound = hFile.FindNextFile();
-        if (!hFile.IsDots() && !hFile.IsDirectory() && hFile.GetFilePath()!=global.trans.map.filepath)
+        if (!hFile.IsDots() && !hFile.IsDirectory() && hFile.GetFilePath()!=current_path)
 		{
 			ret = global.trans.load_tablemap((char *) hFile.GetFilePath().GetString(), VER_OPENSCRAPE_1, false, &line);
             if (ret == SUCCESS)
@@ -682,7 +686,7 @@ void CMainFrame::OnBnClickedGreenCircle()
     while (bFound)
     {
         bFound = hFile.FindNextFile();
-        if (!hFile.IsDots() && !hFile.IsDirectory() && hFile.GetFilePath()!=global.trans.map.filepath )
+        if (!hFile.IsDots() && !hFile.IsDirectory() && hFile.GetFilePath()!=current_path)
 		{
 			ret = global.trans.load_tablemap((char *) hFile.GetFilePath().GetString(), VER_OPENSCRAPE_1, false, &line);
             if (ret == SUCCESS)

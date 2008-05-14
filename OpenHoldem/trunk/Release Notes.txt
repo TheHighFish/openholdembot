@@ -62,7 +62,10 @@ MAINTENANCE:
   code in two places, and have moved this code to the CTransform class where it belongs.  A great
   deal of code was touched (more than I anticipated), so please test carefully.  (OpenHoldem)
 
-
+- When pressing the green button, a 15 file limit in the scraper directory existed (OH would only search
+  the first 15 table maps).  This limitation has been removed. (OpenHoldem)
+  
+  
 v1.8.2 2008-04-25
 NEW STUFF:
 - Make CFileDialog open in the most recently accessed directory in the context of 
