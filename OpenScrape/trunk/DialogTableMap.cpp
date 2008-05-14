@@ -2067,7 +2067,7 @@ void CDlgTableMap::OnBnClickedCreateImage()
 	BYTE				alpha, red, green, blue;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	HTREEITEM			new_hti;
-	CString				text, node_text, sel_region_name;;
+	CString				text, node_text, sel_region_name;
 	HTREEITEM			image_node, region_node, child_node;
 	Stablemap_region	*sel_region_ptr = NULL;
 	
@@ -2095,21 +2095,33 @@ void CDlgTableMap::OnBnClickedCreateImage()
 			new_image.name = edit.m_result;
 			new_image.width = sel_region_ptr->right - sel_region_ptr->left;
 			new_image.height = sel_region_ptr->bottom - sel_region_ptr->top;
+
+			// Insert the new record in the existing array of i$ records
+			new_index = (int) pDoc->trans.map.i$.Add(new_image);
+			
+			// Allocate space for "RGBAImage"
+			text = pDoc->trans.map.i$[new_index].name + ".ppm";
+			pDoc->trans.map.i$[new_index].image = new RGBAImage(pDoc->trans.map.i$[new_index].width, 
+																pDoc->trans.map.i$[new_index].height, 
+																text.GetString());
+
+			// Populate pixel elements of struct
 			pix_cnt = 0;
-			for (y=(int) sel_region_ptr->top; y < (int) sel_region_ptr->bottom; y++) {
-				for (x=(int) sel_region_ptr->left; x < (int) sel_region_ptr->right; x++) {
+			for (y=(int) sel_region_ptr->top; y < (int) sel_region_ptr->bottom; y++) 
+			{
+				for (x=(int) sel_region_ptr->left; x < (int) sel_region_ptr->right; x++) 
+				{
 					alpha = pDoc->attached_pBits[y*width*4 + x*4 + 3];
 					red = pDoc->attached_pBits[y*width*4 + x*4 + 2];
 					green = pDoc->attached_pBits[y*width*4 + x*4 + 1];
 					blue = pDoc->attached_pBits[y*width*4 + x*4 + 0];
 
 					// image record is stored internally in ABGR format
-					new_image.pixel[pix_cnt++] = (alpha<<24) + (blue<<16) + (green<<8) + red;
+					pDoc->trans.map.i$[new_index].pixel[pix_cnt++] = (alpha<<24) + (blue<<16) + (green<<8) + red;
+
+					pDoc->trans.map.i$[new_index].image->Set(red, green, blue, alpha, y*pDoc->trans.map.i$[new_index].width + x);
 				}
 			}
-
-			// Insert the new record in the existing array of i$ records
-			new_index = (int) pDoc->trans.map.i$.Add(new_image);
 
 			// Find root of the Images node
 			image_node = m_TableMapTree.GetChildItem(NULL);

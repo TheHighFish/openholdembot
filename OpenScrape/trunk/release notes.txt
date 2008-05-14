@@ -5,7 +5,6 @@ NEW STUFF:
 - Removed warning and region removal for handle and slider regions, to support the
   addition of slider jamming code into OH. (BillW)
   
-
 BUG FIXES:
 - Removed the statusbar of the tablemap dialog, which caused mispositioning and flickering.
   Displaying the information about unscraped cards and fonts now in 2 text fields. (TheHighFish)
