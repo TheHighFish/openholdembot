@@ -567,6 +567,12 @@ double eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction *logCalli
     __SEH_LOGFATAL("grammar - eval_expression\n");
 }
 
+CEvalInfoFunctionArray::~CEvalInfoFunctionArray()
+{
+	for (int i=0;i<GetSize();i++)
+		delete GetAt(i);
+	RemoveAll();
+}
 
 void CEvalInfoFunctionArray::DumpFunctionArray(int indent)
 {
@@ -615,6 +621,13 @@ void CEvalInfoFunction::DumpFunction(int indent)
 	m_CalledFunctions.DumpFunctionArray(indent+1);
 	m_SymbolsUsed.DumpSymbolArray(indent+1);
     __SEH_LOGFATAL("CEvalInfoFunction::DumpFunction\n");
+}
+
+CEvalInfoSymbolArray::~CEvalInfoSymbolArray()
+{
+	for (int i=0;i<GetSize();i++)
+		delete GetAt(i);
+	RemoveAll();
 }
 
 CEvalInfoFunction *CEvalInfoFunctionArray::FindFunction(const char *name) 

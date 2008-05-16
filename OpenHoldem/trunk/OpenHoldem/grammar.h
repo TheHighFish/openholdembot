@@ -15,6 +15,8 @@ class CEvalInfoFunction;
 class CEvalInfoFunctionArray : public CArray<CEvalInfoFunction *, CEvalInfoFunction *>
 {
 public:
+	~CEvalInfoFunctionArray();
+
 	void DumpFunctionArray(int indent);
 
 	CEvalInfoFunction *FindFunction(const char *name);
@@ -33,6 +35,8 @@ public:
 class CEvalInfoSymbolArray : public CArray<CEvalInfoSymbol *, CEvalInfoSymbol *>
 {
 public:
+	~CEvalInfoSymbolArray();
+
 	CEvalInfoSymbol *FindSymbol(const char *name) {
 		for (int i=0;i<GetSize();i++) {
 			if (!GetAt(i)->m_Symbol.Compare(name))
