@@ -57,6 +57,10 @@ BUG FIXES:
 - Fix to count_same_scrapes() location in Autoplayer::do_autoplayer, so that it is updated for every 
   frame and not only for the ones where 2 buttons are visible.  (Thanks Spud) (OpenHoldem)
   
+- Unload message sent to dll on OH closedown (Spud's fix - Matrix)
+
+- List handling now recognises the current 1000 lists (Matrix)
+  
   
 MAINTENANCE:
 - Active and seated scraping now evaluates p first for efficiency.  (quiqsilver)
