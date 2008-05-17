@@ -506,6 +506,9 @@ BOOL CMainFrame::DestroyWindow()
     Registry		reg;
     WINDOWPLACEMENT wp;
 
+	//unload dll   Matrix (suggested by Spud) 2008-05-17
+    if (cdll.hMod_dll) cdll.unload_dll();
+
     // wait for an update cycle to finish, if necessary
     while (upd && updcount<20)
     {
