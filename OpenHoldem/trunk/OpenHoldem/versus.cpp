@@ -116,7 +116,7 @@ bool CVersus::get_counts(void) {
     nhiwin = nhitie = nhilos = ntiwin = ntitie = ntilos = nlowin = nlotie = nlolos = 0;
 
     // Clear counters
-    for (listnum=0; listnum<=99; listnum++)
+    for (listnum=0; listnum<MAX_HAND_LISTS; listnum++)
         nlistwin[listnum] = nlisttie[listnum] = nlistlos[listnum] = 0;
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -205,7 +205,7 @@ bool CVersus::get_counts(void) {
                         c1rank = temprank;
                     }
 
-                    for (listnum=0; listnum<=99; listnum++)
+                    for (listnum=0; listnum<MAX_HAND_LISTS; listnum++)
                     {
                         if ((StdDeck_SUIT(i)==StdDeck_SUIT(j) && global.formula.inlist[listnum][c0rank][c1rank]) ||
                                 (StdDeck_SUIT(i)!=StdDeck_SUIT(j) && global.formula.inlist[listnum][c1rank][c0rank]))
@@ -308,7 +308,7 @@ bool CVersus::get_counts(void) {
                         c1rank = temprank;
                     }
 
-                    for (listnum=0; listnum<=99; listnum++)
+                    for (listnum=0; listnum<MAX_HAND_LISTS; listnum++)
                     {
                         if ((StdDeck_SUIT(i)==StdDeck_SUIT(j) && global.formula.inlist[listnum][c0rank][c1rank]) ||
                                 (StdDeck_SUIT(i)!=StdDeck_SUIT(j) && global.formula.inlist[listnum][c1rank][c0rank]))

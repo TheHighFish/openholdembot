@@ -447,7 +447,6 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 
     // rounds positions
     sym.betposition = sym.dealposition = sym.callposition = sym.seatposition = 1;
-//	if(sym.playing)sym.dealposition = 1; //Matrix 2008-05-08 didn't work
     sym.dealpositionrais = sym.betpositionrais = 1;
 
     // statistics
@@ -3608,10 +3607,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
     if (memcmp(a, "islistcall", 10)==0 && strlen(a)==10)				return sym.islistcall;
     if (memcmp(a, "islistrais", 10)==0 && strlen(a)==10)				return sym.islistrais;
     if (memcmp(a, "islistalli", 10)==0 && strlen(a)==10)				return sym.islistalli;
-    if (memcmp(a, "islist", 6)==0 && (strlen(a)==7 || strlen(a)==8)) {
-        if (strlen(a)==7)												return sym.islist[a[6]-'0'];
-        if (strlen(a)==8)												return sym.islist[(a[6]-'0')*10 + (a[7]-'0')];
-    }
+    if (memcmp(a, "islist", 6)==0 && (strlen(a)<10) && (atoi(a+6)<MAX_HAND_LISTS)) return sym.islist[atoi(a+6)]; //Matrix 2008-05-14
     if (memcmp(a, "isemptylistcall", 15)==0 && strlen(a)==15)			return sym.isemptylistcall;
     if (memcmp(a, "isemptylistrais", 15)==0 && strlen(a)==15)			return sym.isemptylistrais;
     if (memcmp(a, "isemptylistalli", 15)==0 && strlen(a)==15)			return sym.isemptylistalli;

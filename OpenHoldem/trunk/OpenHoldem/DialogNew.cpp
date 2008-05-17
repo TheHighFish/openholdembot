@@ -93,8 +93,8 @@ void CDlgNew::OnBnClickedOk() {
             }
         }
     }
-    if (type==0 && memcmp(str, "list", 4)==0 && (atoi(str+4)>999)) { //2008-03-22 Matrix
-        MessageBox("'List999' is the highest list which can be used", "Invalid List", MB_ICONERROR);
+    if (type==0 && memcmp(str, "list", 4)==0 && (atoi(str+4)>(MAX_HAND_LISTS-1))) { //2008-03-22 Matrix
+        MessageBox("List is above the highest list number which can be used", "Invalid List", MB_ICONERROR);
         return;
     }
 

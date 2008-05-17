@@ -544,7 +544,7 @@ void CGlobal::create_hand_list_matrices(SFormula *f)
     int			listnum, i, j, N;
     CString		token;
 
-    for (listnum=0; listnum<=99; listnum++)
+    for (listnum=0; listnum<MAX_HAND_LISTS; listnum++)
     {
         for (i=0; i<=12; i++)
         {
@@ -559,6 +559,7 @@ void CGlobal::create_hand_list_matrices(SFormula *f)
     for (i=0; i<N; i++)
     {
         listnum = atoi(f->mHandList[i].list.Mid(4).GetString());
+		if(listnum>=MAX_HAND_LISTS)continue; // matrix 2008-05-14
         ParseHandList(f->mHandList[i].list_text, f->inlist[listnum]);
     }
 

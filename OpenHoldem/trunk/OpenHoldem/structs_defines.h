@@ -53,7 +53,7 @@ typedef boost::spirit::node_val_data_factory<const char *> int_factory_t;
 #define LIMIT_FL		2
 
 // Hand Lists
-#define MAX_HAND_LISTS	100		// e.g. islist0 - islist99
+#define MAX_HAND_LISTS	1000		// e.g. islist0 - islist999 Matrix 2008-05-14
 
 // Preferences
 #define MAX_OPPONENTS		22	
