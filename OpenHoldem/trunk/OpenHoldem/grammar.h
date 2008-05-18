@@ -70,8 +70,8 @@ bool parse (CString *s, boost::spirit::tree_parse_info<const char *, int_factory
 double calc_f$symbol(SFormula *f, char *symbol, bool log, int *e);
 double calc_f$symbol(SFormula *f, char *symbol, int *e);
 //double evaluate(parse_tree_match_t hit);
-double evaluate(SFormula *f, boost::spirit::tree_parse_info<const char *, int_factory_t> info, CEvalInfoFunction *logCallingFunction, int *e);
-double eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction *logCallingFunction, int *e);
+double evaluate(SFormula *f, boost::spirit::tree_parse_info<const char *, int_factory_t> info, CEvalInfoFunction **logCallingFunction, int *e);
+double eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e);
 
 
 void SetPosition(parse_tree_match_t::node_t &node, 

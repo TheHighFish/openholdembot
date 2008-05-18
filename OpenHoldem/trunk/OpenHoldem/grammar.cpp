@@ -102,13 +102,11 @@ double do_calc_f$symbol(SFormula *f, char *symbol, CEvalInfoFunction **logCallin
                 }
                 else
                 {
-					CEvalInfoFunction *newFunc = NULL;
-					if (logCallingFunction)
-						newFunc = new CEvalInfoFunction(symbol);
-
-                    ret = evaluate(f, f->mFunction[i].tpi, newFunc, e);
-
-					if (newFunc) {
+					if (!logCallingFunction)
+	                    ret = evaluate(f, f->mFunction[i].tpi, NULL, e);
+					else {
+						CEvalInfoFunction *newFunc = new CEvalInfoFunction(symbol);
+	                    ret = evaluate(f, f->mFunction[i].tpi, &newFunc, e);
 						newFunc->m_Line = newFunc->m_Column = 1;
 						for (int c=0; c<newFunc->m_Offset; c++)
 						{
@@ -162,14 +160,14 @@ double calc_f$symbol(SFormula *f, char *symbol, bool log, int *e)
     __SEH_LOGFATAL("grammar - calc_f$symbol\n");
 }
 
-double evaluate(SFormula *f, tree_parse_info<const char *, int_factory_t> info, CEvalInfoFunction *logCallingFunction, int *e)
+double evaluate(SFormula *f, tree_parse_info<const char *, int_factory_t> info, CEvalInfoFunction **logCallingFunction, int *e)
 {
     __SEH_HEADER
     return eval_expression(f, info.trees.begin(), logCallingFunction, e);
     __SEH_LOGFATAL("grammar - evaluate\n");
 }
 
-double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction *logCallingFunction, int *e)
+double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e)
 {
     __SEH_HEADER
     double		result;
@@ -180,8 +178,8 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction *logCa
     // Bounce errors up the stack
     if (*e != SUCCESS)  return 0;
 
-	if (logCallingFunction && logCallingFunction->m_Offset < (int)i->value.value())
-		logCallingFunction->m_Offset = (int)i->value.value();
+	if (logCallingFunction && *logCallingFunction && (*logCallingFunction)->m_Offset < (int)i->value.value())
+		(*logCallingFunction)->m_Offset = (int)i->value.value();
 
     // Symbols
     if (i->value.id()==exec_grammar::SYMBOL_ID)
@@ -241,7 +239,7 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction *logCa
             }
 
             // Calculate resultant udf
-            result = do_calc_f$symbol(f, f$func, &logCallingFunction, false, e);
+            result = do_calc_f$symbol(f, f$func, logCallingFunction, false, e);
             if (*e == SUCCESS)
             {
                 return result;
@@ -256,7 +254,7 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction *logCa
         // f$ symbols
         else if (memcmp(sym.c_str(), "f$", 2)==0 && strcmp(sym.c_str(), "f$debug") != 0)
         {
-            return do_calc_f$symbol(f, (char *) sym.c_str(), &logCallingFunction, false, e);
+            return do_calc_f$symbol(f, (char *) sym.c_str(), logCallingFunction, false, e);
         }
 
         // dll$ symbols
@@ -550,7 +548,7 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction *logCa
     __SEH_LOGFATAL("grammar - do_eval_expression :\n");
 }
 
-double eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction *logCallingFunction, int *e)
+double eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e)
 {
     __SEH_HEADER
     string sym(i->value.begin(), i->value.end());
@@ -558,9 +556,9 @@ double eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction *logCalli
 
 	double ret = do_eval_expression(f, i, logCallingFunction, e);
 
-	if (logCallingFunction && tp == exec_grammar::SYMBOL_ID) {
-		if (!logCallingFunction->m_SymbolsUsed.FindSymbol(sym.c_str()) && !logCallingFunction->m_CalledFunctions.FindFunction(sym.c_str()))
-			logCallingFunction->m_SymbolsUsed.Add(new CEvalInfoSymbol(sym.c_str(), ret));
+	if (logCallingFunction && *logCallingFunction && tp == exec_grammar::SYMBOL_ID) {
+		if (!(*logCallingFunction)->m_SymbolsUsed.FindSymbol(sym.c_str()) && !(*logCallingFunction)->m_CalledFunctions.FindFunction(sym.c_str()))
+			(*logCallingFunction)->m_SymbolsUsed.Add(new CEvalInfoSymbol(sym.c_str(), ret));
 	}
 
 	return ret;
