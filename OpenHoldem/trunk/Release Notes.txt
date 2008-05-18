@@ -60,6 +60,9 @@ BUG FIXES:
 - Unload message sent to dll on OH closedown (Spud's fix - Matrix)
 
 - List handling now recognises the current 1000 lists (Matrix)
+
+- Change in CSymbols::calc_stakes to ensure that ante is reset properly each scrape.  (Thanks ZooBoy)
+  (OpenHoldem)
   
   
 MAINTENANCE:

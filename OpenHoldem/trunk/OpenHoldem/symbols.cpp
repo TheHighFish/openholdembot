@@ -892,7 +892,7 @@ void CSymbols::calc_stakes(void)
     int		i;
     bool	found_inferred_sb = false, found_inferred_bb = false;
 
-    sym.sblind = sym.bblind = bigbet = 0;
+    sym.sblind = sym.bblind = bigbet = sym.ante = 0;
 
     // Save the parts we scraped successfully
     if (scraper.s_limit_info.found_sblind)
