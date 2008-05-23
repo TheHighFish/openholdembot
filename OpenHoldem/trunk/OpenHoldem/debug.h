@@ -4,7 +4,7 @@
 // To enable seh:
 // uncomment this 
 // and add /EHa flag to the compiler options
-//#define	SEH_ENABLE	1
+#define	SEH_ENABLE	1
 
 
 //  Three macros for exception handling,

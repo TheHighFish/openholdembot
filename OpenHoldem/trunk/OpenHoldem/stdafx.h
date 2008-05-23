@@ -54,3 +54,5 @@
 #include <afxadv.h>			// MFC support for MRU
 
 #include <afxmt.h>			// CMutex
+
+#include "debug.h"

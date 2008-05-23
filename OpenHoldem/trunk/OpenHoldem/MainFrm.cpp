@@ -1743,7 +1743,9 @@ void CMainFrame::OnUpdateMenuPerlReloadFormula(CCmdUI* pCmdUI)
 
 BOOL CMainFrame::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
-    if (global.m_WaitCursor)
+	__SEH_HEADER
+
+	if (global.m_WaitCursor)
     {
         RestoreWaitCursor();
         return TRUE;
