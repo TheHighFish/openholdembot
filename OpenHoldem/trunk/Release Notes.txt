@@ -64,6 +64,12 @@ BUG FIXES:
 - Change in CSymbols::calc_stakes to ensure that ante is reset properly each scrape.  (Thanks ZooBoy)
   (OpenHoldem)
   
+- A simplification to the pseudo-RNG was made several releases ago, which consolidated the seeding of the
+  RNG into the COpenHoldemApp class.  This has not had the desired effect, and in fact, the pRNG was not
+  being seeded for things such as random button clicking location, and prwin shuffling.  The original
+  approach has been restored and seeding of the pRNG has been added to the constructors of the CSymbols
+  and Autoplayer classes, and has been added to the start of the prwin_thread thread.  (OpenHoldem)
+  
   
 MAINTENANCE:
 - Active and seated scraping now evaluates p first for efficiency.  (quiqsilver)

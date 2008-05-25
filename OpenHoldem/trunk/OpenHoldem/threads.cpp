@@ -348,6 +348,7 @@ UINT __cdecl prwin_thread(LPVOID pParam)
 
 
     __SEH_HEADER
+
     int				i,j,k,randfix, nit = 0; //modified by Matrix 2008-05-08
     CardMask		plCards, comCards, addlcomCards, evalCards, usedCards, temp_usedCards;
     int				nplCards, ncomCards, nopp;
@@ -360,6 +361,9 @@ UINT __cdecl prwin_thread(LPVOID pParam)
     double			sym_nopp, sym_nit;
     unsigned int	deck[52], x, swap;
     int				numberOfCards;
+
+    // Seed RNG
+    srand((unsigned)time( NULL ));
 
     // player cards
     CardMask_RESET(plCards);

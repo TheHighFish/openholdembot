@@ -210,11 +210,6 @@ BOOL COpenHoldemApp::InitInstance()
 
     global.hMainFrame = m_pMainWnd->GetSafeHwnd();
 
-    // Seed RNG
-    LARGE_INTEGER	qpc;
-    QueryPerformanceCounter(&qpc);
-    srand(qpc.LowPart);
-
     // Bring main window to front
     m_pMainWnd->SetWindowPos(&CWnd::wndTop, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
     m_pMainWnd->SetActiveWindow();

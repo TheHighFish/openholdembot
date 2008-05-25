@@ -11,18 +11,22 @@
 //  2008.02.21 by THF
 #include "PokerChat.hpp"
 
-Autoplayer::Autoplayer(void) {
+Autoplayer::Autoplayer(void) 
+{
 
     __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
 
-
     __SEH_HEADER
+
+    // Seed RNG
+    srand((unsigned)time( NULL ));
 
     __SEH_LOGFATAL("Autoplayer::Constructor : \n");
 
 }
 
-Autoplayer::~Autoplayer(void) {
+Autoplayer::~Autoplayer(void) 
+{
     __SEH_HEADER
 
     __SEH_LOGFATAL("Autoplayer::Destructor : \n");

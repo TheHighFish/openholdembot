@@ -80,7 +80,11 @@ CSymbols::CSymbols()
 
 
     __SEH_HEADER
-    ResetSymbolsFirstTime();
+
+	ResetSymbolsFirstTime();
+
+    // Seed RNG
+    srand((unsigned)time( NULL ));
 
     __SEH_LOGFATAL("CSymbols::Constructor : \n");
 
