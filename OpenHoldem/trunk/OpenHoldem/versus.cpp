@@ -25,6 +25,7 @@ CVersus::CVersus() {
 double CVersus::get_symbol(const char *a, int *e) {
     __SEH_HEADER
     int			n;
+	char		*b;		//Matrix 2008-05-21
 
     if (!global.versus_enabled)
         return 0.0;
@@ -48,26 +49,23 @@ double CVersus::get_symbol(const char *a, int *e) {
 
     else if (memcmp(a, "vs$", 3)==0 &&
              ((memcmp(&a[4], "$pr", 3)==0 && strlen(a)==10) ||
-              (memcmp(&a[5], "$pr", 3)==0 && strlen(a)==11)))
+			 (memcmp(&a[5], "$pr", 3)==0 && strlen(a)==11) ||		// Matrix 2008-05-21
+              (memcmp(&a[6], "$pr", 3)==0 && strlen(a)==12)))
     {
 
         // Get the list num we need
-        // vs$x$przzz
-        if (strlen(a)==10)
-            n = a[3] - '0';
-
-        // vs$xy$przzz
-        else if (strlen(a)==11)
-            n = (a[3] - '0')*10 + (a[4] - '0');
+		n = atoi(a+3);		// Matrix 2008-05-21
 
         // win, los or tie?
-        if (strlen(a)==10 && memcmp(&a[7], "win", 3)==0 || strlen(a)==11 && memcmp(&a[8], "win", 3)==0)
+		b = (char *)strstr(a+3,"$pr")+3;	// Matrix 2008-05-21
+
+		if (!memcmp(b,"win",3))
             return (double) nlistwin[n] / ((double) nlistwin[n] + (double) nlisttie[n] + (double) nlistlos[n]);
 
-        else if (strlen(a)==10 && memcmp(&a[7], "tie", 3)==0 || strlen(a)==11 && memcmp(&a[8], "tie", 3)==0)
+        else if (!memcmp(b,"tie",3))
             return (double) nlisttie[n] / ((double) nlistwin[n] + (double) nlisttie[n] + (double) nlistlos[n]);
 
-        else if (strlen(a)==10 && memcmp(&a[7], "los", 3)==0 || strlen(a)==11 && memcmp(&a[8], "los", 3)==0)
+        else if (!memcmp(b,"los",3))
             return (double) nlistlos[n] / ((double) nlistwin[n] + (double) nlisttie[n] + (double) nlistlos[n]);
     }
 

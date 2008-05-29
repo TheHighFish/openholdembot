@@ -69,6 +69,8 @@ BUG FIXES:
   being seeded for things such as random button clicking location, and prwin shuffling.  The original
   approach has been restored and seeding of the pRNG has been added to the constructors of the CSymbols
   and Autoplayer classes, and has been added to the start of the prwin_thread thread.  (OpenHoldem)
+
+- Versus code modified to handle >100 handlists - Matrix
   
   
 MAINTENANCE:
