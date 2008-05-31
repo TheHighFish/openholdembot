@@ -552,12 +552,16 @@ __SEH_HEADER
 				{
 					MessageBox(0, "Error: Malformed function header!\nMissing trailing '##'.",
 						"ERROR", 0);
-						// Skip the rest to avoid crashes by	
-						// accessing an incorrect index.
-					return;
+						// Create a dummy function name.					
+						// Skipping is not possible,
+						// as this crashes the formula editor.
+						strcpy(funcname, "MALFORMED_FUNCTION");
 				}
-				strcpy(funcname, strOneLine.GetString()+start+2);
-				funcname[end-2]='\0';
+				else 
+				{
+					strcpy(funcname, strOneLine.GetString()+start+2);
+					funcname[end-2]='\0';
+				}
 
 				if (strcmp(funcname, "bankroll") == 0) { f->dBankroll = 0.0; content = FTbankroll; }
 				else if (strcmp(funcname, "defcon") == 0) { f->dDefcon = 0.0; content = FTdefcon; }
@@ -660,12 +664,16 @@ __SEH_HEADER
 					{
 						MessageBox(0, "Error: Malformed function header!\nMissing trailing '##'",
 							"ERROR", 0);
-						// Skip the rest to avoid crashes by
-						// accessing an incorrect index.
-						return;
-					}					
-					strcpy(funcname, strOneLine.GetString()+start+2);
-					funcname[end-2]='\0';
+						// Create a dummy function name.					
+						// Skipping is not possible,
+						// as this crashes the formula editor.
+						strcpy(funcname, "MALFORMED_FUNCTION");						
+					}	
+					else
+					{
+						strcpy(funcname, strOneLine.GetString()+start+2);
+						funcname[end-2]='\0';
+					}
 
 					content = FTfunc;
 					func.func = funcname;
