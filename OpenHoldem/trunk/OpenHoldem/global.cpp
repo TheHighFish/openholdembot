@@ -8,6 +8,8 @@
 #include "DialogFormulaScintilla.h"
 #include "global.h"
 #include "threads.h"
+#include <io.h>
+#include <fcntl.h>
 
 class CGlobal	global;
 
@@ -29,7 +31,6 @@ CGlobal::CGlobal(void)
     int			i, j;
 	int			k, vndx; //Matrix 2008-05-08
     Registry	reg;
-    FILE		*fp;
 
     //Initialisation for prwin handrank table
     extern char *prwhandrank169[169];
@@ -116,24 +117,18 @@ CGlobal::CGlobal(void)
     preferences.Trace_enabled = reg.Trace_enabled;
     memcpy(preferences.Trace_functions, reg.Trace_functions, sizeof(bool)*nTraceFunctions);
 
-    // Check for versus.bin
-    if ((fp = fopen("versus.bin", "rb"))!=NULL)
-    {
-        fclose(fp);
-        versus_path = "versus.bin";
-        versus_enabled = true;
-    }
-    else if ((fp = fopen(reg.versus_path, "rb"))!=NULL)
-    {
-        fclose(fp);
-        versus_path = reg.versus_path;
-        versus_enabled = true;
-    }
-    else
+	// Find the versus data.  First check in the current directory
+	// then in the path provided by the registry.  If both fail,
+	// disable versus.
+	versus_fh = _sopen("versus.bin", _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
+	if (versus_fh == -1)
+	{
+		versus_fh = _sopen(reg.versus_path, _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
+	}
+
+	if (versus_fh == -1)
     {
         MessageBox(NULL, "Could not open versus.bin.\nVersus functions will be disabled.\n", "Versus Error", MB_OK | MB_TOPMOST);
-        versus_enabled = false;
-
     }
 
     state_index = 0;

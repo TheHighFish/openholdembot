@@ -61,8 +61,7 @@ public:
 	bool			update_in_process;
 
 	// Versus
-	bool			versus_enabled;
-	CString			versus_path;
+	int				versus_fh;
 
 	// Poker Pro
 	bool			ppro_is_connected;

@@ -27,7 +27,7 @@ double CVersus::get_symbol(const char *a, int *e) {
     int			n;
 	char		*b;		//Matrix 2008-05-21
 
-    if (!global.versus_enabled)
+    if (global.versus_fh == -1)
         return 0.0;
 
     if (memcmp(a, "vs$nhands", 9)==0 && strlen(a)==9)			return nhands;
@@ -78,7 +78,7 @@ double CVersus::get_symbol(const char *a, int *e) {
 
 bool CVersus::get_counts(void) {
     __SEH_HEADER
-    int				i, j, fh;
+    int				i, j;
     unsigned int	pcard[2];
     CardMask		plCards, oppCards, deadCards, comCardsScrape, comCardsEnum, comCardsAll, usedCards;
     unsigned int	wintemp, tietemp, lostemp, offset;
@@ -98,7 +98,7 @@ bool CVersus::get_counts(void) {
     if (!symbols.user_chair_confirmed)
         return false;
 
-    if (!global.versus_enabled)
+    if (global.versus_fh == -1)
         return false;
 
     if (scraper.card_player[(int) symbols.sym.userchair][0] == CARD_NOCARD ||
@@ -121,11 +121,6 @@ bool CVersus::get_counts(void) {
     // PREFLOP
     if (symbols.sym.br == 1)
     {
-        if ((fh = _sopen(global.versus_path, _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL))==-1)
-        {
-            return false;
-        }
-
         // order cards properly
         if (scraper.card_player[(int) symbols.sym.userchair][0] < scraper.card_player[(int) symbols.sym.userchair][1])
         {
@@ -147,9 +142,8 @@ bool CVersus::get_counts(void) {
         offset *= sizeof(byte);
 
         // seek to right position in file
-        if ((pos = _lseek(fh, offset, SEEK_SET)) == -1L)
+        if ((pos = _lseek(global.versus_fh, offset, SEEK_SET)) == -1L)
         {
-            _close(fh);
             return false;
         }
 
@@ -162,7 +156,7 @@ bool CVersus::get_counts(void) {
 
                 if (i!=pcard[0] && i!=pcard[1] && j!=pcard[0] && j!=pcard[1])
                 {
-                    _read(fh, &byte, sizeof(byte));
+                    _read(global.versus_fh, &byte, sizeof(byte));
                     memcpy(&wintemp, &byte[0], sizeof(unsigned int));
                     memcpy(&lostemp, &byte[4], sizeof(unsigned int));
 
@@ -216,8 +210,6 @@ bool CVersus::get_counts(void) {
                 }
             }
         }
-
-        _close(fh);
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

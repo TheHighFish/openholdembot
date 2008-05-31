@@ -1,3 +1,13 @@
+v?.?.? 2008-06-27
+=================
+NEW STUFF:
+
+BUG FIXES:
+- Only locate/open the versus.bin file during OH initialization to avoid
+  problems with the current directory changing.
+
+MAINTENANCE:
+
 v1.9.0 2008-05-16
 =================
 NEW STUFF:
