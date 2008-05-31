@@ -63,8 +63,8 @@ ICM::~ICM ()
 
 double ICM::ProcessQueryICM(const char* pquery, int *e)
 {
-    double		prizes[4] = {0};
-    double		stacks[10] = {0};
+    double		prizes[MAX_PLAYERS] = {0};
+    double		stacks[MAX_PLAYERS] = {0};
     int			i, j;
     int			mychair = (int) symbols.sym.userchair;
     double		pot = symbols.sym.pot;
@@ -340,6 +340,24 @@ double ICM::EquityICM(double *stacks, double *prizes, int playerNB, int player)
     {
         //printf("player %d  stack = %1.2f \n", i, stacks[i]);
     }
+
+	// Degenerate case when the player's stack is zero.  Place
+	// him after all opponents who had stacks at the start of this
+	// hand.  This will not tie-break if two players bust on the
+	// same hand.
+	if (stacks[player] == 0.)
+	{
+		int place = 0;
+
+		for (i = 0; i < MAX_PLAYERS; i++)
+		{
+			if (((int) symbols.sym.opponentsseatedbits >> i) & 1)
+				place++;
+		}
+
+		return prizes[place];
+
+	}
 
     i = 0;
     while (i < playerNB && prizes[i] > 0.)

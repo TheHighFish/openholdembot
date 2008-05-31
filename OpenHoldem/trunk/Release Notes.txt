@@ -6,6 +6,9 @@ BUG FIXES:
 - Only locate/open the versus.bin file during OH initialization to avoid
   problems with the current directory changing.
 
+- Fix icm_allilose once we're in the money.  Avoid potential out-of-bounds
+  accesses to prizes[].
+
 MAINTENANCE:
 
 v1.9.0 2008-05-16
