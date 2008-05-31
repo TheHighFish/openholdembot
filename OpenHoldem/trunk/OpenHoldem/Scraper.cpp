@@ -1707,33 +1707,33 @@ bool CScraper::get_button_state(int button_index)
     __SEH_HEADER
     if (button_index<=9)
     {
-        if (scraper.buttonstate[button_index] == "true" ||
-                scraper.buttonstate[button_index] == "on" ||
-                scraper.buttonstate[button_index] == "yes" ||
-                scraper.buttonstate[button_index] == "checked" ||
-                scraper.buttonstate[button_index] == "lit")
+		if (scraper.buttonstate[button_index].MakeLower().Find("true")!=-1 ||
+                scraper.buttonstate[button_index].MakeLower().Find("on")!=-1 ||
+                scraper.buttonstate[button_index].MakeLower().Find("yes")!=-1 ||
+                scraper.buttonstate[button_index].MakeLower().Find("checked")!=-1 ||
+                scraper.buttonstate[button_index].MakeLower().Find("lit")!=-1 )
         {
             return true;
         }
     }
     else if (button_index==86)
     {
-        if (scraper.i86_buttonstate == "true" ||
-                scraper.i86_buttonstate == "on" ||
-                scraper.i86_buttonstate == "yes" ||
-                scraper.i86_buttonstate == "checked" ||
-                scraper.i86_buttonstate == "lit")
+        if (scraper.i86_buttonstate.MakeLower().Find("true")!=-1 ||
+                scraper.i86_buttonstate.MakeLower().Find("on")!=-1 ||
+                scraper.i86_buttonstate.MakeLower().Find("yes")!=-1 ||
+                scraper.i86_buttonstate.MakeLower().Find("checked")!=-1 ||
+                scraper.i86_buttonstate.MakeLower().Find("lit")!=-1 )
         {
             return true;
         }
     }
     else if (button_index>=860)
     {
-        if (scraper.i86X_buttonstate[button_index-860] == "true" ||
-                scraper.i86X_buttonstate[button_index-860] == "on" ||
-                scraper.i86X_buttonstate[button_index-860] == "yes" ||
-                scraper.i86X_buttonstate[button_index-860] == "checked" ||
-                scraper.i86X_buttonstate[button_index-860] == "lit")
+        if (scraper.i86X_buttonstate[button_index-860].MakeLower().Find("true")!=-1 ||
+                scraper.i86X_buttonstate[button_index-860].MakeLower().Find("on")!=-1 ||
+                scraper.i86X_buttonstate[button_index-860].MakeLower().Find("yes")!=-1 ||
+                scraper.i86X_buttonstate[button_index-860].MakeLower().Find("checked")!=-1 ||
+                scraper.i86X_buttonstate[button_index-860].MakeLower().Find("lit")!=-1 )
         {
             return true;
         }

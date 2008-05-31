@@ -1252,6 +1252,8 @@ void CMainFrame::OnClickedFlags()
     else
         global.flags[9] = false;
 
+	symbols.CalcSymbols();
+
     __SEH_LOGFATAL("CMainFrame::OnClickedFlags :\n");
 }
 

@@ -4,14 +4,21 @@ NEW STUFF:
 
 BUG FIXES:
 - Only locate/open the versus.bin file during OH initialization to avoid
-  problems with the current directory changing.
+  problems with the current directory changing. (ZooBoy)
 
 - Fix icm_allilose once we're in the money.  Avoid potential out-of-bounds
-  accesses to prizes[].
+  accesses to prizes[]. (ZooBoy)
 
 - Fix assertion failures in ICMCalculator.cpp when reconnecting to a table
-  without changing the hand in play.
+  without changing the hand in play. (ZooBoy)
+  
+- Added recalc of symbols upon press of a flag button (OpenHoldem)
 
+- Changed button states to not require a perfect match on returned values, but
+  rather a substring match.  Thus a button state returning "true1", "true2", etc
+  will work properly now (OpenHoldem)
+  
+  
 MAINTENANCE:
 
 v1.9.0 2008-05-16
