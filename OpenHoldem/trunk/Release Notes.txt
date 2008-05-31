@@ -9,6 +9,9 @@ BUG FIXES:
 - Fix icm_allilose once we're in the money.  Avoid potential out-of-bounds
   accesses to prizes[].
 
+- Fix assertion failures in ICMCalculator.cpp when reconnecting to a table
+  without changing the hand in play.
+
 MAINTENANCE:
 
 v1.9.0 2008-05-16

@@ -449,6 +449,10 @@ private:
 	time_t		elapsedhold;				// The time we "sat down"
 	time_t		elapsedhandhold;			// The time since start of last hand
 
+	static double dealerchair_last;
+	static double handnumber_last;
+	static int br_last;
+	static unsigned int player_card_last[2];
 } symbols;
 
 

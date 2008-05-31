@@ -17,6 +17,14 @@
 
 class CSymbols	symbols;
 
+// These can not be function scoped statics because we need to be able to
+// reset them when we connect to a table.
+double CSymbols::dealerchair_last = -1;
+double CSymbols::handnumber_last = -1;
+int CSymbols::br_last = -1;
+unsigned int CSymbols::player_card_last[2] = {CARD_NOCARD, CARD_NOCARD};
+
+
 char handrank169[10][169][4] =
 {
     {"AAo", "KKo", "QQo", "JJo", "TTo", "99o", "88o", "AKs", "77o", "AQs", "AKo", "AJs", "AQo", "ATs", "66o", "AJo", "KQs", "ATo", "A9s", "KJs", "A8s", "KTs", "KQo", "55o", "A7s", "A9o", "KJo", "QJs", "K9s", "KTo", "A8o", "A6s", "QTs", "A5s", "A4s", "A7o", "QJo", "K8s", "A3s", "K9o", "44o", "Q9s", "JTs", "QTo", "A6o", "K7s", "A5o", "A2s", "K6s", "A4o", "K8o", "Q8s", "J9s", "A3o", "K5s", "Q9o", "JTo", "K7o", "A2o", "K4s", "33o", "Q7s", "K6o", "T9s", "J8s", "K3s", "Q8o", "Q6s", "J9o", "K5o", "K2s", "Q5s", "T8s", "J7s", "K4o", "Q7o", "T9o", "Q4s", "J8o", "K3o", "22o", "Q6o", "Q3s", "98s", "T7s", "J6s", "K2o", "Q2s", "Q5o", "J5s", "T8o", "J7o", "Q4o", "97s", "J4s", "T6s", "J3s", "Q3o", "98o", "T7o", "J6o", "87s", "J2s", "96s", "Q2o", "J5o", "T5s", "T4s", "97o", "J4o", "T6o", "86s", "95s", "T3s", "J3o", "76s", "87o", "T2s", "96o", "J2o", "85s", "T5o", "94s", "T4o", "75s", "93s", "86o", "65s", "95o", "T3o", "84s", "92s", "76o", "T2o", "74s", "85o", "54s", "64s", "83s", "94o", "75o", "82s", "93o", "73s", "65o", "53s", "63s", "84o", "92o", "43s", "74o", "72s", "54o", "64o", "52s", "62s", "83o", "82o", "42s", "73o", "53o", "63o", "32s", "43o", "72o", "52o", "62o", "42o", "32o"},
@@ -333,6 +341,13 @@ void CSymbols::ResetSymbolsFirstTime(void)
     // delay
     f$delay = 0;
 
+	// Reset semi-persistent hand state when we instantiate CSymbols.
+	CSymbols::dealerchair_last = -1;
+	CSymbols::handnumber_last = -1;
+	CSymbols::br_last = -1;
+	CSymbols::player_card_last[0] = CARD_NOCARD;
+	CSymbols::player_card_last[1] = CARD_NOCARD;
+
     // log$ symbols
     logsymbols_collection.RemoveAll();
 
@@ -561,9 +576,6 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 void CSymbols::CalcSymbols(void)
 {
     __SEH_HEADER
-    static double		dealerchair_last = -1, handnumber_last = -1;
-    static int			br_last = -1;
-    static unsigned int	player_card_last[2] = {CARD_NOCARD};
 
     int					i, error;
     char				classname[50], title[512];
