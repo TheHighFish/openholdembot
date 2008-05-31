@@ -540,9 +540,22 @@ __SEH_HEADER
 					f->mFunction.Add(func);
 				}
 
-				// Get the function name
+				// Get the function name				
 				start = strOneLine.Find("##",0);
+				// No need to check the result of start,
+				// as this code gets executed only,
+				// if a line starts with "##"	
 				end = strOneLine.Find("##", start+2);
+				// Checking for malformed function header
+				// without trailing "##"
+				if (end == -1) 
+				{
+					MessageBox(0, "Error: Malformed function header!\nMissing trailing '##'.",
+						"ERROR", 0);
+						// Skip the rest to avoid crashes by	
+						// accessing an incorrect index.
+					return;
+				}
 				strcpy(funcname, strOneLine.GetString()+start+2);
 				funcname[end-2]='\0';
 
@@ -634,10 +647,23 @@ __SEH_HEADER
 						f->mFunction.Add(func); 
 						content = FTnone;
 					}
-
-					// Get the function name
+					
+					// Get the function name				
 					start = strOneLine.Find("##",0);
+					// No need to check the result of start,
+					// as this code gets executed only,
+					// if a line starts with "##"	
 					end = strOneLine.Find("##", start+2);
+					// Checking for malformed function header
+					// without trailing "##"
+					if (end == -1) 
+					{
+						MessageBox(0, "Error: Malformed function header!\nMissing trailing '##'",
+							"ERROR", 0);
+						// Skip the rest to avoid crashes by
+						// accessing an incorrect index.
+						return;
+					}					
 					strcpy(funcname, strOneLine.GetString()+start+2);
 					funcname[end-2]='\0';
 

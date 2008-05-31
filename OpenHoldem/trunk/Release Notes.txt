@@ -17,6 +17,9 @@ BUG FIXES:
 - Changed button states to not require a perfect match on returned values, but
   rather a substring match.  Thus a button state returning "true1", "true2", etc
   will work properly now (OpenHoldem)
+
+- Checking headers of OH formulas for missing trailing string "##",
+  which caused incorrect array indices and crashes. (TheHighFish)	
   
   
 MAINTENANCE:
