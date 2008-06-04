@@ -84,7 +84,7 @@ char *	keywords = "ismanual isppro site nchairs isbring session handnumber "
                   "run$pokervalmax run$prnuts run$prbest run$clocks vs$nhands vs$nhandshi vs$nhandsti vs$nhandslo "
                   "vs$prwin vs$prtie vs$prlos vs$prwinhi vs$prtiehi vs$prloshi vs$prwinti vs$prtieti vs$prlosti "
                   "vs$prwinlo vs$prtielo vs$prloslo "
-                  "f$alli f$swag f$srai f$rais f$call f$prefold f$evrais f$evcall f$P f$play f$test "
+                  "f$alli f$swag f$srai f$rais f$call f$prefold f$delay f$chat f$P f$play f$test "
                   "lastraised1 lastraised2 lastraised3 lastraised4 "
                   "raisbits1 raisbits2 raisbits3 raisbits4 "
                   "callbits1 callbits2 callbits3 callbits4 "
@@ -433,8 +433,8 @@ BOOL CDlgFormulaScintilla::OnInitDialog() {
     m_FormulaTree.InsertItem("f$rais", parent);
     m_FormulaTree.InsertItem("f$call", parent);
     m_FormulaTree.InsertItem("f$prefold", parent);
-    m_FormulaTree.InsertItem("f$evrais", parent);
-    m_FormulaTree.InsertItem("f$evcall", parent);
+    m_FormulaTree.InsertItem("f$delay", parent);
+    m_FormulaTree.InsertItem("f$chat", parent);
     m_FormulaTree.InsertItem("f$P", parent);
     m_FormulaTree.InsertItem("f$play", parent);
     m_FormulaTree.InsertItem("f$test", parent);
@@ -602,8 +602,8 @@ void CDlgFormulaScintilla::PopulateUDFs()
                 m_wrk_formula.mFunction[i].func != "f$rais" &&
                 m_wrk_formula.mFunction[i].func != "f$call" &&
                 m_wrk_formula.mFunction[i].func != "f$prefold" &&
-                m_wrk_formula.mFunction[i].func != "f$evrais" &&
-                m_wrk_formula.mFunction[i].func != "f$evcall" &&
+                m_wrk_formula.mFunction[i].func != "f$delay" &&
+                m_wrk_formula.mFunction[i].func != "f$chat" &&
                 m_wrk_formula.mFunction[i].func != "f$P" &&
                 m_wrk_formula.mFunction[i].func != "f$play" &&
                 m_wrk_formula.mFunction[i].func != "f$test" &&
@@ -709,13 +709,14 @@ void CDlgFormulaScintilla::OnSymbolTreeTipInfo(NMHDR *pNMHDR, LRESULT *pResult)
     }
 
     *pResult = 0;
-    __SEH_LOGFATAL("CDlgFormulaScintilla::OnSymbolTreeTipInfo() :\n");
-
+    
+	__SEH_LOGFATAL("CDlgFormulaScintilla::OnSymbolTreeTipInfo() :\n");
 }
 
 void CDlgFormulaScintilla::OnSymbolContextMenu(NMHDR *pNMHDR, LRESULT *pResult)
 {
     __SEH_HEADER
+
     CPoint cursorPos, clientPos;
     cursorPos.x= GetCurrentMessage()->pt.x;
     cursorPos.y= GetCurrentMessage()->pt.y;
@@ -749,7 +750,6 @@ void CDlgFormulaScintilla::OnSymbolContextMenu(NMHDR *pNMHDR, LRESULT *pResult)
     *pResult = 0;
 
     __SEH_LOGFATAL("CDlgFormulaScintilla::OnSymbolTreeTipInfo() :\n");
-
 }
 
 void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pResult) {

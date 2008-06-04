@@ -9,9 +9,7 @@
 
 Registry::Registry(void)
 {
-
     __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
-
 }
 
 
@@ -178,7 +176,6 @@ void Registry::read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, bool *Registr
     //  Otherwise: Keep default value.
 
     __SEH_LOGFATAL("Registry::read_OH_RegistryKey : \n");
-
 }
 
 
@@ -196,7 +193,6 @@ void Registry::read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, unsigned int 
     //  Otherwise: Keep default value.
 
     __SEH_LOGFATAL("Registry::read_OH_RegistryKey : \n");
-
 }
 
 
@@ -214,7 +210,6 @@ void Registry::read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey,  CString *Reg
     //  Otherwise: Keep default value.
 
     __SEH_LOGFATAL("Registry::read_OH_RegistryKey : \n");
-
 }
 
 
@@ -232,7 +227,6 @@ void Registry::read_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, double *Regis
     //  Otherwise: Keep default value.
 
     __SEH_LOGFATAL("Registry::read_OH_RegistryKey : \n");
-
 }
 
 
@@ -262,7 +256,6 @@ void Registry::write_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, CString Regi
 
 
     __SEH_LOGFATAL("Registry::write_OH_RegistryKey : \n");
-
 }
 
 
@@ -432,7 +425,6 @@ void Registry::read_reg(void)
     RegCloseKey(hKey);
 
     __SEH_LOGFATAL("Registry::read_reg : \n");
-
 }
 
 void Registry::write_reg(void)
@@ -577,7 +569,6 @@ void Registry::write_reg(void)
     RegCloseKey(hKey);
 
     __SEH_LOGFATAL("Registry::write_reg : \n");
-
 }
 
 bool Registry::GetProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, CDC* pDC)
@@ -606,7 +597,6 @@ bool Registry::GetProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, CDC
     return font.CreateFontIndirect(&lf)!=0;
 
     __SEH_LOGFATAL("Registry::GetProfileFont : \n");
-
 }
 
 
@@ -625,7 +615,6 @@ bool Registry::WriteProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, C
     return pApp->WriteProfileString(lpszKey, lpszVal, s)!=0;
 
     __SEH_LOGFATAL("Registry::WriteProfileFont : \n");
-
 }
 
 void Registry::readRegString(CString RegistryKey, char* RegistryValue)
@@ -643,7 +632,6 @@ void Registry::readRegString(CString RegistryKey, char* RegistryValue)
     RegCloseKey(hKey);
 
     __SEH_LOGFATAL("Registry::readRegString :\n");
-
 }
 
 void Registry::writeRegString(CString RegistryKey, CString RegistryValue)
@@ -662,7 +650,5 @@ void Registry::writeRegString(CString RegistryKey, CString RegistryValue)
     }
     RegCloseKey(hKey);
 
-
     __SEH_LOGFATAL("Registry::writeRegString :\n");
-
 }

@@ -12,6 +12,11 @@ protected:
 	DECLARE_DYNCREATE(COpenHoldemDoc)
 	DECLARE_MESSAGE_MAP()
 
+private:
+	BOOL is_WinHoldemFormat(CString the_FileName);
+	void check_for_default_FormulaEntries(SFormula *f);
+	void ReadFormulaFile(SFormula *f, CArchive& ar);
+
 public:
 	static COpenHoldemDoc* GetDocument();
 

@@ -19,10 +19,21 @@ BUG FIXES:
   will work properly now (OpenHoldem)
 
 - Checking headers of OH formulas for missing trailing string "##",
-  which caused incorrect array indices and crashes. (TheHighFish)	
-  
-  
-MAINTENANCE:
+  which caused incorrect array indices and crashes. 
+  Trying to continue gracefully. (TheHighFish)	
+
+MAINTENANCE: 
+- A single OpenHoldem Formula file (*.ohf) instead of *.whf and *.whx.
+  The WinHoldem format is still recognized, but gets converted automatically 
+  when saved. (TheHighFish)
+
+- Treating f$evrais and f$evcall now as user defined functions,
+  as they are not necessary for the majority of poker bots 
+  (only for the default one).
+  f$delay and f$chat became standard functions, as they could have 
+  a greater impact on the behaviour of bots. 
+  Slightly modified default bot to reflect this change. (TheHighFish) 
+
 
 v1.9.0 2008-05-16
 =================

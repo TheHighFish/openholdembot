@@ -7,6 +7,7 @@
 double	MyHand::process_query(const char * pquery, int *e)
 {
     __SEH_HEADER
+
     if (memcmp(pquery,"mh_3straight", 12) == 0)			return three_straight((pquery[12]-'0')!=0, (pquery[13]-'0')!=0);
     if (memcmp(pquery,"mh_bottomsd", 11) == 0)			return bottomsd();
     if (memcmp(pquery,"mh_nsuitedbetter", 16) == 0)		return nsuitedbetter();
@@ -26,12 +27,12 @@ double	MyHand::process_query(const char * pquery, int *e)
     return 0.0;
 
     __SEH_LOGFATAL("MyHand::process_query\n");
-
 }
 
 void MyHand::myhand(char * hand)
 {
     __SEH_HEADER
+
     switch ((int) symbols.sym.$$pr[0] >= (int) symbols.sym.$$pr[1] ? (int) symbols.sym.$$pr[0] : (int) symbols.sym.$$pr[1])
     {
     case 10: hand[0]='T';
@@ -85,15 +86,14 @@ void MyHand::myhand(char * hand)
         hand[3]='\0';
     }
 
-
     __SEH_LOGFATAL("MyHand::myhand\n");
-
 }
 
 bool MyHand::three_straight (bool wheel, bool broadway)
 {
     __SEH_HEADER
-    if (bitcount(((int) symbols.sym.rankbitscommon)&0x003e)>=3)
+		
+	if (bitcount(((int) symbols.sym.rankbitscommon)&0x003e)>=3)
     {
         if (wheel)
             return true;
@@ -114,14 +114,13 @@ bool MyHand::three_straight (bool wheel, bool broadway)
     else
         return false ;
 
-
     __SEH_LOGFATAL("MyHand::three_straight\n");
-
 }
 
 bool MyHand::bottomsd (void)
 {
     __SEH_HEADER
+
     if (symbols.sym.nstraight==4 &&
             symbols.sym.nstraightfillcommon-symbols.sym.nstraightfill==1 &&
             (
@@ -145,9 +144,7 @@ bool MyHand::bottomsd (void)
 
     return false;
 
-
     __SEH_LOGFATAL("MyHand::bottomsd\n");
-
 }
 
 int MyHand::nsuitedbetter (void)
@@ -157,13 +154,13 @@ int MyHand::nsuitedbetter (void)
     return bitcount((~((int) symbols.sym.srankbits)&0x7ffe)>>((int) symbols.sym.srankhiplayer));
 
     __SEH_LOGFATAL("MyHand::nsuitedbetter\n");
-
 }
 
 int MyHand::kickerbetter (void)
 {
     __SEH_HEADER
-    // quads, board quads
+
+	// quads, board quads
     if (symbols.sym.isfourofakind && symbols.sym.nrankedcommon==4)
     {
         return bitcount((~((int) symbols.sym.rankbits)&0x7ffe)>>((int) symbols.sym.rankhiplayer));
@@ -246,9 +243,7 @@ int MyHand::kickerbetter (void)
 
     return 0;
 
-
     __SEH_LOGFATAL("MyHand::kickerbetter\n");
-
 }
 
 int MyHand::kickerrank (void)
@@ -328,13 +323,13 @@ int MyHand::kickerrank (void)
     return 0;
 
     __SEH_LOGFATAL("MyHand::kickerrank\n");
-
 }
 
 double MyHand::m_nouts(void)
 {
     __SEH_HEADER
-    double m_nouts=0.0;
+
+	double m_nouts=0.0;
 
     if (symbols.sym.br == 2)
     {
@@ -673,15 +668,12 @@ double MyHand::m_nouts(void)
 
     return m_nouts;
 
-
     __SEH_LOGFATAL("MyHand::nouts\n");
-
 }
 
 bool MyHand::safeboard(void)
 {
     __SEH_HEADER
-
 
     if (symbols.sym.nrankedcommon<=1 && symbols.sym.nsuitedcommon<=2 && symbols.sym.nstraightcommon<=2 && symbols.sym.nstraightfillcommon>=2)
         return true;
@@ -689,15 +681,12 @@ bool MyHand::safeboard(void)
     else
         return false;
 
-
     __SEH_LOGFATAL("MyHand::safeboard\n");
-
 }
 
 int MyHand::strength_straightflush(void)
 {
     __SEH_HEADER
-
 
     int		strength=0;
 
@@ -759,15 +748,12 @@ int MyHand::strength_straightflush(void)
 
     return strength;
 
-
     __SEH_LOGFATAL("MyHand::strength_straightflush\n");
-
 }
 
 int MyHand::strength_quads(void)
 {
     __SEH_HEADER
-
 
     int		strength=0;
 
@@ -830,13 +816,11 @@ int MyHand::strength_quads(void)
     return strength;
 
     __SEH_LOGFATAL("MyHand::strength_quads\n");
-
 }
 
 int MyHand::strength_fullhouse(void)
 {
     __SEH_HEADER
-
 
     int			strength=0;
 
@@ -971,13 +955,11 @@ int MyHand::strength_fullhouse(void)
     return strength;
 
     __SEH_LOGFATAL("MyHand::strength_fullhouse\n");
-
 }
 
 int MyHand::strength_flush(void)
 {
     __SEH_HEADER
-
 
     int		strength=0;
 
@@ -1077,13 +1059,11 @@ int MyHand::strength_flush(void)
     return strength;
 
     __SEH_LOGFATAL("MyHand::strength_flush\n");
-
 }
 
 int MyHand::strength_straight(void)
 {
     __SEH_HEADER
-
 
     int		strength=0;
 
@@ -1250,15 +1230,12 @@ int MyHand::strength_straight(void)
     }
     return strength;
 
-
     __SEH_LOGFATAL("MyHand::strength_straight\n");
-
 }
 
 int MyHand::strength_trips(void)
 {
     __SEH_HEADER
-
 
     int		strength=0;
 
@@ -1359,13 +1336,11 @@ int MyHand::strength_trips(void)
     return strength;
 
     __SEH_LOGFATAL("MyHand::strength_trips\n");
-
 }
 
 int MyHand::strength_twopair(void)
 {
     __SEH_HEADER
-
 
     int		strength=0;
 
@@ -1475,15 +1450,12 @@ int MyHand::strength_twopair(void)
 
     return strength;
 
-
     __SEH_LOGFATAL("MyHand::strength_twopair\n");
-
 }
 
 int MyHand::strength_onepair(void)
 {
     __SEH_HEADER
-
 
     int		strength=0;
 
@@ -1634,7 +1606,5 @@ int MyHand::strength_onepair(void)
 
     return strength;
 
-
     __SEH_LOGFATAL("MyHand::strength_onepair\n");
-
 }

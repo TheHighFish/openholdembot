@@ -344,8 +344,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 
     WNDCLASS wnd;
     HINSTANCE hInst = AfxGetInstanceHandle();
-
-    // Set class name
+   // Set class name
     if (!(::GetClassInfo(hInst, "OpenHoldem", &wnd)))
     {
         wnd.style            = CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW;
@@ -576,14 +575,13 @@ void CMainFrame::OnFileOpen()
 
     Registry::readRegString(theKey, path);
     cfd.m_ofn.lpstrInitialDir = path;
-    cfd.m_ofn.lpstrFilter = "OpenHoldem Files (.whf)\0*.whf\0All files (*.*)\0*.*\0\0";
+    cfd.m_ofn.lpstrFilter = "OpenHoldem Files (.ohf)\0*.ohf\0WinHoldem Files (.whf)\0*.whf\0All files (*.*)\0*.*\0\0";
     cfd.m_ofn.lpstrTitle = "Select Formula file to OPEN";
     if (cfd.DoModal() == IDOK)
-    {
-        COpenHoldemDoc *pDoc = (COpenHoldemDoc *)this->GetActiveDocument();
+    {			
+        COpenHoldemDoc *pDoc = (COpenHoldemDoc *)this->GetActiveDocument();		
 		pDoc->OnOpenDocument(cfd.GetPathName());
 		pDoc->SetPathName(cfd.GetPathName());
-
         // Update window title, registry
         SetWindowText(cfd.GetFileTitle() + " - " + CString(MAKEINTRESOURCE(AFX_IDS_APP_TITLE)));
         Registry::writeRegString(theKey, cfd.GetPathName());
@@ -1775,8 +1773,8 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
             }
         }
     }
-
     CFrameWnd::OnSysCommand(nID, lParam);
+
 	__SEH_LOGFATAL("CMainFrame::OnSysCommand\n")
 }
 
@@ -1924,7 +1922,6 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
 
 bool check_window_match(STableMap *map, HWND h, RECT r, CString title) 
 {
-
     __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
 
 
@@ -2091,5 +2088,4 @@ bool check_window_match(STableMap *map, HWND h, RECT r, CString title)
     return true;
 
     __SEH_LOGFATAL("::check_window_match :\n");
-
 }

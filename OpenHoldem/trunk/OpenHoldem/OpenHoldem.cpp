@@ -107,7 +107,7 @@ BOOL COpenHoldemApp::InitInstance()
     }
     CloseHandle(hProcess);
 
-    // Noew look through process list and count number of matching processes
+    // Now look through process list and count number of matching processes
     EnumProcesses( aProcesses, sizeof(aProcesses), &cbNeeded );
     cProcesses = cbNeeded / sizeof(DWORD);
     global.sessionnum = 0;
