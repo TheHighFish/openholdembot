@@ -49,7 +49,7 @@ public:
 	bool is_string_cardback(CString s);
 	bool is_string_dealer(CString s);
 
-	char				title[512];
+	char				title[MAX_WINDOW_TITLE];
 	unsigned int		card_common[5];
 	unsigned int		card_player[10][2];
 	CString				seated[10], active[10];
@@ -112,6 +112,6 @@ private:
 	int				limit_last;
 	double			sblind_last, bblind_last, sb_bb_last, bb_BB_last, bbet_last, ante_last;
 	double			handnumber_last;
-	char			title_last[512];
+	char			title_last[MAX_WINDOW_TITLE];
 
 } scraper;

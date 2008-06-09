@@ -263,7 +263,7 @@ BOOL COpenHoldemDoc::is_WinHoldemFormat(CString the_FileName)
 	if (Length < 3) { return false; }
 	// Checking the first character of the file extension
 	// Assuming an extension of size 3: "ohf" or "whf".
-	char critical_Character = the_FileName[Length - 3];
+	char critical_Character = the_FileName.GetString()[Length - 3];
 	return (critical_Character == 'w');
 }
 
@@ -774,7 +774,6 @@ void COpenHoldemDoc::ReadFormula(SFormula *f, CArchive& ar)
 	ReadFormulaFile(f, ar);
 
 	CFile *cf_whf = ar.GetFile();  
-	char whxpath[MAX_PATH];
 	CString CSpath = cf_whf->GetFilePath(); 
 
 	if (is_WinHoldemFormat(CSpath))

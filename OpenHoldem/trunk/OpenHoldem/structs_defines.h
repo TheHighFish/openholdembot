@@ -137,6 +137,8 @@ typedef boost::spirit::node_val_data_factory<const char *> int_factory_t;
 #define	POT_CHANGED			(1<<11)
 #define	LIMITS_CHANGED		(1<<12)
 
+#define MAX_WINDOW_TITLE	512
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

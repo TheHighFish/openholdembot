@@ -173,7 +173,7 @@ int CScraper::DoScrape(void)
     // get window title
     strcpy(title, "");
     if (!global.ppro_is_connected)
-        GetWindowText(global.attached_hwnd, title, 512);
+        GetWindowText(global.attached_hwnd, title, MAX_WINDOW_TITLE-1);
 
     // If the bitmaps are the same, then return now
     if (bitmaps_same(entire_window_Last, entire_window_Cur) &&
@@ -249,6 +249,7 @@ int CScraper::DoScrape(void)
 bool CScraper::process_region(HDC hdcCompatible, HDC hdc, int r$index)
 {
     __SEH_HEADER
+
     HBITMAP			bitmap_last = global.trans.map.r$[r$index].last_bmp;
     HBITMAP			bitmap_cur = global.trans.map.r$[r$index].cur_bmp;
     int				left = global.trans.map.r$[r$index].left;
@@ -256,6 +257,14 @@ bool CScraper::process_region(HDC hdcCompatible, HDC hdc, int r$index)
     int				right = global.trans.map.r$[r$index].right;
     int				bottom = global.trans.map.r$[r$index].bottom;
     HBITMAP			old_bitmap;
+
+	// Check for bad parameters
+	if (hdcCompatible == NULL || 
+		hdc == NULL)
+	{
+		return false;
+	}
+
 
     // Get "current" bitmap
     old_bitmap = (HBITMAP) SelectObject(hdcCompatible, bitmap_cur);
@@ -282,10 +291,18 @@ bool CScraper::process_region(HDC hdcCompatible, HDC hdc, int r$index)
 void CScraper::scrape_common_cards(HDC hdcCompatible, HDC hdc)
 {
     __SEH_HEADER
+
     int					i, r$index;
     HBITMAP				old_bitmap;
     unsigned int		card;
     CString				cardstr, rankstr, suitstr;
+
+	// Check for bad parameters
+	if (hdcCompatible == NULL || 
+		hdc == NULL)
+	{
+		return;
+	}
 
     for (i=0; i<=4; i++)
     {
@@ -362,11 +379,21 @@ void CScraper::scrape_common_cards(HDC hdcCompatible, HDC hdc)
 void CScraper::scrape_player_cards(int chair, HDC hdcCompatible, HDC hdc)
 {
     __SEH_HEADER
+
     int					j, r$index;
     HBITMAP				old_bitmap;
     unsigned int		card;
     bool				got_new_scrape;
     CString				cardstr, rankstr, suitstr;
+
+	// Check for bad parameters
+	if (chair < 0 || 
+		chair >= global.trans.map.num_chairs ||
+		hdcCompatible == NULL || 
+		hdc == NULL)
+	{
+		return;
+	}
 
     // Player cards
     got_new_scrape = false;
@@ -508,11 +535,21 @@ void CScraper::scrape_player_cards(int chair, HDC hdcCompatible, HDC hdc)
 void CScraper::scrape_seated(int chair, HDC hdcCompatible, HDC hdc)
 {
     __SEH_HEADER
+
     int					r$index;
     HBITMAP				old_bitmap;
     CString				result;
 
-    seated[chair] = "false";
+    // Check for bad parameters
+	if (chair < 0 || 
+		chair >= global.trans.map.num_chairs ||
+		hdcCompatible == NULL || 
+		hdc == NULL)
+	{
+		return;
+	}
+
+	seated[chair] = "false";
 
     // try p region first
     r$index = global.trans.map.r$pXseated_index[chair];
@@ -555,9 +592,19 @@ void CScraper::scrape_seated(int chair, HDC hdcCompatible, HDC hdc)
 void CScraper::scrape_active(int chair, HDC hdcCompatible, HDC hdc)
 {
     __SEH_HEADER
+
     int					r$index;
     HBITMAP				old_bitmap;
     CString				result;
+
+	// Check for bad parameters
+	if (chair < 0 || 
+		chair >= global.trans.map.num_chairs ||
+		hdcCompatible == NULL || 
+		hdc == NULL)
+	{
+		return;
+	}
 
 	active[chair] = "false";
 
@@ -600,9 +647,19 @@ void CScraper::scrape_active(int chair, HDC hdcCompatible, HDC hdc)
 void CScraper::scrape_dealer(int chair, HDC hdcCompatible, HDC hdc)
 {
     __SEH_HEADER
+
     int					r$index;
     HBITMAP				old_bitmap;
     CString				result;
+
+	// Check for bad parameters
+	if (chair < 0 || 
+		chair >= global.trans.map.num_chairs ||
+		hdcCompatible == NULL || 
+		hdc == NULL)
+	{
+		return;
+	}
 
     // Dealer button
     r$index = global.trans.map.r$pXdealer_index[chair];
@@ -630,14 +687,25 @@ void CScraper::scrape_dealer(int chair, HDC hdcCompatible, HDC hdc)
 
 }
 
-void CScraper::scrape_name(int chair, HDC hdcCompatible, HDC hdc) {
+void CScraper::scrape_name(int chair, HDC hdcCompatible, HDC hdc) 
+{
 
     __SEH_HEADER
+
     int					r$index;
     HBITMAP				old_bitmap;
     bool				got_new_scrape;
     CString				text;
     int					ret;
+
+	// Check for bad parameters
+	if (chair < 0 || 
+		chair >= global.trans.map.num_chairs ||
+		hdcCompatible == NULL || 
+		hdc == NULL)
+	{
+		return;
+	}
 
     // Player name
     got_new_scrape = false;
@@ -701,11 +769,21 @@ void CScraper::scrape_name(int chair, HDC hdcCompatible, HDC hdc) {
 void CScraper::scrape_balance(int chair, HDC hdcCompatible, HDC hdc)
 {
     __SEH_HEADER
+
     int					r$index;
     HBITMAP				old_bitmap;
     bool				got_new_scrape;
     CString				text;
     int					ret;
+
+	// Check for bad parameters
+	if (chair < 0 || 
+		chair >= global.trans.map.num_chairs ||
+		hdcCompatible == NULL || 
+		hdc == NULL)
+	{
+		return;
+	}
 
     // Player balance
     got_new_scrape = false;
@@ -831,7 +909,17 @@ void CScraper::scrape_balance(int chair, HDC hdcCompatible, HDC hdc)
 void CScraper::scrape_bet(int chair, HDC hdcCompatible, HDC hdc)
 {
     __SEH_HEADER
-    int					r$index;
+
+	// Check for bad parameters
+	if (chair < 0 || 
+		chair >= global.trans.map.num_chairs ||
+		hdcCompatible == NULL || 
+		hdc == NULL)
+	{
+		return;
+	}
+
+	int					r$index;
     HBITMAP				old_bitmap;
     CString				text;
 
@@ -879,12 +967,21 @@ void CScraper::scrape_bet(int chair, HDC hdcCompatible, HDC hdc)
 
 }
 
-void CScraper::scrape_buttons(HDC hdcCompatible, HDC hdc) {
+void CScraper::scrape_buttons(HDC hdcCompatible, HDC hdc) 
+{
     __SEH_HEADER
-    int					j, k, r$index;
+
+	int					j, k, r$index;
     HBITMAP				old_bitmap;
     CString				text;
 	Stablemap_region	handle, slider;
+
+	// Check for bad parameters
+	if (hdcCompatible == NULL || 
+		hdc == NULL)
+	{
+		return;
+	}
 
 
     buttonlabel[0] = "fold";
@@ -1032,9 +1129,17 @@ void CScraper::scrape_buttons(HDC hdcCompatible, HDC hdc) {
 void CScraper::scrape_pots(HDC hdcCompatible, HDC hdc)
 {
     __SEH_HEADER
+
     int					j, r$index;
     HBITMAP				old_bitmap;
     CString				text;
+
+	// Check for bad parameters
+	if (hdcCompatible == NULL || 
+		hdc == NULL)
+	{
+		return;
+	}
 
     for (j=0; j<=4; j++)
     {
@@ -1099,12 +1204,20 @@ void CScraper::scrape_pots(HDC hdcCompatible, HDC hdc)
 void CScraper::scrape_limits(HDC hdcCompatible, HDC hdc)
 {
     __SEH_HEADER
+
     int					j, r$index, s$index;
     HBITMAP				old_bitmap;
     CString				text;
     CString				titletext;
-    char				c_titletext[128];
+    char				c_titletext[MAX_WINDOW_TITLE];
     bool				got_new_scrape, log_blind_change;
+
+	// Check for bad parameters
+	if (hdcCompatible == NULL || 
+		hdc == NULL)
+	{
+		return;
+	}
 
     s_limit_info.found_handnumber = s_limit_info.found_sblind = s_limit_info.found_bblind = false;
     s_limit_info.found_bbet = s_limit_info.found_ante = s_limit_info.found_limit = false;
@@ -1171,7 +1284,7 @@ void CScraper::scrape_limits(HDC hdcCompatible, HDC hdc)
         s$index = global.trans.map.s$ttlimits_index;
         if (s$index!=-1)
         {
-            GetWindowText(global.attached_hwnd, c_titletext, 128);
+            GetWindowText(global.attached_hwnd, c_titletext, MAX_WINDOW_TITLE-1);
             titletext = c_titletext;
             global.trans.parse_string_bsl(titletext, global.trans.map.s$[s$index].text, NULL,
                                    &s_limit_info.handnumber, &s_limit_info.sblind, &s_limit_info.bblind, &s_limit_info.bbet,
@@ -1188,7 +1301,7 @@ void CScraper::scrape_limits(HDC hdcCompatible, HDC hdc)
             s$index = global.trans.map.s$ttlimitsX_index[j];
             if (s$index!=-1)
             {
-                GetWindowText(global.attached_hwnd, c_titletext, 128);
+                GetWindowText(global.attached_hwnd, c_titletext, MAX_WINDOW_TITLE-1);
                 titletext = c_titletext;
                 global.trans.parse_string_bsl(titletext, global.trans.map.s$[s$index].text, NULL,
                                        &s_limit_info.handnumber, &s_limit_info.sblind, &s_limit_info.bblind, &s_limit_info.bbet,
@@ -1379,10 +1492,19 @@ void CScraper::scrape_limits(HDC hdcCompatible, HDC hdc)
 double CScraper::get_handnum_from_string(CString t)
 {
     __SEH_HEADER
+
     char		newstr[256] = {0};
     int			i, newpos = 0;
 
-    for (i=0; i<t.GetLength(); i++) {
+	// Check for bad parameters
+	if (!t ||
+		t == "")
+	{
+		return 0.;
+	}
+
+    for (i=0; i<t.GetLength(); i++) 
+	{
         if (t.Mid(i,1) >= "0" && t.Mid(i,1) <= "9")
         {
             newstr[newpos++] = t.Mid(i,1)[0];
@@ -1399,8 +1521,10 @@ double CScraper::get_handnum_from_string(CString t)
 }
 
 
-bool CScraper::bitmaps_same(HBITMAP HBitmapLeft, HBITMAP HBitmapRight) {
+bool CScraper::bitmaps_same(HBITMAP HBitmapLeft, HBITMAP HBitmapRight) 
+{
     __SEH_HEADER
+
     if (HBitmapLeft == HBitmapRight)
         return true;
 
@@ -1506,6 +1630,7 @@ bool CScraper::bitmaps_same(HBITMAP HBitmapLeft, HBITMAP HBitmapRight) {
 void CScraper::create_bitmaps(void)
 {
     __SEH_HEADER
+
     int			i, w, h;
     HDC			hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
     RECT		cr;
@@ -1535,6 +1660,7 @@ void CScraper::create_bitmaps(void)
 void CScraper::delete_bitmaps(void)
 {
     __SEH_HEADER
+
     int			i;
 
     // Whole window
@@ -1566,6 +1692,13 @@ double CScraper::do_chip_scrape(HDC hdc, int i)
     uint32_t		*uresult, hash, pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT];
     double			result=0;
     CString			resstring;
+
+	// Check for bad parameters
+	if (hdc == NULL ||
+		i<0)
+	{
+		return 0.;
+	}
 
     // figure out if we are dealing with a pot or playerbet here
     if (global.trans.map.r$[i].name.Mid(0,5)=="c0pot" && global.trans.map.r$[i].name.Mid(6,4)=="chip")
@@ -1705,6 +1838,7 @@ double CScraper::do_chip_scrape(HDC hdc, int i)
 bool CScraper::get_button_state(int button_index)
 {
     __SEH_HEADER
+
     if (button_index<=9)
     {
 		if (scraper.buttonstate[button_index].MakeLower().Find("true")!=-1 ||
@@ -1748,7 +1882,16 @@ bool CScraper::get_button_state(int button_index)
 bool CScraper::is_numeric(CString t)
 {
     __SEH_HEADER
+
     int i;
+
+	// Check for bad parameters
+	if (!t ||
+		t == "")
+	{
+		return false;
+	}
+
     for (i=0; i<t.GetLength(); i++)
     {
         if (t.Mid(i,1).FindOneOf("$0123456789,.¢ckm") == -1)
@@ -1764,8 +1907,12 @@ bool CScraper::is_numeric(CString t)
 
 bool CScraper::is_string_allin(CString s)
 {
-    if (s=="")
-        return false;
+	// Check for bad parameters
+	if (!s ||
+		s == "")
+	{
+		return false;
+	}
 
     s.Remove(' ');
     s.Remove('-');
@@ -1784,8 +1931,12 @@ bool CScraper::is_string_allin(CString s)
 
 bool CScraper::is_string_raise(CString s)
 {
-    if (s=="")
-        return false;
+	// Check for bad parameters
+	if (!s ||
+		s == "")
+	{
+		return false;
+	}
 
     if (s.MakeLower().Find("raise")!=-1 ||
             s.MakeLower().Find("ra1se")!=-1 ||
@@ -1800,8 +1951,12 @@ bool CScraper::is_string_raise(CString s)
 
 bool CScraper::is_string_call(CString s)
 {
-    if (s=="")
-        return false;
+	// Check for bad parameters
+	if (!s ||
+		s == "")
+	{
+		return false;
+	}
 
     if (s.MakeLower().Find("call")!=-1 ||
             s.MakeLower().Find("caii")!=-1 ||
@@ -1815,8 +1970,12 @@ bool CScraper::is_string_call(CString s)
 
 bool CScraper::is_string_check(CString s)
 {
-    if (s=="")
-        return false;
+	// Check for bad parameters
+	if (!s ||
+		s == "")
+	{
+		return false;
+	}
 
     if (s.MakeLower().Find("check")!=-1)
     {
@@ -1828,8 +1987,12 @@ bool CScraper::is_string_check(CString s)
 
 bool CScraper::is_string_fold(CString s)
 {
-    if (s=="")
-        return false;
+	// Check for bad parameters
+	if (!s ||
+		s == "")
+	{
+		return false;
+	}
 
     if ((s.MakeLower().Find("fold")!=-1 ||
             s.MakeLower().Find("fo1d")!=-1 ||
@@ -1844,8 +2007,13 @@ bool CScraper::is_string_fold(CString s)
 
 bool CScraper::is_string_autopost(CString s)
 {
-    if (s=="")
-        return false;
+	// Check for bad parameters
+	if (!s ||
+		s == "")
+	{
+		return false;
+	}
+
 
     s.Remove(' ');
     s.Remove('-');
@@ -1861,8 +2029,12 @@ bool CScraper::is_string_autopost(CString s)
 
 bool CScraper::is_string_sitin(CString s)
 {
-    if (s=="")
-        return false;
+	// Check for bad parameters
+	if (!s ||
+		s == "")
+	{
+		return false;
+	}
 
     s.Remove(' ');
     s.Remove('-');
@@ -1878,8 +2050,12 @@ bool CScraper::is_string_sitin(CString s)
 
 bool CScraper::is_string_sitout(CString s)
 {
-    if (s=="")
-        return false;
+	// Check for bad parameters
+	if (!s ||
+		s == "")
+	{
+		return false;
+	}
 
     s.Remove(' ');
     s.Remove('-');
@@ -1897,8 +2073,12 @@ bool CScraper::is_string_sitout(CString s)
 
 bool CScraper::is_string_leave(CString s)
 {
-    if (s=="")
-        return false;
+	// Check for bad parameters
+	if (!s ||
+		s == "")
+	{
+		return false;
+	}
 
     if (s.MakeLower().Find("leave")!=-1)
     {
@@ -1910,8 +2090,12 @@ bool CScraper::is_string_leave(CString s)
 
 bool CScraper::is_string_prefold(CString s)
 {
-    if (s=="")
-        return false;
+	// Check for bad parameters
+	if (!s ||
+		s == "")
+	{
+		return false;
+	}
 
     if (s.MakeLower().Find("prefold")!=-1)
     {
@@ -1924,8 +2108,12 @@ bool CScraper::is_string_prefold(CString s)
 
 bool CScraper::is_string_seated(CString s)
 {
-    if (s=="")
-        return false;
+	// Check for bad parameters
+	if (!s ||
+		s == "")
+	{
+		return false;
+	}
 
     if (s.MakeLower().Find("false")!=-1 ||
             s.MakeLower().Find("unseated")!=-1)
@@ -1944,6 +2132,13 @@ bool CScraper::is_string_seated(CString s)
 
 bool CScraper::is_string_active(CString s)
 {
+	// Check for bad parameters
+	if (!s ||
+		s == "")
+	{
+		return global.trans.map.activemethod == 2 ? true : false;
+	}
+
     // new method: active unless pXactive returns false/inactive/out/away
     if (global.trans.map.activemethod == 2)
     {
@@ -1980,8 +2175,12 @@ bool CScraper::is_string_active(CString s)
 
 bool CScraper::is_string_cardback(CString s)
 {
-    if (s=="")
-        return false;
+	// Check for bad parameters
+	if (!s ||
+		s == "")
+	{
+		return false;
+	}
 
     if (s.MakeLower().Find("true")!=-1 ||
             s.MakeLower().Find("cardback")!=-1)
@@ -1994,8 +2193,12 @@ bool CScraper::is_string_cardback(CString s)
 
 bool CScraper::is_string_dealer(CString s)
 {
-    if (s=="")
-        return false;
+	// Check for bad parameters
+	if (!s ||
+		s == "")
+	{
+		return false;
+	}
 
     if (s.MakeLower().Find("true")!=-1 ||
             s.MakeLower().Find("dealer")!=-1)
