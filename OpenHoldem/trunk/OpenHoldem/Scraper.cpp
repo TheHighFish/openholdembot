@@ -1751,7 +1751,7 @@ bool CScraper::is_numeric(CString t)
     int i;
     for (i=0; i<t.GetLength(); i++)
     {
-        if (t.Mid(i,1).FindOneOf("$0123456789,.�ckm") == -1)
+        if (t.Mid(i,1).FindOneOf("$0123456789,.¢ckm") == -1)
             return false;
     }
 
