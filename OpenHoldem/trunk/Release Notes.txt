@@ -25,6 +25,9 @@ BUG FIXES:
 - Possible buffer overflow with reading of window title text has been corrected in
   scraper.h and scraper.cpp (OpenHoldem)
   
+- Poker Tracker symbols no longer permanently fail (always return 0) after red button/
+  sitting out. (quiqsilver)
+
 
 MAINTENANCE: 
 - A single OpenHoldem Formula file (*.ohf) instead of *.whf and *.whx.

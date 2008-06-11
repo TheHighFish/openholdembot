@@ -413,12 +413,12 @@ void PokerTracker::disconnect(void)
 {
     __SEH_HEADER
 
+	connected = false;
 
     if (PQstatus(pgconn) == CONNECTION_OK)
         PQfinish(pgconn);
 
     __SEH_LOGFATAL("PokerTracker::disconnect : \n");
-
 }
 
 int	PokerTracker::getsiteid (void)
