@@ -1841,14 +1841,18 @@ bool CScraper::get_button_state(int button_index)
 
     if (button_index<=9)
     {
-		if (scraper.buttonstate[button_index].MakeLower().Find("true")!=-1 ||
-                scraper.buttonstate[button_index].MakeLower().Find("on")!=-1 ||
-                scraper.buttonstate[button_index].MakeLower().Find("yes")!=-1 ||
-                scraper.buttonstate[button_index].MakeLower().Find("checked")!=-1 ||
-                scraper.buttonstate[button_index].MakeLower().Find("lit")!=-1 )
-        {
-            return true;
-        }
+		// don't MakeLower our mm_network symbol
+		if (!symbols.sym.ismanual || button_index!=5)
+		{
+			if (scraper.buttonstate[button_index].MakeLower().Find("true")!=-1 ||
+					scraper.buttonstate[button_index].MakeLower().Find("on")!=-1 ||
+					scraper.buttonstate[button_index].MakeLower().Find("yes")!=-1 ||
+					scraper.buttonstate[button_index].MakeLower().Find("checked")!=-1 ||
+					scraper.buttonstate[button_index].MakeLower().Find("lit")!=-1 )
+			{
+				return true;
+			}
+		}
     }
     else if (button_index==86)
     {

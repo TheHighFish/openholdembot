@@ -26,7 +26,10 @@ BUG FIXES:
   scraper.h and scraper.cpp (OpenHoldem)
   
 - Poker Tracker symbols no longer permanently fail (always return 0) after red button/
-  sitting out. (quiqsilver)
+  sitting out. (Thanks, Winngy) (quiqsilver)
+  
+- Erratic problems with attempting to retrieve Poker Tracker data when using Manual Mode
+  are now fixed. (Thanks, eesahe) (quiqsilver)
 
 
 MAINTENANCE: 
