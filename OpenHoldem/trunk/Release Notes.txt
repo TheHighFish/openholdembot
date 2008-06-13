@@ -31,6 +31,7 @@ BUG FIXES:
 - Erratic problems with attempting to retrieve Poker Tracker data when using Manual Mode
   are now fixed. (Thanks, eesahe) (quiqsilver)
 
+- Correcting possible issue that can cause a crash. Worker threads should not be playing with windows (SetWindowText) - Spew
 
 MAINTENANCE: 
 - A single OpenHoldem Formula file (*.ohf) instead of *.whf and *.whx.

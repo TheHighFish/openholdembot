@@ -26,3 +26,5 @@ public:
 };
 
 extern COpenHoldemApp theApp;
+
+#define		WMA_SETWINDOWTEXT				WM_APP+1

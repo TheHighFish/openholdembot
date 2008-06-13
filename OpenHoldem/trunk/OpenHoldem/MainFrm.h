@@ -61,6 +61,7 @@ protected: // create from serialization only
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg void OnDllLoadspecificfile();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
+	afx_msg LRESULT OnSetWindowText(WPARAM, LPARAM title);
 	//  2008.03.03 by THF 
 	afx_msg void OnPerlLoadFormula();
 	//  2008.03.07  by THF 

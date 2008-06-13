@@ -124,7 +124,10 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
     ON_UPDATE_COMMAND_UI(ID_INDICATOR_STATUS_NOPP,OnUpdateStatus)
     ON_UPDATE_COMMAND_UI(ID_INDICATOR_STATUS_NIT,OnUpdateStatus)
     ON_UPDATE_COMMAND_UI(ID_INDICATOR_STATUS_ACTION,OnUpdateStatus)
+
     ON_COMMAND(ID_POKERPRO_CONNECT, &CMainFrame::OnPokerproConnect)
+	ON_MESSAGE(WMA_SETWINDOWTEXT, OnSetWindowText)
+
     ON_WM_SETCURSOR()
     ON_WM_SYSCOMMAND()
     ON_UPDATE_COMMAND_UI(ID_VIEW_SHOOTREPLAYFRAME, &CMainFrame::OnUpdateViewShootreplayframe)
@@ -1350,6 +1353,15 @@ void CMainFrame::OnDllLoadspecificfile()
     __SEH_LOGFATAL("CMainFrame::OnDllLoadspecificfile :\n");
 }
 
+LRESULT CMainFrame::OnSetWindowText(WPARAM, LPARAM title)
+{
+	CString *sTitle = (CString *)title;
+
+	SetWindowText(sTitle->GetString());
+
+	delete sTitle;
+	return 0l;
+}
 
 void CMainFrame::OnPokerproConnect() 
 {
