@@ -208,12 +208,14 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logC
 
             // Which form of f$$ is being called determines nature of resultant udf call
             strcpy(f$func, "f$");
+
             if (tolower(sym.c_str()[3])=='x' &&
                     strlen(sym.c_str())==4)
             {
                 f$func[2] = ranks[rank0];
                 f$func[3] = '\0';
             }
+
             else if (tolower(sym.c_str()[3])=='x' &&
                      tolower(sym.c_str()[4])=='x' &&
                      strlen(sym.c_str())==5)
@@ -222,6 +224,7 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logC
                 f$func[3] = ranks[rank1];
                 f$func[4] = '\0';
             }
+
             else if (tolower(sym.c_str()[3])=='x' &&
                      tolower(sym.c_str()[4])=='x' &&
                      tolower(sym.c_str()[5])=='x' &&
@@ -229,9 +232,10 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logC
             {
                 f$func[2] = ranks[rank0];
                 f$func[3] = ranks[rank1];
-                f$func[4] = rank0==rank1 ? 's' : 'o';
+                f$func[4] = symbols.sym.issuited ? 's' : 'o';
                 f$func[5] = '\0';
             }
+
             else
             {
                 *e = ERR_INVALID_F$$_REF;

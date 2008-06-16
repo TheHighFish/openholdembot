@@ -33,6 +33,10 @@ BUG FIXES:
 
 - Correcting possible issue that can cause a crash. Worker threads should not be playing with windows (SetWindowText) - Spew
 
+- The third form of the hand multiplexor (f$$XXx) was not differentiating between suited 
+  and non-suited hole cards correctly.  (eesahe/OpenHoldem)
+  
+
 MAINTENANCE: 
 - A single OpenHoldem Formula file (*.ohf) instead of *.whf and *.whx.
   The WinHoldem format is still recognized, but gets converted automatically 
