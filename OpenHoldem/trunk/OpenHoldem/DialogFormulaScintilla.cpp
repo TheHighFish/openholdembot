@@ -1882,8 +1882,10 @@ void CDlgFormulaScintilla::OnSize(UINT nType, int cx, int cy) {
 
 }
 
-void CDlgFormulaScintilla::OnBnClickedCalc() {
+void CDlgFormulaScintilla::OnBnClickedCalc() 
+{
     __SEH_HEADER
+
     CString					Cstr, title, s;
     double					ret;
     int						error, i;
@@ -1911,9 +1913,10 @@ void CDlgFormulaScintilla::OnBnClickedCalc() {
     global.create_hand_list_matrices(&m_wrk_formula);
 
     // Validate parse trees
-    if (!global.ParseAllFormula(this->GetSafeHwnd(), &m_wrk_formula)) {
+    if (!global.ParseAllFormula(this->GetSafeHwnd(), &m_wrk_formula)) 
+	{
         s.Format("There are syntax errors in one or more formulas that are\n");
-        s.Append("preventing calculation of this formula.\n");
+        s.Append("preventing calculation.\n");
         s.Append("These errors need to be corrected before the 'Calc'\n");
         s.Append("button can be used.");
         MessageBox(s, "PARSE ERROR(s)", MB_OK);
@@ -1923,14 +1926,16 @@ void CDlgFormulaScintilla::OnBnClickedCalc() {
     //
     // f$debug is a special case, handle it first
     //
-    if (m_current_edit == "f$debug") {
+    if (m_current_edit == "f$debug") 
+	{
         LastChangeToFormula(&m_wrk_formula);
         init_debug_array();
         update_debug_auto();
     }
 
     // Processing for any other formula
-    else {
+    else 
+	{
         // time how long it takes
         QueryPerformanceCounter(&bcount);
 
@@ -1941,7 +1946,8 @@ void CDlgFormulaScintilla::OnBnClickedCalc() {
         // time how long it takes
         QueryPerformanceCounter(&ecount);
         QueryPerformanceFrequency(&lFrequency);
-        if (error == SUCCESS) {
+        if (error == SUCCESS) 
+		{
             // display result
             sprintf(format, "%%.%df", m_precision);
             Cstr.Format(format, ret);
@@ -1952,8 +1958,10 @@ void CDlgFormulaScintilla::OnBnClickedCalc() {
                          ((double) (ecount.LowPart - bcount.LowPart))/((double) lFrequency.LowPart));
             SetWindowText(title);
         }
-        else {
-            switch (error) {
+        else 
+		{
+            switch (error) 
+			{
             case ERR_INVALID_SYM:
                 Cstr.Format("ERROR: Invalid symbol");
                 m_CalcResult.SetWindowText(Cstr);

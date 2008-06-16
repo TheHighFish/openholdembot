@@ -109,11 +109,13 @@ void Autoplayer::do_Chat(void)
 }
 
 
-void Autoplayer::do_autoplayer(void) {
+void Autoplayer::do_autoplayer(void) 
+{
 
     __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
 
     __SEH_HEADER
+
     bool			prwin_running, scrape_running;
     int				x, error;
     int				num_buttons_visible;
@@ -1833,8 +1835,10 @@ void Autoplayer::do_f$play(void) {
 
 }
 
-void Autoplayer::do_i86(void) {
+void Autoplayer::do_i86(void) 
+{
     __SEH_HEADER
+
     INPUT			input[100] = {0};
     POINT			pt;
     double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
@@ -1991,8 +1995,8 @@ void Autoplayer::get_click_point(int x, int y, int rx, int ry, POINT *p)
 {
     __SEH_HEADER
 
-    p->x = x + randomNormalScaled(2*rx, 0, 1) - (rx);
-    p->y = y + randomNormalScaled(2*ry, 0, 1) - (ry);
+    p->x = x + (int) (randomNormalScaled(2*rx, 0, 1) + 0.5) - (rx);
+    p->y = y + (int) (randomNormalScaled(2*ry, 0, 1) + 0.5) - (ry);
 
     __SEH_LOGFATAL("Autoplayer::get_click_point :\n");
 
