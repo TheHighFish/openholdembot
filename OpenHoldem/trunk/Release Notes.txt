@@ -47,6 +47,10 @@ MAINTENANCE:
   
 - Added parameter validity checking on all functions in scraper.cpp.
   (OpenHoldem)
+  
+- Random button clicking logic changed to further improve distribution of
+  click points in Autoplayer::get_click_point.  (Indiana/OpenHoldem)
+  
 
 
 v1.9.0 2008-05-16

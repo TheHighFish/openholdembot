@@ -1968,8 +1968,10 @@ void Autoplayer::do_i86(void) {
 
 }
 
-POINT Autoplayer::randomize_click_location(int left, int top, int right, int bottom) {
+POINT Autoplayer::randomize_click_location(int left, int top, int right, int bottom) 
+{
     __SEH_HEADER
+
     POINT p;
 
     // uniform random distribution, yuck!
@@ -1985,10 +1987,12 @@ POINT Autoplayer::randomize_click_location(int left, int top, int right, int bot
 
 }
 
-void Autoplayer::get_click_point(int x, int y, int rx, int ry, POINT *p) {
+void Autoplayer::get_click_point(int x, int y, int rx, int ry, POINT *p) 
+{
     __SEH_HEADER
-    p->x = x + (int) randomNormalScaled(2*rx, 0, 1) - (rx);
-    p->y = y + (int) randomNormalScaled(2*ry, 0, 1) - (ry);
+
+    p->x = x + randomNormalScaled(2*rx, 0, 1) - (rx);
+    p->y = y + randomNormalScaled(2*ry, 0, 1) - (ry);
 
     __SEH_LOGFATAL("Autoplayer::get_click_point :\n");
 
@@ -1996,8 +2000,10 @@ void Autoplayer::get_click_point(int x, int y, int rx, int ry, POINT *p) {
 
 // random number - 0 -> scale, with normal distribution
 // ignore results outside 3.5 stds from the mean
-double Autoplayer::randomNormalScaled(double scale, double m, double s) {
+double Autoplayer::randomNormalScaled(double scale, double m, double s) 
+{
     __SEH_HEADER
+
     double res = -99;
     while (res < -3.5 || res > 3.5) res = randomNormal(m, s);
     return (res / 3.5*s + 1) * (scale / 2.0);
@@ -2006,8 +2012,10 @@ double Autoplayer::randomNormalScaled(double scale, double m, double s) {
 
 }
 
-double Autoplayer::randomNormal(double m, double s) {
+double Autoplayer::randomNormal(double m, double s) 
+{
     __SEH_HEADER
+
     /* mean m, standard deviation s */
     double x1, x2, w, y1, y2;
     do {
