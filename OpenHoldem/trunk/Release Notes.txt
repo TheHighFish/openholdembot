@@ -1,6 +1,12 @@
 v?.?.? 2008-06-27
 =================
 NEW STUFF:
+- Added semantic action to grammar to allow for validation of symbols upon parsing of
+  formula code.  Symbols that are not valid, but syntactically correct, will now be flagged
+  appropriately.  See here for more information on sematic actions in the spirit
+  library: http://spirit.sourceforge.net/distrib/spirit_1_8_5/libs/spirit/doc/semantic_actions.html
+  (OpenHoldem)
+  
 
 BUG FIXES:
 - Only locate/open the versus.bin file during OH initialization to avoid

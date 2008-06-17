@@ -72,11 +72,14 @@ double calc_f$symbol(SFormula *f, char *symbol, int *e);
 //double evaluate(parse_tree_match_t hit);
 double evaluate(SFormula *f, boost::spirit::tree_parse_info<const char *, int_factory_t> info, CEvalInfoFunction **logCallingFunction, int *e);
 double eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e);
+double eval_symbol(SFormula *f, string sym, CEvalInfoFunction **logCallingFunction, int *e);
 
 
 void SetPosition(parse_tree_match_t::node_t &node, 
 						const char *begin, 
 						const char *end);
+
+void SymbolValidation(const char *begin, const char *end);
 
 //  Here's the comment rule
 struct skip_grammar : public boost::spirit::grammar<skip_grammar>
@@ -126,11 +129,11 @@ struct exec_grammar : public boost::spirit::grammar<exec_grammar> {
 
 			// keywords
 			SYMBOL			 =	access_node_d[
-				                leaf_node_d[ 
-								lexeme_d[
-									((alpha_p | '_' | '$') >> *(alnum_p | '_' | '$' | '.')) 
-								] 
-								]
+									leaf_node_d[ 
+										lexeme_d[
+											((alpha_p | '_' | '$') >> *(alnum_p | '_' | '$' | '.')) 
+										][&SymbolValidation] 
+									]
 								][&SetPosition];
 
 			// constants

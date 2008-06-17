@@ -1,4 +1,5 @@
 #include "StdAfx.h"
+
 #include "debug.h"
 #include "resource.h"
 #include "grammar.h"
@@ -378,7 +379,7 @@ bool parse_loop(const CUPDUPDATA* pCUPDUPData)
 {
     __SEH_HEADER
 
-    int				N, i;
+    int				N, i, j;
     CString			s;
     bool			result;
     int				stopchar;
@@ -410,8 +411,11 @@ bool parse_loop(const CUPDUPDATA* pCUPDUPData)
                 data->f->mFunction[i].func != "dll" &&
                 data->f->mFunction[i].func != "f$debug")
         {
+			global.parse_symbol_formula = data->f;
+			global.parse_symbol_stop_strs.RemoveAll();
 
             result = parse(&data->f->mFunction[i].func_text, &data->f->mFunction[i].tpi, &stopchar);
+
             if (!result)
             {
                 linenum = colnum = 1;
@@ -434,6 +438,21 @@ bool parse_loop(const CUPDUPDATA* pCUPDUPData)
                 MessageBox(data->calling_hwnd, s, "PARSE ERROR", MB_OK);
                 data->all_parsed = false;
             }
+
+			else if (global.parse_symbol_stop_strs.GetSize() != 0)
+			{
+				s.Format("Error in parse of %s\n\nInvalid symbols:\n",
+                         data->f->mFunction[i].func.GetString());
+				for (j=0; j<global.parse_symbol_stop_strs.GetSize(); j++)
+				{
+					s.Append("   ");
+					s.Append(global.parse_symbol_stop_strs[j].c_str());
+					s.Append("\n");
+				}
+                MessageBox(data->calling_hwnd, s, "PARSE ERROR", MB_OK);
+                data->all_parsed = false;
+			}
+
             else
             {
                 data->f->mFunction[i].dirty = false;

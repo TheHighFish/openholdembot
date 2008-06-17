@@ -2069,14 +2069,13 @@ void CDlgFormulaScintilla::update_debug_auto(void) {
 
     // Loop through each line in the debug tab and evaluate it
     N = (int) debug_ar.GetSize();
-    for (i=0; i<N; i++) {
-        if (debug_ar[i].valid) {
-            debug_ar[i].error = SUCCESS;
+    for (i=0; i<N; i++) 
+	{
+        if (debug_ar[i].valid && debug_ar[i].error==SUCCESS)
             debug_ar[i].ret = evaluate(&m_wrk_formula, debug_ar[i].tree, NULL, &debug_ar[i].error);
-        }
-        else {
+
+        else
             debug_ar[i].ret = 0;
-        }
     }
     // Format the text
     create_debug_tab(&Cstr);
@@ -2109,7 +2108,8 @@ void CDlgFormulaScintilla::update_debug_auto(void) {
 
 }
 
-void CDlgFormulaScintilla::create_debug_tab(CString *cs) {
+void CDlgFormulaScintilla::create_debug_tab(CString *cs) 
+{
     __SEH_HEADER
     int N, i, j;
     CString newline;
@@ -2120,38 +2120,46 @@ void CDlgFormulaScintilla::create_debug_tab(CString *cs) {
     *cs = "";
 
     N = (int) debug_ar.GetSize();
-    for (i=0; i<N; i++) {
-        if (debug_ar[i].valid) {
-            if (debug_ar[i].error == SUCCESS) {
+    for (i=0; i<N; i++) 
+	{
+        if (debug_ar[i].valid) 
+		{
+            if (debug_ar[i].error == SUCCESS) 
+			{
                 newline.Format(format, debug_ar[i].ret, debug_ar[i].exp.GetString());
                 newline.Append("\r\n");
                 cs->Append(newline);
             }
-            else {
+            else 
+			{
                 newline="";
-                for (j=0; j<m_precision+m_equal-9; j++) {
+                for (j=0; j<m_precision+m_equal-9; j++)
                     newline.Append(" ");
-                }
 
-                switch (debug_ar[i].error) {
-                case ERR_INVALID_SYM:
-                    newline.Append("ERR: sym  = ");
-                    break;
-                case ERR_INVALID_FUNC_SYM:
-                    newline.Append("ERR: f$   = ");
-                    break;
-                case ERR_INVALID_DLL_SYM:
-                    newline.Append("ERR: dll$ = ");
-                    break;
-                case ERR_INVALID_EXPR:
-                    newline.Append("ERR: expr = ");
-                    break;
-                case ERR_DIV_ZERO:
-                    newline.Append("ERR: div0 = ");
-                    break;
-                default:
-                    newline.Append("ERR: unkn = ");
-                    break;
+
+                switch (debug_ar[i].error) 
+				{
+					case ERR_INVALID_SYM:
+						newline.Append("ERR: sym  = ");
+						break;
+					case ERR_INVALID_FUNC_SYM:
+						newline.Append("ERR: f$   = ");
+						break;
+					case ERR_INVALID_DLL_SYM:
+						newline.Append("ERR: dll$ = ");
+						break;
+					case ERR_INVALID_EXPR:
+						newline.Append("ERR: expr = ");
+						break;
+					case ERR_DIV_ZERO:
+						newline.Append("ERR: div0 = ");
+						break;
+					case ERR_BAD_PARSE:
+						newline.Append("ERR: pars = ");
+						break;
+					default:
+						newline.Append("ERR: unkn = ");
+						break;
                 }
 
                 //newline.Append("ERROR = ");
@@ -2160,16 +2168,16 @@ void CDlgFormulaScintilla::create_debug_tab(CString *cs) {
                 cs->Append(newline);
             }
         }
-        else {
+        else 
+		{
             cs->Append(debug_ar[i].exp);
             cs->Append("\r\n");
         }
     }
 
     // Remove last trailing \n so we don't extend field length
-    if (cs->GetLength()>=1) {
+    if (cs->GetLength()>=1)
         *cs = cs->Mid(0, cs->GetLength()-1);
-    }
 
     __SEH_LOGFATAL("CDlgFormulaScintilla::create_debug_tab :\n");
 
@@ -2219,7 +2227,8 @@ void CDlgFormulaScintilla::write_fdebug_log(bool write_header) {
 }
 
 
-void CDlgFormulaScintilla::init_debug_array(void) {
+void CDlgFormulaScintilla::init_debug_array(void) 
+{
     __SEH_HEADER
 
     char				buf[1000], *eq;
@@ -2227,6 +2236,7 @@ void CDlgFormulaScintilla::init_debug_array(void) {
     CString				Cstr, allText, strLine;
     int					stopchar, pos;
     CString				s;
+	bool				parse_result;
 
     global.m_WaitCursor = true;
     BeginWaitCursor();
@@ -2237,36 +2247,44 @@ void CDlgFormulaScintilla::init_debug_array(void) {
 
     m_pActiveScinCtrl->GetText(allText);
     pos=0;
-    while (pos<allText.GetLength()) {
+    while (pos<allText.GetLength()) 
+	{
         // Get next line from entire buffer
         strLine = "";
-        while (allText.Mid(pos, 2)!="\r\n" && allText.Mid(pos, 1)!="\r" && allText.Mid(pos, 1)!="\n" && pos<allText.GetLength()) {
+        while (allText.Mid(pos, 2)!="\r\n" && allText.Mid(pos, 1)!="\r" && allText.Mid(pos, 1)!="\n" && pos<allText.GetLength()) 
+		{
             strLine += allText.Mid(pos, 1);
             pos++;
         }
-        if (allText.Mid(pos, 2)=="\r\n") {
+        if (allText.Mid(pos, 2)=="\r\n") 
+		{
             pos += 2;
         }
-        else if (allText.Mid(pos, 1)=="\r" || allText.Mid(pos, 1)=="\n") {
+        else if (allText.Mid(pos, 1)=="\r" || allText.Mid(pos, 1)=="\n") 
+		{
             pos += 1;
         }
 
         // Find the equal sign, if it exists
         strcpy(buf, strLine.GetString());
-        if ((eq = strstr(buf, "=")) && buf[0]!='/' && buf[1]!='/') {
+        if ((eq = strstr(buf, "=")) && buf[0]!='/' && buf[1]!='/') 
+		{
             eq++;
-            while (*eq==' ' && *eq!='\0') {
+            while (*eq==' ' && *eq!='\0') 
                 eq++;
-            }
 
             // parse
             debug_struct.exp.Format("%s", eq);
-            parse(&debug_struct.exp, &debug_struct.tree, &stopchar);
+			global.parse_symbol_formula = &m_wrk_formula;
+			global.parse_symbol_stop_strs.RemoveAll();
+
+            parse_result = parse(&debug_struct.exp, &debug_struct.tree, &stopchar);
             debug_struct.ret = 0;
-            debug_struct.valid = true;
-            debug_struct.error = SUCCESS;
+			debug_struct.valid = true;
+			debug_struct.error = parse_result && global.parse_symbol_stop_strs.GetSize()==0 ? SUCCESS : ERR_BAD_PARSE;
         }
-        else {
+        else 
+		{
             debug_struct.exp = buf;
             Cstr = "";
             parse(&Cstr, &debug_struct.tree, &stopchar);
@@ -2284,8 +2302,10 @@ void CDlgFormulaScintilla::init_debug_array(void) {
 
 }
 
-void CDlgFormulaScintilla::OnBnClickedApply() {
+void CDlgFormulaScintilla::OnBnClickedApply() 
+{
     __SEH_HEADER
+
     CMenu				*file_menu = this->GetMenu()->GetSubMenu(0);
     COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
     CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
@@ -2306,17 +2326,34 @@ void CDlgFormulaScintilla::OnBnClickedApply() {
     // Save settings to registry
     save_settings_to_registry();
 
+    // Re-calc working set hand lists
+    global.create_hand_list_matrices(&m_wrk_formula);
+
+	// Parse working set
+    if (!global.ParseAllFormula(this->GetSafeHwnd(), &m_wrk_formula))
+	{
+		if (MessageBox("There are errors in the working formula set.\n\n"
+					   "Would you still like to apply changes in the working set to the main set?\n\n"
+					   "Note that if you choose yes here, then the main formula set will \n"
+					   "contain errors, will likely not act as you expect, and may cause you\n"
+					   "to lose money at the tables.\n\n"
+					   "Please only click 'Yes' if you really know what you are doing.",
+					   "PARSE ERROR", 
+					   MB_YESNO) != IDYES)
+		{
+			return;
+		}
+	}
+
     // Copy working set to global set
     LastChangeToFormula(&m_wrk_formula);
     global.CopyFormula(&m_wrk_formula, &global.formula);
     pDoc->SetModifiedFlag(true);
 
-    // Re-calc hand lists
-    global.create_hand_list_matrices(&m_wrk_formula);
+    // Re-calc global set hand lists
     global.create_hand_list_matrices(&global.formula);
 
-    // Re-parse
-    global.ParseAllFormula(this->GetSafeHwnd(), &m_wrk_formula);
+    // Re-parse global set
     global.ParseAllFormula(this->GetSafeHwnd(), &global.formula);
 
     // Re-calc symbols
@@ -2333,7 +2370,8 @@ void CDlgFormulaScintilla::OnBnClickedApply() {
 
 }
 
-void CDlgFormulaScintilla::OnBnClickedOk() {
+void CDlgFormulaScintilla::OnBnClickedOk() 
+{
     __SEH_HEADER
     COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
     CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
@@ -2353,29 +2391,50 @@ void CDlgFormulaScintilla::OnBnClickedOk() {
 
     StopAutoButton();
 
-    // Copy working set to global set
+    // Save settings to registry
+    save_settings_to_registry();
+
+    // Re-calc working set hand lists
+    global.create_hand_list_matrices(&m_wrk_formula);
+
+	// Parse working set
+    if (!global.ParseAllFormula(this->GetSafeHwnd(), &m_wrk_formula))
+	{
+		if (MessageBox("There are errors in the working formula set.\n\n"
+					   "Would you still like to apply changes in the working set to the main set "
+					   "and exit the formula editor?\n\n"
+					   "Note that if you choose yes here, then the main formula set will\n"
+					   "contain errors, will likely not act as you expect, and may cause you\n"
+					   "to lose money at the tables.\n\n"
+					   "Please only click 'Yes' if you really know what you are doing.",
+					   "PARSE ERROR", 
+					   MB_YESNO) != IDYES)
+		{
+			return;
+		}
+	}
+
+	// Copy working set to global set
     LastChangeToFormula(&m_wrk_formula);
     global.CopyFormula(&m_wrk_formula, &global.formula);
     global.ClearFormula(&m_wrk_formula);
     pDoc->SetModifiedFlag(true);
     m_dirty = false;
 
-    // Re-calc hand lists
+    // Re-calc global set hand lists
     global.create_hand_list_matrices(&global.formula);
 
-    // Re-parse
+    // Re-parse global set
     global.ParseAllFormula(this->GetSafeHwnd(), &global.formula);
 
     // Re-calc symbols
     symbols.CalcSymbols();
 
-    // Save settings to registry
-    save_settings_to_registry();
-
     // Uncheck formula button on main toolbar
     pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
 
-    OnOK();
+
+	OnOK();
 
     __SEH_LOGFATAL("CDlgFormulaScintilla::OnBnClickedOk :\n");
 
@@ -2387,17 +2446,40 @@ bool CDlgFormulaScintilla::PromptToSave()
     COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
     CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
-    int ret = MessageBox("You have made changes to this formula.\n\nDo you want to apply changes?", "Save changes?", MB_YESNOCANCEL);
-    if (ret == IDYES) {
-        LastChangeToFormula(&m_wrk_formula);
+    if (MessageBox("You have made changes to this formula.\n\nDo you want to apply changes?", 
+				   "Save changes?", 
+				   MB_YESNOCANCEL)==IDYES)
+	{
+		// Re-calc working set hand lists
+		global.create_hand_list_matrices(&m_wrk_formula);
+
+		// Parse working set
+		if (!global.ParseAllFormula(this->GetSafeHwnd(), &m_wrk_formula))
+		{
+			if (MessageBox("There are errors in the working formula set.\n\n"
+						   "Would you still like to apply changes in the working set to the main set "
+						   "and exit the formula editor?\n\n"
+						   "Note that if you choose yes here, then the main formula set will\n"
+						   "contain errors, will likely not act as you expect, and may cause you\n"
+						   "to lose money at the tables.\n\n"
+						   "Please only click 'Yes' if you really know what you are doing.",
+						   "PARSE ERROR", 
+						   MB_YESNO) != IDYES)
+			{
+				return false;
+			}
+		}
+	
+		// Copy working set to global set
+		LastChangeToFormula(&m_wrk_formula);
         global.CopyFormula(&m_wrk_formula, &global.formula);
         global.ClearFormula(&m_wrk_formula);
         pDoc->SetModifiedFlag(true);
 
-        // Re-calc hand lists
+        // Re-calc global set hand lists
         global.create_hand_list_matrices(&global.formula);
 
-        // Re-parse
+        // Re-parse global set
         global.ParseAllFormula(this->GetSafeHwnd(), &global.formula);
 
         // Uncheck formula button on main toolbar
@@ -2407,7 +2489,8 @@ bool CDlgFormulaScintilla::PromptToSave()
 
         return true;
     }
-    else if (ret == IDNO) {
+    else 
+	{
         global.ClearFormula(&m_wrk_formula);
 
         // Uncheck formula button on main toolbar
@@ -2417,6 +2500,7 @@ bool CDlgFormulaScintilla::PromptToSave()
 
         return true;
     }
+
     return false;
 }
 

@@ -27,6 +27,169 @@ void SetPosition(parse_tree_match_t::node_t &node,
 	node.value.value(begin);
 }
 
+void SymbolValidation(const char *begin, const char *end)
+{
+	int		i, e;
+	string	sym(begin, end);
+	bool	match;
+
+    // "e" literal
+    if (strcmp(sym.c_str(), "e")==0)
+        return;
+
+    // f$$ symbols (hand multiplexor)
+    else if (memcmp(sym.c_str(), "f$$", 3)==0)
+    {
+        if (strlen(sym.c_str())==4)
+		{
+			if (tolower(sym.c_str()[3])!='x')
+			{
+				global.parse_symbol_stop_strs.Add(sym);
+				return;
+			}
+		}
+        else if (strlen(sym.c_str())==5)
+		{
+			if (tolower(sym.c_str()[3])!='x' || tolower(sym.c_str()[4])!='x')
+			{
+				global.parse_symbol_stop_strs.Add(sym);
+				return;
+			}
+		}
+        else if (strlen(sym.c_str())==6)
+		{
+			if (tolower(sym.c_str()[3])!='x' || tolower(sym.c_str()[4])!='x' || tolower(sym.c_str()[5])!='x')
+			{
+				global.parse_symbol_stop_strs.Add(sym);
+				return;
+			}
+		}
+        else
+        {
+			global.parse_symbol_stop_strs.Add(sym);
+			return;
+        }
+    }
+
+    // f$ symbols
+    else if (memcmp(sym.c_str(), "f$", 2)==0)
+    {
+		match = false;
+		for (i=0; i<global.parse_symbol_formula->mFunction.GetSize() && match==false; i++)
+			if (strcmp(global.parse_symbol_formula->mFunction[i].func.GetString(), sym.c_str())==0)
+				match = true;
+
+		if (!match)
+			global.parse_symbol_stop_strs.Add(sym);
+
+        return;
+    }
+
+    // dll$ symbols
+    else if (memcmp(sym.c_str(), "dll$", 4)==0)
+    {
+        // MECHANISM FOR DETECTING INVALID DLL SYMBOLS DOES NOT YET EXIST
+		return;
+    }
+
+    //  Perl symbols (starting with "pl_")
+    else if (memcmp(sym.c_str(), "pl_", 3)==0)
+	{
+		if (!the_Perl_Interpreter.is_Perl_Symbol(sym.c_str()))
+			global.parse_symbol_stop_strs.Add(sym);
+
+		return;
+    }
+
+    // vs$ symbols
+    else if (memcmp(sym.c_str(), "vs$", 3)==0)
+    {
+		e = SUCCESS;
+        versus.get_symbol(sym.c_str(), &e);
+
+		if (e != SUCCESS)
+			global.parse_symbol_stop_strs.Add(sym);
+
+		return;
+    }
+
+    // log$ symbols
+    else if (memcmp(sym.c_str(), "log$", 4)==0)
+    {
+        LogSymbols  logsymbols;
+		e = SUCCESS;
+        logsymbols.process_query(sym.c_str(), &e);
+
+		if (e != SUCCESS)
+			global.parse_symbol_stop_strs.Add(sym);
+
+		return;
+    }
+
+    // icm_ symbols
+    else if (memcmp(sym.c_str(), "icm", 3)==0)
+    {
+        ICM		icm;
+		e = SUCCESS;
+        icm.ProcessQueryICM(sym.c_str()+3, &e);
+
+		if (e != SUCCESS)
+			global.parse_symbol_stop_strs.Add(sym);
+
+		return;
+}
+
+    // Action symbols
+    else if (memcmp(sym.c_str(), "ac_", 3)==0)
+    {
+        Action	action;
+		e = SUCCESS;
+        action.process_query(sym.c_str(), &e);
+
+		if (e != SUCCESS)
+			global.parse_symbol_stop_strs.Add(sym);
+
+		return;
+    }
+
+    // MyHand symbols
+    else if (memcmp(sym.c_str(), "mh_", 3)==0)
+    {
+        MyHand	myhand;
+		e = SUCCESS;
+        myhand.process_query(sym.c_str(), &e);
+
+		if (e != SUCCESS)
+			global.parse_symbol_stop_strs.Add(sym);
+
+		return;
+    }
+
+    // Memory symbols
+    else if (memcmp(sym.c_str(), "me_", 3)==0)
+    {
+		e = SUCCESS;
+		memory.process_query(sym.c_str(), &e);
+
+		if (e != SUCCESS)
+			global.parse_symbol_stop_strs.Add(sym);
+
+        return;
+    }
+
+    // all other symbols
+    else
+    {
+		e = SUCCESS;
+        symbols.GetSymbolVal(sym.c_str(), &e);
+
+		if (e != SUCCESS)
+			global.parse_symbol_stop_strs.Add(sym);
+
+        return;
+	}
+}
+
 void setOffsets(iter_t &i, const char *start)
 {
     __SEH_HEADER
@@ -170,10 +333,8 @@ double evaluate(SFormula *f, tree_parse_info<const char *, int_factory_t> info, 
 double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e)
 {
     __SEH_HEADER
+
     double		result;
-    char		f$func[10];
-    const char	*ranks = "  23456789TJQKA";
-    int			rank0, rank1, rank_temp;
 
     // Bounce errors up the stack
     if (*e != SUCCESS)  return 0;
@@ -185,158 +346,7 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logC
     if (i->value.id()==exec_grammar::SYMBOL_ID)
     {
         string sym(i->value.begin(), i->value.end());
-
-        // "e" literal
-        if (strcmp(sym.c_str(), "e")==0)
-        {
-            return (double) M_E;
-        }
-
-        // f$$ symbols (hand multiplexor)
-        else if (memcmp(sym.c_str(), "f$$", 3)==0)
-        {
-            // Get our card ranks
-            rank0 = (((int)(symbols.sym.$$pc[0]))>>4)&0x0f;
-            rank1 = (((int)(symbols.sym.$$pc[1]))>>4)&0x0f;
-
-            if (rank1>rank0)
-            {
-                rank_temp=rank0;
-                rank0=rank1;
-                rank1=rank_temp;
-            }
-
-            // Which form of f$$ is being called determines nature of resultant udf call
-            strcpy(f$func, "f$");
-
-            if (tolower(sym.c_str()[3])=='x' &&
-                    strlen(sym.c_str())==4)
-            {
-                f$func[2] = ranks[rank0];
-                f$func[3] = '\0';
-            }
-
-            else if (tolower(sym.c_str()[3])=='x' &&
-                     tolower(sym.c_str()[4])=='x' &&
-                     strlen(sym.c_str())==5)
-            {
-                f$func[2] = ranks[rank0];
-                f$func[3] = ranks[rank1];
-                f$func[4] = '\0';
-            }
-
-            else if (tolower(sym.c_str()[3])=='x' &&
-                     tolower(sym.c_str()[4])=='x' &&
-                     tolower(sym.c_str()[5])=='x' &&
-                     strlen(sym.c_str())==6)
-            {
-                f$func[2] = ranks[rank0];
-                f$func[3] = ranks[rank1];
-                f$func[4] = symbols.sym.issuited ? 's' : 'o';
-                f$func[5] = '\0';
-            }
-
-            else
-            {
-                *e = ERR_INVALID_F$$_REF;
-                return 0;
-            }
-
-            // Calculate resultant udf
-            result = do_calc_f$symbol(f, f$func, logCallingFunction, false, e);
-            if (*e == SUCCESS)
-            {
-                return result;
-            }
-            else
-            {
-                *e = SUCCESS;
-                return 0;
-            }
-        }
-
-        // f$ symbols
-        else if (memcmp(sym.c_str(), "f$", 2)==0 && strcmp(sym.c_str(), "f$debug") != 0)
-        {
-            return do_calc_f$symbol(f, (char *) sym.c_str(), logCallingFunction, false, e);
-        }
-
-        // dll$ symbols
-        else if (memcmp(sym.c_str(), "dll$", 4)==0)
-        {
-            // MECHANISM FOR DETECTING INVALID DLL SYMBOLS DOES NOT YET EXIST
-            if (1)
-            {
-                if (cdll.hMod_dll!=NULL)
-                {
-                    return (cdll.process_message) ("query", sym.c_str());
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-            else
-            {
-                *e = ERR_INVALID_DLL_SYM;
-                return 0;
-            }
-        }
-
-        //  2008.02.27 by THF
-        //  Perl symbols (starting with "pl_")
-        else if (the_Perl_Interpreter.is_Perl_Symbol(sym.c_str()))
-        {
-            //  Error checking is done inside the Perl class
-            //  A.t.m. creating a messagebox on serious errors.
-            return the_Perl_Interpreter.get_Perl_Symbol(sym.c_str());
-        }
-
-        // vs$ symbols
-        else if (memcmp(sym.c_str(), "vs$", 3)==0)
-        {
-            return versus.get_symbol(sym.c_str(), e);
-        }
-
-        // log$ symbols
-        else if (memcmp(sym.c_str(), "log$", 4)==0)
-        {
-            LogSymbols  logsymbols;
-            return logsymbols.process_query(sym.c_str(), e);
-        }
-
-        // icm_ symbols
-        else if (memcmp(sym.c_str(), "icm", 3)==0)
-        {
-            ICM		icm;
-            return icm.ProcessQueryICM(sym.c_str()+3, e);
-        }
-
-        // Action symbols
-        else if (memcmp(sym.c_str(), "ac_", 3)==0)
-        {
-            Action	action;
-            return action.process_query(sym.c_str(), e);
-        }
-
-        // MyHand symbols
-        else if (memcmp(sym.c_str(), "mh_", 3)==0)
-        {
-            MyHand	myhand;
-            return myhand.process_query(sym.c_str(), e);
-        }
-
-        // Memory symbols
-        else if (memcmp(sym.c_str(), "me_", 3)==0)
-        {
-            return memory.process_query(sym.c_str(), e);
-        }
-
-        // all other symbols
-        else
-        {
-            return symbols.GetSymbolVal(sym.c_str(), e);
-        }
+		return eval_symbol(f, sym, logCallingFunction, e);
     }
 
     // Hex constant
@@ -552,9 +562,174 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logC
     __SEH_LOGFATAL("grammar - do_eval_expression :\n");
 }
 
+double eval_symbol(SFormula *f, string sym, CEvalInfoFunction **logCallingFunction, int *e)
+{
+    double		result;
+    char		f$func[10];
+    const char	*ranks = "  23456789TJQKA";
+    int			rank0, rank1, rank_temp;
+
+    // "e" literal
+    if (strcmp(sym.c_str(), "e")==0)
+    {
+        return (double) M_E;
+    }
+
+    // f$$ symbols (hand multiplexor)
+    else if (memcmp(sym.c_str(), "f$$", 3)==0)
+    {
+        // Get our card ranks
+        rank0 = (((int)(symbols.sym.$$pc[0]))>>4)&0x0f;
+        rank1 = (((int)(symbols.sym.$$pc[1]))>>4)&0x0f;
+
+        if (rank1>rank0)
+        {
+            rank_temp=rank0;
+            rank0=rank1;
+            rank1=rank_temp;
+        }
+
+        // Which form of f$$ is being called determines nature of resultant udf call
+        strcpy(f$func, "f$");
+
+        if (tolower(sym.c_str()[3])=='x' &&
+                strlen(sym.c_str())==4)
+        {
+            f$func[2] = ranks[rank0];
+            f$func[3] = '\0';
+        }
+
+        else if (tolower(sym.c_str()[3])=='x' &&
+                 tolower(sym.c_str()[4])=='x' &&
+                 strlen(sym.c_str())==5)
+        {
+            f$func[2] = ranks[rank0];
+            f$func[3] = ranks[rank1];
+            f$func[4] = '\0';
+        }
+
+        else if (tolower(sym.c_str()[3])=='x' &&
+                 tolower(sym.c_str()[4])=='x' &&
+                 tolower(sym.c_str()[5])=='x' &&
+                 strlen(sym.c_str())==6)
+        {
+            f$func[2] = ranks[rank0];
+            f$func[3] = ranks[rank1];
+            f$func[4] = symbols.sym.issuited ? 's' : 'o';
+            f$func[5] = '\0';
+        }
+
+        else
+        {
+            *e = ERR_INVALID_F$$_REF;
+            return 0;
+        }
+
+        // Calculate resultant udf
+        result = do_calc_f$symbol(f, f$func, logCallingFunction, false, e);
+        if (*e == SUCCESS)
+        {
+            return result;
+        }
+        else
+        {
+            *e = SUCCESS;
+            return 0;
+        }
+    }
+
+    // f$ symbols
+    else if (memcmp(sym.c_str(), "f$", 2)==0 && strcmp(sym.c_str(), "f$debug") != 0)
+    {
+        return do_calc_f$symbol(f, (char *) sym.c_str(), logCallingFunction, false, e);
+    }
+
+    // dll$ symbols
+    else if (memcmp(sym.c_str(), "dll$", 4)==0)
+    {
+        // MECHANISM FOR DETECTING INVALID DLL SYMBOLS DOES NOT YET EXIST
+        if (1)
+        {
+            if (cdll.hMod_dll!=NULL)
+            {
+                return (cdll.process_message) ("query", sym.c_str());
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        else
+        {
+            *e = ERR_INVALID_DLL_SYM;
+            return 0;
+        }
+    }
+
+    //  2008.02.27 by THF
+    //  Perl symbols (starting with "pl_")
+    else if (the_Perl_Interpreter.is_Perl_Symbol(sym.c_str()))
+    {
+        //  Error checking is done inside the Perl class
+        //  A.t.m. creating a messagebox on serious errors.
+        return the_Perl_Interpreter.get_Perl_Symbol(sym.c_str());
+    }
+
+    // vs$ symbols
+    else if (memcmp(sym.c_str(), "vs$", 3)==0)
+    {
+        return versus.get_symbol(sym.c_str(), e);
+    }
+
+    // log$ symbols
+    else if (memcmp(sym.c_str(), "log$", 4)==0)
+    {
+        LogSymbols  logsymbols;
+        return logsymbols.process_query(sym.c_str(), e);
+    }
+
+    // icm_ symbols
+    else if (memcmp(sym.c_str(), "icm", 3)==0)
+    {
+        ICM		icm;
+        return icm.ProcessQueryICM(sym.c_str()+3, e);
+    }
+
+    // Action symbols
+    else if (memcmp(sym.c_str(), "ac_", 3)==0)
+    {
+        Action	action;
+        return action.process_query(sym.c_str(), e);
+    }
+
+    // MyHand symbols
+    else if (memcmp(sym.c_str(), "mh_", 3)==0)
+    {
+        MyHand	myhand;
+        return myhand.process_query(sym.c_str(), e);
+    }
+
+    // Memory symbols
+    else if (memcmp(sym.c_str(), "me_", 3)==0)
+    {
+        return memory.process_query(sym.c_str(), e);
+    }
+
+    // all other symbols
+    else
+    {
+        return symbols.GetSymbolVal(sym.c_str(), e);
+    }
+
+	return 0;
+
+	__SEH_LOGFATAL("grammar - eval_symbol\n");
+}
+
 double eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e)
 {
     __SEH_HEADER
+
     string sym(i->value.begin(), i->value.end());
 	parser_id tp = i->value.id();
 
@@ -566,7 +741,8 @@ double eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logCall
 	}
 
 	return ret;
-    __SEH_LOGFATAL("grammar - eval_expression\n");
+
+	__SEH_LOGFATAL("grammar - eval_expression\n");
 }
 
 CEvalInfoFunctionArray::~CEvalInfoFunctionArray()

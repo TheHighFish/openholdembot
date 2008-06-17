@@ -30,6 +30,7 @@ typedef boost::spirit::node_val_data_factory<const char *> int_factory_t;
 #define ERR_INVALID_EXPR			13
 #define ERR_DIV_ZERO				15
 #define ERR_INVALID_F$$_REF			16
+#define ERR_BAD_PARSE				17
 
 // Profile version codes
 #define VER_WINSCRAPE			".wsdb1"
@@ -257,8 +258,8 @@ struct SPreferences
 
 struct SDebugTabInfo 
 {
-	bool				valid;
-	int					error;
+	bool				valid; // Does it have an "="
+	int					error; 
 	CString				exp;
 	boost::spirit::tree_parse_info<const char *, int_factory_t>	tree;
 	double				ret;

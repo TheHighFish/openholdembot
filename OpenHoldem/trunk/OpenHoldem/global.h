@@ -90,6 +90,11 @@ public:
 
 	CString			mm_network;
 
+	// Formula set currently being parsed, and result of that parse (this is for symbol validation)
+	SFormula		*parse_symbol_formula;
+	CArray<std::string, std::string>		parse_symbol_stop_strs;
+
+
 } global;
 
 bool parse_loop(const CUPDUPDATA* pCUPDUPData);
