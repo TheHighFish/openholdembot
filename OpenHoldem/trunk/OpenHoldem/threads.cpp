@@ -481,7 +481,7 @@ UINT __cdecl prwin_thread(LPVOID pParam)
 //					}
 					//we should really do a 'randfix' here for the case where RAND_MAX is not an integral
 					//multiple of .level, but the bias introduced is trivial compared to other uncertainties.
-					if(rand()%symbols.prw1326.chair[i].level<=symbols.prw1326.chair[i].weight[j])break; //allowable
+					if(rand()%symbols.prw1326.chair[i].level<symbols.prw1326.chair[i].weight[j])break; //allowable
 					//if we reach here we will loop again to find a suitable hand
 				} //end of possible hand find
 				ocard[k++]=symbols.prw1326.chair[i].rankhi[j];
