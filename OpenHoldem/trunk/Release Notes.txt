@@ -36,6 +36,8 @@ BUG FIXES:
 - The third form of the hand multiplexor (f$$XXx) was not differentiating between suited 
   and non-suited hole cards correctly.  (eesahe/OpenHoldem)
   
+- Corrected prw1326 .weight limit glitch. (Thanks, eesahe) (Matrix)
+  
 
 MAINTENANCE: 
 - A single OpenHoldem Formula file (*.ohf) instead of *.whf and *.whx.
