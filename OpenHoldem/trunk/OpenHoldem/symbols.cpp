@@ -3659,7 +3659,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
     if (memcmp(a, "$$cc", 4)==0)  										return sym.$$cc[a[4]-'0'];
     if (memcmp(a, "$$cr", 4)==0)  										return sym.$$cr[a[4]-'0'];
     if (memcmp(a, "$$cs", 4)==0)  										return sym.$$cs[a[4]-'0'];
-    if (memcmp(a, "$", 1)==0)  											return IsHand(a);
+    if (memcmp(a, "$", 1)==0)  											return IsHand(a, e);
     if (memcmp(a, "ishandup", 8)==0 && strlen(a)==8)					return sym.ishandup;
     if (memcmp(a, "ishandupcommon", 14)==0 && strlen(a)==14)			return sym.ishandupcommon;
     if (memcmp(a, "ishicard", 8)==0 && strlen(a)==8)					return sym.ishicard;
@@ -3920,7 +3920,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 
 }
 
-double CSymbols::IsHand(const char *a)
+double CSymbols::IsHand(const char *a, int *e)
 {
     __SEH_HEADER
     int				cardrank[2] = {0}, temp;
@@ -3928,11 +3928,12 @@ double CSymbols::IsHand(const char *a)
     int				i, cardcnt=0;
     int				plcardrank[2] = {0}, plsuited=0;
 
-    if (!user_chair_confirmed)
-        return 0;
-
     if (strlen(a)<=1)
+	{
+		if (e)
+			*e = ERR_INVALID_SYM;
         return 0;
+	}
 
     // passed in symbol query
     for (i=1; i<(int) strlen(a); i++)
@@ -3963,8 +3964,20 @@ double CSymbols::IsHand(const char *a)
 
         else if (a[i]=='O' || a[i]=='o')
             suited=2;
+
+		else
+		{
+			if (e)
+				*e = ERR_INVALID_SYM;
+			return 0;
+		}
     }
-    if (cardrank[1] > cardrank[0])
+
+    if (!user_chair_confirmed)
+        return 0;
+
+	// sort
+	if (cardrank[1] > cardrank[0])
     {
         temp = cardrank[0];
         cardrank[0] = cardrank[1];

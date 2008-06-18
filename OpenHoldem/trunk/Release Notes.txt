@@ -43,6 +43,9 @@ BUG FIXES:
   and non-suited hole cards correctly.  (eesahe/OpenHoldem)
   
 - Corrected prw1326 .weight limit glitch. (Thanks, eesahe) (Matrix)
+
+- Fixed problem where "$$" was passing parse checks.  "IsHand" function has been augmented to detect and
+  report malformed requests.  (OpenHoldem)
   
 
 MAINTENANCE: 

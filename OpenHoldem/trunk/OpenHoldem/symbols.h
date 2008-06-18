@@ -392,7 +392,7 @@ public:
 	void calc_time(void);
 	void calc_probabilities(void);
 	void get_cardstring(char *c, unsigned int c0, unsigned int c1);
-	double IsHand(const char *a);
+	double IsHand(const char *a, int *e=NULL);
 
 	S_symbols	sym;
 	bool		user_chair_confirmed;
