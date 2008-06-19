@@ -7,6 +7,10 @@ NEW STUFF:
   library: http://spirit.sourceforge.net/distrib/spirit_1_8_5/libs/spirit/doc/semantic_actions.html
   (OpenHoldem)
   
+- Added additional validation of numeric fields.  To be considered numeric, a scraped region must not
+  only contain only these characters "$0123456789,.¢ckm", but must 1. have 0 or 1 decimal points, and 
+  2. If a decimal point is present, then there must be exactly 2 numbers following it. (OpenHoldem)
+  
 
 BUG FIXES:
 - Only locate/open the versus.bin file during OH initialization to avoid

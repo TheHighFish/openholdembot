@@ -1887,7 +1887,7 @@ bool CScraper::is_numeric(CString t)
 {
     __SEH_HEADER
 
-    int i;
+    int i, num_dots = 0, nums_after_dot = 0;
 
 	// Check for bad parameters
 	if (!t ||
@@ -1900,7 +1900,19 @@ bool CScraper::is_numeric(CString t)
     {
         if (t.Mid(i,1).FindOneOf("$0123456789,.¢ckm") == -1)
             return false;
+
+		if (t.Mid(i,1)==".")
+			num_dots++;
+
+		if (num_dots>0 && t.Mid(i,1).FindOneOf("0123456789") != -1)
+			nums_after_dot++;
     }
+
+	if (num_dots!=0 && num_dots!=1)
+		return false;
+
+	if (num_dots>0 && nums_after_dot!=2)
+		return false;
 
     return true;
 
