@@ -2330,6 +2330,7 @@ void CDlgFormulaScintilla::OnBnClickedApply()
     global.create_hand_list_matrices(&m_wrk_formula);
 
 	// Parse working set
+    LastChangeToFormula(&m_wrk_formula);
     if (!global.ParseAllFormula(this->GetSafeHwnd(), &m_wrk_formula))
 	{
 		if (MessageBox("There are errors in the working formula set.\n\n"
@@ -2346,7 +2347,6 @@ void CDlgFormulaScintilla::OnBnClickedApply()
 	}
 
     // Copy working set to global set
-    LastChangeToFormula(&m_wrk_formula);
     global.CopyFormula(&m_wrk_formula, &global.formula);
     pDoc->SetModifiedFlag(true);
 
@@ -2398,6 +2398,7 @@ void CDlgFormulaScintilla::OnBnClickedOk()
     global.create_hand_list_matrices(&m_wrk_formula);
 
 	// Parse working set
+    LastChangeToFormula(&m_wrk_formula);
     if (!global.ParseAllFormula(this->GetSafeHwnd(), &m_wrk_formula))
 	{
 		if (MessageBox("There are errors in the working formula set.\n\n"
@@ -2415,7 +2416,6 @@ void CDlgFormulaScintilla::OnBnClickedOk()
 	}
 
 	// Copy working set to global set
-    LastChangeToFormula(&m_wrk_formula);
     global.CopyFormula(&m_wrk_formula, &global.formula);
     global.ClearFormula(&m_wrk_formula);
     pDoc->SetModifiedFlag(true);
@@ -2454,6 +2454,7 @@ bool CDlgFormulaScintilla::PromptToSave()
 		global.create_hand_list_matrices(&m_wrk_formula);
 
 		// Parse working set
+		LastChangeToFormula(&m_wrk_formula);
 		if (!global.ParseAllFormula(this->GetSafeHwnd(), &m_wrk_formula))
 		{
 			if (MessageBox("There are errors in the working formula set.\n\n"
@@ -2471,7 +2472,6 @@ bool CDlgFormulaScintilla::PromptToSave()
 		}
 	
 		// Copy working set to global set
-		LastChangeToFormula(&m_wrk_formula);
         global.CopyFormula(&m_wrk_formula, &global.formula);
         global.ClearFormula(&m_wrk_formula);
         pDoc->SetModifiedFlag(true);

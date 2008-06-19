@@ -334,7 +334,8 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logC
 {
     __SEH_HEADER
 
-    double		result;
+    double						result;
+	boost::spirit::parser_id	id = i->value.id();
 
     // Bounce errors up the stack
     if (*e != SUCCESS)  return 0;
@@ -343,70 +344,70 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logC
 		(*logCallingFunction)->m_Offset = (int)i->value.value();
 
     // Symbols
-    if (i->value.id()==exec_grammar::SYMBOL_ID)
+    if (id == exec_grammar::SYMBOL_ID)
     {
         string sym(i->value.begin(), i->value.end());
 		return eval_symbol(f, sym, logCallingFunction, e);
     }
 
     // Hex constant
-    else if (i->value.id() == exec_grammar::INT_CONSTANT_HEX_ID)
+    else if (id == exec_grammar::INT_CONSTANT_HEX_ID)
     {
         string number(i->value.begin()+2, i->value.end());
         return (double) strtoul(number.c_str(), 0, 16);
     }
 
     // Dec constant
-    else if (i->value.id() == exec_grammar::INT_CONSTANT_DEC_ID)
+    else if (id == exec_grammar::INT_CONSTANT_DEC_ID)
     {
         string number(i->value.begin(), i->value.end());
         return (double) strtoul(number.c_str(), 0, 10);
     }
 
     // Oct constant
-    else if (i->value.id() == exec_grammar::INT_CONSTANT_OCT_ID)
+    else if (id == exec_grammar::INT_CONSTANT_OCT_ID)
     {
         string number(i->value.begin()+2, i->value.end());
         return (double) strtoul(number.c_str(), 0, 8);
     }
 
     // Quad constant
-    else if (i->value.id() == exec_grammar::INT_CONSTANT_QUA_ID)
+    else if (id == exec_grammar::INT_CONSTANT_QUA_ID)
     {
         string number(i->value.begin()+2, i->value.end());
         return (double) strtoul(number.c_str(), 0, 4);
     }
 
     // Bin constant
-    else if (i->value.id() == exec_grammar::INT_CONSTANT_BIN_ID)
+    else if (id == exec_grammar::INT_CONSTANT_BIN_ID)
     {
         string number(i->value.begin()+2, i->value.end());
         return (double) strtoul(number.c_str(), 0, 2);
     }
 
     // Float constants
-    else if (  i->value.id() == exec_grammar::FLOAT_CONSTANT1_ID
-               | i->value.id() == exec_grammar::FLOAT_CONSTANT2_ID
-               | i->value.id() == exec_grammar::FLOAT_CONSTANT3_ID )
+    else if (  id == exec_grammar::FLOAT_CONSTANT1_ID
+			   | id == exec_grammar::FLOAT_CONSTANT2_ID
+			   | id == exec_grammar::FLOAT_CONSTANT3_ID )
     {
         string number(i->value.begin(), i->value.end());
         return (double) strtod(number.c_str(), 0);
     }
 
     // Exponentiation
-    else if (i->value.id() == exec_grammar::EXP_EXPR_ID)
+    else if (id == exec_grammar::EXP_EXPR_ID)
     {
         string type(i->value.begin(), i->value.end());
         if (memcmp(type.c_str(), "**", 2) == 0)
             return pow(eval_expression(f, i->children.begin(), logCallingFunction, e), eval_expression(f, i->children.begin()+1, logCallingFunction, e));
 
         else if (memcmp(type.c_str(), "ln", 2) == 0)
-            return log(eval_expression(f, i->children.begin(), logCallingFunction, e));
+            return log(eval_expression(f, i->children.begin()+1, logCallingFunction, e));
 
     }
 
     // Unary
-    else if (i->value.id() == exec_grammar::UNARY_EXPR_ID)
+    else if (id == exec_grammar::UNARY_EXPR_ID)
     {
         if (*i->value.begin() == '!')
             return ! eval_expression(f, i->children.begin(), logCallingFunction, e);
@@ -422,7 +423,7 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logC
     }
 
     // Multiplicative
-    else if (i->value.id() == exec_grammar::MULT_EXPR_ID)
+    else if (id == exec_grammar::MULT_EXPR_ID)
     {
         if (*i->value.begin() == '*')
         {
@@ -461,7 +462,7 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logC
     }
 
     // Additive
-    else if (i->value.id() == exec_grammar::ADD_EXPR_ID)
+    else if (id == exec_grammar::ADD_EXPR_ID)
     {
         if (*i->value.begin() == '+')
             return eval_expression(f, i->children.begin(), logCallingFunction, e) + eval_expression(f, i->children.begin()+1, logCallingFunction, e);
@@ -471,7 +472,7 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logC
     }
 
     // Shift
-    else if (i->value.id() == exec_grammar::SHIFT_EXPR_ID)
+    else if (id == exec_grammar::SHIFT_EXPR_ID)
     {
         string type(i->value.begin(), i->value.end());
         if (memcmp(type.c_str(), "<<", 2) == 0)
@@ -482,7 +483,7 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logC
     }
 
     // Relational
-    else if (i->value.id() == exec_grammar::RELATIONAL_EXPR_ID)
+    else if (id == exec_grammar::RELATIONAL_EXPR_ID)
     {
         string type(i->value.begin(), i->value.end());
         if (memcmp(type.c_str(), "<=", 2) == 0)
@@ -499,7 +500,7 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logC
     }
 
     // Equality
-    else if (i->value.id() == exec_grammar::EQUALITY_EXPR_ID)
+    else if (id == exec_grammar::EQUALITY_EXPR_ID)
     {
         string type(i->value.begin(), i->value.end());
         if (memcmp(type.c_str(), "==", 2) == 0)
@@ -510,47 +511,46 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logC
     }
 
     // Binary AND
-    else if (i->value.id() == exec_grammar::BINARY_AND_EXPR_ID)
+    else if (id == exec_grammar::BINARY_AND_EXPR_ID)
     {
         return (double) ((unsigned long) eval_expression(f, i->children.begin(), logCallingFunction, e) & (unsigned long) eval_expression(f, i->children.begin()+1, logCallingFunction, e));
     }
 
     // Binary XOR
-    else if (i->value.id() == exec_grammar::BINARY_XOR_EXPR_ID)
+    else if (id == exec_grammar::BINARY_XOR_EXPR_ID)
     {
         return (double) ((unsigned long) eval_expression(f, i->children.begin(), logCallingFunction, e) ^ (unsigned long) eval_expression(f, i->children.begin()+1, logCallingFunction, e));
     }
 
     // Binary OR
-    else if (i->value.id() == exec_grammar::BINARY_OR_EXPR_ID)
+    else if (id == exec_grammar::BINARY_OR_EXPR_ID)
     {
         return (double) ((unsigned long) eval_expression(f, i->children.begin(), logCallingFunction, e) | (unsigned long) eval_expression(f, i->children.begin()+1, logCallingFunction, e));
     }
 
     // Logical AND
-    else if (i->value.id() == exec_grammar::LOGICAL_AND_EXPR_ID)
+    else if (id == exec_grammar::LOGICAL_AND_EXPR_ID)
     {
         return (double) ( eval_expression(f, i->children.begin(), logCallingFunction, e)>0 && eval_expression(f, i->children.begin()+1, logCallingFunction, e)>0 );
     }
 
     // Logical XOR
-    else if (i->value.id() == exec_grammar::LOGICAL_XOR_EXPR_ID)
+    else if (id == exec_grammar::LOGICAL_XOR_EXPR_ID)
     {
         return (double) ( eval_expression(f, i->children.begin(), logCallingFunction, e) != eval_expression(f, i->children.begin()+1, logCallingFunction, e) );
     }
 
     // Logical OR
-    else if (i->value.id() == exec_grammar::LOGICAL_OR_EXPR_ID)
+    else if (id == exec_grammar::LOGICAL_OR_EXPR_ID)
     {
         return (double) ( eval_expression(f, i->children.begin(), logCallingFunction, e)>0 || eval_expression(f, i->children.begin()+1, logCallingFunction, e)>0 );
     }
 
     // Conditional
-    else if (i->value.id() == exec_grammar::COND_EXPR_ID)
+    else if (id == exec_grammar::COND_EXPR_ID)
     {
         if (eval_expression(f, i->children.begin(), logCallingFunction, e))
             return eval_expression(f, i->children.begin()+1, logCallingFunction, e);
-
         else
             return eval_expression(f, i->children.begin()+3, logCallingFunction, e);
     }

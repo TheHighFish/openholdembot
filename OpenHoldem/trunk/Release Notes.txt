@@ -47,6 +47,9 @@ BUG FIXES:
 - Fixed problem where "$$" was passing parse checks.  "IsHand" function has been augmented to detect and
   report malformed requests.  (OpenHoldem)
   
+- Fixed problem where certain malformed symbol combinations would pass parse validation, such as 
+  "$T7s $89s". (OpenHoldem)
+  
 
 MAINTENANCE: 
 - A single OpenHoldem Formula file (*.ohf) instead of *.whf and *.whx.

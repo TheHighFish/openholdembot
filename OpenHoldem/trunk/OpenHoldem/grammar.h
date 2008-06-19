@@ -104,15 +104,18 @@ struct skip_grammar : public boost::spirit::grammar<skip_grammar>
 };
 
 // execution grammar
-struct exec_grammar : public boost::spirit::grammar<exec_grammar> {
+struct exec_grammar : public boost::spirit::grammar<exec_grammar> 
+{
 	enum { SYMBOL_ID=1, FLOAT_CONSTANT1_ID, FLOAT_CONSTANT2_ID, FLOAT_CONSTANT3_ID, INT_CONSTANT_HEX_ID, 
 		INT_CONSTANT_DEC_ID, INT_CONSTANT_OCT_ID, INT_CONSTANT_QUA_ID, INT_CONSTANT_BIN_ID,	EXP_EXPR_ID, 
 		UNARY_EXPR_ID, MULT_EXPR_ID, ADD_EXPR_ID, SHIFT_EXPR_ID, RELATIONAL_EXPR_ID,
 		EQUALITY_EXPR_ID, BINARY_AND_EXPR_ID, BINARY_XOR_EXPR_ID, BINARY_OR_EXPR_ID, LOGICAL_AND_EXPR_ID, 
-		LOGICAL_XOR_EXPR_ID, LOGICAL_OR_EXPR_ID, COND_EXPR_ID, EXPRESSION_ID, PRIMARY_EXPR_ID };
+		LOGICAL_XOR_EXPR_ID, LOGICAL_OR_EXPR_ID, COND_EXPR_ID, EXPRESSION_ID, 
+		PRIMARY_EXPR_ID };
 
 	template <typename ScannerT>
-	struct definition {
+	struct definition 
+	{
 		definition(exec_grammar const& /*self*/) :
 			LOG_OR_OP("||"), LOG_XOR_OP("^^"), LOG_AND_OP("&&"),
 			EQ_OP("=="), NE_OP("!="),
@@ -221,7 +224,7 @@ struct exec_grammar : public boost::spirit::grammar<exec_grammar> {
 				| SYMBOL
 				;
 
-			exp_expr = (root_node_d[LN_OP] >> exp_expr)
+			exp_expr = (root_node_d[LN_OP] >> LPAREN >> cond_expr >> RPAREN)
 							  | (primary_expr >> *(root_node_d[EXP_OP] >> primary_expr))
 							;
 
@@ -272,9 +275,9 @@ struct exec_grammar : public boost::spirit::grammar<exec_grammar> {
 
 			logical_or_expr = logical_xor_expr >> *(root_node_d[LOG_OR_OP] >> logical_xor_expr);
 
-			cond_expr = logical_or_expr >> *(root_node_d[QUEST_OP] >> cond_expr >> COLON_OP >> cond_expr);
+            cond_expr = logical_or_expr >> *(root_node_d[QUEST_OP] >> cond_expr >> COLON_OP >> cond_expr);
 
-			expression = *(cond_expr >> expression);
+			expression = cond_expr | epsilon_p;
 
 			//  End grammar definition
 		}
