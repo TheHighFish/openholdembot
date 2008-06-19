@@ -66,11 +66,11 @@ public:
 };
 
 // forward declarations
-bool parse (CString *s, boost::spirit::tree_parse_info<const char *, int_factory_t> *i, int *stopchar);
+bool parse (CString *s, tree_parse_info<const char *, int_factory_t> *i, int *stopchar);
 double calc_f$symbol(SFormula *f, char *symbol, bool log, int *e);
 double calc_f$symbol(SFormula *f, char *symbol, int *e);
 //double evaluate(parse_tree_match_t hit);
-double evaluate(SFormula *f, boost::spirit::tree_parse_info<const char *, int_factory_t> info, CEvalInfoFunction **logCallingFunction, int *e);
+double evaluate(SFormula *f, tree_parse_info<const char *, int_factory_t> info, CEvalInfoFunction **logCallingFunction, int *e);
 double eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e);
 double eval_symbol(SFormula *f, string sym, CEvalInfoFunction **logCallingFunction, int *e);
 
@@ -82,7 +82,7 @@ void SetPosition(parse_tree_match_t::node_t &node,
 void SymbolValidation(const char *begin, const char *end);
 
 //  Here's the comment rule
-struct skip_grammar : public boost::spirit::grammar<skip_grammar>
+struct skip_grammar : public grammar<skip_grammar>
 {
 	template <typename ScannerT>
 	struct definition
@@ -96,15 +96,16 @@ struct skip_grammar : public boost::spirit::grammar<skip_grammar>
 				;
 		}
 
-		boost::spirit::rule<ScannerT> skip;
+		rule<ScannerT> skip;
 
-		boost::spirit::rule<ScannerT> const&
+		rule<ScannerT> const&
+
 		start() const { return skip; }
 	};
 };
 
 // execution grammar
-struct exec_grammar : public boost::spirit::grammar<exec_grammar> 
+struct exec_grammar : public grammar<exec_grammar> 
 {
 	enum { SYMBOL_ID=1, FLOAT_CONSTANT1_ID, FLOAT_CONSTANT2_ID, FLOAT_CONSTANT3_ID, INT_CONSTANT_HEX_ID, 
 		INT_CONSTANT_DEC_ID, INT_CONSTANT_OCT_ID, INT_CONSTANT_QUA_ID, INT_CONSTANT_BIN_ID,	EXP_EXPR_ID, 
@@ -283,13 +284,13 @@ struct exec_grammar : public boost::spirit::grammar<exec_grammar>
 		}
 
 		// operators
-		boost::spirit::strlit<>
+		strlit<>
 			LOG_OR_OP, LOG_XOR_OP, LOG_AND_OP,
 			EQ_OP, NE_OP,
 			RSHIFT_OP, LSHIFT_OP,
 			LE_OP, GE_OP,
 			EXP_OP, LN_OP;
-		boost::spirit::chlit<>
+		chlit<>
 			QUEST_OP, COLON_OP, 
 			BIN_OR_OP, BIN_XOR_OP, BIN_AND_OP,
 			LT_OP, GT_OP,
@@ -298,34 +299,35 @@ struct exec_grammar : public boost::spirit::grammar<exec_grammar>
 			LPAREN, RPAREN, LBRACK, RBRACK, LBRACE, RBRACE;
 
 		// terminals
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<SYMBOL_ID> >				SYMBOL;
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<INT_CONSTANT_HEX_ID> >		INT_CONSTANT_HEX;
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<INT_CONSTANT_DEC_ID> >		INT_CONSTANT_DEC;
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<INT_CONSTANT_OCT_ID> >		INT_CONSTANT_OCT;
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<INT_CONSTANT_QUA_ID> >		INT_CONSTANT_QUA;
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<INT_CONSTANT_BIN_ID> >		INT_CONSTANT_BIN;
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<FLOAT_CONSTANT1_ID> >		FLOAT_CONSTANT1;
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<FLOAT_CONSTANT2_ID> >		FLOAT_CONSTANT2;
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<FLOAT_CONSTANT3_ID> >		FLOAT_CONSTANT3;
+		rule<ScannerT, parser_tag<SYMBOL_ID> >					SYMBOL;
+		rule<ScannerT, parser_tag<INT_CONSTANT_HEX_ID> >		INT_CONSTANT_HEX;
+		rule<ScannerT, parser_tag<INT_CONSTANT_DEC_ID> >		INT_CONSTANT_DEC;
+		rule<ScannerT, parser_tag<INT_CONSTANT_OCT_ID> >		INT_CONSTANT_OCT;
+		rule<ScannerT, parser_tag<INT_CONSTANT_QUA_ID> >		INT_CONSTANT_QUA;
+		rule<ScannerT, parser_tag<INT_CONSTANT_BIN_ID> >		INT_CONSTANT_BIN;
+		rule<ScannerT, parser_tag<FLOAT_CONSTANT1_ID> >			FLOAT_CONSTANT1;
+		rule<ScannerT, parser_tag<FLOAT_CONSTANT2_ID> >			FLOAT_CONSTANT2;
+		rule<ScannerT, parser_tag<FLOAT_CONSTANT3_ID> >			FLOAT_CONSTANT3;
 
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<PRIMARY_EXPR_ID> >			primary_expr;
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<EXPRESSION_ID> >			expression;
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<EXP_EXPR_ID> >				exp_expr;
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<UNARY_EXPR_ID> >			unary_expr;
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<MULT_EXPR_ID> >				mult_expr;
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<ADD_EXPR_ID> >				add_expr;
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<SHIFT_EXPR_ID> >			shift_expr;
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<RELATIONAL_EXPR_ID> >		relational_expr;
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<EQUALITY_EXPR_ID> >			equality_expr;
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<BINARY_AND_EXPR_ID> >		binary_and_expr;
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<BINARY_XOR_EXPR_ID> >		binary_xor_expr;
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<BINARY_OR_EXPR_ID> >		binary_or_expr;
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<LOGICAL_AND_EXPR_ID> >		logical_and_expr;
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<LOGICAL_XOR_EXPR_ID> >		logical_xor_expr;
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<LOGICAL_OR_EXPR_ID> >		logical_or_expr;
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<COND_EXPR_ID> >				cond_expr;
+		rule<ScannerT, parser_tag<PRIMARY_EXPR_ID> >			primary_expr;
+		rule<ScannerT, parser_tag<EXPRESSION_ID> >				expression;
+		rule<ScannerT, parser_tag<EXP_EXPR_ID> >				exp_expr;
+		rule<ScannerT, parser_tag<UNARY_EXPR_ID> >				unary_expr;
+		rule<ScannerT, parser_tag<MULT_EXPR_ID> >				mult_expr;
+		rule<ScannerT, parser_tag<ADD_EXPR_ID> >				add_expr;
+		rule<ScannerT, parser_tag<SHIFT_EXPR_ID> >				shift_expr;
+		rule<ScannerT, parser_tag<RELATIONAL_EXPR_ID> >			relational_expr;
+		rule<ScannerT, parser_tag<EQUALITY_EXPR_ID> >			equality_expr;
+		rule<ScannerT, parser_tag<BINARY_AND_EXPR_ID> >			binary_and_expr;
+		rule<ScannerT, parser_tag<BINARY_XOR_EXPR_ID> >			binary_xor_expr;
+		rule<ScannerT, parser_tag<BINARY_OR_EXPR_ID> >			binary_or_expr;
+		rule<ScannerT, parser_tag<LOGICAL_AND_EXPR_ID> >		logical_and_expr;
+		rule<ScannerT, parser_tag<LOGICAL_XOR_EXPR_ID> >		logical_xor_expr;
+		rule<ScannerT, parser_tag<LOGICAL_OR_EXPR_ID> >			logical_or_expr;
+		rule<ScannerT, parser_tag<COND_EXPR_ID> >				cond_expr;
 
-		boost::spirit::rule<ScannerT, boost::spirit::parser_tag<EXPRESSION_ID> > const&
+		rule<ScannerT, parser_tag<EXPRESSION_ID> > const&
+
 		start() const { return expression; }
 	};
 };
