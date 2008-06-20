@@ -1,2 +1,0 @@
-v1.0.0 2008-03-15
-- Initial public release.
