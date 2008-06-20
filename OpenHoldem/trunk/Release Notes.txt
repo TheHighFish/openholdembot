@@ -13,7 +13,7 @@ NEW STUFF:
 
 - User defined functions are now recognized by the Formula Dialog so that they are now colored (Spew)
 
-- islistXXX symbols are only color coded if the equivalent hand list is defined (Spew)
+- islistXXX and vs$XX$pr* symbols are color-coded only if the equivalent hand list is defined (Spew)
 
 - Added f$prefold to the Autoplayer Trace (Spew)
 

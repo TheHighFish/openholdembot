@@ -341,6 +341,11 @@ void CDlgFormulaScintilla::UpdateScintillaKeywords(CScintillaWnd *pWnd) {
 	}
 	for (i=0; i<m_wrk_formula.mHandList.GetSize(); i++) {
 		keys.AppendFormat(" is%s", m_wrk_formula.mHandList[i].list);
+		if (m_wrk_formula.mHandList[i].list.GetLength() > 4) {
+			keys.AppendFormat(" vs$%s$prlos", m_wrk_formula.mHandList[i].list.GetString()+4);
+			keys.AppendFormat(" vs$%s$prwin", m_wrk_formula.mHandList[i].list.GetString()+4);
+			keys.AppendFormat(" vs$%s$prtie", m_wrk_formula.mHandList[i].list.GetString()+4);
+		}
 	}
 	pWnd->SendMessage(SCI_SETKEYWORDS, 0, (LPARAM) keys.GetString());
 }
