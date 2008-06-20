@@ -15,7 +15,7 @@ protected:
 private:
 	BOOL is_WinHoldemFormat(CString the_FileName);
 	void check_for_default_FormulaEntries(SFormula *f);
-	void ReadFormulaFile(SFormula *f, CArchive& ar);
+	void ReadFormulaFile(SFormula *f, CArchive& ar, bool ignoreFirstLine);
 
 public:
 	static COpenHoldemDoc* GetDocument();

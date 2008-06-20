@@ -1,4 +1,4 @@
-#define nTraceFunctions 5
+#define nTraceFunctions 6
 
 class Registry {
 public:

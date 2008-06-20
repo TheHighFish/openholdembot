@@ -40,16 +40,6 @@ char *	keywords = "ismanual isppro site nchairs isbring session handnumber "
                   "currentbet0 currentbet1 currentbet2 currentbet3 currentbet4 currentbet5 currentbet6 "
                   "currentbet7 currentbet8 currentbet9 call bet bet1 bet2 bet3 bet4 pot potcommon "
                   "potplayer callshort raisshort nbetstocall nbetstorais ncurrentbets ncallbets nraisbets "
-                  "islist0 islist1 islist2 islist3 islist4 islist5 islist6 islist7 islist8 islist9 "
-                  "islist10 islist11 islist12 islist13 islist14 islist15 islist16 islist17 islist18 islist19 "
-                  "islist20 islist21 islist22 islist23 islist24 islist25 islist26 islist27 islist28 islist29 "
-                  "islist30 islist31 islist32 islist33 islist34 islist35 islist36 islist37 islist38 islist39 "
-                  "islist40 islist41 islist42 islist43 islist44 islist45 islist46 islist47 islist48 islist49 "
-                  "islist50 islist51 islist52 islist53 islist54 islist55 islist56 islist57 islist58 islist59 "
-                  "islist60 islist61 islist62 islist63 islist64 islist65 islist66 islist67 islist68 islist69 "
-                  "islist70 islist71 islist72 islist73 islist74 islist75 islist76 islist77 islist78 islist79 "
-                  "islist80 islist81 islist82 islist83 islist84 islist85 islist86 islist87 islist88 islist89 "
-                  "islist90 islist91 islist92 islist93 islist94 islist95 islist96 islist97 islist98 islist99 "
                   "islistcall islistrais islistalli isemptylistcall isemptylistrais isemptylistalli "
                   "nlistmax nlistmin pokerval pokervalplayer pokervalcommon pcbits npcbits hicard onepair "
                   "twopair threeofakind straight flush fullhouse fourofakind straightflush royalflush "
@@ -325,7 +315,7 @@ CScintillaWnd *CDlgFormulaScintilla::SetupScintilla(CScintillaWnd *pWnd) {
     pWnd->SendMessage(SCI_SETINDENTATIONGUIDES, false, 0);
     pWnd->SendMessage(SCI_SETMODEVENTMASK, (SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT), 0);
     pWnd->SetLexer(SCLEX_CPP);
-    pWnd->SendMessage(SCI_SETKEYWORDS, 0, (LPARAM) keywords);
+	UpdateScintillaKeywords(pWnd);
     pWnd->EnableWindow(false);
     set_style_colors(pWnd, m_is_syntax_colored);
 
@@ -341,7 +331,27 @@ CScintillaWnd *CDlgFormulaScintilla::SetupScintilla(CScintillaWnd *pWnd) {
     return pWnd;
 
     __SEH_LOGFATAL("CDlgFormulaScintilla::SetupScintilla :\n");
+}
 
+void CDlgFormulaScintilla::UpdateScintillaKeywords(CScintillaWnd *pWnd) {
+	CString keys = keywords;
+	int i;
+	for (i=0; i<m_wrk_formula.mFunction.GetSize(); i++) {
+		keys.AppendFormat(" %s", m_wrk_formula.mFunction[i].func);
+	}
+	for (i=0; i<m_wrk_formula.mHandList.GetSize(); i++) {
+		keys.AppendFormat(" is%s", m_wrk_formula.mHandList[i].list);
+	}
+	pWnd->SendMessage(SCI_SETKEYWORDS, 0, (LPARAM) keys.GetString());
+}
+
+void CDlgFormulaScintilla::UpdateAllScintillaKeywords() 
+{
+	CString keys = keywords;
+	for (int i=0; i<m_wrk_formula.mFunction.GetSize(); i++) 
+		keys.AppendFormat(" %s", m_wrk_formula.mFunction[i].func);
+    for (int iScint=0; iScint<m_ScinArray.GetSize(); iScint++)
+        m_ScinArray[iScint]->SendMessage(SCI_SETKEYWORDS, 0, (LPARAM) keys.GetString());
 }
 
 void CDlgFormulaScintilla::DeleteScintilla(CScintillaWnd *pWnd) {
@@ -1003,6 +1013,8 @@ void CDlgFormulaScintilla::OnNew() {
                 sort_udf_tree();
         }
 
+		UpdateAllScintillaKeywords();
+
         // Select newly inserted item
         m_FormulaTree.SelectItem(newhtitem);
         m_FormulaTree.SetFocus();
@@ -1061,6 +1073,7 @@ void CDlgFormulaScintilla::OnRename() {
             }
         }
         if (didRename) {
+			UpdateAllScintillaKeywords();
 			HTREEITEM hSelectedItem = m_FormulaTree.GetSelectedItem();
 			if (!bRenameUDF || !m_udf_group)
 				m_FormulaTree.SetItemText(hSelectedItem, rendlg.CSnewname);
@@ -1191,6 +1204,7 @@ void CDlgFormulaScintilla::OnDelete() {
                 }
             }
         }
+		UpdateAllScintillaKeywords();
     }
     HandleEnables(true);
 

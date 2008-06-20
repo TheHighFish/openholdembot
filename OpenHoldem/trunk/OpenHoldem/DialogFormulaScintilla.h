@@ -146,6 +146,8 @@ protected:
 
 	BOOL CDlgFormulaScintilla::PreTranslateMessage(MSG* pMsg);
 	CScintillaWnd *SetupScintilla(CScintillaWnd *pWnd);
+	void UpdateAllScintillaKeywords();
+	void UpdateScintillaKeywords(CScintillaWnd *pWnd);
 	void DeleteScintilla(CScintillaWnd *pWnd);
 
 	// Support Functions for the Dialog

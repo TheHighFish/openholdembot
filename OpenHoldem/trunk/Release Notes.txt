@@ -10,7 +10,12 @@ NEW STUFF:
 - Added additional validation of numeric fields.  To be considered numeric, a scraped region must not
   only contain only these characters "$0123456789,.¢ckm", but must 1. have 0 or 1 decimal points, and 
   2. If a decimal point is present, then there must be exactly 2 numbers following it. (OpenHoldem)
-  
+
+- User defined functions are now recognized by the Formula Dialog so that they are now colored (Spew)
+
+- islistXXX symbols are only color coded if the equivalent hand list is defined (Spew)
+
+- Added f$prefold to the Autoplayer Trace (Spew)
 
 BUG FIXES:
 - Only locate/open the versus.bin file during OH initialization to avoid

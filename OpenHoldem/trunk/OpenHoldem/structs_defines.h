@@ -185,12 +185,13 @@ struct STableList
 	RECT		crect;
 };
 
-#define nTraceFunctions 5
+#define nTraceFunctions 6
 #define nTraceAlli 0
 #define nTraceSwag 1
 #define nTraceRais 2
 #define nTraceCall 3
 #define nTracePlay 4
+#define nTracePrefold 5
 struct SPreferences 
 {
 	// Analyzer

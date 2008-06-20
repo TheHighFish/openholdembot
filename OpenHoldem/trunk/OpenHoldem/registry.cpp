@@ -413,11 +413,11 @@ void Registry::read_reg(void)
         read_OH_RegistryKey(hKey, "LogSymbol_max_log", &LogSymbol_max_log);
 
         read_OH_RegistryKey(hKey, "Trace_enabled", &Trace_enabled);
-        read_OH_RegistryKey(hKey, "Trace_functions1", &Trace_functions[0]);
-        read_OH_RegistryKey(hKey, "Trace_functions2", &Trace_functions[1]);
-        read_OH_RegistryKey(hKey, "Trace_functions3", &Trace_functions[2]);
-        read_OH_RegistryKey(hKey, "Trace_functions4", &Trace_functions[3]);
-        read_OH_RegistryKey(hKey, "Trace_functions5", &Trace_functions[4]);
+		CString regValue;
+		for (int i=0;i<nTraceFunctions;i++) {
+			regValue.Format("Trace_Functions%d", i);
+			read_OH_RegistryKey(hKey, regValue, &Trace_functions[i]);
+		}
 
         read_OH_RegistryKey(hKey, "versus", &versus_path);
     }

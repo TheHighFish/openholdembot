@@ -173,7 +173,7 @@ void Autoplayer::do_autoplayer(void)
 
     // Handle f$prefold
     error = SUCCESS;
-    symbols.f$prefold = calc_f$symbol(&global.formula, "f$prefold", &error);
+    symbols.f$prefold = calc_f$symbol(&global.formula, "f$prefold", global.preferences.Trace_functions[nTracePrefold], &error);
     do_prefold();
 
     // if we have <2 visible buttons, then return

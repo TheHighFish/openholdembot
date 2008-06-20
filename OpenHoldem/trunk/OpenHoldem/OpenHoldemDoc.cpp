@@ -624,7 +624,7 @@ void COpenHoldemDoc::check_for_default_FormulaEntries(SFormula *f)
 // Reading a part of a formula, which may be spreaded
 // about two files in case of an old style whf / whx formula.
 //
-void COpenHoldemDoc::ReadFormulaFile(SFormula *f, CArchive& ar)
+void COpenHoldemDoc::ReadFormulaFile(SFormula *f, CArchive& ar, bool ignoreFirstLine)
 {
 	__SEH_HEADER
 
@@ -637,7 +637,8 @@ void COpenHoldemDoc::ReadFormulaFile(SFormula *f, CArchive& ar)
 	SHandList list;		
 
 	// Ignore first line (date/time)
-	ar.ReadString(strOneLine);
+	if (ignoreFirstLine)
+		ar.ReadString(strOneLine);
 
 	// read data in, one line at a time
 	strOneLine = "";
@@ -771,7 +772,7 @@ void COpenHoldemDoc::ReadFormula(SFormula *f, CArchive& ar)
 	//   * ohf 
 	//   * whf and optional whx
 	// In the latter case we have to read both files. 
-	ReadFormulaFile(f, ar);
+	ReadFormulaFile(f, ar, true);
 
 	CFile *cf_whf = ar.GetFile();  
 	CString CSpath = cf_whf->GetFilePath(); 
@@ -780,15 +781,14 @@ void COpenHoldemDoc::ReadFormula(SFormula *f, CArchive& ar)
 		{
 			CFile *cf_whf = ar.GetFile();
 			CFile cf_whx; 
-			char whxpath[MAX_PATH]; 
 			CString CSpath = cf_whf->GetFilePath();
 			CSpath.Replace(".whf", ".whx");
 
-			if (cf_whx.Open(whxpath, CFile::modeNoTruncate | CFile::modeRead)) 
+			if (cf_whx.Open(CSpath, CFile::modeNoTruncate | CFile::modeRead)) 
 			{ 
-				CArchive ar_whx(&cf_whx, CArchive::load);  
+				CArchive ar_whx(&cf_whx, CArchive::load);   
 				// Read whx file, too. //???	
-				ReadFormulaFile(f, ar);	
+				ReadFormulaFile(f, ar_whx, false);	
 			}
 	}
 	// Check and add missing...

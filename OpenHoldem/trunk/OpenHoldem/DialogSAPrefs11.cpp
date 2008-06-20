@@ -54,6 +54,7 @@ BOOL CDlgSAPrefs11::OnInitDialog()
     m_TraceList.AddString("f$rais");
     m_TraceList.AddString("f$call");
     m_TraceList.AddString("f$play");
+    m_TraceList.AddString("f$prefold");
 	for (int i=0;i<nTraceFunctions;i++)
 	{
 		m_TraceList.SetCheck(i, global.preferences.Trace_functions[i]);
