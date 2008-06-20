@@ -193,14 +193,6 @@
 				RelativePath=".\Perl_Callback.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\Perl_Callback.def"
-				>
-			</File>
-			<File
-				RelativePath=".\Perl_Callback.rc"
-				>
-			</File>
 		</Filter>
 	</Files>
 	<Globals>
