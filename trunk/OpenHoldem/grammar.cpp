@@ -24,11 +24,17 @@ void SetPosition(parse_tree_match_t::node_t &node,
 						const char *begin, 
 						const char *end)
 {
+    __SEH_HEADER
+
 	node.value.value(begin);
+
+	__SEH_LOGFATAL("grammar - SetPosition\n");
 }
 
 void SymbolValidation(const char *begin, const char *end)
 {
+    __SEH_HEADER
+
 	int		i, e;
 	string	sym(begin, end);
 	bool	match;
@@ -137,7 +143,7 @@ void SymbolValidation(const char *begin, const char *end)
 			global.parse_symbol_stop_strs.Add(sym);
 
 		return;
-}
+	}
 
     // Action symbols
     else if (memcmp(sym.c_str(), "ac_", 3)==0)
@@ -166,13 +172,17 @@ void SymbolValidation(const char *begin, const char *end)
     }
 
     // Memory symbols
-    else if (memcmp(sym.c_str(), "me_", 3)==0)
+    else if (memcmp(sym.c_str(), "me_st_", 6)==0 ||
+			 memcmp(sym.c_str(), "me_re_", 6)==0)
     {
-		e = SUCCESS;
-		memory.process_query(sym.c_str(), &e);
+		// Memory symbols may need valid parse trees for all formulas, an since we 
+		// are just parsing here, we may not have those trees yet.
 
-		if (e != SUCCESS)
-			global.parse_symbol_stop_strs.Add(sym);
+		//e = SUCCESS;
+		//memory.process_query(sym.c_str(), &e);
+
+		//if (e != SUCCESS)
+		//	global.parse_symbol_stop_strs.Add(sym);
 
         return;
     }
@@ -188,18 +198,22 @@ void SymbolValidation(const char *begin, const char *end)
 
         return;
 	}
+
+	__SEH_LOGFATAL("grammar - SymbolValidation\n");
 }
 
 void setOffsets(iter_t &i, const char *start)
 {
     __SEH_HEADER
+
 	if (i->value.value() != NULL)
 		i->value.value((const char *)(i->value.value()-start));
 	iter_t &cur = i->children.begin();
 	iter_t &end = i->children.end();
 	for (; cur != end; ++cur)
 		setOffsets(cur, start);
-    __SEH_LOGFATAL("grammar - setOffsets\n");
+
+	__SEH_LOGFATAL("grammar - setOffsets\n");
 }
 
 bool parse (CString *s, tree_parse_info<const char *, int_factory_t> *i, int *stopchar)

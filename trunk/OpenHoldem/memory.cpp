@@ -116,6 +116,7 @@ void Memory::store_value(const char * pquery, int *e)
 double Memory::retrieve_value(const char * pquery, int *e)
 {
     __SEH_HEADER
+
     int			i;
     char		var[512];
 
