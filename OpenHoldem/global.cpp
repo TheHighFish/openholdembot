@@ -972,7 +972,7 @@ void CGlobal::save_r$indexes(void)
             buttonnum = trans.map.r$[i].name.GetString()[1] - '0';
             trans.map.r$iXedit_index[buttonnum] = i;
         }
-        else if (trans.map.r$[i].name=="r$i86button")
+        else if (trans.map.r$[i].name=="i86button")
         {
             trans.map.r$i86button_index = i;
         }
@@ -981,7 +981,7 @@ void CGlobal::save_r$indexes(void)
             buttonnum = trans.map.r$[i].name.GetString()[3] - '0';
             trans.map.r$i86Xbutton_index[buttonnum] = i;
         }
-        else if (trans.map.r$[i].name=="r$i86state")
+        else if (trans.map.r$[i].name=="i86state")
         {
             trans.map.r$i86state_index = i;
         }
