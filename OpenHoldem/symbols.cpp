@@ -3051,7 +3051,7 @@ double CSymbols::calc_pokerval(HandVal hv, int n, double *pcb, int card0, int ca
 {
     __SEH_HEADER
     double			pv = 0;
-    int				i, max, c, flush_suit;
+    int				i, j, k, max, c, flush_suit; //Matrix 2008-06-28
     double			bits = 0;
     CardMask		Cards, heartsCards, diamondsCards, clubsCards, spadesCards, suittestCards;
 
@@ -3183,10 +3183,14 @@ double CSymbols::calc_pokerval(HandVal hv, int n, double *pcb, int card0, int ca
 
         for (i=0; i<5; i++)
         {
-            if ( (StdDeck_RANK(card0) == HandVal_TOP_CARD(hv)-i &&
+			j = StdDeck_RANK(card0);	//Matrix 2008-06-28
+			k = StdDeck_RANK(card1);
+			if(j==12)j=-1;
+			if(k==12)k=-1;
+            if ( (j == HandVal_TOP_CARD(hv)-i &&
                     StdDeck_SUIT(card0) == flush_suit)
                     ||
-                    StdDeck_RANK(card1) == HandVal_TOP_CARD(hv)-i &&
+                    k == HandVal_TOP_CARD(hv)-i &&
                     StdDeck_SUIT(card1) == flush_suit)
             {
                 bits = (int) bits | (1<<(4-i));
@@ -3319,8 +3323,12 @@ double CSymbols::calc_pokerval(HandVal hv, int n, double *pcb, int card0, int ca
         pv += (HandVal_TOP_CARD(hv)+2-4)<<0;
         for (i=0; i<5; i++)
         {
-            if (StdDeck_RANK(card0) == HandVal_TOP_CARD(hv)-i ||
-                    StdDeck_RANK(card1) == HandVal_TOP_CARD(hv)-i)
+			j = StdDeck_RANK(card0);	//Matrix 2008-06-28
+			k = StdDeck_RANK(card1);
+			if(j==12)j=-1;
+			if(k==12)k=-1;
+            if (j == HandVal_TOP_CARD(hv)-i ||
+                    k == HandVal_TOP_CARD(hv)-i)
             {
                 bits = (int) bits | (1<<(4-i));
             }

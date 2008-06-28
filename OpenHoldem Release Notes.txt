@@ -1,3 +1,10 @@
+v1.9.2 2008-??=??
+=================
+NEW STUFF:
+
+BUG FIXES:
+- corrected pcbits / npcbits for straight and straight flush cases. (Thanks, pokerbandit) (Matrix)
+
 v1.9.1 2008-06-27
 =================
 NEW STUFF:
