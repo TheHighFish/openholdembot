@@ -362,9 +362,6 @@ void CSymbols::ResetSymbolsNewHand(void)
     __SEH_HEADER
     int		i;
 
-    // general
-    sym.handnumber = 0;
-
     // handrank
     sym.handrank169 = sym.handrank2652 = sym.handrank1326 = sym.handrank1000 = sym.handrank = 0;
 
