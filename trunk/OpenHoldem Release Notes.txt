@@ -5,6 +5,7 @@ NEW STUFF:
 BUG FIXES:
 - corrected pcbits / npcbits for straight and straight flush cases. (Thanks, pokerbandit) (Matrix)
 - Don't clobber the hand number for the first frame of a new hand
+- Make the i86 button work.
 
 v1.9.1 2008-06-27
 =================
