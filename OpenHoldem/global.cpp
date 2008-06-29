@@ -192,7 +192,7 @@ CGlobal::CGlobal(void)
 			symbols.prw1326.vanilla_chair.rankhi[vndx+8]=j+26;	//c
 			symbols.prw1326.vanilla_chair.rankhi[vndx+9]=j+39;	//s
 			symbols.prw1326.vanilla_chair.rankhi[vndx+10]=j+39;	//s
-			symbols.prw1326.vanilla_chair.rankhi[vndx+11]=j+38; //s
+			symbols.prw1326.vanilla_chair.rankhi[vndx+11]=j+39; //s Matrix corrected typo
 			symbols.prw1326.vanilla_chair.ranklo[vndx]=k+13;	//d
 			symbols.prw1326.vanilla_chair.ranklo[vndx+1]=k+26;	//c
 			symbols.prw1326.vanilla_chair.ranklo[vndx+2]=k+39;	//s
