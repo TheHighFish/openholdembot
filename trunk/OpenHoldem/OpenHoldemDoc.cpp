@@ -784,7 +784,7 @@ void COpenHoldemDoc::ReadFormula(SFormula *f, CArchive& ar)
 			CString CSpath = cf_whf->GetFilePath();
 			CSpath.Replace(".whf", ".whx");
 
-			if (cf_whx.Open(CSpath, CFile::modeNoTruncate | CFile::modeRead)) 
+			if (cf_whx.Open(CSpath, CFile::modeNoTruncate | CFile::modeRead| CFile::shareDenyWrite)) 
 			{ 
 				CArchive ar_whx(&cf_whx, CArchive::load);   
 				// Read whx file, too. //???	

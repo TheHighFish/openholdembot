@@ -7,6 +7,8 @@ BUG FIXES:
 - Don't clobber the hand number for the first frame of a new hand
 - Make the i86 button work.
 - Corrected typo in prw1326 vanills chair init. (Thanks Eesahe) (Matrix)
+- Corrected opening of formula to not require exclusive file access (Thanks Spud) (OpenHoldem)
+
 
 v1.9.1 2008-06-27
 =================

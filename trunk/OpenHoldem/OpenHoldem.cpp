@@ -186,7 +186,7 @@ BOOL COpenHoldemApp::InitInstance()
             CFile f;
 
             // If file is there, set to open!
-            if (f.Open(sLastPath, CFile::modeRead))
+            if (f.Open(sLastPath, CFile::modeRead | CFile::shareDenyWrite))
             {
                 cmdInfo.m_nShellCommand = CCommandLineInfo::FileOpen;
                 cmdInfo.m_strFileName = sLastPath;
