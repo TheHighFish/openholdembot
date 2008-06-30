@@ -87,7 +87,7 @@ char * defaultCSchat = "\
    0                                  // default is: do not chat.\r\n";
 
 char * defaultCSP = "// Number of opponents for the prwin simulation.\r\n\r\n\
-(nopponentsplaying==0) ? 0 :\r\n\
+(nopponentsplaying<=0) ? 1 :\r\n\
 \r\n\
 nopponentsplaying + defcon*nopponentsfolded\r\n\
 ";
