@@ -4,7 +4,7 @@
 //
 //  Created: 2008.01.10
 //
-//  Last change: 2008.01.29
+//  Last change: 2008.07.06
 //
 //  Description: A very simple DLL for Openoldem,
 //    enabling Perl to call the function get_OpenHoldem_Symbol()
@@ -89,6 +89,65 @@ extern "C" void _declspec(dllexport) _stdcall get_OpenHoldem_Symbol_indirect(
 	//    e.g. "http://www.cplusplus.com/reference/clibrary/cstdio/sprintf.html"
 	//    We assume a buffer of 80 chars on Perl side.
 	sprintf_s(the_ResultString, 80, "%f", the_Result);	
+#ifdef LOG_CALLBACK
+	DLL_Log = fopen(my_LogFile, APPEND_MODE);
+	//  This is for debugging only; we check the file the rude way.
+	assert(DLL_Log != NULL);
+	fprintf(DLL_Log, "Result: %s\n", the_ResultString);
+	fclose(DLL_Log);	
+#endif	
+}
+
+
+//  Pointer type to get_OpenHoldem_TableName 
+//    It shall point to the function defined in OHs "Perl.cpp".
+//
+typedef void (*T_get_OpenHoldem_TableName_Pointer) (char* the_ResultString);
+
+
+extern "C" void _declspec(dllexport) _stdcall get_OpenHoldem_TableName_indirect(
+	int Pointer_to_Function_get_OpenHoldem_TableName,	
+	char *the_ResultString)
+{
+#ifdef LOG_CALLBACK
+	FILE *DLL_Log = fopen(my_LogFile, APPEND_MODE);
+	//  This is for debugging only; we check the file the rude way.
+	assert(DLL_Log != NULL);
+	fprintf(DLL_Log, "Pointer: %i\n", 
+		Pointer_to_Function_get_OpenHoldem_TableName );
+	fclose(DLL_Log);	
+#endif
+	((T_get_OpenHoldem_TableName_Pointer)(Pointer_to_Function_get_OpenHoldem_TableName))(the_ResultString);	
+#ifdef LOG_CALLBACK
+	DLL_Log = fopen(my_LogFile, APPEND_MODE);
+	//  This is for debugging only; we check the file the rude way.
+	assert(DLL_Log != NULL);
+	fprintf(DLL_Log, "Result: %s\n", the_ResultString);
+	fclose(DLL_Log);	
+#endif	
+}
+
+//  Pointer type to get_OpenHoldem_PlayerName 
+//    It shall point to the function defined in OHs "Perl.cpp".
+//
+typedef void (*T_get_OpenHoldem_PlayerName_Pointer) (int the_Player_Number, char* the_ResultString);
+
+
+extern "C" void _declspec(dllexport) _stdcall get_OpenHoldem_PlayerName_indirect(
+	int Pointer_to_Function_get_OpenHoldem_PlayerName,
+	int the_Player_Number,
+	char *the_ResultString)
+{
+#ifdef LOG_CALLBACK
+	FILE *DLL_Log = fopen(my_LogFile, APPEND_MODE);
+	//  This is for debugging only; we check the file the rude way.
+	assert(DLL_Log != NULL);
+	fprintf(DLL_Log, "Pointer: %i Player Number: %i\n", 
+		Pointer_to_Function_get_OpenHoldem_PlayerName, the_Player_Number );
+	fclose(DLL_Log);	
+#endif
+	((T_get_OpenHoldem_PlayerName_Pointer)(Pointer_to_Function_get_OpenHoldem_PlayerName))(the_Player_Number, 
+		the_ResultString);	
 #ifdef LOG_CALLBACK
 	DLL_Log = fopen(my_LogFile, APPEND_MODE);
 	//  This is for debugging only; we check the file the rude way.
