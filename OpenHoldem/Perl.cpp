@@ -4,7 +4,7 @@
 //
 //  Created: 2007.12.11
 //
-//  Last change: 2008.04.06
+//  Last change: 2008.07.06
 //
 //  Description: An interface to the Perl programing
 //    language for OpenHoldem
@@ -20,6 +20,7 @@
 #include "debug.h"
 #include "dll_extension.h"
 #include "global.h"
+#include "scraper.h"
 #include "Perl.hpp"
 
 using namespace std;
@@ -57,6 +58,7 @@ T_PerlEzDelete P_PerlEzDelete;
 string toString(double d)
 {
     __SEH_HEADER
+
     ostringstream the_Result;
     the_Result << d;
     return the_Result.str();
@@ -75,22 +77,43 @@ string toString(double d)
 static void gws(const char *the_Symbol, double* the_Result)
 {
     __SEH_HEADER
+
     bool is_Error;
     double my_Chair = GetSymbolFromDll(0, "userchair", is_Error);
     *the_Result = GetSymbolFromDll(int(my_Chair), the_Symbol, is_Error);
 
     __SEH_LOGFATAL("Perl::gws : \n");
-
 }
 
 
-static void gws_List(const char *the_Symbol, double* the_Result)
+//  gwt (Get_WinHoldem_TableName)
+//
+//    This function must be static, as we pass a pointer to it to Perl
+//    and then to the callback DLL.
+//    
+static void gwt(char* the_ResultString)
 {
+    __SEH_HEADER
+	//    We assume a buffer of 80 chars on Perl side.
+	sprintf_s(the_ResultString, 80, "%s", scraper.title);
+    __SEH_LOGFATAL("Perl::gwt : \n");
 }
 
 
-static void get_HoldemState_Frame(const char *the_Symbol, double* the_Result)
+//  gwp (Get_WinHoldem_PlayerName)
+//
+//    This function must be static, as we pass a pointer to it to Perl
+//    and then to the callback DLL.
+//    
+static void gwp(int the_PlayerName, char* the_ResultString)
 {
+    __SEH_HEADER
+
+	//    We assume a buffer of 80 chars on Perl side.
+	sprintf_s(the_ResultString, 80, "%s", scraper.playername[the_PlayerName % 10]);
+
+    __SEH_LOGFATAL("Perl::gwp : \n");
+
 }
 
 
@@ -102,6 +125,7 @@ static void get_HoldemState_Frame(const char *the_Symbol, double* the_Result)
 bool Perl::load_DLL(void)
 {
     __SEH_HEADER
+
     //  Load DLL
     HINSTANCE Perl_Lib = LoadLibrary("PerlEz.dll");
     if (Perl_Lib == NULL)
@@ -129,13 +153,15 @@ bool Perl::load_DLL(void)
 }
 
 
-void Perl::send_Callback_Pointer()
+void Perl::send_Callback_Pointers()
 {
     __SEH_HEADER
+
     if (the_Interpreter == NULL)
     {
         return;
     }
+
     //  Send the pointer to the gws function to Perl,
     //    typecasted to an integer, as Perl doesn't support
     //    C function pointers.
@@ -147,9 +173,35 @@ void Perl::send_Callback_Pointer()
                             the_Size_of_ResultBuffer,
                             "i",                            //  Format string: integer
                             the_Pointer_to_gws);            //  Callback pointer as integer
+	do_ErrorCheck(the_ErrorCode);
+
+	//  Send the pointer to the gwt function to Perl,
+    //    typecasted to an integer, as Perl doesn't support
+    //    C function pointers.
+    int the_Pointer_to_gwt = (int)&gwt;
+    the_ErrorCode = (*P_PerlEzCall)(
+						the_Interpreter,
+                        "set_CallbackPointer_to_gwt",   //  Function on Perl side
+                        the_ResultBuffer,
+                        the_Size_of_ResultBuffer,
+                        "i",                            //  Format string: integer
+                        the_Pointer_to_gwt);            //  Callback pointer as integer
     do_ErrorCheck(the_ErrorCode);
 
-    __SEH_LOGFATAL("Perl::send_Callback_Pointer_to_gws : \n");
+	//  Send the pointer to the gwp function to Perl,
+    //    typecasted to an integer, as Perl doesn't support
+    //    C function pointers.
+    int the_Pointer_to_gwp = (int)&gwp;
+    the_ErrorCode = (*P_PerlEzCall)(
+                        the_Interpreter,
+                        "set_CallbackPointer_to_gwp",   //  Function on Perl side
+                        the_ResultBuffer,
+                        the_Size_of_ResultBuffer,
+                        "i",                            //  Format string: integer
+                        the_Pointer_to_gwp);            //  Callback pointer as integer
+    do_ErrorCheck(the_ErrorCode);    
+
+    __SEH_LOGFATAL("Perl::send_Callback_Pointers : \n");
 
 }
 
@@ -157,6 +209,7 @@ void Perl::send_Callback_Pointer()
 Perl::Perl()
 {
     __SEH_HEADER
+
     Formula_loaded = false;
     Interpreter_not_loaded = true;
     if (!global.preferences.Perl_load_Interpreter)
@@ -191,7 +244,7 @@ Perl::Perl()
         MessageBox(NULL, "Could not create Perl interpreter.",
                    "Perl Error", MB_OK | MB_TOPMOST);
     }
-    send_Callback_Pointer();
+    send_Callback_Pointers();
 
     __SEH_LOGFATAL("Perl::Perl : \n");
 
@@ -201,6 +254,7 @@ Perl::Perl()
 Perl::~Perl()
 {
     __SEH_HEADER
+
     //  Unload file and destroy interpreter.
     unload_FormulaFile();
 
@@ -212,6 +266,7 @@ Perl::~Perl()
 bool Perl::is_Perl_Symbol(const char *the_Symbol)
 {
     __SEH_HEADER
+
     //  All Perl symbols for OpenHoldem have
     //    to begin with "pl_" (not "pl$", as
     //    perl does not allow this for identifiers
@@ -246,6 +301,7 @@ bool Perl::is_Perl_Symbol(const char *the_Symbol)
 double Perl::get_Perl_Symbol(const char *the_Symbol)
 {
     __SEH_HEADER
+
     if (!is_Perl_Symbol(the_Symbol))
     {
         //  This should not happen!
@@ -286,6 +342,7 @@ double Perl::get_Perl_Symbol(const char *the_Symbol)
 void Perl::do_ErrorCheck(int the_ErrorCode)
 {
     __SEH_HEADER
+
     if (the_ErrorCode <= 0) {
         return;
     }
@@ -333,6 +390,7 @@ void Perl::do_ErrorCheck(int the_ErrorCode)
 void Perl::unload_FormulaFile()
 {
     __SEH_HEADER
+
     if (Interpreter_not_loaded) {
         return;
     }
@@ -349,7 +407,8 @@ void Perl::unload_FormulaFile()
 void Perl::load_FormulaFile(string the_new_FormulaFile)
 {
     __SEH_HEADER
-    //  Just a security measure
+		
+	//  Just a security measure
     if (P_PerlEzCreate == NULL)
     {
         return;
@@ -375,7 +434,7 @@ void Perl::load_FormulaFile(string the_new_FormulaFile)
         the_actual_FormulaFile = string(the_new_FormulaFile);
         Formula_loaded = true;
     }
-    send_Callback_Pointer();
+    send_Callback_Pointers();
     if (the_Interpreter != NULL)
     {
         Interpreter_not_loaded = false;
@@ -396,6 +455,7 @@ void Perl::load_FormulaFile(string the_new_FormulaFile)
 void Perl::reload_FormulaFile()
 {
     __SEH_HEADER
+
     unload_FormulaFile();
     load_FormulaFile(the_actual_FormulaFile);
 
@@ -407,6 +467,7 @@ void Perl::reload_FormulaFile()
 void Perl::edit_main_FormulaFile()
 {
     __SEH_HEADER
+
     CString my_favourite_Editor = global.preferences.Perl_Editor;
     if (_access(my_favourite_Editor, F_OK) != 0)
     {
@@ -443,6 +504,7 @@ void Perl::edit_main_FormulaFile()
 bool Perl::is_a_Formula_loaded()
 {
     __SEH_HEADER
+
     return (!Interpreter_not_loaded && Formula_loaded);
 
     __SEH_LOGFATAL("Perl::is_a_Formula_loaded : \n");
@@ -453,6 +515,7 @@ bool Perl::is_a_Formula_loaded()
 void Perl::check_Syntax()
 {
     __SEH_HEADER
+
     //  Check the syntax of "the actual Formula".
     //    We can't check "is_a_Formula_loaded()",
     //    as this implies, the formula got loaded with success.

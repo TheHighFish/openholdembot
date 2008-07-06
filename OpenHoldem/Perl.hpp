@@ -4,12 +4,13 @@
 //
 //  Created: 2007.12.11
 //
-//  Last change: 2008.01.29
+//  Last change: 2008.07.06
 //
 //  Description: An interface to the Perl programing language 
 //    for OpenHoldem
 //
 //////////////////////////////////////////////////////////////////////////
+
 #ifndef INC_PEARL_H
 #define INC_PEARL_H
 
@@ -38,7 +39,7 @@ extern class Perl
 	bool Formula_loaded;
 
  private:
-	void send_Callback_Pointer();
+	void send_Callback_Pointers();
 	void do_ErrorCheck(int the_ErrorCode);
 	bool load_DLL(void);
 
@@ -59,7 +60,7 @@ extern class Perl
 	void unload_FormulaFile();
 	void check_Syntax();
 	bool is_a_Formula_loaded();
-}the_Perl_Interpreter;
+} the_Perl_Interpreter;
 
 #endif /* INC_PEARL_H */
 
