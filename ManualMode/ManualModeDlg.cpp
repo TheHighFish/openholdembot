@@ -2216,8 +2216,71 @@ int CManualModeDlg::get_br(void) {
 
 	if (ncommoncards<=2) br=1;
 	else if (ncommoncards==3) br=2;
-	else if (ncommoncards==4) br=4;
-	else if (ncommoncards==5) br=5;
+	else if (ncommoncards==4) br=3;
+	else if (ncommoncards==5) br=4;
 
 	return br;
 }
+
+
+CString CManualModeDlg::get_CardName(char Card)
+{
+	if (Card == CARD_NOCARD) return "";
+	if (Card == CARD_BACK)   return "";
+
+	int suit = 2; //!!!
+	int rank = 7; //!!!
+
+	CString the_Result;
+		
+	return the_Result;
+}
+
+/*
+CString CManualModeDlg::get_Macro_from_GameState()
+{
+	CString Macro;
+
+	// Reset 
+	Macro = "R";
+
+	// For all seats...
+	for (int i=0; i<10; i++)
+	{
+		// Seated?
+		if (seated[i]) {
+			Macro += "P";
+
+			// Button?
+			if (dealer[i])
+			{
+				Macro += "N";
+			}
+
+			// Small Blind? (could be button, if headsup)
+			if (playerbet[i] == sblind)
+			{
+				Macro += "b";
+			}
+
+			// Big Blind? (could be button, if headsup)
+			if (playerbet[i] == bblind)
+			{
+				Macro += "B";
+			}
+
+			// User cards?
+			Macro += get_CardName(card[P0C0+i*2]);
+		}
+	}
+	
+	// Common cards
+	for (int i=0; i<5; i++)
+	{
+		Macro += get_CardName(card[CC0+i]);				
+	}
+	
+	CString MacroNotification = "New macro is: " + Macro;
+	MessageBox(MacroNotification, 0, 0); //!!!
+	return Macro;
+}*/
