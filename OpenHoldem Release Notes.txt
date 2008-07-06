@@ -1,6 +1,7 @@
 v1.9.2 2008-??=??
 =================
 NEW STUFF:
+- Perl supports now player names and table name; gwp and gwt function (by elvis) (TheHighFish)
 
 BUG FIXES:
 - corrected pcbits / npcbits for straight and straight flush cases. (Thanks, pokerbandit) (Matrix)
