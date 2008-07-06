@@ -9,6 +9,7 @@ BUG FIXES:
 - Make the i86 button work.
 - Corrected typo in prw1326 vanills chair init. (Thanks Eesahe) (Matrix)
 - Corrected opening of formula to not require exclusive file access (Thanks Spud) (OpenHoldem)
+- Associated the OpenHoldemDoc class with both ohf and whf file types. (TheHighFish)
 
 
 v1.9.1 2008-06-27
