@@ -10,6 +10,7 @@ BUG FIXES:
 - Corrected typo in prw1326 vanills chair init. (Thanks Eesahe) (Matrix)
 - Corrected opening of formula to not require exclusive file access (Thanks Spud) (OpenHoldem)
 - Associated the OpenHoldemDoc class with both ohf and whf file types. (TheHighFish)
+- Perl: Loading interpreter now without restart, when enabled in the preferences dialog. (TheHighFish)
 
 
 v1.9.1 2008-06-27
