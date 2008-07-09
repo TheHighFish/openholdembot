@@ -6,6 +6,7 @@
 #include "DialogSAPrefs9.h"
 #include "Registry.h"
 #include "global.h"
+#include "Perl.hpp"
 
 
 // DialogSAPrefs9 dialog
@@ -61,6 +62,12 @@ void CDlgSAPrefs9::OnOK()
     reg.Perl_default_Formula = global.preferences.Perl_default_Formula;
     reg.Perl_Editor = global.preferences.Perl_Editor;
     reg.write_reg();
+
+	// Load Perl interpreter without a restart
+	if (global.preferences.Perl_load_Interpreter)
+	{
+		the_Perl_Interpreter = Perl();	
+	}
 
     CSAPrefsSubDlg::OnOK();
 }
