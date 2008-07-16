@@ -10,6 +10,7 @@
 #include "symbols.h" //2008-05-08 Matrix (for prw1326 mesage)
 
 CDll	cdll;
+CRITICAL_SECTION cs_parse;
 
 CDll::CDll()
 {
@@ -186,12 +187,13 @@ double GetSymbolFromDll(int chair, const char* name, bool& iserr)
 
     str.Format("%s", name);
 
+	EnterCriticalSection(&cs_parse);
     result = parse(&str, &tpi, &stopchar);
+	LeaveCriticalSection(&cs_parse);
     if (result)
     {
         e = SUCCESS;
-		int offset;
-        res = evaluate(&global.formula, tpi, NULL, &e);
+		res = evaluate(&global.formula, tpi, NULL, &e);
     }
     else
     {

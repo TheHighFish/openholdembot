@@ -37,6 +37,7 @@ BEGIN_MESSAGE_MAP(COpenHoldemApp, CWinApp)
     ON_COMMAND(ID_FILE_OPEN, &CWinApp::OnFileOpen)
 END_MESSAGE_MAP()
 
+extern CRITICAL_SECTION cs_parse;
 
 // COpenHoldemApp construction
 COpenHoldemApp::COpenHoldemApp()
@@ -52,6 +53,7 @@ COpenHoldemApp::COpenHoldemApp()
     InitializeCriticalSection(&cs_heartbeat);
     InitializeCriticalSection(&cs_updater);
     InitializeCriticalSection(&cs_calc_f$symbol);
+    InitializeCriticalSection(&cs_parse);
 
     __SEH_LOGFATAL("COpenHoldemApp::Constructor :\n");
 
@@ -263,6 +265,7 @@ int COpenHoldemApp::ExitInstance()
     DeleteCriticalSection(&cs_heartbeat);
     DeleteCriticalSection(&cs_updater);
     DeleteCriticalSection(&cs_calc_f$symbol);
+    DeleteCriticalSection(&cs_parse);
 
     stop_log();
 

@@ -26,6 +26,8 @@
 // CDlgFormulaScintilla dialog
 CDlgFormulaScintilla	*m_formulaScintillaDlg = NULL;
 
+extern CRITICAL_SECTION cs_parse;
+
 char *	keywords = "ismanual isppro site nchairs isbring session handnumber "
                   "sitename$ network$ swagdelay allidelay swagtextmethod potmethod activemethod rake nit bankroll bblind sblind "
                   "ante lim isnl ispl isfl sraiprev sraimin sraimax istournament handrank "
@@ -2090,10 +2092,9 @@ void CDlgFormulaScintilla::update_debug_auto(void) {
     N = (int) debug_ar.GetSize();
     for (i=0; i<N; i++) 
 	{
-        if (debug_ar[i].valid && debug_ar[i].error==SUCCESS)
+		if (debug_ar[i].valid && debug_ar[i].error==SUCCESS) {
             debug_ar[i].ret = evaluate(&m_wrk_formula, debug_ar[i].tree, NULL, &debug_ar[i].error);
-
-        else
+		} else
             debug_ar[i].ret = 0;
     }
     // Format the text
@@ -2297,7 +2298,9 @@ void CDlgFormulaScintilla::init_debug_array(void)
 			global.parse_symbol_formula = &m_wrk_formula;
 			global.parse_symbol_stop_strs.RemoveAll();
 
+			EnterCriticalSection(&cs_parse);
             parse_result = parse(&debug_struct.exp, &debug_struct.tree, &stopchar);
+			LeaveCriticalSection(&cs_parse);
             debug_struct.ret = 0;
 			debug_struct.valid = true;
 			debug_struct.error = parse_result && global.parse_symbol_stop_strs.GetSize()==0 ? SUCCESS : ERR_BAD_PARSE;
@@ -2306,7 +2309,9 @@ void CDlgFormulaScintilla::init_debug_array(void)
 		{
             debug_struct.exp = buf;
             Cstr = "";
+			EnterCriticalSection(&cs_parse);
             parse(&Cstr, &debug_struct.tree, &stopchar);
+			LeaveCriticalSection(&cs_parse);
             debug_struct.ret = 0;
             debug_struct.valid = false;
             debug_struct.error = ERR_DEBUG_NOEQ;
