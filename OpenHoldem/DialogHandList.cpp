@@ -8,7 +8,7 @@
 CDlgHandList::CDlgHandList(CWnd* pParent /*=NULL*/)
         : CDialog(CDlgHandList::IDD, pParent)
 {
-
+	nhands = 0;
 }
 
 CDlgHandList::~CDlgHandList()
@@ -188,11 +188,13 @@ void CDlgHandList::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_CHECK167, m_Check[0][2]);
     DDX_Control(pDX, IDC_CHECK168, m_Check[0][1]);
     DDX_Control(pDX, IDC_CHECK169, m_Check[0][0]);
+	DDX_Control(pDX, IDC_COMMENT, m_CommentST);
 }
 
 
 BEGIN_MESSAGE_MAP(CDlgHandList, CDialog)
     ON_BN_CLICKED(IDOK, &CDlgHandList::OnBnClickedOk)
+	ON_CONTROL_RANGE(BN_CLICKED, IDC_CHECK1, IDC_CHECK169, OnCheckClick)
 END_MESSAGE_MAP()
 
 
@@ -212,21 +214,40 @@ BOOL CDlgHandList::OnInitDialog()
     m_HandList_Name.SetWindowText(s.GetString());
 
     // Set checked/unchecked status of each box
-    for (i=0; i<=12; i++)
-        for (j=0; j<=12; j++)
+	for (i=0; i<=12; i++) {
+		for (j=0; j<=12; j++) {
             m_Check[i][j].SetCheck(checked[i][j] ? BST_CHECKED : BST_UNCHECKED);
+		}
+	}
+	OnCheckClick(0);
 
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CDlgHandList::OnBnClickedOk()
+void CDlgHandList::OnCheckClick(UINT controlID)
 {
     int			i, j;
 
-    for (i=0; i<=12; i++)
-        for (j=0; j<=12; j++)
+	nhands = 0;
+	for (i=0; i<=12; i++) {
+		for (j=0; j<=12; j++) {
             checked[i][j] = m_Check[i][j].GetCheck() & BST_CHECKED;
+			if (checked[i][j]) {
+				if (i==j) nhands += 6;
+				else if (i<j) nhands += 12;
+				else nhands += 4;
+			}
+		}
+	}
+	CString comment;
+	comment.Format("%d/1326=%.2f%%", nhands, ((double)nhands/1326.0)*100.0);
+	m_CommentST.SetWindowText(comment);
+}
+
+void CDlgHandList::OnBnClickedOk()
+{
+	OnCheckClick(0);
 
     OnOK();
 }

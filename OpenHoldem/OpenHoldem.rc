@@ -595,13 +595,13 @@ BEGIN
     LTEXT           "Enter values as actual money prizes or as a % of the prize pool:",IDC_STATIC,4,7,206,8
 END
 
-IDD_HANDLIST DIALOGEX 0, 0, 176, 214
+IDD_HANDLIST DIALOGEX 0, 0, 176, 228
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Dialog"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,64,193,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,119,193,50,14
+    DEFPUSHBUTTON   "OK",IDOK,64,207,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,119,207,50,14
     CONTROL         "",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,15,32,8,10
     CONTROL         "",IDC_CHECK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,27,32,8,10
     CONTROL         "",IDC_CHECK3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,39,32,8,10
@@ -800,6 +800,7 @@ BEGIN
     LTEXT           "2",IDC_STATIC,7,166,8,8
     LTEXT           "Unsuited",IDC_STATIC,16,178,27,8
     LTEXT           "Hand list: x ",IDC_HANDLIST_NAME,7,7,48,8
+    LTEXT           "Static",IDC_COMMENT,7,190,162,8
 END
 
 IDD_SAPREFS8 DIALOGEX 0, 0, 219, 155
@@ -1013,7 +1014,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 169
         TOPMARGIN, 7
-        BOTTOMMARGIN, 207
+        BOTTOMMARGIN, 221
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -1026,8 +1027,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    //IDR_MAINFRAME           "OpenHoldem\n\nformula\nOpenHoldem Files (*.whf)\n.whf\nOpenHoldem.Document\nformula.Document"
-	//IDR_MAINFRAME           "OpenHoldem\n\nformula\nOpenHoldem Files (*.ohf)\n.ohf\nWinHoldem Files (*.whf)\n.whf\nOpenHoldem.Document\nformula.Document"
 	IDR_MAINFRAME           "OpenHoldem\n\nformula\nOpenHoldem Files (*.ohf;*.whf)\n.ohf;.whf\nOpenHoldem.Document\nformula.Document"
     ID_INDICATOR_STATUS_COMCARDS "ComCards"
     ID_INDICATOR_STATUS_PRWIN "prwin"
