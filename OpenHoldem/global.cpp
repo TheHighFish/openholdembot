@@ -14,6 +14,7 @@
 
 class CGlobal	global;
 
+extern CRITICAL_SECTION cs_parse;
 
 //  Sanity check: enough disk-space for a replay frame?
 //    We assume, 10 MB are enough
@@ -414,7 +415,9 @@ bool parse_loop(const CUPDUPDATA* pCUPDUPData)
 			global.parse_symbol_formula = data->f;
 			global.parse_symbol_stop_strs.RemoveAll();
 
+			EnterCriticalSection(&cs_parse);
             result = parse(&data->f->mFunction[i].func_text, &data->f->mFunction[i].tpi, &stopchar);
+			LeaveCriticalSection(&cs_parse);
 
             if (!result)
             {
