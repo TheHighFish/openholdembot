@@ -183,4 +183,9 @@ protected:
 	afx_msg void OnCall();
 	afx_msg void OnRaise();
 	afx_msg void OnAllin();
+
+public:
+	// To create macros
+	CString get_CardName(char Card);
+	CString get_Macro_from_GameState();
 };
