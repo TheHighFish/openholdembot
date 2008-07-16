@@ -2,6 +2,7 @@ v1.9.2 2008-??=??
 =================
 NEW STUFF:
 - Perl supports now player names and table name; gwp and gwt function (by elvis) (TheHighFish)
+- Added to the Hand List Dialog a display of what percentage of hand the current hand list represents (Spew)
 
 BUG FIXES:
 - corrected pcbits / npcbits for straight and straight flush cases. (Thanks, pokerbandit) (Matrix)
@@ -11,7 +12,8 @@ BUG FIXES:
 - Corrected opening of formula to not require exclusive file access (Thanks Spud) (OpenHoldem)
 - Associated the OpenHoldemDoc class with both ohf and whf file types. (TheHighFish)
 - Perl: Loading interpreter now without restart, when enabled in the preferences dialog. (TheHighFish)
-
+- Fixed a crash during during a crash, manifested during a dll gws call in the destructor of skip_grammar
+  http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=5170 (Spew)
 
 v1.9.1 2008-06-27
 =================
