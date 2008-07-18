@@ -1,4 +1,4 @@
-v1.9.2 2008-??=??
+v1.9.2 2008-07-25
 =================
 NEW STUFF:
 - Perl supports now player names and table name; gwp and gwt function (by elvis) (TheHighFish)
@@ -8,12 +8,13 @@ BUG FIXES:
 - corrected pcbits / npcbits for straight and straight flush cases. (Thanks, pokerbandit) (Matrix)
 - Don't clobber the hand number for the first frame of a new hand
 - Make the i86 button work.
-- Corrected typo in prw1326 vanills chair init. (Thanks Eesahe) (Matrix)
+- Corrected typo in prw1326 vanilla chair init. (Thanks Eesahe) (Matrix)
 - Corrected opening of formula to not require exclusive file access (Thanks Spud) (OpenHoldem)
 - Associated the OpenHoldemDoc class with both ohf and whf file types. (TheHighFish)
 - Perl: Loading interpreter now without restart, when enabled in the preferences dialog. (TheHighFish)
-- Fixed a crash during a parse, manifested during a dll gws call in the destructor of skip_grammar
-  http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=5170 (Spew)
+- The infamous "random crash bug" fixed.  Occurred during parse, manifested during a dll gws call in 
+  the destructor of skip_grammar http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=5170 (Spew)
+  
 
 v1.9.1 2008-06-27
 =================
