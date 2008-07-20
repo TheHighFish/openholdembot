@@ -1844,11 +1844,11 @@ bool CScraper::get_button_state(int button_index)
 		// don't MakeLower our mm_network symbol
 		if (!symbols.sym.ismanual || button_index!=5)
 		{
-			if (scraper.buttonstate[button_index].MakeLower().Find("true")!=-1 ||
-					scraper.buttonstate[button_index].MakeLower().Find("on")!=-1 ||
-					scraper.buttonstate[button_index].MakeLower().Find("yes")!=-1 ||
-					scraper.buttonstate[button_index].MakeLower().Find("checked")!=-1 ||
-					scraper.buttonstate[button_index].MakeLower().Find("lit")!=-1 )
+			if (scraper.buttonstate[button_index].MakeLower().Left(4) == "true" ||
+				scraper.buttonstate[button_index].MakeLower().Left(2) == "on" ||
+				scraper.buttonstate[button_index].MakeLower().Left(3) == "yes" ||
+				scraper.buttonstate[button_index].MakeLower().Left(7) == "checked" ||
+				scraper.buttonstate[button_index].MakeLower().Left(3) == "lit" )
 			{
 				return true;
 			}
@@ -1856,22 +1856,22 @@ bool CScraper::get_button_state(int button_index)
     }
     else if (button_index==86)
     {
-        if (scraper.i86_buttonstate.MakeLower().Find("true")!=-1 ||
-                scraper.i86_buttonstate.MakeLower().Find("on")!=-1 ||
-                scraper.i86_buttonstate.MakeLower().Find("yes")!=-1 ||
-                scraper.i86_buttonstate.MakeLower().Find("checked")!=-1 ||
-                scraper.i86_buttonstate.MakeLower().Find("lit")!=-1 )
+        if (scraper.i86_buttonstate.MakeLower().Left(4) == "true" ||
+            scraper.i86_buttonstate.MakeLower().Left(2) == "on" ||
+            scraper.i86_buttonstate.MakeLower().Left(3) == "yes" ||
+            scraper.i86_buttonstate.MakeLower().Left(7) == "checked" ||
+            scraper.i86_buttonstate.MakeLower().Left(3) == "lit" )
         {
             return true;
         }
     }
     else if (button_index>=860)
     {
-        if (scraper.i86X_buttonstate[button_index-860].MakeLower().Find("true")!=-1 ||
-                scraper.i86X_buttonstate[button_index-860].MakeLower().Find("on")!=-1 ||
-                scraper.i86X_buttonstate[button_index-860].MakeLower().Find("yes")!=-1 ||
-                scraper.i86X_buttonstate[button_index-860].MakeLower().Find("checked")!=-1 ||
-                scraper.i86X_buttonstate[button_index-860].MakeLower().Find("lit")!=-1 )
+        if (scraper.i86X_buttonstate[button_index-860].MakeLower().Left(4) == "true" ||
+            scraper.i86X_buttonstate[button_index-860].MakeLower().Left(2) == "on" ||
+            scraper.i86X_buttonstate[button_index-860].MakeLower().Left(3) == "yes" ||
+            scraper.i86X_buttonstate[button_index-860].MakeLower().Left(7) == "checked" ||
+            scraper.i86X_buttonstate[button_index-860].MakeLower().Left(3) == "lit" )
         {
             return true;
         }
@@ -1933,11 +1933,11 @@ bool CScraper::is_string_allin(CString s)
     s.Remove(' ');
     s.Remove('-');
 
-    if (s.MakeLower().Find("allin")!=-1 ||
-            s.MakeLower().Find("a11in")!=-1 ||
-            s.MakeLower().Find("allln")!=-1 ||
-            s.MakeLower().Find("a111n")!=-1 ||
-            s.MakeLower().Find("aiiin")!=-1)
+    if (s.MakeLower().Left(5) == "allin" ||
+        s.MakeLower().Left(5) == "a11in" ||
+        s.MakeLower().Left(5) == "allln" ||
+        s.MakeLower().Left(5) == "a111n" ||
+        s.MakeLower().Left(5) == "aiiin")
     {
         return true;
     }
@@ -1954,10 +1954,10 @@ bool CScraper::is_string_raise(CString s)
 		return false;
 	}
 
-    if (s.MakeLower().Find("raise")!=-1 ||
-            s.MakeLower().Find("ra1se")!=-1 ||
-            s.MakeLower().Find("ralse")!=-1 ||
-            s.MakeLower().Find("bet")!=-1)
+    if (s.MakeLower().Left(5) == "raise" ||
+        s.MakeLower().Left(5) == "ra1se" ||
+        s.MakeLower().Left(5) == "ralse" ||
+        s.MakeLower().Left(3) == "bet")
     {
         return true;
     }
@@ -1974,9 +1974,9 @@ bool CScraper::is_string_call(CString s)
 		return false;
 	}
 
-    if (s.MakeLower().Find("call")!=-1 ||
-            s.MakeLower().Find("caii")!=-1 ||
-            s.MakeLower().Find("ca11")!=-1)
+    if (s.MakeLower().Left(4) == "call" ||
+        s.MakeLower().Left(4) == "caii" ||
+        s.MakeLower().Left(4) == "ca11")
     {
         return true;
     }
@@ -1993,7 +1993,7 @@ bool CScraper::is_string_check(CString s)
 		return false;
 	}
 
-    if (s.MakeLower().Find("check")!=-1)
+    if (s.MakeLower().Left(5) == "check")
     {
         return true;
     }
@@ -2010,10 +2010,9 @@ bool CScraper::is_string_fold(CString s)
 		return false;
 	}
 
-    if ((s.MakeLower().Find("fold")!=-1 ||
-            s.MakeLower().Find("fo1d")!=-1 ||
-            s.MakeLower().Find("foid")!=-1) &&
-            s.MakeLower().Find("prefold")==-1 )
+    if (s.MakeLower().Left(4) == "fold" ||
+        s.MakeLower().Left(4) == "fo1d" ||
+        s.MakeLower().Left(4) == "foid")
     {
         return true;
     }
@@ -2034,8 +2033,8 @@ bool CScraper::is_string_autopost(CString s)
     s.Remove(' ');
     s.Remove('-');
 
-    if (s.MakeLower().Find("autopost")!=-1 ||
-            s.MakeLower().Find("aut0p0st")!=-1)
+    if (s.MakeLower().Left(8) == "autopost" ||
+		s.MakeLower().Left(8) == "aut0p0st")
     {
         return true;
     }
@@ -2055,8 +2054,8 @@ bool CScraper::is_string_sitin(CString s)
     s.Remove(' ');
     s.Remove('-');
 
-    if (s.MakeLower().Find("sitin")!=-1 ||
-            s.MakeLower().Find("s1t1n")!=-1)
+    if (s.MakeLower().Left(5) == "sitin" ||
+		s.MakeLower().Left(5) == "s1t1n")
     {
         return true;
     }
@@ -2076,10 +2075,10 @@ bool CScraper::is_string_sitout(CString s)
     s.Remove(' ');
     s.Remove('-');
 
-    if (s.MakeLower().Find("sitout")!=-1 ||
-            s.MakeLower().Find("s1tout")!=-1 ||
-            s.MakeLower().Find("sit0ut")!=-1 ||
-            s.MakeLower().Find("s1t0ut")!=-1)
+    if (s.MakeLower().Left(6) == "sitout" ||
+        s.MakeLower().Left(6) == "s1tout" ||
+        s.MakeLower().Left(6) == "sit0ut" ||
+        s.MakeLower().Left(6) == "s1t0ut")
     {
         return true;
     }
@@ -2096,7 +2095,7 @@ bool CScraper::is_string_leave(CString s)
 		return false;
 	}
 
-    if (s.MakeLower().Find("leave")!=-1)
+    if (s.MakeLower().Left(5) == "leave")
     {
         return true;
     }
@@ -2113,7 +2112,7 @@ bool CScraper::is_string_prefold(CString s)
 		return false;
 	}
 
-    if (s.MakeLower().Find("prefold")!=-1)
+    if (s.MakeLower().Left(7) == "prefold")
     {
         return true;
     }
@@ -2131,14 +2130,14 @@ bool CScraper::is_string_seated(CString s)
 		return false;
 	}
 
-    if (s.MakeLower().Find("false")!=-1 ||
-            s.MakeLower().Find("unseated")!=-1)
+    if (s.MakeLower().Left(5) == "false" ||
+		s.MakeLower().Left(8) == "unseated")
     {
         return false;
     }
 
-    else if (s.MakeLower().Find("true")!=-1 ||
-             s.MakeLower().Find("seated")!=-1)
+    else if (s.MakeLower().Left(4) == "true" ||
+			 s.MakeLower().Left(6) == "seated")
     {
         return true;
     }
@@ -2158,10 +2157,10 @@ bool CScraper::is_string_active(CString s)
     // new method: active unless pXactive returns false/inactive/out/away
     if (global.trans.map.activemethod == 2)
     {
-        if (s.MakeLower().Find("false")!=-1 ||
-                s.MakeLower().Find("inactive")!=-1 ||
-                s.MakeLower().Find("out")!=-1 ||
-                s.MakeLower().Find("away")!=-1)
+        if (s.MakeLower().Left(5) == "false" ||
+            s.MakeLower().Left(8) == "inactive" ||
+            s.MakeLower().Left(3) == "out" ||
+            s.MakeLower().Left(4) == "away")
         {
             return false;
         }
@@ -2174,13 +2173,13 @@ bool CScraper::is_string_active(CString s)
         if (s=="")
             return false;
 
-        if (s.MakeLower().Find("inactive")!=-1)
+        if (s.MakeLower().Left(8) == "inactive")
         {
             return false;
         }
 
-        if (s.MakeLower().Find("true")!=-1 ||
-                s.MakeLower().Find("active")!=-1)
+        if (s.MakeLower().Left(4) == "true" ||
+			s.MakeLower().Left(6) == "active")
         {
             return true;
         }
@@ -2198,8 +2197,8 @@ bool CScraper::is_string_cardback(CString s)
 		return false;
 	}
 
-    if (s.MakeLower().Find("true")!=-1 ||
-            s.MakeLower().Find("cardback")!=-1)
+    if (s.MakeLower().Left(4) == "true" ||
+		s.MakeLower().Left(8) == "cardback")
     {
         return true;
     }
@@ -2216,8 +2215,8 @@ bool CScraper::is_string_dealer(CString s)
 		return false;
 	}
 
-    if (s.MakeLower().Find("true")!=-1 ||
-            s.MakeLower().Find("dealer")!=-1)
+    if (s.MakeLower().Left(4) == "true" ||
+		s.MakeLower().Left(6) == "dealer")
     {
         return true;
     }

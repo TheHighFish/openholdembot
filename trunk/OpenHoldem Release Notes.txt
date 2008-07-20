@@ -14,8 +14,14 @@ BUG FIXES:
 - Perl: Loading interpreter now without restart, when enabled in the preferences dialog. (TheHighFish)
 - The infamous "random crash bug" fixed.  Occurred during parse, manifested during a dll gws call in 
   the destructor of skip_grammar http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=5170 (Spew)
+- Fix for this bug fix in 1.9.1: 'Changed button states to not require a perfect match on returned values, but
+  rather a substring match.  Thus a button state returning "true1", "true2", etc will work properly now'
+  This change negatively impacted the behavior of the sitin/sitout recognition, and the poker tracker
+  query symbols, at a minimum.  This is due to the fix being based on a substring search of the state,
+  rather than on the first X characters.  Thank you to many people for identifying the effects of this
+  bug, and to quiqsilver for identifying the root cause (OpenHoldem)
   
-
+  
 v1.9.1 2008-06-27
 =================
 NEW STUFF:
