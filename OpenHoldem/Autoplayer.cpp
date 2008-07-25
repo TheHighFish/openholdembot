@@ -211,7 +211,7 @@ void Autoplayer::do_autoplayer(void)
     }
     else 
 	{
-		if (symbols.f$alli) do_slider();
+		if (symbols.f$alli && scraper.get_button_state(3)) do_slider();
 		else do_arccf();
     }
 
