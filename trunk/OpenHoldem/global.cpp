@@ -14,8 +14,6 @@
 
 class CGlobal	global;
 
-extern CRITICAL_SECTION cs_parse;
-
 //  Sanity check: enough disk-space for a replay frame?
 //    We assume, 10 MB are enough
 //      - a large table of 1000x1000 pixels a 4 byte
