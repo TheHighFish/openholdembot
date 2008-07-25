@@ -37,8 +37,6 @@ BEGIN_MESSAGE_MAP(COpenHoldemApp, CWinApp)
     ON_COMMAND(ID_FILE_OPEN, &CWinApp::OnFileOpen)
 END_MESSAGE_MAP()
 
-extern CRITICAL_SECTION cs_parse;
-
 // COpenHoldemApp construction
 COpenHoldemApp::COpenHoldemApp()
 {

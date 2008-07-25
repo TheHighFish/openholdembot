@@ -26,8 +26,6 @@
 // CDlgFormulaScintilla dialog
 CDlgFormulaScintilla	*m_formulaScintillaDlg = NULL;
 
-extern CRITICAL_SECTION cs_parse;
-
 char *	keywords = "ismanual isppro site nchairs isbring session handnumber "
                   "sitename$ network$ swagdelay allidelay swagtextmethod potmethod activemethod rake nit bankroll bblind sblind "
                   "ante lim isnl ispl isfl sraiprev sraimin sraimax istournament handrank "
