@@ -726,7 +726,7 @@ double eval_symbol(SFormula *f, string sym, CEvalInfoFunction **logCallingFuncti
     // Memory symbols
     else if (memcmp(sym.c_str(), "me_", 3)==0)
     {
-        return memory.process_query(sym.c_str(), e);
+        return memory.process_query(sym.c_str(), logCallingFunction, e);
     }
 
     // all other symbols

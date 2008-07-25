@@ -27,14 +27,14 @@ Memory::Memory()
 }
 
 
-double Memory::process_query (const char * pquery, int *e)
+double Memory::process_query(const char * pquery, CEvalInfoFunction **logCallingFunction, int *e)
 {
     __SEH_HEADER
 
     if (memcmp(pquery,"me_st_", 6)==0)
     {
         *e = SUCCESS;
-        store_value(pquery, e);
+        store_value(pquery, logCallingFunction, e);
         return 0.0;
     }
 
@@ -52,7 +52,7 @@ double Memory::process_query (const char * pquery, int *e)
 }
 
 
-void Memory::store_value(const char * pquery, int *e)
+void Memory::store_value(const char * pquery, CEvalInfoFunction **logCallingFunction, int *e)
 {
     __SEH_HEADER
     int			i, index=0;
@@ -84,7 +84,7 @@ void Memory::store_value(const char * pquery, int *e)
     if (memcmp(value,"f$",2)==0)
     {
         *e = SUCCESS;
-        result = calc_f$symbol(&global.formula, value, true, e);
+        result = do_calc_f$symbol(&global.formula, value, logCallingFunction, logCallingFunction!=NULL, e);
 
         if (*e==SUCCESS)
         {
