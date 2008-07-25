@@ -70,11 +70,15 @@ void CDlgSAPrefs11::OnOK()
     Registry		reg;
     CString			text;
 
+	reg.read_reg();
     global.preferences.LogSymbol_enabled = m_EnableLog.GetCheck()==BST_CHECKED ? true : false;
+	reg.LogSymbol_enabled = global.preferences.LogSymbol_enabled;
     global.preferences.Trace_enabled = m_EnableTrace.GetCheck()==BST_CHECKED ? true : false;
+	reg.Trace_enabled = global.preferences.Trace_enabled;
 	for (int i=0;i<nTraceFunctions;i++)
 	{
 		global.preferences.Trace_functions[i] = m_TraceList.GetCheck(i);
+		reg.Trace_functions[i] = global.preferences.Trace_functions[i];
 	}
 
     m_MaximumLog.GetWindowText(text);
@@ -83,14 +87,9 @@ void CDlgSAPrefs11::OnOK()
         return;
     }
     global.preferences.LogSymbol_max_log = strtoul(text.GetString(), 0, 10);
-
-    reg.read_reg();
-    reg.LogSymbol_enabled = global.preferences.LogSymbol_enabled;
-    reg.LogSymbol_max_log = global.preferences.LogSymbol_max_log;
-    reg.Trace_enabled = global.preferences.Trace_enabled;
-    memcpy(reg.Trace_functions, global.preferences.Trace_functions, sizeof(bool)*nTraceFunctions);
+	reg.LogSymbol_max_log = global.preferences.LogSymbol_max_log;
+    
     reg.write_reg();
-
     CSAPrefsSubDlg::OnOK();
 }
 
