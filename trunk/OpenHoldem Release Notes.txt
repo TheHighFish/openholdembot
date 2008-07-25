@@ -4,7 +4,7 @@ NEW STUFF:
 - NONE PLANNED
 
 BUG FIXES:
-- 
+- i3slider jamming fix http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=5263 (Spew)
 
 
 v1.9.2 2008-07-25
