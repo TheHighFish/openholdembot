@@ -312,8 +312,7 @@ void Registry::read_reg(void)
         read_OH_RegistryKey(hKey, "precision", &precision);
         read_OH_RegistryKey(hKey, "equal", &equal);
         read_OH_RegistryKey(hKey, "udf_sort", &udf_sort);
-        read_OH_RegistryKey(hKey, "udf_group", &udf_group);
-        read_OH_RegistryKey(hKey, "udf_sort", &udf_sort);
+        read_OH_RegistryKey(hKey, "udf_group", &udf_group);        
         read_OH_RegistryKey(hKey, "expand_std", &expand_std);
         read_OH_RegistryKey(hKey, "expand_list", &expand_list);
         read_OH_RegistryKey(hKey, "expand_udf", &expand_udf);
@@ -418,7 +417,8 @@ void Registry::read_reg(void)
 			regValue.Format("Trace_Functions%d", i);
 			read_OH_RegistryKey(hKey, regValue, &Trace_functions[i]);
 		}
-
+		
+		// versus path
         read_OH_RegistryKey(hKey, "versus", &versus_path);
     }
 
@@ -518,6 +518,7 @@ void Registry::write_reg(void)
     // Prefs - Replay frames
     write_OH_RegistryKey(hKey, "replay_record", replay_record);
     write_OH_RegistryKey(hKey, "replay_record_every_change", replay_record_every_change);
+	write_OH_RegistryKey(hKey, "replay_max_frames", replay_max_frames);
 
     // Poker Pro
     write_OH_RegistryKey(hKey, "ppro_hostname", hostname);
@@ -560,12 +561,15 @@ void Registry::write_reg(void)
     write_OH_RegistryKey(hKey, "LogSymbol_max_log", LogSymbol_max_log);
 
     write_OH_RegistryKey(hKey, "Trace_enabled", Trace_enabled);
-    write_OH_RegistryKey(hKey, "Trace_functions1", Trace_functions[0]);
-    write_OH_RegistryKey(hKey, "Trace_functions2", Trace_functions[1]);
-    write_OH_RegistryKey(hKey, "Trace_functions3", Trace_functions[2]);
-    write_OH_RegistryKey(hKey, "Trace_functions4", Trace_functions[3]);
-    write_OH_RegistryKey(hKey, "Trace_functions5", Trace_functions[4]);
+    write_OH_RegistryKey(hKey, "Trace_functions0", Trace_functions[0]);
+    write_OH_RegistryKey(hKey, "Trace_functions1", Trace_functions[1]);
+    write_OH_RegistryKey(hKey, "Trace_functions2", Trace_functions[2]);
+    write_OH_RegistryKey(hKey, "Trace_functions3", Trace_functions[3]);
+    write_OH_RegistryKey(hKey, "Trace_functions4", Trace_functions[4]);
+	write_OH_RegistryKey(hKey, "Trace_functions5", Trace_functions[5]);
 
+	// Atm don't write versus-path, as there's no option
+	//   in the preferences to set it
     RegCloseKey(hKey);
 
     __SEH_LOGFATAL("Registry::write_reg : \n");
