@@ -5,7 +5,8 @@ NEW STUFF:
 
 BUG FIXES:
 - i3slider jamming fix http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=5263 (Spew)
-
+- Cancel on apply confirmation dialog in Formula Editor would not cancel the close operation (Spew)
+http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=5189
 
 v1.9.2 2008-07-25
 =================

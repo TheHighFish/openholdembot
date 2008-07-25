@@ -2468,9 +2468,10 @@ bool CDlgFormulaScintilla::PromptToSave()
     COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
     CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
-    if (MessageBox("You have made changes to this formula.\n\nDo you want to apply changes?", 
+	int response = MessageBox("You have made changes to this formula.\n\nDo you want to apply changes?", 
 				   "Save changes?", 
-				   MB_YESNOCANCEL)==IDYES)
+				   MB_YESNOCANCEL);
+    if (response == IDYES)
 	{
 		// Re-calc working set hand lists
 		global.create_hand_list_matrices(&m_wrk_formula);
@@ -2511,7 +2512,8 @@ bool CDlgFormulaScintilla::PromptToSave()
 
         return true;
     }
-    else 
+    
+	if (response == IDNO)
 	{
         global.ClearFormula(&m_wrk_formula);
 
