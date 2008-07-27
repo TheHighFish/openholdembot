@@ -337,7 +337,7 @@ void start_log(void) {
     __SEH_HEADER
     if (log_fp==NULL) {
         CString fn;
-        fn.Format("%s\\oh%d.log", global.startup_path, global.sessionnum);
+        fn.Format("%s\\oh_%lu.log", global.startup_path, global.Session_ID);
         log_fp = fopen(fn.GetString(), "a");
         write_log("! log file open\n");
         fprintf(log_fp, "yyyy.mm.dd hh:mm:ss -  # hand commoncard rank poker  win  los  tie  P      nit bestaction - play*      call       bet       pot   balance - FCRA FCRA swag\n");

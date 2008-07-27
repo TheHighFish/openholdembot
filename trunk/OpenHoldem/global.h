@@ -79,8 +79,8 @@ public:
 	int				next_replay_frame;
 	bool			replay_recorded_this_turn;
 
-	// instance/session number
-	int				sessionnum;
+	// Sesssion_ID	
+	unsigned long int	Session_ID;
 
 	// Used for holding table list by callback function
 	CArray <STableList, STableList>		g_tlist;

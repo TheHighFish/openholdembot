@@ -584,7 +584,7 @@ void CSymbols::CalcSymbols(void)
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Global environment symbols
-    sym.session = global.sessionnum;												// session
+    sym.session = global.Session_ID;												// session
     sym.nopponentsmax = global.preferences.max_opponents;							// nopponentsmax
     sym.swagdelay = global.preferences.swag_delay_3;								// swagdelay
     sym.allidelay = -1;																// allidelay  (unused in OpenHoldem)

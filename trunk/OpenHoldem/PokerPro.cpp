@@ -2078,7 +2078,7 @@ void PokerPro::writehh(CString *s) {
     FILE *hh_fp;
 
     if (handhistory) {
-        fn.Format("%s\\ppro\\%s%d.log", global.startup_path, data.m_site_name, global.sessionnum);
+        fn.Format("%s\\ppro\\%s_%lu.log", global.startup_path, data.m_site_name, global.Session_ID);
         hh_fp = fopen(fn.GetString(), "a");
         if (hh_fp==NULL) {
             fd.Format("%s\\ppro", global.startup_path);
