@@ -1209,16 +1209,16 @@ void CGlobal::create_replay_frame(void)
     strftime(now_time_str, 100, "%Y-%m-%d %H:%M:%S", now_time);
 
     // Create replay/session dir if it does not exist
-    path.Format("%s\\replay\\session%d\\", startup_path, sessionnum);
+    path.Format("%s\\replay\\session_%lu\\", startup_path, Session_ID);
     if (GetFileAttributes(path.GetString()) == INVALID_FILE_ATTRIBUTES)
         SHCreateDirectoryEx(NULL, path.GetString(), NULL);
 
     // Create bitmap file
-    path.Format("%s\\replay\\session%d\\frame%03d.bmp", startup_path, sessionnum, global.next_replay_frame);
+    path.Format("%s\\replay\\session_%lu\\frame%03d.bmp", startup_path, Session_ID, global.next_replay_frame);
     CreateBMPFile(path.GetString(), scraper.entire_window_Cur);
 
     // Create HTML file
-    path.Format("%s\\replay\\session%d\\frame%03d.htm", startup_path, sessionnum, global.next_replay_frame);
+    path.Format("%s\\replay\\session_%lu\\frame%03d.htm", startup_path, Session_ID, global.next_replay_frame);
     fp = fopen(path.GetString(), "w");
 
     fprintf(fp, scraper.title);
@@ -1235,7 +1235,7 @@ void CGlobal::create_replay_frame(void)
             global.next_replay_frame-1 >= 0 ? global.next_replay_frame-1 : global.preferences.replay_max_frames);
     fprintf(fp, "<a href=\"frame%03d.htm\">NEXT</a>\n",
             global.next_replay_frame+1 < global.preferences.replay_max_frames ? global.next_replay_frame+1 : 0);
-    fprintf(fp, " [%d.%03d] [%s]<br>\n", sessionnum, global.next_replay_frame, now_time_str);
+    fprintf(fp, " [%lu.%03d] [%s]<br>\n", Session_ID, global.next_replay_frame, now_time_str);
     fprintf(fp, "<br>\n");
     fprintf(fp, "<table>\n");
     fprintf(fp, "<tr>\n");

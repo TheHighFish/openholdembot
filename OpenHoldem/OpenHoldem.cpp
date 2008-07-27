@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include <psapi.h>
+#include <windows.h>
 
 #include "OpenHoldem.h"
 #include "MainFrm.h"
@@ -74,12 +75,8 @@ BOOL COpenHoldemApp::InitInstance()
 {
     __SEH_HEADER
 
-    HMODULE hMod;
-    HANDLE hProcess;
-    DWORD curprocid, aProcesses[1024], cbNeeded, cProcesses;
-    char sCurProcessName[MAX_PATH], sProcessName[MAX_PATH];
-    int i;
-
+    DWORD aProcesses[1024], cbNeeded, cProcesses;
+    
     Scintilla_RegisterClasses(AfxGetInstanceHandle());
 
     // Initialize richedit2 library
@@ -94,6 +91,7 @@ BOOL COpenHoldemApp::InitInstance()
     RegisterClass(&wc);
 
     // Figure out our session number - get name of current process
+	/*
     curprocid = GetCurrentProcessId();
     hProcess = OpenProcess( PROCESS_QUERY_INFORMATION |
                             PROCESS_VM_READ,
@@ -110,7 +108,29 @@ BOOL COpenHoldemApp::InitInstance()
     // Now look through process list and count number of matching processes
     EnumProcesses( aProcesses, sizeof(aProcesses), &cbNeeded );
     cProcesses = cbNeeded / sizeof(DWORD);
-    global.sessionnum = 0;
+    */
+
+	
+
+	// Compute the Session_ID	
+	//
+	// Because of possible problems described here
+	// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=5380 
+	// we now use the process ID.
+	//
+	// To be really unique, it would be better to  
+	// combine it with e.g. initialization time,
+	// but as we can use the Session_ID as a formula symbol 
+	// of type double, we are limited with the precision.
+	//
+	// The current solution ensures at least, that each running
+	// instance of OH has it's unique ID.
+	//
+	// If it matches an older one, the logs etc. are at least
+	// sequencial and not mixed up.
+	global.Session_ID = GetProcessId(GetCurrentProcess());
+
+/*
     for (i=0; i<(int) cProcesses; i++)
     {
         hProcess = OpenProcess( PROCESS_QUERY_INFORMATION |
@@ -127,9 +147,9 @@ BOOL COpenHoldemApp::InitInstance()
 
         if (strcmp(sCurProcessName, sProcessName)==0)
         {
-            global.sessionnum++;
+            global.Session_ID++;
         }
-    }
+    }*/
 
     // InitCommonControlsEx() is required on Windows XP if an application
     // manifest specifies use of ComCtl32.dll version 6 or later to enable

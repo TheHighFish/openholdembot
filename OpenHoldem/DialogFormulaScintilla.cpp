@@ -2232,7 +2232,7 @@ void CDlgFormulaScintilla::write_fdebug_log(bool write_header) {
 
     // write the line to the log
     CString fn;
-    fn.Format("%s\\f$debug%d.log", global.startup_path, global.sessionnum);
+    fn.Format("%s\\f$debug_%lu.log", global.startup_path, global.Session_ID);
     FILE *fp = fopen(fn.GetString(), "a");
     if (write_header) {
         fprintf(fp, "%s\n", header.GetString());

@@ -785,7 +785,7 @@ void CMainFrame::OnBnClickedGreenCircle()
             // Find next replay frame number
             latest_time = 0;
             global.next_replay_frame = last_frame_num = -1;
-            path.Format("%s\\replay\\session%d\\*.bmp", global.startup_path, global.sessionnum);
+            path.Format("%s\\replay\\session_%lu\\*.bmp", global.startup_path, global.Session_ID);
             bFound = hFile.FindFile(path.GetString());
             while (bFound)
             {
