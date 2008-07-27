@@ -74,8 +74,6 @@ COpenHoldemApp theApp;
 BOOL COpenHoldemApp::InitInstance()
 {
     __SEH_HEADER
-
-    DWORD aProcesses[1024], cbNeeded, cProcesses;
     
     Scintilla_RegisterClasses(AfxGetInstanceHandle());
 
@@ -90,29 +88,7 @@ BOOL COpenHoldemApp::InitInstance()
     wc.hIcon = AfxGetApp()->LoadIcon(IDI_ICON1);
     RegisterClass(&wc);
 
-    // Figure out our session number - get name of current process
-	/*
-    curprocid = GetCurrentProcessId();
-    hProcess = OpenProcess( PROCESS_QUERY_INFORMATION |
-                            PROCESS_VM_READ,
-                            FALSE, curprocid );
-    if (hProcess != NULL)
-    {
-        if ( EnumProcessModules( hProcess, &hMod, sizeof(hMod), &cbNeeded) )
-        {
-            GetModuleBaseName( hProcess, hMod, sCurProcessName, MAX_PATH );
-        }
-    }
-    CloseHandle(hProcess);
-
-    // Now look through process list and count number of matching processes
-    EnumProcesses( aProcesses, sizeof(aProcesses), &cbNeeded );
-    cProcesses = cbNeeded / sizeof(DWORD);
-    */
-
-	
-
-	// Compute the Session_ID	
+    // Compute the Session_ID	
 	//
 	// Because of possible problems described here
 	// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=5380 
@@ -129,27 +105,6 @@ BOOL COpenHoldemApp::InitInstance()
 	// If it matches an older one, the logs etc. are at least
 	// sequencial and not mixed up.
 	global.Session_ID = GetProcessId(GetCurrentProcess());
-
-/*
-    for (i=0; i<(int) cProcesses; i++)
-    {
-        hProcess = OpenProcess( PROCESS_QUERY_INFORMATION |
-                                PROCESS_VM_READ,
-                                FALSE, aProcesses[i] );
-        if (hProcess != NULL)
-        {
-            if ( EnumProcessModules( hProcess, &hMod, sizeof(hMod), &cbNeeded) )
-            {
-                GetModuleBaseName( hProcess, hMod, sProcessName, MAX_PATH );
-            }
-        }
-        CloseHandle(hProcess);
-
-        if (strcmp(sCurProcessName, sProcessName)==0)
-        {
-            global.Session_ID++;
-        }
-    }*/
 
     // InitCommonControlsEx() is required on Windows XP if an application
     // manifest specifies use of ComCtl32.dll version 6 or later to enable
