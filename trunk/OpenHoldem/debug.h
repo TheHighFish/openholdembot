@@ -44,14 +44,14 @@
 //    #endif
 //
 #ifdef SEH_ENABLE
-#define __SEH_LOGFATAL(__VA_ARGS__) } \
+#define __SEH_LOGFATAL(...) } \
 	catch (...) \
 	{ \
 	    logfatal(__VA_ARGS__); \
 		throw; \
 	}
 #else
-#define __SEH_LOGFATAL(__VA_ARGS__)
+#define __SEH_LOGFATAL(...)
 #endif
 
 
