@@ -135,7 +135,8 @@ void Registry::init_Defaults(void)
     LogSymbol_max_log = 5;
 
 	Trace_enabled = false;
-	memset(Trace_functions, false, sizeof(bool)*nTraceFunctions);
+	for (int i=0;i<nTraceFunctions;i++)
+		Trace_functions[i] = false;
 
     versus_path = "";
 
@@ -414,7 +415,7 @@ void Registry::read_reg(void)
         read_OH_RegistryKey(hKey, "Trace_enabled", &Trace_enabled);
 		CString regValue;
 		for (int i=0;i<nTraceFunctions;i++) {
-			regValue.Format("Trace_Functions%d", i);
+			regValue.Format("Trace_functions%d", i+1);
 			read_OH_RegistryKey(hKey, regValue, &Trace_functions[i]);
 		}
 		
@@ -561,12 +562,11 @@ void Registry::write_reg(void)
     write_OH_RegistryKey(hKey, "LogSymbol_max_log", LogSymbol_max_log);
 
     write_OH_RegistryKey(hKey, "Trace_enabled", Trace_enabled);
-    write_OH_RegistryKey(hKey, "Trace_functions0", Trace_functions[0]);
-    write_OH_RegistryKey(hKey, "Trace_functions1", Trace_functions[1]);
-    write_OH_RegistryKey(hKey, "Trace_functions2", Trace_functions[2]);
-    write_OH_RegistryKey(hKey, "Trace_functions3", Trace_functions[3]);
-    write_OH_RegistryKey(hKey, "Trace_functions4", Trace_functions[4]);
-	write_OH_RegistryKey(hKey, "Trace_functions5", Trace_functions[5]);
+	CString regValue;
+	for (int i=0;i<nTraceFunctions;i++) {
+		regValue.Format("Trace_functions%d", i+1);
+		write_OH_RegistryKey(hKey, regValue, Trace_functions[i]);
+	}
 
 	// Atm don't write versus-path, as there's no option
 	//   in the preferences to set it
