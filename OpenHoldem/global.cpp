@@ -115,7 +115,8 @@ CGlobal::CGlobal(void)
     preferences.LogSymbol_max_log = reg.LogSymbol_max_log;
 
     preferences.Trace_enabled = reg.Trace_enabled;
-    memcpy(preferences.Trace_functions, reg.Trace_functions, sizeof(bool)*nTraceFunctions);
+	for (int i=0;i<nTraceFunctions;i++)
+		preferences.Trace_functions[i] = reg.Trace_functions[i];
 
 	// Find the versus data.  First check in the current directory
 	// then in the path provided by the registry.  If both fail,
