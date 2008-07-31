@@ -50,7 +50,6 @@ UINT __cdecl heartbeat_thread(LPVOID pParam)
     int					nbytes, result;
     fd_set				fd;
     timeval				tv;
-    bool				hbt=true;
     int					N, i;
 
     while (heartbeat_thread_alive)
@@ -262,11 +261,6 @@ UINT __cdecl heartbeat_thread(LPVOID pParam)
         global.ppro_tid = ppro.data.m_tinf.m_tid;
 
         Sleep(global.preferences.scrape_delay);
-
-        EnterCriticalSection(&cs_heartbeat);
-        hbt = heartbeat_thread_alive;
-        LeaveCriticalSection(&cs_heartbeat);
-
     }
 
     AfxEndThread(0);
