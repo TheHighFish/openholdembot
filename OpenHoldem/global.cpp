@@ -8,7 +8,6 @@
 #include "scraper.h"
 #include "DialogFormulaScintilla.h"
 #include "global.h"
-#include "threads.h"
 #include <io.h>
 #include <fcntl.h>
 
@@ -1174,8 +1173,7 @@ void CGlobal::create_replay_frame(void)
     time_t			ltime;
     struct tm		*now_time;
     char			now_time_str[100];
-    bool			scrape_running;
-	ULARGE_INTEGER free_bytes_for_user_on_disk, 
+	ULARGE_INTEGER	free_bytes_for_user_on_disk, 
 					total_bytes_on_disk, 
 					free_bytes_total_on_disk;
 
@@ -1192,18 +1190,6 @@ void CGlobal::create_replay_frame(void)
 		return;
 	}
 
-    // Wait for scrape cycle to finish before saving frame
-    scrape_running = true;
-    i = 0;
-    while (scrape_running && i<10)
-    {
-        EnterCriticalSection(&cs_updater);
-        scrape_running = global.update_in_process;
-        LeaveCriticalSection(&cs_updater);
-        Sleep(50);
-        i++;
-    }
-
     // Get current time
     time(&ltime);
     now_time = localtime(&ltime);
@@ -1214,130 +1200,137 @@ void CGlobal::create_replay_frame(void)
     if (GetFileAttributes(path.GetString()) == INVALID_FILE_ATTRIBUTES)
         SHCreateDirectoryEx(NULL, path.GetString(), NULL);
 
-    // Create bitmap file
-    path.Format("%s\\replay\\session_%lu\\frame%03d.bmp", startup_path, Session_ID, global.next_replay_frame);
-    CreateBMPFile(path.GetString(), scraper.entire_window_Cur);
+	// Get exclusive access to CScraper and CSymbol variables
+    // (Wait for scrape cycle to finish before saving frame)
+	EnterCriticalSection(&cs_scrape_symbol);
 
-    // Create HTML file
-    path.Format("%s\\replay\\session_%lu\\frame%03d.htm", startup_path, Session_ID, global.next_replay_frame);
-    fp = fopen(path.GetString(), "w");
+		// Create bitmap file
+		path.Format("%s\\replay\\session_%lu\\frame%03d.bmp", startup_path, Session_ID, global.next_replay_frame);
+		CreateBMPFile(path.GetString(), scraper.entire_window_Cur);
 
-    fprintf(fp, scraper.title);
-    fprintf(fp, "\n");
-    fprintf(fp, "<html>\n");
-    fprintf(fp, "<style>\n");
-    fprintf(fp, "td {text-align:right;}\n");
-    fprintf(fp, "</style>\n");
-    fprintf(fp, "<body>\n");
-    fprintf(fp, "<font face=courier>\n");
-    fprintf(fp, "<img src=\"frame%03d.bmp\">\n", global.next_replay_frame);
-    fprintf(fp, "<br>\n");
-    fprintf(fp, "<a href=\"frame%03d.htm\">PREV</a>\n",
-            global.next_replay_frame-1 >= 0 ? global.next_replay_frame-1 : global.preferences.replay_max_frames);
-    fprintf(fp, "<a href=\"frame%03d.htm\">NEXT</a>\n",
-            global.next_replay_frame+1 < global.preferences.replay_max_frames ? global.next_replay_frame+1 : 0);
-    fprintf(fp, " [%lu.%03d] [%s]<br>\n", Session_ID, global.next_replay_frame, now_time_str);
-    fprintf(fp, "<br>\n");
-    fprintf(fp, "<table>\n");
-    fprintf(fp, "<tr>\n");
-    fprintf(fp, "<td>\n");
+		// Create HTML file
+		path.Format("%s\\replay\\session_%lu\\frame%03d.htm", startup_path, Session_ID, global.next_replay_frame);
+		fp = fopen(path.GetString(), "w");
 
-    // Table for: SFABD, hand, bet, balance, name
-    fprintf(fp, "<table border=4 cellpadding=1 cellspacing=1>\n");
-    fprintf(fp, "<tr>\n");
-    fprintf(fp, "<th>#</th>\n");
-    fprintf(fp, "<th>SFABDP</th>\n");  //seated, friend, active, button, dealt, playing
-    fprintf(fp, "<th>hand</th>\n");
-    fprintf(fp, "<th>bet</th>\n");
-    fprintf(fp, "<th>balance</th>\n");
-    fprintf(fp, "<th>name</th>\n");
-    fprintf(fp, "</tr>\n");
-    for (i=0; i<global.trans.map.num_chairs; i++)
-    {
+		fprintf(fp, scraper.title);
+		fprintf(fp, "\n");
+		fprintf(fp, "<html>\n");
+		fprintf(fp, "<style>\n");
+		fprintf(fp, "td {text-align:right;}\n");
+		fprintf(fp, "</style>\n");
+		fprintf(fp, "<body>\n");
+		fprintf(fp, "<font face=courier>\n");
+		fprintf(fp, "<img src=\"frame%03d.bmp\">\n", global.next_replay_frame);
+		fprintf(fp, "<br>\n");
+		fprintf(fp, "<a href=\"frame%03d.htm\">PREV</a>\n",
+				global.next_replay_frame-1 >= 0 ? global.next_replay_frame-1 : global.preferences.replay_max_frames);
+		fprintf(fp, "<a href=\"frame%03d.htm\">NEXT</a>\n",
+				global.next_replay_frame+1 < global.preferences.replay_max_frames ? global.next_replay_frame+1 : 0);
+		fprintf(fp, " [%lu.%03d] [%s]<br>\n", Session_ID, global.next_replay_frame, now_time_str);
+		fprintf(fp, "<br>\n");
+		fprintf(fp, "<table>\n");
+		fprintf(fp, "<tr>\n");
+		fprintf(fp, "<td>\n");
 
-        fprintf(fp, "<tr>\n");
-        fprintf(fp, "<td>%d</td>", i);  // #
-        text.Format("%s%s%s%s%s%s",
-                    (int) (symbols.sym.playersseatedbits) & (1<<i) ? "s" : "-",
-                    symbols.sym.userchair == i ? "f" : "-",
-                    (int) (symbols.sym.playersactivebits) & (1<<i) ? "a" : "-",
-                    symbols.sym.dealerchair== i ? "b" : "-",
-                    (int) (symbols.sym.playersdealtbits) & (1<<i) ? "d" : "-",
-                    (int) (symbols.sym.playersplayingbits) & (1<<i) ? "p" : "-");
-        fprintf(fp, "<td>%s</td>", text.GetString());  // SFABDP
-        fprintf(fp, "<td>%s%s</td>",
-                get_card_html(scraper.card_player[i][0]),
-                get_card_html(scraper.card_player[i][1]) );  // hand
-        fprintf(fp, "<td>%11.2f</td>", scraper.playerbet[i]);  // bet
-        fprintf(fp, "<td>%11.2f</td>", scraper.playerbalance[i]);  // balance
-        fprintf(fp, "<td>%-15s</td>\n", scraper.playername[i].GetString());  // name
-        fprintf(fp, "</tr>\n");
-    }
-    fprintf(fp, "</table>\n");
-    fprintf(fp, "</td>\n");
+		// Table for: SFABD, hand, bet, balance, name
+		fprintf(fp, "<table border=4 cellpadding=1 cellspacing=1>\n");
+		fprintf(fp, "<tr>\n");
+		fprintf(fp, "<th>#</th>\n");
+		fprintf(fp, "<th>SFABDP</th>\n");  //seated, friend, active, button, dealt, playing
+		fprintf(fp, "<th>hand</th>\n");
+		fprintf(fp, "<th>bet</th>\n");
+		fprintf(fp, "<th>balance</th>\n");
+		fprintf(fp, "<th>name</th>\n");
+		fprintf(fp, "</tr>\n");
+		for (i=0; i<global.trans.map.num_chairs; i++)
+		{
 
-    // Table for: FCRA
-    fprintf(fp, "<td>\n");
-    fprintf(fp, "<table align=center border=4 cellpadding=1 cellspacing=1>\n");
-    fprintf(fp, "<tr><th>FCRA</th></tr>\n");
-    fprintf(fp, "<tr>\n");
-    fcra_seen.Format("%s%s%s%s",
-                     ((int)symbols.sym.myturnbits)&0x1 ? "F" : ".",
-                     ((int)symbols.sym.myturnbits)&0x2 ? "C" : ".",
-                     ((int)symbols.sym.myturnbits)&0x4 ? "R" : ".",
-                     ((int)symbols.sym.myturnbits)&0x8 ? "A" : ".");
+			fprintf(fp, "<tr>\n");
+			fprintf(fp, "<td>%d</td>", i);  // #
+			text.Format("%s%s%s%s%s%s",
+						(int) (symbols.sym.playersseatedbits) & (1<<i) ? "s" : "-",
+						symbols.sym.userchair == i ? "f" : "-",
+						(int) (symbols.sym.playersactivebits) & (1<<i) ? "a" : "-",
+						symbols.sym.dealerchair== i ? "b" : "-",
+						(int) (symbols.sym.playersdealtbits) & (1<<i) ? "d" : "-",
+						(int) (symbols.sym.playersplayingbits) & (1<<i) ? "p" : "-");
+			fprintf(fp, "<td>%s</td>", text.GetString());  // SFABDP
+			fprintf(fp, "<td>%s%s</td>",
+					get_card_html(scraper.card_player[i][0]),
+					get_card_html(scraper.card_player[i][1]) );  // hand
+			fprintf(fp, "<td>%11.2f</td>", scraper.playerbet[i]);  // bet
+			fprintf(fp, "<td>%11.2f</td>", scraper.playerbalance[i]);  // balance
+			fprintf(fp, "<td>%-15s</td>\n", scraper.playername[i].GetString());  // name
+			fprintf(fp, "</tr>\n");
+		}
+		fprintf(fp, "</table>\n");
+		fprintf(fp, "</td>\n");
 
-    fprintf(fp, "<td>%s</td>\n", fcra_seen.GetString());
-    fprintf(fp, "</tr>\n");
-    fprintf(fp, "</table>\n");
+		// Table for: FCRA
+		fprintf(fp, "<td>\n");
+		fprintf(fp, "<table align=center border=4 cellpadding=1 cellspacing=1>\n");
+		fprintf(fp, "<tr><th>FCRA</th></tr>\n");
+		fprintf(fp, "<tr>\n");
+		fcra_seen.Format("%s%s%s%s",
+						 ((int)symbols.sym.myturnbits)&0x1 ? "F" : ".",
+						 ((int)symbols.sym.myturnbits)&0x2 ? "C" : ".",
+						 ((int)symbols.sym.myturnbits)&0x4 ? "R" : ".",
+						 ((int)symbols.sym.myturnbits)&0x8 ? "A" : ".");
 
-    // Table for: sb, bb, BB
-    fprintf(fp, "<table align=center border=4 cellpadding=1 cellspacing=1>\n");
-    fprintf(fp, "<tr><th>sb</th><td>%11.2f</td></tr>\n", symbols.sym.sblind);
-    fprintf(fp, "<tr><th>bb</th><td>%11.2f</td></tr>\n", symbols.sym.bblind);
-    fprintf(fp, "<tr><th>BB</th><td>%11.2f</td></tr>\n", symbols.bigbet);
-    fprintf(fp, "</table>\n");
+		fprintf(fp, "<td>%s</td>\n", fcra_seen.GetString());
+		fprintf(fp, "</tr>\n");
+		fprintf(fp, "</table>\n");
 
-    // Table for: common cards
-    fprintf(fp, "<table align=center border=4 cellpadding=1 cellspacing=1>\n");
-    fprintf(fp, "<tr><th>commoncard</th></tr>\n");
-    fprintf(fp, "<tr>\n");
-    fprintf(fp, "<td>%s%s%s%s%s</td>\n",
-            get_card_html(scraper.card_common[0]),
-            get_card_html(scraper.card_common[1]),
-            get_card_html(scraper.card_common[2]),
-            get_card_html(scraper.card_common[3]),
-            get_card_html(scraper.card_common[4]) );
-    fprintf(fp, "</tr>\n");
-    fprintf(fp, "</table>\n");
+		// Table for: sb, bb, BB
+		fprintf(fp, "<table align=center border=4 cellpadding=1 cellspacing=1>\n");
+		fprintf(fp, "<tr><th>sb</th><td>%11.2f</td></tr>\n", symbols.sym.sblind);
+		fprintf(fp, "<tr><th>bb</th><td>%11.2f</td></tr>\n", symbols.sym.bblind);
+		fprintf(fp, "<tr><th>BB</th><td>%11.2f</td></tr>\n", symbols.bigbet);
+		fprintf(fp, "</table>\n");
 
-    // Table for: pots
-    fprintf(fp, "<table align=center border=4 cellpadding=1 cellspacing=1>\n");
-    fprintf(fp, "<tr><th>#</th><th>pot</th></tr>\n");
-    fprintf(fp, "<tr>\n");
-    fprintf(fp, "<td>0</td><td>%11.2f</td>\n", scraper.pot[0]);
-    fprintf(fp, "</tr>\n");
-    for (i=1; i<=9; i++)
-    {
-        if (scraper.pot[i])
-        {
-            fprintf(fp, "<tr>\n");
-            fprintf(fp, "<td>%d</td><td>%11.2f</td>\n", i, scraper.pot[i]);
-            fprintf(fp, "</tr>\n");
-        }
-        else
-        {
-            i = 11;
-        }
-    }
-    fprintf(fp, "</table>\n");
+		// Table for: common cards
+		fprintf(fp, "<table align=center border=4 cellpadding=1 cellspacing=1>\n");
+		fprintf(fp, "<tr><th>commoncard</th></tr>\n");
+		fprintf(fp, "<tr>\n");
+		fprintf(fp, "<td>%s%s%s%s%s</td>\n",
+				get_card_html(scraper.card_common[0]),
+				get_card_html(scraper.card_common[1]),
+				get_card_html(scraper.card_common[2]),
+				get_card_html(scraper.card_common[3]),
+				get_card_html(scraper.card_common[4]) );
+		fprintf(fp, "</tr>\n");
+		fprintf(fp, "</table>\n");
 
-    fprintf(fp, "</td>\n");
-    fprintf(fp, "</tr>\n");
-    fprintf(fp, "</table>\n");
-    fprintf(fp, "</body></html>\n");
+		// Table for: pots
+		fprintf(fp, "<table align=center border=4 cellpadding=1 cellspacing=1>\n");
+		fprintf(fp, "<tr><th>#</th><th>pot</th></tr>\n");
+		fprintf(fp, "<tr>\n");
+		fprintf(fp, "<td>0</td><td>%11.2f</td>\n", scraper.pot[0]);
+		fprintf(fp, "</tr>\n");
+		for (i=1; i<=9; i++)
+		{
+			if (scraper.pot[i])
+			{
+				fprintf(fp, "<tr>\n");
+				fprintf(fp, "<td>%d</td><td>%11.2f</td>\n", i, scraper.pot[i]);
+				fprintf(fp, "</tr>\n");
+			}
+			else
+			{
+				i = 11;
+			}
+		}
+		fprintf(fp, "</table>\n");
 
-    fclose(fp);
+		fprintf(fp, "</td>\n");
+		fprintf(fp, "</tr>\n");
+		fprintf(fp, "</table>\n");
+		fprintf(fp, "</body></html>\n");
+
+		fclose(fp);
+
+	// Allow other threads to use CScraper and CSymbol variables
+	LeaveCriticalSection(&cs_scrape_symbol);
 
     // Increment counter
     global.next_replay_frame++;

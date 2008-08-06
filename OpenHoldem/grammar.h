@@ -333,6 +333,15 @@ struct exec_grammar : public grammar<exec_grammar>
 	};
 };
 
+// This critical section is used in do_calc_f$symbol to prevent multiple parallel calls to Spirit's evaluate function,
+// as this function has been found to not support parallel entry
+extern CRITICAL_SECTION		cs_calc_f$symbol;
+
+// This critical section is used to prevent multiple parallel calls to Spirit's parse function,
+// as this function has been found to not support parallel entry
+// Any code needing to call "parse" needs to wrap that call with this critical section.
+extern CRITICAL_SECTION		cs_parse;
+
 
 #endif  /* INC_GRAMMAR_H */
 

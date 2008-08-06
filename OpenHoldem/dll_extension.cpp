@@ -10,7 +10,6 @@
 #include "symbols.h" //2008-05-08 Matrix (for prw1326 mesage)
 
 CDll	cdll;
-CRITICAL_SECTION cs_parse;
 
 CDll::CDll()
 {

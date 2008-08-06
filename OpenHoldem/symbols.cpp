@@ -7,11 +7,11 @@
 #include "scraper.h"
 #include "grammar.h"
 #include "inlines/eval.h"
-#include "threads.h"
+#include "IteratorThread.h"
 #include "versus.h"
 #include "RunRon.h"
 #include "GameState.h"
-#include "pokertracker.h"
+#include "PokerTrackerThread.h"
 
 #include "symbols.h"
 
@@ -122,9 +122,7 @@ void CSymbols::ResetSymbolsFirstTime(void)
 
     // formula
     sym.rake = sym.bankroll = 0;
-    EnterCriticalSection(&cs_prwin);
     sym.nit = 0;
-    LeaveCriticalSection(&cs_prwin);
 
     // limits
     sym.bblind = sym.sblind = sym.ante = 0;
@@ -153,19 +151,6 @@ void CSymbols::ResetSymbolsFirstTime(void)
         sym.randomround[i] = 0;
 
     sym.prwin = sym.prlos = sym.prtie = 0;
-    EnterCriticalSection(&cs_prwin);
-    prwin_run_with_nit = -1;
-    prwin_run_with_f$p = -1;
-    prwin_run_with_br = -1;
-
-    for (i=0; i<=1; i++)
-        prwin_run_with_playercards[i] = CARD_NOCARD;
-
-    for (i=0; i<=4; i++)
-        prwin_run_with_commoncards[i] = CARD_NOCARD;
-
-    prwin_iterator_progress = 0;
-    LeaveCriticalSection(&cs_prwin);
 
     // statistics
     sym.callror = sym.raisror = sym.srairor = sym.alliror = 0;
@@ -240,9 +225,7 @@ void CSymbols::ResetSymbolsFirstTime(void)
     sym.ishipair = sym.islopair = sym.ismidpair = sym.ishistraight = sym.ishiflush = 0;
 
     // players friends opponents
-    EnterCriticalSection(&cs_prwin);
     sym.nopponents = 0;
-    LeaveCriticalSection(&cs_prwin);
     sym.nopponentsmax = 0;
     sym.nplayersseated = sym.nplayersactive = sym.nplayersdealt = 0;
     sym.nplayersplaying = sym.nplayersblind = 0;
@@ -499,9 +482,7 @@ void CSymbols::ResetSymbolsEveryCalc(void)
     sym.ishipair = sym.islopair = sym.ismidpair = sym.ishistraight = sym.ishiflush = 0;
 
     // players friends opponents
-    EnterCriticalSection(&cs_prwin);
     sym.nopponents = 0;
-    LeaveCriticalSection(&cs_prwin);
     sym.nopponentschecking = sym.nopponentscalling = sym.nopponentsraising = 0;
     sym.nopponentsbetting = sym.nopponentsfolded = 0;
     sym.nplayerscallshort = sym.nchairsdealtright = sym.nchairsdealtleft = 0;
@@ -741,9 +722,7 @@ void CSymbols::CalcSymbols(void)
     sym.nchairs = global.trans.map.num_chairs;										// nchairs
     sym.isppro = global.ppro_isppro;												// isppro
     sym.rake = global.formula.dRake;												// rake
-    EnterCriticalSection(&cs_prwin);
     sym.nit = global.formula.dNit;													// nit
-    LeaveCriticalSection(&cs_prwin);
     sym.bankroll = global.formula.dBankroll;										// bankroll
     sym.defcon = global.formula.dDefcon;											// defcon
     sym.isdefmode = global.formula.dDefcon == 0.0;									// isdefmode
@@ -804,15 +783,12 @@ void CSymbols::CalcSymbols(void)
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // number of opponents (from f$P)
     error = SUCCESS;
-    EnterCriticalSection(&cs_prwin);
     sym.nopponents = calc_f$symbol(&global.formula, "f$P", &error);
 
     if (sym.nopponents > global.preferences.max_opponents)
     {
         sym.nopponents = global.preferences.max_opponents;					// nopponents
     }
-
-    LeaveCriticalSection(&cs_prwin);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // dependent on nopponents calulation - must come after
@@ -1352,27 +1328,30 @@ void CSymbols::calc_probabilities(void)
     __SEH_HEADER
     double			nopp_lastrun, nit_lastrun, br_lastrun;
     unsigned int	playercards_lastrun[2], commoncards_lastrun[5];
-    bool			need_recalc, isalive;
+    bool			need_recalc;
     int				i;
 
     sym.random = (double) rand() / (double) RAND_MAX;								// random
     sym.randomround[4] = sym.randomround[(int) (sym.br-1)];							// randomround
 
-    // collect last run information
-    EnterCriticalSection(&cs_prwin);
-    nopp_lastrun = prwin_run_with_f$p;
-    nit_lastrun = prwin_run_with_nit;
-    br_lastrun = prwin_run_with_br;
-    for (i=0; i<=1; i++)
-        playercards_lastrun[i] = prwin_run_with_playercards[i];
+	// Get exclusive access to CIteratorThread variables
+	EnterCriticalSection(&cs_iterator);
 
-    for (i=0; i<=4; i++)
-        commoncards_lastrun[i] = prwin_run_with_commoncards[i];
+		// collect last run information
+		nopp_lastrun = iterator_run_with_f$p;
+		nit_lastrun = iterator_run_with_nit;
+		br_lastrun = iterator_run_with_br;
+		for (i=0; i<=1; i++)
+			playercards_lastrun[i] = iterator_run_with_playercards[i];
 
-    isalive = prwin_thread_alive;
-    LeaveCriticalSection(&cs_prwin);
+		for (i=0; i<=4; i++)
+			commoncards_lastrun[i] = iterator_run_with_commoncards[i];
 
-    // Start/restart prwin thread on these conditions:
+	// Allow other threads to use CIterator variables
+	LeaveCriticalSection(&cs_iterator);
+
+	
+	// Start/restart prwin thread on these conditions:
     // - changed f$P (nopponents)
     // - changed nit
     // - changed br
@@ -1400,31 +1379,16 @@ void CSymbols::calc_probabilities(void)
 
     if (need_recalc && sym.nit>0)
     {
-        // If thread is running, stop it and restart
-        if (isalive)
-        {
-            // Stop prwin thread
-            EnterCriticalSection(&cs_prwin);
-            prwin_thread_alive = false;
-            LeaveCriticalSection(&cs_prwin);
-            WaitForSingleObject(h_prwin_thread, THREAD_WAIT);
+		// start iterator thread
+		if (p_iterator_thread)
+		{
+			delete p_iterator_thread;
+			write_log("Stopped iterator thread: %08x\n", p_iterator_thread);
+			p_iterator_thread = NULL;
+		}
 
-            // Restart prwin thread
-            EnterCriticalSection(&cs_prwin);
-            prwin_thread_alive = true;
-            sym.prwin = sym.prlos = sym.prtie = 0;
-            LeaveCriticalSection(&cs_prwin);
-            h_prwin_thread = AfxBeginThread(prwin_thread, 0);
-        }
-
-        else
-        {
-            EnterCriticalSection(&cs_prwin);
-            prwin_thread_alive = true;
-            sym.prwin = sym.prlos = sym.prtie = 0;
-            LeaveCriticalSection(&cs_prwin);
-            h_prwin_thread = AfxBeginThread(prwin_thread, 0);
-        }
+		p_iterator_thread = new CIteratorThread;
+		write_log("Started iterator thread: %08x\n", p_iterator_thread);
     }
 
     __SEH_LOGFATAL("CSymbols::calc_probabilities :\n");

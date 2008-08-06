@@ -16,7 +16,7 @@
 #include "DialogHandList.h"
 #include "grammar.h"
 #include "WinMgr.h"
-#include "threads.h"
+#include "scraper.h"
 #include "symbols.h"
 #include "debug.h"
 
@@ -2339,9 +2339,7 @@ void CDlgFormulaScintilla::OnBnClickedApply()
                        "Disable Autoplayer?", MB_YESNO) == IDYES)
         {
             pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
-            EnterCriticalSection(&cs_heartbeat);
             global.autoplay = false;
-            LeaveCriticalSection(&cs_heartbeat);
         }
     }
 
@@ -2405,9 +2403,7 @@ void CDlgFormulaScintilla::OnBnClickedOk()
                        "Disable Autoplayer?", MB_YESNO) == IDYES)
         {
             pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
-            EnterCriticalSection(&cs_heartbeat);
             global.autoplay = false;
-            LeaveCriticalSection(&cs_heartbeat);
         }
     }
 
@@ -2623,13 +2619,16 @@ void CDlgFormulaScintilla::OnTimer(UINT nIDEvent) {
     // Update debug tab (if auto button is pressed)
     else if (nIDEvent == DEBUG_UPDATE_TIMER)
     {
-        EnterCriticalSection(&cs_updater);
+		// Get exclusive access to CScraper and CSymbol variables
+		// Really we are just using this critical section to make sure we are not in the middle of a scrape cycle right now
+		EnterCriticalSection(&cs_scrape_symbol);
 
-        if (m_ButtonAuto.GetCheck() == 1 && global.update_in_process == false && m_current_edit == "f$debug" && ok_to_update_debug) {
-            update_debug_auto();
-        }
+			if (m_ButtonAuto.GetCheck() == 1 && m_current_edit == "f$debug" && ok_to_update_debug) {
+				update_debug_auto();
+			}
 
-        LeaveCriticalSection(&cs_updater);
+		// Allow other threads to use CScraper and CSymbol variables
+		LeaveCriticalSection(&cs_scrape_symbol);
     }
 
 

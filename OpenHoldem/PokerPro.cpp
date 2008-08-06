@@ -8,7 +8,7 @@
 #include "structs_defines.h"
 #include "poker_defs.h"
 #include "symbols.h"
-#include "threads.h"
+#include "IteratorThread.h"
 #include "grammar.h"
 #include "DialogPpro.h"
 
@@ -1843,126 +1843,135 @@ int PokerPro::count_same_scrapes(void) {                               // Copied
 }
 
 
-void PokerPro::DoAutoplayer(void) {
+void PokerPro::DoAutoplayer(void) 
+{
     __SEH_HEADER
 
     int				error;
-    bool			prwin_running, scrape_running;
+    bool			iterator_running;
     int				x, delay;
 
-    EnterCriticalSection(&cs_prwin);
-    prwin_running = prwin_thread_alive;
-    LeaveCriticalSection(&cs_prwin);
-    EnterCriticalSection(&cs_updater);
-    scrape_running = global.update_in_process;
-    LeaveCriticalSection(&cs_updater);
+    EnterCriticalSection(&cs_iterator);
+    iterator_running = iterator_thread_running;
+    LeaveCriticalSection(&cs_iterator);
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // f$play
-    error = SUCCESS;
-    symbols.f$play = calc_f$symbol(&global.formula, "f$play", &error);
-    if (symbols.f$play==-2) {
-        send_stand(data.m_userchair);	   // leave table
-    }
-    else if (symbols.f$play==-1) { }																	// no action
-    else if (symbols.f$play==0 && scraper.get_button_state(6)) {
-        send_sitout(data.m_userchair);    // sit out
-    }
-    else if (symbols.f$play==1 && scraper.get_button_state(5)) {
-        send_sitin(data.m_userchair);    // sit in
-    }
+	// Get exclusive access to CScraper and CSymbol variables
+	EnterCriticalSection(&cs_scrape_symbol);
 
-    // If we are in a scrape/symbol calc cycle, then return
-    if (scrape_running) {
-        return;
-    }
+		////////////////////////////////////////////////////////////////////////////////
+		// f$play
+		error = SUCCESS;
+		symbols.f$play = calc_f$symbol(&global.formula, "f$play", &error);
+		if (symbols.f$play==-2) {
+			send_stand(data.m_userchair);	   // leave table
+		}
+		else if (symbols.f$play==-1) { }																	// no action
+		else if (symbols.f$play==0 && scraper.get_button_state(6)) {
+			send_sitout(data.m_userchair);    // sit out
+		}
+		else if (symbols.f$play==1 && scraper.get_button_state(5)) {
+			send_sitin(data.m_userchair);    // sit in
+		}
 
-    // If prwin thread is still iterating, then return
-    if (prwin_running) {
-        return;
-    }
+		// If iterator thread is still iterating, then return
+		if (iterator_running) 
+		{
+			// Allow other threads to use CScraper and CSymbol variables
+			LeaveCriticalSection(&cs_scrape_symbol);
+			return;
+		}
 
-    // if we have no visible buttons, then return
-    if (!symbols.sym.myturnbits) {
-        return;
-    }
+		// if we have no visible buttons, then return
+		if (!symbols.sym.myturnbits) 
+		{
+			// Allow other threads to use CScraper and CSymbol variables
+			LeaveCriticalSection(&cs_scrape_symbol);
+			return;
+		}
 
-    // If we don't have enough stable frames, or have not waited f$delay milliseconds, then return (added Spektre 2008-04-03)
-    symbols.f$delay = calc_f$symbol(&global.formula, "f$delay", &error);
-    delay = symbols.f$delay / global.preferences.scrape_delay;    // scale f$delay to a number of scrapes
-    x = count_same_scrapes();
-    if (x < (int) global.preferences.frame_delay + delay)
-        return;
+		// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return (added Spektre 2008-04-03)
+		symbols.f$delay = calc_f$symbol(&global.formula, "f$delay", &error);
+		delay = symbols.f$delay / global.preferences.scrape_delay;    // scale f$delay to a number of scrapes
+		x = count_same_scrapes();
+		if (x < (int) global.preferences.frame_delay + delay) 
+		{
+			// Allow other threads to use CScraper and CSymbol variables
+			LeaveCriticalSection(&cs_scrape_symbol);
+			return;
+		}
 
-    // calculate f$alli, f$swag, f$rais, and f$call for autoplayer's use
-    error = SUCCESS;
-    symbols.f$alli = calc_f$symbol(&global.formula, "f$alli", &error);
-    error = SUCCESS;
-    symbols.f$swag = calc_f$symbol(&global.formula, "f$swag", &error);
-    error = SUCCESS;
-    symbols.f$rais = calc_f$symbol(&global.formula, "f$rais", &error);
-    error = SUCCESS;
-    symbols.f$call = calc_f$symbol(&global.formula, "f$call", &error);
+		// calculate f$alli, f$swag, f$rais, and f$call for autoplayer's use
+		error = SUCCESS;
+		symbols.f$alli = calc_f$symbol(&global.formula, "f$alli", &error);
+		error = SUCCESS;
+		symbols.f$swag = calc_f$symbol(&global.formula, "f$swag", &error);
+		error = SUCCESS;
+		symbols.f$rais = calc_f$symbol(&global.formula, "f$rais", &error);
+		error = SUCCESS;
+		symbols.f$call = calc_f$symbol(&global.formula, "f$call", &error);
 
 
-    if (symbols.f$alli && scraper.get_button_state(3) && autoplayer_can_act) {
-        Sleep(500);
-        send_action('ALLI', 0);
-        autoplayer_can_act = false;
-        global.replay_recorded_this_turn = false;
-        Sleep(500);
-        symbols.sym.prevaction = PREVACT_ALLI;
-    }
-    else if (symbols.f$swag && scraper.get_button_state(2) && autoplayer_can_act) {
-        Sleep(500);
-        send_action('SBET', (int) (symbols.f$swag*100));
-        autoplayer_can_act = false;
-        global.replay_recorded_this_turn = false;
-        Sleep(500);
-        symbols.sym.didswag[4] = 1;
-        symbols.sym.didswag[(int) symbols.sym.br-1] = 1;
-        symbols.sym.prevaction = PREVACT_SWAG;
-    }
-    else if (symbols.f$rais && scraper.get_button_state(2) && autoplayer_can_act) {
-        Sleep(500);
-        send_action('RAIS', 0);
-        autoplayer_can_act = false;
-        global.replay_recorded_this_turn = false;
-        Sleep(500);
-        symbols.sym.didrais[4] = 1;
-        symbols.sym.didrais[(int) symbols.sym.br-1] = 1;
-        symbols.sym.prevaction = PREVACT_RAIS;
-    }
-    else if (symbols.f$call && scraper.get_button_state(1) && autoplayer_can_act) {
-        Sleep(500);
-        send_action('CALL', 0);
-        autoplayer_can_act = false;
-        global.replay_recorded_this_turn = false;
-        Sleep(500);
-        symbols.sym.didcall[4] = 1;
-        symbols.sym.didcall[(int) symbols.sym.br-1] = 1;
-        symbols.sym.prevaction = PREVACT_CALL;
-    }
-    else if (scraper.get_button_state(4) && autoplayer_can_act) {
-        Sleep(500);
-        send_action('CHEC', 0);
-        autoplayer_can_act = false;
-        global.replay_recorded_this_turn = false;
-        Sleep(500);
-        symbols.sym.didchec[4] = 1;
-        symbols.sym.didchec[(int) symbols.sym.br-1] = 1;
-        symbols.sym.prevaction = PREVACT_CHEC;
-    }
-    else if (autoplayer_can_act) {
-        Sleep(500);
-        send_action('FOLD', 0);
-        global.replay_recorded_this_turn = false;
-        autoplayer_can_act = false;
-        Sleep(500);
-        symbols.sym.prevaction = PREVACT_FOLD;
-    }
+		if (symbols.f$alli && scraper.get_button_state(3) && autoplayer_can_act) {
+			Sleep(500);
+			send_action('ALLI', 0);
+			autoplayer_can_act = false;
+			global.replay_recorded_this_turn = false;
+			Sleep(500);
+			symbols.sym.prevaction = PREVACT_ALLI;
+		}
+		else if (symbols.f$swag && scraper.get_button_state(2) && autoplayer_can_act) {
+			Sleep(500);
+			send_action('SBET', (int) (symbols.f$swag*100));
+			autoplayer_can_act = false;
+			global.replay_recorded_this_turn = false;
+			Sleep(500);
+			symbols.sym.didswag[4] = 1;
+			symbols.sym.didswag[(int) symbols.sym.br-1] = 1;
+			symbols.sym.prevaction = PREVACT_SWAG;
+		}
+		else if (symbols.f$rais && scraper.get_button_state(2) && autoplayer_can_act) {
+			Sleep(500);
+			send_action('RAIS', 0);
+			autoplayer_can_act = false;
+			global.replay_recorded_this_turn = false;
+			Sleep(500);
+			symbols.sym.didrais[4] = 1;
+			symbols.sym.didrais[(int) symbols.sym.br-1] = 1;
+			symbols.sym.prevaction = PREVACT_RAIS;
+		}
+		else if (symbols.f$call && scraper.get_button_state(1) && autoplayer_can_act) {
+			Sleep(500);
+			send_action('CALL', 0);
+			autoplayer_can_act = false;
+			global.replay_recorded_this_turn = false;
+			Sleep(500);
+			symbols.sym.didcall[4] = 1;
+			symbols.sym.didcall[(int) symbols.sym.br-1] = 1;
+			symbols.sym.prevaction = PREVACT_CALL;
+		}
+		else if (scraper.get_button_state(4) && autoplayer_can_act) {
+			Sleep(500);
+			send_action('CHEC', 0);
+			autoplayer_can_act = false;
+			global.replay_recorded_this_turn = false;
+			Sleep(500);
+			symbols.sym.didchec[4] = 1;
+			symbols.sym.didchec[(int) symbols.sym.br-1] = 1;
+			symbols.sym.prevaction = PREVACT_CHEC;
+		}
+		else if (autoplayer_can_act) {
+			Sleep(500);
+			send_action('FOLD', 0);
+			global.replay_recorded_this_turn = false;
+			autoplayer_can_act = false;
+			Sleep(500);
+			symbols.sym.prevaction = PREVACT_FOLD;
+		}
 
-    __SEH_LOGFATAL("PokerPro::DoAutoplayer : \n");
+	// Allow other threads to use CScraper and CSymbol variables
+	LeaveCriticalSection(&cs_scrape_symbol);
+
+	__SEH_LOGFATAL("PokerPro::DoAutoplayer : \n");
 
 }
 

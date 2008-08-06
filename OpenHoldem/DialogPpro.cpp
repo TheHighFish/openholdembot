@@ -12,9 +12,11 @@
 #include "global.h"
 #include "symbols.h"
 #include "MainFrm.h"
-#include "threads.h"
+#include "HeartbeatThread.h"
+#include "IteratorThread.h"
+#include "scraper.h"
 #include "DialogSitDown.h"
-#include "pokertracker.h"
+#include "PokerTrackerThread.h"
 
 // CDlgPpro dialog
 CDlgPpro			*m_pproDlg;
@@ -179,49 +181,36 @@ void CDlgPpro::OnBnClickedConnectButton() {
     Registry		reg;
     CString			text;
     CMainFrame		*cmf;
-    int				updcount;
-    bool			upd;
 
     cmf = (CMainFrame *)theApp.m_pMainWnd;
 
     // Disconnect if we are already connected
-    if (ppro.m_socket != INVALID_SOCKET) {
-        // wait for an update cycle to finish, if necessary
-        updcount = 0;
-        upd = true;
-        while (upd && updcount<20) {
-            EnterCriticalSection(&cs_updater);
-            upd = global.update_in_process;
-            LeaveCriticalSection(&cs_updater);
-            Sleep(100);
-            updcount++;
-        }
+    if (ppro.m_socket != INVALID_SOCKET) 
+	{
+		// stop threads
+		if (p_heartbeat_thread)
+		{
+			delete p_heartbeat_thread;
+			write_log("Stopped heartbeat thread: %08x\n", p_heartbeat_thread);
+			p_heartbeat_thread = NULL;
+		}
 
-        // Stop heartbeat thread
-        if (heartbeat_thread_alive) {
-            heartbeat_thread_alive = false;
-            WaitForSingleObject(h_heartbeat_thread, THREAD_WAIT);
-        }
+		if (p_iterator_thread)
+		{
+			delete p_iterator_thread;
+			write_log("Stopped iterator thread: %08x\n", p_iterator_thread);
+			p_iterator_thread = NULL;
+		}
 
-        // Stop prwin and pokertracker threads
-        if (prwin_thread_alive)
-        {
-            EnterCriticalSection(&cs_prwin);
-            prwin_thread_alive = false;
-            LeaveCriticalSection(&cs_prwin);
-        }
-        if (pokertracker_thread_alive)  pokertracker_thread_alive = false;
+		if (p_pokertracker_thread)
+		{
+			delete p_pokertracker_thread;
+			write_log("Stopped poker tracker thread: %08x\n", p_pokertracker_thread);
+			p_pokertracker_thread = NULL;
+		}
 
-        // Wait for threads to finish
-        HANDLE handles[2];
-        handles[0] = h_prwin_thread;
-        handles[1] = h_pokertracker_thread;
-        WaitForMultipleObjects(2, handles, true, THREAD_WAIT);
-
-        // Make sure autoplayer is off
-        EnterCriticalSection(&cs_heartbeat);
+		// Make sure autoplayer is off
         global.autoplay = false;
-        LeaveCriticalSection(&cs_heartbeat);
 
         // Do the disconnect
         ppro.disconnect();
@@ -271,14 +260,18 @@ void CDlgPpro::OnBnClickedConnectButton() {
         cmf->m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_REDCIRCLE, false);
 
         // Make sure autoplayer is off
-        EnterCriticalSection(&cs_heartbeat);
         global.autoplay = false;
-        LeaveCriticalSection(&cs_heartbeat);
 
-        // start heartbeat thread
-        heartbeat_thread_alive = true;
-        h_heartbeat_thread = AfxBeginThread(heartbeat_thread, 0);
+		// start heartbeat thread
+		if (p_heartbeat_thread)
+		{
+			delete p_heartbeat_thread;
+			write_log("Stopped heartbeat thread: %08x\n", p_heartbeat_thread);
+			p_heartbeat_thread = NULL;
+		}
 
+		p_heartbeat_thread = new CHeartbeatThread;
+		write_log("Started heartbeat thread: %08x\n", p_heartbeat_thread);
     }
 
 

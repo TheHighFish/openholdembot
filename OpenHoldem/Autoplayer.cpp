@@ -5,7 +5,7 @@
 #include "debug.h"
 #include "symbols.h"
 #include "global.h"
-#include "threads.h"
+#include "IteratorThread.h"
 #include "grammar.h"
 #include "scraper.h"
 //  2008.02.21 by THF
@@ -116,17 +116,10 @@ void Autoplayer::do_autoplayer(void)
 
     __SEH_HEADER
 
-    bool			prwin_running, scrape_running;
     int				x, error;
     int				num_buttons_visible;
     int				delay;
-
-    EnterCriticalSection(&cs_prwin);
-    prwin_running = prwin_thread_alive;
-    LeaveCriticalSection(&cs_prwin);
-    EnterCriticalSection(&cs_updater);
-    scrape_running = global.update_in_process;
-    LeaveCriticalSection(&cs_updater);
+	bool			prwin_running;
 
     // Check status of "Keyboard" menu item, and engage if necessary
     check_bring_keyboard();
@@ -134,87 +127,112 @@ void Autoplayer::do_autoplayer(void)
     // Get r$ indices of buttons that are visible
     num_buttons_visible = get_r$_button_indices();
 
-    // Handle f$play
-    error = SUCCESS;
-	symbols.f$play = calc_f$symbol(&global.formula, "f$play", global.preferences.Trace_functions[nTracePlay], &error);
-    do_f$play();
+	// Get exclusive access to CIteratorThread members
+	EnterCriticalSection(&cs_iterator);
 
-    // Handle i86buttons
-    do_i86();
+	prwin_running = iterator_thread_running;
 
-    //  2007.02.27 by THF
-    //
-    //  Additional functionality: PokerChat
-    //    (Handle f$chat)
-    //
-    //  Selecting a chat message (or no one).
-    //    This message will then be processed by the autoplayer,
-    //    when it's time to click the buttons.
-    //
-    symbols.f$chat = calc_f$symbol(&global.formula, "f$chat", &error);
-    register_ChatMessage(symbols.f$chat);
-    //  Avoiding unnecessary calls to do_Chat(),
-    //    especially mouse movements to the chat box.
-    if ((symbols.f$chat != 0) && is_Chat_allowed())
-    {
-        do_Chat();
-    }
+	// Allow other threads to use CIteratorThread members
+	LeaveCriticalSection(&cs_iterator);
 
-	// Get count of stable frames for use a little bit further down
-    x = count_same_scrapes();
+	// Get exclusive access to CScraper and CSymbol variables
+	EnterCriticalSection(&cs_scrape_symbol);
 
-    // If we are in a scrape/symbol calc cycle, then return
-    if (scrape_running)
-        return;
+		// Handle f$play
+		error = SUCCESS;
+		symbols.f$play = calc_f$symbol(&global.formula, "f$play", global.preferences.Trace_functions[nTracePlay], &error);
+		do_f$play();
 
-    // If prwin thread is still iterating, then return
-    if (prwin_running)
-        return;
+		// Handle i86buttons
+		do_i86();
 
-    // Handle f$prefold
-    error = SUCCESS;
-    symbols.f$prefold = calc_f$symbol(&global.formula, "f$prefold", global.preferences.Trace_functions[nTracePrefold], &error);
-    do_prefold();
+		//  2007.02.27 by THF
+		//
+		//  Additional functionality: PokerChat
+		//    (Handle f$chat)
+		//
+		//  Selecting a chat message (or no one).
+		//    This message will then be processed by the autoplayer,
+		//    when it's time to click the buttons.
+		//
+		symbols.f$chat = calc_f$symbol(&global.formula, "f$chat", &error);
+		register_ChatMessage(symbols.f$chat);
+		//  Avoiding unnecessary calls to do_Chat(),
+		//    especially mouse movements to the chat box.
+		if ((symbols.f$chat != 0) && is_Chat_allowed())
+		{
+			do_Chat();
+		}
 
-    // if we have <2 visible buttons, then return
-    // Change from only requiring one visible button (OpenHoldem 2008-04-03)
-    if (num_buttons_visible < 2)
-        return;
+		// Get count of stable frames for use a little bit further down
+		x = count_same_scrapes();
 
-    // if we are not playing (occluded?) 2008-03-25 Matrix
-    if (!symbols.sym.playing)
-        return;
+		// If prwin thread is still iterating, then return
+		if (prwin_running)
+		{
+			// Allow other threads to use CScraper and CSymbol variables
+			LeaveCriticalSection(&cs_scrape_symbol);
+			return;
+		}
 
-    // If we don't have enough stable frames, or have not waited f$delay milliseconds, then return (modified Spektre 2008-04-03)
-    symbols.f$delay = calc_f$symbol(&global.formula, "f$delay", &error);
-    delay = symbols.f$delay / global.preferences.scrape_delay;    // scale f$delay to a number of scrapes
+		// Handle f$prefold
+		error = SUCCESS;
+		symbols.f$prefold = calc_f$symbol(&global.formula, "f$prefold", global.preferences.Trace_functions[nTracePrefold], &error);
+		do_prefold();
 
-	if (x < (int) global.preferences.frame_delay + delay)
-        return;
+		// if we have <2 visible buttons, then return
+		// Change from only requiring one visible button (OpenHoldem 2008-04-03)
+		if (num_buttons_visible < 2)
+		{
+			// Allow other threads to use CScraper and CSymbol variables
+			LeaveCriticalSection(&cs_scrape_symbol);
+			return;
+		}
 
-    // calculate f$alli, f$swag, f$rais, and f$call for autoplayer's use
-    symbols.sym.isfinalanswer = true;
-    error = SUCCESS;
-	symbols.f$alli = calc_f$symbol(&global.formula, "f$alli", global.preferences.Trace_functions[nTraceAlli], &error);
-    error = SUCCESS;
-    symbols.f$swag = calc_f$symbol(&global.formula, "f$swag", global.preferences.Trace_functions[nTraceSwag], &error);
-    error = SUCCESS;
-    symbols.f$rais = calc_f$symbol(&global.formula, "f$rais", global.preferences.Trace_functions[nTraceRais], &error);
-    error = SUCCESS;
-    symbols.f$call = calc_f$symbol(&global.formula, "f$call", global.preferences.Trace_functions[nTraceCall], &error);
-    symbols.sym.isfinalanswer = false;
+		// if we are not playing (occluded?) 2008-03-25 Matrix
+		if (!symbols.sym.playing)
+		{
+			// Allow other threads to use CScraper and CSymbol variables
+			LeaveCriticalSection(&cs_scrape_symbol);
+			return;
+		}
 
-    // do swag first since it is the odd one
-    if (symbols.f$swag && !symbols.f$alli && scraper.get_button_state(3)) 
-	{
-        do_swag();
-    }
-    else 
-	{
-		if (symbols.f$alli && scraper.get_button_state(3)) do_slider();
-		else do_arccf();
-    }
+		// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return (modified Spektre 2008-04-03)
+		symbols.f$delay = calc_f$symbol(&global.formula, "f$delay", &error);
+		delay = symbols.f$delay / global.preferences.scrape_delay;    // scale f$delay to a number of scrapes
 
+		if (x < (int) global.preferences.frame_delay + delay)
+		{
+			// Allow other threads to use CScraper and CSymbol variables
+			LeaveCriticalSection(&cs_scrape_symbol);
+			return;
+		}
+
+		// calculate f$alli, f$swag, f$rais, and f$call for autoplayer's use
+		symbols.sym.isfinalanswer = true;
+		error = SUCCESS;
+		symbols.f$alli = calc_f$symbol(&global.formula, "f$alli", global.preferences.Trace_functions[nTraceAlli], &error);
+		error = SUCCESS;
+		symbols.f$swag = calc_f$symbol(&global.formula, "f$swag", global.preferences.Trace_functions[nTraceSwag], &error);
+		error = SUCCESS;
+		symbols.f$rais = calc_f$symbol(&global.formula, "f$rais", global.preferences.Trace_functions[nTraceRais], &error);
+		error = SUCCESS;
+		symbols.f$call = calc_f$symbol(&global.formula, "f$call", global.preferences.Trace_functions[nTraceCall], &error);
+		symbols.sym.isfinalanswer = false;
+
+		// do swag first since it is the odd one
+		if (symbols.f$swag && !symbols.f$alli && scraper.get_button_state(3)) 
+		{
+			do_swag();
+		}
+		else 
+		{
+			if (symbols.f$alli && scraper.get_button_state(3)) do_slider();
+			else do_arccf();
+		}
+
+	// Allow other threads to use CScraper and CSymbol variables
+	LeaveCriticalSection(&cs_scrape_symbol);
 
     __SEH_LOGFATAL("Autoplayer::do_autoplayer :\n");
 

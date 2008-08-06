@@ -48,7 +48,7 @@
 				AdditionalIncludeDirectories="..\spirit-1.8.5-miniboost;..\pokereval\include;..\postgres;..\winmgr;..\hscroll-list-box"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;OEMRESOURCE"
 				MinimalRebuild="false"
-				ExceptionHandling="1"
+				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
@@ -280,7 +280,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\HeartbeatThread.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ICMCalculator.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\IteratorThread.cpp"
 				>
 			</File>
 			<File
@@ -332,7 +340,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\pokertracker.cpp"
+				RelativePath=".\PokerTrackerThread.cpp"
 				>
 			</File>
 			<File
@@ -373,10 +381,6 @@
 			</File>
 			<File
 				RelativePath=".\symbols.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\threads.cpp"
 				>
 			</File>
 			<File
@@ -574,7 +578,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\HeartbeatThread.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ICMCalculator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\IteratorThread.h"
 				>
 			</File>
 			<File
@@ -630,7 +642,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\pokertracker.h"
+				RelativePath=".\PokerTrackerThread.h"
 				>
 			</File>
 			<File
@@ -667,10 +679,6 @@
 			</File>
 			<File
 				RelativePath=".\symbols.h"
-				>
-			</File>
-			<File
-				RelativePath=".\threads.h"
 				>
 			</File>
 			<File

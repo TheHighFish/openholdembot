@@ -4,11 +4,12 @@
 #include "debug.h"
 #include "../../CTransform/hash/lookup3.h"
 #include "global.h"
-#include "threads.h"
 #include "symbols.h"
 
 // Global construction of scraper class
 class CScraper	scraper;
+
+CRITICAL_SECTION	cs_scrape_symbol;
 
 CScraper::CScraper(void)
 {
@@ -26,7 +27,8 @@ void CScraper::clear_scrape_areas(void)
     __SEH_HEADER
     int i;
 
-    EnterCriticalSection(&cs_prwin);
+	// Get exclusive access to CScraper and CSymbol variables
+	EnterCriticalSection(&cs_scrape_symbol);
 
     for (i=0; i<5; i++)
         card_common[i] = CARD_NOCARD;
@@ -47,8 +49,6 @@ void CScraper::clear_scrape_areas(void)
         pot[i] = 0;
     }
     i86_buttonstate = "false";
-
-    LeaveCriticalSection(&cs_prwin);
 
     buttonlabel[0] = "fold";
     buttonlabel[1] = "call";
@@ -100,6 +100,9 @@ void CScraper::clear_scrape_areas(void)
     ante_last=0;
     handnumber_last=0;
     strcpy(title_last, "");
+
+	// Allow other threads to use CScraper and CSymbol variables
+	LeaveCriticalSection(&cs_scrape_symbol);
 
     __SEH_LOGFATAL("CScraper::clear_scrape_areas :\n");
 
@@ -328,9 +331,7 @@ void CScraper::scrape_common_cards(HDC hdcCompatible, HDC hdc)
                 scrape_something_changed |= COM_CARD_CHANGED;
             }
 
-            EnterCriticalSection(&cs_prwin);
             card_common[i] = card;
-            LeaveCriticalSection(&cs_prwin);
         }
 
         // try r$c0cardfaceXrank/r$c0cardfaceXsuit region next
@@ -365,9 +366,7 @@ void CScraper::scrape_common_cards(HDC hdcCompatible, HDC hdc)
                 scrape_something_changed |= COM_CARD_CHANGED;
             }
 
-            EnterCriticalSection(&cs_prwin);
             card_common[i] = card;
-            LeaveCriticalSection(&cs_prwin);
         }
 
     }
@@ -417,9 +416,7 @@ void CScraper::scrape_player_cards(int chair, HDC hdcCompatible, HDC hdc)
                     card_player_last[chair][j] = card;
                     scrape_something_changed |= PL_CARD_CHANGED;
                 }
-                EnterCriticalSection(&cs_prwin);
                 card_player[chair][j] = card;
-                LeaveCriticalSection(&cs_prwin);
                 if (chair==symbols.sym.userchair)
                 {
                     card_player_for_display[j] = card;
@@ -444,9 +441,7 @@ void CScraper::scrape_player_cards(int chair, HDC hdcCompatible, HDC hdc)
                     card_player_last[chair][j] = card;
                     scrape_something_changed |= PL_CARD_CHANGED;
                 }
-                EnterCriticalSection(&cs_prwin);
                 card_player[chair][j] = card;
-                LeaveCriticalSection(&cs_prwin);
                 if (chair==symbols.sym.userchair)
                 {
                     card_player_for_display[j] = card;
@@ -485,9 +480,7 @@ void CScraper::scrape_player_cards(int chair, HDC hdcCompatible, HDC hdc)
                     card_player_last[chair][j] = card;
                     scrape_something_changed |= PL_CARD_CHANGED;
                 }
-                EnterCriticalSection(&cs_prwin);
                 card_player[chair][j] = card;
-                LeaveCriticalSection(&cs_prwin);
                 if (chair==symbols.sym.userchair)
                 {
                     card_player_for_display[j] = card;
@@ -507,17 +500,13 @@ void CScraper::scrape_player_cards(int chair, HDC hdcCompatible, HDC hdc)
         SelectObject(hdcCompatible, old_bitmap);
         if (is_string_cardback(cardstr))
         {
-            EnterCriticalSection(&cs_prwin);
             card_player[chair][0] = CARD_BACK;
             card_player[chair][1] = CARD_BACK;
-            LeaveCriticalSection(&cs_prwin);
         }
         else
         {
-            EnterCriticalSection(&cs_prwin);
             card_player[chair][0] = CARD_NOCARD;
             card_player[chair][1] = CARD_NOCARD;
-            LeaveCriticalSection(&cs_prwin);
         }
         if (card_player_last[chair][0] != card_player[chair][0] ||
                 card_player_last[chair][1] != card_player[chair][1])

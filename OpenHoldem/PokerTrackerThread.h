@@ -2,10 +2,20 @@
 #include "libpq-fe.h"
 #include "structs_defines.h"
 
-UINT __cdecl pokertracker_thread(LPVOID pParam);
 
-extern	CWinThread			*h_pokertracker_thread;
-extern	bool				pokertracker_thread_alive;
+extern class CPokerTrackerThread
+{
+	public:
+		CPokerTrackerThread();
+		~CPokerTrackerThread();
+
+		HANDLE		m_StopThread;
+		HANDLE		m_WaitThread;
+
+	private:
+		static UINT pokertracker_thread_function(LPVOID pParam);
+
+} *p_pokertracker_thread;
 
 extern class PokerTracker 
 {
@@ -25,7 +35,6 @@ public:
 	bool				disable;
 	CString				conn_str, ip_addr, port, user, pass, dbname;
 	int					update_delay, cache_refresh, last_siteid;
-	CRITICAL_SECTION	pt_cs;
 	bool				connected;
 	PGconn				*pgconn;
 
@@ -43,6 +52,11 @@ private:
 	
 
 } PT;
+
+// This critical section controls access to any variables in the CPokerTrackerThread or CPokerTracker classes
+// Any code needing access to these variables must grab and release this critical section appropriately
+extern CRITICAL_SECTION		cs_pokertracker;
+
 
 char * const networkid[] = {"", "", "Stars", "Party", "Ultimate", "Absolute", "Microgaming", "Ongame",
 	"Cryptologic", "Pacific", "", "FullTilt", "B2B", "Tribeca", "Worldpex", "iPoker", "Tain", "Bodog",
