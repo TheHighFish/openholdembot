@@ -6,7 +6,6 @@
 #include "debug.h"
 #include "global.h"
 #include "versus.h"
-#include "threads.h"
 #include "ICMCalculator.h"
 //  2008.02.27 by THF
 #include "Perl.hpp"
@@ -19,6 +18,8 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
+CRITICAL_SECTION	cs_calc_f$symbol;
+CRITICAL_SECTION	cs_parse;
 
 void SetPosition(parse_tree_match_t::node_t &node, 
 						const char *begin, 

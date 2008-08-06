@@ -115,3 +115,10 @@ private:
 	char			title_last[MAX_WINDOW_TITLE];
 
 } scraper;
+
+// This critical section controls access to any variables in the CScraper and CSymbols classes
+// Any code needing access to these variables must grab and release this critical section appropriately
+extern CRITICAL_SECTION		cs_scrape_symbol;
+
+
+

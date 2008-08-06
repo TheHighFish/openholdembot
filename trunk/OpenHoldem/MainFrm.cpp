@@ -26,7 +26,8 @@
 #include "debug.h"
 #include "DialogSelectTable.h"
 #include "scraper.h"
-#include "threads.h"
+#include "HeartbeatThread.h"
+#include "IteratorThread.h"
 #include "global.h"
 #include "symbols.h"
 #include "inlines/eval.h"
@@ -35,7 +36,7 @@
 #include "DialogPpro.h"
 #include "DialogScraperOutput.h"
 #include "DialogLockBlinds.h"
-#include "pokertracker.h"
+#include "PokerTrackerThread.h"
 #include "Perl.hpp"
 
 #include "MainFrm.h"
@@ -503,45 +504,33 @@ BOOL CMainFrame::DestroyWindow()
 {
     __SEH_HEADER
 
-    bool			upd = true;
-    int				updcount=0;
     Registry		reg;
     WINDOWPLACEMENT wp;
 
 	//unload dll   Matrix (suggested by Spud) 2008-05-17
     if (cdll.hMod_dll) cdll.unload_dll();
 
-    // wait for an update cycle to finish, if necessary
-    while (upd && updcount<20)
-    {
-        EnterCriticalSection(&cs_updater);
-        upd = global.update_in_process;
-        LeaveCriticalSection(&cs_updater);
-        Sleep(100);
-        updcount++;
-    }
-
-    // Stop heartbeat thread
-    if (heartbeat_thread_alive) 
+	// stop threads
+	if (p_heartbeat_thread)
 	{
-        heartbeat_thread_alive = false;
-        WaitForSingleObject(h_heartbeat_thread, THREAD_WAIT);
-    }
+		delete p_heartbeat_thread;
+		write_log("Stopped heartbeat thread: %08x\n", p_heartbeat_thread);
+		p_heartbeat_thread = NULL;
+	}
 
-    // Stop prwin and pokertracker threads
-    if (prwin_thread_alive)
-    {
-        EnterCriticalSection(&cs_prwin);
-        prwin_thread_alive = false;
-        LeaveCriticalSection(&cs_prwin);
-    }
-    if (pokertracker_thread_alive)  pokertracker_thread_alive = false;
+	if (p_iterator_thread)
+	{
+		delete p_iterator_thread;
+		write_log("Stopped iterator thread: %08x\n", p_iterator_thread);
+		p_iterator_thread = NULL;
+	}
 
-    // Wait for threads to finish
-    HANDLE handles[2];
-    handles[0] = h_prwin_thread;
-    handles[1] = h_pokertracker_thread;
-    WaitForMultipleObjects(2, handles, true, THREAD_WAIT);
+	if (p_pokertracker_thread)
+	{
+		delete p_pokertracker_thread;
+		write_log("Stopped poker tracker thread: %08x\n", p_pokertracker_thread);
+		p_pokertracker_thread = NULL;
+	}
 
     // Save window position
     reg.read_reg();
@@ -771,9 +760,7 @@ void CMainFrame::OnBnClickedGreenCircle()
             m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, true);
 
             // Make sure autoplayer is off
-            EnterCriticalSection(&cs_heartbeat);
             global.autoplay = false;
-            LeaveCriticalSection(&cs_heartbeat);
 
             // mark symbol result cache as stale
             N = (int) global.formula.mFunction.GetSize();
@@ -808,9 +795,15 @@ void CMainFrame::OnBnClickedGreenCircle()
             if (global.next_replay_frame >= global.preferences.replay_max_frames)
                 global.next_replay_frame = 0;
 
-            // start heartbeat
-            heartbeat_thread_alive = true;
-            h_heartbeat_thread = AfxBeginThread(heartbeat_thread, 0);
+            // start heartbeat thread
+            if (p_heartbeat_thread)
+			{
+				delete p_heartbeat_thread;
+				write_log("Stopped heartbeat thread: %08x\n", p_heartbeat_thread);
+				p_heartbeat_thread = NULL;
+			}
+			p_heartbeat_thread = new CHeartbeatThread;
+			write_log("Started heartbeat thread: %08x\n", p_heartbeat_thread);
 
             // Start timer that checks for continued existence of attached HWND
             SetTimer(HWND_CHECK_TIMER, 200, 0);
@@ -846,41 +839,27 @@ void CMainFrame::OnBnClickedRedCircle()
 {
     __SEH_HEADER
 
-    int			updcount;
-    bool		upd = true;
-
-    // wait for an update cycle to finish, if necessary
-    updcount = 0;
-    while (upd && updcount<20) 
+	// stop threads
+	if (p_heartbeat_thread)
 	{
-        EnterCriticalSection(&cs_updater);
-        upd = global.update_in_process;
-        LeaveCriticalSection(&cs_updater);
-        Sleep(100);
-        updcount++;
-    }
+		delete p_heartbeat_thread;
+		write_log("Stopped heartbeat thread: %08x\n", p_heartbeat_thread);
+		p_heartbeat_thread = NULL;
+	}
 
-    // Stop heartbeat thread
-    if (heartbeat_thread_alive) 
+	if (p_iterator_thread)
 	{
-        heartbeat_thread_alive = false;
-        WaitForSingleObject(h_heartbeat_thread, THREAD_WAIT);
-    }
+		delete p_iterator_thread;
+		write_log("Stopped iterator thread: %08x\n", p_iterator_thread);
+		p_iterator_thread = NULL;
+	}
 
-    // Stop prwin and pokertracker threads
-    if (prwin_thread_alive)
-    {
-        EnterCriticalSection(&cs_prwin);
-        prwin_thread_alive = false;
-        LeaveCriticalSection(&cs_prwin);
-    }
-    if (pokertracker_thread_alive)  pokertracker_thread_alive = false;
-
-    // Wait for threads to finish
-    HANDLE handles[2];
-    handles[0] = h_prwin_thread;
-    handles[1] = h_pokertracker_thread;
-    WaitForMultipleObjects(2, handles, true, THREAD_WAIT);
+	if (p_pokertracker_thread)
+	{
+		delete p_pokertracker_thread;
+		write_log("Stopped poker tracker thread: %08x\n", p_pokertracker_thread);
+		p_pokertracker_thread = NULL;
+	}
 
     // Make sure autoplayer is off
     global.autoplay = false;
@@ -955,11 +934,11 @@ void CMainFrame::OnTimer(UINT nIDEvent)
     HandVal		hv;
     char		hvstring[100];
     int			i;
-    bool		prwin_running, scrape_running;
+    bool		iterator_running;
     char		*card;
     CString		temp;
-    int			cur_prwin_iterator_progress;
-    bool		cur_prwin_thread_complete;
+    int			cur_iterator_progress;
+    bool		cur_iterator_thread_complete;
     bool		playing;
     RECT		att_rect, wrect;
     static RECT	prev_att_rect={0}, prev_wrect={0};
@@ -974,18 +953,24 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 
     else if (nIDEvent == ENABLE_BUTTONS_TIMER)
     {
-        // Autoplayer
-        if ((symbols.user_chair_confirmed && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)) ||
-                ppro.data.m_userchair!=-1)
-        {
-            m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
-        }
-        else
-        {
-            m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
-        }
+		// Get exclusive access to CScraper and CSymbol variables
+		EnterCriticalSection(&cs_scrape_symbol);
 
-        // Automatically start autoplayer, if set in preferences
+			// Autoplayer
+			if ((symbols.user_chair_confirmed && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)) ||
+					ppro.data.m_userchair!=-1)
+			{
+				m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
+			}
+			else
+			{
+				m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
+			}
+
+		// Allow other threads to use CScraper and CSymbol variables
+		LeaveCriticalSection(&cs_scrape_symbol);
+
+		// Automatically start autoplayer, if set in preferences
         if (global.preferences.ap_auto && !m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER) &&
                 ((symbols.user_chair_confirmed && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)) ||
                  ppro.data.m_userchair!=-1))
@@ -1018,156 +1003,168 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 
     else if (nIDEvent == UPDATE_STATUS_BAR_TIMER) 
 	{
-        // Don't update certain items if prwin iterator or scrape/symbol calc is in progress
-        EnterCriticalSection(&cs_prwin);
-        prwin_running = prwin_thread_alive;
-        LeaveCriticalSection(&cs_prwin);
-        EnterCriticalSection(&cs_updater);
-        scrape_running = global.update_in_process;
-        LeaveCriticalSection(&cs_updater);
+		// Get exclusive access to CIteratorThread variables
+        EnterCriticalSection(&cs_iterator);
 
-        // Figure out if I am "notplaying"
-        if (scraper.card_player[(int) symbols.sym.userchair][0] == CARD_BACK ||
-                scraper.card_player[(int) symbols.sym.userchair][1] == CARD_BACK ||
-                scraper.card_player[(int) symbols.sym.userchair][0] == CARD_NOCARD ||
-                scraper.card_player[(int) symbols.sym.userchair][1] == CARD_NOCARD)
-        {
-            symbols.sym.playing = playing = false; //2008-03-25 Matrix
-        }
-        else
-        {
-            symbols.sym.playing = playing = true;
-        }
+			// Don't update certain items if iterator is in progress
+			iterator_running = iterator_thread_running;
 
-        // Only update these things if we are not in the middle of a heartbeat update, so as to
-        // avoid flakey information in the display
-        if (!scrape_running)
-        {
-            CardMask_RESET(Cards);
-            nCards=0;
+		// Allow other threads to use CIterator variables
+		LeaveCriticalSection(&cs_iterator);
 
-            // Player cards
-            status_plcards = "";
-            if (symbols.user_chair_confirmed && playing) 
+
+		// Get exclusive access to CScraper and CSymbol variables
+		EnterCriticalSection(&cs_scrape_symbol);
+
+			// Figure out if I am "notplaying"
+			if (scraper.card_player[(int) symbols.sym.userchair][0] == CARD_BACK ||
+					scraper.card_player[(int) symbols.sym.userchair][1] == CARD_BACK ||
+					scraper.card_player[(int) symbols.sym.userchair][0] == CARD_NOCARD ||
+					scraper.card_player[(int) symbols.sym.userchair][1] == CARD_NOCARD)
 			{
-                for (i=0; i<=1; i++) 
+				symbols.sym.playing = playing = false; //2008-03-25 Matrix
+			}
+			else
+			{
+				symbols.sym.playing = playing = true;
+			}
+
+			// Player cards
+			CardMask_RESET(Cards);
+			nCards=0;
+			status_plcards = "";
+			if (symbols.user_chair_confirmed && playing) 
+			{
+				for (i=0; i<=1; i++) 
 				{
-                    // player cards
-                    if (scraper.card_player[(int) symbols.sym.userchair][i] != CARD_BACK &&
-                            scraper.card_player[(int) symbols.sym.userchair][i] != CARD_NOCARD) 
+					// player cards
+					if (scraper.card_player[(int) symbols.sym.userchair][i] != CARD_BACK &&
+							scraper.card_player[(int) symbols.sym.userchair][i] != CARD_NOCARD) 
 					{
-                        card = StdDeck_cardString(scraper.card_player[(int) symbols.sym.userchair][i]);
-                        temp.Format("%s ", card);
-                        status_plcards.Append(temp);
-                        CardMask_SET(Cards, scraper.card_player[(int) symbols.sym.userchair][i]);
-                        nCards++;
-                    }
-                }
-            }
-            else 
+						card = StdDeck_cardString(scraper.card_player[(int) symbols.sym.userchair][i]);
+						temp.Format("%s ", card);
+						status_plcards.Append(temp);
+						CardMask_SET(Cards, scraper.card_player[(int) symbols.sym.userchair][i]);
+						nCards++;
+					}
+				}
+			}
+			else 
 			{
-                if (scraper.card_player_for_display[0] != CARD_BACK && scraper.card_player_for_display[0] != CARD_NOCARD) 
+				if (scraper.card_player_for_display[0] != CARD_BACK && scraper.card_player_for_display[0] != CARD_NOCARD) 
 				{
-                    card = StdDeck_cardString(scraper.card_player_for_display[0]);
-                    temp.Format("%s ", card);
-                    status_plcards.Append(temp);
-                    CardMask_SET(Cards, scraper.card_player_for_display[0]);
-                    nCards++;
-                }
-                if (scraper.card_player_for_display[1] != CARD_BACK && scraper.card_player_for_display[1] != CARD_NOCARD) 
+					card = StdDeck_cardString(scraper.card_player_for_display[0]);
+					temp.Format("%s ", card);
+					status_plcards.Append(temp);
+					CardMask_SET(Cards, scraper.card_player_for_display[0]);
+					nCards++;
+				}
+				if (scraper.card_player_for_display[1] != CARD_BACK && scraper.card_player_for_display[1] != CARD_NOCARD) 
 				{
-                    card = StdDeck_cardString(scraper.card_player_for_display[1]);
-                    temp.Format("%s ", card);
-                    status_plcards.Append(temp);
-                    CardMask_SET(Cards, scraper.card_player_for_display[1]);
-                    nCards++;
-                }
-            }
+					card = StdDeck_cardString(scraper.card_player_for_display[1]);
+					temp.Format("%s ", card);
+					status_plcards.Append(temp);
+					CardMask_SET(Cards, scraper.card_player_for_display[1]);
+					nCards++;
+				}
+			}
 
-            // Common cards
-            status_comcards = "";
-            for (i=0; i<=4; i++) 
+			// Common cards
+			status_comcards = "";
+			for (i=0; i<=4; i++) 
 			{
-                if (scraper.card_common[i] != CARD_BACK &&
-                        scraper.card_common[i] != CARD_NOCARD) 
+				if (scraper.card_common[i] != CARD_BACK &&
+						scraper.card_common[i] != CARD_NOCARD) 
 				{
-                    card = StdDeck_cardString(scraper.card_common[i]);
-                    temp.Format("%s ", card);
-                    status_comcards.Append(temp);
-                    CardMask_SET(Cards, scraper.card_common[i]);
-                    nCards++;
-                }
-            }
+					card = StdDeck_cardString(scraper.card_common[i]);
+					temp.Format("%s ", card);
+					status_comcards.Append(temp);
+					CardMask_SET(Cards, scraper.card_common[i]);
+					nCards++;
+				}
+			}
 
-            // poker hand
-            hv = Hand_EVAL_N(Cards, nCards);
-            HandVal_toString(hv, hvstring);
-            status_pokerhand = hvstring;
-            status_pokerhand = status_pokerhand.Mid(0, status_pokerhand.Find(" "));
+			// poker hand
+			hv = Hand_EVAL_N(Cards, nCards);
+			HandVal_toString(hv, hvstring);
+			status_pokerhand = hvstring;
+			status_pokerhand = status_pokerhand.Mid(0, status_pokerhand.Find(" "));
 
-            // handrank
-            if (global.preferences.handrank_value == "169")
-                status_handrank.Format("%.0f/169", symbols.sym.handrank169);
+			// handrank
+			if (global.preferences.handrank_value == "169")
+				status_handrank.Format("%.0f/169", symbols.sym.handrank169);
 
 			else if (global.preferences.handrank_value == "1000")
-                status_handrank.Format("%.0f/1000", symbols.sym.handrank1000);
+				status_handrank.Format("%.0f/1000", symbols.sym.handrank1000);
 
 			else if (global.preferences.handrank_value == "1326")
-                status_handrank.Format("%.0f/1326", symbols.sym.handrank1326);
+				status_handrank.Format("%.0f/1326", symbols.sym.handrank1326);
 
 			else if (global.preferences.handrank_value == "2652")
-                status_handrank.Format("%.0f/2652", symbols.sym.handrank2652);
+				status_handrank.Format("%.0f/2652", symbols.sym.handrank2652);
 
 			else if (global.preferences.handrank_value == "p")
-                status_handrank.Format("%.2f/2652", symbols.sym.handrankp);
+				status_handrank.Format("%.2f/2652", symbols.sym.handrankp);
 
-            // nopponents
-            if (playing)
-                status_nopp.Format("%d", (int) symbols.sym.nopponents);
+			// nopponents
+			if (playing)
+				status_nopp.Format("%d", (int) symbols.sym.nopponents);
 
 			else
-                status_nopp = "";
-        }
+				status_nopp = "";
 
-        // Always update prwin/nit
-        // prwin/nit
-        EnterCriticalSection(&cs_prwin);
-        cur_prwin_iterator_progress = prwin_iterator_progress;
-        cur_prwin_thread_complete = prwin_thread_complete;
-        LeaveCriticalSection(&cs_prwin);
-        if (symbols.user_chair_confirmed && playing)
-        {
-            EnterCriticalSection(&cs_prwin);
-            status_prwin.Format("%d/%d/%d", (int) (symbols.sym.prwin*1000), (int) (symbols.sym.prtie*1000),
-                                (int) (symbols.sym.prlos*1000));
-            status_nit.Format("%d/%d", cur_prwin_iterator_progress, (int) global.formula.dNit);
-            LeaveCriticalSection(&cs_prwin);
-        }
-        else
-        {
-            status_prwin = "0/0/0";
-            status_nit.Format("0/%d", (int) global.formula.dNit);
-        }
+		// Allow other threads to use CScraper and CSymbol variables
+		LeaveCriticalSection(&cs_scrape_symbol);
 
-        // action
-        if (!symbols.user_chair_confirmed || !playing)
-            status_action = "Notplaying";
 
-        else if (symbols.user_chair_confirmed && cur_prwin_thread_complete)
-        {
-            if (symbols.f$alli)  status_action = "Allin";
-            else if (symbols.f$swag)  status_action.Format("SWAG: %.2f", symbols.f$swag);
-            else if (symbols.f$rais)  status_action = "Bet/Raise";
-            else if (symbols.f$call)  status_action = "Call/Check";
-            else if (symbols.f$prefold)  status_action = "Pre-fold";
-            else  status_action = "Fold/Check";
-        }
+		// Get exclusive access to CIteratorThread variables
+		EnterCriticalSection(&cs_iterator);
 
-        else if (symbols.sym.nopponents==0)
-            status_action = "Idle (f$P==0)";
+			// Always update prwin/nit
+			cur_iterator_progress = iterator_thread_progress;
+			cur_iterator_thread_complete = iterator_thread_complete;
 
-        else
-            status_action = "thinking";
+		// Allow other threads to use CIterator variables
+		LeaveCriticalSection(&cs_iterator);
+
+
+		// Get exclusive access to CScraper and CSymbol variables
+		EnterCriticalSection(&cs_scrape_symbol);
+
+			if (symbols.user_chair_confirmed && playing)
+			{
+				status_prwin.Format("%d/%d/%d", (int) (symbols.sym.prwin*1000), (int) (symbols.sym.prtie*1000),
+									(int) (symbols.sym.prlos*1000));
+				status_nit.Format("%d/%d", cur_iterator_progress, (int) global.formula.dNit);
+			}
+			else
+			{
+				status_prwin = "0/0/0";
+				status_nit.Format("0/%d", (int) global.formula.dNit);
+			}
+
+			// action
+			if (!symbols.user_chair_confirmed || !playing)
+				status_action = "Notplaying";
+
+			else if (symbols.user_chair_confirmed && cur_iterator_thread_complete)
+			{
+				if (symbols.f$alli)  status_action = "Allin";
+				else if (symbols.f$swag)  status_action.Format("SWAG: %.2f", symbols.f$swag);
+				else if (symbols.f$rais)  status_action = "Bet/Raise";
+				else if (symbols.f$call)  status_action = "Call/Check";
+				else if (symbols.f$prefold)  status_action = "Pre-fold";
+				else  status_action = "Fold/Check";
+			}
+
+			else if (symbols.sym.nopponents==0)
+				status_action = "Idle (f$P==0)";
+
+			else
+				status_action = "thinking";
+
+		// Allow other threads to use CScraper and CSymbol variables
+		LeaveCriticalSection(&cs_scrape_symbol);
 
     }
 
@@ -1273,23 +1270,17 @@ void CMainFrame::OnAutoplayer()
         // one last parse - do not engage if parse fails
         if (global.ParseAllFormula(pMyMainWnd->GetSafeHwnd(), &global.formula)) 
 		{
-            EnterCriticalSection(&cs_heartbeat);
             global.autoplay = true;
-            LeaveCriticalSection(&cs_heartbeat);
         }
         else 
 		{
-            EnterCriticalSection(&cs_heartbeat);
             global.autoplay = false;
-            LeaveCriticalSection(&cs_heartbeat);
             m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
         }
     }
     else 
 	{
-        EnterCriticalSection(&cs_heartbeat);
         global.autoplay = false;
-        LeaveCriticalSection(&cs_heartbeat);
     }
 
     __SEH_LOGFATAL("CMainFrame::OnAutoplayer :\n");

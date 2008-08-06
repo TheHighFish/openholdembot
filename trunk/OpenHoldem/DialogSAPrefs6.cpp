@@ -6,7 +6,7 @@
 #include "global.h"
 #include "Registry.h"
 #include "debug.h"
-#include "pokertracker.h"
+#include "PokerTrackerThread.h"
 #include "OpenHoldem.h"
 #include "MainFrm.h"
 

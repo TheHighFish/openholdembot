@@ -13,9 +13,12 @@
 #include "DialogFormulaScintilla.h"
 #include "debug.h"
 #include "global.h"
-#include "threads.h"
+#include "HeartbeatThread.h"
+#include "IteratorThread.h"
+#include "scraper.h"
+#include "grammar.h"
 #include "PokerPro.h"
-#include "pokertracker.h"
+#include "PokerTrackerThread.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -48,10 +51,10 @@ COpenHoldemApp::COpenHoldemApp()
     __SEH_HEADER
 
     // Critical sections
-    InitializeCriticalSection(&cs_prwin);
     InitializeCriticalSection(&cs_heartbeat);
-    InitializeCriticalSection(&cs_updater);
-    InitializeCriticalSection(&cs_calc_f$symbol);
+    InitializeCriticalSection(&cs_iterator);
+    InitializeCriticalSection(&cs_scrape_symbol);
+	InitializeCriticalSection(&cs_calc_f$symbol);
     InitializeCriticalSection(&cs_parse);
 
     __SEH_LOGFATAL("COpenHoldemApp::Constructor :\n");
@@ -201,43 +204,32 @@ int COpenHoldemApp::ExitInstance()
 {
     __SEH_HEADER
 
-    bool	upd = true;
-    int		updcount=0;
+	// stop threads
+	if (p_heartbeat_thread)
+	{
+		delete p_heartbeat_thread;
+		write_log("Stopped heartbeat thread: %08x\n", p_heartbeat_thread);
+		p_heartbeat_thread = NULL;
+	}
 
-    // wait for an update cycle to finish, if necessary
-    while (upd && updcount<20) {
-        EnterCriticalSection(&cs_updater);
-        upd = global.update_in_process;
-        LeaveCriticalSection(&cs_updater);
-        Sleep(100);
-        updcount++;
-    }
+	if (p_iterator_thread)
+	{
+		delete p_iterator_thread;
+		write_log("Stopped iterator thread: %08x\n", p_iterator_thread);
+		p_iterator_thread = NULL;
+	}
 
-    // Stop heartbeat thread
-    if (heartbeat_thread_alive) {
-        heartbeat_thread_alive = false;
-        WaitForSingleObject(h_heartbeat_thread, THREAD_WAIT);
-    }
+	if (p_pokertracker_thread)
+	{
+		delete p_pokertracker_thread;
+		write_log("Stopped poker tracker thread: %08x\n", p_pokertracker_thread);
+		p_pokertracker_thread = NULL;
+	}
 
-    // Stop prwin and pokertracker threads
-    if (prwin_thread_alive)
-    {
-        EnterCriticalSection(&cs_prwin);
-        prwin_thread_alive = false;
-        LeaveCriticalSection(&cs_prwin);
-    }
-    if (pokertracker_thread_alive)  pokertracker_thread_alive = false;
-
-    // Wait for threads to finish
-    HANDLE handles[2];
-    handles[0] = h_prwin_thread;
-    handles[1] = h_pokertracker_thread;
-    WaitForMultipleObjects(2, handles, true, THREAD_WAIT);
-
-    DeleteCriticalSection(&cs_prwin);
+	DeleteCriticalSection(&cs_iterator);
     DeleteCriticalSection(&cs_heartbeat);
-    DeleteCriticalSection(&cs_updater);
-    DeleteCriticalSection(&cs_calc_f$symbol);
+    DeleteCriticalSection(&cs_scrape_symbol);
+	DeleteCriticalSection(&cs_calc_f$symbol);
     DeleteCriticalSection(&cs_parse);
 
     stop_log();

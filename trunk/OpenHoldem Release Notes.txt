@@ -13,6 +13,11 @@ http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=5189
 - Use of re_st_ and re_re_ symbol would always make the Autoplayer Trace output the results of the function being called (Spew)
 - Further "crash" bug fixes - removal of superflous code in heartbeat_thread. (OpenHoldem/Spew)
 
+MAINTENANCE:
+- Complete reworking of thread model to make use of critical sections more intuitive, and to improve
+  reliability of code.  Current thinking is that thread concurrency issues are a source of the
+  current spate of crashes, this reworking addresses those concurrency issues.
+  
 
 v1.9.2 2008-07-25
 =================

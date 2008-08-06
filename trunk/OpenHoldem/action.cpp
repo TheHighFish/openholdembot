@@ -3,7 +3,7 @@
 #include "action.h"
 #include "debug.h"
 #include "symbols.h"
-#include "pokertracker.h"
+#include "PokerTrackerThread.h"
 #include "GameState.h"
 
 double Action::process_query(const char * pquery, int *e)

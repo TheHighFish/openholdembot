@@ -57,9 +57,6 @@ public:
 	bool			autoplay;
 	bool			auto_autoplay_pressed;
 
-	// Update in process status
-	bool			update_in_process;
-
 	// Versus
 	int				versus_fh;
 

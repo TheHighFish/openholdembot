@@ -9,7 +9,7 @@
 #include "scraper.h"
 #include "poker_defs.h"
 #include "global.h"
-#include "threads.h"
+#include "HeartbeatThread.h"
 #include "symbols.h"
 #include "debug.h"
 #include "structs_defines.h"
@@ -155,17 +155,9 @@ void COpenHoldemView::OnTimer(UINT nIDEvent)
 {
     __SEH_HEADER
 
-    bool upd;
-
     if (nIDEvent == DISPLAY_UPDATE_TIMER) 
 	{
-        EnterCriticalSection(&cs_updater);
-        upd = global.update_in_process;
-        LeaveCriticalSection(&cs_updater);
-        if (!upd) 
-		{
-            update_display(false);
-        }
+		update_display(false);
     }
 
     CView::OnTimer(nIDEvent);
@@ -182,7 +174,7 @@ void COpenHoldemView::update_display(bool update_all)
 
     static double			handnumber_last, sblind_last, bblind_last, lim_last, istournament_last;
     static double			ante_last, pot_last, heartbeat_cycle_time_last;
-    static unsigned int		prwin_iterator_progress_last;
+    static unsigned int		iterator_thread_progress_last;
     static unsigned int		card_common_last[5];
     static CString			seated_last[10], active_last[10];
     static unsigned int		card_player_last[10][2];
@@ -207,150 +199,167 @@ void COpenHoldemView::update_display(bool update_all)
         pDC->SelectObject(pOldBrush);
     }
 
-    // Draw center info box
-    update_it = false;
-    if (handnumber_last != symbols.sym.handnumber) 
-	{
-        handnumber_last = symbols.sym.handnumber;
-        update_it = true;
-    }
-    if (sblind_last != symbols.sym.sblind) 
-	{
-        sblind_last = symbols.sym.sblind;
-        update_it = true;
-    }
-    if (bblind_last != symbols.sym.bblind) 
-	{
-        bblind_last = symbols.sym.bblind;
-        update_it = true;
-    }
-    if (lim_last != symbols.sym.lim) 
-	{
-        lim_last = symbols.sym.lim;
-        update_it = true;
-    }
-    if (istournament_last != symbols.sym.istournament) 
-	{
-        istournament_last = symbols.sym.istournament;
-        update_it = true;
-    }
-    if (ante_last != symbols.sym.ante != 0) 
-	{
-        ante_last = symbols.sym.ante;
-        update_it = true;
-    }
-    if (pot_last != symbols.sym.pot) 
-	{
-        pot_last = symbols.sym.pot;
-        update_it = true;
-    }
-    //if (prwin_iterator_progress_last != prwin_iterator_progress) {
-    //	prwin_iterator_progress_last = prwin_iterator_progress;
-    //	update_it = true;
-    //}
-    if (heartbeat_cycle_time_last != heartbeat_cycle_time)
-	{
-        heartbeat_cycle_time_last = heartbeat_cycle_time;
-        update_it = true;
-    }
-    if (update_it || update_all) 
-	{
-        draw_center_info_box();
-    }
+	// Get exclusive access to CScraper and CSymbol variables
+	EnterCriticalSection(&cs_scrape_symbol);
 
-    // Draw button state indicators
-    draw_button_indicators();
+		// Draw center info box
+		update_it = false;
+		if (handnumber_last != symbols.sym.handnumber) 
+		{
+			handnumber_last = symbols.sym.handnumber;
+			update_it = true;
+		}
+		if (sblind_last != symbols.sym.sblind) 
+		{
+			sblind_last = symbols.sym.sblind;
+			update_it = true;
+		}
+		if (bblind_last != symbols.sym.bblind) 
+		{
+			bblind_last = symbols.sym.bblind;
+			update_it = true;
+		}
+		if (lim_last != symbols.sym.lim) 
+		{
+			lim_last = symbols.sym.lim;
+			update_it = true;
+		}
+		if (istournament_last != symbols.sym.istournament) 
+		{
+			istournament_last = symbols.sym.istournament;
+			update_it = true;
+		}
+		if (ante_last != symbols.sym.ante != 0) 
+		{
+			ante_last = symbols.sym.ante;
+			update_it = true;
+		}
+		if (pot_last != symbols.sym.pot) 
+		{
+			pot_last = symbols.sym.pot;
+			update_it = true;
+		}
+		//if (iterator_thread_progress_last != iterator_thread_progress) {
+		//	iterator_thread_progress_last = iterator_thread_progress;
+		//	update_it = true;
+		//}
 
-    // Draw common cards
-    for (i=0; i<5; i++) 
-	{
-        if (card_common_last[i] != scraper.card_common[i] || update_all) 
-		{
-            card_common_last[i] = scraper.card_common[i];
-            draw_card(scraper.card_common[i],
-                      cr.right/2 + cc[i][0], cr.bottom/2 + cc[i][1],
-                      cr.right/2 + cc[i][0] + CARDSIZEX, cr.bottom/2 + cc[i][1] + CARDSIZEY,
-                      false);
-        }
-    }
+		// Get exclusive access to CHeartbeatThread members
+        //EnterCriticalSection(&cs_heartbeat);
 
-    // Draw collection of player info
-    for (i=0; i<global.trans.map.num_chairs; i++) 
-	{
+		//if (p_heartbeat_thread)
+		//{
+		//	if (heartbeat_cycle_time_last != p_heartbeat_thread->heartbeat_cycle_time)
+		//	{
+		//		heartbeat_cycle_time_last = p_heartbeat_thread->heartbeat_cycle_time;
+		//		update_it = true;
+		//	}
+		//}
 
-        // Figure out if we need to redraw this seat
-        update_it = false;
-        if (seated_last[i] != scraper.seated[i] ||
-                active_last[i] != scraper.active[i]) 
-		{
-            seated_last[i] = scraper.seated[i];
-            active_last[i] = scraper.active[i];
-            update_it = true;
-        }
-        if (card_player_last[i][0] != scraper.card_player[i][0] ||
-                card_player_last[i][1] != scraper.card_player[i][1]) 
-		{
-            card_player_last[i][0] = scraper.card_player[i][0];
-            card_player_last[i][1] = scraper.card_player[i][1];
-            update_it = true;
-        }
-        if (dealer_last[i] != scraper.dealer[i]) 
-		{
-            dealer_last[i] = scraper.dealer[i];
-            update_it = true;
-        }
-        if (playername_last[i] != scraper.playername[i]) 
-		{
-            playername_last[i] = scraper.playername[i];
-            update_it = true;
-        }
-        if (playerbalance_last[i] != scraper.playerbalance[i]) 
-		{
-            playerbalance_last[i] = scraper.playerbalance[i];
-            update_it = true;
-        }
-        if (playerbet_last[i] != scraper.playerbet[i]) 
-		{
-            playerbet_last[i] = scraper.playerbet[i];
-            update_it = true;
-        }
+		// Allow other threads to use CHeartbeatThread members
+        //LeaveCriticalSection(&cs_heartbeat);
 
-        if (update_it || update_all) 
+		if (update_it || update_all) 
 		{
-            // Draw active circle
-            if (scraper.is_string_seated(scraper.seated[i])) 
+			draw_center_info_box();
+		}
+
+		// Draw button state indicators
+		draw_button_indicators();
+
+		// Draw common cards
+		for (i=0; i<5; i++) 
+		{
+			if (card_common_last[i] != scraper.card_common[i] || update_all) 
 			{
-                draw_seated_active_circle(i);
-            }
+				card_common_last[i] = scraper.card_common[i];
+				draw_card(scraper.card_common[i],
+						  cr.right/2 + cc[i][0], cr.bottom/2 + cc[i][1],
+						  cr.right/2 + cc[i][0] + CARDSIZEX, cr.bottom/2 + cc[i][1] + CARDSIZEY,
+						  false);
+			}
+		}
 
-            // Draw player cards
-            draw_card(scraper.card_player[i][0],
-                      cr.right * pc[global.trans.map.num_chairs][i][0] - CARDSIZEX - 2,
-                      cr.bottom * pc[global.trans.map.num_chairs][i][1] - CARDSIZEY/2,
-                      cr.right * pc[global.trans.map.num_chairs][i][0] - 2,
-                      cr.bottom * pc[global.trans.map.num_chairs][i][1] + CARDSIZEY/2 - 1,
-                      true);
-            draw_card(scraper.card_player[i][1],
-                      cr.right * pc[global.trans.map.num_chairs][i][0] + 1,
-                      cr.bottom * pc[global.trans.map.num_chairs][i][1] - CARDSIZEY/2,
-                      cr.right * pc[global.trans.map.num_chairs][i][0] + CARDSIZEX + 1,
-                      cr.bottom * pc[global.trans.map.num_chairs][i][1] + CARDSIZEY/2 - 1,
-                      true);
+		// Draw collection of player info
+		for (i=0; i<global.trans.map.num_chairs; i++) 
+		{
 
-            // Draw dealer button
-            if (scraper.dealer[i])
-                draw_dealer_button(i);
+			// Figure out if we need to redraw this seat
+			update_it = false;
+			if (seated_last[i] != scraper.seated[i] ||
+					active_last[i] != scraper.active[i]) 
+			{
+				seated_last[i] = scraper.seated[i];
+				active_last[i] = scraper.active[i];
+				update_it = true;
+			}
+			if (card_player_last[i][0] != scraper.card_player[i][0] ||
+					card_player_last[i][1] != scraper.card_player[i][1]) 
+			{
+				card_player_last[i][0] = scraper.card_player[i][0];
+				card_player_last[i][1] = scraper.card_player[i][1];
+				update_it = true;
+			}
+			if (dealer_last[i] != scraper.dealer[i]) 
+			{
+				dealer_last[i] = scraper.dealer[i];
+				update_it = true;
+			}
+			if (playername_last[i] != scraper.playername[i]) 
+			{
+				playername_last[i] = scraper.playername[i];
+				update_it = true;
+			}
+			if (playerbalance_last[i] != scraper.playerbalance[i]) 
+			{
+				playerbalance_last[i] = scraper.playerbalance[i];
+				update_it = true;
+			}
+			if (playerbet_last[i] != scraper.playerbet[i]) 
+			{
+				playerbet_last[i] = scraper.playerbet[i];
+				update_it = true;
+			}
 
-            // Draw name and balance boxes
-            draw_name_box(i);
-            draw_balance_box(i);
+			if (update_it || update_all) 
+			{
+				// Draw active circle
+				if (scraper.is_string_seated(scraper.seated[i])) 
+				{
+					draw_seated_active_circle(i);
+				}
 
-            // Draw player bet
-            draw_player_bet(i);
-        }
-    }
+				// Draw player cards
+				draw_card(scraper.card_player[i][0],
+						  cr.right * pc[global.trans.map.num_chairs][i][0] - CARDSIZEX - 2,
+						  cr.bottom * pc[global.trans.map.num_chairs][i][1] - CARDSIZEY/2,
+						  cr.right * pc[global.trans.map.num_chairs][i][0] - 2,
+						  cr.bottom * pc[global.trans.map.num_chairs][i][1] + CARDSIZEY/2 - 1,
+						  true);
+				draw_card(scraper.card_player[i][1],
+						  cr.right * pc[global.trans.map.num_chairs][i][0] + 1,
+						  cr.bottom * pc[global.trans.map.num_chairs][i][1] - CARDSIZEY/2,
+						  cr.right * pc[global.trans.map.num_chairs][i][0] + CARDSIZEX + 1,
+						  cr.bottom * pc[global.trans.map.num_chairs][i][1] + CARDSIZEY/2 - 1,
+						  true);
 
-    ReleaseDC(pDC);
+				// Draw dealer button
+				if (scraper.dealer[i])
+					draw_dealer_button(i);
+
+				// Draw name and balance boxes
+				draw_name_box(i);
+				draw_balance_box(i);
+
+				// Draw player bet
+				draw_player_bet(i);
+			}
+		}
+
+		ReleaseDC(pDC);
+
+	// Allow other threads to use CScraper and CSymbol variables
+	LeaveCriticalSection(&cs_scrape_symbol);
 
     __SEH_LOGFATAL("COpenHoldemView::update_display :\n");
 
@@ -468,9 +477,9 @@ void COpenHoldemView::draw_center_info_box(void)
 	}
 
     // Prwin iterator
-    //EnterCriticalSection(&cs_prwin);
-    //s.Format("  Iter: %d\n", prwin_iterator_progress);
-    //LeaveCriticalSection(&cs_prwin);
+    //EnterCriticalSection(&cs_iterator);
+    //s.Format("  Iter: %d\n", iterator_thread_progress);
+    //LeaveCriticalSection(&cs_iterator);
     //t.Append(s);
 
     // Cycle time
