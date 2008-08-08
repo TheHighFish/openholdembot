@@ -1,20 +1,29 @@
 #include "stdafx.h"
 #include "updialog.h"
+#include "debug.h"
 
 CUPDialog::_tagInitCommonControls CUPDialog::m_InitCommonControls;	//Static variable to facilitate the call of InitCommonControlsEx() function Only Once Per App
 
 CUPDialog::_tagInitCommonControls::_tagInitCommonControls()
 {
+    __SEH_HEADER
+
     INITCOMMONCONTROLSEX icce;
 
     icce.dwSize = sizeof(INITCOMMONCONTROLSEX);
     icce.dwICC	= CUPDIALOG_CONTROL_CLASSES;
 
     InitCommonControlsEx(&icce);
+	
+	__SEH_LOGFATAL("CUPDialog::_tagInitCommonControls : \n");
 }
 
 CUPDialog::CUPDialog(HWND hParentWnd,LP_CUPDIALOG_USERPROC lpUserProc,LPVOID lpUserProcParam,LPCTSTR lpszDlgTitle/*=_T("Please Wait..")*/,bool bAllowCancel/*=true*/)
 {
+    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+    __SEH_HEADER
+
     m_hThread = NULL;							//No Thread Yet !!
 
     m_hParentWnd = hParentWnd;					//Needed to Create the DialogBox - DlgProc asks this as Parameter
@@ -28,15 +37,23 @@ CUPDialog::CUPDialog(HWND hParentWnd,LP_CUPDIALOG_USERPROC lpUserProc,LPVOID lpU
     ZeroMemory(m_szDialogCaption,sizeof(m_szDialogCaption));
 
     _tcsncpy(m_szDialogCaption,lpszDlgTitle,(sizeof(m_szDialogCaption)/sizeof(m_szDialogCaption[0]))-1);
+	
+	__SEH_LOGFATAL("CUPDialog::Constructor : \n");
 }
 
 CUPDialog::~CUPDialog(void)
 {
+    __SEH_HEADER
+
     Cleanup();			//It is possible that the Dialog object can be destroyed while Thread is still running..!!
+	
+	__SEH_LOGFATAL("CUPDialog::Destructor : \n");
 }
 
 void CUPDialog::Cleanup()
 {
+    __SEH_HEADER
+
     m_ThreadData.bTerminate = true;
 
     if (m_ThreadData.bAlive)		//If associated Thread is still alive Terminate It
@@ -56,17 +73,25 @@ void CUPDialog::Cleanup()
     m_ThreadData.bAlive = false;
     m_ThreadData.bTerminate = false;
     m_ThreadData.hThreadWnd = NULL;
+	
+	__SEH_LOGFATAL("CUPDialog::Cleanup : \n");
 }
 
 INT_PTR CUPDialog::DoModal()
 {
+    __SEH_HEADER
+
     Cleanup();		//If this is not first time, we had better Terminate any previous instance Threads !!
 
     return DialogBoxParam(NULL,MAKEINTRESOURCE(IDD),m_hParentWnd,ProgressDlgProc,(LPARAM)this);
+	
+	__SEH_LOGFATAL("CUPDialog::DoModal : \n");
 }
 
 static DWORD WINAPI ThreadProc(LPVOID lpThreadParameter)	//Calls the User Progress Procedure
 {
+    __SEH_HEADER
+
     LPPROGRESSTHREADDATA pThreadData = (LPPROGRESSTHREADDATA) lpThreadParameter;
 
     pThreadData->bAlive = true;
@@ -86,10 +111,14 @@ TerminateThreadProc:
         ::PostMessage(pThreadData->hThreadWnd,PROGRESSTHREADDATA::WM_PROGRESSTHREADCOMPLETED,MAKEWPARAM(nResult,0),0);
 
     return 0;
+	
+	__SEH_LOGFATAL("CUPDialog, ThreadProc : \n");
 }
 
 INT_PTR CALLBACK ProgressDlgProc(HWND hDlg,UINT Message,WPARAM wParam,LPARAM lParam)
 {
+    __SEH_HEADER
+
     switch (Message)
     {
     case WM_INITDIALOG:
@@ -175,4 +204,6 @@ INT_PTR CALLBACK ProgressDlgProc(HWND hDlg,UINT Message,WPARAM wParam,LPARAM lPa
     }
     }
     return FALSE;
+	
+	__SEH_LOGFATAL("CUPDialog, ProgressDlgProc : \n");
 }

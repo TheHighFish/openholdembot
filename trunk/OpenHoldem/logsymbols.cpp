@@ -5,6 +5,11 @@
 #include "debug.h"
 #include "global.h"
 
+LogSymbols::LogSymbols()
+{
+    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+}
+
 double	LogSymbols::process_query(const char * pquery, int *e)
 {
     __SEH_HEADER
@@ -35,5 +40,4 @@ double	LogSymbols::process_query(const char * pquery, int *e)
 
 
     __SEH_LOGFATAL("LogSymbols::process_query\n");
-
 }

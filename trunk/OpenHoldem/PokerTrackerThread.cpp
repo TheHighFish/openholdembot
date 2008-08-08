@@ -18,6 +18,10 @@ PokerTracker		PT;
 
 CPokerTrackerThread::CPokerTrackerThread()
 {
+    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+    __SEH_HEADER
+
 	// Create events
 	m_StopThread = CreateEvent(0, TRUE, FALSE, 0);
 	m_WaitThread = CreateEvent(0, TRUE, FALSE, 0);
@@ -26,10 +30,14 @@ CPokerTrackerThread::CPokerTrackerThread()
 
 	// Start thread
 	AfxBeginThread(pokertracker_thread_function, this);
+	
+	__SEH_LOGFATAL("CPokerTrackerThread::Constructor : \n");
 }
 
 CPokerTrackerThread::~CPokerTrackerThread()
 {
+    __SEH_HEADER
+
 	// Trigger thread to stop
 	::SetEvent(m_StopThread);
 
@@ -43,6 +51,8 @@ CPokerTrackerThread::~CPokerTrackerThread()
 	PT.disconnect();
 
     write_log("Stopped Poker Tracker thread.\n");
+	
+	__SEH_LOGFATAL("CPokerTrackerThread::Destructor : \n");
 }
 	
 UINT CPokerTrackerThread::pokertracker_thread_function(LPVOID pParam)

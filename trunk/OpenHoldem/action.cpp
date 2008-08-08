@@ -1,12 +1,17 @@
 #include "stdafx.h"
 
 #include "action.h"
-#include "debug.h"
 #include "symbols.h"
+#include "debug.h"
 #include "PokerTrackerThread.h"
 #include "GameState.h"
 
-double Action::process_query(const char * pquery, int *e)
+PokerAction::PokerAction()
+{
+    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+}
+
+double PokerAction::process_query(const char * pquery, int *e)
 {
     __SEH_HEADER
 
@@ -24,10 +29,10 @@ double Action::process_query(const char * pquery, int *e)
     return 0.0;
 
 
-    __SEH_LOGFATAL("Action::process_query > %s\n", pquery);
+    __SEH_LOGFATAL("PokerAction::process_query > %s\n", pquery);
 }
 
-int Action::preflop_pos (void)
+int PokerAction::preflop_pos (void)
 {
     __SEH_HEADER
 
@@ -104,10 +109,10 @@ int Action::preflop_pos (void)
 								(sym_dealposition==1 ? 2 :
 								 sym_dealposition==2 ? 6 : 0)) :0;
 
-	__SEH_LOGFATAL("Action::preflop_pos\n");
+	__SEH_LOGFATAL("PokerAction::preflop_pos\n");
 }
 
-int Action::prefloprais_pos (void)
+int PokerAction::prefloprais_pos (void)
 {
     __SEH_HEADER
 
@@ -183,10 +188,10 @@ int Action::prefloprais_pos (void)
 								(sym_dealpositionrais==1 ? 2 :
 								sym_dealpositionrais==2 ? 6 : 0)) :0;
 
-	__SEH_LOGFATAL("Action::prefloprais_pos\n");
+	__SEH_LOGFATAL("PokerAction::prefloprais_pos\n");
 }
 
-int Action::postflop_pos (void)
+int PokerAction::postflop_pos (void)
 {
     __SEH_HEADER
 
@@ -254,10 +259,10 @@ int Action::postflop_pos (void)
 		sym_nplayersplaying==2  ? (sym_betposition==1 ? 1 :
 									sym_betposition==2 ? 5 : 0): 0;
 
-	__SEH_LOGFATAL("Action::postflop_pos\n");
+	__SEH_LOGFATAL("PokerAction::postflop_pos\n");
 }
 
-int Action::pf_bets (void)
+int PokerAction::pf_bets (void)
 {
     __SEH_HEADER
 
@@ -280,10 +285,10 @@ int Action::pf_bets (void)
 
 	return result;
 
-	__SEH_LOGFATAL("Action::pf_bets\n");
+	__SEH_LOGFATAL("PokerAction::pf_bets\n");
 }
 
-bool Action::first_into_pot (void)
+bool PokerAction::first_into_pot (void)
 {
     __SEH_HEADER
 
@@ -295,11 +300,11 @@ bool Action::first_into_pot (void)
 
 	return result;
 
-    __SEH_LOGFATAL("Action::first_into_pot\n");
+    __SEH_LOGFATAL("PokerAction::first_into_pot\n");
 
 }
 
-int Action::m_betposition (int chairnum)
+int PokerAction::m_betposition (int chairnum)
 {
     __SEH_HEADER
     int i;
@@ -329,11 +334,11 @@ int Action::m_betposition (int chairnum)
 
     return betpos;
 
-    __SEH_LOGFATAL("Action::m_betposition\n");
+    __SEH_LOGFATAL("PokerAction::m_betposition\n");
 
 }
 
-int Action::m_dealposition (int chairnum)
+int PokerAction::m_dealposition (int chairnum)
 {
     __SEH_HEADER
 
@@ -360,11 +365,11 @@ int Action::m_dealposition (int chairnum)
     }
     return ((sym_playersdealtbits>>chairnum)&1) ? dealposchair : 0 ;
 
-    __SEH_LOGFATAL("Action::m_dealposition\n");
+    __SEH_LOGFATAL("PokerAction::m_dealposition\n");
 
 }
 
-int Action::aggressor_chair (void)
+int PokerAction::aggressor_chair (void)
 {
     __SEH_HEADER
 
@@ -413,10 +418,10 @@ int Action::aggressor_chair (void)
 
     return sym_raischair;
 
-    __SEH_LOGFATAL("Action::aggressor_chair\n");
+    __SEH_LOGFATAL("PokerAction::aggressor_chair\n");
 }
 
-bool Action::agchair_after (void)
+bool PokerAction::agchair_after (void)
 {
     __SEH_HEADER
 
@@ -437,5 +442,5 @@ bool Action::agchair_after (void)
 
 	return result;
 
-    __SEH_LOGFATAL("Action::agchair_after\n");
+    __SEH_LOGFATAL("PokerAction::agchair_after\n");
 }

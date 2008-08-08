@@ -79,6 +79,7 @@ static char *the_ChatMessage;
 void send_ChatMessage(char* the_Message)
 {
     __SEH_HEADER
+
     if ((the_ChatMessage != NULL) || (the_ChatMessage == ""))
     {
         //  Old message has not been sent yet.
@@ -90,7 +91,6 @@ void send_ChatMessage(char* the_Message)
     the_ChatMessage = the_Message;
 
     __SEH_LOGFATAL("PokerChat::send_ChatMessage  : \n");
-
 }
 
 
@@ -105,6 +105,7 @@ time_t first_possible_next_ChatTime;
 bool is_Chat_allowed(void)
 {
     __SEH_HEADER
+
     if (!global.preferences.Chat_enabled)
     {
         return false;
@@ -120,13 +121,13 @@ bool is_Chat_allowed(void)
     return true;
 
     __SEH_LOGFATAL("PokerChat::is_Chat_allowed  : \n");
-
 }
 
 
 void compute_first_possible_next_ChatTime(void)
 {
     __SEH_HEADER
+
     time_t the_actual_Time;
     time(&the_actual_Time);
     first_possible_next_ChatTime = the_actual_Time +
@@ -136,7 +137,6 @@ void compute_first_possible_next_ChatTime(void)
                                    (double(rand()) / RAND_MAX) * global.preferences.Chat_random_Delay;
 
     __SEH_LOGFATAL("PokerChat::compute_first_possible_next_ChatTime  : \n");
-
 }
 
 
@@ -147,6 +147,7 @@ void compute_first_possible_next_ChatTime(void)
 void send_ChatMessage_to_Keyboard()
 {
     __SEH_HEADER
+
     if (!is_Chat_allowed())
     {
         return;
@@ -192,7 +193,6 @@ void send_ChatMessage_to_Keyboard()
     compute_first_possible_next_ChatTime();
 
     __SEH_LOGFATAL("PokerChat::send_ChatMessage_to_Keyboard()  : \n");
-
 }
 
 
@@ -202,10 +202,10 @@ void send_ChatMessage_to_Keyboard()
 PointerType_send_ChatMessage get_Pointer_to__send_ChatMessage()
 {
     __SEH_HEADER
+
     return &send_ChatMessage;
 
     __SEH_LOGFATAL("PokerChat::get_Pointer_to__send_ChatMessage  : \n");
-
 }
 
 //  Simple messages for the formula guys.
@@ -214,6 +214,7 @@ PointerType_send_ChatMessage get_Pointer_to__send_ChatMessage()
 void register_ChatMessage(double the_MessageIndex)
 {
     __SEH_HEADER
+
     unsigned int the_ChatIndex = the_MessageIndex;
     if (the_ChatIndex < first_ChatMessage)
     {
@@ -227,5 +228,4 @@ void register_ChatMessage(double the_MessageIndex)
     send_ChatMessage(the_Message);
 
     __SEH_LOGFATAL("PokerChat::register_ChatMessage  : \n");
-
 }

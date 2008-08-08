@@ -11,19 +11,19 @@
 
 class CVersus	versus;
 
-CVersus::CVersus() {
-#ifdef SEH_ENABLE
-    // Set exception handler
+CVersus::CVersus() 
+{
     __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
-#endif
 
     __SEH_HEADER
 
     __SEH_LOGFATAL("CVersus::Constructor :\n");
 }
 
-double CVersus::get_symbol(const char *a, int *e) {
+double CVersus::get_symbol(const char *a, int *e) 
+{
     __SEH_HEADER
+
     int			n;
 	char		*b;		//Matrix 2008-05-21
 
@@ -79,6 +79,7 @@ double CVersus::get_symbol(const char *a, int *e) {
 bool CVersus::get_counts(void) 
 {
     __SEH_HEADER
+
     int				i, j;
 	unsigned int	pcard[2];
     CardMask		plCards, oppCards, deadCards, comCardsScrape, comCardsEnum, comCardsAll, usedCards;
@@ -354,6 +355,7 @@ bool CVersus::get_counts(void)
 void CVersus::do_calc(CardMask plCards, CardMask oppCards, CardMask comCards,
                       unsigned int *wintemp, unsigned int *tietemp, unsigned int *lostemp) {
     __SEH_HEADER
+
     CardMask		playerEvalCards, oppEvalCards;
     HandVal			player_hv, opp_hv;
     unsigned int	player_pokval, opp_pokval;

@@ -1,8 +1,9 @@
 #pragma once
 
-class Action 
+class PokerAction 
 {
 public:
+	PokerAction::PokerAction();
 	double	process_query(const char * pquery, int *e);
 
 private:

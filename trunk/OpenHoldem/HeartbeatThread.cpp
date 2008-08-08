@@ -20,6 +20,10 @@ CHeartbeatThread	*p_heartbeat_thread = NULL;
 
 CHeartbeatThread::CHeartbeatThread()
 {
+    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+    __SEH_HEADER
+
 	// Create events
 	m_StopThread = CreateEvent(0, TRUE, FALSE, 0);
 	m_WaitThread = CreateEvent(0, TRUE, FALSE, 0);
@@ -29,10 +33,14 @@ CHeartbeatThread::CHeartbeatThread()
 
 	// Start thread
 	AfxBeginThread(heartbeat_thread_function, this);
+
+    __SEH_LOGFATAL("CHeartbeatThread::Constructor :\n");
 }
 
 CHeartbeatThread::~CHeartbeatThread()
 {
+    __SEH_HEADER
+
 	// Trigger thread to stop
 	::SetEvent(m_StopThread);
 
@@ -42,6 +50,8 @@ CHeartbeatThread::~CHeartbeatThread()
 	// Close handles
 	::CloseHandle(m_StopThread);
 	::CloseHandle(m_WaitThread);
+
+    __SEH_LOGFATAL("CHeartbeatThread::Destructor :\n");
 }
 
 UINT CHeartbeatThread::heartbeat_thread_function(LPVOID pParam)

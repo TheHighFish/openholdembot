@@ -59,7 +59,7 @@ CIteratorThread::CIteratorThread()
 	// Allow other threads to use CIterator variables
 	LeaveCriticalSection(&cs_iterator);
 
-	__SEH_LOGFATAL("CIteratorThread::CIteratorThread :\n");
+	__SEH_LOGFATAL("CIteratorThread::Constructor :\n");
 }
 
 CIteratorThread::~CIteratorThread()
@@ -88,11 +88,13 @@ CIteratorThread::~CIteratorThread()
 	// Allow other threads to use CIterator variables
 	LeaveCriticalSection(&cs_iterator);
 
-	__SEH_LOGFATAL("CIteratorThread::~CIteratorThread :\n");
+	__SEH_LOGFATAL("CIteratorThread::Destructor :\n");
 }
 
 UINT CIteratorThread::iterator_thread_function(LPVOID pParam)
 {
+    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
     __SEH_HEADER
 
 	CIteratorThread *pParent = static_cast<CIteratorThread*>(pParam);

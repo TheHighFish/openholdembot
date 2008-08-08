@@ -10,7 +10,10 @@ Memory		memory;
 
 Memory::Memory()
 {
+    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
     __SEH_HEADER
+
     int			i;
 
     var_count=-1;
@@ -21,9 +24,7 @@ Memory::Memory()
         var_value[i]=0.0;
     }
 
-
     __SEH_LOGFATAL("Memory::constructor\n");
-
 }
 
 
@@ -48,7 +49,6 @@ double Memory::process_query(const char * pquery, CEvalInfoFunction **logCalling
     return 0.0;
 
     __SEH_LOGFATAL("Memory::process_query > %s\n", pquery);
-
 }
 
 
@@ -108,9 +108,7 @@ void Memory::store_value(const char * pquery, CEvalInfoFunction **logCallingFunc
         strcpy(var_name[index], var);
     }
 
-
     __SEH_LOGFATAL("Memory::store_value > %s\n", pquery);
-
 }
 
 double Memory::retrieve_value(const char * pquery, int *e)
@@ -134,5 +132,4 @@ double Memory::retrieve_value(const char * pquery, int *e)
     return 0.0;
 
     __SEH_LOGFATAL("Memory::retrieve_value > %s\n", pquery);
-
 }
