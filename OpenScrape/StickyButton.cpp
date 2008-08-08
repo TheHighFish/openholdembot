@@ -1,74 +1,57 @@
 #include "StdAfx.h"
 #include "StickyButton.h"
+#include "debug.h"
 
 const UINT WM_STICKYBUTTONDOWN = RegisterWindowMessage("WM_STICKYBUTTONDOWN");
 const UINT WM_STICKYBUTTONUP = RegisterWindowMessage("WM_STICKYBUTTONUP");
 
-CStickyButton::CStickyButton(void) {
-#ifdef SEH_ENABLE
-	// Set exception handler
+CStickyButton::CStickyButton(void) 
+{
 	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-#endif
 
-#ifdef SEH_ENABLE
-	try {
-#endif
-		m_bState = false;
-		m_bIgnore = false;
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CStickyButton::Constructor : \n"); 
-		throw;
-	}
-#endif
+	m_bState = false;
+	m_bIgnore = false;
 }
 
-CStickyButton::~CStickyButton(void) {
+CStickyButton::~CStickyButton(void) 
+{
 }
 BEGIN_MESSAGE_MAP(CStickyButton, CButton)
 	ON_CONTROL_REFLECT(BN_CLICKED, &CStickyButton::OnBnClicked)
 	ON_WM_KILLFOCUS()
 END_MESSAGE_MAP()
 
-void CStickyButton::OnBnClicked() {
-#ifdef SEH_ENABLE
-	try {
-#endif
-		if (m_bIgnore) {
-			m_bIgnore = false;
-			SetState(true);
-		}
-		else {
-			m_bState = !m_bState;
-			SetState(m_bState); 
-			ASSERT(GetParent());
-			GetParent()->SendMessage(m_bState ? WM_STICKYBUTTONDOWN : WM_STICKYBUTTONUP, (WPARAM) this->GetSafeHwnd());
-		}
-#ifdef SEH_ENABLE
+void CStickyButton::OnBnClicked() 
+{
+	__SEH_HEADER
+
+	if (m_bIgnore) {
+
+		m_bIgnore = false;
+		SetState(true);
 	}
-	catch (...)	 { 
-		logfatal("CStickyButton::OnBnClicked : \n"); 
-		throw;
+	else 
+	{
+		m_bState = !m_bState;
+		SetState(m_bState); 
+		ASSERT(GetParent());
+		GetParent()->SendMessage(m_bState ? WM_STICKYBUTTONDOWN : WM_STICKYBUTTONUP, (WPARAM) this->GetSafeHwnd());
 	}
-#endif
+
+	__SEH_LOGFATAL("CStickyButton::OnBnClicked : \n");
 }
 
-void CStickyButton::OnKillFocus(CWnd* pNewWnd) {
-#ifdef SEH_ENABLE
-	try {
-#endif
-		if (m_bState) {
-			m_bIgnore = true;
-		} 
+void CStickyButton::OnKillFocus(CWnd* pNewWnd) 
+{
+	__SEH_HEADER
 
-		// The following function pops up the button if it's down:
-		CButton::OnKillFocus(pNewWnd);
-#ifdef SEH_ENABLE
-	}
-	catch (...)	 { 
-		logfatal("CStickyButton::OnKillFocus : \n"); 
-		throw;
-	}
-#endif
+	if (m_bState) 
+	{
+		m_bIgnore = true;
+	} 
+
+	// The following function pops up the button if it's down:
+	CButton::OnKillFocus(pNewWnd);
+
+	__SEH_LOGFATAL("CStickyButton::OnKillFocus : \n");
 }

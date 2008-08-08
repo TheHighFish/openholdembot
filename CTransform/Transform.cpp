@@ -5,6 +5,12 @@
 #include "pdiff/CompareArgs.h"
 #include "pdiff/Metric.h"
 
+#ifdef OPENHOLDEM_PROGRAM
+#include "../OpenHoldem/debug.h"
+#else
+#include "../OpenScrape/debug.h"
+#endif
+
 CTransform::CTransform(void)
 {
     __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);

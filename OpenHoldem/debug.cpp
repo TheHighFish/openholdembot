@@ -1,4 +1,7 @@
 #include "stdafx.h"
+
+#include <dbghelp.h>
+
 #include "debug.h"
 #include "global.h"
 #include "symbols.h"
@@ -122,7 +125,7 @@ void logfatal (char* fmt, ...)
     fclose(fatallog);
 }
 
-LONG WINAPI MyUnHandledExceptionFilter(struct _EXCEPTION_POINTERS *lpExceptionInfo) 
+LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers) 
 {
     char flpath[MAX_PATH];
     char msg[1000];
@@ -130,13 +133,13 @@ LONG WINAPI MyUnHandledExceptionFilter(struct _EXCEPTION_POINTERS *lpExceptionIn
     logfatal("########################################################################\n");
     logfatal("FATAL ERROR  (See above for call stack)\n");
     logfatal("########################################################################\n");
-    logfatal("Address: %x\n", lpExceptionInfo->ExceptionRecord->ExceptionAddress);
-    logfatal("Code: %x\n", lpExceptionInfo->ExceptionRecord->ExceptionCode);
-    logfatal("Flags: %x\n", lpExceptionInfo->ExceptionRecord->ExceptionFlags);
-    logfatal("Information: %x\n", lpExceptionInfo->ExceptionRecord->ExceptionInformation);
-    logfatal("Record: %x\n", lpExceptionInfo->ExceptionRecord->ExceptionRecord);
-    logfatal("Num Params: %x\n", lpExceptionInfo->ExceptionRecord->NumberParameters);
-    switch (lpExceptionInfo->ExceptionRecord->ExceptionCode) {
+    logfatal("Address: %x\n", pExceptionPointers->ExceptionRecord->ExceptionAddress);
+    logfatal("Code: %x\n", pExceptionPointers->ExceptionRecord->ExceptionCode);
+    logfatal("Flags: %x\n", pExceptionPointers->ExceptionRecord->ExceptionFlags);
+    logfatal("Information: %x\n", pExceptionPointers->ExceptionRecord->ExceptionInformation);
+    logfatal("Record: %x\n", pExceptionPointers->ExceptionRecord->ExceptionRecord);
+    logfatal("Num Params: %x\n", pExceptionPointers->ExceptionRecord->NumberParameters);
+    switch (pExceptionPointers->ExceptionRecord->ExceptionCode) {
     case EXCEPTION_ACCESS_VIOLATION:
         logfatal("Desc: EXCEPTION_ACCESS_VIOLATION The thread tried to read from or write to a virtual address\n");
         logfatal("      for which it does not have the appropriate access.\n");
@@ -222,12 +225,13 @@ LONG WINAPI MyUnHandledExceptionFilter(struct _EXCEPTION_POINTERS *lpExceptionIn
     logfatal("########################################################################\n");
     logfatal("########################################################################\n\n\n");
 
+	// Create a minidump
+	GenerateDump(pExceptionPointers);
+
     sprintf(flpath, "%s\\fatal error.log", global.startup_path);
-    strcpy(msg, "OpenHoldem is about to crash - this is probably a developer's fault.\n");
-    strcat(msg, "If you would be so kind, please help the file named:\n");
-    strcat(msg, flpath);
-    strcat(msg, " (in your OpenHoldem directory, or in c:\\)\n");
-    strcat(msg, "find it's way to an OpenHoldem developer.\n");
+    strcpy(msg, "OpenHoldem is about to crash.\n");
+    strcat(msg, "A minidump has been created in your\n");
+	strcat(msg, "Windows temporary file directory.\n");
     strcat(msg, "\n\nOpenHoldem will shut down when you click OK.");
     MessageBox(NULL, msg, "FATAL ERROR", MB_OK | MB_ICONEXCLAMATION | MB_TOPMOST);
 
@@ -661,3 +665,35 @@ void stop_log(void)
 
     __SEH_LOGFATAL("::stop_log\n");
 }
+
+int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers)
+{
+    bool		bMiniDumpSuccessful;
+    char		szPath[MAX_PATH]; 
+    char		szFileName[MAX_PATH]; 
+    DWORD		dwBufferSize = MAX_PATH;
+    HANDLE		hDumpFile;
+    SYSTEMTIME	stLocalTime;
+    MINIDUMP_EXCEPTION_INFORMATION	ExpParam;
+
+    GetLocalTime(&stLocalTime);
+    GetTempPath(dwBufferSize, szPath);
+
+    sprintf(szFileName, "%s%s-%s-%04d%02d%02d-%02d%02d%02d-%ld-%ld.dmp", szPath, 
+			"OpenHoldem", VERSION_TEXT, stLocalTime.wYear, stLocalTime.wMonth, stLocalTime.wDay, 
+			stLocalTime.wHour, stLocalTime.wMinute, stLocalTime.wSecond, GetCurrentProcessId(), 
+			GetCurrentThreadId());
+
+    hDumpFile = CreateFile(szFileName, GENERIC_READ|GENERIC_WRITE, FILE_SHARE_WRITE|FILE_SHARE_READ, 
+						   0, CREATE_ALWAYS, 0, 0);
+   
+    ExpParam.ThreadId = GetCurrentThreadId();
+    ExpParam.ExceptionPointers = pExceptionPointers;
+    ExpParam.ClientPointers = TRUE;
+   
+    bMiniDumpSuccessful = MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hDumpFile,
+											MiniDumpWithDataSegs, &ExpParam, NULL, NULL);
+
+    return EXCEPTION_EXECUTE_HANDLER;
+}
+

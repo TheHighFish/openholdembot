@@ -8,6 +8,7 @@
 #include "MainFrm.h"
 #include "OpenScrapeDoc.h"
 #include "OpenScrapeView.h"
+#include "debug.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -28,8 +29,7 @@ END_MESSAGE_MAP()
 
 COpenScrapeApp::COpenScrapeApp()
 {
-	// TODO: add construction code here,
-	// Place all significant initialization in InitInstance
+    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
 }
 
 
@@ -42,6 +42,8 @@ COpenScrapeApp theApp;
 
 BOOL COpenScrapeApp::InitInstance()
 {
+	__SEH_HEADER
+
 	HMODULE		hMod;
 	HANDLE		hProcess;
 	DWORD		curprocid, aProcesses[1024], cbNeeded, cProcesses;
@@ -140,6 +142,8 @@ BOOL COpenScrapeApp::InitInstance()
 	m_TableMapDlg->ShowWindow(SW_SHOW);
 
 	return true;
+
+	__SEH_LOGFATAL("COpenScrapeApp::InitInstance : \n");
 }
 
 // CAboutDlg dialog used for App About

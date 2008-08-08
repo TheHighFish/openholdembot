@@ -69,7 +69,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="psapi.lib"
+				AdditionalDependencies="psapi.lib Dbghelp.lib"
 				OutputFile="$(OutDir)\OpenScrape.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
@@ -135,6 +135,7 @@
 				AdditionalIncludeDirectories="..\hscroll-list-box"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				MinimalRebuild="false"
+				ExceptionHandling="2"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
@@ -155,7 +156,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="psapi.lib"
+				AdditionalDependencies="psapi.lib Dbghelp.lib"
 				OutputFile="$(OutDir)\OpenScrape.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
@@ -240,6 +241,10 @@
 			</File>
 			<File
 				RelativePath=".\DialogTableMap.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\global.cpp"
 				>
 			</File>
 			<File
@@ -370,6 +375,10 @@
 			</File>
 			<File
 				RelativePath=".\DialogTableMap.h"
+				>
+			</File>
+			<File
+				RelativePath=".\global.h"
 				>
 			</File>
 			<File

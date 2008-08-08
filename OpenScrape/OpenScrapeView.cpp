@@ -5,6 +5,7 @@
 #include "OpenScrapeDoc.h"
 #include "OpenScrapeView.h"
 #include "MainFrm.h"
+#include "debug.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -26,6 +27,10 @@ END_MESSAGE_MAP()
 
 COpenScrapeView::COpenScrapeView()
 {
+    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+	__SEH_HEADER
+		
 	black_pen.CreatePen(PS_SOLID, 1, COLOR_BLACK);
 	green_pen.CreatePen(PS_SOLID, 1, COLOR_GREEN);
 	red_pen.CreatePen(PS_SOLID, 1, COLOR_RED);
@@ -46,6 +51,7 @@ COpenScrapeView::COpenScrapeView()
 	hCurDrawRect = ::LoadCursor(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDC_DRAWRECTCURSOR));
 	hCurStandard = ::LoadCursor(NULL, IDC_ARROW);
 
+    __SEH_LOGFATAL("COpenScrapeView::COpenScrapeView : \n");
 }
 
 COpenScrapeView::~COpenScrapeView()
@@ -54,13 +60,19 @@ COpenScrapeView::~COpenScrapeView()
 
 BOOL COpenScrapeView::PreCreateWindow(CREATESTRUCT& cs)
 {
+	__SEH_HEADER
+		
 	return CView::PreCreateWindow(cs);
+
+    __SEH_LOGFATAL("COpenScrapeView::PreCreateWindow : \n");
 }
 
 // COpenScrapeView drawing
 
 void COpenScrapeView::OnDraw(CDC* pDC)
 {
+	__SEH_HEADER
+		
 	COpenScrapeDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
@@ -146,6 +158,8 @@ void COpenScrapeView::OnDraw(CDC* pDC)
 	DeleteObject(hbmp);
 	DeleteDC(hdcCompatible);
 	DeleteDC(hdcScreen);
+
+    __SEH_LOGFATAL("COpenScrapeView::OnDraw : \n");
 }
 
 
@@ -174,6 +188,8 @@ COpenScrapeDoc* COpenScrapeView::GetDocument() const // non-debug version is inl
 
 void COpenScrapeView::OnLButtonDown(UINT nFlags, CPoint point)
 {
+	__SEH_HEADER
+		
 	COpenScrapeDoc		*pDoc = GetDocument();
 	int					i;
 	CString				sel = theApp.m_TableMapDlg->m_TableMapTree.GetItemText(theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem());	
@@ -279,10 +295,14 @@ void COpenScrapeView::OnLButtonDown(UINT nFlags, CPoint point)
 	}
 
 	CView::OnLButtonDown(nFlags, point);
+
+    __SEH_LOGFATAL("COpenScrapeView::OnLButtonDown : \n");
 }
 
 void COpenScrapeView::OnLButtonUp(UINT nFlags, CPoint point)
 {
+	__SEH_HEADER
+		
 	COpenScrapeDoc		*pDoc = GetDocument();
 
 	if (drawing_rect)
@@ -311,10 +331,14 @@ void COpenScrapeView::OnLButtonUp(UINT nFlags, CPoint point)
 
 
 	CView::OnLButtonUp(nFlags, point);
+
+    __SEH_LOGFATAL("COpenScrapeView::OnLButtonUp : \n");
 }
 
 void COpenScrapeView::OnMouseMove(UINT nFlags, CPoint point)
 {
+	__SEH_HEADER
+		
 	COpenScrapeDoc		*pDoc = GetDocument();
 	int					width, height;
 	CString				text;
@@ -371,11 +395,14 @@ void COpenScrapeView::OnMouseMove(UINT nFlags, CPoint point)
 	}
 
 	CView::OnMouseMove(nFlags, point);
+
+    __SEH_LOGFATAL("COpenScrapeView::OnMouseMove : \n");
 }
 
 BOOL COpenScrapeView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
-
+	__SEH_HEADER
+		
 	if (drawing_rect)
 	{
 		::SetCursor(hCurDrawRect);
@@ -383,11 +410,14 @@ BOOL COpenScrapeView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	}
 
 	return CView::OnSetCursor(pWnd, nHitTest, message);
+
+    __SEH_LOGFATAL("COpenScrapeView::OnSetCursor : \n");
 }
 
 void COpenScrapeView::blink_rect(void)
 {
-
+	__SEH_HEADER
+		
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	CString				sel = theApp.m_TableMapDlg->m_TableMapTree.GetItemText(theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem());	
 
@@ -421,24 +451,30 @@ void COpenScrapeView::blink_rect(void)
 	pDC->SelectObject(oldpen);
 	pDC->SelectObject(oldbrush);
 	ReleaseDC(pDC);
+
+    __SEH_LOGFATAL("COpenScrapeView::blink_rect : \n");
 }
 
 
 COpenScrapeView *COpenScrapeView::GetView()
 {
-  CFrameWnd * pFrame = (CFrameWnd *)(AfxGetApp()->m_pMainWnd);
+	__SEH_HEADER
+		
+	CFrameWnd * pFrame = (CFrameWnd *)(AfxGetApp()->m_pMainWnd);
 
-  CView * pView = pFrame->GetActiveView();
+	CView * pView = pFrame->GetActiveView();
 
-  if ( !pView )
-     return NULL;
+	if ( !pView )
+		return NULL;
 
-  // Fail if view is of wrong kind
-  // (this could occur with splitter windows, or additional
-  // views on a single document
-  if ( ! pView->IsKindOf( RUNTIME_CLASS(COpenScrapeView) ) )
-     return NULL;
+	// Fail if view is of wrong kind
+	// (this could occur with splitter windows, or additional
+	// views on a single document
+	if ( ! pView->IsKindOf( RUNTIME_CLASS(COpenScrapeView) ) )
+		return NULL;
 
-  return (COpenScrapeView *) pView;
+	return (COpenScrapeView *) pView;
+
+    __SEH_LOGFATAL("COpenScrapeView::GetView : \n");
 } 
 

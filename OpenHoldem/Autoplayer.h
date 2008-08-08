@@ -1,6 +1,7 @@
 #pragma once
 
-class Autoplayer {
+class Autoplayer 
+{
 public:
 	Autoplayer(void);
 	~Autoplayer(void);

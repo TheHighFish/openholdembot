@@ -1,3 +1,10 @@
+v1.1.6 2008-08-22
+=================
+MAINTENANCE:
+- Minidumps are now generated automatically upon a crash - dumps can be found in your Windows
+  "temp" directory.  
+
+
 v1.1.5 2008-05-16
 ================
 NEW STUFF:
