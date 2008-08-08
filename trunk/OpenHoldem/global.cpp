@@ -27,13 +27,6 @@ CGlobal::CGlobal(void)
 
     __SEH_HEADER
 
-//int *pBadPtr = NULL;
-//*pBadPtr = 0;
-
-	int x, y;
-	x = 0;
-	y = 8/x;
-	
 	int			i;
     Registry	reg;
 
