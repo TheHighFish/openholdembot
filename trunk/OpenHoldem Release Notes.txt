@@ -17,7 +17,8 @@ MAINTENANCE:
 - Complete reworking of thread model to make use of critical sections more intuitive, and to improve
   reliability of code.  Current thinking is that thread concurrency issues are a source of the
   current spate of crashes, this reworking addresses those concurrency issues.
-  
+- Minidumps are now generated automatically upon a crash - dumps can be found in your Windows
+  "temp" directory.  
 
 v1.9.2 2008-07-25
 =================

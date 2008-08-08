@@ -4,7 +4,7 @@
 #include "pdiff/RGBAImage.h"
 
 // SEH #define support
-#ifdef SEH_ENABLE
+/*#ifdef SEH_ENABLE
 #define __SEH_HEADER try {
 #else
 #define __SEH_HEADER
@@ -26,7 +26,7 @@
 #else
 #define __SEH_SET_EXCEPTION_HANDLER($1)
 #endif
-
+*/
 
 ///////////////////////////////
 // defines

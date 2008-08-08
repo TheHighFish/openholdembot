@@ -6,6 +6,7 @@
 
 #include "OpenScrapeDoc.h"
 #include "DialogEditFont.h"
+#include "debug.h"
 
 // CDlgEditFont dialog
 
@@ -14,7 +15,7 @@ IMPLEMENT_DYNAMIC(CDlgEditFont, CDialog)
 CDlgEditFont::CDlgEditFont(CWnd* pParent /*=NULL*/)
 	: CDialog(CDlgEditFont::IDD, pParent)
 {
-
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
 }
 
 CDlgEditFont::~CDlgEditFont()
@@ -44,6 +45,8 @@ END_MESSAGE_MAP()
 // CDlgEditFont message handlers
 BOOL CDlgEditFont::OnInitDialog()
 {
+	__SEH_HEADER
+
 	CDialog::OnInitDialog();
 
 	CString		text;
@@ -90,10 +93,14 @@ BOOL CDlgEditFont::OnInitDialog()
 
 	return false;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
+
+	__SEH_LOGFATAL("CDlgEditFont::OnInitDialog : \n");
 }
 
 void CDlgEditFont::OnLbnSelchangeCharlist()
 {
+	__SEH_HEADER
+
 	int				j, x, bit, top;
 	CString			separation, text, charstr, type;
 	bool			character[MAX_CHAR_WIDTH][MAX_CHAR_HEIGHT] = { false };	
@@ -151,10 +158,13 @@ void CDlgEditFont::OnLbnSelchangeCharlist()
 		m_Character.SetWindowText("");
 	}
 
+	__SEH_LOGFATAL("CDlgEditFont::OnLbnSelchangeCharlist : \n");
 }
 
 void CDlgEditFont::OnBnClickedOk()
 {
+	__SEH_HEADER
+
 	COpenScrapeDoc			*pDoc = COpenScrapeDoc::GetDocument();
 	CString					charstr;
 	CString					temp_type, temp_character;
@@ -166,10 +176,14 @@ void CDlgEditFont::OnBnClickedOk()
 	m_Character.GetWindowText(character);
 
 	OnOK();
+
+	__SEH_LOGFATAL("CDlgEditFont::OnBnClickedOk : \n");
 }
 
 void CDlgEditFont::OnEnKillfocusCharacter()
 {
+	__SEH_HEADER
+
 	CString					temp_character, text;
 	int						cur_sel = m_CharList.GetCurSel();
 
@@ -184,10 +198,13 @@ void CDlgEditFont::OnEnKillfocusCharacter()
 	m_CharList.InsertString(cur_sel, text.GetString());
 	m_CharList.SetCurSel(cur_sel);
 
+	__SEH_LOGFATAL("CDlgEditFont::OnEnKillfocusCharacter : \n");
 }
 
 void CDlgEditFont::OnEnKillfocusType()
 {
+	__SEH_HEADER
+
 	CString					temp_type, text;
 	int						cur_sel = m_CharList.GetCurSel();
 
@@ -196,10 +213,14 @@ void CDlgEditFont::OnEnKillfocusType()
 	Stablemap_font &fontrec = new_t$_recs->ElementAt(cur_sel);
 
 	fontrec.group = atoi(temp_type.Mid(5,1).GetString());
+
+	__SEH_LOGFATAL("CDlgEditFont::OnEnKillfocusType : \n");
 }
 
 void CDlgEditFont::OnBnClickedDelete()
 {
+	__SEH_HEADER
+
 	int		sel = m_CharList.GetCurSel();
 
 	new_t$_recs->RemoveAt(sel);
@@ -210,10 +231,14 @@ void CDlgEditFont::OnBnClickedDelete()
 
 	OnLbnSelchangeCharlist();
 	m_CharList.SetFocus();
+
+	__SEH_LOGFATAL("CDlgEditFont::OnBnClickedDelete : \n");
 }
 
 void CDlgEditFont::OnBnClickedSort()
 {
+	__SEH_HEADER
+
 	int				i, j, k;
 	Stablemap_font	temp;
 	CString			text;
@@ -269,4 +294,6 @@ void CDlgEditFont::OnBnClickedSort()
 	m_CharList.SetCurSel(0);
 	OnLbnSelchangeCharlist();
 	m_CharList.SetFocus();
+
+	__SEH_LOGFATAL("CDlgEditFont::OnBnClickedSort : \n");
 }

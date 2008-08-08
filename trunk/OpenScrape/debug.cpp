@@ -1,13 +1,18 @@
 #include "stdafx.h"
+
+#include <dbghelp.h>
+
 #include "debug.h"
 #include "MainFrm.h"
 #include "OpenScrape.h"
+#include "global.h"
 
 //#include <vld.h>			// visual leak detector
 
 FILE *log_fp = NULL;
 
-char * get_time(char * timebuf) {
+char * get_time(char * timebuf) 
+{
 	// returns current system time in WH format
 	time_t	ltime;
 	char tmptime[30];
@@ -53,7 +58,140 @@ char * get_now_time(char * timebuf)
 	return timebuf;
 }
 
-BOOL CreateBMPFile(const char *szFile, HBITMAP hBMP) {
+void logfatal (char* fmt, ...) 
+{
+    char		buff[10000] ;
+    va_list		ap;
+    char		fatallogpath[MAX_PATH];
+    FILE		*fatallog;
+    char		nowtime[26];
+
+    sprintf(fatallogpath, "%s\\fatal error.log", global.startup_path);
+    fatallog = fopen(fatallogpath, "a");
+
+    va_start(ap, fmt);
+    vsprintf(buff, fmt, ap);
+    fprintf(fatallog, "%s> %s", get_now_time(nowtime), buff);
+
+    va_end(ap);
+    fclose(fatallog);
+}
+
+LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers) 
+{
+    char flpath[MAX_PATH];
+    char msg[1000];
+
+    logfatal("########################################################################\n");
+    logfatal("FATAL ERROR  (See above for call stack)\n");
+    logfatal("########################################################################\n");
+    logfatal("Address: %x\n", pExceptionPointers->ExceptionRecord->ExceptionAddress);
+    logfatal("Code: %x\n", pExceptionPointers->ExceptionRecord->ExceptionCode);
+    logfatal("Flags: %x\n", pExceptionPointers->ExceptionRecord->ExceptionFlags);
+    logfatal("Information: %x\n", pExceptionPointers->ExceptionRecord->ExceptionInformation);
+    logfatal("Record: %x\n", pExceptionPointers->ExceptionRecord->ExceptionRecord);
+    logfatal("Num Params: %x\n", pExceptionPointers->ExceptionRecord->NumberParameters);
+    switch (pExceptionPointers->ExceptionRecord->ExceptionCode) {
+    case EXCEPTION_ACCESS_VIOLATION:
+        logfatal("Desc: EXCEPTION_ACCESS_VIOLATION The thread tried to read from or write to a virtual address\n");
+        logfatal("      for which it does not have the appropriate access.\n");
+        break;
+    case EXCEPTION_ARRAY_BOUNDS_EXCEEDED:
+        logfatal("Desc: EXCEPTION_ARRAY_BOUNDS_EXCEEDED The thread tried to access an array element that is out\n");
+        logfatal("      of bounds and the underlying hardware supports bounds checking.\n");
+        break;
+    case EXCEPTION_BREAKPOINT:
+        logfatal("Desc: EXCEPTION_BREAKPOINT A breakpoint was encountered.\n");
+        break;
+    case EXCEPTION_DATATYPE_MISALIGNMENT:
+        logfatal("Desc: EXCEPTION_DATATYPE_MISALIGNMENT The thread tried to read or write data that is misaligned on\n");
+        logfatal("      hardware that does not provide alignment. For example, 16-bit values must be aligned on 2-byte\n");
+        logfatal("      boundaries; 32-bit values on 4-byte boundaries, and so on.\n");
+        break;
+    case EXCEPTION_FLT_DENORMAL_OPERAND:
+        logfatal("Desc: EXCEPTION_FLT_DENORMAL_OPERAND One of the operands in a floating-point operation is denormal. A\n");
+        logfatal("      denormal value is one that is too small to represent as a standard floating-point value.\n");
+        break;
+    case EXCEPTION_FLT_DIVIDE_BY_ZERO:
+        logfatal("Desc: EXCEPTION_FLT_DIVIDE_BY_ZERO The thread tried to divide a floating-point value by a floating-point\n");
+        logfatal("      divisor of zero.\n");
+        break;
+    case EXCEPTION_FLT_INEXACT_RESULT:
+        logfatal("Desc: EXCEPTION_FLT_INEXACT_RESULT The result of a floating-point operation cannot be represented exactly\n");
+        logfatal("      as a decimal fraction.\n");
+        break;
+    case EXCEPTION_FLT_INVALID_OPERATION:
+        logfatal("Desc: EXCEPTION_FLT_INVALID_OPERATION This exception represents any floating-point exception not included\n");
+        logfatal("      in this list.\n");
+        break;
+    case EXCEPTION_FLT_OVERFLOW:
+        logfatal("Desc: EXCEPTION_FLT_OVERFLOW The exponent of a floating-point operation is greater than the magnitude\n");
+        logfatal("      allowed by the corresponding type.\n");
+        break;
+    case EXCEPTION_FLT_STACK_CHECK:
+        logfatal("Desc: EXCEPTION_FLT_STACK_CHECK The stack overflowed or underflowed as the result of a floating-point\n");
+        logfatal("      operation.\n");
+        break;
+    case EXCEPTION_FLT_UNDERFLOW:
+        logfatal("Desc: EXCEPTION_FLT_UNDERFLOW The exponent of a floating-point operation is less than the magnitude\n");
+        logfatal("      allowed by the corresponding type.\n");
+        break;
+    case EXCEPTION_ILLEGAL_INSTRUCTION:
+        logfatal("Desc: EXCEPTION_ILLEGAL_INSTRUCTION The thread tried to execute an invalid instruction.\n");
+        break;
+    case EXCEPTION_IN_PAGE_ERROR:
+        logfatal("Desc: EXCEPTION_IN_PAGE_ERROR The thread tried to access a page that was not present, and the system\n");
+        logfatal("      was unable to load the page. For example, this exception might occur if a network connection is lost while running a program over the network.\n");
+        break;
+    case EXCEPTION_INT_DIVIDE_BY_ZERO:
+        logfatal("Desc: EXCEPTION_INT_DIVIDE_BY_ZERO The thread tried to divide an integer value by an integer divisor\n");
+        logfatal("      of zero.\n");
+        break;
+    case EXCEPTION_INT_OVERFLOW:
+        logfatal("Desc: EXCEPTION_INT_OVERFLOW The result of an integer operation caused a carry out of the most significant\n");
+        logfatal("      bit of the result.\n");
+        break;
+    case EXCEPTION_INVALID_DISPOSITION:
+        logfatal("Desc: EXCEPTION_INVALID_DISPOSITION An exception handler returned an invalid disposition to the exception\n");
+        logfatal("      dispatcher. Programmers using a high-level language such as C should never encounter this exception.\n");
+        break;
+    case EXCEPTION_NONCONTINUABLE_EXCEPTION:
+        logfatal("Desc: EXCEPTION_NONCONTINUABLE_EXCEPTION The thread tried to continue execution after a noncontinuable\n");
+        logfatal("      exception occurred.\n");
+        break;
+    case EXCEPTION_PRIV_INSTRUCTION:
+        logfatal("Desc: EXCEPTION_PRIV_INSTRUCTION The thread tried to execute an instruction whose operation is not allowed\n");
+        logfatal("      in the current machine mode.\n");
+        break;
+    case EXCEPTION_SINGLE_STEP:
+        logfatal("Desc: EXCEPTION_SINGLE_STEP A trace trap or other single-instruction mechanism signaled that one\n");
+        logfatal("      instruction has been executed.\n");
+        break;
+    case EXCEPTION_STACK_OVERFLOW:
+        logfatal("Desc: EXCEPTION_STACK_OVERFLOW The thread used up its stack.\n");
+        break;
+    default:
+        logfatal("Desc: Unknown.\n");
+        break;
+    }
+    logfatal("########################################################################\n");
+    logfatal("########################################################################\n\n\n");
+
+	// Create a minidump
+	GenerateDump(pExceptionPointers);
+
+    sprintf(flpath, "%s\\fatal error.log", global.startup_path);
+    strcpy(msg, "OpenScrape is about to crash.\n");
+    strcat(msg, "A minidump has been created in your\n");
+	strcat(msg, "Windows temporary file directory.\n");
+    strcat(msg, "\n\nOpenScrape will shut down when you click OK.");
+    MessageBox(NULL, msg, "FATAL ERROR", MB_OK | MB_ICONEXCLAMATION | MB_TOPMOST);
+
+    return EXCEPTION_EXECUTE_HANDLER;
+}
+
+BOOL CreateBMPFile(const char *szFile, HBITMAP hBMP) 
+{
 	// Saves the hBitmap as a bitmap.
 	HDC					hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL); 
 	HDC					hdcCompatible = CreateCompatibleDC(hdcScreen); 
@@ -149,7 +287,7 @@ BOOL CreateBMPFile(const char *szFile, HBITMAP hBMP) {
 void start_log(void) {
 	if (log_fp==NULL) {
 		CString fn;
-		fn.Format("%s\\oh%d.log", startup_path, theApp.sessionnum);
+		fn.Format("%s\\oh%d.log", global.startup_path, theApp.sessionnum);
 		log_fp = fopen(fn.GetString(), "a");
 		write_log("! log file open\n");
 		fprintf(log_fp, "yyyy.mm.dd hh:mm:ss -  # hand commoncard rank poker  win  los  tie  P      nit bestaction - play*      call       bet       pot   balance - FCRA FCRA swag\n");
@@ -182,3 +320,35 @@ void stop_log(void) {
 		log_fp = NULL;
 	}
 }
+
+int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers)
+{
+    bool		bMiniDumpSuccessful;
+    char		szPath[MAX_PATH]; 
+    char		szFileName[MAX_PATH]; 
+    DWORD		dwBufferSize = MAX_PATH;
+    HANDLE		hDumpFile;
+    SYSTEMTIME	stLocalTime;
+    MINIDUMP_EXCEPTION_INFORMATION	ExpParam;
+
+    GetLocalTime(&stLocalTime);
+    GetTempPath(dwBufferSize, szPath);
+
+    sprintf(szFileName, "%s%s-%s-%04d%02d%02d-%02d%02d%02d-%ld-%ld.dmp", szPath, 
+			"OpenScrape", VERSION_TEXT, stLocalTime.wYear, stLocalTime.wMonth, stLocalTime.wDay, 
+			stLocalTime.wHour, stLocalTime.wMinute, stLocalTime.wSecond, GetCurrentProcessId(), 
+			GetCurrentThreadId());
+
+    hDumpFile = CreateFile(szFileName, GENERIC_READ|GENERIC_WRITE, FILE_SHARE_WRITE|FILE_SHARE_READ, 
+						   0, CREATE_ALWAYS, 0, 0);
+   
+    ExpParam.ThreadId = GetCurrentThreadId();
+    ExpParam.ExceptionPointers = pExceptionPointers;
+    ExpParam.ClientPointers = TRUE;
+   
+    bMiniDumpSuccessful = MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hDumpFile,
+											MiniDumpWithDataSegs, &ExpParam, NULL, NULL);
+
+    return EXCEPTION_EXECUTE_HANDLER;
+}
+

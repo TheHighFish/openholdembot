@@ -4,8 +4,14 @@
 // To enable seh:
 // uncomment this 
 // and add /EHa flag to the compiler options
-//#define	SEH_ENABLE	1
+// For automatic minidumps to work, this must be left configured "on"
+// all the time now.
+#define	SEH_ENABLE	1
 
+// This lets transform.cpp know which source tree is #include'ing it
+#ifndef OPENHOLDEM_PROGRAM
+#define OPENHOLDEM_PROGRAM
+#endif
 
 //  Three macros for exception handling,
 //    replacing the old copy- and pasted code
@@ -70,7 +76,7 @@
 #endif
 
 
-LONG WINAPI MyUnHandledExceptionFilter(struct _EXCEPTION_POINTERS *lpExceptionInfo);
+LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers);
 char * get_time(char * timebuf);
 char * get_now_time(char * timebuf);
 void logfatal (char* fmt, ...);
@@ -81,6 +87,7 @@ void write_log(char* fmt, ...);
 void write_log_nostamp(char* fmt, ...);
 void write_log_autoplay(const char * action);
 void stop_log(void);
+int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers);
 
 extern FILE *log_fp;
 

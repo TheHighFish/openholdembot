@@ -5,9 +5,6 @@
 
 #define		BLINKER_TIMER				1
 
-// Global variable to hold the startup path
-extern char		startup_path[MAX_PATH];
-
 // Global variable for holding table list by callback function
 extern CArray <STableList, STableList>		g_tlist;
 

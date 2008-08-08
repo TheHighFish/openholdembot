@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "DialogEditHash.h"
+#include "debug.h"
 
 
 // CDlgEditHash dialog
@@ -12,7 +13,7 @@ IMPLEMENT_DYNAMIC(CDlgEditHash, CDialog)
 CDlgEditHash::CDlgEditHash(CWnd* pParent /*=NULL*/)
 	: CDialog(CDlgEditHash::IDD, pParent)
 {
-
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
 }
 
 CDlgEditHash::~CDlgEditHash()
@@ -35,6 +36,8 @@ END_MESSAGE_MAP()
 
 BOOL CDlgEditHash::OnInitDialog()
 {
+	__SEH_HEADER
+
 	int			i;
 
 	CDialog::OnInitDialog();
@@ -49,11 +52,17 @@ BOOL CDlgEditHash::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
+
+	__SEH_LOGFATAL("CDlgEditHash::OnInitDialog : \n");
 }
 
 void CDlgEditHash::OnBnClickedOk()
 {
+	__SEH_HEADER
+
 	m_Type.GetLBText(m_Type.GetCurSel(), type);
 
 	OnOK();
+
+	__SEH_LOGFATAL("CDlgEditHash::OnBnClickedOk : \n");
 }

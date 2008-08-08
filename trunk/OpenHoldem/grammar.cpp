@@ -582,6 +582,8 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logC
 
 double eval_symbol(SFormula *f, string sym, CEvalInfoFunction **logCallingFunction, int *e)
 {
+    __SEH_HEADER
+
     double		result;
     char		f$func[10];
     const char	*ranks = "  23456789TJQKA";

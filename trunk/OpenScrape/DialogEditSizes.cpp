@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "DialogEditSizes.h"
+#include "debug.h"
 
 
 // CDlgEditSizes dialog
@@ -11,6 +12,7 @@ IMPLEMENT_DYNAMIC(CDlgEditSizes, CDialog)
 
 CDlgEditSizes::CDlgEditSizes(CWnd* pParent /*=NULL*/) : CDialog(CDlgEditSizes::IDD, pParent)
 {
+    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
 }
 
 CDlgEditSizes::~CDlgEditSizes()
@@ -35,6 +37,8 @@ END_MESSAGE_MAP()
 
 BOOL CDlgEditSizes::OnInitDialog()
 {
+	__SEH_HEADER
+
 	int			i;
 	CString		text;
 
@@ -55,10 +59,14 @@ BOOL CDlgEditSizes::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
+
+	__SEH_LOGFATAL("CDlgEditSizes::OnInitDialog : \n");
 }
 
 void CDlgEditSizes::OnBnClickedOk()
 {
+	__SEH_HEADER
+
 	CString		text;
 
 	if (m_Name.GetCurSel() != LB_ERR)
@@ -72,4 +80,6 @@ void CDlgEditSizes::OnBnClickedOk()
 	height = atoi(text.GetString());
 
 	OnOK();
+
+	__SEH_LOGFATAL("CDlgEditSizes::OnBnClickedOk : \n");
 }

@@ -3,12 +3,14 @@
 
 #include "stdafx.h"
 #include "DialogEdit.h"
+#include "debug.h"
 
 // CDlgEdit dialog
 IMPLEMENT_DYNAMIC(CDlgEdit, CDialog)
 
 CDlgEdit::CDlgEdit(CWnd* pParent /*=NULL*/)	: CDialog(CDlgEdit::IDD, pParent) 
 {
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
 }
 
 CDlgEdit::~CDlgEdit() 
@@ -30,6 +32,8 @@ END_MESSAGE_MAP()
 // CDlgEdit message handlers
 BOOL CDlgEdit::OnInitDialog() 
 {
+	__SEH_HEADER
+
 	CDialog::OnInitDialog();
 
 	SetWindowText(m_titletext.GetString());
@@ -39,10 +43,16 @@ BOOL CDlgEdit::OnInitDialog()
 
 	return FALSE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
+
+	__SEH_LOGFATAL("CDlgEdit::OnInitDialog : \n");
 }
 
 void CDlgEdit::OnBnClickedOk() 
 {
+	__SEH_HEADER
+
 	m_EditEntry.GetWindowText(m_result);
 	OnOK();
+
+	__SEH_LOGFATAL("CDlgEdit::OnBnClickedOk : \n");
 }

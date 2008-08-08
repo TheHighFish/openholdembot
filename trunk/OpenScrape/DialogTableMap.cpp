@@ -30,6 +30,10 @@ const char * cardsList[] = { "2c", "2s", "2h", "2d", "3c", "3s", "3h", "3d", "4c
 // CDlgTableMap dialog
 CDlgTableMap::CDlgTableMap(CWnd* pParent /*=NULL*/)	: CDialog(CDlgTableMap::IDD, pParent)
 {
+	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+	__SEH_HEADER
+
 	black_pen.CreatePen(PS_SOLID, 1, COLOR_BLACK);
 	green_pen.CreatePen(PS_SOLID, 1, COLOR_GREEN);
 	red_pen.CreatePen(PS_SOLID, 1, COLOR_RED);
@@ -65,6 +69,8 @@ CDlgTableMap::CDlgTableMap(CWnd* pParent /*=NULL*/)	: CDialog(CDlgTableMap::IDD,
 	picker_cursor = false;
 	hCurPicker = ::LoadCursor(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDC_PICKERCURSOR));
 	hCurStandard = ::LoadCursor(NULL, IDC_ARROW);
+
+	__SEH_LOGFATAL("CDlgTableMap::Constructor : \n");
 }
 
 CDlgTableMap::~CDlgTableMap()
@@ -191,6 +197,8 @@ END_MESSAGE_MAP()
 // CDlgTableMap message handlers
 BOOL CDlgTableMap::OnInitDialog()
 {
+	__SEH_HEADER
+
 	Registry		reg;
 	int				max_x, max_y;
 	CString			text;
@@ -335,10 +343,14 @@ BOOL CDlgTableMap::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
+
+	__SEH_LOGFATAL("CDlgTableMap::OnInitDialog : \n");
 }
 
 BOOL CDlgTableMap::DestroyWindow()
 {
+	__SEH_HEADER
+
 	Registry		reg;
 	WINDOWPLACEMENT wp;
 
@@ -353,22 +365,34 @@ BOOL CDlgTableMap::DestroyWindow()
 	reg.write_reg();
 
 	return CDialog::DestroyWindow();
+
+	__SEH_LOGFATAL("CDlgTableMap::DestroyWindow : \n");
 }
 
 void CDlgTableMap::OnOK()
 {
+	__SEH_HEADER
+
 	// prevents enter key from closing dialog
 	//CDialog::OnOK();
+
+	__SEH_LOGFATAL("CDlgTableMap::OnOK : \n");
 }
 
 void CDlgTableMap::OnCancel()
 {
+	__SEH_HEADER
+
 	// prevents esc key from closing dialog
 	//CDialog::OnCancel();
+
+	__SEH_LOGFATAL("CDlgTableMap::OnCancel : \n");
 }
 
 void CDlgTableMap::OnPaint()
 {
+	__SEH_HEADER
+
 	CPaintDC			dc(this);
 	CString				sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
 	HTREEITEM			parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
@@ -406,10 +430,14 @@ void CDlgTableMap::OnPaint()
 	}
 
 	// Do not call CDialog::OnPaint() for painting messages
+
+	__SEH_LOGFATAL("CDlgTableMap::OnPaint : \n");
 }
 
 void CDlgTableMap::clear_bitmap_control(void)
 {
+	__SEH_HEADER
+
 	CDC				*pDC = m_BitmapFrame.GetDC();
 	CPen			*pTempPen, oldpen;
 	CBrush			*pTempBrush, oldbrush;	
@@ -426,10 +454,14 @@ void CDlgTableMap::clear_bitmap_control(void)
 	pDC->SelectObject(oldbrush);
 	pDC->SelectObject(oldpen);
 	ReleaseDC(pDC);
+
+	__SEH_LOGFATAL("CDlgTableMap::clear_bitmap_control : \n");
 }
 
 void CDlgTableMap::draw_region_bitmap(void)
 {
+	__SEH_HEADER
+
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	CDC					*pDC;
 	HDC					hdcControl, hdcScreen;
@@ -510,10 +542,14 @@ void CDlgTableMap::draw_region_bitmap(void)
 		DeleteDC(hdcScreen);
 		ReleaseDC(pDC);
 	}
+
+	__SEH_LOGFATAL("CDlgTableMap::draw_region_bitmap : \n");
 }
 
 void CDlgTableMap::draw_image_bitmap(void)
 {
+	__SEH_HEADER
+
 	int					x, y, width, height, zoom;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	CDC					*pDC;
@@ -601,10 +637,14 @@ void CDlgTableMap::draw_image_bitmap(void)
 		DeleteDC(hdcScreen);
 		ReleaseDC(pDC);
 	}
+
+	__SEH_LOGFATAL("CDlgTableMap::draw_image_bitmap : \n");
 }
 
 void CDlgTableMap::OnRegionChange()
 {
+	__SEH_HEADER
+
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	CString				text, alpha, red, green, blue;
 	Stablemap_region	*sel_region_ptr = NULL;
@@ -659,16 +699,24 @@ void CDlgTableMap::OnRegionChange()
 	Invalidate(false);
 
 	pDoc->SetModifiedFlag(true);
+
+	__SEH_LOGFATAL("CDlgTableMap::OnRegionChange : \n");
 }
 
 void CDlgTableMap::OnZoomChange()
 {
+	__SEH_HEADER
+
 	theApp.m_pMainWnd->Invalidate(false);
 	Invalidate(false);
+
+	__SEH_LOGFATAL("CDlgTableMap::OnZoomChange : \n");
 }
 
 void CDlgTableMap::OnTvnSelchangedTablemapTree(NMHDR *pNMHDR, LRESULT *pResult)
 {
+	__SEH_HEADER
+
 	LPNMTREEVIEW	pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
 
 	update_display();
@@ -677,10 +725,14 @@ void CDlgTableMap::OnTvnSelchangedTablemapTree(NMHDR *pNMHDR, LRESULT *pResult)
 	Invalidate(false);
 
 	*pResult = 0;
+
+	__SEH_LOGFATAL("CDlgTableMap::OnTvnSelchangedTablemapTree : \n");
 }
 
 void CDlgTableMap::update_display(void)
 {
+	__SEH_HEADER
+
 	CString				text, hashname, type, charstr, sel_ch, sel_type, sel_temp;
 	CString				sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
 	HTREEITEM			parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
@@ -859,10 +911,14 @@ void CDlgTableMap::update_display(void)
 
 	// Re-enable triggering of OnChange messages
 	ignore_changes = false;
+
+	__SEH_LOGFATAL("CDlgTableMap::update_display : \n");
 }
 
 void CDlgTableMap::disable_and_clear_all(void)
 {
+	__SEH_HEADER
+
 	m_Left.EnableWindow(false);
 	m_Left.SetWindowText("");
 	m_Top.EnableWindow(false);
@@ -928,10 +984,14 @@ void CDlgTableMap::disable_and_clear_all(void)
 	m_NudgeDown.EnableWindow(false);
 	m_NudgeDownLeft.EnableWindow(false);
 	m_NudgeLeft.EnableWindow(false);
+
+	__SEH_LOGFATAL("CDlgTableMap::disable_and_clear_all : \n");
 }
 
 void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 {
+	__SEH_HEADER
+
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	CString				text, selected_transform, separation;
 	CDC					*pDC;
@@ -1115,10 +1175,14 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 		DeleteDC(hdcScreen);
 		ReleaseDC(pDC);
 	}
+
+	__SEH_LOGFATAL("CDlgTableMap::update_r$_display : \n");
 }
 
 void CDlgTableMap::update_t$_display(void)
 {
+	__SEH_HEADER
+
 	int					j, x, bit, top;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	CString				separation, text, charstr;
@@ -1168,10 +1232,14 @@ void CDlgTableMap::update_t$_display(void)
 		// Update pixel separation control
 		m_PixelSeparation.SetWindowText(separation);
 	}
+
+	__SEH_LOGFATAL("CDlgTableMap::update_t$_display : \n");
 }
 
 void CDlgTableMap::OnDeltaposLeftSpin(NMHDR *pNMHDR, LRESULT *pResult)
 {
+	__SEH_HEADER
+
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	Stablemap_region	*sel_region_ptr = NULL;
@@ -1193,10 +1261,14 @@ void CDlgTableMap::OnDeltaposLeftSpin(NMHDR *pNMHDR, LRESULT *pResult)
 	pDoc->SetModifiedFlag(true);
 
 	*pResult = 0;
+
+	__SEH_LOGFATAL("CDlgTableMap::OnDeltaposLeftSpin : \n");
 }
 
 void CDlgTableMap::OnDeltaposTopSpin(NMHDR *pNMHDR, LRESULT *pResult)
 {
+	__SEH_HEADER
+
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	Stablemap_region	*sel_region_ptr = NULL;
@@ -1218,10 +1290,14 @@ void CDlgTableMap::OnDeltaposTopSpin(NMHDR *pNMHDR, LRESULT *pResult)
 	pDoc->SetModifiedFlag(true);
 
 	*pResult = 0;
+
+	__SEH_LOGFATAL("CDlgTableMap::OnDeltaposTopSpin : \n");
 }
 
 void CDlgTableMap::OnDeltaposBottomSpin(NMHDR *pNMHDR, LRESULT *pResult)
 {
+	__SEH_HEADER
+
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	Stablemap_region	*sel_region_ptr = NULL;
@@ -1243,10 +1319,14 @@ void CDlgTableMap::OnDeltaposBottomSpin(NMHDR *pNMHDR, LRESULT *pResult)
 	pDoc->SetModifiedFlag(true);
 
 	*pResult = 0;
+
+	__SEH_LOGFATAL("CDlgTableMap::OnDeltaposBottomSpin : \n");
 }
 
 void CDlgTableMap::OnDeltaposRightSpin(NMHDR *pNMHDR, LRESULT *pResult)
 {
+	__SEH_HEADER
+
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	Stablemap_region	*sel_region_ptr = NULL;
@@ -1268,10 +1348,14 @@ void CDlgTableMap::OnDeltaposRightSpin(NMHDR *pNMHDR, LRESULT *pResult)
 	pDoc->SetModifiedFlag(true);
 
 	*pResult = 0;
+
+	__SEH_LOGFATAL("CDlgTableMap::OnDeltaposRightSpin : \n");
 }
 
 void CDlgTableMap::OnDeltaposRadiusSpin(NMHDR *pNMHDR, LRESULT *pResult)
 {
+	__SEH_HEADER
+
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	Stablemap_region	*sel_region_ptr = NULL;
@@ -1293,10 +1377,14 @@ void CDlgTableMap::OnDeltaposRadiusSpin(NMHDR *pNMHDR, LRESULT *pResult)
 	pDoc->SetModifiedFlag(true);
 
 	*pResult = 0;
+
+	__SEH_LOGFATAL("CDlgTableMap::OnDeltaposRadiusSpin : \n");
 }
 
 void CDlgTableMap::OnBnClickedNew()
 {
+	__SEH_HEADER
+
 	COpenScrapeDoc			*pDoc = COpenScrapeDoc::GetDocument();
 	CString					text, sel;
 	int						i, j, new_index;
@@ -1509,10 +1597,13 @@ void CDlgTableMap::OnBnClickedNew()
 		// Not valid - add image using "Create Image" button
 	}
 
+	__SEH_LOGFATAL("CDlgTableMap::OnBnClickedNew : \n");
 }
 
 void CDlgTableMap::OnBnClickedDelete()
 {
+	__SEH_HEADER
+
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	int					i, del_index;
 	CString				text;
@@ -1742,10 +1833,14 @@ void CDlgTableMap::OnBnClickedDelete()
 			}
 		}
 	}
+
+	__SEH_LOGFATAL("CDlgTableMap::OnBnClickedDelete : \n");
 }
 
 HTREEITEM CDlgTableMap::update_tree(CString node_text)
 {
+	__SEH_HEADER
+
 	int				i;
 	bool			expanded[10];
 	HTREEITEM		node;
@@ -1782,10 +1877,14 @@ HTREEITEM CDlgTableMap::update_tree(CString node_text)
 		text = m_TableMapTree.GetItemText(node);
 	}
 	return node;
+
+	__SEH_LOGFATAL("CDlgTableMap::update_tree : \n");
 }
 
 void CDlgTableMap::OnBnClickedEdit()
 {
+	__SEH_HEADER
+
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	CString				text, num;
 	CString				sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
@@ -2057,10 +2156,14 @@ void CDlgTableMap::OnBnClickedEdit()
 	{
 		// Not valid - should delete and add a new one using "Create Image" button
 	}
+
+	__SEH_LOGFATAL("CDlgTableMap::OnBnClickedEdit : \n");
 }
 
 void CDlgTableMap::OnBnClickedCreateImage()
 {
+	__SEH_HEADER
+
 	CDlgEdit			edit;
 	Stablemap_image		new_image;
 	int					x, y, width, height, pix_cnt, new_index;
@@ -2162,10 +2265,14 @@ void CDlgTableMap::OnBnClickedCreateImage()
 			pDoc->SetModifiedFlag(true);	
 		}
 	}
+
+	__SEH_LOGFATAL("CDlgTableMap::OnBnClickedCreateImage : \n");
 }
 
 void CDlgTableMap::OnBnClickedCreateFont()
 {
+	__SEH_HEADER
+
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	CDlgEditFont		dlg_editfont;
 	Stablemap_font		new_font;
@@ -2388,10 +2495,14 @@ void CDlgTableMap::OnBnClickedCreateFont()
 			}
 		}
 	}
+
+	__SEH_LOGFATAL("CDlgTableMap::OnBnClickedCreateFont : \n");
 }
 
 void CDlgTableMap::OnBnClickedCreateHash()
 {
+	__SEH_HEADER
+
 	CDlgEditHash			dlghash;
 	Stablemap_hash_value	new_hash;
 	bool					t[4] = { false };
@@ -2481,28 +2592,40 @@ void CDlgTableMap::OnBnClickedCreateHash()
 			pDoc->SetModifiedFlag(true);
 		}
 	}
+
+	__SEH_LOGFATAL("CDlgTableMap::OnBnClickedCreateHash : \n");
 }
 
 void CDlgTableMap::OnBnClickedFontplus()
 {
+	__SEH_HEADER
+
 	separation_font_size++;
 	lf_fixed.lfHeight = separation_font_size;
 	separation_font.CreateFontIndirect(&lf_fixed);
 	m_PixelSeparation.SetFont(&separation_font);
 	Invalidate(false);
+
+	__SEH_LOGFATAL("CDlgTableMap::OnBnClickedFontplus : \n");
 }
 
 void CDlgTableMap::OnBnClickedFontminus()
 {
+	__SEH_HEADER
+
 	separation_font_size--;
 	lf_fixed.lfHeight = separation_font_size;
 	separation_font.CreateFontIndirect(&lf_fixed);
 	m_PixelSeparation.SetFont(&separation_font);
 	Invalidate(false);
+
+	__SEH_LOGFATAL("CDlgTableMap::OnBnClickedFontminus : \n");
 }
 
 BOOL CDlgTableMap::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
+	__SEH_HEADER
+
 	RECT			bmp_rect;
 	POINT			point;
 
@@ -2519,10 +2642,14 @@ BOOL CDlgTableMap::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	}
 
 	return CDialog::OnSetCursor(pWnd, nHitTest, message);
+
+	__SEH_LOGFATAL("CDlgTableMap::OnSetCursor : \n");
 }
 
 LRESULT CDlgTableMap::OnStickyButtonDown(WPARAM wp, LPARAM lp)
 {
+	__SEH_HEADER
+
 	COpenScrapeView			*pView = COpenScrapeView::GetView();
 
 	if ((HWND) wp == m_DrawRect.GetSafeHwnd())
@@ -2537,10 +2664,14 @@ LRESULT CDlgTableMap::OnStickyButtonDown(WPARAM wp, LPARAM lp)
 	}
 
 	return false;
+
+	__SEH_LOGFATAL("CDlgTableMap::OnStickyButtonDown : \n");
 }
 
 LRESULT CDlgTableMap::OnStickyButtonUp(WPARAM wp, LPARAM lp)
 {
+	__SEH_HEADER
+
 	COpenScrapeView			*pView = COpenScrapeView::GetView();
 
 	if ((HWND) wp == m_DrawRect.GetSafeHwnd())
@@ -2557,10 +2688,14 @@ LRESULT CDlgTableMap::OnStickyButtonUp(WPARAM wp, LPARAM lp)
 	}
 
 	return false;
+
+	__SEH_LOGFATAL("CDlgTableMap::OnStickyButtonUp : \n");
 }
 
 void CDlgTableMap::OnLButtonDown(UINT nFlags, CPoint point)
 {
+	__SEH_HEADER
+
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RECT				bmp_rect;
 	Stablemap_region	*sel_region_ptr = NULL;
@@ -2589,10 +2724,14 @@ void CDlgTableMap::OnLButtonDown(UINT nFlags, CPoint point)
 	}
 
 	CDialog::OnLButtonDown(nFlags, point);
+
+	__SEH_LOGFATAL("CDlgTableMap::OnLButtonDown : \n");
 }
 
 void CDlgTableMap::OnMouseMove(UINT nFlags, CPoint point)
 {
+	__SEH_HEADER
+
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RECT				bmp_rect;
 	Stablemap_region	*sel_region_ptr = NULL;
@@ -2619,10 +2758,14 @@ void CDlgTableMap::OnMouseMove(UINT nFlags, CPoint point)
 	}
 
 	CDialog::OnMouseMove(nFlags, point);
+
+	__SEH_LOGFATAL("CDlgTableMap::OnMouseMove : \n");
 }
 
 COLORREF CDlgTableMap::get_color_under_mouse(UINT *nFlags, CPoint *point)
 {
+	__SEH_HEADER
+
 	CDC				*pDC = GetDC();
 	HDC				hdc = *pDC;
 	HDC				hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
@@ -2677,10 +2820,14 @@ COLORREF CDlgTableMap::get_color_under_mouse(UINT *nFlags, CPoint *point)
 	ReleaseDC(pDC);
 
 	return cr;
+
+	__SEH_LOGFATAL("CDlgTableMap::get_color_under_mouse : \n");
 }
 
 void CDlgTableMap::create_tree(void)
 {
+	__SEH_HEADER
+
 	int							i;
 	HTREEITEM					parent, newitem;
 	COpenScrapeDoc				*pDoc = COpenScrapeDoc::GetDocument();
@@ -2763,10 +2910,14 @@ void CDlgTableMap::create_tree(void)
 	}
 	m_TableMapTree.SortChildren(parent);
 	UpdateStatus();
+
+	__SEH_LOGFATAL("CDlgTableMap::create_tree : \n");
 }
 
 void CDlgTableMap::OnBnClickedNudgeTaller()
 {
+	__SEH_HEADER
+
 	Stablemap_region	*sel_region_ptr = NULL;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
@@ -2784,10 +2935,14 @@ void CDlgTableMap::OnBnClickedNudgeTaller()
 
 		pDoc->SetModifiedFlag(true);
 	}
+
+	__SEH_LOGFATAL("CDlgTableMap::OnBnClickedNudgeTaller : \n");
 }
 
 void CDlgTableMap::OnBnClickedNudgeShorter()
 {
+	__SEH_HEADER
+
 	Stablemap_region	*sel_region_ptr = NULL;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
@@ -2805,10 +2960,14 @@ void CDlgTableMap::OnBnClickedNudgeShorter()
 
 		pDoc->SetModifiedFlag(true);
 	}
+
+	__SEH_LOGFATAL("CDlgTableMap::OnBnClickedNudgeShorter : \n");
 }
 
 void CDlgTableMap::OnBnClickedNudgeWider()
 {
+	__SEH_HEADER
+
 	Stablemap_region	*sel_region_ptr = NULL;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
@@ -2826,10 +2985,14 @@ void CDlgTableMap::OnBnClickedNudgeWider()
 
 		pDoc->SetModifiedFlag(true);
 	}
+
+	__SEH_LOGFATAL("CDlgTableMap::OnBnClickedNudgeWider : \n");
 }
 
 void CDlgTableMap::OnBnClickedNudgeNarrower()
 {
+	__SEH_HEADER
+
 	Stablemap_region	*sel_region_ptr = NULL;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
@@ -2847,10 +3010,14 @@ void CDlgTableMap::OnBnClickedNudgeNarrower()
 
 		pDoc->SetModifiedFlag(true);
 	}
+
+	__SEH_LOGFATAL("CDlgTableMap::OnBnClickedNudgeNarrower : \n");
 }
 
 void CDlgTableMap::OnBnClickedNudgeBigger()
 {
+	__SEH_HEADER
+
 	Stablemap_region	*sel_region_ptr = NULL;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
@@ -2870,10 +3037,14 @@ void CDlgTableMap::OnBnClickedNudgeBigger()
 
 		pDoc->SetModifiedFlag(true);
 	}
+
+	__SEH_LOGFATAL("CDlgTableMap::OnBnClickedNudgeBigger : \n");
 }
 
 void CDlgTableMap::OnBnClickedNudgeSmaller()
 {
+	__SEH_HEADER
+
 	Stablemap_region	*sel_region_ptr = NULL;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
@@ -2893,10 +3064,14 @@ void CDlgTableMap::OnBnClickedNudgeSmaller()
 
 		pDoc->SetModifiedFlag(true);
 	}
+
+	__SEH_LOGFATAL("CDlgTableMap::OnBnClickedNudgeSmaller : \n");
 }
 
 void CDlgTableMap::OnBnClickedNudgeUpleft()
 {
+	__SEH_HEADER
+
 	Stablemap_region	*sel_region_ptr = NULL;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
@@ -2916,10 +3091,14 @@ void CDlgTableMap::OnBnClickedNudgeUpleft()
 
 		pDoc->SetModifiedFlag(true);
 	}
+
+	__SEH_LOGFATAL("CDlgTableMap::OnBnClickedNudgeUpleft : \n");
 }
 
 void CDlgTableMap::OnBnClickedNudgeUp()
 {
+	__SEH_HEADER
+
 	Stablemap_region	*sel_region_ptr = NULL;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
@@ -2937,10 +3116,14 @@ void CDlgTableMap::OnBnClickedNudgeUp()
 
 		pDoc->SetModifiedFlag(true);
 	}
+
+	__SEH_LOGFATAL("CDlgTableMap::OnBnClickedNudgeUp : \n");
 }
 
 void CDlgTableMap::OnBnClickedNudgeUpright()
 {
+	__SEH_HEADER
+
 	Stablemap_region	*sel_region_ptr = NULL;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
@@ -2960,10 +3143,14 @@ void CDlgTableMap::OnBnClickedNudgeUpright()
 
 		pDoc->SetModifiedFlag(true);
 	}
+
+	__SEH_LOGFATAL("CDlgTableMap::OnBnClickedNudgeUpright : \n");
 }
 
 void CDlgTableMap::OnBnClickedNudgeRight()
 {
+	__SEH_HEADER
+
 	Stablemap_region	*sel_region_ptr = NULL;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
@@ -2981,10 +3168,14 @@ void CDlgTableMap::OnBnClickedNudgeRight()
 
 		pDoc->SetModifiedFlag(true);
 	}
+
+	__SEH_LOGFATAL("CDlgTableMap::OnBnClickedNudgeRight : \n");
 }
 
 void CDlgTableMap::OnBnClickedNudgeDownright()
 {
+	__SEH_HEADER
+
 	Stablemap_region	*sel_region_ptr = NULL;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
@@ -3004,10 +3195,14 @@ void CDlgTableMap::OnBnClickedNudgeDownright()
 
 		pDoc->SetModifiedFlag(true);
 	}
+
+	__SEH_LOGFATAL("CDlgTableMap::OnBnClickedNudgeDownright : \n");
 }
 
 void CDlgTableMap::OnBnClickedNudgeDown()
 {
+	__SEH_HEADER
+
 	Stablemap_region	*sel_region_ptr = NULL;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
@@ -3025,10 +3220,14 @@ void CDlgTableMap::OnBnClickedNudgeDown()
 
 		pDoc->SetModifiedFlag(true);
 	}
+
+	__SEH_LOGFATAL("CDlgTableMap::OnBnClickedNudgeDown : \n");
 }
 
 void CDlgTableMap::OnBnClickedNudgeDownleft()
 {
+	__SEH_HEADER
+
 	Stablemap_region	*sel_region_ptr = NULL;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
@@ -3048,10 +3247,14 @@ void CDlgTableMap::OnBnClickedNudgeDownleft()
 
 		pDoc->SetModifiedFlag(true);
 	}
+
+	__SEH_LOGFATAL("CDlgTableMap::OnBnClickedNudgeDownleft : \n");
 }
 
 void CDlgTableMap::OnBnClickedNudgeLeft()
 {
+	__SEH_HEADER
+
 	Stablemap_region	*sel_region_ptr = NULL;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
@@ -3069,10 +3272,14 @@ void CDlgTableMap::OnBnClickedNudgeLeft()
 
 		pDoc->SetModifiedFlag(true);
 	}
+
+	__SEH_LOGFATAL("CDlgTableMap::OnBnClickedNudgeLeft : \n");
 }
 
 BOOL CDlgTableMap::OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult)
 {
+	__SEH_HEADER
+
 	// allow top level routing frame to handle the message
 	if (GetRoutingFrame() != NULL)
 		return false;
@@ -3096,21 +3303,34 @@ BOOL CDlgTableMap::OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult)
 	SWP_NOSIZE|SWP_NOMOVE|SWP_NOOWNERZORDER);
 
 	return true;    // message was handled
+
+	__SEH_LOGFATAL("CDlgTableMap::OnToolTipText : \n");
 }
+
 void CDlgTableMap::OnSizing(UINT nSide, LPRECT lpRect)
 {
+	__SEH_HEADER
+
 	CDialog::OnSizing(nSide, lpRect);
 	const int parts = 2;
 	CRect rect;
+
+	__SEH_LOGFATAL("CDlgTableMap::OnSizing : \n");
 }
 
 int CDlgTableMap::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {	
+	__SEH_HEADER
+
 	return 0;
+
+	__SEH_LOGFATAL("CDlgTableMap::OnCreate : \n");
 }
 
 void CDlgTableMap::UpdateStatus(void)
 {
+	__SEH_HEADER
+
 	int			i, k, fontNum, cardNum;
 	CString		statusFonts, statusCards, node_text, node_group, fontSet;
 	HTREEITEM	node;
@@ -3211,9 +3431,15 @@ void CDlgTableMap::UpdateStatus(void)
 	}
 	//  Display missing cards
 	m_status_cards.SetWindowTextA(_T(statusCards));
+
+	__SEH_LOGFATAL("CDlgTableMap::UpdateStatus : \n");
 }
 
 void CDlgTableMap::OnStnClickedMissingCards()
 {
+	__SEH_HEADER
+
 	// TODO: Add your control notification handler code here
+
+	__SEH_LOGFATAL("CDlgTableMap::OnStnClickedMissingCards : \n");
 }
