@@ -81,7 +81,7 @@ UINT CHeartbeatThread::heartbeat_thread_function(LPVOID pParam)
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         // Scrape window
-        EnterCriticalSection(&cs_scrape_symbol);
+        EnterCriticalSection(&cs_scraper);
 
 		if (!global.ppro_is_connected)
         {
@@ -96,7 +96,7 @@ UINT CHeartbeatThread::heartbeat_thread_function(LPVOID pParam)
             }
         }
 
-		LeaveCriticalSection(&cs_scrape_symbol);
+		LeaveCriticalSection(&cs_scraper);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         // Set Title of window
@@ -131,7 +131,7 @@ UINT CHeartbeatThread::heartbeat_thread_function(LPVOID pParam)
             global.formula.mFunction[i].fresh = false;
         }
 
-        EnterCriticalSection(&cs_scrape_symbol);
+        EnterCriticalSection(&cs_symbols);
 
 		if (new_scrape!=NOTHING_CHANGED || (global.ppro_is_connected && ppro.data.m_tinf.m_tid != 0))
         {
@@ -143,23 +143,27 @@ UINT CHeartbeatThread::heartbeat_thread_function(LPVOID pParam)
             symbols.calc_probabilities();
         }
 
-		LeaveCriticalSection(&cs_scrape_symbol);
+		LeaveCriticalSection(&cs_symbols);
 
 		////////////////////////////////////////////////////////////////////////////////////////////
         // Now that the scraper and symbols calc is done, save some variables from CSraper and CSymbols
 		// for use below
-        EnterCriticalSection(&cs_scrape_symbol);
-		double	card_player0 = scraper.card_player[(int) symbols.sym.chair][0];
-		double	card_player1 = scraper.card_player[(int) symbols.sym.chair][1];
+        EnterCriticalSection(&cs_symbols);
 		double	sym_issittingin = symbols.sym.issittingin;
 		bool	user_chair_confirmed = symbols.user_chair_confirmed;
-		LeaveCriticalSection(&cs_scrape_symbol);
+		int		sym_chair = (int) symbols.sym.chair;
+		bool	sym_ismyturn = (bool) symbols.sym.ismyturn;
+		LeaveCriticalSection(&cs_symbols);
 
+        EnterCriticalSection(&cs_scraper);
+		double	card_player0 = scraper.card_player[sym_chair][0];
+		double	card_player1 = scraper.card_player[sym_chair][1];
+		LeaveCriticalSection(&cs_scraper);
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////
         // If we've folded, stop iterator thread and set prwin/tie/los to zero
-		if (symbols.user_chair_confirmed &&
+		if (user_chair_confirmed &&
 			(card_player0==CARD_NOCARD || card_player0==CARD_BACK ||
 			 card_player1==CARD_NOCARD || card_player1==CARD_BACK))
         {
@@ -172,14 +176,17 @@ UINT CHeartbeatThread::heartbeat_thread_function(LPVOID pParam)
 				p_iterator_thread = NULL;
 			}
 			
-			EnterCriticalSection(&cs_iterator);
+			EnterCriticalSection(&cs_symbols);
             symbols.sym.prwin = 0;
             symbols.sym.prlos = 0;
             symbols.sym.prtie = 0;
-            iterator_thread_progress = 0;
-            iterator_run_with_nit = 0;
-            iterator_run_with_f$p = 0;
-            iterator_run_with_br = 0;
+			LeaveCriticalSection(&cs_symbols);
+
+			EnterCriticalSection(&cs_iterator);
+            iterator_status.iterator_thread_progress = 0;
+            iterator_status.iterator_run_with_nit = 0;
+            iterator_status.iterator_run_with_f$p = 0;
+            iterator_status.iterator_run_with_br = 0;
             LeaveCriticalSection(&cs_iterator);
         }
 
@@ -187,7 +194,7 @@ UINT CHeartbeatThread::heartbeat_thread_function(LPVOID pParam)
         // Create replay frame
         if (global.preferences.replay_record)
         {
-            if (symbols.sym.ismyturn && !global.replay_recorded_this_turn ||
+            if (sym_ismyturn && !global.replay_recorded_this_turn ||
                     global.preferences.replay_record_every_change && new_scrape != NOTHING_CHANGED)
             {
                 global.create_replay_frame();
@@ -245,7 +252,7 @@ UINT CHeartbeatThread::heartbeat_thread_function(LPVOID pParam)
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         // Autoplayer
-        if (cdll.hMod_dll!=NULL && symbols.sym.ismyturn)
+        if (cdll.hMod_dll!=NULL && sym_ismyturn)
         {
             iswait = (cdll.process_message) ("query", "dll$iswait");
         }

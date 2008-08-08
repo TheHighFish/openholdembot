@@ -929,21 +929,43 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 {
     __SEH_HEADER
 
-    CardMask	Cards;
-    int			nCards;
-    HandVal		hv;
-    char		hvstring[100];
-    int			i;
-    bool		iterator_running;
-    char		*card;
-    CString		temp;
-    int			cur_iterator_progress;
-    bool		cur_iterator_thread_complete;
-    bool		playing;
-    RECT		att_rect, wrect;
-    static RECT	prev_att_rect={0}, prev_wrect={0};
+    CardMask		Cards;
+    int				nCards;
+    HandVal			hv;
+    char			hvstring[100];
+    int				i;
+    char			*card;
+    CString			temp;
+    bool			playing;
+    RECT			att_rect, wrect;
+    static RECT		prev_att_rect={0}, prev_wrect={0};
 
-    if (nIDEvent == HWND_CHECK_TIMER)
+	// These variables hold values that are collected in a critical section
+
+	EnterCriticalSection(&cs_symbols);
+	bool			user_chair_confirmed = symbols.user_chair_confirmed;
+	int				sym_userchair = (int) symbols.sym.userchair;
+	LeaveCriticalSection(&cs_symbols);
+
+    EnterCriticalSection(&cs_scraper);
+	unsigned int	card_player[2], card_player_for_display[2], card_common[5];
+	for (i=0; i<=1; i++)
+	{
+		card_player[i] = scraper.card_player[sym_userchair][i];
+		card_player_for_display[i] = scraper.card_player_for_display[i];
+	}
+	for (i=0; i<=4; i++) 
+		card_common[i] = scraper.card_common[i];
+	LeaveCriticalSection(&cs_scraper);
+
+    EnterCriticalSection(&cs_iterator);
+	bool			iterator_running = iterator_status.iterator_thread_running;
+	unsigned int	iterator_progress = iterator_status.iterator_thread_progress;
+	bool			iterator_thread_complete = iterator_status.iterator_thread_complete;
+	LeaveCriticalSection(&cs_iterator);
+
+	
+	if (nIDEvent == HWND_CHECK_TIMER)
     {
         if (!IsWindow(global.attached_hwnd))
         {
@@ -953,26 +975,21 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 
     else if (nIDEvent == ENABLE_BUTTONS_TIMER)
     {
-		// Get exclusive access to CScraper and CSymbol variables
-		EnterCriticalSection(&cs_scrape_symbol);
 
-			// Autoplayer
-			if ((symbols.user_chair_confirmed && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)) ||
-					ppro.data.m_userchair!=-1)
-			{
-				m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
-			}
-			else
-			{
-				m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
-			}
-
-		// Allow other threads to use CScraper and CSymbol variables
-		LeaveCriticalSection(&cs_scrape_symbol);
+		// Autoplayer
+		if ((user_chair_confirmed && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)) ||
+				ppro.data.m_userchair!=-1)
+		{
+			m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
+		}
+		else
+		{
+			m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
+		}
 
 		// Automatically start autoplayer, if set in preferences
         if (global.preferences.ap_auto && !m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER) &&
-                ((symbols.user_chair_confirmed && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)) ||
+                ((user_chair_confirmed && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)) ||
                  ppro.data.m_userchair!=-1))
         {
             if (!global.auto_autoplay_pressed)
@@ -984,11 +1001,13 @@ void CMainFrame::OnTimer(UINT nIDEvent)
         }
 
         // attach
-        if (global.attached_hwnd != NULL) {
+        if (global.attached_hwnd != NULL) 
+		{
             m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_ATTACH_TOP, true);
             m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, true);
         }
-        else {
+        else 
+		{
             m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_ATTACH_TOP, false);
             m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, false);
         }
@@ -1003,24 +1022,10 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 
     else if (nIDEvent == UPDATE_STATUS_BAR_TIMER) 
 	{
-		// Get exclusive access to CIteratorThread variables
-        EnterCriticalSection(&cs_iterator);
-
-			// Don't update certain items if iterator is in progress
-			iterator_running = iterator_thread_running;
-
-		// Allow other threads to use CIterator variables
-		LeaveCriticalSection(&cs_iterator);
-
-
-		// Get exclusive access to CScraper and CSymbol variables
-		EnterCriticalSection(&cs_scrape_symbol);
-
-			// Figure out if I am "notplaying"
-			if (scraper.card_player[(int) symbols.sym.userchair][0] == CARD_BACK ||
-					scraper.card_player[(int) symbols.sym.userchair][1] == CARD_BACK ||
-					scraper.card_player[(int) symbols.sym.userchair][0] == CARD_NOCARD ||
-					scraper.card_player[(int) symbols.sym.userchair][1] == CARD_NOCARD)
+		// Figure out if I am "notplaying"
+		EnterCriticalSection(&cs_symbols);
+			if (card_player[0] == CARD_BACK || card_player[0] == CARD_NOCARD || 
+				card_player[1] == CARD_BACK || card_player[1] == CARD_NOCARD)
 			{
 				symbols.sym.playing = playing = false; //2008-03-25 Matrix
 			}
@@ -1028,68 +1033,63 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 			{
 				symbols.sym.playing = playing = true;
 			}
+		LeaveCriticalSection(&cs_symbols);
 
-			// Player cards
-			CardMask_RESET(Cards);
-			nCards=0;
-			status_plcards = "";
-			if (symbols.user_chair_confirmed && playing) 
+		// Player cards
+		CardMask_RESET(Cards);
+		nCards=0;
+		status_plcards = "";
+		if (user_chair_confirmed && playing) 
+		{
+			for (i=0; i<=1; i++) 
 			{
-				for (i=0; i<=1; i++) 
+				// player cards
+				if (card_player[i] != CARD_BACK && card_player[i] != CARD_NOCARD) 
 				{
-					// player cards
-					if (scraper.card_player[(int) symbols.sym.userchair][i] != CARD_BACK &&
-							scraper.card_player[(int) symbols.sym.userchair][i] != CARD_NOCARD) 
-					{
-						card = StdDeck_cardString(scraper.card_player[(int) symbols.sym.userchair][i]);
-						temp.Format("%s ", card);
-						status_plcards.Append(temp);
-						CardMask_SET(Cards, scraper.card_player[(int) symbols.sym.userchair][i]);
-						nCards++;
-					}
-				}
-			}
-			else 
-			{
-				if (scraper.card_player_for_display[0] != CARD_BACK && scraper.card_player_for_display[0] != CARD_NOCARD) 
-				{
-					card = StdDeck_cardString(scraper.card_player_for_display[0]);
+					card = StdDeck_cardString(card_player[i]);
 					temp.Format("%s ", card);
 					status_plcards.Append(temp);
-					CardMask_SET(Cards, scraper.card_player_for_display[0]);
+					CardMask_SET(Cards, card_player[i]);
 					nCards++;
 				}
-				if (scraper.card_player_for_display[1] != CARD_BACK && scraper.card_player_for_display[1] != CARD_NOCARD) 
+			}
+		}
+		else 
+		{
+			for (i=0; i<=1; i++) 
+			{
+				if (card_player_for_display[i] != CARD_BACK && card_player_for_display[i] != CARD_NOCARD) 
 				{
-					card = StdDeck_cardString(scraper.card_player_for_display[1]);
+					card = StdDeck_cardString(card_player_for_display[i]);
 					temp.Format("%s ", card);
 					status_plcards.Append(temp);
-					CardMask_SET(Cards, scraper.card_player_for_display[1]);
+					CardMask_SET(Cards, card_player_for_display[i]);
 					nCards++;
 				}
 			}
+		}
 
-			// Common cards
-			status_comcards = "";
-			for (i=0; i<=4; i++) 
+		// Common cards
+		status_comcards = "";
+		for (i=0; i<=4; i++) 
+		{
+			if (card_common[i] != CARD_BACK && card_common[i] != CARD_NOCARD) 
 			{
-				if (scraper.card_common[i] != CARD_BACK &&
-						scraper.card_common[i] != CARD_NOCARD) 
-				{
-					card = StdDeck_cardString(scraper.card_common[i]);
-					temp.Format("%s ", card);
-					status_comcards.Append(temp);
-					CardMask_SET(Cards, scraper.card_common[i]);
-					nCards++;
-				}
+				card = StdDeck_cardString(card_common[i]);
+				temp.Format("%s ", card);
+				status_comcards.Append(temp);
+				CardMask_SET(Cards, card_common[i]);
+				nCards++;
 			}
+		}
 
-			// poker hand
-			hv = Hand_EVAL_N(Cards, nCards);
-			HandVal_toString(hv, hvstring);
-			status_pokerhand = hvstring;
-			status_pokerhand = status_pokerhand.Mid(0, status_pokerhand.Find(" "));
+		// poker hand
+		hv = Hand_EVAL_N(Cards, nCards);
+		HandVal_toString(hv, hvstring);
+		status_pokerhand = hvstring;
+		status_pokerhand = status_pokerhand.Mid(0, status_pokerhand.Find(" "));
 
+        EnterCriticalSection(&cs_symbols);
 			// handrank
 			if (global.preferences.handrank_value == "169")
 				status_handrank.Format("%.0f/169", symbols.sym.handrank169);
@@ -1112,30 +1112,15 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 
 			else
 				status_nopp = "";
+		LeaveCriticalSection(&cs_symbols);
 
-		// Allow other threads to use CScraper and CSymbol variables
-		LeaveCriticalSection(&cs_scrape_symbol);
-
-
-		// Get exclusive access to CIteratorThread variables
-		EnterCriticalSection(&cs_iterator);
-
-			// Always update prwin/nit
-			cur_iterator_progress = iterator_thread_progress;
-			cur_iterator_thread_complete = iterator_thread_complete;
-
-		// Allow other threads to use CIterator variables
-		LeaveCriticalSection(&cs_iterator);
-
-
-		// Get exclusive access to CScraper and CSymbol variables
-		EnterCriticalSection(&cs_scrape_symbol);
-
-			if (symbols.user_chair_confirmed && playing)
+		// Always update prwin/nit
+		EnterCriticalSection(&cs_symbols);
+			if (user_chair_confirmed && playing)
 			{
 				status_prwin.Format("%d/%d/%d", (int) (symbols.sym.prwin*1000), (int) (symbols.sym.prtie*1000),
 									(int) (symbols.sym.prlos*1000));
-				status_nit.Format("%d/%d", cur_iterator_progress, (int) global.formula.dNit);
+				status_nit.Format("%d/%d", iterator_progress, (int) global.formula.dNit);
 			}
 			else
 			{
@@ -1147,7 +1132,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 			if (!symbols.user_chair_confirmed || !playing)
 				status_action = "Notplaying";
 
-			else if (symbols.user_chair_confirmed && cur_iterator_thread_complete)
+			else if (symbols.user_chair_confirmed && iterator_thread_complete)
 			{
 				if (symbols.f$alli)  status_action = "Allin";
 				else if (symbols.f$swag)  status_action.Format("SWAG: %.2f", symbols.f$swag);
@@ -1163,8 +1148,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 			else
 				status_action = "thinking";
 
-		// Allow other threads to use CScraper and CSymbol variables
-		LeaveCriticalSection(&cs_scrape_symbol);
+		LeaveCriticalSection(&cs_symbols);
 
     }
 
@@ -1250,7 +1234,9 @@ void CMainFrame::OnClickedFlags()
     else
         global.flags[9] = false;
 
+	EnterCriticalSection(&cs_symbols);
 	symbols.CalcSymbols();
+	LeaveCriticalSection(&cs_symbols);
 
     __SEH_LOGFATAL("CMainFrame::OnClickedFlags :\n");
 }
@@ -1503,12 +1489,14 @@ void CMainFrame::OnLockBlinds(void)
 
         if (lockblinds_dlg.DoModal() == IDOK) 
 		{
+			EnterCriticalSection(&cs_scraper);
             scraper.locked_sblind = lockblinds_dlg.sblind;
             scraper.locked_bblind = lockblinds_dlg.bblind;
             scraper.locked_bbet = lockblinds_dlg.bbet;
             scraper.locked_ante = lockblinds_dlg.ante;
             scraper.locked_gametype = lockblinds_dlg.gametype;
             scraper.blinds_are_locked = true;
+			LeaveCriticalSection(&cs_scraper);
 
             reg.read_reg();
             reg.sblind = lockblinds_dlg.sblind;
@@ -1522,7 +1510,9 @@ void CMainFrame::OnLockBlinds(void)
         else 
 		{
             m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_LOCK_BLINDS, false);
+			EnterCriticalSection(&cs_scraper);
             scraper.blinds_are_locked = false;
+			LeaveCriticalSection(&cs_scraper);
         }
 
     }

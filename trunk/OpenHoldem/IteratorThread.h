@@ -15,16 +15,19 @@ extern class CIteratorThread
 
 } *p_iterator_thread;
 
-extern	bool				iterator_thread_running;
-extern	bool				iterator_thread_complete;
-extern	unsigned int		iterator_thread_progress;
-extern	double				iterator_run_with_nit;
-extern	double				iterator_run_with_f$p;
-extern	double				iterator_run_with_br;
-extern	unsigned int		iterator_run_with_playercards[2];
-extern	unsigned int		iterator_run_with_commoncards[5];
+extern struct SIteratorStatus
+{
+	bool				iterator_thread_running;
+	bool				iterator_thread_complete;
+	unsigned int		iterator_thread_progress;
+	double				iterator_run_with_nit;
+	double				iterator_run_with_f$p;
+	double				iterator_run_with_br;
+	unsigned int		iterator_run_with_playercards[2];
+	unsigned int		iterator_run_with_commoncards[5];
+} iterator_status;
 
-// This critical section controls access to any variables in the CIteratorThread class or the related global variables
+// This critical section controls access to any variables in the CIteratorThread class or the related SIteratorStatus global structure
 // Any code needing access to these variables must grab and release this critical section appropriately
 extern CRITICAL_SECTION		cs_iterator;
 

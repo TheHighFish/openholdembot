@@ -13,7 +13,6 @@
 
 Autoplayer::Autoplayer(void) 
 {
-
     __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
 
     __SEH_HEADER
@@ -22,7 +21,6 @@ Autoplayer::Autoplayer(void)
     srand((unsigned)time( NULL ));
 
     __SEH_LOGFATAL("Autoplayer::Constructor : \n");
-
 }
 
 Autoplayer::~Autoplayer(void) 
@@ -30,7 +28,6 @@ Autoplayer::~Autoplayer(void)
     __SEH_HEADER
 
     __SEH_LOGFATAL("Autoplayer::Destructor : \n");
-
 }
 
 
@@ -47,10 +44,16 @@ void Autoplayer::do_Chat(void)
     //    the clicking code. :(
     //
     __SEH_HEADER
-    if (symbols.f$chat == 0)
-    {
+
+	double	f_chat;
+    
+	EnterCriticalSection(&cs_symbols);
+	f_chat = symbols.f$chat;
+	LeaveCriticalSection(&cs_symbols);
+
+	if (f_chat == 0)
         return;
-    }
+
     INPUT			input[100] = {0};
     POINT			pt;
     double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
@@ -61,16 +64,20 @@ void Autoplayer::do_Chat(void)
     HWND			hwnd_foreground = GetForegroundWindow();
     HWND			hwnd_active = GetActiveWindow();
     POINT			cur_pos;
-    GetCursorPos(&cur_pos);
-    pt = randomize_click_location(global.trans.map.r$[global.trans.map.r$chatbox].left,
+
+	GetCursorPos(&cur_pos);
+
+	pt = randomize_click_location(global.trans.map.r$[global.trans.map.r$chatbox].left,
                                   global.trans.map.r$[global.trans.map.r$chatbox].top,
                                   global.trans.map.r$[global.trans.map.r$chatbox].right,
                                   global.trans.map.r$[global.trans.map.r$chatbox].bottom);
-    // Translate click point to screen/mouse coords
+
+	// Translate click point to screen/mouse coords
     ClientToScreen(global.attached_hwnd, &pt);
     fx = pt.x*(65535.0f/fScreenWidth);
     fy = pt.y*(65535.0f/fScreenHeight);
-    // Set up the input structure
+
+	// Set up the input structure
     ZeroMemory(&input[0],sizeof(INPUT));
     input[0].type = INPUT_MOUSE;
     input[0].mi.dx = fx;
@@ -111,134 +118,145 @@ void Autoplayer::do_Chat(void)
 
 void Autoplayer::do_autoplayer(void) 
 {
-
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
-
     __SEH_HEADER
 
     int				x, error;
     int				num_buttons_visible;
     int				delay;
-	bool			prwin_running;
 
-    // Check status of "Keyboard" menu item, and engage if necessary
+	// These variables hold values that are collected in a critical section
+	double			play, chat, prefold, f_delay, alli, swag, call, rais;
+
+	EnterCriticalSection(&cs_iterator);
+	bool			iterator_running = iterator_status.iterator_thread_running;
+	LeaveCriticalSection(&cs_iterator);
+
+	EnterCriticalSection(&cs_symbols);
+	bool			sym_playing = symbols.sym.playing;
+	bool			button_state_3 = scraper.get_button_state(3);
+	LeaveCriticalSection(&cs_symbols);
+
+	// Check status of "Keyboard" menu item, and engage if necessary
     check_bring_keyboard();
 
     // Get r$ indices of buttons that are visible
     num_buttons_visible = get_r$_button_indices();
 
-	// Get exclusive access to CIteratorThread members
-	EnterCriticalSection(&cs_iterator);
+	// Handle f$play
+	error = SUCCESS;
+	play = calc_f$symbol(&global.formula, "f$play", global.preferences.Trace_functions[nTracePlay], &error);
 
-	prwin_running = iterator_thread_running;
+	EnterCriticalSection(&cs_symbols);
+	symbols.f$play = play;
+	LeaveCriticalSection(&cs_symbols);
 
-	// Allow other threads to use CIteratorThread members
-	LeaveCriticalSection(&cs_iterator);
+	do_f$play();
 
-	// Get exclusive access to CScraper and CSymbol variables
-	EnterCriticalSection(&cs_scrape_symbol);
+	// Handle i86buttons
+	do_i86();
 
-		// Handle f$play
-		error = SUCCESS;
-		symbols.f$play = calc_f$symbol(&global.formula, "f$play", global.preferences.Trace_functions[nTracePlay], &error);
-		do_f$play();
+	//  2007.02.27 by THF
+	//
+	//  Additional functionality: PokerChat
+	//    (Handle f$chat)
+	//
+	//  Selecting a chat message (or no one).
+	//    This message will then be processed by the autoplayer,
+	//    when it's time to click the buttons.
+	//
+	chat = calc_f$symbol(&global.formula, "f$chat", &error);
 
-		// Handle i86buttons
-		do_i86();
+	EnterCriticalSection(&cs_symbols);
+	symbols.f$chat = chat;
+	LeaveCriticalSection(&cs_symbols);
 
-		//  2007.02.27 by THF
-		//
-		//  Additional functionality: PokerChat
-		//    (Handle f$chat)
-		//
-		//  Selecting a chat message (or no one).
-		//    This message will then be processed by the autoplayer,
-		//    when it's time to click the buttons.
-		//
-		symbols.f$chat = calc_f$symbol(&global.formula, "f$chat", &error);
-		register_ChatMessage(symbols.f$chat);
-		//  Avoiding unnecessary calls to do_Chat(),
-		//    especially mouse movements to the chat box.
-		if ((symbols.f$chat != 0) && is_Chat_allowed())
-		{
-			do_Chat();
-		}
+	register_ChatMessage(chat);
 
-		// Get count of stable frames for use a little bit further down
-		x = count_same_scrapes();
+	//  Avoiding unnecessary calls to do_Chat(),
+	//    especially mouse movements to the chat box.
+	if ((chat != 0) && is_Chat_allowed())
+		do_Chat();
 
-		// If prwin thread is still iterating, then return
-		if (prwin_running)
-		{
-			// Allow other threads to use CScraper and CSymbol variables
-			LeaveCriticalSection(&cs_scrape_symbol);
-			return;
-		}
+	// Get count of stable frames for use a little bit further down
+	x = count_same_scrapes();
 
-		// Handle f$prefold
-		error = SUCCESS;
-		symbols.f$prefold = calc_f$symbol(&global.formula, "f$prefold", global.preferences.Trace_functions[nTracePrefold], &error);
-		do_prefold();
+	// If iterator thread is still iterating, then return
+	if (iterator_running)
+		return;
 
-		// if we have <2 visible buttons, then return
-		// Change from only requiring one visible button (OpenHoldem 2008-04-03)
-		if (num_buttons_visible < 2)
-		{
-			// Allow other threads to use CScraper and CSymbol variables
-			LeaveCriticalSection(&cs_scrape_symbol);
-			return;
-		}
+	// Handle f$prefold
+	error = SUCCESS;
+	prefold = calc_f$symbol(&global.formula, "f$prefold", global.preferences.Trace_functions[nTracePrefold], &error);
+	
+	EnterCriticalSection(&cs_symbols);
+	symbols.f$prefold = prefold;
+	LeaveCriticalSection(&cs_symbols);
 
-		// if we are not playing (occluded?) 2008-03-25 Matrix
-		if (!symbols.sym.playing)
-		{
-			// Allow other threads to use CScraper and CSymbol variables
-			LeaveCriticalSection(&cs_scrape_symbol);
-			return;
-		}
+	do_prefold();
 
-		// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return (modified Spektre 2008-04-03)
-		symbols.f$delay = calc_f$symbol(&global.formula, "f$delay", &error);
-		delay = symbols.f$delay / global.preferences.scrape_delay;    // scale f$delay to a number of scrapes
+	// if we have <2 visible buttons, then return
+	// Change from only requiring one visible button (OpenHoldem 2008-04-03)
+	if (num_buttons_visible < 2)
+		return;
 
-		if (x < (int) global.preferences.frame_delay + delay)
-		{
-			// Allow other threads to use CScraper and CSymbol variables
-			LeaveCriticalSection(&cs_scrape_symbol);
-			return;
-		}
+	// if we are not playing (occluded?) 2008-03-25 Matrix
+	if (!sym_playing)
+		return;
 
-		// calculate f$alli, f$swag, f$rais, and f$call for autoplayer's use
-		symbols.sym.isfinalanswer = true;
-		error = SUCCESS;
-		symbols.f$alli = calc_f$symbol(&global.formula, "f$alli", global.preferences.Trace_functions[nTraceAlli], &error);
-		error = SUCCESS;
-		symbols.f$swag = calc_f$symbol(&global.formula, "f$swag", global.preferences.Trace_functions[nTraceSwag], &error);
-		error = SUCCESS;
-		symbols.f$rais = calc_f$symbol(&global.formula, "f$rais", global.preferences.Trace_functions[nTraceRais], &error);
-		error = SUCCESS;
-		symbols.f$call = calc_f$symbol(&global.formula, "f$call", global.preferences.Trace_functions[nTraceCall], &error);
-		symbols.sym.isfinalanswer = false;
+	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return (modified Spektre 2008-04-03)
+	error = SUCCESS;
+	f_delay = calc_f$symbol(&global.formula, "f$delay", &error);
+	
+	EnterCriticalSection(&cs_symbols);
+	symbols.f$delay = f_delay;
+	LeaveCriticalSection(&cs_symbols);
 
-		// do swag first since it is the odd one
-		if (symbols.f$swag && !symbols.f$alli && scraper.get_button_state(3)) 
-		{
-			do_swag();
-		}
+	delay = f_delay / global.preferences.scrape_delay;    // scale f$delay to a number of scrapes
+
+	if (x < (int) global.preferences.frame_delay + delay)
+		return;
+
+	// calculate f$alli, f$swag, f$rais, and f$call for autoplayer's use
+	EnterCriticalSection(&cs_symbols);
+	symbols.sym.isfinalanswer = true;
+	LeaveCriticalSection(&cs_symbols);
+
+	error = SUCCESS;
+	alli = calc_f$symbol(&global.formula, "f$alli", global.preferences.Trace_functions[nTraceAlli], &error);
+	error = SUCCESS;
+	swag = calc_f$symbol(&global.formula, "f$swag", global.preferences.Trace_functions[nTraceSwag], &error);
+	error = SUCCESS;
+	rais = calc_f$symbol(&global.formula, "f$rais", global.preferences.Trace_functions[nTraceRais], &error);
+	error = SUCCESS;
+	call = calc_f$symbol(&global.formula, "f$call", global.preferences.Trace_functions[nTraceCall], &error);
+
+	EnterCriticalSection(&cs_symbols);
+	symbols.f$alli = alli;
+	symbols.f$swag = swag;
+	symbols.f$rais = rais;
+	symbols.f$call = call;
+	symbols.sym.isfinalanswer = false;
+	LeaveCriticalSection(&cs_symbols);
+
+	// do swag first since it is the odd one
+	if (swag && !alli && button_state_3) 
+	{
+		do_swag();
+	}
+	else 
+	{
+		if (alli && button_state_3) 
+			do_slider();
 		else 
-		{
-			if (symbols.f$alli && scraper.get_button_state(3)) do_slider();
-			else do_arccf();
-		}
-
-	// Allow other threads to use CScraper and CSymbol variables
-	LeaveCriticalSection(&cs_scrape_symbol);
+			do_arccf();
+	}
 
     __SEH_LOGFATAL("Autoplayer::do_autoplayer :\n");
 
 }
 
-void Autoplayer::do_swag(void) {
+void Autoplayer::do_swag(void) 
+{
     __SEH_HEADER
 
     int				input_count, r$index;
@@ -257,10 +275,18 @@ void Autoplayer::do_swag(void) {
     POINT			cur_pos;
     bool			lost_focus=false;
 
-    ::GetCursorPos(&cur_pos);
+	EnterCriticalSection(&cs_scraper);
+	bool	button_state_3 = scraper.get_button_state(3);
+	LeaveCriticalSection(&cs_scraper);
 
-    // swag buttons are hard coded as #3 now.  Can they be different?
-    if (scraper.get_button_state(3) && global.trans.map.r$iXedit_index[3]!=-1)
+	EnterCriticalSection(&cs_symbols);
+	double	f_swag = symbols.f$swag;
+	LeaveCriticalSection(&cs_symbols);
+	
+	::GetCursorPos(&cur_pos);
+
+	// swag buttons are hard coded as #3 now.  Can they be different?
+    if (button_state_3 && global.trans.map.r$iXedit_index[3]!=-1)
     {
 
         // If we get a lock, do the action
@@ -450,13 +476,13 @@ void Autoplayer::do_swag(void) {
             input_count++;
 
 
-            if (symbols.f$swag != (int) symbols.f$swag)
+            if (f_swag != (int) f_swag)
             {
-                sprintf(ch_str, "%.2f", symbols.f$swag);
+                sprintf(ch_str, "%.2f", f_swag);
             }
             else
             {
-                sprintf(ch_str, "%.0f", symbols.f$swag);
+                sprintf(ch_str, "%.0f", f_swag);
             }
 
             for (i=0; i<(int) strlen(ch_str); i++)
@@ -602,13 +628,19 @@ void Autoplayer::do_swag(void) {
 
                 SendInput(input_count, input, sizeof(INPUT));
 
-                symbols.sym.didswag[4] += 1;
-                symbols.sym.didswag[(int) symbols.sym.br-1] += 1;
-                symbols.sym.prevaction = PREVACT_SWAG;
-                global.replay_recorded_this_turn = false;
+				EnterCriticalSection(&cs_symbols);
 
-                // reset elapsedauto symbol
-                time(&symbols.elapsedautohold);
+					// record didswag/prevaction
+					symbols.sym.didswag[4] += 1;
+					symbols.sym.didswag[(int) symbols.sym.br-1] += 1;
+					symbols.sym.prevaction = PREVACT_SWAG;
+
+					// reset elapsedauto symbol
+					time(&symbols.elapsedautohold);
+
+				LeaveCriticalSection(&cs_symbols);
+
+				global.replay_recorded_this_turn = false;
 
                 // log it
                 write_log_autoplay("SWAG");
@@ -625,12 +657,13 @@ void Autoplayer::do_swag(void) {
     }
 
     __SEH_LOGFATAL("Autoplayer::do_swag :\n");
-
 }
 
-void Autoplayer::do_arccf(void) {
+void Autoplayer::do_arccf(void) 
+{
     __SEH_HEADER
-    int				do_click, input_count;
+
+	int				do_click, input_count;
     INPUT			input[100] = {0};
     POINT			pt;
     double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
@@ -642,13 +675,19 @@ void Autoplayer::do_arccf(void) {
     HWND			hwnd_active = GetActiveWindow();
     POINT			cur_pos;
 
-    ::GetCursorPos(&cur_pos);
+	EnterCriticalSection(&cs_symbols);
+	double		alli = symbols.f$alli;
+	double		rais = symbols.f$rais;
+	double		call = symbols.f$call;
+	int			sym_myturnbits = (int) symbols.sym.myturnbits;
+	LeaveCriticalSection(&cs_symbols);
 
+	::GetCursorPos(&cur_pos);
 
     do_click = -1;
 
     // ALLIN
-    if (symbols.f$alli && (int) symbols.sym.myturnbits&0x8 && alli_but!=-1)
+    if (alli && sym_myturnbits&0x8 && alli_but!=-1)
     {
         pt = randomize_click_location(global.trans.map.r$[alli_but].left, global.trans.map.r$[alli_but].top,
                                       global.trans.map.r$[alli_but].right, global.trans.map.r$[alli_but].bottom);
@@ -656,7 +695,7 @@ void Autoplayer::do_arccf(void) {
     }
 
     // RAISE
-    else if (symbols.f$rais && (int) symbols.sym.myturnbits&0x4 && rais_but!=-1)
+    else if (rais && sym_myturnbits&0x4 && rais_but!=-1)
     {
         pt = randomize_click_location(global.trans.map.r$[rais_but].left, global.trans.map.r$[rais_but].top,
                                       global.trans.map.r$[rais_but].right, global.trans.map.r$[rais_but].bottom);
@@ -664,7 +703,7 @@ void Autoplayer::do_arccf(void) {
     }
 
     // CALL
-    else if (symbols.f$call && (int) symbols.sym.myturnbits&0x1 && call_but!=-1)
+    else if (call && sym_myturnbits&0x1 && call_but!=-1)
     {
         pt = randomize_click_location(global.trans.map.r$[call_but].left, global.trans.map.r$[call_but].top,
                                       global.trans.map.r$[call_but].right, global.trans.map.r$[call_but].bottom);
@@ -761,40 +800,46 @@ void Autoplayer::do_arccf(void) {
 
             Mutex.Unlock();
 
-            switch (do_click)
-            {
-            case 4:  // allin
-                symbols.sym.prevaction = PREVACT_ALLI;
-                write_log_autoplay("ALLI");
-                break;
-            case 3:  // raise
-                symbols.sym.didrais[4] += 1;
-                symbols.sym.didrais[(int) symbols.sym.br-1] += 1;
-                symbols.sym.prevaction = PREVACT_RAIS;
-                write_log_autoplay("RAIS");
-                break;
-            case 2:  // call
-                symbols.sym.didcall[4] += 1;
-                symbols.sym.didcall[(int) symbols.sym.br-1] += 1;
-                symbols.sym.prevaction = PREVACT_CALL;
-                write_log_autoplay("CALL");
-                break;
-            case 1:  // check
-                symbols.sym.didchec[4] += 1;
-                symbols.sym.didchec[(int) symbols.sym.br-1] += 1;
-                symbols.sym.prevaction = PREVACT_CHEC;
-                write_log_autoplay("CHEC");
-                break;
-            case 0:  // fold
-                symbols.sym.prevaction = PREVACT_FOLD;
-                write_log_autoplay("FOLD");
-                break;
-            }
 
-            global.replay_recorded_this_turn = false;
+			EnterCriticalSection(&cs_symbols);
 
-            // reset elapsedauto symbol
-            time(&symbols.elapsedautohold);
+				// record did*/prevaction
+				switch (do_click)
+				{
+					case 4:  // allin
+						symbols.sym.prevaction = PREVACT_ALLI;
+						write_log_autoplay("ALLI");
+						break;
+					case 3:  // raise
+						symbols.sym.didrais[4] += 1;
+						symbols.sym.didrais[(int) symbols.sym.br-1] += 1;
+						symbols.sym.prevaction = PREVACT_RAIS;
+						write_log_autoplay("RAIS");
+						break;
+					case 2:  // call
+						symbols.sym.didcall[4] += 1;
+						symbols.sym.didcall[(int) symbols.sym.br-1] += 1;
+						symbols.sym.prevaction = PREVACT_CALL;
+						write_log_autoplay("CALL");
+						break;
+					case 1:  // check
+						symbols.sym.didchec[4] += 1;
+						symbols.sym.didchec[(int) symbols.sym.br-1] += 1;
+						symbols.sym.prevaction = PREVACT_CHEC;
+						write_log_autoplay("CHEC");
+						break;
+					case 0:  // fold
+						symbols.sym.prevaction = PREVACT_FOLD;
+						write_log_autoplay("FOLD");
+						break;
+				}
+
+				// reset elapsedauto symbol
+				time(&symbols.elapsedautohold);
+
+			LeaveCriticalSection(&cs_symbols);
+
+			global.replay_recorded_this_turn = false;
         }
     }
 
@@ -802,9 +847,11 @@ void Autoplayer::do_arccf(void) {
 
 }
 
-void Autoplayer::do_slider(void) {
+void Autoplayer::do_slider(void) 
+{
     __SEH_HEADER
-    int				do_drag, input_count,  x, y, x2;
+
+	int				do_drag, input_count,  x, y, x2;
     INPUT			input[100] = {0};
     POINT			pt, pt2;
     double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
@@ -820,19 +867,30 @@ void Autoplayer::do_slider(void) {
     POINT			cur_pos;
 	Stablemap_region handle, slider;
 
-    ::GetCursorPos(&cur_pos);
+	EnterCriticalSection(&cs_scraper);
+	bool			handle_found_at_xy = scraper.handle_found_at_xy;
+	POINT			handle_xy;
+	handle_xy.x = scraper.handle_xy.x;
+	handle_xy.y = scraper.handle_xy.y;
+	LeaveCriticalSection(&cs_scraper);
 
+	EnterCriticalSection(&cs_symbols);
+	bool			sym_ismyturn = symbols.sym.ismyturn;
+	double			alli = symbols.f$alli;
+	LeaveCriticalSection(&cs_symbols);
+
+	::GetCursorPos(&cur_pos);
 
     do_drag = -1;
 
     // ALLIN
-    if (symbols.sym.ismyturn && global.trans.map.r$iXslider_index[3]!=-1 && global.trans.map.r$iXhandle_index[3]!=-1 &&
-		scraper.handle_found_at_xy)
+    if (sym_ismyturn && global.trans.map.r$iXslider_index[3]!=-1 && global.trans.map.r$iXhandle_index[3]!=-1 &&
+		handle_found_at_xy)
     {
 		handle = global.trans.map.r$[global.trans.map.r$iXhandle_index[3]];
 		slider = global.trans.map.r$[global.trans.map.r$iXslider_index[3]];
-		x = scraper.handle_xy.x;
-		y = scraper.handle_xy.y;
+		x = handle_xy.x;
+		y = handle_xy.y;
 		x2 = slider.right-slider.left;
 		pt = randomize_click_location(x, y, x + (handle.right-handle.left), handle.bottom);
 		pt2.x = pt.x+x2;
@@ -858,6 +916,7 @@ void Autoplayer::do_slider(void) {
             SetFocus(global.attached_hwnd);
             SetForegroundWindow(global.attached_hwnd);
             SetActiveWindow(global.attached_hwnd);
+
 			// Move to handle & click & hold button
 			input_count = 0;
 			ZeroMemory(&input[input_count],sizeof(INPUT));
@@ -868,6 +927,7 @@ void Autoplayer::do_slider(void) {
 			input_count++;
             SendInput(input_count, input, sizeof(INPUT));
 			Sleep(200);
+
 			// Move the mouse
 			input_count = 0;
 			ZeroMemory(&input[input_count],sizeof(INPUT));
@@ -878,6 +938,7 @@ void Autoplayer::do_slider(void) {
 			input_count++;
             SendInput(input_count, input, sizeof(INPUT));
 			Sleep(200);
+
 			// Release the button
 			input_count = 0;
 			ZeroMemory(&input[input_count],sizeof(INPUT));
@@ -888,18 +949,22 @@ void Autoplayer::do_slider(void) {
 			input_count++;
             SendInput(input_count, input, sizeof(INPUT));
 			Sleep(100);
-            SetActiveWindow(hwnd_active);
+
+			SetActiveWindow(hwnd_active);
             SetForegroundWindow(hwnd_foreground);
             SetFocus(hwnd_focus);
-            Mutex.Unlock();
+
+			Mutex.Unlock();
 		}
-		if (symbols.f$alli && alli_but!=-1)
+
+		if (alli && alli_but!=-1)
 		{
 			pt = randomize_click_location(global.trans.map.r$[alli_but].left, global.trans.map.r$[alli_but].top,
 										  global.trans.map.r$[alli_but].right, global.trans.map.r$[alli_but].bottom);
 			ClientToScreen(global.attached_hwnd, &pt);
 			fx = pt.x*(65535.0f/fScreenWidth);
 			fy = pt.y*(65535.0f/fScreenHeight);
+
 			// Click button
 			input_count = 0;
 			ZeroMemory(&input[input_count],sizeof(INPUT));
@@ -908,6 +973,7 @@ void Autoplayer::do_slider(void) {
 			input[input_count].mi.dy = fy;
 			input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP;
 			input_count++;
+
 			SendInput(input_count, input, sizeof(INPUT));
 			Sleep(200);
 		}
@@ -945,7 +1011,10 @@ void Autoplayer::do_slider(void) {
 			write_log("*** Jam complete \n", fx, fy, fx2, fy2);
 
             // reset elapsedauto symbol
+			EnterCriticalSection(&cs_symbols);
             time(&symbols.elapsedautohold);
+			LeaveCriticalSection(&cs_symbols);
+
 			Sleep(1200);
         }
     }
@@ -954,7 +1023,8 @@ void Autoplayer::do_slider(void) {
 
 }
 
-void Autoplayer::do_prefold(void) {
+void Autoplayer::do_prefold(void) 
+{
     __SEH_HEADER
     INPUT			input[100] = {0};
     POINT			pt;
@@ -968,10 +1038,17 @@ void Autoplayer::do_prefold(void) {
     POINT			cur_pos;
     int				input_count = 0;
 
-    ::GetCursorPos(&cur_pos);
+	EnterCriticalSection(&cs_symbols);
+	double			prefold = symbols.f$prefold;
+	LeaveCriticalSection(&cs_symbols);
 
-    if (symbols.f$prefold == 0)  return;
-    if (prefold_but == -1)  return;
+	::GetCursorPos(&cur_pos);
+
+    if (prefold == 0)  
+		return;
+
+    if (prefold_but == -1)  
+		return;
 
     // Randomize click location
     pt = randomize_click_location(global.trans.map.r$[prefold_but].left, global.trans.map.r$[prefold_but].top,
@@ -1028,18 +1105,25 @@ void Autoplayer::do_prefold(void) {
 
         Mutex.Unlock();
 
-        // reset elapsedauto symbol
+		EnterCriticalSection(&cs_symbols);
+
+		// reset elapsedauto symbol
         time(&symbols.elapsedautohold);
 
-        symbols.sym.prevaction = PREVACT_FOLD;
-        write_log_autoplay("FOLD");
+		// set prevaction
+		symbols.sym.prevaction = PREVACT_FOLD;
+
+		LeaveCriticalSection(&cs_symbols);
+
+		write_log_autoplay("FOLD");
     }
 
     __SEH_LOGFATAL("Autoplayer::do_prefold :\n");
 
 }
 
-int Autoplayer::count_same_scrapes(void) {
+int Autoplayer::count_same_scrapes(void) 
+{
     __SEH_HEADER
     int						i;
     static unsigned int		card_common_last[5] = {0};
@@ -1051,55 +1135,64 @@ int Autoplayer::count_same_scrapes(void) {
     bool					same_scrape;
     static int				num_same_scrapes=0;
 
-    // These items need to be the same to count as a identical frame:
-    // - up and down cards
-    // - button position
-    // - playerbets
-    // - playerbalances
-    // - button states
-    same_scrape = true;
-    for (i=0; i<5; i++)
-    {
-        if (scraper.card_common[i] != card_common_last[i])  same_scrape = false;
-    }
+	EnterCriticalSection(&cs_symbols);
+	double					sym_myturnbits = symbols.sym.myturnbits;
+	LeaveCriticalSection(&cs_symbols);
 
-    for (i=0; i<10; i++)
-    {
-        if (scraper.card_player[i][0] != card_player_last[i][0])  same_scrape = false;
-        if (scraper.card_player[i][1] != card_player_last[i][1])  same_scrape = false;
-        if (scraper.dealer[i] != dealer_last[i])  same_scrape = false;
-        if (scraper.playerbalance[i] != playerbalance_last[i])  same_scrape = false;
-        if (scraper.playerbet[i] != playerbet_last[i])  same_scrape = false;
-    }
+	// Get exclusive access to CScraper variables
+	EnterCriticalSection(&cs_scraper);
+	
+		// These items need to be the same to count as a identical frame:
+		// - up and down cards
+		// - button position
+		// - playerbets
+		// - playerbalances
+		// - button states
+		same_scrape = true;
+		for (i=0; i<5; i++)
+		{
+			if (scraper.card_common[i] != card_common_last[i])  same_scrape = false;
+		}
 
-    if (symbols.sym.myturnbits != myturnbitslast)  same_scrape = false;
+		for (i=0; i<10; i++)
+		{
+			if (scraper.card_player[i][0] != card_player_last[i][0])  same_scrape = false;
+			if (scraper.card_player[i][1] != card_player_last[i][1])  same_scrape = false;
+			if (scraper.dealer[i] != dealer_last[i])  same_scrape = false;
+			if (scraper.playerbalance[i] != playerbalance_last[i])  same_scrape = false;
+			if (scraper.playerbet[i] != playerbet_last[i])  same_scrape = false;
+		}
 
-    if (same_scrape)
-    {
-        num_same_scrapes++;
-    }
-    else
-    {
-        for (i=0; i<5; i++)
-        {
-            card_common_last[i] = scraper.card_common[i];
-        }
-        for (i=0; i<10; i++)
-        {
-            card_player_last[i][0] = scraper.card_player[i][0];
-            card_player_last[i][1] = scraper.card_player[i][1];
-            dealer_last[i] = scraper.dealer[i];
-            playerbalance_last[i] = scraper.playerbalance[i];
-            playerbet_last[i] = scraper.playerbet[i];
-        }
-        myturnbitslast = symbols.sym.myturnbits;
-        num_same_scrapes = 0;
-    }
+		if (sym_myturnbits != myturnbitslast)  same_scrape = false;
 
-    return num_same_scrapes;
+		if (same_scrape)
+		{
+			num_same_scrapes++;
+		}
+		else
+		{
+			for (i=0; i<5; i++)
+			{
+				card_common_last[i] = scraper.card_common[i];
+			}
+			for (i=0; i<10; i++)
+			{
+				card_player_last[i][0] = scraper.card_player[i][0];
+				card_player_last[i][1] = scraper.card_player[i][1];
+				dealer_last[i] = scraper.dealer[i];
+				playerbalance_last[i] = scraper.playerbalance[i];
+				playerbet_last[i] = scraper.playerbet[i];
+			}
+			myturnbitslast = sym_myturnbits;
+			num_same_scrapes = 0;
+		}
+
+	// Allow other threads to use CScraper variables
+	LeaveCriticalSection(&cs_scraper);
+
+	return num_same_scrapes;
 
     __SEH_LOGFATAL("Autoplayer::count_same_scrapes :\n");
-
 }
 
 
@@ -1111,400 +1204,407 @@ int Autoplayer::get_r$_button_indices(void)
     CString			s;
     int				num_seen=0;
 
-    //////////////////////////////////////////////////////////
-    // find ALLIN button region from scraper
-    button_index = -1;
-    for (i=0; i<=9; i++)
-    {
-        if (scraper.get_button_state(i) && scraper.is_string_allin(scraper.buttonlabel[i]))
-        {
-            button_index = i;
-            i = 10;
-            num_seen++;
-        }
-    }
-    // scraper can't find allin button
-    if (button_index == -1)
-    {
-        alli_but = -1;
-    }
-    else
-    {
-        // find allin button region from profile
-        alli_but = -1;
-        s.Format("i%dbutton", button_index);
-        for (i=0; i<=9; i++)
-        {
-            r$index = global.trans.map.r$iXbutton_index[i];
-            if (r$index!=-1)
-            {
-                if (global.trans.map.r$[r$index].name == s)
-                {
-                    alli_but = r$index;
-                    i = 10;
-                }
-            }
-        }
-    }
+	// Get exclusive access to CScraper variables
+	EnterCriticalSection(&cs_scraper);
 
-    //////////////////////////////////////////////////////////
-    // find RAISE button region from scraper
-    button_index = -1;
-    for (i=0; i<=9; i++)
-    {
-        if (scraper.get_button_state(i) && scraper.is_string_raise(scraper.buttonlabel[i]))
-        {
-            button_index = i;
-            i = 10;
-            num_seen++;
-        }
-    }
-    // scraper can't find raise button
-    if (button_index == -1)
-    {
-        rais_but = -1;
-    }
-    else
-    {
-        // find raise button region from profile
-        rais_but = -1;
-        s.Format("i%dbutton", button_index);
-        for (i=0; i<=9; i++)
-        {
-            r$index = global.trans.map.r$iXbutton_index[i];
-            if (r$index!=-1)
-            {
-                if (global.trans.map.r$[r$index].name == s)
-                {
-                    rais_but = r$index;
-                    i = 10;
-                }
-            }
-        }
-    }
+		//////////////////////////////////////////////////////////
+		// find ALLIN button region from scraper
+		button_index = -1;
+		for (i=0; i<=9; i++)
+		{
+			if (scraper.get_button_state(i) && scraper.is_string_allin(scraper.buttonlabel[i]))
+			{
+				button_index = i;
+				i = 10;
+				num_seen++;
+			}
+		}
+		// scraper can't find allin button
+		if (button_index == -1)
+		{
+			alli_but = -1;
+		}
+		else
+		{
+			// find allin button region from profile
+			alli_but = -1;
+			s.Format("i%dbutton", button_index);
+			for (i=0; i<=9; i++)
+			{
+				r$index = global.trans.map.r$iXbutton_index[i];
+				if (r$index!=-1)
+				{
+					if (global.trans.map.r$[r$index].name == s)
+					{
+						alli_but = r$index;
+						i = 10;
+					}
+				}
+			}
+		}
 
-    //////////////////////////////////////////////////////////
-    // find CALL button region from scraper
-    button_index = -1;
-    for (i=0; i<=9; i++)
-    {
-        if (scraper.get_button_state(i) && scraper.is_string_call(scraper.buttonlabel[i]))
-        {
-            button_index = i;
-            i = 10;
-            num_seen++;
-        }
-    }
-    // scraper can't find call button
-    if (button_index == -1)
-    {
-        call_but = -1;
-    }
-    else
-    {
-        // find call button region from profile
-        call_but = -1;
-        s.Format("i%dbutton", button_index);
-        for (i=0; i<=9; i++)
-        {
-            r$index = global.trans.map.r$iXbutton_index[i];
-            if (r$index!=-1)
-            {
-                if (global.trans.map.r$[r$index].name == s)
-                {
-                    call_but = r$index;
-                    i = 10;
-                }
-            }
-        }
-    }
+		//////////////////////////////////////////////////////////
+		// find RAISE button region from scraper
+		button_index = -1;
+		for (i=0; i<=9; i++)
+		{
+			if (scraper.get_button_state(i) && scraper.is_string_raise(scraper.buttonlabel[i]))
+			{
+				button_index = i;
+				i = 10;
+				num_seen++;
+			}
+		}
+		// scraper can't find raise button
+		if (button_index == -1)
+		{
+			rais_but = -1;
+		}
+		else
+		{
+			// find raise button region from profile
+			rais_but = -1;
+			s.Format("i%dbutton", button_index);
+			for (i=0; i<=9; i++)
+			{
+				r$index = global.trans.map.r$iXbutton_index[i];
+				if (r$index!=-1)
+				{
+					if (global.trans.map.r$[r$index].name == s)
+					{
+						rais_but = r$index;
+						i = 10;
+					}
+				}
+			}
+		}
 
-    //////////////////////////////////////////////////////////
-    // find CHECK button region from scraper
-    button_index = -1;
-    for (i=0; i<=9; i++)
-    {
-        if (scraper.get_button_state(i) && scraper.is_string_check(scraper.buttonlabel[i]))
-        {
-            button_index = i;
-            i = 10;
-            num_seen++;
-        }
-    }
-    // scraper can't find check button
-    if (button_index == -1)
-    {
-        chec_but = -1;
-    }
-    else
-    {
-        // find check button region from profile
-        chec_but = -1;
-        s.Format("i%dbutton", button_index);
-        for (i=0; i<=9; i++)
-        {
-            r$index = global.trans.map.r$iXbutton_index[i];
-            if (r$index!=-1)
-            {
-                if (global.trans.map.r$[r$index].name == s)
-                {
-                    chec_but = r$index;
-                    i = 10;
-                }
-            }
-        }
-    }
+		//////////////////////////////////////////////////////////
+		// find CALL button region from scraper
+		button_index = -1;
+		for (i=0; i<=9; i++)
+		{
+			if (scraper.get_button_state(i) && scraper.is_string_call(scraper.buttonlabel[i]))
+			{
+				button_index = i;
+				i = 10;
+				num_seen++;
+			}
+		}
+		// scraper can't find call button
+		if (button_index == -1)
+		{
+			call_but = -1;
+		}
+		else
+		{
+			// find call button region from profile
+			call_but = -1;
+			s.Format("i%dbutton", button_index);
+			for (i=0; i<=9; i++)
+			{
+				r$index = global.trans.map.r$iXbutton_index[i];
+				if (r$index!=-1)
+				{
+					if (global.trans.map.r$[r$index].name == s)
+					{
+						call_but = r$index;
+						i = 10;
+					}
+				}
+			}
+		}
 
-    //////////////////////////////////////////////////////////
-    // find FOLD button region from scraper
-    button_index = -1;
-    for (i=0; i<=9; i++)
-    {
-        if (scraper.get_button_state(i) && scraper.is_string_fold(scraper.buttonlabel[i]))
-        {
-            button_index = i;
-            i = 10;
-            num_seen++;
-        }
-    }
-    // scraper can't find fold button
-    if (button_index == -1)
-    {
-        fold_but = -1;
-    }
-    else
-    {
-        // find fold button region from profile
-        fold_but = -1;
-        s.Format("i%dbutton", button_index);
-        for (i=0; i<=9; i++)
-        {
-            r$index = global.trans.map.r$iXbutton_index[i];
-            if (r$index!=-1)
-            {
-                if (global.trans.map.r$[r$index].name == s)
-                {
-                    fold_but = r$index;
-                    i = 10;
-                }
-            }
-        }
-    }
+		//////////////////////////////////////////////////////////
+		// find CHECK button region from scraper
+		button_index = -1;
+		for (i=0; i<=9; i++)
+		{
+			if (scraper.get_button_state(i) && scraper.is_string_check(scraper.buttonlabel[i]))
+			{
+				button_index = i;
+				i = 10;
+				num_seen++;
+			}
+		}
+		// scraper can't find check button
+		if (button_index == -1)
+		{
+			chec_but = -1;
+		}
+		else
+		{
+			// find check button region from profile
+			chec_but = -1;
+			s.Format("i%dbutton", button_index);
+			for (i=0; i<=9; i++)
+			{
+				r$index = global.trans.map.r$iXbutton_index[i];
+				if (r$index!=-1)
+				{
+					if (global.trans.map.r$[r$index].name == s)
+					{
+						chec_but = r$index;
+						i = 10;
+					}
+				}
+			}
+		}
 
-    //////////////////////////////////////////////////////////
-    // find AUTOPOST button region from scraper
-    button_index = -1;
-    autopost_state = true;
-    for (i=0; i<=9; i++)
-    {
-        if (scraper.is_string_autopost(scraper.buttonlabel[i]))
-        {
-            autopost_state = scraper.get_button_state(i);
-            button_index = i;
-            i = 10;
-        }
-    }
-    // scraper can't find autopost button
-    if (button_index == -1)
-    {
-        autopost_but = -1;
-    }
-    else
-    {
-        // find autopost button region from profile
-        autopost_but = -1;
-        s.Format("i%dbutton", button_index);
-        for (i=0; i<=9; i++)
-        {
-            r$index = global.trans.map.r$iXbutton_index[i];
-            if (r$index!=-1)
-            {
-                if (global.trans.map.r$[r$index].name == s)
-                {
-                    autopost_but = r$index;
-                    i = 10;
-                }
-            }
-        }
-    }
+		//////////////////////////////////////////////////////////
+		// find FOLD button region from scraper
+		button_index = -1;
+		for (i=0; i<=9; i++)
+		{
+			if (scraper.get_button_state(i) && scraper.is_string_fold(scraper.buttonlabel[i]))
+			{
+				button_index = i;
+				i = 10;
+				num_seen++;
+			}
+		}
+		// scraper can't find fold button
+		if (button_index == -1)
+		{
+			fold_but = -1;
+		}
+		else
+		{
+			// find fold button region from profile
+			fold_but = -1;
+			s.Format("i%dbutton", button_index);
+			for (i=0; i<=9; i++)
+			{
+				r$index = global.trans.map.r$iXbutton_index[i];
+				if (r$index!=-1)
+				{
+					if (global.trans.map.r$[r$index].name == s)
+					{
+						fold_but = r$index;
+						i = 10;
+					}
+				}
+			}
+		}
 
-    //////////////////////////////////////////////////////////
-    // find SITIN button region from scraper
-    button_index = -1;
-    sitin_state = true;
-    for (i=0; i<=9; i++)
-    {
-        if (scraper.is_string_sitin(scraper.buttonlabel[i]))
-        {
-            sitin_state = scraper.get_button_state(i);
-            button_index = i;
-            i = 10;
-        }
-    }
-    // scraper can't find sitin button
-    if (button_index == -1)
-    {
-        sitin_but = -1;
-    }
-    else
-    {
-        // find sitin button region from profile
-        sitin_but = -1;
-        s.Format("i%dbutton", button_index);
-        for (i=0; i<=9; i++)
-        {
-            r$index = global.trans.map.r$iXbutton_index[i];
-            if (r$index!=-1)
-            {
-                if (global.trans.map.r$[r$index].name == s)
-                {
-                    sitin_but = r$index;
-                    i = 10;
-                }
-            }
-        }
-    }
+		//////////////////////////////////////////////////////////
+		// find AUTOPOST button region from scraper
+		button_index = -1;
+		autopost_state = true;
+		for (i=0; i<=9; i++)
+		{
+			if (scraper.is_string_autopost(scraper.buttonlabel[i]))
+			{
+				autopost_state = scraper.get_button_state(i);
+				button_index = i;
+				i = 10;
+			}
+		}
+		// scraper can't find autopost button
+		if (button_index == -1)
+		{
+			autopost_but = -1;
+		}
+		else
+		{
+			// find autopost button region from profile
+			autopost_but = -1;
+			s.Format("i%dbutton", button_index);
+			for (i=0; i<=9; i++)
+			{
+				r$index = global.trans.map.r$iXbutton_index[i];
+				if (r$index!=-1)
+				{
+					if (global.trans.map.r$[r$index].name == s)
+					{
+						autopost_but = r$index;
+						i = 10;
+					}
+				}
+			}
+		}
 
-    //////////////////////////////////////////////////////////
-    // find SITOUT button region from scraper
-    button_index = -1;
-    sitout_state = false;
-    for (i=0; i<=9; i++)
-    {
-        if (scraper.is_string_sitout(scraper.buttonlabel[i]))
-        {
-            sitout_state = scraper.get_button_state(i);
-            button_index = i;
-            i = 10;
-        }
-    }
-    // scraper can't find sitout button
-    if (button_index == -1)
-    {
-        sitout_but = -1;
-    }
-    else
-    {
-        // find sitout button region from profile
-        sitout_but = -1;
-        s.Format("i%dbutton", button_index);
-        for (i=0; i<=9; i++)
-        {
-            r$index = global.trans.map.r$iXbutton_index[i];
-            if (r$index!=-1)
-            {
-                if (global.trans.map.r$[r$index].name == s)
-                {
-                    sitout_but = r$index;
-                    i = 10;
-                }
-            }
-        }
-    }
+		//////////////////////////////////////////////////////////
+		// find SITIN button region from scraper
+		button_index = -1;
+		sitin_state = true;
+		for (i=0; i<=9; i++)
+		{
+			if (scraper.is_string_sitin(scraper.buttonlabel[i]))
+			{
+				sitin_state = scraper.get_button_state(i);
+				button_index = i;
+				i = 10;
+			}
+		}
+		// scraper can't find sitin button
+		if (button_index == -1)
+		{
+			sitin_but = -1;
+		}
+		else
+		{
+			// find sitin button region from profile
+			sitin_but = -1;
+			s.Format("i%dbutton", button_index);
+			for (i=0; i<=9; i++)
+			{
+				r$index = global.trans.map.r$iXbutton_index[i];
+				if (r$index!=-1)
+				{
+					if (global.trans.map.r$[r$index].name == s)
+					{
+						sitin_but = r$index;
+						i = 10;
+					}
+				}
+			}
+		}
 
-    //////////////////////////////////////////////////////////
-    // find LEAVE button region from scraper
-    button_index = -1;
-    for (i=0; i<=9; i++)
-    {
-        if (scraper.get_button_state(i) && scraper.is_string_leave(scraper.buttonlabel[i]))
-        {
-            button_index = i;
-            i = 10;
-        }
-    }
-    // scraper can't find leave button
-    if (button_index == -1)
-    {
-        leave_but = -1;
-    }
-    else
-    {
-        // find leave button region from profile
-        leave_but = -1;
-        s.Format("i%dbutton", button_index);
-        for (i=0; i<=9; i++)
-        {
-            r$index = global.trans.map.r$iXbutton_index[i];
-            if (r$index!=-1)
-            {
-                if (global.trans.map.r$[r$index].name == s)
-                {
-                    leave_but = r$index;
-                    i = 10;
-                }
-            }
-        }
-    }
+		//////////////////////////////////////////////////////////
+		// find SITOUT button region from scraper
+		button_index = -1;
+		sitout_state = false;
+		for (i=0; i<=9; i++)
+		{
+			if (scraper.is_string_sitout(scraper.buttonlabel[i]))
+			{
+				sitout_state = scraper.get_button_state(i);
+				button_index = i;
+				i = 10;
+			}
+		}
+		// scraper can't find sitout button
+		if (button_index == -1)
+		{
+			sitout_but = -1;
+		}
+		else
+		{
+			// find sitout button region from profile
+			sitout_but = -1;
+			s.Format("i%dbutton", button_index);
+			for (i=0; i<=9; i++)
+			{
+				r$index = global.trans.map.r$iXbutton_index[i];
+				if (r$index!=-1)
+				{
+					if (global.trans.map.r$[r$index].name == s)
+					{
+						sitout_but = r$index;
+						i = 10;
+					}
+				}
+			}
+		}
 
-    //////////////////////////////////////////////////////////
-    // find PREFOLD button region from scraper
-    button_index = -1;
-    for (i=0; i<=9; i++)
-    {
-        if (scraper.get_button_state(i) && scraper.is_string_prefold(scraper.buttonlabel[i]))
-        {
-            button_index = i;
-            i = 10;
-        }
-    }
-    // scraper can't find prefold button
-    if (button_index == -1)
-    {
-        prefold_but = -1;
-    }
-    else
-    {
-        // find leave button region from profile
-        prefold_but = -1;
-        s.Format("i%dbutton", button_index);
-        for (i=0; i<=9; i++)
-        {
-            r$index = global.trans.map.r$iXbutton_index[i];
-            if (r$index!=-1)
-            {
-                if (global.trans.map.r$[r$index].name == s)
-                {
-                    prefold_but = r$index;
-                    i = 10;
-                }
-            }
-        }
-    }
+		//////////////////////////////////////////////////////////
+		// find LEAVE button region from scraper
+		button_index = -1;
+		for (i=0; i<=9; i++)
+		{
+			if (scraper.get_button_state(i) && scraper.is_string_leave(scraper.buttonlabel[i]))
+			{
+				button_index = i;
+				i = 10;
+			}
+		}
+		// scraper can't find leave button
+		if (button_index == -1)
+		{
+			leave_but = -1;
+		}
+		else
+		{
+			// find leave button region from profile
+			leave_but = -1;
+			s.Format("i%dbutton", button_index);
+			for (i=0; i<=9; i++)
+			{
+				r$index = global.trans.map.r$iXbutton_index[i];
+				if (r$index!=-1)
+				{
+					if (global.trans.map.r$[r$index].name == s)
+					{
+						leave_but = r$index;
+						i = 10;
+					}
+				}
+			}
+		}
 
-    //////////////////////////////////////////////////////////
-    // find i86 button region from scraper
-    i86_but = -1;
-    i86_state = false;
-    if (scraper.get_button_state(86))
-    {
-        i86_but = global.trans.map.r$i86button_index;
-        i86_state = true;
-    }
+		//////////////////////////////////////////////////////////
+		// find PREFOLD button region from scraper
+		button_index = -1;
+		for (i=0; i<=9; i++)
+		{
+			if (scraper.get_button_state(i) && scraper.is_string_prefold(scraper.buttonlabel[i]))
+			{
+				button_index = i;
+				i = 10;
+			}
+		}
+		// scraper can't find prefold button
+		if (button_index == -1)
+		{
+			prefold_but = -1;
+		}
+		else
+		{
+			// find leave button region from profile
+			prefold_but = -1;
+			s.Format("i%dbutton", button_index);
+			for (i=0; i<=9; i++)
+			{
+				r$index = global.trans.map.r$iXbutton_index[i];
+				if (r$index!=-1)
+				{
+					if (global.trans.map.r$[r$index].name == s)
+					{
+						prefold_but = r$index;
+						i = 10;
+					}
+				}
+			}
+		}
 
-    //////////////////////////////////////////////////////////
-    // find i86 button region from scraper
-    for (i=0; i<=9; i++)
-    {
-        i86X_but[i] = -1;
-        i86X_state[i] = false;
-        if (scraper.get_button_state(860+i))
-        {
-            i86X_but[i] = global.trans.map.r$i86Xbutton_index[i];
-            i86X_state[i] = true;
-        }
-    }
+		//////////////////////////////////////////////////////////
+		// find i86 button region from scraper
+		i86_but = -1;
+		i86_state = false;
+		if (scraper.get_button_state(86))
+		{
+			i86_but = global.trans.map.r$i86button_index;
+			i86_state = true;
+		}
 
-    return num_seen;
+		//////////////////////////////////////////////////////////
+		// find i86 button region from scraper
+		for (i=0; i<=9; i++)
+		{
+			i86X_but[i] = -1;
+			i86X_state[i] = false;
+			if (scraper.get_button_state(860+i))
+			{
+				i86X_but[i] = global.trans.map.r$i86Xbutton_index[i];
+				i86X_state[i] = true;
+			}
+		}
 
+	// Allow other threads to use CScraper variables
+	LeaveCriticalSection(&cs_scraper);
+
+	return num_seen;
 
     __SEH_LOGFATAL("Autoplayer::get_r$_button_indices :\n");
 
 }
 
-void Autoplayer::check_bring_keyboard(void) {
+void Autoplayer::check_bring_keyboard(void) 
+{
     __SEH_HEADER
-    HMENU			bringsysmenu;
+    
+	HMENU			bringsysmenu;
     MENUITEMINFO	mii;
     int				input_count, i;
     INPUT			input[100] = {0};
@@ -1517,7 +1617,11 @@ void Autoplayer::check_bring_keyboard(void) {
     CString			c_text;
     int				keybd_item_pos;
 
-    GetCursorPos(&cur_pos);
+	EnterCriticalSection(&cs_symbols);
+	bool			sym_isbring = (bool) symbols.sym.isbring;
+	LeaveCriticalSection(&cs_symbols);
+
+	GetCursorPos(&cur_pos);
 
     // Find position of "Keyboard" item on system menu
     bringsysmenu = GetSystemMenu(global.attached_hwnd, false);
@@ -1527,7 +1631,8 @@ void Autoplayer::check_bring_keyboard(void) {
     mii.fType = MFT_STRING;
     mii.dwTypeData = temp;
     keybd_item_pos = -1;
-    for (i=GetMenuItemCount(bringsysmenu)-1; i>=0; i--) {
+    for (i=GetMenuItemCount(bringsysmenu)-1; i>=0; i--) 
+	{
 	    mii.cch = 256;
     
 		// Get the text of this menu item
@@ -1535,23 +1640,27 @@ void Autoplayer::check_bring_keyboard(void) {
         c_text = temp;
 
         // See if this is the "keyboard" menu item
-        if (c_text.MakeLower().Find("keyboard") != -1) {
+        if (c_text.MakeLower().Find("keyboard") != -1) 
+		{
             keybd_item_pos = i;
             continue;
         }
     }
 
     // Get state of keyboard menu item
-    if (keybd_item_pos == -1) {
+    if (keybd_item_pos == -1) 
+	{
         return;
     }
-    else {
+    else 
+	{
         mii.cbSize = sizeof(MENUITEMINFO);
         mii.fMask = MIIM_STATE;
         GetMenuItemInfo(bringsysmenu, keybd_item_pos, true, &mii);
     }
 
-    if (!(mii.fState&MFS_CHECKED) && symbols.sym.isbring) {
+    if (!(mii.fState&MFS_CHECKED) && sym_isbring) 
+	{
 
         input_count = 0;
         // Alt key down
@@ -1618,9 +1727,11 @@ void Autoplayer::check_bring_keyboard(void) {
 
 }
 
-void Autoplayer::do_f$play(void) {
+void Autoplayer::do_f$play(void) 
+{
     __SEH_HEADER
-    INPUT			input[100] = {0};
+
+	INPUT			input[100] = {0};
     POINT			pt;
     double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
     double			fScreenHeight = ::GetSystemMetrics( SM_CYSCREEN )-1;
@@ -1633,12 +1744,16 @@ void Autoplayer::do_f$play(void) {
     HWND			hwnd_active = GetActiveWindow();
     POINT			cur_pos;
 
-    ::GetCursorPos(&cur_pos);
+	EnterCriticalSection(&cs_symbols);
+	double			f_play = symbols.f$play;
+	LeaveCriticalSection(&cs_symbols);
+
+	::GetCursorPos(&cur_pos);
 
     do_click = false;
 
     // leave table
-    if (symbols.f$play==-2 && leave_but!=-1)
+    if (f_play==-2 && leave_but!=-1)
     {
         pt = randomize_click_location(global.trans.map.r$[leave_but].left, global.trans.map.r$[leave_but].top,
                                       global.trans.map.r$[leave_but].right, global.trans.map.r$[leave_but].bottom);
@@ -1680,12 +1795,12 @@ void Autoplayer::do_f$play(void) {
     }
 
     // no action
-    else if (symbols.f$play==-1)
+    else if (f_play==-1)
     {
     }
 
     // sit out
-    else if (symbols.f$play==0 && ((sitout_but!=-1 && sitout_state==false) || (sitin_but!=-1 && sitin_state==true)))
+    else if (f_play==0 && ((sitout_but!=-1 && sitout_state==false) || (sitin_but!=-1 && sitin_state==true)))
     {
 
         if (sitout_but!=-1 && sitout_state==false)
@@ -1736,7 +1851,7 @@ void Autoplayer::do_f$play(void) {
     }
 
     // sit in
-    else if (symbols.f$play==1 && ((sitin_but!=-1 && sitin_state==false) || (sitout_but!=-1 && sitout_state==true)))
+    else if (f_play==1 && ((sitin_but!=-1 && sitin_state==false) || (sitout_but!=-1 && sitout_state==true)))
     {
         if (sitin_but!=-1 && sitin_state==false)
         {
@@ -1786,7 +1901,7 @@ void Autoplayer::do_f$play(void) {
     }
 
     // Autopost
-    if (symbols.f$play==1 && autopost_but!=-1 && autopost_state==false)
+    if (f_play==1 && autopost_but!=-1 && autopost_state==false)
     {
         pt = randomize_click_location(global.trans.map.r$[autopost_but].left, global.trans.map.r$[autopost_but].top,
                                       global.trans.map.r$[autopost_but].right, global.trans.map.r$[autopost_but].bottom);
@@ -1828,7 +1943,8 @@ void Autoplayer::do_f$play(void) {
     if (do_click)
     {
         // If we get a lock, do the action
-        if (Mutex.Lock(500)) {
+        if (Mutex.Lock(500)) 
+		{
             SetFocus(global.attached_hwnd);
             SetForegroundWindow(global.attached_hwnd);
             SetActiveWindow(global.attached_hwnd);
@@ -1844,13 +1960,13 @@ void Autoplayer::do_f$play(void) {
             Mutex.Unlock();
 
             // reset elapsedauto symbol
-            time(&symbols.elapsedautohold);
-
+			EnterCriticalSection(&cs_symbols);
+			time(&symbols.elapsedautohold);
+			LeaveCriticalSection(&cs_symbols);
         }
     }
 
     __SEH_LOGFATAL("Autoplayer::do_f$play :\n");
-
 }
 
 void Autoplayer::do_i86(void) 
@@ -1982,12 +2098,13 @@ void Autoplayer::do_i86(void)
             Mutex.Unlock();
 
             // reset elapsedauto symbol
-            time(&symbols.elapsedautohold);
+			EnterCriticalSection(&cs_symbols);
+			time(&symbols.elapsedautohold);
+			LeaveCriticalSection(&cs_symbols);
         }
     }
 
     __SEH_LOGFATAL("Autoplayer::do_i86 :\n");
-
 }
 
 POINT Autoplayer::randomize_click_location(int left, int top, int right, int bottom) 
@@ -2006,7 +2123,6 @@ POINT Autoplayer::randomize_click_location(int left, int top, int right, int bot
     return p;
 
     __SEH_LOGFATAL("Autoplayer::random_click_location :\n");
-
 }
 
 void Autoplayer::get_click_point(int x, int y, int rx, int ry, POINT *p) 
@@ -2017,7 +2133,6 @@ void Autoplayer::get_click_point(int x, int y, int rx, int ry, POINT *p)
     p->y = y + (int) (randomNormalScaled(2*ry, 0, 1) + 0.5) - (ry);
 
     __SEH_LOGFATAL("Autoplayer::get_click_point :\n");
-
 }
 
 // random number - 0 -> scale, with normal distribution

@@ -16,6 +16,7 @@
 #include "HeartbeatThread.h"
 #include "IteratorThread.h"
 #include "scraper.h"
+#include "symbols.h"
 #include "grammar.h"
 #include "PokerPro.h"
 #include "PokerTrackerThread.h"
@@ -44,21 +45,19 @@ END_MESSAGE_MAP()
 // COpenHoldemApp construction
 COpenHoldemApp::COpenHoldemApp()
 {
-
     __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
-
 
     __SEH_HEADER
 
     // Critical sections
     InitializeCriticalSection(&cs_heartbeat);
     InitializeCriticalSection(&cs_iterator);
-    InitializeCriticalSection(&cs_scrape_symbol);
+    InitializeCriticalSection(&cs_scraper);
+    InitializeCriticalSection(&cs_symbols);
 	InitializeCriticalSection(&cs_calc_f$symbol);
     InitializeCriticalSection(&cs_parse);
 
     __SEH_LOGFATAL("COpenHoldemApp::Constructor :\n");
-
 }
 
 // COpenHoldemApp destruction
@@ -67,7 +66,6 @@ COpenHoldemApp::~COpenHoldemApp()
     __SEH_HEADER
 
     __SEH_LOGFATAL("COpenHoldemApp::Destructor :\n");
-
 }
 
 // The one and only COpenHoldemApp object
@@ -197,7 +195,6 @@ BOOL COpenHoldemApp::InitInstance()
     return TRUE;
 
     __SEH_LOGFATAL("COpenHoldemApp::InitInstance :\n");
-
 }
 
 int COpenHoldemApp::ExitInstance()
@@ -228,7 +225,8 @@ int COpenHoldemApp::ExitInstance()
 
 	DeleteCriticalSection(&cs_iterator);
     DeleteCriticalSection(&cs_heartbeat);
-    DeleteCriticalSection(&cs_scrape_symbol);
+    DeleteCriticalSection(&cs_scraper);
+    DeleteCriticalSection(&cs_symbols);
 	DeleteCriticalSection(&cs_calc_f$symbol);
     DeleteCriticalSection(&cs_parse);
 
@@ -239,13 +237,13 @@ int COpenHoldemApp::ExitInstance()
     return CWinApp::ExitInstance();
 
     __SEH_LOGFATAL("COpenHoldemApp::ExitInstance :\n");
-
 }
 
 
 // CDlgAbout dialog used for App About
 
-class CDlgAbout : public CDialog {
+class CDlgAbout : public CDialog 
+{
 public:
     CDlgAbout();
 
@@ -260,10 +258,12 @@ protected:
     DECLARE_MESSAGE_MAP()
 };
 
-CDlgAbout::CDlgAbout() : CDialog(CDlgAbout::IDD) {
+CDlgAbout::CDlgAbout() : CDialog(CDlgAbout::IDD) 
+{
 }
 
-void CDlgAbout::DoDataExchange(CDataExchange* pDX) {
+void CDlgAbout::DoDataExchange(CDataExchange* pDX) 
+{
     CDialog::DoDataExchange(pDX);
 }
 
@@ -271,19 +271,22 @@ BEGIN_MESSAGE_MAP(CDlgAbout, CDialog)
 END_MESSAGE_MAP()
 
 // App command to run the dialog
-void COpenHoldemApp::OnAppAbout() {
+void COpenHoldemApp::OnAppAbout() 
+{
     CDlgAbout aboutDlg;
     aboutDlg.DoModal();
 }
 
 // Added due to inability to get standard LoadStdProfileSettings working properly
-void COpenHoldemApp::MyLoadStdProfileSettings(UINT nMaxMRU) {
+void COpenHoldemApp::MyLoadStdProfileSettings(UINT nMaxMRU) 
+{
     __SEH_HEADER
 
     ASSERT_VALID(this);
     ASSERT(m_pRecentFileList == NULL);
 
-    if (nMaxMRU != 0) {
+    if (nMaxMRU != 0) 
+	{
         // create file MRU since nMaxMRU not zero
         m_pRecentFileList = new CRecentFileList(0, _afxFileSection, _afxFileEntry, nMaxMRU);
         m_pRecentFileList->ReadList();
@@ -292,5 +295,4 @@ void COpenHoldemApp::MyLoadStdProfileSettings(UINT nMaxMRU) {
     m_nNumPreviewPages = GetProfileInt(_afxPreviewSection, _afxPreviewEntry, 0);
 
     __SEH_LOGFATAL("COpenHoldemApp::MyLoadStdProfileSettings :\n");
-
 }

@@ -22,6 +22,7 @@
 #include "global.h"
 #include "scraper.h"
 #include "Perl.hpp"
+#include "IteratorThread.h"
 
 using namespace std;
 
@@ -94,8 +95,12 @@ static void gws(const char *the_Symbol, double* the_Result)
 static void gwt(char* the_ResultString)
 {
     __SEH_HEADER
+
 	//    We assume a buffer of 80 chars on Perl side.
+    EnterCriticalSection(&cs_scraper);
 	sprintf_s(the_ResultString, 80, "%s", scraper.title);
+    LeaveCriticalSection(&cs_scraper);
+
     __SEH_LOGFATAL("Perl::gwt : \n");
 }
 
@@ -110,7 +115,9 @@ static void gwp(int the_PlayerName, char* the_ResultString)
     __SEH_HEADER
 
 	//    We assume a buffer of 80 chars on Perl side.
+    EnterCriticalSection(&cs_scraper);
 	sprintf_s(the_ResultString, 80, "%s", scraper.playername[the_PlayerName % 10]);
+    LeaveCriticalSection(&cs_scraper);
 
     __SEH_LOGFATAL("Perl::gwp : \n");
 

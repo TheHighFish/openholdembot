@@ -25,7 +25,8 @@ struct SLimitInfo
 };
 
 // Global construction of scraper class
-extern class CScraper {
+extern class CScraper 
+{
 public:
 	CScraper(void);
 	int DoScrape(void);
@@ -116,9 +117,9 @@ private:
 
 } scraper;
 
-// This critical section controls access to any variables in the CScraper and CSymbols classes
+// This critical section controls access to any variables in the CScraper class
 // Any code needing access to these variables must grab and release this critical section appropriately
-extern CRITICAL_SECTION		cs_scrape_symbol;
+extern CRITICAL_SECTION		cs_scraper;
 
 
 

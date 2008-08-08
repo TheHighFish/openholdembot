@@ -14,7 +14,7 @@
 #include "MainFrm.h"
 #include "HeartbeatThread.h"
 #include "IteratorThread.h"
-#include "scraper.h"
+//#include "scraper.h"
 #include "DialogSitDown.h"
 #include "PokerTrackerThread.h"
 

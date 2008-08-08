@@ -192,7 +192,10 @@ void SymbolValidation(const char *begin, const char *end)
     else
     {
 		e = SUCCESS;
+		
+		EnterCriticalSection(&cs_symbols);
         symbols.GetSymbolVal(sym.c_str(), &e);
+		LeaveCriticalSection(&cs_symbols);
 
 		if (e != SUCCESS)
 			global.parse_symbol_stop_strs.Add(sym);
@@ -582,7 +585,14 @@ double eval_symbol(SFormula *f, string sym, CEvalInfoFunction **logCallingFuncti
     double		result;
     char		f$func[10];
     const char	*ranks = "  23456789TJQKA";
-    int			rank0, rank1, rank_temp;
+	int			rank_temp;
+
+	EnterCriticalSection(&cs_symbols);
+	int			rank0 = (((int)(symbols.sym.$$pc[0]))>>4)&0x0f;
+	int			rank1 = (((int)(symbols.sym.$$pc[1]))>>4)&0x0f;
+	bool		sym_issuited = (bool) symbols.sym.issuited;
+	LeaveCriticalSection(&cs_symbols);
+
 
     // "e" literal
     if (strcmp(sym.c_str(), "e")==0)
@@ -593,10 +603,6 @@ double eval_symbol(SFormula *f, string sym, CEvalInfoFunction **logCallingFuncti
     // f$$ symbols (hand multiplexor)
     else if (memcmp(sym.c_str(), "f$$", 3)==0)
     {
-        // Get our card ranks
-        rank0 = (((int)(symbols.sym.$$pc[0]))>>4)&0x0f;
-        rank1 = (((int)(symbols.sym.$$pc[1]))>>4)&0x0f;
-
         if (rank1>rank0)
         {
             rank_temp=rank0;
@@ -630,7 +636,7 @@ double eval_symbol(SFormula *f, string sym, CEvalInfoFunction **logCallingFuncti
         {
             f$func[2] = ranks[rank0];
             f$func[3] = ranks[rank1];
-            f$func[4] = symbols.sym.issuited ? 's' : 'o';
+            f$func[4] = sym_issuited ? 's' : 'o';
             f$func[5] = '\0';
         }
 
@@ -733,7 +739,11 @@ double eval_symbol(SFormula *f, string sym, CEvalInfoFunction **logCallingFuncti
     // all other symbols
     else
     {
-        return symbols.GetSymbolVal(sym.c_str(), e);
+		EnterCriticalSection(&cs_symbols);
+		double result = symbols.GetSymbolVal(sym.c_str(), e);
+		LeaveCriticalSection(&cs_symbols);
+
+        return result;
     }
 
 	return 0;

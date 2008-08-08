@@ -1633,7 +1633,11 @@ int PokerPro::get_npd(void) {
     __SEH_LOGFATAL("PokerPro::get_npd : \n");
 
 }
-void PokerPro::DoScrape(void) {
+void PokerPro::DoScrape(void) 
+{
+	// No critical section for CScraper is required in this function, as the only place this function is called is from the
+	// heartbeat thread, and the heartbeat thread wraps the call to this function in a critical section itself
+
     __SEH_HEADER
 
     int			i, j;
@@ -1778,9 +1782,11 @@ void PokerPro::DoScrape(void) {
     __SEH_LOGFATAL("PokerPro::DoScrape : \n");
 
 }
-int PokerPro::count_same_scrapes(void) {                               // Copied from Autoplayer.cpp to be used for f$delay (4-4-2008) Spektre
-    __SEH_HEADER
 
+// Copied from Autoplayer.cpp to be used for f$delay (4-4-2008) Spektre
+int PokerPro::count_same_scrapes(void) 
+{
+    __SEH_HEADER
     int						i;
     static unsigned int		card_common_last[5] = {0};
     static unsigned int		card_player_last[10][2] = {0};
@@ -1791,55 +1797,64 @@ int PokerPro::count_same_scrapes(void) {                               // Copied
     bool					same_scrape;
     static int				num_same_scrapes=0;
 
-    // These items need to be the same to count as a identical frame:
-    // - up and down cards
-    // - button position
-    // - playerbets
-    // - playerbalances
-    // - button states
-    same_scrape = true;
-    for (i=0; i<5; i++)
-    {
-        if (scraper.card_common[i] != card_common_last[i])  same_scrape = false;
-    }
+	EnterCriticalSection(&cs_symbols);
+	double			sym_myturnbits = symbols.sym.myturnbits;
+	LeaveCriticalSection(&cs_symbols);
 
-    for (i=0; i<10; i++)
-    {
-        if (scraper.card_player[i][0] != card_player_last[i][0])  same_scrape = false;
-        if (scraper.card_player[i][1] != card_player_last[i][1])  same_scrape = false;
-        if (scraper.dealer[i] != dealer_last[i])  same_scrape = false;
-        if (scraper.playerbalance[i] != playerbalance_last[i])  same_scrape = false;
-        if (scraper.playerbet[i] != playerbet_last[i])  same_scrape = false;
-    }
+	// Get exclusive access to CScraper variables
+	EnterCriticalSection(&cs_scraper);
+	
+		// These items need to be the same to count as a identical frame:
+		// - up and down cards
+		// - button position
+		// - playerbets
+		// - playerbalances
+		// - button states
+		same_scrape = true;
+		for (i=0; i<5; i++)
+		{
+			if (scraper.card_common[i] != card_common_last[i])  same_scrape = false;
+		}
 
-    if (symbols.sym.myturnbits != myturnbitslast)  same_scrape = false;
+		for (i=0; i<10; i++)
+		{
+			if (scraper.card_player[i][0] != card_player_last[i][0])  same_scrape = false;
+			if (scraper.card_player[i][1] != card_player_last[i][1])  same_scrape = false;
+			if (scraper.dealer[i] != dealer_last[i])  same_scrape = false;
+			if (scraper.playerbalance[i] != playerbalance_last[i])  same_scrape = false;
+			if (scraper.playerbet[i] != playerbet_last[i])  same_scrape = false;
+		}
 
-    if (same_scrape)
-    {
-        num_same_scrapes++;
-    }
-    else
-    {
-        for (i=0; i<5; i++)
-        {
-            card_common_last[i] = scraper.card_common[i];
-        }
-        for (i=0; i<10; i++)
-        {
-            card_player_last[i][0] = scraper.card_player[i][0];
-            card_player_last[i][1] = scraper.card_player[i][1];
-            dealer_last[i] = scraper.dealer[i];
-            playerbalance_last[i] = scraper.playerbalance[i];
-            playerbet_last[i] = scraper.playerbet[i];
-        }
-        myturnbitslast = symbols.sym.myturnbits;
-        num_same_scrapes = 0;
-    }
+		if (sym_myturnbits != myturnbitslast)  same_scrape = false;
 
-    return num_same_scrapes;
+		if (same_scrape)
+		{
+			num_same_scrapes++;
+		}
+		else
+		{
+			for (i=0; i<5; i++)
+			{
+				card_common_last[i] = scraper.card_common[i];
+			}
+			for (i=0; i<10; i++)
+			{
+				card_player_last[i][0] = scraper.card_player[i][0];
+				card_player_last[i][1] = scraper.card_player[i][1];
+				dealer_last[i] = scraper.dealer[i];
+				playerbalance_last[i] = scraper.playerbalance[i];
+				playerbet_last[i] = scraper.playerbet[i];
+			}
+			myturnbitslast = sym_myturnbits;
+			num_same_scrapes = 0;
+		}
 
-    __SEH_LOGFATAL("PokerPro::count_same_scrapes :\n");
+	// Allow other threads to use CScraper variables
+	LeaveCriticalSection(&cs_scraper);
 
+	return num_same_scrapes;
+
+    __SEH_LOGFATAL("Autoplayer::count_same_scrapes :\n");
 }
 
 
@@ -1847,135 +1862,173 @@ void PokerPro::DoAutoplayer(void)
 {
     __SEH_HEADER
 
-    int				error;
-    bool			iterator_running;
-    int				x, delay;
+    int				i, error, x, delay;
 
-    EnterCriticalSection(&cs_iterator);
-    iterator_running = iterator_thread_running;
+	// These variables hold values that are collected in a critical section
+	double			play, f_delay, alli, swag, call, rais;
+
+	EnterCriticalSection(&cs_iterator);
+    bool			iterator_running = iterator_status.iterator_thread_running;
     LeaveCriticalSection(&cs_iterator);
 
-	// Get exclusive access to CScraper and CSymbol variables
-	EnterCriticalSection(&cs_scrape_symbol);
+	EnterCriticalSection(&cs_scraper);
+	bool			button_state[7];
+	for (i=1; i<=6; i++)
+	{
+		button_state[i] = scraper.get_button_state(i);
+	}
+	LeaveCriticalSection(&cs_scraper);
 
-		////////////////////////////////////////////////////////////////////////////////
-		// f$play
-		error = SUCCESS;
-		symbols.f$play = calc_f$symbol(&global.formula, "f$play", &error);
-		if (symbols.f$play==-2) {
-			send_stand(data.m_userchair);	   // leave table
-		}
-		else if (symbols.f$play==-1) { }																	// no action
-		else if (symbols.f$play==0 && scraper.get_button_state(6)) {
-			send_sitout(data.m_userchair);    // sit out
-		}
-		else if (symbols.f$play==1 && scraper.get_button_state(5)) {
-			send_sitin(data.m_userchair);    // sit in
-		}
+	EnterCriticalSection(&cs_symbols);
+	int				sym_myturnbits = (int) symbols.sym.myturnbits;
+	LeaveCriticalSection(&cs_symbols);
 
-		// If iterator thread is still iterating, then return
-		if (iterator_running) 
-		{
-			// Allow other threads to use CScraper and CSymbol variables
-			LeaveCriticalSection(&cs_scrape_symbol);
-			return;
-		}
+	////////////////////////////////////////////////////////////////////////////////
+	// f$play
+	error = SUCCESS;
+	play = calc_f$symbol(&global.formula, "f$play", &error);
 
-		// if we have no visible buttons, then return
-		if (!symbols.sym.myturnbits) 
-		{
-			// Allow other threads to use CScraper and CSymbol variables
-			LeaveCriticalSection(&cs_scrape_symbol);
-			return;
-		}
+	EnterCriticalSection(&cs_symbols);
+	symbols.f$play = play;
+	LeaveCriticalSection(&cs_symbols);
 
-		// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return (added Spektre 2008-04-03)
-		symbols.f$delay = calc_f$symbol(&global.formula, "f$delay", &error);
-		delay = symbols.f$delay / global.preferences.scrape_delay;    // scale f$delay to a number of scrapes
-		x = count_same_scrapes();
-		if (x < (int) global.preferences.frame_delay + delay) 
-		{
-			// Allow other threads to use CScraper and CSymbol variables
-			LeaveCriticalSection(&cs_scrape_symbol);
-			return;
-		}
+	if (play==-2) 
+	{
+		send_stand(data.m_userchair);	   // leave table
+	}
+	else if (play==-1) 
+	{ 
+	}										// no action
+																
+	else if (play==0 && button_state[6]) 
+	{
+		send_sitout(data.m_userchair);    // sit out
+	}
 
-		// calculate f$alli, f$swag, f$rais, and f$call for autoplayer's use
-		error = SUCCESS;
-		symbols.f$alli = calc_f$symbol(&global.formula, "f$alli", &error);
-		error = SUCCESS;
-		symbols.f$swag = calc_f$symbol(&global.formula, "f$swag", &error);
-		error = SUCCESS;
-		symbols.f$rais = calc_f$symbol(&global.formula, "f$rais", &error);
-		error = SUCCESS;
-		symbols.f$call = calc_f$symbol(&global.formula, "f$call", &error);
+	else if (play==1 && button_state[5]) 
+	{
+		send_sitin(data.m_userchair);    // sit in
+	}
 
+	// If iterator thread is still iterating, then return
+	if (iterator_running) 
+		return;
 
-		if (symbols.f$alli && scraper.get_button_state(3) && autoplayer_can_act) {
-			Sleep(500);
-			send_action('ALLI', 0);
-			autoplayer_can_act = false;
-			global.replay_recorded_this_turn = false;
-			Sleep(500);
-			symbols.sym.prevaction = PREVACT_ALLI;
-		}
-		else if (symbols.f$swag && scraper.get_button_state(2) && autoplayer_can_act) {
-			Sleep(500);
-			send_action('SBET', (int) (symbols.f$swag*100));
-			autoplayer_can_act = false;
-			global.replay_recorded_this_turn = false;
-			Sleep(500);
-			symbols.sym.didswag[4] = 1;
-			symbols.sym.didswag[(int) symbols.sym.br-1] = 1;
-			symbols.sym.prevaction = PREVACT_SWAG;
-		}
-		else if (symbols.f$rais && scraper.get_button_state(2) && autoplayer_can_act) {
-			Sleep(500);
-			send_action('RAIS', 0);
-			autoplayer_can_act = false;
-			global.replay_recorded_this_turn = false;
-			Sleep(500);
-			symbols.sym.didrais[4] = 1;
-			symbols.sym.didrais[(int) symbols.sym.br-1] = 1;
-			symbols.sym.prevaction = PREVACT_RAIS;
-		}
-		else if (symbols.f$call && scraper.get_button_state(1) && autoplayer_can_act) {
-			Sleep(500);
-			send_action('CALL', 0);
-			autoplayer_can_act = false;
-			global.replay_recorded_this_turn = false;
-			Sleep(500);
-			symbols.sym.didcall[4] = 1;
-			symbols.sym.didcall[(int) symbols.sym.br-1] = 1;
-			symbols.sym.prevaction = PREVACT_CALL;
-		}
-		else if (scraper.get_button_state(4) && autoplayer_can_act) {
-			Sleep(500);
-			send_action('CHEC', 0);
-			autoplayer_can_act = false;
-			global.replay_recorded_this_turn = false;
-			Sleep(500);
-			symbols.sym.didchec[4] = 1;
-			symbols.sym.didchec[(int) symbols.sym.br-1] = 1;
-			symbols.sym.prevaction = PREVACT_CHEC;
-		}
-		else if (autoplayer_can_act) {
-			Sleep(500);
-			send_action('FOLD', 0);
-			global.replay_recorded_this_turn = false;
-			autoplayer_can_act = false;
-			Sleep(500);
-			symbols.sym.prevaction = PREVACT_FOLD;
-		}
+	// if we have no visible buttons, then return
+	if (!sym_myturnbits) 
+		return;
 
-	// Allow other threads to use CScraper and CSymbol variables
-	LeaveCriticalSection(&cs_scrape_symbol);
+	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return (added Spektre 2008-04-03)
+	error = SUCCESS;
+	f_delay = calc_f$symbol(&global.formula, "f$delay", &error);
+	
+	EnterCriticalSection(&cs_symbols);
+	symbols.f$delay = f_delay;
+	LeaveCriticalSection(&cs_symbols);
+
+	delay = f_delay / global.preferences.scrape_delay;    // scale f$delay to a number of scrapes
+	x = count_same_scrapes();
+	if (x < (int) global.preferences.frame_delay + delay) 
+		return;
+
+	// calculate f$alli, f$swag, f$rais, and f$call for autoplayer's use
+	error = SUCCESS;
+	alli = calc_f$symbol(&global.formula, "f$alli", &error);
+	error = SUCCESS;
+	swag = calc_f$symbol(&global.formula, "f$swag", &error);
+	error = SUCCESS;
+	rais = calc_f$symbol(&global.formula, "f$rais", &error);
+	error = SUCCESS;
+	call = calc_f$symbol(&global.formula, "f$call", &error);
+
+	EnterCriticalSection(&cs_symbols);
+	symbols.f$alli = alli;
+	symbols.f$swag = swag;
+	symbols.f$rais = rais;
+	symbols.f$call = call;
+	LeaveCriticalSection(&cs_symbols);
+
+	if (alli && button_state[3] && autoplayer_can_act) 
+	{
+		Sleep(500);
+		send_action('ALLI', 0);
+		autoplayer_can_act = false;
+		global.replay_recorded_this_turn = false;
+		Sleep(500);
+		EnterCriticalSection(&cs_symbols);
+		symbols.sym.prevaction = PREVACT_ALLI;
+		LeaveCriticalSection(&cs_symbols);
+	}
+	else if (swag && button_state[2] && autoplayer_can_act) 
+	{
+		Sleep(500);
+		send_action('SBET', (int) (swag*100));
+		autoplayer_can_act = false;
+		global.replay_recorded_this_turn = false;
+		Sleep(500);
+		EnterCriticalSection(&cs_symbols);
+		symbols.sym.didswag[4] = 1;
+		symbols.sym.didswag[(int) symbols.sym.br-1] = 1;
+		symbols.sym.prevaction = PREVACT_SWAG;
+		LeaveCriticalSection(&cs_symbols);
+	}
+	else if (rais && button_state[2] && autoplayer_can_act) 
+	{
+		Sleep(500);
+		send_action('RAIS', 0);
+		autoplayer_can_act = false;
+		global.replay_recorded_this_turn = false;
+		Sleep(500);
+		EnterCriticalSection(&cs_symbols);
+		symbols.sym.didrais[4] = 1;
+		symbols.sym.didrais[(int) symbols.sym.br-1] = 1;
+		symbols.sym.prevaction = PREVACT_RAIS;
+		LeaveCriticalSection(&cs_symbols);
+	}
+	else if (call && button_state[1] && autoplayer_can_act) 
+	{
+		Sleep(500);
+		send_action('CALL', 0);
+		autoplayer_can_act = false;
+		global.replay_recorded_this_turn = false;
+		Sleep(500);
+		EnterCriticalSection(&cs_symbols);
+		symbols.sym.didcall[4] = 1;
+		symbols.sym.didcall[(int) symbols.sym.br-1] = 1;
+		symbols.sym.prevaction = PREVACT_CALL;
+		LeaveCriticalSection(&cs_symbols);
+	}
+	else if (button_state[4] && autoplayer_can_act) 
+	{
+		Sleep(500);
+		send_action('CHEC', 0);
+		autoplayer_can_act = false;
+		global.replay_recorded_this_turn = false;
+		Sleep(500);
+		EnterCriticalSection(&cs_symbols);
+		symbols.sym.didchec[4] = 1;
+		symbols.sym.didchec[(int) symbols.sym.br-1] = 1;
+		symbols.sym.prevaction = PREVACT_CHEC;
+		LeaveCriticalSection(&cs_symbols);
+	}
+	else if (autoplayer_can_act) 
+	{
+		Sleep(500);
+		send_action('FOLD', 0);
+		global.replay_recorded_this_turn = false;
+		autoplayer_can_act = false;
+		Sleep(500);
+		EnterCriticalSection(&cs_symbols);
+		symbols.sym.prevaction = PREVACT_FOLD;
+		LeaveCriticalSection(&cs_symbols);
+	}
 
 	__SEH_LOGFATAL("PokerPro::DoAutoplayer : \n");
 
 }
 
-void PokerPro::publish(CString *text, int flags) {
+void PokerPro::publish(CString *text, int flags) 
+{
     __SEH_HEADER
 
 
@@ -2003,7 +2056,8 @@ void PokerPro::publish(CString *text, int flags) {
 
 }
 
-const char* PokerPro::get_action(int chair, int spend) {
+const char* PokerPro::get_action(int chair, int spend) 
+{
     __SEH_HEADER
 
     int current = data.m_pinf[chair].m_betAmount;
@@ -2035,7 +2089,8 @@ const char* PokerPro::get_action(int chair, int spend) {
 
 }
 
-int PokerPro::get_player_pot(void) {
+int PokerPro::get_player_pot(void) 
+{
     __SEH_HEADER
 
     int sum=0;
@@ -2049,7 +2104,8 @@ int PokerPro::get_player_pot(void) {
 
 }
 
-char* PokerPro::card2ascii(char* text, unsigned char cc) {
+char* PokerPro::card2ascii(char* text, unsigned char cc) 
+{
     __SEH_HEADER
 
     const char* srank = " 123456789TJQKA|";
@@ -2068,7 +2124,8 @@ char* PokerPro::card2ascii(char* text, unsigned char cc) {
 
 }
 
-char PokerPro::rank2ascii(int rank) {
+char PokerPro::rank2ascii(int rank) 
+{
     __SEH_HEADER
 
 
@@ -2080,22 +2137,26 @@ char PokerPro::rank2ascii(int rank) {
 
 }
 
-void PokerPro::writehh(CString *s) {
+void PokerPro::writehh(CString *s) 
+{
     __SEH_HEADER
 
     CString fn, fd;
     FILE *hh_fp;
 
-    if (handhistory) {
+    if (handhistory) 
+	{
         fn.Format("%s\\ppro\\%s_%lu.log", global.startup_path, data.m_site_name, global.Session_ID);
         hh_fp = fopen(fn.GetString(), "a");
-        if (hh_fp==NULL) {
+        if (hh_fp==NULL) 
+		{
             fd.Format("%s\\ppro", global.startup_path);
             CreateDirectory(fd.GetString(), NULL);
             hh_fp = fopen(fn.GetString(), "a");
         }
 
-        if (hh_fp!=NULL) {
+        if (hh_fp!=NULL) 
+		{
             fprintf(hh_fp, "%s", s->GetString());
             fflush(hh_fp);
             fclose(hh_fp);
@@ -2107,22 +2168,24 @@ void PokerPro::writehh(CString *s) {
 
 }
 
-const char* PokerPro::get_cardinal_suffix(int n) {
+const char* PokerPro::get_cardinal_suffix(int n) 
+{
     __SEH_HEADER
 
-    switch (n%10) {
-    case 1:
-        return "st";
-        break;
-    case 2:
-        return "nd";
-        break;
-    case 3:
-        return "rd";
-        break;
-    default:
-        return "th";
-        break;
+    switch (n%10) 
+	{
+		case 1:
+			return "st";
+			break;
+		case 2:
+			return "nd";
+			break;
+		case 3:
+			return "rd";
+			break;
+		default:
+			return "th";
+			break;
     }
 
     return "??";
