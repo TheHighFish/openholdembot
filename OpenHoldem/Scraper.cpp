@@ -9,7 +9,7 @@
 // Global construction of scraper class
 class CScraper	scraper;
 
-CRITICAL_SECTION	cs_scrape_symbol;
+CRITICAL_SECTION	cs_scraper;
 
 CScraper::CScraper(void)
 {
@@ -27,8 +27,8 @@ void CScraper::clear_scrape_areas(void)
     __SEH_HEADER
     int i;
 
-	// Get exclusive access to CScraper and CSymbol variables
-	EnterCriticalSection(&cs_scrape_symbol);
+	// Get exclusive access to CScraper variables
+	EnterCriticalSection(&cs_scraper);
 
     for (i=0; i<5; i++)
         card_common[i] = CARD_NOCARD;
@@ -101,8 +101,8 @@ void CScraper::clear_scrape_areas(void)
     handnumber_last=0;
     strcpy(title_last, "");
 
-	// Allow other threads to use CScraper and CSymbol variables
-	LeaveCriticalSection(&cs_scrape_symbol);
+	// Allow other threads to use CScraper variables
+	LeaveCriticalSection(&cs_scraper);
 
     __SEH_LOGFATAL("CScraper::clear_scrape_areas :\n");
 
@@ -156,8 +156,12 @@ bool CScraper::is_common_animation(void)
 // returns true if window has changed and we processed the changes, false otherwise
 int CScraper::DoScrape(void)
 {
-    __SEH_HEADER
-    int				i;
+	// No critical section is required for CScraper in this function, as the only place this function is called is from the
+	// heartbeat thread, and the heartbeat thread wraps the call to this function in a critical section itself
+
+	__SEH_HEADER
+
+	int				i;
     CString			text;
 
     // DC

@@ -17,6 +17,8 @@
 
 class CSymbols	symbols;
 
+CRITICAL_SECTION	cs_symbols;
+
 // These can not be function scoped statics because we need to be able to
 // reset them when we connect to a table.
 double CSymbols::dealerchair_last = -1;
@@ -83,25 +85,125 @@ int handrank2652[10][169] =
 
 CSymbols::CSymbols()
 {
-
     __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
 
-
     __SEH_HEADER
+
+    int			i, j, k, vndx;
+    char *ptr;
 
 	ResetSymbolsFirstTime();
 
     // Seed RNG
     srand((unsigned)time( NULL ));
 
-    __SEH_LOGFATAL("CSymbols::Constructor : \n");
+	//Initialise the handrank tables used by prwin
+	vndx=0; //used to provide an offset into the vanilla table
+	for (i=0;i<169;i++)
+	{
+		//normal weighted prwin table
+		ptr=prwhandrank169[i];
+		j=(strchr(ctonum,*ptr)-ctonum)*13 + (strchr(ctonum,*(ptr+1))-ctonum);
+		if (*(ptr+2)=='s')pair2ranks[j]=i+1;
+		else pair2ranko[j]=i+1;
+		//prw1326 vanilla table
+		j=strchr(ctonum,*ptr)-ctonum;
+		k=strchr(ctonum,*(ptr+1))-ctonum;
+		for(;;)
+		{
+			//I originally had an algorithm to do this, but it was obscure and impenetrable
+			//so now I have switched to the clumsy but simple approach.
+			if(j==k)//pair
+			{
+				symbols.prw1326.vanilla_chair.rankhi[vndx]=j;	//h
+				symbols.prw1326.vanilla_chair.rankhi[vndx+1]=j;	//h
+				symbols.prw1326.vanilla_chair.rankhi[vndx+2]=j; //h
+				symbols.prw1326.vanilla_chair.rankhi[vndx+3]=j+13; //d
+				symbols.prw1326.vanilla_chair.rankhi[vndx+4]=j+13; //d
+				symbols.prw1326.vanilla_chair.rankhi[vndx+5]=j+26; //c
+				symbols.prw1326.vanilla_chair.ranklo[vndx]=k+13;	//d
+				symbols.prw1326.vanilla_chair.ranklo[vndx+1]=k+26;	//c
+				symbols.prw1326.vanilla_chair.ranklo[vndx+2]=k+39;	//s
+				symbols.prw1326.vanilla_chair.ranklo[vndx+3]=k+26;	//c	
+				symbols.prw1326.vanilla_chair.ranklo[vndx+4]=k+39;	//s
+				symbols.prw1326.vanilla_chair.ranklo[vndx+5]=k+39;	//s
+				vndx+=6;
+				break;
+			}
+		
+			if (*(ptr+2)=='s') //suited
+			{
+				symbols.prw1326.vanilla_chair.rankhi[vndx]=j;		//h
+				symbols.prw1326.vanilla_chair.rankhi[vndx+1]=j+13;	//d
+				symbols.prw1326.vanilla_chair.rankhi[vndx+2]=j+26;	//c
+				symbols.prw1326.vanilla_chair.rankhi[vndx+3]=j+39;	//s
+				symbols.prw1326.vanilla_chair.ranklo[vndx]=k;		//h
+				symbols.prw1326.vanilla_chair.ranklo[vndx+1]=k+13;	//d
+				symbols.prw1326.vanilla_chair.ranklo[vndx+2]=k+26;	//c
+				symbols.prw1326.vanilla_chair.ranklo[vndx+3]=k+39;	//s
+				vndx+=4;
+				break;
+			}
+		
+			//only unsuited non-pairs left
+			symbols.prw1326.vanilla_chair.rankhi[vndx]=j;		//h
+			symbols.prw1326.vanilla_chair.rankhi[vndx+1]=j;		//h
+			symbols.prw1326.vanilla_chair.rankhi[vndx+2]=j;		//h
+			symbols.prw1326.vanilla_chair.rankhi[vndx+3]=j+13;	//d
+			symbols.prw1326.vanilla_chair.rankhi[vndx+4]=j+13;	//d
+			symbols.prw1326.vanilla_chair.rankhi[vndx+5]=j+13;	//d
+			symbols.prw1326.vanilla_chair.rankhi[vndx+6]=j+26;	//c
+			symbols.prw1326.vanilla_chair.rankhi[vndx+7]=j+26;	//c
+			symbols.prw1326.vanilla_chair.rankhi[vndx+8]=j+26;	//c
+			symbols.prw1326.vanilla_chair.rankhi[vndx+9]=j+39;	//s
+			symbols.prw1326.vanilla_chair.rankhi[vndx+10]=j+39;	//s
+			symbols.prw1326.vanilla_chair.rankhi[vndx+11]=j+39; //s Matrix corrected typo
+			symbols.prw1326.vanilla_chair.ranklo[vndx]=k+13;	//d
+			symbols.prw1326.vanilla_chair.ranklo[vndx+1]=k+26;	//c
+			symbols.prw1326.vanilla_chair.ranklo[vndx+2]=k+39;	//s
+			symbols.prw1326.vanilla_chair.ranklo[vndx+3]=k;		//h
+			symbols.prw1326.vanilla_chair.ranklo[vndx+4]=k+26;	//c
+			symbols.prw1326.vanilla_chair.ranklo[vndx+5]=k+39;	//s
+			symbols.prw1326.vanilla_chair.ranklo[vndx+6]=k;		//h
+			symbols.prw1326.vanilla_chair.ranklo[vndx+7]=k+13;	//d
+			symbols.prw1326.vanilla_chair.ranklo[vndx+8]=k+39;	//s
+			symbols.prw1326.vanilla_chair.ranklo[vndx+9]=k;		//h
+			symbols.prw1326.vanilla_chair.ranklo[vndx+10]=k+13;	//d
+			symbols.prw1326.vanilla_chair.ranklo[vndx+11]=k+26;	//c
+			vndx+=12;
+			break;
+		}
+	}
 
+	symbols.prw1326.vanilla_chair.level=1024;
+	symbols.prw1326.vanilla_chair.limit=820; //cut off a little early, since 820-884 very improbable
+
+	// now assign a weight table. Assume upper third fully probable, next third reducing
+	// probability, lowest third not played.
+	for(i=0;i<442;i++)
+		symbols.prw1326.vanilla_chair.weight[i]=symbols.prw1326.vanilla_chair.level;
+	for(i=442;i<884;i++)
+		symbols.prw1326.vanilla_chair.weight[i]=symbols.prw1326.vanilla_chair.level*(884-i)/442;
+	for(i=884;i<1326;i++)
+		symbols.prw1326.vanilla_chair.weight[i]=0;
+
+	//finally copy the vanilla to all user chairs so that someone who just turns on prw1326
+	//experimentally does not cause a crash
+	for(i=0;i<10;i++)
+		symbols.prw1326.chair[i]=symbols.prw1326.vanilla_chair ;
+
+	//end of handrank initialisation
+	
+	__SEH_LOGFATAL("CSymbols::Constructor : \n");
 }
 
 void CSymbols::ResetSymbolsFirstTime(void)
 {
     __SEH_HEADER
-    int		i;
+
+	EnterCriticalSection(&cs_symbols);
+
+	int		i;
 
     // general
     sym.ismanual = 0;
@@ -277,7 +379,10 @@ void CSymbols::ResetSymbolsFirstTime(void)
     time(&elapsedhold);
     time(&elapsedhandhold);
     time(&elapsedautohold);
+
+	EnterCriticalSection(&cs_scraper);
     QueryPerformanceCounter(&scraper.clockshold);
+	LeaveCriticalSection(&cs_scraper);
 
     // autoplayer
     sym.myturnbits = sym.ismyturn = sym.issittingin = sym.isautopost = 0;
@@ -336,8 +441,9 @@ void CSymbols::ResetSymbolsFirstTime(void)
 
 	symboltrace_collection.RemoveAll();
 
-    __SEH_LOGFATAL("CSymbols::ResetSymbolsFirstTime : \n");
-
+	LeaveCriticalSection(&cs_symbols);
+    
+	__SEH_LOGFATAL("CSymbols::ResetSymbolsFirstTime : \n");
 }
 
 void CSymbols::ResetSymbolsNewHand(void)
@@ -560,6 +666,8 @@ void CSymbols::CalcSymbols(void)
     unsigned int		player_card_cur[2];
     char				card0[10], card1[10];
 
+	unsigned int		card_player0, card_player1;
+
     // Clear em, before we start
     ResetSymbolsEveryCalc();
 
@@ -579,6 +687,7 @@ void CSymbols::CalcSymbols(void)
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Identification of dealerchair
+	EnterCriticalSection(&cs_scraper);
     for (i=0; i < global.trans.map.num_chairs; i++)
     {
         if (scraper.dealer[i])
@@ -587,6 +696,7 @@ void CSymbols::CalcSymbols(void)
             i = global.trans.map.num_chairs + 1;
         }
     }
+	LeaveCriticalSection(&cs_scraper);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Identification of userchair
@@ -604,15 +714,19 @@ void CSymbols::CalcSymbols(void)
     // Get current userchair's cards
     if (user_chair_confirmed)
     {
+		EnterCriticalSection(&cs_scraper);
         player_card_cur[0] = scraper.card_player[(int) sym.userchair][0];
         player_card_cur[1] = scraper.card_player[(int) sym.userchair][1];
+		LeaveCriticalSection(&cs_scraper);
     }
     else
     {
         player_card_cur[0] = player_card_cur[1] = CARD_NOCARD;
     }
 
+	EnterCriticalSection(&cs_scraper);
     sym.handnumber = scraper.s_limit_info.handnumber;								// handnumber
+	LeaveCriticalSection(&cs_scraper);
 
     // New hand is triggered by change in dealerchair (button moves), or change in userchair's cards (as long as it is not
     // a change to nocards or cardbacks), or a change in handnumber
@@ -646,8 +760,10 @@ void CSymbols::CalcSymbols(void)
         reset_stakes = true;
 
         // icm
+		EnterCriticalSection(&cs_scraper);
         for (i=0; i<=9; i++)
             stacks_at_hand_start[i] = scraper.playerbalance[i] + scraper.playerbet[i];
+		LeaveCriticalSection(&cs_scraper);
 
         // log new hand
         if (player_card_cur[0]==CARD_NOCARD || player_card_cur[0]==CARD_NOCARD)
@@ -673,15 +789,19 @@ void CSymbols::CalcSymbols(void)
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // common cards
     sym.nflopc = 0;
+	EnterCriticalSection(&cs_scraper);
     for (i=0; i<5; i++)
     {
         if (scraper.card_common[i] != CARD_NOCARD)
             sym.nflopc++;															// nflopc
     }
-    sym.ncommoncardspresent = sym.nflopc;											// ncommoncardspresent
+	LeaveCriticalSection(&cs_scraper);
+
+	sym.ncommoncardspresent = sym.nflopc;											// ncommoncardspresent
     sym.ncommoncardsknown = sym.nflopc;												// ncommoncardsknown
 
     // If no common card animation is going on
+	EnterCriticalSection(&cs_scraper);
     if (!scraper.is_common_animation())
     {
         sym.betround = scraper.card_common[4] != CARD_NOCARD ? 4 :
@@ -701,6 +821,7 @@ void CSymbols::CalcSymbols(void)
             sym.betround = 1;
         }
     }
+	LeaveCriticalSection(&cs_scraper);
 
     sym.br = sym.betround;															// br
 
@@ -743,8 +864,12 @@ void CSymbols::CalcSymbols(void)
     sym.isnl = (sym.lim == LIMIT_NL);												// isnl
     sym.ispl = (sym.lim == LIMIT_PL);												// ispl
     sym.isfl = (sym.lim == LIMIT_FL);												// isfl
-    sym.istournament = scraper.s_limit_info.istournament;							// istournament
-    sym.bet[0] = sym.bblind;														// bet1
+
+	EnterCriticalSection(&cs_scraper);
+	sym.istournament = scraper.s_limit_info.istournament;							// istournament
+	LeaveCriticalSection(&cs_scraper);
+
+	sym.bet[0] = sym.bblind;														// bet1
     sym.bet[1] = sym.bblind;														// bet2
     sym.bet[2] = (bigbet!=0 ? bigbet : (sym.isnl || sym.ispl ? sym.bblind : sym.bblind*2));	// bet3
     sym.bet[3] = (bigbet!=0 ? bigbet : (sym.isnl || sym.ispl ? sym.bblind : sym.bblind*2));	// bet4
@@ -759,11 +884,14 @@ void CSymbols::CalcSymbols(void)
     calc_autoplayer();					// autoplayer
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	EnterCriticalSection(&cs_scraper);
+	card_player0 = scraper.card_player[(int) sym.chair][0];
+	card_player1 = scraper.card_player[(int) sym.chair][1];
+	LeaveCriticalSection(&cs_scraper);
+
     if (user_chair_confirmed &&
-            scraper.card_player[(int) sym.chair][0]!=CARD_NOCARD &&
-            scraper.card_player[(int) sym.chair][1]!=CARD_NOCARD &&
-            scraper.card_player[(int) sym.chair][0]!=CARD_BACK &&
-            scraper.card_player[(int) sym.chair][1]!=CARD_BACK)
+		card_player0!=CARD_NOCARD && card_player1!=CARD_NOCARD &&
+		card_player0!=CARD_BACK && card_player1!=CARD_BACK)
     {
         calc_roundspositions();			// rounds positions
         calc_pokervalues();				// pokerval, pocket-common tests
@@ -793,10 +921,8 @@ void CSymbols::CalcSymbols(void)
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // dependent on nopponents calulation - must come after
     if (user_chair_confirmed &&
-            scraper.card_player[(int) sym.chair][0]!=CARD_NOCARD &&
-            scraper.card_player[(int) sym.chair][1]!=CARD_NOCARD &&
-            scraper.card_player[(int) sym.chair][0]!=CARD_BACK &&
-            scraper.card_player[(int) sym.chair][1]!=CARD_BACK)
+		card_player0!=CARD_NOCARD && card_player1!=CARD_NOCARD &&
+		card_player0!=CARD_BACK && card_player1!=CARD_BACK)
     {
         calc_nhands();				// nhands
         calc_handrank();			// handrank
@@ -807,10 +933,8 @@ void CSymbols::CalcSymbols(void)
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // dependent on prwin calulation - must come after
     if (user_chair_confirmed &&
-            scraper.card_player[(int) sym.chair][0]!=CARD_NOCARD &&
-            scraper.card_player[(int) sym.chair][1]!=CARD_NOCARD &&
-            scraper.card_player[(int) sym.chair][0]!=CARD_BACK &&
-            scraper.card_player[(int) sym.chair][1]!=CARD_BACK)
+		card_player0!=CARD_NOCARD && card_player1!=CARD_NOCARD &&
+		card_player0!=CARD_BACK && card_player1!=CARD_BACK)
     {
         calc_statistics();			// ror, mean, variance
     }
@@ -839,7 +963,9 @@ bool CSymbols::calc_userchair(void)
     int				i;
     int				num_buttons_enabled;
 
-    num_buttons_enabled = 0;
+	EnterCriticalSection(&cs_scraper);
+
+	num_buttons_enabled = 0;
     for (i=0; i<=9; i++)
     {
         if (scraper.get_button_state(i) &&
@@ -865,13 +991,18 @@ bool CSymbols::calc_userchair(void)
             {
                 sym.userchair = i;													// userchair
                 sym.chair = i;														// chair
+				LeaveCriticalSection(&cs_scraper);
                 return true;
             }
         }
     }
-    return false;
 
-    __SEH_LOGFATAL("CSymbols::calc_userchair :\n");
+	LeaveCriticalSection(&cs_scraper);
+
+	return false;
+
+
+	__SEH_LOGFATAL("CSymbols::calc_userchair :\n");
 
 }
 
@@ -883,7 +1014,9 @@ void CSymbols::calc_stakes(void)
 
     sym.sblind = sym.bblind = bigbet = sym.ante = 0;
 
-    // Save the parts we scraped successfully
+	EnterCriticalSection(&cs_scraper);
+
+	// Save the parts we scraped successfully
     if (scraper.s_limit_info.found_sblind)
         sym.sblind = scraper.s_limit_info.sblind;									// sblind
 
@@ -963,7 +1096,10 @@ void CSymbols::calc_stakes(void)
 
     // Return now, if we have locked the blinds
     if (scraper.blinds_are_locked)
+	{
+		LeaveCriticalSection(&cs_scraper);
         return;
+	}
 
     // if we still do not have blinds, then infer them from the posted bets
     if (sym.br == 1 && (sym.sblind==0 || sym.bblind==0))
@@ -1011,6 +1147,7 @@ void CSymbols::calc_stakes(void)
             sym.sblind = sym.bblind/2;
     }
 
+	LeaveCriticalSection(&cs_scraper);
 
     __SEH_LOGFATAL("CSymbols::calc_stakes :\n");
 
@@ -1023,109 +1160,113 @@ void CSymbols::calc_betbalancestack(void)
     int				i, j, oppcount;
     double			stack[10], temp;
 
+	EnterCriticalSection(&cs_scraper);
 
-    sym.bet[4] = sym.bet[(int) (sym.br-1)];											// bet
+		sym.bet[4] = sym.bet[(int) (sym.br-1)];											// bet
 
-    for (i=0; i<sym.nchairs; i++)
-        sym.balance[i] = sym.nchairs>i ? scraper.playerbalance[i] : 0;				// balance0-9
+		for (i=0; i<sym.nchairs; i++)
+			sym.balance[i] = sym.nchairs>i ? scraper.playerbalance[i] : 0;				// balance0-9
 
-    sym.balance[10] = user_chair_confirmed ?
-                      scraper.playerbalance[(int) sym.userchair] : 0;								// balance
+		sym.balance[10] = user_chair_confirmed ?
+						  scraper.playerbalance[(int) sym.userchair] : 0;								// balance
 
-    // simple bubble sort for 10 stack values
-    for (i=0; i<sym.nchairs; i++)
-    {
-        if (scraper.card_player[i][0] != CARD_NOCARD && scraper.card_player[i][1] != CARD_NOCARD)
-            stack[i] = sym.balance[i];
+		// simple bubble sort for 10 stack values
+		for (i=0; i<sym.nchairs; i++)
+		{
+			if (scraper.card_player[i][0] != CARD_NOCARD && scraper.card_player[i][1] != CARD_NOCARD)
+				stack[i] = sym.balance[i];
 
-        else
-            stack[i] = 0;
-    }
+			else
+				stack[i] = 0;
+		}
 
-    for (i=0; i<sym.nchairs-1; i++)
-    {
-        for (j=i+1; j<sym.nchairs; j++)
-        {
-            if (stack[i]<stack[j])
-            {
-                temp = stack[i];
-                stack[i]=stack[j];
-                stack[j]=temp;
-            }
-        }
-    }
+		for (i=0; i<sym.nchairs-1; i++)
+		{
+			for (j=i+1; j<sym.nchairs; j++)
+			{
+				if (stack[i]<stack[j])
+				{
+					temp = stack[i];
+					stack[i]=stack[j];
+					stack[j]=temp;
+				}
+			}
+		}
 
-    for (i=0; i<sym.nchairs; i++)
-        sym.stack[i] = sym.nchairs>i ? stack[i] : 0;								// stack0-9
+		for (i=0; i<sym.nchairs; i++)
+			sym.stack[i] = sym.nchairs>i ? stack[i] : 0;								// stack0-9
 
 
-    //
-    // currentbet sanity check
-    //
-    // Get count of opponents
-    oppcount=0;
-    for (i=0; i<sym.nchairs; i++)
-    {
-        if (scraper.card_player[i][0] == CARD_BACK &&
-                scraper.card_player[i][1] == CARD_BACK &&
-                i != sym.userchair)
-        {
-            oppcount+=1;
-        }
-    }
-    for (i=0; i<sym.nchairs; i++)
-    {
-        temp = sym.nchairs>i ? scraper.playerbet[i] : 0;
+		//
+		// currentbet sanity check
+		//
+		// Get count of opponents
+		oppcount=0;
+		for (i=0; i<sym.nchairs; i++)
+		{
+			if (scraper.card_player[i][0] == CARD_BACK &&
+					scraper.card_player[i][1] == CARD_BACK &&
+					i != sym.userchair)
+			{
+				oppcount+=1;
+			}
+		}
+		for (i=0; i<sym.nchairs; i++)
+		{
+			temp = sym.nchairs>i ? scraper.playerbet[i] : 0;
 
-        // Only record currentbet if pot>0 or num of opponents>0
-        //if (scraper.pot[0]>0 || oppcount>0) {
-        if (oppcount>0)
-        {
-            // fixed limit
-            if (sym.isfl)
-            {
-                if (temp/sym.bet[4]<=4)
-                    sym.currentbet[i] = temp;										// currentbet0-9
-            }
+			// Only record currentbet if pot>0 or num of opponents>0
+			//if (scraper.pot[0]>0 || oppcount>0) {
+			if (oppcount>0)
+			{
+				// fixed limit
+				if (sym.isfl)
+				{
+					if (temp/sym.bet[4]<=4)
+						sym.currentbet[i] = temp;										// currentbet0-9
+				}
 
-            // no limit, pot limit
-            else
-            {
-                sym.currentbet[i] = temp; 											// currentbet0-9
-            }
-        }
-    }
+				// no limit, pot limit
+				else
+				{
+					sym.currentbet[i] = temp; 											// currentbet0-9
+				}
+			}
+		}
 
-    sym.currentbet[10] = user_chair_confirmed ?
-                         scraper.playerbet[(int) sym.userchair] : 0;									// currentbet
+		sym.currentbet[10] = user_chair_confirmed ?
+							 scraper.playerbet[(int) sym.userchair] : 0;									// currentbet
 
-    sym.potplayer=0;
-    for (i=0; i<sym.nchairs; i++)
-    {
-        sym.potplayer += sym.currentbet[i];											// potplayer
-    }
+		sym.potplayer=0;
+		for (i=0; i<sym.nchairs; i++)
+		{
+			sym.potplayer += sym.currentbet[i];											// potplayer
+		}
 
-    if (sym.potmethod == 2)															// pot, potcommon ->
-    {
-        sym.pot = scraper.pot[0];
-        sym.potcommon = sym.pot - sym.potplayer;
-    }
-    else
-    {
-        sym.potcommon = 0;
-        for (i=0; i<=4; i++)
-            sym.potcommon += scraper.pot[i];
+		if (sym.potmethod == 2)															// pot, potcommon ->
+		{
+			sym.pot = scraper.pot[0];
+			sym.potcommon = sym.pot - sym.potplayer;
+		}
+		else
+		{
+			sym.potcommon = 0;
+			for (i=0; i<=4; i++)
+				sym.potcommon += scraper.pot[i];
 
-        sym.pot = sym.potcommon + sym.potplayer;									// <- pot, potcommon
-    }
+			sym.pot = sym.potcommon + sym.potplayer;									// <- pot, potcommon
+		}
 
-    __SEH_LOGFATAL("CSymbols::calc_betbalancestack :\n");
+	LeaveCriticalSection(&cs_scraper);
 
+	__SEH_LOGFATAL("CSymbols::calc_betbalancestack :\n");
 }
 
-void CSymbols::calc_chipamts_limits(void) {
+void CSymbols::calc_chipamts_limits(void) 
+{
     __SEH_HEADER
-    int				i;
+
+	int				i;
     int				next_largest_bet;
 
     sym.call = user_chair_confirmed ?
@@ -1226,7 +1367,10 @@ void CSymbols::calc_time(void)
     sym.ncps = sym.nclockspersecond;												// ncps
 
     QueryPerformanceCounter(&clocksnow);
+
+	EnterCriticalSection(&cs_scraper);
     sym.clocks = clocksnow.LowPart - scraper.clockshold.LowPart;					// clocks
+	LeaveCriticalSection(&cs_scraper);
 
     __SEH_LOGFATAL("CSymbols::calc_time :\n");
 
@@ -1235,48 +1379,53 @@ void CSymbols::calc_time(void)
 void CSymbols::calc_autoplayer(void)
 {
     __SEH_HEADER
+
     int		i;
     bool    sitin_but, sitout_but, sitin_state, sitout_state;
 
-    for (i=0; i < 10; i++)
-    {
-        if (scraper.get_button_state(i))
-        {
-            if (scraper.is_string_fold(scraper.buttonlabel[i]))
-                sym.myturnbits = (int) sym.myturnbits | (1<<0);
+	EnterCriticalSection(&cs_scraper);
 
-            else if (scraper.is_string_call(scraper.buttonlabel[i]))
-                sym.myturnbits = (int) sym.myturnbits | (1<<1);
+		for (i=0; i < 10; i++)
+		{
+			if (scraper.get_button_state(i))
+			{
+				if (scraper.is_string_fold(scraper.buttonlabel[i]))
+					sym.myturnbits = (int) sym.myturnbits | (1<<0);
 
-            else if (scraper.is_string_raise(scraper.buttonlabel[i]) || scraper.buttonlabel[i].MakeLower() == "swag")
-                sym.myturnbits = (int) sym.myturnbits | (1<<2);
+				else if (scraper.is_string_call(scraper.buttonlabel[i]))
+					sym.myturnbits = (int) sym.myturnbits | (1<<1);
 
-            else if (scraper.is_string_allin(scraper.buttonlabel[i]))
-                sym.myturnbits = (int) sym.myturnbits | (1<<3);						// myturnbits
+				else if (scraper.is_string_raise(scraper.buttonlabel[i]) || scraper.buttonlabel[i].MakeLower() == "swag")
+					sym.myturnbits = (int) sym.myturnbits | (1<<2);
 
-            else if (scraper.is_string_autopost(scraper.buttonlabel[i]))
-                sym.isautopost = 1;													// isautopost
+				else if (scraper.is_string_allin(scraper.buttonlabel[i]))
+					sym.myturnbits = (int) sym.myturnbits | (1<<3);						// myturnbits
 
-        }
-    }
-    sym.ismyturn = (int) sym.myturnbits & 0x7;										// ismyturn
+				else if (scraper.is_string_autopost(scraper.buttonlabel[i]))
+					sym.isautopost = 1;													// isautopost
 
-    // Figure out sitin/sitout state
-    sitin_but = sitout_but = sitin_state = sitout_state = false;
-    for (i=0; i < 10; i++)
-    {
-        if (scraper.is_string_sitin(scraper.buttonlabel[i]))
-        {
-            sitin_but = true;
-            sitin_state = scraper.get_button_state(i);
-        }
+			}
+		}
+		sym.ismyturn = (int) sym.myturnbits & 0x7;										// ismyturn
 
-        else if (scraper.is_string_sitout(scraper.buttonlabel[i]))
-        {
-            sitout_but = true;
-            sitout_state = scraper.get_button_state(i);
-        }
-    }
+		// Figure out sitin/sitout state
+		sitin_but = sitout_but = sitin_state = sitout_state = false;
+		for (i=0; i < 10; i++)
+		{
+			if (scraper.is_string_sitin(scraper.buttonlabel[i]))
+			{
+				sitin_but = true;
+				sitin_state = scraper.get_button_state(i);
+			}
+
+			else if (scraper.is_string_sitout(scraper.buttonlabel[i]))
+			{
+				sitout_but = true;
+				sitout_state = scraper.get_button_state(i);
+			}
+		}
+
+	LeaveCriticalSection(&cs_scraper);
 
 
     // we have a sitin button
@@ -1338,14 +1487,14 @@ void CSymbols::calc_probabilities(void)
 	EnterCriticalSection(&cs_iterator);
 
 		// collect last run information
-		nopp_lastrun = iterator_run_with_f$p;
-		nit_lastrun = iterator_run_with_nit;
-		br_lastrun = iterator_run_with_br;
+		nopp_lastrun = iterator_status.iterator_run_with_f$p;
+		nit_lastrun = iterator_status.iterator_run_with_nit;
+		br_lastrun = iterator_status.iterator_run_with_br;
 		for (i=0; i<=1; i++)
-			playercards_lastrun[i] = iterator_run_with_playercards[i];
+			playercards_lastrun[i] = iterator_status.iterator_run_with_playercards[i];
 
 		for (i=0; i<=4; i++)
-			commoncards_lastrun[i] = iterator_run_with_commoncards[i];
+			commoncards_lastrun[i] = iterator_status.iterator_run_with_commoncards[i];
 
 	// Allow other threads to use CIterator variables
 	LeaveCriticalSection(&cs_iterator);
@@ -1365,17 +1514,21 @@ void CSymbols::calc_probabilities(void)
         need_recalc = true;
     }
 
-    for (i=0; i<=1; i++)
-    {
-        if (scraper.card_player[(int) symbols.sym.userchair][i] != playercards_lastrun[i])
-            need_recalc = true;
-    }
+	EnterCriticalSection(&cs_scraper);
 
-    for (i=0; i<=4; i++)
-    {
-        if (scraper.card_common[i] != commoncards_lastrun[i])
-            need_recalc = true;
-    }
+		for (i=0; i<=1; i++)
+		{
+			if (scraper.card_player[(int) symbols.sym.userchair][i] != playercards_lastrun[i])
+				need_recalc = true;
+		}
+
+		for (i=0; i<=4; i++)
+		{
+			if (scraper.card_common[i] != commoncards_lastrun[i])
+				need_recalc = true;
+		}
+
+	LeaveCriticalSection(&cs_scraper);
 
     if (need_recalc && sym.nit>0)
     {
@@ -1405,185 +1558,191 @@ void CSymbols::calc_playersfriendsopponents(void)
     lastbet = 0;
     sblindfound = false;
     bblindfound = false;
-    for (i=sym.dealerchair+1; i<=sym.dealerchair+global.trans.map.num_chairs; i++)
-    {
-        if (scraper.playerbet[i%global.trans.map.num_chairs] > lastbet)
-        {
-            lastbet = scraper.playerbet[i%global.trans.map.num_chairs];
-            sym.raischair = i%global.trans.map.num_chairs;									// raischair
-        }
 
-        if (!sblindfound && scraper.playerbet[i%global.trans.map.num_chairs]<=sym.sblind)
-        {
-            sblindfound = true;
-            sym.playersblindbits =
-                (int) sym.playersblindbits | (1<<(i%global.trans.map.num_chairs));			// playersblindbits
-            if (user_chair_confirmed && (i%global.trans.map.num_chairs) != sym.userchair)
-            {
-                sym.opponentsblindbits =
-                    (int) sym.opponentsblindbits | (1<<(i%global.trans.map.num_chairs));		// opponentsblindbits
-            }
+	EnterCriticalSection(&cs_scraper);
 
-            if (user_chair_confirmed && (i%global.trans.map.num_chairs) == sym.userchair)
-            {
-                sym.friendsblindbits =
-                    (int) sym.friendsblindbits | (1<<(i%global.trans.map.num_chairs));		// friendsblindbits
-            }
-        }
+		for (i=sym.dealerchair+1; i<=sym.dealerchair+global.trans.map.num_chairs; i++)
+		{
+			if (scraper.playerbet[i%global.trans.map.num_chairs] > lastbet)
+			{
+				lastbet = scraper.playerbet[i%global.trans.map.num_chairs];
+				sym.raischair = i%global.trans.map.num_chairs;									// raischair
+			}
 
-        else if (!bblindfound && scraper.playerbet[i%global.trans.map.num_chairs]<=sym.bblind)
-        {
-            bblindfound = true;
-            sym.bblindbits = 0; //prwin change
-            sym.playersblindbits =
-                (int) sym.playersblindbits | (1<<(i%global.trans.map.num_chairs));			// playersblindbits
-            if (user_chair_confirmed && (i%global.trans.map.num_chairs) != sym.userchair)
-            {
-                sym.opponentsblindbits =
-                    (int) sym.opponentsblindbits | (1<<(i%global.trans.map.num_chairs));		// opponentsblindbits
-                sym.bblindbits =  //prwin change
-                    (int) sym.bblindbits | (1<<(i%global.trans.map.num_chairs));		// big blind bit
-            }
-        }
-    }
+			if (!sblindfound && scraper.playerbet[i%global.trans.map.num_chairs]<=sym.sblind)
+			{
+				sblindfound = true;
+				sym.playersblindbits =
+					(int) sym.playersblindbits | (1<<(i%global.trans.map.num_chairs));			// playersblindbits
+				if (user_chair_confirmed && (i%global.trans.map.num_chairs) != sym.userchair)
+				{
+					sym.opponentsblindbits =
+						(int) sym.opponentsblindbits | (1<<(i%global.trans.map.num_chairs));		// opponentsblindbits
+				}
 
-    sym.nplayersblind = bitcount(sym.playersblindbits);								// nplayersblind
-    sym.nopponentsblind = bitcount(sym.opponentsblindbits);							// nopponentsblind
-    sym.nfriendsblind = bitcount(sym.friendsblindbits);								// nfriendsblind
+				if (user_chair_confirmed && (i%global.trans.map.num_chairs) == sym.userchair)
+				{
+					sym.friendsblindbits =
+						(int) sym.friendsblindbits | (1<<(i%global.trans.map.num_chairs));		// friendsblindbits
+				}
+			}
 
-    for (i=0; i<global.trans.map.num_chairs; i++)
-    {
-        if (scraper.card_player[i][0] != CARD_NOCARD &&
-                scraper.card_player[i][1] != CARD_NOCARD)
-        {
-            sym.playersdealtbits = (int) sym.playersdealtbits | (1<<i);				// playersdealtbits
-            sym.playersplayingbits = (int) sym.playersplayingbits | (1<<i);			// playersplayingbits
+			else if (!bblindfound && scraper.playerbet[i%global.trans.map.num_chairs]<=sym.bblind)
+			{
+				bblindfound = true;
+				sym.bblindbits = 0; //prwin change
+				sym.playersblindbits =
+					(int) sym.playersblindbits | (1<<(i%global.trans.map.num_chairs));			// playersblindbits
+				if (user_chair_confirmed && (i%global.trans.map.num_chairs) != sym.userchair)
+				{
+					sym.opponentsblindbits =
+						(int) sym.opponentsblindbits | (1<<(i%global.trans.map.num_chairs));		// opponentsblindbits
+					sym.bblindbits =  //prwin change
+						(int) sym.bblindbits | (1<<(i%global.trans.map.num_chairs));		// big blind bit
+				}
+			}
+		}
 
-            if (user_chair_confirmed && i!=sym.userchair)
-            {
-                sym.opponentsdealtbits = (int) sym.opponentsdealtbits | (1<<i);		// opponentsdealtbits
-                sym.opponentsplayingbits = (int) sym.opponentsplayingbits | (1<<i);	// opponentsplayingbits
-            }
+		sym.nplayersblind = bitcount(sym.playersblindbits);								// nplayersblind
+		sym.nopponentsblind = bitcount(sym.opponentsblindbits);							// nopponentsblind
+		sym.nfriendsblind = bitcount(sym.friendsblindbits);								// nfriendsblind
 
-            if (user_chair_confirmed && i==sym.userchair)
-            {
-                sym.friendsdealtbits = (int) sym.friendsdealtbits | (1<<i);			// friendsdealtbits
-                sym.friendsplayingbits = (int) sym.friendsplayingbits | (1<<i);		// friendsplayingbits
-            }
-        }
+		for (i=0; i<global.trans.map.num_chairs; i++)
+		{
+			if (scraper.card_player[i][0] != CARD_NOCARD &&
+					scraper.card_player[i][1] != CARD_NOCARD)
+			{
+				sym.playersdealtbits = (int) sym.playersdealtbits | (1<<i);				// playersdealtbits
+				sym.playersplayingbits = (int) sym.playersplayingbits | (1<<i);			// playersplayingbits
 
-        if (scraper.is_string_seated(scraper.seated[i]))
-        {
-            sym.playersseatedbits = (int) sym.playersseatedbits | (1<<i);			// playersseatedbits
+				if (user_chair_confirmed && i!=sym.userchair)
+				{
+					sym.opponentsdealtbits = (int) sym.opponentsdealtbits | (1<<i);		// opponentsdealtbits
+					sym.opponentsplayingbits = (int) sym.opponentsplayingbits | (1<<i);	// opponentsplayingbits
+				}
 
-            if (user_chair_confirmed && i!=sym.userchair)
-            {
-                sym.opponentsseatedbits = (int) sym.opponentsseatedbits | (1<<i);	// opponentsseatedbits
-            }
-            if (user_chair_confirmed && i==sym.userchair)
-            {
-                sym.friendsseatedbits = (int) sym.friendsseatedbits | (1<<i);		// friendsseatedbits
-            }
-        }
+				if (user_chair_confirmed && i==sym.userchair)
+				{
+					sym.friendsdealtbits = (int) sym.friendsdealtbits | (1<<i);			// friendsdealtbits
+					sym.friendsplayingbits = (int) sym.friendsplayingbits | (1<<i);		// friendsplayingbits
+				}
+			}
 
-        if (scraper.is_string_active(scraper.active[i]))
-        {
-            sym.playersactivebits = (int) sym.playersactivebits | (1<<i);			// playersactivebits
-            if (user_chair_confirmed && i!=sym.userchair)
-            {
-                sym.opponentsactivebits = (int) sym.opponentsactivebits | (1<<i);	// opponentsactivebits
-            }
-            if (user_chair_confirmed && i==sym.userchair)
-            {
-                sym.friendsactivebits = (int) sym.friendsactivebits | (1<<i);		// friendsactivebits
-            }
-        }
-    }
+			if (scraper.is_string_seated(scraper.seated[i]))
+			{
+				sym.playersseatedbits = (int) sym.playersseatedbits | (1<<i);			// playersseatedbits
 
-    sym.nplayersseated = bitcount(sym.playersseatedbits);							// nplayersseated
-    sym.nplayersactive = bitcount(sym.playersactivebits);							// nplayersactive
-    sym.nplayersdealt = bitcount(sym.playersdealtbits);								// nplayersdealt
-    sym.nplayersplaying = bitcount(sym.playersplayingbits);							// nplayersplaying
-    sym.nopponentsseated = bitcount(sym.opponentsseatedbits);						// nopponentsseated
-    sym.nopponentsactive = bitcount(sym.opponentsactivebits);						// nopponentsactive
-    sym.nopponentsdealt = bitcount(sym.opponentsdealtbits);							// nopponentsdealt
-    sym.nopponentsplaying = bitcount(sym.opponentsplayingbits);						// nopponentsplaying
-    sym.nfriendsseated = bitcount(sym.friendsseatedbits);							// nfriendsseated
-    sym.nfriendsactive = bitcount(sym.friendsactivebits);							// nfriendsactive
-    sym.nfriendsdealt = bitcount(sym.friendsdealtbits);								// nfriendsdealt
-    sym.nfriendsplaying = bitcount(sym.friendsplayingbits);							// nfriendsplaying
+				if (user_chair_confirmed && i!=sym.userchair)
+				{
+					sym.opponentsseatedbits = (int) sym.opponentsseatedbits | (1<<i);	// opponentsseatedbits
+				}
+				if (user_chair_confirmed && i==sym.userchair)
+				{
+					sym.friendsseatedbits = (int) sym.friendsseatedbits | (1<<i);		// friendsseatedbits
+				}
+			}
 
-    found_userchair = false;
-    lastbet = 0;
-    for (i=sym.dealerchair+1; i<=sym.dealerchair+global.trans.map.num_chairs && user_chair_confirmed; i++)
-    {
-        if ((i%global.trans.map.num_chairs) == sym.userchair)
-            found_userchair = true;
+			if (scraper.is_string_active(scraper.active[i]))
+			{
+				sym.playersactivebits = (int) sym.playersactivebits | (1<<i);			// playersactivebits
+				if (user_chair_confirmed && i!=sym.userchair)
+				{
+					sym.opponentsactivebits = (int) sym.opponentsactivebits | (1<<i);	// opponentsactivebits
+				}
+				if (user_chair_confirmed && i==sym.userchair)
+				{
+					sym.friendsactivebits = (int) sym.friendsactivebits | (1<<i);		// friendsactivebits
+				}
+			}
+		}
 
-        else
-        {
-            if ((int) sym.playersdealtbits & (1<<(i%global.trans.map.num_chairs)))
-            {
-                if (!found_userchair)
-                    sym.nchairsdealtright += 1;										// nchairsdealtright
+		sym.nplayersseated = bitcount(sym.playersseatedbits);							// nplayersseated
+		sym.nplayersactive = bitcount(sym.playersactivebits);							// nplayersactive
+		sym.nplayersdealt = bitcount(sym.playersdealtbits);								// nplayersdealt
+		sym.nplayersplaying = bitcount(sym.playersplayingbits);							// nplayersplaying
+		sym.nopponentsseated = bitcount(sym.opponentsseatedbits);						// nopponentsseated
+		sym.nopponentsactive = bitcount(sym.opponentsactivebits);						// nopponentsactive
+		sym.nopponentsdealt = bitcount(sym.opponentsdealtbits);							// nopponentsdealt
+		sym.nopponentsplaying = bitcount(sym.opponentsplayingbits);						// nopponentsplaying
+		sym.nfriendsseated = bitcount(sym.friendsseatedbits);							// nfriendsseated
+		sym.nfriendsactive = bitcount(sym.friendsactivebits);							// nfriendsactive
+		sym.nfriendsdealt = bitcount(sym.friendsdealtbits);								// nfriendsdealt
+		sym.nfriendsplaying = bitcount(sym.friendsplayingbits);							// nfriendsplaying
 
-                else
-                    sym.nchairsdealtleft += 1;										// nchairsdealtleft
+		found_userchair = false;
+		lastbet = 0;
+		for (i=sym.dealerchair+1; i<=sym.dealerchair+global.trans.map.num_chairs && user_chair_confirmed; i++)
+		{
+			if ((i%global.trans.map.num_chairs) == sym.userchair)
+				found_userchair = true;
 
-            }
-        }
+			else
+			{
+				if ((int) sym.playersdealtbits & (1<<(i%global.trans.map.num_chairs)))
+				{
+					if (!found_userchair)
+						sym.nchairsdealtright += 1;										// nchairsdealtright
 
-        if (scraper.playerbet[i%global.trans.map.num_chairs] > lastbet &&
-                scraper.playerbet[i%global.trans.map.num_chairs] != 0)
-        {
-            lastbet = scraper.playerbet[i%global.trans.map.num_chairs];
+					else
+						sym.nchairsdealtleft += 1;										// nchairsdealtleft
 
-            if ((i%global.trans.map.num_chairs) != sym.userchair)
-                sym.nopponentsraising += 1;											// nopponentsraising
-        }
+				}
+			}
 
-        else if ((i%global.trans.map.num_chairs) != sym.userchair &&
-                 scraper.playerbet[i%global.trans.map.num_chairs] == lastbet &&
-                 lastbet != 0)
-        {
-            sym.nopponentscalling += 1;												// nopponentscalling
-        }
+			if (scraper.playerbet[i%global.trans.map.num_chairs] > lastbet &&
+					scraper.playerbet[i%global.trans.map.num_chairs] != 0)
+			{
+				lastbet = scraper.playerbet[i%global.trans.map.num_chairs];
 
-        if ((i%global.trans.map.num_chairs) != sym.userchair &&
-                scraper.playerbet[i%global.trans.map.num_chairs] > 0)
-        {
-            sym.nopponentsbetting += 1;												// nopponentsbetting
-        }
+				if ((i%global.trans.map.num_chairs) != sym.userchair)
+					sym.nopponentsraising += 1;											// nopponentsraising
+			}
 
-        if ((i%global.trans.map.num_chairs) != sym.userchair &&
-                (int) sym.playersdealtbits & (1<<(i%global.trans.map.num_chairs)) &&
-                (scraper.card_player[i%global.trans.map.num_chairs][0] == CARD_NOCARD ||
-                 scraper.card_player[i%global.trans.map.num_chairs][1] == CARD_NOCARD))
-        {
-            sym.nopponentsfolded += 1;												// nopponentsfolded
-        }
+			else if ((i%global.trans.map.num_chairs) != sym.userchair &&
+					 scraper.playerbet[i%global.trans.map.num_chairs] == lastbet &&
+					 lastbet != 0)
+			{
+				sym.nopponentscalling += 1;												// nopponentscalling
+			}
 
-        if ((i%global.trans.map.num_chairs) != sym.userchair &&
-                scraper.card_player[i%global.trans.map.num_chairs][0] != CARD_NOCARD &&
-                scraper.card_player[i%global.trans.map.num_chairs][1] != CARD_NOCARD &&
-                scraper.playerbet[i%global.trans.map.num_chairs] == 0)
-        {
-            sym.nopponentschecking += 1;											// nopponentschecking
-        }
+			if ((i%global.trans.map.num_chairs) != sym.userchair &&
+					scraper.playerbet[i%global.trans.map.num_chairs] > 0)
+			{
+				sym.nopponentsbetting += 1;												// nopponentsbetting
+			}
 
-        if (scraper.playerbet[i%global.trans.map.num_chairs] < sym.currentbet[(int) sym.raischair] &&
-                scraper.card_player[i%global.trans.map.num_chairs][0] != CARD_NOCARD &&
-                scraper.card_player[i%global.trans.map.num_chairs][1] != CARD_NOCARD)
-        {
-            sym.nplayerscallshort += 1;												// nplayerscallshort
-        }
-    }
+			if ((i%global.trans.map.num_chairs) != sym.userchair &&
+					(int) sym.playersdealtbits & (1<<(i%global.trans.map.num_chairs)) &&
+					(scraper.card_player[i%global.trans.map.num_chairs][0] == CARD_NOCARD ||
+					 scraper.card_player[i%global.trans.map.num_chairs][1] == CARD_NOCARD))
+			{
+				sym.nopponentsfolded += 1;												// nopponentsfolded
+			}
+
+			if ((i%global.trans.map.num_chairs) != sym.userchair &&
+					scraper.card_player[i%global.trans.map.num_chairs][0] != CARD_NOCARD &&
+					scraper.card_player[i%global.trans.map.num_chairs][1] != CARD_NOCARD &&
+					scraper.playerbet[i%global.trans.map.num_chairs] == 0)
+			{
+				sym.nopponentschecking += 1;											// nopponentschecking
+			}
+
+			if (scraper.playerbet[i%global.trans.map.num_chairs] < sym.currentbet[(int) sym.raischair] &&
+					scraper.card_player[i%global.trans.map.num_chairs][0] != CARD_NOCARD &&
+					scraper.card_player[i%global.trans.map.num_chairs][1] != CARD_NOCARD)
+			{
+				sym.nplayerscallshort += 1;												// nplayerscallshort
+			}
+		}
+
+	LeaveCriticalSection(&cs_scraper);
 
     __SEH_LOGFATAL("CSymbols::calc_playersfriendsopponents :\n");
 
 }
 
-void CSymbols::calc_roundspositions(void) {
+void CSymbols::calc_roundspositions(void) 
+{
     __SEH_HEADER
     int			i;
 
@@ -1631,6 +1790,7 @@ void CSymbols::calc_pokervalues(void)
     HandVal			handval;
     double			dummy;
     int				hi_common_rank, lo_common_rank;
+	unsigned int	card_player[2], card_common[5];
 
     // poker constants
     sym.hicard			= 0x00000001;
@@ -1645,45 +1805,53 @@ void CSymbols::calc_pokervalues(void)
     sym.royalflush		= 0x800EDCBA;
     sym.fiveofakind		= 0xFF000000;
 
-    // pokerval
-    nCards = 0;
-    CardMask_RESET(Cards);
-    for (i=0; i<2; i++)
-    {
-        // player cards
-        if (scraper.card_player[(int) sym.userchair][i] != CARD_BACK &&
-                scraper.card_player[(int) sym.userchair][i] != CARD_NOCARD)
-        {
-            CardMask_SET(Cards, scraper.card_player[(int) sym.userchair][i]);
-            nCards++;
-        }
-    }
-    hi_common_rank = -1;
-    lo_common_rank = 99;
+	EnterCriticalSection(&cs_scraper);
 
-    for (i=0; i<5; i++)
-    {
-        // common cards
-        if (scraper.card_common[i] != CARD_BACK &&
-                scraper.card_common[i] != CARD_NOCARD)
-        {
-            CardMask_SET(Cards, scraper.card_common[i]);
-            nCards++;
-            if ((int) StdDeck_RANK(scraper.card_common[i]) > hi_common_rank)
-                hi_common_rank = StdDeck_RANK(scraper.card_common[i]);
+		// pokerval
+		nCards = 0;
+		CardMask_RESET(Cards);
+		for (i=0; i<2; i++)
+		{
+			// player cards
+			if (scraper.card_player[(int) sym.userchair][i] != CARD_BACK &&
+					scraper.card_player[(int) sym.userchair][i] != CARD_NOCARD)
+			{
+				CardMask_SET(Cards, scraper.card_player[(int) sym.userchair][i]);
+				nCards++;
+			}
 
-            if ((int) StdDeck_RANK(scraper.card_common[i]) < lo_common_rank)
-                lo_common_rank = StdDeck_RANK(scraper.card_common[i]);
+			card_player[i] = scraper.card_player[(int) sym.userchair][i];
+		}
+		hi_common_rank = -1;
+		lo_common_rank = 99;
 
-        }
-    }
+		for (i=0; i<5; i++)
+		{
+			// common cards
+			if (scraper.card_common[i] != CARD_BACK &&
+					scraper.card_common[i] != CARD_NOCARD)
+			{
+				CardMask_SET(Cards, scraper.card_common[i]);
+				nCards++;
+				if ((int) StdDeck_RANK(scraper.card_common[i]) > hi_common_rank)
+					hi_common_rank = StdDeck_RANK(scraper.card_common[i]);
+
+				if ((int) StdDeck_RANK(scraper.card_common[i]) < lo_common_rank)
+					lo_common_rank = StdDeck_RANK(scraper.card_common[i]);
+
+			}
+
+			card_common[i] = scraper.card_common[i];
+		}
+
+	LeaveCriticalSection(&cs_scraper);
+
 
     handval = Hand_EVAL_N(Cards, nCards);
 
     sym.pcbits = 0;
     sym.pokerval = calc_pokerval(handval, nCards, &sym.pcbits,					// pcbits
-                                 scraper.card_player[(int) sym.userchair][0],
-                                 scraper.card_player[(int) sym.userchair][1]);							// pokerval
+                                 card_player[0], card_player[1]);				// pokerval
 
     sym.npcbits = bitcount(sym.pcbits);											// npcbits
     phandval[(int)sym.br-1] = (int)sym.pokerval&0xff000000; //change from previous handval assignment 2008-03-02
@@ -1796,11 +1964,10 @@ void CSymbols::calc_pokervalues(void)
     for (i=0; i<2; i++)
     {
         // player cards
-        if (scraper.card_player[(int) sym.userchair][i] != CARD_BACK &&
-                scraper.card_player[(int) sym.userchair][i] != CARD_NOCARD &&
-                !CardMask_CARD_IS_SET(Cards, scraper.card_player[(int) sym.userchair][i]))
+        if (card_player[i] != CARD_BACK && card_player[i] != CARD_NOCARD &&
+                !CardMask_CARD_IS_SET(Cards, card_player[i]))
         {
-            CardMask_SET(Cards, scraper.card_player[(int) sym.userchair][i]);
+            CardMask_SET(Cards, card_player[i]);
             nCards++;
         }
     }
@@ -1813,11 +1980,10 @@ void CSymbols::calc_pokervalues(void)
     for (i=0; i<5; i++)
     {
         // common cards
-        if (scraper.card_common[i] != CARD_BACK &&
-                scraper.card_common[i] != CARD_NOCARD &&
-                !CardMask_CARD_IS_SET(Cards, scraper.card_common[i]))
+        if (card_common[i] != CARD_BACK && card_common[i] != CARD_NOCARD &&
+                !CardMask_CARD_IS_SET(Cards, card_common[i]))
         {
-            CardMask_SET(Cards, scraper.card_common[i]);
+            CardMask_SET(Cards, card_common[i]);
             nCards++;
         }
     }
@@ -1842,32 +2008,41 @@ void CSymbols::calc_unknowncards(void)
     int				nstdCards, ncommonCards;
     HandVal			handval_std, handval_std_plus1, handval_common_plus1;
     double			dummy;
+	unsigned int	card_player[2], card_common[5];
 
     nstdCards = ncommonCards = 0;
     CardMask_RESET(stdCards);
     CardMask_RESET(commonCards);
-    for (i=0; i<2; i++)
-    {
-        // player cards
-        if (scraper.card_player[(int) sym.userchair][i] != CARD_BACK &&
-                scraper.card_player[(int) sym.userchair][i] != CARD_NOCARD)
-        {
-            CardMask_SET(stdCards, scraper.card_player[(int) sym.userchair][i]);
-            nstdCards++;
-        }
-    }
-    for (i=0; i<5; i++)
-    {
-        // common cards
-        if (scraper.card_common[i] != CARD_BACK &&
-                scraper.card_common[i] != CARD_NOCARD)
-        {
-            CardMask_SET(stdCards, scraper.card_common[i]);
-            nstdCards++;
-            CardMask_SET(commonCards, scraper.card_common[i]);
-            ncommonCards++;
-        }
-    }
+
+	EnterCriticalSection(&cs_scraper);
+
+		for (i=0; i<2; i++)
+			{
+				// player cards
+				if (scraper.card_player[(int) sym.userchair][i] != CARD_BACK &&
+						scraper.card_player[(int) sym.userchair][i] != CARD_NOCARD)
+				{
+					CardMask_SET(stdCards, scraper.card_player[(int) sym.userchair][i]);
+					nstdCards++;
+					card_player[i] = scraper.card_player[(int) sym.userchair][i];
+			}
+		}
+		for (i=0; i<5; i++)
+		{
+			// common cards
+			if (scraper.card_common[i] != CARD_BACK &&
+					scraper.card_common[i] != CARD_NOCARD)
+			{
+				CardMask_SET(stdCards, scraper.card_common[i]);
+				nstdCards++;
+				CardMask_SET(commonCards, scraper.card_common[i]);
+				ncommonCards++;
+				card_common[i] = scraper.card_common[i];
+			}
+		}
+
+	LeaveCriticalSection(&cs_scraper);
+
     sym.ncardsknown = nstdCards;													// ncardsknown
     sym.ncardsunknown = 52 - sym.ncardsknown;										// ncardsunknown
     handval_std = Hand_EVAL_N(stdCards, nstdCards);
@@ -1877,13 +2052,12 @@ void CSymbols::calc_unknowncards(void)
         // iterate through every unseen card and see what happens to our handvals
         for (i=0; i<52; i++)
         {
-            if (i!=scraper.card_player[(int) sym.userchair][0] &&
-                    i!=scraper.card_player[(int) sym.userchair][1] &&
-                    i!=scraper.card_common[0] &&
-                    i!=scraper.card_common[1] &&
-                    i!=scraper.card_common[2] &&
-                    i!=scraper.card_common[3] &&
-                    i!=scraper.card_common[4])
+            if (i!=card_player[0] && card_player[1] &&
+                    i!=card_common[0] &&
+                    i!=card_common[1] &&
+                    i!=card_common[2] &&
+                    i!=card_common[3] &&
+                    i!=card_common[4])
             {
 
                 CardMask_SET(stdCards, i);
@@ -1917,67 +2091,76 @@ void CSymbols::calc_handtests(void)
     __SEH_HEADER
     int		i;
 
-    for (i=0; i<2; i++)
-    {
-        if (scraper.card_player[(int) sym.userchair][i] != CARD_NOCARD &&
-                scraper.card_player[(int) sym.userchair][i] != CARD_BACK)
-        {
-            sym.$$pc[i] = ((StdDeck_RANK(scraper.card_player[(int) sym.userchair][i])+2)<<4) |		//$$pcx
-                          (StdDeck_SUIT(scraper.card_player[(int) sym.userchair][i]) == StdDeck_Suit_CLUBS ? WH_SUIT_CLUBS :
-                           StdDeck_SUIT(scraper.card_player[(int) sym.userchair][i]) == StdDeck_Suit_DIAMONDS ? WH_SUIT_DIAMONDS :
-                           StdDeck_SUIT(scraper.card_player[(int) sym.userchair][i]) == StdDeck_Suit_HEARTS ? WH_SUIT_HEARTS :
-                           StdDeck_SUIT(scraper.card_player[(int) sym.userchair][i]) == StdDeck_Suit_SPADES ? WH_SUIT_SPADES : 0) ;
-            sym.$$pr[i] = ((int)sym.$$pc[i] & 0xf0) >> 4;							// $$prx
-            sym.$$ps[i] = (int)sym.$$pc[i] & 0x0f;									// $$psx
-        }
-    }
-    for (i=0; i<5; i++)
-    {
-        if (scraper.card_common[i] != CARD_NOCARD &&
-                scraper.card_common[i] != CARD_BACK)
-        {
-            sym.$$cc[i] = ((StdDeck_RANK(scraper.card_common[i])+2)<<4) |			// $$ccx
-                          (StdDeck_SUIT(scraper.card_common[i]) == StdDeck_Suit_CLUBS ? WH_SUIT_CLUBS :
-                           StdDeck_SUIT(scraper.card_common[i]) == StdDeck_Suit_DIAMONDS ? WH_SUIT_DIAMONDS :
-                           StdDeck_SUIT(scraper.card_common[i]) == StdDeck_Suit_HEARTS ? WH_SUIT_HEARTS :
-                           StdDeck_SUIT(scraper.card_common[i]) == StdDeck_Suit_SPADES ? WH_SUIT_SPADES : 0) ;
-            sym.$$cr[i] = ((int)sym.$$cc[i] & 0xf0) >> 4;							// $$crx
-            sym.$$cs[i] = (int)sym.$$cc[i] & 0x0f;									// $$csx
-        }
-    }
+	EnterCriticalSection(&cs_scraper);
 
-    __SEH_LOGFATAL("CSymbols::calc_handtests :\n");
+		for (i=0; i<2; i++)
+		{
+			if (scraper.card_player[(int) sym.userchair][i] != CARD_NOCARD &&
+					scraper.card_player[(int) sym.userchair][i] != CARD_BACK)
+			{
+				sym.$$pc[i] = ((StdDeck_RANK(scraper.card_player[(int) sym.userchair][i])+2)<<4) |		//$$pcx
+							  (StdDeck_SUIT(scraper.card_player[(int) sym.userchair][i]) == StdDeck_Suit_CLUBS ? WH_SUIT_CLUBS :
+							   StdDeck_SUIT(scraper.card_player[(int) sym.userchair][i]) == StdDeck_Suit_DIAMONDS ? WH_SUIT_DIAMONDS :
+							   StdDeck_SUIT(scraper.card_player[(int) sym.userchair][i]) == StdDeck_Suit_HEARTS ? WH_SUIT_HEARTS :
+							   StdDeck_SUIT(scraper.card_player[(int) sym.userchair][i]) == StdDeck_Suit_SPADES ? WH_SUIT_SPADES : 0) ;
+				sym.$$pr[i] = ((int)sym.$$pc[i] & 0xf0) >> 4;							// $$prx
+				sym.$$ps[i] = (int)sym.$$pc[i] & 0x0f;									// $$psx
+			}
+		}
+		for (i=0; i<5; i++)
+		{
+			if (scraper.card_common[i] != CARD_NOCARD &&
+					scraper.card_common[i] != CARD_BACK)
+			{
+				sym.$$cc[i] = ((StdDeck_RANK(scraper.card_common[i])+2)<<4) |			// $$ccx
+							  (StdDeck_SUIT(scraper.card_common[i]) == StdDeck_Suit_CLUBS ? WH_SUIT_CLUBS :
+							   StdDeck_SUIT(scraper.card_common[i]) == StdDeck_Suit_DIAMONDS ? WH_SUIT_DIAMONDS :
+							   StdDeck_SUIT(scraper.card_common[i]) == StdDeck_Suit_HEARTS ? WH_SUIT_HEARTS :
+							   StdDeck_SUIT(scraper.card_common[i]) == StdDeck_Suit_SPADES ? WH_SUIT_SPADES : 0) ;
+				sym.$$cr[i] = ((int)sym.$$cc[i] & 0xf0) >> 4;							// $$crx
+				sym.$$cs[i] = (int)sym.$$cc[i] & 0x0f;									// $$csx
+			}
+		}
+
+	LeaveCriticalSection(&cs_scraper);
+
+	__SEH_LOGFATAL("CSymbols::calc_handtests :\n");
 
 }
 
 void CSymbols::calc_pockettests(void)
 {
     __SEH_HEADER
-    if (scraper.card_player[(int) sym.userchair][0] != CARD_NOCARD &&
-            scraper.card_player[(int) sym.userchair][0] != CARD_BACK &&
-            scraper.card_player[(int) sym.userchair][1] != CARD_NOCARD &&
-            scraper.card_player[(int) sym.userchair][1] != CARD_BACK)
-    {
-        if (StdDeck_RANK(scraper.card_player[(int) sym.userchair][0]) ==
-                StdDeck_RANK(scraper.card_player[(int) sym.userchair][1]))
-        {
-            sym.ispair = 1;															// ispair
-        }
-        if (StdDeck_SUIT(scraper.card_player[(int) sym.userchair][0]) ==
-                StdDeck_SUIT(scraper.card_player[(int) sym.userchair][1]))
-        {
-            sym.issuited = 1;														// issuited
-        }
-        if (StdDeck_RANK(scraper.card_player[(int) sym.userchair][0]) -
-                StdDeck_RANK(scraper.card_player[(int) sym.userchair][1]) == 1 ||
-                StdDeck_RANK(scraper.card_player[(int) sym.userchair][1]) -
-                StdDeck_RANK(scraper.card_player[(int) sym.userchair][0]) == 1 )
-        {
-            sym.isconnector = 1;													// isconnector
-        }
-    }
 
-    __SEH_LOGFATAL("CSymbols::calc_pockettests :\n");
+	EnterCriticalSection(&cs_scraper);
+
+		if (scraper.card_player[(int) sym.userchair][0] != CARD_NOCARD &&
+				scraper.card_player[(int) sym.userchair][0] != CARD_BACK &&
+				scraper.card_player[(int) sym.userchair][1] != CARD_NOCARD &&
+				scraper.card_player[(int) sym.userchair][1] != CARD_BACK)
+		{
+			if (StdDeck_RANK(scraper.card_player[(int) sym.userchair][0]) ==
+					StdDeck_RANK(scraper.card_player[(int) sym.userchair][1]))
+			{
+				sym.ispair = 1;															// ispair
+			}
+			if (StdDeck_SUIT(scraper.card_player[(int) sym.userchair][0]) ==
+					StdDeck_SUIT(scraper.card_player[(int) sym.userchair][1]))
+			{
+				sym.issuited = 1;														// issuited
+			}
+			if (StdDeck_RANK(scraper.card_player[(int) sym.userchair][0]) -
+					StdDeck_RANK(scraper.card_player[(int) sym.userchair][1]) == 1 ||
+					StdDeck_RANK(scraper.card_player[(int) sym.userchair][1]) -
+					StdDeck_RANK(scraper.card_player[(int) sym.userchair][0]) == 1 )
+			{
+				sym.isconnector = 1;													// isconnector
+			}
+		}
+
+	LeaveCriticalSection(&cs_scraper);
+
+	__SEH_LOGFATAL("CSymbols::calc_pockettests :\n");
 
 }
 
@@ -1990,18 +2173,22 @@ void CSymbols::calc_listtests(void)
     int				tokpos;
     unsigned int	c0, c1;
 
-    if (StdDeck_RANK(scraper.card_player[(int) sym.userchair][0]) >= StdDeck_RANK(scraper.card_player[(int) sym.userchair][1]))
-    {
-        c0 = scraper.card_player[(int) sym.userchair][0];
-        c1 = scraper.card_player[(int) sym.userchair][1];
-    }
-    else
-    {
-        c0 = scraper.card_player[(int) sym.userchair][1];
-        c1 = scraper.card_player[(int) sym.userchair][0];
-    }
+	EnterCriticalSection(&cs_scraper);
 
-    N = global.formula.mHandList.GetSize();
+		if (StdDeck_RANK(scraper.card_player[(int) sym.userchair][0]) >= StdDeck_RANK(scraper.card_player[(int) sym.userchair][1]))
+		{
+			c0 = scraper.card_player[(int) sym.userchair][0];
+			c1 = scraper.card_player[(int) sym.userchair][1];
+		}
+		else
+		{
+			c0 = scraper.card_player[(int) sym.userchair][1];
+			c1 = scraper.card_player[(int) sym.userchair][0];
+		}
+
+	LeaveCriticalSection(&cs_scraper);
+
+	N = global.formula.mHandList.GetSize();
     for (i=0; i<N; i++)
     {
         listnum = atoi(global.formula.mHandList[i].list.Mid(4).GetString());
@@ -2083,31 +2270,35 @@ void CSymbols::calc_nhands(void)
     double			dummy = 0;
     int				nplCards, ncomCards;
 
-    // player cards
-    CardMask_RESET(plCards);
-    nplCards = 0;
-    for (i=0; i<2; i++)
-    {
-        if (scraper.card_player[(int) sym.userchair][i] != CARD_BACK &&
-                scraper.card_player[(int) sym.userchair][i] != CARD_NOCARD)
-        {
-            CardMask_SET(plCards, scraper.card_player[(int) sym.userchair][i]);
-            nplCards++;
-        }
-    }
+	EnterCriticalSection(&cs_scraper);
 
-    // common cards
-    CardMask_RESET(comCards);
-    ncomCards = 0;
-    for (i=0; i<5; i++)
-    {
-        if (scraper.card_common[i] != CARD_BACK &&
-                scraper.card_common[i] != CARD_NOCARD)
-        {
-            CardMask_SET(comCards, scraper.card_common[i]);
-            ncomCards++;
-        }
-    }
+		// player cards
+		CardMask_RESET(plCards);
+		nplCards = 0;
+		for (i=0; i<2; i++)
+		{
+			if (scraper.card_player[(int) sym.userchair][i] != CARD_BACK &&
+					scraper.card_player[(int) sym.userchair][i] != CARD_NOCARD)
+			{
+				CardMask_SET(plCards, scraper.card_player[(int) sym.userchair][i]);
+				nplCards++;
+			}
+		}
+
+		// common cards
+		CardMask_RESET(comCards);
+		ncomCards = 0;
+		for (i=0; i<5; i++)
+		{
+			if (scraper.card_common[i] != CARD_BACK &&
+					scraper.card_common[i] != CARD_NOCARD)
+			{
+				CardMask_SET(comCards, scraper.card_common[i]);
+				ncomCards++;
+			}
+		}
+
+	LeaveCriticalSection(&cs_scraper);
 
     // player/common cards and pokerval
     CardMask_OR(playerEvalCards, plCards, comCards);
@@ -2164,7 +2355,9 @@ void CSymbols::calc_handrank(void)
     int			i, count;
 
     // Get a string containing the players' current cards
+	EnterCriticalSection(&cs_scraper);
     get_cardstring(cardstr, scraper.card_player[(int) sym.userchair][0], scraper.card_player[(int) sym.userchair][1]);
+	LeaveCriticalSection(&cs_scraper);
 
     // if nopponents<1 or >9 then default to a sane value
     if (sym.nopponents<1)
@@ -2278,28 +2471,32 @@ void CSymbols::calc_fl_str_set(void)
     CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_ACE, Suit_CLUBS));
 
 
-    // player cards
-    CardMask_RESET(plCards);
-    for (i=0; i<2; i++)
-    {
-        if (scraper.card_player[(int) sym.userchair][i] != CARD_BACK &&
-                scraper.card_player[(int) sym.userchair][i] != CARD_NOCARD)
-        {
-            CardMask_SET(plCards, scraper.card_player[(int) sym.userchair][i]);
-        }
-    }
+	EnterCriticalSection(&cs_scraper);
 
-    // common cards
-    CardMask_RESET(comCards);
-    for (i=0; i<5; i++)
-    {
-        if (scraper.card_common[i] != CARD_BACK &&
-                scraper.card_common[i] != CARD_NOCARD)
-        {
-            CardMask_SET(comCards, scraper.card_common[i]);
-            CardMask_SET(plCards, scraper.card_common[i]);
-        }
-    }
+		// player cards
+		CardMask_RESET(plCards);
+		for (i=0; i<2; i++)
+		{
+			if (scraper.card_player[(int) sym.userchair][i] != CARD_BACK &&
+					scraper.card_player[(int) sym.userchair][i] != CARD_NOCARD)
+			{
+				CardMask_SET(plCards, scraper.card_player[(int) sym.userchair][i]);
+			}
+		}
+
+		// common cards
+		CardMask_RESET(comCards);
+		for (i=0; i<5; i++)
+		{
+			if (scraper.card_common[i] != CARD_BACK &&
+					scraper.card_common[i] != CARD_NOCARD)
+			{
+				CardMask_SET(comCards, scraper.card_common[i]);
+				CardMask_SET(plCards, scraper.card_common[i]);
+			}
+		}
+
+	LeaveCriticalSection(&cs_scraper);
 
     // nsuited, tsuit
     max = 0;
@@ -2639,27 +2836,32 @@ void CSymbols::calc_rankbits(void)
     CardMask_RESET(comCards);
     CardMask_RESET(plcomCards);
 
-    // player cards
-    for (c=0; c<=1; c++)
-    {
-        if (scraper.card_player[(int) sym.userchair][c] != CARD_BACK &&
-                scraper.card_player[(int) sym.userchair][c] != CARD_NOCARD)
-        {
-            CardMask_SET(plCards, scraper.card_player[(int) sym.userchair][c]);
-            CardMask_SET(plcomCards, scraper.card_player[(int) sym.userchair][c]);
-        }
-    }
+	EnterCriticalSection(&cs_scraper);
+    
+		// player cards
+		for (c=0; c<=1; c++)
+		{
+			if (scraper.card_player[(int) sym.userchair][c] != CARD_BACK &&
+					scraper.card_player[(int) sym.userchair][c] != CARD_NOCARD)
+			{
+				CardMask_SET(plCards, scraper.card_player[(int) sym.userchair][c]);
+				CardMask_SET(plcomCards, scraper.card_player[(int) sym.userchair][c]);
+			}
+		}
 
-    // common cards
-    for (c=0; c<=4; c++)
-    {
-        if (scraper.card_common[c] != CARD_BACK &&
-                scraper.card_common[c] != CARD_NOCARD)
-        {
-            CardMask_SET(comCards, scraper.card_common[c]);
-            CardMask_SET(plcomCards, scraper.card_common[c]);
-        }
-    }
+		// common cards
+		for (c=0; c<=4; c++)
+		{
+			if (scraper.card_common[c] != CARD_BACK &&
+					scraper.card_common[c] != CARD_NOCARD)
+			{
+				CardMask_SET(comCards, scraper.card_common[c]);
+				CardMask_SET(plcomCards, scraper.card_common[c]);
+			}
+		}
+
+	LeaveCriticalSection(&cs_scraper);
+
 
     for (suit=StdDeck_Suit_FIRST; suit<=StdDeck_Suit_LAST; suit++)
     {
@@ -2875,7 +3077,9 @@ void CSymbols::calc_statistics(void)
     f$srai = calc_f$symbol(&global.formula, "f$srai", &error);
 
     // B
+	EnterCriticalSection(&cs_scraper);
     B = global.formula.dBankroll != 0 ? global.formula.dBankroll : scraper.playerbalance[(int) sym.userchair];
+	LeaveCriticalSection(&cs_scraper);
 
     // call
     C = sym.call;
@@ -3081,23 +3285,31 @@ double CSymbols::calc_pokerval(HandVal hv, int n, double *pcb, int card0, int ca
         CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_KING, Suit_CLUBS));
         CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_ACE, Suit_CLUBS));
 
-        CardMask_RESET(Cards);
-        for (i=0; i<2; i++)
-        {
-            if (scraper.card_player[(int) sym.userchair][i] != CARD_BACK &&
-                    scraper.card_player[(int) sym.userchair][i] != CARD_NOCARD)
-            {
-                CardMask_SET(Cards, scraper.card_player[(int) sym.userchair][i]);
-            }
-        }
-        for (i=0; i<5; i++)
-        {
-            if (scraper.card_common[i] != CARD_BACK &&
-                    scraper.card_common[i] != CARD_NOCARD)
-            {
-                CardMask_SET(Cards, scraper.card_common[i]);
-            }
-        }
+		EnterCriticalSection(&cs_symbols);
+		int	userchair = (int) sym.userchair;
+		LeaveCriticalSection(&cs_symbols);
+
+		EnterCriticalSection(&cs_scraper);
+
+			CardMask_RESET(Cards);
+			for (i=0; i<2; i++)
+			{
+				if (scraper.card_player[userchair][i] != CARD_BACK &&
+					scraper.card_player[userchair][i] != CARD_NOCARD)
+				{
+					CardMask_SET(Cards, scraper.card_player[userchair][i]);
+				}
+			}
+			for (i=0; i<5; i++)
+			{
+				if (scraper.card_common[i] != CARD_BACK &&
+					scraper.card_common[i] != CARD_NOCARD)
+				{
+					CardMask_SET(Cards, scraper.card_common[i]);
+				}
+			}
+
+		LeaveCriticalSection(&cs_scraper);
 
         max = 0;
         CardMask_AND(suittestCards, Cards, spadesCards);
@@ -3953,24 +4165,29 @@ double CSymbols::IsHand(const char *a, int *e)
         cardrank[1] = temp;
     }
 
-    // playercards
-    plcardrank[0] = Deck_RANK(scraper.card_player[(int) sym.userchair][0])+2;
-    plcardrank[1] = Deck_RANK(scraper.card_player[(int) sym.userchair][1])+2;
-    if (plcardrank[1] > plcardrank[0])
-    {
-        temp = plcardrank[0];
-        plcardrank[0] = plcardrank[1];
-        plcardrank[1] = temp;
-    }
-    if (Deck_SUIT(scraper.card_player[(int) sym.userchair][0]) ==
-            Deck_SUIT(scraper.card_player[(int) sym.userchair][1]))
-    {
-        plsuited = 1;
-    }
-    else
-    {
-        plsuited = 0;
-    }
+	EnterCriticalSection(&cs_scraper);
+    
+		// playercards
+		plcardrank[0] = Deck_RANK(scraper.card_player[(int) sym.userchair][0])+2;
+		plcardrank[1] = Deck_RANK(scraper.card_player[(int) sym.userchair][1])+2;
+		if (plcardrank[1] > plcardrank[0])
+		{
+			temp = plcardrank[0];
+			plcardrank[0] = plcardrank[1];
+			plcardrank[1] = temp;
+		}
+		if (Deck_SUIT(scraper.card_player[(int) sym.userchair][0]) ==
+				Deck_SUIT(scraper.card_player[(int) sym.userchair][1]))
+		{
+			plsuited = 1;
+		}
+		else
+		{
+			plsuited = 0;
+		}
+
+	LeaveCriticalSection(&cs_scraper);
+
 
     // check for non suited/offsuit match
     if (suited==1 && plsuited==0)
@@ -4013,29 +4230,46 @@ double CSymbols::IsHand(const char *a, int *e)
 double CSymbols::Chair$(const char *a)
 {
     __SEH_HEADER
-    int i;
+    
+	int i;
 
-    for (i=0; i<global.trans.map.num_chairs; i++)
-    {
-        if (scraper.playername[i].Find(&a[6])!=-1)
-            return i;
-    }
+	EnterCriticalSection(&cs_scraper);
+
+		for (i=0; i<global.trans.map.num_chairs; i++)
+		{
+			if (scraper.playername[i].Find(&a[6])!=-1)
+			{
+				LeaveCriticalSection(&cs_scraper);
+				return i;
+			}
+		}
+
+	LeaveCriticalSection(&cs_scraper);
+
     return -1;
 
-    __SEH_LOGFATAL("CSymbols::Chair$ : <%s>\n", a);
+	__SEH_LOGFATAL("CSymbols::Chair$ : <%s>\n", a);
 
 }
 
 double CSymbols::Chairbit$(const char *a)
 {
     __SEH_HEADER
-    int i, bits=0;
 
-    for (i=0; i<global.trans.map.num_chairs; i++)
-    {
-        if (scraper.playername[i].Find(&a[9])!=-1)
-            bits |= (1<<i);
-    }
+	int i, bits=0;
+
+	EnterCriticalSection(&cs_scraper);
+
+		for (i=0; i<global.trans.map.num_chairs; i++)
+		{
+			if (scraper.playername[i].Find(&a[9])!=-1)
+			{
+				LeaveCriticalSection(&cs_scraper);
+				bits |= (1<<i);
+			}
+		}
+
+	LeaveCriticalSection(&cs_scraper);
 
     return bits;
 

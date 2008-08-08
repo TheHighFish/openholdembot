@@ -1919,7 +1919,9 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
     m_CalcResult.SetWindowText("");
 
     // Caclulate symbols
+	//EnterCriticalSection(&cs_symbols);
     //symbols.CalcSymbols();
+	//LeaveCriticalSection(&cs_symbols);
 
     // mark symbol result cache as stale
     for (i=0; i < (int) m_wrk_formula.mFunction.GetSize(); i++)
@@ -2073,10 +2075,16 @@ void CDlgFormulaScintilla::StopAutoButton()
 
 }
 
-void CDlgFormulaScintilla::update_debug_auto(void) {
+void CDlgFormulaScintilla::update_debug_auto(void) 
+{
     __SEH_HEADER
-    int				N, i;
+
+	int				i;
     CString			Cstr;
+
+	EnterCriticalSection(&cs_symbols);
+	bool			sym_ismyturn = (bool) symbols.sym.ismyturn;
+	LeaveCriticalSection(&cs_symbols);
 
     global.m_WaitCursor = true;
     BeginWaitCursor();
@@ -2087,27 +2095,31 @@ void CDlgFormulaScintilla::update_debug_auto(void) {
 
 
     // Loop through each line in the debug tab and evaluate it
-    N = (int) debug_ar.GetSize();
-    for (i=0; i<N; i++) 
+    for (i=0; i<(int) debug_ar.GetSize(); i++) 
 	{
-		if (debug_ar[i].valid && debug_ar[i].error==SUCCESS) {
+		if (debug_ar[i].valid && debug_ar[i].error==SUCCESS) 
+		{
             debug_ar[i].ret = evaluate(&m_wrk_formula, debug_ar[i].tree, NULL, &debug_ar[i].error);
-		} else
+		} 
+		else
+		{
             debug_ar[i].ret = 0;
+		}
     }
     // Format the text
     create_debug_tab(&Cstr);
 
     // Write the tab's contents to a log file, if selected
-    if (m_fdebuglog &&
-            ((m_fdebuglog_myturn && symbols.sym.ismyturn) || !m_fdebuglog_myturn)) {
-
-        if (!m_wrote_fdebug_header) {
+    if (m_fdebuglog && ((m_fdebuglog_myturn && sym_ismyturn) || !m_fdebuglog_myturn)) 
+	{
+        if (!m_wrote_fdebug_header) 
+		{
             write_fdebug_log(true);
             m_wrote_fdebug_header = true;
 
         }
-        else {
+        else 
+		{
             write_fdebug_log(false);
         }
     }
@@ -2121,9 +2133,7 @@ void CDlgFormulaScintilla::update_debug_auto(void) {
     EndWaitCursor();
     global.m_WaitCursor = false;
 
-
     __SEH_LOGFATAL("CDlgFormulaScintilla::update_debug_auto :\n");
-
 }
 
 void CDlgFormulaScintilla::create_debug_tab(CString *cs) 
@@ -2377,7 +2387,9 @@ void CDlgFormulaScintilla::OnBnClickedApply()
     global.ParseAllFormula(this->GetSafeHwnd(), &global.formula);
 
     // Re-calc symbols
+	EnterCriticalSection(&cs_symbols);
     symbols.CalcSymbols();
+	LeaveCriticalSection(&cs_symbols);
 
     // Rewrite f$debug log header, if required
     m_wrote_fdebug_header = false;
@@ -2387,7 +2399,6 @@ void CDlgFormulaScintilla::OnBnClickedApply()
     HandleEnables(true);
 
     __SEH_LOGFATAL("CDlgFormulaScintilla::OnBnClickedApply :\n");
-
 }
 
 void CDlgFormulaScintilla::OnBnClickedOk() 
@@ -2446,17 +2457,16 @@ void CDlgFormulaScintilla::OnBnClickedOk()
     global.ParseAllFormula(this->GetSafeHwnd(), &global.formula);
 
     // Re-calc symbols
+	EnterCriticalSection(&cs_symbols);
     symbols.CalcSymbols();
+	LeaveCriticalSection(&cs_symbols);
 
     // Uncheck formula button on main toolbar
     pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
 
-
 	OnOK();
 
     __SEH_LOGFATAL("CDlgFormulaScintilla::OnBnClickedOk :\n");
-
-
 }
 
 bool CDlgFormulaScintilla::PromptToSave()
@@ -2621,14 +2631,13 @@ void CDlgFormulaScintilla::OnTimer(UINT nIDEvent) {
     {
 		// Get exclusive access to CScraper and CSymbol variables
 		// Really we are just using this critical section to make sure we are not in the middle of a scrape cycle right now
-		EnterCriticalSection(&cs_scrape_symbol);
+		EnterCriticalSection(&cs_scraper);
 
-			if (m_ButtonAuto.GetCheck() == 1 && m_current_edit == "f$debug" && ok_to_update_debug) {
+			if (m_ButtonAuto.GetCheck() == 1 && m_current_edit == "f$debug" && ok_to_update_debug)
 				update_debug_auto();
-			}
 
 		// Allow other threads to use CScraper and CSymbol variables
-		LeaveCriticalSection(&cs_scrape_symbol);
+		LeaveCriticalSection(&cs_scraper);
     }
 
 

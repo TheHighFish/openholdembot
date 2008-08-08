@@ -455,5 +455,8 @@ private:
 	static unsigned int player_card_last[2];
 } symbols;
 
+// This critical section controls access to any variables in the CSymbols class
+// Any code needing access to these variables must grab and release this critical section appropriately
+extern CRITICAL_SECTION		cs_symbols;
 
 #endif /* INC_SYMBOLS_H */

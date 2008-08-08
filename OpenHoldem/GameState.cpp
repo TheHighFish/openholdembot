@@ -8,9 +8,7 @@ GameState		game_state;
 
 GameState::GameState()
 {
-
     __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
-
 
     __SEH_HEADER
 
@@ -23,13 +21,13 @@ GameState::GameState()
     new_hand = true;
 
     __SEH_LOGFATAL("GameState::GameState\n");
-
 }
 
 double GameState::wh_sym_hist (char * sym, int round)
 {
     __SEH_HEADER
-    int		i;
+
+	int		i;
 
     for (i=0; i<hist_sym_count; i++)
     {
@@ -42,28 +40,32 @@ double GameState::wh_sym_hist (char * sym, int round)
     return 0.0;
 
     __SEH_LOGFATAL("GameState::wh_sym_hist\n");
-
 }
 
 void GameState::process_game_state (holdem_state* pstate)
 {
     __SEH_HEADER
-    int			i, j;
+
+	int			i, j;
     int			e;
     bool		pstate_changed;
     static int	nopponentsplaying_last=0;
 
+	EnterCriticalSection(&cs_symbols);
+	int			sym_br = (int) symbols.sym.br;
+	int			sym_nopponentsdealt = (int) symbols.sym.nopponentsdealt;
+	int			sym_nopponentsplaying = (int) symbols.sym.nopponentsplaying;
+	bool		sym_ismyturn = (bool) symbols.sym.ismyturn;
+	bool		sym_ismanual = (bool) symbols.sym.ismanual;
+	LeaveCriticalSection(&cs_symbols);
+
     // tracking of nopponentsdealt
-    if (symbols.sym.br==2 || symbols.sym.nopponentsdealt>oppdealt)
-    {
-        oppdealt=symbols.sym.nopponentsdealt;
-    }
+    if (sym_br==2 || sym_nopponentsdealt>oppdealt)
+        oppdealt = sym_nopponentsdealt;
 
     // Has the number of opponents changed?
-    if (symbols.sym.nopponentsplaying != nopponentsplaying_last)
-    {
-        nopponentsplaying_last=symbols.sym.nopponentsplaying;
-    }
+    if (sym_nopponentsplaying != nopponentsplaying_last)
+        nopponentsplaying_last = sym_nopponentsplaying;
 
     // see if the new pstate has changed in an interesting way
     pstate_changed = false;
@@ -88,14 +90,14 @@ void GameState::process_game_state (holdem_state* pstate)
                 pstate->m_player[i].m_cards[0] != 0 && pstate->m_player[i].m_cards[1] != 0)
             pstate_changed = true;
     }
-    for (i=0; i<5; i++)
+    for (i=0; i<=4; i++)
     {
         if (pstate->m_cards[i] != m_holdem_state[(m_ndx)&0xff].m_cards[i])
             pstate_changed = true;
     }
 
     // only process wh state if something interesting within the structure changes
-    if (pstate!=NULL && (pstate_changed || symbols.sym.ismyturn))
+    if (pstate!=NULL && (pstate_changed || sym_ismyturn))
         process_state_engine(pstate, pstate_changed);
 
     // reset wh symbol GameState if button moves
@@ -113,17 +115,20 @@ void GameState::process_game_state (holdem_state* pstate)
     new_hand = false;
 
     // collect symbol if it ismyturn, or if ismanual
-    if (symbols.sym.ismyturn || symbols.sym.ismanual)
+	EnterCriticalSection(&cs_symbols);
+
+	if (sym_ismyturn || sym_ismanual)
     {
         for (i=0; i<hist_sym_count; i++)
         {
             e = SUCCESS;
-            hist_sym[i][(int) symbols.sym.br-1] = symbols.GetSymbolVal(hist_sym_strings[i], &e);
+            hist_sym[i][sym_br-1] = symbols.GetSymbolVal(hist_sym_strings[i], &e);
         }
     }
 
-    __SEH_LOGFATAL("GameState::process_game_state\n");
+	LeaveCriticalSection(&cs_symbols);
 
+	__SEH_LOGFATAL("GameState::process_game_state\n");
 }
 
 void GameState::process_ftr (holdem_state* pstate)
@@ -461,7 +466,18 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed)
     static bool		biblind_posted=false;
     static double	bets_last=0.0;
 
-    m_holdem_state[ (++m_ndx)&0xff ] = *pstate;
+	EnterCriticalSection(&cs_symbols);
+	int				sym_br = (int) symbols.sym.br;
+	int				sym_userchair = (int) symbols.sym.userchair;
+	bool			sym_ismanual = (bool) symbols.sym.ismanual;
+	bool			sym_ismyturn = (bool) symbols.sym.ismyturn;
+	double			sym_balance_10 = symbols.sym.balance[10];
+	double			sym_handnumber = symbols.sym.handnumber;
+	double			sym_sblind = symbols.sym.sblind;
+	double			sym_bblind = symbols.sym.bblind;
+	LeaveCriticalSection(&cs_symbols);
+
+	m_holdem_state[ (++m_ndx)&0xff ] = *pstate;
 
     // Only start processing state info, if we have one solid frame recorded (many calcs require m_ndx-1)
     if (safe_to_process_state == false && m_ndx>1)
@@ -481,7 +497,7 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed)
 
     // only process further if safe_to_process_state==true, userchair is identified (br!=0),
     // and m_balance_known is true for all players with cards, and I am actually in the hand
-    if ((symbols.sym.br != 0 && safe_to_process_state && (balance_stability || symbols.sym.ismanual))
+    if ((sym_br != 0 && safe_to_process_state && (balance_stability || sym_ismanual))
             || m_holdem_state[(m_ndx)&0xff].m_dealer_chair != m_holdem_state[(m_ndx-1)&0xff].m_dealer_chair)
     {
 
@@ -495,7 +511,7 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed)
                     m_holdem_state[(m_ndx)&0xff].m_player[i%10].m_cards[1] != 255 &&		// is not card backs this scrape
                     m_holdem_state[(m_ndx)&0xff].m_player[i%10].m_cards[0] != 0 &&			// is not 'no cards' this scrape
                     m_holdem_state[(m_ndx)&0xff].m_player[i%10].m_cards[1] != 0 &&			// is not 'no cards' this scrape
-                    i != symbols.sym.userchair &&												// it's not me
+                    i != sym_userchair &&												// it's not me
                     end_of_hand==false )
             {
                 end_of_hand = true;
@@ -537,28 +553,28 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed)
             }
 
             // Track some stats
-            if (symbols.sym.balance[10] > max_balance)
+            if (sym_balance_10 > max_balance)
             {
-                max_balance = symbols.sym.balance[10] ;
+                max_balance = sym_balance_10;
             }
             hands_played++;
 
-            write_log(">>> New hand %.0f\n", symbols.sym.handnumber);
+            write_log(">>> New hand %.0f\n", sym_handnumber);
         }
 
         // first time to act in the hand//
-        if (symbols.sym.ismyturn && my_first_action_this_hand == true)
+        if (sym_ismyturn && my_first_action_this_hand == true)
         {
             my_first_action_this_hand = false;
         }
 
         // 2. it's my turn
-        if ((symbols.sym.ismyturn && pstate_changed) ||
-                (symbols.sym.ismyturn && my_first_action_this_round == true) ||
-                (((symbols.sym.br == 1 &&
-                   m_holdem_state[(m_ndx)&0xff].m_player[(int) symbols.sym.userchair].m_currentbet == symbols.sym.sblind) ||
-                  (symbols.sym.br == 1 &&
-                   m_holdem_state[(m_ndx)&0xff].m_player[(int) symbols.sym.userchair].m_currentbet == symbols.sym.bblind)) &&
+        if ((sym_ismyturn && pstate_changed) ||
+                (sym_ismyturn && my_first_action_this_round == true) ||
+                (((sym_br == 1 &&
+                   m_holdem_state[(m_ndx)&0xff].m_player[sym_userchair].m_currentbet == sym_sblind) ||
+                  (sym_br == 1 &&
+                   m_holdem_state[(m_ndx)&0xff].m_player[sym_userchair].m_currentbet == sym_bblind)) &&
                  my_first_action_this_round == true) )
         {
 
@@ -566,11 +582,11 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed)
             m_game_state[ (++m_game_ndx)&0xff ] = *pstate;
 
             //reset some vars
-            if (m_holdem_state[(m_ndx)&0xff].m_player[(int) symbols.sym.userchair].m_cards[0] != 0 &&
-                    m_holdem_state[(m_ndx)&0xff].m_player[(int) symbols.sym.userchair].m_cards[1] != 0)
+            if (m_holdem_state[(m_ndx)&0xff].m_player[sym_userchair].m_cards[0] != 0 &&
+				m_holdem_state[(m_ndx)&0xff].m_player[sym_userchair].m_cards[1] != 0)
             {
                 process_game_state = true;
-                write_log( ">>> My turn, br=%d\n", (int) symbols.sym.br);
+                write_log( ">>> My turn, br=%d\n", sym_br);
             }
             else
             {
@@ -579,18 +595,18 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed)
         }
 
         // 3. the betting round has changed
-        if (symbols.sym.br > wh_br_last)
+        if (sym_br > wh_br_last)
         {
             // save the game state
             m_game_state[ (++m_game_ndx)&0xff ] = *pstate;
 
             //reset some vars
-            wh_br_last = symbols.sym.br;
+            wh_br_last = sym_br;
             pot_raised = false;
             my_first_action_this_round = true;
             bets_last = 0.0;
 
-            //write_log(">>> Betting round: %d\n", (int) symbols.sym.br);
+            //write_log(">>> Betting round: %d\n", (int) sym_br);
         }
 
         // it's my turn, so I need to figure out what everyone did before me
@@ -605,42 +621,39 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed)
                 my_first_action_this_round=false;
 
                 // if i am the sb, then iterate just mychair
-                if (symbols.sym.br == 1 &&
-                        m_game_state[(m_game_ndx)&0xff].m_player[(int) symbols.sym.userchair].m_currentbet == symbols.sym.sblind)
+                if (sym_br == 1 && m_game_state[(m_game_ndx)&0xff].m_player[sym_userchair].m_currentbet == sym_sblind)
                 {
-                    from_chair = symbols.sym.userchair;
-                    to_chair = symbols.sym.userchair-1+10;
+                    from_chair = sym_userchair;
+                    to_chair = sym_userchair-1+10;
                 }
 
                 // if i am the bb, then iterate from dlr+1 to mychair
-                else if (symbols.sym.br == 1 &&
-                         m_game_state[(m_game_ndx)&0xff].m_player[(int) symbols.sym.userchair].m_currentbet == symbols.sym.bblind)
+                else if (sym_br == 1 && m_game_state[(m_game_ndx)&0xff].m_player[sym_userchair].m_currentbet == sym_bblind)
                 {
-
                     from_chair = m_game_state[(m_game_ndx)&0xff].m_dealer_chair+1;
-                    to_chair = symbols.sym.userchair-1+10;
+                    to_chair = sym_userchair-1+10;
                 }
 
                 // if the dlr chair < mychair, then iterate from dlr+1 to mychair-1
-                else if (m_game_state[(m_game_ndx)&0xff].m_dealer_chair < symbols.sym.userchair)
+                else if (m_game_state[(m_game_ndx)&0xff].m_dealer_chair < sym_userchair)
                 {
                     from_chair = m_game_state[(m_game_ndx)&0xff].m_dealer_chair+1;
-                    to_chair = symbols.sym.userchair-1;
+                    to_chair = sym_userchair-1;
                 }
 
                 // if the dlr chair >= mychair, then iterate from dlr+1 to mychair-1+10 (to loop around)
                 else
                 {
                     from_chair = m_game_state[(m_game_ndx)&0xff].m_dealer_chair+1;
-                    to_chair = symbols.sym.userchair-1+10;
+                    to_chair = sym_userchair-1+10;
                 }
 
             }
             // if it is not my first action this round, then iterate from mychair+1 to mychair-1+10
             else
             {
-                from_chair = symbols.sym.userchair+1;
-                to_chair = symbols.sym.userchair-1+10;
+                from_chair = sym_userchair+1;
+                to_chair = sym_userchair-1+10;
             }
 
             // now iterate through the chairs and see what everybody did
@@ -648,13 +661,13 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed)
             {
                 // if the currentbet for the chair is the sb and the last bet was zero and br==1
                 // and the player has cards, then we know the chair ***POSTED THE SMALL BLIND***
-                if (m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_currentbet == symbols.sym.sblind &&
+                if (m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_currentbet == sym_sblind &&
                         bets_last==0 &&
                         m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_cards[0]!=0 &&
                         m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_cards[1]!=0 &&
-                        symbols.sym.br == 1)
+                        sym_br == 1)
                 {
-                    chair_actions[i%10][(int) symbols.sym.br-1][w_posted_sb] = true;
+                    chair_actions[i%10][sym_br-1][w_posted_sb] = true;
                     bets_last = m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_currentbet;
                     write_log(">>> Chair %d (%s) posted the sb: $%.2f\n", i%10,
                               m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_name,
@@ -663,13 +676,13 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed)
 
                 // if the currentbet for the chair is the bb and the last bet was the sb and br==1
                 // and the player has cards, then we know the chair ***POSTED THE BIG BLIND***
-                else if (m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_currentbet == symbols.sym.bblind &&
-                         bets_last == symbols.sym.sblind &&
+                else if (m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_currentbet == sym_bblind &&
+                         bets_last == sym_sblind &&
                          m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_cards[0]!=0 &&
                          m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_cards[1]!=0 &&
-                         symbols.sym.br == 1)
+                         sym_br == 1)
                 {
-                    chair_actions[i%10][(int) symbols.sym.br-1][w_posted_bb] = true;
+                    chair_actions[i%10][(int) sym_br-1][w_posted_bb] = true;
                     bets_last = m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_currentbet;
                     write_log(">>> Chair %d (%s) posted the bb: $%.2f\n", i%10,
                               m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_name,
@@ -686,7 +699,7 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed)
                     bets_last = m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_currentbet;
                     if (pot_raised == false)
                     {
-                        chair_actions[i%10][(int) symbols.sym.br-1][w_raised] = true;
+                        chair_actions[i%10][sym_br-1][w_raised] = true;
                         pot_raised = true;
                         write_log(">>> Chair %d (%s) raised to $%.2f\n", i%10,
                                   m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_name,
@@ -694,7 +707,7 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed)
                     }
                     else
                     {
-                        chair_actions[i%10][(int) symbols.sym.br-1][w_reraised] = true;
+                        chair_actions[i%10][sym_br-1][w_reraised] = true;
                         write_log(">>> Chair %d (%s) re-raised to $%.2f\n", i%10,
                                   m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_name,
                                   m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_currentbet);
@@ -709,7 +722,7 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed)
                          m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_cards[1]!=0 &&
                          !end_of_hand)
                 {
-                    chair_actions[i%10][(int) symbols.sym.br-1][w_called] = true;
+                    chair_actions[i%10][sym_br-1][w_called] = true;
                     if (pot_raised == false)
                     {
                         pf_limpers_n += 1;
@@ -728,7 +741,7 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed)
                             m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_balance==
                             m_game_state[(m_game_ndx-1)&0xff].m_player[i%10].m_balance)
                           ||
-                          ( i%10 == symbols.sym.userchair &&										// this is my chair
+                          ( i%10 == sym_userchair &&												// this is my chair
                             m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_cards[0]==0 &&			// no cards this scrape
                             m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_cards[1]==0 &&			// no cards this scrape
                             m_game_state[(m_game_ndx-1)&0xff].m_player[i%10].m_cards[0]!=0 &&		// card fronts/backs last scrape
@@ -736,18 +749,18 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed)
                             m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_balance==
                             m_game_state[(m_game_ndx-1)&0xff].m_player[i%10].m_balance) )
                 {
-                    chair_actions[i%10][(int) symbols.sym.br-1][w_folded] = true;
+                    chair_actions[i%10][sym_br-1][w_folded] = true;
                     write_log(">>> Chair %d (%s) folded\n", i%10,
                               m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_name);
                 }
 
                 // if br!=1 and the player's current bet is zero, and that player has cards in front of them
                 // then we know the chair has ***CHECKED***
-                else if (symbols.sym.br!=1 && m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_currentbet == 0 &&
+                else if (sym_br!=1 && m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_currentbet == 0 &&
                          m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_cards[0]!=0 &&
                          m_game_state[(m_game_ndx)&0xff].m_player[i%10].m_cards[1]!=0)
                 {
-                    chair_actions[i%10][(int) symbols.sym.br-1][w_checked] = true;
+                    chair_actions[i%10][sym_br-1][w_checked] = true;
 
                     write_log( ">>> Chair %d (%s) checked\n", i%10, m_holdem_state[(m_ndx)&0xff].m_player[i%10].m_name);
                 }
@@ -797,11 +810,20 @@ void GameState::process_ftr_engine(holdem_state* pstate)
     static int		ftr_nflopc_last=0;
     static int		ftr_nplayersdealt_last=0;
 
-    // if a new hand has started setup the next element in the ftr tracker array
+	EnterCriticalSection(&cs_symbols);
+	double			sym_elapsed = symbols.sym.elapsed;
+	double			sym_nbetsround_0 = symbols.sym.nbetsround[0];
+	int				sym_nplayersdealt = (int) symbols.sym.nplayersdealt;
+	int				sym_br = (int) symbols.sym.br;
+	int				sym_nflopc = (int) symbols.sym.nflopc;
+	int				sym_nplayersplaying = (int) symbols.sym.nplayersplaying;
+	LeaveCriticalSection(&cs_symbols);
+
+	// if a new hand has started setup the next element in the ftr tracker array
     if (pstate->m_dealer_chair != ftr_dealer_chair_last)
     {
         m_ftr_ndx++;
-        m_ftr[m_ftr_ndx&0xff].elapsed_time = symbols.sym.elapsed;
+        m_ftr[m_ftr_ndx&0xff].elapsed_time = sym_elapsed;
         m_ftr[m_ftr_ndx&0xff].n_pl_dealt = 0;
         m_ftr[m_ftr_ndx&0xff].n_pl_saw_flop = 0;
         m_ftr[m_ftr_ndx&0xff].n_pl_saw_turn = 0;
@@ -813,34 +835,34 @@ void GameState::process_ftr_engine(holdem_state* pstate)
     }
 
     // if nplayersdealt has incremented and it is br1, update the ftr tracker stats
-    if ( symbols.sym.nplayersdealt != ftr_nplayersdealt_last &&
-            symbols.sym.nplayersdealt > ftr_nplayersdealt_last &&
-            symbols.sym.br==1)
+    if (sym_nplayersdealt != ftr_nplayersdealt_last &&
+		sym_nplayersdealt > ftr_nplayersdealt_last &&
+		sym_br==1)
     {
-        m_ftr[m_ftr_ndx&0xff].n_pl_dealt = symbols.sym.nplayersdealt;
-        ftr_nplayersdealt_last = symbols.sym.nplayersdealt;
+        m_ftr[m_ftr_ndx&0xff].n_pl_dealt = sym_nplayersdealt;
+        ftr_nplayersdealt_last = sym_nplayersdealt;
     }
 
     // if the betting round has changed update the ftr tracker stats
-    if (symbols.sym.nflopc > ftr_nflopc_last)
+    if (sym_nflopc > ftr_nflopc_last)
     {
-        if (symbols.sym.nflopc==3 && m_ftr[m_ftr_ndx&0xff].n_pl_saw_flop==0)
+        if (sym_nflopc==3 && m_ftr[m_ftr_ndx&0xff].n_pl_saw_flop==0)
         {
-            m_ftr[m_ftr_ndx&0xff].n_pl_saw_flop = symbols.sym.nplayersplaying;
-            m_ftr[m_ftr_ndx&0xff].n_bets_preflop = symbols.sym.nbetsround[0];
+            m_ftr[m_ftr_ndx&0xff].n_pl_saw_flop = sym_nplayersplaying;
+            m_ftr[m_ftr_ndx&0xff].n_bets_preflop = sym_nbetsround_0;
         }
 
-        if (symbols.sym.nflopc==4 && m_ftr[m_ftr_ndx&0xff].n_pl_saw_turn==0)
+        if (sym_nflopc==4 && m_ftr[m_ftr_ndx&0xff].n_pl_saw_turn==0)
         {
-            m_ftr[m_ftr_ndx&0xff].n_pl_saw_turn = symbols.sym.nplayersplaying;
+            m_ftr[m_ftr_ndx&0xff].n_pl_saw_turn = sym_nplayersplaying;
         }
 
-        if (symbols.sym.nflopc==5 && m_ftr[m_ftr_ndx&0xff].n_pl_saw_river==0)
+        if (sym_nflopc==5 && m_ftr[m_ftr_ndx&0xff].n_pl_saw_river==0)
         {
-            m_ftr[m_ftr_ndx&0xff].n_pl_saw_river = symbols.sym.nplayersplaying;
+            m_ftr[m_ftr_ndx&0xff].n_pl_saw_river = sym_nplayersplaying;
         }
 
-        ftr_nflopc_last = symbols.sym.nflopc;
+        ftr_nflopc_last = sym_nflopc;
     }
 
     __SEH_LOGFATAL("GameState::process_ftr_engine\n");

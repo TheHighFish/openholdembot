@@ -4099,7 +4099,7 @@ CRunRon::~CRunRon(void)
 void CRunRon::get_counts(void)
 {
     __SEH_HEADER
-    unsigned int	pcard[2], ocard[2];
+    unsigned int	ocard[2];
     int				index1, index2;
 
     int				i;
@@ -4112,12 +4112,28 @@ void CRunRon::get_counts(void)
     unsigned int	pokval;
     LARGE_INTEGER	bcount, ecount;
 
+	EnterCriticalSection(&cs_symbols);
+	int		sym_userchair = (int) symbols.sym.userchair;
+	int		sym_br = (int) symbols.sym.br;
+	bool	user_chair_confirmed = symbols.user_chair_confirmed;
+	LeaveCriticalSection(&cs_symbols);
+
+	EnterCriticalSection(&cs_scraper);
+	bool			is_common_animation = scraper.is_common_animation();
+	unsigned int	pcard[2], ccard[5];
+	for (i=0; i<=1; i++)
+		pcard[i] = scraper.card_player[sym_userchair][i];
+	for (i=0; i<=4; i++)
+		ccard[i] = scraper.card_common[i];
+	LeaveCriticalSection(&cs_scraper);
+
+
     // Preflop is pre-calculated
     // Also use the pre-flop code if there is a common card animation going on, to prevent freezeups
-    if (symbols.sym.br==1 || scraper.is_common_animation())
+    if (sym_br==1 || is_common_animation)
     {
 
-        if (!symbols.user_chair_confirmed)
+        if (!user_chair_confirmed)
             return;
 
         //////////////////////////////////////////////////////////////
@@ -4128,9 +4144,6 @@ void CRunRon::get_counts(void)
 
         run$royfl = run$strfl = run$4kind = run$fullh = run$flush = run$strai = run$3kind = 0.0;
         run$2pair = run$1pair = run$hcard = run$total = run$pokervalmax = run$prnuts = run$prbest = run$clocks = 0.0;
-
-        pcard[0] = scraper.card_player[(int) symbols.sym.userchair][0];
-        pcard[1] = scraper.card_player[(int) symbols.sym.userchair][1];
 
         // suited, store in hi/lo
         if (StdDeck_SUIT(pcard[0]) == StdDeck_SUIT(pcard[1]))
@@ -4189,9 +4202,6 @@ void CRunRon::get_counts(void)
 
         ron$royfl = ron$strfl = ron$4kind = ron$fullh = ron$flush = ron$strai = ron$3kind = 0.0;
         ron$2pair = ron$1pair = ron$hcard = ron$total = ron$pokervalmax = ron$prnuts = ron$prbest = ron$clocks = 0.0;
-
-        pcard[0] = scraper.card_player[(int) symbols.sym.userchair][0];
-        pcard[1] = scraper.card_player[(int) symbols.sym.userchair][1];
 
         // suited, store in hi/lo
         if (StdDeck_SUIT(pcard[0]) == StdDeck_SUIT(pcard[1]))
@@ -4255,7 +4265,7 @@ void CRunRon::get_counts(void)
 
 
     // Post flop is calculated on the fly
-    else if (symbols.sym.br>=2)
+    else if (sym_br>=2)
     {
         //////////////////////////////////////////////////////////////
         // run symbols
@@ -4268,10 +4278,9 @@ void CRunRon::get_counts(void)
         CardMask_RESET(DeadCards);
         for (i=0; i<=1; i++)
         {
-            if (scraper.card_player[(int) symbols.sym.userchair][i] != CARD_BACK &&
-                    scraper.card_player[(int) symbols.sym.userchair][i] != CARD_NOCARD)
+            if (pcard[i] != CARD_BACK && pcard[i] != CARD_NOCARD)
             {
-                CardMask_SET(DeadCards, scraper.card_player[(int) symbols.sym.userchair][i]);
+                CardMask_SET(DeadCards, pcard[i]);
                 nDeadCards++;
             }
         }
@@ -4279,9 +4288,9 @@ void CRunRon::get_counts(void)
         // common cards
         for (i=0; i<=4; i++)
         {
-            if (scraper.card_common[i] != CARD_BACK && scraper.card_common[i] != CARD_NOCARD)
+            if (ccard[i] != CARD_BACK && ccard[i] != CARD_NOCARD)
             {
-                CardMask_SET(DeadCards, scraper.card_common[i]);
+                CardMask_SET(DeadCards, ccard[i]);
                 nDeadCards++;
                 nComCards++;
             }
@@ -4348,10 +4357,9 @@ void CRunRon::get_counts(void)
         CardMask_RESET(DeadCards);
         for (i=0; i<=1; i++)
         {
-            if (scraper.card_player[(int) symbols.sym.userchair][i] != CARD_BACK &&
-                    scraper.card_player[(int) symbols.sym.userchair][i] != CARD_NOCARD)
+            if (pcard[i] != CARD_BACK && pcard[i] != CARD_NOCARD)
             {
-                CardMask_SET(DeadCards, scraper.card_player[(int) symbols.sym.userchair][i]);
+                CardMask_SET(DeadCards, pcard[i]);
                 nDeadCards++;
             }
         }
@@ -4360,10 +4368,10 @@ void CRunRon::get_counts(void)
         CardMask_RESET(ComCards);
         for (i=0; i<=4; i++)
         {
-            if (scraper.card_common[i] != CARD_BACK && scraper.card_common[i] != CARD_NOCARD)
+            if (ccard[i] != CARD_BACK && ccard[i] != CARD_NOCARD)
             {
-                CardMask_SET(DeadCards, scraper.card_common[i]);
-                CardMask_SET(ComCards, scraper.card_common[i]);
+                CardMask_SET(DeadCards, ccard[i]);
+                CardMask_SET(ComCards, ccard[i]);
                 nDeadCards++;
                 nComCards++;
             }

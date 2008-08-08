@@ -13,15 +13,7 @@ CRITICAL_SECTION	cs_iterator;
 
 CIteratorThread		*p_iterator_thread = NULL;
 
-bool				iterator_thread_running = false;
-bool				iterator_thread_complete = false;
-unsigned int		iterator_thread_progress=0;
-double				iterator_run_with_nit=0;
-double				iterator_run_with_f$p=0;
-double				iterator_run_with_br = 0;
-unsigned int		iterator_run_with_playercards[2] = {CARD_NOCARD};
-unsigned int		iterator_run_with_commoncards[5] = {CARD_NOCARD};
-
+struct SIteratorStatus	iterator_status;
 
 CIteratorThread::CIteratorThread()
 {
@@ -40,18 +32,18 @@ CIteratorThread::CIteratorThread()
 	// Get exclusive access to CIteratorThread variables
 	EnterCriticalSection(&cs_iterator);
 
-	iterator_thread_running = false;
-	iterator_thread_complete = false;
-	iterator_thread_progress=0;
-	iterator_run_with_nit=0;
-	iterator_run_with_f$p=0;
-	iterator_run_with_br=0;
+	iterator_status.iterator_thread_running = false;
+	iterator_status.iterator_thread_complete = false;
+	iterator_status.iterator_thread_progress=0;
+	iterator_status.iterator_run_with_nit=0;
+	iterator_status.iterator_run_with_f$p=0;
+	iterator_status.iterator_run_with_br=0;
 
     for (i=0; i<=1; i++)
-        iterator_run_with_playercards[i] = CARD_NOCARD;
+        iterator_status.iterator_run_with_playercards[i] = CARD_NOCARD;
 
     for (i=0; i<=4; i++)
-        iterator_run_with_commoncards[i] = CARD_NOCARD;
+        iterator_status.iterator_run_with_commoncards[i] = CARD_NOCARD;
 
 	// Allow other threads to use CIterator variables
 	LeaveCriticalSection(&cs_iterator);
@@ -62,7 +54,7 @@ CIteratorThread::CIteratorThread()
 	// Get exclusive access to CIteratorThread variables
 	EnterCriticalSection(&cs_iterator);
 
-	iterator_thread_running = true;
+	iterator_status.iterator_thread_running = true;
 
 	// Allow other threads to use CIterator variables
 	LeaveCriticalSection(&cs_iterator);
@@ -91,7 +83,7 @@ CIteratorThread::~CIteratorThread()
 	// Get exclusive access to CIteratorThread variables
 	EnterCriticalSection(&cs_iterator);
 
-	iterator_thread_running = false;
+	iterator_status.iterator_thread_running = false;
 
 	// Allow other threads to use CIterator variables
 	LeaveCriticalSection(&cs_iterator);
@@ -117,13 +109,47 @@ UINT CIteratorThread::iterator_thread_function(LPVOID pParam)
     unsigned int	deck[52], x, swap;
     int				numberOfCards;
 
-	// variables we grab from the symbols class for use in the iterator, to avoid grabbing
-	// too many critical sections in every iteration
-	int			prw1326_useme, prw1326_usecallback, prw1326_preflop, prw1326_bblimp;
-	int			sym_playersplayingbits, sym_bblindbits, prw1326_chair_ignore[10], prw1326_chair_limit[10];
-	double		sym_br, sym_userchair, sym_nbetsround_0, sym_didcall_0, sym_nopp, sym_nit;
+	EnterCriticalSection(&cs_symbols);	
+	int			prw1326_useme = symbols.prw1326.useme;
+	int			prw1326_usecallback = symbols.prw1326.usecallback;
+	int			prw1326_preflop = symbols.prw1326.preflop;
+	int			prw1326_bblimp = symbols.prw1326.bblimp;
+	int			sym_playersplayingbits = (int) symbols.sym.playersplayingbits;
+	int			sym_bblindbits = (int) symbols.sym.bblindbits;
+	int			sym_br = (int) symbols.sym.br;
+	int			sym_userchair = (int) symbols.sym.userchair;
+	int			sym_nopp = (int) symbols.sym.nopponents;
+	int			sym_nit = (int) symbols.sym.nit;
+	bool		sym_didcall_0 = (bool) symbols.sym.didcall[0];
+	double		sym_nbetsround_0 = symbols.sym.nbetsround[0];
+	int			prw1326_chair_ignore[10], prw1326_chair_limit[10];
+	for (i=0; i<=9; i++)
+	{
+		prw1326_chair_ignore[i] = symbols.prw1326.chair[i].ignore;
+		prw1326_chair_limit[i] = symbols.prw1326.chair[i].limit;
+	}
+	LeaveCriticalSection(&cs_symbols);
 
-	
+	EnterCriticalSection(&cs_scraper);
+	unsigned int	card_player[2], card_common[5];
+	for (i=0; i<=1; i++)
+		card_player[i] = scraper.card_player[sym_userchair][i];
+	for (i=0; i<=4; i++)
+		card_common[i] = scraper.card_common[i];
+	LeaveCriticalSection(&cs_scraper);
+
+    EnterCriticalSection(&cs_iterator);
+	iterator_status.iterator_thread_complete = false;
+	iterator_status.iterator_thread_progress = 0;
+	iterator_status.iterator_run_with_f$p = sym_nopp;
+	iterator_status.iterator_run_with_nit = sym_nit;
+	iterator_status.iterator_run_with_br = symbols.sym.br;
+	for (i=0; i<=1; i++)
+		iterator_status.iterator_run_with_playercards[i] = card_player[i];
+	for (i=0; i<=4; i++)
+		iterator_status.iterator_run_with_commoncards[i] = card_common[i];
+    LeaveCriticalSection(&cs_iterator);
+
 	// Seed RNG
     srand((unsigned)time( NULL ));
 
@@ -135,79 +161,34 @@ UINT CIteratorThread::iterator_thread_function(LPVOID pParam)
 	// Counters
 	win = tie = los = 0;
 
-	// Get exclusive access to CIteratorThread variables
-    EnterCriticalSection(&cs_iterator);
-
-	iterator_thread_complete = false;
-    iterator_thread_progress = 0;
-
-	// Allow other threads to use CIteratorThread variables
-    LeaveCriticalSection(&cs_iterator);
-
-	// Get exclusive access to CScraper and CSymbol variables
-	EnterCriticalSection(&cs_scrape_symbol);	
-
-		// Get the symbol/scraper variables we need
-		prw1326_useme = symbols.prw1326.useme;
-		prw1326_usecallback = symbols.prw1326.usecallback;
-		sym_br = symbols.sym.br;
-		prw1326_preflop = symbols.prw1326.preflop;
-		sym_userchair = symbols.sym.userchair;
-		sym_playersplayingbits = (int) symbols.sym.playersplayingbits;
-		prw1326_bblimp = symbols.prw1326.bblimp;
-		sym_nbetsround_0 = symbols.sym.nbetsround[0];
-		sym_bblindbits = (int) symbols.sym.bblindbits;
-		sym_didcall_0 = symbols.sym.didcall[0];
-		sym_nopp = symbols.sym.nopponents;
-		sym_nit = symbols.sym.nit;
-
-		// player cards
-		for (i=0; i<=1; i++)
+	// setup masks
+	for (i=0; i<=1; i++)
+	{
+		if (card_player[i] != CARD_BACK && card_player[i] != CARD_NOCARD)
 		{
-			if (scraper.card_player[(int) symbols.sym.userchair][i] != CARD_BACK &&
-					scraper.card_player[(int) symbols.sym.userchair][i] != CARD_NOCARD)
-			{
-				CardMask_SET(plCards, scraper.card_player[(int) symbols.sym.userchair][i]);
-				iterator_run_with_playercards[i] = scraper.card_player[(int) symbols.sym.userchair][i];
-				nplCards++;
-			}
+			CardMask_SET(plCards, card_player[i]);
+			nplCards++;
 		}
-
-		// common cards
-		for (i=0; i<=4; i++)
+	}
+	for (i=0; i<=4; i++)
+	{
+		if (card_common[i] != CARD_BACK && card_common[i] != CARD_NOCARD)
 		{
-			if (scraper.card_common[i] != CARD_BACK &&
-					scraper.card_common[i] != CARD_NOCARD)
-			{
-				CardMask_SET(comCards, scraper.card_common[i]);
-				iterator_run_with_commoncards[i] = scraper.card_common[i];
-				ncomCards++;
-			}
+			CardMask_SET(comCards, card_common[i]);
+			ncomCards++;
 		}
+	}
 
-		// save settings of this run
-		iterator_run_with_f$p = sym_nopp;
-		iterator_run_with_nit = sym_nit;
-		iterator_run_with_br = symbols.sym.br;
+	//Weighted prwin only for nopponents <=13
+	error = SUCCESS;
+	willplay = (int) calc_f$symbol(&global.formula, "f$willplay", &error);
+	error = SUCCESS;
+	wontplay = (int) calc_f$symbol(&global.formula, "f$wontplay", &error);
+	error = SUCCESS;
+	mustplay = (int) calc_f$symbol(&global.formula, "f$mustplay", &error);
+	error = SUCCESS;
+	topclip = (int) calc_f$symbol(&global.formula, "f$topclip", &error);
 
-		//Weighted prwin only for nopponents <=13
-		error = SUCCESS;
-		willplay = (int) calc_f$symbol(&global.formula, "f$willplay", &error);
-		error = SUCCESS;
-		wontplay = (int) calc_f$symbol(&global.formula, "f$wontplay", &error);
-		error = SUCCESS;
-		mustplay = (int) calc_f$symbol(&global.formula, "f$mustplay", &error);
-		error = SUCCESS;
-		topclip = (int) calc_f$symbol(&global.formula, "f$topclip", &error);
-
-		for (i=0; i<=9; i++)
-		{
-			prw1326_chair_ignore[i] = symbols.prw1326.chair[i].ignore;
-			prw1326_chair_limit[i] = symbols.prw1326.chair[i].limit;
-		}
-
-	// Allow other threads to use CScraper and CSymbol variables
-	LeaveCriticalSection(&cs_scrape_symbol);
 
 	// Call prw1326 callback if needed
 	if (prw1326_useme==1326 && prw1326_usecallback==1326 && (sym_br!=1 || prw1326_preflop==1326))
@@ -240,7 +221,7 @@ UINT CIteratorThread::iterator_thread_function(LPVOID pParam)
 			k = nopp = 0; //k is used as an index into ocard[] 
 
 			// loop through active opponents
-			for(i=0; i<=9 && ::WaitForSingleObject(pParent->m_StopThread, 0)!=WAIT_OBJECT_0; i++) 
+			for(i=0; i<=9; i++) 
 			{
 				if (i==sym_userchair)
 					continue; //skip our own chair!
@@ -277,48 +258,51 @@ UINT CIteratorThread::iterator_thread_function(LPVOID pParam)
 
 				randfix=(RAND_MAX/prw1326_chair_limit[i]) * prw1326_chair_limit[i];
 
-				// Get exclusive access to CScraper and CSymbol variables
-				EnterCriticalSection(&cs_scrape_symbol);
 
-				while (::WaitForSingleObject(pParent->m_StopThread, 0)!=WAIT_OBJECT_0)
+				while (true)
 				{ //find a possible hand for this chair NOTE: may want to put in loop limits to prevent hanging
 					do 
 					{
 						j=rand();
 					} while (j>=randfix);
 
-					j=j%symbols.prw1326.chair[i].limit; //j is now any one of the allowed hands
+					j = j % prw1326_chair_limit[i]; //j is now any one of the allowed hands
 
-					if(CardMask_CARD_IS_SET(usedCards,symbols.prw1326.chair[i].rankhi[j] ))
-						continue; //hand contains dead card
+					// Get exclusive access to CSymbols variables
+					EnterCriticalSection(&cs_symbols);
 
-					if(CardMask_CARD_IS_SET(usedCards,symbols.prw1326.chair[i].ranklo[j] ))
-						continue; //hand contains dead card
+						if(CardMask_CARD_IS_SET(usedCards, symbols.prw1326.chair[i].rankhi[j] ))
+							continue; //hand contains dead card
 
-//					if(symbols.prw1326.chair[i].ignore)break; //chair marked as not to be weighted
+						if(CardMask_CARD_IS_SET(usedCards, symbols.prw1326.chair[i].ranklo[j] ))
+							continue; //hand contains dead card
 
-					if(symbols.prw1326.chair[i].level<=symbols.prw1326.chair[i].weight[j])
-						break; //hand marked as always uae
+	//					if(symbols.prw1326.chair[i].ignore)break; //chair marked as not to be weighted
 
-					//check if we want a player who is BB and has not VPIP'd to be analysed further
-//					if(symbols.prw1326.bblimp)
-//					{
-//				    if ((symbols.sym.nbetsround[0]<1.1) && ((int)symbols.sym.bblindbits&(1<<i)))break;
-//					}
+						if(symbols.prw1326.chair[i].level <= symbols.prw1326.chair[i].weight[j])
+							break; //hand marked as always uae
 
-					//we should really do a 'randfix' here for the case where RAND_MAX is not an integral
-					//multiple of .level, but the bias introduced is trivial compared to other uncertainties.
-					if(rand()%symbols.prw1326.chair[i].level<symbols.prw1326.chair[i].weight[j])
-						break; //allowable
+						//check if we want a player who is BB and has not VPIP'd to be analysed further
+	//					if(symbols.prw1326.bblimp)
+	//					{
+	//				    if ((symbols.sym.nbetsround[0]<1.1) && ((int)symbols.sym.bblindbits&(1<<i)))break;
+	//					}
+
+						//we should really do a 'randfix' here for the case where RAND_MAX is not an integral
+						//multiple of .level, but the bias introduced is trivial compared to other uncertainties.
+						if(rand() % symbols.prw1326.chair[i].level < symbols.prw1326.chair[i].weight[j])
+							break; //allowable
+
+					// Allow other threads to use CSymbols variables
+					LeaveCriticalSection(&cs_symbols);
 
 					//if we reach here we will loop again to find a suitable hand
 				} //end of possible hand find
 
-				ocard[k++]=symbols.prw1326.chair[i].rankhi[j];
-				ocard[k++]=symbols.prw1326.chair[i].ranklo[j];
-
-				// Allow other threads to use CScraper and CSymbol variables
-				LeaveCriticalSection(&cs_scrape_symbol);
+				EnterCriticalSection(&cs_symbols);
+				ocard[k++] = symbols.prw1326.chair[i].rankhi[j];
+				ocard[k++] = symbols.prw1326.chair[i].ranklo[j];
+				LeaveCriticalSection(&cs_symbols);
 
 				CardMask_SET(usedCards, ocard[k-2]);
 				CardMask_SET(usedCards, ocard[k-1]);
@@ -346,7 +330,7 @@ UINT CIteratorThread::iterator_thread_function(LPVOID pParam)
 			{
 	            // random replacement algorithm
 	            // opponent cards
-	            for (i=0; i<nopp*2 && ::WaitForSingleObject(pParent->m_StopThread, 0)!=WAIT_OBJECT_0; i+=2)
+	            for (i=0; i<nopp*2; i+=2)
 	            {
 	                temp_usedCards=usedCards;
 	                do
@@ -406,7 +390,7 @@ UINT CIteratorThread::iterator_thread_function(LPVOID pParam)
 		        for (i=0; i<numberOfCards; i++)
 			        deck[i] = i;
 
-	            while (numberOfCards>=1 && ::WaitForSingleObject(pParent->m_StopThread, 0)!=WAIT_OBJECT_0)
+	            while (numberOfCards>=1)
 		        {
 			        x = rand() % numberOfCards;
 				    numberOfCards--;
@@ -482,53 +466,53 @@ UINT CIteratorThread::iterator_thread_function(LPVOID pParam)
         if ((nit/1000 == (int) nit/1000) && nit>=1000)
         {
             EnterCriticalSection(&cs_iterator);
-			iterator_thread_progress = nit;
+			iterator_status.iterator_thread_progress = nit;
             LeaveCriticalSection(&cs_iterator);
 
-			EnterCriticalSection(&cs_scrape_symbol);	
+			EnterCriticalSection(&cs_symbols);	
             symbols.sym.prwin = win / nit;
             symbols.sym.prtie = tie / nit;
             symbols.sym.prlos = los / nit;
-			LeaveCriticalSection(&cs_scrape_symbol);
+			LeaveCriticalSection(&cs_symbols);
         }
     }
 
 	if (nit >= sym_nit)
     {
 	    EnterCriticalSection(&cs_iterator);
-        iterator_thread_complete = true;
-        iterator_thread_progress = nit;
+        iterator_status.iterator_thread_complete = true;
+        iterator_status.iterator_thread_progress = nit;
         LeaveCriticalSection(&cs_iterator);
 
-		EnterCriticalSection(&cs_scrape_symbol);	
+		EnterCriticalSection(&cs_symbols);	
 		symbols.sym.prwin = win / sym_nit;
         symbols.sym.prtie = tie / sym_nit;
         symbols.sym.prlos = los / sym_nit;
-		LeaveCriticalSection(&cs_scrape_symbol);
+		LeaveCriticalSection(&cs_symbols);
     }
     else
     {
 	    EnterCriticalSection(&cs_iterator);
-        iterator_thread_complete = false;
-        iterator_thread_progress = 0;
-        iterator_run_with_nit = 0;
-        iterator_run_with_f$p = 0;
-        iterator_run_with_br = 0;
+        iterator_status.iterator_thread_complete = false;
+        iterator_status.iterator_thread_progress = 0;
+        iterator_status.iterator_run_with_nit = 0;
+        iterator_status.iterator_run_with_f$p = 0;
+        iterator_status.iterator_run_with_br = 0;
         for (i=0; i<=1; i++)
-            iterator_run_with_playercards[i] = CARD_NOCARD;
+            iterator_status.iterator_run_with_playercards[i] = CARD_NOCARD;
         for (i=0; i<=4; i++)
-            iterator_run_with_commoncards[i] = CARD_NOCARD;
+            iterator_status.iterator_run_with_commoncards[i] = CARD_NOCARD;
         LeaveCriticalSection(&cs_iterator);
 
-		EnterCriticalSection(&cs_scrape_symbol);	
+		EnterCriticalSection(&cs_symbols);	
         symbols.sym.prwin = 0;
         symbols.sym.prtie = 0;
         symbols.sym.prlos = 0;
-		LeaveCriticalSection(&cs_scrape_symbol);
+		LeaveCriticalSection(&cs_symbols);
     }
 
     EnterCriticalSection(&cs_iterator);
-	iterator_thread_running = false;
+	iterator_status.iterator_thread_running = false;
 	LeaveCriticalSection(&cs_iterator);
 
 	::SetEvent(pParent->m_NormalExitThread);

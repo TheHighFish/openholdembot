@@ -154,25 +154,26 @@ void CDll::load_dll(char * path)
         }
     }
 
-
     __SEH_LOGFATAL("CDll::load_dll :\n");
-
 }
 
 void CDll::unload_dll(void)
 {
     __SEH_HEADER
-    if (hMod_dll==NULL)
+
+	if (hMod_dll==NULL)
         return;
+
+	EnterCriticalSection(&cs_symbols);
 	symbols.prw1326.useme=0;
+	LeaveCriticalSection(&cs_symbols);
+
     (process_message) ("event", "unload");
 
     if (FreeLibrary(hMod_dll))
         hMod_dll = NULL;
 
-
     __SEH_LOGFATAL("CDll::unload_dll :\n");
-
 }
 
 double GetSymbolFromDll(int chair, const char* name, bool& iserr)

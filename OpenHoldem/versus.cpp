@@ -76,10 +76,11 @@ double CVersus::get_symbol(const char *a, int *e) {
     __SEH_LOGFATAL("CVersus::get_symbol :\n");
 }
 
-bool CVersus::get_counts(void) {
+bool CVersus::get_counts(void) 
+{
     __SEH_HEADER
     int				i, j;
-    unsigned int	pcard[2];
+	unsigned int	pcard[2];
     CardMask		plCards, oppCards, deadCards, comCardsScrape, comCardsEnum, comCardsAll, usedCards;
     unsigned int	wintemp, tietemp, lostemp, offset;
     unsigned int	nhiwin, nhitie, nhilos, ntiwin, ntitie, ntilos, nlowin, nlotie, nlolos;
@@ -95,16 +96,29 @@ bool CVersus::get_counts(void) {
                                 1617000, 1620675, 1623125, 1624350
                               };
 
-    if (!symbols.user_chair_confirmed)
+	EnterCriticalSection(&cs_symbols);
+	int		sym_userchair = (int) symbols.sym.userchair;
+	bool	user_chair_confirmed = symbols.user_chair_confirmed;
+	int		sym_br = (int) symbols.sym.br;
+	LeaveCriticalSection(&cs_symbols);	
+
+	EnterCriticalSection(&cs_scraper);
+	unsigned int	card_player[2], card_common[5];
+	for (i=0; i<=1; i++)
+		card_player[i] = scraper.card_player[sym_userchair][i];
+	for (i=0; i<=4; i++)
+		card_common[i] = scraper.card_common[i];
+	LeaveCriticalSection(&cs_scraper);
+
+	
+	if (!user_chair_confirmed)
         return false;
 
     if (global.versus_fh == -1)
         return false;
 
-    if (scraper.card_player[(int) symbols.sym.userchair][0] == CARD_NOCARD ||
-            scraper.card_player[(int) symbols.sym.userchair][0] == CARD_BACK ||
-            scraper.card_player[(int) symbols.sym.userchair][1] == CARD_NOCARD ||
-            scraper.card_player[(int) symbols.sym.userchair][1] == CARD_BACK)
+    if (card_player[0] == CARD_NOCARD || card_player[0] == CARD_BACK ||
+		card_player[1] == CARD_NOCARD || card_player[1] == CARD_BACK)
     {
         return false;
     }
@@ -119,19 +133,19 @@ bool CVersus::get_counts(void) {
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // PREFLOP
-    if (symbols.sym.br == 1)
+    if (sym_br == 1)
     {
         // order cards properly
-        if (scraper.card_player[(int) symbols.sym.userchair][0] < scraper.card_player[(int) symbols.sym.userchair][1])
+        if (card_player[0] < card_player[1])
         {
-            pcard[0] = scraper.card_player[(int) symbols.sym.userchair][0];
-            pcard[1] = scraper.card_player[(int) symbols.sym.userchair][1];
+            pcard[0] = card_player[0];
+            pcard[1] = card_player[1];
         }
 
         else
         {
-            pcard[0] = scraper.card_player[(int) symbols.sym.userchair][1];
-            pcard[1] = scraper.card_player[(int) symbols.sym.userchair][0];
+            pcard[0] = card_player[1];
+            pcard[1] = card_player[0];
         }
 
         // figure out offset into file
@@ -214,20 +228,21 @@ bool CVersus::get_counts(void) {
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // FLOP, TURN, RIVER
-    else if (symbols.sym.br >= 2) {
+    else if (sym_br >= 2) 
+	{
 
         // Common cards
         CardMask_RESET(comCardsScrape);
-        if (symbols.sym.br >= 2) CardMask_SET(comCardsScrape, scraper.card_common[0]);
-        if (symbols.sym.br >= 2) CardMask_SET(comCardsScrape, scraper.card_common[1]);
-        if (symbols.sym.br >= 2) CardMask_SET(comCardsScrape, scraper.card_common[2]);
-        if (symbols.sym.br >= 3) CardMask_SET(comCardsScrape, scraper.card_common[3]);
-        if (symbols.sym.br >= 4) CardMask_SET(comCardsScrape, scraper.card_common[4]);
+        if (sym_br >= 2) CardMask_SET(comCardsScrape, card_common[0]);
+        if (sym_br >= 2) CardMask_SET(comCardsScrape, card_common[1]);
+        if (sym_br >= 2) CardMask_SET(comCardsScrape, card_common[2]);
+        if (sym_br >= 3) CardMask_SET(comCardsScrape, card_common[3]);
+        if (sym_br >= 4) CardMask_SET(comCardsScrape, card_common[4]);
 
         // player cards
         CardMask_RESET(plCards);
-        CardMask_SET(plCards, scraper.card_player[(int) symbols.sym.userchair][0]);
-        CardMask_SET(plCards, scraper.card_player[(int) symbols.sym.userchair][1]);
+        CardMask_SET(plCards, card_player[0]);
+        CardMask_SET(plCards, card_player[1]);
 
         // all used cards
         CardMask_OR(usedCards, comCardsScrape, plCards);
@@ -248,9 +263,9 @@ bool CVersus::get_counts(void) {
                     CardMask_OR(deadCards, usedCards, oppCards);
                     wintemp = tietemp = lostemp = 0;
 
-                    if (symbols.sym.br==2 || symbols.sym.br==3)
+                    if (sym_br==2 || sym_br==3)
                     {
-                        ENUMERATE_N_CARDS_D(comCardsEnum, symbols.sym.br==2 ? 2 : symbols.sym.br==3 ? 1 : 0, deadCards,
+                        ENUMERATE_N_CARDS_D(comCardsEnum, sym_br==2 ? 2 : sym_br==3 ? 1 : 0, deadCards,
                         {
                             CardMask_OR(comCardsAll, comCardsScrape, comCardsEnum);
                             do_calc(plCards, oppCards, comCardsAll, &wintemp, &tietemp, &lostemp);

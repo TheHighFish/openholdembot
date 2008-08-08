@@ -66,34 +66,43 @@ double ICM::ProcessQueryICM(const char* pquery, int *e)
     double		prizes[MAX_PLAYERS] = {0};
     double		stacks[MAX_PLAYERS] = {0};
     int			i, j;
-    int			mychair = (int) symbols.sym.userchair;
-    double		pot = symbols.sym.pot;
-    int			opponentsplayingbits = (int) symbols.sym.opponentsplayingbits;
-    int			nopponentsplaying = (int) symbols.sym.nopponentsplaying;
-    int			nplayersseated =  (int) symbols.sym.nplayersseated;
-    int			playersseatedbits =  (int) symbols.sym.playersseatedbits;
-
     prizes[0] = global.preferences.icm_prize1;
     prizes[1] = global.preferences.icm_prize2;
     prizes[2] = global.preferences.icm_prize3;
     prizes[3] = global.preferences.icm_prize4;
 
-    for (i = 0; i < MAX_PLAYERS; i++)
+	EnterCriticalSection(&cs_symbols);
+    int			sym_userchair = (int) symbols.sym.userchair;
+    int			sym_opponentsplayingbits = (int) symbols.sym.opponentsplayingbits;
+    int			sym_nopponentsplaying = (int) symbols.sym.nopponentsplaying;
+    int			sym_nplayersseated =  (int) symbols.sym.nplayersseated;
+    int			sym_playersseatedbits =  (int) symbols.sym.playersseatedbits;
+    double		sym_pot = symbols.sym.pot;
+	double		sym_call = symbols.sym.call;
+    double		sym_currentbet[MAX_PLAYERS], stacks_at_hand_start[MAX_PLAYERS];
+	for (i=0; i<MAX_PLAYERS; i++)
+	{
+		sym_currentbet[i] = symbols.sym.currentbet[i];
+		stacks_at_hand_start[i] = symbols.stacks_at_hand_start[i];
+	}
+	LeaveCriticalSection(&cs_symbols);
+
+	for (i = 0; i < MAX_PLAYERS; i++)
     {
-        if ((playersseatedbits>>i)&1)
+        if ((sym_playersseatedbits>>i)&1)
         {
-            stacks[i] = symbols.stacks_at_hand_start[i] - symbols.sym.currentbet[i];
+            stacks[i] = stacks_at_hand_start[i] - sym_currentbet[i];
             //ASSERT(stacks[i] >= 0.0001);
         }
     }
 
     if (strncmp(pquery,"_fold",5)==0)
     {
-        double win = pot / nopponentsplaying;
+        double win = sym_pot / sym_nopponentsplaying;
 
         for (i = 0; i < MAX_PLAYERS; i++)
         {
-            if ((opponentsplayingbits>>i)&1)
+            if ((sym_opponentsplayingbits>>i)&1)
             {
                 stacks[i] += win;
             }
@@ -102,37 +111,36 @@ double ICM::ProcessQueryICM(const char* pquery, int *e)
 
     else if (strncmp(pquery,"_callwin",8)==0)
     {
-        double call = symbols.sym.call;
+        double call = sym_call;
 
-        if (stacks[mychair] < call)
+        if (stacks[sym_userchair] < call)
         {
-            double myTotalBet = symbols.sym.currentbet[mychair] + stacks[mychair];
+            double myTotalBet = sym_currentbet[sym_userchair] + stacks[sym_userchair];
 
             for (i = 0; i < MAX_PLAYERS; i++)
             {
-                if ((opponentsplayingbits>>i)&1 && myTotalBet < symbols.sym.currentbet[i])
+                if ((sym_opponentsplayingbits>>i)&1 && myTotalBet < sym_currentbet[i])
                 {
-                    double extra = symbols.sym.currentbet[i] - myTotalBet;
+                    double extra = sym_currentbet[i] - myTotalBet;
 
                     stacks[i] += extra;
-                    pot -= extra;
+                    sym_pot -= extra;
                 }
             }
         }
-        stacks[mychair] += pot;
+        stacks[sym_userchair] += sym_pot;
     }
 
     else if (strncmp(pquery,"_calllose",9)==0)
     {
-        double call = symbols.sym.call;
-        double mycall = min(call,stacks[mychair]);
-        double win = (pot + mycall) / nopponentsplaying;
+        double mycall = min(sym_call,stacks[sym_userchair]);
+        double win = (sym_pot + mycall) / sym_nopponentsplaying;
 
-        stacks[mychair] -= mycall;
+        stacks[sym_userchair] -= mycall;
 
         for (i = 0; i < MAX_PLAYERS; i++)
         {
-            if ((opponentsplayingbits>>i)&1)
+            if ((sym_opponentsplayingbits>>i)&1)
             {
                 stacks[i] += win;
             }
@@ -141,30 +149,29 @@ double ICM::ProcessQueryICM(const char* pquery, int *e)
 
     else if (strncmp(pquery,"_calltie",8)==0)
     {
-        double call = symbols.sym.call;
         double win = 0.;
 
-        if (stacks[mychair] < call)
+        if (stacks[sym_userchair] < sym_call)
         {
-            double myTotalBet = symbols.sym.currentbet[mychair] + stacks[mychair];
+            double myTotalBet = sym_currentbet[sym_userchair] + stacks[sym_userchair];
 
             for (i = 0; i < MAX_PLAYERS; i++)
             {
-                if ((opponentsplayingbits>>i)&1 && myTotalBet<symbols.sym.currentbet[i])
+                if ((sym_opponentsplayingbits>>i)&1 && myTotalBet<sym_currentbet[i])
                 {
-                    double extra = symbols.sym.currentbet[i] - myTotalBet;
+                    double extra = sym_currentbet[i] - myTotalBet;
 
                     stacks[i] += extra;
-                    pot -= extra;
+                    sym_pot -= extra;
                 }
             }
         }
-        pot += min(call, stacks[mychair]);
-        win = pot / (nopponentsplaying +1);
-        stacks[mychair] += win;
+        sym_pot += min(sym_call, stacks[sym_userchair]);
+        win = sym_pot / (sym_nopponentsplaying +1);
+        stacks[sym_userchair] += win;
         for (i = 0; i < MAX_PLAYERS; i++)
         {
-            if ((opponentsplayingbits>>i)&1)
+            if ((sym_opponentsplayingbits>>i)&1)
             {
                 stacks[i] += win;
             }
@@ -177,7 +184,7 @@ double ICM::ProcessQueryICM(const char* pquery, int *e)
         {
             //assume callers are n smallest stacks
             bool callers[MAX_PLAYERS] = {0};
-            int ncallers = min(pquery[8]-'0', nopponentsplaying);
+            int ncallers = min(pquery[8]-'0', sym_nopponentsplaying);
 
             for (i = 0; i < ncallers; i++)
             {
@@ -186,26 +193,26 @@ double ICM::ProcessQueryICM(const char* pquery, int *e)
 
                 for (j = 0; j < MAX_PLAYERS; j++)
                 {
-                    if ((opponentsplayingbits>>j)&1)
+                    if ((sym_opponentsplayingbits>>j)&1)
                     {
-                        if (!callers[j] && (symbols.sym.currentbet[j] + stacks[j]) < smalleststack)
+                        if (!callers[j] && (sym_currentbet[j] + stacks[j]) < smalleststack)
                         {
-                            smalleststack = symbols.sym.currentbet[j] + stacks[j];
+                            smalleststack = sym_currentbet[j] + stacks[j];
                             jsmallest = j;
                         }
                     }
                 }
                 if (jsmallest > -1)
                 {
-                    double oppCurrentBet = symbols.sym.currentbet[jsmallest];
-                    double myTotalBet = symbols.sym.currentbet[mychair] + stacks[mychair];
+                    double oppCurrentBet = sym_currentbet[jsmallest];
+                    double myTotalBet = sym_currentbet[sym_userchair] + stacks[sym_userchair];
                     double extra = ((oppCurrentBet + stacks[jsmallest]) > myTotalBet) ? myTotalBet - oppCurrentBet :stacks[jsmallest];
                     stacks[jsmallest] -= extra;
                     callers[jsmallest] = true;
-                    pot+=extra;
+                    sym_pot+=extra;
                 }
             }
-            stacks[mychair]+=pot;
+            stacks[sym_userchair]+=sym_pot;
         }
         else
         {
@@ -214,12 +221,12 @@ double ICM::ProcessQueryICM(const char* pquery, int *e)
 
             if (oppChair >= 0)
             {
-                double oppCurrentBet = symbols.sym.currentbet[oppChair];
-                double myTotalBet = symbols.sym.currentbet[mychair] + stacks[mychair];
+                double oppCurrentBet = sym_currentbet[oppChair];
+                double myTotalBet = sym_currentbet[sym_userchair] + stacks[sym_userchair];
                 double extra = ((oppCurrentBet + stacks[oppChair]) > myTotalBet) ? myTotalBet - oppCurrentBet :stacks[oppChair];
 
                 stacks[oppChair] -= extra;
-                stacks[mychair]+= (pot + extra);
+                stacks[sym_userchair]+= (sym_pot + extra);
             }
         }
     }
@@ -229,7 +236,7 @@ double ICM::ProcessQueryICM(const char* pquery, int *e)
         if (isdigit(pquery[9]))
         {
             //assume callers are n biggest stacks
-            int ncallers = min(pquery[9]-'0', nopponentsplaying);
+            int ncallers = min(pquery[9]-'0', sym_nopponentsplaying);
 
             if (ncallers > 0)
             {
@@ -247,11 +254,11 @@ double ICM::ProcessQueryICM(const char* pquery, int *e)
 
                     for (j = 0; j < MAX_PLAYERS; j++)
                     {
-                        if ((opponentsplayingbits>>j)&1)
+                        if ((sym_opponentsplayingbits>>j)&1)
                         {
-                            if (!callers[j] && (symbols.sym.currentbet[j] + stacks[j]) > biggeststack)
+                            if (!callers[j] && (sym_currentbet[j] + stacks[j]) > biggeststack)
                             {
-                                biggeststack = symbols.sym.currentbet[j] + stacks[j];
+                                biggeststack = sym_currentbet[j] + stacks[j];
                                 jbiggest = j;
                             }
                         }
@@ -260,20 +267,20 @@ double ICM::ProcessQueryICM(const char* pquery, int *e)
                     if (jbiggest > -1)
                     {
                         callers[jbiggest] = true;
-                        stacks[jbiggest] += symbols.sym.currentbet[jbiggest];
-                        pot -= symbols.sym.currentbet[jbiggest];
+                        stacks[jbiggest] += sym_currentbet[jbiggest];
+                        sym_pot -= sym_currentbet[jbiggest];
                     }
                 }
-                stacks[mychair] += symbols.sym.currentbet[mychair];
-                pot -= symbols.sym.currentbet[mychair];
+                stacks[sym_userchair] += sym_currentbet[sym_userchair];
+                sym_pot -= sym_currentbet[sym_userchair];
                 for (i = (ncallers -1); i>=0; i--)
                 {
                     ASSERT(biggest[i] >= 0);
-                    sidepots[i] = min(stacks[biggest[i]], stacks[mychair]) - mybet;
+                    sidepots[i] = min(stacks[biggest[i]], stacks[sym_userchair]) - mybet;
                     mybet += sidepots[i];
                 }
-                stacks[mychair] -= mybet;
-                sidepots[ncallers - 1] += pot;
+                stacks[sym_userchair] -= mybet;
+                sidepots[ncallers - 1] += sym_pot;
                 for (i = 0; i<ncallers; i++)
                 {
                     double win = sidepots[i] / (i + 1);
@@ -295,12 +302,12 @@ double ICM::ProcessQueryICM(const char* pquery, int *e)
 
             if (oppChair >= 0)
             {
-                double oppTotalBet = symbols.sym.currentbet[oppChair] + stacks[oppChair];
-                double myTotalBet = symbols.sym.currentbet[mychair] + stacks[mychair];
-                double extra = (oppTotalBet > myTotalBet) ? stacks[mychair] : oppTotalBet - symbols.sym.currentbet[mychair];
+                double oppTotalBet = sym_currentbet[oppChair] + stacks[oppChair];
+                double myTotalBet = sym_currentbet[sym_userchair] + stacks[sym_userchair];
+                double extra = (oppTotalBet > myTotalBet) ? stacks[sym_userchair] : oppTotalBet - sym_currentbet[sym_userchair];
 
-                stacks[oppChair]+= (pot + extra);
-                stacks[mychair]-= extra;
+                stacks[oppChair]+= (sym_pot + extra);
+                stacks[sym_userchair]-= extra;
             }
         }
     }
@@ -312,8 +319,8 @@ double ICM::ProcessQueryICM(const char* pquery, int *e)
 
         if (oppChair >= 0)
         {
-            stacks[oppChair]+= pot / 2;
-            stacks[mychair]+= pot / 2;
+            stacks[oppChair]+= sym_pot / 2;
+            stacks[sym_userchair]+= sym_pot / 2;
         }
     }
 
@@ -321,14 +328,14 @@ double ICM::ProcessQueryICM(const char* pquery, int *e)
     {
         for (i = 0; i < MAX_PLAYERS; i++)
         {
-            if ((playersseatedbits>>i)&1)
+            if ((sym_playersseatedbits>>i)&1)
             {
-                stacks[i] += symbols.sym.currentbet[i];
+                stacks[i] += sym_currentbet[i];
             }
         }
     }
 
-    return EquityICM(stacks, prizes, MAX_PLAYERS, mychair);
+    return EquityICM(stacks, prizes, MAX_PLAYERS, sym_userchair);
 }
 
 double ICM::EquityICM(double *stacks, double *prizes, int playerNB, int player)
@@ -336,7 +343,14 @@ double ICM::EquityICM(double *stacks, double *prizes, int playerNB, int player)
     double ICM = 0.;
     int i = 0;
 
-    for (i = 0; i < playerNB; i++)
+	// These variables hold values that are collected in a critical section
+    int			sym_opponentsseatedbits;
+
+	EnterCriticalSection(&cs_symbols);
+    sym_opponentsseatedbits =  (int) symbols.sym.opponentsseatedbits;
+	LeaveCriticalSection(&cs_symbols);
+
+	for (i = 0; i < playerNB; i++)
     {
         //printf("player %d  stack = %1.2f \n", i, stacks[i]);
     }
@@ -351,7 +365,7 @@ double ICM::EquityICM(double *stacks, double *prizes, int playerNB, int player)
 
 		for (i = 0; i < MAX_PLAYERS; i++)
 		{
-			if (((int) symbols.sym.opponentsseatedbits >> i) & 1)
+			if ((sym_opponentsseatedbits >> i) & 1)
 				place++;
 		}
 
@@ -374,17 +388,25 @@ double ICM::EquityICM(double *stacks, double *prizes, int playerNB, int player)
 
 double ICM::GetPlayerCurrentBet(int pos)
 {
-    return symbols.sym.currentbet[pos];
+	EnterCriticalSection(&cs_symbols);
+	double sym_currentbet = symbols.sym.currentbet[pos];
+	LeaveCriticalSection(&cs_symbols);
+
+	return sym_currentbet;
 }
 
 int ICM::getChairFromDealPos(const char* pquery)
 {
-    int chair = -1;
-    int nplayersseated = (int) symbols.sym.nplayersseated;
+	EnterCriticalSection(&cs_symbols);
+	int sym_nplayersseated = (int) symbols.sym.nplayersseated;
+	int sym_playersseatedbits = (int) symbols.sym.playersseatedbits;
+    int	sym_dealerchair = (int) symbols.sym.dealerchair;
+	LeaveCriticalSection(&cs_symbols);
 
-    if (nplayersseated > 0)
+	int chair = -1;
+
+    if (sym_nplayersseated > 0)
     {
-        int playersseatedbits = (int) symbols.sym.playersseatedbits;
         int dealPos = -1;
 
         if (strcmp(pquery,"SB")==0)
@@ -408,20 +430,21 @@ int ICM::getChairFromDealPos(const char* pquery)
         else if (strcmp(pquery,"D")==0)
             dealPos = 0;
         else if (strcmp(pquery,"CO")==0)
-            dealPos = nplayersseated - 1;
+            dealPos = sym_nplayersseated - 1;
 
         if (dealPos >= 0)
         {
-            chair = (int) symbols.sym.dealerchair;
-
             while (dealPos > 0)
             {
+				chair = sym_dealerchair;
+
                 chair = (chair + 1) % MAX_PLAYERS;
 
-                if ((playersseatedbits>>chair)&1)
+                if ((sym_playersseatedbits>>chair)&1)
                     dealPos--;
             }
         }
     }
+
     return chair;
 }

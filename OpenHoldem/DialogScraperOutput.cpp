@@ -6,7 +6,7 @@
 #include "Registry.h"
 #include "global.h"
 #include "structs_defines.h"
-#include "scraper.h"
+//#include "scraper.h"
 #include "debug.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"

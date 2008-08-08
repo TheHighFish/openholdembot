@@ -47,7 +47,6 @@ CPokerTrackerThread::~CPokerTrackerThread()
 	
 UINT CPokerTrackerThread::pokertracker_thread_function(LPVOID pParam)
 {
-
     __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
 
     __SEH_HEADER
@@ -56,7 +55,11 @@ UINT CPokerTrackerThread::pokertracker_thread_function(LPVOID pParam)
 
 	int			i, j;
 
-    while (true)
+	// These variables hold values that are collected in a critical section
+	bool		sym_issittingin, sym_isppro, sym_ismanual;
+
+	
+	while (true)
     {
 
 		// Check event for stop thread
@@ -72,9 +75,15 @@ UINT CPokerTrackerThread::pokertracker_thread_function(LPVOID pParam)
 
         if (PQstatus(PT.pgconn) == CONNECTION_OK && PT.connected)
         {
+			EnterCriticalSection(&cs_symbols);
+			sym_issittingin = (bool) symbols.sym.issittingin;
+			sym_isppro = (bool) symbols.sym.isppro;
+			sym_ismanual = (bool) symbols.sym.ismanual;
+			LeaveCriticalSection(&cs_symbols);
+
             for (i=0; i<=9; i++)
             {
-                if (symbols.sym.issittingin || symbols.sym.isppro || symbols.sym.ismanual)
+                if (sym_issittingin || sym_isppro || sym_ismanual)
                 {
                     if (PT.checkname(i))
                     {
@@ -97,11 +106,9 @@ UINT CPokerTrackerThread::pokertracker_thread_function(LPVOID pParam)
 
 PokerTracker::PokerTracker()
 {
-
     __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
 
     __SEH_HEADER
-
 
     int				i,j;
     Registry		reg;
@@ -158,6 +165,9 @@ double PokerTracker::process_query (const char * s)
 {
     __SEH_HEADER
 
+	EnterCriticalSection(&cs_symbols);
+	int		sym_raischair = (int) symbols.sym.raischair;
+	LeaveCriticalSection(&cs_symbols);
 
     if (PQstatus(pgconn) != CONNECTION_OK || !connected)  return 0.0;
 
@@ -183,26 +193,26 @@ double PokerTracker::process_query (const char * s)
     else if (memcmp(s,"pt_fbbts",8)==0)				return getstat(s[8]-'0', pt_fbbts);
     else if (memcmp(s,"pt_fsbts",8)==0)				return getstat(s[8]-'0', pt_fsbts);
 
-    else if (memcmp(s,"pt_ricon",8)==0)				return getstat( symbols.sym.raischair, pt_icon);
-    else if (memcmp(s,"pt_rpfr",7)==0)				return getstat( symbols.sym.raischair, pt_pfr);
-    else if (memcmp(s,"pt_raggtotnopf",14)==0)		return getstat( symbols.sym.raischair, pt_aggtotnopf);
-    else if (memcmp(s,"pt_raggtot",10)==0)			return getstat( symbols.sym.raischair, pt_aggtot);
-    else if (memcmp(s,"pt_raggp",8)==0)				return getstat( symbols.sym.raischair, pt_aggp);
-    else if (memcmp(s,"pt_raggf",8)==0)				return getstat( symbols.sym.raischair, pt_aggf);
-    else if (memcmp(s,"pt_raggt",8)==0)				return getstat( symbols.sym.raischair, pt_aggt);
-    else if (memcmp(s,"pt_raggr",8)==0)				return getstat( symbols.sym.raischair, pt_aggr);
-    else if (memcmp(s,"pt_rfloppct",11)==0)			return getstat( symbols.sym.raischair, pt_floppct);
-    else if (memcmp(s,"pt_rturnpct",11)==0)			return getstat( symbols.sym.raischair, pt_turnpct);
-    else if (memcmp(s,"pt_rriverpct",12)==0)		return getstat( symbols.sym.raischair, pt_riverpct);
-    else if (memcmp(s,"pt_rvpip",8)==0)				return getstat( symbols.sym.raischair, pt_vpip);
-    else if (memcmp(s,"pt_rhands",9)==0)			return getstat( symbols.sym.raischair, pt_hands);
-    else if (memcmp(s,"pt_rpf_rfi",10)==0)			return getstat( symbols.sym.raischair, pt_pf_rfi);
-    else if (memcmp(s,"pt_rpf_cr",9)==0)			return getstat( symbols.sym.raischair, pt_pf_cr);
-    else if (memcmp(s,"pt_rpfats",9)==0)			return getstat( symbols.sym.raischair, pt_pfats);
-    else if (memcmp(s,"pt_rwsdp",8)==0)				return getstat( symbols.sym.raischair, pt_wsdp);
-    else if (memcmp(s,"pt_rwssd",8)==0)				return getstat( symbols.sym.raischair, pt_wssd);
-    else if (memcmp(s,"pt_rfbbts",9)==0)			return getstat( symbols.sym.raischair, pt_fbbts);
-    else if (memcmp(s,"pt_rfsbts",9)==0)			return getstat( symbols.sym.raischair, pt_fsbts);
+    else if (memcmp(s,"pt_ricon",8)==0)				return getstat(sym_raischair, pt_icon);
+    else if (memcmp(s,"pt_rpfr",7)==0)				return getstat(sym_raischair, pt_pfr);
+    else if (memcmp(s,"pt_raggtotnopf",14)==0)		return getstat(sym_raischair, pt_aggtotnopf);
+    else if (memcmp(s,"pt_raggtot",10)==0)			return getstat(sym_raischair, pt_aggtot);
+    else if (memcmp(s,"pt_raggp",8)==0)				return getstat(sym_raischair, pt_aggp);
+    else if (memcmp(s,"pt_raggf",8)==0)				return getstat(sym_raischair, pt_aggf);
+    else if (memcmp(s,"pt_raggt",8)==0)				return getstat(sym_raischair, pt_aggt);
+    else if (memcmp(s,"pt_raggr",8)==0)				return getstat(sym_raischair, pt_aggr);
+    else if (memcmp(s,"pt_rfloppct",11)==0)			return getstat(sym_raischair, pt_floppct);
+    else if (memcmp(s,"pt_rturnpct",11)==0)			return getstat(sym_raischair, pt_turnpct);
+    else if (memcmp(s,"pt_rriverpct",12)==0)		return getstat(sym_raischair, pt_riverpct);
+    else if (memcmp(s,"pt_rvpip",8)==0)				return getstat(sym_raischair, pt_vpip);
+    else if (memcmp(s,"pt_rhands",9)==0)			return getstat(sym_raischair, pt_hands);
+    else if (memcmp(s,"pt_rpf_rfi",10)==0)			return getstat(sym_raischair, pt_pf_rfi);
+    else if (memcmp(s,"pt_rpf_cr",9)==0)			return getstat(sym_raischair, pt_pf_cr);
+    else if (memcmp(s,"pt_rpfats",9)==0)			return getstat(sym_raischair, pt_pfats);
+    else if (memcmp(s,"pt_rwsdp",8)==0)				return getstat(sym_raischair, pt_wsdp);
+    else if (memcmp(s,"pt_rwssd",8)==0)				return getstat(sym_raischair, pt_wssd);
+    else if (memcmp(s,"pt_rfbbts",9)==0)			return getstat(sym_raischair, pt_fbbts);
+    else if (memcmp(s,"pt_rfsbts",9)==0)			return getstat(sym_raischair, pt_fsbts);
 
     else if (memcmp(s,"ptt_iconlastr",13)==0)		return getstat(game_state.lastraised(s[13]-'0'), ptt_icon);
     else if (memcmp(s,"ptt_icon",8)==0)				return getstat(s[8]-'0', ptt_icon);
@@ -226,26 +236,26 @@ double PokerTracker::process_query (const char * s)
     else if (memcmp(s,"ptt_fbbts",9)==0)			return getstat(s[9]-'0', ptt_fbbts);
     else if (memcmp(s,"ptt_fsbts",9)==0)			return getstat(s[9]-'0', ptt_fsbts);
 
-    else if (memcmp(s,"ptt_ricon",9)==0)			return getstat( symbols.sym.raischair, ptt_icon);
-    else if (memcmp(s,"ptt_rpfr",8)==0)				return getstat( symbols.sym.raischair, ptt_pfr);
-    else if (memcmp(s,"ptt_raggtotnopf",15)==0)		return getstat( symbols.sym.raischair, ptt_aggtotnopf);
-    else if (memcmp(s,"ptt_raggtot",11)==0)			return getstat( symbols.sym.raischair, ptt_aggtot);
-    else if (memcmp(s,"ptt_raggp",9)==0)			return getstat( symbols.sym.raischair, ptt_aggp);
-    else if (memcmp(s,"ptt_raggf",9)==0)			return getstat( symbols.sym.raischair, ptt_aggf);
-    else if (memcmp(s,"ptt_raggt",9)==0)			return getstat( symbols.sym.raischair, ptt_aggt);
-    else if (memcmp(s,"ptt_raggr",9)==0)			return getstat( symbols.sym.raischair, ptt_aggr);
-    else if (memcmp(s,"ptt_rfloppct",12)==0)		return getstat( symbols.sym.raischair, ptt_floppct);
-    else if (memcmp(s,"ptt_rturnpct",12)==0)		return getstat( symbols.sym.raischair, ptt_turnpct);
-    else if (memcmp(s,"ptt_rriverpct",13)==0)		return getstat( symbols.sym.raischair, ptt_riverpct);
-    else if (memcmp(s,"ptt_rvpip",9)==0)			return getstat( symbols.sym.raischair, ptt_vpip);
-    else if (memcmp(s,"ptt_rhands",10)==0)			return getstat( symbols.sym.raischair, ptt_hands);
-    else if (memcmp(s,"ptt_rpf_rfi",11)==0)			return getstat( symbols.sym.raischair, ptt_pf_rfi);
-    else if (memcmp(s,"ptt_rpf_cr",10)==0)			return getstat( symbols.sym.raischair, ptt_pf_cr);
-    else if (memcmp(s,"ptt_rpfats",10)==0)			return getstat( symbols.sym.raischair, ptt_pfats);
-    else if (memcmp(s,"ptt_rwsdp",8)==0)			return getstat( symbols.sym.raischair, ptt_wsdp);
-    else if (memcmp(s,"ptt_rwssd",8)==0)			return getstat( symbols.sym.raischair, ptt_wssd);
-    else if (memcmp(s,"ptt_rfbbts",9)==0)			return getstat( symbols.sym.raischair, ptt_fbbts);
-    else if (memcmp(s,"ptt_rfsbts",9)==0)			return getstat( symbols.sym.raischair, ptt_fsbts);
+    else if (memcmp(s,"ptt_ricon",9)==0)			return getstat(sym_raischair, ptt_icon);
+    else if (memcmp(s,"ptt_rpfr",8)==0)				return getstat(sym_raischair, ptt_pfr);
+    else if (memcmp(s,"ptt_raggtotnopf",15)==0)		return getstat(sym_raischair, ptt_aggtotnopf);
+    else if (memcmp(s,"ptt_raggtot",11)==0)			return getstat(sym_raischair, ptt_aggtot);
+    else if (memcmp(s,"ptt_raggp",9)==0)			return getstat(sym_raischair, ptt_aggp);
+    else if (memcmp(s,"ptt_raggf",9)==0)			return getstat(sym_raischair, ptt_aggf);
+    else if (memcmp(s,"ptt_raggt",9)==0)			return getstat(sym_raischair, ptt_aggt);
+    else if (memcmp(s,"ptt_raggr",9)==0)			return getstat(sym_raischair, ptt_aggr);
+    else if (memcmp(s,"ptt_rfloppct",12)==0)		return getstat(sym_raischair, ptt_floppct);
+    else if (memcmp(s,"ptt_rturnpct",12)==0)		return getstat(sym_raischair, ptt_turnpct);
+    else if (memcmp(s,"ptt_rriverpct",13)==0)		return getstat(sym_raischair, ptt_riverpct);
+    else if (memcmp(s,"ptt_rvpip",9)==0)			return getstat(sym_raischair, ptt_vpip);
+    else if (memcmp(s,"ptt_rhands",10)==0)			return getstat(sym_raischair, ptt_hands);
+    else if (memcmp(s,"ptt_rpf_rfi",11)==0)			return getstat(sym_raischair, ptt_pf_rfi);
+    else if (memcmp(s,"ptt_rpf_cr",10)==0)			return getstat(sym_raischair, ptt_pf_cr);
+    else if (memcmp(s,"ptt_rpfats",10)==0)			return getstat(sym_raischair, ptt_pfats);
+    else if (memcmp(s,"ptt_rwsdp",8)==0)			return getstat(sym_raischair, ptt_wsdp);
+    else if (memcmp(s,"ptt_rwssd",8)==0)			return getstat(sym_raischair, ptt_wssd);
+    else if (memcmp(s,"ptt_rfbbts",9)==0)			return getstat(sym_raischair, ptt_fbbts);
+    else if (memcmp(s,"ptt_rfsbts",9)==0)			return getstat(sym_raischair, ptt_fsbts);
 
     else return 0.0;
 
@@ -293,14 +303,20 @@ int	PokerTracker::getsiteid (void)
 
     int			i, e;
     CString		sym;
+	double		result;
 
-    if (symbols.sym.isppro)
+	EnterCriticalSection(&cs_symbols);
+	bool		sym_isppro = (bool) symbols.sym.isppro;
+	bool		sym_ismanual = (bool) symbols.sym.ismanual;
+	LeaveCriticalSection(&cs_symbols);
+
+	if (sym_isppro)
     {
         return 3;
     }
     else
     {
-        if (symbols.sym.ismanual)
+        if (sym_ismanual)
         {
             for (i=0; i<=20; i++)
             {
@@ -314,22 +330,32 @@ int	PokerTracker::getsiteid (void)
             for (i=0; i<=20; i++)
             {
                 sym.Format("sitename$%s", networkid[i]);
-                if (symbols.GetSymbolVal(sym.MakeLower().GetString(), &e) && strlen(networkid[i]))
+
+				EnterCriticalSection(&cs_symbols);
+				result = symbols.GetSymbolVal(sym.MakeLower().GetString(), &e);
+				LeaveCriticalSection(&cs_symbols);
+
+                if (result && strlen(networkid[i]))
                     return i;
             }
             //Is s$network one of the supported PT sites?  Return the proper site_id for db queries.
             for (i=0; i<=20; i++)
             {
                 sym.Format("network$%s", networkid[i]);
-                if (symbols.GetSymbolVal(sym.MakeLower().GetString(), &e) && strlen(networkid[i]))
+
+				EnterCriticalSection(&cs_symbols);
+				result = symbols.GetSymbolVal(sym.MakeLower().GetString(), &e);
+				LeaveCriticalSection(&cs_symbols);
+
+				if (result && strlen(networkid[i]))
                     return i;
             }
         }
     }
+
     return -1 ;
 
     __SEH_LOGFATAL("PokerTracker::getsiteid : \n");
-
 }
 
 bool PokerTracker::checkname (int m_chr)
@@ -419,7 +445,6 @@ bool PokerTracker::checkname (int m_chr)
     return result;
 
     __SEH_LOGFATAL("PokerTracker::checkname : \n");
-
 }
 
 double PokerTracker::getstat (int m_chr, PT_Stats stat)
@@ -434,18 +459,13 @@ double PokerTracker::getstat (int m_chr, PT_Stats stat)
     if (m_chr<0 || m_chr>9)
         return 0.0;
 
-	// Get exclusive access to CPokerTracker and CPokerTrackerThread variables
     EnterCriticalSection(&cs_pokertracker);
-
     x = player_stats[m_chr].stat[stat];
-
-	// Allow other threads to use CPokerTracker and CPokerTrackerThread variables
     LeaveCriticalSection(&cs_pokertracker);
 
     return x;
 
     __SEH_LOGFATAL("PokerTracker::getstat : \n");
-
 }
 
 double PokerTracker::update_stat (int m_chr, int stat)
@@ -459,7 +479,11 @@ double PokerTracker::update_stat (int m_chr, int stat)
     char		siteidstr[5];
     int			siteid;
 
-    //No more unnecessary queries when we don't even have a siteid to check
+	EnterCriticalSection(&cs_symbols);
+	double		sym_elapsed = symbols.sym.elapsed;
+	LeaveCriticalSection(&cs_symbols);
+
+	//No more unnecessary queries when we don't even have a siteid to check
     siteid = getsiteid();
     if (siteid == -1)
         return result;
@@ -472,9 +496,9 @@ double PokerTracker::update_stat (int m_chr, int stat)
 
     // If we already have stats cached for the player, the timeout has not expired,
     // return the value from the cache...
-    if (symbols.sym.elapsed-player_stats[m_chr].t_elapsed[stat] < PT.cache_refresh &&
-            player_stats[m_chr].t_elapsed[stat] != -1 &&
-            player_stats[m_chr].stat[stat] != -1)
+    if (sym_elapsed - player_stats[m_chr].t_elapsed[stat] < PT.cache_refresh &&
+		player_stats[m_chr].t_elapsed[stat] != -1 &&
+		player_stats[m_chr].stat[stat] != -1)
     {
         result = player_stats[m_chr].stat[stat];
     }
@@ -576,7 +600,7 @@ double PokerTracker::update_stat (int m_chr, int stat)
 
         // update cache with new values
         player_stats[m_chr].stat[stat] = result;
-        player_stats[m_chr].t_elapsed[stat] = symbols.sym.elapsed;
+        player_stats[m_chr].t_elapsed[stat] = sym_elapsed;
 
 		// Allow other threads to use CPokerTracker and CPokerTrackerThread variables
 		LeaveCriticalSection(&cs_pokertracker);
@@ -584,9 +608,7 @@ double PokerTracker::update_stat (int m_chr, int stat)
 
     return result;
 
-
     __SEH_LOGFATAL("PokerTracker::update_stat : \n");
-
 }
 
 bool PokerTracker::queryname (char * query_name, char * scraped_name, char * best_name)
@@ -684,7 +706,6 @@ bool PokerTracker::queryname (char * query_name, char * scraped_name, char * bes
     return result;
 
     __SEH_LOGFATAL("PokerTracker::queryname : \n");
-
 }
 void PokerTracker::clearstats (void)
 {
@@ -706,5 +727,4 @@ void PokerTracker::clearstats (void)
     }
 
     __SEH_LOGFATAL("PokerTracker::cleardata : \n");
-
 }
