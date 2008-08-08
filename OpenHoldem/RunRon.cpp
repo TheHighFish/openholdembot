@@ -8,8 +8,11 @@
 
 CRunRon::CRunRon(void)
 {
+    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
     __SEH_HEADER
-    //POCKET PAIRS
+
+	//POCKET PAIRS
     //============
     run_count[12][12][9]=94;
     run_count[12][12][8]=122;

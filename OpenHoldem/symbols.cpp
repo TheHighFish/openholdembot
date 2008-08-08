@@ -442,13 +442,14 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	symboltrace_collection.RemoveAll();
 
 	LeaveCriticalSection(&cs_symbols);
-    
+
 	__SEH_LOGFATAL("CSymbols::ResetSymbolsFirstTime : \n");
 }
 
 void CSymbols::ResetSymbolsNewHand(void)
 {
-    __SEH_HEADER
+	__SEH_HEADER
+
     int		i;
 
     // handrank

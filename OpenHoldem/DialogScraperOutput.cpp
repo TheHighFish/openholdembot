@@ -53,7 +53,13 @@ END_WINDOW_MAP()
 CDlgScraperOutput::CDlgScraperOutput(CWnd* pParent /*=NULL*/)
         : CDialog(CDlgScraperOutput::IDD, pParent), m_winMgr(ScraperOutputFormulaMap)
 {
-    in_startup = true;
+    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+    __SEH_HEADER
+
+   in_startup = true;
+
+	__SEH_LOGFATAL("CDlgScraperOutput::Constructor :\n");
 }
 
 CDlgScraperOutput::~CDlgScraperOutput()
@@ -86,6 +92,8 @@ END_MESSAGE_MAP()
 
 BOOL CDlgScraperOutput::OnInitDialog()
 {
+    __SEH_HEADER
+
     Registry	reg;
     int			max_x, max_y;
     RECT		rect;
@@ -130,10 +138,14 @@ BOOL CDlgScraperOutput::OnInitDialog()
 
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
+
+	__SEH_LOGFATAL("CDlgScraperOutput::OnInitDialog :\n");
 }
 
 BOOL CDlgScraperOutput::DestroyWindow()
 {
+    __SEH_HEADER
+
     Registry			reg;
     WINDOWPLACEMENT		wp;
     CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
@@ -152,19 +164,27 @@ BOOL CDlgScraperOutput::DestroyWindow()
     pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, false);
 
     return CDialog::DestroyWindow();
+
+	__SEH_LOGFATAL("CDlgScraperOutput::DestroyWindow :\n");
 }
 
 void CDlgScraperOutput::PostNcDestroy()
 {
-    delete m_ScraperOutputDlg;
+     __SEH_HEADER
+
+   delete m_ScraperOutputDlg;
     m_ScraperOutputDlg	=	NULL;
 
     CDialog::PostNcDestroy();
+
+	__SEH_LOGFATAL("CDlgScraperOutput::PostNcDestroy :\n");
 }
 
 LRESULT CDlgScraperOutput::OnWinMgr(WPARAM wp, LPARAM lp) 
 {
-    NMWINMGR& nmw = *(NMWINMGR*)lp;
+    __SEH_HEADER
+
+   NMWINMGR& nmw = *(NMWINMGR*)lp;
     RECT		rect;
 
     if (nmw.code==NMWINMGR::GET_SIZEINFO) 
@@ -192,10 +212,14 @@ LRESULT CDlgScraperOutput::OnWinMgr(WPARAM wp, LPARAM lp)
     }
 
     return false; // not handled
+
+	__SEH_LOGFATAL("CDlgScraperOutput::OnWinMgr :\n");
 }
 
 void CDlgScraperOutput::OnSize(UINT nType, int cx, int cy)
 {
+    __SEH_HEADER
+
     RECT	rect;
 
     CDialog::OnSize(nType, cx, cy);
@@ -208,10 +232,14 @@ void CDlgScraperOutput::OnSize(UINT nType, int cx, int cy)
         m_Zoom.SetWindowPos(NULL, 0, 0, rect.right-rect.left, 9999, SWP_NOMOVE);
         do_update_display();
     }
+
+	__SEH_LOGFATAL("CDlgScraperOutput::OnSize :\n");
 }
 
 void CDlgScraperOutput::add_listbox_items()
 {
+    __SEH_HEADER
+
     int			N, i;
     CString		s;
 
@@ -223,26 +251,42 @@ void CDlgScraperOutput::add_listbox_items()
     {
         m_RegionList.AddString(global.trans.map.r$[i].name);
     }
+
+	__SEH_LOGFATAL("CDlgScraperOutput::add_listbox_items :\n");
 }
 
 void CDlgScraperOutput::OnLbnSelchangeRegionlist()
 {
+    __SEH_HEADER
+
     do_update_display();
+
+	__SEH_LOGFATAL("CDlgScraperOutput::OnLbnSelchangeRegionlist :\n");
 }
 
 void CDlgScraperOutput::OnCbnSelchangeZoom()
 {
+    __SEH_HEADER
+
     do_update_display();
+
+	__SEH_LOGFATAL("CDlgScraperOutput::OnCbnSelchangeZoom :\n");
 }
 
 void CDlgScraperOutput::OnPaint()
 {
+    __SEH_HEADER
+
     CPaintDC dc(this); // device context for painting
     do_update_display();
+
+	__SEH_LOGFATAL("CDlgScraperOutput::OnPaint :\n");
 }
 
 void CDlgScraperOutput::do_update_display()
 {
+    __SEH_HEADER
+
     CString curtext;
     int		N, i;
     bool	found_match;
@@ -272,10 +316,14 @@ void CDlgScraperOutput::do_update_display()
     {
         do_bitblt(NULL, -1);  // Clear display
     }
+
+	__SEH_LOGFATAL("CDlgScraperOutput::do_update_display :\n");
 }
 
 void CDlgScraperOutput::do_bitblt(HBITMAP bitmap, int r$index)
 {
+    __SEH_HEADER
+
     CDC			*pDC = m_ScraperBitmap.GetDC();
     HDC			hdcControl = *pDC;
     HDC			hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
@@ -356,10 +404,14 @@ void CDlgScraperOutput::do_bitblt(HBITMAP bitmap, int r$index)
     DeleteDC(hdcScreen);
     ReleaseDC(pDC);
 
+
+	__SEH_LOGFATAL("CDlgScraperOutput::do_bitblt :\n");
 }
 
 void CDlgScraperOutput::OnCancel()
 {
+    __SEH_HEADER
+
     CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
     // Uncheck scraper output button on main toolbar
@@ -367,4 +419,6 @@ void CDlgScraperOutput::OnCancel()
 
 
     CDialog::OnCancel();
+
+	__SEH_LOGFATAL("CDlgScraperOutput::OnCancel :\n");
 }

@@ -14,13 +14,13 @@
 
 class PokerPro	ppro;
 
-PokerPro::PokerPro(void) {
-
+PokerPro::PokerPro(void) 
+{
     __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
 
-
     __SEH_HEADER
-    Registry  reg;
+
+	Registry  reg;
 
     reg.read_reg();
     hostname = reg.hostname;
@@ -40,21 +40,24 @@ PokerPro::PokerPro(void) {
     m_socket = INVALID_SOCKET;
 
     __SEH_LOGFATAL("PokerPro::Constructor : \n");
-
 }
 
 
-PokerPro::~PokerPro(void) {
+PokerPro::~PokerPro(void) 
+{
     __SEH_HEADER
+
     ::WSACleanup();
 
     __SEH_LOGFATAL("PokerPro::Destructor : \n");
-
 }
 
-int PokerPro::connect(const char *host, const char * port) {
+int PokerPro::connect(const char *host, const char * port) 
+{
     __SEH_HEADER
-    if (m_socket != INVALID_SOCKET) {
+
+    if (m_socket != INVALID_SOCKET) 
+	{
         return -1;
     }
 
@@ -62,24 +65,29 @@ int PokerPro::connect(const char *host, const char * port) {
 
     addrinfo*	pai;
 
-    if (resolve(host, port, &pai) == 0) {
+    if (resolve(host, port, &pai) == 0) 
+	{
         m_socket = INVALID_SOCKET;
         return -2;
     }
 
-    if ((m_socket = ::socket(pai->ai_family, pai->ai_socktype, pai->ai_protocol)) != INVALID_SOCKET) {
+    if ((m_socket = ::socket(pai->ai_family, pai->ai_socktype, pai->ai_protocol)) != INVALID_SOCKET) 
+	{
         iresult = ::connect(m_socket, pai->ai_addr, pai->ai_addrlen);
     }
 
-    if (pai) {
+    if (pai) 
+	{
         ::freeaddrinfo(pai);
     }
 
-    if (m_socket == INVALID_SOCKET) {
+    if (m_socket == INVALID_SOCKET) 
+	{
         return -3;
     }
 
-    if (iresult == SOCKET_ERROR) {
+    if (iresult == SOCKET_ERROR) 
+	{
         m_socket = INVALID_SOCKET;
         return -4;
     }
@@ -88,13 +96,13 @@ int PokerPro::connect(const char *host, const char * port) {
 
     return 1;
 
-
     __SEH_LOGFATAL("PokerPro::connect : \n");
-
 }
 
-int PokerPro::disconnect(void) {
+int PokerPro::disconnect(void) 
+{
     __SEH_HEADER
+
     ::shutdown(m_socket,SD_BOTH);
     ::closesocket( m_socket );
     m_socket = INVALID_SOCKET;
@@ -102,11 +110,12 @@ int PokerPro::disconnect(void) {
     return 1;
 
     __SEH_LOGFATAL("PokerPro::disconnect : \n");
-
 }
 
-int PokerPro::send_login(const char* username, const char* password) {
+int PokerPro::send_login(const char* username, const char* password) 
+{
     __SEH_HEADER
+
     PokerMessage pm;
     pm.m_event = 'LOGI';
     pm.m_chair = -1;
@@ -115,55 +124,60 @@ int PokerPro::send_login(const char* username, const char* password) {
     return send_message((char*)(&pm), sizeof(PokerMessage));
 
     __SEH_LOGFATAL("PokerPro::send_login : \n");
-
 }
 
-int PokerPro::send_version(void) {
+int PokerPro::send_version(void) 
+{
     __SEH_HEADER
+
     PokerMessage pm;
     pm.m_event = 'VERS';
     pm.m_version = PROTOCOL_VERSION;
     return send_message((char*)(&pm), sizeof(PokerMessage));
 
     __SEH_LOGFATAL("PokerPro::send_version : \n");
-
 }
 
-int PokerPro::send_goto(int location) {
+int PokerPro::send_goto(int location) 
+{
     __SEH_HEADER
+
     PokerMessage pm;
     pm.m_event		= 'GOTO';
     pm.m_location	= location;
     return send_message((char*)(&pm), sizeof(PokerMessage));
 
     __SEH_LOGFATAL("PokerPro::send_goto : \n");
-
 }
 
-int PokerPro::send_sit(int chair) {
+int PokerPro::send_sit(int chair) 
+{
     __SEH_HEADER
+
     PokerMessage pm;
     pm.m_event = 'PSIT';
     pm.m_chair = (chair == -1) ? data.m_userchair : chair;
     return send_message((char*)(&pm), sizeof(PokerMessage));
 
     __SEH_LOGFATAL("PokerPro::send_sit : \n");
-
 }
 
-int PokerPro::send_stand(int chair) {
+int PokerPro::send_stand(int chair) 
+{
     __SEH_HEADER
+
     PokerMessage pm;
     pm.m_event = 'PUNS';
     pm.m_chair = (chair == -1) ? data.m_userchair : chair;
     return send_message((char*)(&pm), sizeof(PokerMessage));
 
     __SEH_LOGFATAL("PokerPro::send_stand : \n");
-
 }
 
-int PokerPro::send_chips(double chips) {
+int PokerPro::send_chips(double chips) 
+{
     __SEH_HEADER
+
     CHAT_MESSAGE	m;
     char			msg[100];
     sprintf(msg, "/chips %.2f", chips);
@@ -192,11 +206,12 @@ int PokerPro::send_chips(double chips) {
     return result;
 
     __SEH_LOGFATAL("PokerPro::send_chips : \n");
-
 }
 
-int PokerPro::send_deposit(double chips) {
+int PokerPro::send_deposit(double chips) 
+{
     __SEH_HEADER
+
     CHAT_MESSAGE	m;
     char			msg[100];
     sprintf(msg, "/bank deposit %.2f", chips);
@@ -225,33 +240,36 @@ int PokerPro::send_deposit(double chips) {
     return result;
 
     __SEH_LOGFATAL("PokerPro::send_deposit : \n");
-
 }
 
-int PokerPro::send_sitin(int chair) {
+int PokerPro::send_sitin(int chair)
+{
     __SEH_HEADER
+
     PokerMessage pm;
     pm.m_event = 'PACT';
     pm.m_chair = (chair == -1) ? data.m_userchair : chair;
     return send_message((char*)(&pm), sizeof(PokerMessage));
 
     __SEH_LOGFATAL("PokerPro::send_sitin : \n");
-
 }
 
-int PokerPro::send_sitout(int chair) {
+int PokerPro::send_sitout(int chair) 
+{
     __SEH_HEADER
+
     PokerMessage pm;
     pm.m_event = 'PINA';
     pm.m_chair = (chair == -1) ? data.m_userchair : chair;
     return send_message((char*)(&pm), sizeof(PokerMessage));
 
     __SEH_LOGFATAL("PokerPro::send_sitout : \n");
-
 }
 
-int PokerPro::send_action(int action, int amount) {
+int PokerPro::send_action(int action, int amount) 
+{
     __SEH_HEADER
+
     PokerMessage pm;
     pm.m_event = action;
     pm.m_chair = data.m_userchair;
@@ -259,11 +277,12 @@ int PokerPro::send_action(int action, int amount) {
     return send_message((char*)(&pm), sizeof(PokerMessage));
 
     __SEH_LOGFATAL("PokerPro::send_action : \n");
-
 }
 
-int PokerPro::resolve (const char* host, const char* port, addrinfo** ppai) {
+int PokerPro::resolve (const char* host, const char* port, addrinfo** ppai) 
+{
     __SEH_HEADER
+
     addrinfo	hints;
 
     memset(&hints, 0, sizeof(hints));
@@ -275,23 +294,26 @@ int PokerPro::resolve (const char* host, const char* port, addrinfo** ppai) {
 
     int iresult = ::getaddrinfo( host, port, &hints, &pai );
 
-    if (iresult != 0) {
+    if (iresult != 0) 
+	{
         return false;
     }
 
-    if (pai) {
+    if (pai) 
+	{
         *ppai = pai;
     }
 
     return true;
 
     __SEH_LOGFATAL("PokerPro::resolve : \n");
-
 }
 
 
-void PokerPro::nolinger (SOCKET s) {
+void PokerPro::nolinger (SOCKET s) 
+{
     __SEH_HEADER
+
     linger  _linger;
     _linger.l_onoff         = 0;    //0=dontlinger  1=linger
     _linger.l_linger        = 0;    //nseconds to linger
@@ -306,38 +328,44 @@ void PokerPro::nolinger (SOCKET s) {
     );
 
     __SEH_LOGFATAL("PokerPro::nolinger : \n");
-
 }
 
-
-int PokerPro::get_random_vacant_chair(void) {
+int PokerPro::get_random_vacant_chair(void) 
+{
     __SEH_HEADER
+
     int rc = -1;
 
-    if (data.m_location > 0)	{
+    if (data.m_location > 0)	
+	{
         int vacant[10];
         int nvacant=0;
-        for (int i=0; i<10; i++) {
-            if (data.m_pinf[i].m_isSeated&0x1) {
+        for (int i=0; i<10; i++) 
+		{
+            if (data.m_pinf[i].m_isSeated&0x1) 
+			{
                 continue;
             }
             vacant[nvacant++] = i;
         }
-        if (nvacant) {
+        if (nvacant) 
+		{
             rc = vacant[rand()%nvacant];
         }
     }
     return rc;
 
     __SEH_LOGFATAL("PokerPro::get_random_vacant_chair : \n");
-
 }
 
-int PokerPro::send_message(const char* pbytes, int nbytes) {
+int PokerPro::send_message(const char* pbytes, int nbytes) 
+{
     __SEH_HEADER
+
     int result;
 
-    if (nbytes > ppsock__msgsizmin)	{
+    if (nbytes > ppsock__msgsizmin)	
+	{
         char msg[ppsock__msgsizmin];
         long* plong = ((long*)(&msg[0]));
 
@@ -352,11 +380,12 @@ int PokerPro::send_message(const char* pbytes, int nbytes) {
     return result;
 
     __SEH_LOGFATAL("PokerPro::send_message : \n");
-
 }
 
-int PokerPro::recv_message(const char** ppbytes, int* pnbytes) {
+int PokerPro::recv_message(const char** ppbytes, int* pnbytes) 
+{
     __SEH_HEADER
+
     int nbytes = ppsock__msgsizmin;
 
     m_nmsg += 1;
@@ -364,23 +393,27 @@ int PokerPro::recv_message(const char** ppbytes, int* pnbytes) {
     char* pbytes = &(m_data[m_nmsg][0]);
 
     int result = recvbuffer(pbytes, nbytes);
-    if (result == 0) {
+    if (result == 0) 
+	{
         return 0;
     }
 
     long* plong = ((long*)pbytes);
 
-    if (plong[0] == 'yasm') {
+    if (plong[0] == 'yasm') 
+	{
         //this is a special yas message
         nbytes = plong[1];
 
-        if (nbytes > ppsock__msgsizmax) {
+        if (nbytes > ppsock__msgsizmax) 
+		{
             return 0;
         }
 
         result = recvbuffer(pbytes, nbytes);
 
-        if (result == 0) {
+        if (result == 0) 
+		{
             return 0;
         }
     }
@@ -391,18 +424,21 @@ int PokerPro::recv_message(const char** ppbytes, int* pnbytes) {
     return 1;
 
     __SEH_LOGFATAL("PokerPro::recv_message : \n");
-
 }
 
 
-int PokerPro::sendbuffer(const char* pbytes, int nbytes) {
+int PokerPro::sendbuffer(const char* pbytes, int nbytes) 
+{
     __SEH_HEADER
+
     int nbytes_sent=0;
 
-    while (nbytes_sent < nbytes) {
+    while (nbytes_sent < nbytes) 
+	{
         int iresult = send(pbytes+nbytes_sent, nbytes-nbytes_sent);
 
-        if (iresult == SOCKET_ERROR) {
+        if (iresult == SOCKET_ERROR) 
+		{
             return SOCKET_ERROR;
         }
 
@@ -411,17 +447,20 @@ int PokerPro::sendbuffer(const char* pbytes, int nbytes) {
     return nbytes_sent;
 
     __SEH_LOGFATAL("PokerPro::sendbuffer : \n");
-
 }
 
-int PokerPro::recvbuffer (char* pbytes, int nbytes) {
+int PokerPro::recvbuffer (char* pbytes, int nbytes) 
+{
     __SEH_HEADER
+
     int nbytesrecv = 0;
 
-    while (nbytesrecv < nbytes) {
+    while (nbytesrecv < nbytes) 
+	{
         int nrecv = recv(pbytes+nbytesrecv, nbytes-nbytesrecv);
 
-        if (nrecv < 1) {
+        if (nrecv < 1) 
+		{
             return 0;    //closed or error
         }
 
@@ -431,32 +470,36 @@ int PokerPro::recvbuffer (char* pbytes, int nbytes) {
     return nbytesrecv;
 
     __SEH_LOGFATAL("PokerPro::recvbuffer : \n");
-
 }
 
-int PokerPro::send(const char* bytes, int nbytes) {
+int PokerPro::send(const char* bytes, int nbytes) 
+{
     __SEH_HEADER
+
     return ::send( m_socket, bytes, nbytes, 0 );
 
     __SEH_LOGFATAL("PokerPro::send : \n");
-
 }
 
-int PokerPro::recv(char* bytes, int nbytes) {
+int PokerPro::recv(char* bytes, int nbytes) 
+{
     __SEH_HEADER
+
     return ::recv( m_socket, bytes, nbytes, 0 );
 
     __SEH_LOGFATAL("PokerPro::recv : \n");
-
 }
 
-void PokerPro::handle_message(const char* pbytes, int nbytes) {
+void PokerPro::handle_message(const char* pbytes, int nbytes) 
+{
     PokerMessage* pm;
 
     __SEH_HEADER
+
     pm = (PokerMessage*)pbytes;
 
-    switch (pm->m_event) {
+    switch (pm->m_event) 
+	{
 
     case 'WPA'	:
     case 'WPSB'	:
@@ -635,14 +678,14 @@ void PokerPro::handle_message(const char* pbytes, int nbytes) {
         break;
     }
 
-
     __SEH_LOGFATAL("PokerPro::handle_message : m_event>%d\n", pm->m_event);
-
 }
 
 
-void PokerPro::HandleEventUnknown(const char* pbytes) {
+void PokerPro::HandleEventUnknown(const char* pbytes) 
+{
     __SEH_HEADER
+
     char stag[8];
     stag[0] = pbytes[3];
     stag[1] = pbytes[2];
@@ -655,79 +698,87 @@ void PokerPro::HandleEventUnknown(const char* pbytes) {
     publish(&s, PUBLISH_ERR);
 
     __SEH_LOGFATAL("PokerPro::HandleEventUnknown : \n");
-
 }
 
 
-void PokerPro::HandleEventUserChair(PokerMessage* pm) {
+void PokerPro::HandleEventUserChair(PokerMessage* pm) 
+{
     __SEH_HEADER
+
     data.m_userchair = pm->m_chair;
 
     __SEH_LOGFATAL("PokerPro::HandleEventUserChair : \n");
-
 }
 
-void PokerPro::HandleEventPlayerPlaying(PokerMessage* pm) {
+void PokerPro::HandleEventPlayerPlaying(PokerMessage* pm) 
+{
     __SEH_HEADER
+
     data.m_pinf[pm->m_chair&0x1f].m_isPlaying = 1;
 
     __SEH_LOGFATAL("PokerPro::HandleEventPlayerPlaying : \n");
-
 }
 
-void PokerPro::HandleEventPlayerNotPlaying(PokerMessage* pm) {
+void PokerPro::HandleEventPlayerNotPlaying(PokerMessage* pm) 
+{
     __SEH_HEADER
+
     data.m_pinf[pm->m_chair&0x1f].m_isPlaying = 0;
 
     __SEH_LOGFATAL("PokerPro::HandleEventPlayerNotPlaying : \n");
-
 }
 
-void PokerPro::HandleEventPlayerActive(PokerMessage* pm) {
+void PokerPro::HandleEventPlayerActive(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     data.m_pinf[pm->m_chair&0x1f].m_isActive = 1;
 
-    if (pm->m_chair == data.m_userchair) {
+    if (pm->m_chair == data.m_userchair) 
+	{
         CString s;
         s.Format("Sitting in.\n");
         publish(&s, 0);
     }
 
     __SEH_LOGFATAL("PokerPro::HandleEventPlayerActive : \n");
-
 }
 
-void PokerPro::HandleEventPlayerInactive(PokerMessage* pm) {
+void PokerPro::HandleEventPlayerInactive(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     data.m_pinf[pm->m_chair&0x1f].m_isActive = 0;
 
-    if (pm->m_chair == data.m_userchair) {
+    if (pm->m_chair == data.m_userchair) 
+	{
         CString s;
         s.Format("Sitting out.\n");
         publish(&s, 0);
     }
 
     __SEH_LOGFATAL("PokerPro::HandleEventPlayerInactive : \n");
-
 }
 
-void PokerPro::HandleEventPlayerSit(PokerMessage* pm) {
+void PokerPro::HandleEventPlayerSit(PokerMessage* pm) 
+{
     __SEH_HEADER
+
     data.m_pinf[pm->m_chair&0x1f].m_isSeated = 1;
     CString s;
     s.Format("Chair %d joining table.\n", pm->m_chair&0x1f);
     publish(&s, 0);
 
     __SEH_LOGFATAL("PokerPro::HandleEventPlayerSit : \n");
-
 }
 
 void PokerPro::HandleEventPlayerUnSit(PokerMessage* pm) {
+
     __SEH_HEADER
+
     data.m_pinf[pm->m_chair&0x1f].m_isSeated = 0;
-    if (pm->m_chair == data.m_userchair) {
+    if (pm->m_chair == data.m_userchair) 
+	{
         data.m_userchair = -1;
     }
     CString s;
@@ -735,10 +786,10 @@ void PokerPro::HandleEventPlayerUnSit(PokerMessage* pm) {
     publish(&s, 0);
 
     __SEH_LOGFATAL("PokerPro::HandleEventPlayerUnSit : \n");
-
 }
 
-void PokerPro::HandleEventSiteName(PokerMessage* pm) {
+void PokerPro::HandleEventSiteName(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     sassign(data.m_site_name, pm->m_text, sizeof(data.m_site_name));
@@ -747,23 +798,25 @@ void PokerPro::HandleEventSiteName(PokerMessage* pm) {
     publish(&s, 0);
 
     __SEH_LOGFATAL("PokerPro::HandleEventSiteName : \n");
-
 }
 
-void PokerPro::HandleEventTableInfo(PokerMessage* pm) {
+void PokerPro::HandleEventTableInfo(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     TINF* ptinf = (TINF*)pm;
     data.m_tinf = *ptinf;
 
     __SEH_LOGFATAL("PokerPro::HandleEventTableInfo : \n");
-
 }
 
-void PokerPro::HandleEventGameInfo(PokerMessage* pm) {
+void PokerPro::HandleEventGameInfo(PokerMessage* pm) 
+{
     __SEH_HEADER
+
     GINF* pginf = (GINF*)pm;
-    if (pginf->m_tid<=0 || pginf->m_tid>=MAX_TABLES) {
+    if (pginf->m_tid<=0 || pginf->m_tid>=MAX_TABLES) 
+	{
         return;
     }
     data.m_ginf[pginf->m_tid] = *pginf;
@@ -776,7 +829,8 @@ void PokerPro::HandleEventGameInfo(PokerMessage* pm) {
     convert_money( BBs, pginf->m_maxbet );
 
     char tL[2] = "*";
-    if ((pginf->m_tmode&0x1) && pginf->m_tlevel) {
+    if ((pginf->m_tmode&0x1) && pginf->m_tlevel) 
+	{
         tL[0] = 'A' + pginf->m_tlevel - 1;
     }
 
@@ -792,61 +846,65 @@ void PokerPro::HandleEventGameInfo(PokerMessage* pm) {
     publish(&s, 0);
 
     __SEH_LOGFATAL("PokerPro::HandleEventGameInfo : \n");
-
 }
 
-void PokerPro::HandleEventGoto(PokerMessage* pm) {
+void PokerPro::HandleEventGoto(PokerMessage* pm) 
+{
     __SEH_HEADER
+
     data.m_location = pm->m_location;
     CString s;
     s.Format("Joined table %d.\n", pm->m_location);
     publish(&s, 0);
 
     __SEH_LOGFATAL("PokerPro::HandleEventGoto : \n");
-
 }
 
-void PokerPro::HandleEventVersion(PokerMessage* pm) {
+void PokerPro::HandleEventVersion(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     __SEH_LOGFATAL("PokerPro::HandleEventVersion : \n");
-
 }
 
-void PokerPro::HandleEventPlayerLogout(PokerMessage* pm) {
+void PokerPro::HandleEventPlayerLogout(PokerMessage* pm) 
+{
     __SEH_HEADER
+
     data.m_isauthenticated = false;
     CString s;
     s.Format("Logout complete.\n");
     publish(&s, 0);
 
     __SEH_LOGFATAL("PokerPro::HandleEventPlayerLogout : \n");
-
 }
 
-void PokerPro::HandleEventPlayerLogin(PokerMessage* pm) {
+void PokerPro::HandleEventPlayerLogin(PokerMessage* pm) 
+{
     __SEH_HEADER
+
     data.m_isauthenticated = true;
     CString s;
     s.Format("Login complete.\n");
     publish(&s, 0);
 
     __SEH_LOGFATAL("PokerPro::HandleEventPlayerLogin : \n");
-
 }
 
-void PokerPro::HandleEventPlayerLoginReject(PokerMessage* pm) {
+void PokerPro::HandleEventPlayerLoginReject(PokerMessage* pm) 
+{
     __SEH_HEADER
+
     data.m_isauthenticated = false;
     CString s;
     s.Format("Login rejected.\n");
     publish(&s, 0);
 
     __SEH_LOGFATAL("PokerPro::HandleEventPlayerLoginReject : \n");
-
 }
 
-void PokerPro::HandleEventPlayerInfo(PokerMessage* pm) {
+void PokerPro::HandleEventPlayerInfo(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     PINF* ppinf = (PINF*)pm;
@@ -862,11 +920,12 @@ void PokerPro::HandleEventPlayerInfo(PokerMessage* pm) {
     publish(&s, 0);
 
     __SEH_LOGFATAL("PokerPro::HandleEventPlayerInfo : \n");
-
 }
 
-void PokerPro::HandleEventWPDS(PokerMessage* pm) {
+void PokerPro::HandleEventWPDS(PokerMessage* pm) 
+{
     __SEH_HEADER
+
     PokerMessage PM;
     PM.m_event = pm->m_event;			//'WPDS'
     PM.m_lparam[1] = pm->m_lparam[1];	//hand number
@@ -879,21 +938,24 @@ void PokerPro::HandleEventWPDS(PokerMessage* pm) {
     send_message((char*)(&PM), sizeof(PokerMessage));
 
     __SEH_LOGFATAL("PokerPro::HandleEventWPDS : \n");
-
 }
 
-void PokerPro::HandleEventWaitPlayer(PokerMessage* pm) {
+void PokerPro::HandleEventWaitPlayer(PokerMessage* pm) 
+{
     __SEH_HEADER
+
     int tag = pm->m_event;
     int action = 0;
     int amount = 0;
     CString s;
 
-    if ((data.m_tinf.m_activePlayer&0xf) != data.m_userchair) {
+    if ((data.m_tinf.m_activePlayer&0xf) != data.m_userchair) 
+	{
         return;
     }
 
-    switch (tag) {
+    switch (tag) 
+	{
     case 'WPA'	:	// wait player small blind
         action = 'ANTE';
         break;
@@ -916,10 +978,10 @@ void PokerPro::HandleEventWaitPlayer(PokerMessage* pm) {
     send_action(action, amount);
 
     __SEH_LOGFATAL("PokerPro::HandleEventWaitPlayer : \n");
-
 }
 
-void PokerPro::HandleEventPlayerFold(PokerMessage* pm) {
+void PokerPro::HandleEventPlayerFold(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     CString s;
@@ -934,10 +996,10 @@ void PokerPro::HandleEventPlayerFold(PokerMessage* pm) {
     writehh(&s);
 
     __SEH_LOGFATAL("PokerPro::HandleEventPlayerFold : \n");
-
 }
 
-void PokerPro::HandleEventPlayerMuck(PokerMessage* pm) {
+void PokerPro::HandleEventPlayerMuck(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     CString s;
@@ -951,10 +1013,10 @@ void PokerPro::HandleEventPlayerMuck(PokerMessage* pm) {
     writehh(&s);
 
     __SEH_LOGFATAL("PokerPro::HandleEventPlayerMuck : \n");
-
 }
 
-void PokerPro::HandleEventPlayerRefund(PokerMessage* pm) {
+void PokerPro::HandleEventPlayerRefund(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     CString s;
@@ -968,10 +1030,10 @@ void PokerPro::HandleEventPlayerRefund(PokerMessage* pm) {
     writehh(&s);
 
     __SEH_LOGFATAL("PokerPro::HandleEventPlayerRefund : \n");
-
 }
 
-void PokerPro::HandleEventPlayerBet(PokerMessage* pm) {
+void PokerPro::HandleEventPlayerBet(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     CString s, hh;
@@ -986,7 +1048,8 @@ void PokerPro::HandleEventPlayerBet(PokerMessage* pm) {
     int call = currbet - before;
     int rais = spend - call;
 
-    if (rais > data.m_prev_rais) {
+    if (rais > data.m_prev_rais) 
+	{
         data.m_prev_rais = rais;
     }
 
@@ -1002,7 +1065,8 @@ void PokerPro::HandleEventPlayerBet(PokerMessage* pm) {
         s.Format("Chair %d (%s) %s.\n", chair, name, action);
         hh.Format("%s %s\n", name, action);
     }
-    else if (data.m_pinf[chair].m_balance) {
+    else if (data.m_pinf[chair].m_balance) 
+	{
         s.Format("Chair %d (%s) %s %s.\n", chair, name, action, samt);
         hh.Format("%s %s %s\n", name, action, samt);
     }
@@ -1015,24 +1079,25 @@ void PokerPro::HandleEventPlayerBet(PokerMessage* pm) {
     writehh(&hh);
 
     __SEH_LOGFATAL("PokerPro::HandleEventPlayerBet : \n");
-
 }
 
-void PokerPro::HandleEventPlayerName(PokerMessage* pm) {
+void PokerPro::HandleEventPlayerName(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     sassign(data.m_pinf[pm->m_chair&0x1f].m_name, pm->m_name, sizeof(data.m_pinf[pm->m_chair&0x1f].m_name));
 
     __SEH_LOGFATAL("PokerPro::HandleEventPlayerName : \n");
-
 }
 
-void PokerPro::HandleEventPlayerBalance(PokerMessage* pm) {
+void PokerPro::HandleEventPlayerBalance(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     data.m_pinf[pm->m_chair&0x1f].m_balance = pm->m_amount;
 
-    if (pm->m_chair == data.m_userchair) {
+    if (pm->m_chair == data.m_userchair) 
+	{
         char sbal[32];
         convert_money(sbal, pm->m_amount);
         CString s;
@@ -1041,10 +1106,10 @@ void PokerPro::HandleEventPlayerBalance(PokerMessage* pm) {
     }
 
     __SEH_LOGFATAL("PokerPro::HandleEventPlayerBalance : \n");
-
 }
 
-void PokerPro::HandleEventPlayerWin(PokerMessage* pm) {
+void PokerPro::HandleEventPlayerWin(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     CString s;
@@ -1053,8 +1118,10 @@ void PokerPro::HandleEventPlayerWin(PokerMessage* pm) {
     int npot = pm->m_lparam[2];
 
     int nwin=0;
-    for (int chair=0; chair<=9; chair++) {
-        if (chairbits&(1<<chair)) {
+    for (int chair=0; chair<=9; chair++) 
+	{
+        if (chairbits&(1<<chair)) 
+		{
             nwin++;
         }
     }
@@ -1064,8 +1131,10 @@ void PokerPro::HandleEventPlayerWin(PokerMessage* pm) {
     char swin[32];
     convert_money(swin, win);
 
-    for (int i=0; i<=9; i++) {
-        if (chairbits & (1<<i))	{
+    for (int i=0; i<=9; i++) 
+	{
+        if (chairbits & (1<<i))	
+		{
             data.m_pinf[i].m_betAmount = win;
             s.Format("%s wins %s.\n", data.m_pinf[i].m_name, swin);
             publish(&s, 0);
@@ -1076,10 +1145,10 @@ void PokerPro::HandleEventPlayerWin(PokerMessage* pm) {
     }
 
     __SEH_LOGFATAL("PokerPro::HandleEventPlayerWin : \n");
-
 }
 
-void PokerPro::HandleEventNextDealer(PokerMessage* pm) {
+void PokerPro::HandleEventNextDealer(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     CString s;
@@ -1113,21 +1182,20 @@ void PokerPro::HandleEventNextDealer(PokerMessage* pm) {
         }
     }
 
-
     __SEH_LOGFATAL("PokerPro::HandleEventNextDealer : \n");
-
 }
 
-void PokerPro::HandleEventNextPlayer(PokerMessage* pm) {
+void PokerPro::HandleEventNextPlayer(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     data.m_tinf.m_activePlayer = pm->m_chair&0x1f;
 
     __SEH_LOGFATAL("PokerPro::HandleEventNextPlayer : \n");
-
 }
 
-void PokerPro::HandleEventNextRound(PokerMessage* pm) {
+void PokerPro::HandleEventNextRound(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     for (int i=0; i<=9; i++) {
@@ -1136,10 +1204,10 @@ void PokerPro::HandleEventNextRound(PokerMessage* pm) {
     data.m_prev_rais = 0;
 
     __SEH_LOGFATAL("PokerPro::HandleEventNextRound : \n");
-
 }
 
-void PokerPro::HandleEventNextHand(PokerMessage* pm) {
+void PokerPro::HandleEventNextHand(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     CString s;
@@ -1157,34 +1225,34 @@ void PokerPro::HandleEventNextHand(PokerMessage* pm) {
     writehh(&s);
 
     __SEH_LOGFATAL("PokerPro::HandleEventNextHand : \n");
-
 }
 
-void PokerPro::HandleEventNextGame(PokerMessage* pm) {
+void PokerPro::HandleEventNextGame(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     __SEH_LOGFATAL("PokerPro::HandleEventNextGame : \n");
-
 }
 
-void PokerPro::HandleEventNextTable(PokerMessage* pm) {
+void PokerPro::HandleEventNextTable(PokerMessage* pm) 
+{
     __SEH_HEADER
 
 
     __SEH_LOGFATAL("PokerPro::HandleEventNextTable : \n");
-
 }
 
-void PokerPro::HandleEventSetPot(PokerMessage* pm) {
+void PokerPro::HandleEventSetPot(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     data.m_pot[pm->m_pot] = pm->m_amount;
 
     __SEH_LOGFATAL("PokerPro::HandleEventSetPot : \n");
-
 }
 
-void PokerPro::HandleEventTotalPot(PokerMessage* pm) {
+void PokerPro::HandleEventTotalPot(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     CString s;
@@ -1195,12 +1263,11 @@ void PokerPro::HandleEventTotalPot(PokerMessage* pm) {
     s.Format("DEALER POT %s\n", spot);
     writehh(&s);
 
-
     __SEH_LOGFATAL("PokerPro::HandleEventTotalPot : \n");
-
 }
 
-void PokerPro::HandleEventStakes(PokerMessage* pm) {
+void PokerPro::HandleEventStakes(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     data.m_ginf[data.m_tinf.m_tid].m_sblind = pm->m_lparam[1];
@@ -1208,27 +1275,27 @@ void PokerPro::HandleEventStakes(PokerMessage* pm) {
     data.m_ginf[data.m_tinf.m_tid].m_maxbet = pm->m_lparam[3];
 
     __SEH_LOGFATAL("PokerPro::HandleEventStakes : \n");
-
 }
 
-void PokerPro::HandleEventEndHand(PokerMessage* pm) {
+void PokerPro::HandleEventEndHand(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     reset_hand();
 
     __SEH_LOGFATAL("PokerPro::HandleEventEndHand : \n");
-
 }
 
-void PokerPro::HandleEventEndTable(PokerMessage* pm) {
+void PokerPro::HandleEventEndTable(PokerMessage* pm) 
+{
     __SEH_HEADER
 
 
     __SEH_LOGFATAL("PokerPro::HandleEventEndTable : \n");
-
 }
 
-void PokerPro::HandleEventDeal(PokerMessage* pm) {
+void PokerPro::HandleEventDeal(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     CString s;
@@ -1245,12 +1312,11 @@ void PokerPro::HandleEventDeal(PokerMessage* pm) {
     s.Format("DEALER DEAL\n");
     writehh(&s);
 
-
     __SEH_LOGFATAL("PokerPro::HandleEventDeal : \n");
-
 }
 
-void PokerPro::HandleEventPlayerChat(PokerMessage* pm) {
+void PokerPro::HandleEventPlayerChat(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     CHAT_MESSAGE *pc = (CHAT_MESSAGE*)pm;
@@ -1259,10 +1325,10 @@ void PokerPro::HandleEventPlayerChat(PokerMessage* pm) {
     publish(&s, 0);
 
     __SEH_LOGFATAL("PokerPro::HandleEventPlayerChat : \n");
-
 }
 
-void PokerPro::HandleEventPokerValue(PokerMessage* pm) {
+void PokerPro::HandleEventPokerValue(PokerMessage* pm) 
+{
     __SEH_HEADER
 
 
@@ -1290,10 +1356,10 @@ void PokerPro::HandleEventPokerValue(PokerMessage* pm) {
     writehh(&s);
 
     __SEH_LOGFATAL("PokerPro::HandleEventPokerValue : \n");
-
 }
 
-void PokerPro::HandleEventRevealCard(PokerMessage* pm) {
+void PokerPro::HandleEventRevealCard(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     CString s;
@@ -1302,7 +1368,8 @@ void PokerPro::HandleEventRevealCard(PokerMessage* pm) {
     int ncard = (pm->m_lparam[2] >> 8) & 0xff;
     data.m_pinf[pm->m_chair&0x1f].m_card[ncard] = ccard;
 
-    if (ncard == 1) {
+    if (ncard == 1) 
+	{
         char a[4];
         char b[4];
         card2ascii(a, data.m_pinf[pm->m_chair&0x1f].m_card[0]);
@@ -1316,10 +1383,10 @@ void PokerPro::HandleEventRevealCard(PokerMessage* pm) {
     }
 
     __SEH_LOGFATAL("PokerPro::HandleEventRevealCard : \n");
-
 }
 
-void PokerPro::HandleEventFlop(PokerMessage* pm) {
+void PokerPro::HandleEventFlop(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     int ccard = (pm->m_lparam[2] >> 0) & 0xff;
@@ -1330,10 +1397,12 @@ void PokerPro::HandleEventFlop(PokerMessage* pm) {
     data.m_tinf.m_card[ncard] = ccard;
     CString s, hh;
 
-    if (ncard < 2) {
+    if (ncard < 2) 
+	{
         return;
     }
-    if (ncard == 2) {
+    if (ncard == 2) 
+	{
         char a[4], b[4], c[4];
         card2ascii(a, data.m_tinf.m_card[0]);
         card2ascii(b, data.m_tinf.m_card[1]);
@@ -1343,14 +1412,16 @@ void PokerPro::HandleEventFlop(PokerMessage* pm) {
         hh.Format("DEALER FLOP %s %s %s\n", a, b, c);
     }
 
-    if (ncard == 3) {
+    if (ncard == 3) 
+	{
         char d[4];
         card2ascii(d, data.m_tinf.m_card[3]);
         s.Format("Dealer turn %s\n", d);
         hh.Format("DEALER TURN %s\n", d);
     }
 
-    if (ncard == 4) {
+    if (ncard == 4) 
+	{
         char e[4];
         card2ascii(e, data.m_tinf.m_card[4]);
         s.Format("Dealer river %s\n", e);
@@ -1361,32 +1432,34 @@ void PokerPro::HandleEventFlop(PokerMessage* pm) {
     writehh(&hh);
 
     __SEH_LOGFATAL("PokerPro::HandleEventFlop : \n");
-
 }
 
-void PokerPro::HandleEventPlayerList(PokerMessage* pm) {
+void PokerPro::HandleEventPlayerList(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     int seatedbits	= pm->m_lparam[1];
     int activebits	= pm->m_lparam[2];
     int playingbits	= pm->m_lparam[3];
 
-    for (int i=0; i<10; i++) {
+    for (int i=0; i<10; i++) 
+	{
         data.m_pinf[i].m_isSeated = (seatedbits & (1<<i)) ? 1 : 0;
         data.m_pinf[i].m_isActive = (activebits & (1<<i)) ? 1 : 0;
         data.m_pinf[i].m_isPlaying = (playingbits & (1<<i)) ? 1 : 0;
     }
 
     __SEH_LOGFATAL("PokerPro::HandleEventPlayerList : \n");
-
 }
 
-void PokerPro::HandleAccount(PokerMessage* pm) {
+void PokerPro::HandleAccount(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     CString s;
 
-    switch (pm->m_event) {
+    switch (pm->m_event) 
+	{
     case 'RER0'	:
         s = "Username invalid"			;
         break;
@@ -1420,32 +1493,31 @@ void PokerPro::HandleAccount(PokerMessage* pm) {
     s = s.MakeLower();
     writehh(&s);
 
-
     __SEH_LOGFATAL("PokerPro::HandleAccount : \n");
-
 }
 
-void PokerPro::HandleEventStarted(PokerMessage* pm) {
+void PokerPro::HandleEventStarted(PokerMessage* pm) 
+{
     __SEH_HEADER
 
-
     __SEH_LOGFATAL("PokerPro::HandleEventStarted : \n");
-
 }
 
-void PokerPro::HandleEventStopped(PokerMessage* pm) {
+void PokerPro::HandleEventStopped(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     __SEH_LOGFATAL("PokerPro::HandleEventStopped : \n");
-
 }
 
-void PokerPro::HandleEventTournament(PokerMessage* pm) {
+void PokerPro::HandleEventTournament(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     CString s;
 
-    switch (pm->m_event) {
+    switch (pm->m_event) 
+	{
     case 'TMOD':
         s.Format("tournament %s", pm->m_lparam[1] ? "mode on" : "mode off");
         break;
@@ -1465,30 +1537,30 @@ void PokerPro::HandleEventTournament(PokerMessage* pm) {
     }
     publish(&s, 0);
 
-
     __SEH_LOGFATAL("PokerPro::HandleEventTournament : \n");
-
 }
 
-void PokerPro::HandleEventTableLock(PokerMessage* pm) {
+void PokerPro::HandleEventTableLock(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     //const char* msg = pm->m_lparam[1] ? "locked" : "unlocked";
 
     __SEH_LOGFATAL("PokerPro::HandleEventTableLock : \n");
-
 }
 
-void PokerPro::HandleEventPing(PokerMessage* pm) {
+void PokerPro::HandleEventPing(PokerMessage* pm) 
+{
     __SEH_HEADER
 
     pm->m_event = 'PONG';
     send_message((char *) pm, sizeof(PokerMessage) );
 
     __SEH_LOGFATAL("PokerPro::HandleEventPing : \n");
-
 }
-char* PokerPro::sassign(char* dst, const char* src, int dstsiz) {
+
+char* PokerPro::sassign(char* dst, const char* src, int dstsiz) 
+{
     __SEH_HEADER
 
     strncpy( dst, src, dstsiz );
@@ -1496,46 +1568,53 @@ char* PokerPro::sassign(char* dst, const char* src, int dstsiz) {
     return dst;
 
     __SEH_LOGFATAL("PokerPro::sassign : \n");
-
 }
 
-char* PokerPro::convert_money(char* text, int amount) {
+char* PokerPro::convert_money(char* text, int amount) 
+{
     __SEH_HEADER
 
     int units = amount/100;
     int cents = amount%100;
 
-    if (amount < 0)	{
+    if (amount < 0)	
+	{
         sprintf(text,"%d.%02d", units, cents);
     }
-    if (amount < 0)	{
+    if (amount < 0)	
+	{
         sprintf(text,"0");
     }
-    else if (amount < 100) {
+    else if (amount < 100) 
+	{
         sprintf(text,".%02d", cents);
     }
-    else if (cents) {
+    else if (cents) 
+	{
         sprintf(text,"%d.%02d", units, cents);
     }
-    else {
+    else 
+	{
         sprintf(text,"%d", units);
     }
 
     return text;
 
     __SEH_LOGFATAL("PokerPro::convert_money : \n");
-
 }
 
-void PokerPro::reset_hand(void) {
+void PokerPro::reset_hand(void) 
+{
     __SEH_HEADER
 
     int i;
 
-    for (i=0; i<=4; i++) {
+    for (i=0; i<=4; i++) 
+	{
         data.m_tinf.m_card[i]=0;
     }
-    for (i=0; i<=9; i++) {
+    for (i=0; i<=9; i++) 
+	{
         data.m_pinf[i].m_card[0]=0;
         data.m_pinf[i].m_card[1]=0;
         data.m_pinf[i].m_betAmount=0;
@@ -1544,42 +1623,45 @@ void PokerPro::reset_hand(void) {
     data.m_prev_rais = 0;
 
     __SEH_LOGFATAL("PokerPro::reset_hand : \n");
-
 }
 
-int PokerPro::get_current_bet(void) {
+int PokerPro::get_current_bet(void) 
+{
     __SEH_HEADER
 
     int bet=0;
-    for (int i=0; i<10; i++) {
+    for (int i=0; i<10; i++) 
+	{
         int _bet = data.m_pinf[i].m_betAmount;
-        if (_bet > bet) {
+        if (_bet > bet) 
+		{
             bet = _bet;
         }
     }
     return bet;
 
     __SEH_LOGFATAL("PokerPro::get_current_bet : \n");
-
 }
 
-int PokerPro::get_betx(void) {
+int PokerPro::get_betx(void) 
+{
     __SEH_HEADER
 
     return (get_round() >= 3) ? data.m_tinf.m_betMax : data.m_tinf.m_betMin;
 
     __SEH_LOGFATAL("PokerPro::get_betx : \n");
-
 }
 
-int PokerPro::get_round(void) {
+int PokerPro::get_round(void) 
+{
     __SEH_HEADER
 
     int round=0;
     int ncc=get_ncc();
     int npd=get_npd();
 
-    switch (ncc) {
+    switch (ncc) 
+	{
     case 0:
         round = npd ? 1 : 0;
         break;
@@ -1600,30 +1682,34 @@ int PokerPro::get_round(void) {
     return round;
 
     __SEH_LOGFATAL("PokerPro::get_round : \n");
-
 }
 
-int PokerPro::get_ncc(void) {
+int PokerPro::get_ncc(void) 
+{
     __SEH_HEADER
 
     int ncc=0;
-    for (int i=0; i<5; i++) {
-        if (data.m_tinf.m_card[i]) {
+    for (int i=0; i<5; i++) 
+	{
+        if (data.m_tinf.m_card[i]) 
+		{
             ncc++;
         }
     }
     return ncc;
 
     __SEH_LOGFATAL("PokerPro::get_ncc : \n");
-
 }
 
-int PokerPro::get_npd(void) {
+int PokerPro::get_npd(void) 
+{
     __SEH_HEADER
 
     int npd=0;
-    for (int i=0; i<=9; i++) {
-        if (data.m_pinf[i].m_card[0] == 0 && data.m_pinf[i].m_card[1] == 0) {
+    for (int i=0; i<=9; i++) 
+	{
+        if (data.m_pinf[i].m_card[0] == 0 && data.m_pinf[i].m_card[1] == 0) 
+		{
             continue;
         }
         npd++;
@@ -1631,8 +1717,8 @@ int PokerPro::get_npd(void) {
     return npd;
 
     __SEH_LOGFATAL("PokerPro::get_npd : \n");
-
 }
+
 void PokerPro::DoScrape(void) 
 {
 	// No critical section for CScraper is required in this function, as the only place this function is called is from the
@@ -1645,27 +1731,31 @@ void PokerPro::DoScrape(void)
     char		money[50];
 
     // Common cards
-    for (i=0; i<=4; i++) {
+    for (i=0; i<=4; i++) 
+	{
         scraper.card_common[i] = CARD_NOCARD;
-        if ((data.m_tinf.m_card[i]&0xff) == WH_CARDBACK) {
+        if ((data.m_tinf.m_card[i]&0xff) == WH_CARDBACK) 
+		{
             scraper.card_common[i] = CARD_BACK;
         }
-        else if ((data.m_tinf.m_card[i]&0xff) == WH_NOCARD) {
+        else if ((data.m_tinf.m_card[i]&0xff) == WH_NOCARD) 
+		{
             scraper.card_common[i] = CARD_NOCARD;
         }
-        else {
-            if (((data.m_tinf.m_card[i]>>0)&0x0f) == WH_SUIT_CLUBS) {
+        else 
+		{
+            if (((data.m_tinf.m_card[i]>>0)&0x0f) == WH_SUIT_CLUBS) 
                 suit = StdDeck_Suit_CLUBS;
-            }
-            else if (((data.m_tinf.m_card[i]>>0)&0x0f) == WH_SUIT_DIAMONDS) {
+
+            else if (((data.m_tinf.m_card[i]>>0)&0x0f) == WH_SUIT_DIAMONDS) 
                 suit = StdDeck_Suit_DIAMONDS;
-            }
-            else if (((data.m_tinf.m_card[i]>>0)&0x0f) == WH_SUIT_HEARTS) {
+
+            else if (((data.m_tinf.m_card[i]>>0)&0x0f) == WH_SUIT_HEARTS) 
                 suit = StdDeck_Suit_HEARTS;
-            }
-            else if (((data.m_tinf.m_card[i]>>0)&0x0f) == WH_SUIT_SPADES) {
+
+            else if (((data.m_tinf.m_card[i]>>0)&0x0f) == WH_SUIT_SPADES) 
                 suit = StdDeck_Suit_SPADES;
-            }
+
             rank = ((data.m_tinf.m_card[i]>>4)&0x0f)-2;
 
             scraper.card_common[i] = StdDeck_MAKE_CARD(rank, suit);
@@ -1673,31 +1763,36 @@ void PokerPro::DoScrape(void)
     }
 
     // Player information
-    for (i=0; i<=9; i++) {
+    for (i=0; i<=9; i++) 
+	{
 
         // Player cards
-        for (j=0; j<=1; j++) {
+        for (j=0; j<=1; j++) 
+		{
             scraper.card_player[i][j] = CARD_NOCARD;
             if (data.m_pinf[i].m_isPlaying&0x1) {
-                if ((data.m_pinf[i].m_card[j]&0xff) == WH_CARDBACK) {
+                if ((data.m_pinf[i].m_card[j]&0xff) == WH_CARDBACK) 
+				{
                     scraper.card_player[i][j] = CARD_BACK;
                 }
-                else if ((data.m_pinf[i].m_card[j]&0xff) == WH_NOCARD) {
+                else if ((data.m_pinf[i].m_card[j]&0xff) == WH_NOCARD) 
+				{
                     scraper.card_player[i][j] = CARD_NOCARD;
                 }
-                else {
-                    if (((data.m_pinf[i].m_card[j]>>0)&0x0f) == WH_SUIT_CLUBS) {
+                else 
+				{
+                    if (((data.m_pinf[i].m_card[j]>>0)&0x0f) == WH_SUIT_CLUBS)
                         suit = StdDeck_Suit_CLUBS;
-                    }
-                    else if (((data.m_pinf[i].m_card[j]>>0)&0x0f) == WH_SUIT_DIAMONDS) {
+
+                    else if (((data.m_pinf[i].m_card[j]>>0)&0x0f) == WH_SUIT_DIAMONDS)
                         suit = StdDeck_Suit_DIAMONDS;
-                    }
-                    else if (((data.m_pinf[i].m_card[j]>>0)&0x0f) == WH_SUIT_HEARTS) {
+
+                    else if (((data.m_pinf[i].m_card[j]>>0)&0x0f) == WH_SUIT_HEARTS)
                         suit = StdDeck_Suit_HEARTS;
-                    }
-                    else if (((data.m_pinf[i].m_card[j]>>0)&0x0f) == WH_SUIT_SPADES) {
+
+                    else if (((data.m_pinf[i].m_card[j]>>0)&0x0f) == WH_SUIT_SPADES)
                         suit = StdDeck_Suit_SPADES;
-                    }
+
                     rank = ((data.m_pinf[i].m_card[j]>>4)&0x0f)-2;
 
                     scraper.card_player[i][j] = StdDeck_MAKE_CARD(rank, suit);
@@ -1719,7 +1814,8 @@ void PokerPro::DoScrape(void)
         scraper.sittingout[i] = !(data.m_pinf[i].m_isPlaying&0x1);
 
         // Clear some things if no one is at this chair
-        if (!scraper.is_string_seated(scraper.seated[i]) & !scraper.is_string_active(scraper.active[i])) {
+        if (!scraper.is_string_seated(scraper.seated[i]) & !scraper.is_string_active(scraper.active[i])) 
+		{
             scraper.playername[i] = "";
             scraper.name_good_scrape[i] = false;
             scraper.playerbalance[i] = 0;
@@ -1762,10 +1858,12 @@ void PokerPro::DoScrape(void)
     scraper.buttonlabel[6] = "sitout";
     scraper.buttonlabel[7] = "autopost";
 
-    for (i=0; i<=4; i++) {
+    for (i=0; i<=4; i++) 
+	{
         scraper.buttonstate[i] = "false";
     }
-    if (autoplayer_can_act) {
+    if (autoplayer_can_act) 
+	{
         scraper.buttonstate[3] = scraper.s_limit_info.limit==LIMIT_NL ? "true" : "false";
         scraper.buttonstate[2] = data.m_pinf[data.m_userchair].m_balance > get_current_bet()-data.m_pinf[data.m_userchair].m_betAmount &&
                                  ((scraper.s_limit_info.limit==LIMIT_NL || scraper.s_limit_info.limit==LIMIT_PL) ||
@@ -1778,9 +1876,7 @@ void PokerPro::DoScrape(void)
     scraper.buttonstate[6] = (data.m_pinf[data.m_userchair].m_isActive) ? "true" : "false";
     scraper.buttonstate[7] = "true";
 
-
     __SEH_LOGFATAL("PokerPro::DoScrape : \n");
-
 }
 
 // Copied from Autoplayer.cpp to be used for f$delay (4-4-2008) Spektre
@@ -2034,11 +2130,14 @@ void PokerPro::publish(CString *text, int flags)
 
     // limit size of message box to 100 lines
     int i, count = 1;
-    for (i = m_pproDlg->messages.GetLength(); i>=0; i--) {
-        if (m_pproDlg->messages.Mid(i, 1) == "\n") {
+    for (i = m_pproDlg->messages.GetLength(); i>=0; i--) 
+	{
+        if (m_pproDlg->messages.Mid(i, 1) == "\n") 
+		{
             count++;
         }
-        if (count>=99) {
+        if (count>=99) 
+		{
             m_pproDlg->messages = m_pproDlg->messages.Mid(i+1);
             continue;
         }
@@ -2047,13 +2146,12 @@ void PokerPro::publish(CString *text, int flags)
     m_pproDlg->messages.Append(text->GetString());
     m_pproDlg->messages_changed = true;
 
-    if (flags & PUBLISH_ERR) {
+    if (flags & PUBLISH_ERR) 
+	{
         MessageBox(NULL, *text, "PPRO: ERROR", MB_OK | MB_TOPMOST);
     }
 
-
     __SEH_LOGFATAL("PokerPro::publish : \n");
-
 }
 
 const char* PokerPro::get_action(int chair, int spend) 
@@ -2065,28 +2163,33 @@ const char* PokerPro::get_action(int chair, int spend)
     int call = get_current_bet();
     int playerpot = get_player_pot();
 
-    if (round <= 0 && playerpot <= 0) {
+    if (round <= 0 && playerpot <= 0) 
+	{
         return "SBLIND";
     }
-    if (round <= 0 && playerpot > 0) {
+    if (round <= 0 && playerpot > 0) 
+	{
         return "BBLIND";
     }
-    if (round >= 1 && spend <= 0) {
+    if (round >= 1 && spend <= 0) 
+	{
         return "CHECK";
     }
-    if (round >= 1 && call > 0 && current+spend <= call) {
+    if (round >= 1 && call > 0 && current+spend <= call) 
+	{
         return "CALL";
     }
-    if (round >= 1 && current+spend > call && playerpot <= 0 && call <= 0) {
+    if (round >= 1 && current+spend > call && playerpot <= 0 && call <= 0) 
+	{
         return "BET";
     }
-    if (round >= 1 && current+spend > call && playerpot > 0 && call > 0) {
+    if (round >= 1 && current+spend > call && playerpot > 0 && call > 0) 
+	{
         return "RAISE";
     }
     return "SPEND";
 
     __SEH_LOGFATAL("PokerPro::get_action : \n");
-
 }
 
 int PokerPro::get_player_pot(void) 
@@ -2094,14 +2197,14 @@ int PokerPro::get_player_pot(void)
     __SEH_HEADER
 
     int sum=0;
-    for (int i=0; i<=9; i++) {
+    for (int i=0; i<=9; i++) 
+	{
         sum += data.m_pinf[i].m_betAmount;
     }
 
     return sum;
 
     __SEH_LOGFATAL("PokerPro::get_player_pot : \n");
-
 }
 
 char* PokerPro::card2ascii(char* text, unsigned char cc) 
@@ -2121,20 +2224,17 @@ char* PokerPro::card2ascii(char* text, unsigned char cc)
     return text;
 
     __SEH_LOGFATAL("PokerPro::card2ascii : \n");
-
 }
 
 char PokerPro::rank2ascii(int rank) 
 {
     __SEH_HEADER
 
-
     const char* srank = " 123456789TJQKA|";
     char ascii = srank[rank];
     return ascii;
 
     __SEH_LOGFATAL("PokerPro::rank2ascii : \n");
-
 }
 
 void PokerPro::writehh(CString *s) 
@@ -2163,9 +2263,7 @@ void PokerPro::writehh(CString *s)
         }
     }
 
-
     __SEH_LOGFATAL("PokerPro::writehh : \n");
-
 }
 
 const char* PokerPro::get_cardinal_suffix(int n) 
@@ -2190,7 +2288,5 @@ const char* PokerPro::get_cardinal_suffix(int n)
 
     return "??";
 
-
     __SEH_LOGFATAL("PokerPro::get_cardinal_suffix : \n");
-
 }

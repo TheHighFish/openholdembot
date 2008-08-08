@@ -4,6 +4,11 @@
 #include "symbols.h"
 #include "debug.h"
 
+MyHand::MyHand()
+{
+    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+}
+
 double	MyHand::process_query(const char * pquery, int *e)
 {
     __SEH_HEADER

@@ -26,6 +26,9 @@
 
 using namespace std;
 
+//  A single interpreter object for OH
+//
+class Perl	the_Perl_Interpreter;
 
 //  Function types in PerlEz.DLL (implemented in PerlEz.h)
 //
@@ -65,7 +68,6 @@ string toString(double d)
     return the_Result.str();
 
     __SEH_LOGFATAL("Perl::toString : \n");
-
 }
 
 
@@ -120,7 +122,6 @@ static void gwp(int the_PlayerName, char* the_ResultString)
     LeaveCriticalSection(&cs_scraper);
 
     __SEH_LOGFATAL("Perl::gwp : \n");
-
 }
 
 
@@ -156,7 +157,6 @@ bool Perl::load_DLL(void)
     return true;
 
     __SEH_LOGFATAL("Perl::load_DLL : \n");
-
 }
 
 
@@ -209,12 +209,13 @@ void Perl::send_Callback_Pointers()
     do_ErrorCheck(the_ErrorCode);    
 
     __SEH_LOGFATAL("Perl::send_Callback_Pointers : \n");
-
 }
 
 
 Perl::Perl()
 {
+    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
     __SEH_HEADER
 
     Formula_loaded = false;
@@ -253,10 +254,9 @@ Perl::Perl()
     }
     send_Callback_Pointers();
 
-    __SEH_LOGFATAL("Perl::Perl : \n");
+    __SEH_LOGFATAL("Perl::Constructor : \n");
 
 }
-
 
 Perl::~Perl()
 {
@@ -265,10 +265,8 @@ Perl::~Perl()
     //  Unload file and destroy interpreter.
     unload_FormulaFile();
 
-    __SEH_LOGFATAL("Perl::Perl : \n");
-
+    __SEH_LOGFATAL("Perl::Destructor : \n");
 }
-
 
 bool Perl::is_Perl_Symbol(const char *the_Symbol)
 {
@@ -288,7 +286,6 @@ bool Perl::is_Perl_Symbol(const char *the_Symbol)
             (the_Symbol[2] == '_'));
 
     __SEH_LOGFATAL("Perl::is_Perl_Symbol : \n");
-
 }
 
 
@@ -340,7 +337,6 @@ double Perl::get_Perl_Symbol(const char *the_Symbol)
     return atof(the_ResultBuffer);
 
     __SEH_LOGFATAL("Perl::get_Perl_Symbol : \n");
-
 }
 
 //  Error checking,
@@ -350,12 +346,12 @@ void Perl::do_ErrorCheck(int the_ErrorCode)
 {
     __SEH_HEADER
 
-    if (the_ErrorCode <= 0) {
+    if (the_ErrorCode <= 0) 
         return;
-    }
-    if (the_ErrorCode > 9)  {
+
+    if (the_ErrorCode > 9)  
         return;
-    }
+
     string the_ErrorMessage;
     switch (the_ErrorCode)
     {
@@ -390,7 +386,6 @@ void Perl::do_ErrorCheck(int the_ErrorCode)
     MessageBox(NULL, the_ErrorMessage.c_str(), "Perl Error", MB_OK | MB_TOPMOST);
 
     __SEH_LOGFATAL("Perl::do_ErrorCheck : \n");
-
 }
 
 
@@ -398,16 +393,15 @@ void Perl::unload_FormulaFile()
 {
     __SEH_HEADER
 
-    if (Interpreter_not_loaded) {
+    if (Interpreter_not_loaded)
         return;
-    }
+
     (*P_PerlEzDelete)(the_Interpreter);
     the_Interpreter = NULL;
     Interpreter_not_loaded = true;
     Formula_loaded = false;
 
     __SEH_LOGFATAL("Perl::unload_FormulaFile : \n");
-
 }
 
 
@@ -417,9 +411,8 @@ void Perl::load_FormulaFile(string the_new_FormulaFile)
 		
 	//  Just a security measure
     if (P_PerlEzCreate == NULL)
-    {
-        return;
-    }
+		return;
+
     if (_access(the_new_FormulaFile.c_str(), F_OK) != 0)
     {
         //  Script to load not accessible
@@ -441,7 +434,9 @@ void Perl::load_FormulaFile(string the_new_FormulaFile)
         the_actual_FormulaFile = string(the_new_FormulaFile);
         Formula_loaded = true;
     }
+
     send_Callback_Pointers();
+
     if (the_Interpreter != NULL)
     {
         Interpreter_not_loaded = false;
@@ -455,7 +450,6 @@ void Perl::load_FormulaFile(string the_new_FormulaFile)
     }
 
     __SEH_LOGFATAL("Perl::load_FormulaFile : \n");
-
 }
 
 
@@ -467,7 +461,6 @@ void Perl::reload_FormulaFile()
     load_FormulaFile(the_actual_FormulaFile);
 
     __SEH_LOGFATAL("Perl::reload_FormulaFile : \n");
-
 }
 
 
@@ -505,7 +498,6 @@ void Perl::edit_main_FormulaFile()
     }
 
     __SEH_LOGFATAL("Perl::edit_main_FormulaFile : \n");
-
 }
 
 bool Perl::is_a_Formula_loaded()
@@ -515,9 +507,7 @@ bool Perl::is_a_Formula_loaded()
     return (!Interpreter_not_loaded && Formula_loaded);
 
     __SEH_LOGFATAL("Perl::is_a_Formula_loaded : \n");
-
 }
-
 
 void Perl::check_Syntax()
 {
@@ -537,6 +527,7 @@ void Perl::check_Syntax()
                    "Perl Error", MB_OK | MB_TOPMOST);
         return;
     }
+
     //  Enclose path in quotation marks, as some editors
     //    (e.g emacs from the Unix world) have problems
     //    with spaces in (Windows-) path names.
@@ -562,8 +553,3 @@ void Perl::check_Syntax()
     __SEH_LOGFATAL("Perl::is_a_Formula_loaded:\n");
 
 }
-
-
-//  A single interpreter object for OH
-//
-class Perl	the_Perl_Interpreter;

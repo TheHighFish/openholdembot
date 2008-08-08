@@ -3,6 +3,7 @@
 class MyHand 
 {
 public:
+	MyHand::MyHand();
 	double	process_query(const char * pquery, int *e);
 
 private:

@@ -18,10 +18,13 @@
 #include "symbols.h"
 #include "global.h"
 #include "ICMCalculator.h"
+#include "debug.h"
 
 
 double P(int i, int n, double *s, int N)
 {
+	__SEH_HEADER
+
     double p = 0.;
 
     if (n==1)
@@ -51,10 +54,13 @@ double P(int i, int n, double *s, int N)
         }
     }
     return p;
+
+	__SEH_LOGFATAL("ICM, P : \n");
 }
 
 ICM::ICM ()
 {
+    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
 }
 
 ICM::~ICM ()
@@ -63,6 +69,8 @@ ICM::~ICM ()
 
 double ICM::ProcessQueryICM(const char* pquery, int *e)
 {
+	__SEH_HEADER
+
     double		prizes[MAX_PLAYERS] = {0};
     double		stacks[MAX_PLAYERS] = {0};
     int			i, j;
@@ -336,11 +344,15 @@ double ICM::ProcessQueryICM(const char* pquery, int *e)
     }
 
     return EquityICM(stacks, prizes, MAX_PLAYERS, sym_userchair);
+
+	__SEH_LOGFATAL("ICM::ProcessQueryICM : \n");
 }
 
 double ICM::EquityICM(double *stacks, double *prizes, int playerNB, int player)
 {
-    double ICM = 0.;
+ 	__SEH_HEADER
+
+   double ICM = 0.;
     int i = 0;
 
 	// These variables hold values that are collected in a critical section
@@ -384,19 +396,27 @@ double ICM::EquityICM(double *stacks, double *prizes, int playerNB, int player)
     }
 
     return ICM;
+
+	__SEH_LOGFATAL("ICM::EquityICM : \n");
 }
 
 double ICM::GetPlayerCurrentBet(int pos)
 {
+	__SEH_HEADER
+
 	EnterCriticalSection(&cs_symbols);
 	double sym_currentbet = symbols.sym.currentbet[pos];
 	LeaveCriticalSection(&cs_symbols);
 
 	return sym_currentbet;
+
+	__SEH_LOGFATAL("ICM::GetPlayerCurrentBet : \n");
 }
 
 int ICM::getChairFromDealPos(const char* pquery)
 {
+	__SEH_HEADER
+
 	EnterCriticalSection(&cs_symbols);
 	int sym_nplayersseated = (int) symbols.sym.nplayersseated;
 	int sym_playersseatedbits = (int) symbols.sym.playersseatedbits;
@@ -447,4 +467,6 @@ int ICM::getChairFromDealPos(const char* pquery)
     }
 
     return chair;
+
+	__SEH_LOGFATAL("ICM::getChairFromDealPos : \n");
 }

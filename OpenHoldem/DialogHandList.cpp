@@ -3,12 +3,19 @@
 
 #include "stdafx.h"
 #include "DialogHandList.h"
+#include "debug.h"
 
 // CDlgHandList dialog
 CDlgHandList::CDlgHandList(CWnd* pParent /*=NULL*/)
         : CDialog(CDlgHandList::IDD, pParent)
 {
+    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+
+    __SEH_HEADER
+
 	nhands = 0;
+
+	__SEH_LOGFATAL("CDlgHandList::Constructor :\n");
 }
 
 CDlgHandList::~CDlgHandList()
@@ -202,6 +209,8 @@ END_MESSAGE_MAP()
 
 BOOL CDlgHandList::OnInitDialog()
 {
+    __SEH_HEADER
+
     CDialog::OnInitDialog();
 
     int			i, j;
@@ -223,10 +232,14 @@ BOOL CDlgHandList::OnInitDialog()
 
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
+
+	__SEH_LOGFATAL("CDlgHandList::OnInitDialog :\n");
 }
 
 void CDlgHandList::OnCheckClick(UINT controlID)
 {
+    __SEH_HEADER
+
     int			i, j;
 
 	nhands = 0;
@@ -243,11 +256,17 @@ void CDlgHandList::OnCheckClick(UINT controlID)
 	CString comment;
 	comment.Format("%d/1326=%.2f%%", nhands, ((double)nhands/1326.0)*100.0);
 	m_CommentST.SetWindowText(comment);
+
+	__SEH_LOGFATAL("CDlgHandList::OnCheckClick :\n");
 }
 
 void CDlgHandList::OnBnClickedOk()
 {
+    __SEH_HEADER
+
 	OnCheckClick(0);
 
     OnOK();
+
+	__SEH_LOGFATAL("CDlgHandList::OnBnClickedOk :\n");
 }

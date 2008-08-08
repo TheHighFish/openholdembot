@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 
 #include "levenshtein.h"
+#include "debug.h"
 #include <string.h>
 #include <malloc.h>
 
@@ -10,6 +11,8 @@
 
 int LDistance::Minimum (int a, int b, int c)
 {
+    __SEH_HEADER
+
     int mi;
 
     mi = a;
@@ -21,6 +24,7 @@ int LDistance::Minimum (int a, int b, int c)
     }
     return mi;
 
+	__SEH_LOGFATAL("LDistance::Minimum : \n");
 }
 
 //**************************************************
@@ -29,7 +33,11 @@ int LDistance::Minimum (int a, int b, int c)
 
 int *LDistance::GetCellPointer (int *pOrigin, int col, int row, int nCols)
 {
+    __SEH_HEADER
+
     return pOrigin + col + (row * (nCols + 1));
+
+	__SEH_LOGFATAL("LDistance::GetCellPointer : \n");
 }
 
 //*****************************************************
@@ -38,11 +46,14 @@ int *LDistance::GetCellPointer (int *pOrigin, int col, int row, int nCols)
 
 int LDistance::GetAt (int *pOrigin, int col, int row, int nCols)
 {
-    int *pCell;
+    __SEH_HEADER
+
+   int *pCell;
 
     pCell = GetCellPointer (pOrigin, col, row, nCols);
     return *pCell;
 
+	__SEH_LOGFATAL("LDistance::GetAt : \n");
 }
 
 //*******************************************************
@@ -51,11 +62,14 @@ int LDistance::GetAt (int *pOrigin, int col, int row, int nCols)
 
 void LDistance::PutAt (int *pOrigin, int col, int row, int nCols, int x)
 {
+    __SEH_HEADER
+
     int *pCell;
 
     pCell = GetCellPointer (pOrigin, col, row, nCols);
     *pCell = x;
 
+	__SEH_LOGFATAL("LDistance::PutAt : \n");
 }
 
 //*****************************
@@ -64,6 +78,8 @@ void LDistance::PutAt (int *pOrigin, int col, int row, int nCols, int x)
 
 int LDistance::LD (char const *s, char const *t)
 {
+    __SEH_HEADER
+
     int *d; // pointer to matrix
     int n; // length of s
     int m; // length of t
@@ -139,4 +155,6 @@ int LDistance::LD (char const *s, char const *t)
     free (d);
     return result;
 
+
+	__SEH_LOGFATAL("LDistance::LD : \n");
 }
