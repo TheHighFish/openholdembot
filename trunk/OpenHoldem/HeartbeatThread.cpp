@@ -56,7 +56,6 @@ CHeartbeatThread::~CHeartbeatThread()
 
 UINT CHeartbeatThread::heartbeat_thread_function(LPVOID pParam)
 {
-
     __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
 
     __SEH_HEADER
@@ -91,7 +90,9 @@ UINT CHeartbeatThread::heartbeat_thread_function(LPVOID pParam)
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         // Scrape window
-        EnterCriticalSection(&cs_scraper);
+		EnterCriticalSection(&cs_scraper);
+		scraper.scraper_update_in_progress = true;
+		LeaveCriticalSection(&cs_scraper);
 
 		if (!global.ppro_is_connected)
         {
@@ -106,9 +107,11 @@ UINT CHeartbeatThread::heartbeat_thread_function(LPVOID pParam)
             }
         }
 
+		EnterCriticalSection(&cs_scraper);
+		scraper.scraper_update_in_progress = false;
 		LeaveCriticalSection(&cs_scraper);
 
-        ////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////
         // Set Title of window
 		CString *messageTitle = new CString();
         if (!global.ppro_is_connected)
@@ -141,7 +144,9 @@ UINT CHeartbeatThread::heartbeat_thread_function(LPVOID pParam)
             global.formula.mFunction[i].fresh = false;
         }
 
-        EnterCriticalSection(&cs_symbols);
+		EnterCriticalSection(&cs_symbols);	
+		symbols.symbols_update_in_progress = true;
+		LeaveCriticalSection(&cs_symbols);
 
 		if (new_scrape!=NOTHING_CHANGED || (global.ppro_is_connected && ppro.data.m_tinf.m_tid != 0))
         {
@@ -153,6 +158,8 @@ UINT CHeartbeatThread::heartbeat_thread_function(LPVOID pParam)
             symbols.calc_probabilities();
         }
 
+		EnterCriticalSection(&cs_symbols);	
+		symbols.symbols_update_in_progress = false;
 		LeaveCriticalSection(&cs_symbols);
 
 		////////////////////////////////////////////////////////////////////////////////////////////

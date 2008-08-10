@@ -341,9 +341,7 @@ int	PokerTracker::getsiteid (void)
             {
                 sym.Format("sitename$%s", networkid[i]);
 
-				EnterCriticalSection(&cs_symbols);
 				result = symbols.GetSymbolVal(sym.MakeLower().GetString(), &e);
-				LeaveCriticalSection(&cs_symbols);
 
                 if (result && strlen(networkid[i]))
                     return i;
@@ -353,9 +351,7 @@ int	PokerTracker::getsiteid (void)
             {
                 sym.Format("network$%s", networkid[i]);
 
-				EnterCriticalSection(&cs_symbols);
 				result = symbols.GetSymbolVal(sym.MakeLower().GetString(), &e);
-				LeaveCriticalSection(&cs_symbols);
 
 				if (result && strlen(networkid[i]))
                     return i;

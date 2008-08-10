@@ -416,6 +416,9 @@ public:
 
 	sprw1326	prw1326;					//prwin 1326 data structure Matrix 2008-04-29
 
+	// used by display functions to decide whether or not to update
+	bool		symbols_update_in_progress;
+
 private:
 	double Chair$(const char *a);
 	double Chairbit$(const char *a);
