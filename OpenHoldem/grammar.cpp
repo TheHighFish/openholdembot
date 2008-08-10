@@ -193,9 +193,7 @@ void SymbolValidation(const char *begin, const char *end)
     {
 		e = SUCCESS;
 		
-		EnterCriticalSection(&cs_symbols);
         symbols.GetSymbolVal(sym.c_str(), &e);
-		LeaveCriticalSection(&cs_symbols);
 
 		if (e != SUCCESS)
 			global.parse_symbol_stop_strs.Add(sym);
@@ -751,9 +749,7 @@ double eval_symbol(SFormula *f, string sym, CEvalInfoFunction **logCallingFuncti
     // all other symbols
     else
     {
-		EnterCriticalSection(&cs_symbols);
 		double result = symbols.GetSymbolVal(sym.c_str(), e);
-		LeaveCriticalSection(&cs_symbols);
 
         return result;
     }

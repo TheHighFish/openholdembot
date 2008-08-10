@@ -6,7 +6,7 @@
 #include "Registry.h"
 #include "global.h"
 #include "structs_defines.h"
-//#include "scraper.h"
+#include "scraper.h"
 #include "debug.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
@@ -291,7 +291,16 @@ void CDlgScraperOutput::do_update_display()
     int		N, i;
     bool	found_match;
 
-    if (in_startup)  return;
+	// If scraper is in progress, then don't update now
+	EnterCriticalSection(&cs_scraper);
+	bool			scraper_updating = scraper.scraper_update_in_progress;
+	LeaveCriticalSection(&cs_scraper);
+
+	if (scraper_updating)
+		return;
+
+	if (in_startup)  
+		return;
 
     if (m_RegionList.GetCurSel() == -1)
     {
@@ -403,7 +412,6 @@ void CDlgScraperOutput::do_bitblt(HBITMAP bitmap, int r$index)
     DeleteDC(hdcCompat2);
     DeleteDC(hdcScreen);
     ReleaseDC(pDC);
-
 
 	__SEH_LOGFATAL("CDlgScraperOutput::do_bitblt :\n");
 }

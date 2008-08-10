@@ -70,9 +70,7 @@ END_MESSAGE_MAP()
 // COpenHoldemView construction/destruction
 COpenHoldemView::COpenHoldemView() 
 {
-
     __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
-
 
     __SEH_HEADER
 
@@ -103,16 +101,13 @@ COpenHoldemView::COpenHoldemView()
 
 
     __SEH_LOGFATAL("COpenHoldemView::constructor\n");
-
 }
 
 COpenHoldemView::~COpenHoldemView() 
 {
     __SEH_HEADER
 
-
     __SEH_LOGFATAL("COpenHoldemView::Destructor\n");
-
 }
 
 BOOL COpenHoldemView::PreCreateWindow(CREATESTRUCT& cs) 
@@ -124,7 +119,6 @@ BOOL COpenHoldemView::PreCreateWindow(CREATESTRUCT& cs)
     return CView::PreCreateWindow(cs);
 
     __SEH_LOGFATAL("COpenHoldemView::PreCreateWindow\n");
-
 }
 
 void COpenHoldemView::OnInitialUpdate() 
@@ -134,10 +128,9 @@ void COpenHoldemView::OnInitialUpdate()
     CView::OnInitialUpdate();
 
     // Timer to check for display updates
-    SetTimer(DISPLAY_UPDATE_TIMER, 250, 0);
+    SetTimer(DISPLAY_UPDATE_TIMER, 103, 0);
 
     __SEH_LOGFATAL("COpenHoldemView::OnInitialUpdate \n");
-
 }
 
 // COpenHoldemView drawing
@@ -148,7 +141,6 @@ void COpenHoldemView::OnDraw(CDC* pDC)
     update_display(true);
 
     __SEH_LOGFATAL("COpenHoldemView::OnDraw \n");
-
 }
 
 void COpenHoldemView::OnTimer(UINT nIDEvent) 
@@ -157,13 +149,22 @@ void COpenHoldemView::OnTimer(UINT nIDEvent)
 
     if (nIDEvent == DISPLAY_UPDATE_TIMER) 
 	{
-		update_display(false);
+		// If scraper/symbols are in progress, then don't update now
+		EnterCriticalSection(&cs_scraper);
+		bool			scraper_updating = scraper.scraper_update_in_progress;
+		LeaveCriticalSection(&cs_scraper);
+
+		EnterCriticalSection(&cs_symbols);	
+		bool			symbols_updating = symbols.symbols_update_in_progress;
+		LeaveCriticalSection(&cs_symbols);
+
+		if (!scraper_updating && !symbols_updating)
+			update_display(false);
     }
 
     CView::OnTimer(nIDEvent);
 
     __SEH_LOGFATAL("COpenHoldemView::OnTimer :\n");
-
 }
 
 void COpenHoldemView::update_display(bool update_all) 
@@ -188,9 +189,8 @@ void COpenHoldemView::update_display(bool update_all)
     CDC						*pDC = GetDC();
 
 	// These variables hold values that are collected in a critical section
-	unsigned int			card_common[5], card_player0, card_player1;
-	bool					is_seated, is_dealer;
-
+	unsigned int	card_common[5], card_player0, card_player1;
+	bool			is_seated, is_dealer;
 
     // Get size of current client window
     GetClientRect(&cr);
@@ -389,9 +389,7 @@ void COpenHoldemView::update_display(bool update_all)
 
 	ReleaseDC(pDC);
 
-
     __SEH_LOGFATAL("COpenHoldemView::update_display :\n");
-
 }
 
 void COpenHoldemView::draw_center_info_box(void) 

@@ -2296,11 +2296,17 @@ void CDlgFormulaScintilla::update_debug_auto(void)
 	int				i;
     CString			Cstr;
 
-	EnterCriticalSection(&cs_symbols);
+	// If symbols are in progress, then don't update now
+	EnterCriticalSection(&cs_symbols);	
+	bool			symbols_updating = symbols.symbols_update_in_progress;
 	bool			sym_ismyturn = (bool) symbols.sym.ismyturn;
 	LeaveCriticalSection(&cs_symbols);
 
-    global.m_WaitCursor = true;
+	if (symbols_updating)
+		return;
+
+
+	global.m_WaitCursor = true;
     BeginWaitCursor();
 
     // mark symbol result cache as stale
@@ -2861,18 +2867,12 @@ void CDlgFormulaScintilla::OnTimer(UINT nIDEvent)
 	{
         HandleEnables(false);
     }
+
     // Update debug tab (if auto button is pressed)
     else if (nIDEvent == DEBUG_UPDATE_TIMER)
     {
-		// Get exclusive access to CScraper and CSymbol variables
-		// Really we are just using this critical section to make sure we are not in the middle of a scrape cycle right now
-		EnterCriticalSection(&cs_scraper);
-
-			if (m_ButtonAuto.GetCheck() == 1 && m_current_edit == "f$debug" && ok_to_update_debug)
-				update_debug_auto();
-
-		// Allow other threads to use CScraper and CSymbol variables
-		LeaveCriticalSection(&cs_scraper);
+		if (m_ButtonAuto.GetCheck() == 1 && m_current_edit == "f$debug" && ok_to_update_debug)
+			update_debug_auto();
     }
 
     __SEH_LOGFATAL("CDlgFormulaScintilla::OnTimer :\n");

@@ -82,6 +82,9 @@ public:
 	double				locked_sblind, locked_bblind, locked_bbet, locked_ante;
 	int					locked_gametype;
 
+	// used by display functions to decide whether or not to update
+	bool				scraper_update_in_progress;
+
 private:
 	void scrape_common_cards(HDC hdcCompatible, HDC hdc);
 	void scrape_player_cards(int chair, HDC hdcCompatible, HDC hdc);
