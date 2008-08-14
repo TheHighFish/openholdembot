@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INC_OPENHOLDEMVIEW_H
+#define INC_OPENHOLDEMVIEW_H
 
 #define DISPLAY_UPDATE_TIMER	111
 
@@ -40,3 +41,4 @@ inline COpenHoldemDoc* COpenHoldemView::GetDocument() const
    { return reinterpret_cast<COpenHoldemDoc*>(m_pDocument); }
 
 
+#endif //INC_OPENHOLDEMVIEW_H

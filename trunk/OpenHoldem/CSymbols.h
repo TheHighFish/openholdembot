@@ -1,11 +1,8 @@
-#ifndef INC_SYMBOLS_H
-#define INC_SYMBOLS_H
-
-#include "poker_defs.h"
-#include "structs_defines.h"
+#ifndef INC_CSYMBOLS_H
+#define INC_CSYMBOLS_H
 
 // Symbol structure
-struct S_symbols 
+struct SSymbols 
 {
 	//General
 	double ismanual;
@@ -384,82 +381,108 @@ struct S_symbols
 extern class CSymbols 
 {
 public:
-	CSymbols::CSymbols();
+	// Critical section used in public mutators and private shared variable writes
+	static CRITICAL_SECTION	cs_symbols;
+
+public:
+	// public functions
+	CSymbols();
+	~CSymbols();
 	void ResetSymbolsFirstTime(void);
 	void CalcSymbols(void);
-	double GetSymbolVal(const char *a, int *e);
-	double calc_pokerval(HandVal handval, int ncards, double *pcbits, int pcard0, int pcard1);
-	void calc_time(void);
-	void calc_probabilities(void);
-	void get_cardstring(char *c, unsigned int c0, unsigned int c1);
-	double IsHand(const char *a, int *e=NULL);
+	void CalcTime(void);
+	void CalcProbabilities(void);
+	void CalcPrimaryFormulas(void);
+	void UpdateAutoplayerInfo(void);
+	const double GetSymbolVal(const char *a, int *e);
+	const double CalcPokerval(const HandVal handval, const int ncards, double *pcbits, const int pcard0, const int pcard1);
+	const void GetCardstring(char *c, const unsigned int c0, const unsigned int c1);
+	const double IsHand(const char *a, int *e=NULL);
+	const int GetSiteId (void);
 
-	S_symbols	sym;
-	bool		user_chair_confirmed;
-	double		f$alli, f$swag, f$rais, f$call, f$play, f$prefold;
-	//  2008.02.27 by THF
-	double f$chat;
+public:
+	// public accessors
+	const bool			user_chair_confirmed() { return _user_chair_confirmed; }
+	const double		bigbet() { return _bigbet; }
+	const double		f$alli() { return _f$alli; }
+	const double		f$swag() { return _f$swag; }
+	const double		f$rais() { return _f$rais; }
+	const double		f$call() { return _f$call; }
+	const double		f$play() { return _f$play; }
+	const double		f$prefold() { return _f$prefold; }
+	const double		f$delay() { return _f$delay; }
+	const double		f$chat() { return _f$chat; }
+	const sprw1326		*prw1326() { return &_prw1326; }
+	const SSymbols		*sym() { return &_sym; }
+	const CArray <CString, CString> *logsymbols_collection() { return &_logsymbols_collection; }
+	const CArray <CString, CString> *symboltrace_collection() { return &_symboltrace_collection; }
+	const double		stacks_at_hand_start(const int n) { if (n>=0 && n<=9) return _stacks_at_hand_start[n]; else return 0; }
 
-	//  2008.04.02 by Spektre
-	int f$delay;                             // Autoplayer delay in milliseconds
+public:
+#define ENT EnterCriticalSection(&cs_symbols);
+#define LEA LeaveCriticalSection(&cs_symbols);
+	// public mutators
+	void	set_reset_stakes(const bool b) { ENT _reset_stakes = b; LEA }
+	void	set_sym_playing(const bool b) { ENT _sym.playing = b; LEA }
+	void	set_elapsedautohold(time_t t) { ENT _elapsedautohold = t; LEA }
+	sprw1326 *set_prw1326() { return &_prw1326; }
+	CArray <CString, CString> *set_logsymbols_collection() { return &_logsymbols_collection; }
+	CArray <CString, CString> *set_symboltrace_collection() { return &_symboltrace_collection; }
 
-	double		bigbet;
-
-	bool		reset_stakes;				// set to true on new hand or on change in title bar text
-
-	double		stacks_at_hand_start[10];	// Used in ICM calculator - ICM needs stacks at beginning of hand
-
-	time_t	elapsedautohold;				// The time since autoplayer acted
-
-    CArray <CString, CString>   logsymbols_collection;    // Used to track the log$ symbols
-    CArray <CString, CString>   symboltrace_collection;    // Used to trace function execution
-
-	sprw1326	prw1326;					//prwin 1326 data structure Matrix 2008-04-29
-
-	// used by display functions to decide whether or not to update
-	bool		symbols_update_in_progress;
+#undef ENT
+#undef LEA
 
 private:
-	double Chair$(const char *a);
-	double Chairbit$(const char *a);
+	// private variables - use public accessors and public mutators to address these
+	SSymbols	_sym;
+	bool		_user_chair_confirmed;
+	double		_f$alli, _f$swag, _f$rais, _f$call, _f$play, _f$prefold, _f$chat, _f$delay;
+	double		_bigbet;
+	bool		_reset_stakes;							// set to true on new hand or on change in title bar text
+	double		_stacks_at_hand_start[10];				// Used in ICM calculator - ICM needs stacks at beginning of hand
+	time_t		_elapsedautohold;						// The time since autoplayer acted
+	CArray <CString, CString>   _logsymbols_collection; // Used to track the log$ symbols
+	CArray <CString, CString>   _symboltrace_collection;// Used to trace function execution
+	sprw1326	_prw1326;								//prwin 1326 data structure Matrix 2008-04-29
+
+private:
+	// private functions and variables - not available via accessors or mutators
+	const double Chair$(const char *a);
+	const double Chairbit$(const char *a);
 	void ResetSymbolsNewHand(void);
 	void ResetSymbolsNewRound(void);
 	void ResetSymbolsEveryCalc(void);
-	bool calc_userchair(void);
-	void calc_stakes(void);
-	void calc_betbalancestack(void);
-	void calc_playersfriendsopponents(void);
-	void calc_chipamts_limits(void);
-	void calc_numbets(void);
-	void calc_flags(void);
-	void calc_autoplayer(void);
-	void calc_roundspositions(void);
-	void calc_pokervalues(void);
-	void calc_unknowncards(void);
-	void calc_handtests(void);
-	void calc_pockettests(void);
-	void calc_listtests(void);
-	void calc_nhands(void);
-	void calc_handrank(void);
-	void calc_fl_str_set(void);
-	void calc_rankbits(void);
-	void calc_history(void);
-	void calc_statistics(void);
-	void calc_run_ron(void);
+	bool CalcUserChair(void);
+	void CalcStakes(void);
+	void CalcBetBalanceStack(void);
+	void CalcPlayersFriendsOpponents(void);
+	void CalcChipamtsLimits(void);
+	void CalcNumbets(void);
+	void CalcFlags(void);
+	void CalcAutoplayer(void);
+	void CalcRoundsPositions(void);
+	void CalcPokerValues(void);
+	void CalcUnknownCards(void);
+	void CalcHandTests(void);
+	void CalcPocketTests(void);
+	void CalcListTests(void);
+	void CalcNhands(void);
+	void CalcHandrank(void);
+	void CalcFlushesStraightsSets(void);
+	void CalcRankbits(void);
+	void CalcHistory(void);
+	void CalcStatistics(void);
+	void CalcRunRon(void);
 
 
-	HandVal		phandval[4], chandval[4];	// for ishandup and ishandupcommon symbol calcs
-	time_t		elapsedhold;				// The time we "sat down"
-	time_t		elapsedhandhold;			// The time since start of last hand
+	HandVal		_phandval[4], _chandval[4];	// for ishandup and ishandupcommon symbol calcs
+	time_t		_elapsedhold;				// The time we "sat down"
+	time_t		_elapsedhandhold;			// The time since start of last hand
 
-	static double dealerchair_last;
-	static double handnumber_last;
-	static int br_last;
-	static unsigned int player_card_last[2];
-} symbols;
+	static double _dealerchair_last;
+	static double _handnumber_last;
+	static int _br_last;
+	static unsigned int _player_card_last[2];
+} *p_symbols;
 
-// This critical section controls access to any variables in the CSymbols class
-// Any code needing access to these variables must grab and release this critical section appropriately
-extern CRITICAL_SECTION		cs_symbols;
-
-#endif /* INC_SYMBOLS_H */
+#endif /* INC_CSYMBOLS_H */

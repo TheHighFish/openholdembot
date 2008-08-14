@@ -1,6 +1,3 @@
-#include "poker_defs.h"
-#include "structs_defines.h" //Matrix 2008-05-14
-
 extern class CVersus {
 public:
 	CVersus();

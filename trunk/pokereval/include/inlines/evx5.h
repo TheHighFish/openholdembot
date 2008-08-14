@@ -20,12 +20,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include <stdlib.h>
-#include <string.h>
-#include "poker_defs.h"
-#include "evx_defs.h"
-#include "inlines/evx_inlines.h"
-
 static inline uint32
 StdDeck_StdRules_EVAL_X5 (StdDeck_RankMask clubs, 
                           StdDeck_RankMask diamonds, 

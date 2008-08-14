@@ -25,9 +25,6 @@
 #ifndef __EVAL_TYPE_H__
 #define __EVAL_TYPE_H__
 
-#include "poker_defs.h"
-
-
 /* This table packs n_bits, is_straight, and (n_bits > 5) into one byte,
    as follows:
    Bit 0:   n_bits > 5

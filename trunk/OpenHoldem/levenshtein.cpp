@@ -1,7 +1,6 @@
 #include "StdAfx.h"
 
 #include "levenshtein.h"
-#include "debug.h"
 #include <string.h>
 #include <malloc.h>
 

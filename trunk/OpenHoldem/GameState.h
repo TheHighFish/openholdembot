@@ -1,5 +1,4 @@
 #include "dll_extension.h"
-#include "structs_defines.h"
 
 extern class GameState {
 public:

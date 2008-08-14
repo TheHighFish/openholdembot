@@ -1,7 +1,7 @@
-#pragma once
+#ifndef INC_DIALOGSAPREFS9_H
+#define INC_DIALOGSAPREFS9_H
+
 #include "resource.h"
-#include "afxwin.h"
-#include "afxcmn.h"
 
 // DialogSAPrefs9 dialog
 
@@ -30,3 +30,6 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 };
+
+
+#endif //INC_DIALOGSAPREFS9_H

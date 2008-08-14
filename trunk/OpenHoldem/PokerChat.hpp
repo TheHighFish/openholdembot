@@ -1,3 +1,6 @@
+#ifndef INC_POKERCHAT_HPP
+#define INC_POKERCHAT_HPP
+
 //////////////////////////////////////////////////////////////////////////
 //
 //  Author: TheHighFish
@@ -16,9 +19,6 @@
 //    implicit this pointer.
 //
 //////////////////////////////////////////////////////////////////////////
-
-#pragma once
-
 
 //  Enumeration constants for simple chat messages.
 //
@@ -96,3 +96,6 @@ bool is_Chat_allowed(void);
 //    Use f$chat as "the_MessageIndex".
 //
 void register_ChatMessage(double the_MessageIndex);
+
+
+#endif //INC_POKERCHAT_HPP

@@ -4,8 +4,6 @@
 #include "stdafx.h"
 #include "OpenHoldem.h"
 #include "DialogRename.h"
-#include "debug.h"
-#include "global.h"
 
 // CDlgRename dialog
 

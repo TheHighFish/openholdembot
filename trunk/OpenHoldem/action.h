@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INC_ACTION_H
+#define INC_ACTION_H
 
 class PokerAction 
 {
@@ -17,3 +18,6 @@ private:
 	int		aggressor_chair(void);
 	bool	agchair_after(void);
 };
+
+
+#endif //INC_ACTION_H

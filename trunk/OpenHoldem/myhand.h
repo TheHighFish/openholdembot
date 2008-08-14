@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INC_MYHAND_H
+#define INC_MYHAND_H
 
 class MyHand 
 {
@@ -24,3 +25,6 @@ private:
 	int		strength_twopair(void);
 	int		strength_onepair(void);
 };
+
+
+#endif //INC_MYHAND_H

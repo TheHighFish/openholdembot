@@ -4,8 +4,6 @@
 #include "stdafx.h"
 #include "OpenHoldem.h"
 #include "DialogNew.h"
-#include "debug.h"
-#include "global.h"
 
 // CDlgNew dialog
 

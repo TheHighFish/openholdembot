@@ -1,9 +1,7 @@
 #include "stdafx.h"
 
 #include "memory.h"
-#include "symbols.h"
-#include "debug.h"
-#include "global.h"
+#include "CSymbols.h"
 #include "grammar.h"
 
 Memory		memory;
@@ -84,7 +82,7 @@ void Memory::store_value(const char * pquery, CEvalInfoFunction **logCallingFunc
     if (memcmp(value,"f$",2)==0)
     {
         *e = SUCCESS;
-        result = do_calc_f$symbol(&global.formula, value, logCallingFunction, logCallingFunction!=NULL, e);
+        result = do_calc_f$symbol(&p_global->formula, value, logCallingFunction, logCallingFunction!=NULL, e);
 
         if (*e==SUCCESS)
         {

@@ -21,7 +21,6 @@
 #ifndef __EVAL_H__
 #define __EVAL_H__
 
-#include "poker_defs.h"
 #include <assert.h>
 
 /*

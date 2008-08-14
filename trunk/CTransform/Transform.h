@@ -1,4 +1,6 @@
-#pragma once
+#ifndef INC_TRANSFORM_H
+#define INC_TRANSFORM_H
+
 
 #include "hash/stdint.h"
 #include "pdiff/RGBAImage.h"
@@ -222,7 +224,7 @@ struct STableMap
 
 	// pots
 	int 	r$c0potX_index[10];
-	int 	r$c0potXchipYZ_index[5][10][10];
+	int 	r$c0potXchipYZ_index[10][10][10];
 
 	// limits
 	int 	r$c0limits_index;
@@ -274,7 +276,7 @@ public:
 					 CString *separation=NULL, COLORREF *cr_avg=0);
 	int t_transform(Stablemap_region *region, HDC hdc, CString *text, 
 					CString *separation, bool background[], bool character[][MAX_CHAR_HEIGHT]);
-	void parse_string_bsl(CString text, CString format, CString *results=NULL, 	
+	void parse_string_bsl(const CString text, const CString format, CString *results=NULL, 	
 		double *handnumber=NULL, double *sblind=NULL, double *bblind=NULL, double *bbet=NULL, 
 		double *ante=NULL, int *limit=NULL, double *sb_bb=NULL, double *bb_BB=NULL, bool *istournament=NULL,
 		bool *found_handnumber=NULL, bool *found_sblind=NULL, bool *found_bblind=NULL, bool *found_bbet=NULL,
@@ -307,3 +309,6 @@ protected:
 int compare_font( char *hexmash1, char *hexmash2);
 int compare_hash( uint32_t *hash1, uint32_t *hash2);
 int	bitcount(unsigned int u);
+
+
+#endif //INC_TRANSFORM_H

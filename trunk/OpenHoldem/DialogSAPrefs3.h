@@ -1,8 +1,7 @@
-#pragma once
+#ifndef INC_DIALOGSAPREFS3_H
+#define INC_DIALOGSAPREFS3_H
 
 #include "resource.h"
-#include "afxwin.h"
-#include "global.h"
 
 // CDlgSAPrefs3 dialog
 
@@ -30,3 +29,6 @@ protected:
 public:
 	CButton m_AlwaysSendState;
 };
+
+
+#endif //INC_DIALOGSAPREFS3_H

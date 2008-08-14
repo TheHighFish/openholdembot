@@ -2,17 +2,13 @@
 //
 
 #include "stdafx.h"
-#include "OpenHoldem.h"
-
 #include "OpenHoldemDoc.h"
 #include "OpenHoldemView.h"
-#include "scraper.h"
-#include "poker_defs.h"
-#include "global.h"
-#include "HeartbeatThread.h"
-#include "symbols.h"
-#include "debug.h"
-#include "structs_defines.h"
+#include "OpenHoldem.h"
+
+#include "CScraper.h"
+#include "CSymbols.h"
+#include "CHeartbeatThread.h"
 
 // Table layouts
 int		cc[5][2] = 
@@ -74,7 +70,7 @@ COpenHoldemView::COpenHoldemView()
 
     __SEH_HEADER
 
-    black_pen.CreatePen(PS_SOLID, 1, COLOR_BLACK);
+	black_pen.CreatePen(PS_SOLID, 1, COLOR_BLACK);
     green_pen.CreatePen(PS_SOLID, 1, COLOR_GREEN);
     red_pen.CreatePen(PS_SOLID, 1, COLOR_RED);
     blue_pen.CreatePen(PS_SOLID, 1, COLOR_BLUE);
@@ -149,18 +145,13 @@ void COpenHoldemView::OnTimer(UINT nIDEvent)
 
     if (nIDEvent == DISPLAY_UPDATE_TIMER) 
 	{
-		// If scraper/symbols are in progress, then don't update now
-		EnterCriticalSection(&cs_scraper);
-		bool			scraper_updating = scraper.scraper_update_in_progress;
-		LeaveCriticalSection(&cs_scraper);
-
-		EnterCriticalSection(&cs_symbols);	
-		bool			symbols_updating = symbols.symbols_update_in_progress;
-		LeaveCriticalSection(&cs_symbols);
-
-		if (!scraper_updating && !symbols_updating)
+		// Only do this if we are not in the middle of a scraper/symbol update
+		if (TryEnterCriticalSection(&p_heartbeat_thread->cs_update_in_progress))
+		{
 			update_display(false);
-    }
+			LeaveCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
+		}
+	}
 
     CView::OnTimer(nIDEvent);
 
@@ -173,13 +164,13 @@ void COpenHoldemView::update_display(bool update_all)
 
     int						i;
 
-    static double			handnumber_last, sblind_last, bblind_last, lim_last, istournament_last;
-    static double			ante_last, pot_last, heartbeat_cycle_time_last;
+    static double			handnumber_last, sblind_last, bblind_last, lim_last;
+    static double			ante_last, pot_last;
     static unsigned int		iterator_thread_progress_last;
     static unsigned int		card_common_last[5];
     static CString			seated_last[10], active_last[10];
     static unsigned int		card_player_last[10][2];
-    static bool				dealer_last[10];
+    static bool				dealer_last[10], istournament_last;
     static CString			playername_last[10];
     static double			playerbalance_last[10];
     static double			playerbet_last[10];
@@ -188,9 +179,13 @@ void COpenHoldemView::update_display(bool update_all)
     RECT					cr;
     CDC						*pDC = GetDC();
 
-	// These variables hold values that are collected in a critical section
-	unsigned int	card_common[5], card_player0, card_player1;
-	bool			is_seated, is_dealer;
+	int sym_handnumber		= (int) p_symbols->sym()->handnumber;
+	double sym_bblind		= p_symbols->sym()->bblind;
+	double sym_sblind		= p_symbols->sym()->sblind;
+	int sym_lim				= (int) p_symbols->sym()->lim;
+	bool sym_istournament	= (bool) p_symbols->sym()->istournament;
+	double sym_ante			= p_symbols->sym()->ante;
+	double sym_pot			= p_symbols->sym()->pot;
 
     // Get size of current client window
     GetClientRect(&cr);
@@ -204,81 +199,43 @@ void COpenHoldemView::update_display(bool update_all)
         pDC->SelectObject(pOldBrush);
     }
 
-	// Get exclusive access to CSymbols variables
-	EnterCriticalSection(&cs_symbols);
-
-		// Draw center info box
-		update_it = false;
-		if (handnumber_last != symbols.sym.handnumber) 
-		{
-			handnumber_last = symbols.sym.handnumber;
-			update_it = true;
-		}
-		if (sblind_last != symbols.sym.sblind) 
-		{
-			sblind_last = symbols.sym.sblind;
-			update_it = true;
-		}
-		if (bblind_last != symbols.sym.bblind) 
-		{
-			bblind_last = symbols.sym.bblind;
-			update_it = true;
-		}
-		if (lim_last != symbols.sym.lim) 
-		{
-			lim_last = symbols.sym.lim;
-			update_it = true;
-		}
-		if (istournament_last != symbols.sym.istournament) 
-		{
-			istournament_last = symbols.sym.istournament;
-			update_it = true;
-		}
-		if (ante_last != symbols.sym.ante != 0) 
-		{
-			ante_last = symbols.sym.ante;
-			update_it = true;
-		}
-		if (pot_last != symbols.sym.pot) 
-		{
-			pot_last = symbols.sym.pot;
-			update_it = true;
-		}
-
-	// Allow other threads to use CSymbols variables
-	LeaveCriticalSection(&cs_symbols);
-
-	// Get exclusive access to CScraper variables
-	EnterCriticalSection(&cs_scraper);
-
-		// Get scraper variables we need for this seat for below
-		for (i=0; i<=4; i++)
-			card_common[i] = scraper.card_common[i];
-
-	// Allow other threads to use CScraper variables
-	LeaveCriticalSection(&cs_scraper);
-
-	//if (iterator_thread_progress_last != iterator_status.iterator_thread_progress) {
-	//	iterator_thread_progress_last = iterator_status.iterator_thread_progress;
-	//	update_it = true;
-	//}
-
-	// Get exclusive access to CHeartbeatThread members
-    //EnterCriticalSection(&cs_heartbeat);
-
-		//if (p_heartbeat_thread)
-		//{
-		//	if (heartbeat_cycle_time_last != p_heartbeat_thread->heartbeat_cycle_time)
-		//	{
-		//		heartbeat_cycle_time_last = p_heartbeat_thread->heartbeat_cycle_time;
-		//		update_it = true;
-		//	}
-		//}
-
-	// Allow other threads to use CHeartbeatThread members
-    //LeaveCriticalSection(&cs_heartbeat);
-
-
+	// Draw center info box
+	update_it = false;
+	if (handnumber_last != sym_handnumber) 
+	{
+		handnumber_last = sym_handnumber;
+		update_it = true;
+	}
+	if (sblind_last != sym_sblind) 
+	{
+		sblind_last = sym_sblind;
+		update_it = true;
+	}
+	if (bblind_last != sym_bblind) 
+	{
+		bblind_last = sym_bblind;
+		update_it = true;
+	}
+	if (lim_last != sym_lim) 
+	{
+		lim_last = sym_lim;
+		update_it = true;
+	}
+	if (istournament_last != sym_istournament) 
+	{
+		istournament_last = sym_istournament;
+		update_it = true;
+	}
+	if (ante_last != sym_ante != 0) 
+	{
+		ante_last = sym_ante;
+		update_it = true;
+	}
+	if (pot_last != sym_pot) 
+	{
+		pot_last = sym_pot;
+		update_it = true;
+	}
 
 	if (update_it || update_all) 
 	{
@@ -291,11 +248,11 @@ void COpenHoldemView::update_display(bool update_all)
 	// Draw common cards
 	for (i=0; i<5; i++) 
 	{
-		if (card_common_last[i] != card_common[i] || update_all) 
+		if (card_common_last[i] != p_scraper->card_common(i) || update_all) 
 		{
-			card_common_last[i] = card_common[i];
+			card_common_last[i] = p_scraper->card_common(i);
 
-			draw_card(card_common[i],
+			draw_card(p_scraper->card_common(i),
 					  cr.right/2 + cc[i][0], cr.bottom/2 + cc[i][1],
 					  cr.right/2 + cc[i][0] + CARDSIZEX, cr.bottom/2 + cc[i][1] + CARDSIZEY,
 					  false);
@@ -303,79 +260,68 @@ void COpenHoldemView::update_display(bool update_all)
 	}
 
 	// Draw collection of player info
-	for (i=0; i<global.trans.map.num_chairs; i++) 
+	for (i=0; i<p_global->trans.map.num_chairs; i++) 
 	{
 
 		// Figure out if we need to redraw this seat
-		EnterCriticalSection(&cs_scraper);
-
-			update_it = false;
-			if (seated_last[i] != scraper.seated[i] ||
-					active_last[i] != scraper.active[i]) 
-			{
-				seated_last[i] = scraper.seated[i];
-				active_last[i] = scraper.active[i];
-				update_it = true;
-			}
-			if (card_player_last[i][0] != scraper.card_player[i][0] ||
-					card_player_last[i][1] != scraper.card_player[i][1]) 
-			{
-				card_player_last[i][0] = scraper.card_player[i][0];
-				card_player_last[i][1] = scraper.card_player[i][1];
-				update_it = true;
-			}
-			if (dealer_last[i] != scraper.dealer[i]) 
-			{
-				dealer_last[i] = scraper.dealer[i];
-				update_it = true;
-			}
-			if (playername_last[i] != scraper.playername[i]) 
-			{
-				playername_last[i] = scraper.playername[i];
-				update_it = true;
-			}
-			if (playerbalance_last[i] != scraper.playerbalance[i]) 
-			{
-				playerbalance_last[i] = scraper.playerbalance[i];
-				update_it = true;
-			}
-			if (playerbet_last[i] != scraper.playerbet[i]) 
-			{
-				playerbet_last[i] = scraper.playerbet[i];
-				update_it = true;
-			}
-
-			// Get scraper variables we need for this seat for below
-			is_seated = scraper.is_string_seated(scraper.seated[i]);
-			card_player0 = scraper.card_player[i][0];
-			card_player1 = scraper.card_player[i][1];
-			is_dealer = scraper.dealer[i];
-
-		LeaveCriticalSection(&cs_scraper);
-
+		update_it = false;
+		if (seated_last[i] != p_scraper->seated(i) ||
+			active_last[i] != p_scraper->active(i)) 
+		{
+			seated_last[i] = p_scraper->seated(i);
+			active_last[i] = p_scraper->active(i);
+			update_it = true;
+		}
+		if (card_player_last[i][0] != p_scraper->card_player(i, 0) ||
+			card_player_last[i][1] != p_scraper->card_player(i, 1)) 
+		{
+			card_player_last[i][0] = p_scraper->card_player(i, 0);
+			card_player_last[i][1] = p_scraper->card_player(i, 1);
+			update_it = true;
+		}
+		if (dealer_last[i] != p_scraper->dealer(i)) 
+		{
+			dealer_last[i] = p_scraper->dealer(i);
+			update_it = true;
+		}
+		if (playername_last[i] != p_scraper->player_name(i)) 
+		{
+			playername_last[i] = p_scraper->player_name(i);
+			update_it = true;
+		}
+		if (playerbalance_last[i] != p_scraper->player_balance(i)) 
+		{
+			playerbalance_last[i] = p_scraper->player_balance(i);
+			update_it = true;
+		}
+		if (playerbet_last[i] != p_scraper->player_bet(i)) 
+		{
+			playerbet_last[i] = p_scraper->player_bet(i);
+			update_it = true;
+		}
 
 		if (update_it || update_all) 
 		{
 			// Draw active circle
-			if (is_seated) 
+			if (p_scraper->IsStringSeated(p_scraper->seated(i))) 
 				draw_seated_active_circle(i);
 
 			// Draw player cards
-			draw_card(card_player0,
-					  cr.right * pc[global.trans.map.num_chairs][i][0] - CARDSIZEX - 2,
-					  cr.bottom * pc[global.trans.map.num_chairs][i][1] - CARDSIZEY/2,
-					  cr.right * pc[global.trans.map.num_chairs][i][0] - 2,
-					  cr.bottom * pc[global.trans.map.num_chairs][i][1] + CARDSIZEY/2 - 1,
+			draw_card(p_scraper->card_player(i, 0),
+					  cr.right * pc[p_global->trans.map.num_chairs][i][0] - CARDSIZEX - 2,
+					  cr.bottom * pc[p_global->trans.map.num_chairs][i][1] - CARDSIZEY/2,
+					  cr.right * pc[p_global->trans.map.num_chairs][i][0] - 2,
+					  cr.bottom * pc[p_global->trans.map.num_chairs][i][1] + CARDSIZEY/2 - 1,
 					  true);
-			draw_card(card_player1,
-					  cr.right * pc[global.trans.map.num_chairs][i][0] + 1,
-					  cr.bottom * pc[global.trans.map.num_chairs][i][1] - CARDSIZEY/2,
-					  cr.right * pc[global.trans.map.num_chairs][i][0] + CARDSIZEX + 1,
-					  cr.bottom * pc[global.trans.map.num_chairs][i][1] + CARDSIZEY/2 - 1,
+			draw_card(p_scraper->card_player(i, 1),
+					  cr.right * pc[p_global->trans.map.num_chairs][i][0] + 1,
+					  cr.bottom * pc[p_global->trans.map.num_chairs][i][1] - CARDSIZEY/2,
+					  cr.right * pc[p_global->trans.map.num_chairs][i][0] + CARDSIZEX + 1,
+					  cr.bottom * pc[p_global->trans.map.num_chairs][i][1] + CARDSIZEY/2 - 1,
 					  true);
 
 			// Draw dealer button
-			if (is_dealer)
+			if (p_scraper->dealer(i))
 				draw_dealer_button(i);
 
 			// Draw name and balance boxes
@@ -406,7 +352,16 @@ void COpenHoldemView::draw_center_info_box(void)
     CDC			*pDC = GetDC();
 	int			height = 80;
 	
-	if (global.preferences.LogSymbol_enabled)
+	int sym_handnumber		= (int) p_symbols->sym()->handnumber;
+	double sym_bblind		= p_symbols->sym()->bblind;
+	double sym_sblind		= p_symbols->sym()->sblind;
+	int sym_lim				= (int) p_symbols->sym()->lim;
+	bool sym_istournament	= (bool) p_symbols->sym()->istournament;
+	double sym_ante			= p_symbols->sym()->ante;
+	double sym_pot			= p_symbols->sym()->pot;
+	bool sym_playing		= (bool) p_symbols->sym()->playing;
+
+	if (p_global->preferences.LogSymbol_enabled)
 		height += 40;
 
     // Get size of current client window
@@ -439,87 +394,68 @@ void COpenHoldemView::draw_center_info_box(void)
     rect.right = right;
     rect.bottom = bottom;
 
-	// Get exclusive access to CSymbols variables
-	EnterCriticalSection(&cs_symbols);
+	t = "";
+	// handnumber
+	if (sym_handnumber != 0) 
+	{
+		s.Format("  Hand #: %.0f\n", sym_handnumber);
+	}
+	else 
+	{
+		s.Format("  Hand #: -\n");
+	}
+	t.Append(s);
 
-		t = "";
-		// handnumber
-		if (symbols.sym.handnumber != 0) 
+	// blinds/type
+	if ((int) sym_sblind != sym_sblind || (int) sym_bblind != sym_bblind) 
+	{
+		s.Format("  %s%s %.2f/%.2f/%.2f\n",
+				 (sym_lim == LIMIT_NL ? "NL" : sym_lim == LIMIT_PL ? "PL" :
+				  sym_lim == LIMIT_FL ? "FL" : "?L"),
+				 (sym_istournament ? "T" : ""),
+				 sym_sblind, sym_bblind, p_symbols->bigbet());
+	}
+	else 
+	{
+		s.Format("  %s%s %.0f/%.0f/%.0f\n",
+				 (sym_lim == LIMIT_NL ? "NL" : sym_lim == LIMIT_PL ? "PL" :
+				  sym_lim == LIMIT_FL ? "FL" : "?L"),
+				 (sym_istournament ? "T" : ""),
+				 sym_sblind, sym_bblind, p_symbols->bigbet());
+	}
+	t.Append(s);
+
+	// ante
+	if (sym_ante != 0) 
+	{
+		if ((int) sym_ante != sym_ante) 
 		{
-			s.Format("  Hand #: %.0f\n", symbols.sym.handnumber);
+			s.Format("  Ante: %.2f\n", sym_ante);
 		}
 		else 
 		{
-			s.Format("  Hand #: -\n");
+			s.Format("  Ante: %.0f\n", sym_ante);
 		}
 		t.Append(s);
+	}
 
-		// blinds/type
-		if ((int) symbols.sym.sblind != symbols.sym.sblind ||
-				(int) symbols.sym.bblind != symbols.sym.bblind) 
-		{
-			s.Format("  %s%s %.2f/%.2f/%.2f\n",
-					 (symbols.sym.lim == LIMIT_NL ? "NL" : symbols.sym.lim == LIMIT_PL ? "PL" :
-					  symbols.sym.lim == LIMIT_FL ? "FL" : "?L"),
-					 (symbols.sym.istournament ? "T" : ""),
-					 symbols.sym.sblind, symbols.sym.bblind, symbols.bigbet);
-		}
-		else 
-		{
-			s.Format("  %s%s %.0f/%.0f/%.0f\n",
-					 (symbols.sym.lim == LIMIT_NL ? "NL" : symbols.sym.lim == LIMIT_PL ? "PL" :
-					  symbols.sym.lim == LIMIT_FL ? "FL" : "?L"),
-					 (symbols.sym.istournament ? "T" : ""),
-					 symbols.sym.sblind, symbols.sym.bblind, symbols.bigbet);
-		}
-		t.Append(s);
+	// Pot
+	if ((int) sym_pot != sym_pot) 
+		s.Format("  Pot: %.2f\n", sym_pot);
 
-		// ante
-		if (symbols.sym.ante != 0) 
+	else 
+		s.Format("  Pot: %.0f\n", sym_pot);
+
+	t.Append(s);
+
+	if (p_symbols->user_chair_confirmed() && sym_playing) 
+	{
+		for (int i=0; i<min(5, p_symbols->logsymbols_collection()->GetCount()); i++)
 		{
-			if ((int) symbols.sym.ante != symbols.sym.ante) 
-			{
-				s.Format("  Ante: %.2f\n", symbols.sym.ante);
-			}
-			else 
-			{
-				s.Format("  Ante: %.0f\n", symbols.sym.ante);
-			}
+			s.Format("  Log: %s\n", p_symbols->logsymbols_collection()[i]);
 			t.Append(s);
 		}
-
-		// Pot
-		if ((int) symbols.sym.pot != symbols.sym.pot) 
-			s.Format("  Pot: %.2f\n", symbols.sym.pot);
-
-		else 
-			s.Format("  Pot: %.0f\n", symbols.sym.pot);
-
-		t.Append(s);
-
-		if (symbols.user_chair_confirmed && symbols.sym.playing) 
-		{
-			for (int i=0; i<min(5, symbols.logsymbols_collection.GetCount()); i++)
-			{
-				s.Format("  Log: %s\n", symbols.logsymbols_collection[i]);
-				t.Append(s);
-			}
-		}
-
-		// Prwin iterator
-		//EnterCriticalSection(&cs_iterator);
-		//s.Format("  Iter: %d\n", iterator_status.iterator_thread_progress);
-		//LeaveCriticalSection(&cs_iterator);
-		//t.Append(s);
-
-		// Cycle time
-		//EnterCriticalSection(&cs_heartbeat);
-		//s.Format("  Cycle: %.2fs", heartbeat_cycle_time);
-		//LeaveCriticalSection(&cs_heartbeat);
-		//t.Append(s);
-
-	// Allow other threads to use CSymbols variables
-	LeaveCriticalSection(&cs_symbols);
+	}
 
 	// Draw it
     pDC->SetBkMode(TRANSPARENT);
@@ -533,7 +469,6 @@ void COpenHoldemView::draw_center_info_box(void)
     ReleaseDC(pDC);
 
     __SEH_LOGFATAL("COpenHoldemView::draw_center_info_box\n");
-
 }
 
 void COpenHoldemView::draw_button_indicators(void) 
@@ -544,49 +479,38 @@ void COpenHoldemView::draw_button_indicators(void)
     bool		fold_drawn, call_drawn, check_drawn, raise_drawn, allin_drawn;
     RECT		cr;
 
-	// These variables hold values that are collected in a critical section
-	bool		button_state, is_fold, is_call, is_check, is_raise, is_allin;
-	
+
 	// Get size of current client window
     GetClientRect(&cr);
 
     fold_drawn = call_drawn = check_drawn = raise_drawn = allin_drawn = false;
-    for (i=0; i<10; i++) 
-	{
-		// Get scraper variables we need for below
-		EnterCriticalSection(&cs_scraper);
-		button_state = scraper.get_button_state(i);
-		is_fold = scraper.is_string_fold(scraper.buttonlabel[i]);
-		is_call = scraper.is_string_call(scraper.buttonlabel[i]);
-		is_check = scraper.is_string_check(scraper.buttonlabel[i]);
-		is_raise = scraper.is_string_raise(scraper.buttonlabel[i]);
-		is_allin = scraper.is_string_allin(scraper.buttonlabel[i]);
-		LeaveCriticalSection(&cs_scraper);
 
+    for (i=0; i<=9; i++) 
+	{
 		// Draw "on" buttons
-		if (button_state) 
+		if (p_scraper->GetButtonState(i)) 
 		{
-            if (is_fold) 
+            if (p_scraper->IsStringFold(p_scraper->button_label(i))) 
 			{
                 draw_specific_button_indicator(i, 'F', cr.right-84, cr.bottom-16, cr.right-70, cr.bottom-2);
                 fold_drawn = true;
             }
-            else if (is_call) 
+            else if (p_scraper->IsStringCall(p_scraper->button_label(i))) 
 			{
                 draw_specific_button_indicator(i, 'C', cr.right-67, cr.bottom-16, cr.right-53, cr.bottom-2);
                 call_drawn = true;
             }
-            else if (is_check) 
+            else if (p_scraper->IsStringCheck(p_scraper->button_label(i))) 
 			{
                 draw_specific_button_indicator(i, 'K', cr.right-50, cr.bottom-16, cr.right-36, cr.bottom-2);
                 check_drawn = true;
             }
-            else if (is_raise) 
+            else if (p_scraper->IsStringRaise(p_scraper->button_label(i))) 
 			{
                 draw_specific_button_indicator(i, 'R', cr.right-33, cr.bottom-16, cr.right-19, cr.bottom-2);
                 raise_drawn = true;
             }
-            else if (is_allin) 
+            else if (p_scraper->IsStringAllin(p_scraper->button_label(i))) 
 			{
                 draw_specific_button_indicator(i, 'A', cr.right-16, cr.bottom-16, cr.right-2, cr.bottom-2);
                 allin_drawn = true;
@@ -611,7 +535,6 @@ void COpenHoldemView::draw_button_indicators(void)
         draw_specific_button_indicator(-1, 'A', cr.right-16, cr.bottom-16, cr.right-2, cr.bottom-2);
 
     __SEH_LOGFATAL("COpenHoldemView::draw_specific_button_indicators\n");
-
 }
 
 void COpenHoldemView::draw_specific_button_indicator(int button_num, char ch, int left, int top, int right, int bottom) 
@@ -624,17 +547,6 @@ void COpenHoldemView::draw_specific_button_indicator(int button_num, char ch, in
     CFont		*oldfont, cFont;
     CString		t;
     CDC			*pDC = GetDC();
-
-	// This variable holds a value that is collected in a critical section
-	bool		button_state = false;
-
-	// Get scraper variable we need for below
-	if (button_num != -1)
-	{
-		EnterCriticalSection(&cs_scraper);
-		button_state = scraper.get_button_state(button_num);
-		LeaveCriticalSection(&cs_scraper);
-	}
 
 	// Set font basics
     lf.lfHeight = -12;
@@ -653,7 +565,7 @@ void COpenHoldemView::draw_specific_button_indicator(int button_num, char ch, in
     }
     else 
 	{
-        if (button_state) 
+        if (p_scraper->GetButtonState(button_num)) 
 		{
             if (ch=='F') 
 			{
@@ -731,11 +643,6 @@ void COpenHoldemView::draw_seated_active_circle(int chair)
     int			left, top, right, bottom;
     CDC			*pDC = GetDC();
 
-	// Get scraper variable we need for below
-	EnterCriticalSection(&cs_scraper);
-	bool		is_active = scraper.is_string_active(scraper.active[chair]);
-	LeaveCriticalSection(&cs_scraper);
-
     // Get size of current client window
     GetClientRect(&cr);
 
@@ -743,15 +650,15 @@ void COpenHoldemView::draw_seated_active_circle(int chair)
     pDC->SetBkColor(COLOR_GRAY);
 
     // Figure placement of circle
-    left = cr.right * pc[global.trans.map.num_chairs][chair][0] - CARDSIZEX - 4;
-    top = cr.bottom * pc[global.trans.map.num_chairs][chair][1] - CARDSIZEX - 3;
-    right = cr.right * pc[global.trans.map.num_chairs][chair][0] + CARDSIZEX + 3;
-    bottom = cr.bottom * pc[global.trans.map.num_chairs][chair][1] + CARDSIZEX + 3;
+    left = cr.right * pc[p_global->trans.map.num_chairs][chair][0] - CARDSIZEX - 4;
+    top = cr.bottom * pc[p_global->trans.map.num_chairs][chair][1] - CARDSIZEX - 3;
+    right = cr.right * pc[p_global->trans.map.num_chairs][chair][0] + CARDSIZEX + 3;
+    bottom = cr.bottom * pc[p_global->trans.map.num_chairs][chair][1] + CARDSIZEX + 3;
 
     pTempPen = (CPen*)pDC->SelectObject(&black_pen);
     oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
 
-    if (is_active) 
+    if (p_scraper->IsStringActive(p_scraper->active(chair))) 
 	{
         pTempBrush = (CBrush*)pDC->SelectObject(&white_brush);
     }
@@ -789,10 +696,10 @@ void COpenHoldemView::draw_dealer_button(int chair)
     pDC->SetBkColor(COLOR_GRAY);
 
     // Figure placement of circle
-    left = cr.right * pc[global.trans.map.num_chairs][chair][0] - 8;
-    top = cr.bottom * pc[global.trans.map.num_chairs][chair][1] - 8;
-    right = cr.right * pc[global.trans.map.num_chairs][chair][0] + 8;
-    bottom = cr.bottom * pc[global.trans.map.num_chairs][chair][1] + 8;
+    left = cr.right * pc[p_global->trans.map.num_chairs][chair][0] - 8;
+    top = cr.bottom * pc[p_global->trans.map.num_chairs][chair][1] - 8;
+    right = cr.right * pc[p_global->trans.map.num_chairs][chair][0] + 8;
+    bottom = cr.bottom * pc[p_global->trans.map.num_chairs][chair][1] + 8;
 
 
     pTempPen = (CPen*)pDC->SelectObject(&black_pen);
@@ -996,13 +903,6 @@ void COpenHoldemView::draw_name_box(int chair)
     CDC			*pDC = GetDC();
     static RECT	name_rect_last[10];
 
-	// Get scraper variables we need for below
-	EnterCriticalSection(&cs_scraper);
-	bool		is_seated = scraper.is_string_seated(scraper.seated[chair]);
-	bool		is_active = scraper.is_string_active(scraper.active[chair]);
-	CString		playername = scraper.playername[chair];
-	LeaveCriticalSection(&cs_scraper);
-
 	// Get size of current client window
     GetClientRect(&cr);
 
@@ -1010,10 +910,10 @@ void COpenHoldemView::draw_name_box(int chair)
     pDC->SetBkColor(COLOR_GRAY);
 
     // Figure placement of box
-    left = cr.right * pc[global.trans.map.num_chairs][chair][0] - 36;
-    top = cr.bottom * pc[global.trans.map.num_chairs][chair][1] + 15;
-    right = cr.right * pc[global.trans.map.num_chairs][chair][0] + 35;
-    bottom = cr.bottom * pc[global.trans.map.num_chairs][chair][1] + 30;
+    left = cr.right * pc[p_global->trans.map.num_chairs][chair][0] - 36;
+    top = cr.bottom * pc[p_global->trans.map.num_chairs][chair][1] + 15;
+    right = cr.right * pc[p_global->trans.map.num_chairs][chair][0] + 35;
+    bottom = cr.bottom * pc[p_global->trans.map.num_chairs][chair][1] + 30;
 
     // Set font basics
     lf.lfHeight = -12;
@@ -1022,9 +922,10 @@ void COpenHoldemView::draw_name_box(int chair)
     oldfont = pDC->SelectObject(&cFont);
     pDC->SetTextColor(COLOR_BLACK);
 
-    if (is_seated || is_active ||
-            (global.trans.map.r$pXseated_index[chair] == -1 && global.trans.map.r$uXseated_index[chair] == -1 &&
-             global.trans.map.r$pXactive_index[chair] == -1 && global.trans.map.r$uXactive_index[chair] == -1) ) 
+    if (p_scraper->IsStringSeated(p_scraper->seated(chair)) || 
+		p_scraper->IsStringActive(p_scraper->active(chair)) /*||
+        (p_global->trans.map.r$pXseated_index[chair] == -1 && p_global->trans.map.r$uXseated_index[chair] == -1 &&
+         p_global->trans.map.r$pXactive_index[chair] == -1 && p_global->trans.map.r$uXactive_index[chair] == -1)*/ ) 
 	{
 
         pTempPen = (CPen*)pDC->SelectObject(&black_pen);
@@ -1037,7 +938,7 @@ void COpenHoldemView::draw_name_box(int chair)
         textrect.top = 0;
         textrect.right = 0;
         textrect.bottom = 0;
-        pDC->DrawText(playername.GetString(), playername.GetLength(), &textrect, DT_CALCRECT);
+        pDC->DrawText(p_scraper->player_name(chair).GetString(), p_scraper->player_name(chair).GetLength(), &textrect, DT_CALCRECT);
 
         // Figure out placement of rectangle
         drawrect.left = left < (left+(right-left)/2)-textrect.right/2-3 ? left : (left+(right-left)/2)-textrect.right/2-3;
@@ -1055,7 +956,7 @@ void COpenHoldemView::draw_name_box(int chair)
         pDC->SetBkMode(OPAQUE);
         pDC->Rectangle(drawrect.left, drawrect.top, drawrect.right, drawrect.bottom);
         pDC->SetBkMode(TRANSPARENT);
-        pDC->DrawText(playername.GetString(), playername.GetLength(), &drawrect,
+        pDC->DrawText(p_scraper->player_name(chair).GetString(), p_scraper->player_name(chair).GetLength(), &drawrect,
                       DT_CENTER | DT_SINGLELINE | DT_VCENTER);
         name_rect_last[chair].left = drawrect.left;
         name_rect_last[chair].top = drawrect.top;
@@ -1098,14 +999,6 @@ void COpenHoldemView::draw_balance_box(int chair)
     CDC			*pDC = GetDC();
     static RECT	balance_rect_last[10];
 
-	// Get scraper variables we need for below
-	EnterCriticalSection(&cs_scraper);
-	bool		is_seated = scraper.is_string_seated(scraper.seated[chair]);
-	bool		is_active = scraper.is_string_active(scraper.active[chair]);
-	bool		sittingout = scraper.sittingout[chair];
-	double		playerbalance = scraper.playerbalance[chair];
-	LeaveCriticalSection(&cs_scraper);
-
 	// Get size of current client window
     GetClientRect(&cr);
 
@@ -1113,10 +1006,10 @@ void COpenHoldemView::draw_balance_box(int chair)
     pDC->SetBkColor(COLOR_GRAY);
 
     // Figure placement of box
-    left = cr.right * pc[global.trans.map.num_chairs][chair][0] - 26;
-    top = cr.bottom * pc[global.trans.map.num_chairs][chair][1] + 30;
-    right = cr.right * pc[global.trans.map.num_chairs][chair][0] + 25;
-    bottom = cr.bottom * pc[global.trans.map.num_chairs][chair][1] + 45;
+    left = cr.right * pc[p_global->trans.map.num_chairs][chair][0] - 26;
+    top = cr.bottom * pc[p_global->trans.map.num_chairs][chair][1] + 30;
+    right = cr.right * pc[p_global->trans.map.num_chairs][chair][0] + 25;
+    bottom = cr.bottom * pc[p_global->trans.map.num_chairs][chair][1] + 45;
 
     // Set font basics
     lf.lfHeight = -12;
@@ -1125,9 +1018,10 @@ void COpenHoldemView::draw_balance_box(int chair)
     oldfont = pDC->SelectObject(&cFont);
     pDC->SetTextColor(COLOR_BLACK);
 
-    if (is_seated || is_active ||
-            (global.trans.map.r$pXseated_index[chair] == -1 && global.trans.map.r$uXseated_index[chair] == -1 &&
-             global.trans.map.r$pXactive_index[chair] == -1 && global.trans.map.r$uXactive_index[chair] == -1) ) 
+    if (p_scraper->IsStringSeated(p_scraper->seated(chair)) || 
+		p_scraper->IsStringActive(p_scraper->active(chair)) /*||
+        (p_global->trans.map.r$pXseated_index[chair] == -1 && p_global->trans.map.r$uXseated_index[chair] == -1 &&
+         p_global->trans.map.r$pXactive_index[chair] == -1 && p_global->trans.map.r$uXactive_index[chair] == -1)*/ ) 
 	{
 
         pTempPen = (CPen*)pDC->SelectObject(&black_pen);
@@ -1136,26 +1030,26 @@ void COpenHoldemView::draw_balance_box(int chair)
         oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush
 
         // Format Text
-        if (!sittingout) 
+        if (!p_scraper->sitting_out(chair)) 
 		{
-            if ((int) playerbalance != playerbalance) 
+            if ((int) p_scraper->player_balance(chair) != p_scraper->player_balance(chair)) 
 			{
-                t.Format("%.2f", playerbalance);
+                t.Format("%.2f", p_scraper->player_balance(chair));
             }
             else 
 			{
-                t.Format("%d", (int) playerbalance);
+                t.Format("%d", (int) p_scraper->player_balance(chair));
             }
         }
         else 
 		{
-            if ((int) playerbalance != playerbalance) 
+            if ((int) p_scraper->player_balance(chair) != p_scraper->player_balance(chair)) 
 			{
-                t.Format("Out (%.2f)", playerbalance);
+                t.Format("Out (%.2f)", p_scraper->player_balance(chair));
             }
             else 
 			{
-                t.Format("Out (%d)", (int) playerbalance);
+                t.Format("Out (%d)", (int) p_scraper->player_balance(chair));
             }
         }
     }
@@ -1224,11 +1118,6 @@ void COpenHoldemView::draw_player_bet(int chair)
     int			xcenter, ycenter, xadj, yadj;
     CDC			*pDC = GetDC();
 
-	// Get scraper variable we need for below
-	EnterCriticalSection(&cs_scraper);
-	double		playerbet = scraper.playerbet[chair];
-	LeaveCriticalSection(&cs_scraper);
-
 	// Get size of current client window
     GetClientRect(&cr);
 
@@ -1246,10 +1135,10 @@ void COpenHoldemView::draw_player_bet(int chair)
     pDC->SetBkColor(COLOR_GRAY);
 
     // Figure placement
-    xcenter = cr.right * pc[global.trans.map.num_chairs][chair][0];
-    ycenter = cr.bottom * pc[global.trans.map.num_chairs][chair][1];
-    xadj = pcbet[global.trans.map.num_chairs][chair][0];
-    yadj = pcbet[global.trans.map.num_chairs][chair][1];
+    xcenter = cr.right * pc[p_global->trans.map.num_chairs][chair][0];
+    ycenter = cr.bottom * pc[p_global->trans.map.num_chairs][chair][1];
+    xadj = pcbet[p_global->trans.map.num_chairs][chair][0];
+    yadj = pcbet[p_global->trans.map.num_chairs][chair][1];
 
     // Set font basics
     lf.lfHeight = -12;
@@ -1259,15 +1148,15 @@ void COpenHoldemView::draw_player_bet(int chair)
     pDC->SetTextColor(COLOR_WHITE);
 
     // Format text
-    if (playerbet != 0) 
+    if (p_scraper->player_bet(chair) != 0) 
 	{
-        if ((int) playerbet != playerbet) 
+        if ((int) p_scraper->player_bet(chair) != p_scraper->player_bet(chair)) 
 		{
-            t.Format("%.2f", playerbet);
+            t.Format("%.2f", p_scraper->player_bet(chair));
         }
         else 
 		{
-            t.Format("%d", (int) playerbet);
+            t.Format("%d", (int) p_scraper->player_bet(chair));
         }
     }
     else 

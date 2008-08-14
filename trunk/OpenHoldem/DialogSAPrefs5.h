@@ -1,7 +1,7 @@
-#pragma once
+#ifndef INC_DIALOGSAPREFS5_H
+#define INC_DIALOGSAPREFS5_H
 
 #include "resource.h"
-#include "afxwin.h"
 
 // CDlgSAPrefs5 dialog
 
@@ -25,3 +25,6 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 };
+
+
+#endif //INC_DIALOGSAPREFS5_H

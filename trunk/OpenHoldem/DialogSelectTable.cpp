@@ -4,8 +4,6 @@
 #include "stdafx.h"
 #include "OpenHoldem.h"
 #include "DialogSelectTable.h"
-#include "debug.h"
-#include "global.h"
 
 // CDlgSelectTable dialog
 

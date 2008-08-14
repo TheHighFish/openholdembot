@@ -2,12 +2,9 @@
 #include <strstream>
 
 #include "grammar.h"
-#include "symbols.h"
-#include "debug.h"
-#include "global.h"
+#include "CSymbols.h"
 #include "versus.h"
 #include "ICMCalculator.h"
-//  2008.02.27 by THF
 #include "Perl.hpp"
 #include "action.h"
 #include "myhand.h"
@@ -51,7 +48,7 @@ void SymbolValidation(const char *begin, const char *end)
 		{
 			if (tolower(sym.c_str()[3])!='x')
 			{
-				global.parse_symbol_stop_strs.Add(sym);
+				p_global->parse_symbol_stop_strs.Add(sym);
 				return;
 			}
 		}
@@ -59,7 +56,7 @@ void SymbolValidation(const char *begin, const char *end)
 		{
 			if (tolower(sym.c_str()[3])!='x' || tolower(sym.c_str()[4])!='x')
 			{
-				global.parse_symbol_stop_strs.Add(sym);
+				p_global->parse_symbol_stop_strs.Add(sym);
 				return;
 			}
 		}
@@ -67,13 +64,13 @@ void SymbolValidation(const char *begin, const char *end)
 		{
 			if (tolower(sym.c_str()[3])!='x' || tolower(sym.c_str()[4])!='x' || tolower(sym.c_str()[5])!='x')
 			{
-				global.parse_symbol_stop_strs.Add(sym);
+				p_global->parse_symbol_stop_strs.Add(sym);
 				return;
 			}
 		}
         else
         {
-			global.parse_symbol_stop_strs.Add(sym);
+			p_global->parse_symbol_stop_strs.Add(sym);
 			return;
         }
     }
@@ -82,12 +79,12 @@ void SymbolValidation(const char *begin, const char *end)
     else if (memcmp(sym.c_str(), "f$", 2)==0)
     {
 		match = false;
-		for (i=0; i<global.parse_symbol_formula->mFunction.GetSize() && match==false; i++)
-			if (strcmp(global.parse_symbol_formula->mFunction[i].func.GetString(), sym.c_str())==0)
+		for (i=0; i<p_global->parse_symbol_formula->mFunction.GetSize() && match==false; i++)
+			if (strcmp(p_global->parse_symbol_formula->mFunction[i].func.GetString(), sym.c_str())==0)
 				match = true;
 
 		if (!match)
-			global.parse_symbol_stop_strs.Add(sym);
+			p_global->parse_symbol_stop_strs.Add(sym);
 
         return;
     }
@@ -102,8 +99,8 @@ void SymbolValidation(const char *begin, const char *end)
     //  Perl symbols (starting with "pl_")
     else if (memcmp(sym.c_str(), "pl_", 3)==0)
 	{
-		if (!the_Perl_Interpreter.is_Perl_Symbol(sym.c_str()))
-			global.parse_symbol_stop_strs.Add(sym);
+		if (!the_Perl_Interpreter->is_Perl_Symbol(sym.c_str()))
+			p_global->parse_symbol_stop_strs.Add(sym);
 
 		return;
     }
@@ -115,7 +112,7 @@ void SymbolValidation(const char *begin, const char *end)
         versus.get_symbol(sym.c_str(), &e);
 
 		if (e != SUCCESS)
-			global.parse_symbol_stop_strs.Add(sym);
+			p_global->parse_symbol_stop_strs.Add(sym);
 
 		return;
     }
@@ -128,7 +125,7 @@ void SymbolValidation(const char *begin, const char *end)
         logsymbols.process_query(sym.c_str(), &e);
 
 		if (e != SUCCESS)
-			global.parse_symbol_stop_strs.Add(sym);
+			p_global->parse_symbol_stop_strs.Add(sym);
 
 		return;
     }
@@ -141,7 +138,7 @@ void SymbolValidation(const char *begin, const char *end)
         icm.ProcessQueryICM(sym.c_str()+3, &e);
 
 		if (e != SUCCESS)
-			global.parse_symbol_stop_strs.Add(sym);
+			p_global->parse_symbol_stop_strs.Add(sym);
 
 		return;
 	}
@@ -154,7 +151,7 @@ void SymbolValidation(const char *begin, const char *end)
         action.process_query(sym.c_str(), &e);
 
 		if (e != SUCCESS)
-			global.parse_symbol_stop_strs.Add(sym);
+			p_global->parse_symbol_stop_strs.Add(sym);
 
 		return;
     }
@@ -167,7 +164,7 @@ void SymbolValidation(const char *begin, const char *end)
         myhand.process_query(sym.c_str(), &e);
 
 		if (e != SUCCESS)
-			global.parse_symbol_stop_strs.Add(sym);
+			p_global->parse_symbol_stop_strs.Add(sym);
 
 		return;
     }
@@ -183,7 +180,7 @@ void SymbolValidation(const char *begin, const char *end)
 		//memory.process_query(sym.c_str(), &e);
 
 		//if (e != SUCCESS)
-		//	global.parse_symbol_stop_strs.Add(sym);
+		//	p_global->parse_symbol_stop_strs.Add(sym);
 
         return;
     }
@@ -192,11 +189,10 @@ void SymbolValidation(const char *begin, const char *end)
     else
     {
 		e = SUCCESS;
-		
-        symbols.GetSymbolVal(sym.c_str(), &e);
+        p_symbols->GetSymbolVal(sym.c_str(), &e);
 
 		if (e != SUCCESS)
-			global.parse_symbol_stop_strs.Add(sym);
+			p_global->parse_symbol_stop_strs.Add(sym);
 
         return;
 	}
@@ -270,7 +266,7 @@ double do_calc_f$symbol(SFormula *f, char *symbol, CEvalInfoFunction **logCallin
         {
             if (strcmp(f->mFunction[i].func, symbol)==0)
             {
-                if (f->mFunction[i].fresh == true && !global.preferences.disable_caching && !skipCache)
+                if (f->mFunction[i].fresh == true && !p_global->preferences.disable_caching && !skipCache)
                 {
                     ret = f->mFunction[i].cache;
 					if (logCallingFunction && *logCallingFunction) {
@@ -597,12 +593,11 @@ double eval_symbol(SFormula *f, string sym, CEvalInfoFunction **logCallingFuncti
     const char	*ranks = "  23456789TJQKA";
 	int			rank_temp;
 
-	EnterCriticalSection(&cs_symbols);
-	int			rank0 = (((int)(symbols.sym.$$pc[0]))>>4)&0x0f;
-	int			rank1 = (((int)(symbols.sym.$$pc[1]))>>4)&0x0f;
-	bool		sym_issuited = (bool) symbols.sym.issuited;
-	LeaveCriticalSection(&cs_symbols);
-
+	int			$$pc0 = (int) p_symbols->sym()->$$pc[0];
+	int			$$pc1 = (int) p_symbols->sym()->$$pc[1];
+	int			rank0 = ($$pc0>>4)&0x0f;
+	int			rank1 = ($$pc1>>4)&0x0f;
+	bool		sym_issuited = (bool) p_symbols->sym()->issuited;
 
     // "e" literal
     if (strcmp(sym.c_str(), "e")==0)
@@ -699,11 +694,11 @@ double eval_symbol(SFormula *f, string sym, CEvalInfoFunction **logCallingFuncti
 
     //  2008.02.27 by THF
     //  Perl symbols (starting with "pl_")
-    else if (the_Perl_Interpreter.is_Perl_Symbol(sym.c_str()))
+    else if (the_Perl_Interpreter->is_Perl_Symbol(sym.c_str()))
     {
         //  Error checking is done inside the Perl class
         //  A.t.m. creating a messagebox on serious errors.
-        return the_Perl_Interpreter.get_Perl_Symbol(sym.c_str());
+        return the_Perl_Interpreter->get_Perl_Symbol(sym.c_str());
     }
 
     // vs$ symbols
@@ -749,7 +744,7 @@ double eval_symbol(SFormula *f, string sym, CEvalInfoFunction **logCallingFuncti
     // all other symbols
     else
     {
-		double result = symbols.GetSymbolVal(sym.c_str(), e);
+		double result = p_symbols->GetSymbolVal(sym.c_str(), e);
 
         return result;
     }
@@ -811,7 +806,9 @@ void CEvalInfoSymbol::DumpSymbol(int indent)
 	else
 		message.Format("%s=%.2f", m_Symbol, m_Value);
 
-    symbols.symboltrace_collection.Add(message);
+	EnterCriticalSection(&p_symbols->cs_symbols);
+    p_symbols->set_symboltrace_collection()->Add(message);
+	LeaveCriticalSection(&p_symbols->cs_symbols);
 
     __SEH_LOGFATAL("CEvalInfoSymbol::DumpSymbol\n");
 };
@@ -839,7 +836,10 @@ void CEvalInfoFunction::DumpFunction(int indent)
 		message.Format("%s%s=%.2f [Cached]", space, m_FunctionName, m_Result);
 	else
 		message.Format("%s%s=%.2f [Line: %d, Col: %d]", space, m_FunctionName, m_Result, m_Line, m_Column);
-    symbols.symboltrace_collection.Add(message);
+	
+	EnterCriticalSection(&p_symbols->cs_symbols);
+    p_symbols->set_symboltrace_collection()->Add(message);
+	LeaveCriticalSection(&p_symbols->cs_symbols);
 
 	m_CalledFunctions.DumpFunctionArray(indent+1);
 	m_SymbolsUsed.DumpSymbolArray(indent+1);

@@ -1,3 +1,6 @@
+#ifndef INC_WINMGR_H
+#define INC_WINMGR_H
+
 ////////////////////////////////////////////////////////////////
 // MSDN Magazine -- July 2001
 // If this code works, it was written by Paul DiLascia.
@@ -7,7 +10,6 @@
 //
 // WinMgr.h -- Main header file for WinMgr library.
 //
-#pragma once
 
 // when using screen dimensions, this is infinite
 const LONG INFINITY=0x7fff; // max short
@@ -251,3 +253,6 @@ protected:
 private:
 	CWinMgr() { ASSERT(FALSE); } // no default constructor
 };
+
+
+#endif //INC_WINMGR_H

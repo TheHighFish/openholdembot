@@ -2,7 +2,6 @@
 #define INC_GRAMMAR_H
 
 #include <boost/spirit/tree/ast.hpp>
-#include "structs_defines.h"
 using namespace std;
 using namespace boost::spirit;
 
@@ -32,6 +31,7 @@ public:
 	CString m_Symbol;
 	double m_Value;
 };
+
 class CEvalInfoSymbolArray : public CArray<CEvalInfoSymbol *, CEvalInfoSymbol *>
 {
 public:

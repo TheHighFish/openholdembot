@@ -4,8 +4,6 @@
 #include "stdafx.h"
 #include "OpenHoldem.h"
 #include "DialogLockBlinds.h"
-#include "debug.h"
-#include "structs_defines.h"
 
 // CDlgLockBlinds dialog
 CDlgLockBlinds::CDlgLockBlinds(CWnd* pParent /*=NULL*/)	: CDialog(CDlgLockBlinds::IDD, pParent) {

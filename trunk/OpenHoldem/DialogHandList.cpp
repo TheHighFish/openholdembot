@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 #include "DialogHandList.h"
-#include "debug.h"
 
 // CDlgHandList dialog
 CDlgHandList::CDlgHandList(CWnd* pParent /*=NULL*/)

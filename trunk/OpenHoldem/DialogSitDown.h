@@ -1,6 +1,5 @@
-#pragma once
-#include "afxwin.h"
-
+#ifndef INC_DIALOGSITDOWN_H
+#define INC_DIALOGSITDOWN_H
 
 // CDlgSitDown dialog
 
@@ -30,3 +29,6 @@ public:
 	int nvacant;
 	int m_selected_chair;
 };
+
+
+#endif //INC_DIALOGSITDOWN_H

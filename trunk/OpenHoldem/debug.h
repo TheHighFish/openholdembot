@@ -85,7 +85,7 @@ BOOL CreateBMPFile(const char *szFile, HBITMAP hBMP);
 void start_log(void);
 void write_log(char* fmt, ...);
 void write_log_nostamp(char* fmt, ...);
-void write_log_autoplay(const char * action);
+void write_logautoplay(const char * action);
 void stop_log(void);
 int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers);
 

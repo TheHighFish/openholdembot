@@ -1,8 +1,10 @@
+#ifndef INC_STDAFX_H
+#define INC_STDAFX_H
+
 // stdafx.h : include file for standard system include files,
 // or project specific include files that are used frequently,
 // but are changed infrequently
 
-#pragma once
 
 #ifndef _SECURE_ATL
 #define _SECURE_ATL 1
@@ -55,4 +57,19 @@
 
 #include <afxmt.h>			// CMutex
 
+#include <windows.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "structs_defines.h"
+#include "CGlobal.h"
+
 #include "debug.h"
+#include "poker_defs.h"
+#include "pokereval_export.h"
+#include "evx_defs.h"
+#include "inlines/evx_inlines.h"
+
+
+
+#endif //INC_STDAFX_H

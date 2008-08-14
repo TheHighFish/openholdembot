@@ -17,9 +17,29 @@ MAINTENANCE:
 - Complete reworking of thread model to make use of critical sections more intuitive, and to improve
   reliability of code.  Current thinking is that thread concurrency issues are a source of the
   current spate of crashes, this reworking addresses those concurrency issues.
+  Specifically, the following classes are now fully encapsulated with access to member variables
+  being provided via accessor and mutator functions.  Access to class members is strictly limited
+  to the published interface, and is enforced at compile time via private class sections and
+  const-ness checks.  Critical section handling is also now within the class and is used to
+  serve the relevant mutator functions.  Classes that are not included in the list below will be fully
+  encapsulated at a later date.
+  - CScraper
+  - CSymbols
+  - CIteratorThread
+  - CAutoplayer
+  - CHeartbeatThread
+  - CPokerTrackerThread
+  - CGlobal (partial)
+              
+- Consistency of variable/function naming has been applied for the CScraper and CSymbols classes.
 - Minidumps are now generated automatically upon a crash - dumps can be found in your Windows
   "temp" directory.  
-
+- Primary formulas (f$alli, f$swag, f$rais, f$call, f$play, f$prefold, f$delay, f$chat) are now only 
+  calculated once per heartbeat and reused.  Update of main window (best action, especially) is much more timely.
+- System-wide mutex is now created once, upon instantiation of the CAutoplayer class.  Locks and unlocks all now
+  use this single mutex instance.  All early, exception-case exits that *may* have resulted in an unintentionally
+  long-locked mutext have had Unlocks added.
+  
 v1.9.2 2008-07-25
 =================
 NEW STUFF:

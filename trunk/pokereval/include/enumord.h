@@ -104,7 +104,6 @@
 #ifndef ENUMORD_H
 #define ENUMORD_H
 
-#include "pokereval_export.h"
 #include "poker_defs.h"
 
 /* largest integer N such that N * ENUM_ORDERING_NBITS(N) < 32 */

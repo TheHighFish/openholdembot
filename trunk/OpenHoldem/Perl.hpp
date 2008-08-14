@@ -60,7 +60,7 @@ extern class Perl
 	void unload_FormulaFile();
 	void check_Syntax();
 	bool is_a_Formula_loaded();
-} the_Perl_Interpreter;
+} *the_Perl_Interpreter;
 
 #endif /* INC_PEARL_H */
 

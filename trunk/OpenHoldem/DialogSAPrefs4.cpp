@@ -4,7 +4,6 @@
 #include "stdafx.h"
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs4.h"
-#include "global.h"
 #include "Registry.h"
 
 
@@ -42,10 +41,10 @@ BOOL CDlgSAPrefs4::OnInitDialog()
     CSAPrefsSubDlg::OnInitDialog();
     CString		text;
 
-    text.Format("%d", global.preferences.scrape_delay);
+    text.Format("%d", p_global->preferences.scrape_delay);
     m_ScrapeDelay.SetWindowText(text);
     m_ScrapeDelay_Spin.SetRange(100, 5000);
-    m_ScrapeDelay_Spin.SetPos(global.preferences.scrape_delay);
+    m_ScrapeDelay_Spin.SetPos(p_global->preferences.scrape_delay);
     m_ScrapeDelay_Spin.SetBuddy(&m_ScrapeDelay);
 
     return TRUE;  // return TRUE unless you set the focus to a control
@@ -62,10 +61,10 @@ void CDlgSAPrefs4::OnOK()
         MessageBox("Invalid Scrape Delay", "ERROR", MB_OK);
         return;
     }
-    global.preferences.scrape_delay = strtoul(text.GetString(), 0, 10);
+    p_global->preferences.scrape_delay = strtoul(text.GetString(), 0, 10);
 
     reg.read_reg();
-    reg.scrape_delay = global.preferences.scrape_delay;
+    reg.scrape_delay = p_global->preferences.scrape_delay;
     reg.write_reg();
 
     CSAPrefsSubDlg::OnOK();

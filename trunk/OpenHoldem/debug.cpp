@@ -2,11 +2,9 @@
 
 #include <dbghelp.h>
 
-#include "debug.h"
-#include "global.h"
-#include "symbols.h"
-#include "scraper.h"
-#include "IteratorThread.h"
+#include "CSymbols.h"
+#include "CScraper.h"
+#include "CIteratorThread.h"
 #include "inlines/eval.h"
 
 //#include <vld.h>			// visual leak detector
@@ -94,12 +92,14 @@ char * get_time(char * timebuf)
 char * get_now_time(char * timebuf) 
 {
     __SEH_HEADER
+
     // returns current system time as a UNIX style string
     time_t	ltime;
 
     time( &ltime );
     ctime_s(timebuf, 26, &ltime);
     timebuf[24]='\0';
+
     return timebuf;
 
     __SEH_LOGFATAL("::get_now_time\n");
@@ -114,12 +114,13 @@ void logfatal (char* fmt, ...)
     FILE		*fatallog;
     char		nowtime[26];
 
-    sprintf(fatallogpath, "%s\\fatal error.log", global.startup_path);
+    sprintf(fatallogpath, "%s\\fatal error.log", p_global->startup_path());
     fatallog = fopen(fatallogpath, "a");
 
     va_start(ap, fmt);
     vsprintf(buff, fmt, ap);
-    fprintf(fatallog, "%s> %s", get_now_time(nowtime), buff);
+	get_now_time(nowtime);
+    fprintf(fatallog, "%s> %s", nowtime, buff);
 
     va_end(ap);
     fclose(fatallog);
@@ -228,7 +229,7 @@ LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers)
 	// Create a minidump
 	GenerateDump(pExceptionPointers);
 
-    sprintf(flpath, "%s\\fatal error.log", global.startup_path);
+    sprintf(flpath, "%s\\fatal error.log", p_global->startup_path());
     strcpy(msg, "OpenHoldem is about to crash.\n");
     strcat(msg, "A minidump has been created in your\n");
 	strcat(msg, "Windows temporary file directory.\n");
@@ -349,7 +350,7 @@ void start_log(void)
     if (log_fp==NULL) 
 	{
         CString fn;
-        fn.Format("%s\\oh_%lu.log", global.startup_path, global.Session_ID);
+        fn.Format("%s\\oh_%lu.log", p_global->startup_path(), p_global->session_id());
         log_fp = fopen(fn.GetString(), "a");
         write_log("! log file open\n");
         fprintf(log_fp, "yyyy.mm.dd hh:mm:ss -  # hand commoncard rank poker  win  los  tie  P      nit bestaction - play*      call       bet       pot   balance - FCRA FCRA swag\n");
@@ -373,7 +374,8 @@ void write_log(char* fmt, ...)
 
         va_start(ap, fmt);
         vsprintf(buff, fmt, ap);
-        fprintf(log_fp, "%s - %s", get_time(nowtime), buff);
+		get_time(nowtime);
+        fprintf(log_fp, "%s - %s", nowtime, buff);
 
         va_end(ap);
 
@@ -405,7 +407,7 @@ void write_log_nostamp(char* fmt, ...)
     __SEH_LOGFATAL("::write_log_nostamp\n");
 }
 
-void write_log_autoplay(const char * action) 
+void write_logautoplay(const char * action) 
 {
     __SEH_HEADER
     char		nowtime[26];
@@ -416,78 +418,45 @@ void write_log_autoplay(const char * action)
     HandVal		hv;
     CString		fcra_formula_status;
 
-	EnterCriticalSection(&cs_symbols);
-	bool			user_chair_confirmed = symbols.user_chair_confirmed;
-	int				sym_userchair = (int) symbols.sym.userchair;
-	int				sym_br = (int) symbols.sym.br;
-	int				sym_myturnbits = (int) symbols.sym.myturnbits;
-	double			sym_handrank169 = symbols.sym.handrank169;
-	double			sym_handrank1000 = symbols.sym.handrank1000;
-	double			sym_handrank1326 = symbols.sym.handrank1326;
-	double			sym_handrank2652 = symbols.sym.handrank2652;
-	double			sym_handrankp = symbols.sym.handrankp;
-	double			f_alli = symbols.f$alli;
-	double			f_swag = symbols.f$swag;
-	double			f_rais = symbols.f$rais;
-	double			f_call = symbols.f$call;
-	double			f_prefold = symbols.f$prefold;
-	double			sym_prwin = symbols.sym.prwin;
-	double			sym_prlos = symbols.sym.prlos;
-	double			sym_prtie = symbols.sym.prtie;
-	double			sym_call = symbols.sym.call;
-	double			sym_bet_4 = symbols.sym.bet[4];
-	double			sym_pot = symbols.sym.pot;
-	double			sym_balance_10 = symbols.sym.balance[10];
-	int				sym_nopponents = (int) symbols.sym.nopponents;
-	int				sym_nit = (int) symbols.sym.nit;
-	LeaveCriticalSection(&cs_symbols);
+	int			sym_userchair = (int) p_symbols->sym()->userchair;
+	int			sym_br = (int) p_symbols->sym()->br;
 
-	EnterCriticalSection(&cs_scraper);
-	unsigned int	card_player[2], card_common[5];
-	for (i=0; i<=1; i++)
-		card_player[i] = scraper.card_player[sym_userchair][i];
-	for (i=0; i<=4; i++)
-		card_common[i] = scraper.card_common[i];
-	LeaveCriticalSection(&cs_scraper);
 
 	if (log_fp != NULL) 
 	{
-		EnterCriticalSection(&cs_symbols);
-			// log$ writing
-			if (global.preferences.LogSymbol_enabled)
+		// log$ writing
+		if (p_global->preferences.LogSymbol_enabled)
+		{
+			int max_log = p_symbols->logsymbols_collection()->GetCount();
+
+			if (max_log > 0)
 			{
-				int max_log = symbols.logsymbols_collection.GetCount();
-
-				if (max_log > 0)
+				if (max_log > p_global->preferences.LogSymbol_max_log)
 				{
-					if (max_log > global.preferences.LogSymbol_max_log)
-					{
-						max_log = global.preferences.LogSymbol_max_log;
-					}
+					max_log = p_global->preferences.LogSymbol_max_log;
+				}
 
-					write_log("*** log$ (Total: %d | Showing: %d)\n", symbols.logsymbols_collection.GetCount(), max_log);
+				write_log("*** log$ (Total: %d | Showing: %d)\n", p_symbols->logsymbols_collection()->GetCount(), max_log);
 
-					for (int i=0; i<max_log; i++)
-					{
-						write_log("***     %s\n", symbols.logsymbols_collection[i]);
-					}
+				for (int i=0; i<max_log; i++)
+				{
+					write_log("***     %s\n", p_symbols->logsymbols_collection()->GetAt(i));
 				}
 			}
+		}
 		
-		LeaveCriticalSection(&cs_symbols);
-
-
 		CardMask_RESET(Cards);
 		nCards=0;
+
 		// player cards
-		if (user_chair_confirmed) 
+		if (p_symbols->user_chair_confirmed()) 
 		{
 			for (i=0; i<=1; i++) 
 			{
-				card = StdDeck_cardString(card_player[i]);
+				card = StdDeck_cardString(p_scraper->card_player(sym_userchair, i));
 				temp.Format("%s", card);
 				pcards.Append(temp);
-				CardMask_SET(Cards, card_player[i]);
+				CardMask_SET(Cards, p_scraper->card_player(sym_userchair, i));
 				nCards++;
 			}
 		}
@@ -502,12 +471,13 @@ void write_log_autoplay(const char * action)
 		{
 			for (i=0; i<=2; i++) 
 			{
-				if (card_common[i] != CARD_BACK && card_common[i] != CARD_NOCARD) 
+				if (p_scraper->card_common(i) != CARD_BACK && 
+					p_scraper->card_common(i) != CARD_NOCARD) 
 				{
-					card = StdDeck_cardString(card_common[i]);
+					card = StdDeck_cardString(p_scraper->card_common(i));
 					temp.Format("%s", card);
 					comcards.Append(temp);
-					CardMask_SET(Cards, card_common[i]);
+					CardMask_SET(Cards, p_scraper->card_common(i));
 					nCards++;
 				}
 			}
@@ -515,19 +485,19 @@ void write_log_autoplay(const char * action)
 
 		if (sym_br >= 3) 
 		{
-			card = StdDeck_cardString(card_common[3]);
+			card = StdDeck_cardString(p_scraper->card_common(3));
 			temp.Format("%s", card);
 			comcards.Append(temp);
-			CardMask_SET(Cards, card_common[3]);
+			CardMask_SET(Cards, p_scraper->card_common(3));
 			nCards++;
 		}
 
 		if (sym_br >= 4) 
 		{
-			card = StdDeck_cardString(card_common[4]);
+			card = StdDeck_cardString(p_scraper->card_common(4));
 			temp.Format("%s", card);
 			comcards.Append(temp);
-			CardMask_SET(Cards, card_common[4]);
+			CardMask_SET(Cards, p_scraper->card_common(4));
 			nCards++;
 		}
 
@@ -535,20 +505,20 @@ void write_log_autoplay(const char * action)
         comcards = comcards.Left(10);
 
         // handrank
-        if (global.preferences.handrank_value == "169")
-            rank.Format("%.0f", sym_handrank169);
+        if (p_global->preferences.handrank_value == "169")
+			rank.Format("%.0f", p_symbols->sym()->handrank169);
 
-        else if (global.preferences.handrank_value == "1000")
-            rank.Format("%.0f", sym_handrank1000);
+        else if (p_global->preferences.handrank_value == "1000")
+            rank.Format("%.0f", p_symbols->sym()->handrank1000);
 
-        else if (global.preferences.handrank_value == "1326")
-            rank.Format("%.0f", sym_handrank1326);
+        else if (p_global->preferences.handrank_value == "1326")
+            rank.Format("%.0f", p_symbols->sym()->handrank1326);
 
-        else if (global.preferences.handrank_value == "2652")
-            rank.Format("%.0f", sym_handrank2652);
+        else if (p_global->preferences.handrank_value == "2652")
+            rank.Format("%.0f", p_symbols->sym()->handrank2652);
 
-        else if (global.preferences.handrank_value == "p")
-            rank.Format("%.2f", sym_handrankp);
+        else if (p_global->preferences.handrank_value == "p")
+            rank.Format("%.2f", p_symbols->sym()->handrankp);
 
 
         // poker hand
@@ -587,23 +557,23 @@ void write_log_autoplay(const char * action)
         // best action
         if (strcmp(action, "SWAG")==0) 
 		{
-            bestaction.Format("$%.2f", f_swag);
+            bestaction.Format("$%.2f", p_symbols->f$swag());
         }
         else 
 		{
-            if (f_alli)
+            if (p_symbols->f$alli())
                 bestaction = "Allin";
 
-            else if (f_swag)
+            else if (p_symbols->f$swag())
                 bestaction = "SWAG";
 
-            else if (f_rais)
+            else if (p_symbols->f$rais())
                 bestaction = "Bet/Raise";
 
-            else if (f_call)
+            else if (p_symbols->f$call())
                 bestaction = "Call/Check";
 
-            else if (f_prefold)
+            else if (p_symbols->f$prefold())
                 bestaction = "Pre-fold";
 
             else
@@ -612,6 +582,7 @@ void write_log_autoplay(const char * action)
         }
 
         // fcra_seen
+		int sym_myturnbits = (int) p_symbols->sym()->myturnbits;
         fcra_seen.Format("%s%s%s%s",
                          sym_myturnbits&0x1 ? "F" : ".",
                          sym_myturnbits&0x2 ? "C" : ".",
@@ -620,36 +591,52 @@ void write_log_autoplay(const char * action)
 
         // fcra formula status
         fcra_formula_status.Format("%s%s%s%s",
-                                   !f_alli && !f_rais && !f_call && !f_swag ? "F" : ".",
-                                   f_call ? "C" : ".",
-                                   f_rais ? "R" : ".",
-                                   f_alli ? "A" : ".");
+                                   !p_symbols->f$alli() && !p_symbols->f$rais() && !p_symbols->f$call() && !p_symbols->f$swag() ? "F" : ".",
+                                   p_symbols->f$call() ? "C" : ".",
+                                   p_symbols->f$rais() ? "R" : ".",
+                                   p_symbols->f$alli() ? "A" : ".");
 
-        fprintf(log_fp, "%s - %1d ", get_time(nowtime), global.trans.map.num_chairs);
-        fprintf(log_fp, "%4s %10s %4s %5s ", pcards.GetString(), comcards.GetString(), rank.GetString(), pokerhand.GetString());
-        fprintf(log_fp, "%4d %4d %4d ", (int) (sym_prwin*1000),(int) (sym_prlos*1000), (int) (sym_prtie*1000));
-        fprintf(log_fp, "%2d %8d %-10s - ", (int) sym_nopponents, (int) sym_nit, bestaction.GetString());
-        fprintf(log_fp, "%-5s %9.2f %9.2f %9.2f ", action, sym_call, sym_bet_4, sym_pot);
-        fprintf(log_fp, "%9.2f - %s %s %.2f\n", sym_balance_10, fcra_seen.GetString(), fcra_formula_status.GetString(), f_swag);
+        fprintf(log_fp, "%s - %1d ", 
+			get_time(nowtime), 
+			p_global->trans.map.num_chairs);
+        fprintf(log_fp, "%4s %10s %4s %5s ", 
+			pcards.GetString(), 
+			comcards.GetString(), 
+			rank.GetString(), 
+			pokerhand.GetString());
+        fprintf(log_fp, "%4d %4d %4d ", 
+			(int) (p_symbols->sym()->prwin*1000),
+			(int) (p_symbols->sym()->prlos*1000), 
+			(int) (p_symbols->sym()->prtie*1000));
+        fprintf(log_fp, "%2d %8d %-10s - ", 
+			(int) p_symbols->sym()->nopponents,
+			(int) p_symbols->sym()->nit,
+			bestaction.GetString());
+        fprintf(log_fp, "%-5s %9.2f %9.2f %9.2f ", 
+			action, 
+			p_symbols->sym()->call, 
+			p_symbols->sym()->bet, 
+			p_symbols->sym()->pot);
+		fprintf(log_fp, "%9.2f - %s %s %.2f\n", 
+			p_symbols->sym()->balance, 
+			fcra_seen.GetString(), 
+			fcra_formula_status.GetString(), 
+			p_symbols->f$swag() );
 
-		EnterCriticalSection(&cs_symbols);
-
-			if (global.preferences.Trace_enabled && symbols.symboltrace_collection.GetSize() > 0)
+		if (p_global->preferences.Trace_enabled && p_symbols->symboltrace_collection()->GetSize() > 0)
+		{
+			write_log_nostamp("***** Autoplayer Trace ****\n");
+			for (int i=0; i<p_symbols->symboltrace_collection()->GetSize(); i++)
 			{
-				write_log_nostamp("***** Autoplayer Trace ****\n");
-				for (int i=0; i<symbols.symboltrace_collection.GetSize(); i++)
-				{
-					write_log_nostamp("%s\n", symbols.symboltrace_collection[i]);
-				}
-				write_log_nostamp("***********************\n");
+				write_log_nostamp("%s\n", p_symbols->symboltrace_collection()->GetAt(i));
 			}
-
-		LeaveCriticalSection(&cs_symbols);
+			write_log_nostamp("***********************\n");
+		}
 
 		fflush(log_fp);
     }
 
-	__SEH_LOGFATAL("::write_log_autoplay\n");
+	__SEH_LOGFATAL("::write_logautoplay\n");
 }
 
 void stop_log(void) 

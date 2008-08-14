@@ -1,14 +1,11 @@
 #include "StdAfx.h"
 
 #include "PokerPro.h"
-#include "debug.h"
+#include "CScraper.h"
+#include "CSymbols.h"
+#include "CIteratorThread.h"
+#include "CAutoplayer.h"
 #include "registry.h"
-#include "global.h"
-#include "scraper.h"
-#include "structs_defines.h"
-#include "poker_defs.h"
-#include "symbols.h"
-#include "IteratorThread.h"
 #include "grammar.h"
 #include "DialogPpro.h"
 
@@ -1733,14 +1730,15 @@ void PokerPro::DoScrape(void)
     // Common cards
     for (i=0; i<=4; i++) 
 	{
-        scraper.card_common[i] = CARD_NOCARD;
-        if ((data.m_tinf.m_card[i]&0xff) == WH_CARDBACK) 
+        p_scraper->set_card_common(i, CARD_NOCARD);
+
+		if ((data.m_tinf.m_card[i]&0xff) == WH_CARDBACK)
 		{
-            scraper.card_common[i] = CARD_BACK;
-        }
+            p_scraper->set_card_common(i, CARD_BACK);
+		}
         else if ((data.m_tinf.m_card[i]&0xff) == WH_NOCARD) 
 		{
-            scraper.card_common[i] = CARD_NOCARD;
+            p_scraper->set_card_common(i, CARD_NOCARD);
         }
         else 
 		{
@@ -1758,7 +1756,7 @@ void PokerPro::DoScrape(void)
 
             rank = ((data.m_tinf.m_card[i]>>4)&0x0f)-2;
 
-            scraper.card_common[i] = StdDeck_MAKE_CARD(rank, suit);
+            p_scraper->set_card_common(i, StdDeck_MAKE_CARD(rank, suit));
         }
     }
 
@@ -1769,15 +1767,17 @@ void PokerPro::DoScrape(void)
         // Player cards
         for (j=0; j<=1; j++) 
 		{
-            scraper.card_player[i][j] = CARD_NOCARD;
-            if (data.m_pinf[i].m_isPlaying&0x1) {
+            p_scraper->set_card_player(i, j, CARD_NOCARD);
+
+            if (data.m_pinf[i].m_isPlaying&0x1) 
+			{
                 if ((data.m_pinf[i].m_card[j]&0xff) == WH_CARDBACK) 
 				{
-                    scraper.card_player[i][j] = CARD_BACK;
+                    p_scraper->set_card_player(i, j, CARD_BACK);
                 }
                 else if ((data.m_pinf[i].m_card[j]&0xff) == WH_NOCARD) 
 				{
-                    scraper.card_player[i][j] = CARD_NOCARD;
+                    p_scraper->set_card_player(i, j, CARD_NOCARD);
                 }
                 else 
 				{
@@ -1795,94 +1795,110 @@ void PokerPro::DoScrape(void)
 
                     rank = ((data.m_pinf[i].m_card[j]>>4)&0x0f)-2;
 
-                    scraper.card_player[i][j] = StdDeck_MAKE_CARD(rank, suit);
+                    p_scraper->set_card_player(i, j, StdDeck_MAKE_CARD(rank, suit));
                 }
             }
         }
 
-        scraper.seated[i] = (data.m_pinf[i].m_isSeated&0x1) ? "true" : "false";
-        scraper.active[i] = (data.m_pinf[i].m_isActive&0x1) ? "true" : "false";
+        p_scraper->set_seated(i, (data.m_pinf[i].m_isSeated&0x1) ? "true" : "false");
+        p_scraper->set_active(i, (data.m_pinf[i].m_isActive&0x1) ? "true" : "false");
 
-        scraper.dealer[i] = false;
-        scraper.playername[i] = data.m_pinf[i].m_name;
-        scraper.name_good_scrape[i] = true;
+        p_scraper->set_dealer(i, false);
+        p_scraper->set_player_name(i, data.m_pinf[i].m_name);
+        p_scraper->set_name_good_scrape(i, true);
         convert_money(money, data.m_pinf[i].m_balance);
-        scraper.playerbalance[i] = atof(money);
-        scraper.balance_good_scrape[i] = true;
+        p_scraper->set_player_balance(i, atof(money));
+        p_scraper->set_balance_good_scrape(i, true);
         convert_money(money, data.m_pinf[i].m_betAmount);
-        scraper.playerbet[i] = atof(money);
-        scraper.sittingout[i] = !(data.m_pinf[i].m_isPlaying&0x1);
+        p_scraper->set_player_bet(i, atof(money));
+        p_scraper->set_sitting_out(i, !(data.m_pinf[i].m_isPlaying&0x1));
 
         // Clear some things if no one is at this chair
-        if (!scraper.is_string_seated(scraper.seated[i]) & !scraper.is_string_active(scraper.active[i])) 
+        if (!p_scraper->IsStringSeated(p_scraper->seated(i)) & !p_scraper->IsStringActive(p_scraper->active(i))) 
 		{
-            scraper.playername[i] = "";
-            scraper.name_good_scrape[i] = false;
-            scraper.playerbalance[i] = 0;
-            scraper.balance_good_scrape[i] = false;
+            p_scraper->set_player_name(i, "");
+            p_scraper->set_name_good_scrape(i, false);
+            p_scraper->set_player_balance(i, 0.);
+            p_scraper->set_balance_good_scrape(i, false);
         }
 
         // Pots
         convert_money(money, data.m_pot[i]);
-        scraper.pot[i] = atof(money);
+        p_scraper->set_pot(i, atof(money));
     }
 
-    scraper.dealer[data.m_tinf.m_activeDealer&0xf] = true;
-    scraper.s_limit_info.handnumber = data.m_handnumber;
-    convert_money(money, data.m_ginf[data.m_tinf.m_tid].m_sblind);
-    scraper.s_limit_info.sblind = atof(money);
-    scraper.s_limit_info.found_sblind = true;
+    p_scraper->set_dealer(data.m_tinf.m_activeDealer&0xf, true);
+
+	// Limit info
+	SLimitInfo LI;
+	LI.handnumber = data.m_handnumber;
+	LI.found_handnumber = true;
+
+	convert_money(money, data.m_ginf[data.m_tinf.m_tid].m_sblind);
+	LI.sblind = atof(money);
+	LI.found_sblind = true;
     convert_money(money, data.m_ginf[data.m_tinf.m_tid].m_minbet);
-    scraper.s_limit_info.bblind = atof(money);
-    scraper.s_limit_info.found_bblind = true;
+	LI.bblind = atof(money);
+    LI.found_bblind = true;
     convert_money(money, data.m_ginf[data.m_tinf.m_tid].m_maxbet);
-    scraper.s_limit_info.bbet = atof(money);
-    scraper.s_limit_info.found_bbet = true;
+    LI.bbet = atof(money);
+	LI.found_bbet = true;
 
-    // don't know where to get ante info from
-    convert_money(money, 0/*data.m_ginf[data.m_tinf.m_tid].*/);
-    scraper.s_limit_info.ante = atof(money);
-    scraper.s_limit_info.found_ante = true;
+    convert_money(money, 0/*data.m_ginf[data.m_tinf.m_tid].*/);  // don't know where to get ante info from
+    LI.ante = atof(money);
+    LI.found_ante = true;
 
-    scraper.s_limit_info.istournament = (data.m_ginf[data.m_tinf.m_tid].m_tmode&0x1) && data.m_ginf[data.m_tinf.m_tid].m_tlevel;
-    scraper.s_limit_info.limit = (data.m_ginf[data.m_tinf.m_tid].m_lim&0x7)==0 ? LIMIT_NL :
-                                 (data.m_ginf[data.m_tinf.m_tid].m_lim&0x7)==1 ? LIMIT_PL : LIMIT_FL;
-    scraper.s_limit_info.found_limit = true;
+    LI.limit = (data.m_ginf[data.m_tinf.m_tid].m_lim&0x7)==0 ? LIMIT_NL :
+			   (data.m_ginf[data.m_tinf.m_tid].m_lim&0x7)==1 ? LIMIT_PL : 
+			   LIMIT_FL;
+    LI.found_limit = true;
 
-    scraper.buttonlabel[0] = "fold";
-    scraper.buttonlabel[1] = "call";
-    scraper.buttonlabel[2] = "raise";
-    scraper.buttonlabel[3] = "allin";
-    scraper.buttonlabel[4] = "check";
-    scraper.buttonlabel[5] = "sitin";
-    scraper.buttonlabel[6] = "sitout";
-    scraper.buttonlabel[7] = "autopost";
+    LI.istournament = (data.m_ginf[data.m_tinf.m_tid].m_tmode&0x1) && data.m_ginf[data.m_tinf.m_tid].m_tlevel;
+
+	LI.sb_bb = 0.;
+	LI.found_sb_bb = false;
+	LI.bb_BB = 0.;
+	LI.found_bb_BB = false;
+
+	p_scraper->SetLimitInfo(LI);
+
+	// buttons
+    p_scraper->set_button_label(0, "fold");
+    p_scraper->set_button_label(1, "call");
+    p_scraper->set_button_label(2, "raise");
+    p_scraper->set_button_label(3, "allin");
+    p_scraper->set_button_label(4, "check");
+    p_scraper->set_button_label(5, "sitin");
+    p_scraper->set_button_label(6, "sitout");
+    p_scraper->set_button_label(7, "autopost");
 
     for (i=0; i<=4; i++) 
 	{
-        scraper.buttonstate[i] = "false";
+        p_scraper->set_button_state(i, "false");
     }
     if (autoplayer_can_act) 
 	{
-        scraper.buttonstate[3] = scraper.s_limit_info.limit==LIMIT_NL ? "true" : "false";
-        scraper.buttonstate[2] = data.m_pinf[data.m_userchair].m_balance > get_current_bet()-data.m_pinf[data.m_userchair].m_betAmount &&
-                                 ((scraper.s_limit_info.limit==LIMIT_NL || scraper.s_limit_info.limit==LIMIT_PL) ||
-                                  get_current_bet() < (data.m_tinf.m_maxNBets&0xf)*get_betx()) ? "true" : "false";
-        scraper.buttonstate[1] = get_current_bet() - data.m_pinf[data.m_userchair].m_betAmount > 0 ? "true" : "false";
-        scraper.buttonstate[4] = get_current_bet() - data.m_pinf[data.m_userchair].m_betAmount == 0 ? "true" : "false";
-        scraper.buttonstate[0] = scraper.buttonstate[4]=="false" ? "true" : "false";
+        p_scraper->set_button_state(3, p_scraper->s_limit_info()->limit==LIMIT_NL ? "true" : "false");
+        p_scraper->set_button_state(2, 
+			data.m_pinf[data.m_userchair].m_balance > get_current_bet() - data.m_pinf[data.m_userchair].m_betAmount &&
+			((p_scraper->s_limit_info()->limit==LIMIT_NL || p_scraper->s_limit_info()->limit==LIMIT_PL) ||
+			  get_current_bet() < (data.m_tinf.m_maxNBets&0xf)*get_betx()) ? "true" : "false");
+        p_scraper->set_button_state(1, get_current_bet() - data.m_pinf[data.m_userchair].m_betAmount > 0 ? "true" : "false");
+        p_scraper->set_button_state(4, get_current_bet() - data.m_pinf[data.m_userchair].m_betAmount == 0 ? "true" : "false");
+        p_scraper->set_button_state(0, p_scraper->button_state(4)=="false" ? "true" : "false");
     }
-    scraper.buttonstate[5] = (data.m_pinf[data.m_userchair].m_isActive) ? "false" : "true";
-    scraper.buttonstate[6] = (data.m_pinf[data.m_userchair].m_isActive) ? "true" : "false";
-    scraper.buttonstate[7] = "true";
+    p_scraper->set_button_state(5, (data.m_pinf[data.m_userchair].m_isActive) ? "false" : "true");
+    p_scraper->set_button_state(6, (data.m_pinf[data.m_userchair].m_isActive) ? "true" : "false");
+    p_scraper->set_button_state(7, "true");
 
     __SEH_LOGFATAL("PokerPro::DoScrape : \n");
 }
 
-// Copied from Autoplayer.cpp to be used for f$delay (4-4-2008) Spektre
+// Copied from CAutoplayer.cpp to be used for f$delay (4-4-2008) Spektre
 int PokerPro::count_same_scrapes(void) 
 {
     __SEH_HEADER
+
     int						i;
     static unsigned int		card_common_last[5] = {0};
     static unsigned int		card_player_last[10][2] = {0};
@@ -1893,64 +1909,56 @@ int PokerPro::count_same_scrapes(void)
     bool					same_scrape;
     static int				num_same_scrapes=0;
 
-	EnterCriticalSection(&cs_symbols);
-	double			sym_myturnbits = symbols.sym.myturnbits;
-	LeaveCriticalSection(&cs_symbols);
+	int sym_myturnbits = (int) p_symbols->sym()->myturnbits;
 
-	// Get exclusive access to CScraper variables
-	EnterCriticalSection(&cs_scraper);
-	
-		// These items need to be the same to count as a identical frame:
-		// - up and down cards
-		// - button position
-		// - playerbets
-		// - playerbalances
-		// - button states
-		same_scrape = true;
-		for (i=0; i<5; i++)
+	// These items need to be the same to count as a identical frame:
+	// - up and down cards
+	// - button position
+	// - playerbets
+	// - playerbalances
+	// - button states
+	same_scrape = true;
+	for (i=0; i<=4; i++)
+	{
+		if (p_scraper->card_common(i) != card_common_last[i])  same_scrape = false;
+	}
+
+	for (i=0; i<=9; i++)
+	{
+		if (p_scraper->card_player(i, 0) != card_player_last[i][0])  same_scrape = false;
+		if (p_scraper->card_player(i, 1) != card_player_last[i][1])  same_scrape = false;
+		if (p_scraper->dealer(i) != dealer_last[i])  same_scrape = false;
+		if (p_scraper->player_balance(i) != playerbalance_last[i])  same_scrape = false;
+		if (p_scraper->player_bet(i) != playerbet_last[i])  same_scrape = false;
+	}
+
+	if (sym_myturnbits != myturnbitslast)  same_scrape = false;
+
+	if (same_scrape)
+	{
+		num_same_scrapes++;
+	}
+	else
+	{
+		for (i=0; i<=4; i++)
 		{
-			if (scraper.card_common[i] != card_common_last[i])  same_scrape = false;
+			card_common_last[i] = p_scraper->card_common(i);
 		}
-
-		for (i=0; i<10; i++)
+		for (i=0; i<=9; i++)
 		{
-			if (scraper.card_player[i][0] != card_player_last[i][0])  same_scrape = false;
-			if (scraper.card_player[i][1] != card_player_last[i][1])  same_scrape = false;
-			if (scraper.dealer[i] != dealer_last[i])  same_scrape = false;
-			if (scraper.playerbalance[i] != playerbalance_last[i])  same_scrape = false;
-			if (scraper.playerbet[i] != playerbet_last[i])  same_scrape = false;
+			card_player_last[i][0] = p_scraper->card_player(i, 0);
+			card_player_last[i][1] = p_scraper->card_player(i, 1);
+			dealer_last[i] = p_scraper->dealer(i);
+			playerbalance_last[i] = p_scraper->player_balance(i);
+			playerbet_last[i] = p_scraper->player_bet(i);
 		}
-
-		if (sym_myturnbits != myturnbitslast)  same_scrape = false;
-
-		if (same_scrape)
-		{
-			num_same_scrapes++;
-		}
-		else
-		{
-			for (i=0; i<5; i++)
-			{
-				card_common_last[i] = scraper.card_common[i];
-			}
-			for (i=0; i<10; i++)
-			{
-				card_player_last[i][0] = scraper.card_player[i][0];
-				card_player_last[i][1] = scraper.card_player[i][1];
-				dealer_last[i] = scraper.dealer[i];
-				playerbalance_last[i] = scraper.playerbalance[i];
-				playerbet_last[i] = scraper.playerbet[i];
-			}
-			myturnbitslast = sym_myturnbits;
-			num_same_scrapes = 0;
-		}
-
-	// Allow other threads to use CScraper variables
-	LeaveCriticalSection(&cs_scraper);
+		myturnbitslast = sym_myturnbits;
+		num_same_scrapes = 0;
+	}
 
 	return num_same_scrapes;
 
-    __SEH_LOGFATAL("Autoplayer::count_same_scrapes :\n");
+    __SEH_LOGFATAL("PokerPro::count_same_scrapes :\n");
 }
 
 
@@ -1958,56 +1966,33 @@ void PokerPro::DoAutoplayer(void)
 {
     __SEH_HEADER
 
-    int				i, error, x, delay;
+    int				x, delay;
 
-	// These variables hold values that are collected in a critical section
-	double			play, f_delay, alli, swag, call, rais;
-
-	EnterCriticalSection(&cs_iterator);
-    bool			iterator_running = iterator_status.iterator_thread_running;
-    LeaveCriticalSection(&cs_iterator);
-
-	EnterCriticalSection(&cs_scraper);
-	bool			button_state[7];
-	for (i=1; i<=6; i++)
-	{
-		button_state[i] = scraper.get_button_state(i);
-	}
-	LeaveCriticalSection(&cs_scraper);
-
-	EnterCriticalSection(&cs_symbols);
-	int				sym_myturnbits = (int) symbols.sym.myturnbits;
-	LeaveCriticalSection(&cs_symbols);
+	int sym_myturnbits = (int) p_symbols->sym()->myturnbits;
+	int sym_br = (int) p_symbols->sym()->br;
 
 	////////////////////////////////////////////////////////////////////////////////
 	// f$play
-	error = SUCCESS;
-	play = calc_f$symbol(&global.formula, "f$play", &error);
-
-	EnterCriticalSection(&cs_symbols);
-	symbols.f$play = play;
-	LeaveCriticalSection(&cs_symbols);
-
-	if (play==-2) 
+	if (p_symbols->f$play()==-2) 
 	{
 		send_stand(data.m_userchair);	   // leave table
 	}
-	else if (play==-1) 
+	else if (p_symbols->f$play()==-1) 
 	{ 
 	}										// no action
 																
-	else if (play==0 && button_state[6]) 
+	else if (p_symbols->f$play()==0 && p_scraper->GetButtonState(6)) 
 	{
 		send_sitout(data.m_userchair);    // sit out
 	}
 
-	else if (play==1 && button_state[5]) 
+	else if (p_symbols->f$play()==1 && p_scraper->GetButtonState(5)) 
 	{
 		send_sitin(data.m_userchair);    // sit in
 	}
 
 	// If iterator thread is still iterating, then return
-	if (iterator_running) 
+	if (_iter_vars.iterator_thread_running) 
 		return;
 
 	// if we have no visible buttons, then return
@@ -2015,112 +2000,78 @@ void PokerPro::DoAutoplayer(void)
 		return;
 
 	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return (added Spektre 2008-04-03)
-	error = SUCCESS;
-	f_delay = calc_f$symbol(&global.formula, "f$delay", &error);
-	
-	EnterCriticalSection(&cs_symbols);
-	symbols.f$delay = f_delay;
-	LeaveCriticalSection(&cs_symbols);
-
-	delay = f_delay / global.preferences.scrape_delay;    // scale f$delay to a number of scrapes
+	delay = p_symbols->f$delay() / p_global->preferences.scrape_delay;    // scale f$delay to a number of scrapes
 	x = count_same_scrapes();
-	if (x < (int) global.preferences.frame_delay + delay) 
+	if (x < (int) p_global->preferences.frame_delay + delay) 
 		return;
 
-	// calculate f$alli, f$swag, f$rais, and f$call for autoplayer's use
-	error = SUCCESS;
-	alli = calc_f$symbol(&global.formula, "f$alli", &error);
-	error = SUCCESS;
-	swag = calc_f$symbol(&global.formula, "f$swag", &error);
-	error = SUCCESS;
-	rais = calc_f$symbol(&global.formula, "f$rais", &error);
-	error = SUCCESS;
-	call = calc_f$symbol(&global.formula, "f$call", &error);
-
-	EnterCriticalSection(&cs_symbols);
-	symbols.f$alli = alli;
-	symbols.f$swag = swag;
-	symbols.f$rais = rais;
-	symbols.f$call = call;
-	LeaveCriticalSection(&cs_symbols);
-
-	if (alli && button_state[3] && autoplayer_can_act) 
+	// take action
+	if (p_symbols->f$alli() && p_scraper->GetButtonState(3) && autoplayer_can_act) 
 	{
 		Sleep(500);
 		send_action('ALLI', 0);
 		autoplayer_can_act = false;
-		global.replay_recorded_this_turn = false;
+		p_global->set_replay_recorded_this_turn(false);
 		Sleep(500);
-		EnterCriticalSection(&cs_symbols);
-		symbols.sym.prevaction = PREVACT_ALLI;
-		LeaveCriticalSection(&cs_symbols);
+		p_autoplayer->set_prevaction(PREVACT_ALLI);
 	}
-	else if (swag && button_state[2] && autoplayer_can_act) 
+	else if (p_symbols->f$swag() && p_scraper->GetButtonState(2) && autoplayer_can_act) 
 	{
 		Sleep(500);
-		send_action('SBET', (int) (swag*100));
+		send_action('SBET', (int) (p_symbols->f$swag()*100));
 		autoplayer_can_act = false;
-		global.replay_recorded_this_turn = false;
+		p_global->set_replay_recorded_this_turn(false);
 		Sleep(500);
-		EnterCriticalSection(&cs_symbols);
-		symbols.sym.didswag[4] = 1;
-		symbols.sym.didswag[(int) symbols.sym.br-1] = 1;
-		symbols.sym.prevaction = PREVACT_SWAG;
-		LeaveCriticalSection(&cs_symbols);
+		p_autoplayer->set_didswag(4, 1);
+		p_autoplayer->set_didswag(sym_br-1, 1);
+		p_autoplayer->set_prevaction(PREVACT_SWAG);
 	}
-	else if (rais && button_state[2] && autoplayer_can_act) 
+	else if (p_symbols->f$rais() && p_scraper->GetButtonState(2) && autoplayer_can_act) 
 	{
 		Sleep(500);
 		send_action('RAIS', 0);
 		autoplayer_can_act = false;
-		global.replay_recorded_this_turn = false;
+		p_global->set_replay_recorded_this_turn(false);
 		Sleep(500);
-		EnterCriticalSection(&cs_symbols);
-		symbols.sym.didrais[4] = 1;
-		symbols.sym.didrais[(int) symbols.sym.br-1] = 1;
-		symbols.sym.prevaction = PREVACT_RAIS;
-		LeaveCriticalSection(&cs_symbols);
+		p_autoplayer->set_didrais(4, 1);
+		p_autoplayer->set_didrais(sym_br-1, 1);
+		p_autoplayer->set_prevaction(PREVACT_RAIS);
 	}
-	else if (call && button_state[1] && autoplayer_can_act) 
+	else if (p_symbols->f$call() && p_scraper->GetButtonState(1) && autoplayer_can_act) 
 	{
 		Sleep(500);
 		send_action('CALL', 0);
 		autoplayer_can_act = false;
-		global.replay_recorded_this_turn = false;
+		p_global->set_replay_recorded_this_turn(false);
 		Sleep(500);
-		EnterCriticalSection(&cs_symbols);
-		symbols.sym.didcall[4] = 1;
-		symbols.sym.didcall[(int) symbols.sym.br-1] = 1;
-		symbols.sym.prevaction = PREVACT_CALL;
-		LeaveCriticalSection(&cs_symbols);
+		p_autoplayer->set_didcall(4, 1);
+		p_autoplayer->set_didcall(sym_br-1, 1);
+		p_autoplayer->set_prevaction(PREVACT_CALL);
 	}
-	else if (button_state[4] && autoplayer_can_act) 
+	else if (p_scraper->GetButtonState(4) && autoplayer_can_act) 
 	{
 		Sleep(500);
 		send_action('CHEC', 0);
 		autoplayer_can_act = false;
-		global.replay_recorded_this_turn = false;
+		p_global->set_replay_recorded_this_turn(false);
 		Sleep(500);
-		EnterCriticalSection(&cs_symbols);
-		symbols.sym.didchec[4] = 1;
-		symbols.sym.didchec[(int) symbols.sym.br-1] = 1;
-		symbols.sym.prevaction = PREVACT_CHEC;
-		LeaveCriticalSection(&cs_symbols);
+		p_autoplayer->set_didchec(4, 1);
+		p_autoplayer->set_didchec(sym_br-1, 1);
+		p_autoplayer->set_prevaction(PREVACT_CHEC);
 	}
 	else if (autoplayer_can_act) 
 	{
 		Sleep(500);
 		send_action('FOLD', 0);
-		global.replay_recorded_this_turn = false;
+		p_global->set_replay_recorded_this_turn(false);
 		autoplayer_can_act = false;
 		Sleep(500);
-		EnterCriticalSection(&cs_symbols);
-		symbols.sym.prevaction = PREVACT_FOLD;
-		LeaveCriticalSection(&cs_symbols);
+		p_autoplayer->set_prevaction(PREVACT_FOLD);
 	}
 
-	__SEH_LOGFATAL("PokerPro::DoAutoplayer : \n");
+	p_symbols->UpdateAutoplayerInfo();
 
+	__SEH_LOGFATAL("PokerPro::DoAutoplayer : \n");
 }
 
 void PokerPro::publish(CString *text, int flags) 
@@ -2246,11 +2197,11 @@ void PokerPro::writehh(CString *s)
 
     if (handhistory) 
 	{
-        fn.Format("%s\\ppro\\%s_%lu.log", global.startup_path, data.m_site_name, global.Session_ID);
+        fn.Format("%s\\ppro\\%s_%lu.log", p_global->startup_path(), data.m_site_name, p_global->session_id());
         hh_fp = fopen(fn.GetString(), "a");
         if (hh_fp==NULL) 
 		{
-            fd.Format("%s\\ppro", global.startup_path);
+            fd.Format("%s\\ppro", p_global->startup_path());
             CreateDirectory(fd.GetString(), NULL);
             hh_fp = fopen(fn.GetString(), "a");
         }

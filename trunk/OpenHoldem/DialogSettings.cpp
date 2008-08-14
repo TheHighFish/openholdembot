@@ -4,8 +4,6 @@
 #include "stdafx.h"
 #include "OpenHoldem.h"
 #include "DialogSettings.h"
-#include "debug.h"
-#include "global.h"
 
 // CDlgSettings dialog
 

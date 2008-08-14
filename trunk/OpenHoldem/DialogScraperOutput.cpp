@@ -2,14 +2,15 @@
 //
 
 #include "stdafx.h"
+
+#include "OpenHoldem.h"
+#include "MainFrm.h"
+
+#include "CScraper.h"
+#include "CHeartbeatThread.h"
+
 #include "DialogScraperOutput.h"
 #include "Registry.h"
-#include "global.h"
-#include "structs_defines.h"
-#include "scraper.h"
-#include "debug.h"
-#include "MainFrm.h"
-#include "OpenHoldem.h"
 
 // CDlgScraperOutput dialog
 CDlgScraperOutput	*m_ScraperOutputDlg = NULL;
@@ -246,10 +247,10 @@ void CDlgScraperOutput::add_listbox_items()
     m_RegionList.ResetContent();
     m_RegionList.SetCurSel(-1);
 
-    N = global.trans.map.r$.GetSize();
+    N = p_global->trans.map.r$.GetSize();
     for (i=0; i<N; i++)
     {
-        m_RegionList.AddString(global.trans.map.r$[i].name);
+        m_RegionList.AddString(p_global->trans.map.r$[i].name);
     }
 
 	__SEH_LOGFATAL("CDlgScraperOutput::add_listbox_items :\n");
@@ -291,40 +292,38 @@ void CDlgScraperOutput::do_update_display()
     int		N, i;
     bool	found_match;
 
-	// If scraper is in progress, then don't update now
-	EnterCriticalSection(&cs_scraper);
-	bool			scraper_updating = scraper.scraper_update_in_progress;
-	LeaveCriticalSection(&cs_scraper);
-
-	if (scraper_updating)
-		return;
-
 	if (in_startup)  
 		return;
 
-    if (m_RegionList.GetCurSel() == -1)
-    {
-        do_bitblt(NULL, -1);  // Clear display
-        return;
-    }
+	// Only do this if we are not in the middle of a scraper/symbol update
+	if (TryEnterCriticalSection(&p_heartbeat_thread->cs_update_in_progress))
+	{
+		if (m_RegionList.GetCurSel() == -1)
+		{
+			do_bitblt(NULL, -1);  // Clear display
+			return;
+		}
 
-    m_RegionList.GetText(m_RegionList.GetCurSel(), curtext);
+		m_RegionList.GetText(m_RegionList.GetCurSel(), curtext);
 
-    N = global.trans.map.r$.GetSize();
-    found_match = false;
-    for (i=0; i<N && !found_match; i++)
-    {
-        if (global.trans.map.r$[i].name == curtext)
-        {
-            do_bitblt(global.trans.map.r$[i].last_bmp, i);
-            found_match = true;
-        }
-    }
+		N = p_global->trans.map.r$.GetSize();
+		found_match = false;
+		for (i=0; i<N && !found_match; i++)
+		{
+			if (p_global->trans.map.r$[i].name == curtext)
+			{
+				do_bitblt(p_global->trans.map.r$[i].last_bmp, i);
+				found_match = true;
+			}
+		}
 
-    if (!found_match)
-    {
-        do_bitblt(NULL, -1);  // Clear display
-    }
+		if (!found_match)
+		{
+			do_bitblt(NULL, -1);  // Clear display
+		}
+
+		LeaveCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
+	}
 
 	__SEH_LOGFATAL("CDlgScraperOutput::do_update_display :\n");
 }
@@ -385,15 +384,15 @@ void CDlgScraperOutput::do_bitblt(HBITMAP bitmap, int r$index)
            m_Zoom.GetCurSel()==3 ? 8 :
            m_Zoom.GetCurSel()==4 ? 16 : 1;
 
-    w = (global.trans.map.r$[r$index].right - global.trans.map.r$[r$index].left) * zoom;
-    h = (global.trans.map.r$[r$index].bottom - global.trans.map.r$[r$index].top) * zoom;
+    w = (p_global->trans.map.r$[r$index].right - p_global->trans.map.r$[r$index].left) * zoom;
+    h = (p_global->trans.map.r$[r$index].bottom - p_global->trans.map.r$[r$index].top) * zoom;
 
     hbm2 = CreateCompatibleBitmap(hdcScreen, w, h);
     old_bitmap2 = (HBITMAP) SelectObject(hdcCompat2, hbm2);
     StretchBlt(	hdcCompat2, 0, 0, w, h,
                 hdcCompat1, 0, 0,
-                global.trans.map.r$[r$index].right - global.trans.map.r$[r$index].left,
-                global.trans.map.r$[r$index].bottom - global.trans.map.r$[r$index].top,
+                p_global->trans.map.r$[r$index].right - p_global->trans.map.r$[r$index].left,
+                p_global->trans.map.r$[r$index].bottom - p_global->trans.map.r$[r$index].top,
                 SRCCOPY );
 
     // Copy 2nd DC to control
@@ -401,7 +400,7 @@ void CDlgScraperOutput::do_bitblt(HBITMAP bitmap, int r$index)
             hdcCompat2, 0, 0, SRCCOPY );
 
     // Output result
-    global.trans.do_transform(&global.trans.map.r$[r$index], hdcCompat1, &res);
+    p_global->trans.do_transform(&p_global->trans.map.r$[r$index], hdcCompat1, &res);
     m_ScraperResult.SetWindowText(res);
 
     // Clean up

@@ -1,10 +1,7 @@
-#pragma once
-#include "ScintillaWnd.h"
-#include "afxcmn.h"
-#include "afxwin.h"
-#include "afxdlgs.h"
+#ifndef INC_DIALOGFORMULASCINTILLA_H
+#define INC_DIALOGFORMULASCINTILLA_H
 
-#include "structs_defines.h"
+#include "ScintillaWnd.h"
 #include "WinMgr.h"
 #include "SizerBar.h"
 
@@ -219,3 +216,6 @@ protected:
 };
 
 extern CDlgFormulaScintilla	*m_formulaScintillaDlg;
+
+
+#endif //INC_DIALOGFORMULASCINTILLA_H

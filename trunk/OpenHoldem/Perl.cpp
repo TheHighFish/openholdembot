@@ -17,18 +17,16 @@
 #include <sstream>
 #include <String>
 #include <windows.h>
-#include "debug.h"
 #include "dll_extension.h"
-#include "global.h"
-#include "scraper.h"
+#include "CScraper.h"
 #include "Perl.hpp"
-#include "IteratorThread.h"
+#include "CIteratorThread.h"
 
 using namespace std;
 
 //  A single interpreter object for OH
 //
-class Perl	the_Perl_Interpreter;
+Perl	*the_Perl_Interpreter = NULL;
 
 //  Function types in PerlEz.DLL (implemented in PerlEz.h)
 //
@@ -99,9 +97,7 @@ static void gwt(char* the_ResultString)
     __SEH_HEADER
 
 	//    We assume a buffer of 80 chars on Perl side.
-    EnterCriticalSection(&cs_scraper);
-	sprintf_s(the_ResultString, 80, "%s", scraper.title);
-    LeaveCriticalSection(&cs_scraper);
+	sprintf_s(the_ResultString, 80, "%s", p_scraper->title());
 
     __SEH_LOGFATAL("Perl::gwt : \n");
 }
@@ -117,9 +113,7 @@ static void gwp(int the_PlayerName, char* the_ResultString)
     __SEH_HEADER
 
 	//    We assume a buffer of 80 chars on Perl side.
-    EnterCriticalSection(&cs_scraper);
-	sprintf_s(the_ResultString, 80, "%s", scraper.playername[the_PlayerName % 10]);
-    LeaveCriticalSection(&cs_scraper);
+	sprintf_s(the_ResultString, 80, "%s", p_scraper->player_name(the_PlayerName % 10));
 
     __SEH_LOGFATAL("Perl::gwp : \n");
 }
@@ -220,7 +214,7 @@ Perl::Perl()
 
     Formula_loaded = false;
     Interpreter_not_loaded = true;
-    if (!global.preferences.Perl_load_Interpreter)
+    if (!p_global->preferences.Perl_load_Interpreter)
     {
         //  For the people who don't need Perl...
         return;
@@ -230,10 +224,10 @@ Perl::Perl()
         //  DLL not found or invalid
         return;
     }
-    if (global.preferences.Perl_load_default_Formula)
+    if (p_global->preferences.Perl_load_default_Formula)
     {
         //  Load file and create new instance of the interpreter.
-        load_FormulaFile(string(global.preferences.Perl_default_Formula));
+        load_FormulaFile(string(p_global->preferences.Perl_default_Formula));
         //  Interpreter_not_loaded and Formula_loaded set automatically.
     }
     else
@@ -468,7 +462,7 @@ void Perl::edit_main_FormulaFile()
 {
     __SEH_HEADER
 
-    CString my_favourite_Editor = global.preferences.Perl_Editor;
+    CString my_favourite_Editor = p_global->preferences.Perl_Editor;
     if (_access(my_favourite_Editor, F_OK) != 0)
     {
         MessageBox(NULL, "Could not start editor.\nExecutable not found or not accessible.",

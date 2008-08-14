@@ -2,8 +2,6 @@
 #define INC_MAINFRM_H
 
 #include "MyCToolBar.h"
-#include "structs_defines.h"
-
 
 #define		HWND_CHECK_TIMER				1
 #define		ENABLE_BUTTONS_TIMER			2

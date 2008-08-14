@@ -1,10 +1,8 @@
 #include "StdAfx.h"
 #include "RunRon.h"
-#include "global.h"
-#include "scraper.h"
-#include "symbols.h"
+#include "CScraper.h"
+#include "CSymbols.h"
 #include "inlines/eval.h"
-#include "debug.h"
 
 CRunRon::CRunRon(void)
 {
@@ -4115,28 +4113,21 @@ void CRunRon::get_counts(void)
     unsigned int	pokval;
     LARGE_INTEGER	bcount, ecount;
 
-	EnterCriticalSection(&cs_symbols);
-	int		sym_userchair = (int) symbols.sym.userchair;
-	int		sym_br = (int) symbols.sym.br;
-	bool	user_chair_confirmed = symbols.user_chair_confirmed;
-	LeaveCriticalSection(&cs_symbols);
+	int sym_br = (int) p_symbols->sym()->br;
+	int sym_userchair = (int) p_symbols->sym()->userchair;
 
-	EnterCriticalSection(&cs_scraper);
-	bool			is_common_animation = scraper.is_common_animation();
 	unsigned int	pcard[2], ccard[5];
 	for (i=0; i<=1; i++)
-		pcard[i] = scraper.card_player[sym_userchair][i];
+		pcard[i] = p_scraper->card_player(sym_userchair, i);
 	for (i=0; i<=4; i++)
-		ccard[i] = scraper.card_common[i];
-	LeaveCriticalSection(&cs_scraper);
-
+		ccard[i] = p_scraper->card_common(i);
 
     // Preflop is pre-calculated
     // Also use the pre-flop code if there is a common card animation going on, to prevent freezeups
-    if (sym_br==1 || is_common_animation)
+    if (sym_br==1 || p_scraper->IsCommonAnimation())
     {
 
-        if (!user_chair_confirmed)
+        if (!p_symbols->user_chair_confirmed())
             return;
 
         //////////////////////////////////////////////////////////////
@@ -4310,7 +4301,7 @@ void CRunRon::get_counts(void)
         {
             CardMask_OR(EvalCards, DeadCards, ExtraCards);
             hv = Hand_EVAL_N(EvalCards, 7);
-            pokval = symbols.calc_pokerval(hv, 7, &dummy, CARD_NOCARD, CARD_NOCARD);
+            pokval = p_symbols->CalcPokerval(hv, 7, &dummy, CARD_NOCARD, CARD_NOCARD);
 
             if (pokval>max_pokval) {
                 max_pokval = pokval;
@@ -4406,7 +4397,7 @@ void CRunRon::get_counts(void)
                         CardMask_SET(EvalCards, ocard[0]);
                         CardMask_SET(EvalCards, ocard[1]);
                         hv = Hand_EVAL_N(EvalCards, 7);
-                        pokval = symbols.calc_pokerval(hv, 7, &dummy, CARD_NOCARD, CARD_NOCARD);
+                        pokval = p_symbols->CalcPokerval(hv, 7, &dummy, CARD_NOCARD, CARD_NOCARD);
 
                         if (pokval>max_pokval) {
                             max_pokval = pokval;
@@ -4475,8 +4466,5 @@ void CRunRon::get_counts(void)
     else if (ron$hcard>run$hcard)	ron$prnuts+=(ron$hcard-run$hcard);
     ron$prnuts = ron$prnuts / ron$total;
 
-
-
     __SEH_LOGFATAL("CRunRon::get_counts :\n");
-
 }

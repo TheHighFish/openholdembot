@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INC_ICMCALCULATOR_H
+#define INC_ICMCALCULATOR_H
 
 #define MAX_PLAYERS		10
 #define MAX_DOUBLE		1.e+200
@@ -18,3 +19,6 @@ private:
 	int getChairFromDealPos(const char* pquery);
 
 };
+
+
+#endif //INC_ICMCALCULATOR_H

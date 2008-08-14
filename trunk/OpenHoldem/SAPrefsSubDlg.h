@@ -1,3 +1,6 @@
+#ifndef AFX_SAPREFSSUBDLG_H__26CFAEA8_91FC_11D3_A10C_00500402F30B__INCLUDED_
+#define AFX_SAPREFSSUBDLG_H__26CFAEA8_91FC_11D3_A10C_00500402F30B__INCLUDED_
+
 /*********************************************************************
 
    Copyright (C) 2002 Smaller Animals Software, Inc.
@@ -27,14 +30,6 @@
 // SAPrefsSubDlg.h: interface for the CSAPrefsSubDlg class.
 //
 //////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_SAPREFSSUBDLG_H__26CFAEA8_91FC_11D3_A10C_00500402F30B__INCLUDED_)
-#define AFX_SAPREFSSUBDLG_H__26CFAEA8_91FC_11D3_A10C_00500402F30B__INCLUDED_
-
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
-
 class CSAPrefsSubDlg : public CDialog  
 {
 public:
