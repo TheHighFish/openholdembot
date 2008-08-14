@@ -5,8 +5,6 @@
 #include "OpenHoldem.h"
 #include "DialogSitDown.h"
 #include "PokerPro.h"
-#include "Debug.h"
-#include "global.h"
 
 // CDlgSitDown dialog
 

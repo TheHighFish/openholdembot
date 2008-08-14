@@ -1,9 +1,7 @@
 #include "stdafx.h"
 
 #include "logsymbols.h"
-#include "symbols.h"
-#include "debug.h"
-#include "global.h"
+#include "CSymbols.h"
 
 LogSymbols::LogSymbols()
 {
@@ -18,9 +16,9 @@ double	LogSymbols::process_query(const char * pquery, int *e)
     {
         bool exists = false;
 
-        for (int i=0; i<symbols.logsymbols_collection.GetCount(); i++)
+        for (int i=0; i<p_symbols->logsymbols_collection()->GetCount(); i++)
         {
-            if (symbols.logsymbols_collection[i] == pquery+4)
+			if (p_symbols->logsymbols_collection()->GetAt(i) == pquery+4)
             {
                 exists = true;
                 break;
@@ -29,7 +27,9 @@ double	LogSymbols::process_query(const char * pquery, int *e)
 
         if (!exists)
         {
-            symbols.logsymbols_collection.Add(pquery+4);
+			EnterCriticalSection(&p_symbols->cs_symbols);
+            p_symbols->set_logsymbols_collection()->Add(pquery+4);
+			LeaveCriticalSection(&p_symbols->cs_symbols);
         }
 
         return 1.0;

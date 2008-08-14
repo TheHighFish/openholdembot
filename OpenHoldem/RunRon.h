@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INC_RUNRON_H
+#define INC_RUNRON_H
 
 class CRunRon {
 public:
@@ -49,3 +50,6 @@ private:
 	double ron_max_pokval_n[13][13];
 
 };
+
+
+#endif //INC_RUNRON_H

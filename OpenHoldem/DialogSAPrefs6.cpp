@@ -2,15 +2,17 @@
 //
 
 #include "stdafx.h"
+
 #include "SAPrefsSubDlg.h"
-#include "global.h"
-#include "Registry.h"
-#include "debug.h"
-#include "PokerTrackerThread.h"
+#include "DialogSAPrefs6.h"
+
 #include "OpenHoldem.h"
 #include "MainFrm.h"
 
-#include "DialogSAPrefs6.h"
+#include "CPokerTrackerThread.h"
+
+#include "Registry.h"
+
 
 // CDlgSAPrefs6 dialog
 
@@ -54,27 +56,30 @@ END_MESSAGE_MAP()
 BOOL CDlgSAPrefs6::OnInitDialog()
 {
     CString text;
+	Registry reg;
 
     CSAPrefsSubDlg::OnInitDialog();
 
-    m_pt_disable.SetCheck(PT.disable == false ? BST_UNCHECKED : BST_CHECKED);
+	reg.read_reg();
 
-    m_pt_ip.SetWindowText(PT.ip_addr.GetString());
-    m_pt_port.SetWindowText(PT.port.GetString());
-    m_pt_user.SetWindowText(PT.user.GetString());
-    m_pt_pass.SetWindowText(PT.pass.GetString());
-    m_pt_dbname.SetWindowText(PT.dbname.GetString());
+	m_pt_disable.SetCheck(!reg.pt_disable ? BST_UNCHECKED : BST_CHECKED);
 
-    text.Format("%d", PT.update_delay);
+	m_pt_ip.SetWindowText(reg.pt_ip_addr.GetString());
+	m_pt_port.SetWindowText(reg.pt_port.GetString());
+	m_pt_user.SetWindowText(reg.pt_user.GetString());
+	m_pt_pass.SetWindowText(reg.pt_pass.GetString());
+	m_pt_dbname.SetWindowText(reg.pt_dbname.GetString());
+
+	text.Format("%d", reg.pt_updatedelay);
     m_UpdateDelay.SetWindowText(text);
     m_UpdateDelay_Spin.SetRange(1, 120);
-    m_UpdateDelay_Spin.SetPos(PT.update_delay);
+    m_UpdateDelay_Spin.SetPos(reg.pt_updatedelay);
     m_UpdateDelay_Spin.SetBuddy(&m_UpdateDelay);
 
-    text.Format("%d", PT.cache_refresh);
+	text.Format("%d", reg.pt_cacherefresh);
     m_CacheRefresh.SetWindowText(text);
     m_CacheRefresh_Spin.SetRange(15, 240);
-    m_CacheRefresh_Spin.SetPos(PT.cache_refresh);
+    m_CacheRefresh_Spin.SetPos(reg.pt_cacherefresh);
     m_CacheRefresh_Spin.SetBuddy(&m_CacheRefresh);
 
     return TRUE;  // return TRUE unless you set the focus to a control
@@ -86,34 +91,39 @@ void CDlgSAPrefs6::OnOK()
     Registry		reg;
     CString			text;
 
-    PT.disable = m_pt_disable.GetCheck() == BST_CHECKED ? true : false;
-    m_pt_ip.GetWindowText(PT.ip_addr);
-    m_pt_port.GetWindowText(PT.port);
-    m_pt_user.GetWindowText(PT.user);
-    m_pt_pass.GetWindowText(PT.pass);
-    m_pt_dbname.GetWindowText(PT.dbname);
-
-    m_UpdateDelay.GetWindowText(text);
-    PT.update_delay = atoi(text.GetString());
-
-    m_CacheRefresh.GetWindowText(text);
-    PT.cache_refresh = atoi(text.GetString());
-
-    PT.conn_str = "host=" + PT.ip_addr;
-    PT.conn_str += " port=" + PT.port;
-    PT.conn_str += " user=" + PT.user;
-    PT.conn_str += " password=" + PT.pass;
-    PT.conn_str += " dbname=" + PT.dbname;
-
     reg.read_reg();
-    reg.pt_disable = PT.disable;
-    reg.pt_ip_addr = PT.ip_addr;
-    reg.pt_port = PT.port;
-    reg.pt_user = PT.user;
-    reg.pt_pass = PT.pass;
-    reg.pt_dbname = PT.dbname;
-    reg.pt_updatedelay = PT.update_delay;
-    reg.pt_cacherefresh = PT.cache_refresh;
+
+    reg.pt_disable = (m_pt_disable.GetCheck() == BST_CHECKED ? true : false);
+	p_global->preferences.pt_prefs.disable = reg.pt_disable;
+
+	m_pt_ip.GetWindowText(text);
+    reg.pt_ip_addr = text;
+	p_global->preferences.pt_prefs.ip_addr = text;
+
+	m_pt_port.GetWindowText(text);
+    reg.pt_port = text;
+	p_global->preferences.pt_prefs.port = text;
+
+	m_pt_user.GetWindowText(text);
+    reg.pt_user = text;
+	p_global->preferences.pt_prefs.user = text;
+
+	m_pt_pass.GetWindowText(text);
+    reg.pt_pass = text;
+	p_global->preferences.pt_prefs.pass = text;
+
+	m_pt_dbname.GetWindowText(text);
+    reg.pt_dbname = text;
+	p_global->preferences.pt_prefs.dbname = text;
+
+	m_UpdateDelay.GetWindowText(text);
+    reg.pt_updatedelay = atoi(text.GetString());
+	p_global->preferences.pt_prefs.update_delay = reg.pt_updatedelay;
+
+	m_CacheRefresh.GetWindowText(text);
+    reg.pt_cacherefresh = atoi(text.GetString());
+	p_global->preferences.pt_prefs.cache_refresh = reg.pt_cacherefresh;
+
     reg.write_reg();
 
     CSAPrefsSubDlg::OnOK();
@@ -138,7 +148,7 @@ void CDlgSAPrefs6::OnBnClickedPtTest()
     conn_str += " dbname=" + dbname;
 
     // Set busy cursor
-    global.m_WaitCursor = true;
+    p_global->set_m_wait_cursor(true);
     pMyMainWnd->BeginWaitCursor();
 
     // Test the connection parameters
@@ -146,22 +156,26 @@ void CDlgSAPrefs6::OnBnClickedPtTest()
 
     // Unset busy cursor
     pMyMainWnd->EndWaitCursor();
-    global.m_WaitCursor = false;
+    p_global->set_m_wait_cursor(false);
 
-    if (PQstatus(pgconn) == CONNECTION_OK) {
+    if (PQstatus(pgconn) == CONNECTION_OK) 
+	{
         write_log("PostgreSQL DB opened successfully <%s/%s/%s>\n", ip_addr, port, dbname);
-        if (PQisthreadsafe()) {
+        if (PQisthreadsafe()) 
+		{
             write_log("PostgreSQL library is thread safe.\n\n");
             MessageBox("PostgreSQL DB opened successfully", "Success", MB_OK);
         }
-        else {
+        else 
+		{
             write_log("PostgreSQL library is *NOT* thread safe!  This is a problem!\n\n");
             MessageBox("PostgreSQL DB opened successfully, but\nPostgreSQL library is *NOT* thread safe!\nThis is a problem!",
                        "Success (partial)", MB_OK);
         }
         PQfinish(pgconn);
     }
-    else {
+    else 
+	{
         write_log("ERROR opening PostgreSQL DB: %s\n\n", PQerrorMessage(pgconn));
         e = "ERROR opening PostgreSQL DB:\n";
         e += PQerrorMessage(pgconn);
@@ -171,7 +185,5 @@ void CDlgSAPrefs6::OnBnClickedPtTest()
         PQfinish(pgconn);
     }
 
-
     __SEH_LOGFATAL("CDlgSAPrefs6::OnBnClickedPtTest :\n");
-
 }

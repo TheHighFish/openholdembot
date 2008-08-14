@@ -1,5 +1,6 @@
-#pragma once
-#include "afxwin.h"
+#ifndef INC_DIALOGHANDLIST_H
+#define INC_DIALOGHANDLIST_H
+
 #include "resource.h"
 
 // CDlgHandList dialog
@@ -27,3 +28,6 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 };
+
+
+#endif //INC_DIALOGHANDLIST_H

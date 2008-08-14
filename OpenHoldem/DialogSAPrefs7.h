@@ -1,7 +1,7 @@
-#pragma once
-#include "resource.h"
-#include "afxwin.h"
+#ifndef INC_DIALOGSAPREFS7_H
+#define INC_DIALOGSAPREFS7_H
 
+#include "resource.h"
 
 // CDlgSAPrefs7 dialog
 
@@ -23,3 +23,6 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 };
+
+
+#endif //INC_DIALOGSAPREFS7_H

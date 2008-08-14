@@ -1,8 +1,7 @@
-#pragma once
+#ifndef INC_DIALOGSAPREFS6_H
+#define INC_DIALOGSAPREFS6_H
 
 #include "resource.h"
-#include "afxwin.h"
-#include "afxcmn.h"
 
 // CDlgSAPrefs6 dialog
 
@@ -27,3 +26,6 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 };
+
+
+#endif //INC_DIALOGSAPREFS6_H

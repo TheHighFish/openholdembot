@@ -1,9 +1,9 @@
-#pragma once
+#ifndef INC_DIALOGSCRAPEROUTPUT_H
+#define INC_DIALOGSCRAPEROUTPUT_H
 
 #include "WinMgr.h"
 #include "SizerBar.h"
 #include "Resource.h"
-#include "afxwin.h"
 
 // CDlgScraperOutput dialog
 class CDlgScraperOutput : public CDialog
@@ -42,3 +42,5 @@ protected:
 
 
 extern CDlgScraperOutput	*m_ScraperOutputDlg;
+
+#endif //INC_DIALOGSCRAPEROUTPUT_H

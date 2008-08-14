@@ -1,9 +1,10 @@
 #include "stdafx.h"
 
 #include "action.h"
-#include "symbols.h"
-#include "debug.h"
-#include "PokerTrackerThread.h"
+
+#include "CSymbols.h"
+#include "CPokerTrackerThread.h"
+
 #include "GameState.h"
 
 PokerAction::PokerAction()
@@ -36,14 +37,9 @@ int PokerAction::preflop_pos (void)
 {
     __SEH_HEADER
 
-	int		sym_nplayersdealt, sym_dealposition;
-	bool	sym_isppro;
-
-	EnterCriticalSection(&cs_symbols);
-	sym_nplayersdealt = (int) symbols.sym.nplayersdealt;
-	sym_dealposition = (int) symbols.sym.dealposition;
-	sym_isppro = (bool) symbols.sym.isppro;
-	LeaveCriticalSection(&cs_symbols);
+	int		sym_nplayersdealt = (int) p_symbols->sym()->nplayersdealt;
+	int		sym_dealposition = (int) p_symbols->sym()->dealposition;
+	bool	sym_isppro = (bool) p_symbols->sym()->isppro;
 	
 
     //SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6
@@ -102,7 +98,7 @@ int PokerAction::preflop_pos (void)
 								 sym_dealposition==3 ? 6 : 0):
 		sym_nplayersdealt==2  ? (
 								// reversed blinds - dealer is BB
-								(PT.getsiteid()==11 || sym_isppro) ?
+								(p_symbols->GetSiteId()==11 || sym_isppro) ?
 								(sym_dealposition==1 ? 1 :
 								sym_dealposition==2 ? 6 : 0 ) :
 								// Normal blinds - dealposition==1 is BB
@@ -116,14 +112,10 @@ int PokerAction::prefloprais_pos (void)
 {
     __SEH_HEADER
 
-	int		sym_nplayersdealt, sym_dealpositionrais;
-	bool	sym_isppro;
-
-	EnterCriticalSection(&cs_symbols);
-	sym_nplayersdealt = (int) symbols.sym.nplayersdealt;
-	sym_dealpositionrais = (int) symbols.sym.dealpositionrais;
-	sym_isppro = (bool) symbols.sym.isppro;
-	LeaveCriticalSection(&cs_symbols);
+	int		e = SUCCESS;
+	int		sym_nplayersdealt = (int) p_symbols->sym()->nplayersdealt;
+	int		sym_dealpositionrais = (int) p_symbols->sym()->dealpositionrais;
+	bool	sym_isppro = (bool) p_symbols->sym()->isppro;
 	
 	//SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6
     return
@@ -181,7 +173,7 @@ int PokerAction::prefloprais_pos (void)
 								sym_dealpositionrais==3 ? 6 : 0):
 		sym_nplayersdealt==2  ? (
 								// reversed blinds - dealer is BB
-								(PT.getsiteid()==11 || sym_isppro) ?
+								(p_symbols->GetSiteId()==11 || sym_isppro) ?
 								(sym_dealpositionrais==1 ? 1 :
 								sym_dealpositionrais==2 ? 6 : 0 ) :
 								// Normal blinds - dealposition==1 is BB
@@ -195,12 +187,9 @@ int PokerAction::postflop_pos (void)
 {
     __SEH_HEADER
 
-	int sym_nplayersplaying, sym_betposition;
-
-	EnterCriticalSection(&cs_symbols);
-	sym_nplayersplaying = (int) symbols.sym.nplayersplaying;
-	sym_betposition = (int) symbols.sym.betposition;
-	LeaveCriticalSection(&cs_symbols);
+	int		e = SUCCESS;
+	int		sym_nplayersplaying = (int) p_symbols->sym()->nplayersplaying;
+	int		sym_betposition = (int) p_symbols->sym()->betposition;
 
     //first=1 early=2 middle=3 late=4 last=5
 	return
@@ -268,20 +257,19 @@ int PokerAction::pf_bets (void)
 
 	int result;
 
-	EnterCriticalSection(&cs_symbols);
+	int		e = SUCCESS;
 
-	if (symbols.sym.br!=1)
+	if (p_symbols->sym()->br!=1)
         result = 0;
 
 	else result = 
 			(first_into_pot())				? 1 :   //No Callers - no callers or blinds only (on preflop).
-			(symbols.sym.ncallbets==1)		? 2 :   //Called Pot - 1 bet to call.
-			(symbols.sym.nbetstocall==1 && (symbols.sym.didcall||symbols.sym.didrais))
+			(p_symbols->sym()->ncallbets==1)		? 2 :   //Called Pot - 1 bet to call.
+			(p_symbols->sym()->nbetstocall==1 && 
+				(p_symbols->sym()->didcall||p_symbols->sym()->didrais))
 			? 3 :   //Raised Back - 1 more bet to call because someone behind you raised after you've already bet/called/raised.
-			(symbols.sym.ncallbets==2)		? 4 :   //Raised Pot - 2 bets to call.
-			(symbols.sym.ncallbets>=3)		? 5 :0; //Reraised Pot - 3+ bets to call.
-
-	LeaveCriticalSection(&cs_symbols);
+			(p_symbols->sym()->ncallbets==2)		? 4 :   //Raised Pot - 2 bets to call.
+			(p_symbols->sym()->ncallbets>=3)		? 5 :0; //Reraised Pot - 3+ bets to call.
 
 	return result;
 
@@ -294,28 +282,26 @@ bool PokerAction::first_into_pot (void)
 
 	bool result;
 
-	EnterCriticalSection(&cs_symbols);
-	result = symbols.sym.br==1 ? (symbols.sym.potplayer<=symbols.sym.sblind+symbols.sym.bblind) : symbols.sym.potplayer<=0.1 ;
-	LeaveCriticalSection(&cs_symbols);
+	int		e = SUCCESS;
+	result = p_symbols->sym()->br==1 ? 
+		p_symbols->sym()->potplayer <= p_symbols->sym()->sblind + p_symbols->sym()->bblind : 
+		p_symbols->sym()->potplayer <= 0.1 ;
 
 	return result;
 
     __SEH_LOGFATAL("PokerAction::first_into_pot\n");
-
 }
 
 int PokerAction::m_betposition (int chairnum)
 {
+
     __SEH_HEADER
-    int i;
-    int betpos = 0 ;
+    int		i;
+    int		betpos = 0 ;
 
-	int sym_dealerchair, sym_playersplayingbits;
-
-	EnterCriticalSection(&cs_symbols);
-	sym_dealerchair = (int) symbols.sym.dealerchair;
-	sym_playersplayingbits = (int) symbols.sym.playersplayingbits;
-	LeaveCriticalSection(&cs_symbols);
+	int		e = SUCCESS;
+	int		sym_dealerchair = (int) p_symbols->sym()->dealerchair;
+	int		sym_playersplayingbits = (int) p_symbols->sym()->playersplayingbits;
 
 	if (chairnum<0 || chairnum>9)
         return betpos;
@@ -335,22 +321,18 @@ int PokerAction::m_betposition (int chairnum)
     return betpos;
 
     __SEH_LOGFATAL("PokerAction::m_betposition\n");
-
 }
 
 int PokerAction::m_dealposition (int chairnum)
 {
     __SEH_HEADER
 
-	int i;
-    int dealposchair = 0 ;
+	int		i;
+    int		dealposchair = 0 ;
 
-	int sym_dealerchair, sym_playersdealtbits;
-
-	EnterCriticalSection(&cs_symbols);
-	sym_dealerchair = (int) symbols.sym.dealerchair;
-	sym_playersdealtbits = (int) symbols.sym.playersdealtbits;
-	LeaveCriticalSection(&cs_symbols);
+	int		e = SUCCESS;
+	int		sym_dealerchair = (int) p_symbols->sym()->dealerchair;
+	int		sym_playersdealtbits = (int) p_symbols->sym()->playersdealtbits;
 
 	if (chairnum<0 || chairnum>9)
         return dealposchair;
@@ -366,54 +348,45 @@ int PokerAction::m_dealposition (int chairnum)
     return ((sym_playersdealtbits>>chairnum)&1) ? dealposchair : 0 ;
 
     __SEH_LOGFATAL("PokerAction::m_dealposition\n");
-
 }
 
 int PokerAction::aggressor_chair (void)
 {
     __SEH_HEADER
 
-	int		i;
-	int		sym_br, sym_raischair;
-	double	sym_nbetsround[4];
-
-	EnterCriticalSection(&cs_symbols);
-	sym_br = (int) symbols.sym.br;
-	sym_raischair = (int) symbols.sym.raischair;
-	for (i=0; i<=3; i++)
-		sym_nbetsround[i] = symbols.sym.nbetsround[i];
-	LeaveCriticalSection(&cs_symbols);
+	int		sym_br = (int) p_symbols->sym()->br;
+	int		sym_raischair = (int) p_symbols->sym()->raischair;
 
 	// br1, no raises
-    if (sym_br==1 && sym_nbetsround[0]==1)
+    if (sym_br==1 && p_symbols->sym()->nbetsround[0]==1)
         return sym_raischair;
 
     // br1, someone raised
-    if (sym_br==1 && sym_nbetsround[0]>1)
+    if (sym_br==1 && p_symbols->sym()->nbetsround[0]>1)
         return game_state.lastraised(1)!=-1 ? game_state.lastraised(1) : sym_raischair;
 
     // br2, no raises
-    if (sym_br==2 && sym_nbetsround[1]==0)
+    if (sym_br==2 && p_symbols->sym()->nbetsround[1]==0)
         return game_state.lastraised(1)!=-1 ? game_state.lastraised(1) : sym_raischair;
 
     // br2, someone raised
-    if (sym_br==2 && sym_nbetsround[1]>0)
+    if (sym_br==2 && p_symbols->sym()->nbetsround[1]>0)
         return game_state.lastraised(2)!=-1 ? game_state.lastraised(2) : sym_raischair;
 
     // br3, no raises
-    if (sym_br==3 && sym_nbetsround[2]==0)
+    if (sym_br==3 && p_symbols->sym()->nbetsround[2]==0)
         return game_state.lastraised(2)!=-1 ? game_state.lastraised(2) : sym_raischair;
 
     // br3, someone raised
-    if (sym_br==3 && sym_nbetsround[2]>0)
+    if (sym_br==3 && p_symbols->sym()->nbetsround[2]>0)
         return game_state.lastraised(3)!=-1 ? game_state.lastraised(3) : sym_raischair;
 
     // br4, no raises
-    if (sym_br==4 && sym_nbetsround[3]==0)
+    if (sym_br==4 && p_symbols->sym()->nbetsround[3]==0)
         return game_state.lastraised(3)!=-1 ? game_state.lastraised(3) : sym_raischair;
 
     // br4, someone raised
-    if (sym_br==4 && sym_nbetsround[3]>0)
+    if (sym_br==4 && p_symbols->sym()->nbetsround[3]>0)
         return game_state.lastraised(4)!=-1 ? game_state.lastraised(4) : sym_raischair;
 
     return sym_raischair;
@@ -425,20 +398,17 @@ bool PokerAction::agchair_after (void)
 {
     __SEH_HEADER
 
-	bool result;
+	bool	result;
+	int		e = SUCCESS;
 
-	EnterCriticalSection(&cs_symbols);
-
-	if (!symbols.user_chair_confirmed)
+	if (!p_symbols->user_chair_confirmed())
         result = false;
 
     if (aggressor_chair()>=0)
-        result = m_betposition(aggressor_chair()) > symbols.sym.betposition ;
+		result = m_betposition(aggressor_chair()) > p_symbols->sym()->betposition;
 
     else
         result = false ;
-
-	LeaveCriticalSection(&cs_symbols);
 
 	return result;
 

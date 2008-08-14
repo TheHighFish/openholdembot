@@ -1,9 +1,7 @@
-#pragma once
+#ifndef INC_DIALOGSAPREFS2_H
+#define INC_DIALOGSAPREFS2_H
 
 #include "resource.h"
-#include "afxwin.h"
-#include "afxcmn.h"
-#include "global.h"
 
 // CDlgSAPrefs2 dialog
 
@@ -33,3 +31,5 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 };
+
+#endif //INC_DIALOGSAPREFS2_H

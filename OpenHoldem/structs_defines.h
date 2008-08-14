@@ -192,6 +192,7 @@ struct STableList
 #define nTraceCall 3
 #define nTracePlay 4
 #define nTracePrefold 5
+
 struct SPreferences 
 {
 	// Analyzer
@@ -232,6 +233,19 @@ struct SPreferences
 	bool			replay_record;
 	bool			replay_record_every_change;
 	int				replay_max_frames;
+
+	// Poker Tracker
+	struct SPTPrefs
+	{
+		CString		ip_addr;
+		CString		port;
+		CString		dbname;
+		CString		user;
+		CString		pass;
+		bool		disable;
+		int			update_delay;
+		int			cache_refresh;
+	} pt_prefs;
 
 	//  2008.02.27 by THF
 	//  Perl

@@ -4,11 +4,16 @@
 // menu options, menu edit commands
 
 #include "stdafx.h"
+
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
 #include "MainFrm.h"
+
+#include "CScraper.h"
+#include "CSymbols.h"
+#include "CHeartbeatThread.h"
+
 #include "DialogFormulaScintilla.h"
-#include "global.h"
 #include "registry.h"
 #include "DialogRename.h"
 #include "DialogNew.h"
@@ -16,9 +21,6 @@
 #include "DialogHandList.h"
 #include "grammar.h"
 #include "WinMgr.h"
-#include "scraper.h"
-#include "symbols.h"
-#include "debug.h"
 
 #include "../scintilla/include/Scintilla.h"
 #include "../scintilla/include/SciLexer.h"
@@ -164,8 +166,8 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
     in_startup = true;
 
     // Copy current doc formula into working set
-    global.ClearFormula(&m_wrk_formula);
-    global.CopyFormula(&global.formula, &m_wrk_formula);
+    p_global->ClearFormula(&m_wrk_formula);
+    p_global->CopyFormula(&p_global->formula, &m_wrk_formula);
 
     m_current_edit = "";
     m_dirty = false;
@@ -1578,7 +1580,7 @@ void CDlgFormulaScintilla::OnHandList()
     }
     if (list_index == -1)  return;
 
-    CGlobal::ParseHandList(m_wrk_formula.mHandList[list_index].list_text, myDialog.checked);
+    p_global->ParseHandList(m_wrk_formula.mHandList[list_index].list_text, myDialog.checked);
 
     // Window title and static text content
     myDialog.hand_list_num = atoi(s.Mid(4).GetString());
@@ -1738,7 +1740,7 @@ BOOL CDlgFormulaScintilla::DestroyWindow()
 
     // Uncheck formula button on main toolbar
     pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
-    global.ClearFormula(&m_wrk_formula);
+    p_global->ClearFormula(&m_wrk_formula);
     return CDialog::DestroyWindow();
 
     __SEH_LOGFATAL("CDlgFormulaScintilla::DestroyWindow :\n");
@@ -2133,9 +2135,7 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
     m_CalcResult.SetWindowText("");
 
     // Caclulate symbols
-	//EnterCriticalSection(&cs_symbols);
     //symbols.CalcSymbols();
-	//LeaveCriticalSection(&cs_symbols);
 
     // mark symbol result cache as stale
     for (i=0; i < (int) m_wrk_formula.mFunction.GetSize(); i++)
@@ -2145,10 +2145,10 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
     LastChangeToFormula(&m_wrk_formula);
 
     // calc hand lists
-    global.create_hand_list_matrices(&m_wrk_formula);
+    p_global->CreateHandListMatrices(&m_wrk_formula);
 
     // Validate parse trees
-    if (!global.ParseAllFormula(this->GetSafeHwnd(), &m_wrk_formula)) 
+    if (!p_global->ParseAllFormula(this->GetSafeHwnd(), &m_wrk_formula)) 
 	{
         s.Format("There are syntax errors in one or more formulas that are\n");
         s.Append("preventing calculation.\n");
@@ -2241,10 +2241,10 @@ void CDlgFormulaScintilla::OnBnClickedAuto()
         m_CalcResult.SetWindowText("");
 
         // cal hand lists
-        global.create_hand_list_matrices(&m_wrk_formula);
+        p_global->CreateHandListMatrices(&m_wrk_formula);
 
         // Validate parse trees
-        if (!global.ParseAllFormula(this->GetSafeHwnd(), &m_wrk_formula)) {
+        if (!p_global->ParseAllFormula(this->GetSafeHwnd(), &m_wrk_formula)) {
             s.Format("There are syntax errors in one or more formulas that are\n");
             s.Append("preventing calculation of this formula.\n");
             s.Append("These errors need to be corrected before the 'Auto'\n");
@@ -2296,62 +2296,60 @@ void CDlgFormulaScintilla::update_debug_auto(void)
 	int				i;
     CString			Cstr;
 
-	// If symbols are in progress, then don't update now
-	EnterCriticalSection(&cs_symbols);	
-	bool			symbols_updating = symbols.symbols_update_in_progress;
-	bool			sym_ismyturn = (bool) symbols.sym.ismyturn;
-	LeaveCriticalSection(&cs_symbols);
+	bool			sym_ismyturn = (bool) p_symbols->sym()->ismyturn;
 
-	if (symbols_updating)
-		return;
-
-
-	global.m_WaitCursor = true;
-    BeginWaitCursor();
-
-    // mark symbol result cache as stale
-    for (i=0; i < (int) m_wrk_formula.mFunction.GetSize(); i++)
-        m_wrk_formula.mFunction[i].fresh = false;
-
-
-    // Loop through each line in the debug tab and evaluate it
-    for (i=0; i<(int) debug_ar.GetSize(); i++) 
+	// Only do this if we are not in the middle of a scraper/symbol update
+	if (TryEnterCriticalSection(&p_heartbeat_thread->cs_update_in_progress))
 	{
-		if (debug_ar[i].valid && debug_ar[i].error==SUCCESS) 
+		p_global->set_m_wait_cursor(true);
+		BeginWaitCursor();
+
+		// mark symbol result cache as stale
+		for (i=0; i < (int) m_wrk_formula.mFunction.GetSize(); i++)
+			m_wrk_formula.mFunction[i].fresh = false;
+
+
+		// Loop through each line in the debug tab and evaluate it
+		for (i=0; i<(int) debug_ar.GetSize(); i++) 
 		{
-            debug_ar[i].ret = evaluate(&m_wrk_formula, debug_ar[i].tree, NULL, &debug_ar[i].error);
-		} 
-		else
-		{
-            debug_ar[i].ret = 0;
+			if (debug_ar[i].valid && debug_ar[i].error==SUCCESS) 
+			{
+				debug_ar[i].ret = evaluate(&m_wrk_formula, debug_ar[i].tree, NULL, &debug_ar[i].error);
+			} 
+			else
+			{
+				debug_ar[i].ret = 0;
+			}
 		}
-    }
-    // Format the text
-    create_debug_tab(&Cstr);
+		// Format the text
+		create_debug_tab(&Cstr);
 
-    // Write the tab's contents to a log file, if selected
-    if (m_fdebuglog && ((m_fdebuglog_myturn && sym_ismyturn) || !m_fdebuglog_myturn)) 
-	{
-        if (!m_wrote_fdebug_header) 
+		// Write the tab's contents to a log file, if selected
+		if (m_fdebuglog && ((m_fdebuglog_myturn && sym_ismyturn) || !m_fdebuglog_myturn)) 
 		{
-            write_fdebug_log(true);
-            m_wrote_fdebug_header = true;
+			if (!m_wrote_fdebug_header) 
+			{
+				write_fdebug_log(true);
+				m_wrote_fdebug_header = true;
 
-        }
-        else 
-		{
-            write_fdebug_log(false);
-        }
-    }
+			}
+			else 
+			{
+				write_fdebug_log(false);
+			}
+		}
 
-    // Display the text in the debug tab
-    m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
-    m_pActiveScinCtrl->SendMessage(SCI_SETTEXT,0,(LPARAM)Cstr.GetString());
-    m_pActiveScinCtrl->GotoPosition(0);
-    m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
+		// Display the text in the debug tab
+		m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
+		m_pActiveScinCtrl->SendMessage(SCI_SETTEXT,0,(LPARAM)Cstr.GetString());
+		m_pActiveScinCtrl->GotoPosition(0);
+		m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
 
-    EndWaitCursor();
-    global.m_WaitCursor = false;
+		EndWaitCursor();
+		p_global->set_m_wait_cursor(false);
+
+		LeaveCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
+	}
 
     __SEH_LOGFATAL("CDlgFormulaScintilla::update_debug_auto :\n");
 }
@@ -2468,7 +2466,7 @@ void CDlgFormulaScintilla::write_fdebug_log(bool write_header)
 
     // write the line to the log
     CString fn;
-    fn.Format("%s\\f$debug_%lu.log", global.startup_path, global.Session_ID);
+    fn.Format("%s\\f$debug_%lu.log", p_global->startup_path(), p_global->session_id());
     FILE *fp = fopen(fn.GetString(), "a");
     if (write_header) 
 	{
@@ -2492,7 +2490,7 @@ void CDlgFormulaScintilla::init_debug_array(void)
     CString				s;
 	bool				parse_result;
 
-    global.m_WaitCursor = true;
+    p_global->set_m_wait_cursor(true);
     BeginWaitCursor();
     //
     // Loop through each line in the debug tab and parse it
@@ -2529,15 +2527,15 @@ void CDlgFormulaScintilla::init_debug_array(void)
 
             // parse
             debug_struct.exp.Format("%s", eq);
-			global.parse_symbol_formula = &m_wrk_formula;
-			global.parse_symbol_stop_strs.RemoveAll();
+			p_global->parse_symbol_formula = &m_wrk_formula;
+			p_global->parse_symbol_stop_strs.RemoveAll();
 
 			EnterCriticalSection(&cs_parse);
             parse_result = parse(&debug_struct.exp, &debug_struct.tree, &stopchar);
 			LeaveCriticalSection(&cs_parse);
             debug_struct.ret = 0;
 			debug_struct.valid = true;
-			debug_struct.error = parse_result && global.parse_symbol_stop_strs.GetSize()==0 ? SUCCESS : ERR_BAD_PARSE;
+			debug_struct.error = parse_result && p_global->parse_symbol_stop_strs.GetSize()==0 ? SUCCESS : ERR_BAD_PARSE;
         }
         else 
 		{
@@ -2554,7 +2552,7 @@ void CDlgFormulaScintilla::init_debug_array(void)
     }
 
     EndWaitCursor();
-    global.m_WaitCursor = false;
+    p_global->set_m_wait_cursor(false);
 
     __SEH_LOGFATAL("CDlgFormulaScintilla::init_debug_array :\n");
 }
@@ -2568,13 +2566,13 @@ void CDlgFormulaScintilla::OnBnClickedApply()
     CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
     // If autoplayer is engaged, dis-engage it
-    if (global.autoplay)
+    if (p_global->autoplay)
     {
         if (MessageBox("Autoplayer is currently enabled.\nWould you like to disable the autoplayer?",
                        "Disable Autoplayer?", MB_YESNO) == IDYES)
         {
             pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
-            global.autoplay = false;
+            p_global->autoplay = false;
         }
     }
 
@@ -2582,11 +2580,11 @@ void CDlgFormulaScintilla::OnBnClickedApply()
     save_settings_to_registry();
 
     // Re-calc working set hand lists
-    global.create_hand_list_matrices(&m_wrk_formula);
+    p_global->CreateHandListMatrices(&m_wrk_formula);
 
 	// Parse working set
     LastChangeToFormula(&m_wrk_formula);
-    if (!global.ParseAllFormula(this->GetSafeHwnd(), &m_wrk_formula))
+    if (!p_global->ParseAllFormula(this->GetSafeHwnd(), &m_wrk_formula))
 	{
 		if (MessageBox("There are errors in the working formula set.\n\n"
 					   "Would you still like to apply changes in the working set to the main set?\n\n"
@@ -2602,19 +2600,17 @@ void CDlgFormulaScintilla::OnBnClickedApply()
 	}
 
     // Copy working set to global set
-    global.CopyFormula(&m_wrk_formula, &global.formula);
+    p_global->CopyFormula(&m_wrk_formula, &p_global->formula);
     pDoc->SetModifiedFlag(true);
 
     // Re-calc global set hand lists
-    global.create_hand_list_matrices(&global.formula);
+    p_global->CreateHandListMatrices(&p_global->formula);
 
     // Re-parse global set
-    global.ParseAllFormula(this->GetSafeHwnd(), &global.formula);
+    p_global->ParseAllFormula(this->GetSafeHwnd(), &p_global->formula);
 
     // Re-calc symbols
-	EnterCriticalSection(&cs_symbols);
-    symbols.CalcSymbols();
-	LeaveCriticalSection(&cs_symbols);
+    p_symbols->CalcSymbols();
 
     // Rewrite f$debug log header, if required
     m_wrote_fdebug_header = false;
@@ -2634,13 +2630,13 @@ void CDlgFormulaScintilla::OnBnClickedOk()
     CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
     // If autoplayer is engaged, dis-engage it
-    if (global.autoplay)
+    if (p_global->autoplay)
     {
         if (MessageBox("Autoplayer is currently enabled.\nWould you like to disable the autoplayer?",
                        "Disable Autoplayer?", MB_YESNO) == IDYES)
         {
             pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
-            global.autoplay = false;
+            p_global->autoplay = false;
         }
     }
 
@@ -2650,11 +2646,11 @@ void CDlgFormulaScintilla::OnBnClickedOk()
     save_settings_to_registry();
 
     // Re-calc working set hand lists
-    global.create_hand_list_matrices(&m_wrk_formula);
+    p_global->CreateHandListMatrices(&m_wrk_formula);
 
 	// Parse working set
     LastChangeToFormula(&m_wrk_formula);
-    if (!global.ParseAllFormula(this->GetSafeHwnd(), &m_wrk_formula))
+    if (!p_global->ParseAllFormula(this->GetSafeHwnd(), &m_wrk_formula))
 	{
 		if (MessageBox("There are errors in the working formula set.\n\n"
 					   "Would you still like to apply changes in the working set to the main set "
@@ -2671,21 +2667,19 @@ void CDlgFormulaScintilla::OnBnClickedOk()
 	}
 
 	// Copy working set to global set
-    global.CopyFormula(&m_wrk_formula, &global.formula);
-    global.ClearFormula(&m_wrk_formula);
+    p_global->CopyFormula(&m_wrk_formula, &p_global->formula);
+    p_global->ClearFormula(&m_wrk_formula);
     pDoc->SetModifiedFlag(true);
     m_dirty = false;
 
     // Re-calc global set hand lists
-    global.create_hand_list_matrices(&global.formula);
+    p_global->CreateHandListMatrices(&p_global->formula);
 
     // Re-parse global set
-    global.ParseAllFormula(this->GetSafeHwnd(), &global.formula);
+    p_global->ParseAllFormula(this->GetSafeHwnd(), &p_global->formula);
 
     // Re-calc symbols
-	EnterCriticalSection(&cs_symbols);
-    symbols.CalcSymbols();
-	LeaveCriticalSection(&cs_symbols);
+	p_symbols->CalcSymbols();
 
     // Uncheck formula button on main toolbar
     pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
@@ -2708,11 +2702,11 @@ bool CDlgFormulaScintilla::PromptToSave()
     if (response == IDYES)
 	{
 		// Re-calc working set hand lists
-		global.create_hand_list_matrices(&m_wrk_formula);
+		p_global->CreateHandListMatrices(&m_wrk_formula);
 
 		// Parse working set
 		LastChangeToFormula(&m_wrk_formula);
-		if (!global.ParseAllFormula(this->GetSafeHwnd(), &m_wrk_formula))
+		if (!p_global->ParseAllFormula(this->GetSafeHwnd(), &m_wrk_formula))
 		{
 			if (MessageBox("There are errors in the working formula set.\n\n"
 						   "Would you still like to apply changes in the working set to the main set "
@@ -2729,15 +2723,15 @@ bool CDlgFormulaScintilla::PromptToSave()
 		}
 	
 		// Copy working set to global set
-        global.CopyFormula(&m_wrk_formula, &global.formula);
-        global.ClearFormula(&m_wrk_formula);
+        p_global->CopyFormula(&m_wrk_formula, &p_global->formula);
+        p_global->ClearFormula(&m_wrk_formula);
         pDoc->SetModifiedFlag(true);
 
         // Re-calc global set hand lists
-        global.create_hand_list_matrices(&global.formula);
+        p_global->CreateHandListMatrices(&p_global->formula);
 
         // Re-parse global set
-        global.ParseAllFormula(this->GetSafeHwnd(), &global.formula);
+        p_global->ParseAllFormula(this->GetSafeHwnd(), &p_global->formula);
 
         // Uncheck formula button on main toolbar
         pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
@@ -2749,7 +2743,7 @@ bool CDlgFormulaScintilla::PromptToSave()
     
 	if (response == IDNO)
 	{
-        global.ClearFormula(&m_wrk_formula);
+        p_global->ClearFormula(&m_wrk_formula);
 
         // Uncheck formula button on main toolbar
         pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
@@ -2783,7 +2777,7 @@ void CDlgFormulaScintilla::OnBnClickedCancel()
         }
     }
     else {
-        global.ClearFormula(&m_wrk_formula);
+        p_global->ClearFormula(&m_wrk_formula);
 
         // Uncheck formula button on main toolbar
         pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
@@ -2962,7 +2956,7 @@ BOOL CDlgFormulaScintilla::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
     __SEH_HEADER
 
-	if (global.m_WaitCursor)
+	if (p_global->m_wait_cursor())
     {
         RestoreWaitCursor();
         return TRUE;

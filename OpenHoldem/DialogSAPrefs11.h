@@ -1,9 +1,7 @@
-#pragma once
-#include "resource.h"
-#include "afxwin.h"
-#include "afxcmn.h"
-#include "global.h"
+#ifndef INC_DIALOGSAPREFS11_H
+#define INC_DIALOGSAPREFS11_H
 
+#include "resource.h"
 
 // DialogSAPrefs11 dialog
 
@@ -35,3 +33,6 @@ protected:
 public:
 	afx_msg void OnBnClickedEnableLog();
 };
+
+
+#endif //INC_DIALOGSAPREFS11_H

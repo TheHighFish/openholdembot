@@ -1,13 +1,9 @@
 #include "stdafx.h"
 
 #include "dll_extension.h"
-#include "global.h"
-#include "debug.h"
 #include "grammar.h"
-//  2008.02.27 by THF
-//  PokerChat
 #include "PokerChat.hpp"
-#include "symbols.h" //2008-05-08 Matrix (for prw1326 mesage)
+#include "CSymbols.h"
 
 CDll	cdll;
 
@@ -70,13 +66,13 @@ void CDll::load_dll(char * path)
     {
 
         // Find DLL name to load from the formula file
-        N = global.formula.mFunction.GetSize();
+        N = p_global->formula.mFunction.GetSize();
         formula_dll = "";
         for (i=0; i<N; i++)
         {
-            if (global.formula.mFunction[i].func == "dll")
+            if (p_global->formula.mFunction[i].func == "dll")
             {
-                formula_dll = global.formula.mFunction[i].func_text;
+                formula_dll = p_global->formula.mFunction[i].func_text;
                 i = N + 1;
             }
         }
@@ -85,8 +81,8 @@ void CDll::load_dll(char * path)
         // Try to load dll from the ##dll## section, if it is specified
         if (formula_dll != "")
         {
-            t.Format("%s\\%s", global.startup_path, formula_dll.GetString());
-            SetCurrentDirectory(global.startup_path);
+            t.Format("%s\\%s", p_global->startup_path(), formula_dll.GetString());
+            SetCurrentDirectory(p_global->startup_path());
             hMod_dll = LoadLibrary(t.GetString());
             err1 = GetLastError();
         }
@@ -94,8 +90,8 @@ void CDll::load_dll(char * path)
         // If dll is still not loaded, load from name in Edit/Preferences
         if (hMod_dll==NULL)
         {
-            t.Format("%s\\%s", global.startup_path, global.preferences.dll_name.GetString());
-            SetCurrentDirectory(global.startup_path);
+            t.Format("%s\\%s", p_global->startup_path(), p_global->preferences.dll_name.GetString());
+            SetCurrentDirectory(p_global->startup_path());
             hMod_dll = LoadLibrary(t.GetString());
             err2 = GetLastError();
         }
@@ -104,7 +100,7 @@ void CDll::load_dll(char * path)
         if (hMod_dll==NULL)
         {
             t.Format("Unable to load DLL from:\n%s, error=%d\n-or-\n%s, error=%d",
-                     global.preferences.dll_name.GetString(), err1,
+                     p_global->preferences.dll_name.GetString(), err1,
                      formula_dll.GetString(), err2);
             MessageBox(NULL, t, "DLL Load Error", MB_OK | MB_TOPMOST);
             return;
@@ -135,11 +131,11 @@ void CDll::load_dll(char * path)
 
             //pass "phl1k" message (address of handlist arrays)
             //  2008-03-22 Matrix
-            (process_message) ("phl1k",global.formula.inlist);
+            (process_message) ("phl1k", p_global->formula.inlist);
 
 			//pass "prw1326" message (address of prw1326 structure)
 			//  2008-05-08 Matrix
-            (process_message) ("prw1326",&symbols.prw1326);
+            (process_message) ("prw1326", p_symbols->prw1326());
 
             //  2008.02.27 by THF
             //
@@ -164,9 +160,9 @@ void CDll::unload_dll(void)
 	if (hMod_dll==NULL)
         return;
 
-	EnterCriticalSection(&cs_symbols);
-	symbols.prw1326.useme=0;
-	LeaveCriticalSection(&cs_symbols);
+	EnterCriticalSection(&p_symbols->cs_symbols);
+	p_symbols->set_prw1326()->useme=0;
+	LeaveCriticalSection(&p_symbols->cs_symbols);
 
     (process_message) ("event", "unload");
 
@@ -193,7 +189,7 @@ double GetSymbolFromDll(int chair, const char* name, bool& iserr)
     if (result)
     {
         e = SUCCESS;
-		res = evaluate(&global.formula, tpi, NULL, &e);
+		res = evaluate(&p_global->formula, tpi, NULL, &e);
     }
     else
     {

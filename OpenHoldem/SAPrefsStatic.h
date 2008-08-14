@@ -1,3 +1,6 @@
+#ifndef AFX_PREFSSTATIC_H__1B15B006_9152_11D3_A10C_00500402F30B__INCLUDED_
+#define AFX_PREFSSTATIC_H__1B15B006_9152_11D3_A10C_00500402F30B__INCLUDED_
+
 /*********************************************************************
 
    Copyright (C) 2002 Smaller Animals Software, Inc.
@@ -24,13 +27,6 @@
    smallest@smalleranimals.com
 
 **********************************************************************/
-
-#if !defined(AFX_PREFSSTATIC_H__1B15B006_9152_11D3_A10C_00500402F30B__INCLUDED_)
-#define AFX_PREFSSTATIC_H__1B15B006_9152_11D3_A10C_00500402F30B__INCLUDED_
-
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
 // PrefsStatic.h : header file
 //
 

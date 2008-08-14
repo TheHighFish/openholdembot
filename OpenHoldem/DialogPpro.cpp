@@ -5,18 +5,17 @@
 #include <process.h>
 
 #include "OpenHoldem.h"
+#include "MainFrm.h"
+
+#include "CSymbols.h"
+#include "CIteratorThread.h"
+#include "CHeartbeatThread.h"
+#include "CPokerTrackerThread.h"
+
 #include "DialogPpro.h"
-#include "debug.h"
 #include "PokerPro.h"
 #include "Registry.h"
-#include "global.h"
-#include "symbols.h"
-#include "MainFrm.h"
-#include "HeartbeatThread.h"
-#include "IteratorThread.h"
-//#include "scraper.h"
 #include "DialogSitDown.h"
-#include "PokerTrackerThread.h"
 
 // CDlgPpro dialog
 CDlgPpro			*m_pproDlg;
@@ -38,7 +37,8 @@ BEGIN_MESSAGE_MAP(CDlgPpro, CDialog)
 END_MESSAGE_MAP()
 
 
-void CDlgPpro::DoDataExchange(CDataExchange* pDX) {
+void CDlgPpro::DoDataExchange(CDataExchange* pDX) 
+{
     CDialog::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_PPRO_HOSTNAME, m_HostName);
     DDX_Control(pDX, IDC_PPRO_PORT, m_Port);
@@ -63,7 +63,8 @@ void CDlgPpro::DoDataExchange(CDataExchange* pDX) {
     DDX_Control(pDX, IDC_PPRO_HANDHISTORY, m_HandHistory);
 }
 
-CDlgPpro::CDlgPpro(CWnd* pParent /*=NULL*/)	: CDialog(CDlgPpro::IDD, pParent) {
+CDlgPpro::CDlgPpro(CWnd* pParent /*=NULL*/)	: CDialog(CDlgPpro::IDD, pParent) 
+{
 
     __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
 
@@ -71,18 +72,18 @@ CDlgPpro::CDlgPpro(CWnd* pParent /*=NULL*/)	: CDialog(CDlgPpro::IDD, pParent) {
     __SEH_HEADER
 
     __SEH_LOGFATAL("CDlgPpro::Constructor : \n");
-
 }
 
-CDlgPpro::~CDlgPpro() {
+CDlgPpro::~CDlgPpro() 
+{
     __SEH_HEADER
 
     __SEH_LOGFATAL("CDlgPpro::Destructor : \n");
-
 }
 
 
-BOOL CDlgPpro::OnInitDialog() {
+BOOL CDlgPpro::OnInitDialog() 
+{
     __SEH_HEADER
     int			i;
     Registry	reg;
@@ -95,23 +96,29 @@ BOOL CDlgPpro::OnInitDialog() {
     m_Port.SetWindowText(ppro.port);
     m_UserName.SetWindowText(ppro.username);
     m_Password.SetWindowText(ppro.password);
-    if (ppro.handhistory) {
+    if (ppro.handhistory) 
+	{
         m_HandHistory.SetCheck(BST_CHECKED);
     }
-    else {
+    else 
+	{
         m_HandHistory.SetCheck(BST_UNCHECKED);
     }
     text.Format("%d", ppro.chips);
     m_Chips.SetWindowText(text);
-    if (ppro.autoseat) {
+    if (ppro.autoseat) 
+	{
         m_AutoSeat.SetCheck(BST_CHECKED);
     }
-    else {
+    else 
+	{
         m_AutoSeat.SetCheck(BST_UNCHECKED);
     }
-    for (i=0; i<MAX_TABLES; i++) {
+    for (i=0; i<MAX_TABLES; i++) 
+	{
         if (m_TableList.FindString(0, ppro.data.m_ginf[i].m_name) == LB_ERR &&
-                strlen(ppro.data.m_ginf[i].m_name)>0) {
+                strlen(ppro.data.m_ginf[i].m_name)>0) 
+		{
             m_TableList.AddString(ppro.data.m_ginf[i].m_name);
         }
     }
@@ -121,7 +128,8 @@ BOOL CDlgPpro::OnInitDialog() {
 
     // Restore window location
     reg.read_reg();
-    if (reg.ppro_x != -1 && reg.ppro_y!=-1) {
+    if (reg.ppro_x != -1 && reg.ppro_y!=-1) 
+	{
         max_x = GetSystemMetrics(SM_CXSCREEN) - GetSystemMetrics(SM_CXICON);
         max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
         ::SetWindowPos(m_hWnd, HWND_TOP, min(reg.ppro_x, max_x), min(reg.ppro_y, max_y),
@@ -138,42 +146,46 @@ BOOL CDlgPpro::OnInitDialog() {
     // EXCEPTION: OCX Property Pages should return FALSE
 
     __SEH_LOGFATAL("CDlgPpro::OnInitDialog : \n");
-
 }
 
-BOOL CDlgPpro::DestroyWindow() {
+BOOL CDlgPpro::DestroyWindow() 
+{
     __SEH_HEADER
+
     KillTimer(STATE_TIMER);
     KillTimer(AUTOSEAT_TIMER);
     return CDialog::DestroyWindow();
 
     __SEH_LOGFATAL("CDlgPpro::DestroyWindow : \n");
-
 }
 
 
 // CDlgPpro message handlers
 
-void CDlgPpro::OnBnClickedOk() {
+void CDlgPpro::OnBnClickedOk() 
+{
     __SEH_HEADER
+
     save_settings_to_reg();
     OnOK();
 
     __SEH_LOGFATAL("CDlgPpro::OnBnClickedOk : \n");
-
 }
 
-void CDlgPpro::OnBnClickedCancel() {
+void CDlgPpro::OnBnClickedCancel() 
+{
     __SEH_HEADER
+
     save_settings_to_reg();
     OnCancel();
 
     __SEH_LOGFATAL("CDlgPpro::OnBnClickedCancel : \n");
 
+
 }
 
-
-void CDlgPpro::OnBnClickedConnectButton() {
+void CDlgPpro::OnBnClickedConnectButton() 
+{
     __SEH_HEADER
     CDlgPpro		dlgppro;
     CString			s;
@@ -188,29 +200,11 @@ void CDlgPpro::OnBnClickedConnectButton() {
     if (ppro.m_socket != INVALID_SOCKET) 
 	{
 		// stop threads
-		if (p_heartbeat_thread)
-		{
-			delete p_heartbeat_thread;
-			write_log("Stopped heartbeat thread: %08x\n", p_heartbeat_thread);
-			p_heartbeat_thread = NULL;
-		}
-
-		if (p_iterator_thread)
-		{
-			delete p_iterator_thread;
-			write_log("Stopped iterator thread: %08x\n", p_iterator_thread);
-			p_iterator_thread = NULL;
-		}
-
-		if (p_pokertracker_thread)
-		{
-			delete p_pokertracker_thread;
-			write_log("Stopped poker tracker thread: %08x\n", p_pokertracker_thread);
-			p_pokertracker_thread = NULL;
-		}
+		if (p_heartbeat_thread)  delete p_heartbeat_thread;
+		if (p_pokertracker_thread)  delete p_pokertracker_thread;
 
 		// Make sure autoplayer is off
-        global.autoplay = false;
+        p_global->autoplay = false;
 
         // Do the disconnect
         ppro.disconnect();
@@ -224,9 +218,10 @@ void CDlgPpro::OnBnClickedConnectButton() {
         cmf->m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_REDCIRCLE, false);
 
         // Tell everything that we not connected
-        global.ppro_is_connected = false;
+        p_global->ppro_is_connected = false;
     }
-    else {
+    else 
+	{
         save_settings_to_reg();
 
         // connect
@@ -242,16 +237,17 @@ void CDlgPpro::OnBnClickedConnectButton() {
 
         // log in
         int ret = ppro.send_login(ppro.username.GetString(), ppro.password.GetString());
-        if ( ret < 0) {
+        if ( ret < 0) 
+		{
             MessageBox("login failed", "PPro connect error", MB_OK);
             return;
         }
 
         // Tell everything that we are connected
-        global.ppro_is_connected = true;
+        p_global->ppro_is_connected = true;
 
         // Reset symbols
-        symbols.ResetSymbolsFirstTime();
+        p_symbols->ResetSymbolsFirstTime();
 
         // Disable buttons, menu items
         cmf->m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_NEW, false);
@@ -260,7 +256,7 @@ void CDlgPpro::OnBnClickedConnectButton() {
         cmf->m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_REDCIRCLE, false);
 
         // Make sure autoplayer is off
-        global.autoplay = false;
+        p_global->autoplay = false;
 
 		// start heartbeat thread
 		if (p_heartbeat_thread)
@@ -274,22 +270,22 @@ void CDlgPpro::OnBnClickedConnectButton() {
 		write_log("Started heartbeat thread: %08x\n", p_heartbeat_thread);
     }
 
-
     __SEH_LOGFATAL("CDlgPpro::OnBnClickedConnectButton :\n");
-
 }
 
-void CDlgPpro::OnBnClickedJointableButton() {
+void CDlgPpro::OnBnClickedJointableButton() 
+{
     __SEH_HEADER
     // I'm not yet joined to a table, so try to join
-    if (ppro.data.m_tinf.m_tid == 0) {
+    if (ppro.data.m_tinf.m_tid == 0) 
+	{
         do_table_select();
     }
 
     // I'm joined, so unjoin
     else {
         // log OH title bar text and table reset
-        write_log("%s - %s(NOT ATTACHED)\n", global.formula_name.GetString(), ppro.data.m_site_name);
+        write_log("%s - %s(NOT ATTACHED)\n", p_global->formula_name.GetString(), ppro.data.m_site_name);
         write_log("TABLE RESET\n*************************************************************\n");
 
         // Stop logging
@@ -305,36 +301,42 @@ void CDlgPpro::OnBnClickedJointableButton() {
     __SEH_LOGFATAL("CDlgPpro::OnBnClickedJointableButton :\n");
 }
 
-void CDlgPpro::OnBnClickedSitdownButton() {
+void CDlgPpro::OnBnClickedSitdownButton() 
+{
     __SEH_HEADER
     CDlgSitDown  dlg_sit;
 
-    if (ppro.data.m_userchair==-1 && dlg_sit.DoModal() == IDOK) {
+    if (ppro.data.m_userchair==-1 && dlg_sit.DoModal() == IDOK) 
+	{
         ppro.send_sit(dlg_sit.m_selected_chair);
     }
-    else {
+    else 
+	{
         ppro.send_stand(ppro.data.m_userchair);
     }
 
     __SEH_LOGFATAL("CDlgPpro::OnBnClickedSitdownButton :\n");
-
 }
 
-void CDlgPpro::OnBnClickedBuychipsButton() {
+void CDlgPpro::OnBnClickedBuychipsButton() 
+{
     __SEH_HEADER
+
     char		itemtext[100];
 
     m_ChipsToBuy.GetWindowText(itemtext, 100);
-    if (atof(itemtext)>0) {
+    if (atof(itemtext)>0) 
+	{
         ppro.send_chips(atof(itemtext));
     }
 
     __SEH_LOGFATAL("CDlgPpro::OnBnClickedBuychipsButton :\n");
-
 }
 
-void CDlgPpro::OnBnClickedDepositButton() {
+void CDlgPpro::OnBnClickedDepositButton() 
+{
     __SEH_HEADER
+
     char		itemtext[100];
 
     m_DepositAmount.GetWindowText(itemtext, 100);
@@ -343,33 +345,38 @@ void CDlgPpro::OnBnClickedDepositButton() {
     }
 
     __SEH_LOGFATAL("CDlgPpro::OnBnClickedDepositButton :\n");
-
 }
 
-void CDlgPpro::OnLbnDblclkTableList() {
+void CDlgPpro::OnLbnDblclkTableList() 
+{
     __SEH_HEADER
+
     do_table_select();
 
     __SEH_LOGFATAL("CDlgPpro::OnLbnDblclkTableList :\n");
-
 }
 
-void CDlgPpro::OnBnClickedSitinButton() {
+void CDlgPpro::OnBnClickedSitinButton() 
+{
     __SEH_HEADER
-    if (ppro.data.m_userchair!=-1) {
-        if (ppro.data.m_pinf[ppro.data.m_userchair].m_isActive&0x1) {
+
+    if (ppro.data.m_userchair!=-1) 
+	{
+        if (ppro.data.m_pinf[ppro.data.m_userchair].m_isActive&0x1) 
+		{
             ppro.send_sitout(ppro.data.m_userchair);
         }
-        else {
+        else 
+		{
             ppro.send_sitin(ppro.data.m_userchair);
         }
     }
 
     __SEH_LOGFATAL("CDlgPpro::OnBnClickedSitinButton :\n");
-
 }
 
-void CDlgPpro::OnTimer(UINT nIDEvent) {
+void CDlgPpro::OnTimer(UINT nIDEvent) 
+{
     __SEH_HEADER
     CString			s;
     int				n, i, j;
@@ -377,161 +384,202 @@ void CDlgPpro::OnTimer(UINT nIDEvent) {
     char			itemtext[100];
     HWND			hwnd_focus, hwnd_foreground, hwnd_active;
 
-    if (nIDEvent == STATE_TIMER) {
+    if (nIDEvent == STATE_TIMER) 
+	{
 
         // connect button
-        if (ppro.m_socket == INVALID_SOCKET) {
+        if (ppro.m_socket == INVALID_SOCKET) 
+		{
             m_ConnectButton.SetWindowText("Connect");
         }
-        else {
+        else 
+		{
             m_ConnectButton.SetWindowText("Disconnect");
         }
 
         // join table button
         if ((ppro.m_socket==INVALID_SOCKET || m_TableList.GetCurSel()==LB_ERR) &&
-                ppro.data.m_tinf.m_tid == 0) {
+                ppro.data.m_tinf.m_tid == 0) 
+		{
             m_JoinTable_Button.EnableWindow(false);
             m_JoinTable_Button.SetWindowTextA("Join Table");
         }
-        else {
+        else 
+		{
             m_JoinTable_Button.EnableWindow(true);
-            if (ppro.data.m_tinf.m_tid == 0) {
+            if (ppro.data.m_tinf.m_tid == 0) 
+			{
                 m_JoinTable_Button.SetWindowTextA("Join Table");
             }
-            else {
+            else 
+			{
                 m_JoinTable_Button.SetWindowTextA("Leave Table");
             }
         }
 
         // Sit down button
-        if (ppro.m_socket==INVALID_SOCKET) {
+        if (ppro.m_socket==INVALID_SOCKET) 
+		{
             m_SitDownButton.EnableWindow(false);
             m_SitDownButton.SetWindowText("Sit Down");
         }
-        else if (ppro.data.m_tinf.m_tid==0) {
+        else if (ppro.data.m_tinf.m_tid==0) 
+		{
             m_SitDownButton.EnableWindow(false);
             m_SitDownButton.SetWindowText("Sit Down");
         }
-        else {
-            if (ppro.data.m_userchair==-1) {
+        else 
+		{
+            if (ppro.data.m_userchair==-1) 
+			{
                 m_SitDownButton.SetWindowText("Sit Down");
-                if (m_AutoSeat.GetCheck()==BST_UNCHECKED || ppro.data.m_tinf.m_tid==0) {
+                if (m_AutoSeat.GetCheck()==BST_UNCHECKED || ppro.data.m_tinf.m_tid==0) 
+				{
                     m_SitDownButton.EnableWindow(true);
                 }
-                else {
+                else 
+				{
                     m_SitDownButton.EnableWindow(false);
                 }
             }
-            else {
+            else 
+			{
                 m_SitDownButton.SetWindowText("Stand Up");
                 m_SitDownButton.EnableWindow(true);
             }
         }
 
         // Buy chips button and edit field
-        if (ppro.data.m_isauthenticated == 0 || ppro.data.m_tinf.m_tid==0) {
+        if (ppro.data.m_isauthenticated == 0 || ppro.data.m_tinf.m_tid==0) 
+		{
             m_BuyChipsButton.EnableWindow(false);
             m_ChipsToBuy.EnableWindow(false);
         }
-        else {
+        else 
+		{
             m_BuyChipsButton.EnableWindow(true);
             m_ChipsToBuy.EnableWindow(true);
         }
 
         // Deposit button
-        if (ppro.data.m_isauthenticated == 0) {
+        if (ppro.data.m_isauthenticated == 0) 
+		{
             m_DepositButton.EnableWindow(false);
             m_DepositAmount.EnableWindow(false);
         }
-        else {
+        else 
+		{
             m_DepositButton.EnableWindow(true);
             m_DepositAmount.EnableWindow(true);
         }
 
         // Sit in button
-        if (ppro.data.m_isauthenticated == 0 || ppro.data.m_userchair==-1) {
+        if (ppro.data.m_isauthenticated == 0 || ppro.data.m_userchair==-1) 
+		{
             m_SitInButton.EnableWindow(false);
         }
-        else {
+        else 
+		{
             m_SitInButton.EnableWindow(true);
-            if (ppro.data.m_userchair!=-1) {
-                if (ppro.data.m_pinf[ppro.data.m_userchair].m_isActive&0x1) {
+            if (ppro.data.m_userchair!=-1) 
+			{
+                if (ppro.data.m_pinf[ppro.data.m_userchair].m_isActive&0x1) 
+				{
                     m_SitInButton.SetWindowTextA("Sit Out");
                 }
-                else {
+                else 
+				{
                     m_SitInButton.SetWindowTextA("Sit In");
                 }
             }
         }
 
         // connection status
-        if (ppro.m_socket == INVALID_SOCKET) {
+        if (ppro.m_socket == INVALID_SOCKET) 
+		{
             m_ConnectStatus.SetWindowText("Connected to: Not Connected");
         }
-        else {
+        else 
+		{
             s.Format("Connected to: %s", ppro.data.m_site_name);
             m_ConnectStatus.SetWindowText(s);
         }
 
         // logged in status
-        if (ppro.data.m_isauthenticated == 0) {
+        if (ppro.data.m_isauthenticated == 0) 
+		{
             m_LoginStatus.SetWindowText("Logged in as: Not Logged In");
         }
-        else {
+        else 
+		{
             s.Format("Logged in as: %s", ppro.username.GetString());
             m_LoginStatus.SetWindowText(s);
         }
 
         // table status
-        if (ppro.data.m_tinf.m_tid == 0) {
+        if (ppro.data.m_tinf.m_tid == 0) 
+		{
             m_StatusTable.SetWindowTextA("Joined at table: Not Joined");
         }
-        else {
+        else 
+		{
             s.Format("Joined at table: %s", ppro.data.m_ginf[ppro.data.m_tinf.m_tid].m_name);
             m_StatusTable.SetWindowText(s);
         }
 
         // seat status
-        if (ppro.data.m_userchair==-1) {
+        if (ppro.data.m_userchair==-1) 
+		{
             m_StatusChair.SetWindowTextA("Seated in chair: Not Seated");
         }
-        else {
+        else 
+		{
             s.Format("Seated in chair: %d", ppro.data.m_userchair);
             m_StatusChair.SetWindowText(s);
         }
 
         // table list, chips, autoseat
-        if (ppro.data.m_isauthenticated==0 || ppro.data.m_tinf.m_tid!=0) {
+        if (ppro.data.m_isauthenticated==0 || ppro.data.m_tinf.m_tid!=0) 
+		{
             m_TableList.EnableWindow(false);
             m_Chips.EnableWindow(false);
             m_AutoSeat.EnableWindow(false);
         }
-        else {
+        else 
+		{
             m_TableList.EnableWindow(true);
-            if (m_AutoSeat.GetCheck()==BST_CHECKED) {
+            if (m_AutoSeat.GetCheck()==BST_CHECKED) 
+			{
                 m_Chips.EnableWindow(true);
             }
-            else {
+            else 
+			{
                 m_Chips.EnableWindow(false);
             }
             m_AutoSeat.EnableWindow(true);
-            for (i=0; i<MAX_TABLES; i++) {
+            for (i=0; i<MAX_TABLES; i++) 
+			{
                 if (m_TableList.FindString(0, ppro.data.m_ginf[i].m_name) == LB_ERR &&
-                        strlen(ppro.data.m_ginf[i].m_name)>0) {
+                        strlen(ppro.data.m_ginf[i].m_name)>0) 
+				{
                     m_TableList.AddString(ppro.data.m_ginf[i].m_name);
                 }
             }
             n = m_TableList.GetCount();
-            for (i=0; i<n; i++) {
+            for (i=0; i<n; i++) 
+			{
                 found = false;
                 m_TableList.GetText(i, itemtext);
-                for (j=0; j<MAX_TABLES; j++) {
-                    if (strcmp(itemtext, ppro.data.m_ginf[j].m_name)==0) {
+                for (j=0; j<MAX_TABLES; j++) 
+				{
+                    if (strcmp(itemtext, ppro.data.m_ginf[j].m_name)==0) 
+					{
                         found = true;
                         j = MAX_TABLES+1;
                     }
                 }
-                if (!found) {
+                if (!found) 
+				{
                     m_TableList.DeleteString(i);
                     n = m_TableList.GetCount();
                 }
@@ -539,14 +587,16 @@ void CDlgPpro::OnTimer(UINT nIDEvent) {
         }
 
         // hostname, port, username, password, handhistory
-        if (ppro.m_socket == INVALID_SOCKET) {
+        if (ppro.m_socket == INVALID_SOCKET) 
+		{
             m_HostName.EnableWindow(true);
             m_Port.EnableWindow(true);
             m_UserName.EnableWindow(true);
             m_Password.EnableWindow(true);
             m_HandHistory.EnableWindow(true);
         }
-        else {
+        else 
+		{
             m_HostName.EnableWindow(false);
             m_Port.EnableWindow(false);
             m_UserName.EnableWindow(false);
@@ -555,7 +605,8 @@ void CDlgPpro::OnTimer(UINT nIDEvent) {
         }
 
         // Messages
-        if (messages_changed) {
+        if (messages_changed) 
+		{
             // Save the active window
             hwnd_focus = ::GetFocus();
             hwnd_foreground = ::GetForegroundWindow();
@@ -575,11 +626,13 @@ void CDlgPpro::OnTimer(UINT nIDEvent) {
         }
 
     }
-    else if (nIDEvent == AUTOSEAT_TIMER) {
+    else if (nIDEvent == AUTOSEAT_TIMER) 
+	{
         // Auto seat, if necessary
         if (need_to_do_autoseat==true &&
                 ppro.data.m_tinf.m_tid!=0 &&
-                ppro.data.m_userchair==-1) {
+                ppro.data.m_userchair==-1) 
+		{
 
             int r = ppro.get_random_vacant_chair();
             ppro.send_sit(r);
@@ -589,10 +642,12 @@ void CDlgPpro::OnTimer(UINT nIDEvent) {
         // Auto chips, if necessary
         if (need_to_do_autochips==true &&
                 ppro.data.m_tinf.m_tid!=0 &&
-                ppro.data.m_userchair!=-1) {
+                ppro.data.m_userchair!=-1) 
+		{
 
             m_Chips.GetWindowText(itemtext, 100);
-            if (atof(itemtext)>0) {
+            if (atof(itemtext)>0) 
+			{
                 ppro.send_chips(atof(itemtext));
             }
             need_to_do_autochips=false;
@@ -603,29 +658,36 @@ void CDlgPpro::OnTimer(UINT nIDEvent) {
 
 }
 
-void CDlgPpro::do_table_select(void) {
+void CDlgPpro::do_table_select(void) 
+{
     __SEH_HEADER
     int		i, table;
     char	itemtext[100];
 
-    if (m_TableList.GetCurSel()!=LB_ERR) {
+    if (m_TableList.GetCurSel()!=LB_ERR) 
+	{
         m_TableList.GetText(m_TableList.GetCurSel(), itemtext);
 
         table = -1;
-        for (i=0; i<MAX_TABLES; i++) {
-            if (strcmp(itemtext, ppro.data.m_ginf[i].m_name)==0) {
+        for (i=0; i<MAX_TABLES; i++) 
+		{
+            if (strcmp(itemtext, ppro.data.m_ginf[i].m_name)==0) 
+			{
                 table = i;
                 i = MAX_TABLES+1;
             }
         }
 
-        if (table != -1) {
+        if (table != -1) 
+		{
             ppro.send_goto(table);
         }
-        if (m_AutoSeat.GetCheck()==BST_CHECKED) {
+        if (m_AutoSeat.GetCheck()==BST_CHECKED) 
+		{
             need_to_do_autoseat = true;
             m_Chips.GetWindowText(itemtext, 100);
-            if (atoi(itemtext) > 0) {
+            if (atoi(itemtext) > 0) 
+			{
                 need_to_do_autochips = true;
             }
         }
@@ -633,15 +695,15 @@ void CDlgPpro::do_table_select(void) {
         // Start logging
         start_log();
 
-        write_log("%s - %s(%s)\n", global.formula_name.GetString(), ppro.data.m_site_name, ppro.data.m_tinf.m_name);
+        write_log("%s - %s(%s)\n", p_global->formula_name.GetString(), ppro.data.m_site_name, ppro.data.m_tinf.m_name);
         write_log("TABLE RESET\n*************************************************************\n");
     }
 
     __SEH_LOGFATAL("CDlgPpro::do_table_select :\n");
-
 }
 
-void CDlgPpro::save_settings_to_reg(void) {
+void CDlgPpro::save_settings_to_reg(void) 
+{
     __SEH_HEADER
     Registry		reg;
     CString			text;
@@ -674,5 +736,4 @@ void CDlgPpro::save_settings_to_reg(void) {
     reg.write_reg();
 
     __SEH_LOGFATAL("CDlgPpro::save_settings_to_reg :\n");
-
 }

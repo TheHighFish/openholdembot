@@ -1,6 +1,5 @@
-#pragma once
-#include "afxwin.h"
-
+#ifndef INC_DIALOGNEW_H
+#define INC_DIALOGNEW_H
 
 // CDlgNew dialog
 
@@ -28,3 +27,5 @@ public:
 	virtual BOOL OnInitDialog();
 	CStatic m_Desc;
 };
+
+#endif //INC_DIALOGNEW_H

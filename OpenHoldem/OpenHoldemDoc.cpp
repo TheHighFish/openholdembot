@@ -7,8 +7,6 @@
 
 #include "OpenHoldemDoc.h"
 #include "DialogFormulaScintilla.h"
-#include "debug.h"
-#include "global.h"
 
 //
 // Default bot specification follows
@@ -241,8 +239,8 @@ COpenHoldemDoc::COpenHoldemDoc()
 
 	__SEH_HEADER
 
-	global.ClearFormula(&global.formula);
-	global.formula_name = "";
+	p_global->ClearFormula(&p_global->formula);
+	p_global->formula_name = "";
 
 	__SEH_LOGFATAL("COpenHoldemDoc::Constructor : \n"); 
 }
@@ -287,49 +285,49 @@ BOOL COpenHoldemDoc::OnNewDocument()
 	}
 
 	// Clear everything
-	global.ClearFormula(&global.formula);
+	p_global->ClearFormula(&p_global->formula);
 
 	// Default bot
 	func.dirty = true;
 
-	func.func = "notes"; func.func_text = defaultCSnotes; global.formula.mFunction.Add(func);
-	func.func = "dll"; func.func_text = ""; global.formula.mFunction.Add(func);
-	func.func = "f$alli"; func.func_text = defaultCSalli; global.formula.mFunction.Add(func);
-	func.func = "f$swag"; func.func_text = defaultCSswag; global.formula.mFunction.Add(func);
-	func.func = "f$srai"; func.func_text = defaultCSsrai; global.formula.mFunction.Add(func);
-	func.func = "f$rais"; func.func_text = defaultCSrais; global.formula.mFunction.Add(func);
-	func.func = "f$call"; func.func_text = defaultCScall; global.formula.mFunction.Add(func);
-	func.func = "f$prefold"; func.func_text = defaultCSprefold; global.formula.mFunction.Add(func);
-	func.func = "f$delay"; func.func_text = defaultCSdelay; global.formula.mFunction.Add(func);
-	func.func = "f$chat"; func.func_text = defaultCSchat; global.formula.mFunction.Add(func);
-	func.func = "f$P"; func.func_text = defaultCSP; global.formula.mFunction.Add(func);
-	func.func = "f$play"; func.func_text = defaultCSplay; global.formula.mFunction.Add(func);
-	func.func = "f$test"; func.func_text = defaultCStest; global.formula.mFunction.Add(func);
-	func.func = "f$debug"; func.func_text = defaultCSdebug; global.formula.mFunction.Add(func);
-	global.formula.dBankroll = defaultdBankroll;
-	global.formula.dDefcon = defaultdDefcon;
-	global.formula.dRake = defaultdRake;
-	global.formula.dNit = defaultdNit;
+	func.func = "notes"; func.func_text = defaultCSnotes; p_global->formula.mFunction.Add(func);
+	func.func = "dll"; func.func_text = ""; p_global->formula.mFunction.Add(func);
+	func.func = "f$alli"; func.func_text = defaultCSalli; p_global->formula.mFunction.Add(func);
+	func.func = "f$swag"; func.func_text = defaultCSswag; p_global->formula.mFunction.Add(func);
+	func.func = "f$srai"; func.func_text = defaultCSsrai; p_global->formula.mFunction.Add(func);
+	func.func = "f$rais"; func.func_text = defaultCSrais; p_global->formula.mFunction.Add(func);
+	func.func = "f$call"; func.func_text = defaultCScall; p_global->formula.mFunction.Add(func);
+	func.func = "f$prefold"; func.func_text = defaultCSprefold; p_global->formula.mFunction.Add(func);
+	func.func = "f$delay"; func.func_text = defaultCSdelay; p_global->formula.mFunction.Add(func);
+	func.func = "f$chat"; func.func_text = defaultCSchat; p_global->formula.mFunction.Add(func);
+	func.func = "f$P"; func.func_text = defaultCSP; p_global->formula.mFunction.Add(func);
+	func.func = "f$play"; func.func_text = defaultCSplay; p_global->formula.mFunction.Add(func);
+	func.func = "f$test"; func.func_text = defaultCStest; p_global->formula.mFunction.Add(func);
+	func.func = "f$debug"; func.func_text = defaultCSdebug; p_global->formula.mFunction.Add(func);
+	p_global->formula.dBankroll = defaultdBankroll;
+	p_global->formula.dDefcon = defaultdDefcon;
+	p_global->formula.dRake = defaultdRake;
+	p_global->formula.dNit = defaultdNit;
 
 	// Unload dll, if one is loaded
 	if (cdll.hMod_dll) cdll.unload_dll();
 
 	// Create hand list matrices
-	global.create_hand_list_matrices(&global.formula);
+	p_global->CreateHandListMatrices(&p_global->formula);
 
 	// Create UDFs
-	func.func = "f$evrais"; func.func_text = defaultCSevrais; global.formula.mFunction.Add(func);
-	func.func = "f$evcall"; func.func_text = defaultCSevcall; global.formula.mFunction.Add(func);	
+	func.func = "f$evrais"; func.func_text = defaultCSevrais; p_global->formula.mFunction.Add(func);
+	func.func = "f$evcall"; func.func_text = defaultCSevcall; p_global->formula.mFunction.Add(func);	
 
 	// Create parse trees for default formula
-	global.ParseAllFormula(pMyMainWnd->GetSafeHwnd(), &global.formula);
+	p_global->ParseAllFormula(pMyMainWnd->GetSafeHwnd(), &p_global->formula);
 
-	global.formula_name = "Default";
+	p_global->formula_name = "Default";
 	SetTitle("Default");
 	//SetModifiedFlag(true);
 
 	// Load dll, if set in preferences
-	if (global.preferences.load_dll_on_startup)
+	if (p_global->preferences.load_dll_on_startup)
 	cdll.load_dll("");
 
 	return true;
@@ -348,7 +346,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 	// Writing a file
 	if (ar.IsStoring()) 
 	{
-		WriteFormula(&global.formula, ar);
+		WriteFormula(&p_global->formula, ar);
 	}
 
 	// Reading a file
@@ -363,20 +361,20 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 		}
 
 		// Read ohf / whf file
-		ReadFormula(&global.formula, ar);
-		global.formula_name = ar.GetFile()->GetFileName();	
+		ReadFormula(&p_global->formula, ar);
+		p_global->formula_name = ar.GetFile()->GetFileName();	
 
 		// Unload dll, if one is loaded
 		if (cdll.hMod_dll) cdll.unload_dll();
 
 		// Create hand list matrices
-		global.create_hand_list_matrices(&global.formula);
+		p_global->CreateHandListMatrices(&p_global->formula);
 
 		// Create parse trees for newly loaded formula
-		global.ParseAllFormula(pMyMainWnd->GetSafeHwnd(), &global.formula);
+		p_global->ParseAllFormula(pMyMainWnd->GetSafeHwnd(), &p_global->formula);
 
 		// Load dll, if set in preferences
-		if (global.preferences.load_dll_on_startup)
+		if (p_global->preferences.load_dll_on_startup)
 			cdll.load_dll("");
 		}
  
@@ -425,7 +423,7 @@ void COpenHoldemDoc::WriteFormula(SFormula *f, CArchive& ar)
 		//  Removed f$evcall and f$evraise.
 		//  Added f$delay and f$chat.
 		s.Format("##%s##\r\n\r\n", get_time(nowtime)); ar.WriteString(s);
-		N = (int) global.formula.mFunction.GetSize();
+		N = (int) p_global->formula.mFunction.GetSize();
 		for (i=0; i<N; i++) 
 		{
 			if (f->mFunction[i].func == "notes") 
@@ -498,7 +496,7 @@ void COpenHoldemDoc::WriteFormula(SFormula *f, CArchive& ar)
 		}		
 
 		// ...then write the user defined functions.
-		N = (int) global.formula.mFunction.GetSize();
+		N = (int) p_global->formula.mFunction.GetSize();
 		for (i=0; i<N; i++) 
 		{
 			if (f->mFunction[i].func != "notes" &&
@@ -765,7 +763,7 @@ void COpenHoldemDoc::ReadFormula(SFormula *f, CArchive& ar)
 	__SEH_HEADER
 
 	// Clear everything
-	global.ClearFormula(&global.formula);
+	p_global->ClearFormula(&p_global->formula);
 	SetModifiedFlag(false);
 
 	// There are two types of formulas

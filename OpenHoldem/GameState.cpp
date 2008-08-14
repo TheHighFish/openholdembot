@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "GameState.h"
-#include "debug.h"
-#include "global.h"
-#include "symbols.h"
+#include "CSymbols.h"
 
 GameState		game_state;
 
@@ -47,17 +45,14 @@ void GameState::process_game_state (holdem_state* pstate)
     __SEH_HEADER
 
 	int			i, j;
-    int			e;
     bool		pstate_changed;
     static int	nopponentsplaying_last=0;
 
-	EnterCriticalSection(&cs_symbols);
-	int			sym_br = (int) symbols.sym.br;
-	int			sym_nopponentsdealt = (int) symbols.sym.nopponentsdealt;
-	int			sym_nopponentsplaying = (int) symbols.sym.nopponentsplaying;
-	bool		sym_ismyturn = (bool) symbols.sym.ismyturn;
-	bool		sym_ismanual = (bool) symbols.sym.ismanual;
-	LeaveCriticalSection(&cs_symbols);
+	int			sym_br = (int) p_symbols->sym()->br;
+	int			sym_nopponentsdealt = (int) p_symbols->sym()->nopponentsdealt;
+	int			sym_nopponentsplaying = (int) p_symbols->sym()->nopponentsplaying;
+	bool		sym_ismyturn = (bool) p_symbols->sym()->ismyturn;
+	bool		sym_ismanual = (bool) p_symbols->sym()->ismanual;
 
     // tracking of nopponentsdealt
     if (sym_br==2 || sym_nopponentsdealt>oppdealt)
@@ -115,18 +110,14 @@ void GameState::process_game_state (holdem_state* pstate)
     new_hand = false;
 
     // collect symbol if it ismyturn, or if ismanual
-	EnterCriticalSection(&cs_symbols);
-
 	if (sym_ismyturn || sym_ismanual)
     {
         for (i=0; i<hist_sym_count; i++)
         {
-            e = SUCCESS;
-            hist_sym[i][sym_br-1] = symbols.GetSymbolVal(hist_sym_strings[i], &e);
+            int e = SUCCESS;
+            hist_sym[i][sym_br-1] = p_symbols->GetSymbolVal(hist_sym_strings[i], &e);
         }
     }
-
-	LeaveCriticalSection(&cs_symbols);
 
 	__SEH_LOGFATAL("GameState::process_game_state\n");
 }
@@ -249,7 +240,7 @@ double GameState::floppct (void)
                 if (elapsed_start==0)
                     elapsed_start=m_ftr[i&0xff].elapsed_time;
 
-                if (elapsed_start-m_ftr[i&0xff].elapsed_time<global.preferences.av_time*60)
+                if (elapsed_start-m_ftr[i&0xff].elapsed_time<p_global->preferences.av_time*60)
                 {
                     num_dealt+=m_ftr[i&0xff].n_pl_dealt;
                     hands++;
@@ -291,7 +282,7 @@ double GameState::turnpct (void)
                 if (elapsed_start==0)
                     elapsed_start=m_ftr[i&0xff].elapsed_time;
 
-                if (elapsed_start-m_ftr[i&0xff].elapsed_time<global.preferences.av_time*60)
+                if (elapsed_start-m_ftr[i&0xff].elapsed_time<p_global->preferences.av_time*60)
                 {
                     num_dealt+=m_ftr[i&0xff].n_pl_dealt;
                     hands++;
@@ -333,7 +324,7 @@ double GameState::riverpct (void)
                 if (elapsed_start==0)
                     elapsed_start=m_ftr[i&0xff].elapsed_time;
 
-                if (elapsed_start-m_ftr[i&0xff].elapsed_time<global.preferences.av_time*60)
+                if (elapsed_start-m_ftr[i&0xff].elapsed_time<p_global->preferences.av_time*60)
                 {
                     num_dealt+=m_ftr[i&0xff].n_pl_dealt;
                     hands++;
@@ -375,7 +366,7 @@ double GameState::avgbetspf (void)
                 if (elapsed_start==0)
                     elapsed_start=m_ftr[i&0xff].elapsed_time;
 
-                if (elapsed_start-m_ftr[i&0xff].elapsed_time<global.preferences.av_time*60)
+                if (elapsed_start-m_ftr[i&0xff].elapsed_time<p_global->preferences.av_time*60)
                 {
                     num_dealt+=m_ftr[i&0xff].n_pl_dealt;
                     hands++;
@@ -417,7 +408,7 @@ double GameState::tablepfr (void)
                 if (elapsed_start==0)
                     elapsed_start=m_ftr[i&0xff].elapsed_time;
 
-                if (elapsed_start-m_ftr[i&0xff].elapsed_time<global.preferences.av_time*60)
+                if (elapsed_start-m_ftr[i&0xff].elapsed_time<p_global->preferences.av_time*60)
                 {
                     num_dealt+=m_ftr[i&0xff].n_pl_dealt;
                     hands++;
@@ -466,16 +457,14 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed)
     static bool		biblind_posted=false;
     static double	bets_last=0.0;
 
-	EnterCriticalSection(&cs_symbols);
-	int				sym_br = (int) symbols.sym.br;
-	int				sym_userchair = (int) symbols.sym.userchair;
-	bool			sym_ismanual = (bool) symbols.sym.ismanual;
-	bool			sym_ismyturn = (bool) symbols.sym.ismyturn;
-	double			sym_balance_10 = symbols.sym.balance[10];
-	double			sym_handnumber = symbols.sym.handnumber;
-	double			sym_sblind = symbols.sym.sblind;
-	double			sym_bblind = symbols.sym.bblind;
-	LeaveCriticalSection(&cs_symbols);
+	int				sym_br = (int) p_symbols->sym()->br;
+	int				sym_userchair = (int) p_symbols->sym()->userchair;
+	bool			sym_ismanual = (bool) p_symbols->sym()->ismanual;
+	bool			sym_ismyturn = (bool) p_symbols->sym()->ismyturn;
+	double			sym_balance = p_symbols->sym()->balance[10];
+	double			sym_handnumber = p_symbols->sym()->handnumber;
+	double			sym_sblind = p_symbols->sym()->sblind;
+	double			sym_bblind = p_symbols->sym()->bblind;
 
 	m_holdem_state[ (++m_ndx)&0xff ] = *pstate;
 
@@ -553,9 +542,9 @@ void GameState::process_state_engine(holdem_state* pstate, bool pstate_changed)
             }
 
             // Track some stats
-            if (sym_balance_10 > max_balance)
+            if (sym_balance > max_balance)
             {
-                max_balance = sym_balance_10;
+                max_balance = sym_balance;
             }
             hands_played++;
 
@@ -810,14 +799,12 @@ void GameState::process_ftr_engine(holdem_state* pstate)
     static int		ftr_nflopc_last=0;
     static int		ftr_nplayersdealt_last=0;
 
-	EnterCriticalSection(&cs_symbols);
-	double			sym_elapsed = symbols.sym.elapsed;
-	double			sym_nbetsround_0 = symbols.sym.nbetsround[0];
-	int				sym_nplayersdealt = (int) symbols.sym.nplayersdealt;
-	int				sym_br = (int) symbols.sym.br;
-	int				sym_nflopc = (int) symbols.sym.nflopc;
-	int				sym_nplayersplaying = (int) symbols.sym.nplayersplaying;
-	LeaveCriticalSection(&cs_symbols);
+	double			sym_elapsed = p_symbols->sym()->elapsed;
+	double			sym_nbetsround1 = p_symbols->sym()->nbetsround[0];
+	int				sym_nplayersdealt = (int) p_symbols->sym()->nplayersdealt;
+	int				sym_br = (int) p_symbols->sym()->br;
+	int				sym_nflopc = (int) p_symbols->sym()->nflopc;
+	int				sym_nplayersplaying = (int) p_symbols->sym()->nplayersplaying;
 
 	// if a new hand has started setup the next element in the ftr tracker array
     if (pstate->m_dealer_chair != ftr_dealer_chair_last)
@@ -849,7 +836,7 @@ void GameState::process_ftr_engine(holdem_state* pstate)
         if (sym_nflopc==3 && m_ftr[m_ftr_ndx&0xff].n_pl_saw_flop==0)
         {
             m_ftr[m_ftr_ndx&0xff].n_pl_saw_flop = sym_nplayersplaying;
-            m_ftr[m_ftr_ndx&0xff].n_bets_preflop = sym_nbetsround_0;
+            m_ftr[m_ftr_ndx&0xff].n_bets_preflop = sym_nbetsround1;
         }
 
         if (sym_nflopc==4 && m_ftr[m_ftr_ndx&0xff].n_pl_saw_turn==0)

@@ -1,6 +1,5 @@
-#pragma once
-#include "afxwin.h"
-
+#ifndef INC_DIALOGSETTINGS_H
+#define INC_DIALOGSETTINGS_H
 
 // CDlgSettings dialog
 
@@ -28,3 +27,6 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 };
+
+
+#endif //INC_DIALOGSETTINGS_H

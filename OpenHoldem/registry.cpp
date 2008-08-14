@@ -2,8 +2,6 @@
 #include "stdafx.h"
 
 #include "registry.h"
-#include "debug.h"
-#include "global.h"
 
 #define OH_SUBKEY  "Software\\OpenHoldem\\OpenHoldem"
 

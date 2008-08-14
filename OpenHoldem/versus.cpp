@@ -3,10 +3,8 @@
 #include <fcntl.h>
 
 #include "versus.h"
-#include "debug.h"
-#include "global.h"
-#include "scraper.h"
-#include "symbols.h"
+#include "CScraper.h"
+#include "CSymbols.h"
 #include "inlines/eval.h"
 
 class CVersus	versus;
@@ -27,7 +25,7 @@ double CVersus::get_symbol(const char *a, int *e)
     int			n;
 	char		*b;		//Matrix 2008-05-21
 
-    if (global.versus_fh == -1)
+    if (p_global->versus_fh == -1)
         return 0.0;
 
     if (memcmp(a, "vs$nhands", 9)==0 && strlen(a)==9)			return nhands;
@@ -97,25 +95,20 @@ bool CVersus::get_counts(void)
                                 1617000, 1620675, 1623125, 1624350
                               };
 
-	EnterCriticalSection(&cs_symbols);
-	int		sym_userchair = (int) symbols.sym.userchair;
-	bool	user_chair_confirmed = symbols.user_chair_confirmed;
-	int		sym_br = (int) symbols.sym.br;
-	LeaveCriticalSection(&cs_symbols);	
+	int sym_br = (int) p_symbols->sym()->br;
+	int sym_userchair = (int) p_symbols->sym()->userchair;
 
-	EnterCriticalSection(&cs_scraper);
 	unsigned int	card_player[2], card_common[5];
 	for (i=0; i<=1; i++)
-		card_player[i] = scraper.card_player[sym_userchair][i];
+		card_player[i] = p_scraper->card_player(sym_userchair, i);
 	for (i=0; i<=4; i++)
-		card_common[i] = scraper.card_common[i];
-	LeaveCriticalSection(&cs_scraper);
+		card_common[i] = p_scraper->card_common(i);
 
 	
-	if (!user_chair_confirmed)
+	if (!p_symbols->user_chair_confirmed())
         return false;
 
-    if (global.versus_fh == -1)
+    if (p_global->versus_fh == -1)
         return false;
 
     if (card_player[0] == CARD_NOCARD || card_player[0] == CARD_BACK ||
@@ -157,7 +150,7 @@ bool CVersus::get_counts(void)
         offset *= sizeof(byte);
 
         // seek to right position in file
-        if ((pos = _lseek(global.versus_fh, offset, SEEK_SET)) == -1L)
+        if ((pos = _lseek(p_global->versus_fh, offset, SEEK_SET)) == -1L)
         {
             return false;
         }
@@ -171,7 +164,7 @@ bool CVersus::get_counts(void)
 
                 if (i!=pcard[0] && i!=pcard[1] && j!=pcard[0] && j!=pcard[1])
                 {
-                    _read(global.versus_fh, &byte, sizeof(byte));
+                    _read(p_global->versus_fh, &byte, sizeof(byte));
                     memcpy(&wintemp, &byte[0], sizeof(unsigned int));
                     memcpy(&lostemp, &byte[4], sizeof(unsigned int));
 
@@ -214,8 +207,8 @@ bool CVersus::get_counts(void)
 
                     for (listnum=0; listnum<MAX_HAND_LISTS; listnum++)
                     {
-                        if ((StdDeck_SUIT(i)==StdDeck_SUIT(j) && global.formula.inlist[listnum][c0rank][c1rank]) ||
-                                (StdDeck_SUIT(i)!=StdDeck_SUIT(j) && global.formula.inlist[listnum][c1rank][c0rank]))
+                        if ((StdDeck_SUIT(i)==StdDeck_SUIT(j) && p_global->formula.inlist[listnum][c0rank][c1rank]) ||
+                                (StdDeck_SUIT(i)!=StdDeck_SUIT(j) && p_global->formula.inlist[listnum][c1rank][c0rank]))
                         {
                             nlistwin[listnum] += wintemp;
                             nlisttie[listnum] += 1712304 - wintemp - lostemp;
@@ -316,8 +309,8 @@ bool CVersus::get_counts(void)
 
                     for (listnum=0; listnum<MAX_HAND_LISTS; listnum++)
                     {
-                        if ((StdDeck_SUIT(i)==StdDeck_SUIT(j) && global.formula.inlist[listnum][c0rank][c1rank]) ||
-                                (StdDeck_SUIT(i)!=StdDeck_SUIT(j) && global.formula.inlist[listnum][c1rank][c0rank]))
+                        if ((StdDeck_SUIT(i)==StdDeck_SUIT(j) && p_global->formula.inlist[listnum][c0rank][c1rank]) ||
+                                (StdDeck_SUIT(i)!=StdDeck_SUIT(j) && p_global->formula.inlist[listnum][c1rank][c0rank]))
                         {
                             nlistwin[listnum] += wintemp;
                             nlisttie[listnum] += tietemp;
@@ -367,8 +360,8 @@ void CVersus::do_calc(CardMask plCards, CardMask oppCards, CardMask comCards,
     player_hv = Hand_EVAL_N(playerEvalCards, 7);
     opp_hv = Hand_EVAL_N(oppEvalCards, 7);
 
-    player_pokval = symbols.calc_pokerval(player_hv, 7, &dummy, 0, 1);
-    opp_pokval = symbols.calc_pokerval(opp_hv, 7, &dummy, 0, 1);
+    player_pokval = p_symbols->CalcPokerval(player_hv, 7, &dummy, 0, 1);
+    opp_pokval = p_symbols->CalcPokerval(opp_hv, 7, &dummy, 0, 1);
 
     if (player_pokval > opp_pokval)
         *wintemp = *wintemp + 1;

@@ -1,6 +1,5 @@
-#pragma once
-#include "afxwin.h"
-
+#ifndef INC_DIALOGRENAME_H
+#define INC_DIALOGRENAME_H
 
 // CDlgRename dialog
 
@@ -28,3 +27,6 @@ public:
 	CString CSnewname;
 	virtual BOOL OnInitDialog();
 };
+
+
+#endif //INC_DIALOGRENAME_H

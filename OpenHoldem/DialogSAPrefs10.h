@@ -1,9 +1,7 @@
-#pragma once
-#include "resource.h"
-#include "afxwin.h"
-#include "afxcmn.h"
-#include "global.h"
+#ifndef INC_DIALOGSAPREFS10_H
+#define INC_DIALOGSAPREFS10_H
 
+#include "resource.h"
 
 // DialogSAPrefs10 dialog
 
@@ -35,3 +33,6 @@ protected:
 public:
 	afx_msg void OnBnClickedEnableChat();
 };
+
+
+#endif //INC_DIALOGSAPREFS10_H

@@ -1,6 +1,6 @@
-#pragma once
-#include "afxwin.h"
-#include "afxcmn.h"
+#ifndef INC_DIALOGPPRO_H
+#define INC_DIALOGPPRO_H
+
 #include "resource.h"
 
 #define		STATE_TIMER		1
@@ -68,3 +68,6 @@ public:
 };
 
 extern CDlgPpro			*m_pproDlg;
+
+
+#endif //INC_DIALOGPPRO_H

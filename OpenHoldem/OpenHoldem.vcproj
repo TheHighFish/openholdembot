@@ -216,7 +216,31 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Autoplayer.cpp"
+				RelativePath=".\CAutoplayer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CGlobal.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CHeartbeatThread.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CIteratorThread.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CPokerTrackerThread.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CScraper.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CSymbols.cpp"
 				>
 			</File>
 			<File
@@ -272,23 +296,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\global.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\grammar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\HeartbeatThread.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\ICMCalculator.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\IteratorThread.cpp"
 				>
 			</File>
 			<File
@@ -340,10 +352,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\PokerTrackerThread.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\registry.cpp"
 				>
 			</File>
@@ -353,10 +361,6 @@
 			</File>
 			<File
 				RelativePath=".\ScintillaWnd.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Scraper.cpp"
 				>
 			</File>
 			<File
@@ -378,10 +382,6 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\symbols.cpp"
-				>
 			</File>
 			<File
 				RelativePath=".\UPDialog.cpp"
@@ -514,7 +514,31 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Autoplayer.h"
+				RelativePath=".\CAutoplayer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CGlobal.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CHeartbeatThread.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CIteratorThread.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CPokerTrackerThread.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CScraper.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CSymbols.h"
 				>
 			</File>
 			<File
@@ -570,23 +594,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\global.h"
-				>
-			</File>
-			<File
 				RelativePath=".\grammar.h"
 				>
 			</File>
 			<File
-				RelativePath=".\HeartbeatThread.h"
-				>
-			</File>
-			<File
 				RelativePath=".\ICMCalculator.h"
-				>
-			</File>
-			<File
-				RelativePath=".\IteratorThread.h"
 				>
 			</File>
 			<File
@@ -642,10 +654,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\PokerTrackerThread.h"
-				>
-			</File>
-			<File
 				RelativePath=".\ppmessage.h"
 				>
 			</File>
@@ -666,19 +674,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Scraper.h"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.h"
 				>
 			</File>
 			<File
 				RelativePath=".\structs_defines.h"
-				>
-			</File>
-			<File
-				RelativePath=".\symbols.h"
 				>
 			</File>
 			<File

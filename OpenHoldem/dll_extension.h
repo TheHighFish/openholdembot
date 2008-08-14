@@ -1,8 +1,6 @@
 #ifndef INC_DLL_EXTENSION_H
 #define INC_DLL_EXTENSION_H
 
-#include "structs_defines.h"
-
 #define WHUSER_API __declspec(dllimport)
 typedef double (*process_message_t)(const char* message, const void* param);
 

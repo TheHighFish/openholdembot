@@ -1,10 +1,12 @@
+#ifndef INC_PERLEZ_H
+#define INC_PERLEZ_H
+
 //
 //  PerlEz.h
 //
 //  Copyright (c) 1998-2003 ActiveState Corp.  All rights reserved. 
 //
 
-#pragma once
 #include <windows.h>
 
 #ifdef __cplusplus
@@ -280,3 +282,6 @@ int APIENTRY PerlEzSetMagicScalarName(PERLEZHANDLE hHandle, LPCSTR pVariableName
 #ifdef __cplusplus
 }
 #endif
+
+
+#endif //INC_PERLEZ_H

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INC_MEMORY_H
+#define INC_MEMORY_H
 
 class CEvalInfoFunction;
 
@@ -17,3 +18,6 @@ private:
 	double retrieve_value(const char * pquery, int *e);
 
 } memory;
+
+
+#endif //INC_MEMORY_H

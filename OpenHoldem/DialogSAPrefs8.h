@@ -1,8 +1,7 @@
-#pragma once
-#include "resource.h"
-#include "afxwin.h"
-#include "afxcmn.h"
+#ifndef INC_DIALOGSAPREFS8_H
+#define INC_DIALOGSAPREFS8_H
 
+#include "resource.h"
 
 // CDlgSAPrefs8 dialog
 
@@ -29,3 +28,6 @@ public:
 	CSpinButtonCtrl m_MaxFramesSpin;
 	afx_msg void OnBnClickedRecordFrames();
 };
+
+
+#endif //INC_DIALOGSAPREFS8_H

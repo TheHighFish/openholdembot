@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INC_MYCTOOLBAR_H
+#define INC_MYCTOOLBAR_H
 
 
 // CMyToolBar
@@ -18,3 +19,4 @@ public:
 };
 
 
+#endif //INC_MYCTOOLBAR_H

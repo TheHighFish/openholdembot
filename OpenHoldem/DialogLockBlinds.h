@@ -1,6 +1,5 @@
-#pragma once
-#include "afxwin.h"
-
+#ifndef INC_DIALOGLOCKBLINDS_H
+#define INC_DIALOGLOCKBLINDS_H
 
 // CDlgLockBlinds dialog
 
@@ -30,3 +29,6 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 };
+
+
+#endif //INC_DIALOGLOCKBLINDS_H

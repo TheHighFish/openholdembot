@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INC_SIZERBAR_H
+#define INC_SIZERBAR_H
 
 #include "WinMgr.h"
 
@@ -47,3 +48,5 @@ protected:
 	DECLARE_MESSAGE_MAP()
 	DECLARE_DYNCREATE(CSizerBar)
 };
+
+#endif //INC_SIZERBAR_H

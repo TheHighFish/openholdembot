@@ -1,9 +1,7 @@
-#pragma once
+#ifndef INC_DIALOGSAPREFS1_H
+#define INC_DIALOGSAPREFS1_H
 
 #include "resource.h"
-#include "afxwin.h"
-#include "afxcmn.h"
-#include "global.h"
 
 // CDlgSAPrefs1 dialog
 
@@ -31,3 +29,6 @@ protected:
 public:
 	afx_msg void OnEnChangeMaxopponents();
 };
+
+
+#endif //INC_DIALOGSAPREFS1_H

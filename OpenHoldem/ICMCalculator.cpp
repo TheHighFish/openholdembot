@@ -15,10 +15,8 @@
 
 #include "stdafx.h"
 
-#include "symbols.h"
-#include "global.h"
+#include "CSymbols.h"
 #include "ICMCalculator.h"
-#include "debug.h"
 
 
 double P(int i, int n, double *s, int N)
@@ -74,26 +72,25 @@ double ICM::ProcessQueryICM(const char* pquery, int *e)
     double		prizes[MAX_PLAYERS] = {0};
     double		stacks[MAX_PLAYERS] = {0};
     int			i, j;
-    prizes[0] = global.preferences.icm_prize1;
-    prizes[1] = global.preferences.icm_prize2;
-    prizes[2] = global.preferences.icm_prize3;
-    prizes[3] = global.preferences.icm_prize4;
+    prizes[0] = p_global->preferences.icm_prize1;
+    prizes[1] = p_global->preferences.icm_prize2;
+    prizes[2] = p_global->preferences.icm_prize3;
+    prizes[3] = p_global->preferences.icm_prize4;
 
-	EnterCriticalSection(&cs_symbols);
-    int			sym_userchair = (int) symbols.sym.userchair;
-    int			sym_opponentsplayingbits = (int) symbols.sym.opponentsplayingbits;
-    int			sym_nopponentsplaying = (int) symbols.sym.nopponentsplaying;
-    int			sym_nplayersseated =  (int) symbols.sym.nplayersseated;
-    int			sym_playersseatedbits =  (int) symbols.sym.playersseatedbits;
-    double		sym_pot = symbols.sym.pot;
-	double		sym_call = symbols.sym.call;
+	int			sym_userchair = (int) p_symbols->sym()->userchair;
+    int			sym_opponentsplayingbits = (int) p_symbols->sym()->opponentsplayingbits;
+    int			sym_nopponentsplaying = (int) p_symbols->sym()->nopponentsplaying;
+    int			sym_nplayersseated =  (int) p_symbols->sym()->nplayersseated;
+    int			sym_playersseatedbits =  (int) p_symbols->sym()->playersseatedbits;
+    double		sym_pot = p_symbols->sym()->pot;
+	double		sym_call = p_symbols->sym()->call;
     double		sym_currentbet[MAX_PLAYERS], stacks_at_hand_start[MAX_PLAYERS];
+
 	for (i=0; i<MAX_PLAYERS; i++)
 	{
-		sym_currentbet[i] = symbols.sym.currentbet[i];
-		stacks_at_hand_start[i] = symbols.stacks_at_hand_start[i];
+		sym_currentbet[i] = p_symbols->sym()->currentbet[i];
+		stacks_at_hand_start[i] = p_symbols->stacks_at_hand_start(i);
 	}
-	LeaveCriticalSection(&cs_symbols);
 
 	for (i = 0; i < MAX_PLAYERS; i++)
     {
@@ -350,17 +347,12 @@ double ICM::ProcessQueryICM(const char* pquery, int *e)
 
 double ICM::EquityICM(double *stacks, double *prizes, int playerNB, int player)
 {
- 	__SEH_HEADER
+	__SEH_HEADER
 
-   double ICM = 0.;
+	double ICM = 0.;
     int i = 0;
 
-	// These variables hold values that are collected in a critical section
-    int			sym_opponentsseatedbits;
-
-	EnterCriticalSection(&cs_symbols);
-    sym_opponentsseatedbits =  (int) symbols.sym.opponentsseatedbits;
-	LeaveCriticalSection(&cs_symbols);
+	int			sym_opponentsseatedbits = (int) p_symbols->sym()->opponentsseatedbits;
 
 	for (i = 0; i < playerNB; i++)
     {
@@ -404,11 +396,7 @@ double ICM::GetPlayerCurrentBet(int pos)
 {
 	__SEH_HEADER
 
-	EnterCriticalSection(&cs_symbols);
-	double sym_currentbet = symbols.sym.currentbet[pos];
-	LeaveCriticalSection(&cs_symbols);
-
-	return sym_currentbet;
+	return p_symbols->sym()->currentbet[pos];
 
 	__SEH_LOGFATAL("ICM::GetPlayerCurrentBet : \n");
 }
@@ -417,11 +405,9 @@ int ICM::getChairFromDealPos(const char* pquery)
 {
 	__SEH_HEADER
 
-	EnterCriticalSection(&cs_symbols);
-	int sym_nplayersseated = (int) symbols.sym.nplayersseated;
-	int sym_playersseatedbits = (int) symbols.sym.playersseatedbits;
-    int	sym_dealerchair = (int) symbols.sym.dealerchair;
-	LeaveCriticalSection(&cs_symbols);
+    int			sym_nplayersseated =  (int) p_symbols->sym()->nplayersseated;
+    int			sym_playersseatedbits =  (int) p_symbols->sym()->playersseatedbits;
+    int			sym_dealerchair =  (int) p_symbols->sym()->dealerchair;
 
 	int chair = -1;
 

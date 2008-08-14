@@ -4,9 +4,7 @@
 #include "stdafx.h"
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs5.h"
-#include "global.h"
 #include "Registry.h"
-#include "global.h"
 
 
 // CDlgSAPrefs5 dialog
@@ -48,12 +46,12 @@ BOOL CDlgSAPrefs5::OnInitDialog()
     m_HandrankValue.AddString("1326");
     m_HandrankValue.AddString("2652");
     m_HandrankValue.AddString("p");
-    m_HandrankValue.SelectString(0, global.preferences.handrank_value);
+    m_HandrankValue.SelectString(0, p_global->preferences.handrank_value);
 
-    text.Format("%.2f", global.preferences.av_time);
+    text.Format("%.2f", p_global->preferences.av_time);
     m_AvTime.SetWindowText(text);
 
-    m_DisableCaching.SetCheck(global.preferences.disable_caching ? BST_CHECKED : BST_UNCHECKED);
+    m_DisableCaching.SetCheck(p_global->preferences.disable_caching ? BST_CHECKED : BST_UNCHECKED);
 
 
     return TRUE;  // return TRUE unless you set the focus to a control
@@ -65,18 +63,18 @@ void CDlgSAPrefs5::OnOK()
     Registry		reg;
     CString			text;
 
-    m_HandrankValue.GetWindowText(global.preferences.handrank_value);
+    m_HandrankValue.GetWindowText(p_global->preferences.handrank_value);
 
     m_AvTime.GetWindowText(text);
-    global.preferences.av_time = atof(text.GetString());
+    p_global->preferences.av_time = atof(text.GetString());
 
-    global.preferences.disable_caching = m_DisableCaching.GetCheck()==BST_CHECKED ? true : false;
+    p_global->preferences.disable_caching = m_DisableCaching.GetCheck()==BST_CHECKED ? true : false;
 
 
     reg.read_reg();
-    reg.handrank_value = global.preferences.handrank_value;
-    reg.avtime = global.preferences.av_time;
-    reg.disable_caching = global.preferences.disable_caching;
+    reg.handrank_value = p_global->preferences.handrank_value;
+    reg.avtime = p_global->preferences.av_time;
+    reg.disable_caching = p_global->preferences.disable_caching;
     reg.write_reg();
 
     CSAPrefsSubDlg::OnOK();

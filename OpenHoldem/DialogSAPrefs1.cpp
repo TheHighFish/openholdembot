@@ -5,7 +5,6 @@
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs1.h"
 #include "Registry.h"
-#include "global.h"
 
 // CDlgSAPrefs1 dialog
 
@@ -40,10 +39,10 @@ BOOL CDlgSAPrefs1::OnInitDialog()
     CSAPrefsSubDlg::OnInitDialog();
     CString		text;
 
-    text.Format("%d", global.preferences.max_opponents);
+    text.Format("%d", p_global->preferences.max_opponents);
     m_MaxOpponents.SetWindowText(text);
     m_MaxOpponents_Spin.SetRange(1, 22);
-    m_MaxOpponents_Spin.SetPos(global.preferences.max_opponents);
+    m_MaxOpponents_Spin.SetPos(p_global->preferences.max_opponents);
     m_MaxOpponents_Spin.SetBuddy(&m_MaxOpponents);
 
 
@@ -61,10 +60,10 @@ void CDlgSAPrefs1::OnOK()
         MessageBox("Invalid Max Opponents", "ERROR", MB_OK);
         return;
     }
-    global.preferences.max_opponents = strtoul(text.GetString(), 0, 10);
+    p_global->preferences.max_opponents = strtoul(text.GetString(), 0, 10);
 
     reg.read_reg();
-    reg.max_opponents = global.preferences.max_opponents;
+    reg.max_opponents = p_global->preferences.max_opponents;
     reg.write_reg();
 
 

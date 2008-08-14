@@ -1,3 +1,6 @@
+#ifndef AFX_HSCROLLLISTBOX_H__E9948720_F12B_11D4_93CF_00105AC9B942__INCLUDED_
+#define AFX_HSCROLLLISTBOX_H__E9948720_F12B_11D4_93CF_00105AC9B942__INCLUDED_
+
 /////////////////////////////////////////////////////////////////////////////
 // HScrollListBox.h : header file
 //
@@ -11,13 +14,6 @@
 // warranty of any kind.
 //
 /////////////////////////////////////////////////////////////////////////////
-#if !defined(AFX_HSCROLLLISTBOX_H__E9948720_F12B_11D4_93CF_00105AC9B942__INCLUDED_)
-#define AFX_HSCROLLLISTBOX_H__E9948720_F12B_11D4_93CF_00105AC9B942__INCLUDED_
-
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 /////////////////////////////////////////////////////////////////////////////
 // CHScrollListBox window
 /////////////////////////////////////////////////////////////////////////////

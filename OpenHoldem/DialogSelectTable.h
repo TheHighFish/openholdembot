@@ -1,7 +1,6 @@
-#pragma once
-#include "afxwin.h"
+#ifndef INC_DIALOGSELECTTABLE_H
+#define INC_DIALOGSELECTTABLE_H
 
-#include "structs_defines.h"
 #include "HScrollListBox.h"
 
 // CDlgSelectTable dialog
@@ -37,3 +36,6 @@ public:
 	CButton m_OK;
 	afx_msg void OnLbnSelchangeListSelectTable();
 };
+
+
+#endif //INC_DIALOGSELECTTABLE_H

@@ -374,7 +374,6 @@ enumSample(enum_game_t game, StdDeck_CardMask pockets[],
            StdDeck_CardMask board, StdDeck_CardMask dead,
            int npockets, int nboard, int niter, int orderflag,
            enum_result_t *result) {
-  int i;
   int numCards;
 
   enumResultClear(result);

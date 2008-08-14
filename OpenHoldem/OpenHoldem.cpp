@@ -3,23 +3,23 @@
 
 #include "stdafx.h"
 #include <psapi.h>
-#include <windows.h>
 
 #include "OpenHoldem.h"
-#include "MainFrm.h"
-
 #include "OpenHoldemDoc.h"
 #include "OpenHoldemView.h"
+#include "MainFrm.h"
+
+#include "CScraper.h"
+#include "CSymbols.h"
+#include "CAutoplayer.h"
+#include "CIteratorThread.h"
+#include "CHeartbeatThread.h"
+#include "CPokerTrackerThread.h"
+
 #include "DialogFormulaScintilla.h"
-#include "debug.h"
-#include "global.h"
-#include "HeartbeatThread.h"
-#include "IteratorThread.h"
-#include "scraper.h"
-#include "symbols.h"
 #include "grammar.h"
 #include "PokerPro.h"
-#include "PokerTrackerThread.h"
+#include "Perl.hpp"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -49,14 +49,6 @@ COpenHoldemApp::COpenHoldemApp()
 
     __SEH_HEADER
 
-    // Critical sections
-    InitializeCriticalSection(&cs_heartbeat);
-    InitializeCriticalSection(&cs_iterator);
-    InitializeCriticalSection(&cs_scraper);
-    InitializeCriticalSection(&cs_symbols);
-	InitializeCriticalSection(&cs_calc_f$symbol);
-    InitializeCriticalSection(&cs_parse);
-
     __SEH_LOGFATAL("COpenHoldemApp::Constructor :\n");
 }
 
@@ -76,7 +68,19 @@ BOOL COpenHoldemApp::InitInstance()
 {
     __SEH_HEADER
     
-    Scintilla_RegisterClasses(AfxGetInstanceHandle());
+	// Critical sections
+	InitializeCriticalSectionAndSpinCount(&cs_iterator, 4000);
+	InitializeCriticalSectionAndSpinCount(&cs_calc_f$symbol, 4000);
+    InitializeCriticalSectionAndSpinCount(&cs_parse, 4000);
+
+	// Classes
+	if (!p_global)  p_global = new CGlobal;
+	if (!p_scraper)  p_scraper = new CScraper;
+	if (!p_symbols)  p_symbols = new CSymbols;
+	if (!p_autoplayer)  p_autoplayer = new CAutoplayer(false, "OHAntiColl");
+	if (!the_Perl_Interpreter)  the_Perl_Interpreter = new Perl;
+
+	Scintilla_RegisterClasses(AfxGetInstanceHandle());
 
     // Initialize richedit2 library
     AfxInitRichEdit2();
@@ -105,7 +109,7 @@ BOOL COpenHoldemApp::InitInstance()
 	//
 	// If it matches an older one, the logs etc. are at least
 	// sequencial and not mixed up.
-	global.Session_ID = GetProcessId(GetCurrentProcess());
+	p_global->set_session_id(GetProcessId(GetCurrentProcess()));
 
     // InitCommonControlsEx() is required on Windows XP if an application
     // manifest specifies use of ComCtl32.dll version 6 or later to enable
@@ -184,7 +188,7 @@ BOOL COpenHoldemApp::InitInstance()
     // Enable drag/drop open
     m_pMainWnd->DragAcceptFiles();
 
-    global.hMainFrame = m_pMainWnd->GetSafeHwnd();
+    p_global->set_h_main_frame(m_pMainWnd->GetSafeHwnd());
 
     // Bring main window to front
     m_pMainWnd->SetWindowPos(&CWnd::wndTop, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
@@ -201,34 +205,22 @@ int COpenHoldemApp::ExitInstance()
 {
     __SEH_HEADER
 
-	// stop threads
-	if (p_heartbeat_thread)
-	{
-		delete p_heartbeat_thread;
-		write_log("Stopped heartbeat thread: %08x\n", p_heartbeat_thread);
-		p_heartbeat_thread = NULL;
-	}
-
-	if (p_iterator_thread)
-	{
+	if (p_iterator_thread)  
 		delete p_iterator_thread;
-		write_log("Stopped iterator thread: %08x\n", p_iterator_thread);
-		p_iterator_thread = NULL;
-	}
+	if (p_heartbeat_thread)  delete p_heartbeat_thread;
+	if (p_pokertracker_thread)  delete p_pokertracker_thread;
 
-	if (p_pokertracker_thread)
-	{
-		delete p_pokertracker_thread;
-		write_log("Stopped poker tracker thread: %08x\n", p_pokertracker_thread);
-		p_pokertracker_thread = NULL;
-	}
-
+	// critical sections
 	DeleteCriticalSection(&cs_iterator);
-    DeleteCriticalSection(&cs_heartbeat);
-    DeleteCriticalSection(&cs_scraper);
-    DeleteCriticalSection(&cs_symbols);
 	DeleteCriticalSection(&cs_calc_f$symbol);
     DeleteCriticalSection(&cs_parse);
+
+	// classes
+	if (p_global)  delete p_global;
+	if (p_scraper)  delete p_scraper;
+	if (p_symbols)  delete p_symbols;
+	if (p_autoplayer)  delete p_autoplayer;
+	if (the_Perl_Interpreter)  delete the_Perl_Interpreter;
 
     stop_log();
 

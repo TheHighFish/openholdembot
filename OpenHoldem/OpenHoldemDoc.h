@@ -3,9 +3,6 @@
 
 // OpenHoldemDoc.h : interface of the COpenHoldemDoc class
 //
-
-#include "structs_defines.h"
-
 class COpenHoldemDoc : public CDocument {
 protected:
 	COpenHoldemDoc();

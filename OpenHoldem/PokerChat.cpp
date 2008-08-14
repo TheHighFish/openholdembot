@@ -21,8 +21,6 @@
 #include <time.h>
 #include <windows.h>
 #include <winuser.h>
-#include "debug.h"
-#include "global.h"
 #include "PokerChat.hpp"
 
 
@@ -106,7 +104,7 @@ bool is_Chat_allowed(void)
 {
     __SEH_HEADER
 
-    if (!global.preferences.Chat_enabled)
+    if (!p_global->preferences.Chat_enabled)
     {
         return false;
     }
@@ -131,10 +129,10 @@ void compute_first_possible_next_ChatTime(void)
     time_t the_actual_Time;
     time(&the_actual_Time);
     first_possible_next_ChatTime = the_actual_Time +
-                                   global.preferences.Chat_min_Delay +
+                                   p_global->preferences.Chat_min_Delay +
                                    //  We have to convert to a double here,
                                    //  as integer "division" would be result in zero.
-                                   (double(rand()) / RAND_MAX) * global.preferences.Chat_random_Delay;
+                                   (double(rand()) / RAND_MAX) * p_global->preferences.Chat_random_Delay;
 
     __SEH_LOGFATAL("PokerChat::compute_first_possible_next_ChatTime  : \n");
 }

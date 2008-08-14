@@ -1,3 +1,6 @@
+#ifndef _MSC_STDINT_H_
+#define _MSC_STDINT_H_
+
 // ISO C9x  compliant stdint.h for Microsoft Visual Studio
 // Based on ISO/IEC 9899:TC2 Committee draft (May 6, 2005) WG14/N1124 
 // 
@@ -32,13 +35,6 @@
 #ifndef _MSC_VER // [
 #error "Use this header only with Microsoft Visual C++ compilers!"
 #endif // _MSC_VER ]
-
-#ifndef _MSC_STDINT_H_ // [
-#define _MSC_STDINT_H_
-
-#if _MSC_VER > 1000
-#pragma once
-#endif
 
 #include <limits.h>
 

@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "updialog.h"
-#include "debug.h"
 
 CUPDialog::_tagInitCommonControls CUPDialog::m_InitCommonControls;	//Static variable to facilitate the call of InitCommonControlsEx() function Only Once Per App
 

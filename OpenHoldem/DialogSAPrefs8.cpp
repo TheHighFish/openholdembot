@@ -4,7 +4,6 @@
 #include "stdafx.h"
 
 #include "SAPrefsSubDlg.h"
-#include "global.h"
 #include "Registry.h"
 
 #include "DialogSAPrefs8.h"
@@ -46,14 +45,14 @@ BOOL CDlgSAPrefs8::OnInitDialog()
 
     CSAPrefsSubDlg::OnInitDialog();
 
-    m_RecordFrames.SetCheck(global.preferences.replay_record ? BST_CHECKED : BST_UNCHECKED);
-    m_RecordEveryChange.SetCheck(global.preferences.replay_record_every_change ? BST_CHECKED : BST_UNCHECKED);
-    m_RecordEveryChange.EnableWindow(global.preferences.replay_record);
+    m_RecordFrames.SetCheck(p_global->preferences.replay_record ? BST_CHECKED : BST_UNCHECKED);
+    m_RecordEveryChange.SetCheck(p_global->preferences.replay_record_every_change ? BST_CHECKED : BST_UNCHECKED);
+    m_RecordEveryChange.EnableWindow(p_global->preferences.replay_record);
 
-    text.Format("%d", global.preferences.replay_max_frames);
+    text.Format("%d", p_global->preferences.replay_max_frames);
     m_MaxFrames.SetWindowText(text.GetString());
     m_MaxFramesSpin.SetRange(1, 1000);
-    m_MaxFramesSpin.SetPos(global.preferences.replay_max_frames);
+    m_MaxFramesSpin.SetPos(p_global->preferences.replay_max_frames);
     m_MaxFramesSpin.SetBuddy(&m_MaxFrames);
 
     return TRUE;  // return TRUE unless you set the focus to a control
@@ -65,16 +64,16 @@ void CDlgSAPrefs8::OnOK()
     Registry		reg;
     CString			text;
 
-    global.preferences.replay_record = m_RecordFrames.GetCheck() == BST_CHECKED;
-    global.preferences.replay_record_every_change = m_RecordEveryChange.GetCheck() == BST_CHECKED;
+    p_global->preferences.replay_record = m_RecordFrames.GetCheck() == BST_CHECKED;
+    p_global->preferences.replay_record_every_change = m_RecordEveryChange.GetCheck() == BST_CHECKED;
 
     m_MaxFrames.GetWindowText(text);
-    global.preferences.replay_max_frames = atoi(text.GetString());
+    p_global->preferences.replay_max_frames = atoi(text.GetString());
 
     reg.read_reg();
-    reg.replay_record = global.preferences.replay_record;
-    reg.replay_record_every_change = global.preferences.replay_record_every_change;
-    reg.replay_max_frames = global.preferences.replay_max_frames;
+    reg.replay_record = p_global->preferences.replay_record;
+    reg.replay_record_every_change = p_global->preferences.replay_record_every_change;
+    reg.replay_max_frames = p_global->preferences.replay_max_frames;
     reg.write_reg();
 
     CSAPrefsSubDlg::OnOK();

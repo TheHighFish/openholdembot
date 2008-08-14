@@ -1,8 +1,7 @@
-#pragma once
+#ifndef INC_DIALOGSAPREFS4_H
+#define INC_DIALOGSAPREFS4_H
 
 #include "resource.h"
-#include "afxwin.h"
-#include "afxcmn.h"
 
 // CDlgSAPrefs4 dialog
 
@@ -30,3 +29,6 @@ protected:
 public:
 	afx_msg void OnDeltaposScrapedelaySpin(NMHDR *pNMHDR, LRESULT *pResult);
 };
+
+
+#endif //INC_DIALOGSAPREFS4_H
