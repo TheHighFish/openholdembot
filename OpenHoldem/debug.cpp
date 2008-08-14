@@ -615,10 +615,10 @@ void write_logautoplay(const char * action)
         fprintf(log_fp, "%-5s %9.2f %9.2f %9.2f ", 
 			action, 
 			p_symbols->sym()->call, 
-			p_symbols->sym()->bet, 
+			p_symbols->sym()->bet[4], 
 			p_symbols->sym()->pot);
 		fprintf(log_fp, "%9.2f - %s %s %.2f\n", 
-			p_symbols->sym()->balance, 
+			p_symbols->sym()->balance[10], 
 			fcra_seen.GetString(), 
 			fcra_formula_status.GetString(), 
 			p_symbols->f$swag() );

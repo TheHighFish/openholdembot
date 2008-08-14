@@ -73,9 +73,9 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 	int				sym_br = (int) p_symbols->sym()->br;
 	int				sym_playersplayingbits = (int) p_symbols->sym()->playersplayingbits;
-	double			sym_nbetsround = p_symbols->sym()->nbetsround[4];
+	double			sym_nbetsround = p_symbols->sym()->nbetsround[0];
 	int				sym_bblindbits = (int) p_symbols->sym()->bblindbits;
-	bool			sym_didcall = (bool) p_symbols->sym()->didcall;
+	bool			sym_didcall = (bool) p_symbols->sym()->didcall[0];
 	int				sym_nopponents = (int) p_symbols->sym()->nopponents;
 
 	int				nopp = sym_nopponents <= MAX_OPPONENTS ? sym_nopponents : MAX_OPPONENTS;

@@ -6,7 +6,7 @@
 // and add /EHa flag to the compiler options
 // For automatic minidumps to work, this must be left configured "on"
 // all the time now.
-#define	SEH_ENABLE	1
+//#define	SEH_ENABLE	1
 
 // This lets transform.cpp know which source tree is #include'ing it
 #ifndef OPENHOLDEM_PROGRAM
