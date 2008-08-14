@@ -266,7 +266,7 @@ int PokerAction::pf_bets (void)
 			(first_into_pot())				? 1 :   //No Callers - no callers or blinds only (on preflop).
 			(p_symbols->sym()->ncallbets==1)		? 2 :   //Called Pot - 1 bet to call.
 			(p_symbols->sym()->nbetstocall==1 && 
-				(p_symbols->sym()->didcall||p_symbols->sym()->didrais))
+				(p_symbols->sym()->didcall[4] || p_symbols->sym()->didrais[4] ))
 			? 3 :   //Raised Back - 1 more bet to call because someone behind you raised after you've already bet/called/raised.
 			(p_symbols->sym()->ncallbets==2)		? 4 :   //Raised Pot - 2 bets to call.
 			(p_symbols->sym()->ncallbets>=3)		? 5 :0; //Reraised Pot - 3+ bets to call.

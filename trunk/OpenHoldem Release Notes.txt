@@ -12,6 +12,8 @@ BUG FIXES:
 http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=5189
 - Use of re_st_ and re_re_ symbol would always make the Autoplayer Trace output the results of the function being called (Spew)
 - Further "crash" bug fixes - removal of superflous code in heartbeat_thread. (OpenHoldem/Spew)
+- Error in PokerAction::pf_bets function corrected.
+- CScraper::ScrapeName, CScraper::ScrapeBalance, correted code to check seated status with "IsStringSeated" function.
 
 MAINTENANCE:
 - Complete reworking of thread model to make use of critical sections more intuitive, and to improve
@@ -38,7 +40,7 @@ MAINTENANCE:
   calculated once per heartbeat and reused.  Update of main window (best action, especially) is much more timely.
 - System-wide mutex is now created once, upon instantiation of the CAutoplayer class.  Locks and unlocks all now
   use this single mutex instance.  All early, exception-case exits that *may* have resulted in an unintentionally
-  long-locked mutext have had Unlocks added.
+  long-locked mutex have had Unlocks added.
   
 v1.9.2 2008-07-25
 =================
