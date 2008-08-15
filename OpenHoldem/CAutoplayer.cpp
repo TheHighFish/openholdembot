@@ -4,8 +4,10 @@
 #include "CAutoplayer.h"
 #include "CSymbols.h"
 #include "CIteratorThread.h"
-#include "grammar.h"
 #include "CScraper.h"
+#include "CGlobal.h"
+
+#include "grammar.h"
 #include "PokerChat.hpp"
 
 CAutoplayer	*p_autoplayer = NULL;

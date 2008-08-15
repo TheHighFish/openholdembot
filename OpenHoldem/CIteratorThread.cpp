@@ -1,10 +1,13 @@
 #include "stdafx.h"
 #include <process.h>
 
+#include "CIteratorThread.h"
+
 #include "CScraper.h"
 #include "CSymbols.h"
+#include "CGlobal.h"
+
 #include "grammar.h"
-#include "CIteratorThread.h"
 #include "inlines/eval.h"
 
 CIteratorThread		*p_iterator_thread = NULL;

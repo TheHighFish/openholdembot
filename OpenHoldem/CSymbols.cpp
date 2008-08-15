@@ -7,6 +7,7 @@
 #include "CIteratorThread.h"
 #include "CAutoplayer.h"
 #include "CPokerTrackerThread.h"
+#include "CGlobal.h"
 
 #include "grammar.h"
 #include "inlines/eval.h"

@@ -20,7 +20,10 @@
 #include "dll_extension.h"
 #include "CScraper.h"
 #include "Perl.hpp"
+
 #include "CIteratorThread.h"
+#include "CGlobal.h"
+
 
 using namespace std;
 

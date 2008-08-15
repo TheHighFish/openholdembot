@@ -23,6 +23,8 @@
 #include <winuser.h>
 #include "PokerChat.hpp"
 
+#include "CGlobal.h"
+
 
 using namespace std;
 

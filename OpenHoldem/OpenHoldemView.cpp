@@ -9,6 +9,8 @@
 #include "CScraper.h"
 #include "CSymbols.h"
 #include "CHeartbeatThread.h"
+#include "CGlobal.h"
+
 
 // Table layouts
 int		cc[5][2] = 

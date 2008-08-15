@@ -4,9 +4,12 @@
 #include "stdafx.h"
 
 #include "SAPrefsSubDlg.h"
+#include "DialogSAPrefs8.h"
+
+#include "CGlobal.h"
+
 #include "Registry.h"
 
-#include "DialogSAPrefs8.h"
 
 // CDlgSAPrefs8 dialog
 

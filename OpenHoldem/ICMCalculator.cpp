@@ -15,8 +15,11 @@
 
 #include "stdafx.h"
 
-#include "CSymbols.h"
 #include "ICMCalculator.h"
+
+#include "CSymbols.h"
+#include "CGlobal.h"
+
 
 
 double P(int i, int n, double *s, int N)

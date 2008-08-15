@@ -12,6 +12,7 @@
 #include "CScraper.h"
 #include "CSymbols.h"
 #include "CHeartbeatThread.h"
+#include "CGlobal.h"
 
 #include "DialogFormulaScintilla.h"
 #include "registry.h"

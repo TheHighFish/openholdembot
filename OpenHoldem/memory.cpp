@@ -2,6 +2,8 @@
 
 #include "memory.h"
 #include "CSymbols.h"
+#include "CGlobal.h"
+
 #include "grammar.h"
 
 Memory		memory;

@@ -13,6 +13,7 @@
 #include "CIteratorThread.h"
 #include "CHeartbeatThread.h"
 #include "CPokerTrackerThread.h"
+#include "CGlobal.h"
 
 #include "DialogFormulaScintilla.h"
 #include "SAPrefsDialog.h"

@@ -61,15 +61,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "structs_defines.h"
-#include "CGlobal.h"
-
 #include "debug.h"
 #include "poker_defs.h"
 #include "pokereval_export.h"
 #include "evx_defs.h"
 #include "inlines/evx_inlines.h"
 
+#include "structs_defines.h"
 
 
 #endif //INC_STDAFX_H
