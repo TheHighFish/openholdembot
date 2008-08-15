@@ -13,7 +13,7 @@
 
 CTransform::CTransform(void)
 {
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 }
 
 CTransform::~CTransform(void)

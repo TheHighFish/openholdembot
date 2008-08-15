@@ -1,55 +1,28 @@
 #ifndef INC_DEBUG_H
 #define INC_DEBUG_H
 
-// To enable seh:
-// uncomment this 
-// and add /EHa flag to the compiler options
-// For automatic minidumps to work, this must be left configured "on"
-// all the time now.
-#define	SEH_ENABLE	1
+// To enable automatic minidumps:
+// "#define SEH_ENABLE_STACK 1" must be commented out
+// "#define	SEH_ENABLE_HANDLER 1" must *not* be commented out
+//
+// If using SEH_ENABLE_STACK, then the /EHa flag must be set in the compiler options
+//#define	SEH_ENABLE_STACK	1
+#define	SEH_ENABLE_HANDLER	1
 
 // This lets transform.cpp know which source tree is #include'ing it
 #ifndef OPENSCRAPE_PROGRAM
 #define OPENSCRAPE_PROGRAM
 #endif
 
-//  Three macros for exception handling,
-//    replacing the old copy- and pasted code
-//    at the beginning and end of every function.
-//    (Maintenance 2008.04.17 by THF)
-//
-//  Docu:
-//    http://en.wikipedia.org/wiki/C_preprocessor
-//    http://en.wikipedia.org/wiki/Variadic_macro
-//
-//  First one: __SEH_HEADER
-//    Replacing:
-//      
-//    #ifdef SEH_ENABLE
-//        try {
-//    #endif
-//
-#ifdef SEH_ENABLE
+//  Three macros for exception handling
+#ifdef SEH_ENABLE_STACK
 #define __SEH_HEADER try {
 #else
 #define __SEH_HEADER
 #endif
 
-
-//  Second one: __SEH_LOGFATAL
-//    In case, you call it with several parameters,
-//    the first parameter has to be a format string 
-//    Replacing:
-//
-//    #ifdef SEH_ENABLE
-//        }
-//	      catch (...)	 { 
-//		      logfatal(<SEVERAL_INFO_TO_LOG>); 
-//		      throw;
-//	      }
-//    #endif
-//
-#ifdef SEH_ENABLE
+//  SEH_LOGFATAL
+#ifdef SEH_ENABLE_STACK
 #define __SEH_LOGFATAL(...) } \
 	catch (...) \
 	{ \
@@ -60,19 +33,11 @@
 #define __SEH_LOGFATAL(...)
 #endif
 
-
-//  Thirs one: __SEH_SET_EXCEPTION_HANDLER
-//    Replacing:
-//
-//    #ifdef SEH_ENABLE
-//	      // Set exception handler
-//	      SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-//    #endif
-//
-#ifdef SEH_ENABLE
-#define __SEH_SET_EXCEPTION_HANDLER($1) SetUnhandledExceptionFilter($1);
+//  SEH_SET_EXCEPTION_HANDLER
+#ifdef SEH_ENABLE_HANDLER
+#define __SEH_SET_EXCEPTION_HANDLER SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
 #else
-#define __SEH_SET_EXCEPTION_HANDLER($1)
+#define __SEH_SET_EXCEPTION_HANDLER
 #endif
 
 

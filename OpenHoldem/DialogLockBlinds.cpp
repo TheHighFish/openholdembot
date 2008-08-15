@@ -8,7 +8,7 @@
 // CDlgLockBlinds dialog
 CDlgLockBlinds::CDlgLockBlinds(CWnd* pParent /*=NULL*/)	: CDialog(CDlgLockBlinds::IDD, pParent) {
 
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 
     __SEH_HEADER
 

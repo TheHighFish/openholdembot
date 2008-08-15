@@ -27,7 +27,7 @@ END_MESSAGE_MAP()
 
 COpenScrapeView::COpenScrapeView()
 {
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 
 	__SEH_HEADER
 		

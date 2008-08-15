@@ -5,7 +5,7 @@
 
 MyHand::MyHand()
 {
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 }
 
 double	MyHand::process_query(const char * pquery, int *e)

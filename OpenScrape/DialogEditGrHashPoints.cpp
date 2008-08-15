@@ -13,7 +13,7 @@
 CDlgEditGrHashPoints::CDlgEditGrHashPoints(CWnd* pParent /*=NULL*/)
 	: CDialog(CDlgEditGrHashPoints::IDD, pParent)
 {
-	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+	__SEH_SET_EXCEPTION_HANDLER
 }
 
 CDlgEditGrHashPoints::~CDlgEditGrHashPoints()

@@ -12,7 +12,7 @@ IMPLEMENT_DYNAMIC(CDlgEditRegion, CDialog)
 
 CDlgEditRegion::CDlgEditRegion(CWnd* pParent /*=NULL*/) : CDialog(CDlgEditRegion::IDD, pParent)
 {
-	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+	__SEH_SET_EXCEPTION_HANDLER
 }
 
 CDlgEditRegion::~CDlgEditRegion()

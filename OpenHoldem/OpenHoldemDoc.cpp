@@ -235,7 +235,7 @@ END_MESSAGE_MAP()
 
 COpenHoldemDoc::COpenHoldemDoc() 
 {
-	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+	__SEH_SET_EXCEPTION_HANDLER
 
 	__SEH_HEADER
 

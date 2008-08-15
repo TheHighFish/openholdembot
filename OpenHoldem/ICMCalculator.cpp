@@ -58,7 +58,7 @@ double P(int i, int n, double *s, int N)
 
 ICM::ICM ()
 {
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 }
 
 ICM::~ICM ()

@@ -66,7 +66,7 @@ END_MESSAGE_MAP()
 // COpenHoldemView construction/destruction
 COpenHoldemView::COpenHoldemView() 
 {
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 
     __SEH_HEADER
 

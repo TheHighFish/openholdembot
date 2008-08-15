@@ -135,7 +135,7 @@
 				AdditionalIncludeDirectories="..\hscroll-list-box"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				MinimalRebuild="false"
-				ExceptionHandling="2"
+				ExceptionHandling="1"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"

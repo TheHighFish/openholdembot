@@ -5,7 +5,7 @@
 
 LogSymbols::LogSymbols()
 {
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 }
 
 double	LogSymbols::process_query(const char * pquery, int *e)

@@ -66,7 +66,7 @@ void CDlgPpro::DoDataExchange(CDataExchange* pDX)
 CDlgPpro::CDlgPpro(CWnd* pParent /*=NULL*/)	: CDialog(CDlgPpro::IDD, pParent) 
 {
 
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 
 
     __SEH_HEADER

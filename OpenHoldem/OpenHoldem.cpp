@@ -25,6 +25,8 @@
 #define new DEBUG_NEW
 #endif
 
+char	_startup_path[MAX_PATH];
+
 // Supports MRU
 AFX_STATIC_DATA const TCHAR _afxFileSection[] = _T("Recent File List");
 AFX_STATIC_DATA const TCHAR _afxFileEntry[] = _T("File%d");
@@ -45,9 +47,12 @@ END_MESSAGE_MAP()
 // COpenHoldemApp construction
 COpenHoldemApp::COpenHoldemApp()
 {
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 
     __SEH_HEADER
+
+    // Save startup directory
+    ::GetCurrentDirectory(MAX_PATH - 1, _startup_path);
 
     __SEH_LOGFATAL("COpenHoldemApp::Constructor :\n");
 }

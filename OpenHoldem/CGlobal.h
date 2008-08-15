@@ -79,7 +79,6 @@ public:
 	const bool				replay_recorded_this_turn() { return _replay_recorded_this_turn; }
 	const unsigned long int session_id() { return _session_id; }
 	const HWND				h_main_frame() { return _h_main_frame; }
-	const char *			startup_path() { return _startup_path; }
 	const HWND				attached_hwnd() { return _attached_hwnd; }
 	//const RECT			attached_rect() { return _attached_rect; }
 	const int				next_replay_frame() { return _next_replay_frame; }
@@ -93,7 +92,6 @@ public:
 	void set_replay_recorded_this_turn(const bool b) { ENT _replay_recorded_this_turn = b; LEA }
 	void set_session_id(const unsigned long int li) { ENT _session_id = li; LEA }
 	void set_h_main_frame(const HWND h) { ENT _h_main_frame = h; LEA }
-	void set_startup_path(const char * c) { ENT if (strlen(c)==0) _startup_path[0]='\0'; else strcpy_s(_startup_path, MAX_PATH, c); LEA }
 	void set_attached_hwnd(const HWND h) { ENT _attached_hwnd = h; LEA }
 	RECT * set_attached_rect() { return &_attached_rect; }
 	void set_next_replay_frame(const int i) { ENT _next_replay_frame = i; LEA }
@@ -107,7 +105,6 @@ private:
 	bool				_m_wait_cursor;  // Used if we need to display a wait cursor anywhere
 	bool				_replay_recorded_this_turn;
 	unsigned long int	_session_id;
-	char				_startup_path[MAX_PATH];
 	HWND				_h_main_frame;	// hwnd for main frame
 	HWND				_attached_hwnd;	 // Table that we are attached to
 	RECT				_attached_rect;  // Table that we are attached to

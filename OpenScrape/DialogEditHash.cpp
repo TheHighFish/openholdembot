@@ -13,7 +13,7 @@ IMPLEMENT_DYNAMIC(CDlgEditHash, CDialog)
 CDlgEditHash::CDlgEditHash(CWnd* pParent /*=NULL*/)
 	: CDialog(CDlgEditHash::IDD, pParent)
 {
-	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+	__SEH_SET_EXCEPTION_HANDLER
 }
 
 CDlgEditHash::~CDlgEditHash()

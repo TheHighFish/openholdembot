@@ -150,14 +150,9 @@ static UINT indicators[] =
 // CMainFrame construction/destruction
 CMainFrame::CMainFrame() 
 {
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 
     __SEH_HEADER
-    // Save startup directory
-	char startup_path[MAX_PATH];
-    ::GetCurrentDirectory(MAX_PATH - 1, startup_path);
-
-	p_global->set_startup_path(startup_path);
 
     __SEH_LOGFATAL("CMainFrame::Constructor :\n");
 }
@@ -644,7 +639,7 @@ void CMainFrame::OnBnClickedGreenCircle()
 	}
 
     // OpenScrape table maps
-    path.Format("%s\\scraper\\*.tm", p_global->startup_path());
+    path.Format("%s\\scraper\\*.tm", _startup_path);
     bFound = hFile.FindFile(path.GetString());
     while (bFound)
     {
@@ -658,7 +653,7 @@ void CMainFrame::OnBnClickedGreenCircle()
     }
 
 	// WinScrape converted profiles
-    path.Format("%s\\scraper\\*.ws", p_global->startup_path());
+    path.Format("%s\\scraper\\*.ws", _startup_path);
     bFound = hFile.FindFile(path.GetString());
     while (bFound)
     {
@@ -762,7 +757,7 @@ void CMainFrame::OnBnClickedGreenCircle()
             p_global->set_next_replay_frame(-1);
 			last_frame_num = -1;
 
-            path.Format("%s\\replay\\session_%lu\\*.bmp", p_global->startup_path(), p_global->session_id());
+            path.Format("%s\\replay\\session_%lu\\*.bmp", _startup_path, p_global->session_id());
             bFound = hFile.FindFile(path.GetString());
             while (bFound)
             {
@@ -1892,7 +1887,7 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
 
 bool check_window_match(STableMap *map, HWND h, RECT r, CString title) 
 {
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 
 
     __SEH_HEADER

@@ -11,7 +11,7 @@ IMPLEMENT_DYNAMIC(CDlgSettings, CDialog)
 
 CDlgSettings::CDlgSettings(CWnd* pParent /*=NULL*/)	: CDialog(CDlgSettings::IDD, pParent) {
 
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 
 
     __SEH_HEADER

@@ -2,6 +2,8 @@
 
 #include <dbghelp.h>
 
+#include "OpenHoldem.h"
+
 #include "CSymbols.h"
 #include "CScraper.h"
 #include "CIteratorThread.h"
@@ -114,7 +116,7 @@ void logfatal (char* fmt, ...)
     FILE		*fatallog;
     char		nowtime[26];
 
-    sprintf(fatallogpath, "%s\\fatal error.log", p_global->startup_path());
+    sprintf(fatallogpath, "%s\\fatal error.log", _startup_path);
     fatallog = fopen(fatallogpath, "a");
 
     va_start(ap, fmt);
@@ -229,10 +231,10 @@ LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers)
 	// Create a minidump
 	GenerateDump(pExceptionPointers);
 
-    sprintf(flpath, "%s\\fatal error.log", p_global->startup_path());
+    sprintf(flpath, "%s\\fatal error.log", _startup_path);
     strcpy(msg, "OpenHoldem is about to crash.\n");
     strcat(msg, "A minidump has been created in your\n");
-	strcat(msg, "Windows temporary file directory.\n");
+	strcat(msg, "OpenHoldem startup directory.\n");
     strcat(msg, "\n\nOpenHoldem will shut down when you click OK.");
     MessageBox(NULL, msg, "FATAL ERROR", MB_OK | MB_ICONEXCLAMATION | MB_TOPMOST);
 
@@ -350,7 +352,7 @@ void start_log(void)
     if (log_fp==NULL) 
 	{
         CString fn;
-        fn.Format("%s\\oh_%lu.log", p_global->startup_path(), p_global->session_id());
+        fn.Format("%s\\oh_%lu.log", _startup_path, p_global->session_id());
         log_fp = fopen(fn.GetString(), "a");
         write_log("! log file open\n");
         fprintf(log_fp, "yyyy.mm.dd hh:mm:ss -  # hand commoncard rank poker  win  los  tie  P      nit bestaction - play*      call       bet       pot   balance - FCRA FCRA swag\n");
@@ -656,7 +658,6 @@ void stop_log(void)
 int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers)
 {
     bool		bMiniDumpSuccessful;
-    char		szPath[MAX_PATH]; 
     char		szFileName[MAX_PATH]; 
     DWORD		dwBufferSize = MAX_PATH;
     HANDLE		hDumpFile;
@@ -664,9 +665,8 @@ int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers)
     MINIDUMP_EXCEPTION_INFORMATION	ExpParam;
 
     GetLocalTime(&stLocalTime);
-    GetTempPath(dwBufferSize, szPath);
 
-    sprintf(szFileName, "%s%s-%s-%04d%02d%02d-%02d%02d%02d-%ld-%ld.dmp", szPath, 
+    sprintf(szFileName, "%s\\%s-%s-%04d%02d%02d-%02d%02d%02d-%ld-%ld.dmp", _startup_path, 
 			"OpenHoldem", VERSION_TEXT, stLocalTime.wYear, stLocalTime.wMonth, stLocalTime.wDay, 
 			stLocalTime.wHour, stLocalTime.wMinute, stLocalTime.wSecond, GetCurrentProcessId(), 
 			GetCurrentThreadId());
@@ -677,9 +677,16 @@ int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers)
     ExpParam.ThreadId = GetCurrentThreadId();
     ExpParam.ExceptionPointers = pExceptionPointers;
     ExpParam.ClientPointers = TRUE;
+
+	MINIDUMP_TYPE	mdt = (MINIDUMP_TYPE) (MiniDumpWithPrivateReadWriteMemory | 
+										   MiniDumpWithDataSegs | 
+										   MiniDumpWithHandleData |
+										   //MiniDumpWithFullMemoryInfo | 
+										   //MiniDumpWithThreadInfo | 
+										   MiniDumpWithUnloadedModules);
    
     bMiniDumpSuccessful = MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hDumpFile,
-											MiniDumpWithDataSegs, &ExpParam, NULL, NULL);
+											mdt, &ExpParam, NULL, NULL);
 
     return EXCEPTION_EXECUTE_HANDLER;
 }

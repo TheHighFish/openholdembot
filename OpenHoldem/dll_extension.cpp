@@ -1,16 +1,20 @@
 #include "stdafx.h"
 
 #include "dll_extension.h"
+
+#include "OpenHoldem.h"
+
+#include "CSymbols.h"
+
 #include "grammar.h"
 #include "PokerChat.hpp"
-#include "CSymbols.h"
 
 CDll	cdll;
 
 CDll::CDll()
 {
 
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 
 
     __SEH_HEADER
@@ -81,8 +85,8 @@ void CDll::load_dll(char * path)
         // Try to load dll from the ##dll## section, if it is specified
         if (formula_dll != "")
         {
-            t.Format("%s\\%s", p_global->startup_path(), formula_dll.GetString());
-            SetCurrentDirectory(p_global->startup_path());
+            t.Format("%s\\%s", _startup_path, formula_dll.GetString());
+            SetCurrentDirectory(_startup_path);
             hMod_dll = LoadLibrary(t.GetString());
             err1 = GetLastError();
         }
@@ -90,8 +94,8 @@ void CDll::load_dll(char * path)
         // If dll is still not loaded, load from name in Edit/Preferences
         if (hMod_dll==NULL)
         {
-            t.Format("%s\\%s", p_global->startup_path(), p_global->preferences.dll_name.GetString());
-            SetCurrentDirectory(p_global->startup_path());
+            t.Format("%s\\%s", _startup_path, p_global->preferences.dll_name.GetString());
+            SetCurrentDirectory(_startup_path);
             hMod_dll = LoadLibrary(t.GetString());
             err2 = GetLastError();
         }

@@ -19,7 +19,7 @@ CRITICAL_SECTION	CHeartbeatThread::cs_update_in_progress;
 
 CHeartbeatThread::CHeartbeatThread()
 {
-	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+	__SEH_SET_EXCEPTION_HANDLER
 
 	__SEH_HEADER
 
@@ -58,7 +58,7 @@ CHeartbeatThread::~CHeartbeatThread()
 
 UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 {
-	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+	__SEH_SET_EXCEPTION_HANDLER
 
 	__SEH_HEADER
 

@@ -83,7 +83,7 @@ int handrank2652[10][169] =
 
 CSymbols::CSymbols()
 {
-	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+	__SEH_SET_EXCEPTION_HANDLER
 
 	__SEH_HEADER
 

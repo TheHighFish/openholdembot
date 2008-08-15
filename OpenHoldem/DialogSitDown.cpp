@@ -12,7 +12,7 @@ IMPLEMENT_DYNAMIC(CDlgSitDown, CDialog)
 
 CDlgSitDown::CDlgSitDown(CWnd* pParent /*=NULL*/) : CDialog(CDlgSitDown::IDD, pParent) {
 
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 
 
     __SEH_HEADER

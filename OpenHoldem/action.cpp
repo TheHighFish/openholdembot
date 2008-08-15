@@ -9,7 +9,7 @@
 
 PokerAction::PokerAction()
 {
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 }
 
 double PokerAction::process_query(const char * pquery, int *e)

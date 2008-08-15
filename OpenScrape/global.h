@@ -7,9 +7,6 @@ public:
 	CGlobal(void);
 	~CGlobal(void);
 
-	// Startup path
-	char			startup_path[MAX_PATH];
-
 } global;
 
 #endif /* INC_GLOBAL_H */

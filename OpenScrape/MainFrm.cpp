@@ -51,12 +51,12 @@ static UINT indicators[] =
 
 CMainFrame::CMainFrame()
 {
-	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+	__SEH_SET_EXCEPTION_HANDLER
 
 	__SEH_HEADER
 		
     // Save startup directory
-    ::GetCurrentDirectory(sizeof(global.startup_path) - 1, global.startup_path);
+    ::GetCurrentDirectory(sizeof(_startup_path) - 1, _startup_path);
 
 	show_regions = true;
 
@@ -296,7 +296,7 @@ void CMainFrame::OnEditUpdatehashes()
 	COpenScrapeDoc	*pDoc = COpenScrapeDoc::GetDocument();
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
-	ret = pDoc->trans.update_hashes(pMyMainWnd->GetSafeHwnd(), global.startup_path);
+	ret = pDoc->trans.update_hashes(pMyMainWnd->GetSafeHwnd(), _startup_path);
 
 	// Redraw the tree
 	theApp.m_TableMapDlg->update_tree("");

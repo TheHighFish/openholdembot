@@ -15,7 +15,7 @@ SIterParams			_iter_params;
 
 CIteratorThread::CIteratorThread()
 {
-	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+	__SEH_SET_EXCEPTION_HANDLER
 
 	__SEH_HEADER
 
@@ -57,7 +57,7 @@ CIteratorThread::~CIteratorThread()
 
 UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 {
-	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+	__SEH_SET_EXCEPTION_HANDLER
 
 	__SEH_HEADER
 
