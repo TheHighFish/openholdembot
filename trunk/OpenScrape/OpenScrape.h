@@ -13,6 +13,8 @@
 // See OpenScrape.cpp for the implementation of this class
 //
 
+extern	char	_startup_path[MAX_PATH];
+
 class COpenScrapeApp : public CWinApp
 {
 public:

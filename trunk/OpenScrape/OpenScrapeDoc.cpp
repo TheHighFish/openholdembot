@@ -26,7 +26,7 @@ END_MESSAGE_MAP()
 
 COpenScrapeDoc::COpenScrapeDoc()
 {
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 
 	__SEH_HEADER
 		
@@ -127,7 +127,7 @@ void COpenScrapeDoc::Serialize(CArchive& ar)
 			if (MessageBox(pMyMainWnd->GetSafeHwnd(), "This is a WinScrape table 'profile'.  Would you like to convert to OpenScrape table map format?", 
 						   "Convert table 'profile'?", MB_YESNO) == IDYES)
 			{
-				ret = trans.convert_tablemap(pMyMainWnd->GetSafeHwnd(), global.startup_path);
+				ret = trans.convert_tablemap(pMyMainWnd->GetSafeHwnd(), _startup_path);
 
 				if (ret != SUCCESS && ret != ERR_INCOMPLETEMASTER)
 				{

@@ -158,7 +158,7 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
         CDialog(CDlgFormulaScintilla::IDD, pParent), m_winMgr(ScintillaFormulaMap) 
 {
 
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 
 
     __SEH_HEADER
@@ -2466,7 +2466,7 @@ void CDlgFormulaScintilla::write_fdebug_log(bool write_header)
 
     // write the line to the log
     CString fn;
-    fn.Format("%s\\f$debug_%lu.log", p_global->startup_path(), p_global->session_id());
+    fn.Format("%s\\f$debug_%lu.log", _startup_path, p_global->session_id());
     FILE *fp = fopen(fn.GetString(), "a");
     if (write_header) 
 	{

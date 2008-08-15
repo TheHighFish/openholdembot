@@ -66,7 +66,7 @@ void logfatal (char* fmt, ...)
     FILE		*fatallog;
     char		nowtime[26];
 
-    sprintf(fatallogpath, "%s\\fatal error.log", global.startup_path);
+    sprintf(fatallogpath, "%s\\fatal error.log", _startup_path);
     fatallog = fopen(fatallogpath, "a");
 
     va_start(ap, fmt);
@@ -180,10 +180,10 @@ LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers)
 	// Create a minidump
 	GenerateDump(pExceptionPointers);
 
-    sprintf(flpath, "%s\\fatal error.log", global.startup_path);
+    sprintf(flpath, "%s\\fatal error.log", _startup_path);
     strcpy(msg, "OpenScrape is about to crash.\n");
     strcat(msg, "A minidump has been created in your\n");
-	strcat(msg, "Windows temporary file directory.\n");
+	strcat(msg, "OpenScrape startup directory.\n");
     strcat(msg, "\n\nOpenScrape will shut down when you click OK.");
     MessageBox(NULL, msg, "FATAL ERROR", MB_OK | MB_ICONEXCLAMATION | MB_TOPMOST);
 
@@ -287,7 +287,7 @@ BOOL CreateBMPFile(const char *szFile, HBITMAP hBMP)
 void start_log(void) {
 	if (log_fp==NULL) {
 		CString fn;
-		fn.Format("%s\\oh%d.log", global.startup_path, theApp.sessionnum);
+		fn.Format("%s\\oh%d.log", _startup_path, theApp.sessionnum);
 		log_fp = fopen(fn.GetString(), "a");
 		write_log("! log file open\n");
 		fprintf(log_fp, "yyyy.mm.dd hh:mm:ss -  # hand commoncard rank poker  win  los  tie  P      nit bestaction - play*      call       bet       pot   balance - FCRA FCRA swag\n");
@@ -346,8 +346,16 @@ int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers)
     ExpParam.ExceptionPointers = pExceptionPointers;
     ExpParam.ClientPointers = TRUE;
    
+	MINIDUMP_TYPE	mdt = (MINIDUMP_TYPE) (MiniDumpWithPrivateReadWriteMemory | 
+										   MiniDumpWithDataSegs | 
+										   MiniDumpWithHandleData |
+										   //MiniDumpWithFullMemoryInfo | 
+										   //MiniDumpWithThreadInfo | 
+										   MiniDumpWithUnloadedModules);
+   
     bMiniDumpSuccessful = MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hDumpFile,
-											MiniDumpWithDataSegs, &ExpParam, NULL, NULL);
+											mdt, &ExpParam, NULL, NULL);
+
 
     return EXCEPTION_EXECUTE_HANDLER;
 }

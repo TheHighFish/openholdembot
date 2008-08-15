@@ -11,7 +11,7 @@ IMPLEMENT_DYNAMIC(CMyToolBar, CToolBar)
 
 CMyToolBar::CMyToolBar() 
 {
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 
     __SEH_HEADER
 

@@ -8,7 +8,7 @@ Memory		memory;
 
 Memory::Memory()
 {
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 
     __SEH_HEADER
 

@@ -14,7 +14,7 @@ CRITICAL_SECTION	CAutoplayer::cs_autoplayer;
 
 CAutoplayer::CAutoplayer(BOOL bInitiallyOwn, LPCTSTR lpszName) : _mutex(bInitiallyOwn, lpszName)
 {
-	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+	__SEH_SET_EXCEPTION_HANDLER
 
 	__SEH_HEADER
 

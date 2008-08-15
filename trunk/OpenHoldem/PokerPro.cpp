@@ -1,6 +1,9 @@
 #include "StdAfx.h"
 
 #include "PokerPro.h"
+
+#include "OpenHoldem.h"
+
 #include "CScraper.h"
 #include "CSymbols.h"
 #include "CIteratorThread.h"
@@ -13,7 +16,7 @@ class PokerPro	ppro;
 
 PokerPro::PokerPro(void) 
 {
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 
     __SEH_HEADER
 
@@ -2197,11 +2200,11 @@ void PokerPro::writehh(CString *s)
 
     if (handhistory) 
 	{
-        fn.Format("%s\\ppro\\%s_%lu.log", p_global->startup_path(), data.m_site_name, p_global->session_id());
+        fn.Format("%s\\ppro\\%s_%lu.log", _startup_path, data.m_site_name, p_global->session_id());
         hh_fp = fopen(fn.GetString(), "a");
         if (hh_fp==NULL) 
 		{
-            fd.Format("%s\\ppro", p_global->startup_path());
+            fd.Format("%s\\ppro", _startup_path);
             CreateDirectory(fd.GetString(), NULL);
             hh_fp = fopen(fn.GetString(), "a");
         }

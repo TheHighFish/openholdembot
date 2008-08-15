@@ -19,7 +19,7 @@ CUPDialog::_tagInitCommonControls::_tagInitCommonControls()
 
 CUPDialog::CUPDialog(HWND hParentWnd,LP_CUPDIALOG_USERPROC lpUserProc,LPVOID lpUserProcParam,LPCTSTR lpszDlgTitle/*=_T("Please Wait..")*/,bool bAllowCancel/*=true*/)
 {
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 
     __SEH_HEADER
 

@@ -12,7 +12,7 @@ IMPLEMENT_DYNAMIC(CDlgEditSymbols, CDialog)
 
 CDlgEditSymbols::CDlgEditSymbols(CWnd* pParent /*=NULL*/) : CDialog(CDlgEditSymbols::IDD, pParent)
 {
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 }
 
 CDlgEditSymbols::~CDlgEditSymbols()

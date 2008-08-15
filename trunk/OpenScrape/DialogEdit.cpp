@@ -10,7 +10,7 @@ IMPLEMENT_DYNAMIC(CDlgEdit, CDialog)
 
 CDlgEdit::CDlgEdit(CWnd* pParent /*=NULL*/)	: CDialog(CDlgEdit::IDD, pParent) 
 {
-	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+	__SEH_SET_EXCEPTION_HANDLER
 }
 
 CDlgEdit::~CDlgEdit() 

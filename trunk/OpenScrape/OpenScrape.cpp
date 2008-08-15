@@ -14,6 +14,7 @@
 #define new DEBUG_NEW
 #endif
 
+char	_startup_path[MAX_PATH];
 
 // COpenScrapeApp
 
@@ -24,22 +25,20 @@ BEGIN_MESSAGE_MAP(COpenScrapeApp, CWinApp)
 	ON_COMMAND(ID_FILE_OPEN, &CWinApp::OnFileOpen)
 END_MESSAGE_MAP()
 
-
 // COpenScrapeApp construction
-
 COpenScrapeApp::COpenScrapeApp()
 {
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
+
+    // Save startup directory
+    ::GetCurrentDirectory(MAX_PATH - 1, _startup_path);
+
 }
 
-
 // The one and only COpenScrapeApp object
-
 COpenScrapeApp theApp;
 
-
 // COpenScrapeApp initialization
-
 BOOL COpenScrapeApp::InitInstance()
 {
 	__SEH_HEADER

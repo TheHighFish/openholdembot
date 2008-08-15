@@ -208,7 +208,7 @@ void Perl::send_Callback_Pointers()
 
 Perl::Perl()
 {
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 
     __SEH_HEADER
 

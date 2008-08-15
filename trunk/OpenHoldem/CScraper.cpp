@@ -9,7 +9,7 @@ CRITICAL_SECTION	CScraper::cs_scraper;
 
 CScraper::CScraper(void)
 {
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 
     __SEH_HEADER
 

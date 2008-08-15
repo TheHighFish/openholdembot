@@ -9,7 +9,7 @@
 
 Registry::Registry(void) 
 {
-    __SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+    __SEH_SET_EXCEPTION_HANDLER
 }
 
 void Registry::read_reg(void) 

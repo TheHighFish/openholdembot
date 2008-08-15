@@ -2,6 +2,7 @@
 #include <io.h>
 #include <fcntl.h>
 
+#include "OpenHoldem.h"
 
 #include "CScraper.h"
 #include "CSymbols.h"
@@ -25,7 +26,7 @@ const unsigned int FREE_SPACE_NEEDED_FOR_REPLAYFRAME = 10000000;
 
 CGlobal::CGlobal(void)
 {
-	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+	__SEH_SET_EXCEPTION_HANDLER
 
 	__SEH_HEADER
 

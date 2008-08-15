@@ -14,7 +14,7 @@ CRITICAL_SECTION	CPokerTrackerThread::cs_pokertracker;
 
 CPokerTrackerThread::CPokerTrackerThread()
 {
-	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+	__SEH_SET_EXCEPTION_HANDLER
 
 	__SEH_HEADER
 
@@ -587,7 +587,7 @@ void CPokerTrackerThread::ClearStats (void)
 
 UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 {
-	__SEH_SET_EXCEPTION_HANDLER(MyUnHandledExceptionFilter);
+	__SEH_SET_EXCEPTION_HANDLER
 
 	__SEH_HEADER
 
