@@ -9,6 +9,7 @@
 #include "CIteratorThread.h"
 #include "CHeartbeatThread.h"
 #include "CPokerTrackerThread.h"
+#include "CGlobal.h"
 
 #include "GameState.h"
 #include "DialogScraperOutput.h"

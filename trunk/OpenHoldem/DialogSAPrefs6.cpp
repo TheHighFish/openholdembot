@@ -6,10 +6,11 @@
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs6.h"
 
+#include "CGlobal.h"
+#include "CPokerTrackerThread.h"
+
 #include "OpenHoldem.h"
 #include "MainFrm.h"
-
-#include "CPokerTrackerThread.h"
 
 #include "Registry.h"
 

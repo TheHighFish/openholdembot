@@ -5,6 +5,8 @@
 #include "versus.h"
 #include "CScraper.h"
 #include "CSymbols.h"
+#include "CGlobal.h"
+
 #include "inlines/eval.h"
 
 class CVersus	versus;

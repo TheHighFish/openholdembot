@@ -5,6 +5,7 @@
 #include "OpenHoldem.h"
 
 #include "CSymbols.h"
+#include "CGlobal.h"
 
 #include "grammar.h"
 #include "PokerChat.hpp"

@@ -2,8 +2,12 @@
 //
 
 #include "stdafx.h"
+
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs9.h"
+
+#include "CGlobal.h"
+
 #include "Registry.h"
 #include "Perl.hpp"
 

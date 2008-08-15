@@ -1,6 +1,9 @@
 #include "stdafx.h"
+
 #include "GameState.h"
+
 #include "CSymbols.h"
+#include "CGlobal.h"
 
 GameState		game_state;
 

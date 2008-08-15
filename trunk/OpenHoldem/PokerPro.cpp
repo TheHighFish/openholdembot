@@ -8,6 +8,8 @@
 #include "CSymbols.h"
 #include "CIteratorThread.h"
 #include "CAutoplayer.h"
+#include "CGlobal.h"
+
 #include "registry.h"
 #include "grammar.h"
 #include "DialogPpro.h"

@@ -7,6 +7,8 @@
 #include "CSymbols.h"
 #include "CScraper.h"
 #include "CIteratorThread.h"
+#include "CGlobal.h"
+
 #include "inlines/eval.h"
 
 //#include <vld.h>			// visual leak detector

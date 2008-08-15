@@ -2,8 +2,12 @@
 //
 
 #include "stdafx.h"
+
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs11.h"
+
+#include "CGlobal.h"
+
 #include "Registry.h"
 
 #define MAX_MAX_LOG 1000000

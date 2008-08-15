@@ -2,10 +2,12 @@
 //
 
 #include "stdafx.h"
+#include "OpenHoldemDoc.h"
 #include "OpenHoldem.h"
 #include "MainFrm.h"
 
-#include "OpenHoldemDoc.h"
+#include "CGlobal.h"
+
 #include "DialogFormulaScintilla.h"
 
 //

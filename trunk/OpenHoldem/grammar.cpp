@@ -2,7 +2,10 @@
 #include <strstream>
 
 #include "grammar.h"
+
 #include "CSymbols.h"
+#include "CGlobal.h"
+
 #include "versus.h"
 #include "ICMCalculator.h"
 #include "Perl.hpp"

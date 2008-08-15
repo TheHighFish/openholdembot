@@ -11,6 +11,7 @@
 #include "CIteratorThread.h"
 #include "CHeartbeatThread.h"
 #include "CPokerTrackerThread.h"
+#include "CGlobal.h"
 
 #include "DialogPpro.h"
 #include "PokerPro.h"

@@ -1,6 +1,8 @@
 #ifndef INC_CGLOBAL_H
 #define INC_CGLOBAL_H
 	
+#include "CGlobal.h"
+
 #include <boost/spirit/tree/ast.hpp>
 #include "dll_extension.h"
 #include "UPDialog.h"

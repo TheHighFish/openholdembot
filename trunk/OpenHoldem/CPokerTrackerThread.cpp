@@ -4,6 +4,7 @@
 
 #include "CSymbols.h"
 #include "CPokerTrackerThread.h"
+#include "CGlobal.h"
 
 #include "levenshtein.h"
 #include "registry.h"

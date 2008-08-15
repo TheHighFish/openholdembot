@@ -8,6 +8,7 @@
 
 #include "CScraper.h"
 #include "CHeartbeatThread.h"
+#include "CGlobal.h"
 
 #include "DialogScraperOutput.h"
 #include "Registry.h"

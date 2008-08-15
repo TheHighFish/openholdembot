@@ -2,6 +2,8 @@
 #include <io.h>
 #include <fcntl.h>
 
+#include "CGlobal.h"
+
 #include "OpenHoldem.h"
 
 #include "CScraper.h"

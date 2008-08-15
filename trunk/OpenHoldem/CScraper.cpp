@@ -3,6 +3,7 @@
 #include "CScraper.h"
 #include "../../CTransform/hash/lookup3.h"
 #include "CSymbols.h"
+#include "CGlobal.h"
 
 CScraper			*p_scraper = NULL;
 CRITICAL_SECTION	CScraper::cs_scraper;
