@@ -400,7 +400,7 @@ void COpenHoldemView::draw_center_info_box(void)
 	// handnumber
 	if (sym_handnumber != 0) 
 	{
-		s.Format("  Hand #: %.0f\n", sym_handnumber);
+		s.Format("  Hand #: %d\n", sym_handnumber);
 	}
 	else 
 	{
