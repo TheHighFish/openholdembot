@@ -627,6 +627,7 @@ void write_logautoplay(const char * action)
 			fcra_formula_status.GetString(), 
 			p_symbols->f$swag() );
 
+		int x = p_symbols->symboltrace_collection()->GetSize();
 		if (p_global->preferences.Trace_enabled && p_symbols->symboltrace_collection()->GetSize() > 0)
 		{
 			write_log_nostamp("***** Autoplayer Trace ****\n");

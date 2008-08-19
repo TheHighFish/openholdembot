@@ -3667,22 +3667,22 @@ void CSymbols::CalcPrimaryFormulas(void)
 		_sym.isfinalanswer = true;
 
 		e = SUCCESS;
-		_f$alli = calc_f$symbol(&p_global->formula, "f$alli", &e);
+		_f$alli = calc_f$symbol(&p_global->formula, "f$alli", p_global->preferences.Trace_functions[nTraceAlli], &e);
 
 		e = SUCCESS;
-		_f$swag = calc_f$symbol(&p_global->formula, "f$swag", &e);
+		_f$swag = calc_f$symbol(&p_global->formula, "f$swag", p_global->preferences.Trace_functions[nTraceSwag], &e);
 
 		e = SUCCESS;
-		_f$rais = calc_f$symbol(&p_global->formula, "f$rais", &e);
+		_f$rais = calc_f$symbol(&p_global->formula, "f$rais", p_global->preferences.Trace_functions[nTraceRais], &e);
 
 		e = SUCCESS;
-		_f$call = calc_f$symbol(&p_global->formula, "f$call", &e);
+		_f$call = calc_f$symbol(&p_global->formula, "f$call", p_global->preferences.Trace_functions[nTraceCall], &e);
 
 		e = SUCCESS;
-		_f$play = calc_f$symbol(&p_global->formula, "f$play", &e);
+		_f$play = calc_f$symbol(&p_global->formula, "f$play", p_global->preferences.Trace_functions[nTracePlay], &e);
 
 		e = SUCCESS;
-		_f$prefold = calc_f$symbol(&p_global->formula, "f$prefold", &e);
+		_f$prefold = calc_f$symbol(&p_global->formula, "f$prefold", p_global->preferences.Trace_functions[nTracePrefold], &e);
 
 		e = SUCCESS;
 		_f$delay = calc_f$symbol(&p_global->formula, "f$delay", &e);
