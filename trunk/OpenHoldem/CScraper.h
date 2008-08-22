@@ -74,20 +74,20 @@ public:
 	const unsigned int	card_common(int n) { if (n>=0 && n<=4) return _card_common[n]; else return CARD_NOCARD; }
 	const unsigned int	card_player(int s, int n) { if (s>=0 && s<=9 && n>=0 && n<=1) return _card_player[s][n]; else return CARD_NOCARD; }
 	const unsigned int	card_player_for_display(int n) { if (n>=0 && n<=1) return _card_player_for_display[n]; else return CARD_NOCARD; }
-	const CString		seated(int n) { if (n>=0 && n<=9) return _seated[n]; else return 0; }
-	const CString		active(int n) { if (n>=0 && n<=9) return _active[n]; else return 0; }
+	const CString		seated(int n) { if (n>=0 && n<=9) return _seated[n]; else return "false"; }
+	const CString		active(int n) { if (n>=0 && n<=9) return _active[n]; else return "false"; }
 	const bool			dealer(int n) { if (n>=0 && n<=9) return _dealer[n]; else return false; }
-	const double		player_bet(int n) { if (n>=0 && n<=9) return _player_bet[n]; else return 0; }
-	const CString		player_name(int n) { if (n>=0 && n<=9) return _player_name[n]; else return 0; }
+	const double		player_bet(int n) { if (n>=0 && n<=9) return _player_bet[n]; else return 0.; }
+	const CString		player_name(int n) { if (n>=0 && n<=9) return _player_name[n]; else return ""; }
 	const bool			name_good_scrape(int n) { if (n>=0 && n<=9) return _name_good_scrape[n]; else return false; }
-	const double		player_balance(int n) { if (n>=0 && n<=9) return _player_balance[n]; else return 0; }
-	const double		balance_good_scrape(int n) { if (n>=0 && n<=9) return _balance_good_scrape[n]; else return 0; }
+	const double		player_balance(int n) { if (n>=0 && n<=9) return _player_balance[n]; else return 0.; }
+	const double		balance_good_scrape(int n) { if (n>=0 && n<=9) return _balance_good_scrape[n]; else return 0.; }
 	const bool			sitting_out(int n) { if (n>=0 && n<=9) return _sitting_out[n]; else return false; }
-	const double		pot(int n) { if (n>=0 && n<=9) return _pot[n]; else return 0; }
-	const CString		button_state(int n) { if (n>=0 && n<=9) return _button_state[n]; else return 0; }
-	const CString		i86X_button_state(int n) { if (n>=0 && n<=9) return _i86X_button_state[n]; else return 0; }
+	const double		pot(int n) { if (n>=0 && n<=9) return _pot[n]; else return 0.; }
+	const CString		button_state(int n) { if (n>=0 && n<=9) return _button_state[n]; else return ""; }
+	const CString		i86X_button_state(int n) { if (n>=0 && n<=9) return _i86X_button_state[n]; else return ""; }
 	const CString		i86_button_state() { return _i86_button_state; }
-	const CString		button_label(int n) { if (n>=0 && n<=9) return _button_label[n]; else return 0; }
+	const CString		button_label(int n) { if (n>=0 && n<=9) return _button_label[n]; else return ""; }
 	const bool			handle_found_at_xy() { return _handle_found_at_xy; }
 	const POINT			handle_xy() { return _handle_xy; }
 	const SLimitInfo*	s_limit_info() { return &_s_limit_info; }

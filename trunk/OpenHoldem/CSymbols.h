@@ -416,7 +416,7 @@ public:
 	const SSymbols		*sym() { return &_sym; }
 	const CArray <CString, CString> *logsymbols_collection() { return &_logsymbols_collection; }
 	const CArray <CString, CString> *symboltrace_collection() { return &_symboltrace_collection; }
-	const double		stacks_at_hand_start(const int n) { if (n>=0 && n<=9) return _stacks_at_hand_start[n]; else return 0; }
+	const double		stacks_at_hand_start(const int n) { if (n>=0 && n<=9) return _stacks_at_hand_start[n]; else return 0.; }
 
 public:
 #define ENT EnterCriticalSection(&cs_symbols);
