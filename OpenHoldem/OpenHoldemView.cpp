@@ -181,7 +181,7 @@ void COpenHoldemView::update_display(bool update_all)
     RECT					cr;
     CDC						*pDC = GetDC();
 
-	int sym_handnumber		= (int) p_symbols->sym()->handnumber;
+	double sym_handnumber		= p_symbols->sym()->handnumber;
 	double sym_bblind		= p_symbols->sym()->bblind;
 	double sym_sblind		= p_symbols->sym()->sblind;
 	int sym_lim				= (int) p_symbols->sym()->lim;
@@ -354,7 +354,7 @@ void COpenHoldemView::draw_center_info_box(void)
     CDC			*pDC = GetDC();
 	int			height = 80;
 	
-	int sym_handnumber		= (int) p_symbols->sym()->handnumber;
+	double sym_handnumber	= p_symbols->sym()->handnumber;
 	double sym_bblind		= p_symbols->sym()->bblind;
 	double sym_sblind		= p_symbols->sym()->sblind;
 	int sym_lim				= (int) p_symbols->sym()->lim;
@@ -400,7 +400,7 @@ void COpenHoldemView::draw_center_info_box(void)
 	// handnumber
 	if (sym_handnumber != 0) 
 	{
-		s.Format("  Hand #: %d\n", sym_handnumber);
+		s.Format("  Hand #: %0f\n", sym_handnumber);
 	}
 	else 
 	{
