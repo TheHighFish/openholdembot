@@ -1248,6 +1248,8 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
     __SEH_HEADER
 
     int					j, r$index, s$index;
+    double				handnumber;
+    bool				istournament;
     HBITMAP				old_bitmap;
     CString				text;
     CString				titletext;
@@ -1259,7 +1261,6 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 		return;
 
 	EnterCriticalSection(&cs_scraper);
-		_s_limit_info.found_handnumber = false;
 		_s_limit_info.found_sblind = false;
 		_s_limit_info.found_bblind = false;
 		_s_limit_info.found_bbet = false;
@@ -1268,6 +1269,14 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 		_s_limit_info.found_sb_bb = false;
 		_s_limit_info.found_bb_BB = false;
 	LeaveCriticalSection(&cs_scraper);
+
+    // These persist after scraping the istournament/handnumber regions
+    // to seed l_istournament and l_handnumber when we scrape info from
+    // the titlebar.  That way if we do not find tournament or handnumber
+    // information in the titlebar we won't overwrite the values we scraped
+    // from the istournament/handnumber regions.
+    istournament = false;
+    handnumber = 0.0;
 
     // istournament
     r$index = p_global->trans.map.r$c0istournament_index;
@@ -1278,11 +1287,13 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
         p_global->trans.do_transform(&p_global->trans.map.r$[r$index], hdcCompatible, &text);
         SelectObject(hdcCompatible, old_bitmap);
 
+		if (text!="")
+			istournament = true;
+		else
+			istournament = false;
+
 		EnterCriticalSection(&cs_scraper);
-			if (text!="")
-				_s_limit_info.istournament = true;
-			else
-				_s_limit_info.istournament = false;
+			_s_limit_info.istournament = istournament;
 
 			if (_istournament_last != _s_limit_info.istournament)
 			{
@@ -1306,7 +1317,8 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 		EnterCriticalSection(&cs_scraper);
 			if (text!="")
 			{
-				_s_limit_info.handnumber = GetHandnumFromString(text);
+				handnumber = GetHandnumFromString(text);
+				_s_limit_info.handnumber = handnumber;
 				got_new_scrape = true;
 			}
 		LeaveCriticalSection(&cs_scraper);
@@ -1326,7 +1338,8 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 			EnterCriticalSection(&cs_scraper);
 				if (text!="")
 				{
-					_s_limit_info.handnumber = GetHandnumFromString(text);
+					handnumber = GetHandnumFromString (text);
+					_s_limit_info.handnumber = handnumber;
 					got_new_scrape = true;
 				}
 			LeaveCriticalSection(&cs_scraper);
@@ -1351,11 +1364,19 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 
     else
     {
-		double l_handnumber=0., l_sblind=0., l_bblind=0., l_bbet=0., l_ante=0., l_sb_bb=0., l_bb_BB=0.;
-		int l_limit=0;
-		bool l_istournament=false, l_found_handnumber=false, l_found_sblind=false, l_found_bblind=false;
-		bool l_found_bbet=false, l_found_ante=false, l_found_limit=false, l_found_sb_bb=false;
-		bool l_found_bb_BB=false;
+	double l_sblind=0., l_bblind=0., l_bbet=0., l_ante=0., l_sb_bb=0., l_bb_BB=0.;
+	int l_limit=0;
+	bool l_found_handnumber=false, l_found_sblind=false, l_found_bblind=false;
+	bool l_found_bbet=false, l_found_ante=false, l_found_limit=false, l_found_sb_bb=false;
+	bool l_found_bb_BB=false;
+
+	// These are scraped from specific regions earlier in this
+	// function.  Use the values we scraped (if any) to seed
+	// the l_ locals so that we don't blindly overwrite the
+	// information we scraped from those specific regions with
+	// default values if we can't find them in the titlebar.
+	double l_handnumber = handnumber;
+	bool l_istournament = istournament;
 
         // s$ttlimits - Scrape blinds/stakes/limit info from title text
         s$index = p_global->trans.map.s$ttlimits_index;
