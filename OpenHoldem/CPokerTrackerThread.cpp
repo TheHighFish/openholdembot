@@ -31,10 +31,10 @@ CPokerTrackerThread::CPokerTrackerThread()
 
 	// Initialize variables
 	_conn_str = "host=" + p_global->preferences.pt_prefs.ip_addr;
-	_conn_str += " _port=" + p_global->preferences.pt_prefs.port;
-	_conn_str += " _user=" + p_global->preferences.pt_prefs.user;
-	_conn_str += " _password=" + p_global->preferences.pt_prefs.pass;
-	_conn_str += " _dbname=" + p_global->preferences.pt_prefs.dbname;
+	_conn_str += " port=" + p_global->preferences.pt_prefs.port;
+	_conn_str += " user=" + p_global->preferences.pt_prefs.user;
+	_conn_str += " password=" + p_global->preferences.pt_prefs.pass;
+	_conn_str += " dbname=" + p_global->preferences.pt_prefs.dbname;
 
 	for (i=0; i<=9; i++)
 	{
@@ -372,7 +372,7 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 			strcpy(strQry2, strQry1);  // move the query into temp str 2
 			strQry2[n-strQry1]='\0';  // cut off temp str 2 at the beginning of the token
 			strcat(strQry2, _player_stats[m_chr].pt_name);  // append the player name to temp str 2
-			strcat(strQry2, n+12); // append the _portion of temp str 1 after the token to temp str 2
+			strcat(strQry2, n+12); // append the portion of temp str 1 after the token to temp str 2
 			strcpy(strQry, strQry2); // move temp str 2 into the original query
 			strcpy(strQry1, strQry);  // move the query into temp str 1
 		}
@@ -385,7 +385,7 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 			strcpy(strQry2, strQry1);  // move the query into temp str 2
 			strQry2[n-strQry1]='\0';  // cut off temp str 2 at the beginning of the token
 			strcat(strQry2, siteidstr);  // append the site id to temp str 2
-			strcat(strQry2, n+8); // append the _portion of temp str 1 after the token to temp str 2
+			strcat(strQry2, n+8); // append the portion of temp str 1 after the token to temp str 2
 			strcpy(strQry, strQry2); // move temp str 2 into the original query
 			strcpy(strQry1, strQry);  // move the query into temp str 1
 		}
