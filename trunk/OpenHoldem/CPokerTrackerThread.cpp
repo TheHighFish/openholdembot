@@ -47,10 +47,10 @@ CPokerTrackerThread::CPokerTrackerThread()
 		strcpy (_player_stats[i].pt_name, "") ;
 		strcpy (_player_stats[i].scraped_name, "") ;
 	}
+	_connected = false;
 
 	AfxBeginThread(PokertrackerThreadFunction, this);
 
-	_connected = false;
 
 	write_log("Started Poker Tracker thread.\n");
 
@@ -86,7 +86,7 @@ const double CPokerTrackerThread::ProcessQuery (const char * s)
 
 	int		sym_raischair = (int) p_symbols->sym()->raischair;
 
-	if (PQstatus(_pgconn) != CONNECTION_OK || !_connected)  
+	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)  
 		return 0.0;
 
 	if	  (memcmp(s,"pt_iconlastr",12)==0)		return GetStat(game_state.lastraised(s[12]-'0'), pt_icon);
@@ -344,7 +344,7 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 	if (siteid == -1)
 		return result;
 
-	if (PQstatus(_pgconn) != CONNECTION_OK || !_connected)
+	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)
 		return result;
 
 	if (m_chr<0 || m_chr>9 || stat<pt_min || stat>pt_max)
@@ -491,7 +491,7 @@ bool CPokerTrackerThread::QueryName (const char * query_name, const char * scrap
 		_last_siteid = siteid;
 	}
 
-	if (PQstatus(_pgconn) != CONNECTION_OK || !_connected)
+	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)
 		return false;
 
 	if (strlen(query_name)==0)
@@ -614,7 +614,7 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 		if (!pParent->_connected)
 			pParent->Connect();
 
-		if (PQstatus(pParent->_pgconn) == CONNECTION_OK && pParent->_connected)
+		if (pParent->_connected && PQstatus(pParent->_pgconn) == CONNECTION_OK)
 		{
 			for (i=0; i<=9; i++)
 			{
