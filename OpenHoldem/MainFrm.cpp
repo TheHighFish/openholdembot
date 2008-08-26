@@ -507,10 +507,21 @@ BOOL CMainFrame::DestroyWindow()
     if (cdll.hMod_dll) cdll.unload_dll();
 
 	// stop threads
-	if (p_iterator_thread)  
+	if (p_iterator_thread) 
+	{
 		delete p_iterator_thread;
-	if (p_heartbeat_thread)  delete p_heartbeat_thread;
-	if (p_pokertracker_thread)  delete p_pokertracker_thread;
+		p_iterator_thread = NULL;
+	}
+	if (p_heartbeat_thread)
+	{
+		delete p_heartbeat_thread;
+		p_heartbeat_thread = NULL;
+	}
+	if (p_pokertracker_thread)
+	{
+		delete p_pokertracker_thread;
+		p_pokertracker_thread = NULL;
+	}
 
     // Save window position
     reg.read_reg();
@@ -840,8 +851,17 @@ void CMainFrame::OnBnClickedRedCircle()
     __SEH_HEADER
 
 	// stop threads
-	if (p_heartbeat_thread)  delete p_heartbeat_thread;
-	if (p_pokertracker_thread)  delete p_pokertracker_thread;
+	if (p_heartbeat_thread)
+	{
+		delete p_heartbeat_thread;
+		p_heartbeat_thread = NULL;
+	}
+
+	if (p_pokertracker_thread)
+	{
+		delete p_pokertracker_thread;
+		p_pokertracker_thread = NULL;
+	}
 
     // Make sure autoplayer is off
     p_global->autoplay = false;
