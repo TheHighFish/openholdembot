@@ -211,10 +211,23 @@ int COpenHoldemApp::ExitInstance()
 {
     __SEH_HEADER
 
-	if (p_iterator_thread)  
+	if (p_iterator_thread) 
+	{
 		delete p_iterator_thread;
-	if (p_heartbeat_thread)  delete p_heartbeat_thread;
-	if (p_pokertracker_thread)  delete p_pokertracker_thread;
+		p_iterator_thread = NULL;
+	}
+
+	if (p_heartbeat_thread)
+	{
+		delete p_heartbeat_thread;
+		p_heartbeat_thread = NULL;
+	}
+
+	if (p_pokertracker_thread)
+	{
+		delete p_pokertracker_thread;
+		p_pokertracker_thread = NULL;
+	}
 
 	// critical sections
 	DeleteCriticalSection(&cs_iterator);

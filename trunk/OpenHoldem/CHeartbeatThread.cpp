@@ -167,7 +167,10 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			 p_scraper->card_player(p_symbols->sym()->chair, 1)==CARD_BACK))
 		{
 			if (p_iterator_thread)
+			{
 				delete p_iterator_thread;
+				p_iterator_thread = NULL;
+			}
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////

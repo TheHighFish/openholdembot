@@ -201,8 +201,16 @@ void CDlgPpro::OnBnClickedConnectButton()
     if (ppro.m_socket != INVALID_SOCKET) 
 	{
 		// stop threads
-		if (p_heartbeat_thread)  delete p_heartbeat_thread;
-		if (p_pokertracker_thread)  delete p_pokertracker_thread;
+		if (p_heartbeat_thread)
+		{
+			delete p_heartbeat_thread;
+			p_heartbeat_thread = NULL;
+		}
+		if (p_pokertracker_thread)
+		{
+			delete p_pokertracker_thread;
+			p_pokertracker_thread = NULL;
+		}
 
 		// Make sure autoplayer is off
         p_global->autoplay = false;

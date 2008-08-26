@@ -384,6 +384,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 	::SetEvent(pParent->_m_wait_thread);
 	delete p_iterator_thread;
+	p_iterator_thread = NULL;
 
 	return 0;
 
