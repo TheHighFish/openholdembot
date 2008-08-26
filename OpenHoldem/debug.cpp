@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include <dbghelp.h>
+#include "../../dbghelp/dbghelp.h"
 
 #include "OpenHoldem.h"
 
@@ -683,8 +683,8 @@ int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers)
 	MINIDUMP_TYPE	mdt = (MINIDUMP_TYPE) (MiniDumpWithPrivateReadWriteMemory | 
 										   MiniDumpWithDataSegs | 
 										   MiniDumpWithHandleData |
-										   //MiniDumpWithFullMemoryInfo | 
-										   //MiniDumpWithThreadInfo | 
+										   MiniDumpWithFullMemoryInfo | 
+										   MiniDumpWithThreadInfo | 
 										   MiniDumpWithUnloadedModules);
    
     bMiniDumpSuccessful = MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hDumpFile,

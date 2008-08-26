@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include <dbghelp.h>
+#include "..\dbghelp\dbghelp.h"
 
 #include "debug.h"
 #include "MainFrm.h"

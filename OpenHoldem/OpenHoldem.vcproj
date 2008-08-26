@@ -45,7 +45,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/D &quot;_CRT_SECURE_NO_DEPRECATE&quot; /D &quot;_CRT_NON_CONFORMING_SWPRINTFS&quot; /D &quot;_SCL_SECURE_NO_DEPRECATE&quot;"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\spirit-1.8.5-miniboost;..\pokereval\include;..\postgres;..\winmgr;..\hscroll-list-box"
+				AdditionalIncludeDirectories="&quot;..\spirit-1.8.5-miniboost&quot;;..\pokereval\include;..\postgres;..\winmgr;&quot;..\hscroll-list-box&quot;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;OEMRESOURCE"
 				MinimalRebuild="false"
 				ExceptionHandling="1"
@@ -70,7 +70,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="imm32.lib psapi.lib Dbghelp.lib ..\scintilla\bin\SciLexer.lib ..\pokereval\Debug\poker-eval.lib ..\lib\libpq.lib ..\lib\PerlEz.lib"
+				AdditionalDependencies="imm32.lib psapi.lib ..\dbghelp\dbghelp.lib ..\scintilla\bin\SciLexer.lib ..\pokereval\Debug\poker-eval.lib ..\lib\libpq.lib ..\lib\PerlEz.lib"
 				OutputFile="$(OutDir)\OpenHoldem.exe"
 				LinkIncremental="2"
 				IgnoreAllDefaultLibraries="false"
@@ -142,7 +142,7 @@
 				OmitFramePointers="false"
 				EnableFiberSafeOptimizations="true"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="..\spirit-1.8.5-miniboost;..\pokereval\include;..\postgres;..\winmgr;..\hscroll-list-box"
+				AdditionalIncludeDirectories="&quot;..\spirit-1.8.5-miniboost&quot;;..\pokereval\include;..\postgres;..\winmgr;&quot;..\hscroll-list-box&quot;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;OEMRESOURCE"
 				MinimalRebuild="false"
 				ExceptionHandling="1"
@@ -166,7 +166,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="imm32.lib psapi.lib Dbghelp.lib ..\scintilla\bin\SciLexer.lib ..\pokereval\Release\poker-eval.lib ..\lib\libpq.lib ..\lib\PerlEz.lib"
+				AdditionalDependencies="imm32.lib psapi.lib ..\dbghelp\dbghelp.lib ..\scintilla\bin\SciLexer.lib ..\pokereval\Release\poker-eval.lib ..\lib\libpq.lib ..\lib\PerlEz.lib"
 				OutputFile="$(OutDir)\OpenHoldem.exe"
 				LinkIncremental="1"
 				GenerateManifest="false"

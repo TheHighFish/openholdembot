@@ -69,7 +69,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="psapi.lib Dbghelp.lib"
+				AdditionalDependencies="psapi.lib ..\dbghelp\dbghelp.lib"
 				OutputFile="$(OutDir)\OpenScrape.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
@@ -156,7 +156,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="psapi.lib Dbghelp.lib"
+				AdditionalDependencies="psapi.lib ..\dbghelp\dbghelp.lib"
 				OutputFile="$(OutDir)\OpenScrape.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
