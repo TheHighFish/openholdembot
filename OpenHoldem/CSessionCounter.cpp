@@ -19,8 +19,6 @@ CSessionCounter::CSessionCounter()
 		{
 			CloseHandle(hMutex);
 		}
-		Beep(880, 200);
-		Sleep(200);
 	}
 	// Otherwise: We failed. No ID available.
 	MessageBox(
