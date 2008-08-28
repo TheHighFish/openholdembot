@@ -2,7 +2,8 @@ v1.1.6 2008-08-22
 =================
 MAINTENANCE:
 - Minidumps are now generated automatically upon a crash - dumps can be found in your OpenScrape
-  startup directory.  
+  startup directory. This feature requires dbghelp.dll to be distributed with OpenScrape.  This file
+  should be placed in the same directory where OpenScrape.exe lives. 
 
 
 v1.1.5 2008-05-16
