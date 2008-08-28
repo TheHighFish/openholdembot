@@ -240,6 +240,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CSessionCounter.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CSymbols.cpp"
 				>
 			</File>
@@ -535,6 +539,10 @@
 			</File>
 			<File
 				RelativePath=".\CScraper.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CSessionCounter.h"
 				>
 			</File>
 			<File
