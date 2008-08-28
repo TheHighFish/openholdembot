@@ -35,7 +35,8 @@ MAINTENANCE:
               
 - Consistency of variable/function naming has been applied for the CScraper and CSymbols classes.
 - Minidumps are now generated automatically upon a crash - dumps can be found in your OpenHoldem
-  startup directory.  
+  startup directory.   This feature requires dbghelp.dll to be distributed with OpenHoldem.  This file
+  should be placed in the same directory where OpenHoldem.exe lives.
 - Primary formulas (f$alli, f$swag, f$rais, f$call, f$play, f$prefold, f$delay, f$chat) are now only 
   calculated once per heartbeat and reused.  Update of main window (best action, especially) is much more timely.
 - System-wide mutex is now created once, upon instantiation of the CAutoplayer class.  Locks and unlocks all now
