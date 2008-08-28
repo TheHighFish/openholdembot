@@ -1,18 +1,26 @@
-#include "stdafx.h"
-#include <windows.h>
+#ifndef INC_CSESSIONCOUNTER_H
+#define INC_CSESSIONCOUNTER_H
 
-class CSessionCounter
+extern class CSessionCounter
 {
 public:
+	// public functions
 	CSessionCounter();
 	~CSessionCounter();
-public:
-	unsigned int get_Session_ID();
-private:
-	static const int MAX_SESSION_IDS = 25;
-private:
-	HANDLE hMutex;
-	unsigned int session_ID;
-};
 
-extern CSessionCounter SessionCounter;
+public:
+	// public accessors
+	const unsigned int session_id() { return _session_id; }
+
+private:
+	// private variables - use public accessors and public mutators to address these
+	unsigned int _session_id;
+
+private:
+	// private functions and variables - not available via accessors or mutators	
+	static const int MAX_SESSION_IDS = 25;
+	HANDLE hMutex;
+
+} SessionCounter;
+
+#endif //INC_CSESSIONCOUNTER_H

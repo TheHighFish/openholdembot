@@ -101,7 +101,7 @@ BOOL COpenHoldemApp::InitInstance()
     wc.hIcon = AfxGetApp()->LoadIcon(IDI_ICON1);
     RegisterClass(&wc);
 
-	p_global->set_session_id(SessionCounter.get_Session_ID());
+	p_global->set_session_id(SessionCounter.session_id());
 
     // InitCommonControlsEx() is required on Windows XP if an application
     // manifest specifies use of ComCtl32.dll version 6 or later to enable
