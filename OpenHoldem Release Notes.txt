@@ -5,7 +5,8 @@ NEW STUFF:
 
 BUG FIXES:
 - Problem with session_ID causing multiple instances of OH to write into 
-  the same log-file. (Thanks, USBFreak) (TheHighFish)
+  the same log-file. (Thanks, USBFreak). Unique session IDs are in the range
+  0..N, as small as possible. (TheHighFish)
 - Some preferences setting got not saved correctly. (TheHighFish) 
 - i3slider jamming fix http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=5263 (Spew)
 - Cancel on apply confirmation dialog in Formula Editor would not cancel the close operation (Spew)
