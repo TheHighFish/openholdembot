@@ -43,7 +43,6 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/D &quot;_CRT_SECURE_NO_DEPRECATE&quot; /D &quot;_CRT_NON_CONFORMING_SWPRINTFS&quot; /D &quot;_SCL_SECURE_NO_DEPRECATE&quot;"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\hscroll-list-box"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
@@ -130,7 +129,6 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/D &quot;_CRT_SECURE_NO_DEPRECATE&quot; /D &quot;_CRT_NON_CONFORMING_SWPRINTFS&quot; /D &quot;_SCL_SECURE_NO_DEPRECATE&quot;"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\hscroll-list-box"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"

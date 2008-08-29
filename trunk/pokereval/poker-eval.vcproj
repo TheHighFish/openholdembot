@@ -138,7 +138,6 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/D &quot;_CRT_SECURE_NO_DEPRECATE&quot; /D &quot;_CRT_NON_CONFORMING_SWPRINTFS&quot; /D &quot;_SCL_SECURE_NO_DEPRECATE&quot;"
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OmitFramePointers="false"
