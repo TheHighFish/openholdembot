@@ -1119,13 +1119,17 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 		if (!p_symbols->user_chair_confirmed() || !playing)
 			status_action = "Notplaying";
 
+		else if (p_symbols->f$prefold())
+		{
+			status_action = "Pre-fold";
+		}
+
 		else if (p_symbols->user_chair_confirmed() && _iter_vars.iterator_thread_complete)
 		{
 			if (p_symbols->f$alli())  status_action = "Allin";
 			else if (p_symbols->f$swag())  status_action.Format("SWAG: %.2f", p_symbols->f$swag());
 			else if (p_symbols->f$rais())  status_action = "Bet/Raise";
 			else if (p_symbols->f$call())  status_action = "Call/Check";
-			else if (p_symbols->f$prefold())  status_action = "Pre-fold";
 			else  status_action = "Fold/Check";
 		}
 

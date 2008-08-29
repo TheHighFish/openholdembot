@@ -142,6 +142,9 @@ void CAutoplayer::DoAutoplayer(void)
 	// Handle i86buttons
 	DoI86();
 
+	// Handle f$prefold
+	DoPrefold();
+
 	//  2007.02.27 by THF
 	//
 	//  Additional functionality: PokerChat
@@ -169,9 +172,6 @@ void CAutoplayer::DoAutoplayer(void)
 
 		return;
 	}
-
-	// Handle f$prefold
-	DoPrefold();
 
 	// if we have <2 visible buttons, then return
 	// Change from only requiring one visible button (OpenHoldem 2008-04-03)
