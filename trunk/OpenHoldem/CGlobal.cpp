@@ -284,23 +284,23 @@ bool CGlobal::ParseAllFormula(HWND hwnd, SFormula *f)
 	CUPDialog		dlg_progress(hwnd, parse_loop, &data, "Please wait", false);
 
 	// Set busy cursor
-	EnterCriticalSection(&cs_global);
-	_m_wait_cursor = true;
-	LeaveCriticalSection(&cs_global);
+	//EnterCriticalSection(&cs_global);
+	//_m_wait_cursor = true;
+	//LeaveCriticalSection(&cs_global);
 
-	CWnd::FromHandle(hwnd)->BeginWaitCursor();
+	//CWnd::FromHandle(hwnd)->BeginWaitCursor();
 	if (m_formulaScintillaDlg) m_formulaScintillaDlg->BeginWaitCursor();
 
 	// Start parsing
 	dlg_progress.DoModal();
 
 	// Unset busy cursor
-	CWnd::FromHandle(hwnd)->EndWaitCursor();
+	//CWnd::FromHandle(hwnd)->EndWaitCursor();
 	if (m_formulaScintillaDlg) m_formulaScintillaDlg->EndWaitCursor();
 
-	EnterCriticalSection(&cs_global);
-	_m_wait_cursor = false;
-	LeaveCriticalSection(&cs_global);
+	//EnterCriticalSection(&cs_global);
+	//_m_wait_cursor = false;
+	//LeaveCriticalSection(&cs_global);
 
 	return data.all_parsed;
 

@@ -1976,6 +1976,9 @@ void PokerPro::DoAutoplayer(void)
 	int sym_myturnbits = (int) p_symbols->sym()->myturnbits;
 	int sym_br = (int) p_symbols->sym()->br;
 
+	// Calculate f$play, f$prefold, f$delay and f$chat for use below
+	p_symbols->CalcSecondaryFormulas();
+
 	////////////////////////////////////////////////////////////////////////////////
 	// f$play
 	if (p_symbols->f$play()==-2) 
@@ -1996,6 +1999,9 @@ void PokerPro::DoAutoplayer(void)
 		send_sitin(data.m_userchair);    // sit in
 	}
 
+	// Get count of stable frames for use a little bit further down
+	x = count_same_scrapes();
+
 	// If iterator thread is still iterating, then return
 	if (_iter_vars.iterator_thread_running) 
 		return;
@@ -2006,9 +2012,13 @@ void PokerPro::DoAutoplayer(void)
 
 	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return (added Spektre 2008-04-03)
 	delay = p_symbols->f$delay() / p_global->preferences.scrape_delay;    // scale f$delay to a number of scrapes
-	x = count_same_scrapes();
+
 	if (x < (int) p_global->preferences.frame_delay + delay) 
 		return;
+
+	// Now that we got through all of the above, we are ready to evaluate the primary formulas
+	// and take the appropriate action
+	p_symbols->CalcPrimaryFormulas(true);
 
 	// take action
 	if (p_symbols->f$alli() && p_scraper->GetButtonState(3) && autoplayer_can_act) 

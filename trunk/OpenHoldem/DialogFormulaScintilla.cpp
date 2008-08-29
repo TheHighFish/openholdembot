@@ -2299,58 +2299,52 @@ void CDlgFormulaScintilla::update_debug_auto(void)
 
 	bool			sym_ismyturn = (bool) p_symbols->sym()->ismyturn;
 
-	// Only do this if we are not in the middle of a scraper/symbol update
-	if (TryEnterCriticalSection(&p_heartbeat_thread->cs_update_in_progress))
+	//p_global->set_m_wait_cursor(true);
+	//BeginWaitCursor();
+
+	// mark symbol result cache as stale
+	for (i=0; i < (int) m_wrk_formula.mFunction.GetSize(); i++)
+		m_wrk_formula.mFunction[i].fresh = false;
+
+
+	// Loop through each line in the debug tab and evaluate it
+	for (i=0; i<(int) debug_ar.GetSize(); i++) 
 	{
-		p_global->set_m_wait_cursor(true);
-		BeginWaitCursor();
-
-		// mark symbol result cache as stale
-		for (i=0; i < (int) m_wrk_formula.mFunction.GetSize(); i++)
-			m_wrk_formula.mFunction[i].fresh = false;
-
-
-		// Loop through each line in the debug tab and evaluate it
-		for (i=0; i<(int) debug_ar.GetSize(); i++) 
+		if (debug_ar[i].valid && debug_ar[i].error==SUCCESS) 
 		{
-			if (debug_ar[i].valid && debug_ar[i].error==SUCCESS) 
-			{
-				debug_ar[i].ret = evaluate(&m_wrk_formula, debug_ar[i].tree, NULL, &debug_ar[i].error);
-			} 
-			else
-			{
-				debug_ar[i].ret = 0;
-			}
-		}
-		// Format the text
-		create_debug_tab(&Cstr);
-
-		// Write the tab's contents to a log file, if selected
-		if (m_fdebuglog && ((m_fdebuglog_myturn && sym_ismyturn) || !m_fdebuglog_myturn)) 
+			debug_ar[i].ret = evaluate(&m_wrk_formula, debug_ar[i].tree, NULL, &debug_ar[i].error);
+		} 
+		else
 		{
-			if (!m_wrote_fdebug_header) 
-			{
-				write_fdebug_log(true);
-				m_wrote_fdebug_header = true;
-
-			}
-			else 
-			{
-				write_fdebug_log(false);
-			}
+			debug_ar[i].ret = 0;
 		}
-
-		// Display the text in the debug tab
-		m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
-		m_pActiveScinCtrl->SendMessage(SCI_SETTEXT,0,(LPARAM)Cstr.GetString());
-		m_pActiveScinCtrl->GotoPosition(0);
-		m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
-
-		EndWaitCursor();
-		p_global->set_m_wait_cursor(false);
-
-		LeaveCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
 	}
+	// Format the text
+	create_debug_tab(&Cstr);
+
+	// Write the tab's contents to a log file, if selected
+	if (m_fdebuglog && ((m_fdebuglog_myturn && sym_ismyturn) || !m_fdebuglog_myturn)) 
+	{
+		if (!m_wrote_fdebug_header) 
+		{
+			write_fdebug_log(true);
+			m_wrote_fdebug_header = true;
+
+		}
+		else 
+		{
+			write_fdebug_log(false);
+		}
+	}
+
+	// Display the text in the debug tab
+	m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
+	m_pActiveScinCtrl->SendMessage(SCI_SETTEXT,0,(LPARAM)Cstr.GetString());
+	m_pActiveScinCtrl->GotoPosition(0);
+	m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
+
+	//EndWaitCursor();
+	//p_global->set_m_wait_cursor(false);
 
     __SEH_LOGFATAL("CDlgFormulaScintilla::update_debug_auto :\n");
 }
@@ -2491,8 +2485,9 @@ void CDlgFormulaScintilla::init_debug_array(void)
     CString				s;
 	bool				parse_result;
 
-    p_global->set_m_wait_cursor(true);
-    BeginWaitCursor();
+    //p_global->set_m_wait_cursor(true);
+    //BeginWaitCursor();
+
     //
     // Loop through each line in the debug tab and parse it
     //
@@ -2552,8 +2547,8 @@ void CDlgFormulaScintilla::init_debug_array(void)
         debug_ar.Add(debug_struct);
     }
 
-    EndWaitCursor();
-    p_global->set_m_wait_cursor(false);
+    //EndWaitCursor();
+    //p_global->set_m_wait_cursor(false);
 
     __SEH_LOGFATAL("CDlgFormulaScintilla::init_debug_array :\n");
 }
