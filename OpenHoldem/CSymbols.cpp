@@ -927,10 +927,6 @@ void CSymbols::CalcSymbols(void)
 		CalcStatistics();			// ror, mean, variance
 	}
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Finally, calculate primary formuals for downstream use
-	CalcPrimaryFormulas();
-
 	__SEH_LOGFATAL("CSymbols::CalcSymbols :\n");
 }
 
@@ -3656,7 +3652,8 @@ const double CSymbols::CalcPokerval(HandVal hv, int n, double *pcb, int card0, i
 
 	__SEH_LOGFATAL("CSymbols::CalcPokerval :\n");
 }
-void CSymbols::CalcPrimaryFormulas(void)
+
+void CSymbols::CalcPrimaryFormulas(const bool final_answer)
 {
 	__SEH_HEADER
 
@@ -3664,7 +3661,7 @@ void CSymbols::CalcPrimaryFormulas(void)
 
 	EnterCriticalSection(&cs_symbols);
 
-		_sym.isfinalanswer = true;
+		_sym.isfinalanswer = final_answer;
 
 		e = SUCCESS;
 		_f$alli = calc_f$symbol(&p_global->formula, "f$alli", p_global->preferences.Trace_functions[nTraceAlli], &e);
@@ -3678,6 +3675,21 @@ void CSymbols::CalcPrimaryFormulas(void)
 		e = SUCCESS;
 		_f$call = calc_f$symbol(&p_global->formula, "f$call", p_global->preferences.Trace_functions[nTraceCall], &e);
 
+		_sym.isfinalanswer = false;
+
+	LeaveCriticalSection(&cs_symbols);
+
+	__SEH_LOGFATAL("CSymbols::CalcPrimaryFormulas :\n");
+}
+
+void CSymbols::CalcSecondaryFormulas(void)
+{
+	__SEH_HEADER
+
+	int e;
+
+	EnterCriticalSection(&cs_symbols);
+
 		e = SUCCESS;
 		_f$play = calc_f$symbol(&p_global->formula, "f$play", p_global->preferences.Trace_functions[nTracePlay], &e);
 
@@ -3690,12 +3702,12 @@ void CSymbols::CalcPrimaryFormulas(void)
 		e = SUCCESS;
 		_f$chat = calc_f$symbol(&p_global->formula, "f$chat", &e);
 
-		_sym.isfinalanswer = false;
-
 	LeaveCriticalSection(&cs_symbols);
 
-	__SEH_LOGFATAL("CSymbols::CalcPrimaryFormulas :\n");
+	__SEH_LOGFATAL("CSymbols::CalcSecondaryFormulas :\n");
 }
+
+
 void CSymbols::UpdateAutoplayerInfo(void)
 {
 	__SEH_HEADER

@@ -188,10 +188,10 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_REDCIRCLE, false);
 
     // Start timer that checks if we should enable buttons
-    SetTimer(ENABLE_BUTTONS_TIMER, 200, 0);
+    SetTimer(ENABLE_BUTTONS_TIMER, 50, 0);
 
     // Start timer that updates status bar
-    SetTimer(UPDATE_STATUS_BAR_TIMER, 200, 0);
+    SetTimer(UPDATE_STATUS_BAR_TIMER, 50, 0);
 
     // Start timer that attaches the OH window when the poker window moves
     SetTimer(ATTACH_WINDOW_TIMER, 20, 0);
@@ -1133,7 +1133,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 			status_action = "Idle (f$P==0)";
 
 		else
-			status_action = "thinking";
+			status_action = "Thinking";
     }
 
     else if (nIDEvent == ATTACH_WINDOW_TIMER)

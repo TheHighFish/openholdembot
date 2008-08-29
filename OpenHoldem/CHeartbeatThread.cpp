@@ -241,13 +241,21 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			iswait = false;
 		}
 
-		if (p_symbols->user_chair_confirmed() && p_global->autoplay && !iswait)
+		// If autoplayer is engaged, we know our chair, and the DLL hasn't told us to wait, then go do it!
+		if (p_global->autoplay && p_symbols->user_chair_confirmed() && !iswait)
 		{
 			if (!p_global->ppro_is_connected)
 				p_autoplayer->DoAutoplayer();
 
 			else if (ppro.data.m_tinf.m_tid != 0)
 				ppro.DoAutoplayer();
+		}
+		else
+		{
+			// Calc primary formulas anyway, so main window can display its information correctly
+			// but set final_answer param to false, since we are not actually using this info to
+			// take action
+			p_symbols->CalcPrimaryFormulas(false);
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////

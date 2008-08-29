@@ -133,6 +133,9 @@ void CAutoplayer::DoAutoplayer(void)
 	// Get r$ indices of buttons that are visible
 	num_buttons_visible = GetR$ButtonIndices();
 
+	// Calculate f$play, f$prefold, f$delay and f$chat for use below
+	p_symbols->CalcSecondaryFormulas();
+
 	// Handle f$play
 	DoF$play();
 
@@ -160,7 +163,12 @@ void CAutoplayer::DoAutoplayer(void)
 
 	// If iterator thread is still iterating, then return
 	if (_iter_vars.iterator_thread_running)
+	{
+		// Calc primary formulas, but not with final answer, so main window can display correctly
+		p_symbols->CalcPrimaryFormulas(false);
+
 		return;
+	}
 
 	// Handle f$prefold
 	DoPrefold();
@@ -168,17 +176,36 @@ void CAutoplayer::DoAutoplayer(void)
 	// if we have <2 visible buttons, then return
 	// Change from only requiring one visible button (OpenHoldem 2008-04-03)
 	if (num_buttons_visible < 2)
+	{
+		// Calc primary formulas, but not with final answer, so main window can display correctly
+		p_symbols->CalcPrimaryFormulas(false);
+
 		return;
+	}
 
 	// if we are not playing (occluded?) 2008-03-25 Matrix
 	if (!p_symbols->sym()->playing)
+	{
+		// Calc primary formulas, but not with final answer, so main window can display correctly
+		p_symbols->CalcPrimaryFormulas(false);
+	
 		return;
+	}
 
 	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return (modified Spektre 2008-04-03)
 	delay = p_symbols->f$delay() / p_global->preferences.scrape_delay;	// scale f$delay to a number of scrapes
 
 	if (x < (int) p_global->preferences.frame_delay + delay)
+	{
+		// Calc primary formulas, but not with final answer, so main window can display correctly
+		p_symbols->CalcPrimaryFormulas(false);
+
 		return;
+	}
+
+	// Now that we got through all of the above, we are ready to evaluate the primary formulas
+	// and take the appropriate action
+	p_symbols->CalcPrimaryFormulas(true);
 
 	// do swag first since it is the odd one
 	if (p_symbols->f$swag() && !p_symbols->f$alli() && p_scraper->GetButtonState(3)) 
