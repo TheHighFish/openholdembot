@@ -114,8 +114,8 @@ private:
 	void HandleEventTournament			(PokerMessage* pm);
 	void HandleEventTableLock			(PokerMessage* pm);
 	void HandleEventPing				(PokerMessage* pm);
-	char* sassign(char* dst, const char* src, int dstsiz);
-	char* convert_money(char* text, int amount);
+	char* sassign(char* dst, const int dst_size, const char* src, int dstsiz);
+	char* convert_money(char* text, const int dst_size, int amount);
 	int get_current_bet(void);
 	int get_betx(void);
 	int get_round(void);

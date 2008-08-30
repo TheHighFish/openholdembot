@@ -121,8 +121,8 @@ int PokerPro::send_login(const char* username, const char* password)
     PokerMessage pm;
     pm.m_event = 'LOGI';
     pm.m_chair = -1;
-    sassign(pm.m_name, username, sizeof(pm.m_name));
-    sassign(pm.m_pass, password, sizeof(pm.m_pass));
+    sassign(pm.m_name, 16, username, sizeof(pm.m_name));
+    sassign(pm.m_pass, 16, password, sizeof(pm.m_pass));
     return send_message((char*)(&pm), sizeof(PokerMessage));
 
     __SEH_LOGFATAL("PokerPro::send_login : \n");
@@ -182,17 +182,17 @@ int PokerPro::send_chips(double chips)
 
     CHAT_MESSAGE	m;
     char			msg[100];
-    sprintf(msg, "/chips %.2f", chips);
+    sprintf_s(msg, 100, "/chips %.2f", chips);
 
     memset(&m,0,sizeof(m));
 
     m.m_tag='CHAT';
 
     if (data.m_userchair >= 0)
-        sassign(m.m_name, data.m_pinf[data.m_userchair].m_name, sizeof(m.m_name));
+        sassign(m.m_name, 16, data.m_pinf[data.m_userchair].m_name, sizeof(m.m_name));
     m.m_name[sizeof(m.m_name)-1]=0;
 
-    sassign(m.m_text, msg, sizeof(m.m_text));
+    sassign(m.m_text, 236, msg, sizeof(m.m_text));
     m.m_text[sizeof(m.m_text)-1]=0;
 
     int nbytes = (int) strlen(m.m_text);
@@ -216,17 +216,17 @@ int PokerPro::send_deposit(double chips)
 
     CHAT_MESSAGE	m;
     char			msg[100];
-    sprintf(msg, "/bank deposit %.2f", chips);
+    sprintf_s(msg, 100, "/bank deposit %.2f", chips);
 
     memset(&m,0,sizeof(m));
 
     m.m_tag='CHAT';
 
     if (data.m_userchair >= 0)
-        sassign(m.m_name, data.m_pinf[data.m_userchair].m_name, sizeof(m.m_name));
+        sassign(m.m_name, 16, data.m_pinf[data.m_userchair].m_name, sizeof(m.m_name));
     m.m_name[sizeof(m.m_name)-1]=0;
 
-    sassign(m.m_text, msg, sizeof(m.m_text));
+    sassign(m.m_text, 236, msg, sizeof(m.m_text));
     m.m_text[sizeof(m.m_text)-1]=0;
 
     int nbytes = (int) strlen(m.m_text);
@@ -794,7 +794,7 @@ void PokerPro::HandleEventSiteName(PokerMessage* pm)
 {
     __SEH_HEADER
 
-    sassign(data.m_site_name, pm->m_text, sizeof(data.m_site_name));
+    sassign(data.m_site_name, 32, pm->m_text, sizeof(data.m_site_name));
     CString s;
     s.Format("%s\n", pm->m_text);
     publish(&s, 0);
@@ -826,9 +826,9 @@ void PokerPro::HandleEventGameInfo(PokerMessage* pm)
     char sbs[32];
     char bbs[32];
     char BBs[32];
-    convert_money( sbs, pginf->m_sblind );
-    convert_money( bbs, pginf->m_minbet );
-    convert_money( BBs, pginf->m_maxbet );
+    convert_money( sbs, 32, pginf->m_sblind );
+    convert_money( bbs, 32, pginf->m_minbet );
+    convert_money( BBs, 32, pginf->m_maxbet );
 
     char tL[2] = "*";
     if ((pginf->m_tmode&0x1) && pginf->m_tlevel) 
@@ -914,8 +914,8 @@ void PokerPro::HandleEventPlayerInfo(PokerMessage* pm)
 
     char sbal[32];
     char sbet[32];
-    convert_money(sbal, ppinf->m_balance);
-    convert_money(sbet, ppinf->m_betAmount);
+    convert_money(sbal, 32, ppinf->m_balance);
+    convert_money(sbet, 32, ppinf->m_betAmount);
 
     CString s;
     s.Format("%d %15s %s %s\n", ppinf->m_chair&0x1f, ppinf->m_name, sbal, sbet);
@@ -1024,7 +1024,7 @@ void PokerPro::HandleEventPlayerRefund(PokerMessage* pm)
     CString s;
 
     char sbet[32];
-    convert_money(sbet, pm->m_amount);
+    convert_money(sbet, 32, pm->m_amount);
     s.Format("Chair %d (%s) refund %s.\n", pm->m_chair&0x1f, data.m_pinf[pm->m_chair&0x1f].m_name, sbet);
     publish(&s, 0);
 
@@ -1061,7 +1061,7 @@ void PokerPro::HandleEventPlayerBet(PokerMessage* pm)
     data.m_pinf[chair].m_betAmount = after;
 
     char samt[32];
-    convert_money(samt, spend);
+    convert_money(samt, 32, spend);
 
     if (spend==0) {
         s.Format("Chair %d (%s) %s.\n", chair, name, action);
@@ -1087,7 +1087,7 @@ void PokerPro::HandleEventPlayerName(PokerMessage* pm)
 {
     __SEH_HEADER
 
-    sassign(data.m_pinf[pm->m_chair&0x1f].m_name, pm->m_name, sizeof(data.m_pinf[pm->m_chair&0x1f].m_name));
+    sassign(data.m_pinf[pm->m_chair&0x1f].m_name, 32, pm->m_name, sizeof(data.m_pinf[pm->m_chair&0x1f].m_name));
 
     __SEH_LOGFATAL("PokerPro::HandleEventPlayerName : \n");
 }
@@ -1101,7 +1101,7 @@ void PokerPro::HandleEventPlayerBalance(PokerMessage* pm)
     if (pm->m_chair == data.m_userchair) 
 	{
         char sbal[32];
-        convert_money(sbal, pm->m_amount);
+        convert_money(sbal, 32, pm->m_amount);
         CString s;
         s.Format("%s's balance is now %s\n", data.m_pinf[pm->m_chair&0x1f].m_name, sbal);
         publish(&s, 0);
@@ -1131,7 +1131,7 @@ void PokerPro::HandleEventPlayerWin(PokerMessage* pm)
     data.m_pot[npot] = 0;
 
     char swin[32];
-    convert_money(swin, win);
+    convert_money(swin, 32, win);
 
     for (int i=0; i<=9; i++) 
 	{
@@ -1160,9 +1160,9 @@ void PokerPro::HandleEventNextDealer(PokerMessage* pm)
     char sbs[32];
     char bbs[32];
     char BBs[32];
-    convert_money(sbs, data.m_ginf[data.m_tinf.m_tid].m_sblind);
-    convert_money(bbs, data.m_ginf[data.m_tinf.m_tid].m_minbet);
-    convert_money(BBs, data.m_ginf[data.m_tinf.m_tid].m_maxbet);
+    convert_money(sbs, 32, data.m_ginf[data.m_tinf.m_tid].m_sblind);
+    convert_money(bbs, 32, data.m_ginf[data.m_tinf.m_tid].m_minbet);
+    convert_money(BBs, 32, data.m_ginf[data.m_tinf.m_tid].m_maxbet);
     s.Format("Table# %d %s %s %s %s %s %s %s\n",
              data.m_tinf.m_tid,
              data.m_tinf.m_name,
@@ -1177,7 +1177,7 @@ void PokerPro::HandleEventNextDealer(PokerMessage* pm)
         int c = (dc+1+i) % 10;
         if ((data.m_pinf[c].m_isSeated&0x1) && (data.m_pinf[c].m_isActive&0x1) && data.m_pinf[c].m_balance > 0) {
             char sbal[32];
-            convert_money(sbal, data.m_pinf[c].m_balance);
+            convert_money(sbal, 32, data.m_pinf[c].m_balance);
 
             s.Format("%s Chair%d %s %s\n", data.m_pinf[c].m_name, c, sbal, dc==c ? "BUTTON" : "");
             writehh(&s);
@@ -1217,9 +1217,11 @@ void PokerPro::HandleEventNextHand(PokerMessage* pm)
     reset_hand();
     data.m_handnumber = pm->m_lparam[1];
     time_t gametime = pm->m_lparam[2];
-    tm* t = gmtime(&gametime);
+    tm t;
+	gmtime_s(&t, &gametime);
+
     char buf[32];
-    strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", t);
+    strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &t);
     s.Format("\nHand# %d %s GMT %s\n", data.m_handnumber, buf, data.m_site_name);
     publish(&s, 0);
 
@@ -1260,7 +1262,7 @@ void PokerPro::HandleEventTotalPot(PokerMessage* pm)
     CString s;
 
     char spot[32];
-    convert_money(spot, pm->m_amount);
+    convert_money(spot, 32, pm->m_amount);
 
     s.Format("DEALER POT %s\n", spot);
     writehh(&s);
@@ -1561,18 +1563,18 @@ void PokerPro::HandleEventPing(PokerMessage* pm)
     __SEH_LOGFATAL("PokerPro::HandleEventPing : \n");
 }
 
-char* PokerPro::sassign(char* dst, const char* src, int dstsiz) 
+char* PokerPro::sassign(char* dst, const int dst_size, const char* src, int dstsiz) 
 {
     __SEH_HEADER
 
-    strncpy( dst, src, dstsiz );
+    strncpy_s( dst, dst_size, src, dstsiz );
     dst[dstsiz-1]=0;
     return dst;
 
     __SEH_LOGFATAL("PokerPro::sassign : \n");
 }
 
-char* PokerPro::convert_money(char* text, int amount) 
+char* PokerPro::convert_money(char* text, const int dst_size, int amount) 
 {
     __SEH_HEADER
 
@@ -1581,23 +1583,23 @@ char* PokerPro::convert_money(char* text, int amount)
 
     if (amount < 0)	
 	{
-        sprintf(text,"%d.%02d", units, cents);
+        sprintf_s(text, dst_size, "%d.%02d", units, cents);
     }
     if (amount < 0)	
 	{
-        sprintf(text,"0");
+        sprintf_s(text, dst_size, "0");
     }
     else if (amount < 100) 
 	{
-        sprintf(text,".%02d", cents);
+        sprintf_s(text, dst_size, ".%02d", cents);
     }
     else if (cents) 
 	{
-        sprintf(text,"%d.%02d", units, cents);
+        sprintf_s(text, dst_size, "%d.%02d", units, cents);
     }
     else 
 	{
-        sprintf(text,"%d", units);
+        sprintf_s(text, dst_size, "%d", units);
     }
 
     return text;
@@ -1855,10 +1857,10 @@ void PokerPro::DoScrape(void)
         p_scraper->set_dealer(i, false);
         p_scraper->set_player_name(i, data.m_pinf[i].m_name);
         p_scraper->set_name_good_scrape(i, true);
-        convert_money(money, data.m_pinf[i].m_balance);
+        convert_money(money, 50, data.m_pinf[i].m_balance);
         p_scraper->set_player_balance(i, atof(money));
         p_scraper->set_balance_good_scrape(i, true);
-        convert_money(money, data.m_pinf[i].m_betAmount);
+        convert_money(money, 50, data.m_pinf[i].m_betAmount);
         p_scraper->set_player_bet(i, atof(money));
         p_scraper->set_sitting_out(i, !(data.m_pinf[i].m_isPlaying&0x1));
 
@@ -1872,7 +1874,7 @@ void PokerPro::DoScrape(void)
         }
 
         // Pots
-        convert_money(money, data.m_pot[i]);
+        convert_money(money, 50, data.m_pot[i]);
         p_scraper->set_pot(i, atof(money));
     }
 
@@ -1883,17 +1885,17 @@ void PokerPro::DoScrape(void)
 	LI.handnumber = data.m_handnumber;
 	LI.found_handnumber = true;
 
-	convert_money(money, data.m_ginf[data.m_tinf.m_tid].m_sblind);
+	convert_money(money, 50, data.m_ginf[data.m_tinf.m_tid].m_sblind);
 	LI.sblind = atof(money);
 	LI.found_sblind = true;
-    convert_money(money, data.m_ginf[data.m_tinf.m_tid].m_minbet);
+    convert_money(money, 50, data.m_ginf[data.m_tinf.m_tid].m_minbet);
 	LI.bblind = atof(money);
     LI.found_bblind = true;
-    convert_money(money, data.m_ginf[data.m_tinf.m_tid].m_maxbet);
+    convert_money(money, 50, data.m_ginf[data.m_tinf.m_tid].m_maxbet);
     LI.bbet = atof(money);
 	LI.found_bbet = true;
 
-    convert_money(money, 0/*data.m_ginf[data.m_tinf.m_tid].*/);  // don't know where to get ante info from
+    convert_money(money, 50, 0/*data.m_ginf[data.m_tinf.m_tid].*/);  // don't know where to get ante info from
     LI.ante = atof(money);
     LI.found_ante = true;
 
@@ -2257,12 +2259,12 @@ void PokerPro::writehh(CString *s)
     if (handhistory) 
 	{
         fn.Format("%s\\ppro\\%s_%lu.log", _startup_path, data.m_site_name, p_global->session_id());
-        hh_fp = fopen(fn.GetString(), "a");
+        fopen_s(&hh_fp, fn.GetString(), "a");
         if (hh_fp==NULL) 
 		{
             fd.Format("%s\\ppro", _startup_path);
             CreateDirectory(fd.GetString(), NULL);
-            hh_fp = fopen(fn.GetString(), "a");
+            fopen_s(&hh_fp, fn.GetString(), "a");
         }
 
         if (hh_fp!=NULL) 

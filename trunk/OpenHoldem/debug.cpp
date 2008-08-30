@@ -118,16 +118,17 @@ void logfatal (char* fmt, ...)
     FILE		*fatallog;
     char		nowtime[26];
 
-    sprintf(fatallogpath, "%s\\fatal error.log", _startup_path);
-    fatallog = fopen(fatallogpath, "a");
+    sprintf_s(fatallogpath, MAX_PATH, "%s\\fatal error.log", _startup_path);
+    if (fopen_s(&fatallog, fatallogpath, "a")==0)
+	{
+		va_start(ap, fmt);
+		vsprintf_s(buff, 10000, fmt, ap);
+		get_now_time(nowtime);
+		fprintf(fatallog, "%s> %s", nowtime, buff);
 
-    va_start(ap, fmt);
-    vsprintf(buff, fmt, ap);
-	get_now_time(nowtime);
-    fprintf(fatallog, "%s> %s", nowtime, buff);
-
-    va_end(ap);
-    fclose(fatallog);
+		va_end(ap);
+		fclose(fatallog);
+	}
 }
 
 LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers) 
@@ -233,11 +234,11 @@ LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers)
 	// Create a minidump
 	GenerateDump(pExceptionPointers);
 
-    sprintf(flpath, "%s\\fatal error.log", _startup_path);
-    strcpy(msg, "OpenHoldem is about to crash.\n");
-    strcat(msg, "A minidump has been created in your\n");
-	strcat(msg, "OpenHoldem startup directory.\n");
-    strcat(msg, "\n\nOpenHoldem will shut down when you click OK.");
+    sprintf_s(flpath, MAX_PATH, "%s\\fatal error.log", _startup_path);
+    strcpy_s(msg, 1000, "OpenHoldem is about to crash.\n");
+    strcat_s(msg, 1000, "A minidump has been created in your\n");
+	strcat_s(msg, 1000, "OpenHoldem startup directory.\n");
+    strcat_s(msg, 1000, "\n\nOpenHoldem will shut down when you click OK.");
     MessageBox(NULL, msg, "FATAL ERROR", MB_OK | MB_ICONEXCLAMATION | MB_TOPMOST);
 
     return EXCEPTION_EXECUTE_HANDLER;
@@ -355,11 +356,13 @@ void start_log(void)
 	{
         CString fn;
         fn.Format("%s\\oh_%lu.log", _startup_path, p_global->session_id());
-        log_fp = fopen(fn.GetString(), "a");
-        write_log("! log file open\n");
-        fprintf(log_fp, "yyyy.mm.dd hh:mm:ss -  # hand commoncard rank poker  win  los  tie  P      nit bestaction - play*      call       bet       pot   balance - FCRA FCRA swag\n");
-        fprintf(log_fp, "----------------------------------------------------------------------------------------------------------------------------------------------------------\n");
-        fflush(log_fp);
+        if (fopen_s(&log_fp, fn.GetString(), "a")==0)
+		{
+			write_log("! log file open\n");
+			fprintf(log_fp, "yyyy.mm.dd hh:mm:ss -  # hand commoncard rank poker  win  los  tie  P      nit bestaction - play*      call       bet       pot   balance - FCRA FCRA swag\n");
+			fprintf(log_fp, "----------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+			fflush(log_fp);
+		}
     }
 
     __SEH_LOGFATAL("::start_log\n");
@@ -377,7 +380,7 @@ void write_log(char* fmt, ...)
 	{
 
         va_start(ap, fmt);
-        vsprintf(buff, fmt, ap);
+        vsprintf_s(buff, 10000, fmt, ap);
 		get_time(nowtime);
         fprintf(log_fp, "%s - %s", nowtime, buff);
 
@@ -400,7 +403,7 @@ void write_log_nostamp(char* fmt, ...)
 	{
 
         va_start(ap, fmt);
-        vsprintf(buff, fmt, ap);
+        vsprintf_s(buff, 10000, fmt, ap);
         fprintf(log_fp, "%s", buff);
 
         va_end(ap);
@@ -668,7 +671,7 @@ int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers)
 
     GetLocalTime(&stLocalTime);
 
-    sprintf(szFileName, "%s\\%s-%s-%04d%02d%02d-%02d%02d%02d-%ld-%ld.dmp", _startup_path, 
+    sprintf_s(szFileName, MAX_PATH, "%s\\%s-%s-%04d%02d%02d-%02d%02d%02d-%ld-%ld.dmp", _startup_path, 
 			"OpenHoldem", VERSION_TEXT, stLocalTime.wYear, stLocalTime.wMonth, stLocalTime.wDay, 
 			stLocalTime.wHour, stLocalTime.wMinute, stLocalTime.wSecond, GetCurrentProcessId(), 
 			GetCurrentThreadId());

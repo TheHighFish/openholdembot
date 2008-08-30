@@ -119,7 +119,7 @@ void CScraper::ClearScrapeAreas(void)
 		_bbet_last=0;
 		_ante_last=0;
 		_handnumber_last=0;
-		strcpy(_title_last, "");
+		strcpy_s(_title_last, 512, "");
 
 	LeaveCriticalSection(&cs_scraper);
 
@@ -213,7 +213,7 @@ int CScraper::DoScrape(void)
 	if (strcmp(_title, _title_last)!=0)
 	{
 		EnterCriticalSection(&cs_scraper);
-			strcpy(_title_last, _title);
+			strcpy_s(_title_last, 512, _title);
 			_s_limit_info.found_handnumber = false;
 			_s_limit_info.found_sblind = false;
 			_s_limit_info.found_bblind = false;
@@ -1840,7 +1840,8 @@ const double CScraper::DoChipScrape(HDC hdc, int i)
 {
     __SEH_HEADER
 
-	int				j, stackindex, chipindex, hashindex;
+	int				j, stackindex, chipindex;
+	UINT_PTR		hashindex;
     CString			type, cstemp;
     int				istart, ivert[10] = { -1 }, ihoriz[10] = { -1 }, index, vertcount=0, horizcount=0;
     int				hash_type, num_precs, pixcount, chipwidth, chipheight;
@@ -1973,7 +1974,7 @@ const double CScraper::DoChipScrape(HDC hdc, int i)
                 // hash match found
                 else
                 {
-                    hashindex = ((long) uresult - (long) p_global->trans.map.hashes)/sizeof(uint32_t);
+                    hashindex = ((UINT_PTR) uresult - (UINT_PTR) p_global->trans.map.hashes)/sizeof(UINT_PTR);
                     resstring = p_global->trans.map.h$[hashindex].name;
                     resstring.Remove(',');
                     resstring.Remove('$');

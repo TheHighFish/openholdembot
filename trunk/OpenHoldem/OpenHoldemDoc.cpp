@@ -679,7 +679,7 @@ void COpenHoldemDoc::ReadFormulaFile(SFormula *f, CArchive& ar, bool ignoreFirst
 				// Trying to continue gracefully.				
 				// Skipping is not possible,
 				// as this crashes the formula editor.											
-				strcpy(funcname, strOneLine.GetString()+start+2);
+				strcpy_s(funcname, 256, strOneLine.GetString()+start+2);
 				funcname[strOneLine.GetLength()]='\0';
 				CString the_ErrorMessage = "Malformed function header!\nMissing trailing '##'.\n" 
 					+ strOneLine + "\n"
@@ -689,7 +689,7 @@ void COpenHoldemDoc::ReadFormulaFile(SFormula *f, CArchive& ar, bool ignoreFirst
 			}
 			else 
 			{
-				strcpy(funcname, strOneLine.GetString()+start+2);
+				strcpy_s(funcname, 256, strOneLine.GetString()+start+2);
 				funcname[end-2]='\0';
 			}
 

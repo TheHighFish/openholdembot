@@ -438,7 +438,7 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logC
             return ! eval_expression(f, i->children.begin(), logCallingFunction, e);
 
         else if (*i->value.begin() == '~')
-            return ~ ((unsigned long) eval_expression(f, i->children.begin(), logCallingFunction, e));
+            return (double) (~ ((unsigned long) eval_expression(f, i->children.begin(), logCallingFunction, e)));
 
         else if (*i->value.begin() == '-')
             return - eval_expression(f, i->children.begin(), logCallingFunction, e);
@@ -619,7 +619,7 @@ double eval_symbol(SFormula *f, string sym, CEvalInfoFunction **logCallingFuncti
         }
 
         // Which form of f$$ is being called determines nature of resultant udf call
-        strcpy(f$func, "f$");
+        strcpy_s(f$func, 10, "f$");
 
         if (tolower(sym.c_str()[3])=='x' &&
                 strlen(sym.c_str())==4)

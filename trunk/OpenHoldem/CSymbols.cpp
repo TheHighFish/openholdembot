@@ -764,13 +764,13 @@ void CSymbols::CalcSymbols(void)
 		// log new hand
 		if (player_card_cur[0]==CARD_NOCARD || player_card_cur[0]==CARD_NOCARD)
 		{
-			strcpy(card0, "NONE");
-			strcpy(card1, "");
+			strcpy_s(card0, 10, "NONE");
+			strcpy_s(card1, 10, "");
 		}
 		else if (player_card_cur[1]==CARD_BACK || player_card_cur[1]==CARD_BACK)
 		{
-			strcpy(card0, "BACKS");
-			strcpy(card1, "");
+			strcpy_s(card0, 10, "BACKS");
+			strcpy_s(card1, 10, "");
 		}
 		else
 		{
@@ -1317,7 +1317,7 @@ void CSymbols::CalcTime(void)
 
 	LARGE_INTEGER	lFrequency, clocksnow;
 	time_t			t_now_time, t_midnight_time;
-	struct tm		*s_midnight_time;
+	tm				s_midnight_time;
 
 	time(&t_now_time);
 
@@ -1325,11 +1325,11 @@ void CSymbols::CalcTime(void)
 
 		_sym.elapsed1970 = t_now_time;													// elapsed1970
 
-		s_midnight_time = localtime(&t_now_time);
-		s_midnight_time->tm_hour = 0;
-		s_midnight_time->tm_min = 0;
-		s_midnight_time->tm_sec = 0;
-		t_midnight_time = mktime(s_midnight_time);
+		localtime_s(&s_midnight_time, &t_now_time);
+		s_midnight_time.tm_hour = 0;
+		s_midnight_time.tm_min = 0;
+		s_midnight_time.tm_sec = 0;
+		t_midnight_time = mktime(&s_midnight_time);
 		_sym.elapsedtoday = t_now_time - t_midnight_time;								// elapsedtoday
 
 		_sym.elapsed = t_now_time - _elapsedhold;											// elapsed
@@ -4131,7 +4131,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	{
 		char	sym[50];
 		int		round;
-		strcpy(sym, &a[3]);
+		strcpy_s(sym, 50, &a[3]);
 		round = sym[strlen(sym)-1]-'0';
 		sym[strlen(sym)-1] = '\0';
 		return game_state.wh_sym_hist(sym, round);

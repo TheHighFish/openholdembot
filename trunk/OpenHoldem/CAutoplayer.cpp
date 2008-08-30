@@ -443,11 +443,11 @@ void CAutoplayer::DoSwag(void)
 
 			if (f_swag != (int) f_swag)
 			{
-				sprintf(ch_str, "%.2f", f_swag);
+				sprintf_s(ch_str, 100, "%.2f", f_swag);
 			}
 			else
 			{
-				sprintf(ch_str, "%.0f", f_swag);
+				sprintf_s(ch_str, 100, "%.0f", f_swag);
 			}
 
 			for (i=0; i<(int) strlen(ch_str); i++)

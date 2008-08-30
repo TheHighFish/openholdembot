@@ -778,7 +778,7 @@ void CMainFrame::OnBnClickedGreenCircle()
                 {
                     filename = hFile.GetFileName();
                     hFile.GetLastWriteTime(time);
-                    sscanf(filename.GetString(), "frame%d.bmp", &frame_num);
+                    sscanf_s(filename.GetString(), "frame%d.bmp", &frame_num);
 
                     if (time>latest_time)
                     {

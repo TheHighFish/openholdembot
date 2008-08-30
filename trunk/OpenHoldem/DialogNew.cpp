@@ -72,7 +72,7 @@ void CDlgNew::OnBnClickedOk() {
     int i;
 
     m_NewName.GetWindowText(CSnewname);
-    strcpy(str, CSnewname.GetString());
+    strcpy_s(str, 512, CSnewname.GetString());
 
     // Changing a list
     if (type==0 && memcmp(str, "list", 4)!=0) {
