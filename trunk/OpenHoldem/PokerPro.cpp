@@ -1728,9 +1728,11 @@ void PokerPro::DoScrape(void)
 
     __SEH_HEADER
 
-    int			i, j;
-    int			suit, rank;
-    char		money[50];
+    int				i=0, j=0;
+    unsigned int	suit = StdDeck_Suit_CLUBS;
+	unsigned int	rank = StdDeck_Rank_2;
+	unsigned int	card = CARD_NOCARD;
+	char			money[50] = "";
 
     // Common cards
     for (i=0; i<=4; i++) 
@@ -1741,27 +1743,48 @@ void PokerPro::DoScrape(void)
 		{
             p_scraper->set_card_common(i, CARD_BACK);
 		}
+
         else if ((data.m_tinf.m_card[i]&0xff) == WH_NOCARD) 
 		{
             p_scraper->set_card_common(i, CARD_NOCARD);
         }
+
         else 
 		{
             if (((data.m_tinf.m_card[i]>>0)&0x0f) == WH_SUIT_CLUBS) 
+			{
                 suit = StdDeck_Suit_CLUBS;
+				rank = ((data.m_tinf.m_card[i]>>4)&0x0f)-2;
+				card = StdDeck_MAKE_CARD(rank, suit);
+			}
 
             else if (((data.m_tinf.m_card[i]>>0)&0x0f) == WH_SUIT_DIAMONDS) 
+			{
                 suit = StdDeck_Suit_DIAMONDS;
+				rank = ((data.m_tinf.m_card[i]>>4)&0x0f)-2;
+				card = StdDeck_MAKE_CARD(rank, suit);
+			}
 
             else if (((data.m_tinf.m_card[i]>>0)&0x0f) == WH_SUIT_HEARTS) 
+			{
                 suit = StdDeck_Suit_HEARTS;
+				rank = ((data.m_tinf.m_card[i]>>4)&0x0f)-2;
+				card = StdDeck_MAKE_CARD(rank, suit);
+			}
 
             else if (((data.m_tinf.m_card[i]>>0)&0x0f) == WH_SUIT_SPADES) 
+			{
                 suit = StdDeck_Suit_SPADES;
+				rank = ((data.m_tinf.m_card[i]>>4)&0x0f)-2;
+				card = StdDeck_MAKE_CARD(rank, suit);
+			}
 
-            rank = ((data.m_tinf.m_card[i]>>4)&0x0f)-2;
+			else
+			{
+				card = CARD_NOCARD;
+			}
 
-            p_scraper->set_card_common(i, StdDeck_MAKE_CARD(rank, suit));
+			p_scraper->set_card_common(i, card);
         }
     }
 
@@ -1780,27 +1803,48 @@ void PokerPro::DoScrape(void)
 				{
                     p_scraper->set_card_player(i, j, CARD_BACK);
                 }
+
                 else if ((data.m_pinf[i].m_card[j]&0xff) == WH_NOCARD) 
 				{
                     p_scraper->set_card_player(i, j, CARD_NOCARD);
                 }
+
                 else 
 				{
                     if (((data.m_pinf[i].m_card[j]>>0)&0x0f) == WH_SUIT_CLUBS)
+					{
                         suit = StdDeck_Suit_CLUBS;
+	                    rank = ((data.m_pinf[i].m_card[j]>>4)&0x0f)-2;
+						card = StdDeck_MAKE_CARD(rank, suit);
+					}
 
                     else if (((data.m_pinf[i].m_card[j]>>0)&0x0f) == WH_SUIT_DIAMONDS)
+					{
                         suit = StdDeck_Suit_DIAMONDS;
+	                    rank = ((data.m_pinf[i].m_card[j]>>4)&0x0f)-2;
+						card = StdDeck_MAKE_CARD(rank, suit);
+					}
 
                     else if (((data.m_pinf[i].m_card[j]>>0)&0x0f) == WH_SUIT_HEARTS)
-                        suit = StdDeck_Suit_HEARTS;
+					{
+						suit = StdDeck_Suit_HEARTS;
+	                    rank = ((data.m_pinf[i].m_card[j]>>4)&0x0f)-2;
+						card = StdDeck_MAKE_CARD(rank, suit);
+					}
 
                     else if (((data.m_pinf[i].m_card[j]>>0)&0x0f) == WH_SUIT_SPADES)
-                        suit = StdDeck_Suit_SPADES;
+					{
+						suit = StdDeck_Suit_SPADES;
+	                    rank = ((data.m_pinf[i].m_card[j]>>4)&0x0f)-2;
+						card = StdDeck_MAKE_CARD(rank, suit);
+					}
 
-                    rank = ((data.m_pinf[i].m_card[j]>>4)&0x0f)-2;
+					else
+					{
+						card = CARD_NOCARD;
+					}
 
-                    p_scraper->set_card_player(i, j, StdDeck_MAKE_CARD(rank, suit));
+                    p_scraper->set_card_player(i, j, card);
                 }
             }
         }
