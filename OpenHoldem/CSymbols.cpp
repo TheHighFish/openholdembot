@@ -3044,7 +3044,7 @@ void CSymbols::CalcStatistics(void)
 
 	// f$srai
 	error = SUCCESS;
-	f$srai = calc_f$symbol(&p_global->formula, "f$srai", &error);
+	f$srai = calc_f$symbol(&p_global->formula, "f$srai", p_global->preferences.Trace_functions[nTraceSwag], &error);
 
 	// B
 	B = p_global->formula.dBankroll != 0 ? p_global->formula.dBankroll : p_scraper->player_balance(_sym.userchair);

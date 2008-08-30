@@ -7,6 +7,7 @@ NEW STUFF:
 BUG FIXES:
 - Validation of card information passed in from PokerPro server to avoid crashes when/if bad information
   is passed in. (OpenHoldem)
+- f$srai would show up as [Cached] in the Autoplayer Trace.  This function will now be traced if f$swag is set to be traced. (Spew)
   
 
 MAINTENANCE:
