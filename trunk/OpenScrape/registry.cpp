@@ -110,33 +110,33 @@ void Registry::write_reg(void)
 	REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, &dwDisp);
 
 	// Main window location and size
-	sprintf(str, "%d", main_x);
+	sprintf_s(str, 256, "%d", main_x);
 	RegSetValueEx(hKey, "main_x", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
-	sprintf(str, "%d", main_y);
+	sprintf_s(str, 256, "%d", main_y);
 	RegSetValueEx(hKey, "main_y", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
-	sprintf(str, "%d", main_dx);
+	sprintf_s(str, 256, "%d", main_dx);
 	RegSetValueEx(hKey, "main_dx", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
-	sprintf(str, "%d", main_dy);
+	sprintf_s(str, 256, "%d", main_dy);
 	RegSetValueEx(hKey, "main_dy", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
 
 	// tablemap window location and size
-	sprintf(str, "%d", tablemap_x);
+	sprintf_s(str, 256, "%d", tablemap_x);
 	RegSetValueEx(hKey, "tablemap_x", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
-	sprintf(str, "%d", tablemap_y);
+	sprintf_s(str, 256, "%d", tablemap_y);
 	RegSetValueEx(hKey, "tablemap_y", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
-	sprintf(str, "%d", tablemap_dx);
+	sprintf_s(str, 256, "%d", tablemap_dx);
 	RegSetValueEx(hKey, "tablemap_dx", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
-	sprintf(str, "%d", tablemap_dy);
+	sprintf_s(str, 256, "%d", tablemap_dy);
 	RegSetValueEx(hKey, "tablemap_dy", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
 
 	// graphical hash point window location and size
-	sprintf(str, "%d", grhash_x);
+	sprintf_s(str, 256, "%d", grhash_x);
 	RegSetValueEx(hKey, "grhash_x", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
-	sprintf(str, "%d", grhash_y);
+	sprintf_s(str, 256, "%d", grhash_y);
 	RegSetValueEx(hKey, "grhash_y", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
-	sprintf(str, "%d", grhash_dx);
+	sprintf_s(str, 256, "%d", grhash_dx);
 	RegSetValueEx(hKey, "grhash_dx", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
-	sprintf(str, "%d", grhash_dy);
+	sprintf_s(str, 256, "%d", grhash_dy);
 	RegSetValueEx(hKey, "grhash_dy", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
 
 	RegCloseKey(hKey);

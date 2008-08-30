@@ -128,7 +128,8 @@ bool RGBAImage::WritePPM()
 {	
 	if (Width <= 0) return false;
 	if (Height <=0 ) return false;
-	FILE *out = fopen(Name.c_str(), "wb");
+	FILE *out;
+	fopen_s(&out, Name.c_str(), "wb");
 	if (!out) return false;
 	fprintf(out, "P6\n%d %d 255\n", Width, Height);
 	for (int y = 0; y < Height; y++) {

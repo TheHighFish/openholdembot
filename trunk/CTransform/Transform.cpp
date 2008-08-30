@@ -476,7 +476,7 @@ int CTransform::load_tablemap(char *filename, char *version, bool check_ws_date,
     // Populate t$ hexmash char array for bsearches later on
     P = (int) map.t$.GetSize();
     for (j=0; j<P; j++)
-        strcpy(map.hexmash[j], map.t$[j].hexmash);
+        strcpy_s(map.hexmash[j], MAX_SINGLE_CHAR_WIDTH*8 + 1, map.t$[j].hexmash);
 
     // Populate h$ hashes array for bsearches later on
     P = (int) map.h$.GetSize();
@@ -722,15 +722,20 @@ int CTransform::convert_tablemap(HWND hwnd, char *startup_path)
 	if (!all_i$_found) 
 	{
 		logpath.Format("%s\\tablemap conversion log.txt", startup_path);
-		fp = fopen(logpath.GetString(), "a");
-		get_now_time(timebuf);
-		fprintf(fp, "<%s>\nConverting from: %s\n", timebuf, map.filepath);
-		fprintf(fp, "h$ records with no matching i$ record:\n");
 
-		for (j=0; j<unmatched_h$_records.GetCount(); j++)
-			fprintf(fp, "\t%3d. h$%s\n", j+1, unmatched_h$_records[j].name.GetString());
+		if (fopen_s(&fp, logpath.GetString(), "a")==0)
+		{
+			get_now_time(timebuf);
+			fprintf(fp, "<%s>\nConverting from: %s\n", timebuf, map.filepath);
+			fprintf(fp, "h$ records with no matching i$ record:\n");
 
-		fprintf(fp, "=======================================================\n\n");
+			for (j=0; j<unmatched_h$_records.GetCount(); j++)
+				fprintf(fp, "\t%3d. h$%s\n", j+1, unmatched_h$_records[j].name.GetString());
+
+			fprintf(fp, "=======================================================\n\n");
+			fclose(fp);
+		}
+
 		MessageBox(hwnd, 
 				   "Could not complete conversion of this table map, due to missing Image\n"\
 				   "records. Please see the \"tablemap conversion log.txt\" file for details.\n\n"\
@@ -738,7 +743,6 @@ int CTransform::convert_tablemap(HWND hwnd, char *startup_path)
 				   "will need to be updated (Edit/Update Hashes) before this table map\n"\
 				   "can be used in OpenHoldem.", 
 				   "Conversion Error", MB_OK);
-		fclose(fp);
 
 		return ERR_INCOMPLETEMASTER;
 	}
@@ -918,20 +922,23 @@ int CTransform::update_hashes(HWND hwnd, char *startup_path)
 	if (!all_i$_found) 
 	{
 		logpath.Format("%s\\hash creation log.txt", startup_path);
-		fp = fopen(logpath.GetString(), "a");
-		get_now_time(timebuf);
-		fprintf(fp, "<%s>\nCreating hashes\n", timebuf);
-		fprintf(fp, "Hashes with no matching image:\n");
+		if (fopen_s(&fp, logpath.GetString(), "a")==0)
+		{
+			get_now_time(timebuf);
+			fprintf(fp, "<%s>\nCreating hashes\n", timebuf);
+			fprintf(fp, "Hashes with no matching image:\n");
 
-		for (j=0; j<unmatched_h$_records.GetCount(); j++) 
-			fprintf(fp, "\t%3d. h$%s\n", j+1, unmatched_h$_records[j].name.GetString());
+			for (j=0; j<unmatched_h$_records.GetCount(); j++) 
+				fprintf(fp, "\t%3d. h$%s\n", j+1, unmatched_h$_records[j].name.GetString());
 
-		fprintf(fp, "=======================================================\n\n");
+			fprintf(fp, "=======================================================\n\n");
+			fclose(fp);
+		}
+
 		MessageBox(hwnd, 
 				   "Could not complete hash creation, due to missing images.\n"\
 				   "Please see the \"hash creation log.txt\" file for details.", 
 				   "Hash Creation Error", MB_OK);
-		fclose(fp);
 	}
 
 	// Init new hash array
@@ -1201,7 +1208,7 @@ int CTransform::i_transform(Stablemap_region *region, HDC hdc, CString *text)
 	}
 
 	// Set threshhold to 65% of available pixels
-	args.ThresholdPixels = (width * height * 0.65) + 0.5;
+	args.ThresholdPixels = (unsigned int) ((width * height * 0.65) + 0.5);
 
 	// Get pixels
 	// Populate BITMAPINFOHEADER
@@ -1290,7 +1297,7 @@ int CTransform::h_transform(Stablemap_region *region, HDC hdc, CString *text)
 	int					hash_type, num_precs, pixcount;
 	uint32_t			*uresult, hash, pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT];
 	int					retval=ERR_NOTHING_TO_SCRAPE;
-	int					index;
+	uint32_t			index;
 	HBITMAP				hbm;
 	BYTE				*pBits, red, green, blue;
 	uint32_t			hashes[512];
@@ -1386,7 +1393,7 @@ int CTransform::h_transform(Stablemap_region *region, HDC hdc, CString *text)
 	else 
 	{ 
 		retval = ERR_GOOD_SCRAPE_GENERAL; 
-		index = ((long) uresult - (long) hashes)/sizeof(uint32_t);
+		index = (uint32_t) ((uresult - hashes)/sizeof(uint32_t));
 		*text = map.h$[index].name;
 	}
 
@@ -1452,7 +1459,7 @@ int CTransform::t_transform(Stablemap_region *region, HDC hdc, CString *text, CS
 			map.s$[i].name.Mid(2,4) == "type")
 		{
 			s$tXtype = map.s$[i].text;
-			i = map.s$.GetSize() + 1;
+			i = (int) map.s$.GetSize() + 1;
 		}
 	}
 
@@ -1549,7 +1556,7 @@ int CTransform::do_plain_font_scan(Stablemap_region *region, int width, int heig
 	{
 		if (map.t$[i].group == sel_region_text_group)
 		{
-			strcpy(hexmash_array[hexmash_array_size], map.t$[i].hexmash);
+			strcpy_s(hexmash_array[hexmash_array_size], MAX_SINGLE_CHAR_WIDTH*8 + 1, map.t$[i].hexmash);
 			t$chars[hexmash_array_size] = map.t$[i].ch;
 			hexmash_array_size++;
 		}
@@ -1600,7 +1607,7 @@ int CTransform::do_plain_font_scan(Stablemap_region *region, int width, int heig
 			{
 				retval = ERR_GOOD_SCRAPE_GENERAL;
 
-				int array_index = ((long)cresult - (long)hexmash_array[0]) / sizeof(hexmash_array[0]);
+				uint32_t array_index = (uint32_t) ((cresult - hexmash_array[0]) / sizeof(hexmash_array[0]));
 
 				newchar.Format("%c", t$chars[array_index]);
 				text->Append(newchar);
@@ -1977,7 +1984,7 @@ void CTransform::calc_hexmash(int left, int right, int top, int bottom, bool (*c
 	}
 
 	// Calculate hexmash
-	strcpy(hexmash, "");
+	strcpy_s(hexmash, 3200, "");
 	for (x = left; x <= right; x++) 
 	{
 		hexval = 0;
@@ -1985,9 +1992,10 @@ void CTransform::calc_hexmash(int left, int right, int top, int bottom, bool (*c
 			if (ch[x][y])
 				hexval += (1 << (last_fg_row - y));
 
-		sprintf(t, "%x", hexval);
-		strcat(hexmash, t);
-		if (withspace)  strcat(hexmash, " ");
+		sprintf_s(t, 20, "%x", hexval);
+		strcat_s(hexmash, 20, t);
+		if (withspace)  
+			strcat_s(hexmash, 20, " ");
 	}
 
     __SEH_LOGFATAL("CTransform::calc_hexmash :\n");
@@ -2498,7 +2506,7 @@ double CTransform::string_to_money(CString inStr)
 			default:
 				if (activeValue.GetLength() > 0) 
 				{
-					int index = possibleValues.Add(activeValue);
+					int index = (int) possibleValues.Add(activeValue);
 					if (currencySymbol)
 						iValueWithCurrencySymbol = index;
 					if (*str == '¢' || *str == 'c')
@@ -2518,7 +2526,7 @@ double CTransform::string_to_money(CString inStr)
 
 	if (activeValue.GetLength() > 0) 
 	{
-		int index = possibleValues.Add(activeValue);
+		int index = (int) possibleValues.Add(activeValue);
 		possibleValuesMultiplier.Add(1);
 		if (currencySymbol)
 			iValueWithCurrencySymbol = index;
