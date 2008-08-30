@@ -193,7 +193,7 @@ BOOL CSAPrefsDialog::OnInitDialog()
             tvi.hInsertAfter = TVI_LAST;
             tvi.item.cchTextMax = 0;
             tvi.item.pszText = LPSTR_TEXTCALLBACK;
-            tvi.item.lParam = (long)pPS;
+            tvi.item.lParam = (LPARAM) pPS;
             tvi.item.mask = TVIF_PARAM | TVIF_TEXT;
 
             HTREEITEM hTree = m_pageTree.InsertItem(&tvi);
@@ -201,8 +201,8 @@ BOOL CSAPrefsDialog::OnInitDialog()
             // keep track of the dlg's we've added (for parent selection)
             if (hTree)
             {
-                DWORD dwTree = (DWORD)hTree;
-                m_dlgMap.SetAt(pPS->pDlg, dwTree);
+                UINT_PTR uipTree = (UINT_PTR) hTree;
+                m_dlgMap.SetAt(pPS->pDlg, uipTree);
             }
         }
     }
@@ -251,10 +251,10 @@ HTREEITEM CSAPrefsDialog::FindHTREEItemForDlg(CSAPrefsSubDlg *pParent)
     }
     else
     {
-        DWORD dwHTree;
+        UINT_PTR dwHTree;
         if (m_dlgMap.Lookup(pParent, dwHTree))
         {
-            return (HTREEITEM)dwHTree;
+            return (HTREEITEM) dwHTree;
         }
         else
         {
@@ -547,7 +547,7 @@ void CSAPrefsDialog::OnSelchangingPageTree(NMHDR* pNMHDR, LRESULT* pResult)
                                 // window that had focus (the one that broke the UpdateData).
                                 // the handler for WM_SET_FOCUS_WND will set the focus back to
                                 // that control
-                                PostMessage(WM_SET_FOCUS_WND, (UINT)pLost->m_hWnd);
+                                PostMessage(WM_SET_FOCUS_WND, (UINT_PTR)pLost->m_hWnd);
                             }
 
                             // don't switch pages
@@ -612,7 +612,7 @@ void CSAPrefsDialog::OnGetdispinfoPageTree(NMHDR* pNMHDR, LRESULT* pResult)
         if (pTVDispInfo->item.mask & TVIF_TEXT)
         {
             pageStruct *pPS = (pageStruct *)pTVDispInfo->item.lParam;
-            strcpy(pTVDispInfo->item.pszText, pPS->csCaption);
+            strcpy_s(pTVDispInfo->item.pszText, 260, pPS->csCaption);
         }
     }
 
@@ -640,7 +640,7 @@ void CSAPrefsDialog::OnPhelp()
                     nm.code=PSN_HELP;
                     nm.hwndFrom=m_hWnd;
                     nm.idFrom=CSAPrefsDialog::IDD;
-                    pPS->pDlg->SendMessage(WM_NOTIFY, 0, (long)&nm);
+                    pPS->pDlg->SendMessage(WM_NOTIFY, 0, (UINT_PTR) &nm);
                 }
             }
         }

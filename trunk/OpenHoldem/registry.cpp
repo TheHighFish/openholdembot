@@ -236,7 +236,7 @@ void Registry::write_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, int Registry
 
     char		str[256];
 
-    sprintf(str, "%d", RegistryValue);
+    sprintf_s(str, 256, "%d", RegistryValue);
     RegSetValueEx(hKey, RegistryKey, 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
 
     __SEH_LOGFATAL("Registry::write_OH_RegistryKey : \n");
@@ -250,7 +250,7 @@ void Registry::write_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, CString Regi
 
     char		str[256];
 
-    sprintf(str, "%s", RegistryValue);
+    sprintf_s(str, 256, "%s", RegistryValue);
     RegSetValueEx(hKey, RegistryKey, 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
 
 
@@ -264,7 +264,7 @@ void Registry::write_OH_RegistryKey(HKEY hKey, LPCTSTR RegistryKey, double Regis
 
     char		str[256];
 
-    sprintf(str, "%f", RegistryValue);
+    sprintf_s(str, 256, "%f", RegistryValue);
     RegSetValueEx(hKey, RegistryKey, 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
 
     __SEH_LOGFATAL("Registry::write_OH_RegistryKey : \n");
@@ -589,7 +589,7 @@ bool Registry::GetProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, CDC
     int bItalic;
     int iPtSize;
 
-    if (sscanf((LPCTSTR)s, "%[a-zA-Z ],%d,%d,%d",
+    if (sscanf_s((LPCTSTR)s, "%[a-zA-Z ],%d,%d,%d",
                lf.lfFaceName, &iPtSize, &lf.lfWeight, &bItalic) != 4)
         return FALSE;
     lf.lfHeight = MulDiv(-iPtSize, 	// convert ptsize to logical units
@@ -647,7 +647,7 @@ void Registry::writeRegString(CString RegistryKey, CString RegistryValue)
     result = RegCreateKeyEx(HKEY_CURRENT_USER, OH_SUBKEY, 0, NULL,
                             REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, NULL);
     if (result==ERROR_SUCCESS){
-        sprintf(str, "%s", RegistryValue);
+        sprintf_s(str, 256, "%s", RegistryValue);
         RegSetValueEx(hKey, RegistryKey, 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
     }
     RegCloseKey(hKey);
