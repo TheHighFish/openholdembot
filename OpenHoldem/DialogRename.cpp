@@ -63,8 +63,8 @@ void CDlgRename::OnBnClickedOk() {
 
     __SEH_HEADER
     m_NewName.GetWindowText(CSnewname);
-    strcpy(oldstr, CSoldname.GetString());
-    strcpy(newstr, CSnewname.GetString());
+    strcpy_s(oldstr, 512, CSoldname.GetString());
+    strcpy_s(newstr, 512, CSnewname.GetString());
 
     // Changing a list
     if (memcmp(oldstr, "list", 4)==0 && memcmp(newstr, "list", 4)!=0) {

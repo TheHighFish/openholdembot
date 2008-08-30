@@ -35,7 +35,7 @@ CUPDialog::CUPDialog(HWND hParentWnd,LP_CUPDIALOG_USERPROC lpUserProc,LPVOID lpU
 
     ZeroMemory(m_szDialogCaption,sizeof(m_szDialogCaption));
 
-    _tcsncpy(m_szDialogCaption,lpszDlgTitle,(sizeof(m_szDialogCaption)/sizeof(m_szDialogCaption[0]))-1);
+    _tcsncpy_s(m_szDialogCaption, 256, lpszDlgTitle,(sizeof(m_szDialogCaption)/sizeof(m_szDialogCaption[0]))-1);
 	
 	__SEH_LOGFATAL("CUPDialog::Constructor : \n");
 }

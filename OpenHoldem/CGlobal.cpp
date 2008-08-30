@@ -121,10 +121,10 @@ CGlobal::CGlobal(void)
 	// Find the versus data.  First check in the current directory
 	// then in the path provided by the registry.  If both fail,
 	// disable versus.
-	versus_fh = _sopen("versus.bin", _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
+	_sopen_s(&versus_fh, "versus.bin", _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
 	if (versus_fh == -1)
 	{
-		versus_fh = _sopen(reg.versus_path, _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
+		versus_fh = _sopen_s(&versus_fh, reg.versus_path, _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
 	}
 
 	if (versus_fh == -1)
@@ -544,7 +544,7 @@ void CGlobal::CaptureState(const char *title)
 	}
 
 	// Poker window title
-	strncpy(state[state_index&0xff].m_title, title, 64);
+	strncpy_s(state[state_index&0xff].m_title, 64, title, 64);
 	state[state_index&0xff].m_title[63] = '\0';
 
 	// Pot information
@@ -588,7 +588,7 @@ void CGlobal::CaptureState(const char *title)
 	{
 
 		// player name, balance, currentbet
-		strcpy(state[state_index&0xff].m_player[i].m_name, p_scraper->player_name(i).GetString());
+		strcpy_s(state[state_index&0xff].m_player[i].m_name, 16, p_scraper->player_name(i).GetString());
 		state[state_index&0xff].m_player[i].m_balance = p_symbols->sym()->balance[i];
 		state[state_index&0xff].m_player[i].m_currentbet = p_symbols->sym()->currentbet[i];
 
@@ -1108,7 +1108,7 @@ void CGlobal::CreateReplayFrame(void)
 	FILE			*fp;
 	int				i;
 	time_t			ltime;
-	struct tm		*now_time;
+	tm				now_time;
 	char			now_time_str[100];
 	ULARGE_INTEGER	free_bytes_for_user_on_disk, 
 					total_bytes_on_disk, 
@@ -1130,8 +1130,8 @@ void CGlobal::CreateReplayFrame(void)
 
 	// Get current time
 	time(&ltime);
-	now_time = localtime(&ltime);
-	strftime(now_time_str, 100, "%Y-%m-%d %H:%M:%S", now_time);
+	localtime_s(&now_time, &ltime);
+	strftime(now_time_str, 100, "%Y-%m-%d %H:%M:%S", &now_time);
 
 	// Create replay/session dir if it does not exist
 	path.Format("%s\\replay\\session_%lu\\", _startup_path, _session_id);
@@ -1148,125 +1148,126 @@ void CGlobal::CreateReplayFrame(void)
 
 		// Create HTML file
 		path.Format("%s\\replay\\session_%lu\\frame%03d.htm", _startup_path, _session_id, _next_replay_frame);
-		fp = fopen(path.GetString(), "w");
-
-		fprintf(fp, p_scraper->title());
-		fprintf(fp, "\n");
-		fprintf(fp, "<html>\n");
-		fprintf(fp, "<style>\n");
-		fprintf(fp, "td {text-align:right;}\n");
-		fprintf(fp, "</style>\n");
-		fprintf(fp, "<body>\n");
-		fprintf(fp, "<font face=courier>\n");
-		fprintf(fp, "<img src=\"frame%03d.bmp\">\n", _next_replay_frame);
-		fprintf(fp, "<br>\n");
-		fprintf(fp, "<a href=\"frame%03d.htm\">PREV</a>\n",
-				_next_replay_frame-1 >= 0 ? _next_replay_frame-1 : preferences.replay_max_frames);
-		fprintf(fp, "<a href=\"frame%03d.htm\">NEXT</a>\n",
-				_next_replay_frame+1 < preferences.replay_max_frames ? _next_replay_frame+1 : 0);
-		fprintf(fp, " [%lu.%03d] [%s]<br>\n", _session_id, _next_replay_frame, now_time_str);
-		fprintf(fp, "<br>\n");
-		fprintf(fp, "<table>\n");
-		fprintf(fp, "<tr>\n");
-		fprintf(fp, "<td>\n");
-
-		// Table for: SFABD, hand, bet, balance, name
-		fprintf(fp, "<table border=4 cellpadding=1 cellspacing=1>\n");
-		fprintf(fp, "<tr>\n");
-		fprintf(fp, "<th>#</th>\n");
-		fprintf(fp, "<th>SFABDP</th>\n");  //seated, friend, active, button, dealt, playing
-		fprintf(fp, "<th>hand</th>\n");
-		fprintf(fp, "<th>bet</th>\n");
-		fprintf(fp, "<th>balance</th>\n");
-		fprintf(fp, "<th>name</th>\n");
-		fprintf(fp, "</tr>\n");
-		for (i=0; i<trans.map.num_chairs; i++)
+		if (fopen_s(&fp, path.GetString(), "w")==0)
 		{
-
+			fprintf(fp, p_scraper->title());
+			fprintf(fp, "\n");
+			fprintf(fp, "<html>\n");
+			fprintf(fp, "<style>\n");
+			fprintf(fp, "td {text-align:right;}\n");
+			fprintf(fp, "</style>\n");
+			fprintf(fp, "<body>\n");
+			fprintf(fp, "<font face=courier>\n");
+			fprintf(fp, "<img src=\"frame%03d.bmp\">\n", _next_replay_frame);
+			fprintf(fp, "<br>\n");
+			fprintf(fp, "<a href=\"frame%03d.htm\">PREV</a>\n",
+					_next_replay_frame-1 >= 0 ? _next_replay_frame-1 : preferences.replay_max_frames);
+			fprintf(fp, "<a href=\"frame%03d.htm\">NEXT</a>\n",
+					_next_replay_frame+1 < preferences.replay_max_frames ? _next_replay_frame+1 : 0);
+			fprintf(fp, " [%lu.%03d] [%s]<br>\n", _session_id, _next_replay_frame, now_time_str);
+			fprintf(fp, "<br>\n");
+			fprintf(fp, "<table>\n");
 			fprintf(fp, "<tr>\n");
-			fprintf(fp, "<td>%d</td>", i);  // #
-			text.Format("%s%s%s%s%s%s",
-				(int) (p_symbols->sym()->playersseatedbits) & (1<<i) ? "s" : "-",
-				p_symbols->sym()->userchair == i ? "f" : "-",
-				(int) (p_symbols->sym()->playersactivebits) & (1<<i) ? "a" : "-",
-				p_symbols->sym()->dealerchair== i ? "b" : "-",
-				(int) (p_symbols->sym()->playersdealtbits) & (1<<i) ? "d" : "-",
-				(int) (p_symbols->sym()->playersplayingbits) & (1<<i) ? "p" : "-");
-			fprintf(fp, "<td>%s</td>", text.GetString());  // SFABDP
-			fprintf(fp, "<td>%s%s</td>",
-					GetCardHtml(p_scraper->card_player(i, 0)),
-					GetCardHtml(p_scraper->card_player(i, 1)) );  // hand
-			fprintf(fp, "<td>%11.2f</td>", p_scraper->player_bet(i));  // bet
-			fprintf(fp, "<td>%11.2f</td>", p_scraper->player_balance(i));  // balance
-			fprintf(fp, "<td>%-15s</td>\n", p_scraper->player_name(i).GetString());  // name
+			fprintf(fp, "<td>\n");
+
+			// Table for: SFABD, hand, bet, balance, name
+			fprintf(fp, "<table border=4 cellpadding=1 cellspacing=1>\n");
+			fprintf(fp, "<tr>\n");
+			fprintf(fp, "<th>#</th>\n");
+			fprintf(fp, "<th>SFABDP</th>\n");  //seated, friend, active, button, dealt, playing
+			fprintf(fp, "<th>hand</th>\n");
+			fprintf(fp, "<th>bet</th>\n");
+			fprintf(fp, "<th>balance</th>\n");
+			fprintf(fp, "<th>name</th>\n");
 			fprintf(fp, "</tr>\n");
-		}
-		fprintf(fp, "</table>\n");
-		fprintf(fp, "</td>\n");
-
-		// Table for: FCRA
-		fprintf(fp, "<td>\n");
-		fprintf(fp, "<table align=center border=4 cellpadding=1 cellspacing=1>\n");
-		fprintf(fp, "<tr><th>FCRA</th></tr>\n");
-		fprintf(fp, "<tr>\n");
-		int sym_myturnbits = (int) p_symbols->sym()->myturnbits;
-		fcra_seen.Format("%s%s%s%s",
-			sym_myturnbits&0x1 ? "F" : ".",
-			sym_myturnbits&0x2 ? "C" : ".",
-			sym_myturnbits&0x4 ? "R" : ".",
-			sym_myturnbits&0x8 ? "A" : ".");
-
-		fprintf(fp, "<td>%s</td>\n", fcra_seen.GetString());
-		fprintf(fp, "</tr>\n");
-		fprintf(fp, "</table>\n");
-
-		// Table for: sb, bb, BB
-		fprintf(fp, "<table align=center border=4 cellpadding=1 cellspacing=1>\n");
-		fprintf(fp, "<tr><th>sb</th><td>%11.2f</td></tr>\n", p_symbols->sym()->sblind);
-		fprintf(fp, "<tr><th>bb</th><td>%11.2f</td></tr>\n", p_symbols->sym()->bblind);
-		fprintf(fp, "<tr><th>BB</th><td>%11.2f</td></tr>\n", p_symbols->bigbet());
-		fprintf(fp, "</table>\n");
-
-		// Table for: common cards
-		fprintf(fp, "<table align=center border=4 cellpadding=1 cellspacing=1>\n");
-		fprintf(fp, "<tr><th>commoncard</th></tr>\n");
-		fprintf(fp, "<tr>\n");
-		fprintf(fp, "<td>%s%s%s%s%s</td>\n",
-				GetCardHtml(p_scraper->card_common(0)),
-				GetCardHtml(p_scraper->card_common(1)),
-				GetCardHtml(p_scraper->card_common(2)),
-				GetCardHtml(p_scraper->card_common(3)),
-				GetCardHtml(p_scraper->card_common(4)) );
-		fprintf(fp, "</tr>\n");
-		fprintf(fp, "</table>\n");
-
-		// Table for: pots
-		fprintf(fp, "<table align=center border=4 cellpadding=1 cellspacing=1>\n");
-		fprintf(fp, "<tr><th>#</th><th>pot</th></tr>\n");
-		fprintf(fp, "<tr>\n");
-		fprintf(fp, "<td>0</td><td>%11.2f</td>\n", p_scraper->pot(0));
-		fprintf(fp, "</tr>\n");
-		for (i=1; i<=9; i++)
-		{
-			if (p_scraper->pot(i))
+			for (i=0; i<trans.map.num_chairs; i++)
 			{
+
 				fprintf(fp, "<tr>\n");
-				fprintf(fp, "<td>%d</td><td>%11.2f</td>\n", i, p_scraper->pot(i));
+				fprintf(fp, "<td>%d</td>", i);  // #
+				text.Format("%s%s%s%s%s%s",
+					(int) (p_symbols->sym()->playersseatedbits) & (1<<i) ? "s" : "-",
+					p_symbols->sym()->userchair == i ? "f" : "-",
+					(int) (p_symbols->sym()->playersactivebits) & (1<<i) ? "a" : "-",
+					p_symbols->sym()->dealerchair== i ? "b" : "-",
+					(int) (p_symbols->sym()->playersdealtbits) & (1<<i) ? "d" : "-",
+					(int) (p_symbols->sym()->playersplayingbits) & (1<<i) ? "p" : "-");
+				fprintf(fp, "<td>%s</td>", text.GetString());  // SFABDP
+				fprintf(fp, "<td>%s%s</td>",
+						GetCardHtml(p_scraper->card_player(i, 0)),
+						GetCardHtml(p_scraper->card_player(i, 1)) );  // hand
+				fprintf(fp, "<td>%11.2f</td>", p_scraper->player_bet(i));  // bet
+				fprintf(fp, "<td>%11.2f</td>", p_scraper->player_balance(i));  // balance
+				fprintf(fp, "<td>%-15s</td>\n", p_scraper->player_name(i).GetString());  // name
 				fprintf(fp, "</tr>\n");
 			}
-			else
+			fprintf(fp, "</table>\n");
+			fprintf(fp, "</td>\n");
+
+			// Table for: FCRA
+			fprintf(fp, "<td>\n");
+			fprintf(fp, "<table align=center border=4 cellpadding=1 cellspacing=1>\n");
+			fprintf(fp, "<tr><th>FCRA</th></tr>\n");
+			fprintf(fp, "<tr>\n");
+			int sym_myturnbits = (int) p_symbols->sym()->myturnbits;
+			fcra_seen.Format("%s%s%s%s",
+				sym_myturnbits&0x1 ? "F" : ".",
+				sym_myturnbits&0x2 ? "C" : ".",
+				sym_myturnbits&0x4 ? "R" : ".",
+				sym_myturnbits&0x8 ? "A" : ".");
+
+			fprintf(fp, "<td>%s</td>\n", fcra_seen.GetString());
+			fprintf(fp, "</tr>\n");
+			fprintf(fp, "</table>\n");
+
+			// Table for: sb, bb, BB
+			fprintf(fp, "<table align=center border=4 cellpadding=1 cellspacing=1>\n");
+			fprintf(fp, "<tr><th>sb</th><td>%11.2f</td></tr>\n", p_symbols->sym()->sblind);
+			fprintf(fp, "<tr><th>bb</th><td>%11.2f</td></tr>\n", p_symbols->sym()->bblind);
+			fprintf(fp, "<tr><th>BB</th><td>%11.2f</td></tr>\n", p_symbols->bigbet());
+			fprintf(fp, "</table>\n");
+
+			// Table for: common cards
+			fprintf(fp, "<table align=center border=4 cellpadding=1 cellspacing=1>\n");
+			fprintf(fp, "<tr><th>commoncard</th></tr>\n");
+			fprintf(fp, "<tr>\n");
+			fprintf(fp, "<td>%s%s%s%s%s</td>\n",
+					GetCardHtml(p_scraper->card_common(0)),
+					GetCardHtml(p_scraper->card_common(1)),
+					GetCardHtml(p_scraper->card_common(2)),
+					GetCardHtml(p_scraper->card_common(3)),
+					GetCardHtml(p_scraper->card_common(4)) );
+			fprintf(fp, "</tr>\n");
+			fprintf(fp, "</table>\n");
+
+			// Table for: pots
+			fprintf(fp, "<table align=center border=4 cellpadding=1 cellspacing=1>\n");
+			fprintf(fp, "<tr><th>#</th><th>pot</th></tr>\n");
+			fprintf(fp, "<tr>\n");
+			fprintf(fp, "<td>0</td><td>%11.2f</td>\n", p_scraper->pot(0));
+			fprintf(fp, "</tr>\n");
+			for (i=1; i<=9; i++)
 			{
-				i = 11;
+				if (p_scraper->pot(i))
+				{
+					fprintf(fp, "<tr>\n");
+					fprintf(fp, "<td>%d</td><td>%11.2f</td>\n", i, p_scraper->pot(i));
+					fprintf(fp, "</tr>\n");
+				}
+				else
+				{
+					i = 11;
+				}
 			}
-		}
-		fprintf(fp, "</table>\n");
+			fprintf(fp, "</table>\n");
 
-		fprintf(fp, "</td>\n");
-		fprintf(fp, "</tr>\n");
-		fprintf(fp, "</table>\n");
-		fprintf(fp, "</body></html>\n");
+			fprintf(fp, "</td>\n");
+			fprintf(fp, "</tr>\n");
+			fprintf(fp, "</table>\n");
+			fprintf(fp, "</body></html>\n");
 
-		fclose(fp);
+			fclose(fp);
+		}	
 
 	LeaveCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
 

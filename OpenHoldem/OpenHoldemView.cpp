@@ -95,7 +95,7 @@ COpenHoldemView::COpenHoldemView()
     lf.lfClipPrecision = 0;
     lf.lfQuality = PROOF_QUALITY;
     lf.lfPitchAndFamily = 0;
-    strcpy(lf.lfFaceName, "Times New Roman");
+    strcpy_s(lf.lfFaceName, 32, "Times New Roman");
 
 
     __SEH_LOGFATAL("COpenHoldemView::constructor\n");

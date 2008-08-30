@@ -44,8 +44,8 @@ CPokerTrackerThread::CPokerTrackerThread()
 			_player_stats[i].t_elapsed[j] = -1 ;
 		}
 		_player_stats[i].found = false ;
-		strcpy (_player_stats[i].pt_name, "") ;
-		strcpy (_player_stats[i].scraped_name, "") ;
+		strcpy_s(_player_stats[i].pt_name, 30, "") ;
+		strcpy_s(_player_stats[i].scraped_name, 30, "") ;
 	}
 	_connected = false;
 
@@ -233,7 +233,7 @@ bool CPokerTrackerThread::CheckName (int m_chr)
 	if (p_global->state[(p_global->state_index-1)&0xff].m_player[m_chr].m_name_known == 0)
 		return false;
 
-	strcpy(oh_scraped_name, p_global->state[(p_global->state_index-1)&0xff].m_player[m_chr].m_name);
+	strcpy_s(oh_scraped_name, 30, p_global->state[(p_global->state_index-1)&0xff].m_player[m_chr].m_name);
 
 	// Check for bad name scrape
 	for (i=0; i<(int) strlen(oh_scraped_name); i++)
@@ -262,8 +262,8 @@ bool CPokerTrackerThread::CheckName (int m_chr)
 		}
 
 		_player_stats[m_chr].found = false ;
-		strcpy (_player_stats[m_chr].pt_name, "") ;
-		strcpy (_player_stats[m_chr].scraped_name, "") ;
+		strcpy_s(_player_stats[m_chr].pt_name, 30, "") ;
+		strcpy_s(_player_stats[m_chr].scraped_name, 30, "") ;
 	}
 
 	// We have not found the name in PT, go find it
@@ -293,14 +293,14 @@ bool CPokerTrackerThread::CheckName (int m_chr)
 	if (result)
 	{
 		_player_stats[m_chr].found = true;
-		strcpy(_player_stats[m_chr].pt_name, best_name);
-		strcpy(_player_stats[m_chr].scraped_name, oh_scraped_name);
+		strcpy_s(_player_stats[m_chr].pt_name, 30, best_name);
+		strcpy_s(_player_stats[m_chr].scraped_name, 30, oh_scraped_name);
 	}
 	else
 	{
 		_player_stats[m_chr].found = false ;
-		strcpy (_player_stats[m_chr].pt_name, "") ;
-		strcpy (_player_stats[m_chr].scraped_name, "") ;
+		strcpy_s(_player_stats[m_chr].pt_name, 30, "");
+		strcpy_s(_player_stats[m_chr].scraped_name, 30, "");
 	}
 
 	return result;
@@ -363,31 +363,31 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 	else
 	{
 		// get query string for the requested statistic
-		strcpy(strQry, query_str[stat]);
+		strcpy_s(strQry, 2000, query_str[stat]);
 
 		// Insert the player name in the query string
-		strcpy(strQry1, strQry);  // move the query into temp str 1
+		strcpy_s(strQry1, 2000, strQry);  // move the query into temp str 1
 		while ((n=strstr(strQry1, "%SCREENNAME%"))!=NULL) // find the token in temp str 1
 		{
-			strcpy(strQry2, strQry1);  // move the query into temp str 2
+			strcpy_s(strQry2, 2000, strQry1);  // move the query into temp str 2
 			strQry2[n-strQry1]='\0';  // cut off temp str 2 at the beginning of the token
-			strcat(strQry2, _player_stats[m_chr].pt_name);  // append the player name to temp str 2
-			strcat(strQry2, n+12); // append the portion of temp str 1 after the token to temp str 2
-			strcpy(strQry, strQry2); // move temp str 2 into the original query
-			strcpy(strQry1, strQry);  // move the query into temp str 1
+			strcat_s(strQry2, 2000, _player_stats[m_chr].pt_name);  // append the player name to temp str 2
+			strcat_s(strQry2, 2000, n+12); // append the portion of temp str 1 after the token to temp str 2
+			strcpy_s(strQry, 2000, strQry2); // move temp str 2 into the original query
+			strcpy_s(strQry1, 2000, strQry);  // move the query into temp str 1
 		}
 
 		// Insert the site id in the query string
-		sprintf(siteidstr, "%d", siteid);
-		strcpy(strQry1, strQry);  // move the query into temp str 1
+		sprintf_s(siteidstr, 5, "%d", siteid);
+		strcpy_s(strQry1, 2000, strQry);  // move the query into temp str 1
 		while ((n=strstr(strQry1, "%SITEID%"))!=NULL)   // find the token in temp str 1
 		{
-			strcpy(strQry2, strQry1);  // move the query into temp str 2
+			strcpy_s(strQry2, 2000, strQry1);  // move the query into temp str 2
 			strQry2[n-strQry1]='\0';  // cut off temp str 2 at the beginning of the token
-			strcat(strQry2, siteidstr);  // append the site id to temp str 2
-			strcat(strQry2, n+8); // append the portion of temp str 1 after the token to temp str 2
-			strcpy(strQry, strQry2); // move temp str 2 into the original query
-			strcpy(strQry1, strQry);  // move the query into temp str 1
+			strcat_s(strQry2, 2000, siteidstr);  // append the site id to temp str 2
+			strcat_s(strQry2, 2000, n+8); // append the portion of temp str 1 after the token to temp str 2
+			strcpy_s(strQry, 2000, strQry2); // move temp str 2 into the original query
+			strcpy_s(strQry1, 2000, strQry);  // move the query into temp str 1
 		}
 
 		// Do the query against the PT database
@@ -497,12 +497,12 @@ bool CPokerTrackerThread::QueryName (const char * query_name, const char * scrap
 	if (strlen(query_name)==0)
 		return false;
 
-	sprintf(siteidstr, "%d", siteid);
+	sprintf_s(siteidstr, 5, "%d", siteid);
 
-	strcpy(strQry, "SELECT screen_name FROM players WHERE screen_name like '");
-	strcat(strQry, query_name);
-	strcat(strQry, "' AND main_site_id=");
-	strcat(strQry, siteidstr);
+	strcpy_s(strQry, 1000, "SELECT screen_name FROM players WHERE screen_name like '");
+	strcat_s(strQry, 1000, query_name);
+	strcat_s(strQry, 1000, "' AND main_site_id=");
+	strcat_s(strQry, 1000, siteidstr);
 
 	try
 	{
@@ -529,7 +529,7 @@ bool CPokerTrackerThread::QueryName (const char * query_name, const char * scrap
 	// If we get one tuple, all is good - return the one name
 	if (PQntuples(res) == 1)
 	{
-		strcpy(best_name, PQgetvalue(res, 0, 0));
+		strcpy_s(best_name, 30, PQgetvalue(res, 0, 0));
 		result = true;
 	}
 
@@ -550,7 +550,7 @@ bool CPokerTrackerThread::QueryName (const char * query_name, const char * scrap
 		}
 		if (bestLD != 999)
 		{
-			strcpy(best_name, PQgetvalue(res, bestLDindex, 0));
+			strcpy_s(best_name, 30, PQgetvalue(res, bestLDindex, 0));
 			result = true;
 		}
 		else
@@ -574,13 +574,13 @@ void CPokerTrackerThread::ClearStats (void)
 	{
 		for (j=pt_min; j<=pt_max; j++)
 		{
-			_player_stats[i].stat[j] = -1.0 ;
-			_player_stats[i].t_elapsed[j] = -1 ;
+			_player_stats[i].stat[j] = -1.0;
+			_player_stats[i].t_elapsed[j] = -1;
 		}
 
 		_player_stats[i].found = false ;
-		strcpy (_player_stats[i].pt_name, "") ;
-		strcpy (_player_stats[i].scraped_name, "") ;
+		strcpy_s(_player_stats[i].pt_name, 30, "");
+		strcpy_s(_player_stats[i].scraped_name, 30, "");
 	}
 
 	__SEH_LOGFATAL("CPokerTracker::cleardata : \n");

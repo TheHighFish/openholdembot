@@ -1147,7 +1147,7 @@ void CDlgFormulaScintilla::OnRename()
     StopAutoButton();
 
     s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
-    strcpy(str, s.GetString());
+    strcpy_s(str, 512, s.GetString());
 
     rendlg.CSoldname = s;
 
@@ -2185,7 +2185,7 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
         if (error == SUCCESS) 
 		{
             // display result
-            sprintf(format, "%%.%df", m_precision);
+            sprintf_s(format, 50, "%%.%df", m_precision);
             Cstr.Format(format, ret);
             m_CalcResult.SetWindowText(Cstr);
 
@@ -2357,7 +2357,7 @@ void CDlgFormulaScintilla::create_debug_tab(CString *cs)
     CString newline;
     char format[50];
 
-    sprintf(format, "%%%d.%df = %%s", m_precision+m_equal, m_precision);
+    sprintf_s(format, 50, "%%%d.%df = %%s", m_precision+m_equal, m_precision);
 
     *cs = "";
 
@@ -2432,7 +2432,7 @@ void CDlgFormulaScintilla::write_fdebug_log(bool write_header)
     CString		temp, line, header;
     char		format[50], nowtime[26];
 
-    sprintf(format, "%%0.%df", m_precision);
+    sprintf_s(format, 50, "%%0.%df", m_precision);
     line.Format("%s,", get_time(nowtime));
     header.Format("date/time,");
 
@@ -2462,13 +2462,16 @@ void CDlgFormulaScintilla::write_fdebug_log(bool write_header)
     // write the line to the log
     CString fn;
     fn.Format("%s\\f$debug_%lu.log", _startup_path, p_global->session_id());
-    FILE *fp = fopen(fn.GetString(), "a");
-    if (write_header) 
+    FILE *fp;
+	if (fopen_s(&fp, fn.GetString(), "a")==0)
 	{
-        fprintf(fp, "%s\n", header.GetString());
-    }
-    fprintf(fp, "%s\n", line.GetString());
-    fclose(fp);
+		if (write_header) 
+		{
+			fprintf(fp, "%s\n", header.GetString());
+		}
+		fprintf(fp, "%s\n", line.GetString());
+		fclose(fp);
+	}
 
     __SEH_LOGFATAL("CDlgFormulaScintilla::write_fdebug_log :\n");
 }
@@ -2514,7 +2517,7 @@ void CDlgFormulaScintilla::init_debug_array(void)
         }
 
         // Find the equal sign, if it exists
-        strcpy(buf, strLine.GetString());
+        strcpy_s(buf, 1000, strLine.GetString());
         if ((eq = strstr(buf, "=")) && buf[0]!='/' && buf[1]!='/') 
 		{
             eq++;

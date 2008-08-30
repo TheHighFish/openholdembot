@@ -20,7 +20,7 @@ Memory::Memory()
 
     for (i=0; i<512; i++)
     {
-        strcpy(var_name[i], "");
+        strcpy_s(var_name[i], 64, "");
         var_value[i]=0.0;
     }
 
@@ -59,12 +59,12 @@ void Memory::store_value(const char * pquery, CEvalInfoFunction **logCallingFunc
     char		var[512], value[512];
     double		result;
 
-    strcpy(var, &pquery[6]);
+    strcpy_s(var, 512, &pquery[6]);
 
     if (strstr(var, "_")!=NULL)
         var[strstr(var, "_")-var]='\0';
 
-    strcpy(value, &pquery[6+strlen(var)+1]);
+    strcpy_s(value, 512, &pquery[6+strlen(var)+1]);
 
     // see if we already have this variable name
     index=var_count+1;
@@ -89,7 +89,7 @@ void Memory::store_value(const char * pquery, CEvalInfoFunction **logCallingFunc
         if (*e==SUCCESS)
         {
             var_value[index] = result;
-            strcpy(var_name[index], var);
+            strcpy_s(var_name[index], 64, var);
         }
         else
         {
@@ -105,7 +105,7 @@ void Memory::store_value(const char * pquery, CEvalInfoFunction **logCallingFunc
 
         var_value[index] = atof(value);
 
-        strcpy(var_name[index], var);
+        strcpy_s(var_name[index], 64, var);
     }
 
     __SEH_LOGFATAL("Memory::store_value > %s\n", pquery);
@@ -118,7 +118,7 @@ double Memory::retrieve_value(const char * pquery, int *e)
     int			i;
     char		var[512];
 
-    strcpy(var, &pquery[6]);
+    strcpy_s(var, 512, &pquery[6]);
 
     for (i=0; i<=var_count; i++)
     {
