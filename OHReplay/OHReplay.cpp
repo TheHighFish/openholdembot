@@ -248,12 +248,12 @@ void draw_cur_frame()
 		SetWindowPos(g_hWnd, NULL, 0, 0, 320, 240, SWP_NOMOVE | SWP_NOZORDER);
 		hdc = GetDC(g_hWnd);
 		SetTextColor(hdc, RGB(220,0,0));
-		sprintf(text, "OHReplay 1.0.0\n");
-		strcat(text,  "----------------------------------\n");
-		strcat(text,  "Open a frame: SysMenu/Open, Ctrl-O, F2\n\n");
-		strcat(text,  "Next frame: Tab\n");
-		strcat(text,  "Previous frame: Shift-Tab\n");
-		strcat(text,  "Reset: Esc\n");
+		sprintf_s(text, 2048, "OHReplay 1.0.1\n");
+		strcat_s(text, 2048, "----------------------------------\n");
+		strcat_s(text, 2048, "Open a frame: SysMenu/Open, Ctrl-O, F2\n\n");
+		strcat_s(text, 2048, "Next frame: Tab\n");
+		strcat_s(text, 2048, "Previous frame: Shift-Tab\n");
+		strcat_s(text, 2048, "Reset: Esc\n");
 		memset(&text_rect, 0, sizeof(RECT));
 		DrawText(hdc, text, (int) strlen(text), &text_rect, DT_CALCRECT);
 		DrawText(hdc, text, (int) strlen(text), &text_rect, NULL);
@@ -267,8 +267,8 @@ void draw_cur_frame()
 	else
 	{
 		// Filenames
-		sprintf(szHtmFile, "%sframe%03d.htm", cur_working_path, cur_frame);
-		sprintf(szBmpFile, "%sframe%03d.bmp", cur_working_path, cur_frame);
+		sprintf_s(szHtmFile, MAX_PATH, "%sframe%03d.htm", cur_working_path, cur_frame);
+		sprintf_s(szBmpFile, MAX_PATH, "%sframe%03d.bmp", cur_working_path, cur_frame);
 
 		// Open bitmap file
 		hBmpFile = (HBITMAP) LoadImage(0, szBmpFile, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
@@ -312,19 +312,21 @@ void draw_cur_frame()
 		ReleaseDC(g_hWnd, hdc);
 
 		// Set title text
-		fp = fopen(szHtmFile, "r");
 		i=0;
-		c = fgetc(fp);
-		while (c!=EOF && c!='\r' && c!='\n')
+		if (fopen_s(&fp, szHtmFile, "r")==0)
 		{
-			title[i++]=c;
 			c = fgetc(fp);
+			while (c!=EOF && c!='\r' && c!='\n')
+			{
+				title[i++]=c;
+				c = fgetc(fp);
+			}
+			fclose(fp);
 		}
-		fclose(fp);
 
 		title[i] = '\0';
 		
-		sprintf(text, "%s [%03d]", title, cur_frame);
+		sprintf_s(text, 2048, "%s [%03d]", title, cur_frame);
 		SetWindowText(g_hWnd, text);
 	}
 }
@@ -348,7 +350,7 @@ void open_frame()
 		cur_working_path[name_start] = '\0';
 
 		// Extract frame number
-		sprintf(framenum, "%s", szName+5);
+		sprintf_s(framenum, 5, "%s", szName+5);
 		framenum[3] = '\0';
 
 		cur_frame = atoi(framenum);
@@ -404,7 +406,7 @@ void prev_frame()
 		return;
 
 	// Filename
-	sprintf(szHtmFile, "%sframe???.htm", cur_working_path);
+	sprintf_s(szHtmFile, MAX_PATH, "%sframe???.htm", cur_working_path);
 
 	// Find first file that matches wildcard
 	hFind = FindFirstFile(szHtmFile, &FindFileData);
@@ -417,7 +419,7 @@ void prev_frame()
 	else
 	{
 		// Scan through all matches, find highest numbered one that is less than cur_frame
-		sprintf(framenum, "%s", FindFileData.cFileName+5);
+		sprintf_s(framenum, 5, "%s", FindFileData.cFileName+5);
 		framenum[3] = '\0';
 
 		if (atoi(framenum) > prev_frame && atoi(framenum)<cur_frame)
@@ -428,7 +430,7 @@ void prev_frame()
 
 		while (FindNextFile(hFind, &FindFileData) != 0) 
 		{
-			sprintf(framenum, "%s", FindFileData.cFileName+5);
+			sprintf_s(framenum, 5, "%s", FindFileData.cFileName+5);
 			framenum[3] = '\0';
 
 			if (atoi(framenum) > prev_frame && atoi(framenum)<cur_frame)
@@ -463,7 +465,7 @@ void next_frame()
 		return;
 
 	// Filename
-	sprintf(szHtmFile, "%sframe???.htm", cur_working_path);
+	sprintf_s(szHtmFile, MAX_PATH, "%sframe???.htm", cur_working_path);
 
 	// Find first file that matches wildcard
 	hFind = FindFirstFile(szHtmFile, &FindFileData);
@@ -476,7 +478,7 @@ void next_frame()
 	else
 	{
 		// Scan through all matches, find lowest numbered one that is greater than cur_frame
-		sprintf(framenum, "%s", FindFileData.cFileName+5);
+		sprintf_s(framenum, 5, "%s", FindFileData.cFileName+5);
 		framenum[3] = '\0';
 
 		if (atoi(framenum) < next_frame && atoi(framenum)>cur_frame)
@@ -487,7 +489,7 @@ void next_frame()
 
 		while (FindNextFile(hFind, &FindFileData) != 0) 
 		{
-			sprintf(framenum, "%s", FindFileData.cFileName+5);
+			sprintf_s(framenum, 5, "%s", FindFileData.cFileName+5);
 			framenum[3] = '\0';
 
 			if (atoi(framenum) < next_frame && atoi(framenum)>cur_frame)

@@ -52,6 +52,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/D &quot;_CRT_SECURE_NO_WARNINGS&quot;"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;.\include&quot;;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL;POKEREVAL_LIBRARY"
@@ -138,6 +139,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/D &quot;_CRT_SECURE_NO_WARNINGS&quot;"
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OmitFramePointers="false"
