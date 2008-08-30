@@ -121,7 +121,7 @@ CManualModeDlg::CManualModeDlg(CWnd* pParent /*=NULL*/) : CDialog(CManualModeDlg
 		lf.lfClipPrecision = 0;
 		lf.lfQuality = PROOF_QUALITY;
 		lf.lfPitchAndFamily = 0;
-		strcpy(lf.lfFaceName, "Verdana");
+		strcpy_s(lf.lfFaceName, 32, "Verdana");
 		cFont.CreateFontIndirect(&lf);
 
 		all_cards.LoadBitmap(IDB_CARDS);
@@ -152,7 +152,7 @@ BOOL CManualModeDlg::DestroyWindow() {
 	GetWindowPlacement(&wp);
 	reg.manual_x = wp.rcNormalPosition.left;
 	reg.manual_y = wp.rcNormalPosition.top;
-	reg.unobstructivePopup = dlgOptions.m_unobstructivePopup;
+	reg.unobstructivePopup = dlgOptions.m_unobstructivePopup != 0;
 	reg.write_reg();
 
 	all_cards.DeleteObject();
