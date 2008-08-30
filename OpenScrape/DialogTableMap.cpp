@@ -60,7 +60,7 @@ CDlgTableMap::CDlgTableMap(CWnd* pParent /*=NULL*/)	: CDialog(CDlgTableMap::IDD,
 	lf_fixed.lfClipPrecision = 0;
 	lf_fixed.lfQuality = PROOF_QUALITY;
 	lf_fixed.lfPitchAndFamily = 0;
-	strcpy(lf_fixed.lfFaceName, "Courier New");
+	strcpy_s(lf_fixed.lfFaceName, 32, "Courier New");
 
 	separation_font.CreateFontIndirect(&lf_fixed);
 
@@ -2336,7 +2336,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 		for (i=0; i<(int) pDoc->trans.map.t$.GetSize(); i++)
 		{
 			if (pDoc->trans.map.t$[i].group == sel_region_text_group)
-				strcpy(hexmash_array[hexmash_array_size++], pDoc->trans.map.t$[i].hexmash);
+				strcpy_s(hexmash_array[hexmash_array_size++], MAX_SINGLE_CHAR_WIDTH*8 + 1, pDoc->trans.map.t$[i].hexmash);
 		}
 
 		// Scan through background, separate characters by looking for background bands
@@ -3285,7 +3285,7 @@ BOOL CDlgTableMap::OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult)
 		return false;
 
     TOOLTIPTEXT *pTTT = (TOOLTIPTEXT*)pNMHDR;
-    UINT nID = pNMHDR->idFrom;
+    UINT_PTR nID = pNMHDR->idFrom;
     if(pTTT->uFlags & TTF_IDISHWND)
     {
         // idFrom is actually the HWND of the tool

@@ -65,7 +65,7 @@ BOOL CDlgEditFont::OnInitDialog()
 	lf_fixed.lfClipPrecision = 0;
 	lf_fixed.lfQuality = PROOF_QUALITY;
 	lf_fixed.lfPitchAndFamily = 0;
-	strcpy(lf_fixed.lfFaceName, "Courier New");
+	strcpy_s(lf_fixed.lfFaceName, 32, "Courier New");
 	separation_font.CreateFontIndirect(&lf_fixed);
 	m_PixelSep.SetFont(&separation_font);
 
