@@ -5,7 +5,9 @@ NEW STUFF:
 
 
 BUG FIXES:
-
+- Validation of card information passed in from PokerPro server to avoid crashes when/if bad information
+  is passed in. (OpenHoldem)
+  
 
 MAINTENANCE:
 
