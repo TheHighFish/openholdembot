@@ -769,7 +769,7 @@ void CDlgFormulaScintilla::OnSymbolTreeTipInfo(NMHDR *pNMHDR, LRESULT *pResult)
     {
         const char *description = (const char *)m_SymbolTree.GetItemData(lpGetInfoTip->hItem);
         if (description)
-            strcpy(lpGetInfoTip->pszText, description);
+            strcpy_s(lpGetInfoTip->pszText, strlen(description), description);
     }
 
     *pResult = 0;
@@ -805,7 +805,7 @@ void CDlgFormulaScintilla::OnSymbolContextMenu(NMHDR *pNMHDR, LRESULT *pResult)
 				{
                     LPSTR lpStr = (LPSTR)::GlobalLock(hMem);
 
-                    strcpy(lpStr, symbol);
+					strcpy_s(lpStr, symbol.GetLength(), symbol.GetString());
                     ::GlobalUnlock(hMem);
 
                     if ( ::SetClipboardData( CF_TEXT, hMem ) != NULL )

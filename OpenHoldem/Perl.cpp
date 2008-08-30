@@ -169,7 +169,7 @@ void Perl::send_Callback_Pointers()
     //  Send the pointer to the gws function to Perl,
     //    typecasted to an integer, as Perl doesn't support
     //    C function pointers.
-    int the_Pointer_to_gws = (int)&gws;
+    int the_Pointer_to_gws = (INT_PTR)&gws;
     int the_ErrorCode = (*P_PerlEzCall)(
                             the_Interpreter,
                             "set_CallbackPointer_to_gws",   //  Function on Perl side
@@ -182,7 +182,7 @@ void Perl::send_Callback_Pointers()
 	//  Send the pointer to the gwt function to Perl,
     //    typecasted to an integer, as Perl doesn't support
     //    C function pointers.
-    int the_Pointer_to_gwt = (int)&gwt;
+    int the_Pointer_to_gwt = (INT_PTR)&gwt;
     the_ErrorCode = (*P_PerlEzCall)(
 						the_Interpreter,
                         "set_CallbackPointer_to_gwt",   //  Function on Perl side
@@ -195,7 +195,7 @@ void Perl::send_Callback_Pointers()
 	//  Send the pointer to the gwp function to Perl,
     //    typecasted to an integer, as Perl doesn't support
     //    C function pointers.
-    int the_Pointer_to_gwp = (int)&gwp;
+    int the_Pointer_to_gwp = (INT_PTR)&gwp;
     the_ErrorCode = (*P_PerlEzCall)(
                         the_Interpreter,
                         "set_CallbackPointer_to_gwp",   //  Function on Perl side
