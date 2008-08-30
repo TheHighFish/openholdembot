@@ -77,15 +77,16 @@ void logfatal (char* fmt, ...) {
 	FILE		*fatallog;
 	char		nowtime[26];
 
-	sprintf(fatallogpath, "%s\\fatal error.log", startup_path);
-	fatallog = fopen(fatallogpath, "a");
-
-	va_start(ap, fmt);
-	vsprintf(buff, fmt, ap);
-	fprintf(fatallog, "%s> %s", get_now_time(nowtime), buff);
-	
-	va_end(ap);
-	fclose(fatallog);
+	sprintf_s(fatallogpath, MAX_PATH, "%s\\fatal error.log", startup_path);
+	if (fopen_s(&fatallog, fatallogpath, "a")==0)
+	{
+		va_start(ap, fmt);
+		vsprintf_s(buff, 10000, fmt, ap);
+		fprintf(fatallog, "%s> %s", get_now_time(nowtime), buff);
+		
+		va_end(ap);
+		fclose(fatallog);
+	}
 }
 
 LONG WINAPI MyUnHandledExceptionFilter(struct _EXCEPTION_POINTERS *lpExceptionInfo) {
@@ -187,13 +188,13 @@ LONG WINAPI MyUnHandledExceptionFilter(struct _EXCEPTION_POINTERS *lpExceptionIn
 	logfatal("########################################################################\n");
 	logfatal("########################################################################\n\n\n");
 
-	sprintf(flpath, "%s\\fatal error.log", startup_path);
-	strcpy(msg, "OpenHoldem is about to crash - this is probably a developer's fault.\n");
-	strcat(msg, "If you would be so kind, please help the file named:\n");
-	strcat(msg, flpath);
-	strcat(msg, " (in your OpenHoldem directory, or in c:\\)\n");
-	strcat(msg, "find it's way to an OpenHoldem developer.\n");
-	strcat(msg, "\n\nOpenHoldem will shut down when you click OK.");
+	sprintf_s(flpath, MAX_PATH, "%s\\fatal error.log", startup_path);
+	strcpy_s(msg, 1000, "OpenHoldem is about to crash - this is probably a developer's fault.\n");
+	strcat_s(msg, 1000, "If you would be so kind, please help the file named:\n");
+	strcat_s(msg, 1000, flpath);
+	strcat_s(msg, 1000, " (in your OpenHoldem directory, or in c:\\)\n");
+	strcat_s(msg, 1000, "find it's way to an OpenHoldem developer.\n");
+	strcat_s(msg, 1000, "\n\nOpenHoldem will shut down when you click OK.");
 	MessageBox(NULL, msg, "FATAL ERROR", MB_OK | MB_ICONEXCLAMATION);
 
 	return EXCEPTION_EXECUTE_HANDLER;

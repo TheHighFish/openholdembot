@@ -53,7 +53,7 @@ void Registry::read_reg(void) {
 			// Popup location
 			cbData = sizeof(str);
 			if ( (hkResult = RegQueryValueEx(hKey, "unobstructivePopup", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS) {
-				unobstructivePopup = atoi(str);
+				unobstructivePopup = atoi(str) != 0;
 			}
 		}
 
@@ -80,18 +80,18 @@ void Registry::write_reg(void) {
 		REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, &dwDisp);
 
 		// Window location and size
-		sprintf(str, "%d", manual_x);
+		sprintf_s(str, 256, "%d", manual_x);
 		RegSetValueEx(hKey, "manual_x", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
 
-		sprintf(str, "%d", manual_y);
+		sprintf_s(str, 256, "%d", manual_y);
 		RegSetValueEx(hKey, "manual_y", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
 
 		// Macro
-		sprintf(str, "%s", macro.GetString());
+		sprintf_s(str, 256, "%s", macro.GetString());
 		RegSetValueEx(hKey, "macro", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
 
 		// Popup location
-		sprintf(str, "%d", unobstructivePopup);
+		sprintf_s(str, 256, "%d", unobstructivePopup);
 		RegSetValueEx(hKey, "unobstructivePopup", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
 
 		RegCloseKey(hKey);
