@@ -83,7 +83,7 @@ LPSTR CScintillaWnd::GetText(void) {
         TCHAR *pReturn = new TCHAR[lLen];
         if (pReturn != NULL) {
             *pReturn = '\0';
-            SendMessage(SCI_GETTEXT, lLen, (long)pReturn);
+            SendMessage(SCI_GETTEXT, lLen, (ULONG_PTR)pReturn);
             return pReturn;
         }
     }
@@ -115,7 +115,7 @@ int CScintillaWnd::GetLinenumberWidth(void) {
     // get number of chars needed to display highest linenumber
     int nChars = GetLinenumberChars ()+1;
     // get width of character '9' in pixels
-    LRESULT lWidth = SendMessage(SCI_TEXTWIDTH, STYLE_LINENUMBER, (long)_T("9"));
+    LRESULT lWidth = SendMessage(SCI_TEXTWIDTH, STYLE_LINENUMBER, (ULONG_PTR)_T("9"));
     return nChars * lWidth;
 }
 
@@ -283,7 +283,7 @@ int CScintillaWnd::GetCurrentFoldinglevel(void) {
 // @rvalue void | not used
 //
 void CScintillaWnd::SetFontname(int nStyle, LPCSTR szFontname) {
-    SendMessage(SCI_STYLESETFONT, nStyle, (long)szFontname);
+    SendMessage(SCI_STYLESETFONT, nStyle, (ULONG_PTR)szFontname);
 }
 
 /////////////////////////////////////
@@ -585,12 +585,12 @@ bool CScintillaWnd::SearchForward(LPSTR szText) { //@parm text to search
     tf.lpstrText = szText;
     tf.chrg.cpMin = lPos+1;
     tf.chrg.cpMax = SendMessage(SCI_GETLENGTH, 0, 0);
-    lPos = SendMessage(SCI_FINDTEXT, m_nSearchflags, (long)&tf);
+    lPos = SendMessage(SCI_FINDTEXT, m_nSearchflags, (ULONG_PTR)&tf);
     if (lPos >= 0) {
         SetFocus();
         GotoPosition(lPos);
         SendMessage(SCI_SETSEL, tf.chrgText.cpMin, tf.chrgText.cpMax);
-        SendMessage(SCI_FINDTEXT, m_nSearchflags, (long)&tf);
+        SendMessage(SCI_FINDTEXT, m_nSearchflags, (ULONG_PTR)&tf);
         return true;
     }
     return false;
@@ -615,12 +615,12 @@ bool CScintillaWnd::SearchBackward(LPSTR szText) { //@parm text to search
         tf.chrg.cpMin = lPos-1;
     }
     tf.chrg.cpMax = 0;
-    lPos = SendMessage(SCI_FINDTEXT, m_nSearchflags, (long)&tf);
+    lPos = SendMessage(SCI_FINDTEXT, m_nSearchflags, (ULONG_PTR)&tf);
     if (lPos >= 0) {
         SetFocus();
         GotoPosition(lPos);
         SendMessage(SCI_SETSEL, tf.chrgText.cpMin, tf.chrgText.cpMax);
-        SendMessage(SCI_FINDTEXT, m_nSearchflags, (long)&tf);
+        SendMessage(SCI_FINDTEXT, m_nSearchflags, (ULONG_PTR)&tf);
         return true;
     }
     return false;
@@ -635,10 +635,10 @@ void CScintillaWnd::ReplaceSearchedText(LPCSTR szText) { //@parm new text
     }
     SendMessage(SCI_TARGETFROMSELECTION, 0, 0);
     if (m_nSearchflags & SCFIND_REGEXP) {
-        SendMessage(SCI_REPLACETARGETRE, strlen(szText), (long)szText);
+        SendMessage(SCI_REPLACETARGETRE, strlen(szText), (ULONG_PTR)szText);
     }
     else {
-        SendMessage(SCI_REPLACETARGET, strlen(szText), (long)szText);
+        SendMessage(SCI_REPLACETARGET, strlen(szText), (ULONG_PTR)szText);
     }
 }
 
@@ -676,7 +676,7 @@ CString CScintillaWnd::GetSelectedText(void) {
         TCHAR *p = new TCHAR[lLen+1];
         if (p != NULL) {
             *p = '\0';
-            SendMessage(SCI_GETSELTEXT, 0, (long)p);
+            SendMessage(SCI_GETSELTEXT, 0, (ULONG_PTR)p);
             CString strReturn = p;
             delete [] p;
             return strReturn;
@@ -704,15 +704,15 @@ int CScintillaWnd::ReplaceAll(LPCSTR szFind, LPCSTR szReplace, bool bUseSelectio
         SendMessage(SCI_SETTARGETEND, lEnd);
 
         // try to find text in target for the first time
-        long lPos = SendMessage(SCI_SEARCHINTARGET, strlen(szFind), (long)szFind);
+        long lPos = SendMessage(SCI_SEARCHINTARGET, strlen(szFind), (ULONG_PTR)szFind);
 
         // loop over selection until end of selection reached - moving the target start each time
         while (lPos < lEnd && lPos >= 0) {
             if (m_nSearchflags & SCFIND_REGEXP) {// check for regular expression flag
-                lLen = SendMessage(SCI_REPLACETARGETRE, strlen(szReplace), (long)szReplace);
+                lLen = SendMessage(SCI_REPLACETARGETRE, strlen(szReplace), (ULONG_PTR)szReplace);
             }
             else {
-                lLen = SendMessage(SCI_REPLACETARGET, strlen(szReplace), (long)szReplace);
+                lLen = SendMessage(SCI_REPLACETARGET, strlen(szReplace), (ULONG_PTR)szReplace);
             }
 
             // the end of the selection was changed - recalc the end
@@ -723,7 +723,7 @@ int CScintillaWnd::ReplaceAll(LPCSTR szFind, LPCSTR szReplace, bool bUseSelectio
             SendMessage(SCI_SETTARGETEND, lEnd);
 
             // find again - if nothing found loop exits
-            lPos = SendMessage(SCI_SEARCHINTARGET, strlen(szFind), (long)szFind);
+            lPos = SendMessage(SCI_SEARCHINTARGET, strlen(szFind), (ULONG_PTR)szFind);
             nCount++;
         }
     }
@@ -740,15 +740,15 @@ int CScintillaWnd::ReplaceAll(LPCSTR szFind, LPCSTR szReplace, bool bUseSelectio
         SendMessage(SCI_SETTARGETEND, lEnd, 0);
 
         // try to find text in target for the first time
-        long lPos = SendMessage(SCI_SEARCHINTARGET, strlen(szFind), (long)szFind);
+        long lPos = SendMessage(SCI_SEARCHINTARGET, strlen(szFind), (ULONG_PTR)szFind);
 
         // loop over selection until end of selection reached - moving the target start each time
         while (lPos < lEnd && lPos >= 0) {
             if (m_nSearchflags & SCFIND_REGEXP) { // check for regular expression flag
-                lLen = SendMessage(SCI_REPLACETARGETRE, strlen(szReplace), (long)szReplace);
+                lLen = SendMessage(SCI_REPLACETARGETRE, strlen(szReplace), (ULONG_PTR)szReplace);
             }
             else {
-                lLen = SendMessage(SCI_REPLACETARGET, strlen(szReplace), (long)szReplace);
+                lLen = SendMessage(SCI_REPLACETARGET, strlen(szReplace), (ULONG_PTR)szReplace);
             }
 
             // the end of the selection was changed - recalc the end
@@ -759,7 +759,7 @@ int CScintillaWnd::ReplaceAll(LPCSTR szFind, LPCSTR szReplace, bool bUseSelectio
             SendMessage(SCI_SETTARGETEND, lEnd);
 
             // find again - if nothing found loop exits
-            lPos = SendMessage(SCI_SEARCHINTARGET, strlen(szFind), (long)szFind);
+            lPos = SendMessage(SCI_SEARCHINTARGET, strlen(szFind), (ULONG_PTR)szFind);
             nCount++;
         }
     }

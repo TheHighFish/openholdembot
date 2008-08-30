@@ -365,8 +365,8 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logC
     // Bounce errors up the stack
     if (*e != SUCCESS)  return 0;
 
-	if (logCallingFunction && *logCallingFunction && (*logCallingFunction)->m_Offset < (int)i->value.value())
-		(*logCallingFunction)->m_Offset = (int)i->value.value();
+	if (logCallingFunction && *logCallingFunction && (*logCallingFunction)->m_Offset < (INT_PTR)i->value.value())
+		(*logCallingFunction)->m_Offset = (INT_PTR)i->value.value();
 
     // Symbols
     if (id == exec_grammar::SYMBOL_ID)
@@ -438,7 +438,7 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logC
             return ! eval_expression(f, i->children.begin(), logCallingFunction, e);
 
         else if (*i->value.begin() == '~')
-            return (double) (~ ((unsigned long) eval_expression(f, i->children.begin(), logCallingFunction, e)));
+            return ~ ((unsigned long) eval_expression(f, i->children.begin(), logCallingFunction, e));
 
         else if (*i->value.begin() == '-')
             return - eval_expression(f, i->children.begin(), logCallingFunction, e);
