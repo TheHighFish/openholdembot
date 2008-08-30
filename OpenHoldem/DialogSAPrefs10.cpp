@@ -49,13 +49,13 @@ BOOL CDlgSAPrefs10::OnInitDialog()
 
     text.Format("%d", p_global->preferences.Chat_min_Delay);
     m_MinimumDelay.SetWindowText(text);
-    m_MinimumDelay_Spin.SetRange(0, MAX_DELAY);
+    m_MinimumDelay_Spin.SetRange(0, (short) MAX_DELAY);
     m_MinimumDelay_Spin.SetPos(p_global->preferences.Chat_min_Delay);
     m_MinimumDelay_Spin.SetBuddy(&m_MinimumDelay);
 
     text.Format("%d", p_global->preferences.Chat_random_Delay);
     m_RandomDelay.SetWindowText(text);
-    m_RandomDelay_Spin.SetRange(0, MAX_DELAY);
+    m_RandomDelay_Spin.SetRange(0, (short) MAX_DELAY);
     m_RandomDelay_Spin.SetPos(p_global->preferences.Chat_random_Delay);
     m_RandomDelay_Spin.SetBuddy(&m_RandomDelay);
 

@@ -47,7 +47,7 @@ BOOL CDlgSAPrefs11::OnInitDialog()
 
     text.Format("%d", p_global->preferences.LogSymbol_max_log);
     m_MaximumLog.SetWindowText(text);
-    m_MaximumLog_Spin.SetRange(0, MAX_MAX_LOG);
+    m_MaximumLog_Spin.SetRange(0, (short) MAX_MAX_LOG);
     m_MaximumLog_Spin.SetPos(p_global->preferences.LogSymbol_max_log);
     m_MaximumLog_Spin.SetBuddy(&m_MaximumLog);
 

@@ -1297,7 +1297,7 @@ int CTransform::h_transform(Stablemap_region *region, HDC hdc, CString *text)
 	int					hash_type, num_precs, pixcount;
 	uint32_t			*uresult, hash, pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT];
 	int					retval=ERR_NOTHING_TO_SCRAPE;
-	uint32_t			index;
+	UINT_PTR			index;
 	HBITMAP				hbm;
 	BYTE				*pBits, red, green, blue;
 	uint32_t			hashes[512];
@@ -1393,7 +1393,7 @@ int CTransform::h_transform(Stablemap_region *region, HDC hdc, CString *text)
 	else 
 	{ 
 		retval = ERR_GOOD_SCRAPE_GENERAL; 
-		index = (uint32_t) ((uresult - hashes)/sizeof(uint32_t));
+		index = ((UINT_PTR) uresult - (UINT_PTR) hashes)/sizeof(UINT_PTR);
 		*text = map.h$[index].name;
 	}
 
@@ -1993,9 +1993,10 @@ void CTransform::calc_hexmash(int left, int right, int top, int bottom, bool (*c
 				hexval += (1 << (last_fg_row - y));
 
 		sprintf_s(t, 20, "%x", hexval);
-		strcat_s(hexmash, 20, t);
+
+		strcat_s(hexmash, 3200, t);
 		if (withspace)  
-			strcat_s(hexmash, 20, " ");
+			strcat_s(hexmash, 3200, " ");
 	}
 
     __SEH_LOGFATAL("CTransform::calc_hexmash :\n");

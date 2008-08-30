@@ -136,7 +136,7 @@ protected:
    // store info about *pDlgs that have been added to 
    // the tree - used for quick lookup of parent nodes
    // DWORDs are used because HTREEITEMs can't be... blame Microsoft
-   CMap< CSAPrefsSubDlg *, CSAPrefsSubDlg *, DWORD, DWORD&  > m_dlgMap;
+   CMap< CSAPrefsSubDlg *, CSAPrefsSubDlg *, UINT, UINT&  > m_dlgMap;
 
 };
 
