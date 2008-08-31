@@ -4,7 +4,7 @@
 #include "CGlobal.h"
 
 #include <boost/spirit/tree/ast.hpp>
-#include "dll_extension.h"
+#include "CDllExtension.h"
 #include "UPDialog.h"
 
 // For parsing progress dialog
@@ -58,7 +58,7 @@ public:
 	int				ppro_tid;
 
 	// Game state array
-	holdem_state	state[256];
+	SHoldemState	state[256];
 	unsigned char	state_index;
 
 	// Used for holding table list by callback function

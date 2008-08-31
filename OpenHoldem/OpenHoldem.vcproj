@@ -301,11 +301,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\action.cpp"
+				RelativePath=".\CAutoplayer.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\CAutoplayer.cpp"
+				RelativePath=".\CDllExtension.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CGameState.cpp"
 				>
 			</File>
 			<File
@@ -318,6 +322,10 @@
 			</File>
 			<File
 				RelativePath=".\CIteratorThread.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CPokerAction.cpp"
 				>
 			</File>
 			<File
@@ -378,14 +386,6 @@
 			</File>
 			<File
 				RelativePath=".\DialogSitDown.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\dll_extension.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\GameState.cpp"
 				>
 			</File>
 			<File
@@ -611,11 +611,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\action.h"
+				RelativePath=".\CAutoplayer.h"
 				>
 			</File>
 			<File
-				RelativePath=".\CAutoplayer.h"
+				RelativePath=".\CDllExtension.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CGameState.h"
 				>
 			</File>
 			<File
@@ -628,6 +632,10 @@
 			</File>
 			<File
 				RelativePath=".\CIteratorThread.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CPokerAction.h"
 				>
 			</File>
 			<File
@@ -688,14 +696,6 @@
 			</File>
 			<File
 				RelativePath=".\DialogSitDown.h"
-				>
-			</File>
-			<File
-				RelativePath=".\dll_extension.h"
-				>
-			</File>
-			<File
-				RelativePath=".\GameState.h"
 				>
 			</File>
 			<File

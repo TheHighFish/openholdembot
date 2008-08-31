@@ -14,6 +14,7 @@
 #include "CHeartbeatThread.h"
 #include "CPokerTrackerThread.h"
 #include "CGlobal.h"
+#include "CDllExtension.h"
 
 #include "DialogFormulaScintilla.h"
 #include "SAPrefsDialog.h"
@@ -32,7 +33,6 @@
 #include "registry.h"
 #include "DialogSelectTable.h"
 #include "inlines/eval.h"
-#include "dll_extension.h"
 #include "PokerPro.h"
 #include "DialogPpro.h"
 #include "DialogScraperOutput.h"
@@ -504,7 +504,7 @@ BOOL CMainFrame::DestroyWindow()
     WINDOWPLACEMENT wp;
 
 	//unload dll   Matrix (suggested by Spud) 2008-05-17
-    if (cdll.hMod_dll) cdll.unload_dll();
+	p_dll_extension->UnloadDll();
 
 	// stop threads
 	if (p_iterator_thread) 
@@ -1279,11 +1279,9 @@ void CMainFrame::OnDllLoad()
 {
     __SEH_HEADER
 
-    if (cdll.hMod_dll!=NULL)
-        cdll.unload_dll();
+	p_dll_extension->UnloadDll();
 
-	else
-        cdll.load_dll("");
+	p_dll_extension->LoadDll("");
 
     __SEH_LOGFATAL("CMainFrame::OnDllLoad :\n");
 }
@@ -1304,11 +1302,9 @@ void CMainFrame::OnDllLoadspecificfile()
 
     if (cfd.DoModal() == IDOK) 
 	{
-        if (cdll.hMod_dll!=NULL) 
-            cdll.unload_dll();
+        p_dll_extension->UnloadDll();
 
-		else
-            cdll.load_dll(cfd.m_ofn.lpstrFile);
+		p_dll_extension->LoadDll(cfd.m_ofn.lpstrFile);
 
         Registry::writeRegString(theKey, cfd.GetPathName());
     }
@@ -1608,7 +1604,7 @@ void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI)
 {
 	__SEH_HEADER
 
-    if (cdll.hMod_dll!=NULL)
+	if (p_dll_extension->IsDllLoaded())
         pCmdUI->SetText("&Unload\tF4");
 
 	else
@@ -1633,13 +1629,14 @@ void CMainFrame::OnUpdateDllLoadspecificfile(CCmdUI *pCmdUI)
 {
 	__SEH_HEADER
 
-    pCmdUI->Enable(cdll.hMod_dll ? false : true);
+	pCmdUI->Enable(p_dll_extension->IsDllLoaded() ? false : true);
 
 	__SEH_LOGFATAL("CMainFrame::OnUpdateDllLoadspecificfile\n")
 }
 
 
-void CMainFrame::OnUpdatePokerproConnect(CCmdUI *pCmdUI) {
+void CMainFrame::OnUpdatePokerproConnect(CCmdUI *pCmdUI) 
+{
 	__SEH_HEADER
 
     pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||

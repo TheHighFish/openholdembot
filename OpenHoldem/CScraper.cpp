@@ -29,7 +29,7 @@ CScraper::~CScraper(void)
 
     DeleteCriticalSection(&cs_scraper);
 
-    __SEH_LOGFATAL("CScraper::Constructor : \n");
+    __SEH_LOGFATAL("CScraper::Destructor : \n");
 }
 
 void CScraper::ClearScrapeAreas(void)
