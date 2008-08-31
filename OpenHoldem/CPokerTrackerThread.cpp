@@ -19,7 +19,7 @@ CPokerTrackerThread::CPokerTrackerThread()
 
 	__SEH_HEADER
 
-	int				i,j;
+	int				i = 0, j = 0;
 	Registry		reg;
 
 	InitializeCriticalSection(&cs_pokertracker);
@@ -223,9 +223,9 @@ bool CPokerTrackerThread::CheckName (int m_chr)
 {
 	__SEH_HEADER
 
-	int			i;
-	char		oh_scraped_name[30], best_name[30], likename[100];
-	bool		result, ok_scrape=false;
+	int			i = 0;
+	char		oh_scraped_name[30] = {0}, best_name[30] = {0}, likename[100] = {0};
+	bool		result = false, ok_scrape = false;
 
 	if (m_chr<0 || m_chr>9)
 		return false;
@@ -312,7 +312,7 @@ double CPokerTrackerThread::GetStat (int m_chr, PT_Stats stat)
 {
 	__SEH_HEADER
 
-	double		x;
+	double		x = 0.;
 
 	if (m_chr<0 || m_chr>9)
 		return 0.0;
@@ -330,12 +330,12 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 {
 	__SEH_HEADER
 
-	PGresult	*res;
-	char		strQry[2000], strQry1[2000], strQry2[2000];
-	const char*	n;
+	PGresult	*res = NULL;
+	char		strQry[2000] = {0}, strQry1[2000] = {0}, strQry2[2000] = {0};
+	const char	*n = NULL;
 	double		result = -1.0;
-	char		siteidstr[5];
-	int			siteid;
+	char		siteidstr[5] = {0};
+	int			siteid = 0;
 
 	int sym_elapsed = (int) p_symbols->sym()->elapsed;
 
@@ -471,13 +471,13 @@ bool CPokerTrackerThread::QueryName (const char * query_name, const char * scrap
 {
 	__SEH_HEADER
 
-	char		strQry[1000] = "";
-	int			i, lev_dist, bestLD, bestLDindex;
-	PGresult	*res;
-	char		siteidstr[5];
-	bool		result=false;
+	char		strQry[1000] = {0};
+	int			i = 0, lev_dist = 0, bestLD = 0, bestLDindex = 0;
+	PGresult	*res = NULL;
+	char		siteidstr[5] = {0};
+	bool		result = false;
 	LDistance	myLD;
-	int			siteid;
+	int			siteid = 0;
 	static int	_last_siteid = -1;
 
 	//No more unnecessary queries when we don't even have a siteid to check
@@ -568,7 +568,7 @@ void CPokerTrackerThread::ClearStats (void)
 {
 	__SEH_HEADER
 
-	int		i,j;
+	int		i = 0, j = 0;
 
 	for (i=0; i<=9; i++)
 	{
@@ -594,7 +594,7 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 
 	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
 
-	int			i, j;
+	int		i = 0, j = 0;
 
 	bool sym_issittingin = (bool) p_symbols->sym()->issittingin;
 	bool sym_isppro = (bool) p_symbols->sym()->isppro;

@@ -65,17 +65,19 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 	CHeartbeatThread *pParent = static_cast<CHeartbeatThread*>(pParam);
 
-	LARGE_INTEGER		cycle_start, cycle_end, lFrequency;
+	LARGE_INTEGER		cycle_start = {0}, cycle_end = {0}, lFrequency = {0};
 	unsigned int		new_scrape = NOTHING_CHANGED;
-	bool				iswait;
-	char				title[512];
-	int					N, i;
+	bool				iswait = false;
+	char				title[512] = {0};
+	int					N = 0, i = 0;
 
 	// PokerPro valiables only
-	const char			*pbytes;
-	int					nbytes, result;
+	const char			*pbytes = NULL;
+	int					nbytes = 0, result = 0;
 	fd_set				fd;
 	timeval				tv;
+
+
 
 	while (true)
 	{

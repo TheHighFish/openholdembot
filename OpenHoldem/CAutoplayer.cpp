@@ -123,9 +123,9 @@ void CAutoplayer::DoAutoplayer(void)
 {
 	__SEH_HEADER
 
-	int				x;
-	int				num_buttons_visible;
-	int				delay;
+	int				x = 0;
+	int				num_buttons_visible = 0;
+	int				delay = 0;
 
 	// Check status of "Keyboard" menu item, and engage if necessary
 	CheckBringKeyboard();
@@ -228,23 +228,23 @@ void CAutoplayer::DoSwag(void)
 {
 	__SEH_HEADER
 
-	int				input_count, r$index;
-	POINT			pt;
+	int				input_count = 0, r$index = 0;
+	POINT			pt = {0};
 	double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
 	double			fScreenHeight = ::GetSystemMetrics( SM_CYSCREEN )-1;
-	double			fx, fy;
+	double			fx = 0., fy = 0.;
 	INPUT			input[100] = {0};
-	char			ch_str[100];
-	int				i;
-	int				vkey;
+	char			ch_str[100] = {0};
+	int				i = 0;
+	int				vkey = 0;
 	HWND			hwnd_focus = GetFocus();
 	HWND			hwnd_foreground = GetForegroundWindow();
 	HWND			hwnd_active = GetActiveWindow();
-	POINT			cur_pos;
-	bool			lost_focus=false;
+	POINT			cur_pos = {0};
+	bool			lost_focus = false;
 	int				e = SUCCESS;
 
-	double	f_swag = p_symbols->f$swag();
+	double			f_swag = p_symbols->f$swag();
 	
 	::GetCursorPos(&cur_pos);
 
@@ -633,16 +633,16 @@ void CAutoplayer::DoARCCF(void)
 {
 	__SEH_HEADER
 
-	int				do_click, input_count;
+	int				do_click = 0, input_count = 0;
 	INPUT			input[100] = {0};
-	POINT			pt;
+	POINT			pt = {0};
 	double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
 	double			fScreenHeight = ::GetSystemMetrics( SM_CYSCREEN )-1;
-	double			fx, fy;
+	double			fx = 0., fy = 0.;
 	HWND			hwnd_focus = GetFocus();
 	HWND			hwnd_foreground = GetForegroundWindow();
 	HWND			hwnd_active = GetActiveWindow();
-	POINT			cur_pos;
+	POINT			cur_pos = {0};
 
 	int				e = SUCCESS;
 	double			alli = p_symbols->f$alli();
@@ -827,24 +827,38 @@ void CAutoplayer::DoSlider(void)
 {
 	__SEH_HEADER
 
-	int				do_drag, input_count,  x, y, x2;
+	int				do_drag = 0, input_count = 0,  x = 0, y = 0, x2 = 0;
 	INPUT			input[100] = {0};
-	POINT			pt, pt2;
+	POINT			pt = {0}, pt2 = {0};
 	double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
 	double			fScreenHeight = ::GetSystemMetrics( SM_CYSCREEN )-1;
-	double			fx = 0;
-	double			fy = 0;
-	double			fx2 = 0;
-	double			fy2 = 0;
+	double			fx = 0.;
+	double			fy = 0.;
+	double			fx2 = 0.;
+	double			fy2 = 0.;
 	HWND			hwnd_focus = GetFocus();
 	HWND			hwnd_foreground = GetForegroundWindow();
 	HWND			hwnd_active = GetActiveWindow();
-	POINT			cur_pos;
-	Stablemap_region handle, slider;
-
+	POINT			cur_pos = {0};
 	int				e = SUCCESS;
 	bool			sym_ismyturn = (bool) p_symbols->sym()->ismyturn;
 	double			alli = p_symbols->f$alli();
+	Stablemap_region handle, slider;
+
+	// init locals
+	handle.name = "";
+	handle.left = handle.top = handle.right = handle.bottom = 0;
+	handle.color = 0;
+	handle.radius = 0;
+	handle.transform = "";
+	handle.cur_bmp = handle.last_bmp = NULL;
+
+	slider.name = "";
+	slider.left = slider.top = slider.right = slider.bottom = 0;
+	slider.color = 0;
+	slider.radius = 0;
+	slider.transform = "";
+	slider.cur_bmp = slider.last_bmp = NULL;
 
 	::GetCursorPos(&cur_pos);
 
@@ -994,14 +1008,14 @@ void CAutoplayer::DoPrefold(void)
 {
 	__SEH_HEADER
 	INPUT			input[100] = {0};
-	POINT			pt;
+	POINT			pt = {0};
 	double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
 	double			fScreenHeight = ::GetSystemMetrics( SM_CYSCREEN )-1;
-	double			fx, fy;
+	double			fx = 0., fy = 0.;
 	HWND			hwnd_focus = GetFocus();
 	HWND			hwnd_foreground = GetForegroundWindow();
 	HWND			hwnd_active = GetActiveWindow();
-	POINT			cur_pos;
+	POINT			cur_pos = {0};
 	int				input_count = 0;
 
 	double			prefold = p_symbols->f$prefold();
@@ -1091,15 +1105,16 @@ void CAutoplayer::DoPrefold(void)
 const int CAutoplayer::CountSameScrape(void) 
 {
 	__SEH_HEADER
-	int						i;
+
+	int						i = 0;
 	static unsigned int		card_common_last[5] = {0};
 	static unsigned int		card_player_last[10][2] = {0};
 	static bool				dealer_last[10] = {0};
 	static double			playerbalance_last[10] = {0};
 	static double			playerbet_last[10] = {0};
 	static double			myturnbitslast = 0;
-	bool					same_scrape;
-	static int				num_same_scrapes=0;
+	bool					same_scrape = false;
+	static int				num_same_scrapes = 0;
 
 	// These items need to be the same to count as a identical frame:
 	// - up and down cards
@@ -1158,10 +1173,10 @@ const int CAutoplayer::CountSameScrape(void)
 int CAutoplayer::GetR$ButtonIndices(void)
 {
 	__SEH_HEADER
-	int				i, r$index;
-	int				button_index;
-	CString			s;
-	int				num_seen=0;
+	int				i = 0, r$index = 0;
+	int				button_index = 0;
+	CString			s = "";
+	int				num_seen = 0;
 
 	//////////////////////////////////////////////////////////
 	// find ALLIN button region from scraper
@@ -1556,20 +1571,22 @@ void CAutoplayer::CheckBringKeyboard(void)
 {
 	__SEH_HEADER
 	
-	HMENU			bringsysmenu;
+	HMENU			bringsysmenu = NULL;
 	MENUITEMINFO	mii;
-	int				input_count, i;
+	int				input_count = 0, i = 0;
 	INPUT			input[100] = {0};
 	HWND			hwnd_focus = GetFocus();
 	HWND			hwnd_foreground = GetForegroundWindow();
 	HWND			hwnd_active = GetActiveWindow();
-	POINT			cur_pos;
-	char			temp[256];
-	CString			c_text;
-	int				keybd_item_pos;
-
+	POINT			cur_pos = {0};
+	char			temp[256] = {0};
+	CString			c_text = "";
+	int				keybd_item_pos = 0;
 	int				e = SUCCESS;
 	bool			sym_isbring = (bool) p_symbols->sym()->isbring;
+
+	// Init locals
+	memset(&mii, 0, sizeof(MENUITEMINFO));
 
 	GetCursorPos(&cur_pos);
 
@@ -1686,17 +1703,16 @@ void CAutoplayer::DoF$play(void)
 	__SEH_HEADER
 
 	INPUT			input[100] = {0};
-	POINT			pt;
+	POINT			pt = {0};
 	double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
 	double			fScreenHeight = ::GetSystemMetrics( SM_CYSCREEN )-1;
-	double			fx, fy;
-	bool			do_click;
+	double			fx = 0., fy = 0.;
+	bool			do_click = false;
 	int				input_count = 0;
 	HWND			hwnd_focus = GetFocus();
 	HWND			hwnd_foreground = GetForegroundWindow();
 	HWND			hwnd_active = GetActiveWindow();
-	POINT			cur_pos;
-
+	POINT			cur_pos = {0};
 	double			f_play = p_symbols->f$play();
 
 	::GetCursorPos(&cur_pos);
@@ -1925,17 +1941,17 @@ void CAutoplayer::DoI86(void)
 	__SEH_HEADER
 
 	INPUT			input[100] = {0};
-	POINT			pt;
+	POINT			pt = {0};
 	double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
 	double			fScreenHeight = ::GetSystemMetrics( SM_CYSCREEN )-1;
-	double			fx, fy;
-	bool			do_click;
+	double			fx = 0., fy = 0.;
+	bool			do_click = false;
 	int				input_count = 0;
-	int				i;
+	int				i = 0;
 	HWND			hwnd_focus = GetFocus();
 	HWND			hwnd_foreground = GetForegroundWindow();
 	HWND			hwnd_active = GetActiveWindow();
-	POINT			cur_pos;
+	POINT			cur_pos = {0};
 
 	::GetCursorPos(&cur_pos);
 
@@ -2061,7 +2077,7 @@ const POINT CAutoplayer::RandomizeClickLocation(const int left, const int top, c
 {
 	__SEH_HEADER
 
-	POINT p;
+	POINT p = {0};
 
 	// uniform random distribution, yuck!
 	//p.x = ((double) rand() / (double) RAND_MAX) * (right-left) + left;
@@ -2104,7 +2120,8 @@ const double CAutoplayer::RandomNormal(const double m, const double s)
 	__SEH_HEADER
 
 	/* mean m, standard deviation s */
-	double x1, x2, w, y1, y2;
+	double x1 = 0., x2 = 0., w = 0., y1 = 0., y2 = 0.;
+
 	do {
 		x1 = 2.0 * ((double) rand()/(double) RAND_MAX) - 1.0;
 		x2 = 2.0 * ((double) rand()/(double) RAND_MAX) - 1.0;

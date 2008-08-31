@@ -130,11 +130,8 @@ void CScraper::ClearScrapeAreas(void)
 const bool CScraper::IsCommonAnimation(void)
 {
     __SEH_HEADER
-    bool			animation;
-    int				flop_card_count;
-
-    animation		= false; // By default there is no animation going on
-    flop_card_count	= 0;
+    bool			animation = false;  // By default there is no animation going on
+    int				flop_card_count = 0;
 
     // Count all the flop cards
 	for (int i=0; i<=2; i++)
@@ -175,15 +172,15 @@ int CScraper::DoScrape(void)
 {
 	__SEH_HEADER
 
-	int				i;
-    CString			text;
+	int				i = 0;
+    CString			text = "";
 
     // DC
     HDC			hdc = GetDC(p_global->attached_hwnd());
     HDC			hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
     HDC			hdcCompatible = CreateCompatibleDC(hdcScreen);
-    RECT		cr;
-    HBITMAP		old_bitmap;
+	RECT		cr = {0};
+    HBITMAP		old_bitmap = NULL;
 
 	// Get bitmap of whole window
     GetClientRect(p_global->attached_hwnd(), &cr);
@@ -289,7 +286,7 @@ bool CScraper::ProcessRegion(const HDC hdcCompatible, const HDC hdc, const int r
     int				top = p_global->trans.map.r$[r$index].top;
     int				right = p_global->trans.map.r$[r$index].right;
     int				bottom = p_global->trans.map.r$[r$index].bottom;
-    HBITMAP			old_bitmap;
+    HBITMAP			old_bitmap = NULL;
 
 	// Check for bad parameters
 	if (hdcCompatible == NULL || hdc == NULL)
@@ -321,10 +318,10 @@ void CScraper::ScrapeCommonCards(HDC hdcCompatible, HDC hdc)
 {
     __SEH_HEADER
 
-    int					i, r$index;
-    HBITMAP				old_bitmap;
-    unsigned int		card;
-    CString				cardstr, rankstr, suitstr;
+    int					i = 0, r$index = 0;
+    HBITMAP				old_bitmap = NULL;
+    unsigned int		card = CARD_NOCARD;
+    CString				cardstr = "", rankstr = "", suitstr = "";
 
 	// Check for bad parameters
 	if (hdcCompatible == NULL || hdc == NULL)
@@ -405,11 +402,11 @@ void CScraper::ScrapePlayerCards(int chair, HDC hdcCompatible, HDC hdc)
 {
     __SEH_HEADER
 
-    int					j, r$index;
-    HBITMAP				old_bitmap;
-    unsigned int		card;
-    bool				got_new_scrape;
-    CString				cardstr, rankstr, suitstr;
+    int					j = 0, r$index = 0;
+    HBITMAP				old_bitmap = NULL;
+    unsigned int		card = CARD_NOCARD;
+    bool				got_new_scrape = false;
+    CString				cardstr = "", rankstr = "", suitstr = "";
 
 	// Check for bad parameters
 	if (chair < 0 || chair >= p_global->trans.map.num_chairs || hdcCompatible == NULL || hdc == NULL)
@@ -559,9 +556,9 @@ void CScraper::ScrapeSeated(int chair, HDC hdcCompatible, HDC hdc)
 {
     __SEH_HEADER
 
-    int					r$index;
-    HBITMAP				old_bitmap;
-    CString				result;
+    int					r$index = 0;
+    HBITMAP				old_bitmap = NULL;
+    CString				result = "";
 
     // Check for bad parameters
 	if (chair < 0 || chair >= p_global->trans.map.num_chairs || hdcCompatible == NULL || hdc == NULL)
@@ -615,9 +612,9 @@ void CScraper::ScrapeActive(int chair, HDC hdcCompatible, HDC hdc)
 {
     __SEH_HEADER
 
-    int					r$index;
-    HBITMAP				old_bitmap;
-    CString				result;
+    int					r$index = 0;
+    HBITMAP				old_bitmap = NULL;
+    CString				result = "";
 
 	// Check for bad parameters
 	if (chair < 0 || chair >= p_global->trans.map.num_chairs || hdcCompatible == NULL || hdc == NULL)
@@ -670,9 +667,9 @@ void CScraper::ScrapeDealer(int chair, HDC hdcCompatible, HDC hdc)
 {
     __SEH_HEADER
 
-    int					r$index;
-    HBITMAP				old_bitmap;
-    CString				result;
+    int					r$index = 0;
+    HBITMAP				old_bitmap = NULL;
+    CString				result = "";
 
 	// Check for bad parameters
 	if (chair < 0 || chair >= p_global->trans.map.num_chairs || hdcCompatible == NULL || hdc == NULL)
@@ -709,11 +706,11 @@ void CScraper::ScrapeName(int chair, HDC hdcCompatible, HDC hdc)
 
     __SEH_HEADER
 
-    int					r$index;
-    HBITMAP				old_bitmap;
-    bool				got_new_scrape;
-    CString				text;
-    int					ret;
+    int					r$index = 0;
+    HBITMAP				old_bitmap = NULL;
+    bool				got_new_scrape = false;
+    CString				text = "";
+    int					ret = 0;
 	bool				is_seated = IsStringSeated(_seated[chair]);
 
 	// Check for bad parameters
@@ -785,11 +782,11 @@ void CScraper::ScrapeBalance(int chair, HDC hdcCompatible, HDC hdc)
 {
     __SEH_HEADER
 
-    int					r$index;
-    HBITMAP				old_bitmap;
-    bool				got_new_scrape;
-    CString				text;
-    int					ret;
+    int					r$index = 0;
+    HBITMAP				old_bitmap = NULL;
+    bool				got_new_scrape = false;
+    CString				text = "";
+    int					ret = 0;
 	bool				is_seated = IsStringSeated(_seated[chair]);
 
 	// Check for bad parameters
@@ -932,9 +929,9 @@ void CScraper::ScrapeBet(int chair, HDC hdcCompatible, HDC hdc)
 {
     __SEH_HEADER
 
-	int					r$index;
-    HBITMAP				old_bitmap;
-    CString				text;
+	int					r$index = 0;
+    HBITMAP				old_bitmap = NULL;
+    CString				text = "";
 
 	// Check for bad parameters
 	if (chair < 0 || chair >= p_global->trans.map.num_chairs || hdcCompatible == NULL || hdc == NULL)
@@ -991,11 +988,26 @@ void CScraper::ScrapeButtons(HDC hdcCompatible, HDC hdc)
 {
     __SEH_HEADER
 
-	int					j, k, r$index;
-    HBITMAP				old_bitmap;
-    CString				text;
+	int					j = 0, k = 0, r$index = 0;
+    HBITMAP				old_bitmap = NULL;
+    CString				text = "";
 	Stablemap_region	handle, slider;
-	POINT				handle_xy;
+	POINT				handle_xy = {0};
+
+	// init locals
+	handle.name = "";
+	handle.left = handle.top = handle.right = handle.bottom = 0;
+	handle.color = 0;
+	handle.radius = 0;
+	handle.transform = "";
+	handle.cur_bmp = handle.last_bmp = NULL;
+
+	slider.name = "";
+	slider.left = slider.top = slider.right = slider.bottom = 0;
+	slider.color = 0;
+	slider.radius = 0;
+	slider.transform = "";
+	slider.cur_bmp = slider.last_bmp = NULL;
 
 	// Check for bad parameters
 	if (hdcCompatible == NULL || hdc == NULL)
@@ -1169,9 +1181,9 @@ void CScraper::ScrapePots(HDC hdcCompatible, HDC hdc)
 {
     __SEH_HEADER
 
-    int					j, r$index;
-    HBITMAP				old_bitmap;
-    CString				text;
+    int					j = 0, r$index = 0;
+    HBITMAP				old_bitmap = NULL;
+    CString				text = "";
 
 	// Check for bad parameters
 	if (hdcCompatible == NULL || hdc == NULL)
@@ -1247,14 +1259,14 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 {
     __SEH_HEADER
 
-    int					j, r$index, s$index;
-    double				handnumber;
-    bool				istournament;
-    HBITMAP				old_bitmap;
-    CString				text;
-    CString				titletext;
-    char				c_titletext[MAX_WINDOW_TITLE];
-    bool				got_new_scrape, log_blind_change;
+    int					j = 0, r$index = 0, s$index = 0;
+    double				handnumber = 0.;
+    bool				istournament = false;
+    HBITMAP				old_bitmap = NULL;
+    CString				text = "";
+    CString				titletext = "";
+	char				c_titletext[MAX_WINDOW_TITLE] = {0};
+    bool				got_new_scrape = false, log_blind_change = false;
 
 	// Check for bad parameters
 	if (hdcCompatible == NULL || hdc == NULL)
@@ -1617,7 +1629,7 @@ const double CScraper::GetHandnumFromString(CString t)
     __SEH_HEADER
 
     char		newstr[256] = {0};
-    int			i, newpos = 0;
+    int			i = 0, newpos = 0;
 
 	// Check for bad parameters
 	if (!t || t == "")
@@ -1748,9 +1760,9 @@ void CScraper::CreateBitmaps(void)
 {
     __SEH_HEADER
 
-    int			i, w, h;
+    int			i = 0, w = 0, h = 0;
     HDC			hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
-    RECT		cr;
+	RECT		cr = {0};
 
     // Whole window
     GetClientRect(p_global->attached_hwnd(), &cr);
@@ -1779,7 +1791,7 @@ void CScraper::DeleteBitmaps(void)
 {
     __SEH_HEADER
 
-    int			i;
+    int			i = 0;
 
     // Whole window
 	EnterCriticalSection(&cs_scraper);
@@ -1840,16 +1852,16 @@ const double CScraper::DoChipScrape(HDC hdc, int i)
 {
     __SEH_HEADER
 
-	int				j, stackindex, chipindex;
-	UINT_PTR		hashindex;
-    CString			type, cstemp;
-    int				istart, ivert[10] = { -1 }, ihoriz[10] = { -1 }, index, vertcount=0, horizcount=0;
-    int				hash_type, num_precs, pixcount, chipwidth, chipheight;
-    int				top, bottom, left, right;
-    bool			stop_loop;
-    uint32_t		*uresult, hash, pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT];
-    double			result=0;
-    CString			resstring;
+	int				j = 0, stackindex = 0, chipindex = 0;
+	UINT_PTR		hashindex = 0;
+    CString			type = "", cstemp = "";
+    int				istart = 0, ivert[10] = { -1 }, ihoriz[10] = { -1 }, index = 0, vertcount = 0, horizcount = 0;
+    int				hash_type = 0, num_precs = 0, pixcount = 0, chipwidth = 0, chipheight = 0;
+    int				top = 0, bottom = 0, left = 0, right = 0;
+    bool			stop_loop = false;
+	uint32_t		*uresult = NULL, hash = 0, pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0};
+    double			result = 0;
+    CString			resstring = "";
 
 	// Check for bad parameters
 	if (hdc == NULL || i<0)
@@ -1993,7 +2005,7 @@ const bool CScraper::GetButtonState(int button_index)
 {
     __SEH_HEADER
 
-	CString l_button_state;
+	CString l_button_state = "";
 	
 	bool sym_ismanual = (bool) p_symbols->sym()->ismanual;
 
@@ -2050,7 +2062,7 @@ const bool CScraper::IsNumeric(CString t)
 {
     __SEH_HEADER
 
-    int i, num_dots = 0, nums_after_dot = 0;
+    int i = 0, num_dots = 0, nums_after_dot = 0;
 
 	// Check for bad parameters
 	if (!t || t == "")
