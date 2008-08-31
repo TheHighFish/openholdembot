@@ -32,7 +32,7 @@ CGlobal::CGlobal(void)
 
 	__SEH_HEADER
 
-	int			i;
+	int			i = 0;
 	Registry	reg;
 
 	InitializeCriticalSectionAndSpinCount(&cs_global, 4000);
@@ -185,8 +185,17 @@ void CGlobal::CopyFormula(SFormula *f, SFormula *t)
 
 	SHandList		list;
 	SFunction		func;
-	int				from_count, to_count, from_iter, to_iter;
-	bool			addit, deleteit;
+	int				from_count = 0, to_count = 0, from_iter = 0, to_iter = 0;
+	bool			addit = false, deleteit = false;
+
+	// Init locals
+	list.list = "";
+	list.list_text = "";
+	func.cache = 0.;
+	func.dirty = false;
+	func.fresh = false;
+	func.func = "";
+	func.func_text = "";
 
 	// handle deleted udfs
 	to_count = (int) t->mFunction.GetSize();
@@ -277,6 +286,7 @@ bool CGlobal::ParseAllFormula(HWND hwnd, SFormula *f)
 	__SEH_HEADER
 
 	sData			data;
+
 	data.all_parsed = true;
 	data.calling_hwnd = hwnd;
 	data.f = f;
@@ -311,13 +321,13 @@ bool parse_loop(const CUPDUPDATA* pCUPDUPData)
 {
 	__SEH_HEADER
 
-	int				N, i, j;
-	CString			s;
-	bool			result;
-	int				stopchar;
-	int				c, linenum, colnum;
-	LARGE_INTEGER	bcount, ecount, lFrequency;
-	double			time_elapsed;
+	int				N = 0, i = 0, j = 0;
+	CString			s = "";
+	bool			result = false;
+	int				stopchar = 0;
+	int				c = 0, linenum = 0, colnum = 0;
+	LARGE_INTEGER	bcount = {0}, ecount = {0}, lFrequency = {0};
+	double			time_elapsed = 0.;
 	sData			*data = (sData*) (pCUPDUPData->GetAppData());
 
 	pCUPDUPData->SetProgress("", 0, false);
@@ -440,7 +450,7 @@ void CGlobal::ParseHandList(CString &list_text, bool inlist[13][13])
 		}
 	}
 
-	int	token_card0_rank, token_card1_rank, temp_rank;
+	int	token_card0_rank = 0, token_card1_rank = 0, temp_rank = 0;
 
 	CString list = list_text.MakeUpper();
 	const char *pStr = list.GetString();
@@ -489,8 +499,8 @@ void CGlobal::CreateHandListMatrices(SFormula *f)
 {
 	__SEH_HEADER
 
-	int			listnum, i, j, N;
-	CString		token;
+	int			listnum = 0, i = 0, j = 0, N = 0;
+	CString		token = "";
 
 	for (listnum=0; listnum<MAX_HAND_LISTS; listnum++)
 	{
@@ -518,9 +528,9 @@ void CGlobal::CaptureState(const char *title)
 {
 	__SEH_HEADER
 
-	int					i, j;
+	int					i = 0, j = 0;
 	bool				playing = true;
-	unsigned char		card;
+	unsigned char		card = CARD_NOCARD;
 
 	// figure out if I am playing
 	int sym_chair = (int) p_symbols->sym()->chair;
@@ -632,7 +642,7 @@ void CGlobal::ClearR$Indices(void)
 {
 	__SEH_HEADER
 
-	int i,j,k;
+	int			i = 0, j = 0, k = 0;
 
 
 	for (i=0; i<=9; i++)
@@ -724,8 +734,9 @@ void CGlobal::SaveR$Indices(void)
 	// r$tablepointX not indexed, as it is only used for finding tables on green circle-click, and
 	//   this function is not called until a table has been selected by the user
 
-	int		i, N;
-	int		cardnum, seatnum, buttonnum, vertstride, horizstride, potnum, limitnum, handnum, indexnum;
+	int		i = 0, N = 0;
+	int		cardnum = 0, seatnum = 0, buttonnum = 0, vertstride = 0, horizstride = 0;
+	int		potnum = 0, limitnum = 0, handnum = 0, indexnum = 0;
 
 	ClearR$Indices();
 
@@ -1005,7 +1016,7 @@ void CGlobal::SaveS$Indices(void)
 	//   this function is not called until a table has been selected by the user/*
 	// s$hXtype are not indexed, as those records are ignored in OH
 
-	int		i, num;
+	int		i = 0, num = 0;
 
 	// Clear 'em first
 	for (i=0; i<=9; i++)
@@ -1046,7 +1057,7 @@ void CGlobal::SaveS$Strings(void)
 
 	// s$reseller and s$mechanic are not saved, as they are only comments and not used in OH for any purpose
 
-	int		i;
+	int		i = 0;
 
 	// Clear 'em first
 	trans.map.num_chairs = 0;
@@ -1104,15 +1115,15 @@ void CGlobal::CreateReplayFrame(void)
 {
 	__SEH_HEADER
 
-	CString			path, filename, text, fcra_seen;
-	FILE			*fp;
-	int				i;
-	time_t			ltime;
-	tm				now_time;
-	char			now_time_str[100];
-	ULARGE_INTEGER	free_bytes_for_user_on_disk, 
-					total_bytes_on_disk, 
-					free_bytes_total_on_disk;
+	CString			path = "", filename = "", text = "", fcra_seen = "";
+	FILE			*fp = NULL;
+	int				i = 0;
+	time_t			ltime = 0;
+	tm				now_time = {0};
+	char			now_time_str[100] = {0};
+	ULARGE_INTEGER	free_bytes_for_user_on_disk = {0}, 
+					total_bytes_on_disk = {0}, 
+					free_bytes_total_on_disk = {0};
 	int				e = SUCCESS;
 
 	//  Sanity check: Enough disk-space for replay frame?	
@@ -1285,7 +1296,7 @@ CString CGlobal::GetCardHtml(unsigned int card)
 {
 	__SEH_HEADER
 
-	CString suit, color, rank, final;
+	CString suit = "", color = "", rank = "", final = "";
 
 	suit =	card == CARD_BACK ? "*" :
 		   card == CARD_NOCARD ? "&nbsp" :

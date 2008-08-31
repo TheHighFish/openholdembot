@@ -64,10 +64,10 @@ char *prwhandrank169[169] =
 	"T3 ","T2 ","94 ","62 ","93 ","92 ","83 ","82 ","72 "
 };
 //weighted prwin lookup tables for non-suited and suited cards
-int pair2ranko[170], pair2ranks[170];
+int pair2ranko[170] = {0}, pair2ranks[170] = {0};
 //used to resolve ascii cards to numbers for init of above
 char ctonum[14]="23456789TJQKA";
-int willplay,wontplay,topclip,mustplay;
+int willplay = 0, wontplay = 0, topclip = 0, mustplay = 0;
 
 int handrank2652[10][169] =
 {
@@ -88,8 +88,8 @@ CSymbols::CSymbols()
 
 	__SEH_HEADER
 
-	int			i, j, k, vndx;
-	char *ptr;
+	int			i = 0, j = 0, k = 0, vndx = 0;
+	char		*ptr = NULL;
 
     InitializeCriticalSectionAndSpinCount(&cs_symbols, 4000);
 
@@ -211,7 +211,7 @@ void CSymbols::ResetSymbolsFirstTime(void)
 {
 	__SEH_HEADER
 
-	int		i;
+	int		i = 0;
 
 	// general
 	_sym.ismanual = 0;
@@ -457,7 +457,7 @@ void CSymbols::ResetSymbolsNewHand(void)
 {
 	__SEH_HEADER
 
-	int		i;
+	int		i = 0;
 
 	// handrank
 	_sym.handrank169 = _sym.handrank2652 = _sym.handrank1326 = _sym.handrank1000 = _sym.handrank = 0;
@@ -545,7 +545,8 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 {
 	__SEH_HEADER
 
-	int		i;
+	int		i = 0;
+
 	// general
 	_sym.isbring = 0;
 
@@ -668,10 +669,10 @@ void CSymbols::CalcSymbols(void)
 {
 	__SEH_HEADER
 
-	int					i;
-	char				classname[50], title[512];
-	unsigned int		player_card_cur[2];
-	char				card0[10], card1[10];
+	int					i = 0;
+	char				classname[50] = {0}, title[512] = {0};
+	unsigned int		player_card_cur[2] = {0};
+	char				card0[10] = {0}, card1[10] = {0};
 
 	// Clear em, before we start
 	ResetSymbolsEveryCalc();
@@ -933,8 +934,8 @@ void CSymbols::CalcSymbols(void)
 bool CSymbols::CalcUserChair(void)
 {
 	__SEH_HEADER
-	int				i;
-	int				num_buttons_enabled=0;
+	int				i = 0;
+	int				num_buttons_enabled = 0;
 
 	for (i=0; i<=9; i++)
 	{
@@ -974,7 +975,8 @@ bool CSymbols::CalcUserChair(void)
 void CSymbols::CalcStakes(void)
 {
 	__SEH_HEADER
-	int		i;
+
+	int		i = 0;
 	bool	found_inferred_sb = false, found_inferred_bb = false;
 
 	EnterCriticalSection(&cs_symbols);
@@ -1118,8 +1120,8 @@ void CSymbols::CalcBetBalanceStack(void)
 {
 	__SEH_HEADER
 
-	int				i, j, oppcount;
-	double			stack[10], temp;
+	int				i = 0, j = 0, oppcount = 0;
+	double			stack[10] = {0}, temp = 0.;
 
 	EnterCriticalSection(&cs_symbols);
 		_sym.bet[4] = _sym.bet[(int) (_sym.br-1)];											// bet
@@ -1226,8 +1228,8 @@ void CSymbols::CalcChipamtsLimits(void)
 {
 	__SEH_HEADER
 
-	int				i;
-	int				next_largest_bet;
+	int				i = 0;
+	int				next_largest_bet = 0;
 
 	EnterCriticalSection(&cs_symbols);	
 
@@ -1291,7 +1293,7 @@ void CSymbols::CalcFlags(void)
 
 	EnterCriticalSection(&cs_symbols);	
 
-		int			i;
+		int			i = 0;
 
 		for (i=0; i<10; i++)
 		{
@@ -1315,9 +1317,9 @@ void CSymbols::CalcTime(void)
 {
 	__SEH_HEADER
 
-	LARGE_INTEGER	lFrequency, clocksnow;
-	time_t			t_now_time, t_midnight_time;
-	tm				s_midnight_time;
+	LARGE_INTEGER	lFrequency = {0}, clocksnow = {0};
+	time_t			t_now_time = 0, t_midnight_time = 0;
+	tm				s_midnight_time = {0};
 
 	time(&t_now_time);
 
@@ -1353,8 +1355,8 @@ void CSymbols::CalcAutoplayer(void)
 {
 	__SEH_HEADER
 
-	int		i;
-	bool	sitin_but, sitout_but, sitin_state, sitout_state;
+	int		i = 0;
+	bool	sitin_but = false, sitout_but = false, sitin_state = false, sitout_state = false;
 
 	EnterCriticalSection(&cs_symbols);	
 
@@ -1450,8 +1452,8 @@ void CSymbols::CalcProbabilities(void)
 {
 	__SEH_HEADER
 
-	bool				need_recalc;
-	int					i;
+	bool				need_recalc = false;
+	int					i = 0;
 
 	EnterCriticalSection(&cs_symbols);	
 		_sym.random = (double) rand() / (double) RAND_MAX;								// random
@@ -1501,13 +1503,9 @@ void CSymbols::CalcProbabilities(void)
 void CSymbols::CalcPlayersFriendsOpponents(void)
 {
 	__SEH_HEADER
-	int				i;
-	double			lastbet;
-	bool			sblindfound, bblindfound, found_userchair;
-
-	lastbet = 0;
-	sblindfound = false;
-	bblindfound = false;
+	int				i = 0;
+	double			lastbet = 0.;
+	bool			sblindfound = false, bblindfound = false, found_userchair = false;
 
 	EnterCriticalSection(&cs_symbols);
 
@@ -1693,7 +1691,7 @@ void CSymbols::CalcRoundsPositions(void)
 
 	EnterCriticalSection(&cs_symbols);	
 
-		int			i;
+		int			i = 0;
 
 		for (i=_sym.dealerchair+1; i<=_sym.dealerchair+p_global->trans.map.num_chairs && (i%p_global->trans.map.num_chairs)!=_sym.userchair; i++)
 		{
@@ -1734,12 +1732,12 @@ void CSymbols::CalcPokerValues(void)
 {
 	__SEH_HEADER
 
-	int				i;
-	CardMask		Cards;
-	int				nCards;
-	HandVal			handval;
-	double			dummy;
-	int				hi_common_rank, lo_common_rank;
+	int				i = 0;
+	CardMask		Cards = {0};
+	int				nCards = 0;
+	HandVal			handval = 0;
+	double			dummy = 0.;
+	int				hi_common_rank = 0, lo_common_rank = 0;
 
 	// poker constants
 	_sym.hicard			= 0x00000001;
@@ -1958,13 +1956,13 @@ void CSymbols::CalcPokerValues(void)
 void CSymbols::CalcUnknownCards(void)
 {
 	__SEH_HEADER
-	int				i;
-	CardMask		stdCards, commonCards;
-	int				nstdCards, ncommonCards;
-	HandVal			handval_std, handval_std_plus1, handval_common_plus1;
-	double			dummy;
 
-	nstdCards = ncommonCards = 0;
+	int				i = 0;
+	CardMask		stdCards = {0}, commonCards = {0};
+	int				nstdCards = 0, ncommonCards = 0;
+	HandVal			handval_std = 0, handval_std_plus1 = 0, handval_common_plus1 = 0;
+	double			dummy = 0.;
+
 	CardMask_RESET(stdCards);
 	CardMask_RESET(commonCards);
 
@@ -2042,7 +2040,7 @@ void CSymbols::CalcHandTests(void)
 {
 	__SEH_HEADER
 
-	int		i;
+	int		i = 0;
 
 	EnterCriticalSection(&cs_symbols);
 
@@ -2121,10 +2119,10 @@ void CSymbols::CalcListTests(void)
 {
 	__SEH_HEADER
 
-	int				i, N;
-	int				listnum;
-	int				tokpos;
-	unsigned int	c0, c1;
+	int				i = 0, N = 0;
+	int				listnum = 0;
+	int				tokpos = 0;
+	unsigned int	c0 = 0, c1 = 0;
 
 	if (StdDeck_RANK(p_scraper->card_player(_sym.userchair, 0)) >= 
 		StdDeck_RANK(p_scraper->card_player(_sym.userchair, 1)))
@@ -2229,12 +2227,13 @@ void CSymbols::CalcListTests(void)
 void CSymbols::CalcNhands(void)
 {
 	__SEH_HEADER
-	CardMask		plCards, comCards, oppCards, playerEvalCards, opponentEvalCards;
-	HandVal			hv_player, hv_opponent;
-	unsigned int	pl_pokval, opp_pokval;
-	int				i, j;
+
+	CardMask		plCards = {0}, comCards = {0}, oppCards = {0}, playerEvalCards = {0}, opponentEvalCards = {0};
+	HandVal			hv_player = 0, hv_opponent = 0;
+	unsigned int	pl_pokval = 0, opp_pokval = 0;
+	int				i = 0, j = 0;
 	double			dummy = 0;
-	int				nplCards, ncomCards;
+	int				nplCards = 0, ncomCards = 0;
 
 	// player cards
 	CardMask_RESET(plCards);
@@ -2317,8 +2316,8 @@ void CSymbols::CalcHandrank(void)
 {
 	__SEH_HEADER
 
-	char		cardstr[10];
-	int			i, count;
+	char		cardstr[10] = {0};
+	int			i = 0, count = 0;
 
 	// Get a string containing the players' current cards
 	GetCardstring(cardstr, 
@@ -2374,10 +2373,11 @@ void CSymbols::CalcFlushesStraightsSets(void)
 {
 	__SEH_HEADER
 
-	int				i, j, n;
-	CardMask		plCards, comCards, heartsCards, diamondsCards, clubsCards, spadesCards, suittestCards;
-	int				max;
-	unsigned int	strbits;
+	int				i = 0, j = 0, n = 0;
+	CardMask		plCards = {0}, comCards = {0};
+	CardMask		heartsCards = {0}, diamondsCards = {0}, clubsCards = {0}, spadesCards = {0}, suittestCards = {0};
+	int				max = 0;
+	unsigned int	strbits = 0;
 
 	// Set up some suit masks
 	CardMask_RESET(heartsCards);
@@ -2797,8 +2797,8 @@ void CSymbols::CalcFlushesStraightsSets(void)
 void CSymbols::CalcRankbits(void)
 {
 	__SEH_HEADER
-	int				i, rank, suit, plcomsuit, comsuit;
-	CardMask		plCards, comCards, plcomCards;
+	int				i = 0, rank = 0, suit = 0, plcomsuit = 0, comsuit = 0;
+	CardMask		plCards = {0}, comCards = {0}, plcomCards = {0};
 
 	CardMask_RESET(plCards);
 	CardMask_RESET(comCards);
@@ -3005,8 +3005,8 @@ void CSymbols::CalcHistory(void)
 {
 	__SEH_HEADER
 
-	double maxbet;
-	int i;
+	double		maxbet = 0.;
+	int			i = 0;
 
 	EnterCriticalSection(&cs_symbols);	
 
@@ -3039,8 +3039,9 @@ void CSymbols::CalcHistory(void)
 void CSymbols::CalcStatistics(void)
 {
 	__SEH_HEADER
-	double	f$srai, C, R, S, B;
-	int		error;
+
+	double		f$srai = 0., C = 0., R = 0., S = 0., B = 0.;
+	int			error = 0;
 
 	// f$srai
 	error = SUCCESS;
@@ -3159,7 +3160,7 @@ const void CSymbols::GetCardstring(char *c, unsigned int c0, unsigned int c1)
 {
 	__SEH_HEADER
 
-	char		card0[10], card1[10];
+		char		card0[10] = {0}, card1[10] = {0};
 
 	// figure out the card string to search for
 	if (StdDeck_RANK(c0) >= StdDeck_RANK(c1))
@@ -3192,10 +3193,10 @@ const double CSymbols::CalcPokerval(HandVal hv, int n, double *pcb, int card0, i
 {
 	__SEH_HEADER
 
-	double			pv = 0;
-	int				i, j, k, max, c, flush_suit; //Matrix 2008-06-28
-	double			bits = 0;
-	CardMask		Cards, heartsCards, diamondsCards, clubsCards, spadesCards, suittestCards;
+	double			pv = 0.;
+	int				i = 0, j = 0, k = 0, max = 0, c = 0, flush_suit = 0; //Matrix 2008-06-28
+	double			bits = 0.;
+	CardMask		Cards = {0}, heartsCards = {0}, diamondsCards = {0}, clubsCards = {0}, spadesCards = {0}, suittestCards = {0};
 
 	// If we have a straight flush or flush, figure out the suit
 	flush_suit = -1;
@@ -3657,7 +3658,7 @@ void CSymbols::CalcPrimaryFormulas(const bool final_answer)
 {
 	__SEH_HEADER
 
-	int e;
+	int e = SUCCESS;
 
 	EnterCriticalSection(&cs_symbols);
 
@@ -3686,7 +3687,7 @@ void CSymbols::CalcSecondaryFormulas(void)
 {
 	__SEH_HEADER
 
-	int e;
+	int e = SUCCESS;
 
 	EnterCriticalSection(&cs_symbols);
 
@@ -3712,7 +3713,7 @@ void CSymbols::UpdateAutoplayerInfo(void)
 {
 	__SEH_HEADER
 
-	int		i;
+	int		i = 0;
 
 	EnterCriticalSection(&cs_symbols);
 
@@ -4129,8 +4130,8 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a,"balance_rank",12)==0 && strlen(a)==13)  				return game_state.sortedbalance(a[12]-'0');
 	if (memcmp(a,"hi_",3)==0)
 	{
-		char	sym[50];
-		int		round;
+		char	sym[50] = {0};
+		int		round = 0;
 		strcpy_s(sym, 50, &a[3]);
 		round = sym[strlen(sym)-1]-'0';
 		sym[strlen(sym)-1] = '\0';
@@ -4154,8 +4155,8 @@ const double CSymbols::IsHand(const char *a, int *e)
 
 	int				cardrank[2] = {0}, temp;
 	int				suited = 0;  //0=not specified, 1=suited, 2=offsuit
-	int				i, cardcnt=0;
-	int				plcardrank[2] = {0}, plsuited=0;
+	int				i, cardcnt = 0;
+	int				plcardrank[2] = {0}, plsuited = 0;
 
 	if (strlen(a)<=1)
 	{
@@ -4273,7 +4274,7 @@ const double CSymbols::Chair$(const char *a)
 {
 	__SEH_HEADER
 	
-	int i;
+	int i = 0;
 
 	for (i=0; i<p_global->trans.map.num_chairs; i++)
 	{
@@ -4290,7 +4291,7 @@ const double CSymbols::Chairbit$(const char *a)
 {
 	__SEH_HEADER
 
-	int i, bits=0;
+	int i = 0, bits = 0;
 
 	for (i=0; i<p_global->trans.map.num_chairs; i++)
 	{
@@ -4307,9 +4308,9 @@ const int CSymbols::GetSiteId (void)
 {
 	__SEH_HEADER
 
-	int			i;
-	CString		sym;
-	double		result;
+	int			i = 0;
+	CString		sym = "";
+	double		result = 0.;
 
 	if (_sym.isppro)
 	{

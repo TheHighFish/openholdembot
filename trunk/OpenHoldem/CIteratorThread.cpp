@@ -66,13 +66,13 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 	CIteratorThread *pParent = static_cast<CIteratorThread*>(pParam);
 
-	int				i, j, k, randfix, nit = 0; //modified by Matrix 2008-05-08
-	CardMask		addlcomCards, evalCards, usedCards, temp_usedCards;
-	unsigned int	ocard[MAX_OPPONENTS*2], card, pl_pokval, opp_pokval, opp_pokvalmax;
-	HandVal			pl_hv, opp_hv;
+	int				i = 0, j = 0, k = 0, randfix = 0, nit = 0; //modified by Matrix 2008-05-08
+	CardMask		addlcomCards = {0}, evalCards = {0}, usedCards = {0}, temp_usedCards = {0};
+	unsigned int	ocard[MAX_OPPONENTS*2] = {0}, card = 0, pl_pokval = 0, opp_pokval = 0, opp_pokvalmax = 0;
+	HandVal			pl_hv = 0, opp_hv = 0;
 	double			dummy = 0;
-	unsigned int	deck[52], x, swap;
-	int				numberOfCards;
+	unsigned int	deck[52] = {0}, x = 0, swap = 0;
+	int				numberOfCards = 0;
 
 	int				sym_br = (int) p_symbols->sym()->br;
 	int				sym_playersplayingbits = (int) p_symbols->sym()->playersplayingbits;
@@ -395,7 +395,7 @@ void CIteratorThread::InitIteratorLoop()
 {
 	__SEH_HEADER
 
-	int i, e;
+	int i = 0, e = SUCCESS;
 	
 	// Set starting status and parameters
 	EnterCriticalSection(&cs_iterator);
@@ -490,9 +490,9 @@ int CIteratorThread::InRange(int card1, int card2)
 
 	extern int willplay, wontplay, topclip, mustplay;
 	extern int pair2ranko[170], pair2ranks[170];
-	int i, j, hrank;
-	i = card1%13;
-	j = card2%13;
+	int i = card1%13;
+	int j = card2%13;
+	int	hrank=0;
 
 	if (j>i) //normalise the card order
 	{
