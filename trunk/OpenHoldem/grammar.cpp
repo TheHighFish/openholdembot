@@ -5,11 +5,11 @@
 
 #include "CSymbols.h"
 #include "CGlobal.h"
+#include "CPokerAction.h"
 
 #include "versus.h"
 #include "ICMCalculator.h"
 #include "Perl.hpp"
-#include "action.h"
 #include "myhand.h"
 #include "memory.h"
 #include "logsymbols.h"
@@ -149,9 +149,9 @@ void SymbolValidation(const char *begin, const char *end)
     // Action symbols
     else if (memcmp(sym.c_str(), "ac_", 3)==0)
     {
-        PokerAction	action;
+        CPokerAction	action;
 		e = SUCCESS;
-        action.process_query(sym.c_str(), &e);
+        action.ProcessQuery(sym.c_str(), &e);
 
 		if (e != SUCCESS)
 			p_global->parse_symbol_stop_strs.Add(sym);
@@ -679,9 +679,9 @@ double eval_symbol(SFormula *f, string sym, CEvalInfoFunction **logCallingFuncti
         // MECHANISM FOR DETECTING INVALID DLL SYMBOLS DOES NOT YET EXIST
         if (1)
         {
-            if (cdll.hMod_dll!=NULL)
+            if (p_dll_extension->IsDllLoaded())
             {
-                return (cdll.process_message) ("query", sym.c_str());
+                return (p_dll_extension->process_message()) ("query", sym.c_str());
             }
             else
             {
@@ -727,8 +727,8 @@ double eval_symbol(SFormula *f, string sym, CEvalInfoFunction **logCallingFuncti
     // Action symbols
     else if (memcmp(sym.c_str(), "ac_", 3)==0)
     {
-        PokerAction	action;
-        return action.process_query(sym.c_str(), e);
+        CPokerAction	action;
+        return action.ProcessQuery(sym.c_str(), e);
     }
 
     // MyHand symbols

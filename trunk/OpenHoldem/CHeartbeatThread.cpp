@@ -10,8 +10,8 @@
 #include "CHeartbeatThread.h"
 #include "CPokerTrackerThread.h"
 #include "CGlobal.h"
+#include "CGameState.h"
 
-#include "GameState.h"
 #include "DialogScraperOutput.h"
 #include "PokerPro.h"
 
@@ -219,8 +219,8 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Game state engine
-		game_state.process_game_state(&p_global->state[(p_global->state_index-1)&0xff]);
-		game_state.process_ftr(&p_global->state[(p_global->state_index-1)&0xff]);
+		p_game_state->ProcessGameState(&p_global->state[(p_global->state_index-1)&0xff]);
+		p_game_state->ProcessFtr(&p_global->state[(p_global->state_index-1)&0xff]);
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// DLL - send state
@@ -229,14 +229,14 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			 p_symbols->user_chair_confirmed()) ||
 			p_global->preferences.dll_always_send_state)
 		{
-			cdll.pass_state_to_dll(&p_global->state[(p_global->state_index-1)&0xff]);
+			p_dll_extension->PassStateToDll(&p_global->state[(p_global->state_index-1)&0xff]);
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Autoplayer
-		if (cdll.hMod_dll!=NULL && p_symbols->sym()->ismyturn)
+		if (p_dll_extension->IsDllLoaded() && p_symbols->sym()->ismyturn)
 		{
-			iswait = (cdll.process_message) ("query", "dll$iswait");
+			iswait = (p_dll_extension->process_message()) ("query", "dll$iswait");
 		}
 		else
 		{

@@ -15,14 +15,13 @@
 #include <io.h>
 #include <process.h>
 #include <sstream>
-#include <String>
-#include <windows.h>
-#include "dll_extension.h"
-#include "CScraper.h"
+
 #include "Perl.hpp"
 
+#include "CScraper.h"
 #include "CIteratorThread.h"
 #include "CGlobal.h"
+#include "CDllExtension.h"
 
 
 using namespace std;

@@ -8,12 +8,12 @@
 #include "CAutoplayer.h"
 #include "CPokerTrackerThread.h"
 #include "CGlobal.h"
+#include "CGameState.h"
 
 #include "grammar.h"
 #include "inlines/eval.h"
 #include "versus.h"
 #include "RunRon.h"
-#include "GameState.h"
 
 CSymbols			*p_symbols = NULL;
 CRITICAL_SECTION	CSymbols::cs_symbols;
@@ -742,7 +742,7 @@ void CSymbols::CalcSymbols(void)
 		_br_last = -1;	// ensure betround reset
 
 		// Update game_state so it knows that a new hand has happened
-		game_state.new_hand = true;
+		p_game_state->set_new_hand(true);
 
 		// Reset symbols and display
 		ResetSymbolsNewHand();
@@ -4115,19 +4115,19 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "vs$prloslo", 10)==0 && strlen(a)==10)  				return _sym.vs$prloslo;
 
 	// GameState symbols
-	if (memcmp(a,"lastraised",10)==0 && strlen(a)==11)  				return game_state.lastraised(a[10]-'0');
-	if (memcmp(a,"raisbits",8)==0 && strlen(a)==9)  					return game_state.raisbits(a[8]-'0');
-	if (memcmp(a,"callbits",8)==0 && strlen(a)==9)  					return game_state.callbits(a[8]-'0');
-	if (memcmp(a,"foldbits",8)==0 && strlen(a)==9)  					return game_state.foldbits(a[8]-'0');
-	if (memcmp(a,"oppdealt",8)==0 && strlen(a)==8)  					return game_state.oppdealt;
-	if (memcmp(a,"floppct",7)==0 && strlen(a)==7)  						return game_state.floppct();
-	if (memcmp(a,"turnpct",7)==0 && strlen(a)==7)  						return game_state.turnpct();
-	if (memcmp(a,"riverpct",8)==0 && strlen(a)==8)  					return game_state.riverpct();
-	if (memcmp(a,"avgbetspf",9)==0 && strlen(a)==9)  					return game_state.avgbetspf();
-	if (memcmp(a,"tablepfr",8)==0 && strlen(a)==8)  					return game_state.tablepfr();
-	if (memcmp(a,"maxbalance",10)==0 && strlen(a)==10)  				return game_state.max_balance;
-	if (memcmp(a,"handsplayed",11)==0 && strlen(a)==11)  				return game_state.hands_played;
-	if (memcmp(a,"balance_rank",12)==0 && strlen(a)==13)  				return game_state.sortedbalance(a[12]-'0');
+	if (memcmp(a,"lastraised",10)==0 && strlen(a)==11)  				return p_game_state->LastRaised(a[10]-'0');
+	if (memcmp(a,"raisbits",8)==0 && strlen(a)==9)  					return p_game_state->RaisBits(a[8]-'0');
+	if (memcmp(a,"callbits",8)==0 && strlen(a)==9)  					return p_game_state->CallBits(a[8]-'0');
+	if (memcmp(a,"foldbits",8)==0 && strlen(a)==9)  					return p_game_state->FoldBits(a[8]-'0');
+	if (memcmp(a,"oppdealt",8)==0 && strlen(a)==8)  					return p_game_state->oppdealt();
+	if (memcmp(a,"floppct",7)==0 && strlen(a)==7)  						return p_game_state->FlopPct();
+	if (memcmp(a,"turnpct",7)==0 && strlen(a)==7)  						return p_game_state->TurnPct();
+	if (memcmp(a,"riverpct",8)==0 && strlen(a)==8)  					return p_game_state->RiverPct();
+	if (memcmp(a,"avgbetspf",9)==0 && strlen(a)==9)  					return p_game_state->AvgBetsPf();
+	if (memcmp(a,"tablepfr",8)==0 && strlen(a)==8)  					return p_game_state->TablePfr();
+	if (memcmp(a,"maxbalance",10)==0 && strlen(a)==10)  				return p_game_state->max_balance();
+	if (memcmp(a,"handsplayed",11)==0 && strlen(a)==11)  				return p_game_state->hands_played();
+	if (memcmp(a,"balance_rank",12)==0 && strlen(a)==13)  				return p_game_state->SortedBalance(a[12]-'0');
 	if (memcmp(a,"hi_",3)==0)
 	{
 		char	sym[50] = {0};
@@ -4135,7 +4135,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 		strcpy_s(sym, 50, &a[3]);
 		round = sym[strlen(sym)-1]-'0';
 		sym[strlen(sym)-1] = '\0';
-		return game_state.wh_sym_hist(sym, round);
+		return p_game_state->OHSymHist(sym, round);
 	}
 
 	// PokerTracker symbols

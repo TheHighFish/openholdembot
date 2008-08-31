@@ -311,8 +311,8 @@ BOOL COpenHoldemDoc::OnNewDocument()
 	p_global->formula.dRake = defaultdRake;
 	p_global->formula.dNit = defaultdNit;
 
-	// Unload dll, if one is loaded
-	if (cdll.hMod_dll) cdll.unload_dll();
+	// Try to unload dll
+	p_dll_extension->UnloadDll();
 
 	// Create hand list matrices
 	p_global->CreateHandListMatrices(&p_global->formula);
@@ -330,7 +330,7 @@ BOOL COpenHoldemDoc::OnNewDocument()
 
 	// Load dll, if set in preferences
 	if (p_global->preferences.load_dll_on_startup)
-	cdll.load_dll("");
+	p_dll_extension->LoadDll("");
 
 	return true;
  
@@ -366,8 +366,8 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 		ReadFormula(&p_global->formula, ar);
 		p_global->formula_name = ar.GetFile()->GetFileName();	
 
-		// Unload dll, if one is loaded
-		if (cdll.hMod_dll) cdll.unload_dll();
+		// Try to unload dll
+		p_dll_extension->UnloadDll();
 
 		// Create hand list matrices
 		p_global->CreateHandListMatrices(&p_global->formula);
@@ -377,7 +377,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 
 		// Load dll, if set in preferences
 		if (p_global->preferences.load_dll_on_startup)
-			cdll.load_dll("");
+			p_dll_extension->LoadDll("");
 		}
  
 		__SEH_LOGFATAL("COpenHoldemDoc::Serialize :\n"); 

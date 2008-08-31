@@ -5,10 +5,10 @@
 #include "CSymbols.h"
 #include "CPokerTrackerThread.h"
 #include "CGlobal.h"
+#include "CGameState.h"
 
 #include "levenshtein.h"
 #include "registry.h"
-#include "GameState.h"
 
 CPokerTrackerThread	*p_pokertracker_thread = NULL;
 CRITICAL_SECTION	CPokerTrackerThread::cs_pokertracker;
@@ -89,7 +89,7 @@ const double CPokerTrackerThread::ProcessQuery (const char * s)
 	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)  
 		return 0.0;
 
-	if	  (memcmp(s,"pt_iconlastr",12)==0)		return GetStat(game_state.lastraised(s[12]-'0'), pt_icon);
+	if	  (memcmp(s,"pt_iconlastr",12)==0)			return GetStat(p_game_state->LastRaised(s[12]-'0'), pt_icon);
 	else if (memcmp(s,"pt_icon",7)==0)				return GetStat(s[7]-'0', pt_icon);
 	else if (memcmp(s,"pt_pfr",6)==0)				return GetStat(s[6]-'0', pt_pfr);
 	else if (memcmp(s,"pt_aggtotnopf",13)==0)		return GetStat(s[13]-'0', pt_aggtotnopf);
@@ -132,7 +132,7 @@ const double CPokerTrackerThread::ProcessQuery (const char * s)
 	else if (memcmp(s,"pt_rfbbts",9)==0)			return GetStat(sym_raischair, pt_fbbts);
 	else if (memcmp(s,"pt_rfsbts",9)==0)			return GetStat(sym_raischair, pt_fsbts);
 
-	else if (memcmp(s,"ptt_iconlastr",13)==0)		return GetStat(game_state.lastraised(s[13]-'0'), ptt_icon);
+	else if (memcmp(s,"ptt_iconlastr",13)==0)		return GetStat(p_game_state->LastRaised(s[13]-'0'), ptt_icon);
 	else if (memcmp(s,"ptt_icon",8)==0)				return GetStat(s[8]-'0', ptt_icon);
 	else if (memcmp(s,"ptt_pfr",7)==0)				return GetStat(s[7]-'0', ptt_pfr);
 	else if (memcmp(s,"ptt_aggtotnopf",14)==0)		return GetStat(s[14]-'0', ptt_aggtotnopf);
