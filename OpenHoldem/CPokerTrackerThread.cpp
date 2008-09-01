@@ -6,8 +6,8 @@
 #include "CPokerTrackerThread.h"
 #include "CGlobal.h"
 #include "CGameState.h"
+#include "CLevDistance.h"
 
-#include "levenshtein.h"
 #include "registry.h"
 
 CPokerTrackerThread	*p_pokertracker_thread = NULL;
@@ -501,7 +501,7 @@ bool CPokerTrackerThread::QueryName (const char * query_name, const char * scrap
 	PGresult	*res = NULL;
 	char		siteidstr[5] = {0};
 	bool		result = false;
-	LDistance	myLD;
+	CLevDistance	myLD;
 	int			siteid = 0;
 	static int	_last_siteid = -1;
 
