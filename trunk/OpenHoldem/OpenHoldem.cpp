@@ -19,6 +19,7 @@
 #include "CGlobal.h"
 #include "CDllExtension.h"
 #include "CGameState.h"
+#include "CMemory.h"
 
 #include "DialogFormulaScintilla.h"
 #include "grammar.h"
@@ -92,6 +93,7 @@ BOOL COpenHoldemApp::InitInstance()
 	if (!p_dll_extension)  p_dll_extension = new CDllExtension;
 	if (!p_game_state)  p_game_state = new CGameState;
 	if (!the_Perl_Interpreter)  the_Perl_Interpreter = new Perl;
+	if (!p_memory)  p_memory = new CMemory;
 
 	Scintilla_RegisterClasses(AfxGetInstanceHandle());
 
@@ -228,7 +230,7 @@ int COpenHoldemApp::ExitInstance()
 	if (p_dll_extension)  { delete p_dll_extension; p_dll_extension = NULL; }
 	if (p_game_state)  { delete p_game_state; p_game_state = NULL; }
 	if (the_Perl_Interpreter)  { delete the_Perl_Interpreter; the_Perl_Interpreter = NULL; }
-
+	if (p_memory)  { delete p_memory; p_memory = NULL; }
 
     stop_log();
 

@@ -321,7 +321,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CICMCalculator.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CIteratorThread.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CLevDistance.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CMemory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CMyHand.cpp"
 				>
 			</File>
 			<File
@@ -393,14 +409,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ICMCalculator.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\levenshtein.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\logsymbols.cpp"
 				>
 			</File>
@@ -409,15 +417,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\memory.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\MyCToolBar.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\myhand.cpp"
 				>
 			</File>
 			<File
@@ -631,7 +631,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CICMCalculator.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CIteratorThread.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CLevDistance.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CMemory.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CMyHand.h"
 				>
 			</File>
 			<File
@@ -703,14 +719,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ICMCalculator.h"
-				>
-			</File>
-			<File
-				RelativePath=".\levenshtein.h"
-				>
-			</File>
-			<File
 				RelativePath=".\logsymbols.h"
 				>
 			</File>
@@ -719,15 +727,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\memory.h"
-				>
-			</File>
-			<File
 				RelativePath=".\MyCToolBar.h"
-				>
-			</File>
-			<File
-				RelativePath=".\myhand.h"
 				>
 			</File>
 			<File

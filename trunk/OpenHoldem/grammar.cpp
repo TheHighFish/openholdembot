@@ -6,12 +6,12 @@
 #include "CSymbols.h"
 #include "CGlobal.h"
 #include "CPokerAction.h"
+#include "CMemory.h"
+#include "CICMCalculator.h"
+#include "CMyHand.h"
 
 #include "versus.h"
-#include "ICMCalculator.h"
 #include "Perl.hpp"
-#include "myhand.h"
-#include "memory.h"
 #include "logsymbols.h"
 
 //#include <boost/spirit/tree/tree_to_xml.hpp>
@@ -136,7 +136,7 @@ void SymbolValidation(const char *begin, const char *end)
     // icm_ symbols
     else if (memcmp(sym.c_str(), "icm", 3)==0)
     {
-        ICM		icm;
+        CICMCalculator		icm;
 		e = SUCCESS;
         icm.ProcessQueryICM(sym.c_str()+3, &e);
 
@@ -162,9 +162,9 @@ void SymbolValidation(const char *begin, const char *end)
     // MyHand symbols
     else if (memcmp(sym.c_str(), "mh_", 3)==0)
     {
-        MyHand	myhand;
+        CMyHand	myhand;
 		e = SUCCESS;
-        myhand.process_query(sym.c_str(), &e);
+        myhand.ProcessQuery(sym.c_str(), &e);
 
 		if (e != SUCCESS)
 			p_global->parse_symbol_stop_strs.Add(sym);
@@ -180,7 +180,7 @@ void SymbolValidation(const char *begin, const char *end)
 		// are just parsing here, we may not have those trees yet.
 
 		//e = SUCCESS;
-		//memory.process_query(sym.c_str(), &e);
+		//p_memory->ProcessQuery(sym.c_str(), &e);
 
 		//if (e != SUCCESS)
 		//	p_global->parse_symbol_stop_strs.Add(sym);
@@ -700,7 +700,7 @@ double eval_symbol(SFormula *f, string sym, CEvalInfoFunction **logCallingFuncti
     else if (the_Perl_Interpreter->is_Perl_Symbol(sym.c_str()))
     {
         //  Error checking is done inside the Perl class
-        //  A.t.m. creating a messagebox on serious errors.
+        //  At the moment, creating a messagebox on serious errors.
         return the_Perl_Interpreter->get_Perl_Symbol(sym.c_str());
     }
 
@@ -720,7 +720,7 @@ double eval_symbol(SFormula *f, string sym, CEvalInfoFunction **logCallingFuncti
     // icm_ symbols
     else if (memcmp(sym.c_str(), "icm", 3)==0)
     {
-        ICM		icm;
+        CICMCalculator		icm;
         return icm.ProcessQueryICM(sym.c_str()+3, e);
     }
 
@@ -734,22 +734,20 @@ double eval_symbol(SFormula *f, string sym, CEvalInfoFunction **logCallingFuncti
     // MyHand symbols
     else if (memcmp(sym.c_str(), "mh_", 3)==0)
     {
-        MyHand	myhand;
-        return myhand.process_query(sym.c_str(), e);
+        CMyHand	myhand;
+        return myhand.ProcessQuery(sym.c_str(), e);
     }
 
     // Memory symbols
     else if (memcmp(sym.c_str(), "me_", 3)==0)
     {
-        return memory.process_query(sym.c_str(), logCallingFunction, e);
+		return p_memory->ProcessQuery(sym.c_str(), logCallingFunction, e);
     }
-
+	
     // all other symbols
     else
     {
-		double result = p_symbols->GetSymbolVal(sym.c_str(), e);
-
-        return result;
+        return p_symbols->GetSymbolVal(sym.c_str(), e);;
     }
 
 	return 0;
