@@ -24,12 +24,13 @@ CPokerTrackerThread::CPokerTrackerThread()
 
 	InitializeCriticalSection(&cs_pokertracker);
 
-
 	// Create events
 	_m_stop_thread = CreateEvent(0, TRUE, FALSE, 0);
 	_m_wait_thread = CreateEvent(0, TRUE, FALSE, 0);
 
 	// Initialize variables
+	_pt_thread = NULL;
+
 	_conn_str = "host=" + p_global->preferences.pt_prefs.ip_addr;
 	_conn_str += " port=" + p_global->preferences.pt_prefs.port;
 	_conn_str += " user=" + p_global->preferences.pt_prefs.user;
@@ -47,29 +48,17 @@ CPokerTrackerThread::CPokerTrackerThread()
 		strcpy_s(_player_stats[i].pt_name, 30, "") ;
 		strcpy_s(_player_stats[i].scraped_name, 30, "") ;
 	}
+
 	_connected = false;
 
-	AfxBeginThread(PokertrackerThreadFunction, this);
-
-
-	write_log("Started Poker Tracker thread.\n");
-
-	__SEH_LOGFATAL("CPokerTracker::constructor : \n");
+	__SEH_LOGFATAL("CPokerTracker::Constructor : \n");
 }
 
 CPokerTrackerThread::~CPokerTrackerThread()
 {
 	__SEH_HEADER
 
-	// Trigger thread to stop
-	::SetEvent(_m_stop_thread);
-
-	// Wait until thread finished
-	::WaitForSingleObject(_m_wait_thread, INFINITE);
-
-	Disconnect();
-
-	write_log("Stopped Poker Tracker thread.\n");
+	StopThread();
 
 	// Close handles
 	::CloseHandle(_m_stop_thread);
@@ -77,7 +66,43 @@ CPokerTrackerThread::~CPokerTrackerThread()
 
 	DeleteCriticalSection(&cs_pokertracker);
 
-	__SEH_LOGFATAL("CPokerTracker::destructor : \n");
+	__SEH_LOGFATAL("CPokerTracker::Destructor : \n");
+}
+
+void CPokerTrackerThread::StartThread()
+{
+	__SEH_HEADER
+
+	if (_pt_thread == NULL)
+	{
+		_pt_thread = AfxBeginThread(PokertrackerThreadFunction, this);
+
+		write_log("Started Poker Tracker thread.\n");
+	}
+
+	__SEH_LOGFATAL("CPokerTracker::StartThread : \n");
+}
+
+void CPokerTrackerThread::StopThread()
+{
+	__SEH_HEADER
+
+	if (_pt_thread)
+	{
+		// Trigger thread to stop
+		::SetEvent(_m_stop_thread);
+
+		// Wait until thread finished
+		::WaitForSingleObject(_m_wait_thread, INFINITE);
+
+		_pt_thread = NULL;
+
+		Disconnect();
+
+		write_log("Stopped Poker Tracker thread.\n");
+	}
+
+	__SEH_LOGFATAL("CPokerTracker::StopThread : \n");
 }
 
 const double CPokerTrackerThread::ProcessQuery (const char * s)

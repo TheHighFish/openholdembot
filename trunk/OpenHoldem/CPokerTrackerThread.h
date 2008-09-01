@@ -22,6 +22,8 @@ public:
 	// public functions
 	CPokerTrackerThread();
 	~CPokerTrackerThread();
+	void StartThread();
+	void StopThread();
 	const double ProcessQuery(const char *s);
 
 private:
@@ -41,6 +43,8 @@ private:
 	SPlayerStats	_player_stats[10];
 	HANDLE			_m_stop_thread;
 	HANDLE			_m_wait_thread;
+
+	CWinThread		*_pt_thread;
 
 } *p_pokertracker_thread;
 

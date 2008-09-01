@@ -88,6 +88,7 @@ BOOL COpenHoldemApp::InitInstance()
 	if (!p_scraper)  p_scraper = new CScraper;
 	if (!p_symbols)  p_symbols = new CSymbols;
 	if (!p_autoplayer)  p_autoplayer = new CAutoplayer(false, "OHAntiColl");
+	if (!p_pokertracker_thread)  p_pokertracker_thread = new CPokerTrackerThread;
 	if (!p_dll_extension)  p_dll_extension = new CDllExtension;
 	if (!p_game_state)  p_game_state = new CGameState;
 	if (!the_Perl_Interpreter)  the_Perl_Interpreter = new Perl;
@@ -213,25 +214,21 @@ int COpenHoldemApp::ExitInstance()
 		p_heartbeat_thread = NULL;
 	}
 
-	if (p_pokertracker_thread)
-	{
-		delete p_pokertracker_thread;
-		p_pokertracker_thread = NULL;
-	}
-
 	// critical sections
 	DeleteCriticalSection(&cs_iterator);
 	DeleteCriticalSection(&cs_calc_f$symbol);
     DeleteCriticalSection(&cs_parse);
 
 	// classes
-	if (p_global)  delete p_global;
-	if (p_scraper)  delete p_scraper;
-	if (p_symbols)  delete p_symbols;
-	if (p_autoplayer)  delete p_autoplayer;
-	if (p_dll_extension)  delete p_dll_extension;
-	if (p_game_state)  delete p_game_state;
-	if (the_Perl_Interpreter)  delete the_Perl_Interpreter;
+	if (p_global)  { delete p_global; p_global = NULL; }
+	if (p_scraper)  { delete p_scraper; p_scraper = NULL; }
+	if (p_symbols)  { delete p_symbols; p_symbols = NULL; }
+	if (p_autoplayer)  { delete p_autoplayer; p_autoplayer = NULL; }
+	if (p_pokertracker_thread)	{ delete p_pokertracker_thread; p_pokertracker_thread = NULL; }
+	if (p_dll_extension)  { delete p_dll_extension; p_dll_extension = NULL; }
+	if (p_game_state)  { delete p_game_state; p_game_state = NULL; }
+	if (the_Perl_Interpreter)  { delete the_Perl_Interpreter; the_Perl_Interpreter = NULL; }
+
 
     stop_log();
 
