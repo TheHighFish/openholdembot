@@ -192,17 +192,12 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		// Start/stop PokerTracker thread as needed
 
 		// Start Poker Tracker Thread if needed and not already running
-		if (p_symbols->sym()->issittingin && !p_global->preferences.pt_prefs.disable)
-			if (!p_pokertracker_thread)  
-				p_pokertracker_thread = new CPokerTrackerThread;
+		if (p_symbols->sym()->issittingin && !p_global->preferences.pt_prefs.disable && p_pokertracker_thread)
+			p_pokertracker_thread->StartThread();
 
 		// Stop Poker Tracker Thread if not needed any longer
-		if (!p_symbols->sym()->issittingin)
-			if (p_pokertracker_thread)  
-			{
-				delete p_pokertracker_thread;
-				p_pokertracker_thread = NULL;
-			}
+		if (!p_symbols->sym()->issittingin && p_pokertracker_thread)
+			p_pokertracker_thread->StopThread();
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Update scraper output dialog if it is present

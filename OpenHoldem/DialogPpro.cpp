@@ -206,11 +206,9 @@ void CDlgPpro::OnBnClickedConnectButton()
 			delete p_heartbeat_thread;
 			p_heartbeat_thread = NULL;
 		}
+
 		if (p_pokertracker_thread)
-		{
-			delete p_pokertracker_thread;
-			p_pokertracker_thread = NULL;
-		}
+			p_pokertracker_thread->StopThread();
 
 		// Make sure autoplayer is off
         p_global->autoplay = false;
