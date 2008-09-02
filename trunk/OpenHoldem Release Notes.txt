@@ -8,7 +8,8 @@ BUG FIXES:
 - Validation of card information passed in from PokerPro server to avoid crashes when/if bad information
   is passed in. (OpenHoldem)
 - f$srai would show up as [Cached] in the Autoplayer Trace.  This function will now be traced if f$swag is set to be traced. (Spew)
-  
+- Corrected error in ICM::GetChairFromDealPos method introduced in 1.9.3a and identified by SNG.Champ (OpenHoldem)
+
 
 MAINTENANCE:
 

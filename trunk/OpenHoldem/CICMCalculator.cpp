@@ -441,10 +441,10 @@ int CICMCalculator::GetChairFromDealPos(const char* pquery)
 
 		if (dealPos >= 0)
 		{
+			chair = sym_dealerchair;
+
 			while (dealPos > 0)
 			{
-				chair = sym_dealerchair;
-
 				chair = (chair + 1) % MAX_PLAYERS;
 
 				if ((sym_playersseatedbits>>chair)&1)
