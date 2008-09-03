@@ -124,7 +124,7 @@ CGlobal::CGlobal(void)
 	_sopen_s(&versus_fh, "versus.bin", _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
 	if (versus_fh == -1)
 	{
-		versus_fh = _sopen_s(&versus_fh, reg.versus_path, _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
+		_sopen_s(&versus_fh, reg.versus_path, _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
 	}
 
 	if (versus_fh == -1)
