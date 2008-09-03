@@ -1274,9 +1274,10 @@ void CMainFrame::OnDllLoad()
 {
     __SEH_HEADER
 
-	p_dll_extension->UnloadDll();
-
-	p_dll_extension->LoadDll("");
+		if (p_dll_extension->IsDllLoaded())
+			p_dll_extension->UnloadDll();
+		else
+			p_dll_extension->LoadDll("");
 
     __SEH_LOGFATAL("CMainFrame::OnDllLoad :\n");
 }
