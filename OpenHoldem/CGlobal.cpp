@@ -598,7 +598,7 @@ void CGlobal::CaptureState(const char *title)
 	{
 
 		// player name, balance, currentbet
-		strcpy_s(state[state_index&0xff].m_player[i].m_name, 16, p_scraper->player_name(i).GetString());
+		strncpy_s(state[state_index&0xff].m_player[i].m_name, 16, p_scraper->player_name(i).GetString(), _TRUNCATE);
 		state[state_index&0xff].m_player[i].m_balance = p_symbols->sym()->balance[i];
 		state[state_index&0xff].m_player[i].m_currentbet = p_symbols->sym()->currentbet[i];
 
