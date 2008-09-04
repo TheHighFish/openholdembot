@@ -4,6 +4,7 @@
 
 #include "hash/stdint.h"
 #include "pdiff/RGBAImage.h"
+#include <map>
 
 // SEH #define support
 /*#ifdef SEH_ENABLE
@@ -133,7 +134,7 @@ struct Stablemap_font
 	char			ch;
 	int				x_count;
 	unsigned int	x[MAX_SINGLE_CHAR_WIDTH];
-	CString			hexmash;	// mashed up x[MAX_SINGLE_CHAR_WIDTH] for bsearch purposes
+	CString			hexmash;	// mashed up x[MAX_SINGLE_CHAR_WIDTH] for lookup purposes
 	int				group;
 };
 
@@ -170,11 +171,11 @@ struct STableMap
 	CArray <Stablemap_size, Stablemap_size>				z$;
 	CArray <Stablemap_symbol, Stablemap_symbol>			s$;
 	CArray <Stablemap_region, Stablemap_region>			r$;
-	uint32_t											hashes[512];	// Region hashes for bsearches
 	CArray <Stablemap_font, Stablemap_font>				t$;
-	char 												hexmash[512][MAX_SINGLE_CHAR_WIDTH*8 + 1];	// Font hexmashes for bsearches
+	std::map<CString, int>								hexmashes[4]; // Font hexmashes for fast lookups - font type 0-3 are indexed in the array
 	CArray <Stablemap_hash_point, Stablemap_hash_point>	p$;
 	CArray <Stablemap_hash_value, Stablemap_hash_value>	h$;
+	std::map<uint32_t, int>								hashes[4]; // Region hashes for fast lookups - hash type 0-3 are indexed in the array
 	CArray <Stablemap_image, Stablemap_image>			i$;
 
 
@@ -286,7 +287,7 @@ public:
 	bool is_in_RGB_color_cube(int center_r, int center_g, int center_b, int radius, int pix_r, int pix_g, int pix_b);
 	void get_shift_left_down_indexes(int x_start, int width, int height, bool background[], bool character[][MAX_CHAR_HEIGHT], 
 										  int *x_begin, int *x_end, int *y_begin, int *y_end);
-	void calc_hexmash(int left, int right, int top, int bottom, bool (*ch)[MAX_CHAR_HEIGHT], char *hexmash, bool withspace=false);
+	void calc_hexmash(int left, int right, int top, int bottom, bool (*ch)[MAX_CHAR_HEIGHT], CString *hexmash, bool withspace=false);
 	double string_to_money(CString str);
 
 	STableMap		map;
@@ -306,8 +307,6 @@ protected:
 	char * get_now_time(char * timebuf);
 };
 
-int compare_font( char *hexmash1, char *hexmash2);
-int compare_hash( uint32_t *hash1, uint32_t *hash2);
 int	bitcount(unsigned int u);
 
 

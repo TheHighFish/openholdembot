@@ -589,8 +589,8 @@ bool Registry::GetProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, CDC
     int bItalic;
     int iPtSize;
 
-    if (sscanf_s((LPCTSTR)s, "%[a-zA-Z ],%d,%d,%d",
-               lf.lfFaceName, &iPtSize, &lf.lfWeight, &bItalic) != 4)
+	if (sscanf_s(s.GetString(), "%[a-zA-Z ],%d,%d,%d",
+               lf.lfFaceName, 32, &iPtSize, &lf.lfWeight, &bItalic) != 4)
         return FALSE;
     lf.lfHeight = MulDiv(-iPtSize, 	// convert ptsize to logical units
                          ::GetDeviceCaps(pDC ? pDC->m_hDC : ::GetDC(NULL), LOGPIXELSY), 72);
