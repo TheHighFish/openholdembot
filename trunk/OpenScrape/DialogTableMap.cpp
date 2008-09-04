@@ -2276,15 +2276,14 @@ void CDlgTableMap::OnBnClickedCreateFont()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	CDlgEditFont		dlg_editfont;
 	Stablemap_font		new_font;
-	CString				text, separation, hex, num;
+	CString				text, separation, num;
 	int					width, height, pos, x_cnt, scan_pos;
 	HDC					hdcScreen, hdc, hdc_region;
 	HBITMAP				old_bitmap, old_bitmap2, bitmap_region;
 	bool				character[MAX_CHAR_WIDTH][MAX_CHAR_HEIGHT], background[MAX_CHAR_WIDTH];
-	char				*cresult, hexmash[MAX_CHAR_WIDTH*16];
+	CString				hexmash;
 	int					char_field_x_begin, char_field_x_end, char_field_y_begin, char_field_y_end;
 	int					i, j, insert_point, new_index;
-	char				hexmash_array[512][MAX_SINGLE_CHAR_WIDTH*8 + 1];
 	HTREEITEM			new_hti, font_node, region_node, child_node;
 	CString				node_text;
 	HTREEITEM			parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
@@ -2330,15 +2329,6 @@ void CDlgTableMap::OnBnClickedCreateFont()
 		DeleteDC(hdc);
 		DeleteDC(hdcScreen);
 
-		// populate hexmash array
-		int hexmash_array_size = 0;
-		int sel_region_text_group = atoi(sel_region_ptr->transform.Right(1));
-		for (i=0; i<(int) pDoc->trans.map.t$.GetSize(); i++)
-		{
-			if (pDoc->trans.map.t$[i].group == sel_region_text_group)
-				strcpy_s(hexmash_array[hexmash_array_size++], MAX_SINGLE_CHAR_WIDTH*8 + 1, pDoc->trans.map.t$[i].hexmash);
-		}
-
 		// Scan through background, separate characters by looking for background bands
 		new_t$_recs.RemoveAll();
 		int start = 0;
@@ -2362,39 +2352,27 @@ void CDlgTableMap::OnBnClickedCreateFont()
 
 			// Get individual hex values
 			pDoc->trans.calc_hexmash(char_field_x_begin, char_field_x_end, char_field_y_begin, char_field_y_end, 
-									 character, hexmash, true);
+									 character, &hexmash, true);
 
-			hex.Format("%s", hexmash);
 			pos = x_cnt = 0;
-			num = hex.Tokenize(" ", pos);
+			num = hexmash.Tokenize(" ", pos);
 			while (pos != -1 && x_cnt<MAX_SINGLE_CHAR_WIDTH)
 			{
 				new_font.x[x_cnt++] = strtoul(num.GetString(), NULL, 16);
-				num = hex.Tokenize(" ", pos);
+				num = hexmash.Tokenize(" ", pos);
 			}
 			new_font.x_count = x_cnt;
 
 			// Get whole hexmash
 			pDoc->trans.calc_hexmash(char_field_x_begin, char_field_x_end, char_field_y_begin, char_field_y_end, 
-									 character, hexmash, false);
-
-			new_font.hexmash.Format("%s", hexmash);
-
+									 character, &new_font.hexmash, false);
 
 			// Search for this character in the existing t$ records list
-			cresult = (char *) bsearch( hexmash, hexmash_array, hexmash_array_size, sizeof(hexmash_array[0]),
-										(int (*)(const void*, const void*)) compare_font);
+			int text_group = atoi(sel_region_ptr->transform.Right(1));
+			std::map<CString, int>::const_iterator fontindex = pDoc->trans.map.hexmashes[text_group].find(new_font.hexmash);
 
 			// Populate new font record
-			if (cresult!=NULL) 
-			{
-				//new_font.ch = pDoc->trans.map.t$[((long)cresult - (long)hexmash_array[0]) / sizeof(hexmash_array[0])].ch;
-				//new_font.group = pDoc->trans.map.t$[((long)cresult - (long)hexmash_array[0]) / sizeof(hexmash_array[0])].group;
-
-				// Insert the new record in the existing array of i$ records
-				//new_t$_recs.Add(new_font);
-			}
-			else			
+			if (fontindex == pDoc->trans.map.hexmashes[text_group].end()) 
 			{
 				m_Transform.GetLBText(m_Transform.GetCurSel(), text);
 				new_font.ch = '?';

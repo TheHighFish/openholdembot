@@ -300,6 +300,12 @@ int CTransform::load_tablemap(char *filename, char *version, bool check_ws_date,
                 hold_font.group = strLineType.GetString()[1] - '0';
             }
 
+			if (hold_font.group<0 || hold_font.group>3)
+			{
+				MessageBox(NULL, strLine, "Invalid font group", MB_OK | MB_TOPMOST);
+				return ERR_SYNTAX;
+			}
+
             i = 0;
             hold_font.hexmash = "";
             while ((token = strLine.Tokenize(" \t", pos))!="" && i<=30 && pos!=-1) 
@@ -379,6 +385,11 @@ int CTransform::load_tablemap(char *filename, char *version, bool check_ws_date,
 		{
             // number
             hold_hash_value.number = strLineType.GetString()[1] - '0';
+			if (hold_hash_value.number<0 || hold_hash_value.number>3)
+			{
+				MessageBox(NULL, strLine, "Invalid hash group", MB_OK | MB_TOPMOST);
+				return ERR_SYNTAX;
+			}
 
             // name
             hold_hash_value.name = strLineType.Mid(3);
@@ -473,21 +484,22 @@ int CTransform::load_tablemap(char *filename, char *version, bool check_ws_date,
     }
     while (ar.ReadString(strLine));
 
-    // Populate t$ hexmash char array for bsearches later on
-    P = (int) map.t$.GetSize();
-    for (j=0; j<P; j++)
-        strcpy_s(map.hexmash[j], MAX_SINGLE_CHAR_WIDTH*8 + 1, map.t$[j].hexmash);
+    // Populate t$ hexmash std::map for fast lookups
+	for (j=0; j<=3; j++)
+		map.hexmashes[j].clear();
+    for (j=0; j<(int) map.t$.GetSize(); j++)
+        map.hexmashes[map.t$[j].group].insert(std::pair<CString, int> (map.t$[j].hexmash, j));
 
-    // Populate h$ hashes array for bsearches later on
-    P = (int) map.h$.GetSize();
-    for (j=0; j<P; j++)
-        map.hashes[j] = map.h$[j].hash;
+    // Populate h$ hashes std::map for fast lookups
+	for (j=0; j<=3; j++)
+		map.hashes[j].clear();
+    for (j=0; j<(int) map.h$.GetSize(); j++)
+		map.hashes[map.h$[j].number].insert(std::pair<uint32_t, int> (map.h$[j].hash, j));
 
     map.valid = true;
     return SUCCESS;
 
     __SEH_LOGFATAL("CTransform::load_tablemap :\n");
-
 }
 
 int CTransform::save_tablemap(CArchive& ar, char *version_text)
@@ -848,14 +860,19 @@ int CTransform::convert_tablemap(HWND hwnd, char *startup_path)
 
 	// Kill the existing h$ records, and replace with new_hashes records
 	map.h$.RemoveAll();
-	N = (int) new_hashes.GetSize();
-	for (j=0; j<N; j++) 
+	for (j=0; j<(int) new_hashes.GetSize(); j++) 
 	{
 		hold_hash_value.name = new_hashes[j].name;
 		hold_hash_value.number = new_hashes[j].number;
 		hold_hash_value.hash = new_hashes[j].hash;
 		map.h$.Add(hold_hash_value);
 	}
+
+    // Populate h$ hashes std::map for fast lookups
+	for (j=0; j<=3; j++)
+		map.hashes[j].clear();
+    for (j=0; j<(int) map.h$.GetSize(); j++)
+		map.hashes[map.h$[j].number].insert(std::pair<uint32_t, int> (map.h$[j].hash, j));
 
 	return SUCCESS;
 
@@ -1040,14 +1057,19 @@ int CTransform::update_hashes(HWND hwnd, char *startup_path)
 
 	// Kill the existing h$ records, and replace with new_hashes records
 	map.h$.RemoveAll();
-	N = (int) new_hashes.GetSize();
-	for (j=0; j<N; j++) 
+	for (j=0; j<(int) new_hashes.GetSize(); j++) 
 	{
 		hold_hash_value.name = new_hashes[j].name;
 		hold_hash_value.number = new_hashes[j].number;
 		hold_hash_value.hash = new_hashes[j].hash;
 		map.h$.Add(hold_hash_value);
 	}
+
+    // Populate h$ hashes std::map for fast lookups
+	for (j=0; j<=3; j++)
+		map.hashes[j].clear();
+    for (j=0; j<(int) map.h$.GetSize(); j++)
+		map.hashes[map.h$[j].number].insert(std::pair<uint32_t, int> (map.h$[j].hash, j));
 
 	if (!all_i$_found)  return ERR_INCOMPLETEMASTER;
 
@@ -1295,22 +1317,24 @@ int CTransform::h_transform(Stablemap_region *region, HDC hdc, CString *text)
 	int					x, y, j;
 	int					width, height;
 	int					hash_type, num_precs, pixcount;
-	uint32_t			*uresult, hash, pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT];
+	uint32_t			hash, pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT];
 	int					retval=ERR_NOTHING_TO_SCRAPE;
-	UINT_PTR			index;
 	HBITMAP				hbm;
 	BYTE				*pBits, red, green, blue;
-	uint32_t			hashes[512];
+	std::map<uint32_t, int>::const_iterator		hashindex;
+
+	width = region->right - region->left;
+	height = region->bottom - region->top;
+	hash_type = region->transform.GetString()[1] - '0';
+	
+	if (map.hashes[hash_type].empty())
+		return ERR_NO_HASH_MATCH;
 
 	// Allocate heap space for BITMAPINFO
 	BITMAPINFO	*bmi;
 	int			info_len = sizeof(BITMAPINFOHEADER) + 1024;
 	bmi = (BITMAPINFO *) ::HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, info_len);
 
-	width = region->right - region->left;
-	height = region->bottom - region->top;
-	hash_type = region->transform.GetString()[1] - '0';
-	
 	// See if region size is too large
 	if (width >= MAX_HASH_WIDTH || height>=MAX_HASH_HEIGHT) 
 	{
@@ -1375,16 +1399,11 @@ int CTransform::h_transform(Stablemap_region *region, HDC hdc, CString *text)
 		if (hash_type==3)  hash = hashword(&pix[0], pixcount, HASH_SEED_3);
 	}
 
-	// bsearch h$ for hash
-	for (j=0; j<(int) map.h$.GetSize(); j++) 
-		hashes[j] = map.h$[j].hash;
-
-	uresult = (uint32_t *) bsearch(&hash, &hashes, map.h$.GetSize(), 
-								  sizeof(uint32_t), 
-								  (int (*)(const void*, const void*)) compare_hash);
+    // lookup hash in h$ records
+	hashindex = map.hashes[hash_type].find(hash);
 
 	// no hash match
-	if (uresult == NULL) 
+	if (hashindex == map.hashes[hash_type].end()) 
 	{ 
 		retval = ERR_NO_HASH_MATCH; 
 		*text = "";
@@ -1393,8 +1412,7 @@ int CTransform::h_transform(Stablemap_region *region, HDC hdc, CString *text)
 	else 
 	{ 
 		retval = ERR_GOOD_SCRAPE_GENERAL; 
-		index = ((UINT_PTR) uresult - (UINT_PTR) hashes)/sizeof(UINT_PTR);
-		*text = map.h$[index].name;
+		*text = map.h$[hashindex->second].name;
 	}
 
 	// Clean up
@@ -1540,28 +1558,17 @@ int CTransform::do_plain_font_scan(Stablemap_region *region, int width, int heig
 {
     __SEH_HEADER
 
-	int					i, y, retval=ERR_TEXT_SCRAPE_NOMATCH;
+	int					y, retval=ERR_TEXT_SCRAPE_NOMATCH;
 	int					x_begin, x_end, y_begin, y_end;
 	int					temp_right, vert_band_left = 0;
 	bool				backg_band;
-	CString				newchar;
-	char				hexmash_array[512][MAX_SINGLE_CHAR_WIDTH*8 + 1];
-	char				*cresult, hexmash[MAX_CHAR_WIDTH*16];
-	char				t$chars[512];
-
-	// populate hexmash array
-	int hexmash_array_size = 0;
-	int sel_region_text_group = atoi(region->transform.Right(1));
-	for (i=0; i<(int) map.t$.GetSize(); i++)
-	{
-		if (map.t$[i].group == sel_region_text_group)
-		{
-			strcpy_s(hexmash_array[hexmash_array_size], MAX_SINGLE_CHAR_WIDTH*8 + 1, map.t$[i].hexmash);
-			t$chars[hexmash_array_size] = map.t$[i].ch;
-			hexmash_array_size++;
-		}
-	}
+	CString				newchar, hexmash;
+	int					text_group = atoi(region->transform.Right(1));
+	std::map<CString, int>::const_iterator	fontindex;
 	
+	if (map.hexmashes[text_group].empty())
+		return retval;
+
 	while (vert_band_left<width) 
 	{
 		// Skip any background bands
@@ -1589,30 +1596,30 @@ int CTransform::do_plain_font_scan(Stablemap_region *region, int width, int heig
 		if (y_end-y_begin > MAX_SINGLE_CHAR_HEIGHT)
 			y_begin = y_end - MAX_SINGLE_CHAR_HEIGHT;
 
-
 		// scanning right to left to find the largest match
 		// start at vert_band_left+MAX_SINGLE_CHAR_WIDTH
 		temp_right = vert_band_left + MAX_SINGLE_CHAR_WIDTH;
+
+		bool continue_looping = true;
 		do 
 		{
 			// calculate hexmash
-			calc_hexmash(vert_band_left, temp_right, y_begin, y_end, ch, hexmash);
+			calc_hexmash(vert_band_left, temp_right, y_begin, y_end, ch, &hexmash);
 
-			// Check for match in t$
-			cresult = (char *) bsearch( hexmash, hexmash_array, hexmash_array_size, sizeof(hexmash_array[0]),
-										(int (*)(const void*, const void*)) compare_font);
+			// lookup font in t$ records
+			fontindex = map.hexmashes[text_group].find(hexmash);
 
 			// Found match, save char and move on
-			if (cresult!=NULL) 
+			if (fontindex != map.hexmashes[text_group].end()) 
 			{
 				retval = ERR_GOOD_SCRAPE_GENERAL;
 
-				uint32_t array_index = (uint32_t) ((cresult - hexmash_array[0]) / sizeof(hexmash_array[0]));
-
-				newchar.Format("%c", t$chars[array_index]);
+				newchar.Format("%c", map.t$[fontindex->second].ch);
 				text->Append(newchar);
 
 				vert_band_left = temp_right + 1;
+
+				continue_looping = false;
 			}
 
 			// No match:  reduce right hand size, or report '?' of we are out of space
@@ -1627,10 +1634,11 @@ int CTransform::do_plain_font_scan(Stablemap_region *region, int width, int heig
 				{
 					// we've scraped something that can't be recognized
 					vert_band_left++;
-					cresult = (char *) 1;
+
+					continue_looping = false;
 				}
 			}
-		} while (cresult==NULL);
+		} while (continue_looping);
 	} // while (vert_band_left<width)
 
 	return retval;
@@ -1960,7 +1968,7 @@ bool CTransform::is_in_RGB_color_cube(int center_r, int center_g, int center_b, 
     __SEH_LOGFATAL("CTransform::is_in_RGB_color_cube :\n");
 }
 
-void CTransform::calc_hexmash(int left, int right, int top, int bottom, bool (*ch)[MAX_CHAR_HEIGHT], char *hexmash, bool withspace)
+void CTransform::calc_hexmash(int left, int right, int top, int bottom, bool (*ch)[MAX_CHAR_HEIGHT], CString *hexmash, bool withspace)
 {
     __SEH_HEADER
 
@@ -1984,7 +1992,7 @@ void CTransform::calc_hexmash(int left, int right, int top, int bottom, bool (*c
 	}
 
 	// Calculate hexmash
-	strcpy_s(hexmash, 3200, "");
+	*hexmash = "";
 	for (x = left; x <= right; x++) 
 	{
 		hexval = 0;
@@ -1994,9 +2002,9 @@ void CTransform::calc_hexmash(int left, int right, int top, int bottom, bool (*c
 
 		sprintf_s(t, 20, "%x", hexval);
 
-		strcat_s(hexmash, 3200, t);
+		*hexmash += t;
 		if (withspace)  
-			strcat_s(hexmash, 3200, " ");
+			*hexmash += " ";
 	}
 
     __SEH_LOGFATAL("CTransform::calc_hexmash :\n");
@@ -2610,20 +2618,6 @@ char * CTransform::get_now_time(char * timebuf)
 	return timebuf;
 
     __SEH_LOGFATAL("CTransform::get_now_time :\n");
-}
-
-
-// supporting functions for bsearch's
-int compare_font( char *hexmash1, char *hexmash2) 
-{
-	return _strcmpi( hexmash1, hexmash2 );
-}
-
-int compare_hash( uint32_t *hash1, uint32_t *hash2) 
-{
-	if (*hash1 < *hash2) return -1;
-	else if (*hash1 > *hash2) return 1;
-	else return 0;
 }
 
 int	bitcount(unsigned int u) 

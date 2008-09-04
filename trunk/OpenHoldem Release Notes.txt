@@ -9,7 +9,9 @@ BUG FIXES:
   is passed in. (OpenHoldem)
 - f$srai would show up as [Cached] in the Autoplayer Trace.  This function will now be traced if f$swag is set to be traced. (Spew)
 - Corrected error in ICM::GetChairFromDealPos method introduced in 1.9.3a and identified by SNG.Champ (OpenHoldem)
-
+- Eliminated artificial limitations on the number of font or hash records that can be present in any given tablemap (.tm) file.
+  Previously this was set to 512 for each.  Thank you to Nick Coldhand & Folder for busting the limit.  (OpenHoldem)
+  
 
 MAINTENANCE:
 

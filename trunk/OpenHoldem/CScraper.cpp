@@ -1853,7 +1853,6 @@ const double CScraper::DoChipScrape(HDC hdc, int i)
     __SEH_HEADER
 
 	int				j = 0, stackindex = 0, chipindex = 0;
-	UINT_PTR		hashindex = 0;
     CString			type = "", cstemp = "";
     int				istart = 0, ivert[10] = { -1 }, ihoriz[10] = { -1 }, index = 0, vertcount = 0, horizcount = 0;
     int				hash_type = 0, num_precs = 0, pixcount = 0, chipwidth = 0, chipheight = 0;
@@ -1862,6 +1861,7 @@ const double CScraper::DoChipScrape(HDC hdc, int i)
 	uint32_t		*uresult = NULL, hash = 0, pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0};
     double			result = 0;
     CString			resstring = "";
+	std::map<uint32_t, int>::const_iterator		hashindex;
 
 	// Check for bad parameters
 	if (hdc == NULL || i<0)
@@ -1972,13 +1972,11 @@ const double CScraper::DoChipScrape(HDC hdc, int i)
                     else if (hash_type==3) hash = hashword(&pix[0], pixcount, HASH_SEED_3);
                 }
 
-                // bsearch h$ for hash
-                uresult = (uint32_t *) bsearch(&hash, &p_global->trans.map.hashes, p_global->trans.map.h$.GetSize(),
-                                               sizeof(uint32_t),
-                                               (int (*)(const void*, const void*)) compare_hash);
+                // lookup hash in h$ records
+				hashindex = p_global->trans.map.hashes[hash_type].find(hash);
 
                 // no hash match
-                if (uresult == NULL)
+                if (hashindex == p_global->trans.map.hashes[hash_type].end())
                 {
                     // stop vertical scrape loop on a non-match
                     chipindex = MAX_CHIPS_PER_STACK+1;
@@ -1986,8 +1984,7 @@ const double CScraper::DoChipScrape(HDC hdc, int i)
                 // hash match found
                 else
                 {
-                    hashindex = ((UINT_PTR) uresult - (UINT_PTR) p_global->trans.map.hashes)/sizeof(UINT_PTR);
-                    resstring = p_global->trans.map.h$[hashindex].name;
+					resstring = p_global->trans.map.h$[hashindex->second].name;
                     resstring.Remove(',');
                     resstring.Remove('$');
                     result += atof(resstring.GetString());

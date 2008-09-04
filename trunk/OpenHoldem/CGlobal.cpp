@@ -554,7 +554,7 @@ void CGlobal::CaptureState(const char *title)
 	}
 
 	// Poker window title
-	strncpy_s(state[state_index&0xff].m_title, 64, title, 64);
+	strncpy_s(state[state_index&0xff].m_title, 64, title, _TRUNCATE);
 	state[state_index&0xff].m_title[63] = '\0';
 
 	// Pot information
