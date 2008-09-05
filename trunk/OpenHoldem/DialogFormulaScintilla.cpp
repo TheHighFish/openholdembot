@@ -30,10 +30,10 @@
 CDlgFormulaScintilla	*m_formulaScintillaDlg = NULL;
 
 char *	keywords = "ismanual isppro site nchairs isbring session handnumber "
-                  "sitename$ network$ swagdelay allidelay swagtextmethod potmethod activemethod rake nit bankroll bblind sblind "
+                  "_sitename$ _network$ swagdelay allidelay _swagtextmethod _potmethod _activemethod rake nit bankroll bblind sblind "
                   "ante lim isnl ispl isfl sraiprev sraimin sraimax istournament handrank "
                   "handrank169 handrank2652 handrank1326 handrank1000 handrankp chair userchair "
-                  "dealerchair raischair chair$ chairbit$ betround br betposition dealposition "
+                  "dealerchair raischair chai_r$ chairbi_t$ betround br betposition dealposition "
                   "callposition seatposition dealpositionrais betpositionrais prwin prtie prlos "
                   "random randomhand randomround randomround1 randomround2 randomround3 randomround4 "
                   "callror raisror srairor alliror callmean raismean sraimean allimean callvariance "
@@ -74,9 +74,9 @@ char *	keywords = "ismanual isppro site nchairs isbring session handnumber "
                   "ron$royfl ron$strfl ron$4kind ron$fullh ron$flush ron$strai ron$3kind ron$2pair ron$1pair "
                   "ron$hcard ron$total ron$pokervalmax ron$prnuts ron$prbest ron$clocks run$royfl run$strfl "
                   "run$4kind run$fullh run$flush run$strai run$3kind run$2pair run$1pair run$hcard run$total "
-                  "run$pokervalmax run$prnuts run$prbest run$clocks vs$nhands vs$nhandshi vs$nhandsti vs$nhandslo "
-                  "vs$prwin vs$prtie vs$prlos vs$prwinhi vs$prtiehi vs$prloshi vs$prwinti vs$prtieti vs$prlosti "
-                  "vs$prwinlo vs$prtielo vs$prloslo "
+                  "run$pokervalmax run$prnuts run$prbest run$clocks v_s$nhands v_s$nhandshi v_s$nhandsti v_s$nhandslo "
+                  "v_s$prwin v_s$prtie v_s$prlos v_s$prwinhi v_s$prtiehi v_s$prloshi v_s$prwinti v_s$prtieti v_s$prlosti "
+                  "v_s$prwinlo v_s$prtielo v_s$prloslo "
                   "f$alli f$swag f$srai f$rais f$call f$prefold f$delay f$chat f$P f$play f$test "
                   "lastraised1 lastraised2 lastraised3 lastraised4 "
                   "raisbits1 raisbits2 raisbits3 raisbits4 "
@@ -356,9 +356,9 @@ void CDlgFormulaScintilla::UpdateScintillaKeywords(CScintillaWnd *pWnd)
 	for (i=0; i<m_wrk_formula.mHandList.GetSize(); i++) {
 		keys.AppendFormat(" is%s", m_wrk_formula.mHandList[i].list);
 		if (m_wrk_formula.mHandList[i].list.GetLength() > 4) {
-			keys.AppendFormat(" vs$%s$prlos", m_wrk_formula.mHandList[i].list.GetString()+4);
-			keys.AppendFormat(" vs$%s$prwin", m_wrk_formula.mHandList[i].list.GetString()+4);
-			keys.AppendFormat(" vs$%s$prtie", m_wrk_formula.mHandList[i].list.GetString()+4);
+			keys.AppendFormat(" v_s$%_s$prlos", m_wrk_formula.mHandList[i].list.GetString()+4);
+			keys.AppendFormat(" v_s$%_s$prwin", m_wrk_formula.mHandList[i].list.GetString()+4);
+			keys.AppendFormat(" v_s$%_s$prtie", m_wrk_formula.mHandList[i].list.GetString()+4);
 		}
 	}
 	pWnd->SendMessage(SCI_SETKEYWORDS, 0, (LPARAM) keys.GetString());
@@ -2199,19 +2199,19 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
             switch (error) 
 			{
             case ERR_INVALID_SYM:
-                Cstr.Format("ERROR: Invalid symbol");
+                Cstr.Format("ERROR: In_valid symbol");
                 m_CalcResult.SetWindowText(Cstr);
                 break;
             case ERR_INVALID_FUNC_SYM:
-                Cstr.Format("ERROR: Invalid f$ reference");
+                Cstr.Format("ERROR: In_valid f$ reference");
                 m_CalcResult.SetWindowText(Cstr);
                 break;
             case ERR_INVALID_DLL_SYM:
-                Cstr.Format("ERROR: Invalid dll$ reference");
+                Cstr.Format("ERROR: In_valid dll$ reference");
                 m_CalcResult.SetWindowText(Cstr);
                 break;
             case ERR_INVALID_EXPR:
-                Cstr.Format("ERROR: Invalid expression");
+                Cstr.Format("ERROR: In_valid expression");
                 m_CalcResult.SetWindowText(Cstr);
                 break;
             case ERR_DIV_ZERO:
@@ -3134,7 +3134,7 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
     bool bFormulaVisible = true;
     bool bTreeHeadingSelected = false;
     bool bTreeValidLeafSelected = false;
-    int  iWhichTypeSelected = -1; // 0=Standard, 1=Hand List, 2=User Defined Function, -1=Invalid
+    int  iWhichTypeSelected = -1; // 0=Standard, 1=Hand List, 2=User Defined Function, -1=In_valid
     bool bFindInfo = false;
     bool bDebugActive = false;
     bool bNotesOrDllActive = false;
@@ -3321,20 +3321,20 @@ void CDlgFormulaScintilla::PopulateSymbols()
     AddSymbol(parent, "ismanual", "true if you're in manual mode, false otherwise");
     AddSymbol(parent, "isppro", "true if you're connected to a ppro server");
     AddSymbol(parent, "site", "0=user/ppro 1=scraped");
-    AddSymbol(parent, "nchairs", "the integer value for the Table Map symbol s$nchairs");
+    AddSymbol(parent, "nchairs", "the integer value for the Table Map symbol _s$nchairs");
     AddSymbol(parent, "isbring", "true if winholdem is attached to a bring client window");
     AddSymbol(parent, "session", "the current logging instance (0-9)");
     AddSymbol(parent, "handnumber", "the site hand number if available");
     AddSymbol(parent, "version", "returns the version number of OpenHoldem that is currently running");
 
     mainParent = parent = AddSymbolTitle("Table Map symbols", NULL, hCatItem);
-    AddSymbol(parent, "sitename$abc", "true if user defined string abc appears within the Table Map symbol s$sitename");
-    AddSymbol(parent, "network$def", "true if user defined string def appears within the Table Map symbol s$network");
+    AddSymbol(parent, "_sitename$abc", "true if user defined string abc appears within the Table Map symbol _s$_sitename");
+    AddSymbol(parent, "_network$def", "true if user defined string def appears within the Table Map symbol _s$_network");
     AddSymbol(parent, "swagdelay", "autoplayer delay in milliseconds between swag keystrokes and button click");
     AddSymbol(parent, "allidelay", "autoplayer delay in milliseconds between alli slider jam and button click");
-    AddSymbol(parent, "swagtextmethod", "the site interpretation for swag edit text (Table Map symbol) 1=f$srai 2=f$srai+call 3=f$srai+call+currentbet");
-    AddSymbol(parent, "potmethod", "the site interpretation for the contents of c0pot0 (Table Map symbol) 1=common (default) 2=total");
-    AddSymbol(parent, "activemethod", " 1=inactive unless pXactive returns true/active (default) 2=active unless pXactive returns false/inactive/out/away");
+    AddSymbol(parent, "_swagtextmethod", "the site interpretation for swag edit text (Table Map symbol) 1=f$srai 2=f$srai+call 3=f$srai+call+currentbet");
+    AddSymbol(parent, "_potmethod", "the site interpretation for the contents of c0pot0 (Table Map symbol) 1=common (default) 2=total");
+    AddSymbol(parent, "_activemethod", " 1=inactive unless pXactive returns true/active (default) 2=active unless pXactive returns false/inactive/out/away");
 
     mainParent = parent = AddSymbolTitle("Formula file", NULL, hCatItem);
     AddSymbol(parent, "rake", "percentage amount added/subtracted to/from the pot");
@@ -3368,8 +3368,8 @@ void CDlgFormulaScintilla::PopulateSymbols()
     AddSymbol(parent, "dealerchair", "dealer chair number (0-9)");
     AddSymbol(parent, "raischair", "raising chair number (0-9)");
     AddSymbol(parent, "oppchair", "raising chair number (0-9)");
-    AddSymbol(parent, "chair$abc", "player abc chair number (0-9); -1 if not found");
-    AddSymbol(parent, "chairbit$abc", "player abc chairbit (1 << chair$abc); 0 if not found");
+    AddSymbol(parent, "chai_r$abc", "player abc chair number (0-9); -1 if not found");
+    AddSymbol(parent, "chairbi_t$abc", "player abc chairbit (1 << chai_r$abc); 0 if not found");
 
     mainParent = parent = AddSymbolTitle("Rounds / Positions", NULL, hCatItem);
     AddSymbol(parent, "betround", "betting round (1-4) 1=preflop, 2=flop, 3=turn, 4=river");
@@ -3673,25 +3673,25 @@ void CDlgFormulaScintilla::PopulateSymbols()
     AddSymbol(parent, "run$clocks", "total number of cpu clocks used to calculate the run$ symbols");
 
     mainParent = parent = AddSymbolTitle("Versus symbols", NULL, hCatItem);
-    AddSymbol(parent, "vs$nhands", "Total possible number of opponent hands");
-    AddSymbol(parent, "vs$nhandshi", "Number of opponent hands that have higher river chances ");
-    AddSymbol(parent, "vs$nhandsti", "Number of opponent hands that have equal river chances");
-    AddSymbol(parent, "vs$nhandslo", "Number of opponent hands that have lower river chances");
-    AddSymbol(parent, "vs$prwin", "Probability (0.000 - 1.000) of winning versus all possible opponent hands ");
-    AddSymbol(parent, "vs$prtie", "Probability (0.000 - 1.000) of chopping versus all possible opponent hands ");
-    AddSymbol(parent, "vs$prlos", "Probability (0.000 - 1.000) of losing versus all possible opponent hands ");
-    AddSymbol(parent, "vs$prwinhi", "Probability (0.000 - 1.000) of winning versus higher opponent hands ");
-    AddSymbol(parent, "vs$prtiehi", "Probability (0.000 - 1.000) of chopping versus higher opponent hands ");
-    AddSymbol(parent, "vs$prloshi", "Probability (0.000 - 1.000) of losing versus higher opponent hands ");
-    AddSymbol(parent, "vs$prwinti", "Probability (0.000 - 1.000) of winning versus equal opponent hands ");
-    AddSymbol(parent, "vs$prtieti", "Probability (0.000 - 1.000) of chopping versus equal opponent hands ");
-    AddSymbol(parent, "vs$prlosti", "Probability (0.000 - 1.000) of losing versus equal opponent hands ");
-    AddSymbol(parent, "vs$prwinlo", "Probability (0.000 - 1.000) of winning versus lower opponent hands ");
-    AddSymbol(parent, "vs$prtielo", "Probability (0.000 - 1.000) of chopping versus lower opponent hands ");
-    AddSymbol(parent, "vs$prloslo", "Probability (0.000 - 1.000) of losing versus lower opponent hands ");
-    AddSymbol(parent, "vs$x$prwin", "Probability (0.000 - 1.000) of winnning versus hand list x");
-    AddSymbol(parent, "vs$x$prlos", "Probability (0.000 - 1.000) of losing versus hand list x");
-    AddSymbol(parent, "vs$x$prtie", "Probability (0.000 - 1.000) of a tie versus hand list x");
+    AddSymbol(parent, "v_s$nhands", "Total possible number of opponent hands");
+    AddSymbol(parent, "v_s$nhandshi", "Number of opponent hands that have higher river chances ");
+    AddSymbol(parent, "v_s$nhandsti", "Number of opponent hands that have equal river chances");
+    AddSymbol(parent, "v_s$nhandslo", "Number of opponent hands that have lower river chances");
+    AddSymbol(parent, "v_s$prwin", "Probability (0.000 - 1.000) of winning versus all possible opponent hands ");
+    AddSymbol(parent, "v_s$prtie", "Probability (0.000 - 1.000) of chopping versus all possible opponent hands ");
+    AddSymbol(parent, "v_s$prlos", "Probability (0.000 - 1.000) of losing versus all possible opponent hands ");
+    AddSymbol(parent, "v_s$prwinhi", "Probability (0.000 - 1.000) of winning versus higher opponent hands ");
+    AddSymbol(parent, "v_s$prtiehi", "Probability (0.000 - 1.000) of chopping versus higher opponent hands ");
+    AddSymbol(parent, "v_s$prloshi", "Probability (0.000 - 1.000) of losing versus higher opponent hands ");
+    AddSymbol(parent, "v_s$prwinti", "Probability (0.000 - 1.000) of winning versus equal opponent hands ");
+    AddSymbol(parent, "v_s$prtieti", "Probability (0.000 - 1.000) of chopping versus equal opponent hands ");
+    AddSymbol(parent, "v_s$prlosti", "Probability (0.000 - 1.000) of losing versus equal opponent hands ");
+    AddSymbol(parent, "v_s$prwinlo", "Probability (0.000 - 1.000) of winning versus lower opponent hands ");
+    AddSymbol(parent, "v_s$prtielo", "Probability (0.000 - 1.000) of chopping versus lower opponent hands ");
+    AddSymbol(parent, "v_s$prloslo", "Probability (0.000 - 1.000) of losing versus lower opponent hands ");
+    AddSymbol(parent, "v_s$x$prwin", "Probability (0.000 - 1.000) of winnning versus hand list x");
+    AddSymbol(parent, "v_s$x$prlos", "Probability (0.000 - 1.000) of losing versus hand list x");
+    AddSymbol(parent, "v_s$x$prtie", "Probability (0.000 - 1.000) of a tie versus hand list x");
 
     mainParent = parent = AddSymbolTitle("History symbols", NULL, hCatItem);
     AddSymbol(parent, "hi_<sym>x (x=1-4)", "the value of the symbol <sym> as of your last turn in betting round x.  Example: hi_prwin1 would return prwin as of your last turn in br1.");

@@ -11,6 +11,7 @@
 #include "CPokerTrackerThread.h"
 #include "CGlobal.h"
 #include "CGameState.h"
+#include "..\CTablemap\CTablemap.h"
 
 #include "DialogScraperOutput.h"
 #include "PokerPro.h"
@@ -143,7 +144,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		if (!p_global->ppro_is_connected)
 		{
 			GetWindowText(p_global->attached_hwnd(), title, 512);
-			messageTitle->Format("%s - %s (%s)", p_global->formula_name, p_global->trans.map.sitename, title);
+			messageTitle->Format("%s - %s (%s)", p_global->formula_name, p_tablemap->s$items()->sitename, title);
 		}
 		else
 		{
@@ -155,7 +156,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 			else
 				_snprintf_s(title, _countof(title), _TRUNCATE, "%s - %s", ppro.data.m_site_name, ppro.data.m_tinf.m_name);
-			messageTitle->Format("%s - %s (%s)", p_global->formula_name, p_global->trans.map.sitename, title);
+			messageTitle->Format("%s - %s (%s)", p_global->formula_name, p_tablemap->s$items()->sitename, title);
 		}
 		theApp.m_pMainWnd->PostMessage(WMA_SETWINDOWTEXT, 0, (LPARAM)messageTitle);
 

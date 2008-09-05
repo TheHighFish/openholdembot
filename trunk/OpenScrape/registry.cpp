@@ -4,8 +4,6 @@
 #include "registry.h"
 #include "stdio.h"
 #include "stdlib.h"
-#include "structs_defines.h"
-#include "debug.h"
 
 Registry::Registry(void) 
 {

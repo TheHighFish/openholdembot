@@ -4,7 +4,6 @@
 #include "stdafx.h"
 #include "OpenScrape.h"
 #include "DialogSelectTable.h"
-#include "debug.h"
 
 // CDlgSelectTable dialog
 IMPLEMENT_DYNAMIC(CDlgSelectTable, CDialog)

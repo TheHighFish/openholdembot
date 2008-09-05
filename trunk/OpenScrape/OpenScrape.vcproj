@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\hscroll-list-box"
+				AdditionalIncludeDirectories="&quot;..\spirit-1.8.5-miniboost&quot;;..\hscroll-list-box"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -130,7 +130,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\hscroll-list-box"
+				AdditionalIncludeDirectories="&quot;..\spirit-1.8.5-miniboost&quot;;..\hscroll-list-box"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				MinimalRebuild="false"
 				ExceptionHandling="1"
@@ -297,6 +297,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\CTransform\CTransform.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\CTransform\hash\lookup3.cpp"
 					>
 				</File>
@@ -312,16 +316,20 @@
 					RelativePath="..\CTransform\pdiff\RGBAImage.cpp"
 					>
 				</File>
-				<File
-					RelativePath="..\CTransform\Transform.cpp"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="hscroll-list-box"
 				>
 				<File
 					RelativePath="..\hscroll-list-box\HScrollListBox.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="CTablemap"
+				>
+				<File
+					RelativePath="..\CTablemap\CTablemap.cpp"
 					>
 				</File>
 			</Filter>
@@ -411,15 +419,15 @@
 				RelativePath=".\StickyButton.h"
 				>
 			</File>
-			<File
-				RelativePath=".\structs_defines.h"
-				>
-			</File>
 			<Filter
 				Name="CTransform"
 				>
 				<File
 					RelativePath="..\CTransform\pdiff\CompareArgs.h"
+					>
+				</File>
+				<File
+					RelativePath="..\CTransform\CTransform.h"
 					>
 				</File>
 				<File
@@ -442,16 +450,20 @@
 					RelativePath="..\CTransform\hash\stdint.h"
 					>
 				</File>
-				<File
-					RelativePath="..\CTransform\Transform.h"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="hscroll-list-box"
 				>
 				<File
 					RelativePath="..\hscroll-list-box\HScrollListBox.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="CTablemap"
+				>
+				<File
+					RelativePath="..\CTablemap\CTablemap.h"
 					>
 				</File>
 			</Filter>

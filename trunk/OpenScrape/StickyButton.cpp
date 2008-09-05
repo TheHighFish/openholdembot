@@ -1,6 +1,5 @@
 #include "StdAfx.h"
 #include "StickyButton.h"
-#include "debug.h"
 
 const UINT WM_STICKYBUTTONDOWN = RegisterWindowMessage("WM_STICKYBUTTONDOWN");
 const UINT WM_STICKYBUTTONUP = RegisterWindowMessage("WM_STICKYBUTTONUP");

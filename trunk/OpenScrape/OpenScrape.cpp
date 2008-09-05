@@ -8,7 +8,6 @@
 #include "MainFrm.h"
 #include "OpenScrapeDoc.h"
 #include "OpenScrapeView.h"
-#include "debug.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -48,6 +47,9 @@ BOOL COpenScrapeApp::InitInstance()
 	DWORD		curprocid, aProcesses[1024], cbNeeded, cProcesses;
 	char		sCurProcessName[MAX_PATH], sProcessName[MAX_PATH];
 	int			i;
+
+	// Classes
+	if (!p_tablemap)  p_tablemap = new CTablemap;
 
 	// Figure out our session number - get name of current process
 	curprocid = GetCurrentProcessId();
@@ -185,3 +187,11 @@ void COpenScrapeApp::OnAppAbout()
 
 // COpenScrapeApp message handlers
 
+
+int COpenScrapeApp::ExitInstance()
+{
+	// classes
+	if (p_tablemap)  { delete p_tablemap; p_tablemap = NULL; }
+
+	return CWinApp::ExitInstance();
+}

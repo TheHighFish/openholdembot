@@ -1,8 +1,7 @@
 // OpenScrapeDoc.h : interface of the COpenScrapeDoc class
 //
 #pragma once
-#include "structs_defines.h"
-#include "../CTransform/transform.h"
+#include "../CTransform/CTransform.h"
 
 int	const num_z$strings = 3;
 char * const z$strings[3] = { "clientsize", "clientsizemin", "clientsizemax" };
@@ -118,9 +117,6 @@ public:
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
 	virtual ~COpenScrapeDoc();
-
-	// Contains the table map and the transform engine
-	CTransform		trans;
 
 	// Blink state
 	bool		blink_on;

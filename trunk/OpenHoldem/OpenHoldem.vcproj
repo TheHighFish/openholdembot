@@ -524,6 +524,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\CTransform\CTransform.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\CTransform\hash\lookup3.cpp"
 					>
 				</File>
@@ -537,10 +541,6 @@
 				</File>
 				<File
 					RelativePath="..\CTransform\pdiff\RGBAImage.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\CTransform\Transform.cpp"
 					>
 				</File>
 			</Filter>
@@ -602,6 +602,41 @@
 				<File
 					RelativePath=".\SAPrefsSubDlg.cpp"
 					>
+				</File>
+			</Filter>
+			<Filter
+				Name="CTablemap"
+				>
+				<File
+					RelativePath="..\CTablemap\CTablemap.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release - Optimized|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
 				</File>
 			</Filter>
 		</Filter>
@@ -780,10 +815,6 @@
 			</File>
 			<File
 				RelativePath=".\stdafx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\structs_defines.h"
 				>
 			</File>
 			<File
@@ -994,6 +1025,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\CTransform\CTransform.h"
+					>
+				</File>
+				<File
 					RelativePath="..\CTransform\hash\lookup3.h"
 					>
 				</File>
@@ -1013,8 +1048,20 @@
 					RelativePath="..\CTransform\hash\stdint.h"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="StructsDefines"
+				>
 				<File
-					RelativePath="..\CTransform\Transform.h"
+					RelativePath="..\StructsDefines\structs_defines.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="CTablemap"
+				>
+				<File
+					RelativePath="..\CTablemap\CTablemap.h"
 					>
 				</File>
 			</Filter>

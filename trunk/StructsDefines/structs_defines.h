@@ -2,12 +2,8 @@
 #define INC_STRUCTS_DEFINES_H
 
 #include <boost/spirit/tree/ast.hpp>
-#include "../../CTransform/transform.h"
 
 typedef boost::spirit::node_val_data_factory<const char *> int_factory_t;
-
-#define VERSION_NUMBER				1.94
-#define VERSION_TEXT				"1.9.4"  // change version number in OpenHoldem.rc also, when needed
 
 // thread timeout
 #define THREAD_WAIT					3000
@@ -23,6 +19,14 @@ typedef boost::spirit::node_val_data_factory<const char *> int_factory_t;
 
 // Error Codes
 #define SUCCESS						0
+#define ERR_EOF						1
+#define ERR_SYNTAX					2
+#define ERR_VERSION					3
+#define ERR_NOTMASTER				4
+#define ERR_HASH_COLL				5
+#define ERR_REGION_SIZE				6
+#define ERR_UNK_LN_TYPE				7
+#define ERR_INV_HASH_TYPE			8
 #define ERR_DEBUG_NOEQ				9
 #define ERR_INVALID_SYM				10
 #define ERR_INVALID_FUNC_SYM		11
@@ -31,6 +35,16 @@ typedef boost::spirit::node_val_data_factory<const char *> int_factory_t;
 #define ERR_DIV_ZERO				15
 #define ERR_INVALID_F$$_REF			16
 #define ERR_BAD_PARSE				17
+#define ERR_INCOMPLETEMASTER		18
+
+// Scraper error codes
+#define ERR_FIELD_TOO_LARGE			-1
+#define ERR_NOTHING_TO_SCRAPE		-2
+#define ERR_NO_HASH_MATCH			-3
+#define ERR_TEXT_SCRAPE_NOMATCH		-4
+#define ERR_INVALID_TRANSFORM_TYPE	-5
+#define ERR_NO_IMAGE_MATCH			-6
+#define	ERR_GOOD_SCRAPE_GENERAL		1
 
 // Profile version codes
 #define VER_WINSCRAPE			".wsdb1"
@@ -120,8 +134,13 @@ typedef boost::spirit::node_val_data_factory<const char *> int_factory_t;
 #define	COLOR_BLUE		RGB(0,0,255)
 #define	COLOR_GREEN		RGB(0,255,0)
 #define	COLOR_WHITE		RGB(255,255,255)
+#define COLOR_LT_GRAY	RGB(212,208,200)
 #define COLOR_GRAY		RGB(182,182,182)
 #define COLOR_YELLOW	RGB(255,255,0)
+
+// Bitmap display
+#define BITMAP_WIDTH		344
+#define BITMAP_HEIGHT		164
 
 // For scraper engine
 #define NOTHING_CHANGED		0
@@ -137,6 +156,16 @@ typedef boost::spirit::node_val_data_factory<const char *> int_factory_t;
 #define BUTTONLABEL_CHANGED	(1<<10)
 #define	POT_CHANGED			(1<<11)
 #define	LIMITS_CHANGED		(1<<12)
+
+// Tablemap/scraper limits
+#define MAX_CHAR_WIDTH		200
+#define	MAX_CHAR_HEIGHT		150
+#define MAX_HASH_WIDTH		200
+#define MAX_HASH_HEIGHT		150
+#define MAX_IMAGE_WIDTH		200
+#define MAX_IMAGE_HEIGHT	150
+#define MAX_SINGLE_CHAR_WIDTH	31
+#define MAX_SINGLE_CHAR_HEIGHT	32
 
 #define MAX_WINDOW_TITLE	512
 
@@ -318,6 +347,7 @@ struct sprw1326
 	sprw1326_chair	vanilla_chair;	   //will be precalculated by OH at startup - convenience values
 	sprw1326_chair  chair[10];  //structures for each chair
 };
+
 // PokerTracker support
 enum PT_Stats 
 {
@@ -332,5 +362,8 @@ enum PT_Stats
 	pt_min = pt_icon,
 	pt_max = ptt_fsbts
 };
+
+
+
 
 #endif /* INC_STRUCTS_DEFINES_H */

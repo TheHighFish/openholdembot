@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "../../dbghelp/dbghelp.h"
+#include "..\..\dbghelp\dbghelp.h"
 
 #include "OpenHoldem.h"
 
@@ -8,6 +8,7 @@
 #include "CScraper.h"
 #include "CIteratorThread.h"
 #include "CGlobal.h"
+#include "..\CTablemap\CTablemap.h"
 
 #include "inlines/eval.h"
 
@@ -605,7 +606,7 @@ void write_logautoplay(const char * action)
 
         fprintf(log_fp, "%s - %1d ", 
 			get_time(nowtime), 
-			p_global->trans.map.num_chairs);
+			p_tablemap->s$items()->num_chairs);
         fprintf(log_fp, "%4s %10s %4s %5s ", 
 			pcards.GetString(), 
 			comcards.GetString(), 

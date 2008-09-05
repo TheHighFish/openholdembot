@@ -3,8 +3,6 @@
 
 #include "stdafx.h"
 #include "DialogEditSizes.h"
-#include "debug.h"
-
 
 // CDlgEditSizes dialog
 

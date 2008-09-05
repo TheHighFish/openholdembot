@@ -9,6 +9,7 @@
 #include "CScraper.h"
 #include "CHeartbeatThread.h"
 #include "CGlobal.h"
+#include "..\CTransform\CTransform.h"
 
 #include "DialogScraperOutput.h"
 #include "Registry.h"
@@ -242,16 +243,15 @@ void CDlgScraperOutput::add_listbox_items()
 {
     __SEH_HEADER
 
-    int			N, i;
+    int			i;
     CString		s;
 
     m_RegionList.ResetContent();
     m_RegionList.SetCurSel(-1);
 
-    N = p_global->trans.map.r$.GetSize();
-    for (i=0; i<N; i++)
+    for (i=0; i<p_tablemap->r$()->GetSize(); i++)
     {
-        m_RegionList.AddString(p_global->trans.map.r$[i].name);
+        m_RegionList.AddString(p_tablemap->r$()->GetAt(i).name);
     }
 
 	__SEH_LOGFATAL("CDlgScraperOutput::add_listbox_items :\n");
@@ -290,7 +290,7 @@ void CDlgScraperOutput::do_update_display()
     __SEH_HEADER
 
     CString curtext;
-    int		N, i;
+    int		i;
     bool	found_match;
 
 	if (in_startup)  
@@ -307,13 +307,12 @@ void CDlgScraperOutput::do_update_display()
 
 		m_RegionList.GetText(m_RegionList.GetCurSel(), curtext);
 
-		N = p_global->trans.map.r$.GetSize();
 		found_match = false;
-		for (i=0; i<N && !found_match; i++)
+		for (i=0; i<p_tablemap->r$()->GetSize() && !found_match; i++)
 		{
-			if (p_global->trans.map.r$[i].name == curtext)
+			if (p_tablemap->r$()->GetAt(i).name == curtext)
 			{
-				do_bitblt(p_global->trans.map.r$[i].last_bmp, i);
+				do_bitblt(p_tablemap->r$()->GetAt(i).last_bmp, i);
 				found_match = true;
 			}
 		}
@@ -344,6 +343,7 @@ void CDlgScraperOutput::do_bitblt(HBITMAP bitmap, int r$index)
     CBrush		gray_brush, *pTempBrush, oldbrush;
     CPen		null_pen, *pTempPen, oldpen;
     CString		res;
+	CTransform	trans;
 
     if (in_startup) 	
 	{
@@ -385,15 +385,15 @@ void CDlgScraperOutput::do_bitblt(HBITMAP bitmap, int r$index)
            m_Zoom.GetCurSel()==3 ? 8 :
            m_Zoom.GetCurSel()==4 ? 16 : 1;
 
-    w = (p_global->trans.map.r$[r$index].right - p_global->trans.map.r$[r$index].left) * zoom;
-    h = (p_global->trans.map.r$[r$index].bottom - p_global->trans.map.r$[r$index].top) * zoom;
+    w = (p_tablemap->r$()->GetAt(r$index).right - p_tablemap->r$()->GetAt(r$index).left) * zoom;
+    h = (p_tablemap->r$()->GetAt(r$index).bottom - p_tablemap->r$()->GetAt(r$index).top) * zoom;
 
     hbm2 = CreateCompatibleBitmap(hdcScreen, w, h);
     old_bitmap2 = (HBITMAP) SelectObject(hdcCompat2, hbm2);
     StretchBlt(	hdcCompat2, 0, 0, w, h,
                 hdcCompat1, 0, 0,
-                p_global->trans.map.r$[r$index].right - p_global->trans.map.r$[r$index].left,
-                p_global->trans.map.r$[r$index].bottom - p_global->trans.map.r$[r$index].top,
+                p_tablemap->r$()->GetAt(r$index).right - p_tablemap->r$()->GetAt(r$index).left,
+                p_tablemap->r$()->GetAt(r$index).bottom - p_tablemap->r$()->GetAt(r$index).top,
                 SRCCOPY );
 
     // Copy 2nd DC to control
@@ -401,7 +401,7 @@ void CDlgScraperOutput::do_bitblt(HBITMAP bitmap, int r$index)
             hdcCompat2, 0, 0, SRCCOPY );
 
     // Output result
-    p_global->trans.do_transform(&p_global->trans.map.r$[r$index], hdcCompat1, &res);
+	trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompat1, &res);
     m_ScraperResult.SetWindowText(res);
 
     // Clean up

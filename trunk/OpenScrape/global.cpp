@@ -1,6 +1,5 @@
 #include "StdAfx.h"
 
-#include "debug.h"
 #include "global.h"
 
 class CGlobal	global;

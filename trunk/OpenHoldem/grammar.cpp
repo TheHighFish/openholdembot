@@ -9,6 +9,7 @@
 #include "CMemory.h"
 #include "CICMCalculator.h"
 #include "CMyHand.h"
+#include "..\CTransform\CTransform.h"
 
 #include "versus.h"
 #include "Perl.hpp"

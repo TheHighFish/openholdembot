@@ -1,8 +1,9 @@
+#ifndef INC_STDAFX_H
+#define INC_STDAFX_H
+
 // stdafx.h : include file for standard system include files,
 // or project specific include files that are used frequently,
 // but are changed infrequently
-
-#pragma once
 
 #ifndef _SECURE_ATL
 #define _SECURE_ATL 1
@@ -38,10 +39,6 @@
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions
 
-
-
-
-
 #ifndef _AFX_NO_OLE_SUPPORT
 #include <afxdtctl.h>		// MFC support for Internet Explorer 4 Common Controls
 #endif
@@ -49,24 +46,14 @@
 #include <afxcmn.h>			// MFC support for Windows Common Controls
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
+// ======================================================================================
+
+// Version
+#define VERSION_NUMBER				1.17
+#define VERSION_TEXT				"1.1.7"  // change version number in OpenScrape.rc also, when needed
 
 
+#include "debug.h"
+#include "..\StructsDefines\structs_defines.h"
 
-
-
-
-
-
-#ifdef _UNICODE
-#if defined _M_IX86
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#elif defined _M_IA64
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='ia64' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#elif defined _M_X64
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='amd64' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#else
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#endif
-#endif
-
-
+#endif //INC_STDAFX_H

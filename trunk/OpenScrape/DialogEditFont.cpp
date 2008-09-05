@@ -6,7 +6,6 @@
 
 #include "OpenScrapeDoc.h"
 #include "DialogEditFont.h"
-#include "debug.h"
 
 // CDlgEditFont dialog
 
@@ -82,7 +81,7 @@ BOOL CDlgEditFont::OnInitDialog()
 
 	for (i = 0; i < new_t$_recs->GetCount(); i++)
 	{
-		Stablemap_font &fontrec = new_t$_recs->ElementAt(i);
+		STablemapFont &fontrec = new_t$_recs->ElementAt(i);
 		text.Format("%c", fontrec.ch);
 		m_CharList.AddString(text.GetString());
 	}
@@ -107,7 +106,7 @@ void CDlgEditFont::OnLbnSelchangeCharlist()
 
 	if (m_CharList.GetCurSel() != LB_ERR)
 	{
-		Stablemap_font &fontrec = new_t$_recs->ElementAt(m_CharList.GetCurSel());
+		STablemapFont &fontrec = new_t$_recs->ElementAt(m_CharList.GetCurSel());
 
 		// Get set bits
 		bit = 0;
@@ -189,7 +188,7 @@ void CDlgEditFont::OnEnKillfocusCharacter()
 
 	m_Character.GetWindowText(temp_character);
 
-	Stablemap_font &fontrec = new_t$_recs->ElementAt(cur_sel);
+	STablemapFont &fontrec = new_t$_recs->ElementAt(cur_sel);
 
 	fontrec.ch = temp_character.GetString()[0];
 
@@ -210,7 +209,7 @@ void CDlgEditFont::OnEnKillfocusType()
 
 	m_Type.GetWindowText(temp_type);
 
-	Stablemap_font &fontrec = new_t$_recs->ElementAt(cur_sel);
+	STablemapFont &fontrec = new_t$_recs->ElementAt(cur_sel);
 
 	fontrec.group = atoi(temp_type.Mid(5,1).GetString());
 
@@ -240,7 +239,7 @@ void CDlgEditFont::OnBnClickedSort()
 	__SEH_HEADER
 
 	int				i, j, k;
-	Stablemap_font	temp;
+	STablemapFont	temp;
 	CString			text;
 	int				size = (int) new_t$_recs->GetSize();
 
@@ -249,8 +248,8 @@ void CDlgEditFont::OnBnClickedSort()
 	{
 		for (j=i+1; j<size; j++)
 		{
-			Stablemap_font &i_fontrec = new_t$_recs->ElementAt(i);
-			Stablemap_font &j_fontrec = new_t$_recs->ElementAt(j);
+			STablemapFont &i_fontrec = new_t$_recs->ElementAt(i);
+			STablemapFont &j_fontrec = new_t$_recs->ElementAt(j);
 			if (j_fontrec.ch < i_fontrec.ch ||
 				j_fontrec.ch == i_fontrec.ch && j_fontrec.group < i_fontrec.group)
 			{
@@ -285,7 +284,7 @@ void CDlgEditFont::OnBnClickedSort()
 	m_CharList.ResetContent();
 	for (i=0; i < size; i++)
 	{
-		Stablemap_font &fontrec = new_t$_recs->ElementAt(i);
+		STablemapFont &fontrec = new_t$_recs->ElementAt(i);
 		text.Format("%c", fontrec.ch);
 		m_CharList.AddString(text.GetString());
 	}

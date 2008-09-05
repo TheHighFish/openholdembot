@@ -1,7 +1,6 @@
 #pragma once
 #include "afxwin.h"
 
-#include "structs_defines.h"
 #include "HScrollListBox.h"
 
 // CDlgSelectTable dialog

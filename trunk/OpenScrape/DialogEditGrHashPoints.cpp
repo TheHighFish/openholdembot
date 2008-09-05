@@ -7,7 +7,6 @@
 #include "OpenScrapeDoc.h"
 #include "registry.h"
 #include "DialogEditGrHashPoints.h"
-#include "debug.h"
 
 // CDlgEditGrHashPoints dialog
 CDlgEditGrHashPoints::CDlgEditGrHashPoints(CWnd* pParent /*=NULL*/)
@@ -65,11 +64,11 @@ BOOL CDlgEditGrHashPoints::OnInitDialog()
 
 	// Sample image list
 	m_Sample_Image.SetWindowPos(NULL, 0, 0, 86, 200, SWP_NOMOVE | SWP_NOZORDER);
-	for (i=0; i<pDoc->trans.map.i$.GetSize(); i++)
+	for (i=0; i<p_tablemap->i$()->GetSize(); i++)
 	{
-		text.Format("%s (%dx%d)", pDoc->trans.map.i$[i].name, pDoc->trans.map.i$[i].width, pDoc->trans.map.i$[i].height);
+		text.Format("%s (%dx%d)", p_tablemap->i$()->GetAt(i).name, p_tablemap->i$()->GetAt(i).width, p_tablemap->i$()->GetAt(i).height);
 		new_item = m_Sample_Image.AddString(text.GetString());
-		m_Sample_Image.SetItemData(new_item, (DWORD_PTR) &pDoc->trans.map.i$[i]);
+		m_Sample_Image.SetItemData(new_item, (DWORD_PTR) &p_tablemap->i$()[i]);
 
 	}
 
@@ -156,12 +155,12 @@ void CDlgEditGrHashPoints::update_bitmap()
 	HDC					hdcControl, hdcScreen, hdc_image;
 	HBITMAP				bitmap_image, old_bitmap_image, bitmap_control, old_bitmap_control;
 	BYTE				*pBits, alpha, red, green, blue;
-	Stablemap_image		*sel_image = NULL;
+	STablemapImage		*sel_image = NULL;
 	COLORREF			cr;
 	
 	// Get pointer to selected image record
 	if (m_Sample_Image.GetCurSel() != LB_ERR)
-		sel_image = (Stablemap_image *) m_Sample_Image.GetItemData(m_Sample_Image.GetCurSel());
+		sel_image = (STablemapImage *) m_Sample_Image.GetItemData(m_Sample_Image.GetCurSel());
 
 	if (sel_image)
 	{
@@ -338,7 +337,7 @@ void CDlgEditGrHashPoints::OnLButtonDown(UINT nFlags, CPoint point)
 	RECT				bmp_rect;
 	CString				text;
 	int					type, i, zoom, x, y;
-	Stablemap_hash_point	temp_hash_point;
+	STablemapHashPoint	temp_hash_point;
 
 	m_Sample_Bitmap.GetWindowRect(&bmp_rect);
 	ScreenToClient(&bmp_rect);

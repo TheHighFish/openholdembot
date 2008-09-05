@@ -9,7 +9,6 @@
 #include "registry.h"
 #include "DialogSelectTable.h"
 #include "global.h"
-#include "debug.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -296,7 +295,7 @@ void CMainFrame::OnEditUpdatehashes()
 	COpenScrapeDoc	*pDoc = COpenScrapeDoc::GetDocument();
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
-	ret = pDoc->trans.update_hashes(pMyMainWnd->GetSafeHwnd(), _startup_path);
+	ret = p_tablemap->UpdateHashes(pMyMainWnd->GetSafeHwnd(), _startup_path);
 
 	// Redraw the tree
 	theApp.m_TableMapDlg->update_tree("");

@@ -1,7 +1,6 @@
 // MainFrm.h : interface of the CMainFrame class
 //
 #pragma once
-#include "structs_defines.h"
 
 #define		BLINKER_TIMER				1
 

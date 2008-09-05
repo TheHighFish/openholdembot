@@ -2,7 +2,7 @@
 #define INC_MAINFRM_H
 
 #include "MyCToolBar.h"
-#include "structs_defines.h"
+#include "..\CTablemap\CTablemap.h"
 
 #define		HWND_CHECK_TIMER				1
 #define		ENABLE_BUTTONS_TIMER			2
@@ -85,6 +85,6 @@ public:
 };
 
 BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam);
-bool check_window_match(STableMap *map, HWND h, RECT r, CString title);
+bool check_window_match(SWholeMap *map, HWND h, RECT r, CString title);
 
 #endif /* INC_MAINFRM_H */
