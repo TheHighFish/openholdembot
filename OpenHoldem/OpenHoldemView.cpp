@@ -8,6 +8,7 @@
 
 #include "CScraper.h"
 #include "CSymbols.h"
+#include "..\CTablemap\CTablemap.h"
 #include "CHeartbeatThread.h"
 #include "CGlobal.h"
 
@@ -262,7 +263,7 @@ void COpenHoldemView::update_display(bool update_all)
 	}
 
 	// Draw collection of player info
-	for (i=0; i<p_global->trans.map.num_chairs; i++) 
+	for (i=0; i<p_tablemap->s$items()->num_chairs; i++) 
 	{
 
 		// Figure out if we need to redraw this seat
@@ -310,16 +311,16 @@ void COpenHoldemView::update_display(bool update_all)
 
 			// Draw player cards
 			draw_card(p_scraper->card_player(i, 0),
-					  cr.right * pc[p_global->trans.map.num_chairs][i][0] - CARDSIZEX - 2,
-					  cr.bottom * pc[p_global->trans.map.num_chairs][i][1] - CARDSIZEY/2,
-					  cr.right * pc[p_global->trans.map.num_chairs][i][0] - 2,
-					  cr.bottom * pc[p_global->trans.map.num_chairs][i][1] + CARDSIZEY/2 - 1,
+					  cr.right * pc[p_tablemap->s$items()->num_chairs][i][0] - CARDSIZEX - 2,
+					  cr.bottom * pc[p_tablemap->s$items()->num_chairs][i][1] - CARDSIZEY/2,
+					  cr.right * pc[p_tablemap->s$items()->num_chairs][i][0] - 2,
+					  cr.bottom * pc[p_tablemap->s$items()->num_chairs][i][1] + CARDSIZEY/2 - 1,
 					  true);
 			draw_card(p_scraper->card_player(i, 1),
-					  cr.right * pc[p_global->trans.map.num_chairs][i][0] + 1,
-					  cr.bottom * pc[p_global->trans.map.num_chairs][i][1] - CARDSIZEY/2,
-					  cr.right * pc[p_global->trans.map.num_chairs][i][0] + CARDSIZEX + 1,
-					  cr.bottom * pc[p_global->trans.map.num_chairs][i][1] + CARDSIZEY/2 - 1,
+					  cr.right * pc[p_tablemap->s$items()->num_chairs][i][0] + 1,
+					  cr.bottom * pc[p_tablemap->s$items()->num_chairs][i][1] - CARDSIZEY/2,
+					  cr.right * pc[p_tablemap->s$items()->num_chairs][i][0] + CARDSIZEX + 1,
+					  cr.bottom * pc[p_tablemap->s$items()->num_chairs][i][1] + CARDSIZEY/2 - 1,
 					  true);
 
 			// Draw dealer button
@@ -652,10 +653,10 @@ void COpenHoldemView::draw_seated_active_circle(int chair)
     pDC->SetBkColor(COLOR_GRAY);
 
     // Figure placement of circle
-    left = cr.right * pc[p_global->trans.map.num_chairs][chair][0] - CARDSIZEX - 4;
-    top = cr.bottom * pc[p_global->trans.map.num_chairs][chair][1] - CARDSIZEX - 3;
-    right = cr.right * pc[p_global->trans.map.num_chairs][chair][0] + CARDSIZEX + 3;
-    bottom = cr.bottom * pc[p_global->trans.map.num_chairs][chair][1] + CARDSIZEX + 3;
+    left = cr.right * pc[p_tablemap->s$items()->num_chairs][chair][0] - CARDSIZEX - 4;
+    top = cr.bottom * pc[p_tablemap->s$items()->num_chairs][chair][1] - CARDSIZEX - 3;
+    right = cr.right * pc[p_tablemap->s$items()->num_chairs][chair][0] + CARDSIZEX + 3;
+    bottom = cr.bottom * pc[p_tablemap->s$items()->num_chairs][chair][1] + CARDSIZEX + 3;
 
     pTempPen = (CPen*)pDC->SelectObject(&black_pen);
     oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
@@ -698,10 +699,10 @@ void COpenHoldemView::draw_dealer_button(int chair)
     pDC->SetBkColor(COLOR_GRAY);
 
     // Figure placement of circle
-    left = cr.right * pc[p_global->trans.map.num_chairs][chair][0] - 8;
-    top = cr.bottom * pc[p_global->trans.map.num_chairs][chair][1] - 8;
-    right = cr.right * pc[p_global->trans.map.num_chairs][chair][0] + 8;
-    bottom = cr.bottom * pc[p_global->trans.map.num_chairs][chair][1] + 8;
+    left = cr.right * pc[p_tablemap->s$items()->num_chairs][chair][0] - 8;
+    top = cr.bottom * pc[p_tablemap->s$items()->num_chairs][chair][1] - 8;
+    right = cr.right * pc[p_tablemap->s$items()->num_chairs][chair][0] + 8;
+    bottom = cr.bottom * pc[p_tablemap->s$items()->num_chairs][chair][1] + 8;
 
 
     pTempPen = (CPen*)pDC->SelectObject(&black_pen);
@@ -912,10 +913,10 @@ void COpenHoldemView::draw_name_box(int chair)
     pDC->SetBkColor(COLOR_GRAY);
 
     // Figure placement of box
-    left = cr.right * pc[p_global->trans.map.num_chairs][chair][0] - 36;
-    top = cr.bottom * pc[p_global->trans.map.num_chairs][chair][1] + 15;
-    right = cr.right * pc[p_global->trans.map.num_chairs][chair][0] + 35;
-    bottom = cr.bottom * pc[p_global->trans.map.num_chairs][chair][1] + 30;
+    left = cr.right * pc[p_tablemap->s$items()->num_chairs][chair][0] - 36;
+    top = cr.bottom * pc[p_tablemap->s$items()->num_chairs][chair][1] + 15;
+    right = cr.right * pc[p_tablemap->s$items()->num_chairs][chair][0] + 35;
+    bottom = cr.bottom * pc[p_tablemap->s$items()->num_chairs][chair][1] + 30;
 
     // Set font basics
     lf.lfHeight = -12;
@@ -926,8 +927,8 @@ void COpenHoldemView::draw_name_box(int chair)
 
     if (p_scraper->IsStringSeated(p_scraper->seated(chair)) || 
 		p_scraper->IsStringActive(p_scraper->active(chair)) /*||
-        (p_global->trans.map.r$pXseated_index[chair] == -1 && p_global->trans.map.r$uXseated_index[chair] == -1 &&
-         p_global->trans.map.r$pXactive_index[chair] == -1 && p_global->trans.map.r$uXactive_index[chair] == -1)*/ ) 
+        (p_tablemap->r$pXseated_index[chair] == -1 && p_tablemap->r$uXseated_index[chair] == -1 &&
+         p_tablemap->r$pXactive_index[chair] == -1 && p_tablemap->r$uXactive_index[chair] == -1)*/ ) 
 	{
 
         pTempPen = (CPen*)pDC->SelectObject(&black_pen);
@@ -1008,10 +1009,10 @@ void COpenHoldemView::draw_balance_box(int chair)
     pDC->SetBkColor(COLOR_GRAY);
 
     // Figure placement of box
-    left = cr.right * pc[p_global->trans.map.num_chairs][chair][0] - 26;
-    top = cr.bottom * pc[p_global->trans.map.num_chairs][chair][1] + 30;
-    right = cr.right * pc[p_global->trans.map.num_chairs][chair][0] + 25;
-    bottom = cr.bottom * pc[p_global->trans.map.num_chairs][chair][1] + 45;
+    left = cr.right * pc[p_tablemap->s$items()->num_chairs][chair][0] - 26;
+    top = cr.bottom * pc[p_tablemap->s$items()->num_chairs][chair][1] + 30;
+    right = cr.right * pc[p_tablemap->s$items()->num_chairs][chair][0] + 25;
+    bottom = cr.bottom * pc[p_tablemap->s$items()->num_chairs][chair][1] + 45;
 
     // Set font basics
     lf.lfHeight = -12;
@@ -1022,8 +1023,8 @@ void COpenHoldemView::draw_balance_box(int chair)
 
     if (p_scraper->IsStringSeated(p_scraper->seated(chair)) || 
 		p_scraper->IsStringActive(p_scraper->active(chair)) /*||
-        (p_global->trans.map.r$pXseated_index[chair] == -1 && p_global->trans.map.r$uXseated_index[chair] == -1 &&
-         p_global->trans.map.r$pXactive_index[chair] == -1 && p_global->trans.map.r$uXactive_index[chair] == -1)*/ ) 
+        (p_tablemap->r$pXseated_index[chair] == -1 && p_tablemap->r$uXseated_index[chair] == -1 &&
+         p_tablemap->r$pXactive_index[chair] == -1 && p_tablemap->r$uXactive_index[chair] == -1)*/ ) 
 	{
 
         pTempPen = (CPen*)pDC->SelectObject(&black_pen);
@@ -1137,10 +1138,10 @@ void COpenHoldemView::draw_player_bet(int chair)
     pDC->SetBkColor(COLOR_GRAY);
 
     // Figure placement
-    xcenter = cr.right * pc[p_global->trans.map.num_chairs][chair][0];
-    ycenter = cr.bottom * pc[p_global->trans.map.num_chairs][chair][1];
-    xadj = pcbet[p_global->trans.map.num_chairs][chair][0];
-    yadj = pcbet[p_global->trans.map.num_chairs][chair][1];
+    xcenter = cr.right * pc[p_tablemap->s$items()->num_chairs][chair][0];
+    ycenter = cr.bottom * pc[p_tablemap->s$items()->num_chairs][chair][1];
+    xadj = pcbet[p_tablemap->s$items()->num_chairs][chair][0];
+    yadj = pcbet[p_tablemap->s$items()->num_chairs][chair][1];
 
     // Set font basics
     lf.lfHeight = -12;

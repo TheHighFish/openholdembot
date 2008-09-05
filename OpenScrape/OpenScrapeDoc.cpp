@@ -5,10 +5,8 @@
 #include "OpenScrape.h"
 #include "MainFrm.h"
 #include "OpenScrapeDoc.h"
-#include "structs_defines.h"
 #include "../CTransform/hash/lookup3.h"
 #include "DialogTableMap.h"
-#include "debug.h"
 #include "global.h"
 
 #ifdef _DEBUG
@@ -30,7 +28,7 @@ COpenScrapeDoc::COpenScrapeDoc()
 
 	__SEH_HEADER
 		
-	trans.clear_tablemap();
+	p_tablemap->ClearTablemap();
 
 	attached_hwnd = NULL;
 	ZeroMemory(&attached_rect, sizeof(RECT));
@@ -65,7 +63,7 @@ BOOL COpenScrapeDoc::OnNewDocument()
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 	
-	trans.clear_tablemap();
+	p_tablemap->ClearTablemap();
 
 	if (theApp.m_TableMapDlg)  
 		theApp.m_TableMapDlg->create_tree();
@@ -84,7 +82,7 @@ BOOL COpenScrapeDoc::OnOpenDocument(LPCTSTR lpszPathName)
 
 	if (!valid_open)
 	{
-		trans.clear_tablemap();
+		p_tablemap->ClearTablemap();
 		SetTitle("");
 	}
 	
@@ -114,20 +112,20 @@ void COpenScrapeDoc::Serialize(CArchive& ar)
 
 	if (ar.IsStoring())
 	{
-		trans.save_tablemap(ar, VERSION_TEXT);
+		p_tablemap->SaveTablemap(ar, VERSION_TEXT);
 	}
 
 	else
 	{
 		loaded_version = "";
-		ret = trans.load_tablemap((char *) ar.m_strFileName.GetString(), "", false, &linenum, &loaded_version);
+		ret = p_tablemap->LoadTablemap((char *) ar.m_strFileName.GetString(), "", false, &linenum, &loaded_version);
 
 		if (loaded_version == VER_WINSCRAPE && ret == SUCCESS)
 		{
 			if (MessageBox(pMyMainWnd->GetSafeHwnd(), "This is a WinScrape table 'profile'.  Would you like to convert to OpenScrape table map format?", 
 						   "Convert table 'profile'?", MB_YESNO) == IDYES)
 			{
-				ret = trans.convert_tablemap(pMyMainWnd->GetSafeHwnd(), _startup_path);
+				ret = p_tablemap->ConvertTablemap(pMyMainWnd->GetSafeHwnd(), _startup_path);
 
 				if (ret != SUCCESS && ret != ERR_INCOMPLETEMASTER)
 				{

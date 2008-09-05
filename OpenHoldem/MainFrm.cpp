@@ -15,6 +15,7 @@
 #include "CPokerTrackerThread.h"
 #include "CGlobal.h"
 #include "CDllExtension.h"
+#include "..\CTransform\CTransform.h"
 
 #include "DialogFormulaScintilla.h"
 #include "SAPrefsDialog.h"
@@ -589,7 +590,7 @@ void CMainFrame::OnFileLoadTableMap()
 
     if (cfd.DoModal() == IDOK)
     {
-        ret = p_global->trans.load_tablemap(cfd.m_ofn.lpstrFile, VER_OPENSCRAPE_1, false, &line);
+        ret = p_tablemap->LoadTablemap(cfd.m_ofn.lpstrFile, VER_OPENSCRAPE_1, false, &line);
         if (ret == ERR_VERSION)
         {
             e.Format("This is an OpenHoldem v1 profile (.ohdb1).\n"\
@@ -604,9 +605,9 @@ void CMainFrame::OnFileLoadTableMap()
         }
         else
         {
-            p_global->SaveR$Indices();
-            p_global->SaveS$Indices();
-            p_global->SaveS$Strings();
+            p_tablemap->SaveR$Indices();
+            p_tablemap->SaveS$Indices();
+            p_tablemap->SaveS$Strings();
 
             // Reset "ScraperOutput" dialog, if it is live
             if (m_ScraperOutputDlg) 
@@ -626,26 +627,37 @@ void CMainFrame::OnBnClickedGreenCircle()
 {
     __SEH_HEADER
 
-    int								i, N, line, ret;
-    CDlgSelectTable					cstd;
-    STableList						tablelisthold;
-    int								result;
-    char							title[512];
-    CFileFind						hFile;
-    CString							path, filename, current_path;
-    BOOL							bFound;
-    int								last_frame_num, frame_num;
-    CTime							time, latest_time;
+    int					i, N, line, ret;
+    CDlgSelectTable		cstd;
+    STableList			tablelisthold;
+    int					result;
+    char				title[512];
+    CFileFind			hFile;
+    CString				path, filename, current_path;
+    BOOL				bFound;
+    int					last_frame_num, frame_num;
+    CTime				time, latest_time;
+	struct SWholeMap	smap;
+
 
     // Clear global list for holding table candidates
     p_global->g_tlist.RemoveAll();
 
     // First check explicitly loaded/last used tablemap
 	current_path = "";
-    if (p_global->trans.map.valid)
+	if (p_tablemap->valid())
 	{
-	    EnumWindows(EnumProcTopLevelWindowList, (LPARAM) &p_global->trans.map);
-		current_path = p_global->trans.map.filepath;
+		smap.z$ = p_tablemap->z$();
+		smap.s$ = p_tablemap->s$();
+		smap.r$ = p_tablemap->r$();
+		smap.t$ = p_tablemap->t$();
+		smap.p$ = p_tablemap->p$();
+		smap.h$ = p_tablemap->h$();
+		smap.i$ = p_tablemap->i$();
+		smap.filepath = p_tablemap->filepath();
+
+	    EnumWindows(EnumProcTopLevelWindowList, (LPARAM) &smap);
+		current_path = p_tablemap->filepath();
 	}
 
     // OpenScrape table maps
@@ -656,9 +668,20 @@ void CMainFrame::OnBnClickedGreenCircle()
         bFound = hFile.FindNextFile();
         if (!hFile.IsDots() && !hFile.IsDirectory() && hFile.GetFilePath()!=current_path)
 		{
-			ret = p_global->trans.load_tablemap((char *) hFile.GetFilePath().GetString(), VER_OPENSCRAPE_1, false, &line);
+			ret = p_tablemap->LoadTablemap((char *) hFile.GetFilePath().GetString(), VER_OPENSCRAPE_1, false, &line);
             if (ret == SUCCESS)
-			    EnumWindows(EnumProcTopLevelWindowList, (LPARAM) &p_global->trans.map);
+			{
+				smap.z$ = p_tablemap->z$();
+				smap.s$ = p_tablemap->s$();
+				smap.r$ = p_tablemap->r$();
+				smap.t$ = p_tablemap->t$();
+				smap.p$ = p_tablemap->p$();
+				smap.h$ = p_tablemap->h$();
+				smap.i$ = p_tablemap->i$();
+				smap.filepath = p_tablemap->filepath();
+		
+				EnumWindows(EnumProcTopLevelWindowList, (LPARAM) &smap);
+			}
 		}
     }
 
@@ -670,9 +693,20 @@ void CMainFrame::OnBnClickedGreenCircle()
         bFound = hFile.FindNextFile();
         if (!hFile.IsDots() && !hFile.IsDirectory() && hFile.GetFilePath()!=current_path)
 		{
-			ret = p_global->trans.load_tablemap((char *) hFile.GetFilePath().GetString(), VER_OPENSCRAPE_1, false, &line);
+			ret = p_tablemap->LoadTablemap((char *) hFile.GetFilePath().GetString(), VER_OPENSCRAPE_1, false, &line);
             if (ret == SUCCESS)
-			    EnumWindows(EnumProcTopLevelWindowList, (LPARAM) &p_global->trans.map);
+			{
+				smap.z$ = p_tablemap->z$();
+				smap.s$ = p_tablemap->s$();
+				smap.r$ = p_tablemap->r$();
+				smap.t$ = p_tablemap->t$();
+				smap.p$ = p_tablemap->p$();
+				smap.h$ = p_tablemap->h$();
+				smap.i$ = p_tablemap->i$();
+				smap.filepath = p_tablemap->filepath();
+
+				EnumWindows(EnumProcTopLevelWindowList, (LPARAM) &smap);
+			}
 		}
     }
 
@@ -724,10 +758,10 @@ void CMainFrame::OnBnClickedGreenCircle()
 				p_global->set_attached_rect()->bottom = p_global->g_tlist[cstd.selected_item].crect.bottom;
 			LeaveCriticalSection(&p_global->cs_global);
         
-			p_global->trans.load_tablemap((char *) p_global->g_tlist[cstd.selected_item].path.GetString(), VER_OPENSCRAPE_1, false, &line);
-            p_global->SaveR$Indices();
-            p_global->SaveS$Indices();
-            p_global->SaveS$Strings();
+			p_tablemap->LoadTablemap((char *) p_global->g_tlist[cstd.selected_item].path.GetString(), VER_OPENSCRAPE_1, false, &line);
+            p_tablemap->SaveR$Indices();
+            p_tablemap->SaveS$Indices();
+            p_tablemap->SaveS$Strings();
 
             // Create bitmaps
 			p_scraper->CreateBitmaps();
@@ -836,7 +870,7 @@ void CMainFrame::OnBnClickedGreenCircle()
             // log OH title bar text and table reset
             ::GetWindowText(p_global->attached_hwnd(), title, 512);
             write_log("\n*************************************************************\nTABLE RESET %s - %s(%s)\n*************************************************************\n",
-                      p_global->formula_name.GetString(), p_global->trans.map.sitename.GetString(), title);
+				p_global->formula_name.GetString(), p_tablemap->s$items()->sitename.GetString(), title);
 
         }
     }
@@ -893,7 +927,7 @@ void CMainFrame::OnBnClickedRedCircle()
 	p_scraper->DeleteBitmaps();
 
     // Clear profile indices
-    p_global->ClearR$Indices();
+    p_tablemap->ClearR$Indices();
 
     // Clear scraper fields
 	p_scraper->ClearScrapeAreas();
@@ -915,7 +949,7 @@ void CMainFrame::OnBnClickedRedCircle()
     }
 
     // log OH title bar text and table reset
-    write_log("%s - %s(NOT ATTACHED)\n", p_global->formula_name.GetString(), p_global->trans.map.sitename.GetString());
+    write_log("%s - %s(NOT ATTACHED)\n", p_global->formula_name.GetString(), p_tablemap->s$items()->sitename.GetString());
     write_log("TABLE RESET\n*************************************************************\n");
 
     // Stop logging
@@ -1867,7 +1901,7 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
     char				text[512];
     RECT				crect;
     STableList			tablelisthold;
-    STableMap			*map = (STableMap *) (lparam);
+    SWholeMap			*map = (SWholeMap *) (lparam);
 
     // If this is not a top level window, then return
     if (GetParent(hwnd) != NULL)
@@ -1903,7 +1937,7 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
     return true;  // keep processing through entire list of windows
 }
 
-bool check_window_match(STableMap *map, HWND h, RECT r, CString title) 
+bool check_window_match(SWholeMap *map, HWND h, RECT r, CString title) 
 {
     __SEH_SET_EXCEPTION_HANDLER
 
@@ -1916,24 +1950,25 @@ bool check_window_match(STableMap *map, HWND h, RECT r, CString title)
     HBITMAP			hbmScreen, hOldScreenBitmap;
     BYTE			*pBits, alpha, red, green, blue;
     int				exact_width, exact_height, min_width, min_height, max_width, max_height;
+	CTransform		trans;
 
     exact_width = exact_height = min_width = min_height = max_width = max_height = 0;
-    for (i=0; i<(int) map->z$.GetSize(); i++)
+    for (i=0; i<(int) map->z$->GetSize(); i++)
     {
-        if (map->z$[i].name == "clientsize")
+        if (map->z$->GetAt(i).name == "clientsize")
         {
-            exact_width = map->z$[i].width;
-            exact_height = map->z$[i].height;
+            exact_width = map->z$->GetAt(i).width;
+            exact_height = map->z$->GetAt(i).height;
         }
-        else if (map->z$[i].name == "clientsizemin")
+        else if (map->z$->GetAt(i).name == "clientsizemin")
         {
-            min_width = map->z$[i].width;
-            min_height = map->z$[i].height;
+            min_width = map->z$->GetAt(i).width;
+            min_height = map->z$->GetAt(i).height;
         }
-        else if (map->z$[i].name == "clientsizemax")
+        else if (map->z$->GetAt(i).name == "clientsizemax")
         {
-            max_width = map->z$[i].width;
-            max_height = map->z$[i].height;
+            max_width = map->z$->GetAt(i).width;
+            max_height = map->z$->GetAt(i).height;
         }
     }
 
@@ -1957,12 +1992,12 @@ bool check_window_match(STableMap *map, HWND h, RECT r, CString title)
 
     // Check title text for match
     good_pos_title = false;
-    for (i=0; i<(int) map->s$.GetSize(); i++)
+    for (i=0; i<(int) map->s$->GetSize(); i++)
     {
-        if (map->s$[i].name.Left(9) == "titletext"  && title.Find(map->s$[i].text)!=-1)
+        if (map->s$->GetAt(i).name.Left(9) == "titletext"  && title.Find(map->s$->GetAt(i).text)!=-1)
         {
             good_pos_title = true;
-            i=(int) map->s$.GetSize()+1;
+            i=(int) map->s$->GetSize()+1;
         }
     }
 
@@ -1971,12 +2006,12 @@ bool check_window_match(STableMap *map, HWND h, RECT r, CString title)
 
     // Check for no negative title text matches
     good_neg_title = true;
-    for (i=0; i<(int) map->s$.GetSize(); i++)
+    for (i=0; i<(int) map->s$->GetSize(); i++)
     {
-        if (map->s$[i].name.Left(10) == "!titletext" && title.Find(map->s$[i].text)!=-1)
+        if (map->s$->GetAt(i).name.Left(10) == "!titletext" && title.Find(map->s$->GetAt(i).text)!=-1)
         {
             good_neg_title = false;
-            i=(int) map->s$.GetSize()+1;
+            i=(int) map->s$->GetSize()+1;
         }
     }
 
@@ -2008,16 +2043,16 @@ bool check_window_match(STableMap *map, HWND h, RECT r, CString title)
     GetDIBits(hdcCompatible, hbmScreen, 0, height, pBits, bmi, DIB_RGB_COLORS);
 
     good_table_points = true;
-    for (i=0; i<(int) map->r$.GetSize(); i++)
+    for (i=0; i<(int) map->r$->GetSize(); i++)
     {
-        if (map->r$[i].name.Find("tablepoint") != -1 &&
-                map->r$[i].right - map->r$[i].left == 1 &&
-                map->r$[i].bottom - map->r$[i].top == 1 &&
-                map->r$[i].transform == "C")
+        if (map->r$->GetAt(i).name.Find("tablepoint") != -1 &&
+                map->r$->GetAt(i).right - map->r$->GetAt(i).left == 1 &&
+                map->r$->GetAt(i).bottom - map->r$->GetAt(i).top == 1 &&
+                map->r$->GetAt(i).transform == "C")
         {
 
-            x = map->r$[i].left;
-            y = map->r$[i].top;
+            x = map->r$->GetAt(i).left;
+            y = map->r$->GetAt(i).top;
 
             int pbits_loc = y*width*4 + x*4;
             alpha = pBits[pbits_loc + 3];
@@ -2026,31 +2061,31 @@ bool check_window_match(STableMap *map, HWND h, RECT r, CString title)
             blue = pBits[pbits_loc + 0];
 
             // positive radius
-            if (map->r$[i].radius >= 0)
+            if (map->r$->GetAt(i).radius >= 0)
             {
-                if (!p_global->trans.is_in_ARGB_color_cube((map->r$[i].color>>24)&0xff,
-                                                 GetRValue(map->r$[i].color),
-                                                 GetGValue(map->r$[i].color),
-                                                 GetBValue(map->r$[i].color),
-                                                 map->r$[i].radius,
-                                                 alpha, red, green, blue))
+                if (!trans.IsInARGBColorCube((map->r$->GetAt(i).color>>24)&0xff,
+                                             GetRValue(map->r$->GetAt(i).color),
+                                             GetGValue(map->r$->GetAt(i).color),
+                                             GetBValue(map->r$->GetAt(i).color),
+                                             map->r$->GetAt(i).radius,
+                                             alpha, red, green, blue))
                 {
                     good_table_points = false;
-                    i=(int) map->r$.GetSize()+1;
+                    i=(int) map->r$->GetSize()+1;
                 }
             }
             // negative radius (logical not)
             else
             {
-                if (p_global->trans.is_in_ARGB_color_cube((map->r$[i].color>>24)&0xff,
-                                                GetRValue(map->r$[i].color),
-                                                GetGValue(map->r$[i].color),
-                                                GetBValue(map->r$[i].color),
-                                                -map->r$[i].radius,
-                                                alpha, red, green, blue))
+                if (trans.IsInARGBColorCube((map->r$->GetAt(i).color>>24)&0xff,
+                                            GetRValue(map->r$->GetAt(i).color),
+                                            GetGValue(map->r$->GetAt(i).color),
+                                            GetBValue(map->r$->GetAt(i).color),
+                                            -map->r$->GetAt(i).radius,
+                                            alpha, red, green, blue))
                 {
                     good_table_points = false;
-                    i=(int) map->r$.GetSize()+1;
+                    i=(int) map->r$->GetSize()+1;
                 }
             }
 

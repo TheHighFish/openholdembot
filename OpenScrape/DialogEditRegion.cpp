@@ -3,8 +3,6 @@
 
 #include "stdafx.h"
 #include "DialogEditRegion.h"
-#include "debug.h"
-
 
 // CDlgEditRegion dialog
 

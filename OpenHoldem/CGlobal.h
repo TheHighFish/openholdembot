@@ -29,19 +29,12 @@ public:
 	void CreateHandListMatrices(SFormula *f);
 	bool ParseAllFormula(HWND hwnd, SFormula *f);
 	void CreateReplayFrame(void);
-	void ClearR$Indices(void);
-	void SaveR$Indices(void);
-	void SaveS$Indices(void);
-	void SaveS$Strings(void);
 	void CaptureState(const char *title);
 	void ParseHandList(CString &list_text, bool inlist[13][13]);
 	void CopyFormula(SFormula *f, SFormula *t);
 
 public:
 	// public variables <<< need to make these private eventually
-	// Table map and transformation engine
-	CTransform		trans;
-
 	// Formula being used for execution
 	SFormula		formula;
 	CString			formula_name;

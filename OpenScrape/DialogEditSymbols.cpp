@@ -4,7 +4,6 @@
 #include "stdafx.h"
 #include "DialogEditSymbols.h"
 #include "OpenScrapeDoc.h"
-#include "debug.h"
 
 // CDlgEditSymbols dialog
 
@@ -89,11 +88,12 @@ void CDlgEditSymbols::OnBnClickedParsebutton()
 
 	CString				results, text, format;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+	CTransform			trans;
 
 	m_Titletext.GetWindowText(text);
 	m_Value.GetWindowText(format);
 	
-	pDoc->trans.parse_string_bsl(text, format, &results);
+	trans.ParseStringBSL(text, format, &results);
 
 	m_ParseResults.SetWindowText(results.GetString());
 

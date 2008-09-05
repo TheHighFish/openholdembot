@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 #include "DialogEdit.h"
-#include "debug.h"
 
 // CDlgEdit dialog
 IMPLEMENT_DYNAMIC(CDlgEdit, CDialog)

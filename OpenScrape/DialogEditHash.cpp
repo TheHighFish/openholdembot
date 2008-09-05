@@ -3,8 +3,6 @@
 
 #include "stdafx.h"
 #include "DialogEditHash.h"
-#include "debug.h"
-
 
 // CDlgEditHash dialog
 

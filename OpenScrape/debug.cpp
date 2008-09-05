@@ -2,7 +2,6 @@
 
 #include "..\dbghelp\dbghelp.h"
 
-#include "debug.h"
 #include "MainFrm.h"
 #include "OpenScrape.h"
 #include "global.h"

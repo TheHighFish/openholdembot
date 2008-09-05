@@ -1,7 +1,6 @@
 #pragma once
 #include "afxwin.h"
 #include "resource.h"
-#include "structs_defines.h"
 
 // CDlgEditFont dialog
 
@@ -18,7 +17,7 @@ public:
 	CString			titletext;
 	CString			character;
 	CString			type;
-	CArray <Stablemap_font, Stablemap_font>		*new_t$_recs;
+	CArray <STablemapFont, STablemapFont>		*new_t$_recs;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

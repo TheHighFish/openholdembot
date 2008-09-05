@@ -3,6 +3,7 @@
 #include "CMyHand.h"
 
 #include "CSymbols.h"
+#include "..\CTransform\CTransform.h"
 
 CMyHand::CMyHand()
 {

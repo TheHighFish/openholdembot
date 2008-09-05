@@ -5,7 +5,6 @@
 // or project specific include files that are used frequently,
 // but are changed infrequently
 
-
 #ifndef _SECURE_ATL
 #define _SECURE_ATL 1
 #endif
@@ -61,13 +60,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "debug.h"
+// Version
+#define VERSION_NUMBER				1.94
+#define VERSION_TEXT				"1.9.4"  // change version number in OpenHoldem.rc also, when needed
+
+// PokerEval
 #include "poker_defs.h"
 #include "pokereval_export.h"
 #include "evx_defs.h"
 #include "inlines/evx_inlines.h"
 
-#include "structs_defines.h"
+
+#include "debug.h"
+#include "..\StructsDefines\structs_defines.h"
 
 
 #endif //INC_STDAFX_H

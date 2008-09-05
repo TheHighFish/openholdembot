@@ -1,6 +1,5 @@
 #pragma once
 #include "afxwin.h"
-#include "structs_defines.h"
 
 // CDlgEditGrHashPoints dialog
 
@@ -12,7 +11,7 @@ public:
 	virtual BOOL OnInitDialog();
 	virtual BOOL DestroyWindow();
 
-	CArray <Stablemap_hash_point, Stablemap_hash_point> working_hash_points;
+	CArray <STablemapHashPoint, STablemapHashPoint> working_hash_points;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

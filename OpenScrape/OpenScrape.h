@@ -27,6 +27,7 @@ public:
 	int				sessionnum;
 	CDlgTableMap	*m_TableMapDlg;
 
+	virtual int ExitInstance();
 };
 
 extern COpenScrapeApp theApp;
