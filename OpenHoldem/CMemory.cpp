@@ -4,6 +4,7 @@
 
 #include "CSymbols.h"
 #include "CGlobal.h"
+#include "CFormula.h"
 
 #include "grammar.h"
 
@@ -88,7 +89,9 @@ void CMemory::StoreValue(const char * pquery, CEvalInfoFunction **logCallingFunc
 	if (memcmp(value,"f$",2)==0)
 	{
 		*e = SUCCESS;
-		result = do_calc_f$symbol(&p_global->formula, value, logCallingFunction, logCallingFunction!=NULL, e);
+		EnterCriticalSection(&p_formula->cs_formula);
+		result = do_calc_f$symbol(p_formula->set_formula(), value, logCallingFunction, logCallingFunction!=NULL, e);
+		LeaveCriticalSection(&p_formula->cs_formula);
 
 		if (*e==SUCCESS)
 		{

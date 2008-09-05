@@ -6,6 +6,7 @@
 
 #include "CSymbols.h"
 #include "CGlobal.h"
+#include "CFormula.h"
 
 #include "grammar.h"
 #include "PokerChat.hpp"
@@ -69,13 +70,13 @@ void CDllExtension::LoadDll(const char * path)
 	{
 
 		// Find DLL name to load from the formula file
-		N = p_global->formula.mFunction.GetSize();
+		N = p_formula->formula()->mFunction.GetSize();
 		formula_dll = "";
 		for (i=0; i<N; i++)
 		{
-			if (p_global->formula.mFunction[i].func == "dll")
+			if (p_formula->formula()->mFunction[i].func == "dll")
 			{
-				formula_dll = p_global->formula.mFunction[i].func_text;
+				formula_dll = p_formula->formula()->mFunction[i].func_text;
 				i = N + 1;
 			}
 		}
@@ -134,7 +135,7 @@ void CDllExtension::LoadDll(const char * path)
 
 			//pass "phl1k" message (address of handlist arrays)
 			//  2008-03-22 Matrix
-			(_process_message) ("phl1k", p_global->formula.inlist);
+			(_process_message) ("phl1k", p_formula->formula()->inlist);
 
 			//pass "prw1326" message (address of prw1326 structure)
 			//  2008-05-08 Matrix
@@ -202,7 +203,9 @@ double GetSymbolFromDll(const int chair, const char* name, bool& iserr)
 	if (result)
 	{
 		e = SUCCESS;
-		res = evaluate(&p_global->formula, tpi, NULL, &e);
+		EnterCriticalSection(&p_formula->cs_formula);
+		res = evaluate(p_formula->set_formula(), tpi, NULL, &e);
+		LeaveCriticalSection(&p_formula->cs_formula);
 	}
 	else
 	{

@@ -3,17 +3,10 @@
 	
 #include "CGlobal.h"
 
+#include "CFormula.h"
+
 #include <boost/spirit/tree/ast.hpp>
 #include "CDllExtension.h"
-#include "UPDialog.h"
-
-// For parsing progress dialog
-struct	sData 
-{
-	bool		all_parsed;
-	HWND		calling_hwnd;
-	SFormula	*f;
-};
 
 extern class CGlobal 
 {
@@ -25,20 +18,11 @@ public:
 	// public functions
 	CGlobal(void);
 	~CGlobal(void);
-	void ClearFormula(SFormula *f);
-	void CreateHandListMatrices(SFormula *f);
-	bool ParseAllFormula(HWND hwnd, SFormula *f);
 	void CreateReplayFrame(void);
 	void CaptureState(const char *title);
-	void ParseHandList(CString &list_text, bool inlist[13][13]);
-	void CopyFormula(SFormula *f, SFormula *t);
 
 public:
 	// public variables <<< need to make these private eventually
-	// Formula being used for execution
-	SFormula		formula;
-	CString			formula_name;
-
 	// Preferences
 	SPreferences	preferences;
 
@@ -58,7 +42,7 @@ public:
 	CArray <STableList, STableList>		g_tlist;
 
 	// Formula set currently being parsed, and result of that parse (this is for symbol validation)
-	SFormula		*parse_symbol_formula;
+	const SFormula		*parse_symbol_formula;
 	CArray<std::string, std::string>		parse_symbol_stop_strs;
 
 	CString			mm_network;
@@ -112,7 +96,5 @@ private:
 	CString GetCardHtml(unsigned int card);
 
 } *p_global;
-
-bool parse_loop(const CUPDUPDATA* pCUPDUPData);
 
 #endif /* INC_CGLOBAL_H */

@@ -13,6 +13,7 @@
 #include "CScraper.h"
 #include "CSymbols.h"
 #include "..\CTablemap\CTablemap.h"
+#include "CFormula.h"
 #include "CAutoplayer.h"
 #include "CIteratorThread.h"
 #include "CHeartbeatThread.h"
@@ -90,6 +91,7 @@ BOOL COpenHoldemApp::InitInstance()
 	if (!p_scraper)  p_scraper = new CScraper;
 	if (!p_symbols)  p_symbols = new CSymbols;
 	if (!p_tablemap)  p_tablemap = new CTablemap;
+	if (!p_formula)  p_formula = new CFormula;
 	if (!p_autoplayer)  p_autoplayer = new CAutoplayer(false, "OHAntiColl");
 	if (!p_pokertracker_thread)  p_pokertracker_thread = new CPokerTrackerThread;
 	if (!p_dll_extension)  p_dll_extension = new CDllExtension;
@@ -227,6 +229,8 @@ int COpenHoldemApp::ExitInstance()
 	if (p_global)  { delete p_global; p_global = NULL; }
 	if (p_scraper)  { delete p_scraper; p_scraper = NULL; }
 	if (p_symbols)  { delete p_symbols; p_symbols = NULL; }
+	if (p_tablemap)  { delete p_tablemap; p_tablemap = NULL; }
+	if (p_formula)  { delete p_formula; p_formula = NULL; }
 	if (p_autoplayer)  { delete p_autoplayer; p_autoplayer = NULL; }
 	if (p_pokertracker_thread)	{ delete p_pokertracker_thread; p_pokertracker_thread = NULL; }
 	if (p_dll_extension)  { delete p_dll_extension; p_dll_extension = NULL; }
