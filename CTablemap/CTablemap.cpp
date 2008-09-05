@@ -44,6 +44,8 @@ void CTablemap::ClearTablemap()
 {
 	__SEH_HEADER
 
+	EnterCriticalSection(&cs_tablemap);
+
 	_valid = false;
 	_filepath = "";
 	_filename = "";
@@ -55,6 +57,8 @@ void CTablemap::ClearTablemap()
 	_p$.RemoveAll();
 	_h$.RemoveAll();
 	_i$.RemoveAll();
+
+	LeaveCriticalSection(&cs_tablemap);
 
 	__SEH_LOGFATAL("CTablemap::ClearTablemap :\n");
 }
@@ -211,7 +215,9 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 
 			hold_size.height = atol(token.GetString());
 
+			EnterCriticalSection(&cs_tablemap);
 			_z$.Add(hold_size);
+			LeaveCriticalSection(&cs_tablemap);
 		}
 
 		// Handle _s$ lines (symbols/string)
@@ -232,7 +238,9 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			}
 			else
 			{
+				EnterCriticalSection(&cs_tablemap);
 				_s$.Add(hold_symbol);
+				LeaveCriticalSection(&cs_tablemap);
 			}
 		}
 
@@ -294,7 +302,9 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			//if (token.GetLength()==0) { return ERR_SYNTAX; }
 			//hold_region.flags = atol(token.GetString());
 
+			EnterCriticalSection(&cs_tablemap);
 			_r$.Add(hold_region);
+			LeaveCriticalSection(&cs_tablemap);
 		}
 
 		// Handle _t$ lines (fonts)
@@ -346,11 +356,15 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 					j=P+1;
 				}
 			}
+
+			EnterCriticalSection(&cs_tablemap);
 			if (insert_point==-1)
 				_t$.Add(hold_font);
 
 			else
 				_t$.InsertAt(insert_point, hold_font);
+			LeaveCriticalSection(&cs_tablemap);
+
 		}
 
 		// Handle _p$ lines (hash points)
@@ -390,11 +404,14 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 					j=P+1;
 				}
 			}
+
+			EnterCriticalSection(&cs_tablemap);
 			if (insert_point==-1)
 				_p$.Add(hold_hash_point);
 
 			else
 				_p$.InsertAt(insert_point, hold_hash_point);
+			LeaveCriticalSection(&cs_tablemap);
 		}
 
 		// Handle _h$ lines (hash values)
@@ -432,11 +449,14 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 					j=P+1;
 				}
 			}
+
+			EnterCriticalSection(&cs_tablemap);
 			if (insert_point==-1)
 				_h$.Add(hold_hash_value);
 
 			else
 				_h$.InsertAt(insert_point, hold_hash_value);
+			LeaveCriticalSection(&cs_tablemap);
 		}
 
 		// Handle _i$ lines (images)
@@ -463,34 +483,36 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			if (hold_image.width * hold_image.height > MAX_IMAGE_WIDTH*MAX_IMAGE_HEIGHT)
 				return ERR_REGION_SIZE;
 
-			// Add the new _i$ record to the internal array
-			new_elem = (int) _i$.Add(hold_image);
+			EnterCriticalSection(&cs_tablemap);
+				// Add the new _i$ record to the internal array
+				new_elem = (int) _i$.Add(hold_image);
 
-			// Allocate space for "RGBAImage"
-			t = _i$[new_elem].name + ".ppm";
-			_i$[new_elem].image = new RGBAImage(_i$[new_elem].width, _i$[new_elem].height, t.GetString());
+				// Allocate space for "RGBAImage"
+				t = _i$[new_elem].name + ".ppm";
+				_i$[new_elem].image = new RGBAImage(_i$[new_elem].width, _i$[new_elem].height, t.GetString());
 
-			// read next "height" lines
-			for (y=0; y < (int) _i$[new_elem].height; y++) 
-			{
-				(*linenum)++;
-				if (!ar.ReadString(strLine)) 
+				// read next "height" lines
+				for (y=0; y < (int) _i$[new_elem].height; y++) 
 				{
-					return ERR_SYNTAX;
+					(*linenum)++;
+					if (!ar.ReadString(strLine)) 
+					{
+						return ERR_SYNTAX;
+					}
+					// scan across "width" of line to get values
+					for (x=0; x < (int) _i$[new_elem].width; x++) 
+					{
+						// unreverse bgra to abgr
+						hexval = strLine.Mid(x*8+6, 2) + strLine.Mid(x*8, 6);
+						_i$[new_elem].pixel[y*_i$[new_elem].width + x] = strtoul(hexval, 0, 16);
+						alpha = (_i$[new_elem].pixel[y*_i$[new_elem].width + x] >> 24) &0xff;
+						blue =  (_i$[new_elem].pixel[y*_i$[new_elem].width + x] >> 16) &0xff;
+						green = (_i$[new_elem].pixel[y*_i$[new_elem].width + x] >>  8) &0xff;
+						red =   (_i$[new_elem].pixel[y*_i$[new_elem].width + x] >>  0) &0xff;
+						_i$[new_elem].image->Set(red, green, blue, alpha, y*_i$[new_elem].width + x);
+					}
 				}
-				// scan across "width" of line to get values
-				for (x=0; x < (int) _i$[new_elem].width; x++) 
-				{
-					// unreverse bgra to abgr
-					hexval = strLine.Mid(x*8+6, 2) + strLine.Mid(x*8, 6);
-					_i$[new_elem].pixel[y*_i$[new_elem].width + x] = strtoul(hexval, 0, 16);
-					alpha = (_i$[new_elem].pixel[y*_i$[new_elem].width + x] >> 24) &0xff;
-					blue =  (_i$[new_elem].pixel[y*_i$[new_elem].width + x] >> 16) &0xff;
-					green = (_i$[new_elem].pixel[y*_i$[new_elem].width + x] >>  8) &0xff;
-					red =   (_i$[new_elem].pixel[y*_i$[new_elem].width + x] >>  0) &0xff;
-					_i$[new_elem].image->Set(red, green, blue, alpha, y*_i$[new_elem].width + x);
-				}
-			}
+			LeaveCriticalSection(&cs_tablemap);
 		}
 
 		// Unknown line type
@@ -878,15 +900,17 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 	} // for (imageloop=0; imageloop<num_irecs; imageloop++)
 
 
-	// Kill the existing h$ records, and replace with new_hashes records
-	_h$.RemoveAll();
-	for (j=0; j<(int) new_hashes.GetSize(); j++) 
-	{
-		hold_hash_value.name = new_hashes[j].name;
-		hold_hash_value.number = new_hashes[j].number;
-		hold_hash_value.hash = new_hashes[j].hash;
-		_h$.Add(hold_hash_value);
-	}
+	EnterCriticalSection(&cs_tablemap);
+		// Kill the existing h$ records, and replace with new_hashes records
+		_h$.RemoveAll();
+		for (j=0; j<(int) new_hashes.GetSize(); j++) 
+		{
+			hold_hash_value.name = new_hashes[j].name;
+			hold_hash_value.number = new_hashes[j].number;
+			hold_hash_value.hash = new_hashes[j].hash;
+			_h$.Add(hold_hash_value);
+		}
+	LeaveCriticalSection(&cs_tablemap);
 
 	// Populate h$ _hashes std::map for fast lookups
 	for (j=0; j<=3; j++)
@@ -1074,15 +1098,17 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 	} // for (imageloop=0; imageloop<num_irecs; imageloop++)
 
 
-	// Kill the existing _h$ records, and replace with new_hashes records
-	_h$.RemoveAll();
-	for (j=0; j<(int) new_hashes.GetSize(); j++) 
-	{
-		hold_hash_value.name = new_hashes[j].name;
-		hold_hash_value.number = new_hashes[j].number;
-		hold_hash_value.hash = new_hashes[j].hash;
-		_h$.Add(hold_hash_value);
-	}
+	EnterCriticalSection(&cs_tablemap);
+		// Kill the existing _h$ records, and replace with new_hashes records
+		_h$.RemoveAll();
+		for (j=0; j<(int) new_hashes.GetSize(); j++) 
+		{
+			hold_hash_value.name = new_hashes[j].name;
+			hold_hash_value.number = new_hashes[j].number;
+			hold_hash_value.hash = new_hashes[j].hash;
+			_h$.Add(hold_hash_value);
+		}
+	LeaveCriticalSection(&cs_tablemap);
 
 	// Populate _h$ _hashes std::map for fast lookups
 	for (j=0; j<=3; j++)
