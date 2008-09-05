@@ -16,6 +16,7 @@
 #include "CGlobal.h"
 #include "CDllExtension.h"
 #include "..\CTransform\CTransform.h"
+#include "CFormula.h"
 
 #include "DialogFormulaScintilla.h"
 #include "SAPrefsDialog.h"
@@ -790,11 +791,7 @@ void CMainFrame::OnBnClickedGreenCircle()
             p_global->autoplay = false;
 
             // mark symbol result cache as stale
-            N = (int) p_global->formula.mFunction.GetSize();
-            for (i=0; i<N; i++)
-            {
-                p_global->formula.mFunction[i].fresh = false;
-            }
+			p_formula->MarkCacheStale();
 
             // Find next replay frame number
             latest_time = 0;
@@ -870,7 +867,7 @@ void CMainFrame::OnBnClickedGreenCircle()
             // log OH title bar text and table reset
             ::GetWindowText(p_global->attached_hwnd(), title, 512);
             write_log("\n*************************************************************\nTABLE RESET %s - %s(%s)\n*************************************************************\n",
-				p_global->formula_name.GetString(), p_tablemap->s$items()->sitename.GetString(), title);
+				p_formula->formula_name().GetString(), p_tablemap->s$items()->sitename.GetString(), title);
 
         }
     }
@@ -936,7 +933,7 @@ void CMainFrame::OnBnClickedRedCircle()
     p_symbols->ResetSymbolsFirstTime();
 
     // Change window title
-    SetWindowText(p_global->formula_name + " - " + m_strTitle);
+    SetWindowText(p_formula->formula_name() + " - " + m_strTitle);
 
     // Reset Display
     InvalidateRect(NULL, false);
@@ -949,7 +946,7 @@ void CMainFrame::OnBnClickedRedCircle()
     }
 
     // log OH title bar text and table reset
-    write_log("%s - %s(NOT ATTACHED)\n", p_global->formula_name.GetString(), p_tablemap->s$items()->sitename.GetString());
+    write_log("%s - %s(NOT ATTACHED)\n", p_formula->formula_name().GetString(), p_tablemap->s$items()->sitename.GetString());
     write_log("TABLE RESET\n*************************************************************\n");
 
     // Stop logging
@@ -1136,12 +1133,12 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 				(int) (_iter_vars.prlos*1000));
 			status_nit.Format("%d/%d", 
 				_iter_vars.iterator_thread_progress, 
-				(int) p_global->formula.dNit);
+				(int) p_formula->formula()->dNit);
 		}
 		else
 		{
 			status_prwin = "0/0/0";
-			status_nit.Format("0/%d", (int) p_global->formula.dNit);
+			status_nit.Format("0/%d", (int) p_formula->formula()->dNit);
 		}
 
 		// action
@@ -1266,10 +1263,10 @@ void CMainFrame::OnAutoplayer()
     if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER)) 
 	{
         // calc hand lists
-        p_global->CreateHandListMatrices(&p_global->formula);
+        p_formula->CreateHandListMatrices();
 
         // one last parse - do not engage if parse fails
-        if (p_global->ParseAllFormula(pMyMainWnd->GetSafeHwnd(), &p_global->formula)) 
+        if (p_formula->ParseAllFormula(pMyMainWnd->GetSafeHwnd())) 
 		{
             p_global->autoplay = true;
         }

@@ -176,34 +176,6 @@ typedef boost::spirit::node_val_data_factory<const char *> int_factory_t;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Structs
-struct SHandList 
-{
-	CString list;
-	CString list_text;
-};
-
-struct SFunction 
-{
-	CString		func;
-	CString		func_text;
-	bool		dirty;
-	boost::spirit::tree_parse_info<const char *, int_factory_t>	tpi;
-	bool		fresh;
-	double		cache;
-};
-
-struct SFormula 
-{
-	CArray <SFunction, SFunction> mFunction;
-
-	double dBankroll, dDefcon, dRake, dNit;
-
-	CArray <SHandList, SHandList> mHandList;
-
-	bool	inlist[1000][13][13];  // list number, rank0/rank1 - rank0>=rank1 == suited, rank0<rank1 == unsuited
-};
-
 enum FileType { FTnone=1, FTbankroll, FTdefcon, FTrake, FTnit, FTlist, FTfunc };
 
 struct STableList 

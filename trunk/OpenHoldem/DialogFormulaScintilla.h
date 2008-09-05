@@ -64,7 +64,8 @@
 #define SCE_C_GLOBALCLASS 19
 #define MAX_STYLE_NUM 19
 
-class CDlgFormulaScintilla : public CDialog {
+class CDlgFormulaScintilla : public CDialog 
+{
 public:
 	CDlgFormulaScintilla(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CDlgFormulaScintilla();
@@ -206,11 +207,13 @@ protected:
 	bool			m_is_syntax_colored;
 
 	CString			m_current_edit;			// Name of formula currently in edit window
-	SFormula		m_wrk_formula;			// Working formula for FormulaDialog
 	CArray <SDebugTabInfo, SDebugTabInfo> debug_ar;		// holds debug tab information
 	CFont			editfont;
 	bool			in_startup;
 	bool			ok_to_update_debug;
+
+	// This is the copy of the formula class that is being worked on in the dialog
+	CFormula		m_wrk_formula;
 
 	DECLARE_MESSAGE_MAP()
 };

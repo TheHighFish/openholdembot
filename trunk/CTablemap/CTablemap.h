@@ -169,7 +169,7 @@ struct SWholeMap
 
 extern class CTablemap 
 {
-//public:
+public:
 	// Critical section used in public mutators and private shared variable writes
 	static CRITICAL_SECTION	cs_tablemap;
 
@@ -217,14 +217,6 @@ public:
 	void	set_r$_top(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].top = i; LEA }
 	void	set_r$_bottom(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].bottom = i; LEA }
 
-	const INT_PTR	set_z$_add(const STablemapSize s) { ENT return _z$.Add(s); LEA }
-	const INT_PTR	set_s$_add(const STablemapSymbol s) { ENT return _s$.Add(s); LEA }
-	const INT_PTR	set_r$_add(const STablemapRegion s) { ENT return _r$.Add(s); LEA }
-	const INT_PTR	set_t$_add(const STablemapFont s) { ENT return _t$.Add(s); LEA }
-	const INT_PTR	set_p$_add(const STablemapHashPoint s) { ENT return _p$.Add(s); LEA }
-	const INT_PTR	set_h$_add(const STablemapHashValue s) { ENT return _h$.Add(s); LEA }
-	const INT_PTR	set_i$_add(const STablemapImage s) { ENT return _i$.Add(s); LEA }
-
 	void	set_z$_removeat(const int n) { ENT if (n>=0 && n<=_z$.GetSize()) _z$.RemoveAt(n,1); LEA }
 	void	set_s$_removeat(const int n) { ENT if (n>=0 && n<=_s$.GetSize()) _s$.RemoveAt(n,1); LEA }
 	void	set_r$_removeat(const int n) { ENT if (n>=0 && n<=_r$.GetSize()) _r$.RemoveAt(n,1); LEA }
@@ -245,7 +237,14 @@ public:
 	void	delete_r$_lastbmp(const int n) { ENT if (n>=0 && n<=_r$.GetSize()) { DeleteObject(_r$[n].last_bmp); _r$[n].last_bmp=NULL; } LEA }
 	void	delete_r$_curbmp(const int n) { ENT if (n>=0 && n<=_r$.GetSize()) { DeleteObject(_r$[n].cur_bmp); _r$[n].cur_bmp=NULL; }  LEA }
 
-//	void	set_s$items_num_chairs(const int n) { ENT _s$items.num_chairs = n; LEA }
+	const INT_PTR	set_z$_add(const STablemapSize s) { return _z$.Add(s); }
+	const INT_PTR	set_s$_add(const STablemapSymbol s) { return _s$.Add(s); }
+	const INT_PTR	set_r$_add(const STablemapRegion s) { return _r$.Add(s); }
+	const INT_PTR	set_t$_add(const STablemapFont s) { return _t$.Add(s); }
+	const INT_PTR	set_p$_add(const STablemapHashPoint s) { return _p$.Add(s); }
+	const INT_PTR	set_h$_add(const STablemapHashValue s) { return _h$.Add(s); }
+	const INT_PTR	set_i$_add(const STablemapImage s) { return _i$.Add(s); }
+
 #undef ENT
 #undef LEA
 

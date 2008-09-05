@@ -107,7 +107,7 @@ class CUPDialog
 public:
 	enum { IDD = CUPDIALOG_DIALOG_ID };
 
-	CUPDialog(HWND hParentWnd,LP_CUPDIALOG_USERPROC lpUserProc,LPVOID lpUserProcParam,LPCTSTR lpszDlgTitle=_T("Please Wait.."),bool bAllowCancel=true);
+	CUPDialog(HWND hParentWnd, LP_CUPDIALOG_USERPROC lpUserProc,LPVOID lpUserProcParam,LPCTSTR lpszDlgTitle=_T("Please Wait.."),bool bAllowCancel=true);
 
 	virtual ~CUPDialog();
 

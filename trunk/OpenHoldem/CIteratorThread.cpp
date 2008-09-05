@@ -445,14 +445,16 @@ void CIteratorThread::InitIteratorLoop()
 	}
 
 	//Weighted prwin only for nopponents <=13
-	e = SUCCESS;
-	_willplay = (int) calc_f$symbol(&p_global->formula, "f$willplay", &e);
-	e = SUCCESS;
-	_wontplay = (int) calc_f$symbol(&p_global->formula, "f$wontplay", &e);
-	e = SUCCESS;
-	_mustplay = (int) calc_f$symbol(&p_global->formula, "f$mustplay", &e);
-	e = SUCCESS;
-	_topclip = (int) calc_f$symbol(&p_global->formula, "f$topclip", &e);
+	EnterCriticalSection(&p_formula->cs_formula);
+		e = SUCCESS;
+		_willplay = (int) calc_f$symbol(p_formula->set_formula(), "f$willplay", &e);
+		e = SUCCESS;
+		_wontplay = (int) calc_f$symbol(p_formula->set_formula(), "f$wontplay", &e);
+		e = SUCCESS;
+		_mustplay = (int) calc_f$symbol(p_formula->set_formula(), "f$mustplay", &e);
+		e = SUCCESS;
+		_topclip = (int) calc_f$symbol(p_formula->set_formula(), "f$topclip", &e);
+	LeaveCriticalSection(&p_formula->cs_formula);
 
 	// Call prw1326 callback if needed
 	if (p_symbols->prw1326()->useme==1326 && 

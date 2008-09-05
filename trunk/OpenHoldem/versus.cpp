@@ -209,8 +209,8 @@ bool CVersus::get_counts(void)
 
                     for (listnum=0; listnum<MAX_HAND_LISTS; listnum++)
                     {
-                        if ((StdDeck_SUIT(i)==StdDeck_SUIT(j) && p_global->formula.inlist[listnum][c0rank][c1rank]) ||
-                                (StdDeck_SUIT(i)!=StdDeck_SUIT(j) && p_global->formula.inlist[listnum][c1rank][c0rank]))
+                        if ((StdDeck_SUIT(i)==StdDeck_SUIT(j) && p_formula->formula()->inlist[listnum][c0rank][c1rank]) ||
+                                (StdDeck_SUIT(i)!=StdDeck_SUIT(j) && p_formula->formula()->inlist[listnum][c1rank][c0rank]))
                         {
                             nlistwin[listnum] += wintemp;
                             nlisttie[listnum] += 1712304 - wintemp - lostemp;
@@ -311,8 +311,8 @@ bool CVersus::get_counts(void)
 
                     for (listnum=0; listnum<MAX_HAND_LISTS; listnum++)
                     {
-                        if ((StdDeck_SUIT(i)==StdDeck_SUIT(j) && p_global->formula.inlist[listnum][c0rank][c1rank]) ||
-                                (StdDeck_SUIT(i)!=StdDeck_SUIT(j) && p_global->formula.inlist[listnum][c1rank][c0rank]))
+                        if ((StdDeck_SUIT(i)==StdDeck_SUIT(j) && p_formula->formula()->inlist[listnum][c0rank][c1rank]) ||
+                                (StdDeck_SUIT(i)!=StdDeck_SUIT(j) && p_formula->formula()->inlist[listnum][c1rank][c0rank]))
                         {
                             nlistwin[listnum] += wintemp;
                             nlisttie[listnum] += tietemp;

@@ -5,11 +5,13 @@
 
 #include "CSymbols.h"
 #include "CGlobal.h"
+
+
+#include "..\CTransform\CTransform.h"
+#include "CICMCalculator.h"
 #include "CPokerAction.h"
 #include "CMemory.h"
-#include "CICMCalculator.h"
 #include "CMyHand.h"
-#include "..\CTransform\CTransform.h"
 
 #include "versus.h"
 #include "Perl.hpp"
@@ -218,7 +220,7 @@ void setOffsets(iter_t &i, const char *start)
 	__SEH_LOGFATAL("grammar - setOffsets\n");
 }
 
-bool parse (CString *s, tree_parse_info<const char *, int_factory_t> *i, int *stopchar)
+bool parse (const CString *s, tree_parse_info<const char *, int_factory_t> *i, int *stopchar)
 {
     __SEH_HEADER
 
@@ -360,20 +362,20 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logC
 {
     __SEH_HEADER
 
-    double						result;
-	boost::spirit::parser_id	id = i->value.id();
+    double                                              result;
+        boost::spirit::parser_id        id = i->value.id();
 
     // Bounce errors up the stack
     if (*e != SUCCESS)  return 0;
 
-	if (logCallingFunction && *logCallingFunction && (*logCallingFunction)->m_Offset < (INT_PTR)i->value.value())
-		(*logCallingFunction)->m_Offset = (INT_PTR)i->value.value();
+        if (logCallingFunction && *logCallingFunction && (*logCallingFunction)->m_Offset < (INT_PTR)i->value.value())
+                (*logCallingFunction)->m_Offset = (INT_PTR)i->value.value();
 
     // Symbols
     if (id == exec_grammar::SYMBOL_ID)
     {
         string sym(i->value.begin(), i->value.end());
-		return eval_symbol(f, sym, logCallingFunction, e);
+                return eval_symbol(f, sym, logCallingFunction, e);
     }
 
     // Hex constant
@@ -404,6 +406,7 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logC
         return (double) strtoul(number.c_str(), 0, 4);
     }
 
+
     // Bin constant
     else if (id == exec_grammar::INT_CONSTANT_BIN_ID)
     {
@@ -413,8 +416,8 @@ double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logC
 
     // Float constants
     else if (  id == exec_grammar::FLOAT_CONSTANT1_ID
-			   | id == exec_grammar::FLOAT_CONSTANT2_ID
-			   | id == exec_grammar::FLOAT_CONSTANT3_ID )
+                           | id == exec_grammar::FLOAT_CONSTANT2_ID
+                           | id == exec_grammar::FLOAT_CONSTANT3_ID )
     {
         string number(i->value.begin(), i->value.end());
         return (double) strtod(number.c_str(), 0);
@@ -592,22 +595,23 @@ double eval_symbol(SFormula *f, string sym, CEvalInfoFunction **logCallingFuncti
 {
     __SEH_HEADER
 
-    double		result;
-    char		f$func[10];
-    const char	*ranks = "  23456789TJQKA";
-	int			rank_temp;
+    double              result;
+    char                f$func[10];
+    const char  *ranks = "  23456789TJQKA";
+        int                     rank_temp;
 
-	int			$$pc0 = (int) p_symbols->sym()->$$pc[0];
-	int			$$pc1 = (int) p_symbols->sym()->$$pc[1];
-	int			rank0 = ($$pc0>>4)&0x0f;
-	int			rank1 = ($$pc1>>4)&0x0f;
-	bool		sym_issuited = (bool) p_symbols->sym()->issuited;
+        int                     $$pc0 = (int) p_symbols->sym()->$$pc[0];
+        int                     $$pc1 = (int) p_symbols->sym()->$$pc[1];
+        int                     rank0 = ($$pc0>>4)&0x0f;
+        int                     rank1 = ($$pc1>>4)&0x0f;
+        bool            sym_issuited = (bool) p_symbols->sym()->issuited;
 
     // "e" literal
     if (strcmp(sym.c_str(), "e")==0)
     {
         return (double) M_E;
     }
+
 
     // f$$ symbols (hand multiplexor)
     else if (memcmp(sym.c_str(), "f$$", 3)==0)
@@ -721,39 +725,39 @@ double eval_symbol(SFormula *f, string sym, CEvalInfoFunction **logCallingFuncti
     // icm_ symbols
     else if (memcmp(sym.c_str(), "icm", 3)==0)
     {
-        CICMCalculator		icm;
+        CICMCalculator          icm;
         return icm.ProcessQueryICM(sym.c_str()+3, e);
     }
 
     // Action symbols
     else if (memcmp(sym.c_str(), "ac_", 3)==0)
     {
-        CPokerAction	action;
+        CPokerAction    action;
         return action.ProcessQuery(sym.c_str(), e);
     }
 
     // MyHand symbols
     else if (memcmp(sym.c_str(), "mh_", 3)==0)
     {
-        CMyHand	myhand;
+        CMyHand myhand;
         return myhand.ProcessQuery(sym.c_str(), e);
     }
 
     // Memory symbols
     else if (memcmp(sym.c_str(), "me_", 3)==0)
     {
-		return p_memory->ProcessQuery(sym.c_str(), logCallingFunction, e);
+                return p_memory->ProcessQuery(sym.c_str(), logCallingFunction, e);
     }
-	
+       
     // all other symbols
     else
     {
         return p_symbols->GetSymbolVal(sym.c_str(), e);;
     }
 
-	return 0;
+        return 0;
 
-	__SEH_LOGFATAL("grammar - eval_symbol\n");
+        __SEH_LOGFATAL("grammar - eval_symbol\n");
 }
 
 double eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e)
@@ -761,18 +765,18 @@ double eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logCall
     __SEH_HEADER
 
     string sym(i->value.begin(), i->value.end());
-	parser_id tp = i->value.id();
+        parser_id tp = i->value.id();
 
-	double ret = do_eval_expression(f, i, logCallingFunction, e);
+        double ret = do_eval_expression(f, i, logCallingFunction, e);
 
-	if (logCallingFunction && *logCallingFunction && tp == exec_grammar::SYMBOL_ID) {
-		if (!(*logCallingFunction)->m_SymbolsUsed.FindSymbol(sym.c_str()) && !(*logCallingFunction)->m_CalledFunctions.FindFunction(sym.c_str()))
-			(*logCallingFunction)->m_SymbolsUsed.Add(new CEvalInfoSymbol(sym.c_str(), ret));
-	}
+        if (logCallingFunction && *logCallingFunction && tp == exec_grammar::SYMBOL_ID) {
+                if (!(*logCallingFunction)->m_SymbolsUsed.FindSymbol(sym.c_str()) && !(*logCallingFunction)->m_CalledFunctions.FindFunction(sym.c_str()))
+                        (*logCallingFunction)->m_SymbolsUsed.Add(new CEvalInfoSymbol(sym.c_str(), ret));
+        }
 
-	return ret;
+        return ret;
 
-	__SEH_LOGFATAL("grammar - eval_expression\n");
+        __SEH_LOGFATAL("grammar - eval_expression\n");
 }
 
 CEvalInfoFunctionArray::~CEvalInfoFunctionArray()

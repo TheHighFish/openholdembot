@@ -292,7 +292,7 @@ void CDlgPpro::OnBnClickedJointableButton()
     // I'm joined, so unjoin
     else {
         // log OH title bar text and table reset
-        write_log("%s - %s(NOT ATTACHED)\n", p_global->formula_name.GetString(), ppro.data.m_site_name);
+        write_log("%s - %s(NOT ATTACHED)\n", p_formula->formula_name().GetString(), ppro.data.m_site_name);
         write_log("TABLE RESET\n*************************************************************\n");
 
         // Stop logging
@@ -702,7 +702,7 @@ void CDlgPpro::do_table_select(void)
         // Start logging
         start_log();
 
-        write_log("%s - %s(%s)\n", p_global->formula_name.GetString(), ppro.data.m_site_name, ppro.data.m_tinf.m_name);
+        write_log("%s - %s(%s)\n", p_formula->formula_name().GetString(), ppro.data.m_site_name, ppro.data.m_tinf.m_name);
         write_log("TABLE RESET\n*************************************************************\n");
     }
 

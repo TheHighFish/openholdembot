@@ -837,15 +837,15 @@ void CSymbols::CalcSymbols(void)
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Symbols derived from current profile/formula
-	_sym.site = 1;																	// site
-	_sym.nchairs = p_tablemap->s$items()->num_chairs;										// nchairs
+	_sym.site = 1;																		// site
+	_sym.nchairs = p_tablemap->s$items()->num_chairs;									// nchairs
 	_sym.isppro = p_global->ppro_isppro;												// isppro
-	_sym.rake = p_global->formula.dRake;												// rake
-	_sym.nit = p_global->formula.dNit;													// nit
-	_sym.bankroll = p_global->formula.dBankroll;										// bankroll
-	_sym.defcon = p_global->formula.dDefcon;											// defcon
-	_sym.isdefmode = p_global->formula.dDefcon == 0.0;									// isdefmode
-	_sym.isaggmode = p_global->formula.dDefcon == 1.0;									// isaggmode
+	_sym.rake = p_formula->formula()->dRake;											// rake
+	_sym.nit = p_formula->formula()->dNit;												// nit
+	_sym.bankroll = p_formula->formula()->dBankroll;									// bankroll
+	_sym.defcon = p_formula->formula()->dDefcon;										// defcon
+	_sym.isdefmode = p_formula->formula()->dDefcon == 0.0;								// isdefmode
+	_sym.isaggmode = p_formula->formula()->dDefcon == 1.0;								// isaggmode
 	_sym.swagtextmethod = p_tablemap->s$items()->swagtextmethod;						// swagtextmethod
 	_sym.potmethod = p_tablemap->s$items()->potmethod;									// potmethod
 	_sym.activemethod = p_tablemap->s$items()->activemethod;							// activemethod
@@ -902,7 +902,9 @@ void CSymbols::CalcSymbols(void)
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// number of opponents (from f$P)
 	int e = SUCCESS;
-	_sym.nopponents = calc_f$symbol(&p_global->formula, "f$P", &e);
+	EnterCriticalSection(&p_formula->cs_formula);
+	_sym.nopponents = calc_f$symbol(p_formula->set_formula(), "f$P", &e);
+	LeaveCriticalSection(&p_formula->cs_formula);
 
 	if (_sym.nopponents > p_global->preferences.max_opponents)
 	{
@@ -2139,13 +2141,13 @@ void CSymbols::CalcListTests(void)
 	}
 
 
-	N = p_global->formula.mHandList.GetSize();
+	N = p_formula->formula()->mHandList.GetSize();
 	for (i=0; i<N; i++)
 	{
-		listnum = atoi(p_global->formula.mHandList[i].list.Mid(4).GetString());
+		listnum = atoi(p_formula->formula()->mHandList[i].list.Mid(4).GetString());
 
-		if ((StdDeck_SUIT(c0)==StdDeck_SUIT(c1) && p_global->formula.inlist[listnum][StdDeck_RANK(c0)][StdDeck_RANK(c1)]) ||
-			(StdDeck_SUIT(c0)!=StdDeck_SUIT(c1) && p_global->formula.inlist[listnum][StdDeck_RANK(c1)][StdDeck_RANK(c0)]))
+		if ((StdDeck_SUIT(c0)==StdDeck_SUIT(c1) && p_formula->formula()->inlist[listnum][StdDeck_RANK(c0)][StdDeck_RANK(c1)]) ||
+			(StdDeck_SUIT(c0)!=StdDeck_SUIT(c1) && p_formula->formula()->inlist[listnum][StdDeck_RANK(c1)][StdDeck_RANK(c0)]))
 		{
 			EnterCriticalSection(&cs_symbols);
 				_sym.islist[listnum] = 1;											// islistxx
@@ -2162,7 +2164,7 @@ void CSymbols::CalcListTests(void)
 	}
 
 	// islistcall, islistrais, islistalli, isemptylistcall, isemptylistrais, isemptylistalli
-	N = p_global->formula.mHandList.GetSize();
+	N = p_formula->formula()->mHandList.GetSize();
 
 	EnterCriticalSection(&cs_symbols);
 	_sym.isemptylistcall = 1;
@@ -2172,7 +2174,7 @@ void CSymbols::CalcListTests(void)
 
 	for (i=0; i<N; i++)
 	{
-		listnum = atoi(p_global->formula.mHandList[i].list.Mid(4).GetString());
+		listnum = atoi(p_formula->formula()->mHandList[i].list.Mid(4).GetString());
 
 		if (listnum == 0)
 		{
@@ -2182,7 +2184,7 @@ void CSymbols::CalcListTests(void)
 				_sym.islistcall = 1;													// islistcall
 			}
 			tokpos = 0;
-			p_global->formula.mHandList[i].list_text.Tokenize(" \t", tokpos);
+			p_formula->formula()->mHandList[i].list_text.Tokenize(" \t", tokpos);
 			if (tokpos != -1)
 			{
 				_sym.isemptylistcall = 0;											// isemptylistcall
@@ -2198,7 +2200,7 @@ void CSymbols::CalcListTests(void)
 				_sym.islistrais = 1;													// islistrais
 			}
 			tokpos = 0;
-			p_global->formula.mHandList[i].list_text.Tokenize(" \t", tokpos);
+			p_formula->formula()->mHandList[i].list_text.Tokenize(" \t", tokpos);
 			if (tokpos != -1)
 			{
 				_sym.isemptylistrais = 0;											// isemptylistrais
@@ -2214,7 +2216,7 @@ void CSymbols::CalcListTests(void)
 				_sym.islistalli = 1;													// islistalli
 			}
 			tokpos = 0;
-			p_global->formula.mHandList[i].list_text.Tokenize(" \t", tokpos);
+			p_formula->formula()->mHandList[i].list_text.Tokenize(" \t", tokpos);
 			if (tokpos != -1)
 			{
 				_sym.isemptylistalli = 0;											// isemptylistalli
@@ -3047,10 +3049,12 @@ void CSymbols::CalcStatistics(void)
 
 	// f$srai
 	error = SUCCESS;
-	f$srai = calc_f$symbol(&p_global->formula, "f$srai", p_global->preferences.Trace_functions[nTraceSwag], &error);
+	EnterCriticalSection(&p_formula->cs_formula);
+	f$srai = calc_f$symbol(p_formula->set_formula(), "f$srai", p_global->preferences.Trace_functions[nTraceSwag], &error);
+	LeaveCriticalSection(&p_formula->cs_formula);
 
 	// B
-	B = p_global->formula.dBankroll != 0 ? p_global->formula.dBankroll : p_scraper->player_balance(_sym.userchair);
+	B = p_formula->formula()->dBankroll != 0 ? p_formula->formula()->dBankroll : p_scraper->player_balance(_sym.userchair);
 
 	EnterCriticalSection(&cs_symbols);	
 
@@ -3664,21 +3668,25 @@ void CSymbols::CalcPrimaryFormulas(const bool final_answer)
 
 	EnterCriticalSection(&cs_symbols);
 
+	EnterCriticalSection(&p_formula->cs_formula);
+
 		_sym.isfinalanswer = final_answer;
 
 		e = SUCCESS;
-		_f$alli = calc_f$symbol(&p_global->formula, "f$alli", p_global->preferences.Trace_functions[nTraceAlli], &e);
+		_f$alli = calc_f$symbol(p_formula->set_formula(), "f$alli", p_global->preferences.Trace_functions[nTraceAlli], &e);
 
 		e = SUCCESS;
-		_f$swag = calc_f$symbol(&p_global->formula, "f$swag", p_global->preferences.Trace_functions[nTraceSwag], &e);
+		_f$swag = calc_f$symbol(p_formula->set_formula(), "f$swag", p_global->preferences.Trace_functions[nTraceSwag], &e);
 
 		e = SUCCESS;
-		_f$rais = calc_f$symbol(&p_global->formula, "f$rais", p_global->preferences.Trace_functions[nTraceRais], &e);
+		_f$rais = calc_f$symbol(p_formula->set_formula(), "f$rais", p_global->preferences.Trace_functions[nTraceRais], &e);
 
 		e = SUCCESS;
-		_f$call = calc_f$symbol(&p_global->formula, "f$call", p_global->preferences.Trace_functions[nTraceCall], &e);
+		_f$call = calc_f$symbol(p_formula->set_formula(), "f$call", p_global->preferences.Trace_functions[nTraceCall], &e);
 
 		_sym.isfinalanswer = false;
+
+	LeaveCriticalSection(&p_formula->cs_formula);
 
 	LeaveCriticalSection(&cs_symbols);
 
@@ -3693,17 +3701,21 @@ void CSymbols::CalcSecondaryFormulas(void)
 
 	EnterCriticalSection(&cs_symbols);
 
-		e = SUCCESS;
-		_f$play = calc_f$symbol(&p_global->formula, "f$play", p_global->preferences.Trace_functions[nTracePlay], &e);
+	EnterCriticalSection(&p_formula->cs_formula);
 
 		e = SUCCESS;
-		_f$prefold = calc_f$symbol(&p_global->formula, "f$prefold", p_global->preferences.Trace_functions[nTracePrefold], &e);
+		_f$play = calc_f$symbol(p_formula->set_formula(), "f$play", p_global->preferences.Trace_functions[nTracePlay], &e);
 
 		e = SUCCESS;
-		_f$delay = calc_f$symbol(&p_global->formula, "f$delay", &e);
+		_f$prefold = calc_f$symbol(p_formula->set_formula(), "f$prefold", p_global->preferences.Trace_functions[nTracePrefold], &e);
 
 		e = SUCCESS;
-		_f$chat = calc_f$symbol(&p_global->formula, "f$chat", &e);
+		_f$delay = calc_f$symbol(p_formula->set_formula(), "f$delay", &e);
+
+		e = SUCCESS;
+		_f$chat = calc_f$symbol(p_formula->set_formula(), "f$chat", &e);
+
+	LeaveCriticalSection(&p_formula->cs_formula);
 
 	LeaveCriticalSection(&cs_symbols);
 

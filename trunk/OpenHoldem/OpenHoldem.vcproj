@@ -309,6 +309,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CFormula.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CGameState.cpp"
 				>
 			</File>
@@ -651,6 +655,10 @@
 			</File>
 			<File
 				RelativePath=".\CDllExtension.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CFormula.h"
 				>
 			</File>
 			<File
