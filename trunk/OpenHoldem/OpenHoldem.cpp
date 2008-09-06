@@ -24,7 +24,7 @@
 #include "CMemory.h"
 
 #include "DialogFormulaScintilla.h"
-#include "grammar.h"
+#include "CGrammar.h"
 #include "PokerPro.h"
 #include "Perl.hpp"
 #include "CSessionCounter.h"
@@ -83,8 +83,6 @@ BOOL COpenHoldemApp::InitInstance()
     
 	// Critical sections
 	InitializeCriticalSectionAndSpinCount(&cs_iterator, 4000);
-	InitializeCriticalSectionAndSpinCount(&cs_calc_f$symbol, 4000);
-    InitializeCriticalSectionAndSpinCount(&cs_parse, 4000);
 
 	// Classes
 	if (!p_global)  p_global = new CGlobal;
@@ -222,8 +220,6 @@ int COpenHoldemApp::ExitInstance()
 
 	// critical sections
 	DeleteCriticalSection(&cs_iterator);
-	DeleteCriticalSection(&cs_calc_f$symbol);
-    DeleteCriticalSection(&cs_parse);
 
 	// classes
 	if (p_global)  { delete p_global; p_global = NULL; }

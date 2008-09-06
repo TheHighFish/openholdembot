@@ -1,88 +1,44 @@
-#ifndef INC_GRAMMAR_H
-#define INC_GRAMMAR_H
+#ifndef INC_CGRAMMAR_H
+#define INC_CGRAMMAR_H
 
 #include <boost/spirit/tree/ast.hpp>
 #include "CFormula.h"
+#include "CEvalInfo.h"
+#include "..\CCritSec\CCritSec.h"
 
 using namespace std;
 using namespace boost::spirit;
 
-typedef node_val_data_factory<const char *>		int_factory_t;
-typedef char const*								iterator_t;
-typedef tree_match<iterator_t, int_factory_t>	parse_tree_match_t;
-typedef parse_tree_match_t::tree_iterator		iter_t;
+typedef node_val_data_factory<const char *>				int_factory_t;
+typedef char const*										iterator_t;
+typedef tree_match<iterator_t, int_factory_t>			parse_tree_match_t;
+typedef parse_tree_match_t::tree_iterator				iter_t;
+typedef	tree_parse_info<const char *, int_factory_t>	tpi_type;
 
-class CEvalInfoFunction;
-class CEvalInfoFunctionArray : public CArray<CEvalInfoFunction *, CEvalInfoFunction *>
+class CGrammar 
 {
 public:
-	~CEvalInfoFunctionArray();
+	// public functions
+	CGrammar();
+	~CGrammar();
+	bool ParseString(const CString *s, tpi_type *i, int *stopchar);
+	double EvaluateTree(CFormula * const f, tpi_type info, CEvalInfoFunction **logCallingFunction, int *e);
+	double CalcF$symbol(CFormula * const f, char *symbol, bool log, int *e);
+	double CalcF$symbol(CFormula * const f, char *symbol, int *e);
+	double DoCalcF$symbol(CFormula * const f, char *symbol, CEvalInfoFunction **logCallingFunction, bool skipCache, int *e);
+	static void ValidateSymbol(const char *begin, const char *end);
+	static void SetPosition(parse_tree_match_t::node_t &node, const char *begin, const char *end);
 
-	void DumpFunctionArray(int indent);
+private:
+	// private functions and variables - not available via accessors or mutators
+	double EvaluateExpression(CFormula * const f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e);
+	double DoEvaluateExpression(CFormula * const f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e);
+	double EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunction **logCallingFunction, int *e);
+	void SetOffsets(iter_t &i, const char *start);
 
-	CEvalInfoFunction *FindFunction(const char *name);
+	CCritSec		m_critsec_parse;
+	CCritSec		m_critsec_evaluate;
 };
-
-class CEvalInfoSymbol
-{
-public:
-	CEvalInfoSymbol(const char *symbol , double val) { m_Symbol = symbol; m_Value = val; }
-
-	void DumpSymbol(int indent);
-
-	CString m_Symbol;
-	double m_Value;
-};
-
-class CEvalInfoSymbolArray : public CArray<CEvalInfoSymbol *, CEvalInfoSymbol *>
-{
-public:
-	~CEvalInfoSymbolArray();
-
-	CEvalInfoSymbol *FindSymbol(const char *name) {
-		for (int i=0;i<GetSize();i++) {
-			if (!GetAt(i)->m_Symbol.Compare(name))
-				return GetAt(i);
-		}
-		return NULL;
-	}
-
-	void DumpSymbolArray(int indent);
-};
-
-class CEvalInfoFunction
-{
-public:
-	CEvalInfoFunction(const char *name) { m_FunctionName = name; m_Cached = false; m_Result = 0.0; m_Offset = m_Line = m_Column = 0; }
-	CEvalInfoFunction(const char *name, bool cached, double result) { m_FunctionName = name; m_Cached = cached; m_Result = result; m_Offset = m_Line = m_Column = 0; }
-
-	CString m_FunctionName;
-	bool    m_Cached;
-	double  m_Result;
-	int		m_Offset, m_Line, m_Column;
-
-	void DumpFunction(int indent);
-
-	CEvalInfoFunctionArray m_CalledFunctions;
-	CEvalInfoSymbolArray m_SymbolsUsed;
-};
-
-// forward declarations
-bool parse(const CString *s, tree_parse_info<const char *, int_factory_t> *i, int *stopchar);
-double calc_f$symbol(SFormula *f, char *symbol, bool log, int *e);
-double calc_f$symbol(SFormula *f, char *symbol, int *e);
-double do_calc_f$symbol(SFormula *f, char *symbol, CEvalInfoFunction **logCallingFunction, bool skipCache, int *e);
-//double evaluate(parse_tree_match_t hit);
-double evaluate(SFormula *f, tree_parse_info<const char *, int_factory_t> info, CEvalInfoFunction **logCallingFunction, int *e);
-double do_eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e);
-double eval_expression(SFormula *f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e);
-double eval_symbol(SFormula *f, string sym, CEvalInfoFunction **logCallingFunction, int *e);
-
-void SetPosition(parse_tree_match_t::node_t &node, 
-						const char *begin, 
-						const char *end);
-
-void SymbolValidation(const char *begin, const char *end);
 
 //  Here's the comment rule
 struct skip_grammar : public grammar<skip_grammar>
@@ -94,8 +50,8 @@ struct skip_grammar : public grammar<skip_grammar>
 		{
 			skip
 				=   space_p
-				|   "//" >> *(anychar_p - eol_p - end_p) >> (eol_p | end_p)     // C++ comment
-				|   "/*" >> *(anychar_p - "*/") >> "*/"     // C comment
+				|   "//" >> *(anychar_p - eol_p - end_p) >> (eol_p | end_p)	 // C++ comment
+				|   "/*" >> *(anychar_p - "*/") >> "*/"	 // C comment
 				;
 		}
 
@@ -139,24 +95,24 @@ struct exec_grammar : public grammar<exec_grammar>
 									leaf_node_d[ 
 										lexeme_d[
 											((alpha_p | '_' | '$') >> *(alnum_p | '_' | '$' | '.')) 
-										][&SymbolValidation] 
+										][&CGrammar::ValidateSymbol] 
 									]
-								][&SetPosition];
+								][&CGrammar::SetPosition];
 
 			// constants
 			// float constant: 12345[eE][+-]123[lLfF]?
 			FLOAT_CONSTANT1  = access_node_d
-				                  [leaf_node_d[ lexeme_d[ 
+								  [leaf_node_d[ lexeme_d[ 
 										+digit_p
 										>> (ch_p('e') | ch_p('E'))
 										>> !(ch_p('+') | ch_p('-'))
 										>> +digit_p
 								   ] ]
-							   ][&SetPosition];
+								][&CGrammar::SetPosition];
 			
 			// float constant: .123([[eE][+-]123)?[lLfF]?
 			FLOAT_CONSTANT2  = access_node_d[
-				                  leaf_node_d[ lexeme_d[ 
+								  leaf_node_d[ lexeme_d[ 
 										*digit_p
 										>> ch_p('.')
 										>> +digit_p
@@ -165,7 +121,7 @@ struct exec_grammar : public grammar<exec_grammar>
 												>> +digit_p
 											)
 								  ] ]
-                               ][&SetPosition];
+							   ][&CGrammar::SetPosition];
 
 			// float constant: 12345.([[eE][+-]123)?[lLfF]?
 			FLOAT_CONSTANT3  = leaf_node_d[ lexeme_d[ access_node_d[
@@ -176,40 +132,40 @@ struct exec_grammar : public grammar<exec_grammar>
 												>> !(ch_p('+') | ch_p('-'))
 												>> +digit_p
 											)
-									  ][&SetPosition]
+									  ][&CGrammar::SetPosition]
 									  ] ];
 
 			INT_CONSTANT_HEX =	leaf_node_d[ lexeme_d[ access_node_d[
 									ch_p('0')
 									>> as_lower_d[ch_p('x')]
 									>> +xdigit_p
-								  ][&SetPosition]
+								  ][&CGrammar::SetPosition]
 								] ];
 
 			INT_CONSTANT_DEC =	leaf_node_d[ lexeme_d[ access_node_d[
 									+digit_p
-								  ][&SetPosition]
+								  ][&CGrammar::SetPosition]
 								] ];
 
 			INT_CONSTANT_OCT =	leaf_node_d[ lexeme_d[ access_node_d[
 									ch_p('0')
 									>> as_lower_d[ch_p('o')]
 									>> +range<>('0', '7')
-								  ][&SetPosition]
+								  ][&CGrammar::SetPosition]
 								] ];
 
 			INT_CONSTANT_QUA =	leaf_node_d[ lexeme_d[ access_node_d[
 									ch_p('0')
 									>> as_lower_d[ch_p('q')]
 									>> +range<>('0', '3')
-								  ][&SetPosition]
+								  ][&CGrammar::SetPosition]
 								] ];
 
 			INT_CONSTANT_BIN =	leaf_node_d[ lexeme_d[ access_node_d[
 									ch_p('0')
 									>> as_lower_d[ch_p('b')]
 									>> +range<>('0', '1')
-								  ][&SetPosition]
+								  ][&CGrammar::SetPosition]
 								] ];
 
 		// Rules
@@ -279,7 +235,7 @@ struct exec_grammar : public grammar<exec_grammar>
 
 			logical_or_expr = logical_xor_expr >> *(root_node_d[LOG_OR_OP] >> logical_xor_expr);
 
-            cond_expr = logical_or_expr >> *(root_node_d[QUEST_OP] >> cond_expr >> COLON_OP >> cond_expr);
+			cond_expr = logical_or_expr >> *(root_node_d[QUEST_OP] >> cond_expr >> COLON_OP >> cond_expr);
 
 			expression = cond_expr | epsilon_p;
 
@@ -335,15 +291,5 @@ struct exec_grammar : public grammar<exec_grammar>
 	};
 };
 
-// This critical section is used in do_calc_f$symbol to prevent multiple parallel calls to Spirit's evaluate function,
-// as this function has been found to not support parallel entry
-extern CRITICAL_SECTION		cs_calc_f$symbol;
-
-// This critical section is used to prevent multiple parallel calls to Spirit's parse function,
-// as this function has been found to not support parallel entry
-// Any code needing to call "parse" needs to wrap that call with this critical section.
-extern CRITICAL_SECTION		cs_parse;
-
-
-#endif  /* INC_GRAMMAR_H */
+#endif  /* INC_CGRAMMAR_H */
 

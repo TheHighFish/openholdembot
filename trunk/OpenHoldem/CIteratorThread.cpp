@@ -6,8 +6,8 @@
 #include "CScraper.h"
 #include "CSymbols.h"
 #include "CGlobal.h"
+#include "CGrammar.h"
 
-#include "grammar.h"
 #include "inlines/eval.h"
 
 CIteratorThread		*p_iterator_thread = NULL;
@@ -395,8 +395,9 @@ void CIteratorThread::InitIteratorLoop()
 {
 	__SEH_HEADER
 
-	int i = 0, e = SUCCESS;
-	
+	int			i = 0, e = SUCCESS;
+	CGrammar	gram;
+
 	// Set starting status and parameters
 	EnterCriticalSection(&cs_iterator);
 		_iter_vars.iterator_thread_running = true;
@@ -445,16 +446,14 @@ void CIteratorThread::InitIteratorLoop()
 	}
 
 	//Weighted prwin only for nopponents <=13
-	EnterCriticalSection(&p_formula->cs_formula);
-		e = SUCCESS;
-		_willplay = (int) calc_f$symbol(p_formula->set_formula(), "f$willplay", &e);
-		e = SUCCESS;
-		_wontplay = (int) calc_f$symbol(p_formula->set_formula(), "f$wontplay", &e);
-		e = SUCCESS;
-		_mustplay = (int) calc_f$symbol(p_formula->set_formula(), "f$mustplay", &e);
-		e = SUCCESS;
-		_topclip = (int) calc_f$symbol(p_formula->set_formula(), "f$topclip", &e);
-	LeaveCriticalSection(&p_formula->cs_formula);
+	e = SUCCESS;
+	_willplay = (int) gram.CalcF$symbol(p_formula, "f$willplay", &e);
+	e = SUCCESS;
+	_wontplay = (int) gram.CalcF$symbol(p_formula, "f$wontplay", &e);
+	e = SUCCESS;
+	_mustplay = (int) gram.CalcF$symbol(p_formula, "f$mustplay", &e);
+	e = SUCCESS;
+	_topclip = (int) gram.CalcF$symbol(p_formula, "f$topclip", &e);
 
 	// Call prw1326 callback if needed
 	if (p_symbols->prw1326()->useme==1326 && 

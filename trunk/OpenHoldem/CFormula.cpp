@@ -2,23 +2,23 @@
 
 #include "CFormula.h"
 
+#include "OpenHoldemDoc.h"
+
 #include "CGlobal.h"
 #include "CSymbols.h"
 #include "..\CTransform\CTransform.h"
+#include "CGrammar.h"
+#include "UPDialog.h"
+#include "..\CCritSec\CCritSec.h"
 
-#include "OpenHoldemDoc.h"
-#include "grammar.h"
 
 CFormula			*p_formula = NULL;
-CRITICAL_SECTION	CFormula::cs_formula;
 
 CFormula::CFormula(void)
 {
 	__SEH_SET_EXCEPTION_HANDLER
 
 	__SEH_HEADER
-
-	InitializeCriticalSectionAndSpinCount(&cs_formula, 4000);
 
 	ClearFormula();
 	_formula_name = "";
@@ -27,26 +27,19 @@ CFormula::CFormula(void)
 
 CFormula::~CFormula(void)
 {
-	__SEH_HEADER
-
-	DeleteCriticalSection(&cs_formula);
-
-	__SEH_LOGFATAL("CFormula::Destructor : \n");
 }
 
 void CFormula::ClearFormula()
 {
 	__SEH_HEADER
 
-	EnterCriticalSection(&cs_formula);
+	CSLock lock(m_critsec);
 
 	_formula.dBankroll = _formula.dDefcon = _formula.dRake = _formula.dNit = 0.0;
 	_formula.mHandList.RemoveAll();
 	_formula.mFunction.RemoveAll();
 
 	_formula_name = "";
-
-	LeaveCriticalSection(&cs_formula);
 
 	__SEH_LOGFATAL("CFormula::ClearFormula : \n");
 }
@@ -57,9 +50,9 @@ void CFormula::SetDefaultBot()
 
 	SFunction		func;
 
-	EnterCriticalSection(&cs_formula);
-
 	ClearFormula();
+
+	CSLock lock(m_critsec);
 
 	func.dirty = true;
 
@@ -88,8 +81,6 @@ void CFormula::SetDefaultBot()
 
 	_formula_name = "Default";
 
-	LeaveCriticalSection(&cs_formula);
-
 	__SEH_LOGFATAL("CFormula::SetDefaultBot : \n");
 }
 
@@ -107,7 +98,7 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 	SFunction	func;	
 	SHandList	list;		
 
-	EnterCriticalSection(&cs_formula);
+	CSLock lock(m_critsec);
 
 	// Ignore first line (date/time)
 	if (ignoreFirstLine)
@@ -236,8 +227,6 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 		_formula.mFunction.Add(func);
 	}
 
-	LeaveCriticalSection(&cs_formula);
-
 	__SEH_LOGFATAL("CFormula::ReadFormulaFile");
 }
 
@@ -358,24 +347,22 @@ void CFormula::CreateHandListMatrices()
 	int			listnum = 0, i = 0, j = 0;
 	CString		token = "";
 
-	EnterCriticalSection(&cs_formula);
+	CSLock lock(m_critsec);
 
-		for (listnum=0; listnum<MAX_HAND_LISTS; listnum++)
-			for (i=0; i<=12; i++)
-				for (j=0; j<=12; j++)
-					_formula.inlist[listnum][i][j] = false;
+	for (listnum=0; listnum<MAX_HAND_LISTS; listnum++)
+		for (i=0; i<=12; i++)
+			for (j=0; j<=12; j++)
+				_formula.inlist[listnum][i][j] = false;
 
-		for (i=0; i<(int) _formula.mHandList.GetSize(); i++)
-		{
-			listnum = atoi(_formula.mHandList[i].list.Mid(4).GetString());
-			
-			if(listnum>=MAX_HAND_LISTS)
-				continue;
-			
-			ParseHandList(_formula.mHandList[i].list_text, _formula.inlist[listnum]);
-		}
-
-	LeaveCriticalSection(&cs_formula);
+	for (i=0; i<(int) _formula.mHandList.GetSize(); i++)
+	{
+		listnum = atoi(_formula.mHandList[i].list.Mid(4).GetString());
+		
+		if(listnum>=MAX_HAND_LISTS)
+			continue;
+		
+		ParseHandList(_formula.mHandList[i].list_text, _formula.inlist[listnum]);
+	}
 
 	__SEH_LOGFATAL("CFormula::CreateHandListMatrices :\n");
 }
@@ -391,7 +378,7 @@ bool CFormula::ParseAllFormula(HWND hwnd)
 	data.calling_hwnd = hwnd;
 	data.pParent = this;
 
-	CUPDialog		dlg_progress(hwnd, &CFormula::ParseLoop, &data, "Please wait", false);
+	CUPDialog		dlg_progress(hwnd, ParseLoop, &data, "Please wait", false);
 
 	dlg_progress.DoModal();
 
@@ -412,149 +399,147 @@ void CFormula::CheckForDefaultFormulaEntries()
 	func.func_text = ""; 
 	func.dirty = true; 
 
-	EnterCriticalSection(&cs_formula);
+	CSLock lock(m_critsec);
 
-		// notes
-		addit = true;
-		for (i=0; i<N; i++)  
-			if (_formula.mFunction[i].func=="notes") addit = false;
-		if (addit==true)  
-		{ 
-			func.func = "notes"; 
-			_formula.mFunction.Add(func); 
-		}
+	// notes
+	addit = true;
+	for (i=0; i<N; i++)  
+		if (_formula.mFunction[i].func=="notes") addit = false;
+	if (addit==true)  
+	{ 
+		func.func = "notes"; 
+		_formula.mFunction.Add(func); 
+	}
 
-		// dll
-		addit = true;
-		for (i=0; i<N; i++)  
-			if (_formula.mFunction[i].func=="dll") addit = false;
-		if (addit==true)  
-		{ 
-			func.func = "dll"; 
-			_formula.mFunction.Add(func); 
-		}
+	// dll
+	addit = true;
+	for (i=0; i<N; i++)  
+		if (_formula.mFunction[i].func=="dll") addit = false;
+	if (addit==true)  
+	{ 
+		func.func = "dll"; 
+		_formula.mFunction.Add(func); 
+	}
 
-		// f$alli
-		addit = true;
-		for (i=0; i<N; i++)  
-			if (_formula.mFunction[i].func=="f$alli") addit = false;
-		if (addit==true)  
-		{ 
-			func.func = "f$alli"; 
-			_formula.mFunction.Add(func); 
-		}
+	// f$alli
+	addit = true;
+	for (i=0; i<N; i++)  
+		if (_formula.mFunction[i].func=="f$alli") addit = false;
+	if (addit==true)  
+	{ 
+		func.func = "f$alli"; 
+		_formula.mFunction.Add(func); 
+	}
 
-		// f$swag
-		addit = true;
-		for (i=0; i<N; i++)  
-			if (_formula.mFunction[i].func=="f$swag") addit = false;
-		if (addit==true)  
-		{ 
-			func.func = "f$swag"; 
-			_formula.mFunction.Add(func); 
-		}
+	// f$swag
+	addit = true;
+	for (i=0; i<N; i++)  
+		if (_formula.mFunction[i].func=="f$swag") addit = false;
+	if (addit==true)  
+	{ 
+		func.func = "f$swag"; 
+		_formula.mFunction.Add(func); 
+	}
 
-		// f$srai
-		addit = true;
-		for (i=0; i<N; i++)  
-			if (_formula.mFunction[i].func=="f$srai") addit = false;
-		if (addit==true)  
-		{ 
-			func.func = "f$srai"; 
-			_formula.mFunction.Add(func); 
-		}
+	// f$srai
+	addit = true;
+	for (i=0; i<N; i++)  
+		if (_formula.mFunction[i].func=="f$srai") addit = false;
+	if (addit==true)  
+	{ 
+		func.func = "f$srai"; 
+		_formula.mFunction.Add(func); 
+	}
 
-		// f$rais
-		addit = true;
-		for (i=0; i<N; i++)  
-			if (_formula.mFunction[i].func=="f$rais") addit = false;
-		if (addit==true)  
-		{ 
-			func.func = "f$rais"; 
-			_formula.mFunction.Add(func); 
-		}
+	// f$rais
+	addit = true;
+	for (i=0; i<N; i++)  
+		if (_formula.mFunction[i].func=="f$rais") addit = false;
+	if (addit==true)  
+	{ 
+		func.func = "f$rais"; 
+		_formula.mFunction.Add(func); 
+	}
 
-		// f$call
-		addit = true;
-		for (i=0; i<N; i++)  
-			if (_formula.mFunction[i].func=="f$call") addit = false;
-		if (addit==true)  
-		{ 
-			func.func = "f$call"; 
-			_formula.mFunction.Add(func); 
-		}
+	// f$call
+	addit = true;
+	for (i=0; i<N; i++)  
+		if (_formula.mFunction[i].func=="f$call") addit = false;
+	if (addit==true)  
+	{ 
+		func.func = "f$call"; 
+		_formula.mFunction.Add(func); 
+	}
 
-		// f$prefold
-		addit = true;
-		for (i=0; i<N; i++)  
-			if (_formula.mFunction[i].func=="f$prefold") addit = false;
-		if (addit==true)  
-		{ 
-			func.func = "f$prefold"; 
-			_formula.mFunction.Add(func); 
-		}
+	// f$prefold
+	addit = true;
+	for (i=0; i<N; i++)  
+		if (_formula.mFunction[i].func=="f$prefold") addit = false;
+	if (addit==true)  
+	{ 
+		func.func = "f$prefold"; 
+		_formula.mFunction.Add(func); 
+	}
 
-		// f$delay
-		addit = true;
-		for (i=0; i<N; i++)  
-			if (_formula.mFunction[i].func=="f$delay") addit = false;
-		if (addit==true)  
-		{ 
-			func.func = "f$delay"; 
-			_formula.mFunction.Add(func); 
-		}
+	// f$delay
+	addit = true;
+	for (i=0; i<N; i++)  
+		if (_formula.mFunction[i].func=="f$delay") addit = false;
+	if (addit==true)  
+	{ 
+		func.func = "f$delay"; 
+		_formula.mFunction.Add(func); 
+	}
 
-		// f$chat
-		addit = true;
-		for (i=0; i<N; i++)  
-			if (_formula.mFunction[i].func=="f$chat") addit = false;
-		if (addit==true)  
-		{ 
-			func.func = "f$chat"; 
-			_formula.mFunction.Add(func); 
-		}
+	// f$chat
+	addit = true;
+	for (i=0; i<N; i++)  
+		if (_formula.mFunction[i].func=="f$chat") addit = false;
+	if (addit==true)  
+	{ 
+		func.func = "f$chat"; 
+		_formula.mFunction.Add(func); 
+	}
 
-		// f$P
-		addit = true;
-		for (i=0; i<N; i++)  
-			if (_formula.mFunction[i].func=="f$P") addit = false;
-		if (addit==true)  
-		{ 
-			func.func = "f$P"; 
-			_formula.mFunction.Add(func); 
-		}
+	// f$P
+	addit = true;
+	for (i=0; i<N; i++)  
+		if (_formula.mFunction[i].func=="f$P") addit = false;
+	if (addit==true)  
+	{ 
+		func.func = "f$P"; 
+		_formula.mFunction.Add(func); 
+	}
 
-		// f$play
-		addit = true;
-		for (i=0; i<N; i++)  
-			if (_formula.mFunction[i].func=="f$play") addit = false;
-		if (addit==true)  
-		{ 
-			func.func = "f$play"; 
-			_formula.mFunction.Add(func); 
-		}
+	// f$play
+	addit = true;
+	for (i=0; i<N; i++)  
+		if (_formula.mFunction[i].func=="f$play") addit = false;
+	if (addit==true)  
+	{ 
+		func.func = "f$play"; 
+		_formula.mFunction.Add(func); 
+	}
 
-		// f$test
-		addit = true;
-		for (i=0; i<N; i++)  
-			if (_formula.mFunction[i].func=="f$test") addit = false;
-		if (addit==true)  
-		{ 
-			func.func = "f$test"; 
-			_formula.mFunction.Add(func); 
-		}
+	// f$test
+	addit = true;
+	for (i=0; i<N; i++)  
+		if (_formula.mFunction[i].func=="f$test") addit = false;
+	if (addit==true)  
+	{ 
+		func.func = "f$test"; 
+		_formula.mFunction.Add(func); 
+	}
 
-		// f$debug
-		addit = true;
-		for (i=0; i<N; i++)  
-			if (_formula.mFunction[i].func=="f$debug") addit = false;
-		if (addit==true)  
-		{ 
-			func.func = "f$debug"; 
-			_formula.mFunction.Add(func); 
-		}
-
-	LeaveCriticalSection(&cs_formula);
+	// f$debug
+	addit = true;
+	for (i=0; i<N; i++)  
+		if (_formula.mFunction[i].func=="f$debug") addit = false;
+	if (addit==true)  
+	{ 
+		func.func = "f$debug"; 
+		_formula.mFunction.Add(func); 
+	}
 
 	__SEH_LOGFATAL("CFormula::CheckForDefaultFormulaEntries");
 }
@@ -563,14 +548,204 @@ void CFormula::MarkCacheStale()
 {
 	__SEH_HEADER
 
-	EnterCriticalSection(&cs_formula);
+	CSLock lock(m_critsec);
 
 	for (int i=0; i<_formula.mFunction.GetSize(); i++)
         _formula.mFunction[i].fresh = false;
 
-	LeaveCriticalSection(&cs_formula);
-
 	__SEH_LOGFATAL("CFormula::MarkCacheStale");
+}
+
+void CFormula::ParseHandList(const CString &list_text, bool inlist[13][13])
+{
+	__SEH_HEADER
+
+	CSLock lock(m_critsec);
+
+	for (int i=0; i<=12; i++)
+		for (int j=0; j<=12; j++)
+			inlist[i][j] = false;
+
+	int	token_card0_rank = 0, token_card1_rank = 0, temp_rank = 0;
+
+	CString list = list_text;
+	list.MakeUpper();
+
+	const char *pStr = list.GetString();
+
+	while (*pStr)
+	{
+		if (pStr[0] == '/' && pStr[1] == '/')
+		{
+			int index = CString(pStr).FindOneOf("\r\n");
+			if (index == -1) break;
+			pStr += index;
+		}
+
+		token_card0_rank = CardIdentHelper(*pStr++);
+
+		if (token_card0_rank == -1)
+			continue;
+
+		token_card1_rank = CardIdentHelper(*pStr++);
+
+		if (token_card0_rank == -1)
+			continue;
+
+		// make card0 have the higher rank
+		if (token_card0_rank < token_card1_rank)
+		{
+			temp_rank = token_card0_rank;
+			token_card0_rank = token_card1_rank;
+			token_card1_rank = temp_rank;
+		}
+
+		if (*pStr == 'S') // suited
+		{
+			inlist[token_card0_rank][token_card1_rank] = true;
+			pStr++;
+		}
+		else  // offsuit or pair
+		{
+			inlist[token_card1_rank][token_card0_rank] = true;
+		}
+	}
+
+	__SEH_LOGFATAL("CFormula::ParseHandList :\n");
+}
+
+void CFormula::CopyFormulaFrom(CFormula *f)
+{
+	__SEH_HEADER
+
+	SHandList		list;
+	SFunction		func;
+	int				from_count = 0, to_count = 0, from_iter = 0, to_iter = 0;
+	bool			addit = false, deleteit = false;
+
+	// Init locals
+	list.list = "";
+	list.list_text = "";
+	func.cache = 0.;
+	func.dirty = false;
+	func.fresh = false;
+	func.func = "";
+	func.func_text = "";
+
+	CSLock lock(m_critsec);
+
+	// handle deleted udfs
+	to_count = (int) _formula.mFunction.GetSize();
+	for (to_iter=0; to_iter<to_count; to_iter++)
+	{
+		from_count = (int) f->formula()->mFunction.GetSize();
+		deleteit = true;
+		for (from_iter=0; from_iter<from_count; from_iter++)
+		{
+			if (_formula.mFunction[to_iter].func == f->formula()->mFunction[from_iter].func)
+			{
+				deleteit = false;
+				from_iter = from_count+1;
+			}
+		}
+		if (deleteit)
+		{
+			_formula.mFunction.RemoveAt(to_iter, 1);
+			to_count = (int) _formula.mFunction.GetSize();
+			to_iter-=1;
+		}
+	}
+
+	// handle new/changed udfs
+	from_count = (int) f->formula()->mFunction.GetSize();
+	for (from_iter=0; from_iter<from_count; from_iter++)
+	{
+		to_count = (int) _formula.mFunction.GetSize();
+		addit = true;
+		for (to_iter=0; to_iter<to_count; to_iter++)
+		{
+			if (_formula.mFunction[to_iter].func == f->formula()->mFunction[from_iter].func)
+			{
+				// changed?
+				addit = false;
+				if (_formula.mFunction[to_iter].func_text == f->formula()->mFunction[from_iter].func_text)
+				{
+					// no change
+					_formula.mFunction[to_iter].dirty = false;
+					_formula.mFunction[to_iter].fresh = false;
+				}
+				else
+				{
+					// yup, it changed
+					_formula.mFunction[to_iter].func_text = f->formula()->mFunction[from_iter].func_text;
+					_formula.mFunction[to_iter].dirty = true;
+					_formula.mFunction[to_iter].fresh = false;
+					_formula.mFunction[to_iter].cache = 0.0;
+				}
+				to_iter = to_count+1;
+			}
+		}
+
+		// new
+		if (addit)
+		{
+			func.func = f->formula()->mFunction[from_iter].func;
+			func.func_text = f->formula()->mFunction[from_iter].func_text;
+			func.dirty = true;
+			func.fresh = false;
+			func.cache = 0.0;
+			_formula.mFunction.Add(func);
+		}
+	}
+
+	// Copy numbers
+	_formula.dBankroll = f->formula()->dBankroll;
+	_formula.dDefcon = f->formula()->dDefcon;
+	_formula.dRake = f->formula()->dRake;
+	_formula.dNit = f->formula()->dNit;
+
+	// Copy hand lists
+	_formula.mHandList.RemoveAll();
+	from_count = (int) f->formula()->mHandList.GetSize();
+	for (from_iter=0; from_iter<from_count; from_iter++)
+	{
+		list.list = f->formula()->mHandList[from_iter].list;
+		list.list_text = f->formula()->mHandList[from_iter].list_text;
+		_formula.mHandList.Add(list);
+	}
+
+	// Copy name
+	_formula_name = f->formula_name();
+	
+
+	__SEH_LOGFATAL("CFormula::CopyFormulaTo :\n");
+}
+
+const int CFormula::CardIdentHelper(const char c)
+{
+	__SEH_HEADER
+
+	if (c>='2' && c<='9')
+		return c - '0' - 2;
+
+	else if (c=='T')
+		return 8;
+
+	else if (c=='J')
+		return 9;
+
+	else if (c=='Q')
+		return 10;
+
+	else if (c=='K')
+		return 11;
+
+	else if (c=='A')
+		return 12;
+
+	return -1;
+
+	__SEH_LOGFATAL("CFormula::CardIdentHelper :\n");
 }
 
 bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
@@ -585,6 +760,7 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 	LARGE_INTEGER	bcount = {0}, ecount = {0}, lFrequency = {0};
 	double			time_elapsed = 0.;
 	sData			*data = (sData*) (pCUPDUPData->GetAppData());
+	CGrammar		gram;
 
 	pCUPDUPData->SetProgress("", 0, false);
 
@@ -611,9 +787,7 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 			p_global->parse_symbol_formula = data->pParent->formula();
 			p_global->parse_symbol_stop_strs.RemoveAll();
 
-			EnterCriticalSection(&cs_formula);
-			result = parse(&data->pParent->formula()->mFunction[i].func_text, &data->pParent->set_formula()->mFunction[i].tpi, &stopchar);
-			LeaveCriticalSection(&cs_formula);
+			result = gram.ParseString(&data->pParent->formula()->mFunction[i].func_text, data->pParent->set_tpi(i), &stopchar);
 
 			if (!result)
 			{
@@ -654,9 +828,7 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 
 			else
 			{
-				EnterCriticalSection(&cs_formula);
-				data->pParent->set_formula()->mFunction[i].dirty = false;
-				LeaveCriticalSection(&cs_formula);
+				data->pParent->set_func_dirty(i, false);
 			}
 		}
 	}
@@ -665,195 +837,5 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 
 	return true;
 
-	__SEH_LOGFATAL("CFormula::ParseLoop :\n");
-}
-
-const int CFormula::CardIdentHelper(const char c)
-{
-	__SEH_HEADER
-
-	if (c>='2' && c<='9')
-		return c - '0' - 2;
-
-	else if (c=='T')
-		return 8;
-
-	else if (c=='J')
-		return 9;
-
-	else if (c=='Q')
-		return 10;
-
-	else if (c=='K')
-		return 11;
-
-	else if (c=='A')
-		return 12;
-
-	return -1;
-
-	__SEH_LOGFATAL("CFormula::CardIdentHelper :\n");
-}
-
-void CFormula::ParseHandList(const CString &list_text, bool inlist[13][13])
-{
-	__SEH_HEADER
-
-	EnterCriticalSection(&cs_formula);
-
-		for (int i=0; i<=12; i++)
-			for (int j=0; j<=12; j++)
-				inlist[i][j] = false;
-
-		int	token_card0_rank = 0, token_card1_rank = 0, temp_rank = 0;
-
-		CString list = list_text;
-		list.MakeUpper();
-
-		const char *pStr = list.GetString();
-
-		while (*pStr)
-		{
-			if (pStr[0] == '/' && pStr[1] == '/')
-			{
-				int index = CString(pStr).FindOneOf("\r\n");
-				if (index == -1) break;
-				pStr += index;
-			}
-
-			token_card0_rank = CardIdentHelper(*pStr++);
-
-			if (token_card0_rank == -1)
-				continue;
-
-			token_card1_rank = CardIdentHelper(*pStr++);
-
-			if (token_card0_rank == -1)
-				continue;
-
-			// make card0 have the higher rank
-			if (token_card0_rank < token_card1_rank)
-			{
-				temp_rank = token_card0_rank;
-				token_card0_rank = token_card1_rank;
-				token_card1_rank = temp_rank;
-			}
-
-			if (*pStr == 'S') // suited
-			{
-				inlist[token_card0_rank][token_card1_rank] = true;
-				pStr++;
-			}
-			else  // offsuit or pair
-			{
-				inlist[token_card1_rank][token_card0_rank] = true;
-			}
-		}
-
-	LeaveCriticalSection(&cs_formula);
-
-	__SEH_LOGFATAL("CFormula::ParseHandList :\n");
-}
-
-
-
-void CopyFormula(const SFormula *f, SFormula *t)
-{
-	__SEH_HEADER
-
-	SHandList		list;
-	SFunction		func;
-	int				from_count = 0, to_count = 0, from_iter = 0, to_iter = 0;
-	bool			addit = false, deleteit = false;
-
-	// Init locals
-	list.list = "";
-	list.list_text = "";
-	func.cache = 0.;
-	func.dirty = false;
-	func.fresh = false;
-	func.func = "";
-	func.func_text = "";
-
-	// handle deleted udfs
-	to_count = (int) t->mFunction.GetSize();
-	for (to_iter=0; to_iter<to_count; to_iter++)
-	{
-		from_count = (int) f->mFunction.GetSize();
-		deleteit = true;
-		for (from_iter=0; from_iter<from_count; from_iter++)
-		{
-			if (t->mFunction[to_iter].func == f->mFunction[from_iter].func)
-			{
-				deleteit = false;
-				from_iter=from_count+1;
-			}
-		}
-		if (deleteit)
-		{
-			t->mFunction.RemoveAt(to_iter, 1);
-			to_count = (int) t->mFunction.GetSize();
-			to_iter-=1;
-		}
-	}
-
-	// handle new/changed udfs
-	from_count = (int) f->mFunction.GetSize();
-	for (from_iter=0; from_iter<from_count; from_iter++)
-	{
-		to_count = (int) t->mFunction.GetSize();
-		addit = true;
-		for (to_iter=0; to_iter<to_count; to_iter++)
-		{
-			if (f->mFunction[from_iter].func == t->mFunction[to_iter].func)
-			{
-				// changed?
-				addit = false;
-				if (f->mFunction[from_iter].func_text == t->mFunction[to_iter].func_text)
-				{
-					// no change
-					t->mFunction[to_iter].dirty = false;
-					t->mFunction[to_iter].fresh = false;
-				}
-				else
-				{
-					// yup, it changed
-					t->mFunction[to_iter].func_text = f->mFunction[from_iter].func_text;
-					t->mFunction[to_iter].dirty = true;
-					t->mFunction[to_iter].fresh = false;
-					t->mFunction[to_iter].cache = 0.0;
-				}
-				to_iter = to_count+1;
-			}
-		}
-
-		// new
-		if (addit)
-		{
-			func.func = f->mFunction[from_iter].func;
-			func.func_text = f->mFunction[from_iter].func_text;
-			func.dirty = true;
-			func.fresh = false;
-			func.cache = 0.0;
-			t->mFunction.Add(func);
-		}
-	}
-
-	// Copy numbers
-	t->dBankroll = f->dBankroll;
-	t->dDefcon = f->dDefcon;
-	t->dRake = f->dRake;
-	t->dNit = f->dNit;
-
-	// Copy hand lists
-	t->mHandList.RemoveAll();
-	from_count = (int) f->mHandList.GetSize();
-	for (from_iter=0; from_iter<from_count; from_iter++)
-	{
-		list.list = f->mHandList[from_iter].list;
-		list.list_text = f->mHandList[from_iter].list_text;
-		t->mHandList.Add(list);
-	}
-
-	__SEH_LOGFATAL("::CopyFormula :\n");
+	__SEH_LOGFATAL("ParseLoop :\n");
 }

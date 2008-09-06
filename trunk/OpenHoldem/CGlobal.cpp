@@ -10,9 +10,9 @@
 #include "CSymbols.h"
 #include "CHeartbeatThread.h"
 #include "..\CTablemap\CTablemap.h"
+#include "CGrammar.h"
 
 #include "resource.h"
-#include "grammar.h"
 #include "registry.h"
 #include "DialogFormulaScintilla.h"
 

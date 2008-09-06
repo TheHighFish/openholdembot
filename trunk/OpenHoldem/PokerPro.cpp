@@ -9,9 +9,9 @@
 #include "CIteratorThread.h"
 #include "CAutoplayer.h"
 #include "CGlobal.h"
+#include "CGrammar.h"
 
 #include "registry.h"
-#include "grammar.h"
 #include "DialogPpro.h"
 
 class PokerPro	ppro;

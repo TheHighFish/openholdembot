@@ -11,8 +11,8 @@
 #include "CGameState.h"
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTransform\CTransform.h"
+#include "CGrammar.h"
 
-#include "grammar.h"
 #include "inlines/eval.h"
 #include "versus.h"
 #include "RunRon.h"
@@ -675,6 +675,7 @@ void CSymbols::CalcSymbols(void)
 	char				classname[50] = {0}, title[512] = {0};
 	unsigned int		player_card_cur[2] = {0};
 	char				card0[10] = {0}, card1[10] = {0};
+	CGrammar			gram;
 
 	// Clear em, before we start
 	ResetSymbolsEveryCalc();
@@ -902,9 +903,7 @@ void CSymbols::CalcSymbols(void)
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// number of opponents (from f$P)
 	int e = SUCCESS;
-	EnterCriticalSection(&p_formula->cs_formula);
-	_sym.nopponents = calc_f$symbol(p_formula->set_formula(), "f$P", &e);
-	LeaveCriticalSection(&p_formula->cs_formula);
+	_sym.nopponents = gram.CalcF$symbol(p_formula, "f$P", &e);
 
 	if (_sym.nopponents > p_global->preferences.max_opponents)
 	{
@@ -3046,12 +3045,11 @@ void CSymbols::CalcStatistics(void)
 
 	double		f$srai = 0., C = 0., R = 0., S = 0., B = 0.;
 	int			error = 0;
+	CGrammar	gram;
 
 	// f$srai
 	error = SUCCESS;
-	EnterCriticalSection(&p_formula->cs_formula);
-	f$srai = calc_f$symbol(p_formula->set_formula(), "f$srai", p_global->preferences.Trace_functions[nTraceSwag], &error);
-	LeaveCriticalSection(&p_formula->cs_formula);
+	f$srai = gram.CalcF$symbol(p_formula, "f$srai", p_global->preferences.Trace_functions[nTraceSwag], &error);
 
 	// B
 	B = p_formula->formula()->dBankroll != 0 ? p_formula->formula()->dBankroll : p_scraper->player_balance(_sym.userchair);
@@ -3664,29 +3662,26 @@ void CSymbols::CalcPrimaryFormulas(const bool final_answer)
 {
 	__SEH_HEADER
 
-	int e = SUCCESS;
+	int			e = SUCCESS;
+	CGrammar	gram;
 
 	EnterCriticalSection(&cs_symbols);
-
-	EnterCriticalSection(&p_formula->cs_formula);
 
 		_sym.isfinalanswer = final_answer;
 
 		e = SUCCESS;
-		_f$alli = calc_f$symbol(p_formula->set_formula(), "f$alli", p_global->preferences.Trace_functions[nTraceAlli], &e);
+		_f$alli = gram.CalcF$symbol(p_formula, "f$alli", p_global->preferences.Trace_functions[nTraceAlli], &e);
 
 		e = SUCCESS;
-		_f$swag = calc_f$symbol(p_formula->set_formula(), "f$swag", p_global->preferences.Trace_functions[nTraceSwag], &e);
+		_f$swag = gram.CalcF$symbol(p_formula, "f$swag", p_global->preferences.Trace_functions[nTraceSwag], &e);
 
 		e = SUCCESS;
-		_f$rais = calc_f$symbol(p_formula->set_formula(), "f$rais", p_global->preferences.Trace_functions[nTraceRais], &e);
+		_f$rais = gram.CalcF$symbol(p_formula, "f$rais", p_global->preferences.Trace_functions[nTraceRais], &e);
 
 		e = SUCCESS;
-		_f$call = calc_f$symbol(p_formula->set_formula(), "f$call", p_global->preferences.Trace_functions[nTraceCall], &e);
+		_f$call = gram.CalcF$symbol(p_formula, "f$call", p_global->preferences.Trace_functions[nTraceCall], &e);
 
 		_sym.isfinalanswer = false;
-
-	LeaveCriticalSection(&p_formula->cs_formula);
 
 	LeaveCriticalSection(&cs_symbols);
 
@@ -3697,25 +3692,22 @@ void CSymbols::CalcSecondaryFormulas(void)
 {
 	__SEH_HEADER
 
-	int e = SUCCESS;
+	int			e = SUCCESS;
+	CGrammar	gram;
 
 	EnterCriticalSection(&cs_symbols);
 
-	EnterCriticalSection(&p_formula->cs_formula);
+		e = SUCCESS;
+		_f$play = gram.CalcF$symbol(p_formula, "f$play", p_global->preferences.Trace_functions[nTracePlay], &e);
 
 		e = SUCCESS;
-		_f$play = calc_f$symbol(p_formula->set_formula(), "f$play", p_global->preferences.Trace_functions[nTracePlay], &e);
+		_f$prefold = gram.CalcF$symbol(p_formula, "f$prefold", p_global->preferences.Trace_functions[nTracePrefold], &e);
 
 		e = SUCCESS;
-		_f$prefold = calc_f$symbol(p_formula->set_formula(), "f$prefold", p_global->preferences.Trace_functions[nTracePrefold], &e);
+		_f$delay = gram.CalcF$symbol(p_formula, "f$delay", &e);
 
 		e = SUCCESS;
-		_f$delay = calc_f$symbol(p_formula->set_formula(), "f$delay", &e);
-
-		e = SUCCESS;
-		_f$chat = calc_f$symbol(p_formula->set_formula(), "f$chat", &e);
-
-	LeaveCriticalSection(&p_formula->cs_formula);
+		_f$chat = gram.CalcF$symbol(p_formula, "f$chat", &e);
 
 	LeaveCriticalSection(&cs_symbols);
 
