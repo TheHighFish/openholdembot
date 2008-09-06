@@ -15,10 +15,6 @@ struct SPlayerStats
 extern class CPokerTrackerThread 
 {
 public:
-	// Critical section used in public mutators and private shared variable writes
-	static CRITICAL_SECTION		cs_pokertracker;
-
-public:
 	// public functions
 	CPokerTrackerThread();
 	~CPokerTrackerThread();

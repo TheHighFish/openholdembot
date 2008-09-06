@@ -11,7 +11,6 @@
 #include "registry.h"
 
 CPokerTrackerThread	*p_pokertracker_thread = NULL;
-CRITICAL_SECTION	CPokerTrackerThread::cs_pokertracker;
 
 CPokerTrackerThread::CPokerTrackerThread()
 {
@@ -21,8 +20,6 @@ CPokerTrackerThread::CPokerTrackerThread()
 
 	int				i = 0, j = 0;
 	Registry		reg;
-
-	InitializeCriticalSection(&cs_pokertracker);
 
 	// Create events
 	_m_stop_thread = CreateEvent(0, TRUE, FALSE, 0);
@@ -63,8 +60,6 @@ CPokerTrackerThread::~CPokerTrackerThread()
 	// Close handles
 	::CloseHandle(_m_stop_thread);
 	::CloseHandle(_m_wait_thread);
-
-	DeleteCriticalSection(&cs_pokertracker);
 
 	__SEH_LOGFATAL("CPokerTracker::Destructor : \n");
 }
@@ -342,11 +337,7 @@ double CPokerTrackerThread::GetStat (int m_chr, PT_Stats stat)
 	if (m_chr<0 || m_chr>9)
 		return 0.0;
 
-	//EnterCriticalSection(&cs_pokertracker);
-	x = _player_stats[m_chr].stat[stat];
-	//LeaveCriticalSection(&cs_pokertracker);
-
-	return x;
+	return _player_stats[m_chr].stat[stat];
 
 	__SEH_LOGFATAL("CPokerTracker::GetStat : \n");
 }
@@ -476,15 +467,9 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 
 		PQclear(res);
 
-		// Get exclusive access to CPokerTracker and CPokerTrackerThread variables
-		EnterCriticalSection(&cs_pokertracker);
-
 		// update cache with new values
 		_player_stats[m_chr].stat[stat] = result;
 		_player_stats[m_chr].t_elapsed[stat] = sym_elapsed;
-
-		// Allow other threads to use CPokerTracker and CPokerTrackerThread variables
-		LeaveCriticalSection(&cs_pokertracker);
 	}
 
 	return result;

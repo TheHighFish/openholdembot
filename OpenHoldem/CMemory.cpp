@@ -5,8 +5,7 @@
 #include "CSymbols.h"
 #include "CGlobal.h"
 #include "CFormula.h"
-
-#include "grammar.h"
+#include "CGrammar.h"
 
 CMemory		*p_memory = NULL;
 
@@ -63,6 +62,7 @@ void CMemory::StoreValue(const char * pquery, CEvalInfoFunction **logCallingFunc
 	int			i = 0, index = 0;
 	char		var[512] = {0}, value[512] = {0};
 	double		result = 0.;
+	CGrammar	gram;
 
 	strcpy_s(var, 512, &pquery[6]);
 
@@ -89,9 +89,7 @@ void CMemory::StoreValue(const char * pquery, CEvalInfoFunction **logCallingFunc
 	if (memcmp(value,"f$",2)==0)
 	{
 		*e = SUCCESS;
-		EnterCriticalSection(&p_formula->cs_formula);
-		result = do_calc_f$symbol(p_formula->set_formula(), value, logCallingFunction, logCallingFunction!=NULL, e);
-		LeaveCriticalSection(&p_formula->cs_formula);
+		result = gram.DoCalcF$symbol(p_formula, value, logCallingFunction, logCallingFunction!=NULL, e);
 
 		if (*e==SUCCESS)
 		{

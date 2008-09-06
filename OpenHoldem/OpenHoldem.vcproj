@@ -309,6 +309,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CEvalInfo.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CFormula.cpp"
 				>
 			</File>
@@ -318,6 +322,10 @@
 			</File>
 			<File
 				RelativePath=".\CGlobal.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CGrammar.cpp"
 				>
 			</File>
 			<File
@@ -406,10 +414,6 @@
 			</File>
 			<File
 				RelativePath=".\DialogSitDown.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\grammar.cpp"
 				>
 			</File>
 			<File
@@ -658,6 +662,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CEvalInfo.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CFormula.h"
 				>
 			</File>
@@ -667,6 +675,10 @@
 			</File>
 			<File
 				RelativePath=".\CGlobal.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CGrammar.h"
 				>
 			</File>
 			<File
@@ -755,10 +767,6 @@
 			</File>
 			<File
 				RelativePath=".\DialogSitDown.h"
-				>
-			</File>
-			<File
-				RelativePath=".\grammar.h"
 				>
 			</File>
 			<File
@@ -1070,6 +1078,14 @@
 				>
 				<File
 					RelativePath="..\CTablemap\CTablemap.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="CCritSec"
+				>
+				<File
+					RelativePath="..\CCritSec\CCritSec.h"
 					>
 				</File>
 			</Filter>

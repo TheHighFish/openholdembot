@@ -1443,9 +1443,7 @@ void CDlgTableMap::OnBnClickedNew()
 				new_size.name = dlgsizes.name;
 				new_size.width = dlgsizes.width;
 				new_size.height = dlgsizes.height;
-				EnterCriticalSection(&p_tablemap->cs_tablemap);
 				new_index = (int) p_tablemap->set_z$_add(new_size);
-				LeaveCriticalSection(&p_tablemap->cs_tablemap);
 
 				// Add new record to tree
 				new_hti = m_TableMapTree.InsertItem(dlgsizes.name, parent ? parent : m_TableMapTree.GetSelectedItem());
@@ -1492,9 +1490,7 @@ void CDlgTableMap::OnBnClickedNew()
 				// Add new record to internal structure
 				new_symbol.name = dlgsymbols.name;
 				new_symbol.text = dlgsymbols.value;
-				EnterCriticalSection(&p_tablemap->cs_tablemap);
 				new_index = (int) p_tablemap->set_s$_add(new_symbol);
-				LeaveCriticalSection(&p_tablemap->cs_tablemap);
 
 				// Add new record to tree
 				new_hti = m_TableMapTree.InsertItem(new_symbol.name, parent ? parent : m_TableMapTree.GetSelectedItem());
@@ -1543,9 +1539,7 @@ void CDlgTableMap::OnBnClickedNew()
 				new_region.color = 0;
 				new_region.radius = 0;
 				new_region.transform = "N";
-				EnterCriticalSection(&p_tablemap->cs_tablemap);
 				new_index = (int) p_tablemap->set_r$_add(new_region);
-				LeaveCriticalSection(&p_tablemap->cs_tablemap);
 
 				// Add new record to tree
 				new_hti = m_TableMapTree.InsertItem(new_region.name, parent ? parent : m_TableMapTree.GetSelectedItem());
@@ -1579,9 +1573,7 @@ void CDlgTableMap::OnBnClickedNew()
 			new_hashpoint.number = atoi(dlghashpoint.type.Mid(5,1).GetString());
 			new_hashpoint.x = dlghashpoint.x;
 			new_hashpoint.y = dlghashpoint.y;
-			EnterCriticalSection(&p_tablemap->cs_tablemap);
 			new_index = (int) p_tablemap->set_p$_add(new_hashpoint);
-			LeaveCriticalSection(&p_tablemap->cs_tablemap);
 
 			// Add new record to tree
 			text.Format("%d (%d, %d)", new_hashpoint.number, new_hashpoint.x, new_hashpoint.y);
@@ -2099,9 +2091,7 @@ void CDlgTableMap::OnBnClickedEdit()
 					temp_hash_point.number = dlggrhashpoints.working_hash_points[i].number;
 					temp_hash_point.x = dlggrhashpoints.working_hash_points[i].x;
 					temp_hash_point.y = dlggrhashpoints.working_hash_points[i].y;
-					EnterCriticalSection(&p_tablemap->cs_tablemap);
 					p_tablemap->set_p$_add(temp_hash_point);
-					LeaveCriticalSection(&p_tablemap->cs_tablemap);
 				}
 
 				// Rebuild tree
@@ -2210,9 +2200,7 @@ void CDlgTableMap::OnBnClickedCreateImage()
 			new_image.height = sel_region_ptr->bottom - sel_region_ptr->top;
 
 			// Insert the new record in the existing array of i$ records
-			EnterCriticalSection(&p_tablemap->cs_tablemap);
 			new_index = (int) p_tablemap->set_i$_add(new_image);
-			LeaveCriticalSection(&p_tablemap->cs_tablemap);
 			
 			// Allocate space for "RGBAImage"
 			text = p_tablemap->i$()->GetAt(new_index).name + ".ppm";
@@ -2445,9 +2433,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 					}
 					if (insert_point==-1) 
 					{
-						EnterCriticalSection(&p_tablemap->cs_tablemap);
 						new_index = (int) p_tablemap->set_t$_add(new_font);
-						LeaveCriticalSection(&p_tablemap->cs_tablemap);
 					}
 					else 
 					{
@@ -2541,9 +2527,7 @@ void CDlgTableMap::OnBnClickedCreateHash()
 			new_hash.name = sel;
 			new_hash.number = atoi(dlghash.type.Mid(5,1).GetString());
 			new_hash.hash = 0;
-			EnterCriticalSection(&p_tablemap->cs_tablemap);
 			new_index = (int) p_tablemap->set_h$_add(new_hash);
-			LeaveCriticalSection(&p_tablemap->cs_tablemap);
 
 			// Warn to update hashes
 			//MessageBox("Hash record created.  Don't forget to 'Edit/Update Hashes'.");

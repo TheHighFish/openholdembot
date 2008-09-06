@@ -14,6 +14,7 @@
 #include "CHeartbeatThread.h"
 #include "CGlobal.h"
 #include "CFormula.h"
+#include "CGrammar.h"
 
 #include "DialogFormulaScintilla.h"
 #include "registry.h"
@@ -21,7 +22,6 @@
 #include "DialogNew.h"
 #include "DialogSettings.h"
 #include "DialogHandList.h"
-#include "grammar.h"
 #include "WinMgr.h"
 
 #include "../scintilla/include/Scintilla.h"
@@ -167,9 +167,7 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 
     // Copy current doc formula into working set
     m_wrk_formula.ClearFormula();
-	EnterCriticalSection(&m_wrk_formula.cs_formula);
-	CopyFormula(p_formula->formula(), m_wrk_formula.set_formula());
-	LeaveCriticalSection(&m_wrk_formula.cs_formula);
+	m_wrk_formula.CopyFormulaFrom(p_formula);
 
 	m_current_edit = "";
     m_dirty = false;
@@ -731,9 +729,7 @@ void CDlgFormulaScintilla::OnTvnSelchangingFormulaTree(NMHDR *pNMHDR, LRESULT *p
 
     LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
 
-	EnterCriticalSection(&m_wrk_formula.cs_formula);
-	LastChangeToFormula(m_wrk_formula.set_formula());
-	LeaveCriticalSection(&m_wrk_formula.cs_formula);
+	LastChangeToFormula(&m_wrk_formula);
 
     *pResult = 0;
 
@@ -1069,9 +1065,7 @@ void CDlgFormulaScintilla::OnNew()
             List.list_text = "";
 
             // Add it to working set CArray
-			EnterCriticalSection(&m_wrk_formula.cs_formula);
-            m_wrk_formula.set_formula()->mHandList.Add(List);
-			LeaveCriticalSection(&m_wrk_formula.cs_formula);
+            m_wrk_formula.set_list_add(List);
 
             // Add to tree
             p = m_FormulaTree.GetParentItem(m_FormulaTree.GetSelectedItem());
@@ -1091,9 +1085,7 @@ void CDlgFormulaScintilla::OnNew()
             Func.fresh = false;
 
             // Add it to working set CArray
-			EnterCriticalSection(&m_wrk_formula.cs_formula);
-            m_wrk_formula.set_formula()->mFunction.Add(Func);
-			LeaveCriticalSection(&m_wrk_formula.cs_formula);
+            m_wrk_formula.set_func_add(Func);
 
             // Add to tree
 			HTREEITEM hNewParent = hUDFItem;
@@ -1167,9 +1159,7 @@ void CDlgFormulaScintilla::OnRename()
                 if (m_wrk_formula.formula()->mHandList[i].list == rendlg.CSoldname) 
 				{
                     // Update it in the CArray working set
-					EnterCriticalSection(&m_wrk_formula.cs_formula);
-                    m_wrk_formula.set_formula()->mHandList[i].list = rendlg.CSnewname;
-					LeaveCriticalSection(&m_wrk_formula.cs_formula);
+                    m_wrk_formula.set_list_list(i, rendlg.CSnewname);
                     didRename = true;
 					break;
                 }
@@ -1187,10 +1177,8 @@ void CDlgFormulaScintilla::OnRename()
                 if (m_wrk_formula.formula()->mFunction[i].func == s) 
 				{
                     // Update it in the CArray working set
-					EnterCriticalSection(&m_wrk_formula.cs_formula);
-                    m_wrk_formula.set_formula()->mFunction[i].func = rendlg.CSnewname;
-                    m_wrk_formula.set_formula()->mFunction[i].fresh = false;
-					LeaveCriticalSection(&m_wrk_formula.cs_formula);
+                    m_wrk_formula.set_func_func(i, rendlg.CSnewname);
+                    m_wrk_formula.set_func_fresh(i, false);
 
                     didRename = true;
 					break;
@@ -1300,9 +1288,7 @@ void CDlgFormulaScintilla::OnDelete()
                     m_pActiveScinCtrl->EnableWindow(false);
 
                     // Remove it from the CArray working set
-					EnterCriticalSection(&m_wrk_formula.cs_formula);
-                    m_wrk_formula.set_formula()->mFunction.RemoveAt(i, 1);
-					LeaveCriticalSection(&m_wrk_formula.cs_formula);
+                    m_wrk_formula.set_func_remove(i);
 
                     // Update the tree
 					HTREEITEM oldParentItem = m_FormulaTree.GetParentItem(hItem);
@@ -1344,9 +1330,7 @@ void CDlgFormulaScintilla::OnDelete()
                     m_pActiveScinCtrl->EnableWindow(false);
 
                     // Remove it from the CArray working set
-					EnterCriticalSection(&m_wrk_formula.cs_formula);
-			        m_wrk_formula.set_formula()->mHandList.RemoveAt(i, 1);
-					LeaveCriticalSection(&m_wrk_formula.cs_formula);
+			        m_wrk_formula.set_list_remove(i);
 
 					// Update the tree
                     m_FormulaTree.DeleteItem(hItem);
@@ -1561,12 +1545,10 @@ void CDlgFormulaScintilla::OnSettings()
 
     if (myDialog.DoModal() == IDOK) 
 	{
-		EnterCriticalSection(&m_wrk_formula.cs_formula);
-        m_wrk_formula.set_formula()->dBankroll = myDialog.bankroll;
-        m_wrk_formula.set_formula()->dDefcon = myDialog.defcon;
-        m_wrk_formula.set_formula()->dRake = myDialog.rake;
-        m_wrk_formula.set_formula()->dNit = myDialog.nit;
-		LeaveCriticalSection(&m_wrk_formula.cs_formula);
+        m_wrk_formula.set_bankroll(myDialog.bankroll);
+        m_wrk_formula.set_defcon(myDialog.defcon);
+        m_wrk_formula.set_rake(myDialog.rake);
+        m_wrk_formula.set_nit(myDialog.nit);
 
         m_dirty = true;
         pDoc->SetModifiedFlag(true);
@@ -1662,9 +1644,7 @@ void CDlgFormulaScintilla::OnHandList()
             newstring += "\r\n";
 
         // save it internally
-		EnterCriticalSection(&m_wrk_formula.cs_formula);
-        m_wrk_formula.set_formula()->mHandList[list_index].list_text = newstring;
-		LeaveCriticalSection(&m_wrk_formula.cs_formula);
+        m_wrk_formula.set_list_text(list_index, newstring);
 
         // update scintilla window
         CScintillaWnd *pCurScin = reinterpret_cast<CScintillaWnd *>(m_FormulaTree.GetItemData(m_FormulaTree.GetSelectedItem()));
@@ -1680,12 +1660,12 @@ void CDlgFormulaScintilla::OnHandList()
     __SEH_LOGFATAL("CDlgFormulaScintilla::OnHandList :\n");
 }
 
-void CDlgFormulaScintilla::LastChangeToFormula(SFormula *f) 
+void CDlgFormulaScintilla::LastChangeToFormula(CFormula *f) 
 {
     __SEH_HEADER
 
-    CString	s;
-    int N, i;
+    CString		s, text;
+    int			N, i;
 
     HTREEITEM hSelected = m_FormulaTree.GetSelectedItem();
     if (hSelected == NULL)
@@ -1702,17 +1682,20 @@ void CDlgFormulaScintilla::LastChangeToFormula(SFormula *f)
 	{
         ASSERT(false);
     }
-    // A child item was selected, copy text from rich edit control to working set CArray
-    else {
+    
+	// A child item was selected, copy text from rich edit control to working set CArray
+    else 
+	{
         // check for function
-        N = (int) f->mFunction.GetSize();
+		N = (int) f->formula()->mFunction.GetSize();
         for (i=0; i<N; i++) 
 		{
-            if (f->mFunction[i].func == s) 
+            if (f->formula()->mFunction[i].func == s) 
 			{
-                pCurScin->GetText(f->mFunction[i].func_text);
-                f->mFunction[i].dirty = true;
-                f->mFunction[i].fresh = false;
+                pCurScin->GetText(text);
+				f->set_func_text(i, text);
+                f->set_func_dirty(i, true);
+                f->set_func_fresh(i, false);
                 return;
             }
         }
@@ -1721,12 +1704,13 @@ void CDlgFormulaScintilla::LastChangeToFormula(SFormula *f)
         if (memcmp(s.GetString(), "list", 4) == 0) 
 		{
             // Find proper list and load it
-            N = (int) f->mHandList.GetSize();
+            N = (int) f->formula()->mHandList.GetSize();
             for (i=0; i<N; i++) 
 			{
-                if (f->mHandList[i].list == s) 
+                if (f->formula()->mHandList[i].list == s) 
 				{
-                    pCurScin->GetText(f->mHandList[i].list_text);
+                    pCurScin->GetText(text);
+					f->set_list_text(i, text);
                     return;
                 }
             }
@@ -2141,7 +2125,7 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
 
     CString					Cstr, title, s;
     double					ret;
-    int						error, i;
+    int						error;
     std::string				str;
     struct SDebugTabInfo	debug_struct;
     LARGE_INTEGER			bcount, ecount, lFrequency;
@@ -2159,9 +2143,7 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
 	m_wrk_formula.MarkCacheStale();
 
     // Make sure we "calc" the latest
-	EnterCriticalSection(&m_wrk_formula.cs_formula);
-	LastChangeToFormula(m_wrk_formula.set_formula());
-	LeaveCriticalSection(&m_wrk_formula.cs_formula);
+	LastChangeToFormula(&m_wrk_formula);
 
     // calc hand lists
     m_wrk_formula.CreateHandListMatrices();
@@ -2182,9 +2164,7 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
     //
     if (m_current_edit == "f$debug") 
 	{
-		EnterCriticalSection(&m_wrk_formula.cs_formula);
-		LastChangeToFormula(m_wrk_formula.set_formula());
-		LeaveCriticalSection(&m_wrk_formula.cs_formula);
+		LastChangeToFormula(&m_wrk_formula);
 
         init_debug_array();
         update_debug_auto();
@@ -2198,9 +2178,7 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
 
         // Execute the currently selected formula
         error = SUCCESS;
-		EnterCriticalSection(&m_wrk_formula.cs_formula);
-		ret = calc_f$symbol(m_wrk_formula.set_formula(), (char *) m_current_edit.GetString(), &error);
-		LeaveCriticalSection(&m_wrk_formula.cs_formula);
+		ret = gram.CalcF$symbol(&m_wrk_formula, (char *) m_current_edit.GetString(), &error);
 
         // time how long it takes
         QueryPerformanceCounter(&ecount);
@@ -2285,9 +2263,7 @@ void CDlgFormulaScintilla::OnBnClickedAuto()
 
         m_ButtonAuto.SetWindowText("* Auto *");
 
-		EnterCriticalSection(&m_wrk_formula.cs_formula);
-        LastChangeToFormula(m_wrk_formula.set_formula());
-		LeaveCriticalSection(&m_wrk_formula.cs_formula);
+        LastChangeToFormula(&m_wrk_formula);
 
 		init_debug_array();
 
@@ -2334,9 +2310,7 @@ void CDlgFormulaScintilla::update_debug_auto(void)
 	{
 		if (debug_ar[i].valid && debug_ar[i].error==SUCCESS) 
 		{
-			EnterCriticalSection(&p_formula->cs_formula);
-			debug_ar[i].ret = evaluate(m_wrk_formula.set_formula(), debug_ar[i].tree, NULL, &debug_ar[i].error);
-			LeaveCriticalSection(&p_formula->cs_formula);
+			debug_ar[i].ret = gram.EvaluateTree(&m_wrk_formula, debug_ar[i].tree, NULL, &debug_ar[i].error);
 		} 
 		else
 		{
@@ -2550,10 +2524,9 @@ void CDlgFormulaScintilla::init_debug_array(void)
 			p_global->parse_symbol_formula = m_wrk_formula.formula();
 			p_global->parse_symbol_stop_strs.RemoveAll();
 
-			EnterCriticalSection(&cs_parse);
-            parse_result = parse(&debug_struct.exp, &debug_struct.tree, &stopchar);
-			LeaveCriticalSection(&cs_parse);
-            debug_struct.ret = 0;
+            parse_result = gram.ParseString(&debug_struct.exp, &debug_struct.tree, &stopchar);
+
+			debug_struct.ret = 0;
 			debug_struct.valid = true;
 			debug_struct.error = parse_result && p_global->parse_symbol_stop_strs.GetSize()==0 ? SUCCESS : ERR_BAD_PARSE;
         }
@@ -2561,10 +2534,10 @@ void CDlgFormulaScintilla::init_debug_array(void)
 		{
             debug_struct.exp = buf;
             Cstr = "";
-			EnterCriticalSection(&cs_parse);
-            parse(&Cstr, &debug_struct.tree, &stopchar);
-			LeaveCriticalSection(&cs_parse);
-            debug_struct.ret = 0;
+
+			gram.ParseString(&Cstr, &debug_struct.tree, &stopchar);
+
+			debug_struct.ret = 0;
             debug_struct.valid = false;
             debug_struct.error = ERR_DEBUG_NOEQ;
         }
@@ -2603,9 +2576,7 @@ void CDlgFormulaScintilla::OnBnClickedApply()
     m_wrk_formula.CreateHandListMatrices();
 
 	// Parse working set
-	EnterCriticalSection(&m_wrk_formula.cs_formula);
-	LastChangeToFormula(m_wrk_formula.set_formula());
-	LeaveCriticalSection(&m_wrk_formula.cs_formula);
+	LastChangeToFormula(&m_wrk_formula);
 
 	if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd()))
 	{
@@ -2623,9 +2594,7 @@ void CDlgFormulaScintilla::OnBnClickedApply()
 	}
 
     // Copy working set to global set
-	EnterCriticalSection(&p_formula->cs_formula);
-	CopyFormula(m_wrk_formula.formula(), p_formula->set_formula());
-	LeaveCriticalSection(&p_formula->cs_formula);
+	p_formula->CopyFormulaFrom(&m_wrk_formula);
 
 	pDoc->SetModifiedFlag(true);
 
@@ -2675,9 +2644,7 @@ void CDlgFormulaScintilla::OnBnClickedOk()
     m_wrk_formula.CreateHandListMatrices();
 
 	// Parse working set
-	EnterCriticalSection(&m_wrk_formula.cs_formula);
-	LastChangeToFormula(m_wrk_formula.set_formula());
-	LeaveCriticalSection(&m_wrk_formula.cs_formula);
+	LastChangeToFormula(&m_wrk_formula);
 
 	if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd()))
 	{
@@ -2696,9 +2663,7 @@ void CDlgFormulaScintilla::OnBnClickedOk()
 	}
 
 	// Copy working set to global set
-	EnterCriticalSection(&p_formula->cs_formula);
-	CopyFormula(m_wrk_formula.formula(), p_formula->set_formula());
-	LeaveCriticalSection(&p_formula->cs_formula);
+	p_formula->CopyFormulaFrom(&m_wrk_formula);
 
 	m_wrk_formula.ClearFormula();
     pDoc->SetModifiedFlag(true);
@@ -2737,9 +2702,7 @@ bool CDlgFormulaScintilla::PromptToSave()
 		m_wrk_formula.CreateHandListMatrices();
 
 		// Parse working set
-		EnterCriticalSection(&m_wrk_formula.cs_formula);
-		LastChangeToFormula(m_wrk_formula.set_formula());
-		LeaveCriticalSection(&m_wrk_formula.cs_formula);
+		LastChangeToFormula(&m_wrk_formula);
 
 		if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd()))
 		{
@@ -2758,9 +2721,7 @@ bool CDlgFormulaScintilla::PromptToSave()
 		}
 	
 		// Copy working set to global set
-		EnterCriticalSection(&p_formula->cs_formula);
-		CopyFormula(m_wrk_formula.formula(), p_formula->set_formula());
-		LeaveCriticalSection(&p_formula->cs_formula);
+		p_formula->CopyFormulaFrom(&m_wrk_formula);
 
         m_wrk_formula.ClearFormula();
         pDoc->SetModifiedFlag(true);

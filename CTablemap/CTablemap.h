@@ -4,6 +4,7 @@
 #include <map>
 #include "../CTransform/hash/stdint.h"
 #include "../CTransform/pdiff/RGBAImage.h"
+#include "..\CCritSec\CCritSec.h"
 
 ///////////////////////////////
 // structs
@@ -170,10 +171,6 @@ struct SWholeMap
 extern class CTablemap 
 {
 public:
-	// Critical section used in public mutators and private shared variable writes
-	static CRITICAL_SECTION	cs_tablemap;
-
-public:
 	// public functions
 	CTablemap(void);
 	~CTablemap(void);
@@ -207,54 +204,50 @@ public:
 
 
 public:
-#define ENT EnterCriticalSection(&cs_tablemap);
-#define LEA LeaveCriticalSection(&cs_tablemap);
+#define ENT CSLock lock(m_critsec);
 	// public mutators 
 
 	// These are used by OpenScrape
-	void	set_r$_left(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].left = i; LEA }
-	void	set_r$_right(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].right = i; LEA }
-	void	set_r$_top(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].top = i; LEA }
-	void	set_r$_bottom(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].bottom = i; LEA }
+	void	set_r$_left(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].left = i;  }
+	void	set_r$_right(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].right = i;  }
+	void	set_r$_top(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].top = i;  }
+	void	set_r$_bottom(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].bottom = i;  }
 
-	void	set_z$_removeat(const int n) { ENT if (n>=0 && n<=_z$.GetSize()) _z$.RemoveAt(n,1); LEA }
-	void	set_s$_removeat(const int n) { ENT if (n>=0 && n<=_s$.GetSize()) _s$.RemoveAt(n,1); LEA }
-	void	set_r$_removeat(const int n) { ENT if (n>=0 && n<=_r$.GetSize()) _r$.RemoveAt(n,1); LEA }
-	void	set_t$_removeat(const int n) { ENT if (n>=0 && n<=_t$.GetSize()) _t$.RemoveAt(n,1); LEA }
-	void	set_p$_removeat(const int n) { ENT if (n>=0 && n<=_p$.GetSize()) _p$.RemoveAt(n,1); LEA }
-	void	set_h$_removeat(const int n) { ENT if (n>=0 && n<=_h$.GetSize()) _h$.RemoveAt(n,1); LEA }
-	void	set_i$_removeat(const int n) { ENT if (n>=0 && n<=_i$.GetSize()) _i$.RemoveAt(n,1); LEA }
+	void	set_z$_removeat(const int n) { ENT if (n>=0 && n<=_z$.GetSize()) _z$.RemoveAt(n,1);  }
+	void	set_s$_removeat(const int n) { ENT if (n>=0 && n<=_s$.GetSize()) _s$.RemoveAt(n,1);  }
+	void	set_r$_removeat(const int n) { ENT if (n>=0 && n<=_r$.GetSize()) _r$.RemoveAt(n,1);  }
+	void	set_t$_removeat(const int n) { ENT if (n>=0 && n<=_t$.GetSize()) _t$.RemoveAt(n,1);  }
+	void	set_p$_removeat(const int n) { ENT if (n>=0 && n<=_p$.GetSize()) _p$.RemoveAt(n,1);  }
+	void	set_h$_removeat(const int n) { ENT if (n>=0 && n<=_h$.GetSize()) _h$.RemoveAt(n,1);  }
+	void	set_i$_removeat(const int n) { ENT if (n>=0 && n<=_i$.GetSize()) _i$.RemoveAt(n,1);  }
 
-	void	set_p$_removeall() { ENT _p$.RemoveAll(); LEA }
-	void	set_i$_image_pixel(const int n1, const int n2, const uint32_t p) { ENT if (n1>=0 && n1<=_i$.GetSize()) _i$[n1].pixel[n2] = p; LEA }
+	void	set_p$_removeall() { ENT _p$.RemoveAll();  }
+	void	set_i$_image_pixel(const int n1, const int n2, const uint32_t p) { ENT if (n1>=0 && n1<=_i$.GetSize()) _i$[n1].pixel[n2] = p;  }
 	void	set_i$_image_set(const int n, const BYTE r, const BYTE g, const BYTE b, const BYTE a, const int p) 
-				{ ENT if (n>=0 && n<=_i$.GetSize()) _i$[n].image->Set(r,g,b,a,p); LEA }
-	void	set_i$_image(const int n, RGBAImage *i) { ENT if (n>=0 && n<=_i$.GetSize()) _i$[n].image = i; LEA }
-	void	set_t$_insertat(const int n, const STablemapFont s) { ENT if (n>=0 && n<=_t$.GetSize()) _t$.InsertAt(n,s); LEA }
+				{ ENT if (n>=0 && n<=_i$.GetSize()) _i$[n].image->Set(r,g,b,a,p);  }
+	void	set_i$_image(const int n, RGBAImage *i) { ENT if (n>=0 && n<=_i$.GetSize()) _i$[n].image = i;  }
+	void	set_t$_insertat(const int n, const STablemapFont s) { ENT if (n>=0 && n<=_t$.GetSize()) _t$.InsertAt(n,s);  }
 
-	void	set_r$_lastbmp(const int n, const HBITMAP h) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].last_bmp = h; LEA }
-	void	set_r$_curbmp(const int n, const HBITMAP h) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].cur_bmp = h; LEA }
-	void	delete_r$_lastbmp(const int n) { ENT if (n>=0 && n<=_r$.GetSize()) { DeleteObject(_r$[n].last_bmp); _r$[n].last_bmp=NULL; } LEA }
-	void	delete_r$_curbmp(const int n) { ENT if (n>=0 && n<=_r$.GetSize()) { DeleteObject(_r$[n].cur_bmp); _r$[n].cur_bmp=NULL; }  LEA }
+	void	set_r$_lastbmp(const int n, const HBITMAP h) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].last_bmp = h;  }
+	void	set_r$_curbmp(const int n, const HBITMAP h) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].cur_bmp = h;  }
+	void	delete_r$_lastbmp(const int n) { ENT if (n>=0 && n<=_r$.GetSize()) { DeleteObject(_r$[n].last_bmp); _r$[n].last_bmp=NULL; }  }
+	void	delete_r$_curbmp(const int n) { ENT if (n>=0 && n<=_r$.GetSize()) { DeleteObject(_r$[n].cur_bmp); _r$[n].cur_bmp=NULL; }   }
 
-	const INT_PTR	set_z$_add(const STablemapSize s) { return _z$.Add(s); }
-	const INT_PTR	set_s$_add(const STablemapSymbol s) { return _s$.Add(s); }
-	const INT_PTR	set_r$_add(const STablemapRegion s) { return _r$.Add(s); }
-	const INT_PTR	set_t$_add(const STablemapFont s) { return _t$.Add(s); }
-	const INT_PTR	set_p$_add(const STablemapHashPoint s) { return _p$.Add(s); }
-	const INT_PTR	set_h$_add(const STablemapHashValue s) { return _h$.Add(s); }
-	const INT_PTR	set_i$_add(const STablemapImage s) { return _i$.Add(s); }
+	const INT_PTR	set_z$_add(const STablemapSize s) { ENT return _z$.Add(s); }
+	const INT_PTR	set_s$_add(const STablemapSymbol s) { ENT return _s$.Add(s); }
+	const INT_PTR	set_r$_add(const STablemapRegion s) { ENT return _r$.Add(s); }
+	const INT_PTR	set_t$_add(const STablemapFont s) { ENT return _t$.Add(s); }
+	const INT_PTR	set_p$_add(const STablemapHashPoint s) { ENT return _p$.Add(s); }
+	const INT_PTR	set_h$_add(const STablemapHashValue s) { ENT return _h$.Add(s); }
+	const INT_PTR	set_i$_add(const STablemapImage s) { ENT return _i$.Add(s); }
 
 #undef ENT
-#undef LEA
 
 private:
 	// private variables - use public accessors and public mutators to address these
 	bool		_valid;
-
 	CString		_filename;
 	CString		_filepath;
-
 	CArray <STablemapSize, STablemapSize>				_z$;
 	CArray <STablemapSymbol, STablemapSymbol>			_s$;
 	CArray <STablemapRegion, STablemapRegion>			_r$;
@@ -264,13 +257,13 @@ private:
 	CArray <STablemapHashValue, STablemapHashValue>		_h$;
 	std::map<uint32_t, int>								_hashes[4]; // Region _hashes for fast lookups - hash type 0-3 are indexed in the array
 	CArray <STablemapImage, STablemapImage>				_i$;
-
 	SR$Indexes	_r$indexes;
 	SS$Indexes	_s$indexes;
 	SS$Items	_s$items;
 
 private:
 	// private functions and variables - not available via accessors or mutators
+	CCritSec		m_critsec;
 
 } *p_tablemap;
 

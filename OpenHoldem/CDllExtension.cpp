@@ -7,8 +7,8 @@
 #include "CSymbols.h"
 #include "CGlobal.h"
 #include "CFormula.h"
+#include "CGrammar.h"
 
-#include "grammar.h"
 #include "PokerChat.hpp"
 
 CDllExtension		*p_dll_extension = NULL;
@@ -192,20 +192,18 @@ double GetSymbolFromDll(const int chair, const char* name, bool& iserr)
 	int			e = SUCCESS, stopchar = 0;
 	double		res = 0.;
 	CString		str = "";
-	boost::spirit::tree_parse_info<const char *, int_factory_t>	tpi;
+	tpi_type	tpi;
 	bool		result = false;
+	CGrammar	gram;
 
 	str.Format("%s", name);
 
-	EnterCriticalSection(&cs_parse);
-	result = parse(&str, &tpi, &stopchar);
-	LeaveCriticalSection(&cs_parse);
+	result = gram.ParseString(&str, &tpi, &stopchar);
+
 	if (result)
 	{
 		e = SUCCESS;
-		EnterCriticalSection(&p_formula->cs_formula);
-		res = evaluate(p_formula->set_formula(), tpi, NULL, &e);
-		LeaveCriticalSection(&p_formula->cs_formula);
+		res = gram.EvaluateTree(p_formula, tpi, NULL, &e);
 	}
 	else
 	{
