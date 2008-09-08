@@ -302,6 +302,7 @@ void CDlgScraperOutput::do_update_display()
 		if (m_RegionList.GetCurSel() == -1)
 		{
 			do_bitblt(NULL, -1);  // Clear display
+			LeaveCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
 			return;
 		}
 
