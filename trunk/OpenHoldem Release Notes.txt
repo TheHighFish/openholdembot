@@ -11,7 +11,8 @@ BUG FIXES:
 - Corrected error in ICM::GetChairFromDealPos method introduced in 1.9.3a and identified by SNG.Champ (OpenHoldem)
 - Eliminated artificial limitations on the number of font or hash records that can be present in any given tablemap (.tm) file.
   Previously this was set to 512 for each.  Thank you to Nick Coldhand & Folder for busting the limit.  (OpenHoldem)
-  
+- Fix for non-released crit sec in CDlgScraperOutput::do_update_display. Identification by ZooBoy, patch by Elvis.
+
 
 MAINTENANCE:
 
