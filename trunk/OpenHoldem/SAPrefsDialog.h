@@ -120,8 +120,8 @@ protected:
 	afx_msg void OnPhelp();
 	afx_msg void OnSelchangingPageTree(NMHDR* pNMHDR, LRESULT* pResult);
 	//}}AFX_MSG
-	afx_msg long OnChangePage(UINT, LONG);
-	afx_msg long OnSetFocusWnd(UINT, LONG);
+	afx_msg long OnChangePage(WPARAM w, LPARAM l);
+	afx_msg long OnSetFocusWnd(WPARAM w, LPARAM l);
 	DECLARE_MESSAGE_MAP()
 
    CPtrArray   m_pages;

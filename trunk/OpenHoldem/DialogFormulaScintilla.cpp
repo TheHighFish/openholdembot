@@ -1855,7 +1855,7 @@ BOOL CDlgFormulaScintilla::OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult)
     TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNMHDR;
     TCHAR szFullText[256];
     CString strTipText;
-    UINT nID = (UINT) pNMHDR->idFrom;
+    UINT_PTR nID = (UINT) pNMHDR->idFrom;
     if (pNMHDR->code == TTN_NEEDTEXTA && (pTTTA->uFlags & TTF_IDISHWND) ||
             pNMHDR->code == TTN_NEEDTEXTW && (pTTTW->uFlags & TTF_IDISHWND)) 
 	{
