@@ -649,11 +649,11 @@ void CSAPrefsDialog::OnPhelp()
 
 /////////////////////////////////////////////////////////////////////////////
 
-LONG CSAPrefsDialog::OnChangePage(UINT u, LONG l)
+LRESULT CSAPrefsDialog::OnChangePage(WPARAM w, LPARAM l)
 {
-    if (ShowPage(u))
+    if (ShowPage(w))
     {
-        m_iCurPage = u;
+        m_iCurPage = w;
     }
 
     return 0L;
@@ -661,11 +661,11 @@ LONG CSAPrefsDialog::OnChangePage(UINT u, LONG l)
 
 /////////////////////////////////////////////////////////////////////////////
 
-LONG CSAPrefsDialog::OnSetFocusWnd(UINT u, LONG l)
+LRESULT CSAPrefsDialog::OnSetFocusWnd(WPARAM w, LPARAM l)
 {
-    if (::IsWindow((HWND)u))
+    if (::IsWindow((HWND)w))
     {
-        ::SetFocus((HWND)u);
+        ::SetFocus((HWND)w);
     }
 
     return 0L;
