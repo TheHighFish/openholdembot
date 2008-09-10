@@ -51,7 +51,7 @@ BOOL CDlgSitDown::OnInitDialog() {
 
     nvacant = 0;
     for (i=0; i<10; i++) {
-        if (ppro.data.m_pinf[i].m_isSeated&0x1) {
+        if (p_PokerPro->data.m_pinf[i].m_isSeated&0x1) {
             continue;
         }
         vacant[nvacant++] = i;

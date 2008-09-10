@@ -21,6 +21,7 @@
 #include "CScraper.h"
 #include "CIteratorThread.h"
 #include "CGlobal.h"
+#include "CPreferences.h"
 #include "CDllExtension.h"
 
 
@@ -216,7 +217,7 @@ Perl::Perl()
 
     Formula_loaded = false;
     Interpreter_not_loaded = true;
-    if (!p_global->preferences.Perl_load_Interpreter)
+    if (!p_Preferences->Perl_load_Interpreter())
     {
         //  For the people who don't need Perl...
         return;
@@ -226,10 +227,10 @@ Perl::Perl()
         //  DLL not found or invalid
         return;
     }
-    if (p_global->preferences.Perl_load_default_Formula)
+    if (p_Preferences->Perl_load_default_Formula())
     {
         //  Load file and create new instance of the interpreter.
-        load_FormulaFile(string(p_global->preferences.Perl_default_Formula));
+        load_FormulaFile(string(p_Preferences->Perl_default_Formula()));
         //  Interpreter_not_loaded and Formula_loaded set automatically.
     }
     else
@@ -464,7 +465,7 @@ void Perl::edit_main_FormulaFile()
 {
     __SEH_HEADER
 
-    CString my_favourite_Editor = p_global->preferences.Perl_Editor;
+    CString my_favourite_Editor = p_Preferences->Perl_Editor();
     if (_access(my_favourite_Editor, F_OK) != 0)
     {
         MessageBox(NULL, "Could not start editor.\nExecutable not found or not accessible.",

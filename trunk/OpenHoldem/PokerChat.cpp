@@ -24,6 +24,7 @@
 #include "PokerChat.hpp"
 
 #include "CGlobal.h"
+#include "CPreferences.h"
 
 
 using namespace std;
@@ -106,7 +107,7 @@ bool is_Chat_allowed(void)
 {
     __SEH_HEADER
 
-    if (!p_global->preferences.Chat_enabled)
+    if (!p_Preferences->Chat_enabled())
     {
         return false;
     }
@@ -131,10 +132,10 @@ void compute_first_possible_next_ChatTime(void)
     time_t the_actual_Time;
     time(&the_actual_Time);
     first_possible_next_ChatTime = the_actual_Time +
-                                   p_global->preferences.Chat_min_Delay +
+                                   p_Preferences->Chat_min_Delay() +
                                    //  We have to convert to a double here,
                                    //  as integer "division" would be result in zero.
-                                   (double(rand()) / RAND_MAX) * p_global->preferences.Chat_random_Delay;
+                                   (double(rand()) / RAND_MAX) * p_Preferences->Chat_random_Delay();
 
     __SEH_LOGFATAL("PokerChat::compute_first_possible_next_ChatTime  : \n");
 }

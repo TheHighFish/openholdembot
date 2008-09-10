@@ -5,11 +5,7 @@
 
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs10.h"
-
-#include "CGlobal.h"
-
-#include "Registry.h"
-
+#include "CPreferences.h"
 
 #define MAX_DELAY 1000000
 
@@ -45,18 +41,18 @@ BOOL CDlgSAPrefs10::OnInitDialog()
     CSAPrefsSubDlg::OnInitDialog();
     CString		text;
 
-    m_EnableChat.SetCheck(p_global->preferences.Chat_enabled ? BST_CHECKED : BST_UNCHECKED);
+    m_EnableChat.SetCheck(p_Preferences->Chat_enabled() ? BST_CHECKED : BST_UNCHECKED);
 
-    text.Format("%d", p_global->preferences.Chat_min_Delay);
+    text.Format("%d", p_Preferences->Chat_min_Delay());
     m_MinimumDelay.SetWindowText(text);
     m_MinimumDelay_Spin.SetRange(0, (short) MAX_DELAY);
-    m_MinimumDelay_Spin.SetPos(p_global->preferences.Chat_min_Delay);
+    m_MinimumDelay_Spin.SetPos(p_Preferences->Chat_min_Delay());
     m_MinimumDelay_Spin.SetBuddy(&m_MinimumDelay);
 
-    text.Format("%d", p_global->preferences.Chat_random_Delay);
+    text.Format("%d", p_Preferences->Chat_random_Delay());
     m_RandomDelay.SetWindowText(text);
     m_RandomDelay_Spin.SetRange(0, (short) MAX_DELAY);
-    m_RandomDelay_Spin.SetPos(p_global->preferences.Chat_random_Delay);
+    m_RandomDelay_Spin.SetPos(p_Preferences->Chat_random_Delay());
     m_RandomDelay_Spin.SetBuddy(&m_RandomDelay);
 
     return TRUE;  // return TRUE unless you set the focus to a control
@@ -66,30 +62,23 @@ BOOL CDlgSAPrefs10::OnInitDialog()
 
 void CDlgSAPrefs10::OnOK()
 {
-    Registry		reg;
     CString			text;
 
-    p_global->preferences.Chat_enabled = m_EnableChat.GetCheck()==BST_CHECKED ? true : false;
+    p_Preferences->Set_Chat_enabled(m_EnableChat.GetCheck()==BST_CHECKED ? true : false);
 
     m_MinimumDelay.GetWindowText(text);
     if (strtoul(text.GetString(), 0, 10)<0 || strtoul(text.GetString(), 0, 10)>MAX_DELAY) {
         MessageBox("Invalid minimum Chat Delay", "ERROR", MB_OK);
         return;
     }
-    p_global->preferences.Chat_min_Delay = strtoul(text.GetString(), 0, 10);
+    p_Preferences->Set_Chat_min_Delay(strtoul(text.GetString(), 0, 10));
 
     m_RandomDelay.GetWindowText(text);
     if (strtoul(text.GetString(), 0, 10)<0 || strtoul(text.GetString(), 0, 10)>MAX_DELAY) {
         MessageBox("Invalid random Chat Delay", "ERROR", MB_OK);
         return;
     }
-    p_global->preferences.Chat_random_Delay = strtoul(text.GetString(), 0, 10);
-
-    reg.read_reg();
-    reg.Chat_enabled = p_global->preferences.Chat_enabled;
-    reg.Chat_min_Delay = p_global->preferences.Chat_min_Delay;
-    reg.Chat_random_Delay = p_global->preferences.Chat_random_Delay;
-    reg.write_reg();
+    p_Preferences->Set_Chat_random_Delay(strtoul(text.GetString(), 0, 10));
 
     CSAPrefsSubDlg::OnOK();
 }

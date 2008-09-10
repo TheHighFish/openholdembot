@@ -3,7 +3,7 @@
 #include <fcntl.h>
 
 #include "CGlobal.h"
-
+#include "CPreferences.h"
 #include "OpenHoldem.h"
 
 #include "CScraper.h"
@@ -37,88 +37,17 @@ CGlobal::CGlobal(void)
 	Registry	reg;
 
 	InitializeCriticalSectionAndSpinCount(&cs_global, 4000);
-
-	// Get saved preferences
-	reg.read_reg();
-
-	// analyzer
-	preferences.max_opponents = reg.max_opponents;
-
-	// autoplayer
-	preferences.frame_delay = reg.frame_delay;
-	preferences.swag_delay_1 = reg.swag_delay_1;
-	preferences.swag_delay_2 = reg.swag_delay_2;
-	preferences.swag_delay_3 = reg.swag_delay_3;
-	preferences.text_selection_method = reg.text_selection_method;
-	preferences.text_deletion_method = reg.text_deletion_method;
-	preferences.bet_confirmation_method = reg.bet_confirmation_method;
-	preferences.button_click_method = reg.button_click_method;
-	preferences.ap_auto = reg.ap_auto;
+	
+	// No longer any need to copy preferences from registry.
 	autoplay_pressed = false;
-	preferences.focus_detect = reg.focus_detect;
-
-	// dll extension
-	preferences.dll_always_send_state = reg.dll_always_send_state;
-	preferences.load_dll_on_startup = reg.load_dll_on_startup;
-	preferences.dll_name = reg.dll_name;
-
-	// scraper
-	preferences.scrape_delay = reg.scrape_delay;
-
-	// symbols
-	preferences.av_time = reg.avtime;
-	preferences.handrank_value = reg.handrank_value;
-	preferences.disable_caching = reg.disable_caching;
-
-	// poker tracker
-	preferences.pt_prefs.ip_addr = reg.pt_ip_addr;
-	preferences.pt_prefs.port = reg.pt_port;
-	preferences.pt_prefs.dbname = reg.pt_dbname;
-	preferences.pt_prefs.user = reg.pt_user;
-	preferences.pt_prefs.pass = reg.pt_pass;
-	preferences.pt_prefs.disable = reg.pt_disable;
-	preferences.pt_prefs.update_delay = reg.pt_updatedelay;
-	preferences.pt_prefs.cache_refresh = reg.pt_cacherefresh;
-
-	// icm
-	preferences.icm_prize1 = reg.icm_prize1;
-	preferences.icm_prize2 = reg.icm_prize2;
-	preferences.icm_prize3 = reg.icm_prize3;
-	preferences.icm_prize4 = reg.icm_prize4;
-
-	// Replay frames
-	preferences.replay_record = reg.replay_record;
-	preferences.replay_record_every_change = reg.replay_record_every_change;
-	preferences.replay_max_frames = reg.replay_max_frames;
-
-	//  2008.02.27 by THF
-	//  Get saved preferences for Perl
-	preferences.Perl_default_Formula = reg.Perl_default_Formula;
-	preferences.Perl_Editor = reg.Perl_Editor;
-	preferences.Perl_load_default_Formula = reg.Perl_load_default_Formula;
-	preferences.Perl_load_Interpreter = reg.Perl_load_Interpreter;
-
-	//  2008.02.27 by THF
-	//  Get saved preferences for PokerChat
-	preferences.Chat_enabled = reg.Chat_enabled;
-	preferences.Chat_min_Delay = reg.Chat_min_Delay;
-	preferences.Chat_random_Delay = reg.Chat_random_Delay;
-
-	//  Get saved preferences for log$
-	preferences.LogSymbol_enabled = reg.LogSymbol_enabled;
-	preferences.LogSymbol_max_log = reg.LogSymbol_max_log;
-
-	preferences.Trace_enabled = reg.Trace_enabled;
-	for (int i=0;i<nTraceFunctions;i++)
-		preferences.Trace_functions[i] = reg.Trace_functions[i];
-
+	
 	// Find the versus data.  First check in the current directory
 	// then in the path provided by the registry.  If both fail,
 	// disable versus.
 	_sopen_s(&versus_fh, "versus.bin", _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
 	if (versus_fh == -1)
 	{
-		_sopen_s(&versus_fh, reg.versus_path, _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
+		_sopen_s(&versus_fh, p_Preferences->versus_path(), _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
 	}
 
 	if (versus_fh == -1)
@@ -335,9 +264,9 @@ void CGlobal::CreateReplayFrame(void)
 			fprintf(fp, "<img src=\"frame%03d.bmp\">\n", _next_replay_frame);
 			fprintf(fp, "<br>\n");
 			fprintf(fp, "<a href=\"frame%03d.htm\">PREV</a>\n",
-					_next_replay_frame-1 >= 0 ? _next_replay_frame-1 : preferences.replay_max_frames);
+					_next_replay_frame-1 >= 0 ? _next_replay_frame-1 : p_Preferences->replay_max_frames());
 			fprintf(fp, "<a href=\"frame%03d.htm\">NEXT</a>\n",
-					_next_replay_frame+1 < preferences.replay_max_frames ? _next_replay_frame+1 : 0);
+					_next_replay_frame+1 < p_Preferences->replay_max_frames() ? _next_replay_frame+1 : 0);
 			fprintf(fp, " [%lu.%03d] [%s]<br>\n", _session_id, _next_replay_frame, now_time_str);
 			fprintf(fp, "<br>\n");
 			fprintf(fp, "<table>\n");
@@ -448,7 +377,7 @@ void CGlobal::CreateReplayFrame(void)
 	// Increment counter
 	EnterCriticalSection(&cs_global);
 		_next_replay_frame++;
-		if (_next_replay_frame >= preferences.replay_max_frames)
+		if (_next_replay_frame >= p_Preferences->replay_max_frames())
 			_next_replay_frame = 0;
 	LeaveCriticalSection(&cs_global);
 

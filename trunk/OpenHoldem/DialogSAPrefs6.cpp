@@ -11,9 +11,7 @@
 
 #include "OpenHoldem.h"
 #include "MainFrm.h"
-
-#include "Registry.h"
-
+#include "CPreferences.h"
 
 // CDlgSAPrefs6 dialog
 
@@ -56,31 +54,28 @@ END_MESSAGE_MAP()
 
 BOOL CDlgSAPrefs6::OnInitDialog()
 {
-    CString text;
-	Registry reg;
+	CString		text;
 
     CSAPrefsSubDlg::OnInitDialog();
 
-	reg.read_reg();
+	m_pt_disable.SetCheck(p_Preferences->pt_disable() ? BST_UNCHECKED : BST_CHECKED);
 
-	m_pt_disable.SetCheck(!reg.pt_disable ? BST_UNCHECKED : BST_CHECKED);
+	m_pt_ip.SetWindowText(p_Preferences->pt_ip_addr().GetString());
+	m_pt_port.SetWindowText(p_Preferences->pt_port().GetString());
+	m_pt_user.SetWindowText(p_Preferences->pt_user().GetString());
+	m_pt_pass.SetWindowText(p_Preferences->pt_pass().GetString());
+	m_pt_dbname.SetWindowText(p_Preferences->pt_dbname().GetString());
 
-	m_pt_ip.SetWindowText(reg.pt_ip_addr.GetString());
-	m_pt_port.SetWindowText(reg.pt_port.GetString());
-	m_pt_user.SetWindowText(reg.pt_user.GetString());
-	m_pt_pass.SetWindowText(reg.pt_pass.GetString());
-	m_pt_dbname.SetWindowText(reg.pt_dbname.GetString());
-
-	text.Format("%d", reg.pt_updatedelay);
+	text.Format("%d", p_Preferences->pt_update_delay());
     m_UpdateDelay.SetWindowText(text);
     m_UpdateDelay_Spin.SetRange(1, 120);
-    m_UpdateDelay_Spin.SetPos(reg.pt_updatedelay);
+    m_UpdateDelay_Spin.SetPos(p_Preferences->pt_update_delay());
     m_UpdateDelay_Spin.SetBuddy(&m_UpdateDelay);
 
-	text.Format("%d", reg.pt_cacherefresh);
+	text.Format("%d", p_Preferences->pt_cache_refresh());
     m_CacheRefresh.SetWindowText(text);
     m_CacheRefresh_Spin.SetRange(15, 240);
-    m_CacheRefresh_Spin.SetPos(reg.pt_cacherefresh);
+    m_CacheRefresh_Spin.SetPos(p_Preferences->pt_cache_refresh());
     m_CacheRefresh_Spin.SetBuddy(&m_CacheRefresh);
 
     return TRUE;  // return TRUE unless you set the focus to a control
@@ -89,43 +84,32 @@ BOOL CDlgSAPrefs6::OnInitDialog()
 
 void CDlgSAPrefs6::OnOK()
 {
-    Registry		reg;
     CString			text;
 
-    reg.read_reg();
+ 
 
-    reg.pt_disable = (m_pt_disable.GetCheck() == BST_CHECKED ? true : false);
-	p_global->preferences.pt_prefs.disable = reg.pt_disable;
+    p_Preferences->Set_pt_disable(m_pt_disable.GetCheck() == BST_CHECKED ? true : false);
 
 	m_pt_ip.GetWindowText(text);
-    reg.pt_ip_addr = text;
-	p_global->preferences.pt_prefs.ip_addr = text;
+	p_Preferences->Set_pt_ip_addr(text);
 
 	m_pt_port.GetWindowText(text);
-    reg.pt_port = text;
-	p_global->preferences.pt_prefs.port = text;
+	p_Preferences->Set_pt_port(text);
 
 	m_pt_user.GetWindowText(text);
-    reg.pt_user = text;
-	p_global->preferences.pt_prefs.user = text;
+	p_Preferences->Set_pt_user(text);
 
 	m_pt_pass.GetWindowText(text);
-    reg.pt_pass = text;
-	p_global->preferences.pt_prefs.pass = text;
+	p_Preferences->Set_pt_pass(text);
 
 	m_pt_dbname.GetWindowText(text);
-    reg.pt_dbname = text;
-	p_global->preferences.pt_prefs.dbname = text;
+	p_Preferences->Set_pt_dbname(text);
 
 	m_UpdateDelay.GetWindowText(text);
-    reg.pt_updatedelay = atoi(text.GetString());
-	p_global->preferences.pt_prefs.update_delay = reg.pt_updatedelay;
+	p_Preferences->Set_pt_update_delay(atoi(text.GetString()));
 
 	m_CacheRefresh.GetWindowText(text);
-    reg.pt_cacherefresh = atoi(text.GetString());
-	p_global->preferences.pt_prefs.cache_refresh = reg.pt_cacherefresh;
-
-    reg.write_reg();
+	p_Preferences->Set_pt_cache_refresh(atoi(text.GetString()));
 
     CSAPrefsSubDlg::OnOK();
 }

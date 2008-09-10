@@ -11,6 +11,7 @@
 #include "..\CTablemap\CTablemap.h"
 #include "CHeartbeatThread.h"
 #include "CGlobal.h"
+#include "CPreferences.h"
 
 
 // Table layouts
@@ -364,7 +365,7 @@ void COpenHoldemView::draw_center_info_box(void)
 	double sym_pot			= p_symbols->sym()->pot;
 	bool sym_playing		= (bool) p_symbols->sym()->playing;
 
-	if (p_global->preferences.LogSymbol_enabled)
+	if (p_Preferences->LogSymbol_enabled())
 		height += 40;
 
     // Get size of current client window

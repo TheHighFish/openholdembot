@@ -1,4 +1,4 @@
-// DlgPpro.cpp : implementation file
+// Dlgp_PokerPro->cpp : implementation file
 //
 
 #include "stdafx.h"
@@ -12,8 +12,9 @@
 #include "CHeartbeatThread.h"
 #include "CPokerTrackerThread.h"
 #include "CGlobal.h"
+#include "CPreferences.h"
 
-#include "DialogPpro.h"
+#include "DialogPPro.h"
 #include "PokerPro.h"
 #include "Registry.h"
 #include "DialogSitDown.h"
@@ -87,17 +88,16 @@ BOOL CDlgPpro::OnInitDialog()
 {
     __SEH_HEADER
     int			i;
-    Registry	reg;
     int			max_x, max_y;
 
     CDialog::OnInitDialog();
 
     CString text;
-    m_HostName.SetWindowText(ppro.hostname);
-    m_Port.SetWindowText(ppro.port);
-    m_UserName.SetWindowText(ppro.username);
-    m_Password.SetWindowText(ppro.password);
-    if (ppro.handhistory) 
+    m_HostName.SetWindowText(p_PokerPro->hostname);
+    m_Port.SetWindowText(p_PokerPro->port);
+    m_UserName.SetWindowText(p_PokerPro->username);
+    m_Password.SetWindowText(p_PokerPro->password);
+    if (p_PokerPro->handhistory) 
 	{
         m_HandHistory.SetCheck(BST_CHECKED);
     }
@@ -105,9 +105,9 @@ BOOL CDlgPpro::OnInitDialog()
 	{
         m_HandHistory.SetCheck(BST_UNCHECKED);
     }
-    text.Format("%d", ppro.chips);
+    text.Format("%d", p_PokerPro->chips);
     m_Chips.SetWindowText(text);
-    if (ppro.autoseat) 
+    if (p_PokerPro->autoseat) 
 	{
         m_AutoSeat.SetCheck(BST_CHECKED);
     }
@@ -117,10 +117,10 @@ BOOL CDlgPpro::OnInitDialog()
     }
     for (i=0; i<MAX_TABLES; i++) 
 	{
-        if (m_TableList.FindString(0, ppro.data.m_ginf[i].m_name) == LB_ERR &&
-                strlen(ppro.data.m_ginf[i].m_name)>0) 
+        if (m_TableList.FindString(0, p_PokerPro->data.m_ginf[i].m_name) == LB_ERR &&
+                strlen(p_PokerPro->data.m_ginf[i].m_name)>0) 
 		{
-            m_TableList.AddString(ppro.data.m_ginf[i].m_name);
+            m_TableList.AddString(p_PokerPro->data.m_ginf[i].m_name);
         }
     }
     need_to_do_autoseat = false;
@@ -128,13 +128,12 @@ BOOL CDlgPpro::OnInitDialog()
     messages_changed = false;
 
     // Restore window location
-    reg.read_reg();
-    if (reg.ppro_x != -1 && reg.ppro_y!=-1) 
+    if (p_Preferences->ppro_x() != -1 && p_Preferences->ppro_y() !=-1) 
 	{
         max_x = GetSystemMetrics(SM_CXSCREEN) - GetSystemMetrics(SM_CXICON);
         max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
-        ::SetWindowPos(m_hWnd, HWND_TOP, min(reg.ppro_x, max_x), min(reg.ppro_y, max_y),
-                       reg.ppro_dx, reg.ppro_dy, SWP_NOCOPYBITS);
+        ::SetWindowPos(m_hWnd, HWND_TOP, min(p_Preferences->ppro_x(), max_x), min(p_Preferences->ppro_y(), max_y),
+                       p_Preferences->ppro_dx(), p_Preferences->ppro_dy(), SWP_NOCOPYBITS);
     }
 
     // Timer to keep things updated as socket messages are processed
@@ -191,14 +190,13 @@ void CDlgPpro::OnBnClickedConnectButton()
     CDlgPpro		dlgppro;
     CString			s;
     PokerMessage	pm;
-    Registry		reg;
     CString			text;
     CMainFrame		*cmf;
 
     cmf = (CMainFrame *)theApp.m_pMainWnd;
 
     // Disconnect if we are already connected
-    if (ppro.m_socket != INVALID_SOCKET) 
+    if (p_PokerPro->m_socket != INVALID_SOCKET) 
 	{
 		// stop threads
 		if (p_heartbeat_thread)
@@ -214,9 +212,9 @@ void CDlgPpro::OnBnClickedConnectButton()
         p_global->autoplay = false;
 
         // Do the disconnect
-        ppro.disconnect();
-        memset(&ppro.data, 0, sizeof(ppdata));
-        ppro.data.m_userchair = -1;
+        p_PokerPro->disconnect();
+        memset(&p_PokerPro->data, 0, sizeof(ppdata));
+        p_PokerPro->data.m_userchair = -1;
 
         // Enable buttons, menu items
         cmf->m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_NEW, true);
@@ -232,18 +230,18 @@ void CDlgPpro::OnBnClickedConnectButton()
         save_settings_to_reg();
 
         // connect
-        if (ppro.connect(ppro.hostname.GetString(), ppro.port.GetString()) < 0) {
+        if (p_PokerPro->connect(p_PokerPro->hostname.GetString(), p_PokerPro->port.GetString()) < 0) {
             MessageBox("connection failed", "PPro connect error", MB_OK);
             return;
         }
 
-        ppro.reset_hand();
+        p_PokerPro->reset_hand();
 
         // send version info
-        ppro.send_version();
+        p_PokerPro->send_version();
 
         // log in
-        int ret = ppro.send_login(ppro.username.GetString(), ppro.password.GetString());
+        int ret = p_PokerPro->send_login(p_PokerPro->username.GetString(), p_PokerPro->password.GetString());
         if ( ret < 0) 
 		{
             MessageBox("login failed", "PPro connect error", MB_OK);
@@ -284,7 +282,7 @@ void CDlgPpro::OnBnClickedJointableButton()
 {
     __SEH_HEADER
     // I'm not yet joined to a table, so try to join
-    if (ppro.data.m_tinf.m_tid == 0) 
+    if (p_PokerPro->data.m_tinf.m_tid == 0) 
 	{
         do_table_select();
     }
@@ -292,17 +290,17 @@ void CDlgPpro::OnBnClickedJointableButton()
     // I'm joined, so unjoin
     else {
         // log OH title bar text and table reset
-        write_log("%s - %s(NOT ATTACHED)\n", p_formula->formula_name().GetString(), ppro.data.m_site_name);
+        write_log("%s - %s(NOT ATTACHED)\n", p_formula->formula_name().GetString(), p_PokerPro->data.m_site_name);
         write_log("TABLE RESET\n*************************************************************\n");
 
         // Stop logging
         stop_log();
 
-        ppro.send_goto(0);
-        ppro.reset_hand();
-        memset(&ppro.data.m_tinf, 0, sizeof(TINF));
-        ppro.data.m_userchair = -1;
-        ppro.data.m_tinf.m_tid = 0;
+        p_PokerPro->send_goto(0);
+        p_PokerPro->reset_hand();
+        memset(&p_PokerPro->data.m_tinf, 0, sizeof(TINF));
+        p_PokerPro->data.m_userchair = -1;
+        p_PokerPro->data.m_tinf.m_tid = 0;
     }
 
     __SEH_LOGFATAL("CDlgPpro::OnBnClickedJointableButton :\n");
@@ -313,13 +311,13 @@ void CDlgPpro::OnBnClickedSitdownButton()
     __SEH_HEADER
     CDlgSitDown  dlg_sit;
 
-    if (ppro.data.m_userchair==-1 && dlg_sit.DoModal() == IDOK) 
+    if (p_PokerPro->data.m_userchair==-1 && dlg_sit.DoModal() == IDOK) 
 	{
-        ppro.send_sit(dlg_sit.m_selected_chair);
+        p_PokerPro->send_sit(dlg_sit.m_selected_chair);
     }
     else 
 	{
-        ppro.send_stand(ppro.data.m_userchair);
+        p_PokerPro->send_stand(p_PokerPro->data.m_userchair);
     }
 
     __SEH_LOGFATAL("CDlgPpro::OnBnClickedSitdownButton :\n");
@@ -334,7 +332,7 @@ void CDlgPpro::OnBnClickedBuychipsButton()
     m_ChipsToBuy.GetWindowText(itemtext, 100);
     if (atof(itemtext)>0) 
 	{
-        ppro.send_chips(atof(itemtext));
+        p_PokerPro->send_chips(atof(itemtext));
     }
 
     __SEH_LOGFATAL("CDlgPpro::OnBnClickedBuychipsButton :\n");
@@ -348,7 +346,7 @@ void CDlgPpro::OnBnClickedDepositButton()
 
     m_DepositAmount.GetWindowText(itemtext, 100);
     if (atof(itemtext)>0) {
-        ppro.send_deposit(atof(itemtext));
+        p_PokerPro->send_deposit(atof(itemtext));
     }
 
     __SEH_LOGFATAL("CDlgPpro::OnBnClickedDepositButton :\n");
@@ -367,15 +365,15 @@ void CDlgPpro::OnBnClickedSitinButton()
 {
     __SEH_HEADER
 
-    if (ppro.data.m_userchair!=-1) 
+    if (p_PokerPro->data.m_userchair!=-1) 
 	{
-        if (ppro.data.m_pinf[ppro.data.m_userchair].m_isActive&0x1) 
+        if (p_PokerPro->data.m_pinf[p_PokerPro->data.m_userchair].m_isActive&0x1) 
 		{
-            ppro.send_sitout(ppro.data.m_userchair);
+            p_PokerPro->send_sitout(p_PokerPro->data.m_userchair);
         }
         else 
 		{
-            ppro.send_sitin(ppro.data.m_userchair);
+            p_PokerPro->send_sitin(p_PokerPro->data.m_userchair);
         }
     }
 
@@ -395,7 +393,7 @@ void CDlgPpro::OnTimer(UINT nIDEvent)
 	{
 
         // connect button
-        if (ppro.m_socket == INVALID_SOCKET) 
+        if (p_PokerPro->m_socket == INVALID_SOCKET) 
 		{
             m_ConnectButton.SetWindowText("Connect");
         }
@@ -405,8 +403,8 @@ void CDlgPpro::OnTimer(UINT nIDEvent)
         }
 
         // join table button
-        if ((ppro.m_socket==INVALID_SOCKET || m_TableList.GetCurSel()==LB_ERR) &&
-                ppro.data.m_tinf.m_tid == 0) 
+        if ((p_PokerPro->m_socket==INVALID_SOCKET || m_TableList.GetCurSel()==LB_ERR) &&
+                p_PokerPro->data.m_tinf.m_tid == 0) 
 		{
             m_JoinTable_Button.EnableWindow(false);
             m_JoinTable_Button.SetWindowTextA("Join Table");
@@ -414,7 +412,7 @@ void CDlgPpro::OnTimer(UINT nIDEvent)
         else 
 		{
             m_JoinTable_Button.EnableWindow(true);
-            if (ppro.data.m_tinf.m_tid == 0) 
+            if (p_PokerPro->data.m_tinf.m_tid == 0) 
 			{
                 m_JoinTable_Button.SetWindowTextA("Join Table");
             }
@@ -425,22 +423,22 @@ void CDlgPpro::OnTimer(UINT nIDEvent)
         }
 
         // Sit down button
-        if (ppro.m_socket==INVALID_SOCKET) 
+        if (p_PokerPro->m_socket==INVALID_SOCKET) 
 		{
             m_SitDownButton.EnableWindow(false);
             m_SitDownButton.SetWindowText("Sit Down");
         }
-        else if (ppro.data.m_tinf.m_tid==0) 
+        else if (p_PokerPro->data.m_tinf.m_tid==0) 
 		{
             m_SitDownButton.EnableWindow(false);
             m_SitDownButton.SetWindowText("Sit Down");
         }
         else 
 		{
-            if (ppro.data.m_userchair==-1) 
+            if (p_PokerPro->data.m_userchair==-1) 
 			{
                 m_SitDownButton.SetWindowText("Sit Down");
-                if (m_AutoSeat.GetCheck()==BST_UNCHECKED || ppro.data.m_tinf.m_tid==0) 
+                if (m_AutoSeat.GetCheck()==BST_UNCHECKED || p_PokerPro->data.m_tinf.m_tid==0) 
 				{
                     m_SitDownButton.EnableWindow(true);
                 }
@@ -457,7 +455,7 @@ void CDlgPpro::OnTimer(UINT nIDEvent)
         }
 
         // Buy chips button and edit field
-        if (ppro.data.m_isauthenticated == 0 || ppro.data.m_tinf.m_tid==0) 
+        if (p_PokerPro->data.m_isauthenticated == 0 || p_PokerPro->data.m_tinf.m_tid==0) 
 		{
             m_BuyChipsButton.EnableWindow(false);
             m_ChipsToBuy.EnableWindow(false);
@@ -469,7 +467,7 @@ void CDlgPpro::OnTimer(UINT nIDEvent)
         }
 
         // Deposit button
-        if (ppro.data.m_isauthenticated == 0) 
+        if (p_PokerPro->data.m_isauthenticated == 0) 
 		{
             m_DepositButton.EnableWindow(false);
             m_DepositAmount.EnableWindow(false);
@@ -481,16 +479,16 @@ void CDlgPpro::OnTimer(UINT nIDEvent)
         }
 
         // Sit in button
-        if (ppro.data.m_isauthenticated == 0 || ppro.data.m_userchair==-1) 
+        if (p_PokerPro->data.m_isauthenticated == 0 || p_PokerPro->data.m_userchair==-1) 
 		{
             m_SitInButton.EnableWindow(false);
         }
         else 
 		{
             m_SitInButton.EnableWindow(true);
-            if (ppro.data.m_userchair!=-1) 
+            if (p_PokerPro->data.m_userchair!=-1) 
 			{
-                if (ppro.data.m_pinf[ppro.data.m_userchair].m_isActive&0x1) 
+                if (p_PokerPro->data.m_pinf[p_PokerPro->data.m_userchair].m_isActive&0x1) 
 				{
                     m_SitInButton.SetWindowTextA("Sit Out");
                 }
@@ -502,51 +500,51 @@ void CDlgPpro::OnTimer(UINT nIDEvent)
         }
 
         // connection status
-        if (ppro.m_socket == INVALID_SOCKET) 
+        if (p_PokerPro->m_socket == INVALID_SOCKET) 
 		{
             m_ConnectStatus.SetWindowText("Connected to: Not Connected");
         }
         else 
 		{
-            s.Format("Connected to: %s", ppro.data.m_site_name);
+            s.Format("Connected to: %s", p_PokerPro->data.m_site_name);
             m_ConnectStatus.SetWindowText(s);
         }
 
         // logged in status
-        if (ppro.data.m_isauthenticated == 0) 
+        if (p_PokerPro->data.m_isauthenticated == 0) 
 		{
             m_LoginStatus.SetWindowText("Logged in as: Not Logged In");
         }
         else 
 		{
-            s.Format("Logged in as: %s", ppro.username.GetString());
+            s.Format("Logged in as: %s", p_PokerPro->username.GetString());
             m_LoginStatus.SetWindowText(s);
         }
 
         // table status
-        if (ppro.data.m_tinf.m_tid == 0) 
+        if (p_PokerPro->data.m_tinf.m_tid == 0) 
 		{
             m_StatusTable.SetWindowTextA("Joined at table: Not Joined");
         }
         else 
 		{
-            s.Format("Joined at table: %s", ppro.data.m_ginf[ppro.data.m_tinf.m_tid].m_name);
+            s.Format("Joined at table: %s", p_PokerPro->data.m_ginf[p_PokerPro->data.m_tinf.m_tid].m_name);
             m_StatusTable.SetWindowText(s);
         }
 
         // seat status
-        if (ppro.data.m_userchair==-1) 
+        if (p_PokerPro->data.m_userchair==-1) 
 		{
             m_StatusChair.SetWindowTextA("Seated in chair: Not Seated");
         }
         else 
 		{
-            s.Format("Seated in chair: %d", ppro.data.m_userchair);
+            s.Format("Seated in chair: %d", p_PokerPro->data.m_userchair);
             m_StatusChair.SetWindowText(s);
         }
 
         // table list, chips, autoseat
-        if (ppro.data.m_isauthenticated==0 || ppro.data.m_tinf.m_tid!=0) 
+        if (p_PokerPro->data.m_isauthenticated==0 || p_PokerPro->data.m_tinf.m_tid!=0) 
 		{
             m_TableList.EnableWindow(false);
             m_Chips.EnableWindow(false);
@@ -566,10 +564,10 @@ void CDlgPpro::OnTimer(UINT nIDEvent)
             m_AutoSeat.EnableWindow(true);
             for (i=0; i<MAX_TABLES; i++) 
 			{
-                if (m_TableList.FindString(0, ppro.data.m_ginf[i].m_name) == LB_ERR &&
-                        strlen(ppro.data.m_ginf[i].m_name)>0) 
+                if (m_TableList.FindString(0, p_PokerPro->data.m_ginf[i].m_name) == LB_ERR &&
+                        strlen(p_PokerPro->data.m_ginf[i].m_name)>0) 
 				{
-                    m_TableList.AddString(ppro.data.m_ginf[i].m_name);
+                    m_TableList.AddString(p_PokerPro->data.m_ginf[i].m_name);
                 }
             }
             n = m_TableList.GetCount();
@@ -579,7 +577,7 @@ void CDlgPpro::OnTimer(UINT nIDEvent)
                 m_TableList.GetText(i, itemtext);
                 for (j=0; j<MAX_TABLES; j++) 
 				{
-                    if (strcmp(itemtext, ppro.data.m_ginf[j].m_name)==0) 
+                    if (strcmp(itemtext, p_PokerPro->data.m_ginf[j].m_name)==0) 
 					{
                         found = true;
                         j = MAX_TABLES+1;
@@ -594,7 +592,7 @@ void CDlgPpro::OnTimer(UINT nIDEvent)
         }
 
         // hostname, port, username, password, handhistory
-        if (ppro.m_socket == INVALID_SOCKET) 
+        if (p_PokerPro->m_socket == INVALID_SOCKET) 
 		{
             m_HostName.EnableWindow(true);
             m_Port.EnableWindow(true);
@@ -637,25 +635,25 @@ void CDlgPpro::OnTimer(UINT nIDEvent)
 	{
         // Auto seat, if necessary
         if (need_to_do_autoseat==true &&
-                ppro.data.m_tinf.m_tid!=0 &&
-                ppro.data.m_userchair==-1) 
+                p_PokerPro->data.m_tinf.m_tid!=0 &&
+                p_PokerPro->data.m_userchair==-1) 
 		{
 
-            int r = ppro.get_random_vacant_chair();
-            ppro.send_sit(r);
+            int r = p_PokerPro->get_random_vacant_chair();
+            p_PokerPro->send_sit(r);
             need_to_do_autoseat = false;
         }
 
         // Auto chips, if necessary
         if (need_to_do_autochips==true &&
-                ppro.data.m_tinf.m_tid!=0 &&
-                ppro.data.m_userchair!=-1) 
+                p_PokerPro->data.m_tinf.m_tid!=0 &&
+                p_PokerPro->data.m_userchair!=-1) 
 		{
 
             m_Chips.GetWindowText(itemtext, 100);
             if (atof(itemtext)>0) 
 			{
-                ppro.send_chips(atof(itemtext));
+                p_PokerPro->send_chips(atof(itemtext));
             }
             need_to_do_autochips=false;
         }
@@ -678,7 +676,7 @@ void CDlgPpro::do_table_select(void)
         table = -1;
         for (i=0; i<MAX_TABLES; i++) 
 		{
-            if (strcmp(itemtext, ppro.data.m_ginf[i].m_name)==0) 
+            if (strcmp(itemtext, p_PokerPro->data.m_ginf[i].m_name)==0) 
 			{
                 table = i;
                 i = MAX_TABLES+1;
@@ -687,7 +685,7 @@ void CDlgPpro::do_table_select(void)
 
         if (table != -1) 
 		{
-            ppro.send_goto(table);
+            p_PokerPro->send_goto(table);
         }
         if (m_AutoSeat.GetCheck()==BST_CHECKED) 
 		{
@@ -702,7 +700,7 @@ void CDlgPpro::do_table_select(void)
         // Start logging
         start_log();
 
-        write_log("%s - %s(%s)\n", p_formula->formula_name().GetString(), ppro.data.m_site_name, ppro.data.m_tinf.m_name);
+        write_log("%s - %s(%s)\n", p_formula->formula_name().GetString(), p_PokerPro->data.m_site_name, p_PokerPro->data.m_tinf.m_name);
         write_log("TABLE RESET\n*************************************************************\n");
     }
 
@@ -712,35 +710,33 @@ void CDlgPpro::do_table_select(void)
 void CDlgPpro::save_settings_to_reg(void) 
 {
     __SEH_HEADER
-    Registry		reg;
+
     CString			text;
     WINDOWPLACEMENT	wp;
 
     GetWindowPlacement(&wp);
 
-    m_HostName.GetWindowText(ppro.hostname);
-    m_Port.GetWindowText(ppro.port);
-    m_UserName.GetWindowText(ppro.username);
-    m_Password.GetWindowText(ppro.password);
-    ppro.handhistory = m_HandHistory.GetCheck() == BST_CHECKED;
+    m_HostName.GetWindowText(p_PokerPro->hostname);
+    m_Port.GetWindowText(p_PokerPro->port);
+    m_UserName.GetWindowText(p_PokerPro->username);
+    m_Password.GetWindowText(p_PokerPro->password);
+    p_PokerPro->handhistory = m_HandHistory.GetCheck() == BST_CHECKED;
     m_Chips.GetWindowText(text);
-    ppro.chips = strtoul(text.GetString(), NULL, 10);
+    p_PokerPro->chips = strtoul(text.GetString(), NULL, 10);
     m_AutoSeat.GetWindowText(text);
-    ppro.autoseat = m_AutoSeat.GetCheck() == BST_CHECKED;
+    p_PokerPro->autoseat = m_AutoSeat.GetCheck() == BST_CHECKED;
 
-    reg.read_reg();
-    reg.hostname = ppro.hostname;
-    reg.port = ppro.port;
-    reg.username = ppro.username;
-    reg.password = ppro.password;
-    reg.handhistory = ppro.handhistory;
-    reg.chips = ppro.chips;
-    reg.autoseat = ppro.autoseat;
-    reg.ppro_x = wp.rcNormalPosition.left;
-    reg.ppro_y = wp.rcNormalPosition.top;
-    reg.ppro_dx = wp.rcNormalPosition.right - wp.rcNormalPosition.left;
-    reg.ppro_dy = wp.rcNormalPosition.bottom - wp.rcNormalPosition.top;
-    reg.write_reg();
+    p_Preferences->Set_ppro_hostname(p_PokerPro->hostname);
+	p_Preferences->Set_ppro_port(p_PokerPro->port);
+    p_Preferences->Set_ppro_username(p_PokerPro->username);
+	p_Preferences->Set_ppro_password(p_PokerPro->password);
+    p_Preferences->Set_ppro_handhistory(p_PokerPro->handhistory);
+    p_Preferences->Set_ppro_chips(p_PokerPro->chips);
+    p_Preferences->Set_ppro_autoseat(p_PokerPro->autoseat);
+    p_Preferences->Set_ppro_x(wp.rcNormalPosition.left);
+    p_Preferences->Set_ppro_y(wp.rcNormalPosition.top);
+    p_Preferences->Set_ppro_dx(wp.rcNormalPosition.right - wp.rcNormalPosition.left);
+    p_Preferences->Set_ppro_dy(wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
 
     __SEH_LOGFATAL("CDlgPpro::save_settings_to_reg :\n");
 }
