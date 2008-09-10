@@ -9,6 +9,8 @@
 #include "CScraper.h"
 #include "CHeartbeatThread.h"
 #include "CGlobal.h"
+
+#include "CPreferences.h"
 #include "..\CTransform\CTransform.h"
 
 #include "DialogScraperOutput.h"
@@ -97,7 +99,6 @@ BOOL CDlgScraperOutput::OnInitDialog()
 {
     __SEH_HEADER
 
-    Registry	reg;
     int			max_x, max_y;
     RECT		rect;
 
@@ -128,12 +129,12 @@ BOOL CDlgScraperOutput::OnInitDialog()
     this->SetIcon(hIcon, FALSE);
 
     // Restore window location and size, precision preference
-    reg.read_reg();
+
     max_x = GetSystemMetrics(SM_CXSCREEN) - GetSystemMetrics(SM_CXICON);
     max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
-    ::SetWindowPos(m_hWnd, HWND_TOP, min(reg.scraper_x, max_x), min(reg.scraper_y, max_y),
-                   reg.scraper_dx, reg.scraper_dy, SWP_NOCOPYBITS);
-    m_Zoom.SetCurSel(reg.scraper_zoom);
+    ::SetWindowPos(m_hWnd, HWND_TOP, min(p_Preferences->scraper_x(), max_x), min(p_Preferences->scraper_y(), max_y),
+                   p_Preferences->scraper_dx(), p_Preferences->scraper_dy(), SWP_NOCOPYBITS);
+    m_Zoom.SetCurSel(p_Preferences->scraper_zoom());
     m_Zoom.GetWindowRect(&rect);
     m_Zoom.SetWindowPos(NULL, 0, 0, rect.right-rect.left, 9999, SWP_NOMOVE);
 
@@ -149,19 +150,16 @@ BOOL CDlgScraperOutput::DestroyWindow()
 {
     __SEH_HEADER
 
-    Registry			reg;
     WINDOWPLACEMENT		wp;
     CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
     // Save settings to registry
     GetWindowPlacement(&wp);
-    reg.read_reg();
-    reg.scraper_x = wp.rcNormalPosition.left;
-    reg.scraper_y = wp.rcNormalPosition.top;
-    reg.scraper_dx = wp.rcNormalPosition.right - wp.rcNormalPosition.left;
-    reg.scraper_dy = wp.rcNormalPosition.bottom - wp.rcNormalPosition.top;
-    reg.scraper_zoom = m_Zoom.GetCurSel();
-    reg.write_reg();
+    p_Preferences->Set_scraper_x(wp.rcNormalPosition.left);
+    p_Preferences->Set_scraper_y(wp.rcNormalPosition.top);
+    p_Preferences->Set_scraper_dx(wp.rcNormalPosition.right - wp.rcNormalPosition.left);
+    p_Preferences->Set_scraper_dy(wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
+    p_Preferences->Set_scraper_zoom(m_Zoom.GetCurSel());
 
     // Uncheck scraper output button on main toolbar
     pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, false);
