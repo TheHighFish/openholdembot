@@ -10,7 +10,9 @@ Registry::Registry()
 	
 	DWORD		dwDisp;
     RegCreateKeyEx(HKEY_CURRENT_USER, OH_SUBKEY, 0, NULL,
-                   REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, &dwDisp);
+                   REG_OPTION_NON_VOLATILE, 
+				   (KEY_WRITE | KEY_QUERY_VALUE | KEY_SET_VALUE),  
+				   NULL, &hKey, &dwDisp);
 }
 
 Registry::~Registry()
