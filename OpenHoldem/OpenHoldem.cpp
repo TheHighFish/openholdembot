@@ -19,6 +19,7 @@
 #include "CHeartbeatThread.h"
 #include "CPokerTrackerThread.h"
 #include "CGlobal.h"
+#include "CPreferences.h"
 #include "CDllExtension.h"
 #include "CGameState.h"
 #include "CMemory.h"
@@ -85,6 +86,8 @@ BOOL COpenHoldemApp::InitInstance()
 	InitializeCriticalSectionAndSpinCount(&cs_iterator, 4000);
 
 	// Classes
+	if (!p_Preferences) p_Preferences = new CPreferences;
+	if (!p_PokerPro) p_PokerPro = new PokerPro;
 	if (!p_global)  p_global = new CGlobal;
 	if (!p_scraper)  p_scraper = new CScraper;
 	if (!p_symbols)  p_symbols = new CSymbols;
@@ -95,7 +98,7 @@ BOOL COpenHoldemApp::InitInstance()
 	if (!p_dll_extension)  p_dll_extension = new CDllExtension;
 	if (!p_game_state)  p_game_state = new CGameState;
 	if (!the_Perl_Interpreter)  the_Perl_Interpreter = new Perl;
-	if (!p_memory)  p_memory = new CMemory;
+	if (!p_memory)  p_memory = new CMemory;	
 
 	Scintilla_RegisterClasses(AfxGetInstanceHandle());
 

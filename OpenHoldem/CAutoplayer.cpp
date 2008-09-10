@@ -6,7 +6,10 @@
 #include "CIteratorThread.h"
 #include "CScraper.h"
 #include "CGlobal.h"
+
+#include "CPreferences.h"
 #include "..\CTablemap\CTablemap.h"
+
 #include "CGrammar.h"
 
 #include "PokerChat.hpp"
@@ -185,9 +188,9 @@ void CAutoplayer::DoAutoplayer(void)
 	}
 
 	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return (modified Spektre 2008-04-03)
-	delay = p_symbols->f$delay() / p_global->preferences.scrape_delay;	// scale f$delay to a number of scrapes
+	delay = p_symbols->f$delay() / p_Preferences->scrape_delay();	// scale f$delay to a number of scrapes
 
-	if (x < (int) p_global->preferences.frame_delay + delay)
+	if (x < (int) p_Preferences->frame_delay() + delay)
 	{
 		// Calc primary formulas, but not with final answer, so main window can display correctly
 		p_symbols->CalcPrimaryFormulas(false);
@@ -249,7 +252,7 @@ void CAutoplayer::DoSwag(void)
 		{
 
 			// TEXT SELECTION
-			if (p_global->preferences.text_selection_method == TEXTSEL_DOUBLECLICK)
+			if (p_Preferences->text_selection_method() == TEXTSEL_DOUBLECLICK)
 			{
 				input_count = 0;
 
@@ -286,7 +289,7 @@ void CAutoplayer::DoSwag(void)
 				input_count++;
 			}
 
-			else if (p_global->preferences.text_selection_method == TEXTSEL_CLICKDRAG)
+			else if (p_Preferences->text_selection_method() == TEXTSEL_CLICKDRAG)
 			{
 				input_count = 0;
 
@@ -343,12 +346,12 @@ void CAutoplayer::DoSwag(void)
 
 			::SetCursorPos(cur_pos.x, cur_pos.y);
 
-			Sleep(p_global->preferences.swag_delay_1);
+			Sleep(p_Preferences->swag_delay_1());
 
 
 
 			// TEXT DELETION
-			if (p_global->preferences.text_deletion_method == TEXTDEL_DELETE)
+			if (p_Preferences->text_deletion_method() == TEXTDEL_DELETE)
 			{
 				input_count = 0;
 
@@ -367,7 +370,7 @@ void CAutoplayer::DoSwag(void)
 				input_count++;
 			}
 
-			else if (p_global->preferences.text_deletion_method == TEXTDEL_BACKSPACE)
+			else if (p_Preferences->text_deletion_method() == TEXTDEL_BACKSPACE)
 			{
 				input_count = 0;
 
@@ -405,7 +408,7 @@ void CAutoplayer::DoSwag(void)
 
 			::SetCursorPos(cur_pos.x, cur_pos.y);
 
-			Sleep(p_global->preferences.swag_delay_2);
+			Sleep(p_Preferences->swag_delay_2());
 
 
 
@@ -468,7 +471,7 @@ void CAutoplayer::DoSwag(void)
 				input_count++;
 			}
 
-			// do it and sleep for p_global->preferences.swag_delay (ms)
+			// do it and sleep for p_Preferences->swag_delay (ms)
 			SetFocus(p_global->attached_hwnd());
 			SetForegroundWindow(p_global->attached_hwnd());
 			SetActiveWindow(p_global->attached_hwnd());
@@ -481,12 +484,12 @@ void CAutoplayer::DoSwag(void)
 
 			::SetCursorPos(cur_pos.x, cur_pos.y);
 
-			Sleep(p_global->preferences.swag_delay_3);
+			Sleep(p_Preferences->swag_delay_3());
 
 
 
 			// BET CONFIRMATION ACTION
-			if (p_global->preferences.bet_confirmation_method == BETCONF_ENTER)
+			if (p_Preferences->bet_confirmation_method() == BETCONF_ENTER)
 			{
 				input_count = 0;
 
@@ -503,7 +506,7 @@ void CAutoplayer::DoSwag(void)
 				input_count++;
 			}
 
-			else if (p_global->preferences.bet_confirmation_method == BETCONF_CLICKBET &&
+			else if (p_Preferences->bet_confirmation_method() == BETCONF_CLICKBET &&
 					 (_rais_but!=-1 || p_tablemap->r$indexes()->r$iXbutton_index[3]!=-1) )
 			{
 				input_count = 0;
@@ -546,7 +549,7 @@ void CAutoplayer::DoSwag(void)
 				input_count++;
 
 				// Do double click if set in preferences
-				if (p_global->preferences.button_click_method == BUTTON_DOUBLECLICK)
+				if (p_Preferences->button_click_method() == BUTTON_DOUBLECLICK)
 				{
 					ZeroMemory(&input[input_count],sizeof(INPUT));
 					input[input_count].type = INPUT_MOUSE;
@@ -583,7 +586,7 @@ void CAutoplayer::DoSwag(void)
 			}
 
 			// do it
-			if (!lost_focus || !p_global->preferences.focus_detect)
+			if (!lost_focus || !p_Preferences->focus_detect())
 			{
 				SetFocus(p_global->attached_hwnd());
 				SetForegroundWindow(p_global->attached_hwnd());
@@ -729,7 +732,7 @@ void CAutoplayer::DoARCCF(void)
 		input_count++;
 
 		// Do double click if set in preferences
-		if (p_global->preferences.button_click_method == BUTTON_DOUBLECLICK)
+		if (p_Preferences->button_click_method() == BUTTON_DOUBLECLICK)
 		{
 			ZeroMemory(&input[input_count],sizeof(INPUT));
 			input[input_count].type = INPUT_MOUSE;
