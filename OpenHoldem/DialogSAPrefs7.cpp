@@ -6,10 +6,7 @@
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs7.h"
 
-#include "CGlobal.h"
-
-#include "Registry.h"
-
+#include "CPreferences.h"
 
 // CDlgSAPrefs7 dialog
 
@@ -47,28 +44,28 @@ BOOL CDlgSAPrefs7::OnInitDialog()
 
     CSAPrefsSubDlg::OnInitDialog();
 
-    if (p_global->preferences.icm_prize1 == (int) p_global->preferences.icm_prize1)
-        text.Format("%.0f", p_global->preferences.icm_prize1);
+    if (p_Preferences->icm_prize1() == (int) p_Preferences->icm_prize1())
+        text.Format("%.0f", p_Preferences->icm_prize1());
     else
-        text.Format("%f", p_global->preferences.icm_prize1);
+        text.Format("%f", p_Preferences->icm_prize1());
     m_ICM1.SetWindowText(text);
 
-    if (p_global->preferences.icm_prize2 == (int) p_global->preferences.icm_prize2)
-        text.Format("%.0f", p_global->preferences.icm_prize2);
+    if (p_Preferences->icm_prize2() == (int) p_Preferences->icm_prize2())
+        text.Format("%.0f", p_Preferences->icm_prize2());
     else
-        text.Format("%f", p_global->preferences.icm_prize2);
+        text.Format("%f", p_Preferences->icm_prize2());
     m_ICM2.SetWindowText(text);
 
-    if (p_global->preferences.icm_prize3 == (int) p_global->preferences.icm_prize3)
-        text.Format("%.0f", p_global->preferences.icm_prize3);
+    if (p_Preferences->icm_prize3() == (int) p_Preferences->icm_prize3())
+        text.Format("%.0f", p_Preferences->icm_prize3());
     else
-        text.Format("%f", p_global->preferences.icm_prize3);
+        text.Format("%f", p_Preferences->icm_prize3());
     m_ICM3.SetWindowText(text);
 
-    if (p_global->preferences.icm_prize4 == (int) p_global->preferences.icm_prize4)
-        text.Format("%.0f", p_global->preferences.icm_prize4);
+    if (p_Preferences->icm_prize4() == (int) p_Preferences->icm_prize4())
+        text.Format("%.0f", p_Preferences->icm_prize4());
     else
-        text.Format("%f", p_global->preferences.icm_prize4);
+        text.Format("%f", p_Preferences->icm_prize4());
     m_ICM4.SetWindowText(text);
 
     return TRUE;  // return TRUE unless you set the focus to a control
@@ -77,24 +74,16 @@ BOOL CDlgSAPrefs7::OnInitDialog()
 
 void CDlgSAPrefs7::OnOK()
 {
-    Registry		reg;
     CString			text;
 
     m_ICM1.GetWindowText(text);
-    p_global->preferences.icm_prize1 = atof(text.GetString());
+    p_Preferences->Set_icm_prize1(atof(text.GetString()));
     m_ICM2.GetWindowText(text);
-    p_global->preferences.icm_prize2 = atof(text.GetString());
+    p_Preferences->Set_icm_prize2(atof(text.GetString()));
     m_ICM3.GetWindowText(text);
-    p_global->preferences.icm_prize3 = atof(text.GetString());
+    p_Preferences->Set_icm_prize3(atof(text.GetString()));
     m_ICM4.GetWindowText(text);
-    p_global->preferences.icm_prize4 = atof(text.GetString());
-
-    reg.read_reg();
-    reg.icm_prize1 = p_global->preferences.icm_prize1;
-    reg.icm_prize2 = p_global->preferences.icm_prize2;
-    reg.icm_prize3 = p_global->preferences.icm_prize3;
-    reg.icm_prize4 = p_global->preferences.icm_prize4;
-    reg.write_reg();
+    p_Preferences->Set_icm_prize4(atof(text.GetString()));
 
     CSAPrefsSubDlg::OnOK();
 }

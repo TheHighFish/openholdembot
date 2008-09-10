@@ -5,10 +5,7 @@
 
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs11.h"
-
-#include "CGlobal.h"
-
-#include "Registry.h"
+#include "CPreferences.h"
 
 #define MAX_MAX_LOG 1000000
 
@@ -43,15 +40,15 @@ BOOL CDlgSAPrefs11::OnInitDialog()
     CSAPrefsSubDlg::OnInitDialog();
     CString		text;
 
-    m_EnableLog.SetCheck(p_global->preferences.LogSymbol_enabled ? BST_CHECKED : BST_UNCHECKED);
+    m_EnableLog.SetCheck(p_Preferences->LogSymbol_enabled() ? BST_CHECKED : BST_UNCHECKED);
 
-    text.Format("%d", p_global->preferences.LogSymbol_max_log);
+    text.Format("%d", p_Preferences->LogSymbol_max_log());
     m_MaximumLog.SetWindowText(text);
     m_MaximumLog_Spin.SetRange(0, (short) MAX_MAX_LOG);
-    m_MaximumLog_Spin.SetPos(p_global->preferences.LogSymbol_max_log);
+    m_MaximumLog_Spin.SetPos(p_Preferences->LogSymbol_max_log());
     m_MaximumLog_Spin.SetBuddy(&m_MaximumLog);
 
-    m_EnableTrace.SetCheck(p_global->preferences.Trace_enabled ? BST_CHECKED : BST_UNCHECKED);
+    m_EnableTrace.SetCheck(p_Preferences->Trace_enabled() ? BST_CHECKED : BST_UNCHECKED);
     m_TraceList.AddString("f$alli");
     m_TraceList.AddString("f$swag");
     m_TraceList.AddString("f$rais");
@@ -60,7 +57,7 @@ BOOL CDlgSAPrefs11::OnInitDialog()
     m_TraceList.AddString("f$prefold");
 	for (int i=0;i<nTraceFunctions;i++)
 	{
-		m_TraceList.SetCheck(i, p_global->preferences.Trace_functions[i]);
+		m_TraceList.SetCheck(i, p_Preferences->Trace_functions(i));
 	}
 
     return TRUE;  // return TRUE unless you set the focus to a control
@@ -70,18 +67,13 @@ BOOL CDlgSAPrefs11::OnInitDialog()
 
 void CDlgSAPrefs11::OnOK()
 {
-    Registry		reg;
     CString			text;
 
-	reg.read_reg();
-    p_global->preferences.LogSymbol_enabled = m_EnableLog.GetCheck()==BST_CHECKED ? true : false;
-	reg.LogSymbol_enabled = p_global->preferences.LogSymbol_enabled;
-    p_global->preferences.Trace_enabled = m_EnableTrace.GetCheck()==BST_CHECKED ? true : false;
-	reg.Trace_enabled = p_global->preferences.Trace_enabled;
+    p_Preferences->Set_LogSymbol_enabled(m_EnableLog.GetCheck()==BST_CHECKED ? true : false);
+	p_Preferences->Set_Trace_enabled(m_EnableTrace.GetCheck()==BST_CHECKED ? true : false);
 	for (int i=0;i<nTraceFunctions;i++)
 	{
-		p_global->preferences.Trace_functions[i] = m_TraceList.GetCheck(i);
-		reg.Trace_functions[i] = p_global->preferences.Trace_functions[i];
+		p_Preferences->Set_Trace_functions(i, m_TraceList.GetCheck(i));		
 	}
 
     m_MaximumLog.GetWindowText(text);
@@ -89,10 +81,8 @@ void CDlgSAPrefs11::OnOK()
         MessageBox("Invalid maximum log amount!", "ERROR", MB_OK);
         return;
     }
-    p_global->preferences.LogSymbol_max_log = strtoul(text.GetString(), 0, 10);
-	reg.LogSymbol_max_log = p_global->preferences.LogSymbol_max_log;
+    p_Preferences->Set_LogSymbol_max_log(strtoul(text.GetString(), 0, 10));
     
-    reg.write_reg();
     CSAPrefsSubDlg::OnOK();
 }
 

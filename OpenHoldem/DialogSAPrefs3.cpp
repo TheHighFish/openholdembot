@@ -5,11 +5,7 @@
 
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs3.h"
-
-#include "CGlobal.h"
-
-#include "Registry.h"
-
+#include "CPreferences.h"
 
 // CDlgSAPrefs3 dialog
 
@@ -45,9 +41,9 @@ BOOL CDlgSAPrefs3::OnInitDialog()
     CSAPrefsSubDlg::OnInitDialog();
     CString		text;
 
-    m_AlwaysSendState.SetCheck(p_global->preferences.dll_always_send_state ? BST_CHECKED : BST_UNCHECKED);
-    m_LoadDllOnStartup.SetCheck(p_global->preferences.load_dll_on_startup ? BST_CHECKED : BST_UNCHECKED);
-    m_DllName.SetWindowText(p_global->preferences.dll_name);
+    m_AlwaysSendState.SetCheck(p_Preferences->dll_always_send_state() ? BST_CHECKED : BST_UNCHECKED);
+    m_LoadDllOnStartup.SetCheck(p_Preferences->dll_load_on_startup() ? BST_CHECKED : BST_UNCHECKED);
+    m_DllName.SetWindowText(p_Preferences->dll_name());
 
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
@@ -55,19 +51,12 @@ BOOL CDlgSAPrefs3::OnInitDialog()
 
 void CDlgSAPrefs3::OnOK()
 {
-    Registry		reg;
     CString			text;
 
-    p_global->preferences.dll_always_send_state = m_AlwaysSendState.GetCheck()==BST_CHECKED ? true : false;
-    p_global->preferences.load_dll_on_startup = m_LoadDllOnStartup.GetCheck()==BST_CHECKED ? true : false;
+    p_Preferences->Set_dll_always_send_state(m_AlwaysSendState.GetCheck()==BST_CHECKED ? true : false);
+    p_Preferences->Set_dll_load_on_startup(m_LoadDllOnStartup.GetCheck()==BST_CHECKED ? true : false);
 
-    m_DllName.GetWindowText(p_global->preferences.dll_name);
-
-    reg.read_reg();
-    reg.dll_always_send_state = p_global->preferences.dll_always_send_state;
-    reg.load_dll_on_startup = p_global->preferences.load_dll_on_startup;
-    reg.dll_name = p_global->preferences.dll_name;
-    reg.write_reg();
+    m_DllName.GetWindowText(p_Preferences->dll_name());
 
     CSAPrefsSubDlg::OnOK();
 }

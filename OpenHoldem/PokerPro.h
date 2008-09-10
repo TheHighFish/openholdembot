@@ -135,7 +135,8 @@ private:
 	int			m_nmsg;
 	bool		autoplayer_can_act;
 
-} ppro;
+};
 
+extern PokerPro *p_PokerPro;
 
 #endif /* INC_POKERPRO_H */

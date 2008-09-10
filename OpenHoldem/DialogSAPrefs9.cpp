@@ -10,6 +10,7 @@
 
 #include "Registry.h"
 #include "Perl.hpp"
+#include "CPreferences.h"
 
 
 // DialogSAPrefs9 dialog
@@ -40,10 +41,10 @@ BOOL CDlgSAPrefs9::OnInitDialog()
 {
     CSAPrefsSubDlg::OnInitDialog();
 
-    m_LoadPerlInterpreter.SetCheck(p_global->preferences.Perl_load_Interpreter ? BST_CHECKED : BST_UNCHECKED);
-    m_LoadDefaultPerlFormula.SetCheck(p_global->preferences.Perl_load_default_Formula ? BST_CHECKED : BST_UNCHECKED);
-    m_DefaultPerlFormula.SetWindowText(p_global->preferences.Perl_default_Formula);
-    m_PerlEditor.SetWindowText(p_global->preferences.Perl_Editor);
+    m_LoadPerlInterpreter.SetCheck(p_Preferences->Perl_load_Interpreter() ? BST_CHECKED : BST_UNCHECKED);
+    m_LoadDefaultPerlFormula.SetCheck(p_Preferences->Perl_load_default_Formula() ? BST_CHECKED : BST_UNCHECKED);
+    m_DefaultPerlFormula.SetWindowText(p_Preferences->Perl_default_Formula());
+    m_PerlEditor.SetWindowText(p_Preferences->Perl_Editor());
 
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
@@ -52,22 +53,13 @@ BOOL CDlgSAPrefs9::OnInitDialog()
 
 void CDlgSAPrefs9::OnOK()
 {
-    Registry		reg;
+    p_Preferences->Set_Perl_load_Interpreter(m_LoadPerlInterpreter.GetCheck()==BST_CHECKED ? true : false);
+    p_Preferences->Set_Perl_load_default_Formula(m_LoadDefaultPerlFormula.GetCheck()==BST_CHECKED ? true : false);
+    m_DefaultPerlFormula.GetWindowText(p_Preferences->Perl_default_Formula());
+    m_PerlEditor.GetWindowText(p_Preferences->Perl_Editor());
 
-    p_global->preferences.Perl_load_Interpreter = m_LoadPerlInterpreter.GetCheck()==BST_CHECKED ? true : false;
-    p_global->preferences.Perl_load_default_Formula = m_LoadDefaultPerlFormula.GetCheck()==BST_CHECKED ? true : false;
-    m_DefaultPerlFormula.GetWindowText(p_global->preferences.Perl_default_Formula);
-    m_PerlEditor.GetWindowText(p_global->preferences.Perl_Editor);
-
-    reg.read_reg();
-    reg.Perl_load_Interpreter = p_global->preferences.Perl_load_Interpreter;
-    reg.Perl_load_default_Formula = p_global->preferences.Perl_load_default_Formula;
-    reg.Perl_default_Formula = p_global->preferences.Perl_default_Formula;
-    reg.Perl_Editor = p_global->preferences.Perl_Editor;
-    reg.write_reg();
-
-	// Load Perl interpreter without a restart
-	if (p_global->preferences.Perl_load_Interpreter)
+   	// Load Perl interpreter without a restart
+	if (p_Preferences->Perl_load_Interpreter())
 	{
 		if (the_Perl_Interpreter)
 			delete the_Perl_Interpreter;

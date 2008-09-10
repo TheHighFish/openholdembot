@@ -19,6 +19,7 @@
 
 #include "CSymbols.h"
 #include "CGlobal.h"
+#include "CPreferences.h"
 
 double P(int i, int n, double *s, int N)
 {
@@ -73,10 +74,10 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 	double		prizes[MAX_PLAYERS] = {0};
 	double		stacks[MAX_PLAYERS] = {0};
 	int			i = 0, j = 0;
-	prizes[0] = p_global->preferences.icm_prize1;
-	prizes[1] = p_global->preferences.icm_prize2;
-	prizes[2] = p_global->preferences.icm_prize3;
-	prizes[3] = p_global->preferences.icm_prize4;
+	prizes[0] = p_Preferences->icm_prize1();
+	prizes[1] = p_Preferences->icm_prize2();
+	prizes[2] = p_Preferences->icm_prize3();
+	prizes[3] = p_Preferences->icm_prize4();
 
 	int			sym_userchair = (int) p_symbols->sym()->userchair;
 	int			sym_opponentsplayingbits = (int) p_symbols->sym()->opponentsplayingbits;

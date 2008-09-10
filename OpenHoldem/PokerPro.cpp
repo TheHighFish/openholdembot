@@ -11,10 +11,10 @@
 #include "CGlobal.h"
 #include "CGrammar.h"
 
-#include "registry.h"
-#include "DialogPpro.h"
+#include "DialogPPro.h"
+#include "CPreferences.h"
 
-class PokerPro	ppro;
+PokerPro	*p_PokerPro;
 
 PokerPro::PokerPro(void) 
 {
@@ -22,16 +22,13 @@ PokerPro::PokerPro(void)
 
     __SEH_HEADER
 
-	Registry  reg;
-
-    reg.read_reg();
-    hostname = reg.hostname;
-    port = reg.port;
-    username = reg.username;
-    password = reg.password;
-    handhistory = reg.handhistory;
-    chips = reg.chips;
-    autoseat = reg.autoseat;
+    hostname = p_Preferences->ppro_hostname();
+    port = p_Preferences->ppro_port();
+    username = p_Preferences->ppro_username();
+    password = p_Preferences->ppro_password();
+    handhistory = p_Preferences->ppro_handhistory();
+    chips = p_Preferences->ppro_chips();
+    autoseat = p_Preferences->ppro_autoseat();
 
     // init
     memset(&data, 0, sizeof(ppdata));
@@ -2057,9 +2054,9 @@ void PokerPro::DoAutoplayer(void)
 		return;
 
 	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return (added Spektre 2008-04-03)
-	delay = p_symbols->f$delay() / p_global->preferences.scrape_delay;    // scale f$delay to a number of scrapes
+	delay = p_symbols->f$delay() / p_Preferences->scrape_delay();    // scale f$delay to a number of scrapes
 
-	if (x < (int) p_global->preferences.frame_delay + delay) 
+	if (x < (int) p_Preferences->frame_delay() + delay) 
 		return;
 
 	// Now that we got through all of the above, we are ready to evaluate the primary formulas
