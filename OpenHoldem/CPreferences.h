@@ -340,11 +340,11 @@ private:
 	// private functions and variables - not available via accessors or mutators
 	void InitDefaults(void);
 	void ReadFromRegistry(void);
-	void ReadReg(LPCTSTR registry_key, int *registry_value);
-	void ReadReg(LPCTSTR registry_key, bool *registry_value);
-	void ReadReg(LPCTSTR registry_key, unsigned int *registry_value);
-	void ReadReg(LPCTSTR registry_key, CString *registry_value);
-	void ReadReg(LPCTSTR registry_key, double *registry_value);
+	void ReadReg(const LPCTSTR registry_key, int *registry_value);
+	void ReadReg(const LPCTSTR registry_key, bool *registry_value);
+	void ReadReg(const LPCTSTR registry_key, unsigned int *registry_value);
+	void ReadReg(const LPCTSTR registry_key, CString *registry_value);
+	void ReadReg(const LPCTSTR registry_key, double *registry_value);
 	void WriteReg(const LPCTSTR registry_key, const int registry_value);
 	void WriteReg(const LPCTSTR registry_key, const CString registry_value);
 	void WriteReg(const LPCTSTR registry_key, const double registry_value);
