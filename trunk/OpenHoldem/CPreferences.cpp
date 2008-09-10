@@ -313,7 +313,7 @@ void CPreferences::ReadFromRegistry()
 	__SEH_LOGFATAL("CPreferences::ReadFromRegistry : \n");
 }
 
-void CPreferences::ReadReg(LPCTSTR registry_key, int *registry_value)
+void CPreferences::ReadReg(const LPCTSTR registry_key, int *registry_value)
 {
 	__SEH_HEADER
 
@@ -330,7 +330,7 @@ void CPreferences::ReadReg(LPCTSTR registry_key, int *registry_value)
 }
 
 
-void CPreferences::ReadReg(LPCTSTR registry_key, bool *registry_value)
+void CPreferences::ReadReg(const LPCTSTR registry_key, bool *registry_value)
 {
 	__SEH_HEADER
 
@@ -347,7 +347,7 @@ void CPreferences::ReadReg(LPCTSTR registry_key, bool *registry_value)
 }
 
 
-void CPreferences::ReadReg(LPCTSTR registry_key, unsigned int *registry_value)
+void CPreferences::ReadReg(const LPCTSTR registry_key, unsigned int *registry_value)
 {
 	__SEH_HEADER
 
@@ -364,7 +364,7 @@ void CPreferences::ReadReg(LPCTSTR registry_key, unsigned int *registry_value)
 }
 
 
-void CPreferences::ReadReg(LPCTSTR registry_key,  CString *registry_value)
+void CPreferences::ReadReg(const LPCTSTR registry_key,  CString *registry_value)
 {
 	__SEH_HEADER
 
@@ -381,7 +381,7 @@ void CPreferences::ReadReg(LPCTSTR registry_key,  CString *registry_value)
 }
 
 
-void CPreferences::ReadReg(LPCTSTR registry_key, double *registry_value)
+void CPreferences::ReadReg(const LPCTSTR registry_key, double *registry_value)
 {
 	__SEH_HEADER
 
