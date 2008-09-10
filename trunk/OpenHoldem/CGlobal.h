@@ -7,6 +7,7 @@
 
 #include <boost/spirit/tree/ast.hpp>
 #include "CDllExtension.h"
+#include "CFormula.h"
 
 extern class CGlobal 
 {
@@ -23,8 +24,10 @@ public:
 
 public:
 	// public variables <<< need to make these private eventually
-	// Preferences
-	SPreferences	preferences;
+
+	// Formula being used for execution
+	SFormula		formula;
+	CString			formula_name;
 
 	// Versus
 	int				versus_fh;
@@ -94,6 +97,14 @@ private:
 private:
 	// private functions and variables - not available via accessors or mutators
 	CString GetCardHtml(unsigned int card);
+
+private:
+	// Functions missing somehow. Maybe caused by my problems with svn? (THF)
+	// TODO: sort and comment.
+	void ClearFormula(SFormula *f);
+	void CopyFormula(SFormula *f, SFormula *t);
+	bool ParseAllFormula(HWND hwnd, SFormula *f);
+	void CreateHandListMatrices(SFormula *f);
 
 } *p_global;
 

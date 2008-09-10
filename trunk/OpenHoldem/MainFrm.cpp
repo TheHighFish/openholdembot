@@ -14,7 +14,9 @@
 #include "CHeartbeatThread.h"
 #include "CPokerTrackerThread.h"
 #include "CGlobal.h"
+#include "CPreferences.h"
 #include "CDllExtension.h"
+
 #include "..\CTransform\CTransform.h"
 #include "CFormula.h"
 
@@ -36,7 +38,7 @@
 #include "DialogSelectTable.h"
 #include "inlines/eval.h"
 #include "PokerPro.h"
-#include "DialogPpro.h"
+#include "DialogPPro.h"
 #include "DialogScraperOutput.h"
 #include "DialogLockBlinds.h"
 #include "Perl.hpp"
@@ -341,7 +343,6 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
     if ( !CFrameWnd::PreCreateWindow(cs) )
         return FALSE;
 
-    Registry	reg;
     int			max_x, max_y;
 
     WNDCLASS wnd;
@@ -364,13 +365,12 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
     cs.lpszClass = "OpenHoldem";
 
     // Restore window location and size
-    reg.read_reg();
     max_x = GetSystemMetrics(SM_CXSCREEN) - GetSystemMetrics(SM_CXICON);
     max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
-    cs.x = min(reg.main_x, max_x);
-    cs.y = min(reg.main_y, max_y);
-    cs.cx = reg.main_dx;
-    cs.cy = reg.main_dy;
+    cs.x = min(p_Preferences->main_x(), max_x);
+    cs.y = min(p_Preferences->main_y(), max_y);
+    cs.cx = p_Preferences->main_dx();
+    cs.cy = p_Preferences->main_dy();
 
     return true;
 
@@ -502,7 +502,6 @@ BOOL CMainFrame::DestroyWindow()
 {
     __SEH_HEADER
 
-    Registry		reg;
     WINDOWPLACEMENT wp;
 
 	//unload dll   Matrix (suggested by Spud) 2008-05-17
@@ -524,24 +523,22 @@ BOOL CMainFrame::DestroyWindow()
 		p_pokertracker_thread->StopThread();
 
     // Save window position
-    reg.read_reg();
     if (!m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_MINMAX)) 
 	{
         GetWindowPlacement(&wp);
 
-        reg.main_x = wp.rcNormalPosition.left;
-        reg.main_y = wp.rcNormalPosition.top;
-        reg.main_dx = wp.rcNormalPosition.right - wp.rcNormalPosition.left;
-        reg.main_dy = wp.rcNormalPosition.bottom - wp.rcNormalPosition.top;
+        p_Preferences->Set_main_x(wp.rcNormalPosition.left);
+        p_Preferences->Set_main_y(wp.rcNormalPosition.top);
+        p_Preferences->Set_main_dx(wp.rcNormalPosition.right - wp.rcNormalPosition.left);
+        p_Preferences->Set_main_dy(wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
     }
     else 
 	{
-        reg.main_x = table_view_size.left;
-        reg.main_y = table_view_size.top;
-        reg.main_dx = table_view_size.right - table_view_size.left;
-        reg.main_dy = table_view_size.bottom - table_view_size.top;
+        p_Preferences->Set_main_x(table_view_size.left);
+        p_Preferences->Set_main_y(table_view_size.top);
+        p_Preferences->Set_main_dx(table_view_size.right - table_view_size.left);
+        p_Preferences->Set_main_dy(table_view_size.bottom - table_view_size.top);
     }
-    reg.write_reg();
 
     return CFrameWnd::DestroyWindow();
 
@@ -556,7 +553,7 @@ void CMainFrame::OnFileOpen()
     CString				theKey = "DefWHFOpenLocation";
     char				path[MAX_PATH];
 
-    Registry::readRegString(theKey, path);
+    Registry::Read_Reg_String(theKey, path);
     cfd.m_ofn.lpstrInitialDir = path;
     cfd.m_ofn.lpstrFilter = "OpenHoldem Files (.ohf)\0*.ohf\0WinHoldem Files (.whf)\0*.whf\0All files (*.*)\0*.*\0\0";
     cfd.m_ofn.lpstrTitle = "Select Formula file to OPEN";
@@ -567,7 +564,7 @@ void CMainFrame::OnFileOpen()
 		pDoc->SetPathName(cfd.GetPathName());
         // Update window title, registry
         SetWindowText(cfd.GetFileTitle() + " - " + CString(MAKEINTRESOURCE(AFX_IDS_APP_TITLE)));
-        Registry::writeRegString(theKey, cfd.GetPathName());
+        Registry::Write_Reg_String(theKey, cfd.GetPathName());
     }
 
     __SEH_LOGFATAL("CMainFrame::OnFileOpen :\n");
@@ -584,7 +581,7 @@ void CMainFrame::OnFileLoadTableMap()
     CString				theKey = "DefTMOpenLocation";
     char				path[MAX_PATH];
 
-    Registry::readRegString(theKey, path);
+    Registry::Read_Reg_String(theKey, path);
     cfd.m_ofn.lpstrInitialDir = path;
     cfd.m_ofn.lpstrFilter = "OpenScrape Table Maps (.tm)\0*.tm\0All files (*.*)\0*.*\0\0";
     cfd.m_ofn.lpstrTitle = "Select OpenScrape table map to OPEN";
@@ -617,7 +614,7 @@ void CMainFrame::OnFileLoadTableMap()
                 m_ScraperOutputDlg->do_update_display();
             }
 
-            Registry::writeRegString(theKey, cfd.GetPathName());
+            Registry::Write_Reg_String(theKey, cfd.GetPathName());
         }
     }
 
@@ -818,7 +815,7 @@ void CMainFrame::OnBnClickedGreenCircle()
             }
 
             p_global->set_next_replay_frame(last_frame_num + 1);
-            if (p_global->next_replay_frame() >= p_global->preferences.replay_max_frames)
+            if (p_global->next_replay_frame() >= p_Preferences->replay_max_frames())
                 p_global->set_next_replay_frame(0);
 
 			// reset iterator vars
@@ -867,6 +864,7 @@ void CMainFrame::OnBnClickedGreenCircle()
             // log OH title bar text and table reset
             ::GetWindowText(p_global->attached_hwnd(), title, 512);
             write_log("\n*************************************************************\nTABLE RESET %s - %s(%s)\n*************************************************************\n",
+
 				p_formula->formula_name().GetString(), p_tablemap->s$items()->sitename.GetString(), title);
 
         }
@@ -946,7 +944,9 @@ void CMainFrame::OnBnClickedRedCircle()
     }
 
     // log OH title bar text and table reset
+
     write_log("%s - %s(NOT ATTACHED)\n", p_formula->formula_name().GetString(), p_tablemap->s$items()->sitename.GetString());
+
     write_log("TABLE RESET\n*************************************************************\n");
 
     // Stop logging
@@ -983,7 +983,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 
 		// Autoplayer
 		if ((p_symbols->user_chair_confirmed() && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)) ||
-				ppro.data.m_userchair!=-1)
+				p_PokerPro->data.m_userchair!=-1)
 		{
 			m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
 		}
@@ -993,9 +993,9 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 		}
 
 		// Automatically start autoplayer, if set in preferences
-        if (p_global->preferences.ap_auto && !m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER) &&
+        if (p_Preferences->ap_auto() && !m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER) &&
                 ((p_symbols->user_chair_confirmed() && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)) ||
-                 ppro.data.m_userchair!=-1))
+                 p_PokerPro->data.m_userchair!=-1))
         {
             if (!p_global->autoplay_pressed)
             {
@@ -1102,19 +1102,19 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 		status_pokerhand = status_pokerhand.Mid(0, status_pokerhand.Find(" "));
 
 		// handrank
-		if (p_global->preferences.handrank_value == "169")
+		if (p_Preferences->sym_handrank_value() == "169")
 			status_handrank.Format("%.0f/169", p_symbols->sym()->handrank169);
 
-		else if (p_global->preferences.handrank_value == "1000")
+		else if (p_Preferences->sym_handrank_value() == "1000")
 			status_handrank.Format("%.0f/1000", p_symbols->sym()->handrank1000);
 
-		else if (p_global->preferences.handrank_value == "1326")
+		else if (p_Preferences->sym_handrank_value() == "1326")
 			status_handrank.Format("%.0f/1326", p_symbols->sym()->handrank1326);
 
-		else if (p_global->preferences.handrank_value == "2652")
+		else if (p_Preferences->sym_handrank_value() == "2652")
 			status_handrank.Format("%.0f/2652", p_symbols->sym()->handrank2652);
 
-		else if (p_global->preferences.handrank_value == "p")
+		else if (p_Preferences->sym_handrank_value() == "p")
 			status_handrank.Format("%.2f/2652", p_symbols->sym()->handrankp);
 
 		// nopponents
@@ -1322,7 +1322,7 @@ void CMainFrame::OnDllLoadspecificfile()
     CString				theKey = "DefDLLOpenLocation";
     char				path[MAX_PATH];
 
-    Registry::readRegString(theKey, path);
+    Registry::Read_Reg_String(theKey, path);
     cfd.m_ofn.lpstrInitialDir = path;
     cfd.m_ofn.lpstrFilter = "DLL Files (.dll)\0*.dll\0\0";
     cfd.m_ofn.lpstrTitle = "Select OpenHoldem DLL file to OPEN";
@@ -1333,7 +1333,7 @@ void CMainFrame::OnDllLoadspecificfile()
 
 		p_dll_extension->LoadDll(cfd.m_ofn.lpstrFile);
 
-        Registry::writeRegString(theKey, cfd.GetPathName());
+        Registry::Write_Reg_String(theKey, cfd.GetPathName());
     }
 
     __SEH_LOGFATAL("CMainFrame::OnDllLoadspecificfile :\n");
@@ -1484,17 +1484,15 @@ void CMainFrame::OnLockBlinds(void)
     __SEH_HEADER
 
     CDlgLockBlinds	lockblinds_dlg;
-    Registry reg;
 
     if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_LOCK_BLINDS)) 
 	{
-        reg.read_reg();
-
-        lockblinds_dlg.sblind = reg.sblind;
-        lockblinds_dlg.bblind = reg.bblind;
-        lockblinds_dlg.bbet = reg.bbet;
-        lockblinds_dlg.ante = reg.ante;
-        lockblinds_dlg.gametype = reg.gametype;
+        
+        lockblinds_dlg.sblind = p_Preferences->sblind();
+        lockblinds_dlg.bblind = p_Preferences->bblind();
+        lockblinds_dlg.bbet = p_Preferences->bbet();
+        lockblinds_dlg.ante = p_Preferences->ante();
+        lockblinds_dlg.gametype = p_Preferences->gametype();
 
         if (lockblinds_dlg.DoModal() == IDOK) 
 		{
@@ -1510,14 +1508,12 @@ void CMainFrame::OnLockBlinds(void)
             p_scraper->SetLockedBlinds(LB);
 
 			// Save locked blinds info for future use
-            reg.read_reg();
-            reg.sblind = lockblinds_dlg.sblind;
-            reg.bblind = lockblinds_dlg.bblind;
-            reg.bbet = lockblinds_dlg.bbet;
-            reg.ante = lockblinds_dlg.ante;
-            reg.gametype = lockblinds_dlg.gametype;
-            reg.write_reg();
-
+            p_Preferences->Set_sblind(lockblinds_dlg.sblind);
+            p_Preferences->Set_bblind(lockblinds_dlg.bblind);
+            p_Preferences->Set_bbet(lockblinds_dlg.bbet);
+            p_Preferences->Set_ante(lockblinds_dlg.ante);
+            p_Preferences->Set_gametype(lockblinds_dlg.gametype);
+            
         }
         else 
 		{
@@ -1638,7 +1634,7 @@ void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI)
         pCmdUI->SetText("&Load\tF4");
 
 	// Not connected to ppro server
-    if (ppro.m_socket==INVALID_SOCKET) 
+    if (p_PokerPro->m_socket==INVALID_SOCKET) 
 	{
         pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
                         !m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
@@ -1646,7 +1642,7 @@ void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI)
     // connected to ppro server
     else 
 	{
-        pCmdUI->Enable(ppro.data.m_pinf[ppro.data.m_userchair].m_isActive&0x1 ? false : true);
+        pCmdUI->Enable(p_PokerPro->data.m_pinf[p_PokerPro->data.m_userchair].m_isActive&0x1 ? false : true);
     }
 
 	__SEH_LOGFATAL("CMainFrame::OnUpdateMenuDllLoad\n")
@@ -1668,7 +1664,7 @@ void CMainFrame::OnUpdatePokerproConnect(CCmdUI *pCmdUI)
 
     pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
                     !m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) &&
-                   !(ppro.m_socket!=INVALID_SOCKET) ? false : true);
+                   !(p_PokerPro->m_socket!=INVALID_SOCKET) ? false : true);
 
 	__SEH_LOGFATAL("CMainFrame::OnUpdatePokerproConnect\n")
 }
@@ -1823,14 +1819,14 @@ void CMainFrame::OnPerlLoadSpecificFormula()
     CString				theKey = "DefPLOpenLocation";
     char				path[MAX_PATH];
 
-    Registry::readRegString(theKey, path);
+    Registry::Read_Reg_String(theKey, path);
     cfd.m_ofn.lpstrInitialDir = path;
     cfd.m_ofn.lpstrFilter = "Perl Scripts (*.pl)\0*.pl\0Perl Modules (*.pm)\0*.pm\0All Files (*.*)\0*.*\0\0";
     cfd.m_ofn.lpstrTitle = "Select Perl formula file to OPEN";
     if (cfd.DoModal() == IDOK)
     {
         the_Perl_Interpreter->load_FormulaFile(cfd.m_ofn.lpstrFile);
-        Registry::writeRegString(theKey, cfd.GetPathName());
+        Registry::Write_Reg_String(theKey, cfd.GetPathName());
     }
 
     __SEH_LOGFATAL("CMainFrame::OnPerlLoadSpecificFormula :\n");

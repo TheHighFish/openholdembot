@@ -8,6 +8,8 @@
 #include "CScraper.h"
 #include "CIteratorThread.h"
 #include "CGlobal.h"
+
+#include "CPreferences.h"
 #include "..\CTablemap\CTablemap.h"
 
 #include "inlines/eval.h"
@@ -433,15 +435,15 @@ void write_logautoplay(const char * action)
 	if (log_fp != NULL) 
 	{
 		// log$ writing
-		if (p_global->preferences.LogSymbol_enabled)
+		if (p_Preferences->LogSymbol_enabled())
 		{
 			int max_log = p_symbols->logsymbols_collection()->GetCount();
 
 			if (max_log > 0)
 			{
-				if (max_log > p_global->preferences.LogSymbol_max_log)
+				if (max_log > p_Preferences->LogSymbol_max_log())
 				{
-					max_log = p_global->preferences.LogSymbol_max_log;
+					max_log = p_Preferences->LogSymbol_max_log();
 				}
 
 				write_log("*** log$ (Total: %d | Showing: %d)\n", p_symbols->logsymbols_collection()->GetCount(), max_log);
@@ -513,19 +515,19 @@ void write_logautoplay(const char * action)
         comcards = comcards.Left(10);
 
         // handrank
-        if (p_global->preferences.handrank_value == "169")
+        if (p_Preferences->sym_handrank_value() == "169")
 			rank.Format("%.0f", p_symbols->sym()->handrank169);
 
-        else if (p_global->preferences.handrank_value == "1000")
+        else if (p_Preferences->sym_handrank_value() == "1000")
             rank.Format("%.0f", p_symbols->sym()->handrank1000);
 
-        else if (p_global->preferences.handrank_value == "1326")
+        else if (p_Preferences->sym_handrank_value() == "1326")
             rank.Format("%.0f", p_symbols->sym()->handrank1326);
 
-        else if (p_global->preferences.handrank_value == "2652")
+        else if (p_Preferences->sym_handrank_value() == "2652")
             rank.Format("%.0f", p_symbols->sym()->handrank2652);
 
-        else if (p_global->preferences.handrank_value == "p")
+        else if (p_Preferences->sym_handrank_value() == "p")
             rank.Format("%.2f", p_symbols->sym()->handrankp);
 
 
@@ -631,7 +633,7 @@ void write_logautoplay(const char * action)
 			fcra_formula_status.GetString(), 
 			p_symbols->f$swag() );
 
-		if (p_global->preferences.Trace_enabled && p_symbols->symboltrace_collection()->GetSize() > 0)
+		if (p_Preferences->Trace_enabled() && p_symbols->symboltrace_collection()->GetSize() > 0)
 		{
 			write_log_nostamp("***** Autoplayer Trace ****\n");
 			for (int i=0; i<p_symbols->symboltrace_collection()->GetSize(); i++)

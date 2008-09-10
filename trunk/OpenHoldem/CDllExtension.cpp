@@ -6,6 +6,7 @@
 
 #include "CSymbols.h"
 #include "CGlobal.h"
+#include "CPreferences.h"
 #include "CFormula.h"
 #include "CGrammar.h"
 
@@ -94,7 +95,7 @@ void CDllExtension::LoadDll(const char * path)
 		// If dll is still not loaded, load from name in Edit/Preferences
 		if (_hmod_dll==NULL)
 		{
-			t.Format("%s\\%s", _startup_path, p_global->preferences.dll_name.GetString());
+			t.Format("%s\\%s", _startup_path, p_Preferences->dll_name().GetString());
 			SetCurrentDirectory(_startup_path);
 			_hmod_dll = LoadLibrary(t.GetString());
 			err2 = GetLastError();
@@ -104,7 +105,7 @@ void CDllExtension::LoadDll(const char * path)
 		if (_hmod_dll==NULL)
 		{
 			t.Format("Unable to load DLL from:\n%s, error=%d\n-or-\n%s, error=%d",
-					 p_global->preferences.dll_name.GetString(), err1,
+					 p_Preferences->dll_name().GetString(), err1,
 					 formula_dll.GetString(), err2);
 			MessageBox(NULL, t, "DLL Load Error", MB_OK | MB_TOPMOST);
 			return;
