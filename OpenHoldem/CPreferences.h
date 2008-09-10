@@ -1,249 +1,235 @@
-#ifndef OPENHOLDEM_CPREFERENCES_H_
-#define OPENHOLDEM_CPREFERENCES_H_
+#ifndef INC_CPREFERENCES_H_
+#define INC_CPREFERENCES_H_
 
-#include "Registry.h"
+#include "..\CCritSec\CCritSec.h"
 
-class CPreferences
+extern class CPreferences
 {
-	//
-	// Constructor and destructor
-	//
 public:
+	// public functions
 	CPreferences();
 	~CPreferences();
 
-	//
-	// Public setter-methods
-	//
 public:
+	// public accessors
 	// Analyzer
-	void Set_max_opponents(unsigned int new_Value);
+	const unsigned int max_opponents() { return _max_opponents; }
 	// Autoplayer
-	void Set_frame_delay(unsigned int new_Value);
-	void Set_swag_delay_1(unsigned int new_Value);
-	void Set_swag_delay_2(unsigned int new_Value);
-	void Set_swag_delay_3(unsigned int new_Value);
-	void Set_text_selection_method(unsigned int new_Value);
-	void Set_text_deletion_method(unsigned int new_Value);
-	void Set_bet_confirmation_method(unsigned int new_Value);
-	void Set_button_click_method(unsigned int new_Value);
-	void Set_ap_auto(bool new_Value);
-	void Set_focus_detect(bool new_Value);
+	const unsigned int frame_delay() { return _frame_delay; }
+	const unsigned int swag_delay_1() { return _swag_delay_1; }
+	const unsigned int swag_delay_2() { return _swag_delay_2; }
+	const unsigned int swag_delay_3() { return _swag_delay_3; }
+	const unsigned int text_selection_method() { return _text_selection_method; }
+	const unsigned int text_deletion_method() { return _text_deletion_method; }
+	const unsigned int bet_confirmation_method() { return _bet_confirmation_method; }
+	const unsigned int button_click_method() { return _button_click_method; }
+	const bool ap_auto() { return _ap_auto; }
+	const bool focus_detect() { return _focus_detect; }
 	// Dll extension
-	void Set_dll_always_send_state(bool new_Value);
-	void Set_dll_load_on_startup(bool new_Value);
-	void Set_dll_name(CString new_Value);
+	const bool dll_always_send_state() { return _dll_always_send_state; }
+	const bool dll_load_on_startup() { return _dll_load_on_startup; }
+	const CString dll_name() { return _dll_name; }
 	// Scraper
-	void Set_scrape_delay(unsigned intnew_Value);
+	const unsigned int scrape_delay() { return _scrape_delay; }
 	// Symbols
-	void Set_sym_av_time(double new_Value);
-	void Set_sym_handrank_value(CString new_Value);
-	void Set_sym_disable_caching(bool new_Value);
+	const double sym_av_time() { return _sym_av_time; }
+	const CString sym_handrank_value() { return _sym_handrank_value; }
+	const bool sym_disable_caching() { return _sym_disable_caching; }
 	// ICM
-	void Set_icm_prize1(double new_Value);
-	void Set_icm_prize2(double new_Value);
-	void Set_icm_prize3(double new_Value);
-	void Set_icm_prize4(double new_Value);
+	const double icm_prize1() { return _icm_prize1; }
+	const double icm_prize2() { return _icm_prize2; }
+	const double icm_prize3() { return _icm_prize3; }
+	const double icm_prize4() { return _icm_prize4; }
 	// Replay Frames
-	void Set_replay_record(bool new_Value);
-	void Set_replay_record_every_change(bool new_Value);
-	void Set_replay_max_frames(int new_Value);
+	const bool replay_record() { return _replay_record; }
+	const bool replay_record_every_change() { return _replay_record_every_change; }
+	const int replay_max_frames() { return _replay_max_frames; }
 	// Poker Tracker
-	void Set_pt_ip_addr(CString new_Value);
-	void Set_pt_port(CString new_Value);
-	void Set_pt_dbname(CString new_Value);
-	void Set_pt_user(CString new_Value);
-	void Set_pt_pass(CString new_Value);
-	void Set_pt_disable(bool new_Value);
-	void Set_pt_update_delay(int new_Value);
-	void Set_pt_cache_refresh(int new_Value);
+	const CString pt_ip_addr() { return _pt_ip_addr; }
+	const CString pt_port() { return _pt_port; }
+	const CString pt_dbname() { return _pt_dbname; }
+	const CString pt_user() { return _pt_user; }
+	const CString pt_pass() { return _pt_pass; }
+	const bool pt_disable() { return _pt_disable; }
+	const int pt_update_delay() { return _pt_update_delay; }
+	const int pt_cache_refresh() { return _pt_cache_refresh; }
 	// Perl
-	void Set_Perl_default_Formula(CString new_Value);
-	void Set_Perl_Editor(CString new_Value);
-	void Set_Perl_load_default_Formula(bool new_Value);
-	void Set_Perl_load_Interpreter(bool new_Value);
+	const CString Perl_default_Formula() { return _perl_default_formula; }
+	const CString Perl_Editor() { return _perl_editor; }
+	const bool Perl_load_default_Formula() { return _perl_load_default_formula; }
+	const bool Perl_load_Interpreter() { return _perl_load_interpreter; }
 	//  PokerChat
-	void Set_Chat_enabled(bool new_Value);
-	void Set_Chat_min_Delay(int new_Value);
-	void Set_Chat_random_Delay(int new_Value);
-    // Log Symbol
-    void Set_LogSymbol_enabled(bool new_Value);
-    void Set_LogSymbol_max_log(bool new_Value);
-    // Tracing
-	void Set_Trace_enabled(bool new_Value);
-	void Set_Trace_functions(unsigned int FunctionNumber, bool Flag);
+	const bool Chat_enabled() { return _chat_enabled; }
+	const int Chat_min_Delay() { return _chat_min_Delay; }
+	const int Chat_random_Delay() { return _chat_random_Delay; }
+	// Log Symbol
+	const bool LogSymbol_enabled() { return _log_symbol_enabled; }
+	const int LogSymbol_max_log() { return _log_symbol_max_log; }
+	// Tracing
+	const bool Trace_enabled() { return _trace_enabled; }
+	const bool Trace_functions(unsigned int FunctionNumber) { return _trace_functions[FunctionNumber]; }
 	// PPro
-	void Set_ppro_hostname(CString New_Value);
-	void Set_ppro_port(CString New_Value);
-	void Set_ppro_username(CString New_Value);
-	void Set_ppro_password(CString New_Value);
-	void Set_ppro_x(int New_Value);
-	void Set_ppro_y(int New_Value);
-	void Set_ppro_dx(int New_Value);
-	void Set_ppro_dy(int New_Value);
-	void Set_ppro_handhistory(bool New_Value);
-	void Set_ppro_chips(unsigned int New_Value);
-	void Set_ppro_autoseat(bool New_Value);
-	// Formula window location
-	void Set_formula_x(int New_Value);
-	void Set_formula_y(int New_Value);
-	void Set_formula_dx(int New_Value);
-	void Set_formula_dy(int New_Value);
-	// Scraper window location
-	void Set_scraper_x(int New_Value);
-	void Set_scraper_y(int New_Value);
-	void Set_scraper_dx(int New_Value);
-	void Set_scraper_dy(int New_Value);
-	// Main window location
-	void Set_main_x(int New_Value);
-	void Set_main_y(int New_Value);
-	void Set_main_dx(int New_Value);
-	void Set_main_dy(int New_Value);
+	const CString ppro_hostname() { return _ppro_hostname; }
+	const CString ppro_port() { return _ppro_port; }
+	const CString ppro_username() { return _ppro_username; }
+	const CString ppro_password() { return _ppro_password; }
+	const int ppro_x() { return _ppro_x; }
+	const int ppro_y() { return _ppro_y; }
+	const int ppro_dx() { return _ppro_dx; }
+	const int ppro_dy() { return _ppro_dy; }
+	const bool ppro_handhistory() { return _ppro_handhistory; }
+	const unsigned int ppro_chips() { return _ppro_chips; }
+	const bool ppro_autoseat() { return _ppro_autoseat; }
+	// Main window locations
+	const int main_x() { return _main_x; }
+	const int main_y() { return _main_y; }
+	const int main_dx() { return _main_dx; }
+	const int main_dy() { return _main_dy; }
+	// Scraper window locations
+	const int scraper_x() { return _scraper_x; }
+	const int scraper_y() { return _scraper_y; }
+	const int scraper_dx() { return _scraper_dx; }
+	const int scraper_dy() { return _scraper_dy; }
+	// Formula window locations
+	const int formula_x() { return _formula_x; }
+	const int formula_y() { return _formula_y; }
+	const int formula_dx() { return _formula_dx; }
+	const int formula_dy() { return _formula_dy; }	
 	// Blind locking
-	void Set_sblind(int New_Value);
-    void Set_bblind(int New_Value);
-    void Set_bbet(int New_Value);
-    void Set_ante(int New_Value);
-    void Set_gametype(int New_Value);
+	const int sblind() { return _sblind; }
+	const int bblind() { return _bblind; }
+	const int bbet() { return _bbet; }
+	const int ante() { return _ante; }
+	const int gametype() { return _gametype; }
 	// Formula editor
-	void Set_expand_list(bool  New_Value);
-	void Set_expand_std(bool New_Value);
-	void Set_expand_udf(bool New_Value);
-	void Set_udf_sort(bool New_Value);
-	void Set_udf_group(bool New_Value);
-	void Set_equal(int New_Value);
-	void Set_precision(int New_Value);
+	const bool expand_list() { return _expand_list; }
+	const bool expand_std() { return _expand_std; }
+	const bool expand_udf() { return _expand_udf; }
+	const bool udf_sort() { return _udf_sort; }
+	const bool udf_group() { return _udf_group; }
+	const int equal() { return _equal; }
+	const int precision() { return _precision; }
 	// Debug logging
-	void Set_fdebuglog(bool New_Value);
-	void Set_fdebuglog_myturn(bool New_Value);
+	const bool fdebuglog() { return _fdebuglog; }
+	const bool fdebuglog_myturn() { return _fdebuglog_myturn; }
+	// Misc
+	const int scraper_zoom() { return _scraper_zoom; }
+	const CString versus_path() { return _versus_path; }	
+	
+public:
+#define ENT CSLock lock(m_critsec);
+	// public mutators
+
+	// Analyzer
+	void set_max_opponents(const unsigned int i) { ENT _max_opponents = i; WriteReg("max_opponents", (int) i); }
+	// Autoplayer
+	void set_frame_delay(const unsigned int i) { ENT _frame_delay = i; WriteReg("frame_delay", (int) i); }
+	void set_swag_delay_1(const unsigned int i) { ENT _swag_delay_1 = i; WriteReg("swag_delay_1", (int) i); }
+	void set_swag_delay_2(const unsigned int i) { ENT _swag_delay_2 = i; WriteReg("swag_delay_2", (int) i); }
+	void set_swag_delay_3(const unsigned int i) { ENT _swag_delay_3 = i; WriteReg("swag_delay_3", (int) i); }
+	void set_text_selection_method(const unsigned int i) { ENT _text_selection_method = i; WriteReg("swag_text_selection", (int) i); }
+	void set_text_deletion_method(const unsigned int i) { ENT _text_deletion_method = i; WriteReg("swag_text_deletion", (int) i); }
+	void set_bet_confirmation_method(const unsigned int i) { ENT _bet_confirmation_method = i; WriteReg("swag_bet_confirmation", (int) i); }
+	void set_button_click_method(const unsigned int i) { ENT _button_click_method = i; WriteReg("button_click_method", (int) i); }
+	void set_ap_auto(const bool b) { ENT _ap_auto = b; WriteReg("auto", (int) b!=false); }
+	void set_focus_detect(const bool b) { ENT _focus_detect = b; WriteReg("focus_detect", (int) b!=false); }
+	// Dll extension
+	void set_dll_always_send_state(const bool b) { ENT _dll_always_send_state = b; WriteReg("dll_always_send_state", b); }
+	void set_dll_load_on_startup(const bool b) { ENT _dll_load_on_startup = b; WriteReg("load_dll_on_startup", b); }
+	void set_dll_name(const CString s) { ENT _dll_name = s; WriteReg("dll_name", s); }
+	// Scraper
+	void set_scrape_delay(const unsigned int i) { ENT _scrape_delay = i; WriteReg("scrape_delay", (int) i); }
+	// Symbols
+	void set_sym_av_time(const double d) { ENT _sym_av_time = d; WriteReg("avtime", d); }
+	void set_sym_handrank_value(const CString s) { ENT _sym_handrank_value = s; WriteReg("handrank_value", s); }
+	void set_sym_disable_caching(const bool b) { ENT _sym_disable_caching = b; WriteReg("disable_caching", b); }
+	// ICM
+	void set_icm_prize1(const double d) { ENT _icm_prize1 = d; WriteReg("icm_prize1", d); }
+	void set_icm_prize2(const double d) { ENT _icm_prize2 = d; WriteReg("icm_prize2", d); }
+	void set_icm_prize3(const double d) { ENT _icm_prize3 = d; WriteReg("icm_prize3", d); }
+	void set_icm_prize4(const double d) { ENT _icm_prize4 = d; WriteReg("icm_prize4", d); }
+	// Replay Frames
+	void set_replay_record(const bool b) { ENT _replay_record = b; WriteReg("replay_record", b); }
+	void set_replay_record_every_change(const bool b) { ENT _replay_record_every_change = b; WriteReg("replay_record_every_change", b); }
+	void set_replay_max_frames(const int i) { ENT _replay_max_frames = i; WriteReg("replay_max_frames", i); }
+	// Poker Tracker
+	void set_pt_ip_addr(const CString s) { ENT _pt_ip_addr = s; WriteReg("pt_ip_addr", s); }
+	void set_pt_port(const CString s) { ENT _pt_port = s; WriteReg("pt_port", s); }
+	void set_pt_dbname(const CString s) { ENT _pt_dbname = s; WriteReg("pt_dbname", s); }
+	void set_pt_user(const CString s) { ENT _pt_user = s; WriteReg("pt_user", s); }
+	void set_pt_pass(const CString s) { ENT _pt_pass = s; WriteReg("pt_pass", s); }
+	void set_pt_disable(const bool b) { ENT _pt_disable = b; WriteReg("pt_disable", b); }
+	void set_pt_update_delay(const int i) { ENT _pt_update_delay = i; WriteReg("pt_updatedelay", i); }
+	void set_pt_cache_refresh(const int i) { ENT _pt_cache_refresh = i; WriteReg("pt_cacherefresh", i); }
+	// Perl
+	void set_perl_default_formula(const CString s) { ENT _perl_default_formula = s; WriteReg("Perl_default_Formula", s); }
+	void set_perl_editor(const CString s) { ENT _perl_editor = s; WriteReg("Perl_Editor", s); }
+	void set_perl_load_default_formula(const bool b) { ENT _perl_load_default_formula = b; WriteReg("Perl_load_default_Formula", b); }
+	void set_perl_load_interpreter(const bool b) { ENT _perl_load_interpreter = b; WriteReg("Perl_load_Interpreter", b); }
+	//  PokerChat
+	void set_chat_enabled(const bool b) { ENT _chat_enabled = b; WriteReg("Chat_enabled", b); }
+	void set_chat_min_Delay(const int i) { ENT _chat_min_Delay = i; WriteReg("Chat_min_Delay", i); }
+	void set_chat_random_Delay(const int i) { ENT _chat_random_Delay = i; WriteReg("Chat_random_Delay", i); }
+	// Log Symbol
+	void set_log_symbol_enabled(const bool b) { ENT _log_symbol_enabled = b; WriteReg("LogSymbol_enabled", b); }
+	void set_log_symbol_max_log(const bool b) { ENT _log_symbol_max_log = b; WriteReg("LogSymbol_max_log", b); }
+	// Tracing
+	void set_trace_enabled(const bool b) { ENT _trace_enabled = b; WriteReg("Trace_enabled", b); }
+	void set_trace_functions(const unsigned int i, const bool b) 
+	{ ENT _trace_functions[i] = b; CString regValue; regValue.Format("Trace_functions%d", i+1);	WriteReg(regValue, b); }
+	// PPro
+	void set_ppro_hostname(const CString s) { ENT _ppro_hostname = s; WriteReg("ppro_hostname", s); }
+	void set_ppro_port(const CString s) { ENT _ppro_port = s; WriteReg("ppro_port", s); }
+	void set_ppro_username(const CString s) { ENT _ppro_username = s; WriteReg("ppro_username", s); }
+	void set_ppro_password(const CString s) { ENT _ppro_password = s; WriteReg("ppro_password", s); }
+	void set_ppro_x(const int i) { ENT _ppro_x = i; WriteReg("ppro_x", i); }
+	void set_ppro_y(const int i) { ENT _ppro_y = i; WriteReg("ppro_y", i); }
+	void set_ppro_dx(const int i) { ENT _ppro_dx = i; WriteReg("ppro_dx", i); }
+	void set_ppro_dy(const int i) { ENT _ppro_dy = i; WriteReg("ppro_dy", i); }
+	void set_ppro_handhistory(const bool b) { ENT _ppro_handhistory = b; WriteReg("ppro_handhistory", b); }
+	void set_ppro_chips(const unsigned int i) { ENT _ppro_chips = i; WriteReg("ppro_chips", (int) i); }
+	void set_ppro_autoseat(const bool b) { ENT _ppro_autoseat = b; WriteReg("ppro_autoseat", b); }
+	// Formula window location
+	void set_formula_x(const int i) { ENT _formula_x = i; WriteReg("formula_x", i); }
+	void set_formula_y(const int i) { ENT _formula_y = i; WriteReg("formula_y", i); }
+	void set_formula_dx(const int i) { ENT _formula_dx = i; WriteReg("formula_dx", i); }
+	void set_formula_dy(const int i) { ENT _formula_dy = i; WriteReg("formula_dy", i); }
+	// Scraper window location
+	void set_scraper_x(const int i) { ENT _scraper_x = i; WriteReg("scraper_x", i); }
+	void set_scraper_y(const int i) { ENT _scraper_y = i; WriteReg("scraper_y", i); }
+	void set_scraper_dx(const int i) { ENT _scraper_dx = i; WriteReg("scraper_dx", i); }
+	void set_scraper_dy(const int i) { ENT _scraper_dy = i; WriteReg("scraper_dy", i); }
+	// Main window location
+	void set_main_x(const int i) { ENT _main_x = i; WriteReg("main_x", i); }
+	void set_main_y(const int i) { ENT _main_y = i; WriteReg("main_y", i); }
+	void set_main_dx(const int i) { ENT _main_dx = i; WriteReg("main_dx", i); }
+	void set_main_dy(const int i) { ENT _main_dy = i; WriteReg("main_dy", i); }
+	// Blind locking
+	void set_sblind(const double d) { ENT _sblind = d; WriteReg("sblind", d); }
+	void set_bblind(const double d) { ENT _bblind = d; WriteReg("bblind", d); }
+	void set_bbet(const double d) { ENT _bbet = d; WriteReg("bbet", d); }
+	void set_ante(const double d) { ENT _ante = d; WriteReg("ante", d); }
+	void set_gametype(const int i) { ENT _gametype = i; WriteReg("gametype", i); }
+	// Formula editor
+	void set_expand_list(const bool  b) { ENT _expand_list = b; WriteReg("expand_list", b); }
+	void set_expand_std(const bool b) { ENT _expand_std = b; WriteReg("expand_std", b); }
+	void set_expand_udf(const bool b) { ENT _expand_udf = b; WriteReg("expand_udf", b); }
+	void set_udf_sort(const bool b) { ENT _udf_sort = b; WriteReg("udf_sort", b); }
+	void set_udf_group(const bool b) { ENT _udf_group = b; WriteReg("udf_group", b); }
+	void set_equal(const int i) { ENT _equal = i; WriteReg("equal", i); }
+	void set_precision(const int i) { ENT _precision = i; WriteReg("precision", i); }
+	// Debug logging
+	void set_fdebuglog(const bool b) { ENT _fdebuglog = b; WriteReg("fdebuglog", b); }
+	void set_fdebuglog_myturn(const bool b) { ENT _fdebuglog_myturn = b; WriteReg("fdebuglog_myturn", b); }
 	// Misc
 	// (No method for versus_path,
 	// as this attribute is nowhere set.) 
-	void Set_scraper_zoom(int New_Value);
+	void set_scraper_zoom(const int i) { ENT _scraper_zoom = i; WriteReg("scraper_zoom", i); }
+#undef ENT
 
-
-	//
-	// Public getter-methods
-	//
-public:
-	// Analyzer
-	unsigned int	max_opponents();
-	// Autoplayer
-	unsigned int	frame_delay();
-	unsigned int	swag_delay_1();
-	unsigned int	swag_delay_2();
-	unsigned int	swag_delay_3();
-	unsigned int	text_selection_method();
-	unsigned int	text_deletion_method();
-	unsigned int	bet_confirmation_method();
-	unsigned int	button_click_method();
-	bool			ap_auto();
-	bool			focus_detect();
-	// Dll extension
-	bool			dll_always_send_state();
-	bool			dll_load_on_startup();
-	CString			dll_name();
-	// Scraper
-	unsigned int	scrape_delay();
-	// Symbols
-	double			sym_av_time();
-	CString			sym_handrank_value();
-	bool			sym_disable_caching();
-	// ICM
-	double			icm_prize1();
-	double			icm_prize2();
-	double			icm_prize3();
-	double			icm_prize4();
-	// Replay Frames
-	bool			replay_record();
-	bool			replay_record_every_change();
-	int				replay_max_frames();
-	// Poker Tracker
-	CString			pt_ip_addr();
-	CString			pt_port();
-	CString			pt_dbname();
-	CString			pt_user();
-	CString			pt_pass();
-	bool			pt_disable();
-	int				pt_update_delay();
-	int				pt_cache_refresh();
-	// Perl
-	CString			Perl_default_Formula();
-	CString			Perl_Editor();
-	bool			Perl_load_default_Formula();
-	bool			Perl_load_Interpreter();
-	//  PokerChat
-	bool			Chat_enabled();
-	int				Chat_min_Delay();
-	int				Chat_random_Delay();
-    // Log Symbol
-    bool            LogSymbol_enabled();
-    int             LogSymbol_max_log();
-    // Tracing
-	bool			Trace_enabled();
-	bool			Trace_functions(unsigned int FunctionNumber);
-	// PPro
-	CString			ppro_hostname();
-	CString			ppro_port();
-	CString			ppro_username();
-	CString			ppro_password();
-	int				ppro_x();
-	int				ppro_y();
-	int				ppro_dx();
-	int				ppro_dy();
-	bool			ppro_handhistory();
-	unsigned int	ppro_chips();
-	bool			ppro_autoseat();
-	// Main window locations
-	int				main_x();
-	int				main_y();
-	int				main_dx();
-	int				main_dy();
-	// Scraper window locations
-	int				scraper_x();
-	int				scraper_y();
-	int				scraper_dx();
-	int				scraper_dy();
-	// Formula window locations
-	int				formula_x();
-	int				formula_y();
-	int				formula_dx();
-	int				formula_dy();	
-	// Blind locking
-	int				sblind();
-    int				bblind();
-    int				bbet();
-    int				ante();
-    int				gametype();
-	// Formula editor
-	bool			expand_list();
-	bool			expand_std();
-	bool			expand_udf();
-	bool			udf_sort();
-	bool			udf_group();
-	int				equal();
-	int				precision();
-	// Debug logging
-	bool			fdebuglog();
-	bool			fdebuglog_myturn();
-	// Misc
-	int				scraper_zoom();
-	CString			versus_path();	
-
-
-	//
-	// Private methods
-	//
 private:
-	// Initialization
-	void Init_Defaults(void);
-	// Registry
-	void Read_From_Registry(void);
+	// private variables - use public accessors and public mutators to address these
 
-	//
-	// Private attributes
-	//
-private:
 	// Analyzer
 	unsigned int	_max_opponents;
 	// Autoplayer
@@ -287,20 +273,20 @@ private:
 	int				_pt_update_delay;
 	int				_pt_cache_refresh;
 	// Perl
-	CString			_Perl_default_Formula;
-	CString			_Perl_Editor;
-	bool			_Perl_load_default_Formula;
-	bool			_Perl_load_Interpreter;
+	CString			_perl_default_formula;
+	CString			_perl_editor;
+	bool			_perl_load_default_formula;
+	bool			_perl_load_interpreter;
 	//  PokerChat
-	bool			_Chat_enabled;
-	int				_Chat_min_Delay;
-	int				_Chat_random_Delay;
-    // Log Symbol
-    bool            _LogSymbol_enabled;
-    int             _LogSymbol_max_log;
-    // Tracing
-	bool			_Trace_enabled;
-	bool			_Trace_functions[nTraceFunctions];
+	bool			_chat_enabled;
+	int				_chat_min_Delay;
+	int				_chat_random_Delay;
+	// Log Symbol
+	bool			_log_symbol_enabled;
+	int				_log_symbol_max_log;
+	// Tracing
+	bool			_trace_enabled;
+	bool			_trace_functions[nTraceFunctions];
 	// PPro
 	CString			_ppro_hostname;
 	bool			_ppro_autoseat;
@@ -350,13 +336,22 @@ private:
 	int				_scraper_zoom;
 	CString			_versus_path;
 
-	//
-	// Private registry object for I/O
-	//
 private:
-	Registry		Reg;
-};
+	// private functions and variables - not available via accessors or mutators
+	void InitDefaults(void);
+	void ReadFromRegistry(void);
+	void ReadReg(LPCTSTR registry_key, int *registry_value);
+	void ReadReg(LPCTSTR registry_key, bool *registry_value);
+	void ReadReg(LPCTSTR registry_key, unsigned int *registry_value);
+	void ReadReg(LPCTSTR registry_key, CString *registry_value);
+	void ReadReg(LPCTSTR registry_key, double *registry_value);
+	void WriteReg(const LPCTSTR registry_key, const int registry_value);
+	void WriteReg(const LPCTSTR registry_key, const CString registry_value);
+	void WriteReg(const LPCTSTR registry_key, const double registry_value);
 
-extern CPreferences *p_Preferences;
+	CCritSec		m_critsec;
+	HKEY			_hkey;
 
-#endif // OPENHOLDEM_CPREFERENCES_H_
+} prefs;
+
+#endif // INC_CPREFERENCES_H_

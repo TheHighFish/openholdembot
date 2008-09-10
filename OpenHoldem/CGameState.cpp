@@ -253,7 +253,7 @@ const double CGameState::FlopPct(void)
 				if (elapsed_start==0)
 					elapsed_start=_m_ftr[i&0xff].elapsed_time;
 
-				if (elapsed_start-_m_ftr[i&0xff].elapsed_time<p_Preferences->sym_av_time()*60)
+				if (elapsed_start-_m_ftr[i&0xff].elapsed_time<prefs.sym_av_time()*60)
 				{
 					num_dealt+=_m_ftr[i&0xff].n_pl_dealt;
 					hands++;
@@ -295,7 +295,7 @@ const double CGameState::TurnPct(void)
 				if (elapsed_start==0)
 					elapsed_start=_m_ftr[i&0xff].elapsed_time;
 
-				if (elapsed_start-_m_ftr[i&0xff].elapsed_time<p_Preferences->sym_av_time()*60)
+				if (elapsed_start-_m_ftr[i&0xff].elapsed_time<prefs.sym_av_time()*60)
 				{
 					num_dealt+=_m_ftr[i&0xff].n_pl_dealt;
 					hands++;
@@ -337,7 +337,7 @@ const double CGameState::RiverPct(void)
 				if (elapsed_start==0)
 					elapsed_start=_m_ftr[i&0xff].elapsed_time;
 
-				if (elapsed_start-_m_ftr[i&0xff].elapsed_time<p_Preferences->sym_av_time()*60)
+				if (elapsed_start-_m_ftr[i&0xff].elapsed_time<prefs.sym_av_time()*60)
 				{
 					num_dealt+=_m_ftr[i&0xff].n_pl_dealt;
 					hands++;
@@ -379,7 +379,7 @@ const double CGameState::AvgBetsPf(void)
 				if (elapsed_start==0)
 					elapsed_start=_m_ftr[i&0xff].elapsed_time;
 
-				if (elapsed_start-_m_ftr[i&0xff].elapsed_time<p_Preferences->sym_av_time()*60)
+				if (elapsed_start-_m_ftr[i&0xff].elapsed_time<prefs.sym_av_time()*60)
 				{
 					num_dealt+=_m_ftr[i&0xff].n_pl_dealt;
 					hands++;
@@ -422,7 +422,7 @@ const double CGameState::TablePfr(void)
 				if (elapsed_start==0)
 					elapsed_start=_m_ftr[i&0xff].elapsed_time;
 
-				if (elapsed_start-_m_ftr[i&0xff].elapsed_time<p_Preferences->sym_av_time()*60)
+				if (elapsed_start-_m_ftr[i&0xff].elapsed_time<prefs.sym_av_time()*60)
 				{
 					num_dealt+=_m_ftr[i&0xff].n_pl_dealt;
 					hands++;

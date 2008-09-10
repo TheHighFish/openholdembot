@@ -41,9 +41,9 @@ BOOL CDlgSAPrefs3::OnInitDialog()
     CSAPrefsSubDlg::OnInitDialog();
     CString		text;
 
-    m_AlwaysSendState.SetCheck(p_Preferences->dll_always_send_state() ? BST_CHECKED : BST_UNCHECKED);
-    m_LoadDllOnStartup.SetCheck(p_Preferences->dll_load_on_startup() ? BST_CHECKED : BST_UNCHECKED);
-    m_DllName.SetWindowText(p_Preferences->dll_name());
+    m_AlwaysSendState.SetCheck(prefs.dll_always_send_state() ? BST_CHECKED : BST_UNCHECKED);
+    m_LoadDllOnStartup.SetCheck(prefs.dll_load_on_startup() ? BST_CHECKED : BST_UNCHECKED);
+    m_DllName.SetWindowText(prefs.dll_name());
 
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
@@ -53,10 +53,11 @@ void CDlgSAPrefs3::OnOK()
 {
     CString			text;
 
-    p_Preferences->Set_dll_always_send_state(m_AlwaysSendState.GetCheck()==BST_CHECKED ? true : false);
-    p_Preferences->Set_dll_load_on_startup(m_LoadDllOnStartup.GetCheck()==BST_CHECKED ? true : false);
+    prefs.set_dll_always_send_state(m_AlwaysSendState.GetCheck()==BST_CHECKED ? true : false);
+    prefs.set_dll_load_on_startup(m_LoadDllOnStartup.GetCheck()==BST_CHECKED ? true : false);
 
-    m_DllName.GetWindowText(p_Preferences->dll_name());
+    m_DllName.GetWindowText(text);
+	prefs.set_dll_name(text);
 
     CSAPrefsSubDlg::OnOK();
 }

@@ -34,7 +34,6 @@
 #include "DialogSAPrefs10.h"
 #include "DialogSAPrefs11.h"
 
-#include "registry.h"
 #include "DialogSelectTable.h"
 #include "inlines/eval.h"
 #include "PokerPro.h"
@@ -367,10 +366,10 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
     // Restore window location and size
     max_x = GetSystemMetrics(SM_CXSCREEN) - GetSystemMetrics(SM_CXICON);
     max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
-    cs.x = min(p_Preferences->main_x(), max_x);
-    cs.y = min(p_Preferences->main_y(), max_y);
-    cs.cx = p_Preferences->main_dx();
-    cs.cy = p_Preferences->main_dy();
+    cs.x = min(prefs.main_x(), max_x);
+    cs.y = min(prefs.main_y(), max_y);
+    cs.cx = prefs.main_dx();
+    cs.cy = prefs.main_dy();
 
     return true;
 
@@ -527,17 +526,17 @@ BOOL CMainFrame::DestroyWindow()
 	{
         GetWindowPlacement(&wp);
 
-        p_Preferences->Set_main_x(wp.rcNormalPosition.left);
-        p_Preferences->Set_main_y(wp.rcNormalPosition.top);
-        p_Preferences->Set_main_dx(wp.rcNormalPosition.right - wp.rcNormalPosition.left);
-        p_Preferences->Set_main_dy(wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
+        prefs.set_main_x(wp.rcNormalPosition.left);
+        prefs.set_main_y(wp.rcNormalPosition.top);
+        prefs.set_main_dx(wp.rcNormalPosition.right - wp.rcNormalPosition.left);
+        prefs.set_main_dy(wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
     }
     else 
 	{
-        p_Preferences->Set_main_x(table_view_size.left);
-        p_Preferences->Set_main_y(table_view_size.top);
-        p_Preferences->Set_main_dx(table_view_size.right - table_view_size.left);
-        p_Preferences->Set_main_dy(table_view_size.bottom - table_view_size.top);
+        prefs.set_main_x(table_view_size.left);
+        prefs.set_main_y(table_view_size.top);
+        prefs.set_main_dx(table_view_size.right - table_view_size.left);
+        prefs.set_main_dy(table_view_size.bottom - table_view_size.top);
     }
 
     return CFrameWnd::DestroyWindow();
@@ -553,7 +552,7 @@ void CMainFrame::OnFileOpen()
     CString				theKey = "DefWHFOpenLocation";
     char				path[MAX_PATH];
 
-    Registry::Read_Reg_String(theKey, path);
+    ReadRegString(theKey, path);
     cfd.m_ofn.lpstrInitialDir = path;
     cfd.m_ofn.lpstrFilter = "OpenHoldem Files (.ohf)\0*.ohf\0WinHoldem Files (.whf)\0*.whf\0All files (*.*)\0*.*\0\0";
     cfd.m_ofn.lpstrTitle = "Select Formula file to OPEN";
@@ -564,7 +563,7 @@ void CMainFrame::OnFileOpen()
 		pDoc->SetPathName(cfd.GetPathName());
         // Update window title, registry
         SetWindowText(cfd.GetFileTitle() + " - " + CString(MAKEINTRESOURCE(AFX_IDS_APP_TITLE)));
-        Registry::Write_Reg_String(theKey, cfd.GetPathName());
+        WriteRegString(theKey, cfd.GetPathName());
     }
 
     __SEH_LOGFATAL("CMainFrame::OnFileOpen :\n");
@@ -581,7 +580,7 @@ void CMainFrame::OnFileLoadTableMap()
     CString				theKey = "DefTMOpenLocation";
     char				path[MAX_PATH];
 
-    Registry::Read_Reg_String(theKey, path);
+    ReadRegString(theKey, path);
     cfd.m_ofn.lpstrInitialDir = path;
     cfd.m_ofn.lpstrFilter = "OpenScrape Table Maps (.tm)\0*.tm\0All files (*.*)\0*.*\0\0";
     cfd.m_ofn.lpstrTitle = "Select OpenScrape table map to OPEN";
@@ -614,7 +613,7 @@ void CMainFrame::OnFileLoadTableMap()
                 m_ScraperOutputDlg->do_update_display();
             }
 
-            Registry::Write_Reg_String(theKey, cfd.GetPathName());
+            WriteRegString(theKey, cfd.GetPathName());
         }
     }
 
@@ -815,7 +814,7 @@ void CMainFrame::OnBnClickedGreenCircle()
             }
 
             p_global->set_next_replay_frame(last_frame_num + 1);
-            if (p_global->next_replay_frame() >= p_Preferences->replay_max_frames())
+            if (p_global->next_replay_frame() >= prefs.replay_max_frames())
                 p_global->set_next_replay_frame(0);
 
 			// reset iterator vars
@@ -983,7 +982,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 
 		// Autoplayer
 		if ((p_symbols->user_chair_confirmed() && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)) ||
-				p_PokerPro->data.m_userchair!=-1)
+				p_pokerpro->data.m_userchair!=-1)
 		{
 			m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
 		}
@@ -993,9 +992,9 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 		}
 
 		// Automatically start autoplayer, if set in preferences
-        if (p_Preferences->ap_auto() && !m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER) &&
+        if (prefs.ap_auto() && !m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER) &&
                 ((p_symbols->user_chair_confirmed() && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)) ||
-                 p_PokerPro->data.m_userchair!=-1))
+                 p_pokerpro->data.m_userchair!=-1))
         {
             if (!p_global->autoplay_pressed)
             {
@@ -1102,19 +1101,19 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 		status_pokerhand = status_pokerhand.Mid(0, status_pokerhand.Find(" "));
 
 		// handrank
-		if (p_Preferences->sym_handrank_value() == "169")
+		if (prefs.sym_handrank_value() == "169")
 			status_handrank.Format("%.0f/169", p_symbols->sym()->handrank169);
 
-		else if (p_Preferences->sym_handrank_value() == "1000")
+		else if (prefs.sym_handrank_value() == "1000")
 			status_handrank.Format("%.0f/1000", p_symbols->sym()->handrank1000);
 
-		else if (p_Preferences->sym_handrank_value() == "1326")
+		else if (prefs.sym_handrank_value() == "1326")
 			status_handrank.Format("%.0f/1326", p_symbols->sym()->handrank1326);
 
-		else if (p_Preferences->sym_handrank_value() == "2652")
+		else if (prefs.sym_handrank_value() == "2652")
 			status_handrank.Format("%.0f/2652", p_symbols->sym()->handrank2652);
 
-		else if (p_Preferences->sym_handrank_value() == "p")
+		else if (prefs.sym_handrank_value() == "p")
 			status_handrank.Format("%.2f/2652", p_symbols->sym()->handrankp);
 
 		// nopponents
@@ -1322,7 +1321,7 @@ void CMainFrame::OnDllLoadspecificfile()
     CString				theKey = "DefDLLOpenLocation";
     char				path[MAX_PATH];
 
-    Registry::Read_Reg_String(theKey, path);
+    ReadRegString(theKey, path);
     cfd.m_ofn.lpstrInitialDir = path;
     cfd.m_ofn.lpstrFilter = "DLL Files (.dll)\0*.dll\0\0";
     cfd.m_ofn.lpstrTitle = "Select OpenHoldem DLL file to OPEN";
@@ -1333,7 +1332,7 @@ void CMainFrame::OnDllLoadspecificfile()
 
 		p_dll_extension->LoadDll(cfd.m_ofn.lpstrFile);
 
-        Registry::Write_Reg_String(theKey, cfd.GetPathName());
+        WriteRegString(theKey, cfd.GetPathName());
     }
 
     __SEH_LOGFATAL("CMainFrame::OnDllLoadspecificfile :\n");
@@ -1488,11 +1487,11 @@ void CMainFrame::OnLockBlinds(void)
     if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_LOCK_BLINDS)) 
 	{
         
-        lockblinds_dlg.sblind = p_Preferences->sblind();
-        lockblinds_dlg.bblind = p_Preferences->bblind();
-        lockblinds_dlg.bbet = p_Preferences->bbet();
-        lockblinds_dlg.ante = p_Preferences->ante();
-        lockblinds_dlg.gametype = p_Preferences->gametype();
+        lockblinds_dlg.sblind = prefs.sblind();
+        lockblinds_dlg.bblind = prefs.bblind();
+        lockblinds_dlg.bbet = prefs.bbet();
+        lockblinds_dlg.ante = prefs.ante();
+        lockblinds_dlg.gametype = prefs.gametype();
 
         if (lockblinds_dlg.DoModal() == IDOK) 
 		{
@@ -1508,11 +1507,11 @@ void CMainFrame::OnLockBlinds(void)
             p_scraper->SetLockedBlinds(LB);
 
 			// Save locked blinds info for future use
-            p_Preferences->Set_sblind(lockblinds_dlg.sblind);
-            p_Preferences->Set_bblind(lockblinds_dlg.bblind);
-            p_Preferences->Set_bbet(lockblinds_dlg.bbet);
-            p_Preferences->Set_ante(lockblinds_dlg.ante);
-            p_Preferences->Set_gametype(lockblinds_dlg.gametype);
+            prefs.set_sblind(lockblinds_dlg.sblind);
+            prefs.set_bblind(lockblinds_dlg.bblind);
+            prefs.set_bbet(lockblinds_dlg.bbet);
+            prefs.set_ante(lockblinds_dlg.ante);
+            prefs.set_gametype(lockblinds_dlg.gametype);
             
         }
         else 
@@ -1634,7 +1633,7 @@ void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI)
         pCmdUI->SetText("&Load\tF4");
 
 	// Not connected to ppro server
-    if (p_PokerPro->m_socket==INVALID_SOCKET) 
+    if (p_pokerpro->m_socket==INVALID_SOCKET) 
 	{
         pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
                         !m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
@@ -1642,7 +1641,7 @@ void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI)
     // connected to ppro server
     else 
 	{
-        pCmdUI->Enable(p_PokerPro->data.m_pinf[p_PokerPro->data.m_userchair].m_isActive&0x1 ? false : true);
+        pCmdUI->Enable(p_pokerpro->data.m_pinf[p_pokerpro->data.m_userchair].m_isActive&0x1 ? false : true);
     }
 
 	__SEH_LOGFATAL("CMainFrame::OnUpdateMenuDllLoad\n")
@@ -1664,7 +1663,7 @@ void CMainFrame::OnUpdatePokerproConnect(CCmdUI *pCmdUI)
 
     pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
                     !m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) &&
-                   !(p_PokerPro->m_socket!=INVALID_SOCKET) ? false : true);
+                   !(p_pokerpro->m_socket!=INVALID_SOCKET) ? false : true);
 
 	__SEH_LOGFATAL("CMainFrame::OnUpdatePokerproConnect\n")
 }
@@ -1819,14 +1818,14 @@ void CMainFrame::OnPerlLoadSpecificFormula()
     CString				theKey = "DefPLOpenLocation";
     char				path[MAX_PATH];
 
-    Registry::Read_Reg_String(theKey, path);
+    ReadRegString(theKey, path);
     cfd.m_ofn.lpstrInitialDir = path;
     cfd.m_ofn.lpstrFilter = "Perl Scripts (*.pl)\0*.pl\0Perl Modules (*.pm)\0*.pm\0All Files (*.*)\0*.*\0\0";
     cfd.m_ofn.lpstrTitle = "Select Perl formula file to OPEN";
     if (cfd.DoModal() == IDOK)
     {
         the_Perl_Interpreter->load_FormulaFile(cfd.m_ofn.lpstrFile);
-        Registry::Write_Reg_String(theKey, cfd.GetPathName());
+        WriteRegString(theKey, cfd.GetPathName());
     }
 
     __SEH_LOGFATAL("CMainFrame::OnPerlLoadSpecificFormula :\n");
@@ -1887,6 +1886,50 @@ void CMainFrame::OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI)
 
 	__SEH_LOGFATAL("CMainFrame::OnUpdateMenuPerlEditMainFormula")
 }
+
+
+void CMainFrame::ReadRegString(CString RegistryKey, char* RegistryValue)
+{
+    __SEH_HEADER
+
+    HKEY				hKey;
+    LONG				result;
+    DWORD				strSize = MAX_PATH;
+
+    result = RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\OpenHoldem\\OpenHoldem", 0, KEY_READ, &hKey);
+
+    if (result==ERROR_SUCCESS)
+	{
+        RegQueryValueEx(hKey,RegistryKey,NULL,NULL,(LPBYTE)RegistryValue,&strSize);
+    }
+
+    RegCloseKey(hKey);
+
+    __SEH_LOGFATAL("CMainFrame::ReadRegString :\n");
+}
+
+void CMainFrame::WriteRegString(CString RegistryKey, CString RegistryValue)
+{
+    __SEH_HEADER
+
+    HKEY				hKey;
+    LONG				result;
+    char				str[MAX_PATH];
+
+    result = RegCreateKeyEx(HKEY_CURRENT_USER, "Software\\OpenHoldem\\OpenHoldem", 0, NULL,
+                            REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, NULL);
+
+    if (result==ERROR_SUCCESS)
+	{
+        sprintf_s(str, 256, "%s", RegistryValue);
+        RegSetValueEx(hKey, RegistryKey, 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
+    }
+
+    RegCloseKey(hKey);
+
+    __SEH_LOGFATAL("CMainFrame::WriteRegString :\n");
+}
+
 
 BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) 
 {

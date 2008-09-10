@@ -41,18 +41,18 @@ BOOL CDlgSAPrefs10::OnInitDialog()
     CSAPrefsSubDlg::OnInitDialog();
     CString		text;
 
-    m_EnableChat.SetCheck(p_Preferences->Chat_enabled() ? BST_CHECKED : BST_UNCHECKED);
+    m_EnableChat.SetCheck(prefs.Chat_enabled() ? BST_CHECKED : BST_UNCHECKED);
 
-    text.Format("%d", p_Preferences->Chat_min_Delay());
+    text.Format("%d", prefs.Chat_min_Delay());
     m_MinimumDelay.SetWindowText(text);
     m_MinimumDelay_Spin.SetRange(0, (short) MAX_DELAY);
-    m_MinimumDelay_Spin.SetPos(p_Preferences->Chat_min_Delay());
+    m_MinimumDelay_Spin.SetPos(prefs.Chat_min_Delay());
     m_MinimumDelay_Spin.SetBuddy(&m_MinimumDelay);
 
-    text.Format("%d", p_Preferences->Chat_random_Delay());
+    text.Format("%d", prefs.Chat_random_Delay());
     m_RandomDelay.SetWindowText(text);
     m_RandomDelay_Spin.SetRange(0, (short) MAX_DELAY);
-    m_RandomDelay_Spin.SetPos(p_Preferences->Chat_random_Delay());
+    m_RandomDelay_Spin.SetPos(prefs.Chat_random_Delay());
     m_RandomDelay_Spin.SetBuddy(&m_RandomDelay);
 
     return TRUE;  // return TRUE unless you set the focus to a control
@@ -64,21 +64,21 @@ void CDlgSAPrefs10::OnOK()
 {
     CString			text;
 
-    p_Preferences->Set_Chat_enabled(m_EnableChat.GetCheck()==BST_CHECKED ? true : false);
+    prefs.set_chat_enabled(m_EnableChat.GetCheck()==BST_CHECKED ? true : false);
 
     m_MinimumDelay.GetWindowText(text);
     if (strtoul(text.GetString(), 0, 10)<0 || strtoul(text.GetString(), 0, 10)>MAX_DELAY) {
         MessageBox("Invalid minimum Chat Delay", "ERROR", MB_OK);
         return;
     }
-    p_Preferences->Set_Chat_min_Delay(strtoul(text.GetString(), 0, 10));
+    prefs.set_chat_min_Delay(strtoul(text.GetString(), 0, 10));
 
     m_RandomDelay.GetWindowText(text);
     if (strtoul(text.GetString(), 0, 10)<0 || strtoul(text.GetString(), 0, 10)>MAX_DELAY) {
         MessageBox("Invalid random Chat Delay", "ERROR", MB_OK);
         return;
     }
-    p_Preferences->Set_Chat_random_Delay(strtoul(text.GetString(), 0, 10));
+    prefs.set_chat_random_Delay(strtoul(text.GetString(), 0, 10));
 
     CSAPrefsSubDlg::OnOK();
 }

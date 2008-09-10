@@ -41,10 +41,10 @@ BOOL CDlgSAPrefs4::OnInitDialog()
     CSAPrefsSubDlg::OnInitDialog();
     CString		text;
 
-    text.Format("%d", p_Preferences->scrape_delay());
+    text.Format("%d", prefs.scrape_delay());
     m_ScrapeDelay.SetWindowText(text);
     m_ScrapeDelay_Spin.SetRange(100, 5000);
-    m_ScrapeDelay_Spin.SetPos(p_Preferences->scrape_delay());
+    m_ScrapeDelay_Spin.SetPos(prefs.scrape_delay());
     m_ScrapeDelay_Spin.SetBuddy(&m_ScrapeDelay);
 
     return TRUE;  // return TRUE unless you set the focus to a control
@@ -60,7 +60,7 @@ void CDlgSAPrefs4::OnOK()
         MessageBox("Invalid Scrape Delay", "ERROR", MB_OK);
         return;
     }
-    p_Preferences->Set_scrape_delay(strtoul(text.GetString(), 0, 10));
+    prefs.set_scrape_delay(strtoul(text.GetString(), 0, 10));
 
     CSAPrefsSubDlg::OnOK();
 }

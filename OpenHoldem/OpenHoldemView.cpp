@@ -365,7 +365,7 @@ void COpenHoldemView::draw_center_info_box(void)
 	double sym_pot			= p_symbols->sym()->pot;
 	bool sym_playing		= (bool) p_symbols->sym()->playing;
 
-	if (p_Preferences->LogSymbol_enabled())
+	if (prefs.LogSymbol_enabled())
 		height += 40;
 
     // Get size of current client window

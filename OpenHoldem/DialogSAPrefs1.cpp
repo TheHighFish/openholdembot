@@ -40,10 +40,10 @@ BOOL CDlgSAPrefs1::OnInitDialog()
     CSAPrefsSubDlg::OnInitDialog();
     CString		text;
 
-    text.Format("%d", p_Preferences->max_opponents());
+    text.Format("%d", prefs.max_opponents());
     m_MaxOpponents.SetWindowText(text);
     m_MaxOpponents_Spin.SetRange(1, 22);
-    m_MaxOpponents_Spin.SetPos(p_Preferences->max_opponents());
+    m_MaxOpponents_Spin.SetPos(prefs.max_opponents());
     m_MaxOpponents_Spin.SetBuddy(&m_MaxOpponents);
 
 
@@ -60,7 +60,7 @@ void CDlgSAPrefs1::OnOK()
         MessageBox("Invalid Max Opponents", "ERROR", MB_OK);
         return;
     }
-    p_Preferences->Set_max_opponents(strtoul(text.GetString(), 0, 10));
+    prefs.set_max_opponents(strtoul(text.GetString(), 0, 10));
 
     CSAPrefsSubDlg::OnOK();
 }

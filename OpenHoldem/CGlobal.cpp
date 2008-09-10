@@ -13,7 +13,6 @@
 #include "CGrammar.h"
 
 #include "resource.h"
-#include "registry.h"
 #include "DialogFormulaScintilla.h"
 
 CGlobal				*p_global = NULL;
@@ -34,7 +33,6 @@ CGlobal::CGlobal(void)
 	__SEH_HEADER
 
 	int			i = 0;
-	Registry	reg;
 
 	InitializeCriticalSectionAndSpinCount(&cs_global, 4000);
 	
@@ -47,7 +45,7 @@ CGlobal::CGlobal(void)
 	_sopen_s(&versus_fh, "versus.bin", _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
 	if (versus_fh == -1)
 	{
-		_sopen_s(&versus_fh, p_Preferences->versus_path(), _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
+		_sopen_s(&versus_fh, prefs.versus_path(), _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
 	}
 
 	if (versus_fh == -1)
@@ -264,9 +262,9 @@ void CGlobal::CreateReplayFrame(void)
 			fprintf(fp, "<img src=\"frame%03d.bmp\">\n", _next_replay_frame);
 			fprintf(fp, "<br>\n");
 			fprintf(fp, "<a href=\"frame%03d.htm\">PREV</a>\n",
-					_next_replay_frame-1 >= 0 ? _next_replay_frame-1 : p_Preferences->replay_max_frames());
+					_next_replay_frame-1 >= 0 ? _next_replay_frame-1 : prefs.replay_max_frames());
 			fprintf(fp, "<a href=\"frame%03d.htm\">NEXT</a>\n",
-					_next_replay_frame+1 < p_Preferences->replay_max_frames() ? _next_replay_frame+1 : 0);
+					_next_replay_frame+1 < prefs.replay_max_frames() ? _next_replay_frame+1 : 0);
 			fprintf(fp, " [%lu.%03d] [%s]<br>\n", _session_id, _next_replay_frame, now_time_str);
 			fprintf(fp, "<br>\n");
 			fprintf(fp, "<table>\n");
@@ -377,7 +375,7 @@ void CGlobal::CreateReplayFrame(void)
 	// Increment counter
 	EnterCriticalSection(&cs_global);
 		_next_replay_frame++;
-		if (_next_replay_frame >= p_Preferences->replay_max_frames())
+		if (_next_replay_frame >= prefs.replay_max_frames())
 			_next_replay_frame = 0;
 	LeaveCriticalSection(&cs_global);
 

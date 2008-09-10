@@ -22,7 +22,6 @@
 
 
 #include "DialogFormulaScintilla.h"
-#include "registry.h"
 #include "DialogRename.h"
 #include "DialogNew.h"
 #include "DialogSettings.h"
@@ -409,7 +408,7 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
 
     // Restore font of Scintilla control
 
-    if (!Registry::Get_Profile_Font("Font", "Formula", editfont)) 
+    if (!GetProfileFont("Font", "Formula", editfont)) 
 	{
         // Use 8pt Courier (monospace) default
         editfont.CreatePointFont(100,"Courier");
@@ -458,7 +457,7 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
     HTREEITEM	parent;
 
     parent = m_FormulaTree.InsertItem("Standard Functions");
-    m_FormulaTree.SetItemState(parent, TVIS_BOLD | (p_Preferences->expand_std() ? TVIS_EXPANDED : 0), TVIS_BOLD | (p_Preferences->expand_std() ? TVIS_EXPANDED : 0) );
+    m_FormulaTree.SetItemState(parent, TVIS_BOLD | (prefs.expand_std() ? TVIS_EXPANDED : 0), TVIS_BOLD | (prefs.expand_std() ? TVIS_EXPANDED : 0) );
     m_FormulaTree.InsertItem("notes", parent);
     m_FormulaTree.InsertItem("dll", parent);
     m_FormulaTree.InsertItem("f$alli", parent);
@@ -475,7 +474,7 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
     m_FormulaTree.InsertItem("f$debug", parent);
 
     parent = m_FormulaTree.InsertItem("Hand Lists");
-    m_FormulaTree.SetItemState(parent, TVIS_BOLD | (p_Preferences->expand_list() ? TVIS_EXPANDED : 0), TVIS_BOLD | (p_Preferences->expand_list() ? TVIS_EXPANDED : 0) );
+    m_FormulaTree.SetItemState(parent, TVIS_BOLD | (prefs.expand_list() ? TVIS_EXPANDED : 0), TVIS_BOLD | (prefs.expand_list() ? TVIS_EXPANDED : 0) );
 	N = (int) m_wrk_formula.formula()->mHandList.GetSize();
 
     for (i=0; i<N; i++) 
@@ -484,8 +483,8 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
     }
 
 	hUDFItem = parent = m_FormulaTree.InsertItem("User Defined Functions");
-    m_FormulaTree.SetItemState(parent, TVIS_BOLD | (p_Preferences->expand_udf() ? TVIS_EXPANDED : 0), TVIS_BOLD | (p_Preferences->expand_udf() ? TVIS_EXPANDED : 0) );
-    m_udf_group = p_Preferences->udf_group();
+    m_FormulaTree.SetItemState(parent, TVIS_BOLD | (prefs.expand_udf() ? TVIS_EXPANDED : 0), TVIS_BOLD | (prefs.expand_udf() ? TVIS_EXPANDED : 0) );
+    m_udf_group = prefs.udf_group();
 	PopulateUDFs();
 
     SetupScintilla(&m_EmptyScinCtrl);
@@ -502,18 +501,18 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
     // Restore window location and size, precision preference
     max_x = GetSystemMetrics(SM_CXSCREEN) - GetSystemMetrics(SM_CXICON);
     max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
-    ::SetWindowPos(m_hWnd, HWND_TOP, min(p_Preferences->formula_x(), max_x), min(p_Preferences->formula_y(), max_y),
-                   p_Preferences->formula_dx(), p_Preferences->formula_dy(), SWP_NOCOPYBITS);
-    m_precision = p_Preferences->precision();
-    m_equal = p_Preferences->equal();
+    ::SetWindowPos(m_hWnd, HWND_TOP, min(prefs.formula_x(), max_x), min(prefs.formula_y(), max_y),
+                   prefs.formula_dx(), prefs.formula_dy(), SWP_NOCOPYBITS);
+    m_precision = prefs.precision();
+    m_equal = prefs.equal();
 
     // Debug logging preferences
-    m_fdebuglog = p_Preferences->fdebuglog();
-    m_fdebuglog_myturn = p_Preferences->fdebuglog_myturn();
+    m_fdebuglog = prefs.fdebuglog();
+    m_fdebuglog_myturn = prefs.fdebuglog_myturn();
     m_wrote_fdebug_header = false;
 
     // Sort UDF?
-    m_udf_sort = p_Preferences->udf_sort();
+    m_udf_sort = prefs.udf_sort();
     if (m_udf_sort)
         sort_udf_tree();
 
@@ -1515,7 +1514,7 @@ void CDlgFormulaScintilla::OnFont()
         editfont.CreateFontIndirect(&newlf);
 
         // Save the new font
-        Registry::Write_Profile_Font("Font", "Formula", editfont);
+        WriteProfileFont("Font", "Formula", editfont);
 
         // Set the new font to all Scintilla windows
         for (int iScint=0; iScint<m_ScinArray.GetSize(); iScint++)
@@ -3091,16 +3090,16 @@ void CDlgFormulaScintilla::save_settings_to_registry()
     UINT			state;
 
     GetWindowPlacement(&wp);
-    p_Preferences->Set_formula_x(wp.rcNormalPosition.left);
-    p_Preferences->Set_formula_y(wp.rcNormalPosition.top);
-    p_Preferences->Set_formula_dx(wp.rcNormalPosition.right - wp.rcNormalPosition.left);
-    p_Preferences->Set_formula_dy(wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
-    p_Preferences->Set_precision(m_precision);
-    p_Preferences->Set_equal(m_equal);
-    p_Preferences->Set_fdebuglog(m_fdebuglog);
-    p_Preferences->Set_fdebuglog_myturn(m_fdebuglog_myturn);
-    p_Preferences->Set_udf_sort(m_udf_sort);
-    p_Preferences->Set_udf_group(m_udf_group);
+    prefs.set_formula_x(wp.rcNormalPosition.left);
+    prefs.set_formula_y(wp.rcNormalPosition.top);
+    prefs.set_formula_dx(wp.rcNormalPosition.right - wp.rcNormalPosition.left);
+    prefs.set_formula_dy(wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
+    prefs.set_precision(m_precision);
+    prefs.set_equal(m_equal);
+    prefs.set_fdebuglog(m_fdebuglog);
+    prefs.set_fdebuglog_myturn(m_fdebuglog_myturn);
+    prefs.set_udf_sort(m_udf_sort);
+    prefs.set_udf_group(m_udf_group);
 
     // Tree expansion settings
     hItem = m_FormulaTree.GetChildItem(NULL);
@@ -3110,11 +3109,11 @@ void CDlgFormulaScintilla::save_settings_to_registry()
         state = m_FormulaTree.GetItemState(hItem, TVIS_EXPANDED) & TVIS_EXPANDED;
 
         if (text == "Standard Functions")
-            p_Preferences->Set_expand_std(state);
+            prefs.set_expand_std(state);
         else if (text == "Hand Lists")
-            p_Preferences->Set_expand_list(state);
+            prefs.set_expand_list(state);
         else if (text == "User Defined Functions")
-            p_Preferences->Set_expand_udf(state);
+            prefs.set_expand_udf(state);
 
         hItem = m_FormulaTree.GetNextItem(hItem, TVGN_NEXT);
         if (hItem != NULL)
@@ -3832,3 +3831,56 @@ void CDlgFormulaScintilla::PopulateSymbols()
 
     __SEH_LOGFATAL("CDlgFormulaScintilla::PopulateSymbols() :\n");
 }
+
+bool CDlgFormulaScintilla::GetProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, CDC* pDC)
+{
+    __SEH_HEADER
+
+    CWinApp *pApp = AfxGetApp();
+    ASSERT_VALID(pApp);
+    CString s = pApp->GetProfileString(lpszKey, lpszVal);
+    if (s.IsEmpty())
+        return FALSE;
+
+    LOGFONT lf;
+    memset(&lf, 0, sizeof(LOGFONT));
+    lf.lfCharSet = DEFAULT_CHARSET;
+    int bItalic;
+    int iPtSize;
+
+	if (sscanf_s(s.GetString(), "%[a-zA-Z ],%d,%d,%d",
+               lf.lfFaceName, 32, &iPtSize, &lf.lfWeight, &bItalic) != 4)
+        return FALSE;
+
+    lf.lfHeight = MulDiv(-iPtSize, 	// convert ptsize to logical units
+                         ::GetDeviceCaps(pDC ? pDC->m_hDC : ::GetDC(NULL), LOGPIXELSY), 72);
+    lf.lfItalic = bItalic;	// because lf.lfItalic is a BYTE
+    font.DeleteObject();		// bye
+
+    return font.CreateFontIndirect(&lf)!=0;
+
+    __SEH_LOGFATAL("CDlgFormulaScintilla::GetProfileFont : \n");
+}
+
+
+bool CDlgFormulaScintilla::WriteProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, CDC* pDC)
+{
+    __SEH_HEADER
+
+    CWinApp *pApp = AfxGetApp();
+    ASSERT_VALID(pApp);
+    LOGFONT lf;
+
+    font.GetLogFont(&lf);
+
+    int iPtSize = MulDiv(-lf.lfHeight, 72,
+                         ::GetDeviceCaps(pDC ? pDC->m_hDC : ::GetDC(NULL), LOGPIXELSY));
+    CString s;
+
+    s.Format("%s,%d,%d,%d", lf.lfFaceName, iPtSize, lf.lfWeight, lf.lfItalic);
+
+    return pApp->WriteProfileString(lpszKey, lpszVal, s)!=0;
+
+    __SEH_LOGFATAL("CDlgFormulaScintilla::WriteProfileFont : \n");
+}
+

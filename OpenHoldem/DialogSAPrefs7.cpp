@@ -44,28 +44,28 @@ BOOL CDlgSAPrefs7::OnInitDialog()
 
     CSAPrefsSubDlg::OnInitDialog();
 
-    if (p_Preferences->icm_prize1() == (int) p_Preferences->icm_prize1())
-        text.Format("%.0f", p_Preferences->icm_prize1());
+    if (prefs.icm_prize1() == (int) prefs.icm_prize1())
+        text.Format("%.0f", prefs.icm_prize1());
     else
-        text.Format("%f", p_Preferences->icm_prize1());
+        text.Format("%f", prefs.icm_prize1());
     m_ICM1.SetWindowText(text);
 
-    if (p_Preferences->icm_prize2() == (int) p_Preferences->icm_prize2())
-        text.Format("%.0f", p_Preferences->icm_prize2());
+    if (prefs.icm_prize2() == (int) prefs.icm_prize2())
+        text.Format("%.0f", prefs.icm_prize2());
     else
-        text.Format("%f", p_Preferences->icm_prize2());
+        text.Format("%f", prefs.icm_prize2());
     m_ICM2.SetWindowText(text);
 
-    if (p_Preferences->icm_prize3() == (int) p_Preferences->icm_prize3())
-        text.Format("%.0f", p_Preferences->icm_prize3());
+    if (prefs.icm_prize3() == (int) prefs.icm_prize3())
+        text.Format("%.0f", prefs.icm_prize3());
     else
-        text.Format("%f", p_Preferences->icm_prize3());
+        text.Format("%f", prefs.icm_prize3());
     m_ICM3.SetWindowText(text);
 
-    if (p_Preferences->icm_prize4() == (int) p_Preferences->icm_prize4())
-        text.Format("%.0f", p_Preferences->icm_prize4());
+    if (prefs.icm_prize4() == (int) prefs.icm_prize4())
+        text.Format("%.0f", prefs.icm_prize4());
     else
-        text.Format("%f", p_Preferences->icm_prize4());
+        text.Format("%f", prefs.icm_prize4());
     m_ICM4.SetWindowText(text);
 
     return TRUE;  // return TRUE unless you set the focus to a control
@@ -77,13 +77,13 @@ void CDlgSAPrefs7::OnOK()
     CString			text;
 
     m_ICM1.GetWindowText(text);
-    p_Preferences->Set_icm_prize1(atof(text.GetString()));
+    prefs.set_icm_prize1(atof(text.GetString()));
     m_ICM2.GetWindowText(text);
-    p_Preferences->Set_icm_prize2(atof(text.GetString()));
+    prefs.set_icm_prize2(atof(text.GetString()));
     m_ICM3.GetWindowText(text);
-    p_Preferences->Set_icm_prize3(atof(text.GetString()));
+    prefs.set_icm_prize3(atof(text.GetString()));
     m_ICM4.GetWindowText(text);
-    p_Preferences->Set_icm_prize4(atof(text.GetString()));
+    prefs.set_icm_prize4(atof(text.GetString()));
 
     CSAPrefsSubDlg::OnOK();
 }

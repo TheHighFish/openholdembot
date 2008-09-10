@@ -58,24 +58,24 @@ BOOL CDlgSAPrefs6::OnInitDialog()
 
     CSAPrefsSubDlg::OnInitDialog();
 
-	m_pt_disable.SetCheck(p_Preferences->pt_disable() ? BST_UNCHECKED : BST_CHECKED);
+	m_pt_disable.SetCheck(prefs.pt_disable() ? BST_UNCHECKED : BST_CHECKED);
 
-	m_pt_ip.SetWindowText(p_Preferences->pt_ip_addr().GetString());
-	m_pt_port.SetWindowText(p_Preferences->pt_port().GetString());
-	m_pt_user.SetWindowText(p_Preferences->pt_user().GetString());
-	m_pt_pass.SetWindowText(p_Preferences->pt_pass().GetString());
-	m_pt_dbname.SetWindowText(p_Preferences->pt_dbname().GetString());
+	m_pt_ip.SetWindowText(prefs.pt_ip_addr().GetString());
+	m_pt_port.SetWindowText(prefs.pt_port().GetString());
+	m_pt_user.SetWindowText(prefs.pt_user().GetString());
+	m_pt_pass.SetWindowText(prefs.pt_pass().GetString());
+	m_pt_dbname.SetWindowText(prefs.pt_dbname().GetString());
 
-	text.Format("%d", p_Preferences->pt_update_delay());
+	text.Format("%d", prefs.pt_update_delay());
     m_UpdateDelay.SetWindowText(text);
     m_UpdateDelay_Spin.SetRange(1, 120);
-    m_UpdateDelay_Spin.SetPos(p_Preferences->pt_update_delay());
+    m_UpdateDelay_Spin.SetPos(prefs.pt_update_delay());
     m_UpdateDelay_Spin.SetBuddy(&m_UpdateDelay);
 
-	text.Format("%d", p_Preferences->pt_cache_refresh());
+	text.Format("%d", prefs.pt_cache_refresh());
     m_CacheRefresh.SetWindowText(text);
     m_CacheRefresh_Spin.SetRange(15, 240);
-    m_CacheRefresh_Spin.SetPos(p_Preferences->pt_cache_refresh());
+    m_CacheRefresh_Spin.SetPos(prefs.pt_cache_refresh());
     m_CacheRefresh_Spin.SetBuddy(&m_CacheRefresh);
 
     return TRUE;  // return TRUE unless you set the focus to a control
@@ -88,28 +88,28 @@ void CDlgSAPrefs6::OnOK()
 
  
 
-    p_Preferences->Set_pt_disable(m_pt_disable.GetCheck() == BST_CHECKED ? true : false);
+    prefs.set_pt_disable(m_pt_disable.GetCheck() == BST_CHECKED ? true : false);
 
 	m_pt_ip.GetWindowText(text);
-	p_Preferences->Set_pt_ip_addr(text);
+	prefs.set_pt_ip_addr(text);
 
 	m_pt_port.GetWindowText(text);
-	p_Preferences->Set_pt_port(text);
+	prefs.set_pt_port(text);
 
 	m_pt_user.GetWindowText(text);
-	p_Preferences->Set_pt_user(text);
+	prefs.set_pt_user(text);
 
 	m_pt_pass.GetWindowText(text);
-	p_Preferences->Set_pt_pass(text);
+	prefs.set_pt_pass(text);
 
 	m_pt_dbname.GetWindowText(text);
-	p_Preferences->Set_pt_dbname(text);
+	prefs.set_pt_dbname(text);
 
 	m_UpdateDelay.GetWindowText(text);
-	p_Preferences->Set_pt_update_delay(atoi(text.GetString()));
+	prefs.set_pt_update_delay(atoi(text.GetString()));
 
 	m_CacheRefresh.GetWindowText(text);
-	p_Preferences->Set_pt_cache_refresh(atoi(text.GetString()));
+	prefs.set_pt_cache_refresh(atoi(text.GetString()));
 
     CSAPrefsSubDlg::OnOK();
 }

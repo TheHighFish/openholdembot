@@ -14,7 +14,6 @@
 #include "..\CTransform\CTransform.h"
 
 #include "DialogScraperOutput.h"
-#include "Registry.h"
 
 // CDlgScraperOutput dialog
 CDlgScraperOutput	*m_ScraperOutputDlg = NULL;
@@ -132,9 +131,9 @@ BOOL CDlgScraperOutput::OnInitDialog()
 
     max_x = GetSystemMetrics(SM_CXSCREEN) - GetSystemMetrics(SM_CXICON);
     max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
-    ::SetWindowPos(m_hWnd, HWND_TOP, min(p_Preferences->scraper_x(), max_x), min(p_Preferences->scraper_y(), max_y),
-                   p_Preferences->scraper_dx(), p_Preferences->scraper_dy(), SWP_NOCOPYBITS);
-    m_Zoom.SetCurSel(p_Preferences->scraper_zoom());
+    ::SetWindowPos(m_hWnd, HWND_TOP, min(prefs.scraper_x(), max_x), min(prefs.scraper_y(), max_y),
+                   prefs.scraper_dx(), prefs.scraper_dy(), SWP_NOCOPYBITS);
+    m_Zoom.SetCurSel(prefs.scraper_zoom());
     m_Zoom.GetWindowRect(&rect);
     m_Zoom.SetWindowPos(NULL, 0, 0, rect.right-rect.left, 9999, SWP_NOMOVE);
 
@@ -155,11 +154,11 @@ BOOL CDlgScraperOutput::DestroyWindow()
 
     // Save settings to registry
     GetWindowPlacement(&wp);
-    p_Preferences->Set_scraper_x(wp.rcNormalPosition.left);
-    p_Preferences->Set_scraper_y(wp.rcNormalPosition.top);
-    p_Preferences->Set_scraper_dx(wp.rcNormalPosition.right - wp.rcNormalPosition.left);
-    p_Preferences->Set_scraper_dy(wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
-    p_Preferences->Set_scraper_zoom(m_Zoom.GetCurSel());
+    prefs.set_scraper_x(wp.rcNormalPosition.left);
+    prefs.set_scraper_y(wp.rcNormalPosition.top);
+    prefs.set_scraper_dx(wp.rcNormalPosition.right - wp.rcNormalPosition.left);
+    prefs.set_scraper_dy(wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
+    prefs.set_scraper_zoom(m_Zoom.GetCurSel());
 
     // Uncheck scraper output button on main toolbar
     pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, false);

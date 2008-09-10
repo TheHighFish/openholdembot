@@ -82,6 +82,10 @@ public:
 	virtual ~CMainFrame();
 	virtual BOOL DestroyWindow();
 	CMyToolBar		m_MainToolBar;
+
+private:
+	void ReadRegString(CString RegistryKey, char* RegistryValue);
+	void WriteRegString(CString RegistryKey, CString RegistryValue);
 };
 
 BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam);

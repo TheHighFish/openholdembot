@@ -47,12 +47,12 @@ BOOL CDlgSAPrefs5::OnInitDialog()
     m_HandrankValue.AddString("1326");
     m_HandrankValue.AddString("2652");
     m_HandrankValue.AddString("p");
-    m_HandrankValue.SelectString(0, p_Preferences->sym_handrank_value());
+    m_HandrankValue.SelectString(0, prefs.sym_handrank_value());
 
-    text.Format("%.2f", p_Preferences->sym_av_time());
+    text.Format("%.2f", prefs.sym_av_time());
     m_AvTime.SetWindowText(text);
 
-    m_DisableCaching.SetCheck(p_Preferences->sym_disable_caching() ? BST_CHECKED : BST_UNCHECKED);
+    m_DisableCaching.SetCheck(prefs.sym_disable_caching() ? BST_CHECKED : BST_UNCHECKED);
 
 
     return TRUE;  // return TRUE unless you set the focus to a control
@@ -63,12 +63,13 @@ void CDlgSAPrefs5::OnOK()
 {
     CString			text;
 
-    m_HandrankValue.GetWindowText(p_Preferences->sym_handrank_value());
+    m_HandrankValue.GetWindowText(text);
+	prefs.set_sym_handrank_value(text);
 
     m_AvTime.GetWindowText(text);
-    p_Preferences->Set_sym_av_time(atof(text.GetString()));
+    prefs.set_sym_av_time(atof(text.GetString()));
 
-    p_Preferences->Set_sym_disable_caching(m_DisableCaching.GetCheck()==BST_CHECKED ? true : false);
+    prefs.set_sym_disable_caching(m_DisableCaching.GetCheck()==BST_CHECKED ? true : false);
 
 	CSAPrefsSubDlg::OnOK();
 }

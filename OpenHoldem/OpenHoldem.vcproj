@@ -361,6 +361,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CPreferences.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CScraper.cpp"
 				>
 			</File>
@@ -450,10 +454,6 @@
 			</File>
 			<File
 				RelativePath=".\PokerPro.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\registry.cpp"
 				>
 			</File>
 			<File
@@ -714,6 +714,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CPreferences.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CScraper.h"
 				>
 			</File>
@@ -811,10 +815,6 @@
 			</File>
 			<File
 				RelativePath=".\ppmessage.h"
-				>
-			</File>
-			<File
-				RelativePath=".\registry.h"
 				>
 			</File>
 			<File

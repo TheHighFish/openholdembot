@@ -188,9 +188,9 @@ void CAutoplayer::DoAutoplayer(void)
 	}
 
 	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return (modified Spektre 2008-04-03)
-	delay = p_symbols->f$delay() / p_Preferences->scrape_delay();	// scale f$delay to a number of scrapes
+	delay = p_symbols->f$delay() / prefs.scrape_delay();	// scale f$delay to a number of scrapes
 
-	if (x < (int) p_Preferences->frame_delay() + delay)
+	if (x < (int) prefs.frame_delay() + delay)
 	{
 		// Calc primary formulas, but not with final answer, so main window can display correctly
 		p_symbols->CalcPrimaryFormulas(false);
@@ -252,7 +252,7 @@ void CAutoplayer::DoSwag(void)
 		{
 
 			// TEXT SELECTION
-			if (p_Preferences->text_selection_method() == TEXTSEL_DOUBLECLICK)
+			if (prefs.text_selection_method() == TEXTSEL_DOUBLECLICK)
 			{
 				input_count = 0;
 
@@ -289,7 +289,7 @@ void CAutoplayer::DoSwag(void)
 				input_count++;
 			}
 
-			else if (p_Preferences->text_selection_method() == TEXTSEL_CLICKDRAG)
+			else if (prefs.text_selection_method() == TEXTSEL_CLICKDRAG)
 			{
 				input_count = 0;
 
@@ -346,12 +346,12 @@ void CAutoplayer::DoSwag(void)
 
 			::SetCursorPos(cur_pos.x, cur_pos.y);
 
-			Sleep(p_Preferences->swag_delay_1());
+			Sleep(prefs.swag_delay_1());
 
 
 
 			// TEXT DELETION
-			if (p_Preferences->text_deletion_method() == TEXTDEL_DELETE)
+			if (prefs.text_deletion_method() == TEXTDEL_DELETE)
 			{
 				input_count = 0;
 
@@ -370,7 +370,7 @@ void CAutoplayer::DoSwag(void)
 				input_count++;
 			}
 
-			else if (p_Preferences->text_deletion_method() == TEXTDEL_BACKSPACE)
+			else if (prefs.text_deletion_method() == TEXTDEL_BACKSPACE)
 			{
 				input_count = 0;
 
@@ -408,7 +408,7 @@ void CAutoplayer::DoSwag(void)
 
 			::SetCursorPos(cur_pos.x, cur_pos.y);
 
-			Sleep(p_Preferences->swag_delay_2());
+			Sleep(prefs.swag_delay_2());
 
 
 
@@ -471,7 +471,7 @@ void CAutoplayer::DoSwag(void)
 				input_count++;
 			}
 
-			// do it and sleep for p_Preferences->swag_delay (ms)
+			// do it and sleep for prefs.swag_delay (ms)
 			SetFocus(p_global->attached_hwnd());
 			SetForegroundWindow(p_global->attached_hwnd());
 			SetActiveWindow(p_global->attached_hwnd());
@@ -484,12 +484,12 @@ void CAutoplayer::DoSwag(void)
 
 			::SetCursorPos(cur_pos.x, cur_pos.y);
 
-			Sleep(p_Preferences->swag_delay_3());
+			Sleep(prefs.swag_delay_3());
 
 
 
 			// BET CONFIRMATION ACTION
-			if (p_Preferences->bet_confirmation_method() == BETCONF_ENTER)
+			if (prefs.bet_confirmation_method() == BETCONF_ENTER)
 			{
 				input_count = 0;
 
@@ -506,7 +506,7 @@ void CAutoplayer::DoSwag(void)
 				input_count++;
 			}
 
-			else if (p_Preferences->bet_confirmation_method() == BETCONF_CLICKBET &&
+			else if (prefs.bet_confirmation_method() == BETCONF_CLICKBET &&
 					 (_rais_but!=-1 || p_tablemap->r$indexes()->r$iXbutton_index[3]!=-1) )
 			{
 				input_count = 0;
@@ -549,7 +549,7 @@ void CAutoplayer::DoSwag(void)
 				input_count++;
 
 				// Do double click if set in preferences
-				if (p_Preferences->button_click_method() == BUTTON_DOUBLECLICK)
+				if (prefs.button_click_method() == BUTTON_DOUBLECLICK)
 				{
 					ZeroMemory(&input[input_count],sizeof(INPUT));
 					input[input_count].type = INPUT_MOUSE;
@@ -586,7 +586,7 @@ void CAutoplayer::DoSwag(void)
 			}
 
 			// do it
-			if (!lost_focus || !p_Preferences->focus_detect())
+			if (!lost_focus || !prefs.focus_detect())
 			{
 				SetFocus(p_global->attached_hwnd());
 				SetForegroundWindow(p_global->attached_hwnd());
@@ -732,7 +732,7 @@ void CAutoplayer::DoARCCF(void)
 		input_count++;
 
 		// Do double click if set in preferences
-		if (p_Preferences->button_click_method() == BUTTON_DOUBLECLICK)
+		if (prefs.button_click_method() == BUTTON_DOUBLECLICK)
 		{
 			ZeroMemory(&input[input_count],sizeof(INPUT));
 			input[input_count].type = INPUT_MOUSE;
