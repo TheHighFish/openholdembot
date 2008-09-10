@@ -684,8 +684,8 @@ void CSymbols::CalcSymbols(void)
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Global environment symbols
 	_sym.session = p_global->session_id();												// session
-	_sym.nopponentsmax = p_Preferences->max_opponents();							// nopponentsmax
-	_sym.swagdelay = p_Preferences->swag_delay_3();								// swagdelay
+	_sym.nopponentsmax = prefs.max_opponents();							// nopponentsmax
+	_sym.swagdelay = prefs.swag_delay_3();								// swagdelay
 	_sym.allidelay = -1;																// allidelay  (unused in OpenHoldem)
 	_sym.version = VERSION_NUMBER;													// version
 	GetClassName(p_global->attached_hwnd(), classname, 50);
@@ -906,9 +906,9 @@ void CSymbols::CalcSymbols(void)
 	int e = SUCCESS;
 	_sym.nopponents = gram.CalcF$symbol(p_formula, "f$P", &e);
 
-	if (_sym.nopponents > p_Preferences->max_opponents())
+	if (_sym.nopponents > prefs.max_opponents())
 	{
-		_sym.nopponents = p_Preferences->max_opponents();					// nopponents
+		_sym.nopponents = prefs.max_opponents();					// nopponents
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2353,19 +2353,19 @@ void CSymbols::CalcHandrank(void)
 		_sym.handrank1326 = _sym.handrank2652/2;											// handrank1326
 		_sym.handrank1000 = 1000*_sym.handrank2652/2652;									// handrank1000
 		_sym.handrankp = 2652.0 / (1.0+(double)count);									// handrankp
-		if (p_Preferences->sym_handrank_value() == "169")
+		if (prefs.sym_handrank_value() == "169")
 			_sym.handrank = _sym.handrank169;
 
-		else if (p_Preferences->sym_handrank_value() == "2652")
+		else if (prefs.sym_handrank_value() == "2652")
 			_sym.handrank = _sym.handrank2652;
 
-		else if (p_Preferences->sym_handrank_value() == "1326")
+		else if (prefs.sym_handrank_value() == "1326")
 			_sym.handrank = _sym.handrank1326;
 
-		else if (p_Preferences->sym_handrank_value() == "1000")
+		else if (prefs.sym_handrank_value() == "1000")
 			_sym.handrank = _sym.handrank1000;
 
-		else if (p_Preferences->sym_handrank_value() == "p")
+		else if (prefs.sym_handrank_value() == "p")
 			_sym.handrank = _sym.handrankp;												// handrank
 
 	LeaveCriticalSection(&cs_symbols);
@@ -3051,7 +3051,7 @@ void CSymbols::CalcStatistics(void)
 	// f$srai
 	error = SUCCESS;
 
-	f$srai = gram.CalcF$symbol(p_formula, "f$srai", p_Preferences->Trace_functions(nTraceSwag), &error);
+	f$srai = gram.CalcF$symbol(p_formula, "f$srai", prefs.Trace_functions(nTraceSwag), &error);
 
 	// B
 	B = p_formula->formula()->dBankroll != 0 ? p_formula->formula()->dBankroll : p_scraper->player_balance(_sym.userchair);
@@ -3672,16 +3672,16 @@ void CSymbols::CalcPrimaryFormulas(const bool final_answer)
 	_sym.isfinalanswer = final_answer;
 
 	e = SUCCESS;
-	_f$alli = gram.CalcF$symbol(p_formula, "f$alli", p_Preferences->Trace_functions(nTraceAlli), &e);
+	_f$alli = gram.CalcF$symbol(p_formula, "f$alli", prefs.Trace_functions(nTraceAlli), &e);
 
 	e = SUCCESS;
-	_f$swag = gram.CalcF$symbol(p_formula, "f$swag", p_Preferences->Trace_functions(nTraceSwag), &e);
+	_f$swag = gram.CalcF$symbol(p_formula, "f$swag", prefs.Trace_functions(nTraceSwag), &e);
 
 	e = SUCCESS;
-	_f$rais = gram.CalcF$symbol(p_formula, "f$rais", p_Preferences->Trace_functions(nTraceRais), &e);
+	_f$rais = gram.CalcF$symbol(p_formula, "f$rais", prefs.Trace_functions(nTraceRais), &e);
 
 	e = SUCCESS;
-	_f$call = gram.CalcF$symbol(p_formula, "f$call", p_Preferences->Trace_functions(nTraceCall), &e);
+	_f$call = gram.CalcF$symbol(p_formula, "f$call", prefs.Trace_functions(nTraceCall), &e);
 
 	_sym.isfinalanswer = false;
 
@@ -3700,10 +3700,10 @@ void CSymbols::CalcSecondaryFormulas(void)
 	EnterCriticalSection(&cs_symbols);
 
 		e = SUCCESS;
-		_f$play = gram.CalcF$symbol(p_formula, "f$play", p_Preferences->Trace_functions(nTracePlay), &e);
+		_f$play = gram.CalcF$symbol(p_formula, "f$play", prefs.Trace_functions(nTracePlay), &e);
 
 		e = SUCCESS;
-		_f$prefold = gram.CalcF$symbol(p_formula, "f$prefold", p_Preferences->Trace_functions(nTracePrefold), &e);
+		_f$prefold = gram.CalcF$symbol(p_formula, "f$prefold", prefs.Trace_functions(nTracePrefold), &e);
 
 		e = SUCCESS;
 		_f$delay = gram.CalcF$symbol(p_formula, "f$delay", &e);

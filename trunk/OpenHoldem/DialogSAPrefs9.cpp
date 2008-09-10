@@ -8,7 +8,6 @@
 
 #include "CGlobal.h"
 
-#include "Registry.h"
 #include "Perl.hpp"
 #include "CPreferences.h"
 
@@ -41,10 +40,10 @@ BOOL CDlgSAPrefs9::OnInitDialog()
 {
     CSAPrefsSubDlg::OnInitDialog();
 
-    m_LoadPerlInterpreter.SetCheck(p_Preferences->Perl_load_Interpreter() ? BST_CHECKED : BST_UNCHECKED);
-    m_LoadDefaultPerlFormula.SetCheck(p_Preferences->Perl_load_default_Formula() ? BST_CHECKED : BST_UNCHECKED);
-    m_DefaultPerlFormula.SetWindowText(p_Preferences->Perl_default_Formula());
-    m_PerlEditor.SetWindowText(p_Preferences->Perl_Editor());
+    m_LoadPerlInterpreter.SetCheck(prefs.Perl_load_Interpreter() ? BST_CHECKED : BST_UNCHECKED);
+    m_LoadDefaultPerlFormula.SetCheck(prefs.Perl_load_default_Formula() ? BST_CHECKED : BST_UNCHECKED);
+    m_DefaultPerlFormula.SetWindowText(prefs.Perl_default_Formula());
+    m_PerlEditor.SetWindowText(prefs.Perl_Editor());
 
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
@@ -53,13 +52,20 @@ BOOL CDlgSAPrefs9::OnInitDialog()
 
 void CDlgSAPrefs9::OnOK()
 {
-    p_Preferences->Set_Perl_load_Interpreter(m_LoadPerlInterpreter.GetCheck()==BST_CHECKED ? true : false);
-    p_Preferences->Set_Perl_load_default_Formula(m_LoadDefaultPerlFormula.GetCheck()==BST_CHECKED ? true : false);
-    m_DefaultPerlFormula.GetWindowText(p_Preferences->Perl_default_Formula());
-    m_PerlEditor.GetWindowText(p_Preferences->Perl_Editor());
+	CString text = "";
+
+    prefs.set_perl_load_interpreter(m_LoadPerlInterpreter.GetCheck()==BST_CHECKED ? true : false);
+    prefs.set_perl_load_default_formula(m_LoadDefaultPerlFormula.GetCheck()==BST_CHECKED ? true : false);
+
+
+    m_DefaultPerlFormula.GetWindowText(text);
+	prefs.set_perl_default_formula(text);
+
+    m_PerlEditor.GetWindowText(text);
+	prefs.set_perl_editor(text);
 
    	// Load Perl interpreter without a restart
-	if (p_Preferences->Perl_load_Interpreter())
+	if (prefs.Perl_load_Interpreter())
 	{
 		if (the_Perl_Interpreter)
 			delete the_Perl_Interpreter;

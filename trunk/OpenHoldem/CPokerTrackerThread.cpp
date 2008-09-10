@@ -9,8 +9,6 @@
 #include "CGameState.h"
 #include "CLevDistance.h"
 
-#include "registry.h"
-
 CPokerTrackerThread	*p_pokertracker_thread = NULL;
 
 CPokerTrackerThread::CPokerTrackerThread()
@@ -28,11 +26,11 @@ CPokerTrackerThread::CPokerTrackerThread()
 	// Initialize variables
 	_pt_thread = NULL;
 
-	_conn_str = "host=" + p_Preferences->pt_ip_addr();
-	_conn_str += " port=" + p_Preferences->pt_port();
-	_conn_str += " user=" + p_Preferences->pt_user();
-	_conn_str += " password=" + p_Preferences->pt_pass();
-	_conn_str += " dbname=" + p_Preferences->pt_dbname();
+	_conn_str = "host=" + prefs.pt_ip_addr();
+	_conn_str += " port=" + prefs.pt_port();
+	_conn_str += " user=" + prefs.pt_user();
+	_conn_str += " password=" + prefs.pt_pass();
+	_conn_str += " dbname=" + prefs.pt_dbname();
 
 	for (i=0; i<=9; i++)
 	{
@@ -210,9 +208,9 @@ void CPokerTrackerThread::Connect(void)
 	if (PQstatus(_pgconn) == CONNECTION_OK)
 	{
 		write_log("PostgreSQL DB opened successfully <%s/%s/%s>\n", 
-			p_Preferences->pt_ip_addr(), 
-			p_Preferences->pt_port(), 
-			p_Preferences->pt_dbname());
+			prefs.pt_ip_addr(), 
+			prefs.pt_port(), 
+			prefs.pt_dbname());
 
 		_connected = true;
 	}
@@ -368,7 +366,7 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 
 	// If we already have stats cached for the player, the timeout has not expired,
 	// return the value from the cache...
-	if (sym_elapsed - _player_stats[m_chr].t_elapsed[stat] < p_Preferences->pt_cache_refresh() &&
+	if (sym_elapsed - _player_stats[m_chr].t_elapsed[stat] < prefs.pt_cache_refresh() &&
 		_player_stats[m_chr].t_elapsed[stat] != -1 &&
 		_player_stats[m_chr].stat[stat] != -1)
 	{
@@ -642,7 +640,7 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 			}
 		}
 
-		for (i=0; i < p_Preferences->pt_update_delay() && 
+		for (i=0; i < prefs.pt_update_delay() && 
 				  ::WaitForSingleObject(pParent->_m_stop_thread, 0)!=WAIT_OBJECT_0; i++)
 			Sleep(1000);
 	}

@@ -86,8 +86,7 @@ BOOL COpenHoldemApp::InitInstance()
 	InitializeCriticalSectionAndSpinCount(&cs_iterator, 4000);
 
 	// Classes
-	if (!p_Preferences) p_Preferences = new CPreferences;
-	if (!p_PokerPro) p_PokerPro = new PokerPro;
+	if (!p_pokerpro) p_pokerpro = new PokerPro;
 	if (!p_global)  p_global = new CGlobal;
 	if (!p_scraper)  p_scraper = new CScraper;
 	if (!p_symbols)  p_symbols = new CSymbols;
@@ -225,6 +224,7 @@ int COpenHoldemApp::ExitInstance()
 	DeleteCriticalSection(&cs_iterator);
 
 	// classes
+	if (p_pokerpro)  { delete p_pokerpro; p_pokerpro = NULL; }
 	if (p_global)  { delete p_global; p_global = NULL; }
 	if (p_scraper)  { delete p_scraper; p_scraper = NULL; }
 	if (p_symbols)  { delete p_symbols; p_symbols = NULL; }

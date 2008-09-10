@@ -714,7 +714,7 @@ double CGrammar::DoCalcF$symbol(CFormula * const f, char *symbol, CEvalInfoFunct
 		{
 			if (strcmp(f->formula()->mFunction[i].func, symbol)==0)
 			{
-				if (f->formula()->mFunction[i].fresh == true && !p_Preferences->sym_disable_caching() && !skipCache)
+				if (f->formula()->mFunction[i].fresh == true && !prefs.sym_disable_caching() && !skipCache)
 				{
 					ret = f->formula()->mFunction[i].cache;
 

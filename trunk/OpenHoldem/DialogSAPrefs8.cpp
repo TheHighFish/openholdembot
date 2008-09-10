@@ -45,14 +45,14 @@ BOOL CDlgSAPrefs8::OnInitDialog()
 
     CSAPrefsSubDlg::OnInitDialog();
 
-    m_RecordFrames.SetCheck(p_Preferences->replay_record() ? BST_CHECKED : BST_UNCHECKED);
-    m_RecordEveryChange.SetCheck(p_Preferences->replay_record_every_change() ? BST_CHECKED : BST_UNCHECKED);
-    m_RecordEveryChange.EnableWindow(p_Preferences->replay_record());
+    m_RecordFrames.SetCheck(prefs.replay_record() ? BST_CHECKED : BST_UNCHECKED);
+    m_RecordEveryChange.SetCheck(prefs.replay_record_every_change() ? BST_CHECKED : BST_UNCHECKED);
+    m_RecordEveryChange.EnableWindow(prefs.replay_record());
 
-    text.Format("%d", p_Preferences->replay_max_frames());
+    text.Format("%d", prefs.replay_max_frames());
     m_MaxFrames.SetWindowText(text.GetString());
     m_MaxFramesSpin.SetRange(1, 1000);
-    m_MaxFramesSpin.SetPos(p_Preferences->replay_max_frames());
+    m_MaxFramesSpin.SetPos(prefs.replay_max_frames());
     m_MaxFramesSpin.SetBuddy(&m_MaxFrames);
 
     return TRUE;  // return TRUE unless you set the focus to a control
@@ -63,11 +63,11 @@ void CDlgSAPrefs8::OnOK()
 {
     CString			text;
 
-    p_Preferences->Set_replay_record(m_RecordFrames.GetCheck() == BST_CHECKED);
-    p_Preferences->Set_replay_record_every_change(m_RecordEveryChange.GetCheck() == BST_CHECKED);
+    prefs.set_replay_record(m_RecordFrames.GetCheck() == BST_CHECKED);
+    prefs.set_replay_record_every_change(m_RecordEveryChange.GetCheck() == BST_CHECKED);
 
     m_MaxFrames.GetWindowText(text);
-    p_Preferences->Set_replay_max_frames(atoi(text.GetString()));
+    prefs.set_replay_max_frames(atoi(text.GetString()));
 
     CSAPrefsSubDlg::OnOK();
 }

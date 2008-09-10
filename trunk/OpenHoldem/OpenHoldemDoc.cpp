@@ -70,7 +70,7 @@ BOOL COpenHoldemDoc::OnNewDocument()
 	//SetModifiedFlag(true);
 
 	// Load dll, if set in preferences
-	if (p_Preferences->dll_load_on_startup())
+	if (prefs.dll_load_on_startup())
 	p_dll_extension->LoadDll("");
 
 	return true;
@@ -133,7 +133,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 		p_formula->ParseAllFormula(pMyMainWnd->GetSafeHwnd());
 
 		// Load dll, if set in preferences
-		if (p_Preferences->dll_load_on_startup())
+		if (prefs.dll_load_on_startup())
 			p_dll_extension->LoadDll("");
 	}
  

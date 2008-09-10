@@ -221,6 +221,10 @@ protected:
 	CGrammar		gram;
 
 	DECLARE_MESSAGE_MAP()
+
+private:
+	bool WriteProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, CDC* pDC=NULL);
+	bool GetProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, CDC* pDC=NULL);
 };
 
 extern CDlgFormulaScintilla	*m_formulaScintillaDlg;
