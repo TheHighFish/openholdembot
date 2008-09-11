@@ -15,8 +15,6 @@ CPokerTrackerThread::CPokerTrackerThread()
 {
 	__SEH_SET_EXCEPTION_HANDLER
 
-	__SEH_HEADER
-
 	int				i = 0, j = 0;
 
 	// Create events
@@ -45,41 +43,29 @@ CPokerTrackerThread::CPokerTrackerThread()
 	}
 
 	_connected = false;
-
-	__SEH_LOGFATAL("CPokerTracker::Constructor : \n");
 }
 
 CPokerTrackerThread::~CPokerTrackerThread()
 {
-	__SEH_HEADER
-
 	StopThread();
 
 	// Close handles
 	::CloseHandle(_m_stop_thread);
 	::CloseHandle(_m_wait_thread);
-
-	__SEH_LOGFATAL("CPokerTracker::Destructor : \n");
 }
 
 void CPokerTrackerThread::StartThread()
 {
-	__SEH_HEADER
-
 	if (_pt_thread == NULL)
 	{
 		_pt_thread = AfxBeginThread(PokertrackerThreadFunction, this);
 
 		write_log("Started Poker Tracker thread.\n");
 	}
-
-	__SEH_LOGFATAL("CPokerTracker::StartThread : \n");
 }
 
 void CPokerTrackerThread::StopThread()
 {
-	__SEH_HEADER
-
 	if (_pt_thread)
 	{
 		// Trigger thread to stop
@@ -94,14 +80,10 @@ void CPokerTrackerThread::StopThread()
 
 		write_log("Stopped Poker Tracker thread.\n");
 	}
-
-	__SEH_LOGFATAL("CPokerTracker::StopThread : \n");
 }
 
 const double CPokerTrackerThread::ProcessQuery (const char * s)
 {
-	__SEH_HEADER
-
 	int		sym_raischair = (int) p_symbols->sym()->raischair;
 
 	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)  
@@ -194,15 +176,10 @@ const double CPokerTrackerThread::ProcessQuery (const char * s)
 	else if (memcmp(s,"ptt_rfsbts",9)==0)			return GetStat(sym_raischair, ptt_fsbts);
 
 	else return 0.0;
-
-	__SEH_LOGFATAL("CPokerTracker::ProcessQuery : \n");
-
 }
 
 void CPokerTrackerThread::Connect(void)
 {
-	__SEH_HEADER
-
 	_pgconn = PQconnectdb(_conn_str.GetString());
 
 	if (PQstatus(_pgconn) == CONNECTION_OK)
@@ -220,27 +197,18 @@ void CPokerTrackerThread::Connect(void)
 		PQfinish(_pgconn);
 		_connected = false;
 	}
-
-	__SEH_LOGFATAL("CPokerTracker::connect : \n");
-
 }
 
 void CPokerTrackerThread::Disconnect(void)
 {
-	__SEH_HEADER
-
 	_connected = false;
 
 	if (PQstatus(_pgconn) == CONNECTION_OK)
 		PQfinish(_pgconn);
-
-	__SEH_LOGFATAL("CPokerTracker::disconnect : \n");
 }
 
 bool CPokerTrackerThread::CheckName (int m_chr)
 {
-	__SEH_HEADER
-
 	int			i = 0;
 	char		oh_scraped_name[30] = {0}, best_name[30] = {0}, likename[100] = {0};
 	bool		result = false, ok_scrape = false;
@@ -322,28 +290,20 @@ bool CPokerTrackerThread::CheckName (int m_chr)
 	}
 
 	return result;
-
-	__SEH_LOGFATAL("CPokerTracker::CheckName : \n");
 }
 
 double CPokerTrackerThread::GetStat (int m_chr, PT_Stats stat)
 {
-	__SEH_HEADER
-
 	double		x = 0.;
 
 	if (m_chr<0 || m_chr>9)
 		return 0.0;
 
 	return _player_stats[m_chr].stat[stat];
-
-	__SEH_LOGFATAL("CPokerTracker::GetStat : \n");
 }
 
 double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 {
-	__SEH_HEADER
-
 	PGresult	*res = NULL;
 	char		strQry[2000] = {0}, strQry1[2000] = {0}, strQry2[2000] = {0};
 	const char	*n = NULL;
@@ -471,14 +431,10 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 	}
 
 	return result;
-
-	__SEH_LOGFATAL("CPokerTracker::UpdateStat : \n");
 }
 
 bool CPokerTrackerThread::QueryName (const char * query_name, const char * scraped_name, char * best_name)
 {
-	__SEH_HEADER
-
 	char		strQry[1000] = {0};
 	int			i = 0, lev_dist = 0, bestLD = 0, bestLDindex = 0;
 	PGresult	*res = NULL;
@@ -569,13 +525,10 @@ bool CPokerTrackerThread::QueryName (const char * query_name, const char * scrap
 
 	PQclear(res);
 	return result;
-
-	__SEH_LOGFATAL("CPokerTracker::QueryName : \n");
 }
+
 void CPokerTrackerThread::ClearStats (void)
 {
-	__SEH_HEADER
-
 	int		i = 0, j = 0;
 
 	for (i=0; i<=9; i++)
@@ -590,15 +543,11 @@ void CPokerTrackerThread::ClearStats (void)
 		strcpy_s(_player_stats[i].pt_name, 30, "");
 		strcpy_s(_player_stats[i].scraped_name, 30, "");
 	}
-
-	__SEH_LOGFATAL("CPokerTracker::cleardata : \n");
 }
 
 UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 {
 	__SEH_SET_EXCEPTION_HANDLER
-
-	__SEH_HEADER
 
 	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
 
@@ -644,6 +593,4 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 				  ::WaitForSingleObject(pParent->_m_stop_thread, 0)!=WAIT_OBJECT_0; i++)
 			Sleep(1000);
 	}
-
-	__SEH_LOGFATAL("::pokertracker_thread : \n");
 }

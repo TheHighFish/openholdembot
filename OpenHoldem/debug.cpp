@@ -22,7 +22,6 @@ FILE *log_fp = NULL;
 
 char * get_time(char * timebuf) 
 {
-    __SEH_HEADER
     // returns current system time in WH format
     time_t	ltime;
     char tmptime[30];
@@ -91,15 +90,10 @@ char * get_time(char * timebuf)
     *(timebuf+19) = '\0';
 
     return timebuf;
-
-    __SEH_LOGFATAL("::get_time : \n");
-
 }
 
 char * get_now_time(char * timebuf) 
 {
-    __SEH_HEADER
-
     // returns current system time as a UNIX style string
     time_t	ltime;
 
@@ -108,9 +102,6 @@ char * get_now_time(char * timebuf)
     timebuf[24]='\0';
 
     return timebuf;
-
-    __SEH_LOGFATAL("::get_now_time\n");
-
 }
 
 void logfatal (char* fmt, ...) 
@@ -136,9 +127,10 @@ void logfatal (char* fmt, ...)
 
 LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers) 
 {
-    char flpath[MAX_PATH];
+	char flpath[MAX_PATH];
     char msg[1000];
 
+    /*
     logfatal("########################################################################\n");
     logfatal("FATAL ERROR  (See above for call stack)\n");
     logfatal("########################################################################\n");
@@ -233,6 +225,7 @@ LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers)
     }
     logfatal("########################################################################\n");
     logfatal("########################################################################\n\n\n");
+	*/
 
 	// Create a minidump
 	GenerateDump(pExceptionPointers);
@@ -249,7 +242,6 @@ LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers)
 
 BOOL CreateBMPFile(const char *szFile, HBITMAP hBMP) 
 {
-    __SEH_HEADER
     // Saves the hBitmap as a bitmap.
     HDC					hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
     HDC					hdcCompatible = CreateCompatibleDC(hdcScreen);
@@ -347,14 +339,10 @@ to_return:
     DeleteDC(hdcScreen);
 
     return bret;
-
-    __SEH_LOGFATAL("::CreateBMPFile\n");
-
 }
 
 void start_log(void) 
 {
-    __SEH_HEADER
     if (log_fp==NULL) 
 	{
         CString fn;
@@ -367,14 +355,10 @@ void start_log(void)
 			fflush(log_fp);
 		}
     }
-
-    __SEH_LOGFATAL("::start_log\n");
-
 }
 
 void write_log(char* fmt, ...) 
 {
-    __SEH_HEADER
     char		buff[10000] ;
     va_list		ap;
     char		nowtime[26];
@@ -391,14 +375,10 @@ void write_log(char* fmt, ...)
 
         fflush(log_fp);
     }
-
-    __SEH_LOGFATAL("::write_log\n");
 }
 
 void write_log_nostamp(char* fmt, ...) 
 {
-    __SEH_HEADER
-
 	char		buff[10000] ;
     va_list		ap;
 
@@ -413,13 +393,10 @@ void write_log_nostamp(char* fmt, ...)
 
         fflush(log_fp);
     }
-
-    __SEH_LOGFATAL("::write_log_nostamp\n");
 }
 
 void write_logautoplay(const char * action) 
 {
-    __SEH_HEADER
     char		nowtime[26];
     CString		pcards, comcards, temp, rank, pokerhand, bestaction, fcra_seen;
     char		*card;
@@ -645,22 +622,16 @@ void write_logautoplay(const char * action)
 
 		fflush(log_fp);
     }
-
-	__SEH_LOGFATAL("::write_logautoplay\n");
 }
 
 void stop_log(void) 
 {
-    __SEH_HEADER
-
     if (log_fp != NULL) 
 	{
         write_log("! log file closed\n");
         fclose(log_fp);
         log_fp = NULL;
     }
-
-    __SEH_LOGFATAL("::stop_log\n");
 }
 
 int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers)

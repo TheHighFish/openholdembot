@@ -18,15 +18,12 @@ CTablemap::CTablemap(void)
 {
 	__SEH_SET_EXCEPTION_HANDLER
 
-    __SEH_HEADER
-
-	ClearTablemap();
+    ClearTablemap();
 
 	ClearR$Indices();
 
 	_s$items.num_chairs = 10;
-
-    __SEH_LOGFATAL("CTablemap::Constructor : \n");}
+}
 
 CTablemap::~CTablemap(void)
 {
@@ -34,8 +31,6 @@ CTablemap::~CTablemap(void)
 
 void CTablemap::ClearTablemap()
 {
-	__SEH_HEADER
-
 	CSLock lock(m_critsec);
 
 	_valid = false;
@@ -49,14 +44,10 @@ void CTablemap::ClearTablemap()
 	_p$.RemoveAll();
 	_h$.RemoveAll();
 	_i$.RemoveAll();
-
-	__SEH_LOGFATAL("CTablemap::ClearTablemap :\n");
 }
 
 int CTablemap::LoadTablemap(const char *_filename, const char *version, const bool check_ws_date, int *linenum, CString *loaded_version) 
 {
-	__SEH_HEADER
-
 	CString				strLine = "", strLineType = "", token = "", s = "", e = "", hexval = "", t = "";
 	int					i = 0, pos = 0, insert_point = 0, P = 0, j = 0, x = 0, y = 0, new_elem = 0;
 	bool				supported_version = false;
@@ -517,14 +508,10 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 
 	_valid = true;
 	return SUCCESS;
-
-	__SEH_LOGFATAL("CTablemap::LoadTablemap :\n");
 }
 
 int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 {
-	__SEH_HEADER
-
 	CString		s = "", t = "", text = "";
 	int			N = 0, i = 0, j = 0, x = 0, y = 0;
 	char		nowtime[26] = {0};
@@ -663,15 +650,11 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.Close();
 
 	return SUCCESS;	
-
-	__SEH_LOGFATAL("CTablemap::SaveTablemap :\n");
 }
 
 
 int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path) 
 {
-	__SEH_HEADER
-
 	int						N = 0, imageloop = 0, hashloop = 0, regionloop = 0, j = 0, insert_point = 0, hash_type = 0;
 	CString					e = "", s = "";
 	uint32_t				pixels[200*150] = {0};
@@ -896,14 +879,10 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 		_hashes[_h$[j].number].insert(std::pair<uint32_t, int> (_h$[j].hash, j));
 
 	return SUCCESS;
-
-	__SEH_LOGFATAL("CTablemap::ConvertTablemap :\n");
 }
 
 int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 {
-	__SEH_HEADER
-
 	int						num_irecs = 0, num_hrecs = 0, num_precs = 0, num_rrecs = 0, N = 0;
 	int						imageloop = 0, hashloop = 0, j = 0, insert_point = 0, hash_type = 0;
 	CString					e = "", s = "";
@@ -1096,15 +1075,11 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 	if (!all_i$_found)  return ERR_INCOMPLETEMASTER;
 
 	return SUCCESS;
-
-	__SEH_LOGFATAL("CTablemap::UpdateHashes :\n");
 }
 
 
 void CTablemap::ClearR$Indices(void)
 {
-	__SEH_HEADER
-
 	int			i = 0, j = 0, k = 0;
 
 	// common card info
@@ -1186,14 +1161,10 @@ void CTablemap::ClearR$Indices(void)
 	// button info
 	_r$indexes.r$i86state_index = -1;
 	_r$indexes.r$i86button_index = -1;
-
-	__SEH_LOGFATAL("CTablemap::ClearR$Indices :\n");
 }
 
 void CTablemap::SaveR$Indices(void)
 {
-	__SEH_HEADER
-
 	// _r$indexes.r$tablepointX not indexed, as it is only used for finding tables on green circle-click, and
 	//   this function is not called until a table has been selected by the user
 
@@ -1466,14 +1437,10 @@ void CTablemap::SaveR$Indices(void)
 		}
 
 	}
-
-	__SEH_LOGFATAL("CTablemap::SaveR$Indices :\n");
 }
 
 void CTablemap::SaveS$Indices(void)
 {
-	__SEH_HEADER
-
 	// _s$titletextX, _s$!titletextX not indexed, as it is only used for finding tables on green circle-click, and
 	//   this function is not called until a table has been selected by the user/*
 	// _s$hXtype are not indexed, as those records are ignored in OH
@@ -1509,14 +1476,10 @@ void CTablemap::SaveS$Indices(void)
 			_s$indexes.s$c0limitsX_index[num] = i;
 		}
 	}
-
-	__SEH_LOGFATAL("CTablemap::SaveS$Indices :\n");
 }
 
 void CTablemap::SaveS$Strings(void)
 {
-	__SEH_HEADER
-
 	// _s$reseller and _s$mechanic are not saved, as they are only comments and not used in OH for any purpose
 
 	int		i = 0;
@@ -1568,6 +1531,4 @@ void CTablemap::SaveS$Strings(void)
 			_s$items.ttype[3] = _s$[i].text;
 
 	}
-
-	__SEH_LOGFATAL("CTablemap::SaveS$Strings :\n");
 }

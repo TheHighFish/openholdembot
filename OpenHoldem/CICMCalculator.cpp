@@ -23,8 +23,6 @@
 
 double P(int i, int n, double *s, int N)
 {
-	__SEH_HEADER
-
 	double p = 0.;
 
 	if (n==1)
@@ -54,8 +52,6 @@ double P(int i, int n, double *s, int N)
 		}
 	}
 	return p;
-
-	__SEH_LOGFATAL("ICM, P : \n");
 }
 
 CICMCalculator::CICMCalculator ()
@@ -69,8 +65,6 @@ CICMCalculator::~CICMCalculator ()
 
 const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 {
-	__SEH_HEADER
-
 	double		prizes[MAX_PLAYERS] = {0};
 	double		stacks[MAX_PLAYERS] = {0};
 	int			i = 0, j = 0;
@@ -343,14 +337,10 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 	}
 
 	return EquityICM(stacks, prizes, MAX_PLAYERS, sym_userchair);
-
-	__SEH_LOGFATAL("CICMCalculator::ProcessQueryICM : \n");
 }
 
 double CICMCalculator::EquityICM(double *stacks, double *prizes, int playerNB, int player)
 {
-	__SEH_HEADER
-
 	double ICM = 0.;
 	int i = 0;
 
@@ -390,23 +380,15 @@ double CICMCalculator::EquityICM(double *stacks, double *prizes, int playerNB, i
 	}
 
 	return ICM;
-
-	__SEH_LOGFATAL("CICMCalculator::EquityICM : \n");
 }
 
 double CICMCalculator::GetPlayerCurrentBet(int pos)
 {
-	__SEH_HEADER
-
 	return p_symbols->sym()->currentbet[pos];
-
-	__SEH_LOGFATAL("CICMCalculator::GetPlayerCurrentBet : \n");
 }
 
 int CICMCalculator::GetChairFromDealPos(const char* pquery)
 {
-	__SEH_HEADER
-
 	int			sym_nplayersseated =  (int) p_symbols->sym()->nplayersseated;
 	int			sym_playersseatedbits =  (int) p_symbols->sym()->playersseatedbits;
 	int			sym_dealerchair =  (int) p_symbols->sym()->dealerchair;
@@ -455,6 +437,4 @@ int CICMCalculator::GetChairFromDealPos(const char* pquery)
 	}
 
 	return chair;
-
-	__SEH_LOGFATAL("CICMCalculator::GetChairFromDealPos : \n");
 }

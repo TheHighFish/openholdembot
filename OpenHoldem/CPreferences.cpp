@@ -34,8 +34,6 @@ CPreferences::~CPreferences()
 //
 void CPreferences::InitDefaults(void)
 {
-	__SEH_HEADER
-
 	// Main window location
 	_main_x = _main_y = 0;
 	_main_dx = 800;
@@ -162,8 +160,6 @@ void CPreferences::InitDefaults(void)
 		_trace_functions[i] = false;
 
 	_versus_path = "";
-
-	__SEH_LOGFATAL("CPreferences::InitDefaults : \n");
 }
 
 //
@@ -172,8 +168,6 @@ void CPreferences::InitDefaults(void)
 
 void CPreferences::ReadFromRegistry()
 {
-	__SEH_HEADER
-
 	InitDefaults();
 	{
 		// Main window location and size
@@ -309,14 +303,10 @@ void CPreferences::ReadFromRegistry()
 		// versus path
 		ReadReg("versus", &_versus_path);
 	}
-
-	__SEH_LOGFATAL("CPreferences::ReadFromRegistry : \n");
 }
 
 void CPreferences::ReadReg(const LPCTSTR registry_key, int *registry_value)
 {
-	__SEH_HEADER
-
 	DWORD		dwType = 0, cbData = 0;
 	char		str[256] = {0};
 	LONG		hkResult = 0;
@@ -325,15 +315,10 @@ void CPreferences::ReadReg(const LPCTSTR registry_key, int *registry_value)
 	if ( (hkResult = RegQueryValueEx(_hkey, registry_key, NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
 		*registry_value = atoi(str);
 	//  Otherwise: Keep default value.
-
-	__SEH_LOGFATAL("CPreferences::ReadReg : \n");
 }
-
 
 void CPreferences::ReadReg(const LPCTSTR registry_key, bool *registry_value)
 {
-	__SEH_HEADER
-
 	DWORD		dwType = 0, cbData = 0;
 	char		str[256] = {0};
 	LONG		hkResult = 0;
@@ -342,15 +327,10 @@ void CPreferences::ReadReg(const LPCTSTR registry_key, bool *registry_value)
 	if ( (hkResult = RegQueryValueEx(_hkey, registry_key, NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
 		*registry_value = atoi(str);
 	//  Otherwise: Keep default value.
-
-	__SEH_LOGFATAL("CPreferences::ReadReg : \n");
 }
-
 
 void CPreferences::ReadReg(const LPCTSTR registry_key, unsigned int *registry_value)
 {
-	__SEH_HEADER
-
 	DWORD		dwType = 0, cbData = 0;
 	char		str[256] = {0};
 	LONG		hkResult = 0;
@@ -359,15 +339,10 @@ void CPreferences::ReadReg(const LPCTSTR registry_key, unsigned int *registry_va
 	if ( (hkResult = RegQueryValueEx(_hkey, registry_key, NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
 		*registry_value = atoi(str);
 	//  Otherwise: Keep default value.
-
-	__SEH_LOGFATAL("CPreferences::ReadReg : \n");
 }
-
 
 void CPreferences::ReadReg(const LPCTSTR registry_key,  CString *registry_value)
 {
-	__SEH_HEADER
-
 	DWORD		dwType = 0, cbData = 0;
 	char		str[256] = {0};
 	LONG		hkResult = 0;
@@ -376,15 +351,10 @@ void CPreferences::ReadReg(const LPCTSTR registry_key,  CString *registry_value)
 	if ( (hkResult = RegQueryValueEx(_hkey, registry_key, NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
 		*registry_value = str;
 	//  Otherwise: Keep default value.
-
-	__SEH_LOGFATAL("CPreferences::ReadReg : \n");
 }
-
 
 void CPreferences::ReadReg(const LPCTSTR registry_key, double *registry_value)
 {
-	__SEH_HEADER
-
 	DWORD		dwType = 0, cbData = 0;
 	char		str[256] = {0};
 	LONG		hkResult = 0;
@@ -393,46 +363,29 @@ void CPreferences::ReadReg(const LPCTSTR registry_key, double *registry_value)
 	if ( (hkResult = RegQueryValueEx(_hkey, registry_key, NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
 		*registry_value = atof(str);
 	//  Otherwise: Keep default value.
-
-	__SEH_LOGFATAL("CPreferences::ReadReg : \n");
 }
-
 
 void CPreferences::WriteReg(const LPCTSTR registry_key, const int registry_value)
 //  This method is used to write unsigned ints and booleans, too.
 {
-	__SEH_HEADER
-
 	char		str[256] = {0};
 
 	sprintf_s(str, 256, "%d", registry_value);
 	RegSetValueEx(_hkey, registry_key, 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
-
-	__SEH_LOGFATAL("CPreferences::WriteReg : \n");
 }
-
 
 void CPreferences::WriteReg(const LPCTSTR registry_key, const CString registry_value)
 {
-	__SEH_HEADER
-
-		char		str[256] = {0};
+	char		str[256] = {0};
 
 	sprintf_s(str, 256, "%s", registry_value);
 	RegSetValueEx(_hkey, registry_key, 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
-
-	__SEH_LOGFATAL("CPreferences::WriteReg : \n");
 }
-
 
 void CPreferences::WriteReg(const LPCTSTR registry_key, const double registry_value)
 {
-	__SEH_HEADER
-
 	char		str[256] = {0};
 
 	sprintf_s(str, 256, "%f", registry_value);
 	RegSetValueEx(_hkey, registry_key, 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
-
-	__SEH_LOGFATAL("CPreferences::WriteReg : \n");
 }

@@ -18,11 +18,7 @@ CDllExtension::CDllExtension()
 {
 	__SEH_SET_EXCEPTION_HANDLER
 
-	__SEH_HEADER
-
 	_hmod_dll = NULL;
-
-	__SEH_LOGFATAL("CDll::Constructor :\n");
 }
 
 CDllExtension::~CDllExtension()
@@ -31,20 +27,14 @@ CDllExtension::~CDllExtension()
 
 void CDllExtension::PassStateToDll(const SHoldemState *pstate)
 {
-	__SEH_HEADER
-
 	if (_hmod_dll==NULL)
 		return;
 
 	(_process_message) ("state", pstate);
-
-	__SEH_LOGFATAL("CDll::PassStateToDll :\n");
 }
 
 void CDllExtension::LoadDll(const char * path)
 {
-	__SEH_HEADER
-
 	CString		t = "", formula_dll = "";
 	int			N = 0, i = 0;
 	DWORD		err1 = 0, err2 = 0;
@@ -154,14 +144,10 @@ void CDllExtension::LoadDll(const char * path)
 							  get_Pointer_to__send_ChatMessage());
 		}
 	}
-
-	__SEH_LOGFATAL("CDll::LoadDll :\n");
 }
 
 void CDllExtension::UnloadDll(void)
 {
-	__SEH_HEADER
-
 	if (_hmod_dll==NULL)
 		return;
 
@@ -173,23 +159,15 @@ void CDllExtension::UnloadDll(void)
 
 	if (FreeLibrary(_hmod_dll))
 		_hmod_dll = NULL;
-
-	__SEH_LOGFATAL("CDll::UnloadDll :\n");
 }
 
 const bool CDllExtension::IsDllLoaded()
 {
-	__SEH_HEADER
-
 	return _hmod_dll != NULL;
-
-	__SEH_LOGFATAL("CDll::IsDllLoaded :\n");
 }
 
 double GetSymbolFromDll(const int chair, const char* name, bool& iserr)
 {
-	__SEH_HEADER
-
 	int			e = SUCCESS, stopchar = 0;
 	double		res = 0.;
 	CString		str = "";
@@ -219,6 +197,4 @@ double GetSymbolFromDll(const int chair, const char* name, bool& iserr)
 		iserr = true;
 
 	return res;
-
-	__SEH_LOGFATAL("::GetSymbolFromDll :\n");
 }

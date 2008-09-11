@@ -13,8 +13,6 @@ CMemory::CMemory()
 {
 	__SEH_SET_EXCEPTION_HANDLER
 
-	__SEH_HEADER
-
 	int	i = 0;
 
 	_var_count = -1;
@@ -24,8 +22,6 @@ CMemory::CMemory()
 		strcpy_s(_var_name[i], 64, "");
 		_var_value[i] = 0.0;
 	}
-
-	__SEH_LOGFATAL("CMemory::constructor\n");
 }
 
 CMemory::~CMemory()
@@ -34,8 +30,6 @@ CMemory::~CMemory()
 
 const double CMemory::ProcessQuery(const char * pquery, CEvalInfoFunction **logCallingFunction, int *e)
 {
-	__SEH_HEADER
-
 	if (memcmp(pquery,"me_st_", 6)==0)
 	{
 		*e = SUCCESS;
@@ -51,14 +45,11 @@ const double CMemory::ProcessQuery(const char * pquery, CEvalInfoFunction **logC
 
 	*e = ERR_INVALID_SYM;
 	return 0.0;
-
-	__SEH_LOGFATAL("CMemory::ProcessQuery > %s\n", pquery);
 }
 
 
 void CMemory::StoreValue(const char * pquery, CEvalInfoFunction **logCallingFunction, int *e)
 {
-	__SEH_HEADER
 	int			i = 0, index = 0;
 	char		var[512] = {0}, value[512] = {0};
 	double		result = 0.;
@@ -112,14 +103,10 @@ void CMemory::StoreValue(const char * pquery, CEvalInfoFunction **logCallingFunc
 
 		strcpy_s(_var_name[index], 64, var);
 	}
-
-	__SEH_LOGFATAL("CMemory::StoreValue > %s\n", pquery);
 }
 
 double CMemory::RetrieveValue(const char * pquery, int *e)
 {
-	__SEH_HEADER
-
 	int			i = 0;
 	char		var[512] = {0};
 
@@ -136,6 +123,4 @@ double CMemory::RetrieveValue(const char * pquery, int *e)
 	*e = ERR_INVALID_EXPR;
 
 	return 0.0;
-
-	__SEH_LOGFATAL("CMemory::RetrieveValue > %s\n", pquery);
 }

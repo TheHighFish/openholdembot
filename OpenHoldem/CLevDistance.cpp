@@ -11,8 +11,6 @@
 
 int CLevDistance::Minimum(int a, int b, int c)
 {
-	__SEH_HEADER
-
 	int mi = a;
 
 	if (b < mi) 
@@ -24,8 +22,6 @@ int CLevDistance::Minimum(int a, int b, int c)
 		mi = c;
 	}
 	return mi;
-
-	__SEH_LOGFATAL("CLevDistance::Minimum : \n");
 }
 
 //**************************************************
@@ -34,11 +30,7 @@ int CLevDistance::Minimum(int a, int b, int c)
 
 int *CLevDistance::GetCellPointer(int *pOrigin, int col, int row, int nCols)
 {
-	__SEH_HEADER
-
 	return pOrigin + col + (row * (nCols + 1));
-
-	__SEH_LOGFATAL("CLevDistance::GetCellPointer : \n");
 }
 
 //*****************************************************
@@ -47,14 +39,10 @@ int *CLevDistance::GetCellPointer(int *pOrigin, int col, int row, int nCols)
 
 int CLevDistance::GetAt(int *pOrigin, int col, int row, int nCols)
 {
-	__SEH_HEADER
-
 	int *pCell;
 
 	pCell = GetCellPointer(pOrigin, col, row, nCols);
 	return *pCell;
-
-	__SEH_LOGFATAL("CLevDistance::GetAt : \n");
 }
 
 //*******************************************************
@@ -63,14 +51,10 @@ int CLevDistance::GetAt(int *pOrigin, int col, int row, int nCols)
 
 void CLevDistance::PutAt(int *pOrigin, int col, int row, int nCols, int x)
 {
-	__SEH_HEADER
-
 	int *pCell;
 
 	pCell = GetCellPointer(pOrigin, col, row, nCols);
 	*pCell = x;
-
-	__SEH_LOGFATAL("CLevDistance::PutAt : \n");
 }
 
 //*****************************
@@ -79,8 +63,6 @@ void CLevDistance::PutAt(int *pOrigin, int col, int row, int nCols, int x)
 
 int CLevDistance::LD(char const *s, char const *t)
 {
-	__SEH_HEADER
-
 	int *d = NULL; // pointer to matrix
 	int n = 0; // length of s
 	int m = 0; // length of t
@@ -163,6 +145,4 @@ int CLevDistance::LD(char const *s, char const *t)
 	result = GetAt (d, n, m, n);
 	free (d);
 	return result;
-
-	__SEH_LOGFATAL("CLevDistance::LD : \n");
 }

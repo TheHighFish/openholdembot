@@ -52,14 +52,10 @@ CMainFrame::CMainFrame()
 {
 	__SEH_SET_EXCEPTION_HANDLER
 
-	__SEH_HEADER
-		
-    // Save startup directory
+	// Save startup directory
     ::GetCurrentDirectory(sizeof(_startup_path) - 1, _startup_path);
 
 	show_regions = true;
-
-	__SEH_LOGFATAL("CMainFrame::Constructor : \n");
 }
 
 CMainFrame::~CMainFrame()
@@ -69,8 +65,6 @@ CMainFrame::~CMainFrame()
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-	__SEH_HEADER
-		
 	TBBUTTONINFO	tbi;
 	tbi.cbSize = sizeof(TBBUTTONINFO);
 	tbi.dwMask = TBIF_STYLE;
@@ -116,14 +110,10 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	SetTimer(BLINKER_TIMER, 500, 0);
 
 	return 0;
-
-	__SEH_LOGFATAL("CMainFrame::OnCreate : \n");
 }
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
-	__SEH_HEADER
-		
 	if( !CFrameWnd::PreCreateWindow(cs) )
 		return FALSE;
 
@@ -160,8 +150,6 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	cs.cy = reg.main_dy;
 
 	return true;
-
-	__SEH_LOGFATAL("CMainFrame::PreCreateWindow : \n");
 }
 
 
@@ -184,8 +172,6 @@ void CMainFrame::Dump(CDumpContext& dc) const
 // CMainFrame message handlers
 BOOL CMainFrame::DestroyWindow()
 {
-	__SEH_HEADER
-		
 	Registry		reg;
 	WINDOWPLACEMENT wp;
 
@@ -203,14 +189,10 @@ BOOL CMainFrame::DestroyWindow()
 	if (theApp.m_TableMapDlg)  theApp.m_TableMapDlg->DestroyWindow();
 
 	return CFrameWnd::DestroyWindow();
-
-	__SEH_LOGFATAL("CMainFrame::DestroyWindow : \n");
 }
 
 void CMainFrame::OnViewConnecttowindow()
 {
-	__SEH_HEADER
-		
 	LPARAM				lparam;
 	int					i, N;
 	CDlgSelectTable		cstd;
@@ -267,29 +249,21 @@ void CMainFrame::OnViewConnecttowindow()
 	// Force re-draw
 	Invalidate(true);
 	theApp.m_TableMapDlg->Invalidate(true);
-
-	__SEH_LOGFATAL("CMainFrame::OnViewConnecttowindow : \n");
 }
 
 
 void CMainFrame::OnViewShowregionboxes()
 {
-	__SEH_HEADER
-		
 	show_regions = !show_regions;
 
 	m_wndToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_REDRECTANGLE, show_regions);
 
 	// Force re-draw
 	Invalidate(true);
-
-	__SEH_LOGFATAL("CMainFrame::OnViewShowregionboxes : \n");
 }
 
 void CMainFrame::OnEditUpdatehashes()
 {
-	__SEH_HEADER
-		
 	int		ret;
 
 	COpenScrapeDoc	*pDoc = COpenScrapeDoc::GetDocument();
@@ -302,14 +276,10 @@ void CMainFrame::OnEditUpdatehashes()
 
 	if (ret == SUCCESS)  
 		MessageBox("Hashes updated successfully.", "Success", MB_OK);
-
-	__SEH_LOGFATAL("CMainFrame::OnEditUpdatehashes : \n");
 }
 
 void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 {
-	__SEH_HEADER
-		
 	COpenScrapeDoc			*pDoc = COpenScrapeDoc::GetDocument();
 	COpenScrapeView			*pView = COpenScrapeView::GetView();
 
@@ -321,14 +291,10 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 	}
 
 	CFrameWnd::OnTimer(nIDEvent);
-
-	__SEH_LOGFATAL("CMainFrame::OnTimer : \n");
 }
 
 void CMainFrame::OnViewRefresh()
 {
-	__SEH_HEADER
-		
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RECT				crect, newrect;
 
@@ -357,23 +323,15 @@ void CMainFrame::OnViewRefresh()
 	{
 		OnViewConnecttowindow();
 	}
-
-	__SEH_LOGFATAL("CMainFrame::OnViewRefresh : \n");
 }
 
 void CMainFrame::OnUpdateViewShowregionboxes(CCmdUI *pCmdUI)
 {
-	__SEH_HEADER
-		
 	pCmdUI->SetCheck(show_regions);
-
-	__SEH_LOGFATAL("CMainFrame::OnUpdateViewShowregionboxes : \n");
 }
 
 void CMainFrame::SaveBmpPbits(void)
 {
-	__SEH_HEADER
-		
 	HDC					hdc;
 	HDC					hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
 	HDC					hdcCompatible = CreateCompatibleDC(hdcScreen); 
@@ -427,15 +385,11 @@ void CMainFrame::SaveBmpPbits(void)
 	::ReleaseDC(pDoc->attached_hwnd, hdc);
 	DeleteDC(hdcCompatible);
 	DeleteDC(hdcScreen);
-
-	__SEH_LOGFATAL("CMainFrame::SaveBmpPbits : \n");
 }
 
 
 BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) 
 {
-	__SEH_HEADER
-		
 	CString				title, winclass;
 	char				text[512];
 	RECT				crect;
@@ -471,15 +425,11 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
 	g_tlist.Add(tablelisthold);
 
 	return true;  // keep processing through entire list of windows
-
-	__SEH_LOGFATAL("EnumProcTopLevelWindowList : \n");
 }
 
 
 void CMainFrame::OnUpdateViewCurrentwindowsize(CCmdUI *pCmdUI)
 {
-	__SEH_HEADER
-		
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	CString				text;
 
@@ -496,6 +446,4 @@ void CMainFrame::OnUpdateViewCurrentwindowsize(CCmdUI *pCmdUI)
 		pCmdUI->SetText("Current size: 0x0");
 		pCmdUI->Enable(false);
 	}
-
-	__SEH_LOGFATAL("CMainFrame::OnUpdateViewCurrentwindowsize : \n");
 }

@@ -25,8 +25,6 @@ CHeartbeatThread::CHeartbeatThread()
 {
 	__SEH_SET_EXCEPTION_HANDLER
 
-	__SEH_HEADER
-
 	InitializeCriticalSectionAndSpinCount(&cs_update_in_progress, 4000);
 
 	// Create events
@@ -35,14 +33,10 @@ CHeartbeatThread::CHeartbeatThread()
 
 	// Start thread
 	AfxBeginThread(HeartbeatThreadFunction, this);
-
-	__SEH_LOGFATAL("CHeartbeatThread::Constructor :\n");
 }
 
 CHeartbeatThread::~CHeartbeatThread()
 {
-	__SEH_HEADER
-
 	// Trigger thread to stop
 	::SetEvent(_m_stop_thread);
 
@@ -56,15 +50,11 @@ CHeartbeatThread::~CHeartbeatThread()
 	DeleteCriticalSection(&cs_update_in_progress);
 
 	p_heartbeat_thread = NULL;
-
-	__SEH_LOGFATAL("CHeartbeatThread::Destructor :\n");
 }
 
 UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 {
 	__SEH_SET_EXCEPTION_HANDLER
-
-	__SEH_HEADER
 
 	CHeartbeatThread *pParent = static_cast<CHeartbeatThread*>(pParam);
 
@@ -79,8 +69,6 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 	int					nbytes = 0, result = 0;
 	fd_set				fd;
 	timeval				tv;
-
-
 
 	while (true)
 	{
@@ -287,6 +275,4 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 		Sleep(prefs.scrape_delay());
 	}
-
-	__SEH_LOGFATAL("CHeartbeatThread::HeartbeatThreadFunction :\n");
 }
