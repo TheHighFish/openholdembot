@@ -1449,9 +1449,13 @@ void CTablemap::SaveS$Indices(void)
 
 	// Clear 'em first
 	for (i=0; i<=9; i++)
+	{
 		_s$indexes.s$ttlimitsX_index[i] = -1;
+		_s$indexes.s$c0limitsX_index[num] = -1;
+	}
 
 	_s$indexes.s$ttlimits_index = -1;
+	_s$indexes.s$c0limits_index = -1;
 
 	for (i=0; i<(int) _s$.GetSize(); i++)
 	{
