@@ -1504,22 +1504,22 @@ void CTablemap::SaveS$Strings(void)
 		if (_s$[i].name == "nchairs")
 			_s$items.num_chairs = strtoul(_s$[i].text.GetString(), NULL, 10);
 
-		if (_s$[i].name == "_swagtextmethod")
+		if (_s$[i].name == "swagtextmethod")
 			_s$items.swagtextmethod = strtoul(_s$[i].text.GetString(), NULL, 10);
 
-		if (_s$[i].name == "_potmethod")
+		if (_s$[i].name == "potmethod")
 			_s$items.potmethod = strtoul(_s$[i].text.GetString(), NULL, 10);
 
-		if (_s$[i].name == "_activemethod")
+		if (_s$[i].name == "activemethod")
 			_s$items.activemethod = strtoul(_s$[i].text.GetString(), NULL, 10);
 
-		if (_s$[i].name == "_sitename")
+		if (_s$[i].name == "sitename")
 			_s$items.sitename = _s$[i].text;
 
-		if (_s$[i].name == "_network")
+		if (_s$[i].name == "network")
 			_s$items.network = _s$[i].text;
 
-		if (_s$[i].name == "_chairconfig")
+		if (_s$[i].name == "chairconfig")
 			_s$items.chairconfig = _s$[i].text;
 
 		if (_s$[i].name == "t0type")
