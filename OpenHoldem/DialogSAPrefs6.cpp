@@ -58,7 +58,7 @@ BOOL CDlgSAPrefs6::OnInitDialog()
 
     CSAPrefsSubDlg::OnInitDialog();
 
-	m_pt_disable.SetCheck(prefs.pt_disable() ? BST_UNCHECKED : BST_CHECKED);
+	m_pt_disable.SetCheck(!prefs.pt_disable() ? BST_UNCHECKED : BST_CHECKED);
 
 	m_pt_ip.SetWindowText(prefs.pt_ip_addr().GetString());
 	m_pt_port.SetWindowText(prefs.pt_port().GetString());
