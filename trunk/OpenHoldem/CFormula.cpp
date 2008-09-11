@@ -734,10 +734,11 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 				data->pParent->formula()->mFunction[i].func != "dll" &&
 				data->pParent->formula()->mFunction[i].func != "f$debug")
 		{
-			p_global->parse_symbol_formula = data->pParent->formula();
-			p_global->parse_symbol_stop_strs.RemoveAll();
-
-			result = gram.ParseString(&data->pParent->formula()->mFunction[i].func_text, data->pParent->set_tpi(i), &stopchar);
+			result = gram.ParseString(
+							&data->pParent->formula()->mFunction[i].func_text, 
+							data->pParent->formula(), 
+							data->pParent->set_tpi(i), 
+							&stopchar);
 
 			if (!result)
 			{
@@ -762,14 +763,14 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 				data->all_parsed = false;
 			}
 
-			else if (p_global->parse_symbol_stop_strs.GetSize() != 0)
+			else if (gram.parse_symbol_stop_strs()->GetSize() != 0)
 			{
 				s.Format("Error in parse of %s\n\nInvalid symbols:\n",
 						 data->pParent->formula()->mFunction[i].func.GetString());
-				for (j=0; j<p_global->parse_symbol_stop_strs.GetSize(); j++)
+				for (j=0; j<gram.parse_symbol_stop_strs()->GetSize(); j++)
 				{
 					s.Append("   ");
-					s.Append(p_global->parse_symbol_stop_strs[j].c_str());
+					s.Append(gram.parse_symbol_stop_strs()->GetAt(j).c_str());
 					s.Append("\n");
 				}
 				MessageBox(data->calling_hwnd, s, "PARSE ERROR", MB_OK);

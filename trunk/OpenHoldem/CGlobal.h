@@ -44,10 +44,6 @@ public:
 	// Used for holding table list by callback function
 	CArray <STableList, STableList>		g_tlist;
 
-	// Formula set currently being parsed, and result of that parse (this is for symbol validation)
-	const SFormula		*parse_symbol_formula;
-	CArray<std::string, std::string>		parse_symbol_stop_strs;
-
 	CString			mm_network;
 
 	// autoplayer engaged status

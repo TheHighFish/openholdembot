@@ -15,32 +15,53 @@ typedef tree_match<iterator_t, int_factory_t>			parse_tree_match_t;
 typedef parse_tree_match_t::tree_iterator				iter_t;
 typedef	tree_parse_info<const char *, int_factory_t>	tpi_type;
 
+
 class CGrammar 
 {
+
 public:
 	// public functions
 	CGrammar();
 	~CGrammar();
-	bool ParseString(const CString *s, tpi_type *i, int *stopchar);
+	bool ParseString(const CString *s, const SFormula *f, tpi_type *i, int *stopchar); 
 	double EvaluateTree(CFormula * const f, tpi_type info, CEvalInfoFunction **logCallingFunction, int *e);
 	double CalcF$symbol(CFormula * const f, char *symbol, bool log, int *e);
 	double CalcF$symbol(CFormula * const f, char *symbol, int *e);
 	double DoCalcF$symbol(CFormula * const f, char *symbol, CEvalInfoFunction **logCallingFunction, bool skipCache, int *e);
-	static void ValidateSymbol(const char *begin, const char *end);
-	static void SetPosition(parse_tree_match_t::node_t &node, const char *begin, const char *end);
+	static void SetPosition(parse_tree_match_t::node_t &node, const char *begin, const char *end) { node.value.value(begin); } 
+
+public:
+	// public accessors
+	const CArray<std::string, std::string> * parse_symbol_stop_strs() { return &_parse_symbol_stop_strs; }
 
 private:
 	// private functions and variables - not available via accessors or mutators
 	double EvaluateExpression(CFormula * const f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e);
 	double DoEvaluateExpression(CFormula * const f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e);
 	double EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunction **logCallingFunction, int *e);
-	void SetOffsets(iter_t &i, const char *start);
+	static void ValidateSymbol(const char *begin, const char *end);
+	static void SetOffsets(iter_t &i, const char *start);
 
-	CCritSec		m_critsec_parse;
+	// Result of formula set currently being parsed (this is for symbol validation)
+	CArray<std::string, std::string>  _parse_symbol_stop_strs;
+
+	// This object ensures access to Spirit's evaluate by one thread at a time
 	CCritSec		m_critsec_evaluate;
+
+	// This object ensures access to Spirit's parse by one thread at a time, and ensures that "_parse_symbol_stop_strs"
+	// is only in use by one thread at a time
+	CCritSec		m_critsec_parse;
 };
 
-//  Here's the comment rule
+// Formula set currently being parsed (this is for symbol validation)
+extern SFormula		*g_parse_symbol_formula;
+
+// Result of formula set currently being parsed (this is for symbol validation)
+// Upon completion of ast_parse, these results are copied back into the class
+extern CArray<std::string, std::string>  g_parse_symbol_stop_strs;
+
+
+// skip grammar
 struct skip_grammar : public grammar<skip_grammar>
 {
 	template <typename ScannerT>
@@ -95,7 +116,7 @@ struct exec_grammar : public grammar<exec_grammar>
 									leaf_node_d[ 
 										lexeme_d[
 											((alpha_p | '_' | '$') >> *(alnum_p | '_' | '$' | '.')) 
-										][&CGrammar::ValidateSymbol] 
+										] 
 									]
 								][&CGrammar::SetPosition];
 
