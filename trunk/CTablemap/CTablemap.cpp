@@ -563,7 +563,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("\r\n");
 	N = (int) _r$.GetSize();
 	for (i=0; i<N; i++) {
-		s.Format("r$indexes.r$%s", _r$[i].name.GetString());
+		s.Format("r$%s", _r$[i].name.GetString());
 		while (s.GetLength()<18) s.Append(" ");
 		t.Format("%3d %3d %3d %3d %8x %4d ", 
 			_r$[i].left, _r$[i].top, _r$[i].right, _r$[i].bottom,
