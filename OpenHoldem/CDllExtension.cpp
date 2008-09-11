@@ -177,7 +177,7 @@ double GetSymbolFromDll(const int chair, const char* name, bool& iserr)
 
 	str.Format("%s", name);
 
-	result = gram.ParseString(&str, &tpi, &stopchar);
+	result = gram.ParseString(&str, (const SFormula *) p_formula, &tpi, &stopchar);
 
 	if (result)
 	{

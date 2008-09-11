@@ -22,45 +22,10 @@
 
 CGrammar::CGrammar(void)
 {
-	__SEH_SET_EXCEPTION_HANDLER
 }
 
 CGrammar::~CGrammar(void)
 {
-}
-
-bool CGrammar::ParseString(const CString *s, tpi_type *i, int *stopchar)
-{
-	exec_grammar	gram;
-	string			str = "";
-	skip_grammar	skip;
-
-	CSLock lock(m_critsec_parse);
-
-	str = s->GetString();
-	const char *last = str.c_str();
-	while (*last) last++;
-	
-	*i = ast_parse<int_factory_t>(str.c_str(), last, gram, skip, int_factory_t());
-
-	if (i->full)
-	{
-		iter_t &cur = i->trees.begin();
-		iter_t &end = i->trees.end();
-		for (; cur != end; ++cur)
-			SetOffsets(cur, str.c_str());
-
-		// parsing succeeded
-		*stopchar = -1;
-		return true;
-	}
-	else
-	{
-		// parsing failed
-		*stopchar = i->stop - str.c_str();
-		return false;
-	}
-	return true;
 }
 
 double CGrammar::EvaluateTree(CFormula * const f, tpi_type info, CEvalInfoFunction **logCallingFunction, int *e)
@@ -87,174 +52,6 @@ double CGrammar::CalcF$symbol(CFormula * const f, char *symbol, bool log, int *e
 	}
 
 	return ret;
-}
-
-
-void CGrammar::ValidateSymbol(const char *begin, const char *end)
-{
-	int		i = 0, e = 0;
-	string	sym(begin, end);
-	bool	match = false;
-
-	// "e" literal
-	if (strcmp(sym.c_str(), "e")==0)
-		return;
-
-	// f$$ symbols (hand multiplexor)
-	else if (memcmp(sym.c_str(), "f$$", 3)==0)
-	{
-		if (strlen(sym.c_str())==4)
-		{
-			if (tolower(sym.c_str()[3])!='x')
-			{
-				p_global->parse_symbol_stop_strs.Add(sym);
-				return;
-			}
-		}
-		else if (strlen(sym.c_str())==5)
-		{
-			if (tolower(sym.c_str()[3])!='x' || tolower(sym.c_str()[4])!='x')
-			{
-				p_global->parse_symbol_stop_strs.Add(sym);
-				return;
-			}
-		}
-		else if (strlen(sym.c_str())==6)
-		{
-			if (tolower(sym.c_str()[3])!='x' || tolower(sym.c_str()[4])!='x' || tolower(sym.c_str()[5])!='x')
-			{
-				p_global->parse_symbol_stop_strs.Add(sym);
-				return;
-			}
-		}
-		else
-		{
-			p_global->parse_symbol_stop_strs.Add(sym);
-			return;
-		}
-	}
-
-	// f$ symbols
-	else if (memcmp(sym.c_str(), "f$", 2)==0)
-	{
-		match = false;
-		for (i=0; i<p_global->parse_symbol_formula->mFunction.GetSize() && match==false; i++)
-			if (strcmp(p_global->parse_symbol_formula->mFunction[i].func.GetString(), sym.c_str())==0)
-				match = true;
-
-		if (!match)
-			p_global->parse_symbol_stop_strs.Add(sym);
-
-		return;
-	}
-
-	// dll$ symbols
-	else if (memcmp(sym.c_str(), "dll$", 4)==0)
-	{
-		// MECHANISM FOR DETECTING INVALID DLL SYMBOLS DOES NOT YET EXIST
-		return;
-	}
-
-	//  Perl symbols (starting with "pl_")
-	else if (memcmp(sym.c_str(), "pl_", 3)==0)
-	{
-		if (!the_Perl_Interpreter->is_Perl_Symbol(sym.c_str()))
-			p_global->parse_symbol_stop_strs.Add(sym);
-
-		return;
-	}
-
-	// vs$ symbols
-	else if (memcmp(sym.c_str(), "vs$", 3)==0)
-	{
-		e = SUCCESS;
-		versus.get_symbol(sym.c_str(), &e);
-
-		if (e != SUCCESS)
-			p_global->parse_symbol_stop_strs.Add(sym);
-
-		return;
-	}
-
-	// log$ symbols
-	else if (memcmp(sym.c_str(), "log$", 4)==0)
-	{
-		LogSymbols  logsymbols;
-		e = SUCCESS;
-		logsymbols.process_query(sym.c_str(), &e);
-
-		if (e != SUCCESS)
-			p_global->parse_symbol_stop_strs.Add(sym);
-
-		return;
-	}
-
-	// icm_ symbols
-	else if (memcmp(sym.c_str(), "icm", 3)==0)
-	{
-		CICMCalculator		icm;
-		e = SUCCESS;
-		icm.ProcessQueryICM(sym.c_str()+3, &e);
-
-		if (e != SUCCESS)
-			p_global->parse_symbol_stop_strs.Add(sym);
-
-		return;
-	}
-
-	// Action symbols
-	else if (memcmp(sym.c_str(), "ac_", 3)==0)
-	{
-		CPokerAction	action;
-		e = SUCCESS;
-		action.ProcessQuery(sym.c_str(), &e);
-
-		if (e != SUCCESS)
-			p_global->parse_symbol_stop_strs.Add(sym);
-
-		return;
-	}
-
-	// MyHand symbols
-	else if (memcmp(sym.c_str(), "mh_", 3)==0)
-	{
-		CMyHand	myhand;
-		e = SUCCESS;
-		myhand.ProcessQuery(sym.c_str(), &e);
-
-		if (e != SUCCESS)
-			p_global->parse_symbol_stop_strs.Add(sym);
-
-		return;
-	}
-
-	// Memory symbols
-	else if (memcmp(sym.c_str(), "me_st_", 6)==0 ||
-			 memcmp(sym.c_str(), "me_re_", 6)==0)
-	{
-		// Memory symbols may need valid parse trees for all formulas, an since we 
-		// are just parsing here, we may not have those trees yet.
-
-		//e = SUCCESS;
-		//p_memory->ProcessQuery(sym.c_str(), &e);
-
-		//if (e != SUCCESS)
-		//	p_global->parse_symbol_stop_strs.Add(sym);
-
-		return;
-	}
-
-	// all other symbols
-	else
-	{
-		e = SUCCESS;
-		p_symbols->GetSymbolVal(sym.c_str(), &e);
-
-		if (e != SUCCESS)
-			p_global->parse_symbol_stop_strs.Add(sym);
-
-		return;
-	}
 }
 
 double CGrammar::EvaluateExpression(CFormula * const f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e)
@@ -741,6 +538,57 @@ double CGrammar::DoCalcF$symbol(CFormula * const f, char *symbol, CEvalInfoFunct
 	return 0;
 }
 
+
+////////////////////////
+// Parsing functions
+CArray<std::string, std::string>  g_parse_symbol_stop_strs;
+SFormula		*g_parse_symbol_formula;
+
+bool CGrammar::ParseString(const CString *s, const SFormula *f, tpi_type *i, int *stopchar)
+{
+	exec_grammar	gram;
+	string			str = "";
+	skip_grammar	skip;
+	int				c = 0;
+
+	CSLock lock(m_critsec_parse);
+
+	g_parse_symbol_formula = (SFormula *) f;
+	g_parse_symbol_stop_strs.RemoveAll();
+
+	str = s->GetString();
+	const char *last = str.c_str();
+	while (*last) last++;
+	
+	*i = ast_parse<int_factory_t>(str.c_str(), last, gram, skip, int_factory_t());
+
+	// Copy stop_strs result from global holder back into the class
+	_parse_symbol_stop_strs.RemoveAll();
+	for (c=0; c<g_parse_symbol_stop_strs.GetCount(); c++)
+		_parse_symbol_stop_strs.Add(g_parse_symbol_stop_strs[c]);
+
+	// Figure out if we were successful
+	if (i->full)
+	{
+		iter_t &cur = i->trees.begin();
+		iter_t &end = i->trees.end();
+		for (; cur != end; ++cur)
+			SetOffsets(cur, str.c_str());
+
+		// parsing succeeded
+		*stopchar = -1;
+		return true;
+	}
+	else
+	{
+		// parsing failed
+		*stopchar = i->stop - str.c_str();
+		return false;
+	}
+	return true;
+}
+
+
 void CGrammar::SetOffsets(iter_t &i, const char *start)
 {
 	if (i->value.value() != NULL)
@@ -754,9 +602,169 @@ void CGrammar::SetOffsets(iter_t &i, const char *start)
 		SetOffsets(cur, start);
 }
 
-void CGrammar::SetPosition(parse_tree_match_t::node_t &node, const char *begin, const char *end)
+void CGrammar::ValidateSymbol(const char *begin, const char *end)
 {
-	node.value.value(begin);
+	int		i = 0, e = 0;
+	string	sym(begin, end);
+	bool	match = false;
+
+	// "e" literal
+	if (strcmp(sym.c_str(), "e")==0)
+		return;
+
+	// f$$ symbols (hand multiplexor)
+	else if (memcmp(sym.c_str(), "f$$", 3)==0)
+	{
+		if (strlen(sym.c_str())==4)
+		{
+			if (tolower(sym.c_str()[3])!='x')
+			{
+				g_parse_symbol_stop_strs.Add(sym);
+				return;
+			}
+		}
+		else if (strlen(sym.c_str())==5)
+		{
+			if (tolower(sym.c_str()[3])!='x' || tolower(sym.c_str()[4])!='x')
+			{
+				g_parse_symbol_stop_strs.Add(sym);
+				return;
+			}
+		}
+		else if (strlen(sym.c_str())==6)
+		{
+			if (tolower(sym.c_str()[3])!='x' || tolower(sym.c_str()[4])!='x' || tolower(sym.c_str()[5])!='x')
+			{
+				g_parse_symbol_stop_strs.Add(sym);
+				return;
+			}
+		}
+		else
+		{
+			g_parse_symbol_stop_strs.Add(sym);
+			return;
+		}
+	}
+
+	// f$ symbols
+	else if (memcmp(sym.c_str(), "f$", 2)==0)
+	{
+		match = false;
+		for (i=0; i<g_parse_symbol_formula->mFunction.GetSize() && match==false; i++)
+			if (strcmp(g_parse_symbol_formula->mFunction[i].func.GetString(), sym.c_str())==0)
+				match = true;
+
+		if (!match)
+			g_parse_symbol_stop_strs.Add(sym);
+
+		return;
+	}
+
+	// dll$ symbols
+	else if (memcmp(sym.c_str(), "dll$", 4)==0)
+	{
+		// MECHANISM FOR DETECTING INVALID DLL SYMBOLS DOES NOT YET EXIST
+		return;
+	}
+
+	//  Perl symbols (starting with "pl_")
+	else if (memcmp(sym.c_str(), "pl_", 3)==0)
+	{
+		if (!the_Perl_Interpreter->is_Perl_Symbol(sym.c_str()))
+			g_parse_symbol_stop_strs.Add(sym);
+
+		return;
+	}
+
+	// vs$ symbols
+	else if (memcmp(sym.c_str(), "vs$", 3)==0)
+	{
+		e = SUCCESS;
+		versus.get_symbol(sym.c_str(), &e);
+
+		if (e != SUCCESS)
+			g_parse_symbol_stop_strs.Add(sym);
+
+		return;
+	}
+
+	// log$ symbols
+	else if (memcmp(sym.c_str(), "log$", 4)==0)
+	{
+		LogSymbols  logsymbols;
+		e = SUCCESS;
+		logsymbols.process_query(sym.c_str(), &e);
+
+		if (e != SUCCESS)
+			g_parse_symbol_stop_strs.Add(sym);
+
+		return;
+	}
+
+	// icm_ symbols
+	else if (memcmp(sym.c_str(), "icm", 3)==0)
+	{
+		CICMCalculator		icm;
+		e = SUCCESS;
+		icm.ProcessQueryICM(sym.c_str()+3, &e);
+
+		if (e != SUCCESS)
+			g_parse_symbol_stop_strs.Add(sym);
+
+		return;
+	}
+
+	// Action symbols
+	else if (memcmp(sym.c_str(), "ac_", 3)==0)
+	{
+		CPokerAction	action;
+		e = SUCCESS;
+		action.ProcessQuery(sym.c_str(), &e);
+
+		if (e != SUCCESS)
+			g_parse_symbol_stop_strs.Add(sym);
+
+		return;
+	}
+
+	// MyHand symbols
+	else if (memcmp(sym.c_str(), "mh_", 3)==0)
+	{
+		CMyHand	myhand;
+		e = SUCCESS;
+		myhand.ProcessQuery(sym.c_str(), &e);
+
+		if (e != SUCCESS)
+			g_parse_symbol_stop_strs.Add(sym);
+
+		return;
+	}
+
+	// Memory symbols
+	else if (memcmp(sym.c_str(), "me_st_", 6)==0 ||
+			 memcmp(sym.c_str(), "me_re_", 6)==0)
+	{
+		// Memory symbols may need valid parse trees for all formulas, an since we 
+		// are just parsing here, we may not have those trees yet.
+
+		//e = SUCCESS;
+		//p_memory->ProcessQuery(sym.c_str(), &e);
+
+		//if (e != SUCCESS)
+		//	g_parse_symbol_stop_strs.Add(sym);
+
+		return;
+	}
+
+	// all other symbols
+	else
+	{
+		e = SUCCESS;
+		p_symbols->GetSymbolVal(sym.c_str(), &e);
+
+		if (e != SUCCESS)
+			g_parse_symbol_stop_strs.Add(sym);
+
+		return;
+	}
 }
-
-

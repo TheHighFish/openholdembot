@@ -2524,21 +2524,18 @@ void CDlgFormulaScintilla::init_debug_array(void)
             // parse
             debug_struct.exp.Format("%s", eq);
 
-			p_global->parse_symbol_formula = m_wrk_formula.formula();
-			p_global->parse_symbol_stop_strs.RemoveAll();
-
-            parse_result = gram.ParseString(&debug_struct.exp, &debug_struct.tree, &stopchar);
+            parse_result = gram.ParseString(&debug_struct.exp, m_wrk_formula.formula(), &debug_struct.tree, &stopchar);
 
 			debug_struct.ret = 0;
 			debug_struct.valid = true;
-			debug_struct.error = parse_result && p_global->parse_symbol_stop_strs.GetSize()==0 ? SUCCESS : ERR_BAD_PARSE;
+			debug_struct.error = parse_result && gram.parse_symbol_stop_strs()->GetSize()==0 ? SUCCESS : ERR_BAD_PARSE;
         }
         else 
 		{
             debug_struct.exp = buf;
             Cstr = "";
 
-			gram.ParseString(&Cstr, &debug_struct.tree, &stopchar);
+			gram.ParseString(&Cstr, m_wrk_formula.formula(), &debug_struct.tree, &stopchar);
 
 			debug_struct.ret = 0;
             debug_struct.valid = false;
