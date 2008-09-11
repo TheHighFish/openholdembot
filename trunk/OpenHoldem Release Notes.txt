@@ -15,7 +15,7 @@ BUG FIXES:
 
 
 MAINTENANCE:
-
+- Removal of fatal_error.log creation on crash.  This has been replaced by minidumps.
 
 
 v1.9.3 2008-08-22

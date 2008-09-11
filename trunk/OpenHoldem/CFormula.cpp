@@ -18,12 +18,9 @@ CFormula::CFormula(void)
 {
 	__SEH_SET_EXCEPTION_HANDLER
 
-	__SEH_HEADER
-
 	ClearFormula();
 	_formula_name = "";
-
-	__SEH_LOGFATAL("CFormula::Constructor : \n");}
+}
 
 CFormula::~CFormula(void)
 {
@@ -31,8 +28,6 @@ CFormula::~CFormula(void)
 
 void CFormula::ClearFormula()
 {
-	__SEH_HEADER
-
 	CSLock lock(m_critsec);
 
 	_formula.dBankroll = _formula.dDefcon = _formula.dRake = _formula.dNit = 0.0;
@@ -40,14 +35,10 @@ void CFormula::ClearFormula()
 	_formula.mFunction.RemoveAll();
 
 	_formula_name = "";
-
-	__SEH_LOGFATAL("CFormula::ClearFormula : \n");
 }
 
 void CFormula::SetDefaultBot()
 {
-	__SEH_HEADER
-
 	SFunction		func;
 
 	ClearFormula();
@@ -80,16 +71,12 @@ void CFormula::SetDefaultBot()
 	func.func = "f$evcall"; func.func_text = defaultCSevcall; _formula.mFunction.Add(func);	
 
 	_formula_name = "Default";
-
-	__SEH_LOGFATAL("CFormula::SetDefaultBot : \n");
 }
 
 // Reading a part of a formula, which may be spread
 // between two files in case of an old style whf / whx formula.
 void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 {
-	__SEH_HEADER
-
 	CString		strOneLine = ""; 
 	int			content = 0;
 	char		funcname[256] = {0};
@@ -226,14 +213,10 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 		func.func_text.TrimRight("\r\n");
 		_formula.mFunction.Add(func);
 	}
-
-	__SEH_LOGFATAL("CFormula::ReadFormulaFile");
 }
 
 void CFormula::WriteFormula(CArchive& ar) 
 {
-	__SEH_HEADER
-
 	CString		s = "";
 	int			i = 0, N = (int) _formula.mFunction.GetSize();
 	char		nowtime[26] = {0};
@@ -336,14 +319,10 @@ void CFormula::WriteFormula(CArchive& ar)
 			ar.WriteString("##" + _formula.mFunction[i].func + "##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
 		}
 	}
-
-	__SEH_LOGFATAL("CFormula::WriteFormula :\n"); 
 }
 
 void CFormula::CreateHandListMatrices()
 {
-	__SEH_HEADER
-
 	int			listnum = 0, i = 0, j = 0;
 	CString		token = "";
 
@@ -363,15 +342,11 @@ void CFormula::CreateHandListMatrices()
 		
 		ParseHandList(_formula.mHandList[i].list_text, _formula.inlist[listnum]);
 	}
-
-	__SEH_LOGFATAL("CFormula::CreateHandListMatrices :\n");
 }
 
 bool CFormula::ParseAllFormula(HWND hwnd)
 {
 	// returns true for successful parse of all trees, false otherwise
-	__SEH_HEADER
-
 	sData			data;
 
 	data.all_parsed = true;
@@ -383,14 +358,10 @@ bool CFormula::ParseAllFormula(HWND hwnd)
 	dlg_progress.DoModal();
 
 	return data.all_parsed;
-
-	__SEH_LOGFATAL("CFormula::ParseAllFormula :\n");
 }
 
 void CFormula::CheckForDefaultFormulaEntries()
 {
-	__SEH_HEADER
-
 	int			N = 0, i = 0;
 	bool		addit = false;
 	SFunction	func;	
@@ -540,26 +511,18 @@ void CFormula::CheckForDefaultFormulaEntries()
 		func.func = "f$debug"; 
 		_formula.mFunction.Add(func); 
 	}
-
-	__SEH_LOGFATAL("CFormula::CheckForDefaultFormulaEntries");
 }
 
 void CFormula::MarkCacheStale()
 {
-	__SEH_HEADER
-
 	CSLock lock(m_critsec);
 
 	for (int i=0; i<_formula.mFunction.GetSize(); i++)
         _formula.mFunction[i].fresh = false;
-
-	__SEH_LOGFATAL("CFormula::MarkCacheStale");
 }
 
 void CFormula::ParseHandList(const CString &list_text, bool inlist[13][13])
 {
-	__SEH_HEADER
-
 	CSLock lock(m_critsec);
 
 	for (int i=0; i<=12; i++)
@@ -610,14 +573,10 @@ void CFormula::ParseHandList(const CString &list_text, bool inlist[13][13])
 			inlist[token_card1_rank][token_card0_rank] = true;
 		}
 	}
-
-	__SEH_LOGFATAL("CFormula::ParseHandList :\n");
 }
 
 void CFormula::CopyFormulaFrom(CFormula *f)
 {
-	__SEH_HEADER
-
 	SHandList		list;
 	SFunction		func;
 	int				from_count = 0, to_count = 0, from_iter = 0, to_iter = 0;
@@ -716,15 +675,10 @@ void CFormula::CopyFormulaFrom(CFormula *f)
 
 	// Copy name
 	_formula_name = f->formula_name();
-	
-
-	__SEH_LOGFATAL("CFormula::CopyFormulaTo :\n");
 }
 
 const int CFormula::CardIdentHelper(const char c)
 {
-	__SEH_HEADER
-
 	if (c>='2' && c<='9')
 		return c - '0' - 2;
 
@@ -744,14 +698,10 @@ const int CFormula::CardIdentHelper(const char c)
 		return 12;
 
 	return -1;
-
-	__SEH_LOGFATAL("CFormula::CardIdentHelper :\n");
 }
 
 bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 {
-	__SEH_HEADER
-
 	int				i = 0, j = 0, N = 0;
 	CString			s = "";
 	bool			result = false;
@@ -836,6 +786,4 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 	pCUPDUPData->SetProgress("", 100, true);
 
 	return true;
-
-	__SEH_LOGFATAL("ParseLoop :\n");
 }

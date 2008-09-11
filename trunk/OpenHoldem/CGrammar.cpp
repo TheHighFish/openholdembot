@@ -31,8 +31,6 @@ CGrammar::~CGrammar(void)
 
 bool CGrammar::ParseString(const CString *s, tpi_type *i, int *stopchar)
 {
-	__SEH_HEADER
-
 	exec_grammar	gram;
 	string			str = "";
 	skip_grammar	skip;
@@ -63,34 +61,22 @@ bool CGrammar::ParseString(const CString *s, tpi_type *i, int *stopchar)
 		return false;
 	}
 	return true;
-
-	__SEH_LOGFATAL("CGrammar::ParseString :\n");
 }
 
 double CGrammar::EvaluateTree(CFormula * const f, tpi_type info, CEvalInfoFunction **logCallingFunction, int *e)
 {
-	__SEH_HEADER
-
 	CSLock lock(m_critsec_evaluate);
 
 	return EvaluateExpression(f, info.trees.begin(), logCallingFunction, e);
-
-	__SEH_LOGFATAL("CGrammar::EvaluateTree :\n");
 }
 
 double CGrammar::CalcF$symbol(CFormula * const f, char *symbol, int *e)
 { 
-	__SEH_HEADER
-
 	return CalcF$symbol(f, symbol, false, e); 
-
-	__SEH_LOGFATAL("CGrammar::CalcF$symbol(1) :\n");
 }
 
 double CGrammar::CalcF$symbol(CFormula * const f, char *symbol, bool log, int *e)
 {
-	__SEH_HEADER
-
 	CEvalInfoFunction *logCallingFunction = NULL;
 	double ret = DoCalcF$symbol(f, symbol, (log ? &logCallingFunction : NULL), log, e);
 
@@ -101,15 +87,11 @@ double CGrammar::CalcF$symbol(CFormula * const f, char *symbol, bool log, int *e
 	}
 
 	return ret;
-
-	__SEH_LOGFATAL("CGrammar::CalcF$symbol(2) :\n");
 }
 
 
 void CGrammar::ValidateSymbol(const char *begin, const char *end)
 {
-	__SEH_HEADER
-
 	int		i = 0, e = 0;
 	string	sym(begin, end);
 	bool	match = false;
@@ -273,14 +255,10 @@ void CGrammar::ValidateSymbol(const char *begin, const char *end)
 
 		return;
 	}
-
-	__SEH_LOGFATAL("CGrammar::ValidateSymbol :\n");
 }
 
 double CGrammar::EvaluateExpression(CFormula * const f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e)
 {
-	__SEH_HEADER
-
 	string sym(i->value.begin(), i->value.end());
 	parser_id tp = i->value.id();
 
@@ -293,14 +271,10 @@ double CGrammar::EvaluateExpression(CFormula * const f, iter_t const& i, CEvalIn
 	}
 
 	return ret;
-
-	__SEH_LOGFATAL("CGrammar::EvaluateExpression :\n");
 }
 
 double CGrammar::DoEvaluateExpression(CFormula * const f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e)
 {
-	__SEH_HEADER
-
 	double			result = 0.;
 	boost::spirit::parser_id		id = i->value.id();
 
@@ -527,14 +501,10 @@ double CGrammar::DoEvaluateExpression(CFormula * const f, iter_t const& i, CEval
 	*e = ERR_INVALID_EXPR;
 
 	return 0;
-
-	__SEH_LOGFATAL("CGrammar::DoEvaluateExpression :\n");
 }
 
 double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunction **logCallingFunction, int *e)
 {
-	__SEH_HEADER
-
 	double			result = 0.;
 	char			f$func[10] = {0};
 	const char		*ranks = "  23456789TJQKA";
@@ -694,15 +664,11 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 		return p_symbols->GetSymbolVal(sym.c_str(), e);;
 	}
 
-		return 0;
-
-		__SEH_LOGFATAL("CGrammar::EvaluateSymbol :\n");
+	return 0;
 }
 
 double CGrammar::DoCalcF$symbol(CFormula * const f, char *symbol, CEvalInfoFunction **logCallingFunction, bool skipCache, int *e)
 {
-	__SEH_HEADER
-
 	int		i = 0;
 	double	ret = 0.;
 
@@ -773,14 +739,10 @@ double CGrammar::DoCalcF$symbol(CFormula * const f, char *symbol, CEvalInfoFunct
 	*e = ERR_INVALID_FUNC_SYM;
 
 	return 0;
-
-	__SEH_LOGFATAL("CGrammar::DoCalcF$symbol :\n");
 }
 
 void CGrammar::SetOffsets(iter_t &i, const char *start)
 {
-	__SEH_HEADER
-
 	if (i->value.value() != NULL)
 		i->value.value((const char *)(i->value.value()-start));
 
@@ -790,17 +752,11 @@ void CGrammar::SetOffsets(iter_t &i, const char *start)
 
 	for (; cur != end; ++cur)
 		SetOffsets(cur, start);
-
-	__SEH_LOGFATAL("CGrammar::SetOffsets :\n");
 }
 
 void CGrammar::SetPosition(parse_tree_match_t::node_t &node, const char *begin, const char *end)
 {
-	__SEH_HEADER
-
 	node.value.value(begin);
-
-	__SEH_LOGFATAL("CGrammar::SetPosition :\n");
 }
 
 

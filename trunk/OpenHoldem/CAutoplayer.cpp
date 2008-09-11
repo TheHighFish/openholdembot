@@ -20,8 +20,6 @@ CAutoplayer::CAutoplayer(BOOL bInitiallyOwn, LPCTSTR lpszName) : _mutex(bInitial
 {
 	__SEH_SET_EXCEPTION_HANDLER
 
-	__SEH_HEADER
-
 	ASSERT(_mutex.m_hObject != NULL);
 
 	// Seed RNG
@@ -47,8 +45,6 @@ void CAutoplayer::DoChat(void)
 	//	with the default check button. Therefore we duplicated
 	//	the clicking code. :(
 	//
-	__SEH_HEADER
-
 	double f_chat = p_symbols->f$chat();
 
 	if (f_chat == 0)
@@ -110,14 +106,10 @@ void CAutoplayer::DoChat(void)
 
 		_mutex.Unlock();
 	}
-
-	__SEH_LOGFATAL("CAutoplayer::DoChat : \n");
 }
 
 void CAutoplayer::DoAutoplayer(void) 
 {
-	__SEH_HEADER
-
 	int				x = 0;
 	int				num_buttons_visible = 0;
 	int				delay = 0;
@@ -214,15 +206,10 @@ void CAutoplayer::DoAutoplayer(void)
 		else 
 			DoARCCF();
 	}
-
-	__SEH_LOGFATAL("CAutoplayer::DoAutoplayer :\n");
-
 }
 
 void CAutoplayer::DoSwag(void) 
 {
-	__SEH_HEADER
-
 	int				input_count = 0, r$index = 0;
 	POINT			pt = {0};
 	double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
@@ -624,14 +611,10 @@ void CAutoplayer::DoSwag(void)
 			_mutex.Unlock();
 		}
 	}
-
-	__SEH_LOGFATAL("CAutoplayer::DoSwag :\n");
 }
 
 void CAutoplayer::DoARCCF(void) 
 {
-	__SEH_HEADER
-
 	int				do_click = 0, input_count = 0;
 	INPUT			input[100] = {0};
 	POINT			pt = {0};
@@ -826,15 +809,10 @@ void CAutoplayer::DoARCCF(void)
 			p_global->set_replay_recorded_this_turn(false);
 		}
 	}
-
-	__SEH_LOGFATAL("CAutoplayer::DoARCCF :\n");
-
 }
 
 void CAutoplayer::DoSlider(void) 
 {
-	__SEH_HEADER
-
 	int				do_drag = 0, input_count = 0,  x = 0, y = 0, x2 = 0;
 	INPUT			input[100] = {0};
 	POINT			pt = {0}, pt2 = {0};
@@ -1010,14 +988,10 @@ void CAutoplayer::DoSlider(void)
 			Sleep(1200);
 		}
 	}
-
-	__SEH_LOGFATAL("CAutoplayer::DoARCCF :\n");
-
 }
 
 void CAutoplayer::DoPrefold(void) 
 {
-	__SEH_HEADER
 	INPUT			input[100] = {0};
 	POINT			pt = {0};
 	double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
@@ -1109,15 +1083,10 @@ void CAutoplayer::DoPrefold(void)
 
 		write_logautoplay("FOLD");
 	}
-
-	__SEH_LOGFATAL("CAutoplayer::DoPrefold :\n");
-
 }
 
 const int CAutoplayer::CountSameScrape(void) 
 {
-	__SEH_HEADER
-
 	int						i = 0;
 	static unsigned int		card_common_last[5] = {0};
 	static unsigned int		card_player_last[10][2] = {0};
@@ -1177,14 +1146,11 @@ const int CAutoplayer::CountSameScrape(void)
 	}
 
 	return num_same_scrapes;
-
-	__SEH_LOGFATAL("CAutoplayer::CountSameScrape :\n");
 }
 
 
 int CAutoplayer::GetR$ButtonIndices(void)
 {
-	__SEH_HEADER
 	int				i = 0, r$index = 0;
 	int				button_index = 0;
 	CString			s = "";
@@ -1575,14 +1541,10 @@ int CAutoplayer::GetR$ButtonIndices(void)
 	}
 
 	return num_seen;
-
-	__SEH_LOGFATAL("CAutoplayer::GetR$ButtonIndices :\n");
 }
 
 void CAutoplayer::CheckBringKeyboard(void) 
 {
-	__SEH_HEADER
-	
 	HMENU			bringsysmenu = NULL;
 	MENUITEMINFO	mii;
 	int				input_count = 0, i = 0;
@@ -1705,15 +1667,10 @@ void CAutoplayer::CheckBringKeyboard(void)
 			_mutex.Unlock();
 		}
 	}
-
-	__SEH_LOGFATAL("CAutoplayer::CheckBringKeyboard :\n");
-
 }
 
 void CAutoplayer::DoF$play(void) 
 {
-	__SEH_HEADER
-
 	INPUT			input[100] = {0};
 	POINT			pt = {0};
 	double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
@@ -1956,14 +1913,10 @@ void CAutoplayer::DoF$play(void)
 			p_symbols->set_elapsedautohold(my_time_t);
 		}
 	}
-
-	__SEH_LOGFATAL("CAutoplayer::DoF$play :\n");
 }
 
 void CAutoplayer::DoI86(void) 
 {
-	__SEH_HEADER
-
 	INPUT			input[100] = {0};
 	POINT			pt = {0};
 	double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
@@ -2097,14 +2050,10 @@ void CAutoplayer::DoI86(void)
 			p_symbols->set_elapsedautohold(my_time_t);
 		}
 	}
-
-	__SEH_LOGFATAL("CAutoplayer::DoI86 :\n");
 }
 
 const POINT CAutoplayer::RandomizeClickLocation(const int left, const int top, const int right, const int bottom) 
 {
-	__SEH_HEADER
-
 	POINT p = {0};
 
 	// uniform random distribution, yuck!
@@ -2115,38 +2064,25 @@ const POINT CAutoplayer::RandomizeClickLocation(const int left, const int top, c
 	GetClickPoint(left + (right-left)/2, top + (bottom-top)/2, (right-left)/2, (bottom-top)/2, &p);
 
 	return p;
-
-	__SEH_LOGFATAL("CAutoplayer::RandomizeClickLocation :\n");
 }
 
 const void CAutoplayer::GetClickPoint(const int x, const int y, const int rx, const int ry, POINT *p) 
 {
-	__SEH_HEADER
-
 	p->x = x + (int) (RandomNormalScaled(2*rx, 0, 1) + 0.5) - (rx);
 	p->y = y + (int) (RandomNormalScaled(2*ry, 0, 1) + 0.5) - (ry);
-
-	__SEH_LOGFATAL("CAutoplayer::GetClickPoint :\n");
 }
 
 // random number - 0 -> scale, with normal distribution
 // ignore results outside 3.5 stds from the mean
 const double CAutoplayer::RandomNormalScaled(const double scale, const double m, const double s) 
 {
-	__SEH_HEADER
-
 	double res = -99;
 	while (res < -3.5 || res > 3.5) res = RandomNormal(m, s);
 	return (res / 3.5*s + 1) * (scale / 2.0);
-
-	__SEH_LOGFATAL("CAutoplayer::RandomNormalScaled :\n");
-
 }
 
 const double CAutoplayer::RandomNormal(const double m, const double s) 
 {
-	__SEH_HEADER
-
 	/* mean m, standard deviation s */
 	double x1 = 0., x2 = 0., w = 0., y1 = 0., y2 = 0.;
 
@@ -2161,7 +2097,4 @@ const double CAutoplayer::RandomNormal(const double m, const double s)
 	y2 = x2 * w;
 
 	return( m + y1 * s );
-
-	__SEH_LOGFATAL("CAutoplayer::RandomNormal :\n");
-
 }

@@ -20,8 +20,6 @@ CIteratorThread::CIteratorThread()
 {
 	__SEH_SET_EXCEPTION_HANDLER
 
-	__SEH_HEADER
-
 	// Create events
 	_m_stop_thread = CreateEvent(0, TRUE, FALSE, 0);
 	_m_wait_thread = CreateEvent(0, TRUE, FALSE, 0);
@@ -35,14 +33,10 @@ CIteratorThread::CIteratorThread()
 	EnterCriticalSection(&cs_iterator);
 	_iter_vars.iterator_thread_running = true;
 	LeaveCriticalSection(&cs_iterator);
-
-	__SEH_LOGFATAL("CIteratorThread::Constructor :\n");
 }
 
 CIteratorThread::~CIteratorThread()
 {
-	__SEH_HEADER
-
 	// Trigger thread to die
 	::SetEvent(_m_stop_thread);
 
@@ -54,15 +48,11 @@ CIteratorThread::~CIteratorThread()
 	::CloseHandle(_m_wait_thread);
 
 	p_iterator_thread = NULL;
-
-	__SEH_LOGFATAL("CIteratorThread::Destructor :\n");
 }
 
 UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 {
 	__SEH_SET_EXCEPTION_HANDLER
-
-	__SEH_HEADER
 
 	CIteratorThread *pParent = static_cast<CIteratorThread*>(pParam);
 
@@ -387,14 +377,10 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 	p_iterator_thread = NULL;
 
 	return 0;
-
-	__SEH_LOGFATAL("CIteratorThread::IteratorThreadFunction :\n");
 }
 
 void CIteratorThread::InitIteratorLoop()
 {
-	__SEH_HEADER
-
 	int			i = 0, e = SUCCESS;
 	CGrammar	gram;
 
@@ -462,14 +448,10 @@ void CIteratorThread::InitIteratorLoop()
 	{
 		p_symbols->prw1326()->prw_callback(); //Matrix 2008-05-09
 	}
-
-	__SEH_LOGFATAL("CIteratorThread::IteratorThreadFunction :\n");
 }
 
 int CIteratorThread::InRange(int card1, int card2)
 {
-	__SEH_HEADER
-
 	//returns non-zero if card pair acceptable for prwin calculation
 
 	/*
@@ -532,6 +514,4 @@ int CIteratorThread::InRange(int card1, int card2)
 		return 1; //OK
 
 	return 0; //no good
-
-	__SEH_LOGFATAL("CIteratorThread::inrange :\n");
 }

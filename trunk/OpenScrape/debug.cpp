@@ -83,6 +83,7 @@ LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers)
     char flpath[MAX_PATH];
     char msg[1000];
 
+/*
     logfatal("########################################################################\n");
     logfatal("FATAL ERROR  (See above for call stack)\n");
     logfatal("########################################################################\n");
@@ -177,6 +178,7 @@ LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers)
     }
     logfatal("########################################################################\n");
     logfatal("########################################################################\n\n\n");
+*/
 
 	// Create a minidump
 	GenerateDump(pExceptionPointers);

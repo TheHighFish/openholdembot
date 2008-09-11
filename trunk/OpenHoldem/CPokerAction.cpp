@@ -17,8 +17,6 @@ CPokerAction::~CPokerAction()
 
 const double CPokerAction::ProcessQuery(const char * pquery, int *e)
 {
-	__SEH_HEADER
-
 	if (memcmp(pquery,"ac_aggressor",12)==0)				return AggressorChair();
 	if (memcmp(pquery,"ac_agchair_after", 16) == 0)			return AgchairAfter();
 	if (memcmp(pquery,"ac_preflop_pos", 14) == 0)			return PreflopPos();
@@ -31,15 +29,10 @@ const double CPokerAction::ProcessQuery(const char * pquery, int *e)
 
 	*e = ERR_INVALID_SYM;
 	return 0.0;
-
-
-	__SEH_LOGFATAL("CPokerAction::ProcessQuery > %s\n", pquery);
 }
 
 const int CPokerAction::PreflopPos (void)
 {
-	__SEH_HEADER
-
 	int		sym_nplayersdealt = (int) p_symbols->sym()->nplayersdealt;
 	int		sym_dealposition = (int) p_symbols->sym()->dealposition;
 	bool	sym_isppro = (bool) p_symbols->sym()->isppro;
@@ -107,14 +100,10 @@ const int CPokerAction::PreflopPos (void)
 								// Normal blinds - dealposition==1 is BB
 								(sym_dealposition==1 ? 2 :
 								 sym_dealposition==2 ? 6 : 0)) :0;
-
-	__SEH_LOGFATAL("CPokerAction::PreflopPos\n");
 }
 
 const int CPokerAction::PreflopRaisPos (void)
 {
-	__SEH_HEADER
-
 	int		e = SUCCESS;
 	int		sym_nplayersdealt = (int) p_symbols->sym()->nplayersdealt;
 	int		sym_dealpositionrais = (int) p_symbols->sym()->dealpositionrais;
@@ -182,14 +171,10 @@ const int CPokerAction::PreflopRaisPos (void)
 								// Normal blinds - dealposition==1 is BB
 								(sym_dealpositionrais==1 ? 2 :
 								sym_dealpositionrais==2 ? 6 : 0)) :0;
-
-	__SEH_LOGFATAL("CPokerAction::PreflopRaisPos\n");
 }
 
 const int CPokerAction::PostflopPos (void)
 {
-	__SEH_HEADER
-
 	int		e = SUCCESS;
 	int		sym_nplayersplaying = (int) p_symbols->sym()->nplayersplaying;
 	int		sym_betposition = (int) p_symbols->sym()->betposition;
@@ -250,14 +235,10 @@ const int CPokerAction::PostflopPos (void)
 									sym_betposition==3 ? 5 : 0):
 		sym_nplayersplaying==2  ? (sym_betposition==1 ? 1 :
 									sym_betposition==2 ? 5 : 0): 0;
-
-	__SEH_LOGFATAL("CPokerAction::PostflopPos\n");
 }
 
 const int CPokerAction::PreflopBets (void)
 {
-	__SEH_HEADER
-
 	int		result = 0;
 	int		e = SUCCESS;
 
@@ -274,14 +255,10 @@ const int CPokerAction::PreflopBets (void)
 			(p_symbols->sym()->ncallbets>=3)		? 5 :0; //Reraised Pot - 3+ bets to call.
 
 	return result;
-
-	__SEH_LOGFATAL("CPokerAction::PreflopBets\n");
 }
 
 const bool CPokerAction::FirstIntoPot (void)
 {
-	__SEH_HEADER
-
 	bool	result = false;
 	int		e = SUCCESS;
 
@@ -290,14 +267,11 @@ const bool CPokerAction::FirstIntoPot (void)
 		p_symbols->sym()->potplayer <= 0.1 ;
 
 	return result;
-
-	__SEH_LOGFATAL("CPokerAction::FirstIntoPot\n");
 }
 
 const int CPokerAction::BetPosition (const int chairnum)
 {
 
-	__SEH_HEADER
 	int		i = 0;
 	int		betpos = 0;
 	int		e = SUCCESS;
@@ -320,14 +294,10 @@ const int CPokerAction::BetPosition (const int chairnum)
 	}
 
 	return betpos;
-
-	__SEH_LOGFATAL("CPokerAction::BetPosition\n");
 }
 
 const int CPokerAction::DealPosition (const int chairnum)
 {
-	__SEH_HEADER
-
 	int		i = 0;
 	int		dealposchair = 0 ;
 	int		e = SUCCESS;
@@ -346,14 +316,10 @@ const int CPokerAction::DealPosition (const int chairnum)
 			i=99;
 	}
 	return ((sym_playersdealtbits>>chairnum)&1) ? dealposchair : 0 ;
-
-	__SEH_LOGFATAL("CPokerAction::DealPosition\n");
 }
 
 const int CPokerAction::AggressorChair (void)
 {
-	__SEH_HEADER
-
 	int		sym_br = (int) p_symbols->sym()->br;
 	int		sym_raischair = (int) p_symbols->sym()->raischair;
 
@@ -390,14 +356,10 @@ const int CPokerAction::AggressorChair (void)
 		return p_game_state->LastRaised(4)!=-1 ? p_game_state->LastRaised(4) : sym_raischair;
 
 	return sym_raischair;
-
-	__SEH_LOGFATAL("CPokerAction::AggressorChair\n");
 }
 
 const bool CPokerAction::AgchairAfter (void)
 {
-	__SEH_HEADER
-
 	bool	result = false;
 	int		e = SUCCESS;
 
@@ -411,6 +373,4 @@ const bool CPokerAction::AgchairAfter (void)
 		result = false ;
 
 	return result;
-
-	__SEH_LOGFATAL("CPokerAction::AgchairAfter\n");
 }

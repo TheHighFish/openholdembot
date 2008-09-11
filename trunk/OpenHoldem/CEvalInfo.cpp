@@ -13,19 +13,13 @@ CEvalInfoFunctionArray::~CEvalInfoFunctionArray()
 
 void CEvalInfoFunctionArray::DumpFunctionArray(int indent)
 {
-	__SEH_HEADER
-
 	indent++;
 	for (int i=0;i<GetSize();i++)
 		GetAt(i)->DumpFunction(indent);
-
-	__SEH_LOGFATAL("CEvalInfoFunctionArray::DumpFunctionArray\n");
 }
 
 void CEvalInfoSymbol::DumpSymbol(int indent)
 {
-	__SEH_HEADER
-
 	CString message = "", format = "";
 
 	if (indent > 0) 
@@ -39,24 +33,17 @@ void CEvalInfoSymbol::DumpSymbol(int indent)
 	EnterCriticalSection(&p_symbols->cs_symbols);
 	p_symbols->set_symboltrace_collection()->Add(message);
 	LeaveCriticalSection(&p_symbols->cs_symbols);
+}
 
-	__SEH_LOGFATAL("CEvalInfoSymbol::DumpSymbol\n");
-};
 void CEvalInfoSymbolArray::DumpSymbolArray(int indent)
 {
-	__SEH_HEADER
-
 	indent++;
 	for (int i=0;i<GetSize();i++)
 		GetAt(i)->DumpSymbol(indent);
-
-	__SEH_LOGFATAL("CEvalInfoSymbolArray::DumpSymbolArray\n");
 }
 
 void CEvalInfoFunction::DumpFunction(int indent)
 {
-	__SEH_HEADER
-
 	CString message = "", format = "", space = "";
 
 	if (indent > 0) 
@@ -76,26 +63,18 @@ void CEvalInfoFunction::DumpFunction(int indent)
 
 	m_CalledFunctions.DumpFunctionArray(indent+1);
 	m_SymbolsUsed.DumpSymbolArray(indent+1);
-	
-	__SEH_LOGFATAL("CEvalInfoFunction::DumpFunction\n");
 }
 
 CEvalInfoSymbolArray::~CEvalInfoSymbolArray()
 {
-	__SEH_HEADER
-
 	for (int i=0;i<GetSize();i++)
 		delete GetAt(i);
 
 	RemoveAll();
-	
-	__SEH_LOGFATAL("CEvalInfoSymbolArray::Destructor\n");
 }
 
 CEvalInfoFunction *CEvalInfoFunctionArray::FindFunction(const char *name) 
 {
-	__SEH_HEADER
-
 	for (int i=0;i<GetSize();i++) 
 	{
 		if (!GetAt(i)->m_FunctionName.Compare(name))
@@ -103,6 +82,4 @@ CEvalInfoFunction *CEvalInfoFunctionArray::FindFunction(const char *name)
 	}
 
 	return NULL;
-
-	__SEH_LOGFATAL("CEvalInfoFunctionArray::FindFunction\n");
 }

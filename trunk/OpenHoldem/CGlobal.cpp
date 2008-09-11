@@ -30,8 +30,6 @@ CGlobal::CGlobal(void)
 {
 	__SEH_SET_EXCEPTION_HANDLER
 
-	__SEH_HEADER
-
 	int			i = 0;
 
 	InitializeCriticalSectionAndSpinCount(&cs_global, 4000);
@@ -75,23 +73,15 @@ CGlobal::CGlobal(void)
 		_m_wait_cursor = false;
 		_replay_recorded_this_turn = false;
 	LeaveCriticalSection(&cs_global);
-
-	__SEH_LOGFATAL("CGlobal::Constructor : \n");
 }
 
 CGlobal::~CGlobal(void)
 {
-	__SEH_HEADER
-
 	DeleteCriticalSection(&cs_global);
-
-	__SEH_LOGFATAL("CGlobal::Destructor : \n");
 }
 
 void CGlobal::CaptureState(const char *title)
 {
-	__SEH_HEADER
-
 	int					i = 0, j = 0;
 	bool				playing = true;
 	unsigned char		card = CARD_NOCARD;
@@ -197,14 +187,10 @@ void CGlobal::CaptureState(const char *title)
 	}
 
 	state_index++;
-
-	__SEH_LOGFATAL("CGlobal::CaptureState :\n");
 }
 
 void CGlobal::CreateReplayFrame(void)
 {
-	__SEH_HEADER
-
 	CString			path = "", filename = "", text = "", fcra_seen = "";
 	FILE			*fp = NULL;
 	int				i = 0;
@@ -378,14 +364,10 @@ void CGlobal::CreateReplayFrame(void)
 		if (_next_replay_frame >= prefs.replay_max_frames())
 			_next_replay_frame = 0;
 	LeaveCriticalSection(&cs_global);
-
-	__SEH_LOGFATAL("CGlobal::CreateReplayFrame :\n");
 }
 
 CString CGlobal::GetCardHtml(unsigned int card)
 {
-	__SEH_HEADER
-
 	CString suit = "", color = "", rank = "", final = "";
 
 	suit =	card == CARD_BACK ? "*" :
@@ -424,6 +406,4 @@ CString CGlobal::GetCardHtml(unsigned int card)
 	final.Format("<font color=%s>%s%s</font>", color, rank, suit);
 
 	return final;
-
-	__SEH_LOGFATAL("CGlobal::GetCardHtml :\n");
 }

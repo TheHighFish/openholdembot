@@ -16,8 +16,6 @@ CMyHand::~CMyHand()
 
 double	CMyHand::ProcessQuery(const char * pquery, int *e)
 {
-	__SEH_HEADER
-
 	if (memcmp(pquery,"mh_3straight", 12) == 0)			return ThreeStraight((pquery[12]-'0')!=0, (pquery[13]-'0')!=0);
 	if (memcmp(pquery,"mh_bottomsd", 11) == 0)			return BottomStraightDraw();
 	if (memcmp(pquery,"mh_nsuitedbetter", 16) == 0)		return NSuitedBetter();
@@ -35,14 +33,10 @@ double	CMyHand::ProcessQuery(const char * pquery, int *e)
 
 	*e = ERR_INVALID_SYM;
 	return 0.0;
-
-	__SEH_LOGFATAL("CMyHand::ProcessQuery\n");
 }
 
 void CMyHand::MyHand(char * hand)
 {
-	__SEH_HEADER
-
 	int		$$pr0 = (int) p_symbols->sym()->$$pr[0];
 	int		$$pr1 = (int) p_symbols->sym()->$$pr[1];
 	bool	issuited = p_symbols->sym()->issuited;
@@ -99,14 +93,10 @@ void CMyHand::MyHand(char * hand)
 		hand[2]=' ';
 		hand[3]='\0';
 	}
-
-	__SEH_LOGFATAL("CMyHand::MyHand\n");
 }
 
 const bool CMyHand::ThreeStraight(bool wheel, bool broadway)
 {
-	__SEH_HEADER
-
 	int		rankbitscommon = (int) p_symbols->sym()->rankbitscommon;
 
 	if (bitcount(rankbitscommon&0x003e)>=3)
@@ -129,14 +119,10 @@ const bool CMyHand::ThreeStraight(bool wheel, bool broadway)
 		return true;
 	else
 		return false ;
-
-	__SEH_LOGFATAL("CMyHand::ThreeStraight\n");
 }
 
 const bool CMyHand::BottomStraightDraw(void)
 {
-	__SEH_HEADER
-
 	int		nstraight = (int) p_symbols->sym()->nstraight;
 	int		nstraightfillcommon = (int) p_symbols->sym()->nstraightfillcommon;
 	int		nstraightfill = (int) p_symbols->sym()->nstraightfill;
@@ -170,26 +156,18 @@ const bool CMyHand::BottomStraightDraw(void)
 	) return true;
 
 	return false;
-
-	__SEH_LOGFATAL("CMyHand::BottomStraightDraw\n");
 }
 
 const int CMyHand::NSuitedBetter(void)
 {
-	__SEH_HEADER
-
 	int		srankbits = (int) p_symbols->sym()->srankbits;
 	int		srankhiplayer = (int) p_symbols->sym()->srankhiplayer;
 
 	return bitcount(((~srankbits)&0x7ffe)>>srankhiplayer);
-
-	__SEH_LOGFATAL("CMyHand::NSuitedBetter\n");
 }
 
 const int CMyHand::KickerBetter(void)
 {
-	__SEH_HEADER
-
 	int result = 0;
 
 	int		rankhiplayer = (int) p_symbols->sym()->rankhiplayer;
@@ -294,14 +272,10 @@ const int CMyHand::KickerBetter(void)
 	}
 
 	return result;
-
-	__SEH_LOGFATAL("CMyHand::KickerBetter\n");
 }
 
 const int CMyHand::KickerRank(void)
 {
-	__SEH_HEADER
-
 	int result = 0;
 
 	int		rankhiplayer = (int) p_symbols->sym()->rankhiplayer;
@@ -376,14 +350,10 @@ const int CMyHand::KickerRank(void)
 	}
 
 	return result;
-
-	__SEH_LOGFATAL("CMyHand::KickerRank\n");
 }
 
 const double CMyHand::NOuts(void)
 {
-	__SEH_HEADER
-
 	double nouts = 0.0;
 
 	int		onepair = (int) p_symbols->sym()->onepair;
@@ -727,14 +697,10 @@ const double CMyHand::NOuts(void)
 		nouts = 0.0;
 
 	return nouts;
-
-	__SEH_LOGFATAL("CMyHand::NOuts\n");
 }
 
 const bool CMyHand::SafeBoard(void)
 {
-	__SEH_HEADER
-
 	bool result = false;
 
 	int		nrankedcommon = (int) p_symbols->sym()->nrankedcommon;
@@ -749,14 +715,10 @@ const bool CMyHand::SafeBoard(void)
 		result = false;
 
 	return result;
-
-	__SEH_LOGFATAL("CMyHand::SafeBoard\n");
 }
 
 const int CMyHand::StrengthStraightFlush(void)
 {
-	__SEH_HEADER
-
 	int		strength = 0;
 
 	int		pokervalcommon = (int) p_symbols->sym()->pokervalcommon;
@@ -822,14 +784,10 @@ const int CMyHand::StrengthStraightFlush(void)
 	}
 
 	return strength;
-
-	__SEH_LOGFATAL("CMyHand::StrengthStraightFlush\n");
 }
 
 const int CMyHand::StrengthQuads(void)
 {
-	__SEH_HEADER
-
 	int		strength = 0;
 
 	int		pokervalcommon = (int) p_symbols->sym()->pokervalcommon;
@@ -894,14 +852,10 @@ const int CMyHand::StrengthQuads(void)
 	}
 
 	return strength;
-
-	__SEH_LOGFATAL("CMyHand::StrengthQuads\n");
 }
 
 const int CMyHand::StrengthFullHouse(void)
 {
-	__SEH_HEADER
-
 	int			strength = 0;
 
 	bool	isfullhouse = (bool) p_symbols->sym()->isfullhouse;
@@ -1030,14 +984,10 @@ const int CMyHand::StrengthFullHouse(void)
 	}
 
 	return strength;
-
-	__SEH_LOGFATAL("CMyHand::StrengthFullHouse\n");
 }
 
 const int CMyHand::StrengthFlush(void)
 {
-	__SEH_HEADER
-
 	int		strength = 0;
 
 	bool	ishiflush = (bool) p_symbols->sym()->ishiflush;
@@ -1139,14 +1089,10 @@ const int CMyHand::StrengthFlush(void)
 	}
 
 	return strength;
-
-	__SEH_LOGFATAL("CMyHand::StrengthFlush\n");
 }
 
 const int CMyHand::StrengthStraight(void)
 {
-	__SEH_HEADER
-
 	int		strength = 0;
 
 	bool	isstraight = (bool) p_symbols->sym()->isstraight;
@@ -1326,14 +1272,10 @@ const int CMyHand::StrengthStraight(void)
 	}
 
 	return strength;
-
-	__SEH_LOGFATAL("CMyHand::StrengthStraight\n");
 }
 
 const int CMyHand::StrengthTrips(void)
 {
-	__SEH_HEADER
-
 	int		strength = 0;
  
 	bool	isthreeofakind = (bool) p_symbols->sym()->isthreeofakind;
@@ -1442,14 +1384,10 @@ const int CMyHand::StrengthTrips(void)
 	}
 
 	return strength;
-
-	__SEH_LOGFATAL("CMyHand::StrengthTrips\n");
 }
 
 const int CMyHand::StrengthTwoPair(void)
 {
-	__SEH_HEADER
-
 	int		strength = 0;
 
 	bool	istwopair = (bool) p_symbols->sym()->istwopair;
@@ -1562,14 +1500,10 @@ const int CMyHand::StrengthTwoPair(void)
 	}
 
 	return strength;
-
-	__SEH_LOGFATAL("CMyHand::StrengthTwoPair\n");
 }
 
 const int CMyHand::StrengthOnePair(void)
 {
-	__SEH_HEADER
-
 	int		strength = 0;
 
 	bool	isonepair = (bool) p_symbols->sym()->isonepair;
@@ -1730,6 +1664,4 @@ const int CMyHand::StrengthOnePair(void)
 	}
 
 	return strength;
-
-	__SEH_LOGFATAL("CMyHand::StrengthOnePair\n");
 }

@@ -89,12 +89,10 @@ CSymbols::CSymbols()
 {
 	__SEH_SET_EXCEPTION_HANDLER
 
-	__SEH_HEADER
-
 	int			i = 0, j = 0, k = 0, vndx = 0;
 	char		*ptr = NULL;
 
-    InitializeCriticalSectionAndSpinCount(&cs_symbols, 4000);
+	InitializeCriticalSectionAndSpinCount(&cs_symbols, 4000);
 
 	ResetSymbolsFirstTime();
 
@@ -197,23 +195,15 @@ CSymbols::CSymbols()
 		_prw1326.chair[i]=_prw1326.vanilla_chair ;
 
 	//end of handrank initialisation
-	
-	__SEH_LOGFATAL("CSymbols::Constructor : \n");
 }
 
 CSymbols::~CSymbols()
 {
-	__SEH_HEADER
-
 	DeleteCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::Destructor : \n");
 }
 
 void CSymbols::ResetSymbolsFirstTime(void)
 {
-	__SEH_HEADER
-
 	int		i = 0;
 
 	// general
@@ -452,14 +442,10 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	LARGE_INTEGER PerformanceCount;
 	QueryPerformanceCounter(&PerformanceCount);
 	p_scraper->set_clocks_hold(PerformanceCount);
-
-	__SEH_LOGFATAL("CSymbols::ResetSymbolsFirstTime : \n");
 }
 
 void CSymbols::ResetSymbolsNewHand(void)
 {
-	__SEH_HEADER
-
 	int		i = 0;
 
 	// handrank
@@ -528,26 +514,18 @@ void CSymbols::ResetSymbolsNewHand(void)
 	// icm
 	for (i=0; i<=9; i++)
 		_stacks_at_hand_start[i] = 0;
-
-	__SEH_LOGFATAL("CSymbols::ResetSymbolsNewHand : \n");
 }
 
 void CSymbols::ResetSymbolsNewRound(void)
 {
-	__SEH_HEADER
-
 	_sym.didchec[4] = 0;
 	_sym.didcall[4] = 0;
 	_sym.didrais[4] = 0;
 	_sym.didswag[4] = 0;
-
-	__SEH_LOGFATAL("CSymbols::ResetSymbolsNewRound : \n");
 }
 
 void CSymbols::ResetSymbolsEveryCalc(void)
 {
-	__SEH_HEADER
-
 	int		i = 0;
 
 	// general
@@ -664,14 +642,10 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 	_logsymbols_collection.RemoveAll();
 
 	_symboltrace_collection.RemoveAll();
-
-	__SEH_LOGFATAL("CSymbols::ResetSymbolsEveryCalc : \n");
 }
 
 void CSymbols::CalcSymbols(void)
 {
-	__SEH_HEADER
-
 	int					i = 0;
 	char				classname[50] = {0}, title[512] = {0};
 	unsigned int		player_card_cur[2] = {0};
@@ -931,13 +905,10 @@ void CSymbols::CalcSymbols(void)
 	{
 		CalcStatistics();			// ror, mean, variance
 	}
-
-	__SEH_LOGFATAL("CSymbols::CalcSymbols :\n");
 }
 
 bool CSymbols::CalcUserChair(void)
 {
-	__SEH_HEADER
 	int				i = 0;
 	int				num_buttons_enabled = 0;
 
@@ -972,14 +943,10 @@ bool CSymbols::CalcUserChair(void)
 	}
 
 	return false;
-
-	__SEH_LOGFATAL("CSymbols::CalcUserChair :\n");
 }
 
 void CSymbols::CalcStakes(void)
 {
-	__SEH_HEADER
-
 	int		i = 0;
 	bool	found_inferred_sb = false, found_inferred_bb = false;
 
@@ -1116,14 +1083,10 @@ void CSymbols::CalcStakes(void)
 		}
 
 	LeaveCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::CalcStakes :\n");
 }
 
 void CSymbols::CalcBetBalanceStack(void)
 {
-	__SEH_HEADER
-
 	int				i = 0, j = 0, oppcount = 0;
 	double			stack[10] = {0}, temp = 0.;
 
@@ -1224,14 +1187,10 @@ void CSymbols::CalcBetBalanceStack(void)
 		}
 
 	LeaveCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::CalcBetBalanceStack :\n");
 }
 
 void CSymbols::CalcChipamtsLimits(void) 
 {
-	__SEH_HEADER
-
 	int				i = 0;
 	int				next_largest_bet = 0;
 
@@ -1265,14 +1224,10 @@ void CSymbols::CalcChipamtsLimits(void)
 			_sym.sraimax = 0;															// sraimax
 
 	LeaveCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::CalcChipamtsLimits :\n");
 }
 
 void CSymbols::CalcNumbets(void)
 {
-	__SEH_HEADER
-
 	EnterCriticalSection(&cs_symbols);	
 
 		if (_user_chair_confirmed)
@@ -1287,14 +1242,10 @@ void CSymbols::CalcNumbets(void)
 		_sym.nraisbets = _sym.ncallbets + 1;												// nraisbets
 
 	LeaveCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::CalcNumbets :\n");
 }
 
 void CSymbols::CalcFlags(void)
 {
-	__SEH_HEADER
-
 	EnterCriticalSection(&cs_symbols);	
 
 		int			i = 0;
@@ -1312,15 +1263,10 @@ void CSymbols::CalcFlags(void)
 		}
 
 	LeaveCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::CalcFlags :\n");
-
 }
 
 void CSymbols::CalcTime(void)
 {
-	__SEH_HEADER
-
 	LARGE_INTEGER	lFrequency = {0}, clocksnow = {0};
 	time_t			t_now_time = 0, t_midnight_time = 0;
 	tm				s_midnight_time = {0};
@@ -1351,14 +1297,10 @@ void CSymbols::CalcTime(void)
 		_sym.clocks = clocksnow.LowPart - p_scraper->clocks_hold().LowPart;				// clocks
 
 	LeaveCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::CalcTime :\n");
 }
 
 void CSymbols::CalcAutoplayer(void)
 {
-	__SEH_HEADER
-
 	int		i = 0;
 	bool	sitin_but = false, sitout_but = false, sitin_state = false, sitout_state = false;
 
@@ -1448,14 +1390,10 @@ void CSymbols::CalcAutoplayer(void)
 		}
 
 	LeaveCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::CalcAutoplayer :\n");
 }
 
 void CSymbols::CalcProbabilities(void)
 {
-	__SEH_HEADER
-
 	bool				need_recalc = false;
 	int					i = 0;
 
@@ -1500,13 +1438,10 @@ void CSymbols::CalcProbabilities(void)
 
 		p_iterator_thread = new CIteratorThread;
 	}
-
-	__SEH_LOGFATAL("CSymbols::CalcProbabilities :\n");
 }
 
 void CSymbols::CalcPlayersFriendsOpponents(void)
 {
-	__SEH_HEADER
 	int				i = 0;
 	double			lastbet = 0.;
 	bool			sblindfound = false, bblindfound = false, found_userchair = false;
@@ -1685,14 +1620,10 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 		}
 
 	LeaveCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::CalcPlayersFriendsOpponents :\n");
 }
 
 void CSymbols::CalcRoundsPositions(void) 
 {
-	__SEH_HEADER
-
 	EnterCriticalSection(&cs_symbols);	
 
 		int			i = 0;
@@ -1728,14 +1659,10 @@ void CSymbols::CalcRoundsPositions(void)
 		}
 
 	LeaveCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::CalcRoundsPositions :\n");
 }
 
 void CSymbols::CalcPokerValues(void)
 {
-	__SEH_HEADER
-
 	int				i = 0;
 	CardMask		Cards = {0};
 	int				nCards = 0;
@@ -1953,14 +1880,10 @@ void CSymbols::CalcPokerValues(void)
 			_sym.ishandupcommon = 1;															// ishandupcommon
 		}
 	LeaveCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::CalcPokerValues :\n");
 }
 
 void CSymbols::CalcUnknownCards(void)
 {
-	__SEH_HEADER
-
 	int				i = 0;
 	CardMask		stdCards = {0}, commonCards = {0};
 	int				nstdCards = 0, ncommonCards = 0;
@@ -2036,14 +1959,10 @@ void CSymbols::CalcUnknownCards(void)
 		}
 
 	LeaveCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::CalcUnknownCards :\n");
 }
 
 void CSymbols::CalcHandTests(void)
 {
-	__SEH_HEADER
-
 	int		i = 0;
 
 	EnterCriticalSection(&cs_symbols);
@@ -2078,14 +1997,10 @@ void CSymbols::CalcHandTests(void)
 		}
 
 	LeaveCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::CalcHandTests :\n");
 }
 
 void CSymbols::CalcPocketTests(void)
 {
-	__SEH_HEADER
-
 	EnterCriticalSection(&cs_symbols);
 
 		if (p_scraper->card_player(_sym.userchair, 0) != CARD_NOCARD && 
@@ -2115,14 +2030,10 @@ void CSymbols::CalcPocketTests(void)
 		}
 
 	LeaveCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::CalcPocketTests :\n");
 }
 
 void CSymbols::CalcListTests(void)
 {
-	__SEH_HEADER
-
 	int				i = 0, N = 0;
 	int				listnum = 0;
 	int				tokpos = 0;
@@ -2224,14 +2135,10 @@ void CSymbols::CalcListTests(void)
 			LeaveCriticalSection(&cs_symbols);
 		}
 	}
-
-	__SEH_LOGFATAL("CSymbols::CalcListTests :\n");
 }
 
 void CSymbols::CalcNhands(void)
 {
-	__SEH_HEADER
-
 	CardMask		plCards = {0}, comCards = {0}, oppCards = {0}, playerEvalCards = {0}, opponentEvalCards = {0};
 	HandVal			hv_player = 0, hv_opponent = 0;
 	unsigned int	pl_pokval = 0, opp_pokval = 0;
@@ -2312,14 +2219,10 @@ void CSymbols::CalcNhands(void)
 
 		_sym.prlosnow = 1 - pow(((_sym.nhandslo + _sym.nhandsti)/_sym.nhands), _sym.nopponents);
 	LeaveCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::CalcNhands :\n");
 }
 
 void CSymbols::CalcHandrank(void)
 {
-	__SEH_HEADER
-
 	char		cardstr[10] = {0};
 	int			i = 0, count = 0;
 
@@ -2369,14 +2272,10 @@ void CSymbols::CalcHandrank(void)
 			_sym.handrank = _sym.handrankp;												// handrank
 
 	LeaveCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::CalcHandrank :\n");
 }
 
 void CSymbols::CalcFlushesStraightsSets(void)
 {
-	__SEH_HEADER
-
 	int				i = 0, j = 0, n = 0;
 	CardMask		plCards = {0}, comCards = {0};
 	CardMask		heartsCards = {0}, diamondsCards = {0}, clubsCards = {0}, spadesCards = {0}, suittestCards = {0};
@@ -2794,13 +2693,10 @@ void CSymbols::CalcFlushesStraightsSets(void)
 		}
 
 	LeaveCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::CalcFlushesStraightsSets :\n");
 }
 
 void CSymbols::CalcRankbits(void)
 {
-	__SEH_HEADER
 	int				i = 0, rank = 0, suit = 0, plcomsuit = 0, comsuit = 0;
 	CardMask		plCards = {0}, comCards = {0}, plcomCards = {0};
 
@@ -3001,14 +2897,10 @@ void CSymbols::CalcRankbits(void)
 		}
 
 	LeaveCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::CalcRankbits :\n");
 }
 
 void CSymbols::CalcHistory(void)
 {
-	__SEH_HEADER
-
 	double		maxbet = 0.;
 	int			i = 0;
 
@@ -3036,14 +2928,10 @@ void CSymbols::CalcHistory(void)
 		_sym.nbetsround[4] = _sym.nbetsround[(int) _sym.br-1];								// nbetsround
 
 	LeaveCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::CalcHistory :\n");
 }
 
 void CSymbols::CalcStatistics(void)
 {
-	__SEH_HEADER
-
 	double		f$srai = 0., C = 0., R = 0., S = 0., B = 0.;
 	int			error = 0;
 	CGrammar	gram;
@@ -3104,14 +2992,10 @@ void CSymbols::CalcStatistics(void)
 					  pow(M_E, ( 2*_sym.allimean*(B/S+_sym.pot/S)/_sym.allivariance ) - 1);
 
 	LeaveCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::CalcStatistics :\n");
 }
 
 void CSymbols::CalcRunRon(void)
 {
-	__SEH_HEADER
-
 	CRunRon			rr;
 
 	rr.get_counts();
@@ -3157,16 +3041,12 @@ void CSymbols::CalcRunRon(void)
 		//_sym.ron$prnuts = /run$total;
 
 	LeaveCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::CalcRunRon :\n");
 }
 
 
 const void CSymbols::GetCardstring(char *c, unsigned int c0, unsigned int c1)
 {
-	__SEH_HEADER
-
-		char		card0[10] = {0}, card1[10] = {0};
+	char		card0[10] = {0}, card1[10] = {0};
 
 	// figure out the card string to search for
 	if (StdDeck_RANK(c0) >= StdDeck_RANK(c1))
@@ -3191,14 +3071,10 @@ const void CSymbols::GetCardstring(char *c, unsigned int c0, unsigned int c1)
 		c[2] = 's';
 	}
 	c[3]='\0';
-
-	__SEH_LOGFATAL("CSymbols::get_cur_pl_cardstring :\n");
 }
 
 const double CSymbols::CalcPokerval(HandVal hv, int n, double *pcb, int card0, int card1)
 {
-	__SEH_HEADER
-
 	double			pv = 0.;
 	int				i = 0, j = 0, k = 0, max = 0, c = 0, flush_suit = 0; //Matrix 2008-06-28
 	double			bits = 0.;
@@ -3656,14 +3532,10 @@ const double CSymbols::CalcPokerval(HandVal hv, int n, double *pcb, int card0, i
 
 	*pcb = bits;
 	return pv;
-
-	__SEH_LOGFATAL("CSymbols::CalcPokerval :\n");
 }
 
 void CSymbols::CalcPrimaryFormulas(const bool final_answer)
 {
-	__SEH_HEADER
-
 	int			e = SUCCESS;
 	CGrammar	gram;
 
@@ -3686,14 +3558,10 @@ void CSymbols::CalcPrimaryFormulas(const bool final_answer)
 	_sym.isfinalanswer = false;
 
 	LeaveCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::CalcPrimaryFormulas :\n");
 }
 
 void CSymbols::CalcSecondaryFormulas(void)
 {
-	__SEH_HEADER
-
 	int			e = SUCCESS;
 	CGrammar	gram;
 
@@ -3712,15 +3580,10 @@ void CSymbols::CalcSecondaryFormulas(void)
 		_f$chat = gram.CalcF$symbol(p_formula, "f$chat", &e);
 
 	LeaveCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::CalcSecondaryFormulas :\n");
 }
-
 
 void CSymbols::UpdateAutoplayerInfo(void)
 {
-	__SEH_HEADER
-
 	int		i = 0;
 
 	EnterCriticalSection(&cs_symbols);
@@ -3736,14 +3599,10 @@ void CSymbols::UpdateAutoplayerInfo(void)
 		}
 
 	LeaveCriticalSection(&cs_symbols);
-
-	__SEH_LOGFATAL("CSymbols::UpdateAutoplayerInfo :\n");
 }
 
 const double CSymbols::GetSymbolVal(const char *a, int *e)
 {
-	__SEH_HEADER
-
 	if (memcmp(a, "ismanual", 8)==0 && strlen(a)==8)					return _sym.ismanual;
 	if (memcmp(a, "isppro", 6)==0 && strlen(a)==6)						return _sym.isppro;
 	if (memcmp(a, "site", 4)==0 && strlen(a)==4)						return _sym.site;
@@ -4153,14 +4012,10 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	*e = ERR_INVALID_SYM;
 	return 0.0;
 
-
-	__SEH_LOGFATAL("CSymbols::GetSymbolVal : <%s>\n", a);
 }
 
 const double CSymbols::IsHand(const char *a, int *e)
 {
-	__SEH_HEADER
-
 	int				cardrank[2] = {0}, temp;
 	int				suited = 0;  //0=not specified, 1=suited, 2=offsuit
 	int				i, cardcnt = 0;
@@ -4274,14 +4129,10 @@ const double CSymbols::IsHand(const char *a, int *e)
 	}
 
 	return 1;
-
-	__SEH_LOGFATAL("CSymbols::IsHand : <%s>\n", a);
 }
 
 const double CSymbols::Chair$(const char *a)
 {
-	__SEH_HEADER
-	
 	int i = 0;
 
 	for (i=0; i<p_tablemap->s$items()->num_chairs; i++)
@@ -4291,14 +4142,10 @@ const double CSymbols::Chair$(const char *a)
 	}
 
 	return -1;
-
-	__SEH_LOGFATAL("CSymbols::Chair$ : <%s>\n", a);
 }
 
 const double CSymbols::Chairbit$(const char *a)
 {
-	__SEH_HEADER
-
 	int i = 0, bits = 0;
 
 	for (i=0; i<p_tablemap->s$items()->num_chairs; i++)
@@ -4308,14 +4155,10 @@ const double CSymbols::Chairbit$(const char *a)
 	}
 
 	return bits;
-
-	__SEH_LOGFATAL("CSymbols::Chairbit$ : <%s>\n", a);
 }
 
 const int CSymbols::GetSiteId (void)
 {
-	__SEH_HEADER
-
 	int			i = 0;
 	CString		sym = "";
 	double		result = 0.;
@@ -4362,6 +4205,4 @@ const int CSymbols::GetSiteId (void)
 	}
 
 	return -1 ;
-
-	__SEH_LOGFATAL("CSymbols::GetSiteId : \n");
 }

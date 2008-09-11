@@ -13,8 +13,6 @@ CGameState::CGameState()
 {
 	__SEH_SET_EXCEPTION_HANDLER
 
-	__SEH_HEADER
-
 	InitializeCriticalSectionAndSpinCount(&cs_gamestate, 4000);
 
 	_m_ndx = 0;
@@ -41,23 +39,15 @@ CGameState::CGameState()
 	_ftr_dealer_chair_last = 0;
 	_ftr_nflopc_last = 0;
 	_ftr_nplayersdealt_last = 0;
-
-	__SEH_LOGFATAL("GameState::Constructor\n");
 }
 
 CGameState::~CGameState()
 {
-    __SEH_HEADER
-
-    DeleteCriticalSection(&cs_gamestate);
-
-    __SEH_LOGFATAL("CScraper::Destructor : \n");
+	DeleteCriticalSection(&cs_gamestate);
 }
 
 void CGameState::ProcessGameState(SHoldemState *pstate)
 {
-	__SEH_HEADER
-
 	int			i = 0, j = 0;
 	bool		pstate_changed = false;
 
@@ -133,23 +123,15 @@ void CGameState::ProcessGameState(SHoldemState *pstate)
 			_hist_sym[i][sym_br-1] = p_symbols->GetSymbolVal(_hist_sym_strings[i], &e);
 		}
 	}
-
-	__SEH_LOGFATAL("GameState::ProcessGameState\n");
 }
 
 void CGameState::ProcessFtr(SHoldemState *pstate)
 {
-	__SEH_HEADER
-
 	ProcessFtrEngine(pstate);
-
-	__SEH_LOGFATAL("CGameState::ProcessFtr\n");
 }
 
 const int CGameState::LastRaised(const int round)
 {
-	__SEH_HEADER
-
 	int last_raised = -1;
 	int i = 0;
 
@@ -176,14 +158,10 @@ const int CGameState::LastRaised(const int round)
 	}
 
 	return last_raised;
-
-	__SEH_LOGFATAL("CGameState::LastRaised\n");
 }
 
 const int CGameState::RaisBits(const int round)
 {
-	__SEH_HEADER
-
 	int i = 0, bits = 0;
 
 	for (i=0; i<=9; i++)
@@ -195,14 +173,10 @@ const int CGameState::RaisBits(const int round)
 		}
 	}
 	return bits;
-
-	__SEH_LOGFATAL("GameState::RaisBits\n");
 }
 
 const int CGameState::CallBits(const int round)
 {
-	__SEH_HEADER
-
 	int i = 0, bits = 0;
 
 	for (i=0; i<=9; i++)
@@ -214,14 +188,10 @@ const int CGameState::CallBits(const int round)
 		}
 	}
 	return bits;
-
-	__SEH_LOGFATAL("CGameState::CallBits\n");
 }
 
 const int CGameState::FoldBits(const int round)
 {
-	__SEH_HEADER
-
 	int i = 0, bits = 0;
 
 	for (i=0; i<=9; i++)
@@ -232,14 +202,10 @@ const int CGameState::FoldBits(const int round)
 		}
 	}
 	return bits;
-
-	__SEH_LOGFATAL("CGameState::FoldBits\n");
 }
 
 const double CGameState::FlopPct(void)
 {
-	__SEH_HEADER
-
 	int		i = 0;
 	int		elapsed_start = 0, num_dealt = 0, hands = 0, num_saw_cards = 0;
 	double	percent = 0.;
@@ -274,14 +240,10 @@ const double CGameState::FlopPct(void)
 		percent=-1;
 
 	return percent;
-
-	__SEH_LOGFATAL("CGameState::FlopPct\n");
 }
 
 const double CGameState::TurnPct(void)
 {
-	__SEH_HEADER
-
 	int		i = 0;
 	int		elapsed_start = 0, num_dealt = 0, hands = 0, num_saw_cards = 0;
 	double	percent = 0.;
@@ -316,14 +278,10 @@ const double CGameState::TurnPct(void)
 		percent=-1;
 
 	return percent;
-
-	__SEH_LOGFATAL("CGameState::TurnPct\n");
 }
 
 const double CGameState::RiverPct(void)
 {
-	__SEH_HEADER
-
 	int		i = 0;
 	int		elapsed_start = 0, num_dealt = 0, hands = 0, num_saw_cards = 0;
 	double	percent = 0.;
@@ -358,14 +316,10 @@ const double CGameState::RiverPct(void)
 		percent=-1;
 
 	return percent;
-
-	__SEH_LOGFATAL("CGameState::RiverPct\n");
 }
 
 const double CGameState::AvgBetsPf(void)
 {
-	__SEH_HEADER
-
 	int		i = 0;
 	int		elapsed_start = 0, num_dealt = 0, hands = 0, num_saw_cards = 0;
 	double	percent = 0., bets_preflop = 0.;
@@ -400,14 +354,10 @@ const double CGameState::AvgBetsPf(void)
 		percent=-1;
 
 	return percent;
-
-	__SEH_LOGFATAL("CGameState::AvgBetsPf\n");
 }
 
 const double CGameState::TablePfr(void)
 {
-	__SEH_HEADER
-
 	int		i = 0;
 	int		elapsed_start = 0, num_dealt = 0, hands = 0, num_saw_cards = 0, bets_preflop = 0;
 	double	percent = 0.;
@@ -447,14 +397,10 @@ const double CGameState::TablePfr(void)
 		percent=-1;
 
 	return percent;
-
-	__SEH_LOGFATAL("CGameState::TablePfr\n");
 }
 
 const double CGameState::OHSymHist(const char * sym, const int round)
 {
-	__SEH_HEADER
-
 	int		i = 0;
 
 	for (i=0; i<_hist_sym_count; i++)
@@ -466,14 +412,10 @@ const double CGameState::OHSymHist(const char * sym, const int round)
 	}
 
 	return 0.0;
-
-	__SEH_LOGFATAL("CGameState::OHSymHist\n");
 }
 
 const double CGameState::SortedBalance(const int rank)
 {
-	__SEH_HEADER
-
 	int		i = 0, n = 0;
 	double	stacks[10] = {0.};
 	double	temp = 0.;
@@ -496,14 +438,10 @@ const double CGameState::SortedBalance(const int rank)
 	}
 
 	return stacks[rank];
-
-	__SEH_LOGFATAL("CGameState::SortedBalance\n");
 }
 
 void CGameState::ProcessStateEngine(SHoldemState *pstate, bool pstate_changed)
 {
-	__SEH_HEADER
-
 	int				from_chair = 0, to_chair = 0;
 	bool			balance_stability = false;
 	int				i = 0, j = 0, k = 0;
@@ -806,14 +744,10 @@ void CGameState::ProcessStateEngine(SHoldemState *pstate, bool pstate_changed)
 			}  // end of "for (i = from_chair; i <= to_chair; i++)"
 		} // end of "if (br != 0 &&..."
 	} // end of "if (_process_game_state)"
-
-	__SEH_LOGFATAL("CGameState::ProcessStateEngine\n");
 }
 
 void CGameState::ProcessFtrEngine(SHoldemState *pstate)
 {
-	__SEH_HEADER
-
 	double			sym_elapsed = p_symbols->sym()->elapsed;
 	double			sym_nbetsround1 = p_symbols->sym()->nbetsround[0];
 	int				sym_nplayersdealt = (int) p_symbols->sym()->nplayersdealt;
@@ -866,14 +800,10 @@ void CGameState::ProcessFtrEngine(SHoldemState *pstate)
 
 		_ftr_nflopc_last = sym_nflopc;
 	}
-
-	__SEH_LOGFATAL("CGameState::ProcessFtrEngine\n");
 }
 
 void CGameState::DumpState(void)
 {
-	__SEH_HEADER
-
 	int			i = 0;
 
 	write_log("_m_ndx: %d\n", _m_ndx);
@@ -896,8 +826,6 @@ void CGameState::DumpState(void)
 		write_log("m_name_known:%d  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_name_known);
 		write_log("m_balance_known:%d\n", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance_known);
 	}
-
-	__SEH_LOGFATAL("CGameState::DumpState\n");
 }
 
 unsigned int CGameState::_exponents[11]={1,2,4,8,16,32,64,128,256,512,1024};

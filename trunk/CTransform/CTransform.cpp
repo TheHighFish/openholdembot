@@ -22,8 +22,6 @@ CTransform::~CTransform(void)
 
 const int CTransform::DoTransform(const STablemapRegion *region, const HDC hdc, CString *text, CString *separation, COLORREF *cr_avg) 
 {
-	__SEH_HEADER
-
 	bool				character[MAX_CHAR_WIDTH][MAX_CHAR_HEIGHT] = {false};	
 	bool				background[MAX_CHAR_WIDTH] = {false};
 
@@ -52,14 +50,10 @@ const int CTransform::DoTransform(const STablemapRegion *region, const HDC hdc, 
 	}
 
 	return ERR_INVALID_TRANSFORM_TYPE;
-
-	__SEH_LOGFATAL("CTransform::DoTransform :\n");
 }
 
 const int CTransform::CTypeTransform(const STablemapRegion *region, const HDC hdc, CString *text, COLORREF *cr_avg) 
 {
-	__SEH_HEADER
-
 	int					x = 0, y = 0;
 	int					width = 0, height = 0;
 	int					rr_sum = 0, gg_sum = 0, bb_sum = 0, pix_cnt = 0;
@@ -132,14 +126,10 @@ const int CTransform::CTypeTransform(const STablemapRegion *region, const HDC hd
 	delete []pBits;
 
 	return ERR_GOOD_SCRAPE_GENERAL;
-
-	__SEH_LOGFATAL("CTransform::CTransform :\n");
 }
 
 const int CTransform::ITypeTransform(const STablemapRegion *region, const HDC hdc, CString *text) 
 {
-	__SEH_HEADER
-
 	int					width = 0, height = 0, x = 0, y = 0, i = 0, best_match = 0, result = 0;
 	unsigned int		smallest_pix_diff = 0;
 	int					retval=ERR_NOTHING_TO_SCRAPE;
@@ -248,14 +238,10 @@ const int CTransform::ITypeTransform(const STablemapRegion *region, const HDC hd
 	delete []pBits;
 
 	return retval;
-
-	__SEH_LOGFATAL("CTransform::ITypeTransform :\n");
 }
 
 const int CTransform::HTypeTransform(const STablemapRegion *region, const HDC hdc, CString *text) 
 {
-	__SEH_HEADER
-
 	int					x = 0, y = 0, j = 0;
 	int					width = 0, height = 0;
 	int					hash_type = 0, num_precs = 0, pixcount = 0;
@@ -362,16 +348,12 @@ const int CTransform::HTypeTransform(const STablemapRegion *region, const HDC hd
 	delete []pBits;
 
 	return retval;
-
-	__SEH_LOGFATAL("CTransform::HTypeTransform :\n");
 }
 
 
 const int CTransform::TTypeTransform(const STablemapRegion *region, const HDC hdc, CString *text, CString *separation, 
 									 bool background[], bool character[][MAX_CHAR_HEIGHT])
 {
-	__SEH_HEADER
-
 	int					x = 0, y = 0;
 	int					i = 0;
 	int					width = 0, height = 0;
@@ -492,15 +474,11 @@ const int CTransform::TTypeTransform(const STablemapRegion *region, const HDC hd
 		return DoFuzzyFontScan(region, width, height, background, character, 
 								  s$tXtype.MakeLower()=="fuzzy" ? DEFAULT_FUZZY_TOLERANCE : atof(s$tXtype.GetString()) ,
 								  text);
-
-	__SEH_LOGFATAL("CTransform::TTypeTransform :\n");
 }
 
 const int CTransform::DoPlainFontScan(const STablemapRegion *region, const int width, const int height, 
 									  const bool bg[], const bool (*ch)[MAX_CHAR_HEIGHT], CString *text)
 {
-	__SEH_HEADER
-
 	int					y = 0, retval=ERR_TEXT_SCRAPE_NOMATCH;
 	int					x_begin = 0, x_end = 0, y_begin = 0, y_end = 0;
 	int					temp_right = 0, vert_band_left = 0;
@@ -585,16 +563,12 @@ const int CTransform::DoPlainFontScan(const STablemapRegion *region, const int w
 	} // while (vert_band_left<width)
 
 	return retval;
-
-	__SEH_LOGFATAL("CTransform::DoPlainFontScan :\n");
 }
 
 const int CTransform::DoFuzzyFontScan(const STablemapRegion *region, const int width, const int height, 
 									  const bool bg[], const bool (*ch)[MAX_CHAR_HEIGHT], const double tolerance, 
 									  CString *text)
 {
-
-	__SEH_HEADER
 
 	int					y = 0, t_index = 0, retval = ERR_TEXT_SCRAPE_NOMATCH;
 	int					vert_band_left = 0;
@@ -641,16 +615,12 @@ const int CTransform::DoFuzzyFontScan(const STablemapRegion *region, const int w
 	}
 
 	return retval;
-
-	__SEH_LOGFATAL("CTransform::DoFuzzyFontScan :\n");
 }
 		
 const int CTransform::GetBestHammingDistance(const STablemapRegion *region, const int width, const int height, 
 											 const bool bg[], const bool (*ch)[MAX_CHAR_HEIGHT], 
 											 const int left, const double tolerance)
 {
-	__SEH_HEADER
-
 	int					i = 0, j = 0, x = 0, y = 0;
 	int					x_begin = 0, x_end = 0, y_begin = 0, y_end = 0;
 	CString				hex_bits = "";
@@ -744,14 +714,10 @@ const int CTransform::GetBestHammingDistance(const STablemapRegion *region, cons
 	{
 		return -1;
 	}
-
-	__SEH_LOGFATAL("CTransform::GetBestHammingDistance :\n");
 }
 
 const int CTransform::CalcHammingDistance(const unsigned int x, const unsigned int y)
 {
-	__SEH_HEADER
-
 	int dist = 0, val = x ^ y;
 
 	while(val)
@@ -761,8 +727,6 @@ const int CTransform::CalcHammingDistance(const unsigned int x, const unsigned i
 	}
 
 	return dist;
-
-	__SEH_LOGFATAL("CTransform::CalcHammingDistance :\n");
 }
 
 
@@ -770,8 +734,6 @@ const void CTransform::GetShiftLeftDownIndexes(const int x_start, const int widt
 											   const bool background[], const bool character[][MAX_CHAR_HEIGHT], 
 											   int *x_begin, int *x_end, int *y_begin, int *y_end)
 {
-	__SEH_HEADER
-
 	int	x = 0, y = 0;
 
 	// Find the real beginning and end on the x dimension
@@ -823,16 +785,12 @@ const void CTransform::GetShiftLeftDownIndexes(const int x_start, const int widt
 			}
 		}
 	}
-
-	__SEH_LOGFATAL("CTransform::GetShiftLeftDownIndexes :\n");
 }
 
 const bool CTransform::IsInARGBColorCube(const int center_a, const int center_r, const int center_g, const int center_b, 
 									     const int radius, const int pix_a, const int pix_r, const int pix_g, 
 										 const int pix_b) 
 {
-	__SEH_HEADER
-
 	int		a_diff = 0, r_diff = 0, g_diff = 0, b_diff = 0, tot_diff = 0;
 
 	// zero radius
@@ -867,15 +825,11 @@ const bool CTransform::IsInARGBColorCube(const int center_a, const int center_r,
 	}	
 
 	return false;
-
-	__SEH_LOGFATAL("CTransform::IsInARGBColorCube :\n");
 }
 
 const bool CTransform::IsInRGBColorCube(const int center_r, const int center_g, const int center_b, 
 										const int radius, const int pix_r, const int pix_g, const int pix_b)
 {
-	__SEH_HEADER
-
 	int		r_diff = 0, g_diff = 0, b_diff = 0, tot_diff = 0;
 
 	// zero radius
@@ -909,15 +863,11 @@ const bool CTransform::IsInRGBColorCube(const int center_r, const int center_g, 
 	}	
 
 	return false;
-
-	__SEH_LOGFATAL("CTransform::IsInRGBColorCube :\n");
 }
 
 const void CTransform::CalcHexmash(const int left, const int right, const int top, const int bottom, 
 								   const bool (*ch)[MAX_CHAR_HEIGHT], CString *hexmash, const bool withspace)
 {
-	__SEH_HEADER
-
 	int				x = 0, y = 0, last_fg_row = 0;
 	unsigned int	hexval = 0;
 	char			t[20] = {0};
@@ -952,8 +902,6 @@ const void CTransform::CalcHexmash(const int left, const int right, const int to
 		if (withspace)  
 			*hexmash += " ";
 	}
-
-	__SEH_LOGFATAL("CTransform::CalcHexmash :\n");
 }
 
 const void CTransform::ParseStringBSL(const CString text, const CString format, 
@@ -962,8 +910,6 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 									  bool *found_handnumber, bool *found_sblind, bool *found_bblind, bool *found_bbet,
 									  bool *found_ante, bool *found_limit, bool *found_sb_bb, bool *found_bb_BB) 
 {
-	__SEH_HEADER
-
 	int			place_in_format = 0, place_in_text = 0;
 	CString		token = "", skip_str = "", number_type = "";
 	double		number = 0.;
@@ -1414,14 +1360,10 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 			place_in_text = text.GetLength()+1;
 		}
 	}
-
-	__SEH_LOGFATAL("CTransform::parse_string_BSL :\n");
 }
 
 const double CTransform::StringToMoney(const CString inStr)
 {
-	__SEH_HEADER
-
 	const char			*str = inStr.GetString();
 	CStringArray		possibleValues;
 	CArray<int, int>	possibleValuesMultiplier;
@@ -1506,8 +1448,6 @@ const double CTransform::StringToMoney(const CString inStr)
 	}
 
 	return number;
-
-	__SEH_LOGFATAL("CTransform::StringToMoney :\n");
 }
 
 int	bitcount(unsigned int u) 
