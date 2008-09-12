@@ -8,6 +8,7 @@
 
 #include "CSymbols.h"
 #include "CGlobal.h"
+#include "CPokerPro.h"
 
 CScraper			*p_scraper = NULL;
 CRITICAL_SECTION	CScraper::cs_scraper;
@@ -179,7 +180,7 @@ int CScraper::DoScrape(void)
 
 	// get window title
 	_title[0] = '\0';
-	if (!p_global->ppro_is_connected)
+	if (!p_pokerpro->IsConnected())
 		GetWindowText(p_global->attached_hwnd(), _title, MAX_WINDOW_TITLE-1);
 
 	// If the bitmaps are the same, then return now

@@ -25,14 +25,6 @@ public:
 public:
 	// public variables <<< need to make these private eventually
 
-	// Versus
-	int				versus_fh;
-
-	// Poker Pro
-	bool			ppro_is_connected;
-	int				ppro_isppro;
-	int				ppro_tid;
-
 	// Game state array
 	SHoldemState	state[256];
 	unsigned char	state_index;

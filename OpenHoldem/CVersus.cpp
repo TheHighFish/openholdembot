@@ -7,6 +7,7 @@
 #include "CScraper.h"
 #include "CSymbols.h"
 #include "CGlobal.h"
+#include "CPreferences.h"
 
 #include "inlines/eval.h"
 
@@ -15,6 +16,20 @@ CVersus		*p_versus = NULL;
 CVersus::CVersus() 
 {
 	__SEH_SET_EXCEPTION_HANDLER
+
+	// Find the versus data.  First check in the current directory
+	// then in the path provided by the registry.  If both fail,
+	// disable versus.
+	_sopen_s(&_versus_fh, "versus.bin", _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
+	if (_versus_fh == -1)
+	{
+		_sopen_s(&_versus_fh, prefs.versus_path(), _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
+	}
+
+	if (_versus_fh == -1)
+	{
+		MessageBox(NULL, "Could not open versus.bin.\nVersus functions will be disabled.\n", "Versus Error", MB_OK | MB_TOPMOST);
+	}
 }
 
 CVersus::~CVersus() 
@@ -26,7 +41,7 @@ double CVersus::GetSymbol(const char *a, int *e)
 	int			n = 0;
 	char		*b = 0;
 
-	if (p_global->versus_fh == -1)
+	if (_versus_fh == -1)
 		return 0.0;
 
 	if (memcmp(a, "vs$nhands", 9)==0 && strlen(a)==9)			return _nhands;
@@ -106,7 +121,7 @@ bool CVersus::GetCounts(void)
 	if (!p_symbols->user_chair_confirmed())
 		return false;
 
-	if (p_global->versus_fh == -1)
+	if (_versus_fh == -1)
 		return false;
 
 	if (card_player[0] == CARD_NOCARD || card_player[0] == CARD_BACK ||
@@ -148,7 +163,7 @@ bool CVersus::GetCounts(void)
 		offset *= sizeof(byte);
 
 		// seek to right position in file
-		if ((pos = _lseek(p_global->versus_fh, offset, SEEK_SET)) == -1L)
+		if ((pos = _lseek(_versus_fh, offset, SEEK_SET)) == -1L)
 		{
 			return false;
 		}
@@ -162,7 +177,7 @@ bool CVersus::GetCounts(void)
 
 				if (i!=pcard[0] && i!=pcard[1] && j!=pcard[0] && j!=pcard[1])
 				{
-					_read(p_global->versus_fh, &byte, sizeof(byte));
+					_read(_versus_fh, &byte, sizeof(byte));
 					memcpy(&wintemp, &byte[0], sizeof(unsigned int));
 					memcpy(&lostemp, &byte[4], sizeof(unsigned int));
 
