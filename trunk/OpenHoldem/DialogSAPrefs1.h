@@ -17,15 +17,17 @@ public:
 	enum { IDD = IDD_SAPREFS1 };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 public:
 	CEdit m_MaxOpponents;
 	CSpinButtonCtrl m_MaxOpponents_Spin;
 	virtual BOOL OnInitDialog();
+
 protected:
 	virtual void OnOK();
+
 public:
 	afx_msg void OnEnChangeMaxopponents();
 };

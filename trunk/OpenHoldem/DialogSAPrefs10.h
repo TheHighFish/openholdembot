@@ -17,7 +17,7 @@ public:
 	enum { IDD = IDD_SAPREFS10 };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
 public:
 	CButton m_EnableChat;	
@@ -26,10 +26,12 @@ public:
 	CEdit m_RandomDelay;
 	CSpinButtonCtrl m_RandomDelay_Spin;
 	virtual BOOL OnInitDialog();
+
 protected:
 	virtual void OnOK();
 
 	DECLARE_MESSAGE_MAP()
+
 public:
 	afx_msg void OnBnClickedEnableChat();
 };

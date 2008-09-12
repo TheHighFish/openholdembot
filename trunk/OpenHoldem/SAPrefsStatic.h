@@ -14,12 +14,12 @@
    freely, subject to the following restrictions:
 
    1. The origin of this software must not be misrepresented; you must not
-     claim that you wrote the original software. If you use this software
-     in a product, an acknowledgment in the product documentation would be
-     appreciated but is not required.
+	 claim that you wrote the original software. If you use this software
+	 in a product, an acknowledgment in the product documentation would be
+	 appreciated but is not required.
 
    2. Altered source versions must be plainly marked as such, and must not be
-     misrepresented as being the original software.
+	 misrepresented as being the original software.
 
    3. This notice may not be removed or altered from any source distribution.
 
@@ -61,14 +61,13 @@ public:
 	virtual ~CSAPrefsStatic();
 
 protected:
-   CFont m_captionFont, m_nameFont;
+	CFont m_captionFont, m_nameFont;
 
-   CBitmap m_bm;
+	CBitmap m_bm;
 
 	CString m_csConstantText;
-	
 
-   void MakeCaptionBitmap();
+	void MakeCaptionBitmap();
 
 	// Generated message map functions
 protected:

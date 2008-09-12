@@ -17,15 +17,16 @@ public:
 	enum { IDD = IDD_SAPREFS11 };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
 public:
 	CButton m_EnableLog;
 	CButton m_EnableTrace;
-    CEdit m_MaximumLog;
+	CEdit m_MaximumLog;
 	CCheckListBox m_TraceList;
 	CSpinButtonCtrl m_MaximumLog_Spin;
 	virtual BOOL OnInitDialog();
+
 protected:
 	virtual void OnOK();
 

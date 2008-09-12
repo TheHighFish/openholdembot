@@ -24,7 +24,7 @@ protected:
 		DECLARE_MESSAGE_MAP()
 
 public:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	void OnTimer(UINT nIDEvent);
 
 	bool	need_to_do_autoseat;
@@ -39,8 +39,8 @@ public:
 	afx_msg void OnBnClickedDepositButton();
 	afx_msg void OnLbnDblclkTableList();
 	afx_msg void OnBnClickedSitinButton();
-	void do_table_select(void);
-	void save_settings_to_reg(void);
+	void DoTableSelect(void);
+	void SaveSettingsToRegistry(void);
 	virtual BOOL OnInitDialog();
 
 	CEdit m_HostName;

@@ -67,32 +67,21 @@ void CDlgPpro::DoDataExchange(CDataExchange* pDX)
 
 CDlgPpro::CDlgPpro(CWnd* pParent /*=NULL*/)	: CDialog(CDlgPpro::IDD, pParent) 
 {
-
 	__SEH_SET_EXCEPTION_HANDLER
-
-
-	__SEH_HEADER
-
-	__SEH_LOGFATAL("CDlgPpro::Constructor : \n");
 }
 
 CDlgPpro::~CDlgPpro() 
 {
-	__SEH_HEADER
-
-	__SEH_LOGFATAL("CDlgPpro::Destructor : \n");
 }
-
 
 BOOL CDlgPpro::OnInitDialog() 
 {
-	__SEH_HEADER
-	int			i;
-	int			max_x, max_y;
+	int			i = 0;
+	int			max_x = 0, max_y = 0;
 
 	CDialog::OnInitDialog();
 
-	CString text;
+	CString text = "";
 	m_HostName.SetWindowText(prefs.ppro_hostname());
 	m_Port.SetWindowText(prefs.ppro_port());
 	m_UserName.SetWindowText(prefs.ppro_username());
@@ -144,56 +133,35 @@ BOOL CDlgPpro::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
-
-	__SEH_LOGFATAL("CDlgPpro::OnInitDialog : \n");
 }
 
 BOOL CDlgPpro::DestroyWindow() 
 {
-	__SEH_HEADER
-
 	KillTimer(STATE_TIMER);
 	KillTimer(AUTOSEAT_TIMER);
 	return CDialog::DestroyWindow();
-
-	__SEH_LOGFATAL("CDlgPpro::DestroyWindow : \n");
 }
 
-
 // CDlgPpro message handlers
-
 void CDlgPpro::OnBnClickedOk() 
 {
-	__SEH_HEADER
-
-	save_settings_to_reg();
+	SaveSettingsToRegistry();
 	OnOK();
-
-	__SEH_LOGFATAL("CDlgPpro::OnBnClickedOk : \n");
 }
 
 void CDlgPpro::OnBnClickedCancel() 
 {
-	__SEH_HEADER
-
-	save_settings_to_reg();
+	SaveSettingsToRegistry();
 	OnCancel();
-
-	__SEH_LOGFATAL("CDlgPpro::OnBnClickedCancel : \n");
-
-
 }
 
 void CDlgPpro::OnBnClickedConnectButton() 
 {
-	__SEH_HEADER
 	CDlgPpro		dlgppro;
-	CString			s;
+	CString			s = "";
 	PokerMessage	pm;
-	CString			text;
-	CMainFrame		*cmf;
-
-	cmf = (CMainFrame *)theApp.m_pMainWnd;
+	CString			text = "";
+	CMainFrame		*cmf = (CMainFrame *)theApp.m_pMainWnd;
 
 	// Disconnect if we are already connected
 	if (p_pokerpro->IsConnected()) 
@@ -224,7 +192,7 @@ void CDlgPpro::OnBnClickedConnectButton()
 	}
 	else 
 	{
-		save_settings_to_reg();
+		SaveSettingsToRegistry();
 
 		// connect
 		if (p_pokerpro->Connect(prefs.ppro_hostname().GetString(), prefs.ppro_port().GetString()) < 0) {
@@ -268,21 +236,19 @@ void CDlgPpro::OnBnClickedConnectButton()
 		p_heartbeat_thread = new CHeartbeatThread;
 		write_log("Started heartbeat thread: %08x\n", p_heartbeat_thread);
 	}
-
-	__SEH_LOGFATAL("CDlgPpro::OnBnClickedConnectButton :\n");
 }
 
 void CDlgPpro::OnBnClickedJointableButton() 
 {
-	__SEH_HEADER
 	// I'm not yet joined to a table, so try to join
 	if (p_pokerpro->ppdata()->m_tinf.m_tid == 0) 
 	{
-		do_table_select();
+		DoTableSelect();
 	}
 
 	// I'm joined, so unjoin
-	else {
+	else 
+	{
 		// log OH title bar text and table reset
 		write_log("%s - %s(NOT ATTACHED)\n", p_formula->formula_name().GetString(), p_pokerpro->ppdata()->m_site_name);
 		write_log("TABLE RESET\n*************************************************************\n");
@@ -296,13 +262,10 @@ void CDlgPpro::OnBnClickedJointableButton()
 		p_pokerpro->set_ppdata_reset_userchair();
 		p_pokerpro->set_ppdata_tinf_tid_reset();
 	}
-
-	__SEH_LOGFATAL("CDlgPpro::OnBnClickedJointableButton :\n");
 }
 
 void CDlgPpro::OnBnClickedSitdownButton() 
 {
-	__SEH_HEADER
 	CDlgSitDown  dlg_sit;
 
 	if (p_pokerpro->ppdata()->m_userchair==-1 && dlg_sit.DoModal() == IDOK) 
@@ -313,52 +276,36 @@ void CDlgPpro::OnBnClickedSitdownButton()
 	{
 		p_pokerpro->SendStand(p_pokerpro->ppdata()->m_userchair);
 	}
-
-	__SEH_LOGFATAL("CDlgPpro::OnBnClickedSitdownButton :\n");
 }
 
 void CDlgPpro::OnBnClickedBuychipsButton() 
 {
-	__SEH_HEADER
-
-	char		itemtext[100];
+	char		itemtext[100] = {0};
 
 	m_ChipsToBuy.GetWindowText(itemtext, 100);
 	if (atof(itemtext)>0) 
 	{
 		p_pokerpro->SendChips(atof(itemtext));
 	}
-
-	__SEH_LOGFATAL("CDlgPpro::OnBnClickedBuychipsButton :\n");
 }
 
 void CDlgPpro::OnBnClickedDepositButton() 
 {
-	__SEH_HEADER
-
-	char		itemtext[100];
+	char		itemtext[100] = {0};
 
 	m_DepositAmount.GetWindowText(itemtext, 100);
-	if (atof(itemtext)>0) {
-		p_pokerpro->SendDeposit(atof(itemtext));
-	}
 
-	__SEH_LOGFATAL("CDlgPpro::OnBnClickedDepositButton :\n");
+	if (atof(itemtext)>0) 
+		p_pokerpro->SendDeposit(atof(itemtext));
 }
 
 void CDlgPpro::OnLbnDblclkTableList() 
 {
-	__SEH_HEADER
-
-	do_table_select();
-
-	__SEH_LOGFATAL("CDlgPpro::OnLbnDblclkTableList :\n");
+	DoTableSelect();
 }
 
 void CDlgPpro::OnBnClickedSitinButton() 
 {
-	__SEH_HEADER
-
 	if (p_pokerpro->ppdata()->m_userchair!=-1) 
 	{
 		if (p_pokerpro->ppdata()->m_pinf[p_pokerpro->ppdata()->m_userchair].m_isActive&0x1) 
@@ -370,18 +317,15 @@ void CDlgPpro::OnBnClickedSitinButton()
 			p_pokerpro->SendSitin(p_pokerpro->ppdata()->m_userchair);
 		}
 	}
-
-	__SEH_LOGFATAL("CDlgPpro::OnBnClickedSitinButton :\n");
 }
 
 void CDlgPpro::OnTimer(UINT nIDEvent) 
 {
-	__SEH_HEADER
-	CString			s;
-	int				n, i, j;
-	bool			found;
-	char			itemtext[100];
-	HWND			hwnd_focus, hwnd_foreground, hwnd_active;
+	CString			s = "";
+	int				n = 0, i = 0, j = 0;
+	bool			found = false;
+	char			itemtext[100] = {0};
+	HWND			hwnd_focus = NULL, hwnd_foreground = NULL, hwnd_active = NULL;
 
 	if (nIDEvent == STATE_TIMER) 
 	{
@@ -651,16 +595,12 @@ void CDlgPpro::OnTimer(UINT nIDEvent)
 			need_to_do_autochips=false;
 		}
 	}
-
-	__SEH_LOGFATAL("CDlgPpro::OnTimer :\n");
-
 }
 
-void CDlgPpro::do_table_select(void) 
+void CDlgPpro::DoTableSelect(void) 
 {
-	__SEH_HEADER
-	int		i, table;
-	char	itemtext[100];
+	int		i = 0, table = 0;
+	char	itemtext[100] = {0};
 
 	if (m_TableList.GetCurSel()!=LB_ERR) 
 	{
@@ -696,16 +636,12 @@ void CDlgPpro::do_table_select(void)
 		write_log("%s - %s(%s)\n", p_formula->formula_name().GetString(), p_pokerpro->ppdata()->m_site_name, p_pokerpro->ppdata()->m_tinf.m_name);
 		write_log("TABLE RESET\n*************************************************************\n");
 	}
-
-	__SEH_LOGFATAL("CDlgPpro::do_table_select :\n");
 }
 
-void CDlgPpro::save_settings_to_reg(void) 
+void CDlgPpro::SaveSettingsToRegistry(void) 
 {
-	__SEH_HEADER
-
-	CString			text;
-	int				chips;
+	CString			text = "";
+	int				chips = 0;
 	WINDOWPLACEMENT	wp;
 
 	GetWindowPlacement(&wp);
@@ -738,6 +674,4 @@ void CDlgPpro::save_settings_to_reg(void)
 	prefs.set_ppro_dx(wp.rcNormalPosition.right - wp.rcNormalPosition.left);
 	
 	prefs.set_ppro_dy(wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
-
-	__SEH_LOGFATAL("CDlgPpro::save_settings_to_reg :\n");
 }

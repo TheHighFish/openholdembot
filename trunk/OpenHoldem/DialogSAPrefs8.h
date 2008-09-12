@@ -14,13 +14,14 @@ public:
 	virtual ~CDlgSAPrefs8();
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
 
 	enum { IDD = IDD_SAPREFS8 };
 
 	DECLARE_MESSAGE_MAP()
+
 public:
 	CButton m_RecordFrames;
 	CButton m_RecordEveryChange;

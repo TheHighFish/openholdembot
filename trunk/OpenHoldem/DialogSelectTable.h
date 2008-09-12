@@ -20,7 +20,7 @@ public:
 	enum { IDD = IDD_SELECTTABLE };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 public:
@@ -31,6 +31,7 @@ public:
 protected:
 	afx_msg void OnBnClickedOk();
 	virtual BOOL OnInitDialog();
+
 public:
 	afx_msg void OnLbnDblclkListSelectTable();
 	CButton m_OK;

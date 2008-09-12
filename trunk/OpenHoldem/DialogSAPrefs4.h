@@ -17,15 +17,17 @@ public:
 	enum { IDD = IDD_SAPREFS4 };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 public:
 	CEdit m_ScrapeDelay;
 	CSpinButtonCtrl m_ScrapeDelay_Spin;
 	virtual BOOL OnInitDialog();
+
 protected:
 	virtual void OnOK();
+
 public:
 	afx_msg void OnDeltaposScrapedelaySpin(NMHDR *pNMHDR, LRESULT *pResult);
 };
