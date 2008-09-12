@@ -14,6 +14,7 @@
 #include "CPreferences.h"
 #include "CGameState.h"
 #include "..\CTablemap\CTablemap.h"
+#include "CReplayFrame.h"
 
 #include "DialogScraperOutput.h"
 #include "CPokerPro.h"
@@ -30,6 +31,8 @@ CHeartbeatThread::CHeartbeatThread()
 	// Create events
 	_m_stop_thread = CreateEvent(0, TRUE, FALSE, 0);
 	_m_wait_thread = CreateEvent(0, TRUE, FALSE, 0);
+
+	_replay_recorded_this_turn = false;
 
 	// Start thread
 	AfxBeginThread(HeartbeatThreadFunction, this);
@@ -167,11 +170,12 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 		if (prefs.replay_record())
 		{
-			if ( (p_symbols->sym()->ismyturn && !p_global->replay_recorded_this_turn()) ||
+			if ( (p_symbols->sym()->ismyturn && !p_heartbeat_thread->replay_recorded_this_turn()) ||
 				 (prefs.replay_record_every_change() && new_scrape != NOTHING_CHANGED) )
 			{
-				p_global->CreateReplayFrame();
-				p_global->set_replay_recorded_this_turn(true);
+				CReplayFrame	crf;
+				crf.CreateReplayFrame();
+				p_heartbeat_thread->set_replay_recorded_this_turn(true);
 			}
 		}
 

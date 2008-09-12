@@ -4,13 +4,12 @@
 #include "CAutoplayer.h"
 #include "CSymbols.h"
 #include "CIteratorThread.h"
+#include "CHeartbeatThread.h"
 #include "CScraper.h"
 #include "CGlobal.h"
-
+#include "CGrammar.h"
 #include "CPreferences.h"
 #include "..\CTablemap\CTablemap.h"
-
-#include "CGrammar.h"
 
 #include "PokerChat.hpp"
 
@@ -598,7 +597,7 @@ void CAutoplayer::DoSwag(void)
 				time(&my_time_t);
 				p_symbols->set_elapsedautohold(my_time_t);
 
-				p_global->set_replay_recorded_this_turn(false);
+				p_heartbeat_thread->set_replay_recorded_this_turn(false);
 
 				// log it
 				write_logautoplay("SWAG");
@@ -808,7 +807,7 @@ void CAutoplayer::DoARCCF(void)
 			time(&my_time_t);
 			p_symbols->set_elapsedautohold(my_time_t);
 
-			p_global->set_replay_recorded_this_turn(false);
+			p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		}
 	}
 }

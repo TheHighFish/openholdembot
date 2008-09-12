@@ -18,6 +18,7 @@
 #include "CDllExtension.h"
 #include "CPokerPro.h"
 #include "CAutoplayer.h"
+#include "CReplayFrame.h"
 
 #include "..\CTransform\CTransform.h"
 #include "CFormula.h"
@@ -438,7 +439,8 @@ void CMainFrame::OnViewShootreplayframe()
 {
 	__SEH_HEADER
 
-    p_global->CreateReplayFrame();
+	CReplayFrame	crf;
+    crf.CreateReplayFrame();
 
 	__SEH_LOGFATAL("CMainFrame::OnViewShootreplayframe\n")
 }
@@ -632,13 +634,10 @@ void CMainFrame::OnBnClickedGreenCircle()
     STableList			tablelisthold;
     int					result;
     char				title[512];
-    CFileFind			hFile;
-    CString				path, filename, current_path;
-    BOOL				bFound;
-    int					last_frame_num, frame_num;
-    CTime				time, latest_time;
-	struct SWholeMap	smap;
-
+	SWholeMap			smap;
+	CString				path, current_path;
+	BOOL				bFound;
+	CFileFind			hFile;
 
     // Clear global list for holding table candidates
     p_global->g_tlist.RemoveAll();
@@ -783,34 +782,6 @@ void CMainFrame::OnBnClickedGreenCircle()
 
             // mark symbol result cache as stale
 			p_formula->MarkCacheStale();
-
-            // Find next replay frame number
-            latest_time = 0;
-            p_global->set_next_replay_frame(-1);
-			last_frame_num = -1;
-
-            path.Format("%s\\replay\\session_%lu\\*.bmp", _startup_path, p_global->session_id());
-            bFound = hFile.FindFile(path.GetString());
-            while (bFound)
-            {
-                bFound = hFile.FindNextFile();
-                if (!hFile.IsDots() && !hFile.IsDirectory())
-                {
-                    filename = hFile.GetFileName();
-                    hFile.GetLastWriteTime(time);
-                    sscanf_s(filename.GetString(), "frame%d.bmp", &frame_num);
-
-                    if (time>latest_time)
-                    {
-                        last_frame_num = frame_num;
-                        latest_time = time;
-                    }
-                }
-            }
-
-            p_global->set_next_replay_frame(last_frame_num + 1);
-            if (p_global->next_replay_frame() >= prefs.replay_max_frames())
-                p_global->set_next_replay_frame(0);
 
 			// reset iterator vars
 			EnterCriticalSection(&cs_iterator);

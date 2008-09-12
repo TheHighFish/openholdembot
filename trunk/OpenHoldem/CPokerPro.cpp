@@ -7,6 +7,7 @@
 #include "CScraper.h"
 #include "CSymbols.h"
 #include "CIteratorThread.h"
+#include "CHeartbeatThread.h"
 #include "CAutoplayer.h"
 #include "CGlobal.h"
 #include "CGrammar.h"
@@ -1735,7 +1736,7 @@ void PokerPro::DoAutoplayer(void)
 		Sleep(500);
 		SendAction('ALLI', 0);
 		_autoplayer_can_act = false;
-		p_global->set_replay_recorded_this_turn(false);
+		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		Sleep(500);
 		p_autoplayer->set_prevaction(PREVACT_ALLI);
 	}
@@ -1744,7 +1745,7 @@ void PokerPro::DoAutoplayer(void)
 		Sleep(500);
 		SendAction('SBET', (int) (p_symbols->f$swag()*100));
 		_autoplayer_can_act = false;
-		p_global->set_replay_recorded_this_turn(false);
+		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		Sleep(500);
 		p_autoplayer->set_didswag(4, 1);
 		p_autoplayer->set_didswag(sym_br-1, 1);
@@ -1755,7 +1756,7 @@ void PokerPro::DoAutoplayer(void)
 		Sleep(500);
 		SendAction('RAIS', 0);
 		_autoplayer_can_act = false;
-		p_global->set_replay_recorded_this_turn(false);
+		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		Sleep(500);
 		p_autoplayer->set_didrais(4, 1);
 		p_autoplayer->set_didrais(sym_br-1, 1);
@@ -1766,7 +1767,7 @@ void PokerPro::DoAutoplayer(void)
 		Sleep(500);
 		SendAction('CALL', 0);
 		_autoplayer_can_act = false;
-		p_global->set_replay_recorded_this_turn(false);
+		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		Sleep(500);
 		p_autoplayer->set_didcall(4, 1);
 		p_autoplayer->set_didcall(sym_br-1, 1);
@@ -1777,7 +1778,7 @@ void PokerPro::DoAutoplayer(void)
 		Sleep(500);
 		SendAction('CHEC', 0);
 		_autoplayer_can_act = false;
-		p_global->set_replay_recorded_this_turn(false);
+		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		Sleep(500);
 		p_autoplayer->set_didchec(4, 1);
 		p_autoplayer->set_didchec(sym_br-1, 1);
@@ -1787,7 +1788,7 @@ void PokerPro::DoAutoplayer(void)
 	{
 		Sleep(500);
 		SendAction('FOLD', 0);
-		p_global->set_replay_recorded_this_turn(false);
+		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		_autoplayer_can_act = false;
 		Sleep(500);
 		p_autoplayer->set_prevaction(PREVACT_FOLD);
