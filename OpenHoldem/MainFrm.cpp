@@ -16,6 +16,8 @@
 #include "CGlobal.h"
 #include "CPreferences.h"
 #include "CDllExtension.h"
+#include "CPokerPro.h"
+#include "CAutoplayer.h"
 
 #include "..\CTransform\CTransform.h"
 #include "CFormula.h"
@@ -36,7 +38,6 @@
 
 #include "DialogSelectTable.h"
 #include "inlines/eval.h"
-#include "CPokerPro.h"
 #include "DialogPPro.h"
 #include "DialogScraperOutput.h"
 #include "DialogLockBlinds.h"
@@ -157,6 +158,8 @@ CMainFrame::CMainFrame()
     __SEH_SET_EXCEPTION_HANDLER
 
     __SEH_HEADER
+
+	_autoplay_pressed = false;
 
     __SEH_LOGFATAL("CMainFrame::Constructor :\n");
 }
@@ -747,14 +750,6 @@ void CMainFrame::OnBnClickedGreenCircle()
 		{
             // Load correct tablemap, and save hwnd/rect/numchairs of table that we are "attached" to
             p_global->set_attached_hwnd(p_global->g_tlist[cstd.selected_item].hwnd);
-
-			EnterCriticalSection(&p_global->cs_global);
-				p_global->set_attached_rect()->left = p_global->g_tlist[cstd.selected_item].crect.left;
-				p_global->set_attached_rect()->top = p_global->g_tlist[cstd.selected_item].crect.top;
-				p_global->set_attached_rect()->right = p_global->g_tlist[cstd.selected_item].crect.right;
-				p_global->set_attached_rect()->bottom = p_global->g_tlist[cstd.selected_item].crect.bottom;
-			LeaveCriticalSection(&p_global->cs_global);
-        
 			p_tablemap->LoadTablemap((char *) p_global->g_tlist[cstd.selected_item].path.GetString(), VER_OPENSCRAPE_1, false, &line);
             p_tablemap->SaveR$Indices();
             p_tablemap->SaveS$Indices();
@@ -784,7 +779,7 @@ void CMainFrame::OnBnClickedGreenCircle()
             m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, true);
 
             // Make sure autoplayer is off
-            p_global->autoplay = false;
+            p_autoplayer->set_autoplayer_engaged(false);
 
             // mark symbol result cache as stale
 			p_formula->MarkCacheStale();
@@ -887,17 +882,11 @@ void CMainFrame::OnBnClickedRedCircle()
 		p_pokertracker_thread->StopThread();
 
     // Make sure autoplayer is off
-    p_global->autoplay = false;
-    p_global->autoplay_pressed = false;
+    p_autoplayer->set_autoplayer_engaged(false);
+    _autoplay_pressed = false;
 
     // Clear "attached" info
     p_global->set_attached_hwnd(NULL);
-	EnterCriticalSection(&p_global->cs_global);
-		p_global->set_attached_rect()->left = 0;
-		p_global->set_attached_rect()->top = 0;
-		p_global->set_attached_rect()->right = 0;
-		p_global->set_attached_rect()->bottom = 0;
-	LeaveCriticalSection(&p_global->cs_global);
 
     // Stop timer that checks for valid hwnd
     KillTimer(HWND_CHECK_TIMER);
@@ -996,11 +985,11 @@ void CMainFrame::OnTimer(UINT nIDEvent)
                 ((p_symbols->user_chair_confirmed() && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)) ||
                  p_pokerpro->ppdata()->m_userchair!=-1))
         {
-            if (!p_global->autoplay_pressed)
+            if (!_autoplay_pressed)
             {
                 m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
                 OnAutoplayer();
-                p_global->autoplay_pressed = true;
+                _autoplay_pressed = true;
             }
         }
 
@@ -1267,17 +1256,17 @@ void CMainFrame::OnAutoplayer()
         // one last parse - do not engage if parse fails
         if (p_formula->ParseAllFormula(pMyMainWnd->GetSafeHwnd())) 
 		{
-            p_global->autoplay = true;
+            p_autoplayer->set_autoplayer_engaged(true);
         }
         else 
 		{
-            p_global->autoplay = false;
+            p_autoplayer->set_autoplayer_engaged(false);
             m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
         }
     }
     else 
 	{
-        p_global->autoplay = false;
+        p_autoplayer->set_autoplayer_engaged(false);
     }
 
     __SEH_LOGFATAL("CMainFrame::OnAutoplayer :\n");

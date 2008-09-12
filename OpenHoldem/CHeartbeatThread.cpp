@@ -198,12 +198,12 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Save state
-		p_global->CaptureState(title);
+		p_game_state->CaptureState(title);
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Game state engine
-		p_game_state->ProcessGameState(&p_global->state[(p_global->state_index-1)&0xff]);
-		p_game_state->ProcessFtr(&p_global->state[(p_global->state_index-1)&0xff]);
+		p_game_state->ProcessGameState(p_game_state->state((p_game_state->state_index()-1)&0xff));
+		p_game_state->ProcessFtr(p_game_state->state((p_game_state->state_index()-1)&0xff));
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// DLL - send state
@@ -212,7 +212,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			 p_symbols->user_chair_confirmed()) ||
 			prefs.dll_always_send_state())
 		{
-			p_dll_extension->PassStateToDll(&p_global->state[(p_global->state_index-1)&0xff]);
+			p_dll_extension->PassStateToDll(p_game_state->state((p_game_state->state_index()-1)&0xff));
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////
@@ -227,7 +227,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		}
 
 		// If autoplayer is engaged, we know our chair, and the DLL hasn't told us to wait, then go do it!
-		if (p_global->autoplay && p_symbols->user_chair_confirmed() && !iswait)
+		if (p_autoplayer->autoplayer_engaged() && p_symbols->user_chair_confirmed() && !iswait)
 		{
 			if (!p_pokerpro->IsConnected())
 				p_autoplayer->DoAutoplayer();

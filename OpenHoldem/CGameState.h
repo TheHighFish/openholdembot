@@ -2,19 +2,17 @@
 #define INC_CGAMESTATE_H
 
 #include "CDllExtension.h"
+#include "..\CCritSec\CCritSec.h"
 
 extern class CGameState 
 {
 public:
-	// Critical section used in public mutators and private shared variable writes
-	static CRITICAL_SECTION	cs_gamestate;
-
-public:
 	// public functions
 	CGameState();
 	~CGameState();
-	void ProcessGameState(SHoldemState *pstate);
-	void ProcessFtr(SHoldemState *pstate);
+	void ProcessGameState(const SHoldemState *pstate);
+	void ProcessFtr(const SHoldemState *pstate);
+	void CaptureState(const char *title);
 	const int LastRaised(const int round);
 	const int RaisBits(const int round);
 	const int CallBits(const int round);
@@ -32,15 +30,13 @@ public:
 	const int oppdealt() { return _oppdealt; }
 	const int max_balance() { return _max_balance; }
 	const int hands_played() { return _hands_played; }
+	const SHoldemState * state(const int i) { if (i>=0 && i<=255) return &_state[i]; else return NULL; }
+	const int state_index() { return _state_index; }
 
-public:
-#define ENT EnterCriticalSection(&cs_gamestate);
-#define LEA LeaveCriticalSection(&cs_gamestate);
+#define ENT CSLock lock(m_critsec);
 	// public mutators
-	void	set_new_hand(const bool b) { ENT _new_hand = b; LEA }
-
+	void	set_new_hand(const bool b) { ENT _new_hand = b; }
 #undef ENT
-#undef LEA
 
 private:
 	// private variables - use public accessors and public mutators to address these
@@ -48,11 +44,13 @@ private:
 	double				_max_balance;
 	int					_hands_played;
 	bool				_new_hand;
+	SHoldemState		_state[256];
+	unsigned char		_state_index;
 
 private:
 	// private functions and variables - not available via accessors or mutators
-	void ProcessStateEngine(SHoldemState *pstate, bool pstate_changed) ;
-	void ProcessFtrEngine(SHoldemState *pstate) ;
+	void ProcessStateEngine(const SHoldemState *pstate, const bool pstate_changed) ;
+	void ProcessFtrEngine(const SHoldemState *pstate) ;
 	void DumpState(void) ;
 
 	SHoldemState		_m_holdem_state[256];
@@ -73,7 +71,6 @@ private:
 	bool				_big_blind_posted;
 	double				_bets_last;
 
-
 	SHoldemState		_m_game_state[256];
 	unsigned char		_m_game_ndx;
 	bool				_chair_actions[10][4][w_num_action_types];   // 10 chairs, 4 rounds, number of action types
@@ -81,11 +78,12 @@ private:
 	int					_ftr_nflopc_last;
 	int					_ftr_nplayersdealt_last;
 
-
 	double				_hist_sym[200][4];
 	static const int	_hist_sym_count=121;
 	static unsigned int	_exponents[11];
 	static const char	*_hist_sym_strings[200];
+
+	CCritSec			m_critsec;
 
 } *p_game_state;
 

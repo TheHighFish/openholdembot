@@ -216,10 +216,10 @@ bool CPokerTrackerThread::CheckName (int m_chr)
 	if (m_chr<0 || m_chr>9)
 		return false;
 
-	if (p_global->state[(p_global->state_index-1)&0xff].m_player[m_chr].m_name_known == 0)
+	if (p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[m_chr].m_name_known == 0)
 		return false;
 
-	strcpy_s(oh_scraped_name, 30, p_global->state[(p_global->state_index-1)&0xff].m_player[m_chr].m_name);
+	strcpy_s(oh_scraped_name, 30, p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[m_chr].m_name);
 
 	// Check for bad name scrape
 	for (i=0; i<(int) strlen(oh_scraped_name); i++)

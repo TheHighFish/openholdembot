@@ -13,9 +13,10 @@
 #include "CPokerTrackerThread.h"
 #include "CGlobal.h"
 #include "CPreferences.h"
+#include "CPokerPro.h"
+#include "CAutoplayer.h"
 
 #include "DialogPPro.h"
-#include "CPokerPro.h"
 #include "DialogSitDown.h"
 
 // CDlgPpro dialog
@@ -208,7 +209,7 @@ void CDlgPpro::OnBnClickedConnectButton()
 			p_pokertracker_thread->StopThread();
 
 		// Make sure autoplayer is off
-		p_global->autoplay = false;
+		p_autoplayer->set_autoplayer_engaged(false);
 
 		// Do the disconnect
 		p_pokerpro->Disconnect();
@@ -254,7 +255,7 @@ void CDlgPpro::OnBnClickedConnectButton()
 		cmf->m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_REDCIRCLE, false);
 
 		// Make sure autoplayer is off
-		p_global->autoplay = false;
+		p_autoplayer->set_autoplayer_engaged(false);
 
 		// start heartbeat thread
 		if (p_heartbeat_thread)
