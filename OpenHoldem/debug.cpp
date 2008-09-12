@@ -410,15 +410,15 @@ void write_logautoplay(const char * action)
 	if (log_fp != NULL) 
 	{
 		// log$ writing
-		if (prefs.LogSymbol_enabled())
+		if (prefs.log_symbol_enabled())
 		{
 			int max_log = p_symbols->logsymbols_collection()->GetCount();
 
 			if (max_log > 0)
 			{
-				if (max_log > prefs.LogSymbol_max_log())
+				if (max_log > prefs.log_symbol_max_log())
 				{
-					max_log = prefs.LogSymbol_max_log();
+					max_log = prefs.log_symbol_max_log();
 				}
 
 				write_log("*** log$ (Total: %d | Showing: %d)\n", p_symbols->logsymbols_collection()->GetCount(), max_log);
@@ -608,7 +608,7 @@ void write_logautoplay(const char * action)
 			fcra_formula_status.GetString(), 
 			p_symbols->f$swag() );
 
-		if (prefs.Trace_enabled() && p_symbols->symboltrace_collection()->GetSize() > 0)
+		if (prefs.trace_enabled() && p_symbols->symboltrace_collection()->GetSize() > 0)
 		{
 			write_log_nostamp("***** Autoplayer Trace ****\n");
 			for (int i=0; i<p_symbols->symboltrace_collection()->GetSize(); i++)

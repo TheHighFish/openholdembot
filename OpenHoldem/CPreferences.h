@@ -54,20 +54,20 @@ public:
 	const int pt_update_delay() { return _pt_update_delay; }
 	const int pt_cache_refresh() { return _pt_cache_refresh; }
 	// Perl
-	const CString Perl_default_Formula() { return _perl_default_formula; }
-	const CString Perl_Editor() { return _perl_editor; }
-	const bool Perl_load_default_Formula() { return _perl_load_default_formula; }
-	const bool Perl_load_Interpreter() { return _perl_load_interpreter; }
+	const CString perl_default_formula() { return _perl_default_formula; }
+	const CString perl_editor() { return _perl_editor; }
+	const bool perl_load_default_formula() { return _perl_load_default_formula; }
+	const bool perl_load_interpreter() { return _perl_load_interpreter; }
 	//  PokerChat
-	const bool Chat_enabled() { return _chat_enabled; }
-	const int Chat_min_Delay() { return _chat_min_Delay; }
-	const int Chat_random_Delay() { return _chat_random_Delay; }
+	const bool chat_enabled() { return _chat_enabled; }
+	const int chat_min_delay() { return _chat_min_delay; }
+	const int chat_random_delay() { return _chat_random_delay; }
 	// Log Symbol
-	const bool LogSymbol_enabled() { return _log_symbol_enabled; }
-	const int LogSymbol_max_log() { return _log_symbol_max_log; }
+	const bool log_symbol_enabled() { return _log_symbol_enabled; }
+	const int log_symbol_max_log() { return _log_symbol_max_log; }
 	// Tracing
-	const bool Trace_enabled() { return _trace_enabled; }
-	const bool Trace_functions(unsigned int FunctionNumber) { return _trace_functions[FunctionNumber]; }
+	const bool trace_enabled() { return _trace_enabled; }
+	const bool trace_functions(unsigned int i) { return _trace_functions[i]; }
 	// PPro
 	const CString ppro_hostname() { return _ppro_hostname; }
 	const CString ppro_port() { return _ppro_port; }
@@ -162,21 +162,21 @@ public:
 	void set_pt_update_delay(const int i) { ENT _pt_update_delay = i; WriteReg("pt_updatedelay", i); }
 	void set_pt_cache_refresh(const int i) { ENT _pt_cache_refresh = i; WriteReg("pt_cacherefresh", i); }
 	// Perl
-	void set_perl_default_formula(const CString s) { ENT _perl_default_formula = s; WriteReg("Perl_default_Formula", s); }
-	void set_perl_editor(const CString s) { ENT _perl_editor = s; WriteReg("Perl_Editor", s); }
-	void set_perl_load_default_formula(const bool b) { ENT _perl_load_default_formula = b; WriteReg("Perl_load_default_Formula", b); }
-	void set_perl_load_interpreter(const bool b) { ENT _perl_load_interpreter = b; WriteReg("Perl_load_Interpreter", b); }
+	void set_perl_default_formula(const CString s) { ENT _perl_default_formula = s; WriteReg("perl_default_formula", s); }
+	void set_perl_editor(const CString s) { ENT _perl_editor = s; WriteReg("perl_editor", s); }
+	void set_perl_load_default_formula(const bool b) { ENT _perl_load_default_formula = b; WriteReg("perl_load_default_formula", b); }
+	void set_perl_load_interpreter(const bool b) { ENT _perl_load_interpreter = b; WriteReg("perl_load_interpreter", b); }
 	//  PokerChat
-	void set_chat_enabled(const bool b) { ENT _chat_enabled = b; WriteReg("Chat_enabled", b); }
-	void set_chat_min_Delay(const int i) { ENT _chat_min_Delay = i; WriteReg("Chat_min_Delay", i); }
-	void set_chat_random_Delay(const int i) { ENT _chat_random_Delay = i; WriteReg("Chat_random_Delay", i); }
+	void set_chat_enabled(const bool b) { ENT _chat_enabled = b; WriteReg("chat_enabled", b); }
+	void set_chat_min_delay(const int i) { ENT _chat_min_delay = i; WriteReg("chat_min_delay", i); }
+	void set_chat_random_delay(const int i) { ENT _chat_random_delay = i; WriteReg("chat_random_delay", i); }
 	// Log Symbol
-	void set_log_symbol_enabled(const bool b) { ENT _log_symbol_enabled = b; WriteReg("LogSymbol_enabled", b); }
-	void set_log_symbol_max_log(const bool b) { ENT _log_symbol_max_log = b; WriteReg("LogSymbol_max_log", b); }
+	void set_log_symbol_enabled(const bool b) { ENT _log_symbol_enabled = b; WriteReg("log_symbol_enabled", b); }
+	void set_log_symbol_max_log(const bool b) { ENT _log_symbol_max_log = b; WriteReg("log_symbol_max_log", b); }
 	// Tracing
-	void set_trace_enabled(const bool b) { ENT _trace_enabled = b; WriteReg("Trace_enabled", b); }
+	void set_trace_enabled(const bool b) { ENT _trace_enabled = b; WriteReg("trace_enabled", b); }
 	void set_trace_functions(const unsigned int i, const bool b) 
-	{ ENT _trace_functions[i] = b; CString regValue; regValue.Format("Trace_functions%d", i+1);	WriteReg(regValue, b); }
+	{ ENT _trace_functions[i] = b; CString regValue; regValue.Format("trace_functions%d", i+1);	WriteReg(regValue, b); }
 	// PPro
 	void set_ppro_hostname(const CString s) { ENT _ppro_hostname = s; WriteReg("ppro_hostname", s); }
 	void set_ppro_port(const CString s) { ENT _ppro_port = s; WriteReg("ppro_port", s); }
@@ -279,8 +279,8 @@ private:
 	bool			_perl_load_interpreter;
 	//  PokerChat
 	bool			_chat_enabled;
-	int				_chat_min_Delay;
-	int				_chat_random_Delay;
+	int				_chat_min_delay;
+	int				_chat_random_delay;
 	// Log Symbol
 	bool			_log_symbol_enabled;
 	int				_log_symbol_max_log;

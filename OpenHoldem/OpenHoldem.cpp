@@ -23,12 +23,12 @@
 #include "CGameState.h"
 #include "CMemory.h"
 #include "CVersus.h"
-
-#include "DialogFormulaScintilla.h"
 #include "CGrammar.h"
 #include "CPokerPro.h"
-#include "Perl.hpp"
+#include "CPerl.hpp"
 #include "CSessionCounter.h"
+
+#include "DialogFormulaScintilla.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -95,7 +95,7 @@ BOOL COpenHoldemApp::InitInstance()
 	if (!p_pokertracker_thread)  p_pokertracker_thread = new CPokerTrackerThread;
 	if (!p_dll_extension)  p_dll_extension = new CDllExtension;
 	if (!p_game_state)  p_game_state = new CGameState;
-	if (!the_Perl_Interpreter)  the_Perl_Interpreter = new Perl;
+	if (!p_perl)  p_perl = new CPerl;
 	if (!p_memory)  p_memory = new CMemory;	
 	if (!p_versus)  p_versus = new CVersus;	
 
@@ -231,7 +231,7 @@ int COpenHoldemApp::ExitInstance()
 	if (p_pokertracker_thread)	{ delete p_pokertracker_thread; p_pokertracker_thread = NULL; }
 	if (p_dll_extension)  { delete p_dll_extension; p_dll_extension = NULL; }
 	if (p_game_state)  { delete p_game_state; p_game_state = NULL; }
-	if (the_Perl_Interpreter)  { delete the_Perl_Interpreter; the_Perl_Interpreter = NULL; }
+	if (p_perl)  { delete p_perl; p_perl = NULL; }
 	if (p_memory)  { delete p_memory; p_memory = NULL; }
 	if (p_versus)  { delete p_versus; p_versus = NULL; }
 

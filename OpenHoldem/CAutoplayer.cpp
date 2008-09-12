@@ -100,7 +100,8 @@ void CAutoplayer::DoChat(void)
 		//
 		//  We can now "type in" the message, if there's one.
 		//
-		send_ChatMessage_to_Keyboard();
+		SendChatMessageToKeyboard();
+
 		//
 		//  Restore window state
 		SetActiveWindow(hwnd_active);
@@ -145,11 +146,11 @@ void CAutoplayer::DoAutoplayer(void)
 	//	This message will then be processed by the autoplayer,
 	//	when it's time to click the buttons.
 	//
-	register_ChatMessage(p_symbols->f$chat());
+	RegisterChatMessage(p_symbols->f$chat());
 
 	//  Avoiding unnecessary calls to DoChat(),
 	//	especially mouse movements to the chat box.
-	if ((p_symbols->f$chat() != 0) && is_Chat_allowed())
+	if ((p_symbols->f$chat() != 0) && IsChatAllowed())
 		DoChat();
 
 	// Get count of stable frames for use a little bit further down

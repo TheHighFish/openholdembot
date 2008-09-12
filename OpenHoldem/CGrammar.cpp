@@ -16,8 +16,8 @@
 #include "..\CCritSec\CCritSec.h"
 #include "CVersus.h"
 #include "CDllExtension.h"
+#include "CPerl.hpp"
 
-#include "Perl.hpp"
 #include "logsymbols.h"
 
 CGrammar::CGrammar(void)
@@ -408,11 +408,11 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 
 	//  2008.02.27 by THF
 	//  Perl symbols (starting with "pl_")
-	else if (the_Perl_Interpreter->is_Perl_Symbol(sym.c_str()))
+	else if (p_perl->IsPerlSymbol(sym.c_str()))
 	{
 		//  Error checking is done inside the Perl class
 		//  At the moment, creating a messagebox on serious errors.
-		return the_Perl_Interpreter->get_Perl_Symbol(sym.c_str());
+		return p_perl->GetPerlSymbol(sym.c_str());
 	}
 
 	// vs$ symbols
@@ -670,7 +670,7 @@ void CGrammar::ValidateSymbol(const char *begin, const char *end)
 	//  Perl symbols (starting with "pl_")
 	else if (memcmp(sym.c_str(), "pl_", 3)==0)
 	{
-		if (!the_Perl_Interpreter->is_Perl_Symbol(sym.c_str()))
+		if (!p_perl->IsPerlSymbol(sym.c_str()))
 			g_parse_symbol_stop_strs.Add(sym);
 
 		return;

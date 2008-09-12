@@ -148,8 +148,8 @@ void CPreferences::InitDefaults(void)
 	//  PokerChat
 	_chat_enabled = false;
 	//  Just a security measure against crazy bot formulas...
-	_chat_min_Delay = 600;	  //  seconds
-	_chat_random_Delay = 3000;  //  seconds;
+	_chat_min_delay = 600;	  //  seconds
+	_chat_random_delay = 3000;  //  seconds;
 
 	// log$ loggin
 	_log_symbol_enabled = false;
@@ -279,24 +279,24 @@ void CPreferences::ReadFromRegistry()
 		ReadReg("scraper_zoom", &_scraper_zoom);
 
 		// Perl
-		ReadReg("Perl_Editor", &_perl_editor);
-		ReadReg("Perl_load_default_Formula", &_perl_load_default_formula);
-		ReadReg("Perl_load_Interpreter", &_perl_load_interpreter);
-		ReadReg("Chat_enabled", &_chat_enabled);
+		ReadReg("perl_editor", &_perl_editor);
+		ReadReg("perl_load_default_formula", &_perl_load_default_formula);
+		ReadReg("perl_load_interpreter", &_perl_load_interpreter);
+		ReadReg("chat_enabled", &_chat_enabled);
 
 		// PokerChat
-		ReadReg("Chat_enabled", &_chat_enabled);
-		ReadReg("Chat_min_Delay", &_chat_min_Delay);
-		ReadReg("Chat_random_Delay", &_chat_random_Delay);
+		ReadReg("chat_enabled", &_chat_enabled);
+		ReadReg("chat_min_delay", &_chat_min_delay);
+		ReadReg("chat_random_delay", &_chat_random_delay);
 
 		// log$ logging
-		ReadReg("LogSymbol_enabled", &_log_symbol_enabled);
-		ReadReg("LogSymbol_max_log", &_log_symbol_max_log);
+		ReadReg("log_symbol_enabled", &_log_symbol_enabled);
+		ReadReg("log_symbol_max_log", &_log_symbol_max_log);
 
-		ReadReg("Trace_enabled", &_trace_enabled);
+		ReadReg("trace_enabled", &_trace_enabled);
 		CString regValue;
 		for (int i=0;i<nTraceFunctions;i++) {
-			regValue.Format("Trace_functions%d", i+1);
+			regValue.Format("trace_functions%d", i+1);
 			ReadReg(regValue, &_trace_functions[i]);
 		}
 		

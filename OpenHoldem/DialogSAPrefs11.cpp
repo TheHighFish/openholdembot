@@ -40,15 +40,15 @@ BOOL CDlgSAPrefs11::OnInitDialog()
     CSAPrefsSubDlg::OnInitDialog();
     CString		text;
 
-    m_EnableLog.SetCheck(prefs.LogSymbol_enabled() ? BST_CHECKED : BST_UNCHECKED);
+    m_EnableLog.SetCheck(prefs.log_symbol_enabled() ? BST_CHECKED : BST_UNCHECKED);
 
-    text.Format("%d", prefs.LogSymbol_max_log());
+    text.Format("%d", prefs.log_symbol_max_log());
     m_MaximumLog.SetWindowText(text);
     m_MaximumLog_Spin.SetRange(0, (short) MAX_MAX_LOG);
-    m_MaximumLog_Spin.SetPos(prefs.LogSymbol_max_log());
+    m_MaximumLog_Spin.SetPos(prefs.log_symbol_max_log());
     m_MaximumLog_Spin.SetBuddy(&m_MaximumLog);
 
-    m_EnableTrace.SetCheck(prefs.Trace_enabled() ? BST_CHECKED : BST_UNCHECKED);
+    m_EnableTrace.SetCheck(prefs.trace_enabled() ? BST_CHECKED : BST_UNCHECKED);
     m_TraceList.AddString("f$alli");
     m_TraceList.AddString("f$swag");
     m_TraceList.AddString("f$rais");
@@ -57,7 +57,7 @@ BOOL CDlgSAPrefs11::OnInitDialog()
     m_TraceList.AddString("f$prefold");
 	for (int i=0;i<nTraceFunctions;i++)
 	{
-		m_TraceList.SetCheck(i, prefs.Trace_functions(i));
+		m_TraceList.SetCheck(i, prefs.trace_functions(i));
 	}
 
     return TRUE;  // return TRUE unless you set the focus to a control
