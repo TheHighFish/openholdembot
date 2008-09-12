@@ -16,7 +16,7 @@
 #include "..\CTablemap\CTablemap.h"
 
 #include "DialogScraperOutput.h"
-#include "PokerPro.h"
+#include "CPokerPro.h"
 
 CHeartbeatThread	*p_heartbeat_thread = NULL;
 CRITICAL_SECTION	CHeartbeatThread::cs_update_in_progress;
@@ -100,7 +100,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			}
 			else
 			{
-				if (p_pokerpro->data.m_tinf.m_tid != 0)
+				if (p_pokerpro->ppdata()->m_tinf.m_tid != 0)
 				{
 					p_pokerpro->DoScrape();
 				}
@@ -112,7 +112,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			// mark symbol result cache as stale
 			p_formula->MarkCacheStale();
 
-			if (new_scrape!=NOTHING_CHANGED || (p_global->ppro_is_connected && p_pokerpro->data.m_tinf.m_tid != 0))
+			if (new_scrape!=NOTHING_CHANGED || (p_global->ppro_is_connected && p_pokerpro->ppdata()->m_tinf.m_tid != 0))
 			{
 				p_symbols->CalcSymbols();
 			}
@@ -134,14 +134,14 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		}
 		else
 		{
-			if (p_pokerpro->data.m_tinf.m_tid == 0)
-				_snprintf_s(title, _countof(title), _TRUNCATE, "%s", p_pokerpro->data.m_site_name);
+			if (p_pokerpro->ppdata()->m_tinf.m_tid == 0)
+				_snprintf_s(title, _countof(title), _TRUNCATE, "%s", p_pokerpro->ppdata()->m_site_name);
 
-			else if (p_pokerpro->data.m_userchair!=-1)
-				_snprintf_s(title, _countof(title), _TRUNCATE, "%s - %s - %s", p_pokerpro->data.m_site_name, p_pokerpro->data.m_tinf.m_name, p_pokerpro->data.m_pinf[p_pokerpro->data.m_userchair].m_name);
+			else if (p_pokerpro->ppdata()->m_userchair!=-1)
+				_snprintf_s(title, _countof(title), _TRUNCATE, "%s - %s - %s", p_pokerpro->ppdata()->m_site_name, p_pokerpro->ppdata()->m_tinf.m_name, p_pokerpro->ppdata()->m_pinf[p_pokerpro->ppdata()->m_userchair].m_name);
 
 			else
-				_snprintf_s(title, _countof(title), _TRUNCATE, "%s - %s", p_pokerpro->data.m_site_name, p_pokerpro->data.m_tinf.m_name);
+				_snprintf_s(title, _countof(title), _TRUNCATE, "%s - %s", p_pokerpro->ppdata()->m_site_name, p_pokerpro->ppdata()->m_tinf.m_name);
 			messageTitle->Format("%s - %s (%s)", p_formula->formula_name(), p_tablemap->s$items()->sitename, title);
 		}
 		theApp.m_pMainWnd->PostMessage(WMA_SETWINDOWTEXT, 0, (LPARAM)messageTitle);
@@ -232,7 +232,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			if (!p_global->ppro_is_connected)
 				p_autoplayer->DoAutoplayer();
 
-			else if (p_pokerpro->data.m_tinf.m_tid != 0)
+			else if (p_pokerpro->ppdata()->m_tinf.m_tid != 0)
 				p_pokerpro->DoAutoplayer();
 		}
 		else
@@ -249,7 +249,8 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		{
 			// If there is anything on the socket, process it
 			FD_ZERO(&fd);
-			FD_SET(p_pokerpro->m_socket, &fd);
+			FD_SET(p_pokerpro->socket(), &fd);
+
 			tv.tv_usec = 50;
 			tv.tv_sec = 0;
 
@@ -258,7 +259,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			{
 				pbytes = NULL;
 				nbytes = 0;
-				result = p_pokerpro->recv_message( &pbytes, &nbytes );
+				result = p_pokerpro->ReceivePPMessage( &pbytes, &nbytes );
 				if (result == 0)
 				{
 					// Trigger thread to stop
@@ -266,12 +267,12 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 				}
 				else
 				{
-					p_pokerpro->handle_message(pbytes, nbytes);
+					p_pokerpro->HandlePPMessage(pbytes, nbytes);
 				}
 			}
 		}
-		p_global->ppro_isppro = p_pokerpro->m_socket!=INVALID_SOCKET ? 1 : 0;
-		p_global->ppro_tid = p_pokerpro->data.m_tinf.m_tid;
+		p_global->ppro_isppro = (p_pokerpro->IsConnected() ? 1 : 0);
+		p_global->ppro_tid = p_pokerpro->ppdata()->m_tinf.m_tid;
 
 		Sleep(prefs.scrape_delay());
 	}

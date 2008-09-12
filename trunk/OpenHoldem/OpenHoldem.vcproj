@@ -357,11 +357,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CPokerPro.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CPokerTrackerThread.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\CPreferences.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CRunRon.cpp"
 				>
 			</File>
 			<File
@@ -374,6 +382,10 @@
 			</File>
 			<File
 				RelativePath=".\CSymbols.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CVersus.cpp"
 				>
 			</File>
 			<File
@@ -453,14 +465,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\PokerPro.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\RunRon.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\ScintillaWnd.cpp"
 				>
 			</File>
@@ -494,10 +498,6 @@
 			</File>
 			<File
 				RelativePath=".\UPDialog.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\versus.cpp"
 				>
 			</File>
 			<Filter
@@ -710,11 +710,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CPokerPro.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CPokerTrackerThread.h"
 				>
 			</File>
 			<File
 				RelativePath=".\CPreferences.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CRunRon.h"
 				>
 			</File>
 			<File
@@ -727,6 +735,10 @@
 			</File>
 			<File
 				RelativePath=".\CSymbols.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CVersus.h"
 				>
 			</File>
 			<File
@@ -810,19 +822,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\PokerPro.h"
-				>
-			</File>
-			<File
 				RelativePath=".\ppmessage.h"
 				>
 			</File>
 			<File
 				RelativePath=".\Resource.h"
-				>
-			</File>
-			<File
-				RelativePath=".\RunRon.h"
 				>
 			</File>
 			<File
@@ -835,10 +839,6 @@
 			</File>
 			<File
 				RelativePath=".\UPDialog.h"
-				>
-			</File>
-			<File
-				RelativePath=".\versus.h"
 				>
 			</File>
 			<Filter

@@ -25,10 +25,6 @@ public:
 public:
 	// public variables <<< need to make these private eventually
 
-	// Formula being used for execution
-	SFormula		formula;
-	CString			formula_name;
-
 	// Versus
 	int				versus_fh;
 

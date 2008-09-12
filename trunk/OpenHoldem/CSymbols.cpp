@@ -13,10 +13,10 @@
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTransform\CTransform.h"
 #include "CGrammar.h"
+#include "CVersus.h"
+#include "CRunRon.h"
 
 #include "inlines/eval.h"
-#include "versus.h"
-#include "RunRon.h"
 
 CSymbols			*p_symbols = NULL;
 CRITICAL_SECTION	CSymbols::cs_symbols;
@@ -862,13 +862,13 @@ void CSymbols::CalcSymbols(void)
 	{
 		CalcRoundsPositions();			// rounds positions
 		CalcPokerValues();				// pokerval, pocket-common tests
-		CalcUnknownCards();			// (un)known cards
+		CalcUnknownCards();				// (un)known cards
 		CalcHandTests();				// hand tests
 		CalcPocketTests();				// pocket tests
 		CalcListTests();				// list tests, list numbers
-		CalcFlushesStraightsSets();				// flushes, straights, sets
-		CalcRankbits();				// rankbits, rankhi, ranklo
-		versus.get_counts();			// calculate versus values
+		CalcFlushesStraightsSets();		// flushes, straights, sets
+		CalcRankbits();					// rankbits, rankhi, ranklo
+		p_versus->GetCounts();			// calculate versus values
 
 		_sym.originaldealposition = _sym.dealposition; //remember dealposition Matrix 2008-05-09
 	}
@@ -2998,41 +2998,41 @@ void CSymbols::CalcRunRon(void)
 {
 	CRunRon			rr;
 
-	rr.get_counts();
+	rr.GetCounts();
 
 	EnterCriticalSection(&cs_symbols);
 
-		_sym.run$royfl = rr.run$royfl;
-		_sym.run$strfl = rr.run$strfl;
-		_sym.run$4kind = rr.run$4kind;
-		_sym.run$fullh = rr.run$fullh;
-		_sym.run$flush = rr.run$flush;
-		_sym.run$strai = rr.run$strai;
-		_sym.run$3kind = rr.run$3kind;
-		_sym.run$2pair = rr.run$2pair;
-		_sym.run$1pair = rr.run$1pair;
-		_sym.run$hcard = rr.run$hcard;
-		_sym.run$total = rr.run$royfl+rr.run$strfl+rr.run$4kind+rr.run$fullh+rr.run$flush+
-						rr.run$strai+rr.run$3kind+rr.run$2pair+rr.run$1pair+rr.run$hcard;
-		_sym.run$prbest = rr.run_pokervalmax_count/_sym.run$total;
-		_sym.run$pokervalmax = rr.run$pokervalmax;
-		_sym.run$clocks = rr.run$clocks;
+		_sym.run$royfl = rr.srun()->royfl;
+		_sym.run$strfl = rr.srun()->strfl;
+		_sym.run$4kind = rr.srun()->fourkind;
+		_sym.run$fullh = rr.srun()->fullh;
+		_sym.run$flush = rr.srun()->flush;
+		_sym.run$strai = rr.srun()->strai;
+		_sym.run$3kind = rr.srun()->threekind;
+		_sym.run$2pair = rr.srun()->twopair;
+		_sym.run$1pair = rr.srun()->onepair;
+		_sym.run$hcard = rr.srun()->hcard;
+		_sym.run$total = rr.srun()->royfl+rr.srun()->strfl+rr.srun()->fourkind+rr.srun()->fullh+rr.srun()->flush+
+						rr.srun()->strai+rr.srun()->threekind+rr.srun()->twopair+rr.srun()->onepair+rr.srun()->hcard;
+		_sym.run$prbest = rr.srun()->pokervalmaxcount/_sym.run$total;
+		_sym.run$pokervalmax = rr.srun()->pokervalmax;
+		_sym.run$clocks = rr.srun()->clocks;
 
-		_sym.ron$royfl = rr.ron$royfl;
-		_sym.ron$strfl = rr.ron$strfl;
-		_sym.ron$4kind = rr.ron$4kind;
-		_sym.ron$fullh = rr.ron$fullh;
-		_sym.ron$flush = rr.ron$flush;
-		_sym.ron$strai = rr.ron$strai;
-		_sym.ron$3kind = rr.ron$3kind;
-		_sym.ron$2pair = rr.ron$2pair;
-		_sym.ron$1pair = rr.ron$1pair;
-		_sym.ron$hcard = rr.ron$hcard;
-		_sym.ron$total = rr.ron$royfl+rr.ron$strfl+rr.ron$4kind+rr.ron$fullh+rr.ron$flush+
-						rr.ron$strai+rr.ron$3kind+rr.ron$2pair+rr.ron$1pair+rr.ron$hcard;
-		_sym.ron$prbest = rr.ron_pokervalmax_count/_sym.ron$total;
-		_sym.ron$pokervalmax = rr.ron$pokervalmax;
-		_sym.ron$clocks = rr.ron$clocks;
+		_sym.ron$royfl = rr.sron()->royfl;
+		_sym.ron$strfl = rr.sron()->strfl;
+		_sym.ron$4kind = rr.sron()->fourkind;
+		_sym.ron$fullh = rr.sron()->fullh;
+		_sym.ron$flush = rr.sron()->flush;
+		_sym.ron$strai = rr.sron()->strai;
+		_sym.ron$3kind = rr.sron()->threekind;
+		_sym.ron$2pair = rr.sron()->twopair;
+		_sym.ron$1pair = rr.sron()->onepair;
+		_sym.ron$hcard = rr.sron()->hcard;
+		_sym.ron$total = rr.sron()->royfl+rr.sron()->strfl+rr.sron()->fourkind+rr.sron()->fullh+rr.sron()->flush+
+						rr.sron()->strai+rr.sron()->threekind+rr.sron()->twopair+rr.sron()->onepair+rr.sron()->hcard;
+		_sym.ron$prbest = rr.sron()->pokervalmaxcount/_sym.ron$total;
+		_sym.ron$pokervalmax = rr.sron()->pokervalmax;
+		_sym.ron$clocks = rr.sron()->clocks;
 
 
 		//////////////////////////////////////////////////////////////

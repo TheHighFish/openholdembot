@@ -15,8 +15,8 @@
 #include "CFormula.h"
 #include "CEvalInfo.h"
 #include "..\CCritSec\CCritSec.h"
+#include "CVersus.h"
 
-#include "versus.h"
 #include "Perl.hpp"
 #include "logsymbols.h"
 
@@ -418,7 +418,7 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 	// vs$ symbols
 	else if (memcmp(sym.c_str(), "vs$", 3)==0)
 	{
-		return versus.get_symbol(sym.c_str(), e);
+		return p_versus->GetSymbol(sym.c_str(), e);
 	}
 
 	// log$ symbols
@@ -680,7 +680,7 @@ void CGrammar::ValidateSymbol(const char *begin, const char *end)
 	else if (memcmp(sym.c_str(), "vs$", 3)==0)
 	{
 		e = SUCCESS;
-		versus.get_symbol(sym.c_str(), &e);
+		p_versus->GetSymbol(sym.c_str(), &e);
 
 		if (e != SUCCESS)
 			g_parse_symbol_stop_strs.Add(sym);
