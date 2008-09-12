@@ -2,6 +2,7 @@
 #include <process.h>
 
 #include "OpenHoldem.h"
+#include "MainFrm.h"
 
 #include "CScraper.h"
 #include "CSymbols.h"
@@ -10,7 +11,6 @@
 #include "CIteratorThread.h"
 #include "CHeartbeatThread.h"
 #include "CPokerTrackerThread.h"
-#include "CGlobal.h"
 #include "CPreferences.h"
 #include "CGameState.h"
 #include "..\CTablemap\CTablemap.h"
@@ -59,7 +59,8 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 {
 	__SEH_SET_EXCEPTION_HANDLER
 
-	CHeartbeatThread *pParent = static_cast<CHeartbeatThread*>(pParam);
+	CHeartbeatThread	*pParent = static_cast<CHeartbeatThread*>(pParam);
+	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	LARGE_INTEGER		cycle_start = {0}, cycle_end = {0}, lFrequency = {0};
 	unsigned int		new_scrape = NOTHING_CHANGED;
@@ -132,7 +133,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		CString *messageTitle = new CString();
 		if (!p_pokerpro->IsConnected())
 		{
-			GetWindowText(p_global->attached_hwnd(), title, 512);
+			GetWindowText(pMyMainWnd->attached_hwnd(), title, 512);
 			messageTitle->Format("%s - %s (%s)", p_formula->formula_name(), p_tablemap->s$items()->sitename, title);
 		}
 		else

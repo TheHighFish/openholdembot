@@ -23,7 +23,6 @@
 #include <winuser.h>
 #include "PokerChat.hpp"
 
-#include "CGlobal.h"
 #include "CPreferences.h"
 
 

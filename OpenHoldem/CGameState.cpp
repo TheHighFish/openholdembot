@@ -4,7 +4,6 @@
 
 #include "CSymbols.h"
 #include "CScraper.h"
-#include "CGlobal.h"
 #include "CPreferences.h"
 
 CGameState			*p_game_state = NULL;
@@ -37,6 +36,8 @@ CGameState::CGameState()
 	_ftr_dealer_chair_last = 0;
 	_ftr_nflopc_last = 0;
 	_ftr_nplayersdealt_last = 0;
+
+	_mm_network = "";
 }
 
 CGameState::~CGameState()
@@ -150,7 +151,7 @@ void CGameState::CaptureState(const char *title)
 	bool sym_ismanual = (bool) p_symbols->sym()->ismanual;
 	if (sym_ismanual)
 	{
-		p_global->mm_network = p_scraper->button_state(5);
+		set_mm_network(p_scraper->button_state(5));
 	}
 
 	// Poker window title

@@ -12,7 +12,6 @@
 #include "CScraper.h"
 #include "CSymbols.h"
 #include "CHeartbeatThread.h"
-#include "CGlobal.h"
 #include "CPreferences.h"
 #include "CFormula.h"
 #include "CGrammar.h"
@@ -2455,7 +2454,7 @@ void CDlgFormulaScintilla::write_fdebug_log(bool write_header)
 
     // write the line to the log
     CString fn;
-    fn.Format("%s\\f$debug_%lu.log", _startup_path, p_global->session_id());
+    fn.Format("%s\\f$debug_%lu.log", _startup_path, theApp._session_id);
     FILE *fp;
 	if (fopen_s(&fp, fn.GetString(), "a")==0)
 	{
@@ -2481,9 +2480,6 @@ void CDlgFormulaScintilla::init_debug_array(void)
     int					stopchar, pos;
     CString				s;
 	bool				parse_result;
-
-    //p_global->set_m_wait_cursor(true);
-    //BeginWaitCursor();
 
     //
     // Loop through each line in the debug tab and parse it
@@ -2540,9 +2536,6 @@ void CDlgFormulaScintilla::init_debug_array(void)
         }
         debug_ar.Add(debug_struct);
     }
-
-    //EndWaitCursor();
-    //p_global->set_m_wait_cursor(false);
 
     __SEH_LOGFATAL("CDlgFormulaScintilla::init_debug_array :\n");
 }
@@ -2953,8 +2946,9 @@ void CDlgFormulaScintilla::OnFormulaDebugMyturn()
 BOOL CDlgFormulaScintilla::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
     __SEH_HEADER
+    CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
-	if (p_global->m_wait_cursor())
+	if (pMyMainWnd->wait_cursor())
     {
         RestoreWaitCursor();
         return TRUE;

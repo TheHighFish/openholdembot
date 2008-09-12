@@ -10,7 +10,6 @@
 #include "CSymbols.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CHeartbeatThread.h"
-#include "CGlobal.h"
 #include "CPreferences.h"
 
 

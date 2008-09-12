@@ -3,7 +3,6 @@
 #include "CMemory.h"
 
 #include "CSymbols.h"
-#include "CGlobal.h"
 #include "CFormula.h"
 #include "CGrammar.h"
 

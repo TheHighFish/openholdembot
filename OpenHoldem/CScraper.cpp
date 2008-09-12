@@ -7,8 +7,10 @@
 #include "..\CTablemap\CTablemap.h"
 
 #include "CSymbols.h"
-#include "CGlobal.h"
 #include "CPokerPro.h"
+
+#include "OpenHoldem.h"
+#include "MainFrm.h"
 
 CScraper			*p_scraper = NULL;
 CRITICAL_SECTION	CScraper::cs_scraper;
@@ -162,16 +164,17 @@ int CScraper::DoScrape(void)
 {
 	int				i = 0;
 	CString			text = "";
+	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	// DC
-	HDC			hdc = GetDC(p_global->attached_hwnd());
+	HDC			hdc = GetDC(pMyMainWnd->attached_hwnd());
 	HDC			hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
 	HDC			hdcCompatible = CreateCompatibleDC(hdcScreen);
 	RECT		cr = {0};
 	HBITMAP		old_bitmap = NULL;
 
 	// Get bitmap of whole window
-	GetClientRect(p_global->attached_hwnd(), &cr);
+	GetClientRect(pMyMainWnd->attached_hwnd(), &cr);
 
 	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_cur);
 
@@ -181,7 +184,7 @@ int CScraper::DoScrape(void)
 	// get window title
 	_title[0] = '\0';
 	if (!p_pokerpro->IsConnected())
-		GetWindowText(p_global->attached_hwnd(), _title, MAX_WINDOW_TITLE-1);
+		GetWindowText(pMyMainWnd->attached_hwnd(), _title, MAX_WINDOW_TITLE-1);
 
 	// If the bitmaps are the same, then return now
 	if (BitmapsSame(_entire_window_last, _entire_window_cur) &&
@@ -190,7 +193,7 @@ int CScraper::DoScrape(void)
 	{
 		DeleteDC(hdcCompatible);
 		DeleteDC(hdcScreen);
-		ReleaseDC(p_global->attached_hwnd(), hdc);
+		ReleaseDC(pMyMainWnd->attached_hwnd(), hdc);
 		return NOTHING_CHANGED;
 	}
 
@@ -257,7 +260,7 @@ int CScraper::DoScrape(void)
 
 	DeleteDC(hdcCompatible);
 	DeleteDC(hdcScreen);
-	ReleaseDC(p_global->attached_hwnd(), hdc);
+	ReleaseDC(pMyMainWnd->attached_hwnd(), hdc);
 
 	return _scrape_something_changed;
 }
@@ -1218,6 +1221,7 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 	char				c_titletext[MAX_WINDOW_TITLE] = {0};
 	bool				got_new_scrape = false, log_blind_change = false;
 	CTransform			trans;
+	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	// Check for bad parameters
 	if (hdcCompatible == NULL || hdc == NULL)
@@ -1345,7 +1349,7 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 		s$index = p_tablemap->s$indexes()->s$ttlimits_index;
 		if (s$index!=-1)
 		{
-			GetWindowText(p_global->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
+			GetWindowText(pMyMainWnd->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
 			titletext = c_titletext;
 		 	
 			trans.ParseStringBSL(
@@ -1361,7 +1365,7 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 			s$index = p_tablemap->s$indexes()->s$ttlimitsX_index[j];
 			if (s$index!=-1)
 			{
-				GetWindowText(p_global->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
+				GetWindowText(pMyMainWnd->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
 				titletext = c_titletext;
 	
 				trans.ParseStringBSL(
@@ -1698,12 +1702,13 @@ const bool CScraper::BitmapsSame(HBITMAP HBitmapLeft, HBITMAP HBitmapRight)
 
 void CScraper::CreateBitmaps(void)
 {
-	int			i = 0, w = 0, h = 0;
-	HDC			hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
-	RECT		cr = {0};
+	int				i = 0, w = 0, h = 0;
+	HDC				hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
+	RECT			cr = {0};
+	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	// Whole window
-	GetClientRect(p_global->attached_hwnd(), &cr);
+	GetClientRect(pMyMainWnd->attached_hwnd(), &cr);
 	w = cr.right - cr.left;
 	h = cr.bottom - cr.top;
 	EnterCriticalSection(&cs_scraper);

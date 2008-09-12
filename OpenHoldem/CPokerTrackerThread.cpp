@@ -4,7 +4,6 @@
 
 #include "CSymbols.h"
 #include "CPokerTrackerThread.h"
-#include "CGlobal.h"
 #include "CPreferences.h"
 #include "CGameState.h"
 #include "CLevDistance.h"

@@ -321,10 +321,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CGlobal.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CGrammar.cpp"
 				>
 			</File>
@@ -675,10 +671,6 @@
 			</File>
 			<File
 				RelativePath=".\CGameState.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CGlobal.h"
 				>
 			</File>
 			<File

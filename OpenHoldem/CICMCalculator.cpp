@@ -18,7 +18,6 @@
 #include "CICMCalculator.h"
 
 #include "CSymbols.h"
-#include "CGlobal.h"
 #include "CPreferences.h"
 
 double P(int i, int n, double *s, int N)

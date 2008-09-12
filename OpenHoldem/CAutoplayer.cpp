@@ -6,10 +6,12 @@
 #include "CIteratorThread.h"
 #include "CHeartbeatThread.h"
 #include "CScraper.h"
-#include "CGlobal.h"
 #include "CGrammar.h"
 #include "CPreferences.h"
 #include "..\CTablemap\CTablemap.h"
+
+#include "OpenHoldem.h"
+#include "MainFrm.h"
 
 #include "PokerChat.hpp"
 
@@ -60,6 +62,7 @@ void CAutoplayer::DoChat(void)
 	HWND			hwnd_foreground = GetForegroundWindow();
 	HWND			hwnd_active = GetActiveWindow();
 	POINT			cur_pos;
+	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	GetCursorPos(&cur_pos);
 
@@ -69,7 +72,7 @@ void CAutoplayer::DoChat(void)
 								  p_tablemap->r$()->GetAt(p_tablemap->r$indexes()->r$chatbox).bottom);
 
 	// Translate click point to screen/mouse coords
-	ClientToScreen(p_global->attached_hwnd(), &pt);
+	ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
 	fx = pt.x*(65535.0f/fScreenWidth);
 	fy = pt.y*(65535.0f/fScreenHeight);
 
@@ -87,9 +90,9 @@ void CAutoplayer::DoChat(void)
 	// If we get a lock, do the action
 	if (_mutex.Lock(500))
 	{
-		SetFocus(p_global->attached_hwnd());
-		SetForegroundWindow(p_global->attached_hwnd());
-		SetActiveWindow(p_global->attached_hwnd());
+		SetFocus(pMyMainWnd->attached_hwnd());
+		SetForegroundWindow(pMyMainWnd->attached_hwnd());
+		SetActiveWindow(pMyMainWnd->attached_hwnd());
 		SendInput(2, input, sizeof(INPUT));
 		//
 		//  Pre: f$chat > 0,
@@ -226,6 +229,7 @@ void CAutoplayer::DoSwag(void)
 	POINT			cur_pos = {0};
 	bool			lost_focus = false;
 	int				e = SUCCESS;
+	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	double			f_swag = p_symbols->f$swag();
 	
@@ -248,7 +252,7 @@ void CAutoplayer::DoSwag(void)
 				r$index = p_tablemap->r$indexes()->r$iXedit_index[3];
 				pt = RandomizeClickLocation(p_tablemap->r$()->GetAt(r$index).left, p_tablemap->r$()->GetAt(r$index).top,
 											  p_tablemap->r$()->GetAt(r$index).right, p_tablemap->r$()->GetAt(r$index).bottom);
-				ClientToScreen(p_global->attached_hwnd(), &pt);
+				ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
 				fx = pt.x*(65535.0f/fScreenWidth);
 				fy = pt.y*(65535.0f/fScreenHeight);
 
@@ -285,7 +289,7 @@ void CAutoplayer::DoSwag(void)
 				r$index = p_tablemap->r$indexes()->r$iXedit_index[3];
 				pt.x = p_tablemap->r$()->GetAt(r$index).right;
 				pt.y = p_tablemap->r$()->GetAt(r$index).top + (p_tablemap->r$()->GetAt(r$index).bottom-p_tablemap->r$()->GetAt(r$index).top)/2;
-				ClientToScreen(p_global->attached_hwnd(), &pt);
+				ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
 				fx = pt.x*(65535.0f/fScreenWidth);
 				fy = pt.y*(65535.0f/fScreenHeight);
 
@@ -298,7 +302,7 @@ void CAutoplayer::DoSwag(void)
 
 				pt.x = p_tablemap->r$()->GetAt(r$index).left;
 				pt.y = p_tablemap->r$()->GetAt(r$index).top + (p_tablemap->r$()->GetAt(r$index).bottom-p_tablemap->r$()->GetAt(r$index).top)/2;
-				ClientToScreen(p_global->attached_hwnd(), &pt);
+				ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
 				fx = pt.x*(65535.0f/fScreenWidth);
 				fy = pt.y*(65535.0f/fScreenHeight);
 
@@ -322,14 +326,14 @@ void CAutoplayer::DoSwag(void)
 			}
 
 			// Do text selection and sleep
-			SetFocus(p_global->attached_hwnd());
-			SetForegroundWindow(p_global->attached_hwnd());
-			SetActiveWindow(p_global->attached_hwnd());
+			SetFocus(pMyMainWnd->attached_hwnd());
+			SetForegroundWindow(pMyMainWnd->attached_hwnd());
+			SetActiveWindow(pMyMainWnd->attached_hwnd());
 
 			SendInput(input_count, input, sizeof(INPUT));
 
 			// Check for stolen focus, and thus misswag
-			if (GetForegroundWindow() != p_global->attached_hwnd())
+			if (GetForegroundWindow() != pMyMainWnd->attached_hwnd())
 				lost_focus = true;
 
 			::SetCursorPos(cur_pos.x, cur_pos.y);
@@ -384,14 +388,14 @@ void CAutoplayer::DoSwag(void)
 			}
 
 			// do it and sleep
-			SetFocus(p_global->attached_hwnd());
-			SetForegroundWindow(p_global->attached_hwnd());
-			SetActiveWindow(p_global->attached_hwnd());
+			SetFocus(pMyMainWnd->attached_hwnd());
+			SetForegroundWindow(pMyMainWnd->attached_hwnd());
+			SetActiveWindow(pMyMainWnd->attached_hwnd());
 
 			SendInput(input_count, input, sizeof(INPUT));
 
 			// Check for stolen focus, and thus misswag
-			if (GetForegroundWindow() != p_global->attached_hwnd())
+			if (GetForegroundWindow() != pMyMainWnd->attached_hwnd())
 				lost_focus = true;
 
 			::SetCursorPos(cur_pos.x, cur_pos.y);
@@ -410,7 +414,7 @@ void CAutoplayer::DoSwag(void)
 										p_tablemap->r$()->GetAt(r$index).right, 
 										p_tablemap->r$()->GetAt(r$index).bottom);
 
-			ClientToScreen(p_global->attached_hwnd(), &pt);
+			ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
 			fx = pt.x*(65535.0f/fScreenWidth);
 			fy = pt.y*(65535.0f/fScreenHeight);
 
@@ -460,14 +464,14 @@ void CAutoplayer::DoSwag(void)
 			}
 
 			// do it and sleep for prefs.swag_delay (ms)
-			SetFocus(p_global->attached_hwnd());
-			SetForegroundWindow(p_global->attached_hwnd());
-			SetActiveWindow(p_global->attached_hwnd());
+			SetFocus(pMyMainWnd->attached_hwnd());
+			SetForegroundWindow(pMyMainWnd->attached_hwnd());
+			SetActiveWindow(pMyMainWnd->attached_hwnd());
 
 			SendInput(input_count, input, sizeof(INPUT));
 
 			// Check for stolen focus, and thus misswag
-			if (GetForegroundWindow() != p_global->attached_hwnd())
+			if (GetForegroundWindow() != pMyMainWnd->attached_hwnd())
 				lost_focus = true;
 
 			::SetCursorPos(cur_pos.x, cur_pos.y);
@@ -518,7 +522,7 @@ void CAutoplayer::DoSwag(void)
 				}
 
 				// Click on button
-				ClientToScreen(p_global->attached_hwnd(), &pt);
+				ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
 				fx = pt.x*(65535.0f/fScreenWidth);
 				fy = pt.y*(65535.0f/fScreenHeight);
 
@@ -576,9 +580,9 @@ void CAutoplayer::DoSwag(void)
 			// do it
 			if (!lost_focus || !prefs.focus_detect())
 			{
-				SetFocus(p_global->attached_hwnd());
-				SetForegroundWindow(p_global->attached_hwnd());
-				SetActiveWindow(p_global->attached_hwnd());
+				SetFocus(pMyMainWnd->attached_hwnd());
+				SetForegroundWindow(pMyMainWnd->attached_hwnd());
+				SetActiveWindow(pMyMainWnd->attached_hwnd());
 
 				SendInput(input_count, input, sizeof(INPUT));
 
@@ -626,6 +630,7 @@ void CAutoplayer::DoARCCF(void)
 	HWND			hwnd_foreground = GetForegroundWindow();
 	HWND			hwnd_active = GetActiveWindow();
 	POINT			cur_pos = {0};
+	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	int				e = SUCCESS;
 	double			alli = p_symbols->f$alli();
@@ -696,7 +701,7 @@ void CAutoplayer::DoARCCF(void)
 		input_count = 0;
 
 		// Translate click point to screen/mouse coords
-		ClientToScreen(p_global->attached_hwnd(), &pt);
+		ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
 		fx = pt.x*(65535.0f/fScreenWidth);
 		fy = pt.y*(65535.0f/fScreenHeight);
 
@@ -747,9 +752,9 @@ void CAutoplayer::DoARCCF(void)
 		// If we get a lock, do the action
 		if (_mutex.Lock(500))
 		{
-			SetFocus(p_global->attached_hwnd());
-			SetForegroundWindow(p_global->attached_hwnd());
-			SetActiveWindow(p_global->attached_hwnd());
+			SetFocus(pMyMainWnd->attached_hwnd());
+			SetForegroundWindow(pMyMainWnd->attached_hwnd());
+			SetActiveWindow(pMyMainWnd->attached_hwnd());
 
 			SendInput(input_count, input, sizeof(INPUT));
 
@@ -829,6 +834,8 @@ void CAutoplayer::DoSlider(void)
 	POINT			cur_pos = {0};
 	int				e = SUCCESS;
 	bool			sym_ismyturn = (bool) p_symbols->sym()->ismyturn;
+	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
+
 	double			alli = p_symbols->f$alli();
 	STablemapRegion handle, slider;
 
@@ -871,19 +878,19 @@ void CAutoplayer::DoSlider(void)
 	{
 
 		// Translate click point to screen/mouse coords
-		ClientToScreen(p_global->attached_hwnd(), &pt);
+		ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
 		fx = pt.x*(65535.0f/fScreenWidth);
 		fy = pt.y*(65535.0f/fScreenHeight);
-		ClientToScreen(p_global->attached_hwnd(), &pt2);
+		ClientToScreen(pMyMainWnd->attached_hwnd(), &pt2);
 		fx2 = pt2.x*(65535.0f/fScreenWidth);
 		fy2 = pt2.y*(65535.0f/fScreenHeight);
 		write_log("*** Jam from %d,%d to %d,%d \n", fx, fy, fx2, fy2);
 
 		if (_mutex.Lock(500))
 		{
-			SetFocus(p_global->attached_hwnd());
-			SetForegroundWindow(p_global->attached_hwnd());
-			SetActiveWindow(p_global->attached_hwnd());
+			SetFocus(pMyMainWnd->attached_hwnd());
+			SetForegroundWindow(pMyMainWnd->attached_hwnd());
+			SetActiveWindow(pMyMainWnd->attached_hwnd());
 
 			// Move to handle & click & hold button
 			input_count = 0;
@@ -932,7 +939,7 @@ void CAutoplayer::DoSlider(void)
 										p_tablemap->r$()->GetAt(_alli_but).right, 
 										p_tablemap->r$()->GetAt(_alli_but).bottom);
 
-			ClientToScreen(p_global->attached_hwnd(), &pt);
+			ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
 			fx = pt.x*(65535.0f/fScreenWidth);
 			fy = pt.y*(65535.0f/fScreenHeight);
 
@@ -963,9 +970,9 @@ void CAutoplayer::DoSlider(void)
 		// If we get a lock, do the action
 		if (_mutex.Lock(500))
 		{
-			SetFocus(p_global->attached_hwnd());
-			SetForegroundWindow(p_global->attached_hwnd());
-			SetActiveWindow(p_global->attached_hwnd());
+			SetFocus(pMyMainWnd->attached_hwnd());
+			SetForegroundWindow(pMyMainWnd->attached_hwnd());
+			SetActiveWindow(pMyMainWnd->attached_hwnd());
 
 			SendInput(input_count, input, sizeof(INPUT));
 
@@ -1003,6 +1010,7 @@ void CAutoplayer::DoPrefold(void)
 	HWND			hwnd_active = GetActiveWindow();
 	POINT			cur_pos = {0};
 	int				input_count = 0;
+	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	double			prefold = p_symbols->f$prefold();
 
@@ -1024,7 +1032,7 @@ void CAutoplayer::DoPrefold(void)
 	input_count = 0;
 
 	// Translate click point to screen/mouse coords
-	ClientToScreen(p_global->attached_hwnd(), &pt);
+	ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
 	fx = pt.x*(65535.0f/fScreenWidth);
 	fy = pt.y*(65535.0f/fScreenHeight);
 
@@ -1057,9 +1065,9 @@ void CAutoplayer::DoPrefold(void)
 	// If we get a lock, do the action
 	if (_mutex.Lock(500))
 	{
-		SetFocus(p_global->attached_hwnd());
-		SetForegroundWindow(p_global->attached_hwnd());
-		SetActiveWindow(p_global->attached_hwnd());
+		SetFocus(pMyMainWnd->attached_hwnd());
+		SetForegroundWindow(pMyMainWnd->attached_hwnd());
+		SetActiveWindow(pMyMainWnd->attached_hwnd());
 
 		SendInput(input_count, input, sizeof(INPUT));
 
@@ -1559,6 +1567,7 @@ void CAutoplayer::CheckBringKeyboard(void)
 	int				keybd_item_pos = 0;
 	int				e = SUCCESS;
 	bool			sym_isbring = (bool) p_symbols->sym()->isbring;
+	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	// Init locals
 	memset(&mii, 0, sizeof(MENUITEMINFO));
@@ -1566,7 +1575,7 @@ void CAutoplayer::CheckBringKeyboard(void)
 	GetCursorPos(&cur_pos);
 
 	// Find position of "Keyboard" item on system menu
-	bringsysmenu = GetSystemMenu(p_global->attached_hwnd(), false);
+	bringsysmenu = GetSystemMenu(pMyMainWnd->attached_hwnd(), false);
 
 	mii.cbSize = sizeof(MENUITEMINFO);
 	mii.fMask = MIIM_STRING;
@@ -1633,9 +1642,9 @@ void CAutoplayer::CheckBringKeyboard(void)
 
 		if (_mutex.Lock(500)) 
 		{
-			SetFocus(p_global->attached_hwnd());
-			SetForegroundWindow(p_global->attached_hwnd());
-			SetActiveWindow(p_global->attached_hwnd());
+			SetFocus(pMyMainWnd->attached_hwnd());
+			SetForegroundWindow(pMyMainWnd->attached_hwnd());
+			SetActiveWindow(pMyMainWnd->attached_hwnd());
 			SendInput(input_count, input, sizeof(INPUT));
 			_mutex.Unlock();
 		}
@@ -1657,9 +1666,9 @@ void CAutoplayer::CheckBringKeyboard(void)
 
 		if (_mutex.Lock(500)) 
 		{
-			SetFocus(p_global->attached_hwnd());
-			SetForegroundWindow(p_global->attached_hwnd());
-			SetActiveWindow(p_global->attached_hwnd());
+			SetFocus(pMyMainWnd->attached_hwnd());
+			SetForegroundWindow(pMyMainWnd->attached_hwnd());
+			SetActiveWindow(pMyMainWnd->attached_hwnd());
 			SendInput(input_count, input, sizeof(INPUT));
 			SetActiveWindow(hwnd_active);
 			SetForegroundWindow(hwnd_foreground);
@@ -1683,6 +1692,8 @@ void CAutoplayer::DoF$play(void)
 	HWND			hwnd_foreground = GetForegroundWindow();
 	HWND			hwnd_active = GetActiveWindow();
 	POINT			cur_pos = {0};
+	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
+
 	double			f_play = p_symbols->f$play();
 
 	::GetCursorPos(&cur_pos);
@@ -1700,7 +1711,7 @@ void CAutoplayer::DoF$play(void)
 		input_count = 0;
 
 		// Translate click point to screen/mouse coords
-		ClientToScreen(p_global->attached_hwnd(), &pt);
+		ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
 		fx = pt.x*(65535.0f/fScreenWidth);
 		fy = pt.y*(65535.0f/fScreenHeight);
 
@@ -1760,7 +1771,7 @@ void CAutoplayer::DoF$play(void)
 		input_count = 0;
 
 		// Translate click point to screen/mouse coords
-		ClientToScreen(p_global->attached_hwnd(), &pt);
+		ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
 		fx = pt.x*(65535.0f/fScreenWidth);
 		fy = pt.y*(65535.0f/fScreenHeight);
 
@@ -1814,7 +1825,7 @@ void CAutoplayer::DoF$play(void)
 		input_count = 0;
 
 		// Translate click point to screen/mouse coords
-		ClientToScreen(p_global->attached_hwnd(), &pt);
+		ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
 		fx = pt.x*(65535.0f/fScreenWidth);
 		fy = pt.y*(65535.0f/fScreenHeight);
 
@@ -1856,7 +1867,7 @@ void CAutoplayer::DoF$play(void)
 									p_tablemap->r$()->GetAt(_autopost_but).bottom);
 
 		// Translate click point to screen/mouse coords
-		ClientToScreen(p_global->attached_hwnd(), &pt);
+		ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
 		fx = pt.x*(65535.0f/fScreenWidth);
 		fy = pt.y*(65535.0f/fScreenHeight);
 
@@ -1894,9 +1905,9 @@ void CAutoplayer::DoF$play(void)
 		// If we get a lock, do the action
 		if (_mutex.Lock(500)) 
 		{
-			SetFocus(p_global->attached_hwnd());
-			SetForegroundWindow(p_global->attached_hwnd());
-			SetActiveWindow(p_global->attached_hwnd());
+			SetFocus(pMyMainWnd->attached_hwnd());
+			SetForegroundWindow(pMyMainWnd->attached_hwnd());
+			SetActiveWindow(pMyMainWnd->attached_hwnd());
 
 			SendInput(input_count, input, sizeof(INPUT));
 
@@ -1930,6 +1941,7 @@ void CAutoplayer::DoI86(void)
 	HWND			hwnd_foreground = GetForegroundWindow();
 	HWND			hwnd_active = GetActiveWindow();
 	POINT			cur_pos = {0};
+	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	::GetCursorPos(&cur_pos);
 
@@ -1944,7 +1956,7 @@ void CAutoplayer::DoI86(void)
 		input_count = 0;
 
 		// Translate click point to screen/mouse coords
-		ClientToScreen(p_global->attached_hwnd(), &pt);
+		ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
 		fx = pt.x*(65535.0f/fScreenWidth);
 		fy = pt.y*(65535.0f/fScreenHeight);
 
@@ -1991,7 +2003,7 @@ void CAutoplayer::DoI86(void)
 				input_count = 0;
 
 				// Translate click point to screen/mouse coords
-				ClientToScreen(p_global->attached_hwnd(), &pt);
+				ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
 				fx = pt.x*(65535.0f/fScreenWidth);
 				fy = pt.y*(65535.0f/fScreenHeight);
 
@@ -2031,9 +2043,9 @@ void CAutoplayer::DoI86(void)
 		// If we get a lock, do the action
 		if (_mutex.Lock(500))
 		{
-			SetFocus(p_global->attached_hwnd());
-			SetForegroundWindow(p_global->attached_hwnd());
-			SetActiveWindow(p_global->attached_hwnd());
+			SetFocus(pMyMainWnd->attached_hwnd());
+			SetForegroundWindow(pMyMainWnd->attached_hwnd());
+			SetActiveWindow(pMyMainWnd->attached_hwnd());
 
 			SendInput(input_count, input, sizeof(INPUT));
 

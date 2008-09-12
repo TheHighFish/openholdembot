@@ -11,10 +11,10 @@
 #include "CIteratorThread.h"
 #include "CHeartbeatThread.h"
 #include "CPokerTrackerThread.h"
-#include "CGlobal.h"
 #include "CPreferences.h"
 #include "CPokerPro.h"
 #include "CAutoplayer.h"
+#include "CFormula.h"
 
 #include "DialogPPro.h"
 #include "DialogSitDown.h"

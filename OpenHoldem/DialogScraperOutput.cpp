@@ -8,8 +8,6 @@
 
 #include "CScraper.h"
 #include "CHeartbeatThread.h"
-#include "CGlobal.h"
-
 #include "CPreferences.h"
 #include "..\CTransform\CTransform.h"
 

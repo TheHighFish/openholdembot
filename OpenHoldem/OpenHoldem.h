@@ -28,6 +28,8 @@ public:
 
 public:
 	virtual int ExitInstance();
+
+	unsigned long int	_session_id;
 };
 
 extern COpenHoldemApp theApp;

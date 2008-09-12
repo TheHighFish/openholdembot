@@ -14,10 +14,6 @@
 #define new DEBUG_NEW
 #endif
 
-// Global variable for holding table list by callback function
-CArray <STableList, STableList>		g_tlist;
-
-
 // CMainFrame
 
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
@@ -387,6 +383,7 @@ void CMainFrame::SaveBmpPbits(void)
 	DeleteDC(hdcScreen);
 }
 
+CArray <STableList, STableList>		g_tlist; 
 
 BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) 
 {

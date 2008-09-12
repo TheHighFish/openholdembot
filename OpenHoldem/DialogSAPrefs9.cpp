@@ -6,8 +6,6 @@
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs9.h"
 
-#include "CGlobal.h"
-
 #include "Perl.hpp"
 #include "CPreferences.h"
 

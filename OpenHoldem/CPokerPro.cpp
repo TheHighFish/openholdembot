@@ -9,7 +9,6 @@
 #include "CIteratorThread.h"
 #include "CHeartbeatThread.h"
 #include "CAutoplayer.h"
-#include "CGlobal.h"
 #include "CGrammar.h"
 
 #include "DialogPPro.h"
@@ -1898,7 +1897,7 @@ void PokerPro::WriteHH(const CString *s)
 
 	if (prefs.ppro_handhistory()) 
 	{
-		fn.Format("%s\\ppro\\%s_%lu.log", _startup_path, _ppdata.m_site_name, p_global->session_id());
+		fn.Format("%s\\ppro\\%s_%lu.log", _startup_path, _ppdata.m_site_name, theApp._session_id);
 		fopen_s(&hh_fp, fn.GetString(), "a");
 		if (hh_fp==NULL) 
 		{

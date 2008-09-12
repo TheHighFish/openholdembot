@@ -4,7 +4,6 @@
 
 #include "OpenHoldemDoc.h"
 
-#include "CGlobal.h"
 #include "CSymbols.h"
 #include "..\CTransform\CTransform.h"
 #include "CGrammar.h"

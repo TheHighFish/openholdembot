@@ -5,7 +5,6 @@
 
 #include "CScraper.h"
 #include "CSymbols.h"
-#include "CGlobal.h"
 #include "CGrammar.h"
 
 #include "inlines/eval.h"
