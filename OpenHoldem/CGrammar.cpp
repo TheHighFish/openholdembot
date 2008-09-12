@@ -17,8 +17,7 @@
 #include "CVersus.h"
 #include "CDllExtension.h"
 #include "CPerl.hpp"
-
-#include "logsymbols.h"
+#include "CLogSymbols.h"
 
 CGrammar::CGrammar(void)
 {
@@ -424,8 +423,8 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 	// log$ symbols
 	else if (memcmp(sym.c_str(), "log$", 4)==0)
 	{
-		LogSymbols  logsymbols;
-		return logsymbols.process_query(sym.c_str(), e);
+		CLogSymbols  logsymbols;
+		return logsymbols.ProcessQuery(sym.c_str(), e);
 	}
 
 	// icm_ symbols
@@ -691,9 +690,9 @@ void CGrammar::ValidateSymbol(const char *begin, const char *end)
 	// log$ symbols
 	else if (memcmp(sym.c_str(), "log$", 4)==0)
 	{
-		LogSymbols  logsymbols;
+		CLogSymbols  logsymbols;
 		e = SUCCESS;
-		logsymbols.process_query(sym.c_str(), &e);
+		logsymbols.ProcessQuery(sym.c_str(), &e);
 
 		if (e != SUCCESS)
 			g_parse_symbol_stop_strs.Add(sym);
