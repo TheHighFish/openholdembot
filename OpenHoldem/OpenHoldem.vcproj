@@ -369,6 +369,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CReplayFrame.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CRunRon.cpp"
 				>
 			</File>
@@ -719,6 +723,10 @@
 			</File>
 			<File
 				RelativePath=".\CPreferences.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CReplayFrame.h"
 				>
 			</File>
 			<File
