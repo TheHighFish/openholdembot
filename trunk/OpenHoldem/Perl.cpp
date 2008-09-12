@@ -20,7 +20,6 @@
 
 #include "CScraper.h"
 #include "CIteratorThread.h"
-#include "CGlobal.h"
 #include "CPreferences.h"
 #include "CDllExtension.h"
 

@@ -6,8 +6,8 @@
 #include "OpenHoldem.h"
 #include "MainFrm.h"
 
-#include "CGlobal.h"
 #include "CPreferences.h"
+#include "CDllExtension.h"
 
 #include "DialogFormulaScintilla.h"
 

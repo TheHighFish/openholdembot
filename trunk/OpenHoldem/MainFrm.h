@@ -3,13 +3,15 @@
 
 #include "MyCToolBar.h"
 #include "..\CTablemap\CTablemap.h"
+#include "..\CCritSec\CCritSec.h"
 
 #define		HWND_CHECK_TIMER				1
 #define		ENABLE_BUTTONS_TIMER			2
 #define		UPDATE_STATUS_BAR_TIMER			3
 #define		ATTACH_WINDOW_TIMER				4
 
-class CMainFrame : public CFrameWnd {
+class CMainFrame : public CFrameWnd 
+{
 protected: // create from serialization only
 	CMainFrame();
 	DECLARE_DYNCREATE(CMainFrame)
@@ -61,21 +63,16 @@ protected: // create from serialization only
 	afx_msg void OnDllLoadspecificfile();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg LRESULT OnSetWindowText(WPARAM, LPARAM title);
-	//  2008.03.03 by THF 
 	afx_msg void OnPerlLoadFormula();
-	//  2008.03.07  by THF 
 	afx_msg void OnUpdateMenuPerlLoadSpecificFormula(CCmdUI* pCmdUI);
 	afx_msg void OnPerlLoadSpecificFormula();
 	afx_msg void OnPerlEditMainFormula();
 	afx_msg void OnUpdateMenuPerlLoad(CCmdUI* pCmdUI);
-	//  2008.03.20  by THF
 	afx_msg void OnPerlCheckSyntax();
 	afx_msg void OnPerlReloadFormula();
 	afx_msg void OnUpdateMenuPerlReloadFormula(CCmdUI* pCmdUI);
-	//  2008.04.29 by THF
 	afx_msg void OnUpdateMenuPerlCheckSyntax(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI);
-	
 
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
@@ -83,13 +80,39 @@ public:
 	virtual BOOL DestroyWindow();
 	CMyToolBar		m_MainToolBar;
 
+public:
+	// public accessors
+	const HWND attached_hwnd() { return _attached_hwnd; }
+	const bool flags(const int i) { if (i>=0 && i<=9) return _flags[i]; else return false; }
+	const bool wait_cursor() { return _wait_cursor; }
+
+public:
+#define ENT CSLock lock(m_critsec);
+	// public mutators
+	void set_attached_hwnd(const HWND h) { ENT _attached_hwnd = h; }
+	void set_flags(const int i, const bool b) { ENT if (i>=0 && i<=9) _flags[i] = b; }
+	void set_wait_cursor(const bool b) { ENT _wait_cursor = b; }
+#undef ENT
+
 private:
+	// private variables - use public accessors and public mutators to address these
+	HWND			_attached_hwnd;	 // Table that we are attached to
+	bool			_flags[10];		 // Flags button status
+	bool			_wait_cursor;	 // Used if we need to display a wait cursor anywhere
+
+private:
+	// private functions and variables - not available via accessors or mutators
 	void ReadRegString(CString RegistryKey, char* RegistryValue);
 	void WriteRegString(CString RegistryKey, CString RegistryValue);
 
-	bool _autoplay_pressed;
+	bool			_autoplay_pressed;
+
+	CCritSec		m_critsec;
 
 };
+
+// used by EnumProcTopLevelWindowList function
+extern CArray <STableList, STableList>		g_tlist; 
 
 BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam);
 bool check_window_match(SWholeMap *map, HWND h, RECT r, CString title);

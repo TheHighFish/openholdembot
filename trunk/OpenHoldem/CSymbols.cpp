@@ -7,7 +7,6 @@
 #include "CIteratorThread.h"
 #include "CAutoplayer.h"
 #include "CPokerTrackerThread.h"
-#include "CGlobal.h"
 #include "CPreferences.h"
 #include "CGameState.h"
 #include "..\CTablemap\CTablemap.h"
@@ -16,6 +15,10 @@
 #include "CVersus.h"
 #include "CRunRon.h"
 #include "CPokerPro.h"
+#include "CGameState.h"
+
+#include "OpenHoldem.h"
+#include "MainFrm.h"
 
 #include "inlines/eval.h"
 
@@ -652,18 +655,19 @@ void CSymbols::CalcSymbols(void)
 	unsigned int		player_card_cur[2] = {0};
 	char				card0[10] = {0}, card1[10] = {0};
 	CGrammar			gram;
+	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	// Clear em, before we start
 	ResetSymbolsEveryCalc();
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Global environment symbols
-	_sym.session = p_global->session_id();												// session
-	_sym.nopponentsmax = prefs.max_opponents();							// nopponentsmax
-	_sym.swagdelay = prefs.swag_delay_3();								// swagdelay
-	_sym.allidelay = -1;																// allidelay  (unused in OpenHoldem)
+	_sym.session = theApp._session_id;												// session
+	_sym.nopponentsmax = prefs.max_opponents();										// nopponentsmax
+	_sym.swagdelay = prefs.swag_delay_3();											// swagdelay
+	_sym.allidelay = -1;															// allidelay  (unused in OpenHoldem)
 	_sym.version = VERSION_NUMBER;													// version
-	GetClassName(p_global->attached_hwnd(), classname, 50);
+	GetClassName(pMyMainWnd->attached_hwnd(), classname, 50);
 	if (strcmp(classname, "BRING")==0)
 		_sym.isbring = 1;															// isbring
 
@@ -725,7 +729,7 @@ void CSymbols::CalcSymbols(void)
 
 		// Reset symbols and display
 		ResetSymbolsNewHand();
-		InvalidateRect(p_global->h_main_frame(), NULL, true);
+		InvalidateRect(theApp.m_pMainWnd->GetSafeHwnd(), NULL, true);
 
 		// randoms
 		_sym.randomhand = (double) rand() / (double) RAND_MAX;						// randomhand
@@ -757,7 +761,7 @@ void CSymbols::CalcSymbols(void)
 			StdDeck_cardToString(player_card_cur[0], card0);
 			StdDeck_cardToString(player_card_cur[1], card1);
 		}
-		GetWindowText(p_global->attached_hwnd(), title, 512);
+		GetWindowText(pMyMainWnd->attached_hwnd(), title, 512);
 		write_log("\n*************************************************************\nHAND RESET (num:%.0f dealer:%.0f cards:%s%s): %s\n*************************************************************\n",
 				  _sym.handnumber, _sym.dealerchair, card0, card1, title);
 	}
@@ -1247,13 +1251,15 @@ void CSymbols::CalcNumbets(void)
 
 void CSymbols::CalcFlags(void)
 {
+	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
+
 	EnterCriticalSection(&cs_symbols);	
 
 		int			i = 0;
 
 		for (i=0; i<10; i++)
 		{
-			_sym.f[i] = p_global->flags(i);													// fn
+			_sym.f[i] = pMyMainWnd->flags(i);											// fn
 			if (_sym.f[i] != 0)
 			{
 				if (i > _sym.fmax)
@@ -4174,7 +4180,7 @@ const int CSymbols::GetSiteId (void)
 		{
 			for (i=0; i<=20; i++)
 			{
-				if ((p_global->mm_network.GetString() == networkid[i]) && strlen(networkid[i]))
+				if ((p_game_state->mm_network().GetString() == networkid[i]) && strlen(networkid[i]))
 					return i;
 			}
 		}

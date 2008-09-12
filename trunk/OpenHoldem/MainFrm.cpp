@@ -13,7 +13,6 @@
 #include "CIteratorThread.h"
 #include "CHeartbeatThread.h"
 #include "CPokerTrackerThread.h"
-#include "CGlobal.h"
 #include "CPreferences.h"
 #include "CDllExtension.h"
 #include "CPokerPro.h"
@@ -161,6 +160,10 @@ CMainFrame::CMainFrame()
     __SEH_HEADER
 
 	_autoplay_pressed = false;
+	_attached_hwnd = NULL;
+
+	for (int i=0; i<=9; i++)
+		_flags[i] = false;
 
     __SEH_LOGFATAL("CMainFrame::Constructor :\n");
 }
@@ -640,7 +643,7 @@ void CMainFrame::OnBnClickedGreenCircle()
 	CFileFind			hFile;
 
     // Clear global list for holding table candidates
-    p_global->g_tlist.RemoveAll();
+    g_tlist.RemoveAll();
 
     // First check explicitly loaded/last used tablemap
 	current_path = "";
@@ -710,7 +713,7 @@ void CMainFrame::OnBnClickedGreenCircle()
     }
 
     // Put global candidate table list in table select dialog variables
-	N = (int) p_global->g_tlist.GetSize();
+	N = (int) g_tlist.GetSize();
     if (N == 0) 
 	{
         int cySize = GetSystemMetrics(SM_CYSIZE);
@@ -731,13 +734,13 @@ void CMainFrame::OnBnClickedGreenCircle()
 		{
             for (i=0; i<N; i++) 
 			{
-                tablelisthold.hwnd = p_global->g_tlist[i].hwnd;
-                tablelisthold.title = p_global->g_tlist[i].title;
-                tablelisthold.path = p_global->g_tlist[i].path;
-                tablelisthold.crect.left = p_global->g_tlist[i].crect.left;
-                tablelisthold.crect.top = p_global->g_tlist[i].crect.top;
-                tablelisthold.crect.right = p_global->g_tlist[i].crect.right;
-                tablelisthold.crect.bottom = p_global->g_tlist[i].crect.bottom;
+                tablelisthold.hwnd = g_tlist[i].hwnd;
+                tablelisthold.title = g_tlist[i].title;
+                tablelisthold.path = g_tlist[i].path;
+                tablelisthold.crect.left = g_tlist[i].crect.left;
+                tablelisthold.crect.top = g_tlist[i].crect.top;
+                tablelisthold.crect.right = g_tlist[i].crect.right;
+                tablelisthold.crect.bottom = g_tlist[i].crect.bottom;
                 cstd.tlist.Add(tablelisthold);
             }
 
@@ -748,8 +751,8 @@ void CMainFrame::OnBnClickedGreenCircle()
         if (result == IDOK) 
 		{
             // Load correct tablemap, and save hwnd/rect/numchairs of table that we are "attached" to
-            p_global->set_attached_hwnd(p_global->g_tlist[cstd.selected_item].hwnd);
-			p_tablemap->LoadTablemap((char *) p_global->g_tlist[cstd.selected_item].path.GetString(), VER_OPENSCRAPE_1, false, &line);
+            set_attached_hwnd(g_tlist[cstd.selected_item].hwnd);
+			p_tablemap->LoadTablemap((char *) g_tlist[cstd.selected_item].path.GetString(), VER_OPENSCRAPE_1, false, &line);
             p_tablemap->SaveR$Indices();
             p_tablemap->SaveS$Indices();
             p_tablemap->SaveS$Strings();
@@ -827,7 +830,7 @@ void CMainFrame::OnBnClickedGreenCircle()
                 MessageBox("It appears that font smoothing is enabled. In order for OpenHoldem to reliably\nextract information from the poker client you should disable Font Smoothing", "Caution: Font smoothing is enabled", MB_OK|MB_ICONWARNING);
 
             // log OH title bar text and table reset
-            ::GetWindowText(p_global->attached_hwnd(), title, 512);
+            ::GetWindowText(_attached_hwnd, title, 512);
             write_log("\n*************************************************************\nTABLE RESET %s - %s(%s)\n*************************************************************\n",
 
 				p_formula->formula_name().GetString(), p_tablemap->s$items()->sitename.GetString(), title);
@@ -857,7 +860,7 @@ void CMainFrame::OnBnClickedRedCircle()
     _autoplay_pressed = false;
 
     // Clear "attached" info
-    p_global->set_attached_hwnd(NULL);
+    set_attached_hwnd(NULL);
 
     // Stop timer that checks for valid hwnd
     KillTimer(HWND_CHECK_TIMER);
@@ -931,7 +934,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 
 	if (nIDEvent == HWND_CHECK_TIMER)
     {
-        if (!IsWindow(p_global->attached_hwnd()))
+        if (!IsWindow(_attached_hwnd))
         {
             OnBnClickedRedCircle();
         }
@@ -965,7 +968,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
         }
 
         // attach
-        if (p_global->attached_hwnd() != NULL) 
+        if (_attached_hwnd != NULL) 
 		{
             m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_ATTACH_TOP, true);
             m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, true);
@@ -977,7 +980,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
         }
 
         // Shoot replay frame
-        if (p_global->attached_hwnd() != NULL)
+        if (_attached_hwnd != NULL)
             m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, true);
         else
             m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, false);
@@ -1127,24 +1130,24 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 
     else if (nIDEvent == ATTACH_WINDOW_TIMER)
     {
-        ::GetWindowRect(p_global->attached_hwnd(), &att_rect);
+        ::GetWindowRect(_attached_hwnd, &att_rect);
         GetWindowRect(&wrect);
 
         if (memcmp(&prev_att_rect, &att_rect, sizeof(RECT))!=0 ||
                 memcmp(&prev_wrect, &wrect, sizeof(RECT))!=0)
         {
-            ::GetWindowRect(p_global->attached_hwnd(), &prev_att_rect);
+            ::GetWindowRect(_attached_hwnd, &prev_att_rect);
             GetWindowRect(&prev_wrect);
 
             if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_TOP))
             {
-                if (IsWindow(p_global->attached_hwnd()))
+                if (IsWindow(_attached_hwnd))
                     MoveWindow(att_rect.left, att_rect.top-(wrect.bottom-wrect.top), att_rect.right-att_rect.left, wrect.bottom-wrect.top);
             }
 
             if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_BOTTOM))
             {
-                if (IsWindow(p_global->attached_hwnd()))
+                if (IsWindow(_attached_hwnd))
                     MoveWindow(att_rect.left, att_rect.bottom, att_rect.right-att_rect.left, wrect.bottom-wrect.top);
             }
         }
@@ -1157,55 +1160,16 @@ void CMainFrame::OnClickedFlags()
 {
     __SEH_HEADER
 
-    if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER0))
-        p_global->set_flags(0, true);
-    else
-        p_global->set_flags(0, false);
-
-	if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER1))
-        p_global->set_flags(1, true);
-    else
-        p_global->set_flags(1, false);
-
-	if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER2))
-        p_global->set_flags(2, true);
-    else
-        p_global->set_flags(2, false);
-
-	if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER3))
-        p_global->set_flags(3, true);
-    else
-        p_global->set_flags(3, false);
-
-	if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER4))
-        p_global->set_flags(4, true);
-    else
-        p_global->set_flags(4, false);
-
-	if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER5))
-        p_global->set_flags(5, true);
-    else
-        p_global->set_flags(5, false);
-
-	if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER6))
-        p_global->set_flags(6, true);
-    else
-        p_global->set_flags(6, false);
-
-	if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER7))
-        p_global->set_flags(7, true);
-    else
-        p_global->set_flags(7, false);
-
-	if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER8))
-        p_global->set_flags(8, true);
-    else
-        p_global->set_flags(8, false);
-
-	if (m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER9))
-        p_global->set_flags(9, true);
-    else
-        p_global->set_flags(9, false);
+    set_flags(0, m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER0));
+	set_flags(1, m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER1));
+	set_flags(2, m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER2));
+	set_flags(3, m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER3));
+	set_flags(4, m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER4));
+	set_flags(5, m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER5));
+	set_flags(6, m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER6));
+	set_flags(7, m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER7));
+	set_flags(8, m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER8));
+	set_flags(9, m_FlagsToolBar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER9));
 
 	p_symbols->CalcSymbols();
 
@@ -1405,7 +1369,7 @@ void CMainFrame::OnAttachTop(void)
     __SEH_HEADER
 
     RECT	att_rect, wrect;
-    ::GetWindowRect(p_global->attached_hwnd(), &att_rect);
+    ::GetWindowRect(_attached_hwnd, &att_rect);
     GetWindowRect(&wrect);
 
     if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_TOP)) 
@@ -1424,7 +1388,7 @@ void CMainFrame::OnAttachBottom(void)
     __SEH_HEADER
 
     RECT	att_rect, wrect;
-    ::GetWindowRect(p_global->attached_hwnd(), &att_rect);
+    ::GetWindowRect(_attached_hwnd, &att_rect);
     GetWindowRect(&wrect);
 
     if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_BOTTOM)) 
@@ -1577,7 +1541,7 @@ void CMainFrame::OnUpdateFileConnect(CCmdUI *pCmdUI)
 {
 	__SEH_HEADER
 
-    pCmdUI->Enable(!p_global->attached_hwnd());
+    pCmdUI->Enable(!_attached_hwnd);
 
 	__SEH_LOGFATAL("CMainFrame::OnUpdateFileConnect\n")
 }
@@ -1633,7 +1597,7 @@ void CMainFrame::OnUpdateViewShootreplayframe(CCmdUI *pCmdUI)
 {
 	__SEH_HEADER
 
-    pCmdUI->Enable(p_global->attached_hwnd()!=NULL);
+    pCmdUI->Enable(_attached_hwnd != NULL);
 
 	__SEH_LOGFATAL("CMainFrame::OnUpdateViewShootreplayframe\n")
 }
@@ -1714,7 +1678,7 @@ BOOL CMainFrame::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
 	__SEH_HEADER
 
-	if (p_global->m_wait_cursor())
+	if (_wait_cursor)
     {
         RestoreWaitCursor();
         return TRUE;
@@ -1890,6 +1854,7 @@ void CMainFrame::WriteRegString(CString RegistryKey, CString RegistryValue)
     __SEH_LOGFATAL("CMainFrame::WriteRegString :\n");
 }
 
+CArray <STableList, STableList>		g_tlist; 
 
 BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) 
 {
@@ -1927,7 +1892,7 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
         tablelisthold.crect.top = crect.top;
         tablelisthold.crect.right = crect.right;
         tablelisthold.crect.bottom = crect.bottom;
-        p_global->g_tlist.Add(tablelisthold);
+        g_tlist.Add(tablelisthold);
     }
 
     return true;  // keep processing through entire list of windows

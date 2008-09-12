@@ -32,10 +32,12 @@ public:
 	const int hands_played() { return _hands_played; }
 	const SHoldemState * state(const int i) { if (i>=0 && i<=255) return &_state[i]; else return NULL; }
 	const int state_index() { return _state_index; }
+	const CString mm_network() { return _mm_network; }
 
 #define ENT CSLock lock(m_critsec);
 	// public mutators
 	void	set_new_hand(const bool b) { ENT _new_hand = b; }
+	void	set_mm_network(const CString s) { ENT _mm_network = s; }
 #undef ENT
 
 private:
@@ -46,6 +48,7 @@ private:
 	bool				_new_hand;
 	SHoldemState		_state[256];
 	unsigned char		_state_index;
+	CString				_mm_network;
 
 private:
 	// private functions and variables - not available via accessors or mutators

@@ -7,8 +7,6 @@
 #include "CSymbols.h"
 #include "CScraper.h"
 #include "CIteratorThread.h"
-#include "CGlobal.h"
-
 #include "CPreferences.h"
 #include "..\CTablemap\CTablemap.h"
 
@@ -346,7 +344,7 @@ void start_log(void)
     if (log_fp==NULL) 
 	{
         CString fn;
-        fn.Format("%s\\oh_%lu.log", _startup_path, p_global->session_id());
+        fn.Format("%s\\oh_%lu.log", _startup_path, theApp._session_id);
         if (fopen_s(&log_fp, fn.GetString(), "a")==0)
 		{
 			write_log("! log file open\n");

@@ -5,7 +5,6 @@
 #include "OpenHoldem.h"
 
 #include "CSymbols.h"
-#include "CGlobal.h"
 #include "CPreferences.h"
 #include "CFormula.h"
 #include "CGrammar.h"

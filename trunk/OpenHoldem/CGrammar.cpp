@@ -4,7 +4,6 @@
 #include "CGrammar.h"
 
 #include "CSymbols.h"
-#include "CGlobal.h"
 #include "CPreferences.h"
 
 #include "..\CTransform\CTransform.h"
@@ -16,6 +15,7 @@
 #include "CEvalInfo.h"
 #include "..\CCritSec\CCritSec.h"
 #include "CVersus.h"
+#include "CDllExtension.h"
 
 #include "Perl.hpp"
 #include "logsymbols.h"

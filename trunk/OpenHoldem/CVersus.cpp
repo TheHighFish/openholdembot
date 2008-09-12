@@ -6,8 +6,9 @@
 
 #include "CScraper.h"
 #include "CSymbols.h"
-#include "CGlobal.h"
 #include "CPreferences.h"
+#include "CFormula.h"
+#include "CDllExtension.h"
 
 #include "inlines/eval.h"
 

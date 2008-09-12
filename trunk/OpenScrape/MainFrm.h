@@ -4,9 +4,6 @@
 
 #define		BLINKER_TIMER				1
 
-// Global variable for holding table list by callback function
-extern CArray <STableList, STableList>		g_tlist;
-
 class CMainFrame : public CFrameWnd
 {
 	
@@ -40,5 +37,8 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 };
+
+// used by EnumProcTopLevelWindowList function
+extern CArray <STableList, STableList>		g_tlist; 
 
 BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam);

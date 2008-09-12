@@ -2,7 +2,6 @@
 
 #include "CReplayFrame.h"
 
-#include "CGlobal.h"
 #include "CPreferences.h"
 #include "CHeartbeatThread.h"
 #include "CScraper.h"
@@ -33,7 +32,7 @@ CReplayFrame::CReplayFrame(void)
 	// Find next replay frame number
     _next_replay_frame = -1;
 
-    path.Format("%s\\replay\\session_%lu\\*.bmp", _startup_path, p_global->session_id());
+    path.Format("%s\\replay\\session_%lu\\*.bmp", _startup_path, theApp._session_id);
     bFound = hFile.FindFile(path.GetString());
     while (bFound)
     {
@@ -93,7 +92,7 @@ void CReplayFrame::CreateReplayFrame(void)
 	strftime(now_time_str, 100, "%Y-%m-%d %H:%M:%S", &now_time);
 
 	// Create replay/session dir if it does not exist
-	path.Format("%s\\replay\\session_%lu\\", _startup_path, p_global->session_id());
+	path.Format("%s\\replay\\session_%lu\\", _startup_path, theApp._session_id);
 	if (GetFileAttributes(path.GetString()) == INVALID_FILE_ATTRIBUTES)
 		SHCreateDirectoryEx(NULL, path.GetString(), NULL);
 
@@ -102,11 +101,11 @@ void CReplayFrame::CreateReplayFrame(void)
 	EnterCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
 
 		// Create bitmap file
-		path.Format("%s\\replay\\session_%lu\\frame%03d.bmp", _startup_path, p_global->session_id(), _next_replay_frame);
+		path.Format("%s\\replay\\session_%lu\\frame%03d.bmp", _startup_path, theApp._session_id, _next_replay_frame);
 		CreateBMPFile(path.GetString(), p_scraper->entire_window_cur());
 
 		// Create HTML file
-		path.Format("%s\\replay\\session_%lu\\frame%03d.htm", _startup_path, p_global->session_id(), _next_replay_frame);
+		path.Format("%s\\replay\\session_%lu\\frame%03d.htm", _startup_path, theApp._session_id, _next_replay_frame);
 		if (fopen_s(&fp, path.GetString(), "w")==0)
 		{
 			fprintf(fp, p_scraper->title());
@@ -123,7 +122,7 @@ void CReplayFrame::CreateReplayFrame(void)
 					_next_replay_frame-1 >= 0 ? _next_replay_frame-1 : prefs.replay_max_frames());
 			fprintf(fp, "<a href=\"frame%03d.htm\">NEXT</a>\n",
 					_next_replay_frame+1 < prefs.replay_max_frames() ? _next_replay_frame+1 : 0);
-			fprintf(fp, " [%lu.%03d] [%s]<br>\n", p_global->session_id(), _next_replay_frame, now_time_str);
+			fprintf(fp, " [%lu.%03d] [%s]<br>\n", theApp._session_id, _next_replay_frame, now_time_str);
 			fprintf(fp, "<br>\n");
 			fprintf(fp, "<table>\n");
 			fprintf(fp, "<tr>\n");

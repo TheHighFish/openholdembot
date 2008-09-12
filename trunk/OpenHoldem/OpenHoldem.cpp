@@ -18,7 +18,6 @@
 #include "CIteratorThread.h"
 #include "CHeartbeatThread.h"
 #include "CPokerTrackerThread.h"
-#include "CGlobal.h"
 #include "CPreferences.h"
 #include "CDllExtension.h"
 #include "CGameState.h"
@@ -88,7 +87,6 @@ BOOL COpenHoldemApp::InitInstance()
 
 	// Classes
 	if (!p_pokerpro) p_pokerpro = new PokerPro;
-	if (!p_global)  p_global = new CGlobal;
 	if (!p_scraper)  p_scraper = new CScraper;
 	if (!p_symbols)  p_symbols = new CSymbols;
 	if (!p_tablemap)  p_tablemap = new CTablemap;
@@ -114,7 +112,7 @@ BOOL COpenHoldemApp::InitInstance()
     wc.hIcon = AfxGetApp()->LoadIcon(IDI_ICON1);
     RegisterClass(&wc);
 
-	p_global->set_session_id(SessionCounter.session_id());
+	_session_id = SessionCounter.session_id();
 
     // InitCommonControlsEx() is required on Windows XP if an application
     // manifest specifies use of ComCtl32.dll version 6 or later to enable
@@ -193,8 +191,6 @@ BOOL COpenHoldemApp::InitInstance()
     // Enable drag/drop open
     m_pMainWnd->DragAcceptFiles();
 
-    p_global->set_h_main_frame(m_pMainWnd->GetSafeHwnd());
-
     // Bring main window to front
     m_pMainWnd->SetWindowPos(&CWnd::wndTop, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
     m_pMainWnd->SetActiveWindow();
@@ -227,7 +223,6 @@ int COpenHoldemApp::ExitInstance()
 
 	// classes
 	if (p_pokerpro)  { delete p_pokerpro; p_pokerpro = NULL; }
-	if (p_global)  { delete p_global; p_global = NULL; }
 	if (p_scraper)  { delete p_scraper; p_scraper = NULL; }
 	if (p_symbols)  { delete p_symbols; p_symbols = NULL; }
 	if (p_tablemap)  { delete p_tablemap; p_tablemap = NULL; }

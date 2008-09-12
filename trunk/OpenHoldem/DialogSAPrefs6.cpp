@@ -6,7 +6,6 @@
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs6.h"
 
-#include "CGlobal.h"
 #include "CPokerTrackerThread.h"
 
 #include "OpenHoldem.h"
@@ -133,7 +132,7 @@ void CDlgSAPrefs6::OnBnClickedPtTest()
     conn_str += " dbname=" + dbname;
 
     // Set busy cursor
-    p_global->set_m_wait_cursor(true);
+    pMyMainWnd->set_wait_cursor(true);
     pMyMainWnd->BeginWaitCursor();
 
     // Test the connection parameters
@@ -141,7 +140,7 @@ void CDlgSAPrefs6::OnBnClickedPtTest()
 
     // Unset busy cursor
     pMyMainWnd->EndWaitCursor();
-    p_global->set_m_wait_cursor(false);
+    pMyMainWnd->set_wait_cursor(false);
 
     if (PQstatus(pgconn) == CONNECTION_OK) 
 	{
