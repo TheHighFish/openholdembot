@@ -14,20 +14,20 @@ public:
 	virtual void OnCancel();
 	virtual BOOL OnInitDialog();
 	virtual BOOL DestroyWindow();
-	void add_listbox_items(void);
-	void do_update_display();
+	void AddListboxItems(void);
+	void UpdateDisplay();
 
 	enum { IDD = IDD_SCRAPER_OUTPUT };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	virtual void PostNcDestroy();
 	afx_msg void OnLbnSelchangeRegionlist();
 	afx_msg void OnCbnSelchangeZoom();
 	afx_msg void OnPaint();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg LRESULT OnWinMgr(WPARAM wp, LPARAM lp);
-	void do_bitblt(HBITMAP bitmap, int r$index);
+	void DoBitblt(HBITMAP bitmap, int r$index);
 
 	CWinMgr			m_winMgr;				// window manager
 	CSizerBar		m_winMgrSizerBar;		// sizer bar

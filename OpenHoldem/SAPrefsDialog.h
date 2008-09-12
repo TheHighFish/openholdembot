@@ -14,12 +14,12 @@
    freely, subject to the following restrictions:
 
    1. The origin of this software must not be misrepresented; you must not
-     claim that you wrote the original software. If you use this software
-     in a product, an acknowledgment in the product documentation would be
-     appreciated but is not required.
+	 claim that you wrote the original software. If you use this software
+	 in a product, an acknowledgment in the product documentation would be
+	 appreciated but is not required.
 
    2. Altered source versions must be plainly marked as such, and must not be
-     misrepresented as being the original software.
+	 misrepresented as being the original software.
 
    3. This notice may not be removed or altered from any source distribution.
 
@@ -93,7 +93,7 @@ public:
 	public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	//}}AFX_VIRTUAL
 
@@ -104,7 +104,7 @@ protected:
 
    // if you don't like this, you can replace it with a static
    CSAPrefsStatic	   m_captionBar;
-	CTreeCtrl	      m_pageTree;
+	CTreeCtrl		  m_pageTree;
 
    // check to see if this dlg has already been added to the tree
    HTREEITEM FindHTREEItemForDlg(CSAPrefsSubDlg *pParent);
@@ -125,9 +125,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
    CPtrArray   m_pages;
-   int         m_iCurPage;
-   CRect       m_frameRect;
-   CString     m_csTitle, m_csConstantText;
+   int		 m_iCurPage;
+   CRect	   m_frameRect;
+   CString	 m_csTitle, m_csConstantText;
 
    bool m_bValidateBeforeChangingPage;
 

@@ -19,7 +19,7 @@ public:
 protected:
 	virtual void OnOK();
 	virtual BOOL OnInitDialog();
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	afx_msg void OnDeltaposSwagdelay1Spin(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposSwagdelay2Spin(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposSwagdelay3Spin(NMHDR *pNMHDR, LRESULT *pResult);

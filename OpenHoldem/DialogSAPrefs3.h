@@ -17,15 +17,17 @@ public:
 	enum { IDD = IDD_SAPREFS3 };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 public:
 	CButton m_LoadDllOnStartup;
 	CEdit m_DllName;
 	virtual BOOL OnInitDialog();
+
 protected:
 	virtual void OnOK();
+
 public:
 	CButton m_AlwaysSendState;
 };

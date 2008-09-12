@@ -17,7 +17,7 @@ public:
 	enum { IDD = IDD_SAPREFS9 };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
 public:
 	CButton m_LoadPerlInterpreter;
@@ -25,6 +25,7 @@ public:
 	CEdit m_DefaultPerlFormula;
 	CEdit m_PerlEditor;
 	virtual BOOL OnInitDialog();
+
 protected:
 	virtual void OnOK();
 

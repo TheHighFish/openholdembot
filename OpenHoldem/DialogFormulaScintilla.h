@@ -73,7 +73,7 @@ public:
 	virtual ~CDlgFormulaScintilla();
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	virtual BOOL DestroyWindow();
-	void update_debug_auto(void);
+	void UpdateDebugAuto(void);
 
 	enum { IDD = IDD_FORMULA_SCINTILLA };
 	
@@ -86,7 +86,7 @@ public:
 	bool			m_dirty;
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	virtual BOOL OnInitDialog();
 	virtual void PostNcDestroy();
 	afx_msg void OnBnClickedApply();
@@ -120,10 +120,10 @@ protected:
 	afx_msg void OnNextBookmark();
 	afx_msg void OnPrevBookmark();
 	afx_msg BOOL OnToolTipText(UINT nID, NMHDR* pNMHDR, LRESULT* pResult); 
-	void create_debug_tab(CString *cs);
-	void write_fdebug_log(bool write_header);
-	void init_debug_array(void);
-	void resize_dialog_for_control_bars(void);
+	void CreateDebugTab(CString *cs);
+	void WriteFDebugLog(bool write_header);
+	void InitDebugArray(void);
+	void ResizeDialogForControlBars(void);
 	void LastChangeToFormula(CFormula *f);
 	afx_msg void OnEditUndo();
 	afx_msg void OnEditRedo();
@@ -138,11 +138,11 @@ protected:
 	afx_msg void OnFormulaViewGroupudf();
 	afx_msg void OnHelpWiki();
 	afx_msg void OnHelpForums();
-	void sort_udf_tree();
+	void SortUdfTree();
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	void OnTimer(UINT nIDEvent);
-	void save_settings_to_registry();
-	void set_style_colors(CScintillaWnd *pWnd, bool enabled);
+	void SaveSettingsToRegistry();
+	void SetStyleColors(CScintillaWnd *pWnd, bool enabled);
 
 	BOOL CDlgFormulaScintilla::PreTranslateMessage(MSG* pMsg);
 	CScintillaWnd *SetupScintilla(CScintillaWnd *pWnd);
@@ -161,21 +161,21 @@ protected:
 	HTREEITEM AddSymbol(HTREEITEM parentItem, const char *symbol, const char *description);
 	HTREEITEM hRawItem, hCatItem;
 
-	void      PopulateUDFs();
+	void	  PopulateUDFs();
 	HTREEITEM FindUDFGroupItem(const char *groupName);
 	HTREEITEM FindUDFStartingItem(const char *groupName);
 	HTREEITEM MoveTreeItem(HTREEITEM hItem, HTREEITEM hNewParent, const char *name, bool bSelect);
-	void      GetGroupName(const char *functionName, CString &groupName);
-	void      RemoveSingleItemGroups();
-	void      GroupUDFs();
-	void      UngroupUDFs();
+	void	  GetGroupName(const char *functionName, CString &groupName);
+	void	  RemoveSingleItemGroups();
+	void	  GroupUDFs();
+	void	  UngroupUDFs();
 	HTREEITEM hUDFItem;
 
 	void HandleEnables(bool All);
 
 	// Find/Replace Support Functions and Variables
 	afx_msg void OnFindReplaceDlg();
-    afx_msg LONG OnFindReplace(WPARAM wParam, LPARAM lParam);
+	afx_msg LONG OnFindReplace(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnFindNext();
 	afx_msg void OnFindPrev();
 			void CloseFindReplaceDialog();
@@ -198,7 +198,7 @@ protected:
 	CSizerBar		m_winMgrSizerBar;		// sizer bar
 	CTabCtrl		m_TabControl;
 
-    HACCEL			m_hEditAccelTable;
+	HACCEL			m_hEditAccelTable;
 	HACCEL			m_hDialogAccelTable;
 
 	int				m_precision, m_equal;	// precision for debug tab

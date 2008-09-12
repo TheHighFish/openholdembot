@@ -16,9 +16,10 @@ public:
 	enum { IDD = IDD_SITDOWN };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
+
 public:
 	CListBox m_AvailableChairs;
 	afx_msg void OnLbnDblclkAvailablechairs();

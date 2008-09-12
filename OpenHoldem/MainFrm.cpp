@@ -617,8 +617,8 @@ void CMainFrame::OnFileLoadTableMap()
             // Reset "ScraperOutput" dialog, if it is live
             if (m_ScraperOutputDlg) 
 			{
-                m_ScraperOutputDlg->add_listbox_items();
-                m_ScraperOutputDlg->do_update_display();
+                m_ScraperOutputDlg->AddListboxItems();
+                m_ScraperOutputDlg->UpdateDisplay();
             }
 
             WriteRegString(theKey, cfd.GetPathName());
@@ -769,8 +769,8 @@ void CMainFrame::OnBnClickedGreenCircle()
             // Reset "ScraperOutput" dialog, if it is live
             if (m_ScraperOutputDlg) 
 			{
-                m_ScraperOutputDlg->add_listbox_items();
-                m_ScraperOutputDlg->do_update_display();
+                m_ScraperOutputDlg->AddListboxItems();
+                m_ScraperOutputDlg->UpdateDisplay();
             }
 
             // Disable buttons, menu items
@@ -901,8 +901,8 @@ void CMainFrame::OnBnClickedRedCircle()
     // Reset "ScraperOutput" dialog, if it is live
     if (m_ScraperOutputDlg)
     {
-        m_ScraperOutputDlg->add_listbox_items();
-        m_ScraperOutputDlg->do_update_display();
+        m_ScraperOutputDlg->AddListboxItems();
+        m_ScraperOutputDlg->UpdateDisplay();
     }
 
     // log OH title bar text and table reset

@@ -17,7 +17,7 @@ public:
 	bool	checked[13][13];
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnCheckClick(UINT controlID);
 
