@@ -25,6 +25,8 @@ CAutoplayer::CAutoplayer(BOOL bInitiallyOwn, LPCTSTR lpszName) : _mutex(bInitial
 	// Seed RNG
 	srand((unsigned)time( NULL ));
 
+	_autoplayer_enaged = false;
+
 	__SEH_LOGFATAL("CAutoplayer::Constructor : \n");
 }
 

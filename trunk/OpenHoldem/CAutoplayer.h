@@ -18,27 +18,30 @@ public:
 	const int didcall(const int n) { if (n>=0 && n<=4) return _didcall[n]; else return 0; }
 	const int didrais(const int n) { if (n>=0 && n<=4) return _didrais[n]; else return 0; }
 	const int didswag(const int n) { if (n>=0 && n<=4) return _didswag[n]; else return 0; }
+	const bool autoplayer_engaged() { return _autoplayer_enaged; }
 
 public:
 #define ENT CSLock lock(m_critsec);
 	// public mutators
 	// **These are only needed by the PokerPro code to push it's updates into the CAutoplayer structures**
-	void set_prevaction(const int i) { ENT _prevaction = i; };
-	void set_didchec(const int n, const int i) { ENT if (n>=0 && n<=4) _didchec[n] = i; };
-	void set_didcall(const int n, const int i) { ENT if (n>=0 && n<=4) _didcall[n] = i; };
-	void set_didrais(const int n, const int i) { ENT if (n>=0 && n<=4) _didrais[n] = i; };
-	void set_didswag(const int n, const int i) { ENT if (n>=0 && n<=4) _didswag[n] = i; };
+	void set_prevaction(const int i) { ENT _prevaction = i; }
+	void set_didchec(const int n, const int i) { ENT if (n>=0 && n<=4) _didchec[n] = i; }
+	void set_didcall(const int n, const int i) { ENT if (n>=0 && n<=4) _didcall[n] = i; }
+	void set_didrais(const int n, const int i) { ENT if (n>=0 && n<=4) _didrais[n] = i; }
+	void set_didswag(const int n, const int i) { ENT if (n>=0 && n<=4) _didswag[n] = i; }
 	// **End PokerPro-specific mutators
+
+	void set_autoplayer_engaged(const bool b) { ENT _autoplayer_enaged = b; }
 #undef ENT
 
 private:
 	// private variables - use public accessors and public mutators to address these
-	int _prevaction;
-	int _didchec[5];				// "didchec" is held in element 4, round specific in elements 0-3
-	int _didcall[5];				// "didcall" is held in element 4, round specific in elements 0-3
-	int _didrais[5];				// "didrais" is held in element 4, round specific in elements 0-3
-	int _didswag[5];				// "didswag" is held in element 4, round specific in elements 0-3
-
+	int		_prevaction;
+	int		_didchec[5];				// "didchec" is held in element 4, round specific in elements 0-3
+	int		_didcall[5];				// "didcall" is held in element 4, round specific in elements 0-3
+	int		_didrais[5];				// "didrais" is held in element 4, round specific in elements 0-3
+	int		_didswag[5];				// "didswag" is held in element 4, round specific in elements 0-3
+	bool	_autoplayer_enaged;
 
 private:
 	// private functions and variables - not available via accessors or mutators

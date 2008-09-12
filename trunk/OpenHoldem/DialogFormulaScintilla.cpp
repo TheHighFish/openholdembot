@@ -16,10 +16,7 @@
 #include "CPreferences.h"
 #include "CFormula.h"
 #include "CGrammar.h"
-
-#include "CFormula.h"
-#include "CGrammar.h"
-
+#include "CAutoplayer.h"
 
 #include "DialogFormulaScintilla.h"
 #include "DialogRename.h"
@@ -2559,13 +2556,13 @@ void CDlgFormulaScintilla::OnBnClickedApply()
     CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
     // If autoplayer is engaged, dis-engage it
-    if (p_global->autoplay)
+    if (p_autoplayer->autoplayer_engaged())
     {
         if (MessageBox("Autoplayer is currently enabled.\nWould you like to disable the autoplayer?",
                        "Disable Autoplayer?", MB_YESNO) == IDYES)
         {
             pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
-            p_global->autoplay = false;
+            p_autoplayer->set_autoplayer_engaged(false);
         }
     }
 
@@ -2625,13 +2622,13 @@ void CDlgFormulaScintilla::OnBnClickedOk()
     CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
     // If autoplayer is engaged, dis-engage it
-    if (p_global->autoplay)
+    if (p_autoplayer->autoplayer_engaged())
     {
         if (MessageBox("Autoplayer is currently enabled.\nWould you like to disable the autoplayer?",
                        "Disable Autoplayer?", MB_YESNO) == IDYES)
         {
             pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
-            p_global->autoplay = false;
+            p_autoplayer->set_autoplayer_engaged(false);
         }
     }
 

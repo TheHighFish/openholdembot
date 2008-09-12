@@ -86,6 +86,9 @@ public:
 private:
 	void ReadRegString(CString RegistryKey, char* RegistryValue);
 	void WriteRegString(CString RegistryKey, CString RegistryValue);
+
+	bool _autoplay_pressed;
+
 };
 
 BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam);

@@ -3,17 +3,15 @@
 #include "CGameState.h"
 
 #include "CSymbols.h"
+#include "CScraper.h"
 #include "CGlobal.h"
 #include "CPreferences.h"
 
-CGameState			*p_game_state;
-CRITICAL_SECTION	CGameState::cs_gamestate;
+CGameState			*p_game_state = NULL;
 
 CGameState::CGameState()
 {
 	__SEH_SET_EXCEPTION_HANDLER
-
-	InitializeCriticalSectionAndSpinCount(&cs_gamestate, 4000);
 
 	_m_ndx = 0;
 	_hands_played = 0;
@@ -43,10 +41,9 @@ CGameState::CGameState()
 
 CGameState::~CGameState()
 {
-	DeleteCriticalSection(&cs_gamestate);
 }
 
-void CGameState::ProcessGameState(SHoldemState *pstate)
+void CGameState::ProcessGameState(const SHoldemState *pstate)
 {
 	int			i = 0, j = 0;
 	bool		pstate_changed = false;
@@ -110,9 +107,7 @@ void CGameState::ProcessGameState(SHoldemState *pstate)
 		}
 	}
 
-	EnterCriticalSection(&cs_gamestate);
-	_new_hand = false;
-	LeaveCriticalSection(&cs_gamestate);
+	set_new_hand(false);
 
 	// collect symbol if it ismyturn, or if ismanual
 	if (sym_ismyturn || sym_ismanual)
@@ -125,9 +120,119 @@ void CGameState::ProcessGameState(SHoldemState *pstate)
 	}
 }
 
-void CGameState::ProcessFtr(SHoldemState *pstate)
+void CGameState::ProcessFtr(const SHoldemState *pstate)
 {
 	ProcessFtrEngine(pstate);
+}
+
+
+void CGameState::CaptureState(const char *title)
+{
+	int					i = 0, j = 0;
+	bool				playing = true;
+	unsigned char		card = CARD_NOCARD;
+
+	// figure out if I am playing
+	int sym_chair = (int) p_symbols->sym()->chair;
+	if (!p_symbols->user_chair_confirmed())
+	{
+		playing = false;
+	}
+	else if (p_scraper->card_player(sym_chair, 0) == CARD_BACK || 
+			 p_scraper->card_player(sym_chair, 1) == CARD_BACK ||
+			 p_scraper->card_player(sym_chair, 0) == CARD_NOCARD || 
+			 p_scraper->card_player(sym_chair, 1) == CARD_NOCARD)
+	{
+		playing = false;
+	}
+
+	// When using MM, grab i5state for PT network
+	bool sym_ismanual = (bool) p_symbols->sym()->ismanual;
+	if (sym_ismanual)
+	{
+		p_global->mm_network = p_scraper->button_state(5);
+	}
+
+	// Poker window title
+	strncpy_s(_state[_state_index&0xff].m_title, 64, title, _TRUNCATE);
+	_state[_state_index&0xff].m_title[63] = '\0';
+
+	// Pot information
+	for (i=0; i<=9; i++)
+		_state[_state_index&0xff].m_pot[i] = p_scraper->pot(i);
+
+	// Common cards
+	for (i=0; i<=4; i++)
+	{
+		if (p_scraper->card_common(i) == CARD_BACK)
+		{
+			card = WH_CARDBACK;
+		}
+		else if (p_scraper->card_common(i) == CARD_NOCARD)
+		{
+			card = WH_NOCARD;
+		}
+		else
+		{
+			card = ((StdDeck_RANK(p_scraper->card_common(i))+2)<<4) |
+					(StdDeck_SUIT(p_scraper->card_common(i)) == StdDeck_Suit_CLUBS ? WH_SUIT_CLUBS :
+					 StdDeck_SUIT(p_scraper->card_common(i)) == StdDeck_Suit_DIAMONDS ? WH_SUIT_DIAMONDS :
+					 StdDeck_SUIT(p_scraper->card_common(i)) == StdDeck_Suit_HEARTS ? WH_SUIT_HEARTS :
+					 StdDeck_SUIT(p_scraper->card_common(i)) == StdDeck_Suit_SPADES ? WH_SUIT_SPADES : 0) ;
+		}
+
+		_state[_state_index&0xff].m_cards[i] = card;
+	}
+
+	// playing, posting, dealerchair
+	int sym_dealerchair = (int) p_symbols->sym()->dealerchair;
+	bool sym_isautopost = (bool) p_symbols->sym()->isautopost;
+	_state[_state_index&0xff].m_is_playing = playing;
+	_state[_state_index&0xff].m_is_posting = sym_isautopost;
+	_state[_state_index&0xff].m_fillerbits = 0;
+	_state[_state_index&0xff].m_fillerbyte = 0;
+	_state[_state_index&0xff].m_dealer_chair = sym_dealerchair;
+
+	// loop through all 10 player chairs
+	for (i=0; i<=9; i++)
+	{
+
+		// player name, balance, currentbet
+		strncpy_s(_state[_state_index&0xff].m_player[i].m_name, 16, p_scraper->player_name(i).GetString(), _TRUNCATE);
+		_state[_state_index&0xff].m_player[i].m_balance = p_symbols->sym()->balance[i];
+		_state[_state_index&0xff].m_player[i].m_currentbet = p_symbols->sym()->currentbet[i];
+
+		// player cards
+		for (j=0; j<=1; j++)
+		{
+			if (p_scraper->card_player(i, j) == CARD_BACK)
+			{
+				card = WH_CARDBACK;
+			}
+			else if (p_scraper->card_player(i, j) == CARD_NOCARD)
+			{
+				card = WH_NOCARD;
+			}
+			else
+			{
+				card = ((StdDeck_RANK(p_scraper->card_player(i, j))+2)<<4) |
+					   (StdDeck_SUIT(p_scraper->card_player(i, j)) == StdDeck_Suit_CLUBS ? WH_SUIT_CLUBS :
+						StdDeck_SUIT(p_scraper->card_player(i, j)) == StdDeck_Suit_DIAMONDS ? WH_SUIT_DIAMONDS :
+						StdDeck_SUIT(p_scraper->card_player(i, j)) == StdDeck_Suit_HEARTS ? WH_SUIT_HEARTS :
+						StdDeck_SUIT(p_scraper->card_player(i, j)) == StdDeck_Suit_SPADES ? WH_SUIT_SPADES : 0) ;
+			}
+
+			_state[_state_index&0xff].m_player[i].m_cards[j] = card;
+		}
+
+		// player name known, balance known
+		_state[_state_index&0xff].m_player[i].m_name_known = p_scraper->name_good_scrape(i) ? 1 : 0;
+		_state[_state_index&0xff].m_player[i].m_balance_known = p_scraper->balance_good_scrape(i) ? 1 : 0;
+		_state[_state_index&0xff].m_player[i].m_fillerbits = 0;
+		_state[_state_index&0xff].m_player[i].m_fillerbyte = 0;
+	}
+
+	_state_index++;
 }
 
 const int CGameState::LastRaised(const int round)
@@ -440,7 +545,7 @@ const double CGameState::SortedBalance(const int rank)
 	return stacks[rank];
 }
 
-void CGameState::ProcessStateEngine(SHoldemState *pstate, bool pstate_changed)
+void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstate_changed)
 {
 	int				from_chair = 0, to_chair = 0;
 	bool			balance_stability = false;
@@ -746,7 +851,7 @@ void CGameState::ProcessStateEngine(SHoldemState *pstate, bool pstate_changed)
 	} // end of "if (_process_game_state)"
 }
 
-void CGameState::ProcessFtrEngine(SHoldemState *pstate)
+void CGameState::ProcessFtrEngine(const SHoldemState *pstate)
 {
 	double			sym_elapsed = p_symbols->sym()->elapsed;
 	double			sym_nbetsround1 = p_symbols->sym()->nbetsround[0];

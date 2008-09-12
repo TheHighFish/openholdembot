@@ -34,9 +34,6 @@ CGlobal::CGlobal(void)
 
 	InitializeCriticalSectionAndSpinCount(&cs_global, 4000);
 	
-	// No longer any need to copy preferences from registry.
-	autoplay_pressed = false;
-	
 	EnterCriticalSection(&cs_global);
 		_attached_hwnd = NULL;
 
@@ -44,12 +41,7 @@ CGlobal::CGlobal(void)
 			_flags[i] = false;
 	LeaveCriticalSection(&cs_global);
 
-	state_index = 0;
-
 	mm_network = "";
-
-	autoplay = false;
-	autoplay_pressed = false;
 
 	EnterCriticalSection(&cs_global);
 		_m_wait_cursor = false;
@@ -60,115 +52,6 @@ CGlobal::CGlobal(void)
 CGlobal::~CGlobal(void)
 {
 	DeleteCriticalSection(&cs_global);
-}
-
-void CGlobal::CaptureState(const char *title)
-{
-	int					i = 0, j = 0;
-	bool				playing = true;
-	unsigned char		card = CARD_NOCARD;
-
-	// figure out if I am playing
-	int sym_chair = (int) p_symbols->sym()->chair;
-	if (!p_symbols->user_chair_confirmed())
-	{
-		playing = false;
-	}
-	else if (p_scraper->card_player(sym_chair, 0) == CARD_BACK || 
-			 p_scraper->card_player(sym_chair, 1) == CARD_BACK ||
-			 p_scraper->card_player(sym_chair, 0) == CARD_NOCARD || 
-			 p_scraper->card_player(sym_chair, 1) == CARD_NOCARD)
-	{
-		playing = false;
-	}
-
-	// When using MM, grab i5state for PT network
-	bool sym_ismanual = (bool) p_symbols->sym()->ismanual;
-	if (sym_ismanual)
-	{
-		mm_network = p_scraper->button_state(5);
-	}
-
-	// Poker window title
-	strncpy_s(state[state_index&0xff].m_title, 64, title, _TRUNCATE);
-	state[state_index&0xff].m_title[63] = '\0';
-
-	// Pot information
-	for (i=0; i<=9; i++)
-		state[state_index&0xff].m_pot[i] = p_scraper->pot(i);
-
-	// Common cards
-	for (i=0; i<=4; i++)
-	{
-		if (p_scraper->card_common(i) == CARD_BACK)
-		{
-			card = WH_CARDBACK;
-		}
-		else if (p_scraper->card_common(i) == CARD_NOCARD)
-		{
-			card = WH_NOCARD;
-		}
-		else
-		{
-			card = ((StdDeck_RANK(p_scraper->card_common(i))+2)<<4) |
-					(StdDeck_SUIT(p_scraper->card_common(i)) == StdDeck_Suit_CLUBS ? WH_SUIT_CLUBS :
-					 StdDeck_SUIT(p_scraper->card_common(i)) == StdDeck_Suit_DIAMONDS ? WH_SUIT_DIAMONDS :
-					 StdDeck_SUIT(p_scraper->card_common(i)) == StdDeck_Suit_HEARTS ? WH_SUIT_HEARTS :
-					 StdDeck_SUIT(p_scraper->card_common(i)) == StdDeck_Suit_SPADES ? WH_SUIT_SPADES : 0) ;
-		}
-
-		state[state_index&0xff].m_cards[i] = card;
-	}
-
-	// playing, posting, dealerchair
-	int sym_dealerchair = (int) p_symbols->sym()->dealerchair;
-	bool sym_isautopost = (bool) p_symbols->sym()->isautopost;
-	state[state_index&0xff].m_is_playing = playing;
-	state[state_index&0xff].m_is_posting = sym_isautopost;
-	state[state_index&0xff].m_fillerbits = 0;
-	state[state_index&0xff].m_fillerbyte = 0;
-	state[state_index&0xff].m_dealer_chair = sym_dealerchair;
-
-	// loop through all 10 player chairs
-	for (i=0; i<=9; i++)
-	{
-
-		// player name, balance, currentbet
-		strncpy_s(state[state_index&0xff].m_player[i].m_name, 16, p_scraper->player_name(i).GetString(), _TRUNCATE);
-		state[state_index&0xff].m_player[i].m_balance = p_symbols->sym()->balance[i];
-		state[state_index&0xff].m_player[i].m_currentbet = p_symbols->sym()->currentbet[i];
-
-		// player cards
-		for (j=0; j<=1; j++)
-		{
-			if (p_scraper->card_player(i, j) == CARD_BACK)
-			{
-				card = WH_CARDBACK;
-			}
-			else if (p_scraper->card_player(i, j) == CARD_NOCARD)
-			{
-				card = WH_NOCARD;
-			}
-			else
-			{
-				card = ((StdDeck_RANK(p_scraper->card_player(i, j))+2)<<4) |
-					   (StdDeck_SUIT(p_scraper->card_player(i, j)) == StdDeck_Suit_CLUBS ? WH_SUIT_CLUBS :
-						StdDeck_SUIT(p_scraper->card_player(i, j)) == StdDeck_Suit_DIAMONDS ? WH_SUIT_DIAMONDS :
-						StdDeck_SUIT(p_scraper->card_player(i, j)) == StdDeck_Suit_HEARTS ? WH_SUIT_HEARTS :
-						StdDeck_SUIT(p_scraper->card_player(i, j)) == StdDeck_Suit_SPADES ? WH_SUIT_SPADES : 0) ;
-			}
-
-			state[state_index&0xff].m_player[i].m_cards[j] = card;
-		}
-
-		// player name known, balance known
-		state[state_index&0xff].m_player[i].m_name_known = p_scraper->name_good_scrape(i) ? 1 : 0;
-		state[state_index&0xff].m_player[i].m_balance_known = p_scraper->balance_good_scrape(i) ? 1 : 0;
-		state[state_index&0xff].m_player[i].m_fillerbits = 0;
-		state[state_index&0xff].m_player[i].m_fillerbyte = 0;
-	}
-
-	state_index++;
 }
 
 void CGlobal::CreateReplayFrame(void)

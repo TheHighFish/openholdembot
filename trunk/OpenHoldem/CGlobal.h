@@ -20,24 +20,14 @@ public:
 	CGlobal(void);
 	~CGlobal(void);
 	void CreateReplayFrame(void);
-	void CaptureState(const char *title);
 
 public:
 	// public variables <<< need to make these private eventually
-
-	// Game state array
-	SHoldemState	state[256];
-	unsigned char	state_index;
 
 	// Used for holding table list by callback function
 	CArray <STableList, STableList>		g_tlist;
 
 	CString			mm_network;
-
-	// autoplayer engaged status
-	bool			autoplay;
-	bool			autoplay_pressed;
-
 
 public:
 	// public accessors
@@ -46,7 +36,6 @@ public:
 	const unsigned long int session_id() { return _session_id; }
 	const HWND				h_main_frame() { return _h_main_frame; }
 	const HWND				attached_hwnd() { return _attached_hwnd; }
-	//const RECT			attached_rect() { return _attached_rect; }
 	const int				next_replay_frame() { return _next_replay_frame; }
 	const bool				flags(const int n) { if (n>=0 && n<=9) return _flags[n]; else return false; }
 
@@ -59,7 +48,6 @@ public:
 	void set_session_id(const unsigned long int li) { ENT _session_id = li; LEA }
 	void set_h_main_frame(const HWND h) { ENT _h_main_frame = h; LEA }
 	void set_attached_hwnd(const HWND h) { ENT _attached_hwnd = h; LEA }
-	RECT * set_attached_rect() { return &_attached_rect; }
 	void set_next_replay_frame(const int i) { ENT _next_replay_frame = i; LEA }
 	void set_flags(const int n, const bool b) { ENT if (n>=0 && n<=9) _flags[n] = b; LEA }
 
@@ -73,7 +61,6 @@ private:
 	unsigned long int	_session_id;
 	HWND				_h_main_frame;	// hwnd for main frame
 	HWND				_attached_hwnd;	 // Table that we are attached to
-	RECT				_attached_rect;  // Table that we are attached to
 	int					_next_replay_frame;	// Next replay frame number
 	bool				_flags[10];	// _flags button status
 
@@ -81,14 +68,6 @@ private:
 private:
 	// private functions and variables - not available via accessors or mutators
 	CString GetCardHtml(unsigned int card);
-
-private:
-	// Functions missing somehow. Maybe caused by my problems with svn? (THF)
-	// TODO: sort and comment.
-	void ClearFormula(SFormula *f);
-	void CopyFormula(SFormula *f, SFormula *t);
-	bool ParseAllFormula(HWND hwnd, SFormula *f);
-	void CreateHandListMatrices(SFormula *f);
 
 } *p_global;
 
