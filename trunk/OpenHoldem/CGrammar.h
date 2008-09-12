@@ -29,6 +29,7 @@ public:
 	double CalcF$symbol(CFormula * const f, char *symbol, int *e);
 	double DoCalcF$symbol(CFormula * const f, char *symbol, CEvalInfoFunction **logCallingFunction, bool skipCache, int *e);
 	static void SetPosition(parse_tree_match_t::node_t &node, const char *begin, const char *end) { node.value.value(begin); } 
+	static void ValidateSymbol(const char *begin, const char *end);
 
 public:
 	// public accessors
@@ -39,7 +40,6 @@ private:
 	double EvaluateExpression(CFormula * const f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e);
 	double DoEvaluateExpression(CFormula * const f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e);
 	double EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunction **logCallingFunction, int *e);
-	static void ValidateSymbol(const char *begin, const char *end);
 	static void SetOffsets(iter_t &i, const char *start);
 
 	// Result of formula set currently being parsed (this is for symbol validation)
@@ -116,7 +116,7 @@ struct exec_grammar : public grammar<exec_grammar>
 									leaf_node_d[ 
 										lexeme_d[
 											((alpha_p | '_' | '$') >> *(alnum_p | '_' | '$' | '.')) 
-										] 
+										][&CGrammar::ValidateSymbol]
 									]
 								][&CGrammar::SetPosition];
 
