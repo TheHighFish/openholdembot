@@ -220,9 +220,6 @@ void CDlgPpro::OnBnClickedConnectButton()
 		cmf->m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_OPEN, true);
 		cmf->m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
 		cmf->m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_REDCIRCLE, false);
-
-		// Tell everything that we not connected
-		p_global->ppro_is_connected = false;
 	}
 	else 
 	{
@@ -246,9 +243,6 @@ void CDlgPpro::OnBnClickedConnectButton()
 			MessageBox("login failed", "PPro connect error", MB_OK);
 			return;
 		}
-
-		// Tell everything that we are connected
-		p_global->ppro_is_connected = true;
 
 		// Reset symbols
 		p_symbols->ResetSymbolsFirstTime();

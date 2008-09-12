@@ -37,30 +37,12 @@ CGlobal::CGlobal(void)
 	// No longer any need to copy preferences from registry.
 	autoplay_pressed = false;
 	
-	// Find the versus data.  First check in the current directory
-	// then in the path provided by the registry.  If both fail,
-	// disable versus.
-	_sopen_s(&versus_fh, "versus.bin", _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
-	if (versus_fh == -1)
-	{
-		_sopen_s(&versus_fh, prefs.versus_path(), _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
-	}
-
-	if (versus_fh == -1)
-	{
-		MessageBox(NULL, "Could not open versus.bin.\nVersus functions will be disabled.\n", "Versus Error", MB_OK | MB_TOPMOST);
-	}
-
 	EnterCriticalSection(&cs_global);
 		_attached_hwnd = NULL;
 
 		for (i=0; i<10; i++)
 			_flags[i] = false;
 	LeaveCriticalSection(&cs_global);
-
-	ppro_is_connected = false;
-	ppro_isppro = false;
-	ppro_tid = 0;
 
 	state_index = 0;
 

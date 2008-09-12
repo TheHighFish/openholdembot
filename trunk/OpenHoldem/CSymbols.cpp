@@ -15,6 +15,7 @@
 #include "CGrammar.h"
 #include "CVersus.h"
 #include "CRunRon.h"
+#include "CPokerPro.h"
 
 #include "inlines/eval.h"
 
@@ -815,7 +816,7 @@ void CSymbols::CalcSymbols(void)
 	// Symbols derived from current profile/formula
 	_sym.site = 1;																		// site
 	_sym.nchairs = p_tablemap->s$items()->num_chairs;									// nchairs
-	_sym.isppro = p_global->ppro_isppro;												// isppro
+	_sym.isppro = p_pokerpro->IsConnected();											// isppro
 	_sym.rake = p_formula->formula()->dRake;											// rake
 	_sym.nit = p_formula->formula()->dNit;												// nit
 	_sym.bankroll = p_formula->formula()->dBankroll;									// bankroll
@@ -829,7 +830,7 @@ void CSymbols::CalcSymbols(void)
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Other scraped items
 	if (_reset_stakes || _sym.sblind==0 || _sym.bblind==0 ||
-		(p_global->ppro_is_connected && p_global->ppro_tid != 0))
+		(p_pokerpro->IsConnected() && p_pokerpro->ppdata()->m_tinf.m_tid != 0))
 	{
 		CalcStakes();	// bblind/sblind/bbet/ante/lim
 		set_reset_stakes(false);

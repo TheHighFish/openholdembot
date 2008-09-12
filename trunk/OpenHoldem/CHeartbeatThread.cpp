@@ -90,7 +90,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			////////////////////////////////////////////////////////////////////////////////////////////
 			// Scrape window
 
-			if (!p_global->ppro_is_connected)
+			if (!p_pokerpro->IsConnected())
 			{
 				new_scrape = p_scraper->DoScrape();
 
@@ -112,7 +112,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			// mark symbol result cache as stale
 			p_formula->MarkCacheStale();
 
-			if (new_scrape!=NOTHING_CHANGED || (p_global->ppro_is_connected && p_pokerpro->ppdata()->m_tinf.m_tid != 0))
+			if (new_scrape!=NOTHING_CHANGED || (p_pokerpro->IsConnected() && p_pokerpro->ppdata()->m_tinf.m_tid != 0))
 			{
 				p_symbols->CalcSymbols();
 			}
@@ -127,7 +127,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Set Title of window
 		CString *messageTitle = new CString();
-		if (!p_global->ppro_is_connected)
+		if (!p_pokerpro->IsConnected())
 		{
 			GetWindowText(p_global->attached_hwnd(), title, 512);
 			messageTitle->Format("%s - %s (%s)", p_formula->formula_name(), p_tablemap->s$items()->sitename, title);
@@ -229,7 +229,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		// If autoplayer is engaged, we know our chair, and the DLL hasn't told us to wait, then go do it!
 		if (p_global->autoplay && p_symbols->user_chair_confirmed() && !iswait)
 		{
-			if (!p_global->ppro_is_connected)
+			if (!p_pokerpro->IsConnected())
 				p_autoplayer->DoAutoplayer();
 
 			else if (p_pokerpro->ppdata()->m_tinf.m_tid != 0)
@@ -245,7 +245,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// scrape_delay, or wait for next ppro message
-		if (p_global->ppro_is_connected)
+		if (p_pokerpro->IsConnected())
 		{
 			// If there is anything on the socket, process it
 			FD_ZERO(&fd);
@@ -271,9 +271,6 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 				}
 			}
 		}
-		p_global->ppro_isppro = (p_pokerpro->IsConnected() ? 1 : 0);
-		p_global->ppro_tid = p_pokerpro->ppdata()->m_tinf.m_tid;
-
 		Sleep(prefs.scrape_delay());
 	}
 }
