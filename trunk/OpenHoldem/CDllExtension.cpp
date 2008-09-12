@@ -133,14 +133,14 @@ void CDllExtension::LoadDll(const char * path)
 
 			//  2008.02.27 by THF
 			//
-			//  pass "p_send_chatMessage" message
+			//  pass "p_send_chat_message" message
 			//
 			//  Providing a pointer to the chat function,
 			//	which can be used inside the dll,
 			//	similar to "pfgws".
 			//
-			(_process_message)(Pointer_for__send_ChatMessage,
-							  get_Pointer_to__send_ChatMessage());
+			(_process_message)(pointer_for_send_chat_message,
+							  GetPointerToSendChatMessage());
 		}
 	}
 }

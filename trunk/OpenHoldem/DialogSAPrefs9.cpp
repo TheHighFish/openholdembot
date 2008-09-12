@@ -6,7 +6,7 @@
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs9.h"
 
-#include "Perl.hpp"
+#include "CPerl.hpp"
 #include "CPreferences.h"
 
 
@@ -38,10 +38,10 @@ BOOL CDlgSAPrefs9::OnInitDialog()
 {
     CSAPrefsSubDlg::OnInitDialog();
 
-    m_LoadPerlInterpreter.SetCheck(prefs.Perl_load_Interpreter() ? BST_CHECKED : BST_UNCHECKED);
-    m_LoadDefaultPerlFormula.SetCheck(prefs.Perl_load_default_Formula() ? BST_CHECKED : BST_UNCHECKED);
-    m_DefaultPerlFormula.SetWindowText(prefs.Perl_default_Formula());
-    m_PerlEditor.SetWindowText(prefs.Perl_Editor());
+    m_LoadPerlInterpreter.SetCheck(prefs.perl_load_interpreter() ? BST_CHECKED : BST_UNCHECKED);
+    m_LoadDefaultPerlFormula.SetCheck(prefs.perl_load_default_formula() ? BST_CHECKED : BST_UNCHECKED);
+    m_DefaultPerlFormula.SetWindowText(prefs.perl_default_formula());
+    m_PerlEditor.SetWindowText(prefs.perl_editor());
 
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
@@ -63,12 +63,12 @@ void CDlgSAPrefs9::OnOK()
 	prefs.set_perl_editor(text);
 
    	// Load Perl interpreter without a restart
-	if (prefs.Perl_load_Interpreter())
+	if (prefs.perl_load_interpreter())
 	{
-		if (the_Perl_Interpreter)
-			delete the_Perl_Interpreter;
+		if (p_perl)
+			delete p_perl;
 
-		the_Perl_Interpreter = new Perl;
+		p_perl = new CPerl;
 	}
 
     CSAPrefsSubDlg::OnOK();

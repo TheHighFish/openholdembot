@@ -41,7 +41,7 @@
 #include "DialogPPro.h"
 #include "DialogScraperOutput.h"
 #include "DialogLockBlinds.h"
-#include "Perl.hpp"
+#include "CPerl.hpp"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1635,7 +1635,7 @@ void CMainFrame::OnUpdateMenuPerlLoad(CCmdUI* pCmdUI)
 {
 	__SEH_HEADER
 
-    if (the_Perl_Interpreter->is_a_Formula_loaded()) 
+    if (p_perl->IsAFormulaLoaded()) 
         pCmdUI->SetText("&Unload Formula\tF7");
 
 	else 
@@ -1664,7 +1664,7 @@ void CMainFrame::OnUpdateMenuPerlReloadFormula(CCmdUI* pCmdUI)
 {
 	__SEH_HEADER
 
-    pCmdUI->Enable((the_Perl_Interpreter->is_a_Formula_loaded() &&
+    pCmdUI->Enable((p_perl->IsAFormulaLoaded() &&
 					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) &&
                     m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)));
 
@@ -1717,14 +1717,14 @@ void CMainFrame::OnPerlLoadFormula()
 {
     __SEH_HEADER
 
-    if (the_Perl_Interpreter->is_a_Formula_loaded())
+    if (p_perl->IsAFormulaLoaded())
     {
-        the_Perl_Interpreter->unload_FormulaFile();
+        p_perl->UnloadFormulaFile();
     }
     else
     {
         //  Reload the most recent formula
-        the_Perl_Interpreter->reload_FormulaFile();
+        p_perl->ReloadFormulaFile();
     }
 	//  Make some noise, as there's no visible reaction
 	Beep(880, 125);	
@@ -1748,7 +1748,7 @@ void CMainFrame::OnPerlLoadSpecificFormula()
     cfd.m_ofn.lpstrTitle = "Select Perl formula file to OPEN";
     if (cfd.DoModal() == IDOK)
     {
-        the_Perl_Interpreter->load_FormulaFile(cfd.m_ofn.lpstrFile);
+        p_perl->LoadFormulaFile(cfd.m_ofn.lpstrFile);
         WriteRegString(theKey, cfd.GetPathName());
     }
 
@@ -1761,7 +1761,7 @@ void CMainFrame::OnPerlEditMainFormula()
 {
     __SEH_HEADER
 
-    the_Perl_Interpreter->edit_main_FormulaFile();
+    p_perl->EditMainFormulaFile();
 
     __SEH_LOGFATAL("CMainFrame::OnPerlEditMainFormula :\n");
 }
@@ -1774,7 +1774,7 @@ void CMainFrame::OnPerlReloadFormula()
 
     //  Reload the most recent formula
     //    (This is a shortcut for unload + load.)
-    the_Perl_Interpreter->reload_FormulaFile();
+    p_perl->ReloadFormulaFile();
 	//  Make some noise, as there's no visible reaction
 	Beep(880, 125);
 
@@ -1786,7 +1786,7 @@ void CMainFrame::OnPerlCheckSyntax()
 {
     __SEH_HEADER
 
-    the_Perl_Interpreter->check_Syntax();
+    p_perl->CheckSyntax();
 
     __SEH_LOGFATAL("CMainFrame::OnPerlEditCheckSyntax :\n");
 }
@@ -1796,7 +1796,7 @@ void CMainFrame::OnUpdateMenuPerlCheckSyntax(CCmdUI* pCmdUI)
 {
 	__SEH_HEADER	
 
-	pCmdUI->Enable(the_Perl_Interpreter->is_a_Formula_loaded());
+	pCmdUI->Enable(p_perl->IsAFormulaLoaded());
 
 	__SEH_LOGFATAL("CMainFrame::OnUpdateMenuPerlCheckSyntax")
 }
@@ -1806,7 +1806,7 @@ void CMainFrame::OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI)
 {
 	__SEH_HEADER
 
-	pCmdUI->Enable(the_Perl_Interpreter->is_a_Formula_loaded());
+	pCmdUI->Enable(p_perl->IsAFormulaLoaded());
 
 	__SEH_LOGFATAL("CMainFrame::OnUpdateMenuPerlEditMainFormula")
 }

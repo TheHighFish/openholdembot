@@ -251,25 +251,25 @@ struct SPreferences
 	//  2008.02.27 by THF
 	//  Perl
 	//  (same as registry keys for Perl)
-	CString			Perl_default_Formula;
-	CString			Perl_Editor;
-	bool			Perl_load_default_Formula;
-	bool			Perl_load_Interpreter;
+	CString			perl_default_formula;
+	CString			perl_editor;
+	bool			perl_load_default_formula;
+	bool			perl_load_interpreter;
 
 	//  2008.02.27 by THF
 	//  PokerChat
 	//  (same as registry keys for PokerChat)
-	bool			Chat_enabled;
-	int				Chat_min_Delay;
-	int				Chat_random_Delay;
+	bool			chat_enabled;
+	int				chat_min_delay;
+	int				chat_random_delay;
 
     // Log Symbol
-    bool            LogSymbol_enabled;
-    int             LogSymbol_max_log;
+    bool            log_symbol_enabled;
+    int             log_symbol_max_log;
 
     // Tracing
-	bool			Trace_enabled;
-	bool			Trace_functions[nTraceFunctions];
+	bool			trace_enabled;
+	bool			trace_functions[nTraceFunctions];
 };
 
 struct SDebugTabInfo 

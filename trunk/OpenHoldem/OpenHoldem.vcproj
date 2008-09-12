@@ -349,6 +349,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CPerl.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CPokerAction.cpp"
 				>
 			</File>
@@ -454,10 +458,6 @@
 			</File>
 			<File
 				RelativePath=".\OpenHoldemView.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Perl.cpp"
 				>
 			</File>
 			<File
@@ -702,6 +702,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CPerl.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CPokerAction.h"
 				>
 			</File>
@@ -807,10 +811,6 @@
 			</File>
 			<File
 				RelativePath=".\OpenHoldemView.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Perl.hpp"
 				>
 			</File>
 			<File

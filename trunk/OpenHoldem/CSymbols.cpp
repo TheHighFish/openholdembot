@@ -2946,7 +2946,7 @@ void CSymbols::CalcStatistics(void)
 	// f$srai
 	error = SUCCESS;
 
-	f$srai = gram.CalcF$symbol(p_formula, "f$srai", prefs.Trace_functions(nTraceSwag), &error);
+	f$srai = gram.CalcF$symbol(p_formula, "f$srai", prefs.trace_functions(nTraceSwag), &error);
 
 	// B
 	B = p_formula->formula()->dBankroll != 0 ? p_formula->formula()->dBankroll : p_scraper->player_balance(_sym.userchair);
@@ -3551,16 +3551,16 @@ void CSymbols::CalcPrimaryFormulas(const bool final_answer)
 	_sym.isfinalanswer = final_answer;
 
 	e = SUCCESS;
-	_f$alli = gram.CalcF$symbol(p_formula, "f$alli", prefs.Trace_functions(nTraceAlli), &e);
+	_f$alli = gram.CalcF$symbol(p_formula, "f$alli", prefs.trace_functions(nTraceAlli), &e);
 
 	e = SUCCESS;
-	_f$swag = gram.CalcF$symbol(p_formula, "f$swag", prefs.Trace_functions(nTraceSwag), &e);
+	_f$swag = gram.CalcF$symbol(p_formula, "f$swag", prefs.trace_functions(nTraceSwag), &e);
 
 	e = SUCCESS;
-	_f$rais = gram.CalcF$symbol(p_formula, "f$rais", prefs.Trace_functions(nTraceRais), &e);
+	_f$rais = gram.CalcF$symbol(p_formula, "f$rais", prefs.trace_functions(nTraceRais), &e);
 
 	e = SUCCESS;
-	_f$call = gram.CalcF$symbol(p_formula, "f$call", prefs.Trace_functions(nTraceCall), &e);
+	_f$call = gram.CalcF$symbol(p_formula, "f$call", prefs.trace_functions(nTraceCall), &e);
 
 	_sym.isfinalanswer = false;
 
@@ -3575,10 +3575,10 @@ void CSymbols::CalcSecondaryFormulas(void)
 	EnterCriticalSection(&cs_symbols);
 
 		e = SUCCESS;
-		_f$play = gram.CalcF$symbol(p_formula, "f$play", prefs.Trace_functions(nTracePlay), &e);
+		_f$play = gram.CalcF$symbol(p_formula, "f$play", prefs.trace_functions(nTracePlay), &e);
 
 		e = SUCCESS;
-		_f$prefold = gram.CalcF$symbol(p_formula, "f$prefold", prefs.Trace_functions(nTracePrefold), &e);
+		_f$prefold = gram.CalcF$symbol(p_formula, "f$prefold", prefs.trace_functions(nTracePrefold), &e);
 
 		e = SUCCESS;
 		_f$delay = gram.CalcF$symbol(p_formula, "f$delay", &e);
