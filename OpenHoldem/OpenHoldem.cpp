@@ -23,10 +23,11 @@
 #include "CDllExtension.h"
 #include "CGameState.h"
 #include "CMemory.h"
+#include "CVersus.h"
 
 #include "DialogFormulaScintilla.h"
 #include "CGrammar.h"
-#include "PokerPro.h"
+#include "CPokerPro.h"
 #include "Perl.hpp"
 #include "CSessionCounter.h"
 
@@ -98,6 +99,7 @@ BOOL COpenHoldemApp::InitInstance()
 	if (!p_game_state)  p_game_state = new CGameState;
 	if (!the_Perl_Interpreter)  the_Perl_Interpreter = new Perl;
 	if (!p_memory)  p_memory = new CMemory;	
+	if (!p_versus)  p_versus = new CVersus;	
 
 	Scintilla_RegisterClasses(AfxGetInstanceHandle());
 
@@ -236,6 +238,7 @@ int COpenHoldemApp::ExitInstance()
 	if (p_game_state)  { delete p_game_state; p_game_state = NULL; }
 	if (the_Perl_Interpreter)  { delete the_Perl_Interpreter; the_Perl_Interpreter = NULL; }
 	if (p_memory)  { delete p_memory; p_memory = NULL; }
+	if (p_versus)  { delete p_versus; p_versus = NULL; }
 
     stop_log();
 

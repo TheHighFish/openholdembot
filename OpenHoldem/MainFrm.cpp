@@ -36,7 +36,7 @@
 
 #include "DialogSelectTable.h"
 #include "inlines/eval.h"
-#include "PokerPro.h"
+#include "CPokerPro.h"
 #include "DialogPPro.h"
 #include "DialogScraperOutput.h"
 #include "DialogLockBlinds.h"
@@ -982,7 +982,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 
 		// Autoplayer
 		if ((p_symbols->user_chair_confirmed() && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)) ||
-				p_pokerpro->data.m_userchair!=-1)
+				p_pokerpro->ppdata()->m_userchair!=-1)
 		{
 			m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
 		}
@@ -994,7 +994,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 		// Automatically start autoplayer, if set in preferences
         if (prefs.ap_auto() && !m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER) &&
                 ((p_symbols->user_chair_confirmed() && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)) ||
-                 p_pokerpro->data.m_userchair!=-1))
+                 p_pokerpro->ppdata()->m_userchair!=-1))
         {
             if (!p_global->autoplay_pressed)
             {
@@ -1633,7 +1633,7 @@ void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI)
         pCmdUI->SetText("&Load\tF4");
 
 	// Not connected to ppro server
-    if (p_pokerpro->m_socket==INVALID_SOCKET) 
+    if (!p_pokerpro->IsConnected()) 
 	{
         pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
                         !m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
@@ -1641,7 +1641,7 @@ void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI)
     // connected to ppro server
     else 
 	{
-        pCmdUI->Enable(p_pokerpro->data.m_pinf[p_pokerpro->data.m_userchair].m_isActive&0x1 ? false : true);
+        pCmdUI->Enable(p_pokerpro->ppdata()->m_pinf[p_pokerpro->ppdata()->m_userchair].m_isActive&0x1 ? false : true);
     }
 
 	__SEH_LOGFATAL("CMainFrame::OnUpdateMenuDllLoad\n")
@@ -1663,7 +1663,7 @@ void CMainFrame::OnUpdatePokerproConnect(CCmdUI *pCmdUI)
 
     pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
                     !m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) &&
-                   !(p_pokerpro->m_socket!=INVALID_SOCKET) ? false : true);
+                   !p_pokerpro->IsConnected() ? false : true);
 
 	__SEH_LOGFATAL("CMainFrame::OnUpdatePokerproConnect\n")
 }
