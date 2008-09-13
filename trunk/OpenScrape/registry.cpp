@@ -12,8 +12,6 @@ Registry::Registry(void)
 
 void Registry::read_reg(void) 
 {
-	__SEH_HEADER
-		
 	HKEY		hKey;
 	DWORD		dwType, cbData;
 	LONG		hkResult;
@@ -91,14 +89,10 @@ void Registry::read_reg(void)
 	}
 
 	RegCloseKey(hKey);
-
-    __SEH_LOGFATAL("Registry::read_reg : \n");
 }
 
 void Registry::write_reg(void) 
 {
-	__SEH_HEADER
-		
 	HKEY		hKey;
 	DWORD		dwDisp;
 	char		str[256];
@@ -138,6 +132,4 @@ void Registry::write_reg(void)
 	RegSetValueEx(hKey, "grhash_dy", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
 
 	RegCloseKey(hKey);
-
-    __SEH_LOGFATAL("Registry::write_reg : \n");
 }

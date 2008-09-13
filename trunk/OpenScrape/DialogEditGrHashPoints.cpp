@@ -46,8 +46,6 @@ END_MESSAGE_MAP()
 
 BOOL CDlgEditGrHashPoints::OnInitDialog()
 {
-	__SEH_HEADER
-
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	int					i, new_item;
 	CString				text;
@@ -93,25 +91,17 @@ BOOL CDlgEditGrHashPoints::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
-
-	__SEH_LOGFATAL("CDlgEditGrHashPoints::OnInitDialog : \n");
 }
 
 void CDlgEditGrHashPoints::OnPaint()
 {
-	__SEH_HEADER
-
 	CPaintDC dc(this); // device context for painting
 
 	update_bitmap();
-
-	__SEH_LOGFATAL("CDlgEditGrHashPoints::OnPaint : \n");
 }
 
 void CDlgEditGrHashPoints::OnCbnSelchangeHashType()
 {
-	__SEH_HEADER
-
 	CString				text;
 	int					type;
 
@@ -123,32 +113,20 @@ void CDlgEditGrHashPoints::OnCbnSelchangeHashType()
 
 	reset_list_box(type);
 	update_bitmap();
-
-	__SEH_LOGFATAL("CDlgEditGrHashPoints::OnCbnSelchangeHashType : \n");
 }
 
 void CDlgEditGrHashPoints::OnCbnSelchangeSampleImage()
 {
-	__SEH_HEADER
-
 	update_bitmap();
-
-	__SEH_LOGFATAL("CDlgEditGrHashPoints::OnCbnSelchangeSampleImage : \n");
 }
 
 void CDlgEditGrHashPoints::OnCbnSelchangeZoomLevel()
 {
-	__SEH_HEADER
-
 	update_bitmap();
-
-	__SEH_LOGFATAL("CDlgEditGrHashPoints::OnCbnSelchangeZoomLevel : \n");
 }
 
 void CDlgEditGrHashPoints::update_bitmap()
 {
-	__SEH_HEADER
-
 	int					i, x, y, width, height, zoom, type;
 	CString				text;
 	CDC					*pDC;
@@ -272,14 +250,10 @@ void CDlgEditGrHashPoints::update_bitmap()
 		DeleteDC(hdcScreen);
 		ReleaseDC(pDC);
 	}
-
-	__SEH_LOGFATAL("CDlgEditGrHashPoints::update_bitmap : \n");
 }
 
 void CDlgEditGrHashPoints::reset_list_box(int type)
 {
-	__SEH_HEADER
-
 	int			i;
 	CString		text;
 
@@ -292,14 +266,10 @@ void CDlgEditGrHashPoints::reset_list_box(int type)
 			m_Point_List.AddString(text.GetString());
 		}
 	}
-
-	__SEH_LOGFATAL("CDlgEditGrHashPoints::reset_list_box : \n");
 }
 
 void CDlgEditGrHashPoints::OnMouseMove(UINT nFlags, CPoint point)
 {
-	__SEH_HEADER
-
 	RECT				bmp_rect;
 	CString				text;
 	int					zoom;
@@ -326,14 +296,10 @@ void CDlgEditGrHashPoints::OnMouseMove(UINT nFlags, CPoint point)
 	}
 
 	CDialog::OnMouseMove(nFlags, point);
-
-	__SEH_LOGFATAL("CDlgEditGrHashPoints::OnMouseMove : \n");
 }
 
 void CDlgEditGrHashPoints::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	__SEH_HEADER
-
 	RECT				bmp_rect;
 	CString				text;
 	int					type, i, zoom, x, y;
@@ -397,14 +363,10 @@ void CDlgEditGrHashPoints::OnLButtonDown(UINT nFlags, CPoint point)
 	}
 
 	CDialog::OnLButtonDown(nFlags, point);
-
-	__SEH_LOGFATAL("CDlgEditGrHashPoints::OnLButtonDown : \n");
 }
 
 void CDlgEditGrHashPoints::OnRButtonDown(UINT nFlags, CPoint point)
 {
-	__SEH_HEADER
-
 	RECT				bmp_rect;
 	CString				text;
 	int					type, i, zoom, x, y, del_index;
@@ -463,14 +425,10 @@ void CDlgEditGrHashPoints::OnRButtonDown(UINT nFlags, CPoint point)
 	}
 
 	CDialog::OnRButtonDown(nFlags, point);
-
-	__SEH_LOGFATAL("CDlgEditGrHashPoints::OnRButtonDown : \n");
 }
 
 BOOL CDlgEditGrHashPoints::DestroyWindow()
 {
-	__SEH_HEADER
-
 	Registry		reg;
 	WINDOWPLACEMENT wp;
 
@@ -485,6 +443,4 @@ BOOL CDlgEditGrHashPoints::DestroyWindow()
 	reg.write_reg();
 
 	return CDialog::DestroyWindow();
-
-	__SEH_LOGFATAL("CDlgEditGrHashPoints::DestroyWindow : \n");
 }

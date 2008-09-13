@@ -37,18 +37,12 @@ END_MESSAGE_MAP()
 
 void CDlgSelectTable::OnBnClickedOk() 
 {
-	__SEH_HEADER
-
 	selected_item = m_HSLB.GetCurSel();
 	OnOK();
-
-	__SEH_LOGFATAL("CDlgSelectTable::OnBnClickedOk : \n");
 }
 
 BOOL CDlgSelectTable::OnInitDialog() 
 {
-	__SEH_HEADER
-
 	int		i, N;
 
 	CDialog::OnInitDialog();
@@ -65,24 +59,14 @@ BOOL CDlgSelectTable::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
-
-	__SEH_LOGFATAL("CDlgSelectTable::OnInitDialog : \n");
 }
 
 void CDlgSelectTable::OnLbnDblclkListSelectTable() 
 {
-	__SEH_HEADER
-
 	OnBnClickedOk();
-
-	__SEH_LOGFATAL("CDlgSelectTable::OnLbnDblclkListSelectTable : \n");
 }
 
 void CDlgSelectTable::OnLbnSelchangeListSelectTable() 
 {
-	__SEH_HEADER
-
 	m_OK.EnableWindow(true);
-
-	__SEH_LOGFATAL("CDlgSelectTable::OnLbnSelchangeListSelectTable : \n");
 }

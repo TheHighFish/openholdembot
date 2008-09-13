@@ -26,8 +26,6 @@ COpenScrapeDoc::COpenScrapeDoc()
 {
     __SEH_SET_EXCEPTION_HANDLER
 
-	__SEH_HEADER
-		
 	p_tablemap->ClearTablemap();
 
 	attached_hwnd = NULL;
@@ -37,8 +35,6 @@ COpenScrapeDoc::COpenScrapeDoc()
 	blink_on = false;
 	valid_open = false;
 	is_dirty = false;
-
-    __SEH_LOGFATAL("COpenScrapeDoc::COpenScrapeDoc : \n");
 }
 
 COpenScrapeDoc::~COpenScrapeDoc()
@@ -47,19 +43,13 @@ COpenScrapeDoc::~COpenScrapeDoc()
 
 COpenScrapeDoc * COpenScrapeDoc::GetDocument() 
 {
-	__SEH_HEADER
-		
 	CFrameWnd * pFrame = (CFrameWnd *)(AfxGetApp()->m_pMainWnd);
 
 	return (COpenScrapeDoc *) pFrame->GetActiveDocument();
-
-    __SEH_LOGFATAL("COpenScrapeDoc::GetDocument : \n");
 }
 
 BOOL COpenScrapeDoc::OnNewDocument()
 {
-	__SEH_HEADER
-		
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 	
@@ -69,14 +59,10 @@ BOOL COpenScrapeDoc::OnNewDocument()
 		theApp.m_TableMapDlg->create_tree();
 
 	return TRUE;
-
-    __SEH_LOGFATAL("COpenScrapeDoc::OnNewDocument : \n");
 }
 
 BOOL COpenScrapeDoc::OnOpenDocument(LPCTSTR lpszPathName)
 {
-	__SEH_HEADER
-		
 	if (!CDocument::OnOpenDocument(lpszPathName))
 		return FALSE;
 
@@ -96,16 +82,12 @@ BOOL COpenScrapeDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	if (theApp.m_TableMapDlg)  theApp.m_TableMapDlg->Invalidate(true);
 
 	return valid_open;
-
-    __SEH_LOGFATAL("COpenScrapeDoc::OnOpenDocument : \n");
 }
 
 // COpenScrapeDoc serialization
 
 void COpenScrapeDoc::Serialize(CArchive& ar)
 {
-	__SEH_HEADER
-		
 	CString			loaded_version, s;
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 	int				linenum, ret;
@@ -173,8 +155,6 @@ void COpenScrapeDoc::Serialize(CArchive& ar)
 			valid_open = true;
 		}
 	}
-
-    __SEH_LOGFATAL("COpenScrapeDoc::Serialize : \n");
 }
 
 

@@ -33,8 +33,6 @@ END_MESSAGE_MAP()
 
 BOOL CDlgEditRegion::OnInitDialog()
 {
-	__SEH_HEADER
-
 	CDialog::OnInitDialog();
 
 	int			i;
@@ -52,18 +50,12 @@ BOOL CDlgEditRegion::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
-
-	__SEH_LOGFATAL("CDlgEditRegion::OnInitDialog : \n");
 }
 
 void CDlgEditRegion::OnBnClickedOk()
 {
-	__SEH_HEADER
-
 	m_Name.GetWindowText(name);
 
 	OnOK();
-
-	__SEH_LOGFATAL("CDlgEditRegion::OnBnClickedOk : \n");
 }
 

@@ -36,8 +36,6 @@ END_MESSAGE_MAP()
 
 BOOL CDlgEditHashPoint::OnInitDialog()
 {
-	__SEH_HEADER
-
 	CDialog::OnInitDialog();
 
 	CString		text;
@@ -64,14 +62,10 @@ BOOL CDlgEditHashPoint::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
-
-	__SEH_LOGFATAL("CDlgEditHashPoint::OnInitDialog : \n");
 }
 
 void CDlgEditHashPoint::OnBnClickedOk()
 {
-	__SEH_HEADER
-
 	CString		text;
 
 	m_Type.GetWindowText(type);
@@ -83,6 +77,4 @@ void CDlgEditHashPoint::OnBnClickedOk()
 	y = atoi(text.GetString());
 
 	OnOK();
-
-	__SEH_LOGFATAL("CDlgEditHashPoint::OnBnClickedOk : \n");
 }

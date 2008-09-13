@@ -40,8 +40,6 @@ END_MESSAGE_MAP()
 
 BOOL CDlgEditSymbols::OnInitDialog()
 {
-	__SEH_HEADER
-
 	CDialog::OnInitDialog();
 
 	int			i;
@@ -65,27 +63,19 @@ BOOL CDlgEditSymbols::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
-
-	__SEH_LOGFATAL("CDlgEditSymbols::OnInitDialog : \n");
 }
 
 void CDlgEditSymbols::OnBnClickedOk()
 {
-	__SEH_HEADER
-
 	m_Name.GetWindowText(name);
 	m_Value.GetWindowText(value);
 
 	OnOK();
-
-	__SEH_LOGFATAL("CDlgEditSymbols::OnBnClickedOk : \n");
 }
 
 
 void CDlgEditSymbols::OnBnClickedParsebutton()
 {
-	__SEH_HEADER
-
 	CString				results, text, format;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	CTransform			trans;
@@ -96,14 +86,10 @@ void CDlgEditSymbols::OnBnClickedParsebutton()
 	trans.ParseStringBSL(text, format, &results);
 
 	m_ParseResults.SetWindowText(results.GetString());
-
-	__SEH_LOGFATAL("CDlgEditSymbols::OnBnClickedParsebutton : \n");
 }
 
 void CDlgEditSymbols::OnCbnSelchangeName()
 {
-	__SEH_HEADER
-
 	m_Name.GetWindowText(name);
 
 	if (name.Find("ttlimits") != -1)
@@ -119,6 +105,4 @@ void CDlgEditSymbols::OnCbnSelchangeName()
 		m_ParseResults.EnableWindow(false);
 		m_ParseButton.EnableWindow(false);
 	}
-
-	__SEH_LOGFATAL("CDlgEditSymbols::OnCbnSelchangeName : \n");
 }
