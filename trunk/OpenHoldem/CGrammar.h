@@ -15,7 +15,6 @@ typedef tree_match<iterator_t, int_factory_t>			parse_tree_match_t;
 typedef parse_tree_match_t::tree_iterator				iter_t;
 typedef	tree_parse_info<const char *, int_factory_t>	tpi_type;
 
-
 class CGrammar 
 {
 
@@ -44,14 +43,14 @@ private:
 
 	// Result of formula set currently being parsed (this is for symbol validation)
 	CArray<std::string, std::string>  _parse_symbol_stop_strs;
-
-	// This object ensures access to Spirit's evaluate by one thread at a time
-	CCritSec		m_critsec_evaluate;
-
-	// This object ensures access to Spirit's parse by one thread at a time, and ensures that "_parse_symbol_stop_strs"
-	// is only in use by one thread at a time
-	CCritSec		m_critsec_parse;
 };
+
+// This object ensures access to Spirit's evaluate by one thread at a time
+extern CCritSec		m_critsec_evaluate;
+
+// This object ensures access to Spirit's parse by one thread at a time, and ensures that "_parse_symbol_stop_strs"
+// is only in use by one thread at a time
+extern CCritSec		m_critsec_parse;
 
 // Formula set currently being parsed (this is for symbol validation)
 extern SFormula		*g_parse_symbol_formula;

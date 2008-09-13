@@ -27,6 +27,8 @@ CGrammar::~CGrammar(void)
 {
 }
 
+CCritSec		m_critsec_evaluate;
+
 double CGrammar::EvaluateTree(CFormula * const f, tpi_type info, CEvalInfoFunction **logCallingFunction, int *e)
 {
 	CSLock lock(m_critsec_evaluate);
@@ -542,6 +544,7 @@ double CGrammar::DoCalcF$symbol(CFormula * const f, char *symbol, CEvalInfoFunct
 // Parsing functions
 CArray<std::string, std::string>  g_parse_symbol_stop_strs;
 SFormula		*g_parse_symbol_formula;
+CCritSec		m_critsec_parse;
 
 bool CGrammar::ParseString(const CString *s, const SFormula *f, tpi_type *i, int *stopchar)
 {
