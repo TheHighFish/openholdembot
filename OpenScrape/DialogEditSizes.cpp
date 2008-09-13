@@ -35,8 +35,6 @@ END_MESSAGE_MAP()
 
 BOOL CDlgEditSizes::OnInitDialog()
 {
-	__SEH_HEADER
-
 	int			i;
 	CString		text;
 
@@ -57,14 +55,10 @@ BOOL CDlgEditSizes::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
-
-	__SEH_LOGFATAL("CDlgEditSizes::OnInitDialog : \n");
 }
 
 void CDlgEditSizes::OnBnClickedOk()
 {
-	__SEH_HEADER
-
 	CString		text;
 
 	if (m_Name.GetCurSel() != LB_ERR)
@@ -78,6 +72,4 @@ void CDlgEditSizes::OnBnClickedOk()
 	height = atoi(text.GetString());
 
 	OnOK();
-
-	__SEH_LOGFATAL("CDlgEditSizes::OnBnClickedOk : \n");
 }

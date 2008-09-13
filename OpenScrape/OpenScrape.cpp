@@ -40,8 +40,6 @@ COpenScrapeApp theApp;
 // COpenScrapeApp initialization
 BOOL COpenScrapeApp::InitInstance()
 {
-	__SEH_HEADER
-
 	HMODULE		hMod;
 	HANDLE		hProcess;
 	DWORD		curprocid, aProcesses[1024], cbNeeded, cProcesses;
@@ -143,8 +141,6 @@ BOOL COpenScrapeApp::InitInstance()
 	m_TableMapDlg->ShowWindow(SW_SHOW);
 
 	return true;
-
-	__SEH_LOGFATAL("COpenScrapeApp::InitInstance : \n");
 }
 
 // CAboutDlg dialog used for App About
