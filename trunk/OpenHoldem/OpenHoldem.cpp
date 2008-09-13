@@ -47,31 +47,24 @@ extern bool Scintilla_RegisterClasses(void *hInstance);
 extern bool Scintilla_ReleaseResources();
 
 BEGIN_MESSAGE_MAP(COpenHoldemApp, CWinApp)
-    ON_COMMAND(ID_APP_ABOUT, &COpenHoldemApp::OnAppAbout)
-    // Standard file based document commands
-    ON_COMMAND(ID_FILE_NEW, &CWinApp::OnFileNew)
-    ON_COMMAND(ID_FILE_OPEN, &CWinApp::OnFileOpen)
+	ON_COMMAND(ID_APP_ABOUT, &COpenHoldemApp::OnAppAbout)
+	// Standard file based document commands
+	ON_COMMAND(ID_FILE_NEW, &CWinApp::OnFileNew)
+	ON_COMMAND(ID_FILE_OPEN, &CWinApp::OnFileOpen)
 END_MESSAGE_MAP()
 
 // COpenHoldemApp construction
 COpenHoldemApp::COpenHoldemApp()
 {
-    __SEH_SET_EXCEPTION_HANDLER
+	__SEH_SET_EXCEPTION_HANDLER
 
-    __SEH_HEADER
-
-    // Save startup directory
-    ::GetCurrentDirectory(MAX_PATH - 1, _startup_path);
-
-    __SEH_LOGFATAL("COpenHoldemApp::Constructor :\n");
+	// Save startup directory
+	::GetCurrentDirectory(MAX_PATH - 1, _startup_path);
 }
 
 // COpenHoldemApp destruction
 COpenHoldemApp::~COpenHoldemApp()
 {
-    __SEH_HEADER
-
-    __SEH_LOGFATAL("COpenHoldemApp::Destructor :\n");
 }
 
 // The one and only COpenHoldemApp object
@@ -80,8 +73,6 @@ COpenHoldemApp theApp;
 // COpenHoldemApp initialization
 BOOL COpenHoldemApp::InitInstance()
 {
-    __SEH_HEADER
-    
 	// Critical sections
 	InitializeCriticalSectionAndSpinCount(&cs_iterator, 4000);
 
@@ -101,111 +92,107 @@ BOOL COpenHoldemApp::InitInstance()
 
 	Scintilla_RegisterClasses(AfxGetInstanceHandle());
 
-    // Initialize richedit2 library
-    AfxInitRichEdit2();
+	// Initialize richedit2 library
+	AfxInitRichEdit2();
 
-    // Change class name of Dialog
-    WNDCLASS wc;
-    GetClassInfo(AfxGetInstanceHandle(), "#32770", &wc);
+	// Change class name of Dialog
+	WNDCLASS wc;
+	GetClassInfo(AfxGetInstanceHandle(), "#32770", &wc);
 
-    wc.lpszClassName = "OpenHoldemFormula";
-    wc.hIcon = AfxGetApp()->LoadIcon(IDI_ICON1);
-    RegisterClass(&wc);
+	wc.lpszClassName = "OpenHoldemFormula";
+	wc.hIcon = AfxGetApp()->LoadIcon(IDI_ICON1);
+	RegisterClass(&wc);
 
 	_session_id = SessionCounter.session_id();
 
-    // InitCommonControlsEx() is required on Windows XP if an application
-    // manifest specifies use of ComCtl32.dll version 6 or later to enable
-    // visual styles.  Otherwise, any window creation will fail.
-    INITCOMMONCONTROLSEX InitCtrls;
-    InitCtrls.dwSize = sizeof(InitCtrls);
-    // Set this to include all the common control classes you want to use
-    // in your application.
-    InitCtrls.dwICC = ICC_WIN95_CLASSES;
-    InitCommonControlsEx(&InitCtrls);
+	// InitCommonControlsEx() is required on Windows XP if an application
+	// manifest specifies use of ComCtl32.dll version 6 or later to enable
+	// visual styles.  Otherwise, any window creation will fail.
+	INITCOMMONCONTROLSEX InitCtrls;
+	InitCtrls.dwSize = sizeof(InitCtrls);
+	// Set this to include all the common control classes you want to use
+	// in your application.
+	InitCtrls.dwICC = ICC_WIN95_CLASSES;
+	InitCommonControlsEx(&InitCtrls);
 
-    CWinApp::InitInstance();
+	CWinApp::InitInstance();
 
-    // Standard initialization
-    // If you are not using these features and wish to reduce the size
-    // of your final executable, you should remove from the following
-    // the specific initialization routines you do not need
-    // Change the registry key under which our settings are stored
-    SetRegistryKey(_T("OpenHoldem"));
+	// Standard initialization
+	// If you are not using these features and wish to reduce the size
+	// of your final executable, you should remove from the following
+	// the specific initialization routines you do not need
+	// Change the registry key under which our settings are stored
+	SetRegistryKey(_T("OpenHoldem"));
 
-    MyLoadStdProfileSettings(4);  // Load standard INI file options (including MRU)
-    if (m_pRecentFileList == NULL)
-        AfxMessageBox("Still NULL");
-    // Register the application's document templates.  Document templates
-    //  serve as the connection between documents, frame windows and views
-    CSingleDocTemplate* pDocTemplate;
+	MyLoadStdProfileSettings(4);  // Load standard INI file options (including MRU)
+	if (m_pRecentFileList == NULL)
+		AfxMessageBox("Still NULL");
+	// Register the application's document templates.  Document templates
+	//  serve as the connection between documents, frame windows and views
+	CSingleDocTemplate* pDocTemplate;
 
-    pDocTemplate = new CSingleDocTemplate(
-        IDR_MAINFRAME,
-        RUNTIME_CLASS(COpenHoldemDoc),
-        RUNTIME_CLASS(CMainFrame),       // main SDI frame window
-        RUNTIME_CLASS(COpenHoldemView));
-    if (!pDocTemplate)
-        return FALSE;
-    AddDocTemplate(pDocTemplate);
+	pDocTemplate = new CSingleDocTemplate(
+		IDR_MAINFRAME,
+		RUNTIME_CLASS(COpenHoldemDoc),
+		RUNTIME_CLASS(CMainFrame),	   // main SDI frame window
+		RUNTIME_CLASS(COpenHoldemView));
+	if (!pDocTemplate)
+		return FALSE;
+	AddDocTemplate(pDocTemplate);
 
-    // Enable DDE Execute open
-    EnableShellOpen();
-    RegisterShellFileTypes(TRUE);
+	// Enable DDE Execute open
+	EnableShellOpen();
+	RegisterShellFileTypes(TRUE);
 
-    // Parse command line for standard shell commands, DDE, file open
-    CCommandLineInfo cmdInfo;
-    ParseCommandLine(cmdInfo);
+	// Parse command line for standard shell commands, DDE, file open
+	CCommandLineInfo cmdInfo;
+	ParseCommandLine(cmdInfo);
 
-    // Open the most recently saved file. (First on the MRU list.) Get the last
-    // file from the registry. We need not account for cmdInfo.m_bRunAutomated and
-    // cmdInfo.m_bRunEmbedded as they are processed before we get here.
-    if (cmdInfo.m_nShellCommand == CCommandLineInfo::FileNew)
-    {
-        CString sLastPath(GetProfileString(_afxFileSection, "File1"));
+	// Open the most recently saved file. (First on the MRU list.) Get the last
+	// file from the registry. We need not account for cmdInfo.m_bRunAutomated and
+	// cmdInfo.m_bRunEmbedded as they are processed before we get here.
+	if (cmdInfo.m_nShellCommand == CCommandLineInfo::FileNew)
+	{
+		CString sLastPath(GetProfileString(_afxFileSection, "File1"));
 
-        if (! sLastPath.IsEmpty())
-        {
-            CFile f;
+		if (! sLastPath.IsEmpty())
+		{
+			CFile f;
 
-            // If file is there, set to open!
-            if (f.Open(sLastPath, CFile::modeRead | CFile::shareDenyWrite))
-            {
-                cmdInfo.m_nShellCommand = CCommandLineInfo::FileOpen;
-                cmdInfo.m_strFileName = sLastPath;
-                f.Close();
-            }
-        }
-    }
+			// If file is there, set to open!
+			if (f.Open(sLastPath, CFile::modeRead | CFile::shareDenyWrite))
+			{
+				cmdInfo.m_nShellCommand = CCommandLineInfo::FileOpen;
+				cmdInfo.m_strFileName = sLastPath;
+				f.Close();
+			}
+		}
+	}
 
-    // Dispatch commands specified on the command line.  Will return FALSE if
-    // app was launched with /RegServer, /Register, /Unregserver or /Unregister.
-    if (!ProcessShellCommand(cmdInfo))
-        return FALSE;
+	// Dispatch commands specified on the command line.  Will return FALSE if
+	// app was launched with /RegServer, /Register, /Unregserver or /Unregister.
+	if (!ProcessShellCommand(cmdInfo))
+		return FALSE;
 
-    // The one and only window has been initialized, so show and update it
-    m_pMainWnd->ShowWindow(SW_SHOW);
-    m_pMainWnd->UpdateWindow();
-    // call DragAcceptFiles only if there's a suffix
-    //  In an SDI app, this should occur after ProcessShellCommand
-    // Enable drag/drop open
-    m_pMainWnd->DragAcceptFiles();
+	// The one and only window has been initialized, so show and update it
+	m_pMainWnd->ShowWindow(SW_SHOW);
+	m_pMainWnd->UpdateWindow();
+	// call DragAcceptFiles only if there's a suffix
+	//  In an SDI app, this should occur after ProcessShellCommand
+	// Enable drag/drop open
+	m_pMainWnd->DragAcceptFiles();
 
-    // Bring main window to front
-    m_pMainWnd->SetWindowPos(&CWnd::wndTop, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-    m_pMainWnd->SetActiveWindow();
-    m_pMainWnd->SetFocus();
-    m_pMainWnd->SetForegroundWindow();
+	// Bring main window to front
+	m_pMainWnd->SetWindowPos(&CWnd::wndTop, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+	m_pMainWnd->SetActiveWindow();
+	m_pMainWnd->SetFocus();
+	m_pMainWnd->SetForegroundWindow();
 
-    return TRUE;
-
-    __SEH_LOGFATAL("COpenHoldemApp::InitInstance :\n");
+	return TRUE;
 }
 
 int COpenHoldemApp::ExitInstance()
 {
-    __SEH_HEADER
-
 	if (p_iterator_thread) 
 	{
 		delete p_iterator_thread;
@@ -235,32 +222,28 @@ int COpenHoldemApp::ExitInstance()
 	if (p_memory)  { delete p_memory; p_memory = NULL; }
 	if (p_versus)  { delete p_versus; p_versus = NULL; }
 
-    stop_log();
+	stop_log();
 
-    Scintilla_ReleaseResources();
+	Scintilla_ReleaseResources();
 
-    return CWinApp::ExitInstance();
-
-    __SEH_LOGFATAL("COpenHoldemApp::ExitInstance :\n");
+	return CWinApp::ExitInstance();
 }
 
-
 // CDlgAbout dialog used for App About
-
 class CDlgAbout : public CDialog 
 {
 public:
-    CDlgAbout();
+	CDlgAbout();
 
 // Dialog Data
-    enum { IDD = IDD_ABOUTBOX };
+	enum { IDD = IDD_ABOUTBOX };
 
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
 // Implementation
 protected:
-    DECLARE_MESSAGE_MAP()
+	DECLARE_MESSAGE_MAP()
 };
 
 CDlgAbout::CDlgAbout() : CDialog(CDlgAbout::IDD) 
@@ -269,7 +252,7 @@ CDlgAbout::CDlgAbout() : CDialog(CDlgAbout::IDD)
 
 void CDlgAbout::DoDataExchange(CDataExchange* pDX) 
 {
-    CDialog::DoDataExchange(pDX);
+	CDialog::DoDataExchange(pDX);
 }
 
 BEGIN_MESSAGE_MAP(CDlgAbout, CDialog)
@@ -278,26 +261,22 @@ END_MESSAGE_MAP()
 // App command to run the dialog
 void COpenHoldemApp::OnAppAbout() 
 {
-    CDlgAbout aboutDlg;
-    aboutDlg.DoModal();
+	CDlgAbout aboutDlg;
+	aboutDlg.DoModal();
 }
 
 // Added due to inability to get standard LoadStdProfileSettings working properly
 void COpenHoldemApp::MyLoadStdProfileSettings(UINT nMaxMRU) 
 {
-    __SEH_HEADER
+	ASSERT_VALID(this);
+	ASSERT(m_pRecentFileList == NULL);
 
-    ASSERT_VALID(this);
-    ASSERT(m_pRecentFileList == NULL);
-
-    if (nMaxMRU != 0) 
+	if (nMaxMRU != 0) 
 	{
-        // create file MRU since nMaxMRU not zero
-        m_pRecentFileList = new CRecentFileList(0, _afxFileSection, _afxFileEntry, nMaxMRU);
-        m_pRecentFileList->ReadList();
-    }
-    // 0 by default means not set
-    m_nNumPreviewPages = GetProfileInt(_afxPreviewSection, _afxPreviewEntry, 0);
-
-    __SEH_LOGFATAL("COpenHoldemApp::MyLoadStdProfileSettings :\n");
+		// create file MRU since nMaxMRU not zero
+		m_pRecentFileList = new CRecentFileList(0, _afxFileSection, _afxFileEntry, nMaxMRU);
+		m_pRecentFileList->ReadList();
+	}
+	// 0 by default means not set
+	m_nNumPreviewPages = GetProfileInt(_afxPreviewSection, _afxPreviewEntry, 0);
 }
