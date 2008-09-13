@@ -13,20 +13,11 @@
 class CMainFrame : public CFrameWnd 
 {
 protected: // create from serialization only
-	CMainFrame();
 	DECLARE_DYNCREATE(CMainFrame)
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	DECLARE_MESSAGE_MAP()
-	CStatusBar		m_wndStatusBar;
-	CMyToolBar		m_FlagsToolBar;
-	CString			status_plcards, status_comcards, status_pokerhand, status_prwin, status_nopp, status_nit, status_action,
-					status_handrank;
-	RECT			table_view_size;
 
-	int create_main_toolbar(void);
-	int create_flags_toolbar(void);
-	void align_toolbars(void);
-	int create_status_bar(void);
+	CMainFrame();
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnFileOpen();
 	afx_msg void OnEditFormula();
 	afx_msg void OnScraperOutput();
@@ -104,8 +95,18 @@ private:
 	// private functions and variables - not available via accessors or mutators
 	void ReadRegString(CString RegistryKey, char* RegistryValue);
 	void WriteRegString(CString RegistryKey, CString RegistryValue);
-
+	int CreateMainToolbar(void);
+	int CreateFlagsToolbar(void);
+	void AlignToolbars(void);
+	int CreateStatusBar(void);
+	
+	CStatusBar		_status_bar;
+	CMyToolBar		_tool_bar;
+	CString			_status_plcards, _status_comcards, _status_pokerhand, _status_prwin, _status_nopp;
+	CString			_status_nit, _status_action, _status_handrank;
+	RECT			_table_view_size;
 	bool			_autoplay_pressed;
+	RECT			_prev_att_rect, _prev_wrect;
 
 	CCritSec		m_critsec;
 

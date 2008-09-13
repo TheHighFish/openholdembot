@@ -12,26 +12,18 @@
 #include "DialogFormulaScintilla.h"
 
 // COpenHoldemDoc
-
 IMPLEMENT_DYNCREATE(COpenHoldemDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(COpenHoldemDoc, CDocument)
 END_MESSAGE_MAP()
 
-
 // COpenHoldemDoc construction/destruction
-
 COpenHoldemDoc::COpenHoldemDoc() 
 {
 	__SEH_SET_EXCEPTION_HANDLER
 
-	__SEH_HEADER
-
 	p_formula->ClearFormula();
-
-	__SEH_LOGFATAL("COpenHoldemDoc::Constructor : \n"); 
 }
-
 
 COpenHoldemDoc::~COpenHoldemDoc() 
 {
@@ -39,8 +31,6 @@ COpenHoldemDoc::~COpenHoldemDoc()
 
 BOOL COpenHoldemDoc::OnNewDocument() 
 {
-	__SEH_HEADER
-
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	if (!CDocument::OnNewDocument())
@@ -74,16 +64,12 @@ BOOL COpenHoldemDoc::OnNewDocument()
 	p_dll_extension->LoadDll("");
 
 	return true;
- 
-	__SEH_LOGFATAL("COpenHoldemDoc::OnNewDocument : \n"); 
 }
 
 
 // COpenHoldemDoc serialization
 void COpenHoldemDoc::Serialize(CArchive& ar) 
 {
-	__SEH_HEADER
-
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	// Writing a file
@@ -136,15 +122,10 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 		if (prefs.dll_load_on_startup())
 			p_dll_extension->LoadDll("");
 	}
- 
-	__SEH_LOGFATAL("COpenHoldemDoc::Serialize :\n"); 
 }
-
 
 void COpenHoldemDoc::ReadFormula(CArchive& ar) 
 {
-	__SEH_HEADER
-
 	// Clear everything
 	p_formula->ClearFormula();
 
@@ -174,14 +155,10 @@ void COpenHoldemDoc::ReadFormula(CArchive& ar)
 
 	// Check and add missing...
 	p_formula->CheckForDefaultFormulaEntries();
-			
-	__SEH_LOGFATAL("COpenHoldemDoc::ReadFormula :\n"); 
 }
 
 BOOL COpenHoldemDoc::IsWinHoldemFormat(CString the_FileName)
 {	
-	__SEH_HEADER
-
 	unsigned int Length = the_FileName.GetLength();
 
 	// Path maybe undefined at startup...
@@ -193,17 +170,11 @@ BOOL COpenHoldemDoc::IsWinHoldemFormat(CString the_FileName)
 	char critical_Character = the_FileName.GetString()[Length - 3];
 
 	return (critical_Character == 'w');
-
-	__SEH_LOGFATAL("COpenHoldemDoc::IsWinHoldemFormat :\n");
 }
 
 COpenHoldemDoc * COpenHoldemDoc::GetDocument() 
 {
-	__SEH_HEADER
-
 	CFrameWnd * pFrame = (CFrameWnd *)(AfxGetApp()->m_pMainWnd);
 	return (COpenHoldemDoc *) pFrame->GetActiveDocument();
- 
-	__SEH_LOGFATAL("COpenHoldemDoc::GetDocument : \n"); 
 }
 
