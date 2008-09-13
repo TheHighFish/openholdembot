@@ -27,14 +27,11 @@ CAutoplayer::CAutoplayer(BOOL bInitiallyOwn, LPCTSTR lpszName) : _mutex(bInitial
 	srand((unsigned)time( NULL ));
 
 	_autoplayer_enaged = false;
-
-	__SEH_LOGFATAL("CAutoplayer::Constructor : \n");
 }
 
 CAutoplayer::~CAutoplayer(void) 
 {
 }
-
 
 void CAutoplayer::DoChat(void)
 {

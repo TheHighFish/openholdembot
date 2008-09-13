@@ -161,8 +161,6 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 {
 	__SEH_SET_EXCEPTION_HANDLER
 
-	__SEH_HEADER
-
 	in_startup = true;
 
 	// Copy current doc formula into working set
@@ -188,8 +186,6 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 	m_pFRDlg = NULL;
 
 	hUDFItem = NULL;
-
-	__SEH_LOGFATAL("CDlgFormulaScintilla::Constructor :\n");
 }
 
 CDlgFormulaScintilla::~CDlgFormulaScintilla() 
