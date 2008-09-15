@@ -26,7 +26,8 @@ CAutoplayer::CAutoplayer(BOOL bInitiallyOwn, LPCTSTR lpszName) : _mutex(bInitial
 	// Seed RNG
 	srand((unsigned)time( NULL ));
 
-	_autoplayer_enaged = false;
+	set_autoplayer_engaged(false);
+	ResetHand();
 }
 
 CAutoplayer::~CAutoplayer(void) 
@@ -208,6 +209,19 @@ void CAutoplayer::DoAutoplayer(void)
 		else 
 			DoARCCF();
 	}
+}
+
+void CAutoplayer::ResetHand(void) 
+{
+	for (int i=0; i<=4; i++)
+	{
+		set_didchec(i,0);
+		set_didcall(i,0);
+		set_didrais(i,0);
+		set_didswag(i,0);
+	}
+
+	set_prevaction(-1);
 }
 
 void CAutoplayer::DoSwag(void) 
@@ -587,10 +601,9 @@ void CAutoplayer::DoSwag(void)
 				// record didswag/prevaction
 				int sym_br = (int) p_symbols->sym()->br;
 
-				CSLock lock(m_critsec);
-				_didswag[4] = p_symbols->sym()->didswag[4] + 1;
-				_didswag[sym_br-1] = p_symbols->sym()->didswag[sym_br-1] + 1;
-				_prevaction = PREVACT_SWAG;
+				set_didswag(4, p_symbols->sym()->didswag[4] + 1);
+				set_didswag(sym_br-1, p_symbols->sym()->didswag[sym_br-1] + 1);
+				set_prevaction(PREVACT_SWAG);
 
 				p_symbols->UpdateAutoplayerInfo();
 
@@ -768,37 +781,36 @@ void CAutoplayer::DoARCCF(void)
 			// record did*/prevaction
 			int sym_br = (int) p_symbols->sym()->br;
 
-			CSLock lock(m_critsec);
 			switch (do_click)
 			{
 				case 4:  // allin
-					_prevaction = PREVACT_ALLI;
+					set_prevaction(PREVACT_ALLI);
 					write_logautoplay("ALLI");
 					break;
 
 				case 3:  // raise
-					_didrais[4] = p_symbols->sym()->didrais[4] + 1;
-					_didrais[sym_br-1] = p_symbols->sym()->didrais[sym_br-1] + 1;
-					_prevaction = PREVACT_RAIS;
+					set_didrais(4, p_symbols->sym()->didrais[4] + 1);
+					set_didrais(sym_br-1, p_symbols->sym()->didrais[sym_br-1] + 1);
+					set_prevaction(PREVACT_RAIS);
 					write_logautoplay("RAIS");
 					break;
 
 				case 2:  // call
-					_didcall[4] = p_symbols->sym()->didcall[4] + 1;
-					_didcall[sym_br-1] = p_symbols->sym()->didcall[sym_br-1] + 1;
-					_prevaction = PREVACT_CALL;
+					set_didcall(4, p_symbols->sym()->didcall[4] + 1);
+					set_didcall(sym_br-1, p_symbols->sym()->didcall[sym_br-1] + 1);
+					set_prevaction(PREVACT_CALL);
 					write_logautoplay("CALL");
 					break;
 
 				case 1:  // check
-					_didchec[4] = p_symbols->sym()->didchec[4] + 1;
-					_didchec[sym_br-1] = p_symbols->sym()->didchec[sym_br-1] + 1;
-					_prevaction = PREVACT_CHEC;
+					set_didchec(4, p_symbols->sym()->didchec[4] + 1);
+					set_didchec(sym_br-1, p_symbols->sym()->didchec[sym_br-1] + 1);
+					set_prevaction(PREVACT_CHEC);
 					write_logautoplay("CHEC");
 					break;
 
 				case 0:  // fold
-					_prevaction = PREVACT_FOLD;
+					set_prevaction(PREVACT_FOLD);
 					write_logautoplay("FOLD");
 					break;
 			}
@@ -1083,8 +1095,7 @@ void CAutoplayer::DoPrefold(void)
 		p_symbols->set_elapsedautohold(my_time_t);
 
 		// set prevaction
-		CSLock lock(m_critsec);
-		_prevaction = PREVACT_FOLD;
+		set_prevaction(PREVACT_FOLD);
 
 		p_symbols->UpdateAutoplayerInfo();
 

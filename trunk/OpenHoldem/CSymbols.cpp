@@ -727,6 +727,9 @@ void CSymbols::CalcSymbols(void)
 		// Update game_state so it knows that a new hand has happened
 		p_game_state->set_new_hand(true);
 
+		// Reset autoplayer structures
+		p_autoplayer->ResetHand();
+
 		// Reset symbols and display
 		ResetSymbolsNewHand();
 		InvalidateRect(theApp.m_pMainWnd->GetSafeHwnd(), NULL, true);
