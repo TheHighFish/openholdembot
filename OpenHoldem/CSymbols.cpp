@@ -3554,16 +3554,16 @@ void CSymbols::CalcPrimaryFormulas(const bool final_answer)
 	_sym.isfinalanswer = final_answer;
 
 	e = SUCCESS;
-	_f$alli = gram.CalcF$symbol(p_formula, "f$alli", prefs.trace_functions(nTraceAlli), &e);
+	_f$alli = gram.CalcF$symbol(p_formula, "f$alli", (final_answer && prefs.trace_functions(nTraceAlli)), &e);
 
 	e = SUCCESS;
-	_f$swag = gram.CalcF$symbol(p_formula, "f$swag", prefs.trace_functions(nTraceSwag), &e);
+	_f$swag = gram.CalcF$symbol(p_formula, "f$swag", (final_answer && prefs.trace_functions(nTraceSwag)), &e);
 
 	e = SUCCESS;
-	_f$rais = gram.CalcF$symbol(p_formula, "f$rais", prefs.trace_functions(nTraceRais), &e);
+	_f$rais = gram.CalcF$symbol(p_formula, "f$rais", (final_answer && prefs.trace_functions(nTraceRais)), &e);
 
 	e = SUCCESS;
-	_f$call = gram.CalcF$symbol(p_formula, "f$call", prefs.trace_functions(nTraceCall), &e);
+	_f$call = gram.CalcF$symbol(p_formula, "f$call", (final_answer && prefs.trace_functions(nTraceCall)), &e);
 
 	_sym.isfinalanswer = false;
 
