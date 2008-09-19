@@ -12,8 +12,9 @@ BUG FIXES:
 - Eliminated artificial limitations on the number of font or hash records that can be present in any given tablemap (.tm) file.
   Previously this was set to 512 for each.  Thank you to Nick Coldhand & Folder for busting the limit.  (OpenHoldem)
 - Fix for non-released crit sec in CDlgScraperOutput::do_update_display. Identification by ZooBoy, patch by Elvis.
-
-
+- The Autoplayer Trace was logging the main functions multiple times (this incorrect behaviour was not in a released version) (Spew)
+- log$ functions were not displayed properly on the main OH display (Spew)
+- The formula editor would allow the creation of duplicate lists and udfs.  The rename and new operations did not check for uniqueness (Spew)
 MAINTENANCE:
 - Removal of fatal_error.log creation on crash.  This has been replaced by minidumps.
 
