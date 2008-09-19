@@ -437,7 +437,7 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	{
 		for (int i=0; i<min(5, p_symbols->logsymbols_collection()->GetCount()); i++)
 		{
-			s.Format("  Log: %s\n", p_symbols->logsymbols_collection()[i]);
+			s.Format("  Log: %s\n", p_symbols->logsymbols_collection()->GetAt(i));
 			t.Append(s);
 		}
 	}
