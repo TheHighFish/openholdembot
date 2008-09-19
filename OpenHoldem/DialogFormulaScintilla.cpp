@@ -983,6 +983,19 @@ void CDlgFormulaScintilla::OnNew()
 	{
 		if (newdlg.type == 0) 
 		{
+			bool bAlreadyExists = false;
+			for (int i=0; i<m_wrk_formula.formula()->mHandList.GetSize(); i++)
+			{
+				if (m_wrk_formula.formula()->mHandList[i].list == newdlg.CSnewname) {
+					bAlreadyExists = true;
+					break;
+				}
+			}
+			if (bAlreadyExists) {
+				MessageBox("Cannot proceed as list already exists");
+				return;
+			}
+
 			List.list = newdlg.CSnewname;
 			List.list_text = "";
 
@@ -1002,6 +1015,21 @@ void CDlgFormulaScintilla::OnNew()
 		}
 		else 
 		{
+			bool bAlreadyExists = false;
+			for (int i=0; i<m_wrk_formula.formula()->mFunction.GetSize(); i++) 
+			{
+				if (m_wrk_formula.formula()->mFunction[i].func == newdlg.CSnewname) 
+				{
+					bAlreadyExists = true;
+					break;
+				}
+			}
+
+			if (bAlreadyExists) {
+				MessageBox("Cannot proceed as this function already exists");
+				return;
+			}
+
 			Func.func = newdlg.CSnewname;
 			Func.func_text = "";
 			Func.fresh = false;
@@ -1070,16 +1098,29 @@ void CDlgFormulaScintilla::OnRename()
 		// Renaming a list
 		if (memcmp(str, "list", 4) == 0) 
 		{
-			// Find proper list
-			N = (int) m_wrk_formula.formula()->mHandList.GetSize();
-			for (i=0; i<N; i++) 
+			bool bAlreadyExists = false;
+			for (i=0; i<m_wrk_formula.formula()->mHandList.GetSize(); i++)
 			{
-				if (m_wrk_formula.formula()->mHandList[i].list == rendlg.CSoldname) 
-				{
-					// Update it in the CArray working set
-					m_wrk_formula.set_list_list(i, rendlg.CSnewname);
-					didRename = true;
+				if (m_wrk_formula.formula()->mHandList[i].list == rendlg.CSnewname) {
+					bAlreadyExists = true;
 					break;
+				}
+			}
+			if (bAlreadyExists) {
+				MessageBox("Cannot rename to a list that already exists");
+				PostMessage(WM_COMMAND, ID_FORMULA_EDIT_RENAME);
+			} else {
+				// Find proper list
+				N = (int) m_wrk_formula.formula()->mHandList.GetSize();
+				for (i=0; i<N; i++) 
+				{
+					if (m_wrk_formula.formula()->mHandList[i].list == rendlg.CSoldname) 
+					{
+						// Update it in the CArray working set
+						m_wrk_formula.set_list_list(i, rendlg.CSnewname);
+						didRename = true;
+						break;
+					}
 				}
 			}
 		}
@@ -1088,18 +1129,34 @@ void CDlgFormulaScintilla::OnRename()
 		else if (memcmp(str, "f$", 2) == 0) 
 		{
 			bRenameUDF = true;
-			// Find proper UDF and display it
-			N = (int) m_wrk_formula.formula()->mFunction.GetSize();
-			for (i=0; i<N; i++) 
-			{
-				if (m_wrk_formula.formula()->mFunction[i].func == s) 
-				{
-					// Update it in the CArray working set
-					m_wrk_formula.set_func_func(i, rendlg.CSnewname);
-					m_wrk_formula.set_func_fresh(i, false);
 
-					didRename = true;
+			bool bAlreadyExists = false;
+			for (i=0; i<m_wrk_formula.formula()->mFunction.GetSize(); i++) 
+			{
+				if (m_wrk_formula.formula()->mFunction[i].func == rendlg.CSnewname) 
+				{
+					bAlreadyExists = true;
 					break;
+				}
+			}
+
+			if (bAlreadyExists) {
+				MessageBox("Cannot rename to a formula that already exists");
+				PostMessage(WM_COMMAND, ID_FORMULA_EDIT_RENAME);
+			} else {
+				// Find proper UDF and display it
+				N = (int) m_wrk_formula.formula()->mFunction.GetSize();
+				for (i=0; i<N; i++) 
+				{
+					if (m_wrk_formula.formula()->mFunction[i].func == s) 
+					{
+						// Update it in the CArray working set
+						m_wrk_formula.set_func_func(i, rendlg.CSnewname);
+						m_wrk_formula.set_func_fresh(i, false);
+
+						didRename = true;
+						break;
+					}
 				}
 			}
 		}
