@@ -1,14 +1,8 @@
 v1.1.8 2008-09-26
 =================
-NEW STUFF:
-- NONE PLANNED
-
-
-BUG FIXES:
-
-
 MAINTENANCE:
 - Removal of fatal_error.log creation on crash.  This has been replaced by minidumps.
+- Further stabilization of code tree, especially regarding class encapsulation and thread critical section handling.
 
 
 v1.1.7 2008-08-22

@@ -1,9 +1,5 @@
 v1.9.4 2008-09-26
 =================
-NEW STUFF:
-- NONE PLANNED
-
-
 BUG FIXES:
 - Validation of card information passed in from PokerPro server to avoid crashes when/if bad information
   is passed in. (OpenHoldem)
@@ -17,6 +13,7 @@ BUG FIXES:
 
 MAINTENANCE:
 - Removal of fatal_error.log creation on crash.  This has been replaced by minidumps.
+- Further stabilization of code tree, especially regarding class encapsulation and thread critical section handling.
 
 
 v1.9.3 2008-08-22
