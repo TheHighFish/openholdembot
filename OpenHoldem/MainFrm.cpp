@@ -159,6 +159,7 @@ CMainFrame::CMainFrame()
 
 	_autoplay_pressed = false;
 	_attached_hwnd = NULL;
+	_wait_cursor = false;
 
 	for (int i=0; i<=9; i++)
 		_flags[i] = false;
