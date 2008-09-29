@@ -345,7 +345,8 @@ void start_log(void)
 	{
         CString fn;
         fn.Format("%s\\oh_%lu.log", _startup_path, theApp._session_id);
-        if (fopen_s(&log_fp, fn.GetString(), "a")==0)
+
+		if ((log_fp = _fsopen(fn.GetString(), "a", _SH_DENYWR)) != 0)
 		{
 			write_log("! log file open\n");
 			fprintf(log_fp, "yyyy.mm.dd hh:mm:ss -  # hand commoncard rank poker  win  los  tie  P      nit bestaction - play*      call       bet       pot   balance - FCRA FCRA swag\n");
