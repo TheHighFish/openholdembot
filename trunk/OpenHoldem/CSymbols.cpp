@@ -1041,55 +1041,53 @@ void CSymbols::CalcStakes(void)
 		}
 
 		// Return now, if we have locked the blinds
-		if (p_scraper->s_lock_blinds()->blinds_are_locked)
-			return;
-
-		// if we still do not have blinds, then infer them from the posted bets
-		if (_sym.br == 1 && (_sym.sblind==0 || _sym.bblind==0))
-		{
-			for (i=_sym.dealerchair+1; i<=_sym.dealerchair+p_tablemap->s$items()->num_chairs; i++)
+		if (!p_scraper->s_lock_blinds()->blinds_are_locked) {
+			// if we still do not have blinds, then infer them from the posted bets
+			if (_sym.br == 1 && (_sym.sblind==0 || _sym.bblind==0))
 			{
-				if (p_scraper->card_player(i%p_tablemap->s$items()->num_chairs, 0) != CARD_NOCARD && 
-					p_scraper->card_player(i%p_tablemap->s$items()->num_chairs, 0) != CARD_NOCARD)
+				for (i=_sym.dealerchair+1; i<=_sym.dealerchair+p_tablemap->s$items()->num_chairs; i++)
 				{
-					if (p_scraper->player_bet(i%p_tablemap->s$items()->num_chairs) != 0 && !found_inferred_sb)
+					if (p_scraper->card_player(i%p_tablemap->s$items()->num_chairs, 0) != CARD_NOCARD && 
+						p_scraper->card_player(i%p_tablemap->s$items()->num_chairs, 0) != CARD_NOCARD)
 					{
-						if (_sym.sblind==0)
+						if (p_scraper->player_bet(i%p_tablemap->s$items()->num_chairs) != 0 && !found_inferred_sb)
 						{
-							_sym.sblind = p_scraper->player_bet(i%p_tablemap->s$items()->num_chairs);
-							found_inferred_sb = true;
-						}
-					}
-
-					else if (p_scraper->player_bet(i%p_tablemap->s$items()->num_chairs) != 0 && found_inferred_sb && !found_inferred_bb)
-					{
-						if (_sym.bblind==0)
-						{
-							// !heads up - normal blinds
-							if (i%p_tablemap->s$items()->num_chairs != _sym.dealerchair)
+							if (_sym.sblind==0)
 							{
-								_sym.bblind = p_scraper->player_bet(i%p_tablemap->s$items()->num_chairs);
-							}
-							// heads up - reversed blinds
-							else
-							{
-								_sym.bblind = _sym.sblind;
 								_sym.sblind = p_scraper->player_bet(i%p_tablemap->s$items()->num_chairs);
+								found_inferred_sb = true;
 							}
-							found_inferred_bb = true;
+						}
+
+						else if (p_scraper->player_bet(i%p_tablemap->s$items()->num_chairs) != 0 && found_inferred_sb && !found_inferred_bb)
+						{
+							if (_sym.bblind==0)
+							{
+								// !heads up - normal blinds
+								if (i%p_tablemap->s$items()->num_chairs != _sym.dealerchair)
+								{
+									_sym.bblind = p_scraper->player_bet(i%p_tablemap->s$items()->num_chairs);
+								}
+								// heads up - reversed blinds
+								else
+								{
+									_sym.bblind = _sym.sblind;
+									_sym.sblind = p_scraper->player_bet(i%p_tablemap->s$items()->num_chairs);
+								}
+								found_inferred_bb = true;
+							}
 						}
 					}
 				}
+
+				// check for reasonableness
+				if (_sym.bblind > _sym.sblind*2)
+					_sym.bblind = _sym.sblind*2;
+
+				if (_sym.sblind >= _sym.bblind)
+					_sym.sblind = _sym.bblind/2;
 			}
-
-			// check for reasonableness
-			if (_sym.bblind > _sym.sblind*2)
-				_sym.bblind = _sym.sblind*2;
-
-			if (_sym.sblind >= _sym.bblind)
-				_sym.sblind = _sym.bblind/2;
 		}
-
 	LeaveCriticalSection(&cs_symbols);
 }
 
