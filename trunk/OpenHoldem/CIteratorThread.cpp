@@ -55,7 +55,8 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 	CIteratorThread *pParent = static_cast<CIteratorThread*>(pParam);
 
-	int				i = 0, j = 0, k = 0, randfix = 0, nit = 0; //modified by Matrix 2008-05-08
+	int				i = 0, j = 0, k = 0, randfix = 0;
+	unsigned int	nit = 0;
 	CardMask		addlcomCards = {0}, evalCards = {0}, usedCards = {0}, temp_usedCards = {0};
 	unsigned int	ocard[MAX_OPPONENTS*2] = {0}, card = 0, pl_pokval = 0, opp_pokval = 0, opp_pokvalmax = 0;
 	HandVal			pl_hv = 0, opp_hv = 0;
@@ -346,9 +347,9 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 			_iter_vars.iterator_thread_running = false;
 			_iter_vars.iterator_thread_complete = true;
 			_iter_vars.iterator_thread_progress = nit;
-			_iter_vars.prwin = pParent->_win / _iter_params.nit;
-			_iter_vars.prtie = pParent->_tie / _iter_params.nit;
-			_iter_vars.prlos = pParent->_los / _iter_params.nit;
+			_iter_vars.prwin = pParent->_win / (double) _iter_params.nit;
+			_iter_vars.prtie = pParent->_tie / (double) _iter_params.nit;
+			_iter_vars.prlos = pParent->_los / (double) _iter_params.nit;
 		LeaveCriticalSection(&cs_iterator);
 	}
 	else

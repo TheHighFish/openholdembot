@@ -8,9 +8,9 @@ extern CRITICAL_SECTION	cs_iterator;
 
 extern struct SIterParams
 {
-	double			nit;
-	double			f$p;
-	double			br;
+	unsigned int	nit;
+	unsigned int	f$p;
+	unsigned int	br;
 	unsigned int	pcard[2];
 	unsigned int	ccard[5];
 } _iter_params;

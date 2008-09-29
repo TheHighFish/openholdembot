@@ -1423,9 +1423,9 @@ void CSymbols::CalcProbabilities(void)
 	// - changed player cards
 	// - changed common cards
 	need_recalc = false;
-	if (_sym.nopponents != _iter_params.f$p ||
-		_sym.nit != _iter_params.nit ||
-		_sym.br != _iter_params.br)
+	if ((int) _sym.nopponents != _iter_params.f$p ||
+		(int) _sym.nit != _iter_params.nit ||
+		(int) _sym.br != _iter_params.br)
 	{
 		need_recalc = true;
 	}
