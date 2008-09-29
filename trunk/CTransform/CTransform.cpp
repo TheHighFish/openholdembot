@@ -23,7 +23,7 @@ CTransform::~CTransform(void)
 const int CTransform::DoTransform(const STablemapRegion *region, const HDC hdc, CString *text, CString *separation, COLORREF *cr_avg) 
 {
 	bool				character[MAX_CHAR_WIDTH][MAX_CHAR_HEIGHT] = {false};	
-	bool				background[MAX_CHAR_WIDTH] = {false};
+	bool				background[MAX_CHAR_WIDTH] = {true};
 
 	switch (region->transform.GetString()[0]) 
 	{
@@ -352,11 +352,12 @@ const int CTransform::HTypeTransform(const STablemapRegion *region, const HDC hd
 
 
 const int CTransform::TTypeTransform(const STablemapRegion *region, const HDC hdc, CString *text, CString *separation, 
-									 bool background[], bool character[][MAX_CHAR_HEIGHT])
+									 bool background[], bool (*character)[MAX_CHAR_HEIGHT])
 {
 	int					x = 0, y = 0;
 	int					i = 0;
-	int					width = 0, height = 0;
+	int					width = region->right - region->left;
+	int					height = region->bottom - region->top;
 	CString				s$tXtype = "";
 	HBITMAP				hbm = NULL;
 	BYTE				*pBits = NULL, alpha = 0, red = 0, green = 0, blue = 0;
@@ -368,25 +369,15 @@ const int CTransform::TTypeTransform(const STablemapRegion *region, const HDC hd
 
 	// Initialize
 	*text = "";
-	for (x=0; x<MAX_CHAR_WIDTH; x++) 
-	{
-		background[x] = true;
-		for (y=0; y<MAX_CHAR_HEIGHT; y++) 
-		{
-			character[x][y] = false;
-		}
-	}
 
 	// Check max size
-	width = region->right - region->left;
-	height = region->bottom - region->top;
-	if (width >= MAX_CHAR_WIDTH) 
+	if (width+1 > MAX_CHAR_WIDTH) 
 	{
 		text->Append("Field too wide");
 		HeapFree(GetProcessHeap(), NULL, bmi);
 		return ERR_FIELD_TOO_LARGE;
 	}
-	if (height >= MAX_CHAR_HEIGHT) 
+	if (height+1 > MAX_CHAR_HEIGHT) 
 	{
 		text->Append("Field too tall");
 		HeapFree(GetProcessHeap(), NULL, bmi);
@@ -520,6 +511,9 @@ const int CTransform::DoPlainFontScan(const STablemapRegion *region, const int w
 		// scanning right to left to find the largest match
 		// start at vert_band_left+MAX_SINGLE_CHAR_WIDTH
 		temp_right = vert_band_left + MAX_SINGLE_CHAR_WIDTH;
+
+		if (temp_right>width)
+			temp_right = width;
 
 		bool continue_looping = true;
 		do 

@@ -35,7 +35,7 @@ public:
 	const int DoTransform(const STablemapRegion *region, const HDC hdc, CString *text, 
 						  CString *separation=NULL, COLORREF *cr_avg=0);
 	const int TTypeTransform(const STablemapRegion *region, const HDC hdc, CString *text, 
-							 CString *separation, bool background[], bool character[][MAX_CHAR_HEIGHT]);
+							 CString *separation, bool background[], bool (*character)[MAX_CHAR_HEIGHT]);
 	const void ParseStringBSL(const CString text, const CString format, CString *results=NULL, 	
 							  double *handnumber=NULL, double *sblind=NULL, double *bblind=NULL, double *bbet=NULL, 
 							  double *ante=NULL, int *limit=NULL, double *sb_bb=NULL, double *bb_BB=NULL, bool *istournament=NULL,
