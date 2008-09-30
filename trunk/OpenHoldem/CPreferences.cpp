@@ -220,7 +220,7 @@ void CPreferences::ReadFromRegistry()
 		ReadReg("swag_bet_confirmation", &_bet_confirmation_method);
 		ReadReg("button_click_method", &_button_click_method);
 		ReadReg("auto", &_ap_auto);
-		/*ReadReg("focus_detect", &_focus_detect);*/
+		ReadReg("focus_detect", &_focus_detect);
 
 		// prefs - dll extension
 		ReadReg("dll_always_send_state", &_dll_always_send_state);
@@ -294,8 +294,10 @@ void CPreferences::ReadFromRegistry()
 		ReadReg("log_symbol_max_log", &_log_symbol_max_log);
 
 		ReadReg("trace_enabled", &_trace_enabled);
+
 		CString regValue;
-		for (int i=0;i<nTraceFunctions;i++) {
+		for (int i=0;i<nTraceFunctions;i++) 
+		{
 			regValue.Format("trace_functions%d", i+1);
 			ReadReg(regValue, &_trace_functions[i]);
 		}
