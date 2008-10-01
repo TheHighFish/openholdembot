@@ -214,7 +214,7 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 	}
 }
 
-void CFormula::WriteFormula(CArchive& ar) 
+void CFormula::WriteFormula(CArchive& ar, bool use_new_OHF_style) 
 {
 	CString		s = "";
 	int			i = 0, N = (int) _formula.mFunction.GetSize();
@@ -225,8 +225,7 @@ void CFormula::WriteFormula(CArchive& ar)
 	//	* are essential to control the behaviour 
 	//	  of (nearly) every poker bot.
 	//	* configure some very important constants.
-	//  Removed f$evcall and f$evraise.
-	//  Added f$delay and f$chat.
+	//  
 	s.Format("##%s##\r\n\r\n", get_time(nowtime)); ar.WriteString(s);
 
 	for (i=0; i<N; i++) 
@@ -269,14 +268,35 @@ void CFormula::WriteFormula(CArchive& ar)
 		if (_formula.mFunction[i].func == "f$prefold") 
 			ar.WriteString("##f$prefold##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
 	
-	for (i=0; i<N; i++) 
-		if (_formula.mFunction[i].func == "f$delay") 
-			ar.WriteString("##f$delay##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
+	// New standard formulas are
+	//   * f$delay
+	//   * f$chat
+	//
+	// Old standard formulas are:
+	//   * f$evrais 
+	//   * f§evcall
+	//
+	if (use_new_OHF_style)
+	{
+		for (i=0; i<N; i++) 
+			if (_formula.mFunction[i].func == "f$delay") 
+				ar.WriteString("##f$delay##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
 	
-	for (i=0; i<N; i++) 
-		if (_formula.mFunction[i].func == "f$chat") 
-			ar.WriteString("##f$chat##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
+		for (i=0; i<N; i++) 
+			if (_formula.mFunction[i].func == "f$chat") 
+				ar.WriteString("##f$chat##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
+	}
+	else
+	{
+		for (i=0; i<N; i++) 
+			if (_formula.mFunction[i].func == "f$evrais") 
+				ar.WriteString("##f$evrais##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
 	
+		for (i=0; i<N; i++) 
+			if (_formula.mFunction[i].func == "f$evcall") 
+				ar.WriteString("##f$evcall##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
+	}
+
 	for (i=0; i<N; i++) 
 		if (_formula.mFunction[i].func == "f$P") 
 			ar.WriteString("##f$P##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
@@ -293,29 +313,36 @@ void CFormula::WriteFormula(CArchive& ar)
 		if (_formula.mFunction[i].func == "f$debug") 
 			ar.WriteString("##f$debug##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
 
-	// handlists
+	// handlists for both ohf and old whf style
 	for (i=0; i<(int) _formula.mHandList.GetSize(); i++) 
 		ar.WriteString("##" + _formula.mHandList[i].list + "##\r\n" + _formula.mHandList[i].list_text + "\r\n\r\n");
 
-	// ...then write the user defined functions.
-	for (i=0; i<(int) _formula.mFunction.GetSize(); i++) 
+	// User defined functions for new ohf style only.
+	// We don't ever have to save them, as for a conversion
+	// we only have to generate an ohf file and (for technical reasons)
+	// recreate the old whf (which is already open for storing).
+	//
+	if (use_new_OHF_style)
 	{
-		if (_formula.mFunction[i].func != "notes" &&
-			_formula.mFunction[i].func != "dll" &&
-			_formula.mFunction[i].func != "f$alli" &&
-			_formula.mFunction[i].func != "f$swag" &&
-			_formula.mFunction[i].func != "f$srai" &&
-			_formula.mFunction[i].func != "f$rais" &&
-			_formula.mFunction[i].func != "f$call" &&
-			_formula.mFunction[i].func != "f$prefold" &&
-			_formula.mFunction[i].func != "f$delay" &&
-			_formula.mFunction[i].func != "f$chat" &&
-			_formula.mFunction[i].func != "f$P" &&
-			_formula.mFunction[i].func != "f$play" &&
-			_formula.mFunction[i].func != "f$test" &&
-			_formula.mFunction[i].func != "f$debug" ) 
+		for (i=0; i<(int) _formula.mFunction.GetSize(); i++) 
 		{
-			ar.WriteString("##" + _formula.mFunction[i].func + "##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
+			if (_formula.mFunction[i].func != "notes" &&
+				_formula.mFunction[i].func != "dll" &&
+				_formula.mFunction[i].func != "f$alli" &&
+				_formula.mFunction[i].func != "f$swag" &&
+				_formula.mFunction[i].func != "f$srai" &&
+				_formula.mFunction[i].func != "f$rais" &&
+				_formula.mFunction[i].func != "f$call" &&
+				_formula.mFunction[i].func != "f$prefold" &&
+				_formula.mFunction[i].func != "f$delay" &&
+				_formula.mFunction[i].func != "f$chat" &&
+				_formula.mFunction[i].func != "f$P" &&
+				_formula.mFunction[i].func != "f$play" &&
+				_formula.mFunction[i].func != "f$test" &&
+				_formula.mFunction[i].func != "f$debug" ) 
+			{
+				ar.WriteString("##" + _formula.mFunction[i].func + "##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
+			}
 		}
 	}
 }

@@ -51,7 +51,7 @@ public:
 	void ClearFormula();
 	void SetDefaultBot();
 	void ReadFormulaFile(CArchive& ar, bool ignoreFirstLine);
-	void WriteFormula(CArchive& ar);
+	void WriteFormula(CArchive& ar, bool use_new_OHF_style);
 	void CreateHandListMatrices();
 	bool ParseAllFormula(HWND hwnd);
 	void CheckForDefaultFormulaEntries();

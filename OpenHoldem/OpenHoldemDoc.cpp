@@ -75,23 +75,29 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 	// Writing a file
 	if (ar.IsStoring()) 
 	{
-
 		if (IsWinHoldemFormat(ar.GetFile()->GetFileName())) 
-		{
-			MessageBox(0, "Converting file formats\n{whf, whx} -> {ohf}",
-				"File Conversion", MB_OK | MB_ICONINFORMATION);		
-			CString the_old_FileName = GetPathName();
-			CString the_new_FileName = GetPathName();
-			the_new_FileName.Replace("whf", "ohf");
-			SetPathName(the_new_FileName);			
-			ar.GetFile()->Close();			
-			//ar.GetFile()->Rename(the_old_FileName, the_new_FileName);	
-			ar.GetFile()->Open(the_new_FileName, CFile::modeCreate | CFile::modeWrite);
+		{	
+			// Write old style formula (WHF)
+			p_formula->WriteFormula(ar, false);
+			// Do not close this archive here.
+			// It's expected to stay open at this point!
 		}
-
-		p_formula->WriteFormula(ar);
+		// Prepare new filename, in case it's an old "whf".
+		CString the_new_FileName = GetPathName();
+		the_new_FileName.Replace("whf", "ohf");		
+		// Notification
+		MessageBox(0, "Converting file formats\n{whf, whx} -> {ohf}",
+			"File Conversion", MB_OK | MB_ICONINFORMATION);	
+		// Open new style formula (OHF)	
+		CFile OHF_File;
+		OHF_File.Open(the_new_FileName, CFile::modeCreate | CFile::modeWrite);
+		CArchive OHF_Archive(&OHF_File, CArchive::store);
+		// Write new style formula (OHF) in any case
+		p_formula->WriteFormula(OHF_Archive, true);
+		// Close archive and file
+		OHF_Archive.Close();
+		OHF_File.Close();		
 	}
-
 	// Reading a file
 	else 
 	{
