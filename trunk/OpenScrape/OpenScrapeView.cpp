@@ -350,10 +350,10 @@ void COpenScrapeView::OnMouseMove(UINT nFlags, CPoint point)
 		height = p_tablemap->r$()->GetAt(dragged_region).bottom - p_tablemap->r$()->GetAt(dragged_region).top;
 
 		// Update internal structure for selected region
-		p_tablemap->set_r$_left(drawrect_region, point.x - drag_left_offset);
-		p_tablemap->set_r$_top(drawrect_region, point.y - drag_top_offset);
-		p_tablemap->set_r$_right(drawrect_region, p_tablemap->r$()->GetAt(dragged_region).left + width);
-		p_tablemap->set_r$_bottom(drawrect_region, p_tablemap->r$()->GetAt(dragged_region).top + height);
+		p_tablemap->set_r$_left(dragged_region, point.x - drag_left_offset);
+		p_tablemap->set_r$_top(dragged_region, point.y - drag_top_offset);
+		p_tablemap->set_r$_right(dragged_region, p_tablemap->r$()->GetAt(dragged_region).left + width);
+		p_tablemap->set_r$_bottom(dragged_region, p_tablemap->r$()->GetAt(dragged_region).top + height);
 
 		// Update table map dialog
 		text.Format("%d", p_tablemap->r$()->GetAt(dragged_region).left);
