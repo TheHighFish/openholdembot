@@ -703,8 +703,9 @@ void CDlgFormulaScintilla::OnSymbolTreeTipInfo(NMHDR *pNMHDR, LRESULT *pResult)
 	if (lpGetInfoTip && lpGetInfoTip->hItem)
 	{
 		const char *description = (const char *)m_SymbolTree.GetItemData(lpGetInfoTip->hItem);
+
 		if (description)
-			strcpy_s(lpGetInfoTip->pszText, strlen(description), description);
+			strcpy_s(lpGetInfoTip->pszText, lpGetInfoTip->cchTextMax, description);
 	}
 
 	*pResult = 0;
