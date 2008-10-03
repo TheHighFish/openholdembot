@@ -133,13 +133,13 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
+				Optimization="3"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="false"
 				EnableFiberSafeOptimizations="true"
-				WholeProgramOptimization="false"
+				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="&quot;..\spirit-1.8.5-miniboost&quot;;..\pokereval\include;..\postgres;..\winmgr;&quot;..\hscroll-list-box&quot;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;OEMRESOURCE"
 				MinimalRebuild="false"
