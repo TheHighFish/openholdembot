@@ -3,6 +3,7 @@ v1.1.8 2008-09-26
 MAINTENANCE:
 - Removal of fatal_error.log creation on crash.  This has been replaced by minidumps.
 - Further stabilization of code tree, especially regarding class encapsulation and thread critical section handling.
+- The Optimizer in the compiler has now been enabled by default for Release builds.
 
 
 v1.1.7 2008-08-22
