@@ -1073,6 +1073,12 @@ void CScraper::ScrapeButtons(HDC hdcCompatible, HDC hdc)
 		LeaveCriticalSection(&cs_scraper);
 	}
 
+	// When using MM, grab i5state for PT network
+	if ((bool) p_symbols->sym()->ismanual)
+	{
+		p_tablemap->set_s$items_network(p_scraper->button_state(5));
+	}
+
 	// i86 button state
 	r$index = p_tablemap->r$indexes()->r$i86state_index;
 	if (r$index!=-1)

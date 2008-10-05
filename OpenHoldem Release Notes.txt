@@ -13,6 +13,9 @@ BUG FIXES:
 - Added range check in CTransform::DoPlainFontScan to correct out-of-range error with large fields (more than 169 pixels wide).
   This bounds violation can and will cause sporadic access violation crashes. Thanks to Nick for finding the problem and providing 
   the .tm/frame to diagnose the issue.
+- Corrected OH to properly recognize "Network" setting on ManualMode, to report "network$" symbol correctly, and to correctly
+  retrieve PokerTracker symbols when connected to a ManualMode table.
+  
 
 MAINTENANCE:
 - Removal of fatal_error.log creation on crash.  This has been replaced by minidumps.

@@ -4181,7 +4181,7 @@ const int CSymbols::GetSiteId (void)
 		{
 			for (i=0; i<=20; i++)
 			{
-				if ((p_game_state->mm_network().GetString() == networkid[i]) && strlen(networkid[i]))
+				if ((p_tablemap->s$items()->network == networkid[i]) && strlen(networkid[i]))
 					return i;
 			}
 		}

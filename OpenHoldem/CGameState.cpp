@@ -36,8 +36,6 @@ CGameState::CGameState()
 	_ftr_dealer_chair_last = 0;
 	_ftr_nflopc_last = 0;
 	_ftr_nplayersdealt_last = 0;
-
-	_mm_network = "";
 }
 
 CGameState::~CGameState()
@@ -145,13 +143,6 @@ void CGameState::CaptureState(const char *title)
 			 p_scraper->card_player(sym_chair, 1) == CARD_NOCARD)
 	{
 		playing = false;
-	}
-
-	// When using MM, grab i5state for PT network
-	bool sym_ismanual = (bool) p_symbols->sym()->ismanual;
-	if (sym_ismanual)
-	{
-		set_mm_network(p_scraper->button_state(5));
 	}
 
 	// Poker window title
