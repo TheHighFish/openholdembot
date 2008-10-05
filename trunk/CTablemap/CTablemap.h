@@ -232,6 +232,7 @@ public:
 	void	set_r$_curbmp(const int n, const HBITMAP h) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].cur_bmp = h;  }
 	void	delete_r$_lastbmp(const int n) { ENT if (n>=0 && n<=_r$.GetSize()) { DeleteObject(_r$[n].last_bmp); _r$[n].last_bmp=NULL; }  }
 	void	delete_r$_curbmp(const int n) { ENT if (n>=0 && n<=_r$.GetSize()) { DeleteObject(_r$[n].cur_bmp); _r$[n].cur_bmp=NULL; }   }
+	void	set_s$items_network(const CString s) { ENT _s$items.network=s; }
 
 	const INT_PTR	set_z$_add(const STablemapSize s) { ENT return _z$.Add(s); }
 	const INT_PTR	set_s$_add(const STablemapSymbol s) { ENT return _s$.Add(s); }

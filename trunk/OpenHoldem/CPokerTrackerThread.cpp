@@ -556,16 +556,8 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 	bool sym_isppro = (bool) p_symbols->sym()->isppro;
 	bool sym_ismanual = (bool) p_symbols->sym()->ismanual;
 
-	while (true)
+	while (::WaitForSingleObject(pParent->_m_stop_thread, 0) != WAIT_OBJECT_0)
 	{
-
-		// Check event for stop thread
-		if(::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
-		{
-			// Set event
-			::SetEvent(pParent->_m_wait_thread);
-			AfxEndThread(0);
-		}
 
 		if (!pParent->_connected)
 			pParent->Connect();
@@ -592,4 +584,8 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 				  ::WaitForSingleObject(pParent->_m_stop_thread, 0)!=WAIT_OBJECT_0; i++)
 			Sleep(1000);
 	}
+
+	// Set event
+	::SetEvent(pParent->_m_wait_thread);
+	return 0;
 }
