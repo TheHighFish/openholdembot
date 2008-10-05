@@ -16,10 +16,6 @@ CPokerTrackerThread::CPokerTrackerThread()
 
 	int				i = 0, j = 0;
 
-	// Create events
-	_m_stop_thread = CreateEvent(0, TRUE, FALSE, 0);
-	_m_wait_thread = CreateEvent(0, TRUE, FALSE, 0);
-
 	// Initialize variables
 	_pt_thread = NULL;
 
@@ -47,14 +43,14 @@ CPokerTrackerThread::CPokerTrackerThread()
 CPokerTrackerThread::~CPokerTrackerThread()
 {
 	StopThread();
-
-	// Close handles
-	::CloseHandle(_m_stop_thread);
-	::CloseHandle(_m_wait_thread);
 }
 
 void CPokerTrackerThread::StartThread()
 {
+	// Create events
+	_m_stop_thread = CreateEvent(0, TRUE, FALSE, 0);
+	_m_wait_thread = CreateEvent(0, TRUE, FALSE, 0);
+
 	if (_pt_thread == NULL)
 	{
 		_pt_thread = AfxBeginThread(PokertrackerThreadFunction, this);
@@ -79,6 +75,10 @@ void CPokerTrackerThread::StopThread()
 
 		write_log("Stopped Poker Tracker thread.\n");
 	}
+
+	// Close handles
+	::CloseHandle(_m_stop_thread);
+	::CloseHandle(_m_wait_thread);
 }
 
 const double CPokerTrackerThread::ProcessQuery (const char * s)
