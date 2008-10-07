@@ -96,10 +96,10 @@ public:
 	const int formula_dx() { return _formula_dx; }
 	const int formula_dy() { return _formula_dy; }	
 	// Blind locking
-	const int sblind() { return _sblind; }
-	const int bblind() { return _bblind; }
-	const int bbet() { return _bbet; }
-	const int ante() { return _ante; }
+	const double sblind() { return _sblind; }
+	const double bblind() { return _bblind; }
+	const double bbet() { return _bbet; }
+	const double ante() { return _ante; }
 	const int gametype() { return _gametype; }
 	// Formula editor
 	const bool expand_list() { return _expand_list; }
@@ -316,10 +316,10 @@ private:
 	int				_ppro_dx;
 	int				_ppro_dy;
 	// Blind locking
-	int				_sblind;
-	int				_bblind;
-	int				_bbet;
-	int				_ante;
+	double			_sblind;
+	double			_bblind;
+	double			_bbet;
+	double			_ante;
 	int				_gametype;
 	// Formula editor
 	bool			_expand_list;
