@@ -15,7 +15,8 @@ BUG FIXES:
   the .tm/frame to diagnose the issue.
 - Corrected OH to properly recognize "Network" setting on ManualMode, to report "network$" symbol correctly, and to correctly
   retrieve PokerTracker symbols when connected to a ManualMode table.
-  
+- Full house hand strength was not working correctly with trips on board.  Identification of problem and submission of patch by elvis.
+
 
 MAINTENANCE:
 - Removal of fatal_error.log creation on crash.  This has been replaced by minidumps.

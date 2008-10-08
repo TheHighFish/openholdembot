@@ -885,8 +885,14 @@ const int CMyHand::StrengthFullHouse(void)
 		// e.g. QQ/QTT53
 		(isfullhouse && ispair && nrankedcommon==2 && !(pokervalcommon&twopair) &&
 		 ((pokerval>>8)&15)>(pokerval&15) && (pcbits&0x1c) &&
-		 trank==((pokervalcommon>>8)&0xf)) ||
-
+		 trank==((pokervalcommon>>8)&0xf) ) ||
+		
+		// Board trips, I have pocket pair and top side full house, pocket pair is higher than non-participating board card
+		// e.g. QQ/QTTT3
+		(isfullhouse && ispair && nrankedcommon==3 &&
+		 ((pokerval>>8)&15)>(pokerval&15) && (pcbits&0x1c) &&
+		 trank==((pokervalcommon>>4)&0xf) ) ||
+		
 		// Board paired, I have pocket pair and top side full house, pocket pair is lower than non-participating board cards
 		// e.g. QQ/QTTA3
 		(isfullhouse && ispair && nrankedcommon==2 && !(pokervalcommon&twopair) &&
@@ -903,7 +909,8 @@ const int CMyHand::StrengthFullHouse(void)
 		// e.g. QQ/QKKA6
 		(isfullhouse && ispair && nrankedcommon==2 && !(pokervalcommon&twopair) &&
 		 ((pokerval>>8)&15)<(pokerval&15) && (pcbits&0x1c) &&
-		 trank<((pokervalcommon>>8)&0xf))
+		 trank<((pokervalcommon>>8)&0xf) )
+		
 	)
 	{
 		strength=5;
@@ -912,6 +919,12 @@ const int CMyHand::StrengthFullHouse(void)
 	// strength 4
 	else if
 	(
+		// Board trips, I have pocket pair and top side full house, pocket pair is lower than non-participating board card
+		// e.g. QQ/QTTTA
+		(isfullhouse && ispair && nrankedcommon==3 &&
+		 ((pokerval>>8)&15)>(pokerval&15) && (pcbits&0x1c) &&
+		 trank<((pokervalcommon>>4)&0xf) ) ||
+
 		// Board paired, I don't have pocket pair, I have top side full house, pair is higher than non-participating board cards
 		// e.g. QJ/QQJ53
 		(isfullhouse && !ispair && nrankedcommon==2 && !(pokervalcommon&twopair) &&
