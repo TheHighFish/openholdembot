@@ -172,7 +172,7 @@ public:
 	void set_chat_random_delay(const int i) { ENT _chat_random_delay = i; WriteReg("chat_random_delay", i); }
 	// Log Symbol
 	void set_log_symbol_enabled(const bool b) { ENT _log_symbol_enabled = b; WriteReg("log_symbol_enabled", b); }
-	void set_log_symbol_max_log(const bool b) { ENT _log_symbol_max_log = b; WriteReg("log_symbol_max_log", b); }
+	void set_log_symbol_max_log(const int b) { ENT _log_symbol_max_log = b; WriteReg("log_symbol_max_log", b); }
 	// Tracing
 	void set_trace_enabled(const bool b) { ENT _trace_enabled = b; WriteReg("trace_enabled", b); }
 	void set_trace_functions(const unsigned int i, const bool b) 
