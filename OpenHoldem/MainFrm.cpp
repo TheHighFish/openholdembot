@@ -492,7 +492,10 @@ BOOL CMainFrame::DestroyWindow()
 	}
 
 	if (p_pokertracker_thread)
-		p_pokertracker_thread->StopThread();
+	{
+		delete p_pokertracker_thread;
+		p_pokertracker_thread = NULL;
+	}
 
 	// Save window position
 	if (!m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_MINMAX)) 

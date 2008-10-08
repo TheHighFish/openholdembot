@@ -38,6 +38,8 @@ CPokerTrackerThread::CPokerTrackerThread()
 	}
 
 	_connected = false;
+	_m_stop_thread = NULL;
+	_m_wait_thread = NULL;
 }
 
 CPokerTrackerThread::~CPokerTrackerThread()
@@ -77,8 +79,16 @@ void CPokerTrackerThread::StopThread()
 	}
 
 	// Close handles
-	::CloseHandle(_m_stop_thread);
-	::CloseHandle(_m_wait_thread);
+	if (_m_stop_thread)
+	{
+		::CloseHandle(_m_stop_thread);
+		_m_stop_thread = NULL;
+	}
+	if (_m_wait_thread)
+	{
+		::CloseHandle(_m_wait_thread);
+		_m_wait_thread = NULL;
+	}
 }
 
 const double CPokerTrackerThread::ProcessQuery (const char * s)
