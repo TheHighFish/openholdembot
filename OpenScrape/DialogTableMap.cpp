@@ -2169,22 +2169,33 @@ void CDlgTableMap::OnBnClickedCreateFont()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	CDlgEditFont		dlg_editfont;
 	STablemapFont		new_font;
-	CString				text, separation, num;
-	int					width, height, pos, x_cnt, scan_pos;
-	HDC					hdcScreen, hdc, hdc_region;
-	HBITMAP				old_bitmap, old_bitmap2, bitmap_region;
-	bool				character[MAX_CHAR_WIDTH][MAX_CHAR_HEIGHT], background[MAX_CHAR_WIDTH];
-	CString				hexmash;
-	int					char_field_x_begin, char_field_x_end, char_field_y_begin, char_field_y_end;
-	int					i, j, insert_point, new_index;
-	HTREEITEM			new_hti, font_node, region_node, child_node;
-	CString				node_text;
+	CString				text = "", separation = "", num = "";
+	int					width = 0, height = 0, pos = 0, x_cnt = 0, scan_pos = 0;
+	HDC					hdcScreen = NULL, hdc = NULL, hdc_region = NULL;
+	HBITMAP				old_bitmap = NULL, old_bitmap2 = NULL, bitmap_region = NULL;
+	bool				character[MAX_CHAR_WIDTH][MAX_CHAR_HEIGHT] = {false};
+	bool				background[MAX_CHAR_WIDTH] = {true};
+	CString				hexmash = "";
+	int					char_field_x_begin = 0, char_field_x_end = 0, char_field_y_begin = 0, char_field_y_end = 0;
+	int					i = 0, j = 0, insert_point = 0, new_index = 0;
+	HTREEITEM			new_hti = NULL, font_node = NULL, region_node = NULL, child_node = NULL;
+	CString				node_text = "";
 	HTREEITEM			parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
 	CArray <STablemapFont, STablemapFont>		new_t$_recs;
 	STablemapRegion		*sel_region_ptr = NULL;
-	CString				sel_region_name;
+	CString				sel_region_name = "";
 	CTransform			trans;
 	
+	// This is required, as initializers above are not working correctly
+	for (i=0; i<MAX_CHAR_WIDTH; i++)
+		for (j=0; j<MAX_CHAR_HEIGHT; j++)
+			character[i][j] = false;
+
+	for (i=0; i<MAX_CHAR_WIDTH; i++)
+		background[i] = true;
+
+
+
 	if (m_TableMapTree.GetSelectedItem())
 	{
 		// Get pointer to selected region record
