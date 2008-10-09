@@ -190,6 +190,11 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 
 CDlgFormulaScintilla::~CDlgFormulaScintilla() 
 {
+	for (int i=0; i<m_ScinArray.GetSize(); i++)
+	{
+		delete m_ScinArray.GetAt(i);
+	}
+	m_ScinArray.RemoveAll();
 }
 
 void CDlgFormulaScintilla::DoDataExchange(CDataExchange* pDX) 
