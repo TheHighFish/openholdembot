@@ -88,6 +88,7 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	virtual BOOL OnInitDialog();
+	virtual void OnCancel();
 	virtual void PostNcDestroy();
 	afx_msg void OnBnClickedApply();
 	afx_msg void OnBnClickedOk();
