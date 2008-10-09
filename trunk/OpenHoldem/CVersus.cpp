@@ -91,7 +91,6 @@ double CVersus::GetSymbol(const char *a, int *e)
 bool CVersus::GetCounts(void) 
 {
 	int				i = 0, j = 0;
-	unsigned int	pcard[2] = {CARD_NOCARD};
 	CardMask		plCards, oppCards, deadCards, comCardsScrape, comCardsEnum, comCardsAll, usedCards;
 	unsigned int	wintemp = 0, tietemp = 0, lostemp = 0, offset = 0;
 	unsigned int	nhiwin = 0, nhitie = 0, nhilos = 0, ntiwin = 0, ntitie = 0, ntilos = 0, nlowin = 0, nlotie = 0, nlolos = 0;
@@ -109,7 +108,11 @@ bool CVersus::GetCounts(void)
 	int sym_br = (int) p_symbols->sym()->br;
 	int sym_userchair = (int) p_symbols->sym()->userchair;
 
-	unsigned int	card_player[2], card_common[5];
+	unsigned int	pcard[2] = {0};
+	for (i=0; i<=1; i++)
+		pcard[i] = CARD_NOCARD;
+
+	unsigned int	card_player[2] = {0}, card_common[5] = {0};
 	for (i=0; i<=1; i++)
 		card_player[i] = p_scraper->card_player(sym_userchair, i);
 	for (i=0; i<=4; i++)

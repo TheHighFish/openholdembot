@@ -23,7 +23,12 @@ CTransform::~CTransform(void)
 const int CTransform::DoTransform(const STablemapRegion *region, const HDC hdc, CString *text, CString *separation, COLORREF *cr_avg) 
 {
 	bool				character[MAX_CHAR_WIDTH][MAX_CHAR_HEIGHT] = {false};	
-	bool				background[MAX_CHAR_WIDTH] = {true};
+	bool				background[MAX_CHAR_WIDTH] = {false};
+
+	// Initialize arrays
+	for (int i=0; i<MAX_CHAR_WIDTH; i++)
+		background[i] = true;
+
 
 	switch (region->transform.GetString()[0]) 
 	{

@@ -2174,7 +2174,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 	HDC					hdcScreen = NULL, hdc = NULL, hdc_region = NULL;
 	HBITMAP				old_bitmap = NULL, old_bitmap2 = NULL, bitmap_region = NULL;
 	bool				character[MAX_CHAR_WIDTH][MAX_CHAR_HEIGHT] = {false};
-	bool				background[MAX_CHAR_WIDTH] = {true};
+	bool				background[MAX_CHAR_WIDTH] = {false};
 	CString				hexmash = "";
 	int					char_field_x_begin = 0, char_field_x_end = 0, char_field_y_begin = 0, char_field_y_end = 0;
 	int					i = 0, j = 0, insert_point = 0, new_index = 0;
@@ -2186,11 +2186,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 	CString				sel_region_name = "";
 	CTransform			trans;
 	
-	// This is required, as initializers above are not working correctly
-	for (i=0; i<MAX_CHAR_WIDTH; i++)
-		for (j=0; j<MAX_CHAR_HEIGHT; j++)
-			character[i][j] = false;
-
+	// Initialize arrays
 	for (i=0; i<MAX_CHAR_WIDTH; i++)
 		background[i] = true;
 
