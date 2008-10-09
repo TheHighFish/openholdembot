@@ -2184,6 +2184,7 @@ void CDlgFormulaScintilla::UpdateDebugAuto(void)
 	// Display the text in the debug tab
 	m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
 	m_pActiveScinCtrl->SendMessage(SCI_SETTEXT,0,(LPARAM)Cstr.GetString());
+	m_pActiveScinCtrl->SendMessage(SCI_EMPTYUNDOBUFFER);
 	m_pActiveScinCtrl->GotoPosition(0);
 	m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
 }
