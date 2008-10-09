@@ -33,7 +33,8 @@ public:
 private:
 	// private functions and variables - not available via accessors or mutators
 	static UINT IteratorThreadFunction(LPVOID pParam);
-	int InRange(int card1, int card2);
+	int InRange(const int card1, const int card2, const int willplay, 
+				const int wontplay, const int topclip, const int mustplay);
 	void InitIteratorLoop(void);
 
 	// variables for iterator loop

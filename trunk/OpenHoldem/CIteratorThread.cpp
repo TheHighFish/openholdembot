@@ -236,7 +236,8 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 							}
 						}
 					}
-					while (!pParent->InRange(ocard[i],ocard[i+1]));
+					while (!pParent->InRange(ocard[i], ocard[i+1], pParent->_willplay, 
+							pParent->_wontplay, pParent->_topclip, pParent->_mustplay));
 				}
 				// additional common cards
 				CardMask_RESET(addlcomCards);
@@ -450,17 +451,18 @@ void CIteratorThread::InitIteratorLoop()
 	}
 }
 
-int CIteratorThread::InRange(int card1, int card2)
+int CIteratorThread::InRange(const int card1, const int card2, const int willplay, 
+							 const int wontplay, const int topclip, const int mustplay)
 {
 	//returns non-zero if card pair acceptable for prwin calculation
 
 	/*
 	p |---|	---------
-	r |   |   /		 \
-	o |   |  /		   \
-	b |   | /			 \
-	a |   |/			   \
-	b |					 \
+	r |   |   /      \
+	o |   |  /        \
+	b |   | /          \
+	a |   |/            \
+	b |                  \
 	l -----------------------------------------------------
 	e	 1	2	   3	 4	 handrank169 ->
 	1=mustplay
@@ -471,7 +473,6 @@ int CIteratorThread::InRange(int card1, int card2)
 	 mustplay and topclip are debatable constructs at the best of times 2008-01-29)
 	*/
 
-	extern int willplay, wontplay, topclip, mustplay;
 	extern int pair2ranko[170], pair2ranks[170];
 	int i = card1%13;
 	int j = card2%13;
