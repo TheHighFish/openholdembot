@@ -510,6 +510,13 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
 	// EXCEPTION: OCX Property Pages should return false
 }
 
+void CDlgFormulaScintilla::OnCancel()
+{
+	m_formulaScintillaDlg = NULL;
+
+	CDialog::OnCancel();
+}
+
 void CDlgFormulaScintilla::RemoveSingleItemGroups()
 {
 	HTREEITEM hUDFChildItem = m_FormulaTree.GetChildItem(hUDFItem);
@@ -3591,4 +3598,3 @@ bool CDlgFormulaScintilla::WriteProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CF
 
 	return pApp->WriteProfileString(lpszKey, lpszVal, s)!=0;
 }
-
