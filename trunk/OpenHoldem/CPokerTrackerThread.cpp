@@ -49,12 +49,12 @@ CPokerTrackerThread::~CPokerTrackerThread()
 
 void CPokerTrackerThread::StartThread()
 {
-	// Create events
-	_m_stop_thread = CreateEvent(0, TRUE, FALSE, 0);
-	_m_wait_thread = CreateEvent(0, TRUE, FALSE, 0);
-
 	if (_pt_thread == NULL)
 	{
+		// Create events
+		_m_stop_thread = CreateEvent(0, TRUE, FALSE, 0);
+		_m_wait_thread = CreateEvent(0, TRUE, FALSE, 0);
+
 		_pt_thread = AfxBeginThread(PokertrackerThreadFunction, this);
 
 		write_log("Started Poker Tracker thread.\n");
