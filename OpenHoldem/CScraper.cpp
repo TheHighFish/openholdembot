@@ -1787,7 +1787,7 @@ const double CScraper::DoChipScrape(HDC hdc, int i)
 {
 	int				j = 0, stackindex = 0, chipindex = 0;
 	CString			type = "", cstemp = "";
-	int				istart = 0, ivert[10] = { -1 }, ihoriz[10] = { -1 }, index = 0, vertcount = 0, horizcount = 0;
+	int				istart = 0, ivert[10] = {0}, ihoriz[10] = {0}, index = 0, vertcount = 0, horizcount = 0;
 	int				hash_type = 0, num_precs = 0, pixcount = 0, chipwidth = 0, chipheight = 0;
 	int				top = 0, bottom = 0, left = 0, right = 0;
 	bool			stop_loop = false;
@@ -1795,6 +1795,13 @@ const double CScraper::DoChipScrape(HDC hdc, int i)
 	double			result = 0;
 	CString			resstring = "";
 	std::map<uint32_t, int>::const_iterator		hashindex;
+
+	// Initialize arrays
+	for (j=0; j<10; j++)
+	{
+		ivert[j] = -1;
+		ihoriz[j] = -1;
+	}
 
 	// Check for bad parameters
 	if (hdc == NULL || i<0)
