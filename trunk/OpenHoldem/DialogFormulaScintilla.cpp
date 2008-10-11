@@ -749,7 +749,7 @@ void CDlgFormulaScintilla::OnSymbolContextMenu(NMHDR *pNMHDR, LRESULT *pResult)
 				{
 					LPSTR lpStr = (LPSTR)::GlobalLock(hMem);
 
-					strcpy_s(lpStr, symbol.GetLength(), symbol.GetString());
+					strcpy_s(lpStr, symbol.GetLength() + 1, symbol.GetString());
 					::GlobalUnlock(hMem);
 
 					if ( ::SetClipboardData( CF_TEXT, hMem ) != NULL )
