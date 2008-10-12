@@ -2071,6 +2071,14 @@ void CDlgTableMap::OnBnClickedCreateImage()
 	CString				text, node_text, sel_region_name;
 	HTREEITEM			image_node, region_node, child_node;
 	STablemapRegion	*sel_region_ptr = NULL;
+
+	// Make sure that we are attached to a window before we do this
+	if (!pDoc->attached_hwnd)
+	{
+		MessageBox("To create an image, you must first capture\na window, using the 'Green Circle' toolbar button.", 
+				   "No window captured", MB_OK);
+		return;
+	}
 	
 	if (m_TableMapTree.GetSelectedItem())
 	{
