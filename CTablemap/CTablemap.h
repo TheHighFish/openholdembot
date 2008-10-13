@@ -183,6 +183,7 @@ public:
 	void SaveR$Indices(void);
 	void SaveS$Indices(void);
 	void SaveS$Strings(void);
+	void UpdateHexmashesHashes(const int group);
 
 public:
 	// public accessors
@@ -212,6 +213,9 @@ public:
 	void	set_r$_right(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].right = i;  }
 	void	set_r$_top(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].top = i;  }
 	void	set_r$_bottom(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].bottom = i;  }
+	void	set_r$_color(const int n, const COLORREF c) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].color = c;  }
+	void	set_r$_radius(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].radius = i;  }
+	void	set_r$_transform(const int n, const CString s) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].transform = s;  }
 
 	void	set_z$_removeat(const int n) { ENT if (n>=0 && n<=_z$.GetSize()) _z$.RemoveAt(n,1);  }
 	void	set_s$_removeat(const int n) { ENT if (n>=0 && n<=_s$.GetSize()) _s$.RemoveAt(n,1);  }

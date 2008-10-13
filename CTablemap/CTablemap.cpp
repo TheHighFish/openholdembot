@@ -178,7 +178,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			continue;
 		}
 
-		// Handle _z$ lines (sizes)
+		// Handle z$ lines (sizes)
 		if (strLineType.Left(2) == "z$") 
 		{
 			// name
@@ -201,7 +201,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			_z$.Add(hold_size);
 		}
 
-		// Handle _s$ lines (symbols/string)
+		// Handle s$ lines (symbols/string)
 		else if (strLineType.Left(2) == "s$") 
 		{
 			// name
@@ -223,7 +223,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			}
 		}
 
-		// Handle _r$indexes.r$ lines (regions)
+		// Handle r$indexes.r$ lines (regions)
 		else if (strLineType.Left(2) == "r$") 
 		{
 			// name
@@ -284,7 +284,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			_r$.Add(hold_region);
 		}
 
-		// Handle _t$ lines (fonts)
+		// Handle t$ lines (fonts)
 		else if (strLineType.Left(2) == "t$" ||
 				 (strLineType.Left(1) == 't' &&
 				  strLineType.Mid(1,1) >= "0" &&
@@ -292,14 +292,14 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 				  strLineType.Mid(2,1) == "$")) 
 		{
 
-			// Old style _t$ records (no font groups) - pre "2007 Nov 1 08:32:55" WinScrape release
+			// Old style t$ records (no font groups) - pre "2007 Nov 1 08:32:55" WinScrape release
 			if (strLineType.Left(2) == "t$") 
 			{
 				t = strLineType.Mid(2,1);
 				hold_font.ch = t.GetString()[0];
 				hold_font.group = 0;
 			}
-			// New style _t$ records (font groups 0-3) - "2007 Nov 1 08:32:55" WinScrape release and later
+			// New style t$ records (font groups 0-3) - "2007 Nov 1 08:32:55" WinScrape release and later
 			else 
 			{
 				t = strLineType.Mid(3,1);
@@ -309,7 +309,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 
 			if (hold_font.group<0 || hold_font.group>3)
 			{
-				MessageBox(NULL, strLine, "In_valid font group", MB_OK | MB_TOPMOST);
+				MessageBox(NULL, strLine, "Invalid font group", MB_OK | MB_TOPMOST);
 				return ERR_SYNTAX;
 			}
 
@@ -341,7 +341,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 				_t$.InsertAt(insert_point, hold_font);
 		}
 
-		// Handle _p$ lines (hash points)
+		// Handle p$ lines (hash points)
 		else if (strLineType.Left(1) == "p" &&
 				 strLineType.Mid(1,1) >= "0" &&
 				 strLineType.Mid(1,1) <= "9" &&
@@ -386,7 +386,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 				_p$.InsertAt(insert_point, hold_hash_point);
 		}
 
-		// Handle _h$ lines (hash values)
+		// Handle h$ lines (hash values)
 		else if (strLineType.Left(1) == "h" &&
 				 strLineType.Mid(1,1) >= "0" &&
 				 strLineType.Mid(1,1) <= "9" &&
@@ -429,7 +429,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 				_h$.InsertAt(insert_point, hold_hash_value);
 		}
 
-		// Handle _i$ lines (images)
+		// Handle i$ lines (images)
 		else if (strLineType.Left(2) == "i$") 
 		{
 			// name
@@ -453,7 +453,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			if (hold_image.width * hold_image.height > MAX_IMAGE_WIDTH*MAX_IMAGE_HEIGHT)
 				return ERR_REGION_SIZE;
 
-			// Add the new _i$ record to the internal array
+			// Add the new i$ record to the internal array
 			new_elem = (int) _i$.Add(hold_image);
 
 			// Allocate space for "RGBAImage"
@@ -494,19 +494,12 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 	}
 	while (ar.ReadString(strLine));
 
-	// Populate _t$ hexmash std::map for fast lookups
+	// Populate t$ hexmash std::map for fast lookups
 	for (j=0; j<=3; j++)
-		_hexmashes[j].clear();
-	for (j=0; j<(int) _t$.GetSize(); j++)
-		_hexmashes[_t$[j].group].insert(std::pair<CString, int> (_t$[j].hexmash, j));
-
-	// Populate _h$ _hashes std::map for fast lookups
-	for (j=0; j<=3; j++)
-		_hashes[j].clear();
-	for (j=0; j<(int) _h$.GetSize(); j++)
-		_hashes[_h$[j].number].insert(std::pair<uint32_t, int> (_h$[j].hash, j));
+		UpdateHexmashesHashes(j);
 
 	_valid = true;
+
 	return SUCCESS;
 }
 
@@ -676,7 +669,7 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 		return ERR_NOTMASTER;
 	}
 
-	// Loop through all the region (_r$indexes.r$) records, and invert the colors to align with
+	// Loop through all the region (r$indexes.r$) records, and invert the colors to align with
 	// Windows' COLORREF  ARGB->ABGR
 	for (regionloop=0; regionloop<(int) _r$.GetSize(); regionloop++) 
 	{
@@ -687,12 +680,12 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 			((_r$[regionloop].color & 0x000000ff)<<16);
 	}
 
-	// Loop through all the region (_r$indexes.r$) records, and look for i3slider or i3handle
+	// Loop through all the region (r$indexes.r$) records, and look for i3slider or i3handle
 	// Warn if these are found and remove them
 	//warning_displayed = false;
-	//for (regionloop=0; regionloop<(int) _r$.GetSize(); regionloop++) {
-	//	if (_r$[regionloop].name == "i3slider" ||
-	//		_r$[regionloop].name == "i3handle")
+	//for (regionloop=0; regionloop<(int) r$.GetSize(); regionloop++) {
+	//	if (r$[regionloop].name == "i3slider" ||
+	//		r$[regionloop].name == "i3handle")
 	//	{
 	//		if (!warning_displayed)
 	//		{
@@ -703,7 +696,7 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 	//			warning_displayed = true;
 	//		}
 
-	//		_r$indexes.r$.RemoveAt(regionloop);
+	//		r$indexes.r$.RemoveAt(regionloop);
 	//	}
 	//}
 
@@ -767,7 +760,7 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 	// Loop through each of the image records and create _hashes
 	for (imageloop=0; imageloop<(int) _i$.GetSize(); imageloop++) 
 	{
-		// Loop through the _h$ records to find all the _hashes that we have to create for this image record
+		// Loop through the h$ records to find all the _hashes that we have to create for this image record
 		for (hashloop=0; hashloop<(int) _h$.GetSize(); hashloop++) 
 		{
 			if (_i$[imageloop].name == _h$[hashloop].name) 
@@ -779,7 +772,7 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 				hold_hash_value.name = _i$[imageloop].name;
 				hold_hash_value.number = hash_type;
 
-				// Get count of pixels (_p$ records)
+				// Get count of pixels (p$ records)
 				pixcount = 0;
 				for (j=0; j<(int) _p$.GetSize(); j++) 
 				{
@@ -872,7 +865,7 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 		_h$.Add(hold_hash_value);
 	}
 
-	// Populate h$ _hashes std::map for fast lookups
+	// Populate h$ hashes std::map for fast lookups
 	for (j=0; j<=3; j++)
 		_hashes[j].clear();
 	for (j=0; j<(int) _h$.GetSize(); j++)
@@ -963,7 +956,7 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 	// Loop through each of the image records and create _hashes
 	for (imageloop=0; imageloop<num_irecs; imageloop++) 
 	{
-		// Loop through the _h$ records to find all the _hashes that we have to create for this image record
+		// Loop through the h$ records to find all the _hashes that we have to create for this image record
 		for (hashloop=0; hashloop<num_hrecs; hashloop++) 
 		{
 			if (_i$[imageloop].name == _h$[hashloop].name) 
@@ -1056,7 +1049,7 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 
 	CSLock lock(m_critsec);
 	
-	// Kill the existing _h$ records, and replace with new_hashes records
+	// Kill the existing h$ records, and replace with new_hashes records
 	_h$.RemoveAll();
 	for (j=0; j<(int) new_hashes.GetSize(); j++) 
 	{
@@ -1066,7 +1059,7 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 		_h$.Add(hold_hash_value);
 	}
 
-	// Populate _h$ _hashes std::map for fast lookups
+	// Populate h$ hashes std::map for fast lookups
 	for (j=0; j<=3; j++)
 		_hashes[j].clear();
 	for (j=0; j<(int) _h$.GetSize(); j++)
@@ -1165,8 +1158,8 @@ void CTablemap::ClearR$Indices(void)
 
 void CTablemap::SaveR$Indices(void)
 {
-	// _r$indexes.r$tablepointX not indexed, as it is only used for finding tables on green circle-click, and
-	//   this function is not called until a table has been selected by the user
+	// _r$tablepointX not indexed, as it is only used for finding tables on green circle-click, and
+	//  this function is not called until a table has been selected by the user
 
 	int		i = 0;
 	int		cardnum = 0, seatnum = 0, buttonnum = 0, vertstride = 0, horizstride = 0;
@@ -1178,7 +1171,7 @@ void CTablemap::SaveR$Indices(void)
 	{
 		///////////////////////////////////////////////////////////////////////////////////////////////
 		// Player info
-		// Player cards, _r$indexes.r$pXcardfaceYrank, _r$indexes.r$pXcardfaceYsuit
+		// Player cards, r$pXcardfaceYrank, r$pXcardfaceYsuit
 		if (_r$[i].name.Mid(0,1)=="p" &&
 				_r$[i].name.Mid(2,8)=="cardface" &&
 				_r$[i].name.Mid(11,4)=="rank")
@@ -1196,7 +1189,7 @@ void CTablemap::SaveR$Indices(void)
 			_r$indexes.r$pXcardfaceYsuit_index[seatnum][cardnum] = i;
 		}
 
-		// Player cards, _r$indexes.r$pXcardfaceY, _r$indexes.r$uXcardfaceY
+		// Player cards,r$pXcardfaceY, r$uXcardfaceY
 		else if (_r$[i].name.Mid(0,1)=="p" && _r$[i].name.Mid(2,8)=="cardface")
 		{
 			seatnum = _r$[i].name.GetString()[1] - '0';
@@ -1210,14 +1203,14 @@ void CTablemap::SaveR$Indices(void)
 			_r$indexes.r$uXcardfaceY_index[seatnum][cardnum] = i;
 		}
 
-		// Player card backs, _r$indexes.r$pXcardback
+		// Player card backs, r$pXcardback
 		else if (_r$[i].name.Mid(0,1)=="p" && _r$[i].name.Mid(2,8)=="cardback")
 		{
 			seatnum = _r$[i].name.GetString()[1] - '0';
 			_r$indexes.r$pXcardback_index[seatnum] = i;
 		}
 
-		// Seated, _r$indexes.r$pXseated, _r$indexes.r$uXseated
+		// Seated, r$pXseated, _r$uXseated
 		else if (_r$[i].name.Mid(0,1)=="p" && _r$[i].name.Mid(2,6)=="seated")
 		{
 			seatnum = _r$[i].name.GetString()[1] - '0';
@@ -1229,7 +1222,7 @@ void CTablemap::SaveR$Indices(void)
 			_r$indexes.r$uXseated_index[seatnum] = i;
 		}
 
-		// Active, _r$indexes.r$pXactive, _r$indexes.r$uXactive
+		// Active, r$pXactive, r$uXactive
 		else if (_r$[i].name.Mid(0,1)=="p" && _r$[i].name.Mid(2,6)=="active")
 		{
 			seatnum = _r$[i].name.GetString()[1] - '0';
@@ -1241,14 +1234,14 @@ void CTablemap::SaveR$Indices(void)
 			_r$indexes.r$uXactive_index[seatnum] = i;
 		}
 
-		// Dealer button, _r$indexes.r$pXdealer
+		// Dealer button, r$pXdealer
 		else if (_r$[i].name.Mid(0,1)=="p" && _r$[i].name.Mid(2,6)=="dealer")
 		{
 			seatnum = _r$[i].name.GetString()[1] - '0';
 			_r$indexes.r$pXdealer_index[seatnum] = i;
 		}
 
-		// Player name _r$indexes.r$pXname, _r$indexes.r$uXname, _r$indexes.r$uname
+		// Player name r$pXname, r$uXname, r$uname
 		else if (_r$[i].name.Mid(0,1)=="p" && _r$[i].name.Mid(2,4)=="name")
 		{
 			seatnum = _r$[i].name.GetString()[1] - '0';
@@ -1264,7 +1257,7 @@ void CTablemap::SaveR$Indices(void)
 			_r$indexes.r$uname_index = i;
 		}
 
-		// Player balance, _r$indexes.r$pXbalance, _r$indexes.r$uXbalance, _r$indexes.r$ubalance
+		// Player balance, r$pXbalance, r$uXbalance, r$ubalance
 		else if (_r$[i].name.Mid(0,1)=="p" && _r$[i].name.Mid(2,7)=="balance")
 		{
 			seatnum = _r$[i].name.GetString()[1] - '0';
@@ -1280,7 +1273,7 @@ void CTablemap::SaveR$Indices(void)
 			_r$indexes.r$ubalance_index = i;
 		}
 
-		// Player bet, _r$indexes.r$pXbet, _r$indexes.r$pXchipYZ
+		// Player bet, r$pXbet, r$pXchipYZ
 		else if (_r$[i].name.Mid(0,1)=="p" && _r$[i].name.Mid(2,3)=="bet")
 		{
 			seatnum = _r$[i].name.GetString()[1] - '0';
@@ -1296,7 +1289,7 @@ void CTablemap::SaveR$Indices(void)
 
 		///////////////////////////////////////////////////////////////////////////////////////////////
 		// Common card info
-		// Common cards, _r$indexes.r$c0cardfaceXrank, _r$indexes.r$c0cardfaceXsuit
+		// Common cards, r$c0cardfaceXrank, r$c0cardfaceXsuit
 		else if (_r$[i].name.Mid(0,10)=="c0cardface" && _r$[i].name.Mid(11,4)=="rank")
 		{
 			cardnum = _r$[i].name.GetString()[10] - '0';
@@ -1307,7 +1300,7 @@ void CTablemap::SaveR$Indices(void)
 			cardnum = _r$[i].name.GetString()[10] - '0';
 			_r$indexes.r$c0cardfaceXsuit_index[cardnum] = i;
 		}
-		// Common cards, _r$indexes.r$c0cardfaceX
+		// Common cards, r$c0cardfaceX
 		else if (_r$[i].name.Mid(0,10)=="c0cardface")
 		{
 			cardnum = _r$[i].name.GetString()[10] - '0';
@@ -1316,8 +1309,8 @@ void CTablemap::SaveR$Indices(void)
 
 		///////////////////////////////////////////////////////////////////////////////////////////////
 		// Button info
-		// _r$indexes.r$iXbutton, _r$indexes.r$iXstate, _r$indexes.r$iXlabel, _r$indexes.r$iXslider, _r$indexes.r$iXhandle, _r$indexes.r$iXedit, _r$indexes.r$i86Xstate, _r$indexes.r$i86Xbutton,
-		// _r$indexes.r$i86state, _r$indexes.r$i86button
+		// r$iXbutton, r$iXstate, r$iXlabel, r$iXslider, r$iXhandle, r$iXedit, r$i86Xstate, r$i86Xbutton,
+		// r$i86state, r$i86button
 		else if (_r$[i].name.Mid(0,1)=="i" && _r$[i].name.Mid(2,6)=="button")
 		{
 			buttonnum = _r$[i].name.GetString()[1] - '0';
@@ -1376,7 +1369,7 @@ void CTablemap::SaveR$Indices(void)
 
 		///////////////////////////////////////////////////////////////////////////////////////////////
 		// Pots
-		// Pots, _r$indexes.r$c0potX, _r$indexes.r$c0potXchipYZ
+		// Pots, r$c0potX, r$c0potXchipYZ
 		else if (_r$[i].name.Mid(0,5)=="c0pot" && _r$[i].name.Find("chip")==-1)
 		{
 			potnum = _r$[i].name.GetString()[5] - '0';
@@ -1392,7 +1385,7 @@ void CTablemap::SaveR$Indices(void)
 
 		///////////////////////////////////////////////////////////////////////////////////////////////
 		// Limits
-		// _r$indexes.r$c0limits, _r$indexes.r$c0limitsX
+		// r$c0limits, r$c0limitsX
 		else if (_r$[i].name=="c0limits")
 		{
 			_r$indexes.r$c0limits_index = i;
@@ -1403,13 +1396,13 @@ void CTablemap::SaveR$Indices(void)
 			_r$indexes.r$c0limitsX_index[limitnum] = i;
 		}
 
-		// _r$indexes.r$c0istournament
+		// r$c0istournament
 		else if (_r$[i].name == "c0istournament")
 		{
 			_r$indexes.r$c0istournament_index = i;
 		}
 
-		// _r$indexes.r$c0sblind, _r$indexes.r$c0bblind, _r$indexes.r$c0bigbet, _r$indexes.r$c0ante, _r$indexes.r$c0handnumberX, _r$indexes.r$c0handnumber
+		// r$c0sblind, r$c0bblind, r$c0bigbet, r$c0ante, r$c0handnumberX, r$c0handnumber
 		else if (_r$[i].name == "c0sblind")
 		{
 			_r$indexes.r$c0sblind_index = i;
@@ -1441,9 +1434,9 @@ void CTablemap::SaveR$Indices(void)
 
 void CTablemap::SaveS$Indices(void)
 {
-	// _s$titletextX, _s$!titletextX not indexed, as it is only used for finding tables on green circle-click, and
-	//   this function is not called until a table has been selected by the user/*
-	// _s$hXtype are not indexed, as those records are ignored in OH
+	// s$titletextX, s$!titletextX not indexed, as it is only used for finding tables on green circle-click, and
+	// this function is not called until a table has been selected by the user
+	// s$hXtype are not indexed, as those records are ignored in OH
 
 	int		i = 0, num = 0;
 
@@ -1460,7 +1453,7 @@ void CTablemap::SaveS$Indices(void)
 	for (i=0; i<(int) _s$.GetSize(); i++)
 	{
 
-		// _s$ttlimits, _s$ttlimitsX
+		// s$ttlimits, s$ttlimitsX
 		if (_s$[i].name=="ttlimits")
 		{
 			_s$indexes.s$ttlimits_index = i;
@@ -1484,7 +1477,7 @@ void CTablemap::SaveS$Indices(void)
 
 void CTablemap::SaveS$Strings(void)
 {
-	// _s$reseller and _s$mechanic are not saved, as they are only comments and not used in OH for any purpose
+	// s$reseller and s$mechanic are not saved, as they are only comments and not used in OH for any purpose
 
 	int		i = 0;
 
@@ -1535,4 +1528,21 @@ void CTablemap::SaveS$Strings(void)
 			_s$items.ttype[3] = _s$[i].text;
 
 	}
+}
+
+void CTablemap::UpdateHexmashesHashes(const int group)
+{
+	int j = 0;
+
+	// Populate t$ hexmash std::map for fast lookups
+	_hexmashes[group].clear();
+	for (j=0; j<(int) _t$.GetSize(); j++)
+		if (_t$[j].group == group)
+			_hexmashes[group].insert(std::pair<CString, int> (_t$[j].hexmash, j));
+
+	// Populate h$ hashes std::map for fast lookups
+	_hashes[group].clear();
+	for (j=0; j<(int) _h$.GetSize(); j++)
+		if (_h$[j].number == group)
+			_hashes[group].insert(std::pair<uint32_t, int> (_h$[j].hash, j));
 }
