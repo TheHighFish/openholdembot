@@ -3219,8 +3219,6 @@ const double CSymbols::CalcPokerval(HandVal hv, int n, double *pcb, int card0, i
 		{
 			j = StdDeck_RANK(card0);	//Matrix 2008-06-28
 			k = StdDeck_RANK(card1);
-			if(j==12)j=-1;
-			if(k==12)k=-1;
 			if ( (j == HandVal_TOP_CARD(hv)-i &&
 					StdDeck_SUIT(card0) == flush_suit)
 					||
@@ -3229,6 +3227,24 @@ const double CSymbols::CalcPokerval(HandVal hv, int n, double *pcb, int card0, i
 			{
 				bits = (int) bits | (1<<(4-i));
 			}
+			//In straight evaluation an Ace can appear in hv as either 0x0c or 0xff. 
+			//We need to do an ugly test for both cases.
+
+			if((j==12)||(k==12))  //Matrix 2008-10-14 !!KLUDGE ALERT!!
+			{
+				if(j==12)j=-1;
+				if(k==12)k=-1;
+				if ( (j == HandVal_TOP_CARD(hv)-i &&
+					StdDeck_SUIT(card0) == flush_suit)
+					||
+					k == HandVal_TOP_CARD(hv)-i &&
+					StdDeck_SUIT(card1) == flush_suit)
+				{
+					bits = (int) bits | (1<<(4-i));
+				}
+			}
+
+
 		}
 		break;
 
@@ -3359,13 +3375,22 @@ const double CSymbols::CalcPokerval(HandVal hv, int n, double *pcb, int card0, i
 		{
 			j = StdDeck_RANK(card0);	//Matrix 2008-06-28
 			k = StdDeck_RANK(card1);
-			if(j==12)j=-1;
-			if(k==12)k=-1;
 			if (j == HandVal_TOP_CARD(hv)-i ||
 					k == HandVal_TOP_CARD(hv)-i)
 			{
 				bits = (int) bits | (1<<(4-i));
 			}
+			if((j==12)||(k==12))  //Matrix 2008-10-14 !!KLUDGE ALERT!!
+			{
+				if(j==12)j=-1;
+				if(k==12)k=-1;
+				if (j == HandVal_TOP_CARD(hv)-i ||
+					k == HandVal_TOP_CARD(hv)-i)
+					{
+						bits = (int) bits | (1<<(4-i));
+					}
+			}
+
 		}
 		break;
 
