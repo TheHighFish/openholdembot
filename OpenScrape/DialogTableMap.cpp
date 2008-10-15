@@ -1206,11 +1206,12 @@ void CDlgTableMap::OnDeltaposLeftSpin(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	STablemapRegion		sel_region;
+	int					index = 0;
 	
 	// Get selected region record
 	if (m_TableMapTree.GetSelectedItem())
 	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
+		index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
 		sel_region = p_tablemap->r$()->GetAt(index);
 	}
 	else
@@ -1220,7 +1221,7 @@ void CDlgTableMap::OnDeltaposLeftSpin(NMHDR *pNMHDR, LRESULT *pResult)
 	
 	if (ignore_changes)  return;
 
-	sel_region.left = pNMUpDown->iPos + pNMUpDown->iDelta;
+	p_tablemap->set_r$_left(index, pNMUpDown->iPos + pNMUpDown->iDelta);
 
 	update_r$_display(true);
 	Invalidate(false);
@@ -1236,11 +1237,12 @@ void CDlgTableMap::OnDeltaposTopSpin(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	STablemapRegion		sel_region;
+	int					index = 0;
 	
 	// Get selected region record
 	if (m_TableMapTree.GetSelectedItem())
 	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
+		index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
 		sel_region = p_tablemap->r$()->GetAt(index);
 	}
 	else
@@ -1250,7 +1252,7 @@ void CDlgTableMap::OnDeltaposTopSpin(NMHDR *pNMHDR, LRESULT *pResult)
 
 	if (ignore_changes)  return;
 
-	sel_region.top = pNMUpDown->iPos + pNMUpDown->iDelta;
+	p_tablemap->set_r$_top(index, pNMUpDown->iPos + pNMUpDown->iDelta);
 
 	update_r$_display(true);
 	Invalidate(false);
@@ -1266,11 +1268,12 @@ void CDlgTableMap::OnDeltaposBottomSpin(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	STablemapRegion		sel_region;
+	int					index = 0;
 	
 	// Get selected region record
 	if (m_TableMapTree.GetSelectedItem())
 	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
+		index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
 		sel_region = p_tablemap->r$()->GetAt(index);
 	}
 	else
@@ -1280,7 +1283,7 @@ void CDlgTableMap::OnDeltaposBottomSpin(NMHDR *pNMHDR, LRESULT *pResult)
 
 	if (ignore_changes)  return;
 
-	sel_region.bottom = pNMUpDown->iPos + pNMUpDown->iDelta;
+	p_tablemap->set_r$_bottom(index, pNMUpDown->iPos + pNMUpDown->iDelta);
 
 	update_r$_display(true);
 	Invalidate(false);
@@ -1296,11 +1299,12 @@ void CDlgTableMap::OnDeltaposRightSpin(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	STablemapRegion		sel_region;
+	int					index = 0;
 	
 	// Get selected region record
 	if (m_TableMapTree.GetSelectedItem())
 	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
+		index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
 		sel_region = p_tablemap->r$()->GetAt(index);
 	}
 	else
@@ -1310,7 +1314,7 @@ void CDlgTableMap::OnDeltaposRightSpin(NMHDR *pNMHDR, LRESULT *pResult)
 
 	if (ignore_changes)  return;
 
-	sel_region.right = pNMUpDown->iPos + pNMUpDown->iDelta;
+	p_tablemap->set_r$_right(index, pNMUpDown->iPos + pNMUpDown->iDelta);
 
 	update_r$_display(true);
 	Invalidate(false);
@@ -1326,11 +1330,12 @@ void CDlgTableMap::OnDeltaposRadiusSpin(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	STablemapRegion		sel_region;
+	int					index = 0;
 	
 	// Get selected region record
 	if (m_TableMapTree.GetSelectedItem())
 	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
+		index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
 		sel_region = p_tablemap->r$()->GetAt(index);
 	}
 	else
@@ -1340,7 +1345,7 @@ void CDlgTableMap::OnDeltaposRadiusSpin(NMHDR *pNMHDR, LRESULT *pResult)
 
 	if (ignore_changes)  return;
 
-	sel_region.radius = pNMUpDown->iPos + pNMUpDown->iDelta;
+	p_tablemap->set_r$_radius(index, pNMUpDown->iPos + pNMUpDown->iDelta);
 
 	update_r$_display(true);
 	Invalidate(false);
@@ -2702,8 +2707,8 @@ void CDlgTableMap::OnBnClickedNudgeTaller()
 		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
 		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
 
-		p_tablemap->set_r$_top(index, sel_region.top--);
-		p_tablemap->set_r$_bottom(index, sel_region.bottom++);
+		p_tablemap->set_r$_top(index, sel_region.top-1);
+		p_tablemap->set_r$_bottom(index, sel_region.bottom+1);
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -2722,8 +2727,8 @@ void CDlgTableMap::OnBnClickedNudgeShorter()
 		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
 		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
 
-		p_tablemap->set_r$_top(index, sel_region.top++);
-		p_tablemap->set_r$_bottom(index, sel_region.bottom--);
+		p_tablemap->set_r$_top(index, sel_region.top+1);
+		p_tablemap->set_r$_bottom(index, sel_region.bottom-1);
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -2742,8 +2747,8 @@ void CDlgTableMap::OnBnClickedNudgeWider()
 		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
 		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
 
-		p_tablemap->set_r$_left(index, sel_region.left--);
-		p_tablemap->set_r$_right(index, sel_region.right++);
+		p_tablemap->set_r$_left(index, sel_region.left-1);
+		p_tablemap->set_r$_right(index, sel_region.right+1);
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -2762,8 +2767,8 @@ void CDlgTableMap::OnBnClickedNudgeNarrower()
 		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
 		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
 
-		p_tablemap->set_r$_left(index, sel_region.left++);
-		p_tablemap->set_r$_right(index, sel_region.right--);
+		p_tablemap->set_r$_left(index, sel_region.left+1);
+		p_tablemap->set_r$_right(index, sel_region.right-1);
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -2782,10 +2787,10 @@ void CDlgTableMap::OnBnClickedNudgeBigger()
 		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
 		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
 
-		p_tablemap->set_r$_left(index, sel_region.left--);
-		p_tablemap->set_r$_top(index, sel_region.top--);
-		p_tablemap->set_r$_right(index, sel_region.right++);
-		p_tablemap->set_r$_bottom(index, sel_region.bottom++);
+		p_tablemap->set_r$_left(index, sel_region.left-1);
+		p_tablemap->set_r$_top(index, sel_region.top-1);
+		p_tablemap->set_r$_right(index, sel_region.right+1);
+		p_tablemap->set_r$_bottom(index, sel_region.bottom+1);
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -2804,10 +2809,10 @@ void CDlgTableMap::OnBnClickedNudgeSmaller()
 		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
 		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
 
-		p_tablemap->set_r$_left(index, sel_region.left++);
-		p_tablemap->set_r$_top(index, sel_region.top++);
-		p_tablemap->set_r$_right(index, sel_region.right--);
-		p_tablemap->set_r$_bottom(index, sel_region.bottom--);
+		p_tablemap->set_r$_left(index, sel_region.left+1);
+		p_tablemap->set_r$_top(index, sel_region.top+1);
+		p_tablemap->set_r$_right(index, sel_region.right-1);
+		p_tablemap->set_r$_bottom(index, sel_region.bottom-1);
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -2826,10 +2831,10 @@ void CDlgTableMap::OnBnClickedNudgeUpleft()
 		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
 		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
 
-		p_tablemap->set_r$_left(index, sel_region.left--);
-		p_tablemap->set_r$_top(index, sel_region.top--);
-		p_tablemap->set_r$_right(index, sel_region.right--);
-		p_tablemap->set_r$_bottom(index, sel_region.bottom--);
+		p_tablemap->set_r$_left(index, sel_region.left-1);
+		p_tablemap->set_r$_top(index, sel_region.top-1);
+		p_tablemap->set_r$_right(index, sel_region.right-1);
+		p_tablemap->set_r$_bottom(index, sel_region.bottom-1);
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -2848,8 +2853,8 @@ void CDlgTableMap::OnBnClickedNudgeUp()
 		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
 		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
 
-		p_tablemap->set_r$_top(index, sel_region.top--);
-		p_tablemap->set_r$_bottom(index, sel_region.bottom--);
+		p_tablemap->set_r$_top(index, sel_region.top-1);
+		p_tablemap->set_r$_bottom(index, sel_region.bottom-1);
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -2868,10 +2873,10 @@ void CDlgTableMap::OnBnClickedNudgeUpright()
 		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
 		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
 
-		p_tablemap->set_r$_left(index, sel_region.left++);
-		p_tablemap->set_r$_top(index, sel_region.top--);
-		p_tablemap->set_r$_right(index, sel_region.right++);
-		p_tablemap->set_r$_bottom(index, sel_region.bottom--);
+		p_tablemap->set_r$_left(index, sel_region.left+1);
+		p_tablemap->set_r$_top(index, sel_region.top-1);
+		p_tablemap->set_r$_right(index, sel_region.right+1);
+		p_tablemap->set_r$_bottom(index, sel_region.bottom-1);
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -2890,8 +2895,8 @@ void CDlgTableMap::OnBnClickedNudgeRight()
 		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
 		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
 
-		p_tablemap->set_r$_left(index, sel_region.left++);
-		p_tablemap->set_r$_right(index, sel_region.right++);
+		p_tablemap->set_r$_left(index, sel_region.left+1);
+		p_tablemap->set_r$_right(index, sel_region.right+1);
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -2910,10 +2915,10 @@ void CDlgTableMap::OnBnClickedNudgeDownright()
 		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
 		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
 
-		p_tablemap->set_r$_left(index, sel_region.left++);
-		p_tablemap->set_r$_top(index, sel_region.top++);
-		p_tablemap->set_r$_right(index, sel_region.right++);
-		p_tablemap->set_r$_bottom(index, sel_region.bottom++);
+		p_tablemap->set_r$_left(index, sel_region.left+1);
+		p_tablemap->set_r$_top(index, sel_region.top+1);
+		p_tablemap->set_r$_right(index, sel_region.right+1);
+		p_tablemap->set_r$_bottom(index, sel_region.bottom+1);
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -2932,8 +2937,8 @@ void CDlgTableMap::OnBnClickedNudgeDown()
 		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
 		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
 
-		p_tablemap->set_r$_top(index, sel_region.top++);
-		p_tablemap->set_r$_bottom(index, sel_region.bottom++);
+		p_tablemap->set_r$_top(index, sel_region.top+1);
+		p_tablemap->set_r$_bottom(index, sel_region.bottom+1);
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -2952,10 +2957,10 @@ void CDlgTableMap::OnBnClickedNudgeDownleft()
 		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
 		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
 
-		p_tablemap->set_r$_left(index, sel_region.left--);
-		p_tablemap->set_r$_top(index, sel_region.top++);
-		p_tablemap->set_r$_right(index, sel_region.right--);
-		p_tablemap->set_r$_bottom(index, sel_region.bottom++);
+		p_tablemap->set_r$_left(index, sel_region.left-1);
+		p_tablemap->set_r$_top(index, sel_region.top+1);
+		p_tablemap->set_r$_right(index, sel_region.right-1);
+		p_tablemap->set_r$_bottom(index, sel_region.bottom+1);
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -2974,8 +2979,8 @@ void CDlgTableMap::OnBnClickedNudgeLeft()
 		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
 		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
 
-		p_tablemap->set_r$_left(index, sel_region.left--);
-		p_tablemap->set_r$_right(index, sel_region.right--);
+		p_tablemap->set_r$_left(index, sel_region.left-1);
+		p_tablemap->set_r$_right(index, sel_region.right-1);
 
 		update_r$_display(false);
 		Invalidate(false);
