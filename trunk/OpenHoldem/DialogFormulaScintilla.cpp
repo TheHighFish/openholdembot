@@ -192,7 +192,8 @@ CDlgFormulaScintilla::~CDlgFormulaScintilla()
 {
 	for (int i=0; i<m_ScinArray.GetSize(); i++)
 	{
-		delete m_ScinArray.GetAt(i);
+		if (&m_EmptyScinCtrl != m_ScinArray.GetAt(i))
+			delete m_ScinArray.GetAt(i);
 	}
 	m_ScinArray.RemoveAll();
 }
