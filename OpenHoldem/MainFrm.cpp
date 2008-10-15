@@ -376,11 +376,7 @@ void CMainFrame::OnEditFormula()
 	{
 		BOOL	bWasShown = ::IsWindow(m_formulaScintillaDlg->m_hWnd) && m_formulaScintillaDlg->IsWindowVisible();
 
-		if (!m_formulaScintillaDlg->DestroyWindow())
-		{
-			m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, true);
-			return; // The Formula user requested to not have the dialog close
-		}
+		m_formulaScintillaDlg->EndDialog(IDCANCEL);
 		delete m_formulaScintillaDlg;
 		m_formulaScintillaDlg = NULL;
 
