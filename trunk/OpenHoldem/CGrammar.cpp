@@ -548,12 +548,12 @@ CCritSec		m_critsec_parse;
 
 bool CGrammar::ParseString(const CString *s, const SFormula *f, tpi_type *i, int *stopchar)
 {
+	CSLock lock(m_critsec_parse);	// must come before instantiation of exec_grammar struct on stack
+
 	exec_grammar	gram;
 	string			str = "";
 	skip_grammar	skip;
 	int				c = 0;
-
-	CSLock lock(m_critsec_parse);
 
 	g_parse_symbol_formula = (SFormula *) f;
 	g_parse_symbol_stop_strs.RemoveAll();
