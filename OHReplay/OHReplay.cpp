@@ -397,7 +397,7 @@ bool select_frame(char *szFile, char *szFileTitle, int *name_start, int *name_en
 //
 void prev_frame()
 {
-	char			framenum[5], szHtmFile[MAX_PATH];
+	char			framenum[8], szHtmFile[MAX_PATH];
 	WIN32_FIND_DATA	FindFileData;
 	HANDLE			hFind;
 	int				prev_frame=-1, max_frame=-1;
