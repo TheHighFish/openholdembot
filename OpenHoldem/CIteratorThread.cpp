@@ -12,8 +12,8 @@
 CIteratorThread		*p_iterator_thread = NULL;
 CRITICAL_SECTION	cs_iterator;
 
-SIterVars			_iter_vars;
-SIterParams			_iter_params;
+SIterVars			_iter_vars = {0.,0.,0.,false,true,0};
+SIterParams			_iter_params = {0, 0, 0, {CARD_NOCARD, CARD_NOCARD}, {CARD_NOCARD, CARD_NOCARD, CARD_NOCARD} };
 
 CIteratorThread::CIteratorThread()
 {

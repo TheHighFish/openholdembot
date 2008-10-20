@@ -740,7 +740,7 @@ void CMainFrame::OnBnClickedGreenCircle()
 			// reset iterator vars
 			EnterCriticalSection(&cs_iterator);
 				_iter_vars.iterator_thread_running = false;
-				_iter_vars.iterator_thread_complete = false;
+				_iter_vars.iterator_thread_complete = true;
 				_iter_vars.iterator_thread_progress = 0;
 				_iter_params.nit = 0;
 				_iter_params.f$p = 0;
