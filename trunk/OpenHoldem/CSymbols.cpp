@@ -1439,7 +1439,13 @@ void CSymbols::CalcProbabilities(void)
 	}
 
 	// restart iterator thread
-	if (need_recalc && _sym.nit>0)
+	if (_sym.nit==0)
+	{
+		EnterCriticalSection(&cs_iterator);
+		_iter_vars.iterator_thread_complete = true;
+		LeaveCriticalSection(&cs_iterator);
+	}
+	else if (need_recalc)
 	{
 		if (p_iterator_thread)
 			delete p_iterator_thread;
