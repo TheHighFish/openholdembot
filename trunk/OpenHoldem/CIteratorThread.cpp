@@ -73,6 +73,9 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 	int				nopp = sym_nopponents <= MAX_OPPONENTS ? sym_nopponents : MAX_OPPONENTS;
 
+	// Seed the RNG
+	srand((unsigned)GetTickCount());
+
 	//
 	// Main iterator loop
 	//
@@ -402,9 +405,6 @@ void CIteratorThread::InitIteratorLoop()
 		_iter_params.ccard[4] = p_scraper->card_common(4);
 		_iter_vars.prwin = _iter_vars.prtie = _iter_vars.prlos = 0.;
 	LeaveCriticalSection(&cs_iterator);
-
-	// Seed RNG
-	srand((unsigned)time( NULL ));
 
 	// player cards
 	CardMask_RESET(_plCards);

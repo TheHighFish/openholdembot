@@ -1,6 +1,6 @@
 BUG FIXES:
 
-v1.9.4 2008-09-26
+v1.9.4 2008-10-21
 =================
 BUG FIXES:
 - Validation of card information passed in from PokerPro server to avoid crashes when/if bad information
@@ -19,6 +19,7 @@ BUG FIXES:
   retrieve PokerTracker symbols when connected to a ManualMode table.
 - Full house hand strength was not working correctly with trips on board.  Identification of problem and submission of patch by elvis.
 - CSymbols.cpp mofified to give correct pcbits/npcbits value when a straight or straight flush contains an Ace(noted by fn101). (Matrix)
+- Fixed problem of seeding of RNG.  Spawned threads were not seeding the RNG pseudo-randomly.  (Thanks, Matrix, for the fix)
 
 
 MAINTENANCE:

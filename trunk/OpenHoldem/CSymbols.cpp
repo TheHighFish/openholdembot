@@ -100,9 +100,6 @@ CSymbols::CSymbols()
 
 	ResetSymbolsFirstTime();
 
-	// Seed RNG
-	srand((unsigned)time( NULL ));
-
 	//Initialise the handrank tables used by prwin
 	vndx=0; //used to provide an offset into the vanilla table
 	for (i=0;i<169;i++)

@@ -24,7 +24,7 @@ CAutoplayer::CAutoplayer(BOOL bInitiallyOwn, LPCTSTR lpszName) : _mutex(bInitial
 	ASSERT(_mutex.m_hObject != NULL);
 
 	// Seed RNG
-	srand((unsigned)time( NULL ));
+	//srand((unsigned)time( NULL ));
 
 	set_autoplayer_engaged(false);
 	ResetHand();

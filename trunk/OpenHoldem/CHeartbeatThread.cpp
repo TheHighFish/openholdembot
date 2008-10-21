@@ -68,11 +68,14 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 	char				title[512] = {0};
 	int					N = 0, i = 0;
 
-	// PokerPro valiables only
+	// PokerPro variables only
 	const char			*pbytes = NULL;
 	int					nbytes = 0, result = 0;
 	fd_set				fd;
 	timeval				tv;
+
+	// Seed the RNG
+	srand((unsigned)GetTickCount());
 
 	while (true)
 	{
