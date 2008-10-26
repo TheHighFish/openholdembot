@@ -26,8 +26,12 @@ public:
 	CButton m_RecordFrames;
 	CButton m_RecordEveryChange;
 	CEdit m_MaxFrames;
+	CButton m_RecordEveryChangePlaying;
 	CSpinButtonCtrl m_MaxFramesSpin;
 	afx_msg void OnBnClickedRecordFrames();
+	afx_msg void OnBnClickedRecordFramesPlaying();
+	afx_msg void OnBnClickedRecordFramesChanging();
+	
 };
 
 

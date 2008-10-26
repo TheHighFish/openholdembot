@@ -44,6 +44,7 @@ public:
 	const bool replay_record() { return _replay_record; }
 	const bool replay_record_every_change() { return _replay_record_every_change; }
 	const int replay_max_frames() { return _replay_max_frames; }
+	const bool replay_record_every_change_playing() { return _replay_record_every_change_playing; }
 	// Poker Tracker
 	const CString pt_ip_addr() { return _pt_ip_addr; }
 	const CString pt_port() { return _pt_port; }
@@ -152,6 +153,7 @@ public:
 	void set_replay_record(const bool b) { ENT _replay_record = b; WriteReg("replay_record", b); }
 	void set_replay_record_every_change(const bool b) { ENT _replay_record_every_change = b; WriteReg("replay_record_every_change", b); }
 	void set_replay_max_frames(const int i) { ENT _replay_max_frames = i; WriteReg("replay_max_frames", i); }
+	void set_replay_record_every_change_playing(const bool b) { ENT _replay_record_every_change_playing = b; WriteReg("replay_record_every_change_playing", b); }
 	// Poker Tracker
 	void set_pt_ip_addr(const CString s) { ENT _pt_ip_addr = s; WriteReg("pt_ip_addr", s); }
 	void set_pt_port(const CString s) { ENT _pt_port = s; WriteReg("pt_port", s); }
@@ -261,6 +263,7 @@ private:
 	double			_icm_prize4;
 	// Replay Frames
 	bool			_replay_record;
+	bool			_replay_record_every_change_playing;
 	bool			_replay_record_every_change;
 	int				_replay_max_frames;
 	// Poker Tracker

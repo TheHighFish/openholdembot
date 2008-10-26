@@ -28,11 +28,14 @@ void CDlgSAPrefs8::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_RECORD_FRAMES, m_RecordFrames);
 	DDX_Control(pDX, IDC_RECORD_EVERY_CHANGE, m_RecordEveryChange);
 	DDX_Control(pDX, IDC_MAXFRAMES, m_MaxFrames);
+	DDX_Control(pDX, IDC_RECORD_EVERY_CHANGE_PLAYING, m_RecordEveryChangePlaying);
 	DDX_Control(pDX, IDC_MAXFRAMES_SPIN, m_MaxFramesSpin);
 }
 
 BEGIN_MESSAGE_MAP(CDlgSAPrefs8, CDialog)
 	ON_BN_CLICKED(IDC_RECORD_FRAMES, &CDlgSAPrefs8::OnBnClickedRecordFrames)
+	ON_BN_CLICKED(IDC_RECORD_EVERY_CHANGE, &CDlgSAPrefs8::OnBnClickedRecordFramesChanging)
+	ON_BN_CLICKED(IDC_RECORD_EVERY_CHANGE_PLAYING, &CDlgSAPrefs8::OnBnClickedRecordFramesPlaying)
 END_MESSAGE_MAP()
 
 // CDlgSAPrefs8 message handlers
@@ -44,8 +47,15 @@ BOOL CDlgSAPrefs8::OnInitDialog()
 
 	m_RecordFrames.SetCheck(prefs.replay_record() ? BST_CHECKED : BST_UNCHECKED);
 	m_RecordEveryChange.SetCheck(prefs.replay_record_every_change() ? BST_CHECKED : BST_UNCHECKED);
+	m_RecordEveryChangePlaying.SetCheck(prefs.replay_record_every_change_playing() ? BST_CHECKED : BST_UNCHECKED);
+
+	m_RecordEveryChangePlaying.EnableWindow(prefs.replay_record());
 	m_RecordEveryChange.EnableWindow(prefs.replay_record());
 
+	if (prefs.replay_record()){
+		m_RecordEveryChangePlaying.EnableWindow(!prefs.replay_record_every_change());
+		m_RecordEveryChange.EnableWindow(!prefs.replay_record_every_change_playing());	
+	}
 	text.Format("%d", prefs.replay_max_frames());
 	m_MaxFrames.SetWindowText(text.GetString());
 	m_MaxFramesSpin.SetRange(1, 1000);
@@ -62,6 +72,7 @@ void CDlgSAPrefs8::OnOK()
 
 	prefs.set_replay_record(m_RecordFrames.GetCheck() == BST_CHECKED);
 	prefs.set_replay_record_every_change(m_RecordEveryChange.GetCheck() == BST_CHECKED);
+    prefs.set_replay_record_every_change_playing(m_RecordEveryChangePlaying.GetCheck() == BST_CHECKED);
 
 	m_MaxFrames.GetWindowText(text);
 	prefs.set_replay_max_frames(atoi(text.GetString()));
@@ -72,4 +83,15 @@ void CDlgSAPrefs8::OnOK()
 void CDlgSAPrefs8::OnBnClickedRecordFrames()
 {
 	m_RecordEveryChange.EnableWindow(m_RecordFrames.GetCheck() == BST_CHECKED);
+	m_RecordEveryChangePlaying.EnableWindow(m_RecordFrames.GetCheck() == BST_CHECKED);
+}
+
+void CDlgSAPrefs8::OnBnClickedRecordFramesPlaying()
+{
+	m_RecordEveryChange.EnableWindow(!m_RecordEveryChangePlaying.GetCheck() == BST_CHECKED);
+}
+
+void CDlgSAPrefs8::OnBnClickedRecordFramesChanging()
+{
+	m_RecordEveryChangePlaying.EnableWindow(!m_RecordEveryChange.GetCheck() == BST_CHECKED);
 }

@@ -170,18 +170,26 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////
-		// Create replay frame
+      // Create replay frame
 
-		if (prefs.replay_record())
-		{
-			if ( (p_symbols->sym()->ismyturn && !p_heartbeat_thread->replay_recorded_this_turn()) ||
-				 (prefs.replay_record_every_change() && new_scrape != NOTHING_CHANGED) )
-			{
-				CReplayFrame	crf;
-				crf.CreateReplayFrame();
-				p_heartbeat_thread->set_replay_recorded_this_turn(true);
-			}
-		}
+      if (prefs.replay_record())
+      {
+         if ( (p_symbols->sym()->ismyturn && !p_heartbeat_thread->replay_recorded_this_turn()) ||
+             (prefs.replay_record_every_change() && new_scrape != NOTHING_CHANGED) ||
+			 (prefs.replay_record_every_change_playing() && (p_symbols->user_chair_confirmed() &&
+               !(p_scraper->card_player(p_symbols->sym()->chair, 0)==CARD_NOCARD ||
+                p_scraper->card_player(p_symbols->sym()->chair, 0)==CARD_BACK ||
+                p_scraper->card_player(p_symbols->sym()->chair, 1)==CARD_NOCARD ||
+                p_scraper->card_player(p_symbols->sym()->chair, 1)==CARD_BACK))&& new_scrape != NOTHING_CHANGED))
+         {
+                    
+               CReplayFrame   crf;
+               crf.CreateReplayFrame();
+               p_heartbeat_thread->set_replay_recorded_this_turn(true);
+         }
+
+
+      }
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Start/stop PokerTracker thread as needed
