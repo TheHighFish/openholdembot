@@ -116,6 +116,7 @@ void CPreferences::InitDefaults(void)
 
 	// Poker Tracker
 	_pt_disable = true;
+	_pt_version = "2";
 	_pt_ip_addr = "127.0.0.1";
 	_pt_port = "5432";
 	_pt_user = "pokertracker";
@@ -238,6 +239,7 @@ void CPreferences::ReadFromRegistry()
 
 		// Prefs - poker tracker
 		ReadReg("pt_disable", &_pt_disable);
+		ReadReg("pt_version", &_pt_version);
 		ReadReg("pt_ip_addr", &_pt_ip_addr);
 		ReadReg("pt_port", &_pt_port);
 		ReadReg("pt_user", &_pt_user);

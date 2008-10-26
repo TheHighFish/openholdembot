@@ -321,6 +321,7 @@ struct sprw1326
 };
 
 // PokerTracker support
+// This enum is used for both PT2 and PT3
 enum PT_Stats 
 {
 	pt_icon, pt_hands, pt_pfr, pt_aggp, pt_aggf,

@@ -1,9 +1,12 @@
 v2.0.0 2009-xx-xx
 =================
 BUG FIXES:
-MAINTENANCE:
-NEW STUFF:
 
+MAINTENANCE:
+
+NEW STUFF:
+- Added option to save all replay frames whenever something changes when you are in the hand (Thanks, markedagain for the patch) [OpenHoldem]
+- Added support for PokerTracker v3 (Thanks, fn101 for the query translation) [OpenHoldem]
 
 v1.9.4 2008-10-21
 =================
