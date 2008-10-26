@@ -49,8 +49,8 @@
 // ======================================================================================
 
 // Version
-#define VERSION_NUMBER				1.18
-#define VERSION_TEXT				"1.1.8"  // change version number in OpenScrape.rc also, when needed
+#define VERSION_NUMBER				2.00
+#define VERSION_TEXT				"2.0.0"  // change version number in OpenScrape.rc also, when needed
 
 
 #include "debug.h"
