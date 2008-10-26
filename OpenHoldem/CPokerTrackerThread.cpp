@@ -98,7 +98,7 @@ const double CPokerTrackerThread::ProcessQuery (const char * s)
 	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)  
 		return 0.0;
 
-	if	  (memcmp(s,"pt_iconlastr",12)==0)			return GetStat(p_game_state->LastRaised(s[12]-'0'), pt_icon);
+	if	    (memcmp(s,"pt_iconlastr",12)==0)		return GetStat(p_game_state->LastRaised(s[12]-'0'), pt_icon);
 	else if (memcmp(s,"pt_icon",7)==0)				return GetStat(s[7]-'0', pt_icon);
 	else if (memcmp(s,"pt_pfr",6)==0)				return GetStat(s[6]-'0', pt_pfr);
 	else if (memcmp(s,"pt_aggtotnopf",13)==0)		return GetStat(s[13]-'0', pt_aggtotnopf);
@@ -346,7 +346,10 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 	else
 	{
 		// get query string for the requested statistic
-		strcpy_s(strQry, 2000, query_str[stat]);
+		if (prefs.pt_version()=="3")
+			strcpy_s(strQry, 2000, query_str3[stat]);
+		else
+			strcpy_s(strQry, 2000, query_str2[stat]);
 
 		// Insert the player name in the query string
 		strcpy_s(strQry1, 2000, strQry);  // move the query into temp str 1
@@ -377,7 +380,10 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 		try
 		{
 			// See if we can find the player name in the database
-			write_log("Querying %s for m_chr %d: %s\n", stat_str[stat], m_chr, strQry);
+			if (prefs.pt_version()=="3")
+				write_log("Querying %s for m_chr %d: %s\n", stat_str3[stat], m_chr, strQry);
+			else
+				write_log("Querying %s for m_chr %d: %s\n", stat_str2[stat], m_chr, strQry);
 			res = PQexec(_pgconn, strQry);
 		}
 		catch (_com_error &e)
@@ -428,7 +434,10 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 			if (PQgetisnull(res,0,0) != 1)
 			{
 				result = atof(PQgetvalue(res,0,0));
-				write_log("Query %s for m_chr %d success: %f\n", stat_str[stat], m_chr, result);
+				if (prefs.pt_version()=="3")
+					write_log("Query %s for m_chr %d success: %f\n", stat_str3[stat], m_chr, result);
+				else
+					write_log("Query %s for m_chr %d success: %f\n", stat_str2[stat], m_chr, result);
 			}
 		}
 
@@ -472,10 +481,22 @@ bool CPokerTrackerThread::QueryName (const char * query_name, const char * scrap
 
 	sprintf_s(siteidstr, 5, "%d", siteid);
 
-	strcpy_s(strQry, 1000, "SELECT screen_name FROM players WHERE screen_name like '");
-	strcat_s(strQry, 1000, query_name);
-	strcat_s(strQry, 1000, "' AND main_site_id=");
-	strcat_s(strQry, 1000, siteidstr);
+	// PT version 3 name query
+	if (prefs.pt_version()=="3")
+	{
+		strcpy_s(strQry, 1000, "SELECT player_name FROM player WHERE player_name like '");
+		strcat_s(strQry, 1000, query_name);
+		strcat_s(strQry, 1000, "' AND id_site=");
+		strcat_s(strQry, 1000, siteidstr);
+	}
+	// PT version 2 name query
+	else
+	{
+		strcpy_s(strQry, 1000, "SELECT screen_name FROM players WHERE screen_name like '");
+		strcat_s(strQry, 1000, query_name);
+		strcat_s(strQry, 1000, "' AND main_site_id=");
+		strcat_s(strQry, 1000, siteidstr);
+	}
 
 	try
 	{

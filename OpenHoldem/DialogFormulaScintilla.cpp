@@ -85,7 +85,13 @@ char * keywords = "ismanual isppro site nchairs isbring session handnumber "
 				  "foldbits1 foldbits2 foldbits3 foldbits4 "
 				  "oppdealt floppct turnpct riverpct avgbetspf tablepfr maxbalance handsplayed "
 				  "balance_rank0 balance_rank1 balance_rank2 balance_rank3 balance_rank4 balance_rank5 "
-				  "balance_rank6 balance_rank7 balance_rank8 balance_rank9 ";
+				  "balance_rank6 balance_rank7 balance_rank8 balance_rank9 "
+				  "pt_icon pt_hands pt_pfr pt_aggp pt_aggf pt_aggt pt_aggr "
+				  "pt_aggtot pt_aggtotnopf pt_floppct pt_turnpct pt_riverpct pt_vpip pt_pf_rfi "
+				  "pt_pf_cr pt_pfats pt_wsdp pt_wssd pt_fbbts pt_fsbts "
+				  "ptt_icon ptt_hands ptt_pfr ptt_aggp ptt_aggf ptt_aggt ptt_aggr "
+				  "ptt_aggtot ptt_aggtotnopf ptt_floppct ptt_turnpct ptt_riverpct ptt_vpip ptt_pf_rfi "
+				  "ptt_pf_cr ptt_pfats ptt_wsdp ptt_wssd ptt_fbbts ptt_fsbts ";
 
 #define ID_SCIN_SIZERBAR 5555
 
