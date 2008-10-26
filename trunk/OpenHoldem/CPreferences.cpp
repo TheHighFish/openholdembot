@@ -134,6 +134,7 @@ void CPreferences::InitDefaults(void)
 	_replay_record = false;
 	_replay_record_every_change = false;
 	_replay_max_frames = 100;
+	_replay_record_every_change_playing = false;
 
 	//  Perl
 	_perl_default_formula = "";
@@ -255,6 +256,7 @@ void CPreferences::ReadFromRegistry()
 		ReadReg("replay_record", &_replay_record);
 		ReadReg("replay_record_every_change", &_replay_record_every_change);
 		ReadReg("replay_max_frames", &_replay_max_frames);
+		ReadReg("replay_record_every_change_playing", &_replay_record_every_change_playing);
 
 		// poker Pro
 		ReadReg("ppro_hostname", &_ppro_hostname);

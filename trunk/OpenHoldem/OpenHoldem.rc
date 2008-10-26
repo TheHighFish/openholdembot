@@ -809,11 +809,13 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "     Automatically record replay frames (when its my turn)",IDC_RECORD_FRAMES,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,16,198,10
-    EDITTEXT        IDC_MAXFRAMES,98,51,28,14,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_MAXFRAMES_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,126,51,11,14
-    LTEXT           "Maximum frames to store ",IDC_STATIC,9,53,86,8
+    EDITTEXT        IDC_MAXFRAMES,98,59,28,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_MAXFRAMES_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,126,59,11,14
+    LTEXT           "Maximum frames to store ",IDC_STATIC,9,61,86,8
     CONTROL         "     But do it on every change in table state",IDC_RECORD_EVERY_CHANGE,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,30,31,153,10
+    CONTROL         "     Record every change when in hand",IDC_RECORD_EVERY_CHANGE_PLAYING,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,29,43,148,15
 END
 
 IDD_SAPREFS9 DIALOGEX 0, 0, 219, 155
@@ -1027,7 +1029,7 @@ END
 
 STRINGTABLE 
 BEGIN
-	IDR_MAINFRAME           "OpenHoldem\n\nformula\nOpenHoldem Files (*.ohf;*.whf)\n.ohf;.whf\nOpenHoldem.Document\nformula.Document"
+    IDR_MAINFRAME           "OpenHoldem\n\nformula\nOpenHoldem Files (*.ohf;*.whf)\n.ohf;.whf\nOpenHoldem.Document\nformula.Document"
     ID_INDICATOR_STATUS_COMCARDS "ComCards"
     ID_INDICATOR_STATUS_PRWIN "prwin"
     ID_INDICATOR_STATUS_NOPP "nopp"

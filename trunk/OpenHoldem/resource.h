@@ -358,6 +358,7 @@
 #define IDC_ENABLE_TRACE                1299
 #define IDC_TRACE_LIST                  1300
 #define IDC_COMMENT                     1301
+#define IDC_RECORD_EVERY_CHANGE_PLAYING 1302
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -472,7 +473,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        176
 #define _APS_NEXT_COMMAND_VALUE         32970
-#define _APS_NEXT_CONTROL_VALUE         1302
+#define _APS_NEXT_CONTROL_VALUE         1303
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
