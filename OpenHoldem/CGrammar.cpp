@@ -6,6 +6,7 @@
 #include "CSymbols.h"
 #include "CPreferences.h"
 
+#include "CAutoplayer.h"
 #include "..\CTransform\CTransform.h"
 #include "CICMCalculator.h"
 #include "CPokerAction.h"
@@ -21,6 +22,7 @@
 
 CGrammar::CGrammar(void)
 {
+	_RecursionDepth = 0;
 }
 
 CGrammar::~CGrammar(void)
@@ -470,6 +472,19 @@ double CGrammar::DoCalcF$symbol(CFormula * const f, char *symbol, CEvalInfoFunct
 	int		i = 0;
 	double	ret = 0.;
 
+	// Check recursion depth of DoCalcF$symbol 
+	// to detect a recursive formula.
+	// Decrease _RecursionDepth on every function exit!
+	_RecursionDepth++;
+	if (_RecursionDepth > _MAX_RECURSION_DEPTH)
+	{
+		MessageBox(0, "Recursion to deep.\nProbably endless.\nStopping autoplayer.",
+			"ERROR", 0);		
+		p_autoplayer->set_autoplayer_engaged(false);
+		_RecursionDepth--;
+		return 0.0;
+	}
+
 	if (strcmp(symbol, "f$debug") != 0 &&
 			strcmp(symbol, "notes") != 0 &&
 			strcmp(symbol, "dll") != 0)
@@ -490,7 +505,8 @@ double CGrammar::DoCalcF$symbol(CFormula * const f, char *symbol, CEvalInfoFunct
 					
 					else if (logCallingFunction && !*logCallingFunction)
 						*logCallingFunction = new CEvalInfoFunction(symbol, true, ret);
-
+					
+					_RecursionDepth--;
 					return ret;
 				}
 				else
@@ -528,6 +544,7 @@ double CGrammar::DoCalcF$symbol(CFormula * const f, char *symbol, CEvalInfoFunct
 					if (*e == SUCCESS)
 						f->set_func_fresh(i, true);
 
+					_RecursionDepth--;
 					return ret;
 				}
 			}
@@ -536,6 +553,7 @@ double CGrammar::DoCalcF$symbol(CFormula * const f, char *symbol, CEvalInfoFunct
 
 	*e = ERR_INVALID_FUNC_SYM;
 
+	_RecursionDepth--;
 	return 0;
 }
 

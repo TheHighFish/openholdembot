@@ -41,6 +41,9 @@ private:
 	double EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunction **logCallingFunction, int *e);
 	static void SetOffsets(iter_t &i, const char *start);
 
+	unsigned int				_RecursionDepth;	// To detect endless recursion in DoCalcF$symbol(...);
+	static const unsigned int	_MAX_RECURSION_DEPTH = 1000;
+
 	// Result of formula set currently being parsed (this is for symbol validation)
 	CArray<std::string, std::string>  _parse_symbol_stop_strs;
 };
