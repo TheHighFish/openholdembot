@@ -8,6 +8,7 @@ NEW STUFF:
 - Added option to save all replay frames whenever something changes when you are in the hand (Thanks, markedagain for the patch) [OpenHoldem]
 - Added support for PokerTracker v3 (Thanks, fn101 for the query translation) [OpenHoldem]
 - Added option to disable runtime message boxes [OpenHoldem]
+- Added runtime-check for recursive formulas. [TheHighFish]
 
 v1.9.4 2008-10-21
 =================
