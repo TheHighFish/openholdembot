@@ -550,15 +550,15 @@ void CMainFrame::OnFileLoadTableMap()
 
 	if (cfd.DoModal() == IDOK)
 	{
-		ret = p_tablemap->LoadTablemap(cfd.m_ofn.lpstrFile, VER_OPENSCRAPE_1, false, &line);
-		if (ret == ERR_VERSION)
+		ret = p_tablemap->LoadTablemap(cfd.m_ofn.lpstrFile, VER_OPENSCRAPE_1, false, &line, prefs.disable_msgbox());
+		if (ret == ERR_VERSION && !prefs.disable_msgbox())
 		{
-			e.Format("This is an OpenHoldem v1 profile (.ohdb1).\n"\
-					 "OpenHoldem versions 1.2.0 and higher require v2 Profiles (.ohdb2),\n"\
+			e.Format("This is an OpenHoldem v1 profile (.ohdb1).\n"
+					 "OpenHoldem versions 1.2.0 and higher require v2 Profiles (.ohdb2),\n"
 					 "or OpenScrape Table Maps.\n");
 			MessageBox(e, "Table map load error", MB_OK);
 		}
-		else if (ret != SUCCESS)
+		else if (ret != SUCCESS&& !prefs.disable_msgbox())
 		{
 			e.Format("Error code: %d  line: %d", ret, line);
 			MessageBox(e, "Table map load error", MB_OK);
@@ -621,7 +621,7 @@ void CMainFrame::OnBnClickedGreenCircle()
 		bFound = hFile.FindNextFile();
 		if (!hFile.IsDots() && !hFile.IsDirectory() && hFile.GetFilePath()!=current_path)
 		{
-			ret = p_tablemap->LoadTablemap((char *) hFile.GetFilePath().GetString(), VER_OPENSCRAPE_1, false, &line);
+			ret = p_tablemap->LoadTablemap((char *) hFile.GetFilePath().GetString(), VER_OPENSCRAPE_1, false, &line, prefs.disable_msgbox());
 			if (ret == SUCCESS)
 			{
 				smap.z$ = p_tablemap->z$();
@@ -646,7 +646,7 @@ void CMainFrame::OnBnClickedGreenCircle()
 		bFound = hFile.FindNextFile();
 		if (!hFile.IsDots() && !hFile.IsDirectory() && hFile.GetFilePath()!=current_path)
 		{
-			ret = p_tablemap->LoadTablemap((char *) hFile.GetFilePath().GetString(), VER_OPENSCRAPE_1, false, &line);
+			ret = p_tablemap->LoadTablemap((char *) hFile.GetFilePath().GetString(), VER_OPENSCRAPE_1, false, &line, prefs.disable_msgbox());
 			if (ret == SUCCESS)
 			{
 				smap.z$ = p_tablemap->z$();
@@ -669,10 +669,18 @@ void CMainFrame::OnBnClickedGreenCircle()
 	{
 		int cySize = GetSystemMetrics(SM_CYSIZE);
 		int cyMenuSize = GetSystemMetrics(SM_CYMENU);
-		if (cySize != 18 && cyMenuSize != 19)
-			MessageBox("Cannot find table\n\nIt appears that your settings are not configured according to OpenHoldem specifications.\nYou must ensure that XP themes are not used (Use Windows Classic style) and\nfont size is set to normal.\n\nFor more info, look at the wiki documentation and the user forums", "Cannot find table", MB_OK);
-		else
-			MessageBox("No valid tables found", "Cannot find table", MB_OK);
+
+		if (!prefs.disable_msgbox())
+		{
+			if (cySize != 18 && cyMenuSize != 19)
+				MessageBox("Cannot find table\n\n"
+						   "It appears that your settings are not configured according to OpenHoldem specifications.\n"
+						   "You must ensure that XP themes are not used (Use Windows Classic style) and\n"
+						   "font size is set to normal.\n\n"
+						   "For more info, look at the wiki documentation and the user forums", "Cannot find table", MB_OK);
+			else
+				MessageBox("No valid tables found", "Cannot find table", MB_OK);
+		}
 	}
 	else 
 	{
@@ -703,7 +711,7 @@ void CMainFrame::OnBnClickedGreenCircle()
 		{
 			// Load correct tablemap, and save hwnd/rect/numchairs of table that we are "attached" to
 			set_attached_hwnd(g_tlist[cstd.selected_item].hwnd);
-			p_tablemap->LoadTablemap((char *) g_tlist[cstd.selected_item].path.GetString(), VER_OPENSCRAPE_1, false, &line);
+			p_tablemap->LoadTablemap((char *) g_tlist[cstd.selected_item].path.GetString(), VER_OPENSCRAPE_1, false, &line, prefs.disable_msgbox());
 			p_tablemap->SaveR$Indices();
 			p_tablemap->SaveS$Indices();
 			p_tablemap->SaveS$Strings();
@@ -772,12 +780,14 @@ void CMainFrame::OnBnClickedGreenCircle()
 
 			CWindowDC dc(NULL);
 			int nBitsPerPixel = dc.GetDeviceCaps(PLANES) * dc.GetDeviceCaps(BITSPIXEL);
-			if (nBitsPerPixel < 24)
+
+			if (nBitsPerPixel < 24 && !prefs.disable_msgbox())
 				MessageBox("It appears that your Display settings are not configured according to OpenHoldem specifications.\n24 bit color or higher is needed to reliably extract information from the poker client\n\nFor more info, look at the wiki documentation and the user forums", "Caution: Color Depth Too Low", MB_OK|MB_ICONWARNING);
 
 			BOOL fontSmoothingEnabled = FALSE;
 			SystemParametersInfo(SPI_GETFONTSMOOTHING, 0, (LPVOID)&fontSmoothingEnabled, 0);
-			if (fontSmoothingEnabled)
+
+			if (fontSmoothingEnabled && !prefs.disable_msgbox())
 				MessageBox("It appears that font smoothing is enabled. In order for OpenHoldem to reliably\nextract information from the poker client you should disable Font Smoothing", "Caution: Font smoothing is enabled", MB_OK|MB_ICONWARNING);
 
 			// log OH title bar text and table reset
@@ -1123,7 +1133,7 @@ void CMainFrame::OnAutoplayer()
 		p_formula->CreateHandListMatrices();
 
 		// one last parse - do not engage if parse fails
-		if (p_formula->ParseAllFormula(pMyMainWnd->GetSafeHwnd())) 
+		if (p_formula->ParseAllFormula(pMyMainWnd->GetSafeHwnd(), prefs.disable_msgbox()))
 		{
 			p_autoplayer->set_autoplayer_engaged(true);
 		}
@@ -1517,11 +1527,13 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
 	{
 		if (m_formulaScintillaDlg)
 		{
-			if (m_formulaScintillaDlg->m_dirty &&
-					MessageBox("The Formula Editor has un-applied (and unsaved) changes.\n"\
-							   "Really exit?", "Unsaved formula warning", MB_YESNO) == IDNO)
+			if (m_formulaScintillaDlg->m_dirty && !prefs.disable_msgbox())
 			{
-				return;
+				if (MessageBox("The Formula Editor has un-applied (and unsaved) changes.\n"
+							   "Really exit?", "Unsaved formula warning", MB_YESNO) == IDNO)
+				{
+					return;
+				}
 			}
 		}
 	}

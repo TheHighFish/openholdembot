@@ -359,6 +359,8 @@
 #define IDC_ENABLE_TRACE                1299
 #define IDC_TRACE_LIST                  1300
 #define IDC_COMMENT                     1301
+#define IDC_ENABLE_TRACE2               1301
+#define IDC_DISABLE_MSGBOX              1301
 #define IDC_RECORD_EVERY_CHANGE_PLAYING 1302
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771

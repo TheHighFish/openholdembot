@@ -46,7 +46,8 @@ void CTablemap::ClearTablemap()
 	_i$.RemoveAll();
 }
 
-int CTablemap::LoadTablemap(const char *_filename, const char *version, const bool check_ws_date, int *linenum, CString *loaded_version) 
+int CTablemap::LoadTablemap(const char *_filename, const char *version, const bool check_ws_date, int *linenum, const bool disable_msgbox,
+							CString *loaded_version) 
 {
 	CString				strLine = "", strLineType = "", token = "", s = "", e = "", hexval = "", t = "";
 	int					i = 0, pos = 0, insert_point = 0, P = 0, j = 0, x = 0, y = 0, new_elem = 0;
@@ -309,7 +310,9 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 
 			if (hold_font.group<0 || hold_font.group>3)
 			{
-				MessageBox(NULL, strLine, "Invalid font group", MB_OK | MB_TOPMOST);
+				if (!disable_msgbox)
+					MessageBox(NULL, strLine, "Invalid font group", MB_OK | MB_TOPMOST);
+
 				return ERR_SYNTAX;
 			}
 
@@ -396,7 +399,9 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			hold_hash_value.number = strLineType.GetString()[1] - '0';
 			if (hold_hash_value.number<0 || hold_hash_value.number>3)
 			{
-				MessageBox(NULL, strLine, "In_valid hash group", MB_OK | MB_TOPMOST);
+				if (!disable_msgbox)
+					MessageBox(NULL, strLine, "In_valid hash group", MB_OK | MB_TOPMOST);
+	
 				return ERR_SYNTAX;
 			}
 
@@ -486,7 +491,9 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 		// Unknown line type
 		else 
 		{
-			MessageBox(NULL, strLine, "Unknown Line Type", MB_OK | MB_TOPMOST);
+			if (!disable_msgbox)
+				MessageBox(NULL, strLine, "Unknown Line Type", MB_OK | MB_TOPMOST);
+	
 			return ERR_UNK_LN_TYPE;
 		}
 

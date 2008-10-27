@@ -1819,7 +1819,8 @@ void PokerPro::Publish(CString *text, const int flags)
 
 	if (flags & PUBLISH_ERR) 
 	{
-		MessageBox(NULL, *text, "PPRO: ERROR", MB_OK | MB_TOPMOST);
+		if (!prefs.disable_msgbox())
+			MessageBox(NULL, *text, "PPRO: ERROR", MB_OK | MB_TOPMOST);
 	}
 }
 

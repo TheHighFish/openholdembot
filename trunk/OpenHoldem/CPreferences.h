@@ -70,6 +70,8 @@ public:
 	// Tracing
 	const bool trace_enabled() { return _trace_enabled; }
 	const bool trace_functions(unsigned int i) { return _trace_functions[i]; }
+	// Logging and debugging
+	const bool disable_msgbox() { return _disable_msgbox; }
 	// PPro
 	const CString ppro_hostname() { return _ppro_hostname; }
 	const CString ppro_port() { return _ppro_port; }
@@ -181,6 +183,8 @@ public:
 	void set_trace_enabled(const bool b) { ENT _trace_enabled = b; WriteReg("trace_enabled", b); }
 	void set_trace_functions(const unsigned int i, const bool b) 
 	{ ENT _trace_functions[i] = b; CString regValue; regValue.Format("trace_functions%d", i+1);	WriteReg(regValue, b); }
+	// Logging and debugging
+	void set_disable_msgbox(const bool b) { ENT _disable_msgbox = b; WriteReg("disable_msgbox", b); }
 	// PPro
 	void set_ppro_hostname(const CString s) { ENT _ppro_hostname = s; WriteReg("ppro_hostname", s); }
 	void set_ppro_port(const CString s) { ENT _ppro_port = s; WriteReg("ppro_port", s); }
@@ -293,6 +297,8 @@ private:
 	// Tracing
 	bool			_trace_enabled;
 	bool			_trace_functions[nTraceFunctions];
+	// Logging & MessageBox
+	bool			_disable_msgbox;
 	// PPro
 	CString			_ppro_hostname;
 	bool			_ppro_autoseat;

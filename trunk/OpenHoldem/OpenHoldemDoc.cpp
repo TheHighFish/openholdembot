@@ -54,7 +54,7 @@ BOOL COpenHoldemDoc::OnNewDocument()
 	p_formula->CreateHandListMatrices();
 
 	// Create parse trees for default formula
-	p_formula->ParseAllFormula(pMyMainWnd->GetSafeHwnd());
+	p_formula->ParseAllFormula(pMyMainWnd->GetSafeHwnd(), prefs.disable_msgbox());
 
 	SetTitle("Default");
 	//SetModifiedFlag(true);
@@ -125,7 +125,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 		p_formula->CreateHandListMatrices();
 
 		// Create parse trees for newly loaded formula
-		p_formula->ParseAllFormula(pMyMainWnd->GetSafeHwnd());
+		p_formula->ParseAllFormula(pMyMainWnd->GetSafeHwnd(), prefs.disable_msgbox());
 
 		// Load dll, if set in preferences
 		if (prefs.dll_load_on_startup())
@@ -142,7 +142,7 @@ void COpenHoldemDoc::ReadFormula(CArchive& ar)
 	//   * ohf 
 	//   * whf and optional whx
 	// In the latter case we have to read both files. 
-	p_formula->ReadFormulaFile(ar, true);
+	p_formula->ReadFormulaFile(ar, true, prefs.disable_msgbox());
 
 	CFile *cf_whf = ar.GetFile();  
 	CString CSpath = cf_whf->GetFilePath(); 
@@ -158,7 +158,7 @@ void COpenHoldemDoc::ReadFormula(CArchive& ar)
 			{ 
 				CArchive ar_whx(&cf_whx, CArchive::load);   
 				// Read whx file, too. //???	
-				p_formula->ReadFormulaFile(ar_whx, false);	
+				p_formula->ReadFormulaFile(ar_whx, false, prefs.disable_msgbox());	
 			}
 	}
 

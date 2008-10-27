@@ -161,6 +161,9 @@ void CPreferences::InitDefaults(void)
 	for (int i=0;i<nTraceFunctions;i++)
 		_trace_functions[i] = false;
 
+	// Logging and debugging
+	_disable_msgbox = false;
+
 	_versus_path = "";
 }
 
@@ -306,6 +309,9 @@ void CPreferences::ReadFromRegistry()
 			ReadReg(regValue, &_trace_functions[i]);
 		}
 		
+		// Logging and debugging
+		ReadReg("disable_msgbox", &_disable_msgbox);
+
 		// versus path
 		ReadReg("versus", &_versus_path);
 	}

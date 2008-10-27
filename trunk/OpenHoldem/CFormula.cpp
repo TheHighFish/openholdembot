@@ -74,7 +74,7 @@ void CFormula::SetDefaultBot()
 
 // Reading a part of a formula, which may be spread
 // between two files in case of an old style whf / whx formula.
-void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
+void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine, bool disable_msgbox)
 {
 	CString		strOneLine = ""; 
 	int			content = 0;
@@ -133,11 +133,14 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 				// as this crashes the formula editor.											
 				strcpy_s(funcname, 256, strOneLine.GetString()+start+2);
 				funcname[strOneLine.GetLength()]='\0';
-				CString the_ErrorMessage = "Malformed function header!\nMissing trailing '##'.\n" 
-					+ strOneLine + "\n"
-					+ "Trying to continue...";
-				MessageBox(0, the_ErrorMessage, "Syntax Error", 
-					MB_OK | MB_ICONEXCLAMATION);
+				
+				if (!disable_msgbox)
+				{
+					CString the_ErrorMessage = "Malformed function header!\nMissing trailing '##'.\n" 
+						+ strOneLine + "\n"
+						+ "Trying to continue...";
+					MessageBox(0, the_ErrorMessage, "Syntax Error", MB_OK | MB_ICONEXCLAMATION);
+				}
 			}
 
 			else 
@@ -370,7 +373,7 @@ void CFormula::CreateHandListMatrices()
 	}
 }
 
-bool CFormula::ParseAllFormula(HWND hwnd)
+bool CFormula::ParseAllFormula(HWND hwnd, bool disable_msgbox)
 {
 	// returns true for successful parse of all trees, false otherwise
 	sData			data;
@@ -378,6 +381,7 @@ bool CFormula::ParseAllFormula(HWND hwnd)
 	data.all_parsed = true;
 	data.calling_hwnd = hwnd;
 	data.pParent = this;
+	data.disable_msgbox = disable_msgbox;
 
 	CUPDialog		dlg_progress(hwnd, ParseLoop, &data, "Please wait", false);
 
@@ -781,25 +785,34 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 						colnum++;
 					}
 				}
-				s.Format("Error in parse of %s\nLine: %d  Character: %d\n\nNear:\n \"%s\"",
-						 data->pParent->formula()->mFunction[i].func.GetString(),
-						 linenum, colnum,
-						 data->pParent->formula()->mFunction[i].func_text.Mid(stopchar, 40).GetString());
-				MessageBox(data->calling_hwnd, s, "PARSE ERROR", MB_OK);
+
+				if (!data->disable_msgbox)
+				{
+					s.Format("Error in parse of %s\nLine: %d  Character: %d\n\nNear:\n \"%s\"",
+							 data->pParent->formula()->mFunction[i].func.GetString(),
+							 linenum, colnum,
+							 data->pParent->formula()->mFunction[i].func_text.Mid(stopchar, 40).GetString());
+					MessageBox(data->calling_hwnd, s, "PARSE ERROR", MB_OK);
+				}
+
 				data->all_parsed = false;
 			}
 
 			else if (gram.parse_symbol_stop_strs()->GetSize() != 0)
 			{
-				s.Format("Error in parse of %s\n\nInvalid symbols:\n",
-						 data->pParent->formula()->mFunction[i].func.GetString());
-				for (j=0; j<gram.parse_symbol_stop_strs()->GetSize(); j++)
+				if (!data->disable_msgbox)
 				{
-					s.Append("   ");
-					s.Append(gram.parse_symbol_stop_strs()->GetAt(j).c_str());
-					s.Append("\n");
+					s.Format("Error in parse of %s\n\nInvalid symbols:\n",
+							 data->pParent->formula()->mFunction[i].func.GetString());
+					for (j=0; j<gram.parse_symbol_stop_strs()->GetSize(); j++)
+					{
+						s.Append("   ");
+						s.Append(gram.parse_symbol_stop_strs()->GetAt(j).c_str());
+						s.Append("\n");
+					}
+					MessageBox(data->calling_hwnd, s, "PARSE ERROR", MB_OK);
 				}
-				MessageBox(data->calling_hwnd, s, "PARSE ERROR", MB_OK);
+
 				data->all_parsed = false;
 			}
 
