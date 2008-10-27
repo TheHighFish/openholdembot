@@ -26,12 +26,9 @@ CSessionCounter::CSessionCounter()
 	}
 
 	// Otherwise: We failed. No ID available.
-	MessageBox(
-		0, 
-		CString("Could not grab a session ID.\n")
-		+ CString("Too many instances of OpenHoldem\n"),
-		"SessionCounter Error",
-		0);	
+	MessageBox(0, "Could not grab a session ID.\n"
+				  "Too many instances of OpenHoldem\n",
+				  "SessionCounter Error", MB_OK);
 }
 
 CSessionCounter::~CSessionCounter()

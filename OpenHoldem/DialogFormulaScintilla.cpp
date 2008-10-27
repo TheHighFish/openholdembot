@@ -1006,12 +1006,14 @@ void CDlgFormulaScintilla::OnNew()
 			bool bAlreadyExists = false;
 			for (int i=0; i<m_wrk_formula.formula()->mHandList.GetSize(); i++)
 			{
-				if (m_wrk_formula.formula()->mHandList[i].list == newdlg.CSnewname) {
+				if (m_wrk_formula.formula()->mHandList[i].list == newdlg.CSnewname) 
+				{
 					bAlreadyExists = true;
 					break;
 				}
 			}
-			if (bAlreadyExists) {
+			if (bAlreadyExists) 
+			{
 				MessageBox("Cannot proceed as list already exists");
 				return;
 			}
@@ -1045,7 +1047,8 @@ void CDlgFormulaScintilla::OnNew()
 				}
 			}
 
-			if (bAlreadyExists) {
+			if (bAlreadyExists) 
+			{
 				MessageBox("Cannot proceed as this function already exists");
 				return;
 			}
@@ -1121,15 +1124,19 @@ void CDlgFormulaScintilla::OnRename()
 			bool bAlreadyExists = false;
 			for (i=0; i<m_wrk_formula.formula()->mHandList.GetSize(); i++)
 			{
-				if (m_wrk_formula.formula()->mHandList[i].list == rendlg.CSnewname) {
+				if (m_wrk_formula.formula()->mHandList[i].list == rendlg.CSnewname) 
+				{
 					bAlreadyExists = true;
 					break;
 				}
 			}
-			if (bAlreadyExists) {
+			if (bAlreadyExists) 
+			{
 				MessageBox("Cannot rename to a list that already exists");
 				PostMessage(WM_COMMAND, ID_FORMULA_EDIT_RENAME);
-			} else {
+			} 
+			else 
+			{
 				// Find proper list
 				N = (int) m_wrk_formula.formula()->mHandList.GetSize();
 				for (i=0; i<N; i++) 
@@ -1160,10 +1167,13 @@ void CDlgFormulaScintilla::OnRename()
 				}
 			}
 
-			if (bAlreadyExists) {
+			if (bAlreadyExists) 
+			{
 				MessageBox("Cannot rename to a formula that already exists");
 				PostMessage(WM_COMMAND, ID_FORMULA_EDIT_RENAME);
-			} else {
+			} 
+			else 
+			{
 				// Find proper UDF and display it
 				N = (int) m_wrk_formula.formula()->mFunction.GetSize();
 				for (i=0; i<N; i++) 
@@ -2023,7 +2033,7 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
 	m_wrk_formula.CreateHandListMatrices();
 
 	// Validate parse trees
-	if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd())) 
+	if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd(), false))
 	{
 		s.Format("There are syntax errors in one or more formulas that are\n");
 		s.Append("preventing calculation.\n");
@@ -2116,7 +2126,7 @@ void CDlgFormulaScintilla::OnBnClickedAuto()
 		m_wrk_formula.CreateHandListMatrices();
 
 		// Validate parse trees
-		if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd())) 
+		if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd(), false))
 		{
 			s.Format("There are syntax errors in one or more formulas that are\n");
 			s.Append("preventing calculation of this formula.\n");
@@ -2414,7 +2424,7 @@ void CDlgFormulaScintilla::OnBnClickedApply()
 	// Parse working set
 	LastChangeToFormula(&m_wrk_formula);
 
-	if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd()))
+	if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd(), false))
 	{
 		if (MessageBox("There are errors in the working formula set.\n\n"
 					   "Would you still like to apply changes in the working set to the main set?\n\n"
@@ -2438,7 +2448,7 @@ void CDlgFormulaScintilla::OnBnClickedApply()
 	p_formula->CreateHandListMatrices();
 
 	// Re-parse global set
-	p_formula->ParseAllFormula(this->GetSafeHwnd());
+	p_formula->ParseAllFormula(this->GetSafeHwnd(), false);
 
 	// Re-calc symbols
 	p_symbols->CalcSymbols();
@@ -2478,7 +2488,7 @@ void CDlgFormulaScintilla::OnBnClickedOk()
 	// Parse working set
 	LastChangeToFormula(&m_wrk_formula);
 
-	if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd()))
+	if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd(), false))
 	{
 		if (MessageBox("There are errors in the working formula set.\n\n"
 					   "Would you still like to apply changes in the working set to the main set "
@@ -2505,7 +2515,7 @@ void CDlgFormulaScintilla::OnBnClickedOk()
 	p_formula->CreateHandListMatrices();
 
 	// Re-parse global set
-	p_formula->ParseAllFormula(this->GetSafeHwnd());
+	p_formula->ParseAllFormula(this->GetSafeHwnd(), false);
 
 	// Re-calc symbols
 	p_symbols->CalcSymbols();
@@ -2532,7 +2542,7 @@ bool CDlgFormulaScintilla::PromptToSave()
 		// Parse working set
 		LastChangeToFormula(&m_wrk_formula);
 
-		if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd()))
+		if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd(), false))
 		{
 			if (MessageBox("There are errors in the working formula set.\n\n"
 						   "Would you still like to apply changes in the working set to the main set "
@@ -2558,7 +2568,7 @@ bool CDlgFormulaScintilla::PromptToSave()
 		p_formula->CreateHandListMatrices();
 
 		// Re-parse global set
-		p_formula->ParseAllFormula(this->GetSafeHwnd());
+		p_formula->ParseAllFormula(this->GetSafeHwnd(), false);
 
 		// Uncheck formula button on main toolbar
 		pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);

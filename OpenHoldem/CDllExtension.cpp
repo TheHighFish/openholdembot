@@ -50,8 +50,12 @@ void CDllExtension::LoadDll(const char * path)
 		// If DLL is not loaded, pop an error
 		if (_hmod_dll==NULL)
 		{
-			t.Format("Unable to load DLL from:%s, error=%d\n", path, err1);
-			MessageBox(NULL, t, "DLL Load Error", MB_OK | MB_TOPMOST);
+			if (!prefs.disable_msgbox())
+			{
+				t.Format("Unable to load DLL from:%s, error=%d\n", path, err1);
+				MessageBox(NULL, t, "DLL Load Error", MB_OK | MB_TOPMOST);
+			}
+
 			return;
 		}
 	}
@@ -93,10 +97,14 @@ void CDllExtension::LoadDll(const char * path)
 		// If it is still not loaded, pop an error
 		if (_hmod_dll==NULL)
 		{
-			t.Format("Unable to load DLL from:\n%s, error=%d\n-or-\n%s, error=%d",
+			if (!prefs.disable_msgbox())
+			{
+				t.Format("Unable to load DLL from:\n%s, error=%d\n-or-\n%s, error=%d",
 					 prefs.dll_name().GetString(), err1,
 					 formula_dll.GetString(), err2);
-			MessageBox(NULL, t, "DLL Load Error", MB_OK | MB_TOPMOST);
+				MessageBox(NULL, t, "DLL Load Error", MB_OK | MB_TOPMOST);
+			}
+
 			return;
 		}
 	}
@@ -110,8 +118,12 @@ void CDllExtension::LoadDll(const char * path)
 
 		if (_process_message==NULL)
 		{
-			t.Format("Unable to find process_message in dll");
-			MessageBox(NULL, t, "DLL Load Error", MB_OK | MB_TOPMOST);
+			if (!prefs.disable_msgbox())
+			{
+				t.Format("Unable to find process_message in dll");
+				MessageBox(NULL, t, "DLL Load Error", MB_OK | MB_TOPMOST);
+			}
+
 			FreeLibrary(_hmod_dll);
 			_hmod_dll = NULL;
 		}

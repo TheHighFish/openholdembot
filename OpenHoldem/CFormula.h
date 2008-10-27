@@ -40,6 +40,7 @@ struct	sData
 	bool		all_parsed;
 	HWND		calling_hwnd;
 	CFormula	*pParent;
+	bool		disable_msgbox;
 };
 
 extern class CFormula 
@@ -50,10 +51,10 @@ public:
 	~CFormula();
 	void ClearFormula();
 	void SetDefaultBot();
-	void ReadFormulaFile(CArchive& ar, bool ignoreFirstLine);
+	void ReadFormulaFile(CArchive& ar, bool ignoreFirstLine, bool disable_msgbox);
 	void WriteFormula(CArchive& ar, bool use_new_OHF_style);
 	void CreateHandListMatrices();
-	bool ParseAllFormula(HWND hwnd);
+	bool ParseAllFormula(HWND hwnd, bool disable_msgbox);
 	void CheckForDefaultFormulaEntries();
 	void MarkCacheStale();
 	void ParseHandList(const CString &list_text, bool inlist[13][13]);

@@ -168,7 +168,9 @@ void CDlgSAPrefs6::OnBnClickedPtTest()
 		e += PQerrorMessage(pgconn);
 		e += "\nConn string:";
 		e += conn_str;
+
 		MessageBox(e.GetString(), "ERROR", MB_OK);
+
 		PQfinish(pgconn);
 	}
 }

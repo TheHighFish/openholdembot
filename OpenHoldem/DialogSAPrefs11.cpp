@@ -32,6 +32,7 @@ void CDlgSAPrefs11::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_MAXIMUM_LOG_SPIN, m_MaximumLog_Spin);
 	DDX_Control(pDX, IDC_ENABLE_TRACE, m_EnableTrace);
 	DDX_Control(pDX, IDC_TRACE_LIST, m_TraceList);
+	DDX_Control(pDX, IDC_DISABLE_MSGBOX, m_disable_msgbox);
 }
 
 BOOL CDlgSAPrefs11::OnInitDialog()
@@ -54,17 +55,20 @@ BOOL CDlgSAPrefs11::OnInitDialog()
 	m_TraceList.AddString("f$call");
 	m_TraceList.AddString("f$play");
 	m_TraceList.AddString("f$prefold");
+
 	for (int i=0;i<nTraceFunctions;i++)
 	{
 		m_TraceList.SetCheck(i, prefs.trace_functions(i));
 	}
+
+	m_disable_msgbox.SetCheck(prefs.disable_msgbox() ? BST_CHECKED : BST_UNCHECKED);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
 BEGIN_MESSAGE_MAP(CDlgSAPrefs11, CSAPrefsSubDlg)
-	ON_BN_CLICKED(IDC_ENABLE_LOG, &CDlgSAPrefs11::OnBnClickedEnableLog)
+	ON_BN_CLICKED(IDC_DISABLE_MSGBOX, &CDlgSAPrefs11::OnBnClickedDisableMsgbox)
 END_MESSAGE_MAP()
 
 // DialogSAPrefs11 message handlers
@@ -85,11 +89,21 @@ void CDlgSAPrefs11::OnOK()
 		return;
 	}
 	prefs.set_log_symbol_max_log(strtoul(text.GetString(), 0, 10));
+
+	prefs.set_disable_msgbox(m_disable_msgbox.GetCheck()==BST_CHECKED ? true : false);
 	
 	CSAPrefsSubDlg::OnOK();
 }
 
-void CDlgSAPrefs11::OnBnClickedEnableLog()
+
+void CDlgSAPrefs11::OnBnClickedDisableMsgbox()
 {
-	// TODO: Add your control notification handler code here
+	if (m_disable_msgbox.GetCheck()==BST_CHECKED)
+		MessageBox("Warning: Selecting this option instructs OpenHoldem to refrain from\n"
+				   "displaying ANY runtime informational or error message boxes.  Examples\n"
+				   "include parse errors, DLL load errors, etc.  It is strongly advised that\n"
+				   "this option only be usedin a production environment that has been\n"
+				   "completely and thoroughly tested for proper behavior.\n\n"
+				   "Note that interactive messages are not disabled, such as when using the\n"
+				   "formula editor and the PokerPro dialog.", "WARNING", MB_OK);
 }

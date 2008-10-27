@@ -27,7 +27,7 @@ CVersus::CVersus()
 		_sopen_s(&_versus_fh, prefs.versus_path(), _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
 	}
 
-	if (_versus_fh == -1)
+	if (_versus_fh == -1 && !prefs.disable_msgbox())
 	{
 		MessageBox(NULL, "Could not open versus.bin.\nVersus functions will be disabled.\n", "Versus Error", MB_OK | MB_TOPMOST);
 	}
