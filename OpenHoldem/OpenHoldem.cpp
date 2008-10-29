@@ -73,9 +73,6 @@ COpenHoldemApp theApp;
 // COpenHoldemApp initialization
 BOOL COpenHoldemApp::InitInstance()
 {
-	// Critical sections
-	InitializeCriticalSectionAndSpinCount(&cs_iterator, 4000);
-
 	// Classes
 	if (!p_pokerpro) p_pokerpro = new PokerPro;
 	if (!p_scraper)  p_scraper = new CScraper;
@@ -204,9 +201,6 @@ int COpenHoldemApp::ExitInstance()
 		delete p_heartbeat_thread;
 		p_heartbeat_thread = NULL;
 	}
-
-	// critical sections
-	DeleteCriticalSection(&cs_iterator);
 
 	// classes
 	if (p_pokerpro)  { delete p_pokerpro; p_pokerpro = NULL; }

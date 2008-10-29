@@ -748,22 +748,7 @@ void CMainFrame::OnBnClickedGreenCircle()
 			p_formula->MarkCacheStale();
 
 			// reset iterator vars
-			EnterCriticalSection(&cs_iterator);
-				_iter_vars.iterator_thread_running = false;
-				_iter_vars.iterator_thread_complete = true;
-				_iter_vars.iterator_thread_progress = 0;
-				_iter_params.nit = 0;
-				_iter_params.f$p = 0;
-				_iter_params.br = 0;
-				for (i=0; i<=1; i++)
-					_iter_params.pcard[i] = CARD_NOCARD;
-				for (i=0; i<=4; i++)
-					_iter_params.ccard[i] = CARD_NOCARD;
-
-				_iter_vars.prwin = 0.;
-				_iter_vars.prtie = 0.;
-				_iter_vars.prlos = 0.;
-			LeaveCriticalSection(&cs_iterator);
+			iter_vars.ResetVars();
 
 			// start heartbeat thread
 			if (p_heartbeat_thread)
@@ -1044,11 +1029,11 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 		if (p_symbols->user_chair_confirmed() && playing)
 		{
 			_status_prwin.Format("%d/%d/%d", 
-				(int) (_iter_vars.prwin*1000), 
-				(int) (_iter_vars.prtie*1000),
-				(int) (_iter_vars.prlos*1000));
+				(int) (iter_vars.prwin()*1000), 
+				(int) (iter_vars.prtie()*1000),
+				(int) (iter_vars.prlos()*1000));
 			_status_nit.Format("%d/%d", 
-				_iter_vars.iterator_thread_progress, 
+				iter_vars.iterator_thread_progress(),
 				(int) p_formula->formula()->dNit);
 		}
 		else
@@ -1066,7 +1051,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 			_status_action = "Pre-fold";
 		}
 
-		else if (p_symbols->user_chair_confirmed() && _iter_vars.iterator_thread_complete)
+		else if (p_symbols->user_chair_confirmed() && iter_vars.iterator_thread_complete())
 		{
 			if (p_symbols->f$alli())  _status_action = "Allin";
 			else if (p_symbols->f$swag())  _status_action.Format("SWAG: %.2f", p_symbols->f$swag());

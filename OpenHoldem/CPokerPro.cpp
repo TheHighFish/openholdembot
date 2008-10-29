@@ -1712,7 +1712,7 @@ void PokerPro::DoAutoplayer(void)
 	x = CountSameScrapes();
 
 	// If iterator thread is still iterating, then return
-	if (_iter_vars.iterator_thread_running) 
+	if (iter_vars.iterator_thread_running()) 
 		return;
 
 	// if we have no visible buttons, then return

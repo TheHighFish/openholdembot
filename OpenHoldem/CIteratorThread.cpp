@@ -10,10 +10,43 @@
 #include "inlines/eval.h"
 
 CIteratorThread		*p_iterator_thread = NULL;
-CRITICAL_SECTION	cs_iterator;
 
-SIterVars			_iter_vars = {0.,0.,0.,false,true,0};
-SIterParams			_iter_params = {0, 0, 0, {CARD_NOCARD, CARD_NOCARD}, {CARD_NOCARD, CARD_NOCARD, CARD_NOCARD} };
+CIteratorVars		iter_vars;
+
+CIteratorVars::CIteratorVars()
+{
+	__SEH_SET_EXCEPTION_HANDLER
+
+	ResetVars();
+}
+
+CIteratorVars::~CIteratorVars()
+{
+}
+
+void CIteratorVars::ResetVars()
+{
+	int i = 0;
+
+	_nit = 0;
+	_f$p = 0;
+	_br = 0;
+
+	for (i=0; i<=1; i++)
+		_pcard[i] = CARD_NOCARD;
+
+	for (i=0; i<=4; i++)
+		_ccard[i] = CARD_NOCARD;
+
+	_prwin = 0;
+	_prtie = 0;
+	_prlos = 0;
+	_iterator_thread_running = false;
+	_iterator_thread_complete = true;
+	_iterator_thread_progress = 0;
+}
+
+
 
 CIteratorThread::CIteratorThread()
 {
@@ -29,9 +62,7 @@ CIteratorThread::CIteratorThread()
 	// Start thread
 	AfxBeginThread(IteratorThreadFunction, this);
 
-	EnterCriticalSection(&cs_iterator);
-	_iter_vars.iterator_thread_running = true;
-	LeaveCriticalSection(&cs_iterator);
+	iter_vars.set_iterator_thread_running(true);
 }
 
 CIteratorThread::~CIteratorThread()
@@ -79,7 +110,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 	//
 	// Main iterator loop
 	//
-	for (nit=0; nit < _iter_params.nit; nit++)
+	for (nit=0; nit < iter_vars.nit(); nit++)
 	{
 		// Check event for thread stop signal
 		if(::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
@@ -336,44 +367,40 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 		if ((nit/1000 == (int) nit/1000) && nit>=1000)
 		{
-			EnterCriticalSection(&cs_iterator);
-				_iter_vars.iterator_thread_progress = nit;
-				_iter_vars.prwin = pParent->_win / (double) nit;
-				_iter_vars.prtie = pParent->_tie / (double) nit;
-				_iter_vars.prlos = pParent->_los / (double) nit;
-			LeaveCriticalSection(&cs_iterator);
+			iter_vars.set_iterator_thread_progress(nit);
+			iter_vars.set_prwin(pParent->_win / (double) nit);
+			iter_vars.set_prtie(pParent->_tie / (double) nit);
+			iter_vars.set_prlos(pParent->_los / (double) nit);
 		}
 	}
 
-	if (nit >= _iter_params.nit)
+	if (nit >= iter_vars.nit())
 	{
-		EnterCriticalSection(&cs_iterator);
-			_iter_vars.iterator_thread_running = false;
-			_iter_vars.iterator_thread_complete = true;
-			_iter_vars.iterator_thread_progress = nit;
-			_iter_vars.prwin = pParent->_win / (double) _iter_params.nit;
-			_iter_vars.prtie = pParent->_tie / (double) _iter_params.nit;
-			_iter_vars.prlos = pParent->_los / (double) _iter_params.nit;
-		LeaveCriticalSection(&cs_iterator);
+		iter_vars.set_iterator_thread_running(false);
+		iter_vars.set_iterator_thread_complete(true);
+		iter_vars.set_iterator_thread_progress(nit);
+		iter_vars.set_prwin(pParent->_win / (double) iter_vars.nit());
+		iter_vars.set_prtie(pParent->_tie / (double) iter_vars.nit());
+		iter_vars.set_prlos(pParent->_los / (double) iter_vars.nit());
 	}
 	else
 	{
-		EnterCriticalSection(&cs_iterator);
-			_iter_vars.iterator_thread_running = false;
-			_iter_vars.iterator_thread_complete = false;
-			_iter_vars.iterator_thread_progress = 0;
-			_iter_params.nit = 0;
-			_iter_params.f$p = 0;
-			_iter_params.br = 0;
-			for (i=0; i<=1; i++)
-				_iter_params.pcard[i] = CARD_NOCARD;
-			for (i=0; i<=4; i++)
-				_iter_params.ccard[i] = CARD_NOCARD;
+		iter_vars.set_iterator_thread_running(false);
+		iter_vars.set_iterator_thread_complete(false);
+		iter_vars.set_iterator_thread_progress(0);
+		iter_vars.set_nit(0);
+		iter_vars.set_f$p(0);
+		iter_vars.set_br(0);
 
-			_iter_vars.prwin = 0.;
-			_iter_vars.prtie = 0.;
-			_iter_vars.prlos = 0.;
-		LeaveCriticalSection(&cs_iterator);
+		for (i=0; i<=1; i++)
+			iter_vars.set_pcard(i, CARD_NOCARD);
+
+		for (i=0; i<=4; i++)
+			iter_vars.set_ccard(i, CARD_NOCARD);
+
+		iter_vars.set_prwin(0);
+		iter_vars.set_prtie(0);
+		iter_vars.set_prlos(0);
 	}
 
 	::SetEvent(pParent->_m_wait_thread);
@@ -389,22 +416,22 @@ void CIteratorThread::InitIteratorLoop()
 	CGrammar	gram;
 
 	// Set starting status and parameters
-	EnterCriticalSection(&cs_iterator);
-		_iter_vars.iterator_thread_running = true;
-		_iter_vars.iterator_thread_complete = false;
-		_iter_vars.iterator_thread_progress = 0;
-		_iter_params.f$p = (int) p_symbols->sym()->nopponents;
-		_iter_params.nit = (int) p_symbols->sym()->nit;
-		_iter_params.br = (int) p_symbols->sym()->br;
-		_iter_params.pcard[0] = p_scraper->card_player((int) p_symbols->sym()->userchair, 0);
-		_iter_params.pcard[1] = p_scraper->card_player((int) p_symbols->sym()->userchair, 1);
-		_iter_params.ccard[0] = p_scraper->card_common(0);
-		_iter_params.ccard[1] = p_scraper->card_common(1);
-		_iter_params.ccard[2] = p_scraper->card_common(2);
-		_iter_params.ccard[3] = p_scraper->card_common(3);
-		_iter_params.ccard[4] = p_scraper->card_common(4);
-		_iter_vars.prwin = _iter_vars.prtie = _iter_vars.prlos = 0.;
-	LeaveCriticalSection(&cs_iterator);
+	iter_vars.set_iterator_thread_running(true);
+	iter_vars.set_iterator_thread_complete(false);
+	iter_vars.set_iterator_thread_progress(0);
+	iter_vars.set_nit((int) p_symbols->sym()->nit);
+	iter_vars.set_f$p((int) p_symbols->sym()->nopponents);
+	iter_vars.set_br((int) p_symbols->sym()->br);
+
+	for (i=0; i<=1; i++)
+		iter_vars.set_pcard(i, p_scraper->card_player((int) p_symbols->sym()->userchair, i));
+
+	for (i=0; i<=4; i++)
+		iter_vars.set_ccard(i, p_scraper->card_common(i));
+
+	iter_vars.set_prwin(0);
+	iter_vars.set_prtie(0);
+	iter_vars.set_prlos(0);
 
 	// player cards
 	CardMask_RESET(_plCards);
@@ -417,17 +444,17 @@ void CIteratorThread::InitIteratorLoop()
 	// setup masks
 	for (i=0; i<=1; i++)
 	{
-		if (_iter_params.pcard[i] != CARD_BACK && _iter_params.pcard[i] != CARD_NOCARD)
+		if (iter_vars.pcard(i) != CARD_BACK && iter_vars.pcard(i) != CARD_NOCARD)
 		{
-			CardMask_SET(_plCards, _iter_params.pcard[i]);
+			CardMask_SET(_plCards, iter_vars.pcard(i));
 			_nplCards++;
 		}
 	}
 	for (i=0; i<=4; i++)
 	{
-		if (_iter_params.ccard[i] != CARD_BACK && _iter_params.ccard[i] != CARD_NOCARD)
+		if (iter_vars.ccard(i) != CARD_BACK && iter_vars.ccard(i) != CARD_NOCARD)
 		{
-			CardMask_SET(_comCards, _iter_params.ccard[i]);
+			CardMask_SET(_comCards, iter_vars.ccard(i));
 			_ncomCards++;
 		}
 	}

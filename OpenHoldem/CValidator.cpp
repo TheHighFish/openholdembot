@@ -17,7 +17,7 @@ CValidator::~CValidator()
 }
 
 
-void CValidator::validate_single_Rule()
+void CValidator::ValidateSingleRule()
 {
 	if (_precondition) 
     { 
@@ -99,13 +99,13 @@ double CValidator::gws(const char *the_Symbol)
 
 // END_TESTCASE
 //
-// Actions: validate_single_Rule(), i.e.: 
+// Actions: ValidateSingleRule(), i.e.: 
 //   * execution of the testcase
 //     (if precondition for the rule applies).
 //   * message on error (postcondition not met).
 //   * stop autoplayer on error (optional)
 //
-#define END_TESTCASE validate_single_Rule();
+#define END_TESTCASE ValidateSingleRule();
 	
 
 //
@@ -113,7 +113,7 @@ double CValidator::gws(const char *the_Symbol)
 //
 /////////////////////////////////////////////////////////////////////////////
 
-void CValidator::validate_GameState()
+void CValidator::ValidateGameState()
 {
 	// Do not validate, if not enabled.
 	// Validate never? Then leave.
