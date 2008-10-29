@@ -98,8 +98,6 @@ static void gwp(int the_PlayerName, char* the_ResultString)
 
 CPerl::CPerl()
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	_formula_loaded = false;
 	_interpreter_not_loaded = true;
 

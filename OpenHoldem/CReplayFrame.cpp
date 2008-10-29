@@ -19,8 +19,6 @@ const unsigned int FREE_SPACE_NEEDED_FOR_REPLAYFRAME = 10000000;
 
 CReplayFrame::CReplayFrame(void)
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
     CTime		time = 0, latest_time = 0;
     int			last_frame_num = -1, frame_num = 0;
     CString		path = "", filename = "", current_path = "";

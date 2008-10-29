@@ -19,8 +19,6 @@ CAutoplayer	*p_autoplayer = NULL;
 
 CAutoplayer::CAutoplayer(BOOL bInitiallyOwn, LPCTSTR lpszName) : _mutex(bInitiallyOwn, lpszName)
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	ASSERT(_mutex.m_hObject != NULL);
 
 	// Seed RNG

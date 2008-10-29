@@ -12,8 +12,6 @@ CPokerTrackerThread	*p_pokertracker_thread = NULL;
 
 CPokerTrackerThread::CPokerTrackerThread()
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	int				i = 0, j = 0;
 
 	// Initialize variables
@@ -577,8 +575,6 @@ void CPokerTrackerThread::ClearStats (void)
 
 UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
 
 	int		i = 0, j = 0;

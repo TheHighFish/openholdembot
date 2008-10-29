@@ -156,8 +156,6 @@ static UINT indicators[] =
 // CMainFrame construction/destruction
 CMainFrame::CMainFrame() 
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	_autoplay_pressed = false;
 	_attached_hwnd = NULL;
 	_wait_cursor = false;
@@ -1670,8 +1668,6 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
 
 bool check_window_match(SWholeMap *map, HWND h, RECT r, CString title) 
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	int				i = 0;
 	bool			good_size = false, good_pos_title = false, good_neg_title = false, good_table_points = false;
 	int				width = 0, height = 0, x = 0, y = 0;

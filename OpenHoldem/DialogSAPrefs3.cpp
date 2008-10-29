@@ -14,7 +14,6 @@ IMPLEMENT_DYNAMIC(CDlgSAPrefs3, CSAPrefsSubDlg)
 CDlgSAPrefs3::CDlgSAPrefs3(CWnd* pParent /*=NULL*/)
 		: CSAPrefsSubDlg(CDlgSAPrefs3::IDD, pParent)
 {
-	__SEH_SET_EXCEPTION_HANDLER
 }
 
 CDlgSAPrefs3::~CDlgSAPrefs3()

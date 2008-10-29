@@ -8,8 +8,6 @@
 
 CRunRon::CRunRon(void)
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	//POCKET PAIRS
 	//============
 	_run_count[12][12][9]=94;

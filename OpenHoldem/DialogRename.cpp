@@ -11,7 +11,6 @@ IMPLEMENT_DYNAMIC(CDlgRename, CDialog)
 
 CDlgRename::CDlgRename(CWnd* pParent /*=NULL*/) : CDialog(CDlgRename::IDD, pParent) 
 {
-	__SEH_SET_EXCEPTION_HANDLER
 }
 
 CDlgRename::~CDlgRename() 

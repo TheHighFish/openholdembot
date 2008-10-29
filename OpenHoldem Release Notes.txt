@@ -3,6 +3,7 @@ v2.0.0 2009-xx-xx
 BUG FIXES:
 
 MAINTENANCE:
+- Removed last SEH-code (__SEH_SET_EXCEPTION_HANDLER), which is no longer neccessary. [TheHighFish]
 
 NEW STUFF:
 - Added option to save all replay frames whenever something changes when you are in the hand (Thanks, markedagain for the patch) [OpenHoldem]

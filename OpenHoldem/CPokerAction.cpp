@@ -8,7 +8,6 @@
 
 CPokerAction::CPokerAction()
 {
-	__SEH_SET_EXCEPTION_HANDLER
 }
 
 CPokerAction::~CPokerAction()

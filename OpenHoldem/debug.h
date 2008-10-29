@@ -6,9 +6,6 @@
 #define OPENHOLDEM_PROGRAM
 #endif
 
-//  SEH_SET_EXCEPTION_HANDLER
-#define __SEH_SET_EXCEPTION_HANDLER SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-
 LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers);
 char * get_time(char * timebuf);
 char * get_now_time(char * timebuf);

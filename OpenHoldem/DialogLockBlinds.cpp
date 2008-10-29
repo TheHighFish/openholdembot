@@ -8,7 +8,6 @@
 // CDlgLockBlinds dialog
 CDlgLockBlinds::CDlgLockBlinds(CWnd* pParent /*=NULL*/)	: CDialog(CDlgLockBlinds::IDD, pParent) 
 {
-	__SEH_SET_EXCEPTION_HANDLER
 }
 
 void CDlgLockBlinds::DoDataExchange(CDataExchange* pDX) 

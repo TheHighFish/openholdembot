@@ -15,8 +15,6 @@ CDllExtension		*p_dll_extension = NULL;
 
 CDllExtension::CDllExtension()
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	_hmod_dll = NULL;
 }
 

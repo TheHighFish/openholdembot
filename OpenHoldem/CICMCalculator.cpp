@@ -55,7 +55,6 @@ double P(int i, int n, double *s, int N)
 
 CICMCalculator::CICMCalculator ()
 {
-	__SEH_SET_EXCEPTION_HANDLER
 }
 
 CICMCalculator::~CICMCalculator ()

@@ -16,8 +16,6 @@ CVersus		*p_versus = NULL;
 
 CVersus::CVersus() 
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	// Find the versus data.  First check in the current directory
 	// then in the path provided by the registry.  If both fail,
 	// disable versus.

@@ -8,8 +8,6 @@
 CDlgHandList::CDlgHandList(CWnd* pParent /*=NULL*/)
 		: CDialog(CDlgHandList::IDD, pParent)
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	nhands = 0;
 }
 

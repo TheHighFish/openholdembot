@@ -165,8 +165,6 @@ END_WINDOW_MAP()
 CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 		CDialog(CDlgFormulaScintilla::IDD, pParent), m_winMgr(ScintillaFormulaMap) 
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	in_startup = true;
 
 	// Copy current doc formula into working set

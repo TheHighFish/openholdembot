@@ -10,8 +10,6 @@ CGameState			*p_game_state = NULL;
 
 CGameState::CGameState()
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	_m_ndx = 0;
 	_hands_played = 0;
 	_max_balance = 0;

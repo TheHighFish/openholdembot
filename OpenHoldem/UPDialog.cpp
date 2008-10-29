@@ -15,8 +15,6 @@ CUPDialog::_tagInitCommonControls::_tagInitCommonControls()
 
 CUPDialog::CUPDialog(HWND hParentWnd,LP_CUPDIALOG_USERPROC lpUserProc,LPVOID lpUserProcParam,LPCTSTR lpszDlgTitle/*=_T("Please Wait..")*/,bool bAllowCancel/*=true*/)
 {
-    __SEH_SET_EXCEPTION_HANDLER
-
     m_hThread = NULL;							//No Thread Yet !!
 
     m_hParentWnd = hParentWnd;					//Needed to Create the DialogBox - DlgProc asks this as Parameter

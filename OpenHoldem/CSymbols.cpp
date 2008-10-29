@@ -91,8 +91,6 @@ int handrank2652[10][169] =
 
 CSymbols::CSymbols()
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	int			i = 0, j = 0, k = 0, vndx = 0;
 	char		*ptr = NULL;
 
