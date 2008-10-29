@@ -22,14 +22,11 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
-	BOOL OnInitDialog();
-	void OnOK();
+	virtual BOOL OnInitDialog();
+	virtual void OnOK();
 
 protected:
 	CButton  	m_RadioButton_Disable;
-	/*
-	CButton  	m_RadioButton_Enable_My_Turn;
-	CButton  	m_RadioButton_Enable_Always;*/
 	CButton		m_Button_Stop_On_Error;   
 };
 
