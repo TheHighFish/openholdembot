@@ -393,6 +393,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CValidator.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CVersus.cpp"
 				>
 			</File>
@@ -565,6 +569,10 @@
 				</File>
 				<File
 					RelativePath=".\DialogSAPrefs11.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogSAPrefs12.cpp"
 					>
 				</File>
 				<File
@@ -743,6 +751,10 @@
 			</File>
 			<File
 				RelativePath=".\CSymbols.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CValidator.h"
 				>
 			</File>
 			<File
@@ -974,6 +986,10 @@
 				</File>
 				<File
 					RelativePath=".\DialogSAPrefs11.h"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogSAPrefs12.h"
 					>
 				</File>
 				<File

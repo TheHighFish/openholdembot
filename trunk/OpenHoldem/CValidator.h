@@ -7,11 +7,11 @@ public:
 	// public functions
 	CValidator();
 	~CValidator();
-	void validate_GameState();
+	void ValidateGameState();
 
 private:
 	// private functions
-	void validate_single_Rule();
+	void ValidateSingleRule();
 	double gws(const char *the_Symbol);
 
 private:

@@ -1407,9 +1407,9 @@ void CSymbols::CalcProbabilities(void)
 		_sym.random = (double) rand() / (double) RAND_MAX;								// random
 		_sym.randomround[4] = _sym.randomround[(int) (_sym.br-1)];						// randomround
 
-		_sym.prwin = _iter_vars.prwin;													// prwin
-		_sym.prtie = _iter_vars.prtie;													// prtie
-		_sym.prlos = _iter_vars.prlos;													// prlos
+		_sym.prwin = iter_vars.prwin();													// prwin
+		_sym.prtie = iter_vars.prtie();													// prtie
+		_sym.prlos = iter_vars.prlos();													// prlos
 	LeaveCriticalSection(&cs_symbols);	
 
 	// Start/restart prwin thread on these conditions:
@@ -1419,29 +1419,27 @@ void CSymbols::CalcProbabilities(void)
 	// - changed player cards
 	// - changed common cards
 	need_recalc = false;
-	if ((int) _sym.nopponents != _iter_params.f$p ||
-		(int) _sym.nit != _iter_params.nit ||
-		(int) _sym.br != _iter_params.br)
+	if ((int) _sym.nopponents != iter_vars.f$p() ||
+		(int) _sym.nit != iter_vars.nit() ||
+		(int) _sym.br != iter_vars.br() )
 	{
 		need_recalc = true;
 	}
 
-	if (p_scraper->card_player(_sym.userchair, 0) != _iter_params.pcard[0] || 
-		p_scraper->card_player(_sym.userchair, 1) != _iter_params.pcard[1])
+	if (p_scraper->card_player(_sym.userchair, 0) != iter_vars.pcard(0) || 
+		p_scraper->card_player(_sym.userchair, 1) != iter_vars.pcard(1))
 		need_recalc = true;
 
 	for (i=0; i<=4; i++)
 	{
-		if (p_scraper->card_common(i) != _iter_params.ccard[i])
+		if (p_scraper->card_common(i) != iter_vars.ccard(i))
 			need_recalc = true;
 	}
 
 	// restart iterator thread
 	if (_sym.nit==0)
 	{
-		EnterCriticalSection(&cs_iterator);
-		_iter_vars.iterator_thread_complete = true;
-		LeaveCriticalSection(&cs_iterator);
+		iter_vars.set_iterator_thread_complete(true);
 	}
 	else if (need_recalc)
 	{
