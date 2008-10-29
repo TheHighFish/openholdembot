@@ -57,11 +57,11 @@ BOOL CDlgSAPrefs12::OnInitDialog()
 
 void CDlgSAPrefs12::OnOK()
 {
-	if (IsDlgButtonChecked(IDC_RADIO_VALIDATOR_1) == MF_CHECKED)
+	if (IsDlgButtonChecked(IDC_RADIO_VALIDATOR_1))
 	{
 		prefs.set_validator_enabled(0);
 	}
-	else if (IsDlgButtonChecked(IDC_RADIO_VALIDATOR_2) == MF_CHECKED)
+	else if (IsDlgButtonChecked(IDC_RADIO_VALIDATOR_2))
 	{
 		prefs.set_validator_enabled(1);
 	}
@@ -69,6 +69,6 @@ void CDlgSAPrefs12::OnOK()
 	{
 		prefs.set_validator_enabled(2);
 	}
-	prefs.set_validator_stop_on_error(IsDlgButtonChecked(IDC_CHECK_VALIDATOR_STOP_ON_ERROR) == MF_CHECKED);
+	prefs.set_validator_stop_on_error(IsDlgButtonChecked(IDC_CHECK_VALIDATOR_STOP_ON_ERROR));
 	CSAPrefsSubDlg::OnOK();
 }
