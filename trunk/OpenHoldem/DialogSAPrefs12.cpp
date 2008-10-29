@@ -57,7 +57,6 @@ BOOL CDlgSAPrefs12::OnInitDialog()
 
 void CDlgSAPrefs12::OnOK()
 {
-	Beep(440, 200);
 	if (IsDlgButtonChecked(IDC_RADIO_VALIDATOR_1) == MF_CHECKED)
 	{
 		prefs.set_validator_enabled(0);
