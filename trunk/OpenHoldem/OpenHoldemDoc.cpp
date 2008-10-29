@@ -20,8 +20,6 @@ END_MESSAGE_MAP()
 // COpenHoldemDoc construction/destruction
 COpenHoldemDoc::COpenHoldemDoc() 
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	p_formula->ClearFormula();
 }
 

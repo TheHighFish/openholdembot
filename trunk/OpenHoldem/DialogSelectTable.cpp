@@ -11,7 +11,6 @@ IMPLEMENT_DYNAMIC(CDlgSelectTable, CDialog)
 
 CDlgSelectTable::CDlgSelectTable(CWnd* pParent /*=NULL*/) : CDialog(CDlgSelectTable::IDD, pParent) 
 {
-	__SEH_SET_EXCEPTION_HANDLER
 }
 
 CDlgSelectTable::~CDlgSelectTable() 

@@ -54,8 +54,6 @@ END_WINDOW_MAP()
 CDlgScraperOutput::CDlgScraperOutput(CWnd* pParent /*=NULL*/)
 		: CDialog(CDlgScraperOutput::IDD, pParent), m_winMgr(ScraperOutputFormulaMap)
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	in_startup = true;
 }
 

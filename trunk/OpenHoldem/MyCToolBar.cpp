@@ -11,7 +11,6 @@ IMPLEMENT_DYNAMIC(CMyToolBar, CToolBar)
 
 CMyToolBar::CMyToolBar() 
 {
-    __SEH_SET_EXCEPTION_HANDLER
 }
 
 CMyToolBar::~CMyToolBar() 

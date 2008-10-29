@@ -18,8 +18,6 @@ PokerPro		*p_pokerpro = NULL;
 
 PokerPro::PokerPro(void) 
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	// init
 	memset(&_ppdata, 0, sizeof(SPPData));
 	_ppdata.m_userchair = -1;

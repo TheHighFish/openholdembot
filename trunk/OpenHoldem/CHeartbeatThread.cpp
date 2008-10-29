@@ -25,8 +25,6 @@ CRITICAL_SECTION	CHeartbeatThread::cs_update_in_progress;
 
 CHeartbeatThread::CHeartbeatThread()
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	InitializeCriticalSectionAndSpinCount(&cs_update_in_progress, 4000);
 
 	// Create events
@@ -58,8 +56,6 @@ CHeartbeatThread::~CHeartbeatThread()
 
 UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	CHeartbeatThread	*pParent = static_cast<CHeartbeatThread*>(pParam);
 	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 

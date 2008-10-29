@@ -50,8 +50,6 @@ void CIteratorVars::ResetVars()
 
 CIteratorThread::CIteratorThread()
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	// Create events
 	_m_stop_thread = CreateEvent(0, TRUE, FALSE, 0);
 	_m_wait_thread = CreateEvent(0, TRUE, FALSE, 0);
@@ -82,8 +80,6 @@ CIteratorThread::~CIteratorThread()
 
 UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	CIteratorThread *pParent = static_cast<CIteratorThread*>(pParam);
 
 	int				i = 0, j = 0, k = 0, randfix = 0;

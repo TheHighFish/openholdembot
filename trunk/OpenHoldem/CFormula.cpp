@@ -15,8 +15,6 @@ CFormula			*p_formula = NULL;
 
 CFormula::CFormula(void)
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	ClearFormula();
 	_formula_name = "";
 }

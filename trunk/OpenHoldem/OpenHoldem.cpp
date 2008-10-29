@@ -56,8 +56,6 @@ END_MESSAGE_MAP()
 // COpenHoldemApp construction
 COpenHoldemApp::COpenHoldemApp()
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	// Save startup directory
 	::GetCurrentDirectory(MAX_PATH - 1, _startup_path);
 }

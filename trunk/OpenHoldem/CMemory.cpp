@@ -10,8 +10,6 @@ CMemory		*p_memory = NULL;
 
 CMemory::CMemory()
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	int	i = 0;
 
 	_var_count = -1;

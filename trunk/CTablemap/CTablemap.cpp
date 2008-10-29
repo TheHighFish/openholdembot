@@ -16,8 +16,6 @@ CTablemap			*p_tablemap = NULL;
 
 CTablemap::CTablemap(void)
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
     ClearTablemap();
 
 	ClearR$Indices();

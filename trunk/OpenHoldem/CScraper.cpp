@@ -17,8 +17,6 @@ CRITICAL_SECTION	CScraper::cs_scraper;
 
 CScraper::CScraper(void)
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	InitializeCriticalSectionAndSpinCount(&cs_scraper, 4000);
 
 	ClearScrapeAreas();

@@ -5,7 +5,6 @@
 
 CLogSymbols::CLogSymbols()
 {
-	__SEH_SET_EXCEPTION_HANDLER
 }
 
 CLogSymbols::~CLogSymbols()

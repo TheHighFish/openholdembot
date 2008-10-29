@@ -7,7 +7,6 @@
 
 CMyHand::CMyHand()
 {
-	__SEH_SET_EXCEPTION_HANDLER
 }
 
 CMyHand::~CMyHand()

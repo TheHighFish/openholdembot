@@ -69,8 +69,6 @@ END_MESSAGE_MAP()
 // COpenHoldemView construction/destruction
 COpenHoldemView::COpenHoldemView() 
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	int i = 0, j = 0;
 
 	_black_pen.CreatePen(PS_SOLID, 1, COLOR_BLACK);
