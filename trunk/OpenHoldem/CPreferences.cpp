@@ -164,6 +164,14 @@ void CPreferences::InitDefaults(void)
 	// Logging and debugging
 	_disable_msgbox = false;
 
+	// Validator
+	//   0 = disabled
+	//   1 = when it's my turn
+	//   2 = always
+	_validator_enabled = 2;
+	_validator_stop_on_error = true;
+
+	// Misc
 	_versus_path = "";
 }
 
@@ -311,6 +319,9 @@ void CPreferences::ReadFromRegistry()
 		
 		// Logging and debugging
 		ReadReg("disable_msgbox", &_disable_msgbox);
+
+		ReadReg("validator_enabled", &_validator_enabled);
+		ReadReg("validator_stop_on_error", &_validator_stop_on_error);
 
 		// versus path
 		ReadReg("versus", &_versus_path);

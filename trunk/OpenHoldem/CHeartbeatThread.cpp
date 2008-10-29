@@ -15,6 +15,7 @@
 #include "CGameState.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CReplayFrame.h"
+#include "CValidator.h"
 
 #include "DialogScraperOutput.h"
 #include "CPokerPro.h"
@@ -220,6 +221,11 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		// Game state engine
 		p_game_state->ProcessGameState(p_game_state->state((p_game_state->state_index()-1)&0xff));
 		p_game_state->ProcessFtr(p_game_state->state((p_game_state->state_index()-1)&0xff));
+
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// OH-Validator
+		CValidator validator;
+		validator.validate_GameState();
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// DLL - send state

@@ -35,6 +35,7 @@
 #include "DialogSAPrefs9.h"
 #include "DialogSAPrefs10.h"
 #include "DialogSAPrefs11.h"
+#include "DialogSAPrefs12.h"
 
 #include "DialogSelectTable.h"
 #include "inlines/eval.h"
@@ -430,10 +431,10 @@ void CMainFrame::OnEditPreferences()
 	CDlgSAPrefs6 page6;
 	CDlgSAPrefs7 page7;
 	CDlgSAPrefs8 page8;
-	//  2008.03.02 by THF
 	CDlgSAPrefs9 page9;
 	CDlgSAPrefs10 page10;
 	CDlgSAPrefs11 page11;
+	CDlgSAPrefs12 page12;
 
 	// add pages
 	dlg.AddPage(page1, "Analyzer");
@@ -447,6 +448,7 @@ void CMainFrame::OnEditPreferences()
 	dlg.AddPage(page8, "Replay Frames");
 	dlg.AddPage(page4, "Scraper");
 	dlg.AddPage(page5, "Symbols");
+	dlg.AddPage(page12, "Validator");
 
 	// this one will be a child node on the tree
 	// (&page3 specifies the parent)
