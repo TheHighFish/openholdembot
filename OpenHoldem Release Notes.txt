@@ -9,6 +9,9 @@ NEW STUFF:
 - Added support for PokerTracker v3 (Thanks, fn101 for the query translation) [OpenHoldem]
 - Added option to disable runtime message boxes [OpenHoldem]
 - Added runtime-check for recursive formulas. [TheHighFish]
+- Added OH-Validator to verify the gamestate at the symbol level. 
+  Still lots of validator rules needed to get a good coverage of
+  possible problems. [TheHighfish]
 
 v1.9.4 2008-10-21
 =================

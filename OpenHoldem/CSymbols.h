@@ -475,7 +475,6 @@ private:
 	void CalcStatistics(void);
 	void CalcRunRon(void);
 
-
 	HandVal		_phandval[4], _chandval[4];	// for ishandup and ishandupcommon symbol calcs
 	time_t		_elapsedhold;				// The time we "sat down"
 	time_t		_elapsedhandhold;			// The time since start of last hand

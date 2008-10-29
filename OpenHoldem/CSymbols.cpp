@@ -645,6 +645,7 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 	_symboltrace_collection.RemoveAll();
 }
 
+
 void CSymbols::CalcSymbols(void)
 {
 	int					i = 0;

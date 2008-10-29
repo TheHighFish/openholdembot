@@ -116,6 +116,10 @@ public:
 	// Debug logging
 	const bool fdebuglog() { return _fdebuglog; }
 	const bool fdebuglog_myturn() { return _fdebuglog_myturn; }
+	// Validator
+	const int validator_enabled() { return _validator_enabled; }
+	const bool validator_stop_on_error() { return _validator_stop_on_error; }
+
 	// Misc
 	const int scraper_zoom() { return _scraper_zoom; }
 	const CString versus_path() { return _versus_path; }	
@@ -229,6 +233,10 @@ public:
 	// Debug logging
 	void set_fdebuglog(const bool b) { ENT _fdebuglog = b; WriteReg("fdebuglog", b); }
 	void set_fdebuglog_myturn(const bool b) { ENT _fdebuglog_myturn = b; WriteReg("fdebuglog_myturn", b); }
+
+	void set_validator_enabled(const int i) { ENT _validator_enabled = i; WriteReg("validator_enabled", i); }
+	void set_validator_stop_on_error(const bool b) { ENT _validator_stop_on_error = b; WriteReg("validator_stop_on_error", b); }
+
 	// Misc
 	// (No method for versus_path,
 	// as this attribute is nowhere set.) 
@@ -344,6 +352,9 @@ private:
 	// Debug logging
 	bool			_fdebuglog;
 	bool			_fdebuglog_myturn;
+	// Validator
+	int				_validator_enabled;
+	bool			_validator_stop_on_error;
 	// Misc
 	int				_scraper_zoom;
 	CString			_versus_path;
