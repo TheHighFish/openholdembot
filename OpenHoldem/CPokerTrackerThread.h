@@ -49,7 +49,7 @@ char * const networkid[] = {"", "", "Stars", "Party", "Ultimate", "Absolute", "M
 	"Everest", "Boss", "Betfair"} ;
 
 // These are for PokerTracker version 2 stats
-char * const stat_str2[] = {
+char * const stat_str[] = {
 	"pt_icon", "pt_hands", "pt_pfr", "pt_aggp", "pt_aggf", "pt_aggt", "pt_aggr", 
 	"pt_aggtot", "pt_aggtotnopf", "pt_floppct", "pt_turnpct", "pt_riverpct", "pt_vpip", "pt_pf_rfi",
 	"pt_pf_cr", "pt_pfats",	"pt_wsdp", "pt_wssd", "pt_fbbts", "pt_fsbts",
@@ -58,15 +58,6 @@ char * const stat_str2[] = {
 	"ptt_pf_cr", "ptt_pfats", "ptt_wsdp", "ptt_wssd", "ptt_fbbts", "ptt_fsbts"
 };
 
-// These are for PokerTracker version 3 stats
-char * const stat_str3[] = {
-	"pt3_icon", "pt3_hands", "pt3_pfr", "pt3_aggp", "pt3_aggf", "pt3_aggt", "pt3_aggr", 
-	"pt3_aggtot", "pt3_aggtotnopf", "pt3_floppct", "pt3_turnpct", "pt3_riverpct", "pt3_vpip", "pt3_pf_rfi",
-	"pt3_pf3_cr", "pt3_pfats",	"pt3_wsdp", "pt3_wssd", "pt3_fbbts", "pt3_fsbts",
-	"ptt3_icon", "ptt3_hands", "ptt3_pfr", "ptt3_aggp", "ptt3_aggf", "ptt3_aggt", "ptt3_aggr",
-	"ptt3_aggtot", "ptt3_aggtotnopf", "ptt3_floppct", "ptt3_turnpct", "ptt3_riverpct", "ptt3_vpip", "ptt3_pf_rfi",
-	"ptt3_pf_cr", "ptt3_pfats", "ptt3_wsdp", "ptt3_wssd", "ptt3_fbbts", "ptt3_fsbts"
-};
 
 // Array of PokerTracker version 2 queries, needs to be in same order as stat_str enum
 char * const query_str2[] = {
@@ -547,7 +538,7 @@ char * const query_str2[] = {
 
 
 
-// Array of PokerTracker version 3 queries, needs to be in same order as stat_str3 enum
+// Array of PokerTracker version 3 queries, needs to be in same order as stat_str enum
 char * const query_str3[] = {
 
 // RING STATISTICS
