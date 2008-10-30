@@ -93,7 +93,7 @@ const int CPokerAction::PreflopPos (void)
 								 sym_dealposition==3 ? 6 : 0):
 		sym_nplayersdealt==2  ? (
 								// reversed blinds - dealer is BB
-								(p_symbols->GetSiteId()==11 || sym_isppro) ?
+								(pt_lookup.GetSiteId()==11 || sym_isppro) ?
 								(sym_dealposition==1 ? 1 :
 								sym_dealposition==2 ? 6 : 0 ) :
 								// Normal blinds - dealposition==1 is BB
@@ -164,7 +164,7 @@ const int CPokerAction::PreflopRaisPos (void)
 								sym_dealpositionrais==3 ? 6 : 0):
 		sym_nplayersdealt==2  ? (
 								// reversed blinds - dealer is BB
-								(p_symbols->GetSiteId()==11 || sym_isppro) ?
+								(pt_lookup.GetSiteId()==11 || sym_isppro) ?
 								(sym_dealpositionrais==1 ? 1 :
 								sym_dealpositionrais==2 ? 6 : 0 ) :
 								// Normal blinds - dealposition==1 is BB

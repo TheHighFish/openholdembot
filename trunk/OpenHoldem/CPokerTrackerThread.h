@@ -2,15 +2,22 @@
 #define INC_CPOKERTRACKERTHREAD_H
 
 #include "libpq-fe.h"
+#include <map>
 
-struct SPlayerStats 
+extern class CPokerTrackerLookup
 {
-	char		scraped_name[30];
-	char		pt_name[30];
-	bool		found;
-	double		stat[50];
-	int			t_elapsed[50];
-};
+public:
+	// public functions
+	CPokerTrackerLookup();
+	~CPokerTrackerLookup();
+	const int GetSiteId();
+
+private:
+	// private functions and variables - not available via accessors or mutators
+	std::map<CString, int>	_pt2_siteid;
+	std::map<CString, int>	_pt3_siteid;
+} pt_lookup;
+
 
 extern class CPokerTrackerThread 
 {
@@ -36,17 +43,22 @@ private:
 	CString			_conn_str;
 	bool			_connected;
 	PGconn *		_pgconn;
-	SPlayerStats	_player_stats[10];
+
+	struct SPlayerStats 
+	{
+		char		scraped_name[30];
+		char		pt_name[30];
+		bool		found;
+		double		stat[50];
+		int			t_elapsed[50];
+	} _player_stats[10];
+
 	HANDLE			_m_stop_thread;
 	HANDLE			_m_wait_thread;
 
 	CWinThread		*_pt_thread;
 
 } *p_pokertracker_thread;
-
-char * const networkid[] = {"", "", "Stars", "Party", "Ultimate", "Absolute", "Microgaming", "Ongame",
-	"Cryptologic", "Pacific", "", "FullTilt", "B2B", "Tribeca", "Worldpex", "iPoker", "Tain", "Bodog",
-	"Everest", "Boss", "Betfair"} ;
 
 // These are for PokerTracker version 2 stats
 char * const stat_str[] = {
