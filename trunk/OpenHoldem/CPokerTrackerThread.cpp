@@ -378,10 +378,7 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 		try
 		{
 			// See if we can find the player name in the database
-			if (prefs.pt_version()=="3")
-				write_log("Querying %s for m_chr %d: %s\n", stat_str3[stat], m_chr, strQry);
-			else
-				write_log("Querying %s for m_chr %d: %s\n", stat_str2[stat], m_chr, strQry);
+			write_log("Querying %s for m_chr %d: %s\n", stat_str[stat], m_chr, strQry);
 			res = PQexec(_pgconn, strQry);
 		}
 		catch (_com_error &e)
@@ -432,10 +429,7 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 			if (PQgetisnull(res,0,0) != 1)
 			{
 				result = atof(PQgetvalue(res,0,0));
-				if (prefs.pt_version()=="3")
-					write_log("Query %s for m_chr %d success: %f\n", stat_str3[stat], m_chr, result);
-				else
-					write_log("Query %s for m_chr %d success: %f\n", stat_str2[stat], m_chr, result);
+				write_log("Query %s for m_chr %d success: %f\n", stat_str[stat], m_chr, result);
 			}
 		}
 
