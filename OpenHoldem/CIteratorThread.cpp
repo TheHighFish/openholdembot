@@ -15,8 +15,6 @@ CIteratorVars		iter_vars;
 
 CIteratorVars::CIteratorVars()
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	ResetVars();
 }
 

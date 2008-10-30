@@ -399,7 +399,6 @@ public:
 	const double CalcPokerval(const HandVal handval, const int ncards, double *pcbits, const int pcard0, const int pcard1);
 	const void GetCardstring(char *c, const unsigned int c0, const unsigned int c1);
 	const double IsHand(const char *a, int *e=NULL);
-	const int GetSiteId (void);
 
 public:
 	// public accessors

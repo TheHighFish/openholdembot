@@ -7,8 +7,142 @@
 #include "CPreferences.h"
 #include "CGameState.h"
 #include "CLevDistance.h"
+#include "..\CTablemap\CTablemap.h"
 
 CPokerTrackerThread	*p_pokertracker_thread = NULL;
+CPokerTrackerLookup pt_lookup;
+
+CPokerTrackerLookup::CPokerTrackerLookup()
+{
+	_pt2_siteid.clear();
+	_pt3_siteid.clear();
+
+	_pt2_siteid.insert(std::pair<CString, int> ("Stars", 2));
+	_pt2_siteid.insert(std::pair<CString, int> ("Party", 3));
+	_pt2_siteid.insert(std::pair<CString, int> ("Ultimate", 4));
+	_pt2_siteid.insert(std::pair<CString, int> ("Absolute", 5));
+	_pt2_siteid.insert(std::pair<CString, int> ("Microgaming", 6));
+	_pt2_siteid.insert(std::pair<CString, int> ("Ongame", 7));
+	_pt2_siteid.insert(std::pair<CString, int> ("Cryptologic", 8));
+	_pt2_siteid.insert(std::pair<CString, int> ("Pacific", 9));
+	_pt2_siteid.insert(std::pair<CString, int> ("FullTilt", 11));
+	_pt2_siteid.insert(std::pair<CString, int> ("B2B", 12));
+	_pt2_siteid.insert(std::pair<CString, int> ("Tribeca", 13));
+	_pt2_siteid.insert(std::pair<CString, int> ("Worldpex", 14));
+	_pt2_siteid.insert(std::pair<CString, int> ("iPoker", 15));
+	_pt2_siteid.insert(std::pair<CString, int> ("Tain", 16));
+	_pt2_siteid.insert(std::pair<CString, int> ("Bodog", 17));
+	_pt2_siteid.insert(std::pair<CString, int> ("Everest", 18));
+	_pt2_siteid.insert(std::pair<CString, int> ("Boss", 19));
+	_pt2_siteid.insert(std::pair<CString, int> ("Betfair", 20));
+
+	_pt3_siteid.insert(std::pair<CString, int> ("Stars", 100));
+	_pt3_siteid.insert(std::pair<CString, int> ("Party", 200));
+	_pt3_siteid.insert(std::pair<CString, int> ("FullTilt", 300));
+	_pt3_siteid.insert(std::pair<CString, int> ("iPoker", 400));
+	_pt3_siteid.insert(std::pair<CString, int> ("Everest", 500));
+	_pt3_siteid.insert(std::pair<CString, int> ("Ongame", 600));
+}
+
+CPokerTrackerLookup::~CPokerTrackerLookup()
+{
+}
+
+const int CPokerTrackerLookup::GetSiteId()
+{
+	CString version = prefs.pt_version();
+	CString network = p_tablemap->s$items()->network;
+
+	// Input parameter "version" needs to be "2" or "3" for PT version 2 or PT version 3, respectively
+	if (version!="2" && version!="3")
+		return -1;
+
+	if (p_symbols->sym()->isppro)
+	{
+		return 3;
+	}
+	else
+	{
+		// If we are using manual mode, we expect an exact match on the lookup
+		if (p_symbols->sym()->ismanual)
+		{
+			std::map<CString, int>::const_iterator lookup, end;
+
+			if (version=="3")
+			{
+				lookup = _pt3_siteid.find(network);
+				end = _pt3_siteid.end();
+			}
+			else
+			{
+				lookup = _pt2_siteid.find(network);
+				end = _pt2_siteid.end();
+			}
+
+			if (lookup==end)
+				return -1;
+			else
+				return lookup->second;
+		}
+
+		// If this is a regular scraped table, a match is valid for a substring match if sitename or network
+		else
+		{
+			std::map<CString, int>::const_iterator lookup, end;
+
+			//Is s$sitename one of the supported PT sites?  Return the proper site_id for db queries.
+			if (version=="3")
+			{
+				lookup = _pt3_siteid.begin();
+				end = _pt3_siteid.end();
+			}
+			else
+			{
+				lookup = _pt2_siteid.begin();
+				end = _pt2_siteid.end();
+			}
+
+			while (lookup!=end)
+			{
+				CString	sym = "sitename$" + lookup->first;
+				int e = SUCCESS;
+
+				if (p_symbols->GetSymbolVal(sym.MakeLower().GetString(), &e))
+					return lookup->second;
+
+				lookup++;
+			}
+
+			//Is s$network one of the supported PT sites?  Return the proper site_id for db queries.
+			if (version=="3")
+			{
+				lookup = _pt3_siteid.begin();
+				end = _pt3_siteid.end();
+			}
+			else
+			{
+				lookup = _pt2_siteid.begin();
+				end = _pt2_siteid.end();
+			}
+
+			while (lookup!=end)
+			{
+				CString	sym = "network$" + lookup->first;
+				int e = SUCCESS;
+
+				if (p_symbols->GetSymbolVal(sym.MakeLower().GetString(), &e))
+					return lookup->second;
+
+				lookup++;
+			}
+		}
+	}
+
+	return -1 ;
+}
+
+
+
 
 CPokerTrackerThread::CPokerTrackerThread()
 {
@@ -321,7 +455,7 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 	int sym_elapsed = (int) p_symbols->sym()->elapsed;
 
 	//No more unnecessary queries when we don't even have a siteid to check
-	siteid = p_symbols->GetSiteId();
+	siteid = pt_lookup.GetSiteId();
 	if (siteid == -1)
 		return result;
 
@@ -455,7 +589,7 @@ bool CPokerTrackerThread::QueryName (const char * query_name, const char * scrap
 	static int	_last_siteid = -1;
 
 	//No more unnecessary queries when we don't even have a siteid to check
-	siteid = p_symbols->GetSiteId();
+	siteid = pt_lookup.GetSiteId();
 	if (siteid == -1)  return false;
 
 	// siteid has changed -- we're using ManualMode
