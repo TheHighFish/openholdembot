@@ -10,6 +10,8 @@
 #include "CGrammar.h"
 
 #include "PokerChat.hpp"
+#include "Cversus.h"
+#include "CIteratorThread.h"
 
 CDllExtension		*p_dll_extension = NULL;
 
@@ -185,6 +187,27 @@ double GetSymbolFromDll(const int chair, const char* name, bool& iserr)
 	CGrammar	gram;
 
 	str.Format("%s", name);
+
+	if (strcmp (str, "cmd$recalc") == 0)
+	{
+		// restart iterator thread
+		if (p_symbols->sym()->nit==0)
+		{
+			iter_vars.set_iterator_thread_complete(true);
+		}
+		else
+		{
+			if (p_iterator_thread)
+				delete p_iterator_thread;
+
+			p_iterator_thread = new CIteratorThread;
+		}
+
+		// Recompute versus tables
+		p_versus->GetCounts ();
+		iserr = false;
+		return 0;
+	}
 
 	result = gram.ParseString(&str, (const SFormula *) p_formula, &tpi, &stopchar);
 
