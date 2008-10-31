@@ -13,6 +13,7 @@ public:
 	void ProcessGameState(const SHoldemState *pstate);
 	void ProcessFtr(const SHoldemState *pstate);
 	void CaptureState(const char *title);
+	bool ProcessThisFrame(void);
 	const int LastRaised(const int round);
 	const int RaisBits(const int round);
 	const int CallBits(const int round);

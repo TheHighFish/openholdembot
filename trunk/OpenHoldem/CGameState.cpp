@@ -535,14 +535,40 @@ const double CGameState::SortedBalance(const int rank)
 	return stacks[rank];
 }
 
+// Return true if the game state processor should process the current frame.
+// Also used to stall the autoplayer until after the game state processor has
+// processed the current frame.
+bool CGameState::ProcessThisFrame (void)
+{
+	bool			balance_stability = false;
+	int				i;
+	int				sym_br = (int) p_symbols->sym()->br;
+	bool			sym_ismanual = (bool) p_symbols->sym()->ismanual;
+
+	// check if all balances are known (indicates stability of info passed to DLL)
+	balance_stability = true;
+	for (i=0; i<10; i++)
+	{
+		if (_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[0] != 0 && 
+			_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[1] != 0 &&
+			_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance_known != 1)
+		{
+			balance_stability = false;
+		}
+	}
+
+	// only process further if _safe_to_process_state==true, userchair is identified (br!=0),
+	// and m_balance_known is true for all players with cards, and I am actually in the hand
+	return ((sym_br != 0 && _safe_to_process_state && (balance_stability || sym_ismanual))
+			|| _m_holdem_state[(_m_ndx)&0xff].m_dealer_chair != _m_holdem_state[(_m_ndx-1)&0xff].m_dealer_chair);
+}
+
 void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstate_changed)
 {
 	int				from_chair = 0, to_chair = 0;
-	bool			balance_stability = false;
 	int				i = 0, j = 0, k = 0;
 	int				sym_br = (int) p_symbols->sym()->br;
 	int				sym_userchair = (int) p_symbols->sym()->userchair;
-	bool			sym_ismanual = (bool) p_symbols->sym()->ismanual;
 	bool			sym_ismyturn = (bool) p_symbols->sym()->ismyturn;
 	double			sym_balance = p_symbols->sym()->balance[10];
 	double			sym_handnumber = p_symbols->sym()->handnumber;
@@ -555,22 +581,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 	if (_safe_to_process_state == false && _m_ndx>1)
 		_safe_to_process_state = true;
 
-	// check if all balances are known (indicates stability of info passed to DLL)
-	balance_stability = true;
-	for (i=0; i<10; i++)
-	{
-		if (_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[0] != 0 &&
-				_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[1] != 0 &&
-				_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance_known != 1)
-		{
-			balance_stability = false;
-		}
-	}
-
-	// only process further if _safe_to_process_state==true, userchair is identified (br!=0),
-	// and m_balance_known is true for all players with cards, and I am actually in the hand
-	if ((sym_br != 0 && _safe_to_process_state && (balance_stability || sym_ismanual))
-			|| _m_holdem_state[(_m_ndx)&0xff].m_dealer_chair != _m_holdem_state[(_m_ndx-1)&0xff].m_dealer_chair)
+	if (CGameState::ProcessThisFrame ())
 	{
 
 		// Check for end of hand situation

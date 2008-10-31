@@ -12,6 +12,7 @@
 
 #include "OpenHoldem.h"
 #include "MainFrm.h"
+#include "CGameState.h"
 
 #include "PokerChat.hpp"
 
@@ -188,6 +189,14 @@ void CAutoplayer::DoAutoplayer(void)
 		// Calc primary formulas, but not with final answer, so main window can display correctly
 		p_symbols->CalcPrimaryFormulas(false);
 
+		return;
+	}
+
+	// If the game state processor didn't process this frame, then we should not act.
+	if (!p_game_state->ProcessThisFrame ())
+	{
+		// Calc primary formulas, but not with final answer, so main window can display correctly
+		p_symbols->CalcPrimaryFormulas(false);
 		return;
 	}
 
