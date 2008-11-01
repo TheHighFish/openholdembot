@@ -154,6 +154,11 @@ struct SS$Items
 	CString network;
 	CString	chairconfig;
 	CString	ttype[4];
+	int		swagselectionmethod;
+	int		swagdeletionmethod;
+	int		swagconfirmationmethod;
+	int		buttonclickmethod;
+
 };
 
 struct SWholeMap

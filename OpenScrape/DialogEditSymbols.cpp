@@ -33,6 +33,7 @@ BEGIN_MESSAGE_MAP(CDlgEditSymbols, CDialog)
 	ON_BN_CLICKED(IDOK, &CDlgEditSymbols::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_PARSEBUTTON, &CDlgEditSymbols::OnBnClickedParsebutton)
 	ON_CBN_SELCHANGE(IDC_NAME, &CDlgEditSymbols::OnCbnSelchangeName)
+	ON_EN_KILLFOCUS(IDC_VALUE, &CDlgEditSymbols::OnEnKillfocusValue)
 END_MESSAGE_MAP()
 
 
@@ -90,7 +91,16 @@ void CDlgEditSymbols::OnBnClickedParsebutton()
 
 void CDlgEditSymbols::OnCbnSelchangeName()
 {
-	m_Name.GetWindowText(name);
+	LRESULT index = m_Name.SendMessage(CB_GETCURSEL, (WPARAM) 0, 0);
+	int len = m_Name.SendMessage(CB_GETLBTEXTLEN, (WPARAM) index, (LPARAM) 0);
+
+	char *buffer = new char[len+1];
+ 
+	m_Name.SendMessage(CB_GETLBTEXT, (WPARAM) index, (LPARAM) buffer);
+	name.Format("%s", buffer);
+
+	delete [] buffer;           
+	buffer = NULL;
 
 	if (name.Find("ttlimits") != -1)
 	{
@@ -104,5 +114,45 @@ void CDlgEditSymbols::OnCbnSelchangeName()
 		m_Titletext.EnableWindow(false);
 		m_ParseResults.EnableWindow(false);
 		m_ParseButton.EnableWindow(false);
+	}
+}
+
+
+void CDlgEditSymbols::OnEnKillfocusValue()
+{
+	CString s, v;
+	m_Name.GetWindowText(s);
+	m_Value.GetWindowText(v);
+
+	if (s=="swagselectionmethod")
+	{
+		if (v!="Sgl Click" && v!="Dbl Click" && v!="Click Drag")
+			MessageBox("Valid values for swagselectionmethod are:\n"
+			           "'Sgl Click', 'Dbl Click' and 'Click Drag'",
+					   "Invalid value", MB_OK);
+	}
+	
+	else if (s=="swagdeletionmethod")
+	{
+		if (v!="Delete" && v!="Backspace")
+			MessageBox("Valid values for swagdeletionmethod are:\n"
+			           "'Delete' and 'Backspace'",
+					   "Invalid value", MB_OK);	
+	}
+
+	else if (s=="swagconfirmationmethod")
+	{
+		if (v!="Enter" && v!="Click Bet")
+			MessageBox("Valid values for swagconfirmationmethod are:\n"
+			           "'Enter' and 'Click Bet'",
+					   "Invalid value", MB_OK);	
+	}
+
+	else if (s=="buttonclickmethod")
+	{
+		if (v!="Single" && v!="Double")
+			MessageBox("Valid values for buttonclickmethod are:\n"
+			           "'Single' and 'Double'",
+					   "Invalid value", MB_OK);	
 	}
 }

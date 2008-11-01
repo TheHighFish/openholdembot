@@ -6,8 +6,8 @@
 int	const num_z$strings = 3;
 char * const z$strings[3] = { "clientsize", "clientsizemin", "clientsizemax" };
 
-int	const num_s$strings = 58;
-char * const s$strings[58] = { "titletext", "titletext0", "titletext1", "titletext2", "titletext3", "titletext4", "titletext5", "titletext6",
+int	const num_s$strings = 62;
+char * const s$strings[62] = { "titletext", "titletext0", "titletext1", "titletext2", "titletext3", "titletext4", "titletext5", "titletext6",
 							   "titletext7", "titletext8", "titletext9", 
 							   "!titletext", "!titletext0", "!titletext1", "!titletext2", "!titletext3", "!titletext4", "!titletext5", "!titletext6",
 							   "!titletext7", "!titletext8", "!titletext9", 
@@ -16,7 +16,8 @@ char * const s$strings[58] = { "titletext", "titletext0", "titletext1", "titlete
 							   "c0limits", "c0limits0", "c0limits1", "c0limits2", "c0limits3", "c0limits4", "c0limits5", "c0limits6", "c0limits7", 
 							   "c0limits8", "c0limits9", 
 							   "sitename", "network", "nchairs", "reseller", "mechanic", "chairconfig", "swagtextmethod", "potmethod", "activemethod", 
-							   "defaultlabels", "t0type", "t1type", "t2type", "t3type" };
+							   "defaultlabels", "t0type", "t1type", "t2type", "t3type", "swagselectionmethod", "swagdeletionmethod", 
+							   "swagconfirmationmethod", "buttonclickmethod" };
 
 int	const num_r$strings = 339;
 // r$tablepointXXX is a special case, as XXX can be anything in any order - it will always show up in the drop down list

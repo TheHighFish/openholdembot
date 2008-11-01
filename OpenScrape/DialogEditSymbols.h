@@ -26,6 +26,7 @@ protected:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedParsebutton();
 	afx_msg void OnCbnSelchangeName();
+	afx_msg void OnEnKillfocusValue();
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	CComboBox m_Name;
 	CEdit m_Value;

@@ -74,12 +74,6 @@ void CPreferences::InitDefaults(void)
 	_ap_auto = false;
 	_focus_detect = false;
 
-	// autoplayer - swag
-	_text_selection_method = TEXTSEL_DOUBLECLICK;
-	_text_deletion_method = TEXTDEL_DELETE;
-	_bet_confirmation_method = BETCONF_CLICKBET;
-	_button_click_method = BUTTON_SINGLECLICK;
-
 	// scraper
 	_scrape_delay = 750;
 
@@ -228,10 +222,6 @@ void CPreferences::ReadFromRegistry()
 		//	(WH backward compatibility.)
 		ReadReg("swag_delay", &_swag_delay_3);
 		ReadReg("swag_delay_3", &_swag_delay_3);
-		ReadReg("swag_text_selection", &_text_selection_method);
-		ReadReg("swag_text_deletion", &_text_deletion_method);
-		ReadReg("swag_bet_confirmation", &_bet_confirmation_method);
-		ReadReg("button_click_method", &_button_click_method);
 		ReadReg("auto", &_ap_auto);
 		ReadReg("focus_detect", &_focus_detect);
 

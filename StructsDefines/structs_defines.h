@@ -92,8 +92,9 @@ typedef boost::spirit::node_val_data_factory<const char *> int_factory_t;
 
 
 // SWAG options
-#define TEXTSEL_DOUBLECLICK	1
-#define TEXTSEL_CLICKDRAG	2
+#define TEXTSEL_SINGLECLICK	1
+#define TEXTSEL_DOUBLECLICK	2
+#define TEXTSEL_CLICKDRAG	3
 #define TEXTDEL_DELETE		1
 #define TEXTDEL_BACKSPACE	2
 #define BETCONF_ENTER		1
