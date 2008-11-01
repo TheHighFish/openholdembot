@@ -1,9 +1,20 @@
 v2.0.0 2009-xx-xx
 =================
 BUG FIXES:
+- Fix to Add New Symbol dialog, whereby change to dropdown was not always enabling/disabling TitleText, ParseResults,
+  and ParseButton fields correctly.
+  
 MAINTENANCE:
-NEW STUFF:
 
+NEW STUFF:
+- Added "swagselectionmethod", "swagdeletionmethod", "swagconfirmationmethod" and "buttonclickmethod" to valid s$strings list.
+  The settings that might be saved in the registry from previous OpenHoldem versions are now ignored for these methods.  If these
+  methods are not specified in the .tm file, then the default actions are:
+  swagselectionmethod = Dbl Click
+  swagdeletionmethod = Delete
+  swagconfirmationmethod = Enter
+  buttonclickmethod = Double
+  [OpenHoldem]
 
 v1.1.8 2008-10-21
 =================

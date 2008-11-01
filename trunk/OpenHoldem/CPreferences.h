@@ -19,10 +19,6 @@ public:
 	const unsigned int swag_delay_1() { return _swag_delay_1; }
 	const unsigned int swag_delay_2() { return _swag_delay_2; }
 	const unsigned int swag_delay_3() { return _swag_delay_3; }
-	const unsigned int text_selection_method() { return _text_selection_method; }
-	const unsigned int text_deletion_method() { return _text_deletion_method; }
-	const unsigned int bet_confirmation_method() { return _bet_confirmation_method; }
-	const unsigned int button_click_method() { return _button_click_method; }
 	const bool ap_auto() { return _ap_auto; }
 	const bool focus_detect() { return _focus_detect; }
 	// Dll extension
@@ -135,10 +131,6 @@ public:
 	void set_swag_delay_1(const unsigned int i) { ENT _swag_delay_1 = i; WriteReg("swag_delay_1", (int) i); }
 	void set_swag_delay_2(const unsigned int i) { ENT _swag_delay_2 = i; WriteReg("swag_delay_2", (int) i); }
 	void set_swag_delay_3(const unsigned int i) { ENT _swag_delay_3 = i; WriteReg("swag_delay_3", (int) i); }
-	void set_text_selection_method(const unsigned int i) { ENT _text_selection_method = i; WriteReg("swag_text_selection", (int) i); }
-	void set_text_deletion_method(const unsigned int i) { ENT _text_deletion_method = i; WriteReg("swag_text_deletion", (int) i); }
-	void set_bet_confirmation_method(const unsigned int i) { ENT _bet_confirmation_method = i; WriteReg("swag_bet_confirmation", (int) i); }
-	void set_button_click_method(const unsigned int i) { ENT _button_click_method = i; WriteReg("button_click_method", (int) i); }
 	void set_ap_auto(const bool b) { ENT _ap_auto = b; WriteReg("auto", (int) b!=false); }
 	void set_focus_detect(const bool b) { ENT _focus_detect = b; WriteReg("focus_detect", (int) b!=false); }
 	// Dll extension
@@ -253,10 +245,6 @@ private:
 	unsigned int	_swag_delay_1;
 	unsigned int	_swag_delay_2;
 	unsigned int	_swag_delay_3;
-	unsigned int	_text_selection_method;
-	unsigned int	_text_deletion_method;
-	unsigned int	_bet_confirmation_method;
-	unsigned int	_button_click_method;
 	bool			_ap_auto;
 	bool			_focus_detect;
 

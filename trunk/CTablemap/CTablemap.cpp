@@ -93,14 +93,14 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 
 	
 	//
-	// Validate WinScrape file version, if passed in
+	// Validate file version, if passed in
 	// check the ".wsdb1"/".ohdb1"/".ohdb2"/".osdb1" line
 	if (strlen(version)) 
 	{
 		if (memcmp(version, VER_OPENSCRAPE_1, strlen(version)) == 0)
 		{
 			if (memcmp(strLine.GetString(), VER_OPENHOLDEM_2, strlen(VER_OPENHOLDEM_2)) != 0 &&
-					memcmp(strLine.GetString(), VER_OPENSCRAPE_1, strlen(VER_OPENSCRAPE_1)) != 0)
+				memcmp(strLine.GetString(), VER_OPENSCRAPE_1, strlen(VER_OPENSCRAPE_1)) != 0)
 			{
 				return ERR_VERSION;
 			}
@@ -1532,6 +1532,22 @@ void CTablemap::SaveS$Strings(void)
 		if (_s$[i].name == "t3type")
 			_s$items.ttype[3] = _s$[i].text;
 
+		if (_s$[i].name == "swagselectionmethod")
+			_s$items.swagselectionmethod = _s$[i].text == "Sgl Click" ? TEXTSEL_SINGLECLICK	:
+										   _s$[i].text == "Dbl Click" ? TEXTSEL_DOUBLECLICK :
+										   _s$[i].text == "Click Drag" ? TEXTSEL_CLICKDRAG : 0;
+
+		if (_s$[i].name == "swagdeletionmethod")
+			_s$items.swagdeletionmethod = _s$[i].text == "Delete" ? TEXTDEL_DELETE :
+										  _s$[i].text == "Backspace" ? TEXTDEL_BACKSPACE : 0;
+
+		if (_s$[i].name == "swagconfirmationmethod")
+			_s$items.swagconfirmationmethod = _s$[i].text == "Enter" ? BETCONF_ENTER :
+											  _s$[i].text == "Click Bet" ? BETCONF_CLICKBET : 0;
+
+		if (_s$[i].name == "buttonclickmethod")
+			_s$items.buttonclickmethod = _s$[i].text == "Single" ? BUTTON_SINGLECLICK :
+										 _s$[i].text == "Double" ? BUTTON_DOUBLECLICK : 0;
 	}
 }
 

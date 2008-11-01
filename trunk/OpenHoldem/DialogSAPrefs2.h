@@ -26,7 +26,6 @@ protected:
 
 	CEdit			m_FrameDelay, m_SwagDelay1, m_SwagDelay2, m_SwagDelay3;
 	CSpinButtonCtrl m_FrameDelay_Spin, m_SwagDelay1_Spin, m_SwagDelay2_Spin, m_SwagDelay3_Spin;
-	CComboBox		m_TextSelection, m_TextDeletion, m_BetConfirmation, m_ButtonClicking;
 	CButton			m_AutoAP, m_FocusDetect;
 
 	DECLARE_MESSAGE_MAP()

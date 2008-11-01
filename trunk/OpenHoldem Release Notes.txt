@@ -13,6 +13,17 @@ NEW STUFF:
 - Added OH-Validator to verify the gamestate at the symbol level. 
   Still lots of validator rules needed to get a good coverage of
   possible problems. [TheHighfish]
+- "swagselectionmethod", "swagdeletionmethod", "swagconfirmationmethod" and "buttonclickmethod" are now settings that are drawn from
+  the table map file. The settings that might be saved in the registry from previous OpenHoldem versions are deprecated and are now 
+  ignored for these methods.  SWAG timings are still set in OpenHoldem preferences, as usual. If these methods are not specified in 
+  the .tm file, then the default actions are:
+  swagselectionmethod = Dbl Click
+  swagdeletionmethod = Delete
+  swagconfirmationmethod = Enter
+  buttonclickmethod = Double
+  [OpenHoldem]
+- Added new Table Map "swagselectionmethod" option: Single Click  [OpenHoldem]
+
 
 v1.9.4 2008-10-21
 =================

@@ -263,7 +263,8 @@ void CAutoplayer::DoSwag(void)
 		{
 
 			// TEXT SELECTION
-			if (prefs.text_selection_method() == TEXTSEL_DOUBLECLICK)
+			if (p_tablemap->s$items()->swagselectionmethod == TEXTSEL_DOUBLECLICK ||
+				p_tablemap->s$items()->swagselectionmethod == 0)
 			{
 				input_count = 0;
 
@@ -300,7 +301,32 @@ void CAutoplayer::DoSwag(void)
 				input_count++;
 			}
 
-			else if (prefs.text_selection_method() == TEXTSEL_CLICKDRAG)
+			if (p_tablemap->s$items()->swagselectionmethod == TEXTSEL_SINGLECLICK)
+			{
+				input_count = 0;
+
+				// Single click in edit box
+				r$index = p_tablemap->r$indexes()->r$iXedit_index[3];
+				pt = RandomizeClickLocation(p_tablemap->r$()->GetAt(r$index).left, p_tablemap->r$()->GetAt(r$index).top,
+											  p_tablemap->r$()->GetAt(r$index).right, p_tablemap->r$()->GetAt(r$index).bottom);
+				ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
+				fx = pt.x*(65535.0f/fScreenWidth);
+				fy = pt.y*(65535.0f/fScreenHeight);
+
+				ZeroMemory(&input[input_count],sizeof(INPUT));
+				input[input_count].type = INPUT_MOUSE;
+				input[input_count].mi.dx = fx;
+				input[input_count].mi.dy = fy;
+				input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
+				input_count++;
+
+				ZeroMemory(&input[input_count],sizeof(INPUT));
+				input[input_count].type = INPUT_MOUSE;
+				input[input_count].mi.dwFlags = MOUSEEVENTF_LEFTUP;
+				input_count++;
+			}
+
+			else if (p_tablemap->s$items()->swagselectionmethod == TEXTSEL_CLICKDRAG)
 			{
 				input_count = 0;
 
@@ -362,7 +388,8 @@ void CAutoplayer::DoSwag(void)
 
 
 			// TEXT DELETION
-			if (prefs.text_deletion_method() == TEXTDEL_DELETE)
+			if (p_tablemap->s$items()->swagdeletionmethod == TEXTDEL_DELETE ||
+				p_tablemap->s$items()->swagdeletionmethod == 0)
 			{
 				input_count = 0;
 
@@ -381,7 +408,7 @@ void CAutoplayer::DoSwag(void)
 				input_count++;
 			}
 
-			else if (prefs.text_deletion_method() == TEXTDEL_BACKSPACE)
+			else if (p_tablemap->s$items()->swagdeletionmethod == TEXTDEL_BACKSPACE)
 			{
 				input_count = 0;
 
@@ -500,7 +527,8 @@ void CAutoplayer::DoSwag(void)
 
 
 			// BET CONFIRMATION ACTION
-			if (prefs.bet_confirmation_method() == BETCONF_ENTER)
+			if (p_tablemap->s$items()->swagconfirmationmethod == BETCONF_ENTER ||
+				p_tablemap->s$items()->swagconfirmationmethod == 0)
 			{
 				input_count = 0;
 
@@ -517,7 +545,7 @@ void CAutoplayer::DoSwag(void)
 				input_count++;
 			}
 
-			else if (prefs.bet_confirmation_method() == BETCONF_CLICKBET &&
+			else if (p_tablemap->s$items()->swagconfirmationmethod == BETCONF_CLICKBET &&
 					 (_rais_but!=-1 || p_tablemap->r$indexes()->r$iXbutton_index[3]!=-1) )
 			{
 				input_count = 0;
@@ -560,7 +588,7 @@ void CAutoplayer::DoSwag(void)
 				input_count++;
 
 				// Do double click if set in preferences
-				if (prefs.button_click_method() == BUTTON_DOUBLECLICK)
+				if (p_tablemap->s$items()->buttonclickmethod == BUTTON_DOUBLECLICK)
 				{
 					ZeroMemory(&input[input_count],sizeof(INPUT));
 					input[input_count].type = INPUT_MOUSE;
@@ -739,7 +767,7 @@ void CAutoplayer::DoARCCF(void)
 		input_count++;
 
 		// Do double click if set in preferences
-		if (prefs.button_click_method() == BUTTON_DOUBLECLICK)
+		if (p_tablemap->s$items()->buttonclickmethod == BUTTON_DOUBLECLICK)
 		{
 			ZeroMemory(&input[input_count],sizeof(INPUT));
 			input[input_count].type = INPUT_MOUSE;
