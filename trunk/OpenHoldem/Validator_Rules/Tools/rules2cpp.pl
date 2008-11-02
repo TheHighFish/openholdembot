@@ -34,6 +34,9 @@
 # Operate on all lines...
 while (<>)
 {
+	# Fix 2 common misspellings
+	s/TEST_ID/TESTCASE_ID/g;
+	s/TASTCASE/TESTCASE/g;
 	# Print to stdout without change
 	# * lines, that shall stay as is
 	# * lines, that already got converted
