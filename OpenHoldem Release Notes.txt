@@ -4,6 +4,7 @@ BUG FIXES:
 
 MAINTENANCE:
 - Removed last SEH-code (__SEH_SET_EXCEPTION_HANDLER), which is no longer neccessary. [TheHighFish]
+- The Autoplayer will not act on a frame which is not processed by the game state processor
 
 NEW STUFF:
 - Added option to save all replay frames whenever something changes when you are in the hand (Thanks, markedagain for the patch) [OpenHoldem]
@@ -23,6 +24,7 @@ NEW STUFF:
   buttonclickmethod = Double
   [OpenHoldem]
 - Added new Table Map "swagselectionmethod" option: Single Click  [OpenHoldem]
+- If a user DLL sends the request "cmd$recalc", then the versus tables are recomputed and the iterator thread is restarted.
 
 
 v1.9.4 2008-10-21
