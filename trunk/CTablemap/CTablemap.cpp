@@ -1110,11 +1110,13 @@ void CTablemap::ClearR$Indices(void)
 		_r$indexes.r$uXseated_index[i] = -1;
 		_r$indexes.r$pXactive_index[i] = -1;
 		_r$indexes.r$uXactive_index[i] = -1;
+		_r$indexes.r$uXdealer_index[i] = -1;
 		_r$indexes.r$pXdealer_index[i] = -1;
 		_r$indexes.r$pXname_index[i] = -1;
 		_r$indexes.r$uXname_index[i] = -1;
 		_r$indexes.r$pXbalance_index[i] = -1;
 		_r$indexes.r$uXbalance_index[i] = -1;
+		_r$indexes.r$uXbet_index[i] = -1;
 		_r$indexes.r$pXbet_index[i] = -1;
 
 		for (j=0; j<=9; j++)
@@ -1239,11 +1241,16 @@ void CTablemap::SaveR$Indices(void)
 			_r$indexes.r$uXactive_index[seatnum] = i;
 		}
 
-		// Dealer button, r$pXdealer
+		// Dealer button, r$pXdealer, r$uXdealer
 		else if (_r$[i].name.Mid(0,1)=="p" && _r$[i].name.Mid(2,6)=="dealer")
 		{
 			seatnum = _r$[i].name.GetString()[1] - '0';
 			_r$indexes.r$pXdealer_index[seatnum] = i;
+		}
+		else if (_r$[i].name.Mid(0,1)=="u" && _r$[i].name.Mid(2,6)=="dealer")
+		{
+			seatnum = _r$[i].name.GetString()[1] - '0';
+			_r$indexes.r$uXdealer_index[seatnum] = i;
 		}
 
 		// Player name r$pXname, r$uXname, r$uname
@@ -1278,11 +1285,16 @@ void CTablemap::SaveR$Indices(void)
 			_r$indexes.r$ubalance_index = i;
 		}
 
-		// Player bet, r$pXbet, r$pXchipYZ
+		// Player bet, r$pXbet, r$uXbet, r$pXchipYZ
 		else if (_r$[i].name.Mid(0,1)=="p" && _r$[i].name.Mid(2,3)=="bet")
 		{
 			seatnum = _r$[i].name.GetString()[1] - '0';
 			_r$indexes.r$pXbet_index[seatnum] = i;
+		}
+		else if (_r$[i].name.Mid(0,1)=="u" && _r$[i].name.Mid(2,3)=="bet")
+		{
+			seatnum = _r$[i].name.GetString()[1] - '0';
+			_r$indexes.r$uXbet_index[seatnum] = i;
 		}
 		else if (_r$[i].name.Mid(0,1)=="p" && _r$[i].name.Mid(2,4)=="chip")
 		{

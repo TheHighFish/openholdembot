@@ -19,9 +19,9 @@ char * const s$strings[63] = { "titletext", "titletext0", "titletext1", "titlete
 							   "defaultlabels", "t0type", "t1type", "t2type", "t3type", "swagselectionmethod", "swagdeletionmethod", 
 							   "swagconfirmationmethod", "buttonclickmethod", "handresetmethod" };
 
-int	const num_r$strings = 339;
+int	const num_r$strings = 359;
 // r$tablepointXXX is a special case, as XXX can be anything in any order - it will always show up in the drop down list
-char * const r$strings[339] = { "c0cardface0", "c0cardface1", "c0cardface2", "c0cardface3", "c0cardface4", 
+char * const r$strings[359] = { "c0cardface0", "c0cardface1", "c0cardface2", "c0cardface3", "c0cardface4", 
 								"c0cardface0rank", "c0cardface1rank", "c0cardface2rank", "c0cardface3rank", "c0cardface4rank", 
 								"c0cardface0suit", "c0cardface1suit", "c0cardface2suit", "c0cardface3suit", "c0cardface4suit", 
 								"c0handnumber", "c0handnumber1", "c0handnumber2", "c0handnumber3", "c0handnumber4", "c0handnumber5", "c0handnumber6",
@@ -92,12 +92,16 @@ char * const r$strings[339] = { "c0cardface0", "c0cardface1", "c0cardface2", "c0
 								"u7cardface0", "u8cardface0", "u9cardface0", 
 								"u0cardface1", "u1cardface1", "u2cardface1", "u3cardface1", "u4cardface1", "u5cardface1", "u6cardface1", 
 								"u7cardface1", "u8cardface1", "u9cardface1", 
+								"u0bet", "u1bet", "u2bet", "u3bet", "u4bet", "u5bet", "u6bet", "u7bet", 
+								"u8bet", "u9bet", 
+								"u0dealer", "u1dealer", "u2dealer", "u3dealer", "u4dealer", "u5dealer", "u6dealer", "u7dealer", 
+								"u8dealer", "u9dealer", 
 								"uname", "u0name", "u1name", "u2name", "u3name", "u4name", "u5name", "u6name", "u7name", 
 								"u8name", "u9name", 
 								"u0seated", "u1seated", "u2seated", "u3seated", "u4seated", "u5seated", "u6seated", "u7seated", 
 								"u8seated", "u9seated", 
 								"tablepoint"};
-								//42
+								//62
 
 
 

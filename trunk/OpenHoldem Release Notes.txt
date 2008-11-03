@@ -36,6 +36,9 @@ NEW STUFF:
   - 0x00000010 = handnumber
   - 0x00000100 = player cards (not triggered by change to "no cards" or to "card backs")
   [OpenHoldem]
+- Added handling of new uXdealer and uXbet regions.  These new regions correlate to the pXdealer and pXbet regions in much the
+  same way as uXname/pXname and uXbalance/pXbalance. If, for example, pXdealer does not match, then the scraper engine will
+  check uXdealer for a match.  [OpenHoldem]
 
 
 v1.9.4 2008-10-21

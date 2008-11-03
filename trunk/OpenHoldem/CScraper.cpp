@@ -640,12 +640,16 @@ void CScraper::ScrapeDealer(int chair, HDC hdcCompatible, HDC hdc)
 	HBITMAP				old_bitmap = NULL;
 	CString				result = "";
 	CTransform			trans;
+	bool				found_dealer;
 
 	// Check for bad parameters
 	if (chair < 0 || chair >= p_tablemap->s$items()->num_chairs || hdcCompatible == NULL || hdc == NULL)
 		return;
 
+	_dealer[chair] = false;
+
 	// Dealer button
+	found_dealer = false;
 	r$index = p_tablemap->r$indexes()->r$pXdealer_index[chair];
 	if (r$index!=-1)
 	{
@@ -654,19 +658,31 @@ void CScraper::ScrapeDealer(int chair, HDC hdcCompatible, HDC hdc)
 		trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &result);
 		SelectObject(hdcCompatible, old_bitmap);
 
-		EnterCriticalSection(&cs_scraper);
-			if (IsStringDealer(result))
-				_dealer[chair] = true;
-			else
-				_dealer[chair] = false;
-
-			if (_dealer_last[chair] != _dealer[chair])
-			{
-				_dealer_last[chair] = _dealer[chair];
-				_scrape_something_changed |= DEALER_CHANGED;
-			}
-		LeaveCriticalSection(&cs_scraper);
+		if (IsStringDealer(result))
+			found_dealer = true;
 	}
+
+	r$index = p_tablemap->r$indexes()->r$uXdealer_index[chair];
+	if (r$index!=-1 && !found_dealer)
+	{
+		ProcessRegion(hdcCompatible, hdc, r$index);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
+		trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &result);
+		SelectObject(hdcCompatible, old_bitmap);
+
+		if (IsStringDealer(result))
+			found_dealer = true;
+	}
+
+	EnterCriticalSection(&cs_scraper);
+		_dealer[chair] = found_dealer;
+
+		if (_dealer_last[chair] != _dealer[chair])
+		{
+			_dealer_last[chair] = _dealer[chair];
+			_scrape_something_changed |= DEALER_CHANGED;
+		}
+	LeaveCriticalSection(&cs_scraper);
 }
 
 void CScraper::ScrapeName(int chair, HDC hdcCompatible, HDC hdc) 
@@ -900,6 +916,7 @@ void CScraper::ScrapeBet(int chair, HDC hdcCompatible, HDC hdc)
 
 	_player_bet[chair] = 0;
 
+	// Player bet
 	r$index = p_tablemap->r$indexes()->r$pXbet_index[chair];
 	if (r$index!=-1)
 	{
@@ -911,36 +928,54 @@ void CScraper::ScrapeBet(int chair, HDC hdcCompatible, HDC hdc)
 		text.Remove('$');
 
 		EnterCriticalSection(&cs_scraper);
-			if (text!="")
-			{
-				_player_bet[chair] = trans.StringToMoney(text);
-				if (_playerbet_last[chair] != _player_bet[chair])
-				{
-					_playerbet_last[chair] = _player_bet[chair];
-					_scrape_something_changed |= PLAYERBET_CHANGED;
-				}
-			}
+		if (text!="")
+		{
+			_player_bet[chair] = trans.StringToMoney(text);
+		}
 		LeaveCriticalSection(&cs_scraper);
 	}
 
+	if (_player_bet[chair] == 0)
+	{
+		r$index = p_tablemap->r$indexes()->r$uXbet_index[chair];
+		if (r$index!=-1)
+		{
+			ProcessRegion(hdcCompatible, hdc, r$index);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
+			trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
+			SelectObject(hdcCompatible, old_bitmap);
+			text.Remove(',');
+			text.Remove('$');
+
+			EnterCriticalSection(&cs_scraper);
+			if (text!="")
+			{
+				_player_bet[chair] = trans.StringToMoney(text);
+			}
+			LeaveCriticalSection(&cs_scraper);
+		}
+	}		
+		
 	if (_player_bet[chair] == 0)
 	{
 		r$index = p_tablemap->r$indexes()->r$pXchip_index[chair][0][0];
 		if (r$index!=-1)
 		{
 			EnterCriticalSection(&cs_scraper);
-				old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_cur);
-				_player_bet[chair] = DoChipScrape(hdcCompatible, r$index);
-				SelectObject(hdcCompatible, old_bitmap);
-
-				if (_playerbet_last[chair] != _player_bet[chair])
-				{
-					_playerbet_last[chair] = _player_bet[chair];
-					_scrape_something_changed |= PLAYERBET_CHANGED;
-				}
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_cur);
+			_player_bet[chair] = DoChipScrape(hdcCompatible, r$index);
+			SelectObject(hdcCompatible, old_bitmap);
 			LeaveCriticalSection(&cs_scraper);
 		}
 	}
+
+	EnterCriticalSection(&cs_scraper);
+	if (_playerbet_last[chair] != _player_bet[chair])
+	{
+		_playerbet_last[chair] = _player_bet[chair];
+		_scrape_something_changed |= PLAYERBET_CHANGED;
+	}
+	LeaveCriticalSection(&cs_scraper);
 }
 
 void CScraper::ScrapeButtons(HDC hdcCompatible, HDC hdc) 

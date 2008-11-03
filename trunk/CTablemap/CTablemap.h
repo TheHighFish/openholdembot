@@ -92,6 +92,7 @@ struct SR$Indexes
 	int		r$pXseated_index[10];
 	int		r$uXactive_index[10];
 	int		r$pXactive_index[10];
+	int		r$uXdealer_index[10];
 	int		r$pXdealer_index[10];
 	int		r$uname_index;
 	int		r$uXname_index[10];
@@ -99,6 +100,7 @@ struct SR$Indexes
 	int		r$ubalance_index;
 	int		r$uXbalance_index[10];
 	int		r$pXbalance_index[10];
+	int		r$uXbet_index[10];
 	int		r$pXbet_index[10];
 	int		r$pXchip_index[10][10][10];
 
