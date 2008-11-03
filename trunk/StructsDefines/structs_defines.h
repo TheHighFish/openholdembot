@@ -104,6 +104,11 @@ typedef boost::spirit::node_val_data_factory<const char *> int_factory_t;
 #define BUTTON_SINGLECLICK	1
 #define BUTTON_DOUBLECLICK	2
 
+// Hand reset detection options
+#define HANDRESET_DEALER	0x0001
+#define HANDRESET_HANDNUM	0x0010
+#define HANDRESET_CARDS		0x0100
+
 // Autoplayer prevaction
 #define PREVACT_FOLD		-1
 #define PREVACT_CHEC		0

@@ -708,10 +708,20 @@ void CSymbols::CalcSymbols(void)
 
 	// New hand is triggered by change in dealerchair (button moves), or change in userchair's cards (as long as it is not
 	// a change to nocards or cardbacks), or a change in handnumber
-	if (_sym.dealerchair != _dealerchair_last ||
-			player_card_cur[0]!=CARD_NOCARD && player_card_cur[0]!=CARD_BACK && player_card_cur[0]!=_player_card_last[0] ||
-			player_card_cur[1]!=CARD_NOCARD && player_card_cur[1]!=CARD_BACK && player_card_cur[1]!=_player_card_last[1] ||
+	if (((p_tablemap->s$items()->handresetmethod & HANDRESET_DEALER) && 
+			_sym.dealerchair != _dealerchair_last)
+			
+		||
+
+		((p_tablemap->s$items()->handresetmethod & HANDRESET_HANDNUM) &&
+			(player_card_cur[0]!=CARD_NOCARD && player_card_cur[0]!=CARD_BACK && player_card_cur[0]!=_player_card_last[0] ||
+			 player_card_cur[1]!=CARD_NOCARD && player_card_cur[1]!=CARD_BACK && player_card_cur[1]!=_player_card_last[1]))
+		
+		||
+
+		((p_tablemap->s$items()->handresetmethod & HANDRESET_CARDS) &&
 			_sym.handnumber != _handnumber_last)
+	   )
 	{
 		// Save for next pass
 		_dealerchair_last = _sym.dealerchair;

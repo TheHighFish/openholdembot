@@ -25,6 +25,17 @@ NEW STUFF:
   [OpenHoldem]
 - Added new Table Map "swagselectionmethod" option: Single Click  [OpenHoldem]
 - If a user DLL sends the request "cmd$recalc", then the versus tables are recomputed and the iterator thread is restarted.
+- Added handling of "handresetmethod" as specified in the table map file to identify which scrape changes should be used 
+  as a trigger to identify a "hand reset" event. This is a bitmapped integer; only one of the selected scrape changes needs 
+  to occur in order for the scrape to be considered a "hand reset".  The values below are in hexadecimal format, but the 
+  value assigned to the "handresetmethod" symbol must be specified in decimal (base-10) format.  As an example, if you
+  want to instruct OpenHoldem to treat a change in dealer button OR a change in player cards as a "hand reset", then 
+  "handresetmethod" should be set to 5.  If you want to instruct OpenHoldem to treat only a change in dealer button as a 
+  "hand reset", then "handresetmethod" should be set to 1.
+  - 0x00000001 = dealer button
+  - 0x00000010 = handnumber
+  - 0x00000100 = player cards (not triggered by change to "no cards" or to "card backs")
+  [OpenHoldem]
 
 
 v1.9.4 2008-10-21

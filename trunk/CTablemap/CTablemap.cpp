@@ -1548,6 +1548,10 @@ void CTablemap::SaveS$Strings(void)
 		if (_s$[i].name == "buttonclickmethod")
 			_s$items.buttonclickmethod = _s$[i].text == "Single" ? BUTTON_SINGLECLICK :
 										 _s$[i].text == "Double" ? BUTTON_DOUBLECLICK : 0;
+
+		if (_s$[i].name == "handresetmethod")
+			_s$items.handresetmethod = atoi(_s$[i].text.GetString());
+
 	}
 }
 

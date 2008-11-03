@@ -158,7 +158,7 @@ struct SS$Items
 	int		swagdeletionmethod;
 	int		swagconfirmationmethod;
 	int		buttonclickmethod;
-
+	int		handresetmethod;
 };
 
 struct SWholeMap
