@@ -1639,8 +1639,15 @@ void CDlgTableMap::OnBnClickedDelete()
 		text.Format("Really delete Font record: %s", sel);
 		if (MessageBox(text.GetString(), "Delete Font record?", MB_YESNO) == IDYES)
 		{
+			// Get text group of this record, so we know which to update in the call to UpdateHexmashesHashes below
+			int text_group = p_tablemap->t$()->GetAt(index).group;
+
 			// Delete record from internal structure and update tree
 			p_tablemap->set_t$_removeat(index);
+
+			// Update hexmashes and hashes index	
+			p_tablemap->UpdateHexmashesHashes(text_group);
+
 			HTREEITEM node = update_tree("Fonts");
 			if (node!=NULL)  m_TableMapTree.SelectItem(node);
 
