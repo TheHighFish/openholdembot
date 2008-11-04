@@ -11,6 +11,7 @@ public:
 	~CAutoplayer(void);
 	void DoAutoplayer(void);
 	void ResetHand(void);
+	void ResetRound(void);
 
 public:
 	// public accessors

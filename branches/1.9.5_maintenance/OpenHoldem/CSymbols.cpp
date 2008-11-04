@@ -810,6 +810,11 @@ void CSymbols::CalcSymbols(void)
 	if (_sym.br != _br_last)
 	{
 		_br_last = _sym.br;
+
+		// Reset autoplayer structures
+		p_autoplayer->ResetRound();
+
+		// Reset symbols
 		ResetSymbolsNewRound();
 
 		// log betting round change
