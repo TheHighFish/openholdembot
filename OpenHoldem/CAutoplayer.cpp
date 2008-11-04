@@ -231,6 +231,14 @@ void CAutoplayer::ResetHand(void)
 	set_prevaction(-1);
 }
 
+void CAutoplayer::ResetRound(void) 
+{
+	set_didchec(4,0);
+	set_didcall(4,0);
+	set_didrais(4,0);
+	set_didswag(4,0);
+}
+
 void CAutoplayer::DoSwag(void) 
 {
 	int				input_count = 0, r$index = 0;
