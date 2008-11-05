@@ -35,7 +35,7 @@ void CTablemap::ClearTablemap()
 	_filepath = "";
 	_filename = "";
 
-	_z$.RemoveAll();
+	_z$.clear();
 	_s$.RemoveAll();
 	_r$.RemoveAll();
 	_t$.RemoveAll();
@@ -197,7 +197,8 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 
 			hold_size.height = atol(token.GetString());
 
-			_z$.Add(hold_size);
+			if (!z$_insert(hold_size))
+				MessageBox(NULL, strLine, "ERROR adding size record", MB_OK | MB_TOPMOST);
 		}
 
 		// Handle s$ lines (symbols/string)
@@ -532,9 +533,11 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("// sizes\r\n");
 	ar.WriteString("//\r\n");
 	ar.WriteString("\r\n");
-	N = (int) _z$.GetSize();
-	for (i=0; i<N; i++) {
-		s.Format("z$%-16s %d  %d\r\n", _z$[i].name, _z$[i].width, _z$[i].height); 
+	
+	ZMap::const_iterator z_iter;
+	for (z_iter=_z$.begin(); z_iter!=_z$.end(); z_iter++)
+	{
+		s.Format("z$%-16s %d  %d\r\n", z_iter->second.name, z_iter->second.width, z_iter->second.height); 
 		ar.WriteString(s);
 	}
 	ar.WriteString("\r\n");

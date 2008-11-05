@@ -15,6 +15,9 @@ struct STablemapSize
 	unsigned int	width;
 	unsigned int	height;
 };
+typedef std::pair<CString, STablemapSize> ZPair;
+typedef std::map<CString, STablemapSize> ZMap;
+
 
 struct STablemapSymbol 
 {
@@ -165,7 +168,7 @@ struct SS$Items
 
 struct SWholeMap
 {
-	const CArray <STablemapSize, STablemapSize>			*z$;
+	const ZMap	*z$;
 	const CArray <STablemapSymbol, STablemapSymbol>		*s$;
 	const CArray <STablemapRegion, STablemapRegion> 		*r$;
 	const CArray <STablemapFont, STablemapFont>			*t$;
@@ -195,7 +198,7 @@ public:
 
 public:
 	// public accessors
-	const CArray <STablemapSize, STablemapSize>	* z$() { return &_z$; }
+	const ZMap *z$() { return &_z$; }
 	const CArray <STablemapSymbol, STablemapSymbol> * s$() { return &_s$; }
 	const CArray <STablemapRegion, STablemapRegion> * r$() { return &_r$; }
 	const CArray <STablemapFont, STablemapFont> * t$() { return &_t$; }
@@ -217,6 +220,22 @@ public:
 	// public mutators 
 
 	// These are used by OpenScrape
+	const bool	z$_insert(const STablemapSize s) { ENT std::pair<ZMap::iterator, bool> r=_z$.insert(ZPair(s.name, s)); return r.second;  }
+	const INT_PTR	set_s$_add(const STablemapSymbol s) { ENT return _s$.Add(s); }
+	const INT_PTR	set_r$_add(const STablemapRegion s) { ENT return _r$.Add(s); }
+	const INT_PTR	set_t$_add(const STablemapFont s) { ENT return _t$.Add(s); }
+	const INT_PTR	set_p$_add(const STablemapHashPoint s) { ENT return _p$.Add(s); }
+	const INT_PTR	set_h$_add(const STablemapHashValue s) { ENT return _h$.Add(s); }
+	const INT_PTR	set_i$_add(const STablemapImage s) { ENT return _i$.Add(s); }
+
+	const size_t	z$_erase(CString s) { ENT std::map<int, int>::size_type c = _z$.erase(s); return c;  }
+	void	set_s$_removeat(const int n) { ENT if (n>=0 && n<=_s$.GetSize()) _s$.RemoveAt(n,1);  }
+	void	set_r$_removeat(const int n) { ENT if (n>=0 && n<=_r$.GetSize()) _r$.RemoveAt(n,1);  }
+	void	set_t$_removeat(const int n) { ENT if (n>=0 && n<=_t$.GetSize()) _t$.RemoveAt(n,1);  }
+	void	set_p$_removeat(const int n) { ENT if (n>=0 && n<=_p$.GetSize()) _p$.RemoveAt(n,1);  }
+	void	set_h$_removeat(const int n) { ENT if (n>=0 && n<=_h$.GetSize()) _h$.RemoveAt(n,1);  }
+	void	set_i$_removeat(const int n) { ENT if (n>=0 && n<=_i$.GetSize()) _i$.RemoveAt(n,1);  }
+
 	void	set_r$_left(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].left = i;  }
 	void	set_r$_right(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].right = i;  }
 	void	set_r$_top(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].top = i;  }
@@ -224,14 +243,6 @@ public:
 	void	set_r$_color(const int n, const COLORREF c) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].color = c;  }
 	void	set_r$_radius(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].radius = i;  }
 	void	set_r$_transform(const int n, const CString s) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].transform = s;  }
-
-	void	set_z$_removeat(const int n) { ENT if (n>=0 && n<=_z$.GetSize()) _z$.RemoveAt(n,1);  }
-	void	set_s$_removeat(const int n) { ENT if (n>=0 && n<=_s$.GetSize()) _s$.RemoveAt(n,1);  }
-	void	set_r$_removeat(const int n) { ENT if (n>=0 && n<=_r$.GetSize()) _r$.RemoveAt(n,1);  }
-	void	set_t$_removeat(const int n) { ENT if (n>=0 && n<=_t$.GetSize()) _t$.RemoveAt(n,1);  }
-	void	set_p$_removeat(const int n) { ENT if (n>=0 && n<=_p$.GetSize()) _p$.RemoveAt(n,1);  }
-	void	set_h$_removeat(const int n) { ENT if (n>=0 && n<=_h$.GetSize()) _h$.RemoveAt(n,1);  }
-	void	set_i$_removeat(const int n) { ENT if (n>=0 && n<=_i$.GetSize()) _i$.RemoveAt(n,1);  }
 
 	void	set_p$_removeall() { ENT _p$.RemoveAll();  }
 	void	set_i$_image_pixel(const int n1, const int n2, const uint32_t p) { ENT if (n1>=0 && n1<=_i$.GetSize()) _i$[n1].pixel[n2] = p;  }
@@ -246,13 +257,6 @@ public:
 	void	delete_r$_curbmp(const int n) { ENT if (n>=0 && n<=_r$.GetSize()) { DeleteObject(_r$[n].cur_bmp); _r$[n].cur_bmp=NULL; }   }
 	void	set_s$items_network(const CString s) { ENT _s$items.network=s; }
 
-	const INT_PTR	set_z$_add(const STablemapSize s) { ENT return _z$.Add(s); }
-	const INT_PTR	set_s$_add(const STablemapSymbol s) { ENT return _s$.Add(s); }
-	const INT_PTR	set_r$_add(const STablemapRegion s) { ENT return _r$.Add(s); }
-	const INT_PTR	set_t$_add(const STablemapFont s) { ENT return _t$.Add(s); }
-	const INT_PTR	set_p$_add(const STablemapHashPoint s) { ENT return _p$.Add(s); }
-	const INT_PTR	set_h$_add(const STablemapHashValue s) { ENT return _h$.Add(s); }
-	const INT_PTR	set_i$_add(const STablemapImage s) { ENT return _i$.Add(s); }
 
 #undef ENT
 
@@ -261,7 +265,7 @@ private:
 	bool		_valid;
 	CString		_filename;
 	CString		_filepath;
-	CArray <STablemapSize, STablemapSize>				_z$;
+	ZMap		_z$;
 	CArray <STablemapSymbol, STablemapSymbol>			_s$;
 	CArray <STablemapRegion, STablemapRegion>			_r$;
 	CArray <STablemapFont, STablemapFont>				_t$;

@@ -5,9 +5,10 @@ BUG FIXES:
   and ParseButton fields correctly.
 - Applied fix from maintenance branch that addresses an internal index not being updated when deleting a font record, 
   causing a scrambling of OCR results when a T-transform region was displayed after the delete.  Thanks to USBFreak for 
-  identifying the problem (OpenHoldem)
+  identifying the problem [OpenHoldem]
     
 MAINTENANCE:
+- Migration of table map z-record handling from CArray's with manual indices to std::map structures. [OpenHoldem]
 
 NEW STUFF:
 - Added "swagselectionmethod", "swagdeletionmethod", "swagconfirmationmethod" and "buttonclickmethod" to valid s$strings list.
