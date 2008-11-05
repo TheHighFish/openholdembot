@@ -704,7 +704,6 @@ void CDlgTableMap::update_display(void)
 	CString				num, x, y, selected_parent_text;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 
-	STablemapSize		sel_size;
 	STablemapSymbol		sel_symbol;
 	STablemapHashValue	sel_hash_value;
 
@@ -766,11 +765,12 @@ void CDlgTableMap::update_display(void)
 			// Get selected size record
 			if (m_TableMapTree.GetSelectedItem())
 			{
-				int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-				sel_size = p_tablemap->z$()->GetAt(index);
-
-				text.Format("%d x %d", sel_size.width, sel_size.height);
-				m_Result.SetWindowText(text.GetString());
+				ZMap::const_iterator z_iter = p_tablemap->z$()->find(sel);
+				if (z_iter != p_tablemap->z$()->end())
+				{
+					text.Format("%d x %d", z_iter->second.width, z_iter->second.height);
+					m_Result.SetWindowText(text.GetString());
+				}
 			}
 		}
 
@@ -1390,12 +1390,16 @@ void CDlgTableMap::OnBnClickedNew()
 		dlgsizes.name = "";
 		dlgsizes.width = 0;
 		dlgsizes.height = 0;
+		dlgsizes.readonly_key = false;
 		dlgsizes.strings.RemoveAll();
+
+		ZMap::const_iterator z_iter;
 		for (i=0; i<num_z$strings; i++)
 		{
 			used_string = false;
-			for (j=0; j<p_tablemap->z$()->GetCount(); j++)
-				if (p_tablemap->z$()->GetAt(j).name == z$strings[i])  
+
+			for (z_iter=p_tablemap->z$()->begin(); z_iter!=p_tablemap->z$()->end(); z_iter++)
+				if (z_iter->second.name == z$strings[i])  
 					used_string=true;
 
 			if (!used_string)
@@ -1416,16 +1420,17 @@ void CDlgTableMap::OnBnClickedNew()
 				new_size.name = dlgsizes.name;
 				new_size.width = dlgsizes.width;
 				new_size.height = dlgsizes.height;
-				new_index = (int) p_tablemap->set_z$_add(new_size);
+				if (p_tablemap->z$_insert(new_size))
+				{
 
-				// Add new record to tree
-				new_hti = m_TableMapTree.InsertItem(dlgsizes.name, parent ? parent : m_TableMapTree.GetSelectedItem());
-				m_TableMapTree.SetItemData(new_hti, (DWORD_PTR) new_index);
-				m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
-				m_TableMapTree.SelectItem(new_hti);
+					// Add new record to tree
+					new_hti = m_TableMapTree.InsertItem(dlgsizes.name, parent ? parent : m_TableMapTree.GetSelectedItem());
+					m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
+					m_TableMapTree.SelectItem(new_hti);
 
-				pDoc->SetModifiedFlag(true);
-				Invalidate(false);
+					pDoc->SetModifiedFlag(true);
+					Invalidate(false);
+				}
 			}
 		}
 	}
@@ -1578,7 +1583,6 @@ void CDlgTableMap::OnBnClickedDelete()
 	CString				sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
 	HTREEITEM			parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
 	CString				selected_parent_text = "";
-	int					index;
 
 	if (!m_TableMapTree.GetSelectedItem())
 		return;
@@ -1586,26 +1590,32 @@ void CDlgTableMap::OnBnClickedDelete()
 	if (parent != NULL) 
 		selected_parent_text = m_TableMapTree.GetItemText(parent);
 
-	// Get index into array for selected record
-	index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-
 	if (selected_parent_text == "Sizes")
 	{
 		text.Format("Really delete Size record: %s", sel);
 		if (MessageBox(text.GetString(), "Delete Size record?", MB_YESNO) == IDYES)
 		{
 			// Delete record from internal structure and update tree
-			p_tablemap->set_z$_removeat(index);
-			HTREEITEM node = update_tree("Sizes");
-			if (node!=NULL)  m_TableMapTree.SelectItem(node);
+			if (!p_tablemap->z$_erase(sel))
+			{
+				MessageBox("Error deleting size record.", "ERROR", MB_OK | MB_TOPMOST);
+			}
+			else 
+			{
+				HTREEITEM node = update_tree("Sizes");
+				if (node!=NULL)  m_TableMapTree.SelectItem(node);
 
-			Invalidate(false);
-			pDoc->SetModifiedFlag(true);
+				Invalidate(false);
+				pDoc->SetModifiedFlag(true);
+			}
 		}
 	}
 	
 	else if (selected_parent_text == "Symbols")
 	{
+		// Get index into array for selected record
+		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
+
 		text.Format("Really delete Symbol record: %s", sel);
 		if (MessageBox(text.GetString(), "Delete Symbol record?", MB_YESNO) == IDYES)
 		{
@@ -1621,6 +1631,9 @@ void CDlgTableMap::OnBnClickedDelete()
 	
 	else if (selected_parent_text == "Regions")
 	{
+		// Get index into array for selected record
+		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
+
 		text.Format("Really delete Region record: %s", sel);
 		if (MessageBox(text.GetString(), "Delete Region record?", MB_YESNO) == IDYES)
 		{
@@ -1636,6 +1649,9 @@ void CDlgTableMap::OnBnClickedDelete()
 	
 	else if (selected_parent_text == "Fonts")
 	{
+		// Get index into array for selected record
+		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
+
 		text.Format("Really delete Font record: %s", sel);
 		if (MessageBox(text.GetString(), "Delete Font record?", MB_YESNO) == IDYES)
 		{
@@ -1658,6 +1674,9 @@ void CDlgTableMap::OnBnClickedDelete()
 	
 	else if (selected_parent_text == "Hash Points")
 	{
+		// Get index into array for selected record
+		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
+
 		text.Format("Really delete Hash Point record: %s", sel);
 		if (MessageBox(text.GetString(), "Delete Hash Point record?", MB_YESNO) == IDYES)
 		{
@@ -1673,6 +1692,9 @@ void CDlgTableMap::OnBnClickedDelete()
 	
 	else if (selected_parent_text == "Hashes")
 	{
+		// Get index into array for selected record
+		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
+
 		text.Format("Really delete Hash record: %s", sel);
 		if (MessageBox(text.GetString(), "Delete Hash record?", MB_YESNO) == IDYES)
 		{
@@ -1688,6 +1710,9 @@ void CDlgTableMap::OnBnClickedDelete()
 
 	else if (selected_parent_text == "Images")
 	{
+		// Get index into array for selected record
+		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
+
 		text.Format("Really delete Image record: %s", sel);
 		if (MessageBox(text.GetString(), "Delete Image record?", MB_YESNO) == IDYES)
 		{
@@ -1761,7 +1786,6 @@ void CDlgTableMap::OnBnClickedEdit()
 	CString				sel_region_name;
 	CString				node_text = "";
 	CArray <STablemapFont, STablemapFont>		new_t$_recs;
-	STablemapSize		sel_size;
 	STablemapSymbol		sel_symbol;
 	STablemapRegion		sel_region;
 	STablemapFont		sel_font;
@@ -1780,32 +1804,50 @@ void CDlgTableMap::OnBnClickedEdit()
 	if (selected_parent_text == "Sizes")
 	{
 		// Get selected size record
-		sel_size = p_tablemap->z$()->GetAt(index);
+		ZMap::const_iterator z_iter = p_tablemap->z$()->find(sel);
 
-		// Prep dialog
-		dlgsizes.titletext = "Edit Size record";
-		dlgsizes.name = sel_size.name;
-		dlgsizes.width = sel_size.width;
-		dlgsizes.height = sel_size.height;
-		dlgsizes.strings.RemoveAll();
-		for (j=0; j<num_z$strings; j++)  dlgsizes.strings.Add(z$strings[j]);
-
-		// Show dialog
-		if (dlgsizes.DoModal() == IDOK)
+		if (z_iter == p_tablemap->z$()->end())
 		{
-			// Edit record in internal structure
-			sel_size.name = dlgsizes.name;
-			sel_size.width = dlgsizes.width;
-			sel_size.height = dlgsizes.height;
+			MessageBox("Error editing size record.", "ERROR", MB_OK | MB_TOPMOST);
+		}
+		else
+		{
+			// Prep dialog
+			dlgsizes.titletext = "Edit Size record";
+			dlgsizes.name = z_iter->second.name;
+			dlgsizes.width = z_iter->second.width;
+			dlgsizes.height = z_iter->second.height;
+			dlgsizes.readonly_key = true;
+			dlgsizes.strings.RemoveAll();
+			for (j=0; j<num_z$strings; j++)  dlgsizes.strings.Add(z$strings[j]);
 
-			// Edit record in tree
-			m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), dlgsizes.name.GetString());
-			m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
-			m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
+			// Show dialog
+			if (dlgsizes.DoModal() == IDOK)
+			{
+				// Remove old record in internal structure
+				if (!p_tablemap->z$_erase(sel))
+				{
+					MessageBox("Error editing size record.", "ERROR", MB_OK | MB_TOPMOST);
+				}
+				else
+				{
+					// Add new record in internal structure
+					STablemapSize newsize;
+					newsize.name = dlgsizes.name;
+					newsize.width = dlgsizes.width;
+					newsize.height = dlgsizes.height;
+					p_tablemap->z$_insert(newsize);
 
-			update_display();
-			Invalidate(false);
-			pDoc->SetModifiedFlag(true);
+					// Edit record in tree
+					m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), dlgsizes.name.GetString());
+					m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
+					m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
+
+					update_display();
+					Invalidate(false);
+					pDoc->SetModifiedFlag(true);
+				}
+			}
 		}
 	}
 	
@@ -2631,11 +2673,11 @@ void CDlgTableMap::create_tree(void)
 	// z$ records
 	parent = m_TableMapTree.InsertItem("Sizes");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
-	for (i=0; i<p_tablemap->z$()->GetSize(); i++) 
-	{
-		newitem = m_TableMapTree.InsertItem(p_tablemap->z$()->GetAt(i).name, parent);
-		m_TableMapTree.SetItemData(newitem, (DWORD_PTR) i);
-	}
+
+	ZMap::const_iterator z_iter;
+	for (z_iter=p_tablemap->z$()->begin(); z_iter!=p_tablemap->z$()->end(); z_iter++)
+		m_TableMapTree.InsertItem(z_iter->second.name, parent);
+
 	m_TableMapTree.SortChildren(parent);
 
 	// s$ records

@@ -1,11 +1,12 @@
 v2.0.0 2009-xx-xx
 =================
 BUG FIXES:
-- Applied fix from maintenance branch that addresses did* symbols not being reset between rounds. (OpenHoldem)
+- Applied fix from maintenance branch that addresses did* symbols not being reset between rounds. [OpenHoldem]
   
 MAINTENANCE:
 - Removed last SEH-code (__SEH_SET_EXCEPTION_HANDLER), which is no longer neccessary. [TheHighFish]
-- The Autoplayer will not act on a frame which is not processed by the game state processor
+- The Autoplayer will not act on a frame which is not processed by the game state processor [ZooBoy]
+- Migration of table map z-record handling from CArray's with manual indices to std::map structures. [OpenHoldem]
 
 NEW STUFF:
 - Added option to save all replay frames whenever something changes when you are in the hand (Thanks, markedagain for the patch) [OpenHoldem]
@@ -26,6 +27,7 @@ NEW STUFF:
   [OpenHoldem]
 - Added new Table Map "swagselectionmethod" option: Single Click  [OpenHoldem]
 - If a user DLL sends the request "cmd$recalc", then the versus tables are recomputed and the iterator thread is restarted.
+  [ZooBoy]
 - Added handling of "handresetmethod" as specified in the table map file to identify which scrape changes should be used 
   as a trigger to identify a "hand reset" event. This is a bitmapped integer; only one of the selected scrape changes needs 
   to occur in order for the scrape to be considered a "hand reset".  The values below are in hexadecimal format, but the 

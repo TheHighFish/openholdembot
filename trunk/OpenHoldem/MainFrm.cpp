@@ -1678,23 +1678,22 @@ bool check_window_match(SWholeMap *map, HWND h, RECT r, CString title)
 	CTransform		trans;
 
 	exact_width = exact_height = min_width = min_height = max_width = max_height = 0;
-	for (i=0; i<(int) map->z$->GetSize(); i++)
+	ZMap::const_iterator z_iter;
+	z_iter = map->z$->find("clientsize");
+	if (z_iter != map->z$->end())
 	{
-		if (map->z$->GetAt(i).name == "clientsize")
-		{
-			exact_width = map->z$->GetAt(i).width;
-			exact_height = map->z$->GetAt(i).height;
-		}
-		else if (map->z$->GetAt(i).name == "clientsizemin")
-		{
-			min_width = map->z$->GetAt(i).width;
-			min_height = map->z$->GetAt(i).height;
-		}
-		else if (map->z$->GetAt(i).name == "clientsizemax")
-		{
-			max_width = map->z$->GetAt(i).width;
-			max_height = map->z$->GetAt(i).height;
-		}
+		exact_width = z_iter->second.width;
+		exact_height = z_iter->second.height;
+	}
+	z_iter = map->z$->find("clientsizemin");
+	{
+		min_width = z_iter->second.width;
+		min_height = z_iter->second.height;
+	}
+	z_iter = map->z$->find("clientsizemax");
+	{
+		max_width = z_iter->second.width;
+		max_height = z_iter->second.height;
 	}
 
 	// Check for exact match on client size
