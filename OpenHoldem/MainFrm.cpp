@@ -1683,11 +1683,13 @@ bool check_window_match(SWholeMap *map, HWND h, RECT r, CString title)
 		exact_height = z_iter->second.height;
 	}
 	z_iter = map->z$->find("clientsizemin");
+	if (z_iter != map->z$->end())
 	{
 		min_width = z_iter->second.width;
 		min_height = z_iter->second.height;
 	}
 	z_iter = map->z$->find("clientsizemax");
+	if (z_iter != map->z$->end())
 	{
 		max_width = z_iter->second.width;
 		max_height = z_iter->second.height;
@@ -1717,15 +1719,17 @@ bool check_window_match(SWholeMap *map, HWND h, RECT r, CString title)
 	good_pos_title = false;
 
 	s_iter = map->s$->find("titletext");
-	if (s_iter!=map->s$->end() && title.Find(s_iter->second.text)!=-1)
-		good_pos_title = true;
+	if (s_iter!=map->s$->end())
+		if (title.Find(s_iter->second.text)!=-1)
+			good_pos_title = true;
 	
 	for (i=0; i<=9; i++)
 	{
 		s.Format("titletext%d", i);
 		s_iter = map->s$->find(s);
-		if (s_iter!=map->s$->end() && title.Find(s_iter->second.text)!=-1)
-			good_pos_title = true;
+		if (s_iter!=map->s$->end())
+			if (title.Find(s_iter->second.text)!=-1)
+				good_pos_title = true;
 	}
 
 	if (!good_pos_title)
@@ -1735,15 +1739,17 @@ bool check_window_match(SWholeMap *map, HWND h, RECT r, CString title)
 	good_neg_title = true;
 
 	s_iter = map->s$->find("!titletext");
-	if (s_iter!=map->s$->end() && title.Find(s_iter->second.text)!=-1)
-		good_neg_title = true;
+	if (s_iter!=map->s$->end())
+		if (title.Find(s_iter->second.text)!=-1)
+			good_neg_title = true;
 
 	for (i=0; i<=9; i++)
 	{
 		s.Format("!titletext%d", i);
 		s_iter = map->s$->find(s);
-		if (s_iter!=map->s$->end() && title.Find(s_iter->second.text)!=-1)
-			good_neg_title = true;
+		if (s_iter!=map->s$->end())
+			if (title.Find(s_iter->second.text)!=-1)
+				good_neg_title = true;
 	}
 
 	if (!good_neg_title)
