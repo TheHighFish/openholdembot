@@ -17,6 +17,7 @@ public:
 	CString						titletext;
 	CArray <CString, CString>	strings;
 	CString						titlebartext, name, value;
+	bool						readonly_key;
 
 // Dialog Data
 	enum { IDD = IDD_EDIT_SYMBOLS };

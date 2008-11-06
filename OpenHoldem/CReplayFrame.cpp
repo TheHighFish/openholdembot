@@ -137,7 +137,8 @@ void CReplayFrame::CreateReplayFrame(void)
 			fprintf(fp, "<th>balance</th>\n");
 			fprintf(fp, "<th>name</th>\n");
 			fprintf(fp, "</tr>\n");
-			for (i=0; i<p_tablemap->s$items()->num_chairs; i++)
+
+			for (i=0; i<p_tablemap->nchairs(); i++)
 			{
 
 				fprintf(fp, "<tr>\n");

@@ -134,7 +134,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		if (!p_pokerpro->IsConnected())
 		{
 			GetWindowText(pMyMainWnd->attached_hwnd(), title, 512);
-			messageTitle->Format("%s - %s (%s)", p_formula->formula_name(), p_tablemap->s$items()->sitename, title);
+			messageTitle->Format("%s - %s (%s)", p_formula->formula_name(), p_tablemap->sitename(), title);
 		}
 		else
 		{
@@ -146,7 +146,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 			else
 				_snprintf_s(title, _countof(title), _TRUNCATE, "%s - %s", p_pokerpro->ppdata()->m_site_name, p_pokerpro->ppdata()->m_tinf.m_name);
-			messageTitle->Format("%s - %s (%s)", p_formula->formula_name(), p_tablemap->s$items()->sitename, title);
+			messageTitle->Format("%s - %s (%s)", p_formula->formula_name(), p_tablemap->sitename(), title);
 		}
 		theApp.m_pMainWnd->PostMessage(WMA_SETWINDOWTEXT, 0, (LPARAM)messageTitle);
 

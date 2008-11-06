@@ -51,7 +51,7 @@ CPokerTrackerLookup::~CPokerTrackerLookup()
 const int CPokerTrackerLookup::GetSiteId()
 {
 	CString version = prefs.pt_version();
-	CString network = p_tablemap->s$items()->network;
+	CString network = p_tablemap->network();
 
 	// Input parameter "version" needs to be "2" or "3" for PT version 2 or PT version 3, respectively
 	if (version!="2" && version!="3")

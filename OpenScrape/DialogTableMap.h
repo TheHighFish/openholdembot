@@ -96,7 +96,6 @@ public:
 	CStickyButton		m_DrawRect;
 
 	DECLARE_MESSAGE_MAP()
-	afx_msg void OnStnClickedMissingCards();
 };
 
 

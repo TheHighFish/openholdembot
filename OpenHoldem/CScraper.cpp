@@ -388,7 +388,7 @@ void CScraper::ScrapePlayerCards(int chair, HDC hdcCompatible, HDC hdc)
 	CTransform			trans;
 
 	// Check for bad parameters
-	if (chair < 0 || chair >= p_tablemap->s$items()->num_chairs || hdcCompatible == NULL || hdc == NULL)
+	if (chair < 0 || chair >= p_tablemap->nchairs() || hdcCompatible == NULL || hdc == NULL)
 		return;
 
 	int sym_userchair = (int) p_symbols->sym()->userchair;
@@ -537,7 +537,7 @@ void CScraper::ScrapeSeated(int chair, HDC hdcCompatible, HDC hdc)
 	CTransform			trans;
 
 	// Check for bad parameters
-	if (chair < 0 || chair >= p_tablemap->s$items()->num_chairs || hdcCompatible == NULL || hdc == NULL)
+	if (chair < 0 || chair >= p_tablemap->nchairs() || hdcCompatible == NULL || hdc == NULL)
 		return;
 
 	_seated[chair] = "false";
@@ -590,7 +590,7 @@ void CScraper::ScrapeActive(int chair, HDC hdcCompatible, HDC hdc)
 	CTransform			trans;
 
 	// Check for bad parameters
-	if (chair < 0 || chair >= p_tablemap->s$items()->num_chairs || hdcCompatible == NULL || hdc == NULL)
+	if (chair < 0 || chair >= p_tablemap->nchairs() || hdcCompatible == NULL || hdc == NULL)
 		return;
 
 	_active[chair] = "false";
@@ -612,8 +612,8 @@ void CScraper::ScrapeActive(int chair, HDC hdcCompatible, HDC hdc)
 	// try u region next, but only if we didn't get a key result from the p region
 	r$index = p_tablemap->r$indexes()->r$uXactive_index[chair];
 	if (r$index!=-1 && 
-		((!IsStringActive(_active[chair]) && p_tablemap->s$items()->activemethod != 2) ||
-		 (IsStringActive(_active[chair]) && p_tablemap->s$items()->activemethod == 2) ) )
+		((!IsStringActive(_active[chair]) && p_tablemap->activemethod() != 2) ||
+		 (IsStringActive(_active[chair]) && p_tablemap->activemethod() == 2) ) )
 	{
 		ProcessRegion(hdcCompatible, hdc, r$index);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
@@ -643,7 +643,7 @@ void CScraper::ScrapeDealer(int chair, HDC hdcCompatible, HDC hdc)
 	bool				found_dealer;
 
 	// Check for bad parameters
-	if (chair < 0 || chair >= p_tablemap->s$items()->num_chairs || hdcCompatible == NULL || hdc == NULL)
+	if (chair < 0 || chair >= p_tablemap->nchairs() || hdcCompatible == NULL || hdc == NULL)
 		return;
 
 	_dealer[chair] = false;
@@ -697,7 +697,7 @@ void CScraper::ScrapeName(int chair, HDC hdcCompatible, HDC hdc)
 	CTransform			trans;
 
 	// Check for bad parameters
-	if (chair < 0 || chair >= p_tablemap->s$items()->num_chairs || hdcCompatible == NULL || hdc == NULL)
+	if (chair < 0 || chair >= p_tablemap->nchairs() || hdcCompatible == NULL || hdc == NULL)
 		return;
 
 	int	sym_chair = (int) p_symbols->sym()->chair;
@@ -770,7 +770,7 @@ void CScraper::ScrapeBalance(int chair, HDC hdcCompatible, HDC hdc)
 	CTransform			trans;
 
 	// Check for bad parameters
-	if (chair < 0 || chair >= p_tablemap->s$items()->num_chairs || hdcCompatible == NULL || hdc == NULL)
+	if (chair < 0 || chair >= p_tablemap->nchairs() || hdcCompatible == NULL || hdc == NULL)
 		return;
 
 	int	sym_chair = (int) p_symbols->sym()->chair;
@@ -911,7 +911,7 @@ void CScraper::ScrapeBet(int chair, HDC hdcCompatible, HDC hdc)
 	CTransform			trans;
 
 	// Check for bad parameters
-	if (chair < 0 || chair >= p_tablemap->s$items()->num_chairs || hdcCompatible == NULL || hdc == NULL)
+	if (chair < 0 || chair >= p_tablemap->nchairs() || hdcCompatible == NULL || hdc == NULL)
 		return;
 
 	_player_bet[chair] = 0;
@@ -1109,7 +1109,7 @@ void CScraper::ScrapeButtons(HDC hdcCompatible, HDC hdc)
 	// When using MM, grab i5state for PT network
 	if ((bool) p_symbols->sym()->ismanual)
 	{
-		p_tablemap->set_s$items_network(p_scraper->button_state(5));
+		p_tablemap->set_network(p_scraper->button_state(5));
 	}
 
 	// i86 button state
@@ -1255,7 +1255,7 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 	double				handnumber = 0.;
 	bool				istournament = false;
 	HBITMAP				old_bitmap = NULL;
-	CString				text = "";
+	CString				s = "", text = "";
 	CString				titletext = "";
 	char				c_titletext[MAX_WINDOW_TITLE] = {0};
 	bool				got_new_scrape = false, log_blind_change = false;
@@ -1370,45 +1370,47 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 
 	else
 	{
-	double l_sblind=0., l_bblind=0., l_bbet=0., l_ante=0., l_sb_bb=0., l_bb_BB=0.;
-	int l_limit=0;
-	bool l_found_handnumber=false, l_found_sblind=false, l_found_bblind=false;
-	bool l_found_bbet=false, l_found_ante=false, l_found_limit=false, l_found_sb_bb=false;
-	bool l_found_bb_BB=false;
+		double l_sblind=0., l_bblind=0., l_bbet=0., l_ante=0., l_sb_bb=0., l_bb_BB=0.;
+		int l_limit=0;
+		bool l_found_handnumber=false, l_found_sblind=false, l_found_bblind=false;
+		bool l_found_bbet=false, l_found_ante=false, l_found_limit=false, l_found_sb_bb=false;
+		bool l_found_bb_BB=false;
+		SMapCI s_iter = p_tablemap->s$()->end();
 
-	// These are scraped from specific regions earlier in this
-	// function.  Use the values we scraped (if any) to seed
-	// the l_ locals so that we don't blindly overwrite the
-	// information we scraped from those specific regions with
-	// default values if we can't find them in the titlebar.
-	double l_handnumber = handnumber;
-	bool l_istournament = istournament;
+		// These are scraped from specific regions earlier in this
+		// function.  Use the values we scraped (if any) to seed
+		// the l_ locals so that we don't blindly overwrite the
+		// information we scraped from those specific regions with
+		// default values if we can't find them in the titlebar.
+		double l_handnumber = handnumber;
+		bool l_istournament = istournament;
 
 		// s$ttlimits - Scrape blinds/stakes/limit info from title text
-		s$index = p_tablemap->s$indexes()->s$ttlimits_index;
-		if (s$index!=-1)
+		s_iter = p_tablemap->s$()->find("s$ttlimits");
+		if (s_iter != p_tablemap->s$()->end())
 		{
 			GetWindowText(pMyMainWnd->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
 			titletext = c_titletext;
 		 	
 			trans.ParseStringBSL(
-				titletext, p_tablemap->s$()->GetAt(s$index).text, NULL,
+				titletext, s_iter->second.text, NULL,
 				&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_istournament, 
 				&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
 				&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
 		}
 
 		// s$ttlimitsX - Scrape blinds/stakes/limit info from title text
-		for (j=0; j<=4; j++)
+		for (j=0; j<=9; j++)
 		{
-			s$index = p_tablemap->s$indexes()->s$ttlimitsX_index[j];
-			if (s$index!=-1)
+			s.Format("s$ttlimits%d", j);
+			s_iter = p_tablemap->s$()->find(s);
+			if (s_iter != p_tablemap->s$()->end())
 			{
 				GetWindowText(pMyMainWnd->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
 				titletext = c_titletext;
 	
 				trans.ParseStringBSL(
-					titletext, p_tablemap->s$()->GetAt(s$index).text, NULL,
+					titletext, s_iter->second.text, NULL,
 					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_istournament, 
 					&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
 					&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
@@ -1417,8 +1419,8 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 
 		// r$c0limits, s$c0limits
 		r$index = p_tablemap->r$indexes()->r$c0limits_index;
-		s$index = p_tablemap->s$indexes()->s$c0limits_index;
-		if (r$index!=-1 && s$index!=-1)
+		s_iter = p_tablemap->s$()->find("s$c0limits");
+		if (r$index!=-1 && s_iter!=p_tablemap->s$()->end())
 		{
 			ProcessRegion(hdcCompatible, hdc, r$index);
 			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
@@ -1427,7 +1429,7 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 			if (text!="")
 			{
 				trans.ParseStringBSL(
-					text, p_tablemap->s$()->GetAt(s$index).text, NULL,
+					text, s_iter->second.text, NULL,
 					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_istournament, 
 					&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
 					&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
@@ -1438,8 +1440,9 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 		{
 			// r$c0limitsX, s$c0limitsX
 			r$index = p_tablemap->r$indexes()->r$c0limitsX_index[j];
-			s$index = p_tablemap->s$indexes()->s$c0limitsX_index[j];
-			if (r$index!=-1 && s$index!=-1)
+			s.Format("s$c0limits%d", j);
+			s_iter = p_tablemap->s$()->find(s);
+			if (r$index!=-1 && s_iter!=p_tablemap->s$()->end())
 			{
 				ProcessRegion(hdcCompatible, hdc, r$index);
 				old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
@@ -1448,7 +1451,7 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 
 				if (text!="")
 				{
-					trans.ParseStringBSL(text, p_tablemap->s$()->GetAt(s$index).text, NULL,
+					trans.ParseStringBSL(text, s_iter->second.text, NULL,
 						&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_istournament, 
 						&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
 						&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
@@ -2245,10 +2248,10 @@ const bool CScraper::IsStringActive(CString s)
 {
 	// Check for bad parameters
 	if (!s || s == "")
-		return p_tablemap->s$items()->activemethod == 2 ? true : false;
+		return p_tablemap->activemethod() == 2 ? true : false;
 
 	// new method: active unless pXactive returns false/inactive/out/away
-	if (p_tablemap->s$items()->activemethod == 2)
+	if (p_tablemap->activemethod() == 2)
 	{
 		if (s.MakeLower().Left(5) == "false" ||
 			s.MakeLower().Left(8) == "inactive" ||

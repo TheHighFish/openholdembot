@@ -566,8 +566,6 @@ void CMainFrame::OnFileLoadTableMap()
 		else
 		{
 			p_tablemap->SaveR$Indices();
-			p_tablemap->SaveS$Indices();
-			p_tablemap->SaveS$Strings();
 
 			// Reset "ScraperOutput" dialog, if it is live
 			if (m_ScraperOutputDlg) 
@@ -713,8 +711,6 @@ void CMainFrame::OnBnClickedGreenCircle()
 			set_attached_hwnd(g_tlist[cstd.selected_item].hwnd);
 			p_tablemap->LoadTablemap((char *) g_tlist[cstd.selected_item].path.GetString(), VER_OPENSCRAPE_1, false, &line, prefs.disable_msgbox());
 			p_tablemap->SaveR$Indices();
-			p_tablemap->SaveS$Indices();
-			p_tablemap->SaveS$Strings();
 
 			// Create bitmaps
 			p_scraper->CreateBitmaps();
@@ -777,9 +773,10 @@ void CMainFrame::OnBnClickedGreenCircle()
 
 			// log OH title bar text and table reset
 			::GetWindowText(_attached_hwnd, title, 512);
-			write_log("\n*************************************************************\nTABLE RESET %s - %s(%s)\n*************************************************************\n",
-
-				p_formula->formula_name().GetString(), p_tablemap->s$items()->sitename.GetString(), title);
+			write_log("\n*************************************************************\n"
+					  "TABLE RESET %s - %s(%s)\n"
+					  "*************************************************************\n",
+					  p_formula->formula_name().GetString(), p_tablemap->s$()->find("sitename")->second.text.GetString(), title);
 
 		}
 	}
@@ -849,7 +846,7 @@ void CMainFrame::OnBnClickedRedCircle()
 
 	// log OH title bar text and table reset
 
-	write_log("%s - %s(NOT ATTACHED)\n", p_formula->formula_name().GetString(), p_tablemap->s$items()->sitename.GetString());
+	write_log("%s - %s(NOT ATTACHED)\n", p_formula->formula_name().GetString(), p_tablemap->s$()->find("sitename")->second.text.GetString());
 
 	write_log("TABLE RESET\n*************************************************************\n");
 
@@ -1676,9 +1673,9 @@ bool check_window_match(SWholeMap *map, HWND h, RECT r, CString title)
 	BYTE			*pBits = NULL, alpha = 0, red = 0, green = 0, blue = 0;
 	int				exact_width = 0, exact_height = 0, min_width = 0, min_height = 0, max_width = 0, max_height = 0;
 	CTransform		trans;
+	CString			s;
 
-	exact_width = exact_height = min_width = min_height = max_width = max_height = 0;
-	ZMap::const_iterator z_iter;
+	ZMapCI z_iter = map->z$->end();
 	z_iter = map->z$->find("clientsize");
 	if (z_iter != map->z$->end())
 	{
@@ -1715,14 +1712,20 @@ bool check_window_match(SWholeMap *map, HWND h, RECT r, CString title)
 		return false;
 
 	// Check title text for match
+	SMapCI s_iter = map->s$->end();
+
 	good_pos_title = false;
-	for (i=0; i<(int) map->s$->GetSize(); i++)
+
+	s_iter = map->s$->find("titletext");
+	if (s_iter!=map->s$->end() && title.Find(s_iter->second.text)!=-1)
+		good_pos_title = true;
+	
+	for (i=0; i<=9; i++)
 	{
-		if (map->s$->GetAt(i).name.Left(9) == "titletext"  && title.Find(map->s$->GetAt(i).text)!=-1)
-		{
+		s.Format("titletext%d", i);
+		s_iter = map->s$->find(s);
+		if (s_iter!=map->s$->end() && title.Find(s_iter->second.text)!=-1)
 			good_pos_title = true;
-			i=(int) map->s$->GetSize()+1;
-		}
 	}
 
 	if (!good_pos_title)
@@ -1730,13 +1733,17 @@ bool check_window_match(SWholeMap *map, HWND h, RECT r, CString title)
 
 	// Check for no negative title text matches
 	good_neg_title = true;
-	for (i=0; i<(int) map->s$->GetSize(); i++)
+
+	s_iter = map->s$->find("!titletext");
+	if (s_iter!=map->s$->end() && title.Find(s_iter->second.text)!=-1)
+		good_neg_title = true;
+
+	for (i=0; i<=9; i++)
 	{
-		if (map->s$->GetAt(i).name.Left(10) == "!titletext" && title.Find(map->s$->GetAt(i).text)!=-1)
-		{
-			good_neg_title = false;
-			i=(int) map->s$->GetSize()+1;
-		}
+		s.Format("!titletext%d", i);
+		s_iter = map->s$->find(s);
+		if (s_iter!=map->s$->end() && title.Find(s_iter->second.text)!=-1)
+			good_neg_title = true;
 	}
 
 	if (!good_neg_title)

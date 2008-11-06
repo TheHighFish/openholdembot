@@ -271,8 +271,7 @@ void CAutoplayer::DoSwag(void)
 		{
 
 			// TEXT SELECTION
-			if (p_tablemap->s$items()->swagselectionmethod == TEXTSEL_DOUBLECLICK ||
-				p_tablemap->s$items()->swagselectionmethod == 0)
+			if (p_tablemap->swagselectionmethod() == TEXTSEL_DOUBLECLICK)
 			{
 				input_count = 0;
 
@@ -309,7 +308,7 @@ void CAutoplayer::DoSwag(void)
 				input_count++;
 			}
 
-			if (p_tablemap->s$items()->swagselectionmethod == TEXTSEL_SINGLECLICK)
+			if (p_tablemap->swagselectionmethod() == TEXTSEL_SINGLECLICK)
 			{
 				input_count = 0;
 
@@ -334,7 +333,7 @@ void CAutoplayer::DoSwag(void)
 				input_count++;
 			}
 
-			else if (p_tablemap->s$items()->swagselectionmethod == TEXTSEL_CLICKDRAG)
+			else if (p_tablemap->swagselectionmethod() == TEXTSEL_CLICKDRAG)
 			{
 				input_count = 0;
 
@@ -396,8 +395,7 @@ void CAutoplayer::DoSwag(void)
 
 
 			// TEXT DELETION
-			if (p_tablemap->s$items()->swagdeletionmethod == TEXTDEL_DELETE ||
-				p_tablemap->s$items()->swagdeletionmethod == 0)
+			if (p_tablemap->swagdeletionmethod() == TEXTDEL_DELETE)
 			{
 				input_count = 0;
 
@@ -416,7 +414,7 @@ void CAutoplayer::DoSwag(void)
 				input_count++;
 			}
 
-			else if (p_tablemap->s$items()->swagdeletionmethod == TEXTDEL_BACKSPACE)
+			else if (p_tablemap->swagdeletionmethod() == TEXTDEL_BACKSPACE)
 			{
 				input_count = 0;
 
@@ -535,8 +533,7 @@ void CAutoplayer::DoSwag(void)
 
 
 			// BET CONFIRMATION ACTION
-			if (p_tablemap->s$items()->swagconfirmationmethod == BETCONF_ENTER ||
-				p_tablemap->s$items()->swagconfirmationmethod == 0)
+			if (p_tablemap->swagconfirmationmethod() == BETCONF_ENTER)
 			{
 				input_count = 0;
 
@@ -553,7 +550,7 @@ void CAutoplayer::DoSwag(void)
 				input_count++;
 			}
 
-			else if (p_tablemap->s$items()->swagconfirmationmethod == BETCONF_CLICKBET &&
+			else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET &&
 					 (_rais_but!=-1 || p_tablemap->r$indexes()->r$iXbutton_index[3]!=-1) )
 			{
 				input_count = 0;
@@ -596,7 +593,7 @@ void CAutoplayer::DoSwag(void)
 				input_count++;
 
 				// Do double click if set in preferences
-				if (p_tablemap->s$items()->buttonclickmethod == BUTTON_DOUBLECLICK)
+				if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
 				{
 					ZeroMemory(&input[input_count],sizeof(INPUT));
 					input[input_count].type = INPUT_MOUSE;
@@ -775,7 +772,7 @@ void CAutoplayer::DoARCCF(void)
 		input_count++;
 
 		// Do double click if set in preferences
-		if (p_tablemap->s$items()->buttonclickmethod == BUTTON_DOUBLECLICK)
+		if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
 		{
 			ZeroMemory(&input[input_count],sizeof(INPUT));
 			input[input_count].type = INPUT_MOUSE;
