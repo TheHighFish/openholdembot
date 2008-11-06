@@ -362,7 +362,7 @@ const int CTransform::TTypeTransform(const STablemapRegion *region, const HDC hd
 	int					i = 0;
 	int					width = region->right - region->left;
 	int					height = region->bottom - region->top;
-	CString				s$tXtype = "";
+	CString				s = "", s$tXtype = "";
 	HBITMAP				hbm = NULL;
 	BYTE				*pBits = NULL, alpha = 0, red = 0, green = 0, blue = 0;
 
@@ -390,16 +390,12 @@ const int CTransform::TTypeTransform(const STablemapRegion *region, const HDC hd
 
 	// Get associated s$record
 	s$tXtype = "plain";
-	for (i=0; i<p_tablemap->s$()->GetSize(); i++)
-	{
-		if (p_tablemap->s$()->GetAt(i).name.Left(1) == "t" &&
-			p_tablemap->s$()->GetAt(i).name.Mid(1,1) == region->transform.Mid(1,1) &&
-			p_tablemap->s$()->GetAt(i).name.Mid(2,4) == "type")
-		{
-			s$tXtype = p_tablemap->s$()->GetAt(i).text;
-			i = (int) p_tablemap->s$()->GetSize() + 1;
-		}
-	}
+
+	s.Format("t%stype", region->transform.Mid(1,1));
+
+	SMapCI s_iter = p_tablemap->s$()->find(s);
+	if (s_iter != p_tablemap->s$()->end())
+		s$tXtype = s_iter->second.text;
 
 	// Load entire foreground pixel array into memory
 	// Populate BITMAPINFOHEADER

@@ -160,19 +160,19 @@ void COpenHoldemView::OnTimer(UINT nIDEvent)
 
 void COpenHoldemView::UpdateDisplay(const bool update_all) 
 {
-	int						i = 0;
+	int			i = 0;
 
-	bool					update_it = false;
-	RECT					cr = {0};
-	CDC						*pDC = GetDC();
+	bool		update_it = false;
+	RECT		cr = {0};
+	CDC			*pDC = GetDC();
 
-	double sym_handnumber	= p_symbols->sym()->handnumber;
-	double sym_bblind		= p_symbols->sym()->bblind;
-	double sym_sblind		= p_symbols->sym()->sblind;
-	int sym_lim				= (int) p_symbols->sym()->lim;
-	bool sym_istournament	= (bool) p_symbols->sym()->istournament;
-	double sym_ante			= p_symbols->sym()->ante;
-	double sym_pot			= p_symbols->sym()->pot;
+	double		sym_handnumber = p_symbols->sym()->handnumber;
+	double		sym_bblind = p_symbols->sym()->bblind;
+	double		sym_sblind = p_symbols->sym()->sblind;
+	int			sym_lim = (int) p_symbols->sym()->lim;
+	bool		sym_istournament = (bool) p_symbols->sym()->istournament;
+	double		sym_ante = p_symbols->sym()->ante;
+	double		sym_pot = p_symbols->sym()->pot;
 
 	// Get size of current client window
 	GetClientRect(&cr);
@@ -247,7 +247,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 	}
 
 	// Draw collection of player info
-	for (i=0; i<p_tablemap->s$items()->num_chairs; i++) 
+	for (i=0; i<p_tablemap->nchairs(); i++) 
 	{
 
 		// Figure out if we need to redraw this seat
@@ -295,16 +295,16 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 
 			// Draw player cards
 			DrawCard(p_scraper->card_player(i, 0),
-					  cr.right * pc[p_tablemap->s$items()->num_chairs][i][0] - CARDSIZEX - 2,
-					  cr.bottom * pc[p_tablemap->s$items()->num_chairs][i][1] - CARDSIZEY/2,
-					  cr.right * pc[p_tablemap->s$items()->num_chairs][i][0] - 2,
-					  cr.bottom * pc[p_tablemap->s$items()->num_chairs][i][1] + CARDSIZEY/2 - 1,
+					  cr.right * pc[p_tablemap->nchairs()][i][0] - CARDSIZEX - 2,
+					  cr.bottom * pc[p_tablemap->nchairs()][i][1] - CARDSIZEY/2,
+					  cr.right * pc[p_tablemap->nchairs()][i][0] - 2,
+					  cr.bottom * pc[p_tablemap->nchairs()][i][1] + CARDSIZEY/2 - 1,
 					  true);
 			DrawCard(p_scraper->card_player(i, 1),
-					  cr.right * pc[p_tablemap->s$items()->num_chairs][i][0] + 1,
-					  cr.bottom * pc[p_tablemap->s$items()->num_chairs][i][1] - CARDSIZEY/2,
-					  cr.right * pc[p_tablemap->s$items()->num_chairs][i][0] + CARDSIZEX + 1,
-					  cr.bottom * pc[p_tablemap->s$items()->num_chairs][i][1] + CARDSIZEY/2 - 1,
+					  cr.right * pc[p_tablemap->nchairs()][i][0] + 1,
+					  cr.bottom * pc[p_tablemap->nchairs()][i][1] - CARDSIZEY/2,
+					  cr.right * pc[p_tablemap->nchairs()][i][0] + CARDSIZEX + 1,
+					  cr.bottom * pc[p_tablemap->nchairs()][i][1] + CARDSIZEY/2 - 1,
 					  true);
 
 			// Draw dealer button
@@ -621,10 +621,10 @@ void COpenHoldemView::DrawSeatedActiveCircle(const int chair)
 	pDC->SetBkColor(COLOR_GRAY);
 
 	// Figure placement of circle
-	left = cr.right * pc[p_tablemap->s$items()->num_chairs][chair][0] - CARDSIZEX - 4;
-	top = cr.bottom * pc[p_tablemap->s$items()->num_chairs][chair][1] - CARDSIZEX - 3;
-	right = cr.right * pc[p_tablemap->s$items()->num_chairs][chair][0] + CARDSIZEX + 3;
-	bottom = cr.bottom * pc[p_tablemap->s$items()->num_chairs][chair][1] + CARDSIZEX + 3;
+	left = cr.right * pc[p_tablemap->nchairs()][chair][0] - CARDSIZEX - 4;
+	top = cr.bottom * pc[p_tablemap->nchairs()][chair][1] - CARDSIZEX - 3;
+	right = cr.right * pc[p_tablemap->nchairs()][chair][0] + CARDSIZEX + 3;
+	bottom = cr.bottom * pc[p_tablemap->nchairs()][chair][1] + CARDSIZEX + 3;
 
 	pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
 	oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
@@ -662,10 +662,10 @@ void COpenHoldemView::DrawDealerButton(const int chair)
 	pDC->SetBkColor(COLOR_GRAY);
 
 	// Figure placement of circle
-	left = cr.right * pc[p_tablemap->s$items()->num_chairs][chair][0] - 8;
-	top = cr.bottom * pc[p_tablemap->s$items()->num_chairs][chair][1] - 8;
-	right = cr.right * pc[p_tablemap->s$items()->num_chairs][chair][0] + 8;
-	bottom = cr.bottom * pc[p_tablemap->s$items()->num_chairs][chair][1] + 8;
+	left = cr.right * pc[p_tablemap->nchairs()][chair][0] - 8;
+	top = cr.bottom * pc[p_tablemap->nchairs()][chair][1] - 8;
+	right = cr.right * pc[p_tablemap->nchairs()][chair][0] + 8;
+	bottom = cr.bottom * pc[p_tablemap->nchairs()][chair][1] + 8;
 
 
 	pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
@@ -866,10 +866,10 @@ void COpenHoldemView::DrawNameBox(const int chair)
 	pDC->SetBkColor(COLOR_GRAY);
 
 	// Figure placement of box
-	left = cr.right * pc[p_tablemap->s$items()->num_chairs][chair][0] - 36;
-	top = cr.bottom * pc[p_tablemap->s$items()->num_chairs][chair][1] + 15;
-	right = cr.right * pc[p_tablemap->s$items()->num_chairs][chair][0] + 35;
-	bottom = cr.bottom * pc[p_tablemap->s$items()->num_chairs][chair][1] + 30;
+	left = cr.right * pc[p_tablemap->nchairs()][chair][0] - 36;
+	top = cr.bottom * pc[p_tablemap->nchairs()][chair][1] + 15;
+	right = cr.right * pc[p_tablemap->nchairs()][chair][0] + 35;
+	bottom = cr.bottom * pc[p_tablemap->nchairs()][chair][1] + 30;
 
 	// Set font basics
 	_logfont.lfHeight = -12;
@@ -957,10 +957,10 @@ void COpenHoldemView::DrawBalanceBox(const int chair)
 	pDC->SetBkColor(COLOR_GRAY);
 
 	// Figure placement of box
-	left = cr.right * pc[p_tablemap->s$items()->num_chairs][chair][0] - 26;
-	top = cr.bottom * pc[p_tablemap->s$items()->num_chairs][chair][1] + 30;
-	right = cr.right * pc[p_tablemap->s$items()->num_chairs][chair][0] + 25;
-	bottom = cr.bottom * pc[p_tablemap->s$items()->num_chairs][chair][1] + 45;
+	left = cr.right * pc[p_tablemap->nchairs()][chair][0] - 26;
+	top = cr.bottom * pc[p_tablemap->nchairs()][chair][1] + 30;
+	right = cr.right * pc[p_tablemap->nchairs()][chair][0] + 25;
+	bottom = cr.bottom * pc[p_tablemap->nchairs()][chair][1] + 45;
 
 	// Set font basics
 	_logfont.lfHeight = -12;
@@ -1080,10 +1080,10 @@ void COpenHoldemView::DrawPlayerBet(const int chair)
 	pDC->SetBkColor(COLOR_GRAY);
 
 	// Figure placement
-	xcenter = cr.right * pc[p_tablemap->s$items()->num_chairs][chair][0];
-	ycenter = cr.bottom * pc[p_tablemap->s$items()->num_chairs][chair][1];
-	xadj = pcbet[p_tablemap->s$items()->num_chairs][chair][0];
-	yadj = pcbet[p_tablemap->s$items()->num_chairs][chair][1];
+	xcenter = cr.right * pc[p_tablemap->nchairs()][chair][0];
+	ycenter = cr.bottom * pc[p_tablemap->nchairs()][chair][1];
+	xadj = pcbet[p_tablemap->nchairs()][chair][0];
+	yadj = pcbet[p_tablemap->nchairs()][chair][1];
 
 	// Set font basics
 	_logfont.lfHeight = -12;

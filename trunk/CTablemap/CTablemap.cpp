@@ -19,8 +19,6 @@ CTablemap::CTablemap(void)
     ClearTablemap();
 
 	ClearR$Indices();
-
-	_s$items.num_chairs = 10;
 }
 
 CTablemap::~CTablemap(void)
@@ -36,7 +34,7 @@ void CTablemap::ClearTablemap()
 	_filename = "";
 
 	_z$.clear();
-	_s$.RemoveAll();
+	_s$.clear();
 	_r$.RemoveAll();
 	_t$.RemoveAll();
 	_p$.RemoveAll();
@@ -219,7 +217,8 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			}
 			else
 			{
-				_s$.Add(hold_symbol);
+				if (!s$_insert(hold_symbol))
+					MessageBox(NULL, strLine, "ERROR adding symbol/string record", MB_OK | MB_TOPMOST);
 			}
 		}
 
@@ -534,7 +533,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("//\r\n");
 	ar.WriteString("\r\n");
 	
-	ZMap::const_iterator z_iter;
+	ZMapCI z_iter = _z$.end();
 	for (z_iter=_z$.begin(); z_iter!=_z$.end(); z_iter++)
 	{
 		s.Format("z$%-16s %d  %d\r\n", z_iter->second.name, z_iter->second.width, z_iter->second.height); 
@@ -547,11 +546,13 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("// strings\r\n");
 	ar.WriteString("//\r\n");
 	ar.WriteString("\r\n");
-	N = (int) _s$.GetSize();
-	for (i=0; i<N; i++) {
-		s.Format("s$%s", _s$[i].name.GetString());
+
+	SMapCI s_iter = _s$.end();
+	for (s_iter=_s$.begin(); s_iter!=_s$.end(); s_iter++)
+	{
+		s.Format("s$%s", s_iter->second.name.GetString());
 		while (s.GetLength()<18) s.Append(" ");
-		s.Append(_s$[i].text);
+		s.Append(s_iter->second.text);
 		s.Append("\r\n");
 		ar.WriteString(s);
 	}
@@ -1448,124 +1449,6 @@ void CTablemap::SaveR$Indices(void)
 			handnum = _r$[i].name.GetString()[12] - '0';
 			_r$indexes.r$c0handnumberX_index[handnum] = i;
 		}
-
-	}
-}
-
-void CTablemap::SaveS$Indices(void)
-{
-	// s$titletextX, s$!titletextX not indexed, as it is only used for finding tables on green circle-click, and
-	// this function is not called until a table has been selected by the user
-	// s$hXtype are not indexed, as those records are ignored in OH
-
-	int		i = 0, num = 0;
-
-	// Clear 'em first
-	for (i=0; i<=9; i++)
-	{
-		_s$indexes.s$ttlimitsX_index[i] = -1;
-		_s$indexes.s$c0limitsX_index[num] = -1;
-	}
-
-	_s$indexes.s$ttlimits_index = -1;
-	_s$indexes.s$c0limits_index = -1;
-
-	for (i=0; i<(int) _s$.GetSize(); i++)
-	{
-
-		// s$ttlimits, s$ttlimitsX
-		if (_s$[i].name=="ttlimits")
-		{
-			_s$indexes.s$ttlimits_index = i;
-		}
-		else if (_s$[i].name.Mid(0,8)=="ttlimits")
-		{
-			num = _s$[i].name.GetString()[8] - '0';
-			_s$indexes.s$ttlimitsX_index[num] = i;
-		}
-		else if (_s$[i].name=="c0limits")
-		{
-			_s$indexes.s$c0limits_index = i;
-		}
-		else if (_s$[i].name.Mid(0,8)=="c0limits")
-		{
-			num = _s$[i].name.GetString()[8] - '0';
-			_s$indexes.s$c0limitsX_index[num] = i;
-		}
-	}
-}
-
-void CTablemap::SaveS$Strings(void)
-{
-	// s$reseller and s$mechanic are not saved, as they are only comments and not used in OH for any purpose
-
-	int		i = 0;
-
-	// Clear 'em first
-	_s$items.num_chairs = 0;
-	_s$items.swagtextmethod = 0;
-	_s$items.potmethod = 0;
-	_s$items.activemethod = 0;
-	_s$items.sitename = "";
-	_s$items.network = "";
-	_s$items.chairconfig = "";
-	for (i=0; i<=3; i++)
-		_s$items.ttype[i] = "";
-
-	for (i=0; i<(int) _s$.GetSize(); i++)
-	{
-		if (_s$[i].name == "nchairs")
-			_s$items.num_chairs = strtoul(_s$[i].text.GetString(), NULL, 10);
-
-		if (_s$[i].name == "swagtextmethod")
-			_s$items.swagtextmethod = strtoul(_s$[i].text.GetString(), NULL, 10);
-
-		if (_s$[i].name == "potmethod")
-			_s$items.potmethod = strtoul(_s$[i].text.GetString(), NULL, 10);
-
-		if (_s$[i].name == "activemethod")
-			_s$items.activemethod = strtoul(_s$[i].text.GetString(), NULL, 10);
-
-		if (_s$[i].name == "sitename")
-			_s$items.sitename = _s$[i].text;
-
-		if (_s$[i].name == "network")
-			_s$items.network = _s$[i].text;
-
-		if (_s$[i].name == "chairconfig")
-			_s$items.chairconfig = _s$[i].text;
-
-		if (_s$[i].name == "t0type")
-			_s$items.ttype[0] = _s$[i].text;
-
-		if (_s$[i].name == "t1type")
-			_s$items.ttype[1] = _s$[i].text;
-
-		if (_s$[i].name == "t2type")
-			_s$items.ttype[2] = _s$[i].text;
-
-		if (_s$[i].name == "t3type")
-			_s$items.ttype[3] = _s$[i].text;
-
-		if (_s$[i].name == "swagselectionmethod")
-			_s$items.swagselectionmethod = _s$[i].text == "Sgl Click" ? TEXTSEL_SINGLECLICK	:
-										   _s$[i].text == "Dbl Click" ? TEXTSEL_DOUBLECLICK :
-										   _s$[i].text == "Click Drag" ? TEXTSEL_CLICKDRAG : 0;
-
-		if (_s$[i].name == "swagdeletionmethod")
-			_s$items.swagdeletionmethod = _s$[i].text == "Delete" ? TEXTDEL_DELETE :
-										  _s$[i].text == "Backspace" ? TEXTDEL_BACKSPACE : 0;
-
-		if (_s$[i].name == "swagconfirmationmethod")
-			_s$items.swagconfirmationmethod = _s$[i].text == "Enter" ? BETCONF_ENTER :
-											  _s$[i].text == "Click Bet" ? BETCONF_CLICKBET : 0;
-
-		if (_s$[i].name == "buttonclickmethod")
-			_s$items.buttonclickmethod = _s$[i].text == "Single" ? BUTTON_SINGLECLICK :
-										 _s$[i].text == "Double" ? BUTTON_DOUBLECLICK : 0;
-
-		if (_s$[i].name == "handresetmethod")
-			_s$items.handresetmethod = atoi(_s$[i].text.GetString());
 
 	}
 }

@@ -584,7 +584,7 @@ void write_logautoplay(const char * action)
 
         fprintf(log_fp, "%s - %1d ", 
 			get_time(nowtime), 
-			p_tablemap->s$items()->num_chairs);
+			p_tablemap->nchairs());
         fprintf(log_fp, "%4s %10s %4s %5s ", 
 			pcards.GetString(), 
 			comcards.GetString(), 

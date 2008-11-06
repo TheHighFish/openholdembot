@@ -53,6 +53,7 @@ BOOL CDlgEditSymbols::OnInitDialog()
 	for (i=0; i<strings.GetSize(); i++)  m_Name.AddString(strings[i]);
 	m_Name.SelectString(-1, name);
 	m_Name.SetWindowPos(NULL, 0, 0, 145, 300, SWP_NOMOVE | SWP_NOZORDER);
+	m_Name.EnableWindow(readonly_key!=true);
 
 	m_Value.SetWindowText(value.GetString());
 

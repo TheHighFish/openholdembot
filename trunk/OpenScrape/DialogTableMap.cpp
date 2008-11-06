@@ -184,8 +184,6 @@ BEGIN_MESSAGE_MAP(CDlgTableMap, CDialog)
 	ON_NOTIFY_EX(TTN_NEEDTEXT, 0, OnToolTipText)
 	ON_WM_CREATE()
 	ON_WM_SIZING()
-
-	ON_STN_CLICKED(IDC_MISSING_CARDS, &CDlgTableMap::OnStnClickedMissingCards)
 END_MESSAGE_MAP()
 
 
@@ -762,7 +760,7 @@ void CDlgTableMap::update_display(void)
 			m_Delete.EnableWindow(true);
 			m_Edit.EnableWindow(true);
 
-			// Get selected size record
+			// Display selected size record
 			if (m_TableMapTree.GetSelectedItem())
 			{
 				ZMap::const_iterator z_iter = p_tablemap->z$()->find(sel);
@@ -781,13 +779,12 @@ void CDlgTableMap::update_display(void)
 			m_Delete.EnableWindow(true);
 			m_Edit.EnableWindow(true);
 
-			// Get selected symbol record
+			// Display selected symbol record
 			if (m_TableMapTree.GetSelectedItem())
 			{
-				int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-				sel_symbol = p_tablemap->s$()->GetAt(index);
-
-				m_Result.SetWindowText(sel_symbol.text.GetString());
+				SMap::const_iterator s_iter = p_tablemap->s$()->find(sel);
+				if (s_iter != p_tablemap->s$()->end())
+					m_Result.SetWindowText(s_iter->second.text.GetString());
 			}
 		}
 
@@ -859,7 +856,7 @@ void CDlgTableMap::update_display(void)
 			m_New.EnableWindow(true);
 			m_Delete.EnableWindow(true);
 
-			// Get selected hash value record
+			// Display selected hash value record
 			if (m_TableMapTree.GetSelectedItem())
 			{
 				int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
@@ -1420,9 +1417,9 @@ void CDlgTableMap::OnBnClickedNew()
 				new_size.name = dlgsizes.name;
 				new_size.width = dlgsizes.width;
 				new_size.height = dlgsizes.height;
+
 				if (p_tablemap->z$_insert(new_size))
 				{
-
 					// Add new record to tree
 					new_hti = m_TableMapTree.InsertItem(dlgsizes.name, parent ? parent : m_TableMapTree.GetSelectedItem());
 					m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
@@ -1443,14 +1440,17 @@ void CDlgTableMap::OnBnClickedNew()
 		dlgsymbols.value = "";
 		::GetWindowText(pDoc->attached_hwnd, title, 200);
 		dlgsymbols.titlebartext = title;
+		dlgsymbols.readonly_key = false;
 		dlgsymbols.strings.RemoveAll();
 
+		SMap::const_iterator s_iter;
 		for (i=0; i<num_s$strings; i++)
 		{
 			used_string = false;
-			for (j=0; j<p_tablemap->s$()->GetCount(); j++)
-				if (p_tablemap->s$()->GetAt(j).name == s$strings[i])  
-					used_string=true;
+
+			for (s_iter=p_tablemap->s$()->begin(); s_iter!=p_tablemap->s$()->end(); s_iter++)
+				if (s_iter->second.name == s$strings[i])  
+						used_string=true;
 
 			if (!used_string)
 				dlgsymbols.strings.Add(s$strings[i]);
@@ -1468,16 +1468,17 @@ void CDlgTableMap::OnBnClickedNew()
 				// Add new record to internal structure
 				new_symbol.name = dlgsymbols.name;
 				new_symbol.text = dlgsymbols.value;
-				new_index = (int) p_tablemap->set_s$_add(new_symbol);
 
-				// Add new record to tree
-				new_hti = m_TableMapTree.InsertItem(new_symbol.name, parent ? parent : m_TableMapTree.GetSelectedItem());
-				m_TableMapTree.SetItemData(new_hti, (DWORD_PTR) new_index);
-				m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
-				m_TableMapTree.SelectItem(new_hti);
+				if (p_tablemap->s$_insert(new_symbol))
+				{
+					// Add new record to tree
+					new_hti = m_TableMapTree.InsertItem(new_symbol.name, parent ? parent : m_TableMapTree.GetSelectedItem());
+					m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
+					m_TableMapTree.SelectItem(new_hti);
 
-				pDoc->SetModifiedFlag(true);
-				Invalidate(false);
+					pDoc->SetModifiedFlag(true);
+					Invalidate(false);
+				}
 			}
 		}
 	}
@@ -1613,19 +1614,22 @@ void CDlgTableMap::OnBnClickedDelete()
 	
 	else if (selected_parent_text == "Symbols")
 	{
-		// Get index into array for selected record
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-
 		text.Format("Really delete Symbol record: %s", sel);
 		if (MessageBox(text.GetString(), "Delete Symbol record?", MB_YESNO) == IDYES)
 		{
 			// Delete record from internal structure
-			p_tablemap->set_s$_removeat(index);
-			HTREEITEM node = update_tree("Symbols");
-			if (node!=NULL)  m_TableMapTree.SelectItem(node);
+			if (!p_tablemap->s$_erase(sel))
+			{
+				MessageBox("Error deleting symbol record.", "ERROR", MB_OK | MB_TOPMOST);
+			}
+			else 
+			{
+				HTREEITEM node = update_tree("Symbols");
+				if (node!=NULL)  m_TableMapTree.SelectItem(node);
 
-			Invalidate(false);
-			pDoc->SetModifiedFlag(true);
+				Invalidate(false);
+				pDoc->SetModifiedFlag(true);
+			}
 		}
 	}
 	
@@ -1786,7 +1790,6 @@ void CDlgTableMap::OnBnClickedEdit()
 	CString				sel_region_name;
 	CString				node_text = "";
 	CArray <STablemapFont, STablemapFont>		new_t$_recs;
-	STablemapSymbol		sel_symbol;
 	STablemapRegion		sel_region;
 	STablemapFont		sel_font;
 	STablemapHashPoint	sel_hash_point, temp_hash_point;
@@ -1853,33 +1856,51 @@ void CDlgTableMap::OnBnClickedEdit()
 	
 	else if (selected_parent_text == "Symbols")
 	{
-		// Get selected size record
-		sel_symbol = p_tablemap->s$()->GetAt(index);
+		// Get selected symbol record
+		SMap::const_iterator s_iter = p_tablemap->s$()->find(sel);
 
-		// Prep dialog
-		dlgsymbols.titletext = "Edit Symbol record";
-		dlgsymbols.name = sel_symbol.name;
-		dlgsymbols.value = sel_symbol.text;
-		::GetWindowText(pDoc->attached_hwnd, title, 200);
-		dlgsymbols.titlebartext = title;
-		dlgsymbols.strings.RemoveAll();
-		for (j=0; j<num_s$strings; j++)  dlgsymbols.strings.Add(s$strings[j]);
-		
-		// Show dialog
-		if (dlgsymbols.DoModal() == IDOK)
+		if (s_iter == p_tablemap->s$()->end())
 		{
-			// Edit record in internal structure
-			sel_symbol.name = dlgsymbols.name;
-			sel_symbol.text = dlgsymbols.value;
+			MessageBox("Error editing symbol record.", "ERROR", MB_OK | MB_TOPMOST);
+		}
+		else
+		{
+			// Prep dialog
+			dlgsymbols.titletext = "Edit Symbol record";
+			dlgsymbols.name = s_iter->second.name;
+			dlgsymbols.value = s_iter->second.text;
+			::GetWindowText(pDoc->attached_hwnd, title, 200);
+			dlgsymbols.titlebartext = title;
+			dlgsymbols.readonly_key = true;
+			dlgsymbols.strings.RemoveAll();
+			for (j=0; j<num_s$strings; j++)  dlgsymbols.strings.Add(s$strings[j]);
+			
+			// Show dialog
+			if (dlgsymbols.DoModal() == IDOK)
+			{
+				// Remove old record in internal structure
+				if (!p_tablemap->s$_erase(sel))
+				{
+					MessageBox("Error editing symbol record.", "ERROR", MB_OK | MB_TOPMOST);
+				}
+				else
+				{
+					// Add new record in internal structure
+					STablemapSymbol newsymbol;
+					newsymbol.name = dlgsymbols.name;
+					newsymbol.text = dlgsymbols.value;
+					p_tablemap->s$_insert(newsymbol);
 
-			// Edit record in tree
-			m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), dlgsymbols.name.GetString());
-			m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
-			m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
+					// Edit record in tree
+					m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), dlgsymbols.name.GetString());
+					m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
+					m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
 
-			update_display();
-			Invalidate(false);
-			pDoc->SetModifiedFlag(true);
+					update_display();
+					Invalidate(false);
+					pDoc->SetModifiedFlag(true);
+				}
+			}
 		}
 	}
 	
@@ -2683,11 +2704,11 @@ void CDlgTableMap::create_tree(void)
 	// s$ records
 	parent = m_TableMapTree.InsertItem("Symbols");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
-	for (i=0; i<p_tablemap->s$()->GetSize(); i++) 
-	{
-		newitem = m_TableMapTree.InsertItem(p_tablemap->s$()->GetAt(i).name, parent);
-		m_TableMapTree.SetItemData(newitem, (DWORD_PTR) i);
-	}
+
+	SMap::const_iterator s_iter;
+	for (s_iter=p_tablemap->s$()->begin(); s_iter!=p_tablemap->s$()->end(); s_iter++)
+		m_TableMapTree.InsertItem(s_iter->second.name, parent);
+
 	m_TableMapTree.SortChildren(parent);
 
 	// r$ records
@@ -3180,9 +3201,4 @@ void CDlgTableMap::UpdateStatus(void)
 	}
 	//  Display missing cards
 	m_status_cards.SetWindowTextA(_T(statusCards));
-}
-
-void CDlgTableMap::OnStnClickedMissingCards()
-{
-	// TODO: Add your control notification handler code here
 }
