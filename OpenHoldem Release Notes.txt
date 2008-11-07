@@ -42,6 +42,7 @@ NEW STUFF:
 - Added handling of new uXdealer and uXbet regions.  These new regions correlate to the pXdealer and pXbet regions in much the
   same way as uXname/pXname and uXbalance/pXbalance. If, for example, pXdealer does not match, then the scraper engine will
   check uXdealer for a match.  [OpenHoldem]
+- Symbol myturnbits does now support the check-button (bit 4; value 16)
 
 
 v1.9.4 2008-10-21
