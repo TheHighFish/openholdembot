@@ -19,6 +19,8 @@
 #include "DialogEditGrHashPoints.h"
 #include "DialogEditHash.h"
 
+#include "..\CTablemap\CTablemap.h"
+
 const char * fontsList = "aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ0123456789.,_-$";
 	
 const char * cardsList[] = { "2c", "2s", "2h", "2d", "3c", "3s", "3h", "3d", "4c", "4s", "4h", "4d",
@@ -523,13 +525,13 @@ void CDlgTableMap::draw_image_bitmap(void)
 	HDC					hdcControl, hdcScreen, hdc_image;
 	HBITMAP				bitmap_image, old_bitmap_image, bitmap_control, old_bitmap_control;
 	BYTE				*pBits, alpha, red, green, blue;
-	STablemapImage		sel_image;
+	IMapCI				sel_image = p_tablemap->i$()->end();
 	
-	// Get selected region record
+	// Get selected image record
 	if (m_TableMapTree.GetSelectedItem())
 	{
 		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		sel_image = p_tablemap->i$()->GetAt(index);
+		sel_image = p_tablemap->i$()->find(index);
 	}
 	else
 	{
@@ -537,8 +539,8 @@ void CDlgTableMap::draw_image_bitmap(void)
 	}
 
 	// Get bitmap size
-	width = sel_image.width;
-	height = sel_image.height;
+	width = sel_image->second.width;
+	height = sel_image->second.height;
 
 	// Copy saved bitmap into a memory dc so we can get the bmi
 	pDC = m_BitmapFrame.GetDC();
@@ -566,10 +568,10 @@ void CDlgTableMap::draw_image_bitmap(void)
 	for (y=0; y < (int) height; y++) {
 		for (x=0; x < (int) width; x++) {
 			// image record is stored internally in ABGR format
-			alpha = (sel_image.pixel[y*width + x] >> 24) & 0xff;
-			red = (sel_image.pixel[y*width + x] >> 0) & 0xff;
-			green = (sel_image.pixel[y*width + x] >> 8) & 0xff;
-			blue = (sel_image.pixel[y*width + x] >> 16) & 0xff;
+			alpha = (sel_image->second.pixel[y*width + x] >> 24) & 0xff;
+			red = (sel_image->second.pixel[y*width + x] >> 0) & 0xff;
+			green = (sel_image->second.pixel[y*width + x] >> 8) & 0xff;
+			blue = (sel_image->second.pixel[y*width + x] >> 16) & 0xff;
 
 			// SetDIBits format is BGRA
 			pBits[y*width*4 + x*4 + 0] = blue;
@@ -857,13 +859,17 @@ void CDlgTableMap::update_display(void)
 			m_Delete.EnableWindow(true);
 
 			// Display selected hash value record
-			if (m_TableMapTree.GetSelectedItem())
+			int hash_type = strtoul(sel.Mid(sel.Find("(")+1, 1).GetString(), NULL, 10);
+			bool displayed = false;
+			for (HMapCI h_iter=p_tablemap->h$(hash_type)->begin(); h_iter!=p_tablemap->h$(hash_type)->end() && !displayed; h_iter++)
 			{
-				int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-				sel_hash_value = p_tablemap->h$()->GetAt(index);
-
-				text.Format("%08x", sel_hash_value.hash);
-				m_Result.SetWindowText(text.GetString());
+				int start=0;
+				if (h_iter->second.name == sel.Tokenize(" ", start))
+				{
+					text.Format("%08x", h_iter->second.hash);
+					m_Result.SetWindowText(text.GetString());
+					displayed = true;
+				}
 			}
 		}
 
@@ -1418,7 +1424,12 @@ void CDlgTableMap::OnBnClickedNew()
 				new_size.width = dlgsizes.width;
 				new_size.height = dlgsizes.height;
 
-				if (p_tablemap->z$_insert(new_size))
+				// Insert the new record in the existing array of z$ records
+				if (!p_tablemap->z$_insert(new_size))
+				{
+					MessageBox("Failed to create size record.", "Size creation error", MB_OK);
+				}
+				else
 				{
 					// Add new record to tree
 					new_hti = m_TableMapTree.InsertItem(dlgsizes.name, parent ? parent : m_TableMapTree.GetSelectedItem());
@@ -1469,7 +1480,12 @@ void CDlgTableMap::OnBnClickedNew()
 				new_symbol.name = dlgsymbols.name;
 				new_symbol.text = dlgsymbols.value;
 
-				if (p_tablemap->s$_insert(new_symbol))
+				// Insert the new record in the existing array of z$ records
+				if (!p_tablemap->s$_insert(new_symbol))
+				{
+					MessageBox("Failed to create symbol record.", "Symbol creation error", MB_OK);
+				}
+				else
 				{
 					// Add new record to tree
 					new_hti = m_TableMapTree.InsertItem(new_symbol.name, parent ? parent : m_TableMapTree.GetSelectedItem());
@@ -1703,12 +1719,28 @@ void CDlgTableMap::OnBnClickedDelete()
 		if (MessageBox(text.GetString(), "Delete Hash record?", MB_YESNO) == IDYES)
 		{
 			// Delete record from internal structure and update tree
-			p_tablemap->set_h$_removeat(index);
-			HTREEITEM node = update_tree("Hashes");
-			if (node!=NULL)  m_TableMapTree.SelectItem(node);
+			int hash_type = strtoul(sel.Mid(sel.Find("(")+1, 1).GetString(), NULL, 10);
+			bool deleted = false;
+			for (HMapCI h_iter=p_tablemap->h$(hash_type)->begin(); h_iter!=p_tablemap->h$(hash_type)->end()  && !deleted; h_iter++)
+			{
+				int start=0;
+				if (h_iter->second.name == sel.Tokenize(" ", start))
+				{
 
-			Invalidate(false);
-			pDoc->SetModifiedFlag(true);
+					if (p_tablemap->h$_erase(hash_type, h_iter->second.hash))
+					{
+						HTREEITEM node = update_tree("Hashes");
+						if (node!=NULL)  m_TableMapTree.SelectItem(node);
+
+						Invalidate(false);
+						pDoc->SetModifiedFlag(true);
+					}
+
+					// Exit loop
+					h_iter=p_tablemap->h$(hash_type)->begin();
+					deleted = true;
+				}
+			}
 		}
 	}
 
@@ -1721,12 +1753,14 @@ void CDlgTableMap::OnBnClickedDelete()
 		if (MessageBox(text.GetString(), "Delete Image record?", MB_YESNO) == IDYES)
 		{
 			// Delete record from internal structure and update tree
-			p_tablemap->set_i$_removeat(index);
-			HTREEITEM node = update_tree("Images");
-			if (node!=NULL)  m_TableMapTree.SelectItem(node);
+			if (p_tablemap->i$_erase(index))
+			{
+				HTREEITEM node = update_tree("Images");
+				if (node!=NULL)  m_TableMapTree.SelectItem(node);
 
-			Invalidate(false);
-			pDoc->SetModifiedFlag(true);
+				Invalidate(false);
+				pDoc->SetModifiedFlag(true);
+			}
 		}
 	}
 }
@@ -2074,7 +2108,7 @@ void CDlgTableMap::OnBnClickedCreateImage()
 {
 	CDlgEdit			edit;
 	STablemapImage		new_image;
-	int					x, y, width, height, pix_cnt, new_index;
+	int					x, y, width, height, pix_cnt;
 	BYTE				alpha, red, green, blue;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	HTREEITEM			new_hti;
@@ -2116,14 +2150,10 @@ void CDlgTableMap::OnBnClickedCreateImage()
 		new_image.name = edit.m_result;
 		new_image.width = sel_region.right - sel_region.left;
 		new_image.height = sel_region.bottom - sel_region.top;
-
-		// Insert the new record in the existing array of i$ records
-		new_index = (int) p_tablemap->set_i$_add(new_image);
 		
 		// Allocate space for "RGBAImage"
-		text = p_tablemap->i$()->GetAt(new_index).name + ".ppm";
-		p_tablemap->set_i$_image(new_index, new RGBAImage(p_tablemap->i$()->GetAt(new_index).width, 
-								 p_tablemap->i$()->GetAt(new_index).height, text.GetString()) );
+		text = new_image.name + ".ppm";
+		new_image.image = new RGBAImage(new_image.width, new_image.height, text.GetString());
 
 		// Populate pixel elements of struct
 		pix_cnt = 0;
@@ -2137,12 +2167,18 @@ void CDlgTableMap::OnBnClickedCreateImage()
 				blue = pDoc->attached_pBits[y*width*4 + x*4 + 0];
 
 				// image record is stored internally in ABGR format
-				p_tablemap->set_i$_image_pixel(new_index, pix_cnt, (alpha<<24) + (blue<<16) + (green<<8) + red);
-
-				p_tablemap->set_i$_image_set(new_index, red, green, blue, alpha, pix_cnt);
+				new_image.pixel[pix_cnt] = (alpha<<24) + (blue<<16) + (green<<8) + red;
+				new_image.image->Set(red, green, blue, alpha, pix_cnt);
 
 				pix_cnt++;
 			}
+		}
+
+		// Insert the new record in the existing array of i$ records, exit on failure
+		if (!p_tablemap->i$_insert(new_image))
+		{
+			MessageBox("Failed to create image record, possible duplicate?", "Image creation error", MB_OK);
+			return;
 		}
 
 		// Find root of the Images node
@@ -2160,7 +2196,8 @@ void CDlgTableMap::OnBnClickedCreateImage()
 		{
 			text.Format("%s (%dx%d)", new_image.name, new_image.width, new_image.height);
 			new_hti = m_TableMapTree.InsertItem(text.GetString(), image_node);
-			m_TableMapTree.SetItemData(new_hti, (DWORD_PTR) new_index);
+			m_TableMapTree.SetItemData(new_hti, 
+				(DWORD_PTR) p_tablemap->CreateI$Index(new_image.name, new_image.width, new_image.height, new_image.pixel));
 			m_TableMapTree.SortChildren(image_node);
 		}
 
@@ -2410,7 +2447,7 @@ void CDlgTableMap::OnBnClickedCreateHash()
 	HTREEITEM				parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
 	HTREEITEM				new_hti, node, child_node;
 	CString					text, node_text, sel_region_name;
-	int						j, new_index;
+	int						j;
 
 	if (m_TableMapTree.GetSelectedItem())
 	{
@@ -2419,13 +2456,22 @@ void CDlgTableMap::OnBnClickedCreateHash()
 	}
 
 	// Get image name
-	j = 0;
-	sel = sel.Tokenize(" ", j);
+	int start=0;
+	sel = sel.Tokenize(" ", start);
 
 	// See which hash types are already present for this image
-	for (j=0; j<p_tablemap->h$()->GetSize(); j++)
-		if (p_tablemap->h$()->GetAt(j).name == sel)
-			t[p_tablemap->h$()->GetAt(j).number] = true;
+	for (j=0; j<=3; j++)
+	{
+		bool found = false;
+		for (HMapCI h_iter=p_tablemap->h$(j)->begin(); h_iter!=p_tablemap->h$(j)->end() && !found; h_iter++)
+		{
+			if (h_iter->second.name == sel)
+			{
+				t[j] = true;
+				found = true;
+			}
+		}
+	}
 
 	// Prepare dialog
 	dlghash.titletext = "Name of new font character";
@@ -2446,49 +2492,50 @@ void CDlgTableMap::OnBnClickedCreateHash()
 		{
 			// Add new record to internal structure
 			new_hash.name = sel;
-			new_hash.number = atoi(dlghash.type.Mid(5,1).GetString());
 			new_hash.hash = 0;
-			new_index = (int) p_tablemap->set_h$_add(new_hash);
-
-			// Warn to update hashes
-			//MessageBox("Hash record created.  Don't forget to 'Edit/Update Hashes'.");
-
-			// Find root of the Hashes node
-			node = m_TableMapTree.GetChildItem(NULL);
-			node_text = m_TableMapTree.GetItemText(node);
-
-			while (node_text!="Hashes" && node!=NULL)
+			int hash_type = strtoul(dlghash.type.Mid(5,1).GetString(), NULL, 10);
+			if (!p_tablemap->h$_insert(hash_type, new_hash))
 			{
-				node = m_TableMapTree.GetNextItem(node, TVGN_NEXT);
+				MessageBox("Error adding hash record: " + new_hash.name, "Hash record add error", MB_OK);
+			}
+			else
+			{
+				// Find root of the Hashes node
+				node = m_TableMapTree.GetChildItem(NULL);
 				node_text = m_TableMapTree.GetItemText(node);
-			}
 
-			// Insert the new record into the tree
-			if (node!=NULL)
-			{
-				// Add new record to tree
-				text.Format("%s (%d)", new_hash.name, new_hash.number);
-				new_hti = m_TableMapTree.InsertItem(text.GetString(), node);
-				m_TableMapTree.SetItemData(new_hti, (DWORD_PTR) new_index);
-				m_TableMapTree.SortChildren(node);
-			}
+				while (node_text!="Hashes" && node!=NULL)
+				{
+					node = m_TableMapTree.GetNextItem(node, TVGN_NEXT);
+					node_text = m_TableMapTree.GetItemText(node);
+				}
 
-			node = update_tree("Images");
+				// Insert the new record into the tree
+				if (node!=NULL)
+				{
+					// Add new record to tree
+					text.Format("%s (%d)", new_hash.name, hash_type);
+					new_hti = m_TableMapTree.InsertItem(text.GetString(), node);
+					m_TableMapTree.SortChildren(node);
+				}
 
-			// Re-select previously selected image
-			child_node = m_TableMapTree.GetChildItem(node);
-			node_text = m_TableMapTree.GetItemText(child_node);
-			while (node_text!=sel_region_name && child_node!=NULL)
-			{
-				child_node = m_TableMapTree.GetNextItem(child_node, TVGN_NEXT);
+				node = update_tree("Images");
+
+				// Re-select previously selected image
+				child_node = m_TableMapTree.GetChildItem(node);
 				node_text = m_TableMapTree.GetItemText(child_node);
+				while (node_text!=sel_region_name && child_node!=NULL)
+				{
+					child_node = m_TableMapTree.GetNextItem(child_node, TVGN_NEXT);
+					node_text = m_TableMapTree.GetItemText(child_node);
+				}
+
+				if (child_node)
+					m_TableMapTree.SelectItem(child_node);
+
+				//Invalidate(false);
+				pDoc->SetModifiedFlag(true);
 			}
-
-			if (child_node)
-				m_TableMapTree.SelectItem(child_node);
-
-			//Invalidate(false);
-			pDoc->SetModifiedFlag(true);
 		}
 	}
 }
@@ -2747,22 +2794,25 @@ void CDlgTableMap::create_tree(void)
 	// h$ records
 	parent = m_TableMapTree.InsertItem("Hashes");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
-	for (i=0; i<p_tablemap->h$()->GetSize(); i++) 
+	for (i=0; i<=3; i++)
 	{
-		text.Format("%s (%d)", p_tablemap->h$()->GetAt(i).name, p_tablemap->h$()->GetAt(i).number);
-		newitem = m_TableMapTree.InsertItem(text, parent);
-		m_TableMapTree.SetItemData(newitem, (DWORD_PTR) i);
+		for (HMapCI h_iter=p_tablemap->h$(i)->begin(); h_iter!=p_tablemap->h$(i)->end(); h_iter++)
+		{
+			text.Format("%s (%d)", h_iter->second.name, i);
+			newitem = m_TableMapTree.InsertItem(text, parent);
+		}
 	}
 	m_TableMapTree.SortChildren(parent);
 
 	// i$ records
 	parent = m_TableMapTree.InsertItem("Images");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
-	for (i=0; i<p_tablemap->i$()->GetSize(); i++) 
+	for (IMapCI i_iter=p_tablemap->i$()->begin(); i_iter!=p_tablemap->i$()->end(); i_iter++)
 	{
-		text.Format("%s (%dx%d)", p_tablemap->i$()->GetAt(i).name, p_tablemap->i$()->GetAt(i).width, p_tablemap->i$()->GetAt(i).height);
+		text.Format("%s (%dx%d)", i_iter->second.name, i_iter->second.width, i_iter->second.height);
 		newitem = m_TableMapTree.InsertItem(text, parent);
-		m_TableMapTree.SetItemData(newitem, (DWORD_PTR) i);
+		m_TableMapTree.SetItemData(newitem, 
+			(DWORD_PTR) p_tablemap->CreateI$Index(i_iter->second.name, i_iter->second.width, i_iter->second.height, i_iter->second.pixel));
 	}
 	m_TableMapTree.SortChildren(parent);
 	UpdateStatus();

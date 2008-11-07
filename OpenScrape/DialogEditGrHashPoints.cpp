@@ -47,7 +47,7 @@ END_MESSAGE_MAP()
 BOOL CDlgEditGrHashPoints::OnInitDialog()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	int					i, new_item;
+	int					new_item;
 	CString				text;
 	Registry			reg;
 	int					max_x, max_y;
@@ -62,12 +62,12 @@ BOOL CDlgEditGrHashPoints::OnInitDialog()
 
 	// Sample image list
 	m_Sample_Image.SetWindowPos(NULL, 0, 0, 86, 200, SWP_NOMOVE | SWP_NOZORDER);
-	for (i=0; i<p_tablemap->i$()->GetSize(); i++)
+	for (IMapCI i_iter=p_tablemap->i$()->begin(); i_iter!=p_tablemap->i$()->end(); i_iter++) 
 	{
-		text.Format("%s (%dx%d)", p_tablemap->i$()->GetAt(i).name, p_tablemap->i$()->GetAt(i).width, p_tablemap->i$()->GetAt(i).height);
+		text.Format("%s (%dx%d)", i_iter->second.name, i_iter->second.width, i_iter->second.height);
 		new_item = m_Sample_Image.AddString(text.GetString());
-		m_Sample_Image.SetItemData(new_item, (DWORD_PTR) &p_tablemap->i$()[i]);
-
+		m_Sample_Image.SetItemData(new_item, 
+			(DWORD_PTR) p_tablemap->CreateI$Index(i_iter->second.name, i_iter->second.width, i_iter->second.height, i_iter->second.pixel));
 	}
 
 	// Zoom
@@ -133,18 +133,21 @@ void CDlgEditGrHashPoints::update_bitmap()
 	HDC					hdcControl, hdcScreen, hdc_image;
 	HBITMAP				bitmap_image, old_bitmap_image, bitmap_control, old_bitmap_control;
 	BYTE				*pBits, alpha, red, green, blue;
-	STablemapImage		*sel_image = NULL;
+	IMapCI				sel_image = p_tablemap->i$()->end();
 	COLORREF			cr;
 	
 	// Get pointer to selected image record
 	if (m_Sample_Image.GetCurSel() != LB_ERR)
-		sel_image = (STablemapImage *) m_Sample_Image.GetItemData(m_Sample_Image.GetCurSel());
+	{
+		int index = (int) m_Sample_Image.GetItemData(m_Sample_Image.GetCurSel());
+		sel_image = p_tablemap->i$()->find(index);
+	}
 
-	if (sel_image)
+	if (sel_image != p_tablemap->i$()->end())
 	{
 		// Get bitmap size
-		width = sel_image->width;
-		height = sel_image->height;
+		width = sel_image->second.width;
+		height = sel_image->second.height;
 
 		// Copy saved bitmap into a memory dc so we can get the bmi
 		pDC = m_Sample_Bitmap.GetDC();
@@ -172,10 +175,10 @@ void CDlgEditGrHashPoints::update_bitmap()
 		for (y=0; y < (int) height; y++) {
 			for (x=0; x < (int) width; x++) {
 				// image record is stored internally in ABGR format
-				alpha = (sel_image->pixel[y*width + x] >> 24) & 0xff;
-				red = (sel_image->pixel[y*width + x] >> 0) & 0xff;
-				green = (sel_image->pixel[y*width + x] >> 8) & 0xff;
-				blue = (sel_image->pixel[y*width + x] >> 16) & 0xff;
+				alpha = (sel_image->second.pixel[y*width + x] >> 24) & 0xff;
+				red = (sel_image->second.pixel[y*width + x] >> 0) & 0xff;
+				green = (sel_image->second.pixel[y*width + x] >> 8) & 0xff;
+				blue = (sel_image->second.pixel[y*width + x] >> 16) & 0xff;
 
 				// SetDIBits format is BGRA
 				pBits[y*width*4 + x*4 + 0] = blue;
@@ -188,10 +191,10 @@ void CDlgEditGrHashPoints::update_bitmap()
 
 		// Figure size of stretched bitmap and resize control to fit
 		zoom = m_Zoom.GetCurSel()==0 ? 1 :
-			m_Zoom.GetCurSel()==1 ? 2 :
-			m_Zoom.GetCurSel()==2 ? 4 :
-			m_Zoom.GetCurSel()==3 ? 8 :
-			m_Zoom.GetCurSel()==4 ? 16 : 1;
+			   m_Zoom.GetCurSel()==1 ? 2 :
+			   m_Zoom.GetCurSel()==2 ? 4 :
+			   m_Zoom.GetCurSel()==3 ? 8 :
+			   m_Zoom.GetCurSel()==4 ? 16 : 1;
 
 		m_Sample_Bitmap.SetWindowPos(NULL, 0, 0, (width*zoom)+2, (height*zoom)+2, SWP_NOMOVE | SWP_NOZORDER | SWP_NOCOPYBITS);
 

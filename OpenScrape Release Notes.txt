@@ -8,7 +8,7 @@ BUG FIXES:
   identifying the problem [OpenHoldem]
     
 MAINTENANCE:
-- Migration of table map z and s-record handling from CArray's with manual indices to std::map structures. [OpenHoldem]
+- Migration of table map z, s, h and i record handling from CArray's with manual indices to std::map structures. [OpenHoldem]
 
 NEW STUFF:
 - Added "swagselectionmethod", "swagdeletionmethod", "swagconfirmationmethod" and "buttonclickmethod" to valid s$strings list.
