@@ -1343,6 +1343,12 @@ void CSymbols::CalcAutoplayer(void)
 				else if (p_scraper->IsStringAllin(button_label))
 					_sym.myturnbits = (int) _sym.myturnbits | (1<<3);						// myturnbits
 
+				else if (p_scraper->IsStringCheck(button_label))
+					_sym.myturnbits = (int) _sym.myturnbits | (1<<4);
+
+				else if (p_scraper->IsStringAllin(button_label))
+					_sym.myturnbits = (int) _sym.myturnbits | (1<<3);
+
 				else if (p_scraper->IsStringAutopost(button_label))
 					_sym.isautopost = 1;													// isautopost
 

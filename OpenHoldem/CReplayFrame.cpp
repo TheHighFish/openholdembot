@@ -169,10 +169,13 @@ void CReplayFrame::CreateReplayFrame(void)
 			fprintf(fp, "<tr>\n");
 			int sym_myturnbits = (int) p_symbols->sym()->myturnbits;
 			fcra_seen.Format("%s%s%s%s",
-				sym_myturnbits&0x1 ? "F" : ".",
-				sym_myturnbits&0x2 ? "C" : ".",
-				sym_myturnbits&0x4 ? "R" : ".",
-				sym_myturnbits&0x8 ? "A" : ".");
+				sym_myturnbits&0x01 ? "F" : ".",
+				sym_myturnbits&0x02 ? "C" : ".",
+				// Check button out of order to stay consistent
+				// with button order in manual mode.
+				sym_myturnbits&0x10 ? "K" : ".",
+				sym_myturnbits&0x04 ? "R" : ".",
+				sym_myturnbits&0x08 ? "A" : ".");
 
 			fprintf(fp, "<td>%s</td>\n", fcra_seen.GetString());
 			fprintf(fp, "</tr>\n");
