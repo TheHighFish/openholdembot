@@ -1830,7 +1830,6 @@ const double CScraper::DoChipScrape(HDC hdc, int i)
 	uint32_t		*uresult = NULL, hash = 0, pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0};
 	double			result = 0;
 	CString			resstring = "";
-	std::map<uint32_t, int>::const_iterator		hashindex;
 
 	// Initialize arrays
 	for (j=0; j<10; j++)
@@ -1949,10 +1948,10 @@ const double CScraper::DoChipScrape(HDC hdc, int i)
 				}
 
 				// lookup hash in h$ records
-				hashindex = p_tablemap->hashes(hash_type)->find(hash);
+				HMapCI h_iter = p_tablemap->h$(hash_type)->find(hash);
 
 				// no hash match
-				if (hashindex == p_tablemap->hashes(hash_type)->end())
+				if (h_iter == p_tablemap->h$(hash_type)->end())
 				{
 					// stop vertical scrape loop on a non-match
 					chipindex = MAX_CHIPS_PER_STACK+1;
@@ -1960,7 +1959,7 @@ const double CScraper::DoChipScrape(HDC hdc, int i)
 				// hash match found
 				else
 				{
-					resstring = p_tablemap->h$()->GetAt(hashindex->second).name;
+					resstring = h_iter->second.name;
 					resstring.Remove(',');
 					resstring.Remove('$');
 					result += atof(resstring.GetString());

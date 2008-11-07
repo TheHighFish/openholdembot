@@ -4,7 +4,7 @@
 #include <map>
 #include "../CTransform/hash/stdint.h"
 #include "../CTransform/pdiff/RGBAImage.h"
-#include "..\CCritSec\CCritSec.h"
+#include "../CCritSec/CCritSec.h"
 
 ///////////////////////////////
 // structs
@@ -63,12 +63,15 @@ struct STablemapHashPoint
 
 struct STablemapHashValue 
 {
-	unsigned int	number;
 	CString			name;
 	uint32_t		hash;
 };
+typedef std::pair<uint32_t, STablemapHashValue> HPair;
+typedef std::map<uint32_t, STablemapHashValue> HMap;
+typedef HMap::iterator HMapI;
+typedef HMap::const_iterator HMapCI;
 
-struct STablemapImage 
+struct STablemapImage
 {
 	CString			name;
 	unsigned int	width;
@@ -76,6 +79,10 @@ struct STablemapImage
 	uint32_t		pixel[MAX_HASH_WIDTH*MAX_HASH_HEIGHT];
 	RGBAImage		*image;
 };
+typedef std::pair<uint32_t, STablemapImage> IPair;
+typedef std::map<uint32_t, STablemapImage> IMap;
+typedef IMap::iterator IMapI;
+typedef IMap::const_iterator IMapCI;
 
 struct SR$Indexes
 {
@@ -148,8 +155,8 @@ struct SWholeMap
 	const CArray <STablemapRegion, STablemapRegion> 		*r$;
 	const CArray <STablemapFont, STablemapFont>			*t$;
 	const CArray <STablemapHashPoint, STablemapHashPoint>	*p$;
-	const CArray <STablemapHashValue, STablemapHashValue>	*h$;
-	const CArray <STablemapImage, STablemapImage>			*i$;
+	const HMap	*h$[4];
+	const IMap	*i$;
 	CString filepath;
 };
 
@@ -168,6 +175,9 @@ public:
 	void ClearR$Indices(void);
 	void SaveR$Indices(void);
 	void UpdateHexmashesHashes(const int group);
+	CString CreateH$Index(const unsigned int number, const CString name);
+	uint32_t CreateI$Index(const CString name, const int width, const int height, const uint32_t *pixels);
+
 
 public:
 	// public accessors
@@ -176,8 +186,8 @@ public:
 	const CArray <STablemapRegion, STablemapRegion> * r$() { return &_r$; }
 	const CArray <STablemapFont, STablemapFont> * t$() { return &_t$; }
 	const CArray <STablemapHashPoint, STablemapHashPoint> * p$() { return &_p$; }
-	const CArray <STablemapHashValue, STablemapHashValue> * h$() { return &_h$; }
-	const CArray <STablemapImage, STablemapImage> * i$() { return &_i$; }
+	const HMap *h$(const int i) { if (i>=0 && i<=3) return &_h$[i]; else return NULL; }
+	const IMap *i$() { return &_i$; }
 
 	/* commonly used strings */
 	const int nchairs()				{ SMapCI it = _s$.find("nchairs"); 
@@ -215,7 +225,6 @@ public:
 									  int n = strtoul(it->second.text.GetString(), NULL, 10); 
 									  return (n>=1 && n<=0x0111) ? n : 0x0111; }
 
-	const std::map<uint32_t, int> * hashes(const int n) { return &(_hashes[n]); }
 	const std::map<CString, int> * hexmashes(const int n) { return &(_hexmashes[n]); }
 	const SR$Indexes * r$indexes() { return &_r$indexes; }
 	const bool valid() { return _valid; }
@@ -228,21 +237,23 @@ public:
 	// public mutators 
 
 	// These are used by OpenScrape
+	void		h$_clear(const int i) { ENT if (i>=0 && i<=3) _h$[i].clear(); }
+
 	const bool	z$_insert(const STablemapSize s) { ENT std::pair<ZMapI, bool> r=_z$.insert(ZPair(s.name, s)); return r.second;  }
 	const bool	s$_insert(const STablemapSymbol s) { ENT std::pair<SMapI, bool> r=_s$.insert(SPair(s.name, s)); return r.second;  }
 	const INT_PTR	set_r$_add(const STablemapRegion s) { ENT return _r$.Add(s); }
 	const INT_PTR	set_t$_add(const STablemapFont s) { ENT return _t$.Add(s); }
 	const INT_PTR	set_p$_add(const STablemapHashPoint s) { ENT return _p$.Add(s); }
-	const INT_PTR	set_h$_add(const STablemapHashValue s) { ENT return _h$.Add(s); }
-	const INT_PTR	set_i$_add(const STablemapImage s) { ENT return _i$.Add(s); }
+	const bool	h$_insert(const int i, const STablemapHashValue s) { ENT if (i>=0 && i<=3) { std::pair<HMapI, bool> r=_h$[i].insert(HPair(s.hash, s)); return r.second; } else return false; }
+	const bool	i$_insert(const STablemapImage s) { ENT std::pair<IMapI, bool> r=_i$.insert(IPair(CreateI$Index(s.name,s.width,s.height,s.pixel), s)); return r.second; }
 
 	const size_t	z$_erase(CString s) { ENT std::map<int, int>::size_type c = _z$.erase(s); return c; }
 	const size_t	s$_erase(CString s) { ENT std::map<int, int>::size_type c = _s$.erase(s); return c; }
 	void	set_r$_removeat(const int n) { ENT if (n>=0 && n<=_r$.GetSize()) _r$.RemoveAt(n,1);  }
 	void	set_t$_removeat(const int n) { ENT if (n>=0 && n<=_t$.GetSize()) _t$.RemoveAt(n,1);  }
 	void	set_p$_removeat(const int n) { ENT if (n>=0 && n<=_p$.GetSize()) _p$.RemoveAt(n,1);  }
-	void	set_h$_removeat(const int n) { ENT if (n>=0 && n<=_h$.GetSize()) _h$.RemoveAt(n,1);  }
-	void	set_i$_removeat(const int n) { ENT if (n>=0 && n<=_i$.GetSize()) _i$.RemoveAt(n,1);  }
+	const size_t	h$_erase(const int i, uint32_t u) { ENT if (i>=0 && i<=3) { std::map<int, int>::size_type c = _h$[i].erase(u); return c; } else return 0; }
+	const size_t	i$_erase(uint32_t u) { ENT std::map<int, int>::size_type c = _i$.erase(u); return c; }
 
 	void	set_r$_left(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].left = i;  }
 	void	set_r$_right(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].right = i;  }
@@ -251,21 +262,15 @@ public:
 	void	set_r$_color(const int n, const COLORREF c) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].color = c;  }
 	void	set_r$_radius(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].radius = i;  }
 	void	set_r$_transform(const int n, const CString s) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].transform = s;  }
-
-	void	set_p$_removeall() { ENT _p$.RemoveAll();  }
-	void	set_i$_image_pixel(const int n1, const int n2, const uint32_t p) { ENT if (n1>=0 && n1<=_i$.GetSize()) _i$[n1].pixel[n2] = p;  }
-	void	set_i$_image_set(const int n, const BYTE r, const BYTE g, const BYTE b, const BYTE a, const int p) 
-				{ ENT if (n>=0 && n<=_i$.GetSize()) _i$[n].image->Set(r,g,b,a,p);  }
-	void	set_i$_image(const int n, RGBAImage *i) { ENT if (n>=0 && n<=_i$.GetSize()) _i$[n].image = i;  }
-	void	set_t$_insertat(const int n, const STablemapFont s) { ENT if (n>=0 && n<=_t$.GetSize()) _t$.InsertAt(n,s);  }
-
 	void	set_r$_lastbmp(const int n, const HBITMAP h) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].last_bmp = h;  }
 	void	set_r$_curbmp(const int n, const HBITMAP h) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].cur_bmp = h;  }
 	void	delete_r$_lastbmp(const int n) { ENT if (n>=0 && n<=_r$.GetSize()) { DeleteObject(_r$[n].last_bmp); _r$[n].last_bmp=NULL; }  }
 	void	delete_r$_curbmp(const int n) { ENT if (n>=0 && n<=_r$.GetSize()) { DeleteObject(_r$[n].cur_bmp); _r$[n].cur_bmp=NULL; }   }
+
+	void	set_p$_removeall() { ENT _p$.RemoveAll();  }
+	void	set_t$_insertat(const int n, const STablemapFont s) { ENT if (n>=0 && n<=_t$.GetSize()) _t$.InsertAt(n,s);  }
+
 	void	set_network(const CString s) { ENT SMapI s_iter=_s$.find("network"); if (s_iter!=_s$.end()) s_iter->second.text=s; }
-
-
 #undef ENT
 
 private:
@@ -273,15 +278,15 @@ private:
 	bool		_valid;
 	CString		_filename;
 	CString		_filepath;
-	ZMap		_z$;
-	SMap		_s$;
+	ZMap		_z$; // indexed on name
+	SMap		_s$; // indexed on name
 	CArray <STablemapRegion, STablemapRegion>			_r$;
 	CArray <STablemapFont, STablemapFont>				_t$;
-	std::map<CString, int>								_hexmashes[4]; // Font _hexmashes for fast lookups - font type 0-3 are indexed in the array
 	CArray <STablemapHashPoint, STablemapHashPoint>		_p$;
-	CArray <STablemapHashValue, STablemapHashValue>		_h$;
-	std::map<uint32_t, int>								_hashes[4]; // Region _hashes for fast lookups - hash type 0-3 are indexed in the array
-	CArray <STablemapImage, STablemapImage>				_i$;
+	HMap		_h$[4]; // indexed on hash
+	IMap		_i$; // indexed on a hash of: name+all pixels in RBGA hex format
+
+	std::map<CString, int>								_hexmashes[4]; // Font _hexmashes for fast lookups - font type 0-3 are indexed in the array
 	SR$Indexes	_r$indexes;
 
 private:

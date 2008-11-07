@@ -134,7 +134,8 @@ const int CTransform::CTypeTransform(const STablemapRegion *region, const HDC hd
 
 const int CTransform::ITypeTransform(const STablemapRegion *region, const HDC hdc, CString *text) 
 {
-	int					width = 0, height = 0, x = 0, y = 0, i = 0, best_match = 0, result = 0;
+	int					width = 0, height = 0, x = 0, y = 0, i = 0, result = 0;
+	IMapCI				best_match = p_tablemap->i$()->end();
 	unsigned int		smallest_pix_diff = 0;
 	int					retval=ERR_NOTHING_TO_SCRAPE;
 	HBITMAP				hbm = NULL;
@@ -196,27 +197,26 @@ const int CTransform::ITypeTransform(const STablemapRegion *region, const HDC hd
 	}
 
 	// scan through all i$ records and find the one that has the smallest pixel difference
-	best_match = -1;
 	smallest_pix_diff = 0xffffffff;
-	for (i=0; i<(int) p_tablemap->i$()->GetSize(); i++)
+	for (IMapCI i_iter=p_tablemap->i$()->begin(); i_iter!=p_tablemap->i$()->end(); i_iter++)
 	{	
-		if (p_tablemap->i$()->GetAt(i).width == width && p_tablemap->i$()->GetAt(i).height == height)
+		if (i_iter->second.width == width && i_iter->second.height == height)
 		{
 			// point ImgB to i$ record that was populated on table map load
-			args.ImgB = p_tablemap->i$()->GetAt(i).image;
+			args.ImgB = i_iter->second.image;
 
 			// Compare the two images
 			result = Yee_Compare(args);
 			if (args.PixelsFailed==0)
 			{
-				best_match = i;
+				best_match = i_iter;
 				smallest_pix_diff = 0;
 				break;
 			}
 
 			if (args.PixelsFailed < smallest_pix_diff)
 			{
-				best_match = i;
+				best_match = i_iter;
 				smallest_pix_diff = args.PixelsFailed;
 			}
 		}
@@ -228,7 +228,7 @@ const int CTransform::ITypeTransform(const STablemapRegion *region, const HDC hd
 	// return the i$ record text, if the smallest pixel difference is less than the threshold
 	if (smallest_pix_diff<args.ThresholdPixels)
 	{
-		*text = p_tablemap->i$()->GetAt(best_match).name.GetString();
+		*text = best_match->second.name.GetString();
 		retval = ERR_GOOD_SCRAPE_GENERAL;
 	}
 	else
@@ -253,13 +253,12 @@ const int CTransform::HTypeTransform(const STablemapRegion *region, const HDC hd
 	int					retval=ERR_NOTHING_TO_SCRAPE;
 	HBITMAP				hbm = NULL;
 	BYTE				*pBits = NULL, red = 0, green = 0, blue = 0;
-	std::map<uint32_t, int>::const_iterator		hashindex;
 
 	width = region->right - region->left;
 	height = region->bottom - region->top;
 	hash_type = region->transform.GetString()[1] - '0';
 	
-	if (p_tablemap->hashes(hash_type)->empty())
+	if (p_tablemap->h$(hash_type)->empty())
 		return ERR_NO_HASH_MATCH;
 
 	// Allocate heap space for BITMAPINFO
@@ -332,10 +331,10 @@ const int CTransform::HTypeTransform(const STablemapRegion *region, const HDC hd
 	}
 
 	// lookup hash in h$ records
-	hashindex = p_tablemap->hashes(hash_type)->find(hash);
+	HMapCI h_iter = p_tablemap->h$(hash_type)->find(hash);
 
 	// no hash match
-	if (hashindex == p_tablemap->hashes(hash_type)->end()) 
+	if (h_iter == p_tablemap->h$(hash_type)->end()) 
 	{ 
 		retval = ERR_NO_HASH_MATCH; 
 		*text = "";
@@ -344,7 +343,7 @@ const int CTransform::HTypeTransform(const STablemapRegion *region, const HDC hd
 	else 
 	{ 
 		retval = ERR_GOOD_SCRAPE_GENERAL; 
-		*text = p_tablemap->h$()->GetAt(hashindex->second).name;
+		*text = h_iter->second.name;
 	}
 
 	// Clean up

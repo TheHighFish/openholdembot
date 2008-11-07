@@ -2,7 +2,7 @@
 #include <Math.h>
 
 #include "CTablemap.h"
-#include "..\CTransform\CTransform.h"
+#include "../CTransform/CTransform.h"
 
 #ifdef OPENHOLDEM_PROGRAM
 #include "../OpenHoldem/debug.h"
@@ -38,15 +38,18 @@ void CTablemap::ClearTablemap()
 	_r$.RemoveAll();
 	_t$.RemoveAll();
 	_p$.RemoveAll();
-	_h$.RemoveAll();
-	_i$.RemoveAll();
+
+	for (int i=0; i<=3; i++)
+		_h$[i].clear();
+
+	_i$.clear();
 }
 
 int CTablemap::LoadTablemap(const char *_filename, const char *version, const bool check_ws_date, int *linenum, const bool disable_msgbox,
 							CString *loaded_version) 
 {
 	CString				strLine = "", strLineType = "", token = "", s = "", e = "", hexval = "", t = "";
-	int					i = 0, pos = 0, insert_point = 0, P = 0, j = 0, x = 0, y = 0, new_elem = 0;
+	int					i = 0, pos = 0, insert_point = 0, P = 0, j = 0, x = 0, y = 0;
 	bool				supported_version = false;
 	BYTE				alpha = 0, red = 0, green = 0, blue = 0;
 
@@ -196,7 +199,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			hold_size.height = atol(token.GetString());
 
 			if (!z$_insert(hold_size))
-				MessageBox(NULL, strLine, "ERROR adding size record", MB_OK | MB_TOPMOST);
+				MessageBox(NULL, strLine, "ERROR adding size record: " + hold_size.name, MB_OK | MB_TOPMOST);
 		}
 
 		// Handle s$ lines (symbols/string)
@@ -218,7 +221,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			else
 			{
 				if (!s$_insert(hold_symbol))
-					MessageBox(NULL, strLine, "ERROR adding symbol/string record", MB_OK | MB_TOPMOST);
+					MessageBox(NULL, strLine, "ERROR adding symbol/string record: " + hold_symbol.name, MB_OK | MB_TOPMOST);
 			}
 		}
 
@@ -394,11 +397,11 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 				 strLineType.Mid(2,1) == "$") 
 		{
 			// number
-			hold_hash_value.number = strLineType.GetString()[1] - '0';
-			if (hold_hash_value.number<0 || hold_hash_value.number>3)
+			int hash_group = strLineType.GetString()[1] - '0';
+			if (hash_group<0 || hash_group>3)
 			{
 				if (!disable_msgbox)
-					MessageBox(NULL, strLine, "In_valid hash group", MB_OK | MB_TOPMOST);
+					MessageBox(NULL, strLine, "Invalid hash group", MB_OK | MB_TOPMOST);
 	
 				return ERR_SYNTAX;
 			}
@@ -413,23 +416,9 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 
 			hold_hash_value.hash = strtoul(token.GetString(), 0, 16);
 
-			// Insert into array so it is sorted
-			P = (int) _h$.GetSize();
-			insert_point = -1;
-			for (j=0; j<P; j++) 
-			{
-				if (hold_hash_value.hash < _h$[j].hash)
-				{
-					insert_point = j;
-					j=P+1;
-				}
-			}
-
-			if (insert_point==-1)
-				_h$.Add(hold_hash_value);
-
-			else
-				_h$.InsertAt(insert_point, hold_hash_value);
+			// Add the new h$ record to the internal array
+			if (!h$_insert(hash_group, hold_hash_value))
+				MessageBox(NULL, strLine, "ERROR adding hash value record: " + hold_hash_value.name, MB_OK | MB_TOPMOST);			
 		}
 
 		// Handle i$ lines (images)
@@ -456,15 +445,12 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			if (hold_image.width * hold_image.height > MAX_IMAGE_WIDTH*MAX_IMAGE_HEIGHT)
 				return ERR_REGION_SIZE;
 
-			// Add the new i$ record to the internal array
-			new_elem = (int) _i$.Add(hold_image);
-
 			// Allocate space for "RGBAImage"
-			t = _i$[new_elem].name + ".ppm";
-			_i$[new_elem].image = new RGBAImage(_i$[new_elem].width, _i$[new_elem].height, t.GetString());
+			t = hold_image.name + ".ppm";
+			hold_image.image = new RGBAImage(hold_image.width, hold_image.height, t.GetString());
 
 			// read next "height" lines
-			for (y=0; y < (int) _i$[new_elem].height; y++) 
+			for (y=0; y < (int) hold_image.height; y++) 
 			{
 				(*linenum)++;
 				if (!ar.ReadString(strLine)) 
@@ -472,18 +458,22 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 					return ERR_SYNTAX;
 				}
 				// scan across "width" of line to get values
-				for (x=0; x < (int) _i$[new_elem].width; x++) 
+				for (x=0; x < (int) hold_image.width; x++) 
 				{
 					// unreverse bgra to abgr
 					hexval = strLine.Mid(x*8+6, 2) + strLine.Mid(x*8, 6);
-					_i$[new_elem].pixel[y*_i$[new_elem].width + x] = strtoul(hexval, 0, 16);
-					alpha = (_i$[new_elem].pixel[y*_i$[new_elem].width + x] >> 24) &0xff;
-					blue =  (_i$[new_elem].pixel[y*_i$[new_elem].width + x] >> 16) &0xff;
-					green = (_i$[new_elem].pixel[y*_i$[new_elem].width + x] >>  8) &0xff;
-					red =   (_i$[new_elem].pixel[y*_i$[new_elem].width + x] >>  0) &0xff;
-					_i$[new_elem].image->Set(red, green, blue, alpha, y*_i$[new_elem].width + x);
+					hold_image.pixel[y*hold_image.width + x] = strtoul(hexval, 0, 16);
+					alpha = (hold_image.pixel[y*hold_image.width + x] >> 24) &0xff;
+					blue =  (hold_image.pixel[y*hold_image.width + x] >> 16) &0xff;
+					green = (hold_image.pixel[y*hold_image.width + x] >>  8) &0xff;
+					red =   (hold_image.pixel[y*hold_image.width + x] >>  0) &0xff;
+					hold_image.image->Set(red, green, blue, alpha, y*hold_image.width + x);
 				}
 			}
+
+			// Add the new i$ record to the internal array
+			if (!i$_insert(hold_image))
+				MessageBox(NULL, strLine, "ERROR adding image record: " + hold_image.name, MB_OK | MB_TOPMOST);			
 		}
 
 		// Unknown line type
@@ -511,7 +501,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 {
 	CString		s = "", t = "", text = "";
-	int			N = 0, i = 0, j = 0, x = 0, y = 0;
+	int			i = 0, j = 0, x = 0, y = 0;
 	char		nowtime[26] = {0};
 
 	// Version
@@ -533,8 +523,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("//\r\n");
 	ar.WriteString("\r\n");
 	
-	ZMapCI z_iter = _z$.end();
-	for (z_iter=_z$.begin(); z_iter!=_z$.end(); z_iter++)
+	for (ZMapCI z_iter=_z$.begin(); z_iter!=_z$.end(); z_iter++)
 	{
 		s.Format("z$%-16s %d  %d\r\n", z_iter->second.name, z_iter->second.width, z_iter->second.height); 
 		ar.WriteString(s);
@@ -547,8 +536,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("//\r\n");
 	ar.WriteString("\r\n");
 
-	SMapCI s_iter = _s$.end();
-	for (s_iter=_s$.begin(); s_iter!=_s$.end(); s_iter++)
+	for (SMapCI s_iter=_s$.begin(); s_iter!=_s$.end(); s_iter++)
 	{
 		s.Format("s$%s", s_iter->second.name.GetString());
 		while (s.GetLength()<18) s.Append(" ");
@@ -563,8 +551,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("// regions\r\n");
 	ar.WriteString("//\r\n");
 	ar.WriteString("\r\n");
-	N = (int) _r$.GetSize();
-	for (i=0; i<N; i++) {
+	for (i=0; i<(int) _r$.GetSize(); i++) {
 		s.Format("r$%s", _r$[i].name.GetString());
 		while (s.GetLength()<18) s.Append(" ");
 		t.Format("%3d %3d %3d %3d %8x %4d ", 
@@ -586,8 +573,8 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("// fonts\r\n");
 	ar.WriteString("//\r\n");
 	ar.WriteString("\r\n");
-	N = (int) _t$.GetSize();
-	for (i=0; i<N; i++) {
+	for (i=0; i<(int) _t$.GetSize(); i++) 
+	{
 		s.Format("t%d$%c", _t$[i].group, _t$[i].ch);
 		for (j=0; j<_t$[i].x_count; j++) { 
 			t.Format(" %x", _t$[i].x[j]);
@@ -603,10 +590,8 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("// points\r\n");
 	ar.WriteString("//\r\n");
 	ar.WriteString("\r\n");
-	N = (int) _p$.GetSize();
-	for (i=0; i<N; i++) {
+	for (i=0; i<(int) _p$.GetSize(); i++)
 		s.Format("p%d$%4d %4d\r\n", _p$[i].number, _p$[i].x, _p$[i].y);  ar.WriteString(s);
-	}
 	ar.WriteString("\r\n");
 
 	// hash
@@ -614,13 +599,16 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("// hash\r\n");
 	ar.WriteString("//\r\n");
 	ar.WriteString("\r\n");
-	N = (int) _h$.GetSize();
-	for (i=0; i<N; i++) {
-		s.Format("h%d$%s", _h$[i].number, _h$[i].name.GetString());
-		while (s.GetLength()<19) { s.Append(" "); }
-		t.Format("%08x\r\n", _h$[i].hash);
-		s.Append(t);
-		ar.WriteString(s);
+	for (i=0; i<=3; i++)
+	{
+		for (HMapCI h_iter=_h$[i].begin(); h_iter!=_h$[i].end(); h_iter++)
+		{
+			s.Format("h%d$%s", i, h_iter->second.name.GetString());
+			while (s.GetLength()<19) { s.Append(" "); }
+			t.Format("%08x\r\n", h_iter->second.hash);
+			s.Append(t);
+			ar.WriteString(s);
+		}
 	}
 	ar.WriteString("\r\n");
 
@@ -629,16 +617,16 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("// images\r\n");
 	ar.WriteString("//\r\n");
 	ar.WriteString("\r\n");
-	N = (int) _i$.GetSize();
-	for (i=0; i<N; i++) {
-		s.Format("i$%-16s %-3d %-3d\n", _i$[i].name, _i$[i].width, _i$[i].height);
+	for (IMapCI i_iter=_i$.begin(); i_iter!=_i$.end(); i_iter++)
+	{
+		s.Format("i$%-16s %-3d %-3d\n", i_iter->second.name, i_iter->second.width, i_iter->second.height);
 		ar.WriteString(s);
 		for (y=0; y<(int) _i$[i].height; y++)
 		{
 			s = "";
 			for (x=0; x<(int) _i$[i].width; x++)
 			{
-				text.Format("%08x", _i$[i].pixel[y*_i$[i].width + x]);
+				text.Format("%08x", i_iter->second.pixel[y*i_iter->second.width + x]);
 				t = text.Mid(2, 6) + text.Mid(0,2);
 				//t = text;
 				s.Append(t);
@@ -657,7 +645,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 
 int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path) 
 {
-	int						N = 0, imageloop = 0, hashloop = 0, regionloop = 0, j = 0, insert_point = 0, hash_type = 0;
+	int						regionloop = 0, i = 0, j = 0;
 	CString					e = "", s = "";
 	uint32_t				pixels[200*150] = {0};
 	int						pixcount = 0;
@@ -668,11 +656,11 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 	uint32_t				hash_seed = 0;
 	STablemapHashValue		hold_hash_value;
 	STablemapHashValue		h$_record;
-	CArray <STablemapHashValue, STablemapHashValue>	new_hashes;
-	CArray <STablemapHashValue, STablemapHashValue>	unmatched_h$_records;
+	CArray <STablemapHashValue, STablemapHashValue> new_hashes[4];
+	CArray <STablemapHashValue, STablemapHashValue>	unmatched_h$_records[4];
 
 	// Get number of records of each type in this table map
-	if ((int) _i$.GetSize()==0) 
+	if (_i$.begin()==_i$.end()) 
 	{
 		MessageBox(hwnd, "No i$ records found - is this a master?", "'Profile' Error", MB_OK);
 		return ERR_NOTMASTER;
@@ -689,50 +677,32 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 			((_r$[regionloop].color & 0x000000ff)<<16);
 	}
 
-	// Loop through all the region (r$indexes.r$) records, and look for i3slider or i3handle
-	// Warn if these are found and remove them
-	//warning_displayed = false;
-	//for (regionloop=0; regionloop<(int) r$.GetSize(); regionloop++) {
-	//	if (r$[regionloop].name == "i3slider" ||
-	//		r$[regionloop].name == "i3handle")
-	//	{
-	//		if (!warning_displayed)
-	//		{
-	//			MessageBox(pMyMainWnd->GetSafeHwnd(), "This WinScrape 'profile' contains either a '_r$indexes.r$i3slider'\n"\
-	//												  "or '_r$indexes.r$i3handle' region definition.  OpenScrape/OpenHoldem\n"\
-	//												  "do not make use of these region types and they will not be\n"\
-	//												  "saved in the OpenScrape table map format.", "'Profile' Warning", MB_OK);
-	//			warning_displayed = true;
-	//		}
-
-	//		r$indexes.r$.RemoveAt(regionloop);
-	//	}
-	//}
-
 	// Loop through all the hash (h$) records, and check for a corresponding image (i$) record
+	// Log missing records, display message and error out if we can't find them all
 	all_i$_found = true;
-	unmatched_h$_records.RemoveAll();
+	for (i=0; i<=3; j++)
+		unmatched_h$_records[j].RemoveAll();
 
-	for (hashloop=0; hashloop<(int) _h$.GetSize(); hashloop++) 
+	for (i=0; i<=3; j++)
 	{
-		this_i$_found = false;
-		for (imageloop=0; imageloop<(int) _i$.GetSize(); imageloop++) 
+		for (HMapCI h_iter=_h$[i].begin(); h_iter!=_h$[i].end(); h_iter++)
 		{
-			if (_i$[imageloop].name == _h$[hashloop].name) 
+			this_i$_found = false;
+			for (IMapCI i_iter=_i$.begin(); i_iter!=_i$.end(); i_iter++)
 			{
-				this_i$_found = true;
-				imageloop = (int) _i$.GetSize() + 1;
+				if (i_iter->second.name == h_iter->second.name) 
+					this_i$_found = true;
 			}
-		}
-		if (!this_i$_found) 
-		{
-			all_i$_found = false;
-			h$_record.name = _h$[hashloop].name;
-			h$_record.hash = _h$[hashloop].hash;
-			h$_record.number = _h$[hashloop].number;
-			unmatched_h$_records.Add(h$_record);
-		}
 
+			if (!this_i$_found) 
+			{
+				all_i$_found = false;
+				h$_record.name = h_iter->second.name;
+				h$_record.hash = h_iter->second.hash;
+				unmatched_h$_records[i].Add(h$_record);
+			}
+
+		}
 	}
 
 	if (!all_i$_found) 
@@ -745,8 +715,9 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 			fprintf(fp, "<%s>\nConverting from: %s\n", timebuf, _filepath);
 			fprintf(fp, "h$ records with no matching i$ record:\n");
 
-			for (j=0; j<unmatched_h$_records.GetCount(); j++)
-				fprintf(fp, "\t%3d. h$%s\n", j+1, unmatched_h$_records[j].name.GetString());
+			for (i=0; i<=3; i++)
+				for (j=0; j<unmatched_h$_records[i].GetCount(); j++)
+					fprintf(fp, "\t%3d. h$%s\n", j+1, unmatched_h$_records[i].GetAt(j).name.GetString());
 
 			fprintf(fp, "=======================================================\n\n");
 			fclose(fp);
@@ -763,130 +734,93 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 		return ERR_INCOMPLETEMASTER;
 	}
 
-	// Init new hash array
-	new_hashes.RemoveAll();
+	// Prepare CArray that holds temporary hash records
+	for (i=0; i<=3; i++)
+		new_hashes[i].RemoveAll();
 
-	// Loop through each of the image records and create _hashes
-	for (imageloop=0; imageloop<(int) _i$.GetSize(); imageloop++) 
+	// Loop through each of the image records and create hashes
+	for (IMapCI i_iter=_i$.begin(); i_iter!=_i$.end(); i_iter++) 
 	{
-		// Loop through the h$ records to find all the _hashes that we have to create for this image record
-		for (hashloop=0; hashloop<(int) _h$.GetSize(); hashloop++) 
+		// Loop through the h$ records to find all the hashes that we have to create for this image record
+		for (i=0; i<=3; i++)
 		{
-			if (_i$[imageloop].name == _h$[hashloop].name) 
+			for (HMapCI h_iter=_h$[i].begin(); h_iter!=_h$[i].end(); h_iter++) 
 			{
-				
-				hash_type = _h$[hashloop].number;
-
-				// create hash, based on type
-				hold_hash_value.name = _i$[imageloop].name;
-				hold_hash_value.number = hash_type;
-
-				// Get count of pixels (p$ records)
-				pixcount = 0;
-				for (j=0; j<(int) _p$.GetSize(); j++) 
+				if (i_iter->second.name == h_iter->second.name) 
 				{
-					if (_p$[j].number == hash_type &&
-						_p$[j].x <= _i$[imageloop].width &&
-						_p$[j].y <= _i$[imageloop].height) 
+					// create hash, based on type
+					hold_hash_value.name = i_iter->second.name;
+
+					// Get count of pixels (p$ records)
+					pixcount = 0;
+					for (j=0; j<(int) _p$.GetSize(); j++) 
 					{
-							pixels[pixcount++] = 
-								_i$[imageloop].pixel[_p$[j].y * _i$[imageloop].width +
-															 _p$[j].x];				
+						if (_p$[j].number == i &&
+							_p$[j].x <= i_iter->second.width &&
+							_p$[j].y <= i_iter->second.height) 
+						{
+								pixels[pixcount++] = i_iter->second.pixel[_p$[j].y * i_iter->second.width + _p$[j].x];				
+						}
 					}
-				}
 
-				if (hash_type>=0 && hash_type<=3) 
-				{
-				
-					hash_seed = hash_type==0 ? HASH_SEED_0 :
-								hash_type==1 ? HASH_SEED_1 :
-								hash_type==2 ? HASH_SEED_2 :
-								hash_type==3 ? HASH_SEED_3 : 0;
+					hash_seed = i==0 ? HASH_SEED_0 :
+								i==1 ? HASH_SEED_1 :
+								i==2 ? HASH_SEED_2 :
+								i==3 ? HASH_SEED_3 : 0;
 
 					// Create hash
 					if (pixcount==0) 
-					{
-						hold_hash_value.hash = hashword(&_i$[imageloop].pixel[0], 
-														_i$[imageloop].width * _i$[imageloop].height,
-														hash_seed);
-					}
+						hold_hash_value.hash = hashword(&i_iter->second.pixel[0], i_iter->second.width * i_iter->second.height, hash_seed);
 					else 
-					{
 						hold_hash_value.hash = hashword(&pixels[0], pixcount, hash_seed);
-					}
-				}
 
-				// bad hash type
-				else 
-				{
-					e.Format("In_valid hash type (%d) for image record <%s>", hash_type, _i$[imageloop].name.GetString()); 
-					MessageBox(hwnd, e, "In_valid hash type", MB_OK);
-					return ERR_INV_HASH_TYPE;
-				}
-
-				// Check for hash collision
-				N = (int) new_hashes.GetSize();
-				for (j=0; j<N; j++) {
-					if (hold_hash_value.hash == new_hashes[j].hash) 
+					// Check for hash collision
+					for (j=0; j<(int) new_hashes[i].GetSize(); j++) 
 					{
-						e.Format("Hash collision:\n	<%s> and <%s>\n\nTalk to an OpenHoldem developer, please.\n%s %08x %08x", 
-							_i$[imageloop].name.GetString(), 
-							new_hashes[j].name.GetString(),
-							_h$[hashloop].name,
-							hold_hash_value.hash, new_hashes[j].hash
-							); 
-						MessageBox(hwnd, e, "Hash collision", MB_OK);
-						return ERR_HASH_COLL;
+						if (hold_hash_value.hash == new_hashes[i].GetAt(j).hash) 
+						{
+							e.Format("Hash collision:\n	<%s> and <%s>\n\nTalk to an OpenHoldem developer, please.\n%s %08x %08x", 
+								hold_hash_value.name.GetString(), 
+								new_hashes[i].GetAt(j).name.GetString(),
+								hold_hash_value.name,
+								hold_hash_value.hash, new_hashes[i].GetAt(j).hash
+								); 
+							MessageBox(hwnd, e, "Hash collision", MB_OK);
+							return ERR_HASH_COLL;
+						}
 					}
+
+					// Store this new hash in the temporary holding CArray
+					new_hashes[i].Add(hold_hash_value);
 				}
-
-				// Find the right spot to insert this hash record (so list is sorted at the end)
-				N = (int) new_hashes.GetSize();
-				insert_point = -1;
-				for (j=0; j<N; j++) 
-				{
-					if (hold_hash_value.hash < new_hashes[j].hash) 
-					{
-						insert_point = j;
-						j=N+1;
-					}
-				}
-
-				if (insert_point==-1)
-					new_hashes.Add(hold_hash_value);
-
-				else
-					new_hashes.InsertAt(insert_point, hold_hash_value);
-			}
-		}  // for (hashloop=0; hashloop<num_hrecs; hashloop++)
-	} // for (imageloop=0; imageloop<num_irecs; imageloop++)
+			}  // for (HMapCI h_iter=_h$.begin(); h_iter!=_h$.end(); h_iter++) 
+		} // for (i=0; i<=3; i++)
+	} // for (IMapCI i_iter=_i$.begin(); i_iter!=_i$.end(); i_iter++) 
 
 
-	CSLock lock(m_critsec);
-	
-	// Kill the existing h$ records, and replace with new_hashes records
-	_h$.RemoveAll();
-	for (j=0; j<(int) new_hashes.GetSize(); j++) 
+	// Copy the temporary new hash CArray to the internal std::map
+	for (i=0; i<=3; i++)
+		h$_clear(i);
+
+	for (i=0; i<=3; i++)
 	{
-		hold_hash_value.name = new_hashes[j].name;
-		hold_hash_value.number = new_hashes[j].number;
-		hold_hash_value.hash = new_hashes[j].hash;
-		_h$.Add(hold_hash_value);
+		for (j=0; j<(int) new_hashes[i].GetSize(); j++)
+		{
+			if (!h$_insert(i, new_hashes[i].GetAt(j)))
+			{
+				e.Format("Hash record: %d %s %08x", i, new_hashes[i].GetAt(j).name, new_hashes[i].GetAt(j).hash);
+				MessageBox(NULL, e, "ERROR adding hash value record: " + new_hashes[i].GetAt(j).name, MB_OK | MB_TOPMOST);	
+			}
+		}
 	}
-
-	// Populate h$ hashes std::map for fast lookups
-	for (j=0; j<=3; j++)
-		_hashes[j].clear();
-	for (j=0; j<(int) _h$.GetSize(); j++)
-		_hashes[_h$[j].number].insert(std::pair<uint32_t, int> (_h$[j].hash, j));
 
 	return SUCCESS;
 }
 
 int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 {
-	int						num_irecs = 0, num_hrecs = 0, num_precs = 0, num_rrecs = 0, N = 0;
-	int						imageloop = 0, hashloop = 0, j = 0, insert_point = 0, hash_type = 0;
+	int						num_precs = 0, num_rrecs = 0;
+	int						i = 0, j = 0;
 	CString					e = "", s = "";
 	uint32_t				pixels[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0}, filtered_pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0};
 	int						pixcount = 0;
@@ -896,45 +830,44 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 	CString					logpath = "";
 	STablemapHashValue		hold_hash_value;
 	STablemapHashValue		h$_record;
-	CArray <STablemapHashValue, STablemapHashValue>	new_hashes;
-	CArray <STablemapHashValue, STablemapHashValue>	unmatched_h$_records;
+	CArray <STablemapHashValue, STablemapHashValue>	new_hashes[4];
+	CArray <STablemapHashValue, STablemapHashValue>	unmatched_h$_records[4];
 
 	// Get number of records of each type in this table map
-	num_irecs = (int) _i$.GetSize();
-	if (num_irecs==0) 
+	if (_i$.begin()==_i$.end()) 
 	{
 		MessageBox(hwnd, "No images found - cannot create hashes.", "Table Map Error", MB_OK);
 		return ERR_NOTMASTER;
 	}
 
-	num_hrecs = (int) _h$.GetSize();
 	num_precs = (int) _p$.GetSize();
 	num_rrecs = (int) _r$.GetSize();
 
 	// Loop through all the hash (h$) records, and check for a corresponding image (i$) record
+	// Log missing records and display message if we can't find them all
 	all_i$_found = true;
-	unmatched_h$_records.RemoveAll();
+	for (i=0; i<=3; i++)
+		unmatched_h$_records[i].RemoveAll();
 
-	for (hashloop=0; hashloop<num_hrecs; hashloop++) 
+	for (i=0; i<=3; i++)
 	{
-		this_i$_found = false;
-		for (imageloop=0; imageloop<num_irecs; imageloop++) 
+		for (HMapCI h_iter=_h$[i].begin(); h_iter!=_h$[i].end(); h_iter++)
 		{
-			if (_i$[imageloop].name == _h$[hashloop].name) 
+			this_i$_found = false;
+			for (IMapCI i_iter=_i$.begin(); i_iter!=_i$.end(); i_iter++) 
 			{
-				this_i$_found = true;
-				imageloop = num_irecs + 1;
+				if (i_iter->second.name == h_iter->second.name) 
+					this_i$_found = true;
+			}
+
+			if (!this_i$_found) 
+			{
+				all_i$_found = false;
+				h$_record.name = h_iter->second.name;
+				h$_record.hash = h_iter->second.hash;
+				unmatched_h$_records[i].Add(h$_record);
 			}
 		}
-		if (!this_i$_found) 
-		{
-			all_i$_found = false;
-			h$_record.name = _h$[hashloop].name;
-			h$_record.hash = _h$[hashloop].hash;
-			h$_record.number = _h$[hashloop].number;
-			unmatched_h$_records.Add(h$_record);
-		}
-
 	}
 
 	if (!all_i$_found) 
@@ -946,8 +879,9 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 			fprintf(fp, "<%s>\nCreating _hashes\n", timebuf);
 			fprintf(fp, "Hashes with no matching image:\n");
 
-			for (j=0; j<unmatched_h$_records.GetCount(); j++) 
-				fprintf(fp, "\t%3d. h$%s\n", j+1, unmatched_h$_records[j].name.GetString());
+			for (i=0; i<=3; i++)
+				for (j=0; j<unmatched_h$_records[i].GetCount(); j++) 
+					fprintf(fp, "\t%3d. h$%s\n", j+1, unmatched_h$_records[i].GetAt(j).name.GetString());
 
 			fprintf(fp, "=======================================================\n\n");
 			fclose(fp);
@@ -960,119 +894,92 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 	}
 
 	// Init new hash array
-	new_hashes.RemoveAll();
+	for (i=0; i<=3; i++)
+		new_hashes[i].RemoveAll();
 
-	// Loop through each of the image records and create _hashes
-	for (imageloop=0; imageloop<num_irecs; imageloop++) 
+	// Loop through each of the image records and create hashes
+	for (IMapCI i_iter=_i$.begin(); i_iter!=_i$.end(); i_iter++) 
 	{
-		// Loop through the h$ records to find all the _hashes that we have to create for this image record
-		for (hashloop=0; hashloop<num_hrecs; hashloop++) 
+		// Loop through the h$ records to find all the hashes that we have to create for this image record
+		for (i=0; i<=3; i++)
 		{
-			if (_i$[imageloop].name == _h$[hashloop].name) 
+			for (HMapCI h_iter=_h$[i].begin(); h_iter!=_h$[i].end(); h_iter++) 
 			{
-				
-				hash_type = _h$[hashloop].number;
-
-				// create hash, based on type
-				hold_hash_value.name = _i$[imageloop].name;
-				hold_hash_value.number = hash_type;
-
-				// all pixel hash
-				if (hash_type == 0) 
+				if (i_iter->second.name == h_iter->second.name) 
 				{
+					// create hash, based on type
+					hold_hash_value.name = i_iter->second.name;
 
-					// only create hash based on rgb values - ignore alpha
-					for (j=0; j < (int) (_i$[imageloop].width * _i$[imageloop].height); j++)
-						filtered_pix[j] = _i$[imageloop].pixel[j] & 0x00ffffff;
-
-					hold_hash_value.hash = hashword(&filtered_pix[0], _i$[imageloop].width * _i$[imageloop].height, HASH_SEED_0);
-				}
-
-				// selected pixel hash
-				else if (hash_type>=1 && hash_type<=3) 
-				{
-					pixcount = 0;
-					for (j=0; j<num_precs; j++) 
+					// all pixel hash
+					if (i == 0) 
 					{
-						if (_p$[j].number == hash_type &&
-							_p$[j].x <= _i$[imageloop].width &&
-							_p$[j].y <= _i$[imageloop].height) 
+						// only create hash based on rgb values - ignore alpha
+						for (j=0; j < (int) (i_iter->second.width * i_iter->second.height); j++)
+							filtered_pix[j] = i_iter->second.pixel[j] & 0x00ffffff;
+
+						hold_hash_value.hash = hashword(&filtered_pix[0], i_iter->second.width * i_iter->second.height, HASH_SEED_0);
+					}
+
+					// selected pixel hash
+					else if (i>=1 && i<=3) 
+					{
+						pixcount = 0;
+						for (j=0; j<num_precs; j++) 
 						{
+							if (_p$[j].number == i &&
+								_p$[j].x <= i_iter->second.width &&
+								_p$[j].y <= i_iter->second.height) 
+							{
 								// only create hash based on rgb values - ignore alpha
-								pixels[pixcount++] = 
-									_i$[imageloop].pixel[_p$[j].y * _i$[imageloop].width + _p$[j].x] & 0x00ffffff;
+								pixels[pixcount++] = i_iter->second.pixel[_p$[j].y * i_iter->second.width + _p$[j].x] & 0x00ffffff;
+							}
+						}
+
+						if (i==1)
+								hold_hash_value.hash = hashword(&pixels[0], pixcount, HASH_SEED_1);
+						if (i==2)
+								hold_hash_value.hash = hashword(&pixels[0], pixcount, HASH_SEED_2);
+						if (i==3)
+								hold_hash_value.hash = hashword(&pixels[0], pixcount, HASH_SEED_3);
+
+					}
+
+					// Check for hash collision
+					for (j=0; j<(int) new_hashes[i].GetSize(); j++) 
+					{
+						if (hold_hash_value.hash == new_hashes[i].GetAt(j).hash) 
+						{
+							e.Format("Hash collision:\n	<%s> and <%s>\n\nTalk to an OpenHoldem developer, please.", 
+								i_iter->second.name.GetString(), 
+								new_hashes[i].GetAt(j).name.GetString()); 
+							MessageBox(hwnd, e, "Hash collision", MB_OK);
+							return ERR_HASH_COLL;
 						}
 					}
 
-					if (hash_type==1)
-							hold_hash_value.hash = hashword(&pixels[0], pixcount, HASH_SEED_1);
-					if (hash_type==2)
-							hold_hash_value.hash = hashword(&pixels[0], pixcount, HASH_SEED_2);
-					if (hash_type==3)
-							hold_hash_value.hash = hashword(&pixels[0], pixcount, HASH_SEED_3);
-
+					// Store this new hash in the temporary holding CArray
+					new_hashes[i].Add(hold_hash_value);
 				}
-
-				// bad hash type
-				else 
-				{
-					e.Format("Invalid hash type (%d) for image record <%s>", hash_type, _i$[imageloop].name.GetString()); 
-					MessageBox(hwnd, e, "Invalid hash type", MB_OK);
-					return ERR_INV_HASH_TYPE;
-				}
-
-				// Check for hash collision
-				N = (int) new_hashes.GetSize();
-				for (j=0; j<N; j++) 
-				{
-					if (hold_hash_value.hash == new_hashes[j].hash) 
-					{
-						e.Format("Hash collision:\n	<%s> and <%s>\n\nTalk to an OpenHoldem developer, please.", 
-							_i$[imageloop].name.GetString(), 
-							new_hashes[j].name.GetString()); 
-						MessageBox(hwnd, e, "Hash collision", MB_OK);
-						return ERR_HASH_COLL;
-					}
-				}
-
-				// Find the right spot to insert this hash record (so list is sorted at the end)
-				N = (int) new_hashes.GetSize();
-				insert_point = -1;
-				for (j=0; j<N; j++) 
-				{
-					if (hold_hash_value.hash < new_hashes[j].hash) 
-					{
-						insert_point = j;
-						j=N+1;
-					}
-				}
-				if (insert_point==-1)
-					new_hashes.Add(hold_hash_value);
-
-				else
-					new_hashes.InsertAt(insert_point, hold_hash_value);
-			}
-		}  // for (hashloop=0; hashloop<num_hrecs; hashloop++)
-	} // for (imageloop=0; imageloop<num_irecs; imageloop++)
+			}  // for (HMapCI h_iter=_h$.begin(); h_iter!=_h$.end(); h_iter++)
+		} // for (i=0; i<=3; i++)
+	} // for (IMapCI i_iter=_i$.begin(); i_iter!=_i$.end(); i_iter++)
 
 
-	CSLock lock(m_critsec);
-	
-	// Kill the existing h$ records, and replace with new_hashes records
-	_h$.RemoveAll();
-	for (j=0; j<(int) new_hashes.GetSize(); j++) 
+	// Copy the temporary new hash CArray to the internal std::map
+	for (i=0; i<=3; i++)
+		h$_clear(i);
+
+	for (i=0; i<=3; i++)
 	{
-		hold_hash_value.name = new_hashes[j].name;
-		hold_hash_value.number = new_hashes[j].number;
-		hold_hash_value.hash = new_hashes[j].hash;
-		_h$.Add(hold_hash_value);
+		for (j=0; j<(int) new_hashes[i].GetSize(); j++)
+		{
+			if (!h$_insert(i, new_hashes[i].GetAt(j)))
+			{
+				e.Format("Hash record: %d %s %08x", i, new_hashes[i].GetAt(j).name, new_hashes[i].GetAt(j).hash);
+				MessageBox(NULL, e, "ERROR adding hash value record: " + hold_hash_value.name, MB_OK | MB_TOPMOST);	
+			}
+		}
 	}
-
-	// Populate h$ hashes std::map for fast lookups
-	for (j=0; j<=3; j++)
-		_hashes[j].clear();
-	for (j=0; j<(int) _h$.GetSize(); j++)
-		_hashes[_h$[j].number].insert(std::pair<uint32_t, int> (_h$[j].hash, j));
 
 	if (!all_i$_found)  return ERR_INCOMPLETEMASTER;
 
@@ -1457,15 +1364,32 @@ void CTablemap::UpdateHexmashesHashes(const int group)
 {
 	int j = 0;
 
+	CSLock lock(m_critsec);
+
 	// Populate t$ hexmash std::map for fast lookups
 	_hexmashes[group].clear();
 	for (j=0; j<(int) _t$.GetSize(); j++)
 		if (_t$[j].group == group)
 			_hexmashes[group].insert(std::pair<CString, int> (_t$[j].hexmash, j));
+}
 
-	// Populate h$ hashes std::map for fast lookups
-	_hashes[group].clear();
-	for (j=0; j<(int) _h$.GetSize(); j++)
-		if (_h$[j].number == group)
-			_hashes[group].insert(std::pair<uint32_t, int> (_h$[j].hash, j));
+// Creates the 32bit hash for an image record using name and pixels
+uint32_t CTablemap::CreateI$Index(const CString name, const int width, const int height, const uint32_t *pixels)
+{
+	uint32_t *uints = new uint32_t[MAX_HASH_WIDTH*MAX_HASH_HEIGHT + name.GetLength()];
+	int c = 0, i = 0;
+
+	// Put the ascii value of each letter into a uint32_t
+	for (i=0; i<name.GetLength(); i++)
+		uints[c++] = name.Mid(i,1).GetString()[0];
+
+	// Now the pixels
+	for (i=0; i<(int) (height * width); i++)
+		uints[c++] = pixels[i];
+
+	uint32_t index = hashword(&uints[0], height * width + name.GetLength(), 0x71e9ff36);
+
+	delete [] uints;
+
+	return index;
 }
