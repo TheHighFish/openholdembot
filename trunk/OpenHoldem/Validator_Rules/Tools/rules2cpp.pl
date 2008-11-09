@@ -39,7 +39,8 @@ while (<>)
 	s/TASTCASE/TESTCASE/g;
 	# Print to stdout without change
 	# * lines, that shall stay as is
-	# * lines, that already got converted
+	# * lines, that already got converted (including "gws")
+	# * preprocessor macros ("#define")
 	# * empty lines
 	# * comments
 	if ((/^.*BEGIN_TESTCASE.*$/)
@@ -48,6 +49,7 @@ while (<>)
 		|| (/^.*SYMBOLS_POSSIBLY_AFFECTED.*$/)
 		|| (/^.*END_TESTCASE.*$/)
 		|| (/^.*gws.*$/)
+		|| (/^#define.*$/)
 		|| (/^[ ]*$/)
 		|| (/^.*\/\/.*$/))
 	{
