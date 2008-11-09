@@ -42,7 +42,7 @@ COpenScrapeView::COpenScrapeView()
 	yellow_brush.CreateSolidBrush(COLOR_YELLOW);
 
 	dragging = false;
-	dragged_region = -1;
+	dragged_region = "";
 
 	drawing_rect = drawing_started = false;
 	hCurDrawRect = ::LoadCursor(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDC_DRAWRECTCURSOR));
@@ -76,7 +76,6 @@ void COpenScrapeView::OnDraw(CDC* pDC)
 										      pDoc->attached_rect.right - pDoc->attached_rect.left, 
 										      pDoc->attached_rect.bottom - pDoc->attached_rect.top);
 	HBITMAP		old_bitmap1, old_bitmap2;
-	int			i, N;
 	CMainFrame	*pmyframe = (CMainFrame*)AfxGetMainWnd(); 
 	RECT		crect;
 
@@ -109,11 +108,10 @@ void COpenScrapeView::OnDraw(CDC* pDC)
 	// Draw all region rectangles
 	if (pmyframe->show_regions)
 	{
-		N = (int) p_tablemap->r$()->GetSize();
-		
-		for (i=0; i<N; i++)
+		for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++)
 		{
-			if ( (i==dragged_region && dragging) || (i==drawrect_region && drawing_rect && drawing_started) )
+			if ( (r_iter->second.name==dragged_region && dragging) || 
+				 (r_iter->second.name==drawrect_region && drawing_rect && drawing_started) )
 			{
 				// Set pen and brush
 				pTempPen = (CPen*)pDC->SelectObject(black_dot_pen);
@@ -121,7 +119,7 @@ void COpenScrapeView::OnDraw(CDC* pDC)
 				pTempBrush = (CBrush*)pDC->SelectObject(GetStockObject(NULL_BRUSH));
 				oldbrush.FromHandle((HBRUSH)pTempBrush);
 
-				pDC->Rectangle(p_tablemap->r$()->GetAt(i).left-1, p_tablemap->r$()->GetAt(i).top-1, p_tablemap->r$()->GetAt(i).right+1, p_tablemap->r$()->GetAt(i).bottom+1);
+				pDC->Rectangle(r_iter->second.left-1, r_iter->second.top-1, r_iter->second.right+1, r_iter->second.bottom+1);
 
 				pDC->SelectObject(oldpen);
 				pDC->SelectObject(oldbrush);
@@ -135,7 +133,7 @@ void COpenScrapeView::OnDraw(CDC* pDC)
 				pTempBrush = (CBrush*)pDC->SelectObject(GetStockObject(NULL_BRUSH));
 				oldbrush.FromHandle((HBRUSH)pTempBrush);
 
-				pDC->Rectangle(p_tablemap->r$()->GetAt(i).left-1, p_tablemap->r$()->GetAt(i).top-1, p_tablemap->r$()->GetAt(i).right+1, p_tablemap->r$()->GetAt(i).bottom+1);
+				pDC->Rectangle(r_iter->second.left-1, r_iter->second.top-1, r_iter->second.right+1, r_iter->second.bottom+1);
 
 				pDC->SelectObject(oldpen);
 				pDC->SelectObject(oldbrush);
@@ -176,7 +174,6 @@ COpenScrapeDoc* COpenScrapeView::GetDocument() const // non-debug version is inl
 void COpenScrapeView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	COpenScrapeDoc		*pDoc = GetDocument();
-	int					i;
 	CString				sel = theApp.m_TableMapDlg->m_TableMapTree.GetItemText(theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem());	
 	HTREEITEM			temp_hti, imagepar_hti;
 	bool				found;
@@ -188,32 +185,28 @@ void COpenScrapeView::OnLButtonDown(UINT nFlags, CPoint point)
 		drawrect_start = point;
 		drawing_started = true;
 		
-		for (i=0; i<p_tablemap->r$()->GetSize(); i++)
+		RMapI r_iter = p_tablemap->set_r$()->find(sel.GetString());
+		
+		if (r_iter != p_tablemap->r$()->end())
 		{
-			if (p_tablemap->r$()->GetAt(i).name == sel)
-			{
-				drawrect_region = i;
+			drawrect_region = r_iter->second.name;
 
-				// Update internal structure
-				p_tablemap->set_r$_left(drawrect_region, point.x);
-				p_tablemap->set_r$_top(drawrect_region, point.y);
-				p_tablemap->set_r$_right(drawrect_region, point.x);
-				p_tablemap->set_r$_bottom(drawrect_region, point.y);
+			// Update internal structure
+			r_iter->second.left = point.x;
+			r_iter->second.top = point.y;
+			r_iter->second.right = point.x;
+			r_iter->second.bottom = point.y;
 
-				// Update table map dialog
-				text.Format("%d", point.x);
-				theApp.m_TableMapDlg->m_Left.SetWindowText(text.GetString());
-				theApp.m_TableMapDlg->m_Right.SetWindowText(text.GetString());
-				text.Format("%d", point.y);
-				theApp.m_TableMapDlg->m_Top.SetWindowText(text.GetString());
-				theApp.m_TableMapDlg->m_Bottom.SetWindowText(text.GetString());
+			// Update table map dialog
+			text.Format("%d", point.x);
+			theApp.m_TableMapDlg->m_Left.SetWindowText(text.GetString());
+			theApp.m_TableMapDlg->m_Right.SetWindowText(text.GetString());
+			text.Format("%d", point.y);
+			theApp.m_TableMapDlg->m_Top.SetWindowText(text.GetString());
+			theApp.m_TableMapDlg->m_Bottom.SetWindowText(text.GetString());
 
-				Invalidate(false);
-				i = (int) p_tablemap->r$()->GetSize() + 1;
-
-			}
+			Invalidate(false);
 		}
-
 	}
 
 	// Otherwise...
@@ -222,35 +215,34 @@ void COpenScrapeView::OnLButtonDown(UINT nFlags, CPoint point)
 		// Shift click means we want to drag the region
 		if (nFlags & MK_SHIFT)
 		{
-			for (i=0; i<p_tablemap->r$()->GetSize(); i++)
+			RMapCI r_iter = p_tablemap->r$()->find(sel.GetString());
+			
+			if (r_iter != p_tablemap->r$()->end())
 			{
-				if (point.x >= (LONG) p_tablemap->r$()->GetAt(i).left-1 &&
-					point.x <= (LONG) p_tablemap->r$()->GetAt(i).right+1 &&
-					point.y >= (LONG) p_tablemap->r$()->GetAt(i).top-1 &&
-					point.y <= (LONG) p_tablemap->r$()->GetAt(i).bottom+1 &&
-					(theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem() == NULL || p_tablemap->r$()->GetAt(i).name == sel) )
+				if (point.x >= (LONG) r_iter->second.left-1 &&
+					point.x <= (LONG) r_iter->second.right+1 &&
+					point.y >= (LONG) r_iter->second.top-1 &&
+					point.y <= (LONG) r_iter->second.bottom+1)
 				{
 					dragging = true;
-					dragged_region = i;
-					drag_left_offset = point.x - p_tablemap->r$()->GetAt(i).left;
-					drag_top_offset = point.y - p_tablemap->r$()->GetAt(i).top;
+					dragged_region = r_iter->second.name;
+					drag_left_offset = point.x - r_iter->second.left;
+					drag_top_offset = point.y - r_iter->second.top;
 					Invalidate(false);
-					i = (int) p_tablemap->r$()->GetSize() + 1;
 				}
 			}
 		}
 
-
 		// No shift means just select the region in the tree
 		else
 		{
-			for (i=0; i<p_tablemap->r$()->GetSize(); i++)
+			for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++)
 			{
-				if (point.x >= (LONG) p_tablemap->r$()->GetAt(i).left-1 &&
-					point.x <= (LONG) p_tablemap->r$()->GetAt(i).right+1 &&
-					point.y >= (LONG) p_tablemap->r$()->GetAt(i).top-1 &&
-					point.y <= (LONG) p_tablemap->r$()->GetAt(i).bottom+1 &&
-					p_tablemap->r$()->GetAt(i).name != sel)
+				if (point.x >= (LONG) r_iter->second.left-1 &&
+					point.x <= (LONG) r_iter->second.right+1 &&
+					point.y >= (LONG) r_iter->second.top-1 &&
+					point.y <= (LONG) r_iter->second.bottom+1 &&
+					r_iter->second.name != sel)
 				{
 
 					// Find parent node
@@ -258,7 +250,9 @@ void COpenScrapeView::OnLButtonDown(UINT nFlags, CPoint point)
 					imagepar_hti = NULL;
 					while (temp_hti && imagepar_hti==NULL)
 					{
-						if (theApp.m_TableMapDlg->m_TableMapTree.GetItemText(temp_hti) == "Regions")  imagepar_hti = temp_hti;
+						if (theApp.m_TableMapDlg->m_TableMapTree.GetItemText(temp_hti) == "Regions")  
+							imagepar_hti = temp_hti;
+
 						temp_hti = theApp.m_TableMapDlg->m_TableMapTree.GetNextItem(temp_hti, TVGN_NEXT);
 					}
 
@@ -267,13 +261,13 @@ void COpenScrapeView::OnLButtonDown(UINT nFlags, CPoint point)
 					found = false;
 					while (temp_hti && !found)
 					{
-						if (p_tablemap->r$()->GetAt(i).name == theApp.m_TableMapDlg->m_TableMapTree.GetItemText(temp_hti))  found = true;
-						else temp_hti = theApp.m_TableMapDlg->m_TableMapTree.GetNextItem(temp_hti, TVGN_NEXT);
+						if (r_iter->second.name == theApp.m_TableMapDlg->m_TableMapTree.GetItemText(temp_hti))  
+							found = true;
+						else 
+							temp_hti = theApp.m_TableMapDlg->m_TableMapTree.GetNextItem(temp_hti, TVGN_NEXT);
 					}
 
 					theApp.m_TableMapDlg->m_TableMapTree.SelectItem(temp_hti);
-
-					i = (int) p_tablemap->r$()->GetSize() + 1;
 				}
 			}
 		}
@@ -291,21 +285,26 @@ void COpenScrapeView::OnLButtonUp(UINT nFlags, CPoint point)
 		drawing_rect = false;
 		drawing_started = false;
 
-		p_tablemap->set_r$_left(drawrect_region, drawrect_start.x<point.x ? drawrect_start.x : point.x);
-		p_tablemap->set_r$_top(drawrect_region, drawrect_start.y<point.y ? drawrect_start.y : point.y);
-		p_tablemap->set_r$_right(drawrect_region, drawrect_start.x>=point.x ? drawrect_start.x : point.x);
-		p_tablemap->set_r$_bottom(drawrect_region, drawrect_start.y>=point.y ? drawrect_start.y : point.y);
+		RMapI r_iter=p_tablemap->set_r$()->find(drawrect_region.GetString());
 
-		theApp.m_TableMapDlg->m_DrawRect.OnBnClicked();
-		Invalidate(false);
-		theApp.m_TableMapDlg->Invalidate(false);
+		if (r_iter != p_tablemap->r$()->end())
+		{
+			r_iter->second.left = drawrect_start.x<point.x ? drawrect_start.x : point.x;
+			r_iter->second.top = drawrect_start.y<point.y ? drawrect_start.y : point.y;
+			r_iter->second.right = drawrect_start.x>=point.x ? drawrect_start.x : point.x;
+			r_iter->second.bottom = drawrect_start.y>=point.y ? drawrect_start.y : point.y;
+
+			theApp.m_TableMapDlg->m_DrawRect.OnBnClicked();
+			Invalidate(false);
+			theApp.m_TableMapDlg->Invalidate(false);
+		}
 	}
 
 
 	else if (dragging)
 	{
 		dragging = false;
-		dragged_region = -1;
+		dragged_region = "";
 		Invalidate(false);
 		theApp.m_TableMapDlg->Invalidate(false);
 	}
@@ -322,53 +321,63 @@ void COpenScrapeView::OnMouseMove(UINT nFlags, CPoint point)
 
 	if (drawing_rect && drawing_started)
 	{
-		// Update internal structure for selected region
-		p_tablemap->set_r$_left(drawrect_region, drawrect_start.x<point.x ? drawrect_start.x : point.x);
-		p_tablemap->set_r$_top(drawrect_region, drawrect_start.y<point.y ? drawrect_start.y : point.y);
-		p_tablemap->set_r$_right(drawrect_region, drawrect_start.x>=point.x ? drawrect_start.x : point.x);
-		p_tablemap->set_r$_bottom(drawrect_region, drawrect_start.y>=point.y ? drawrect_start.y : point.y);
+		RMapI r_iter=p_tablemap->set_r$()->find(drawrect_region.GetString());
 
-		// Update table map dialog
-		text.Format("%d", p_tablemap->r$()->GetAt(drawrect_region).left);
-		theApp.m_TableMapDlg->m_Left.SetWindowText(text.GetString());
-		text.Format("%d", p_tablemap->r$()->GetAt(drawrect_region).top);
-		theApp.m_TableMapDlg->m_Top.SetWindowText(text.GetString());
-		text.Format("%d", p_tablemap->r$()->GetAt(drawrect_region).right);
-		theApp.m_TableMapDlg->m_Right.SetWindowText(text.GetString());
-		text.Format("%d", p_tablemap->r$()->GetAt(drawrect_region).bottom);
-		theApp.m_TableMapDlg->m_Bottom.SetWindowText(text.GetString());
+		if (r_iter != p_tablemap->r$()->end())
+		{
+			// Update internal structure for selected region
+			r_iter->second.left = drawrect_start.x<point.x ? drawrect_start.x : point.x;
+			r_iter->second.top = drawrect_start.y<point.y ? drawrect_start.y : point.y;
+			r_iter->second.right = drawrect_start.x>=point.x ? drawrect_start.x : point.x;
+			r_iter->second.bottom = drawrect_start.y>=point.y ? drawrect_start.y : point.y;
 
-		theApp.m_TableMapDlg->update_display();
-		theApp.m_TableMapDlg->Invalidate(false);
-		Invalidate(false);
-		pDoc->SetModifiedFlag(true);
+			// Update table map dialog
+			text.Format("%d", r_iter->second.left);
+			theApp.m_TableMapDlg->m_Left.SetWindowText(text.GetString());
+			text.Format("%d", r_iter->second.top);
+			theApp.m_TableMapDlg->m_Top.SetWindowText(text.GetString());
+			text.Format("%d", r_iter->second.right);
+			theApp.m_TableMapDlg->m_Right.SetWindowText(text.GetString());
+			text.Format("%d", r_iter->second.bottom);
+			theApp.m_TableMapDlg->m_Bottom.SetWindowText(text.GetString());
+
+			theApp.m_TableMapDlg->update_display();
+			theApp.m_TableMapDlg->Invalidate(false);
+			Invalidate(false);
+			pDoc->SetModifiedFlag(true);
+		}
 	}
 
 	else if (dragging)
 	{
-		width = p_tablemap->r$()->GetAt(dragged_region).right - p_tablemap->r$()->GetAt(dragged_region).left;
-		height = p_tablemap->r$()->GetAt(dragged_region).bottom - p_tablemap->r$()->GetAt(dragged_region).top;
+		RMapI r_iter=p_tablemap->set_r$()->find(dragged_region.GetString());
 
-		// Update internal structure for selected region
-		p_tablemap->set_r$_left(dragged_region, point.x - drag_left_offset);
-		p_tablemap->set_r$_top(dragged_region, point.y - drag_top_offset);
-		p_tablemap->set_r$_right(dragged_region, p_tablemap->r$()->GetAt(dragged_region).left + width);
-		p_tablemap->set_r$_bottom(dragged_region, p_tablemap->r$()->GetAt(dragged_region).top + height);
+		if (r_iter != p_tablemap->r$()->end())
+		{
+			width = r_iter->second.right - r_iter->second.left;
+			height = r_iter->second.bottom - r_iter->second.top;
 
-		// Update table map dialog
-		text.Format("%d", p_tablemap->r$()->GetAt(dragged_region).left);
-		theApp.m_TableMapDlg->m_Left.SetWindowText(text.GetString());
-		text.Format("%d", p_tablemap->r$()->GetAt(dragged_region).top);
-		theApp.m_TableMapDlg->m_Top.SetWindowText(text.GetString());
-		text.Format("%d", p_tablemap->r$()->GetAt(dragged_region).right);
-		theApp.m_TableMapDlg->m_Right.SetWindowText(text.GetString());
-		text.Format("%d", p_tablemap->r$()->GetAt(dragged_region).bottom);
-		theApp.m_TableMapDlg->m_Bottom.SetWindowText(text.GetString());
+			// Update internal structure for selected region
+			r_iter->second.left = point.x - drag_left_offset;
+			r_iter->second.top = point.y - drag_top_offset;
+			r_iter->second.right = r_iter->second.left + width;
+			r_iter->second.bottom = r_iter->second.top + height;
 
-		theApp.m_TableMapDlg->update_display();
-		theApp.m_TableMapDlg->Invalidate(false);
-		Invalidate(false);
-		pDoc->SetModifiedFlag(true);
+			// Update table map dialog
+			text.Format("%d", r_iter->second.left);
+			theApp.m_TableMapDlg->m_Left.SetWindowText(text.GetString());
+			text.Format("%d", r_iter->second.top);
+			theApp.m_TableMapDlg->m_Top.SetWindowText(text.GetString());
+			text.Format("%d", r_iter->second.right);
+			theApp.m_TableMapDlg->m_Right.SetWindowText(text.GetString());
+			text.Format("%d", r_iter->second.bottom);
+			theApp.m_TableMapDlg->m_Bottom.SetWindowText(text.GetString());
+
+			theApp.m_TableMapDlg->update_display();
+			theApp.m_TableMapDlg->Invalidate(false);
+			Invalidate(false);
+			pDoc->SetModifiedFlag(true);
+		}
 	}
 
 	CView::OnMouseMove(nFlags, point);
@@ -393,7 +402,6 @@ void COpenScrapeView::blink_rect(void)
 	CDC					*pDC = GetDC();
 	CPen				*pTempPen, oldpen;
 	CBrush				*pTempBrush, oldbrush;	
-	int					i;
 
 	if (dragging)  return;
 
@@ -406,14 +414,10 @@ void COpenScrapeView::blink_rect(void)
 
 	if (!dragging)
 	{
-		for (i=0; i<(int) p_tablemap->r$()->GetSize(); i++)
-		{
-			if (p_tablemap->r$()->GetAt(i).name == sel)
-			{
-				pDC->Rectangle(p_tablemap->r$()->GetAt(i).left-1, p_tablemap->r$()->GetAt(i).top-1, p_tablemap->r$()->GetAt(i).right+1, p_tablemap->r$()->GetAt(i).bottom+1);
-				i = (int) p_tablemap->r$()->GetSize() + 1;
-			}
-		}
+		RMapCI r_iter=p_tablemap->r$()->find(sel.GetString());
+
+		if (r_iter != p_tablemap->r$()->end())
+			pDC->Rectangle(r_iter->second.left-1, r_iter->second.top-1, r_iter->second.right+1, r_iter->second.bottom+1);
 	}
 
 	// Clean up

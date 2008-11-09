@@ -19,7 +19,7 @@ CTransform::~CTransform(void)
 {
 }
 
-const int CTransform::DoTransform(const STablemapRegion *region, const HDC hdc, CString *text, CString *separation, COLORREF *cr_avg) 
+const int CTransform::DoTransform(RMapCI region, const HDC hdc, CString *text, CString *separation, COLORREF *cr_avg) 
 {
 	bool				character[MAX_CHAR_WIDTH][MAX_CHAR_HEIGHT] = {false};	
 	bool				background[MAX_CHAR_WIDTH] = {false};
@@ -29,7 +29,7 @@ const int CTransform::DoTransform(const STablemapRegion *region, const HDC hdc, 
 		background[i] = true;
 
 
-	switch (region->transform.GetString()[0]) 
+	switch (region->second.transform.GetString()[0]) 
 	{
 		case 'C':
 			return CTypeTransform(region, hdc, text, cr_avg);
@@ -56,7 +56,7 @@ const int CTransform::DoTransform(const STablemapRegion *region, const HDC hdc, 
 	return ERR_INVALID_TRANSFORM_TYPE;
 }
 
-const int CTransform::CTypeTransform(const STablemapRegion *region, const HDC hdc, CString *text, COLORREF *cr_avg) 
+const int CTransform::CTypeTransform(RMapCI region, const HDC hdc, CString *text, COLORREF *cr_avg) 
 {
 	int					x = 0, y = 0;
 	int					width = 0, height = 0;
@@ -71,8 +71,8 @@ const int CTransform::CTypeTransform(const STablemapRegion *region, const HDC hd
 	bmi = (BITMAPINFO *) ::HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, info_len);
 
 	// Get bitmap size
-	width = region->right - region->left;
-	height = region->bottom - region->top;
+	width = region->second.right - region->second.left;
+	height = region->second.bottom - region->second.top;
 
 	// Get pixels
 	// Populate BITMAPINFOHEADER
@@ -113,10 +113,10 @@ const int CTransform::CTypeTransform(const STablemapRegion *region, const HDC hd
 	if (cr_avg!=NULL)
 		*cr_avg = RGB(rr_avg, gg_avg, bb_avg);
 
-	if (IsInRGBColorCube(GetRValue(region->color), 
-						 GetGValue(region->color), 
-						 GetBValue(region->color), 
-						 region->radius,
+	if (IsInRGBColorCube(GetRValue(region->second.color), 
+						 GetGValue(region->second.color), 
+						 GetBValue(region->second.color), 
+						 region->second.radius,
 						 (int) rr_avg, (int) gg_avg, (int) bb_avg)) 
 	{
 		*text = "true";
@@ -132,7 +132,7 @@ const int CTransform::CTypeTransform(const STablemapRegion *region, const HDC hd
 	return ERR_GOOD_SCRAPE_GENERAL;
 }
 
-const int CTransform::ITypeTransform(const STablemapRegion *region, const HDC hdc, CString *text) 
+const int CTransform::ITypeTransform(RMapCI region, const HDC hdc, CString *text) 
 {
 	int					width = 0, height = 0, x = 0, y = 0, i = 0, result = 0;
 	IMapCI				best_match = p_tablemap->i$()->end();
@@ -149,8 +149,8 @@ const int CTransform::ITypeTransform(const STablemapRegion *region, const HDC hd
 	int			info_len = sizeof(BITMAPINFOHEADER) + 1024;
 	bmi = (BITMAPINFO *) ::HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, info_len);
 
-	width = region->right - region->left;
-	height = region->bottom - region->top;
+	width = region->second.right - region->second.left;
+	height = region->second.bottom - region->second.top;
 	
 	// See if region size is too large
 	if (width >= MAX_IMAGE_WIDTH || height>=MAX_IMAGE_HEIGHT) 
@@ -244,7 +244,7 @@ const int CTransform::ITypeTransform(const STablemapRegion *region, const HDC hd
 	return retval;
 }
 
-const int CTransform::HTypeTransform(const STablemapRegion *region, const HDC hdc, CString *text) 
+const int CTransform::HTypeTransform(RMapCI region, const HDC hdc, CString *text) 
 {
 	int					x = 0, y = 0, j = 0;
 	int					width = 0, height = 0;
@@ -254,9 +254,9 @@ const int CTransform::HTypeTransform(const STablemapRegion *region, const HDC hd
 	HBITMAP				hbm = NULL;
 	BYTE				*pBits = NULL, red = 0, green = 0, blue = 0;
 
-	width = region->right - region->left;
-	height = region->bottom - region->top;
-	hash_type = region->transform.GetString()[1] - '0';
+	width = region->second.right - region->second.left;
+	height = region->second.bottom - region->second.top;
+	hash_type = region->second.transform.GetString()[1] - '0';
 	
 	if (p_tablemap->h$(hash_type)->empty())
 		return ERR_NO_HASH_MATCH;
@@ -354,13 +354,13 @@ const int CTransform::HTypeTransform(const STablemapRegion *region, const HDC hd
 }
 
 
-const int CTransform::TTypeTransform(const STablemapRegion *region, const HDC hdc, CString *text, CString *separation, 
+const int CTransform::TTypeTransform(RMapCI region, const HDC hdc, CString *text, CString *separation, 
 									 bool background[], bool (*character)[MAX_CHAR_HEIGHT])
 {
 	int					x = 0, y = 0;
 	int					i = 0;
-	int					width = region->right - region->left;
-	int					height = region->bottom - region->top;
+	int					width = region->second.right - region->second.left;
+	int					height = region->second.bottom - region->second.top;
 	CString				s = "", s$tXtype = "";
 	HBITMAP				hbm = NULL;
 	BYTE				*pBits = NULL, alpha = 0, red = 0, green = 0, blue = 0;
@@ -390,9 +390,9 @@ const int CTransform::TTypeTransform(const STablemapRegion *region, const HDC hd
 	// Get associated s$record
 	s$tXtype = "plain";
 
-	s.Format("t%stype", region->transform.Mid(1,1));
+	s.Format("t%stype", region->second.transform.Mid(1,1));
 
-	SMapCI s_iter = p_tablemap->s$()->find(s);
+	SMapCI s_iter = p_tablemap->s$()->find(s.GetString());
 	if (s_iter != p_tablemap->s$()->end())
 		s$tXtype = s_iter->second.text;
 
@@ -418,11 +418,11 @@ const int CTransform::TTypeTransform(const STablemapRegion *region, const HDC hd
 			blue = pBits[y*width*4 + x*4 + 0];
 
 			// See if our pixel is in the defined color cube
-			if (IsInARGBColorCube((region->color>>24)&0xff,
-								 GetRValue(region->color), 
-								 GetGValue(region->color), 
-								 GetBValue(region->color), 
-								 region->radius, 
+			if (IsInARGBColorCube((region->second.color>>24)&0xff,
+								 GetRValue(region->second.color), 
+								 GetGValue(region->second.color), 
+								 GetBValue(region->second.color), 
+								 region->second.radius, 
 								 alpha, 
 								 red, 
 								 green,
@@ -466,7 +466,7 @@ const int CTransform::TTypeTransform(const STablemapRegion *region, const HDC hd
 								  text);
 }
 
-const int CTransform::DoPlainFontScan(const STablemapRegion *region, const int width, const int height, 
+const int CTransform::DoPlainFontScan(RMapCI region, const int width, const int height, 
 									  const bool bg[], const bool (*ch)[MAX_CHAR_HEIGHT], CString *text)
 {
 	int					y = 0, retval=ERR_TEXT_SCRAPE_NOMATCH;
@@ -474,7 +474,7 @@ const int CTransform::DoPlainFontScan(const STablemapRegion *region, const int w
 	int					temp_right = 0, vert_band_left = 0;
 	bool				backg_band = false;
 	CString				newchar = "", hexmash = "";
-	int					text_group = atoi(region->transform.Right(1));
+	int					text_group = atoi(region->second.transform.Right(1));
 	std::map<CString, int>::const_iterator	fontindex;
 	
 	if (p_tablemap->hexmashes(text_group)->empty())
@@ -521,7 +521,7 @@ const int CTransform::DoPlainFontScan(const STablemapRegion *region, const int w
 			CalcHexmash(vert_band_left, temp_right, y_begin, y_end, ch, &hexmash);
 
 			// lookup font in t$ records
-			fontindex = p_tablemap->hexmashes(text_group)->find(hexmash);
+			fontindex = p_tablemap->hexmashes(text_group)->find(hexmash.GetString());
 
 			// Found match, save char and move on
 			if (fontindex != p_tablemap->hexmashes(text_group)->end()) 
@@ -558,7 +558,7 @@ const int CTransform::DoPlainFontScan(const STablemapRegion *region, const int w
 	return retval;
 }
 
-const int CTransform::DoFuzzyFontScan(const STablemapRegion *region, const int width, const int height, 
+const int CTransform::DoFuzzyFontScan(RMapCI region, const int width, const int height, 
 									  const bool bg[], const bool (*ch)[MAX_CHAR_HEIGHT], const double tolerance, 
 									  CString *text)
 {
@@ -610,7 +610,7 @@ const int CTransform::DoFuzzyFontScan(const STablemapRegion *region, const int w
 	return retval;
 }
 		
-const int CTransform::GetBestHammingDistance(const STablemapRegion *region, const int width, const int height, 
+const int CTransform::GetBestHammingDistance(RMapCI region, const int width, const int height, 
 											 const bool bg[], const bool (*ch)[MAX_CHAR_HEIGHT], 
 											 const int left, const double tolerance)
 {
@@ -649,7 +649,7 @@ const int CTransform::GetBestHammingDistance(const STablemapRegion *region, cons
 
 			// If the size of this character is <= the number of columns we are looking at and
 			// if this t$ record is in our font group then consider it
-			if (p_tablemap->t$()->GetAt(i).x_count<=x+1 && atoi(region->transform.Mid(1, 1).GetString()) == p_tablemap->t$()->GetAt(i).group)
+			if (p_tablemap->t$()->GetAt(i).x_count<=x+1 && atoi(region->second.transform.Mid(1, 1).GetString()) == p_tablemap->t$()->GetAt(i).group)
 			{
 				// Get the hamming distance and lit pix counts "by column" left to right
 				tot_hd[x][i] = 0;

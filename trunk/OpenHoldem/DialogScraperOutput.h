@@ -27,7 +27,7 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg LRESULT OnWinMgr(WPARAM wp, LPARAM lp);
-	void DoBitblt(HBITMAP bitmap, int r$index);
+	void DoBitblt(HBITMAP bitmap, RMapCI r_iter);
 
 	CWinMgr			m_winMgr;				// window manager
 	CSizerBar		m_winMgrSizerBar;		// sizer bar

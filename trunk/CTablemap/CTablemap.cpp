@@ -17,8 +17,6 @@ CTablemap			*p_tablemap = NULL;
 CTablemap::CTablemap(void)
 {
     ClearTablemap();
-
-	ClearR$Indices();
 }
 
 CTablemap::~CTablemap(void)
@@ -35,7 +33,7 @@ void CTablemap::ClearTablemap()
 
 	_z$.clear();
 	_s$.clear();
-	_r$.RemoveAll();
+	_r$.clear();
 	_t$.RemoveAll();
 	_p$.RemoveAll();
 
@@ -225,7 +223,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			}
 		}
 
-		// Handle r$indexes.r$ lines (regions)
+		// Handle r$ lines (regions)
 		else if (strLineType.Left(2) == "r$") 
 		{
 			// name
@@ -283,7 +281,8 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			//if (token.GetLength()==0) { return ERR_SYNTAX; }
 			//hold_region.flags = atol(token.GetString());
 
-			_r$.Add(hold_region);
+			if (!r$_insert(hold_region))
+				MessageBox(NULL, strLine, "ERROR adding region record: " + hold_region.name, MB_OK | MB_TOPMOST);
 		}
 
 		// Handle t$ lines (fonts)
@@ -551,14 +550,15 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("// regions\r\n");
 	ar.WriteString("//\r\n");
 	ar.WriteString("\r\n");
-	for (i=0; i<(int) _r$.GetSize(); i++) {
-		s.Format("r$%s", _r$[i].name.GetString());
+	for (RMapCI r_iter=_r$.begin(); r_iter!=_r$.end(); r_iter++)
+	{
+		s.Format("r$%s", r_iter->second.name.GetString());
 		while (s.GetLength()<18) s.Append(" ");
 		t.Format("%3d %3d %3d %3d %8x %4d ", 
-			_r$[i].left, _r$[i].top, _r$[i].right, _r$[i].bottom,
-			_r$[i].color, _r$[i].radius);
+			r_iter->second.left, r_iter->second.top, r_iter->second.right, r_iter->second.bottom,
+			r_iter->second.color, r_iter->second.radius);
 		s.Append(t);
-		t = _r$[i].transform;
+		t = r_iter->second.transform;
 		while (t.GetLength()<2) { t.Append(" "); }
 		s.Append(t);
 		//t.Format("		  %d\r\n", _r$[i].flags);
@@ -645,7 +645,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 
 int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path) 
 {
-	int						regionloop = 0, i = 0, j = 0;
+	int						i = 0, j = 0;
 	CString					e = "", s = "";
 	uint32_t				pixels[200*150] = {0};
 	int						pixcount = 0;
@@ -666,15 +666,15 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 		return ERR_NOTMASTER;
 	}
 
-	// Loop through all the region (r$indexes.r$) records, and invert the colors to align with
+	// Loop through all the region records, and invert the colors to align with
 	// Windows' COLORREF  ARGB->ABGR
-	for (regionloop=0; regionloop<(int) _r$.GetSize(); regionloop++) 
+	for (RMapI r_iter=_r$.begin(); r_iter!=_r$.end(); r_iter++) 
 	{
-		_r$[regionloop].color = 
-			(_r$[regionloop].color & 0xff000000) +
-			((_r$[regionloop].color & 0x00ff0000)>>16) +
-			((_r$[regionloop].color & 0x0000ff00)) +
-			((_r$[regionloop].color & 0x000000ff)<<16);
+		r_iter->second.color = 
+			(r_iter->second.color & 0xff000000) +
+			((r_iter->second.color & 0x00ff0000)>>16) +
+			((r_iter->second.color & 0x0000ff00)) +
+			((r_iter->second.color & 0x000000ff)<<16);
 	}
 
 	// Loop through all the hash (h$) records, and check for a corresponding image (i$) record
@@ -819,7 +819,7 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 
 int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 {
-	int						num_precs = 0, num_rrecs = 0;
+	int						num_precs = 0;
 	int						i = 0, j = 0;
 	CString					e = "", s = "";
 	uint32_t				pixels[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0}, filtered_pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0};
@@ -841,7 +841,6 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 	}
 
 	num_precs = (int) _p$.GetSize();
-	num_rrecs = (int) _r$.GetSize();
 
 	// Loop through all the hash (h$) records, and check for a corresponding image (i$) record
 	// Log missing records and display message if we can't find them all
@@ -984,380 +983,6 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 	if (!all_i$_found)  return ERR_INCOMPLETEMASTER;
 
 	return SUCCESS;
-}
-
-
-void CTablemap::ClearR$Indices(void)
-{
-	int			i = 0, j = 0, k = 0;
-
-	// common card info
-	for (i=0; i<=4; i++)
-	{
-		_r$indexes.r$c0cardfaceX_index[i] = -1;
-		_r$indexes.r$c0cardfaceXrank_index[i] = -1;
-		_r$indexes.r$c0cardfaceXsuit_index[i] = -1;
-	}
-
-	// pots
-	for (i=0; i<=9; i++)
-		for (j=0; j<=9; j++)
-			for (k=0; k<=9; k++)
-				_r$indexes.r$c0potXchipYZ_index[i][j][k] = -1;
-
-	for (i=0; i<=9; i++)
-	{
-		// player info
-		_r$indexes.r$pXcardfaceY_index[i][0] = -1;
-		_r$indexes.r$pXcardfaceY_index[i][1] = -1;
-		_r$indexes.r$pXcardfaceYrank_index[i][0] = -1;
-		_r$indexes.r$pXcardfaceYrank_index[i][1] = -1;
-		_r$indexes.r$pXcardfaceYsuit_index[i][0] = -1;
-		_r$indexes.r$pXcardfaceYsuit_index[i][1] = -1;
-		_r$indexes.r$uXcardfaceY_index[i][0] = -1;
-		_r$indexes.r$uXcardfaceY_index[i][1] = -1;
-		_r$indexes.r$pXcardback_index[i] = -1;
-		_r$indexes.r$pXseated_index[i] = -1;
-		_r$indexes.r$uXseated_index[i] = -1;
-		_r$indexes.r$pXactive_index[i] = -1;
-		_r$indexes.r$uXactive_index[i] = -1;
-		_r$indexes.r$uXdealer_index[i] = -1;
-		_r$indexes.r$pXdealer_index[i] = -1;
-		_r$indexes.r$pXname_index[i] = -1;
-		_r$indexes.r$uXname_index[i] = -1;
-		_r$indexes.r$pXbalance_index[i] = -1;
-		_r$indexes.r$uXbalance_index[i] = -1;
-		_r$indexes.r$uXbet_index[i] = -1;
-		_r$indexes.r$pXbet_index[i] = -1;
-
-		for (j=0; j<=9; j++)
-			for (k=0; k<=9; k++)
-				_r$indexes.r$pXchip_index[i][j][k] = -1;
-
-		// button info
-		_r$indexes.r$iXbutton_index[i] = -1;
-		_r$indexes.r$iXstate_index[i] = -1;
-		_r$indexes.r$iXlabel_index[i] = -1;
-
-		for (j=0; j<=9; j++)
-			_r$indexes.r$iXlabelY_index[i][j] = -1;
-
-		_r$indexes.r$iXslider_index[i] = -1;
-		_r$indexes.r$iXhandle_index[i] = -1;
-		_r$indexes.r$iXedit_index[i] = -1;
-		_r$indexes.r$i86Xstate_index[i] = -1;
-		_r$indexes.r$i86Xbutton_index[i] = -1;
-
-		// limits
-		_r$indexes.r$c0limitsX_index[i] = -1;
-		_r$indexes.r$c0handnumberX_index[i] = -1;
-
-		// pots
-		_r$indexes.r$c0potX_index[i] = -1;
-	}
-
-	// limits
-	_r$indexes.r$c0limits_index = -1;
-	_r$indexes.r$c0istournament_index = -1;
-	_r$indexes.r$c0sblind_index = -1;
-	_r$indexes.r$c0bblind_index = -1;
-	_r$indexes.r$c0bigbet_index = -1;
-	_r$indexes.r$c0ante_index = -1;
-	_r$indexes.r$c0handnumber_index = -1;
-
-	// player info
-	_r$indexes.r$uname_index = -1;
-	_r$indexes.r$ubalance_index = -1;
-
-	// button info
-	_r$indexes.r$i86state_index = -1;
-	_r$indexes.r$i86button_index = -1;
-}
-
-void CTablemap::SaveR$Indices(void)
-{
-	// _r$tablepointX not indexed, as it is only used for finding tables on green circle-click, and
-	//  this function is not called until a table has been selected by the user
-
-	int		i = 0;
-	int		cardnum = 0, seatnum = 0, buttonnum = 0, vertstride = 0, horizstride = 0;
-	int		potnum = 0, limitnum = 0, handnum = 0, indexnum = 0;
-
-	ClearR$Indices();
-
-	for (i=0; i<_r$.GetCount(); i++)
-	{
-		///////////////////////////////////////////////////////////////////////////////////////////////
-		// Player info
-		// Player cards, r$pXcardfaceYrank, r$pXcardfaceYsuit
-		if (_r$[i].name.Mid(0,1)=="p" &&
-				_r$[i].name.Mid(2,8)=="cardface" &&
-				_r$[i].name.Mid(11,4)=="rank")
-		{
-			seatnum = _r$[i].name.GetString()[1] - '0';
-			cardnum = _r$[i].name.GetString()[10] - '0';
-			_r$indexes.r$pXcardfaceYrank_index[seatnum][cardnum] = i;
-		}
-		else if (_r$[i].name.Mid(0,1)=="p" &&
-				 _r$[i].name.Mid(2,8)=="cardface" &&
-				 _r$[i].name.Mid(11,4)=="suit")
-		{
-			seatnum = _r$[i].name.GetString()[1] - '0';
-			cardnum = _r$[i].name.GetString()[10] - '0';
-			_r$indexes.r$pXcardfaceYsuit_index[seatnum][cardnum] = i;
-		}
-
-		// Player cards,r$pXcardfaceY, r$uXcardfaceY
-		else if (_r$[i].name.Mid(0,1)=="p" && _r$[i].name.Mid(2,8)=="cardface")
-		{
-			seatnum = _r$[i].name.GetString()[1] - '0';
-			cardnum = _r$[i].name.GetString()[10] - '0';
-			_r$indexes.r$pXcardfaceY_index[seatnum][cardnum] = i;
-		}
-		else if (_r$[i].name.Mid(0,1)=="u" && _r$[i].name.Mid(2,8)=="cardface")
-		{
-			seatnum = _r$[i].name.GetString()[1] - '0';
-			cardnum = _r$[i].name.GetString()[10] - '0';
-			_r$indexes.r$uXcardfaceY_index[seatnum][cardnum] = i;
-		}
-
-		// Player card backs, r$pXcardback
-		else if (_r$[i].name.Mid(0,1)=="p" && _r$[i].name.Mid(2,8)=="cardback")
-		{
-			seatnum = _r$[i].name.GetString()[1] - '0';
-			_r$indexes.r$pXcardback_index[seatnum] = i;
-		}
-
-		// Seated, r$pXseated, _r$uXseated
-		else if (_r$[i].name.Mid(0,1)=="p" && _r$[i].name.Mid(2,6)=="seated")
-		{
-			seatnum = _r$[i].name.GetString()[1] - '0';
-			_r$indexes.r$pXseated_index[seatnum] = i;
-		}
-		else if (_r$[i].name.Mid(0,1)=="u" && _r$[i].name.Mid(2,6)=="seated")
-		{
-			seatnum = _r$[i].name.GetString()[1] - '0';
-			_r$indexes.r$uXseated_index[seatnum] = i;
-		}
-
-		// Active, r$pXactive, r$uXactive
-		else if (_r$[i].name.Mid(0,1)=="p" && _r$[i].name.Mid(2,6)=="active")
-		{
-			seatnum = _r$[i].name.GetString()[1] - '0';
-			_r$indexes.r$pXactive_index[seatnum] = i;
-		}
-		else if (_r$[i].name.Mid(0,1)=="u" && _r$[i].name.Mid(2,6)=="active")
-		{
-			seatnum = _r$[i].name.GetString()[1] - '0';
-			_r$indexes.r$uXactive_index[seatnum] = i;
-		}
-
-		// Dealer button, r$pXdealer, r$uXdealer
-		else if (_r$[i].name.Mid(0,1)=="p" && _r$[i].name.Mid(2,6)=="dealer")
-		{
-			seatnum = _r$[i].name.GetString()[1] - '0';
-			_r$indexes.r$pXdealer_index[seatnum] = i;
-		}
-		else if (_r$[i].name.Mid(0,1)=="u" && _r$[i].name.Mid(2,6)=="dealer")
-		{
-			seatnum = _r$[i].name.GetString()[1] - '0';
-			_r$indexes.r$uXdealer_index[seatnum] = i;
-		}
-
-		// Player name r$pXname, r$uXname, r$uname
-		else if (_r$[i].name.Mid(0,1)=="p" && _r$[i].name.Mid(2,4)=="name")
-		{
-			seatnum = _r$[i].name.GetString()[1] - '0';
-			_r$indexes.r$pXname_index[seatnum] = i;
-		}
-		else if (_r$[i].name.Mid(0,1)=="u" && _r$[i].name.Mid(2,4)=="name")
-		{
-			seatnum = _r$[i].name.GetString()[1] - '0';
-			_r$indexes.r$uXname_index[seatnum] = i;
-		}
-		else if (_r$[i].name=="uname")
-		{
-			_r$indexes.r$uname_index = i;
-		}
-
-		// Player balance, r$pXbalance, r$uXbalance, r$ubalance
-		else if (_r$[i].name.Mid(0,1)=="p" && _r$[i].name.Mid(2,7)=="balance")
-		{
-			seatnum = _r$[i].name.GetString()[1] - '0';
-			_r$indexes.r$pXbalance_index[seatnum] = i;
-		}
-		else if (_r$[i].name.Mid(0,1)=="u" && _r$[i].name.Mid(2,7)=="balance")
-		{
-			seatnum = _r$[i].name.GetString()[1] - '0';
-			_r$indexes.r$uXbalance_index[seatnum] = i;
-		}
-		else if (_r$[i].name=="ubalance")
-		{
-			_r$indexes.r$ubalance_index = i;
-		}
-
-		// Player bet, r$pXbet, r$uXbet, r$pXchipYZ
-		else if (_r$[i].name.Mid(0,1)=="p" && _r$[i].name.Mid(2,3)=="bet")
-		{
-			seatnum = _r$[i].name.GetString()[1] - '0';
-			_r$indexes.r$pXbet_index[seatnum] = i;
-		}
-		else if (_r$[i].name.Mid(0,1)=="u" && _r$[i].name.Mid(2,3)=="bet")
-		{
-			seatnum = _r$[i].name.GetString()[1] - '0';
-			_r$indexes.r$uXbet_index[seatnum] = i;
-		}
-		else if (_r$[i].name.Mid(0,1)=="p" && _r$[i].name.Mid(2,4)=="chip")
-		{
-			seatnum = _r$[i].name.GetString()[1] - '0';
-			vertstride = _r$[i].name.GetString()[6] - '0';
-			horizstride = _r$[i].name.GetString()[7] - '0';
-			_r$indexes.r$pXchip_index[seatnum][vertstride][horizstride] = i;
-		}
-
-		///////////////////////////////////////////////////////////////////////////////////////////////
-		// Common card info
-		// Common cards, r$c0cardfaceXrank, r$c0cardfaceXsuit
-		else if (_r$[i].name.Mid(0,10)=="c0cardface" && _r$[i].name.Mid(11,4)=="rank")
-		{
-			cardnum = _r$[i].name.GetString()[10] - '0';
-			_r$indexes.r$c0cardfaceXrank_index[cardnum] = i;
-		}
-		else if (_r$[i].name.Mid(0,10)=="c0cardface" && _r$[i].name.Mid(11,4)=="suit")
-		{
-			cardnum = _r$[i].name.GetString()[10] - '0';
-			_r$indexes.r$c0cardfaceXsuit_index[cardnum] = i;
-		}
-		// Common cards, r$c0cardfaceX
-		else if (_r$[i].name.Mid(0,10)=="c0cardface")
-		{
-			cardnum = _r$[i].name.GetString()[10] - '0';
-			_r$indexes.r$c0cardfaceX_index[cardnum] = i;
-		}
-
-		///////////////////////////////////////////////////////////////////////////////////////////////
-		// Button info
-		// r$iXbutton, r$iXstate, r$iXlabel, r$iXslider, r$iXhandle, r$iXedit, r$i86Xstate, r$i86Xbutton,
-		// r$i86state, r$i86button
-		else if (_r$[i].name.Mid(0,1)=="i" && _r$[i].name.Mid(2,6)=="button")
-		{
-			buttonnum = _r$[i].name.GetString()[1] - '0';
-			_r$indexes.r$iXbutton_index[buttonnum] = i;
-		}
-		else if (_r$[i].name.Mid(0,1)=="i" && _r$[i].name.Mid(2,5)=="state")
-		{
-			buttonnum = _r$[i].name.GetString()[1] - '0';
-			_r$indexes.r$iXstate_index[buttonnum] = i;
-		}
-		else if (_r$[i].name.Mid(0,1)=="i" && _r$[i].name.Mid(2,5)=="label" && _r$[i].name.GetLength()==7)
-		{
-			buttonnum = _r$[i].name.GetString()[1] - '0';
-			_r$indexes.r$iXlabel_index[buttonnum] = i;
-		}
-		else if (_r$[i].name.Mid(0,1)=="i" && _r$[i].name.Mid(2,5)=="label" && _r$[i].name.GetLength()==8)
-		{
-			buttonnum = _r$[i].name.GetString()[1] - '0';
-			indexnum = _r$[i].name.GetString()[7] - '0';
-			_r$indexes.r$iXlabelY_index[buttonnum][indexnum] = i;
-		}
-		else if (_r$[i].name.Mid(0,1)=="i" && _r$[i].name.Mid(2,6)=="slider")
-		{
-			buttonnum = _r$[i].name.GetString()[1] - '0';
-			_r$indexes.r$iXslider_index[buttonnum] = i;
-		}
-		else if (_r$[i].name.Mid(0,1)=="i" && _r$[i].name.Mid(2,6)=="handle")
-		{
-			buttonnum = _r$[i].name.GetString()[1] - '0';
-			_r$indexes.r$iXhandle_index[buttonnum] = i;
-		}
-		else if (_r$[i].name.Mid(0,1)=="i" && _r$[i].name.Mid(2,4)=="edit")
-		{
-			buttonnum = _r$[i].name.GetString()[1] - '0';
-			_r$indexes.r$iXedit_index[buttonnum] = i;
-		}
-		else if (_r$[i].name=="i86button")
-		{
-			_r$indexes.r$i86button_index = i;
-		}
-		else if (_r$[i].name.Mid(0,3)=="i86" && _r$[i].name.Mid(4,6)=="button")
-		{
-			buttonnum = _r$[i].name.GetString()[3] - '0';
-			_r$indexes.r$i86Xbutton_index[buttonnum] = i;
-		}
-		else if (_r$[i].name=="i86state")
-		{
-			_r$indexes.r$i86state_index = i;
-		}
-		else if (_r$[i].name.Mid(0,3)=="i86" && _r$[i].name.Mid(4,5)=="state")
-		{
-			buttonnum = _r$[i].name.GetString()[3] - '0';
-			_r$indexes.r$i86Xstate_index[buttonnum] = i;
-		}
-
-
-		///////////////////////////////////////////////////////////////////////////////////////////////
-		// Pots
-		// Pots, r$c0potX, r$c0potXchipYZ
-		else if (_r$[i].name.Mid(0,5)=="c0pot" && _r$[i].name.Find("chip")==-1)
-		{
-			potnum = _r$[i].name.GetString()[5] - '0';
-			_r$indexes.r$c0potX_index[potnum] = i;
-		}
-		else if (_r$[i].name.Mid(0,5)=="c0pot" && _r$[i].name.Mid(6,4)=="chip")
-		{
-			potnum = _r$[i].name.GetString()[5] - '0';
-			vertstride = _r$[i].name.GetString()[10] - '0';
-			horizstride = _r$[i].name.GetString()[11] - '0';
-			_r$indexes.r$c0potXchipYZ_index[potnum][vertstride][horizstride] = i;
-		}
-
-		///////////////////////////////////////////////////////////////////////////////////////////////
-		// Limits
-		// r$c0limits, r$c0limitsX
-		else if (_r$[i].name=="c0limits")
-		{
-			_r$indexes.r$c0limits_index = i;
-		}
-		else if (_r$[i].name.Mid(0,8)=="c0limits")
-		{
-			limitnum = _r$[i].name.GetString()[8] - '0';
-			_r$indexes.r$c0limitsX_index[limitnum] = i;
-		}
-
-		// r$c0istournament
-		else if (_r$[i].name == "c0istournament")
-		{
-			_r$indexes.r$c0istournament_index = i;
-		}
-
-		// r$c0sblind, r$c0bblind, r$c0bigbet, r$c0ante, r$c0handnumberX, r$c0handnumber
-		else if (_r$[i].name == "c0sblind")
-		{
-			_r$indexes.r$c0sblind_index = i;
-		}
-		else if (_r$[i].name == "c0bblind")
-		{
-			_r$indexes.r$c0bblind_index = i;
-		}
-		else if (_r$[i].name == "c0bigbet")
-		{
-			_r$indexes.r$c0bigbet_index = i;
-		}
-		else if (_r$[i].name == "c0ante")
-		{
-			_r$indexes.r$c0ante_index = i;
-		}
-		else if (_r$[i].name=="c0handnumber")
-		{
-			_r$indexes.r$c0handnumber_index = i;
-		}
-		else if (_r$[i].name.Mid(0,12)=="c0handnumber")
-		{
-			handnum = _r$[i].name.GetString()[12] - '0';
-			_r$indexes.r$c0handnumberX_index[handnum] = i;
-		}
-
-	}
 }
 
 void CTablemap::UpdateHexmashesHashes(const int group)

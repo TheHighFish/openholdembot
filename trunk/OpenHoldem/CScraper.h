@@ -2,6 +2,7 @@
 #define INC_CSCRAPER_H
 
 #include "../../CTransform/hash/stdint.h"
+#include "../CTablemap/CTablemap.h"
 
 struct SLimitInfo
 {
@@ -155,9 +156,9 @@ private:
 	void ScrapePots(const HDC hdcCompatible, const HDC hdc);
 	void ScrapeLimits(const HDC hdcCompatible, const HDC hdc);
 	const double GetHandnumFromString(const CString t);
-	bool ProcessRegion(const HDC hdcCompatible, const HDC hdc, const int r$index);
+	bool ProcessRegion(const HDC hdcCompatible, const HDC hdc, RMapCI r_iter);
 	const bool BitmapsSame(const HBITMAP HBitmapLeft, const HBITMAP HBitmapRight);
-	const double DoChipScrape(const HDC hdc, const int i);
+	const double DoChipScrape(const HDC hdc, RMapCI r_iter);
 	const bool IsNumeric(const CString t);
 
 	// for change detection

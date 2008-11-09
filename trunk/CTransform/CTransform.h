@@ -32,9 +32,9 @@ public:
 	// public functions
 	CTransform(void);
 	~CTransform(void);
-	const int DoTransform(const STablemapRegion *region, const HDC hdc, CString *text, 
+	const int DoTransform(RMapCI region, const HDC hdc, CString *text, 
 						  CString *separation=NULL, COLORREF *cr_avg=0);
-	const int TTypeTransform(const STablemapRegion *region, const HDC hdc, CString *text, 
+	const int TTypeTransform(RMapCI region, const HDC hdc, CString *text, 
 							 CString *separation, bool background[], bool (*character)[MAX_CHAR_HEIGHT]);
 	const void ParseStringBSL(const CString text, const CString format, CString *results=NULL, 	
 							  double *handnumber=NULL, double *sblind=NULL, double *bblind=NULL, double *bbet=NULL, 
@@ -54,15 +54,15 @@ public:
 
 private:
 	// private functions and variables - not available via accessors or mutators
-	const int CTypeTransform(const STablemapRegion *region, const HDC hdc, CString *text, COLORREF *cr_avg);
-	const int ITypeTransform(const STablemapRegion *region, const HDC hdc, CString *text);
-	const int HTypeTransform(const STablemapRegion *region, const HDC hdc, CString *text);
-	const int DoPlainFontScan(const STablemapRegion *region, const int width, const int height, 
+	const int CTypeTransform(RMapCI region, const HDC hdc, CString *text, COLORREF *cr_avg);
+	const int ITypeTransform(RMapCI region, const HDC hdc, CString *text);
+	const int HTypeTransform(RMapCI region, const HDC hdc, CString *text);
+	const int DoPlainFontScan(RMapCI region, const int width, const int height, 
 							  const bool bg[], const bool (*ch)[MAX_CHAR_HEIGHT], CString *text);
-	const int DoFuzzyFontScan(const STablemapRegion *region, const int width, const int height, 
+	const int DoFuzzyFontScan(RMapCI region, const int width, const int height, 
 							  const bool bg[], const bool (*ch)[MAX_CHAR_HEIGHT], 
 							  const double tolerance, CString *text);
-	const int GetBestHammingDistance(const STablemapRegion *region, const int width, const int height, 
+	const int GetBestHammingDistance(RMapCI region, const int width, const int height, 
 									 const bool bg[], const bool (*ch)[MAX_CHAR_HEIGHT], const int left, 
 									 const double tolerance);
 	const int CalcHammingDistance(const unsigned int x, const unsigned int y);

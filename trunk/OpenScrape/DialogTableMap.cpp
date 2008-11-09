@@ -371,10 +371,18 @@ void CDlgTableMap::OnCancel()
 void CDlgTableMap::OnPaint()
 {
 	CPaintDC			dc(this);
-	CString				sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
-	HTREEITEM			parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
+	HTREEITEM			parent = NULL;
 	CString				selected_parent_text = "";
+	CString				sel = "";
 
+	// Get name of currently selected item and its parent item
+	if (m_TableMapTree.GetSelectedItem())
+	{
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+		parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
+	}
+
+	// Get name of selected item's parent
 	if (parent != NULL) 
 		selected_parent_text = m_TableMapTree.GetItemText(parent);
 
@@ -438,19 +446,20 @@ void CDlgTableMap::draw_region_bitmap(void)
 	HBITMAP				old_bitmap_orig, bitmap_subset, old_bitmap_subset, bitmap_control, old_bitmap_control;
 	int					left, right, top, bottom, zoom;
 	CPen				*pTempPen, oldpen;
-	CBrush				*pTempBrush, oldbrush;	
-	STablemapRegion		sel_region;
-	
-	// Get selected region record
+	CBrush				*pTempBrush, oldbrush;
+	RMapCI				sel_region = p_tablemap->r$()->end();
+	CString				sel = "";
+
+	// Get name of currently selected item
 	if (m_TableMapTree.GetSelectedItem())
-	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		sel_region = p_tablemap->r$()->GetAt(index);
-	}
-	else
-	{
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->r$()->find(sel.GetString());
+
+	// Exit if we can't find the region record
+	if (sel_region == p_tablemap->r$()->end())
 		return;
-	}
 
 	pDC = m_BitmapFrame.GetDC();
 	hdcControl = *pDC;
@@ -461,10 +470,10 @@ void CDlgTableMap::draw_region_bitmap(void)
 	old_bitmap_orig = (HBITMAP) SelectObject(hdc_bitmap_orig, pDoc->attached_bitmap);
 
 	// Figure out the size of the subset bitmap
-	left = sel_region.left - 5;
-	top = sel_region.top - 5;
-	right = sel_region.right + 5;
-	bottom = sel_region.bottom + 5;
+	left = sel_region->second.left - 5;
+	top = sel_region->second.top - 5;
+	right = sel_region->second.right + 5;
+	bottom = sel_region->second.bottom + 5;
 	zoom = m_Zoom.GetCurSel()==0 ? 1 :
 		   m_Zoom.GetCurSel()==1 ? 2 :
 		   m_Zoom.GetCurSel()==2 ? 4 :
@@ -483,8 +492,8 @@ void CDlgTableMap::draw_region_bitmap(void)
 	pTempBrush = (CBrush*) SelectObject(hdc_bitmap_subset, GetStockObject(NULL_BRUSH));
 	oldbrush.FromHandle((HBRUSH)pTempBrush);
 	Rectangle(hdc_bitmap_subset, 4, 4, 
-			  6 + sel_region.right - sel_region.left,  
-			  6 + sel_region.bottom - sel_region.top);
+			  6 + sel_region->second.right - sel_region->second.left,  
+			  6 + sel_region->second.bottom - sel_region->second.top);
 	SelectObject(hdc_bitmap_subset, oldpen);
 	SelectObject(hdc_bitmap_subset, oldbrush);
 
@@ -494,8 +503,8 @@ void CDlgTableMap::draw_region_bitmap(void)
 	// Copy from bitmap subset to our control and stretch it
 	bitmap_control = CreateCompatibleBitmap(hdcScreen, (right-left)*zoom, (bottom-top)*zoom);
 	old_bitmap_control = (HBITMAP) SelectObject(hdcControl, bitmap_control);
-	if (sel_region.right >= sel_region.left && 
-		sel_region.bottom >= sel_region.top)
+	if (sel_region->second.right >= sel_region->second.left && 
+		sel_region->second.bottom >= sel_region->second.top)
 	{
 		StretchBlt(hdcControl, 1, 1, (right-left)*zoom, (bottom-top)*zoom,
 			   hdc_bitmap_subset, 0, 0, right-left, bottom-top,
@@ -616,48 +625,47 @@ void CDlgTableMap::OnRegionChange()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	CString				text, alpha, red, green, blue;
-	STablemapRegion		sel_region;
-	int					index;
-	
-	// Get selected region record
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	CString				sel = "";
+
+	// Get name of currently selected item
 	if (m_TableMapTree.GetSelectedItem())
-	{
-		index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		sel_region = p_tablemap->r$()->GetAt(index);
-	}
-	else
-	{
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+
+	// Exit if we can't find the region record
+	if (sel_region == p_tablemap->r$()->end())
 		return;
-	}
 
 	if (ignore_changes)  return;
 
 	// left/top/right/bottom
 	m_Left.GetWindowText(text);
-	p_tablemap->set_r$_left(index, atoi(text.GetString()));
+	sel_region->second.left = strtoul(text.GetString(), NULL, 10);
 	m_Top.GetWindowText(text);
-	p_tablemap->set_r$_top(index, atoi(text.GetString()));
+	sel_region->second.top = strtoul(text.GetString(), NULL, 10);
 	m_Right.GetWindowText(text);
-	p_tablemap->set_r$_right(index, atoi(text.GetString()));
+	sel_region->second.right = strtoul(text.GetString(), NULL, 10);
 	m_Bottom.GetWindowText(text);
-	p_tablemap->set_r$_bottom(index, atoi(text.GetString()));
+	sel_region->second.bottom = strtoul(text.GetString(), NULL, 10);
 
 	// color/radius (color is stored internally and in the .tm file in ABGR (COLORREF) format)
 	m_Alpha.GetWindowText(alpha);
 	m_Red.GetWindowText(red);
 	m_Green.GetWindowText(green);
 	m_Blue.GetWindowText(blue);
-	p_tablemap->set_r$_color(index, 
-		((strtoul(alpha.GetString(), NULL, 16))<<24) +  // alpha
-		((strtoul(blue.GetString(), NULL, 16))<<16) +  // red
-		((strtoul(green.GetString(), NULL, 16))<<8) +   // green
-		(strtoul(red.GetString(), NULL, 16)));         // blue
+	sel_region->second.color = ((strtoul(alpha.GetString(), NULL, 16))<<24) +  // alpha
+							   ((strtoul(blue.GetString(), NULL, 16))<<16) +   // red
+							   ((strtoul(green.GetString(), NULL, 16))<<8) +   // green
+							   (strtoul(red.GetString(), NULL, 16));          // blue
 	m_Radius.GetWindowText(text);
-	p_tablemap->set_r$_radius(index, atoi(text.GetString()));
+	sel_region->second.radius = strtoul(text.GetString(), NULL, 10);
 
 	// transform type
 	m_Transform.GetLBText(m_Transform.GetCurSel(), text);
-	p_tablemap->set_r$_transform(index,
+	sel_region->second.transform = 
 		text == "Color" ? "C" :
 		text == "Image" ? "I" :
 		text == "Text0" ? "T0" :
@@ -669,7 +677,7 @@ void CDlgTableMap::OnRegionChange()
 		text == "Hash2" ? "H2" :
 		text == "Hash3" ? "H3" :
 		text == "None" ? "N" : 
-		"");
+		"";
 
 	update_display();
 	theApp.m_pMainWnd->Invalidate(false);
@@ -699,13 +707,19 @@ void CDlgTableMap::OnTvnSelchangedTablemapTree(NMHDR *pNMHDR, LRESULT *pResult)
 void CDlgTableMap::update_display(void)
 {
 	CString				text, hashname, type, charstr, sel_ch, sel_type, sel_temp;
-	CString				sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
-	HTREEITEM			parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
+	HTREEITEM			parent = NULL;
 	CString				num, x, y, selected_parent_text;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-
 	STablemapSymbol		sel_symbol;
 	STablemapHashValue	sel_hash_value;
+	CString				sel = "";
+
+	// Get name of currently selected item and its parent item
+	if (m_TableMapTree.GetSelectedItem())
+	{
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+		parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
+	}
 
 	// Don't trigger OnChange messages
 	ignore_changes = true;
@@ -765,7 +779,7 @@ void CDlgTableMap::update_display(void)
 			// Display selected size record
 			if (m_TableMapTree.GetSelectedItem())
 			{
-				ZMap::const_iterator z_iter = p_tablemap->z$()->find(sel);
+				ZMap::const_iterator z_iter = p_tablemap->z$()->find(sel.GetString());
 				if (z_iter != p_tablemap->z$()->end())
 				{
 					text.Format("%d x %d", z_iter->second.width, z_iter->second.height);
@@ -784,7 +798,7 @@ void CDlgTableMap::update_display(void)
 			// Display selected symbol record
 			if (m_TableMapTree.GetSelectedItem())
 			{
-				SMap::const_iterator s_iter = p_tablemap->s$()->find(sel);
+				SMap::const_iterator s_iter = p_tablemap->s$()->find(sel.GetString());
 				if (s_iter != p_tablemap->s$()->end())
 					m_Result.SetWindowText(s_iter->second.text.GetString());
 			}
@@ -813,7 +827,7 @@ void CDlgTableMap::update_display(void)
 			m_FontMinus.EnableWindow(true);
 			m_New.EnableWindow(true);
 			m_Delete.EnableWindow(true);
-			m_Edit.EnableWindow(true);
+			m_Edit.EnableWindow(false);
 			m_Zoom.EnableWindow(true);
 			m_NudgeTaller.EnableWindow(true);
 			m_NudgeShorter.EnableWindow(true);
@@ -963,52 +977,53 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 	HDC					hdcControl, hdcScreen, hdc_bitmap_orig, hdc_bitmap_transform;
 	HBITMAP				old_bitmap_orig, bitmap_transform, old_bitmap_transform;
 	COLORREF			cr_avg;
-	STablemapRegion		sel_region;
 	CTransform			trans;
+	RMapCI				sel_region = p_tablemap->r$()->end();
+	CString				sel = "";
 
-	// Get selected region record
+	// Get name of currently selected item
 	if (m_TableMapTree.GetSelectedItem())
-	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		sel_region = p_tablemap->r$()->GetAt(index);
-	}
-	else
-	{
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->r$()->find(sel.GetString());
+
+	// Exit if we can't find the region record
+	if (sel_region == p_tablemap->r$()->end())
 		return;
-	}
 
 	// Left/top/right/bottom edits/spinners
 	if (!dont_update_spinners)
 	{
-		text.Format("%d", sel_region.left);
+		text.Format("%d", sel_region->second.left);
 		m_Left.SetWindowText(text);
-		m_LeftSpin.SetPos(sel_region.left);
+		m_LeftSpin.SetPos(sel_region->second.left);
 
-		text.Format("%d", sel_region.top);
+		text.Format("%d", sel_region->second.top);
 		m_Top.SetWindowText(text);
-		m_TopSpin.SetPos(sel_region.top);
+		m_TopSpin.SetPos(sel_region->second.top);
 
-		text.Format("%d", sel_region.right);
+		text.Format("%d", sel_region->second.right);
 		m_Right.SetWindowText(text);
-		m_RightSpin.SetPos(sel_region.right);
+		m_RightSpin.SetPos(sel_region->second.right);
 
-		text.Format("%d", sel_region.bottom);
+		text.Format("%d", sel_region->second.bottom);
 		m_Bottom.SetWindowText(text);
-		m_BottomSpin.SetPos(sel_region.bottom);
+		m_BottomSpin.SetPos(sel_region->second.bottom);
 	}
 
 	// Transform
-	if (sel_region.transform == "C")			selected_transform = "Color";
-	else if (sel_region.transform == "I")		selected_transform = "Image";
-	else if (sel_region.transform == "T0")		selected_transform = "Text0";
-	else if (sel_region.transform == "T1")		selected_transform = "Text1";
-	else if (sel_region.transform == "T2")		selected_transform = "Text2";
-	else if (sel_region.transform == "T3")		selected_transform = "Text3";
-	else if (sel_region.transform == "H0")		selected_transform = "Hash0";
-	else if (sel_region.transform == "H1")		selected_transform = "Hash1";
-	else if (sel_region.transform == "H2")		selected_transform = "Hash2";
-	else if (sel_region.transform == "H3")		selected_transform = "Hash3";
-	else if (sel_region.transform == "N")		selected_transform = "None";
+	if (sel_region->second.transform == "C")			selected_transform = "Color";
+	else if (sel_region->second.transform == "I")		selected_transform = "Image";
+	else if (sel_region->second.transform == "T0")		selected_transform = "Text0";
+	else if (sel_region->second.transform == "T1")		selected_transform = "Text1";
+	else if (sel_region->second.transform == "T2")		selected_transform = "Text2";
+	else if (sel_region->second.transform == "T3")		selected_transform = "Text3";
+	else if (sel_region->second.transform == "H0")		selected_transform = "Hash0";
+	else if (sel_region->second.transform == "H1")		selected_transform = "Hash1";
+	else if (sel_region->second.transform == "H2")		selected_transform = "Hash2";
+	else if (sel_region->second.transform == "H3")		selected_transform = "Hash3";
+	else if (sel_region->second.transform == "N")		selected_transform = "None";
 	m_Transform.SelectString(-1, selected_transform);
 
 	// Color/radius  (color is stored internally and in the .tm file in ABGR (COLORREF) format)
@@ -1036,15 +1051,15 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 		m_Radius.EnableWindow(true);
 	}
 
-	text.Format("%02x", (sel_region.color >> 24) & 0xff);
+	text.Format("%02x", (sel_region->second.color >> 24) & 0xff);
 	m_Alpha.SetWindowText(text);
-	text.Format("%02x", (sel_region.color >> 0) & 0xff);
+	text.Format("%02x", (sel_region->second.color >> 0) & 0xff);
 	m_Red.SetWindowText(text);
-	text.Format("%02x", (sel_region.color >> 8) & 0xff);
+	text.Format("%02x", (sel_region->second.color >> 8) & 0xff);
 	m_Green.SetWindowText(text);
-	text.Format("%02x", (sel_region.color >> 16) & 0xff);
+	text.Format("%02x", (sel_region->second.color >> 16) & 0xff);
 	m_Blue.SetWindowText(text);
-	text.Format("%d", sel_region.radius);
+	text.Format("%d", sel_region->second.radius);
 	m_Radius.SetWindowText(text);
 
 	if (selected_transform != "Color")
@@ -1070,19 +1085,19 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 
 	hdc_bitmap_transform = CreateCompatibleDC(hdcScreen);
 	bitmap_transform = CreateCompatibleBitmap(hdcScreen, 
-								   sel_region.right-sel_region.left, 
-								   sel_region.bottom-sel_region.top);
+								   sel_region->second.right - sel_region->second.left, 
+								   sel_region->second.bottom  - sel_region->second.top);
 	old_bitmap_transform = (HBITMAP) SelectObject(hdc_bitmap_transform, bitmap_transform);
 
 	BitBlt(hdc_bitmap_transform, 0, 0, 
-		   sel_region.right - sel_region.left, 
-		   sel_region.bottom - sel_region.top,
+		   sel_region->second.right - sel_region->second.left, 
+		   sel_region->second.bottom - sel_region->second.top,
 		   hdc_bitmap_orig, 
-		   sel_region.left, sel_region.top, 
+		   sel_region->second.left, sel_region->second.top, 
 		   SRCCOPY);
 
 	// result field
-	int ret = trans.DoTransform(&sel_region, hdc_bitmap_transform, &text, &separation, &cr_avg);
+	int ret = trans.DoTransform(sel_region, hdc_bitmap_transform, &text, &separation, &cr_avg);
 	if (ret != ERR_GOOD_SCRAPE_GENERAL)
 	{
 		switch (ret)
@@ -1122,7 +1137,7 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 		m_GreenAvg.SetWindowText(text);
 		text.Format("%02x", GetBValue(cr_avg));
 		m_BlueAvg.SetWindowText(text);
-		text.Format("%d", sel_region.radius);
+		text.Format("%d", sel_region->second.radius);
 	}
 
 	// Create font button
@@ -1208,23 +1223,23 @@ void CDlgTableMap::OnDeltaposLeftSpin(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	STablemapRegion		sel_region;
-	int					index = 0;
-	
-	// Get selected region record
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	CString				sel = "";
+
+	// Get name of currently selected item
 	if (m_TableMapTree.GetSelectedItem())
-	{
-		index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		sel_region = p_tablemap->r$()->GetAt(index);
-	}
-	else
-	{
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+
+	// Exit if we can't find the region record
+	if (sel_region == p_tablemap->r$()->end())
 		return;
-	}
 	
 	if (ignore_changes)  return;
 
-	p_tablemap->set_r$_left(index, pNMUpDown->iPos + pNMUpDown->iDelta);
+	sel_region->second.left = pNMUpDown->iPos + pNMUpDown->iDelta;
 
 	update_r$_display(true);
 	Invalidate(false);
@@ -1239,23 +1254,23 @@ void CDlgTableMap::OnDeltaposTopSpin(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	STablemapRegion		sel_region;
-	int					index = 0;
-	
-	// Get selected region record
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	CString				sel = "";
+
+	// Get name of currently selected item
 	if (m_TableMapTree.GetSelectedItem())
-	{
-		index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		sel_region = p_tablemap->r$()->GetAt(index);
-	}
-	else
-	{
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+
+	// Exit if we can't find the region record
+	if (sel_region == p_tablemap->r$()->end())
 		return;
-	}
 
 	if (ignore_changes)  return;
 
-	p_tablemap->set_r$_top(index, pNMUpDown->iPos + pNMUpDown->iDelta);
+	sel_region->second.top = pNMUpDown->iPos + pNMUpDown->iDelta;
 
 	update_r$_display(true);
 	Invalidate(false);
@@ -1270,23 +1285,23 @@ void CDlgTableMap::OnDeltaposBottomSpin(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	STablemapRegion		sel_region;
-	int					index = 0;
-	
-	// Get selected region record
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	CString				sel = "";
+
+	// Get name of currently selected item
 	if (m_TableMapTree.GetSelectedItem())
-	{
-		index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		sel_region = p_tablemap->r$()->GetAt(index);
-	}
-	else
-	{
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+
+	// Exit if we can't find the region record
+	if (sel_region == p_tablemap->r$()->end())
 		return;
-	}
 
 	if (ignore_changes)  return;
 
-	p_tablemap->set_r$_bottom(index, pNMUpDown->iPos + pNMUpDown->iDelta);
+	sel_region->second.bottom = pNMUpDown->iPos + pNMUpDown->iDelta;
 
 	update_r$_display(true);
 	Invalidate(false);
@@ -1301,23 +1316,23 @@ void CDlgTableMap::OnDeltaposRightSpin(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	STablemapRegion		sel_region;
-	int					index = 0;
-	
-	// Get selected region record
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	CString				sel = "";
+
+	// Get name of currently selected item
 	if (m_TableMapTree.GetSelectedItem())
-	{
-		index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		sel_region = p_tablemap->r$()->GetAt(index);
-	}
-	else
-	{
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+
+	// Exit if we can't find the region record
+	if (sel_region == p_tablemap->r$()->end())
 		return;
-	}
 
 	if (ignore_changes)  return;
 
-	p_tablemap->set_r$_right(index, pNMUpDown->iPos + pNMUpDown->iDelta);
+	sel_region->second.right = pNMUpDown->iPos + pNMUpDown->iDelta;
 
 	update_r$_display(true);
 	Invalidate(false);
@@ -1332,23 +1347,23 @@ void CDlgTableMap::OnDeltaposRadiusSpin(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	STablemapRegion		sel_region;
-	int					index = 0;
-	
-	// Get selected region record
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	CString				sel = "";
+
+	// Get name of currently selected item
 	if (m_TableMapTree.GetSelectedItem())
-	{
-		index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		sel_region = p_tablemap->r$()->GetAt(index);
-	}
-	else
-	{
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+
+	// Exit if we can't find the region record
+	if (sel_region == p_tablemap->r$()->end())
 		return;
-	}
 
 	if (ignore_changes)  return;
 
-	p_tablemap->set_r$_radius(index, pNMUpDown->iPos + pNMUpDown->iDelta);
+	sel_region->second.radius = pNMUpDown->iPos + pNMUpDown->iDelta;
 
 	update_r$_display(true);
 	Invalidate(false);
@@ -1362,8 +1377,8 @@ void CDlgTableMap::OnDeltaposRadiusSpin(NMHDR *pNMHDR, LRESULT *pResult)
 void CDlgTableMap::OnBnClickedNew()
 {
 	COpenScrapeDoc			*pDoc = COpenScrapeDoc::GetDocument();
-	CString					text, sel;
-	int						i, j, new_index;
+	CString					text;
+	int						i, new_index;
 	bool					used_string;
 	HTREEITEM				new_hti;
 	char					title[200];
@@ -1377,12 +1392,18 @@ void CDlgTableMap::OnBnClickedNew()
 	STablemapRegion			new_region;
 	STablemapHashPoint		new_hashpoint;
 
-	HTREEITEM				parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
+	HTREEITEM				parent;
 	CString					selected_parent_text = "";
+	CString					sel = "";
 
+	// Get name of currently selected item and its parent item
 	if (m_TableMapTree.GetSelectedItem())
-		selected_parent_text = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	{
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+		parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
+	}
 
+	// Get name of currently selected item's parent
 	if (parent != NULL) 
 		selected_parent_text = m_TableMapTree.GetItemText(parent);
 
@@ -1508,8 +1529,8 @@ void CDlgTableMap::OnBnClickedNew()
 		for (i=0; i<num_r$strings; i++)
 		{
 			used_string = false;
-			for (j=0; j<p_tablemap->r$()->GetCount(); j++)
-				if (p_tablemap->r$()->GetAt(j).name == r$strings[i] && r$strings[i] != "tablepoint")  
+			for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++)
+				if (r_iter->second.name == r$strings[i] && r$strings[i] != "tablepoint")  
 					used_string=true;
 
 			if (!used_string)
@@ -1534,16 +1555,23 @@ void CDlgTableMap::OnBnClickedNew()
 				new_region.color = 0;
 				new_region.radius = 0;
 				new_region.transform = "N";
-				new_index = (int) p_tablemap->set_r$_add(new_region);
 
-				// Add new record to tree
-				new_hti = m_TableMapTree.InsertItem(new_region.name, parent ? parent : m_TableMapTree.GetSelectedItem());
-				m_TableMapTree.SetItemData(new_hti, (DWORD_PTR) new_index);
-				m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
-				m_TableMapTree.SelectItem(new_hti);
+				// Insert the new record in the existing array of z$ records
+				if (!p_tablemap->r$_insert(new_region))
+				{
+					MessageBox("Failed to create region record.", "Region creation error", MB_OK);
+				}
+				else
+				{
 
-				pDoc->SetModifiedFlag(true);
-				Invalidate(false);
+					// Add new record to tree
+					new_hti = m_TableMapTree.InsertItem(new_region.name, parent ? parent : m_TableMapTree.GetSelectedItem());
+					m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
+					m_TableMapTree.SelectItem(new_hti);
+
+					pDoc->SetModifiedFlag(true);
+					Invalidate(false);
+				}
 			}
 		}
 	}
@@ -1597,13 +1625,18 @@ void CDlgTableMap::OnBnClickedDelete()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	CString				text;
-	CString				sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
-	HTREEITEM			parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
+	HTREEITEM			parent = NULL;
 	CString				selected_parent_text = "";
+	CString				sel = "";
 
-	if (!m_TableMapTree.GetSelectedItem())
-		return;
+	// Get name of currently selected item and its parent item
+	if (m_TableMapTree.GetSelectedItem())
+	{
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+		parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
+	}
 
+	// Get name of currently selected item's parent
 	if (parent != NULL) 
 		selected_parent_text = m_TableMapTree.GetItemText(parent);
 
@@ -1633,7 +1666,7 @@ void CDlgTableMap::OnBnClickedDelete()
 		text.Format("Really delete Symbol record: %s", sel);
 		if (MessageBox(text.GetString(), "Delete Symbol record?", MB_YESNO) == IDYES)
 		{
-			// Delete record from internal structure
+			// Delete record from internal structure and update tree
 			if (!p_tablemap->s$_erase(sel))
 			{
 				MessageBox("Error deleting symbol record.", "ERROR", MB_OK | MB_TOPMOST);
@@ -1651,19 +1684,22 @@ void CDlgTableMap::OnBnClickedDelete()
 	
 	else if (selected_parent_text == "Regions")
 	{
-		// Get index into array for selected record
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-
 		text.Format("Really delete Region record: %s", sel);
 		if (MessageBox(text.GetString(), "Delete Region record?", MB_YESNO) == IDYES)
 		{
 			// Delete record from internal structure and update tree
-			p_tablemap->set_r$_removeat(index);
-			HTREEITEM node = update_tree("Regions");
-			if (node!=NULL)  m_TableMapTree.SelectItem(node);
+			if (!p_tablemap->r$_erase(sel))
+			{
+				MessageBox("Error deleting region record.", "ERROR", MB_OK | MB_TOPMOST);
+			}
+			else 
+			{
+				HTREEITEM node = update_tree("Regions");
+				if (node!=NULL)  m_TableMapTree.SelectItem(node);
 
-			Invalidate(false);
-			pDoc->SetModifiedFlag(true);
+				Invalidate(false);
+				pDoc->SetModifiedFlag(true);
+			}
 		}
 	}
 	
@@ -1809,8 +1845,6 @@ void CDlgTableMap::OnBnClickedEdit()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	CString				text, num;
-	CString				sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
-	HTREEITEM			parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
 	HTREEITEM			node;
 	int					i, j, pos, x_cnt;
 	char				title[200];
@@ -1820,7 +1854,6 @@ void CDlgTableMap::OnBnClickedEdit()
 	CDlgEditFont		dlg_editfont;
 	CDlgEditHashPoint	dlghashpoint;
 	CDlgEditGrHashPoints	dlggrhashpoints;
-	CString				selected_parent_text = "";
 	CString				sel_region_name;
 	CString				node_text = "";
 	CArray <STablemapFont, STablemapFont>		new_t$_recs;
@@ -1828,20 +1861,27 @@ void CDlgTableMap::OnBnClickedEdit()
 	STablemapFont		sel_font;
 	STablemapHashPoint	sel_hash_point, temp_hash_point;
 	STablemapFont		new_font;
-	int					index;
 
-	if (!m_TableMapTree.GetSelectedItem())
-		return;
+	CString				sel = "";
+	HTREEITEM			parent = NULL;
+	CString				selected_parent_text = "";
 
-	index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
+	// Get name of currently selected item and its parent item
+	if (m_TableMapTree.GetSelectedItem())
+	{
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+		parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
+	}
 
+	// Get name of currently selected item's parent
 	if (parent != NULL) 
 		selected_parent_text = m_TableMapTree.GetItemText(parent);
+
 
 	if (selected_parent_text == "Sizes")
 	{
 		// Get selected size record
-		ZMap::const_iterator z_iter = p_tablemap->z$()->find(sel);
+		ZMapI z_iter = p_tablemap->set_z$()->find(sel.GetString());
 
 		if (z_iter == p_tablemap->z$()->end())
 		{
@@ -1861,29 +1901,18 @@ void CDlgTableMap::OnBnClickedEdit()
 			// Show dialog
 			if (dlgsizes.DoModal() == IDOK)
 			{
-				// Remove old record in internal structure
-				if (!p_tablemap->z$_erase(sel))
-				{
-					MessageBox("Error editing size record.", "ERROR", MB_OK | MB_TOPMOST);
-				}
-				else
-				{
-					// Add new record in internal structure
-					STablemapSize newsize;
-					newsize.name = dlgsizes.name;
-					newsize.width = dlgsizes.width;
-					newsize.height = dlgsizes.height;
-					p_tablemap->z$_insert(newsize);
+				// Update record in internal structure
+				z_iter->second.width = dlgsizes.width;
+				z_iter->second.height = dlgsizes.height;
 
-					// Edit record in tree
-					m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), dlgsizes.name.GetString());
-					m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
-					m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
+				// Update record in tree
+				m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), dlgsizes.name.GetString());
+				m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
+				m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
 
-					update_display();
-					Invalidate(false);
-					pDoc->SetModifiedFlag(true);
-				}
+				update_display();
+				Invalidate(false);
+				pDoc->SetModifiedFlag(true);
 			}
 		}
 	}
@@ -1891,7 +1920,7 @@ void CDlgTableMap::OnBnClickedEdit()
 	else if (selected_parent_text == "Symbols")
 	{
 		// Get selected symbol record
-		SMap::const_iterator s_iter = p_tablemap->s$()->find(sel);
+		SMapI s_iter = p_tablemap->set_s$()->find(sel.GetString());
 
 		if (s_iter == p_tablemap->s$()->end())
 		{
@@ -1912,62 +1941,30 @@ void CDlgTableMap::OnBnClickedEdit()
 			// Show dialog
 			if (dlgsymbols.DoModal() == IDOK)
 			{
-				// Remove old record in internal structure
-				if (!p_tablemap->s$_erase(sel))
-				{
-					MessageBox("Error editing symbol record.", "ERROR", MB_OK | MB_TOPMOST);
-				}
-				else
-				{
-					// Add new record in internal structure
-					STablemapSymbol newsymbol;
-					newsymbol.name = dlgsymbols.name;
-					newsymbol.text = dlgsymbols.value;
-					p_tablemap->s$_insert(newsymbol);
+				// Update record in internal structure
+				s_iter->second.text = dlgsymbols.value;
 
-					// Edit record in tree
-					m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), dlgsymbols.name.GetString());
-					m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
-					m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
+				// Update record in tree
+				m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), dlgsymbols.name.GetString());
+				m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
+				m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
 
-					update_display();
-					Invalidate(false);
-					pDoc->SetModifiedFlag(true);
-				}
+				update_display();
+				Invalidate(false);
+				pDoc->SetModifiedFlag(true);
 			}
 		}
 	}
 	
 	else if (selected_parent_text == "Regions")
 	{
-		// Get selected size record
-		sel_region = p_tablemap->r$()->GetAt(index);
-
-		// Prep dialog
-		dlgregions.titletext = "Edit Region record";
-		dlgregions.name = sel_region.name;
-		dlgregions.strings.RemoveAll();
-		for (j=0; j<num_r$strings; j++)  dlgregions.strings.Add(r$strings[j]);
-		
-		// Show dialog
-		if (dlgregions.DoModal() == IDOK)
-		{
-			// Edit record in internal structure
-			sel_region.name = dlgregions.name;
-
-			// Edit record in tree
-			m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), dlgregions.name.GetString());
-			m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
-			m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
-
-			update_display();
-			Invalidate(false);
-			pDoc->SetModifiedFlag(true);
-		}
+		// Editing of region record fields is via GUI
 	}
 	
 	else if (selected_parent_text == "Fonts")
 	{
+		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
+
 		// Get selected font record
 		sel_font = p_tablemap->t$()->GetAt(index);
 
@@ -2057,6 +2054,8 @@ void CDlgTableMap::OnBnClickedEdit()
 		// else bring up the individual hash point editor
 		else
 		{
+			int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
+	
 			// Get selected size record
 			sel_hash_point = p_tablemap->p$()->GetAt(index);
 
@@ -2114,7 +2113,20 @@ void CDlgTableMap::OnBnClickedCreateImage()
 	HTREEITEM			new_hti;
 	CString				text, node_text, sel_region_name;
 	HTREEITEM			image_node, region_node, child_node;
-	STablemapRegion		sel_region;
+	RMapCI				sel_region = p_tablemap->r$()->end();
+	CString				sel = "";
+
+	// Get name of currently selected item
+	if (m_TableMapTree.GetSelectedItem())
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->r$()->find(sel.GetString());
+
+	// Exit if we can't find the region record
+	if (sel_region == p_tablemap->r$()->end())
+		return;
+
 
 	// Make sure that we are attached to a window before we do this
 	if (!pDoc->attached_hwnd)
@@ -2124,20 +2136,6 @@ void CDlgTableMap::OnBnClickedCreateImage()
 		return;
 	}
 	
-	// Get selected region record
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		sel_region = p_tablemap->r$()->GetAt(index);
-
-		// Save currently selected region so we can reselect it at the end
-		sel_region_name = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
-	}
-	else
-	{
-		return;
-	}
-
 	edit.m_titletext = "Name of new image";
 	edit.m_result = "";
 	if (edit.DoModal() == IDOK) 
@@ -2148,8 +2146,8 @@ void CDlgTableMap::OnBnClickedCreateImage()
 
 		// Populate new image record			
 		new_image.name = edit.m_result;
-		new_image.width = sel_region.right - sel_region.left;
-		new_image.height = sel_region.bottom - sel_region.top;
+		new_image.width = sel_region->second.right - sel_region->second.left;
+		new_image.height = sel_region->second.bottom - sel_region->second.top;
 		
 		// Allocate space for "RGBAImage"
 		text = new_image.name + ".ppm";
@@ -2157,9 +2155,9 @@ void CDlgTableMap::OnBnClickedCreateImage()
 
 		// Populate pixel elements of struct
 		pix_cnt = 0;
-		for (y=(int) sel_region.top; y < (int) sel_region.bottom; y++) 
+		for (y=(int) sel_region->second.top; y < (int) sel_region->second.bottom; y++) 
 		{
-			for (x=(int) sel_region.left; x < (int) sel_region.right; x++) 
+			for (x=(int) sel_region->second.left; x < (int) sel_region->second.right; x++) 
 			{
 				alpha = pDoc->attached_pBits[y*width*4 + x*4 + 3];
 				red = pDoc->attached_pBits[y*width*4 + x*4 + 2];
@@ -2206,7 +2204,7 @@ void CDlgTableMap::OnBnClickedCreateImage()
 		// Re-select previously selected region
 		child_node = m_TableMapTree.GetChildItem(region_node);
 		node_text = m_TableMapTree.GetItemText(child_node);
-		while (node_text!=sel_region_name && child_node!=NULL)
+		while (node_text!=sel && child_node!=NULL)
 		{
 			child_node = m_TableMapTree.GetNextItem(child_node, TVGN_NEXT);
 			node_text = m_TableMapTree.GetItemText(child_node);
@@ -2238,32 +2236,28 @@ void CDlgTableMap::OnBnClickedCreateFont()
 	CString				node_text = "";
 	HTREEITEM			parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
 	CArray <STablemapFont, STablemapFont>		new_t$_recs;
-	STablemapRegion		sel_region;
-	CString				sel_region_name = "";
 	CTransform			trans;
-	
+	RMapCI				sel_region = p_tablemap->r$()->end();
+	CString				sel = "";
+
+	// Get name of currently selected item
+	if (m_TableMapTree.GetSelectedItem())
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->r$()->find(sel.GetString());
+
+	// Exit if we can't find the region record
+	if (sel_region == p_tablemap->r$()->end())
+		return;
+
 	// Initialize arrays
 	for (i=0; i<MAX_CHAR_WIDTH; i++)
 		background[i] = true;
 
-
-	// Get selected region record
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		sel_region = p_tablemap->r$()->GetAt(index);
-
-		// Save currently selected region so we can reselect it at the end
-		sel_region_name = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
-	}
-	else
-	{
-		return;
-	}
-
 	// Get bitmap size
-	width = sel_region.right - sel_region.left;
-	height = sel_region.bottom - sel_region.top;
+	width = sel_region->second.right - sel_region->second.left;
+	height = sel_region->second.bottom - sel_region->second.top;
 
 	// Select saved bitmap into memory DC
 	hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL); 
@@ -2274,10 +2268,10 @@ void CDlgTableMap::OnBnClickedCreateFont()
 	hdc_region = CreateCompatibleDC(hdcScreen);
 	bitmap_region = CreateCompatibleBitmap(hdcScreen, width, height);
 	old_bitmap2 = (HBITMAP) SelectObject(hdc_region, bitmap_region);
-	BitBlt(hdc_region, 0, 0, width, height, hdc, sel_region.left, sel_region.top, SRCCOPY);
+	BitBlt(hdc_region, 0, 0, width, height, hdc, sel_region->second.left, sel_region->second.top, SRCCOPY);
 
 	// Get the pixels
-	trans.TTypeTransform(&sel_region, hdc_region, &text, &separation, background, character);
+	trans.TTypeTransform(sel_region, hdc_region, &text, &separation, background, character);
 
 	// Clean up
 	SelectObject(hdc_region, old_bitmap2);
@@ -2327,7 +2321,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 								 character, &new_font.hexmash, false);
 
 		// Search for this character in the existing t$ records list
-		int text_group = atoi(sel_region.transform.Right(1));
+		int text_group = atoi(sel_region->second.transform.Right(1));
 		std::map<CString, int>::const_iterator fontindex = p_tablemap->hexmashes(text_group)->find(new_font.hexmash);
 
 		// Populate new font record
@@ -2411,7 +2405,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 			}
 
 			// Update hexmashes and hashes index	
-			int text_group = atoi(sel_region.transform.Right(1));
+			int text_group = atoi(sel_region->second.transform.Right(1));
 			p_tablemap->UpdateHexmashesHashes(text_group);
 
 			// Update tree
@@ -2420,7 +2414,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 			// Re-select previously selected region
 			child_node = m_TableMapTree.GetChildItem(region_node);
 			node_text = m_TableMapTree.GetItemText(child_node);
-			while (node_text!=sel_region_name && child_node!=NULL)
+			while (node_text!=sel && child_node!=NULL)
 			{
 				child_node = m_TableMapTree.GetNextItem(child_node, TVGN_NEXT);
 				node_text = m_TableMapTree.GetItemText(child_node);
@@ -2443,17 +2437,25 @@ void CDlgTableMap::OnBnClickedCreateHash()
 	STablemapHashValue		new_hash;
 	bool					t[4] = { false };
 	COpenScrapeDoc			*pDoc = COpenScrapeDoc::GetDocument();
-	CString					sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
-	HTREEITEM				parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
 	HTREEITEM				new_hti, node, child_node;
-	CString					text, node_text, sel_region_name;
+	CString					text, node_text;
 	int						j;
 
+	HTREEITEM				parent;
+	CString					selected_parent_text = "";
+	CString					sel = "";
+
+	// Get name of currently selected item and its parent item
 	if (m_TableMapTree.GetSelectedItem())
 	{
-		// Save currently selected region so we can reselect it at the end
-		sel_region_name = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+		parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
 	}
+
+	// Get name of currently selected item's parent
+	if (parent != NULL) 
+		selected_parent_text = m_TableMapTree.GetItemText(parent);
+
 
 	// Get image name
 	int start=0;
@@ -2524,7 +2526,7 @@ void CDlgTableMap::OnBnClickedCreateHash()
 				// Re-select previously selected image
 				child_node = m_TableMapTree.GetChildItem(node);
 				node_text = m_TableMapTree.GetItemText(child_node);
-				while (node_text!=sel_region_name && child_node!=NULL)
+				while (node_text!=sel && child_node!=NULL)
 				{
 					child_node = m_TableMapTree.GetNextItem(child_node, TVGN_NEXT);
 					node_text = m_TableMapTree.GetItemText(child_node);
@@ -2620,25 +2622,33 @@ void CDlgTableMap::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RECT				bmp_rect;
-	
-	m_BitmapFrame.GetWindowRect(&bmp_rect);
-	ScreenToClient(&bmp_rect);
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	CString				sel = "";
 
-	if (picker_cursor &&
-		point.x >= bmp_rect.left && point.x <= bmp_rect.right &&
-		point.y >= bmp_rect.top && point.y <= bmp_rect.bottom)
+	// Get name of currently selected item
+	if (m_TableMapTree.GetSelectedItem())
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+
+	if (sel_region != p_tablemap->r$()->end())
 	{
-		if (!m_TableMapTree.GetSelectedItem())
-			return;
+		m_BitmapFrame.GetWindowRect(&bmp_rect);
+		ScreenToClient(&bmp_rect);
 
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		p_tablemap->set_r$_color(index, get_color_under_mouse(&nFlags, &point));
+		if (picker_cursor &&
+			point.x >= bmp_rect.left && point.x <= bmp_rect.right &&
+			point.y >= bmp_rect.top && point.y <= bmp_rect.bottom)
+		{
+			sel_region->second.color = get_color_under_mouse(&nFlags, &point);
 
-		update_display();
-		Invalidate(false);
-		pDoc->SetModifiedFlag(true);
+			update_display();
+			Invalidate(false);
+			pDoc->SetModifiedFlag(true);
 
-		m_Picker.OnBnClicked();
+			m_Picker.OnBnClicked();
+		}
 	}
 
 	CDialog::OnLButtonDown(nFlags, point);
@@ -2648,23 +2658,31 @@ void CDlgTableMap::OnMouseMove(UINT nFlags, CPoint point)
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RECT				bmp_rect;
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	CString				sel = "";
 
-	m_BitmapFrame.GetWindowRect(&bmp_rect);
-	ScreenToClient(&bmp_rect);
+	// Get name of currently selected item
+	if (m_TableMapTree.GetSelectedItem())
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
 
-	if (picker_cursor &&
-		point.x >= bmp_rect.left && point.x <= bmp_rect.right &&
-		point.y >= bmp_rect.top && point.y <= bmp_rect.bottom)
+	// Get iterator for selected region
+	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+
+	if (sel_region != p_tablemap->r$()->end())
 	{
-		if (!m_TableMapTree.GetSelectedItem())
-			return;
+		m_BitmapFrame.GetWindowRect(&bmp_rect);
+		ScreenToClient(&bmp_rect);
 
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		p_tablemap->set_r$_color(index, get_color_under_mouse(&nFlags, &point));
+		if (picker_cursor &&
+			point.x >= bmp_rect.left && point.x <= bmp_rect.right &&
+			point.y >= bmp_rect.top && point.y <= bmp_rect.bottom)
+		{
+			sel_region->second.color = get_color_under_mouse(&nFlags, &point);
 
-		update_display();
-		Invalidate(false);
-		pDoc->SetModifiedFlag(true);
+			update_display();
+			Invalidate(false);
+			pDoc->SetModifiedFlag(true);
+		}
 	}
 
 	CDialog::OnMouseMove(nFlags, point);
@@ -2742,8 +2760,7 @@ void CDlgTableMap::create_tree(void)
 	parent = m_TableMapTree.InsertItem("Sizes");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
 
-	ZMap::const_iterator z_iter;
-	for (z_iter=p_tablemap->z$()->begin(); z_iter!=p_tablemap->z$()->end(); z_iter++)
+	for (ZMapCI z_iter=p_tablemap->z$()->begin(); z_iter!=p_tablemap->z$()->end(); z_iter++)
 		m_TableMapTree.InsertItem(z_iter->second.name, parent);
 
 	m_TableMapTree.SortChildren(parent);
@@ -2752,8 +2769,7 @@ void CDlgTableMap::create_tree(void)
 	parent = m_TableMapTree.InsertItem("Symbols");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
 
-	SMap::const_iterator s_iter;
-	for (s_iter=p_tablemap->s$()->begin(); s_iter!=p_tablemap->s$()->end(); s_iter++)
+	for (SMapCI s_iter=p_tablemap->s$()->begin(); s_iter!=p_tablemap->s$()->end(); s_iter++)
 		m_TableMapTree.InsertItem(s_iter->second.name, parent);
 
 	m_TableMapTree.SortChildren(parent);
@@ -2761,11 +2777,10 @@ void CDlgTableMap::create_tree(void)
 	// r$ records
 	parent = m_TableMapTree.InsertItem("Regions");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
-	for (i=0; i<p_tablemap->r$()->GetSize(); i++) 
-	{
-		newitem = m_TableMapTree.InsertItem(p_tablemap->r$()->GetAt(i).name, parent);
-		m_TableMapTree.SetItemData(newitem, (DWORD_PTR) i);
-	}
+
+	for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++)
+		m_TableMapTree.InsertItem(r_iter->second.name, parent);
+
 	m_TableMapTree.SortChildren(parent);
 
 	// t$ records
@@ -2794,6 +2809,7 @@ void CDlgTableMap::create_tree(void)
 	// h$ records
 	parent = m_TableMapTree.InsertItem("Hashes");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
+
 	for (i=0; i<=3; i++)
 	{
 		for (HMapCI h_iter=p_tablemap->h$(i)->begin(); h_iter!=p_tablemap->h$(i)->end(); h_iter++)
@@ -2802,11 +2818,13 @@ void CDlgTableMap::create_tree(void)
 			newitem = m_TableMapTree.InsertItem(text, parent);
 		}
 	}
+
 	m_TableMapTree.SortChildren(parent);
 
 	// i$ records
 	parent = m_TableMapTree.InsertItem("Images");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
+
 	for (IMapCI i_iter=p_tablemap->i$()->begin(); i_iter!=p_tablemap->i$()->end(); i_iter++)
 	{
 		text.Format("%s (%dx%d)", i_iter->second.name, i_iter->second.width, i_iter->second.height);
@@ -2814,7 +2832,9 @@ void CDlgTableMap::create_tree(void)
 		m_TableMapTree.SetItemData(newitem, 
 			(DWORD_PTR) p_tablemap->CreateI$Index(i_iter->second.name, i_iter->second.width, i_iter->second.height, i_iter->second.pixel));
 	}
+
 	m_TableMapTree.SortChildren(parent);
+
 	UpdateStatus();
 }
 
@@ -2822,13 +2842,20 @@ void CDlgTableMap::OnBnClickedNudgeTaller()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	CString				sel = "";
 
-		p_tablemap->set_r$_top(index, sel_region.top-1);
-		p_tablemap->set_r$_bottom(index, sel_region.bottom+1);
+	// Get name of currently selected item
+	if (m_TableMapTree.GetSelectedItem())
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+
+	if (sel_region != p_tablemap->r$()->end())
+	{
+		sel_region->second.top = sel_region->second.top-1;
+		sel_region->second.bottom = sel_region->second.bottom+1;
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -2842,13 +2869,20 @@ void CDlgTableMap::OnBnClickedNudgeShorter()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	CString				sel = "";
 
-		p_tablemap->set_r$_top(index, sel_region.top+1);
-		p_tablemap->set_r$_bottom(index, sel_region.bottom-1);
+	// Get name of currently selected item
+	if (m_TableMapTree.GetSelectedItem())
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+
+	if (sel_region != p_tablemap->r$()->end())
+	{
+		sel_region->second.top = sel_region->second.top+1;
+		sel_region->second.bottom = sel_region->second.bottom-1;
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -2862,13 +2896,20 @@ void CDlgTableMap::OnBnClickedNudgeWider()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	CString				sel = "";
 
-		p_tablemap->set_r$_left(index, sel_region.left-1);
-		p_tablemap->set_r$_right(index, sel_region.right+1);
+	// Get name of currently selected item
+	if (m_TableMapTree.GetSelectedItem())
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+
+	if (sel_region != p_tablemap->r$()->end())
+	{
+		sel_region->second.left = sel_region->second.left-1;
+		sel_region->second.right = sel_region->second.right+1;
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -2882,13 +2923,20 @@ void CDlgTableMap::OnBnClickedNudgeNarrower()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	CString				sel = "";
 
-		p_tablemap->set_r$_left(index, sel_region.left+1);
-		p_tablemap->set_r$_right(index, sel_region.right-1);
+	// Get name of currently selected item
+	if (m_TableMapTree.GetSelectedItem())
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+
+	if (sel_region != p_tablemap->r$()->end())
+	{
+		sel_region->second.left = sel_region->second.left+1;
+		sel_region->second.right = sel_region->second.right-1;
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -2902,15 +2950,22 @@ void CDlgTableMap::OnBnClickedNudgeBigger()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	CString				sel = "";
 
-		p_tablemap->set_r$_left(index, sel_region.left-1);
-		p_tablemap->set_r$_top(index, sel_region.top-1);
-		p_tablemap->set_r$_right(index, sel_region.right+1);
-		p_tablemap->set_r$_bottom(index, sel_region.bottom+1);
+	// Get name of currently selected item
+	if (m_TableMapTree.GetSelectedItem())
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+
+	if (sel_region != p_tablemap->r$()->end())
+	{
+		sel_region->second.left = sel_region->second.left-1;
+		sel_region->second.top = sel_region->second.top-1;
+		sel_region->second.right = sel_region->second.right+1;
+		sel_region->second.bottom = sel_region->second.bottom+1;
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -2924,15 +2979,29 @@ void CDlgTableMap::OnBnClickedNudgeSmaller()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	CString				sel = "";
 
-		p_tablemap->set_r$_left(index, sel_region.left+1);
-		p_tablemap->set_r$_top(index, sel_region.top+1);
-		p_tablemap->set_r$_right(index, sel_region.right-1);
-		p_tablemap->set_r$_bottom(index, sel_region.bottom-1);
+	// Get name of currently selected item
+	if (m_TableMapTree.GetSelectedItem())
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+
+	if (sel_region != p_tablemap->r$()->end())
+	{
+		if (sel_region->second.left+1<=sel_region->second.right)
+			sel_region->second.left = sel_region->second.left+1;
+
+		if (sel_region->second.top+1<=sel_region->second.bottom)
+			sel_region->second.top = sel_region->second.top+1;
+
+		if (sel_region->second.right-1>=sel_region->second.left)
+			sel_region->second.right = sel_region->second.right-1;
+
+		if (sel_region->second.bottom-1>=sel_region->second.top)
+			sel_region->second.bottom = sel_region->second.bottom-1;
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -2945,16 +3014,23 @@ void CDlgTableMap::OnBnClickedNudgeSmaller()
 void CDlgTableMap::OnBnClickedNudgeUpleft()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
 
-		p_tablemap->set_r$_left(index, sel_region.left-1);
-		p_tablemap->set_r$_top(index, sel_region.top-1);
-		p_tablemap->set_r$_right(index, sel_region.right-1);
-		p_tablemap->set_r$_bottom(index, sel_region.bottom-1);
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	CString				sel = "";
+
+	// Get name of currently selected item
+	if (m_TableMapTree.GetSelectedItem())
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+
+	if (sel_region != p_tablemap->r$()->end())
+	{
+		sel_region->second.left = sel_region->second.left-1;
+		sel_region->second.top = sel_region->second.top-1;
+		sel_region->second.right = sel_region->second.right-1;
+		sel_region->second.bottom = sel_region->second.bottom-1;
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -2968,13 +3044,20 @@ void CDlgTableMap::OnBnClickedNudgeUp()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	CString				sel = "";
 
-		p_tablemap->set_r$_top(index, sel_region.top-1);
-		p_tablemap->set_r$_bottom(index, sel_region.bottom-1);
+	// Get name of currently selected item
+	if (m_TableMapTree.GetSelectedItem())
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+
+	if (sel_region != p_tablemap->r$()->end())
+	{
+		sel_region->second.top = sel_region->second.top-1;
+		sel_region->second.bottom = sel_region->second.bottom-1;
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -2988,15 +3071,22 @@ void CDlgTableMap::OnBnClickedNudgeUpright()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	CString				sel = "";
 
-		p_tablemap->set_r$_left(index, sel_region.left+1);
-		p_tablemap->set_r$_top(index, sel_region.top-1);
-		p_tablemap->set_r$_right(index, sel_region.right+1);
-		p_tablemap->set_r$_bottom(index, sel_region.bottom-1);
+	// Get name of currently selected item
+	if (m_TableMapTree.GetSelectedItem())
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+
+	if (sel_region != p_tablemap->r$()->end())
+	{
+		sel_region->second.left = sel_region->second.left+1;
+		sel_region->second.top = sel_region->second.top-1;
+		sel_region->second.right = sel_region->second.right+1;
+		sel_region->second.bottom = sel_region->second.bottom-1;
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -3010,13 +3100,20 @@ void CDlgTableMap::OnBnClickedNudgeRight()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	CString				sel = "";
 
-		p_tablemap->set_r$_left(index, sel_region.left+1);
-		p_tablemap->set_r$_right(index, sel_region.right+1);
+	// Get name of currently selected item
+	if (m_TableMapTree.GetSelectedItem())
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+
+	if (sel_region != p_tablemap->r$()->end())
+	{
+		sel_region->second.left = sel_region->second.left+1;
+		sel_region->second.right = sel_region->second.right+1;
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -3030,15 +3127,22 @@ void CDlgTableMap::OnBnClickedNudgeDownright()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	CString				sel = "";
 
-		p_tablemap->set_r$_left(index, sel_region.left+1);
-		p_tablemap->set_r$_top(index, sel_region.top+1);
-		p_tablemap->set_r$_right(index, sel_region.right+1);
-		p_tablemap->set_r$_bottom(index, sel_region.bottom+1);
+	// Get name of currently selected item
+	if (m_TableMapTree.GetSelectedItem())
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+
+	if (sel_region != p_tablemap->r$()->end())
+	{
+		sel_region->second.left = sel_region->second.left+1;
+		sel_region->second.top = sel_region->second.top+1;
+		sel_region->second.right = sel_region->second.right+1;
+		sel_region->second.bottom = sel_region->second.bottom+1;
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -3051,14 +3155,21 @@ void CDlgTableMap::OnBnClickedNudgeDownright()
 void CDlgTableMap::OnBnClickedNudgeDown()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
 
-		p_tablemap->set_r$_top(index, sel_region.top+1);
-		p_tablemap->set_r$_bottom(index, sel_region.bottom+1);
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	CString				sel = "";
+
+	// Get name of currently selected item
+	if (m_TableMapTree.GetSelectedItem())
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+
+	if (sel_region != p_tablemap->r$()->end())
+	{
+		sel_region->second.top = sel_region->second.top+1;
+		sel_region->second.bottom = sel_region->second.bottom+1;
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -3072,15 +3183,22 @@ void CDlgTableMap::OnBnClickedNudgeDownleft()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	CString				sel = "";
 
-		p_tablemap->set_r$_left(index, sel_region.left-1);
-		p_tablemap->set_r$_top(index, sel_region.top+1);
-		p_tablemap->set_r$_right(index, sel_region.right-1);
-		p_tablemap->set_r$_bottom(index, sel_region.bottom+1);
+	// Get name of currently selected item
+	if (m_TableMapTree.GetSelectedItem())
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+
+	if (sel_region != p_tablemap->r$()->end())
+	{
+		sel_region->second.left = sel_region->second.left-1;
+		sel_region->second.top = sel_region->second.top+1;
+		sel_region->second.right = sel_region->second.right-1;
+		sel_region->second.bottom = sel_region->second.bottom+1;
 
 		update_r$_display(false);
 		Invalidate(false);
@@ -3094,13 +3212,20 @@ void CDlgTableMap::OnBnClickedNudgeLeft()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		STablemapRegion	sel_region = p_tablemap->r$()->GetAt(index);
+	RMapI				sel_region = p_tablemap->set_r$()->end();
+	CString				sel = "";
 
-		p_tablemap->set_r$_left(index, sel_region.left-1);
-		p_tablemap->set_r$_right(index, sel_region.right-1);
+	// Get name of currently selected item
+	if (m_TableMapTree.GetSelectedItem())
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+
+	if (sel_region != p_tablemap->r$()->end())
+	{
+		sel_region->second.left = sel_region->second.left-1;
+		sel_region->second.right = sel_region->second.right-1;
 
 		update_r$_display(false);
 		Invalidate(false);
