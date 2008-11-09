@@ -1,7 +1,8 @@
 #ifndef INC_CAUTOPLAYER_H
 #define INC_CAUTOPLAYER_H
 
-#include "..\CCritSec\CCritSec.h"
+#include "../CCritSec/CCritSec.h"
+#include "../CTablemap/CTablemap.h"
 
 extern class CAutoplayer 
 {
@@ -59,10 +60,10 @@ private:
 	const double RandomNormalScaled(const double scale, const double m, const double s);
 	const double RandomNormal(const double m, const double s);
 
-	int		_alli_but, _rais_but, _call_but, _chec_but, _fold_but;
-	int		_autopost_but, _sitin_but, _sitout_but, _leave_but, _pre_fold_but;
+	RMapCI	_alli_but, _rais_but, _call_but, _chec_but, _fold_but;
+	RMapCI	_autopost_but, _sitin_but, _sitout_but, _leave_but, _pre_fold_but;
 	bool	_autopost_state, _sitin_state, _sitout_state;
-	int		_i86_but, _i86X_but[10];
+	RMapCI	_i86_but, _i86X_but[10];
 	bool	_i86_state, _i86X_state[10];
 
 	// Mutex used for cross-instance autoplayer coordination

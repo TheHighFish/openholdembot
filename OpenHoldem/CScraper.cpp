@@ -4,7 +4,6 @@
 
 #include "..\CTransform\CTransform.h"
 #include "..\CTransform\hash\lookup3.h"
-#include "..\CTablemap\CTablemap.h"
 
 #include "CSymbols.h"
 #include "CPokerPro.h"
@@ -263,32 +262,28 @@ int CScraper::DoScrape(void)
 	return _scrape_something_changed;
 }
 
-bool CScraper::ProcessRegion(const HDC hdcCompatible, const HDC hdc, const int r$index)
+bool CScraper::ProcessRegion(const HDC hdcCompatible, const HDC hdc, RMapCI r_iter)
 {
-	HBITMAP			bitmap_last = p_tablemap->r$()->GetAt(r$index).last_bmp;
-	HBITMAP			bitmap_cur = p_tablemap->r$()->GetAt(r$index).cur_bmp;
-	int				left = p_tablemap->r$()->GetAt(r$index).left;
-	int				top = p_tablemap->r$()->GetAt(r$index).top;
-	int				right = p_tablemap->r$()->GetAt(r$index).right;
-	int				bottom = p_tablemap->r$()->GetAt(r$index).bottom;
-	HBITMAP			old_bitmap = NULL;
-
 	// Check for bad parameters
 	if (hdcCompatible == NULL || hdc == NULL)
 		return false;
 
 	// Get "current" bitmap
-	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, bitmap_cur);
-	BitBlt(hdcCompatible, 0, 0, right-left, bottom-top, hdc, left, top, SRCCOPY);
+	HBITMAP old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+	BitBlt(hdcCompatible, 0, 0, r_iter->second.right - r_iter->second.left, 
+							    r_iter->second.bottom - r_iter->second.top, 
+								hdc, r_iter->second.left, r_iter->second.top, SRCCOPY);
 	SelectObject(hdcCompatible, old_bitmap);
 
 	// If the bitmaps are different, then continue on
-	if (!BitmapsSame(bitmap_last, bitmap_cur))
+	if (!BitmapsSame(r_iter->second.last_bmp, r_iter->second.cur_bmp))
 	{
 
 		// Copy into "last" bitmap
-		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, bitmap_last);
-		BitBlt(hdcCompatible, 0, 0, right-left, bottom-top, hdc, left, top, SRCCOPY);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.last_bmp);
+		BitBlt(hdcCompatible, 0, 0, r_iter->second.right - r_iter->second.left, 
+									r_iter->second.bottom - r_iter->second.top, 
+									hdc, r_iter->second.left, r_iter->second.top, SRCCOPY);
 		SelectObject(hdcCompatible, old_bitmap);
 
 		return true;
@@ -299,27 +294,29 @@ bool CScraper::ProcessRegion(const HDC hdcCompatible, const HDC hdc, const int r
 
 void CScraper::ScrapeCommonCards(HDC hdcCompatible, HDC hdc)
 {
-	int					i = 0, r$index = 0;
 	HBITMAP				old_bitmap = NULL;
 	unsigned int		card = CARD_NOCARD;
 	CString				cardstr = "", rankstr = "", suitstr = "";
 	CTransform			trans;
+	CString				s = "";
+	RMapCI				r_iter1 = p_tablemap->r$()->end(), r_iter2 = p_tablemap->r$()->end();
 
 	// Check for bad parameters
 	if (hdcCompatible == NULL || hdc == NULL)
 		return;
 
-	for (i=0; i<=4; i++)
+	for (int i=0; i<=4; i++)
 	{
 		card = CARD_NOCARD;
 
 		// try r$c0cardfaceX region first
-		r$index = p_tablemap->r$indexes()->r$c0cardfaceX_index[i];
-		if (r$index != -1)
+		s.Format("c0cardface%d", i);
+		r_iter1 = p_tablemap->r$()->find(s.GetString());
+		if (r_iter1 != p_tablemap->r$()->end())
 		{
-			ProcessRegion(hdcCompatible, hdc, r$index);
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-			trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &cardstr);
+			ProcessRegion(hdcCompatible, hdc, r_iter1);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter1->second.cur_bmp);
+			trans.DoTransform(r_iter1, hdcCompatible, &cardstr);
 			SelectObject(hdcCompatible, old_bitmap);
 
 			if (cardstr!="")
@@ -339,26 +336,28 @@ void CScraper::ScrapeCommonCards(HDC hdcCompatible, HDC hdc)
 		}
 
 		// try r$c0cardfaceXrank/r$c0cardfaceXsuit region next
-		if (p_tablemap->r$indexes()->r$c0cardfaceXrank_index[i] != -1 &&
-			p_tablemap->r$indexes()->r$c0cardfaceXsuit_index[i] != -1 &&
-			card==CARD_NOCARD)
-		{
+		s.Format("c0cardface%drank", i);
+		r_iter1 = p_tablemap->r$()->find(s.GetString());
 
+		s.Format("c0cardface%dsuit", i);
+		r_iter2 = p_tablemap->r$()->find(s.GetString());
+
+		if (r_iter1 != p_tablemap->r$()->end() && r_iter2 != p_tablemap->r$()->end() && card==CARD_NOCARD)
+		{
 			// Get rank
-			r$index = p_tablemap->r$indexes()->r$c0cardfaceXrank_index[i];
-			ProcessRegion(hdcCompatible, hdc, r$index);
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-			trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &rankstr);
+			ProcessRegion(hdcCompatible, hdc, r_iter1);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter1->second.cur_bmp);
+			trans.DoTransform(r_iter1, hdcCompatible, &rankstr);
 			SelectObject(hdcCompatible, old_bitmap);
 
 			// Get suit
-			r$index = p_tablemap->r$indexes()->r$c0cardfaceXsuit_index[i];
-			ProcessRegion(hdcCompatible, hdc, r$index);
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-			trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &suitstr);
+			ProcessRegion(hdcCompatible, hdc, r_iter2);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter2->second.cur_bmp);
+			trans.DoTransform(r_iter2, hdcCompatible, &suitstr);
 			SelectObject(hdcCompatible, old_bitmap);
 
 			if (rankstr=="10") rankstr="T";
+
 			if (rankstr!="" && suitstr!="")
 			{
 				cardstr = rankstr + suitstr;
@@ -380,12 +379,14 @@ void CScraper::ScrapeCommonCards(HDC hdcCompatible, HDC hdc)
 
 void CScraper::ScrapePlayerCards(int chair, HDC hdcCompatible, HDC hdc)
 {
-	int					j = 0, r$index = 0;
+	int					j = 0;
 	HBITMAP				old_bitmap = NULL;
 	unsigned int		card = CARD_NOCARD;
 	bool				got_new_scrape = false;
 	CString				cardstr = "", rankstr = "", suitstr = "";
 	CTransform			trans;
+	CString				s = "";
+	RMapCI				r_iter1 = p_tablemap->r$()->end(), r_iter2 = p_tablemap->r$()->end();
 
 	// Check for bad parameters
 	if (chair < 0 || chair >= p_tablemap->nchairs() || hdcCompatible == NULL || hdc == NULL)
@@ -400,12 +401,13 @@ void CScraper::ScrapePlayerCards(int chair, HDC hdcCompatible, HDC hdc)
 		card = CARD_NOCARD;
 
 		// try r$uXcardfaceY region first
-		r$index = p_tablemap->r$indexes()->r$uXcardfaceY_index[chair][j];
-		if (r$index!=-1)
+		s.Format("u%dcardface%d", chair, j);
+		r_iter1 = p_tablemap->r$()->find(s.GetString());
+		if (r_iter1 != p_tablemap->r$()->end())
 		{
-			ProcessRegion(hdcCompatible, hdc, r$index);
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-			trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &cardstr);
+			ProcessRegion(hdcCompatible, hdc, r_iter1);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter1->second.cur_bmp);
+			trans.DoTransform(r_iter1, hdcCompatible, &cardstr);
 			SelectObject(hdcCompatible, old_bitmap);
 
 			if (cardstr!="")
@@ -428,15 +430,16 @@ void CScraper::ScrapePlayerCards(int chair, HDC hdcCompatible, HDC hdc)
 		}
 
 		// try r$pXcardfaceY region next
-		r$index = p_tablemap->r$indexes()->r$pXcardfaceY_index[chair][j];
-		if (r$index!=-1 && card==CARD_NOCARD)
+		s.Format("p%dcardface%d", chair, j);
+		r_iter1 = p_tablemap->r$()->find(s.GetString());
+		if (r_iter1 != p_tablemap->r$()->end())
 		{
-			ProcessRegion(hdcCompatible, hdc, r$index);
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-			int res = trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &cardstr);
+			ProcessRegion(hdcCompatible, hdc, r_iter1);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter1->second.cur_bmp);
+			trans.DoTransform(r_iter1, hdcCompatible, &cardstr);
 			SelectObject(hdcCompatible, old_bitmap);
 
-			if (cardstr!="")
+			if (cardstr!="" && card==CARD_NOCARD)
 			{
 				StdDeck_stringToCard((char *) cardstr.GetString(), (int *) &card);
 
@@ -456,26 +459,28 @@ void CScraper::ScrapePlayerCards(int chair, HDC hdcCompatible, HDC hdc)
 		}
 
 		// try r$pXcardfaceYrank/r$pXcardfaceYsuit regions next
-		if (p_tablemap->r$indexes()->r$pXcardfaceYrank_index[chair][j] != -1 &&
-			p_tablemap->r$indexes()->r$pXcardfaceYsuit_index[chair][j] != -1 &&
-			card==CARD_NOCARD)
-		{
+		s.Format("p%dcardface%drank", chair, j);
+		r_iter1 = p_tablemap->r$()->find(s.GetString());
 
+		s.Format("p%dcardface%dsuit", chair, j);
+		r_iter2 = p_tablemap->r$()->find(s.GetString());
+
+		if (r_iter1!=p_tablemap->r$()->end() && r_iter2!=p_tablemap->r$()->end() && card==CARD_NOCARD)
+		{
 			// Get rank
-			r$index = p_tablemap->r$indexes()->r$pXcardfaceYrank_index[chair][j];
-			ProcessRegion(hdcCompatible, hdc, r$index);
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-			trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &rankstr);
+			ProcessRegion(hdcCompatible, hdc, r_iter1);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter1->second.cur_bmp);
+			trans.DoTransform(r_iter1, hdcCompatible, &rankstr);
 			SelectObject(hdcCompatible, old_bitmap);
 
 			// Get suit
-			r$index = p_tablemap->r$indexes()->r$pXcardfaceYsuit_index[chair][j];
-			ProcessRegion(hdcCompatible, hdc, r$index);
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-			trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &suitstr);
+			ProcessRegion(hdcCompatible, hdc, r_iter2);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter2->second.cur_bmp);
+			trans.DoTransform(r_iter2, hdcCompatible, &suitstr);
 			SelectObject(hdcCompatible, old_bitmap);
 
 			if (rankstr=="10") rankstr="T";
+
 			if (rankstr!="" && suitstr!="")
 			{
 				cardstr = rankstr + suitstr;
@@ -497,13 +502,14 @@ void CScraper::ScrapePlayerCards(int chair, HDC hdcCompatible, HDC hdc)
 		}
 	}
 
-	// Player card backs
-	r$index = p_tablemap->r$indexes()->r$pXcardback_index[chair];
-	if (r$index!=-1 && card==CARD_NOCARD)
+	// Player card backs pXcardback
+	s.Format("p%dcardback", chair);
+	r_iter1 = p_tablemap->r$()->find(s.GetString());
+	if (r_iter1 != p_tablemap->r$()->end() && card==CARD_NOCARD)
 	{
-		ProcessRegion(hdcCompatible, hdc, r$index);
-		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-		trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &cardstr);
+		ProcessRegion(hdcCompatible, hdc, r_iter1);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter1->second.cur_bmp);
+		trans.DoTransform(r_iter1, hdcCompatible, &cardstr);
 		SelectObject(hdcCompatible, old_bitmap);
 
 		EnterCriticalSection(&cs_scraper);
@@ -531,10 +537,11 @@ void CScraper::ScrapePlayerCards(int chair, HDC hdcCompatible, HDC hdc)
 
 void CScraper::ScrapeSeated(int chair, HDC hdcCompatible, HDC hdc)
 {
-	int					r$index = 0;
 	HBITMAP				old_bitmap = NULL;
 	CString				result = "";
 	CTransform			trans;
+	CString				s = "";
+	RMapCI				r_iter = p_tablemap->r$()->end();
 
 	// Check for bad parameters
 	if (chair < 0 || chair >= p_tablemap->nchairs() || hdcCompatible == NULL || hdc == NULL)
@@ -542,13 +549,14 @@ void CScraper::ScrapeSeated(int chair, HDC hdcCompatible, HDC hdc)
 
 	_seated[chair] = "false";
 
-	// try p region first
-	r$index = p_tablemap->r$indexes()->r$pXseated_index[chair];
-	if (r$index!=-1)
+	// try p region first pXseated
+	s.Format("p%dseated", chair);
+	r_iter = p_tablemap->r$()->find(s.GetString());
+	if (r_iter != p_tablemap->r$()->end())
 	{
-		ProcessRegion(hdcCompatible, hdc, r$index);
-		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-		trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &result);
+		ProcessRegion(hdcCompatible, hdc, r_iter);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+		trans.DoTransform(r_iter, hdcCompatible, &result);
 		SelectObject(hdcCompatible, old_bitmap);
 
 		EnterCriticalSection(&cs_scraper);
@@ -557,14 +565,15 @@ void CScraper::ScrapeSeated(int chair, HDC hdcCompatible, HDC hdc)
 		LeaveCriticalSection(&cs_scraper);
 	}
 
-	// try u region next,
+	// try u region next uXseated,
 	// but only if we didn't get a positive result from the p region
-	r$index = p_tablemap->r$indexes()->r$uXseated_index[chair];
-	if (r$index!=-1 && !IsStringSeated(_seated[chair]))
+	s.Format("u%dseated", chair);
+	r_iter = p_tablemap->r$()->find(s.GetString());
+	if (r_iter != p_tablemap->r$()->end() && !IsStringSeated(_seated[chair]))
 	{
-		ProcessRegion(hdcCompatible, hdc, r$index);
-		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-		trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &result);
+		ProcessRegion(hdcCompatible, hdc, r_iter);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+		trans.DoTransform(r_iter, hdcCompatible, &result);
 		SelectObject(hdcCompatible, old_bitmap);
 
 		EnterCriticalSection(&cs_scraper);
@@ -584,10 +593,11 @@ void CScraper::ScrapeSeated(int chair, HDC hdcCompatible, HDC hdc)
 
 void CScraper::ScrapeActive(int chair, HDC hdcCompatible, HDC hdc)
 {
-	int					r$index = 0;
 	HBITMAP				old_bitmap = NULL;
 	CString				result = "";
 	CTransform			trans;
+	CString				s = "";
+	RMapCI				r_iter = p_tablemap->r$()->end();
 
 	// Check for bad parameters
 	if (chair < 0 || chair >= p_tablemap->nchairs() || hdcCompatible == NULL || hdc == NULL)
@@ -595,13 +605,14 @@ void CScraper::ScrapeActive(int chair, HDC hdcCompatible, HDC hdc)
 
 	_active[chair] = "false";
 
-	// try p region first
-	r$index = p_tablemap->r$indexes()->r$pXactive_index[chair];
-	if (r$index!=-1)
+	// try p region first pXactive
+	s.Format("p%dactive", chair);
+	r_iter = p_tablemap->r$()->find(s.GetString());
+	if (r_iter != p_tablemap->r$()->end())
 	{
-		ProcessRegion(hdcCompatible, hdc, r$index);
-		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-		trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &result);
+		ProcessRegion(hdcCompatible, hdc, r_iter);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+		trans.DoTransform(r_iter, hdcCompatible, &result);
 		SelectObject(hdcCompatible, old_bitmap);
 
 		EnterCriticalSection(&cs_scraper);
@@ -610,14 +621,15 @@ void CScraper::ScrapeActive(int chair, HDC hdcCompatible, HDC hdc)
 	}
 
 	// try u region next, but only if we didn't get a key result from the p region
-	r$index = p_tablemap->r$indexes()->r$uXactive_index[chair];
-	if (r$index!=-1 && 
+	s.Format("u%dactive", chair);
+	r_iter = p_tablemap->r$()->find(s.GetString());
+	if (r_iter != p_tablemap->r$()->end() && 
 		((!IsStringActive(_active[chair]) && p_tablemap->activemethod() != 2) ||
 		 (IsStringActive(_active[chair]) && p_tablemap->activemethod() == 2) ) )
 	{
-		ProcessRegion(hdcCompatible, hdc, r$index);
-		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-		trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &result);
+		ProcessRegion(hdcCompatible, hdc, r_iter);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+		trans.DoTransform(r_iter, hdcCompatible, &result);
 		SelectObject(hdcCompatible, old_bitmap);
 
 		EnterCriticalSection(&cs_scraper);
@@ -636,11 +648,12 @@ void CScraper::ScrapeActive(int chair, HDC hdcCompatible, HDC hdc)
 
 void CScraper::ScrapeDealer(int chair, HDC hdcCompatible, HDC hdc)
 {
-	int					r$index = 0;
 	HBITMAP				old_bitmap = NULL;
 	CString				result = "";
 	CTransform			trans;
 	bool				found_dealer;
+	CString				s = "";
+	RMapCI				r_iter = p_tablemap->r$()->end();
 
 	// Check for bad parameters
 	if (chair < 0 || chair >= p_tablemap->nchairs() || hdcCompatible == NULL || hdc == NULL)
@@ -648,26 +661,30 @@ void CScraper::ScrapeDealer(int chair, HDC hdcCompatible, HDC hdc)
 
 	_dealer[chair] = false;
 
-	// Dealer button
+	// Dealer button pXdealer
 	found_dealer = false;
-	r$index = p_tablemap->r$indexes()->r$pXdealer_index[chair];
-	if (r$index!=-1)
+
+	s.Format("p%ddealer", chair);
+	r_iter = p_tablemap->r$()->find(s.GetString());
+	if (r_iter != p_tablemap->r$()->end())
 	{
-		ProcessRegion(hdcCompatible, hdc, r$index);
-		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-		trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &result);
+		ProcessRegion(hdcCompatible, hdc, r_iter);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+		trans.DoTransform(r_iter, hdcCompatible, &result);
 		SelectObject(hdcCompatible, old_bitmap);
 
 		if (IsStringDealer(result))
 			found_dealer = true;
 	}
 
-	r$index = p_tablemap->r$indexes()->r$uXdealer_index[chair];
-	if (r$index!=-1 && !found_dealer)
+	// Dealer button uXdealer
+	s.Format("u%ddealer", chair);
+	r_iter = p_tablemap->r$()->find(s.GetString());
+	if (r_iter != p_tablemap->r$()->end() && !found_dealer)
 	{
-		ProcessRegion(hdcCompatible, hdc, r$index);
-		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-		trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &result);
+		ProcessRegion(hdcCompatible, hdc, r_iter);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+		trans.DoTransform(r_iter, hdcCompatible, &result);
 		SelectObject(hdcCompatible, old_bitmap);
 
 		if (IsStringDealer(result))
@@ -688,13 +705,14 @@ void CScraper::ScrapeDealer(int chair, HDC hdcCompatible, HDC hdc)
 void CScraper::ScrapeName(int chair, HDC hdcCompatible, HDC hdc) 
 {
 
-	int					r$index = 0;
 	HBITMAP				old_bitmap = NULL;
 	bool				got_new_scrape = false;
 	CString				text = "";
 	int					ret = 0;
 	bool				is_seated = IsStringSeated(_seated[chair]);
 	CTransform			trans;
+	CString				s = "";
+	RMapCI				r_iter = p_tablemap->r$()->end();
 
 	// Check for bad parameters
 	if (chair < 0 || chair >= p_tablemap->nchairs() || hdcCompatible == NULL || hdc == NULL)
@@ -702,38 +720,43 @@ void CScraper::ScrapeName(int chair, HDC hdcCompatible, HDC hdc)
 
 	int	sym_chair = (int) p_symbols->sym()->chair;
 
-	// Player name
 	got_new_scrape = false;
-	r$index = p_tablemap->r$indexes()->r$uname_index;
-	if (r$index!=-1 && p_symbols->user_chair_confirmed() && chair==sym_chair && is_seated)
+
+	// Player name uname
+	r_iter = p_tablemap->r$()->find("uname");
+	if (r_iter != p_tablemap->r$()->end() && p_symbols->user_chair_confirmed() && chair==sym_chair && is_seated)
 	{
-		ProcessRegion(hdcCompatible, hdc, r$index);
-		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-		ret = trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
+		ProcessRegion(hdcCompatible, hdc, r_iter);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
 
 		if (ret==ERR_GOOD_SCRAPE_GENERAL && text!="")
 			got_new_scrape = true;
 	}
 
-	r$index = p_tablemap->r$indexes()->r$uXname_index[chair];
-	if (r$index!=-1 && !got_new_scrape && p_symbols->user_chair_confirmed() && chair==sym_chair && is_seated)
+	// Player name uXname
+	s.Format("u%dname", chair);
+	r_iter = p_tablemap->r$()->find(s.GetString());
+	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape && p_symbols->user_chair_confirmed() && chair==sym_chair && is_seated)
 	{
-		ProcessRegion(hdcCompatible, hdc, r$index);
-		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-		ret = trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
+		ProcessRegion(hdcCompatible, hdc, r_iter);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
 
 		if (ret==ERR_GOOD_SCRAPE_GENERAL && text!="")
 			got_new_scrape = true;
 	}
 
-	r$index = p_tablemap->r$indexes()->r$pXname_index[chair];
-	if (r$index!=-1 && !got_new_scrape && is_seated)
+	// Player name pXname
+	s.Format("p%dname", chair);
+	r_iter = p_tablemap->r$()->find(s.GetString());
+	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape && is_seated)
 	{
-		ProcessRegion(hdcCompatible, hdc, r$index);
-		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-		ret = trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
+		ProcessRegion(hdcCompatible, hdc, r_iter);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
 
 		if (ret==ERR_GOOD_SCRAPE_GENERAL && text!="")
@@ -761,13 +784,14 @@ void CScraper::ScrapeName(int chair, HDC hdcCompatible, HDC hdc)
 
 void CScraper::ScrapeBalance(int chair, HDC hdcCompatible, HDC hdc)
 {
-	int					r$index = 0;
 	HBITMAP				old_bitmap = NULL;
 	bool				got_new_scrape = false;
 	CString				text = "";
 	int					ret = 0;
 	bool				is_seated = IsStringSeated(_seated[chair]);
 	CTransform			trans;
+	CString				s = "";
+	RMapCI				r_iter = p_tablemap->r$()->end();
 
 	// Check for bad parameters
 	if (chair < 0 || chair >= p_tablemap->nchairs() || hdcCompatible == NULL || hdc == NULL)
@@ -775,18 +799,17 @@ void CScraper::ScrapeBalance(int chair, HDC hdcCompatible, HDC hdc)
 
 	int	sym_chair = (int) p_symbols->sym()->chair;
 
-	// Player balance
 	got_new_scrape = false;
 
 	_sitting_out[chair] = false;
 
-	r$index = p_tablemap->r$indexes()->r$ubalance_index;
-	if (r$index!=-1 && p_symbols->user_chair_confirmed() && 
-		chair==sym_chair && is_seated)
+	// Player balance ubalance
+	r_iter = p_tablemap->r$()->find("ubalance");
+	if (r_iter != p_tablemap->r$()->end() && p_symbols->user_chair_confirmed() && chair==sym_chair && is_seated)
 	{
-		ProcessRegion(hdcCompatible, hdc, r$index);
-		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-		ret = trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
+		ProcessRegion(hdcCompatible, hdc, r_iter);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
 
 		if (ret == ERR_GOOD_SCRAPE_GENERAL)
@@ -815,13 +838,14 @@ void CScraper::ScrapeBalance(int chair, HDC hdcCompatible, HDC hdc)
 		}
 	}
 
-	r$index = p_tablemap->r$indexes()->r$uXbalance_index[chair];
-	if (r$index!=-1 && !got_new_scrape && p_symbols->user_chair_confirmed() && 
-		chair==sym_chair && is_seated)
+	// Player name uXbalance
+	s.Format("u%dbalance", chair);
+	r_iter = p_tablemap->r$()->find(s.GetString());
+	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape && p_symbols->user_chair_confirmed() && chair==sym_chair && is_seated)
 	{
-		ProcessRegion(hdcCompatible, hdc, r$index);
-		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-		ret = trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
+		ProcessRegion(hdcCompatible, hdc, r_iter);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
 
 		if (ret == ERR_GOOD_SCRAPE_GENERAL)
@@ -850,12 +874,14 @@ void CScraper::ScrapeBalance(int chair, HDC hdcCompatible, HDC hdc)
 		}
 	}
 
-	r$index = p_tablemap->r$indexes()->r$pXbalance_index[chair];
-	if (r$index!=-1 && !got_new_scrape && is_seated)
+	// Player balance pXbalance
+	s.Format("p%dbalance", chair);
+	r_iter = p_tablemap->r$()->find(s.GetString());
+	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape && is_seated)
 	{
-		ProcessRegion(hdcCompatible, hdc, r$index);
-		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-		ret = trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
+		ProcessRegion(hdcCompatible, hdc, r_iter);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
 
 		if (ret == ERR_GOOD_SCRAPE_GENERAL)
@@ -905,10 +931,11 @@ void CScraper::ScrapeBalance(int chair, HDC hdcCompatible, HDC hdc)
 
 void CScraper::ScrapeBet(int chair, HDC hdcCompatible, HDC hdc)
 {
-	int					r$index = 0;
 	HBITMAP				old_bitmap = NULL;
 	CString				text = "";
 	CTransform			trans;
+	CString				s = "";
+	RMapCI				r_iter = p_tablemap->r$()->end();
 
 	// Check for bad parameters
 	if (chair < 0 || chair >= p_tablemap->nchairs() || hdcCompatible == NULL || hdc == NULL)
@@ -916,14 +943,16 @@ void CScraper::ScrapeBet(int chair, HDC hdcCompatible, HDC hdc)
 
 	_player_bet[chair] = 0;
 
-	// Player bet
-	r$index = p_tablemap->r$indexes()->r$pXbet_index[chair];
-	if (r$index!=-1)
+	// Player bet pXbet
+	s.Format("p%dbet", chair);
+	r_iter = p_tablemap->r$()->find(s.GetString());
+	if (r_iter != p_tablemap->r$()->end())
 	{
-		ProcessRegion(hdcCompatible, hdc, r$index);
-		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-		trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
+		ProcessRegion(hdcCompatible, hdc, r_iter);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+		trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
+
 		text.Remove(',');
 		text.Remove('$');
 
@@ -935,38 +964,37 @@ void CScraper::ScrapeBet(int chair, HDC hdcCompatible, HDC hdc)
 		LeaveCriticalSection(&cs_scraper);
 	}
 
-	if (_player_bet[chair] == 0)
+	// uXbet
+	s.Format("u%dbet", chair);
+	r_iter = p_tablemap->r$()->find(s.GetString());
+	if (r_iter != p_tablemap->r$()->end() && _player_bet[chair] == 0)
 	{
-		r$index = p_tablemap->r$indexes()->r$uXbet_index[chair];
-		if (r$index!=-1)
-		{
-			ProcessRegion(hdcCompatible, hdc, r$index);
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-			trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
-			SelectObject(hdcCompatible, old_bitmap);
-			text.Remove(',');
-			text.Remove('$');
+		ProcessRegion(hdcCompatible, hdc, r_iter);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+		trans.DoTransform(r_iter, hdcCompatible, &text);
+		SelectObject(hdcCompatible, old_bitmap);
 
-			EnterCriticalSection(&cs_scraper);
-			if (text!="")
-			{
-				_player_bet[chair] = trans.StringToMoney(text);
-			}
-			LeaveCriticalSection(&cs_scraper);
+		text.Remove(',');
+		text.Remove('$');
+
+		EnterCriticalSection(&cs_scraper);
+		if (text!="")
+		{
+			_player_bet[chair] = trans.StringToMoney(text);
 		}
+		LeaveCriticalSection(&cs_scraper);
 	}		
 		
-	if (_player_bet[chair] == 0)
+	// pXchip00
+	s.Format("p%dchp00", chair);
+	r_iter = p_tablemap->r$()->find(s.GetString());
+	if (r_iter != p_tablemap->r$()->end() && _player_bet[chair] == 0)
 	{
-		r$index = p_tablemap->r$indexes()->r$pXchip_index[chair][0][0];
-		if (r$index!=-1)
-		{
-			EnterCriticalSection(&cs_scraper);
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_cur);
-			_player_bet[chair] = DoChipScrape(hdcCompatible, r$index);
-			SelectObject(hdcCompatible, old_bitmap);
-			LeaveCriticalSection(&cs_scraper);
-		}
+		EnterCriticalSection(&cs_scraper);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_cur);
+		_player_bet[chair] = DoChipScrape(hdcCompatible, r_iter);
+		SelectObject(hdcCompatible, old_bitmap);
+		LeaveCriticalSection(&cs_scraper);
 	}
 
 	EnterCriticalSection(&cs_scraper);
@@ -980,27 +1008,14 @@ void CScraper::ScrapeBet(int chair, HDC hdcCompatible, HDC hdc)
 
 void CScraper::ScrapeButtons(HDC hdcCompatible, HDC hdc) 
 {
-	int					j = 0, k = 0, r$index = 0;
+	int					j = 0, k = 0;
 	HBITMAP				old_bitmap = NULL;
 	CString				text = "";
-	STablemapRegion		handle, slider;
 	POINT				handle_xy = {0};
 	CTransform			trans;
-
-	// init locals
-	handle.name = "";
-	handle.left = handle.top = handle.right = handle.bottom = 0;
-	handle.color = 0;
-	handle.radius = 0;
-	handle.transform = "";
-	handle.cur_bmp = handle.last_bmp = NULL;
-
-	slider.name = "";
-	slider.left = slider.top = slider.right = slider.bottom = 0;
-	slider.color = 0;
-	slider.radius = 0;
-	slider.transform = "";
-	slider.cur_bmp = slider.last_bmp = NULL;
+	CString				s = "";
+	RMapCI				r_iter = p_tablemap->r$()->end(), slider = p_tablemap->r$()->end(), handleCI = p_tablemap->r$()->end();
+	RMapI				handleI = p_tablemap->set_r$()->end();
 
 	// Check for bad parameters
 	if (hdcCompatible == NULL || hdc == NULL)
@@ -1020,13 +1035,14 @@ void CScraper::ScrapeButtons(HDC hdcCompatible, HDC hdc)
 
 	for (j=0; j<=9; j++)
 	{
-		// Button state
-		r$index = p_tablemap->r$indexes()->r$iXstate_index[j];
-		if (r$index!=-1)
+		// Button state iXstate
+		s.Format("i%dstate", j);
+		r_iter = p_tablemap->r$()->find(s.GetString());
+		if (r_iter != p_tablemap->r$()->end())
 		{
-			ProcessRegion(hdcCompatible, hdc, r$index);
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-			trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
+			ProcessRegion(hdcCompatible, hdc, r_iter);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
 
 			EnterCriticalSection(&cs_scraper);
@@ -1041,13 +1057,14 @@ void CScraper::ScrapeButtons(HDC hdcCompatible, HDC hdc)
 			LeaveCriticalSection(&cs_scraper);
 		}
 
-		// i86X button state
-		r$index = p_tablemap->r$indexes()->r$i86Xstate_index[j];
-		if (r$index!=-1)
+		// i86X button state i86Xstate
+		s.Format("i86%dstate", j);
+		r_iter = p_tablemap->r$()->find(s.GetString());
+		if (r_iter != p_tablemap->r$()->end())
 		{
-			ProcessRegion(hdcCompatible, hdc, r$index);
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-			trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
+			ProcessRegion(hdcCompatible, hdc, r_iter);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
 
 			EnterCriticalSection(&cs_scraper);
@@ -1065,12 +1082,14 @@ void CScraper::ScrapeButtons(HDC hdcCompatible, HDC hdc)
 		// Button label
 		// First check iXlabel
 		text = "";
-		r$index = p_tablemap->r$indexes()->r$iXlabel_index[j];
-		if (r$index!=-1)
+
+		s.Format("i%dlabel", j);
+		r_iter = p_tablemap->r$()->find(s.GetString());
+		if (r_iter != p_tablemap->r$()->end())
 		{
-			ProcessRegion(hdcCompatible, hdc, r$index);
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-			trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
+			ProcessRegion(hdcCompatible, hdc, r_iter);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
 
 			EnterCriticalSection(&cs_scraper);
@@ -1082,12 +1101,13 @@ void CScraper::ScrapeButtons(HDC hdcCompatible, HDC hdc)
 		// Second check iXlabelY
 		for (k=0; k<=9 && text == ""; k++)
 		{
-			r$index = p_tablemap->r$indexes()->r$iXlabelY_index[j][k];
-			if (r$index!=-1)
+			s.Format("i%dlabel%d", j, k);
+			r_iter = p_tablemap->r$()->find(s.GetString());
+			if (r_iter != p_tablemap->r$()->end())
 			{
-				ProcessRegion(hdcCompatible, hdc, r$index);
-				old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-				trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
+				ProcessRegion(hdcCompatible, hdc, r_iter);
+				old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+				trans.DoTransform(r_iter, hdcCompatible, &text);
 				SelectObject(hdcCompatible, old_bitmap);
 
 				EnterCriticalSection(&cs_scraper);
@@ -1113,12 +1133,13 @@ void CScraper::ScrapeButtons(HDC hdcCompatible, HDC hdc)
 	}
 
 	// i86 button state
-	r$index = p_tablemap->r$indexes()->r$i86state_index;
-	if (r$index!=-1)
+	s.Format("i86state");
+	r_iter = p_tablemap->r$()->find(s.GetString());
+	if (r_iter != p_tablemap->r$()->end())
 	{
-		ProcessRegion(hdcCompatible, hdc, r$index);
-		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-		trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
+		ProcessRegion(hdcCompatible, hdc, r_iter);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+		trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
 
 		EnterCriticalSection(&cs_scraper);
@@ -1136,26 +1157,31 @@ void CScraper::ScrapeButtons(HDC hdcCompatible, HDC hdc)
 	}
 
 	// find handle
-	r$index = p_tablemap->r$indexes()->r$iXhandle_index[3];
-	if (r$index!=-1 && p_tablemap->r$indexes()->r$iXslider_index[3] != -1 && _button_state[3]!="false")
-	{
-		handle = p_tablemap->r$()->GetAt(p_tablemap->r$indexes()->r$iXhandle_index[3]);
-		slider = p_tablemap->r$()->GetAt(p_tablemap->r$indexes()->r$iXslider_index[3]);
-		ProcessRegion(hdcCompatible, hdc, r$index);
-		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
+	handleCI = p_tablemap->r$()->find("i3handle");
+	slider = p_tablemap->r$()->find("i3slider");
 
-		j=slider.right-handle.left;
+	if (handleCI!=p_tablemap->r$()->end() && slider!=p_tablemap->r$()->end() && _button_state[3]!="false")
+	{
+		ProcessRegion(hdcCompatible, hdc, handleCI);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, handleCI->second.cur_bmp);
+
+		j = slider->second.right - handleCI->second.left;
 		text="";
 		
 		_handle_found_at_xy = false;
 		
 		for (k=0; k<=j; k++)
 		{
-			handle.left += k;
-			handle.right += k;
-			trans.DoTransform(&handle, hdcCompatible, &text);
-			handle.left -= k;
-			handle.right -= k;
+			handleI = p_tablemap->set_r$()->find("i3handle");
+			handleI->second.left += k;
+			handleI->second.right += k;
+
+			handleCI = p_tablemap->r$()->find("i3handle");
+			trans.DoTransform(handleCI, hdcCompatible, &text);
+
+			handleI = p_tablemap->set_r$()->find("i3handle");
+			handleI->second.left -= k;
+			handleI->second.right -= k;
 			if (text == "handle" || text == "true") 
 				break;
 		}
@@ -1163,9 +1189,10 @@ void CScraper::ScrapeButtons(HDC hdcCompatible, HDC hdc)
 		EnterCriticalSection(&cs_scraper);
 			if (text!="" && k <= j)
 			{
+				handleCI = p_tablemap->r$()->find("i3handle");
 				_handle_found_at_xy = true;
-				handle_xy.x = handle.left + k;
-				handle_xy.y = handle.top;
+				handle_xy.x = handleCI->second.left + k;
+				handle_xy.y = handleCI->second.top;
 				_handle_xy = handle_xy;
 			}
 		LeaveCriticalSection(&cs_scraper);
@@ -1176,10 +1203,12 @@ void CScraper::ScrapeButtons(HDC hdcCompatible, HDC hdc)
 
 void CScraper::ScrapePots(HDC hdcCompatible, HDC hdc)
 {
-	int					j = 0, r$index = 0;
+	int					j = 0;
 	HBITMAP				old_bitmap = NULL;
 	CString				text = "";
 	CTransform			trans;
+	CString				s = "";
+	RMapCI				r_iter = p_tablemap->r$()->end();
 
 	// Check for bad parameters
 	if (hdcCompatible == NULL || hdc == NULL)
@@ -1191,13 +1220,15 @@ void CScraper::ScrapePots(HDC hdcCompatible, HDC hdc)
 	for (j=0; j<=9; j++)
 	{
 		// r$c0potX
-		r$index = p_tablemap->r$indexes()->r$c0potX_index[j];
-		if (r$index!=-1)
+		s.Format("c0pot%d", j);
+		r_iter = p_tablemap->r$()->find(s.GetString());
+		if (r_iter != p_tablemap->r$()->end())
 		{
-			ProcessRegion(hdcCompatible, hdc, r$index);
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-			trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
+			ProcessRegion(hdcCompatible, hdc, r_iter);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
+
 			text.Remove(',');
 			text.Remove('$');
 
@@ -1215,52 +1246,58 @@ void CScraper::ScrapePots(HDC hdcCompatible, HDC hdc)
 			LeaveCriticalSection(&cs_scraper);
 		}
 
-		// r$c0potXchipYZ_index
-		if (_pot[j] == 0)
+		// r$c0potXchip00_index
+		s.Format("c0pot%dchip00", j);
+		r_iter = p_tablemap->r$()->find(s.GetString());
+		if (r_iter != p_tablemap->r$()->end() && _pot[j] == 0)
 		{
-			r$index = p_tablemap->r$indexes()->r$c0potXchipYZ_index[j][0][0];
-			if (r$index!=-1)
-			{
-				ProcessRegion(hdcCompatible, hdc, r$index);	//update bitmap for scraper output window
+			ProcessRegion(hdcCompatible, hdc, r_iter);
+			//old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+			//trans.DoTransform(r_iter, hdcCompatible, &text);
+			//SelectObject(hdcCompatible, old_bitmap);
 
-				EnterCriticalSection(&cs_scraper);
-					old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_cur);
-					_pot[j] = DoChipScrape(hdcCompatible, r$index);
-					SelectObject(hdcCompatible, old_bitmap);
+			EnterCriticalSection(&cs_scraper);
+				old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_cur);
+				_pot[j] = DoChipScrape(hdcCompatible, r_iter);
+				SelectObject(hdcCompatible, old_bitmap);
 
-					if (_pot_last[j] != _pot[j])
-					{
-						_pot_last[j] = _pot[j];
-						_scrape_something_changed |= POT_CHANGED;
-					}
-				LeaveCriticalSection(&cs_scraper);
-			}
+				if (_pot_last[j] != _pot[j])
+				{
+					_pot_last[j] = _pot[j];
+					_scrape_something_changed |= POT_CHANGED;
+				}
+			LeaveCriticalSection(&cs_scraper);
 
 			// update the bitmap for second chip position in the first stack
-			r$index = p_tablemap->r$indexes()->r$c0potXchipYZ_index[j][0][1];
-			if (r$index!=-1)
-				ProcessRegion(hdcCompatible, hdc, r$index);
+			s.Format("c0pot%dchip01", j);
+			r_iter = p_tablemap->r$()->find(s.GetString());
+			if (r_iter != p_tablemap->r$()->end())
+				ProcessRegion(hdcCompatible, hdc, r_iter);
 
 			// update the bitmap for first chip position in the second stack
-			r$index = p_tablemap->r$indexes()->r$c0potXchipYZ_index[j][1][0];
-			if (r$index!=-1)
-				ProcessRegion(hdcCompatible, hdc, r$index);
+			s.Format("c0pot%dchip10", j);
+			r_iter = p_tablemap->r$()->find(s.GetString());
+			if (r_iter != p_tablemap->r$()->end())
+				ProcessRegion(hdcCompatible, hdc, r_iter);
 		}
 	}
 }
 
 void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 {
-	int					j = 0, r$index = 0, s$index = 0;
+	int					j = 0;
 	double				handnumber = 0.;
 	bool				istournament = false;
 	HBITMAP				old_bitmap = NULL;
-	CString				s = "", text = "";
+	CString				text = "";
 	CString				titletext = "";
 	char				c_titletext[MAX_WINDOW_TITLE] = {0};
 	bool				got_new_scrape = false, log_blind_change = false;
 	CTransform			trans;
 	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
+	CString				s = "";
+	RMapCI				r_iter = p_tablemap->r$()->end();
+	SMapCI				s_iter = p_tablemap->s$()->end();
 
 	// Check for bad parameters
 	if (hdcCompatible == NULL || hdc == NULL)
@@ -1284,13 +1321,13 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 	istournament = false;
 	handnumber = 0.0;
 
-	// istournament
-	r$index = p_tablemap->r$indexes()->r$c0istournament_index;
-	if (r$index!=-1)
+	// c0istournament
+	r_iter = p_tablemap->r$()->find("c0istournament");
+	if (r_iter != p_tablemap->r$()->end())
 	{
-		ProcessRegion(hdcCompatible, hdc, r$index);
-		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-		trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
+		ProcessRegion(hdcCompatible, hdc, r_iter);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+		trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
 
 		if (text!="")
@@ -1310,15 +1347,13 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 	}
 
 	// r$c0handnumber
-	got_new_scrape = false;
-	r$index = p_tablemap->r$indexes()->r$c0handnumber_index;
-	if (r$index!=-1)
+	r_iter = p_tablemap->r$()->find("c0handnumber");
+	if (r_iter != p_tablemap->r$()->end())
 	{
-		ProcessRegion(hdcCompatible, hdc, r$index);
-		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-		trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
+		ProcessRegion(hdcCompatible, hdc, r_iter);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+		trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
-		text.Remove(',');
 
 		EnterCriticalSection(&cs_scraper);
 			if (text!="")
@@ -1333,12 +1368,13 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 	for (j=0; j<=9; j++)
 	{
 		// r$c0handnumberX
-		r$index = p_tablemap->r$indexes()->r$c0handnumberX_index[j];
-		if (r$index!=-1 && !got_new_scrape)
+		s.Format("c0handnumber%d", j);
+		r_iter = p_tablemap->r$()->find(s.GetString());
+		if (r_iter != p_tablemap->r$()->end() && !got_new_scrape)
 		{
-			ProcessRegion(hdcCompatible, hdc, r$index);
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-			trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
+			ProcessRegion(hdcCompatible, hdc, r_iter);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
 			
 			EnterCriticalSection(&cs_scraper);
@@ -1375,7 +1411,6 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 		bool l_found_handnumber=false, l_found_sblind=false, l_found_bblind=false;
 		bool l_found_bbet=false, l_found_ante=false, l_found_limit=false, l_found_sb_bb=false;
 		bool l_found_bb_BB=false;
-		SMapCI s_iter = p_tablemap->s$()->end();
 
 		// These are scraped from specific regions earlier in this
 		// function.  Use the values we scraped (if any) to seed
@@ -1386,7 +1421,7 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 		bool l_istournament = istournament;
 
 		// s$ttlimits - Scrape blinds/stakes/limit info from title text
-		s_iter = p_tablemap->s$()->find("s$ttlimits");
+		s_iter = p_tablemap->s$()->find("ttlimits");
 		if (s_iter != p_tablemap->s$()->end())
 		{
 			GetWindowText(pMyMainWnd->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
@@ -1402,8 +1437,8 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 		// s$ttlimitsX - Scrape blinds/stakes/limit info from title text
 		for (j=0; j<=9; j++)
 		{
-			s.Format("s$ttlimits%d", j);
-			s_iter = p_tablemap->s$()->find(s);
+			s.Format("ttlimits%d", j);
+			s_iter = p_tablemap->s$()->find(s.GetString());
 			if (s_iter != p_tablemap->s$()->end())
 			{
 				GetWindowText(pMyMainWnd->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
@@ -1418,14 +1453,15 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 		}
 
 		// r$c0limits, s$c0limits
-		r$index = p_tablemap->r$indexes()->r$c0limits_index;
-		s_iter = p_tablemap->s$()->find("s$c0limits");
-		if (r$index!=-1 && s_iter!=p_tablemap->s$()->end())
+		r_iter = p_tablemap->r$()->find("c0limits");
+		s_iter = p_tablemap->s$()->find("c0limits");
+		if (r_iter!=p_tablemap->r$()->end() && s_iter!=p_tablemap->s$()->end())
 		{
-			ProcessRegion(hdcCompatible, hdc, r$index);
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-			trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
+			ProcessRegion(hdcCompatible, hdc, r_iter);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
+
 			if (text!="")
 			{
 				trans.ParseStringBSL(
@@ -1439,14 +1475,16 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 		for (j=0; j<=9; j++)
 		{
 			// r$c0limitsX, s$c0limitsX
-			r$index = p_tablemap->r$indexes()->r$c0limitsX_index[j];
-			s.Format("s$c0limits%d", j);
-			s_iter = p_tablemap->s$()->find(s);
-			if (r$index!=-1 && s_iter!=p_tablemap->s$()->end())
+			s.Format("c0limits%d", j);
+			r_iter = p_tablemap->r$()->find(s.GetString());
+			s.Format("c0limits%d", j);
+			s_iter = p_tablemap->s$()->find(s.GetString());
+
+			if (r_iter!=p_tablemap->r$()->end() && s_iter!=p_tablemap->s$()->end())
 			{
-				ProcessRegion(hdcCompatible, hdc, r$index);
-				old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-				trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
+				ProcessRegion(hdcCompatible, hdc, r_iter);
+				old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+				trans.DoTransform(r_iter, hdcCompatible, &text);
 				SelectObject(hdcCompatible, old_bitmap);
 
 				if (text!="")
@@ -1482,13 +1520,14 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 
 
 		// r$c0sblind
-		r$index = p_tablemap->r$indexes()->r$c0sblind_index;
-		if (r$index!=-1 && !_s_limit_info.found_sblind)
+		r_iter = p_tablemap->r$()->find("c0sblind");
+		if (r_iter != p_tablemap->r$()->end() && !_s_limit_info.found_sblind)
 		{
-			ProcessRegion(hdcCompatible, hdc, r$index);
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-			trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
+			ProcessRegion(hdcCompatible, hdc, r_iter);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
+
 			text.Remove(',');
 			text.Remove('$');
 
@@ -1499,13 +1538,14 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 		}
 
 		// r$c0bblind
-		r$index = p_tablemap->r$indexes()->r$c0bblind_index;
-		if (r$index!=-1 && !_s_limit_info.found_bblind)
+		r_iter = p_tablemap->r$()->find("c0bblind");
+		if (r_iter != p_tablemap->r$()->end() && !_s_limit_info.found_bblind)
 		{
-			ProcessRegion(hdcCompatible, hdc, r$index);
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-			trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
+			ProcessRegion(hdcCompatible, hdc, r_iter);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
+
 			text.Remove(',');
 			text.Remove('$');
 
@@ -1516,13 +1556,14 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 		}
 
 		// r$c0bigbet
-		r$index = p_tablemap->r$indexes()->r$c0bigbet_index;
-		if (r$index!=-1 && !_s_limit_info.found_bbet)
+		r_iter = p_tablemap->r$()->find("c0bigbet");
+		if (r_iter != p_tablemap->r$()->end() && !_s_limit_info.found_bbet)
 		{
-			ProcessRegion(hdcCompatible, hdc, r$index);
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-			trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
+			ProcessRegion(hdcCompatible, hdc, r_iter);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
+
 			text.Remove(',');
 			text.Remove('$');
 
@@ -1533,12 +1574,14 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 		}
 
 		// r$c0ante
-		if (r$index!=-1 && !_s_limit_info.found_ante)
+		r_iter = p_tablemap->r$()->find("c0ante");
+		if (r_iter != p_tablemap->r$()->end() && !_s_limit_info.found_ante)
 		{
-			ProcessRegion(hdcCompatible, hdc, r$index);
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, p_tablemap->r$()->GetAt(r$index).cur_bmp);
-			trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompatible, &text);
+			ProcessRegion(hdcCompatible, hdc, r_iter);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
+
 			text.Remove(',');
 			text.Remove('$');
 
@@ -1612,7 +1655,9 @@ void CScraper::ScrapeLimits(HDC hdcCompatible, HDC hdc)
 	// log the stakes change
 	if (log_blind_change)
 	{
-		write_log("\n*************************************************************\nNEW STAKES sb(%.2f) bb(%.2f) BB(%.2f) ante(%.2f)\n*************************************************************\n",
+		write_log("\n*************************************************************\n"
+				  "NEW STAKES sb(%.2f) bb(%.2f) BB(%.2f) ante(%.2f)\n"
+				  "*************************************************************\n",
 				  _s_limit_info.sblind, _s_limit_info.bblind, 
 				  _s_limit_info.bbet, _s_limit_info.ante);
 	}
@@ -1759,12 +1804,12 @@ void CScraper::CreateBitmaps(void)
 	LeaveCriticalSection(&cs_scraper);
 
 	// r$regions
-	for (i=0; i<(int) p_tablemap->r$()->GetSize(); i++)
+	for (RMapI r_iter=p_tablemap->set_r$()->begin(); r_iter!=p_tablemap->set_r$()->end(); r_iter++)
 	{
-		w = p_tablemap->r$()->GetAt(i).right - p_tablemap->r$()->GetAt(i).left;
-		h = p_tablemap->r$()->GetAt(i).bottom - p_tablemap->r$()->GetAt(i).top;
-		p_tablemap->set_r$_lastbmp(i, CreateCompatibleBitmap(hdcScreen, w, h));
-		p_tablemap->set_r$_curbmp(i, CreateCompatibleBitmap(hdcScreen, w, h));
+		w = r_iter->second.right - r_iter->second.left;
+		h = r_iter->second.bottom - r_iter->second.top;
+		r_iter->second.last_bmp = CreateCompatibleBitmap(hdcScreen, w, h);
+		r_iter->second.cur_bmp = CreateCompatibleBitmap(hdcScreen, w, h);
 	}
 
 	DeleteDC(hdcScreen);
@@ -1781,10 +1826,10 @@ void CScraper::DeleteBitmaps(void)
 	LeaveCriticalSection(&cs_scraper);
 
 	// Common cards
-	for (i=0; i<(int) p_tablemap->r$()->GetSize(); i++)
+	for (RMapI r_iter=p_tablemap->set_r$()->begin(); r_iter!=p_tablemap->set_r$()->end(); r_iter++)
 	{
-		p_tablemap->delete_r$_lastbmp(i);
-		p_tablemap->delete_r$_curbmp(i);
+		DeleteObject(r_iter->second.last_bmp); r_iter->second.last_bmp=NULL;
+		DeleteObject(r_iter->second.cur_bmp); r_iter->second.cur_bmp=NULL;
 	}
 }
 
@@ -1819,11 +1864,9 @@ void CScraper::SetLimitInfo(const SLimitInfo LI)
 }
 
 // This is the chip scrape routine
-const double CScraper::DoChipScrape(HDC hdc, int i)
+const double CScraper::DoChipScrape(HDC hdc, RMapCI r_iter)
 {
 	int				j = 0, stackindex = 0, chipindex = 0;
-	CString			type = "", cstemp = "";
-	int				istart = 0, ivert[10] = {0}, ihoriz[10] = {0}, index = 0, vertcount = 0, horizcount = 0;
 	int				hash_type = 0, num_precs = 0, pixcount = 0, chipwidth = 0, chipheight = 0;
 	int				top = 0, bottom = 0, left = 0, right = 0;
 	bool			stop_loop = false;
@@ -1831,50 +1874,54 @@ const double CScraper::DoChipScrape(HDC hdc, int i)
 	double			result = 0;
 	CString			resstring = "";
 
+	CString			type = "";
+	int				vertcount = 0, horizcount = 0;
+	RMapCI			r_start = p_tablemap->r$()->end();
+	RMapCI			r_vert[10];
+	RMapCI			r_horiz[10];
+	CString			s = "";
+
 	// Initialize arrays
 	for (j=0; j<10; j++)
 	{
-		ivert[j] = -1;
-		ihoriz[j] = -1;
+		r_vert[j] = p_tablemap->r$()->end();
+		r_horiz[j] = p_tablemap->r$()->end();
 	}
 
 	// Check for bad parameters
-	if (hdc == NULL || i<0)
+	if (hdc == NULL || r_iter == p_tablemap->r$()->end())
 		return 0.;
 
 	// figure out if we are dealing with a pot or playerbet here
-	if (p_tablemap->r$()->GetAt(i).name.Mid(0,5)=="c0pot" && p_tablemap->r$()->GetAt(i).name.Mid(6,4)=="chip")
-		type = p_tablemap->r$()->GetAt(i).name.Mid(0,10);
+	if (r_iter->second.name.Mid(0,5)=="c0pot" && r_iter->second.name.Mid(6,4)=="chip")
+		type = r_iter->second.name.Mid(0,10);
 
-	else if (p_tablemap->r$()->GetAt(i).name.Mid(0,1)=="p" && p_tablemap->r$()->GetAt(i).name.Mid(2,4)=="chip")
-		type = p_tablemap->r$()->GetAt(i).name.Mid(0,6);
+	else if (r_iter->second.name.Mid(0,1)=="p" && r_iter->second.name.Mid(2,4)=="chip")
+		type = r_iter->second.name.Mid(0,6);
 
 	else
-		return 0;
+		return 0.;
 
-	// find index of start, vert stride, and horiz stride regions
-	for (j=0; j<(int) p_tablemap->r$()->GetSize(); j++)
+	// find start, vert stride, and horiz stride regions
+	s.Format("%s00", type.GetString());
+	r_start = p_tablemap->r$()->find(s.GetString());
+	if (r_start == p_tablemap->r$()->end())
+		return 0.;
+
+	for (j = 1; j<=9; j++)
 	{
-		if (p_tablemap->r$()->GetAt(j).name.Find(type + "00")!=-1)
-		{
-			istart = j;
-		}
-		else if (p_tablemap->r$()->GetAt(j).name.Find(type + "0")!=-1)
-		{
-			cstemp = type + "0";
-			index = p_tablemap->r$()->GetAt(j).name.Mid(cstemp.GetLength(), 1).GetString()[0] - '0';
-			ivert[index] = j;
+		s.Format("%s0%d", type.GetString(), j);
+		r_vert[j] = p_tablemap->r$()->find(s.GetString());
+		if (r_vert[j] != p_tablemap->r$()->end())
 			vertcount++;
-		}
-		else if (p_tablemap->r$()->GetAt(j).name.Find(type)!=-1)
-		{
-			index = p_tablemap->r$()->GetAt(j).name.Mid(type.GetLength(), 1).GetString()[0] - '0';
-			ihoriz[index] = j;
+
+		s.Format("%s%d0", type.GetString(), j);
+		r_horiz[j] = p_tablemap->r$()->find(s.GetString());
+		if (r_horiz[j] != p_tablemap->r$()->end())
 			horizcount++;
-		}
 	}
 
-	hash_type = p_tablemap->r$()->GetAt(istart).transform.GetString()[1] - '0';
+	hash_type = r_start->second.transform.GetString()[1] - '0';
 
 	stop_loop = false;
 	// loop through horizontal stacks
@@ -1887,40 +1934,36 @@ const double CScraper::DoChipScrape(HDC hdc, int i)
 			// figure out left, right, top, bottom of next chip to be scraped
 			if (vertcount==1)
 			{
-				top = p_tablemap->r$()->GetAt(istart).top +
-					  chipindex*(p_tablemap->r$()->GetAt(ivert[1]).top - p_tablemap->r$()->GetAt(istart).top);
-				bottom = p_tablemap->r$()->GetAt(istart).bottom +
-						 chipindex*(p_tablemap->r$()->GetAt(ivert[1]).bottom - p_tablemap->r$()->GetAt(istart).bottom);
+				top = r_start->second.top + chipindex*(r_vert[1]->second.top - r_start->second.top);
+				bottom = r_start->second.bottom + chipindex*(r_vert[1]->second.bottom - r_start->second.bottom);
 			}
 			else
 			{
-				if (ivert[chipindex]==-1)
+				if (r_vert[chipindex] == p_tablemap->r$()->end())
 				{
 					stop_loop = true;
 				}
 				else
 				{
-					top = p_tablemap->r$()->GetAt(ivert[chipindex]).top;
-					bottom = p_tablemap->r$()->GetAt(ivert[chipindex]).bottom;
+					top = r_vert[chipindex]->second.top;
+					bottom = r_vert[chipindex]->second.bottom;
 				}
 			}
 			if (horizcount==1)
 			{
-				left = p_tablemap->r$()->GetAt(istart).left +
-					   stackindex*(p_tablemap->r$()->GetAt(ihoriz[1]).left - p_tablemap->r$()->GetAt(istart).left);
-				right = p_tablemap->r$()->GetAt(istart).right +
-						stackindex*(p_tablemap->r$()->GetAt(ihoriz[1]).right - p_tablemap->r$()->GetAt(istart).right);
+				left = r_start->second.left + stackindex*(r_horiz[1]->second.left - r_start->second.left);
+				right = r_start->second.right + stackindex*(r_horiz[1]->second.right - r_start->second.right);
 			}
 			else
 			{
-				if (ihoriz[stackindex]==-1)
+				if (r_horiz[stackindex] == p_tablemap->r$()->end())
 				{
 					stop_loop = true;
 				}
 				else
 				{
-					left = p_tablemap->r$()->GetAt(ihoriz[stackindex]).left;
-					right = p_tablemap->r$()->GetAt(ihoriz[stackindex]).right;
+					left = r_horiz[stackindex]->second.left;
+					right = r_horiz[stackindex]->second.right;
 				}
 			}
 

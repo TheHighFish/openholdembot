@@ -6,7 +6,7 @@ BUG FIXES:
 MAINTENANCE:
 - Removed last SEH-code (__SEH_SET_EXCEPTION_HANDLER), which is no longer neccessary. [TheHighFish]
 - The Autoplayer will not act on a frame which is not processed by the game state processor [ZooBoy]
-- Migration of table map z, s, h and i record handling from CArray's with manual indices to std::map structures. [OpenHoldem]
+- Migration of table map z, s, r, h and i record handling from CArray's with manual indices to std::map structures. [OpenHoldem]
 
 NEW STUFF:
 - Added option to save all replay frames whenever something changes when you are in the hand (Thanks, markedagain for the patch) [OpenHoldem]

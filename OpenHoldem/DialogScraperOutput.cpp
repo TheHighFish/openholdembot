@@ -212,10 +212,8 @@ void CDlgScraperOutput::AddListboxItems()
 	m_RegionList.ResetContent();
 	m_RegionList.SetCurSel(-1);
 
-	for (i=0; i<p_tablemap->r$()->GetSize(); i++)
-	{
-		m_RegionList.AddString(p_tablemap->r$()->GetAt(i).name);
-	}
+	for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++)
+		m_RegionList.AddString(r_iter->second.name);
 }
 
 void CDlgScraperOutput::OnLbnSelchangeRegionlist()
@@ -237,8 +235,6 @@ void CDlgScraperOutput::OnPaint()
 void CDlgScraperOutput::UpdateDisplay()
 {
 	CString curtext = "";
-	int		i = 0;
-	bool	found_match = false;
 
 	if (in_startup)  
 		return;
@@ -248,33 +244,26 @@ void CDlgScraperOutput::UpdateDisplay()
 	{
 		if (m_RegionList.GetCurSel() == -1)
 		{
-			DoBitblt(NULL, -1);  // Clear display
+			DoBitblt(NULL, p_tablemap->r$()->end());  // Clear display
 			LeaveCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
 			return;
 		}
 
 		m_RegionList.GetText(m_RegionList.GetCurSel(), curtext);
 
-		found_match = false;
-		for (i=0; i<p_tablemap->r$()->GetSize() && !found_match; i++)
-		{
-			if (p_tablemap->r$()->GetAt(i).name == curtext)
-			{
-				DoBitblt(p_tablemap->r$()->GetAt(i).last_bmp, i);
-				found_match = true;
-			}
-		}
+		RMapCI r_iter = p_tablemap->r$()->find(curtext.GetString());
 
-		if (!found_match)
-		{
-			DoBitblt(NULL, -1);  // Clear display
-		}
+		if (r_iter != p_tablemap->r$()->end())
+			DoBitblt(r_iter->second.last_bmp, r_iter);
+
+		else
+			DoBitblt(NULL, p_tablemap->r$()->end());  // Clear display
 
 		LeaveCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
 	}
 }
 
-void CDlgScraperOutput::DoBitblt(HBITMAP bitmap, int r$index)
+void CDlgScraperOutput::DoBitblt(HBITMAP bitmap, RMapCI r_iter)
 {
 	CDC			*pDC = m_ScraperBitmap.GetDC();
 	HDC			hdcControl = *pDC;
@@ -312,7 +301,7 @@ void CDlgScraperOutput::DoBitblt(HBITMAP bitmap, int r$index)
 	pDC->SelectObject(oldpen);
 
 	// return if all we needed to do was erase display
-	if (r$index == -1)
+	if (bitmap == NULL)
 	{
 		DeleteDC(hdcCompat1);
 		DeleteDC(hdcCompat2);
@@ -329,15 +318,15 @@ void CDlgScraperOutput::DoBitblt(HBITMAP bitmap, int r$index)
 		   m_Zoom.GetCurSel()==3 ? 8 :
 		   m_Zoom.GetCurSel()==4 ? 16 : 1;
 
-	w = (p_tablemap->r$()->GetAt(r$index).right - p_tablemap->r$()->GetAt(r$index).left) * zoom;
-	h = (p_tablemap->r$()->GetAt(r$index).bottom - p_tablemap->r$()->GetAt(r$index).top) * zoom;
+	w = (r_iter->second.right - r_iter->second.left) * zoom;
+	h = (r_iter->second.bottom - r_iter->second.top) * zoom;
 
 	hbm2 = CreateCompatibleBitmap(hdcScreen, w, h);
 	old_bitmap2 = (HBITMAP) SelectObject(hdcCompat2, hbm2);
 	StretchBlt(	hdcCompat2, 0, 0, w, h,
 				hdcCompat1, 0, 0,
-				p_tablemap->r$()->GetAt(r$index).right - p_tablemap->r$()->GetAt(r$index).left,
-				p_tablemap->r$()->GetAt(r$index).bottom - p_tablemap->r$()->GetAt(r$index).top,
+				r_iter->second.right - r_iter->second.left,
+				r_iter->second.bottom - r_iter->second.top,
 				SRCCOPY );
 
 	// Copy 2nd DC to control
@@ -345,7 +334,7 @@ void CDlgScraperOutput::DoBitblt(HBITMAP bitmap, int r$index)
 			hdcCompat2, 0, 0, SRCCOPY );
 
 	// Output result
-	trans.DoTransform(&(p_tablemap->r$()->GetAt(r$index)), hdcCompat1, &res);
+	trans.DoTransform(r_iter, hdcCompat1, &res);
 	m_ScraperResult.SetWindowText(res);
 
 	// Clean up

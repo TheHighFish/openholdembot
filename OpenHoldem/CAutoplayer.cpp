@@ -8,7 +8,6 @@
 #include "CScraper.h"
 #include "CGrammar.h"
 #include "CPreferences.h"
-#include "..\CTablemap\CTablemap.h"
 
 #include "OpenHoldem.h"
 #include "MainFrm.h"
@@ -60,13 +59,14 @@ void CAutoplayer::DoChat(void)
 	HWND			hwnd_active = GetActiveWindow();
 	POINT			cur_pos;
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
+	RMapCI			r_iter = p_tablemap->r$()->find("chatbox");
+
+	if (r_iter == p_tablemap->r$()->end())
+		return;
 
 	GetCursorPos(&cur_pos);
 
-	pt = RandomizeClickLocation(p_tablemap->r$()->GetAt(p_tablemap->r$indexes()->r$chatbox).left,
-								  p_tablemap->r$()->GetAt(p_tablemap->r$indexes()->r$chatbox).top,
-								  p_tablemap->r$()->GetAt(p_tablemap->r$indexes()->r$chatbox).right,
-								  p_tablemap->r$()->GetAt(p_tablemap->r$indexes()->r$chatbox).bottom);
+	pt = RandomizeClickLocation(r_iter->second.left, r_iter->second.top, r_iter->second.right, r_iter->second.bottom);
 
 	// Translate click point to screen/mouse coords
 	ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
@@ -241,7 +241,7 @@ void CAutoplayer::ResetRound(void)
 
 void CAutoplayer::DoSwag(void) 
 {
-	int				input_count = 0, r$index = 0;
+	int				input_count = 0;
 	POINT			pt = {0};
 	double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
 	double			fScreenHeight = ::GetSystemMetrics( SM_CYSCREEN )-1;
@@ -257,13 +257,15 @@ void CAutoplayer::DoSwag(void)
 	bool			lost_focus = false;
 	int				e = SUCCESS;
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-
 	double			f_swag = p_symbols->f$swag();
+	RMapCI			r_edit = p_tablemap->r$()->find("i3edit");
+	RMapCI			r_button = p_tablemap->r$()->find("i3button");
+
 	
 	::GetCursorPos(&cur_pos);
 
 	// swag buttons are hard coded as #3 now.  Can they be different?
-	if (p_scraper->GetButtonState(3) && p_tablemap->r$indexes()->r$iXedit_index[3]!=-1)
+	if (p_scraper->GetButtonState(3) && r_edit!=p_tablemap->r$()->end())
 	{
 
 		// If we get a lock, do the action
@@ -276,9 +278,8 @@ void CAutoplayer::DoSwag(void)
 				input_count = 0;
 
 				// Double click in edit box
-				r$index = p_tablemap->r$indexes()->r$iXedit_index[3];
-				pt = RandomizeClickLocation(p_tablemap->r$()->GetAt(r$index).left, p_tablemap->r$()->GetAt(r$index).top,
-											  p_tablemap->r$()->GetAt(r$index).right, p_tablemap->r$()->GetAt(r$index).bottom);
+				pt = RandomizeClickLocation(r_edit->second.left, r_edit->second.top, 
+											r_edit->second.right, r_edit->second.bottom);
 				ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
 				fx = pt.x*(65535.0f/fScreenWidth);
 				fy = pt.y*(65535.0f/fScreenHeight);
@@ -313,9 +314,8 @@ void CAutoplayer::DoSwag(void)
 				input_count = 0;
 
 				// Single click in edit box
-				r$index = p_tablemap->r$indexes()->r$iXedit_index[3];
-				pt = RandomizeClickLocation(p_tablemap->r$()->GetAt(r$index).left, p_tablemap->r$()->GetAt(r$index).top,
-											  p_tablemap->r$()->GetAt(r$index).right, p_tablemap->r$()->GetAt(r$index).bottom);
+				pt = RandomizeClickLocation(r_edit->second.left, r_edit->second.top, 
+											r_edit->second.right, r_edit->second.bottom);
 				ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
 				fx = pt.x*(65535.0f/fScreenWidth);
 				fy = pt.y*(65535.0f/fScreenHeight);
@@ -338,9 +338,8 @@ void CAutoplayer::DoSwag(void)
 				input_count = 0;
 
 				// left click, drag to left, un-left click
-				r$index = p_tablemap->r$indexes()->r$iXedit_index[3];
-				pt.x = p_tablemap->r$()->GetAt(r$index).right;
-				pt.y = p_tablemap->r$()->GetAt(r$index).top + (p_tablemap->r$()->GetAt(r$index).bottom-p_tablemap->r$()->GetAt(r$index).top)/2;
+				pt.x = r_edit->second.right;
+				pt.y = r_edit->second.top + (r_edit->second.bottom - r_edit->second.top)/2;
 				ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
 				fx = pt.x*(65535.0f/fScreenWidth);
 				fy = pt.y*(65535.0f/fScreenHeight);
@@ -352,8 +351,8 @@ void CAutoplayer::DoSwag(void)
 				input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
 				input_count++;
 
-				pt.x = p_tablemap->r$()->GetAt(r$index).left;
-				pt.y = p_tablemap->r$()->GetAt(r$index).top + (p_tablemap->r$()->GetAt(r$index).bottom-p_tablemap->r$()->GetAt(r$index).top)/2;
+				pt.x = r_edit->second.left;
+				pt.y = r_edit->second.top + (r_edit->second.bottom - r_edit->second.top)/2;
 				ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
 				fx = pt.x*(65535.0f/fScreenWidth);
 				fy = pt.y*(65535.0f/fScreenHeight);
@@ -460,11 +459,8 @@ void CAutoplayer::DoSwag(void)
 			input_count = 0;
 
 			// Click in edit box
-			r$index = p_tablemap->r$indexes()->r$iXedit_index[3];
-			pt = RandomizeClickLocation(p_tablemap->r$()->GetAt(r$index).left, 
-										p_tablemap->r$()->GetAt(r$index).top,
-										p_tablemap->r$()->GetAt(r$index).right, 
-										p_tablemap->r$()->GetAt(r$index).bottom);
+			pt = RandomizeClickLocation(r_edit->second.left, r_edit->second.top, 
+										r_edit->second.right, r_edit->second.bottom);
 
 			ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
 			fx = pt.x*(65535.0f/fScreenWidth);
@@ -551,27 +547,19 @@ void CAutoplayer::DoSwag(void)
 			}
 
 			else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET &&
-					 (_rais_but!=-1 || p_tablemap->r$indexes()->r$iXbutton_index[3]!=-1) )
+					 (_rais_but!=p_tablemap->r$()->end() || r_button!=p_tablemap->r$()->end()) )
 			{
 				input_count = 0;
 
 				// Click on bet/raise button
 				// use i3button region it it exists, otherwise use the bet/raise button region
-				if (p_tablemap->r$indexes()->r$iXbutton_index[3]!=-1)
-				{
-					pt = RandomizeClickLocation(p_tablemap->r$()->GetAt(p_tablemap->r$indexes()->r$iXbutton_index[3]).left,
-												p_tablemap->r$()->GetAt(p_tablemap->r$indexes()->r$iXbutton_index[3]).top,
-												p_tablemap->r$()->GetAt(p_tablemap->r$indexes()->r$iXbutton_index[3]).right,
-												p_tablemap->r$()->GetAt(p_tablemap->r$indexes()->r$iXbutton_index[3]).bottom);
-				}
+				if (r_button!=p_tablemap->r$()->end())
+					pt = RandomizeClickLocation(r_button->second.left, r_button->second.top, 
+												r_button->second.right, r_button->second.bottom);
 
 				else
-				{
-					pt = RandomizeClickLocation(p_tablemap->r$()->GetAt(_rais_but).left, 
-												p_tablemap->r$()->GetAt(_rais_but).top,
-												p_tablemap->r$()->GetAt(_rais_but).right, 
-												p_tablemap->r$()->GetAt(_rais_but).bottom);
-				}
+					pt = RandomizeClickLocation(_rais_but->second.left, _rais_but->second.top, 
+												_rais_but->second.right, _rais_but->second.bottom);
 
 				// Click on button
 				ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
@@ -694,56 +682,46 @@ void CAutoplayer::DoARCCF(void)
 	do_click = -1;
 
 	// ALLIN
-	if (alli && sym_myturnbits&0x8 && _alli_but!=-1)
+	if (alli && sym_myturnbits&0x8 && _alli_but!=p_tablemap->r$()->end())
 	{
-		pt = RandomizeClickLocation(p_tablemap->r$()->GetAt(_alli_but).left, 
-									p_tablemap->r$()->GetAt(_alli_but).top,
-									p_tablemap->r$()->GetAt(_alli_but).right, 
-									p_tablemap->r$()->GetAt(_alli_but).bottom);
+		pt = RandomizeClickLocation(_alli_but->second.left, _alli_but->second.top, 
+									_alli_but->second.right,  _alli_but->second.bottom);
 		do_click = 4;
 	}
 
 	// RAISE
-	else if (rais && sym_myturnbits&0x4 && _rais_but!=-1)
+	else if (rais && sym_myturnbits&0x4 && _rais_but!=p_tablemap->r$()->end())
 	{
-		pt = RandomizeClickLocation(p_tablemap->r$()->GetAt(_rais_but).left, 
-									p_tablemap->r$()->GetAt(_rais_but).top,
-									p_tablemap->r$()->GetAt(_rais_but).right, 
-									p_tablemap->r$()->GetAt(_rais_but).bottom);
+		pt = RandomizeClickLocation(_rais_but->second.left, _rais_but->second.top, 
+									_rais_but->second.right,  _rais_but->second.bottom);
 		do_click = 3;
 	}
 
 	// CALL
-	else if (call && sym_myturnbits&0x1 && _call_but!=-1)
+	else if (call && sym_myturnbits&0x1 && _call_but!=p_tablemap->r$()->end())
 	{
-		pt = RandomizeClickLocation(p_tablemap->r$()->GetAt(_call_but).left, 
-									p_tablemap->r$()->GetAt(_call_but).top,
-									p_tablemap->r$()->GetAt(_call_but).right, 
-									p_tablemap->r$()->GetAt(_call_but).bottom);
+		pt = RandomizeClickLocation(_call_but->second.left, _call_but->second.top, 
+									_call_but->second.right, _call_but->second.bottom);
 		do_click = 2;
 	}
 
 	// CHECK
 	// None of f$alli, f$swag, f$rais, f$call are > 0 or no buttons related to
 	// these actions can be found. If there is a check button, then click it.
-	else if (_chec_but!=-1)
+	else if (_chec_but!=p_tablemap->r$()->end())
 	{
-		pt = RandomizeClickLocation(p_tablemap->r$()->GetAt(_chec_but).left, 
-									p_tablemap->r$()->GetAt(_chec_but).top,
-									p_tablemap->r$()->GetAt(_chec_but).right, 
-									p_tablemap->r$()->GetAt(_chec_but).bottom);
+		pt = RandomizeClickLocation(_chec_but->second.left, _chec_but->second.top, 
+									_chec_but->second.right, _chec_but->second.bottom);
 		do_click = 1;
 	}
 
 	// FOLD
 	// None of f$alli, f$swag, f$rais, f$call are > 0 or no buttons related to
 	// these actions can be found. If there is a fold button, then click it, otherwise we have a serious problem.
-	else if (_fold_but!=-1)
+	else if (_fold_but!=p_tablemap->r$()->end())
 	{
-		pt = RandomizeClickLocation(p_tablemap->r$()->GetAt(_fold_but).left, 
-									p_tablemap->r$()->GetAt(_fold_but).top,
-									p_tablemap->r$()->GetAt(_fold_but).right, 
-									p_tablemap->r$()->GetAt(_fold_but).bottom);
+		pt = RandomizeClickLocation(_fold_but->second.left, _fold_but->second.top, 
+									_fold_but->second.right, _fold_but->second.bottom);
 		do_click = 0;
 	}
 
@@ -869,7 +847,7 @@ void CAutoplayer::DoARCCF(void)
 
 void CAutoplayer::DoSlider(void) 
 {
-	int				do_drag = 0, input_count = 0,  x = 0, y = 0, x2 = 0;
+	int				input_count = 0,  x = 0, y = 0, x2 = 0;
 	INPUT			input[100] = {0};
 	POINT			pt = {0}, pt2 = {0};
 	double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
@@ -885,166 +863,144 @@ void CAutoplayer::DoSlider(void)
 	int				e = SUCCESS;
 	bool			sym_ismyturn = (bool) p_symbols->sym()->ismyturn;
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-
 	double			alli = p_symbols->f$alli();
-	STablemapRegion handle, slider;
-
-	// init locals
-	handle.name = "";
-	handle.left = handle.top = handle.right = handle.bottom = 0;
-	handle.color = 0;
-	handle.radius = 0;
-	handle.transform = "";
-	handle.cur_bmp = handle.last_bmp = NULL;
-
-	slider.name = "";
-	slider.left = slider.top = slider.right = slider.bottom = 0;
-	slider.color = 0;
-	slider.radius = 0;
-	slider.transform = "";
-	slider.cur_bmp = slider.last_bmp = NULL;
+	RMapCI			slider = p_tablemap->r$()->find("i3slider");
+	RMapCI			handle = p_tablemap->r$()->find("i3handle");
 
 	::GetCursorPos(&cur_pos);
 
-	do_drag = -1;
+	if (!sym_ismyturn)
+		return;
 
-	// ALLIN
-	if (sym_ismyturn && p_tablemap->r$indexes()->r$iXslider_index[3]!=-1 && p_tablemap->r$indexes()->r$iXhandle_index[3]!=-1 &&
-		p_scraper->handle_found_at_xy())
+	if (slider==p_tablemap->r$()->end() | handle==p_tablemap->r$()->end())
+		return;
+
+	if (!p_scraper->handle_found_at_xy())
+		return;
+
+	// Vars
+	x = p_scraper->handle_xy().x;
+	y = p_scraper->handle_xy().y;
+	x2 = slider->second.right - slider->second.left;
+	pt = RandomizeClickLocation(x, y, x + (handle->second.right - handle->second.left), handle->second.bottom);
+	pt2.x = pt.x+x2;
+	pt2.y = pt.y;
+
+	// Translate click point to screen/mouse coords
+	ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
+	fx = pt.x*(65535.0f/fScreenWidth);
+	fy = pt.y*(65535.0f/fScreenHeight);
+	ClientToScreen(pMyMainWnd->attached_hwnd(), &pt2);
+	fx2 = pt2.x*(65535.0f/fScreenWidth);
+	fy2 = pt2.y*(65535.0f/fScreenHeight);
+	write_log("*** Jam from %d,%d to %d,%d \n", fx, fy, fx2, fy2);
+
+	if (_mutex.Lock(500))
 	{
-		handle = p_tablemap->r$()->GetAt(p_tablemap->r$indexes()->r$iXhandle_index[3]);
-		slider = p_tablemap->r$()->GetAt(p_tablemap->r$indexes()->r$iXslider_index[3]);
-		x = p_scraper->handle_xy().x;
-		y = p_scraper->handle_xy().y;
-		x2 = slider.right-slider.left;
-		pt = RandomizeClickLocation(x, y, x + (handle.right-handle.left), handle.bottom);
-		pt2.x = pt.x+x2;
-		pt2.y = pt.y;
-		do_drag = 1;
-	}
+		SetFocus(pMyMainWnd->attached_hwnd());
+		SetForegroundWindow(pMyMainWnd->attached_hwnd());
+		SetActiveWindow(pMyMainWnd->attached_hwnd());
 
-
-	if (do_drag=1)
-	{
-
-		// Translate click point to screen/mouse coords
-		ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
-		fx = pt.x*(65535.0f/fScreenWidth);
-		fy = pt.y*(65535.0f/fScreenHeight);
-		ClientToScreen(pMyMainWnd->attached_hwnd(), &pt2);
-		fx2 = pt2.x*(65535.0f/fScreenWidth);
-		fy2 = pt2.y*(65535.0f/fScreenHeight);
-		write_log("*** Jam from %d,%d to %d,%d \n", fx, fy, fx2, fy2);
-
-		if (_mutex.Lock(500))
-		{
-			SetFocus(pMyMainWnd->attached_hwnd());
-			SetForegroundWindow(pMyMainWnd->attached_hwnd());
-			SetActiveWindow(pMyMainWnd->attached_hwnd());
-
-			// Move to handle & click & hold button
-			input_count = 0;
-			ZeroMemory(&input[input_count],sizeof(INPUT));
-			input[input_count].type = INPUT_MOUSE;
-			input[input_count].mi.dx = fx;
-			input[input_count].mi.dy = fy;
-			input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
-			input_count++;
-			SendInput(input_count, input, sizeof(INPUT));
-			Sleep(200);
-
-			// Move the mouse
-			input_count = 0;
-			ZeroMemory(&input[input_count],sizeof(INPUT));
-			input[input_count].type = INPUT_MOUSE;
-			input[input_count].mi.dx = fx2;
-			input[input_count].mi.dy = fy2;
-			input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
-			input_count++;
-			SendInput(input_count, input, sizeof(INPUT));
-			Sleep(200);
-
-			// Release the button
-			input_count = 0;
-			ZeroMemory(&input[input_count],sizeof(INPUT));
-			input[input_count].type = INPUT_MOUSE;
-			input[input_count].mi.dx = fx2;
-			input[input_count].mi.dy = fy2;
-			input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTUP;
-			input_count++;
-			SendInput(input_count, input, sizeof(INPUT));
-			Sleep(100);
-
-			SetActiveWindow(hwnd_active);
-			SetForegroundWindow(hwnd_foreground);
-			SetFocus(hwnd_focus);
-
-			_mutex.Unlock();
-		}
-
-		if (alli && _alli_but!=-1)
-		{
-			pt = RandomizeClickLocation(p_tablemap->r$()->GetAt(_alli_but).left, 
-										p_tablemap->r$()->GetAt(_alli_but).top,
-										p_tablemap->r$()->GetAt(_alli_but).right, 
-										p_tablemap->r$()->GetAt(_alli_but).bottom);
-
-			ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
-			fx = pt.x*(65535.0f/fScreenWidth);
-			fy = pt.y*(65535.0f/fScreenHeight);
-
-			// Click button
-			input_count = 0;
-			ZeroMemory(&input[input_count],sizeof(INPUT));
-			input[input_count].type = INPUT_MOUSE;
-			input[input_count].mi.dx = fx;
-			input[input_count].mi.dy = fy;
-			input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP;
-			input_count++;
-
-			SendInput(input_count, input, sizeof(INPUT));
-			Sleep(200);
-		}
-		// Restore cursor to current location
-		fx = cur_pos.x*(65535.0f/fScreenWidth);
-		fy = cur_pos.y*(65535.0f/fScreenHeight);
-
+		// Move to handle & click & hold button
 		input_count = 0;
 		ZeroMemory(&input[input_count],sizeof(INPUT));
 		input[input_count].type = INPUT_MOUSE;
 		input[input_count].mi.dx = fx;
 		input[input_count].mi.dy = fy;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
+		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
+		input_count++;
+		SendInput(input_count, input, sizeof(INPUT));
+		Sleep(200);
+
+		// Move the mouse
+		input_count = 0;
+		ZeroMemory(&input[input_count],sizeof(INPUT));
+		input[input_count].type = INPUT_MOUSE;
+		input[input_count].mi.dx = fx2;
+		input[input_count].mi.dy = fy2;
+		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
+		input_count++;
+		SendInput(input_count, input, sizeof(INPUT));
+		Sleep(200);
+
+		// Release the button
+		input_count = 0;
+		ZeroMemory(&input[input_count],sizeof(INPUT));
+		input[input_count].type = INPUT_MOUSE;
+		input[input_count].mi.dx = fx2;
+		input[input_count].mi.dy = fy2;
+		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTUP;
+		input_count++;
+		SendInput(input_count, input, sizeof(INPUT));
+		Sleep(100);
+
+		SetActiveWindow(hwnd_active);
+		SetForegroundWindow(hwnd_foreground);
+		SetFocus(hwnd_focus);
+
+		_mutex.Unlock();
+	}
+
+	if (alli && _alli_but!=p_tablemap->r$()->end())
+	{
+		pt = RandomizeClickLocation(_alli_but->second.left, _alli_but->second.top, 
+									_alli_but->second.right, _alli_but->second.bottom);
+
+		ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
+		fx = pt.x*(65535.0f/fScreenWidth);
+		fy = pt.y*(65535.0f/fScreenHeight);
+
+		// Click button
+		input_count = 0;
+		ZeroMemory(&input[input_count],sizeof(INPUT));
+		input[input_count].type = INPUT_MOUSE;
+		input[input_count].mi.dx = fx;
+		input[input_count].mi.dy = fy;
+		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP;
 		input_count++;
 
-		// If we get a lock, do the action
-		if (_mutex.Lock(500))
-		{
-			SetFocus(pMyMainWnd->attached_hwnd());
-			SetForegroundWindow(pMyMainWnd->attached_hwnd());
-			SetActiveWindow(pMyMainWnd->attached_hwnd());
+		SendInput(input_count, input, sizeof(INPUT));
+		Sleep(200);
+	}
+	// Restore cursor to current location
+	fx = cur_pos.x*(65535.0f/fScreenWidth);
+	fy = cur_pos.y*(65535.0f/fScreenHeight);
 
-			SendInput(input_count, input, sizeof(INPUT));
+	input_count = 0;
+	ZeroMemory(&input[input_count],sizeof(INPUT));
+	input[input_count].type = INPUT_MOUSE;
+	input[input_count].mi.dx = fx;
+	input[input_count].mi.dy = fy;
+	input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
+	input_count++;
 
-			SetActiveWindow(hwnd_active);
-			SetForegroundWindow(hwnd_foreground);
-			SetFocus(hwnd_focus);
+	// If we get a lock, do the action
+	if (_mutex.Lock(500))
+	{
+		SetFocus(pMyMainWnd->attached_hwnd());
+		SetForegroundWindow(pMyMainWnd->attached_hwnd());
+		SetActiveWindow(pMyMainWnd->attached_hwnd());
 
-			::SetCursorPos(cur_pos.x, cur_pos.y);
+		SendInput(input_count, input, sizeof(INPUT));
 
-			_mutex.Unlock();
+		SetActiveWindow(hwnd_active);
+		SetForegroundWindow(hwnd_foreground);
+		SetFocus(hwnd_focus);
 
-			write_logautoplay("JAM");
+		::SetCursorPos(cur_pos.x, cur_pos.y);
 
-			write_log("*** Jam complete \n", fx, fy, fx2, fy2);
+		_mutex.Unlock();
 
-			// reset elapsedauto symbol
-			time_t my_time_t;
-			time(&my_time_t);
-			p_symbols->set_elapsedautohold(my_time_t);
+		write_logautoplay("JAM");
 
-			Sleep(1200);
-		}
+		write_log("*** Jam complete \n", fx, fy, fx2, fy2);
+
+		// reset elapsedauto symbol
+		time_t my_time_t;
+		time(&my_time_t);
+		p_symbols->set_elapsedautohold(my_time_t);
+
+		Sleep(1200);
 	}
 }
 
@@ -1069,15 +1025,12 @@ void CAutoplayer::DoPrefold(void)
 	if (prefold == 0)  
 		return;
 
-	if (_pre_fold_but == -1)  
+	if (_pre_fold_but == p_tablemap->r$()->end())  
 		return;
 
 	// Randomize click location
-	pt = RandomizeClickLocation(p_tablemap->r$()->GetAt(_pre_fold_but).left, 
-								p_tablemap->r$()->GetAt(_pre_fold_but).top,
-								p_tablemap->r$()->GetAt(_pre_fold_but).right, 
-								p_tablemap->r$()->GetAt(_pre_fold_but).bottom);
-
+	pt = RandomizeClickLocation(_pre_fold_but->second.left, _pre_fold_but->second.top, 
+								_pre_fold_but->second.right,  _pre_fold_but->second.bottom);
 
 	input_count = 0;
 
@@ -1163,9 +1116,8 @@ const int CAutoplayer::CountSameScrape(void)
 	// - button states
 	same_scrape = true;
 	for (i=0; i<=4; i++)
-	{
-		if (p_scraper->card_common(i) != card_common_last[i])  same_scrape = false;
-	}
+		if (p_scraper->card_common(i) != card_common_last[i])  
+			same_scrape = false;
 
 	for (i=0; i<=9; i++)
 	{
@@ -1209,7 +1161,7 @@ const int CAutoplayer::CountSameScrape(void)
 
 int CAutoplayer::GetR$ButtonIndices(void)
 {
-	int				i = 0, r$index = 0;
+	int				i = 0;
 	int				button_index = 0;
 	CString			s = "";
 	int				num_seen = 0;
@@ -1217,383 +1169,184 @@ int CAutoplayer::GetR$ButtonIndices(void)
 	//////////////////////////////////////////////////////////
 	// find ALLIN button region from scraper
 	button_index = -1;
-	for (i=0; i<=9; i++)
+	for (i=0; i<=9 && button_index==-1; i++)
 	{
 		if (p_scraper->GetButtonState(i) && p_scraper->IsStringAllin(p_scraper->button_label(i)))
 		{
 			button_index = i;
-			i = 10;
 			num_seen++;
 		}
 	}
-	// scraper can't find allin button
-	if (button_index == -1)
-	{
-		_alli_but = -1;
-	}
-	else
-	{
-		// find allin button region from profile
-		_alli_but = -1;
-		s.Format("i%dbutton", button_index);
-		for (i=0; i<=9; i++)
-		{
-			r$index = p_tablemap->r$indexes()->r$iXbutton_index[i];
-			if (r$index!=-1)
-			{
-				if (p_tablemap->r$()->GetAt(r$index).name == s)
-				{
-					_alli_but = r$index;
-					i = 10;
-				}
-			}
-		}
-	}
+
+	// find allin button region from table map
+	s.Format("i%dbutton", button_index);
+	_alli_but = p_tablemap->r$()->find(s.GetString());
 
 	//////////////////////////////////////////////////////////
 	// find RAISE button region from scraper
 	button_index = -1;
-	for (i=0; i<=9; i++)
+	for (i=0; i<=9 && button_index==-1; i++)
 	{
 		if (p_scraper->GetButtonState(i) && p_scraper->IsStringRaise(p_scraper->button_label(i)))
 		{
 			button_index = i;
-			i = 10;
 			num_seen++;
 		}
 	}
-	// scraper can't find raise button
-	if (button_index == -1)
-	{
-		_rais_but = -1;
-	}
-	else
-	{
-		// find raise button region from profile
-		_rais_but = -1;
-		s.Format("i%dbutton", button_index);
-		for (i=0; i<=9; i++)
-		{
-			r$index = p_tablemap->r$indexes()->r$iXbutton_index[i];
-			if (r$index!=-1)
-			{
-				if (p_tablemap->r$()->GetAt(r$index).name == s)
-				{
-					_rais_but = r$index;
-					i = 10;
-				}
-			}
-		}
-	}
+
+	// find rais button region from table map
+	s.Format("i%dbutton", button_index);
+	_rais_but = p_tablemap->r$()->find(s.GetString());
 
 	//////////////////////////////////////////////////////////
 	// find CALL button region from scraper
 	button_index = -1;
-	for (i=0; i<=9; i++)
+	for (i=0; i<=9 && button_index==-1; i++)
 	{
 		if (p_scraper->GetButtonState(i) && p_scraper->IsStringCall(p_scraper->button_label(i)))
 		{
 			button_index = i;
-			i = 10;
 			num_seen++;
 		}
 	}
-	// scraper can't find call button
-	if (button_index == -1)
-	{
-		_call_but = -1;
-	}
-	else
-	{
-		// find call button region from profile
-		_call_but = -1;
-		s.Format("i%dbutton", button_index);
-		for (i=0; i<=9; i++)
-		{
-			r$index = p_tablemap->r$indexes()->r$iXbutton_index[i];
-			if (r$index!=-1)
-			{
-				if (p_tablemap->r$()->GetAt(r$index).name == s)
-				{
-					_call_but = r$index;
-					i = 10;
-				}
-			}
-		}
-	}
+
+	// find call button region from table map
+	s.Format("i%dbutton", button_index);
+	_call_but = p_tablemap->r$()->find(s.GetString());
 
 	//////////////////////////////////////////////////////////
 	// find CHECK button region from scraper
 	button_index = -1;
-	for (i=0; i<=9; i++)
+	for (i=0; i<=9 && button_index==-1; i++)
 	{
 		if (p_scraper->GetButtonState(i) && p_scraper->IsStringCheck(p_scraper->button_label(i)))
 		{
 			button_index = i;
-			i = 10;
 			num_seen++;
 		}
 	}
-	// scraper can't find check button
-	if (button_index == -1)
-	{
-		_chec_but = -1;
-	}
-	else
-	{
-		// find check button region from profile
-		_chec_but = -1;
-		s.Format("i%dbutton", button_index);
-		for (i=0; i<=9; i++)
-		{
-			r$index = p_tablemap->r$indexes()->r$iXbutton_index[i];
-			if (r$index!=-1)
-			{
-				if (p_tablemap->r$()->GetAt(r$index).name == s)
-				{
-					_chec_but = r$index;
-					i = 10;
-				}
-			}
-		}
-	}
+
+	// find chec button region from table map
+	s.Format("i%dbutton", button_index);
+	_chec_but = p_tablemap->r$()->find(s.GetString());
 
 	//////////////////////////////////////////////////////////
 	// find FOLD button region from scraper
 	button_index = -1;
-	for (i=0; i<=9; i++)
+	for (i=0; i<=9 && button_index==-1; i++)
 	{
 		if (p_scraper->GetButtonState(i) && p_scraper->IsStringFold(p_scraper->button_label(i)))
 		{
 			button_index = i;
-			i = 10;
 			num_seen++;
 		}
 	}
-	// scraper can't find fold button
-	if (button_index == -1)
-	{
-		_fold_but = -1;
-	}
-	else
-	{
-		// find fold button region from profile
-		_fold_but = -1;
-		s.Format("i%dbutton", button_index);
-		for (i=0; i<=9; i++)
-		{
-			r$index = p_tablemap->r$indexes()->r$iXbutton_index[i];
-			if (r$index!=-1)
-			{
-				if (p_tablemap->r$()->GetAt(r$index).name == s)
-				{
-					_fold_but = r$index;
-					i = 10;
-				}
-			}
-		}
-	}
+
+	// find fold button region from table map
+	s.Format("i%dbutton", button_index);
+	_fold_but = p_tablemap->r$()->find(s.GetString());
 
 	//////////////////////////////////////////////////////////
 	// find AUTOPOST button region from scraper
 	button_index = -1;
 	_autopost_state = true;
-	for (i=0; i<=9; i++)
+	for (i=0; i<=9 && button_index==-1; i++)
 	{
 		if (p_scraper->IsStringAutopost(p_scraper->button_label(i)))
 		{
 			_autopost_state = p_scraper->GetButtonState(i);
 			button_index = i;
-			i = 10;
 		}
 	}
-	// scraper can't find autopost button
-	if (button_index == -1)
-	{
-		_autopost_but = -1;
-	}
-	else
-	{
-		// find autopost button region from profile
-		_autopost_but = -1;
-		s.Format("i%dbutton", button_index);
-		for (i=0; i<=9; i++)
-		{
-			r$index = p_tablemap->r$indexes()->r$iXbutton_index[i];
-			if (r$index!=-1)
-			{
-				if (p_tablemap->r$()->GetAt(r$index).name == s)
-				{
-					_autopost_but = r$index;
-					i = 10;
-				}
-			}
-		}
-	}
+
+	// find autopost button region from table map
+	s.Format("i%dbutton", button_index);
+	_autopost_but = p_tablemap->r$()->find(s.GetString());
 
 	//////////////////////////////////////////////////////////
 	// find SITIN button region from scraper
 	button_index = -1;
 	_sitin_state = true;
-	for (i=0; i<=9; i++)
+	for (i=0; i<=9 && button_index==-1; i++)
 	{
 		if (p_scraper->IsStringSitin(p_scraper->button_label(i)))
 		{
 			_sitin_state = p_scraper->GetButtonState(i);
 			button_index = i;
-			i = 10;
 		}
 	}
-	// scraper can't find sitin button
-	if (button_index == -1)
-	{
-		_sitin_but = -1;
-	}
-	else
-	{
-		// find sitin button region from profile
-		_sitin_but = -1;
-		s.Format("i%dbutton", button_index);
-		for (i=0; i<=9; i++)
-		{
-			r$index = p_tablemap->r$indexes()->r$iXbutton_index[i];
-			if (r$index!=-1)
-			{
-				if (p_tablemap->r$()->GetAt(r$index).name == s)
-				{
-					_sitin_but = r$index;
-					i = 10;
-				}
-			}
-		}
-	}
+
+	// find sitin button region from table map
+	s.Format("i%dbutton", button_index);
+	_sitin_but = p_tablemap->r$()->find(s.GetString());
 
 	//////////////////////////////////////////////////////////
 	// find SITOUT button region from scraper
 	button_index = -1;
 	_sitout_state = false;
-	for (i=0; i<=9; i++)
+	for (i=0; i<=9 && button_index==-1; i++)
 	{
 		if (p_scraper->IsStringSitout(p_scraper->button_label(i)))
 		{
 			_sitout_state = p_scraper->GetButtonState(i);
 			button_index = i;
-			i = 10;
 		}
 	}
-	// scraper can't find sitout button
-	if (button_index == -1)
-	{
-		_sitout_but = -1;
-	}
-	else
-	{
-		// find sitout button region from profile
-		_sitout_but = -1;
-		s.Format("i%dbutton", button_index);
-		for (i=0; i<=9; i++)
-		{
-			r$index = p_tablemap->r$indexes()->r$iXbutton_index[i];
-			if (r$index!=-1)
-			{
-				if (p_tablemap->r$()->GetAt(r$index).name == s)
-				{
-					_sitout_but = r$index;
-					i = 10;
-				}
-			}
-		}
-	}
+
+	// find sitout button region from table map
+	s.Format("i%dbutton", button_index);
+	_sitout_but = p_tablemap->r$()->find(s.GetString());
 
 	//////////////////////////////////////////////////////////
 	// find LEAVE button region from scraper
 	button_index = -1;
-	for (i=0; i<=9; i++)
+	for (i=0; i<=9 && button_index==-1; i++)
 	{
 		if (p_scraper->GetButtonState(i) && p_scraper->IsStringLeave(p_scraper->button_label(i)))
 		{
 			button_index = i;
-			i = 10;
 		}
 	}
-	// scraper can't find leave button
-	if (button_index == -1)
-	{
-		_leave_but = -1;
-	}
-	else
-	{
-		// find leave button region from profile
-		_leave_but = -1;
-		s.Format("i%dbutton", button_index);
-		for (i=0; i<=9; i++)
-		{
-			r$index = p_tablemap->r$indexes()->r$iXbutton_index[i];
-			if (r$index!=-1)
-			{
-				if (p_tablemap->r$()->GetAt(r$index).name == s)
-				{
-					_leave_but = r$index;
-					i = 10;
-				}
-			}
-		}
-	}
+
+	// find leave button region from table map
+	s.Format("i%dbutton", button_index);
+	_leave_but = p_tablemap->r$()->find(s.GetString());
 
 	//////////////////////////////////////////////////////////
 	// find PREFOLD button region from scraper
 	button_index = -1;
-	for (i=0; i<=9; i++)
+	for (i=0; i<=9 && button_index==-1; i++)
 	{
 		if (p_scraper->GetButtonState(i) && p_scraper->IsStringPrefold(p_scraper->button_label(i)))
 		{
 			button_index = i;
-			i = 10;
-		}
-	}
-	// scraper can't find prefold button
-	if (button_index == -1)
-	{
-		_pre_fold_but = -1;
-	}
-	else
-	{
-		// find leave button region from profile
-		_pre_fold_but = -1;
-		s.Format("i%dbutton", button_index);
-		for (i=0; i<=9; i++)
-		{
-			r$index = p_tablemap->r$indexes()->r$iXbutton_index[i];
-			if (r$index!=-1)
-			{
-				if (p_tablemap->r$()->GetAt(r$index).name == s)
-				{
-					_pre_fold_but = r$index;
-					i = 10;
-				}
-			}
 		}
 	}
 
+	// find prefold button region from table map
+	s.Format("i%dbutton", button_index);
+	_pre_fold_but = p_tablemap->r$()->find(s.GetString());
+
 	//////////////////////////////////////////////////////////
 	// find i86 button region from scraper
-	_i86_but = -1;
 	_i86_state = false;
+	_i86_but = p_tablemap->r$()->end();
 	if (p_scraper->GetButtonState(86))
 	{
-		_i86_but = p_tablemap->r$indexes()->r$i86button_index;
+		_i86_but = p_tablemap->r$()->find("i86button");
 		_i86_state = true;
 	}
 
 	//////////////////////////////////////////////////////////
-	// find i86 button region from scraper
+	// find i86X button region from scraper
 	for (i=0; i<=9; i++)
 	{
-		_i86X_but[i] = -1;
 		_i86X_state[i] = false;
+		_i86X_but[i] = p_tablemap->r$()->end();
 		if (p_scraper->GetButtonState(860+i))
 		{
-			_i86X_but[i] = p_tablemap->r$indexes()->r$i86Xbutton_index[i];
+			s.Format("i86%dbutton", i);
+			_i86X_but[i] = p_tablemap->r$()->find(s.GetString());
 			_i86X_state[i] = true;
 		}
 	}
@@ -1750,12 +1503,10 @@ void CAutoplayer::DoF$play(void)
 	do_click = false;
 
 	// leave table
-	if (f_play==-2 && _leave_but!=-1)
+	if (f_play==-2 && _leave_but!=p_tablemap->r$()->end())
 	{
-		pt = RandomizeClickLocation(p_tablemap->r$()->GetAt(_leave_but).left, 
-									p_tablemap->r$()->GetAt(_leave_but).top,
-									p_tablemap->r$()->GetAt(_leave_but).right, 
-									p_tablemap->r$()->GetAt(_leave_but).bottom);
+		pt = RandomizeClickLocation(_leave_but->second.left, _leave_but->second.top, 
+									_leave_but->second.right,  _leave_but->second.bottom);
 
 		input_count = 0;
 
@@ -1799,23 +1550,18 @@ void CAutoplayer::DoF$play(void)
 	}
 
 	// sit out
-	else if (f_play==0 && ((_sitout_but!=-1 && _sitout_state==false) || (_sitin_but!=-1 && _sitin_state==true)))
+	else if (f_play==0 && 
+			 ( (_sitout_but!=p_tablemap->r$()->end() && _sitout_state==false) || 
+			   (_sitin_but!=p_tablemap->r$()->end() && _sitin_state==true) ) )
 	{
 
-		if (_sitout_but!=-1 && _sitout_state==false)
-		{
-			pt = RandomizeClickLocation(p_tablemap->r$()->GetAt(_sitout_but).left, 
-										p_tablemap->r$()->GetAt(_sitout_but).top,
-										p_tablemap->r$()->GetAt(_sitout_but).right, 
-										p_tablemap->r$()->GetAt(_sitout_but).bottom);
-		}
-		else if (_sitin_but!=-1 && _sitin_state==true)
-		{
-			pt = RandomizeClickLocation(p_tablemap->r$()->GetAt(_sitin_but).left, 
-										p_tablemap->r$()->GetAt(_sitin_but).top,
-										p_tablemap->r$()->GetAt(_sitin_but).right, 
-										p_tablemap->r$()->GetAt(_sitin_but).bottom);
-		}
+		if (_sitout_but!=p_tablemap->r$()->end() && _sitout_state==false)
+			pt = RandomizeClickLocation(_sitout_but->second.left, _sitout_but->second.top, 
+										_sitout_but->second.right,  _sitout_but->second.bottom);
+
+		else if (_sitin_but!=p_tablemap->r$()->end() && _sitin_state==true)
+			pt = RandomizeClickLocation(_sitin_but->second.left, _sitin_but->second.top, 
+										_sitin_but->second.right, _sitin_but->second.bottom);
 
 		input_count = 0;
 
@@ -1854,22 +1600,17 @@ void CAutoplayer::DoF$play(void)
 	}
 
 	// sit in
-	else if (f_play==1 && ((_sitin_but!=-1 && _sitin_state==false) || (_sitout_but!=-1 && _sitout_state==true)))
+	else if (f_play==1 && 
+			 ( (_sitin_but!=p_tablemap->r$()->end() && _sitin_state==false) || 
+			   (_sitout_but!=p_tablemap->r$()->end() && _sitout_state==true) ) )
 	{
-		if (_sitin_but!=-1 && _sitin_state==false)
-		{
-			pt = RandomizeClickLocation(p_tablemap->r$()->GetAt(_sitin_but).left, 
-										p_tablemap->r$()->GetAt(_sitin_but).top,
-										p_tablemap->r$()->GetAt(_sitin_but).right, 
-										p_tablemap->r$()->GetAt(_sitin_but).bottom);
-		}
-		else if (_sitout_but!=-1 && _sitout_state==true)
-		{
-			pt = RandomizeClickLocation(p_tablemap->r$()->GetAt(_sitout_but).left, 
-										p_tablemap->r$()->GetAt(_sitout_but).top,
-										p_tablemap->r$()->GetAt(_sitout_but).right, 
-										p_tablemap->r$()->GetAt(_sitout_but).bottom);
-		}
+		if (_sitin_but!=p_tablemap->r$()->end() && _sitin_state==false)
+			pt = RandomizeClickLocation(_sitin_but->second.left, _sitin_but->second.top, 
+										_sitin_but->second.right, _sitin_but->second.bottom);
+
+		else if (_sitout_but!=p_tablemap->r$()->end() && _sitout_state==true)
+			pt = RandomizeClickLocation(_sitout_but->second.left, _sitout_but->second.top, 
+										_sitout_but->second.right, _sitout_but->second.bottom);
 
 		input_count = 0;
 
@@ -1908,12 +1649,10 @@ void CAutoplayer::DoF$play(void)
 	}
 
 	// Autopost
-	if (f_play==1 && _autopost_but!=-1 && _autopost_state==false)
+	if (f_play==1 && _autopost_but!=p_tablemap->r$()->end() && _autopost_state==false)
 	{
-		pt = RandomizeClickLocation(p_tablemap->r$()->GetAt(_autopost_but).left, 
-									p_tablemap->r$()->GetAt(_autopost_but).top,
-									p_tablemap->r$()->GetAt(_autopost_but).right, 
-									p_tablemap->r$()->GetAt(_autopost_but).bottom);
+		pt = RandomizeClickLocation(_autopost_but->second.left, _autopost_but->second.top, 
+									_autopost_but->second.right, _autopost_but->second.bottom);
 
 		// Translate click point to screen/mouse coords
 		ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
@@ -1995,12 +1734,10 @@ void CAutoplayer::DoI86(void)
 	::GetCursorPos(&cur_pos);
 
 	do_click = false;
-	if (_i86_but!=-1 && _i86_state)
+	if (_i86_but!=p_tablemap->r$()->end() && _i86_state)
 	{
-		pt = RandomizeClickLocation(p_tablemap->r$()->GetAt(_i86_but).left, 
-									p_tablemap->r$()->GetAt(_i86_but).top,
-									p_tablemap->r$()->GetAt(_i86_but).right, 
-									p_tablemap->r$()->GetAt(_i86_but).bottom);
+		pt = RandomizeClickLocation(_i86_but->second.left, _i86_but->second.top,
+									_i86_but->second.right, _i86_but->second.bottom);
 
 		input_count = 0;
 
@@ -2042,12 +1779,10 @@ void CAutoplayer::DoI86(void)
 	{
 		for (i=0; i<=9; i++)
 		{
-			if (_i86X_but[i]!=-1 && _i86X_state[i])
+			if (_i86X_but[i]!=p_tablemap->r$()->end() && _i86X_state[i])
 			{
-				pt = RandomizeClickLocation(p_tablemap->r$()->GetAt(_i86X_but[i]).left, 
-											p_tablemap->r$()->GetAt(_i86X_but[i]).top,
-											p_tablemap->r$()->GetAt(_i86X_but[i]).right, 
-											p_tablemap->r$()->GetAt(_i86X_but[i]).bottom);
+				pt = RandomizeClickLocation(_i86X_but[i]->second.left, _i86X_but[i]->second.top,
+											_i86X_but[i]->second.right, _i86X_but[i]->second.bottom);
 
 				input_count = 0;
 

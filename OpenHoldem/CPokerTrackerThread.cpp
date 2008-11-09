@@ -70,12 +70,12 @@ const int CPokerTrackerLookup::GetSiteId()
 
 			if (version=="3")
 			{
-				lookup = _pt3_siteid.find(network);
+				lookup = _pt3_siteid.find(network.GetString());
 				end = _pt3_siteid.end();
 			}
 			else
 			{
-				lookup = _pt2_siteid.find(network);
+				lookup = _pt2_siteid.find(network.GetString());
 				end = _pt2_siteid.end();
 			}
 

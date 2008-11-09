@@ -16,7 +16,7 @@ protected: // create from serialization only
 	CPen		black_pen, green_pen, red_pen, blue_pen, white_dot_pen, black_dot_pen, null_pen;
 	CBrush		white_brush, gray_brush, red_brush, yellow_brush;
 	bool		dragging;
-	int			dragged_region;
+	CString		dragged_region;
 	int			drag_left_offset, drag_top_offset;
 
 	HCURSOR		hCurDrawRect, hCurStandard;
@@ -32,7 +32,7 @@ public:
 
 	bool		drawing_rect, drawing_started;
 	CPoint		drawrect_start;
-	int			drawrect_region;
+	CString		drawrect_region;
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;

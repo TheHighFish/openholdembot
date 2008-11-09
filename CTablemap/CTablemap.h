@@ -44,6 +44,10 @@ struct STablemapRegion
 	HBITMAP			cur_bmp;
 	HBITMAP			last_bmp;
 };
+typedef std::pair<CString, STablemapRegion> RPair;
+typedef std::map<CString, STablemapRegion> RMap;
+typedef RMap::iterator RMapI;
+typedef RMap::const_iterator RMapCI;
 
 struct STablemapFont 
 {
@@ -84,75 +88,11 @@ typedef std::map<uint32_t, STablemapImage> IMap;
 typedef IMap::iterator IMapI;
 typedef IMap::const_iterator IMapCI;
 
-struct SR$Indexes
-{
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	// Holds indexes to _r$ entries for fast lookup - populated by save_r$indexes()
-	// common card info
-	int		r$c0cardfaceX_index[5];
-	int		r$c0cardfaceXrank_index[5];
-	int		r$c0cardfaceXsuit_index[5];
-
-	//  Chat support
-	//  2008.02.21 by THF
-	int		r$chatbox;
-
-	// player info
-	int		r$uXcardfaceY_index[10][2];
-	int		r$pXcardfaceY_index[10][2];
-	int		r$pXcardfaceYrank_index[10][2];
-	int		r$pXcardfaceYsuit_index[10][2];
-	int		r$pXcardback_index[10];
-	int		r$uXseated_index[10];
-	int		r$pXseated_index[10];
-	int		r$uXactive_index[10];
-	int		r$pXactive_index[10];
-	int		r$uXdealer_index[10];
-	int		r$pXdealer_index[10];
-	int		r$uname_index;
-	int		r$uXname_index[10];
-	int		r$pXname_index[10];
-	int		r$ubalance_index;
-	int		r$uXbalance_index[10];
-	int		r$pXbalance_index[10];
-	int		r$uXbet_index[10];
-	int		r$pXbet_index[10];
-	int		r$pXchip_index[10][10][10];
-
-	// button info
-	int		r$iXbutton_index[10];
-	int		r$iXstate_index[10];
-	int		r$iXlabel_index[10];
-	int		r$iXlabelY_index[10][10];
-	int		r$iXslider_index[10];
-	int		r$iXhandle_index[10];
-	int		r$iXedit_index[10];
-	int		r$i86Xbutton_index[10];
-	int		r$i86button_index;
-	int		r$i86Xstate_index[10];
-	int		r$i86state_index;
-
-	// pots
-	int 	r$c0potX_index[10];
-	int 	r$c0potXchipYZ_index[10][10][10];
-
-	// limits
-	int 	r$c0limits_index;
-	int		r$c0limitsX_index[10];
-	int		r$c0istournament_index;
-	int		r$c0sblind_index;
-	int		r$c0bblind_index;
-	int		r$c0bigbet_index;
-	int		r$c0ante_index;
-	int		r$c0handnumber_index;
-	int		r$c0handnumberX_index[10];
-};
-
 struct SWholeMap
 {
 	const ZMap	*z$;
 	const SMap	*s$;
-	const CArray <STablemapRegion, STablemapRegion> 		*r$;
+	const RMap	*r$;
 	const CArray <STablemapFont, STablemapFont>			*t$;
 	const CArray <STablemapHashPoint, STablemapHashPoint>	*p$;
 	const HMap	*h$[4];
@@ -172,8 +112,6 @@ public:
 	int SaveTablemap(CArchive& ar, const char *version_text);
 	int ConvertTablemap(const HWND hwnd=NULL, const char *startup_path="");
 	int UpdateHashes(const HWND hwnd, const char *startup_path);
-	void ClearR$Indices(void);
-	void SaveR$Indices(void);
 	void UpdateHexmashesHashes(const int group);
 	CString CreateH$Index(const unsigned int number, const CString name);
 	uint32_t CreateI$Index(const CString name, const int width, const int height, const uint32_t *pixels);
@@ -183,7 +121,7 @@ public:
 	// public accessors
 	const ZMap *z$() { return &_z$; }
 	const SMap *s$() { return &_s$; }
-	const CArray <STablemapRegion, STablemapRegion> * r$() { return &_r$; }
+	const RMap *r$() { return &_r$; }
 	const CArray <STablemapFont, STablemapFont> * t$() { return &_t$; }
 	const CArray <STablemapHashPoint, STablemapHashPoint> * p$() { return &_p$; }
 	const HMap *h$(const int i) { if (i>=0 && i<=3) return &_h$[i]; else return NULL; }
@@ -226,7 +164,6 @@ public:
 									  return (n>=1 && n<=0x0111) ? n : 0x0111; }
 
 	const std::map<CString, int> * hexmashes(const int n) { return &(_hexmashes[n]); }
-	const SR$Indexes * r$indexes() { return &_r$indexes; }
 	const bool valid() { return _valid; }
 	const CString filename() { return _filename; }
 	const CString filepath() { return _filepath; }
@@ -241,7 +178,7 @@ public:
 
 	const bool	z$_insert(const STablemapSize s) { ENT std::pair<ZMapI, bool> r=_z$.insert(ZPair(s.name, s)); return r.second;  }
 	const bool	s$_insert(const STablemapSymbol s) { ENT std::pair<SMapI, bool> r=_s$.insert(SPair(s.name, s)); return r.second;  }
-	const INT_PTR	set_r$_add(const STablemapRegion s) { ENT return _r$.Add(s); }
+	const bool	r$_insert(const STablemapRegion s) { ENT std::pair<RMapI, bool> r=_r$.insert(RPair(s.name, s)); return r.second;  }
 	const INT_PTR	set_t$_add(const STablemapFont s) { ENT return _t$.Add(s); }
 	const INT_PTR	set_p$_add(const STablemapHashPoint s) { ENT return _p$.Add(s); }
 	const bool	h$_insert(const int i, const STablemapHashValue s) { ENT if (i>=0 && i<=3) { std::pair<HMapI, bool> r=_h$[i].insert(HPair(s.hash, s)); return r.second; } else return false; }
@@ -249,23 +186,15 @@ public:
 
 	const size_t	z$_erase(CString s) { ENT std::map<int, int>::size_type c = _z$.erase(s); return c; }
 	const size_t	s$_erase(CString s) { ENT std::map<int, int>::size_type c = _s$.erase(s); return c; }
-	void	set_r$_removeat(const int n) { ENT if (n>=0 && n<=_r$.GetSize()) _r$.RemoveAt(n,1);  }
+	const size_t	r$_erase(CString s) { ENT std::map<int, int>::size_type c = _r$.erase(s); return c; }
 	void	set_t$_removeat(const int n) { ENT if (n>=0 && n<=_t$.GetSize()) _t$.RemoveAt(n,1);  }
 	void	set_p$_removeat(const int n) { ENT if (n>=0 && n<=_p$.GetSize()) _p$.RemoveAt(n,1);  }
 	const size_t	h$_erase(const int i, uint32_t u) { ENT if (i>=0 && i<=3) { std::map<int, int>::size_type c = _h$[i].erase(u); return c; } else return 0; }
 	const size_t	i$_erase(uint32_t u) { ENT std::map<int, int>::size_type c = _i$.erase(u); return c; }
 
-	void	set_r$_left(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].left = i;  }
-	void	set_r$_right(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].right = i;  }
-	void	set_r$_top(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].top = i;  }
-	void	set_r$_bottom(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].bottom = i;  }
-	void	set_r$_color(const int n, const COLORREF c) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].color = c;  }
-	void	set_r$_radius(const int n, const unsigned int i) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].radius = i;  }
-	void	set_r$_transform(const int n, const CString s) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].transform = s;  }
-	void	set_r$_lastbmp(const int n, const HBITMAP h) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].last_bmp = h;  }
-	void	set_r$_curbmp(const int n, const HBITMAP h) { ENT if (n>=0 && n<=_r$.GetSize()) _r$[n].cur_bmp = h;  }
-	void	delete_r$_lastbmp(const int n) { ENT if (n>=0 && n<=_r$.GetSize()) { DeleteObject(_r$[n].last_bmp); _r$[n].last_bmp=NULL; }  }
-	void	delete_r$_curbmp(const int n) { ENT if (n>=0 && n<=_r$.GetSize()) { DeleteObject(_r$[n].cur_bmp); _r$[n].cur_bmp=NULL; }   }
+	ZMap *set_z$() { return &_z$; }
+	SMap *set_s$() { return &_s$; }
+	RMap *set_r$() { return &_r$; }
 
 	void	set_p$_removeall() { ENT _p$.RemoveAll();  }
 	void	set_t$_insertat(const int n, const STablemapFont s) { ENT if (n>=0 && n<=_t$.GetSize()) _t$.InsertAt(n,s);  }
@@ -280,14 +209,13 @@ private:
 	CString		_filepath;
 	ZMap		_z$; // indexed on name
 	SMap		_s$; // indexed on name
-	CArray <STablemapRegion, STablemapRegion>			_r$;
+	RMap		_r$; // indexed on name
 	CArray <STablemapFont, STablemapFont>				_t$;
 	CArray <STablemapHashPoint, STablemapHashPoint>		_p$;
 	HMap		_h$[4]; // indexed on hash
 	IMap		_i$; // indexed on a hash of: name+all pixels in RBGA hex format
 
-	std::map<CString, int>								_hexmashes[4]; // Font _hexmashes for fast lookups - font type 0-3 are indexed in the array
-	SR$Indexes	_r$indexes;
+	std::map<CString, int>	_hexmashes[4]; // Font _hexmashes for fast lookups - font type 0-3 are indexed in the array
 
 private:
 	// private functions and variables - not available via accessors or mutators

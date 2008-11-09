@@ -565,8 +565,6 @@ void CMainFrame::OnFileLoadTableMap()
 		}
 		else
 		{
-			p_tablemap->SaveR$Indices();
-
 			// Reset "ScraperOutput" dialog, if it is live
 			if (m_ScraperOutputDlg) 
 			{
@@ -713,7 +711,6 @@ void CMainFrame::OnBnClickedGreenCircle()
 			// Load correct tablemap, and save hwnd/rect/numchairs of table that we are "attached" to
 			set_attached_hwnd(g_tlist[cstd.selected_item].hwnd);
 			p_tablemap->LoadTablemap((char *) g_tlist[cstd.selected_item].path.GetString(), VER_OPENSCRAPE_1, false, &line, prefs.disable_msgbox());
-			p_tablemap->SaveR$Indices();
 
 			// Create bitmaps
 			p_scraper->CreateBitmaps();
@@ -824,9 +821,6 @@ void CMainFrame::OnBnClickedRedCircle()
 
 	// Delete bitmaps
 	p_scraper->DeleteBitmaps();
-
-	// Clear profile indices
-	p_tablemap->ClearR$Indices();
 
 	// Clear scraper fields
 	p_scraper->ClearScrapeAreas();
@@ -1729,7 +1723,7 @@ bool check_window_match(SWholeMap *map, HWND h, RECT r, CString title)
 	for (i=0; i<=9; i++)
 	{
 		s.Format("titletext%d", i);
-		s_iter = map->s$->find(s);
+		s_iter = map->s$->find(s.GetString());
 		if (s_iter!=map->s$->end())
 			if (title.Find(s_iter->second.text)!=-1)
 				good_pos_title = true;
@@ -1749,7 +1743,7 @@ bool check_window_match(SWholeMap *map, HWND h, RECT r, CString title)
 	for (i=0; i<=9; i++)
 	{
 		s.Format("!titletext%d", i);
-		s_iter = map->s$->find(s);
+		s_iter = map->s$->find(s.GetString());
 		if (s_iter!=map->s$->end())
 			if (title.Find(s_iter->second.text)!=-1)
 				good_neg_title = true;
@@ -1783,16 +1777,17 @@ bool check_window_match(SWholeMap *map, HWND h, RECT r, CString title)
 	GetDIBits(hdcCompatible, hbmScreen, 0, height, pBits, bmi, DIB_RGB_COLORS);
 
 	good_table_points = true;
-	for (i=0; i<(int) map->r$->GetSize(); i++)
+	bool found = false;
+	for (RMapCI r_iter=map->r$->begin(); r_iter!=map->r$->end() && !found; r_iter++)
 	{
-		if (map->r$->GetAt(i).name.Find("tablepoint") != -1 &&
-				map->r$->GetAt(i).right - map->r$->GetAt(i).left == 1 &&
-				map->r$->GetAt(i).bottom - map->r$->GetAt(i).top == 1 &&
-				map->r$->GetAt(i).transform == "C")
+		if (r_iter->second.name.Find("tablepoint") != -1 &&
+			r_iter->second.right - r_iter->second.left == 1 &&
+			r_iter->second.bottom - r_iter->second.top == 1 &&
+			r_iter->second.transform == "C")
 		{
 
-			x = map->r$->GetAt(i).left;
-			y = map->r$->GetAt(i).top;
+			x = r_iter->second.left;
+			y = r_iter->second.top;
 
 			int pbits_loc = y*width*4 + x*4;
 			alpha = pBits[pbits_loc + 3];
@@ -1801,31 +1796,31 @@ bool check_window_match(SWholeMap *map, HWND h, RECT r, CString title)
 			blue = pBits[pbits_loc + 0];
 
 			// positive radius
-			if (map->r$->GetAt(i).radius >= 0)
+			if (r_iter->second.radius >= 0)
 			{
-				if (!trans.IsInARGBColorCube((map->r$->GetAt(i).color>>24)&0xff,
-											 GetRValue(map->r$->GetAt(i).color),
-											 GetGValue(map->r$->GetAt(i).color),
-											 GetBValue(map->r$->GetAt(i).color),
-											 map->r$->GetAt(i).radius,
+				if (!trans.IsInARGBColorCube((r_iter->second.color>>24)&0xff,
+											 GetRValue(r_iter->second.color),
+											 GetGValue(r_iter->second.color),
+											 GetBValue(r_iter->second.color),
+											 r_iter->second.radius,
 											 alpha, red, green, blue))
 				{
 					good_table_points = false;
-					i=(int) map->r$->GetSize()+1;
+					found = true;
 				}
 			}
 			// negative radius (logical not)
 			else
 			{
-				if (trans.IsInARGBColorCube((map->r$->GetAt(i).color>>24)&0xff,
-											GetRValue(map->r$->GetAt(i).color),
-											GetGValue(map->r$->GetAt(i).color),
-											GetBValue(map->r$->GetAt(i).color),
-											-map->r$->GetAt(i).radius,
+				if (trans.IsInARGBColorCube((r_iter->second.color>>24)&0xff,
+											r_iter->second.color,
+											r_iter->second.color,
+											r_iter->second.color,
+											-r_iter->second.radius,
 											alpha, red, green, blue))
 				{
 					good_table_points = false;
-					i=(int) map->r$->GetSize()+1;
+					found = true;
 				}
 			}
 
