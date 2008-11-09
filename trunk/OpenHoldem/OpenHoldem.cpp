@@ -268,7 +268,6 @@ void COpenHoldemApp::OnForceCrash()
 		// FORCE A CRASH
 		int *invalid_memory_access = NULL;
 		*invalid_memory_access = 0;
-
 	}
 }
 

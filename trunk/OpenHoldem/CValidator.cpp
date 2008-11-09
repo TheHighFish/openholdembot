@@ -138,4 +138,5 @@ void CValidator::ValidateGameState()
 	// and include them here as is.
 	//
 #include "Validator_Rules\range_checks_inline.cpp"
+#include "Validator_Rules\consistency_checks_cards_inline.cpp"
 }
