@@ -10,6 +10,9 @@
 #   "perl rules2cpp <THE_RULES_FILE>"
 #   This will print the generated code to stdout.
 #
+# NOTE: For bitwise operations you have to typecast
+#   gws-operands to integer manually.
+#
 # AUTHOR: TheHighFish
 #
 # DATE: 2008.11.31
@@ -57,7 +60,7 @@ while (<>)
 	}
 	else
 	{
-		# In the other lines place a gws-callaround each symnols,
+		# In the other lines place a gws-call around each symnols,
 		#   then print to stdout.
 		s/[a-z\$][a-z_\$0-9]*/gws("$&")/g;
 		# If we substituted true or false,

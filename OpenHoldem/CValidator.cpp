@@ -17,6 +17,30 @@ CValidator::~CValidator()
 }
 
 
+// Create a stringified list of (symbol: value)-pairs
+// for output in the error-message.
+CString CValidator::Symbols_And_Values(const CString symbols_possibly_affected)
+{
+	CString Result = "";
+	int Token_Pos = 0;
+	while (Token_Pos < symbols_possibly_affected.GetLength())
+	{
+		// Tokenize the string, using space or commas as delimiters.
+		CString Symbol = symbols_possibly_affected.Tokenize(" ,", Token_Pos);
+		double Symbol_Value = gws(Symbol);
+		CString Symbol_Value_String;
+		// Convert symbol value to string, 7 digits total, 2 digits precision
+		Symbol_Value_String.Format("%7.2f", Symbol_Value);
+		Result += "\n    ("
+			+ Symbol
+			+ ": "
+			+ Symbol_Value_String
+			+ ")";
+	}
+	return Result;
+}
+
+
 void CValidator::ValidateSingleRule()
 {
 	if (_precondition) 
@@ -27,11 +51,14 @@ void CValidator::ValidateSingleRule()
 			{ 
 				p_autoplayer->set_autoplayer_engaged(false); 
 			} 
-			CString the_ErrorMessage = "Testcase ID: " 
+			CString the_ErrorMessage = "TESTCASE ID: " 
 				+ CString(_testcase_id) 
 				+ "\n\n" 
-			    + "Symbols affected: " 
-				+ CString(_symbols_possibly_affected); 
+				+ "REASONING: "
+				+ CString(_reasoning)
+				+ "\n\n"
+			    + "SYMBOLS AFFECTED: " 
+				+ Symbols_And_Values(_symbols_possibly_affected); 
 			MessageBox(NULL, the_ErrorMessage, "Validator Error", 
 				MB_OK | MB_TOPMOST | MB_ICONEXCLAMATION); 
 		} 
@@ -64,9 +91,9 @@ double CValidator::gws(const char *the_Symbol)
 
 // REASONING
 //
-// Action: Ignore this by turning it into an empty string.
+// Action: Assign the reasoning to a private string-pointer.
 //
-#define REASONING(R)
+#define REASONING(R) { _reasoning = (R); }
 
 
 // TESTCASE_ID
@@ -74,6 +101,7 @@ double CValidator::gws(const char *the_Symbol)
 // Action: Assign the testcase-ID to a private variable.
 //
 #define TESTCASE_ID(N) { _testcase_id = (N); }
+
 
 // PRECONDITION
 //
@@ -138,5 +166,7 @@ void CValidator::ValidateGameState()
 	// and include them here as is.
 	//
 #include "Validator_Rules\range_checks_inline.cpp"
+#include "Validator_Rules\consistency_checks_buttons_inline.cpp"
 #include "Validator_Rules\consistency_checks_cards_inline.cpp"
+#include "Validator_Rules\consistency_checks_handreset_inline.cpp"
 }
