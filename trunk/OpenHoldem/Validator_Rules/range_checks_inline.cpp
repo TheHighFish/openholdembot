@@ -602,7 +602,7 @@ BEGIN_TESTCASE
     REASONING ("Range check for symbols balance0..balance9 ")
     PRECONDITION (true)
     POSTCONDITION ((gws("balance0") >= 0) && (gws("balance1") >= 0) && (gws("balance2") >= 0) && (gws("balance3") >= 0) && (gws("balance4") >= 0) && (gws("balance5") >= 0) && (gws("balance6") >= 0) && (gws("balance7") >= 0) && (gws("balance8") >= 0) && (gws("balance9") >= 0))
-    SYMBOLS_POSSIBLY_AFFECTED ("balance0..balance9")
+    SYMBOLS_POSSIBLY_AFFECTED ("balance0, balance1, balance2, balance3, balance4, balance5, balance6, balance7, balance8, balance9")
 END_TESTCASE
 
 
@@ -611,7 +611,7 @@ BEGIN_TESTCASE
     REASONING ("Range check for symbols stack0..stack9")
     PRECONDITION (true)
     POSTCONDITION ((gws("stack0") >= gws("stack1")) && (gws("stack1") >= gws("stack2")) && (gws("stack2") >= gws("stack3")) && (gws("stack3") >= gws("stack4")) && (gws("stack4") >= gws("stack5")) && (gws("stack5") >= gws("stack6")) && (gws("stack6") >= gws("stack7")) && (gws("stack7") >= gws("stack8")) && (gws("stack8") >= gws("stack9")) && (gws("stack9") >= 0))
-    SYMBOLS_POSSIBLY_AFFECTED ("stack0..stack9")
+    SYMBOLS_POSSIBLY_AFFECTED ("stack0, stack1, stack2, stack3, stack4, stack5, stack6, stack7, stack8, stack9")
 END_TESTCASE
 
 
@@ -629,7 +629,7 @@ BEGIN_TESTCASE
     REASONING ("Range check for symbols currentbet0..currentbet9 ")
     PRECONDITION (true)
     POSTCONDITION ((gws("currentbet0") >= 0) && (gws("currentbet1") >= 0) && (gws("currentbet2") >= 0) && (gws("currentbet3") >= 0) && (gws("currentbet4") >= 0) && (gws("currentbet5") >= 0) && (gws("currentbet6") >= 0) && (gws("currentbet7") >= 0) && (gws("currentbet8") >= 0) && (gws("currentbet9") >= 0))
-    SYMBOLS_POSSIBLY_AFFECTED ("currentbet0..currentbet9")
+    SYMBOLS_POSSIBLY_AFFECTED ("currentbet0, currentbet1, currentbet2, currentbet3, currentbet4, currentbet5, currentbet6, currentbet7, currentbet8, currentbet9")
 END_TESTCASE
 
 
@@ -656,7 +656,7 @@ BEGIN_TESTCASE
     REASONING ("Range check for symbols bet1..bet4")
     PRECONDITION (true)
     POSTCONDITION ((gws("bet1") > 0) && (gws("bet2") > 0) && (gws("bet3") > 0) && (gws("bet4") > 0))
-    SYMBOLS_POSSIBLY_AFFECTED ("bet1..bet4")
+    SYMBOLS_POSSIBLY_AFFECTED ("bet1, bet2, bet3, bet4")
 END_TESTCASE
 
 
@@ -703,6 +703,79 @@ BEGIN_TESTCASE
     POSTCONDITION (gws("raisshort") >= 0)
     SYMBOLS_POSSIBLY_AFFECTED ("raisshort")
 END_TESTCASE
+
+
+//
+// Number of Bets (73..77)
+//
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0073")
+    REASONING ("Range check for symbol nbetstocall")
+    PRECONDITION (true)
+    POSTCONDITION (gws("nbetstocall") >= 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("nbetstocall")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0074")
+    REASONING ("Range check for symbol nbetstorais")
+    PRECONDITION (true)
+    POSTCONDITION (gws("nbetstorais") >= 1)
+    SYMBOLS_POSSIBLY_AFFECTED ("nbetstorais")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0075")
+    REASONING ("Range check for symbol ncurrentbets")
+    PRECONDITION (true)
+    POSTCONDITION (gws("ncurrentbets") >= 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("ncurrentbets")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0076")
+    REASONING ("Range check for symbol ncallbets")
+    PRECONDITION (true)
+    POSTCONDITION (gws("ncallbets") >= 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("ncallbets")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0077")
+    REASONING ("Range check for symbol nraisbets")
+    PRECONDITION (true)
+    POSTCONDITION (gws("nraisbets") >= 1)
+    SYMBOLS_POSSIBLY_AFFECTED ("nraisbets")
+END_TESTCASE
+
+
+//
+// List Tests 78..79
+//   The other list test are trivial
+//
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0078")
+    REASONING ("Range check for symbol nlistmax")
+    PRECONDITION (true)
+    POSTCONDITION (gws("nlistmax") >= 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("nlistmax")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0079")
+    REASONING ("Range check for symbol nlistmin ")
+    PRECONDITION (true)
+    POSTCONDITION (gws("nlistmin") >= 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("nlistmin ")
+END_TESTCASE
+
 
 //
 // Flags (0127..0128)
@@ -874,7 +947,7 @@ BEGIN_TESTCASE
     REASONING ("Range check for symbols balance_rank0..balance_rank9")
     PRECONDITION (true)
     POSTCONDITION ((gws("balance_rank0") >= gws("balance_rank1")) && (gws("balance_rank1") >= gws("balance_rank2")) && (gws("balance_rank2") >= gws("balance_rank3")) && (gws("balance_rank3") >= gws("balance_rank4")) && (gws("balance_rank4") >= gws("balance_rank5")) && (gws("balance_rank5") >= gws("balance_rank6")) && (gws("balance_rank6") >= gws("balance_rank7")) && (gws("balance_rank7") >= gws("balance_rank8")) && (gws("balance_rank8") >= gws("balance_rank9")) && (gws("balance_rank") >= 0))
-    SYMBOLS_POSSIBLY_AFFECTED ("balance_rank0..balance_rank9")
+    SYMBOLS_POSSIBLY_AFFECTED ("balance_rank0, balance_rank1, balance_rank2, balance_rank3, balance_rank4, balance_rank5, balance_rank6, balance_rank7, balance_rank8, balance_rank9")
 END_TESTCASE
 
 
