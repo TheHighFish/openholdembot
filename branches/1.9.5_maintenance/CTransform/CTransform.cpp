@@ -327,7 +327,7 @@ const int CTransform::HTypeTransform(const STablemapRegion *region, const HDC hd
 				x = p_tablemap->p$()->GetAt(j).x;
 				y = p_tablemap->p$()->GetAt(j).y;
 
-				if (x<=width && y<=height)
+				if (x<width && y<height)
 				{
 					red = pBits[y*width*4 + x*4 + 2];
 					green = pBits[y*width*4 + x*4 + 1];

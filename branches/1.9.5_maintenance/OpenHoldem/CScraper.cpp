@@ -1911,7 +1911,7 @@ const double CScraper::DoChipScrape(HDC hdc, int i)
 							int x = p_tablemap->p$()->GetAt(j).x;
 							int y = p_tablemap->p$()->GetAt(j).y;
 
-							if (x<=chipwidth && y<=chipheight)
+							if (x<chipwidth && y<chipheight)
 								pix[pixcount++] = GetPixel(hdc, left + x, top + y);
 						}
 					}
