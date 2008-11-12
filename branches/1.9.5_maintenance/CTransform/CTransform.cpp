@@ -256,6 +256,11 @@ const int CTransform::HTypeTransform(const STablemapRegion *region, const HDC hd
 	BYTE				*pBits = NULL, red = 0, green = 0, blue = 0;
 	std::map<uint32_t, int>::const_iterator		hashindex;
 
+	// OpenHoldem notes 2008-11-12
+	// Width and height calcs below are wrong..they should both have a +1 on the end,
+	// however, changing them at this point would break all existing .tm's that use 
+	// hashes.  Impact is minimal, as only one row of pixels on the far right and far
+	// bottom are skipped, and thus a good hash is still generated.
 	width = region->right - region->left;
 	height = region->bottom - region->top;
 	hash_type = region->transform.GetString()[1] - '0';
@@ -321,10 +326,14 @@ const int CTransform::HTypeTransform(const STablemapRegion *region, const HDC hd
 			{
 				x = p_tablemap->p$()->GetAt(j).x;
 				y = p_tablemap->p$()->GetAt(j).y;
-				red = pBits[y*width*4 + x*4 + 2];
-				green = pBits[y*width*4 + x*4 + 1];
-				blue = pBits[y*width*4 + x*4 + 0];
-				pix[pixcount++] = (blue<<16) + (green<<8) + red;
+
+				if (x<=width && y<=height)
+				{
+					red = pBits[y*width*4 + x*4 + 2];
+					green = pBits[y*width*4 + x*4 + 1];
+					blue = pBits[y*width*4 + x*4 + 0];
+					pix[pixcount++] = (blue<<16) + (green<<8) + red;
+				}
 			}
 		}
 		if (hash_type==1)  hash = hashword(&pix[0], pixcount, HASH_SEED_1);

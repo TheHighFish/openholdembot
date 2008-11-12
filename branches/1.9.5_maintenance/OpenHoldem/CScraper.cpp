@@ -1891,6 +1891,11 @@ const double CScraper::DoChipScrape(HDC hdc, int i)
 
 			if (!stop_loop)
 			{
+				// OpenHoldem notes 2008-11-12
+				// Width and height calcs below are wrong..they should both have a +1 on the end,
+				// however, changing them at this point would break all existing .tm's that use 
+				// hashes.  Impact is minimal, as only one row of pixels on the far right and far
+				// bottom are skipped, and thus a good hash is still generated.
 				chipwidth = right - left;
 				chipheight = bottom - top;
 
@@ -1903,7 +1908,11 @@ const double CScraper::DoChipScrape(HDC hdc, int i)
 					{
 						if (p_tablemap->p$()->GetAt(j).number == hash_type)
 						{
-							pix[pixcount++] = GetPixel(hdc, left + p_tablemap->p$()->GetAt(j).x, top + p_tablemap->p$()->GetAt(j).y);
+							int x = p_tablemap->p$()->GetAt(j).x;
+							int y = p_tablemap->p$()->GetAt(j).y;
+
+							if (x<=chipwidth && y<=chipheight)
+								pix[pixcount++] = GetPixel(hdc, left + x, top + y);
 						}
 					}
 

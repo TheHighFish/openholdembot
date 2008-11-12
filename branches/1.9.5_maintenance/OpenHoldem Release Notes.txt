@@ -4,7 +4,8 @@ BUG FIXES:
 - Did* symbols not being reset between rounds.  Thus if your bot swags in round 1, "didswag" will be non-zero throughout
   that same hand.  Thanks to PokerBandit1 for originally pointing this out, and thanks to Brass Knuckles for spending an
   inordinate amount of time helping to diagnose the root cause.  (OpenHoldem)
-  
+- Out of range hash points in a .tm file can cause a crash.  Bounds checking added. Thanks, peanutym for finding the bug.
+  (OpenHoldem)
 
 v1.9.4 2008-10-21
 =================
