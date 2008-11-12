@@ -575,7 +575,6 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 {
 	CString		s = "", t = "", text = "";
-	int			i = 0, j = 0, x = 0, y = 0;
 	char		nowtime[26] = {0};
 
 	// Version
@@ -637,12 +636,12 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("//\r\n");
 	ar.WriteString("\r\n");
 
-	for (i=0; i<=3; i++)
+	for (int i=0; i<=3; i++)
 	{
 		for (TMapCI t_iter =_t$[i].begin(); t_iter != _t$[i].end(); t_iter++)
 		{
 			s.Format("t%d$%c", i, t_iter->second.ch);
-			for (j=0; j<t_iter->second.x_count; j++) 
+			for (int j=0; j<t_iter->second.x_count; j++) 
 			{ 
 				t.Format(" %x", t_iter->second.x[j]);
 				s.Append(t);
@@ -659,7 +658,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("//\r\n");
 	ar.WriteString("\r\n");
 
-	for (i=0; i<=3; i++)
+	for (int i=0; i<=3; i++)
 	{
 		for (PMapCI p_iter=_p$[i].begin(); p_iter!=_p$[i].end(); p_iter++)
 		{
@@ -675,7 +674,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("//\r\n");
 	ar.WriteString("\r\n");
 
-	for (i=0; i<=3; i++)
+	for (int i=0; i<=3; i++)
 	{
 		for (HMapCI h_iter=_h$[i].begin(); h_iter!=_h$[i].end(); h_iter++)
 		{
@@ -692,16 +691,18 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("\r\n");
 	for (IMapCI i_iter=_i$.begin(); i_iter!=_i$.end(); i_iter++)
 	{
-		s.Format("i$%-16s %-3d %-3d\n", i_iter->second.name, i_iter->second.width, i_iter->second.height);
+		int width = i_iter->second.width;
+		int height = i_iter->second.height;
+
+		s.Format("i$%-16s %-3d %-3d\r\n", i_iter->second.name, width, height);
 		ar.WriteString(s);
-		for (y=0; y<(int) _i$[i].height; y++)
+		for (int y=0; y<height; y++)
 		{
 			s = "";
-			for (x=0; x<(int) _i$[i].width; x++)
+			for (int x=0; x<width; x++)
 			{
-				text.Format("%08x", i_iter->second.pixel[y*i_iter->second.width + x]);
+				text.Format("%08x", i_iter->second.pixel[width + x]);
 				t = text.Mid(2, 6) + text.Mid(0,2);
-				//t = text;
 				s.Append(t);
 			}
 			s.Append("\r\n");

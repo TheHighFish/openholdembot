@@ -149,6 +149,9 @@ const int CTransform::ITypeTransform(RMapCI region, const HDC hdc, CString *text
 	int			info_len = sizeof(BITMAPINFOHEADER) + 1024;
 	bmi = (BITMAPINFO *) ::HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, info_len);
 
+	// OpenHoldem notes 2008-11-12
+	// Width and height calcs below are wrong..they should both have a +1 on the end,
+	// and should be fixed.
 	width = region->second.right - region->second.left;
 	height = region->second.bottom - region->second.top;
 	
@@ -254,6 +257,11 @@ const int CTransform::HTypeTransform(RMapCI region, const HDC hdc, CString *text
 	HBITMAP				hbm = NULL;
 	BYTE				*pBits = NULL, red = 0, green = 0, blue = 0;
 
+	// OpenHoldem notes 2008-11-12
+	// Width and height calcs below are wrong..they should both have a +1 on the end,
+	// however, changing them at this point would break all existing .tm's that use 
+	// hashes.  Impact is minimal, as only one row of pixels on the far right and far
+	// bottom are skipped, and thus a good hash is still generated.
 	width = region->second.right - region->second.left;
 	height = region->second.bottom - region->second.top;
 	hash_type = region->second.transform.GetString()[1] - '0';
@@ -316,11 +324,16 @@ const int CTransform::HTypeTransform(RMapCI region, const HDC hdc, CString *text
 		{
 			x = p_iter->second.x;
 			y = p_iter->second.y;
-			red = pBits[y*width*4 + x*4 + 2];
-			green = pBits[y*width*4 + x*4 + 1];
-			blue = pBits[y*width*4 + x*4 + 0];
-			pix[pixcount++] = (blue<<16) + (green<<8) + red;
+
+			if (x<width && y<height)
+			{
+				red = pBits[y*width*4 + x*4 + 2];
+				green = pBits[y*width*4 + x*4 + 1];
+				blue = pBits[y*width*4 + x*4 + 0];
+				pix[pixcount++] = (blue<<16) + (green<<8) + red;
+			}
 		}
+
 		if (hash_type==1)  hash = hashword(&pix[0], pixcount, HASH_SEED_1);
 		if (hash_type==2)  hash = hashword(&pix[0], pixcount, HASH_SEED_2);
 		if (hash_type==3)  hash = hashword(&pix[0], pixcount, HASH_SEED_3);
