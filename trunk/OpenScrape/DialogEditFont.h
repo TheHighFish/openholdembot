@@ -16,15 +16,15 @@ public:
 	enum { IDD = IDD_EDIT_FONT };
 	CString			titletext;
 	CString			character;
-	CString			type;
-	CArray <STablemapFont, STablemapFont>		*new_t$_recs;
+	int				group;
+	bool			delete_sort_enabled;
+	CArray <STablemapFont, STablemapFont>		*new_t$_recs[4];
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnLbnSelchangeCharlist();
 	afx_msg void OnEnKillfocusCharacter();
-	afx_msg void OnEnKillfocusType();
 	afx_msg void OnBnClickedDelete();
 	afx_msg void OnBnClickedSort();
 
@@ -34,6 +34,8 @@ protected:
 	CEdit		m_PixelSep;
 	LOGFONT		lf_fixed;
 	CFont		separation_font;
+	CButton m_Delete;
+	CButton m_Sort;
 
 	DECLARE_MESSAGE_MAP()
 };

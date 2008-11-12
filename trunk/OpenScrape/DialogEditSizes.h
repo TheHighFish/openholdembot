@@ -18,7 +18,6 @@ public:
 	
 	CString						name;
 	int							width, height;
-	bool						readonly_key;
 
 // Dialog Data
 	enum { IDD = IDD_EDIT_SIZES };

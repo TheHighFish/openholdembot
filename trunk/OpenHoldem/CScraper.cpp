@@ -1867,7 +1867,7 @@ void CScraper::SetLimitInfo(const SLimitInfo LI)
 const double CScraper::DoChipScrape(HDC hdc, RMapCI r_iter)
 {
 	int				j = 0, stackindex = 0, chipindex = 0;
-	int				hash_type = 0, num_precs = 0, pixcount = 0, chipwidth = 0, chipheight = 0;
+	int				hash_type = 0, pixcount = 0, chipwidth = 0, chipheight = 0;
 	int				top = 0, bottom = 0, left = 0, right = 0;
 	bool			stop_loop = false;
 	uint32_t		*uresult = NULL, hash = 0, pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0};
@@ -1975,15 +1975,9 @@ const double CScraper::DoChipScrape(HDC hdc, RMapCI r_iter)
 				// calculate hash
 				if (hash_type>=1 && hash_type<=3)
 				{
-					num_precs = (int) p_tablemap->p$()->GetSize();
 					pixcount = 0;
-					for (j=0; j<num_precs; j++)
-					{
-						if (p_tablemap->p$()->GetAt(j).number == hash_type)
-						{
-							pix[pixcount++] = GetPixel(hdc, left + p_tablemap->p$()->GetAt(j).x, top + p_tablemap->p$()->GetAt(j).y);
-						}
-					}
+					for (PMapCI p_iter=p_tablemap->p$(hash_type)->begin(); p_iter!=p_tablemap->p$(hash_type)->end(); p_iter++)
+						pix[pixcount++] = GetPixel(hdc, left + p_iter->second.x, top + p_iter->second.y);
 
 					if (hash_type==1) hash = hashword(&pix[0], pixcount, HASH_SEED_1);
 					else if (hash_type==2) hash = hashword(&pix[0], pixcount, HASH_SEED_2);

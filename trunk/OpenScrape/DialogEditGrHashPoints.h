@@ -11,7 +11,7 @@ public:
 	virtual BOOL OnInitDialog();
 	virtual BOOL DestroyWindow();
 
-	CArray <STablemapHashPoint, STablemapHashPoint> working_hash_points;
+	CArray <STablemapHashPoint, STablemapHashPoint> working_hash_points[4];
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

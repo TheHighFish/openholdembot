@@ -1168,34 +1168,42 @@ void CDlgTableMap::update_t$_display(void)
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	CString				separation, text, charstr;
 	bool				character[MAX_CHAR_WIDTH][MAX_CHAR_HEIGHT] = { false };	
-	STablemapFont		sel_font;
-	
-	// Get selected region record
+	TMapCI				sel_font = p_tablemap->t$(0)->end();
+	CString				sel = "";
+
+	// Get name of currently selected item
 	if (m_TableMapTree.GetSelectedItem())
-	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-		sel_font = p_tablemap->t$()->GetAt(index);
-	}
-	else
-	{
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+
+	// Get record lookup info from name
+	int font_type = strtoul(sel.Mid(sel.Find("(")+1, 1).GetString(), NULL, 10);
+	if (font_type<0 || font_type>3)
 		return;
-	}
+
+	CString hexmash = sel.Mid(sel.Find("[")+1, sel.Find("]") - sel.Find("[") - 1);
+	
+	// Get iterator for selected font
+	sel_font = p_tablemap->t$(font_type)->find(hexmash.GetString());
+
+	// Exit if we can't find the font record
+	if (sel_font == p_tablemap->t$(font_type)->end())
+		return;
 
 	// Get set bits
 	bit = 0;
-	for (j=0; j<sel_font.x_count; j++)
+	for (j=0; j<sel_font->second.x_count; j++)
 		for (bit=0; bit<MAX_CHAR_HEIGHT; bit++)
-			character[j][bit] = (sel_font.x[j] & (int) pow((double) 2, (double) bit)) != 0;
+			character[j][bit] = (sel_font->second.x[j] & (int) pow((double) 2, (double) bit)) != 0;
 
 	// Find topmost line with a set pixel
 	for (j=MAX_CHAR_HEIGHT-1; j>=0; j--)
 	{
-		for (x=0; x<sel_font.x_count; x++)
+		for (x=0; x<sel_font->second.x_count; x++)
 		{
 			if (character[x][j])
 			{
 				top = j;
-				x = sel_font.x_count + 1;
+				x = sel_font->second.x_count + 1;
 				j = -1;
 			}
 		}
@@ -1205,7 +1213,7 @@ void CDlgTableMap::update_t$_display(void)
 	separation = "";
 	for (j=top; j>=0; j--)
 	{
-		for (x=0; x<sel_font.x_count; x++)
+		for (x=0; x<sel_font->second.x_count; x++)
 		{
 			if (character[x][j])
 				separation.Append("X");
@@ -1377,21 +1385,6 @@ void CDlgTableMap::OnDeltaposRadiusSpin(NMHDR *pNMHDR, LRESULT *pResult)
 void CDlgTableMap::OnBnClickedNew()
 {
 	COpenScrapeDoc			*pDoc = COpenScrapeDoc::GetDocument();
-	CString					text;
-	int						i, new_index;
-	bool					used_string;
-	HTREEITEM				new_hti;
-	char					title[200];
-
-	CDlgEditSizes			dlgsizes;
-	CDlgEditSymbols			dlgsymbols;
-	CDlgEditRegion			dlgregions;
-	CDlgEditHashPoint		dlghashpoint;
-	STablemapSize			new_size;
-	STablemapSymbol			new_symbol;
-	STablemapRegion			new_region;
-	STablemapHashPoint		new_hashpoint;
-
 	HTREEITEM				parent;
 	CString					selected_parent_text = "";
 	CString					sel = "";
@@ -1401,6 +1394,7 @@ void CDlgTableMap::OnBnClickedNew()
 	{
 		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
 		parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
+		selected_parent_text = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
 	}
 
 	// Get name of currently selected item's parent
@@ -1410,17 +1404,17 @@ void CDlgTableMap::OnBnClickedNew()
 	if (selected_parent_text == "Sizes")
 	{
 		// Prep dialog
+		CDlgEditSizes dlgsizes;
 		dlgsizes.titletext = "New Size record";
 		dlgsizes.name = "";
 		dlgsizes.width = 0;
 		dlgsizes.height = 0;
-		dlgsizes.readonly_key = false;
 		dlgsizes.strings.RemoveAll();
 
 		ZMap::const_iterator z_iter;
-		for (i=0; i<num_z$strings; i++)
+		for (int i=0; i<num_z$strings; i++)
 		{
-			used_string = false;
+			bool used_string = false;
 
 			for (z_iter=p_tablemap->z$()->begin(); z_iter!=p_tablemap->z$()->end(); z_iter++)
 				if (z_iter->second.name == z$strings[i])  
@@ -1441,6 +1435,7 @@ void CDlgTableMap::OnBnClickedNew()
 			{
 
 				// Add new record to internal structure
+				STablemapSize new_size;
 				new_size.name = dlgsizes.name;
 				new_size.width = dlgsizes.width;
 				new_size.height = dlgsizes.height;
@@ -1453,7 +1448,7 @@ void CDlgTableMap::OnBnClickedNew()
 				else
 				{
 					// Add new record to tree
-					new_hti = m_TableMapTree.InsertItem(dlgsizes.name, parent ? parent : m_TableMapTree.GetSelectedItem());
+					HTREEITEM new_hti = m_TableMapTree.InsertItem(dlgsizes.name, parent ? parent : m_TableMapTree.GetSelectedItem());
 					m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
 					m_TableMapTree.SelectItem(new_hti);
 
@@ -1467,22 +1462,23 @@ void CDlgTableMap::OnBnClickedNew()
 	else if (selected_parent_text == "Symbols")
 	{
 		// Prep dialog
+		CDlgEditSymbols dlgsymbols;
 		dlgsymbols.titletext = "New Symbol record";
 		dlgsymbols.name = "";
 		dlgsymbols.value = "";
+		char title[200];
 		::GetWindowText(pDoc->attached_hwnd, title, 200);
 		dlgsymbols.titlebartext = title;
-		dlgsymbols.readonly_key = false;
 		dlgsymbols.strings.RemoveAll();
 
 		SMap::const_iterator s_iter;
-		for (i=0; i<num_s$strings; i++)
+		for (int i=0; i<num_s$strings; i++)
 		{
-			used_string = false;
+			bool used_string = false;
 
 			for (s_iter=p_tablemap->s$()->begin(); s_iter!=p_tablemap->s$()->end(); s_iter++)
 				if (s_iter->second.name == s$strings[i])  
-						used_string=true;
+					used_string=true;
 
 			if (!used_string)
 				dlgsymbols.strings.Add(s$strings[i]);
@@ -1498,6 +1494,7 @@ void CDlgTableMap::OnBnClickedNew()
 			if (dlgsymbols.DoModal() == IDOK && dlgsymbols.name!="")
 			{
 				// Add new record to internal structure
+				STablemapSymbol new_symbol;
 				new_symbol.name = dlgsymbols.name;
 				new_symbol.text = dlgsymbols.value;
 
@@ -1509,7 +1506,7 @@ void CDlgTableMap::OnBnClickedNew()
 				else
 				{
 					// Add new record to tree
-					new_hti = m_TableMapTree.InsertItem(new_symbol.name, parent ? parent : m_TableMapTree.GetSelectedItem());
+					HTREEITEM new_hti = m_TableMapTree.InsertItem(new_symbol.name, parent ? parent : m_TableMapTree.GetSelectedItem());
 					m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
 					m_TableMapTree.SelectItem(new_hti);
 
@@ -1523,12 +1520,13 @@ void CDlgTableMap::OnBnClickedNew()
 	else if (selected_parent_text == "Regions")
 	{
 		// Prep dialog
+		CDlgEditRegion dlgregions;
 		dlgregions.titletext = "New Region record";
 		dlgregions.name = "";
 		dlgregions.strings.RemoveAll();
-		for (i=0; i<num_r$strings; i++)
+		for (int i=0; i<num_r$strings; i++)
 		{
-			used_string = false;
+			bool used_string = false;
 			for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++)
 				if (r_iter->second.name == r$strings[i] && r$strings[i] != "tablepoint")  
 					used_string=true;
@@ -1547,6 +1545,7 @@ void CDlgTableMap::OnBnClickedNew()
 			if (dlgregions.DoModal() == IDOK && dlgregions.name!="")
 			{
 				// Add new record to internal structure
+				STablemapRegion new_region;
 				new_region.name = dlgregions.name;
 				new_region.left = 0;
 				new_region.top = 0;
@@ -1565,7 +1564,7 @@ void CDlgTableMap::OnBnClickedNew()
 				{
 
 					// Add new record to tree
-					new_hti = m_TableMapTree.InsertItem(new_region.name, parent ? parent : m_TableMapTree.GetSelectedItem());
+					HTREEITEM new_hti = m_TableMapTree.InsertItem(new_region.name, parent ? parent : m_TableMapTree.GetSelectedItem());
 					m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
 					m_TableMapTree.SelectItem(new_hti);
 
@@ -1584,6 +1583,7 @@ void CDlgTableMap::OnBnClickedNew()
 	else if (selected_parent_text == "Hash Points")
 	{
 		// Prep dialog
+		CDlgEditHashPoint dlghashpoint;
 		dlghashpoint.titletext = "New Hash Point record";
 		dlghashpoint.type = "Type 0";
 		dlghashpoint.x = 0;
@@ -1593,20 +1593,28 @@ void CDlgTableMap::OnBnClickedNew()
 		if (dlghashpoint.DoModal() == IDOK)
 		{
 			// Add new record to internal structure
-			new_hashpoint.number = atoi(dlghashpoint.type.Mid(5,1).GetString());
+			int type = atoi(dlghashpoint.type.Mid(5,1).GetString());
+			STablemapHashPoint new_hashpoint;
 			new_hashpoint.x = dlghashpoint.x;
 			new_hashpoint.y = dlghashpoint.y;
-			new_index = (int) p_tablemap->set_p$_add(new_hashpoint);
 
-			// Add new record to tree
-			text.Format("%d (%d, %d)", new_hashpoint.number, new_hashpoint.x, new_hashpoint.y);
-			new_hti = m_TableMapTree.InsertItem(text.GetString(), parent ? parent : m_TableMapTree.GetSelectedItem());
-			m_TableMapTree.SetItemData(new_hti, (DWORD_PTR) new_index);
-			m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
-			m_TableMapTree.SelectItem(new_hti);
+			// Insert the new record in the existing array of p$ records
+			if (!p_tablemap->p$_insert(type, new_hashpoint))
+			{
+				MessageBox("Failed to create hash point record.", "Hash point creation error", MB_OK);
+			}
+			else
+			{
+				// Add new record to tree
+				CString text;
+				text.Format("%d (%d, %d)", type, new_hashpoint.x, new_hashpoint.y);
+				HTREEITEM new_hti = m_TableMapTree.InsertItem(text.GetString(), parent ? parent : m_TableMapTree.GetSelectedItem());
+				m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
+				m_TableMapTree.SelectItem(new_hti);
 
-			pDoc->SetModifiedFlag(true);
-			Invalidate(false);
+				pDoc->SetModifiedFlag(true);
+				Invalidate(false);
+			}
 		}
 	}
 	
@@ -1705,52 +1713,51 @@ void CDlgTableMap::OnBnClickedDelete()
 	
 	else if (selected_parent_text == "Fonts")
 	{
-		// Get index into array for selected record
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-
 		text.Format("Really delete Font record: %s", sel);
 		if (MessageBox(text.GetString(), "Delete Font record?", MB_YESNO) == IDYES)
 		{
-			// Get text group of this record, so we know which to update in the call to UpdateHexmashesHashes below
-			int text_group = p_tablemap->t$()->GetAt(index).group;
 
 			// Delete record from internal structure and update tree
-			p_tablemap->set_t$_removeat(index);
+			int font_type = strtoul(sel.Mid(sel.Find("(")+1, 1).GetString(), NULL, 10);
+			if (font_type<0 || font_type>3)
+				return;
 
-			// Update hexmashes and hashes index	
-			p_tablemap->UpdateHexmashesHashes(text_group);
+			CString hexmash = sel.Mid(sel.Find("[")+1, sel.Find("]") - sel.Find("[") - 1);
+	
+			if (p_tablemap->t$_erase(font_type, hexmash))
+			{
+				HTREEITEM node = update_tree("Fonts");
+				if (node!=NULL)  m_TableMapTree.SelectItem(node);
 
-			HTREEITEM node = update_tree("Fonts");
-			if (node!=NULL)  m_TableMapTree.SelectItem(node);
-
-			Invalidate(false);
-			pDoc->SetModifiedFlag(true);
+				Invalidate(false);
+				pDoc->SetModifiedFlag(true);
+			}
 		}
 	}
 	
 	else if (selected_parent_text == "Hash Points")
 	{
-		// Get index into array for selected record
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-
 		text.Format("Really delete Hash Point record: %s", sel);
 		if (MessageBox(text.GetString(), "Delete Hash Point record?", MB_YESNO) == IDYES)
 		{
 			// Delete record from internal structure and update tree
-			p_tablemap->set_p$_removeat(index);
-			HTREEITEM node = update_tree("Hash Points");
-			if (node!=NULL)  m_TableMapTree.SelectItem(node);
+			int hashpoint_type = strtoul(sel.Mid(0, 1).GetString(), NULL, 10);
+			int x = strtoul(sel.Mid(3, sel.Find(",")-3).GetString(), NULL, 10);
+			int y = strtoul(sel.Mid(sel.Find(",")+2, sel.Find(")")-sel.Find(",")+2).GetString(), NULL, 10);
 
-			Invalidate(false);
-			pDoc->SetModifiedFlag(true);
+			if (p_tablemap->p$_erase(hashpoint_type, ((x&0xffff)<<16) | (y&0xffff)))
+			{
+				HTREEITEM node = update_tree("Hash Points");
+				if (node!=NULL)  m_TableMapTree.SelectItem(node);
+
+				Invalidate(false);
+				pDoc->SetModifiedFlag(true);
+			}
 		}
 	}
 	
 	else if (selected_parent_text == "Hashes")
 	{
-		// Get index into array for selected record
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-
 		text.Format("Really delete Hash record: %s", sel);
 		if (MessageBox(text.GetString(), "Delete Hash record?", MB_YESNO) == IDYES)
 		{
@@ -1844,24 +1851,6 @@ HTREEITEM CDlgTableMap::update_tree(CString node_text)
 void CDlgTableMap::OnBnClickedEdit()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	CString				text, num;
-	HTREEITEM			node;
-	int					i, j, pos, x_cnt;
-	char				title[200];
-	CDlgEditSizes		dlgsizes;
-	CDlgEditSymbols		dlgsymbols;
-	CDlgEditRegion		dlgregions;
-	CDlgEditFont		dlg_editfont;
-	CDlgEditHashPoint	dlghashpoint;
-	CDlgEditGrHashPoints	dlggrhashpoints;
-	CString				sel_region_name;
-	CString				node_text = "";
-	CArray <STablemapFont, STablemapFont>		new_t$_recs;
-	STablemapRegion		sel_region;
-	STablemapFont		sel_font;
-	STablemapHashPoint	sel_hash_point, temp_hash_point;
-	STablemapFont		new_font;
-
 	CString				sel = "";
 	HTREEITEM			parent = NULL;
 	CString				selected_parent_text = "";
@@ -1881,133 +1870,265 @@ void CDlgTableMap::OnBnClickedEdit()
 	if (selected_parent_text == "Sizes")
 	{
 		// Get selected size record
-		ZMapI z_iter = p_tablemap->set_z$()->find(sel.GetString());
+		ZMapCI z_iter = p_tablemap->z$()->find(sel.GetString());
 
 		if (z_iter == p_tablemap->z$()->end())
 		{
-			MessageBox("Error editing size record.", "ERROR", MB_OK | MB_TOPMOST);
+			MessageBox("Error editing record - not found.", "ERROR", MB_OK | MB_TOPMOST);
+			return;
 		}
-		else
+
+		// Prep dialog
+		CDlgEditSizes dlgsizes;
+		dlgsizes.titletext = "Edit Size record";
+		dlgsizes.name = z_iter->second.name;
+		dlgsizes.width = z_iter->second.width;
+		dlgsizes.height = z_iter->second.height;
+
+		dlgsizes.strings.RemoveAll();
+		for (int i=0; i<num_z$strings; i++)  
+			dlgsizes.strings.Add(z$strings[i]);
+
+		// Show dialog
+		if (dlgsizes.DoModal() != IDOK)
+			return;
+
+		// If key is changed, search for new key, and error out if found
+		if (dlgsizes.name != z_iter->second.name &&
+			p_tablemap->z$()->find(dlgsizes.name) != p_tablemap->z$()->end())
 		{
-			// Prep dialog
-			dlgsizes.titletext = "Edit Size record";
-			dlgsizes.name = z_iter->second.name;
-			dlgsizes.width = z_iter->second.width;
-			dlgsizes.height = z_iter->second.height;
-			dlgsizes.readonly_key = true;
-			dlgsizes.strings.RemoveAll();
-			for (j=0; j<num_z$strings; j++)  dlgsizes.strings.Add(z$strings[j]);
-
-			// Show dialog
-			if (dlgsizes.DoModal() == IDOK)
-			{
-				// Update record in internal structure
-				z_iter->second.width = dlgsizes.width;
-				z_iter->second.height = dlgsizes.height;
-
-				// Update record in tree
-				m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), dlgsizes.name.GetString());
-				m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
-				m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
-
-				update_display();
-				Invalidate(false);
-				pDoc->SetModifiedFlag(true);
-			}
+			MessageBox("Error editing record - name already exists.", "ERROR", MB_OK | MB_TOPMOST);
+			return;
 		}
+
+		// Delete original record in internal structure
+		if (!p_tablemap->z$_erase(sel))
+		{
+			MessageBox("Error applying changes.", "ERROR (1)", MB_OK | MB_TOPMOST);
+			return;
+		}
+
+		// Add new record to internal structure
+		STablemapSize new_size;
+		new_size.name = dlgsizes.name;
+		new_size.width = dlgsizes.width;
+		new_size.height = dlgsizes.height;
+
+		if (!p_tablemap->z$_insert(new_size))
+		{
+			MessageBox("Error applying changes.", "ERROR (2)", MB_OK | MB_TOPMOST);
+			return;
+		}
+
+		// Update record in tree
+		m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), new_size.name.GetString());
+		m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
+		m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
+
+		update_display();
+		Invalidate(false);
+		pDoc->SetModifiedFlag(true);
 	}
 	
 	else if (selected_parent_text == "Symbols")
 	{
 		// Get selected symbol record
-		SMapI s_iter = p_tablemap->set_s$()->find(sel.GetString());
+		SMapCI s_iter = p_tablemap->s$()->find(sel.GetString());
 
 		if (s_iter == p_tablemap->s$()->end())
 		{
-			MessageBox("Error editing symbol record.", "ERROR", MB_OK | MB_TOPMOST);
+			MessageBox("Error editing record - not found.", "ERROR", MB_OK | MB_TOPMOST);
+			return;
 		}
-		else
+
+		// Prep dialog
+		CDlgEditSymbols dlgsymbols;
+		dlgsymbols.titletext = "Edit Symbol record";
+		dlgsymbols.name = s_iter->second.name;
+		dlgsymbols.value = s_iter->second.text;
+		char title[200];
+		::GetWindowText(pDoc->attached_hwnd, title, 200);
+		dlgsymbols.titlebartext = title;
+
+		dlgsymbols.strings.RemoveAll();
+		for (int i=0; i<num_s$strings; i++)  
+			dlgsymbols.strings.Add(s$strings[i]);
+		
+		// Show dialog
+		if (dlgsymbols.DoModal() != IDOK)
+			return;
+
+		// If key is changed, search for new key, and error out if found
+		if (dlgsymbols.name != s_iter->second.name &&
+			p_tablemap->s$()->find(dlgsymbols.name) != p_tablemap->s$()->end())
 		{
-			// Prep dialog
-			dlgsymbols.titletext = "Edit Symbol record";
-			dlgsymbols.name = s_iter->second.name;
-			dlgsymbols.value = s_iter->second.text;
-			::GetWindowText(pDoc->attached_hwnd, title, 200);
-			dlgsymbols.titlebartext = title;
-			dlgsymbols.readonly_key = true;
-			dlgsymbols.strings.RemoveAll();
-			for (j=0; j<num_s$strings; j++)  dlgsymbols.strings.Add(s$strings[j]);
-			
-			// Show dialog
-			if (dlgsymbols.DoModal() == IDOK)
-			{
-				// Update record in internal structure
-				s_iter->second.text = dlgsymbols.value;
-
-				// Update record in tree
-				m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), dlgsymbols.name.GetString());
-				m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
-				m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
-
-				update_display();
-				Invalidate(false);
-				pDoc->SetModifiedFlag(true);
-			}
+			MessageBox("Error editing record - name already exists.", "ERROR", MB_OK | MB_TOPMOST);
+			return;
 		}
+
+		// Delete original record in internal structure
+		if (!p_tablemap->s$_erase(sel))
+		{
+			MessageBox("Error applying changes.", "ERROR (1)", MB_OK | MB_TOPMOST);
+			return;
+		}
+
+		// Add new record to internal structure
+		STablemapSymbol new_symbol;
+		new_symbol.name = dlgsymbols.name;
+		new_symbol.text = dlgsymbols.value;
+
+		if (!p_tablemap->s$_insert(new_symbol))
+		{
+			MessageBox("Error applying changes.", "ERROR (2)", MB_OK | MB_TOPMOST);
+			return;
+		}
+
+		// Update record in tree
+		m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), new_symbol.name.GetString());
+		m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
+		m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
+
+		update_display();
+		Invalidate(false);
+		pDoc->SetModifiedFlag(true);
 	}
 	
 	else if (selected_parent_text == "Regions")
 	{
-		// Editing of region record fields is via GUI
+		// Get selected region record
+		RMapCI r_iter = p_tablemap->r$()->find(sel.GetString());
+
+		if (r_iter == p_tablemap->r$()->end())
+		{
+			MessageBox("Error editing record - not found.", "ERROR", MB_OK | MB_TOPMOST);
+			return;
+		}
+
+		// Prep dialog
+		CDlgEditRegion dlgregion;
+		dlgregion.titletext = "Edit Region record";
+		dlgregion.name = r_iter->second.name;
+		
+		dlgregion.strings.RemoveAll();
+		for (int i=0; i<num_r$strings; i++)  
+			dlgregion.strings.Add(r$strings[i]);
+		
+		// Show dialog
+		if (dlgregion.DoModal() != IDOK)
+			return;
+
+		// If key is changed, search for new key, and error out if found
+		if (dlgregion.name != r_iter->second.name &&
+			p_tablemap->r$()->find(dlgregion.name) != p_tablemap->r$()->end())
+		{
+			MessageBox("Error editing record - name already exists.", "ERROR", MB_OK | MB_TOPMOST);
+			return;
+		}
+
+		// Delete original record in internal structure
+		if (!p_tablemap->r$_erase(sel))
+		{
+			MessageBox("Error applying changes.", "ERROR (1)", MB_OK | MB_TOPMOST);
+			return;
+		}
+
+		// Add new record to internal structure
+		STablemapRegion new_region;
+		new_region.name = dlgregion.name;
+		new_region.left = r_iter->second.left;
+		new_region.top = r_iter->second.top;
+		new_region.right = r_iter->second.right;
+		new_region.bottom = r_iter->second.bottom;
+		new_region.color = r_iter->second.color;
+		new_region.radius = r_iter->second.radius;
+		new_region.transform = r_iter->second.transform;
+		new_region.cur_bmp = r_iter->second.cur_bmp;
+		new_region.last_bmp = r_iter->second.last_bmp;
+
+		if (!p_tablemap->r$_insert(new_region))
+		{
+			MessageBox("Error applying changes.", "ERROR (2)", MB_OK | MB_TOPMOST);
+			return;
+		}
+
+		// Update record in tree
+		m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), new_region.name.GetString());
+		m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
+		m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
+
+		update_display();
+		Invalidate(false);
+		pDoc->SetModifiedFlag(true);
+
 	}
 	
 	else if (selected_parent_text == "Fonts")
 	{
-		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-
 		// Get selected font record
-		sel_font = p_tablemap->t$()->GetAt(index);
+		int font_group = strtoul(sel.Mid(sel.Find("(")+1, 1).GetString(), NULL, 10);
+		if (font_group<0 || font_group>3)
+			return;
+
+		CString hexmash = sel.Mid(sel.Find("[")+1, sel.Find("]") - sel.Find("[") - 1);
+		
+		TMapCI t_iter = p_tablemap->t$(font_group)->find(hexmash);
+
+		if (t_iter == p_tablemap->t$(font_group)->end())
+		{
+			MessageBox("Error editing record - not found.", "ERROR", MB_OK | MB_TOPMOST);
+			return;
+		}
 
 		// Prep dialog
+		STablemapFont edit_font;
+		edit_font.ch = t_iter->second.ch;
+		edit_font.x_count = t_iter->second.x_count;
+		for (int i = 0; i<edit_font.x_count; i++)
+			edit_font.x[i] = t_iter->second.x[i];
+		edit_font.hexmash =  t_iter->second.hexmash;
+
+		CArray <STablemapFont, STablemapFont> edit_font_array;
+		edit_font_array.Add(edit_font);
+
+		CDlgEditFont dlg_editfont;
 		dlg_editfont.titletext = "Edit font character";
-		dlg_editfont.character = sel_font.ch; //new_font.ch;
-		new_font.ch = sel_font.ch;
-		new_font.group = sel_font.group;
-		pos = 0;
-		x_cnt = sel_font.x_count;
-		while (pos < x_cnt)
-		{
-			new_font.x[pos] = sel_font.x[pos];
-			pos ++;
-		}
-		new_font.x_count = x_cnt;
-		new_font.hexmash =  sel_font.hexmash;
+		dlg_editfont.character = t_iter->second.ch;
+		dlg_editfont.group = font_group;
+		dlg_editfont.delete_sort_enabled = false;
+		dlg_editfont.new_t$_recs[font_group] = &edit_font_array;
 
-		// Insert the new record in the existing array of t$ records
-		new_t$_recs.Add(new_font);
-
-		text.Format("Type %d", sel_font.group);
-		dlg_editfont.type = text.GetString();
-
-		dlg_editfont.new_t$_recs = &new_t$_recs;
 
 		// Show dialog
-		if (dlg_editfont.DoModal() == IDOK)
-		{
-			// Edit record in internal structure
-			sel_font.ch = dlg_editfont.character.GetAt(0);
-			sel_font.group =  atoi(dlg_editfont.type.Right(1));
-			
-			// Edit record in tree
-			text.Format("%c (%s)", dlg_editfont.character.GetAt(0), dlg_editfont.type.Right(1));
-			m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), text.GetString());
-			m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
-			m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
+		if (dlg_editfont.DoModal() != IDOK)
+			return;
 
-			update_display();
-			Invalidate(false);
-			pDoc->SetModifiedFlag(true);
+		// Delete original record in internal structure
+		if (!p_tablemap->t$_erase(font_group, hexmash))
+		{
+			MessageBox("Error applying changes.", "ERROR (1)", MB_OK | MB_TOPMOST);
+			return;
 		}
+
+		// Add new record to internal structure
+		edit_font.ch = dlg_editfont.character.GetAt(0);
+
+		if (!p_tablemap->t$_insert(font_group, edit_font))
+		{
+			MessageBox("Error applying changes.", "ERROR (2)", MB_OK | MB_TOPMOST);
+			return;
+		}
+
+		// Update record in tree
+		CString text;
+		text.Format("%c (%d) [%s]", edit_font.ch, font_group, edit_font.hexmash);
+		m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), text.GetString());
+		m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
+		m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
+
+		update_display();
+		Invalidate(false);
+		pDoc->SetModifiedFlag(true);
 	}
 	
 	else if (selected_parent_text == "Hash Points" ||
@@ -2017,78 +2138,103 @@ void CDlgTableMap::OnBnClickedEdit()
 		if (parent==NULL)
 		{
 			// Prep dialog
-			for (i=0; i<p_tablemap->p$()->GetCount(); i++)
+			CDlgEditGrHashPoints dlggrhashpoints;
+			for (int i=0; i<=3; i++)
 			{
-				temp_hash_point.number = p_tablemap->p$()->GetAt(i).number;
-				temp_hash_point.x = p_tablemap->p$()->GetAt(i).x;
-				temp_hash_point.y = p_tablemap->p$()->GetAt(i).y;
-				dlggrhashpoints.working_hash_points.Add(temp_hash_point);
+				for (PMapCI p_iter=p_tablemap->p$(i)->begin(); p_iter!=p_tablemap->p$(i)->end(); p_iter++)
+				{
+					STablemapHashPoint hash_point;
+					hash_point.x = p_iter->second.x;
+					hash_point.y = p_iter->second.y;
+					dlggrhashpoints.working_hash_points[i].Add(hash_point);
+				}
 			}
 
 			// Show dialog
-			if (dlggrhashpoints.DoModal() == IDOK)
+			if (dlggrhashpoints.DoModal() != IDOK)
+				return;
+
+			// Clear all existing hash points
+			for (int i=0; i<=3; i++)
+				p_tablemap->p$_clear(i);
+
+			// Load new hash points from dialog into internal structure
+			for (int i=0; i<=3; i++)
 			{
-				// Clear all existing hash points
-				p_tablemap->set_p$_removeall();
-
-				// Load new has points from dialog into internal structure
-				for (i=0; i<dlggrhashpoints.working_hash_points.GetSize(); i++)
+				for (int j=0; j<dlggrhashpoints.working_hash_points[i].GetSize(); j++)
 				{
-					temp_hash_point.number = dlggrhashpoints.working_hash_points[i].number;
-					temp_hash_point.x = dlggrhashpoints.working_hash_points[i].x;
-					temp_hash_point.y = dlggrhashpoints.working_hash_points[i].y;
-					p_tablemap->set_p$_add(temp_hash_point);
+					STablemapHashPoint hash_point;
+					hash_point.x = dlggrhashpoints.working_hash_points[i].GetAt(j).x;
+					hash_point.y = dlggrhashpoints.working_hash_points[i].GetAt(j).y;
+					p_tablemap->p$_insert(i, hash_point);
 				}
-
-				// Rebuild tree
-				node = update_tree("Hash Points");
-				if (node!=NULL)				
-					m_TableMapTree.SelectItem(node);
-
-				update_display();
-				Invalidate(false);
-				pDoc->SetModifiedFlag(true);
 			}
+
+			// Rebuild tree
+			HTREEITEM node = update_tree("Hash Points");
+			if (node!=NULL)				
+				m_TableMapTree.SelectItem(node);
+
+			update_display();
+			Invalidate(false);
+			pDoc->SetModifiedFlag(true);
 		}
 
 		// else bring up the individual hash point editor
 		else
 		{
-			int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-	
-			// Get selected size record
-			sel_hash_point = p_tablemap->p$()->GetAt(index);
+			// Get selected hash point record
+			int hashpoint_type = strtoul(sel.Mid(0, 1).GetString(), NULL, 10);
+			int x = strtoul(sel.Mid(3, sel.Find(",")-3).GetString(), NULL, 10);
+			int y = strtoul(sel.Mid(sel.Find(",")+2, sel.Find(")")-sel.Find(",")+2).GetString(), NULL, 10);
 
-			j = 0;
-			num = "";
-			while (sel.Mid(j, 1) != " ")  num += sel.Mid(j++, 1);
+			PMapCI sel_hash_point = p_tablemap->p$(hashpoint_type)->find(((x&0xffff)<<16) | (y&0xffff));
+
+			if (sel_hash_point == p_tablemap->p$(hashpoint_type)->end())
+				return;
 
 			// Prep dialog
+			CDlgEditHashPoint dlghashpoint;
 			dlghashpoint.titletext = "Edit Hash Point record";
-			text.Format("Type %s", num);
+			CString text;
+			text.Format("Type %d", hashpoint_type);
 			dlghashpoint.type = text;
-			dlghashpoint.x = sel_hash_point.x;
-			dlghashpoint.y = sel_hash_point.y;
-			
+			dlghashpoint.x = sel_hash_point->second.x;
+			dlghashpoint.y = sel_hash_point->second.y;
+
+
 			// Show dialog
-			if (dlghashpoint.DoModal() == IDOK)
+			if (dlghashpoint.DoModal() != IDOK)
+				return;
+
+			// Delete original record in internal structure
+			if (!p_tablemap->p$_erase(hashpoint_type, ((sel_hash_point->second.x&0xffff)<<16) | (sel_hash_point->second.y&0xffff)))
 			{
-
-				// Edit record in internal structure
-				sel_hash_point.number = atoi(dlghashpoint.type.Mid(5,1).GetString());
-				sel_hash_point.x = dlghashpoint.x;
-				sel_hash_point.y = dlghashpoint.y;
-
-				// Edit record in tree
-				text.Format("%d (%d, %d)", sel_hash_point.number, sel_hash_point.x, sel_hash_point.y);
-				m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), text.GetString());
-				m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
-				m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
-
-				update_display();
-				Invalidate(false);
-				pDoc->SetModifiedFlag(true);
+				MessageBox("Error applying changes.", "ERROR (1)", MB_OK | MB_TOPMOST);
+				return;
 			}
+
+			// Add new record to internal structure
+			int new_hashpoint_type = atoi(dlghashpoint.type.Mid(5,1).GetString());
+			STablemapHashPoint hash_point;
+			hash_point.x = dlghashpoint.x;
+			hash_point.y = dlghashpoint.y;
+
+			if (!p_tablemap->p$_insert(new_hashpoint_type, hash_point))
+			{
+				MessageBox("Error applying changes.", "ERROR (2)", MB_OK | MB_TOPMOST);
+				return;
+			}
+
+			// Edit record in tree
+			text.Format("%d (%d, %d)", new_hashpoint_type, hash_point.x, hash_point.y);
+			m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), text.GetString());
+			m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
+			m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
+
+			update_display();
+			Invalidate(false);
+			pDoc->SetModifiedFlag(true);
 		}
 	}
 	
@@ -2235,10 +2381,11 @@ void CDlgTableMap::OnBnClickedCreateFont()
 	HTREEITEM			new_hti = NULL, font_node = NULL, region_node = NULL, child_node = NULL;
 	CString				node_text = "";
 	HTREEITEM			parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
-	CArray <STablemapFont, STablemapFont>		new_t$_recs;
+	CArray <STablemapFont, STablemapFont>		new_t$_recs[4];
 	CTransform			trans;
 	RMapCI				sel_region = p_tablemap->r$()->end();
 	CString				sel = "";
+	int					font_group;
 
 	// Get name of currently selected item
 	if (m_TableMapTree.GetSelectedItem())
@@ -2250,6 +2397,9 @@ void CDlgTableMap::OnBnClickedCreateFont()
 	// Exit if we can't find the region record
 	if (sel_region == p_tablemap->r$()->end())
 		return;
+
+	// Get the text group we are dealing with
+	font_group = atoi(sel_region->second.transform.Right(1));
 
 	// Initialize arrays
 	for (i=0; i<MAX_CHAR_WIDTH; i++)
@@ -2283,7 +2433,9 @@ void CDlgTableMap::OnBnClickedCreateFont()
 	DeleteDC(hdcScreen);
 
 	// Scan through background, separate characters by looking for background bands
-	new_t$_recs.RemoveAll();
+	for (i=0; i<=3; i++)
+		new_t$_recs[i].RemoveAll();
+
 	int start = 0;
 
 	// skip initial background bands
@@ -2320,19 +2472,15 @@ void CDlgTableMap::OnBnClickedCreateFont()
 		trans.CalcHexmash(char_field_x_begin, char_field_x_end, char_field_y_begin, char_field_y_end, 
 								 character, &new_font.hexmash, false);
 
-		// Search for this character in the existing t$ records list
-		int text_group = atoi(sel_region->second.transform.Right(1));
-		std::map<CString, int>::const_iterator fontindex = p_tablemap->hexmashes(text_group)->find(new_font.hexmash);
-
-		// Populate new font record
-		if (fontindex == p_tablemap->hexmashes(text_group)->end()) 
+		// Populate new font record array, if this character does not already exist in this font group
+		if (p_tablemap->t$(font_group)->find(new_font.hexmash) == p_tablemap->t$(font_group)->end()) 
 		{
+			CString text;
 			m_Transform.GetLBText(m_Transform.GetCurSel(), text);
 			new_font.ch = '?';
-			new_font.group = text.GetString()[4]-'0';
 
 			// Insert the new record in the existing array of i$ records
-			new_t$_recs.Add(new_font);
+			new_t$_recs[font_group].Add(new_font);
 		}
 
 		// skip background bands
@@ -2341,7 +2489,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 
 	}
 
-	if (new_t$_recs.GetCount() == 0)
+	if (new_t$_recs[font_group].GetCount() == 0)
 	{
 		MessageBox("No foreground pixels, or no unknown characters found.", "Font creation error");
 	}
@@ -2350,12 +2498,15 @@ void CDlgTableMap::OnBnClickedCreateFont()
 		// Prepare dialog box
 		dlg_editfont.titletext = "Add font characters";
 		dlg_editfont.character = "";
-		dlg_editfont.type = "Type 0";
-		dlg_editfont.new_t$_recs = &new_t$_recs;
+		dlg_editfont.delete_sort_enabled = true;
+		dlg_editfont.group = font_group;
+
+		for (i=0; i<=3; i++)
+			dlg_editfont.new_t$_recs[i] = &new_t$_recs[i];
 
 		if (dlg_editfont.DoModal() == IDOK) 
 		{
-			// Find root of the Images node
+			// Find root of the Fonts node
 			font_node = m_TableMapTree.GetChildItem(NULL);
 			node_text = m_TableMapTree.GetItemText(font_node);
 			while (node_text!="Fonts" && font_node!=NULL)
@@ -2364,49 +2515,27 @@ void CDlgTableMap::OnBnClickedCreateFont()
 				node_text = m_TableMapTree.GetItemText(font_node);
 			}
 
-			for (i=0; i<new_t$_recs.GetCount(); i++)
+			for (i=0; i<new_t$_recs[font_group].GetCount(); i++)
 			{
 				// Populate temp structure
-				new_font.x_count = new_t$_recs[i].x_count;
+				new_font.x_count = new_t$_recs[font_group].GetAt(i).x_count;
 				for (j=0; j<new_font.x_count; j++)
-					new_font.x[j] = new_t$_recs[i].x[j];
-				new_font.hexmash = new_t$_recs[i].hexmash;
-				new_font.group = new_t$_recs[i].group;
-				new_font.ch = new_t$_recs[i].ch;
+					new_font.x[j] = new_t$_recs[font_group].GetAt(i).x[j];
+				new_font.hexmash = new_t$_recs[font_group].GetAt(i).hexmash;
+				new_font.ch = new_t$_recs[font_group].GetAt(i).ch;
 
-				// Insert into internal structure so it is sorted alphabetically by hexmash
-				insert_point = -1;
-				for (j=0; j<(int) p_tablemap->t$()->GetSize(); j++) 
-				{
-					if (new_font.hexmash < p_tablemap->t$()->GetAt(j).hexmash) 
-					{
-						insert_point = j;
-						j=(int) p_tablemap->t$()->GetSize() + 1;
-					}
-				}
-				if (insert_point==-1) 
-				{
-					new_index = (int) p_tablemap->set_t$_add(new_font);
-				}
-				else 
-				{
-					p_tablemap->set_t$_insertat(insert_point, new_font);
-					new_index = insert_point;
-				}
+				// Insert into internal structure
+				p_tablemap->t$_insert(font_group, new_font);
 
 				// Insert the new record into the tree
 				if (font_node!=NULL)
 				{
 					// Insert the new records into the tree
-					text.Format("%c (%d)", new_font.ch, new_font.group);
+					text.Format("%c (%d) [%s]", new_font.ch, font_group, new_font.hexmash);
 					new_hti = m_TableMapTree.InsertItem(text.GetString(), font_node);
 					m_TableMapTree.SetItemData(new_hti, (DWORD_PTR) new_index);
 				}
 			}
-
-			// Update hexmashes and hashes index	
-			int text_group = atoi(sel_region->second.transform.Right(1));
-			p_tablemap->UpdateHexmashesHashes(text_group);
 
 			// Update tree
 			region_node = update_tree("Regions");
@@ -2786,24 +2915,30 @@ void CDlgTableMap::create_tree(void)
 	// t$ records
 	parent = m_TableMapTree.InsertItem("Fonts");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
-	for (i=0; i<p_tablemap->t$()->GetSize(); i++) 
+	
+	for (i=0; i<3; i++)
 	{
-		STablemapFont stmf = p_tablemap->t$()->GetAt(i);
-		text.Format("%c (%d)", p_tablemap->t$()->GetAt(i).ch, p_tablemap->t$()->GetAt(i).group);
-		newitem = m_TableMapTree.InsertItem(text, parent);
-		m_TableMapTree.SetItemData(newitem, (DWORD_PTR) i);
+		for (TMapCI t_iter=p_tablemap->t$(i)->begin(); t_iter!=p_tablemap->t$(i)->end(); t_iter++)
+		{
+			text.Format("%c (%d) [%s]", t_iter->second.ch, i, t_iter->second.hexmash);
+			newitem = m_TableMapTree.InsertItem(text, parent);
+		}
 	}
 	m_TableMapTree.SortChildren(parent);
 
 	// p$ records
 	parent = m_TableMapTree.InsertItem("Hash Points");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
-	for (i=0; i<p_tablemap->p$()->GetSize(); i++) 
+
+	for (i=0; i<3; i++)
 	{
-		text.Format("%d (%d, %d)", p_tablemap->p$()->GetAt(i).number, p_tablemap->p$()->GetAt(i).x, p_tablemap->p$()->GetAt(i).y);
-		newitem = m_TableMapTree.InsertItem(text, parent);
-		m_TableMapTree.SetItemData(newitem, (DWORD_PTR) i);
+		for (PMapCI p_iter=p_tablemap->p$(i)->begin(); p_iter!=p_tablemap->p$(i)->end(); p_iter++)
+		{
+			text.Format("%d (%d, %d)", i, p_iter->second.x, p_iter->second.y);
+			newitem = m_TableMapTree.InsertItem(text, parent);
+		}
 	}
+
 	m_TableMapTree.SortChildren(parent);
 
 	// h$ records

@@ -34,11 +34,13 @@ void CTablemap::ClearTablemap()
 	_z$.clear();
 	_s$.clear();
 	_r$.clear();
-	_t$.RemoveAll();
-	_p$.RemoveAll();
 
 	for (int i=0; i<=3; i++)
+	{
+		_t$[i].clear();
+		_p$[i].clear();
 		_h$[i].clear();
+	}
 
 	_i$.clear();
 }
@@ -47,9 +49,8 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 							CString *loaded_version) 
 {
 	CString				strLine = "", strLineType = "", token = "", s = "", e = "", hexval = "", t = "";
-	int					i = 0, pos = 0, insert_point = 0, P = 0, j = 0, x = 0, y = 0;
+	int					pos = 0, x = 0, y = 0;
 	bool				supported_version = false;
-	BYTE				alpha = 0, red = 0, green = 0, blue = 0;
 
 	// temp
 	STablemapSize			hold_size;
@@ -137,9 +138,9 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 		do 
 		{
 			if (strLine.Find(VER_WINSCRAPE_DATE1) != -1 ||
-					strLine.Find(VER_WINSCRAPE_DATE2) != -1 ||
-					strLine.Find(VER_WINSCRAPE_DATE3) != -1 ||
-					strLine.Find(VER_WINSCRAPE_DATE4) != -1) 
+				strLine.Find(VER_WINSCRAPE_DATE2) != -1 ||
+				strLine.Find(VER_WINSCRAPE_DATE3) != -1 ||
+				strLine.Find(VER_WINSCRAPE_DATE4) != -1) 
 			{
 				supported_version = true;
 			}
@@ -197,7 +198,18 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			hold_size.height = atol(token.GetString());
 
 			if (!z$_insert(hold_size))
-				MessageBox(NULL, strLine, "ERROR adding size record: " + hold_size.name, MB_OK | MB_TOPMOST);
+			{
+				ZMapCI z_iter = _z$.find(hold_size.name);
+				if (z_iter != _z$.end())
+				{
+					t.Format("'%s' skipped, as this size record already exists.", strLine);
+					MessageBox(NULL, t.GetString(), "ERROR adding size record", MB_OK | MB_TOPMOST);			
+				}
+				else
+				{
+					MessageBox(NULL, strLine, "ERROR adding size record", MB_OK | MB_TOPMOST);			
+				}
+			}
 		}
 
 		// Handle s$ lines (symbols/string)
@@ -219,7 +231,21 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			else
 			{
 				if (!s$_insert(hold_symbol))
-					MessageBox(NULL, strLine, "ERROR adding symbol/string record: " + hold_symbol.name, MB_OK | MB_TOPMOST);
+				{
+					if (!disable_msgbox)
+					{
+						SMapCI s_iter = _s$.find(hold_symbol.name);
+						if (s_iter != _s$.end())
+						{
+							t.Format("'%s' skipped, as this string/symbol record already exists.", strLine);
+							MessageBox(NULL, t.GetString(), "ERROR adding string/symbol record", MB_OK | MB_TOPMOST);			
+						}
+						else
+						{
+							MessageBox(NULL, strLine, "ERROR adding string/symbol record", MB_OK | MB_TOPMOST);			
+						}
+					}
+				}
 			}
 		}
 
@@ -282,33 +308,49 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			//hold_region.flags = atol(token.GetString());
 
 			if (!r$_insert(hold_region))
-				MessageBox(NULL, strLine, "ERROR adding region record: " + hold_region.name, MB_OK | MB_TOPMOST);
+			{
+				if (!disable_msgbox)
+				{
+					RMapCI r_iter = _r$.find(hold_region.name);
+					if (r_iter != _r$.end())
+					{
+						t.Format("'%s' skipped, as this region record already exists.", strLine);
+						MessageBox(NULL, t.GetString(), "ERROR adding region record", MB_OK | MB_TOPMOST);			
+					}
+					else
+					{
+						MessageBox(NULL, strLine, "ERROR adding region record", MB_OK | MB_TOPMOST);			
+					}
+				}
+			}
 		}
 
 		// Handle t$ lines (fonts)
 		else if (strLineType.Left(2) == "t$" ||
 				 (strLineType.Left(1) == 't' &&
 				  strLineType.Mid(1,1) >= "0" &&
-				  strLineType.Mid(1,1) <= "9" &&
+				  strLineType.Mid(1,1) <= "3" &&
 				  strLineType.Mid(2,1) == "$")) 
 		{
+
+			int font_group = 0;
 
 			// Old style t$ records (no font groups) - pre "2007 Nov 1 08:32:55" WinScrape release
 			if (strLineType.Left(2) == "t$") 
 			{
 				t = strLineType.Mid(2,1);
 				hold_font.ch = t.GetString()[0];
-				hold_font.group = 0;
+				font_group = 0;
 			}
-			// New style t$ records (font groups 0-3) - "2007 Nov 1 08:32:55" WinScrape release and later
+			// New style t$ records (font groups 0-3) - "2007 Nov 1 08:32:55" WinScrape release and later & OpenScrape
 			else 
 			{
 				t = strLineType.Mid(3,1);
 				hold_font.ch = t.GetString()[0];
-				hold_font.group = strLineType.GetString()[1] - '0';
+				font_group = strLineType.GetString()[1] - '0';
 			}
 
-			if (hold_font.group<0 || hold_font.group>3)
+			if (font_group<0 || font_group>3)
 			{
 				if (!disable_msgbox)
 					MessageBox(NULL, strLine, "Invalid font group", MB_OK | MB_TOPMOST);
@@ -316,7 +358,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 				return ERR_SYNTAX;
 			}
 
-			i = 0;
+			int i = 0;
 			hold_font.hexmash = "";
 			while ((token = strLine.Tokenize(" \t", pos))!="" && i<=30 && pos!=-1) 
 			{
@@ -325,34 +367,42 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			}
 			hold_font.x_count = i;
 
-			// Insert into array so it is sorted alphabetically
-			P = (int) _t$.GetSize();
-			insert_point = -1;
-			for (j=0; j<P; j++) 
+			// Add the new t$ record to the internal array
+			if (!t$_insert(font_group, hold_font))
 			{
-				if (hold_font.hexmash < _t$[j].hexmash)
+				if (!disable_msgbox)
 				{
-					insert_point = j;
-					j=P+1;
+					TMapCI t_iter = _t$[font_group].find(hold_font.hexmash);
+					if (t_iter != _t$[font_group].end())
+					{
+						t.Format("'%s' skipped, as this character already exists in group %d as '%c'.",
+							strLine, font_group, t_iter->second.ch);
+						MessageBox(NULL, t.GetString(), "ERROR adding font record", MB_OK | MB_TOPMOST);			
+					}
+					else
+					{
+						MessageBox(NULL, strLine, "ERROR adding font record", MB_OK | MB_TOPMOST);			
+					}
 				}
 			}
-
-			if (insert_point==-1)
-				_t$.Add(hold_font);
-
-			else
-				_t$.InsertAt(insert_point, hold_font);
 		}
 
 		// Handle p$ lines (hash points)
 		else if (strLineType.Left(1) == "p" &&
 				 strLineType.Mid(1,1) >= "0" &&
-				 strLineType.Mid(1,1) <= "9" &&
+				 strLineType.Mid(1,1) <= "3" &&
 				 strLineType.Mid(2,1) == "$") 
 		{
 			// number
 			token = strLineType.Mid(1,1);
-			hold_hash_point.number = atol(token);
+			int hashpoint_group = atol(token);
+			if (hashpoint_group<0 || hashpoint_group>3)
+			{
+				if (!disable_msgbox)
+					MessageBox(NULL, strLine, "Invalid hash point group", MB_OK | MB_TOPMOST);
+	
+				return ERR_SYNTAX;
+			}
 
 			// x
 			token = strLine.Tokenize(" \t", pos);
@@ -368,31 +418,30 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			token = strLine.Tokenize(" \t", pos);
 			hold_hash_point.y = atol(token.GetString());
 
-			// Find the right spot to insert this p$ record (so list is sorted - needed for binary searches)
-			P = (int) _p$.GetSize();
-			insert_point = -1;
-			for (j=0; j<P; j++) 
+			// Add the new p$ record to the internal array
+			if (!p$_insert(hashpoint_group, hold_hash_point))
 			{
-				if ( hold_hash_point.number == _p$[j].number &&
-						((hold_hash_point.x == _p$[j].x && hold_hash_point.y < _p$[j].y) ||
-						 (hold_hash_point.x < _p$[j].x)) )
+				if (!disable_msgbox)
 				{
-					insert_point = j;
-					j=P+1;
+					PMapCI p_iter = _p$[hashpoint_group].find(((hold_hash_point.x&0xffff)<<16) | (hold_hash_point.y&0xffff));
+					if (p_iter != _p$[hashpoint_group].end())
+					{
+						t.Format("'%s' skipped, as hash point (%d, %d) already exists in group %d.", 
+							strLine, hold_hash_point.x, hold_hash_point.y, hashpoint_group);
+						MessageBox(NULL, t.GetString(), "ERROR adding hash point record", MB_OK | MB_TOPMOST);			
+					}
+					else
+					{
+						MessageBox(NULL, strLine, "ERROR adding hash point record", MB_OK | MB_TOPMOST);			
+					}
 				}
 			}
-
-			if (insert_point==-1)
-				_p$.Add(hold_hash_point);
-
-			else
-				_p$.InsertAt(insert_point, hold_hash_point);
 		}
 
 		// Handle h$ lines (hash values)
 		else if (strLineType.Left(1) == "h" &&
 				 strLineType.Mid(1,1) >= "0" &&
-				 strLineType.Mid(1,1) <= "9" &&
+				 strLineType.Mid(1,1) <= "3" &&
 				 strLineType.Mid(2,1) == "$") 
 		{
 			// number
@@ -417,7 +466,22 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 
 			// Add the new h$ record to the internal array
 			if (!h$_insert(hash_group, hold_hash_value))
-				MessageBox(NULL, strLine, "ERROR adding hash value record: " + hold_hash_value.name, MB_OK | MB_TOPMOST);			
+			{
+				if (!disable_msgbox)
+				{
+					HMapCI h_iter = _h$[hash_group].find(hold_hash_value.hash);
+					if (h_iter != _h$[hash_group].end())
+					{
+						t.Format("'%s' skipped, as hash %08x already exists in group %d.", 
+							strLine, hold_hash_value.hash, hash_group);
+						MessageBox(NULL, t.GetString(), "ERROR adding hash record", MB_OK | MB_TOPMOST);			
+					}
+					else
+					{
+						MessageBox(NULL, strLine, "ERROR adding hash record", MB_OK | MB_TOPMOST);			
+					}
+				}
+			}
 		}
 
 		// Handle i$ lines (images)
@@ -462,24 +526,39 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 					// unreverse bgra to abgr
 					hexval = strLine.Mid(x*8+6, 2) + strLine.Mid(x*8, 6);
 					hold_image.pixel[y*hold_image.width + x] = strtoul(hexval, 0, 16);
-					alpha = (hold_image.pixel[y*hold_image.width + x] >> 24) &0xff;
-					blue =  (hold_image.pixel[y*hold_image.width + x] >> 16) &0xff;
-					green = (hold_image.pixel[y*hold_image.width + x] >>  8) &0xff;
-					red =   (hold_image.pixel[y*hold_image.width + x] >>  0) &0xff;
+					BYTE alpha = (hold_image.pixel[y*hold_image.width + x] >> 24) &0xff;
+					BYTE blue =  (hold_image.pixel[y*hold_image.width + x] >> 16) &0xff;
+					BYTE green = (hold_image.pixel[y*hold_image.width + x] >>  8) &0xff;
+					BYTE red =   (hold_image.pixel[y*hold_image.width + x] >>  0) &0xff;
 					hold_image.image->Set(red, green, blue, alpha, y*hold_image.width + x);
 				}
 			}
 
 			// Add the new i$ record to the internal array
 			if (!i$_insert(hold_image))
-				MessageBox(NULL, strLine, "ERROR adding image record: " + hold_image.name, MB_OK | MB_TOPMOST);			
+			{
+				if (!disable_msgbox)
+				{
+					IMapCI i_iter = _i$.find(CreateI$Index(hold_image.name, hold_image.width, hold_image.height, hold_image.pixel));
+					if (i_iter != _i$.end())
+					{
+						t.Format("'%s' skipped, as image already exists as '%s', with identical width, height and pixels.", 
+							strLineType, i_iter->second.name);
+						MessageBox(NULL, t.GetString(), "ERROR adding image record", MB_OK | MB_TOPMOST);			
+					}
+					else
+					{
+						MessageBox(NULL, strLine, "ERROR adding image record", MB_OK | MB_TOPMOST);			
+					}
+				}
+			}
 		}
 
 		// Unknown line type
 		else 
 		{
 			if (!disable_msgbox)
-				MessageBox(NULL, strLine, "Unknown Line Type", MB_OK | MB_TOPMOST);
+				MessageBox(NULL, strLine, "ERROR Unknown Line Type", MB_OK | MB_TOPMOST);
 	
 			return ERR_UNK_LN_TYPE;
 		}
@@ -487,10 +566,6 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 		(*linenum)++;
 	}
 	while (ar.ReadString(strLine));
-
-	// Populate t$ hexmash std::map for fast lookups
-	for (j=0; j<=3; j++)
-		UpdateHexmashesHashes(j);
 
 	_valid = true;
 
@@ -537,10 +612,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 
 	for (SMapCI s_iter=_s$.begin(); s_iter!=_s$.end(); s_iter++)
 	{
-		s.Format("s$%s", s_iter->second.name.GetString());
-		while (s.GetLength()<18) s.Append(" ");
-		s.Append(s_iter->second.text);
-		s.Append("\r\n");
+		s.Format("s$%-25s %s\r\n", s_iter->second.name.GetString(), s_iter->second.text.GetString());
 		ar.WriteString(s);
 	}
 	ar.WriteString("\r\n");
@@ -552,18 +624,9 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("\r\n");
 	for (RMapCI r_iter=_r$.begin(); r_iter!=_r$.end(); r_iter++)
 	{
-		s.Format("r$%s", r_iter->second.name.GetString());
-		while (s.GetLength()<18) s.Append(" ");
-		t.Format("%3d %3d %3d %3d %8x %4d ", 
+		s.Format("r$%-18s %3d %3d %3d %3d %8x %4d %s\r\n", r_iter->second.name.GetString(),
 			r_iter->second.left, r_iter->second.top, r_iter->second.right, r_iter->second.bottom,
-			r_iter->second.color, r_iter->second.radius);
-		s.Append(t);
-		t = r_iter->second.transform;
-		while (t.GetLength()<2) { t.Append(" "); }
-		s.Append(t);
-		//t.Format("		  %d\r\n", _r$[i].flags);
-		t.Format("\r\n");
-		s.Append(t);
+			r_iter->second.color, r_iter->second.radius, r_iter->second.transform);
 		ar.WriteString(s);
 	}
 	ar.WriteString("\r\n");
@@ -573,15 +636,20 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("// fonts\r\n");
 	ar.WriteString("//\r\n");
 	ar.WriteString("\r\n");
-	for (i=0; i<(int) _t$.GetSize(); i++) 
+
+	for (i=0; i<=3; i++)
 	{
-		s.Format("t%d$%c", _t$[i].group, _t$[i].ch);
-		for (j=0; j<_t$[i].x_count; j++) { 
-			t.Format(" %x", _t$[i].x[j]);
-			s.Append(t);
+		for (TMapCI t_iter =_t$[i].begin(); t_iter != _t$[i].end(); t_iter++)
+		{
+			s.Format("t%d$%c", i, t_iter->second.ch);
+			for (j=0; j<t_iter->second.x_count; j++) 
+			{ 
+				t.Format(" %x", t_iter->second.x[j]);
+				s.Append(t);
+			}
+			s.Append("\r\n");
+			ar.WriteString(s);
 		}
-		s.Append("\r\n");
-		ar.WriteString(s);
 	}
 	ar.WriteString("\r\n");
 
@@ -590,8 +658,15 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("// points\r\n");
 	ar.WriteString("//\r\n");
 	ar.WriteString("\r\n");
-	for (i=0; i<(int) _p$.GetSize(); i++)
-		s.Format("p%d$%4d %4d\r\n", _p$[i].number, _p$[i].x, _p$[i].y);  ar.WriteString(s);
+
+	for (i=0; i<=3; i++)
+	{
+		for (PMapCI p_iter=_p$[i].begin(); p_iter!=_p$[i].end(); p_iter++)
+		{
+			s.Format("p%d$%4d %4d\r\n", i, p_iter->second.x, p_iter->second.y);  
+			ar.WriteString(s);
+		}
+	}
 	ar.WriteString("\r\n");
 
 	// hash
@@ -599,14 +674,12 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("// hash\r\n");
 	ar.WriteString("//\r\n");
 	ar.WriteString("\r\n");
+
 	for (i=0; i<=3; i++)
 	{
 		for (HMapCI h_iter=_h$[i].begin(); h_iter!=_h$[i].end(); h_iter++)
 		{
-			s.Format("h%d$%s", i, h_iter->second.name.GetString());
-			while (s.GetLength()<19) { s.Append(" "); }
-			t.Format("%08x\r\n", h_iter->second.hash);
-			s.Append(t);
+			s.Format("h%d$%-18s %08x\r\n", i, h_iter->second.name.GetString(), h_iter->second.hash);
 			ar.WriteString(s);
 		}
 	}
@@ -753,13 +826,12 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 
 					// Get count of pixels (p$ records)
 					pixcount = 0;
-					for (j=0; j<(int) _p$.GetSize(); j++) 
+					for (PMapCI p_iter=_p$[i].begin(); p_iter!=_p$[i].end(); p_iter++) 
 					{
-						if (_p$[j].number == i &&
-							_p$[j].x <= i_iter->second.width &&
-							_p$[j].y <= i_iter->second.height) 
+						if (p_iter->second.x <= i_iter->second.width &&
+							p_iter->second.y <= i_iter->second.height) 
 						{
-								pixels[pixcount++] = i_iter->second.pixel[_p$[j].y * i_iter->second.width + _p$[j].x];				
+								pixels[pixcount++] = i_iter->second.pixel[(p_iter->second.y * i_iter->second.width) + p_iter->second.x];				
 						}
 					}
 
@@ -819,7 +891,6 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 
 int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 {
-	int						num_precs = 0;
 	int						i = 0, j = 0;
 	CString					e = "", s = "";
 	uint32_t				pixels[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0}, filtered_pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0};
@@ -839,8 +910,6 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 		MessageBox(hwnd, "No images found - cannot create hashes.", "Table Map Error", MB_OK);
 		return ERR_NOTMASTER;
 	}
-
-	num_precs = (int) _p$.GetSize();
 
 	// Loop through all the hash (h$) records, and check for a corresponding image (i$) record
 	// Log missing records and display message if we can't find them all
@@ -923,14 +992,14 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 					else if (i>=1 && i<=3) 
 					{
 						pixcount = 0;
-						for (j=0; j<num_precs; j++) 
+						for (PMapCI p_iter=_p$[i].begin(); p_iter!=_p$[i].end(); p_iter++)
 						{
-							if (_p$[j].number == i &&
-								_p$[j].x <= i_iter->second.width &&
-								_p$[j].y <= i_iter->second.height) 
+							if (p_iter->second.x <= i_iter->second.width &&
+								p_iter->second.y <= i_iter->second.height) 
 							{
 								// only create hash based on rgb values - ignore alpha
-								pixels[pixcount++] = i_iter->second.pixel[_p$[j].y * i_iter->second.width + _p$[j].x] & 0x00ffffff;
+								pixels[pixcount++] = 
+									i_iter->second.pixel[(p_iter->second.y * i_iter->second.width) + p_iter->second.x] & 0x00ffffff;
 							}
 						}
 
@@ -983,19 +1052,6 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 	if (!all_i$_found)  return ERR_INCOMPLETEMASTER;
 
 	return SUCCESS;
-}
-
-void CTablemap::UpdateHexmashesHashes(const int group)
-{
-	int j = 0;
-
-	CSLock lock(m_critsec);
-
-	// Populate t$ hexmash std::map for fast lookups
-	_hexmashes[group].clear();
-	for (j=0; j<(int) _t$.GetSize(); j++)
-		if (_t$[j].group == group)
-			_hexmashes[group].insert(std::pair<CString, int> (_t$[j].hexmash, j));
 }
 
 // Creates the 32bit hash for an image record using name and pixels
