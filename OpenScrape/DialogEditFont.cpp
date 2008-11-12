@@ -28,6 +28,8 @@ void CDlgEditFont::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TYPE, m_Type);
 	DDX_Control(pDX, IDC_CHARLIST, m_CharList);
 	DDX_Control(pDX, IDC_PIXELSEP, m_PixelSep);
+	DDX_Control(pDX, IDC_DELETE, m_Delete);
+	DDX_Control(pDX, IDC_SORT, m_Sort);
 }
 
 
@@ -35,7 +37,6 @@ BEGIN_MESSAGE_MAP(CDlgEditFont, CDialog)
 	ON_BN_CLICKED(IDOK, &CDlgEditFont::OnBnClickedOk)
 	ON_LBN_SELCHANGE(IDC_CHARLIST, &CDlgEditFont::OnLbnSelchangeCharlist)
 	ON_EN_KILLFOCUS(IDC_CHARACTER, &CDlgEditFont::OnEnKillfocusCharacter)
-	ON_CBN_KILLFOCUS(IDC_TYPE, &CDlgEditFont::OnEnKillfocusType)
 	ON_BN_CLICKED(IDC_DELETE, &CDlgEditFont::OnBnClickedDelete)
 	ON_BN_CLICKED(IDC_SORT, &CDlgEditFont::OnBnClickedSort)
 END_MESSAGE_MAP()
@@ -68,18 +69,23 @@ BOOL CDlgEditFont::OnInitDialog()
 
 	SetWindowText(titletext.GetString());
 
+	m_Delete.EnableWindow(delete_sort_enabled);
+	m_Sort.EnableWindow(delete_sort_enabled);
+
 	m_Type.AddString("Type 0");
 	m_Type.AddString("Type 1");
 	m_Type.AddString("Type 2");
 	m_Type.AddString("Type 3");
-	m_Type.SelectString(-1, type.GetString());
+	text.Format("Type %d", group);
+	m_Type.SelectString(-1, text.GetString());
 	m_Type.SetWindowPos(NULL, 0, 0, 75, 300, SWP_NOMOVE | SWP_NOZORDER);
+	m_Type.EnableWindow(false);
 
 	m_Character.SetWindowText(character.GetString());
 
-	for (i = 0; i < new_t$_recs->GetCount(); i++)
+	for (i = 0; i < new_t$_recs[group]->GetCount(); i++)
 	{
-		STablemapFont &fontrec = new_t$_recs->ElementAt(i);
+		STablemapFont &fontrec = new_t$_recs[group]->ElementAt(i);
 		text.Format("%c", fontrec.ch);
 		m_CharList.AddString(text.GetString());
 	}
@@ -87,6 +93,7 @@ BOOL CDlgEditFont::OnInitDialog()
 	m_CharList.SetCurSel(0);
 	OnLbnSelchangeCharlist();
 	m_CharList.SetFocus();
+
 
 	return false;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -100,7 +107,7 @@ void CDlgEditFont::OnLbnSelchangeCharlist()
 
 	if (m_CharList.GetCurSel() != LB_ERR)
 	{
-		STablemapFont &fontrec = new_t$_recs->ElementAt(m_CharList.GetCurSel());
+		STablemapFont &fontrec = new_t$_recs[group]->ElementAt(m_CharList.GetCurSel());
 
 		// Get set bits
 		bit = 0;
@@ -138,7 +145,7 @@ void CDlgEditFont::OnLbnSelchangeCharlist()
 
 		// Update controls
 		m_PixelSep.SetWindowText(separation);
-		type.Format("Type %d", fontrec.group);
+		type.Format("Type %d", group);
 		m_Type.SelectString(-1, type);
 		charstr.Format("%c", fontrec.ch);
 		m_Character.SetWindowText(charstr.GetString());
@@ -155,13 +162,7 @@ void CDlgEditFont::OnLbnSelchangeCharlist()
 void CDlgEditFont::OnBnClickedOk()
 {
 	COpenScrapeDoc			*pDoc = COpenScrapeDoc::GetDocument();
-	CString					charstr;
-	CString					temp_type, temp_character;
 
-	m_Type.GetWindowText(temp_type);
-	m_Character.GetWindowText(temp_character);
-
-	m_Type.GetWindowText(type);
 	m_Character.GetWindowText(character);
 
 	OnOK();
@@ -174,7 +175,7 @@ void CDlgEditFont::OnEnKillfocusCharacter()
 
 	m_Character.GetWindowText(temp_character);
 
-	STablemapFont &fontrec = new_t$_recs->ElementAt(cur_sel);
+	STablemapFont &fontrec = new_t$_recs[group]->ElementAt(cur_sel);
 
 	fontrec.ch = temp_character.GetString()[0];
 
@@ -184,23 +185,11 @@ void CDlgEditFont::OnEnKillfocusCharacter()
 	m_CharList.SetCurSel(cur_sel);
 }
 
-void CDlgEditFont::OnEnKillfocusType()
-{
-	CString					temp_type, text;
-	int						cur_sel = m_CharList.GetCurSel();
-
-	m_Type.GetWindowText(temp_type);
-
-	STablemapFont &fontrec = new_t$_recs->ElementAt(cur_sel);
-
-	fontrec.group = atoi(temp_type.Mid(5,1).GetString());
-}
-
 void CDlgEditFont::OnBnClickedDelete()
 {
 	int		sel = m_CharList.GetCurSel();
 
-	new_t$_recs->RemoveAt(sel);
+	new_t$_recs[group]->RemoveAt(sel);
 	m_CharList.DeleteString(sel);
 	
 	if (m_CharList.GetCount()>0)
@@ -215,21 +204,19 @@ void CDlgEditFont::OnBnClickedSort()
 	int				i, j, k;
 	STablemapFont	temp;
 	CString			text;
-	int				size = (int) new_t$_recs->GetSize();
+	int				size = (int) new_t$_recs[group]->GetSize();
 
 	// Bubble sort em
 	for (i=0; i<size-1; i++)
 	{
 		for (j=i+1; j<size; j++)
 		{
-			STablemapFont &i_fontrec = new_t$_recs->ElementAt(i);
-			STablemapFont &j_fontrec = new_t$_recs->ElementAt(j);
-			if (j_fontrec.ch < i_fontrec.ch ||
-				j_fontrec.ch == i_fontrec.ch && j_fontrec.group < i_fontrec.group)
+			STablemapFont &i_fontrec = new_t$_recs[group]->ElementAt(i);
+			STablemapFont &j_fontrec = new_t$_recs[group]->ElementAt(j);
+			if (j_fontrec.ch < i_fontrec.ch)
 			{
 				// hold i rec in temp
 				temp.ch = i_fontrec.ch;
-				temp.group = i_fontrec.group;
 				temp.x_count = i_fontrec.x_count;
 				for (k=0; k<i_fontrec.x_count; k++)
 					temp.x[k] = i_fontrec.x[k];
@@ -237,7 +224,6 @@ void CDlgEditFont::OnBnClickedSort()
 
 				// copy j rec to i rec
 				i_fontrec.ch = j_fontrec.ch;
-				i_fontrec.group = j_fontrec.group;
 				i_fontrec.x_count = j_fontrec.x_count;
 				for (k=0; k<j_fontrec.x_count; k++)
 					i_fontrec.x[k] = j_fontrec.x[k];
@@ -245,7 +231,6 @@ void CDlgEditFont::OnBnClickedSort()
 
 				// copy temp to j rec
 				j_fontrec.ch = temp.ch;
-				j_fontrec.group = temp.group;
 				j_fontrec.x_count = temp.x_count;
 				for (k=0; k<temp.x_count; k++)
 					j_fontrec.x[k] = temp.x[k];
@@ -258,7 +243,7 @@ void CDlgEditFont::OnBnClickedSort()
 	m_CharList.ResetContent();
 	for (i=0; i < size; i++)
 	{
-		STablemapFont &fontrec = new_t$_recs->ElementAt(i);
+		STablemapFont &fontrec = new_t$_recs[group]->ElementAt(i);
 		text.Format("%c", fontrec.ch);
 		m_CharList.AddString(text.GetString());
 	}

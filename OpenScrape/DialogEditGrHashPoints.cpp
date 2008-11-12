@@ -13,6 +13,9 @@ CDlgEditGrHashPoints::CDlgEditGrHashPoints(CWnd* pParent /*=NULL*/)
 	: CDialog(CDlgEditGrHashPoints::IDD, pParent)
 {
 	__SEH_SET_EXCEPTION_HANDLER
+
+	for (int i=0; i<=3; i++)
+		working_hash_points[i].RemoveAll();
 }
 
 CDlgEditGrHashPoints::~CDlgEditGrHashPoints()
@@ -212,14 +215,15 @@ void CDlgEditGrHashPoints::update_bitmap()
 			type = text.GetString()[4] - '0';
 
 			// Draw points on bitmap as circles
-			for (i=0; i<working_hash_points.GetSize(); i++)
+			for (i=0; i<working_hash_points[type].GetSize(); i++)
 			{
-				if (working_hash_points[i].number == type && 
-					working_hash_points[i].x <= (unsigned int) width && 
-					working_hash_points[i].y <= (unsigned int) height)
+				unsigned int this_x = working_hash_points[type].GetAt(i).x;
+				unsigned int this_y = working_hash_points[type].GetAt(i).y;
+
+				if (this_x <= (unsigned int) width && this_y <= (unsigned int) height)
 				{
 					// draw in inverted color
-					cr = GetPixel(hdc_image, working_hash_points[i].x, working_hash_points[i].y) ^ 0x00ffffff;
+					cr = GetPixel(hdc_image, this_x, this_y) ^ 0x00ffffff;
 
 					CPen mypen(PS_SOLID, 1, cr);
 					HGDIOBJ oldpen = pDC->SelectObject(mypen);
@@ -227,10 +231,7 @@ void CDlgEditGrHashPoints::update_bitmap()
 					CBrush mybrush(cr);
 					HGDIOBJ oldbrush = pDC->SelectObject(mybrush);
 
-					pDC->RoundRect(working_hash_points[i].x*zoom+1, working_hash_points[i].y*zoom+1, 
-								   (working_hash_points[i].x+1)*zoom+1, (working_hash_points[i].y+1)*zoom+1, 
-								   zoom, zoom);
-
+					pDC->RoundRect(this_x*zoom+1, this_y*zoom+1, (this_x+1)*zoom+1, (this_y+1)*zoom+1, zoom, zoom);
 					pDC->SelectObject(oldpen);
 					pDC->SelectObject(oldbrush);
 					DeleteObject(mypen);
@@ -261,13 +262,10 @@ void CDlgEditGrHashPoints::reset_list_box(int type)
 	CString		text;
 
 	m_Point_List.ResetContent();
-	for (i=0; i<working_hash_points.GetSize(); i++)
+	for (i=0; i<working_hash_points[type].GetSize(); i++)
 	{
-		if (working_hash_points[i].number == type)
-		{
-			text.Format("%2d, %2d", working_hash_points[i].x, working_hash_points[i].y);
-			m_Point_List.AddString(text.GetString());
-		}
+		text.Format("%2d, %2d", working_hash_points[type].GetAt(i).x, working_hash_points[type].GetAt(i).y);
+		m_Point_List.AddString(text.GetString());
 	}
 }
 
@@ -338,21 +336,19 @@ void CDlgEditGrHashPoints::OnLButtonDown(UINT nFlags, CPoint point)
 		y = (point.y-bmp_rect.top-1)/zoom;
 
 		// See if we already have this point
-		for (i=0; i<working_hash_points.GetSize(); i++)
+		for (i=0; i<working_hash_points[type].GetSize(); i++)
 		{
-			if (working_hash_points[i].number == type &&
-				working_hash_points[i].x == x &&
-				working_hash_points[i].y == y)
+			if (working_hash_points[type].GetAt(i).x == x &&
+				working_hash_points[type].GetAt(i).y == y)
 			{
 				return;
 			}
 		}
 
 		// Add it to the working set
-		temp_hash_point.number = type;
 		temp_hash_point.x = x;
 		temp_hash_point.y = y;
-		working_hash_points.Add(temp_hash_point);
+		working_hash_points[type].Add(temp_hash_point);
 
 		// Update the list box
 		reset_list_box(type);
@@ -405,11 +401,10 @@ void CDlgEditGrHashPoints::OnRButtonDown(UINT nFlags, CPoint point)
 
 		// See if we have this point
 		del_index = -1;
-		for (i=0; i<working_hash_points.GetSize(); i++)
+		for (i=0; i<working_hash_points[type].GetSize(); i++)
 		{
-			if (working_hash_points[i].number == type &&
-				working_hash_points[i].x == x &&
-				working_hash_points[i].y == y)
+			if (working_hash_points[type].GetAt(i).x == x &&
+				working_hash_points[type].GetAt(i).y == y)
 			{
 				del_index = i;
 			}
@@ -418,7 +413,7 @@ void CDlgEditGrHashPoints::OnRButtonDown(UINT nFlags, CPoint point)
 			return;
 
 		// Remove it from the working set
-		working_hash_points.RemoveAt(del_index, 1);
+		working_hash_points[type].RemoveAt(del_index, 1);
 
 		// Update the list box
 		reset_list_box(type);

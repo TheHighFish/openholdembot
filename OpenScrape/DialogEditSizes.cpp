@@ -45,7 +45,6 @@ BOOL CDlgEditSizes::OnInitDialog()
 	for (i=0; i<strings.GetSize(); i++)  m_Name.AddString(strings[i].GetString());
 	m_Name.SelectString(-1, name.GetString());
 	m_Name.SetWindowPos(NULL, 0, 0, 145, 300, SWP_NOMOVE | SWP_NOZORDER);
-	m_Name.EnableWindow(readonly_key!=true);
 
 	text.Format("%d", width);
 	m_Width.SetWindowText(text.GetString());

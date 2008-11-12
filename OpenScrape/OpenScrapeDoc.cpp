@@ -100,7 +100,7 @@ void COpenScrapeDoc::Serialize(CArchive& ar)
 	else
 	{
 		loaded_version = "";
-		ret = p_tablemap->LoadTablemap((char *) ar.m_strFileName.GetString(), "", false, &linenum, &loaded_version);
+		ret = p_tablemap->LoadTablemap((char *) ar.m_strFileName.GetString(), "", false, &linenum, false, &loaded_version);
 
 		if (loaded_version == VER_WINSCRAPE && ret == SUCCESS)
 		{

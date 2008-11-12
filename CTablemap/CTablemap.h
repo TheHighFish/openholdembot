@@ -55,15 +55,21 @@ struct STablemapFont
 	int				x_count;
 	unsigned int	x[MAX_SINGLE_CHAR_WIDTH];
 	CString			hexmash;	// mashed up x[MAX_SINGLE_CHAR_WIDTH] for lookup purposes
-	int				group;
 };
+typedef std::pair<CString, STablemapFont> TPair;
+typedef std::map<CString, STablemapFont> TMap;
+typedef TMap::iterator TMapI;
+typedef TMap::const_iterator TMapCI;
 
 struct STablemapHashPoint 
 {
-	unsigned int	number;
 	unsigned int	x;
 	unsigned int	y;
 };
+typedef std::pair<uint32_t, STablemapHashPoint> PPair;
+typedef std::map<uint32_t, STablemapHashPoint> PMap;
+typedef PMap::iterator PMapI;
+typedef PMap::const_iterator PMapCI;
 
 struct STablemapHashValue 
 {
@@ -93,8 +99,8 @@ struct SWholeMap
 	const ZMap	*z$;
 	const SMap	*s$;
 	const RMap	*r$;
-	const CArray <STablemapFont, STablemapFont>			*t$;
-	const CArray <STablemapHashPoint, STablemapHashPoint>	*p$;
+	const TMap	*t$[4];
+	const PMap	*p$[4];
 	const HMap	*h$[4];
 	const IMap	*i$;
 	CString filepath;
@@ -112,18 +118,16 @@ public:
 	int SaveTablemap(CArchive& ar, const char *version_text);
 	int ConvertTablemap(const HWND hwnd=NULL, const char *startup_path="");
 	int UpdateHashes(const HWND hwnd, const char *startup_path);
-	void UpdateHexmashesHashes(const int group);
 	CString CreateH$Index(const unsigned int number, const CString name);
 	uint32_t CreateI$Index(const CString name, const int width, const int height, const uint32_t *pixels);
-
 
 public:
 	// public accessors
 	const ZMap *z$() { return &_z$; }
 	const SMap *s$() { return &_s$; }
 	const RMap *r$() { return &_r$; }
-	const CArray <STablemapFont, STablemapFont> * t$() { return &_t$; }
-	const CArray <STablemapHashPoint, STablemapHashPoint> * p$() { return &_p$; }
+	const TMap *t$(const int i) { if (i>=0 && i<=3) return &_t$[i]; else return NULL; }
+	const PMap *p$(const int i) { if (i>=0 && i<=3) return &_p$[i]; else return NULL; }
 	const HMap *h$(const int i) { if (i>=0 && i<=3) return &_h$[i]; else return NULL; }
 	const IMap *i$() { return &_i$; }
 
@@ -163,7 +167,6 @@ public:
 									  int n = strtoul(it->second.text.GetString(), NULL, 10); 
 									  return (n>=1 && n<=0x0111) ? n : 0x0111; }
 
-	const std::map<CString, int> * hexmashes(const int n) { return &(_hexmashes[n]); }
 	const bool valid() { return _valid; }
 	const CString filename() { return _filename; }
 	const CString filepath() { return _filepath; }
@@ -175,29 +178,25 @@ public:
 
 	// These are used by OpenScrape
 	void		h$_clear(const int i) { ENT if (i>=0 && i<=3) _h$[i].clear(); }
+	void		p$_clear(const int i) { ENT if (i>=0 && i<=3) _p$[i].clear(); }
 
 	const bool	z$_insert(const STablemapSize s) { ENT std::pair<ZMapI, bool> r=_z$.insert(ZPair(s.name, s)); return r.second;  }
 	const bool	s$_insert(const STablemapSymbol s) { ENT std::pair<SMapI, bool> r=_s$.insert(SPair(s.name, s)); return r.second;  }
 	const bool	r$_insert(const STablemapRegion s) { ENT std::pair<RMapI, bool> r=_r$.insert(RPair(s.name, s)); return r.second;  }
-	const INT_PTR	set_t$_add(const STablemapFont s) { ENT return _t$.Add(s); }
-	const INT_PTR	set_p$_add(const STablemapHashPoint s) { ENT return _p$.Add(s); }
+	const bool	t$_insert(const int i, const STablemapFont s) { ENT if (i>=0 && i<=3) { std::pair<TMapI, bool> r=_t$[i].insert(TPair(s.hexmash, s)); return r.second; } else return false; }
+	const bool	p$_insert(const int i, const STablemapHashPoint s) { ENT if (i>=0 && i<=3) { std::pair<PMapI, bool> r=_p$[i].insert(PPair(((s.x&0xffff)<<16) | (s.y&0xffff), s)); return r.second; } else return false; }
 	const bool	h$_insert(const int i, const STablemapHashValue s) { ENT if (i>=0 && i<=3) { std::pair<HMapI, bool> r=_h$[i].insert(HPair(s.hash, s)); return r.second; } else return false; }
 	const bool	i$_insert(const STablemapImage s) { ENT std::pair<IMapI, bool> r=_i$.insert(IPair(CreateI$Index(s.name,s.width,s.height,s.pixel), s)); return r.second; }
 
 	const size_t	z$_erase(CString s) { ENT std::map<int, int>::size_type c = _z$.erase(s); return c; }
 	const size_t	s$_erase(CString s) { ENT std::map<int, int>::size_type c = _s$.erase(s); return c; }
 	const size_t	r$_erase(CString s) { ENT std::map<int, int>::size_type c = _r$.erase(s); return c; }
-	void	set_t$_removeat(const int n) { ENT if (n>=0 && n<=_t$.GetSize()) _t$.RemoveAt(n,1);  }
-	void	set_p$_removeat(const int n) { ENT if (n>=0 && n<=_p$.GetSize()) _p$.RemoveAt(n,1);  }
+	const size_t	t$_erase(const int i, CString s) { ENT if (i>=0 && i<=3) { std::map<int, int>::size_type c = _t$[i].erase(s); return c; } else return 0; }
+	const size_t	p$_erase(const int i, uint32_t u) { ENT if (i>=0 && i<=3) { std::map<int, int>::size_type c = _p$[i].erase(u); return c; } else return 0; }
 	const size_t	h$_erase(const int i, uint32_t u) { ENT if (i>=0 && i<=3) { std::map<int, int>::size_type c = _h$[i].erase(u); return c; } else return 0; }
 	const size_t	i$_erase(uint32_t u) { ENT std::map<int, int>::size_type c = _i$.erase(u); return c; }
 
-	ZMap *set_z$() { return &_z$; }
-	SMap *set_s$() { return &_s$; }
 	RMap *set_r$() { return &_r$; }
-
-	void	set_p$_removeall() { ENT _p$.RemoveAll();  }
-	void	set_t$_insertat(const int n, const STablemapFont s) { ENT if (n>=0 && n<=_t$.GetSize()) _t$.InsertAt(n,s);  }
 
 	void	set_network(const CString s) { ENT SMapI s_iter=_s$.find("network"); if (s_iter!=_s$.end()) s_iter->second.text=s; }
 #undef ENT
@@ -207,15 +206,13 @@ private:
 	bool		_valid;
 	CString		_filename;
 	CString		_filepath;
-	ZMap		_z$; // indexed on name
-	SMap		_s$; // indexed on name
-	RMap		_r$; // indexed on name
-	CArray <STablemapFont, STablemapFont>				_t$;
-	CArray <STablemapHashPoint, STablemapHashPoint>		_p$;
-	HMap		_h$[4]; // indexed on hash
-	IMap		_i$; // indexed on a hash of: name+all pixels in RBGA hex format
-
-	std::map<CString, int>	_hexmashes[4]; // Font _hexmashes for fast lookups - font type 0-3 are indexed in the array
+	ZMap		_z$; // indexed on name (as a CString)
+	SMap		_s$; // indexed on name (as a CString)
+	RMap		_r$; // indexed on name (as a CString)
+	TMap		_t$[4]; // indexed on hexmash (as a CString)
+	PMap		_p$[4]; // indexed on "x<<16 | y" (as a uint32_t; x in high 16bits, y in low 16bits)
+	HMap		_h$[4]; // indexed on hash (as a uint32_t)
+	IMap		_i$; // indexed on a uint32_t hash of: name+all pixels in RBGA hex format
 
 private:
 	// private functions and variables - not available via accessors or mutators

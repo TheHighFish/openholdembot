@@ -599,10 +599,12 @@ void CMainFrame::OnBnClickedGreenCircle()
 		smap.z$ = p_tablemap->z$();
 		smap.s$ = p_tablemap->s$();
 		smap.r$ = p_tablemap->r$();
-		smap.t$ = p_tablemap->t$();
-		smap.p$ = p_tablemap->p$();
 		for (i=0; i<=3; i++)
+		{
+			smap.t$[i] = p_tablemap->t$(i);
+			smap.p$[i] = p_tablemap->p$(i);
 			smap.h$[i] = p_tablemap->h$(i);
+		}
 		smap.i$ = p_tablemap->i$();
 		smap.filepath = p_tablemap->filepath();
 
@@ -624,10 +626,12 @@ void CMainFrame::OnBnClickedGreenCircle()
 				smap.z$ = p_tablemap->z$();
 				smap.s$ = p_tablemap->s$();
 				smap.r$ = p_tablemap->r$();
-				smap.t$ = p_tablemap->t$();
-				smap.p$ = p_tablemap->p$();
 				for (i=0; i<=3; i++)
+				{
+					smap.t$[i] = p_tablemap->t$(i);
+					smap.p$[i] = p_tablemap->p$(i);
 					smap.h$[i] = p_tablemap->h$(i);
+				}
 				smap.i$ = p_tablemap->i$();
 				smap.filepath = p_tablemap->filepath();
 		
@@ -650,10 +654,12 @@ void CMainFrame::OnBnClickedGreenCircle()
 				smap.z$ = p_tablemap->z$();
 				smap.s$ = p_tablemap->s$();
 				smap.r$ = p_tablemap->r$();
-				smap.t$ = p_tablemap->t$();
-				smap.p$ = p_tablemap->p$();
 				for (i=0; i<=3; i++)
+				{
+					smap.t$[i] = p_tablemap->t$(i);
+					smap.p$[i] = p_tablemap->p$(i);
 					smap.h$[i] = p_tablemap->h$(i);
+				}
 				smap.i$ = p_tablemap->i$();
 				smap.filepath = p_tablemap->filepath();
 

@@ -62,9 +62,9 @@ private:
 	const int DoFuzzyFontScan(RMapCI region, const int width, const int height, 
 							  const bool bg[], const bool (*ch)[MAX_CHAR_HEIGHT], 
 							  const double tolerance, CString *text);
-	const int GetBestHammingDistance(RMapCI region, const int width, const int height, 
-									 const bool bg[], const bool (*ch)[MAX_CHAR_HEIGHT], const int left, 
-									 const double tolerance);
+	TMapCI GetBestHammingDistance(RMapCI region, const int width, const int height, 
+								  const bool bg[], const bool (*ch)[MAX_CHAR_HEIGHT], const int left, 
+								  const double tolerance);
 	const int CalcHammingDistance(const unsigned int x, const unsigned int y);
 
 };
