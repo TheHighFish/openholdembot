@@ -2,6 +2,7 @@
 #define INC_DIALOGSAPREFS2_H
 
 #include "resource.h"
+#include "afxwin.h"
 
 // CDlgSAPrefs2 dialog
 
@@ -26,9 +27,10 @@ protected:
 
 	CEdit			m_FrameDelay, m_SwagDelay1, m_SwagDelay2, m_SwagDelay3;
 	CSpinButtonCtrl m_FrameDelay_Spin, m_SwagDelay1_Spin, m_SwagDelay2_Spin, m_SwagDelay3_Spin;
-	CButton			m_AutoAP, m_FocusDetect;
+	CButton			m_AutoAP, m_FocusDetect, m_SwagUseComma;
 
 	DECLARE_MESSAGE_MAP()
+public:
 };
 
 #endif //INC_DIALOGSAPREFS2_H
