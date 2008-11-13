@@ -54,8 +54,8 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0505")
     REASONING ("If there's a call button, then there can't be a check button.")
-    PRECONDITION (((int)gws("myturnbits") & BUTTON_CALL) == 0)
-    POSTCONDITION (((int)gws("myturnbits") & BUTTON_CHECK) != 0)
+    PRECONDITION (((int)gws("myturnbits") & BUTTON_CALL) != 0)
+    POSTCONDITION (((int)gws("myturnbits") & BUTTON_CHECK) == 0)
     SYMBOLS_POSSIBLY_AFFECTED ("myturnbits")
 END_TESTCASE
 
