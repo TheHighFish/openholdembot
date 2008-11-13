@@ -144,23 +144,39 @@ void COpenScrapeDoc::Serialize(CArchive& ar)
 
 		else if (loaded_version == VER_OPENSCRAPE_1)
 		{
-			MessageBox(pMyMainWnd->GetSafeHwnd(), "This is a version 1 table map.  Version 2.0.0 and higher of OpenHoldem and\n" \
-												  "OpenScrape use a new format (version 2) for .tm files.  OpenScrape has loaded\n"\
-												  "this table map into memory, but it is highly recommended that you immediately\n"\
-												  "use the menu 'File\\Save As' to save this map to a new file name.\n\n"\
-												  "The following settings have been moved from OpenHoldem preferences to the .tm\n"\
-												  "file itself.  Please either create these s$ records, or realize that defaults\n"\
-												  "will be used by the OpenHoldem autoplayer if they are not present in the .tm:\n"\
-												  "   swagselectionmethod, swagdeletionmethod, swagconfirmationmethod, and\n"\
-												  "   buttonclickmethod\n\n"\
-												  "Handling of region rectangles has changed in version 2 of the table map file.\n"\
-												  "The rightmost column and bottommost row of pixels are no longer ignored in\n"\
-												  "color and hash transformation calculations.  For hashes, please use the menu\n"\
-												  "'Edit\\Update Hashes' to recalculate hashes.  For regions that use color\n"\
-												  "transforms (including fuzzy fonts), a manual review of these regions is required\n"\
-												  "to ensure that the meaning of the region is still correct.\n",
-												  "Old version warning", MB_OK);
-			is_dirty = false;
+			if (MessageBox(pMyMainWnd->GetSafeHwnd(), "This is a version 1 table map.  Version 2.0.0 and higher of OpenHoldem and\n" \
+													  "OpenScrape use a new format (version 2) for .tm files.  OpenScrape has loaded\n"\
+													  "this table map into memory, but it is highly recommended that you immediately\n"\
+													  "use the menu 'File\\Save As' to save this map to a new file name.\n\n"\
+													  "The following settings have been moved from OpenHoldem preferences to the .tm\n"\
+													  "file itself.  Please either create these s$ records, or realize that defaults\n"\
+													  "will be used by the OpenHoldem autoplayer if they are not present in the .tm:\n"\
+													  "   swagselectionmethod, swagdeletionmethod, swagconfirmationmethod, and\n"\
+													  "   buttonclickmethod\n\n"\
+													  "Handling of region rectangles has changed in version 2 of the table map file.\n"\
+													  "The rightmost column and bottommost row of pixels are no longer ignored in\n"\
+													  "color, hash and font transformation calculations.  OpenScrape can automatically\n"\
+													  "adjust the size of the regions in this tablemap so that they still work\n"\
+													  "as before.  Clicking 'Yes' below will execute this adjustment.  It is highly\n"\
+													  "recommended that you audit your regions to ensure that they still operate\n"\
+													  "correctly.\n",
+													  "Old version warning", MB_YESNO) == IDYES)
+			{
+				// Correct all regions by decrementing the right and bottom fields
+				for (RMapI r_iter = p_tablemap->set_r$()->begin(); r_iter != p_tablemap->set_r$()->end(); r_iter++)
+				{
+					r_iter->second.right--;
+					r_iter->second.bottom--;
+				}
+
+				is_dirty = true;
+			}
+
+			else
+			{
+				is_dirty = false;
+			}
+
 			valid_open = true;
 		}
 

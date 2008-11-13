@@ -6,11 +6,11 @@ BUG FIXES:
   Bounds checking added to prevent this occurrence. [OpenHoldem]
 - Table map region rectangles are now properly drawn and utilized.  Previously, the right and bottom edges of the
   rectangle were ignored, both when being drawn in OpenScrape, and when being used in transforms in OpenHoldem.  The
-  implications of this is that regions that use color transforms (this includes fuzzy fonting) are likely to require 
-  updating, and this can only be done manually in OpenScrape.  Also, hash transforms will need to be updated, but 
-  that can be done quickly in OpenScrape with a "Edit/Update Hashes". The file version for .tm's will be updated to 
-  ".osdb2" when saved with version 2.0.0+ of OpenScrape.  Opening of older .tm file versions in either OpenHoldem or 
-  OpenScrape will result in a warning message with similar information to the above being displayed. [OpenHoldem]
+  implications of this is that v1 regions require updating, and will be handled automatically in OpenScrape.  Also, 
+  hash transforms will need to be updated, and that can also be done in OpenScrape with a "Edit/Update Hashes". 
+  The file version for .tm's will be updated to ".osdb2" when saved with version 2.0.0+ of OpenScrape.  Opening 
+  of older .tm file versions in either OpenHoldem or OpenScrape will result in a warning message with similar 
+  information to the above being displayed. [OpenHoldem]
 - Hand numbers are now displayed in center info box correctly, if they are integers [OpenHoldem]
   
 MAINTENANCE:
