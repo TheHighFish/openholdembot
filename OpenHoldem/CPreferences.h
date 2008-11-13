@@ -21,6 +21,7 @@ public:
 	const unsigned int swag_delay_3() { return _swag_delay_3; }
 	const bool ap_auto() { return _ap_auto; }
 	const bool focus_detect() { return _focus_detect; }
+	const bool swag_use_comma() { return _swag_use_comma; }
 	// Dll extension
 	const bool dll_always_send_state() { return _dll_always_send_state; }
 	const bool dll_load_on_startup() { return _dll_load_on_startup; }
@@ -133,6 +134,7 @@ public:
 	void set_swag_delay_3(const unsigned int i) { ENT _swag_delay_3 = i; WriteReg("swag_delay_3", (int) i); }
 	void set_ap_auto(const bool b) { ENT _ap_auto = b; WriteReg("auto", (int) b!=false); }
 	void set_focus_detect(const bool b) { ENT _focus_detect = b; WriteReg("focus_detect", (int) b!=false); }
+	void set_swag_use_comma(const bool b) { ENT _swag_use_comma = b; WriteReg("swag_use_comma", (int) b!=false); }
 	// Dll extension
 	void set_dll_always_send_state(const bool b) { ENT _dll_always_send_state = b; WriteReg("dll_always_send_state", b); }
 	void set_dll_load_on_startup(const bool b) { ENT _dll_load_on_startup = b; WriteReg("load_dll_on_startup", b); }
@@ -247,6 +249,7 @@ private:
 	unsigned int	_swag_delay_3;
 	bool			_ap_auto;
 	bool			_focus_detect;
+	bool			_swag_use_comma;
 
 	// Dll extension
 	bool			_dll_always_send_state;

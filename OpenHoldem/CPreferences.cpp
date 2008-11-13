@@ -73,6 +73,7 @@ void CPreferences::InitDefaults(void)
 	_swag_delay_3 = 700;
 	_ap_auto = false;
 	_focus_detect = false;
+	_swag_use_comma = false;
 
 	// scraper
 	_scrape_delay = 750;
@@ -224,6 +225,7 @@ void CPreferences::ReadFromRegistry()
 		ReadReg("swag_delay_3", &_swag_delay_3);
 		ReadReg("auto", &_ap_auto);
 		ReadReg("focus_detect", &_focus_detect);
+		ReadReg("swag_use_comma", &_swag_use_comma);
 
 		// prefs - dll extension
 		ReadReg("dll_always_send_state", &_dll_always_send_state);

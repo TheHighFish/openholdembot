@@ -54,6 +54,8 @@ NEW STUFF:
   check uXdealer for a match.  [OpenHoldem]
 - Symbol myturnbits does now support the check-button (bit 4; value 16) [TheHighFish]
 - Added: Menu item to force crash for testing purposes, including a confirmation-dialog [TheHighFish]
+- New option in Autoplayer preferences to use a comma instead of a 'dot' for separation of the whole number from the
+  fractional number when swagging.  Thanks to ZeuZDK for the patch.  (OpenHoldem)
 
 
 v1.9.4 2008-10-21

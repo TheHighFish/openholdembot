@@ -496,7 +496,14 @@ void CAutoplayer::DoSwag(void)
 				}
 				if (ch_str[i]=='.')
 				{
-					vkey = VK_DECIMAL;
+					if (prefs.swag_use_comma())
+					{
+						vkey = VK_OEM_COMMA;
+					}
+					else
+					{
+						vkey = VK_DECIMAL;
+					}
 				}
 
 				ZeroMemory(&input[input_count],sizeof(INPUT));
