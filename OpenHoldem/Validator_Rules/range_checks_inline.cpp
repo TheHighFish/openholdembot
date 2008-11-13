@@ -1,4 +1,7 @@
 
+#define UNDEFINED_ZERO 0
+#define	UNDEFINED_NEGATIVE_ONE -1
+
 //****************************************************
 //
 // General symbols
@@ -150,18 +153,18 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0015")
     REASONING ("Range check for symbol bblind")
-    PRECONDITION (true)
+    PRECONDITION (gws("nplayersdealt") > 0)
     POSTCONDITION (gws("bblind") >= 0.02)
-    SYMBOLS_POSSIBLY_AFFECTED ("bblind")
+    SYMBOLS_POSSIBLY_AFFECTED ("bblind, nplayersdealt")
 END_TESTCASE
 
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0016")
     REASONING ("Range check for symbol sblind")
-    PRECONDITION (true)
+    PRECONDITION (gws("nplayersdealt") > 0)
     POSTCONDITION (gws("sblind") >= 0.01)
-    SYMBOLS_POSSIBLY_AFFECTED ("sblind")
+    SYMBOLS_POSSIBLY_AFFECTED ("sblind, nplayersdealt")
 END_TESTCASE
 
 
@@ -178,7 +181,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0018")
     REASONING ("Range check for symbol lim")
     PRECONDITION (true)
-    POSTCONDITION ((gws("lim") == 0) || (gws("lim") == 1) || (gws("lim") == 2))
+    POSTCONDITION ((gws("lim") == 0) || (gws("lim") == 1) || (gws("lim") == 2) || (gws("lim") == UNDEFINED_NEGATIVE_ONE))
     SYMBOLS_POSSIBLY_AFFECTED ("lim")
 END_TESTCASE
 
@@ -214,7 +217,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0022")
     REASONING ("Range check for symbol sraiprev")
     PRECONDITION (true)
-    POSTCONDITION (gws("sraiprev") > 0)
+    POSTCONDITION ((gws("sraiprev") > 0) || (gws("sraiprev") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("sraiprev")
 END_TESTCASE
 
@@ -223,7 +226,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0023")
     REASONING ("Range check for symbol sraimin")
     PRECONDITION (true)
-    POSTCONDITION (gws("sraimin") > 0)
+    POSTCONDITION ((gws("sraimin") > 0) || (gws("sraimin") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("sraimin")
 END_TESTCASE
 
@@ -256,7 +259,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0026")
     REASONING ("Range check for symbol handrank")
     PRECONDITION (true)
-    POSTCONDITION ((gws("handrank") >= 1) && (gws("handrank") <= 2652))
+    POSTCONDITION ((gws("handrank") >= 1) && (gws("handrank") <= 2652) || (gws("handrank") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("handrank")
 END_TESTCASE
 
@@ -265,7 +268,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0027")
     REASONING ("Range check for symbol handrank169")
     PRECONDITION (true)
-    POSTCONDITION ((gws("handrank169") >= 1) && (gws("handrank169") <= 169))
+    POSTCONDITION ((gws("handrank169") >= 1) && (gws("handrank169") <= 169) || (gws("handrank169") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("handrank169")
 END_TESTCASE
 
@@ -274,7 +277,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0028")
     REASONING ("Range check for symbol handrank2652")
     PRECONDITION (true)
-    POSTCONDITION ((gws("handrank2652") >= 12) && (gws("handrank2652") <= 2652))
+    POSTCONDITION ((gws("handrank2652") >= 12) && (gws("handrank2652") <= 2652) || (gws("handrank2652") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("handrank2652")
 END_TESTCASE
 
@@ -283,7 +286,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0029")
     REASONING ("Range check for symbol handrank1326")
     PRECONDITION (true)
-    POSTCONDITION ((gws("handrank1326") >= 6) && (gws("handrank1326") <= 1326))
+    POSTCONDITION ((gws("handrank1326") >= 6) && (gws("handrank1326") <= 1326) || (gws("handrank1326") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("handrank1326")
 END_TESTCASE
 
@@ -292,7 +295,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0030")
     REASONING ("Range check for symbol handrank1000")
     PRECONDITION (true)
-    POSTCONDITION ((gws("handrank1000") >= 4) && (gws("handrank1000") <= 1000))
+    POSTCONDITION ((gws("handrank1000") >= 4) && (gws("handrank1000") <= 1000)  || (gws("handrank1000") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("handrank1000")
 END_TESTCASE
 
@@ -301,7 +304,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0031")
     REASONING ("Range check for symbol handrankp")
     PRECONDITION (true)
-    POSTCONDITION ((gws("handrankp") >= 1) && (gws("handrankp") <= 2652))
+    POSTCONDITION ((gws("handrankp") >= 1) && (gws("handrankp") <= 2652) || (gws("handrankp") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("handrankp")
 END_TESTCASE
 
@@ -375,7 +378,7 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0038")
     REASONING ("Range check for symbol betposition")
-    PRECONDITION (true)
+    PRECONDITION (gws("nplayersdealt") > 1)
     POSTCONDITION ((gws("betposition") >= 1) && (gws("betposition") <= gws("nplayersdealt")))
     SYMBOLS_POSSIBLY_AFFECTED ("betposition, nplayersdealt")
 END_TESTCASE
@@ -384,8 +387,8 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0039")
     REASONING ("Range check for symbol dealposition")
-    PRECONDITION (true)
-    POSTCONDITION ((gws("dealposition") >= 1) && (gws("dealposition") <= gws("nplayersdealt")))
+    PRECONDITION (gws("nplayersdealt") > 1)
+    POSTCONDITION ((gws("dealposition") >= 1) && (gws("dealposition") <= gws("nplayersdealt")) || (gws("dealposition") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("dealposition, nplayersdealt")
 END_TESTCASE
 
@@ -655,7 +658,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0067")
     REASONING ("Range check for symbols bet1..bet4")
     PRECONDITION (true)
-    POSTCONDITION ((gws("bet1") > 0) && (gws("bet2") > 0) && (gws("bet3") > 0) && (gws("bet4") > 0))
+    POSTCONDITION ((gws("bet1") > 0) && (gws("bet2") > 0) && (gws("bet3") > 0) && (gws("bet4") > 0) || (gws("bet1") == UNDEFINED_ZERO) && (gws("bet2") == UNDEFINED_ZERO) && (gws("bet3") == UNDEFINED_ZERO) && (gws("bet4") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("bet1, bet2, bet3, bet4")
 END_TESTCASE
 
@@ -721,9 +724,9 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0074")
     REASONING ("Range check for symbol nbetstorais")
-    PRECONDITION (true)
-    POSTCONDITION (gws("nbetstorais") >= 1)
-    SYMBOLS_POSSIBLY_AFFECTED ("nbetstorais")
+    PRECONDITION (gws("nplayersdealt") > 1)
+    POSTCONDITION (gws("nbetstorais") > 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("nbetstorais, nplayersdealt")
 END_TESTCASE
 
 
@@ -763,7 +766,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0078")
     REASONING ("Range check for symbol nlistmax")
     PRECONDITION (true)
-    POSTCONDITION (gws("nlistmax") >= 0)
+    POSTCONDITION ((gws("nlistmax") >= 0) || (gws("nlistmax") == UNDEFINED_NEGATIVE_ONE))
     SYMBOLS_POSSIBLY_AFFECTED ("nlistmax")
 END_TESTCASE
 
@@ -772,7 +775,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0079")
     REASONING ("Range check for symbol nlistmin ")
     PRECONDITION (true)
-    POSTCONDITION (gws("nlistmin") >= 0)
+    POSTCONDITION (gws("nlistmin") >= 0 || (gws("nlistmin") == UNDEFINED_NEGATIVE_ONE))
     SYMBOLS_POSSIBLY_AFFECTED ("nlistmin ")
 END_TESTCASE
 
@@ -959,7 +962,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0298")
     REASONING ("Range check for symbol $$ps0")
     PRECONDITION (true)
-    POSTCONDITION ((gws("$$ps0") >= 1) && (gws("$$ps0") <= 4))
+    POSTCONDITION ((gws("$$ps0") >= 1) && (gws("$$ps0") <= 4) || (gws("$$ps0") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("$$ps0")
 END_TESTCASE
 
@@ -968,7 +971,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0299")
     REASONING ("Range check for symbol $$ps1")
     PRECONDITION (true)
-    POSTCONDITION ((gws("$$ps1") >= 1) && (gws("$$ps1") <= 4))
+    POSTCONDITION ((gws("$$ps1") >= 1) && (gws("$$ps1") <= 4) || (gws("$$ps1") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("$$ps1")
 END_TESTCASE
 
@@ -977,7 +980,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0300")
     REASONING ("Range check for symbol $$cs0")
     PRECONDITION (true)
-    POSTCONDITION ((gws("$$cs0") >= 1) && (gws("$$cs0") <= 4))
+    POSTCONDITION ((gws("$$cs0") >= 1) && (gws("$$cs0") <= 4) || (gws("$$cs0") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("$$cs0")
 END_TESTCASE
 
@@ -986,7 +989,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0301")
     REASONING ("Range check for symbol $$cs1")
     PRECONDITION (true)
-    POSTCONDITION ((gws("$$cs1") >= 1) && (gws("$$cs1") <= 4))
+    POSTCONDITION ((gws("$$cs1") >= 1) && (gws("$$cs1") <= 4) || (gws("$$cs1") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("$$cs1")
 END_TESTCASE
 
@@ -995,7 +998,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0302")
     REASONING ("Range check for symbol $$cs2")
     PRECONDITION (true)
-    POSTCONDITION ((gws("$$cs2") >= 1) && (gws("$$cs2") <= 4))
+    POSTCONDITION ((gws("$$cs2") >= 1) && (gws("$$cs2") <= 4) || (gws("$$cs2") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("$$cs2")
 END_TESTCASE
 
@@ -1004,7 +1007,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0303")
     REASONING ("Range check for symbol $$cs3")
     PRECONDITION (true)
-    POSTCONDITION ((gws("$$cs3") >= 1) && (gws("$$cs3") <= 4))
+    POSTCONDITION ((gws("$$cs3") >= 1) && (gws("$$cs3") <= 4) || (gws("$$cs3") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("$$cs3")
 END_TESTCASE
 
@@ -1013,7 +1016,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0304")
     REASONING ("Range check for symbol $$cs4")
     PRECONDITION (true)
-    POSTCONDITION ((gws("$$cs4") >= 1) && (gws("$$cs4") <= 4))
+    POSTCONDITION ((gws("$$cs4") >= 1) && (gws("$$cs4") <= 4) || (gws("$$cs4") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("$$cs4")
 END_TESTCASE
 
@@ -1022,7 +1025,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0305")
     REASONING ("Range check for symbol $$pr0")
     PRECONDITION (true)
-    POSTCONDITION ((gws("$$pr0") >= 1) && (gws("$$pr0") <= 14))
+    POSTCONDITION ((gws("$$pr0") >= 1) && (gws("$$pr0") <= 14) || (gws("$$pr0") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("$$pr0")
 END_TESTCASE
 
@@ -1031,7 +1034,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0306")
     REASONING ("Range check for symbol $$pr1")
     PRECONDITION (true)
-    POSTCONDITION ((gws("$$pr1") >= 1) && (gws("$$pr1") <= 14))
+    POSTCONDITION ((gws("$$pr1") >= 1) && (gws("$$pr1") <= 14) || (gws("$$pr1") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("$$pr1")
 END_TESTCASE
 
@@ -1040,7 +1043,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0307")
     REASONING ("Range check for symbol $$cr0")
     PRECONDITION (true)
-    POSTCONDITION ((gws("$$cr0") >= 1) && (gws("$$cr0") <= 14))
+    POSTCONDITION ((gws("$$cr0") >= 1) && (gws("$$cr0") <= 14) || (gws("$$cr0") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("$$cr0")
 END_TESTCASE
 
@@ -1049,7 +1052,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0308")
     REASONING ("Range check for symbol $$cr1")
     PRECONDITION (true)
-    POSTCONDITION ((gws("$$cr1") >= 1) && (gws("$$cr1") <= 14))
+    POSTCONDITION ((gws("$$cr1") >= 1) && (gws("$$cr1") <= 14) || (gws("$$cr1") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("$$cr1")
 END_TESTCASE
 
@@ -1058,7 +1061,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0309")
     REASONING ("Range check for symbol $$cr2")
     PRECONDITION (true)
-    POSTCONDITION ((gws("$$cr2") >= 1) && (gws("$$cr2") <= 14))
+    POSTCONDITION ((gws("$$cr2") >= 1) && (gws("$$cr2") <= 14) || (gws("$$cr2") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("$$cr2")
 END_TESTCASE
 
@@ -1067,7 +1070,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0310")
     REASONING ("Range check for symbol $$cs3")
     PRECONDITION (true)
-    POSTCONDITION ((gws("$$cr3") >= 1) && (gws("$$cr3") <= 14))
+    POSTCONDITION ((gws("$$cr3") >= 1) && (gws("$$cr3") <= 14) || (gws("$$cr3") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("$$cr3")
 END_TESTCASE
 
@@ -1076,7 +1079,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0311")
     REASONING ("Range check for symbol $$cr4")
     PRECONDITION (true)
-    POSTCONDITION ((gws("$$cr4") >= 1) && (gws("$$cr4") <= 14))
+    POSTCONDITION ((gws("$$cr4") >= 1) && (gws("$$cr4") <= 14) || (gws("$$cr4") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("$$cr4")
 END_TESTCASE
 
