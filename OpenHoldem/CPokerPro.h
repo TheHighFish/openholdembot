@@ -23,6 +23,7 @@ struct SPPData
 	int		m_userchair;
 	int		m_handnumber;
 	int		m_pot[10];
+	int		m_total_pot;
 	int		m_prev_rais;
 	int		m_isconnected;
 };
@@ -72,6 +73,7 @@ private:
 	SOCKET		_socket;
 	int			_table;
 	SPPData		_ppdata;
+	CString m_ftp_filename;
 
 private:
 	// private functions and variables - not available via accessors or mutators	
@@ -144,7 +146,11 @@ private:
 	char* Card2Ascii(char* text, const unsigned char cc);
 	char Rank2Ascii(const int rank);
 	void WriteHH(const CString *s);
+	void writeFThh(const CString *s);
 	const char* GetCardinalSuffix(const int n);
+	void setHHFilename(void);
+	const CString FT_string_PokerVal(int in_hand_value);
+	const CString FT_FullCardName(unsigned char in_card_value);
 	const int CountSameScrapes(void);						// Added to handle delay  (4-3-2008)  Spektre 
 
 	WSADATA		_wsadata;

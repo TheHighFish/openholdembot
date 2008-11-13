@@ -369,6 +369,7 @@
 #define IDC_RADIO_VALIDATOR_2           1307
 #define IDC_RADIO_VALIDATOR_3           1308
 #define IDC_CHECK_VALIDATOR_STOP_ON_ERROR 1310
+#define IDC_PPRO_FULLTILTLOGFORMAT      1311
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -484,7 +485,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        176
 #define _APS_NEXT_COMMAND_VALUE         32971
-#define _APS_NEXT_CONTROL_VALUE         1311
+#define _APS_NEXT_CONTROL_VALUE         1312
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -8,7 +8,8 @@
 
 // CDlgPpro dialog
 
-class CDlgPpro : public CDialog {
+class CDlgPpro : public CDialog 
+{
 	DECLARE_DYNAMIC(CDlgPpro)
 
 public:
@@ -65,6 +66,7 @@ public:
 	CButton m_SitInButton;
 	CRichEditCtrl m_PproMessages;
 	CButton m_HandHistory;
+	CButton m_FTHHLogFormat;
 };
 
 extern CDlgPpro			*m_pproDlg;

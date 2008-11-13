@@ -56,7 +56,9 @@ NEW STUFF:
 - Added: Menu item to force crash for testing purposes, including a confirmation-dialog [TheHighFish]
 - New option in Autoplayer preferences to use a comma instead of a 'dot' for separation of the whole number from the
   fractional number when swagging.  Thanks to ZeuZDK for the patch.  (OpenHoldem)
-
+- New option on PokerPro dialog to create hand history files in a FullTilt format to allow importing into PokerTracker.
+  HH files are created in the PPro\FTHH subdirectory of the OH installation, in a subdirectory named for the PPro login.
+  Thanks, Sinbad_the_Sailor, for the patch.  [OpenHoldem]
 
 v1.9.4 2008-10-21
 =================

@@ -79,6 +79,7 @@ public:
 	const int ppro_dx() { return _ppro_dx; }
 	const int ppro_dy() { return _ppro_dy; }
 	const bool ppro_handhistory() { return _ppro_handhistory; }
+	const bool ppro_ft_hhlog_format() { return _ppro_ft_hhlog_format; }
 	const unsigned int ppro_chips() { return _ppro_chips; }
 	const bool ppro_autoseat() { return _ppro_autoseat; }
 	// Main window locations
@@ -193,6 +194,7 @@ public:
 	void set_ppro_dx(const int i) { ENT _ppro_dx = i; WriteReg("ppro_dx", i); }
 	void set_ppro_dy(const int i) { ENT _ppro_dy = i; WriteReg("ppro_dy", i); }
 	void set_ppro_handhistory(const bool b) { ENT _ppro_handhistory = b; WriteReg("ppro_handhistory", b); }
+	void set_ppro_ft_hhlog_format(const bool b) { ENT _ppro_ft_hhlog_format = b; WriteReg("ppro_ft_hhlog_format", b); }
 	void set_ppro_chips(const unsigned int i) { ENT _ppro_chips = i; WriteReg("ppro_chips", (int) i); }
 	void set_ppro_autoseat(const bool b) { ENT _ppro_autoseat = b; WriteReg("ppro_autoseat", b); }
 	// Formula window location
@@ -305,6 +307,7 @@ private:
 	CString			_ppro_username;
 	CString			_ppro_password;
 	bool			_ppro_handhistory;
+	bool			_ppro_ft_hhlog_format;
 	int				_ppro_chips;
 	// Formula window location
 	int				_formula_x;	
