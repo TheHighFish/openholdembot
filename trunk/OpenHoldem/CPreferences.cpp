@@ -89,6 +89,7 @@ void CPreferences::InitDefaults(void)
 	_ppro_username = "openholdem";
 	_ppro_password = "";
 	_ppro_handhistory = false;
+	_ppro_ft_hhlog_format = false;
 	_ppro_chips = 1000;
 	_ppro_autoseat = true;
 
@@ -269,6 +270,7 @@ void CPreferences::ReadFromRegistry()
 		ReadReg("ppro_username", &_ppro_username);
 		ReadReg("ppro_password", &_ppro_password);
 		ReadReg("ppro_handhistory", &_ppro_handhistory);
+		ReadReg("ppro_ft_hhlog_format", &_ppro_ft_hhlog_format);
 		ReadReg("ppro_chips", &_ppro_chips);
 		ReadReg("ppro_autoseat", &_ppro_autoseat);
 

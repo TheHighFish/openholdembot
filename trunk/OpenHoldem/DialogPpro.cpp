@@ -63,6 +63,7 @@ void CDlgPpro::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SITIN_BUTTON, m_SitInButton);
 	DDX_Control(pDX, IDC_PPRO_MESSAGES, m_PproMessages);
 	DDX_Control(pDX, IDC_PPRO_HANDHISTORY, m_HandHistory);
+	DDX_Control(pDX, IDC_PPRO_FULLTILTLOGFORMAT, m_FTHHLogFormat);
 }
 
 CDlgPpro::CDlgPpro(CWnd* pParent /*=NULL*/)	: CDialog(CDlgPpro::IDD, pParent) 
@@ -92,6 +93,14 @@ BOOL CDlgPpro::OnInitDialog()
 	else 
 	{
 		m_HandHistory.SetCheck(BST_UNCHECKED);
+	}
+	if (prefs.ppro_ft_hhlog_format()) 
+	{
+		m_FTHHLogFormat.SetCheck(BST_CHECKED);
+	}
+	else 
+	{
+		m_FTHHLogFormat.SetCheck(BST_UNCHECKED);
 	}
 	text.Format("%d", prefs.ppro_chips());
 	m_Chips.SetWindowText(text);
@@ -535,6 +544,7 @@ void CDlgPpro::OnTimer(UINT nIDEvent)
 			m_UserName.EnableWindow(true);
 			m_Password.EnableWindow(true);
 			m_HandHistory.EnableWindow(true);
+			m_FTHHLogFormat.EnableWindow(true);
 		}
 		else 
 		{
@@ -543,6 +553,7 @@ void CDlgPpro::OnTimer(UINT nIDEvent)
 			m_UserName.EnableWindow(false);
 			m_Password.EnableWindow(false);
 			m_HandHistory.EnableWindow(false);
+			m_FTHHLogFormat.EnableWindow(false);
 		}
 
 		// Messages
@@ -659,6 +670,7 @@ void CDlgPpro::SaveSettingsToRegistry(void)
 	prefs.set_ppro_password(text);
 
 	prefs.set_ppro_handhistory(m_HandHistory.GetCheck() == BST_CHECKED);
+	prefs.set_ppro_ft_hhlog_format(m_FTHHLogFormat.GetCheck() == BST_CHECKED);
 	
 	m_Chips.GetWindowText(text);
 	chips = strtoul(text.GetString(), NULL, 10);

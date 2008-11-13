@@ -13,6 +13,8 @@
 
 #include "DialogPPro.h"
 #include "CPreferences.h"
+#include <time.h>
+#include <string.h>
 
 PokerPro		*p_pokerpro = NULL;
 
@@ -116,6 +118,7 @@ const int PokerPro::SendSit(const int chair)
 	PokerMessage pm;
 	pm.m_event = 'PSIT';
 	pm.m_chair = (chair == -1) ? _ppdata.m_userchair : chair;
+	setHHFilename();
 	return SendPPMessage((char*)(&pm), sizeof(PokerMessage));
 }
 
@@ -808,8 +811,20 @@ void PokerPro::HandleEventPlayerFold(const PokerMessage* pm)
 	s.Format("Chair %d (%s) folds.\n", pm->m_chair&0x1f, _ppdata.m_pinf[pm->m_chair&0x1f].m_name);
 	Publish(&s, 0);
 
-	s.Format("%s FOLD\n", _ppdata.m_pinf[pm->m_chair&0x1f].m_name);
-	WriteHH(&s);
+	if (prefs.ppro_ft_hhlog_format()  == false) {
+
+		s.Format("%s FOLD\n", _ppdata.m_pinf[pm->m_chair&0x1f].m_name);
+		WriteHH(&s);
+
+	}
+
+	else {
+
+		s.Format("%s folds\n", _ppdata.m_pinf[pm->m_chair&0x1f].m_name);
+		writeFThh(&s);
+
+	}
+
 }
 
 void PokerPro::HandleEventPlayerMuck(const PokerMessage* pm) 
@@ -821,8 +836,20 @@ void PokerPro::HandleEventPlayerMuck(const PokerMessage* pm)
 	s.Format("Chair %d (%s) mucks.\n", pm->m_chair&0x1f, _ppdata.m_pinf[pm->m_chair&0x1f].m_name);
 	Publish(&s, 0);
 
-	s.Format("%s MUCK\n", _ppdata.m_pinf[pm->m_chair&0x1f].m_name);
-	WriteHH(&s);
+	if (prefs.ppro_ft_hhlog_format()  == false) {
+
+		s.Format("%s MUCK\n", _ppdata.m_pinf[pm->m_chair&0x1f].m_name);
+		WriteHH(&s);
+
+	}
+
+	else {
+
+		s.Format("%s mucks\n", _ppdata.m_pinf[pm->m_chair&0x1f].m_name);
+		writeFThh(&s);
+
+	}
+
 }
 
 void PokerPro::HandleEventPlayerRefund(const PokerMessage* pm) 
@@ -834,8 +861,21 @@ void PokerPro::HandleEventPlayerRefund(const PokerMessage* pm)
 	s.Format("Chair %d (%s) refund %s.\n", pm->m_chair&0x1f, _ppdata.m_pinf[pm->m_chair&0x1f].m_name, sbet);
 	Publish(&s, 0);
 
-	s.Format("%s RFND %s\n", _ppdata.m_pinf[pm->m_chair&0x1f].m_name, sbet);
-	WriteHH(&s);
+	if (prefs.ppro_ft_hhlog_format()  == false) {
+
+		s.Format("%s RFND %s\n", _ppdata.m_pinf[pm->m_chair&0x1f].m_name, sbet);
+		WriteHH(&s);
+
+	}
+
+	else {
+
+		s.Format("Uncalled bet of $%s returned to %s\n", sbet, _ppdata.m_pinf[pm->m_chair&0x1f].m_name);
+		writeFThh(&s);
+
+	}
+
+
 }
 
 void PokerPro::HandleEventPlayerBet(const PokerMessage* pm) 
@@ -863,24 +903,94 @@ void PokerPro::HandleEventPlayerBet(const PokerMessage* pm)
 	_ppdata.m_pinf[chair].m_betAmount = after;
 
 	char samt[32];
+	char betAmt[32];
+	char sbAmt[32];
+	char bbAmt[32];
+
 	ConvertMoney(samt, 32, spend);
+	ConvertMoney(betAmt, 32, after);
+	ConvertMoney(sbAmt, 32, _ppdata.m_tinf.m_betSBlind);
+	ConvertMoney(bbAmt, 32, _ppdata.m_tinf.m_betMin);
 
 	if (spend==0) {
 		s.Format("Chair %d (%s) %s.\n", chair, name, action);
-		hh.Format("%s %s\n", name, action);
+		if (prefs.ppro_ft_hhlog_format()  == false) {
+			hh.Format("%s %s\n", name, action);
+		}
+		else {
+
+			if (!std::strcmp(action,"SBLIND")) {
+				hh.Format("%s posts the small blind of $%s\n", name, sbAmt);
+			}
+			if (!std::strcmp(action,"BBLIND")) {
+				hh.Format("%s posts the big blind of $%s\n", name, bbAmt);
+			}
+			if (!std::strcmp(action,"CHECK")) {
+				hh.Format("%s checks\n", name);
+			}
+			if (!std::strcmp(action,"CALL")) {
+				hh.Format("%s calls $%s\n", name, samt);
+			}
+			if (!std::strcmp(action,"BET")) {
+				hh.Format("%s bets $%s\n", name, betAmt);
+			}
+			if (!std::strcmp(action,"RAISE")) {
+				hh.Format("%s raises to $%s\n", name, betAmt);
+			}
+		}
 	}
-	else if (_ppdata.m_pinf[chair].m_balance) 
-	{
+	else if (_ppdata.m_pinf[chair].m_balance) {
 		s.Format("Chair %d (%s) %s %s.\n", chair, name, action, samt);
-		hh.Format("%s %s %s\n", name, action, samt);
+		if (prefs.ppro_ft_hhlog_format()  == false) {
+			hh.Format("%s %s %s\n", name, action, samt);
+		}
+		else {
+			if (!std::strcmp(action,"SBLIND")) {
+				hh.Format("%s posts the small blind of $%s\n", name, sbAmt);
+			}
+			if (!std::strcmp(action,"BBLIND")) {
+				hh.Format("%s posts the big blind of $%s\n", name, bbAmt);
+			}
+			if (!std::strcmp(action,"CHECK")) {
+				hh.Format("%s checks\n", name);
+			}
+			if (!std::strcmp(action,"CALL")) {
+				hh.Format("%s calls $%s\n", name, samt);
+			}
+			if (!std::strcmp(action,"BET")) {
+				hh.Format("%s bets $%s\n", name, betAmt);
+			}
+			if (!std::strcmp(action,"RAISE")) {
+				hh.Format("%s raises to $%s\n", name, betAmt);
+			}
+		}
 	}
 	else {
 		s.Format("Chair %d (%s) %s %s all in.\n", chair, name, action, samt);
-		hh.Format("%s %s %s ALLIN\n", name, action, samt );
+		if (prefs.ppro_ft_hhlog_format()  == false) {
+			hh.Format("%s %s %s ALLIN\n", name, action, samt );
+		}
+		else {
+			if (!std::strcmp(action,"CALL")) {
+				hh.Format("%s calls $%s, and is all in\n", name, samt);
+			}
+			if (!std::strcmp(action,"BET")) {
+				hh.Format("%s bets $%s, and is all in\n", name, betAmt);
+			}
+			if (!std::strcmp(action,"RAISE")) {
+				hh.Format("%s raises to $%s, and is all in\n", name, betAmt);
+			}
+		}
 	}
 
 	Publish(&s, 0);
-	WriteHH(&hh);
+	if (prefs.ppro_ft_hhlog_format() == false) {
+		WriteHH(&hh);
+	}
+	else {
+		writeFThh(&hh);
+	}
+
 }
 
 void PokerPro::HandleEventPlayerName(const PokerMessage* pm) 
@@ -904,71 +1014,174 @@ void PokerPro::HandleEventPlayerBalance(const PokerMessage* pm)
 
 void PokerPro::HandleEventPlayerWin(const PokerMessage* pm) 
 {
-	CString s = "";
+	CString s;
 
 	int chairbits = pm->m_chair;
 	int npot = pm->m_lparam[2];
 
 	int nwin=0;
-	for (int chair=0; chair<=9; chair++) 
-	{
-		if (chairbits&(1<<chair)) 
-		{
+	for (int chair=0; chair<=9; chair++) {
+		if (chairbits&(1<<chair)) {
 			nwin++;
 		}
 	}
 	int win = _ppdata.m_pot[npot]/nwin;
 	_ppdata.m_pot[npot] = 0;
 
-	char swin[32] = {0};
-	ConvertMoney(swin, 32, win);
+	char swin[32];
+	ConvertMoney(swin,32, win);
 
-	for (int i=0; i<=9; i++) 
-	{
-		if (chairbits & (1<<i))	
-		{
+	for (int i=0; i<=9; i++) {
+		if (chairbits & (1<<i))	{
 			_ppdata.m_pinf[i].m_betAmount = win;
 			s.Format("%s wins %s.\n", _ppdata.m_pinf[i].m_name, swin);
 			Publish(&s, 0);
 
-			s.Format("%s WIN %s\n", _ppdata.m_pinf[i].m_name, swin);
-			WriteHH(&s);
+			if (prefs.ppro_ft_hhlog_format()  == true) {
+				unsigned char count_of_pots;
+				unsigned char real_pot_number[10];
+				CString pot_name;
+
+
+				count_of_pots = 0;
+
+				for (int j=0; j<=9; j++) {
+					/*
+					Clarification of the Below:
+					On the 1st iteration, the real pot number is 0, 
+					on the subsequent iterations it stays the same if the pot
+					is equal to the preceding pot, (ie it is split) and goes up one otherwise.
+					*/
+					if (j>0){
+						if (_ppdata.m_pot[j]==_ppdata.m_pot[j-1]){
+							real_pot_number[j] = real_pot_number[j-1];
+						}
+						else {
+							count_of_pots++;
+							real_pot_number[j] = real_pot_number[j-1] + 1;
+						}
+					}
+					else {
+						count_of_pots++;
+						real_pot_number[j] = 0;
+					}
+					if (_ppdata.m_pot[j]==0){
+						break;
+					}
+
+				}
+
+				switch (real_pot_number[npot]){
+					case 0:
+						if (count_of_pots > 1){
+							pot_name = "the main pot";
+						}
+						else {
+							pot_name = "the pot";
+						}
+						break;
+					case 1:
+						if (count_of_pots > 2){
+							pot_name = "side pot #1";
+						}
+						else {
+							pot_name = "the side pot";
+						}
+						break;
+					default:
+						pot_name.Format("side pot #%l", npot);
+						break;
+				}
+				if (_ppdata.m_pinf[i].m_handValue > 0 ){
+					s.Format("%s wins %s ($%s) with %s\n", _ppdata.m_pinf[i].m_name, pot_name, swin, FT_string_PokerVal(_ppdata.m_pinf[i].m_handValue));
+				}
+				else {
+					s.Format("%s wins %s ($%s)\n", _ppdata.m_pinf[i].m_name, pot_name, swin);
+				}
+				writeFThh(&s);
+			}
 		}
 	}
 }
 
 void PokerPro::HandleEventNextDealer(const PokerMessage* pm) 
 {
-	CString s = "";
+	CString s;
 
 	_ppdata.m_tinf.m_activeDealer = pm->m_chair&0x1f;
 
-	char sbs[32] = {0};
-	char bbs[32] = {0};
-	char BBs[32] = {0};
-	ConvertMoney(sbs, 32, _ppdata.m_ginf[_ppdata.m_tinf.m_tid].m_sblind);
-	ConvertMoney(bbs, 32, _ppdata.m_ginf[_ppdata.m_tinf.m_tid].m_minbet);
-	ConvertMoney(BBs, 32, _ppdata.m_ginf[_ppdata.m_tinf.m_tid].m_maxbet);
-	s.Format("Table# %d %s %s %s %s %s %s %s\n",
-			 _ppdata.m_tinf.m_tid,
-			 _ppdata.m_tinf.m_name,
-			 _ppdata.m_ginf[_ppdata.m_tinf.m_tid].m_moneyid ? "RealMoney" : "PlayMoney",
-			 sbs, bbs, BBs,
-			 (_ppdata.m_tinf.m_lim&0x7)==2 ? "Limit" : (_ppdata.m_tinf.m_lim&0x7)==1 ? "PotLimit" : "NoLimit",
-			 "Holdem");
-	WriteHH(&s);
+	char sbs[32];
+	char bbs[32];
+	char BBs[32];
+	ConvertMoney(sbs,32, _ppdata.m_ginf[_ppdata.m_tinf.m_tid].m_sblind);
+	ConvertMoney(bbs,32, _ppdata.m_ginf[_ppdata.m_tinf.m_tid].m_minbet);
+	ConvertMoney(BBs,32, _ppdata.m_ginf[_ppdata.m_tinf.m_tid].m_maxbet);
+
+	if (prefs.ppro_ft_hhlog_format()  == false) {
+		s.Format("Table# %d %s %s %s %s %s %s %s\n",
+			_ppdata.m_tinf.m_tid,
+			_ppdata.m_tinf.m_name,
+			_ppdata.m_ginf[_ppdata.m_tinf.m_tid].m_moneyid ? "RealMoney" : "PlayMoney",
+			sbs, bbs, BBs,
+			(_ppdata.m_tinf.m_lim&0x7)==2 ? "Limit" : (_ppdata.m_tinf.m_lim&0x7)==1 ? "PotLimit" : "NoLimit",
+			"Holdem");
+		WriteHH(&s);
+	}
+	else {
+		if(_ppdata.m_handnumber > 0){
+
+			time_t rawtime;
+			tm* TimeHolder;
+			tm FNTime;
+
+			time(&rawtime);
+			TimeHolder = localtime(&rawtime);
+			FNTime = TimeHolder[0];
+						s.Format("\n\n\nFull Tilt Poker Game #%d: Table %s - $%s/$%s - %s Hold'em - %d:%d:%d ET - %d/%02d/%02d\n",
+				_ppdata.m_handnumber,
+				_ppdata.m_tinf.m_name,
+				sbs, bbs,
+				(_ppdata.m_tinf.m_lim&0x7)==2 ? "Limit" : (_ppdata.m_tinf.m_lim&0x7)==1 ? "Pot Limit" : "No Limit",
+				FNTime.tm_hour,
+				FNTime.tm_min,
+				FNTime.tm_sec,
+				FNTime.tm_year + 1900,
+				FNTime.tm_mon + 1,
+				FNTime.tm_mday);
+			writeFThh(&s);
+		}
+	}
 
 	int dc = _ppdata.m_tinf.m_activeDealer&0xf;
 	for (int i=0; i<10; i++) {
-		int c = (dc+1+i) % 10;
+		int c;
+		if (prefs.ppro_ft_hhlog_format()  == false) {
+			c = (dc+1+i) % 10;
+		}
+		else {
+			c = i + 1;
+		}
 		if ((_ppdata.m_pinf[c].m_isSeated&0x1) && (_ppdata.m_pinf[c].m_isActive&0x1) && _ppdata.m_pinf[c].m_balance > 0) {
 			char sbal[32];
-			ConvertMoney(sbal, 32, _ppdata.m_pinf[c].m_balance);
+			ConvertMoney(sbal,32, _ppdata.m_pinf[c].m_balance);
 
-			s.Format("%s Chair%d %s %s\n", _ppdata.m_pinf[c].m_name, c, sbal, dc==c ? "BUTTON" : "");
-			WriteHH(&s);
+			if (prefs.ppro_ft_hhlog_format()  == false) {
+				s.Format("%s Chair%d %s %s\n", _ppdata.m_pinf[c].m_name, c, sbal, dc==c ? "BUTTON" : "");
+				WriteHH(&s);
+			}
+			else {
+				if(_ppdata.m_handnumber > 0){
+					s.Format("Seat %d: %s ($%s)\n",
+						c,
+						_ppdata.m_pinf[c].m_name,
+						sbal
+						);
+					writeFThh(&s);
+				}
+			}
 		}
 	}
+
 }
 
 void PokerPro::HandleEventNextPlayer(const PokerMessage* pm) 
@@ -999,8 +1212,11 @@ void PokerPro::HandleEventNextHand(const PokerMessage* pm)
 	s.Format("\nHand# %d %s GMT %s\n", _ppdata.m_handnumber, buf, _ppdata.m_site_name);
 	Publish(&s, 0);
 
-	s.Format("\nHand# %d %s GMT %s\n", _ppdata.m_handnumber, buf, _ppdata.m_site_name);
-	WriteHH(&s);
+	if (prefs.ppro_ft_hhlog_format()  == false) {
+		s.Format("\nHand# %d %s GMT %s\n",  _ppdata.m_handnumber, buf, _ppdata.m_site_name);
+		WriteHH(&s);
+	}
+
 }
 
 void PokerPro::HandleEventNextGame(const PokerMessage* pm) 
@@ -1023,8 +1239,10 @@ void PokerPro::HandleEventTotalPot(const PokerMessage* pm)
 	char spot[32] = {0};
 	ConvertMoney(spot, 32, pm->m_amount);
 
-	s.Format("DEALER POT %s\n", spot);
-	WriteHH(&s);
+	if (prefs.ppro_ft_hhlog_format()  == false) {
+		s.Format("DEALER POT %s\n", spot);
+		WriteHH(&s);
+	}
 }
 
 void PokerPro::HandleEventStakes(const PokerMessage* pm) 
@@ -1036,6 +1254,111 @@ void PokerPro::HandleEventStakes(const PokerMessage* pm)
 
 void PokerPro::HandleEventEndHand(const PokerMessage* pm) 
 {
+
+	CString s, hh;
+	int chair;
+	int npot;
+	int count_of_pots;
+	int rake;
+	char sTotalPot[32];
+	char sPot[32];
+	char sRake[32];
+	char a[4], b[4], c[4], d[4], e[4];
+
+
+
+	if (prefs.ppro_ft_hhlog_format() == true){
+		s.Format("*** SUMMARY ***\n");
+		writeFThh(&s);
+		count_of_pots = 0;
+		for (int j=0; j<=9; j++) {
+			count_of_pots++;
+			if (_ppdata.m_pot[j]==0){
+				break;
+			}
+		}
+
+		ConvertMoney(sTotalPot,50, _ppdata.m_total_pot);
+		s.Format("Total pot %s",sTotalPot);
+		writeFThh(&s);
+
+		rake = _ppdata.m_total_pot;
+
+		if (count_of_pots > 1) {
+
+			npot = 0;
+
+			while (npot < count_of_pots) {
+
+				ConvertMoney(sPot,50,_ppdata.m_pot[npot]);
+				rake = rake - _ppdata.m_pot[npot];
+
+				switch (npot) {
+					case 0:
+						s.Format(" Main pot %s.",sPot);
+						writeFThh(&s);
+						break;
+					case 1:
+						if (count_of_pots > 2) {
+							s.Format(" Side pot 1 %s.",sPot);
+						}
+						else {
+							s.Format(" Side pot %s.",sPot);
+						}
+						writeFThh(&s);
+						break;
+					default:
+						s.Format(" Side pot %d %s.",npot,sPot);
+						writeFThh(&s);
+						break;
+				}
+
+				npot++;
+			}
+		}
+
+		ConvertMoney(sRake,50,rake);
+		s.Format(" | Rake %s\n",sRake);
+		writeFThh(&s);
+
+		Card2Ascii(a,_ppdata.m_tinf.m_card[0]);
+		Card2Ascii(b,_ppdata.m_tinf.m_card[1]);
+		Card2Ascii(c,_ppdata.m_tinf.m_card[2]);
+		Card2Ascii(d,_ppdata.m_tinf.m_card[3]);
+		Card2Ascii(e,_ppdata.m_tinf.m_card[4]);
+
+		if (!_ppdata.m_tinf.m_card[0]==0) {
+			if (!_ppdata.m_tinf.m_card[3]==0) {
+				if (!_ppdata.m_tinf.m_card[4]==0) {
+					s.Format("Board: [%s %s %s %s %s]\n",a,b,c,d,e);
+					writeFThh(&s);
+				}
+				else {
+					s.Format("Board: [%s %s %s %s]\n",a,b,c,d);
+					writeFThh(&s);
+				}
+			}
+			else {
+				s.Format("Board: [%s %s %s]\n",a,b,c);
+				writeFThh(&s);
+			}
+
+		}
+
+		for (int i=0; i<10; i++) {
+			chair = i + 1;
+			s.Format("Seat %d: This line is not read by Poker Tracker.\n",
+				chair
+				);
+			writeFThh(&s);
+		}
+
+		s.Format("\n\n\n");
+		writeFThh(&s);
+
+	}
+
+
 	ResetHand();
 }
 
@@ -1056,8 +1379,15 @@ void PokerPro::HandleEventDeal(const PokerMessage* pm)
 	s.Format("Dealing...\n");
 	Publish(&s, 0);
 
-	s.Format("DEALER DEAL\n");
-	WriteHH(&s);
+	if (prefs.ppro_ft_hhlog_format()  == false) {
+		s.Format("DEALER DEAL\n");
+		WriteHH(&s);
+	}
+	else {
+		s.Format("The button is in seat #%d\n", _ppdata.m_tinf.m_activeDealer&0xf);
+		writeFThh(&s);
+	}
+
 }
 
 void PokerPro::HandleEventPlayerChat(const PokerMessage* pm) 
@@ -1071,6 +1401,8 @@ void PokerPro::HandleEventPlayerChat(const PokerMessage* pm)
 void PokerPro::HandleEventPokerValue(const PokerMessage* pm) 
 {
 	CString s = "";
+
+	 _ppdata.m_pinf[pm->m_chair&0x1f].m_handValue = pm->m_amount;
 
 	int isflush = (pm->m_amount & 0x90000000);
 
@@ -1090,20 +1422,31 @@ void PokerPro::HandleEventPokerValue(const PokerMessage* pm)
 	sval[6] = 0;
 	sval[7] = 0;
 
-	s.Format("%s POKER %s\n", _ppdata.m_pinf[pm->m_chair&0x1f].m_name, sval);
-	WriteHH(&s);
+	if (prefs.ppro_ft_hhlog_format()  == false) {
+		s.Format("%s POKER %s\n", _ppdata.m_pinf[pm->m_chair&0x1f].m_name, sval);
+		WriteHH(&s);
+	}
+	else {
+		char a[4];
+		char b[4];
+		Card2Ascii(a, _ppdata.m_pinf[pm->m_chair&0x1f].m_card[0]);
+		Card2Ascii(b, _ppdata.m_pinf[pm->m_chair&0x1f].m_card[1]);
+
+		s.Format("%s shows [%s %s] %s\n", _ppdata.m_pinf[pm->m_chair&0x1f].m_name,a,b,FT_string_PokerVal(pm->m_amount));
+		writeFThh(&s);
+	}
+
 }
 
 void PokerPro::HandleEventRevealCard(const PokerMessage* pm) 
 {
-	CString s = "";
+	CString s;
 
 	int ccard = (pm->m_lparam[2] >> 0) & 0xff;
 	int ncard = (pm->m_lparam[2] >> 8) & 0xff;
 	_ppdata.m_pinf[pm->m_chair&0x1f].m_card[ncard] = ccard;
 
-	if (ncard == 1) 
-	{
+	if (ncard == 1) {
 		char a[4];
 		char b[4];
 		Card2Ascii(a, _ppdata.m_pinf[pm->m_chair&0x1f].m_card[0]);
@@ -1112,9 +1455,27 @@ void PokerPro::HandleEventRevealCard(const PokerMessage* pm)
 		int round = GetRound();
 		const char* what = (round <= 1) ? "HAND" : "SHOW";
 
-		s.Format("%s %s %s %s\n", _ppdata.m_pinf[pm->m_chair&0x1f].m_name, what, a, b);
-		WriteHH(&s);
+		if (prefs.ppro_ft_hhlog_format()  == false) {
+			s.Format("%s %s %s %s\n", _ppdata.m_pinf[pm->m_chair&0x1f].m_name, what, a, b);
+			WriteHH(&s);
+		}
+		else {
+			if (round <= 1) {
+				s.Format("Dealt to %s [%s %s]\n", _ppdata.m_pinf[pm->m_chair&0x1f].m_name, a, b);
+
+			}
+			else {
+				if (_ppdata.m_tinf.m_card[4] > 0){
+					s.Format("%s shows [%s %s]\n", _ppdata.m_pinf[pm->m_chair&0x1f].m_name, a, b);
+				}
+				else {
+					s.Format("",1);
+				}
+			}
+			writeFThh(&s);
+		}
 	}
+
 }
 
 void PokerPro::HandleEventFlop(const PokerMessage* pm) 
@@ -1125,41 +1486,63 @@ void PokerPro::HandleEventFlop(const PokerMessage* pm)
 	ncard--;
 
 	_ppdata.m_tinf.m_card[ncard] = ccard;
-	CString s = "", hh = "";
+	CString s, hh;
 
-	if (ncard < 2) 
-	{
-		return;
-	}
-	if (ncard == 2) 
-	{
+	if (ncard < 2) { return; }
+	if (ncard == 2) {
 		char a[4], b[4], c[4];
 		Card2Ascii(a, _ppdata.m_tinf.m_card[0]);
 		Card2Ascii(b, _ppdata.m_tinf.m_card[1]);
 		Card2Ascii(c, _ppdata.m_tinf.m_card[2]);
 
 		s.Format("Dealer flop %s %s %s\n", a, b, c);
-		hh.Format("DEALER FLOP %s %s %s\n", a, b, c);
+		if (prefs.ppro_ft_hhlog_format()  == false) {
+			hh.Format("DEALER FLOP %s %s %s\n", a, b, c);
+		}
+		else {
+			hh.Format("*** FLOP *** [%s %s %s]\n", a, b, c);
+		}
 	}
 
-	if (ncard == 3) 
-	{
-		char d[4];
+	if (ncard == 3) {
+		char a[4], b[4], c[4], d[4];
+		Card2Ascii(a, _ppdata.m_tinf.m_card[0]);
+		Card2Ascii(b, _ppdata.m_tinf.m_card[1]);
+		Card2Ascii(c, _ppdata.m_tinf.m_card[2]);
 		Card2Ascii(d, _ppdata.m_tinf.m_card[3]);
 		s.Format("Dealer turn %s\n", d);
-		hh.Format("DEALER TURN %s\n", d);
+		if (prefs.ppro_ft_hhlog_format()  == false) {
+			hh.Format("DEALER TURN %s\n", d);
+		}
+		else {
+			hh.Format("*** TURN *** [%s %s %s] [%s]\n", a, b, c, d);
+		}
 	}
 
-	if (ncard == 4) 
-	{
-		char e[4];
+	if (ncard == 4) {
+		char a[4], b[4], c[4], d[4], e[4];
+		Card2Ascii(a, _ppdata.m_tinf.m_card[0]);
+		Card2Ascii(b, _ppdata.m_tinf.m_card[1]);
+		Card2Ascii(c, _ppdata.m_tinf.m_card[2]);
+		Card2Ascii(d, _ppdata.m_tinf.m_card[3]);
 		Card2Ascii(e, _ppdata.m_tinf.m_card[4]);
 		s.Format("Dealer river %s\n", e);
-		hh.Format("DEALER RIVER %s\n", e);
+		if (prefs.ppro_ft_hhlog_format()  == false) {
+			hh.Format("DEALER RIVER %s\n", e);
+		}
+		else {
+			hh.Format("*** RIVER *** [%s %s %s %s] [%s]\n", a, b, c, d, e);
+		}
 	}
 
 	Publish(&s, 0);
-	WriteHH(&hh);
+	if (prefs.ppro_ft_hhlog_format()  == false) {
+		WriteHH(&hh);
+	}
+	else {
+		writeFThh(&hh);
+	}
+
 }
 
 void PokerPro::HandleEventPlayerList(const PokerMessage* pm) 
@@ -1212,8 +1595,10 @@ void PokerPro::HandleAccount(const PokerMessage* pm)
 	}
 	Publish(&s, 0);
 
-	s = s.MakeLower();
-	WriteHH(&s);
+	if (prefs.ppro_ft_hhlog_format()  == false) {
+		s = s.MakeLower();
+		WriteHH(&s);
+	}
 }
 
 void PokerPro::HandleEventStarted(const PokerMessage* pm) 
@@ -1310,6 +1695,7 @@ void PokerPro::ResetHand(void)
 		_ppdata.m_pinf[i].m_card[0]=0;
 		_ppdata.m_pinf[i].m_card[1]=0;
 		_ppdata.m_pinf[i].m_betAmount=0;
+		_ppdata.m_pinf[i].m_handValue=0;
 	}
 	memset(_ppdata.m_pot,0,sizeof(_ppdata.m_pot));
 	_ppdata.m_prev_rais = 0;
@@ -1914,6 +2300,49 @@ void PokerPro::WriteHH(const CString *s)
 	}
 }
 
+void PokerPro::writeFThh(const CString *s) {
+
+		CString fn, fd;
+		FILE *hh_fp;
+
+		if (prefs.ppro_handhistory()) {
+			fn.Format("%s\\ppro\\FTHH\\%s\\%s", _startup_path,_ppdata.m_pinf[_ppdata.m_userchair].m_name,m_ftp_filename);
+			fopen_s(&hh_fp, fn.GetString(), "a");
+			if (hh_fp==NULL) {
+				fd.Format("%s\\ppro\\FTHH\\%s", _startup_path,_ppdata.m_pinf[_ppdata.m_userchair].m_name);
+				CreateDirectory(fd.GetString(), NULL);
+				fopen_s(&hh_fp, fn.GetString(), "a");
+				if (hh_fp==NULL) {
+					fd.Format("%s\\ppro\\FTHH", _startup_path);
+					CreateDirectory(fd.GetString(), NULL);
+					fd.Format("%s\\ppro\\FTHH\\%s", _startup_path,_ppdata.m_pinf[_ppdata.m_userchair].m_name);
+					CreateDirectory(fd.GetString(), NULL);
+					fopen_s(&hh_fp, fn.GetString(), "a");
+
+					if (hh_fp==NULL) {
+						fd.Format("%s\\ppro", _startup_path);
+						CreateDirectory(fd.GetString(), NULL);
+						fd.Format("%s\\ppro\\FTHH", _startup_path);
+						CreateDirectory(fd.GetString(), NULL);
+						fd.Format("%s\\ppro\\FTHH\\%s", _startup_path,_ppdata.m_pinf[_ppdata.m_userchair].m_name);
+						CreateDirectory(fd.GetString(), NULL);
+						fopen_s(&hh_fp, fn.GetString(), "a");
+					}
+
+				}
+
+			}
+
+			if (hh_fp!=NULL) {
+				fprintf(hh_fp, "%s", s->GetString());
+				fflush(hh_fp);
+				fclose(hh_fp);
+			}
+		}
+
+}
+
+
 const char* PokerPro::GetCardinalSuffix(const int n) 
 {
 	switch (n%10) 
@@ -1933,4 +2362,145 @@ const char* PokerPro::GetCardinalSuffix(const int n)
 	}
 
 	return "??";
+}
+
+const CString PokerPro::FT_string_PokerVal(int in_hand_value) {
+
+		CString ReturnValue;
+		unsigned char Card1;
+		unsigned char Card2;
+		unsigned char Card4;
+
+		Card1 = (in_hand_value >> 16) & 15;
+		Card2 = (in_hand_value >> 12) & 15;
+		Card4 = (in_hand_value >> 4) & 15;
+
+		switch (in_hand_value/0x1000000) {
+			case 0x80:
+				if (Card1 == 0xE) {
+					ReturnValue = "a royal flush";
+				}
+				else {
+					ReturnValue.Format("a straight flush, %s high", FT_FullCardName(Card1));
+				}
+				break;
+			case 0x40:
+				ReturnValue.Format("four of a kind, %ss", FT_FullCardName(Card1));
+				break;
+			case 0x20:
+				ReturnValue.Format("a full house, %ss and %ss", FT_FullCardName(Card1), FT_FullCardName(Card4));
+				break;
+			case 0x10:
+				ReturnValue.Format("a flush, %s high", FT_FullCardName(Card1));
+				break;
+			case 0x08:
+				ReturnValue.Format("a straight, %s high", FT_FullCardName(Card1));
+				break;
+			case 0x04:
+				ReturnValue.Format("three of a kind, %ss", FT_FullCardName(Card1));
+				break;
+			case 0x02:
+				ReturnValue.Format("two pair, %ss and %ss", FT_FullCardName(Card1), FT_FullCardName(Card4));
+				break;
+			case 0x01:
+				ReturnValue.Format("a pair, %ss", FT_FullCardName(Card1));
+				break;
+			case 0x00:
+				ReturnValue.Format("%s %s high", FT_FullCardName(Card1), FT_FullCardName(Card2));
+				break;
+			default:
+				ReturnValue = "unknown hand";
+				break;
+		}
+
+		return ReturnValue;
+
+}
+
+const CString PokerPro::FT_FullCardName(unsigned char in_card_value) {
+
+		CString ReturnValue;
+
+		switch (in_card_value) {
+			case 0xE:
+				ReturnValue = "Ace";
+				break;
+			case 0xD:
+				ReturnValue = "King";
+				break;
+			case 0xC:
+				ReturnValue = "Queen";
+				break;
+			case 0xB:
+				ReturnValue = "Jack";
+				break;
+			case 0xA:
+				ReturnValue = "Ten";
+				break;
+			case 0x9:
+				ReturnValue = "Nine";
+				break;
+			case 0x8:
+				ReturnValue = "Eight";
+				break;
+			case 0x7:
+				ReturnValue = "Seven";
+				break;
+			case 0x6:
+				ReturnValue = "Six";
+				break;
+			case 0x5:
+				ReturnValue = "Five";
+				break;
+			case 0x4:
+				ReturnValue = "Four";
+				break;
+			case 0x3:
+				ReturnValue = "Three";
+				break;
+			case 0x2:
+				ReturnValue = "Two";
+				break;
+			case 0x1:
+				ReturnValue = "Ace";
+				break;
+			default:
+				ReturnValue = "an uncard";
+				break;
+		}
+
+		return ReturnValue;
+
+}
+
+void PokerPro::setHHFilename(void) {
+
+	time_t rawtime;
+	tm* TimeHolder;
+	tm FNTime;
+
+	char sbs[32];
+	char bbs[32];
+
+	time(&rawtime);
+	TimeHolder = localtime(&rawtime);
+	FNTime = TimeHolder[0];
+
+	//Spreading this atrocity to multiple lines for clarity.
+	//As clear as anything using Format can be, at any rate...
+
+
+	m_ftp_filename.Format(
+		"FT%d%02d%02d %s - $%s-$%s - %s.txt",
+		FNTime.tm_year + 1900,
+		FNTime.tm_mon + 1,
+		FNTime.tm_mday,
+		_ppdata.m_tinf.m_name,
+		ConvertMoney(sbs,32,_ppdata.m_tinf.m_betSBlind),
+		ConvertMoney(bbs,32,_ppdata.m_tinf.m_betMin),
+		((_ppdata.m_tinf.m_lim&0x7)==0 ? "No Limit Hold'em" :
+		(_ppdata.m_tinf.m_lim&0x7)==1 ? "Pot Limit Hold'em" :
+		"Limit Hold'em")  //Copied wholesale from our friends as I have no idea how to read m_lim otherwise.
+		);
+
 }
