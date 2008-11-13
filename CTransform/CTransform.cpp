@@ -71,8 +71,8 @@ const int CTransform::CTypeTransform(RMapCI region, const HDC hdc, CString *text
 	bmi = (BITMAPINFO *) ::HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, info_len);
 
 	// Get bitmap size
-	width = region->second.right - region->second.left;
-	height = region->second.bottom - region->second.top;
+	width = region->second.right - region->second.left + 1;
+	height = region->second.bottom - region->second.top + 1;
 
 	// Get pixels
 	// Populate BITMAPINFOHEADER
@@ -149,14 +149,11 @@ const int CTransform::ITypeTransform(RMapCI region, const HDC hdc, CString *text
 	int			info_len = sizeof(BITMAPINFOHEADER) + 1024;
 	bmi = (BITMAPINFO *) ::HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, info_len);
 
-	// OpenHoldem notes 2008-11-12
-	// Width and height calcs below are wrong..they should both have a +1 on the end,
-	// and should be fixed.
-	width = region->second.right - region->second.left;
-	height = region->second.bottom - region->second.top;
+	width = region->second.right - region->second.left + 1;
+	height = region->second.bottom - region->second.top + 1;
 	
 	// See if region size is too large
-	if (width >= MAX_IMAGE_WIDTH || height>=MAX_IMAGE_HEIGHT) 
+	if (width > MAX_IMAGE_WIDTH || height > MAX_IMAGE_HEIGHT) 
 	{
 		HeapFree(GetProcessHeap(), NULL, bmi);
 		return ERR_FIELD_TOO_LARGE;
@@ -253,44 +250,32 @@ const int CTransform::HTypeTransform(RMapCI region, const HDC hdc, CString *text
 	int					width = 0, height = 0;
 	int					hash_type = 0, pixcount = 0;
 	uint32_t			hash = 0, pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0};
-	int					retval=ERR_NOTHING_TO_SCRAPE;
-	HBITMAP				hbm = NULL;
+	int					retval = ERR_NOTHING_TO_SCRAPE;
 	BYTE				*pBits = NULL, red = 0, green = 0, blue = 0;
 
-	// OpenHoldem notes 2008-11-12
-	// Width and height calcs below are wrong..they should both have a +1 on the end,
-	// however, changing them at this point would break all existing .tm's that use 
-	// hashes.  Impact is minimal, as only one row of pixels on the far right and far
-	// bottom are skipped, and thus a good hash is still generated.
-	width = region->second.right - region->second.left;
-	height = region->second.bottom - region->second.top;
+	width = region->second.right - region->second.left + 1;
+	height = region->second.bottom - region->second.top + 1;
 	hash_type = region->second.transform.GetString()[1] - '0';
 	
 	if (p_tablemap->h$(hash_type)->empty())
 		return ERR_NO_HASH_MATCH;
+
+	// See if region size is too large
+	if (width > MAX_HASH_WIDTH || height > MAX_HASH_HEIGHT) 
+		return ERR_FIELD_TOO_LARGE;
+
+	// If width or height is negative (left>right or bottom>top), then return
+	if (width<0 || height<0)
+		return ERR_NOTHING_TO_SCRAPE;
 
 	// Allocate heap space for BITMAPINFO
 	BITMAPINFO	*bmi;
 	int			info_len = sizeof(BITMAPINFOHEADER) + 1024;
 	bmi = (BITMAPINFO *) ::HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, info_len);
 
-	// See if region size is too large
-	if (width >= MAX_HASH_WIDTH || height>=MAX_HASH_HEIGHT) 
-	{
-		HeapFree(GetProcessHeap(), NULL, bmi);
-		return ERR_FIELD_TOO_LARGE;
-	}
-
-	// If width or height is negative (left>right or bottom>top), then return
-	if (width<0 || height<0)
-	{
-		HeapFree(GetProcessHeap(), NULL, bmi);
-		return ERR_NOTHING_TO_SCRAPE;
-	}
-
 	// Get pixels
 	// Populate BITMAPINFOHEADER
-	hbm = (HBITMAP) GetCurrentObject(hdc, OBJ_BITMAP);
+	HBITMAP hbm = (HBITMAP) GetCurrentObject(hdc, OBJ_BITMAP);
 	bmi->bmiHeader.biSize = sizeof(bmi->bmiHeader);
 	bmi->bmiHeader.biBitCount = 0;
 	::GetDIBits(hdc, hbm, 0, 0, NULL, bmi, DIB_RGB_COLORS);
@@ -368,31 +353,23 @@ const int CTransform::TTypeTransform(RMapCI region, const HDC hdc, CString *text
 {
 	int					x = 0, y = 0;
 	int					i = 0;
-	int					width = region->second.right - region->second.left;
-	int					height = region->second.bottom - region->second.top;
+	int					width = region->second.right - region->second.left + 1;
+	int					height = region->second.bottom - region->second.top + 1;
 	CString				s = "", s$tXtype = "";
-	HBITMAP				hbm = NULL;
 	BYTE				*pBits = NULL, alpha = 0, red = 0, green = 0, blue = 0;
-
-	// Allocate heap space for BITMAPINFO
-	BITMAPINFO	*bmi = NULL;
-	int			info_len = sizeof(BITMAPINFOHEADER) + 1024;
-	bmi = (BITMAPINFO *) ::HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, info_len);
 
 	// Initialize
 	*text = "";
 
 	// Check max size
-	if (width+1 > MAX_CHAR_WIDTH) 
+	if (width > MAX_CHAR_WIDTH) 
 	{
 		text->Append("Field too wide");
-		HeapFree(GetProcessHeap(), NULL, bmi);
 		return ERR_FIELD_TOO_LARGE;
 	}
-	if (height+1 > MAX_CHAR_HEIGHT) 
+	if (height > MAX_CHAR_HEIGHT) 
 	{
 		text->Append("Field too tall");
-		HeapFree(GetProcessHeap(), NULL, bmi);
 		return ERR_FIELD_TOO_LARGE;
 	}
 
@@ -405,9 +382,14 @@ const int CTransform::TTypeTransform(RMapCI region, const HDC hdc, CString *text
 	if (s_iter != p_tablemap->s$()->end())
 		s$tXtype = s_iter->second.text;
 
+	// Allocate heap space for BITMAPINFO
+	BITMAPINFO	*bmi = NULL;
+	int			info_len = sizeof(BITMAPINFOHEADER) + 1024;
+	bmi = (BITMAPINFO *) ::HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, info_len);
+
 	// Load entire foreground pixel array into memory
 	// Populate BITMAPINFOHEADER
-	hbm = (HBITMAP) GetCurrentObject(hdc, OBJ_BITMAP);
+	HBITMAP hbm = (HBITMAP) GetCurrentObject(hdc, OBJ_BITMAP);
 	bmi->bmiHeader.biSize = sizeof(bmi->bmiHeader);
 	bmi->bmiHeader.biBitCount = 0;
 	::GetDIBits(hdc, hbm, 0, 0, NULL, bmi, DIB_RGB_COLORS);

@@ -550,20 +550,38 @@ void CMainFrame::OnFileLoadTableMap()
 
 	if (cfd.DoModal() == IDOK)
 	{
-		ret = p_tablemap->LoadTablemap(cfd.m_ofn.lpstrFile, VER_OPENSCRAPE_1, false, &line, prefs.disable_msgbox());
-		if (ret == ERR_VERSION && !prefs.disable_msgbox())
+		CString loaded_version;
+		ret = p_tablemap->LoadTablemap(cfd.m_ofn.lpstrFile, VER_OPENSCRAPE_2, false, &line, prefs.disable_msgbox()), &loaded_version;
+		
+		if (loaded_version == VER_OPENHOLDEM_1 && ret == ERR_VERSION && !prefs.disable_msgbox())
 		{
 			e.Format("This is an OpenHoldem v1 profile (.ohdb1).\n"
 					 "OpenHoldem versions 1.2.0 and higher require v2 Profiles (.ohdb2),\n"
 					 "or OpenScrape Table Maps.\n");
 			MessageBox(e, "Table map load error", MB_OK);
 		}
-		else if (ret != SUCCESS&& !prefs.disable_msgbox())
+
+		else if ( (loaded_version == VER_OPENSCRAPE_1 || loaded_version == VER_OPENHOLDEM_2) 
+				  && !prefs.disable_msgbox())
+		{
+			MessageBox("This is a version 1 table map.\n\n"\
+					   "Version 2.0.0 and higher of OpenHoldem use a new format (version 2).  This\n"\
+					   "table map has been loaded, but it is highly unlikely to work correctly until\n"\
+					   "is has been opened in OpenScrape version 2.0.0 or higher, adjustments have\n"\
+					   "been made to autoplayer settings, color transforms, and hash transforms, and\n"\
+					   "has been resaved.\n\n"\
+					   "Please do not use this table map prior to updating it to version 2 in\n"\
+					   "OpenScrape or you run the very serious risk of costly mis-scrapes.",
+					   "Table map load warning", MB_OK | MB_ICONEXCLAMATION);		
+		}
+
+		else if (ret != SUCCESS && !prefs.disable_msgbox())
 		{
 			e.Format("Error code: %d  line: %d", ret, line);
 			MessageBox(e, "Table map load error", MB_OK);
 		}
-		else
+		
+		if (ret == SUCCESS)
 		{
 			// Reset "ScraperOutput" dialog, if it is live
 			if (m_ScraperOutputDlg) 
@@ -620,7 +638,7 @@ void CMainFrame::OnBnClickedGreenCircle()
 		bFound = hFile.FindNextFile();
 		if (!hFile.IsDots() && !hFile.IsDirectory() && hFile.GetFilePath()!=current_path)
 		{
-			ret = p_tablemap->LoadTablemap((char *) hFile.GetFilePath().GetString(), VER_OPENSCRAPE_1, false, &line, prefs.disable_msgbox());
+			ret = p_tablemap->LoadTablemap((char *) hFile.GetFilePath().GetString(), VER_OPENSCRAPE_2, false, &line, prefs.disable_msgbox());
 			if (ret == SUCCESS)
 			{
 				smap.z$ = p_tablemap->z$();
@@ -648,7 +666,7 @@ void CMainFrame::OnBnClickedGreenCircle()
 		bFound = hFile.FindNextFile();
 		if (!hFile.IsDots() && !hFile.IsDirectory() && hFile.GetFilePath()!=current_path)
 		{
-			ret = p_tablemap->LoadTablemap((char *) hFile.GetFilePath().GetString(), VER_OPENSCRAPE_1, false, &line, prefs.disable_msgbox());
+			ret = p_tablemap->LoadTablemap((char *) hFile.GetFilePath().GetString(), VER_OPENSCRAPE_2, false, &line, prefs.disable_msgbox());
 			if (ret == SUCCESS)
 			{
 				smap.z$ = p_tablemap->z$();
@@ -716,7 +734,22 @@ void CMainFrame::OnBnClickedGreenCircle()
 		{
 			// Load correct tablemap, and save hwnd/rect/numchairs of table that we are "attached" to
 			set_attached_hwnd(g_tlist[cstd.selected_item].hwnd);
-			p_tablemap->LoadTablemap((char *) g_tlist[cstd.selected_item].path.GetString(), VER_OPENSCRAPE_1, false, &line, prefs.disable_msgbox());
+			CString loaded_version;
+			p_tablemap->LoadTablemap((char *) g_tlist[cstd.selected_item].path.GetString(), VER_OPENSCRAPE_2, false, &line, 
+									 prefs.disable_msgbox(), &loaded_version);
+
+			if ( (loaded_version == VER_OPENSCRAPE_1 || loaded_version == VER_OPENHOLDEM_2) && !prefs.disable_msgbox())
+			{
+				MessageBox("You have loaded a version 1 table map for this poker table.\n\n"\
+						   "Version 2.0.0 and higher of OpenHoldem use a new format (version 2).  This\n"\
+						   "table map has been loaded, but it is highly unlikely to work correctly until\n"\
+						   "is has been opened in OpenScrape version 2.0.0 or higher, adjustments have\n"\
+						   "been made to autoplayer settings, color transforms, and hash transforms, and\n"\
+						   "has been resaved.\n\n"\
+						   "Please do not continue touse this table map prior to updating it to version\n"\
+						   "2 in OpenScrape or you run the very serious risk of costly mis-scrapes.",
+						   "Table map load warning", MB_OK | MB_ICONEXCLAMATION);	
+			}
 
 			// Create bitmaps
 			p_scraper->CreateBitmaps();

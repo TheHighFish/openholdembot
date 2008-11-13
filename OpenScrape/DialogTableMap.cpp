@@ -349,8 +349,8 @@ BOOL CDlgTableMap::DestroyWindow()
 
 	reg.tablemap_x = wp.rcNormalPosition.left;
 	reg.tablemap_y = wp.rcNormalPosition.top;
-	reg.tablemap_dx = wp.rcNormalPosition.right - wp.rcNormalPosition.left;
-	reg.tablemap_dy = wp.rcNormalPosition.bottom - wp.rcNormalPosition.top;
+	reg.tablemap_dx = wp.rcNormalPosition.right - wp.rcNormalPosition.left + 1;
+	reg.tablemap_dy = wp.rcNormalPosition.bottom - wp.rcNormalPosition.top + 1;
 	reg.write_reg();
 
 	return CDialog::DestroyWindow();
@@ -482,9 +482,9 @@ void CDlgTableMap::draw_region_bitmap(void)
 
 	// Create a memory DC to hold only the subset bitmap and copy
 	hdc_bitmap_subset = CreateCompatibleDC(hdcScreen);
-	bitmap_subset = CreateCompatibleBitmap(hdcScreen, right-left, bottom-top);
+	bitmap_subset = CreateCompatibleBitmap(hdcScreen, right-left+1, bottom-top+1);
 	old_bitmap_subset = (HBITMAP) SelectObject(hdc_bitmap_subset, bitmap_subset);
-	BitBlt(hdc_bitmap_subset, 0, 0, right-left, bottom-top, hdc_bitmap_orig, left, top, SRCCOPY);
+	BitBlt(hdc_bitmap_subset, 0, 0, right-left+1, bottom-top+1, hdc_bitmap_orig, left, top, SRCCOPY);
 
 	// Draw selection rectangle on the copy of the bitmap
 	pTempPen = (CPen*) SelectObject(hdc_bitmap_subset, red_pen);
@@ -492,22 +492,22 @@ void CDlgTableMap::draw_region_bitmap(void)
 	pTempBrush = (CBrush*) SelectObject(hdc_bitmap_subset, GetStockObject(NULL_BRUSH));
 	oldbrush.FromHandle((HBRUSH)pTempBrush);
 	Rectangle(hdc_bitmap_subset, 4, 4, 
-			  6 + sel_region->second.right - sel_region->second.left,  
-			  6 + sel_region->second.bottom - sel_region->second.top);
+			  6 + sel_region->second.right - sel_region->second.left + 1,  
+			  6 + sel_region->second.bottom - sel_region->second.top + 1);
 	SelectObject(hdc_bitmap_subset, oldpen);
 	SelectObject(hdc_bitmap_subset, oldbrush);
 
 	// Resize bitmap control to fit
-	m_BitmapFrame.SetWindowPos(NULL, 0, 0, ((right-left)*zoom)+2, ((bottom-top)*zoom)+2, SWP_NOMOVE | SWP_NOZORDER | SWP_NOCOPYBITS);
+	m_BitmapFrame.SetWindowPos(NULL, 0, 0, ((right-left+1)*zoom)+2, ((bottom-top+1)*zoom)+2, SWP_NOMOVE | SWP_NOZORDER | SWP_NOCOPYBITS);
 
 	// Copy from bitmap subset to our control and stretch it
-	bitmap_control = CreateCompatibleBitmap(hdcScreen, (right-left)*zoom, (bottom-top)*zoom);
+	bitmap_control = CreateCompatibleBitmap(hdcScreen, (right-left+1)*zoom, (bottom-top+1)*zoom);
 	old_bitmap_control = (HBITMAP) SelectObject(hdcControl, bitmap_control);
 	if (sel_region->second.right >= sel_region->second.left && 
 		sel_region->second.bottom >= sel_region->second.top)
 	{
-		StretchBlt(hdcControl, 1, 1, (right-left)*zoom, (bottom-top)*zoom,
-			   hdc_bitmap_subset, 0, 0, right-left, bottom-top,
+		StretchBlt(hdcControl, 1, 1, (right-left+1)*zoom, (bottom-top+1)*zoom,
+			   hdc_bitmap_subset, 0, 0, right-left+1, bottom-top+1,
 			   SRCCOPY);
 	}
 
@@ -1085,13 +1085,13 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 
 	hdc_bitmap_transform = CreateCompatibleDC(hdcScreen);
 	bitmap_transform = CreateCompatibleBitmap(hdcScreen, 
-								   sel_region->second.right - sel_region->second.left, 
-								   sel_region->second.bottom  - sel_region->second.top);
+								   sel_region->second.right - sel_region->second.left + 1, 
+								   sel_region->second.bottom  - sel_region->second.top + 1);
 	old_bitmap_transform = (HBITMAP) SelectObject(hdc_bitmap_transform, bitmap_transform);
 
 	BitBlt(hdc_bitmap_transform, 0, 0, 
-		   sel_region->second.right - sel_region->second.left, 
-		   sel_region->second.bottom - sel_region->second.top,
+		   sel_region->second.right - sel_region->second.left + 1, 
+		   sel_region->second.bottom - sel_region->second.top + 1,
 		   hdc_bitmap_orig, 
 		   sel_region->second.left, sel_region->second.top, 
 		   SRCCOPY);
@@ -2287,13 +2287,13 @@ void CDlgTableMap::OnBnClickedCreateImage()
 	if (edit.DoModal() == IDOK) 
 	{
 		// Get bitmap size
-		width = pDoc->attached_rect.right - pDoc->attached_rect.left;
-		height = pDoc->attached_rect.bottom - pDoc->attached_rect.top;
+		width = pDoc->attached_rect.right - pDoc->attached_rect.left + 1;
+		height = pDoc->attached_rect.bottom - pDoc->attached_rect.top + 1;
 
 		// Populate new image record			
 		new_image.name = edit.m_result;
-		new_image.width = sel_region->second.right - sel_region->second.left;
-		new_image.height = sel_region->second.bottom - sel_region->second.top;
+		new_image.width = sel_region->second.right - sel_region->second.left + 1;
+		new_image.height = sel_region->second.bottom - sel_region->second.top + 1;
 		
 		// Allocate space for "RGBAImage"
 		text = new_image.name + ".ppm";
@@ -2406,8 +2406,8 @@ void CDlgTableMap::OnBnClickedCreateFont()
 		background[i] = true;
 
 	// Get bitmap size
-	width = sel_region->second.right - sel_region->second.left;
-	height = sel_region->second.bottom - sel_region->second.top;
+	width = sel_region->second.right - sel_region->second.left + 1;
+	height = sel_region->second.bottom - sel_region->second.top + 1;
 
 	// Select saved bitmap into memory DC
 	hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL); 
@@ -2832,8 +2832,8 @@ COLORREF CDlgTableMap::get_color_under_mouse(UINT *nFlags, CPoint *point)
 
 	// Load TableMap dialog into memory DC
 	GetClientRect(&crect);
-	width = crect.right - crect.left;
-	height = crect.bottom - crect.top;
+	width = crect.right - crect.left + 1;
+	height = crect.bottom - crect.top + 1;
 	hbm = CreateCompatibleBitmap(hdcScreen, width, height);
 	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, hbm);
 	BitBlt(hdcCompatible, 0, 0, width, height, hdc, 0, 0, SRCCOPY);

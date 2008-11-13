@@ -51,6 +51,7 @@ typedef boost::spirit::node_val_data_factory<const char *> int_factory_t;
 #define VER_OPENHOLDEM_1		".ohdb1"  // no longer valid, due to changing of hash keys for types 1-3
 #define VER_OPENHOLDEM_2		".ohdb2"  // legacy version, still supported, although openscrape table maps are preferred
 #define VER_OPENSCRAPE_1		".osdb1"
+#define VER_OPENSCRAPE_2		".osdb2"
 #define VER_WINSCRAPE_DATE1		"2006 Aug 7 13:11:37"
 #define VER_WINSCRAPE_DATE2		"2007 Nov 1 08:32:55"
 #define VER_WINSCRAPE_DATE3		"2007 Nov 3 09:54:04"
