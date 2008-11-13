@@ -119,7 +119,7 @@ void COpenScrapeView::OnDraw(CDC* pDC)
 				pTempBrush = (CBrush*)pDC->SelectObject(GetStockObject(NULL_BRUSH));
 				oldbrush.FromHandle((HBRUSH)pTempBrush);
 
-				pDC->Rectangle(r_iter->second.left-1, r_iter->second.top-1, r_iter->second.right+1, r_iter->second.bottom+1);
+				pDC->Rectangle(r_iter->second.left-1, r_iter->second.top-1, r_iter->second.right+2, r_iter->second.bottom+2);
 
 				pDC->SelectObject(oldpen);
 				pDC->SelectObject(oldbrush);
@@ -133,7 +133,7 @@ void COpenScrapeView::OnDraw(CDC* pDC)
 				pTempBrush = (CBrush*)pDC->SelectObject(GetStockObject(NULL_BRUSH));
 				oldbrush.FromHandle((HBRUSH)pTempBrush);
 
-				pDC->Rectangle(r_iter->second.left-1, r_iter->second.top-1, r_iter->second.right+1, r_iter->second.bottom+1);
+				pDC->Rectangle(r_iter->second.left-1, r_iter->second.top-1, r_iter->second.right+2, r_iter->second.bottom+2);
 
 				pDC->SelectObject(oldpen);
 				pDC->SelectObject(oldbrush);
@@ -417,7 +417,7 @@ void COpenScrapeView::blink_rect(void)
 		RMapCI r_iter=p_tablemap->r$()->find(sel.GetString());
 
 		if (r_iter != p_tablemap->r$()->end())
-			pDC->Rectangle(r_iter->second.left-1, r_iter->second.top-1, r_iter->second.right+1, r_iter->second.bottom+1);
+			pDC->Rectangle(r_iter->second.left-1, r_iter->second.top-1, r_iter->second.right+2, r_iter->second.bottom+2);
 	}
 
 	// Clean up

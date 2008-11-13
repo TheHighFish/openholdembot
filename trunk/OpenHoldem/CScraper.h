@@ -144,21 +144,21 @@ private:
 
 private:
 	// private functions and variables - not available via accessors or mutators
-	void ScrapeCommonCards(const HDC hdcCompatible, const HDC hdc);
-	void ScrapePlayerCards(const int chair, const HDC hdcCompatible, const HDC hdc);
-	void ScrapeSeated(const int chair, const HDC hdcCompatible, const HDC hdc);
-	void ScrapeActive(const int chair, const HDC hdcCompatible, const HDC hdc);
-	void ScrapeDealer(const int chair, const HDC hdcCompatible, const HDC hdc);
-	void ScrapeName(const int chair, const HDC hdcCompatible, const HDC hdc);
-	void ScrapeBalance(const int chair, const HDC hdcCompatible, const HDC hdc);
-	void ScrapeBet(const int chair, const HDC hdcCompatible, const HDC hdc);
-	void ScrapeButtons(const HDC hdcCompatible, const HDC hdc);
-	void ScrapePots(const HDC hdcCompatible, const HDC hdc);
-	void ScrapeLimits(const HDC hdcCompatible, const HDC hdc);
+	void ScrapeCommonCards();
+	void ScrapePlayerCards(const int chair);
+	void ScrapeSeated(const int chair);
+	void ScrapeActive(const int chair);
+	void ScrapeDealer(const int chair);
+	void ScrapeName(const int chair);
+	void ScrapeBalance(const int chair);
+	void ScrapeBet(const int chair);
+	void ScrapeButtons();
+	void ScrapePots();
+	void ScrapeLimits();
 	const double GetHandnumFromString(const CString t);
-	bool ProcessRegion(const HDC hdcCompatible, const HDC hdc, RMapCI r_iter);
+	bool ProcessRegion(RMapCI r_iter);
 	const bool BitmapsSame(const HBITMAP HBitmapLeft, const HBITMAP HBitmapRight);
-	const double DoChipScrape(const HDC hdc, RMapCI r_iter);
+	const double DoChipScrape(RMapCI r_iter);
 	const bool IsNumeric(const CString t);
 
 	// for change detection

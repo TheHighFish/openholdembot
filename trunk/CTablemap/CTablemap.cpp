@@ -94,13 +94,15 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 	
 	//
 	// Validate file version, if passed in
-	// check the ".wsdb1"/".ohdb1"/".ohdb2"/".osdb1" line
+	// check the ".wsdb1"/".ohdb1"/".ohdb2"/".osdb1"/".osdb2" line
 	if (strlen(version)) 
 	{
-		if (memcmp(version, VER_OPENSCRAPE_1, strlen(version)) == 0)
+		if (memcmp(version, VER_OPENSCRAPE_1, strlen(version)) == 0 ||
+			memcmp(version, VER_OPENSCRAPE_2, strlen(version)) == 0)
 		{
 			if (memcmp(strLine.GetString(), VER_OPENHOLDEM_2, strlen(VER_OPENHOLDEM_2)) != 0 &&
-				memcmp(strLine.GetString(), VER_OPENSCRAPE_1, strlen(VER_OPENSCRAPE_1)) != 0)
+				memcmp(strLine.GetString(), VER_OPENSCRAPE_1, strlen(VER_OPENSCRAPE_1)) != 0 &&
+				memcmp(strLine.GetString(), VER_OPENSCRAPE_2, strlen(VER_OPENSCRAPE_2)) != 0)
 			{
 				return ERR_VERSION;
 			}
@@ -128,6 +130,9 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 
 		else if (memcmp(strLine.GetString(), VER_OPENSCRAPE_1, strlen(VER_OPENSCRAPE_1)) == 0)
 			loaded_version->Format("%s", VER_OPENSCRAPE_1);
+
+		else if (memcmp(strLine.GetString(), VER_OPENSCRAPE_2, strlen(VER_OPENSCRAPE_2)) == 0)
+			loaded_version->Format("%s", VER_OPENSCRAPE_2);
 	}
 
 
@@ -172,7 +177,8 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 		if (strLineType == VER_WINSCRAPE ||
 				strLineType == VER_OPENHOLDEM_1 ||
 				strLineType == VER_OPENHOLDEM_2 ||
-				strLineType == VER_OPENSCRAPE_1) 
+				strLineType == VER_OPENSCRAPE_1 ||
+				strLineType == VER_OPENSCRAPE_2) 
 		{
 			continue;
 		}
@@ -199,15 +205,19 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 
 			if (!z$_insert(hold_size))
 			{
-				ZMapCI z_iter = _z$.find(hold_size.name);
-				if (z_iter != _z$.end())
+				if (!disable_msgbox)
 				{
-					t.Format("'%s' skipped, as this size record already exists.", strLine);
-					MessageBox(NULL, t.GetString(), "ERROR adding size record", MB_OK | MB_TOPMOST);			
-				}
-				else
-				{
-					MessageBox(NULL, strLine, "ERROR adding size record", MB_OK | MB_TOPMOST);			
+					ZMapCI z_iter = _z$.find(hold_size.name);
+
+					if (z_iter != _z$.end())
+					{
+						t.Format("'%s' skipped, as this size record already exists.", strLine);
+						MessageBox(NULL, t.GetString(), "ERROR adding size record", MB_OK | MB_TOPMOST);			
+					}
+					else
+					{
+						MessageBox(NULL, strLine, "ERROR adding size record", MB_OK | MB_TOPMOST);			
+					}
 				}
 			}
 		}
@@ -578,7 +588,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	char		nowtime[26] = {0};
 
 	// Version
-	s.Format("%s\r\n", VER_OPENSCRAPE_1); ar.WriteString(s);
+	s.Format("%s\r\n", VER_OPENSCRAPE_2); ar.WriteString(s);
 	ar.WriteString("\r\n");
 
 	// Comment header
@@ -701,9 +711,9 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 			s = "";
 			for (int x=0; x<width; x++)
 			{
-				text.Format("%08x", i_iter->second.pixel[width + x]);
-				t = text.Mid(2, 6) + text.Mid(0,2);
-				s.Append(t);
+				text.Format("%08x", i_iter->second.pixel[y*width + x]);
+				s.Append(text.Mid(2, 6));
+				s.Append(text.Mid(0,2));
 			}
 			s.Append("\r\n");
 			ar.WriteString(s);

@@ -142,6 +142,28 @@ void COpenScrapeDoc::Serialize(CArchive& ar)
 			valid_open = false;
 		}
 
+		else if (loaded_version == VER_OPENSCRAPE_1)
+		{
+			MessageBox(pMyMainWnd->GetSafeHwnd(), "This is a version 1 table map.  Version 2.0.0 and higher of OpenHoldem and\n" \
+												  "OpenScrape use a new format (version 2) for .tm files.  OpenScrape has loaded\n"\
+												  "this table map into memory, but it is highly recommended that you immediately\n"\
+												  "use the menu 'File\\Save As' to save this map to a new file name.\n\n"\
+												  "The following settings have been moved from OpenHoldem preferences to the .tm\n"\
+												  "file itself.  Please either create these s$ records, or realize that defaults\n"\
+												  "will be used by the OpenHoldem autoplayer if they are not present in the .tm:\n"\
+												  "   swagselectionmethod, swagdeletionmethod, swagconfirmationmethod, and\n"\
+												  "   buttonclickmethod\n\n"\
+												  "Handling of region rectangles has changed in version 2 of the table map file.\n"\
+												  "The rightmost column and bottommost row of pixels are no longer ignored in\n"\
+												  "color and hash transformation calculations.  For hashes, please use the menu\n"\
+												  "'Edit\\Update Hashes' to recalculate hashes.  For regions that use color\n"\
+												  "transforms, a manual review of these reqions is required to ensure that the\n"\
+												  "meaning of the region is still correct.\n",
+												  "Old version warning", MB_OK);
+			is_dirty = false;
+			valid_open = true;
+		}
+
 		else if (ret != SUCCESS)
 		{
 			s.Format("Error %d loading table map.", ret);
