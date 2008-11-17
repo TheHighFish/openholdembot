@@ -6,7 +6,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0057")
     REASONING ("Range check for symbol defcon")
     PRECONDITION (true)
-    POSTCONDITION ((gws("defcaon") >= 0) && (gws("defcon") <= 1))
+    POSTCONDITION ((gws("defcon") >= 0) && (gws("defcon") <= 1))
     SYMBOLS_POSSIBLY_AFFECTED ("defcon")
 END_TESTCASE
 
