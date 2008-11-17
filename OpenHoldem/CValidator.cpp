@@ -75,6 +75,10 @@ double CValidator::gws(const char *the_Symbol)
 	return GetSymbolFromDll(int(my_Chair), the_Symbol, is_Error);
 }
 
+// Constants for the validators range-checks
+#define UNDEFINED_ZERO 0
+#define	UNDEFINED_NEGATIVE_ONE -1
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Macros for the validator,
@@ -165,8 +169,30 @@ void CValidator::ValidateGameState()
 	// we just put them in external files
 	// and include them here as is.
 	//
-#include "Validator_Rules\range_checks_inline.cpp"
-#include "Validator_Rules\consistency_checks_buttons_inline.cpp"
+#include "Validator_Rules\range_checks_general_symbols_inline.cpp"
+#include "Validator_Rules\range_checks_tablemap_symbols_inline.cpp"
+#include "Validator_Rules\range_checks_formula_file_inline.cpp"
+#include "Validator_Rules\range_checks_limits_inline.cpp"
+#include "Validator_Rules\range_checks_handrank_inline.cpp"
+#include "Validator_Rules\range_checks_chairs_inline.cpp"
+#include "Validator_Rules\range_checks_rounds_positions_inline.cpp"
+#include "Validator_Rules\range_checks_probabilities_inline.cpp"
+#include "Validator_Rules\range_checks_P_formula_inline.cpp"
+#include "Validator_Rules\range_checks_chip_amounts_inline.cpp"
+#include "Validator_Rules\range_checks_number_of_bets_inline.cpp"
+#include "Validator_Rules\range_checks_list_tests_inline.cpp"
+#include "Validator_Rules\range_checks_players_players_friends_opponents_inline.cpp"
+#include "Validator_Rules\range_checks_flags_inline.cpp"
+#include "Validator_Rules\range_checks_common_cards_inline.cpp"
+#include "Validator_Rules\range_checks_known_cards_inline.cpp"
+#include "Validator_Rules\range_checks_nhands_inline.cpp"
+#include "Validator_Rules\range_checks_flushes_straights_sets_inline.cpp"
+#include "Validator_Rules\range_checks_time_inline.cpp"
+#include "Validator_Rules\range_checks_table_stats.cpp"
+#include "Validator_Rules\range_checks_card_symbols_inline.cpp"
+#include "Validator_Rules\range_checks_NOT_TO_DO_inline.cpp"
 #include "Validator_Rules\consistency_checks_cards_inline.cpp"
+#include "Validator_Rules\consistency_checks_buttons_inline.cpp"
 #include "Validator_Rules\consistency_checks_handreset_inline.cpp"
+#include "Validator_Rules\consistency_checks_memory_symbols_inline.cpp"
 }

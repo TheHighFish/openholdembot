@@ -1,0 +1,20 @@
+//
+// Flags (0127..0128)
+//
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0127")
+    REASONING ("Range check for symbol fmax")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("fmax") >= 0) && (gws("fmax") <= 9))
+    SYMBOLS_POSSIBLY_AFFECTED ("fmax")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0128")
+    REASONING ("Range check for symbol fbits")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("fbits") >= 0) && (gws("fbits") <= 1023))
+    SYMBOLS_POSSIBLY_AFFECTED ("fbits")
+END_TESTCASE
