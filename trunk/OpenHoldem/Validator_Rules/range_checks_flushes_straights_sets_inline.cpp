@@ -1,0 +1,146 @@
+//
+// Flushes, Straights, Sets
+//
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0140")
+    REASONING ("Range check for symbol nsuited")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("nsuited") >= 1) && (gws("nsuited") <= 7))
+    SYMBOLS_POSSIBLY_AFFECTED ("nsuited")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0141")
+    REASONING ("Range check for symbol nsuitedcommon")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("nsuitedcommon") >= 1) && (gws("nsuitedcommon") <= 5))
+    SYMBOLS_POSSIBLY_AFFECTED ("nsuitedcommon")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0142")
+    REASONING ("Range check for symbol tsuit")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("tsuit") >= 1) && (gws("tsuit") <= 4))
+    SYMBOLS_POSSIBLY_AFFECTED ("tsuit")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0143")
+    REASONING ("Range check for symbol tsuitcommon")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("tsuitcommon") >= 1) && (gws("tsuitcommon") <= 4))
+    SYMBOLS_POSSIBLY_AFFECTED ("tsuitcommon")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0144")
+    REASONING ("Range check for symbol nranked")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("nranked") >= 1) && (gws("nranked") <= 4))
+    SYMBOLS_POSSIBLY_AFFECTED ("nranked")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0145")
+    REASONING ("Range check for symbol nrankedcommon")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("nrankedcommon") >= 1) && (gws("nrankedcommon") <= 4))
+    SYMBOLS_POSSIBLY_AFFECTED ("nrankedcommon")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0146")
+    REASONING ("Range check for symbol trank")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("trank") >= 1) && (gws("trank") <= 4))
+    SYMBOLS_POSSIBLY_AFFECTED ("trank")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0147")
+    REASONING ("Range check for symbol trankcommon")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("trankcommon") >= 1) && (gws("trankcommon") <= 4))
+    SYMBOLS_POSSIBLY_AFFECTED ("trankcommon")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0148")
+    REASONING ("Range check for symbol nstraight")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("nstraight") >= 1) && (gws("nstraight") <= 7))
+    SYMBOLS_POSSIBLY_AFFECTED ("nstraight")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0149")
+    REASONING ("Range check for symbol nstraightcommon")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("nstraightcommon") >= 1) && (gws("nstraightcommon") <= 5))
+    SYMBOLS_POSSIBLY_AFFECTED ("nstraightcommon")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0150")
+    REASONING ("Range check for symbol nstraightfill")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("nstraightfill") >= 0) && (gws("nstraightfill") <= 5))
+    SYMBOLS_POSSIBLY_AFFECTED ("nstraightfill")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0151")
+    REASONING ("Range check for symbol nstraightfillcommon")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("nstraightfillcommon") >= 0) && (gws("nstraightfillcommon") <= 5))
+    SYMBOLS_POSSIBLY_AFFECTED ("nstraightfillcommon")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0152")
+    REASONING ("Range check for symbol nstraightflush")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("nstraightflush") >= 0) && (gws("nstraightflush") <= 7))
+    SYMBOLS_POSSIBLY_AFFECTED ("nstraightflush")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0153")
+    REASONING ("Range check for symbol nstraightflushcommon")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("nstraightflushcommon") >= 0) && (gws("nstraightflushcommon") <= 7))
+    SYMBOLS_POSSIBLY_AFFECTED ("nstraightflushcommon")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0154")
+    REASONING ("Range check for symbol nstraightflushfill")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("nstraightflushfill") >= 0) && (gws("nstraightflushfill") <= 5))
+    SYMBOLS_POSSIBLY_AFFECTED ("nstraightflushfill")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0155")
+    REASONING ("Range check for symbol nstraightflushfillcommon")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("nstraightflushfillcommon") >= 0) && (gws("nstraightflushfillcommon") <= 5))
+    SYMBOLS_POSSIBLY_AFFECTED ("nstraightflushfillcommon")
+END_TESTCASE
