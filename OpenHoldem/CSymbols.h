@@ -229,7 +229,7 @@ struct SSymbols
 
 	//FLAGS
 	double fmax;
-	double f[10];
+	double f[19];
 	double fbits;
 
 	//COMMON CARDS
