@@ -588,7 +588,7 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 
 	// flags
 	_sym.fmax = _sym.fbits = 0;
-	for (i=0; i<10; i++)
+	for (i=0; i<20; i++)
 		_sym.f[i] = 0;
 
 	// (un)known cards
@@ -1269,7 +1269,7 @@ void CSymbols::CalcFlags(void)
 
 		int			i = 0;
 
-		for (i=0; i<10; i++)
+		for (i=0; i<20; i++)
 		{
 			_sym.f[i] = pMyMainWnd->flags(i);											// fn
 			if (_sym.f[i] != 0)
@@ -3882,6 +3882,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	//FLAGS
 	if (memcmp(a, "fmax", 4)==0 && strlen(a)==4)						return _sym.fmax;
 	if (memcmp(a, "f", 1)==0 && strlen(a)==2)							return _sym.f[a[1]-'0'];
+	if (memcmp(a, "f", 1)==0 && strlen(a)==3)							return _sym.f[10 * (a[1]-'0') + a[2] - '0'];
 	if (memcmp(a, "fbits", 5)==0 && strlen(a)==5)						return _sym.fbits;
 
 	//COMMON CARDS

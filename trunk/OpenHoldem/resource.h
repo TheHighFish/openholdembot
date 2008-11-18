@@ -477,6 +477,17 @@
 #define ID_VIEW_GROUPUDFS               32968
 #define ID_FORMULA_VIEW_GROUPUDFS       32969
 #define ID_HELP_FORCECRASH              32970
+#define ID_NUMBER11                     32972
+#define ID_NUMBER12                     32973
+#define ID_NUMBER13                     32974
+#define ID_NUMBER14                     32975
+#define ID_NUMBER15                     32976
+#define ID_NUMBER16                     32977
+#define ID_NUMBER17                     32978
+#define ID_NUMBER18                     32979
+#define ID_BUTTON32980                  32980
+#define ID_NUMBER19                     32980
+#define ID_NUMBER10                     32981
 #define ID_INDICATOR_STATUS_PLCARDS     61191
 
 // Next default values for new objects
@@ -484,7 +495,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        176
-#define _APS_NEXT_COMMAND_VALUE         32971
+#define _APS_NEXT_COMMAND_VALUE         32982
 #define _APS_NEXT_CONTROL_VALUE         1312
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
