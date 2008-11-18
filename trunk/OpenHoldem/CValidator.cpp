@@ -196,6 +196,7 @@ void CValidator::ValidateGameState()
 #include "Validator_Rules\range_checks_versus_inline.cpp"
 #include "Validator_Rules\range_checks_action_symbols_inline.cpp"
 #include "Validator_Rules\range_checks_table_stats.cpp"
+#include "Validator_Rules\range_icm_symbols_inline.cpp"
 #include "Validator_Rules\range_checks_card_symbols_inline.cpp"
 #include "Validator_Rules\range_checks_NOT_TO_DO_inline.cpp"
 #include "Validator_Rules\consistency_checks_cards_inline.cpp"
