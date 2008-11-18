@@ -181,6 +181,7 @@ void CValidator::ValidateGameState()
 #include "Validator_Rules\range_checks_chip_amounts_inline.cpp"
 #include "Validator_Rules\range_checks_number_of_bets_inline.cpp"
 #include "Validator_Rules\range_checks_list_tests_inline.cpp"
+#include "Validator_Rules\range_checks_poker_values_inline.cpp"
 #include "Validator_Rules\range_checks_players_players_friends_opponents_inline.cpp"
 #include "Validator_Rules\range_checks_flags_inline.cpp"
 #include "Validator_Rules\range_checks_common_cards_inline.cpp"
