@@ -188,6 +188,7 @@ void CValidator::ValidateGameState()
 #include "Validator_Rules\range_checks_known_cards_inline.cpp"
 #include "Validator_Rules\range_checks_nhands_inline.cpp"
 #include "Validator_Rules\range_checks_flushes_straights_sets_inline.cpp"
+#include "Validator_Rules\range_checks_rank_bits_inline.cpp"
 #include "Validator_Rules\range_checks_rank_hi_inline.cpp"
 #include "Validator_Rules\range_checks_rank_lo_inline.cpp"
 #include "Validator_Rules\range_checks_time_inline.cpp"
