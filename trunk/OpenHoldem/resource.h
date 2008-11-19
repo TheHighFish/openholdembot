@@ -50,6 +50,7 @@
 #define IDR_FORMULA_SYMBOL_MENU         175
 #define IDD_SAPREFS11                   176
 #define IDD_SAPREFS12                   177
+#define IDD_SAPREFS13                   178
 #define IDC_NEW                         1006
 #define IDC_DELETE                      1007
 #define IDC_RENAME                      1013
@@ -365,11 +366,15 @@
 #define IDC_ENABLE_TRACE2               1301
 #define IDC_DISABLE_MSGBOX              1301
 #define IDC_RECORD_EVERY_CHANGE_PLAYING 1302
+#define IDC_OMF_CLASS_NAME              1304
+#define IDC_OMF_MUTEX_NAME              1305
+#define IDC_OMF_REG_NAME                1306
 #define IDC_RADIO_VALIDATOR_1           1306
 #define IDC_RADIO_VALIDATOR_2           1307
 #define IDC_RADIO_VALIDATOR_3           1308
 #define IDC_CHECK_VALIDATOR_STOP_ON_ERROR 1310
 #define IDC_PPRO_FULLTILTLOGFORMAT      1311
+#define IDC_SIMPLE_TITLE                1312
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -494,9 +499,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        176
+#define _APS_NEXT_RESOURCE_VALUE        179
 #define _APS_NEXT_COMMAND_VALUE         32982
-#define _APS_NEXT_CONTROL_VALUE         1312
+#define _APS_NEXT_CONTROL_VALUE         1313
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -36,6 +36,7 @@
 #include "DialogSAPrefs10.h"
 #include "DialogSAPrefs11.h"
 #include "DialogSAPrefs12.h"
+#include "DialogSAPrefs13.h"
 
 #include "DialogSelectTable.h"
 #include "inlines/eval.h"
@@ -141,6 +142,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 
 	ON_COMMAND(ID_POKERPRO_CONNECT, &CMainFrame::OnPokerproConnect)
 	ON_MESSAGE(WMA_SETWINDOWTEXT, OnSetWindowText)
+	ON_MESSAGE(WMA_DOCONNECT, &CMainFrame::OnConnectMessage)
 
 	ON_WM_SETCURSOR()
 	ON_WM_SYSCOMMAND()
@@ -215,6 +217,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	// Start timer that attaches the OH window when the poker window moves
 	SetTimer(ATTACH_WINDOW_TIMER, 20, 0);
+
+	if (prefs.simple_window_title())
+		SetMainWindowTitle("");
 
 	return 0;
 }
@@ -359,8 +364,9 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 
 	WNDCLASS wnd;
 	HINSTANCE hInst = AfxGetInstanceHandle();
-   // Set class name
-	if (!(::GetClassInfo(hInst, "OpenHoldem", &wnd)))
+
+	// Set class name
+	if (!(::GetClassInfo(hInst, prefs.window_class_name(), &wnd)))
 	{
 		wnd.style			= CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW;
 		wnd.lpfnWndProc	  = ::DefWindowProc;
@@ -370,11 +376,11 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 		wnd.hCursor		  = AfxGetApp()->LoadStandardCursor(IDC_ARROW);
 		wnd.hbrBackground	= (HBRUSH) (COLOR_3DFACE + 1);
 		wnd.lpszMenuName	 = NULL;
-		wnd.lpszClassName	= "OpenHoldem";
+		wnd.lpszClassName	= prefs.window_class_name();
 
 		AfxRegisterClass( &wnd );
 	}
-	cs.lpszClass = "OpenHoldem";
+	cs.lpszClass = prefs.window_class_name();
 
 	// Restore window location and size
 	max_x = GetSystemMetrics(SM_CXSCREEN) - GetSystemMetrics(SM_CXICON);
@@ -453,6 +459,7 @@ void CMainFrame::OnEditPreferences()
 	CDlgSAPrefs10 page10;
 	CDlgSAPrefs11 page11;
 	CDlgSAPrefs12 page12;
+	CDlgSAPrefs13 page13;
 
 	// add pages
 	dlg.AddPage(page1, "Analyzer");
@@ -467,6 +474,7 @@ void CMainFrame::OnEditPreferences()
 	dlg.AddPage(page4, "Scraper");
 	dlg.AddPage(page5, "Symbols");
 	dlg.AddPage(page12, "Validator");
+	dlg.AddPage(page13, "Obscure");
 
 	// this one will be a child node on the tree
 	// (&page3 specifies the parent)
@@ -534,6 +542,26 @@ BOOL CMainFrame::DestroyWindow()
 	return CFrameWnd::DestroyWindow();
 }
 
+void CMainFrame::SetMainWindowTitle(LPCSTR title)
+{
+	if (prefs.simple_window_title()) {
+		if (_exec_filename.IsEmpty()) {
+			char exec[_MAX_PATH];
+			GetModuleFileName(AfxGetInstanceHandle(), exec, _MAX_PATH);
+			_exec_filename = exec;
+			int index = _exec_filename.ReverseFind('\\');
+			if (index >= 0)
+				_exec_filename = _exec_filename.Mid(index+1);
+			index = _exec_filename.ReverseFind('.');
+			if (index > 0)
+				_exec_filename = _exec_filename.Left(index);
+		}
+		SetWindowText(_exec_filename);
+	} else {
+		SetWindowText(title);
+	}
+}
+
 void CMainFrame::OnFileOpen() 
 {
 	CFileDialog			cfd(true);
@@ -550,7 +578,7 @@ void CMainFrame::OnFileOpen()
 		pDoc->OnOpenDocument(cfd.GetPathName());
 		pDoc->SetPathName(cfd.GetPathName());
 		// Update window title, registry
-		SetWindowText(cfd.GetFileTitle() + " - " + CString(MAKEINTRESOURCE(AFX_IDS_APP_TITLE)));
+		SetMainWindowTitle(cfd.GetFileTitle() + " - " + CString(MAKEINTRESOURCE(AFX_IDS_APP_TITLE)));
 		WriteRegString(theKey, cfd.GetPathName());
 	}
 }
@@ -614,7 +642,7 @@ void CMainFrame::OnFileLoadTableMap()
 	}
 }
 
-void CMainFrame::OnBnClickedGreenCircle() 
+BOOL CMainFrame::DoConnect(HWND targetHWnd)
 {
 	int					i = 0, N = 0, line = 0, ret = 0;
 	CDlgSelectTable		cstd;
@@ -645,7 +673,10 @@ void CMainFrame::OnBnClickedGreenCircle()
 		smap.i$ = p_tablemap->i$();
 		smap.filepath = p_tablemap->filepath();
 
-		EnumWindows(EnumProcTopLevelWindowList, (LPARAM) &smap);
+		if (targetHWnd == NULL)
+			EnumWindows(EnumProcTopLevelWindowList, (LPARAM) &smap);
+		else
+			EnumProcTopLevelWindowList(targetHWnd, (LPARAM) &smap);
 		current_path = p_tablemap->filepath();
 	}
 
@@ -672,7 +703,10 @@ void CMainFrame::OnBnClickedGreenCircle()
 				smap.i$ = p_tablemap->i$();
 				smap.filepath = p_tablemap->filepath();
 		
-				EnumWindows(EnumProcTopLevelWindowList, (LPARAM) &smap);
+				if (targetHWnd == NULL)
+					EnumWindows(EnumProcTopLevelWindowList, (LPARAM) &smap);
+				else
+					EnumProcTopLevelWindowList(targetHWnd, (LPARAM) &smap);
 			}
 		}
 	}
@@ -700,7 +734,10 @@ void CMainFrame::OnBnClickedGreenCircle()
 				smap.i$ = p_tablemap->i$();
 				smap.filepath = p_tablemap->filepath();
 
-				EnumWindows(EnumProcTopLevelWindowList, (LPARAM) &smap);
+				if (targetHWnd == NULL)
+					EnumWindows(EnumProcTopLevelWindowList, (LPARAM) &smap);
+				else
+					EnumProcTopLevelWindowList(targetHWnd, (LPARAM) &smap);
 			}
 		}
 	}
@@ -709,19 +746,21 @@ void CMainFrame::OnBnClickedGreenCircle()
 	N = (int) g_tlist.GetSize();
 	if (N == 0) 
 	{
-		int cySize = GetSystemMetrics(SM_CYSIZE);
-		int cyMenuSize = GetSystemMetrics(SM_CYMENU);
+		if (targetHWnd != NULL) {
+			int cySize = GetSystemMetrics(SM_CYSIZE);
+			int cyMenuSize = GetSystemMetrics(SM_CYMENU);
 
-		if (!prefs.disable_msgbox())
-		{
-			if (cySize != 18 && cyMenuSize != 19)
-				MessageBox("Cannot find table\n\n"
-						   "It appears that your settings are not configured according to OpenHoldem specifications.\n"
-						   "You must ensure that XP themes are not used (Use Windows Classic style) and\n"
-						   "font size is set to normal.\n\n"
-						   "For more info, look at the wiki documentation and the user forums", "Cannot find table", MB_OK);
-			else
-				MessageBox("No valid tables found", "Cannot find table", MB_OK);
+			if (!prefs.disable_msgbox())
+			{
+				if (cySize != 18 && cyMenuSize != 19)
+					MessageBox("Cannot find table\n\n"
+							   "It appears that your settings are not configured according to OpenHoldem specifications.\n"
+							   "You must ensure that XP themes are not used (Use Windows Classic style) and\n"
+							   "font size is set to normal.\n\n"
+							   "For more info, look at the wiki documentation and the user forums", "Cannot find table", MB_OK);
+				else
+					MessageBox("No valid tables found", "Cannot find table", MB_OK);
+			}
 		}
 	}
 	else 
@@ -816,17 +855,19 @@ void CMainFrame::OnBnClickedGreenCircle()
 			// Start logging
 			start_log();
 
-			CWindowDC dc(NULL);
-			int nBitsPerPixel = dc.GetDeviceCaps(PLANES) * dc.GetDeviceCaps(BITSPIXEL);
+			if (targetHWnd == NULL) {
+				CWindowDC dc(NULL);
+				int nBitsPerPixel = dc.GetDeviceCaps(PLANES) * dc.GetDeviceCaps(BITSPIXEL);
 
 			if (nBitsPerPixel < 24 && !prefs.disable_msgbox())
-				MessageBox("It appears that your Display settings are not configured according to OpenHoldem specifications.\n24 bit color or higher is needed to reliably extract information from the poker client\n\nFor more info, look at the wiki documentation and the user forums", "Caution: Color Depth Too Low", MB_OK|MB_ICONWARNING);
+					MessageBox("It appears that your Display settings are not configured according to OpenHoldem specifications.\n24 bit color or higher is needed to reliably extract information from the poker client\n\nFor more info, look at the wiki documentation and the user forums", "Caution: Color Depth Too Low", MB_OK|MB_ICONWARNING);
 
-			BOOL fontSmoothingEnabled = FALSE;
-			SystemParametersInfo(SPI_GETFONTSMOOTHING, 0, (LPVOID)&fontSmoothingEnabled, 0);
+				BOOL fontSmoothingEnabled = FALSE;
+				SystemParametersInfo(SPI_GETFONTSMOOTHING, 0, (LPVOID)&fontSmoothingEnabled, 0);
 
 			if (fontSmoothingEnabled && !prefs.disable_msgbox())
-				MessageBox("It appears that font smoothing is enabled. In order for OpenHoldem to reliably\nextract information from the poker client you should disable Font Smoothing", "Caution: Font smoothing is enabled", MB_OK|MB_ICONWARNING);
+					MessageBox("It appears that font smoothing is enabled. In order for OpenHoldem to reliably\nextract information from the poker client you should disable Font Smoothing", "Caution: Font smoothing is enabled", MB_OK|MB_ICONWARNING);
+			}
 
 			// log OH title bar text and table reset
 			::GetWindowText(_attached_hwnd, title, 512);
@@ -837,6 +878,12 @@ void CMainFrame::OnBnClickedGreenCircle()
 
 		}
 	}
+	return (result == IDOK ? TRUE : FALSE);
+}
+
+void CMainFrame::OnBnClickedGreenCircle() 
+{
+	DoConnect(NULL);
 }
 
 void CMainFrame::OnBnClickedRedCircle() 
@@ -886,7 +933,7 @@ void CMainFrame::OnBnClickedRedCircle()
 	p_symbols->ResetSymbolsFirstTime();
 
 	// Change window title
-	SetWindowText(p_formula->formula_name() + " - " + m_strTitle);
+	SetMainWindowTitle(p_formula->formula_name() + " - " + m_strTitle);
 
 	// Reset Display
 	InvalidateRect(NULL, false);
@@ -1237,13 +1284,21 @@ void CMainFrame::OnDllLoadspecificfile()
 	}
 }
 
+LRESULT CMainFrame::OnConnectMessage(WPARAM, LPARAM hwnd)
+{
+	return DoConnect((HWND)hwnd);
+}
+
 LRESULT CMainFrame::OnSetWindowText(WPARAM, LPARAM title)
 {
-	CString *sTitle = (CString *)title;
+	if (title) {
+		CString *sTitle = (CString *)title;
 
-	SetWindowText(sTitle->GetString());
-
-	delete sTitle;
+		SetMainWindowTitle(sTitle->GetString());
+		delete sTitle;
+	} else {
+		SetMainWindowTitle("");
+	}
 	return 0l;
 }
 
@@ -1577,11 +1632,11 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
 			{
 				if (MessageBox("The Formula Editor has un-applied (and unsaved) changes.\n"
 							   "Really exit?", "Unsaved formula warning", MB_YESNO) == IDNO)
-				{
-					return;
-				}
+			{
+				return;
 			}
 		}
+	}
 	}
 	CFrameWnd::OnSysCommand(nID, lParam);
 }

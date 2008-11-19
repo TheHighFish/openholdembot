@@ -36,5 +36,6 @@ public:
 extern COpenHoldemApp theApp;
 
 #define		WMA_SETWINDOWTEXT				WM_APP+1
+#define		WMA_DOCONNECT					WM_APP+2
 
 #endif //INC_OPENHOLDEM_H
