@@ -39,8 +39,6 @@ char	_startup_path[MAX_PATH];
 // Supports MRU
 AFX_STATIC_DATA const TCHAR _afxFileSection[] = _T("Recent File List");
 AFX_STATIC_DATA const TCHAR _afxFileEntry[] = _T("File%d");
-AFX_STATIC_DATA const TCHAR _afxPreviewSection[] = _T("Settings");
-AFX_STATIC_DATA const TCHAR _afxPreviewEntry[] = _T("PreviewPages");
 
 // COpenHoldemApp
 extern bool Scintilla_RegisterClasses(void *hInstance);
@@ -72,20 +70,6 @@ COpenHoldemApp theApp;
 // COpenHoldemApp initialization
 BOOL COpenHoldemApp::InitInstance()
 {
-	// Classes
-	if (!p_pokerpro) p_pokerpro = new PokerPro;
-	if (!p_scraper)  p_scraper = new CScraper;
-	if (!p_symbols)  p_symbols = new CSymbols;
-	if (!p_tablemap)  p_tablemap = new CTablemap;
-	if (!p_formula)  p_formula = new CFormula;
-	if (!p_autoplayer)  p_autoplayer = new CAutoplayer(false, "OHAntiColl");
-	if (!p_pokertracker_thread)  p_pokertracker_thread = new CPokerTrackerThread;
-	if (!p_dll_extension)  p_dll_extension = new CDllExtension;
-	if (!p_game_state)  p_game_state = new CGameState;
-	if (!p_perl)  p_perl = new CPerl;
-	if (!p_memory)  p_memory = new CMemory;	
-	if (!p_versus)  p_versus = new CVersus;	
-
 	Scintilla_RegisterClasses(AfxGetInstanceHandle());
 
 	// Initialize richedit2 library
@@ -118,7 +102,42 @@ BOOL COpenHoldemApp::InitInstance()
 	// of your final executable, you should remove from the following
 	// the specific initialization routines you do not need
 	// Change the registry key under which our settings are stored
-	SetRegistryKey(_T("OpenHoldem"));
+	bool load_from_registry = true;
+	for (int i = 1; i < __argc; i++)
+	{
+		LPCTSTR pszParam = __targv[i];
+		if (_tcsncmp(pszParam, "/ini:", 5) == 0) {
+			CString path(pszParam+5);
+			path.Replace("~", _startup_path);
+			free((void*)m_pszProfileName);
+			m_pszProfileName = strdup(path);
+			load_from_registry = false;
+		}
+		if (_tcscmp(pszParam, "/ini") == 0) {
+			CString path;
+			path.Format("%s\\openholdem.ini", _startup_path);
+			free((void*)m_pszProfileName);
+			m_pszProfileName = strdup(path);
+			load_from_registry = false;
+		}
+	}
+	if (load_from_registry)
+		SetRegistryKey(_T("OpenHoldem"));
+	prefs.LoadPreferences(load_from_registry);
+
+	// Classes
+	if (!p_pokerpro) p_pokerpro = new PokerPro;
+	if (!p_scraper)  p_scraper = new CScraper;
+	if (!p_symbols)  p_symbols = new CSymbols;
+	if (!p_tablemap)  p_tablemap = new CTablemap;
+	if (!p_formula)  p_formula = new CFormula;
+	if (!p_autoplayer)  p_autoplayer = new CAutoplayer(false, prefs.mutex_name());
+	if (!p_pokertracker_thread)  p_pokertracker_thread = new CPokerTrackerThread;
+	if (!p_dll_extension)  p_dll_extension = new CDllExtension;
+	if (!p_game_state)  p_game_state = new CGameState;
+	if (!p_perl)  p_perl = new CPerl;
+	if (!p_memory)  p_memory = new CMemory;	
+	if (!p_versus)  p_versus = new CVersus;	
 
 	MyLoadStdProfileSettings(4);  // Load standard INI file options (including MRU)
 	if (m_pRecentFileList == NULL)
@@ -169,6 +188,9 @@ BOOL COpenHoldemApp::InitInstance()
 	// app was launched with /RegServer, /Register, /Unregserver or /Unregister.
 	if (!ProcessShellCommand(cmdInfo))
 		return FALSE;
+
+	if (prefs.simple_window_title())
+		m_pMainWnd->PostMessage(WMA_SETWINDOWTEXT, 0, (LPARAM)NULL);
 
 	// The one and only window has been initialized, so show and update it
 	m_pMainWnd->ShowWindow(SW_SHOW);

@@ -10,8 +10,11 @@ public:
 	CPreferences();
 	~CPreferences();
 
+	void LoadPreferences(bool registry);
+
 public:
 	// public accessors
+
 	// Analyzer
 	const unsigned int max_opponents() { return _max_opponents; }
 	// Autoplayer
@@ -121,10 +124,15 @@ public:
 	// Misc
 	const int scraper_zoom() { return _scraper_zoom; }
 	const CString versus_path() { return _versus_path; }	
-	
+
+	// Obscure
+	const CString &window_class_name()		{ return _window_class_name; }
+	const CString &mutex_name()				{ return _mutex_name; }
+	bool simple_window_title()				{ return _simple_window_title; }
+
 public:
-#define ENT CSLock lock(m_critsec);
 	// public mutators
+#define ENT CSLock lock(m_critsec);
 
 	// Analyzer
 	void set_max_opponents(const unsigned int i) { ENT _max_opponents = i; WriteReg("max_opponents", (int) i); }
@@ -237,6 +245,12 @@ public:
 	// (No method for versus_path,
 	// as this attribute is nowhere set.) 
 	void set_scraper_zoom(const int i) { ENT _scraper_zoom = i; WriteReg("scraper_zoom", i); }
+
+	// Obscure
+	void set_window_class_name(const CString &s)	{ ENT _window_class_name = s; WriteReg("window_class_name", s); }
+	void set_mutex_name(const CString &s)			{ ENT _mutex_name= s; WriteReg("mutex_name", s); }
+	void set_simple_window_title(bool in)			{ ENT _simple_window_title= in; WriteReg("simple_window_title", (int) in!=false); }
+	
 #undef ENT
 
 private:
@@ -352,23 +366,26 @@ private:
 	// Misc
 	int				_scraper_zoom;
 	CString			_versus_path;
+	// Obscure
+	CString			_window_class_name;
+	CString			_mutex_name;
+	bool			_simple_window_title;
 
 private:
 	// private functions and variables - not available via accessors or mutators
 	void InitDefaults(void);
-	void ReadFromRegistry(void);
+	void ReadPreferences(void);
 	void ReadReg(const LPCTSTR registry_key, int *registry_value);
 	void ReadReg(const LPCTSTR registry_key, bool *registry_value);
 	void ReadReg(const LPCTSTR registry_key, unsigned int *registry_value);
 	void ReadReg(const LPCTSTR registry_key, CString *registry_value);
 	void ReadReg(const LPCTSTR registry_key, double *registry_value);
 	void WriteReg(const LPCTSTR registry_key, const int registry_value);
-	void WriteReg(const LPCTSTR registry_key, const CString registry_value);
+	void WriteReg(const LPCTSTR registry_key, const CString &registry_value);
 	void WriteReg(const LPCTSTR registry_key, const double registry_value);
 
 	CCritSec		m_critsec;
-	HKEY			_hkey;
-
+	CString			_preferences_heading;
 } prefs;
 
 #endif // INC_CPREFERENCES_H_

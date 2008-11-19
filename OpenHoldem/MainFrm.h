@@ -53,6 +53,7 @@ protected: // create from serialization only
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg void OnDllLoadspecificfile();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
+	afx_msg LRESULT OnConnectMessage(WPARAM, LPARAM hwnd);
 	afx_msg LRESULT OnSetWindowText(WPARAM, LPARAM title);
 	afx_msg void OnPerlLoadFormula();
 	afx_msg void OnUpdateMenuPerlLoadSpecificFormula(CCmdUI* pCmdUI);
@@ -70,6 +71,9 @@ public:
 	virtual ~CMainFrame();
 	virtual BOOL DestroyWindow();
 	CMyToolBar		m_MainToolBar;
+
+	void	SetMainWindowTitle(LPCSTR title);
+	CString	_exec_filename;
 
 public:
 	// public accessors
@@ -100,6 +104,8 @@ private:
 	void AlignToolbars(void);
 	int CreateStatusBar(void);
 	
+	BOOL DoConnect(HWND target);
+
 	CStatusBar		_status_bar;
 	CMyToolBar		_tool_bar;
 	CString			_status_plcards, _status_comcards, _status_pokerhand, _status_prwin, _status_nopp;

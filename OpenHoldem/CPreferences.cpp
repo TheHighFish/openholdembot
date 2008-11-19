@@ -11,22 +11,20 @@ CPreferences		prefs;
 //
 CPreferences::CPreferences()
 {
-	// Create a registry key for OH,
-	// if it does not exist
-	
-	DWORD		dwDisp;
-
-	LONG res = RegCreateKeyEx(HKEY_CURRENT_USER, "Software\\OpenHoldem\\OpenHoldem", 0, NULL,
-				   REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &_hkey, &dwDisp);
-
-	ASSERT(res==ERROR_SUCCESS);
-
-	ReadFromRegistry();
 }
 
 CPreferences::~CPreferences()	
 {
-	RegCloseKey(_hkey);
+}
+
+void CPreferences::LoadPreferences(bool registry)
+{
+	if (registry)
+		_preferences_heading.Empty();
+	else
+		_preferences_heading = "Preferences";
+
+	ReadPreferences();
 }
 
 //
@@ -169,13 +167,17 @@ void CPreferences::InitDefaults(void)
 
 	// Misc
 	_versus_path = "";
+
+	_window_class_name = "OpenHoldem";
+	_mutex_name= "OHAntiColl";
+	_simple_window_title = false;
 }
 
 //
 // Private methods to access the registry
 //
 
-void CPreferences::ReadFromRegistry()
+void CPreferences::ReadPreferences()
 {
 	InitDefaults();
 	{
@@ -319,90 +321,70 @@ void CPreferences::ReadFromRegistry()
 
 		// versus path
 		ReadReg("versus", &_versus_path);
+
+		// obscure
+		ReadReg("window_class_name", &_window_class_name);
+		ReadReg("mutex_name", &_mutex_name);
+		ReadReg("simple_window_title", &_simple_window_title);
 	}
 }
 
 void CPreferences::ReadReg(const LPCTSTR registry_key, int *registry_value)
 {
-	DWORD		dwType = 0, cbData = 0;
-	char		str[256] = {0};
-	LONG		hkResult = 0;
-
-	cbData = sizeof(str);
-	if ( (hkResult = RegQueryValueEx(_hkey, registry_key, NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
-		*registry_value = atoi(str);
-	//  Otherwise: Keep default value.
+	CString value;
+	value = AfxGetApp()->GetProfileString(_preferences_heading, registry_key);
+	if (!value.IsEmpty())
+		*registry_value = atoi(value);
 }
 
 void CPreferences::ReadReg(const LPCTSTR registry_key, bool *registry_value)
 {
-	DWORD		dwType = 0, cbData = 0;
-	char		str[256] = {0};
-	LONG		hkResult = 0;
-
-	cbData = sizeof(str);
-	if ( (hkResult = RegQueryValueEx(_hkey, registry_key, NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
-		*registry_value = atoi(str);
-	//  Otherwise: Keep default value.
+	CString value;
+	value = AfxGetApp()->GetProfileString(_preferences_heading, registry_key);
+	if (!value.IsEmpty())
+		*registry_value = atoi(value);
 }
 
 void CPreferences::ReadReg(const LPCTSTR registry_key, unsigned int *registry_value)
 {
-	DWORD		dwType = 0, cbData = 0;
-	char		str[256] = {0};
-	LONG		hkResult = 0;
-
-	cbData = sizeof(str);
-	if ( (hkResult = RegQueryValueEx(_hkey, registry_key, NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
-		*registry_value = atoi(str);
-	//  Otherwise: Keep default value.
+	CString value;
+	value = AfxGetApp()->GetProfileString(_preferences_heading, registry_key);
+	if (!value.IsEmpty())
+		*registry_value = atoi(value);
 }
 
 void CPreferences::ReadReg(const LPCTSTR registry_key,  CString *registry_value)
 {
-	DWORD		dwType = 0, cbData = 0;
-	char		str[256] = {0};
-	LONG		hkResult = 0;
-
-	cbData = sizeof(str);
-	if ( (hkResult = RegQueryValueEx(_hkey, registry_key, NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
-		*registry_value = str;
-	//  Otherwise: Keep default value.
+	CString value;
+	value = AfxGetApp()->GetProfileString(_preferences_heading, registry_key);
+	if (!value.IsEmpty())
+		*registry_value = value;
 }
 
 void CPreferences::ReadReg(const LPCTSTR registry_key, double *registry_value)
 {
-	DWORD		dwType = 0, cbData = 0;
-	char		str[256] = {0};
-	LONG		hkResult = 0;
-
-	cbData = sizeof(str);
-	if ( (hkResult = RegQueryValueEx(_hkey, registry_key, NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
-		*registry_value = atof(str);
-	//  Otherwise: Keep default value.
+	CString value;
+	value = AfxGetApp()->GetProfileString(_preferences_heading, registry_key);
+	if (!value.IsEmpty())
+		*registry_value = atof(value);
 }
 
 void CPreferences::WriteReg(const LPCTSTR registry_key, const int registry_value)
 //  This method is used to write unsigned ints and booleans, too.
 {
-	char		str[256] = {0};
-
-	sprintf_s(str, 256, "%d", registry_value);
-	RegSetValueEx(_hkey, registry_key, 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
+	CString str;
+	str.Format("%d", registry_value);
+	AfxGetApp()->WriteProfileString(_preferences_heading, registry_key, str);
 }
 
-void CPreferences::WriteReg(const LPCTSTR registry_key, const CString registry_value)
+void CPreferences::WriteReg(const LPCTSTR registry_key, const CString &registry_value)
 {
-	char		str[256] = {0};
-
-	sprintf_s(str, 256, "%s", registry_value);
-	RegSetValueEx(_hkey, registry_key, 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
+	AfxGetApp()->WriteProfileString(_preferences_heading, registry_key, registry_value);
 }
 
 void CPreferences::WriteReg(const LPCTSTR registry_key, const double registry_value)
 {
-	char		str[256] = {0};
-
-	sprintf_s(str, 256, "%f", registry_value);
-	RegSetValueEx(_hkey, registry_key, 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
+	CString str;
+	str.Format("%f", registry_value);
+	AfxGetApp()->WriteProfileString(_preferences_heading, registry_key, str);
 }
