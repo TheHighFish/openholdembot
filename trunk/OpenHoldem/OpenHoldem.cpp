@@ -39,6 +39,8 @@ char	_startup_path[MAX_PATH];
 // Supports MRU
 AFX_STATIC_DATA const TCHAR _afxFileSection[] = _T("Recent File List");
 AFX_STATIC_DATA const TCHAR _afxFileEntry[] = _T("File%d");
+AFX_STATIC_DATA const TCHAR _afxPreviewSection[] = _T("Settings");
+AFX_STATIC_DATA const TCHAR _afxPreviewEntry[] = _T("PreviewPages");
 
 // COpenHoldemApp
 extern bool Scintilla_RegisterClasses(void *hInstance);
