@@ -332,7 +332,7 @@ const double CGameState::FlopPct(void)
 		percent=(double) num_saw_cards/(double) num_dealt;
 
 	else
-		percent=-1;
+		percent=0;
 
 	return percent;
 }
@@ -370,7 +370,7 @@ const double CGameState::TurnPct(void)
 		percent=(double) num_saw_cards/(double) num_dealt;
 
 	else
-		percent=-1;
+		percent=0;
 
 	return percent;
 }
@@ -408,7 +408,7 @@ const double CGameState::RiverPct(void)
 		percent=(double) num_saw_cards/(double) num_dealt;
 
 	else
-		percent=-1;
+		percent=0;
 
 	return percent;
 }
@@ -446,7 +446,7 @@ const double CGameState::AvgBetsPf(void)
 		percent=(double) bets_preflop/(double) hands;
 
 	else
-		percent=-1;
+		percent=0;
 
 	return percent;
 }
@@ -489,7 +489,7 @@ const double CGameState::TablePfr(void)
 		percent=(double) bets_preflop/(double) hands;
 
 	else
-		percent=-1;
+		percent=0;
 
 	return percent;
 }
