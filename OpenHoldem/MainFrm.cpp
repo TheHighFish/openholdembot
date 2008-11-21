@@ -468,13 +468,13 @@ void CMainFrame::OnEditPreferences()
 	dlg.AddPage(page3, "DLL Extension");
 	dlg.AddPage(page7, "ICM");
 	dlg.AddPage(page11, "Logging");
+	dlg.AddPage(page13, "Obscure");
 	dlg.AddPage(page9, "Perl");
 	dlg.AddPage(page6, "Poker Tracker");
 	dlg.AddPage(page8, "Replay Frames");
 	dlg.AddPage(page4, "Scraper");
 	dlg.AddPage(page5, "Symbols");
-	dlg.AddPage(page12, "Validator");
-	dlg.AddPage(page13, "Obscure");
+	dlg.AddPage(page12, "Validator");	
 
 	// this one will be a child node on the tree
 	// (&page3 specifies the parent)
