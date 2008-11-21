@@ -661,7 +661,7 @@ void CSymbols::CalcSymbols(void)
 	_sym.session = theApp._session_id;												// session
 	_sym.nopponentsmax = prefs.max_opponents();										// nopponentsmax
 	_sym.swagdelay = prefs.swag_delay_3();											// swagdelay
-	_sym.allidelay = -1;															// allidelay  (unused in OpenHoldem)
+	_sym.allidelay = 0;																// allidelay  (unused in OpenHoldem)
 	_sym.version = VERSION_NUMBER;													// version
 	GetClassName(pMyMainWnd->attached_hwnd(), classname, 50);
 	if (strcmp(classname, "BRING")==0)
