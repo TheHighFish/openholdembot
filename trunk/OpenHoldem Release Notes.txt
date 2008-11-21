@@ -59,6 +59,15 @@ NEW STUFF:
 - New option on PokerPro dialog to create hand history files in a FullTilt format to allow importing into PokerTracker.
   HH files are created in the PPro\FTHH subdirectory of the OH installation, in a subdirectory named for the PPro login.
   Thanks, Sinbad_the_Sailor, for the patch.  [OpenHoldem]
+- Added 10 additional flag buttons (numbers 11-20) [ZooBoy]
+- New stealth preferences to  1) specify what class name OpenHoldem will use 2) specify the name of the anti-collision mutex, and
+  3) specify to use simple window title (spew)
+- Options to load preferences from ini file based on a command line option, examples: 
+  /ini => openholdem.ini
+  /ini:[filepath] => uses the file path provided, must be a full path
+  /ini:~\[filename] => uses [filename] ini file in OpenHoldem's working directory
+   (spew)
+- A connect message to instruct OH to connect to a poker table specifying a HWND (spew)
 
 v1.9.4 2008-10-21
 =================
