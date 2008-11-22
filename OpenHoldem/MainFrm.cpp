@@ -615,7 +615,7 @@ void CMainFrame::OnFileLoadTableMap()
 			MessageBox("This is a version 1 table map.\n\n"\
 					   "Version 2.0.0 and higher of OpenHoldem use a new format (version 2).  This\n"\
 					   "table map has been loaded, but it is highly unlikely to work correctly until\n"\
-					   "is has been opened in OpenScrape version 2.0.0 or higher, and adjustments\n"\
+					   "it has been opened in OpenScrape version 2.0.0 or higher, and adjustments\n"\
 					   "have been made to autoplayer settings and region sizes.\n\n"\
 					   "Please do not use this table map prior to updating it to version 2 in\n"\
 					   "OpenScrape or you run the very serious risk of costly mis-scrapes.",
@@ -801,7 +801,7 @@ BOOL CMainFrame::DoConnect(HWND targetHWnd)
 				MessageBox("You have loaded a version 1 table map for this poker table.\n\n"\
 						   "Version 2.0.0 and higher of OpenHoldem use a new format (version 2).  This\n"\
 						   "table map has been loaded, but it is highly unlikely to work correctly until\n"\
-						   "is has been opened in OpenScrape version 2.0.0 or higher, and adjustments\n"\
+						   "it has been opened in OpenScrape version 2.0.0 or higher, and adjustments\n"\
 						   "have been made to autoplayer settings and region sizes.\n\n"\
 						   "Please do not use this table map prior to updating it to version 2 in\n"\
 						   "OpenScrape or you run the very serious risk of costly mis-scrapes.",

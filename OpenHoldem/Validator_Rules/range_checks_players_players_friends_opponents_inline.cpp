@@ -6,7 +6,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0087")
     REASONING ("Range check for symbol nopponentsmax")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nopponentsmax") >= 1) && (gws("nopponentsmax") <= 22))
+    POSTCONDITION ((gws("nopponentsmax") >= 0) && (gws("nopponentsmax") <= 22))
     SYMBOLS_POSSIBLY_AFFECTED ("nopponentsmax")
 END_TESTCASE
 

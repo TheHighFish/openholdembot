@@ -24,7 +24,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0134")
     REASONING ("Range check for symbol ncardsunknown")
     PRECONDITION (true)
-    POSTCONDITION ((gws("ncardsunknown") >= 45) && (gws("ncardsunknown") <= 52))
+    POSTCONDITION (((gws("ncardsunknown") >= 45) && (gws("ncardsunknown") <= 52)) || (gws("ncardsunknown") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("ncardsunknown")
 END_TESTCASE
 
