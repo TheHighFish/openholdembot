@@ -6,7 +6,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0140")
     REASONING ("Range check for symbol nsuited")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nsuited") >= 1) && (gws("nsuited") <= 7))
+    POSTCONDITION ((gws("nsuited") >= 0) && (gws("nsuited") <= 7))
     SYMBOLS_POSSIBLY_AFFECTED ("nsuited")
 END_TESTCASE
 
@@ -15,7 +15,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0141")
     REASONING ("Range check for symbol nsuitedcommon")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nsuitedcommon") >= 1) && (gws("nsuitedcommon") <= 5))
+    POSTCONDITION ((gws("nsuitedcommon") >= 0) && (gws("nsuitedcommon") <= 5))
     SYMBOLS_POSSIBLY_AFFECTED ("nsuitedcommon")
 END_TESTCASE
 
@@ -24,7 +24,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0142")
     REASONING ("Range check for symbol tsuit")
     PRECONDITION (true)
-    POSTCONDITION ((gws("tsuit") >= 1) && (gws("tsuit") <= 4))
+    POSTCONDITION ((gws("tsuit") >= 0) && (gws("tsuit") <= 4))
     SYMBOLS_POSSIBLY_AFFECTED ("tsuit")
 END_TESTCASE
 
@@ -33,7 +33,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0143")
     REASONING ("Range check for symbol tsuitcommon")
     PRECONDITION (true)
-    POSTCONDITION ((gws("tsuitcommon") >= 1) && (gws("tsuitcommon") <= 4))
+    POSTCONDITION ((gws("tsuitcommon") >= 0) && (gws("tsuitcommon") <= 4))
     SYMBOLS_POSSIBLY_AFFECTED ("tsuitcommon")
 END_TESTCASE
 
@@ -42,7 +42,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0144")
     REASONING ("Range check for symbol nranked")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nranked") >= 1) && (gws("nranked") <= 4))
+    POSTCONDITION ((gws("nranked") >= 0) && (gws("nranked") <= 4))
     SYMBOLS_POSSIBLY_AFFECTED ("nranked")
 END_TESTCASE
 
@@ -51,7 +51,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0145")
     REASONING ("Range check for symbol nrankedcommon")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nrankedcommon") >= 1) && (gws("nrankedcommon") <= 4))
+    POSTCONDITION ((gws("nrankedcommon") >= 0) && (gws("nrankedcommon") <= 4))
     SYMBOLS_POSSIBLY_AFFECTED ("nrankedcommon")
 END_TESTCASE
 
@@ -60,7 +60,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0146")
     REASONING ("Range check for symbol trank")
     PRECONDITION (true)
-    POSTCONDITION ((gws("trank") >= 1) && (gws("trank") <= 4))
+    POSTCONDITION ((gws("trank") >= 0) && (gws("trank") <= 4))
     SYMBOLS_POSSIBLY_AFFECTED ("trank")
 END_TESTCASE
 
@@ -69,7 +69,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0147")
     REASONING ("Range check for symbol trankcommon")
     PRECONDITION (true)
-    POSTCONDITION ((gws("trankcommon") >= 1) && (gws("trankcommon") <= 4))
+    POSTCONDITION ((gws("trankcommon") >= 0) && (gws("trankcommon") <= 4))
     SYMBOLS_POSSIBLY_AFFECTED ("trankcommon")
 END_TESTCASE
 
@@ -78,7 +78,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0148")
     REASONING ("Range check for symbol nstraight")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nstraight") >= 1) && (gws("nstraight") <= 7))
+    POSTCONDITION ((gws("nstraight") >= 0) && (gws("nstraight") <= 7))
     SYMBOLS_POSSIBLY_AFFECTED ("nstraight")
 END_TESTCASE
 
@@ -87,7 +87,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0149")
     REASONING ("Range check for symbol nstraightcommon")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nstraightcommon") >= 1) && (gws("nstraightcommon") <= 5))
+    POSTCONDITION ((gws("nstraightcommon") >= 0) && (gws("nstraightcommon") <= 5))
     SYMBOLS_POSSIBLY_AFFECTED ("nstraightcommon")
 END_TESTCASE
 
