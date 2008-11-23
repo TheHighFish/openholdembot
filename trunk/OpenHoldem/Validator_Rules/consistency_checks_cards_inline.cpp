@@ -113,3 +113,8 @@ BEGIN_TESTCASE
     POSTCONDITION ((gws("$pc0") != CARD_UNKNOWN) && (gws("$pc0") != CARDBACK))
     SYMBOLS_POSSIBLY_AFFECTED ("$pc0, $pc1")
 END_TESTCASE
+
+
+// If I'm not active, then I can't hold cards.
+
+// If I'n not playing, I cant hold cards.
