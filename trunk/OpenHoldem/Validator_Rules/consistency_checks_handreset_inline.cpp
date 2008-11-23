@@ -5,7 +5,7 @@
 BEGIN_TESTCASE
     TESTCASE_ID ("0600")
     REASONING ("Did the hand last 'long enough' to reach the current betting round, or was there an incorrect hand-reset in the meantime? We assume, the game has to last at least 1 second per (finished) betting round and per player still in the hand.")
-    PRECONDITION (handnumber > 1)
+    PRECONDITION (gws("handnumber") > 1)
     POSTCONDITION (gws("elapsedhand") >= ((gws("betround")-1) * gws("nplayersplaying")))
     SYMBOLS_POSSIBLY_AFFECTED ("elapsedhand, betround, nplayersplaying, handnumber")
 END_TESTCASE

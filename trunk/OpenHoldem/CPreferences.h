@@ -120,6 +120,7 @@ public:
 	// Validator
 	const int validator_enabled() { return _validator_enabled; }
 	const bool validator_stop_on_error() { return _validator_stop_on_error; }
+	const bool validator_use_heuristic_rules() { return _validator_use_heuristic_rules; }
 
 	// Misc
 	const int scraper_zoom() { return _scraper_zoom; }
@@ -240,6 +241,7 @@ public:
 
 	void set_validator_enabled(const int i) { ENT _validator_enabled = i; WriteReg("validator_enabled", i); }
 	void set_validator_stop_on_error(const bool b) { ENT _validator_stop_on_error = b; WriteReg("validator_stop_on_error", b); }
+	void set_validator_use_heuristic_rules(const bool b) { ENT _validator_use_heuristic_rules = b; WriteReg("validator_use_heuristic_rules", b); }
 
 	// Misc
 	// (No method for versus_path,
@@ -363,6 +365,7 @@ private:
 	// Validator
 	int				_validator_enabled;
 	bool			_validator_stop_on_error;
+	bool			_validator_use_heuristic_rules;
 	// Misc
 	int				_scraper_zoom;
 	CString			_versus_path;
