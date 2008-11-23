@@ -119,7 +119,7 @@ double CValidator::gws(const char *the_Symbol)
 // Action: Assign the heuristic-flag to a private variable
 //
 //
-#define HEURISTIC(H) { _heuristic = H; }
+#define HEURISTIC_RULE(H) { _heuristic = (H); }
 
 
 // PRECONDITION
