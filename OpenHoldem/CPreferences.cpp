@@ -163,6 +163,7 @@ void CPreferences::InitDefaults(void)
 	//   1 = when it's my turn
 	//   2 = always
 	_validator_enabled = 2;
+	_validator_use_heuristic_rules = true;
 	_validator_stop_on_error = true;
 
 	// Misc
@@ -317,6 +318,7 @@ void CPreferences::ReadPreferences()
 		ReadReg("disable_msgbox", &_disable_msgbox);
 
 		ReadReg("validator_enabled", &_validator_enabled);
+		ReadReg("validator_use_heuristic_rules", &_validator_use_heuristic_rules);
 		ReadReg("validator_stop_on_error", &_validator_stop_on_error);
 
 		// versus path

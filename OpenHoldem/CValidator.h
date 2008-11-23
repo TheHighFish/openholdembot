@@ -18,6 +18,7 @@ private:
 private:
 	// private data members, not (directly) accessible
 	char	*_testcase_id;
+	bool	_heuristic;
 	char    *_reasoning;
 	bool	_precondition;
 	bool	_postcondition;

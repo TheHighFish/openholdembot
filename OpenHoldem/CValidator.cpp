@@ -43,8 +43,15 @@ CString CValidator::Symbols_And_Values(const CString symbols_possibly_affected)
 
 void CValidator::ValidateSingleRule()
 {
+	// Heuristic rules and not to be tested?
+	if (_heuristic && !prefs.validator_use_heuristic_rules())
+	{
+		return;
+	}
+	// Test to be executed?
 	if (_precondition) 
     { 
+		// Test failed?
 	    if (!_postcondition ) 
         { 
 			if (prefs.validator_stop_on_error()) 
@@ -105,6 +112,14 @@ double CValidator::gws(const char *the_Symbol)
 // Action: Assign the testcase-ID to a private variable.
 //
 #define TESTCASE_ID(N) { _testcase_id = (N); }
+
+
+// HEURISTIC
+//
+// Action: Assign the heuristic-flag to a private variable
+//
+//
+#define HEURISTIC(H) { _heuristic = H; }
 
 
 // PRECONDITION
