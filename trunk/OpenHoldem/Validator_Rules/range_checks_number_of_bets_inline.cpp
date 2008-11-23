@@ -4,6 +4,7 @@
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0073")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nbetstocall")
     PRECONDITION (true)
     POSTCONDITION (gws("nbetstocall") >= 0)
@@ -13,6 +14,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0074")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nbetstorais")
     PRECONDITION (gws("nplayersdealt") > 1)
     POSTCONDITION (gws("nbetstorais") > 0)
@@ -22,6 +24,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0075")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ncurrentbets")
     PRECONDITION (true)
     POSTCONDITION (gws("ncurrentbets") >= 0)
@@ -31,6 +34,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0076")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ncallbets")
     PRECONDITION (true)
     POSTCONDITION (gws("ncallbets") >= 0)
@@ -40,6 +44,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0077")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nraisbets")
     PRECONDITION (true)
     POSTCONDITION (gws("nraisbets") >= 1)

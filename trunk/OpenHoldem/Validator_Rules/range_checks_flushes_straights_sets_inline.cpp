@@ -4,6 +4,7 @@
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0140")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nsuited")
     PRECONDITION (true)
     POSTCONDITION ((gws("nsuited") >= 0) && (gws("nsuited") <= 7))
@@ -13,6 +14,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0141")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nsuitedcommon")
     PRECONDITION (true)
     POSTCONDITION ((gws("nsuitedcommon") >= 0) && (gws("nsuitedcommon") <= 5))
@@ -22,6 +24,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0142")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol tsuit")
     PRECONDITION (true)
     POSTCONDITION ((gws("tsuit") >= 0) && (gws("tsuit") <= 4))
@@ -31,6 +34,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0143")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol tsuitcommon")
     PRECONDITION (true)
     POSTCONDITION ((gws("tsuitcommon") >= 0) && (gws("tsuitcommon") <= 4))
@@ -40,6 +44,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0144")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nranked")
     PRECONDITION (true)
     POSTCONDITION ((gws("nranked") >= 0) && (gws("nranked") <= 4))
@@ -49,6 +54,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0145")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nrankedcommon")
     PRECONDITION (true)
     POSTCONDITION ((gws("nrankedcommon") >= 0) && (gws("nrankedcommon") <= 4))
@@ -58,6 +64,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0146")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol trank")
     PRECONDITION (true)
     POSTCONDITION ((gws("trank") >= 0) && (gws("trank") <= 4))
@@ -67,6 +74,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0147")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol trankcommon")
     PRECONDITION (true)
     POSTCONDITION ((gws("trankcommon") >= 0) && (gws("trankcommon") <= 4))
@@ -76,6 +84,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0148")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nstraight")
     PRECONDITION (true)
     POSTCONDITION ((gws("nstraight") >= 0) && (gws("nstraight") <= 7))
@@ -85,6 +94,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0149")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nstraightcommon")
     PRECONDITION (true)
     POSTCONDITION ((gws("nstraightcommon") >= 0) && (gws("nstraightcommon") <= 5))
@@ -94,6 +104,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0150")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nstraightfill")
     PRECONDITION (true)
     POSTCONDITION ((gws("nstraightfill") >= 0) && (gws("nstraightfill") <= 5))
@@ -103,6 +114,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0151")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nstraightfillcommon")
     PRECONDITION (true)
     POSTCONDITION ((gws("nstraightfillcommon") >= 0) && (gws("nstraightfillcommon") <= 5))
@@ -112,6 +124,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0152")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nstraightflush")
     PRECONDITION (true)
     POSTCONDITION ((gws("nstraightflush") >= 0) && (gws("nstraightflush") <= 7))
@@ -121,6 +134,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0153")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nstraightflushcommon")
     PRECONDITION (true)
     POSTCONDITION ((gws("nstraightflushcommon") >= 0) && (gws("nstraightflushcommon") <= 7))
@@ -130,6 +144,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0154")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nstraightflushfill")
     PRECONDITION (true)
     POSTCONDITION ((gws("nstraightflushfill") >= 0) && (gws("nstraightflushfill") <= 5))
@@ -139,6 +154,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0155")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nstraightflushfillcommon")
     PRECONDITION (true)
     POSTCONDITION ((gws("nstraightflushfillcommon") >= 0) && (gws("nstraightflushfillcommon") <= 5))

@@ -6,6 +6,7 @@
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0156")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol rankbits")
     PRECONDITION (true)
     POSTCONDITION ((gws("rankbits") >= 0) && (gws("rankbits") <= MAX_RANKBITS))
@@ -15,6 +16,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0157")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol rankbitscommon")
     PRECONDITION (true)
     POSTCONDITION ((gws("rankbitscommon") >= 0) && (gws("rankbitscommon") <= MAX_RANKBITS))
@@ -24,6 +26,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0158")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol rankbitsplayer")
     PRECONDITION (true)
     POSTCONDITION ((gws("rankbitsplayer") >= 0) && (gws("rankbitsplayer") <= MAX_RANKBITS))
@@ -33,6 +36,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0159")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol rankbitspoker")
     PRECONDITION (true)
     POSTCONDITION ((gws("rankbitspoker") >= 0) && (gws("rankbitspoker") <= MAX_RANKBITS))
@@ -42,6 +46,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0160")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol srankbits")
     PRECONDITION (true)
     POSTCONDITION ((gws("srankbits") >= 0) && (gws("srankbits") <= MAX_RANKBITS))
@@ -51,6 +56,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0161")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol srankbitscommon")
     PRECONDITION (true)
     POSTCONDITION ((gws("srankbitscommon") >= 0) && (gws("srankbitscommon") <= MAX_RANKBITS))
@@ -60,6 +66,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0162")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol srankbitsplayer")
     PRECONDITION (true)
     POSTCONDITION ((gws("srankbitsplayer") >= 0) && (gws("srankbitsplayer") <= MAX_RANKBITS))
@@ -69,6 +76,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0163")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol srankbitspoker")
     PRECONDITION (true)
     POSTCONDITION ((gws("srankbitspoker") >= 0) && (gws("srankbitspoker") <= MAX_RANKBITS))

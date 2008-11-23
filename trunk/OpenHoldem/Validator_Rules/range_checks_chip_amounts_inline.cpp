@@ -4,6 +4,7 @@
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0060")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol balance ")
     PRECONDITION (true)
     POSTCONDITION (gws("balance") >= 0)
@@ -13,6 +14,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0061")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbols balance0..balance9 ")
     PRECONDITION (true)
     POSTCONDITION ((gws("balance0") >= 0) && (gws("balance1") >= 0) && (gws("balance2") >= 0) && (gws("balance3") >= 0) && (gws("balance4") >= 0) && (gws("balance5") >= 0) && (gws("balance6") >= 0) && (gws("balance7") >= 0) && (gws("balance8") >= 0) && (gws("balance9") >= 0))
@@ -22,6 +24,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0062")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbols stack0..stack9")
     PRECONDITION (true)
     POSTCONDITION ((gws("stack0") >= gws("stack1")) && (gws("stack1") >= gws("stack2")) && (gws("stack2") >= gws("stack3")) && (gws("stack3") >= gws("stack4")) && (gws("stack4") >= gws("stack5")) && (gws("stack5") >= gws("stack6")) && (gws("stack6") >= gws("stack7")) && (gws("stack7") >= gws("stack8")) && (gws("stack8") >= gws("stack9")) && (gws("stack9") >= 0))
@@ -31,6 +34,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0063")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol currentbet")
     PRECONDITION (true)
     POSTCONDITION (gws("currentbet") >= 0)
@@ -40,6 +44,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0064")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbols currentbet0..currentbet9 ")
     PRECONDITION (true)
     POSTCONDITION ((gws("currentbet0") >= 0) && (gws("currentbet1") >= 0) && (gws("currentbet2") >= 0) && (gws("currentbet3") >= 0) && (gws("currentbet4") >= 0) && (gws("currentbet5") >= 0) && (gws("currentbet6") >= 0) && (gws("currentbet7") >= 0) && (gws("currentbet8") >= 0) && (gws("currentbet9") >= 0))
@@ -49,6 +54,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0065")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol call")
     PRECONDITION (true)
     POSTCONDITION (gws("call") >= 0)
@@ -58,6 +64,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0066")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol bet")
     PRECONDITION (true)
     POSTCONDITION (gws("bet") >= 0)
@@ -67,6 +74,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0067")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbols bet1..bet4")
     PRECONDITION (true)
     POSTCONDITION ((gws("bet1") > 0) && (gws("bet2") > 0) && (gws("bet3") > 0) && (gws("bet4") > 0) || (gws("bet1") == UNDEFINED_ZERO) && (gws("bet2") == UNDEFINED_ZERO) && (gws("bet3") == UNDEFINED_ZERO) && (gws("bet4") == UNDEFINED_ZERO))
@@ -76,6 +84,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0068")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol pot")
     PRECONDITION (true)
     POSTCONDITION (gws("pot") == (gws("potcommon") + gws("potplayer")))
@@ -85,6 +94,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0069")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol potcommon")
     PRECONDITION (true)
     POSTCONDITION (gws("potcommon") >= 0)
@@ -94,6 +104,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0070")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol potplayer")
     PRECONDITION (true)
     POSTCONDITION (gws("potplayer") >= 0)
@@ -103,6 +114,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0071")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol callshort")
     PRECONDITION (true)
     POSTCONDITION (gws("callshort") >= 0)
@@ -112,6 +124,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0072")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol raisshort")
     PRECONDITION (true)
     POSTCONDITION (gws("raisshort") >= 0)

@@ -10,6 +10,7 @@
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0080")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol pokerval")
     PRECONDITION (true)
     POSTCONDITION ((gws("pokerval") >= 0) && (gws("pokerval") <= FIVE_OF_A_KIND_ACES))
@@ -19,6 +20,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0081")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol pokervalplayer")
     PRECONDITION (true)
     POSTCONDITION ((gws("pokervalplayer") >= 0) && (gws("pokervalplayer") <= FIVE_OF_A_KIND_ACES))
@@ -28,6 +30,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0082")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol pokervalcommon")
     PRECONDITION (true)
     POSTCONDITION ((gws("pokervalcommon") >= 0) && (gws("pokervalcommon") <= FIVE_OF_A_KIND_ACES))
@@ -37,6 +40,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("00083")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol pcbits")
     PRECONDITION (true)
     POSTCONDITION ((gws("pcbits") >= 0) && (gws("pcbits") <= 24))
@@ -46,6 +50,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0084")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol npcbits")
     PRECONDITION (true)
     POSTCONDITION ((gws("npcbis") == 0) || (gws("npcbits") == 1) || (gws("npcbits") == 2))

@@ -4,6 +4,7 @@
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0237")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol vs$nhands")
     PRECONDITION (true)
     POSTCONDITION ((gws("vs$nhands") >= 0) && (gws("vs$nhands") <= 2652))
@@ -13,6 +14,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0238")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol vs$nhandshi")
     PRECONDITION (true)
     POSTCONDITION ((gws("vs$nhandshi") >= 0) && (gws("vs$nhandshi") <= 2652))
@@ -22,6 +24,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0239")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol vs$nhandsti")
     PRECONDITION (true)
     POSTCONDITION ((gws("vs$nhandsti") >= 0) && (gws("vs$nhandsti") <= 2652))
@@ -31,6 +34,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0240")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol vs$nhandslo")
     PRECONDITION (true)
     POSTCONDITION ((gws("vs$nhandslo") >= 0) && (gws("vs$nhandslo") <= 2652))
@@ -40,6 +44,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0241")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol vs$prwin")
     PRECONDITION (true)
     POSTCONDITION ((gws("vs$prwin") >= 0) && (gws("vs$prwin") <= 1))
@@ -49,6 +54,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0242")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol vs$prtie")
     PRECONDITION (true)
     POSTCONDITION ((gws("vs$prtie") >= 0) && (gws("vs$prtie") <= 1))
@@ -58,6 +64,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0243")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol vs$prlos")
     PRECONDITION (true)
     POSTCONDITION ((gws("vs$prlos") >= 0) && (gws("vs$prlos") <= 1))
@@ -67,6 +74,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0244")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol vs$prwinhi")
     PRECONDITION (true)
     POSTCONDITION ((gws("vs$prwinhi") >= 0) && (gws("vs$prwinhi") <= 1))
@@ -76,6 +84,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0245")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol vs$prtiehi")
     PRECONDITION (true)
     POSTCONDITION ((gws("vs$prtiehi") >= 0) && (gws("vs$prtiehi") <= 1))
@@ -85,6 +94,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0246")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol vs$prloshi")
     PRECONDITION (true)
     POSTCONDITION ((gws("vs$prloshi") >= 0) && (gws("vs$prloshi") <= 1))
@@ -94,6 +104,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0247")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol vs$prwinti")
     PRECONDITION (true)
     POSTCONDITION ((gws("vs$prwinti") >= 0) && (gws("vs$prwinti") <= 1))
@@ -103,6 +114,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0248")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol vs$prtieti")
     PRECONDITION (true)
     POSTCONDITION ((gws("vs$prtieti") >= 0) && (gws("vs$prtieti") <= 1))
@@ -112,6 +124,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0249")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol vs$prlosti")
     PRECONDITION (true)
     POSTCONDITION ((gws("vs$prlosti") >= 0) && (gws("vs$prlosti") <= 1))
@@ -121,6 +134,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0250")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol vs$prwinlo")
     PRECONDITION (true)
     POSTCONDITION ((gws("vs$prwinlo") >= 0) && (gws("vs$prwinlo") <= 1))
@@ -130,6 +144,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0251")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol vs$prtielo")
     PRECONDITION (true)
     POSTCONDITION ((gws("vs$prtielo") >= 0) && (gws("vs$prtielo") <= 1))
@@ -139,6 +154,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0252")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol vs$prloslo")
     PRECONDITION (true)
     POSTCONDITION ((gws("vs$prloslo") >= 0) && (gws("vs$prloslo") <= 1))

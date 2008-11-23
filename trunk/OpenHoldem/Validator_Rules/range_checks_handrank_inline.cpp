@@ -5,6 +5,7 @@
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0026")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol handrank")
     PRECONDITION (true)
     POSTCONDITION ((gws("handrank") >= 1) && (gws("handrank") <= 2652) || (gws("handrank") == UNDEFINED_ZERO))
@@ -14,6 +15,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0027")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol handrank169")
     PRECONDITION (true)
     POSTCONDITION ((gws("handrank169") >= 1) && (gws("handrank169") <= 169) || (gws("handrank169") == UNDEFINED_ZERO))
@@ -23,6 +25,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0028")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol handrank2652")
     PRECONDITION (true)
     POSTCONDITION ((gws("handrank2652") >= 12) && (gws("handrank2652") <= 2652) || (gws("handrank2652") == UNDEFINED_ZERO))
@@ -32,6 +35,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0029")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol handrank1326")
     PRECONDITION (true)
     POSTCONDITION ((gws("handrank1326") >= 6) && (gws("handrank1326") <= 1326) || (gws("handrank1326") == UNDEFINED_ZERO))
@@ -41,6 +45,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0030")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol handrank1000")
     PRECONDITION (true)
     POSTCONDITION ((gws("handrank1000") >= 4) && (gws("handrank1000") <= 1000)  || (gws("handrank1000") == UNDEFINED_ZERO))
@@ -50,6 +55,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0031")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol handrankp")
     PRECONDITION (true)
     POSTCONDITION ((gws("handrankp") >= 1) && (gws("handrankp") <= 2652) || (gws("handrankp") == UNDEFINED_ZERO))
