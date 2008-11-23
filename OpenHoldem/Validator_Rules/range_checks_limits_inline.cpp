@@ -4,6 +4,7 @@
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0015")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol bblind")
     PRECONDITION (gws("nplayersdealt") > 0)
     POSTCONDITION (gws("bblind") >= 0.02)
@@ -13,6 +14,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0016")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol sblind")
     PRECONDITION (gws("nplayersdealt") > 0)
     POSTCONDITION (gws("sblind") >= 0.01)
@@ -22,6 +24,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0017")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ante")
     PRECONDITION (true)
     POSTCONDITION (gws("ante") >= 0)
@@ -31,6 +34,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0018")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol lim")
     PRECONDITION (true)
     POSTCONDITION ((gws("lim") == 0) || (gws("lim") == 1) || (gws("lim") == 2) || (gws("lim") == UNDEFINED_NEGATIVE_ONE))
@@ -40,6 +44,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0019")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol isnl")
     PRECONDITION (true)
     POSTCONDITION ((gws("isnl") == true) || (gws("isnl") == false))
@@ -49,6 +54,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0020")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ispl")
     PRECONDITION (true)
     POSTCONDITION ((gws("ispl") == true) || (gws("ispl") == false))
@@ -58,6 +64,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0021")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol isfl")
     PRECONDITION (true)
     POSTCONDITION ((gws("isfl") == true) || (gws("isfl") == false))
@@ -67,6 +74,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0022")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol sraiprev")
     PRECONDITION (true)
     POSTCONDITION ((gws("sraiprev") > 0) || (gws("sraiprev") == UNDEFINED_ZERO))
@@ -76,6 +84,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0023")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol sraimin")
     PRECONDITION (true)
     POSTCONDITION ((gws("sraimin") > 0) || (gws("sraimin") == UNDEFINED_ZERO))
@@ -85,6 +94,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0024")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol sraimax")
     PRECONDITION (true)
     POSTCONDITION (gws("sraimax") >= 0)
@@ -94,6 +104,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0025")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol istournament")
     PRECONDITION (true)
     POSTCONDITION ((gws("istournament") == true) || (gws("istournament") == false))

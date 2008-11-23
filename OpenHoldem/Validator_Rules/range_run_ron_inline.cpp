@@ -4,6 +4,7 @@
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0207")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ron$royfl")
     PRECONDITION (true)
     POSTCONDITION (gws("ron$royfl") >= 0)
@@ -13,6 +14,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0208")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ron$strfl")
     PRECONDITION (true)
     POSTCONDITION (gws("ron$strfl") >= 0)
@@ -22,6 +24,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0209")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ron$4kind")
     PRECONDITION (true)
     POSTCONDITION (gws("ron$4kind") >= 0)
@@ -31,6 +34,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0210")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ron$fullh")
     PRECONDITION (true)
     POSTCONDITION (gws("ron$fullh") >= 0)
@@ -40,6 +44,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0211")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ron$flush")
     PRECONDITION (true)
     POSTCONDITION (gws("ron$flush") >= 0)
@@ -49,6 +54,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0212")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ron$strai")
     PRECONDITION (true)
     POSTCONDITION (gws("ron$strai") >= 0)
@@ -58,6 +64,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0213")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ron$3kind")
     PRECONDITION (true)
     POSTCONDITION (gws("ron$3kind") >= 0)
@@ -67,6 +74,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0214")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ron$2pair")
     PRECONDITION (true)
     POSTCONDITION (gws("ron$2pair") >= 0)
@@ -76,6 +84,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0215")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ron$1pair")
     PRECONDITION (true)
     POSTCONDITION (gws("ron$1pair") >= 0)
@@ -85,6 +94,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0216")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ron$hcard")
     PRECONDITION (true)
     POSTCONDITION (gws("ron$hcard") >= 0)
@@ -94,6 +104,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0217")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ron$total")
     PRECONDITION (true)
     POSTCONDITION (gws("ron$total") >= 0)
@@ -103,6 +114,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0218")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ron$pokervalmax")
     PRECONDITION (true)
     POSTCONDITION (gws("ron$pokervalmax") >= 0)
@@ -112,6 +124,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0219")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ron$prnuts")
     PRECONDITION (true)
     POSTCONDITION (gws("ron$prnuts") >= 0)
@@ -121,6 +134,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0220")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ron$prbest")
     PRECONDITION (true)
     POSTCONDITION (gws("ron$prbest") >= 0)
@@ -130,6 +144,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0221")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ron$clocks")
     PRECONDITION (true)
     POSTCONDITION (gws("ron$clocks") >= 0)
@@ -139,6 +154,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0222")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol run$royfl")
     PRECONDITION (true)
     POSTCONDITION (gws("run$royfl") >= 0)
@@ -148,6 +164,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0223")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol run$strfl")
     PRECONDITION (true)
     POSTCONDITION (gws("run$strfl") >= 0)
@@ -157,6 +174,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0224")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol run$4kind")
     PRECONDITION (true)
     POSTCONDITION (gws("run$4kind") >= 0)
@@ -166,6 +184,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0225")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol run$fullh")
     PRECONDITION (true)
     POSTCONDITION (gws("run$fullh") >= 0)
@@ -175,6 +194,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0226")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol run$flush")
     PRECONDITION (true)
     POSTCONDITION (gws("run$flush") >= 0)
@@ -184,6 +204,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0227")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol run$strai")
     PRECONDITION (true)
     POSTCONDITION (gws("run$strai") >= 0)
@@ -193,6 +214,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0228")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol run$3kind")
     PRECONDITION (true)
     POSTCONDITION (gws("run$3kind") >= 0)
@@ -202,6 +224,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0229")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol run$2pair")
     PRECONDITION (true)
     POSTCONDITION (gws("run$2pair") >= 0)
@@ -211,6 +234,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0230")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol run$1pair")
     PRECONDITION (true)
     POSTCONDITION (gws("run$1pair") >= 0)
@@ -220,6 +244,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0231")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol run$hcard")
     PRECONDITION (true)
     POSTCONDITION (gws("run$hcard") >= 0)
@@ -229,6 +254,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0232")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol run$total")
     PRECONDITION (true)
     POSTCONDITION (gws("run$total") >= 0)
@@ -238,6 +264,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0233")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol run$pokervalmax")
     PRECONDITION (true)
     POSTCONDITION (gws("run$pokervalmax") >= 0)
@@ -247,6 +274,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0234")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol run$prnuts")
     PRECONDITION (true)
     POSTCONDITION (gws("run$prnuts") >= 0)
@@ -256,6 +284,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0235")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol run$prbest")
     PRECONDITION (true)
     POSTCONDITION (gws("run$prbest") >= 0)
@@ -265,6 +294,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0236")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol run$clocks")
     PRECONDITION (true)
     POSTCONDITION (gws("run$clocks") >= 0)

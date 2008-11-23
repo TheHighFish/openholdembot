@@ -4,6 +4,7 @@
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0284")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol floppct")
     PRECONDITION (true)
     POSTCONDITION ((gws("floppct") >= 0) && (gws("floppct") <= 1))
@@ -13,6 +14,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0285")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol turnpct")
     PRECONDITION (true)
     POSTCONDITION ((gws("turnpct") >= 0) && (gws("turnpct") <= 1))
@@ -22,6 +24,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0286")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol riverpct")
     PRECONDITION (true)
     POSTCONDITION ((gws("riverpct") >= 0) && (gws("riverpct") <= 1))
@@ -31,6 +34,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0287")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol avgbetspf")
     PRECONDITION (true)
     POSTCONDITION (gws("avgbetspf") >= 0)
@@ -40,6 +44,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0288")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol tablepfr")
     PRECONDITION (true)
     POSTCONDITION ((gws("tablepfr") >= 0) && (gws("tablepfr") <= 1))
@@ -49,6 +54,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0289")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol maxbalance")
     PRECONDITION (true)
     POSTCONDITION (gws("maxbalance") >= 0)
@@ -58,6 +64,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0290")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol handsplayed")
     PRECONDITION (true)
     POSTCONDITION (gws("handsplayed") >= 0)
@@ -67,6 +74,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0291")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbols balance_rank0..balance_rank9")
     PRECONDITION (true)
     POSTCONDITION ((gws("balance_rank0") >= gws("balance_rank1")) && (gws("balance_rank1") >= gws("balance_rank2")) && (gws("balance_rank2") >= gws("balance_rank3")) && (gws("balance_rank3") >= gws("balance_rank4")) && (gws("balance_rank4") >= gws("balance_rank5")) && (gws("balance_rank5") >= gws("balance_rank6")) && (gws("balance_rank6") >= gws("balance_rank7")) && (gws("balance_rank7") >= gws("balance_rank8")) && (gws("balance_rank8") >= gws("balance_rank9")) && (gws("balance_rank") >= 0))

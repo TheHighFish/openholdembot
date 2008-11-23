@@ -4,6 +4,7 @@
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0172")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ranklo")
     PRECONDITION (true)
     POSTCONDITION (((gws("ranklo") >= 2) && (gws("ranklo") <= 14)) || (gws("ranklo") == UNDEFINED_ZERO))
@@ -13,6 +14,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0173")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ranklocommon")
     PRECONDITION (true)
     POSTCONDITION (((gws("ranklocommon") >= 2) && (gws("ranklocommon") <= 14)) || (gws("ranklocommon") == UNDEFINED_ZERO))
@@ -22,6 +24,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0174")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol rankloplayer")
     PRECONDITION (true)
     POSTCONDITION (((gws("rankloplayer") >= 2) && (gws("rankloplayer") <= 14)) || (gws("rankloplayer") == UNDEFINED_ZERO))
@@ -31,6 +34,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0175")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ranklopoker")
     PRECONDITION (true)
     POSTCONDITION (((gws("ranklopoker") >= 2) && (gws("ranklopoker") <= 14)) || (gws("ranklopoker") == UNDEFINED_ZERO))
@@ -40,6 +44,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0176")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol sranklo")
     PRECONDITION (true)
     POSTCONDITION (((gws("sranklo") >= 2) && (gws("sranklo") <= 14)) || (gws("sranklo") == UNDEFINED_ZERO))
@@ -49,6 +54,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0177")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol sranklocommon")
     PRECONDITION (true)
     POSTCONDITION (((gws("sranklocommon") >= 2) && (gws("sranklocommon") <= 14)) || (gws("sranklocommon") == UNDEFINED_ZERO))
@@ -58,6 +64,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0178")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol srankloplayer")
     PRECONDITION (true)
     POSTCONDITION (((gws("srankloplayer") >= 2) && (gws("srankloplayer") <= 14)) || (gws("srankloplayer") == UNDEFINED_ZERO))
@@ -67,6 +74,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0179")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol sranklopoker")
     PRECONDITION (true)
     POSTCONDITION (((gws("sranklopoker") >= 2) && (gws("sranklopoker") <= 14)) || (gws("sranklopoker") == UNDEFINED_ZERO))

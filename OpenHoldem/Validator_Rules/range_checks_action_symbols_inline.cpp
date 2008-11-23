@@ -4,6 +4,7 @@
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0256")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbols lastraisedx (x=1-4)")
     PRECONDITION (true)
     POSTCONDITION ((gws("lastraised1") >= -1) && (gws("lastraised1") <= 9) && (gws("lastraised2") >= -1) && (gws("lastraised2") <= 9) && (gws("lastraised3") >= -1) && (gws("lastraised3") <= 9) && (gws("lastraised4") >= -1) && (gws("lastraised4") <= 9))
@@ -12,6 +13,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0257")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbols raisbitsx (x=1-4) ")
     PRECONDITION (true)
     POSTCONDITION ((gws("raisbits1") >= 0) && (gws("raisbits1") <= 512) && (gws("raisbits2") >= 0) && (gws("raisbits2") <= 512) && (gws("raisbits3") >= 0) && (gws("raisbits3") <= 512) && (gws("raisbits4") >= 0) && (gws("raisbits4") <= 512) )
@@ -21,6 +23,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0258")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbols callbitsx (x=1-4) ")
     PRECONDITION (true)
     POSTCONDITION ((gws("callbits1") >= 0) && (gws("callbits1") <= 512) && (gws("callbits2") >= 0) && (gws("callbits2") <= 512) && (gws("callbits3") >= 0) && (gws("callbits3") <= 512) && (gws("callbits4") >= 0) && (gws("callbits4") <= 512) )
@@ -30,6 +33,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0259")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbols foldbitsx (x=1-4) ")
     PRECONDITION (true)
     POSTCONDITION ((gws("foldbits1") >= 0) && (gws("foldbits1") <= 512) && (gws("foldbits2") >= 0) && (gws("foldbits2") <= 512) && (gws("foldbits3") >= 0) && (gws("foldbits3") <= 512) && (gws("foldbits4") >= 0) && (gws("foldbits4") <= 512) )
@@ -39,6 +43,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0260")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol oppdealt")
     PRECONDITION (true)
     POSTCONDITION ((gws("oppdealt") >= 0) && (gws("oppdealt") <= 10))
@@ -48,6 +53,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0261")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ac_aggressor")
     PRECONDITION (true)
     POSTCONDITION ((gws("ac_aggressor") >= 0) && (gws("ac_aggressor") <= 9))
@@ -57,6 +63,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0262")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ac_agchair_after")
     PRECONDITION (true)
     POSTCONDITION ((gws("ac_agchair_after") == true ) || (gws("ac_agchair_after") == false))
@@ -66,6 +73,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0263")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ac_preflop_pos")
     PRECONDITION (true)
     POSTCONDITION ((gws("ac_preflop_pos") >= 0) && (gws("ac_preflop_pos") <= 6))
@@ -75,6 +83,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0264")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ac_prefloprais_pos")
     PRECONDITION (true)
     POSTCONDITION ((gws("ac_prefloprais_pos") >= 0) && (gws("ac_prefloprais_pos") <= 6))
@@ -84,6 +93,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0265")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ac_postflop_pos")
     PRECONDITION (true)
     POSTCONDITION ((gws("ac_postflop_pos") >= 0) && (gws("ac_postflop_pos") <= 5))
@@ -93,6 +103,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0266")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ac_pf_bets")
     PRECONDITION (gws("betround") == 1)
     POSTCONDITION ((gws("ac_pf_bets") >= 1) && (gws("ac_pf_bets") <= 5))
@@ -102,6 +113,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0267")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ac_first_into_pot")
     PRECONDITION (true)
     POSTCONDITION ((gws("ac_first_into_pot") == true) || (gws("ac_first_into_pot") == false))
@@ -111,6 +123,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0268")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbols ac_betposx (x=0-9)")
     PRECONDITION (true)
     POSTCONDITION ((gws("ac_betpos0") >= 0) && (gws("ac_betpos0") <= gws("nplayersdealt")) && (gws("ac_betpos1") >= 0) && (gws("ac_betpos1") <= gws("nplayersdealt")) && (gws("ac_betpos2") >= 0) && (gws("ac_betpos2") <= gws("nplayersdealt")) && (gws("ac_betpos3") >= 0) && (gws("ac_betpos3") <= gws("nplayersdealt")) && (gws("ac_betpos4") >= 0) && (gws("ac_betpos4") <= gws("nplayersdealt")) && (gws("ac_betpos5") >= 0) && (gws("ac_betpos5") <= gws("nplayersdealt")) && (gws("ac_betpos6") >= 0) && (gws("ac_betpos6") <= gws("nplayersdealt")) && (gws("ac_betpos7") >= 0) && (gws("ac_betpos7") <= gws("nplayersdealt")) && (gws("ac_betpos8") >= 0) && (gws("ac_betpos8") <= gws("nplayersdealt")) && (gws("ac_betpos9") >= 0) && (gws("ac_betpos9") <= gws("nplayersdealt")))
@@ -120,6 +133,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0269")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbols ac_dealposx (x=0-9)")
     PRECONDITION (true)
     POSTCONDITION ((gws("ac_dealpos0") >= 0) && (gws("ac_dealpos0") <= gws("nplayersdealt")) && (gws("ac_dealpos1") >= 0) && (gws("ac_dealpos1") <= gws("nplayersdealt")) && (gws("ac_dealpos2") >= 0) && (gws("ac_dealpos2") <= gws("nplayersdealt")) && (gws("ac_dealpos3") >= 0) && (gws("ac_dealpos3") <= gws("nplayersdealt")) && (gws("ac_dealpos4") >= 0) && (gws("ac_dealpos4") <= gws("nplayersdealt")) && (gws("ac_dealpos5") >= 0) && (gws("ac_dealpos5") <= gws("nplayersdealt")) && (gws("ac_dealpos6") >= 0) && (gws("ac_dealpos6") <= gws("nplayersdealt")) && (gws("ac_dealpos7") >= 0) && (gws("ac_dealpos7") <= gws("nplayersdealt")) && (gws("ac_dealpos8") >= 0) && (gws("ac_dealpos8") <= gws("nplayersdealt")) && (gws("ac_dealpos9") >= 0) && (gws("ac_dealpos9") <= gws("nplayersdealt")))

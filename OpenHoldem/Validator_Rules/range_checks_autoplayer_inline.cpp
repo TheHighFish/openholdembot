@@ -4,6 +4,7 @@
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0188")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol myturnbits")
     PRECONDITION (true)
     POSTCONDITION ((gws("myturnbits") >= 0) && (gws("myturnbits") <= 31))
@@ -13,6 +14,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0189")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ismyturn")
     PRECONDITION (true)
     POSTCONDITION ((gws("ismyturn") >= 0) && (gws("ismyturn") <= 7))

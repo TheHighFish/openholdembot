@@ -4,6 +4,7 @@
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0700")
+    HEURISTIC_RULE (false)
     REASONING ("Test for memory-symbols, trying to store and recall a value")
     PRECONDITION (gws("me_st_FourtyTwo_42") || true)
     POSTCONDITION (gws("me_re_FourtyTwo") == 42)

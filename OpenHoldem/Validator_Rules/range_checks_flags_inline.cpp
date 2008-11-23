@@ -4,6 +4,7 @@
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0127")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol fmax")
     PRECONDITION (true)
     POSTCONDITION ((gws("fmax") >= 0) && (gws("fmax") <= 9))
@@ -13,6 +14,7 @@ END_TESTCASE
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0128")
+    HEURISTIC_RULE (false)
     REASONING ("Range check for symbol fbits")
     PRECONDITION (true)
     POSTCONDITION ((gws("fbits") >= 0) && (gws("fbits") <= 1023))
