@@ -219,4 +219,6 @@ void CValidator::ValidateGameState()
 #include "Validator_Rules\consistency_checks_buttons_inline.cpp"
 #include "Validator_Rules\consistency_checks_handreset_inline.cpp"
 #include "Validator_Rules\consistency_checks_memory_symbols_inline.cpp"
+#include "Validator_Rules\consistency_checks_time_inline.cpp"
+#include "Validator_Rules\consistency_checks_table_stats_inline.cpp"
 }
