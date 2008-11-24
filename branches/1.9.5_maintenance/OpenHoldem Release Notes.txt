@@ -1,4 +1,4 @@
-v1.9.5 2008-xx-xx
+v1.9.5 2008-11-24
 =================
 BUG FIXES:
 - Did* symbols not being reset between rounds.  Thus if your bot swags in round 1, "didswag" will be non-zero throughout
