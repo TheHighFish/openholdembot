@@ -2082,19 +2082,19 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
 			switch (error) 
 			{
 			case ERR_INVALID_SYM:
-				Cstr.Format("ERROR: In_valid symbol");
+				Cstr.Format("ERROR: Invalid symbol");
 				m_CalcResult.SetWindowText(Cstr);
 				break;
 			case ERR_INVALID_FUNC_SYM:
-				Cstr.Format("ERROR: In_valid f$ reference");
+				Cstr.Format("ERROR: Invalid f$ reference");
 				m_CalcResult.SetWindowText(Cstr);
 				break;
 			case ERR_INVALID_DLL_SYM:
-				Cstr.Format("ERROR: In_valid dll$ reference");
+				Cstr.Format("ERROR: Invalid dll$ reference");
 				m_CalcResult.SetWindowText(Cstr);
 				break;
 			case ERR_INVALID_EXPR:
-				Cstr.Format("ERROR: In_valid expression");
+				Cstr.Format("ERROR: Invalid expression");
 				m_CalcResult.SetWindowText(Cstr);
 				break;
 			case ERR_DIV_ZERO:
