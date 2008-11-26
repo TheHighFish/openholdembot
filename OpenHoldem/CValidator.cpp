@@ -58,14 +58,20 @@ void CValidator::ValidateSingleRule()
 			{ 
 				p_autoplayer->set_autoplayer_engaged(false); 
 			} 
+			// Create error message
 			CString the_ErrorMessage = "TESTCASE ID: " 
 				+ CString(_testcase_id) 
-				+ "\n\n" 
-				+ "REASONING: "
+				+ "\n\n";
+			if (_heuristic)
+			{
+				the_ErrorMessage += "HEURISTIC RULE: yes";
+			}
+			the_ErrorMessage += "REASONING: "
 				+ CString(_reasoning)
 				+ "\n\n"
 			    + "SYMBOLS AFFECTED: " 
 				+ Symbols_And_Values(_symbols_possibly_affected); 
+			// Show error message
 			MessageBox(NULL, the_ErrorMessage, "Validator Error", 
 				MB_OK | MB_TOPMOST | MB_ICONEXCLAMATION); 
 		} 
@@ -221,4 +227,8 @@ void CValidator::ValidateGameState()
 #include "Validator_Rules\consistency_checks_memory_symbols_inline.cpp"
 #include "Validator_Rules\consistency_checks_time_inline.cpp"
 #include "Validator_Rules\consistency_checks_table_stats_inline.cpp"
+#include "Validator_Rules\consistency_checks_general_inline.cpp"
+#include "Validator_Rules\consistency_checks_history_inline.cpp"
+#include "Validator_Rules\consistency_checks_bets_inline.cpp"
+#include "Validator_Rules\consistency_checks_autoplayer_inline.cpp"
 }
