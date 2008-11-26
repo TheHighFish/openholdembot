@@ -127,6 +127,140 @@ BEGIN_TESTCASE
 END_TESTCASE
 
 
-// If I'm not active, then I can't hold cards.
+BEGIN_TESTCASE
+    TESTCASE_ID ("0412")
+    HEURISTIC_RULE (false)
+    REASONING ("If I'm sitting out, then I can't hold cards.")
+    PRECONDITION (gws("issittingout"))
+    POSTCONDITION ((gws("$$pc0") == CARD_UNKNOWN) && (gws("$$pc1") == CARD_UNKNOWN))
+    SYMBOLS_POSSIBLY_AFFECTED ("issittingout, $$pc0, $$pc1")
+END_TESTCASE
 
-// If I'n not playing, I cant hold cards.
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0413")
+    HEURISTIC_RULE (false)
+    REASONING ("If I'm not playing, I cant hold cards.")
+    PRECONDITION (gws("friendsplaingbits") == 0)
+    POSTCONDITION ((gws("$$pc0") == CARD_UNKNOWN) && (gws("$$pc1") == CARD_UNKNOWN))
+    SYMBOLS_POSSIBLY_AFFECTED ("friendsplaingbits, $$pc0, $$pc1")
+END_TESTCASE
+
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0414")
+    HEURISTIC_RULE (false)
+    REASONING ("If it's preflop, there have to be 0 common cards present and known.")
+    PRECONDITION (gws("betround") == 1)
+    POSTCONDITION ((gws("ncommoncardspresent") == 0) && (gws("ncommoncardsknown") == 0))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, ncommoncardspresent, ncommoncardsknown")
+END_TESTCASE
+
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0415")
+    HEURISTIC_RULE (false)
+    REASONING ("If it's the flop, there have to be 3 common cards present and known.")
+    PRECONDITION (gws("betround") == 2)
+    POSTCONDITION ((gws("ncommoncardspresent") == 3) && (gws("ncommoncardsknown") == 3))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, ncommoncardspresent, ncommoncardsknown")
+END_TESTCASE
+
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0416")
+    HEURISTIC_RULE (false)
+    REASONING ("If it's the turn, there have to be 4 common cards present and known.")
+    PRECONDITION (gws("betround") == 3)
+    POSTCONDITION ((gws("ncommoncardspresent") == 4) && (gws("ncommoncardsknown") == 4))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, ncommoncardspresent, ncommoncardsknown")
+END_TESTCASE
+
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0417")
+    HEURISTIC_RULE (false)
+    REASONING ("If it's the river, there have to be 5 common cards present and known.")
+    PRECONDITION (gws("betround") == 4)
+    POSTCONDITION ((gws("ncommoncardspresent") == 5) && (gws("ncommoncardsknown") == 5))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, ncommoncardspresent, ncommoncardsknown")
+END_TESTCASE
+
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0418")
+    HEURISTIC_RULE (false)
+    REASONING ("If I hold cards, the total number of known cards is 2 plus the number of common cards.")
+    PRECONDITION ((gws("$$pc0") != CARD_UNKNOWN) && (gws("$$pc0") != CARDBACK) && (gws("$$pc1") != CARD_UNKNOWN) && (gws("$$pc1") != CARDBACK))
+    POSTCONDITION (gws("ncardsknown") == (gws("ncommoncardsknown") + 2))
+    SYMBOLS_POSSIBLY_AFFECTED ("$$pc0, $$pc1, ncardsknown, ncommoncardsknown")
+END_TESTCASE
+
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0419")
+    HEURISTIC_RULE (false)
+    REASONING ("The number of unknown cards is 52 minus the number of known cards.")
+    PRECONDITION (true)
+    POSTCONDITION (gws("ncardsknown") == (52 - gws("ncardsunknown")))
+    SYMBOLS_POSSIBLY_AFFECTED ("ncardsknown, ncardsunknown")
+END_TESTCASE
+
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0420")
+    HEURISTIC_RULE (false)
+    REASONING ("If it's not the turn or river there can't be a single-card that beats us.")
+    PRECONDITION (gws("betround") < 3)
+    POSTCONDITION (gws("ncardsbetter") == 1)
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, ncardsbetter")
+END_TESTCASE
+
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0421")
+    HEURISTIC_RULE (false)
+    REASONING ("If both my cards are of the same rank, I have a pocket pair.")
+    PRECONDITION (gws("$$pr0") == gws("$$pr1"))
+    POSTCONDITION (gws("ispair"))
+    SYMBOLS_POSSIBLY_AFFECTED ("$$pr0, $$pr1, ispair")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0422")
+    HEURISTIC_RULE (false)
+    REASONING ("If both my cards are not of the same rank, I don't have a pocket pair.")
+    PRECONDITION (gws("$pr0") != gws("$$pr1"))
+    POSTCONDITION (!gws("ispair"))
+    SYMBOLS_POSSIBLY_AFFECTED ("$$pr0, $$pr1, ispair")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0423")
+    HEURISTIC_RULE (false)
+    REASONING ("If both my cards are of the same suit, they are suited.")
+    PRECONDITION (gws("$$ps0") == gws("$$ps1"))
+    POSTCONDITION (gws("issuited"))
+    SYMBOLS_POSSIBLY_AFFECTED ("$$ps0, $$ps1, issuited")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0424")
+    HEURISTIC_RULE (false)
+    REASONING ("If my cards are not of the same suit, they are not suited")
+    PRECONDITION (gws("$ps0") != gws("$$ps1"))
+    POSTCONDITION (!gws("issuited"))
+    SYMBOLS_POSSIBLY_AFFECTED ("$$ps0, $$ps1, issuited")
+END_TESTCASE
