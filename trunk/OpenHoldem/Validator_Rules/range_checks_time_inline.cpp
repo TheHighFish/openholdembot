@@ -67,7 +67,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nclockspersecond")
     PRECONDITION (true)
-    POSTCONDITION (gws("nclockspersecond") >= 0)
+    POSTCONDITION (gws("nclockspersecond") >= 1)
     SYMBOLS_POSSIBLY_AFFECTED ("nclockspersecond")
 END_TESTCASE
 

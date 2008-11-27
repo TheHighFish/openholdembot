@@ -43,7 +43,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (true)
     REASONING ("Check for numer of hands played, under the assumption that a hand can last at most 2 minutes on average.")
     PRECONDITION (gws("elapsed") >= 120)
-    POSTCONDITION ((gws("handsplayed") *120 ) >= gws("elapsed") )
+    POSTCONDITION (((gws("handsplayed") + 1) * 120 ) >= gws("elapsed") )
     SYMBOLS_POSSIBLY_AFFECTED ("handsplayed, elapsed")
 END_TESTCASE
 
