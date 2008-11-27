@@ -7,7 +7,7 @@
 //
 // Poker Value Constants
 //   We don't test these symbols,
-//   as they are to trivial to do them wrong.
+//   as they are too trivial to do them wrong.
 //
 
 
