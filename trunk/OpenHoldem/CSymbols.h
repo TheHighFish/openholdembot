@@ -72,20 +72,6 @@ struct SSymbols
 	double randomhand;
 	double randomround[5];				// "randomround" is held in element 4, round specific in elements 0-3
 
-	//STATISTICS
-	double callror;
-	double raisror;
-	double srairor;
-	double alliror;
-	double callmean;
-	double raismean;
-	double sraimean;
-	double allimean;
-	double callvariance;
-	double raisvariance;
-	double sraivariance;
-	double allivariance;
-
 	//P FORMULA
 	double defcon;
 	double isdefmode;
@@ -471,7 +457,6 @@ private:
 	void CalcFlushesStraightsSets(void);
 	void CalcRankbits(void);
 	void CalcHistory(void);
-	void CalcStatistics(void);
 	void CalcRunRon(void);
 
 	HandVal		_phandval[4], _chandval[4];	// for ishandup and ishandupcommon symbol calcs
