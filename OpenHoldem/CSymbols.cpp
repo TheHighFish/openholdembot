@@ -254,11 +254,6 @@ void CSymbols::ResetSymbolsFirstTime(void)
 
 	_sym.prwin = _sym.prlos = _sym.prtie = 0;
 
-	// statistics
-	_sym.callror = _sym.raisror = _sym.srairor = _sym.alliror = 0;
-	_sym.callmean = _sym.raismean = _sym.sraimean = _sym.allimean = 0;
-	_sym.callvariance = _sym.raisvariance = _sym.sraivariance = _sym.allivariance = 0;
-
 	// p formula
 	_sym.defcon = _sym.isdefmode = _sym.isaggmode = 0;
 
@@ -542,11 +537,6 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 	// rounds positions
 	_sym.betposition = _sym.dealposition = _sym.callposition = _sym.seatposition = 1;
 	_sym.dealpositionrais = _sym.betpositionrais = 1;
-
-	// statistics
-	_sym.callror = _sym.raisror = _sym.srairor = _sym.alliror = 0;
-	_sym.callmean = _sym.raismean = _sym.sraimean = _sym.allimean = 0;
-	_sym.callvariance = _sym.raisvariance = _sym.sraivariance = _sym.allivariance = 0;
 
 	// chip amounts
 	for (i=0; i<11; i++)
@@ -914,15 +904,6 @@ void CSymbols::CalcSymbols(void)
 		CalcHandrank();			// handrank
 		CalcProbabilities();		// prwin, random
 		CalcRunRon();				// run$, ron$
-	}
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// dependent on prwin calulation - must come after
-	if (_user_chair_confirmed &&
-		p_scraper->card_player(_sym.chair, 0)!=CARD_NOCARD && p_scraper->card_player(_sym.chair, 1)!=CARD_NOCARD &&
-		p_scraper->card_player(_sym.chair, 0)!=CARD_BACK && p_scraper->card_player(_sym.chair, 1)!=CARD_BACK)
-	{
-		CalcStatistics();			// ror, mean, variance
 	}
 }
 
@@ -2959,69 +2940,6 @@ void CSymbols::CalcHistory(void)
 	LeaveCriticalSection(&cs_symbols);
 }
 
-void CSymbols::CalcStatistics(void)
-{
-	double		f$srai = 0., C = 0., R = 0., S = 0., B = 0.;
-	int			error = 0;
-	CGrammar	gram;
-
-	// f$srai
-	error = SUCCESS;
-
-	f$srai = gram.CalcF$symbol(p_formula, "f$srai", prefs.trace_functions(nTraceSwag), &error);
-
-	// B
-	B = p_formula->formula()->dBankroll != 0 ? p_formula->formula()->dBankroll : p_scraper->player_balance(_sym.userchair);
-
-	EnterCriticalSection(&cs_symbols);	
-
-		// call
-		C = _sym.call;
-		R = 0;
-		S = C+R;
-		_sym.callmean = (S==0) ? 0 : _sym.prwin*((_sym.pot+R)/S) + _sym.prtie*((_sym.pot+R)/2/S) - _sym.prlos*(S/S);
-		_sym.callvariance = _sym.prwin*pow(_sym.pot/S - _sym.callmean, 2) +
-						   _sym.prtie*pow(_sym.pot/S/2 - _sym.callmean, 2) +
-						   _sym.prlos*pow(-1 - _sym.callmean, 2);
-		_sym.callror = pow(M_E, ( 2*_sym.callmean*(0/S+_sym.pot/S)/_sym.callvariance ) - 1) /
-					  pow(M_E, ( 2*_sym.callmean*(B/S+_sym.pot/S)/_sym.callvariance ) - 1);
-
-
-		// rais
-		C = _sym.call;
-		R = _sym.bet[4];
-		S = C+R;
-		_sym.raismean = (S==0) ? 0 : _sym.prwin*((_sym.pot+R)/S) + _sym.prtie*((_sym.pot+R)/2/S) - _sym.prlos*(S/S);
-		_sym.raisvariance = _sym.prwin*pow(_sym.pot/S - _sym.callmean, 2) +
-						   _sym.prtie*pow(_sym.pot/S/2 - _sym.callmean, 2) +
-						   _sym.prlos*pow(-1 - _sym.callmean, 2);
-		_sym.raisror = pow(M_E, ( 2*_sym.raismean*(0/S+_sym.pot/S)/_sym.raisvariance ) - 1) /
-					  pow(M_E, ( 2*_sym.raismean*(B/S+_sym.pot/S)/_sym.raisvariance ) - 1);
-
-		// srai
-		C = _sym.call;
-		R = f$srai;
-		S = C+R;
-		_sym.sraimean = (S==0) ? 0 : _sym.prwin*((_sym.pot+R)/S) + _sym.prtie*((_sym.pot+R)/2/S) - _sym.prlos*(S/S);
-		_sym.sraivariance = _sym.prwin*pow(_sym.pot/S - _sym.callmean, 2) +
-						   _sym.prtie*pow(_sym.pot/S/2 - _sym.callmean, 2) +
-						   _sym.prlos*pow(-1 - _sym.callmean, 2);
-		_sym.srairor = pow(M_E, ( 2*_sym.sraimean*(0/S+_sym.pot/S)/_sym.sraivariance ) - 1) /
-					  pow(M_E, ( 2*_sym.sraimean*(B/S+_sym.pot/S)/_sym.sraivariance ) - 1);
-
-		// alli
-		C = _sym.call;
-		R = _sym.balance[10] - _sym.call;
-		S = C+R;
-		_sym.allimean = (S==0) ? 0 : _sym.prwin*((_sym.pot+R)/S) + _sym.prtie*((_sym.pot+R)/2/S) - _sym.prlos*(S/S);
-		_sym.allivariance = _sym.prwin*pow(_sym.pot/S - _sym.callmean, 2) +
-						   _sym.prtie*pow(_sym.pot/S/2 - _sym.callmean, 2) +
-						   _sym.prlos*pow(-1 - _sym.callmean, 2);
-		_sym.alliror = pow(M_E, ( 2*_sym.allimean*(0/S+_sym.pot/S)/_sym.allivariance ) - 1) /
-					  pow(M_E, ( 2*_sym.allimean*(B/S+_sym.pot/S)/_sym.allivariance ) - 1);
-
-	LeaveCriticalSection(&cs_symbols);
-}
 
 void CSymbols::CalcRunRon(void)
 {
@@ -3728,20 +3646,6 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "randomhand", 10)==0 && strlen(a)==10)				return _sym.randomhand;
 	if (memcmp(a, "randomround", 11)==0 && strlen(a)==11)				return _sym.randomround[4];
 	if (memcmp(a, "randomround", 11)==0 && strlen(a)==12)				return _sym.randomround[a[11]-'0'-1];
-
-	//STATISTICS
-	if (memcmp(a, "callror", 7)==0 && strlen(a)==7)						return _sym.callror;
-	if (memcmp(a, "raisror", 7)==0 && strlen(a)==7)  					return _sym.raisror;
-	if (memcmp(a, "srairor", 7)==0 && strlen(a)==7)  					return _sym.srairor;
-	if (memcmp(a, "alliror", 7)==0 && strlen(a)==7)  					return _sym.alliror;
-	if (memcmp(a, "callmean", 8)==0 && strlen(a)==8)  					return _sym.callmean;
-	if (memcmp(a, "raismean", 8)==0 && strlen(a)==8)  					return _sym.raismean;
-	if (memcmp(a, "sraimean", 8)==0 && strlen(a)==8)  					return _sym.sraimean;
-	if (memcmp(a, "allimean", 8)==0 && strlen(a)==8)  					return _sym.allimean;
-	if (memcmp(a, "callvariance", 12)==0 && strlen(a)==12)				return _sym.callvariance;
-	if (memcmp(a, "raisvariance", 12)==0 && strlen(a)==12)  			return _sym.raisvariance;
-	if (memcmp(a, "sraivariance", 12)==0 && strlen(a)==12)  			return _sym.sraivariance;
-	if (memcmp(a, "allivariance", 12)==0 && strlen(a)==12)  			return _sym.allivariance;
 
 	//P FORMULA
 	if (memcmp(a, "defcon", 6)==0 && strlen(a)==6)						return _sym.defcon;

@@ -37,8 +37,7 @@ char * keywords = "ismanual isppro site nchairs isbring session handnumber "
 				  "dealerchair raischair chair$ chairbit$ betround br betposition dealposition "
 				  "callposition seatposition dealpositionrais betpositionrais prwin prtie prlos "
 				  "random randomhand randomround randomround1 randomround2 randomround3 randomround4 "
-				  "callror raisror srairor alliror callmean raismean sraimean allimean callvariance "
-				  "raisvariance sraivariance allivariance defcon isdefmode isaggmode balance balance0 "
+				  "defcon isdefmode isaggmode balance balance0 "
 				  "balance1 balance2 balance3 balance4 balance5 balance6 balance7 balance8 balance9 "
 				  "stack0 stack1 stack2 stack3 stack4 stack5 stack6 stack7 stack8 stack9 currentbet "
 				  "currentbet0 currentbet1 currentbet2 currentbet3 currentbet4 currentbet5 currentbet6 "
@@ -3131,20 +3130,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "randomhand", "random number between (0.000-1.000) for the hand");
 	AddSymbol(parent, "randomround", "random number between (0.000-1.000) for the current round");
 	AddSymbol(parent, "randomround1 - randomround4", "random number between (0.000-1.000) for round 1 - 4");
-
-	mainParent = parent = AddSymbolTitle("Statistics", "Note that these symbols have not been created for use in OpenHoldem yet.   Please see the to-do thread in the OpenHoldem stickies section of the forum for more information.", hCatItem);
-	AddSymbol(parent, "callror", "the statistical risk of ruin for call decision");
-	AddSymbol(parent, "raisror", "the statistical risk of ruin for rais decision");
-	AddSymbol(parent, "srairor", "the statistical risk of ruin for srai decision");
-	AddSymbol(parent, "alliror", "the statistical risk of ruin for alli decision");
-	AddSymbol(parent, "callmean", "the statistical mean for call decision");
-	AddSymbol(parent, "raismean", "the statistical mean for rais decision");
-	AddSymbol(parent, "sraimean", "the statistical mean for srai decision");
-	AddSymbol(parent, "allimean", "the statistical mean for alli decision");
-	AddSymbol(parent, "callvariance", "the statistical variance for call decision");
-	AddSymbol(parent, "raisvariance", "the statistical variance for rais decision");
-	AddSymbol(parent, "sraivariance", "the statistical variance for srai decision");
-	AddSymbol(parent, "allivariance", "the statistical variance for alli decision");
 
 	mainParent = parent = AddSymbolTitle("Formulas", NULL, hCatItem);
 	AddSymbol(parent, "f$name", "reference the specified formula");
