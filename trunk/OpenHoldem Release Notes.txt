@@ -11,6 +11,8 @@ BUG FIXES:
   of older .tm file versions in either OpenHoldem or OpenScrape will result in a warning message with similar 
   information to the above being displayed. [OpenHoldem]
 - Hand numbers are now displayed in center info box correctly, if they are integers [OpenHoldem]
+- ICMCalculator: for icm_* symbols stacks are now initialized with balances instead of stack_at_hand_start - currentbet. 
+  stack_at_hand_start is now only use for icm symbol ("my equity at the start of this hand") [spud]
   
 MAINTENANCE:
 - Removed last SEH-code (__SEH_SET_EXCEPTION_HANDLER), which is no longer neccessary. [TheHighFish]

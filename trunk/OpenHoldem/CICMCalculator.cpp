@@ -78,20 +78,14 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 	int			sym_playersseatedbits =  (int) p_symbols->sym()->playersseatedbits;
 	double		sym_pot = p_symbols->sym()->pot;
 	double		sym_call = p_symbols->sym()->call;
-	double		sym_currentbet[MAX_PLAYERS], stacks_at_hand_start[MAX_PLAYERS];
-
-	for (i=0; i<MAX_PLAYERS; i++)
-	{
-		sym_currentbet[i] = p_symbols->sym()->currentbet[i];
-		stacks_at_hand_start[i] = p_symbols->stacks_at_hand_start(i);
-	}
+   double		sym_currentbet[MAX_PLAYERS]={0};
 
 	for (i = 0; i < MAX_PLAYERS; i++)
 	{
 		if ((sym_playersseatedbits>>i)&1)
 		{
-			stacks[i] = stacks_at_hand_start[i] - sym_currentbet[i];
-			//ASSERT(stacks[i] >= 0.0001);
+			stacks[i] = p_symbols->sym()->balance[i];
+			sym_currentbet[i] = p_symbols->sym()->currentbet[i];
 		}
 	}
 
@@ -323,16 +317,20 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 		}
 	}
 
-	else
+	else if(strcmp(pquery,"")==0)
 	{
 		for (i = 0; i < MAX_PLAYERS; i++)
 		{
 			if ((sym_playersseatedbits>>i)&1)
 			{
-				stacks[i] += sym_currentbet[i];
+				stacks[i] = p_symbols->stacks_at_hand_start(i);
 			}
-		}
+	   }
 	}
+   else
+   {
+      return 0.;
+   } 
 
 	return EquityICM(stacks, prizes, MAX_PLAYERS, sym_userchair);
 }
