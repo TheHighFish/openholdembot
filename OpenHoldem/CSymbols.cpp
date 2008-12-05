@@ -3575,57 +3575,487 @@ void CSymbols::UpdateAutoplayerInfo(void)
 
 const double CSymbols::GetSymbolVal(const char *a, int *e)
 {
-	if (memcmp(a, "ismanual", 8)==0 && strlen(a)==8)					return _sym.ismanual;
-	if (memcmp(a, "isppro", 6)==0 && strlen(a)==6)						return _sym.isppro;
-	if (memcmp(a, "site", 4)==0 && strlen(a)==4)						return _sym.site;
-	if (memcmp(a, "nchairs", 7)==0 && strlen(a)==7)						return _sym.nchairs;
-	if (memcmp(a, "isbring", 7)==0 && strlen(a)==7)						return _sym.isbring;
-	if (memcmp(a, "session", 7)==0 && strlen(a)==7)						return _sym.session;
-	if (memcmp(a, "handnumber", 10)==0 && strlen(a)==10)				return _sym.handnumber;
-	if (memcmp(a, "version", 7)==0 && strlen(a)==7)						return _sym.version;
+	// Look up a symbol value.
+	// As a long series of string comparisions is not efficient
+	// (especially for large formulas or with the validator turned on),
+	// we do now a two-step-comparision (preselection for symbol groups).
+	// This should result in still quite maintenable and more efficient code.
 
-	//PROFILE
-	if (memcmp(a, "sitename$", 9)==0)									return p_tablemap->sitename().Find(&a[9])!=-1;
-	if (memcmp(a, "network$", 8)==0)									return p_tablemap->network().Find(&a[8])!=-1;
-	if (memcmp(a, "swagdelay", 9)==0 && strlen(a)==9)					return _sym.swagdelay;
-	if (memcmp(a, "allidelay", 9)==0 && strlen(a)==9)					return _sym.allidelay;
-	if (memcmp(a, "swagtextmethod", 14)==0 && strlen(a)==14)			return _sym.swagtextmethod;
-	if (memcmp(a, "potmethod", 9)==0 && strlen(a)==9)					return _sym.potmethod;
-	if (memcmp(a, "activemethod", 12)==0 && strlen(a)==12)				return _sym.activemethod;
+	// PLAYERS FRIENDS OPPONENTS 1(7)
+	if (memcmp(a, "nopponents", 10)==0)
+	{
+		if (memcmp(a, "nopponents", 10)==0 && strlen(a)==10)				return _sym.nopponents;
+		if (memcmp(a, "nopponentsmax", 13)==0 && strlen(a)==13)				return _sym.nopponentsmax;
+		if (memcmp(a, "nopponentsseated", 16)==0 && strlen(a)==16)			return _sym.nopponentsseated;
+		if (memcmp(a, "nopponentsactive", 16)==0 && strlen(a)==16)			return _sym.nopponentsactive;
+		if (memcmp(a, "nopponentsdealt", 15)==0 && strlen(a)==15)			return _sym.nopponentsdealt;
+		if (memcmp(a, "nopponentsplaying", 17)==0 && strlen(a)==17)			return _sym.nopponentsplaying;
+		if (memcmp(a, "nopponentsblind", 15)==0 && strlen(a)==15)			return _sym.nopponentsblind;
+		if (memcmp(a, "nopponentschecking", 18)==0 && strlen(a)==18)		return _sym.nopponentschecking;
+		if (memcmp(a, "nopponentscalling", 17)==0 && strlen(a)==17)			return _sym.nopponentscalling;
+		if (memcmp(a, "nopponentsraising", 17)==0 && strlen(a)==17)			return _sym.nopponentsraising;
+		if (memcmp(a, "nopponentsbetting", 17)==0 && strlen(a)==17)			return _sym.nopponentsbetting;
+		if (memcmp(a, "nopponentsfolded", 16)==0 && strlen(a)==16)			return _sym.nopponentsfolded;
+	}
 
-	//FORMULA FILE
-	if (memcmp(a, "rake", 4)==0 && strlen(a)==4)						return _sym.rake;
-	if (memcmp(a, "nit", 3)==0 && strlen(a)==3)							return _sym.nit;
-	if (memcmp(a, "bankroll", 8)==0 && strlen(a)==8)					return _sym.bankroll;
+	// PLAYERS FRIENDS OPPONENTS 2(7)
+	// HISTORY 2(3)
+	if (memcmp(a, "nplayers", 8)==0)
+	{
+		// PLAYERS FRIENDS OPPONENTS 2(7
+		if (memcmp(a, "nplayersseated", 14)==0 && strlen(a)==14)			return _sym.nplayersseated;
+		if (memcmp(a, "nplayersactive", 14)==0 && strlen(a)==14)			return _sym.nplayersactive;
+		if (memcmp(a, "nplayersdealt", 13)==0 && strlen(a)==13)				return _sym.nplayersdealt;
+		if (memcmp(a, "nplayersplaying", 15)==0 && strlen(a)==15)			return _sym.nplayersplaying;
+		if (memcmp(a, "nplayersblind", 13)==0 && strlen(a)==13)				return _sym.nplayersblind;
+		if (memcmp(a, "nplayerscallshort", 17)==0 && strlen(a)==17)			return _sym.nplayerscallshort;
 
-	//LIMITS
-	if (memcmp(a, "bblind", 6)==0 && strlen(a)==6)						return _sym.bblind;
-	if (memcmp(a, "sblind", 6)==0 && strlen(a)==6)						return _sym.sblind;
-	if (memcmp(a, "ante", 4)==0 && strlen(a)==4)						return _sym.ante;
-	if (memcmp(a, "lim", 3)==0 && strlen(a)==3)							return _sym.lim;
-	if (memcmp(a, "isnl", 4)==0 && strlen(a)==4)						return _sym.isnl;
-	if (memcmp(a, "ispl", 4)==0 && strlen(a)==4)						return _sym.ispl;
-	if (memcmp(a, "isfl", 4)==0 && strlen(a)==4)						return _sym.isfl;
-	if (memcmp(a, "sraiprev", 8)==0 && strlen(a)==8)					return _sym.sraiprev;
-	if (memcmp(a, "sraimin", 7)==0 && strlen(a)==7)						return _sym.sraimin;
-	if (memcmp(a, "sraimax", 7)==0 && strlen(a)==7)						return _sym.sraimax;
-	if (memcmp(a, "istournament", 12)==0 && strlen(a)==12)				return _sym.istournament;
+		// HISTORY 2(3)
+		if (memcmp(a, "nplayersround", 13)==0 && strlen(a)==13)				return _sym.nplayersround[4];
+		if (memcmp(a, "nplayersround", 13)==0 && strlen(a)==14)				return _sym.nplayersround[a[13]-'0'-1];
+	}
 
-	//HAND RANK
-	if (memcmp(a, "handrank", 8)==0 && strlen(a)==8)					return _sym.handrank;
-	if (memcmp(a, "handrank169", 11)==0 && strlen(a)==11)				return _sym.handrank169;
-	if (memcmp(a, "handrank2652", 12)==0 && strlen(a)==12)				return _sym.handrank2652;
-	if (memcmp(a, "handrank1326", 12)==0 && strlen(a)==12)				return _sym.handrank1326;
-	if (memcmp(a, "handrank1000", 12)==0 && strlen(a)==12)				return _sym.handrank1000;
-	if (memcmp(a, "handrankp", 9)==0 && strlen(a)==9)					return _sym.handrankp;
+	// PLAYERS FRIENDS OPPONENTS 3(7)
+	if (memcmp(a, "nfriends", 8)==0)
+	{
+		if (memcmp(a, "nfriendsseated", 14)==0 && strlen(a)==14)			return _sym.nfriendsseated;
+		if (memcmp(a, "nfriendsactive", 14)==0 && strlen(a)==14)			return _sym.nfriendsactive;
+		if (memcmp(a, "nfriendsdealt", 13)==0 && strlen(a)==13)				return _sym.nfriendsdealt;
+		if (memcmp(a, "nfriendsplaying", 15)==0 && strlen(a)==15)			return _sym.nfriendsplaying;
+		if (memcmp(a, "nfriendsblind", 13)==0 && strlen(a)==13)				return _sym.nfriendsblind;
+	}
 
-	//CHAIRS
-	if (memcmp(a, "chair", 5)==0 && strlen(a)==5)						return _sym.chair;
+	// PLAYERS FRIENDS OPPONENTS 4(7)	
+	if (memcmp(a, "nchairs", 7)==0)
+	{
+		if (memcmp(a, "nchairsdealtright", 17)==0 && strlen(a)==17)			return _sym.nchairsdealtright;
+		if (memcmp(a, "nchairsdealtleft", 16)==0 && strlen(a)==16)			return _sym.nchairsdealtleft;
+	}
+
+	// PLAYERS FRIENDS OPPONENTS 5(7)
+	if (memcmp(a, "players", 7)==0)
+	{
+		if (memcmp(a, "playersseatedbits", 17)==0 && strlen(a)==17)			return _sym.playersseatedbits;
+		if (memcmp(a, "playersactivebits", 17)==0 && strlen(a)==17)			return _sym.playersactivebits;
+		if (memcmp(a, "playersdealtbits", 16)==0 && strlen(a)==16)			return _sym.playersdealtbits;
+		if (memcmp(a, "playersplayingbits", 18)==0 && strlen(a)==18)		return _sym.playersplayingbits;
+		if (memcmp(a, "playersblindbits", 16)==0 && strlen(a)==16)			return _sym.playersblindbits;
+	}
+
+	// PLAYERS FRIENDS OPPONENTS 6(7)
+	if (memcmp(a, "opponents", 9)==0)
+	{
+		if (memcmp(a, "opponentsseatedbits", 19)==0 && strlen(a)==19)		return _sym.opponentsseatedbits;
+		if (memcmp(a, "opponentsactivebits", 19)==0 && strlen(a)==19)		return _sym.opponentsactivebits;
+		if (memcmp(a, "opponentsdealtbits", 18)==0 && strlen(a)==18)		return _sym.opponentsdealtbits;
+		if (memcmp(a, "opponentsplayingbits", 20)==0 && strlen(a)==20)		return _sym.opponentsplayingbits;
+		if (memcmp(a, "opponentsblindbits", 18)==0 && strlen(a)==18)		return _sym.opponentsblindbits;
+	}
+
+	//PLAYERS FRIENDS OPPONENTS 7(7)
+	if (memcmp(a, "friends", 7)==0)
+	{
+		if (memcmp(a, "friendsseatedbits", 17)==0 && strlen(a)==17)			return _sym.friendsseatedbits;
+		if (memcmp(a, "friendsactivebits", 17)==0 && strlen(a)==17)			return _sym.friendsactivebits;
+		if (memcmp(a, "friendsdealtbits", 16)==0 && strlen(a)==16)			return _sym.friendsdealtbits;
+		if (memcmp(a, "friendsplayingbits", 18)==0 && strlen(a)==18)		return _sym.friendsplayingbits;
+		if (memcmp(a, "friendsblindbits", 16)==0 && strlen(a)==16)			return _sym.friendsblindbits;
+	}
+
+	// LIST TESTS 1(2)
+	if (memcmp(a, "islist", 6) == 0)
+	{
+		if (memcmp(a, "islistcall", 10)==0 && strlen(a)==10)				return _sym.islistcall;
+		if (memcmp(a, "islistrais", 10)==0 && strlen(a)==10)				return _sym.islistrais;
+		if (memcmp(a, "islistalli", 10)==0 && strlen(a)==10)				return _sym.islistalli;
+		if (memcmp(a, "islist", 6)==0 && (strlen(a)<10) && (atoi(a+6)<MAX_HAND_LISTS)) return _sym.islist[atoi(a+6)]; //Matrix 2008-05-14
+	}
+
+	// PokerTracker symbols
+	if (memcmp(a,"pt_",3)==0 || memcmp(a,"ptt_",4)==0)
+	{
+		return p_pokertracker_thread->ProcessQuery(a);
+	}
+
+	// HAND RANK
+	if (memcmp(a, "handrank", 8) == 0)
+	{
+		if (memcmp(a, "handrank", 8)==0 && strlen(a)==8)					return _sym.handrank;
+		if (memcmp(a, "handrank169", 11)==0 && strlen(a)==11)				return _sym.handrank169;
+		if (memcmp(a, "handrank2652", 12)==0 && strlen(a)==12)				return _sym.handrank2652;
+		if (memcmp(a, "handrank1326", 12)==0 && strlen(a)==12)				return _sym.handrank1326;
+		if (memcmp(a, "handrank1000", 12)==0 && strlen(a)==12)				return _sym.handrank1000;
+		if (memcmp(a, "handrankp", 9)==0 && strlen(a)==9)					return _sym.handrankp;
+	}
+
+	// NHANDS 1(2)
+	if (memcmp(a, "nhands", 5)==0)
+	{
+		if (memcmp(a, "nhands", 6)==0 && strlen(a)==6)						return _sym.nhands;
+		if (memcmp(a, "nhandshi", 8)==0 && strlen(a)==8)					return _sym.nhandshi;
+		if (memcmp(a, "nhandslo", 8)==0 && strlen(a)==8)					return _sym.nhandslo;
+		if (memcmp(a, "nhandsti", 8)==0 && strlen(a)==8)					return _sym.nhandsti;
+	}
+
+	// RANK HI
+	// Part 1(2): rankhi...symbols
+	if (memcmp(a, "rankhi", 6) == 0)
+	{
+		if (memcmp(a, "rankhi", 6)==0 && strlen(a)==6)						return _sym.rankhi;
+		if (memcmp(a, "rankhicommon", 12)==0 && strlen(a)==12)				return _sym.rankhicommon;
+		if (memcmp(a, "rankhiplayer", 12)==0 && strlen(a)==12)				return _sym.rankhiplayer;
+		if (memcmp(a, "rankhipoker", 11)==0 && strlen(a)==11)				return _sym.rankhipoker;
+	}
+
+	// RANK HI
+	// Part 2(2): srankhi...symbols
+	if (memcmp(a, "srankhi", 7) == 0)
+	{
+		if (memcmp(a, "srankhi", 7)==0 && strlen(a)==7)						return _sym.srankhi;
+		if (memcmp(a, "srankhicommon", 13)==0 && strlen(a)==13)				return _sym.srankhicommon;
+		if (memcmp(a, "srankhiplayer", 13)==0 && strlen(a)==13)				return _sym.srankhiplayer;
+		if (memcmp(a, "srankhipoker", 12)==0 && strlen(a)==12)				return _sym.srankhipoker;
+	}
+
+	// RANK LO
+	// Part 1(2): ranklo...symbols
+	if (memcmp(a, "ranklo", 6) == 0)
+	{
+		if (memcmp(a, "ranklo", 6)==0 && strlen(a)==6)						return _sym.ranklo;
+		if (memcmp(a, "ranklocommon", 12)==0 && strlen(a)==12)				return _sym.ranklocommon;
+		if (memcmp(a, "rankloplayer", 12)==0 && strlen(a)==12)				return _sym.rankloplayer;
+		if (memcmp(a, "ranklopoker", 11)==0 && strlen(a)==11)				return _sym.ranklopoker;
+	}
+
+	// RANK LO
+	// Part 2(2): sranklo...symbols
+	if (memcmp(a, "sranklo", 7) == 0)
+	{
+		if (memcmp(a, "sranklo", 7)==0 && strlen(a)==7)						return _sym.sranklo;
+		if (memcmp(a, "sranklocommon", 13)==0 && strlen(a)==13)				return _sym.sranklocommon;
+		if (memcmp(a, "srankloplayer", 13)==0 && strlen(a)==13)				return _sym.srankloplayer;
+		if (memcmp(a, "sranklopoker", 12)==0 && strlen(a)==12)				return _sym.sranklopoker;
+	}
+
+	// Versus
+	if (memcmp(a, "vs$", 3) == 0)
+	{
+		if (memcmp(a, "vs$nhands", 10)==0 && strlen(a)==10)					return _sym.vs$nhands;
+		if (memcmp(a, "vs$nhandshi", 10)==0 && strlen(a)==10)				return _sym.vs$nhandshi;
+		if (memcmp(a, "vs$nhandsti", 10)==0 && strlen(a)==10)				return _sym.vs$nhandsti;
+		if (memcmp(a, "vs$nhandslo", 10)==0 && strlen(a)==10)				return _sym.vs$nhandslo;
+		if (memcmp(a, "vs$prwin", 8)==0 && strlen(a)==8)  					return _sym.vs$prwin;
+		if (memcmp(a, "vs$prtie", 8)==0 && strlen(a)==8)  					return _sym.vs$prtie;
+		if (memcmp(a, "vs$prlos", 8)==0 && strlen(a)==8)  					return _sym.vs$prlos;
+		if (memcmp(a, "vs$prwinhi", 10)==0 && strlen(a)==10)				return _sym.vs$prwinhi;
+		if (memcmp(a, "vs$prtiehi", 10)==0 && strlen(a)==10)  				return _sym.vs$prtiehi;
+		if (memcmp(a, "vs$prloshi", 10)==0 && strlen(a)==10)  				return _sym.vs$prloshi;
+		if (memcmp(a, "vs$prwinti", 10)==0 && strlen(a)==10)  				return _sym.vs$prwinti;
+		if (memcmp(a, "vs$prtieti", 10)==0 && strlen(a)==10)  				return _sym.vs$prtieti;
+		if (memcmp(a, "vs$prlosti", 10)==0 && strlen(a)==10)  				return _sym.vs$prlosti;
+		if (memcmp(a, "vs$prwinlo", 10)==0 && strlen(a)==10)  				return _sym.vs$prwinlo;
+		if (memcmp(a, "vs$prtielo", 10)==0 && strlen(a)==10)  				return _sym.vs$prtielo;
+		if (memcmp(a, "vs$prloslo", 10)==0 && strlen(a)==10)  				return _sym.vs$prloslo;
+	}
+
+	// Probabilities
+	// Part 1(2): random...-symbols
+	if (memcmp(a, "random", 6) == 0)
+	{
+		if (memcmp(a, "random", 6)==0 && strlen(a)==6)						return _sym.random;
+		if (memcmp(a, "randomhand", 10)==0 && strlen(a)==10)				return _sym.randomhand;
+		if (memcmp(a, "randomround", 11)==0 && strlen(a)==11)				return _sym.randomround[4];
+		if (memcmp(a, "randomround", 11)==0 && strlen(a)==12)				return _sym.randomround[a[11]-'0'-1];
+	}
+
+	// History
+	// Part 1(3): did...-symbols
+	if (memcmp(a, "did", 3) == 0)
+	{
+		if (memcmp(a, "didchec", 7)==0 && strlen(a)==7)						return _sym.didchec[4];
+		if (memcmp(a, "didcall", 7)==0 && strlen(a)==7)						return _sym.didcall[4];
+		if (memcmp(a, "didrais", 7)==0 && strlen(a)==7)						return _sym.didrais[4];
+		if (memcmp(a, "didswag", 7)==0 && strlen(a)==7)						return _sym.didswag[4];
+		if (memcmp(a, "didchecround", 12)==0 && strlen(a)==13)				return _sym.didchec[a[12]-'0'-1];
+		if (memcmp(a, "didcallround", 12)==0 && strlen(a)==13)				return _sym.didcall[a[12]-'0'-1];
+		if (memcmp(a, "didraisround", 12)==0 && strlen(a)==13)				return _sym.didrais[a[12]-'0'-1];
+		if (memcmp(a, "didswaground", 12)==0 && strlen(a)==13)				return _sym.didswag[a[12]-'0'-1];
+	}	
+
+	// run$ ron$ 
+	// Part 1(2): ron$
+	if (memcmp(a, "ron$", 4) == 0)
+	{
+		if (memcmp(a, "ron$royfl", 9)==0 && strlen(a)==9)					return _sym.ron$royfl;
+		if (memcmp(a, "ron$strfl", 9)==0 && strlen(a)==9)					return _sym.ron$strfl;
+		if (memcmp(a, "ron$4kind", 9)==0 && strlen(a)==9)					return _sym.ron$4kind;
+		if (memcmp(a, "ron$fullh", 9)==0 && strlen(a)==9)					return _sym.ron$fullh;
+		if (memcmp(a, "ron$flush", 9)==0 && strlen(a)==9)					return _sym.ron$flush;
+		if (memcmp(a, "ron$strai", 9)==0 && strlen(a)==9)					return _sym.ron$strai;
+		if (memcmp(a, "ron$3kind", 9)==0 && strlen(a)==9)					return _sym.ron$3kind;
+		if (memcmp(a, "ron$2pair", 9)==0 && strlen(a)==9)					return _sym.ron$2pair;
+		if (memcmp(a, "ron$1pair", 9)==0 && strlen(a)==9)					return _sym.ron$1pair;
+		if (memcmp(a, "ron$hcard", 9)==0 && strlen(a)==9)					return _sym.ron$hcard;
+		if (memcmp(a, "ron$total", 9)==0 && strlen(a)==9)					return _sym.ron$total;
+		if (memcmp(a, "ron$pokervalmax", 15)==0 && strlen(a)==15)			return _sym.ron$pokervalmax;
+		if (memcmp(a, "ron$prnuts", 10)==0 && strlen(a)==10)				return _sym.ron$prnuts;
+		if (memcmp(a, "ron$prbest", 10)==0 && strlen(a)==10)				return _sym.ron$prbest;
+		if (memcmp(a, "ron$clocks", 10)==0 && strlen(a)==10)				return _sym.ron$clocks;
+	}
+
+	// run$ ron$ 
+	// Part 2(2): run$
+	if (memcmp(a, "run$", 4) == 0)
+	{
+		if (memcmp(a, "run$royfl", 9)==0 && strlen(a)==9)					return _sym.run$royfl;
+		if (memcmp(a, "run$strfl", 9)==0 && strlen(a)==9)  					return _sym.run$strfl;
+		if (memcmp(a, "run$4kind", 9)==0 && strlen(a)==9)  					return _sym.run$4kind;
+		if (memcmp(a, "run$fullh", 9)==0 && strlen(a)==9)  					return _sym.run$fullh;
+		if (memcmp(a, "run$flush", 9)==0 && strlen(a)==9)  					return _sym.run$flush;
+		if (memcmp(a, "run$strai", 9)==0 && strlen(a)==9)  					return _sym.run$strai;
+		if (memcmp(a, "run$3kind", 9)==0 && strlen(a)==9)  					return _sym.run$3kind;
+		if (memcmp(a, "run$2pair", 9)==0 && strlen(a)==9)  					return _sym.run$2pair;
+		if (memcmp(a, "run$1pair", 9)==0 && strlen(a)==9)  					return _sym.run$1pair;
+		if (memcmp(a, "run$hcard", 9)==0 && strlen(a)==9)  					return _sym.run$hcard;
+		if (memcmp(a, "run$total", 9)==0 && strlen(a)==9)  					return _sym.run$total;
+		if (memcmp(a, "run$pokervalmax", 15)==0 && strlen(a)==15)			return _sym.run$pokervalmax;
+		if (memcmp(a, "run$prnuts", 10)==0 && strlen(a)==10)				return _sym.run$prnuts;
+		if (memcmp(a, "run$prbest", 10)==0 && strlen(a)==10)				return _sym.run$prbest;
+		if (memcmp(a, "run$clocks", 10)==0 && strlen(a)==10)				return _sym.run$clocks;
+	}
+
+	// LIST TESTS 2(2)
+	if (memcmp(a, "isemptylist", 6) == 0)
+	{
+		if (memcmp(a, "isemptylistcall", 15)==0 && strlen(a)==15)			return _sym.isemptylistcall;
+		if (memcmp(a, "isemptylistrais", 15)==0 && strlen(a)==15)			return _sym.isemptylistrais;
+		if (memcmp(a, "isemptylistalli", 15)==0 && strlen(a)==15)			return _sym.isemptylistalli;
+	}
+
+	// History symbols
+	if (memcmp(a, "hi_", 3)==0)
+	{
+		char	sym[50] = {0};
+		int		round = 0;
+		strcpy_s(sym, 50, &a[3]);
+		round = sym[strlen(sym)-1]-'0';
+		sym[strlen(sym)-1] = '\0';
+		return p_game_state->OHSymHist(sym, round);
+	}
+
+	// RANK BITS 1(2)
+	if (memcmp(a, "rankbits", 8)==0)
+	{
+		if (memcmp(a, "rankbits", 8)==0 && strlen(a)==8)					return _sym.rankbits;
+		if (memcmp(a, "rankbitscommon", 14)==0 && strlen(a)==14)			return _sym.rankbitscommon;
+		if (memcmp(a, "rankbitsplayer", 14)==0 && strlen(a)==14)			return _sym.rankbitsplayer;
+		if (memcmp(a, "rankbitspoker", 13)==0 && strlen(a)==13)				return _sym.rankbitspoker;
+	}
+
+	// RANK BITS 2(2)
+	if (memcmp(a, "srankbits", 9)==0)
+	{
+		if (memcmp(a, "srankbits", 9)==0 && strlen(a)==9)					return _sym.srankbits;
+		if (memcmp(a, "srankbitscommon", 15)==0 && strlen(a)==15)			return _sym.srankbitscommon;
+		if (memcmp(a, "srankbitsplayer", 15)==0 && strlen(a)==15)			return _sym.srankbitsplayer;
+		if (memcmp(a, "srankbitspoker", 14)==0 && strlen(a)==14)			return _sym.srankbitspoker;
+	}
+	
+	// TIME 1(2)
+	if (memcmp(a, "elapsed", 7)==0)
+	{
+		if (memcmp(a, "elapsed", 7)==0 && strlen(a)==7)						return _sym.elapsed;
+		if (memcmp(a, "elapsedhand", 11)==0 && strlen(a)==11)				return _sym.elapsedhand;
+		if (memcmp(a, "elapsedauto", 11)==0 && strlen(a)==11)				return _sym.elapsedauto;
+		if (memcmp(a, "elapsedtoday", 12)==0 && strlen(a)==12)				return _sym.elapsedtoday;
+		if (memcmp(a, "elapsed1970", 11)==0 && strlen(a)==11)				return _sym.elapsed1970;	
+	}
+
+	// Various is...symbols
+	if (memcmp(a, "is", 2)==0)
+	{
+		// GENERAL
+		if (memcmp(a, "ismanual", 8)==0 && strlen(a)==8)					return _sym.ismanual;
+		if (memcmp(a, "isppro", 6)==0 && strlen(a)==6)						return _sym.isppro;
+		if (memcmp(a, "isbring", 7)==0 && strlen(a)==7)						return _sym.isbring;
+
+		// LIMITS 1(3)
+		if (memcmp(a, "isnl", 4)==0 && strlen(a)==4)						return _sym.isnl;
+		if (memcmp(a, "ispl", 4)==0 && strlen(a)==4)						return _sym.ispl;
+		if (memcmp(a, "isfl", 4)==0 && strlen(a)==4)						return _sym.isfl;
+		if (memcmp(a, "istournament", 12)==0 && strlen(a)==12)				return _sym.istournament;
+
+		// P FORMULA
+		if (memcmp(a, "isdefmode", 9)==0 && strlen(a)==9)					return _sym.isdefmode;
+		if (memcmp(a, "isaggmode", 9)==0 && strlen(a)==9)					return _sym.isaggmode;
+		if (memcmp(a, "ishandup", 8)==0 && strlen(a)==8)					return _sym.ishandup;
+
+		// HAND TESTS 2(2)
+		if (memcmp(a, "ishandupcommon", 14)==0 && strlen(a)==14)			return _sym.ishandupcommon;
+		if (memcmp(a, "ishicard", 8)==0 && strlen(a)==8)					return _sym.ishicard;
+		if (memcmp(a, "isonepair", 9)==0 && strlen(a)==9)					return _sym.isonepair;
+		if (memcmp(a, "istwopair", 9)==0 && strlen(a)==9)					return _sym.istwopair;
+		if (memcmp(a, "isthreeofakind", 14)==0 && strlen(a)==14)			return _sym.isthreeofakind;
+		if (memcmp(a, "isstraight", 10)==0 && strlen(a)==10)				return _sym.isstraight;
+		if (memcmp(a, "isflush", 7)==0 && strlen(a)==7)						return _sym.isflush;
+		if (memcmp(a, "isfullhouse", 11)==0 && strlen(a)==11)				return _sym.isfullhouse;
+		if (memcmp(a, "isfourofakind", 13)==0 && strlen(a)==13)				return _sym.isfourofakind;
+		if (memcmp(a, "isstraightflush", 15)==0 && strlen(a)==15)			return _sym.isstraightflush;
+		if (memcmp(a, "isroyalflush", 12)==0 && strlen(a)==12)				return _sym.isroyalflush;
+		if (memcmp(a, "isfiveofakind", 13)==0 && strlen(a)==13)				return _sym.isfiveofakind;
+
+		// POCKET TESTS
+		if (memcmp(a, "ispair", 6)==0 && strlen(a)==6)						return _sym.ispair;
+		if (memcmp(a, "issuited", 8)==0 && strlen(a)==8)					return _sym.issuited;
+		if (memcmp(a, "isconnector", 11)==0 && strlen(a)==11)				return _sym.isconnector;
+
+		// POCKET/COMMON TESTS
+		if (memcmp(a, "ishipair", 8)==0 && strlen(a)==8)					return _sym.ishipair;
+		if (memcmp(a, "islopair", 8)==0 && strlen(a)==8)					return _sym.islopair;
+		if (memcmp(a, "ismidpair", 9)==0 && strlen(a)==9)					return _sym.ismidpair;
+		if (memcmp(a, "ishistraight", 12)==0 && strlen(a)==12)				return _sym.ishistraight;
+		if (memcmp(a, "ishiflush", 9)==0 && strlen(a)==9)					return _sym.ishiflush;
+
+		// AUTOPLAYER 2(2)
+		if (memcmp(a, "ismyturn", 8)==0 && strlen(a)==8)					return _sym.ismyturn;
+		if (memcmp(a, "issittingin", 11)==0 && strlen(a)==11)				return _sym.issittingin;
+		if (memcmp(a, "issittingout", 12)==0 && strlen(a)==12)				return _sym.issittingout;
+		if (memcmp(a, "isautopost", 10)==0 && strlen(a)==10)				return _sym.isautopost;
+		if (memcmp(a, "isfinalanswer", 13)==0 && strlen(a)==13)				return _sym.isfinalanswer;
+	}
+
+	// HAND TESTS 1(2)
+	if (memcmp(a, "$", 1)==0)
+	{
+		if (memcmp(a, "$$pc", 4)==0)										return _sym.$$pc[a[4]-'0'];
+		if (memcmp(a, "$$pr", 4)==0)										return _sym.$$pr[a[4]-'0'];
+		if (memcmp(a, "$$ps", 4)==0)  										return _sym.$$ps[a[4]-'0'];
+		if (memcmp(a, "$$cc", 4)==0)  										return _sym.$$cc[a[4]-'0'];
+		if (memcmp(a, "$$cr", 4)==0)  										return _sym.$$cr[a[4]-'0'];
+		if (memcmp(a, "$$cs", 4)==0)  										return _sym.$$cs[a[4]-'0'];
+		if (memcmp(a, "$", 1)==0)  											return IsHand(a, e);
+	}
+
+	// LIST NUMBERS
+	if (memcmp(a, "nlist", 5)==0)
+	{
+		if (memcmp(a, "nlistmax", 8)==0 && strlen(a)==8)					return _sym.nlistmax;
+		if (memcmp(a, "nlistmin", 8)==0 && strlen(a)==8)					return _sym.nlistmin;
+	}
+	
+	// POKER VALUES 1(2)
+	if (memcmp(a, "pokerval", 8)==0)
+	{
+		if (memcmp(a, "pokerval", 8)==0 && strlen(a)==8)					return _sym.pokerval;
+		if (memcmp(a, "pokervalplayer", 14)==0 && strlen(a)==14)			return _sym.pokervalplayer;
+		if (memcmp(a, "pokervalcommon", 14)==0 && strlen(a)==14)			return _sym.pokervalcommon;
+	}
+
+	// (UN) KNOWN CARDS 1(3)
+	if (memcmp(a, "ncards", 6)==0)
+	{
+		if (memcmp(a, "ncardsknown", 11)==0 && strlen(a)==11)				return _sym.ncardsknown;
+		if (memcmp(a, "ncardsunknown", 13)==0 && strlen(a)==13)				return _sym.ncardsunknown;
+		if (memcmp(a, "ncardsbetter", 12)==0 && strlen(a)==12)				return _sym.ncardsbetter;
+	}
+
+	// Varios probabilities
+	if (memcmp(a, "pr", 2)==0)
+	{
+		// PROBABILITIES
+		// Part 2(2)
+		if (memcmp(a, "prwin", 5)==0 && strlen(a)==5)						return _sym.prwin;
+		if (memcmp(a, "prlos", 5)==0 && strlen(a)==5)						return _sym.prlos;
+		if (memcmp(a, "prtie", 5)==0 && strlen(a)==5)						return _sym.prtie;
+
+		//NHANDS 2(2)
+		if (memcmp(a, "prwinnow", 8)==0 && strlen(a)==8)					return _sym.prwinnow;
+		if (memcmp(a, "prlosnow", 8)==0 && strlen(a)==8)					return _sym.prlosnow;
+	}
+
+	// FLUSHES SETS STRAIGHTS 1(5)
+	if (memcmp(a, "nsuited", 7)==0)
+	{
+		if (memcmp(a, "nsuited", 7)==0 && strlen(a)==7)						return _sym.nsuited;
+		if (memcmp(a, "nsuitedcommon", 13)==0 && strlen(a)==13)				return _sym.nsuitedcommon;
+	}
+
+	// FLUSHES SETS STRAIGHTS 2(5)
+	if (memcmp(a, "tsuit", 5)==0)
+	{
+		if (memcmp(a, "tsuit", 5)==0 && strlen(a)==5)						return _sym.tsuit;
+		if (memcmp(a, "tsuitcommon", 11)==0 && strlen(a)==11)				return _sym.tsuitcommon;
+	}
+
+	// FLUSHES SETS STRAIGHTS 3(5)
+	if (memcmp(a, "nranked", 7)==0)
+	{
+		if (memcmp(a, "nranked", 7)==0 && strlen(a)==7)						return _sym.nranked;
+		if (memcmp(a, "nrankedcommon", 13)==0 && strlen(a)==13)				return _sym.nrankedcommon;
+	}
+
+	// FLUSHES SETS STRAIGHTS 4(5)
+	if (memcmp(a, "trank", 5)==0)
+	{
+		if (memcmp(a, "trank", 5)==0 && strlen(a)==5)						return _sym.trank;
+		if (memcmp(a, "trankcommon", 11)==0 && strlen(a)==11)				return _sym.trankcommon;
+	}
+
+	// FLUSHES SETS STRAIGHTS 5(5)
+	if (memcmp(a, "nstraight", 9)==0)
+	{
+		if (memcmp(a, "nstraight", 9)==0 && strlen(a)==9)					return _sym.nstraight;
+		if (memcmp(a, "nstraightcommon", 15)==0 && strlen(a)==15)			return _sym.nstraightcommon;
+		if (memcmp(a, "nstraightfill", 13)==0 && strlen(a)==13)				return _sym.nstraightfill;
+		if (memcmp(a, "nstraightfillcommon", 19)==0 && strlen(a)==19)		return _sym.nstraightfillcommon;
+		if (memcmp(a, "nstraightflush", 14)==0 && strlen(a)==14)			return _sym.nstraightflush;
+		if (memcmp(a, "nstraightflushcommon", 20)==0 && strlen(a)==20)		return _sym.nstraightflushcommon;
+		if (memcmp(a, "nstraightflushfill", 18)==0 && strlen(a)==18)		return _sym.nstraightflushfill;
+		if (memcmp(a, "nstraightflushfillcommon", 24)==0 && strlen(a)==24)  return _sym.nstraightflushfillcommon;
+	}
+
+	// LIMITS 2(3)
+	if (memcmp(a, "srai", 5)==0)
+	{
+		if (memcmp(a, "sraiprev", 8)==0 && strlen(a)==8)					return _sym.sraiprev;
+		if (memcmp(a, "sraimin", 7)==0 && strlen(a)==7)						return _sym.sraimin;
+		if (memcmp(a, "sraimax", 7)==0 && strlen(a)==7)						return _sym.sraimax;
+	}
+
+	// (UN)KNOWN CARDS 2(3)
+	if (memcmp(a, "ncards", 6)==0)
+	{
+		if (memcmp(a, "ncardsknown", 11)==0 && strlen(a)==11)				return _sym.ncardsknown;
+		if (memcmp(a, "ncardsunknown", 13)==0 && strlen(a)==13)				return _sym.ncardsunknown;
+		if (memcmp(a, "ncardsbetter", 12)==0 && strlen(a)==12)				return _sym.ncardsbetter;
+	}
+
+	// CHAIRS 1(2)
+	if (memcmp(a, "chair", 5)==0)
+	{
+		if (memcmp(a, "chair", 5)==0 && strlen(a)==5)						return _sym.chair;
+		if (memcmp(a, "chair$", 6)==0)										return Chair$(a);
+		if (memcmp(a, "chairbit$", 9)==0)									return Chairbit$(a);
+	}
+
+	// Various pot..symbols
+	if (memcmp(a, "pot", 3)==0)
+	{
+		// CHIP AMOUNTS 1(2)
+		if (memcmp(a, "pot", 3)==0 && strlen(a)==3)							return _sym.pot;
+		if (memcmp(a, "potcommon", 9)==0 && strlen(a)==9)					return _sym.potcommon;
+		if (memcmp(a, "potplayer", 9)==0 && strlen(a)==9)					return _sym.potplayer;	
+		// PROFILE 1(2)
+		if (memcmp(a, "potmethod", 9)==0 && strlen(a)==9)					return _sym.potmethod;
+	}
+
+	// Various symbols below
+	// without any optimized lookup.
+	//
+	// CHAIRS 2(2)	
 	if (memcmp(a, "userchair", 9)==0 && strlen(a)==9)					return _sym.userchair;
 	if (memcmp(a, "dealerchair", 11)==0 && strlen(a)==11)				return _sym.dealerchair;
 	if (memcmp(a, "raischair", 9)==0 && strlen(a)==9)					return _sym.raischair;
-	if (memcmp(a, "chair$", 6)==0)										return Chair$(a);
-	if (memcmp(a, "chairbit$", 9)==0)									return Chairbit$(a);
 
 	//ROUND&POSITIONS
 	if (memcmp(a, "betround", 8)==0 && strlen(a)==8)					return _sym.betround;
@@ -3638,21 +4068,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "betpositionrais", 15)==0 && strlen(a)==15)			return _sym.betpositionrais;
 	if (memcmp(a, "originaldealposition", 20)==0 && strlen(a)==20)		return _sym.originaldealposition; //Matrix 2008-05-09
 
-	//PROBABILITIES
-	if (memcmp(a, "prwin", 5)==0 && strlen(a)==5)						return _sym.prwin;
-	if (memcmp(a, "prlos", 5)==0 && strlen(a)==5)						return _sym.prlos;
-	if (memcmp(a, "prtie", 5)==0 && strlen(a)==5)						return _sym.prtie;
-	if (memcmp(a, "random", 6)==0 && strlen(a)==6)						return _sym.random;
-	if (memcmp(a, "randomhand", 10)==0 && strlen(a)==10)				return _sym.randomhand;
-	if (memcmp(a, "randomround", 11)==0 && strlen(a)==11)				return _sym.randomround[4];
-	if (memcmp(a, "randomround", 11)==0 && strlen(a)==12)				return _sym.randomround[a[11]-'0'-1];
-
-	//P FORMULA
-	if (memcmp(a, "defcon", 6)==0 && strlen(a)==6)						return _sym.defcon;
-	if (memcmp(a, "isdefmode", 9)==0 && strlen(a)==9)					return _sym.isdefmode;
-	if (memcmp(a, "isaggmode", 9)==0 && strlen(a)==9)					return _sym.isaggmode;
-
-	//CHIP AMOUNTS
+	//CHIP AMOUNTS 2(2)
 	if (memcmp(a, "balance", 7)==0 && strlen(a)==7)						return _sym.balance[10];
 	if (memcmp(a, "balance", 7)==0 && strlen(a)==8)						return _sym.balance[a[7]-'0'];
 	if (memcmp(a, "stack", 5)==0 && strlen(a)==6)						return _sym.stack[a[5]-'0'];
@@ -3661,9 +4077,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "call", 4)==0 && strlen(a)==4)						return _sym.call;
 	if (memcmp(a, "bet", 3)==0 && strlen(a)==3)							return _sym.bet[4];
 	if (memcmp(a, "bet", 3)==0 && strlen(a)==4)							return _sym.bet[a[3]-'0'-1];
-	if (memcmp(a, "pot", 3)==0 && strlen(a)==3)							return _sym.pot;
-	if (memcmp(a, "potcommon", 9)==0 && strlen(a)==9)					return _sym.potcommon;
-	if (memcmp(a, "potplayer", 9)==0 && strlen(a)==9)					return _sym.potplayer;
+	
 	if (memcmp(a, "callshort", 9)==0 && strlen(a)==9)					return _sym.callshort;
 	if (memcmp(a, "raisshort", 9)==0 && strlen(a)==9)					return _sym.raisshort;
 
@@ -3674,23 +4088,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "ncallbets", 9)==0 && strlen(a)==9)					return _sym.ncallbets;
 	if (memcmp(a, "nraisbets", 9)==0 && strlen(a)==9)					return _sym.nraisbets;
 
-	//LIST TESTS
-	if (memcmp(a, "islistcall", 10)==0 && strlen(a)==10)				return _sym.islistcall;
-	if (memcmp(a, "islistrais", 10)==0 && strlen(a)==10)				return _sym.islistrais;
-	if (memcmp(a, "islistalli", 10)==0 && strlen(a)==10)				return _sym.islistalli;
-	if (memcmp(a, "islist", 6)==0 && (strlen(a)<10) && (atoi(a+6)<MAX_HAND_LISTS)) return _sym.islist[atoi(a+6)]; //Matrix 2008-05-14
-	if (memcmp(a, "isemptylistcall", 15)==0 && strlen(a)==15)			return _sym.isemptylistcall;
-	if (memcmp(a, "isemptylistrais", 15)==0 && strlen(a)==15)			return _sym.isemptylistrais;
-	if (memcmp(a, "isemptylistalli", 15)==0 && strlen(a)==15)			return _sym.isemptylistalli;
-
-	//LIST NUMBERS
-	if (memcmp(a, "nlistmax", 8)==0 && strlen(a)==8)					return _sym.nlistmax;
-	if (memcmp(a, "nlistmin", 8)==0 && strlen(a)==8)					return _sym.nlistmin;
-
-	//POKER VALUES
-	if (memcmp(a, "pokerval", 8)==0 && strlen(a)==8)					return _sym.pokerval;
-	if (memcmp(a, "pokervalplayer", 14)==0 && strlen(a)==14)			return _sym.pokervalplayer;
-	if (memcmp(a, "pokervalcommon", 14)==0 && strlen(a)==14)			return _sym.pokervalcommon;
+	//POKER VALUES 2(2)	
 	if (memcmp(a, "pcbits", 6)==0 && strlen(a)==6)						return _sym.pcbits;
 	if (memcmp(a, "npcbits", 7)==0 && strlen(a)==7)						return _sym.npcbits;
 
@@ -3707,82 +4105,6 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "royalflush", 10)==0 && strlen(a)==10)				return _sym.royalflush;
 	if (memcmp(a, "fiveofakind", 11)==0 && strlen(a)==11)				return _sym.fiveofakind;
 
-	//HAND TESTS
-	if (memcmp(a, "$$pc", 4)==0)										return _sym.$$pc[a[4]-'0'];
-	if (memcmp(a, "$$pr", 4)==0)										return _sym.$$pr[a[4]-'0'];
-	if (memcmp(a, "$$ps", 4)==0)  										return _sym.$$ps[a[4]-'0'];
-	if (memcmp(a, "$$cc", 4)==0)  										return _sym.$$cc[a[4]-'0'];
-	if (memcmp(a, "$$cr", 4)==0)  										return _sym.$$cr[a[4]-'0'];
-	if (memcmp(a, "$$cs", 4)==0)  										return _sym.$$cs[a[4]-'0'];
-	if (memcmp(a, "$", 1)==0)  											return IsHand(a, e);
-	if (memcmp(a, "ishandup", 8)==0 && strlen(a)==8)					return _sym.ishandup;
-	if (memcmp(a, "ishandupcommon", 14)==0 && strlen(a)==14)			return _sym.ishandupcommon;
-	if (memcmp(a, "ishicard", 8)==0 && strlen(a)==8)					return _sym.ishicard;
-	if (memcmp(a, "isonepair", 9)==0 && strlen(a)==9)					return _sym.isonepair;
-	if (memcmp(a, "istwopair", 9)==0 && strlen(a)==9)					return _sym.istwopair;
-	if (memcmp(a, "isthreeofakind", 14)==0 && strlen(a)==14)			return _sym.isthreeofakind;
-	if (memcmp(a, "isstraight", 10)==0 && strlen(a)==10)				return _sym.isstraight;
-	if (memcmp(a, "isflush", 7)==0 && strlen(a)==7)						return _sym.isflush;
-	if (memcmp(a, "isfullhouse", 11)==0 && strlen(a)==11)				return _sym.isfullhouse;
-	if (memcmp(a, "isfourofakind", 13)==0 && strlen(a)==13)				return _sym.isfourofakind;
-	if (memcmp(a, "isstraightflush", 15)==0 && strlen(a)==15)			return _sym.isstraightflush;
-	if (memcmp(a, "isroyalflush", 12)==0 && strlen(a)==12)				return _sym.isroyalflush;
-	if (memcmp(a, "isfiveofakind", 13)==0 && strlen(a)==13)				return _sym.isfiveofakind;
-
-	//POCKET TESTS
-	if (memcmp(a, "ispair", 6)==0 && strlen(a)==6)						return _sym.ispair;
-	if (memcmp(a, "issuited", 8)==0 && strlen(a)==8)					return _sym.issuited;
-	if (memcmp(a, "isconnector", 11)==0 && strlen(a)==11)				return _sym.isconnector;
-
-	//POCKET/COMMON TESTS
-	if (memcmp(a, "ishipair", 8)==0 && strlen(a)==8)					return _sym.ishipair;
-	if (memcmp(a, "islopair", 8)==0 && strlen(a)==8)					return _sym.islopair;
-	if (memcmp(a, "ismidpair", 9)==0 && strlen(a)==9)					return _sym.ismidpair;
-	if (memcmp(a, "ishistraight", 12)==0 && strlen(a)==12)				return _sym.ishistraight;
-	if (memcmp(a, "ishiflush", 9)==0 && strlen(a)==9)					return _sym.ishiflush;
-
-	//PLAYERS FRIENDS OPPONENTS
-	if (memcmp(a, "nopponents", 10)==0 && strlen(a)==10)				return _sym.nopponents;
-	if (memcmp(a, "nopponentsmax", 13)==0 && strlen(a)==13)				return _sym.nopponentsmax;
-	if (memcmp(a, "nplayersseated", 14)==0 && strlen(a)==14)			return _sym.nplayersseated;
-	if (memcmp(a, "nplayersactive", 14)==0 && strlen(a)==14)			return _sym.nplayersactive;
-	if (memcmp(a, "nplayersdealt", 13)==0 && strlen(a)==13)				return _sym.nplayersdealt;
-	if (memcmp(a, "nplayersplaying", 15)==0 && strlen(a)==15)			return _sym.nplayersplaying;
-	if (memcmp(a, "nplayersblind", 13)==0 && strlen(a)==13)				return _sym.nplayersblind;
-	if (memcmp(a, "nfriendsseated", 14)==0 && strlen(a)==14)			return _sym.nfriendsseated;
-	if (memcmp(a, "nfriendsactive", 14)==0 && strlen(a)==14)			return _sym.nfriendsactive;
-	if (memcmp(a, "nfriendsdealt", 13)==0 && strlen(a)==13)				return _sym.nfriendsdealt;
-	if (memcmp(a, "nfriendsplaying", 15)==0 && strlen(a)==15)			return _sym.nfriendsplaying;
-	if (memcmp(a, "nfriendsblind", 13)==0 && strlen(a)==13)				return _sym.nfriendsblind;
-	if (memcmp(a, "nopponentsseated", 16)==0 && strlen(a)==16)			return _sym.nopponentsseated;
-	if (memcmp(a, "nopponentsactive", 16)==0 && strlen(a)==16)			return _sym.nopponentsactive;
-	if (memcmp(a, "nopponentsdealt", 15)==0 && strlen(a)==15)			return _sym.nopponentsdealt;
-	if (memcmp(a, "nopponentsplaying", 17)==0 && strlen(a)==17)			return _sym.nopponentsplaying;
-	if (memcmp(a, "nopponentsblind", 15)==0 && strlen(a)==15)			return _sym.nopponentsblind;
-	if (memcmp(a, "nopponentschecking", 18)==0 && strlen(a)==18)		return _sym.nopponentschecking;
-	if (memcmp(a, "nopponentscalling", 17)==0 && strlen(a)==17)			return _sym.nopponentscalling;
-	if (memcmp(a, "nopponentsraising", 17)==0 && strlen(a)==17)			return _sym.nopponentsraising;
-	if (memcmp(a, "nopponentsbetting", 17)==0 && strlen(a)==17)			return _sym.nopponentsbetting;
-	if (memcmp(a, "nopponentsfolded", 16)==0 && strlen(a)==16)			return _sym.nopponentsfolded;
-	if (memcmp(a, "nplayerscallshort", 17)==0 && strlen(a)==17)			return _sym.nplayerscallshort;
-	if (memcmp(a, "nchairsdealtright", 17)==0 && strlen(a)==17)			return _sym.nchairsdealtright;
-	if (memcmp(a, "nchairsdealtleft", 16)==0 && strlen(a)==16)			return _sym.nchairsdealtleft;
-	if (memcmp(a, "playersseatedbits", 17)==0 && strlen(a)==17)			return _sym.playersseatedbits;
-	if (memcmp(a, "playersactivebits", 17)==0 && strlen(a)==17)			return _sym.playersactivebits;
-	if (memcmp(a, "playersdealtbits", 16)==0 && strlen(a)==16)			return _sym.playersdealtbits;
-	if (memcmp(a, "playersplayingbits", 18)==0 && strlen(a)==18)		return _sym.playersplayingbits;
-	if (memcmp(a, "playersblindbits", 16)==0 && strlen(a)==16)			return _sym.playersblindbits;
-	if (memcmp(a, "opponentsseatedbits", 19)==0 && strlen(a)==19)		return _sym.opponentsseatedbits;
-	if (memcmp(a, "opponentsactivebits", 19)==0 && strlen(a)==19)		return _sym.opponentsactivebits;
-	if (memcmp(a, "opponentsdealtbits", 18)==0 && strlen(a)==18)		return _sym.opponentsdealtbits;
-	if (memcmp(a, "opponentsplayingbits", 20)==0 && strlen(a)==20)		return _sym.opponentsplayingbits;
-	if (memcmp(a, "opponentsblindbits", 18)==0 && strlen(a)==18)		return _sym.opponentsblindbits;
-	if (memcmp(a, "friendsseatedbits", 17)==0 && strlen(a)==17)			return _sym.friendsseatedbits;
-	if (memcmp(a, "friendsactivebits", 17)==0 && strlen(a)==17)			return _sym.friendsactivebits;
-	if (memcmp(a, "friendsdealtbits", 16)==0 && strlen(a)==16)			return _sym.friendsdealtbits;
-	if (memcmp(a, "friendsplayingbits", 18)==0 && strlen(a)==18)		return _sym.friendsplayingbits;
-	if (memcmp(a, "friendsblindbits", 16)==0 && strlen(a)==16)			return _sym.friendsblindbits;
-
 	//FLAGS
 	if (memcmp(a, "fmax", 4)==0 && strlen(a)==4)						return _sym.fmax;
 	if (memcmp(a, "f", 1)==0 && strlen(a)==2)							return _sym.f[a[1]-'0'];
@@ -3794,183 +4116,70 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "ncommoncardsknown", 17)==0 && strlen(a)==17)			return _sym.ncommoncardsknown;
 	if (memcmp(a, "nflopc", 6)==0 && strlen(a)==6)						return _sym.nflopc;
 
-	//(UN)KNOWN CARDS
-	if (memcmp(a, "nouts", 5)==0 && strlen(a)==5)						return _sym.nouts;
-	if (memcmp(a, "ncardsknown", 11)==0 && strlen(a)==11)				return _sym.ncardsknown;
-	if (memcmp(a, "ncardsunknown", 13)==0 && strlen(a)==13)				return _sym.ncardsunknown;
-	if (memcmp(a, "ncardsbetter", 12)==0 && strlen(a)==12)				return _sym.ncardsbetter;
-
-	//NHANDS
-	if (memcmp(a, "nhands", 6)==0 && strlen(a)==6)						return _sym.nhands;
-	if (memcmp(a, "nhandshi", 8)==0 && strlen(a)==8)					return _sym.nhandshi;
-	if (memcmp(a, "nhandslo", 8)==0 && strlen(a)==8)					return _sym.nhandslo;
-	if (memcmp(a, "nhandsti", 8)==0 && strlen(a)==8)					return _sym.nhandsti;
-	if (memcmp(a, "prwinnow", 8)==0 && strlen(a)==8)					return _sym.prwinnow;
-	if (memcmp(a, "prlosnow", 8)==0 && strlen(a)==8)					return _sym.prlosnow;
-
-	//FLUSHES SETS STRAIGHTS
-	if (memcmp(a, "nsuited", 7)==0 && strlen(a)==7)						return _sym.nsuited;
-	if (memcmp(a, "nsuitedcommon", 13)==0 && strlen(a)==13)				return _sym.nsuitedcommon;
-	if (memcmp(a, "tsuit", 5)==0 && strlen(a)==5)						return _sym.tsuit;
-	if (memcmp(a, "tsuitcommon", 11)==0 && strlen(a)==11)				return _sym.tsuitcommon;
-	if (memcmp(a, "nranked", 7)==0 && strlen(a)==7)						return _sym.nranked;
-	if (memcmp(a, "nrankedcommon", 13)==0 && strlen(a)==13)				return _sym.nrankedcommon;
-	if (memcmp(a, "trank", 5)==0 && strlen(a)==5)						return _sym.trank;
-	if (memcmp(a, "trankcommon", 11)==0 && strlen(a)==11)				return _sym.trankcommon;
-	if (memcmp(a, "nstraight", 9)==0 && strlen(a)==9)					return _sym.nstraight;
-	if (memcmp(a, "nstraightcommon", 15)==0 && strlen(a)==15)			return _sym.nstraightcommon;
-	if (memcmp(a, "nstraightfill", 13)==0 && strlen(a)==13)				return _sym.nstraightfill;
-	if (memcmp(a, "nstraightfillcommon", 19)==0 && strlen(a)==19)		return _sym.nstraightfillcommon;
-	if (memcmp(a, "nstraightflush", 14)==0 && strlen(a)==14)			return _sym.nstraightflush;
-	if (memcmp(a, "nstraightflushcommon", 20)==0 && strlen(a)==20)		return _sym.nstraightflushcommon;
-	if (memcmp(a, "nstraightflushfill", 18)==0 && strlen(a)==18)		return _sym.nstraightflushfill;
-	if (memcmp(a, "nstraightflushfillcommon", 24)==0 && strlen(a)==24)  return _sym.nstraightflushfillcommon;
-
-	//RANK BITS
-	if (memcmp(a, "rankbits", 8)==0 && strlen(a)==8)					return _sym.rankbits;
-	if (memcmp(a, "rankbitscommon", 14)==0 && strlen(a)==14)			return _sym.rankbitscommon;
-	if (memcmp(a, "rankbitsplayer", 14)==0 && strlen(a)==14)			return _sym.rankbitsplayer;
-	if (memcmp(a, "rankbitspoker", 13)==0 && strlen(a)==13)				return _sym.rankbitspoker;
-	if (memcmp(a, "srankbits", 9)==0 && strlen(a)==9)					return _sym.srankbits;
-	if (memcmp(a, "srankbitscommon", 15)==0 && strlen(a)==15)			return _sym.srankbitscommon;
-	if (memcmp(a, "srankbitsplayer", 15)==0 && strlen(a)==15)			return _sym.srankbitsplayer;
-	if (memcmp(a, "srankbitspoker", 14)==0 && strlen(a)==14)			return _sym.srankbitspoker;
-
-	//RANK HI
-	if (memcmp(a, "rankhi", 6)==0 && strlen(a)==6)						return _sym.rankhi;
-	if (memcmp(a, "rankhicommon", 12)==0 && strlen(a)==12)				return _sym.rankhicommon;
-	if (memcmp(a, "rankhiplayer", 12)==0 && strlen(a)==12)				return _sym.rankhiplayer;
-	if (memcmp(a, "rankhipoker", 11)==0 && strlen(a)==11)				return _sym.rankhipoker;
-	if (memcmp(a, "srankhi", 7)==0 && strlen(a)==7)						return _sym.srankhi;
-	if (memcmp(a, "srankhicommon", 13)==0 && strlen(a)==13)				return _sym.srankhicommon;
-	if (memcmp(a, "srankhiplayer", 13)==0 && strlen(a)==13)				return _sym.srankhiplayer;
-	if (memcmp(a, "srankhipoker", 12)==0 && strlen(a)==12)				return _sym.srankhipoker;
-
-	//RANK LO
-	if (memcmp(a, "ranklo", 6)==0 && strlen(a)==6)						return _sym.ranklo;
-	if (memcmp(a, "ranklocommon", 12)==0 && strlen(a)==12)				return _sym.ranklocommon;
-	if (memcmp(a, "rankloplayer", 12)==0 && strlen(a)==12)				return _sym.rankloplayer;
-	if (memcmp(a, "ranklopoker", 11)==0 && strlen(a)==11)				return _sym.ranklopoker;
-	if (memcmp(a, "sranklo", 7)==0 && strlen(a)==7)						return _sym.sranklo;
-	if (memcmp(a, "sranklocommon", 13)==0 && strlen(a)==13)				return _sym.sranklocommon;
-	if (memcmp(a, "srankloplayer", 13)==0 && strlen(a)==13)				return _sym.srankloplayer;
-	if (memcmp(a, "sranklopoker", 12)==0 && strlen(a)==12)				return _sym.sranklopoker;
-
-	//TIME
-	if (memcmp(a, "elapsed", 7)==0 && strlen(a)==7)						return _sym.elapsed;
-	if (memcmp(a, "elapsedhand", 11)==0 && strlen(a)==11)				return _sym.elapsedhand;
-	if (memcmp(a, "elapsedauto", 11)==0 && strlen(a)==11)				return _sym.elapsedauto;
-	if (memcmp(a, "elapsedtoday", 12)==0 && strlen(a)==12)				return _sym.elapsedtoday;
-	if (memcmp(a, "elapsed1970", 11)==0 && strlen(a)==11)				return _sym.elapsed1970;
+	//(UN)KNOWN CARDS 3(3)
+	if (memcmp(a, "nouts", 5)==0 && strlen(a)==5)						return _sym.nouts;	
+	
+	// TIME 2(2)	
 	if (memcmp(a, "clocks", 6)==0 && strlen(a)==6)						return _sym.clocks;
 	if (memcmp(a, "nclockspersecond", 16)==0 && strlen(a)==16)			return _sym.nclockspersecond;
 	if (memcmp(a, "ncps", 4)==0 && strlen(a)==4)						return _sym.ncps;
 
-
-	//AUTOPLAYER
-	if (memcmp(a, "myturnbits", 10)==0 && strlen(a)==10)				return _sym.myturnbits;
-	if (memcmp(a, "ismyturn", 8)==0 && strlen(a)==8)					return _sym.ismyturn;
-	if (memcmp(a, "issittingin", 11)==0 && strlen(a)==11)				return _sym.issittingin;
-	if (memcmp(a, "issittingout", 12)==0 && strlen(a)==12)				return _sym.issittingout;
-	if (memcmp(a, "isautopost", 10)==0 && strlen(a)==10)				return _sym.isautopost;
-	if (memcmp(a, "isfinalanswer", 13)==0 && strlen(a)==13)				return _sym.isfinalanswer;
-
-	//HISTORY
-	if (memcmp(a, "nplayersround", 13)==0 && strlen(a)==13)				return _sym.nplayersround[4];
-	if (memcmp(a, "nplayersround", 13)==0 && strlen(a)==14)				return _sym.nplayersround[a[13]-'0'-1];
+	// HISTORY 
+	// Part 3(3)
 	if (memcmp(a, "prevaction", 10)==0 && strlen(a)==10)				return _sym.prevaction;
-	if (memcmp(a, "didchec", 7)==0 && strlen(a)==7)						return _sym.didchec[4];
-	if (memcmp(a, "didcall", 7)==0 && strlen(a)==7)						return _sym.didcall[4];
-	if (memcmp(a, "didrais", 7)==0 && strlen(a)==7)						return _sym.didrais[4];
-	if (memcmp(a, "didswag", 7)==0 && strlen(a)==7)						return _sym.didswag[4];
 	if (memcmp(a, "nbetsround", 10)==0 && strlen(a)==10)				return _sym.nbetsround[4];
 	if (memcmp(a, "nbetsround", 10)==0 && strlen(a)==11)				return _sym.nbetsround[a[10]-'0'-1];
-	if (memcmp(a, "didchecround", 12)==0 && strlen(a)==13)				return _sym.didchec[a[12]-'0'-1];
-	if (memcmp(a, "didcallround", 12)==0 && strlen(a)==13)				return _sym.didcall[a[12]-'0'-1];
-	if (memcmp(a, "didraisround", 12)==0 && strlen(a)==13)				return _sym.didrais[a[12]-'0'-1];
-	if (memcmp(a, "didswaground", 12)==0 && strlen(a)==13)				return _sym.didswag[a[12]-'0'-1];
 
-	//run$ ron$
-	if (memcmp(a, "ron$royfl", 9)==0 && strlen(a)==9)					return _sym.ron$royfl;
-	if (memcmp(a, "ron$strfl", 9)==0 && strlen(a)==9)					return _sym.ron$strfl;
-	if (memcmp(a, "ron$4kind", 9)==0 && strlen(a)==9)					return _sym.ron$4kind;
-	if (memcmp(a, "ron$fullh", 9)==0 && strlen(a)==9)					return _sym.ron$fullh;
-	if (memcmp(a, "ron$flush", 9)==0 && strlen(a)==9)					return _sym.ron$flush;
-	if (memcmp(a, "ron$strai", 9)==0 && strlen(a)==9)					return _sym.ron$strai;
-	if (memcmp(a, "ron$3kind", 9)==0 && strlen(a)==9)					return _sym.ron$3kind;
-	if (memcmp(a, "ron$2pair", 9)==0 && strlen(a)==9)					return _sym.ron$2pair;
-	if (memcmp(a, "ron$1pair", 9)==0 && strlen(a)==9)					return _sym.ron$1pair;
-	if (memcmp(a, "ron$hcard", 9)==0 && strlen(a)==9)					return _sym.ron$hcard;
-	if (memcmp(a, "ron$total", 9)==0 && strlen(a)==9)					return _sym.ron$total;
-	if (memcmp(a, "ron$pokervalmax", 15)==0 && strlen(a)==15)			return _sym.ron$pokervalmax;
-	if (memcmp(a, "ron$prnuts", 10)==0 && strlen(a)==10)				return _sym.ron$prnuts;
-	if (memcmp(a, "ron$prbest", 10)==0 && strlen(a)==10)				return _sym.ron$prbest;
-	if (memcmp(a, "ron$clocks", 10)==0 && strlen(a)==10)				return _sym.ron$clocks;
-	if (memcmp(a, "run$royfl", 9)==0 && strlen(a)==9)					return _sym.run$royfl;
-	if (memcmp(a, "run$strfl", 9)==0 && strlen(a)==9)  					return _sym.run$strfl;
-	if (memcmp(a, "run$4kind", 9)==0 && strlen(a)==9)  					return _sym.run$4kind;
-	if (memcmp(a, "run$fullh", 9)==0 && strlen(a)==9)  					return _sym.run$fullh;
-	if (memcmp(a, "run$flush", 9)==0 && strlen(a)==9)  					return _sym.run$flush;
-	if (memcmp(a, "run$strai", 9)==0 && strlen(a)==9)  					return _sym.run$strai;
-	if (memcmp(a, "run$3kind", 9)==0 && strlen(a)==9)  					return _sym.run$3kind;
-	if (memcmp(a, "run$2pair", 9)==0 && strlen(a)==9)  					return _sym.run$2pair;
-	if (memcmp(a, "run$1pair", 9)==0 && strlen(a)==9)  					return _sym.run$1pair;
-	if (memcmp(a, "run$hcard", 9)==0 && strlen(a)==9)  					return _sym.run$hcard;
-	if (memcmp(a, "run$total", 9)==0 && strlen(a)==9)  					return _sym.run$total;
-	if (memcmp(a, "run$pokervalmax", 15)==0 && strlen(a)==15)			return _sym.run$pokervalmax;
-	if (memcmp(a, "run$prnuts", 10)==0 && strlen(a)==10)				return _sym.run$prnuts;
-	if (memcmp(a, "run$prbest", 10)==0 && strlen(a)==10)				return _sym.run$prbest;
-	if (memcmp(a, "run$clocks", 10)==0 && strlen(a)==10)				return _sym.run$clocks;
+	// GENERAL
+	if (memcmp(a, "site", 4)==0 && strlen(a)==4)						return _sym.site;
+	if (memcmp(a, "nchairs", 7)==0 && strlen(a)==7)						return _sym.nchairs;
+	if (memcmp(a, "session", 7)==0 && strlen(a)==7)						return _sym.session;
+	if (memcmp(a, "handnumber", 10)==0 && strlen(a)==10)				return _sym.handnumber;
+	if (memcmp(a, "version", 7)==0 && strlen(a)==7)						return _sym.version;
 
-	// Versus
-	if (memcmp(a, "vs$nhands", 10)==0 && strlen(a)==10)					return _sym.vs$nhands;
-	if (memcmp(a, "vs$nhandshi", 10)==0 && strlen(a)==10)				return _sym.vs$nhandshi;
-	if (memcmp(a, "vs$nhandsti", 10)==0 && strlen(a)==10)				return _sym.vs$nhandsti;
-	if (memcmp(a, "vs$nhandslo", 10)==0 && strlen(a)==10)				return _sym.vs$nhandslo;
-	if (memcmp(a, "vs$prwin", 8)==0 && strlen(a)==8)  					return _sym.vs$prwin;
-	if (memcmp(a, "vs$prtie", 8)==0 && strlen(a)==8)  					return _sym.vs$prtie;
-	if (memcmp(a, "vs$prlos", 8)==0 && strlen(a)==8)  					return _sym.vs$prlos;
-	if (memcmp(a, "vs$prwinhi", 10)==0 && strlen(a)==10)				return _sym.vs$prwinhi;
-	if (memcmp(a, "vs$prtiehi", 10)==0 && strlen(a)==10)  				return _sym.vs$prtiehi;
-	if (memcmp(a, "vs$prloshi", 10)==0 && strlen(a)==10)  				return _sym.vs$prloshi;
-	if (memcmp(a, "vs$prwinti", 10)==0 && strlen(a)==10)  				return _sym.vs$prwinti;
-	if (memcmp(a, "vs$prtieti", 10)==0 && strlen(a)==10)  				return _sym.vs$prtieti;
-	if (memcmp(a, "vs$prlosti", 10)==0 && strlen(a)==10)  				return _sym.vs$prlosti;
-	if (memcmp(a, "vs$prwinlo", 10)==0 && strlen(a)==10)  				return _sym.vs$prwinlo;
-	if (memcmp(a, "vs$prtielo", 10)==0 && strlen(a)==10)  				return _sym.vs$prtielo;
-	if (memcmp(a, "vs$prloslo", 10)==0 && strlen(a)==10)  				return _sym.vs$prloslo;
+	//P FORMULA
+	if (memcmp(a, "defcon", 6)==0 && strlen(a)==6)						return _sym.defcon;
+
+	// LIMITS 3(3)
+	if (memcmp(a, "bblind", 6)==0 && strlen(a)==6)						return _sym.bblind;
+	if (memcmp(a, "sblind", 6)==0 && strlen(a)==6)						return _sym.sblind;
+	if (memcmp(a, "ante", 4)==0 && strlen(a)==4)						return _sym.ante;
+	if (memcmp(a, "lim", 3)==0 && strlen(a)==3)							return _sym.lim;
+
+	//PROFILE
+	if (memcmp(a, "sitename$", 9)==0)									return p_tablemap->sitename().Find(&a[9])!=-1;
+	if (memcmp(a, "network$", 8)==0)									return p_tablemap->network().Find(&a[8])!=-1;
+	if (memcmp(a, "swagdelay", 9)==0 && strlen(a)==9)					return _sym.swagdelay;
+	if (memcmp(a, "allidelay", 9)==0 && strlen(a)==9)					return _sym.allidelay;
+	if (memcmp(a, "swagtextmethod", 14)==0 && strlen(a)==14)			return _sym.swagtextmethod;
+
+	if (memcmp(a, "activemethod", 12)==0 && strlen(a)==12)				return _sym.activemethod;
+
+	//FORMULA FILE
+	if (memcmp(a, "rake", 4)==0 && strlen(a)==4)						return _sym.rake;
+	if (memcmp(a, "nit", 3)==0 && strlen(a)==3)							return _sym.nit;
+	if (memcmp(a, "bankroll", 8)==0 && strlen(a)==8)					return _sym.bankroll;
+
+	// AUTOPLAYER 1(2)
+	if (memcmp(a, "myturnbits", 10)==0 && strlen(a)==10)				return _sym.myturnbits;
 
 	// GameState symbols
-	if (memcmp(a,"lastraised",10)==0 && strlen(a)==11)  				return p_game_state->LastRaised(a[10]-'0');
-	if (memcmp(a,"raisbits",8)==0 && strlen(a)==9)  					return p_game_state->RaisBits(a[8]-'0');
-	if (memcmp(a,"callbits",8)==0 && strlen(a)==9)  					return p_game_state->CallBits(a[8]-'0');
-	if (memcmp(a,"foldbits",8)==0 && strlen(a)==9)  					return p_game_state->FoldBits(a[8]-'0');
-	if (memcmp(a,"oppdealt",8)==0 && strlen(a)==8)  					return p_game_state->oppdealt();
-	if (memcmp(a,"floppct",7)==0 && strlen(a)==7)  						return p_game_state->FlopPct();
-	if (memcmp(a,"turnpct",7)==0 && strlen(a)==7)  						return p_game_state->TurnPct();
-	if (memcmp(a,"riverpct",8)==0 && strlen(a)==8)  					return p_game_state->RiverPct();
-	if (memcmp(a,"avgbetspf",9)==0 && strlen(a)==9)  					return p_game_state->AvgBetsPf();
-	if (memcmp(a,"tablepfr",8)==0 && strlen(a)==8)  					return p_game_state->TablePfr();
-	if (memcmp(a,"maxbalance",10)==0 && strlen(a)==10)  				return p_game_state->max_balance();
-	if (memcmp(a,"handsplayed",11)==0 && strlen(a)==11)  				return p_game_state->hands_played();
-	if (memcmp(a,"balance_rank",12)==0 && strlen(a)==13)  				return p_game_state->SortedBalance(a[12]-'0');
-	if (memcmp(a,"hi_",3)==0)
-	{
-		char	sym[50] = {0};
-		int		round = 0;
-		strcpy_s(sym, 50, &a[3]);
-		round = sym[strlen(sym)-1]-'0';
-		sym[strlen(sym)-1] = '\0';
-		return p_game_state->OHSymHist(sym, round);
-	}
-
-	// PokerTracker symbols
-	if (memcmp(a,"pt_",3)==0 || memcmp(a,"ptt_",4)==0)					return p_pokertracker_thread->ProcessQuery(a);
-
+	if (memcmp(a, "lastraised", 10)==0 && strlen(a)==11)  				return p_game_state->LastRaised(a[10]-'0');
+	if (memcmp(a, "raisbits", 8)==0 && strlen(a)==9)  					return p_game_state->RaisBits(a[8]-'0');
+	if (memcmp(a, "callbits", 8)==0 && strlen(a)==9)  					return p_game_state->CallBits(a[8]-'0');
+	if (memcmp(a, "foldbits", 8)==0 && strlen(a)==9)  					return p_game_state->FoldBits(a[8]-'0');
+	if (memcmp(a, "oppdealt", 8)==0 && strlen(a)==8)  					return p_game_state->oppdealt();
+	if (memcmp(a, "floppct", 7)==0 && strlen(a)==7)  						return p_game_state->FlopPct();
+	if (memcmp(a, "turnpct", 7)==0 && strlen(a)==7)  						return p_game_state->TurnPct();
+	if (memcmp(a, "riverpct", 8)==0 && strlen(a)==8)  					return p_game_state->RiverPct();
+	if (memcmp(a, "avgbetspf", 9)==0 && strlen(a)==9)  					return p_game_state->AvgBetsPf();
+	if (memcmp(a, "tablepfr", 8)==0 && strlen(a)==8)  					return p_game_state->TablePfr();
+	if (memcmp(a, "maxbalance", 10)==0 && strlen(a)==10)  				return p_game_state->max_balance();
+	if (memcmp(a, "handsplayed", 11)==0 && strlen(a)==11)  				return p_game_state->hands_played();
+	if (memcmp(a, "balance_rank", 12)==0 && strlen(a)==13)  				return p_game_state->SortedBalance(a[12]-'0');
 
 	*e = ERR_INVALID_SYM;
 	return 0.0;
-
 }
 
 const double CSymbols::IsHand(const char *a, int *e)
