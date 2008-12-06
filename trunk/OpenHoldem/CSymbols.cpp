@@ -3689,7 +3689,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	}
 
 	// NHANDS 1(2)
-	if (memcmp(a, "nhands", 5)==0)
+	if (memcmp(a, "nhands", 6)==0)
 	{
 		if (memcmp(a, "nhands", 6)==0 && strlen(a)==6)						return _sym.nhands;
 		if (memcmp(a, "nhandshi", 8)==0 && strlen(a)==8)					return _sym.nhandshi;
@@ -3707,7 +3707,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "rankhipoker", 11)==0 && strlen(a)==11)				return _sym.rankhipoker;
 	}
 
-	// RANK HI
+	// SRANK HI
 	// Part 2(2): srankhi...symbols
 	if (memcmp(a, "srankhi", 7) == 0)
 	{
@@ -3727,7 +3727,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "ranklopoker", 11)==0 && strlen(a)==11)				return _sym.ranklopoker;
 	}
 
-	// RANK LO
+	// SRANK LO
 	// Part 2(2): sranklo...symbols
 	if (memcmp(a, "sranklo", 7) == 0)
 	{
@@ -3825,7 +3825,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	}
 
 	// LIST TESTS 2(2)
-	if (memcmp(a, "isemptylist", 6) == 0)
+	if (memcmp(a, "isemptylist", 11) == 0)
 	{
 		if (memcmp(a, "isemptylistcall", 15)==0 && strlen(a)==15)			return _sym.isemptylistcall;
 		if (memcmp(a, "isemptylistrais", 15)==0 && strlen(a)==15)			return _sym.isemptylistrais;
@@ -3852,7 +3852,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "rankbitspoker", 13)==0 && strlen(a)==13)				return _sym.rankbitspoker;
 	}
 
-	// RANK BITS 2(2)
+	// SRANK BITS 2(2)
 	if (memcmp(a, "srankbits", 9)==0)
 	{
 		if (memcmp(a, "srankbits", 9)==0 && strlen(a)==9)					return _sym.srankbits;
@@ -4015,7 +4015,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	}
 
 	// LIMITS 2(3)
-	if (memcmp(a, "srai", 5)==0)
+	if (memcmp(a, "srai", 4)==0)
 	{
 		if (memcmp(a, "sraiprev", 8)==0 && strlen(a)==8)					return _sym.sraiprev;
 		if (memcmp(a, "sraimin", 7)==0 && strlen(a)==7)						return _sym.sraimin;
@@ -4169,14 +4169,14 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "callbits", 8)==0 && strlen(a)==9)  					return p_game_state->CallBits(a[8]-'0');
 	if (memcmp(a, "foldbits", 8)==0 && strlen(a)==9)  					return p_game_state->FoldBits(a[8]-'0');
 	if (memcmp(a, "oppdealt", 8)==0 && strlen(a)==8)  					return p_game_state->oppdealt();
-	if (memcmp(a, "floppct", 7)==0 && strlen(a)==7)  						return p_game_state->FlopPct();
-	if (memcmp(a, "turnpct", 7)==0 && strlen(a)==7)  						return p_game_state->TurnPct();
+	if (memcmp(a, "floppct", 7)==0 && strlen(a)==7)  					return p_game_state->FlopPct();
+	if (memcmp(a, "turnpct", 7)==0 && strlen(a)==7)  					return p_game_state->TurnPct();
 	if (memcmp(a, "riverpct", 8)==0 && strlen(a)==8)  					return p_game_state->RiverPct();
 	if (memcmp(a, "avgbetspf", 9)==0 && strlen(a)==9)  					return p_game_state->AvgBetsPf();
 	if (memcmp(a, "tablepfr", 8)==0 && strlen(a)==8)  					return p_game_state->TablePfr();
 	if (memcmp(a, "maxbalance", 10)==0 && strlen(a)==10)  				return p_game_state->max_balance();
 	if (memcmp(a, "handsplayed", 11)==0 && strlen(a)==11)  				return p_game_state->hands_played();
-	if (memcmp(a, "balance_rank", 12)==0 && strlen(a)==13)  				return p_game_state->SortedBalance(a[12]-'0');
+	if (memcmp(a, "balance_rank", 12)==0 && strlen(a)==13)  			return p_game_state->SortedBalance(a[12]-'0');
 
 	*e = ERR_INVALID_SYM;
 	return 0.0;
