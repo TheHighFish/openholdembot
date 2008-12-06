@@ -207,8 +207,8 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0419")
     HEURISTIC_RULE (false)
-    REASONING ("The number of unknown cards is 52 minus the number of known cards.")
-    PRECONDITION (true)
+    REASONING ("If a game is going on, then the number of unknown cards is 52 minus the number of known cards.")
+    PRECONDITION (gws("ncardsknown") > 0)
     POSTCONDITION (gws("ncardsknown") == (52 - gws("ncardsunknown")))
     SYMBOLS_POSSIBLY_AFFECTED ("ncardsknown, ncardsunknown")
 END_TESTCASE
@@ -218,8 +218,8 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0420")
     HEURISTIC_RULE (false)
-    REASONING ("If it's not the turn or river there can't be a single-card that beats us.")
-    PRECONDITION (gws("betround") < 3)
+    REASONING ("If it's not the turn or river (and I hold cards), then there can't be a single-card that beats us.")
+    PRECONDITION ((gws("betround") < 3) && (gws("ncardsknown") > 0))
     POSTCONDITION (gws("ncardsbetter") == 1)
     SYMBOLS_POSSIBLY_AFFECTED ("betround, ncardsbetter")
 END_TESTCASE
@@ -230,7 +230,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0421")
     HEURISTIC_RULE (false)
     REASONING ("If both my cards are of the same rank, I have a pocket pair.")
-    PRECONDITION (gws("$$pr0") == gws("$$pr1"))
+    PRECONDITION ((gws("$$pr0") == gws("$$pr1")) && (gws("$$pc0") != CARD_UNKNOWN) && (gws("$$pc1") != CARD_UNKNOWN))
     POSTCONDITION (gws("ispair"))
     SYMBOLS_POSSIBLY_AFFECTED ("$$pr0, $$pr1, ispair")
 END_TESTCASE
@@ -240,7 +240,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0422")
     HEURISTIC_RULE (false)
     REASONING ("If both my cards are not of the same rank, I don't have a pocket pair.")
-    PRECONDITION (gws("$pr0") != gws("$$pr1"))
+    PRECONDITION ((gws("$pr0") != gws("$$pr1")) && (gws("$$pc0") != CARD_UNKNOWN) && (gws("$$pc1") != CARD_UNKNOWN))
     POSTCONDITION (!gws("ispair"))
     SYMBOLS_POSSIBLY_AFFECTED ("$$pr0, $$pr1, ispair")
 END_TESTCASE
@@ -250,7 +250,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0423")
     HEURISTIC_RULE (false)
     REASONING ("If both my cards are of the same suit, they are suited.")
-    PRECONDITION (gws("$$ps0") == gws("$$ps1"))
+    PRECONDITION ((gws("$$ps0") == gws("$$ps1")) && (gws("$$pc0") != CARD_UNKNOWN) && (gws("$$pc1") != CARD_UNKNOWN))
     POSTCONDITION (gws("issuited"))
     SYMBOLS_POSSIBLY_AFFECTED ("$$ps0, $$ps1, issuited")
 END_TESTCASE

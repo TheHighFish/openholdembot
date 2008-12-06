@@ -64,7 +64,7 @@ void CValidator::ValidateSingleRule()
 				+ "\n\n";
 			if (_heuristic)
 			{
-				the_ErrorMessage += "HEURISTIC RULE: yes";
+				the_ErrorMessage += "HEURISTIC RULE: yes\n\n";
 			}
 			the_ErrorMessage += "REASONING: "
 				+ CString(_reasoning)

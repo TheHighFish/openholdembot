@@ -31,17 +31,17 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0903")
     HEURISTIC_RULE (false)
-    REASONING ("If it's a FL game, the there must be at least 1 bet preflop and at most 4 on average.")
-    PRECONDITION (true)
+    REASONING ("If it's a FL table and there's a game going on, then there must be at least 1 bet preflop and at most 4 on average.")
+    PRECONDITION (gws("isfl") && (gws("nplayersplaying") >= 2))
     POSTCONDITION ((gws("avgbetspf") >= 1) &&(gws("avgbetspf") <= 4)) 
-    SYMBOLS_POSSIBLY_AFFECTED ("avgbetspf")
+    SYMBOLS_POSSIBLY_AFFECTED ("avgbetspf, isfl, nplayersplaying")
 END_TESTCASE
 
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0904")
     HEURISTIC_RULE (true)
-    REASONING ("Check for numer of hands played, under the assumption that a hand can last at most 2 minutes on average.")
+    REASONING ("Check for numer of hands played, under the assumption that a hand can last at most 2 minutes.")
     PRECONDITION (gws("elapsed") >= 120)
     POSTCONDITION (((gws("handsplayed") + 1) * 120 ) >= gws("elapsed") )
     SYMBOLS_POSSIBLY_AFFECTED ("handsplayed, elapsed")
