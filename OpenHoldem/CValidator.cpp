@@ -232,4 +232,5 @@ void CValidator::ValidateGameState()
 #include "Validator_Rules\consistency_checks_bets_inline.cpp"
 #include "Validator_Rules\consistency_checks_autoplayer_inline.cpp"
 #include "Validator_Rules\consistency_checks_players_friends_opponents_inline.cpp"
+#include "Validator_Rules\consistency_checks_chip_amounts_inline.cpp"
 }
