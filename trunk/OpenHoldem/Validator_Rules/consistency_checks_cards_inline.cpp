@@ -264,3 +264,15 @@ BEGIN_TESTCASE
     POSTCONDITION (!gws("issuited"))
     SYMBOLS_POSSIBLY_AFFECTED ("$$ps0, $$ps1, issuited")
 END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0425")
+    HEURISTIC_RULE (false)
+    REASONING ("If 7 or more cards are known, then it must be either a showdown  (5 common cards known) or it is a tournament before the first hand, drawing the position of the button (1 known card per player, no known common cards).")
+    PRECONDITION (gws("ncardsknown") >= 7)
+    POSTCONDITION ((gws("ncommoncardsknown") == 5) || (gws("istournament") && (gws("handsplayed") == 0) && (gws("ncommoncardsknown") == 0)))
+    SYMBOLS_POSSIBLY_AFFECTED ("ncardsknown, ncommoncardsknown, istournamen, handsplayed")
+END_TESTCASE
+ 
+ 
