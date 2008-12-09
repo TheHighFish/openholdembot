@@ -41,10 +41,10 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0804")
     HEURISTIC_RULE (false)
-    REASONING ("Session duration has to be greater than the time since our last action.")
-    PRECONDITION (true)
+    REASONING ("Once the first hand is finished, the session duration has to be greater than the time since our last action.")
+    PRECONDITION (gws("handsplayed") >= 1)
     POSTCONDITION (gws("elapsed") > gws("elapsedauto"))
-    SYMBOLS_POSSIBLY_AFFECTED ("elapsed, elapsedauto")
+    SYMBOLS_POSSIBLY_AFFECTED ("elapsed, elapsedauto, handsplayed")
 END_TESTCASE
 
 
