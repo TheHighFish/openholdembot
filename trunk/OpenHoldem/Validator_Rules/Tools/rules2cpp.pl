@@ -62,7 +62,10 @@ while (<>)
 	{
 		# In the other lines place a gws-call around each symnols,
 		#   then print to stdout.
-		s/[a-z\$][a-z_\$0-9]*/gws("$&")/g;
+		# Each symbol has to start either with a character or a Dollar,
+		#   but fortunatelly not with "x", as this way we avoid 
+		#   substituting hexadecimal numbers.			
+		s/[a-wyz\$][a-z_\$0-9]*/gws("$&")/g;
 		# If we substituted true or false,
 		#   substitute it back.
 		s/gws\("true"\)/true/g;
