@@ -7,7 +7,7 @@
 #   into usable CPP-code (preprocessor-macros).
 #
 # USAGE: At the command-line:
-#   "perl rules2cpp <THE_RULES_FILE>"
+#   "perl rules2cpp.pl <THE_RULES_FILE>"
 #   This will print the generated code to stdout.
 #
 # NOTE: For bitwise operations you have to typecast
@@ -22,7 +22,7 @@
 # Rules look like this:
 #
 # BEGIN_TESTCASE
-#     TEST_ID ("0074")
+#     TESTCASE_ID ("0074")
 #     REASONING ("Range check for symbol nbetstorais")
 #     PRECONDITION (true)
 #     POSTCONDITION (nbetstorais >= 1)
@@ -47,7 +47,8 @@ while (<>)
 	# * empty lines
 	# * comments
 	if ((/^.*BEGIN_TESTCASE.*$/)
-		|| (/^.*TEST_ID.*/)
+		|| (/^.*TESTCASE_ID.*/)
+		|| (/^.*HEURISTIC_RULE.*$/)
 		|| (/^.*REASONING.*$/)
 		|| (/^.*SYMBOLS_POSSIBLY_AFFECTED.*$/)
 		|| (/^.*END_TESTCASE.*$/)
