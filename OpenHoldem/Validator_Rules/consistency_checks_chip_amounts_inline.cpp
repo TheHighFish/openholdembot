@@ -196,3 +196,43 @@ BEGIN_TESTCASE
     POSTCONDITION (gws("hi_balance_91") >= gws("balance9"))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance_91, balance9")
 END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1520")
+    HEURISTIC_RULE (true)
+    REASONING ("If it's a tournament (SNG only, no MTT), then the sum of all chips has to be a multiple of the number of players at the table, as all players got the same amount of chips and there's no rake.")  
+    PRECONDITION (gws("istournament"))
+    POSTCONDITION ((int((gws("potcommon") + gws("potplayer") + gws("balance0") + gws("balance1") + gws("balance2") + gws("balance3") + gws("balance4") + gws("balance5") + gws("balance6") + gws("balance7") + gws("balance8") + gws("balance9"))) % int(gws("nchairs"))) == 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("istournament, potcommon, potplayer, balance0, balance1, balance2, balance3, balance4, balance5, balance6, balance7, balance8, balance9, nchairs")
+END_TESTCASE
+ 
+ 
+BEGIN_TESTCASE
+    TESTCASE_ID ("1521")
+    HEURISTIC_RULE (true)
+    REASONING ("If it's a tournament (SNG only, no MTT), then the sum of all chips has to be a multiple of 100, as all players got the same amount of chips and there's no rake.")
+    PRECONDITION (gws("istournament"))
+    POSTCONDITION ((int((gws("potcommon") + gws("potplayer") + gws("balance0") + gws("balance1") + gws("balance2") + gws("balance3") + gws("balance4") + gws("balance5") + gws("balance6") + gws("balance7") + gws("balance8") + gws("balance9"))) % 100) == 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("istournament, potcommon, potplayer, balance0, balance1, balance2, balance3, balance4, balance5, balance6, balance7, balance8, balance9")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1522")
+    HEURISTIC_RULE (false)
+    REASONING ("If it's postflop, there has to be a non-zero common pot.")
+    PRECONDITION (gws("betround") > 1)
+    POSTCONDITION (gws("pot") > 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, pot")
+END_TESTCASE
+ 
+ 
+BEGIN_TESTCASE
+    TESTCASE_ID ("1523")
+    HEURISTIC_RULE (false)
+    REASONING ("The common pot must be at least as large as the bets in front of all players.")
+    PRECONDITION (true)
+    POSTCONDITION (gws("pot") >= (gws("currentbet0") + gws("currentbet1") + gws("currentbet2") + gws("currentbet3") + gws("currentbet4") + gws("currentbet5") + gws("currentbet6") + gws("currentbet7") + gws("currentbet8") + gws("currentbet9")))
+    SYMBOLS_POSSIBLY_AFFECTED ("pot,  currentbet0,  currentbet1,  currentbet2,  currentbet3,  currentbet4,  currentbet5,  currentbet6,  currentbet7,  currentbet8,  currentbet9")
+END_TESTCASE
