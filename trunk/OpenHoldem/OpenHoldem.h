@@ -10,6 +10,10 @@
 
 #include "resource.h"	   // main symbols
 
+#include "..\..\Reference Mouse DLL\mousedll.h"
+#include "..\..\Reference Keyboard DLL\keyboarddll.h"
+#include "..\..\Reference Scraper DLL\scraperdll.h"
+
 // COpenHoldemApp:
 // See OpenHoldem.cpp for the implementation of this class
 //
@@ -30,7 +34,14 @@ public:
 public:
 	virtual int ExitInstance();
 
+	mouse_click_t			_dll_mouse_click;
+	keyboard_sendstring_t	_dll_keyboard_sendstring;
+	scraper_override_t		_dll_scraper_override;
+
 	unsigned long int	_session_id;
+	HMODULE				_mouse_dll;
+	HMODULE				_keyboard_dll;
+	HMODULE				_scraper_dll;
 };
 
 extern COpenHoldemApp theApp;

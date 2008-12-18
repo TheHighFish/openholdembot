@@ -1,0 +1,3 @@
+LIBRARY	keyboard.dll
+EXPORTS
+   SendString   @1
