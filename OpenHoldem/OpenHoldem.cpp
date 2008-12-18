@@ -30,6 +30,7 @@
 
 #include "DialogFormulaScintilla.h"
 
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -112,14 +113,14 @@ BOOL COpenHoldemApp::InitInstance()
 			CString path(pszParam+5);
 			path.Replace("~", _startup_path);
 			free((void*)m_pszProfileName);
-			m_pszProfileName = strdup(path);
+			m_pszProfileName = _strdup(path);
 			load_from_registry = false;
 		}
 		if (_tcscmp(pszParam, "/ini") == 0) {
 			CString path;
 			path.Format("%s\\openholdem.ini", _startup_path);
 			free((void*)m_pszProfileName);
-			m_pszProfileName = strdup(path);
+			m_pszProfileName = _strdup(path);
 			load_from_registry = false;
 		}
 	}
@@ -140,6 +141,105 @@ BOOL COpenHoldemApp::InitInstance()
 	if (!p_perl)  p_perl = new CPerl;
 	if (!p_memory)  p_memory = new CMemory;	
 	if (!p_versus)  p_versus = new CVersus;	
+
+	// mouse.dll - failure in load is fatal
+	_mouse_dll = LoadLibrary("mouse.dll");
+	if (_mouse_dll==NULL)
+	{
+		CString		t = "";
+		t.Format("Unable to load mouse.dll, error: %d\n\nExiting.", GetLastError());
+		MessageBox(NULL, t, "OpenHoldem mouse.dll ERROR", MB_OK | MB_TOPMOST);
+		return false;
+	}
+	else
+	{
+		_dll_mouse_click = (mouse_click_t) GetProcAddress(_mouse_dll, "MouseClick");
+
+		if (_dll_mouse_click==NULL)
+		{
+			CString		t = "";
+			t.Format("Unable to find 'MouseClick' in mouse.dll");
+			MessageBox(NULL, t, "OpenHoldem mouse.dll ERROR", MB_OK | MB_TOPMOST);
+
+			FreeLibrary(_mouse_dll);
+			_mouse_dll = NULL;
+			return false;
+		}
+
+		CString t = "";
+		RECT r = {0};
+		t.Format("Success: %d", (_dll_mouse_click) (r, MouseLeft, 1));
+		MessageBox(NULL, t.GetString(), "MOUSE!", MB_OK);
+	}
+
+	// keyboard.dll - failure in load is fatal
+	_keyboard_dll = LoadLibrary("keyboard.dll");
+	if (_keyboard_dll==NULL)
+	{
+		CString		t = "";
+		t.Format("Unable to load keyboard.dll, error: %d\n\nExiting.", GetLastError());
+		MessageBox(NULL, t, "OpenHoldem keyboard.dll ERROR", MB_OK | MB_TOPMOST);
+		return false;
+	}
+	else
+	{
+		_dll_keyboard_sendstring = (keyboard_sendstring_t) GetProcAddress(_keyboard_dll, "SendString");
+
+		if (_dll_keyboard_sendstring==NULL)
+		{
+			CString		t = "";
+			t.Format("Unable to find 'SendString' in keyboard.dll");
+			MessageBox(NULL, t, "OpenHoldem keyboard.dll ERROR", MB_OK | MB_TOPMOST);
+
+			FreeLibrary(_keyboard_dll);
+			_keyboard_dll = NULL;
+			return false;
+		}
+
+
+		CString t = "";
+		t.Format("Success: %d", (_dll_keyboard_sendstring) ("", 0));
+		MessageBox(NULL, t.GetString(), "KEYBOARD!", MB_OK);
+	}
+
+	// scraper.dll - failure in load is NOT fatal
+	_scraper_dll = LoadLibrary("scraper.dll");
+	if (_scraper_dll==NULL)
+	{
+		if (!prefs.disable_msgbox())		
+		{
+			CString		t = "";
+			t.Format("Unable to load scraper.dll, error: %d\n\nExiting.", GetLastError());
+			MessageBox(NULL, t, "OpenHoldem scraper.dll WARNING", MB_OK | MB_TOPMOST);
+		}
+	}
+	else
+	{
+		_dll_scraper_override = (scraper_override_t) GetProcAddress(_scraper_dll, "OverrideScraper");
+
+		if (_dll_scraper_override==NULL)
+		{
+			if (!prefs.disable_msgbox())		
+			{
+				CString		t = "";
+				t.Format("Unable to find 'ProcessMessage' in scraper.dll");
+				MessageBox(NULL, t, "OpenHoldem scraper.dll ERROR", MB_OK | MB_TOPMOST);
+			}
+
+			FreeLibrary(_scraper_dll);
+			_scraper_dll = NULL;
+		}
+		else
+		{
+			if (!prefs.disable_msgbox())		
+			{
+				MessageBox(NULL, "OpenHoldem scraper.dll successfully loaded.", "Success", MB_OK | MB_TOPMOST);
+			}
+		}
+	}
+
+
+
 
 	MyLoadStdProfileSettings(4);  // Load standard INI file options (including MRU)
 	if (m_pRecentFileList == NULL)

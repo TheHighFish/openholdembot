@@ -1,0 +1,3 @@
+LIBRARY	scraper
+EXPORTS
+   OverrideScraper   @1

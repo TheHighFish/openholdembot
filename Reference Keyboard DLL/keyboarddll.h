@@ -1,0 +1,15 @@
+#ifndef INC_KEYBOARDDLL_H
+#define INC_KEYBOARDDLL_H
+
+#ifdef KEYBOARDDLL_EXPORTS
+#define KEYBOARDDLL_API __declspec(dllexport)
+#else
+#define KEYBOARDDLL_API __declspec(dllimport)
+#endif
+
+typedef int (*keyboard_sendstring_t)(const char*, const int length);
+
+KEYBOARDDLL_API int SendString(const char*, const int length);
+
+
+#endif //INC_KEYBOARDDLL_H
