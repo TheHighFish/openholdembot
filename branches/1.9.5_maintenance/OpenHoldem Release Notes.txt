@@ -1,3 +1,10 @@
+
+v1.9.x
+=================
+BUG FIXES:
+- Correct the protection against dangerously low f$willplay & f$wontplay. Problem identified by a.punter (Matrix)
+
+
 v1.9.5 2008-11-24
 =================
 BUG FIXES:

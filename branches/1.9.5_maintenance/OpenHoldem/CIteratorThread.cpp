@@ -90,9 +90,11 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 		}
 
 		CardMask_OR(usedCards, pParent->_plCards, pParent->_comCards);
-
-		if (pParent->_willplay && (pParent->_willplay<nopp+1) )
-			pParent->_willplay=nopp+1; //too low a value can give lockup
+		//Correct the protection against dangerously low f$willplay & f$wontplay - Matrix 2008-12-22
+		if (pParent->_willplay && (pParent->_willplay<nopp*2+1) )
+			pParent->_willplay=nopp*2+1; //too low a value can give lockup
+		if (pParent->_wontplay<pParent->_willplay)
+			pParent->_wontplay=pParent->_willplay;
 
 
 		if (p_symbols->prw1326()->useme==1326 && (sym_br!=1 || p_symbols->prw1326()->preflop==1326))
