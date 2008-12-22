@@ -13,6 +13,7 @@ BUG FIXES:
 - Hand numbers are now displayed in center info box correctly, if they are integers [OpenHoldem]
 - ICMCalculator: for icm_* symbols stacks are now initialized with balances instead of stack_at_hand_start - currentbet. 
   stack_at_hand_start is now only use for icm symbol ("my equity at the start of this hand") [spud]
+- Coorected protection against dangerously low f$willplay/f$wontplay values (Matrix)
   
 MAINTENANCE:
 - Optimized symbol-lookup. [TheHighFish]
