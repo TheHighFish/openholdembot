@@ -3443,6 +3443,22 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "foldbitsx (x=1-4)", "which chairs folded in round x");
 	AddSymbol(parent, "oppdealt", "Trailing indicator for nopponentsdealt");
 
+	mainParent = parent = AddSymbolTitle("MyHand symbols", NULL, hCatItem);
+	AddSymbol(parent, "mh_3straightxy", "(x=1 for wheel, 0 not, y=1 for broadway, 0 not) - returns true if the board has a wheel straight draw or broadway straight draw, given the wheel/broadway parameters");
+	AddSymbol(parent, "mh_bottomsd", "true if I have a bottom straight draw");
+	AddSymbol(parent, "mh_nsuitedbetter", "number of missing suited cards that are higher than my best suited card");
+	AddSymbol(parent, "mh_kickerbetter", "number of cards that can beat your kicker");
+	AddSymbol(parent, "mh_kickerrank", "rank of your kicker (returns 0 if kicker is shared [board] and thus useless)");
+	AddSymbol(parent, "mh_nouts", "number of outs (HTC's formula)");
+	AddSymbol(parent, "mh_str_strflush", "0-5 (5 best) of the relative strength of your straight flush");
+	AddSymbol(parent, "mh_str_quads", "0-5 (5 best) of the relative strength of your four of a kind");
+	AddSymbol(parent, "mh_str_fullhouse", "0-5 (5 best) of the relative strength of your full house");
+	AddSymbol(parent, "mh_str_flush", "0-5 (5 best) of the relative strength of your flush");
+	AddSymbol(parent, "mh_str_straight", "0-5 (5 best) of the relative strength of your straight");
+	AddSymbol(parent, "mh_str_trips", "0-5 (5 best) of the relative strength of your three of a kind");
+	AddSymbol(parent, "mh_str_twopair", "0-5 (5 best) of the relative strength of your two pair"); 
+	AddSymbol(parent, "mh_str_onepair", "0-5 (5 best) of the relative strength of your one pair");
+
 	mainParent = parent = AddSymbolTitle("Table stats symbols", "Note: the setting for [y minutes] can be found in Edit/Preferences, and defaults to 15 minutes.", hCatItem);
 	AddSymbol(parent, "floppct", "percentage of players seeing the flop for the last y minutes");
 	AddSymbol(parent, "turnpct", "percentage of players seeing the turn for the last y minutes");
