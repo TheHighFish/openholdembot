@@ -1,3 +1,4 @@
 LIBRARY	scraper
 EXPORTS
    OverrideScraper   @1
+   ProcessMessage    @2

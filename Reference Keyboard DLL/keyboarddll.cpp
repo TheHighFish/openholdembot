@@ -2,9 +2,10 @@
 //
 
 #include <windows.h>
+#include <atlstr.h>
 #include "keyboarddll.h"
 
-KEYBOARDDLL_API int SendString(const char*, const int length)
+KEYBOARDDLL_API int SendString(const CString s)
 {
 	return 43;
 }

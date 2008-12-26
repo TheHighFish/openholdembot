@@ -20,6 +20,8 @@
 #include "DialogScraperOutput.h"
 #include "CPokerPro.h"
 
+#include "..\..\Reference Scraper DLL\scraperdll.h"
+
 CHeartbeatThread	*p_heartbeat_thread = NULL;
 CRITICAL_SECTION	CHeartbeatThread::cs_update_in_progress;
 
@@ -63,7 +65,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 	unsigned int		new_scrape = NOTHING_CHANGED;
 	bool				iswait = false;
 	char				title[512] = {0};
-	int					N = 0, i = 0;
+	int					N = 0, i = 0, j = 0;
 
 	// PokerPro variables only
 	const char			*pbytes = NULL;
@@ -109,6 +111,96 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 					p_pokerpro->DoScrape();
 				}
 			}
+
+			////////////////////////////////////////////////////////////////////////////////////////////
+			// Give scraper.dll a chance to override scraper results
+
+			if (theApp._scraper_dll)
+			{
+				SScraperState  ss;
+
+				// populate structure that gets passed to dll
+				strncpy_s(ss.title, MAX_WINDOW_TITLE, p_scraper->title(), MAX_WINDOW_TITLE);
+
+				for (i=0; i<=4; i++)
+				{
+					ss.card_common[i] = p_scraper->card_common(i);
+				}
+
+				for (i=0; i<=9; i++)
+				{
+					ss.card_player[i][0] = p_scraper->card_player(i, 0);
+					ss.card_player[i][1] = p_scraper->card_player(i, 1);
+					ss.dealer[i] = p_scraper->dealer(i);
+					ss.sitting_out[i] = p_scraper->sitting_out(i);
+					ss.seated[i] = p_scraper->seated(i);
+					ss.active[i] = p_scraper->active(i);
+					ss.name[i] = p_scraper->player_name(i);
+					ss.balance[i] = p_scraper->player_balance(i);
+					ss.bet[i] = p_scraper->player_bet(i);
+				}
+
+				ss.card_player_for_display[0] = p_scraper->card_player_for_display(0);
+				ss.card_player_for_display[1] = p_scraper->card_player_for_display(1);
+
+				for (i=0; i<=9; i++)
+				{
+					ss.pot[i] = p_scraper->pot(i);
+				}
+
+				for (i=0; i<=9; i++)
+				{
+					ss.button_state[i] = p_scraper->button_state(i);
+					ss.i86X_button_state[i] = p_scraper->i86X_button_state(i);
+					ss.button_label[i] = p_scraper->button_label(i);
+				}
+
+				ss.i86_button_state = p_scraper->i86_button_state();
+
+				// Call the scraper override
+				(theApp._dll_scraper_override) (&ss);
+
+				// Replace values in p_scraper with those provided by scraper dll
+				p_scraper->set_title(ss.title);
+
+				for (i=0; i<=4; i++)
+				{
+					p_scraper->set_card_common(i, ss.card_common[i]);
+				}
+
+				for (i=0; i<=9; i++)
+				{
+					p_scraper->set_card_player(i, 0, ss.card_player[i][0]);
+					p_scraper->set_card_player(i, 1, ss.card_player[i][1]);
+					p_scraper->set_dealer(i, ss.dealer[i]);
+					p_scraper->set_sitting_out(i, ss.sitting_out[i]);
+					p_scraper->set_seated(i, ss.seated[i]);
+					p_scraper->set_active(i, ss.active[i]);
+					p_scraper->set_player_name(i, ss.name[i]);
+					p_scraper->set_player_balance(i, ss.balance[i]);
+					p_scraper->set_player_bet(i, ss.bet[i]);
+				}
+
+				p_scraper->set_card_player_for_display(0, ss.card_player_for_display[0]);
+				p_scraper->set_card_player_for_display(1, ss.card_player_for_display[1]);
+
+				for (i=0; i<=9; i++)
+				{
+					p_scraper->set_pot(i, ss.pot[i]);
+				}
+
+				for (i=0; i<=9; i++)
+				{
+					p_scraper->set_button_state(i, ss.button_state[i]);
+					p_scraper->set_i86X_button_state(i, ss.i86X_button_state[i]);
+					p_scraper->set_button_label(i, ss.button_label[i]);
+				}
+
+				p_scraper->set_i86_button_state(ss.i86_button_state);
+
+
+			}
+
 
 			////////////////////////////////////////////////////////////////////////////////////////////
 			// Caclulate symbols

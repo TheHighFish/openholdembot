@@ -840,6 +840,10 @@ BOOL CMainFrame::DoConnect(HWND targetHWnd)
 			// reset iterator vars
 			iter_vars.ResetVars();
 
+			// Send "connect" and HWND to scraper DLL, if loaded
+			if (theApp._dll_scraper_process_message)
+				(theApp._dll_scraper_process_message) ("connect", &_attached_hwnd);
+
 			// start heartbeat thread
 			if (p_heartbeat_thread)
 				delete p_heartbeat_thread;
@@ -855,26 +859,40 @@ BOOL CMainFrame::DoConnect(HWND targetHWnd)
 			// Start logging
 			start_log();
 
-			if (targetHWnd == NULL) {
+			if (targetHWnd == NULL) 
+			{
 				CWindowDC dc(NULL);
 				int nBitsPerPixel = dc.GetDeviceCaps(PLANES) * dc.GetDeviceCaps(BITSPIXEL);
 
-			if (nBitsPerPixel < 24 && !prefs.disable_msgbox())
-					MessageBox("It appears that your Display settings are not configured according to OpenHoldem specifications.\n24 bit color or higher is needed to reliably extract information from the poker client\n\nFor more info, look at the wiki documentation and the user forums", "Caution: Color Depth Too Low", MB_OK|MB_ICONWARNING);
+				if (nBitsPerPixel < 24 && !prefs.disable_msgbox())
+					MessageBox("It appears that your Display settings are not configured according to OpenHoldem specifications.\n"
+							   "24 bit color or higher is needed to reliably extract information from the poker client\n\n"
+							   "For more info, look at the wiki documentation and the user forums", 
+							   "Caution: Color Depth Too Low", MB_OK|MB_ICONWARNING);
 
 				BOOL fontSmoothingEnabled = FALSE;
 				SystemParametersInfo(SPI_GETFONTSMOOTHING, 0, (LPVOID)&fontSmoothingEnabled, 0);
 
-			if (fontSmoothingEnabled && !prefs.disable_msgbox())
-					MessageBox("It appears that font smoothing is enabled. In order for OpenHoldem to reliably\nextract information from the poker client you should disable Font Smoothing", "Caution: Font smoothing is enabled", MB_OK|MB_ICONWARNING);
+				if (fontSmoothingEnabled && !prefs.disable_msgbox())
+					MessageBox("It appears that font smoothing is enabled. In order for OpenHoldem to reliably\n"
+							   "extract information from the poker client you should disable Font Smoothing", 
+							   "Caution: Font smoothing is enabled", MB_OK|MB_ICONWARNING);
 			}
 
 			// log OH title bar text and table reset
 			::GetWindowText(_attached_hwnd, title, 512);
+
+			CString site="";
+			SMapCI site_i = p_tablemap->s$()->find("sitename");
+			if (site_i != p_tablemap->s$()->end())
+				site = site_i->second.text;
+
+			CString formula = p_formula->formula_name();
+
 			write_log("\n*************************************************************\n"
 					  "TABLE RESET %s - %s(%s)\n"
 					  "*************************************************************\n",
-					  p_formula->formula_name().GetString(), p_tablemap->s$()->find("sitename")->second.text.GetString(), title);
+					  formula.GetString(), site.GetString(), title);
 
 		}
 	}
@@ -901,6 +919,10 @@ void CMainFrame::OnBnClickedRedCircle()
 	// Make sure autoplayer is off
 	p_autoplayer->set_autoplayer_engaged(false);
 	_autoplay_pressed = false;
+
+	// Send "disconnect" to scraper DLL, if loaded
+	if (theApp._dll_scraper_process_message)
+			(theApp._dll_scraper_process_message) ("disconnect", NULL);
 
 	// Clear "attached" info
 	set_attached_hwnd(NULL);
