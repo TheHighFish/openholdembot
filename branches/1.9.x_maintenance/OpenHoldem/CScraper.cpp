@@ -1927,6 +1927,10 @@ const double CScraper::DoChipScrape(HDC hdc, int i)
 				// no hash match
 				if (hashindex == p_tablemap->hashes(hash_type)->end())
 				{
+					// Stop horizontal scrape loop if chipindex==0 AND a non-match
+					if (chipindex==0)
+						stackindex = MAX_CHIP_STACKS+1;
+
 					// stop vertical scrape loop on a non-match
 					chipindex = MAX_CHIPS_PER_STACK+1;
 				}
