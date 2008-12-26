@@ -282,7 +282,7 @@ void CPreferences::ReadFromRegistry()
 		ReadReg("perl_editor", &_perl_editor);
 		ReadReg("perl_load_default_formula", &_perl_load_default_formula);
 		ReadReg("perl_load_interpreter", &_perl_load_interpreter);
-		ReadReg("chat_enabled", &_chat_enabled);
+		ReadReg("perl_default_formula", &_perl_default_formula);
 
 		// PokerChat
 		ReadReg("chat_enabled", &_chat_enabled);
