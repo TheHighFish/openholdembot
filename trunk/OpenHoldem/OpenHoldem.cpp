@@ -198,7 +198,7 @@ BOOL COpenHoldemApp::InitInstance()
 
 
 		CString t = "";
-		t.Format("Success: %d", (_dll_keyboard_sendstring) ("", 0));
+		t.Format("Success: %d", (_dll_keyboard_sendstring) (""));
 		MessageBox(NULL, t.GetString(), "KEYBOARD!", MB_OK);
 	}
 
@@ -209,7 +209,7 @@ BOOL COpenHoldemApp::InitInstance()
 		if (!prefs.disable_msgbox())		
 		{
 			CString		t = "";
-			t.Format("Unable to load scraper.dll, error: %d\n\nExiting.", GetLastError());
+			t.Format("Unable to load scraper.dll, error: %d", GetLastError());
 			MessageBox(NULL, t, "OpenHoldem scraper.dll WARNING", MB_OK | MB_TOPMOST);
 		}
 	}
@@ -217,12 +217,14 @@ BOOL COpenHoldemApp::InitInstance()
 	{
 		_dll_scraper_override = (scraper_override_t) GetProcAddress(_scraper_dll, "OverrideScraper");
 
-		if (_dll_scraper_override==NULL)
+		_dll_scraper_process_message = (scraper_process_message_t) GetProcAddress(_scraper_dll, "ProcessMessage");
+
+		if (_dll_scraper_override==NULL || _dll_scraper_process_message==NULL)
 		{
 			if (!prefs.disable_msgbox())		
 			{
 				CString		t = "";
-				t.Format("Unable to find 'ProcessMessage' in scraper.dll");
+				t.Format("Unable to find 'OverrideScraper' and/or 'ProcessMessage' in scraper.dll");
 				MessageBox(NULL, t, "OpenHoldem scraper.dll ERROR", MB_OK | MB_TOPMOST);
 			}
 

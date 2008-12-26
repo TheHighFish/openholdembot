@@ -102,9 +102,11 @@ public:
 #define ENT EnterCriticalSection(&cs_scraper);
 #define LEA LeaveCriticalSection(&cs_scraper);
 	// public mutators 
-	// **These are only needed by the PokerPro code to push it's updates into the CScraper structures**
+	// **These are needed by PokerPro and the scraper override dll to push their updates into the CScraper structures**
+	void	set_title(const char *s) { ENT strncpy_s(_title, MAX_WINDOW_TITLE, s, MAX_WINDOW_TITLE); LEA }
 	void	set_card_common(const int n, const unsigned int c) { ENT if (n>=0 && n<=4) _card_common[n] = c; LEA }
 	void	set_card_player(const int s, const int n, const unsigned int c) { ENT if (s>=0 && s<=9 && n>=0 && n<=1) _card_player[s][n] = c; LEA }
+	void	set_card_player_for_display(const int n, const unsigned int c) { ENT if (n>=0 && n<=1) _card_player_for_display[n] = c; LEA }
 	void	set_seated(const int n, CString s) { ENT if (n>=0 && n<=9) _seated[n] = s; LEA }
 	void	set_active(const int n, CString s) { ENT if (n>=0 && n<=9) _active[n] = s; LEA }
 	void	set_dealer(const int n, const bool b) { ENT if (n>=0 && n<=9) _dealer[n] = b; LEA }
@@ -116,6 +118,8 @@ public:
 	void	set_sitting_out(const int n, const bool b) { ENT if (n>=0 && n<=9) _sitting_out[n] = b; LEA }
 	void	set_pot(const int n, const double d) { ENT if (n>=0 && n<=9) _pot[n] = d; LEA }
 	void	set_button_state(const int n, const CString s) { ENT if (n>=0 && n<=9) _button_state[n] = s; LEA }
+	void	set_i86X_button_state(const int n, const CString s) { ENT if (n>=0 && n<=9) _i86X_button_state[n] = s; LEA }
+	void	set_i86_button_state(const CString s) { ENT _i86_button_state = s; LEA }
 	void	set_button_label(const int n, const CString s) { ENT if (n>=0 && n<=9) _button_label[n] = s; LEA }
 	// **End PokerPro-specific mutators
 

@@ -34,9 +34,10 @@ public:
 public:
 	virtual int ExitInstance();
 
-	mouse_click_t			_dll_mouse_click;
-	keyboard_sendstring_t	_dll_keyboard_sendstring;
-	scraper_override_t		_dll_scraper_override;
+	mouse_click_t				_dll_mouse_click;
+	keyboard_sendstring_t		_dll_keyboard_sendstring;
+	scraper_override_t			_dll_scraper_override;
+	scraper_process_message_t	_dll_scraper_process_message;
 
 	unsigned long int	_session_id;
 	HMODULE				_mouse_dll;

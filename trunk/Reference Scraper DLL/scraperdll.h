@@ -1,4 +1,4 @@
-#ifndef INC_SCRPAERDLL_H
+#ifndef INC_SCRAPERDLL_H
 #define INC_SCRAPERDLL_H
 
 #include <atlstr.h>
@@ -31,5 +31,8 @@ struct SScraperState
 
 typedef void (*scraper_override_t)(SScraperState *state);
 SCRAPERDLL_API void OverrideScraper(SScraperState *state);
+
+typedef void (*scraper_process_message_t)(const char *message, const void *param);
+SCRAPERDLL_API void ProcessMessage(const char *message, const void *param);
 
 #endif //INC_SCRAPERDLL_H

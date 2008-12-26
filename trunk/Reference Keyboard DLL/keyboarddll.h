@@ -7,9 +7,9 @@
 #define KEYBOARDDLL_API __declspec(dllimport)
 #endif
 
-typedef int (*keyboard_sendstring_t)(const char*, const int length);
+typedef int (*keyboard_sendstring_t)(const CString s);
 
-KEYBOARDDLL_API int SendString(const char*, const int length);
+KEYBOARDDLL_API int SendString(const CString s);
 
 
 #endif //INC_KEYBOARDDLL_H
