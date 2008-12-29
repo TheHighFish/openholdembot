@@ -62,11 +62,6 @@ char _message_table[][max_length_of_simple_messages] =
 };
 
 
-//  Pointer to the chatmessage to store it,
-//	until it is processed and send to the keyboard
-//
-static char *_the_chat_message;
-
 //  End of enforced chat pause, a security measure against crazy bots.
 time_t _first_possible_next_chat_time;
 
@@ -121,56 +116,6 @@ void ComputeFirstPossibleNextChatTime(void)
 								   //  as integer "division" would be result in zero.
 								   (double(rand()) / RAND_MAX) * prefs.chat_random_delay();
 }
-
-//  Processing the chat-message (if there's one)
-//	(To be called by the autoplayer, which selects
-//	the chatbox, too.)
-void SendChatMessageToKeyboard()
-{
-	if (!IsChatAllowed())
-		return;
-
-	if (_the_chat_message == NULL)
-		return;
-
-	//  Checks ok. Going to send the message.
-	unsigned int i = 0;
-	//  Send the_Message char by char,
-	//	creating virtual keyboard input with "key_event"
-	//	of the Windows API.
-	while (_the_chat_message[i] != '\0')
-	{
-		char the_next_char = _the_chat_message[i];
-		//
-		//  All messages have must be send in upper case,
-		//	but will appear in lower case.
-		//	This is caused by a discrepancy betwenn ASCII codes
-		//	and keybord codes (and lack of a usable mapping function).
-		//	Fortunately the ASCII code for upper case chars
-		//	is identical with the keybord code for lower case chars.
-		//	(To create upper case characters, you would need to set
-		//	  the additional flag for the shift key.)
-		//
-		the_next_char = toupper(the_next_char);
-		keybd_event((BYTE) the_next_char,
-					MapVirtualKey((BYTE) the_next_char, 1),
-					0, 0);
-		//  Some hardcoded delay between the keyboard messages.
-		//  Is this really neccessary, as Windows messages don't
-		//  have any time stamp?
-		Sleep(80);
-		i++;
-	}
-	//  Send <return> to the chatbox
-	char the_return_char = '\r';
-	keybd_event((BYTE) the_return_char,
-				MapVirtualKey((BYTE) the_return_char, 1),
-				0, 0);
-	//  Deleting message and setting new safety pause
-	_the_chat_message = NULL;
-	ComputeFirstPossibleNextChatTime();
-}
-
 
 //  Getting a pointer to "send_ChatMessage" to send to the DLL
 //	at startup (similar to "pfgws")

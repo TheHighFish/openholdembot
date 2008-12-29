@@ -153,23 +153,20 @@ BOOL COpenHoldemApp::InitInstance()
 	}
 	else
 	{
+		_dll_mouse_process_message = (mouse_process_message_t) GetProcAddress(_mouse_dll, "ProcessMessage");
 		_dll_mouse_click = (mouse_click_t) GetProcAddress(_mouse_dll, "MouseClick");
+		_dll_mouse_click_drag = (mouse_clickdrag_t) GetProcAddress(_mouse_dll, "MouseClickDrag");
 
-		if (_dll_mouse_click==NULL)
+		if (_dll_mouse_process_message==NULL || _dll_mouse_click==NULL || _dll_mouse_click_drag==NULL)
 		{
 			CString		t = "";
-			t.Format("Unable to find 'MouseClick' in mouse.dll");
+			t.Format("Unable to find all symbols in mouse.dll");
 			MessageBox(NULL, t, "OpenHoldem mouse.dll ERROR", MB_OK | MB_TOPMOST);
 
 			FreeLibrary(_mouse_dll);
 			_mouse_dll = NULL;
 			return false;
 		}
-
-		CString t = "";
-		RECT r = {0};
-		t.Format("Success: %d", (_dll_mouse_click) (r, MouseLeft, 1));
-		MessageBox(NULL, t.GetString(), "MOUSE!", MB_OK);
 	}
 
 	// keyboard.dll - failure in load is fatal
@@ -183,23 +180,20 @@ BOOL COpenHoldemApp::InitInstance()
 	}
 	else
 	{
+		_dll_keyboard_process_message = (keyboard_process_message_t) GetProcAddress(_keyboard_dll, "ProcessMessage");
 		_dll_keyboard_sendstring = (keyboard_sendstring_t) GetProcAddress(_keyboard_dll, "SendString");
+		_dll_keyboard_sendkey = (keyboard_sendkey_t) GetProcAddress(_keyboard_dll, "SendKey");
 
-		if (_dll_keyboard_sendstring==NULL)
+		if (_dll_keyboard_process_message==NULL || _dll_keyboard_sendstring==NULL || _dll_keyboard_sendkey==NULL)
 		{
 			CString		t = "";
-			t.Format("Unable to find 'SendString' in keyboard.dll");
+			t.Format("Unable to find all symbols in keyboard.dll");
 			MessageBox(NULL, t, "OpenHoldem keyboard.dll ERROR", MB_OK | MB_TOPMOST);
 
 			FreeLibrary(_keyboard_dll);
 			_keyboard_dll = NULL;
 			return false;
 		}
-
-
-		CString t = "";
-		t.Format("Success: %d", (_dll_keyboard_sendstring) (""));
-		MessageBox(NULL, t.GetString(), "KEYBOARD!", MB_OK);
 	}
 
 	// scraper.dll - failure in load is NOT fatal
@@ -215,16 +209,15 @@ BOOL COpenHoldemApp::InitInstance()
 	}
 	else
 	{
+		_dll_scraper_process_message = (scraper_process_message_t) GetProcAddress(_scraper_dll, "ProcessMessage");
 		_dll_scraper_override = (scraper_override_t) GetProcAddress(_scraper_dll, "OverrideScraper");
 
-		_dll_scraper_process_message = (scraper_process_message_t) GetProcAddress(_scraper_dll, "ProcessMessage");
-
-		if (_dll_scraper_override==NULL || _dll_scraper_process_message==NULL)
+		if (_dll_scraper_process_message==NULL || _dll_scraper_override==NULL)
 		{
 			if (!prefs.disable_msgbox())		
 			{
 				CString		t = "";
-				t.Format("Unable to find 'OverrideScraper' and/or 'ProcessMessage' in scraper.dll");
+				t.Format("Unable to find all symbols in scraper.dll");
 				MessageBox(NULL, t, "OpenHoldem scraper.dll ERROR", MB_OK | MB_TOPMOST);
 			}
 
