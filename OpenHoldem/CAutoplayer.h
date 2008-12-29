@@ -55,10 +55,6 @@ private:
 	void DoF$play(void);
 	void DoI86(void);
 	void DoChat(void);
-	const POINT RandomizeClickLocation(const int left, const int top, const int right, const int bottom);
-	const void GetClickPoint(const int x, const int y, const int rx, const int ry, POINT *p);
-	const double RandomNormalScaled(const double scale, const double m, const double s);
-	const double RandomNormal(const double m, const double s);
 
 	RMapCI	_alli_but, _rais_but, _call_but, _chec_but, _fold_but;
 	RMapCI	_autopost_but, _sitin_but, _sitout_but, _leave_but, _pre_fold_but;

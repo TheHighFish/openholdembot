@@ -77,11 +77,6 @@ bool IsChatAllowed(void);
 
 void ComputeFirstPossibleNextChatTime(void);
 
-//  Processing the chat-message (if there's one)
-//	(To be called by the autoplayer, which selects
-//	the chatbox, too.) 
-void SendChatMessageToKeyboard();
-
 //  Getting a pointer to "send_ChatMessage" to send to the DLL
 //	at startup (similar to "pfgws")
 PointerTypeSendChatMessage GetPointerToSendChatMessage();
@@ -89,5 +84,10 @@ PointerTypeSendChatMessage GetPointerToSendChatMessage();
 //  Simple messages for the formula guys.
 //	Use f$chat as "the_MessageIndex".
 void RegisterChatMessage(double message_index);
+
+//  Pointer to the chatmessage to store it,
+//	until it is processed and send to the keyboard
+//
+static char *_the_chat_message;
 
 #endif //INC_POKERCHAT_HPP

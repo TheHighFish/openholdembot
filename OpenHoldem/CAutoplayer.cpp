@@ -34,80 +34,45 @@ CAutoplayer::~CAutoplayer(void)
 
 void CAutoplayer::DoChat(void)
 {
-	//  PokerChat
-	//  2008.02.27 by THF
-	//
-	//  Activating the chat box by a mouse click;
-	//	then sending the message to the keyboard.
-	//
-	//  We can't use "do_click = 5", as this would lead to problems
-	//	with the default check button. Therefore we duplicated
-	//	the clicking code. :(
-	//
-	double f_chat = p_symbols->f$chat();
+	double			f_chat = p_symbols->f$chat();
+	HWND			hwnd_focus = GetFocus();
+	POINT			cur_pos = {0};
 
 	if (f_chat == 0)
 		return;
 
-	INPUT			input[100] = {0};
-	POINT			pt;
-	double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
-	double			fScreenHeight = ::GetSystemMetrics( SM_CYSCREEN )-1;
-	double			fx, fy;
-	HWND			hwnd_focus = GetFocus();
-	HWND			hwnd_foreground = GetForegroundWindow();
-	HWND			hwnd_active = GetActiveWindow();
-	POINT			cur_pos;
+	if (!IsChatAllowed())
+		return;
+
+	if (_the_chat_message == NULL)
+		return;
+
+	::GetCursorPos(&cur_pos);
+
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 	RMapCI			r_iter = p_tablemap->r$()->find("chatbox");
 
 	if (r_iter == p_tablemap->r$()->end())
 		return;
 
-	GetCursorPos(&cur_pos);
+	RECT r;
+	r.left = r_iter->second.left;
+	r.top = r_iter->second.top;
+	r.right = r_iter->second.right;
+	r.bottom = r_iter->second.bottom;
 
-	pt = RandomizeClickLocation(r_iter->second.left, r_iter->second.top, r_iter->second.right, r_iter->second.bottom);
+	CString s;
+	s.Format("%s", _the_chat_message);
 
-	// Translate click point to screen/mouse coords
-	ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
-	fx = pt.x*(65535.0f/fScreenWidth);
-	fy = pt.y*(65535.0f/fScreenHeight);
-
-	// Set up the input structure
-	ZeroMemory(&input[0],sizeof(INPUT));
-	input[0].type = INPUT_MOUSE;
-	input[0].mi.dx = fx;
-	input[0].mi.dy = fy;
-	input[0].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
-	ZeroMemory(&input[1],sizeof(INPUT));
-	input[1].type = INPUT_MOUSE;
-	input[1].mi.dx = fx;
-	input[1].mi.dy = fy;
-	input[1].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTUP;
 	// If we get a lock, do the action
 	if (_mutex.Lock(500))
 	{
-		SetFocus(pMyMainWnd->attached_hwnd());
-		SetForegroundWindow(pMyMainWnd->attached_hwnd());
-		SetActiveWindow(pMyMainWnd->attached_hwnd());
-		SendInput(2, input, sizeof(INPUT));
-		//
-		//  Pre: f$chat > 0,
-		//   Chatbox selected by a mouse click.
-		//
-		//  We can now "type in" the message, if there's one.
-		//
-		SendChatMessageToKeyboard();
-
-		//
-		//  Restore window state
-		SetActiveWindow(hwnd_active);
-		SetForegroundWindow(hwnd_foreground);
-		SetFocus(hwnd_focus);
-		SetCursorPos(cur_pos.x, cur_pos.y);
-
+		(theApp._dll_keyboard_sendstring) (pMyMainWnd->attached_hwnd(), r, s, false, hwnd_focus, cur_pos);
 		_mutex.Unlock();
 	}
+
+	_the_chat_message = NULL;
+	ComputeFirstPossibleNextChatTime();
 }
 
 void CAutoplayer::DoAutoplayer(void) 
@@ -241,30 +206,22 @@ void CAutoplayer::ResetRound(void)
 
 void CAutoplayer::DoSwag(void) 
 {
-	int				input_count = 0;
-	POINT			pt = {0};
-	double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
-	double			fScreenHeight = ::GetSystemMetrics( SM_CYSCREEN )-1;
-	double			fx = 0., fy = 0.;
-	INPUT			input[100] = {0};
-	char			ch_str[100] = {0};
-	int				i = 0;
-	int				vkey = 0;
 	HWND			hwnd_focus = GetFocus();
-	HWND			hwnd_foreground = GetForegroundWindow();
-	HWND			hwnd_active = GetActiveWindow();
 	POINT			cur_pos = {0};
 	bool			lost_focus = false;
-	int				e = SUCCESS;
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 	double			f_swag = p_symbols->f$swag();
 	RMapCI			r_edit = p_tablemap->r$()->find("i3edit");
 	RMapCI			r_button = p_tablemap->r$()->find("i3button");
+	POINT			p_null = {-1, -1};
+	RECT			r_null = {-1, -1, -1, -1};
 
-	
+	if (r_edit==p_tablemap->r$()->end())
+		return;
+
 	::GetCursorPos(&cur_pos);
 
-	// swag buttons are hard coded as #3 now.  Can they be different?
+	// swag buttons are hard coded as #3 for now, due to legacy WH standard
 	if (p_scraper->GetButtonState(3) && r_edit!=p_tablemap->r$()->end())
 	{
 
@@ -272,103 +229,21 @@ void CAutoplayer::DoSwag(void)
 		if (_mutex.Lock(500))
 		{
 
+			RECT rect_edit;
+			rect_edit.left = r_edit->second.left;
+			rect_edit.top = r_edit->second.top;
+			rect_edit.right = r_edit->second.right;
+			rect_edit.bottom = r_edit->second.bottom;
+
 			// TEXT SELECTION
 			if (p_tablemap->swagselectionmethod() == TEXTSEL_DOUBLECLICK)
-			{
-				input_count = 0;
+				(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_edit, MouseLeft, 2, NULL, p_null);
 
-				// Double click in edit box
-				pt = RandomizeClickLocation(r_edit->second.left, r_edit->second.top, 
-											r_edit->second.right, r_edit->second.bottom);
-				ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
-				fx = pt.x*(65535.0f/fScreenWidth);
-				fy = pt.y*(65535.0f/fScreenHeight);
-
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_MOUSE;
-				input[input_count].mi.dx = fx;
-				input[input_count].mi.dy = fy;
-				input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
-				input_count++;
-
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_MOUSE;
-				input[input_count].mi.dwFlags = MOUSEEVENTF_LEFTUP;
-				input_count++;
-
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_MOUSE;
-				input[input_count].mi.dx = fx;
-				input[input_count].mi.dy = fy;
-				input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
-				input_count++;
-
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_MOUSE;
-				input[input_count].mi.dwFlags = MOUSEEVENTF_LEFTUP;
-				input_count++;
-			}
-
-			if (p_tablemap->swagselectionmethod() == TEXTSEL_SINGLECLICK)
-			{
-				input_count = 0;
-
-				// Single click in edit box
-				pt = RandomizeClickLocation(r_edit->second.left, r_edit->second.top, 
-											r_edit->second.right, r_edit->second.bottom);
-				ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
-				fx = pt.x*(65535.0f/fScreenWidth);
-				fy = pt.y*(65535.0f/fScreenHeight);
-
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_MOUSE;
-				input[input_count].mi.dx = fx;
-				input[input_count].mi.dy = fy;
-				input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
-				input_count++;
-
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_MOUSE;
-				input[input_count].mi.dwFlags = MOUSEEVENTF_LEFTUP;
-				input_count++;
-			}
+			else if (p_tablemap->swagselectionmethod() == TEXTSEL_SINGLECLICK)
+				(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_edit, MouseLeft, 1, NULL, p_null);
 
 			else if (p_tablemap->swagselectionmethod() == TEXTSEL_CLICKDRAG)
-			{
-				input_count = 0;
-
-				// left click, drag to left, un-left click
-				pt.x = r_edit->second.right;
-				pt.y = r_edit->second.top + (r_edit->second.bottom - r_edit->second.top)/2;
-				ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
-				fx = pt.x*(65535.0f/fScreenWidth);
-				fy = pt.y*(65535.0f/fScreenHeight);
-
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_MOUSE;
-				input[input_count].mi.dx = fx;
-				input[input_count].mi.dy = fy;
-				input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
-				input_count++;
-
-				pt.x = r_edit->second.left;
-				pt.y = r_edit->second.top + (r_edit->second.bottom - r_edit->second.top)/2;
-				ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
-				fx = pt.x*(65535.0f/fScreenWidth);
-				fy = pt.y*(65535.0f/fScreenHeight);
-
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_MOUSE;
-				input[input_count].mi.dx = fx;
-				input[input_count].mi.dy = fy;
-				input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
-				input_count++;
-
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_MOUSE;
-				input[input_count].mi.dwFlags = MOUSEEVENTF_LEFTUP;
-				input_count++;
-			}
+				(theApp._dll_mouse_click_drag) (pMyMainWnd->attached_hwnd(), rect_edit, NULL, p_null);
 
 			else
 			{
@@ -376,18 +251,9 @@ void CAutoplayer::DoSwag(void)
 				return;
 			}
 
-			// Do text selection and sleep
-			SetFocus(pMyMainWnd->attached_hwnd());
-			SetForegroundWindow(pMyMainWnd->attached_hwnd());
-			SetActiveWindow(pMyMainWnd->attached_hwnd());
-
-			SendInput(input_count, input, sizeof(INPUT));
-
 			// Check for stolen focus, and thus misswag
 			if (GetForegroundWindow() != pMyMainWnd->attached_hwnd())
 				lost_focus = true;
-
-			::SetCursorPos(cur_pos.x, cur_pos.y);
 
 			Sleep(prefs.swag_delay_1());
 
@@ -395,42 +261,10 @@ void CAutoplayer::DoSwag(void)
 
 			// TEXT DELETION
 			if (p_tablemap->swagdeletionmethod() == TEXTDEL_DELETE)
-			{
-				input_count = 0;
-
-				// Press delete
-				// Delete down
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_KEYBOARD;
-				input[input_count].ki.wVk = VK_DELETE;
-				input_count++;
-
-				// Delete up
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_KEYBOARD;
-				input[input_count].ki.wVk = VK_DELETE;
-				input[input_count].ki.dwFlags = KEYEVENTF_KEYUP;
-				input_count++;
-			}
+				(theApp._dll_keyboard_sendkey) (pMyMainWnd->attached_hwnd(), r_null, VK_DELETE, NULL, p_null);
 
 			else if (p_tablemap->swagdeletionmethod() == TEXTDEL_BACKSPACE)
-			{
-				input_count = 0;
-
-				// Press backspace
-				// Backspace down
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_KEYBOARD;
-				input[input_count].ki.wVk = VK_BACK;
-				input_count++;
-
-				// Backspace up
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_KEYBOARD;
-				input[input_count].ki.wVk = VK_BACK;
-				input[input_count].ki.dwFlags = KEYEVENTF_KEYUP;
-				input_count++;
-			}
+				(theApp._dll_keyboard_sendkey) (pMyMainWnd->attached_hwnd(), r_null, VK_BACK, NULL, p_null);
 
 			else
 			{
@@ -438,200 +272,71 @@ void CAutoplayer::DoSwag(void)
 				return;
 			}
 
-			// do it and sleep
-			SetFocus(pMyMainWnd->attached_hwnd());
-			SetForegroundWindow(pMyMainWnd->attached_hwnd());
-			SetActiveWindow(pMyMainWnd->attached_hwnd());
-
-			SendInput(input_count, input, sizeof(INPUT));
-
 			// Check for stolen focus, and thus misswag
 			if (GetForegroundWindow() != pMyMainWnd->attached_hwnd())
 				lost_focus = true;
-
-			::SetCursorPos(cur_pos.x, cur_pos.y);
 
 			Sleep(prefs.swag_delay_2());
 
 
 
 			// SWAG AMOUNT ENTRY
-			input_count = 0;
-
-			// Click in edit box
-			pt = RandomizeClickLocation(r_edit->second.left, r_edit->second.top, 
-										r_edit->second.right, r_edit->second.bottom);
-
-			ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
-			fx = pt.x*(65535.0f/fScreenWidth);
-			fy = pt.y*(65535.0f/fScreenHeight);
-
-			ZeroMemory(&input[input_count],sizeof(INPUT));
-			input[input_count].type = INPUT_MOUSE;
-			input[input_count].mi.dx = fx;
-			input[input_count].mi.dy = fy;
-			input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
-			input_count++;
-
-			ZeroMemory(&input[input_count],sizeof(INPUT));
-			input[input_count].type = INPUT_MOUSE;
-			input[input_count].mi.dwFlags = MOUSEEVENTF_LEFTUP;
-			input_count++;
-
-
+			CString swag_amt;
 			if (f_swag != (int) f_swag)
-			{
-				sprintf_s(ch_str, 100, "%.2f", f_swag);
-			}
+				swag_amt.Format("%.2f", f_swag);
 			else
-			{
-				sprintf_s(ch_str, 100, "%.0f", f_swag);
-			}
+				swag_amt.Format("%.0f", f_swag);
 
-			for (i=0; i<(int) strlen(ch_str); i++)
-			{
-				if (ch_str[i]>='0' && ch_str[i]<='9')
-				{
-					vkey = ch_str[i];
-				}
-				if (ch_str[i]=='.')
-				{
-					if (prefs.swag_use_comma())
-					{
-						vkey = VK_OEM_COMMA;
-					}
-					else
-					{
-						vkey = VK_DECIMAL;
-					}
-				}
-
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_KEYBOARD;
-				input[input_count].ki.wVk = vkey;
-				input_count++;
-
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_KEYBOARD;
-				input[input_count].ki.wVk = vkey;
-				input[input_count].ki.dwFlags = KEYEVENTF_KEYUP;
-				input_count++;
-			}
-
-			// do it and sleep for prefs.swag_delay (ms)
-			SetFocus(pMyMainWnd->attached_hwnd());
-			SetForegroundWindow(pMyMainWnd->attached_hwnd());
-			SetActiveWindow(pMyMainWnd->attached_hwnd());
-
-			SendInput(input_count, input, sizeof(INPUT));
+			(theApp._dll_keyboard_sendstring) (pMyMainWnd->attached_hwnd(), rect_edit, swag_amt, prefs.swag_use_comma(), NULL, p_null);
 
 			// Check for stolen focus, and thus misswag
 			if (GetForegroundWindow() != pMyMainWnd->attached_hwnd())
 				lost_focus = true;
-
-			::SetCursorPos(cur_pos.x, cur_pos.y);
 
 			Sleep(prefs.swag_delay_3());
 
 
 
 			// BET CONFIRMATION ACTION
-			if (p_tablemap->swagconfirmationmethod() == BETCONF_ENTER)
-			{
-				input_count = 0;
-
-				// Press enter
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_KEYBOARD;
-				input[input_count].ki.wVk = VK_RETURN;
-				input_count++;
-
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_KEYBOARD;
-				input[input_count].ki.wVk = VK_RETURN;
-				input[input_count].ki.dwFlags = KEYEVENTF_KEYUP;
-				input_count++;
-			}
-
-			else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET &&
-					 (_rais_but!=p_tablemap->r$()->end() || r_button!=p_tablemap->r$()->end()) )
-			{
-				input_count = 0;
-
-				// Click on bet/raise button
-				// use i3button region it it exists, otherwise use the bet/raise button region
-				if (r_button!=p_tablemap->r$()->end())
-					pt = RandomizeClickLocation(r_button->second.left, r_button->second.top, 
-												r_button->second.right, r_button->second.bottom);
-
-				else
-					pt = RandomizeClickLocation(_rais_but->second.left, _rais_but->second.top, 
-												_rais_but->second.right, _rais_but->second.bottom);
-
-				// Click on button
-				ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
-				fx = pt.x*(65535.0f/fScreenWidth);
-				fy = pt.y*(65535.0f/fScreenHeight);
-
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_MOUSE;
-				input[input_count].mi.dx = fx;
-				input[input_count].mi.dy = fy;
-				input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
-				input_count++;
-
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_MOUSE;
-				input[input_count].mi.dx = fx;
-				input[input_count].mi.dy = fy;
-				input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTUP;
-				input_count++;
-
-				// Do double click if set in preferences
-				if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
-				{
-					ZeroMemory(&input[input_count],sizeof(INPUT));
-					input[input_count].type = INPUT_MOUSE;
-					input[input_count].mi.dx = fx;
-					input[input_count].mi.dy = fy;
-					input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
-					input_count++;
-
-					ZeroMemory(&input[input_count],sizeof(INPUT));
-					input[input_count].type = INPUT_MOUSE;
-					input[input_count].mi.dx = fx;
-					input[input_count].mi.dy = fy;
-					input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTUP;
-					input_count++;
-				}
-
-				// Restore cursor to current location
-				::GetCursorPos(&pt);
-				fx = pt.x*(65535.0f/fScreenWidth);
-				fy = pt.y*(65535.0f/fScreenHeight);
-
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_MOUSE;
-				input[input_count].mi.dx = fx;
-				input[input_count].mi.dy = fy;
-				input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
-				input_count++;
-			}
-
-			else
-			{
-				_mutex.Unlock();
-				return;
-			}
-
-			// do it
 			if (!lost_focus || !prefs.focus_detect())
 			{
-				SetFocus(pMyMainWnd->attached_hwnd());
-				SetForegroundWindow(pMyMainWnd->attached_hwnd());
-				SetActiveWindow(pMyMainWnd->attached_hwnd());
+				if (p_tablemap->swagconfirmationmethod() == BETCONF_ENTER)
+				{
+					(theApp._dll_keyboard_sendkey) (pMyMainWnd->attached_hwnd(), r_null, VK_RETURN, hwnd_focus, cur_pos);
+				}
 
-				SendInput(input_count, input, sizeof(INPUT));
+				else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET &&
+						 (_rais_but!=p_tablemap->r$()->end() || r_button!=p_tablemap->r$()->end()) )
+				{
+					RECT rect_button;
+
+					// use i3button region if it exists, otherwise use the bet/raise button region
+					if (r_button!=p_tablemap->r$()->end())
+					{
+						rect_button.left = r_button->second.left;
+						rect_button.top = r_button->second.top;
+						rect_button.right = r_button->second.right;
+						rect_button.bottom = r_button->second.bottom;
+					}
+					else
+					{
+						rect_button.left = _rais_but->second.left;
+						rect_button.top = _rais_but->second.top;
+						rect_button.right = _rais_but->second.right;
+						rect_button.bottom = _rais_but->second.bottom;
+					}
+
+					if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
+						(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_button, MouseLeft, 2, hwnd_focus, cur_pos);
+					else
+						(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_button, MouseLeft, 1, hwnd_focus, cur_pos);
+				}
+
+				else
+				{
+					_mutex.Unlock();
+					return;
+				}
 
 				// record didswag/prevaction
 				int sym_br = (int) p_symbols->sym()->br;
@@ -653,12 +358,6 @@ void CAutoplayer::DoSwag(void)
 				write_logautoplay("SWAG");
 			}
 
-			SetActiveWindow(hwnd_active);
-			SetForegroundWindow(hwnd_foreground);
-			SetFocus(hwnd_focus);
-
-			::SetCursorPos(cur_pos.x, cur_pos.y);
-
 			_mutex.Unlock();
 		}
 	}
@@ -666,19 +365,11 @@ void CAutoplayer::DoSwag(void)
 
 void CAutoplayer::DoARCCF(void) 
 {
-	int				do_click = 0, input_count = 0;
-	INPUT			input[100] = {0};
-	POINT			pt = {0};
-	double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
-	double			fScreenHeight = ::GetSystemMetrics( SM_CYSCREEN )-1;
-	double			fx = 0., fy = 0.;
+	int				do_click = 0;
 	HWND			hwnd_focus = GetFocus();
-	HWND			hwnd_foreground = GetForegroundWindow();
-	HWND			hwnd_active = GetActiveWindow();
 	POINT			cur_pos = {0};
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
-	int				e = SUCCESS;
 	double			alli = p_symbols->f$alli();
 	double			rais = p_symbols->f$rais();
 	double			call = p_symbols->f$call();
@@ -686,29 +377,37 @@ void CAutoplayer::DoARCCF(void)
 
 	::GetCursorPos(&cur_pos);
 
+	RECT			r;
+
 	do_click = -1;
 
 	// ALLIN
 	if (alli && sym_myturnbits&0x8 && _alli_but!=p_tablemap->r$()->end())
 	{
-		pt = RandomizeClickLocation(_alli_but->second.left, _alli_but->second.top, 
-									_alli_but->second.right,  _alli_but->second.bottom);
+		r.left = _alli_but->second.left;
+		r.top = _alli_but->second.top;
+		r.right = _alli_but->second.right;
+		r.bottom =_alli_but->second.bottom;
 		do_click = 4;
 	}
 
 	// RAISE
 	else if (rais && sym_myturnbits&0x4 && _rais_but!=p_tablemap->r$()->end())
 	{
-		pt = RandomizeClickLocation(_rais_but->second.left, _rais_but->second.top, 
-									_rais_but->second.right,  _rais_but->second.bottom);
+		r.left = _rais_but->second.left;
+		r.top = _rais_but->second.top;
+		r.right = _rais_but->second.right;
+		r.bottom =_rais_but->second.bottom;
 		do_click = 3;
 	}
 
 	// CALL
 	else if (call && sym_myturnbits&0x1 && _call_but!=p_tablemap->r$()->end())
 	{
-		pt = RandomizeClickLocation(_call_but->second.left, _call_but->second.top, 
-									_call_but->second.right, _call_but->second.bottom);
+		r.left = _call_but->second.left;
+		r.top = _call_but->second.top;
+		r.right = _call_but->second.right;
+		r.bottom =_call_but->second.bottom;
 		do_click = 2;
 	}
 
@@ -717,8 +416,10 @@ void CAutoplayer::DoARCCF(void)
 	// these actions can be found. If there is a check button, then click it.
 	else if (_chec_but!=p_tablemap->r$()->end())
 	{
-		pt = RandomizeClickLocation(_chec_but->second.left, _chec_but->second.top, 
-									_chec_but->second.right, _chec_but->second.bottom);
+		r.left = _chec_but->second.left;
+		r.top = _chec_but->second.top;
+		r.right = _chec_but->second.right;
+		r.bottom =_chec_but->second.bottom;
 		do_click = 1;
 	}
 
@@ -727,81 +428,25 @@ void CAutoplayer::DoARCCF(void)
 	// these actions can be found. If there is a fold button, then click it, otherwise we have a serious problem.
 	else if (_fold_but!=p_tablemap->r$()->end())
 	{
-		pt = RandomizeClickLocation(_fold_but->second.left, _fold_but->second.top, 
-									_fold_but->second.right, _fold_but->second.bottom);
+		r.left = _fold_but->second.left;
+		r.top = _fold_but->second.top;
+		r.right = _fold_but->second.right;
+		r.bottom =_fold_but->second.bottom;
 		do_click = 0;
 	}
 
 	if (do_click>=0)
 	{
-		input_count = 0;
-
-		// Translate click point to screen/mouse coords
-		ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
-		fx = pt.x*(65535.0f/fScreenWidth);
-		fy = pt.y*(65535.0f/fScreenHeight);
-
-		// Click button
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = fx;
-		input[input_count].mi.dy = fy;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
-		input_count++;
-
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = fx;
-		input[input_count].mi.dy = fy;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTUP;
-		input_count++;
-
-		// Do double click if set in preferences
-		if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
-		{
-			ZeroMemory(&input[input_count],sizeof(INPUT));
-			input[input_count].type = INPUT_MOUSE;
-			input[input_count].mi.dx = fx;
-			input[input_count].mi.dy = fy;
-			input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
-			input_count++;
-
-			ZeroMemory(&input[input_count],sizeof(INPUT));
-			input[input_count].type = INPUT_MOUSE;
-			input[input_count].mi.dx = fx;
-			input[input_count].mi.dy = fy;
-			input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTUP;
-			input_count++;
-		}
-
-		// Restore cursor to current location
-		fx = cur_pos.x*(65535.0f/fScreenWidth);
-		fy = cur_pos.y*(65535.0f/fScreenHeight);
-
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = fx;
-		input[input_count].mi.dy = fy;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
-		input_count++;
-
 		// If we get a lock, do the action
 		if (_mutex.Lock(500))
 		{
-			SetFocus(pMyMainWnd->attached_hwnd());
-			SetForegroundWindow(pMyMainWnd->attached_hwnd());
-			SetActiveWindow(pMyMainWnd->attached_hwnd());
 
-			SendInput(input_count, input, sizeof(INPUT));
-
-			SetActiveWindow(hwnd_active);
-			SetForegroundWindow(hwnd_foreground);
-			SetFocus(hwnd_focus);
-
-			::SetCursorPos(cur_pos.x, cur_pos.y);
-
+			if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
+				(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), r, MouseLeft, 2, hwnd_focus, cur_pos);
+			else
+				(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), r, MouseLeft, 1, hwnd_focus, cur_pos);
+			
 			_mutex.Unlock();
-
 
 			// record did*/prevaction
 			int sym_br = (int) p_symbols->sym()->br;
@@ -854,25 +499,17 @@ void CAutoplayer::DoARCCF(void)
 
 void CAutoplayer::DoSlider(void) 
 {
-	int				input_count = 0,  x = 0, y = 0, x2 = 0;
-	INPUT			input[100] = {0};
-	POINT			pt = {0}, pt2 = {0};
-	double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
-	double			fScreenHeight = ::GetSystemMetrics( SM_CYSCREEN )-1;
-	double			fx = 0.;
-	double			fy = 0.;
-	double			fx2 = 0.;
-	double			fy2 = 0.;
 	HWND			hwnd_focus = GetFocus();
-	HWND			hwnd_foreground = GetForegroundWindow();
-	HWND			hwnd_active = GetActiveWindow();
 	POINT			cur_pos = {0};
-	int				e = SUCCESS;
+
 	bool			sym_ismyturn = (bool) p_symbols->sym()->ismyturn;
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 	double			alli = p_symbols->f$alli();
 	RMapCI			slider = p_tablemap->r$()->find("i3slider");
 	RMapCI			handle = p_tablemap->r$()->find("i3handle");
+	RMapCI			r_button = p_tablemap->r$()->find("i3button");
+	POINT			p_null = {-1, -1};
+	RECT			r_null = {-1, -1, -1, -1};
 
 	::GetCursorPos(&cur_pos);
 
@@ -885,146 +522,84 @@ void CAutoplayer::DoSlider(void)
 	if (!p_scraper->handle_found_at_xy())
 		return;
 
-	// Vars
-	x = p_scraper->handle_xy().x;
-	y = p_scraper->handle_xy().y;
-	x2 = slider->second.right - slider->second.left;
-	pt = RandomizeClickLocation(x, y, x + (handle->second.right - handle->second.left), handle->second.bottom);
-	pt2.x = pt.x+x2;
-	pt2.y = pt.y;
 
-	// Translate click point to screen/mouse coords
-	ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
-	fx = pt.x*(65535.0f/fScreenWidth);
-	fy = pt.y*(65535.0f/fScreenHeight);
-	ClientToScreen(pMyMainWnd->attached_hwnd(), &pt2);
-	fx2 = pt2.x*(65535.0f/fScreenWidth);
-	fy2 = pt2.y*(65535.0f/fScreenHeight);
-	write_log("*** Jam from %d,%d to %d,%d \n", fx, fy, fx2, fy2);
-
+	// Get mutex lock and jam
 	if (_mutex.Lock(500))
 	{
-		SetFocus(pMyMainWnd->attached_hwnd());
-		SetForegroundWindow(pMyMainWnd->attached_hwnd());
-		SetActiveWindow(pMyMainWnd->attached_hwnd());
+		// Click and drag handle
+		RECT	r;
+		r.left = p_scraper->handle_xy().x + ((handle->second.right - handle->second.left)/2);
+		r.top = p_scraper->handle_xy().y + ((handle->second.bottom - handle->second.top)/2);
+		r.right = p_scraper->handle_xy().x + (slider->second.right - slider->second.left);
+		r.bottom = r.top;		
+		
+		write_log("*** Jam from %d,%d to %d,%d \n", r.left, r.top, r.right, r.bottom);
 
-		// Move to handle & click & hold button
-		input_count = 0;
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = fx;
-		input[input_count].mi.dy = fy;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
-		input_count++;
-		SendInput(input_count, input, sizeof(INPUT));
-		Sleep(200);
+		(theApp._dll_mouse_click_drag) (pMyMainWnd->attached_hwnd(), r, NULL, p_null);
 
-		// Move the mouse
-		input_count = 0;
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = fx2;
-		input[input_count].mi.dy = fy2;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
-		input_count++;
-		SendInput(input_count, input, sizeof(INPUT));
-		Sleep(200);
+		Sleep(prefs.swag_delay_3());
 
-		// Release the button
-		input_count = 0;
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = fx2;
-		input[input_count].mi.dy = fy2;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTUP;
-		input_count++;
-		SendInput(input_count, input, sizeof(INPUT));
-		Sleep(100);
+		// Click confirmation button
+		if (p_tablemap->swagconfirmationmethod() == BETCONF_ENTER)
+		{
+			(theApp._dll_keyboard_sendkey) (pMyMainWnd->attached_hwnd(), r_null, VK_RETURN, hwnd_focus, cur_pos);
+		}
 
-		SetActiveWindow(hwnd_active);
-		SetForegroundWindow(hwnd_foreground);
-		SetFocus(hwnd_focus);
+		else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET &&
+				 (_rais_but!=p_tablemap->r$()->end() || r_button!=p_tablemap->r$()->end()) )
+		{
+			RECT rect_button;
 
-		_mutex.Unlock();
-	}
+			// use allin button if it exists, otherwise use i3button region if it exists, 
+			// otherwise use the bet/raise button region
+			if (_alli_but!=p_tablemap->r$()->end())
+			{
+				rect_button.left = _alli_but->second.left;
+				rect_button.top = _alli_but->second.top;
+				rect_button.right = _alli_but->second.right;
+				rect_button.bottom = _alli_but->second.bottom;
+			}
+			
+			else if (r_button!=p_tablemap->r$()->end())
+			{
+				rect_button.left = r_button->second.left;
+				rect_button.top = r_button->second.top;
+				rect_button.right = r_button->second.right;
+				rect_button.bottom = r_button->second.bottom;
+			}
+			
+			else
+			{
+				rect_button.left = _rais_but->second.left;
+				rect_button.top = _rais_but->second.top;
+				rect_button.right = _rais_but->second.right;
+				rect_button.bottom = _rais_but->second.bottom;
+			}
 
-	if (alli && _alli_but!=p_tablemap->r$()->end())
-	{
-		pt = RandomizeClickLocation(_alli_but->second.left, _alli_but->second.top, 
-									_alli_but->second.right, _alli_but->second.bottom);
-
-		ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
-		fx = pt.x*(65535.0f/fScreenWidth);
-		fy = pt.y*(65535.0f/fScreenHeight);
-
-		// Click button
-		input_count = 0;
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = fx;
-		input[input_count].mi.dy = fy;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP;
-		input_count++;
-
-		SendInput(input_count, input, sizeof(INPUT));
-		Sleep(200);
-	}
-	// Restore cursor to current location
-	fx = cur_pos.x*(65535.0f/fScreenWidth);
-	fy = cur_pos.y*(65535.0f/fScreenHeight);
-
-	input_count = 0;
-	ZeroMemory(&input[input_count],sizeof(INPUT));
-	input[input_count].type = INPUT_MOUSE;
-	input[input_count].mi.dx = fx;
-	input[input_count].mi.dy = fy;
-	input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
-	input_count++;
-
-	// If we get a lock, do the action
-	if (_mutex.Lock(500))
-	{
-		SetFocus(pMyMainWnd->attached_hwnd());
-		SetForegroundWindow(pMyMainWnd->attached_hwnd());
-		SetActiveWindow(pMyMainWnd->attached_hwnd());
-
-		SendInput(input_count, input, sizeof(INPUT));
-
-		SetActiveWindow(hwnd_active);
-		SetForegroundWindow(hwnd_foreground);
-		SetFocus(hwnd_focus);
-
-		::SetCursorPos(cur_pos.x, cur_pos.y);
-
-		_mutex.Unlock();
+			if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
+				(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_button, MouseLeft, 2, hwnd_focus, cur_pos);
+			else
+				(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_button, MouseLeft, 1, hwnd_focus, cur_pos);
+		}
 
 		write_logautoplay("JAM");
 
-		write_log("*** Jam complete \n", fx, fy, fx2, fy2);
+		write_log("*** Jam complete \n",r.left, r.top, r.right, r.bottom);
 
 		// reset elapsedauto symbol
 		time_t my_time_t;
 		time(&my_time_t);
 		p_symbols->set_elapsedautohold(my_time_t);
-
-		Sleep(1200);
 	}
+
+	_mutex.Unlock();
 }
 
 void CAutoplayer::DoPrefold(void) 
 {
-	INPUT			input[100] = {0};
-	POINT			pt = {0};
-	double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
-	double			fScreenHeight = ::GetSystemMetrics( SM_CYSCREEN )-1;
-	double			fx = 0., fy = 0.;
 	HWND			hwnd_focus = GetFocus();
-	HWND			hwnd_foreground = GetForegroundWindow();
-	HWND			hwnd_active = GetActiveWindow();
 	POINT			cur_pos = {0};
-	int				input_count = 0;
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-
 	double			prefold = p_symbols->f$prefold();
 
 	::GetCursorPos(&cur_pos);
@@ -1036,56 +611,16 @@ void CAutoplayer::DoPrefold(void)
 		return;
 
 	// Randomize click location
-	pt = RandomizeClickLocation(_pre_fold_but->second.left, _pre_fold_but->second.top, 
-								_pre_fold_but->second.right,  _pre_fold_but->second.bottom);
-
-	input_count = 0;
-
-	// Translate click point to screen/mouse coords
-	ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
-	fx = pt.x*(65535.0f/fScreenWidth);
-	fy = pt.y*(65535.0f/fScreenHeight);
-
-	// Set up the input structure
-	ZeroMemory(&input[input_count],sizeof(INPUT));
-	input[input_count].type = INPUT_MOUSE;
-	input[input_count].mi.dx = fx;
-	input[input_count].mi.dy = fy;
-	input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
-	input_count++;
-
-	ZeroMemory(&input[input_count],sizeof(INPUT));
-	input[input_count].type = INPUT_MOUSE;
-	input[input_count].mi.dx = fx;
-	input[input_count].mi.dy = fy;
-	input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTUP;
-	input_count++;
-
-	// Restore cursor to current location
-	fx = cur_pos.x*(65535.0f/fScreenWidth);
-	fy = cur_pos.y*(65535.0f/fScreenHeight);
-
-	ZeroMemory(&input[input_count],sizeof(INPUT));
-	input[input_count].type = INPUT_MOUSE;
-	input[input_count].mi.dx = fx;
-	input[input_count].mi.dy = fy;
-	input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
-	input_count++;
-
+	RECT	r;
+	r.left = _pre_fold_but->second.left;
+	r.top = _pre_fold_but->second.top;
+	r.right = _pre_fold_but->second.right;
+	r.bottom = _pre_fold_but->second.bottom;
+	
 	// If we get a lock, do the action
 	if (_mutex.Lock(500))
 	{
-		SetFocus(pMyMainWnd->attached_hwnd());
-		SetForegroundWindow(pMyMainWnd->attached_hwnd());
-		SetActiveWindow(pMyMainWnd->attached_hwnd());
-
-		SendInput(input_count, input, sizeof(INPUT));
-
-		SetActiveWindow(hwnd_active);
-		SetForegroundWindow(hwnd_foreground);
-		SetFocus(hwnd_focus);
-
-		::SetCursorPos(cur_pos.x, cur_pos.y);
+		(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), r, MouseLeft, 1, hwnd_focus, cur_pos);
 
 		_mutex.Unlock();
 
@@ -1368,8 +903,6 @@ void CAutoplayer::CheckBringKeyboard(void)
 	int				input_count = 0, i = 0;
 	INPUT			input[100] = {0};
 	HWND			hwnd_focus = GetFocus();
-	HWND			hwnd_foreground = GetForegroundWindow();
-	HWND			hwnd_active = GetActiveWindow();
 	POINT			cur_pos = {0};
 	char			temp[256] = {0};
 	CString			c_text = "";
@@ -1478,11 +1011,15 @@ void CAutoplayer::CheckBringKeyboard(void)
 			SetFocus(pMyMainWnd->attached_hwnd());
 			SetForegroundWindow(pMyMainWnd->attached_hwnd());
 			SetActiveWindow(pMyMainWnd->attached_hwnd());
+
 			SendInput(input_count, input, sizeof(INPUT));
-			SetActiveWindow(hwnd_active);
-			SetForegroundWindow(hwnd_foreground);
+
+			SetActiveWindow(hwnd_focus);
+			SetForegroundWindow(hwnd_focus);
 			SetFocus(hwnd_focus);
+
 			SetCursorPos(cur_pos.x, cur_pos.y);
+
 			_mutex.Unlock();
 		}
 	}
@@ -1490,20 +1027,12 @@ void CAutoplayer::CheckBringKeyboard(void)
 
 void CAutoplayer::DoF$play(void) 
 {
-	INPUT			input[100] = {0};
-	POINT			pt = {0};
-	double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
-	double			fScreenHeight = ::GetSystemMetrics( SM_CYSCREEN )-1;
-	double			fx = 0., fy = 0.;
 	bool			do_click = false;
-	int				input_count = 0;
 	HWND			hwnd_focus = GetFocus();
-	HWND			hwnd_foreground = GetForegroundWindow();
-	HWND			hwnd_active = GetActiveWindow();
 	POINT			cur_pos = {0};
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-
 	double			f_play = p_symbols->f$play();
+	RECT			r = {0};
 
 	::GetCursorPos(&cur_pos);
 
@@ -1512,41 +1041,10 @@ void CAutoplayer::DoF$play(void)
 	// leave table
 	if (f_play==-2 && _leave_but!=p_tablemap->r$()->end())
 	{
-		pt = RandomizeClickLocation(_leave_but->second.left, _leave_but->second.top, 
-									_leave_but->second.right,  _leave_but->second.bottom);
-
-		input_count = 0;
-
-		// Translate click point to screen/mouse coords
-		ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
-		fx = pt.x*(65535.0f/fScreenWidth);
-		fy = pt.y*(65535.0f/fScreenHeight);
-
-		// Set up the input structure
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = fx;
-		input[input_count].mi.dy = fy;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
-		input_count++;
-
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = fx;
-		input[input_count].mi.dy = fy;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTUP;
-		input_count++;
-
-		// Restore cursor to current location
-		fx = cur_pos.x*(65535.0f/fScreenWidth);
-		fy = cur_pos.y*(65535.0f/fScreenHeight);
-
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = fx;
-		input[input_count].mi.dy = fy;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
-		input_count++;
+		r.left = _leave_but->second.left;
+		r.top = _leave_but->second.top;
+		r.right = _leave_but->second.right;
+		r.bottom = _leave_but->second.bottom;
 
 		do_click = true;
 	}
@@ -1563,45 +1061,20 @@ void CAutoplayer::DoF$play(void)
 	{
 
 		if (_sitout_but!=p_tablemap->r$()->end() && _sitout_state==false)
-			pt = RandomizeClickLocation(_sitout_but->second.left, _sitout_but->second.top, 
-										_sitout_but->second.right,  _sitout_but->second.bottom);
+		{
+			r.left = _sitout_but->second.left;
+			r.top = _sitout_but->second.top;
+			r.right = _sitout_but->second.right;
+			r.bottom = _sitout_but->second.bottom;
+		}
 
 		else if (_sitin_but!=p_tablemap->r$()->end() && _sitin_state==true)
-			pt = RandomizeClickLocation(_sitin_but->second.left, _sitin_but->second.top, 
-										_sitin_but->second.right, _sitin_but->second.bottom);
-
-		input_count = 0;
-
-		// Translate click point to screen/mouse coords
-		ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
-		fx = pt.x*(65535.0f/fScreenWidth);
-		fy = pt.y*(65535.0f/fScreenHeight);
-
-		// Set up the input structure
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = fx;
-		input[input_count].mi.dy = fy;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
-		input_count++;
-
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = fx;
-		input[input_count].mi.dy = fy;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTUP;
-		input_count++;
-
-		// Restore cursor to current location
-		fx = cur_pos.x*(65535.0f/fScreenWidth);
-		fy = cur_pos.y*(65535.0f/fScreenHeight);
-
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = fx;
-		input[input_count].mi.dy = fy;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
-		input_count++;
+		{
+			r.left = _sitin_but->second.left;
+			r.top = _sitin_but->second.top;
+			r.right = _sitin_but->second.right;
+			r.bottom = _sitin_but->second.bottom;
+		}
 
 		do_click = true;
 	}
@@ -1612,45 +1085,20 @@ void CAutoplayer::DoF$play(void)
 			   (_sitout_but!=p_tablemap->r$()->end() && _sitout_state==true) ) )
 	{
 		if (_sitin_but!=p_tablemap->r$()->end() && _sitin_state==false)
-			pt = RandomizeClickLocation(_sitin_but->second.left, _sitin_but->second.top, 
-										_sitin_but->second.right, _sitin_but->second.bottom);
+		{
+			r.left = _sitin_but->second.left;
+			r.top = _sitin_but->second.top;
+			r.right = _sitin_but->second.right;
+			r.bottom = _sitin_but->second.bottom;
+		}
 
 		else if (_sitout_but!=p_tablemap->r$()->end() && _sitout_state==true)
-			pt = RandomizeClickLocation(_sitout_but->second.left, _sitout_but->second.top, 
-										_sitout_but->second.right, _sitout_but->second.bottom);
-
-		input_count = 0;
-
-		// Translate click point to screen/mouse coords
-		ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
-		fx = pt.x*(65535.0f/fScreenWidth);
-		fy = pt.y*(65535.0f/fScreenHeight);
-
-		// Set up the input structure
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = fx;
-		input[input_count].mi.dy = fy;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
-		input_count++;
-
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = fx;
-		input[input_count].mi.dy = fy;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTUP;
-		input_count++;
-
-		// Restore cursor to current location
-		fx = cur_pos.x*(65535.0f/fScreenWidth);
-		fy = cur_pos.y*(65535.0f/fScreenHeight);
-
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = fx;
-		input[input_count].mi.dy = fy;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
-		input_count++;
+		{
+			r.left = _sitout_but->second.left;
+			r.top = _sitout_but->second.top;
+			r.right = _sitout_but->second.right;
+			r.bottom = _sitout_but->second.bottom;
+		}
 
 		do_click = true;
 	}
@@ -1658,39 +1106,10 @@ void CAutoplayer::DoF$play(void)
 	// Autopost
 	if (f_play==1 && _autopost_but!=p_tablemap->r$()->end() && _autopost_state==false)
 	{
-		pt = RandomizeClickLocation(_autopost_but->second.left, _autopost_but->second.top, 
-									_autopost_but->second.right, _autopost_but->second.bottom);
-
-		// Translate click point to screen/mouse coords
-		ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
-		fx = pt.x*(65535.0f/fScreenWidth);
-		fy = pt.y*(65535.0f/fScreenHeight);
-
-		// Set up the input structure
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = fx;
-		input[input_count].mi.dy = fy;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
-		input_count++;
-
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = fx;
-		input[input_count].mi.dy = fy;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTUP;
-		input_count++;
-
-		// Restore cursor to current location
-		fx = cur_pos.x*(65535.0f/fScreenWidth);
-		fy = cur_pos.y*(65535.0f/fScreenHeight);
-
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = fx;
-		input[input_count].mi.dy = fy;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
-		input_count++;
+		r.left = _autopost_but->second.left;
+		r.top = _autopost_but->second.top;
+		r.right = _autopost_but->second.right;
+		r.bottom = _autopost_but->second.bottom;
 
 		do_click = true;
 	}
@@ -1700,17 +1119,7 @@ void CAutoplayer::DoF$play(void)
 		// If we get a lock, do the action
 		if (_mutex.Lock(500)) 
 		{
-			SetFocus(pMyMainWnd->attached_hwnd());
-			SetForegroundWindow(pMyMainWnd->attached_hwnd());
-			SetActiveWindow(pMyMainWnd->attached_hwnd());
-
-			SendInput(input_count, input, sizeof(INPUT));
-
-			SetActiveWindow(hwnd_active);
-			SetForegroundWindow(hwnd_foreground);
-			SetFocus(hwnd_focus);
-
-			::SetCursorPos(cur_pos.x, cur_pos.y);
+			(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), r, MouseLeft, 1, hwnd_focus, cur_pos);
 
 			_mutex.Unlock();
 
@@ -1724,60 +1133,23 @@ void CAutoplayer::DoF$play(void)
 
 void CAutoplayer::DoI86(void) 
 {
-	INPUT			input[100] = {0};
-	POINT			pt = {0};
-	double			fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
-	double			fScreenHeight = ::GetSystemMetrics( SM_CYSCREEN )-1;
-	double			fx = 0., fy = 0.;
 	bool			do_click = false;
-	int				input_count = 0;
 	int				i = 0;
 	HWND			hwnd_focus = GetFocus();
-	HWND			hwnd_foreground = GetForegroundWindow();
-	HWND			hwnd_active = GetActiveWindow();
 	POINT			cur_pos = {0};
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
+	RECT			r;
 
 	::GetCursorPos(&cur_pos);
 
 	do_click = false;
+
 	if (_i86_but!=p_tablemap->r$()->end() && _i86_state)
 	{
-		pt = RandomizeClickLocation(_i86_but->second.left, _i86_but->second.top,
-									_i86_but->second.right, _i86_but->second.bottom);
-
-		input_count = 0;
-
-		// Translate click point to screen/mouse coords
-		ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
-		fx = pt.x*(65535.0f/fScreenWidth);
-		fy = pt.y*(65535.0f/fScreenHeight);
-
-		// Set up the input structure
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = fx;
-		input[input_count].mi.dy = fy;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
-		input_count++;
-
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = fx;
-		input[input_count].mi.dy = fy;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTUP;
-		input_count++;
-
-		// Restore cursor to current location
-		fx = cur_pos.x*(65535.0f/fScreenWidth);
-		fy = cur_pos.y*(65535.0f/fScreenHeight);
-
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_MOUSE;
-		input[input_count].mi.dx = fx;
-		input[input_count].mi.dy = fy;
-		input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
-		input_count++;
+		r.left = _i86_but->second.left;
+		r.top = _i86_but->second.top;
+		r.right = _i86_but->second.right;
+		r.bottom = _i86_but->second.bottom;
 
 		do_click = true;
 	}
@@ -1788,40 +1160,10 @@ void CAutoplayer::DoI86(void)
 		{
 			if (_i86X_but[i]!=p_tablemap->r$()->end() && _i86X_state[i])
 			{
-				pt = RandomizeClickLocation(_i86X_but[i]->second.left, _i86X_but[i]->second.top,
-											_i86X_but[i]->second.right, _i86X_but[i]->second.bottom);
-
-				input_count = 0;
-
-				// Translate click point to screen/mouse coords
-				ClientToScreen(pMyMainWnd->attached_hwnd(), &pt);
-				fx = pt.x*(65535.0f/fScreenWidth);
-				fy = pt.y*(65535.0f/fScreenHeight);
-
-				// Set up the input structure
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_MOUSE;
-				input[input_count].mi.dx = fx;
-				input[input_count].mi.dy = fy;
-				input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTDOWN;
-				input_count++;
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_MOUSE;
-				input[input_count].mi.dx = fx;
-				input[input_count].mi.dy = fy;
-				input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_LEFTUP;
-				input_count++;
-
-				// Restore cursor to current location
-				fx = cur_pos.x*(65535.0f/fScreenWidth);
-				fy = cur_pos.y*(65535.0f/fScreenHeight);
-
-				ZeroMemory(&input[input_count],sizeof(INPUT));
-				input[input_count].type = INPUT_MOUSE;
-				input[input_count].mi.dx = fx;
-				input[input_count].mi.dy = fy;
-				input[input_count].mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
-				input_count++;
+				r.left = _i86X_but[i]->second.left;
+				r.top = _i86X_but[i]->second.top;
+				r.right = _i86X_but[i]->second.right;
+				r.bottom = _i86X_but[i]->second.bottom;
 
 				do_click = true;
 				i = 10;
@@ -1834,17 +1176,7 @@ void CAutoplayer::DoI86(void)
 		// If we get a lock, do the action
 		if (_mutex.Lock(500))
 		{
-			SetFocus(pMyMainWnd->attached_hwnd());
-			SetForegroundWindow(pMyMainWnd->attached_hwnd());
-			SetActiveWindow(pMyMainWnd->attached_hwnd());
-
-			SendInput(input_count, input, sizeof(INPUT));
-
-			SetActiveWindow(hwnd_active);
-			SetForegroundWindow(hwnd_foreground);
-			SetFocus(hwnd_focus);
-
-			::SetCursorPos(cur_pos.x, cur_pos.y);
+			(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), r, MouseLeft, 1, hwnd_focus, cur_pos);
 
 			_mutex.Unlock();
 
@@ -1854,51 +1186,4 @@ void CAutoplayer::DoI86(void)
 			p_symbols->set_elapsedautohold(my_time_t);
 		}
 	}
-}
-
-const POINT CAutoplayer::RandomizeClickLocation(const int left, const int top, const int right, const int bottom) 
-{
-	POINT p = {0};
-
-	// uniform random distribution, yuck!
-	//p.x = ((double) rand() / (double) RAND_MAX) * (right-left) + left;
-	//p.y = ((double) rand() / (double) RAND_MAX) * (bottom-top) + top;
-
-	// normal random distribution - much better!
-	GetClickPoint(left + (right-left)/2, top + (bottom-top)/2, (right-left)/2, (bottom-top)/2, &p);
-
-	return p;
-}
-
-const void CAutoplayer::GetClickPoint(const int x, const int y, const int rx, const int ry, POINT *p) 
-{
-	p->x = x + (int) (RandomNormalScaled(2*rx, 0, 1) + 0.5) - (rx);
-	p->y = y + (int) (RandomNormalScaled(2*ry, 0, 1) + 0.5) - (ry);
-}
-
-// random number - 0 -> scale, with normal distribution
-// ignore results outside 3.5 stds from the mean
-const double CAutoplayer::RandomNormalScaled(const double scale, const double m, const double s) 
-{
-	double res = -99;
-	while (res < -3.5 || res > 3.5) res = RandomNormal(m, s);
-	return (res / 3.5*s + 1) * (scale / 2.0);
-}
-
-const double CAutoplayer::RandomNormal(const double m, const double s) 
-{
-	/* mean m, standard deviation s */
-	double x1 = 0., x2 = 0., w = 0., y1 = 0., y2 = 0.;
-
-	do {
-		x1 = 2.0 * ((double) rand()/(double) RAND_MAX) - 1.0;
-		x2 = 2.0 * ((double) rand()/(double) RAND_MAX) - 1.0;
-		w = x1 * x1 + x2 * x2;
-	} while ( w >= 1.0 );
-
-	w = sqrt( (-2.0 * log( w ) ) / w );
-	y1 = x1 * w;
-	y2 = x2 * w;
-
-	return( m + y1 * s );
 }
