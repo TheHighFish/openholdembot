@@ -5,6 +5,7 @@ BUG FIXES:
   region was displayed after the delete.  Thanks to USBFreak for identifying the problem (OpenHoldem)
 - "Edit"ing of size, symbol, region, font and hash point records in the previous release was non-functional.  Thanks to
   Ares for finding the bug.  (OpenHoldem)
+- Fix for crash when opening graphical hash point editor.  Thanks to Ares for finding the bug.  (OpenHoldem)
 
 v1.1.8 2008-10-21
 =================

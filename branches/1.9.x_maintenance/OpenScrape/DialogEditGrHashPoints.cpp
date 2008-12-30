@@ -66,7 +66,8 @@ BOOL CDlgEditGrHashPoints::OnInitDialog()
 	{
 		text.Format("%s (%dx%d)", p_tablemap->i$()->GetAt(i).name, p_tablemap->i$()->GetAt(i).width, p_tablemap->i$()->GetAt(i).height);
 		new_item = m_Sample_Image.AddString(text.GetString());
-		m_Sample_Image.SetItemData(new_item, (DWORD_PTR) &p_tablemap->i$()[i]);
+
+		m_Sample_Image.SetItemData(new_item, (DWORD_PTR) p_tablemap->i$()->GetData()+i);
 
 	}
 
