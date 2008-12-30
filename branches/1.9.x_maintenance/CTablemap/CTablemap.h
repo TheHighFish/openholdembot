@@ -225,6 +225,12 @@ public:
 	void	set_h$_removeat(const int n) { ENT if (n>=0 && n<=_h$.GetSize()) _h$.RemoveAt(n,1);  }
 	void	set_i$_removeat(const int n) { ENT if (n>=0 && n<=_i$.GetSize()) _i$.RemoveAt(n,1);  }
 
+	void	set_z$_setat(const int n, const STablemapSize s) { ENT if (n>=0 && n<=_z$.GetSize()) _z$.SetAt(n,s);  }
+	void	set_s$_setat(const int n, const STablemapSymbol s) { ENT if (n>=0 && n<=_s$.GetSize()) _s$.SetAt(n,s);  }
+	void	set_r$_setat(const int n, const STablemapRegion s) { ENT if (n>=0 && n<=_r$.GetSize()) _r$.SetAt(n,s);  }
+	void	set_t$_setat(const int n, const STablemapFont s) { ENT if (n>=0 && n<=_t$.GetSize()) _t$.SetAt(n,s);  }
+	void	set_p$_setat(const int n, const STablemapHashPoint s) { ENT if (n>=0 && n<=_p$.GetSize()) _p$.SetAt(n,s);  }
+
 	void	set_p$_removeall() { ENT _p$.RemoveAll();  }
 	void	set_i$_image_pixel(const int n1, const int n2, const uint32_t p) { ENT if (n1>=0 && n1<=_i$.GetSize()) _i$[n1].pixel[n2] = p;  }
 	void	set_i$_image_set(const int n, const BYTE r, const BYTE g, const BYTE b, const BYTE a, const int p) 

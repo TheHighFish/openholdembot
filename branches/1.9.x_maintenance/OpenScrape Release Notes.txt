@@ -3,6 +3,8 @@ v1.1.9 2008-11-24
 BUG FIXES:
 - Internal index not being updated when deleting a font record, causing a scrambling of OCR results when a T-transform 
   region was displayed after the delete.  Thanks to USBFreak for identifying the problem (OpenHoldem)
+- "Edit"ing of size, symbol, region, font and hash point records in the previous release was non-functional.  Thanks to
+  Ares for finding the bug.  (OpenHoldem)
 
 v1.1.8 2008-10-21
 =================

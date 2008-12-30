@@ -1797,6 +1797,7 @@ void CDlgTableMap::OnBnClickedEdit()
 			sel_size.name = dlgsizes.name;
 			sel_size.width = dlgsizes.width;
 			sel_size.height = dlgsizes.height;
+			p_tablemap->set_z$_setat(index, sel_size);
 
 			// Edit record in tree
 			m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), dlgsizes.name.GetString());
@@ -1829,6 +1830,7 @@ void CDlgTableMap::OnBnClickedEdit()
 			// Edit record in internal structure
 			sel_symbol.name = dlgsymbols.name;
 			sel_symbol.text = dlgsymbols.value;
+			p_tablemap->set_s$_setat(index, sel_symbol);
 
 			// Edit record in tree
 			m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), dlgsymbols.name.GetString());
@@ -1857,6 +1859,7 @@ void CDlgTableMap::OnBnClickedEdit()
 		{
 			// Edit record in internal structure
 			sel_region.name = dlgregions.name;
+			p_tablemap->set_r$_setat(index, sel_region);
 
 			// Edit record in tree
 			m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), dlgregions.name.GetString());
@@ -1903,6 +1906,7 @@ void CDlgTableMap::OnBnClickedEdit()
 			// Edit record in internal structure
 			sel_font.ch = dlg_editfont.character.GetAt(0);
 			sel_font.group =  atoi(dlg_editfont.type.Right(1));
+			p_tablemap->set_t$_setat(index, sel_font);
 			
 			// Edit record in tree
 			text.Format("%c (%s)", dlg_editfont.character.GetAt(0), dlg_editfont.type.Right(1));
@@ -1982,6 +1986,7 @@ void CDlgTableMap::OnBnClickedEdit()
 				sel_hash_point.number = atoi(dlghashpoint.type.Mid(5,1).GetString());
 				sel_hash_point.x = dlghashpoint.x;
 				sel_hash_point.y = dlghashpoint.y;
+				p_tablemap->set_p$_setat(index, sel_hash_point);
 
 				// Edit record in tree
 				text.Format("%d (%d, %d)", sel_hash_point.number, sel_hash_point.x, sel_hash_point.y);
