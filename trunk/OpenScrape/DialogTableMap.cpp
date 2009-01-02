@@ -2287,8 +2287,8 @@ void CDlgTableMap::OnBnClickedCreateImage()
 	if (edit.DoModal() == IDOK) 
 	{
 		// Get bitmap size
-		width = pDoc->attached_rect.right - pDoc->attached_rect.left + 1;
-		height = pDoc->attached_rect.bottom - pDoc->attached_rect.top + 1;
+		width = pDoc->attached_rect.right - pDoc->attached_rect.left;
+		height = pDoc->attached_rect.bottom - pDoc->attached_rect.top;
 
 		// Populate new image record			
 		new_image.name = edit.m_result;
@@ -2301,9 +2301,9 @@ void CDlgTableMap::OnBnClickedCreateImage()
 
 		// Populate pixel elements of struct
 		pix_cnt = 0;
-		for (y=(int) sel_region->second.top; y < (int) sel_region->second.bottom; y++) 
+		for (y=(int) sel_region->second.top; y <= (int) sel_region->second.bottom; y++) 
 		{
-			for (x=(int) sel_region->second.left; x < (int) sel_region->second.right; x++) 
+			for (x=(int) sel_region->second.left; x <= (int) sel_region->second.right; x++) 
 			{
 				alpha = pDoc->attached_pBits[y*width*4 + x*4 + 3];
 				red = pDoc->attached_pBits[y*width*4 + x*4 + 2];
