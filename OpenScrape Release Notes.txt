@@ -38,6 +38,8 @@ NEW STUFF:
   [OpenHoldem]
 - Added uXdealer and uXbet to valid r$strings list.  These new regions correlate to the pXdealer and pXbet regions in much the
   same way as uXname/pXname and uXbalance/pXbalance. [OpenHoldem]
+- Added "scraperdll" to valid s$strings list.  This new symbols instructs OpenHoldem to load the specified external scraper
+  override DLL file. [spew]
   
 
 

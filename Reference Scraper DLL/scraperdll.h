@@ -9,6 +9,9 @@
 #define SCRAPERDLL_API __declspec(dllimport)
 #endif
 
+enum LimitType { NoLimit, PotLimit, FixedLimit };
+
+
 struct SScraperState
 {
 	char			title[512];
@@ -27,6 +30,13 @@ struct SScraperState
 	CString			i86X_button_state[10];
 	CString			i86_button_state;
 	CString			button_label[10];
+	double			sblind;
+	double			bblind;
+	double			bbet;
+	double			ante;
+	LimitType		limit;
+	double			handnumber;
+	bool			istournament;
 };
 
 typedef void (*scraper_override_t)(SScraperState *state);
