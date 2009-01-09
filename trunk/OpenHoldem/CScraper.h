@@ -121,6 +121,14 @@ public:
 	void	set_i86X_button_state(const int n, const CString s) { ENT if (n>=0 && n<=9) _i86X_button_state[n] = s; LEA }
 	void	set_i86_button_state(const CString s) { ENT _i86_button_state = s; LEA }
 	void	set_button_label(const int n, const CString s) { ENT if (n>=0 && n<=9) _button_label[n] = s; LEA }
+	void	set_sblind(const double d) { ENT _s_limit_info.sblind = d; LEA }
+	void	set_bblind(const double d) { ENT _s_limit_info.bblind = d; LEA }
+	void	set_bbet(const double d) { ENT _s_limit_info.bbet = d; LEA }
+	void	set_ante(const double d) { ENT _s_limit_info.ante = d; LEA }
+	void	set_limit(const int i) { ENT _s_limit_info.limit = i; LEA }
+	void	set_handnumber(const double d) { ENT _s_limit_info.handnumber = d; LEA }
+	void	set_istournament(const bool b) { ENT _s_limit_info.istournament = b; LEA }
+
 	// **End PokerPro-specific mutators
 
 	void	set_clocks_hold(const LARGE_INTEGER li) { ENT _clocks_hold = li; LEA }

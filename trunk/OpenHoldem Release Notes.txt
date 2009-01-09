@@ -64,19 +64,28 @@ NEW STUFF:
 - Symbol myturnbits does now support the check-button (bit 4; value 16) [TheHighFish]
 - Added: Menu item to force crash for testing purposes, including a confirmation-dialog [TheHighFish]
 - New option in Autoplayer preferences to use a comma instead of a 'dot' for separation of the whole number from the
-  fractional number when swagging.  Thanks to ZeuZDK for the patch.  (OpenHoldem)
+  fractional number when swagging.  Thanks to ZeuZDK for the patch.  [OpenHoldem]
 - New option on PokerPro dialog to create hand history files in a FullTilt format to allow importing into PokerTracker.
   HH files are created in the PPro\FTHH subdirectory of the OH installation, in a subdirectory named for the PPro login.
   Thanks, Sinbad_the_Sailor, for the patch.  [OpenHoldem]
 - Added 10 additional flag buttons (numbers 11-20) [ZooBoy]
 - New stealth preferences to  1) specify what class name OpenHoldem will use 2) specify the name of the anti-collision mutex, and
-  3) specify to use simple window title (spew)
+  3) specify to use simple window title [spew]
 - Options to load preferences from ini file based on a command line option, examples: 
   /ini => openholdem.ini
   /ini:[filepath] => uses the file path provided, must be a full path
   /ini:~\[filename] => uses [filename] ini file in OpenHoldem's working directory
-   (spew)
-- A connect message to instruct OH to connect to a poker table specifying a HWND (spew)
+   [spew]
+- A connect message to instruct OH to connect to a poker table specifying a HWND [spew]
+- OH's mouse and keyboard interactions are now handled by external mouse.dll and keyboard.dll files.  Reference implementations
+  of these files are provided in the source code and with the binary distribution.  Anyone can now modify these DLLs to add extra
+  functionality (queueing of requests?) or stealth, for example. [OpenHoldem]
+- New option added to .tm files to allow the loading of an external scraper override DLL.  This external DLL can be used to
+  override the results of the internal scraper engine.  This DLL is called immediately after the internal scraper engine
+  finishes its pass every heartbeat, and the current state of the internal scraper is passed to the DLL for inspection and
+  modification.  A reference scraper DLL is provided in the source code as a starting point.  An obvious use of this would
+  be to hook or inject the target casino client to retrieve better state information than that which could be collected using
+  the built-in pixel scraper.  The DLL to load is specified by the 'scraperdll' symbol in the .tm file.  [OpenHoldem]
 
 v1.9.4 2008-10-21
 =================

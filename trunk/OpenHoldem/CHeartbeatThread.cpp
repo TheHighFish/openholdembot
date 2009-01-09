@@ -157,6 +157,14 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 				ss.i86_button_state = p_scraper->i86_button_state();
 
+				ss.sblind = p_scraper->s_limit_info()->sblind;
+				ss.bblind = p_scraper->s_limit_info()->bblind;
+				ss.bbet = p_scraper->s_limit_info()->bbet;
+				ss.ante = p_scraper->s_limit_info()->ante;
+				ss.limit = (LimitType) p_scraper->s_limit_info()->limit;
+				ss.handnumber = p_scraper->s_limit_info()->handnumber;
+				ss.istournament = p_scraper->s_limit_info()->istournament;
+
 				// Call the scraper override
 				(theApp._dll_scraper_override) (&ss);
 
@@ -198,6 +206,13 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 				p_scraper->set_i86_button_state(ss.i86_button_state);
 
+				p_scraper->set_sblind(ss.sblind);
+				p_scraper->set_bblind(ss.bblind);
+				p_scraper->set_bbet(ss.bbet);
+				p_scraper->set_ante(ss.ante);
+				p_scraper->set_limit(ss.limit);
+				p_scraper->set_handnumber(ss.handnumber);
+				p_scraper->set_istournament(ss.istournament);
 
 			}
 

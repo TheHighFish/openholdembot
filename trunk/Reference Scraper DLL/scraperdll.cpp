@@ -9,10 +9,10 @@ HWND	*target_hwnd;
 
 SCRAPERDLL_API void OverrideScraper(SScraperState *state) 
 {
-	state->card_common[0] = StdDeck_MAKE_CARD(StdDeck_Rank_ACE, StdDeck_Suit_HEARTS);
-	state->card_common[1] = StdDeck_MAKE_CARD(StdDeck_Rank_ACE, StdDeck_Suit_DIAMONDS);
-	state->card_common[2] = StdDeck_MAKE_CARD(StdDeck_Rank_ACE, StdDeck_Suit_SPADES);
-	state->card_common[3] = StdDeck_MAKE_CARD(StdDeck_Rank_ACE, StdDeck_Suit_CLUBS);
+	//state->card_common[0] = StdDeck_MAKE_CARD(StdDeck_Rank_ACE, StdDeck_Suit_HEARTS);
+	//state->card_common[1] = StdDeck_MAKE_CARD(StdDeck_Rank_ACE, StdDeck_Suit_DIAMONDS);
+	//state->card_common[2] = StdDeck_MAKE_CARD(StdDeck_Rank_ACE, StdDeck_Suit_SPADES);
+	//state->card_common[3] = StdDeck_MAKE_CARD(StdDeck_Rank_ACE, StdDeck_Suit_CLUBS);
 }
 
 SCRAPERDLL_API void ProcessMessage(const char *message, const void *param)
