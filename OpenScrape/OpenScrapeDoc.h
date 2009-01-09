@@ -6,8 +6,8 @@
 int	const num_z$strings = 3;
 char * const z$strings[3] = { "clientsize", "clientsizemin", "clientsizemax" };
 
-int	const num_s$strings = 63;
-char * const s$strings[63] = { "titletext", "titletext0", "titletext1", "titletext2", "titletext3", "titletext4", "titletext5", "titletext6",
+int	const num_s$strings = 64;
+char * const s$strings[64] = { "titletext", "titletext0", "titletext1", "titletext2", "titletext3", "titletext4", "titletext5", "titletext6",
 							   "titletext7", "titletext8", "titletext9", 
 							   "!titletext", "!titletext0", "!titletext1", "!titletext2", "!titletext3", "!titletext4", "!titletext5", "!titletext6",
 							   "!titletext7", "!titletext8", "!titletext9", 
@@ -17,7 +17,7 @@ char * const s$strings[63] = { "titletext", "titletext0", "titletext1", "titlete
 							   "c0limits8", "c0limits9", 
 							   "sitename", "network", "nchairs", "reseller", "mechanic", "chairconfig", "swagtextmethod", "potmethod", "activemethod", 
 							   "defaultlabels", "t0type", "t1type", "t2type", "t3type", "swagselectionmethod", "swagdeletionmethod", 
-							   "swagconfirmationmethod", "buttonclickmethod", "handresetmethod" };
+							   "swagconfirmationmethod", "buttonclickmethod", "handresetmethod", "scraperdll" };
 
 int	const num_r$strings = 359;
 // r$tablepointXXX is a special case, as XXX can be anything in any order - it will always show up in the drop down list
