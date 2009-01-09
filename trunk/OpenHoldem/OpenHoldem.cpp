@@ -60,6 +60,9 @@ COpenHoldemApp::COpenHoldemApp()
 {
 	// Save startup directory
 	::GetCurrentDirectory(MAX_PATH - 1, _startup_path);
+	
+	_dll_scraper_process_message = NULL;
+	_dll_scraper_override = NULL;
 }
 
 // COpenHoldemApp destruction
@@ -196,46 +199,6 @@ BOOL COpenHoldemApp::InitInstance()
 		}
 	}
 
-	// scraper.dll - failure in load is NOT fatal
-	_scraper_dll = LoadLibrary("scraper.dll");
-	if (_scraper_dll==NULL)
-	{
-		if (!prefs.disable_msgbox())		
-		{
-			CString		t = "";
-			t.Format("Unable to load scraper.dll, error: %d", GetLastError());
-			MessageBox(NULL, t, "OpenHoldem scraper.dll WARNING", MB_OK | MB_TOPMOST);
-		}
-	}
-	else
-	{
-		_dll_scraper_process_message = (scraper_process_message_t) GetProcAddress(_scraper_dll, "ProcessMessage");
-		_dll_scraper_override = (scraper_override_t) GetProcAddress(_scraper_dll, "OverrideScraper");
-
-		if (_dll_scraper_process_message==NULL || _dll_scraper_override==NULL)
-		{
-			if (!prefs.disable_msgbox())		
-			{
-				CString		t = "";
-				t.Format("Unable to find all symbols in scraper.dll");
-				MessageBox(NULL, t, "OpenHoldem scraper.dll ERROR", MB_OK | MB_TOPMOST);
-			}
-
-			FreeLibrary(_scraper_dll);
-			_scraper_dll = NULL;
-		}
-		else
-		{
-			if (!prefs.disable_msgbox())		
-			{
-				MessageBox(NULL, "OpenHoldem scraper.dll successfully loaded.", "Success", MB_OK | MB_TOPMOST);
-			}
-		}
-	}
-
-
-
-
 	MyLoadStdProfileSettings(4);  // Load standard INI file options (including MRU)
 	if (m_pRecentFileList == NULL)
 		AfxMessageBox("Still NULL");
@@ -339,6 +302,15 @@ int COpenHoldemApp::ExitInstance()
 	Scintilla_ReleaseResources();
 
 	return CWinApp::ExitInstance();
+}
+
+void COpenHoldemApp::UnloadScraperDLL()
+{
+	if (_scraper_dll)
+		FreeLibrary(_scraper_dll);
+	_scraper_dll = NULL;
+	_dll_scraper_process_message = NULL;
+	_dll_scraper_override = NULL;
 }
 
 // CDlgAbout dialog used for App About

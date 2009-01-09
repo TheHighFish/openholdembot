@@ -166,6 +166,7 @@ public:
 									  if (it==_s$.end()) return 0x0111;
 									  int n = strtoul(it->second.text.GetString(), NULL, 10); 
 									  return (n>=1 && n<=0x0111) ? n : 0x0111; }
+	const CString scraperdll()		{ SMapCI it = _s$.find("scraperdll"); if (it!=_s$.end()) return it->second.text; else return ""; }
 
 	const bool valid() { return _valid; }
 	const CString filename() { return _filename; }
