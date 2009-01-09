@@ -40,13 +40,15 @@ public:
 	keyboard_process_message_t	_dll_keyboard_process_message;
 	keyboard_sendstring_t		_dll_keyboard_sendstring;
 	keyboard_sendkey_t			_dll_keyboard_sendkey;
-	scraper_process_message_t	_dll_scraper_process_message;
-	scraper_override_t			_dll_scraper_override;
 
 	unsigned long int	_session_id;
 	HMODULE				_mouse_dll;
 	HMODULE				_keyboard_dll;
-	HMODULE				_scraper_dll;
+
+	void						UnloadScraperDLL();
+	HMODULE						_scraper_dll;
+	scraper_process_message_t	_dll_scraper_process_message;
+	scraper_override_t			_dll_scraper_override;
 };
 
 extern COpenHoldemApp theApp;

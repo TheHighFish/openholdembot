@@ -824,6 +824,50 @@ BOOL CMainFrame::DoConnect(HWND targetHWnd)
 				m_ScraperOutputDlg->UpdateDisplay();
 			}
 
+			// scraper.dll - failure in load is NOT fatal
+			theApp.UnloadScraperDLL();
+			CString filename = p_tablemap->scraperdll();
+			if (!filename.IsEmpty()) {
+				int index = p_tablemap->filepath().ReverseFind('\\');
+				if (index > 0)
+					path.Format("%s\\%s", p_tablemap->filepath().Left(index), filename);
+				else
+					path = filename;
+				theApp._scraper_dll = LoadLibrary(path);
+			}
+			if (theApp._scraper_dll==NULL)
+			{
+				if (!filename.IsEmpty() && !prefs.disable_msgbox())		
+				{
+					CString		t = "";
+					t.Format("Unable to load %s\n\nError: %d", path, GetLastError());
+					MessageBox(t, "OpenHoldem scraper.dll WARNING", MB_OK | MB_TOPMOST);
+				}
+			}
+			else
+			{
+				theApp._dll_scraper_process_message = (scraper_process_message_t) GetProcAddress(theApp._scraper_dll, "ProcessMessage");
+				theApp._dll_scraper_override = (scraper_override_t) GetProcAddress(theApp._scraper_dll, "OverrideScraper");
+
+				if (theApp._dll_scraper_process_message==NULL || theApp._dll_scraper_override==NULL)
+				{
+					if (!prefs.disable_msgbox())		
+					{
+						CString		t = "";
+						t.Format("Unable to find all symbols in scraper.dll");
+						MessageBox(t, "OpenHoldem scraper.dll ERROR", MB_OK | MB_TOPMOST);
+					}
+
+					theApp.UnloadScraperDLL();
+				}
+				else
+				{
+					if (!prefs.disable_msgbox())		
+					{
+					}
+				}
+			}
+
 			// Disable buttons, menu items
 			m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_NEW, false);
 			m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_OPEN, false);
@@ -924,6 +968,8 @@ void CMainFrame::OnBnClickedRedCircle()
 	if (theApp._dll_scraper_process_message)
 			(theApp._dll_scraper_process_message) ("disconnect", NULL);
 
+	theApp.UnloadScraperDLL();
+
 	// Clear "attached" info
 	set_attached_hwnd(NULL);
 
@@ -968,8 +1014,8 @@ void CMainFrame::OnBnClickedRedCircle()
 	}
 
 	// log OH title bar text and table reset
-
-	write_log("%s - %s(NOT ATTACHED)\n", p_formula->formula_name().GetString(), p_tablemap->s$()->find("sitename")->second.text.GetString());
+	CString sitename = (p_tablemap->s$()->find("sitename") != p_tablemap->s$()->end() ? p_tablemap->s$()->find("sitename")->second.text.GetString() : "");
+	write_log("%s - %s(NOT ATTACHED)\n", p_formula->formula_name().GetString(), sitename);
 
 	write_log("TABLE RESET\n*************************************************************\n");
 
