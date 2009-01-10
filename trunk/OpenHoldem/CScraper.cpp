@@ -176,7 +176,7 @@ int CScraper::DoScrape(void)
 	GetClientRect(pMyMainWnd->attached_hwnd(), &cr);
 
 	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_cur);
-	BitBlt(hdcCompatible, 0, 0, cr.right-cr.left+1, cr.bottom-cr.top+1, hdc, cr.left, cr.top, SRCCOPY);
+	BitBlt(hdcCompatible, 0, 0, cr.right, cr.bottom, hdc, cr.left, cr.top, SRCCOPY);
 	SelectObject(hdcCompatible, old_bitmap);
 
 	// get window title
@@ -1812,25 +1812,22 @@ const bool CScraper::BitmapsSame(HBITMAP HBitmapLeft, HBITMAP HBitmapRight)
 
 void CScraper::CreateBitmaps(void)
 {
-	int				w = 0, h = 0;
 	HDC				hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	// Whole window
 	RECT			cr = {0};
 	GetClientRect(pMyMainWnd->attached_hwnd(), &cr);
-	w = cr.right - cr.left + 1;
-	h = cr.bottom - cr.top + 1;
 	EnterCriticalSection(&cs_scraper);
-		_entire_window_last = CreateCompatibleBitmap(hdcScreen, w, h);
-		_entire_window_cur = CreateCompatibleBitmap(hdcScreen, w, h);
+		_entire_window_last = CreateCompatibleBitmap(hdcScreen, cr.right, cr.bottom);
+		_entire_window_cur = CreateCompatibleBitmap(hdcScreen, cr.right, cr.bottom);
 	LeaveCriticalSection(&cs_scraper);
 
 	// r$regions
 	for (RMapI r_iter=p_tablemap->set_r$()->begin(); r_iter!=p_tablemap->set_r$()->end(); r_iter++)
 	{
-		w = r_iter->second.right - r_iter->second.left + 1;
-		h = r_iter->second.bottom - r_iter->second.top + 1;
+		int w = r_iter->second.right - r_iter->second.left + 1;
+		int h = r_iter->second.bottom - r_iter->second.top + 1;
 		r_iter->second.last_bmp = CreateCompatibleBitmap(hdcScreen, w, h);
 		r_iter->second.cur_bmp = CreateCompatibleBitmap(hdcScreen, w, h);
 	}
