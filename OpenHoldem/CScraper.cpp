@@ -1953,6 +1953,15 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 
 	hash_type = r_start->second.transform.GetString()[1] - '0';
 
+	// Bitblt the attached windows bitmap into a HDC
+HDC hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
+HDC hdcCompat = CreateCompatibleDC(hdcScreen);
+RECT rect;
+GetClientRect(pMyMainWnd->attached_hwnd(), &rect);
+HBITMAP attached_bitmap = CreateCompatibleBitmap(hdcScreen, rect.right, rect.bottom);
+HBITMAP	old_bitmap = (HBITMAP) SelectObject(hdcCompat, attached_bitmap);
+BitBlt(hdcCompat, 0, 0, rect.right, rect.bottom, hdc, 0, 0, SRCCOPY);
+
 	stop_loop = false;
 	// loop through horizontal stacks
 	for (stackindex=0; stackindex<MAX_CHIP_STACKS && !stop_loop; stackindex++)
@@ -2012,7 +2021,7 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 							int y = p_iter->second.y;
 
 							if (x<chipwidth && y<chipheight)
-								pix[pixcount++] = GetPixel(hdc, left + x, top + y);
+								pix[pixcount++] = GetPixel(hdcCompat, left + x, top + y);
 					}
 
 					if (hash_type==1) hash = hashword(&pix[0], pixcount, HASH_SEED_1);
@@ -2044,7 +2053,12 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 			}
 		}
 	}
-	
+
+SelectObject(hdcCompat, old_bitmap);
+DeleteObject(attached_bitmap);
+DeleteDC(hdcCompat);
+DeleteDC(hdcScreen);
+
 	ReleaseDC(pMyMainWnd->attached_hwnd(), hdc);
 	return result;
 }
