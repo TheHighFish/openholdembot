@@ -243,8 +243,9 @@ bool CPokerTrackerThread::CheckName (int m_chr)
 		return false;
 
 	// We already have the name, and it has not changed since we last checked, so do nothing
-	if (_player_stats[m_chr].found && strcmp(_player_stats[m_chr].scraped_name, oh_scraped_name)==0)
-		return true;
+//	if (_player_stats[m_chr].found && strcmp(_player_stats[m_chr].scraped_name, oh_scraped_name)==0)
+//		return true;
+
 
 	// We think we have the name, but it has changed since we last checked...reset stats for this
 	// chair and search again

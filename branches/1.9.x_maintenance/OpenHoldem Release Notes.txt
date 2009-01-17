@@ -5,7 +5,10 @@ BUG FIXES:
 - Correct the protection against dangerously low f$willplay & f$wontplay. Problem identified by a.punter (Matrix)
 - Perl preferences didn't load the default formulas name from registry. Thanks to Skyzzo for finding it. (TheHighFish)
 - Correct chip scrape routine to stop horizontal scanning on a non-match on the first vertical chip.  Thanks Ares. (OpenHoldem)
-
+- Stopped poker tracker code from skipping name check when it thinks it already found a match.  This will allow the
+  code to recover quickly if it happens to mis-scrape a name when originally connecting to a table.  Thanks to Booster
+  for the patch.  (OpenHoldem)
+  
 
 v1.9.5 2008-11-24
 =================
