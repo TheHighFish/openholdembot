@@ -28,6 +28,28 @@
 #include <atlstr.h>
 #include "keyboarddll.h"
 
+const int Shift   = 1;
+const int Control = 2;
+const int Alt     = 4;
+
+void PlayKeyboardEvent(int vkey, int bscan)
+{
+	// This should hopefully fix the stuck control key problem.
+	keybd_event(VK_CONTROL, 0, (bscan & Control) ? 0 : KEYEVENTF_KEYUP, 0);
+	keybd_event(VK_SHIFT,   0, (bscan & Shift)   ? 0 : KEYEVENTF_KEYUP, 0);
+	keybd_event(VK_MENU,    0, (bscan & Alt)     ? 0 : KEYEVENTF_KEYUP, 0);
+
+	keybd_event(vkey,  bscan,  0, 0);
+	keybd_event(vkey,  bscan,  KEYEVENTF_KEYUP, 0);
+
+	if (bscan & Control)
+		keybd_event(VK_CONTROL, 0, KEYEVENTF_KEYUP, 0);
+	if (bscan & Shift)
+		keybd_event(VK_SHIFT,   0, KEYEVENTF_KEYUP, 0);
+	if (bscan & Alt)
+		keybd_event(VK_MENU,    0, KEYEVENTF_KEYUP, 0);
+}
+
 KEYBOARDDLL_API int SendString(const HWND hwnd, const RECT rect, const CString s, const bool use_comma,
 							   const HWND restore_focus, const POINT restore_cursor)
 {
@@ -64,42 +86,6 @@ KEYBOARDDLL_API int SendString(const HWND hwnd, const RECT rect, const CString s
 		input_count++;
 	}
 
-	// Add each character of the string to the input struct
-	char ch_str[100];
-	sprintf_s(ch_str, 100, "%s", s.GetString());
-
-	int	vkey = 0;
-
-	for (int i=0; i<(int) strlen(ch_str); i++)
-	{
-		if (ch_str[i]=='.')
-		{
-			if (use_comma)
-			{
-				vkey = VK_OEM_COMMA;
-			}
-			else
-			{
-				vkey = VK_DECIMAL;
-			}
-		}
-		else
-		{
-			vkey = MapVirtualKey(ch_str[i], 1);
-		}
-
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_KEYBOARD;
-		input[input_count].ki.wVk = vkey;
-		input_count++;
-
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_KEYBOARD;
-		input[input_count].ki.wVk = vkey;
-		input[input_count].ki.dwFlags = KEYEVENTF_KEYUP;
-		input_count++;
-	}
-
 	// Set focus to target window
 	SetFocus(hwnd);
 	SetForegroundWindow(hwnd);
@@ -107,6 +93,23 @@ KEYBOARDDLL_API int SendString(const HWND hwnd, const RECT rect, const CString s
 
 	// Send input
 	SendInput(input_count, input, sizeof(INPUT));
+
+	// Add each character of the string to the input struct
+	char ch_str[100];
+	sprintf_s(ch_str, 100, "%s", s.GetString());
+
+	int	vkey = 0;
+
+	int i = 0, strlength = (int)strlen(ch_str);
+	short KeyScan;
+	for (i=0; i<strlength; i++)
+	{
+		if (use_comma && ch_str[i]=='.')
+			ch_str[i] = ',';
+		KeyScan = VkKeyScan(ch_str[i]);
+		PlayKeyboardEvent(LOBYTE(KeyScan), HIBYTE(KeyScan));
+		Sleep(5);
+	}
 
 	// Restore previous window state and cursor position
 	if (restore_focus!=NULL)
@@ -205,6 +208,7 @@ BOOL APIENTRY DllMain( HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReser
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
+		//MessageBox(NULL, "kbd", "1", 0);
 	case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:
 	case DLL_PROCESS_DETACH:
