@@ -240,8 +240,8 @@ int CScraper::DoScrape(void)
 		ScrapeActive(i);
 		ScrapeDealer(i);
 		ScrapeName(i);
-		ScrapeBalance(i);
 		ScrapeBet(i);
+		ScrapeBalance(i);  // Must come after ScrapeBet, as is dependent on ScrapeBet's results
 
 		if (!IsStringSeated(_seated[i]) && !IsStringActive(_active[i]))
 		{
