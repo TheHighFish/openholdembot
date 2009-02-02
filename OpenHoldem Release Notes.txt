@@ -83,7 +83,8 @@ NEW STUFF:
 - A connect message to instruct OH to connect to a poker table specifying a HWND [spew]
 - OH's mouse and keyboard interactions are now handled by external mouse.dll and keyboard.dll files.  Reference implementations
   of these files are provided in the source code and with the binary distribution.  Anyone can now modify these DLLs to add extra
-  functionality (queueing of requests?) or stealth, for example. [OpenHoldem]
+  functionality (queueing of requests?) or stealth, for example. Included in these implementations is Arkayn's suggestion to use
+  the windows API function "AttachThreadInput" to ensure the correct target window receives the input. [OpenHoldem]
 - New option added to .tm files to allow the loading of an external scraper override DLL.  This external DLL can be used to
   override the results of the internal scraper engine.  This DLL is called immediately after the internal scraper engine
   finishes its pass every heartbeat, and the current state of the internal scraper is passed to the DLL for inspection and
