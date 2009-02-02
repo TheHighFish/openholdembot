@@ -636,6 +636,30 @@ void stop_log(void)
     }
 }
 
+void write_log_pokertracker(char* fmt, ...) 
+{
+    char		buff[10000] ;
+    va_list		ap;
+    char		nowtime[26];
+	FILE		*fp=NULL;
+
+    CString fn;
+    fn.Format("%s\\oh_pt_%lu.log", _startup_path, theApp._session_id);
+
+	if ((fp = _fsopen(fn.GetString(), "a", _SH_DENYWR)) != 0)
+	{
+        va_start(ap, fmt);
+        vsprintf_s(buff, 10000, fmt, ap);
+		get_time(nowtime);
+        fprintf(fp, "%s - %s", nowtime, buff);
+
+        va_end(ap);
+
+        fflush(fp);
+		fclose(fp);
+    }
+}
+
 int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers)
 {
     bool		bMiniDumpSuccessful;
