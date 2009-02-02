@@ -28,6 +28,7 @@ MAINTENANCE:
 - Changed the initial value of the following symbols from -1 to 0: 
 allidelay, floppct, turnpct, riverpct, avgbetspf, tablepfr. [TheHighFish]
 - Removed the "risk-of-ruin"-symbols from the code-base due to lack of documentation and practical relevance. [TheHighFish]
+- Updated blinds "reasonableness" check in CSymbols::CalcStakes, per suggestion by Sharky.  [OpenHoldem]
 
 NEW STUFF:
 - Added option to save all replay frames whenever something changes when you are in the hand (Thanks, markedagain for the patch) [OpenHoldem]
