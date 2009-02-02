@@ -87,6 +87,8 @@ KEYBOARDDLL_API int SendString(const HWND hwnd, const RECT rect, const CString s
 	}
 
 	// Set focus to target window
+	int idTarget = GetWindowThreadProcessId(hwnd, NULL);
+	AttachThreadInput(GetCurrentThreadId(), idTarget, true);
 	SetFocus(hwnd);
 	SetForegroundWindow(hwnd);
 	SetActiveWindow(hwnd);
@@ -94,7 +96,7 @@ KEYBOARDDLL_API int SendString(const HWND hwnd, const RECT rect, const CString s
 	// Send input
 	SendInput(input_count, input, sizeof(INPUT));
 
-	// Add each character of the string to the input struct
+	// Send each character of the string via PlayKeyboardEvent
 	char ch_str[100];
 	sprintf_s(ch_str, 100, "%s", s.GetString());
 
@@ -175,6 +177,8 @@ KEYBOARDDLL_API int SendKey(const HWND hwnd, const RECT rect, UINT vkey,
 	input_count++;
 
 	// Set focus to target window
+	int idTarget = GetWindowThreadProcessId(hwnd, NULL);
+	AttachThreadInput(GetCurrentThreadId(), idTarget, true);
 	SetFocus(hwnd);
 	SetForegroundWindow(hwnd);
 	SetActiveWindow(hwnd);
