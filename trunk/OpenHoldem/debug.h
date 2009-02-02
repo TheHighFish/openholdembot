@@ -17,6 +17,7 @@ void write_log(char* fmt, ...);
 void write_log_nostamp(char* fmt, ...);
 void write_logautoplay(const char * action);
 void stop_log(void);
+void write_log_pokertracker(char* fmt, ...);
 int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers);
 
 extern FILE *log_fp;
