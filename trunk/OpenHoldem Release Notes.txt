@@ -90,7 +90,11 @@ NEW STUFF:
   modification.  A reference scraper DLL is provided in the source code as a starting point.  An obvious use of this would
   be to hook or inject the target casino client to retrieve better state information than that which could be collected using
   the built-in pixel scraper.  The DLL to load is specified by the 'scraperdll' symbol in the .tm file.  [OpenHoldem]
-
+- Added handling of "balancenumbersonly" as specified in the table map file which allows for specifying that all characters besides 
+  numbers (0-9 and dot/decimal separator) are stripped from the text transform result for balance regions.  This is useful for those
+  casinos that include spurious/changing alphanumeric information in their balance boxes.  Setting this string to "True" or
+  "Yes" will enable balance cleansing, any other value or the absence of this string will result in no balance cleansing.
+  Thanks to Nick Coldhand for the patch.  [OpenHoldem]
 
 
 v1.9.4 2008-10-21
