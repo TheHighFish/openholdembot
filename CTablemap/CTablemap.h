@@ -141,31 +141,48 @@ public:
 	const int activemethod()		{ SMapCI it = _s$.find("activemethod"); if (it!=_s$.end()) return strtoul(it->second.text.GetString(), NULL, 10); else return 0; }
 	const CString sitename()		{ SMapCI it = _s$.find("sitename"); if (it!=_s$.end()) return it->second.text; else return ""; }
 	const CString network()			{ SMapCI it = _s$.find("network"); if (it!=_s$.end()) return it->second.text; else return ""; }
+
 	const int swagselectionmethod() { SMapCI it = _s$.find("swagselectionmethod");
 									  if (it==_s$.end()) return TEXTSEL_DOUBLECLICK;
-									  else if (it->second.text == "Sgl Click") return TEXTSEL_SINGLECLICK;
-									  else if (it->second.text == "Dbl Click") return TEXTSEL_DOUBLECLICK;
-									  else if (it->second.text == "Click Drag") return TEXTSEL_CLICKDRAG;
+									  CString s=it->second.text;
+									  if (s.MakeLower() == "sgl click") return TEXTSEL_SINGLECLICK;
+									  else if (s.MakeLower() == "dbl click") return TEXTSEL_DOUBLECLICK;
+									  else if (s.MakeLower() == "click drag") return TEXTSEL_CLICKDRAG;
 									  else return TEXTSEL_DOUBLECLICK; }
+
 	const int swagdeletionmethod()	{ SMapCI it = _s$.find("swagdeletionmethod");
 									  if (it==_s$.end()) return TEXTDEL_DELETE;
-									  else if (it->second.text == "Delete") return TEXTDEL_DELETE;
-									  else if (it->second.text == "Backspace") return TEXTDEL_BACKSPACE; 
+									  CString s=it->second.text;
+									  if (s.MakeLower() == "delete") return TEXTDEL_DELETE;
+									  else if (s.MakeLower() == "backspace") return TEXTDEL_BACKSPACE; 
 									  else return TEXTDEL_DELETE; }
+
 	const int swagconfirmationmethod() { SMapCI it = _s$.find("swagconfirmationmethod");
 									  if (it==_s$.end()) return BETCONF_ENTER;
-									  else if (it->second.text == "Enter") return BETCONF_ENTER;
-									  else if (it->second.text == "Click Bet") return BETCONF_CLICKBET; 
+									  CString s=it->second.text;
+									  if (s.MakeLower() == "enter") return BETCONF_ENTER;
+									  else if (s.MakeLower() == "click bet") return BETCONF_CLICKBET; 
 									  else return BETCONF_ENTER; }
+
 	const int buttonclickmethod()	{ SMapCI it = _s$.find("buttonclickmethod");
 									  if (it==_s$.end()) return BUTTON_SINGLECLICK;
-									  else if (it->second.text == "Single") return BUTTON_SINGLECLICK;
-									  else if (it->second.text == "Double") return BUTTON_DOUBLECLICK; 
+									  CString s=it->second.text;
+									  if (s.MakeLower() == "single") return BUTTON_SINGLECLICK;
+									  else if (s.MakeLower() == "double") return BUTTON_DOUBLECLICK; 
 									  else return BUTTON_SINGLECLICK; }
+
 	const int handresetmethod()		{ SMapCI it = _s$.find("handresetmethod"); 
 									  if (it==_s$.end()) return 0x0111;
 									  int n = strtoul(it->second.text.GetString(), NULL, 10); 
 									  return (n>=1 && n<=0x0111) ? n : 0x0111; }
+
+	const bool balancenumbersonly()	{ SMapCI it = _s$.find("balancenumbersonly"); 
+									  if (it==_s$.end()) return false;
+									  CString s=it->second.text;
+									  if (s.MakeLower() == "true") return true;
+									  else if (s.MakeLower() == "yes") return true; 
+									  else return false; }
+
 	const CString scraperdll()		{ SMapCI it = _s$.find("scraperdll"); if (it!=_s$.end()) return it->second.text; else return ""; }
 
 	const bool valid() { return _valid; }

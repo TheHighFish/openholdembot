@@ -40,6 +40,11 @@ NEW STUFF:
   same way as uXname/pXname and uXbalance/pXbalance. [OpenHoldem]
 - Added "scraperdll" to valid s$strings list.  This new symbols instructs OpenHoldem to load the specified external scraper
   override DLL file. [spew]
+- Added "balancenumbersonly" to valid s$strings list.  This setting allows you to specify that all characters besides numbers 
+  (0-9 and dot/decimal separator) are stripped from the text transform result for balance regions.  This is useful for those
+  casinos that include spurious/changing alphanumeric information in their balance boxes.  Setting this string to "True" or
+  "Yes" will enable balance cleansing, any other value or the absence of this string will result in no balance cleansing.
+  Thanks to Nick Coldhand for the patch.  [OpenHoldem]
   
 
 

@@ -855,6 +855,17 @@ void CScraper::ScrapeBalance(int chair)
 				text.Remove(',');
 				text.Remove('$');
 
+				if (p_tablemap->balancenumbersonly())
+				{
+					for (int i='a'; i<='z'; i++)
+						text.Remove(i);
+					for (int i='A'; i<='Z'; i++)
+						text.Remove(i);
+					text.Remove('-');
+					text.Remove('(');
+					text.Remove(')');
+				}
+
 				if (text!="" && IsNumeric(text))
 					got_new_scrape = true;
 			}
@@ -891,6 +902,17 @@ void CScraper::ScrapeBalance(int chair)
 				text.Remove(',');
 				text.Remove('$');
 
+				if (p_tablemap->balancenumbersonly())
+				{
+					for (int i='a'; i<='z'; i++)
+						text.Remove(i);
+					for (int i='A'; i<='Z'; i++)
+						text.Remove(i);
+					text.Remove('-');
+					text.Remove('(');
+					text.Remove(')');
+				}
+
 				if (text!="" && IsNumeric(text))
 					got_new_scrape = true;
 			}
@@ -926,6 +948,17 @@ void CScraper::ScrapeBalance(int chair)
 			{
 				text.Remove(',');
 				text.Remove('$');
+
+				if (p_tablemap->balancenumbersonly())
+				{
+					for (int i='a'; i<='z'; i++)
+						text.Remove(i);
+					for (int i='A'; i<='Z'; i++)
+						text.Remove(i);
+					text.Remove('-');
+					text.Remove('(');
+					text.Remove(')');
+				}
 
 				if (text!="" && IsNumeric(text))
 					got_new_scrape = true;
