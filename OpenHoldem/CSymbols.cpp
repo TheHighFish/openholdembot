@@ -1073,11 +1073,15 @@ void CSymbols::CalcStakes(void)
 				}
 
 				// check for reasonableness
-				if (_sym.bblind > _sym.sblind*2)
+				if (_sym.bblind > _sym.sblind*3+0.001)
 					_sym.bblind = _sym.sblind*2;
 
-				if (_sym.sblind >= _sym.bblind)
+				if (_sym.sblind > _sym.bblind+0.001)
 					_sym.sblind = _sym.bblind/2;
+
+				if (_bigbet > _sym.bblind*2+0.001 || _bigbet < _sym.bblind*2-0.001)
+					_bigbet = _sym.bblind*2;
+
 			}
 		}
 	LeaveCriticalSection(&cs_symbols);
