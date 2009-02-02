@@ -847,6 +847,7 @@ void CScraper::ScrapeBalance(int chair)
 			{
 				EnterCriticalSection(&cs_scraper);
 				_sitting_out[chair] = true;
+				_active[chair] = "false";
 				LeaveCriticalSection(&cs_scraper);
 			}
 
@@ -894,6 +895,7 @@ void CScraper::ScrapeBalance(int chair)
 			{
 				EnterCriticalSection(&cs_scraper);
   				_sitting_out[chair] = true;
+				_active[chair] = "false";
 				LeaveCriticalSection(&cs_scraper);
 			}
 
@@ -941,6 +943,7 @@ void CScraper::ScrapeBalance(int chair)
 			{
 				EnterCriticalSection(&cs_scraper);
   				_sitting_out[chair] = true;
+				_active[chair] = "false";
 				LeaveCriticalSection(&cs_scraper);
 			}
 
