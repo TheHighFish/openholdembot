@@ -61,19 +61,16 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_FILE_OPEN, &CMainFrame::OnUpdateMenuFileOpen)
 	ON_UPDATE_COMMAND_UI(ID_FILE_LOADTABLEMAP, &CMainFrame::OnUpdateMenuFileLoadProfile)
 	ON_UPDATE_COMMAND_UI(ID_FILE_CONNECT, &CMainFrame::OnUpdateFileConnect)
+	ON_UPDATE_COMMAND_UI(ID_FILE_DISCONNECT, &CMainFrame::OnUpdateFileDisconnect)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_MAIN_TOOLBAR, &CMainFrame::OnUpdateViewMainToolbar)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_FLAGS_TOOLBAR, &CMainFrame::OnUpdateViewFlagsToolbar)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_STATUSBAR, &CMainFrame::OnUpdateViewStatusbar)
 	ON_UPDATE_COMMAND_UI(ID_DLL_LOAD, &CMainFrame::OnUpdateMenuDllLoad)
 	ON_UPDATE_COMMAND_UI(ID_DLL_LOADSPECIFICFILE, &CMainFrame::OnUpdateDllLoadspecificfile)
 	ON_UPDATE_COMMAND_UI(ID_POKERPRO_CONNECT, &CMainFrame::OnUpdatePokerproConnect)
-	//  2008.03.04 by THF
 	ON_UPDATE_COMMAND_UI(ID_PERL_LOADFORMULA, &CMainFrame::OnUpdateMenuPerlLoad)
-	//  2008.03.07 by THF
 	ON_UPDATE_COMMAND_UI(ID_PERL_LOADSPECIFICFORMULA, &CMainFrame::OnUpdateMenuPerlLoadSpecificFormula)
-	//  2008.03.20 by THF
 	ON_UPDATE_COMMAND_UI(ID_PERL_RELOADFORMULA, &CMainFrame::OnUpdateMenuPerlReloadFormula)
-	//  2008.04.29 by THF
 	ON_UPDATE_COMMAND_UI(ID_PERL_CHECKSYNTAX, &CMainFrame::OnUpdateMenuPerlCheckSyntax)
 	ON_UPDATE_COMMAND_UI(ID_PERL_EDITMAINFORMULA, &CMainFrame::OnUpdateMenuPerlEditMainFormula)
 
@@ -81,6 +78,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND(ID_FILE_OPEN, &CMainFrame::OnFileOpen)
 	ON_COMMAND(ID_FILE_LOADTABLEMAP, &CMainFrame::OnFileLoadTableMap)
 	ON_COMMAND(ID_FILE_CONNECT, &CMainFrame::OnBnClickedGreenCircle)
+	ON_COMMAND(ID_FILE_DISCONNECT, &CMainFrame::OnBnClickedRedCircle)
 	ON_COMMAND(ID_EDIT_FORMULA, &CMainFrame::OnEditFormula)
 	ON_COMMAND(ID_EDIT_PREFERENCES, &CMainFrame::OnEditPreferences)
 	ON_COMMAND(ID_VIEW_MAIN_TOOLBAR, &CMainFrame::OnFormulaViewMainToolbar)
@@ -90,7 +88,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND(ID_VIEW_SHOOTREPLAYFRAME, &CMainFrame::OnViewShootreplayframe)
 	ON_COMMAND(ID_DLL_LOAD, &CMainFrame::OnDllLoad)
 	ON_COMMAND(ID_DLL_LOADSPECIFICFILE, &CMainFrame::OnDllLoadspecificfile)
-	//  2008.03.03 by THF
 	ON_COMMAND(ID_PERL_LOADFORMULA, &CMainFrame::OnPerlLoadFormula)
 	ON_COMMAND(ID_PERL_LOADSPECIFICFORMULA, &CMainFrame::OnPerlLoadSpecificFormula)
 	ON_COMMAND(ID_PERL_RELOADFORMULA, &CMainFrame::OnPerlReloadFormula)
@@ -1600,6 +1597,11 @@ void CMainFrame::OnUpdateFileConnect(CCmdUI *pCmdUI)
 	pCmdUI->Enable(!_attached_hwnd);
 }
 
+void CMainFrame::OnUpdateFileDisconnect(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(_attached_hwnd!=NULL);
+}
+
 void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI)
 {
 	if (p_dll_extension->IsDllLoaded())
@@ -2030,3 +2032,4 @@ bool check_window_match(SWholeMap *map, HWND h, RECT r, CString title)
 
 	return true;
 }
+

@@ -95,6 +95,7 @@ NEW STUFF:
   casinos that include spurious/changing alphanumeric information in their balance boxes.  Setting this string to "True" or
   "Yes" will enable balance cleansing, any other value or the absence of this string will result in no balance cleansing.
   Thanks to Nick Coldhand for the patch.  [OpenHoldem]
+- File/Disconnect menu option added.  [OpenHoldem]
 
 
 v1.9.4 2008-10-21
