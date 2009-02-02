@@ -495,6 +495,7 @@
 #define ID_BUTTON32980                  32980
 #define ID_NUMBER19                     32980
 #define ID_NUMBER10                     32981
+#define ID_FILE_DISCONNECT              32982
 #define ID_INDICATOR_STATUS_PLCARDS     61191
 
 // Next default values for new objects
@@ -502,7 +503,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        179
-#define _APS_NEXT_COMMAND_VALUE         32982
+#define _APS_NEXT_COMMAND_VALUE         32985
 #define _APS_NEXT_CONTROL_VALUE         1314
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

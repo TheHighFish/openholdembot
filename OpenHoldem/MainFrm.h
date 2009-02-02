@@ -40,6 +40,7 @@ protected: // create from serialization only
 	afx_msg void OnUpdateMenuFileOpen(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateMenuFileLoadProfile(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateFileConnect(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateFileDisconnect(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateMenuDllLoad(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateDllLoadspecificfile(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateViewMainToolbar(CCmdUI *pCmdUI);
@@ -115,7 +116,6 @@ private:
 	RECT			_prev_att_rect, _prev_wrect;
 
 	CCritSec		m_critsec;
-
 };
 
 // used by EnumProcTopLevelWindowList function
