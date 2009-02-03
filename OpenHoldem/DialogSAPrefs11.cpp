@@ -32,6 +32,8 @@ void CDlgSAPrefs11::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_ENABLE_TRACE, m_EnableTrace);
 	DDX_Control(pDX, IDC_TRACE_LIST, m_TraceList);
 	DDX_Control(pDX, IDC_DISABLE_MSGBOX, m_disable_msgbox);
+	DDX_Control(pDX, IDC_DEBUGLEVEL, m_DebugLevel);
+	DDX_Control(pDX, IDC_DEBUGLEVEL_PT, m_DebugLevel_PT);
 }
 
 BOOL CDlgSAPrefs11::OnInitDialog()
@@ -62,6 +64,20 @@ BOOL CDlgSAPrefs11::OnInitDialog()
 
 	m_disable_msgbox.SetCheck(prefs.disable_msgbox() ? BST_CHECKED : BST_UNCHECKED);
 
+	m_DebugLevel.AddString("0");
+	m_DebugLevel.AddString("1");
+	m_DebugLevel.AddString("2");
+	m_DebugLevel.AddString("3");
+	text.Format("%d", prefs.log_level());
+	m_DebugLevel.SelectString(0, text.GetString());
+
+	m_DebugLevel_PT.AddString("0");
+	m_DebugLevel_PT.AddString("1");
+	m_DebugLevel_PT.AddString("2");
+	m_DebugLevel_PT.AddString("3");
+	text.Format("%d", prefs.log_level_pt());
+	m_DebugLevel_PT.SelectString(0, text.GetString());
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -90,6 +106,12 @@ void CDlgSAPrefs11::OnOK()
 	prefs.set_log_symbol_max_log(strtoul(text.GetString(), 0, 10));
 
 	prefs.set_disable_msgbox(m_disable_msgbox.GetCheck()==BST_CHECKED ? true : false);
+
+	m_DebugLevel.GetWindowText(text);
+	prefs.set_log_level(strtoul(text.GetString(), NULL, 10));
+
+	m_DebugLevel_PT.GetWindowText(text);
+	prefs.set_log_level_pt(strtoul(text.GetString(), NULL, 10));
 	
 	CSAPrefsSubDlg::OnOK();
 }

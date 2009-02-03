@@ -761,7 +761,7 @@ void CSymbols::CalcSymbols(void)
 			StdDeck_cardToString(player_card_cur[1], card1);
 		}
 		GetWindowText(pMyMainWnd->attached_hwnd(), title, 512);
-		write_log("\n*************************************************************\nHAND RESET (num:%.0f dealer:%.0f cards:%s%s): %s\n*************************************************************\n",
+		write_log(1, "\n*************************************************************\nHAND RESET (num:%.0f dealer:%.0f cards:%s%s): %s\n*************************************************************\n",
 				  _sym.handnumber, _sym.dealerchair, card0, card1, title);
 	}
 
@@ -817,7 +817,7 @@ void CSymbols::CalcSymbols(void)
 		ResetSymbolsNewRound();
 
 		// log betting round change
-		write_log("ROUND %.0f\n", _sym.br);
+		write_log(1, "ROUND %.0f\n", _sym.br);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

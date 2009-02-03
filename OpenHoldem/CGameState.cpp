@@ -598,7 +598,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 					_end_of_hand==false )
 			{
 				_end_of_hand = true;
-				write_log(">>> SHOWDOWN\n");
+				write_log(1, ">>> SHOWDOWN\n");
 			}
 		}
 
@@ -642,7 +642,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 			}
 			_hands_played++;
 
-			write_log(">>> New hand %.0f\n", sym_handnumber);
+			write_log(1, ">>> New hand %.0f\n", sym_handnumber);
 		}
 
 		// first time to act in the hand//
@@ -669,7 +669,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 				_m_holdem_state[(_m_ndx)&0xff].m_player[sym_userchair].m_cards[1] != 0)
 			{
 				_process_game_state = true;
-				write_log( ">>> My turn, br=%d\n", sym_br);
+				write_log(1, ">>> My turn, br=%d\n", sym_br);
 			}
 			else
 			{
@@ -752,7 +752,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 				{
 					_chair_actions[i%10][sym_br-1][w_posted_sb] = true;
 					_bets_last = _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet;
-					write_log(">>> Chair %d (%s) posted the sb: $%.2f\n", i%10,
+					write_log(1, ">>> Chair %d (%s) posted the sb: $%.2f\n", i%10,
 							  _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_name,
 							  _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet);
 				}
@@ -767,7 +767,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 				{
 					_chair_actions[i%10][(int) sym_br-1][w_posted_bb] = true;
 					_bets_last = _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet;
-					write_log(">>> Chair %d (%s) posted the bb: $%.2f\n", i%10,
+					write_log(1, ">>> Chair %d (%s) posted the bb: $%.2f\n", i%10,
 							  _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_name,
 							  _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet);
 				}
@@ -784,14 +784,14 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 					{
 						_chair_actions[i%10][sym_br-1][w_raised] = true;
 						_pot_raised = true;
-						write_log(">>> Chair %d (%s) raised to $%.2f\n", i%10,
+						write_log(1, ">>> Chair %d (%s) raised to $%.2f\n", i%10,
 								  _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_name,
 								  _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet);
 					}
 					else
 					{
 						_chair_actions[i%10][sym_br-1][w_reraised] = true;
-						write_log(">>> Chair %d (%s) re-raised to $%.2f\n", i%10,
+						write_log(1, ">>> Chair %d (%s) re-raised to $%.2f\n", i%10,
 								  _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_name,
 								  _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet);
 					}
@@ -810,7 +810,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 					{
 						_pf_limpers_n += 1;
 					}
-					write_log(">>> Chair %d (%s) called\n", i%10, _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_name);
+					write_log(1, ">>> Chair %d (%s) called\n", i%10, _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_name);
 				}
 
 				// if cards have disappeared, and they were card backs last scrape,
@@ -833,7 +833,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 							_m_game_state[(_m_game_ndx-1)&0xff].m_player[i%10].m_balance) )
 				{
 					_chair_actions[i%10][sym_br-1][w_folded] = true;
-					write_log(">>> Chair %d (%s) folded\n", i%10,
+					write_log(1, ">>> Chair %d (%s) folded\n", i%10,
 							  _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_name);
 				}
 
@@ -845,7 +845,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 				{
 					_chair_actions[i%10][sym_br-1][w_checked] = true;
 
-					write_log( ">>> Chair %d (%s) checked\n", i%10, _m_holdem_state[(_m_ndx)&0xff].m_player[i%10].m_name);
+					write_log(1, ">>> Chair %d (%s) checked\n", i%10, _m_holdem_state[(_m_ndx)&0xff].m_player[i%10].m_name);
 				}
 			}  // end of "for (i = from_chair; i <= to_chair; i++)"
 		} // end of "if (br != 0 &&..."
@@ -912,25 +912,25 @@ void CGameState::DumpState(void)
 {
 	int			i = 0;
 
-	write_log("_m_ndx: %d\n", _m_ndx);
-	write_log("m_title: %s\n", _m_holdem_state[(_m_ndx)&0xff].m_title);
-	write_log("m_pot: %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f\n", _m_holdem_state[(_m_ndx)&0xff].m_pot[0], _m_holdem_state[(_m_ndx)&0xff].m_pot[1],
+	write_log(3, "_m_ndx: %d\n", _m_ndx);
+	write_log(3, "m_title: %s\n", _m_holdem_state[(_m_ndx)&0xff].m_title);
+	write_log(3, "m_pot: %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f\n", _m_holdem_state[(_m_ndx)&0xff].m_pot[0], _m_holdem_state[(_m_ndx)&0xff].m_pot[1],
 			  _m_holdem_state[(_m_ndx)&0xff].m_pot[2], _m_holdem_state[(_m_ndx)&0xff].m_pot[3], _m_holdem_state[(_m_ndx)&0xff].m_pot[4],
 			  _m_holdem_state[(_m_ndx)&0xff].m_pot[5], _m_holdem_state[(_m_ndx)&0xff].m_pot[6], _m_holdem_state[(_m_ndx)&0xff].m_pot[7],
 			  _m_holdem_state[(_m_ndx)&0xff].m_pot[8], _m_holdem_state[(_m_ndx)&0xff].m_pot[9]);
-	write_log("m_cards: %d %d %d %d %d\n", _m_holdem_state[(_m_ndx)&0xff].m_cards[0], _m_holdem_state[(_m_ndx)&0xff].m_cards[1],
+	write_log(3, "m_cards: %d %d %d %d %d\n", _m_holdem_state[(_m_ndx)&0xff].m_cards[0], _m_holdem_state[(_m_ndx)&0xff].m_cards[1],
 			  _m_holdem_state[(_m_ndx)&0xff].m_cards[2], _m_holdem_state[(_m_ndx)&0xff].m_cards[3], _m_holdem_state[(_m_ndx)&0xff].m_cards[4]);
-	write_log("m_is_playing: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_is_playing);
-	write_log("m_is_posting: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_is_posting);
-	write_log("m_dealer_chair: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_dealer_chair);
+	write_log(3, "m_is_playing: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_is_playing);
+	write_log(3, "m_is_posting: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_is_posting);
+	write_log(3, "m_dealer_chair: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_dealer_chair);
 	for (i=0; i<10; i++) {
-		write_log("m_player[%d].m_name:%s  ", i, _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_name);
-		write_log("m_balance:%.2f  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance);
-		write_log("m_currentbet:%.2f  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_currentbet);
-		write_log("m_cards:%d/%d  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[0],
+		write_log(3, "m_player[%d].m_name:%s  ", i, _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_name);
+		write_log(3, "m_balance:%.2f  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance);
+		write_log(3, "m_currentbet:%.2f  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_currentbet);
+		write_log(3, "m_cards:%d/%d  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[0],
 				  _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[1]);
-		write_log("m_name_known:%d  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_name_known);
-		write_log("m_balance_known:%d\n", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance_known);
+		write_log(3, "m_name_known:%d  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_name_known);
+		write_log(3, "m_balance_known:%d\n", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance_known);
 	}
 }
 

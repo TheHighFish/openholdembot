@@ -27,11 +27,13 @@ public:
 	CCheckListBox m_TraceList;
 	CSpinButtonCtrl m_MaximumLog_Spin;
 	virtual BOOL OnInitDialog();
+	CComboBox m_DebugLevel, m_DebugLevel_PT;
 
 protected:
 	virtual void OnOK();
 
 	DECLARE_MESSAGE_MAP()
+public:
 };
 
 

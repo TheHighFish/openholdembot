@@ -157,6 +157,8 @@ void CPreferences::InitDefaults(void)
 
 	// Logging and debugging
 	_disable_msgbox = false;
+	_log_level = 1;
+	_log_level_pt = 1;
 
 	// Validator
 	//   0 = disabled
@@ -287,6 +289,7 @@ void CPreferences::ReadPreferences()
 		// f$debug logging
 		ReadReg("fdebuglog", &_fdebuglog);
 		ReadReg("fdebuglog_myturn", &_fdebuglog_myturn);
+
 		// scraper zoom level
 		ReadReg("scraper_zoom", &_scraper_zoom);
 
@@ -316,6 +319,8 @@ void CPreferences::ReadPreferences()
 		
 		// Logging and debugging
 		ReadReg("disable_msgbox", &_disable_msgbox);
+		ReadReg("log_level", &_log_level);
+		ReadReg("log_level_pt", &_log_level_pt);
 
 		ReadReg("validator_enabled", &_validator_enabled);
 		ReadReg("validator_use_heuristic_rules", &_validator_use_heuristic_rules);

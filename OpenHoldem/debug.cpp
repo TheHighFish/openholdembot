@@ -341,14 +341,17 @@ to_return:
 
 void start_log(void) 
 {
-    if (log_fp==NULL) 
+	if (prefs.log_level()==0)
+		return;
+	
+	if (log_fp==NULL) 
 	{
         CString fn;
         fn.Format("%s\\oh_%lu.log", _startup_path, theApp._session_id);
 
 		if ((log_fp = _fsopen(fn.GetString(), "a", _SH_DENYWR)) != 0)
 		{
-			write_log("! log file open\n");
+			write_log(1, "! log file open\n");
 			fprintf(log_fp, "yyyy.mm.dd hh:mm:ss -  # hand commoncard rank poker  win  los  tie  P      nit bestaction - play*      call       bet       pot   balance - FCRA FCRA swag\n");
 			fprintf(log_fp, "----------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 			fflush(log_fp);
@@ -356,11 +359,14 @@ void start_log(void)
     }
 }
 
-void write_log(char* fmt, ...) 
+void write_log(int level, char* fmt, ...) 
 {
     char		buff[10000] ;
     va_list		ap;
     char		nowtime[26];
+
+	if (level>prefs.log_level())
+		return;
 
     if (log_fp != NULL) 
 	{
@@ -376,10 +382,13 @@ void write_log(char* fmt, ...)
     }
 }
 
-void write_log_nostamp(char* fmt, ...) 
+void write_log_nostamp(int level, char* fmt, ...) 
 {
 	char		buff[10000] ;
     va_list		ap;
+
+	if (level>prefs.log_level())
+		return;
 
     if (log_fp != NULL) 
 	{
@@ -394,7 +403,7 @@ void write_log_nostamp(char* fmt, ...)
     }
 }
 
-void write_logautoplay(const char * action) 
+void write_logautoplay(int level, const char * action) 
 {
     char		nowtime[26];
     CString		pcards, comcards, temp, rank, pokerhand, bestaction, fcra_seen;
@@ -407,6 +416,9 @@ void write_logautoplay(const char * action)
 	int			sym_userchair = (int) p_symbols->sym()->userchair;
 	int			sym_br = (int) p_symbols->sym()->br;
 
+
+	if (level>prefs.log_level())
+		return;
 
 	if (log_fp != NULL) 
 	{
@@ -422,11 +434,11 @@ void write_logautoplay(const char * action)
 					max_log = prefs.log_symbol_max_log();
 				}
 
-				write_log("*** log$ (Total: %d | Showing: %d)\n", p_symbols->logsymbols_collection()->GetCount(), max_log);
+				write_log(1, "*** log$ (Total: %d | Showing: %d)\n", p_symbols->logsymbols_collection()->GetCount(), max_log);
 
 				for (int i=0; i<max_log; i++)
 				{
-					write_log("***     %s\n", p_symbols->logsymbols_collection()->GetAt(i));
+					write_log(1, "***     %s\n", p_symbols->logsymbols_collection()->GetAt(i));
 				}
 			}
 		}
@@ -614,12 +626,12 @@ void write_logautoplay(const char * action)
 
 		if (prefs.trace_enabled() && p_symbols->symboltrace_collection()->GetSize() > 0)
 		{
-			write_log_nostamp("***** Autoplayer Trace ****\n");
+			write_log_nostamp(1, "***** Autoplayer Trace ****\n");
 			for (int i=0; i<p_symbols->symboltrace_collection()->GetSize(); i++)
 			{
-				write_log_nostamp("%s\n", p_symbols->symboltrace_collection()->GetAt(i));
+				write_log_nostamp(1, "%s\n", p_symbols->symboltrace_collection()->GetAt(i));
 			}
-			write_log_nostamp("***********************\n");
+			write_log_nostamp(1, "***********************\n");
 		}
 
 		fflush(log_fp);
@@ -630,18 +642,21 @@ void stop_log(void)
 {
     if (log_fp != NULL) 
 	{
-        write_log("! log file closed\n");
+        write_log(1, "! log file closed\n");
         fclose(log_fp);
         log_fp = NULL;
     }
 }
 
-void write_log_pokertracker(char* fmt, ...) 
+void write_log_pokertracker(int level, char* fmt, ...) 
 {
     char		buff[10000] ;
     va_list		ap;
     char		nowtime[26];
 	FILE		*fp=NULL;
+
+	if (level>prefs.log_level_pt())
+		return;
 
     CString fn;
     fn.Format("%s\\oh_pt_%lu.log", _startup_path, theApp._session_id);

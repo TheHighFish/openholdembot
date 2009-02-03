@@ -72,6 +72,8 @@ public:
 	const bool trace_functions(unsigned int i) { return _trace_functions[i]; }
 	// Logging and debugging
 	const bool disable_msgbox() { return _disable_msgbox; }
+	const int log_level() { return _log_level; }
+	const int log_level_pt() { return _log_level_pt; }
 	// PPro
 	const CString ppro_hostname() { return _ppro_hostname; }
 	const CString ppro_port() { return _ppro_port; }
@@ -193,6 +195,8 @@ public:
 	{ ENT _trace_functions[i] = b; CString regValue; regValue.Format("trace_functions%d", i+1);	WriteReg(regValue, b); }
 	// Logging and debugging
 	void set_disable_msgbox(const bool b) { ENT _disable_msgbox = b; WriteReg("disable_msgbox", b); }
+	void set_log_level(const int i) { ENT _log_level = i; WriteReg("log_level", i); }
+	void set_log_level_pt(const int i) { ENT _log_level_pt = i; WriteReg("log_level_pt", i); }
 	// PPro
 	void set_ppro_hostname(const CString s) { ENT _ppro_hostname = s; WriteReg("ppro_hostname", s); }
 	void set_ppro_port(const CString s) { ENT _ppro_port = s; WriteReg("ppro_port", s); }
@@ -260,6 +264,7 @@ private:
 
 	// Analyzer
 	unsigned int	_max_opponents;
+
 	// Autoplayer
 	unsigned int	_frame_delay;
 	unsigned int	_swag_delay_1;
@@ -273,22 +278,27 @@ private:
 	bool			_dll_always_send_state;
 	bool			_dll_load_on_startup;
 	CString			_dll_name;
+
 	// Scraper
 	unsigned int	_scrape_delay;
+
 	// Symbols
 	double			_sym_av_time;
 	CString			_sym_handrank_value;
 	bool			_sym_disable_caching;
+
 	// ICM
 	double			_icm_prize1;
 	double			_icm_prize2;
 	double			_icm_prize3;
 	double			_icm_prize4;
+
 	// Replay Frames
 	bool			_replay_record;
 	bool			_replay_record_every_change_playing;
 	bool			_replay_record_every_change;
 	int				_replay_max_frames;
+
 	// Poker Tracker
 	CString			_pt_version;
 	CString			_pt_ip_addr;
@@ -299,23 +309,31 @@ private:
 	bool			_pt_disable;
 	int				_pt_update_delay;
 	int				_pt_cache_refresh;
+
 	// Perl
 	CString			_perl_default_formula;
 	CString			_perl_editor;
 	bool			_perl_load_default_formula;
 	bool			_perl_load_interpreter;
+
 	//  PokerChat
 	bool			_chat_enabled;
 	int				_chat_min_delay;
 	int				_chat_random_delay;
+
 	// Log Symbol
 	bool			_log_symbol_enabled;
 	int				_log_symbol_max_log;
+
 	// Tracing
 	bool			_trace_enabled;
 	bool			_trace_functions[nTraceFunctions];
+
 	// Logging & MessageBox
 	bool			_disable_msgbox;
+	int				_log_level;
+	int				_log_level_pt;
+
 	// PPro
 	CString			_ppro_hostname;
 	bool			_ppro_autoseat;
@@ -325,32 +343,38 @@ private:
 	bool			_ppro_handhistory;
 	bool			_ppro_ft_hhlog_format;
 	int				_ppro_chips;
+
 	// Formula window location
 	int				_formula_x;	
 	int				_formula_y;
 	int				_formula_dx;
 	int				_formula_dy;
+
 	// Scraper window location
 	int				_scraper_x;
 	int				_scraper_y;
 	int				_scraper_dx;
 	int				_scraper_dy;
+
 	// Main window location
 	int				_main_x;
 	int				_main_y;
 	int				_main_dx;
 	int				_main_dy;
+
 	// PPro window location
 	int				_ppro_x;
 	int				_ppro_y;
 	int				_ppro_dx;
 	int				_ppro_dy;
+
 	// Blind locking
 	double			_sblind;
 	double			_bblind;
 	double			_bbet;
 	double			_ante;
 	int				_gametype;
+
 	// Formula editor
 	bool			_expand_list;
 	bool			_expand_std;
@@ -359,16 +383,20 @@ private:
 	bool			_udf_group;
 	int				_equal;
 	int				_precision;
+
 	// Debug logging
 	bool			_fdebuglog;
 	bool			_fdebuglog_myturn;
+
 	// Validator
 	int				_validator_enabled;
 	bool			_validator_stop_on_error;
 	bool			_validator_use_heuristic_rules;
+
 	// Misc
 	int				_scraper_zoom;
 	CString			_versus_path;
+
 	// Obscure
 	CString			_window_class_name;
 	CString			_mutex_name;
