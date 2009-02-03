@@ -355,7 +355,7 @@ void CAutoplayer::DoSwag(void)
 				p_heartbeat_thread->set_replay_recorded_this_turn(false);
 
 				// log it
-				write_logautoplay("SWAG");
+				write_logautoplay(1, "SWAG");
 			}
 
 			_mutex.Unlock();
@@ -455,33 +455,33 @@ void CAutoplayer::DoARCCF(void)
 			{
 				case 4:  // allin
 					set_prevaction(PREVACT_ALLI);
-					write_logautoplay("ALLI");
+					write_logautoplay(1, "ALLI");
 					break;
 
 				case 3:  // raise
 					set_didrais(4, p_symbols->sym()->didrais[4] + 1);
 					set_didrais(sym_br-1, p_symbols->sym()->didrais[sym_br-1] + 1);
 					set_prevaction(PREVACT_RAIS);
-					write_logautoplay("RAIS");
+					write_logautoplay(1, "RAIS");
 					break;
 
 				case 2:  // call
 					set_didcall(4, p_symbols->sym()->didcall[4] + 1);
 					set_didcall(sym_br-1, p_symbols->sym()->didcall[sym_br-1] + 1);
 					set_prevaction(PREVACT_CALL);
-					write_logautoplay("CALL");
+					write_logautoplay(1, "CALL");
 					break;
 
 				case 1:  // check
 					set_didchec(4, p_symbols->sym()->didchec[4] + 1);
 					set_didchec(sym_br-1, p_symbols->sym()->didchec[sym_br-1] + 1);
 					set_prevaction(PREVACT_CHEC);
-					write_logautoplay("CHEC");
+					write_logautoplay(1, "CHEC");
 					break;
 
 				case 0:  // fold
 					set_prevaction(PREVACT_FOLD);
-					write_logautoplay("FOLD");
+					write_logautoplay(1, "FOLD");
 					break;
 			}
 
@@ -533,7 +533,7 @@ void CAutoplayer::DoSlider(void)
 		r.right = p_scraper->handle_xy().x + (slider->second.right - slider->second.left);
 		r.bottom = r.top;		
 		
-		write_log("*** Jam from %d,%d to %d,%d \n", r.left, r.top, r.right, r.bottom);
+		write_log(1, "*** Jam from %d,%d to %d,%d \n", r.left, r.top, r.right, r.bottom);
 
 		(theApp._dll_mouse_click_drag) (pMyMainWnd->attached_hwnd(), r, NULL, p_null);
 
@@ -582,9 +582,9 @@ void CAutoplayer::DoSlider(void)
 				(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_button, MouseLeft, 1, hwnd_focus, cur_pos);
 		}
 
-		write_logautoplay("JAM");
+		write_logautoplay(1, "JAM");
 
-		write_log("*** Jam complete \n",r.left, r.top, r.right, r.bottom);
+		write_log(1, "*** Jam complete \n",r.left, r.top, r.right, r.bottom);
 
 		// reset elapsedauto symbol
 		time_t my_time_t;
@@ -634,7 +634,7 @@ void CAutoplayer::DoPrefold(void)
 
 		p_symbols->UpdateAutoplayerInfo();
 
-		write_logautoplay("FOLD");
+		write_logautoplay(1, "FOLD");
 	}
 }
 

@@ -95,6 +95,7 @@
 #define IDC_SWAGDELAY1_SPIN             1041
 #define IDC_COMBO2                      1052
 #define IDC_HANDRANKVALUE               1052
+#define IDC_DEBUGLEVEL_PT               1052
 #define IDC_LOAD_DLL_ON_STARTUP         1054
 #define IDC_DLLNAME                     1055
 #define IDC_PPRO_AUTOSEAT               1056
@@ -132,6 +133,7 @@
 #define IDC_COMBO1                      1081
 #define IDC_LOCK_BLINDS_GAME_TYPE       1081
 #define IDC_PT_VERSION                  1081
+#define IDC_DEBUGLEVEL                  1081
 #define IDC_REGIONLIST                  1083
 #define IDC_SCRAPERRESULT               1084
 #define IDC_SCRAPERBITMAP               1085
@@ -504,7 +506,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        179
 #define _APS_NEXT_COMMAND_VALUE         32985
-#define _APS_NEXT_CONTROL_VALUE         1314
+#define _APS_NEXT_CONTROL_VALUE         1315
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

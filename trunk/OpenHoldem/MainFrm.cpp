@@ -930,7 +930,7 @@ BOOL CMainFrame::DoConnect(HWND targetHWnd)
 
 			CString formula = p_formula->formula_name();
 
-			write_log("\n*************************************************************\n"
+			write_log(1, "\n*************************************************************\n"
 					  "TABLE RESET %s - %s(%s)\n"
 					  "*************************************************************\n",
 					  formula.GetString(), site.GetString(), title);
@@ -1012,9 +1012,9 @@ void CMainFrame::OnBnClickedRedCircle()
 
 	// log OH title bar text and table reset
 	CString sitename = (p_tablemap->s$()->find("sitename") != p_tablemap->s$()->end() ? p_tablemap->s$()->find("sitename")->second.text.GetString() : "");
-	write_log("%s - %s(NOT ATTACHED)\n", p_formula->formula_name().GetString(), sitename);
+	write_log(1, "%s - %s(NOT ATTACHED)\n", p_formula->formula_name().GetString(), sitename);
 
-	write_log("TABLE RESET\n*************************************************************\n");
+	write_log(1, "TABLE RESET\n*************************************************************\n");
 
 	// Stop logging
 	stop_log();

@@ -237,12 +237,12 @@ void CDlgPpro::OnBnClickedConnectButton()
 		if (p_heartbeat_thread)
 		{
 			delete p_heartbeat_thread;
-			write_log("Stopped heartbeat thread: %08x\n", p_heartbeat_thread);
+			write_log(3, "Stopped heartbeat thread: %08x\n", p_heartbeat_thread);
 			p_heartbeat_thread = NULL;
 		}
 
 		p_heartbeat_thread = new CHeartbeatThread;
-		write_log("Started heartbeat thread: %08x\n", p_heartbeat_thread);
+		write_log(3, "Started heartbeat thread: %08x\n", p_heartbeat_thread);
 	}
 }
 
@@ -258,8 +258,8 @@ void CDlgPpro::OnBnClickedJointableButton()
 	else 
 	{
 		// log OH title bar text and table reset
-		write_log("%s - %s(NOT ATTACHED)\n", p_formula->formula_name().GetString(), p_pokerpro->ppdata()->m_site_name);
-		write_log("TABLE RESET\n*************************************************************\n");
+		write_log(1, "%s - %s(NOT ATTACHED)\n", p_formula->formula_name().GetString(), p_pokerpro->ppdata()->m_site_name);
+		write_log(1, "TABLE RESET\n*************************************************************\n");
 
 		// Stop logging
 		stop_log();
@@ -643,8 +643,8 @@ void CDlgPpro::DoTableSelect(void)
 		// Start logging
 		start_log();
 
-		write_log("%s - %s(%s)\n", p_formula->formula_name().GetString(), p_pokerpro->ppdata()->m_site_name, p_pokerpro->ppdata()->m_tinf.m_name);
-		write_log("TABLE RESET\n*************************************************************\n");
+		write_log(1, "%s - %s(%s)\n", p_formula->formula_name().GetString(), p_pokerpro->ppdata()->m_site_name, p_pokerpro->ppdata()->m_tinf.m_name);
+		write_log(1, "TABLE RESET\n*************************************************************\n");
 	}
 }
 
