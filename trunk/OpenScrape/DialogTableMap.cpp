@@ -1763,8 +1763,7 @@ void CDlgTableMap::OnBnClickedDelete()
 		{
 			// Delete record from internal structure and update tree
 			int hash_type = strtoul(sel.Mid(sel.Find("(")+1, 1).GetString(), NULL, 10);
-			bool deleted = false;
-			for (HMapCI h_iter=p_tablemap->h$(hash_type)->begin(); h_iter!=p_tablemap->h$(hash_type)->end()  && !deleted; h_iter++)
+			for (HMapCI h_iter=p_tablemap->h$(hash_type)->begin(); h_iter!=p_tablemap->h$(hash_type)->end(); h_iter++)
 			{
 				int start=0;
 				if (h_iter->second.name == sel.Tokenize(" ", start))
@@ -1778,10 +1777,7 @@ void CDlgTableMap::OnBnClickedDelete()
 						Invalidate(false);
 						pDoc->SetModifiedFlag(true);
 					}
-
-					// Exit loop
-					h_iter=p_tablemap->h$(hash_type)->begin();
-					deleted = true;
+					break;
 				}
 			}
 		}
