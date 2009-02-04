@@ -756,7 +756,7 @@ void CScraper::ScrapeName(int chair)
 	// Player name uXname
 	s.Format("u%dname", chair);
 	r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape && p_symbols->user_chair_confirmed() && chair==sym_chair && is_seated)
+	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape)
 	{
 		ProcessRegion(r_iter);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
@@ -876,7 +876,7 @@ void CScraper::ScrapeBalance(int chair)
 	// Player name uXbalance
 	s.Format("u%dbalance", chair);
 	r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape && p_symbols->user_chair_confirmed() && chair==sym_chair && is_seated)
+	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape)
 	{
 		ProcessRegion(r_iter);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
@@ -2241,7 +2241,8 @@ const bool CScraper::IsStringCheck(CString s)
 	if (!s || s == "")
 		return false;
 
-	if (s.MakeLower().Left(5) == "check")
+	if (s.MakeLower().Left(5) == "check" ||
+		s.MakeLower().Left(5) == "cheok")
 	{
 		return true;
 	}
