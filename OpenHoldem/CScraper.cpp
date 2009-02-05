@@ -169,8 +169,10 @@ const bool CScraper::IsCommonAnimation(void)
 // returns true if window has changed and we processed the changes, false otherwise
 int CScraper::DoScrape(void)
 {
-	__HDC_HEADER
+	write_log(3, "Starting Scraper cadence...");
 	
+	__HDC_HEADER
+
 	// Get bitmap of whole window
 	RECT		cr = {0};
 	GetClientRect(pMyMainWnd->attached_hwnd(), &cr);
@@ -192,6 +194,8 @@ int CScraper::DoScrape(void)
 		DeleteDC(hdcCompatible);
 		DeleteDC(hdcScreen);
 		ReleaseDC(pMyMainWnd->attached_hwnd(), hdc);
+
+		write_log(3, "...ending Scraper cadence early (no change).");
 		return NOTHING_CHANGED;
 	}
 
@@ -230,17 +234,31 @@ int CScraper::DoScrape(void)
 	LeaveCriticalSection(&cs_scraper);
 
 	// Common cards
+	write_log(3, "Calling ScrapeCommonCards.");
 	ScrapeCommonCards();
 
 	// Player information
 	for (int i=0; i<=9; i++)
 	{
+		write_log(3, "Calling ScrapePlayerCards, chair %d.", i);
 		ScrapePlayerCards(i);
+	
+		write_log(3, "Calling ScrapeSeated, chair %d.", i);
 		ScrapeSeated(i);
+	
+		write_log(3, "Calling ScrapeActive, chair %d.", i);
 		ScrapeActive(i);
+	
+		write_log(3, "Calling ScrapeDealer, chair %d.", i);
 		ScrapeDealer(i);
+	
+		write_log(3, "Calling ScrapeName, chair %d.", i);
 		ScrapeName(i);
+	
+		write_log(3, "Calling ScrapeBet, chair %d.", i);
 		ScrapeBet(i);
+	
+		write_log(3, "Calling ScrapeBalance, chair %d.", i);
 		ScrapeBalance(i);  // Must come after ScrapeBet, as is dependent on ScrapeBet's results
 
 		if (!IsStringSeated(_seated[i]) && !IsStringActive(_active[i]))
@@ -254,9 +272,16 @@ int CScraper::DoScrape(void)
 		}
 	}
 
+	write_log(3, "Calling ScrapeButtons.");
 	ScrapeButtons();		// Buttons
+
+	write_log(3, "Calling ScrapePots.");
 	ScrapePots();		// Pots
+
+	write_log(3, "Calling ScrapeLimits.");
 	ScrapeLimits();		// limits
+
+	write_log(3, "...ending Scraper cadence, changed: %d", _scrape_something_changed);
 
 	return _scrape_something_changed;
 }
@@ -315,9 +340,13 @@ void CScraper::ScrapeCommonCards()
 			SelectObject(hdcCompatible, old_bitmap);
 
 			if (cardstr!="")
+			{
 				StdDeck_stringToCard((char *) cardstr.GetString(), (int *) &card);
+			}
 			else
+			{
 				card = CARD_NOCARD;
+			}
 
 			EnterCriticalSection(&cs_scraper);
 				if (_card_common_last[i] != card)
@@ -328,6 +357,8 @@ void CScraper::ScrapeCommonCards()
 
 				_card_common[i] = card;
 			LeaveCriticalSection(&cs_scraper);
+
+			write_log(3, "c0cardface%d, result %s", i, cardstr.GetString());
 		}
 
 		// try r$c0cardfaceXrank/r$c0cardfaceXsuit region next
@@ -368,6 +399,8 @@ void CScraper::ScrapeCommonCards()
 
 				_card_common[i] = card;
 			LeaveCriticalSection(&cs_scraper);
+
+			write_log(3, "c0cardface%drank/c0cardface%dsuit, result %s", i, i, cardstr.GetString());
 		}
 	}
 
@@ -426,6 +459,8 @@ void CScraper::ScrapePlayerCards(int chair)
 						_card_player_for_display[j] = card;
 				LeaveCriticalSection(&cs_scraper);
 			}
+
+			write_log(3, "u%dcardface%d, result %s", chair, j, cardstr.GetString());
 		}
 
 		// try r$pXcardfaceY region next
@@ -455,6 +490,8 @@ void CScraper::ScrapePlayerCards(int chair)
 						_card_player_for_display[j] = card;
 				LeaveCriticalSection(&cs_scraper);
 			}
+
+			write_log(3, "p%dcardface%d, result %s", chair, j, cardstr.GetString());
 		}
 
 		// try r$pXcardfaceYrank/r$pXcardfaceYsuit regions next
@@ -498,6 +535,8 @@ void CScraper::ScrapePlayerCards(int chair)
 						_card_player_for_display[j] = card;
 				LeaveCriticalSection(&cs_scraper);
 			}
+
+			write_log(3, "p%dcardface%drank/p%dcardface%dsuit, result %s%s", chair, j, chair, j, rankstr.GetString(), suitstr.GetString());
 		}
 	}
 
@@ -516,11 +555,15 @@ void CScraper::ScrapePlayerCards(int chair)
 			{
 				_card_player[chair][0] = CARD_BACK;
 				_card_player[chair][1] = CARD_BACK;
+
+				write_log(3, "p%dcardback, result CARDBACK", chair);
 			}
 			else
 			{
 				_card_player[chair][0] = CARD_NOCARD;
 				_card_player[chair][1] = CARD_NOCARD;
+
+				write_log(3, "p%dcardback, result NOCARD", chair);
 			}
 
 			if (_card_player_last[chair][0] != _card_player[chair][0] ||
@@ -566,6 +609,8 @@ void CScraper::ScrapeSeated(int chair)
 			if (result!="")
 				_seated[chair] = result;
 		LeaveCriticalSection(&cs_scraper);
+
+		write_log(3, "p%dseated, result %s", chair, result.GetString());
 	}
 
 	// try u region next uXseated,
@@ -583,6 +628,8 @@ void CScraper::ScrapeSeated(int chair)
 			if (result!="")
 				_seated[chair] = result;
 		LeaveCriticalSection(&cs_scraper);
+
+		write_log(3, "u%dseated, result %s", chair, result.GetString());
 	}
 
 	EnterCriticalSection(&cs_scraper);
@@ -626,6 +673,8 @@ void CScraper::ScrapeActive(int chair)
 		EnterCriticalSection(&cs_scraper);
 		_active[chair] = result;
 		LeaveCriticalSection(&cs_scraper);
+
+		write_log(3, "p%dactive, result %s", chair, result.GetString());
 	}
 
 	// try u region next, but only if we didn't get a key result from the p region
@@ -643,6 +692,7 @@ void CScraper::ScrapeActive(int chair)
 		EnterCriticalSection(&cs_scraper);
 		_active[chair] = result;
 		LeaveCriticalSection(&cs_scraper);
+		write_log(3, "u%dactive, result %s", chair, result.GetString());
 	}
 
 	EnterCriticalSection(&cs_scraper);
@@ -688,6 +738,8 @@ void CScraper::ScrapeDealer(int chair)
 
 		if (IsStringDealer(result))
 			found_dealer = true;
+
+		write_log(3, "p%ddealer, result %s", chair, result.GetString());
 	}
 
 	// Dealer button uXdealer
@@ -702,6 +754,8 @@ void CScraper::ScrapeDealer(int chair)
 
 		if (IsStringDealer(result))
 			found_dealer = true;
+
+		write_log(3, "u%ddealer, result %s", chair, result.GetString());
 	}
 
 	EnterCriticalSection(&cs_scraper);
@@ -751,6 +805,8 @@ void CScraper::ScrapeName(int chair)
 
 		if (ret==ERR_GOOD_SCRAPE_GENERAL && text!="")
 			got_new_scrape = true;
+
+		write_log(3, "uname, result %s", text.GetString());
 	}
 
 	// Player name uXname
@@ -765,6 +821,8 @@ void CScraper::ScrapeName(int chair)
 
 		if (ret==ERR_GOOD_SCRAPE_GENERAL && text!="")
 			got_new_scrape = true;
+
+		write_log(3, "u%dname, result %s", chair, text.GetString());
 	}
 
 	// Player name pXname
@@ -779,6 +837,8 @@ void CScraper::ScrapeName(int chair)
 
 		if (ret==ERR_GOOD_SCRAPE_GENERAL && text!="")
 			got_new_scrape = true;
+
+		write_log(3, "p%dname, result %s", chair, text.GetString());
 	}
 
 	EnterCriticalSection(&cs_scraper);
@@ -841,6 +901,8 @@ void CScraper::ScrapeBalance(int chair)
 			{
 				got_new_scrape = true;
 				text = "0";
+
+				write_log(3, "ubalance, result ALLIN");
 			}
 
 			else if (text.MakeLower().Find("out")!=-1)
@@ -849,6 +911,8 @@ void CScraper::ScrapeBalance(int chair)
 				_sitting_out[chair] = true;
 				_active[chair] = "false";
 				LeaveCriticalSection(&cs_scraper);
+
+				write_log(3, "ubalance, result OUT");
 			}
 
 			else
@@ -869,6 +933,8 @@ void CScraper::ScrapeBalance(int chair)
 
 				if (text!="" && IsNumeric(text))
 					got_new_scrape = true;
+
+				write_log(3, "ubalance, result %s", text.GetString());
 			}
 		}
 	}
@@ -889,6 +955,8 @@ void CScraper::ScrapeBalance(int chair)
 			{
 				got_new_scrape = true;
 				text = "0";
+
+				write_log(3, "u%dbalance, result ALLIN", chair);
 			}
 
 			else if (text.MakeLower().Find("out")!=-1)
@@ -897,6 +965,8 @@ void CScraper::ScrapeBalance(int chair)
   				_sitting_out[chair] = true;
 				_active[chair] = "false";
 				LeaveCriticalSection(&cs_scraper);
+
+				write_log(3, "u%dbalance, result OUT", chair);
 			}
 
 			else
@@ -917,6 +987,8 @@ void CScraper::ScrapeBalance(int chair)
 
 				if (text!="" && IsNumeric(text))
 					got_new_scrape = true;
+
+				write_log(3, "u%dbalance, result %s", chair, text.GetString());
 			}
 		}
 	}
@@ -937,6 +1009,8 @@ void CScraper::ScrapeBalance(int chair)
 			{
 				got_new_scrape = true;
 				text = "0";
+
+				write_log(3, "u%dbalance, result ALLIN", chair);
 			}
 
 			else if (text.MakeLower().Find("out")!=-1)
@@ -945,6 +1019,8 @@ void CScraper::ScrapeBalance(int chair)
   				_sitting_out[chair] = true;
 				_active[chair] = "false";
 				LeaveCriticalSection(&cs_scraper);
+
+				write_log(3, "u%dbalance, result OUT", chair);
 			}
 
 			else
@@ -965,6 +1041,8 @@ void CScraper::ScrapeBalance(int chair)
 
 				if (text!="" && IsNumeric(text))
 					got_new_scrape = true;
+
+				write_log(3, "u%dbalance, result %s", chair, text.GetString());
 			}
 		}
 	}
@@ -1026,6 +1104,8 @@ void CScraper::ScrapeBet(int chair)
 			_player_bet[chair] = trans.StringToMoney(text);
 		}
 		LeaveCriticalSection(&cs_scraper);
+
+		write_log(3, "p%dbet, result %s", chair, text.GetString());
 	}
 
 	// uXbet
@@ -1047,6 +1127,8 @@ void CScraper::ScrapeBet(int chair)
 			_player_bet[chair] = trans.StringToMoney(text);
 		}
 		LeaveCriticalSection(&cs_scraper);
+
+		write_log(3, "u%dbet, result %s", chair, text.GetString());
 	}		
 		
 	// pXchip00
@@ -1059,6 +1141,8 @@ void CScraper::ScrapeBet(int chair)
 		_player_bet[chair] = DoChipScrape(r_iter);
 		SelectObject(hdcCompatible, old_bitmap);
 		LeaveCriticalSection(&cs_scraper);
+
+		write_log(3, "p%dchipXY, result %f", chair, _player_bet[chair]);
 	}
 
 	EnterCriticalSection(&cs_scraper);
@@ -1117,6 +1201,8 @@ void CScraper::ScrapeButtons()
 					_scrape_something_changed |= BUTTONSTATE_CHANGED;
 				}
 			LeaveCriticalSection(&cs_scraper);
+
+			write_log(3, "i%dstate, result %s", j, text.GetString());
 		}
 
 		// i86X button state i86Xstate
@@ -1139,6 +1225,8 @@ void CScraper::ScrapeButtons()
 					_scrape_something_changed |= BUTTONSTATE_CHANGED;
 				}
 			LeaveCriticalSection(&cs_scraper);
+
+			write_log(3, "i86%dstate, result %s", j, text.GetString());
 		}
 
 		// Button label
@@ -1158,6 +1246,8 @@ void CScraper::ScrapeButtons()
 				if (text!="")
 					_button_label[j] = text;
 			LeaveCriticalSection(&cs_scraper);
+
+			write_log(3, "i%dlabel, result %s", j, text.GetString());
 		}
 
 		// Second check iXlabelY
@@ -1176,6 +1266,8 @@ void CScraper::ScrapeButtons()
 					if (text!="")
 						_button_label[j] = text;
 				LeaveCriticalSection(&cs_scraper);
+
+				write_log(3, "i%dlabel%d, result %s", j, k, text.GetString());
 			}
 		}
 
@@ -1216,6 +1308,8 @@ void CScraper::ScrapeButtons()
 				_scrape_something_changed |= BUTTONSTATE_CHANGED;
 			}
 		LeaveCriticalSection(&cs_scraper);
+
+		write_log(3, "i86state, result %s", text.GetString());
 	}
 
 	// find handle
@@ -1258,6 +1352,8 @@ void CScraper::ScrapeButtons()
 				_handle_xy = handle_xy;
 			}
 		LeaveCriticalSection(&cs_scraper);
+
+		write_log(3, "i3handle, result %d,%d", handle_xy.x, handle_xy.y);
 			
 		SelectObject(hdcCompatible, old_bitmap);
 	}
@@ -1304,6 +1400,8 @@ void CScraper::ScrapePots()
 					}
 				}
 			LeaveCriticalSection(&cs_scraper);
+
+			write_log(3, "c0pot%d, result %s", j, text.GetString());
 		}
 
 		// r$c0potXchip00_index
@@ -1327,6 +1425,8 @@ void CScraper::ScrapePots()
 					_scrape_something_changed |= POT_CHANGED;
 				}
 			LeaveCriticalSection(&cs_scraper);
+
+			write_log(3, "c0pot%dchipXY, result %f", j, _pot[j]);
 
 			// update the bitmap for second chip position in the first stack
 			s.Format("c0pot%dchip01", j);
@@ -1401,6 +1501,8 @@ void CScraper::ScrapeLimits()
 				_scrape_something_changed |= LIMITS_CHANGED;
 			}
 		LeaveCriticalSection(&cs_scraper);
+
+		write_log(3, "c0istournament, result %s", text.GetString());
 	}
 
 	// r$c0handnumber
@@ -1420,6 +1522,8 @@ void CScraper::ScrapeLimits()
 				got_new_scrape = true;
 			}
 		LeaveCriticalSection(&cs_scraper);
+
+		write_log(3, "c0handnumber, result %s", text.GetString());
 	}
 
 	for (j=0; j<=9; j++)
@@ -1442,6 +1546,8 @@ void CScraper::ScrapeLimits()
 					got_new_scrape = true;
 				}
 			LeaveCriticalSection(&cs_scraper);
+
+			write_log(3, "c0handnumber%d, result %s", j, text.GetString());
 		}
 	}
 
@@ -1459,6 +1565,9 @@ void CScraper::ScrapeLimits()
 			_s_limit_info.limit = _s_lock_blinds.gametype;
 			_s_limit_info.found_limit = true;
 		LeaveCriticalSection(&cs_scraper);
+
+		write_log(3, "Locked blinds, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d", 
+			_s_lock_blinds.sblind, _s_lock_blinds.bblind, _s_lock_blinds.bbet, _s_lock_blinds.ante, _s_lock_blinds.gametype);
 	}
 
 	else
@@ -1489,6 +1598,9 @@ void CScraper::ScrapeLimits()
 				&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_istournament, 
 				&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
 				&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
+
+			write_log(3, "ttlimits, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d", 
+				_s_lock_blinds.sblind, _s_lock_blinds.bblind, _s_lock_blinds.bbet, _s_lock_blinds.ante, _s_lock_blinds.gametype);
 		}
 
 		// s$ttlimitsX - Scrape blinds/stakes/limit info from title text
@@ -1506,6 +1618,9 @@ void CScraper::ScrapeLimits()
 					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_istournament, 
 					&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
 					&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
+
+				write_log(3, "ttlimits%d, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d", j,
+					_s_lock_blinds.sblind, _s_lock_blinds.bblind, _s_lock_blinds.bbet, _s_lock_blinds.ante, _s_lock_blinds.gametype);
 			}
 		}
 
@@ -1526,6 +1641,9 @@ void CScraper::ScrapeLimits()
 					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_istournament, 
 					&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
 					&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
+
+				write_log(3, "c0limits, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d", 
+					_s_lock_blinds.sblind, _s_lock_blinds.bblind, _s_lock_blinds.bbet, _s_lock_blinds.ante, _s_lock_blinds.gametype);
 			}
 		}
 
@@ -1551,6 +1669,9 @@ void CScraper::ScrapeLimits()
 						&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
 						&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
 				}
+
+				write_log(3, "c0limits%d, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d", j,
+					_s_lock_blinds.sblind, _s_lock_blinds.bblind, _s_lock_blinds.bbet, _s_lock_blinds.ante, _s_lock_blinds.gametype);
 			}
 
 			// save what we just scanned through
@@ -1592,6 +1713,8 @@ void CScraper::ScrapeLimits()
 				if (text!="")
 					_s_limit_info.sblind = trans.StringToMoney(text);
 			LeaveCriticalSection(&cs_scraper);
+
+			write_log(3, "c0sblind, result %s", j, text.GetString());
 		}
 
 		// r$c0bblind
@@ -1610,6 +1733,8 @@ void CScraper::ScrapeLimits()
 				if (text!="")
 					_s_limit_info.bblind = trans.StringToMoney(text);
 			LeaveCriticalSection(&cs_scraper);
+
+			write_log(3, "c0bblind, result %s", j, text.GetString());
 		}
 
 		// r$c0bigbet
@@ -1628,6 +1753,8 @@ void CScraper::ScrapeLimits()
 				if (text!="")
 					_s_limit_info.bbet = trans.StringToMoney(text);
 			LeaveCriticalSection(&cs_scraper);
+
+			write_log(3, "c0bigbet, result %s", j, text.GetString());
 		}
 
 		// r$c0ante
@@ -1646,6 +1773,8 @@ void CScraper::ScrapeLimits()
 				if (text!="")
 					_s_limit_info.ante = trans.StringToMoney(text);
 			LeaveCriticalSection(&cs_scraper);
+
+			write_log(3, "c0ante, result %s", j, text.GetString());
 		}
 	}
 
@@ -1990,13 +2119,13 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 	hash_type = r_start->second.transform.GetString()[1] - '0';
 
 	// Bitblt the attached windows bitmap into a HDC
-HDC hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
-HDC hdcCompat = CreateCompatibleDC(hdcScreen);
-RECT rect;
-GetClientRect(pMyMainWnd->attached_hwnd(), &rect);
-HBITMAP attached_bitmap = CreateCompatibleBitmap(hdcScreen, rect.right, rect.bottom);
-HBITMAP	old_bitmap = (HBITMAP) SelectObject(hdcCompat, attached_bitmap);
-BitBlt(hdcCompat, 0, 0, rect.right, rect.bottom, hdc, 0, 0, SRCCOPY);
+	HDC hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
+	HDC hdcCompat = CreateCompatibleDC(hdcScreen);
+	RECT rect;
+	GetClientRect(pMyMainWnd->attached_hwnd(), &rect);
+	HBITMAP attached_bitmap = CreateCompatibleBitmap(hdcScreen, rect.right, rect.bottom);
+	HBITMAP	old_bitmap = (HBITMAP) SelectObject(hdcCompat, attached_bitmap);
+	BitBlt(hdcCompat, 0, 0, rect.right, rect.bottom, hdc, 0, 0, SRCCOPY);
 
 	stop_loop = false;
 	// loop through horizontal stacks
@@ -2090,10 +2219,10 @@ BitBlt(hdcCompat, 0, 0, rect.right, rect.bottom, hdc, 0, 0, SRCCOPY);
 		}
 	}
 
-SelectObject(hdcCompat, old_bitmap);
-DeleteObject(attached_bitmap);
-DeleteDC(hdcCompat);
-DeleteDC(hdcScreen);
+	SelectObject(hdcCompat, old_bitmap);
+	DeleteObject(attached_bitmap);
+	DeleteDC(hdcCompat);
+	DeleteDC(hdcScreen);
 
 	ReleaseDC(pMyMainWnd->attached_hwnd(), hdc);
 	return result;

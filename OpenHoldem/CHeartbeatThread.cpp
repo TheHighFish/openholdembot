@@ -391,7 +391,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			// Calc primary formulas anyway, so main window can display its information correctly
 			// but set final_answer param to false, since we are not actually using this info to
 			// take action
-			write_log(3, "HBT: Calling CalcPrimaryFormulas.");
+			write_log(3, "HBT: Calling CalcPrimaryFormulas without isfinalanswer.");
 			p_symbols->CalcPrimaryFormulas(false);
 		}
 
