@@ -3,20 +3,20 @@
 #include "..\..\dbghelp\dbghelp.h"
 
 #include "OpenHoldem.h"
-
 #include "CSymbols.h"
 #include "CScraper.h"
 #include "CIteratorThread.h"
 #include "CPreferences.h"
 #include "..\CTablemap\CTablemap.h"
-
 #include "inlines/eval.h"
+#include "debug.h"
 
 //#include <vld.h>			// visual leak detector
 
 
 
 FILE *log_fp = NULL;
+CCritSec log_critsec;  // Used to ensure only one thread at a time writes to log file
 
 char * get_time(char * timebuf) 
 {
@@ -347,6 +347,8 @@ void start_log(void)
 	if (log_fp==NULL) 
 	{
         CString fn;
+		CSLock lock(log_critsec);
+
         fn.Format("%s\\oh_%lu.log", _startup_path, theApp._session_id);
 
 		if ((log_fp = _fsopen(fn.GetString(), "a", _SH_DENYWR)) != 0)
@@ -370,6 +372,7 @@ void write_log(int level, char* fmt, ...)
 
     if (log_fp != NULL) 
 	{
+		CSLock lock(log_critsec);
 
         va_start(ap, fmt);
         vsprintf_s(buff, 10000, fmt, ap);
@@ -392,6 +395,7 @@ void write_log_nostamp(int level, char* fmt, ...)
 
     if (log_fp != NULL) 
 	{
+		CSLock lock(log_critsec);
 
         va_start(ap, fmt);
         vsprintf_s(buff, 10000, fmt, ap);
@@ -422,6 +426,8 @@ void write_logautoplay(int level, const char * action)
 
 	if (log_fp != NULL) 
 	{
+		CSLock lock(log_critsec);
+
 		// log$ writing
 		if (prefs.log_symbol_enabled())
 		{

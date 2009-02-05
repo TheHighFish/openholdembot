@@ -81,22 +81,35 @@ void CAutoplayer::DoAutoplayer(void)
 	int				num_buttons_visible = 0;
 	int				delay = 0;
 
+	write_log(3, "Starting Autoplayer cadence...");
+
 	// Check status of "Keyboard" menu item, and engage if necessary
+	write_log(3, "Calling CheckBringKeyboard.");
 	CheckBringKeyboard();
 
 	// Get r$ indices of buttons that are visible
 	num_buttons_visible = GetR$ButtonIndices();
+	write_log(3, "Number of visible buttons: %d", num_buttons_visible);
+
 
 	// Calculate f$play, f$prefold, f$delay and f$chat for use below
+	write_log(3, "Calling CalcSecondaryFormulas.");
 	p_symbols->CalcSecondaryFormulas();
+	write_log(3, "Secondary formulas; f$play: %f", p_symbols->f$play());
+	write_log(3, "Secondary formulas; f$prefold: %f", p_symbols->f$prefold());
+	write_log(3, "Secondary formulas; f$delay: %f", p_symbols->f$delay());
+	write_log(3, "Secondary formulas; f$chat: %f", p_symbols->f$chat());
 
 	// Handle f$play
+	write_log(3, "Calling DoF$play.");
 	DoF$play();
 
 	// Handle i86buttons
+	write_log(3, "Calling DoI86.");
 	DoI86();
 
 	// Handle f$prefold
+	write_log(3, "Calling DoPrefold.");
 	DoPrefold();
 
 	//  2007.02.27 by THF
@@ -108,22 +121,33 @@ void CAutoplayer::DoAutoplayer(void)
 	//	This message will then be processed by the autoplayer,
 	//	when it's time to click the buttons.
 	//
+	write_log(3, "Calling RegisterChatMessage.");
 	RegisterChatMessage(p_symbols->f$chat());
 
 	//  Avoiding unnecessary calls to DoChat(),
 	//	especially mouse movements to the chat box.
 	if ((p_symbols->f$chat() != 0) && IsChatAllowed())
+	{
+		write_log(3, "Calling DoChat.");
 		DoChat();
+	}
 
 	// Get count of stable frames for use a little bit further down
 	x = CountSameScrape();
+	write_log(3, "Number of stable frames: % d", x);
+
 
 	// If iterator thread is still iterating, then return
 	if (iter_vars.iterator_thread_running())
 	{
 		// Calc primary formulas, but not with final answer, so main window can display correctly
+		write_log(3, "Calling CalcPrimaryFormulas without final answer.");
 		p_symbols->CalcPrimaryFormulas(false);
-
+		write_log(3, "Primary formulas; f$alli: %f", p_symbols->f$alli());
+		write_log(3, "Primary formulas; f$swag: %f", p_symbols->f$swag());
+		write_log(3, "Primary formulas; f$rais: %f", p_symbols->f$rais());
+		write_log(3, "Primary formulas; f$call: %f", p_symbols->f$call());
+		write_log(3, "...ending Autoplayer cadence early (iterator still running).");
 		return;
 	}
 
@@ -132,8 +156,13 @@ void CAutoplayer::DoAutoplayer(void)
 	if (num_buttons_visible < 2)
 	{
 		// Calc primary formulas, but not with final answer, so main window can display correctly
+		write_log(3, "Calling CalcPrimaryFormulas without final answer.");
 		p_symbols->CalcPrimaryFormulas(false);
-
+		write_log(3, "Primary formulas; f$alli: %f", p_symbols->f$alli());
+		write_log(3, "Primary formulas; f$swag: %f", p_symbols->f$swag());
+		write_log(3, "Primary formulas; f$rais: %f", p_symbols->f$rais());
+		write_log(3, "Primary formulas; f$call: %f", p_symbols->f$call());
+		write_log(3, "...ending Autoplayer cadence early (buttons visible < 2).");
 		return;
 	}
 
@@ -141,19 +170,29 @@ void CAutoplayer::DoAutoplayer(void)
 	if (!p_symbols->sym()->playing)
 	{
 		// Calc primary formulas, but not with final answer, so main window can display correctly
+		write_log(3, "Calling CalcPrimaryFormulas without final answer.");
 		p_symbols->CalcPrimaryFormulas(false);
-	
+		write_log(3, "Primary formulas; f$alli: %f", p_symbols->f$alli());
+		write_log(3, "Primary formulas; f$swag: %f", p_symbols->f$swag());
+		write_log(3, "Primary formulas; f$rais: %f", p_symbols->f$rais());
+		write_log(3, "Primary formulas; f$call: %f", p_symbols->f$call());
+		write_log(3, "...ending Autoplayer cadence early (notplaying).");
 		return;
 	}
 
-	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return (modified Spektre 2008-04-03)
+	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return
 	delay = p_symbols->f$delay() / prefs.scrape_delay();	// scale f$delay to a number of scrapes
 
 	if (x < (int) prefs.frame_delay() + delay)
 	{
 		// Calc primary formulas, but not with final answer, so main window can display correctly
+		write_log(3, "Calling CalcPrimaryFormulas without final answer.");
 		p_symbols->CalcPrimaryFormulas(false);
-
+		write_log(3, "Primary formulas; f$alli: %f", p_symbols->f$alli());
+		write_log(3, "Primary formulas; f$swag: %f", p_symbols->f$swag());
+		write_log(3, "Primary formulas; f$rais: %f", p_symbols->f$rais());
+		write_log(3, "Primary formulas; f$call: %f", p_symbols->f$call());
+		write_log(3, "...ending Autoplayer cadence early (f$delay).");
 		return;
 	}
 
@@ -161,26 +200,46 @@ void CAutoplayer::DoAutoplayer(void)
 	if (!p_game_state->ProcessThisFrame ())
 	{
 		// Calc primary formulas, but not with final answer, so main window can display correctly
+		write_log(3, "Calling CalcPrimaryFormulas without final answer.");
 		p_symbols->CalcPrimaryFormulas(false);
+		write_log(3, "Primary formulas; f$alli: %f", p_symbols->f$alli());
+		write_log(3, "Primary formulas; f$swag: %f", p_symbols->f$swag());
+		write_log(3, "Primary formulas; f$rais: %f", p_symbols->f$rais());
+		write_log(3, "Primary formulas; f$call: %f", p_symbols->f$call());
+		write_log(3, "...ending Autoplayer cadence early (game state processor says 'stop').");
 		return;
 	}
 
 	// Now that we got through all of the above, we are ready to evaluate the primary formulas
 	// and take the appropriate action
+	write_log(3, "Calling CalcPrimaryFormulas with final answer.");
 	p_symbols->CalcPrimaryFormulas(true);
+	write_log(3, "Primary formulas; f$alli: %f", p_symbols->f$alli());
+	write_log(3, "Primary formulas; f$swag: %f", p_symbols->f$swag());
+	write_log(3, "Primary formulas; f$rais: %f", p_symbols->f$rais());
+	write_log(3, "Primary formulas; f$call: %f", p_symbols->f$call());
 
 	// do swag first since it is the odd one
 	if (p_symbols->f$swag() && !p_symbols->f$alli() && p_scraper->GetButtonState(3)) 
 	{
+		write_log(3, "Calling DoSwag.");
 		DoSwag();
 	}
 	else 
 	{
 		if (p_symbols->f$alli() && p_scraper->GetButtonState(3))
+		{
+			write_log(3, "Calling DoSlider.");
 			DoSlider();
-		else 
+		}
+		else
+		{
+			write_log(3, "Calling DoARCCF.");
 			DoARCCF();
+		}
 	}
+
+	write_log(3, "...ending Autoplayer cadence.");
 }
 
 void CAutoplayer::ResetHand(void) 
@@ -216,151 +275,200 @@ void CAutoplayer::DoSwag(void)
 	POINT			p_null = {-1, -1};
 	RECT			r_null = {-1, -1, -1, -1};
 
+	write_log(3, "Starting DoSwag...");
+
+	// swag regions are hard coded as #3 for now, due to legacy WH standard
 	if (r_edit==p_tablemap->r$()->end())
+	{
+		write_log(3, "...ending DoSwag early (no edit field).");
 		return;
+	}
+	if (!p_scraper->GetButtonState(3))
+	{
+		write_log(3, "...ending DoSwag early (no edit button).");
+		return;
+	}
 
 	::GetCursorPos(&cur_pos);
 
-	// swag buttons are hard coded as #3 for now, due to legacy WH standard
-	if (p_scraper->GetButtonState(3) && r_edit!=p_tablemap->r$()->end())
+	// If we get a lock, do the action
+	if (!_mutex.Lock(500))
+	{
+		write_log(3, "...ending DoSwag early (could not get mutex lock).");
+		return;
+	}
+
+	else
 	{
 
-		// If we get a lock, do the action
-		if (_mutex.Lock(500))
+		RECT rect_edit;
+		rect_edit.left = r_edit->second.left;
+		rect_edit.top = r_edit->second.top;
+		rect_edit.right = r_edit->second.right;
+		rect_edit.bottom = r_edit->second.bottom;
+
+		// TEXT SELECTION
+		if (p_tablemap->swagselectionmethod() == TEXTSEL_DOUBLECLICK)
 		{
+			write_log(3, "Text selection; calling mouse.dll to double click: %d,%d %d,%d", rect_edit.left, rect_edit.top, 
+				rect_edit.right, rect_edit.bottom);
+			(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_edit, MouseLeft, 2, NULL, p_null);
+		}
 
-			RECT rect_edit;
-			rect_edit.left = r_edit->second.left;
-			rect_edit.top = r_edit->second.top;
-			rect_edit.right = r_edit->second.right;
-			rect_edit.bottom = r_edit->second.bottom;
+		else if (p_tablemap->swagselectionmethod() == TEXTSEL_SINGLECLICK)
+		{
+			write_log(3, "Text selection; calling mouse.dll to single click: %d,%d %d,%d", rect_edit.left, rect_edit.top, 
+				rect_edit.right, rect_edit.bottom);
+			(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_edit, MouseLeft, 1, NULL, p_null);
+		}
 
-			// TEXT SELECTION
-			if (p_tablemap->swagselectionmethod() == TEXTSEL_DOUBLECLICK)
-				(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_edit, MouseLeft, 2, NULL, p_null);
+		else if (p_tablemap->swagselectionmethod() == TEXTSEL_CLICKDRAG)
+		{
+			write_log(3, "Text selection; calling mouse.dll to click drag: %d,%d %d,%d", rect_edit.left, rect_edit.top, 
+				rect_edit.right, rect_edit.bottom);
+			(theApp._dll_mouse_click_drag) (pMyMainWnd->attached_hwnd(), rect_edit, NULL, p_null);
+		}
 
-			else if (p_tablemap->swagselectionmethod() == TEXTSEL_SINGLECLICK)
-				(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_edit, MouseLeft, 1, NULL, p_null);
+		else
+		{
+			write_log(3, "...ending DoSwag early (invalid swagselectionmethod).");
+			_mutex.Unlock();
+			return;
+		}
 
-			else if (p_tablemap->swagselectionmethod() == TEXTSEL_CLICKDRAG)
-				(theApp._dll_mouse_click_drag) (pMyMainWnd->attached_hwnd(), rect_edit, NULL, p_null);
+		// Check for stolen focus, and thus misswag
+		if (GetForegroundWindow() != pMyMainWnd->attached_hwnd())
+			lost_focus = true;
 
-			else
+		write_log(3, "Sleeping %dms.", prefs.swag_delay_1());
+		Sleep(prefs.swag_delay_1());
+
+
+
+		// TEXT DELETION
+		if (p_tablemap->swagdeletionmethod() == TEXTDEL_DELETE)
+		{
+			write_log(3, "Text deletion; calling keyboard.dll to press 'delete'");
+			(theApp._dll_keyboard_sendkey) (pMyMainWnd->attached_hwnd(), r_null, VK_DELETE, NULL, p_null);
+		}
+
+		else if (p_tablemap->swagdeletionmethod() == TEXTDEL_BACKSPACE)
+		{
+			write_log(3, "Text deletion; calling keyboard.dll to press 'backspace'");
+			(theApp._dll_keyboard_sendkey) (pMyMainWnd->attached_hwnd(), r_null, VK_BACK, NULL, p_null);
+		}
+
+		else
+		{
+			write_log(3, "...ending DoSwag early (invalid swagdeletionmethod).");
+			_mutex.Unlock();
+			return;
+		}
+
+		// Check for stolen focus, and thus misswag
+		if (GetForegroundWindow() != pMyMainWnd->attached_hwnd())
+			lost_focus = true;
+
+		write_log(3, "Sleeping %dms.", prefs.swag_delay_2());
+		Sleep(prefs.swag_delay_2());
+
+
+
+		// SWAG AMOUNT ENTRY
+		CString swag_amt;
+		if (f_swag != (int) f_swag)
+			swag_amt.Format("%.2f", f_swag);
+		else
+			swag_amt.Format("%.0f", f_swag);
+
+		write_log(3, "Swag amount; calling keyboard.dll to swag: %s %d,%d %d,%d", swag_amt, rect_edit.left, rect_edit.top, 
+				rect_edit.right, rect_edit.bottom);
+		(theApp._dll_keyboard_sendstring) (pMyMainWnd->attached_hwnd(), rect_edit, swag_amt, prefs.swag_use_comma(), NULL, p_null);
+
+		// Check for stolen focus, and thus misswag
+		if (GetForegroundWindow() != pMyMainWnd->attached_hwnd())
+			lost_focus = true;
+
+		write_log(3, "Sleeping %dms.", prefs.swag_delay_3());
+		Sleep(prefs.swag_delay_3());
+
+
+
+		// BET CONFIRMATION ACTION
+		if (!lost_focus || !prefs.focus_detect())
+		{
+			if (p_tablemap->swagconfirmationmethod() == BETCONF_ENTER)
 			{
-				_mutex.Unlock();
-				return;
+				write_log(3, "Confirmation; calling keyboard.dll to press 'Enter'");					
+				(theApp._dll_keyboard_sendkey) (pMyMainWnd->attached_hwnd(), r_null, VK_RETURN, hwnd_focus, cur_pos);
 			}
 
-			// Check for stolen focus, and thus misswag
-			if (GetForegroundWindow() != pMyMainWnd->attached_hwnd())
-				lost_focus = true;
-
-			Sleep(prefs.swag_delay_1());
-
-
-
-			// TEXT DELETION
-			if (p_tablemap->swagdeletionmethod() == TEXTDEL_DELETE)
-				(theApp._dll_keyboard_sendkey) (pMyMainWnd->attached_hwnd(), r_null, VK_DELETE, NULL, p_null);
-
-			else if (p_tablemap->swagdeletionmethod() == TEXTDEL_BACKSPACE)
-				(theApp._dll_keyboard_sendkey) (pMyMainWnd->attached_hwnd(), r_null, VK_BACK, NULL, p_null);
-
-			else
+			else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET &&
+					 (_rais_but!=p_tablemap->r$()->end() || r_button!=p_tablemap->r$()->end()) )
 			{
-				_mutex.Unlock();
-				return;
-			}
+				RECT rect_button;
 
-			// Check for stolen focus, and thus misswag
-			if (GetForegroundWindow() != pMyMainWnd->attached_hwnd())
-				lost_focus = true;
-
-			Sleep(prefs.swag_delay_2());
-
-
-
-			// SWAG AMOUNT ENTRY
-			CString swag_amt;
-			if (f_swag != (int) f_swag)
-				swag_amt.Format("%.2f", f_swag);
-			else
-				swag_amt.Format("%.0f", f_swag);
-
-			(theApp._dll_keyboard_sendstring) (pMyMainWnd->attached_hwnd(), rect_edit, swag_amt, prefs.swag_use_comma(), NULL, p_null);
-
-			// Check for stolen focus, and thus misswag
-			if (GetForegroundWindow() != pMyMainWnd->attached_hwnd())
-				lost_focus = true;
-
-			Sleep(prefs.swag_delay_3());
-
-
-
-			// BET CONFIRMATION ACTION
-			if (!lost_focus || !prefs.focus_detect())
-			{
-				if (p_tablemap->swagconfirmationmethod() == BETCONF_ENTER)
+				// use i3button region if it exists, otherwise use the bet/raise button region
+				if (r_button!=p_tablemap->r$()->end())
 				{
-					(theApp._dll_keyboard_sendkey) (pMyMainWnd->attached_hwnd(), r_null, VK_RETURN, hwnd_focus, cur_pos);
+					rect_button.left = r_button->second.left;
+					rect_button.top = r_button->second.top;
+					rect_button.right = r_button->second.right;
+					rect_button.bottom = r_button->second.bottom;
 				}
-
-				else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET &&
-						 (_rais_but!=p_tablemap->r$()->end() || r_button!=p_tablemap->r$()->end()) )
-				{
-					RECT rect_button;
-
-					// use i3button region if it exists, otherwise use the bet/raise button region
-					if (r_button!=p_tablemap->r$()->end())
-					{
-						rect_button.left = r_button->second.left;
-						rect_button.top = r_button->second.top;
-						rect_button.right = r_button->second.right;
-						rect_button.bottom = r_button->second.bottom;
-					}
-					else
-					{
-						rect_button.left = _rais_but->second.left;
-						rect_button.top = _rais_but->second.top;
-						rect_button.right = _rais_but->second.right;
-						rect_button.bottom = _rais_but->second.bottom;
-					}
-
-					if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
-						(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_button, MouseLeft, 2, hwnd_focus, cur_pos);
-					else
-						(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_button, MouseLeft, 1, hwnd_focus, cur_pos);
-				}
-
 				else
 				{
-					_mutex.Unlock();
-					return;
+					rect_button.left = _rais_but->second.left;
+					rect_button.top = _rais_but->second.top;
+					rect_button.right = _rais_but->second.right;
+					rect_button.bottom = _rais_but->second.bottom;
 				}
 
-				// record didswag/prevaction
-				int sym_br = (int) p_symbols->sym()->br;
-
-				set_didswag(4, p_symbols->sym()->didswag[4] + 1);
-				set_didswag(sym_br-1, p_symbols->sym()->didswag[sym_br-1] + 1);
-				set_prevaction(PREVACT_SWAG);
-
-				p_symbols->UpdateAutoplayerInfo();
-
-				// reset elapsedauto symbol
-				time_t my_time_t;
-				time(&my_time_t);
-				p_symbols->set_elapsedautohold(my_time_t);
-
-				p_heartbeat_thread->set_replay_recorded_this_turn(false);
-
-				// log it
-				write_logautoplay(1, "SWAG");
+				if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
+				{
+					write_log(3, "Confirmation; calling mouse.dll to double click bet button: %d,%d %d,%d", 
+						rect_button.left, rect_button.top, rect_button.right, rect_button.bottom);					
+					(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_button, MouseLeft, 2, hwnd_focus, cur_pos);
+				}
+				else
+				{
+					write_log(3, "Confirmation; calling mouse.dll to single click bet button: %d,%d %d,%d", 
+						rect_button.left, rect_button.top, rect_button.right, rect_button.bottom);					
+					(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_button, MouseLeft, 1, hwnd_focus, cur_pos);
+				}
 			}
 
-			_mutex.Unlock();
+			else
+			{
+				write_log(3, "...ending DoSwag early (invalid swagconfirmationmethod).");
+				_mutex.Unlock();
+				return;
+			}
+
+			// record didswag/prevaction
+			int sym_br = (int) p_symbols->sym()->br;
+
+			set_didswag(4, p_symbols->sym()->didswag[4] + 1);
+			set_didswag(sym_br-1, p_symbols->sym()->didswag[sym_br-1] + 1);
+			set_prevaction(PREVACT_SWAG);
+
+			p_symbols->UpdateAutoplayerInfo();
+
+			// reset elapsedauto symbol
+			time_t my_time_t;
+			time(&my_time_t);
+			p_symbols->set_elapsedautohold(my_time_t);
+
+			p_heartbeat_thread->set_replay_recorded_this_turn(false);
+
+			// log it
+			write_logautoplay(1, "SWAG");
 		}
+
+		_mutex.Unlock();
 	}
+
+	write_log(3, "...ending DoSwag, 'didswag' now: %d", p_symbols->sym()->didswag[4]);
 }
 
 void CAutoplayer::DoARCCF(void) 
@@ -374,6 +482,8 @@ void CAutoplayer::DoARCCF(void)
 	double			rais = p_symbols->f$rais();
 	double			call = p_symbols->f$call();
 	int				sym_myturnbits = (int) p_symbols->sym()->myturnbits;
+
+	write_log(3, "Starting DoARCCF...");
 
 	::GetCursorPos(&cur_pos);
 
@@ -389,6 +499,7 @@ void CAutoplayer::DoARCCF(void)
 		r.right = _alli_but->second.right;
 		r.bottom =_alli_but->second.bottom;
 		do_click = 4;
+		write_log(3, "Found valid f$alli formula/allin button combination.");
 	}
 
 	// RAISE
@@ -399,6 +510,7 @@ void CAutoplayer::DoARCCF(void)
 		r.right = _rais_but->second.right;
 		r.bottom =_rais_but->second.bottom;
 		do_click = 3;
+		write_log(3, "Found valid f$rais formula/raise button combination.");
 	}
 
 	// CALL
@@ -409,6 +521,7 @@ void CAutoplayer::DoARCCF(void)
 		r.right = _call_but->second.right;
 		r.bottom =_call_but->second.bottom;
 		do_click = 2;
+		write_log(3, "Found valid f$call formula/call button combination.");
 	}
 
 	// CHECK
@@ -421,6 +534,7 @@ void CAutoplayer::DoARCCF(void)
 		r.right = _chec_but->second.right;
 		r.bottom =_chec_but->second.bottom;
 		do_click = 1;
+		write_log(3, "Found valid check button (all primary formulas = 0).");
 	}
 
 	// FOLD
@@ -433,18 +547,37 @@ void CAutoplayer::DoARCCF(void)
 		r.right = _fold_but->second.right;
 		r.bottom =_fold_but->second.bottom;
 		do_click = 0;
+		write_log(3, "Found valid fold button (all primary formulas = 0).");
 	}
 
-	if (do_click>=0)
+	if (do_click<0)
+	{
+		write_log(3, "...ending DoARCCF early (no relevant primary formula/available button combination).");
+		return;
+	}
+
+	else
 	{
 		// If we get a lock, do the action
-		if (_mutex.Lock(500))
+		if (!_mutex.Lock(500))
+		{
+			write_log(3, "...ending DoARCCF early (could not get mutex lock).");
+			return;
+		}
+
+		else
 		{
 
 			if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
+			{
+				write_log(3, "Calling mouse.dll to double click: %d,%d %d,%d", r.left, r.top, r.right, r.bottom);
 				(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), r, MouseLeft, 2, hwnd_focus, cur_pos);
+			}
 			else
+			{
+				write_log(3, "Calling mouse.dll to single click: %d,%d %d,%d", r.left, r.top, r.right, r.bottom);
 				(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), r, MouseLeft, 1, hwnd_focus, cur_pos);
+			}
 			
 			_mutex.Unlock();
 
@@ -495,6 +628,9 @@ void CAutoplayer::DoARCCF(void)
 			p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		}
 	}
+
+	write_log(3, "...ending DoARCCF, 'didrais'/'didcall'/'didchec' now: %d", 
+		p_symbols->sym()->didrais[4], p_symbols->sym()->didcall[4], p_symbols->sym()->didchec[4]);
 }
 
 void CAutoplayer::DoSlider(void) 
@@ -510,6 +646,8 @@ void CAutoplayer::DoSlider(void)
 	RMapCI			r_button = p_tablemap->r$()->find("i3button");
 	POINT			p_null = {-1, -1};
 	RECT			r_null = {-1, -1, -1, -1};
+
+	write_log(3, "Starting DoSlider...");
 
 	::GetCursorPos(&cur_pos);
 
@@ -533,15 +671,16 @@ void CAutoplayer::DoSlider(void)
 		r.right = p_scraper->handle_xy().x + (slider->second.right - slider->second.left);
 		r.bottom = r.top;		
 		
-		write_log(1, "*** Jam from %d,%d to %d,%d \n", r.left, r.top, r.right, r.bottom);
-
+		write_log(1, "Calling mouse.dll to jam from %d,%d to %d,%d", r.left, r.top, r.right, r.bottom);
 		(theApp._dll_mouse_click_drag) (pMyMainWnd->attached_hwnd(), r, NULL, p_null);
 
+		write_log(3, "Sleeping %dms.", prefs.swag_delay_3());
 		Sleep(prefs.swag_delay_3());
 
 		// Click confirmation button
 		if (p_tablemap->swagconfirmationmethod() == BETCONF_ENTER)
 		{
+			write_log(3, "Confirmation; calling keyboard.dll to press 'Enter'");
 			(theApp._dll_keyboard_sendkey) (pMyMainWnd->attached_hwnd(), r_null, VK_RETURN, hwnd_focus, cur_pos);
 		}
 
@@ -577,14 +716,29 @@ void CAutoplayer::DoSlider(void)
 			}
 
 			if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
+			{
+				write_log(3, "Confirmation; calling mouse.dll to double click bet button: %d,%d %d,%d", 
+						rect_button.left, rect_button.top, rect_button.right, rect_button.bottom);	
 				(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_button, MouseLeft, 2, hwnd_focus, cur_pos);
+			}
 			else
+			{
+				write_log(3, "Confirmation; calling mouse.dll to single click bet button: %d,%d %d,%d", 
+						rect_button.left, rect_button.top, rect_button.right, rect_button.bottom);	
 				(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_button, MouseLeft, 1, hwnd_focus, cur_pos);
+			}
 		}
 
-		write_logautoplay(1, "JAM");
+		else
+		{
+			write_log(3, "...ending DoSlider early (invalid swagconfirmationmethod).");
+			_mutex.Unlock();
+			return;
+		}
 
-		write_log(1, "*** Jam complete \n",r.left, r.top, r.right, r.bottom);
+
+		write_logautoplay(1, "JAM");
+		write_log(1, "Jam complete: ", r.left, r.top, r.right, r.bottom);
 
 		// reset elapsedauto symbol
 		time_t my_time_t;
@@ -593,6 +747,8 @@ void CAutoplayer::DoSlider(void)
 	}
 
 	_mutex.Unlock();
+
+	write_log(3, "...ending DoSlider.");
 }
 
 void CAutoplayer::DoPrefold(void) 
@@ -601,6 +757,8 @@ void CAutoplayer::DoPrefold(void)
 	POINT			cur_pos = {0};
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 	double			prefold = p_symbols->f$prefold();
+
+	write_log(3, "Starting DoPrefold...");
 
 	::GetCursorPos(&cur_pos);
 
@@ -620,6 +778,8 @@ void CAutoplayer::DoPrefold(void)
 	// If we get a lock, do the action
 	if (_mutex.Lock(500))
 	{
+		write_log(3, "Confirmation; calling mouse.dll to single click prefold button: %d,%d %d,%d", r.left, r.top, r.right, r.bottom);	
+
 		(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), r, MouseLeft, 1, hwnd_focus, cur_pos);
 
 		_mutex.Unlock();
@@ -636,6 +796,8 @@ void CAutoplayer::DoPrefold(void)
 
 		write_logautoplay(1, "FOLD");
 	}
+
+	write_log(3, "...ending DoPrefold.");
 }
 
 const int CAutoplayer::CountSameScrape(void) 
@@ -1034,6 +1196,8 @@ void CAutoplayer::DoF$play(void)
 	double			f_play = p_symbols->f$play();
 	RECT			r = {0};
 
+	write_log(3, "Starting DoF$play...");
+
 	::GetCursorPos(&cur_pos);
 
 	do_click = false;
@@ -1047,6 +1211,7 @@ void CAutoplayer::DoF$play(void)
 		r.bottom = _leave_but->second.bottom;
 
 		do_click = true;
+		write_log(3, "Found valid f$play (leave) / leave button combination.");
 	}
 
 	// no action
@@ -1077,6 +1242,7 @@ void CAutoplayer::DoF$play(void)
 		}
 
 		do_click = true;
+		write_log(3, "Found valid f$play (sitout) / sitout button combination.");
 	}
 
 	// sit in
@@ -1101,10 +1267,11 @@ void CAutoplayer::DoF$play(void)
 		}
 
 		do_click = true;
+		write_log(3, "Found valid f$play (sitin) / sitin button combination.");
 	}
 
 	// Autopost
-	if (f_play==1 && _autopost_but!=p_tablemap->r$()->end() && _autopost_state==false)
+	else if (f_play==1 && _autopost_but!=p_tablemap->r$()->end() && _autopost_state==false)
 	{
 		r.left = _autopost_but->second.left;
 		r.top = _autopost_but->second.top;
@@ -1112,6 +1279,7 @@ void CAutoplayer::DoF$play(void)
 		r.bottom = _autopost_but->second.bottom;
 
 		do_click = true;
+		write_log(3, "Found valid f$play (sitin) / autopost button combination.");
 	}
 
 	if (do_click)
@@ -1119,6 +1287,7 @@ void CAutoplayer::DoF$play(void)
 		// If we get a lock, do the action
 		if (_mutex.Lock(500)) 
 		{
+			write_log(3, "Calling mouse.dll to single click button: %d,%d %d,%d", r.left, r.top, r.right, r.bottom);	
 			(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), r, MouseLeft, 1, hwnd_focus, cur_pos);
 
 			_mutex.Unlock();
@@ -1129,6 +1298,8 @@ void CAutoplayer::DoF$play(void)
 			p_symbols->set_elapsedautohold(my_time_t);
 		}
 	}
+
+	write_log(3, "...ending DoF$play.");
 }
 
 void CAutoplayer::DoI86(void) 
@@ -1139,6 +1310,8 @@ void CAutoplayer::DoI86(void)
 	POINT			cur_pos = {0};
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 	RECT			r;
+
+	write_log(3, "Starting DoI86...");
 
 	::GetCursorPos(&cur_pos);
 
@@ -1152,6 +1325,7 @@ void CAutoplayer::DoI86(void)
 		r.bottom = _i86_but->second.bottom;
 
 		do_click = true;
+		write_log(3, "Found valid i86 button.");
 	}
 
 	else
@@ -1166,7 +1340,8 @@ void CAutoplayer::DoI86(void)
 				r.bottom = _i86X_but[i]->second.bottom;
 
 				do_click = true;
-				i = 10;
+				write_log(3, "Found valid i86 (%d) button.", i);
+				break;
 			}
 		}
 	}
@@ -1176,6 +1351,7 @@ void CAutoplayer::DoI86(void)
 		// If we get a lock, do the action
 		if (_mutex.Lock(500))
 		{
+			write_log(3, "Calling mouse.dll to single click button: %d,%d %d,%d", r.left, r.top, r.right, r.bottom);	
 			(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), r, MouseLeft, 1, hwnd_focus, cur_pos);
 
 			_mutex.Unlock();
@@ -1186,4 +1362,6 @@ void CAutoplayer::DoI86(void)
 			p_symbols->set_elapsedautohold(my_time_t);
 		}
 	}
+
+	write_log(3, "...ending DoI86.");
 }
