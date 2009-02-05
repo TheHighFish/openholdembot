@@ -21,13 +21,10 @@
 	DeleteDC(hdcScreen); \
 	ReleaseDC(pMyMainWnd->attached_hwnd(), hdc);
 
-CScraper			*p_scraper = NULL;
-CRITICAL_SECTION	CScraper::cs_scraper;
+CScraper *p_scraper = NULL;
 
 CScraper::CScraper(void)
 {
-	InitializeCriticalSectionAndSpinCount(&cs_scraper, 4000);
-
 	ClearScrapeAreas();
 
 	_s_lock_blinds.blinds_are_locked = false;
@@ -35,97 +32,92 @@ CScraper::CScraper(void)
 
 CScraper::~CScraper(void)
 {
-	DeleteCriticalSection(&cs_scraper);
 }
 
 void CScraper::ClearScrapeAreas(void)
 {
-	EnterCriticalSection(&cs_scraper);
+	int i=0;
 
-		int i;
+	for (i=0; i<=4; i++)
+		set_card_common(i, CARD_NOCARD);
 
-		for (i=0; i<=4; i++)
-			_card_common[i] = CARD_NOCARD;
+	for (i=0; i<=9; i++)
+	{
+		set_card_player(i, 0, CARD_NOCARD);
+		set_card_player(i, 1, CARD_NOCARD);
+		set_seated(i, "false");
+		set_active(i, "false");
+		set_dealer(i, false);
+		set_player_bet(i, 0.0);
+		set_player_name(i, "");
+		set_name_good_scrape(i, false);
+		set_player_balance(i, 0.0);
+		set_balance_good_scrape(i, false);
+		set_i86X_button_state(i, "false");
+		set_button_state(i, "false");
+		set_button_label(i, "");
+		set_pot(i, 0.);
+	}
+	set_i86_button_state("false");
 
-		for (i=0; i<=9; i++)
-		{
-			_card_player[i][0] = CARD_NOCARD;
-			_card_player[i][1] = CARD_NOCARD;
-			_seated[i] = "false";
-			_active[i] = "false";
-			_dealer[i] = false;
-			_player_bet[i] = 0.0;
-			_player_name[i] = "";
-			_name_good_scrape[i] = false;
-			_player_balance[i] = 0.0;
-			_balance_good_scrape[i] = false;
-			_i86X_button_state[i] = "false";
-			_button_state[i] = "false";
-			_button_label[i] = "";
-			_pot[i] = 0.;
-		}
-		_i86_button_state = "false";
+	set_button_label(0, "fold");
+	set_button_label(1, "call");
+	set_button_label(2, "raise");
+	set_button_label(3, "allin");
 
-		_button_label[0] = "fold";
-		_button_label[1] = "call";
-		_button_label[2] = "raise";
-		_button_label[3] = "allin";
+	set_istournament(false);
+	set_handnumber(0);
+	set_sblind(0);
+	set_bblind(0);
+	set_bbet(0);
+	set_ante(0);
+	set_sb_bb(0);
+	set_bb_BB(0);
+	set_limit(-1);
+	set_found_handnumber(false);
+	set_found_sblind(false);
+	set_found_bblind(false);
+	set_found_bbet(false);
+	set_found_ante(false);
+	set_found_limit(false);
+	set_found_sb_bb(false);
+	set_found_bb_BB(false);
 
-		_s_limit_info.istournament = false;
-		_s_limit_info.handnumber = 0;
-		_s_limit_info.sblind = 0;
-		_s_limit_info.bblind = 0;
-		_s_limit_info.bbet = 0;
-		_s_limit_info.ante = 0;
-		_s_limit_info.sb_bb = 0;
-		_s_limit_info.bb_BB = 0;
-		_s_limit_info.limit = -1;
-		_s_limit_info.found_handnumber = false;
-		_s_limit_info.found_sblind = false;
-		_s_limit_info.found_bblind = false;
-		_s_limit_info.found_bbet = false;
-		_s_limit_info.found_ante = false;
-		_s_limit_info.found_limit = false;
-		_s_limit_info.found_sb_bb = false;
-		_s_limit_info.found_bb_BB = false;
+	set_card_player_for_display(0, CARD_NOCARD);
+	set_card_player_for_display(1, CARD_NOCARD);
 
-		_card_player_for_display[0] = CARD_NOCARD;
-		_card_player_for_display[1] = CARD_NOCARD;
+	// change detection
+	_ucf_last=false;
+	for (i=0; i<=4; i++)
+		_card_common_last[i]=CARD_NOCARD;
 
-		// change detection
-		_ucf_last=false;
-		for (i=0; i<=4; i++)
-			_card_common_last[i]=CARD_NOCARD;
+	for (i=0; i<=9; i++)
+	{
+		_card_player_last[i][0]=CARD_NOCARD;
+		_card_player_last[i][1]=CARD_NOCARD;
+		_seated_last[i] = "false";
+		_active_last[i] = "false";
+		_dealer_last[i] = false;
+		_name_last[i]="";
+		_balance_last[i]=0;
+		_playerbet_last[i]=0;
+		_button_state_last[i]="";
+		_i86X_button_state_last[i]="";
+		_button_label_last[i]="";
+		_pot_last[i]=0;
+	}
 
-		for (i=0; i<=9; i++)
-		{
-			_card_player_last[i][0]=CARD_NOCARD;
-			_card_player_last[i][1]=CARD_NOCARD;
-			_seated_last[i] = "false";
-			_active_last[i] = "false";
-			_dealer_last[i] = false;
-			_name_last[i]="";
-			_balance_last[i]=0;
-			_playerbet_last[i]=0;
-			_button_state_last[i]="";
-			_i86X_button_state_last[i]="";
-			_button_label_last[i]="";
-			_pot_last[i]=0;
-		}
-
-		_i86_button_state_last = "";
-		_istournament_last = false;
-		_limit_last=0;
-		_sblind_last=0;
-		_bblind_last=0;
-		_sb_bb_last=0;
-		_bb_BB_last=0;
-		_bbet_last=0;
-		_ante_last=0;
-		_handnumber_last=0;
-		strcpy_s(_title_last, 512, "");
-
-	LeaveCriticalSection(&cs_scraper);
+	_i86_button_state_last = "";
+	_istournament_last = false;
+	_limit_last=0;
+	_sblind_last=0;
+	_bblind_last=0;
+	_sb_bb_last=0;
+	_bb_BB_last=0;
+	_bbet_last=0;
+	_ante_last=0;
+	_handnumber_last=0;
+	strcpy_s(_title_last, 512, "");
 }
 
 // returns true if common cards are in the middle of an animation
@@ -202,17 +194,16 @@ int CScraper::DoScrape(void)
 	// Copy into "last" title
 	if (strcmp(_title, _title_last)!=0)
 	{
-		EnterCriticalSection(&cs_scraper);
-			strcpy_s(_title_last, 512, _title);
-			_s_limit_info.found_handnumber = false;
-			_s_limit_info.found_sblind = false;
-			_s_limit_info.found_bblind = false;
-			_s_limit_info.found_bbet = false;
-			_s_limit_info.found_ante = false;
-			_s_limit_info.found_sb_bb = false;
-			_s_limit_info.found_bb_BB = false;
-			_s_limit_info.found_limit = false;
-		LeaveCriticalSection(&cs_scraper);
+		strcpy_s(_title_last, 512, _title);
+
+		set_found_handnumber(false);
+		set_found_sblind(false);
+		set_found_bblind(false);
+		set_found_bbet(false);
+		set_found_ante(false);
+		set_found_sb_bb(false);
+		set_found_bb_BB(false);
+		set_found_limit(false);
 
 		p_symbols->set_reset_stakes(true);
 	}
@@ -229,9 +220,7 @@ int CScraper::DoScrape(void)
 
 	// flag for detecting if anything useful has changed - used downstream to decide whether or not to
 	// update symbols, etc.
-	EnterCriticalSection(&cs_scraper);
 	_scrape_something_changed = NOTHING_CHANGED;
-	LeaveCriticalSection(&cs_scraper);
 
 	// Common cards
 	write_log(3, "Calling ScrapeCommonCards.");
@@ -263,12 +252,10 @@ int CScraper::DoScrape(void)
 
 		if (!IsStringSeated(_seated[i]) && !IsStringActive(_active[i]))
 		{
-			EnterCriticalSection(&cs_scraper);
-				_player_name[i] = "";
-				_name_good_scrape[i] = false;
-				_player_balance[i] = 0;
-				_balance_good_scrape[i] = false;
-			LeaveCriticalSection(&cs_scraper);
+			set_player_name(i, "");
+			set_name_good_scrape(i, false);
+			set_player_balance(i, 0);
+			set_balance_good_scrape(i, false);
 		}
 	}
 
@@ -348,15 +335,13 @@ void CScraper::ScrapeCommonCards()
 				card = CARD_NOCARD;
 			}
 
-			EnterCriticalSection(&cs_scraper);
-				if (_card_common_last[i] != card)
-				{
-					_card_common_last[i] = card;
-					_scrape_something_changed |= COM_CARD_CHANGED;
-				}
+			if (_card_common_last[i] != card)
+			{
+				_card_common_last[i] = card;
+				_scrape_something_changed |= COM_CARD_CHANGED;
+			}
 
-				_card_common[i] = card;
-			LeaveCriticalSection(&cs_scraper);
+			set_card_common(i, card);
 
 			write_log(3, "c0cardface%d, result %s", i, cardstr.GetString());
 		}
@@ -390,15 +375,13 @@ void CScraper::ScrapeCommonCards()
 				StdDeck_stringToCard((char *) cardstr.GetString(), (int *) &card);
 			}
 
-			EnterCriticalSection(&cs_scraper);
-				if (_card_common_last[i] != card)
-				{
-					_card_common_last[i] = card;
-					_scrape_something_changed |= COM_CARD_CHANGED;
-				}
+			if (_card_common_last[i] != card)
+			{
+				_card_common_last[i] = card;
+				_scrape_something_changed |= COM_CARD_CHANGED;
+			}
 
-				_card_common[i] = card;
-			LeaveCriticalSection(&cs_scraper);
+			set_card_common(i, card);
 
 			write_log(3, "c0cardface%drank/c0cardface%dsuit, result %s", i, i, cardstr.GetString());
 		}
@@ -409,7 +392,6 @@ void CScraper::ScrapeCommonCards()
 
 void CScraper::ScrapePlayerCards(int chair)
 {
-	__HDC_HEADER
 	unsigned int		card = CARD_NOCARD;
 	bool				got_new_scrape = false;
 	CString				cardstr = "", rankstr = "", suitstr = "";
@@ -419,10 +401,9 @@ void CScraper::ScrapePlayerCards(int chair)
 
 	// Check for bad parameters
 	if (chair < 0 || chair >= p_tablemap->nchairs())
-	{
-		__HDC_FOOTER
 		return;
-	}
+
+	__HDC_HEADER
 
 	int sym_userchair = (int) p_symbols->sym()->userchair;
 
@@ -446,18 +427,16 @@ void CScraper::ScrapePlayerCards(int chair)
 			{
 				StdDeck_stringToCard((char *) cardstr.GetString(), (int *) &card);
 
-				EnterCriticalSection(&cs_scraper);
-					if (_card_player_last[chair][j] != card)
-					{
-						_card_player_last[chair][j] = card;
-						_scrape_something_changed |= PL_CARD_CHANGED;
-					}
+				if (_card_player_last[chair][j] != card)
+				{
+					_card_player_last[chair][j] = card;
+					_scrape_something_changed |= PL_CARD_CHANGED;
+				}
 
-					_card_player[chair][j] = card;
+				set_card_player(chair, j, card);
 
-					if (chair==sym_userchair)
-						_card_player_for_display[j] = card;
-				LeaveCriticalSection(&cs_scraper);
+				if (chair==sym_userchair)
+					set_card_player_for_display(j, card);
 			}
 
 			write_log(3, "u%dcardface%d, result %s", chair, j, cardstr.GetString());
@@ -477,18 +456,16 @@ void CScraper::ScrapePlayerCards(int chair)
 			{
 				StdDeck_stringToCard((char *) cardstr.GetString(), (int *) &card);
 
-				EnterCriticalSection(&cs_scraper);
-					if (_card_player_last[chair][j] != card)
-					{
-						_card_player_last[chair][j] = card;
-						_scrape_something_changed |= PL_CARD_CHANGED;
-					}
+				if (_card_player_last[chair][j] != card)
+				{
+					_card_player_last[chair][j] = card;
+					_scrape_something_changed |= PL_CARD_CHANGED;
+				}
 
-					_card_player[chair][j] = card;
+				set_card_player(chair, j, card);
 
-					if (chair==sym_userchair)
-						_card_player_for_display[j] = card;
-				LeaveCriticalSection(&cs_scraper);
+				if (chair==sym_userchair)
+					set_card_player_for_display(j,  card);
 			}
 
 			write_log(3, "p%dcardface%d, result %s", chair, j, cardstr.GetString());
@@ -522,18 +499,16 @@ void CScraper::ScrapePlayerCards(int chair)
 				cardstr = rankstr + suitstr;
 				StdDeck_stringToCard((char *) cardstr.GetString(), (int *) &card);
 
-				EnterCriticalSection(&cs_scraper);
-					if (_card_player_last[chair][j] != card)
-					{
-						_card_player_last[chair][j] = card;
-						_scrape_something_changed |= PL_CARD_CHANGED;
-					}
+				if (_card_player_last[chair][j] != card)
+				{
+					_card_player_last[chair][j] = card;
+					_scrape_something_changed |= PL_CARD_CHANGED;
+				}
 
-					_card_player[chair][j] = card;
+				set_card_player(chair, j, card);
 
-					if (chair==sym_userchair)
-						_card_player_for_display[j] = card;
-				LeaveCriticalSection(&cs_scraper);
+				if (chair==sym_userchair)
+					set_card_player_for_display(j, card);
 			}
 
 			write_log(3, "p%dcardface%drank/p%dcardface%dsuit, result %s%s", chair, j, chair, j, rankstr.GetString(), suitstr.GetString());
@@ -550,37 +525,34 @@ void CScraper::ScrapePlayerCards(int chair)
 		trans.DoTransform(r_iter1, hdcCompatible, &cardstr);
 		SelectObject(hdcCompatible, old_bitmap);
 
-		EnterCriticalSection(&cs_scraper);
-			if (IsStringCardback(cardstr))
-			{
-				_card_player[chair][0] = CARD_BACK;
-				_card_player[chair][1] = CARD_BACK;
+		if (IsStringCardback(cardstr))
+		{
+			set_card_player(chair, 0, CARD_BACK);
+			set_card_player(chair, 1, CARD_BACK);
 
-				write_log(3, "p%dcardback, result CARDBACK", chair);
-			}
-			else
-			{
-				_card_player[chair][0] = CARD_NOCARD;
-				_card_player[chair][1] = CARD_NOCARD;
+			write_log(3, "p%dcardback, result CARDBACK", chair);
+		}
+		else
+		{
+			set_card_player(chair, 0, CARD_NOCARD);
+			set_card_player(chair, 1, CARD_NOCARD);
 
-				write_log(3, "p%dcardback, result NOCARD", chair);
-			}
+			write_log(3, "p%dcardback, result NOCARD", chair);
+		}
 
-			if (_card_player_last[chair][0] != _card_player[chair][0] ||
-				_card_player_last[chair][1] != _card_player[chair][1] )
-			{
-				_card_player_last[chair][0] = _card_player[chair][0] ;
-				_card_player_last[chair][1] = _card_player[chair][1];
-				_scrape_something_changed |= PL_CARD_CHANGED;
-			}
-		LeaveCriticalSection(&cs_scraper);
+		if (_card_player_last[chair][0] != _card_player[chair][0] ||
+			_card_player_last[chair][1] != _card_player[chair][1] )
+		{
+			_card_player_last[chair][0] = _card_player[chair][0] ;
+			_card_player_last[chair][1] = _card_player[chair][1];
+			_scrape_something_changed |= PL_CARD_CHANGED;
+		}
 	}
 	__HDC_FOOTER
 }
 
 void CScraper::ScrapeSeated(int chair)
 {
-	__HDC_HEADER
 	CString				result = "";
 	CTransform			trans;
 	CString				s = "";
@@ -588,12 +560,11 @@ void CScraper::ScrapeSeated(int chair)
 
 	// Check for bad parameters
 	if (chair < 0 || chair >= p_tablemap->nchairs())
-	{
-		__HDC_FOOTER
 		return;
-	}
 
-	_seated[chair] = "false";
+	__HDC_HEADER
+
+	set_seated(chair, "false");
 
 	// try p region first pXseated
 	s.Format("p%dseated", chair);
@@ -605,10 +576,8 @@ void CScraper::ScrapeSeated(int chair)
 		trans.DoTransform(r_iter, hdcCompatible, &result);
 		SelectObject(hdcCompatible, old_bitmap);
 
-		EnterCriticalSection(&cs_scraper);
-			if (result!="")
-				_seated[chair] = result;
-		LeaveCriticalSection(&cs_scraper);
+		if (result!="")
+			set_seated(chair, result);
 
 		write_log(3, "p%dseated, result %s", chair, result.GetString());
 	}
@@ -624,28 +593,23 @@ void CScraper::ScrapeSeated(int chair)
 		trans.DoTransform(r_iter, hdcCompatible, &result);
 		SelectObject(hdcCompatible, old_bitmap);
 
-		EnterCriticalSection(&cs_scraper);
-			if (result!="")
-				_seated[chair] = result;
-		LeaveCriticalSection(&cs_scraper);
+		if (result!="")
+			set_seated(chair, result);
 
 		write_log(3, "u%dseated, result %s", chair, result.GetString());
 	}
 
-	EnterCriticalSection(&cs_scraper);
-		if (_seated_last[chair] != _seated[chair])
-		{
-			_seated_last[chair] = _seated[chair];
-			_scrape_something_changed |= SEATED_CHANGED;
-		}
-	LeaveCriticalSection(&cs_scraper);
+	if (_seated_last[chair] != _seated[chair])
+	{
+		_seated_last[chair] = _seated[chair];
+		_scrape_something_changed |= SEATED_CHANGED;
+	}
 
 	__HDC_FOOTER
 }
 
 void CScraper::ScrapeActive(int chair)
 {
-	__HDC_HEADER
 	CString				result = "";
 	CTransform			trans;
 	CString				s = "";
@@ -653,12 +617,11 @@ void CScraper::ScrapeActive(int chair)
 
 	// Check for bad parameters
 	if (chair < 0 || chair >= p_tablemap->nchairs())
-	{
-		__HDC_FOOTER
 		return;
-	}
 
-	_active[chair] = "false";
+	__HDC_HEADER
+
+	set_active(chair, "false");
 
 	// try p region first pXactive
 	s.Format("p%dactive", chair);
@@ -670,9 +633,7 @@ void CScraper::ScrapeActive(int chair)
 		trans.DoTransform(r_iter, hdcCompatible, &result);
 		SelectObject(hdcCompatible, old_bitmap);
 
-		EnterCriticalSection(&cs_scraper);
-		_active[chair] = result;
-		LeaveCriticalSection(&cs_scraper);
+		set_active(chair, result);
 
 		write_log(3, "p%dactive, result %s", chair, result.GetString());
 	}
@@ -689,26 +650,21 @@ void CScraper::ScrapeActive(int chair)
 		trans.DoTransform(r_iter, hdcCompatible, &result);
 		SelectObject(hdcCompatible, old_bitmap);
 
-		EnterCriticalSection(&cs_scraper);
-		_active[chair] = result;
-		LeaveCriticalSection(&cs_scraper);
+		set_active(chair, result);
 		write_log(3, "u%dactive, result %s", chair, result.GetString());
 	}
 
-	EnterCriticalSection(&cs_scraper);
-		if (_active_last[chair] != _active[chair])
-		{
-			_active_last[chair] = _active[chair];
-			_scrape_something_changed |= ACTIVE_CHANGED;
-		}
-	LeaveCriticalSection(&cs_scraper);
+	if (_active_last[chair] != _active[chair])
+	{
+		_active_last[chair] = _active[chair];
+		_scrape_something_changed |= ACTIVE_CHANGED;
+	}
 
 	__HDC_FOOTER
 }
 
 void CScraper::ScrapeDealer(int chair)
 {
-	__HDC_HEADER
 	CString				result = "";
 	CTransform			trans;
 	bool				found_dealer;
@@ -717,12 +673,11 @@ void CScraper::ScrapeDealer(int chair)
 
 	// Check for bad parameters
 	if (chair < 0 || chair >= p_tablemap->nchairs())
-	{
-		__HDC_FOOTER
 		return;
-	}
 
-	_dealer[chair] = false;
+	__HDC_HEADER
+
+	set_dealer(chair, false);
 
 	// Dealer button pXdealer
 	found_dealer = false;
@@ -758,15 +713,13 @@ void CScraper::ScrapeDealer(int chair)
 		write_log(3, "u%ddealer, result %s", chair, result.GetString());
 	}
 
-	EnterCriticalSection(&cs_scraper);
-		_dealer[chair] = found_dealer;
+	set_dealer(chair, found_dealer);
 
-		if (_dealer_last[chair] != _dealer[chair])
-		{
-			_dealer_last[chair] = _dealer[chair];
-			_scrape_something_changed |= DEALER_CHANGED;
-		}
-	LeaveCriticalSection(&cs_scraper);
+	if (_dealer_last[chair] != _dealer[chair])
+	{
+		_dealer_last[chair] = _dealer[chair];
+		_scrape_something_changed |= DEALER_CHANGED;
+	}
 
 	__HDC_FOOTER
 }
@@ -774,7 +727,6 @@ void CScraper::ScrapeDealer(int chair)
 void CScraper::ScrapeName(int chair) 
 {
 
-	__HDC_HEADER
 	bool				got_new_scrape = false;
 	CString				text = "";
 	int					ret = 0;
@@ -785,10 +737,9 @@ void CScraper::ScrapeName(int chair)
 
 	// Check for bad parameters
 	if (chair < 0 || chair >= p_tablemap->nchairs())
-	{
-		__HDC_FOOTER
 		return;
-	}
+
+	__HDC_HEADER
 
 	int	sym_chair = (int) p_symbols->sym()->chair;
 
@@ -841,30 +792,27 @@ void CScraper::ScrapeName(int chair)
 		write_log(3, "p%dname, result %s", chair, text.GetString());
 	}
 
-	EnterCriticalSection(&cs_scraper);
-		if (got_new_scrape)
-		{
-			_name_good_scrape[chair] = true;
-			_player_name[chair] = text;
-		}
-		else
-		{
-			_name_good_scrape[chair] = false;
-		}
+	if (got_new_scrape)
+	{
+		set_name_good_scrape(chair, true);
+		set_player_name(chair, text);
+	}
+	else
+	{
+		set_name_good_scrape(chair, false);
+	}
 
-		if (_name_last[chair] != _player_name[chair])
-		{
-			_name_last[chair] = _player_name[chair];
-			_scrape_something_changed |= NAME_CHANGED;
-		}
-	LeaveCriticalSection(&cs_scraper);
+	if (_name_last[chair] != _player_name[chair])
+	{
+		_name_last[chair] = _player_name[chair];
+		_scrape_something_changed |= NAME_CHANGED;
+	}
 
 	__HDC_FOOTER
 }
 
 void CScraper::ScrapeBalance(int chair)
 {
-	__HDC_HEADER
 	bool				got_new_scrape = false;
 	CString				text = "";
 	int					ret = 0;
@@ -875,16 +823,15 @@ void CScraper::ScrapeBalance(int chair)
 
 	// Check for bad parameters
 	if (chair < 0 || chair >= p_tablemap->nchairs())
-	{
-		__HDC_FOOTER
 		return;
-	}
+
+	__HDC_HEADER
 
 	int	sym_chair = (int) p_symbols->sym()->chair;
 
 	got_new_scrape = false;
 
-	_sitting_out[chair] = false;
+	set_sitting_out(chair, false);
 
 	// Player balance ubalance
 	r_iter = p_tablemap->r$()->find("ubalance");
@@ -907,10 +854,8 @@ void CScraper::ScrapeBalance(int chair)
 
 			else if (text.MakeLower().Find("out")!=-1)
 			{
-				EnterCriticalSection(&cs_scraper);
-				_sitting_out[chair] = true;
-				_active[chair] = "false";
-				LeaveCriticalSection(&cs_scraper);
+				set_sitting_out(chair, true);
+				set_active(chair, "false");
 
 				write_log(3, "ubalance, result OUT");
 			}
@@ -961,10 +906,8 @@ void CScraper::ScrapeBalance(int chair)
 
 			else if (text.MakeLower().Find("out")!=-1)
 			{
-				EnterCriticalSection(&cs_scraper);
-  				_sitting_out[chair] = true;
-				_active[chair] = "false";
-				LeaveCriticalSection(&cs_scraper);
+  				set_sitting_out(chair, true);
+				set_active(chair, "false");
 
 				write_log(3, "u%dbalance, result OUT", chair);
 			}
@@ -1015,10 +958,8 @@ void CScraper::ScrapeBalance(int chair)
 
 			else if (text.MakeLower().Find("out")!=-1)
 			{
-				EnterCriticalSection(&cs_scraper);
-  				_sitting_out[chair] = true;
-				_active[chair] = "false";
-				LeaveCriticalSection(&cs_scraper);
+  				set_sitting_out(chair, true);
+				set_active(chair, "false");
 
 				write_log(3, "u%dbalance, result OUT", chair);
 			}
@@ -1047,30 +988,27 @@ void CScraper::ScrapeBalance(int chair)
 		}
 	}
 
-	EnterCriticalSection(&cs_scraper);
-		if (got_new_scrape)
-		{
-			_balance_good_scrape[chair] = true;
-			_player_balance[chair] = trans.StringToMoney(text);
-		}
-		else
-		{
-			_balance_good_scrape[chair] = false;
-		}
+	if (got_new_scrape)
+	{
+		set_balance_good_scrape(chair, true);
+		set_player_balance(chair, trans.StringToMoney(text));
+	}
+	else
+	{
+		set_balance_good_scrape(chair, false);
+	}
 
-		if (_balance_last[chair] != _player_balance[chair])
-		{
-			_balance_last[chair] = _player_balance[chair];
-			_scrape_something_changed |= BALANCE_CHANGED;
-		}
-	LeaveCriticalSection(&cs_scraper);
+	if (_balance_last[chair] != _player_balance[chair])
+	{
+		_balance_last[chair] = _player_balance[chair];
+		_scrape_something_changed |= BALANCE_CHANGED;
+	}
 
 	__HDC_FOOTER
 }
 
 void CScraper::ScrapeBet(int chair)
 {
-	__HDC_HEADER
 	CString				text = "";
 	CTransform			trans;
 	CString				s = "";
@@ -1078,12 +1016,11 @@ void CScraper::ScrapeBet(int chair)
 
 	// Check for bad parameters
 	if (chair < 0 || chair >= p_tablemap->nchairs())
-	{
-		__HDC_FOOTER
 		return;
-	}
 
-	_player_bet[chair] = 0;
+	__HDC_HEADER
+
+	set_player_bet(chair, 0);
 
 	// Player bet pXbet
 	s.Format("p%dbet", chair);
@@ -1098,12 +1035,10 @@ void CScraper::ScrapeBet(int chair)
 		text.Remove(',');
 		text.Remove('$');
 
-		EnterCriticalSection(&cs_scraper);
 		if (text!="")
 		{
-			_player_bet[chair] = trans.StringToMoney(text);
+			set_player_bet(chair, trans.StringToMoney(text));
 		}
-		LeaveCriticalSection(&cs_scraper);
 
 		write_log(3, "p%dbet, result %s", chair, text.GetString());
 	}
@@ -1121,12 +1056,10 @@ void CScraper::ScrapeBet(int chair)
 		text.Remove(',');
 		text.Remove('$');
 
-		EnterCriticalSection(&cs_scraper);
 		if (text!="")
 		{
-			_player_bet[chair] = trans.StringToMoney(text);
+			set_player_bet(chair, trans.StringToMoney(text));
 		}
-		LeaveCriticalSection(&cs_scraper);
 
 		write_log(3, "u%dbet, result %s", chair, text.GetString());
 	}		
@@ -1136,22 +1069,18 @@ void CScraper::ScrapeBet(int chair)
 	r_iter = p_tablemap->r$()->find(s.GetString());
 	if (r_iter != p_tablemap->r$()->end() && _player_bet[chair] == 0)
 	{
-		EnterCriticalSection(&cs_scraper);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_cur);
-		_player_bet[chair] = DoChipScrape(r_iter);
+		set_player_bet(chair, DoChipScrape(r_iter));
 		SelectObject(hdcCompatible, old_bitmap);
-		LeaveCriticalSection(&cs_scraper);
 
 		write_log(3, "p%dchipXY, result %f", chair, _player_bet[chair]);
 	}
 
-	EnterCriticalSection(&cs_scraper);
 	if (_playerbet_last[chair] != _player_bet[chair])
 	{
 		_playerbet_last[chair] = _player_bet[chair];
 		_scrape_something_changed |= PLAYERBET_CHANGED;
 	}
-	LeaveCriticalSection(&cs_scraper);
 
 	__HDC_FOOTER
 }
@@ -1159,6 +1088,7 @@ void CScraper::ScrapeBet(int chair)
 void CScraper::ScrapeButtons() 
 {
 	__HDC_HEADER
+
 	int					j = 0, k = 0;
 	CString				text = "";
 	POINT				handle_xy = {0};
@@ -1167,16 +1097,18 @@ void CScraper::ScrapeButtons()
 	RMapCI				r_iter = p_tablemap->r$()->end(), slider = p_tablemap->r$()->end(), handleCI = p_tablemap->r$()->end();
 	RMapI				handleI = p_tablemap->set_r$()->end();
 
-	_button_label[0] = "fold";
-	_button_label[1] = "call";
-	_button_label[2] = "raise";
-	_button_label[3] = "allin";
+	set_button_label(0, "fold");
+	set_button_label(1, "call");
+	set_button_label(2, "raise");
+	set_button_label(3, "allin");
 	for (j=4; j<=9; j++)
-		_button_label[j] = "";
+	{
+		set_button_label(j, "");
+	}
 	for (j=0; j<=9; j++)
 	{
-		_button_state[j] = "false";
-		_i86X_button_state[j] = "false";
+		set_button_state(j, "false");
+		set_i86X_button_state(j, "false");
 	}
 
 	for (j=0; j<=9; j++)
@@ -1191,16 +1123,14 @@ void CScraper::ScrapeButtons()
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
 
-			EnterCriticalSection(&cs_scraper);
-				if (text!="")
-					_button_state[j] = text;
+			if (text!="")
+				set_button_state(j, text);
 
-				if (_button_state_last[j] != _button_state[j])
-				{
-					_button_state_last[j] = _button_state[j];
-					_scrape_something_changed |= BUTTONSTATE_CHANGED;
-				}
-			LeaveCriticalSection(&cs_scraper);
+			if (_button_state_last[j] != _button_state[j])
+			{
+				_button_state_last[j] = _button_state[j];
+				_scrape_something_changed |= BUTTONSTATE_CHANGED;
+			}
 
 			write_log(3, "i%dstate, result %s", j, text.GetString());
 		}
@@ -1215,16 +1145,14 @@ void CScraper::ScrapeButtons()
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
 
-			EnterCriticalSection(&cs_scraper);
-				if (text!="")
-					_i86X_button_state[j] = text;
+			if (text!="")
+				set_i86X_button_state(j, text);
 
-				if (_i86X_button_state_last[j] != _i86X_button_state[j])
-				{
-					_i86X_button_state_last[j] = _i86X_button_state[j];
-					_scrape_something_changed |= BUTTONSTATE_CHANGED;
-				}
-			LeaveCriticalSection(&cs_scraper);
+			if (_i86X_button_state_last[j] != _i86X_button_state[j])
+			{
+				_i86X_button_state_last[j] = _i86X_button_state[j];
+				_scrape_something_changed |= BUTTONSTATE_CHANGED;
+			}
 
 			write_log(3, "i86%dstate, result %s", j, text.GetString());
 		}
@@ -1242,10 +1170,8 @@ void CScraper::ScrapeButtons()
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
 
-			EnterCriticalSection(&cs_scraper);
-				if (text!="")
-					_button_label[j] = text;
-			LeaveCriticalSection(&cs_scraper);
+			if (text!="")
+				set_button_label(j, text);
 
 			write_log(3, "i%dlabel, result %s", j, text.GetString());
 		}
@@ -1262,22 +1188,18 @@ void CScraper::ScrapeButtons()
 				trans.DoTransform(r_iter, hdcCompatible, &text);
 				SelectObject(hdcCompatible, old_bitmap);
 
-				EnterCriticalSection(&cs_scraper);
-					if (text!="")
-						_button_label[j] = text;
-				LeaveCriticalSection(&cs_scraper);
+				if (text!="")
+					set_button_label(j, text);
 
 				write_log(3, "i%dlabel%d, result %s", j, k, text.GetString());
 			}
 		}
 
-		EnterCriticalSection(&cs_scraper);
-			if (_button_label_last[j] != _button_label[j])
-			{
-				_button_label_last[j] = _button_label[j];
-				_scrape_something_changed |= BUTTONLABEL_CHANGED;
-			}
-		LeaveCriticalSection(&cs_scraper);
+		if (_button_label_last[j] != _button_label[j])
+		{
+			_button_label_last[j] = _button_label[j];
+			_scrape_something_changed |= BUTTONLABEL_CHANGED;
+		}
 	}
 
 	// When using MM, grab i5state for PT network
@@ -1296,18 +1218,16 @@ void CScraper::ScrapeButtons()
 		trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
 
-		EnterCriticalSection(&cs_scraper);
-			if (text!="")
-				_i86_button_state = text;
-			else
-				_i86_button_state = "false";
+		if (text!="")
+			set_i86_button_state(text);
+		else
+			set_i86_button_state("false");
 
-			if (_i86_button_state_last != _i86_button_state)
-			{
-				_i86_button_state_last = _i86_button_state;
-				_scrape_something_changed |= BUTTONSTATE_CHANGED;
-			}
-		LeaveCriticalSection(&cs_scraper);
+		if (_i86_button_state_last != _i86_button_state)
+		{
+			_i86_button_state_last = _i86_button_state;
+			_scrape_something_changed |= BUTTONSTATE_CHANGED;
+		}
 
 		write_log(3, "i86state, result %s", text.GetString());
 	}
@@ -1342,16 +1262,15 @@ void CScraper::ScrapeButtons()
 				break;
 		}
 
-		EnterCriticalSection(&cs_scraper);
-			if (text!="" && k <= j)
-			{
-				handleCI = p_tablemap->r$()->find("i3handle");
-				_handle_found_at_xy = true;
-				handle_xy.x = handleCI->second.left + k;
-				handle_xy.y = handleCI->second.top;
-				_handle_xy = handle_xy;
-			}
-		LeaveCriticalSection(&cs_scraper);
+		if (text!="" && k <= j)
+		{
+			handleCI = p_tablemap->r$()->find("i3handle");
+			handle_xy.x = handleCI->second.left + k;
+			handle_xy.y = handleCI->second.top;
+
+			set_handle_found_at_xy(true);
+			set_handle_xy(handle_xy);
+		}
 
 		write_log(3, "i3handle, result %d,%d", handle_xy.x, handle_xy.y);
 			
@@ -1371,7 +1290,7 @@ void CScraper::ScrapePots()
 	RMapCI				r_iter = p_tablemap->r$()->end();
 
 	for (j=0; j<=9; j++)
-		_pot[j] = 0;
+		set_pot(j, 0);
 
 	for (j=0; j<=9; j++)
 	{
@@ -1388,18 +1307,16 @@ void CScraper::ScrapePots()
 			text.Remove(',');
 			text.Remove('$');
 
-			EnterCriticalSection(&cs_scraper);
-				if (text!="")
-				{
-					_pot[j] = trans.StringToMoney(text);
+			if (text!="")
+			{
+				set_pot(j, trans.StringToMoney(text));
 
-					if (_pot_last[j] != _pot[j])
-					{
-						_pot_last[j] = _pot[j];
-						_scrape_something_changed |= POT_CHANGED;
-					}
+				if (_pot_last[j] != _pot[j])
+				{
+					_pot_last[j] = _pot[j];
+					_scrape_something_changed |= POT_CHANGED;
 				}
-			LeaveCriticalSection(&cs_scraper);
+			}
 
 			write_log(3, "c0pot%d, result %s", j, text.GetString());
 		}
@@ -1414,17 +1331,15 @@ void CScraper::ScrapePots()
 			//trans.DoTransform(r_iter, hdcCompatible, &text);
 			//SelectObject(hdcCompatible, old_bitmap);
 
-			EnterCriticalSection(&cs_scraper);
-				old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_cur);
-				_pot[j] = DoChipScrape(r_iter);
-				SelectObject(hdcCompatible, old_bitmap);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_cur);
+			set_pot(j, DoChipScrape(r_iter));
+			SelectObject(hdcCompatible, old_bitmap);
 
-				if (_pot_last[j] != _pot[j])
-				{
-					_pot_last[j] = _pot[j];
-					_scrape_something_changed |= POT_CHANGED;
-				}
-			LeaveCriticalSection(&cs_scraper);
+			if (_pot_last[j] != _pot[j])
+			{
+				_pot_last[j] = _pot[j];
+				_scrape_something_changed |= POT_CHANGED;
+			}
 
 			write_log(3, "c0pot%dchipXY, result %f", j, _pot[j]);
 
@@ -1460,15 +1375,13 @@ void CScraper::ScrapeLimits()
 	RMapCI				r_iter = p_tablemap->r$()->end();
 	SMapCI				s_iter = p_tablemap->s$()->end();
 
-	EnterCriticalSection(&cs_scraper);
-		_s_limit_info.found_sblind = false;
-		_s_limit_info.found_bblind = false;
-		_s_limit_info.found_bbet = false;
-		_s_limit_info.found_ante = false;
-		_s_limit_info.found_limit = false;
-		_s_limit_info.found_sb_bb = false;
-		_s_limit_info.found_bb_BB = false;
-	LeaveCriticalSection(&cs_scraper);
+	set_found_sblind(false);
+	set_found_bblind(false);
+	set_found_bbet(false);
+	set_found_ante(false);
+	set_found_limit(false);
+	set_found_sb_bb(false);
+	set_found_bb_BB(false);
 
 	// These persist after scraping the istournament/handnumber regions
 	// to seed l_istournament and l_handnumber when we scrape info from
@@ -1492,15 +1405,13 @@ void CScraper::ScrapeLimits()
 		else
 			istournament = false;
 
-		EnterCriticalSection(&cs_scraper);
-			_s_limit_info.istournament = istournament;
+		set_istournament(istournament);
 
-			if (_istournament_last != _s_limit_info.istournament)
-			{
-				_istournament_last = _s_limit_info.istournament;
-				_scrape_something_changed |= LIMITS_CHANGED;
-			}
-		LeaveCriticalSection(&cs_scraper);
+		if (_istournament_last != _s_limit_info.istournament)
+		{
+			_istournament_last = _s_limit_info.istournament;
+			_scrape_something_changed |= LIMITS_CHANGED;
+		}
 
 		write_log(3, "c0istournament, result %s", text.GetString());
 	}
@@ -1514,14 +1425,12 @@ void CScraper::ScrapeLimits()
 		trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
 
-		EnterCriticalSection(&cs_scraper);
-			if (text!="")
-			{
-				handnumber = GetHandnumFromString(text);
-				_s_limit_info.handnumber = handnumber;
-				got_new_scrape = true;
-			}
-		LeaveCriticalSection(&cs_scraper);
+		if (text!="")
+		{
+			handnumber = GetHandnumFromString(text);
+			set_handnumber(handnumber);
+			got_new_scrape = true;
+		}
 
 		write_log(3, "c0handnumber, result %s", text.GetString());
 	}
@@ -1538,14 +1447,12 @@ void CScraper::ScrapeLimits()
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
 			
-			EnterCriticalSection(&cs_scraper);
-				if (text!="")
-				{
-					handnumber = GetHandnumFromString (text);
-					_s_limit_info.handnumber = handnumber;
-					got_new_scrape = true;
-				}
-			LeaveCriticalSection(&cs_scraper);
+			if (text!="")
+			{
+				handnumber = GetHandnumFromString (text);
+				set_handnumber(handnumber);
+				got_new_scrape = true;
+			}
 
 			write_log(3, "c0handnumber%d, result %s", j, text.GetString());
 		}
@@ -1553,18 +1460,16 @@ void CScraper::ScrapeLimits()
 
 	if (_s_lock_blinds.blinds_are_locked)
 	{
-		EnterCriticalSection(&cs_scraper);
-			_s_limit_info.sblind = _s_lock_blinds.sblind;
-			_s_limit_info.found_sblind = true;
-			_s_limit_info.bblind = _s_lock_blinds.bblind;
-			_s_limit_info.found_bblind = true;
-			_s_limit_info.bbet = _s_lock_blinds.bbet;
-			_s_limit_info.found_bbet = true;
-			_s_limit_info.ante = _s_lock_blinds.ante;
-			_s_limit_info.found_ante = true;
-			_s_limit_info.limit = _s_lock_blinds.gametype;
-			_s_limit_info.found_limit = true;
-		LeaveCriticalSection(&cs_scraper);
+		set_sblind(_s_lock_blinds.sblind);
+		set_found_sblind(true);
+		set_bblind(_s_lock_blinds.bblind);
+		set_found_bblind(true);
+		set_bbet(_s_lock_blinds.bbet);
+		set_found_bbet(true);
+		set_ante(_s_lock_blinds.ante);
+		set_found_ante(true);
+		set_limit(_s_lock_blinds.gametype);
+		set_found_limit(true);
 
 		write_log(3, "Locked blinds, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d", 
 			_s_lock_blinds.sblind, _s_lock_blinds.bblind, _s_lock_blinds.bbet, _s_lock_blinds.ante, _s_lock_blinds.gametype);
@@ -1675,25 +1580,23 @@ void CScraper::ScrapeLimits()
 			}
 
 			// save what we just scanned through
-			EnterCriticalSection(&cs_scraper);
-				_s_limit_info.handnumber = l_handnumber;
-				_s_limit_info.sblind = l_sblind;
-				_s_limit_info.bblind = l_bblind;
-				_s_limit_info.bbet = l_bbet;
-				_s_limit_info.ante = l_ante;
-				_s_limit_info.limit = l_limit;
-				_s_limit_info.sb_bb = l_sb_bb;
-				_s_limit_info.bb_BB = l_bb_BB;
-				_s_limit_info.istournament = l_istournament;
-				_s_limit_info.found_handnumber = l_found_handnumber;
-				_s_limit_info.found_sblind = l_found_sblind;
-				_s_limit_info.found_bblind = l_found_bblind;
-				_s_limit_info.found_bbet = l_found_bbet;
-				_s_limit_info.found_ante = l_found_ante;
-				_s_limit_info.found_limit = l_found_limit;
-				_s_limit_info.found_sb_bb = l_found_sb_bb;
-				_s_limit_info.found_bb_BB = l_found_bb_BB;
-			LeaveCriticalSection(&cs_scraper);
+			set_handnumber(l_handnumber);
+			set_sblind(l_sblind);
+			set_bblind(l_bblind);
+			set_bbet(l_bbet);
+			set_ante(l_ante);
+			set_limit(l_limit);
+			set_sb_bb(l_sb_bb);
+			set_bb_BB(l_bb_BB);
+			set_istournament(l_istournament);
+			set_found_handnumber(l_found_handnumber);
+			set_found_sblind(l_found_sblind);
+			set_found_bblind(l_found_bblind);
+			set_found_bbet(l_found_bbet);
+			set_found_ante(l_found_ante);
+			set_found_limit(l_found_limit);
+			set_found_sb_bb(l_found_sb_bb);
+			set_found_bb_BB(l_found_bb_BB);
 		}
 
 
@@ -1709,10 +1612,8 @@ void CScraper::ScrapeLimits()
 			text.Remove(',');
 			text.Remove('$');
 
-			EnterCriticalSection(&cs_scraper);
-				if (text!="")
-					_s_limit_info.sblind = trans.StringToMoney(text);
-			LeaveCriticalSection(&cs_scraper);
+			if (text!="")
+				set_sblind(trans.StringToMoney(text));
 
 			write_log(3, "c0sblind, result %s", j, text.GetString());
 		}
@@ -1729,10 +1630,8 @@ void CScraper::ScrapeLimits()
 			text.Remove(',');
 			text.Remove('$');
 
-			EnterCriticalSection(&cs_scraper);
-				if (text!="")
-					_s_limit_info.bblind = trans.StringToMoney(text);
-			LeaveCriticalSection(&cs_scraper);
+			if (text!="")
+				set_bblind(trans.StringToMoney(text));
 
 			write_log(3, "c0bblind, result %s", j, text.GetString());
 		}
@@ -1749,10 +1648,8 @@ void CScraper::ScrapeLimits()
 			text.Remove(',');
 			text.Remove('$');
 
-			EnterCriticalSection(&cs_scraper);
-				if (text!="")
-					_s_limit_info.bbet = trans.StringToMoney(text);
-			LeaveCriticalSection(&cs_scraper);
+			if (text!="")
+				set_bbet(trans.StringToMoney(text));
 
 			write_log(3, "c0bigbet, result %s", j, text.GetString());
 		}
@@ -1769,10 +1666,8 @@ void CScraper::ScrapeLimits()
 			text.Remove(',');
 			text.Remove('$');
 
-			EnterCriticalSection(&cs_scraper);
-				if (text!="")
-					_s_limit_info.ante = trans.StringToMoney(text);
-			LeaveCriticalSection(&cs_scraper);
+			if (text!="")
+				set_ante(trans.StringToMoney(text));
 
 			write_log(3, "c0ante, result %s", j, text.GetString());
 		}
@@ -1782,61 +1677,59 @@ void CScraper::ScrapeLimits()
 	// see if anything changed
 	log_blind_change = false;
 
-	EnterCriticalSection(&cs_scraper);
-		if (_limit_last != _s_limit_info.limit)
-		{
-			_limit_last = _s_limit_info.limit;
-			_scrape_something_changed |= LIMITS_CHANGED;
-		}
+	if (_limit_last != _s_limit_info.limit)
+	{
+		_limit_last = _s_limit_info.limit;
+		_scrape_something_changed |= LIMITS_CHANGED;
+	}
 
-		if (_sblind_last != _s_limit_info.sblind)
-		{
-			_sblind_last = _s_limit_info.sblind;
-			_scrape_something_changed |= LIMITS_CHANGED;
-			log_blind_change = true;
-		}
+	if (_sblind_last != _s_limit_info.sblind)
+	{
+		_sblind_last = _s_limit_info.sblind;
+		_scrape_something_changed |= LIMITS_CHANGED;
+		log_blind_change = true;
+	}
 
-		if (_bblind_last != _s_limit_info.bblind)
-		{
-			_bblind_last = _s_limit_info.bblind;
-			_scrape_something_changed |= LIMITS_CHANGED;
-			log_blind_change = true;
-		}
+	if (_bblind_last != _s_limit_info.bblind)
+	{
+		_bblind_last = _s_limit_info.bblind;
+		_scrape_something_changed |= LIMITS_CHANGED;
+		log_blind_change = true;
+	}
 
-		if (_sb_bb_last != _s_limit_info.sb_bb)
-		{
-			_sb_bb_last = _s_limit_info.sb_bb;
-			_scrape_something_changed |= LIMITS_CHANGED;
-			log_blind_change = true;
-		}
+	if (_sb_bb_last != _s_limit_info.sb_bb)
+	{
+		_sb_bb_last = _s_limit_info.sb_bb;
+		_scrape_something_changed |= LIMITS_CHANGED;
+		log_blind_change = true;
+	}
 
-		if (_bb_BB_last != _s_limit_info.bb_BB)
-		{
-			_bb_BB_last = _s_limit_info.bb_BB;
-			_scrape_something_changed |= LIMITS_CHANGED;
-			log_blind_change = true;
-		}
+	if (_bb_BB_last != _s_limit_info.bb_BB)
+	{
+		_bb_BB_last = _s_limit_info.bb_BB;
+		_scrape_something_changed |= LIMITS_CHANGED;
+		log_blind_change = true;
+	}
 
-		if (_bbet_last != _s_limit_info.bbet)
-		{
-			_bbet_last = _s_limit_info.bbet;
-			_scrape_something_changed |= LIMITS_CHANGED;
-			log_blind_change = true;
-		}
+	if (_bbet_last != _s_limit_info.bbet)
+	{
+		_bbet_last = _s_limit_info.bbet;
+		_scrape_something_changed |= LIMITS_CHANGED;
+		log_blind_change = true;
+	}
 
-		if (_ante_last != _s_limit_info.ante)
-		{
-			_ante_last = _s_limit_info.ante;
-			_scrape_something_changed |= LIMITS_CHANGED;
-			log_blind_change = true;
-		}
+	if (_ante_last != _s_limit_info.ante)
+	{
+		_ante_last = _s_limit_info.ante;
+		_scrape_something_changed |= LIMITS_CHANGED;
+		log_blind_change = true;
+	}
 
-		if (_handnumber_last != _s_limit_info.handnumber)
-		{
-			_handnumber_last = _s_limit_info.handnumber;
-			_scrape_something_changed |= LIMITS_CHANGED;
-		}
-	LeaveCriticalSection(&cs_scraper);
+	if (_handnumber_last != _s_limit_info.handnumber)
+	{
+		_handnumber_last = _s_limit_info.handnumber;
+		_scrape_something_changed |= LIMITS_CHANGED;
+	}
 
 	// log the stakes change
 	if (log_blind_change)
@@ -1983,10 +1876,8 @@ void CScraper::CreateBitmaps(void)
 	// Whole window
 	RECT			cr = {0};
 	GetClientRect(pMyMainWnd->attached_hwnd(), &cr);
-	EnterCriticalSection(&cs_scraper);
-		_entire_window_last = CreateCompatibleBitmap(hdcScreen, cr.right, cr.bottom);
-		_entire_window_cur = CreateCompatibleBitmap(hdcScreen, cr.right, cr.bottom);
-	LeaveCriticalSection(&cs_scraper);
+	_entire_window_last = CreateCompatibleBitmap(hdcScreen, cr.right, cr.bottom);
+	set_entire_window_cur(CreateCompatibleBitmap(hdcScreen, cr.right, cr.bottom));
 
 	// r$regions
 	for (RMapI r_iter=p_tablemap->set_r$()->begin(); r_iter!=p_tablemap->set_r$()->end(); r_iter++)
@@ -2003,10 +1894,8 @@ void CScraper::CreateBitmaps(void)
 void CScraper::DeleteBitmaps(void)
 {
 	// Whole window
-	EnterCriticalSection(&cs_scraper);
-		DeleteObject(_entire_window_last);
-		DeleteObject(_entire_window_cur);
-	LeaveCriticalSection(&cs_scraper);
+	DeleteObject(_entire_window_last);
+	delete_entire_window_cur();
 
 	// Common cards
 	for (RMapI r_iter=p_tablemap->set_r$()->begin(); r_iter!=p_tablemap->set_r$()->end(); r_iter++)
@@ -2018,32 +1907,28 @@ void CScraper::DeleteBitmaps(void)
 
 void CScraper::SetLockedBlinds(const SLockBlinds LB)
 {
-	EnterCriticalSection(&cs_scraper);
-		_s_lock_blinds.blinds_are_locked = LB.blinds_are_locked;
-		_s_lock_blinds.sblind = LB.sblind;
-		_s_lock_blinds.bblind = LB.bblind;
-		_s_lock_blinds.bbet = LB.bbet;
-		_s_lock_blinds.ante = LB.ante;
-		_s_lock_blinds.gametype = LB.gametype;
-	LeaveCriticalSection(&cs_scraper);
+	set_LB_blinds_are_locked(LB.blinds_are_locked);
+	set_LB_sblind(LB.sblind);
+	set_LB_bblind(LB.bblind);
+	set_LB_bbet(LB.bbet);
+	set_LB_ante(LB.ante);
+	set_LB_gametype(LB.gametype);
 }
 
 void CScraper::SetLimitInfo(const SLimitInfo LI)
 {
-	EnterCriticalSection(&cs_scraper);
-		_s_limit_info.handnumber = LI.handnumber;
-		_s_limit_info.sblind = LI.sblind;
-		_s_limit_info.bblind = LI.bblind;
-		_s_limit_info.bbet = LI.bbet;
-		_s_limit_info.ante = LI.ante;
-		_s_limit_info.limit = LI.limit;
-		_s_limit_info.istournament = LI.istournament;
-		_s_limit_info.found_sblind = LI.found_sblind;
-		_s_limit_info.found_bblind = LI.found_bblind;
-		_s_limit_info.found_bbet = LI.found_bbet;
-		_s_limit_info.found_ante = LI.found_ante;
-		_s_limit_info.found_limit = LI.found_limit;
-	LeaveCriticalSection(&cs_scraper);
+	set_handnumber(LI.handnumber);
+	set_sblind(LI.sblind);
+	set_bblind(LI.bblind);
+	set_bbet(LI.bbet);
+	set_ante(LI.ante);
+	set_limit(LI.limit);
+	set_istournament(LI.istournament);
+	set_found_sblind(LI.found_sblind);
+	set_found_bblind(LI.found_bblind);
+	set_found_bbet(LI.found_bbet);
+	set_found_ante(LI.found_ante);
+	set_found_limit(LI.found_limit);
 }
 
 // This is the chip scrape routine
@@ -2570,3 +2455,6 @@ const bool CScraper::IsStringDealer(CString s)
 
 	return false;
 }
+
+#undef __HDC_HEADER
+#undef __HDC_FOOTER

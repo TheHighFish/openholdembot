@@ -39,10 +39,6 @@ struct SLockBlinds
 extern class CScraper 
 {
 public:
-	// Critical section used in public mutators and private shared variable writes
-	static CRITICAL_SECTION	cs_scraper;
-
-public:
 	// public functions
 	CScraper(void);
 	~CScraper(void);
@@ -93,48 +89,61 @@ public:
 	const POINT			handle_xy() { return _handle_xy; }
 	const SLimitInfo*	s_limit_info() { return &_s_limit_info; }
 	const SLockBlinds*	s_lock_blinds() { return &_s_lock_blinds; }
-	const HBITMAP		entire_window_last() { return _entire_window_last; }
 	const HBITMAP		entire_window_cur() { return _entire_window_cur; }
 	const LARGE_INTEGER	clocks_hold() { return _clocks_hold; }
-	const int			scrape_something_changed() { return _scrape_something_changed; }
 
 public:
-#define ENT EnterCriticalSection(&cs_scraper);
-#define LEA LeaveCriticalSection(&cs_scraper);
+#define ENT CSLock lock(m_critsec);
 	// public mutators 
-	// **These are needed by PokerPro and the scraper override dll to push their updates into the CScraper structures**
-	void	set_title(const char *s) { ENT strncpy_s(_title, MAX_WINDOW_TITLE, s, MAX_WINDOW_TITLE); LEA }
-	void	set_card_common(const int n, const unsigned int c) { ENT if (n>=0 && n<=4) _card_common[n] = c; LEA }
-	void	set_card_player(const int s, const int n, const unsigned int c) { ENT if (s>=0 && s<=9 && n>=0 && n<=1) _card_player[s][n] = c; LEA }
-	void	set_card_player_for_display(const int n, const unsigned int c) { ENT if (n>=0 && n<=1) _card_player_for_display[n] = c; LEA }
-	void	set_seated(const int n, CString s) { ENT if (n>=0 && n<=9) _seated[n] = s; LEA }
-	void	set_active(const int n, CString s) { ENT if (n>=0 && n<=9) _active[n] = s; LEA }
-	void	set_dealer(const int n, const bool b) { ENT if (n>=0 && n<=9) _dealer[n] = b; LEA }
-	void	set_player_bet(const int n, const double d) { ENT if (n>=0 && n<=9) _player_bet[n] = d; LEA }
-	void	set_player_name(const int n, const CString s) { ENT if (n>=0 && n<=9) _player_name[n] = s; LEA }
-	void	set_name_good_scrape(const int n, const bool b) { ENT if (n>=0 && n<=9) _name_good_scrape[n] = b; LEA }
-	void	set_player_balance(const int n, const double d) { ENT if (n>=0 && n<=9) _player_balance[n] = d; LEA }
-	void	set_balance_good_scrape(const int n, const bool b) { ENT if (n>=0 && n<=9) _balance_good_scrape[n] = b; LEA }
-	void	set_sitting_out(const int n, const bool b) { ENT if (n>=0 && n<=9) _sitting_out[n] = b; LEA }
-	void	set_pot(const int n, const double d) { ENT if (n>=0 && n<=9) _pot[n] = d; LEA }
-	void	set_button_state(const int n, const CString s) { ENT if (n>=0 && n<=9) _button_state[n] = s; LEA }
-	void	set_i86X_button_state(const int n, const CString s) { ENT if (n>=0 && n<=9) _i86X_button_state[n] = s; LEA }
-	void	set_i86_button_state(const CString s) { ENT _i86_button_state = s; LEA }
-	void	set_button_label(const int n, const CString s) { ENT if (n>=0 && n<=9) _button_label[n] = s; LEA }
-	void	set_sblind(const double d) { ENT _s_limit_info.sblind = d; LEA }
-	void	set_bblind(const double d) { ENT _s_limit_info.bblind = d; LEA }
-	void	set_bbet(const double d) { ENT _s_limit_info.bbet = d; LEA }
-	void	set_ante(const double d) { ENT _s_limit_info.ante = d; LEA }
-	void	set_limit(const int i) { ENT _s_limit_info.limit = i; LEA }
-	void	set_handnumber(const double d) { ENT _s_limit_info.handnumber = d; LEA }
-	void	set_istournament(const bool b) { ENT _s_limit_info.istournament = b; LEA }
-
-	// **End PokerPro-specific mutators
-
-	void	set_clocks_hold(const LARGE_INTEGER li) { ENT _clocks_hold = li; LEA }
+	// Used mainly by PokerPro and the scraper override dll to push their updates into the CScraper structures
+	void	set_title(const char *s) { ENT strncpy_s(_title, MAX_WINDOW_TITLE, s, MAX_WINDOW_TITLE);}
+	void	set_card_common(const int n, const unsigned int c) { ENT if (n>=0 && n<=4) _card_common[n] = c;}
+	void	set_card_player(const int s, const int n, const unsigned int c) { ENT if (s>=0 && s<=9 && n>=0 && n<=1) _card_player[s][n] = c;}
+	void	set_card_player_for_display(const int n, const unsigned int c) { ENT if (n>=0 && n<=1) _card_player_for_display[n] = c;}
+	void	set_seated(const int n, CString s) { ENT if (n>=0 && n<=9) _seated[n] = s;}
+	void	set_active(const int n, CString s) { ENT if (n>=0 && n<=9) _active[n] = s;}
+	void	set_dealer(const int n, const bool b) { ENT if (n>=0 && n<=9) _dealer[n] = b;}
+	void	set_player_bet(const int n, const double d) { ENT if (n>=0 && n<=9) _player_bet[n] = d;}
+	void	set_player_name(const int n, const CString s) { ENT if (n>=0 && n<=9) _player_name[n] = s;}
+	void	set_name_good_scrape(const int n, const bool b) { ENT if (n>=0 && n<=9) _name_good_scrape[n] = b;}
+	void	set_player_balance(const int n, const double d) { ENT if (n>=0 && n<=9) _player_balance[n] = d;}
+	void	set_balance_good_scrape(const int n, const bool b) { ENT if (n>=0 && n<=9) _balance_good_scrape[n] = b;}
+	void	set_sitting_out(const int n, const bool b) { ENT if (n>=0 && n<=9) _sitting_out[n] = b;}
+	void	set_pot(const int n, const double d) { ENT if (n>=0 && n<=9) _pot[n] = d;}
+	void	set_button_state(const int n, const CString s) { ENT if (n>=0 && n<=9) _button_state[n] = s;}
+	void	set_i86X_button_state(const int n, const CString s) { ENT if (n>=0 && n<=9) _i86X_button_state[n] = s;}
+	void	set_i86_button_state(const CString s) { ENT _i86_button_state = s;}
+	void	set_button_label(const int n, const CString s) { ENT if (n>=0 && n<=9) _button_label[n] = s;}
+	void	set_sblind(const double d) { ENT _s_limit_info.sblind = d;}
+	void	set_bblind(const double d) { ENT _s_limit_info.bblind = d;}
+	void	set_bbet(const double d) { ENT _s_limit_info.bbet = d;}
+	void	set_ante(const double d) { ENT _s_limit_info.ante = d;}
+	void	set_limit(const int i) { ENT _s_limit_info.limit = i;}
+	void	set_handnumber(const double d) { ENT _s_limit_info.handnumber = d;}
+	void	set_istournament(const bool b) { ENT _s_limit_info.istournament = b;}
+	void	set_sb_bb(const double d) { ENT _s_limit_info.sb_bb = d;}
+	void	set_bb_BB(const double d) { ENT _s_limit_info.bb_BB = d;}
+	void	set_found_sblind(const bool b) { ENT _s_limit_info.found_sblind = b;}
+	void	set_found_bblind(const bool b) { ENT _s_limit_info.found_bblind = b;}
+	void	set_found_bbet(const bool b) { ENT _s_limit_info.found_bbet = b;}
+	void	set_found_ante(const bool b) { ENT _s_limit_info.found_ante = b;}
+	void	set_found_limit(const bool b) { ENT _s_limit_info.found_limit = b;}
+	void	set_found_handnumber(const bool b) { ENT _s_limit_info.found_handnumber = b;}
+	void	set_found_sb_bb(const bool b) { ENT _s_limit_info.found_sb_bb = b;}
+	void	set_found_bb_BB(const bool b) { ENT _s_limit_info.found_bb_BB = b;}
+	void	set_clocks_hold(const LARGE_INTEGER li) { ENT _clocks_hold = li;}
+	void	set_handle_found_at_xy(const bool b) { ENT _handle_found_at_xy = b;}
+	void	set_handle_xy(const POINT p) { ENT _handle_xy.x = p.x; _handle_xy.y = p.y;}
+	void	set_entire_window_cur(const HBITMAP h) { ENT _entire_window_cur = h;}
+	void	delete_entire_window_cur() { ENT DeleteObject(_entire_window_cur);}
+	void	set_LB_blinds_are_locked(const bool b) { ENT _s_lock_blinds.blinds_are_locked = b;}
+	void	set_LB_sblind(const double d) { ENT _s_lock_blinds.sblind = d;}
+	void	set_LB_bblind(const double d) { ENT _s_lock_blinds.bblind = d;}
+	void	set_LB_bbet(const double d) { ENT _s_lock_blinds.bbet = d;}
+	void	set_LB_ante(const double d) { ENT _s_lock_blinds.ante = d;}
+	void	set_LB_gametype(const int i) { ENT _s_lock_blinds.gametype = i;}
 
 #undef ENT
-#undef LEA
 	
 private:
 	// private variables - use public accessors and public mutators to address these
@@ -144,7 +153,6 @@ private:
 	CString				_seated[10], _active[10], _player_name[10];
 	double				_player_balance[10], _player_bet[10], _pot[10];
 	CString				_button_state[10], _i86X_button_state[10], _i86_button_state, _button_label[10];
-	int					_scrape_something_changed;
 	bool				_handle_found_at_xy;
 	POINT				_handle_xy;
 
@@ -152,7 +160,7 @@ private:
 	SLockBlinds			_s_lock_blinds;
 
 	LARGE_INTEGER		_clocks_hold;			// used for "clocks" symbol
-	HBITMAP				_entire_window_last, _entire_window_cur;
+	HBITMAP				_entire_window_cur;
 
 private:
 	// private functions and variables - not available via accessors or mutators
@@ -187,6 +195,10 @@ private:
 	double			_sblind_last, _bblind_last, _sb_bb_last, _bb_BB_last, _bbet_last, _ante_last;
 	double			_handnumber_last;
 	char			_title_last[MAX_WINDOW_TITLE];
+	int				_scrape_something_changed;
+	HBITMAP			_entire_window_last;
+
+	CCritSec		m_critsec;
 
 } *p_scraper;
 
