@@ -98,6 +98,8 @@ NEW STUFF:
   "Yes" will enable balance cleansing, any other value or the absence of this string will result in no balance cleansing.
   Thanks to Nick Coldhand for the patch.  [OpenHoldem]
 - File/Disconnect menu option added.  [OpenHoldem]
+- Detailed level-3 logging is now available for critical parts of OpenHoldem, including the heartbeat thread, the scraper engine, and
+  and the autoplayer engine.  More can be added as it becomes clear that it is needed.  [OpenHoldem]
 
 
 v1.9.4 2008-10-21
