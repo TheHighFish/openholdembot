@@ -71,7 +71,7 @@ void CMemory::StoreValue(const char * pquery, CEvalInfoFunction **logCallingFunc
 
 	// if we didn't find the var, put it in a new slot
 	if (index==_var_count+1)
-		_var_count++;
+		set_var_count(_var_count+1);
 
 	//store the value
 	if (memcmp(value,"f$",2)==0)
@@ -81,8 +81,8 @@ void CMemory::StoreValue(const char * pquery, CEvalInfoFunction **logCallingFunc
 
 		if (*e==SUCCESS)
 		{
-			_var_value[index] = result;
-			strcpy_s(_var_name[index], 64, var);
+			set_var_value(index, result);
+			set_var_name(index, var);
 		}
 		else
 		{
@@ -96,9 +96,9 @@ void CMemory::StoreValue(const char * pquery, CEvalInfoFunction **logCallingFunc
 		if (strstr(value, "_")!=NULL)
 			value[strstr(value, "_")-value]='.';
 
-		_var_value[index] = atof(value);
+		set_var_value(index, atof(value));
 
-		strcpy_s(_var_name[index], 64, var);
+		set_var_name(index, var);
 	}
 }
 
