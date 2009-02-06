@@ -1,3 +1,7 @@
+v1.9.7 2009-xx-xx
+=================
+BUG FIXES:
+-  Fix for run$prnuts and run$prnuts always reporting zero.  Thanks, flounderhead, for the find AND the fix! (OpenHoldem)
 
 v1.9.6 2009-02-02
 =================
@@ -9,7 +13,6 @@ BUG FIXES:
   code to recover quickly if it happens to mis-scrape a name when originally connecting to a table.  Thanks to Booster
   for the patch.  (OpenHoldem)
   
-
 v1.9.5 2008-11-24
 =================
 BUG FIXES:

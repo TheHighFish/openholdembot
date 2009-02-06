@@ -3033,6 +3033,7 @@ void CSymbols::CalcRunRon(void)
 		_sym.run$prbest = rr.srun()->pokervalmaxcount/_sym.run$total;
 		_sym.run$pokervalmax = rr.srun()->pokervalmax;
 		_sym.run$clocks = rr.srun()->clocks;
+		_sym.run$prnuts = rr.srun()->prnuts;
 
 		_sym.ron$royfl = rr.sron()->royfl;
 		_sym.ron$strfl = rr.sron()->strfl;
@@ -3049,6 +3050,7 @@ void CSymbols::CalcRunRon(void)
 		_sym.ron$prbest = rr.sron()->pokervalmaxcount/_sym.ron$total;
 		_sym.ron$pokervalmax = rr.sron()->pokervalmax;
 		_sym.ron$clocks = rr.sron()->clocks;
+		_sym.ron$prnuts = rr.sron()->prnuts;
 
 
 		//////////////////////////////////////////////////////////////

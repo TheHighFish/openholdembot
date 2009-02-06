@@ -4437,27 +4437,29 @@ void CRunRon::GetCounts(void)
 	}
 
 	// NUTS probabilities
-	if (_srun.royfl>_sron.royfl)		_srun.prnuts+=(_srun.royfl-_sron.royfl);
-	else if (_srun.strfl>_sron.strfl)	_srun.prnuts+=(_srun.strfl-_sron.strfl);
-	else if (_srun.fourkind>_sron.fourkind)	_srun.prnuts+=(_srun.fourkind-_sron.fourkind);
-	else if (_srun.fullh>_sron.fullh)	_srun.prnuts+=(_srun.fullh-_sron.fullh);
-	else if (_srun.flush>_sron.flush)	_srun.prnuts+=(_srun.flush-_sron.flush);
-	else if (_srun.strai>_sron.strai)	_srun.prnuts+=(_srun.strai-_sron.strai);
+	_srun.prnuts = 0;
+	if (_srun.royfl>_sron.royfl)				_srun.prnuts+=(_srun.royfl-_sron.royfl);
+	else if (_srun.strfl>_sron.strfl)			_srun.prnuts+=(_srun.strfl-_sron.strfl);
+	else if (_srun.fourkind>_sron.fourkind)		_srun.prnuts+=(_srun.fourkind-_sron.fourkind);
+	else if (_srun.fullh>_sron.fullh)			_srun.prnuts+=(_srun.fullh-_sron.fullh);
+	else if (_srun.flush>_sron.flush)			_srun.prnuts+=(_srun.flush-_sron.flush);
+	else if (_srun.strai>_sron.strai)			_srun.prnuts+=(_srun.strai-_sron.strai);
 	else if (_srun.threekind>_sron.threekind)	_srun.prnuts+=(_srun.threekind-_sron.threekind);
-	else if (_srun.twopair>_sron.twopair)	_srun.prnuts+=(_srun.twopair-_sron.twopair);
-	else if (_srun.onepair>_sron.onepair)	_srun.prnuts+=(_srun.onepair-_sron.onepair);
-	else if (_srun.hcard>_sron.hcard)	_srun.prnuts+=(_srun.hcard-_sron.hcard);
+	else if (_srun.twopair>_sron.twopair)		_srun.prnuts+=(_srun.twopair-_sron.twopair);
+	else if (_srun.onepair>_sron.onepair)		_srun.prnuts+=(_srun.onepair-_sron.onepair);
+	else if (_srun.hcard>_sron.hcard)			_srun.prnuts+=(_srun.hcard-_sron.hcard);
 	_srun.prnuts = _srun.prnuts / _srun.total;
 
-	if (_sron.royfl>_srun.royfl)		_sron.prnuts+=(_sron.royfl-_srun.royfl);
-	else if (_sron.strfl>_srun.strfl)	_sron.prnuts+=(_sron.strfl-_srun.strfl);
-	else if (_sron.fourkind>_srun.fourkind)	_sron.prnuts+=(_sron.fourkind-_srun.fourkind);
-	else if (_sron.fullh>_srun.fullh)	_sron.prnuts+=(_sron.fullh-_srun.fullh);
-	else if (_sron.flush>_srun.flush)	_sron.prnuts+=(_sron.flush-_srun.flush);
-	else if (_sron.strai>_srun.strai)	_sron.prnuts+=(_sron.strai-_srun.strai);
+	_sron.prnuts = 0;
+	if (_sron.royfl>_srun.royfl)				_sron.prnuts+=(_sron.royfl-_srun.royfl);
+	else if (_sron.strfl>_srun.strfl)			_sron.prnuts+=(_sron.strfl-_srun.strfl);
+	else if (_sron.fourkind>_srun.fourkind)		_sron.prnuts+=(_sron.fourkind-_srun.fourkind);
+	else if (_sron.fullh>_srun.fullh)			_sron.prnuts+=(_sron.fullh-_srun.fullh);
+	else if (_sron.flush>_srun.flush)			_sron.prnuts+=(_sron.flush-_srun.flush);
+	else if (_sron.strai>_srun.strai)			_sron.prnuts+=(_sron.strai-_srun.strai);
 	else if (_sron.threekind>_srun.threekind)	_sron.prnuts+=(_sron.threekind-_srun.threekind);
-	else if (_sron.twopair>_srun.twopair)	_sron.prnuts+=(_sron.twopair-_srun.twopair);
-	else if (_sron.onepair>_srun.onepair)	_sron.prnuts+=(_sron.onepair-_srun.onepair);
-	else if (_sron.hcard>_srun.hcard)	_sron.prnuts+=(_sron.hcard-_srun.hcard);
+	else if (_sron.twopair>_srun.twopair)		_sron.prnuts+=(_sron.twopair-_srun.twopair);
+	else if (_sron.onepair>_srun.onepair)		_sron.prnuts+=(_sron.onepair-_srun.onepair);
+	else if (_sron.hcard>_srun.hcard)			_sron.prnuts+=(_sron.hcard-_srun.hcard);
 	_sron.prnuts = _sron.prnuts / _sron.total;
 }
