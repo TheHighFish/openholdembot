@@ -30,9 +30,7 @@ void CEvalInfoSymbol::DumpSymbol(int indent)
 	else
 		message.Format("%s=%.2f", m_Symbol, m_Value);
 
-	EnterCriticalSection(&p_symbols->cs_symbols);
-	p_symbols->set_symboltrace_collection()->Add(message);
-	LeaveCriticalSection(&p_symbols->cs_symbols);
+	p_symbols->symboltrace_collection_add(message);
 }
 
 void CEvalInfoSymbolArray::DumpSymbolArray(int indent)
@@ -57,9 +55,7 @@ void CEvalInfoFunction::DumpFunction(int indent)
 	else
 		message.Format("%s%s=%.2f [Line: %d, Col: %d]", space, m_FunctionName, m_Result, m_Line, m_Column);
 	
-	EnterCriticalSection(&p_symbols->cs_symbols);
-	p_symbols->set_symboltrace_collection()->Add(message);
-	LeaveCriticalSection(&p_symbols->cs_symbols);
+	p_symbols->symboltrace_collection_add(message);
 
 	m_CalledFunctions.DumpFunctionArray(indent+1);
 	m_SymbolsUsed.DumpSymbolArray(indent+1);

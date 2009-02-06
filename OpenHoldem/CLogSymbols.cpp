@@ -28,9 +28,7 @@ double CLogSymbols::ProcessQuery(const char * pquery, int *e)
 
 		if (!exists)
 		{
-			EnterCriticalSection(&p_symbols->cs_symbols);
-			p_symbols->set_logsymbols_collection()->Add(pquery+4);
-			LeaveCriticalSection(&p_symbols->cs_symbols);
+			p_symbols->logsymbols_collection_add(pquery+4);
 		}
 
 		return 1.0;
