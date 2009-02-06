@@ -30,7 +30,7 @@ allidelay, floppct, turnpct, riverpct, avgbetspf, tablepfr. [TheHighFish]
 - Removed the "risk-of-ruin"-symbols from the code-base due to lack of documentation and practical relevance. [TheHighFish]
 - Updated blinds "reasonableness" check in CSymbols::CalcStakes, per suggestion by Sharky.  [OpenHoldem]
 - Pokertracker logging information is now directed to "oh_pt_X.log" where X is the OH instance number.  [OpenHoldem]
-- Continuing improvement in cross-thread resource contention protection (CMemory, CScraper) [OpenHoldem]
+- Continuing improvement in cross-thread resource contention protection (CMemory, CScraper, CSymbols) [OpenHoldem]
 
 NEW STUFF:
 - Added option to save all replay frames whenever something changes when you are in the hand (Thanks, markedagain for the patch) [OpenHoldem]

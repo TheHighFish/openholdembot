@@ -162,9 +162,7 @@ void CDllExtension::UnloadDll(void)
 	if (_hmod_dll==NULL)
 		return;
 
-	EnterCriticalSection(&p_symbols->cs_symbols);
-	p_symbols->set_prw1326()->useme=0;
-	LeaveCriticalSection(&p_symbols->cs_symbols);
+	p_symbols->set_prw1326_useme(0);
 
 	(_process_message) ("event", "unload");
 
