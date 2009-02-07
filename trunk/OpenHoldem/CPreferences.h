@@ -40,6 +40,7 @@ public:
 	const double icm_prize2() { return _icm_prize2; }
 	const double icm_prize3() { return _icm_prize3; }
 	const double icm_prize4() { return _icm_prize4; }
+	const double icm_prize5() { return _icm_prize5; }
 	// Replay Frames
 	const bool replay_record() { return _replay_record; }
 	const bool replay_record_every_change() { return _replay_record_every_change; }
@@ -162,6 +163,7 @@ public:
 	void set_icm_prize2(const double d) { ENT _icm_prize2 = d; WriteReg("icm_prize2", d); }
 	void set_icm_prize3(const double d) { ENT _icm_prize3 = d; WriteReg("icm_prize3", d); }
 	void set_icm_prize4(const double d) { ENT _icm_prize4 = d; WriteReg("icm_prize4", d); }
+	void set_icm_prize5(const double d) { ENT _icm_prize5 = d; WriteReg("icm_prize5", d); }
 	// Replay Frames
 	void set_replay_record(const bool b) { ENT _replay_record = b; WriteReg("replay_record", b); }
 	void set_replay_record_every_change(const bool b) { ENT _replay_record_every_change = b; WriteReg("replay_record_every_change", b); }
@@ -292,6 +294,7 @@ private:
 	double			_icm_prize2;
 	double			_icm_prize3;
 	double			_icm_prize4;
+	double			_icm_prize5;
 
 	// Replay Frames
 	bool			_replay_record;

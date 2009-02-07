@@ -124,6 +124,7 @@ void CPreferences::InitDefaults(void)
 	_icm_prize2 = 0.3;
 	_icm_prize3 = 0.2;
 	_icm_prize4 = 0.0;
+	_icm_prize5 = 0.0;
 
 	// Replay frames
 	_replay_record = false;
@@ -262,6 +263,7 @@ void CPreferences::ReadPreferences()
 		ReadReg("icm_prize2", &_icm_prize2);
 		ReadReg("icm_prize3", &_icm_prize3);
 		ReadReg("icm_prize4", &_icm_prize4);
+		ReadReg("icm_prize5", &_icm_prize5);
 
 		// Prefs - Replay frames
 		ReadReg("replay_record", &_replay_record);

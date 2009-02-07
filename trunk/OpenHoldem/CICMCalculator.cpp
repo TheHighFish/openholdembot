@@ -70,6 +70,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 	prizes[1] = prefs.icm_prize2();
 	prizes[2] = prefs.icm_prize3();
 	prizes[3] = prefs.icm_prize4();
+	prizes[4] = prefs.icm_prize5();
 
 	int			sym_userchair = (int) p_symbols->sym()->userchair;
 	int			sym_opponentsplayingbits = (int) p_symbols->sym()->opponentsplayingbits;

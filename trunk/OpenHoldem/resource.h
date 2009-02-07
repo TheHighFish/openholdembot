@@ -168,6 +168,7 @@
 #define IDC_ICM_4                       1113
 #define IDC_CHECK1                      1114
 #define IDC_AUTO_AP                     1114
+#define IDC_ICM_5                       1114
 #define IDC_CHECK2                      1115
 #define IDC_AUTO_AP2                    1115
 #define IDC_FOCUSDETECT                 1115
