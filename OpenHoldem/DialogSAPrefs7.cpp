@@ -28,6 +28,7 @@ void CDlgSAPrefs7::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_ICM_2, m_ICM2);
 	DDX_Control(pDX, IDC_ICM_3, m_ICM3);
 	DDX_Control(pDX, IDC_ICM_4, m_ICM4);
+	DDX_Control(pDX, IDC_ICM_5, m_ICM5);
 }
 
 BEGIN_MESSAGE_MAP(CDlgSAPrefs7, CDialog)
@@ -64,6 +65,12 @@ BOOL CDlgSAPrefs7::OnInitDialog()
 		text.Format("%f", prefs.icm_prize4());
 	m_ICM4.SetWindowText(text);
 
+	if (prefs.icm_prize5() == (int) prefs.icm_prize5())
+		text.Format("%.0f", prefs.icm_prize5());
+	else
+		text.Format("%f", prefs.icm_prize5());
+	m_ICM5.SetWindowText(text);
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -80,6 +87,8 @@ void CDlgSAPrefs7::OnOK()
 	prefs.set_icm_prize3(atof(text.GetString()));
 	m_ICM4.GetWindowText(text);
 	prefs.set_icm_prize4(atof(text.GetString()));
+	m_ICM5.GetWindowText(text);
+	prefs.set_icm_prize5(atof(text.GetString()));
 
 	CSAPrefsSubDlg::OnOK();
 }
