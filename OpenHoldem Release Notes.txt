@@ -19,6 +19,9 @@ BUG FIXES:
 - Stopped poker tracker code from skipping name check when it thinks it already found a match.  This will allow the
   code to recover quickly if it happens to mis-scrape a name when originally connecting to a table.  Thanks to Booster
   for the patch.  [OpenHoldem]
+- Applied fix from maintenance branch that addresses run$prnuts and run$prnuts always reporting zero.  Thanks, flounderhead, 
+  for the find AND the fix! [OpenHoldem]
+  
   
 MAINTENANCE:
 - Optimized symbol-lookup. [TheHighFish]
