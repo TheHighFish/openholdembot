@@ -66,12 +66,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SciLexer", "scintilla\vcbui
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Reference User DLL", "reference user dll\whuser.vcproj", "{B7E24796-7873-4A94-9CFE-2E27C5B0931A}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Reference Mouse DLL", "Reference Mouse DLL\Reference Mouse DLL.vcproj", "{03DE5C1C-773F-47CF-AD7C-470F68C6400E}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
@@ -130,10 +124,6 @@ Global
 		{E757A486-9770-4DB4-8299-00E22986E604}.Debug|Win32.Build.0 = Debug|Win32
 		{E757A486-9770-4DB4-8299-00E22986E604}.Release|Win32.ActiveCfg = Release|Win32
 		{E757A486-9770-4DB4-8299-00E22986E604}.Release|Win32.Build.0 = Release|Win32
-		{B7E24796-7873-4A94-9CFE-2E27C5B0931A}.Debug|Win32.ActiveCfg = Debug|Win32
-		{B7E24796-7873-4A94-9CFE-2E27C5B0931A}.Debug|Win32.Build.0 = Debug|Win32
-		{B7E24796-7873-4A94-9CFE-2E27C5B0931A}.Release|Win32.ActiveCfg = Release|Win32
-		{B7E24796-7873-4A94-9CFE-2E27C5B0931A}.Release|Win32.Build.0 = Release|Win32
 		{03DE5C1C-773F-47CF-AD7C-470F68C6400E}.Debug|Win32.ActiveCfg = Debug|Win32
 		{03DE5C1C-773F-47CF-AD7C-470F68C6400E}.Debug|Win32.Build.0 = Debug|Win32
 		{03DE5C1C-773F-47CF-AD7C-470F68C6400E}.Release|Win32.ActiveCfg = Release|Win32
