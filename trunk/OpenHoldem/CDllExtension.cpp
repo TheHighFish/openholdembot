@@ -112,7 +112,7 @@ void CDllExtension::LoadDll(const char * path)
 	if (_hmod_dll)
 	{
 		// Get address of process_message from dll
-		// whuser.dll does not ship with a .def file by default - we must use the ordinal method to get the address
+		// user.dll, as defined in WinHoldem, does not ship with a .def file by default - we must use the ordinal method to get the address
 		//global.process_message = (process_message_t) GetProcAddress(global._hmod_dll, "process_message");
 		_process_message = (process_message_t) ::GetProcAddress(_hmod_dll, (LPCSTR) 1);
 

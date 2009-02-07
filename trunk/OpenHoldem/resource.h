@@ -28,7 +28,6 @@
 #define IDD_POKERPRO                    152
 #define IDD_POKERPRO_DLG                152
 #define IDD_SITDOWN                     153
-#define IDC_MARGIN                      154
 #define IDD_FORMULA_SCINTILLA           155
 #define IDD_LOCK_BLINDS                 157
 #define IDD_SCRAPER_OUTPUT              158
