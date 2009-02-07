@@ -79,7 +79,7 @@ void CPreferences::InitDefaults(void)
 	// dll
 	_dll_always_send_state = true;
 	_dll_load_on_startup = false;
-	_dll_name = "whuser.dll";
+	_dll_name = "user.dll";
 
 	// Ppro
 	_ppro_hostname = "127.0.0.1";

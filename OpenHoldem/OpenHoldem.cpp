@@ -217,7 +217,7 @@ BOOL COpenHoldemApp::InitInstance()
 
 	// Enable DDE Execute open
 	EnableShellOpen();
-	RegisterShellFileTypes(TRUE);
+	RegisterShellFileTypes(true);
 
 	// Parse command line for standard shell commands, DDE, file open
 	CCommandLineInfo cmdInfo;

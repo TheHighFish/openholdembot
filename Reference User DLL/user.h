@@ -1,18 +1,10 @@
-/*
-	Filename	:	whuser.h
-	Author(s)	:	winholdem development
-	Date		:	2004-JUN-25
-	Copyright	:	(c) 2004 HixoxiH Software
-	History		:
-*/
+#ifndef _user_h_
+#define _user_h_
 
-#ifndef _whuser_h_
-#define _whuser_h_
-
-#ifdef WHUSER_EXPORTS
-#define WHUSER_API __declspec(dllexport)
+#ifdef USERDLL_EXPORTS
+#define USERDLL_API __declspec(dllexport)
 #else
-#define WHUSER_API __declspec(dllimport)
+#define USERDLL_API __declspec(dllimport)
 #endif
 
 struct holdem_player {
@@ -44,12 +36,12 @@ struct holdem_state {
 };
 
 typedef double (*process_message_t)(const char* message, const void* param );
-WHUSER_API double process_message( const char* message, const void* param );
-typedef double (*pfgws_t)( int c, const char* psym, bool& iserr );
+USERDLL_API double process_message( const char* message, const void* param );
+typedef double (*p_getsym_t)( int c, const char* psym, bool& iserr );
 
-extern	pfgws_t			m_pget_winholdem_symbol;
+extern	p_getsym_t		p_get_symbol;
 
-double gws( const char* name );
+double getsym( const char* name );
 double process_state(holdem_state* pstate);
 double process_query(const char* pquery);
 

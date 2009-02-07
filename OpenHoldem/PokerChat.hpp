@@ -11,7 +11,7 @@
 //
 //  Description: A very simple chat system for OpenHoldem,
 //	providing:
-//	  - an interface for whuser.dll
+//	  - an interface for user.dll
 //	  - (limited) chat support for the OH scripting language.
 //
 //  PokerChat is non-OOP, as we pass a function pointer to DLLs,
