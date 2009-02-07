@@ -3209,6 +3209,7 @@ void CSymbols::CalcRunRon(void)
 	set_sym_run$prbest(rr.srun()->pokervalmaxcount/_sym.run$total);
 	set_sym_run$pokervalmax(rr.srun()->pokervalmax);
 	set_sym_run$clocks(rr.srun()->clocks);
+	set_sym_run$prnuts(rr.srun()->prnuts);
 
 	set_sym_ron$royfl(rr.sron()->royfl);
 	set_sym_ron$strfl(rr.sron()->strfl);
@@ -3225,12 +3226,8 @@ void CSymbols::CalcRunRon(void)
 	set_sym_ron$prbest(rr.sron()->pokervalmaxcount/_sym.ron$total);
 	set_sym_ron$pokervalmax(rr.sron()->pokervalmax);
 	set_sym_ron$clocks(rr.sron()->clocks);
+	set_sym_ron$prnuts(rr.sron()->prnuts);
 
-
-	//////////////////////////////////////////////////////////////
-	// probabilities
-	//_sym.run$prnuts = totals[];
-	//_sym.ron$prnuts = /run$total;
 }
 
 

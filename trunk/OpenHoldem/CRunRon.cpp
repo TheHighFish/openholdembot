@@ -4435,6 +4435,7 @@ void CRunRon::GetCounts(void)
 	}
 
 	// NUTS probabilities
+	_srun.prnuts = 0;
 	if (_srun.royfl>_sron.royfl)		_srun.prnuts+=(_srun.royfl-_sron.royfl);
 	else if (_srun.strfl>_sron.strfl)	_srun.prnuts+=(_srun.strfl-_sron.strfl);
 	else if (_srun.fourkind>_sron.fourkind)	_srun.prnuts+=(_srun.fourkind-_sron.fourkind);
@@ -4447,6 +4448,7 @@ void CRunRon::GetCounts(void)
 	else if (_srun.hcard>_sron.hcard)	_srun.prnuts+=(_srun.hcard-_sron.hcard);
 	_srun.prnuts = _srun.prnuts / _srun.total;
 
+	_sron.prnuts = 0;
 	if (_sron.royfl>_srun.royfl)		_sron.prnuts+=(_sron.royfl-_srun.royfl);
 	else if (_sron.strfl>_srun.strfl)	_sron.prnuts+=(_sron.strfl-_srun.strfl);
 	else if (_sron.fourkind>_srun.fourkind)	_sron.prnuts+=(_sron.fourkind-_srun.fourkind);
