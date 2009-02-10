@@ -21,6 +21,8 @@ BUG FIXES:
   for the patch.  [OpenHoldem]
 - Applied fix from maintenance branch that addresses run$prnuts and run$prnuts always reporting zero.  Thanks, flounderhead, 
   for the find AND the fix! [OpenHoldem]
+- Applied fix from maintenance branch that addresses a problem with the chip scraping routine when multiple chip landing spots 
+  are specified (i.e. more than just 00/01/10).  Thanks to papa05 for finding the problem.  (OpenHoldem)  
   
 MAINTENANCE:
 - Optimized symbol-lookup. [TheHighFish]
