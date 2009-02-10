@@ -2028,14 +2028,14 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 			}
 			else
 			{
-				if (r_vert[chipindex] == p_tablemap->r$()->end())
+				if (r_vert[chipindex+1] == p_tablemap->r$()->end())
 				{
 					stop_loop = true;
 				}
 				else
 				{
-					top = r_vert[chipindex]->second.top;
-					bottom = r_vert[chipindex]->second.bottom;
+					top = r_vert[chipindex+1]->second.top;
+					bottom = r_vert[chipindex+1]->second.bottom;
 				}
 			}
 			if (horizcount==1)
@@ -2045,14 +2045,14 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 			}
 			else
 			{
-				if (r_horiz[stackindex] == p_tablemap->r$()->end())
+				if (r_horiz[stackindex+1] == p_tablemap->r$()->end())
 				{
 					stop_loop = true;
 				}
 				else
 				{
-					left = r_horiz[stackindex]->second.left;
-					right = r_horiz[stackindex]->second.right;
+					left = r_horiz[stackindex+1]->second.left;
+					right = r_horiz[stackindex+1]->second.right;
 				}
 			}
 
