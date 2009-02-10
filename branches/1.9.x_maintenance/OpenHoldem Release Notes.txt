@@ -1,7 +1,9 @@
 v1.9.7 2009-xx-xx
 =================
 BUG FIXES:
--  Fix for run$prnuts and run$prnuts always reporting zero.  Thanks, flounderhead, for the find AND the fix! (OpenHoldem)
+- Fix for run$prnuts and run$prnuts always reporting zero.  Thanks, flounderhead, for the find AND the fix! (OpenHoldem)
+- Corrected chip scraping routine when multiple chip landing spots are specified (i.e. more than just 00/01/10).  Thanks to
+  papa05 for finding the problem.  (OpenHoldem)
 
 v1.9.6 2009-02-02
 =================

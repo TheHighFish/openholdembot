@@ -1859,14 +1859,14 @@ const double CScraper::DoChipScrape(HDC hdc, int i)
 			}
 			else
 			{
-				if (ivert[chipindex]==-1)
+				if (ivert[chipindex+1]==-1)
 				{
 					stop_loop = true;
 				}
 				else
 				{
-					top = p_tablemap->r$()->GetAt(ivert[chipindex]).top;
-					bottom = p_tablemap->r$()->GetAt(ivert[chipindex]).bottom;
+					top = p_tablemap->r$()->GetAt(ivert[chipindex+1]).top;
+					bottom = p_tablemap->r$()->GetAt(ivert[chipindex+1]).bottom;
 				}
 			}
 			if (horizcount==1)
@@ -1878,14 +1878,14 @@ const double CScraper::DoChipScrape(HDC hdc, int i)
 			}
 			else
 			{
-				if (ihoriz[stackindex]==-1)
+				if (ihoriz[stackindex+1]==-1)
 				{
 					stop_loop = true;
 				}
 				else
 				{
-					left = p_tablemap->r$()->GetAt(ihoriz[stackindex]).left;
-					right = p_tablemap->r$()->GetAt(ihoriz[stackindex]).right;
+					left = p_tablemap->r$()->GetAt(ihoriz[stackindex+1]).left;
+					right = p_tablemap->r$()->GetAt(ihoriz[stackindex+1]).right;
 				}
 			}
 
