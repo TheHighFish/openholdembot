@@ -633,8 +633,8 @@ TMapCI CTransform::GetBestHammingDistance(RMapCI region, const int width, const 
 		// best hamming distance match
 		for (TMapCI t_iter=p_tablemap->t$(font_group)->begin(); t_iter!=p_tablemap->t$(font_group)->end(); t_iter++)
 		{
-			int lit_pixels = 0;
-			int tot_hd = 0;
+			int lit_pixels = 1;
+			int tot_hd = 1;
 			double weighted_hd = 999999.;
 
 			// If the size of this character is <= the number of columns we are looking at then consider it
