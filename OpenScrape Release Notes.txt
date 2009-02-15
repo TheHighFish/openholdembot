@@ -45,6 +45,12 @@ NEW STUFF:
   casinos that include spurious/changing alphanumeric information in their balance boxes.  Setting this string to "True" or
   "Yes" will enable balance cleansing, any other value or the absence of this string will result in no balance cleansing.
   Thanks to Nick Coldhand for the patch.  [OpenHoldem]
+- Added "chipscrapemethod" to valid s$strings list.  This setting allows you to specify that the scraper engine should check
+  all 200 possible chip locations (10 stacks of 20 chips) everytime a chip scrape region is required.  The default behavior 
+  is to stop checking a given stack when there is no match, and to stop checking all stacks when the base chip for that stack 
+  does not match. This is only valid when a region specifies the 00, 01, and 10 locations only.  For regions that specify 
+  other chip landing spots, those chips/stacks will be checked as per previous behavior.  A value of "All" will trigger the 
+  "check all 200 locations" behavior, any other value will result in the stop checking behavior as described.  [OpenHoldem]
   
 
 
