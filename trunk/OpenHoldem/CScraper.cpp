@@ -2011,6 +2011,9 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 	HBITMAP attached_bitmap = CreateCompatibleBitmap(hdcScreen, rect.right, rect.bottom);
 	HBITMAP	old_bitmap = (HBITMAP) SelectObject(hdcCompat, attached_bitmap);
 	BitBlt(hdcCompat, 0, 0, rect.right, rect.bottom, hdc, 0, 0, SRCCOPY);
+	
+	// Get chipscrapemethod option from tablemap, if specified
+	bool chipscrape200 = p_tablemap->chipscrapemethod();
 
 	stop_loop = false;
 	// loop through horizontal stacks
@@ -2038,6 +2041,7 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 					bottom = r_vert[chipindex+1]->second.bottom;
 				}
 			}
+
 			if (horizcount==1)
 			{
 				left = r_start->second.left + stackindex*(r_horiz[1]->second.left - r_start->second.left);
@@ -2085,12 +2089,16 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 				// no hash match
 				if (h_iter == p_tablemap->h$(hash_type)->end())
 				{
-					// Stop horizontal scrape loop if chipindex==0 AND a non-match
-					if (chipindex==0)
-						stackindex = MAX_CHIP_STACKS+1;
+					// See if we should stop horiz or vert loops
+					if (!chipscrape200)
+					{
+						// Stop horizontal scrape loop if chipindex==0 AND a non-match
+						if (chipindex==0)
+							stackindex = MAX_CHIP_STACKS+1;
 
-					// stop vertical scrape loop on a non-match
-					chipindex = MAX_CHIPS_PER_STACK+1;
+						// stop vertical scrape loop on a non-match
+						chipindex = MAX_CHIPS_PER_STACK+1;
+					}
 				}
 				// hash match found
 				else
