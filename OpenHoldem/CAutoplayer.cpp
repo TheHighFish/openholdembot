@@ -8,6 +8,7 @@
 #include "CScraper.h"
 #include "CGrammar.h"
 #include "CPreferences.h"
+#include "CReplayFrame.h"
 
 #include "OpenHoldem.h"
 #include "MainFrm.h"
@@ -218,6 +219,18 @@ void CAutoplayer::DoAutoplayer(void)
 	write_log(3, "Primary formulas; f$swag: %f", p_symbols->f$swag());
 	write_log(3, "Primary formulas; f$rais: %f", p_symbols->f$rais());
 	write_log(3, "Primary formulas; f$call: %f", p_symbols->f$call());
+
+	// save replay frame, if needed
+	if (prefs.replay_record())
+	{
+		if (p_symbols->sym()->ismyturn && !p_heartbeat_thread->replay_recorded_this_turn())
+		{
+			write_log(3, "Calling CreateReplayFrame.");
+			CReplayFrame   crf;
+			crf.CreateReplayFrame();
+			p_heartbeat_thread->set_replay_recorded_this_turn(true);
+		}
+	}
 
 	// do swag first since it is the odd one
 	if (p_symbols->f$swag() && !p_symbols->f$alli() && p_scraper->GetButtonState(3)) 

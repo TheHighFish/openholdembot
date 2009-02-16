@@ -22,7 +22,10 @@ BUG FIXES:
 - Applied fix from maintenance branch that addresses run$prnuts and run$prnuts always reporting zero.  Thanks, flounderhead, 
   for the find AND the fix! [OpenHoldem]
 - Applied fix from maintenance branch that addresses a problem with the chip scraping routine when multiple chip landing spots 
-  are specified (i.e. more than just 00/01/10).  Thanks to papa05 for finding the problem.  (OpenHoldem)  
+  are specified (i.e. more than just 00/01/10).  Thanks to papa05 for finding the problem.  [OpenHoldem]
+- Replay frames are now created with image that is present just prior to the autoplayer acting, unless one of the 'record on
+  every change' options is selected, in which case, those frames will be created in the same way as before.  Thanks to
+  Nick Coldhand for identifying the issue.  [OpenHoldem]
   
 MAINTENANCE:
 - Optimized symbol-lookup. [TheHighFish]
