@@ -44,6 +44,7 @@
 #include "DialogScraperOutput.h"
 #include "DialogLockBlinds.h"
 #include "CPerl.hpp"
+#include "DialogChairNum.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -62,9 +63,11 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_FILE_LOADTABLEMAP, &CMainFrame::OnUpdateMenuFileLoadProfile)
 	ON_UPDATE_COMMAND_UI(ID_FILE_CONNECT, &CMainFrame::OnUpdateFileConnect)
 	ON_UPDATE_COMMAND_UI(ID_FILE_DISCONNECT, &CMainFrame::OnUpdateFileDisconnect)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_FORCEUSERCHAIR, &CMainFrame::OnUpdateEditForceuserchair)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_MAIN_TOOLBAR, &CMainFrame::OnUpdateViewMainToolbar)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_FLAGS_TOOLBAR, &CMainFrame::OnUpdateViewFlagsToolbar)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_STATUSBAR, &CMainFrame::OnUpdateViewStatusbar)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOOTREPLAYFRAME, &CMainFrame::OnUpdateViewShootreplayframe)
 	ON_UPDATE_COMMAND_UI(ID_DLL_LOAD, &CMainFrame::OnUpdateMenuDllLoad)
 	ON_UPDATE_COMMAND_UI(ID_DLL_LOADSPECIFICFILE, &CMainFrame::OnUpdateDllLoadspecificfile)
 	ON_UPDATE_COMMAND_UI(ID_POKERPRO_CONNECT, &CMainFrame::OnUpdatePokerproConnect)
@@ -81,6 +84,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND(ID_FILE_DISCONNECT, &CMainFrame::OnBnClickedRedCircle)
 	ON_COMMAND(ID_EDIT_FORMULA, &CMainFrame::OnEditFormula)
 	ON_COMMAND(ID_EDIT_PREFERENCES, &CMainFrame::OnEditPreferences)
+	ON_COMMAND(ID_EDIT_FORCEUSERCHAIR, &CMainFrame::OnEditForceuserchair)
 	ON_COMMAND(ID_VIEW_MAIN_TOOLBAR, &CMainFrame::OnFormulaViewMainToolbar)
 	ON_COMMAND(ID_VIEW_FLAGS_TOOLBAR, &CMainFrame::OnFormulaViewFlagsToolbar)
 	ON_COMMAND(ID_VIEW_STATUSBAR, &CMainFrame::OnFormulaViewStatusbar)
@@ -143,7 +147,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 
 	ON_WM_SETCURSOR()
 	ON_WM_SYSCOMMAND()
-	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOOTREPLAYFRAME, &CMainFrame::OnUpdateViewShootreplayframe)
 END_MESSAGE_MAP()
 
 static UINT indicators[] = 
@@ -1020,6 +1023,22 @@ void CMainFrame::OnBnClickedRedCircle()
 	stop_log();
 }
 
+void CMainFrame::OnEditForceuserchair()
+{
+	CDlgChairNum	dlg;
+
+	if (dlg.DoModal()==IDOK)
+	{
+		p_symbols->set_sym_chair(dlg.chair);
+		p_symbols->set_sym_userchair(dlg.chair);
+		p_symbols->set_user_chair_confirmed(true); 
+		time_t tm;
+		time(&tm);
+		p_symbols->set_elapsedhold(tm);
+		write_log(3, "Force set userchair to %d\n", dlg.chair);
+	}
+}
+
 void CMainFrame::OnTimer(UINT nIDEvent) 
 {
 	CardMask		Cards;
@@ -1571,116 +1590,6 @@ void CMainFrame::OnFormulaViewStatusbar()
 	RecalcLayout();
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-// Menu updaters
-
-void CMainFrame::OnUpdateMenuFileNew(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
-}
-
-void CMainFrame::OnUpdateMenuFileOpen(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
-}
-
-void CMainFrame::OnUpdateMenuFileLoadProfile(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
-}
-
-void CMainFrame::OnUpdateFileConnect(CCmdUI *pCmdUI)
-{
-	pCmdUI->Enable(!_attached_hwnd);
-}
-
-void CMainFrame::OnUpdateFileDisconnect(CCmdUI *pCmdUI)
-{
-	pCmdUI->Enable(_attached_hwnd!=NULL);
-}
-
-void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI)
-{
-	if (p_dll_extension->IsDllLoaded())
-		pCmdUI->SetText("&Unload\tF4");
-
-	else
-		pCmdUI->SetText("&Load\tF4");
-
-	// Not connected to ppro server
-	if (!p_pokerpro->IsConnected()) 
-	{
-		pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-						!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
-	}
-	// connected to ppro server
-	else 
-	{
-		pCmdUI->Enable(p_pokerpro->ppdata()->m_pinf[p_pokerpro->ppdata()->m_userchair].m_isActive&0x1 ? false : true);
-	}
-}
-
-void CMainFrame::OnUpdateDllLoadspecificfile(CCmdUI *pCmdUI)
-{
-	pCmdUI->Enable(p_dll_extension->IsDllLoaded() ? false : true);
-}
-
-void CMainFrame::OnUpdatePokerproConnect(CCmdUI *pCmdUI) 
-{
-	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) &&
-				   !p_pokerpro->IsConnected() ? false : true);
-}
-
-
-void CMainFrame::OnUpdateViewShootreplayframe(CCmdUI *pCmdUI)
-{
-	pCmdUI->Enable(_attached_hwnd != NULL);
-}
-
-void CMainFrame::OnUpdateViewMainToolbar(CCmdUI *pCmdUI) 
-{
-	pCmdUI->SetCheck(m_MainToolBar.IsVisible() ? 1 : 0);
-}
-
-void CMainFrame::OnUpdateViewFlagsToolbar(CCmdUI *pCmdUI) 
-{
-	pCmdUI->SetCheck(_tool_bar.IsVisible() ? 1 : 0);
-}
-
-void CMainFrame::OnUpdateViewStatusbar(CCmdUI *pCmdUI) 
-{
-	pCmdUI->SetCheck(_status_bar.IsVisible() ? 1 : 0);
-}
-
-void CMainFrame::OnUpdateMenuPerlLoad(CCmdUI* pCmdUI)
-{
-	if (p_perl->IsAFormulaLoaded()) 
-		pCmdUI->SetText("&Unload Formula\tF7");
-
-	else 
-		pCmdUI->SetText("&Load Formula\tF7");
-
-	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
-}
-
-void CMainFrame::OnUpdateMenuPerlLoadSpecificFormula(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
-}
-
-void CMainFrame::OnUpdateMenuPerlReloadFormula(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable((p_perl->IsAFormulaLoaded() &&
-					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) &&
-					m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)));
-}
-
 BOOL CMainFrame::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
 	if (_wait_cursor)
@@ -1726,8 +1635,6 @@ void CMainFrame::OnPerlLoadFormula()
 	Beep(880, 125);	
 }
 
-
-//  2008.03.03 by THF
 void CMainFrame::OnPerlLoadSpecificFormula() 
 {
 	CFileDialog			cfd(true);
@@ -1762,16 +1669,6 @@ void CMainFrame::OnPerlReloadFormula()
 void CMainFrame::OnPerlCheckSyntax() 
 {
 	p_perl->CheckSyntax();
-}
-
-void CMainFrame::OnUpdateMenuPerlCheckSyntax(CCmdUI* pCmdUI) 
-{
-	pCmdUI->Enable(p_perl->IsAFormulaLoaded());
-}
-
-void CMainFrame::OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI) 
-{
-	pCmdUI->Enable(p_perl->IsAFormulaLoaded());
 }
 
 void CMainFrame::ReadRegString(CString RegistryKey, char* RegistryValue)
@@ -2033,3 +1930,126 @@ bool check_window_match(SWholeMap *map, HWND h, RECT r, CString title)
 	return true;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+// Menu updaters
+
+void CMainFrame::OnUpdateMenuFileNew(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
+					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+}
+
+void CMainFrame::OnUpdateMenuFileOpen(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
+					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+}
+
+void CMainFrame::OnUpdateMenuFileLoadProfile(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
+					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+}
+
+void CMainFrame::OnUpdateFileConnect(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(!_attached_hwnd);
+}
+
+void CMainFrame::OnUpdateFileDisconnect(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(_attached_hwnd!=NULL);
+}
+
+void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI)
+{
+	if (p_dll_extension->IsDllLoaded())
+		pCmdUI->SetText("&Unload\tF4");
+
+	else
+		pCmdUI->SetText("&Load\tF4");
+
+	// Not connected to ppro server
+	if (!p_pokerpro->IsConnected()) 
+	{
+		pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
+						!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+	}
+	// connected to ppro server
+	else 
+	{
+		pCmdUI->Enable(p_pokerpro->ppdata()->m_pinf[p_pokerpro->ppdata()->m_userchair].m_isActive&0x1 ? false : true);
+	}
+}
+
+void CMainFrame::OnUpdateDllLoadspecificfile(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(p_dll_extension->IsDllLoaded() ? false : true);
+}
+
+void CMainFrame::OnUpdatePokerproConnect(CCmdUI *pCmdUI) 
+{
+	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
+					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) &&
+				   !p_pokerpro->IsConnected() ? false : true);
+}
+
+void CMainFrame::OnUpdateViewShootreplayframe(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(_attached_hwnd != NULL);
+}
+
+void CMainFrame::OnUpdateViewMainToolbar(CCmdUI *pCmdUI) 
+{
+	pCmdUI->SetCheck(m_MainToolBar.IsVisible() ? 1 : 0);
+}
+
+void CMainFrame::OnUpdateViewFlagsToolbar(CCmdUI *pCmdUI) 
+{
+	pCmdUI->SetCheck(_tool_bar.IsVisible() ? 1 : 0);
+}
+
+void CMainFrame::OnUpdateViewStatusbar(CCmdUI *pCmdUI) 
+{
+	pCmdUI->SetCheck(_status_bar.IsVisible() ? 1 : 0);
+}
+
+void CMainFrame::OnUpdateMenuPerlLoad(CCmdUI* pCmdUI)
+{
+	if (p_perl->IsAFormulaLoaded()) 
+		pCmdUI->SetText("&Unload Formula\tF7");
+
+	else 
+		pCmdUI->SetText("&Load Formula\tF7");
+
+	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
+					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+}
+
+void CMainFrame::OnUpdateMenuPerlLoadSpecificFormula(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
+					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+}
+
+void CMainFrame::OnUpdateMenuPerlReloadFormula(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable((p_perl->IsAFormulaLoaded() &&
+					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) &&
+					m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)));
+}
+
+void CMainFrame::OnUpdateMenuPerlCheckSyntax(CCmdUI* pCmdUI) 
+{
+	pCmdUI->Enable(p_perl->IsAFormulaLoaded());
+}
+
+void CMainFrame::OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI) 
+{
+	pCmdUI->Enable(p_perl->IsAFormulaLoaded());
+}
+
+void CMainFrame::OnUpdateEditForceuserchair(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(!p_symbols->user_chair_confirmed() && _attached_hwnd!=NULL ? true : false);
+}
