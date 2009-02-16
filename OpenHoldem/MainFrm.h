@@ -20,6 +20,7 @@ protected: // create from serialization only
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnFileOpen();
 	afx_msg void OnEditFormula();
+	afx_msg void OnEditForceuserchair();
 	afx_msg void OnScraperOutput();
 	afx_msg void OnViewShootreplayframe();
 	afx_msg void OnEditPreferences();
@@ -36,6 +37,7 @@ protected: // create from serialization only
 	afx_msg void OnAttachBottom();
 	afx_msg void OnLockBlinds();
 	afx_msg void OnPokerproConnect();
+
 	afx_msg void OnUpdateMenuFileNew(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateMenuFileOpen(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateMenuFileLoadProfile(CCmdUI* pCmdUI);
@@ -48,6 +50,13 @@ protected: // create from serialization only
 	afx_msg void OnUpdateViewStatusbar(CCmdUI *pCmdUI);
 	afx_msg void OnUpdatePokerproConnect(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateViewShootreplayframe(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateEditForceuserchair(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateMenuPerlReloadFormula(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateMenuPerlCheckSyntax(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateMenuPerlLoad(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateMenuPerlLoadSpecificFormula(CCmdUI* pCmdUI);
+
 	afx_msg void OnFormulaViewMainToolbar();
 	afx_msg void OnFormulaViewFlagsToolbar();
 	afx_msg void OnFormulaViewStatusbar();
@@ -57,15 +66,10 @@ protected: // create from serialization only
 	afx_msg LRESULT OnConnectMessage(WPARAM, LPARAM hwnd);
 	afx_msg LRESULT OnSetWindowText(WPARAM, LPARAM title);
 	afx_msg void OnPerlLoadFormula();
-	afx_msg void OnUpdateMenuPerlLoadSpecificFormula(CCmdUI* pCmdUI);
 	afx_msg void OnPerlLoadSpecificFormula();
 	afx_msg void OnPerlEditMainFormula();
-	afx_msg void OnUpdateMenuPerlLoad(CCmdUI* pCmdUI);
 	afx_msg void OnPerlCheckSyntax();
 	afx_msg void OnPerlReloadFormula();
-	afx_msg void OnUpdateMenuPerlReloadFormula(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateMenuPerlCheckSyntax(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI);
 
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);

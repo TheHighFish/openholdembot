@@ -112,6 +112,9 @@ NEW STUFF:
   stack does not match. This is only valid when a region specifies the 00, 01, and 10 locations only.  For regions that specify 
   other chip landing spots, those chips/stacks will be checked as per previous behavior.  A value of "All" will trigger the 
   "check all 200 locations" behavior, any other value will result in the stop checking behavior as described.  [OpenHoldem]
+- Added "Edit/Force User Chair" menu item.  This will bypass OH's automatic detection of the user's chair, and set it to whatever
+  you specify.  This is really useful for debugging/manual mode, but can be used to specify the user's chair at a live table
+  prior to OH auto-detecting it, if you so choose. [OpenHoldem]
 
 
 v1.9.4 2008-10-21

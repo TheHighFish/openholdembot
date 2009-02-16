@@ -50,6 +50,7 @@
 #define IDD_SAPREFS11                   176
 #define IDD_SAPREFS12                   177
 #define IDD_SAPREFS13                   178
+#define IDD_CHARINUM                    179
 #define IDC_NEW                         1006
 #define IDC_DELETE                      1007
 #define IDC_RENAME                      1013
@@ -379,6 +380,7 @@
 #define IDC_SIMPLE_TITLE                1312
 #define IDC_CHECK_VALIDATOR_HEURISTIC_RULES 1313
 #define IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES 1313
+#define IDC_CHAIRNUM                    1315
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -498,15 +500,16 @@
 #define ID_NUMBER19                     32980
 #define ID_NUMBER10                     32981
 #define ID_FILE_DISCONNECT              32982
+#define ID_EDIT_FORCEUSERCHAIR          32985
 #define ID_INDICATOR_STATUS_PLCARDS     61191
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        179
-#define _APS_NEXT_COMMAND_VALUE         32985
-#define _APS_NEXT_CONTROL_VALUE         1315
+#define _APS_NEXT_RESOURCE_VALUE        180
+#define _APS_NEXT_COMMAND_VALUE         32986
+#define _APS_NEXT_CONTROL_VALUE         1316
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

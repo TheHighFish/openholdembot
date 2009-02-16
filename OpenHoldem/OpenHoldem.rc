@@ -169,6 +169,7 @@ BEGIN
     BEGIN
         MENUITEM "&Formula\tCtrl+F",            ID_EDIT_FORMULA
         MENUITEM "P&references\tCtrl+P",        ID_EDIT_PREFERENCES
+        MENUITEM "Force &User Chair\tCtrl+U",   ID_EDIT_FORCEUSERCHAIR
     END
     POPUP "&View"
     BEGIN
@@ -287,6 +288,7 @@ BEGIN
     VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
     "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
     "T",            ID_FILE_CONNECT,        VIRTKEY, CONTROL, NOINVERT
+    "D",            ID_FILE_DISCONNECT,     VIRTKEY, CONTROL, NOINVERT
     "L",            ID_FILE_LOADTABLEMAP,   VIRTKEY, CONTROL, NOINVERT
     "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
     "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
@@ -306,7 +308,7 @@ BEGIN
     VK_F8,          ID_PERL_RELOADFORMULA,  VIRTKEY, NOINVERT
     VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
     VK_F12,         ID_VIEW_SHOOTREPLAYFRAME, VIRTKEY, NOINVERT
-    "D",            ID_FILE_DISCONNECT,     VIRTKEY, CONTROL, NOINVERT
+    "U",            ID_EDIT_FORCEUSERCHAIR, VIRTKEY, CONTROL, NOINVERT
 END
 
 
@@ -903,6 +905,16 @@ BEGIN
     CONTROL         "Simple Main Window Title",IDC_SIMPLE_TITLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,39,95,10
 END
 
+IDD_CHARINUM DIALOGEX 0, 0, 120, 53
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Enter Chair Number"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,7,32,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,63,32,50,14
+    EDITTEXT        IDC_CHAIRNUM,7,7,54,14,ES_AUTOHSCROLL
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1066,6 +1078,14 @@ BEGIN
     IDD_SAPREFS12, DIALOG
     BEGIN
         BOTTOMMARGIN, 145
+    END
+
+    IDD_CHARINUM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 113
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 46
     END
 END
 #endif    // APSTUDIO_INVOKED

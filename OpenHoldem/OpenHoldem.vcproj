@@ -405,6 +405,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DialogChairNum.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\DialogFormulaScintilla.cpp"
 				>
 			</File>
@@ -767,6 +771,10 @@
 			</File>
 			<File
 				RelativePath=".\debug.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DialogChairNum.h"
 				>
 			</File>
 			<File
