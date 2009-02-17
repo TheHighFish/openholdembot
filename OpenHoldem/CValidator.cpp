@@ -71,9 +71,16 @@ void CValidator::ValidateSingleRule()
 				+ "\n\n"
 			    + "SYMBOLS AFFECTED: " 
 				+ Symbols_And_Values(_symbols_possibly_affected); 
-			// Show error message
-			MessageBox(NULL, the_ErrorMessage, "Validator Error", 
-				MB_OK | MB_TOPMOST | MB_ICONEXCLAMATION); 
+			// Show error message, if appropriate
+			if (!prefs.disable_msgbox())
+			{
+				MessageBox(NULL, the_ErrorMessage, "Validator Error", 
+					MB_OK | MB_TOPMOST | MB_ICONEXCLAMATION); 
+			}
+			// Log error message
+			the_ErrorMessage.Replace("\n\n", ". ");
+			the_ErrorMessage.Replace("\n", " ");
+			write_log(1, "%s%s\n", "VALIDATOR ERROR: ", the_ErrorMessage);
 		} 
     } 
 }
