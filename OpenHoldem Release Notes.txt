@@ -26,6 +26,8 @@ BUG FIXES:
 - Replay frames are now created with image that is present just prior to the autoplayer acting, unless one of the 'record on
   every change' options is selected, in which case, those frames will be created in the same way as before.  Thanks to
   Nick Coldhand for identifying the issue.  [OpenHoldem]
+- Fixed Formula Editor listing of vs$* symbols (listed as v_s$), and added pt_* symbols to be recognized in the Formula editor (Spew)
+
   
 MAINTENANCE:
 - Optimized symbol-lookup. [TheHighFish]
