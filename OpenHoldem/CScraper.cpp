@@ -887,7 +887,7 @@ void CScraper::ScrapeBalance(int chair)
 	// Player name uXbalance
 	s.Format("u%dbalance", chair);
 	r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape)
+	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape && is_seated)
 	{
 		ProcessRegion(r_iter);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
