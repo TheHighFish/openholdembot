@@ -1,6 +1,7 @@
 v2.0.0 2009-xx-xx
 =================
 BUG FIXES:
+- Fixed a crash when you delete the last Hash from a hast type (Hash0 for example). This crash was only in the pre-release versions [spew]
 - Fix to Add New Symbol dialog, whereby change to dropdown was not always enabling/disabling TitleText, ParseResults,
   and ParseButton fields correctly.
 - Applied fix from maintenance branch that addresses an internal index not being updated when deleting a font record, 

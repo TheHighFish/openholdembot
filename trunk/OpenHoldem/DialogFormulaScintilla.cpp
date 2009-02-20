@@ -85,9 +85,6 @@ char * keywords = "ismanual isppro site nchairs isbring session handnumber "
 				  "oppdealt floppct turnpct riverpct avgbetspf tablepfr maxbalance handsplayed "
 				  "balance_rank0 balance_rank1 balance_rank2 balance_rank3 balance_rank4 balance_rank5 "
 				  "balance_rank6 balance_rank7 balance_rank8 balance_rank9 "
-				  "pt_icon pt_hands pt_pfr pt_aggp pt_aggf pt_aggt pt_aggr "
-				  "pt_aggtot pt_aggtotnopf pt_floppct pt_turnpct pt_riverpct pt_vpip pt_pf_rfi "
-				  "pt_pf_cr pt_pfats pt_wsdp pt_wssd pt_fbbts pt_fsbts "
 				  "ptt_icon ptt_hands ptt_pfr ptt_aggp ptt_aggf ptt_aggt ptt_aggr "
 				  "ptt_aggtot ptt_aggtotnopf ptt_floppct ptt_turnpct ptt_riverpct ptt_vpip ptt_pf_rfi "
 				  "ptt_pf_cr ptt_pfats ptt_wsdp ptt_wssd ptt_fbbts ptt_fsbts ";
@@ -351,6 +348,28 @@ void CDlgFormulaScintilla::UpdateScintillaKeywords(CScintillaWnd *pWnd)
 			keys.AppendFormat(" vs$%s$prwin", m_wrk_formula.formula()->mHandList[i].list.GetString()+4);
 			keys.AppendFormat(" vs$%s$prtie", m_wrk_formula.formula()->mHandList[i].list.GetString()+4);
 		}
+	}
+	for (i=0; i<10; i++) {
+		keys.AppendFormat(" pt_icon%d", i);
+		keys.AppendFormat(" pt_hands%d", i);
+		keys.AppendFormat(" pt_pfr%d", i);
+		keys.AppendFormat(" pt_aggp%d", i);
+		keys.AppendFormat(" pt_aggf%d", i);
+		keys.AppendFormat(" pt_aggt%d", i);
+		keys.AppendFormat(" pt_aggr%d", i);
+		keys.AppendFormat(" pt_aggtot%d", i);
+		keys.AppendFormat(" pt_aggtotnopf%d", i);
+		keys.AppendFormat(" pt_floppct%d", i);
+		keys.AppendFormat(" pt_turnpct%d", i);
+		keys.AppendFormat(" pt_riverpct%d", i);
+		keys.AppendFormat(" pt_vpip%d", i);
+		keys.AppendFormat(" pt_pf_rfi%d", i);
+		keys.AppendFormat(" pt_pf_cr%d", i);
+		keys.AppendFormat(" pt_pfats%d", i);
+		keys.AppendFormat(" pt_wsdp%d", i);
+		keys.AppendFormat(" pt_wssd%d", i);
+		keys.AppendFormat(" pt_fbbts%d", i);
+		keys.AppendFormat(" pt_fsbts%d", i);
 	}
 	pWnd->SendMessage(SCI_SETKEYWORDS, 0, (LPARAM) keys.GetString());
 }
@@ -3398,25 +3417,25 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "run$clocks", "total number of cpu clocks used to calculate the run$ symbols");
 
 	mainParent = parent = AddSymbolTitle("Versus symbols", NULL, hCatItem);
-	AddSymbol(parent, "v_s$nhands", "Total possible number of opponent hands");
-	AddSymbol(parent, "v_s$nhandshi", "Number of opponent hands that have higher river chances ");
-	AddSymbol(parent, "v_s$nhandsti", "Number of opponent hands that have equal river chances");
-	AddSymbol(parent, "v_s$nhandslo", "Number of opponent hands that have lower river chances");
-	AddSymbol(parent, "v_s$prwin", "Probability (0.000 - 1.000) of winning versus all possible opponent hands ");
-	AddSymbol(parent, "v_s$prtie", "Probability (0.000 - 1.000) of chopping versus all possible opponent hands ");
-	AddSymbol(parent, "v_s$prlos", "Probability (0.000 - 1.000) of losing versus all possible opponent hands ");
-	AddSymbol(parent, "v_s$prwinhi", "Probability (0.000 - 1.000) of winning versus higher opponent hands ");
-	AddSymbol(parent, "v_s$prtiehi", "Probability (0.000 - 1.000) of chopping versus higher opponent hands ");
-	AddSymbol(parent, "v_s$prloshi", "Probability (0.000 - 1.000) of losing versus higher opponent hands ");
-	AddSymbol(parent, "v_s$prwinti", "Probability (0.000 - 1.000) of winning versus equal opponent hands ");
-	AddSymbol(parent, "v_s$prtieti", "Probability (0.000 - 1.000) of chopping versus equal opponent hands ");
-	AddSymbol(parent, "v_s$prlosti", "Probability (0.000 - 1.000) of losing versus equal opponent hands ");
-	AddSymbol(parent, "v_s$prwinlo", "Probability (0.000 - 1.000) of winning versus lower opponent hands ");
-	AddSymbol(parent, "v_s$prtielo", "Probability (0.000 - 1.000) of chopping versus lower opponent hands ");
-	AddSymbol(parent, "v_s$prloslo", "Probability (0.000 - 1.000) of losing versus lower opponent hands ");
-	AddSymbol(parent, "v_s$x$prwin", "Probability (0.000 - 1.000) of winnning versus hand list x");
-	AddSymbol(parent, "v_s$x$prlos", "Probability (0.000 - 1.000) of losing versus hand list x");
-	AddSymbol(parent, "v_s$x$prtie", "Probability (0.000 - 1.000) of a tie versus hand list x");
+	AddSymbol(parent, "vs$nhands", "Total possible number of opponent hands");
+	AddSymbol(parent, "vs$nhandshi", "Number of opponent hands that have higher river chances ");
+	AddSymbol(parent, "vs$nhandsti", "Number of opponent hands that have equal river chances");
+	AddSymbol(parent, "vs$nhandslo", "Number of opponent hands that have lower river chances");
+	AddSymbol(parent, "vs$prwin", "Probability (0.000 - 1.000) of winning versus all possible opponent hands ");
+	AddSymbol(parent, "vs$prtie", "Probability (0.000 - 1.000) of chopping versus all possible opponent hands ");
+	AddSymbol(parent, "vs$prlos", "Probability (0.000 - 1.000) of losing versus all possible opponent hands ");
+	AddSymbol(parent, "vs$prwinhi", "Probability (0.000 - 1.000) of winning versus higher opponent hands ");
+	AddSymbol(parent, "vs$prtiehi", "Probability (0.000 - 1.000) of chopping versus higher opponent hands ");
+	AddSymbol(parent, "vs$prloshi", "Probability (0.000 - 1.000) of losing versus higher opponent hands ");
+	AddSymbol(parent, "vs$prwinti", "Probability (0.000 - 1.000) of winning versus equal opponent hands ");
+	AddSymbol(parent, "vs$prtieti", "Probability (0.000 - 1.000) of chopping versus equal opponent hands ");
+	AddSymbol(parent, "vs$prlosti", "Probability (0.000 - 1.000) of losing versus equal opponent hands ");
+	AddSymbol(parent, "vs$prwinlo", "Probability (0.000 - 1.000) of winning versus lower opponent hands ");
+	AddSymbol(parent, "vs$prtielo", "Probability (0.000 - 1.000) of chopping versus lower opponent hands ");
+	AddSymbol(parent, "vs$prloslo", "Probability (0.000 - 1.000) of losing versus lower opponent hands ");
+	AddSymbol(parent, "vs$x$prwin", "Probability (0.000 - 1.000) of winnning versus hand list x");
+	AddSymbol(parent, "vs$x$prlos", "Probability (0.000 - 1.000) of losing versus hand list x");
+	AddSymbol(parent, "vs$x$prtie", "Probability (0.000 - 1.000) of a tie versus hand list x");
 
 	mainParent = parent = AddSymbolTitle("History symbols", NULL, hCatItem);
 	AddSymbol(parent, "hi_<sym>x (x=1-4)", "the value of the symbol <sym> as of your last turn in betting round x.  Example: hi_prwin1 would return prwin as of your last turn in br1.");
