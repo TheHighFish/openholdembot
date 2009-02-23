@@ -1938,7 +1938,7 @@ void CSymbols::CalcUnknownCards(void)
 		_sym.ncardsunknown = 52 - _sym.ncardsknown;										// ncardsunknown
 		handval_std = Hand_EVAL_N(stdCards, nstdCards);
 
-		if (_sym.br<4 && _user_chair_confirmed)
+		if (_user_chair_confirmed)
 		{
 			// iterate through every unseen card and see what happens to our handvals
 			for (i=0; i<=51; i++)
@@ -1960,12 +1960,14 @@ void CSymbols::CalcUnknownCards(void)
 					handval_common_plus1 = Hand_EVAL_N(commonCards, ncommonCards+1);
 					CardMask_UNSET(commonCards, i);
 
-					if (HandVal_HANDTYPE(handval_std_plus1) > HandVal_HANDTYPE(handval_std) &&
-							CalcPokerval(handval_std_plus1, nstdCards+1, &dummy, CARD_NOCARD, CARD_NOCARD) > _sym.pokerval &&
-							HandVal_HANDTYPE(handval_std_plus1) > HandVal_HANDTYPE(handval_common_plus1))
+					if (_sym.br<4 && 
+						HandVal_HANDTYPE(handval_std_plus1) > HandVal_HANDTYPE(handval_std) &&
+						CalcPokerval(handval_std_plus1, nstdCards+1, &dummy, CARD_NOCARD, CARD_NOCARD) > _sym.pokerval &&
+						HandVal_HANDTYPE(handval_std_plus1) > HandVal_HANDTYPE(handval_common_plus1))
 					{
-						_sym.nouts++;													// nouts
+						_sym.nouts++;														// nouts
 					}
+
 					if (CalcPokerval(handval_common_plus1, ncommonCards+1, &dummy, CARD_NOCARD, CARD_NOCARD) > _sym.pokerval)
 					{
 						_sym.ncardsbetter++;												// ncardsbetter
