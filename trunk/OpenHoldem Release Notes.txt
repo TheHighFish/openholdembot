@@ -28,6 +28,8 @@ BUG FIXES:
   Nick Coldhand for identifying the issue.  [OpenHoldem]
 - Fixed Formula Editor listing of vs$* symbols (listed as v_s$), and added pt_* symbols to be recognized in the Formula editor [Spew]
 - Fix for calculation of ncardsbetter on the river.  Thanks Maverick, for the fix.  [OpenHoldem]
+- Fix in CTransform for fuzzy font matching when exact match occurs with small number of pixels (like a 'period').  Thanks for
+  flounderhead/Bender for the find/fix.  [OpenHoldem]
 
   
 MAINTENANCE:
