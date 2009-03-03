@@ -32,13 +32,14 @@ enum {
 	PN0, PN1, PN2, PN3, PN4, PN5, PN6, PN7, PN8, PN9,
 	PB0, PB1, PB2, PB3, PB4, PB5, PB6, PB7, PB8, PB9,
 	CIB,
-	FB, CB, KB, RB, AB,
+	FB, CB, KB, RB, AB, SO, LT, PFB, APB,
 	BET0, BET1, BET2, BET3, BET4, BET5, BET6, BET7, BET8, BET9,
 	MACRO
 };
 
 // CManualModeDlg dialog
-class CManualModeDlg : public CDialog {
+class CManualModeDlg : public CDialog 
+{
 public:
 	CManualModeDlg(CWnd* pParent = NULL);	// standard constructor
 	enum { IDD = IDD_MANUALMODE_DIALOG };
@@ -50,7 +51,7 @@ protected:
 	CPen		black_pen, green_pen, red_pen, blue_pen, white_dot_pen, white_pen, null_pen;
 	CBrush		white_brush, gray_brush, red_brush, yellow_brush;
 	LOGFONT		lf;
-	CFont		cFont;
+	CFont		cFont, cFont_sm;
 
 	CardMask			used_cards;
 	unsigned int		card[25];  // aligns with enum above 0-19 player cards, 20-24 common cards
@@ -60,7 +61,7 @@ protected:
 	CString				playerbalance[10];
 	CString				playerbet[10];
 	double				pot[10];
-	bool				buttonstate[10]; // fold, call, check, raise, allin
+	bool				buttonstate[10]; // fold, call, check, raise, allin, prefold
 	CString				handnumber;
 	CString				sblind;
 	CString				bblind;
@@ -93,7 +94,7 @@ protected:
 
 	void draw_button_indicators(void);
 	void draw_specific_button_indicator(int button_num, char ch, int left, int top, int right, int bottom);
-
+	void draw_control_indicators(void);
 	void draw_seated_active_circle(int chair);
 	void draw_center_info_box(void);
 	void draw_card(unsigned int card, int left, int top, int shift = 0);

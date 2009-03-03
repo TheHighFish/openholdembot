@@ -9,6 +9,7 @@
 #define new DEBUG_NEW
 #endif
 
+char	_startup_path[MAX_PATH];
 
 // CManualModeApp
 
@@ -21,8 +22,8 @@ END_MESSAGE_MAP()
 
 CManualModeApp::CManualModeApp()
 {
-	// TODO: add construction code here,
-	// Place all significant initialization in InitInstance
+	// Save startup directory
+	::GetCurrentDirectory(MAX_PATH - 1, _startup_path);
 }
 
 

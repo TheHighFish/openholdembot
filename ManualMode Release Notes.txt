@@ -1,13 +1,18 @@
 v2.0.0 2009-xx-xx
 =================
 BUG FIXES:
+
 MAINTENANCE:
+- Migrated from SEH exception handling to Minidump exception handling. [OpenHoldem]
+
 NEW STUFF:
+- Added sit out, leave table, pre-fold and auto-post blinds buttons. [OpenHoldem]
 
 
 v1.0.9 2008-07-25
 =================
 MAINTENANCE - All level 3 compiler warnings have been addressed.
+
 
 v1.0.8 2008-07-25
 =================
