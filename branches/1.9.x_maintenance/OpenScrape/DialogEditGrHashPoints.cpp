@@ -67,7 +67,7 @@ BOOL CDlgEditGrHashPoints::OnInitDialog()
 		text.Format("%s (%dx%d)", p_tablemap->i$()->GetAt(i).name, p_tablemap->i$()->GetAt(i).width, p_tablemap->i$()->GetAt(i).height);
 		new_item = m_Sample_Image.AddString(text.GetString());
 
-		m_Sample_Image.SetItemData(new_item, (DWORD_PTR) p_tablemap->i$()->GetData()+i);
+		m_Sample_Image.SetItemData(new_item, (DWORD_PTR) i);
 
 	}
 
@@ -134,123 +134,124 @@ void CDlgEditGrHashPoints::update_bitmap()
 	HDC					hdcControl, hdcScreen, hdc_image;
 	HBITMAP				bitmap_image, old_bitmap_image, bitmap_control, old_bitmap_control;
 	BYTE				*pBits, alpha, red, green, blue;
-	STablemapImage		*sel_image = NULL;
+	STablemapImage		sel_image;
 	COLORREF			cr;
-	
+
+	// No image selected then return
+	if (m_Sample_Image.GetCurSel() == LB_ERR)
+		return;
+
 	// Get pointer to selected image record
-	if (m_Sample_Image.GetCurSel() != LB_ERR)
-		sel_image = (STablemapImage *) m_Sample_Image.GetItemData(m_Sample_Image.GetCurSel());
+	int index = (int) m_Sample_Image.GetItemData(m_Sample_Image.GetCurSel());
+	sel_image = p_tablemap->i$()->GetAt(index);
 
-	if (sel_image)
+	// Get bitmap size
+	width = sel_image.width;
+	height = sel_image.height;
+
+	// Copy saved bitmap into a memory dc so we can get the bmi
+	pDC = m_Sample_Bitmap.GetDC();
+	hdcControl = *pDC;
+	hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL); 
+
+	// Create new memory DC and new bitmap
+	hdc_image = CreateCompatibleDC(hdcScreen);
+	bitmap_image = CreateCompatibleBitmap(hdcScreen, width, height);
+	old_bitmap_image = (HBITMAP) SelectObject(hdc_image, bitmap_image);
+
+	// Setup BITMAPINFO
+	BITMAPINFO	bmi;
+	ZeroMemory(&bmi.bmiHeader, sizeof(BITMAPINFOHEADER));
+	bmi.bmiHeader.biSize = sizeof(bmi.bmiHeader);
+	bmi.bmiHeader.biWidth = width;
+	bmi.bmiHeader.biHeight = -height;
+	bmi.bmiHeader.biPlanes = 1;
+	bmi.bmiHeader.biBitCount = 32;
+	bmi.bmiHeader.biCompression = BI_RGB; //BI_BITFIELDS;
+	bmi.bmiHeader.biSizeImage = width * height * 4;
+
+	// Copy saved image info into pBits array
+	pBits = new BYTE[bmi.bmiHeader.biSizeImage];
+	for (y=0; y < (int) height; y++) {
+		for (x=0; x < (int) width; x++) {
+			// image record is stored internally in ABGR format
+			alpha = (sel_image.pixel[y*width + x] >> 24) & 0xff;
+			red = (sel_image.pixel[y*width + x] >> 0) & 0xff;
+			green = (sel_image.pixel[y*width + x] >> 8) & 0xff;
+			blue = (sel_image.pixel[y*width + x] >> 16) & 0xff;
+
+			// SetDIBits format is BGRA
+			pBits[y*width*4 + x*4 + 0] = blue;
+			pBits[y*width*4 + x*4 + 1] = green;
+			pBits[y*width*4 + x*4 + 2] = red;
+			pBits[y*width*4 + x*4 + 3] = alpha; 
+		}
+	}
+	::SetDIBits(hdc_image, bitmap_image, 0, height, pBits, &bmi, DIB_RGB_COLORS);
+
+	// Figure size of stretched bitmap and resize control to fit
+	zoom = m_Zoom.GetCurSel()==0 ? 1 :
+		m_Zoom.GetCurSel()==1 ? 2 :
+		m_Zoom.GetCurSel()==2 ? 4 :
+		m_Zoom.GetCurSel()==3 ? 8 :
+		m_Zoom.GetCurSel()==4 ? 16 : 1;
+
+	m_Sample_Bitmap.SetWindowPos(NULL, 0, 0, (width*zoom)+2, (height*zoom)+2, SWP_NOMOVE | SWP_NOZORDER | SWP_NOCOPYBITS);
+
+	// Copy from saved bitmap DC copy to our control and stretch it
+	bitmap_control = CreateCompatibleBitmap(hdcScreen, width*zoom, height*zoom);
+	old_bitmap_control = (HBITMAP) SelectObject(hdcControl, bitmap_control);
+	StretchBlt(hdcControl, 1, 1, width*zoom, height*zoom,
+			   hdc_image, 0, 0, width, height,
+			   SRCCOPY);
+
+	if (m_Hash_Type.GetCurSel() != LB_ERR)
 	{
-		// Get bitmap size
-		width = sel_image->width;
-		height = sel_image->height;
+		// Get the seleted hash type
+		m_Hash_Type.GetLBText(m_Hash_Type.GetCurSel(), text);
+		type = text.GetString()[4] - '0';
 
-		// Copy saved bitmap into a memory dc so we can get the bmi
-		pDC = m_Sample_Bitmap.GetDC();
-		hdcControl = *pDC;
-		hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL); 
+		// Draw points on bitmap as circles
+		for (i=0; i<working_hash_points.GetSize(); i++)
+		{
+			if (working_hash_points[i].number == type && 
+				working_hash_points[i].x <= (unsigned int) width && 
+				working_hash_points[i].y <= (unsigned int) height)
+			{
+				// draw in inverted color
+				cr = GetPixel(hdc_image, working_hash_points[i].x, working_hash_points[i].y) ^ 0x00ffffff;
 
-		// Create new memory DC and new bitmap
-		hdc_image = CreateCompatibleDC(hdcScreen);
-		bitmap_image = CreateCompatibleBitmap(hdcScreen, width, height);
-		old_bitmap_image = (HBITMAP) SelectObject(hdc_image, bitmap_image);
+				CPen mypen(PS_SOLID, 1, cr);
+				HGDIOBJ oldpen = pDC->SelectObject(mypen);
 
-		// Setup BITMAPINFO
-		BITMAPINFO	bmi;
-		ZeroMemory(&bmi.bmiHeader, sizeof(BITMAPINFOHEADER));
-		bmi.bmiHeader.biSize = sizeof(bmi.bmiHeader);
-		bmi.bmiHeader.biWidth = width;
-		bmi.bmiHeader.biHeight = -height;
-		bmi.bmiHeader.biPlanes = 1;
-		bmi.bmiHeader.biBitCount = 32;
-		bmi.bmiHeader.biCompression = BI_RGB; //BI_BITFIELDS;
-		bmi.bmiHeader.biSizeImage = width * height * 4;
+				CBrush mybrush(cr);
+				HGDIOBJ oldbrush = pDC->SelectObject(mybrush);
 
-		// Copy saved image info into pBits array
-		pBits = new BYTE[bmi.bmiHeader.biSizeImage];
-		for (y=0; y < (int) height; y++) {
-			for (x=0; x < (int) width; x++) {
-				// image record is stored internally in ABGR format
-				alpha = (sel_image->pixel[y*width + x] >> 24) & 0xff;
-				red = (sel_image->pixel[y*width + x] >> 0) & 0xff;
-				green = (sel_image->pixel[y*width + x] >> 8) & 0xff;
-				blue = (sel_image->pixel[y*width + x] >> 16) & 0xff;
+				pDC->RoundRect(working_hash_points[i].x*zoom+1, working_hash_points[i].y*zoom+1, 
+							   (working_hash_points[i].x+1)*zoom+1, (working_hash_points[i].y+1)*zoom+1, 
+							   zoom, zoom);
 
-				// SetDIBits format is BGRA
-				pBits[y*width*4 + x*4 + 0] = blue;
-				pBits[y*width*4 + x*4 + 1] = green;
-				pBits[y*width*4 + x*4 + 2] = red;
-				pBits[y*width*4 + x*4 + 3] = alpha; 
+				pDC->SelectObject(oldpen);
+				pDC->SelectObject(oldbrush);
+				DeleteObject(mypen);
+				DeleteObject(mybrush);
 			}
 		}
-		::SetDIBits(hdc_image, bitmap_image, 0, height, pBits, &bmi, DIB_RGB_COLORS);
-
-		// Figure size of stretched bitmap and resize control to fit
-		zoom = m_Zoom.GetCurSel()==0 ? 1 :
-			m_Zoom.GetCurSel()==1 ? 2 :
-			m_Zoom.GetCurSel()==2 ? 4 :
-			m_Zoom.GetCurSel()==3 ? 8 :
-			m_Zoom.GetCurSel()==4 ? 16 : 1;
-
-		m_Sample_Bitmap.SetWindowPos(NULL, 0, 0, (width*zoom)+2, (height*zoom)+2, SWP_NOMOVE | SWP_NOZORDER | SWP_NOCOPYBITS);
-
-		// Copy from saved bitmap DC copy to our control and stretch it
-		bitmap_control = CreateCompatibleBitmap(hdcScreen, width*zoom, height*zoom);
-		old_bitmap_control = (HBITMAP) SelectObject(hdcControl, bitmap_control);
-		StretchBlt(hdcControl, 1, 1, width*zoom, height*zoom,
-				   hdc_image, 0, 0, width, height,
-				   SRCCOPY);
-
-		if (m_Hash_Type.GetCurSel() != LB_ERR)
-		{
-			// Get the seleted hash type
-			m_Hash_Type.GetLBText(m_Hash_Type.GetCurSel(), text);
-			type = text.GetString()[4] - '0';
-
-			// Draw points on bitmap as circles
-			for (i=0; i<working_hash_points.GetSize(); i++)
-			{
-				if (working_hash_points[i].number == type && 
-					working_hash_points[i].x <= (unsigned int) width && 
-					working_hash_points[i].y <= (unsigned int) height)
-				{
-					// draw in inverted color
-					cr = GetPixel(hdc_image, working_hash_points[i].x, working_hash_points[i].y) ^ 0x00ffffff;
-
-					CPen mypen(PS_SOLID, 1, cr);
-					HGDIOBJ oldpen = pDC->SelectObject(mypen);
-
-					CBrush mybrush(cr);
-					HGDIOBJ oldbrush = pDC->SelectObject(mybrush);
-
-					pDC->RoundRect(working_hash_points[i].x*zoom+1, working_hash_points[i].y*zoom+1, 
-								   (working_hash_points[i].x+1)*zoom+1, (working_hash_points[i].y+1)*zoom+1, 
-								   zoom, zoom);
-
-					pDC->SelectObject(oldpen);
-					pDC->SelectObject(oldbrush);
-					DeleteObject(mypen);
-					DeleteObject(mybrush);
-				}
-			}
-		}			
+	}			
 
 
-		// Clean up
-		delete []pBits;
+	// Clean up
+	delete []pBits;
 
-		SelectObject(hdcControl, old_bitmap_control);
-		DeleteObject(bitmap_control);
+	SelectObject(hdcControl, old_bitmap_control);
+	DeleteObject(bitmap_control);
 
-		SelectObject(hdc_image, old_bitmap_image);
-		DeleteObject(bitmap_image);
-		DeleteDC(hdc_image);
+	SelectObject(hdc_image, old_bitmap_image);
+	DeleteObject(bitmap_image);
+	DeleteDC(hdc_image);
 
-		DeleteDC(hdcScreen);
-		ReleaseDC(pDC);
-	}
+	DeleteDC(hdcScreen);
+	ReleaseDC(pDC);
 }
 
 void CDlgEditGrHashPoints::reset_list_box(int type)
