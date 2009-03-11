@@ -397,7 +397,7 @@ bool select_frame(char *szFile, char *szFileTitle, int *name_start, int *name_en
 //
 void prev_frame()
 {
-	char			framenum[8], szHtmFile[MAX_PATH];
+	char			framenum[MAX_PATH], szHtmFile[MAX_PATH];
 	WIN32_FIND_DATA	FindFileData;
 	HANDLE			hFind;
 	int				prev_frame=-1, max_frame=-1;
@@ -419,7 +419,7 @@ void prev_frame()
 	else
 	{
 		// Scan through all matches, find highest numbered one that is less than cur_frame
-		sprintf_s(framenum, 8, "%s", FindFileData.cFileName+5);
+		sprintf_s(framenum, MAX_PATH, "%s", FindFileData.cFileName+5);
 		framenum[3] = '\0';
 
 		if (atoi(framenum) > prev_frame && atoi(framenum)<cur_frame)
@@ -430,7 +430,7 @@ void prev_frame()
 
 		while (FindNextFile(hFind, &FindFileData) != 0) 
 		{
-			sprintf_s(framenum, 8, "%s", FindFileData.cFileName+5);
+			sprintf_s(framenum, MAX_PATH, "%s", FindFileData.cFileName+5);
 			framenum[3] = '\0';
 
 			if (atoi(framenum) > prev_frame && atoi(framenum)<cur_frame)
@@ -456,7 +456,7 @@ void prev_frame()
 //
 void next_frame()
 {
-	char			framenum[8], szHtmFile[MAX_PATH];
+	char			framenum[MAX_PATH], szHtmFile[MAX_PATH];
 	WIN32_FIND_DATA	FindFileData;
 	HANDLE			hFind;
 	int				next_frame=999999, min_frame=999999;
@@ -478,7 +478,7 @@ void next_frame()
 	else
 	{
 		// Scan through all matches, find lowest numbered one that is greater than cur_frame
-		sprintf_s(framenum, 8, "%s", FindFileData.cFileName+5);
+		sprintf_s(framenum, MAX_PATH, "%s", FindFileData.cFileName+5);
 		framenum[3] = '\0';
 
 		if (atoi(framenum) < next_frame && atoi(framenum)>cur_frame)
@@ -489,7 +489,7 @@ void next_frame()
 
 		while (FindNextFile(hFind, &FindFileData) != 0) 
 		{
-			sprintf_s(framenum, 8, "%s", FindFileData.cFileName+5);
+			sprintf_s(framenum, MAX_PATH, "%s", FindFileData.cFileName+5);
 			framenum[3] = '\0';
 
 			if (atoi(framenum) < next_frame && atoi(framenum)>cur_frame)
