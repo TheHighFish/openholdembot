@@ -6,6 +6,11 @@ BUG FIXES:
   papa05 for finding the problem.  (OpenHoldem)
 - Fixed Formula Editor listing of vs$* symbols (listed as v_s$) (Spew)
 - Fix for calculation of ncardsbetter on the river.  Thanks Maverick, for the fix.  (OpenHoldem)
+- Fix to the following symbols to allow for better detection when players rapidly fold their cards, before OH can get a 
+  good scrape.  A non-zero bet will now trigger detection of a player/opponent as well as card faces or card backs. Thanks
+  to Pete for the find and the fix. (OpenHoldem)
+  playersplayingbits, playersdealtbits, opponentsplayingbits, opponentsdealtbits, friendsplayingbits, friendsfriendsplayingbitsbits
+  and their associated count symbols, nplayersplaying, nplayersdealt, etc.
 
 v1.9.6 2009-02-02
 =================
