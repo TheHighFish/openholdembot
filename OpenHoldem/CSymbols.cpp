@@ -1788,7 +1788,7 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 
 	for (i=0; i<p_tablemap->nchairs(); i++)
 	{
-		if (p_scraper->card_player(i, 0) != CARD_NOCARD && p_scraper->card_player(i, 1) != CARD_NOCARD)
+		if ((p_scraper->card_player(i, 0) != CARD_NOCARD && p_scraper->card_player(i, 1) != CARD_NOCARD) || p_scraper->player_bet(i) != 0)
 		{
 			set_sym_playersdealtbits((int) _sym.playersdealtbits | (1<<i));				// playersdealtbits
 			set_sym_playersplayingbits((int) _sym.playersplayingbits | (1<<i));			// playersplayingbits

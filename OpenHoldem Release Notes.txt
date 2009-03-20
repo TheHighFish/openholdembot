@@ -30,7 +30,11 @@ BUG FIXES:
 - Fix for calculation of ncardsbetter on the river.  Thanks Maverick, for the fix.  [OpenHoldem]
 - Fix in CTransform for fuzzy font matching when exact match occurs with small number of pixels (like a 'period').  Thanks for
   flounderhead/Bender for the find/fix.  [OpenHoldem]
-
+- Applied fix from maintenance branch that allows for the following symbols to have better detection when players rapidly fold their 
+  cards, before OH can get a good scrape.  A non-zero bet will now trigger detection of a player/opponent as well as card faces or 
+  card backs. Thanks to Pete for the find and the fix. [OpenHoldem]
+  playersplayingbits, playersdealtbits, opponentsplayingbits, opponentsdealtbits, friendsplayingbits, friendsfriendsplayingbitsbits
+  and their associated count symbols, nplayersplaying, nplayersdealt, etc.
   
 MAINTENANCE:
 - Optimized symbol-lookup. [TheHighFish]
