@@ -35,6 +35,7 @@ void CDlgSAPrefs2::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_AUTO_AP, m_AutoAP);
 	DDX_Control(pDX, IDC_FOCUSDETECT, m_FocusDetect);
 	DDX_Control(pDX, IDC_SWAGUSECOMMA, m_SwagUseComma);
+	DDX_Control(pDX, IDC_ONLY_CALC_ON_TURN, m_CalcOnMyTurn);
 }
 
 BEGIN_MESSAGE_MAP(CDlgSAPrefs2, CSAPrefsSubDlg)
@@ -79,6 +80,8 @@ BOOL CDlgSAPrefs2::OnInitDialog()
 
 	m_SwagUseComma.SetCheck(prefs.swag_use_comma() ? BST_CHECKED : BST_UNCHECKED);
 
+	m_CalcOnMyTurn.SetCheck(prefs.calc_only_my_turn() ? BST_CHECKED : BST_UNCHECKED);
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -122,6 +125,7 @@ void CDlgSAPrefs2::OnOK()
 	prefs.set_ap_auto(m_AutoAP.GetCheck()==BST_CHECKED ? true : false);
 	prefs.set_focus_detect(m_FocusDetect.GetCheck()==BST_CHECKED ? true : false);
 	prefs.set_swag_use_comma(m_SwagUseComma.GetCheck()==BST_CHECKED ? true : false);
+	prefs.set_calc_only_my_turn(m_CalcOnMyTurn.GetCheck()==BST_CHECKED ? true : false);
 
 	CSAPrefsSubDlg::OnOK();
 }

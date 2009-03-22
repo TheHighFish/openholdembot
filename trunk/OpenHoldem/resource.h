@@ -176,6 +176,8 @@
 #define IDC_FOCUSDETECT2                1116
 #define IDC_SWAGUSECOMMA                1116
 #define IDC_CHECK4                      1117
+#define IDC_SWAGUSECOMMA2               1117
+#define IDC_ONLY_CALC_ON_TURN           1117
 #define IDC_CHECK5                      1118
 #define IDC_CHECK6                      1119
 #define IDC_CHECK7                      1120
@@ -509,7 +511,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        180
 #define _APS_NEXT_COMMAND_VALUE         32986
-#define _APS_NEXT_CONTROL_VALUE         1316
+#define _APS_NEXT_CONTROL_VALUE         1317
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

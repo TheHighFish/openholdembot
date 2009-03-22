@@ -25,6 +25,8 @@ public:
 	const bool ap_auto() { return _ap_auto; }
 	const bool focus_detect() { return _focus_detect; }
 	const bool swag_use_comma() { return _swag_use_comma; }
+	const bool calc_only_my_turn() { return _calc_only_my_turn; }
+
 	// Dll extension
 	const bool dll_always_send_state() { return _dll_always_send_state; }
 	const bool dll_load_on_startup() { return _dll_load_on_startup; }
@@ -148,6 +150,7 @@ public:
 	void set_ap_auto(const bool b) { ENT _ap_auto = b; WriteReg("auto", (int) b!=false); }
 	void set_focus_detect(const bool b) { ENT _focus_detect = b; WriteReg("focus_detect", (int) b!=false); }
 	void set_swag_use_comma(const bool b) { ENT _swag_use_comma = b; WriteReg("swag_use_comma", (int) b!=false); }
+	void set_calc_only_my_turn(const bool b) { ENT _calc_only_my_turn = b; WriteReg("calc_only_my_turn", (int) b!=false); }
 	// Dll extension
 	void set_dll_always_send_state(const bool b) { ENT _dll_always_send_state = b; WriteReg("dll_always_send_state", b); }
 	void set_dll_load_on_startup(const bool b) { ENT _dll_load_on_startup = b; WriteReg("load_dll_on_startup", b); }
@@ -275,6 +278,7 @@ private:
 	bool			_ap_auto;
 	bool			_focus_detect;
 	bool			_swag_use_comma;
+	bool			_calc_only_my_turn;
 
 	// Dll extension
 	bool			_dll_always_send_state;
