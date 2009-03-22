@@ -48,8 +48,11 @@ allidelay, floppct, turnpct, riverpct, avgbetspf, tablepfr. [TheHighFish]
 - Pokertracker logging information is now directed to "oh_pt_X.log" where X is the OH instance number.  [OpenHoldem]
 - Continuing improvement in cross-thread resource contention protection (CMemory, CScraper, CSymbols) [OpenHoldem]
 - Removed final references to 'whuser' and 'gws' throughout, where possible. [OpenHoldem]
+- OH would use the uXbalance and uXname regions to obtain the balance and name for ONLY the user, I changed it so that it can be used for all players (Spew)
 
 NEW STUFF:
+- A new option to prevent the calculation of the primary functions (f$swag, f$rais etc) when it is not the players turn.  It will also prevent the calculation of most of the expensive symbols including the pr* however the handrank symbols will be calculated as these are commonly used in the f$prefold calculations.  f$prefold and f$play are still evaluated regardless if it is your turn or not.  The preference can be found in the Autoplayer page of the Edit->Preferences (Spew)
+- The function f$autotrace will now be called once per action but its value will be ignored.  This is added in order to capture symbols using the AutoPlayer Trace (requested by USBFreak) (spew)
 - Added option to save all replay frames whenever something changes when you are in the hand (Thanks, markedagain for the patch) [OpenHoldem]
 - Added support for PokerTracker v3 (Thanks, fn101 for the query translation) [OpenHoldem]
 - Added option to disable runtime message boxes [OpenHoldem]

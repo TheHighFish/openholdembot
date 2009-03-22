@@ -376,6 +376,7 @@ public:
 	void CalcProbabilities(void);
 	void CalcPrimaryFormulas(const bool final_answer);
 	void CalcSecondaryFormulas(void);
+	void CalcAutoTrace(void);
 	void UpdateAutoplayerInfo(void);
 	const double GetSymbolVal(const char *a, int *e);
 	const double CalcPokerval(const HandVal handval, const int ncards, double *pcbits, const int pcard0, const int pcard1);

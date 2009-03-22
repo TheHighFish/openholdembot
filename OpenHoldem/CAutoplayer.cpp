@@ -438,6 +438,7 @@ void CAutoplayer::DoSwag(void)
 				}
 
 				if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
+
 				{
 					write_log(3, "Confirmation; calling mouse.dll to double click bet button: %d,%d %d,%d", 
 						rect_button.left, rect_button.top, rect_button.right, rect_button.bottom);					
@@ -809,7 +810,7 @@ void CAutoplayer::DoPrefold(void)
 
 		write_logautoplay(1, "FOLD");
 	}
-
+	p_symbols->CalcAutoTrace();
 	write_log(3, "...ending DoPrefold.");
 }
 
