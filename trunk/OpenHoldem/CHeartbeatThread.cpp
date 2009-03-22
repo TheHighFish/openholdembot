@@ -141,6 +141,8 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 					ss.active[i] = p_scraper->active(i);
 					ss.name[i] = p_scraper->player_name(i);
 					ss.balance[i] = p_scraper->player_balance(i);
+					ss.name_good_scrape[i] = p_scraper->name_good_scrape(i);
+					ss.balance_good_scrape[i] = p_scraper->balance_good_scrape(i);
 					ss.bet[i] = p_scraper->player_bet(i);
 				}
 
@@ -191,6 +193,8 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 					p_scraper->set_active(i, ss.active[i]);
 					p_scraper->set_player_name(i, ss.name[i]);
 					p_scraper->set_player_balance(i, ss.balance[i]);
+					p_scraper->set_name_good_scrape(i, ss.name_good_scrape[i]);
+					p_scraper->set_balance_good_scrape(i, ss.balance_good_scrape[i]);
 					p_scraper->set_player_bet(i, ss.bet[i]);
 				}
 
