@@ -151,11 +151,8 @@ CPokerTrackerThread::CPokerTrackerThread()
 	// Initialize variables
 	_pt_thread = NULL;
 
-	_conn_str = "host=" + prefs.pt_ip_addr();
-	_conn_str += " port=" + prefs.pt_port();
-	_conn_str += " user=" + prefs.pt_user();
-	_conn_str += " password=" + prefs.pt_pass();
-	_conn_str += " dbname=" + prefs.pt_dbname();
+	_conn_str.Format("host=%s port=%s user=%s password=%s dbname='%s'",  
+		prefs.pt_ip_addr(), prefs.pt_port(), prefs.pt_user(), prefs.pt_pass(), prefs.pt_dbname());
 
 	for (i=0; i<=9; i++)
 	{

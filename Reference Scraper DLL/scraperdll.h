@@ -24,6 +24,8 @@ struct SScraperState
 	CString			active[10];
 	CString			name[10];
 	double			balance[10];
+	bool			name_good_scrape[10];
+	bool			balance_good_scrape[10];
 	double			bet[10];
 	double			pot[10];
 	CString			button_state[10];
