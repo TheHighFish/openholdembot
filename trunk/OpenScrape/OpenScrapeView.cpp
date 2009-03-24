@@ -396,7 +396,8 @@ void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
  */
 void COpenScrapeView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	if(nChar==VK_UP || nChar==VK_DOWN || nChar==VK_LEFT || nChar==VK_RIGHT) {
+	if(nChar==VK_UP || nChar==VK_DOWN || nChar==VK_LEFT || nChar==VK_RIGHT
+		|| nChar==VK_NUMPAD1 || nChar==VK_NUMPAD3 || nChar==VK_NUMPAD7 || nChar==VK_NUMPAD9) {
 		// find the currently selected
 		CString sel = theApp.m_TableMapDlg->m_TableMapTree.GetItemText(theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem());	
 		RMapI r_iter = p_tablemap->set_r$()->find(sel.GetString());
@@ -436,6 +437,26 @@ void COpenScrapeView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 					r_iter->second.left = r_iter->second.left-speed;
 					r_iter->second.right = r_iter->second.right-speed;
 				} else if(nChar == VK_RIGHT)	{
+					r_iter->second.left = r_iter->second.left+speed;
+					r_iter->second.right = r_iter->second.right+speed;
+				} else if(nChar == VK_NUMPAD1)	{
+					r_iter->second.top = r_iter->second.top+speed;
+					r_iter->second.bottom = r_iter->second.bottom+speed;
+					r_iter->second.left = r_iter->second.left-speed;
+					r_iter->second.right = r_iter->second.right-speed;
+				} else if(nChar == VK_NUMPAD3)	{
+					r_iter->second.top = r_iter->second.top+speed;
+					r_iter->second.bottom = r_iter->second.bottom+speed;
+					r_iter->second.left = r_iter->second.left+speed;
+					r_iter->second.right = r_iter->second.right+speed;
+				} else if(nChar == VK_NUMPAD7)	{
+					r_iter->second.top = r_iter->second.top-speed;
+					r_iter->second.bottom = r_iter->second.bottom-speed;
+					r_iter->second.left = r_iter->second.left-speed;
+					r_iter->second.right = r_iter->second.right-speed;
+				} else if(nChar == VK_NUMPAD9)	{
+					r_iter->second.top = r_iter->second.top-speed;
+					r_iter->second.bottom = r_iter->second.bottom-speed;
 					r_iter->second.left = r_iter->second.left+speed;
 					r_iter->second.right = r_iter->second.right+speed;
 				} 
