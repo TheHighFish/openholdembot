@@ -2617,10 +2617,16 @@ void CDlgTableMap::OnBnClickedCreateHash()
 	{
 		if (dlghash.DoModal() == IDOK)
 		{
+			// Which has type was selected?
+			int hash_type = strtoul(dlghash.type.Mid(5,1).GetString(), NULL, 10);
+
+			// Calculate hash for selected image
+			int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
+			IMapCI i_iter = p_tablemap->i$()->find(index);
+			new_hash.hash = p_tablemap->CalculateHashValue(i_iter, hash_type);
+
 			// Add new record to internal structure
 			new_hash.name = sel;
-			new_hash.hash = 0;
-			int hash_type = strtoul(dlghash.type.Mid(5,1).GetString(), NULL, 10);
 			if (!p_tablemap->h$_insert(hash_type, new_hash))
 			{
 				MessageBox("Error adding hash record: " + new_hash.name, "Hash record add error", MB_OK);

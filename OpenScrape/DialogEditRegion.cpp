@@ -48,7 +48,7 @@ BOOL CDlgEditRegion::OnInitDialog()
 
 	m_Name.SetFocus();
 
-	return TRUE;  // return TRUE unless you set the focus to a control
+	return FALSE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 

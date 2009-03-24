@@ -1065,6 +1065,48 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 	return SUCCESS;
 }
 
+// Used by OpenScrape to calculate initial hash when first creating it with "Calculate Hash" button
+uint32_t CTablemap::CalculateHashValue(IMapCI i_iter, const int type)
+{
+	uint32_t pixels[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0}, filtered_pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0};
+
+	// all pixel hash
+	if (type == 0) 
+	{
+		// only create hash based on rgb values - ignore alpha
+		for (int j=0; j < (int) (i_iter->second.width * i_iter->second.height); j++)
+			filtered_pix[j] = i_iter->second.pixel[j] & 0x00ffffff;
+
+		return hashword(&filtered_pix[0], i_iter->second.width * i_iter->second.height, HASH_SEED_0);
+	}
+
+	// selected pixel hash
+	else if (type>=1 && type<=3) 
+	{
+		int pixcount = 0;
+		for (PMapCI p_iter=_p$[type].begin(); p_iter!=_p$[type].end(); p_iter++)
+		{
+			if (p_iter->second.x <= i_iter->second.width &&
+				p_iter->second.y <= i_iter->second.height) 
+			{
+				// only create hash based on rgb values - ignore alpha
+				pixels[pixcount++] = 
+					i_iter->second.pixel[(p_iter->second.y * i_iter->second.width) + p_iter->second.x] & 0x00ffffff;
+			}
+		}
+
+		if (type==1)
+				return hashword(&pixels[0], pixcount, HASH_SEED_1);
+		if (type==2)
+				return hashword(&pixels[0], pixcount, HASH_SEED_2);
+		if (type==3)
+				return hashword(&pixels[0], pixcount, HASH_SEED_3);
+
+	}
+
+	return 0;
+}
+
 // Creates the 32bit hash for an image record using name and pixels
 uint32_t CTablemap::CreateI$Index(const CString name, const int width, const int height, const uint32_t *pixels)
 {

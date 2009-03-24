@@ -9,6 +9,7 @@
 #include "registry.h"
 #include "DialogSelectTable.h"
 #include "global.h"
+#include "DialogCopyRegion.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -31,6 +32,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_TIMER()
 	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWREGIONBOXES, &CMainFrame::OnUpdateViewShowregionboxes)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_CURRENTWINDOWSIZE, &CMainFrame::OnUpdateViewCurrentwindowsize)
+	ON_COMMAND(ID_EDIT_DUPLICATEREGION, &CMainFrame::OnEditDuplicateregion)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_DUPLICATEREGION, &CMainFrame::OnUpdateEditDuplicateregion)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -274,6 +277,128 @@ void CMainFrame::OnEditUpdatehashes()
 		MessageBox("Hashes updated successfully.", "Success", MB_OK);
 }
 
+void CMainFrame::OnEditDuplicateregion()
+{
+	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+	RMapCI				sel_region = p_tablemap->r$()->end();
+	HTREEITEM			parent;
+	CString				sel = "", selected_parent_text = "";
+		
+	// Get name of currently selected item
+	if (theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem())
+	{
+		sel = theApp.m_TableMapDlg->m_TableMapTree.GetItemText(theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem());
+		parent = theApp.m_TableMapDlg->m_TableMapTree.GetParentItem(theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem());
+	}
+
+	// Get name of currently selected item's parent
+	if (parent != NULL) 
+		selected_parent_text = theApp.m_TableMapDlg->m_TableMapTree.GetItemText(parent);
+	else
+		return;
+
+
+	// Get iterator for selected region
+	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+
+	// Exit if we can't find the region record
+	if (sel_region == p_tablemap->r$()->end())
+		return;
+
+	// Present multi-selector region dialog
+	CDlgCopyRegion  dlgcopyregion;
+	dlgcopyregion.source_region = sel;
+	dlgcopyregion.candidates.RemoveAll();
+
+	// Figure out which related regions to provide as copy destination options
+	CString	target="";
+	if (sel.Mid(0,1)=="p" || sel.Mid(0,1)=="u")
+		target=sel.Mid(2);
+	else if (sel.Mid(0,1)=="c" && sel.Mid(2,8)=="cardface")
+		target=sel.Mid(2,8);
+	else if (sel.Mid(0,1)=="c" && sel.Mid(2,10)=="handnumber")
+		target=sel.Mid(2,10);
+	else if (sel.Mid(0,1)=="c" && sel.Mid(2,3)=="pot")
+		target=sel.Mid(2,3);
+	else if (sel.Mid(0,1)=="c" && sel.Mid(2,6)=="limits")
+		target=sel.Mid(2,6);
+	else if (sel.Mid(0,1)=="i" && sel.Mid(1,2)!="86")
+		target=sel.Mid(2);
+	else if (sel.Mid(0,1)=="i" && sel.Mid(2,2)=="86")
+	{
+		if (sel.Mid(3,1)>="0" && sel.Mid(3,1)<="9")
+			target=sel.Mid(4);
+		else
+			target=sel.Mid(3);
+	}
+
+	// Add them to the dialog
+	for (int i=0; i<num_r$strings; i++)
+	{
+		bool add_it = (strstr(r$strings[i], target.GetString())!=NULL);
+
+		CString s = r$strings[i];
+		for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++)
+		{
+			if (r_iter->second.name == s)  
+				add_it = false;
+		}
+
+		if (add_it)
+			dlgcopyregion.candidates.Add(r$strings[i]);
+	}
+
+	// Show dialog if there are any strings left to add
+	if (dlgcopyregion.candidates.GetSize() == 0)
+	{
+		MessageBox("All related region records are already present.");
+	}
+	else
+	{
+		if (dlgcopyregion.DoModal() == IDOK)
+		{
+			bool added_at_least_one = false;
+
+			// Add new records to internal structure
+			for (int i=0; i<dlgcopyregion.selected.GetSize(); i++)
+			{
+				//MessageBox(dlgcopyregion.selected[i]);
+				STablemapRegion new_region;
+				new_region.name = dlgcopyregion.selected[i];
+				new_region.left = sel_region->second.left + (5*i);
+				new_region.top = sel_region->second.top + (5*i);
+				new_region.right = sel_region->second.right + (5*i);
+				new_region.bottom = sel_region->second.bottom + (5*i);
+				new_region.color = sel_region->second.color;
+				new_region.radius = sel_region->second.radius;
+				new_region.transform = sel_region->second.transform;
+
+				// Insert the new record in the existing array of z$ records
+				if (p_tablemap->r$_insert(new_region))
+				{
+					added_at_least_one = true;
+
+					// Add new record to tree
+					HTREEITEM new_hti = theApp.m_TableMapDlg->m_TableMapTree.InsertItem(
+						new_region.name, parent ? parent : theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem());
+
+					theApp.m_TableMapDlg->m_TableMapTree.SortChildren(parent ? parent : 
+						theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem());
+
+					theApp.m_TableMapDlg->m_TableMapTree.SelectItem(new_hti);
+				}
+			}
+
+			if (added_at_least_one)
+			{
+				pDoc->SetModifiedFlag(true);
+				Invalidate(false);
+			}
+		}
+	}
+
+}
+
 void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 {
 	COpenScrapeDoc			*pDoc = COpenScrapeDoc::GetDocument();
@@ -393,20 +518,18 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
 	STableList			tablelisthold;
 
 	// If this is not a top level window, then return
-	if (GetParent(hwnd) != NULL) {
+	if (GetParent(hwnd) != NULL)
 		return true;
-	}
 
 	// If this window is not visible, then return
-	if (!IsWindowVisible(hwnd)) {
+	if (!IsWindowVisible(hwnd))
 		return true;
-	}
 
 	// If there is no caption on this window, then return
 	GetWindowText(hwnd, text, sizeof(text));
-	if (strlen(text)==0) {
+	if (strlen(text)==0)
 		return true;
-	}
+
 	title = text;
 
 	// Found a window, get client area rect
@@ -443,4 +566,24 @@ void CMainFrame::OnUpdateViewCurrentwindowsize(CCmdUI *pCmdUI)
 		pCmdUI->SetText("Current size: 0x0");
 		pCmdUI->Enable(false);
 	}
+}
+
+void CMainFrame::OnUpdateEditDuplicateregion(CCmdUI *pCmdUI)
+{
+	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+	HTREEITEM			parent;
+	CString				sel = "", selected_parent_text = "";
+		
+	// Get name of currently selected item
+	if (theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem())
+	{
+		sel = theApp.m_TableMapDlg->m_TableMapTree.GetItemText(theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem());
+		parent = theApp.m_TableMapDlg->m_TableMapTree.GetParentItem(theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem());
+	}
+
+	// Get name of currently selected item's parent
+	if (parent != NULL) 
+		selected_parent_text = theApp.m_TableMapDlg->m_TableMapTree.GetItemText(parent);
+
+	pCmdUI->Enable(selected_parent_text == "Regions");
 }
