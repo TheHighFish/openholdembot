@@ -59,7 +59,8 @@ NEW STUFF:
 - Menu item added to duplicate regions - select a region in the map, and choose "Edit/Duplicate Region".  A dialog will be
   presented with a list of related regions that are valid copy targets. You can multi-select in this dialog with the standard
   Control-click and Shift-click modifiers.  [OpenHoldem]
-  
+- Applied Oscar's keyboard control patch for OpenScrape. You can now move regions using he arrow keys, fast-move regions using
+  shift+arrow keys, and resize regions using ctrl+arrow keys. [OpenHoldem]  
   
 
 

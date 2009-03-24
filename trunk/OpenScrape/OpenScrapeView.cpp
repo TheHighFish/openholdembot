@@ -20,6 +20,7 @@ BEGIN_MESSAGE_MAP(COpenScrapeView, CView)
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
 	ON_WM_SETCURSOR()
+	ON_WM_KEYDOWN()
 END_MESSAGE_MAP()
 
 // COpenScrapeView construction/destruction
@@ -382,6 +383,74 @@ void COpenScrapeView::OnMouseMove(UINT nFlags, CPoint point)
 
 	CView::OnMouseMove(nFlags, point);
 }
+
+void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) 
+{
+	
+}
+
+
+/**
+ * handles Keyboard presses, currently used for moving/resizing regions.
+ * \param nChar the virtual key pressed down
+ */
+void COpenScrapeView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	if(nChar==VK_UP || nChar==VK_DOWN || nChar==VK_LEFT || nChar==VK_RIGHT) {
+		// find the currently selected
+		CString sel = theApp.m_TableMapDlg->m_TableMapTree.GetItemText(theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem());	
+		RMapI r_iter = p_tablemap->set_r$()->find(sel.GetString());
+
+		if (r_iter != p_tablemap->r$()->end())
+		{
+			// check what key combinations are down
+			bool shiftKeyDown = GetKeyState(VK_SHIFT)>>7;
+			bool sizeChangeKeyDown = GetKeyState(VK_CONTROL)>>7;
+
+			int speed = 1;
+			if(shiftKeyDown) {
+				speed = 5;
+			} 
+			
+			if(sizeChangeKeyDown) {
+				// change size of region
+				if(nChar == VK_UP)	{
+					r_iter->second.top = r_iter->second.top-speed;
+				} else if(nChar == VK_DOWN)	{
+					r_iter->second.top = r_iter->second.top+speed;
+				} else if(nChar == VK_LEFT)	{
+					r_iter->second.right = r_iter->second.right-speed;
+				} else if(nChar == VK_RIGHT)	{
+					r_iter->second.right = r_iter->second.right+speed;
+				} 
+			} else {
+
+				// Default is just to move the selected region
+				if(nChar == VK_UP)	{
+					r_iter->second.top = r_iter->second.top-speed;
+					r_iter->second.bottom = r_iter->second.bottom-speed;
+				} else if(nChar == VK_DOWN)	{
+					r_iter->second.top = r_iter->second.top+speed;
+					r_iter->second.bottom = r_iter->second.bottom+speed;
+				} else if(nChar == VK_LEFT)	{
+					r_iter->second.left = r_iter->second.left-speed;
+					r_iter->second.right = r_iter->second.right-speed;
+				} else if(nChar == VK_RIGHT)	{
+					r_iter->second.left = r_iter->second.left+speed;
+					r_iter->second.right = r_iter->second.right+speed;
+				} 
+			}
+
+			theApp.m_TableMapDlg->update_display();
+			theApp.m_TableMapDlg->Invalidate(false);
+			Invalidate(false);
+			GetDocument()->SetModifiedFlag(true);
+		}
+	}
+
+	CView::OnKeyDown(nChar, nRepCnt, nFlags);
+}
+
 
 BOOL COpenScrapeView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
