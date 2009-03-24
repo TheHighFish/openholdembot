@@ -3,7 +3,7 @@ v1.2.1 2009-xx-xx
 BUG FIXES:
 - Fixed display of sample image in the graphical hash point editor - selection of the sample image was causing an
   "Out of memory" error message in certain cases.  Thanks to Friday for finding the bug. [OpenHoldem]
-
+- Fix in OpenScrape - in list of regions (when adding or editing), "i3edit" was listed as "r$i3edit" [OpenHoldem]
 
 v1.2.0 2009-02-02
 =================
