@@ -45,7 +45,7 @@ char * const r$strings[359] = { "c0cardface0", "c0cardface1", "c0cardface2", "c0
 								"i8state", "i9state", 
 								"i3handle", "i3slider",
 								//41
-								"r$i3edit",
+								"i3edit",
 								"i86button", "i860button", "i861button", "i862button", "i863button", "i864button", "i865button", "i866button", 
 								"i867button", "i868button", "i869button", 
 								"i86state", "i860state", "i861state", "i862state", "i863state", "i864state", "i865state", "i866state", 

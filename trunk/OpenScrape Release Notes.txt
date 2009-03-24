@@ -13,6 +13,7 @@ BUG FIXES:
   The file version for .tm's will be updated to ".osdb2" when saved with version 2.0.0+ of OpenScrape.  Opening 
   of older .tm file versions in either OpenHoldem or OpenScrape will result in a warning message with similar 
   information to the above being displayed. [OpenHoldem]
+- Tab order in table map dialog was incorrect.  Thanks, Friday.  [OpenHoldem]
       
 MAINTENANCE:
 - Migration of table map z, s, r, t, p, h and i record handling from CArray's with manual indices to std::map structures. [OpenHoldem]
@@ -52,6 +53,13 @@ NEW STUFF:
   does not match. This is only valid when a region specifies the 00, 01, and 10 locations only.  For regions that specify 
   other chip landing spots, those chips/stacks will be checked as per previous behavior.  A value of "All" will trigger the 
   "check all 200 locations" behavior, any other value will result in the stop checking behavior as described.  [OpenHoldem]
+- Upon creating a new hash record "Create Hash", the hash will be calculated and inserted in the new record.  Previously,
+  a zero hash was inserted necessitating the use of menu item "Edit/Update Hashes" to calculate the correct values.
+  [OpenHoldem]
+- Menu item added to duplicate regions - select a region in the map, and choose "Edit/Duplicate Region".  A dialog will be
+  presented with a list of related regions that are valid copy targets. You can multi-select in this dialog with the standard
+  Control-click and Shift-click modifiers.  [OpenHoldem]
+  
   
 
 

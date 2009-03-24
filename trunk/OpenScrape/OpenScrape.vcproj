@@ -207,6 +207,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DialogCopyRegion.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\DialogEdit.cpp"
 				>
 			</File>
@@ -346,6 +350,10 @@
 			>
 			<File
 				RelativePath=".\debug.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DialogCopyRegion.h"
 				>
 			</File>
 			<File
@@ -527,18 +535,6 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\pacific.10.sample\pacific.10.sample instructions.txt"
-			>
-		</File>
-		<File
-			RelativePath=".\pacific.10.sample\pacific.10.sample.jpg"
-			>
-		</File>
-		<File
-			RelativePath=".\pacific.10.sample\pacific.10.tm"
-			>
-		</File>
 	</Files>
 	<Globals>
 		<Global

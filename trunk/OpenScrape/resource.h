@@ -19,6 +19,7 @@
 #define IDC_DRAWRECTCURSOR              143
 #define IDD_EDIT_HASH                   144
 #define IDD_EDIT_GR_HASHPOINTS          145
+#define IDD_COPY_REGION                 146
 #define IDC_TABLEMAP_TREE               1000
 #define IDC_LEFT                        1001
 #define IDC_CURRENTREGION               1002
@@ -94,6 +95,9 @@
 #define IDC_TRACKER_FONT_NUM            1079
 #define IDC_                            1085
 #define IDC_MISSING_CARDS               1089
+#define IDC_LIST1                       1090
+#define IDC_REGIONLIST                  1090
+#define IDC_SOURCE                      1091
 #define IDC_MISSING_FONTS               1092
 #define ID_MAIN_TOOLBAR_GREENCIRCLE     32771
 #define ID_VIEW_CONNECTTOWINDOW         32772
@@ -103,14 +107,16 @@
 #define ID_MAIN_TOOLBAR_REFRESH         32776
 #define ID_VIEW_REFRESH                 32777
 #define ID_VIEW_CURRENTWINDOWSIZE       32778
+#define ID_EDIT_DUPLICATEREGION         32779
+#define ID_EDIT_COPYREGION              32780
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        146
-#define _APS_NEXT_COMMAND_VALUE         32779
-#define _APS_NEXT_CONTROL_VALUE         1090
+#define _APS_NEXT_RESOURCE_VALUE        147
+#define _APS_NEXT_COMMAND_VALUE         32781
+#define _APS_NEXT_CONTROL_VALUE         1092
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
