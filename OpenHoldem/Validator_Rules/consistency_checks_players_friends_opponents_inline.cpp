@@ -33,7 +33,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("If buttons are visible (it's my turn), there must be at least 1 opponent playing.")
     PRECONDITION (gws("ismyturn"))
-    POSTCONDITION ((int(gws("nopponentsplayingbits")) != 0) && (int(gws("nopponentsplaying") > 0)))
+    POSTCONDITION ((int(gws("opponentsplayingbits")) != 0) && (int(gws("nopponentsplaying") > 0)))
     SYMBOLS_POSSIBLY_AFFECTED ("ismyturn, nopponentsplayingbits, nopponentsplaying")
 END_TESTCASE
 
@@ -63,7 +63,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The number of players who are playing plus the ones who have folded must equal the number of players who got dealt cards. ")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nopponentsfolded") + gws("nopponentsplaying")) == gws("nopponentsplaying"))
+    POSTCONDITION ((gws("nopponentsfolded") + gws("nopponentsplaying")) == gws("nplayerssplaying"))
     SYMBOLS_POSSIBLY_AFFECTED ("nopponentsfolded, nopponentsplaying, nopponentsplaying")
 END_TESTCASE
 
