@@ -67,7 +67,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol trank")
     PRECONDITION (true)
-    POSTCONDITION ((gws("trank") >= 0) && (gws("trank") <= 4))
+    POSTCONDITION ((gws("trank") >= 0) && (gws("trank") <= 14))
     SYMBOLS_POSSIBLY_AFFECTED ("trank")
 END_TESTCASE
 
@@ -77,7 +77,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol trankcommon")
     PRECONDITION (true)
-    POSTCONDITION ((gws("trankcommon") >= 0) && (gws("trankcommon") <= 4))
+    POSTCONDITION ((gws("trankcommon") >= 0) && (gws("trankcommon") <= 14))
     SYMBOLS_POSSIBLY_AFFECTED ("trankcommon")
 END_TESTCASE
 
