@@ -68,7 +68,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\pokereval\Debug\poker-eval.lib"
+				AdditionalDependencies="..\pokereval\Debug\poker-eval.lib ..\dbghelp\dbghelp.lib"
 				OutputFile="$(OutDir)\ManualMode.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
