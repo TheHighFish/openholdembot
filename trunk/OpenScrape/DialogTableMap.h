@@ -4,8 +4,10 @@
 #include "resource.h"
 #include "StickyButton.h"
 
-// CDlgTableMap dialog
+// Region grouping types
+enum {UNGROUPED, BY_TYPE, BY_NAME};
 
+// CDlgTableMap dialog
 class CDlgTableMap : public CDialog
 {
 protected:
@@ -13,6 +15,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
 	virtual void OnCancel();
+	HTREEITEM GetRootParentNode(HTREEITEM item);
 	afx_msg void OnPaint();
 	void clear_bitmap_control(void);
 	void draw_region_bitmap(void);
@@ -59,6 +62,10 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSizing(UINT nSide, LPRECT lpRect);
 	COLORREF get_color_under_mouse(UINT *nFlags, CPoint *point);
+	CString GetGroupName(CString regionName);
+	HTREEITEM FindRegionGroupItem(HTREEITEM hRegionNode, CString groupName);
+	HTREEITEM MoveTreeItem(HTREEITEM hItem, HTREEITEM hNewParent, CString name, bool bSelect);
+	void RemoveSingleItemGroups(void);
 
 	CStatic				m_BitmapFrame;
 	CStickyButton		m_Picker;
@@ -90,10 +97,15 @@ public:
 	void update_display(void);
 	void UpdateStatus(void);
 	HTREEITEM update_tree(CString node_text);
+	void GroupRegions(void);
+	void UngroupRegions(void);
+	HTREEITEM GetRegionNode(void);
+	HTREEITEM FindItem(CString s, HTREEITEM start);
 
 	CTreeCtrl			m_TableMapTree;
 	CEdit				m_Left, m_Top, m_Bottom, m_Right;
 	CStickyButton		m_DrawRect;
+	int					region_grouping;
 
 	DECLARE_MESSAGE_MAP()
 };

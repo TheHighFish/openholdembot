@@ -176,8 +176,6 @@ void COpenScrapeView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	COpenScrapeDoc		*pDoc = GetDocument();
 	CString				sel = theApp.m_TableMapDlg->m_TableMapTree.GetItemText(theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem());	
-	HTREEITEM			temp_hti, imagepar_hti;
-	bool				found;
 	CString				text;
 
 	// If we are drawing a rectangle for a region, handle that
@@ -247,28 +245,13 @@ void COpenScrapeView::OnLButtonDown(UINT nFlags, CPoint point)
 				{
 
 					// Find parent node
-					temp_hti = theApp.m_TableMapDlg->m_TableMapTree.GetRootItem();
-					imagepar_hti = NULL;
-					while (temp_hti && imagepar_hti==NULL)
-					{
-						if (theApp.m_TableMapDlg->m_TableMapTree.GetItemText(temp_hti) == "Regions")  
-							imagepar_hti = temp_hti;
-
-						temp_hti = theApp.m_TableMapDlg->m_TableMapTree.GetNextItem(temp_hti, TVGN_NEXT);
-					}
+					HTREEITEM parent_node = theApp.m_TableMapDlg->GetRegionNode();
 
 					// Find correct leaf node
-					temp_hti = theApp.m_TableMapDlg->m_TableMapTree.GetNextItem(imagepar_hti, TVGN_CHILD);
-					found = false;
-					while (temp_hti && !found)
-					{
-						if (r_iter->second.name == theApp.m_TableMapDlg->m_TableMapTree.GetItemText(temp_hti))  
-							found = true;
-						else 
-							temp_hti = theApp.m_TableMapDlg->m_TableMapTree.GetNextItem(temp_hti, TVGN_NEXT);
-					}
+					HTREEITEM item = theApp.m_TableMapDlg->FindItem(r_iter->second.name, parent_node);
 
-					theApp.m_TableMapDlg->m_TableMapTree.SelectItem(temp_hti);
+					if (item)
+						theApp.m_TableMapDlg->m_TableMapTree.SelectItem(item);
 				}
 			}
 		}

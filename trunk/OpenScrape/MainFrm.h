@@ -16,9 +16,15 @@ protected: // create from serialization only
 	afx_msg void OnEditUpdatehashes();
 	afx_msg void OnEditDuplicateregion();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnGroupregionsBytype();
+	afx_msg void OnGroupregionsByname();
+	afx_msg void OnViewUngroupregions();
 	afx_msg void OnUpdateViewShowregionboxes(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateViewCurrentwindowsize(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateEditDuplicateregion(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateGroupregionsBytype(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateGroupregionsByname(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateViewUngroupregions(CCmdUI *pCmdUI);
 	void SaveBmpPbits(void);
 	DECLARE_MESSAGE_MAP()
 

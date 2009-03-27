@@ -1,5 +1,6 @@
 
-class Registry {
+class Registry 
+{
 public:
 	Registry(void);
 
@@ -10,6 +11,9 @@ public:
 	int main_x, main_y, main_dx, main_dy;
 	int tablemap_x, tablemap_y, tablemap_dx, tablemap_dy;
 	int grhash_x, grhash_y, grhash_dx, grhash_dy;
+
+	// Region grouping
+	int region_grouping;
 
 };
 

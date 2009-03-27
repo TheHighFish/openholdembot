@@ -30,62 +30,66 @@ void Registry::read_reg(void)
 	grhash_dx = 380;
 	grhash_dy = 330;
 
+	region_grouping =0; // None
+
 	hkResult = RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\OpenHoldem\\OpenScrape", 0, KEY_READ, &hKey);
 	if (hkResult==ERROR_SUCCESS) {
 
 		// Main window location and size
 		cbData = sizeof(str);
-		if ( (hkResult = RegQueryValueEx(hKey, "main_x", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS) {
+		if ( (hkResult = RegQueryValueEx(hKey, "main_x", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
 			main_x = atoi(str);
-		}
+
 		cbData = sizeof(str);
-		if ( (hkResult = RegQueryValueEx(hKey, "main_y", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS) {
+		if ( (hkResult = RegQueryValueEx(hKey, "main_y", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
 			main_y = atoi(str);
-		}
+
 		cbData = sizeof(str);
-		if ( (hkResult = RegQueryValueEx(hKey, "main_dx", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS) {
+		if ( (hkResult = RegQueryValueEx(hKey, "main_dx", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
 			main_dx = atoi(str);
-		}
+
 		cbData = sizeof(str);
-		if ( (hkResult = RegQueryValueEx(hKey, "main_dy", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS) {
+		if ( (hkResult = RegQueryValueEx(hKey, "main_dy", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
 			main_dy = atoi(str);
-		}
 
 		// tablemap window location and size
 		cbData = sizeof(str);
-		if ( (hkResult = RegQueryValueEx(hKey, "tablemap_x", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS) {
+		if ( (hkResult = RegQueryValueEx(hKey, "tablemap_x", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
 			tablemap_x = atoi(str);
-		}
+
 		cbData = sizeof(str);
-		if ( (hkResult = RegQueryValueEx(hKey, "tablemap_y", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS) {
+		if ( (hkResult = RegQueryValueEx(hKey, "tablemap_y", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
 			tablemap_y = atoi(str);
-		}
+
 		cbData = sizeof(str);
-		if ( (hkResult = RegQueryValueEx(hKey, "tablemap_dx", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS) {
+		if ( (hkResult = RegQueryValueEx(hKey, "tablemap_dx", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
 			tablemap_dx = atoi(str);
-		}
+
 		cbData = sizeof(str);
-		if ( (hkResult = RegQueryValueEx(hKey, "tablemap_dy", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS) {
+		if ( (hkResult = RegQueryValueEx(hKey, "tablemap_dy", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
 			tablemap_dy = atoi(str);
-		}
 
 		// graphical hash point window location and size
 		cbData = sizeof(str);
-		if ( (hkResult = RegQueryValueEx(hKey, "grhash_x", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS) {
+		if ( (hkResult = RegQueryValueEx(hKey, "grhash_x", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
 			grhash_x = atoi(str);
-		}
+
 		cbData = sizeof(str);
-		if ( (hkResult = RegQueryValueEx(hKey, "grhash_y", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS) {
+		if ( (hkResult = RegQueryValueEx(hKey, "grhash_y", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
 			grhash_y = atoi(str);
-		}
+
 		cbData = sizeof(str);
-		if ( (hkResult = RegQueryValueEx(hKey, "grhash_dx", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS) {
+		if ( (hkResult = RegQueryValueEx(hKey, "grhash_dx", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
 			grhash_dx = atoi(str);
-		}
+
 		cbData = sizeof(str);
-		if ( (hkResult = RegQueryValueEx(hKey, "grhash_dy", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS) {
+		if ( (hkResult = RegQueryValueEx(hKey, "grhash_dy", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
 			grhash_dy = atoi(str);
-		}
+
+		// Region grouping
+		cbData = sizeof(str);
+		if ( (hkResult = RegQueryValueEx(hKey, "region_grouping", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
+			region_grouping = atoi(str);
 	}
 
 	RegCloseKey(hKey);
@@ -130,6 +134,10 @@ void Registry::write_reg(void)
 	RegSetValueEx(hKey, "grhash_dx", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
 	sprintf_s(str, 256, "%d", grhash_dy);
 	RegSetValueEx(hKey, "grhash_dy", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
+
+	// Region grouping
+	sprintf_s(str, 256, "%d", region_grouping);
+	RegSetValueEx(hKey, "region_grouping", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
 
 	RegCloseKey(hKey);
 }

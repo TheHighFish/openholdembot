@@ -131,6 +131,12 @@ BEGIN
         MENUITEM "&Connect To Window",          ID_VIEW_CONNECTTOWINDOW
         MENUITEM "Show &Region Boxes",          ID_VIEW_SHOWREGIONBOXES
         MENUITEM "Re&fresh",                    ID_VIEW_REFRESH
+        POPUP "&Group Regions"
+        BEGIN
+            MENUITEM "By &Type",                    ID_GROUPREGIONS_BYTYPE
+            MENUITEM "By &Name",                    ID_GROUPREGIONS_BYNAME
+        END
+        MENUITEM "&Ungroup Regions",            ID_VIEW_UNGROUPREGIONS
         MENUITEM SEPARATOR
         MENUITEM "Current size: 0x0",           ID_VIEW_CURRENTWINDOWSIZE
     END

@@ -326,6 +326,9 @@ BOOL CDlgTableMap::OnInitDialog()
 	::SetWindowPos(m_hWnd, HWND_TOP, min(reg.tablemap_x, max_x), min(reg.tablemap_y, max_y),
 		reg.tablemap_dx, reg.tablemap_dy, SWP_NOCOPYBITS);
 
+	// Region grouping
+	region_grouping = reg.region_grouping;
+
 	//  Display missing cards and fonts
 	UpdateStatus();
 
@@ -368,6 +371,25 @@ void CDlgTableMap::OnCancel()
 	//CDialog::OnCancel();
 }
 
+HTREEITEM CDlgTableMap::GetRootParentNode(HTREEITEM item)
+{
+	if (m_TableMapTree.GetParentItem(item) == NULL)
+	{
+		return NULL;
+	}
+
+	else
+	{
+		HTREEITEM parent = m_TableMapTree.GetParentItem(item);
+
+		while (m_TableMapTree.GetParentItem(parent)!=NULL)
+			parent = m_TableMapTree.GetParentItem(parent);
+
+		return parent;
+	}
+
+}
+
 void CDlgTableMap::OnPaint()
 {
 	CPaintDC			dc(this);
@@ -379,7 +401,7 @@ void CDlgTableMap::OnPaint()
 	if (m_TableMapTree.GetSelectedItem())
 	{
 		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
-		parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
+		parent = GetRootParentNode(m_TableMapTree.GetSelectedItem());
 	}
 
 	// Get name of selected item's parent
@@ -393,8 +415,9 @@ void CDlgTableMap::OnPaint()
 		m_BitmapFrame.SetWindowPos(NULL, 0, 0, BITMAP_WIDTH, BITMAP_HEIGHT, SWP_NOMOVE | SWP_NOZORDER | SWP_NOCOPYBITS);
 	}
 
-	// A leaf item was selected
-	else {
+	// A non root item was selected
+	else 
+	{
 
 		// Display currently selected region bitmap from saved bitmap
 		if (selected_parent_text == "Regions")
@@ -718,7 +741,7 @@ void CDlgTableMap::update_display(void)
 	if (m_TableMapTree.GetSelectedItem())
 	{
 		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
-		parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
+		parent = GetRootParentNode(m_TableMapTree.GetSelectedItem());
 	}
 
 	// Don't trigger OnChange messages
@@ -1393,7 +1416,7 @@ void CDlgTableMap::OnBnClickedNew()
 	if (m_TableMapTree.GetSelectedItem())
 	{
 		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
-		parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
+		parent = GetRootParentNode(m_TableMapTree.GetSelectedItem());
 		selected_parent_text = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
 	}
 
@@ -1641,7 +1664,7 @@ void CDlgTableMap::OnBnClickedDelete()
 	if (m_TableMapTree.GetSelectedItem())
 	{
 		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
-		parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
+		parent = GetRootParentNode(m_TableMapTree.GetSelectedItem());
 	}
 
 	// Get name of currently selected item's parent
@@ -1855,7 +1878,7 @@ void CDlgTableMap::OnBnClickedEdit()
 	if (m_TableMapTree.GetSelectedItem())
 	{
 		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
-		parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
+		parent = GetRootParentNode(m_TableMapTree.GetSelectedItem());
 	}
 
 	// Get name of currently selected item's parent
@@ -2376,7 +2399,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 	int					i = 0, j = 0, insert_point = 0, new_index = 0;
 	HTREEITEM			new_hti = NULL, font_node = NULL, region_node = NULL, child_node = NULL;
 	CString				node_text = "";
-	HTREEITEM			parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
+	HTREEITEM			parent = GetRootParentNode(m_TableMapTree.GetSelectedItem());
 	CArray <STablemapFont, STablemapFont>		new_t$_recs[4];
 	CTransform			trans;
 	RMapCI				sel_region = p_tablemap->r$()->end();
@@ -2574,7 +2597,7 @@ void CDlgTableMap::OnBnClickedCreateHash()
 	if (m_TableMapTree.GetSelectedItem())
 	{
 		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
-		parent = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
+		parent = GetRootParentNode(m_TableMapTree.GetSelectedItem());
 	}
 
 	// Get name of currently selected item's parent
@@ -2911,6 +2934,11 @@ void CDlgTableMap::create_tree(void)
 
 	for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++)
 		m_TableMapTree.InsertItem(r_iter->second.name, parent);
+
+	if (region_grouping) 
+		GroupRegions(); 
+	else 
+		UngroupRegions();
 
 	m_TableMapTree.SortChildren(parent);
 
@@ -3513,4 +3541,304 @@ void CDlgTableMap::UpdateStatus(void)
 	}
 	//  Display missing cards
 	m_status_cards.SetWindowTextA(_T(statusCards));
+}
+
+CString CDlgTableMap::GetGroupName(CString regionName)
+{
+	CString groupName = "";
+
+	switch (region_grouping)
+	{
+		case BY_TYPE:
+
+			if (regionName.Mid(0,1)=="p" || regionName.Mid(0,1)=="u" || regionName.Mid(0,1)=="c")
+				groupName = regionName.Mid(0,2);
+
+			else if (regionName.Mid(0,3)=="i86")
+				groupName = regionName.Mid(0,3);
+
+			else if (regionName.Mid(0,1)=="i")
+				groupName = regionName.Mid(0,2);
+
+			else
+				groupName.Empty();
+
+			break;
+
+		case BY_NAME:
+
+			if (regionName.Find("cardface")!=-1 && regionName.Find("rank")!=-1)
+				groupName = "cardface-rank";
+
+			else if (regionName.Find("cardface")!=-1 && regionName.Find("suit")!=-1)
+				groupName = "cardface-suit";
+
+			else if (regionName.Find("cardface")!=-1)
+				groupName = "cardface";
+
+			else if (regionName.Find("handnumber")!=-1)
+				groupName = "handnumber";
+
+			else if (regionName.Find("pot")!=-1 && regionName.Find("chip")!=-1)
+				groupName = "pot-chip";
+
+			else if (regionName.Find("pot")!=-1)
+				groupName = "pot";
+
+			else if (regionName.Find("limits")!=-1)
+				groupName = "limits";
+
+			else if (regionName.Find("button")!=-1)
+				groupName = "button";
+
+			else if (regionName.Find("label")!=-1)
+				groupName = "label";
+
+			else if (regionName.Find("state")!=-1)
+				groupName = "state";
+
+			else if (regionName.Find("active")!=-1)
+				groupName = "active";
+
+			else if (regionName.Find("balance")!=-1)
+				groupName = "balance";
+
+			else if (regionName.Find("bet")!=-1)
+				groupName = "bet";
+
+			else if (regionName.Find("cardback")!=-1)
+				groupName = "cardback";
+
+			else if (regionName.Find("dealer")!=-1)
+				groupName = "dealer";
+
+			else if (regionName.Find("name")!=-1 && regionName.Find("tourn")==-1)
+				groupName = "name";
+
+			else if (regionName.Find("seated")!=-1)
+				groupName = "seated";
+
+			else if (regionName.Find("chip")!=-1)
+				groupName = "chip";
+
+			else
+				groupName.Empty();
+			break;
+	}
+
+	return groupName;
+}
+
+HTREEITEM CDlgTableMap::FindRegionGroupItem(HTREEITEM hRegionNode, CString groupName)
+{
+	HTREEITEM searchItem = m_TableMapTree.GetChildItem(hRegionNode);
+
+	while (searchItem) 
+	{
+		if (m_TableMapTree.ItemHasChildren(searchItem)) 
+		{
+			CString tempString = m_TableMapTree.GetItemText(searchItem);
+			if (!tempString.Compare(groupName))
+				return searchItem;
+		}
+		searchItem = m_TableMapTree.GetNextSiblingItem(searchItem);
+	}
+
+	return NULL;
+}
+
+HTREEITEM CDlgTableMap::MoveTreeItem(HTREEITEM hItem, HTREEITEM hNewParent, CString name, bool bSelect)
+{
+	HTREEITEM hMovedItem = NULL;
+
+	if (!name.IsEmpty())
+	{
+		hMovedItem = m_TableMapTree.InsertItem(name, hNewParent);
+	}
+	else 
+	{
+		CString itemName;
+		itemName = m_TableMapTree.GetItemText(hItem);
+		hMovedItem = m_TableMapTree.InsertItem(itemName, hNewParent);
+	}
+
+	m_TableMapTree.SetItemData(hMovedItem, m_TableMapTree.GetItemData(hItem));
+	m_TableMapTree.DeleteItem(hItem);
+
+	if (bSelect)
+		m_TableMapTree.SelectItem(hMovedItem);
+
+	return hMovedItem;
+}
+
+void CDlgTableMap::RemoveSingleItemGroups()
+{
+	// Find region node
+	HTREEITEM hRegionNode = GetRegionNode();
+	
+	if (hRegionNode == NULL)
+		return;
+
+	if (m_TableMapTree.GetItemText(hRegionNode) != "Regions")
+		return;
+
+	HTREEITEM hRegionChildItem = m_TableMapTree.GetChildItem(hRegionNode);
+	HTREEITEM hNextLevelItem = NULL, hNextItem = NULL;
+
+	while (hRegionChildItem != NULL)
+	{
+		// Skip, if this item is not a group
+		if (!m_TableMapTree.ItemHasChildren(hRegionChildItem)) 
+		{
+			hRegionChildItem = m_TableMapTree.GetNextSiblingItem(hRegionChildItem);
+		}
+
+		// Move single item out of group
+		else
+		{
+
+			hNextItem = m_TableMapTree.GetNextSiblingItem(hRegionChildItem);
+			hNextLevelItem = m_TableMapTree.GetChildItem(hRegionChildItem);
+
+			if (hNextLevelItem != NULL && m_TableMapTree.GetNextSiblingItem(hNextLevelItem) == NULL) 
+			{
+				MoveTreeItem(hNextLevelItem, hRegionNode, NULL, false);
+				m_TableMapTree.DeleteItem(hRegionChildItem);
+			}
+
+			hRegionChildItem = hNextItem;
+		}
+	}
+}
+
+HTREEITEM CDlgTableMap::GetRegionNode()
+{
+	HTREEITEM hRegionNode = m_TableMapTree.GetNextItem(m_TableMapTree.GetRootItem(), TVGN_NEXT);
+	
+	while (hRegionNode != NULL) 
+	{
+		if (m_TableMapTree.GetItemText(hRegionNode) == "Regions")
+			break;
+
+		hRegionNode = m_TableMapTree.GetNextItem(hRegionNode, TVGN_NEXT);
+	}
+
+	return hRegionNode;
+}
+
+void CDlgTableMap::GroupRegions()
+{
+	if (!m_TableMapTree.ItemHasChildren(m_TableMapTree.GetRootItem()))
+		return;
+
+	// Find region node
+	HTREEITEM hRegionNode = GetRegionNode();
+	
+	if (hRegionNode == NULL)
+		return;
+
+	if (m_TableMapTree.GetItemText(hRegionNode) != "Regions")
+		return;
+
+	// Loop through each item in the region node and move into groups
+	HTREEITEM hRegionChildItem = m_TableMapTree.GetChildItem(hRegionNode);
+	HTREEITEM hNextItem = NULL;
+
+	while (hRegionChildItem != NULL)
+	{
+		hNextItem = m_TableMapTree.GetNextSiblingItem(hRegionChildItem);
+
+		// Skip, if this item is a group
+		if (!m_TableMapTree.ItemHasChildren(hRegionChildItem)) 
+		{
+			CString itemText = m_TableMapTree.GetItemText(hRegionChildItem);
+			CString groupName = GetGroupName(itemText);
+
+			// Skip, if this is not a group-able region
+			if (!groupName.IsEmpty()) 
+			{
+
+				// Find or create the appropriate group node
+				HTREEITEM hGroup = FindRegionGroupItem(hRegionNode, groupName);
+
+				if (!hGroup)
+					hGroup = m_TableMapTree.InsertItem(groupName, hRegionNode);
+
+				// Move the item into the new group
+				MoveTreeItem(hRegionChildItem, hGroup, itemText, false);
+			}
+		}
+
+		hRegionChildItem = hNextItem;
+	}
+
+	if (region_grouping==BY_NAME)
+		RemoveSingleItemGroups();
+}
+
+void CDlgTableMap::UngroupRegions()
+{
+	if (!m_TableMapTree.ItemHasChildren(m_TableMapTree.GetRootItem()))
+		return;
+
+	// Find region node
+	HTREEITEM hRegionNode = GetRegionNode();
+	
+	if (hRegionNode == NULL)
+		return;
+
+	if (m_TableMapTree.GetItemText(hRegionNode) != "Regions")
+		return;
+
+	// Loop through each item in the region node and move into groups
+	HTREEITEM hRegionChildItem = m_TableMapTree.GetChildItem(hRegionNode);
+	HTREEITEM hGroupedRegionItem = NULL, hNextItem = NULL;
+
+	while (hRegionChildItem != NULL)
+	{
+		// Skip if this item is not a group
+		if (!m_TableMapTree.ItemHasChildren(hRegionChildItem)) 
+		{
+			hRegionChildItem = m_TableMapTree.GetNextSiblingItem(hRegionChildItem);
+		}
+
+		// Move out of the group
+		else
+		{
+			hGroupedRegionItem = m_TableMapTree.GetChildItem(hRegionChildItem);
+			while (hGroupedRegionItem) 
+			{
+				hNextItem = m_TableMapTree.GetNextSiblingItem(hGroupedRegionItem);
+				MoveTreeItem(hGroupedRegionItem, hRegionNode, NULL, false);
+				hGroupedRegionItem = hNextItem;
+			}
+
+			hNextItem = m_TableMapTree.GetNextSiblingItem(hRegionChildItem);
+			m_TableMapTree.DeleteItem(hRegionChildItem);
+			hRegionChildItem = hNextItem;
+		}
+	}
+}
+
+HTREEITEM CDlgTableMap::FindItem(CString s, HTREEITEM start)
+{
+	HTREEITEM item = m_TableMapTree.GetNextItem(start, TVGN_CHILD);
+
+	while (item)
+	{
+		CString t = m_TableMapTree.GetItemText(item);
+		if (m_TableMapTree.ItemHasChildren(item))
+		{
+			HTREEITEM next = FindItem(s, item);
+			if (next)
+				return next;
+		}
+
+		else if (s == m_TableMapTree.GetItemText(item))  
+			return item;
+
+		item = m_TableMapTree.GetNextItem(item, TVGN_NEXT);
+	}
+
+	return NULL;
 }

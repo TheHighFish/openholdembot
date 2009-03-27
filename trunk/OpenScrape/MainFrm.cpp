@@ -34,6 +34,12 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_CURRENTWINDOWSIZE, &CMainFrame::OnUpdateViewCurrentwindowsize)
 	ON_COMMAND(ID_EDIT_DUPLICATEREGION, &CMainFrame::OnEditDuplicateregion)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_DUPLICATEREGION, &CMainFrame::OnUpdateEditDuplicateregion)
+	ON_COMMAND(ID_GROUPREGIONS_BYTYPE, &CMainFrame::OnGroupregionsBytype)
+	ON_COMMAND(ID_GROUPREGIONS_BYNAME, &CMainFrame::OnGroupregionsByname)
+	ON_COMMAND(ID_VIEW_UNGROUPREGIONS, &CMainFrame::OnViewUngroupregions)
+	ON_UPDATE_COMMAND_UI(ID_GROUPREGIONS_BYTYPE, &CMainFrame::OnUpdateGroupregionsBytype)
+	ON_UPDATE_COMMAND_UI(ID_GROUPREGIONS_BYNAME, &CMainFrame::OnUpdateGroupregionsByname)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_UNGROUPREGIONS, &CMainFrame::OnUpdateViewUngroupregions)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -446,9 +452,108 @@ void CMainFrame::OnViewRefresh()
 	}
 }
 
+void CMainFrame::OnGroupregionsBytype()
+{
+	Registry		reg;
+	reg.read_reg();
+	reg.region_grouping = BY_TYPE;
+	reg.write_reg();
+
+	theApp.m_TableMapDlg->region_grouping = BY_TYPE;
+	theApp.m_TableMapDlg->UngroupRegions();
+	theApp.m_TableMapDlg->GroupRegions();
+
+	HTREEITEM hRegionNode = theApp.m_TableMapDlg->GetRegionNode();
+	theApp.m_TableMapDlg->m_TableMapTree.SortChildren(hRegionNode);
+}
+
+void CMainFrame::OnGroupregionsByname()
+{
+	Registry		reg;
+	reg.read_reg();
+	reg.region_grouping = BY_NAME;
+	reg.write_reg();
+
+	theApp.m_TableMapDlg->region_grouping = BY_NAME;
+	theApp.m_TableMapDlg->UngroupRegions();
+	theApp.m_TableMapDlg->GroupRegions();
+
+	HTREEITEM hRegionNode = theApp.m_TableMapDlg->GetRegionNode();
+	theApp.m_TableMapDlg->m_TableMapTree.SortChildren(hRegionNode);
+}
+
+void CMainFrame::OnViewUngroupregions()
+{
+	Registry		reg;
+	reg.read_reg();
+	reg.region_grouping = UNGROUPED;
+	reg.write_reg();
+
+	theApp.m_TableMapDlg->region_grouping = UNGROUPED;
+	theApp.m_TableMapDlg->UngroupRegions();
+
+	HTREEITEM hRegionNode = theApp.m_TableMapDlg->GetRegionNode();
+	theApp.m_TableMapDlg->m_TableMapTree.SortChildren(hRegionNode);
+}
+
+void CMainFrame::OnUpdateViewCurrentwindowsize(CCmdUI *pCmdUI)
+{
+	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+	CString				text;
+
+	if (pDoc->attached_hwnd)
+	{
+		text.Format("Current size: %dx%d", pDoc->attached_rect.right - pDoc->attached_rect.left, 
+										   pDoc->attached_rect.bottom - pDoc->attached_rect.top);
+		pCmdUI->SetText(text.GetString());
+		pCmdUI->Enable(true);
+	}
+
+	else
+	{
+		pCmdUI->SetText("Current size: 0x0");
+		pCmdUI->Enable(false);
+	}
+}
+
+void CMainFrame::OnUpdateEditDuplicateregion(CCmdUI *pCmdUI)
+{
+	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+	HTREEITEM			parent;
+	CString				sel = "", selected_parent_text = "";
+		
+	// Get name of currently selected item
+	if (theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem())
+	{
+		sel = theApp.m_TableMapDlg->m_TableMapTree.GetItemText(theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem());
+		parent = theApp.m_TableMapDlg->m_TableMapTree.GetParentItem(theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem());
+	}
+
+	// Get name of currently selected item's parent
+	if (parent != NULL) 
+		selected_parent_text = theApp.m_TableMapDlg->m_TableMapTree.GetItemText(parent);
+
+	pCmdUI->Enable(selected_parent_text == "Regions");
+}
+
 void CMainFrame::OnUpdateViewShowregionboxes(CCmdUI *pCmdUI)
 {
 	pCmdUI->SetCheck(show_regions);
+}
+
+void CMainFrame::OnUpdateGroupregionsBytype(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetCheck(theApp.m_TableMapDlg->region_grouping==BY_TYPE);
+}
+
+void CMainFrame::OnUpdateGroupregionsByname(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetCheck(theApp.m_TableMapDlg->region_grouping==BY_NAME);
+}
+
+void CMainFrame::OnUpdateViewUngroupregions(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetCheck(theApp.m_TableMapDlg->region_grouping==UNGROUPED);
 }
 
 void CMainFrame::SaveBmpPbits(void)
@@ -547,43 +652,3 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
 	return true;  // keep processing through entire list of windows
 }
 
-
-void CMainFrame::OnUpdateViewCurrentwindowsize(CCmdUI *pCmdUI)
-{
-	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	CString				text;
-
-	if (pDoc->attached_hwnd)
-	{
-		text.Format("Current size: %dx%d", pDoc->attached_rect.right - pDoc->attached_rect.left, 
-										   pDoc->attached_rect.bottom - pDoc->attached_rect.top);
-		pCmdUI->SetText(text.GetString());
-		pCmdUI->Enable(true);
-	}
-
-	else
-	{
-		pCmdUI->SetText("Current size: 0x0");
-		pCmdUI->Enable(false);
-	}
-}
-
-void CMainFrame::OnUpdateEditDuplicateregion(CCmdUI *pCmdUI)
-{
-	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	HTREEITEM			parent;
-	CString				sel = "", selected_parent_text = "";
-		
-	// Get name of currently selected item
-	if (theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem())
-	{
-		sel = theApp.m_TableMapDlg->m_TableMapTree.GetItemText(theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem());
-		parent = theApp.m_TableMapDlg->m_TableMapTree.GetParentItem(theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem());
-	}
-
-	// Get name of currently selected item's parent
-	if (parent != NULL) 
-		selected_parent_text = theApp.m_TableMapDlg->m_TableMapTree.GetItemText(parent);
-
-	pCmdUI->Enable(selected_parent_text == "Regions");
-}
