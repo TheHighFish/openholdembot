@@ -97,6 +97,8 @@
 #define IDC_MISSING_CARDS               1089
 #define IDC_REGIONLIST                  1090
 #define IDC_SOURCE                      1091
+#define IDC_EDIT1                       1093
+#define IDC_EDITXY                      1093
 #define IDC_MISSING_FONTS               1092
 #define ID_MAIN_TOOLBAR_GREENCIRCLE     32771
 #define ID_VIEW_CONNECTTOWINDOW         32772

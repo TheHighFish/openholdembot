@@ -100,6 +100,7 @@ void CDlgTableMap::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_RESULT, m_Result);
 	DDX_Control(pDX, IDC_NEW, m_New);
 	DDX_Control(pDX, IDC_DELETE, m_Delete);
+	DDX_Control(pDX, IDC_EDITXY, m_xy);
 	DDX_Control(pDX, IDC_EDIT, m_Edit);
 	DDX_Control(pDX, IDC_CREATE_IMAGE, m_CreateImage);
 	DDX_Control(pDX, IDC_CREATE_FONT, m_CreateFont);
@@ -267,6 +268,8 @@ BOOL CDlgTableMap::OnInitDialog()
 	m_Zoom.AddString("16x");
 	m_Zoom.SetCurSel(2);
 	m_Zoom.SetWindowPos(NULL, 0, 0, 72, 200, SWP_NOMOVE | SWP_NOZORDER);
+
+	m_xy.SetWindowPos(NULL, 0, 0, 60, 12, SWP_NOMOVE | SWP_NOZORDER);
 
 	// Set bitmap on front of picker button
 	picker_bitmap.LoadBitmap(IDB_PICKERBITMAP);
@@ -1033,7 +1036,10 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 		text.Format("%d", sel_region->second.bottom);
 		m_Bottom.SetWindowText(text);
 		m_BottomSpin.SetPos(sel_region->second.bottom);
+
 	}
+	text.Format("%d x %d", sel_region->second.right-sel_region->second.left+1, sel_region->second.bottom-sel_region->second.top+1);
+	m_xy.SetWindowText(text);
 
 	// Transform
 	if (sel_region->second.transform == "C")			selected_transform = "Color";

@@ -63,7 +63,7 @@ NEW STUFF:
   shift+arrow keys, and resize regions using ctrl+arrow keys. Applied Bender's patch to allow diagonal movement with
   the corner numpad keys (1,3,7,9) [OpenHoldem]
 - Added option to group regions in display tree by type or name (View/Group Regions, View/Ungroup Regions) [OpenHoldem]
-  
+- Added display of rectangle size in rectangle box (Thanks BillW for the patch) [OpenHoldem]
 
 
 v1.1.8 2008-10-21
