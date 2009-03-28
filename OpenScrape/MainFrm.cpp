@@ -1,6 +1,10 @@
 // MainFrm.cpp : implementation of the CMainFrame class
 //
 
+#ifndef VC_EXTRALEAN
+#define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
+#include <windows.h>
+
 #include "stdafx.h"
 #include "OpenScrape.h"
 #include "OpenScrapeDoc.h"
@@ -427,6 +431,34 @@ void CMainFrame::OnViewRefresh()
 
 	if (pDoc->attached_hwnd)
 	{
+		// bring attached window to front
+		::SetFocus(pDoc->attached_hwnd);
+		::SetForegroundWindow(pDoc->attached_hwnd);
+		::SetActiveWindow(pDoc->attached_hwnd);
+
+		// check if its OHreplay
+		char className[20];
+		::GetClassName(pDoc->attached_hwnd,className, 20);
+		if(strcmp("OHREPLAY", className)==0) {
+
+			// if OHreplay send a tab keypress to goto next screen
+			KEYBDINPUT  kb={0};  
+			INPUT    Input={0};
+			kb.wVk  = VK_TAB; 
+			Input.type  = INPUT_KEYBOARD;
+			Input.ki  = kb;
+			::SendInput(1,&Input,sizeof(Input));
+			// generate up 
+			::ZeroMemory(&kb,sizeof(KEYBDINPUT));
+			::ZeroMemory(&Input,sizeof(INPUT));
+			kb.dwFlags  =  KEYEVENTF_KEYUP;
+			kb.wVk  = VK_TAB; 
+			Input.type  =  INPUT_KEYBOARD;
+			Input.ki  =  kb;
+			::SendInput(1,&Input,sizeof(Input));
+		}
+
+		Sleep(100); // little time to allow for redraw
 		SaveBmpPbits();
 
 		// Update saved rect
@@ -444,6 +476,12 @@ void CMainFrame::OnViewRefresh()
 		// Force re-draw
 		Invalidate(true);
 		theApp.m_TableMapDlg->Invalidate(true);
+		
+		// bring open scrape back to front
+		::SetFocus(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
+		::SetForegroundWindow(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
+		::SetActiveWindow(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
+
 	}
 
 	else 

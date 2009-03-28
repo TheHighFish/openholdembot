@@ -64,7 +64,11 @@ NEW STUFF:
   the corner numpad keys (1,3,7,9) [OpenHoldem]
 - Added option to group regions in display tree by type or name (View/Group Regions, View/Ungroup Regions) [OpenHoldem]
 - Added display of rectangle size in rectangle box (Thanks BillW for the patch) [OpenHoldem]
-
+- Applied Oscar's patch:
+  - When you select refresh it will bring the targeted window to the front, scrape it, then place it to the back again.
+  - Also if you are connected to OHReplay it moves to the next screen before scraping
+  - Keyboard shortcuts: F3 - Connect, F4 - Show Region Boxes, F5 - Refresh Scrape, F1 - Help/About, Control + U - Update Hashes
+  [OpenHoldem]
 
 v1.1.8 2008-10-21
 =================

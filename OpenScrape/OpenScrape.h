@@ -15,6 +15,8 @@
 
 extern	char	_startup_path[MAX_PATH];
 
+
+//!  The Main class of openscrape that creates the other dialogues 
 class COpenScrapeApp : public CWinApp
 {
 public:

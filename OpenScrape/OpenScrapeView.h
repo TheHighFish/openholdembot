@@ -1,9 +1,13 @@
 // OpenScrapeView.h : interface of the COpenScrapeView class
 //
 #pragma once
-
+//!  Displays Image of csino table, overlayed with regions.
+/*!
+  also allows movement of regions and calling of file->menu functions.
+*/
 class COpenScrapeView : public CView
 {
+
 protected: // create from serialization only
 	COpenScrapeView();
 	DECLARE_DYNCREATE(COpenScrapeView)

@@ -107,6 +107,7 @@ char * const r$strings[359] = { "c0cardface0", "c0cardface1", "c0cardface2", "c0
 
 
 
+//!  Container class for Tablemap data to aid with loading/saving
 class COpenScrapeDoc : public CDocument
 {
 protected: // create from serialization only
