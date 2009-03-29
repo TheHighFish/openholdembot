@@ -214,18 +214,6 @@ BEGIN_TESTCASE
 END_TESTCASE
 
 
-
-BEGIN_TESTCASE
-    TESTCASE_ID ("0420")
-    HEURISTIC_RULE (false)
-    REASONING ("If it's not the turn or river (and I hold cards), then there can't be a single-card that beats us.")
-    PRECONDITION ((gws("betround") < 3) && (gws("ncardsknown") > 0))
-    POSTCONDITION (gws("ncardsbetter") == 1)
-    SYMBOLS_POSSIBLY_AFFECTED ("betround, ncardsbetter")
-END_TESTCASE
-
-
-
 BEGIN_TESTCASE
     TESTCASE_ID ("0421")
     HEURISTIC_RULE (false)
