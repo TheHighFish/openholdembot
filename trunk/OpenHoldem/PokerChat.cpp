@@ -75,9 +75,9 @@ time_t _first_possible_next_chat_time;
 //	as we store a pointer to the message, until the autoplayer
 //	acts again!
 //
-void SendChatMessage(char* message)
+void SendChatMessage(char* new_message)
 {
-	if (message != NULL || message == "")
+	if (_the_chat_message != NULL || new_message == "")
 	{
 		//  Old message has not been sent yet.
 		//  Ignore newer one (especially, if
@@ -85,7 +85,7 @@ void SendChatMessage(char* message)
 		return;
 	};
 	//  Store it, until it is processed
-	_the_chat_message = message;
+	_the_chat_message = new_message;
 }
 
 //  Chat enabled in preferences
