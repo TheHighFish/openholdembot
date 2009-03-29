@@ -71,7 +71,7 @@ void CAutoplayer::DoChat(void)
 		(theApp._dll_keyboard_sendstring) (pMyMainWnd->attached_hwnd(), r, s, false, hwnd_focus, cur_pos);
 		_mutex.Unlock();
 	}
-
+	// Clear old chat_message to allow new ones.
 	_the_chat_message = NULL;
 	ComputeFirstPossibleNextChatTime();
 }
