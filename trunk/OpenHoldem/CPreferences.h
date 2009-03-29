@@ -129,7 +129,8 @@ public:
 
 	// Misc
 	const int scraper_zoom() { return _scraper_zoom; }
-	const CString versus_path() { return _versus_path; }	
+	// versus_path() is implemented in the cpp-file.
+	const CString versus_path(); 	
 
 	// Obscure
 	const CString &window_class_name()		{ return _window_class_name; }
@@ -402,7 +403,6 @@ private:
 
 	// Misc
 	int				_scraper_zoom;
-	CString			_versus_path;
 
 	// Obscure
 	CString			_window_class_name;
