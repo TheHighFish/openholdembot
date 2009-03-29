@@ -170,9 +170,6 @@ void CPreferences::InitDefaults(void)
 	_validator_use_heuristic_rules = true;
 	_validator_stop_on_error = true;
 
-	// Misc
-	_versus_path = "";
-
 	_window_class_name = "OpenHoldem";
 	_mutex_name= "OHAntiColl";
 	_simple_window_title = false;
@@ -330,9 +327,6 @@ void CPreferences::ReadPreferences()
 		ReadReg("validator_use_heuristic_rules", &_validator_use_heuristic_rules);
 		ReadReg("validator_stop_on_error", &_validator_stop_on_error);
 
-		// versus path
-		ReadReg("versus", &_versus_path);
-
 		// obscure
 		ReadReg("window_class_name", &_window_class_name);
 		ReadReg("mutex_name", &_mutex_name);
@@ -398,4 +392,15 @@ void CPreferences::WriteReg(const LPCTSTR registry_key, const double registry_va
 	CString str;
 	str.Format("%f", registry_value);
 	AfxGetApp()->WriteProfileString(_preferences_heading, registry_key, str);
+}
+
+const CString CPreferences::versus_path()
+{
+	// Take the OpenHoldem-installation-directory as versus_path.
+	TCHAR Buffer[MAX_PATH];
+	GetModuleFileName(NULL, Buffer, MAX_PATH);
+	CString ExecutableFileName = Buffer;
+	unsigned int PositionOfLastDelimiter = ExecutableFileName.ReverseFind('\\');
+	// Truncate path. Keep last "\" to get versus_path.
+	return(ExecutableFileName.Left(PositionOfLastDelimiter + 1));
 }
