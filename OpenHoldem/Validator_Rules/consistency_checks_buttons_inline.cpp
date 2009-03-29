@@ -40,7 +40,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("If it's my turn and there's a bet to call, then there has to be a call button.")
     PRECONDITION (gws("ismyturn") && (gws("nbetstocall") > 0))
-    POSTCONDITION (((int)gws("myturnbits") & BUTTON_CHECK) != 0)
+    POSTCONDITION (((int)gws("myturnbits") & BUTTON_CALL) != 0)
     SYMBOLS_POSSIBLY_AFFECTED ("ismyturn, myturnbits, nbetstocall")
 END_TESTCASE
 
