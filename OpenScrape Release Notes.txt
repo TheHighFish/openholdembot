@@ -70,6 +70,7 @@ NEW STUFF:
   - Keyboard shortcuts: F3 - Connect, F4 - Show Region Boxes, F5 - Refresh Scrape, F1 - Help/About, Control + U - Update Hashes
   [OpenHoldem]
 - Applied Bender's patch, replaces "Create hash" dialog with four create hash buttons.  [OpenHoldem]
+- Applied Bender's patch, enables Insert and Delete keys for adding/deleting records to the .tm file.  [OpenHoldem]
 
 
 v1.1.8 2008-10-21

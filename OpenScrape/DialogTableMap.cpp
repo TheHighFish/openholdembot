@@ -188,6 +188,7 @@ BEGIN_MESSAGE_MAP(CDlgTableMap, CDialog)
 	ON_NOTIFY_EX(TTN_NEEDTEXT, 0, OnToolTipText)
 	ON_WM_CREATE()
 	ON_WM_SIZING()
+	ON_NOTIFY(TVN_KEYDOWN, IDC_TABLEMAP_TREE, &CDlgTableMap::OnTvnKeydownTablemapTree)
 	ON_BN_CLICKED(IDC_CREATE_HASH0, &CDlgTableMap::OnBnClickedCreateHash0)
 	ON_BN_CLICKED(IDC_CREATE_HASH1, &CDlgTableMap::OnBnClickedCreateHash1)
 	ON_BN_CLICKED(IDC_CREATE_HASH2, &CDlgTableMap::OnBnClickedCreateHash2)
@@ -899,7 +900,6 @@ void CDlgTableMap::update_display(void)
 		else if (selected_parent_text == "Hashes")
 		{
 			disable_and_clear_all();
-			m_New.EnableWindow(true);
 			m_Delete.EnableWindow(true);
 
 			// Display selected hash value record
@@ -1709,6 +1709,9 @@ void CDlgTableMap::OnBnClickedDelete()
 	HTREEITEM			parent = NULL;
 	CString				selected_parent_text = "";
 	CString				sel = "";
+	CString				region_text = "";
+	CString				caption_text = "";
+	bool				item_deleted = false;
 
 	// Get name of currently selected item and its parent item
 	if (m_TableMapTree.GetSelectedItem())
@@ -1721,137 +1724,76 @@ void CDlgTableMap::OnBnClickedDelete()
 	if (parent != NULL) 
 		selected_parent_text = m_TableMapTree.GetItemText(parent);
 
+	CString		valid_regions("Sizes|Symbols|Regions|Fonts|Hash Points|Hashes|Images");
+	if (valid_regions.Find(selected_parent_text.GetString()) == -1)
+		return;
+
+	region_text = selected_parent_text.Left(selected_parent_text.GetLength() - 1);
+	caption_text.Format("Delete %s record?",region_text);
+	text.Format("Really delete %s record: %s", region_text, sel);
+
+	if (MessageBox(text.GetString(), caption_text.GetString(), MB_YESNO) == IDNO)
+		return;
+
 	if (selected_parent_text == "Sizes")
 	{
-		text.Format("Really delete Size record: %s", sel);
-		if (MessageBox(text.GetString(), "Delete Size record?", MB_YESNO) == IDYES)
-		{
-			// Delete record from internal structure and update tree
-			if (!p_tablemap->z$_erase(sel))
-			{
-				MessageBox("Error deleting size record.", "ERROR", MB_OK | MB_TOPMOST);
-			}
-			else 
-			{
-				HTREEITEM node = update_tree("Sizes");
-				if (node!=NULL)  m_TableMapTree.SelectItem(node);
-
-				Invalidate(false);
-				pDoc->SetModifiedFlag(true);
-			}
-		}
+		
+		// Delete record from internal structure and update tree
+		if (p_tablemap->z$_erase(sel))
+			item_deleted = true;
 	}
 	
 	else if (selected_parent_text == "Symbols")
 	{
-		text.Format("Really delete Symbol record: %s", sel);
-		if (MessageBox(text.GetString(), "Delete Symbol record?", MB_YESNO) == IDYES)
-		{
-			// Delete record from internal structure and update tree
-			if (!p_tablemap->s$_erase(sel))
-			{
-				MessageBox("Error deleting symbol record.", "ERROR", MB_OK | MB_TOPMOST);
-			}
-			else 
-			{
-				HTREEITEM node = update_tree("Symbols");
-				if (node!=NULL)  m_TableMapTree.SelectItem(node);
-
-				Invalidate(false);
-				pDoc->SetModifiedFlag(true);
-			}
-		}
+		// Delete record from internal structure and update tree
+		if (p_tablemap->s$_erase(sel))
+			item_deleted = true;
 	}
 	
 	else if (selected_parent_text == "Regions")
 	{
-		text.Format("Really delete Region record: %s", sel);
-		if (MessageBox(text.GetString(), "Delete Region record?", MB_YESNO) == IDYES)
-		{
-			// Delete record from internal structure and update tree
-			if (!p_tablemap->r$_erase(sel))
-			{
-				MessageBox("Error deleting region record.", "ERROR", MB_OK | MB_TOPMOST);
-			}
-			else 
-			{
-				HTREEITEM node = update_tree("Regions");
-				if (node!=NULL)  m_TableMapTree.SelectItem(node);
-
-				Invalidate(false);
-				pDoc->SetModifiedFlag(true);
-			}
-		}
+		// Delete record from internal structure and update tree
+		if (p_tablemap->r$_erase(sel))
+			item_deleted = true;
 	}
 	
 	else if (selected_parent_text == "Fonts")
 	{
-		text.Format("Really delete Font record: %s", sel);
-		if (MessageBox(text.GetString(), "Delete Font record?", MB_YESNO) == IDYES)
-		{
+		// Delete record from internal structure and update tree
+		int font_type = strtoul(sel.Mid(sel.Find("(")+1, 1).GetString(), NULL, 10);
+		if (font_type<0 || font_type>3)
+			return;
 
-			// Delete record from internal structure and update tree
-			int font_type = strtoul(sel.Mid(sel.Find("(")+1, 1).GetString(), NULL, 10);
-			if (font_type<0 || font_type>3)
-				return;
+		CString hexmash = sel.Mid(sel.Find("[")+1, sel.Find("]") - sel.Find("[") - 1);
 
-			CString hexmash = sel.Mid(sel.Find("[")+1, sel.Find("]") - sel.Find("[") - 1);
-	
-			if (p_tablemap->t$_erase(font_type, hexmash))
-			{
-				HTREEITEM node = update_tree("Fonts");
-				if (node!=NULL)  m_TableMapTree.SelectItem(node);
-
-				Invalidate(false);
-				pDoc->SetModifiedFlag(true);
-			}
-		}
+		if (p_tablemap->t$_erase(font_type, hexmash))
+			item_deleted = true;
 	}
 	
 	else if (selected_parent_text == "Hash Points")
 	{
-		text.Format("Really delete Hash Point record: %s", sel);
-		if (MessageBox(text.GetString(), "Delete Hash Point record?", MB_YESNO) == IDYES)
-		{
-			// Delete record from internal structure and update tree
-			int hashpoint_type = strtoul(sel.Mid(0, 1).GetString(), NULL, 10);
-			int x = strtoul(sel.Mid(3, sel.Find(",")-3).GetString(), NULL, 10);
-			int y = strtoul(sel.Mid(sel.Find(",")+2, sel.Find(")")-sel.Find(",")+2).GetString(), NULL, 10);
+		// Delete record from internal structure and update tree
+		int hashpoint_type = strtoul(sel.Mid(0, 1).GetString(), NULL, 10);
+		int x = strtoul(sel.Mid(3, sel.Find(",")-3).GetString(), NULL, 10);
+		int y = strtoul(sel.Mid(sel.Find(",")+2, sel.Find(")")-sel.Find(",")+2).GetString(), NULL, 10);
 
-			if (p_tablemap->p$_erase(hashpoint_type, ((x&0xffff)<<16) | (y&0xffff)))
-			{
-				HTREEITEM node = update_tree("Hash Points");
-				if (node!=NULL)  m_TableMapTree.SelectItem(node);
-
-				Invalidate(false);
-				pDoc->SetModifiedFlag(true);
-			}
-		}
+		if (p_tablemap->p$_erase(hashpoint_type, ((x&0xffff)<<16) | (y&0xffff)))
+			item_deleted = true;
 	}
 	
 	else if (selected_parent_text == "Hashes")
 	{
-		text.Format("Really delete Hash record: %s", sel);
-		if (MessageBox(text.GetString(), "Delete Hash record?", MB_YESNO) == IDYES)
+		// Delete record from internal structure and update tree
+		int hash_type = strtoul(sel.Mid(sel.Find("(")+1, 1).GetString(), NULL, 10);
+		for (HMapCI h_iter=p_tablemap->h$(hash_type)->begin(); h_iter!=p_tablemap->h$(hash_type)->end(); h_iter++)
 		{
-			// Delete record from internal structure and update tree
-			int hash_type = strtoul(sel.Mid(sel.Find("(")+1, 1).GetString(), NULL, 10);
-			for (HMapCI h_iter=p_tablemap->h$(hash_type)->begin(); h_iter!=p_tablemap->h$(hash_type)->end(); h_iter++)
+			int start=0;
+			if (h_iter->second.name == sel.Tokenize(" ", start))
 			{
-				int start=0;
-				if (h_iter->second.name == sel.Tokenize(" ", start))
-				{
 
-					if (p_tablemap->h$_erase(hash_type, h_iter->second.hash))
-					{
-						HTREEITEM node = update_tree("Hashes");
-						if (node!=NULL)  m_TableMapTree.SelectItem(node);
-
-						Invalidate(false);
-						pDoc->SetModifiedFlag(true);
-					}
-					break;
-				}
+				if (p_tablemap->h$_erase(hash_type, h_iter->second.hash))
+					item_deleted = true;
+				break;
 			}
 		}
 	}
@@ -1861,19 +1803,24 @@ void CDlgTableMap::OnBnClickedDelete()
 		// Get index into array for selected record
 		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
 
-		text.Format("Really delete Image record: %s", sel);
-		if (MessageBox(text.GetString(), "Delete Image record?", MB_YESNO) == IDYES)
-		{
-			// Delete record from internal structure and update tree
-			if (p_tablemap->i$_erase(index))
-			{
-				HTREEITEM node = update_tree("Images");
-				if (node!=NULL)  m_TableMapTree.SelectItem(node);
+		// Delete record from internal structure and update tree
+		if (p_tablemap->i$_erase(index))
+			item_deleted = true;
+	}
 
-				Invalidate(false);
-				pDoc->SetModifiedFlag(true);
-			}
-		}
+	if (!item_deleted)
+	{
+		text.Format("Error deleting %s record.", region_text);
+		MessageBox(text.GetString(), "ERROR", MB_OK | MB_TOPMOST);
+		return;
+	}
+	else 
+	{
+		HTREEITEM node = update_tree(selected_parent_text);
+		if (node!=NULL)  m_TableMapTree.SelectItem(node);
+
+		Invalidate(false);
+		pDoc->SetModifiedFlag(true);
 	}
 }
 
@@ -3874,4 +3821,21 @@ void CDlgTableMap::CreateHash(int hash_type)
 	}
 
 	update_display();
+}
+
+void CDlgTableMap::OnTvnKeydownTablemapTree(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMTVKEYDOWN pTVKeyDown = reinterpret_cast<LPNMTVKEYDOWN>(pNMHDR);
+	switch (pTVKeyDown->wVKey)
+	{
+	case VK_DELETE:
+		CDlgTableMap::OnBnClickedDelete();
+		break;
+	case VK_INSERT:
+		CDlgTableMap::OnBnClickedNew();
+		break;
+	default:
+		break;
+	}
+	*pResult = 0;
 }
