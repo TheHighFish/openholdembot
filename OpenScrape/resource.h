@@ -17,7 +17,6 @@
 #define IDC_PICKERCURSOR                141
 #define IDD_EDIT_HASHPOINTS             142
 #define IDC_DRAWRECTCURSOR              143
-#define IDD_EDIT_HASH                   144
 #define IDD_EDIT_GR_HASHPOINTS          145
 #define IDD_COPY_REGION                 146
 #define IDC_TABLEMAP_TREE               1000
@@ -41,14 +40,18 @@
 #define IDC_CREATE_HASH                 1018
 #define IDC_CREATE_IMAGE                1019
 #define IDC_LIST_SELECT_TABLE           1020
+#define IDC_CREATE_HASH0                1020
 #define IDC_CREATE_FONT                 1021
 #define IDC_EDITENTRY                   1022
+#define IDC_CREATE_HASH1                1022
 #define IDC_RADIUS_SPIN                 1023
 #define IDC_PIXELSEPARATION             1024
 #define IDC_FONTPLUS                    1025
 #define IDC_HEIGHT                      1026
+#define IDC_CREATE_HASH2                1026
 #define IDC_FONTMINUS                   1027
 #define IDC_NAME                        1028
+#define IDC_CREATE_HASH3                1028
 #define IDC_WIDTH                       1029
 #define IDC_TYPE                        1030
 #define IDC_VALUE                       1031
@@ -97,9 +100,9 @@
 #define IDC_MISSING_CARDS               1089
 #define IDC_REGIONLIST                  1090
 #define IDC_SOURCE                      1091
+#define IDC_MISSING_FONTS               1092
 #define IDC_EDIT1                       1093
 #define IDC_EDITXY                      1093
-#define IDC_MISSING_FONTS               1092
 #define ID_MAIN_TOOLBAR_GREENCIRCLE     32771
 #define ID_VIEW_CONNECTTOWINDOW         32772
 #define ID_MAIN_TOOLBAR_REDRECTANGLE    32773

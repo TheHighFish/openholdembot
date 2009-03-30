@@ -36,7 +36,6 @@ protected:
 	afx_msg void OnBnClickedEdit();
 	afx_msg void OnBnClickedCreateImage();
 	afx_msg void OnBnClickedCreateFont();
-	afx_msg void OnBnClickedCreateHash();
 	afx_msg void OnBnClickedFontplus();
 	afx_msg void OnBnClickedFontminus();
 	afx_msg void OnBnClickedNudgeTaller();
@@ -72,7 +71,7 @@ protected:
 	CSpinButtonCtrl		m_LeftSpin, m_TopSpin, m_BottomSpin, m_RightSpin, m_RadiusSpin;
 	CComboBox			m_Transform, m_Zoom, m_TrackerFontSet, m_TrackerFontNum, m_TrackerCardNum;
 	CEdit				m_Alpha, m_Red, m_Green, m_Blue, m_RedAvg, m_GreenAvg, m_BlueAvg, m_Radius, m_Result, m_PixelSeparation;
-	CButton				m_New, m_Delete, m_Edit, m_CreateHash, m_CreateImage, m_CreateFont, m_FontPlus, m_FontMinus;
+	CButton				m_New, m_Delete, m_Edit, m_CreateImage, m_CreateFont, m_FontPlus, m_FontMinus;
 	CButton				m_NudgeTaller, m_NudgeShorter, m_NudgeWider, m_NudgeNarrower, m_NudgeBigger, m_NudgeSmaller;
 	CButton				m_NudgeUpLeft, m_NudgeUp, m_NudgeUpRight, m_NudgeRight, m_NudgeDownRight, m_NudgeDown;
 	CButton				m_NudgeDownLeft, m_NudgeLeft;
@@ -108,6 +107,15 @@ public:
 	int					region_grouping;
 
 	DECLARE_MESSAGE_MAP()
+	afx_msg void OnBnClickedCreateHash0();
+	CButton m_CreateHash0;
+	afx_msg void OnBnClickedCreateHash1();
+	afx_msg void OnBnClickedCreateHash2();
+	afx_msg void OnBnClickedCreateHash3();
+	CButton m_CreateHash1;
+	CButton m_CreateHash2;
+	CButton m_CreateHash3;
+	void CreateHash(int hash_type);
 };
 
 
