@@ -15,17 +15,10 @@ protected:
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
 	virtual void OnCancel();
-	HTREEITEM GetRootParentNode(HTREEITEM item);
 	afx_msg void OnPaint();
-	void clear_bitmap_control(void);
-	void draw_region_bitmap(void);
-	void draw_image_bitmap(void);
 	afx_msg void OnRegionChange();
 	afx_msg void OnZoomChange();
 	afx_msg void OnTvnSelchangedTablemapTree(NMHDR *pNMHDR, LRESULT *pResult);
-	void disable_and_clear_all(void);
-	void update_r$_display(bool dont_update_spinners);
-	void update_t$_display();
 	afx_msg void OnDeltaposLeftSpin(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposTopSpin(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposBottomSpin(NMHDR *pNMHDR, LRESULT *pResult);
@@ -34,6 +27,10 @@ protected:
 	afx_msg void OnBnClickedNew();
 	afx_msg void OnBnClickedDelete();
 	afx_msg void OnBnClickedEdit();
+	afx_msg void OnBnClickedCreateHash0();
+	afx_msg void OnBnClickedCreateHash1();
+	afx_msg void OnBnClickedCreateHash2();
+	afx_msg void OnBnClickedCreateHash3();
 	afx_msg void OnBnClickedCreateImage();
 	afx_msg void OnBnClickedCreateFont();
 	afx_msg void OnBnClickedFontplus();
@@ -60,11 +57,20 @@ protected:
 	afx_msg BOOL OnToolTipText(UINT id, NMHDR* pTTTStruct, LRESULT* pResult);
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSizing(UINT nSide, LPRECT lpRect);
+	afx_msg void OnTvnKeydownTablemapTree(NMHDR *pNMHDR, LRESULT *pResult);
+	HTREEITEM GetRootParentNode(HTREEITEM item);
+	void clear_bitmap_control(void);
+	void draw_region_bitmap(void);
+	void draw_image_bitmap(void);
+	void disable_and_clear_all(void);
+	void update_r$_display(bool dont_update_spinners);
+	void update_t$_display();
 	COLORREF get_color_under_mouse(UINT *nFlags, CPoint *point);
 	CString GetGroupName(CString regionName);
 	HTREEITEM FindRegionGroupItem(HTREEITEM hRegionNode, CString groupName);
 	HTREEITEM MoveTreeItem(HTREEITEM hItem, HTREEITEM hNewParent, CString name, bool bSelect);
 	void RemoveSingleItemGroups(void);
+	void CreateHash(int hash_type);
 
 	CStatic				m_BitmapFrame;
 	CStickyButton		m_Picker;
@@ -72,6 +78,7 @@ protected:
 	CComboBox			m_Transform, m_Zoom, m_TrackerFontSet, m_TrackerFontNum, m_TrackerCardNum;
 	CEdit				m_Alpha, m_Red, m_Green, m_Blue, m_RedAvg, m_GreenAvg, m_BlueAvg, m_Radius, m_Result, m_PixelSeparation;
 	CButton				m_New, m_Delete, m_Edit, m_CreateImage, m_CreateFont, m_FontPlus, m_FontMinus;
+	CButton				m_CreateHash0, m_CreateHash1, m_CreateHash2, m_CreateHash3;
 	CButton				m_NudgeTaller, m_NudgeShorter, m_NudgeWider, m_NudgeNarrower, m_NudgeBigger, m_NudgeSmaller;
 	CButton				m_NudgeUpLeft, m_NudgeUp, m_NudgeUpRight, m_NudgeRight, m_NudgeDownRight, m_NudgeDown;
 	CButton				m_NudgeDownLeft, m_NudgeLeft;
@@ -107,15 +114,6 @@ public:
 	int					region_grouping;
 
 	DECLARE_MESSAGE_MAP()
-	afx_msg void OnBnClickedCreateHash0();
-	CButton m_CreateHash0;
-	afx_msg void OnBnClickedCreateHash1();
-	afx_msg void OnBnClickedCreateHash2();
-	afx_msg void OnBnClickedCreateHash3();
-	CButton m_CreateHash1;
-	CButton m_CreateHash2;
-	CButton m_CreateHash3;
-	void CreateHash(int hash_type);
 };
 
 
