@@ -69,6 +69,8 @@ NEW STUFF:
   - Also if you are connected to OHReplay it moves to the next screen before scraping
   - Keyboard shortcuts: F3 - Connect, F4 - Show Region Boxes, F5 - Refresh Scrape, F1 - Help/About, Control + U - Update Hashes
   [OpenHoldem]
+- Applied Bender's patch, replaces "Create hash" dialog with four create hash buttons.  [OpenHoldem]
+
 
 v1.1.8 2008-10-21
 =================

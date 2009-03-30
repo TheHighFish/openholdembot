@@ -17,7 +17,6 @@
 #include "DialogEditFont.h"
 #include "DialogEditHashPoint.h"
 #include "DialogEditGrHashPoints.h"
-#include "DialogEditHash.h"
 
 #include "..\CTablemap\CTablemap.h"
 
@@ -104,7 +103,6 @@ void CDlgTableMap::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT, m_Edit);
 	DDX_Control(pDX, IDC_CREATE_IMAGE, m_CreateImage);
 	DDX_Control(pDX, IDC_CREATE_FONT, m_CreateFont);
-	DDX_Control(pDX, IDC_CREATE_HASH, m_CreateHash);
 	DDX_Control(pDX, IDC_PIXELSEPARATION, m_PixelSeparation);
 	DDX_Control(pDX, IDC_FONTPLUS, m_FontPlus);
 	DDX_Control(pDX, IDC_FONTMINUS, m_FontMinus);
@@ -130,6 +128,10 @@ void CDlgTableMap::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TRACKER_CARD_NUM, m_TrackerCardNum);
 	DDX_Control(pDX, IDC_MISSING_CARDS, m_status_cards);
 	DDX_Control(pDX, IDC_MISSING_FONTS, m_status_fonts);
+	DDX_Control(pDX, IDC_CREATE_HASH0, m_CreateHash0);
+	DDX_Control(pDX, IDC_CREATE_HASH1, m_CreateHash1);
+	DDX_Control(pDX, IDC_CREATE_HASH2, m_CreateHash2);
+	DDX_Control(pDX, IDC_CREATE_HASH3, m_CreateHash3);
 }
 
 
@@ -160,7 +162,6 @@ BEGIN_MESSAGE_MAP(CDlgTableMap, CDialog)
 	ON_BN_CLICKED(IDC_EDIT, &CDlgTableMap::OnBnClickedEdit)
 	ON_BN_CLICKED(IDC_CREATE_IMAGE, &CDlgTableMap::OnBnClickedCreateImage)
 	ON_BN_CLICKED(IDC_CREATE_FONT, &CDlgTableMap::OnBnClickedCreateFont)
-	ON_BN_CLICKED(IDC_CREATE_HASH, &CDlgTableMap::OnBnClickedCreateHash)
 	ON_BN_CLICKED(IDC_FONTPLUS, &CDlgTableMap::OnBnClickedFontplus)
 	ON_BN_CLICKED(IDC_FONTMINUS, &CDlgTableMap::OnBnClickedFontminus)
 	ON_BN_CLICKED(IDC_NUDGE_TALLER, &CDlgTableMap::OnBnClickedNudgeTaller)
@@ -187,6 +188,10 @@ BEGIN_MESSAGE_MAP(CDlgTableMap, CDialog)
 	ON_NOTIFY_EX(TTN_NEEDTEXT, 0, OnToolTipText)
 	ON_WM_CREATE()
 	ON_WM_SIZING()
+	ON_BN_CLICKED(IDC_CREATE_HASH0, &CDlgTableMap::OnBnClickedCreateHash0)
+	ON_BN_CLICKED(IDC_CREATE_HASH1, &CDlgTableMap::OnBnClickedCreateHash1)
+	ON_BN_CLICKED(IDC_CREATE_HASH2, &CDlgTableMap::OnBnClickedCreateHash2)
+	ON_BN_CLICKED(IDC_CREATE_HASH3, &CDlgTableMap::OnBnClickedCreateHash3)
 END_MESSAGE_MAP()
 
 
@@ -846,7 +851,6 @@ void CDlgTableMap::update_display(void)
 			m_Radius.EnableWindow(true);
 			m_CreateImage.EnableWindow(true);
 			m_CreateFont.EnableWindow(true);
-			m_CreateHash.EnableWindow(false);
 			m_Result.EnableWindow(true);
 			m_PixelSeparation.EnableWindow(true);
 			m_FontPlus.EnableWindow(true);
@@ -917,8 +921,45 @@ void CDlgTableMap::update_display(void)
 		{
 			disable_and_clear_all();
 			m_Delete.EnableWindow(true);
-			m_CreateHash.EnableWindow(true);
 			m_Zoom.EnableWindow(true);
+			m_CreateHash0.EnableWindow(true);
+			m_CreateHash1.EnableWindow(true);
+			m_CreateHash2.EnableWindow(true);
+			m_CreateHash3.EnableWindow(true);
+
+			// Get image name
+			int start=0;
+			sel = sel.Tokenize(" ", start);
+
+			// See which hash types are already present for this image
+			// and disable the relevant create hash button
+			int j;
+			for (j=0; j<=3; j++)
+			{
+				bool found = false;
+				for (HMapCI h_iter=p_tablemap->h$(j)->begin(); h_iter!=p_tablemap->h$(j)->end() && !found; h_iter++)
+				{
+					if (h_iter->second.name == sel)
+					{
+						switch (j)
+						{
+						case 0 :
+							m_CreateHash0.EnableWindow(false);
+							break;
+						case 1: 
+							m_CreateHash1.EnableWindow(false);
+							break;
+						case 2 :
+							m_CreateHash2.EnableWindow(false);
+							break;
+						case 3 :
+							m_CreateHash3.EnableWindow(false);
+							break;
+						}
+					}
+				}
+			}
+
 		}
 	}
 
@@ -964,7 +1005,10 @@ void CDlgTableMap::disable_and_clear_all(void)
 
 	m_CreateImage.EnableWindow(false);
 	m_CreateFont.EnableWindow(false);
-	m_CreateHash.EnableWindow(false);
+	m_CreateHash0.EnableWindow(false);
+	m_CreateHash1.EnableWindow(false);
+	m_CreateHash2.EnableWindow(false);
+	m_CreateHash3.EnableWindow(false);
 
 	m_PixelSeparation.EnableWindow(false);
 	m_PixelSeparation.SetWindowText("");
@@ -2585,122 +2629,6 @@ void CDlgTableMap::OnBnClickedCreateFont()
 	}
 }
 
-void CDlgTableMap::OnBnClickedCreateHash()
-{
-	CDlgEditHash			dlghash;
-	STablemapHashValue		new_hash;
-	bool					t[4] = { false };
-	COpenScrapeDoc			*pDoc = COpenScrapeDoc::GetDocument();
-	HTREEITEM				new_hti, node, child_node;
-	CString					text, node_text;
-	int						j;
-
-	HTREEITEM				parent;
-	CString					selected_parent_text = "";
-	CString					sel = "";
-
-	// Get name of currently selected item and its parent item
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
-		parent = GetRootParentNode(m_TableMapTree.GetSelectedItem());
-	}
-
-	// Get name of currently selected item's parent
-	if (parent != NULL) 
-		selected_parent_text = m_TableMapTree.GetItemText(parent);
-
-
-	// Get image name
-	int start=0;
-	sel = sel.Tokenize(" ", start);
-
-	// See which hash types are already present for this image
-	for (j=0; j<=3; j++)
-	{
-		bool found = false;
-		for (HMapCI h_iter=p_tablemap->h$(j)->begin(); h_iter!=p_tablemap->h$(j)->end() && !found; h_iter++)
-		{
-			if (h_iter->second.name == sel)
-			{
-				t[j] = true;
-				found = true;
-			}
-		}
-	}
-
-	// Prepare dialog
-	dlghash.titletext = "Name of new font character";
-	dlghash.strings.RemoveAll();
-	if (!t[0])  dlghash.strings.Add("Hash 0");
-	if (!t[1])  dlghash.strings.Add("Hash 1");
-	if (!t[2])  dlghash.strings.Add("Hash 2");
-	if (!t[3])  dlghash.strings.Add("Hash 3");
-
-	// Show dialog if there are any strings left to add
-	if (dlghash.strings.GetSize() == 0)
-	{
-		MessageBox("All Hash types are already present for this image.");
-	}
-	else
-	{
-		if (dlghash.DoModal() == IDOK)
-		{
-			// Which has type was selected?
-			int hash_type = strtoul(dlghash.type.Mid(5,1).GetString(), NULL, 10);
-
-			// Calculate hash for selected image
-			int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
-			IMapCI i_iter = p_tablemap->i$()->find(index);
-			new_hash.hash = p_tablemap->CalculateHashValue(i_iter, hash_type);
-
-			// Add new record to internal structure
-			new_hash.name = sel;
-			if (!p_tablemap->h$_insert(hash_type, new_hash))
-			{
-				MessageBox("Error adding hash record: " + new_hash.name, "Hash record add error", MB_OK);
-			}
-			else
-			{
-				// Find root of the Hashes node
-				node = m_TableMapTree.GetChildItem(NULL);
-				node_text = m_TableMapTree.GetItemText(node);
-
-				while (node_text!="Hashes" && node!=NULL)
-				{
-					node = m_TableMapTree.GetNextItem(node, TVGN_NEXT);
-					node_text = m_TableMapTree.GetItemText(node);
-				}
-
-				// Insert the new record into the tree
-				if (node!=NULL)
-				{
-					// Add new record to tree
-					text.Format("%s (%d)", new_hash.name, hash_type);
-					new_hti = m_TableMapTree.InsertItem(text.GetString(), node);
-					m_TableMapTree.SortChildren(node);
-				}
-
-				node = update_tree("Images");
-
-				// Re-select previously selected image
-				child_node = m_TableMapTree.GetChildItem(node);
-				node_text = m_TableMapTree.GetItemText(child_node);
-				while (node_text!=sel && child_node!=NULL)
-				{
-					child_node = m_TableMapTree.GetNextItem(child_node, TVGN_NEXT);
-					node_text = m_TableMapTree.GetItemText(child_node);
-				}
-
-				if (child_node)
-					m_TableMapTree.SelectItem(child_node);
-
-				//Invalidate(false);
-				pDoc->SetModifiedFlag(true);
-			}
-		}
-	}
-}
 
 void CDlgTableMap::OnBnClickedFontplus()
 {
@@ -3847,4 +3775,103 @@ HTREEITEM CDlgTableMap::FindItem(CString s, HTREEITEM start)
 	}
 
 	return NULL;
+}
+
+void CDlgTableMap::OnBnClickedCreateHash0()
+{
+	CreateHash(0);
+}
+
+void CDlgTableMap::OnBnClickedCreateHash1()
+{
+	CreateHash(1);
+}
+
+void CDlgTableMap::OnBnClickedCreateHash2()
+{
+	CreateHash(2);
+}
+
+void CDlgTableMap::OnBnClickedCreateHash3()
+{
+	CreateHash(3);
+}
+
+void CDlgTableMap::CreateHash(int hash_type)
+{
+	STablemapHashValue		new_hash;
+	COpenScrapeDoc			*pDoc = COpenScrapeDoc::GetDocument();
+	HTREEITEM				new_hti, node, child_node;
+	CString					text, node_text;
+
+	HTREEITEM				parent;
+	CString					selected_parent_text = "";
+	CString					sel = "";
+
+	// Get name of currently selected item and its parent item
+	if (m_TableMapTree.GetSelectedItem())
+	{
+		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+		parent = GetRootParentNode(m_TableMapTree.GetSelectedItem());
+	}
+
+	// Get name of currently selected item's parent
+	if (parent != NULL) 
+		selected_parent_text = m_TableMapTree.GetItemText(parent);
+
+	// Get image name
+	int start=0;
+	sel = sel.Tokenize(" ", start);
+
+	// Calculate hash for selected image
+	int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
+	IMapCI i_iter = p_tablemap->i$()->find(index);
+	new_hash.hash = p_tablemap->CalculateHashValue(i_iter, hash_type);
+
+	// Add new record to internal structure
+	new_hash.name = sel;
+	if (!p_tablemap->h$_insert(hash_type, new_hash))
+	{
+		MessageBox("Error adding hash record: " + new_hash.name, "Hash record add error", MB_OK);
+	}
+	else
+	{
+		// Find root of the Hashes node
+		node = m_TableMapTree.GetChildItem(NULL);
+		node_text = m_TableMapTree.GetItemText(node);
+
+		while (node_text!="Hashes" && node!=NULL)
+		{
+			node = m_TableMapTree.GetNextItem(node, TVGN_NEXT);
+			node_text = m_TableMapTree.GetItemText(node);
+		}
+
+		// Insert the new record into the tree
+		if (node!=NULL)
+		{
+			// Add new record to tree
+			text.Format("%s (%d)", new_hash.name, hash_type);
+			new_hti = m_TableMapTree.InsertItem(text.GetString(), node);
+			m_TableMapTree.SortChildren(node);
+		}
+
+		node = update_tree("Images");
+
+		// Re-select previously selected image
+		child_node = m_TableMapTree.GetChildItem(node);
+		node_text = m_TableMapTree.GetItemText(child_node);
+		while (node_text!=sel && child_node!=NULL)
+		{
+			child_node = m_TableMapTree.GetNextItem(child_node, TVGN_NEXT);
+			node_text = m_TableMapTree.GetItemText(child_node);
+		}
+
+		if (child_node)
+			m_TableMapTree.SelectItem(child_node);
+
+		//Invalidate(false);
+		pDoc->SetModifiedFlag(true);
+	}
+
+	update_display();
 }
