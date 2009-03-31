@@ -378,9 +378,15 @@ bool CPerl::LoadDLL(void)
 	if (Perl_Lib == NULL)
 	{
 		if (!prefs.disable_msgbox())
-			MessageBox(NULL, "PerlEz.DLL not found. \nPlease check your installation and your systems PATH variable", 
-					   "Perl Error", MB_OK | MB_TOPMOST);
-
+		{
+			DWORD ErrorCode = GetLastError();
+			CString ErrorMessage;
+			ErrorMessage.Format("%s%d%s",
+				"PerlEz.DLL not found. \nPlease check your installation and your systems PATH variable\n\nErrorCode: [",
+				ErrorCode, "]");
+			MessageBox(NULL, ErrorMessage, "Perl Error", MB_OK | MB_TOPMOST);
+			
+		}
 		return false;
 	}
 
