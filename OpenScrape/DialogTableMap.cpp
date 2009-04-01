@@ -380,7 +380,7 @@ void CDlgTableMap::OnCancel()
 	//CDialog::OnCancel();
 }
 
-HTREEITEM CDlgTableMap::GetRootParentNode(HTREEITEM item)
+HTREEITEM CDlgTableMap::GetRecordTypeNode(HTREEITEM item)
 {
 	if (m_TableMapTree.GetParentItem(item) == NULL)
 	{
@@ -396,29 +396,43 @@ HTREEITEM CDlgTableMap::GetRootParentNode(HTREEITEM item)
 
 		return parent;
 	}
-
 }
+
+// Gets the text of the selected item and the selected item's record type
+// Parameters:
+//   sel_text: set to the text of the selected item
+//   type_text: set to the text of the selected item's record type
+// Returns: the node of the selected item's record type (String, Symbol, Image, etc), 
+//          or NULL if the record type node is already selected
+HTREEITEM CDlgTableMap::GetTextSelItemAndRecordType(CString *sel_text, CString *type_text)
+{
+	sel_text->Empty();
+	type_text->Empty();
+
+	if (!m_TableMapTree.GetSelectedItem())
+		return NULL;
+
+	*(sel_text) = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	HTREEITEM record_type_node = GetRecordTypeNode(m_TableMapTree.GetSelectedItem());
+
+	if (record_type_node == NULL)
+		*(type_text) = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	else
+		*(type_text) = m_TableMapTree.GetItemText(record_type_node);
+
+	return record_type_node;
+}
+
 
 void CDlgTableMap::OnPaint()
 {
 	CPaintDC			dc(this);
-	HTREEITEM			parent = NULL;
-	CString				selected_parent_text = "";
-	CString				sel = "";
 
-	// Get name of currently selected item and its parent item
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
-		parent = GetRootParentNode(m_TableMapTree.GetSelectedItem());
-	}
-
-	// Get name of selected item's parent
-	if (parent != NULL) 
-		selected_parent_text = m_TableMapTree.GetItemText(parent);
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// A root item was selected, or nothing has been selected yet
-	if (parent==NULL || m_TableMapTree.GetSelectedItem()==NULL) 
+	if (type_node==NULL || m_TableMapTree.GetSelectedItem()==NULL) 
 	{
 		clear_bitmap_control();
 		m_BitmapFrame.SetWindowPos(NULL, 0, 0, BITMAP_WIDTH, BITMAP_HEIGHT, SWP_NOMOVE | SWP_NOZORDER | SWP_NOCOPYBITS);
@@ -429,12 +443,12 @@ void CDlgTableMap::OnPaint()
 	{
 
 		// Display currently selected region bitmap from saved bitmap
-		if (selected_parent_text == "Regions")
+		if (type_text == "Regions")
 		{
 			draw_region_bitmap();
 		}
 
-		else if (selected_parent_text == "Images")
+		else if (type_text == "Images")
 		{
 			draw_image_bitmap();
 		}
@@ -658,14 +672,12 @@ void CDlgTableMap::OnRegionChange()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	CString				text, alpha, red, green, blue;
 	RMapI				sel_region = p_tablemap->set_r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
 
 	// Exit if we can't find the region record
 	if (sel_region == p_tablemap->r$()->end())
@@ -739,58 +751,50 @@ void CDlgTableMap::OnTvnSelchangedTablemapTree(NMHDR *pNMHDR, LRESULT *pResult)
 void CDlgTableMap::update_display(void)
 {
 	CString				text, hashname, type, charstr, sel_ch, sel_type, sel_temp;
-	HTREEITEM			parent = NULL;
-	CString				num, x, y, selected_parent_text;
+	CString				num, x, y;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	STablemapSymbol		sel_symbol;
-	STablemapHashValue	sel_hash_value;
-	CString				sel = "";
 
-	// Get name of currently selected item and its parent item
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
-		parent = GetRootParentNode(m_TableMapTree.GetSelectedItem());
-	}
+	CString	sel_text, type_text;
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Don't trigger OnChange messages
 	ignore_changes = true;
 
 	// A root item was selected
-	if (parent == NULL) 
+	if (type_node == NULL || m_TableMapTree.ItemHasChildren(m_TableMapTree.GetSelectedItem())) 
 	{
 		disable_and_clear_all();
 
-		if (sel == "Sizes")
+		if (type_text == "Sizes")
 		{
 			m_New.EnableWindow(true);
 		}
 
-		else if (sel == "Symbols")
+		else if (type_text == "Symbols")
 		{
 			m_New.EnableWindow(true);
 		}
 
-		else if (sel == "Regions")
+		else if (type_text == "Regions")
 		{
 			m_New.EnableWindow(true);
 		}
 
-		else if (sel == "Fonts")
+		else if (type_text == "Fonts")
 		{
 		}
 
-		else if (sel == "Hash Points")
+		else if (type_text == "Hash Points")
 		{
 			m_New.EnableWindow(true);
 			m_Edit.EnableWindow(true);
 		}
 
-		else if (sel == "Hashes")
+		else if (type_text == "Hashes")
 		{
 		}
 
-		else if (sel == "Images")
+		else if (type_text == "Images")
 		{
 		}
 	}
@@ -798,10 +802,7 @@ void CDlgTableMap::update_display(void)
 	// A leaf item was selected
 	else 
 	{
-
-		selected_parent_text = m_TableMapTree.GetItemText(parent);
-
-		if (selected_parent_text == "Sizes")
+		if (type_text == "Sizes")
 		{
 			disable_and_clear_all();
 			m_New.EnableWindow(true);
@@ -811,7 +812,7 @@ void CDlgTableMap::update_display(void)
 			// Display selected size record
 			if (m_TableMapTree.GetSelectedItem())
 			{
-				ZMap::const_iterator z_iter = p_tablemap->z$()->find(sel.GetString());
+				ZMap::const_iterator z_iter = p_tablemap->z$()->find(sel_text.GetString());
 				if (z_iter != p_tablemap->z$()->end())
 				{
 					text.Format("%d x %d", z_iter->second.width, z_iter->second.height);
@@ -820,7 +821,7 @@ void CDlgTableMap::update_display(void)
 			}
 		}
 
-		else if (selected_parent_text == "Symbols")
+		else if (type_text == "Symbols")
 		{
 			disable_and_clear_all();
 			m_New.EnableWindow(true);
@@ -830,13 +831,13 @@ void CDlgTableMap::update_display(void)
 			// Display selected symbol record
 			if (m_TableMapTree.GetSelectedItem())
 			{
-				SMap::const_iterator s_iter = p_tablemap->s$()->find(sel.GetString());
+				SMap::const_iterator s_iter = p_tablemap->s$()->find(sel_text.GetString());
 				if (s_iter != p_tablemap->s$()->end())
 					m_Result.SetWindowText(s_iter->second.text.GetString());
 			}
 		}
 
-		else if (selected_parent_text == "Regions")
+		else if (type_text == "Regions")
 		{
 			m_Left.EnableWindow(true);
 			m_Top.EnableWindow(true);
@@ -878,7 +879,7 @@ void CDlgTableMap::update_display(void)
 			update_r$_display(false);
 		}
 
-		else if (selected_parent_text == "Fonts")
+		else if (type_text == "Fonts")
 		{
 			disable_and_clear_all();
 			m_PixelSeparation.EnableWindow(true);
@@ -889,7 +890,7 @@ void CDlgTableMap::update_display(void)
 			update_t$_display();
 		}
 
-		else if (selected_parent_text == "Hash Points")
+		else if (type_text == "Hash Points")
 		{
 			disable_and_clear_all();
 			m_New.EnableWindow(true);
@@ -897,18 +898,18 @@ void CDlgTableMap::update_display(void)
 			m_Edit.EnableWindow(true);
 		}
 
-		else if (selected_parent_text == "Hashes")
+		else if (type_text == "Hashes")
 		{
 			disable_and_clear_all();
 			m_Delete.EnableWindow(true);
 
 			// Display selected hash value record
-			int hash_type = strtoul(sel.Mid(sel.Find("(")+1, 1).GetString(), NULL, 10);
+			int hash_type = strtoul(sel_text.Mid(sel_text.Find("(")+1, 1).GetString(), NULL, 10);
 			bool displayed = false;
 			for (HMapCI h_iter=p_tablemap->h$(hash_type)->begin(); h_iter!=p_tablemap->h$(hash_type)->end() && !displayed; h_iter++)
 			{
 				int start=0;
-				if (h_iter->second.name == sel.Tokenize(" ", start))
+				if (h_iter->second.name == sel_text.Tokenize(" ", start))
 				{
 					text.Format("%08x", h_iter->second.hash);
 					m_Result.SetWindowText(text.GetString());
@@ -917,7 +918,7 @@ void CDlgTableMap::update_display(void)
 			}
 		}
 
-		else if (selected_parent_text == "Images")
+		else if (type_text == "Images")
 		{
 			disable_and_clear_all();
 			m_Delete.EnableWindow(true);
@@ -929,7 +930,7 @@ void CDlgTableMap::update_display(void)
 
 			// Get image name
 			int start=0;
-			sel = sel.Tokenize(" ", start);
+			sel_text = sel_text.Tokenize(" ", start);
 
 			// See which hash types are already present for this image
 			// and disable the relevant create hash button
@@ -939,7 +940,7 @@ void CDlgTableMap::update_display(void)
 				bool found = false;
 				for (HMapCI h_iter=p_tablemap->h$(j)->begin(); h_iter!=p_tablemap->h$(j)->end() && !found; h_iter++)
 				{
-					if (h_iter->second.name == sel)
+					if (h_iter->second.name == sel_text)
 					{
 						switch (j)
 						{
@@ -1049,14 +1050,12 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 	COLORREF			cr_avg;
 	CTransform			trans;
 	RMapCI				sel_region = p_tablemap->r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->r$()->find(sel.GetString());
+	sel_region = p_tablemap->r$()->find(sel_text.GetString());
 
 	// Exit if we can't find the region record
 	if (sel_region == p_tablemap->r$()->end())
@@ -1242,18 +1241,16 @@ void CDlgTableMap::update_t$_display(void)
 	CString				separation, text, charstr;
 	bool				character[MAX_CHAR_WIDTH][MAX_CHAR_HEIGHT] = { false };	
 	TMapCI				sel_font = p_tablemap->t$(0)->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get record lookup info from name
-	int font_type = strtoul(sel.Mid(sel.Find("(")+1, 1).GetString(), NULL, 10);
+	int font_type = strtoul(sel_text.Mid(sel_text.Find("(")+1, 1).GetString(), NULL, 10);
 	if (font_type<0 || font_type>3)
 		return;
 
-	CString hexmash = sel.Mid(sel.Find("[")+1, sel.Find("]") - sel.Find("[") - 1);
+	CString hexmash = sel_text.Mid(sel_text.Find("[")+1, sel_text.Find("]") - sel_text.Find("[") - 1);
 	
 	// Get iterator for selected font
 	sel_font = p_tablemap->t$(font_type)->find(hexmash.GetString());
@@ -1305,14 +1302,12 @@ void CDlgTableMap::OnDeltaposLeftSpin(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RMapI				sel_region = p_tablemap->set_r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
 
 	// Exit if we can't find the region record
 	if (sel_region == p_tablemap->r$()->end())
@@ -1336,14 +1331,12 @@ void CDlgTableMap::OnDeltaposTopSpin(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RMapI				sel_region = p_tablemap->set_r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
 
 	// Exit if we can't find the region record
 	if (sel_region == p_tablemap->r$()->end())
@@ -1367,14 +1360,12 @@ void CDlgTableMap::OnDeltaposBottomSpin(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RMapI				sel_region = p_tablemap->set_r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
 
 	// Exit if we can't find the region record
 	if (sel_region == p_tablemap->r$()->end())
@@ -1398,14 +1389,12 @@ void CDlgTableMap::OnDeltaposRightSpin(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RMapI				sel_region = p_tablemap->set_r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
 
 	// Exit if we can't find the region record
 	if (sel_region == p_tablemap->r$()->end())
@@ -1429,14 +1418,12 @@ void CDlgTableMap::OnDeltaposRadiusSpin(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMUPDOWN			pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RMapI				sel_region = p_tablemap->set_r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
 
 	// Exit if we can't find the region record
 	if (sel_region == p_tablemap->r$()->end())
@@ -1458,23 +1445,11 @@ void CDlgTableMap::OnDeltaposRadiusSpin(NMHDR *pNMHDR, LRESULT *pResult)
 void CDlgTableMap::OnBnClickedNew()
 {
 	COpenScrapeDoc			*pDoc = COpenScrapeDoc::GetDocument();
-	HTREEITEM				parent;
-	CString					selected_parent_text = "";
-	CString					sel = "";
 
-	// Get name of currently selected item and its parent item
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
-		parent = GetRootParentNode(m_TableMapTree.GetSelectedItem());
-		selected_parent_text = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
-	}
+	CString	sel_text, type_text;
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get name of currently selected item's parent
-	if (parent != NULL) 
-		selected_parent_text = m_TableMapTree.GetItemText(parent);
-
-	if (selected_parent_text == "Sizes")
+	if (type_text == "Sizes")
 	{
 		// Prep dialog
 		CDlgEditSizes dlgsizes;
@@ -1521,8 +1496,8 @@ void CDlgTableMap::OnBnClickedNew()
 				else
 				{
 					// Add new record to tree
-					HTREEITEM new_hti = m_TableMapTree.InsertItem(dlgsizes.name, parent ? parent : m_TableMapTree.GetSelectedItem());
-					m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
+					HTREEITEM new_hti = m_TableMapTree.InsertItem(dlgsizes.name, type_node ? type_node : m_TableMapTree.GetSelectedItem());
+					m_TableMapTree.SortChildren(type_node ? type_node : m_TableMapTree.GetSelectedItem());
 					m_TableMapTree.SelectItem(new_hti);
 
 					pDoc->SetModifiedFlag(true);
@@ -1532,7 +1507,7 @@ void CDlgTableMap::OnBnClickedNew()
 		}
 	}
 	
-	else if (selected_parent_text == "Symbols")
+	else if (type_text == "Symbols")
 	{
 		// Prep dialog
 		CDlgEditSymbols dlgsymbols;
@@ -1579,8 +1554,8 @@ void CDlgTableMap::OnBnClickedNew()
 				else
 				{
 					// Add new record to tree
-					HTREEITEM new_hti = m_TableMapTree.InsertItem(new_symbol.name, parent ? parent : m_TableMapTree.GetSelectedItem());
-					m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
+					HTREEITEM new_hti = m_TableMapTree.InsertItem(new_symbol.name, type_node ? type_node : m_TableMapTree.GetSelectedItem());
+					m_TableMapTree.SortChildren(type_node ? type_node : m_TableMapTree.GetSelectedItem());
 					m_TableMapTree.SelectItem(new_hti);
 
 					pDoc->SetModifiedFlag(true);
@@ -1590,7 +1565,7 @@ void CDlgTableMap::OnBnClickedNew()
 		}
 	}
 	
-	else if (selected_parent_text == "Regions")
+	else if (type_text == "Regions")
 	{
 		// Prep dialog
 		CDlgEditRegion dlgregions;
@@ -1637,9 +1612,17 @@ void CDlgTableMap::OnBnClickedNew()
 				{
 
 					// Add new record to tree
-					HTREEITEM new_hti = m_TableMapTree.InsertItem(new_region.name, parent ? parent : m_TableMapTree.GetSelectedItem());
-					m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
-					m_TableMapTree.SelectItem(new_hti);
+					if (region_grouping==UNGROUPED)
+					{
+						HTREEITEM new_hti = m_TableMapTree.InsertItem(new_region.name, type_node ? type_node : m_TableMapTree.GetSelectedItem());
+						m_TableMapTree.SortChildren(type_node ? type_node : m_TableMapTree.GetSelectedItem());
+					}
+
+					else
+					{
+						InsertGroupedRegion(new_region.name);
+					}
+
 
 					pDoc->SetModifiedFlag(true);
 					Invalidate(false);
@@ -1648,12 +1631,12 @@ void CDlgTableMap::OnBnClickedNew()
 		}
 	}
 	
-	else if (selected_parent_text == "Fonts")
+	else if (type_text == "Fonts")
 	{
 		// Not valid - add font character using "Create Font" button
 	}
 	
-	else if (selected_parent_text == "Hash Points")
+	else if (type_text == "Hash Points")
 	{
 		// Prep dialog
 		CDlgEditHashPoint dlghashpoint;
@@ -1681,8 +1664,8 @@ void CDlgTableMap::OnBnClickedNew()
 				// Add new record to tree
 				CString text;
 				text.Format("%d (%d, %d)", type, new_hashpoint.x, new_hashpoint.y);
-				HTREEITEM new_hti = m_TableMapTree.InsertItem(text.GetString(), parent ? parent : m_TableMapTree.GetSelectedItem());
-				m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
+				HTREEITEM new_hti = m_TableMapTree.InsertItem(text.GetString(), type_node ? type_node : m_TableMapTree.GetSelectedItem());
+				m_TableMapTree.SortChildren(type_node ? type_node : m_TableMapTree.GetSelectedItem());
 				m_TableMapTree.SelectItem(new_hti);
 
 				pDoc->SetModifiedFlag(true);
@@ -1691,12 +1674,12 @@ void CDlgTableMap::OnBnClickedNew()
 		}
 	}
 	
-	else if (selected_parent_text == "Hashes")
+	else if (type_text == "Hashes")
 	{
 		// Not valid - add hash using "Create Hash" button
 	}
 
-	else if (selected_parent_text == "Images")
+	else if (type_text == "Images")
 	{
 		// Not valid - add image using "Create Image" button
 	}
@@ -1705,90 +1688,70 @@ void CDlgTableMap::OnBnClickedNew()
 void CDlgTableMap::OnBnClickedDelete()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	CString				text;
-	HTREEITEM			parent = NULL;
-	CString				selected_parent_text = "";
-	CString				sel = "";
-	CString				region_text = "";
-	CString				caption_text = "";
 	bool				item_deleted = false;
 
-	// Get name of currently selected item and its parent item
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
-		parent = GetRootParentNode(m_TableMapTree.GetSelectedItem());
-	}
+	CString	sel_text, type_text;
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get name of currently selected item's parent
-	if (parent != NULL) 
-		selected_parent_text = m_TableMapTree.GetItemText(parent);
-
-	CString		valid_regions("Sizes|Symbols|Regions|Fonts|Hash Points|Hashes|Images");
-	if (valid_regions.Find(selected_parent_text.GetString()) == -1)
+	CString		valid_types("Sizes|Symbols|Regions|Fonts|Hash Points|Hashes|Images");
+	if (valid_types.Find(type_text.GetString()) == -1)
 		return;
 
-	region_text = selected_parent_text.Left(selected_parent_text.GetLength() - 1);
-	caption_text.Format("Delete %s record?",region_text);
-	text.Format("Really delete %s record: %s", region_text, sel);
+	CString region_text = type_text.Left(type_text.GetLength() - 1);
+	CString caption_text, text;
+	caption_text.Format("Delete %s record?", region_text);
+	text.Format("Really delete %s record: %s", region_text, sel_text);
 
 	if (MessageBox(text.GetString(), caption_text.GetString(), MB_YESNO) == IDNO)
 		return;
 
-	if (selected_parent_text == "Sizes")
+	if (type_text == "Sizes")
 	{
-		
-		// Delete record from internal structure and update tree
-		if (p_tablemap->z$_erase(sel))
+		if (p_tablemap->z$_erase(sel_text))
 			item_deleted = true;
 	}
 	
-	else if (selected_parent_text == "Symbols")
+	else if (type_text == "Symbols")
 	{
-		// Delete record from internal structure and update tree
-		if (p_tablemap->s$_erase(sel))
+		if (p_tablemap->s$_erase(sel_text))
 			item_deleted = true;
 	}
 	
-	else if (selected_parent_text == "Regions")
+	else if (type_text == "Regions")
 	{
-		// Delete record from internal structure and update tree
-		if (p_tablemap->r$_erase(sel))
+		if (p_tablemap->r$_erase(sel_text))
 			item_deleted = true;
 	}
 	
-	else if (selected_parent_text == "Fonts")
+	else if (type_text == "Fonts")
 	{
-		// Delete record from internal structure and update tree
-		int font_type = strtoul(sel.Mid(sel.Find("(")+1, 1).GetString(), NULL, 10);
+		int font_type = strtoul(sel_text.Mid(sel_text.Find("(")+1, 1).GetString(), NULL, 10);
 		if (font_type<0 || font_type>3)
 			return;
 
-		CString hexmash = sel.Mid(sel.Find("[")+1, sel.Find("]") - sel.Find("[") - 1);
+		CString hexmash = sel_text.Mid(sel_text.Find("[")+1, sel_text.Find("]") - sel_text.Find("[") - 1);
 
 		if (p_tablemap->t$_erase(font_type, hexmash))
 			item_deleted = true;
 	}
 	
-	else if (selected_parent_text == "Hash Points")
+	else if (type_text == "Hash Points")
 	{
-		// Delete record from internal structure and update tree
-		int hashpoint_type = strtoul(sel.Mid(0, 1).GetString(), NULL, 10);
-		int x = strtoul(sel.Mid(3, sel.Find(",")-3).GetString(), NULL, 10);
-		int y = strtoul(sel.Mid(sel.Find(",")+2, sel.Find(")")-sel.Find(",")+2).GetString(), NULL, 10);
+		int hashpoint_type = strtoul(sel_text.Mid(0, 1).GetString(), NULL, 10);
+		int x = strtoul(sel_text.Mid(3, sel_text.Find(",")-3).GetString(), NULL, 10);
+		int y = strtoul(sel_text.Mid(sel_text.Find(",")+2, sel_text.Find(")")-sel_text.Find(",")+2).GetString(), NULL, 10);
 
 		if (p_tablemap->p$_erase(hashpoint_type, ((x&0xffff)<<16) | (y&0xffff)))
 			item_deleted = true;
 	}
 	
-	else if (selected_parent_text == "Hashes")
+	else if (type_text == "Hashes")
 	{
-		// Delete record from internal structure and update tree
-		int hash_type = strtoul(sel.Mid(sel.Find("(")+1, 1).GetString(), NULL, 10);
+		int hash_type = strtoul(sel_text.Mid(sel_text.Find("(")+1, 1).GetString(), NULL, 10);
 		for (HMapCI h_iter=p_tablemap->h$(hash_type)->begin(); h_iter!=p_tablemap->h$(hash_type)->end(); h_iter++)
 		{
 			int start=0;
-			if (h_iter->second.name == sel.Tokenize(" ", start))
+			if (h_iter->second.name == sel_text.Tokenize(" ", start))
 			{
 
 				if (p_tablemap->h$_erase(hash_type, h_iter->second.hash))
@@ -1798,59 +1761,87 @@ void CDlgTableMap::OnBnClickedDelete()
 		}
 	}
 
-	else if (selected_parent_text == "Images")
+	else if (type_text == "Images")
 	{
 		// Get index into array for selected record
 		int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
 
-		// Delete record from internal structure and update tree
 		if (p_tablemap->i$_erase(index))
 			item_deleted = true;
 	}
 
 	if (!item_deleted)
 	{
+		CString text;
 		text.Format("Error deleting %s record.", region_text);
 		MessageBox(text.GetString(), "ERROR", MB_OK | MB_TOPMOST);
 		return;
 	}
 	else 
 	{
-		HTREEITEM node = update_tree(selected_parent_text);
-		if (node!=NULL)  m_TableMapTree.SelectItem(node);
+		HTREEITEM prev = m_TableMapTree.GetPrevSiblingItem(m_TableMapTree.GetSelectedItem());
+		HTREEITEM prev_prev = NULL;
+
+		if (prev==NULL)
+		{
+			prev = m_TableMapTree.GetParentItem(m_TableMapTree.GetSelectedItem());
+			
+			if (m_TableMapTree.GetParentItem(prev)!=NULL)
+				prev_prev = m_TableMapTree.GetParentItem(prev);
+		}
+
+		m_TableMapTree.DeleteItem(m_TableMapTree.GetSelectedItem());
+		m_TableMapTree.SelectItem(prev);
+
+		if (prev_prev != NULL && !m_TableMapTree.ItemHasChildren(prev))
+		{
+			m_TableMapTree.DeleteItem(prev);
+			m_TableMapTree.SelectItem(prev_prev);
+		}
 
 		Invalidate(false);
 		pDoc->SetModifiedFlag(true);
 	}
 }
 
+void CDlgTableMap::SaveNodeExpansionState(CArray <bool, bool> *node_state)
+{
+	node_state->RemoveAll();
+	HTREEITEM node = m_TableMapTree.GetChildItem(NULL);
+	while (node!=NULL)
+	{
+		node_state->Add((m_TableMapTree.GetItemState(node, TVIS_EXPANDED) & TVIS_EXPANDED) != 0);
+		node = m_TableMapTree.GetNextItem(node, TVGN_NEXT);
+	}
+}
+
+void CDlgTableMap::RestoreNodeExpansionState(CArray <bool, bool> *node_state)
+{
+	int i = 0;
+
+	HTREEITEM node = m_TableMapTree.GetChildItem(NULL);
+	while (node!=NULL && i<node_state->GetCount())
+	{
+		m_TableMapTree.Expand(node, node_state->GetAt(i) ? TVE_EXPAND : TVE_COLLAPSE);
+		i++;
+		node = m_TableMapTree.GetNextItem(node, TVGN_NEXT);
+	}
+}
+
 HTREEITEM CDlgTableMap::update_tree(CString node_text)
 {
-	int				i;
-	bool			expanded[10];
+	CArray <bool, bool> node_state;
 	HTREEITEM		node;
 	CString			text;
 
 	// Save expanded state of each node
-	i = 0;
-	node = m_TableMapTree.GetChildItem(NULL);
-	while (node!=NULL)
-	{
-		expanded[i++] = (m_TableMapTree.GetItemState(node, TVIS_EXPANDED) & TVIS_EXPANDED) != 0;
-		node = m_TableMapTree.GetNextItem(node, TVGN_NEXT);
-	}
+	SaveNodeExpansionState(&node_state);
 
 	// Recreate the tree
 	create_tree();
 
 	// Restore expanded state of each node
-	i = 0;
-	node = m_TableMapTree.GetChildItem(NULL);
-	while (node!=NULL)
-	{
-		m_TableMapTree.Expand(node, expanded[i++] ? TVE_EXPAND : TVE_COLLAPSE);
-		node = m_TableMapTree.GetNextItem(node, TVGN_NEXT);
-	}
+	RestoreNodeExpansionState(&node_state);
 
 	// Find root node and return it
 	node = m_TableMapTree.GetChildItem(NULL);
@@ -1867,26 +1858,14 @@ HTREEITEM CDlgTableMap::update_tree(CString node_text)
 void CDlgTableMap::OnBnClickedEdit()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	CString				sel = "";
-	HTREEITEM			parent = NULL;
-	CString				selected_parent_text = "";
 
-	// Get name of currently selected item and its parent item
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
-		parent = GetRootParentNode(m_TableMapTree.GetSelectedItem());
-	}
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
-	// Get name of currently selected item's parent
-	if (parent != NULL) 
-		selected_parent_text = m_TableMapTree.GetItemText(parent);
-
-
-	if (selected_parent_text == "Sizes")
+	if (type_text == "Sizes")
 	{
 		// Get selected size record
-		ZMapCI z_iter = p_tablemap->z$()->find(sel.GetString());
+		ZMapCI z_iter = p_tablemap->z$()->find(sel_text.GetString());
 
 		if (z_iter == p_tablemap->z$()->end())
 		{
@@ -1918,7 +1897,7 @@ void CDlgTableMap::OnBnClickedEdit()
 		}
 
 		// Delete original record in internal structure
-		if (!p_tablemap->z$_erase(sel))
+		if (!p_tablemap->z$_erase(sel_text))
 		{
 			MessageBox("Error applying changes.", "ERROR (1)", MB_OK | MB_TOPMOST);
 			return;
@@ -1938,7 +1917,7 @@ void CDlgTableMap::OnBnClickedEdit()
 
 		// Update record in tree
 		m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), new_size.name.GetString());
-		m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
+		m_TableMapTree.SortChildren(type_node ? type_node : m_TableMapTree.GetSelectedItem());
 		m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
 
 		update_display();
@@ -1946,10 +1925,10 @@ void CDlgTableMap::OnBnClickedEdit()
 		pDoc->SetModifiedFlag(true);
 	}
 	
-	else if (selected_parent_text == "Symbols")
+	else if (type_text == "Symbols")
 	{
 		// Get selected symbol record
-		SMapCI s_iter = p_tablemap->s$()->find(sel.GetString());
+		SMapCI s_iter = p_tablemap->s$()->find(sel_text.GetString());
 
 		if (s_iter == p_tablemap->s$()->end())
 		{
@@ -1983,7 +1962,7 @@ void CDlgTableMap::OnBnClickedEdit()
 		}
 
 		// Delete original record in internal structure
-		if (!p_tablemap->s$_erase(sel))
+		if (!p_tablemap->s$_erase(sel_text))
 		{
 			MessageBox("Error applying changes.", "ERROR (1)", MB_OK | MB_TOPMOST);
 			return;
@@ -2002,7 +1981,7 @@ void CDlgTableMap::OnBnClickedEdit()
 
 		// Update record in tree
 		m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), new_symbol.name.GetString());
-		m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
+		m_TableMapTree.SortChildren(type_node ? type_node : m_TableMapTree.GetSelectedItem());
 		m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
 
 		update_display();
@@ -2010,10 +1989,10 @@ void CDlgTableMap::OnBnClickedEdit()
 		pDoc->SetModifiedFlag(true);
 	}
 	
-	else if (selected_parent_text == "Regions")
+	else if (type_text == "Regions")
 	{
 		// Get selected region record
-		RMapCI r_iter = p_tablemap->r$()->find(sel.GetString());
+		RMapCI r_iter = p_tablemap->r$()->find(sel_text.GetString());
 
 		if (r_iter == p_tablemap->r$()->end())
 		{
@@ -2043,7 +2022,7 @@ void CDlgTableMap::OnBnClickedEdit()
 		}
 
 		// Delete original record in internal structure
-		if (!p_tablemap->r$_erase(sel))
+		if (!p_tablemap->r$_erase(sel_text))
 		{
 			MessageBox("Error applying changes.", "ERROR (1)", MB_OK | MB_TOPMOST);
 			return;
@@ -2070,7 +2049,7 @@ void CDlgTableMap::OnBnClickedEdit()
 
 		// Update record in tree
 		m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), new_region.name.GetString());
-		m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
+		m_TableMapTree.SortChildren(type_node ? type_node : m_TableMapTree.GetSelectedItem());
 		m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
 
 		update_display();
@@ -2079,14 +2058,14 @@ void CDlgTableMap::OnBnClickedEdit()
 
 	}
 	
-	else if (selected_parent_text == "Fonts")
+	else if (type_text == "Fonts")
 	{
 		// Get selected font record
-		int font_group = strtoul(sel.Mid(sel.Find("(")+1, 1).GetString(), NULL, 10);
+		int font_group = strtoul(sel_text.Mid(sel_text.Find("(")+1, 1).GetString(), NULL, 10);
 		if (font_group<0 || font_group>3)
 			return;
 
-		CString hexmash = sel.Mid(sel.Find("[")+1, sel.Find("]") - sel.Find("[") - 1);
+		CString hexmash = sel_text.Mid(sel_text.Find("[")+1, sel_text.Find("]") - sel_text.Find("[") - 1);
 		
 		TMapCI t_iter = p_tablemap->t$(font_group)->find(hexmash);
 
@@ -2139,7 +2118,7 @@ void CDlgTableMap::OnBnClickedEdit()
 		CString text;
 		text.Format("%c (%d) [%s]", edit_font.ch, font_group, edit_font.hexmash);
 		m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), text.GetString());
-		m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
+		m_TableMapTree.SortChildren(type_node ? type_node : m_TableMapTree.GetSelectedItem());
 		m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
 
 		update_display();
@@ -2147,11 +2126,11 @@ void CDlgTableMap::OnBnClickedEdit()
 		pDoc->SetModifiedFlag(true);
 	}
 	
-	else if (selected_parent_text == "Hash Points" ||
-			 parent == NULL && sel == "Hash Points")
+	else if (type_text == "Hash Points" ||
+			 type_node == NULL && sel_text == "Hash Points")
 	{
 		// If parent==NULL, then the root of hash points is selected and we should bring up the graphical hash point editor
-		if (parent==NULL)
+		if (type_node==NULL)
 		{
 			// Prep dialog
 			CDlgEditGrHashPoints dlggrhashpoints;
@@ -2174,22 +2153,25 @@ void CDlgTableMap::OnBnClickedEdit()
 			for (int i=0; i<=3; i++)
 				p_tablemap->p$_clear(i);
 
-			// Load new hash points from dialog into internal structure
+			// Load new hash points from dialog into internal structure and tree
 			for (int i=0; i<=3; i++)
 			{
 				for (int j=0; j<dlggrhashpoints.working_hash_points[i].GetSize(); j++)
 				{
+					// Internal structure
 					STablemapHashPoint hash_point;
 					hash_point.x = dlggrhashpoints.working_hash_points[i].GetAt(j).x;
 					hash_point.y = dlggrhashpoints.working_hash_points[i].GetAt(j).y;
 					p_tablemap->p$_insert(i, hash_point);
+
+					// Tree
+					CString text;
+					text.Format("%d (%d, %d)", i, hash_point.x, hash_point.y);
+					m_TableMapTree.InsertItem(text, m_TableMapTree.GetSelectedItem());
 				}
 			}
 
-			// Rebuild tree
-			HTREEITEM node = update_tree("Hash Points");
-			if (node!=NULL)				
-				m_TableMapTree.SelectItem(node);
+			m_TableMapTree.SortChildren(m_TableMapTree.GetSelectedItem());
 
 			update_display();
 			Invalidate(false);
@@ -2200,9 +2182,9 @@ void CDlgTableMap::OnBnClickedEdit()
 		else
 		{
 			// Get selected hash point record
-			int hashpoint_type = strtoul(sel.Mid(0, 1).GetString(), NULL, 10);
-			int x = strtoul(sel.Mid(3, sel.Find(",")-3).GetString(), NULL, 10);
-			int y = strtoul(sel.Mid(sel.Find(",")+2, sel.Find(")")-sel.Find(",")+2).GetString(), NULL, 10);
+			int hashpoint_type = strtoul(sel_text.Mid(0, 1).GetString(), NULL, 10);
+			int x = strtoul(sel_text.Mid(3, sel_text.Find(",")-3).GetString(), NULL, 10);
+			int y = strtoul(sel_text.Mid(sel_text.Find(",")+2, sel_text.Find(")")-sel_text.Find(",")+2).GetString(), NULL, 10);
 
 			PMapCI sel_hash_point = p_tablemap->p$(hashpoint_type)->find(((x&0xffff)<<16) | (y&0xffff));
 
@@ -2245,7 +2227,7 @@ void CDlgTableMap::OnBnClickedEdit()
 			// Edit record in tree
 			text.Format("%d (%d, %d)", new_hashpoint_type, hash_point.x, hash_point.y);
 			m_TableMapTree.SetItemText(m_TableMapTree.GetSelectedItem(), text.GetString());
-			m_TableMapTree.SortChildren(parent ? parent : m_TableMapTree.GetSelectedItem());
+			m_TableMapTree.SortChildren(type_node ? type_node : m_TableMapTree.GetSelectedItem());
 			m_TableMapTree.SelectItem(m_TableMapTree.GetSelectedItem());
 
 			update_display();
@@ -2254,12 +2236,12 @@ void CDlgTableMap::OnBnClickedEdit()
 		}
 	}
 	
-	else if (selected_parent_text == "Hashes")
+	else if (type_text == "Hashes")
 	{
 		// Not valid - should delete and add a new one using "Create Hash" button
 	}
 
-	else if (selected_parent_text == "Images")
+	else if (type_text == "Images")
 	{
 		// Not valid - should delete and add a new one using "Create Image" button
 	}
@@ -2276,14 +2258,12 @@ void CDlgTableMap::OnBnClickedCreateImage()
 	CString				text, node_text, sel_region_name;
 	HTREEITEM			image_node, region_node, child_node;
 	RMapCI				sel_region = p_tablemap->r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->r$()->find(sel.GetString());
+	sel_region = p_tablemap->r$()->find(sel_text.GetString());
 
 	// Exit if we can't find the region record
 	if (sel_region == p_tablemap->r$()->end())
@@ -2366,7 +2346,7 @@ void CDlgTableMap::OnBnClickedCreateImage()
 		// Re-select previously selected region
 		child_node = m_TableMapTree.GetChildItem(region_node);
 		node_text = m_TableMapTree.GetItemText(child_node);
-		while (node_text!=sel && child_node!=NULL)
+		while (node_text!=sel_text && child_node!=NULL)
 		{
 			child_node = m_TableMapTree.GetNextItem(child_node, TVGN_NEXT);
 			node_text = m_TableMapTree.GetItemText(child_node);
@@ -2396,19 +2376,17 @@ void CDlgTableMap::OnBnClickedCreateFont()
 	int					i = 0, j = 0, insert_point = 0, new_index = 0;
 	HTREEITEM			new_hti = NULL, font_node = NULL, region_node = NULL, child_node = NULL;
 	CString				node_text = "";
-	HTREEITEM			parent = GetRootParentNode(m_TableMapTree.GetSelectedItem());
+	HTREEITEM			parent = GetRecordTypeNode(m_TableMapTree.GetSelectedItem());
 	CArray <STablemapFont, STablemapFont>		new_t$_recs[4];
 	CTransform			trans;
 	RMapCI				sel_region = p_tablemap->r$()->end();
-	CString				sel = "";
 	int					font_group;
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->r$()->find(sel.GetString());
+	sel_region = p_tablemap->r$()->find(sel_text.GetString());
 
 	// Exit if we can't find the region record
 	if (sel_region == p_tablemap->r$()->end())
@@ -2559,7 +2537,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 			// Re-select previously selected region
 			child_node = m_TableMapTree.GetChildItem(region_node);
 			node_text = m_TableMapTree.GetItemText(child_node);
-			while (node_text!=sel && child_node!=NULL)
+			while (node_text!=sel_text && child_node!=NULL)
 			{
 				child_node = m_TableMapTree.GetNextItem(child_node, TVGN_NEXT);
 				node_text = m_TableMapTree.GetItemText(child_node);
@@ -2658,14 +2636,12 @@ void CDlgTableMap::OnLButtonDown(UINT nFlags, CPoint point)
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RECT				bmp_rect;
 	RMapI				sel_region = p_tablemap->set_r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
@@ -2694,14 +2670,12 @@ void CDlgTableMap::OnMouseMove(UINT nFlags, CPoint point)
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RECT				bmp_rect;
 	RMapI				sel_region = p_tablemap->set_r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
@@ -2889,14 +2863,12 @@ void CDlgTableMap::OnBnClickedNudgeTaller()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
@@ -2916,14 +2888,12 @@ void CDlgTableMap::OnBnClickedNudgeShorter()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
@@ -2943,14 +2913,12 @@ void CDlgTableMap::OnBnClickedNudgeWider()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
@@ -2970,14 +2938,12 @@ void CDlgTableMap::OnBnClickedNudgeNarrower()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
@@ -2997,14 +2963,12 @@ void CDlgTableMap::OnBnClickedNudgeBigger()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
@@ -3026,14 +2990,12 @@ void CDlgTableMap::OnBnClickedNudgeSmaller()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
@@ -3062,14 +3024,12 @@ void CDlgTableMap::OnBnClickedNudgeUpleft()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 
 	RMapI				sel_region = p_tablemap->set_r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
@@ -3091,14 +3051,12 @@ void CDlgTableMap::OnBnClickedNudgeUp()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
@@ -3118,14 +3076,12 @@ void CDlgTableMap::OnBnClickedNudgeUpright()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
@@ -3147,14 +3103,12 @@ void CDlgTableMap::OnBnClickedNudgeRight()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
@@ -3174,14 +3128,12 @@ void CDlgTableMap::OnBnClickedNudgeDownright()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
@@ -3203,14 +3155,12 @@ void CDlgTableMap::OnBnClickedNudgeDown()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 
 	RMapI				sel_region = p_tablemap->set_r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
@@ -3230,14 +3180,12 @@ void CDlgTableMap::OnBnClickedNudgeDownleft()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
@@ -3259,14 +3207,12 @@ void CDlgTableMap::OnBnClickedNudgeLeft()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	
 	RMapI				sel_region = p_tablemap->set_r$()->end();
-	CString				sel = "";
 
-	// Get name of currently selected item
-	if (m_TableMapTree.GetSelectedItem())
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get iterator for selected region
-	sel_region = p_tablemap->set_r$()->find(sel.GetString());
+	sel_region = p_tablemap->set_r$()->find(sel_text.GetString());
 
 	if (sel_region != p_tablemap->r$()->end())
 	{
@@ -3502,6 +3448,14 @@ CString CDlgTableMap::GetGroupName(CString regionName)
 			else if (regionName.Find("chip")!=-1)
 				groupName = "chip";
 
+			else if (regionName.Find("c0istournament")!=-1 || regionName.Find("c0smallblind")!=-1 || 
+					 regionName.Find("c0bigblind")!=-1 || regionName.Find("c0bigbet")!=-1 ||
+					 regionName.Find("c0ante")!=-1)
+				groupName = "c0misc";
+
+			else if (regionName.Find("tablepoint")!=-1)
+				groupName = "tablepoint";
+
 			else
 				groupName.Empty();
 			break;
@@ -3653,8 +3607,8 @@ void CDlgTableMap::GroupRegions()
 		hRegionChildItem = hNextItem;
 	}
 
-	if (region_grouping==BY_NAME)
-		RemoveSingleItemGroups();
+	//if (region_grouping==BY_NAME)
+	//	RemoveSingleItemGroups();
 }
 
 void CDlgTableMap::UngroupRegions()
@@ -3699,6 +3653,38 @@ void CDlgTableMap::UngroupRegions()
 			hRegionChildItem = hNextItem;
 		}
 	}
+}
+
+HTREEITEM CDlgTableMap::InsertGroupedRegion(CString itemText)
+{
+	// Find region node
+	HTREEITEM hRegionNode = GetRegionNode();
+	
+	if (hRegionNode == NULL)
+		return NULL;
+
+	if (m_TableMapTree.GetItemText(hRegionNode) != "Regions")
+		return NULL;
+
+	// Figure out the group name for this item
+	CString groupName = GetGroupName(itemText);
+
+	// Find or create the appropriate group node
+	HTREEITEM hGroup = FindRegionGroupItem(hRegionNode, groupName);
+
+	if (!hGroup)
+		hGroup = m_TableMapTree.InsertItem(groupName, hRegionNode);
+
+	// Insert it
+	HTREEITEM hNewItem = m_TableMapTree.InsertItem(itemText, hGroup);
+	m_TableMapTree.SortChildren(hGroup);
+	
+	// And clean up if needed
+	//if (region_grouping==BY_NAME)
+	//	RemoveSingleItemGroups();
+
+
+	return hNewItem;
 }
 
 HTREEITEM CDlgTableMap::FindItem(CString s, HTREEITEM start)
@@ -3746,29 +3732,17 @@ void CDlgTableMap::OnBnClickedCreateHash3()
 
 void CDlgTableMap::CreateHash(int hash_type)
 {
-	STablemapHashValue		new_hash;
-	COpenScrapeDoc			*pDoc = COpenScrapeDoc::GetDocument();
-	HTREEITEM				new_hti, node, child_node;
-	CString					text, node_text;
+	STablemapHashValue	new_hash;
+	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+	HTREEITEM			new_hti, node, child_node;
+	CString				text, node_text;
 
-	HTREEITEM				parent;
-	CString					selected_parent_text = "";
-	CString					sel = "";
-
-	// Get name of currently selected item and its parent item
-	if (m_TableMapTree.GetSelectedItem())
-	{
-		sel = m_TableMapTree.GetItemText(m_TableMapTree.GetSelectedItem());
-		parent = GetRootParentNode(m_TableMapTree.GetSelectedItem());
-	}
-
-	// Get name of currently selected item's parent
-	if (parent != NULL) 
-		selected_parent_text = m_TableMapTree.GetItemText(parent);
+	CString				sel_text = "", type_text = "";
+	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get image name
 	int start=0;
-	sel = sel.Tokenize(" ", start);
+	sel_text = sel_text.Tokenize(" ", start);
 
 	// Calculate hash for selected image
 	int index = (int) m_TableMapTree.GetItemData(m_TableMapTree.GetSelectedItem());
@@ -3776,7 +3750,7 @@ void CDlgTableMap::CreateHash(int hash_type)
 	new_hash.hash = p_tablemap->CalculateHashValue(i_iter, hash_type);
 
 	// Add new record to internal structure
-	new_hash.name = sel;
+	new_hash.name = sel_text;
 	if (!p_tablemap->h$_insert(hash_type, new_hash))
 	{
 		MessageBox("Error adding hash record: " + new_hash.name, "Hash record add error", MB_OK);
@@ -3807,7 +3781,7 @@ void CDlgTableMap::CreateHash(int hash_type)
 		// Re-select previously selected image
 		child_node = m_TableMapTree.GetChildItem(node);
 		node_text = m_TableMapTree.GetItemText(child_node);
-		while (node_text!=sel && child_node!=NULL)
+		while (node_text!=sel_text && child_node!=NULL)
 		{
 			child_node = m_TableMapTree.GetNextItem(child_node, TVGN_NEXT);
 			node_text = m_TableMapTree.GetItemText(child_node);

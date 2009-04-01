@@ -58,7 +58,8 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSizing(UINT nSide, LPRECT lpRect);
 	afx_msg void OnTvnKeydownTablemapTree(NMHDR *pNMHDR, LRESULT *pResult);
-	HTREEITEM GetRootParentNode(HTREEITEM item);
+	HTREEITEM GetRecordTypeNode(HTREEITEM item);
+	HTREEITEM GetTextSelItemAndRecordType(CString *sel_text, CString *type_text);
 	void clear_bitmap_control(void);
 	void draw_region_bitmap(void);
 	void draw_image_bitmap(void);
@@ -71,6 +72,9 @@ protected:
 	HTREEITEM MoveTreeItem(HTREEITEM hItem, HTREEITEM hNewParent, CString name, bool bSelect);
 	void RemoveSingleItemGroups(void);
 	void CreateHash(int hash_type);
+	void SaveNodeExpansionState(CArray <bool, bool> *node_state);
+	void RestoreNodeExpansionState(CArray <bool, bool> *node_state);
+	HTREEITEM InsertGroupedRegion(CString itemText);
 
 	CStatic				m_BitmapFrame;
 	CStickyButton		m_Picker;
