@@ -166,7 +166,7 @@ void CPreferences::InitDefaults(void)
 	//   0 = disabled
 	//   1 = when it's my turn
 	//   2 = always
-	_validator_enabled = 2;
+	_validator_enabled = 0;
 	_validator_use_heuristic_rules = true;
 	_validator_stop_on_error = true;
 
