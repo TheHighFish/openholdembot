@@ -308,7 +308,7 @@ CAPTION "About OpenHoldem"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            128,IDC_STATIC,11,17,20,20
-    LTEXT           "OpenHoldem Version 1.9.5",IDC_STATIC,40,10,119,8,SS_NOPREFIX
+    LTEXT           "OpenHoldem Version 1.9.7",IDC_STATIC,40,10,119,8,SS_NOPREFIX
     LTEXT           "Licensed under GPLv3",IDC_STATIC,40,25,119,8
     DEFPUSHBUTTON   "OK",IDOK,178,7,50,16,WS_GROUP
 END
@@ -882,12 +882,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "OpenHoldem"
             VALUE "FileDescription", "OpenHoldem"
-            VALUE "FileVersion", "1.9.5.0"
+            VALUE "FileVersion", "1.9.7.0"
             VALUE "InternalName", "OpenHoldem.exe"
             VALUE "LegalCopyright", "Licensed under GPLv3"
             VALUE "OriginalFilename", "OpenHoldem.exe"
             VALUE "ProductName", "OpenHoldem"
-            VALUE "ProductVersion", "1.9.5.0"
+            VALUE "ProductVersion", "1.9.7.0"
         END
     END
     BLOCK "VarFileInfo"

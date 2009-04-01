@@ -1,4 +1,4 @@
-v1.9.7 2009-xx-xx
+v1.9.7 2009-03-31
 =================
 BUG FIXES:
 - Fix for run$prnuts and run$prnuts always reporting zero.  Thanks, flounderhead, for the find AND the fix! (OpenHoldem)

@@ -1,4 +1,4 @@
-v1.2.1 2009-xx-xx
+v1.2.1 2009-03-31
 =================
 BUG FIXES:
 - Fixed display of sample image in the graphical hash point editor - selection of the sample image was causing an
