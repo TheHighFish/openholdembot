@@ -2,7 +2,7 @@
 // Rank bits
 //
 
-#define MAX_RANKBITS 0x3FFF
+#define MAX_RANKBITS 0x7FFF
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0156")

@@ -76,7 +76,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0244")
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol vs$prwinhi")
-    PRECONDITION (true)
+    PRECONDITION (gws("nhandshi") > 0)
     POSTCONDITION ((gws("vs$prwinhi") >= 0) && (gws("vs$prwinhi") <= 1))
     SYMBOLS_POSSIBLY_AFFECTED ("vs$prwinhi")
 END_TESTCASE
@@ -86,7 +86,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0245")
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol vs$prtiehi")
-    PRECONDITION (true)
+    PRECONDITION (gws("nhandshi") > 0)
     POSTCONDITION ((gws("vs$prtiehi") >= 0) && (gws("vs$prtiehi") <= 1))
     SYMBOLS_POSSIBLY_AFFECTED ("vs$prtiehi")
 END_TESTCASE
@@ -96,7 +96,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0246")
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol vs$prloshi")
-    PRECONDITION (true)
+    PRECONDITION (gws("nhandshi") > 0)
     POSTCONDITION ((gws("vs$prloshi") >= 0) && (gws("vs$prloshi") <= 1))
     SYMBOLS_POSSIBLY_AFFECTED ("vs$prloshi")
 END_TESTCASE
@@ -136,7 +136,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0250")
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol vs$prwinlo")
-    PRECONDITION (true)
+    PRECONDITION (gws("nhandslo") > 0)
     POSTCONDITION ((gws("vs$prwinlo") >= 0) && (gws("vs$prwinlo") <= 1))
     SYMBOLS_POSSIBLY_AFFECTED ("vs$prwinlo")
 END_TESTCASE
@@ -146,7 +146,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0251")
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol vs$prtielo")
-    PRECONDITION (true)
+    PRECONDITION (gws("nhandslo") > 0)
     POSTCONDITION ((gws("vs$prtielo") >= 0) && (gws("vs$prtielo") <= 1))
     SYMBOLS_POSSIBLY_AFFECTED ("vs$prtielo")
 END_TESTCASE
@@ -156,7 +156,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0252")
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol vs$prloslo")
-    PRECONDITION (true)
+    PRECONDITION (gws("nhandslo") > 0)
     POSTCONDITION ((gws("vs$prloslo") >= 0) && (gws("vs$prloslo") <= 1))
     SYMBOLS_POSSIBLY_AFFECTED ("vs$prloslo")
 END_TESTCASE
