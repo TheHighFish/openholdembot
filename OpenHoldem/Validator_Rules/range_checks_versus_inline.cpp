@@ -163,7 +163,7 @@ END_TESTCASE
 
 
 //
-// No change to test
+// No chance to test
 //   vs$x$prwin, vs$x$prlos, vs$x$prtie,
 //   where x can be an arbitrary number.
 //
