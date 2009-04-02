@@ -103,8 +103,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("A players balance can't increase during a game. Partial rule for player 0.")
     PRECONDITION ((gws("betround") >= 2) && ((int(gws("playersplayingbits")) & 0x0001) == 0x0001))
-    POSTCONDITION (gws("hi_balance_01") >= gws("balance0"))
-    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance_01, balance0")
+    POSTCONDITION (gws("hi_balance01") >= gws("balance0"))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance01, balance0")
 END_TESTCASE
 
 
@@ -113,8 +113,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("A players balance can't increase during a game. Partial rule for player 1.")
     PRECONDITION ((gws("betround") >= 2) && ((int(gws("playersplayingbits")) & 0x0002) == 0x0002))
-    POSTCONDITION (gws("hi_balance_11") >= gws("balance1"))
-    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance_11, balance1")
+    POSTCONDITION (gws("hi_balance11") >= gws("balance1"))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance11, balance1")
 END_TESTCASE
 
 
@@ -123,8 +123,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("A players balance can't increase during a game. Partial rule for player 2.")
     PRECONDITION ((gws("betround") >= 2) && ((int(gws("playersplayingbits")) & 0x0004) == 0x0004))
-    POSTCONDITION (gws("hi_balance_21") >= gws("balance2"))
-    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance_21, balance2")
+    POSTCONDITION (gws("hi_balance21") >= gws("balance2"))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance21, balance2")
 END_TESTCASE
 
 
@@ -133,8 +133,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("A players balance can't increase during a game. Partial rule for player 3.")
     PRECONDITION ((gws("betround") >= 2) && ((int(gws("playersplayingbits")) & 0x0008) == 0x0008))
-    POSTCONDITION (gws("hi_balance_31") >= gws("balance3"))
-    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance_31, balance3")
+    POSTCONDITION (gws("hi_balance31") >= gws("balance3"))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance31, balance3")
 END_TESTCASE
 
 
@@ -143,8 +143,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("A players balance can't increase during a game. Partial rule for player 4.")
     PRECONDITION ((gws("betround") >= 2) && ((int(gws("playersplayingbits")) & 0x0010) == 0x0010))
-    POSTCONDITION (gws("hi_balance_41") >= gws("balance4"))
-    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance_41, balance4")
+    POSTCONDITION (gws("hi_balance41") >= gws("balance4"))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance41, balance4")
 END_TESTCASE
 
 
@@ -153,8 +153,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("A players balance can't increase during a game. Partial rule for player 5.")
     PRECONDITION ((gws("betround") >= 2) && ((int(gws("playersplayingbits")) & 0x0020) == 0x0020))
-    POSTCONDITION (gws("hi_balance_51") >= gws("balance5"))
-    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance_51, balance5")
+    POSTCONDITION (gws("hi_balance51") >= gws("balance5"))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance51, balance5")
 END_TESTCASE
 
 
@@ -163,8 +163,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("A players balance can't increase during a game. Partial rule for player 6.")
     PRECONDITION ((gws("betround") >= 2) && ((int(gws("playersplayingbits")) & 0x0040) == 0x0040))
-    POSTCONDITION (gws("hi_balance_61") >= gws("balance6"))
-    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance_61, balance6")
+    POSTCONDITION (gws("hi_balance61") >= gws("balance6"))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance61, balance6")
 END_TESTCASE
 
 
@@ -173,8 +173,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("A players balance can't increase during a game. Partial rule for player 7.")
     PRECONDITION ((gws("betround") >= 2) && ((int(gws("playersplayingbits")) & 0x0080) == 0x0080))
-    POSTCONDITION (gws("hi_balance_71") >= gws("balance7"))
-    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance_71, balance7")
+    POSTCONDITION (gws("hi_balance71") >= gws("balance7"))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance71, balance7")
 END_TESTCASE
 
 
@@ -183,8 +183,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("A players balance can't increase during a game. Partial rule for player 8.")
     PRECONDITION ((gws("betround") >= 2) && ((int(gws("playersplayingbits")) & 0x0100) == 0x0100))
-    POSTCONDITION (gws("hi_balance_81") >= gws("balance8"))
-    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance_81, balance8")
+    POSTCONDITION (gws("hi_balance81") >= gws("balance8"))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance81, balance8")
 END_TESTCASE
 
 
@@ -193,8 +193,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("A players balance can't increase during a game. Partial rule for player 9.")
     PRECONDITION ((gws("betround") >= 2) && ((int(gws("playersplayingbits")) & 0x0200) == 0x0200))
-    POSTCONDITION (gws("hi_balance_91") >= gws("balance9"))
-    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance_91, balance9")
+    POSTCONDITION (gws("hi_balance91") >= gws("balance9"))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, hi_balance91, balance9")
 END_TESTCASE
 
 

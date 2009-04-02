@@ -142,9 +142,9 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0413")
     HEURISTIC_RULE (false)
     REASONING ("If I'm not playing, I cant hold cards.")
-    PRECONDITION (gws("friendsplaingbits") == 0)
+    PRECONDITION (gws("friendsplayingbits") == 0)
     POSTCONDITION ((gws("$$pc0") == CARD_UNKNOWN) && (gws("$$pc1") == CARD_UNKNOWN))
-    SYMBOLS_POSSIBLY_AFFECTED ("friendsplaingbits, $$pc0, $$pc1")
+    SYMBOLS_POSSIBLY_AFFECTED ("friendsplayingbits, $$pc0, $$pc1")
 END_TESTCASE
 
 
