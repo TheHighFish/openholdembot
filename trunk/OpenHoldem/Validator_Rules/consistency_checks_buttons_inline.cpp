@@ -48,19 +48,9 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0504")
     HEURISTIC_RULE (false)
-    REASONING ("If there's a check button, then there can't be a call button.")
-    PRECONDITION (((int)gws("myturnbits") & BUTTON_CHECK) != 0)
-    POSTCONDITION (((int)gws("myturnbits") & BUTTON_CALL) == 0)
-    SYMBOLS_POSSIBLY_AFFECTED ("myturnbits")
-END_TESTCASE
-
-
-BEGIN_TESTCASE
-    TESTCASE_ID ("0505")
-    HEURISTIC_RULE (false)
-    REASONING ("If there's a call button, then there can't be a check button.")
-    PRECONDITION (((int)gws("myturnbits") & BUTTON_CALL) != 0)
-    POSTCONDITION (((int)gws("myturnbits") & BUTTON_CHECK) == 0)
+    REASONING ("If there's a check button, then there can't be a call button and vice versa.")
+    PRECONDITION (true)
+    POSTCONDITION (!((((int)gws("myturnbits") & BUTTON_CALL) == 0) && (((int)gws("myturnbits") & BUTTON_CHECK) != 0)))
     SYMBOLS_POSSIBLY_AFFECTED ("myturnbits")
 END_TESTCASE
 
