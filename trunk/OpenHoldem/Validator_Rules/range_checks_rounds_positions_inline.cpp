@@ -19,7 +19,7 @@ BEGIN_TESTCASE
     REASONING ("Range check for symbol br")
     PRECONDITION (true)
     POSTCONDITION (gws("br") == gws("betround"))
-    SYMBOLS_POSSIBLY_AFFECTED ("br")
+    SYMBOLS_POSSIBLY_AFFECTED ("br, betround")
 END_TESTCASE
 
 
@@ -69,7 +69,7 @@ BEGIN_TESTCASE
     REASONING ("Range check for symbol seatposition")
     PRECONDITION (true)
     POSTCONDITION ((gws("seatposition") >= -9) && (gws("seatposition") <= 9))
-    SYMBOLS_POSSIBLY_AFFECTED ("")
+    SYMBOLS_POSSIBLY_AFFECTED ("seatposition")
 END_TESTCASE
 
 
