@@ -58,7 +58,10 @@ NEW STUFF:
 - Added support for PokerTracker v3 (Thanks, fn101 for the query translation) [OpenHoldem]
 - Added option to disable runtime message boxes [OpenHoldem]
 - Added runtime-check for recursive formulas. [TheHighFish]
-- Added OH-Validator to verify the gamestate at the symbol level. [TheHighfish]
+- Added OH-Validator to verify the gamestate at the symbol level. 
+  Documentation: http://www.maxinmontreal.com/wiki/index.php5?title=OpenHoldem:EndUserDocumentation:Validator
+  Thanks to all the people who help developing and testing: USBFreak, Xtions, Tinkerer, Maverick, Bender and Want2Learn.
+  [TheHighFish]
 - "swagselectionmethod", "swagdeletionmethod", "swagconfirmationmethod" and "buttonclickmethod" are now settings that are drawn from
   the table map file. The settings that might be saved in the registry from previous OpenHoldem versions are deprecated and are now 
   ignored for these methods.  SWAG timings are still set in OpenHoldem preferences, as usual. Opening a version 1 .tm file with version
