@@ -25,7 +25,8 @@ private:
 	bool	_postcondition;
 	char	*_symbols_possibly_affected;
 private:
-	bool _EnabledManually;
+	bool _enabled_manually;
+	bool _no_errors_this_heartbeat;
 } *p_validator; 
 
 #endif
