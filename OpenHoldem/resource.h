@@ -502,6 +502,7 @@
 #define ID_NUMBER19                     32980
 #define ID_NUMBER10                     32981
 #define ID_FILE_DISCONNECT              32982
+#define ID_MAIN_TOOLBAR_VALIDATOR		32983
 #define ID_EDIT_FORCEUSERCHAIR          32985
 #define ID_INDICATOR_STATUS_PLCARDS     61191
 

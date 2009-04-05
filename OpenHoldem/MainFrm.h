@@ -32,6 +32,7 @@ protected: // create from serialization only
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnUpdateStatus(CCmdUI *pCmdUI);
 	afx_msg void OnAutoplayer();
+	afx_msg void OnValidator();
 	afx_msg void OnMinMax();
 	afx_msg void OnAttachTop();
 	afx_msg void OnAttachBottom();
