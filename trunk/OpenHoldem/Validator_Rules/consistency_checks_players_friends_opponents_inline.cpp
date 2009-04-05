@@ -63,8 +63,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The number of opponents who are playing plus the ones who have folded must equal the number of opponents who got dealt cards. ")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nopponentsfolded") + gws("nopponentsplaying")) == gws("nopponentsplaying"))
-    SYMBOLS_POSSIBLY_AFFECTED ("nopponentsfolded, nopponentsplaying, nopponentsplaying")
+    POSTCONDITION ((gws("nopponentsfolded") + gws("nopponentsplaying")) == gws("nopponentsdealt"))
+    SYMBOLS_POSSIBLY_AFFECTED ("nopponentsfolded, nopponentsplaying, nopponentsdealt")
 END_TESTCASE
 
 
