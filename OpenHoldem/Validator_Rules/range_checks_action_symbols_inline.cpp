@@ -16,7 +16,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbols raisbitsx (x=1-4) ")
     PRECONDITION (true)
-    POSTCONDITION ((gws("raisbits1") >= 0) && (gws("raisbits1") <= 512) && (gws("raisbits2") >= 0) && (gws("raisbits2") <= 512) && (gws("raisbits3") >= 0) && (gws("raisbits3") <= 512) && (gws("raisbits4") >= 0) && (gws("raisbits4") <= 512) )
+    POSTCONDITION ((gws("raisbits1") >= 0) && (gws("raisbits1") <= 1023) && (gws("raisbits2") >= 0) && (gws("raisbits2") <= 1023) && (gws("raisbits3") >= 0) && (gws("raisbits3") <= 1023) && (gws("raisbits4") >= 0) && (gws("raisbits4") <= 1023) )
     SYMBOLS_POSSIBLY_AFFECTED ("raisbits1, raisbits2, raisbits3, raisbits4")
 END_TESTCASE
 
@@ -26,7 +26,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbols callbitsx (x=1-4) ")
     PRECONDITION (true)
-    POSTCONDITION ((gws("callbits1") >= 0) && (gws("callbits1") <= 512) && (gws("callbits2") >= 0) && (gws("callbits2") <= 512) && (gws("callbits3") >= 0) && (gws("callbits3") <= 512) && (gws("callbits4") >= 0) && (gws("callbits4") <= 512) )
+    POSTCONDITION ((gws("callbits1") >= 0) && (gws("callbits1") <= 1023) && (gws("callbits2") >= 0) && (gws("callbits2") <= 1023) && (gws("callbits3") >= 0) && (gws("callbits3") <= 1023) && (gws("callbits4") >= 0) && (gws("callbits4") <= 1023) )
     SYMBOLS_POSSIBLY_AFFECTED ("callbits1, callbits2, callbits3, callbits4")
 END_TESTCASE
 
@@ -36,7 +36,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbols foldbitsx (x=1-4) ")
     PRECONDITION (true)
-    POSTCONDITION ((gws("foldbits1") >= 0) && (gws("foldbits1") <= 512) && (gws("foldbits2") >= 0) && (gws("foldbits2") <= 512) && (gws("foldbits3") >= 0) && (gws("foldbits3") <= 512) && (gws("foldbits4") >= 0) && (gws("foldbits4") <= 512) )
+    POSTCONDITION ((gws("foldbits1") >= 0) && (gws("foldbits1") <= 1023) && (gws("foldbits2") >= 0) && (gws("foldbits2") <= 1023) && (gws("foldbits3") >= 0) && (gws("foldbits3") <= 1023) && (gws("foldbits4") >= 0) && (gws("foldbits4") <= 1023) )
     SYMBOLS_POSSIBLY_AFFECTED ("foldbits1, foldbits2, foldbits3, foldbits4")
 END_TESTCASE
 

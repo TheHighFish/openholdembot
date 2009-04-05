@@ -69,9 +69,9 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0507")
     HEURISTIC_RULE (false)
-    REASONING ("If it's a NL- or a PL-game and it's my turn and my balance is greater than the bets to call, then there has to be always a raise button.")
+    REASONING ("If it's a NL- or a PL-game and it's my turn and my balance is greater than the bets to call, then there has to be always a raise button (or a call button, in case all opponents are allin).")
     PRECONDITION (gws("ismyturn") && (gws("isnl") || gws("ispl")) && ((gws("balance")/gws("bets")) > gws("nbetstocall")))
-    POSTCONDITION (((int)gws("myturnbits") & BUTTON_RAISE) != 0)
+    POSTCONDITION ((((int)gws("myturnbits") & BUTTON_RAISE) != 0) || (((int)gws("myturnbits") & BUTTON_CALL) != 0))
     SYMBOLS_POSSIBLY_AFFECTED ("ismyturn, isnl, ispl, balance, bets, nbetstocall, myturnbits")
 END_TESTCASE
 
@@ -89,9 +89,9 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0509")
     HEURISTIC_RULE (false)
-    REASONING ("If it's a NL game and it's my turn, then there has to be always an allin button.")
+    REASONING ("If it's a NL game and it's my turn, then there has to be always an allin button (or a call button, in case all opponents are allin).")
     PRECONDITION (gws("isnl") && gws("ismyturn"))
-    POSTCONDITION (((int)gws("myturnbits") & BUTTON_ALLIN) != 0)
+    POSTCONDITION ((((int)gws("myturnbits") & BUTTON_ALLIN) != 0) || (((int)gws("myturnbits") & BUTTON_CALL) != 0))
     SYMBOLS_POSSIBLY_AFFECTED ("isnl, ismyturn, myturnbits")
 END_TESTCASE
 

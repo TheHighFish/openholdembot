@@ -68,7 +68,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol seatposition")
     PRECONDITION (true)
-    POSTCONDITION ((gws("seatposition") >= -9) && (gws("seatposition") <= 9))
+    POSTCONDITION ((gws("seatposition") >= 0) && (gws("seatposition") <= 10))
     SYMBOLS_POSSIBLY_AFFECTED ("seatposition")
 END_TESTCASE
 
