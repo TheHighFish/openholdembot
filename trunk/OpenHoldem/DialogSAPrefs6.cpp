@@ -131,7 +131,8 @@ void CDlgSAPrefs6::OnBnClickedPtTest()
 	conn_str += " port=" + port;
 	conn_str += " user=" + user;
 	conn_str += " password=" + pass;
-	conn_str += " dbname=" + dbname;
+	conn_str += " dbname='" + dbname;
+	conn_str += "'";
 
 	// Set busy cursor
 	pMyMainWnd->set_wait_cursor(true);
