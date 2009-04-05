@@ -3,6 +3,7 @@
 #include "CAutoPlayer.h"
 #include "CDllExtension.h"
 #include "CPreferences.h"
+#include "CReplayFrame.h"
 #include "CSymbols.h"
 #include "CValidator.h"
 
@@ -12,7 +13,7 @@ CValidator *p_validator = NULL;
 
 CValidator::CValidator()
 {
-	_EnabledManually = false;
+	_enabled_manually = false;
 }
 
 
@@ -23,7 +24,7 @@ CValidator::~CValidator()
 
 void CValidator::SetEnabledManually(bool Enabled)
 {
-	_EnabledManually = Enabled;
+	_enabled_manually = Enabled;
 }
 
 
@@ -64,10 +65,20 @@ void CValidator::ValidateSingleRule()
 		// Test failed?
 	    if (!_postcondition ) 
         { 
+			if (_no_errors_this_heartbeat)
+			{
+				// First error: shoot replayframe, if needed
+				if (prefs.validator_shoot_replayframe_on_error())
+				{
+					CReplayFrame crf;
+					crf.CreateReplayFrame();
+				}
+				_no_errors_this_heartbeat = false;
+			}
 			if (prefs.validator_stop_on_error()) 
 			{ 
 				p_autoplayer->set_autoplayer_engaged(false); 
-			} 
+			}
 			// Create error message
 			CString the_ErrorMessage = "TESTCASE ID: " 
 				+ CString(_testcase_id) 
@@ -190,7 +201,7 @@ void CValidator::ValidateGameState()
 		// Enabled, when it's my turn?
 		|| ((prefs.validator_enabled() == 1) && (p_symbols->sym()->ismyturn)) 
 		// Manually enabled via toolbar?
-		|| (_EnabledManually))
+		|| (_enabled_manually))
 	{
 	// Validate.
 	//
@@ -203,6 +214,7 @@ void CValidator::ValidateGameState()
 	// we just put them in external files
 	// and include them here as is.
 	//
+	_no_errors_this_heartbeat = true;
 #include "Validator_Rules\range_checks_general_symbols_inline.cpp"
 #include "Validator_Rules\range_checks_tablemap_symbols_inline.cpp"
 #include "Validator_Rules\range_checks_formula_file_inline.cpp"

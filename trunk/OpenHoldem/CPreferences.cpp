@@ -169,6 +169,7 @@ void CPreferences::InitDefaults(void)
 	_validator_enabled = 0;
 	_validator_use_heuristic_rules = true;
 	_validator_stop_on_error = true;
+	_validator_shoot_replayframe_on_error = true;
 
 	_window_class_name = "OpenHoldem";
 	_mutex_name= "OHAntiColl";
@@ -323,9 +324,11 @@ void CPreferences::ReadPreferences()
 		ReadReg("log_level", &_log_level);
 		ReadReg("log_level_pt", &_log_level_pt);
 
+		// Validator
 		ReadReg("validator_enabled", &_validator_enabled);
 		ReadReg("validator_use_heuristic_rules", &_validator_use_heuristic_rules);
 		ReadReg("validator_stop_on_error", &_validator_stop_on_error);
+		ReadReg("validator_shoot_replayframe_on_error", &_validator_shoot_replayframe_on_error);
 
 		// obscure
 		ReadReg("window_class_name", &_window_class_name);

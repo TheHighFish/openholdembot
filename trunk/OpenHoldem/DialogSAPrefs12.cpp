@@ -51,6 +51,7 @@ BOOL CDlgSAPrefs12::OnInitDialog()
 	}
 	CheckDlgButton(IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES, prefs.validator_use_heuristic_rules() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_CHECK_VALIDATOR_STOP_ON_ERROR, prefs.validator_stop_on_error() ? MF_CHECKED : MF_UNCHECKED);
+	CheckDlgButton(IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR, prefs.validator_shoot_replayframe_on_error() ? MF_CHECKED : MF_UNCHECKED);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -72,6 +73,7 @@ void CDlgSAPrefs12::OnOK()
 	}
 	prefs.set_validator_use_heuristic_rules(IsDlgButtonChecked(IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES));
 	prefs.set_validator_stop_on_error(IsDlgButtonChecked(IDC_CHECK_VALIDATOR_STOP_ON_ERROR));
+	prefs.set_validator_shoot_replayframe_on_error(IsDlgButtonChecked(IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR));
 	CSAPrefsSubDlg::OnOK();
 }
 

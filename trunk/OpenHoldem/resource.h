@@ -383,6 +383,7 @@
 #define IDC_CHECK_VALIDATOR_HEURISTIC_RULES 1313
 #define IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES 1313
 #define IDC_CHAIRNUM                    1315
+#define IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR 1317
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -502,7 +503,7 @@
 #define ID_NUMBER19                     32980
 #define ID_NUMBER10                     32981
 #define ID_FILE_DISCONNECT              32982
-#define ID_MAIN_TOOLBAR_VALIDATOR		32983
+#define ID_MAIN_TOOLBAR_VALIDATOR       32983
 #define ID_EDIT_FORCEUSERCHAIR          32985
 #define ID_INDICATOR_STATUS_PLCARDS     61191
 
@@ -512,7 +513,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        180
 #define _APS_NEXT_COMMAND_VALUE         32986
-#define _APS_NEXT_CONTROL_VALUE         1317
+#define _APS_NEXT_CONTROL_VALUE         1318
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
