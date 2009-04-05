@@ -7,13 +7,23 @@
 #include "CValidator.h"
 
 
+CValidator *p_validator = NULL;
+
+
 CValidator::CValidator()
 {
+	_EnabledManually = false;
 }
 
 
 CValidator::~CValidator()
 {
+}
+
+
+void CValidator::SetEnabledManually(bool Enabled)
+{
+	_EnabledManually = Enabled;
 }
 
 
@@ -175,18 +185,14 @@ double CValidator::gws(const char *the_Symbol)
 
 void CValidator::ValidateGameState()
 {
-	// Do not validate, if not enabled.
-	// Validate never? Then leave.
-	if (prefs.validator_enabled() == 0) 
-	{ 
-		return; 
-	}
-	// Validate only, when it's my turn, but it is not my turn? Then leave.
-	if ((prefs.validator_enabled() == 1) && !(p_symbols->sym()->ismyturn)) 
-	{ 
-		return; 
-	}
-	// Otherwise validate.
+	if (// Always enabled?
+		(prefs.validator_enabled() == 2)
+		// Enabled, when it's my turn?
+		|| ((prefs.validator_enabled() == 1) && (p_symbols->sym()->ismyturn)) 
+		// Manually enabled via toolbar?
+		|| (_EnabledManually))
+	{
+	// Validate.
 	//
 	//
 	// Validator-rules are defined in "pseudo-code",
@@ -243,4 +249,5 @@ void CValidator::ValidateGameState()
 #include "Validator_Rules\consistency_checks_limits_inline.cpp"
 #include "Validator_Rules\consistency_checks_number_of_bets_inline.cpp"
 #include "Validator_Rules\consistency_checks_action_symbols_inline.cpp"
+	}
 }

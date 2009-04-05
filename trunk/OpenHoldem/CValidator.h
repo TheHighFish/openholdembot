@@ -1,13 +1,14 @@
 #ifndef INC_VALIDATOR_H
 #define INC_VALIDATOR_H
 
-class CValidator
+extern class CValidator
 {
 public:
 	// public functions
 	CValidator();
 	~CValidator();
 	void ValidateGameState();
+	void SetEnabledManually(bool Enabled);
 
 private:
 	// private functions
@@ -23,6 +24,8 @@ private:
 	bool	_precondition;
 	bool	_postcondition;
 	char	*_symbols_possibly_affected;
-}; 
+private:
+	bool _EnabledManually;
+} *p_validator; 
 
 #endif

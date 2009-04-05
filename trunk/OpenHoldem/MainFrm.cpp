@@ -18,6 +18,7 @@
 #include "CPokerPro.h"
 #include "CAutoplayer.h"
 #include "CReplayFrame.h"
+#include "CValidator.h"
 
 #include "..\CTransform\CTransform.h"
 #include "CFormula.h"
@@ -103,6 +104,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_REDCIRCLE, &CMainFrame::OnBnClickedRedCircle)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_AUTOPLAYER, &CMainFrame::OnAutoplayer)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_FORMULA, &CMainFrame::OnEditFormula)
+	ON_BN_CLICKED(ID_MAIN_TOOLBAR_VALIDATOR, &CMainFrame::OnValidator)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_MINMAX, &CMainFrame::OnMinMax)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_ATTACH_TOP, &CMainFrame::OnAttachTop)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, &CMainFrame::OnAttachBottom)
@@ -241,6 +243,9 @@ int CMainFrame::CreateMainToolbar(void)
 
 	// Make formula button sticky
 	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_FORMULA, &tbi);
+
+	// Make validator button sticky
+	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_VALIDATOR, &tbi);
 
 	// Make scraper output button sticky
 	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, &tbi);
@@ -1323,6 +1328,22 @@ void CMainFrame::OnAutoplayer()
 	else 
 	{
 		p_autoplayer->set_autoplayer_engaged(false);
+	}
+}
+
+void CMainFrame::OnValidator() 
+{
+	if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_VALIDATOR)) 
+	{
+		m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_VALIDATOR, true);
+		p_validator->SetEnabledManually(true);
+		Beep(220, 200);
+	}
+	else
+	{
+		m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_VALIDATOR, false);
+		p_validator->SetEnabledManually(false);
+		Beep(440, 200);
 	}
 }
 

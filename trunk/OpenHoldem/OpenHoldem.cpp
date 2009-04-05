@@ -27,6 +27,7 @@
 #include "CPokerPro.h"
 #include "CPerl.hpp"
 #include "CSessionCounter.h"
+#include "CValidator.h"
 
 #include "DialogFormulaScintilla.h"
 
@@ -144,6 +145,7 @@ BOOL COpenHoldemApp::InitInstance()
 	if (!p_perl)  p_perl = new CPerl;
 	if (!p_memory)  p_memory = new CMemory;	
 	if (!p_versus)  p_versus = new CVersus;	
+	if (!p_validator) p_validator = new CValidator;
 
 	// mouse.dll - failure in load is fatal
 	_mouse_dll = LoadLibrary("mouse.dll");
