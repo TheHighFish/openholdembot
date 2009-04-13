@@ -2,6 +2,8 @@ v2.0.0 2009-xx-xx
 =================
 BUG FIXES:
 MAINTENANCE:
+- Removal of identifying information from Properties/Version display in Windows Explorer. [OpenHoldem]
+
 NEW STUFF:
 
 

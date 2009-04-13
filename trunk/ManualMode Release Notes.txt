@@ -4,6 +4,7 @@ BUG FIXES:
 
 MAINTENANCE:
 - Migrated from SEH exception handling to Minidump exception handling. [OpenHoldem]
+- Removal of identifying information from Properties/Version display in Windows Explorer. [OpenHoldem]
 
 NEW STUFF:
 - Added sit out, leave table, pre-fold and auto-post blinds buttons. [OpenHoldem]
