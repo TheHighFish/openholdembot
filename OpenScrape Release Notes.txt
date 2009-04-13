@@ -17,6 +17,7 @@ BUG FIXES:
       
 MAINTENANCE:
 - Migration of table map z, s, r, t, p, h and i record handling from CArray's with manual indices to std::map structures. [OpenHoldem]
+- Removal of identifying information from Properties/Version display in Windows Explorer. [OpenHoldem]
 
 NEW STUFF:
 - Added "swagselectionmethod", "swagdeletionmethod", "swagconfirmationmethod" and "buttonclickmethod" to valid s$strings list.
