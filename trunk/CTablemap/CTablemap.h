@@ -184,11 +184,9 @@ public:
 									  else if (s.MakeLower() == "yes") return true; 
 									  else return false; }
 
-	const bool chipscrapemethod()	{ SMapCI it = _s$.find("chipscrapemethod"); 
-									  if (it==_s$.end()) return false;
-									  CString s=it->second.text;
-									  if (s.MakeLower() == "all") return true;
-									  else return false; }
+	const CString chipscrapemethod(){ SMapCI it = _s$.find("chipscrapemethod"); 
+									  if (it==_s$.end()) return "";
+									  else return it->second.text; }
 
 	const CString scraperdll()		{ SMapCI it = _s$.find("scraperdll"); if (it!=_s$.end()) return it->second.text; else return ""; }
 

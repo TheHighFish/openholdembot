@@ -127,11 +127,11 @@ NEW STUFF:
   and the autoplayer engine.  More can be added as it becomes clear that it is needed.  [OpenHoldem]
 - Added support for 5th prize in ICM calculator.  [OpenHoldem]
 - Added handling of "chipscrapemethod" as specified in the table map file which allows for specifying that the scraper engine
-  should check all 200 possible chip locations (10 stacks of 20 chips) everytime a chip scrape region is required.  The default 
-  behavior is to stop checking a given stack when there is no match, and to stop checking all stacks when the base chip for that 
-  stack does not match. This is only valid when a region specifies the 00, 01, and 10 locations only.  For regions that specify 
-  other chip landing spots, those chips/stacks will be checked as per previous behavior.  A value of "All" will trigger the 
-  "check all 200 locations" behavior, any other value will result in the stop checking behavior as described.  [OpenHoldem]
+  should check either all 200 possible chip locations (10 stacks of 20 chips) ("All") or certain grid of chip locations ("XxY")
+  everytime a chip scrape region is required.  The default behavior is to stop checking a given stack when there is no match, 
+  and to stop checking all stacks when the base chip for that stack does not match. This is only valid when a region specifies 
+  the 00, 01, and 10 locations only.  For regions that specify other chip landing spots, those chips/stacks will be checked as 
+  per original behavior. [OpenHoldem]
 - Added "Edit/Force User Chair" menu item.  This will bypass OH's automatic detection of the user's chair, and set it to whatever
   you specify.  This is really useful for debugging/manual mode, but can be used to specify the user's chair at a live table
   prior to OH auto-detecting it, if you so choose. [OpenHoldem]
