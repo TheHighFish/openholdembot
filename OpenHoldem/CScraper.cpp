@@ -2013,7 +2013,14 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 	BitBlt(hdcCompat, 0, 0, rect.right, rect.bottom, hdc, 0, 0, SRCCOPY);
 	
 	// Get chipscrapemethod option from tablemap, if specified
-	bool chipscrape200 = p_tablemap->chipscrapemethod();
+	CString res = p_tablemap->chipscrapemethod();
+	CString cs_method = res.MakeLower();
+	int cs_method_x = 0, cs_method_y = 0;
+	if (cs_method!="" && cs_method!="all" && cs_method.Find("x")!=-1)
+	{
+		cs_method_x = strtoul(cs_method.Left(cs_method.Find("x")), NULL, 10);
+		cs_method_y = strtoul(cs_method.Mid(cs_method.Find("x")+1), NULL, 10);
+	}
 
 	stop_loop = false;
 	// loop through horizontal stacks
@@ -2089,8 +2096,8 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 				// no hash match
 				if (h_iter == p_tablemap->h$(hash_type)->end())
 				{
-					// See if we should stop horiz or vert loops
-					if (!chipscrape200)
+					// See if we should stop horiz or vert loops on a non-match
+					if (cs_method == "")
 					{
 						// Stop horizontal scrape loop if chipindex==0 AND a non-match
 						if (chipindex==0)
@@ -2100,6 +2107,7 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 						chipindex = MAX_CHIPS_PER_STACK+1;
 					}
 				}
+
 				// hash match found
 				else
 				{
@@ -2109,7 +2117,16 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 					result += atof(resstring.GetString());
 				}
 			}
+
+			// See if we should stop chip loop due to chipscrapemethod
+			if (cs_method!="" && cs_method!="all" && chipindex>=cs_method_y)
+				chipindex = MAX_CHIPS_PER_STACK+1;
 		}
+
+		// See if we should stop stack loop due to chipscrapemethod
+		if (cs_method!="" && cs_method!="all" && stackindex>=cs_method_x)
+			stackindex = MAX_CHIP_STACKS+1;
+
 	}
 
 	SelectObject(hdcCompat, old_bitmap);
