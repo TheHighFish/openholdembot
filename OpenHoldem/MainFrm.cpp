@@ -1337,13 +1337,11 @@ void CMainFrame::OnValidator()
 	{
 		m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_VALIDATOR, true);
 		p_validator->SetEnabledManually(true);
-		Beep(220, 200);
 	}
 	else
 	{
 		m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_VALIDATOR, false);
 		p_validator->SetEnabledManually(false);
-		Beep(440, 200);
 	}
 }
 
@@ -1653,7 +1651,6 @@ void CMainFrame::OnPerlLoadFormula()
 		p_perl->ReloadFormulaFile();
 	}
 	//  Make some noise, as there's no visible reaction
-	Beep(880, 125);	
 }
 
 void CMainFrame::OnPerlLoadSpecificFormula() 
@@ -1684,7 +1681,6 @@ void CMainFrame::OnPerlReloadFormula()
 	//	(This is a shortcut for unload + load.)
 	p_perl->ReloadFormulaFile();
 	//  Make some noise, as there's no visible reaction
-	Beep(880, 125);
 }
 
 void CMainFrame::OnPerlCheckSyntax() 
