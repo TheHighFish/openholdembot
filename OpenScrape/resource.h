@@ -101,6 +101,7 @@
 #define IDC_REGIONLIST                  1090
 #define IDC_SOURCE                      1091
 #define IDC_MISSING_FONTS               1092
+#define IDC_COMBO1                      1092
 #define IDC_EDIT1                       1093
 #define IDC_EDITXY                      1093
 #define ID_MAIN_TOOLBAR_GREENCIRCLE     32771
@@ -124,7 +125,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        147
 #define _APS_NEXT_COMMAND_VALUE         32785
-#define _APS_NEXT_CONTROL_VALUE         1092
+#define _APS_NEXT_CONTROL_VALUE         1093
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
