@@ -69,9 +69,9 @@ NEW STUFF:
   ignored for these methods.  SWAG timings are still set in OpenHoldem preferences, as usual. Opening a version 1 .tm file with version
   2.0.0+ of OpenScrape or OpenHoldem will result in a reminder message to check these fields. If these methods are not specified in 
   the .tm file, then the default actions are:
-  swagselectionmethod = Dbl Click  (valid values are "Sgl Click" or "Dbl Click" or "Click Drag")
-  swagdeletionmethod = Delete  (valid values are "Delete" or "Backspace")
-  swagconfirmationmethod = Enter  (valid values are "Enter" or "Click Bet")
+  swagselectionmethod = Dbl Click  (valid values are "Sgl Click", "Dbl Click", "Click Drag" or "Nothing")
+  swagdeletionmethod = Delete  (valid values are "Delete", "Backspace" or "Nothing")
+  swagconfirmationmethod = Enter  (valid values are "Enter", "Click Bet" or "Nothing")
   buttonclickmethod = Double  (valid values are "Single" or "Double")
   [OpenHoldem]
 - Added new Table Map "swagselectionmethod" option: Single Click  [OpenHoldem]

@@ -149,6 +149,7 @@ public:
 									  if (s.MakeLower() == "sgl click") return TEXTSEL_SINGLECLICK;
 									  else if (s.MakeLower() == "dbl click") return TEXTSEL_DOUBLECLICK;
 									  else if (s.MakeLower() == "click drag") return TEXTSEL_CLICKDRAG;
+									  else if (s.MakeLower() == "nothing") return TEXTSEL_NOTHING;
 									  else return TEXTSEL_DOUBLECLICK; }
 
 	const int swagdeletionmethod()	{ SMapCI it = _s$.find("swagdeletionmethod");
@@ -156,6 +157,7 @@ public:
 									  CString s=it->second.text;
 									  if (s.MakeLower() == "delete") return TEXTDEL_DELETE;
 									  else if (s.MakeLower() == "backspace") return TEXTDEL_BACKSPACE; 
+									  else if (s.MakeLower() == "nothing") return TEXTDEL_NOTHING;
 									  else return TEXTDEL_DELETE; }
 
 	const int swagconfirmationmethod() { SMapCI it = _s$.find("swagconfirmationmethod");
@@ -163,6 +165,7 @@ public:
 									  CString s=it->second.text;
 									  if (s.MakeLower() == "enter") return BETCONF_ENTER;
 									  else if (s.MakeLower() == "click bet") return BETCONF_CLICKBET; 
+									  else if (s.MakeLower() == "nothing") return BETCONF_NOTHING;
 									  else return BETCONF_ENTER; }
 
 	const int buttonclickmethod()	{ SMapCI it = _s$.find("buttonclickmethod");

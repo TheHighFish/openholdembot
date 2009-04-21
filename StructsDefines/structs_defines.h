@@ -96,10 +96,13 @@ typedef boost::spirit::node_val_data_factory<const char *> int_factory_t;
 #define TEXTSEL_SINGLECLICK	1
 #define TEXTSEL_DOUBLECLICK	2
 #define TEXTSEL_CLICKDRAG	3
+#define TEXTSEL_NOTHING		4
 #define TEXTDEL_DELETE		1
 #define TEXTDEL_BACKSPACE	2
+#define TEXTDEL_NOTHING		3
 #define BETCONF_ENTER		1
 #define BETCONF_CLICKBET	2
+#define BETCONF_NOTHING		3
 
 // Button click options
 #define BUTTON_SINGLECLICK	1
