@@ -49,16 +49,15 @@ BOOL CDlgEditSymbols::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	SetWindowText(titletext.GetString());
+	m_Titletext.SetWindowText(titlebartext.GetString());
 
+	// Set drop down choices for "Record name" field and select current
 	for (i=0; i<strings.GetSize(); i++)  m_Name.AddString(strings[i]);
 	m_Name.SelectString(-1, name);
 	m_Name.SetWindowPos(NULL, 0, 0, 145, 300, SWP_NOMOVE | SWP_NOZORDER);
 
-	m_Value.SetWindowText(value.GetString());
-
-	m_Titletext.SetWindowText(titlebartext.GetString());
-
-	OnCbnSelchangeName();
+	m_Value.SetWindowText(value);
+	OnCbnSelchangeName();		
 
 	m_Name.SetFocus();
 
@@ -115,6 +114,13 @@ void CDlgEditSymbols::OnCbnSelchangeName()
 		m_ParseResults.EnableWindow(false);
 		m_ParseButton.EnableWindow(false);
 	}
+
+	m_Value.GetWindowText(value);
+	m_Value.Clear();
+	m_Value.ResetContent();
+	SetDefaultValues();
+	if (m_Value.SelectString(-1, value) == CB_ERR)
+		m_Value.SetWindowText(value);
 }
 
 
@@ -154,5 +160,50 @@ void CDlgEditSymbols::OnEnKillfocusValue()
 			MessageBox("Valid values for buttonclickmethod are:\n"
 			           "'Single' and 'Double'",
 					   "Invalid value", MB_OK);	
+	}
+}
+
+void CDlgEditSymbols::SetDefaultValues()
+{
+	m_Value.Clear();
+	if (name.MakeLower() == "swagselectionmethod")
+	{
+		m_Value.AddString("Sgl Click");
+		m_Value.AddString("Dbl Click");
+		m_Value.AddString("Click Drag");
+		m_Value.AddString("Nothing");
+	}
+	
+	else if (name.MakeLower() == "swagdeletionmethod")
+	{
+		m_Value.AddString("Delete");
+		m_Value.AddString("Backspace");
+		m_Value.AddString("Nothing");
+	}
+
+	else if (name.MakeLower() == "swagconfirmationmethod")
+	{
+		m_Value.AddString("Enter");
+		m_Value.AddString("Click Bet");
+		m_Value.AddString("Nothing");
+	}
+	
+	else if (name.MakeLower() == "buttonclickmethod")
+	{
+		m_Value.AddString("Single");
+		m_Value.AddString("Double");
+	}
+	
+	else if (name.MakeLower() == "balancenumbersonly")
+	{
+		m_Value.AddString("False");
+		m_Value.AddString("True");
+	}
+	
+	else if (name.MakeLower() == "chipscrapemethod")
+	{
+		m_Value.AddString("Original");
+		m_Value.AddString("All");
+		m_Value.AddString("XxY");
 	}
 }

@@ -316,7 +316,6 @@ CAPTION "Dialog"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     COMBOBOX        IDC_NAME,3,17,96,30,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_VALUE,104,17,212,15,ES_AUTOHSCROLL
     DEFPUSHBUTTON   "OK",IDOK,213,191,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,267,191,50,14
     LTEXT           "String:",IDC_STATIC,105,5,22,8
@@ -325,6 +324,7 @@ BEGIN
     EDITTEXT        IDC_TITLETEXT,50,37,266,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_PARSERESULTS,4,75,313,107,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | WS_VSCROLL | WS_HSCROLL
     PUSHBUTTON      "Parse titlebar text with 'string'",IDC_PARSEBUTTON,5,58,114,14
+    COMBOBOX        IDC_VALUE,103,17,213,113,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
 END
 
 IDD_EDIT_REGION DIALOGEX 0, 0, 130, 63
@@ -425,13 +425,8 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", ""
-            VALUE "FileDescription", ""
             VALUE "FileVersion", "2.0.0.0"
-            VALUE "InternalName", ""
             VALUE "LegalCopyright", "Licensed under GPLv3"
-            VALUE "OriginalFilename", ""
-            VALUE "ProductName", ""
             VALUE "ProductVersion", "2.0.0.0"
         END
     END
