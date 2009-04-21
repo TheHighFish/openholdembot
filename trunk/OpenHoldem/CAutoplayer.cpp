@@ -312,6 +312,10 @@ void CAutoplayer::DoSwag(void)
 			(theApp._dll_mouse_click_drag) (pMyMainWnd->attached_hwnd(), rect_edit, NULL, p_null);
 		}
 
+		else if (p_tablemap->swagselectionmethod() == TEXTSEL_NOTHING)
+		{
+		}
+
 		else
 		{
 			write_log(3, "...ending DoSwag early (invalid swagselectionmethod).\n");
@@ -339,6 +343,10 @@ void CAutoplayer::DoSwag(void)
 		{
 			write_log(3, "Text deletion; calling keyboard.dll to press 'backspace'\n");
 			(theApp._dll_keyboard_sendkey) (pMyMainWnd->attached_hwnd(), r_null, VK_BACK, NULL, p_null);
+		}
+
+		else if (p_tablemap->swagdeletionmethod() == TEXTDEL_NOTHING)
+		{
 		}
 
 		else
@@ -420,6 +428,10 @@ void CAutoplayer::DoSwag(void)
 						rect_button.left, rect_button.top, rect_button.right, rect_button.bottom);					
 					(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_button, MouseLeft, 1, hwnd_focus, cur_pos);
 				}
+			}
+
+			if (p_tablemap->swagconfirmationmethod() == BETCONF_NOTHING)
+			{
 			}
 
 			else

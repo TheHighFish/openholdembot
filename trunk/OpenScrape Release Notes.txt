@@ -23,9 +23,9 @@ NEW STUFF:
 - Added "swagselectionmethod", "swagdeletionmethod", "swagconfirmationmethod" and "buttonclickmethod" to valid s$strings list.
   The settings that might be saved in the registry from previous OpenHoldem versions are now ignored for these methods.  If these
   methods are not specified in the .tm file, then the default actions are:
-  swagselectionmethod = Dbl Click  (valid values are "Sgl Click" or "Dbl Click" or "Click Drag")
-  swagdeletionmethod = Delete  (valid values are "Delete" or "Backspace")
-  swagconfirmationmethod = Enter  (valid values are "Enter" or "Click Bet")
+  swagselectionmethod = Dbl Click  (valid values are "Sgl Click", "Dbl Click", "Click Drag" or "Nothing")
+  swagdeletionmethod = Delete  (valid values are "Delete", "Backspace" or "Nothing")
+  swagconfirmationmethod = Enter  (valid values are "Enter", "Click Bet" or "Nothing")
   buttonclickmethod = Double  (valid values are "Single" or "Double")
   [OpenHoldem]
 - Added "handresetmethod" to valid s$strings list.  This new symbol instructs the OpenHoldem engine as to which scrape changes 
