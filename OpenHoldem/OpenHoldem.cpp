@@ -218,8 +218,11 @@ BOOL COpenHoldemApp::InitInstance()
 	AddDocTemplate(pDocTemplate);
 
 	// Enable DDE Execute open
-	EnableShellOpen();
-	RegisterShellFileTypes(true);
+	if (load_from_registry)
+	{
+		EnableShellOpen();
+		RegisterShellFileTypes(false);
+	}
 
 	// Parse command line for standard shell commands, DDE, file open
 	CCommandLineInfo cmdInfo;
