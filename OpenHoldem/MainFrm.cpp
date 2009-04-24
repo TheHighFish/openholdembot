@@ -1651,6 +1651,7 @@ void CMainFrame::OnPerlLoadFormula()
 		p_perl->ReloadFormulaFile();
 	}
 	//  Make some noise, as there's no visible reaction
+	Beep(880, 125);	
 }
 
 void CMainFrame::OnPerlLoadSpecificFormula() 
@@ -1681,6 +1682,7 @@ void CMainFrame::OnPerlReloadFormula()
 	//	(This is a shortcut for unload + load.)
 	p_perl->ReloadFormulaFile();
 	//  Make some noise, as there's no visible reaction
+	Beep(880, 125);
 }
 
 void CMainFrame::OnPerlCheckSyntax() 

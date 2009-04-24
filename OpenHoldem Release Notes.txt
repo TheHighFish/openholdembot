@@ -37,6 +37,7 @@ BUG FIXES:
   and their associated count symbols, nplayersplaying, nplayersdealt, etc.
 - versus_path was undifined. We now take the OpenHoldem-installation-directory to search for versus.bin. [TheHighFish]
 - Surround database name in single quotes when testing PokerTracker connection
+- pcbits returned incorrect values (0x1F) for X2s. Thanks to Want2Learn for reporting it. [TheHighFish]
   
 MAINTENANCE:
 - Optimized symbol-lookup. [TheHighFish]
