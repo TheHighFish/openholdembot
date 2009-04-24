@@ -3720,36 +3720,36 @@ const double CSymbols::CalcPokerval(HandVal hv, int n, double *pcb, int card0, i
 
 		// either hole card used as top card
 		if (n>=1 &&
-				StdDeck_RANK(card0) == HandVal_TOP_CARD(hv) ||
-				StdDeck_RANK(card1) == HandVal_TOP_CARD(hv) )
+				(StdDeck_RANK(card0) == HandVal_TOP_CARD(hv) ||
+				 StdDeck_RANK(card1) == HandVal_TOP_CARD(hv) ))
 		{
 			bits = (int) bits | (1<<4);
 		}
 		// either hole card used as first kicker
 		if (n>=2 &&
-				StdDeck_RANK(card0) == HandVal_SECOND_CARD(hv) ||
-				StdDeck_RANK(card1) == HandVal_SECOND_CARD(hv) )
+				(StdDeck_RANK(card0) == HandVal_SECOND_CARD(hv) ||
+				 StdDeck_RANK(card1) == HandVal_SECOND_CARD(hv) ))
 		{
 			bits = (int) bits | (1<<3);
 		}
 		// either hole card used as second kicker
 		if (n>=3 &&
-				StdDeck_RANK(card0) == HandVal_THIRD_CARD(hv) ||
-				StdDeck_RANK(card1) == HandVal_THIRD_CARD(hv) )
+				(StdDeck_RANK(card0) == HandVal_THIRD_CARD(hv) ||
+				 StdDeck_RANK(card1) == HandVal_THIRD_CARD(hv) ))
 		{
 			bits = (int) bits | (1<<2);
 		}
 		// either hole card used as third kicker
 		if (n>=3 &&
-				StdDeck_RANK(card0) == HandVal_FOURTH_CARD(hv) ||
-				StdDeck_RANK(card1) == HandVal_FOURTH_CARD(hv) )
+				(StdDeck_RANK(card0) == HandVal_FOURTH_CARD(hv) ||
+				 StdDeck_RANK(card1) == HandVal_FOURTH_CARD(hv) ))
 		{
 			bits = (int) bits | (1<<1);
 		}
 		// either hole card used as fourth kicker
 		if (n>=3 &&
-				StdDeck_RANK(card0) == HandVal_FIFTH_CARD(hv) ||
-				StdDeck_RANK(card1) == HandVal_FIFTH_CARD(hv) )
+				(StdDeck_RANK(card0) == HandVal_FIFTH_CARD(hv) ||
+				 StdDeck_RANK(card1) == HandVal_FIFTH_CARD(hv) ))
 		{
 			bits = (int) bits | (1<<0);
 		}
