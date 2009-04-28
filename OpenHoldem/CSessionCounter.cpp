@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CSessionCounter.h"
+#include "CPreferences.h"
 
 // Global instantiation of CSessionCounter class
 CSessionCounter SessionCounter;
@@ -12,7 +13,7 @@ CSessionCounter::CSessionCounter()
 	for (int i=0; i<MAX_SESSION_IDS; i++)
 	{
 		// Name the mutexes A..Y
-		CString mutex_name = "Session_ID_Mutex_" + CString(char('A' + i));
+		CString mutex_name = prefs.mutex_name() + "_" + CString(char('A' + i));
 		hMutex = CreateMutex(0, FALSE, mutex_name);
 		if (GetLastError() != ERROR_ALREADY_EXISTS)
 		{
