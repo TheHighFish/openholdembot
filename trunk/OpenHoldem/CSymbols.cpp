@@ -1612,9 +1612,6 @@ void CSymbols::CalcAutoplayer(void)
 				else if (p_scraper->IsStringRaise(button_label) || button_label.MakeLower() == "swag")
 				set_sym_myturnbits((int) _sym.myturnbits | (1<<2));
 
-				else if (p_scraper->IsStringAllin(button_label))
-				set_sym_myturnbits((int) _sym.myturnbits | (1<<3));						// myturnbits
-
 				else if (p_scraper->IsStringCheck(button_label))
 				set_sym_myturnbits((int) _sym.myturnbits | (1<<4));
 

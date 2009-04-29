@@ -168,7 +168,7 @@ void CReplayFrame::CreateReplayFrame(void)
 			fprintf(fp, "<tr><th>FCRA</th></tr>\n");
 			fprintf(fp, "<tr>\n");
 			int sym_myturnbits = (int) p_symbols->sym()->myturnbits;
-			fcra_seen.Format("%s%s%s%s",
+			fcra_seen.Format("%s%s%s%s%s",
 				sym_myturnbits&0x01 ? "F" : ".",
 				sym_myturnbits&0x02 ? "C" : ".",
 				// Check button out of order to stay consistent
