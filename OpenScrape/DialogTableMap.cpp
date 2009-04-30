@@ -3751,8 +3751,8 @@ void CDlgTableMap::CreateHash(int hash_type)
 {
 	STablemapHashValue	new_hash;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	HTREEITEM			new_hti, node, child_node;
-	CString				text, node_text;
+	HTREEITEM			new_hti, child_node;
+	CString				text;
 
 	CString				sel_text = "", type_text = "";
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
@@ -3774,20 +3774,10 @@ void CDlgTableMap::CreateHash(int hash_type)
 	}
 	else
 	{
-		// Find root of the Hashes node
-		node = m_TableMapTree.GetChildItem(NULL);
-		node_text = m_TableMapTree.GetItemText(node);
-
-		while (node_text!="Hashes" && node!=NULL)
-		{
-			node = m_TableMapTree.GetNextItem(node, TVGN_NEXT);
-			node_text = m_TableMapTree.GetItemText(node);
-		}
-
 		// Insert the new record into the tree
+		HTREEITEM node = GetTypeNode("Hashes");
 		if (node!=NULL)
 		{
-			// Add new record to tree
 			text.Format("%s (%d)", new_hash.name, hash_type);
 			new_hti = m_TableMapTree.InsertItem(text.GetString(), node);
 			m_TableMapTree.SortChildren(node);
@@ -3797,7 +3787,7 @@ void CDlgTableMap::CreateHash(int hash_type)
 
 		// Re-select previously selected image
 		child_node = m_TableMapTree.GetChildItem(node);
-		node_text = m_TableMapTree.GetItemText(child_node);
+		CString node_text = m_TableMapTree.GetItemText(child_node);
 		while (node_text!=sel_text && child_node!=NULL)
 		{
 			child_node = m_TableMapTree.GetNextItem(child_node, TVGN_NEXT);
@@ -3809,6 +3799,9 @@ void CDlgTableMap::CreateHash(int hash_type)
 
 		//Invalidate(false);
 		pDoc->SetModifiedFlag(true);
+
+		text.Format("Added hash group %d record: %s", hash_type, new_hash.name);
+		MessageBox(text, "Hash record add success", MB_OK);
 	}
 
 	update_display();
