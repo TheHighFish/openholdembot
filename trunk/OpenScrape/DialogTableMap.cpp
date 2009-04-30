@@ -1612,17 +1612,19 @@ void CDlgTableMap::OnBnClickedNew()
 				{
 
 					// Add new record to tree
+					HTREEITEM new_hti = NULL;
 					if (region_grouping==UNGROUPED)
 					{
-						HTREEITEM new_hti = m_TableMapTree.InsertItem(new_region.name, type_node ? type_node : m_TableMapTree.GetSelectedItem());
+						new_hti = m_TableMapTree.InsertItem(new_region.name, type_node ? type_node : m_TableMapTree.GetSelectedItem());
 						m_TableMapTree.SortChildren(type_node ? type_node : m_TableMapTree.GetSelectedItem());
 					}
 
 					else
 					{
-						InsertGroupedRegion(new_region.name);
+						new_hti = InsertGroupedRegion(new_region.name);
 					}
 
+					m_TableMapTree.SelectItem(new_hti);
 
 					pDoc->SetModifiedFlag(true);
 					Invalidate(false);
