@@ -501,7 +501,7 @@ void CMainFrame::OnGroupregionsBytype()
 	theApp.m_TableMapDlg->UngroupRegions();
 	theApp.m_TableMapDlg->GroupRegions();
 
-	HTREEITEM hRegionNode = theApp.m_TableMapDlg->GetRegionNode();
+	HTREEITEM hRegionNode = theApp.m_TableMapDlg->GetTypeNode("Regions");
 	theApp.m_TableMapDlg->m_TableMapTree.SortChildren(hRegionNode);
 }
 
@@ -516,7 +516,7 @@ void CMainFrame::OnGroupregionsByname()
 	theApp.m_TableMapDlg->UngroupRegions();
 	theApp.m_TableMapDlg->GroupRegions();
 
-	HTREEITEM hRegionNode = theApp.m_TableMapDlg->GetRegionNode();
+	HTREEITEM hRegionNode = theApp.m_TableMapDlg->GetTypeNode("Regions");
 	theApp.m_TableMapDlg->m_TableMapTree.SortChildren(hRegionNode);
 }
 
@@ -530,7 +530,7 @@ void CMainFrame::OnViewUngroupregions()
 	theApp.m_TableMapDlg->region_grouping = UNGROUPED;
 	theApp.m_TableMapDlg->UngroupRegions();
 
-	HTREEITEM hRegionNode = theApp.m_TableMapDlg->GetRegionNode();
+	HTREEITEM hRegionNode = theApp.m_TableMapDlg->GetTypeNode("Regions");
 	theApp.m_TableMapDlg->m_TableMapTree.SortChildren(hRegionNode);
 }
 

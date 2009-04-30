@@ -109,7 +109,7 @@ public:
 	HTREEITEM update_tree(CString node_text);
 	void GroupRegions(void);
 	void UngroupRegions(void);
-	HTREEITEM GetRegionNode(void);
+	HTREEITEM GetTypeNode(CString type);
 	HTREEITEM FindItem(CString s, HTREEITEM start);
 
 	CTreeCtrl			m_TableMapTree;

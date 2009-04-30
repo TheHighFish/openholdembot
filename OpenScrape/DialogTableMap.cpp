@@ -1695,6 +1695,11 @@ void CDlgTableMap::OnBnClickedDelete()
 	CString	sel_text, type_text;
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
+	// If this is a parent/group item, return immediately
+	if (type_node == NULL || m_TableMapTree.ItemHasChildren(m_TableMapTree.GetSelectedItem()))
+		return;
+
+	// If this is not a valid record type (like a region group), then return
 	CString		valid_types("Sizes|Symbols|Regions|Fonts|Hash Points|Hashes|Images");
 	if (valid_types.Find(type_text.GetString()) == -1)
 		return;
@@ -2154,6 +2159,16 @@ void CDlgTableMap::OnBnClickedEdit()
 			// Clear all existing hash points
 			for (int i=0; i<=3; i++)
 				p_tablemap->p$_clear(i);
+
+			// Clear Hash Points branch of tree
+			HTREEITEM hHashPointNode = GetTypeNode("Hash Points");
+			HTREEITEM hChild = m_TableMapTree.GetChildItem(hHashPointNode);
+
+			while (hChild!=NULL)
+			{
+				m_TableMapTree.DeleteItem(hChild);
+				hChild = m_TableMapTree.GetChildItem(hHashPointNode);
+			}
 
 			// Load new hash points from dialog into internal structure and tree
 			for (int i=0; i<=3; i++)
@@ -3511,7 +3526,7 @@ HTREEITEM CDlgTableMap::MoveTreeItem(HTREEITEM hItem, HTREEITEM hNewParent, CStr
 void CDlgTableMap::RemoveSingleItemGroups()
 {
 	// Find region node
-	HTREEITEM hRegionNode = GetRegionNode();
+	HTREEITEM hRegionNode = GetTypeNode("Regions");
 	
 	if (hRegionNode == NULL)
 		return;
@@ -3548,19 +3563,19 @@ void CDlgTableMap::RemoveSingleItemGroups()
 	}
 }
 
-HTREEITEM CDlgTableMap::GetRegionNode()
+HTREEITEM CDlgTableMap::GetTypeNode(CString type)
 {
-	HTREEITEM hRegionNode = m_TableMapTree.GetNextItem(m_TableMapTree.GetRootItem(), TVGN_NEXT);
+	HTREEITEM hNode = m_TableMapTree.GetNextItem(m_TableMapTree.GetRootItem(), TVGN_NEXT);
 	
-	while (hRegionNode != NULL) 
+	while (hNode != NULL) 
 	{
-		if (m_TableMapTree.GetItemText(hRegionNode) == "Regions")
+		if (m_TableMapTree.GetItemText(hNode) == type)
 			break;
 
-		hRegionNode = m_TableMapTree.GetNextItem(hRegionNode, TVGN_NEXT);
+		hNode = m_TableMapTree.GetNextItem(hNode, TVGN_NEXT);
 	}
 
-	return hRegionNode;
+	return hNode;
 }
 
 void CDlgTableMap::GroupRegions()
@@ -3569,7 +3584,7 @@ void CDlgTableMap::GroupRegions()
 		return;
 
 	// Find region node
-	HTREEITEM hRegionNode = GetRegionNode();
+	HTREEITEM hRegionNode = GetTypeNode("Regions");
 	
 	if (hRegionNode == NULL)
 		return;
@@ -3619,7 +3634,7 @@ void CDlgTableMap::UngroupRegions()
 		return;
 
 	// Find region node
-	HTREEITEM hRegionNode = GetRegionNode();
+	HTREEITEM hRegionNode = GetTypeNode("Regions");
 	
 	if (hRegionNode == NULL)
 		return;
@@ -3660,7 +3675,7 @@ void CDlgTableMap::UngroupRegions()
 HTREEITEM CDlgTableMap::InsertGroupedRegion(CString itemText)
 {
 	// Find region node
-	HTREEITEM hRegionNode = GetRegionNode();
+	HTREEITEM hRegionNode = GetTypeNode("Regions");
 	
 	if (hRegionNode == NULL)
 		return NULL;
