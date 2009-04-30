@@ -245,7 +245,7 @@ void COpenScrapeView::OnLButtonDown(UINT nFlags, CPoint point)
 				{
 
 					// Find parent node
-					HTREEITEM parent_node = theApp.m_TableMapDlg->GetRegionNode();
+					HTREEITEM parent_node = theApp.m_TableMapDlg->GetTypeNode("Regions");
 
 					// Find correct leaf node
 					HTREEITEM item = theApp.m_TableMapDlg->FindItem(r_iter->second.name, parent_node);
