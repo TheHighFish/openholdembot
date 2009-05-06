@@ -430,7 +430,7 @@ void CAutoplayer::DoSwag(void)
 				}
 			}
 
-			if (p_tablemap->swagconfirmationmethod() == BETCONF_NOTHING)
+			else if (p_tablemap->swagconfirmationmethod() == BETCONF_NOTHING)
 			{
 			}
 
