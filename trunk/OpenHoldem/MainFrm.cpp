@@ -570,11 +570,8 @@ void CMainFrame::SetMainWindowTitle(LPCSTR title)
 void CMainFrame::OnFileOpen() 
 {
 	CFileDialog			cfd(true);
-	CString				theKey = "DefWHFOpenLocation";
-	char				path[MAX_PATH];
 
-	ReadRegString(theKey, path);
-	cfd.m_ofn.lpstrInitialDir = path;
+	cfd.m_ofn.lpstrInitialDir = prefs.path_ohf();
 	cfd.m_ofn.lpstrFilter = "OpenHoldem Files (.ohf)\0*.ohf\0WinHoldem Files (.whf)\0*.whf\0All files (*.*)\0*.*\0\0";
 	cfd.m_ofn.lpstrTitle = "Select Formula file to OPEN";
 	if (cfd.DoModal() == IDOK)
@@ -584,7 +581,7 @@ void CMainFrame::OnFileOpen()
 		pDoc->SetPathName(cfd.GetPathName());
 		// Update window title, registry
 		SetMainWindowTitle(cfd.GetFileTitle() + " - " + CString(MAKEINTRESOURCE(AFX_IDS_APP_TITLE)));
-		WriteRegString(theKey, cfd.GetPathName());
+		prefs.set_path_ohf(cfd.GetPathName());
 	}
 }
 
@@ -593,11 +590,8 @@ void CMainFrame::OnFileLoadTableMap()
 	CFileDialog			cfd(true);
 	int					line = 0, ret = 0;
 	CString				e = "";
-	CString				theKey = "DefTMOpenLocation";
-	char				path[MAX_PATH] = {0};
 
-	ReadRegString(theKey, path);
-	cfd.m_ofn.lpstrInitialDir = path;
+	cfd.m_ofn.lpstrInitialDir = prefs.path_tm();
 	cfd.m_ofn.lpstrFilter = "OpenScrape Table Maps (.tm)\0*.tm\0All files (*.*)\0*.*\0\0";
 	cfd.m_ofn.lpstrTitle = "Select OpenScrape table map to OPEN";
 
@@ -642,7 +636,7 @@ void CMainFrame::OnFileLoadTableMap()
 				m_ScraperOutputDlg->UpdateDisplay();
 			}
 
-			WriteRegString(theKey, cfd.GetPathName());
+			prefs.set_path_tm(cfd.GetPathName());
 		}
 	}
 }
@@ -1369,11 +1363,8 @@ void CMainFrame::OnDllLoad()
 void CMainFrame::OnDllLoadspecificfile()
 {
 	CFileDialog			cfd(true);
-	CString				theKey = "DefDLLOpenLocation";
-	char				path[MAX_PATH] = {0};
 
-	ReadRegString(theKey, path);
-	cfd.m_ofn.lpstrInitialDir = path;
+	cfd.m_ofn.lpstrInitialDir = prefs.path_dll();
 	cfd.m_ofn.lpstrFilter = "DLL Files (.dll)\0*.dll\0\0";
 	cfd.m_ofn.lpstrTitle = "Select OpenHoldem DLL file to OPEN";
 
@@ -1383,7 +1374,7 @@ void CMainFrame::OnDllLoadspecificfile()
 
 		p_dll_extension->LoadDll(cfd.m_ofn.lpstrFile);
 
-		WriteRegString(theKey, cfd.GetPathName());
+		prefs.set_path_dll(cfd.GetPathName());
 	}
 }
 
@@ -1657,17 +1648,14 @@ void CMainFrame::OnPerlLoadFormula()
 void CMainFrame::OnPerlLoadSpecificFormula() 
 {
 	CFileDialog			cfd(true);
-	CString				theKey = "DefPLOpenLocation";
-	char				path[MAX_PATH] = {0};
 
-	ReadRegString(theKey, path);
-	cfd.m_ofn.lpstrInitialDir = path;
+	cfd.m_ofn.lpstrInitialDir = prefs.path_perl();
 	cfd.m_ofn.lpstrFilter = "Perl Scripts (*.pl)\0*.pl\0Perl Modules (*.pm)\0*.pm\0All Files (*.*)\0*.*\0\0";
 	cfd.m_ofn.lpstrTitle = "Select Perl formula file to OPEN";
 	if (cfd.DoModal() == IDOK)
 	{
 		p_perl->LoadFormulaFile(cfd.m_ofn.lpstrFile);
-		WriteRegString(theKey, cfd.GetPathName());
+		prefs.set_path_perl(cfd.GetPathName());
 	}
 }
 
@@ -1690,39 +1678,6 @@ void CMainFrame::OnPerlCheckSyntax()
 	p_perl->CheckSyntax();
 }
 
-void CMainFrame::ReadRegString(CString RegistryKey, char* RegistryValue)
-{
-	HKEY				hKey;
-	LONG				result = 0;
-	DWORD				strSize = MAX_PATH;
-
-	result = RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\OpenHoldem\\OpenHoldem", 0, KEY_READ, &hKey);
-
-	if (result==ERROR_SUCCESS)
-	{
-		RegQueryValueEx(hKey,RegistryKey,NULL,NULL,(LPBYTE)RegistryValue,&strSize);
-	}
-
-	RegCloseKey(hKey);
-}
-
-void CMainFrame::WriteRegString(CString RegistryKey, CString RegistryValue)
-{
-	HKEY				hKey;
-	LONG				result = 0;
-	char				str[MAX_PATH] = {0};
-
-	result = RegCreateKeyEx(HKEY_CURRENT_USER, "Software\\OpenHoldem\\OpenHoldem", 0, NULL,
-							REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, NULL);
-
-	if (result==ERROR_SUCCESS)
-	{
-		sprintf_s(str, 256, "%s", RegistryValue);
-		RegSetValueEx(hKey, RegistryKey, 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
-	}
-
-	RegCloseKey(hKey);
-}
 
 CArray <STableList, STableList>		g_tlist; 
 

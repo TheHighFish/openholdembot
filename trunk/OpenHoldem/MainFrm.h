@@ -103,8 +103,6 @@ private:
 
 private:
 	// private functions and variables - not available via accessors or mutators
-	void ReadRegString(CString RegistryKey, char* RegistryValue);
-	void WriteRegString(CString RegistryKey, CString RegistryValue);
 	int CreateMainToolbar(void);
 	int CreateFlagsToolbar(void);
 	void AlignToolbars(void);
