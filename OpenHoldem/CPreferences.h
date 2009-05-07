@@ -138,6 +138,12 @@ public:
 	const CString &mutex_name()				{ return _mutex_name; }
 	bool simple_window_title()				{ return _simple_window_title; }
 
+	// CFileDialog saved paths
+	const CString path_ohf()		{ return _path_ohf; }
+	const CString path_tm()			{ return _path_tm; }
+	const CString path_perl()		{ return _path_perl; }
+	const CString path_dll()		{ return _path_dll; }
+
 public:
 	// public mutators
 #define ENT CSLock lock(m_critsec);
@@ -264,7 +270,13 @@ public:
 	void set_window_class_name(const CString &s)	{ ENT _window_class_name = s; WriteReg("window_class_name", s); }
 	void set_mutex_name(const CString &s)			{ ENT _mutex_name= s; WriteReg("mutex_name", s); }
 	void set_simple_window_title(bool in)			{ ENT _simple_window_title= in; WriteReg("simple_window_title", (int) in!=false); }
-	
+
+	// CFileDialog saved paths
+	void set_path_ohf(const CString s)		{ ENT _path_ohf = s; WriteReg("last_path_ohf", s); }
+	void set_path_tm(const CString s)		{ ENT _path_tm = s; WriteReg("last_path_tm", s); }
+	void set_path_perl(const CString s)		{ ENT _path_perl = s; WriteReg("last_path_perl", s); }
+	void set_path_dll(const CString s)		{ ENT _path_dll = s; WriteReg("last_path_dll", s); }
+
 #undef ENT
 
 private:
@@ -411,6 +423,12 @@ private:
 	CString			_window_class_name;
 	CString			_mutex_name;
 	bool			_simple_window_title;
+
+	// CFileDialog saved paths
+	CString			_path_ohf;
+	CString			_path_tm;
+	CString			_path_perl;
+	CString			_path_dll;
 
 private:
 	// private functions and variables - not available via accessors or mutators

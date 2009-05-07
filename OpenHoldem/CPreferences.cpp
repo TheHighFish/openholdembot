@@ -171,9 +171,17 @@ void CPreferences::InitDefaults(void)
 	_validator_stop_on_error = true;
 	_validator_shoot_replayframe_on_error = true;
 
+	// Obscure
 	_window_class_name = "OpenHoldem";
 	_mutex_name= "OHAntiColl";
 	_simple_window_title = false;
+
+	// CFileDialog saved paths
+	_path_ohf = "";
+	_path_tm = "";
+	_path_perl = "";
+	_path_dll = "";
+
 }
 
 //
@@ -334,6 +342,12 @@ void CPreferences::ReadPreferences()
 		ReadReg("window_class_name", &_window_class_name);
 		ReadReg("mutex_name", &_mutex_name);
 		ReadReg("simple_window_title", &_simple_window_title);
+
+		// CFileDialog saved paths
+		ReadReg("last_path_ohf", &_path_ohf);
+		ReadReg("last_path_tm", &_path_tm);
+		ReadReg("last_path_perl", &_path_perl);
+		ReadReg("last_path_dll", &_path_dll);
 	}
 }
 
