@@ -439,8 +439,8 @@ void CMainFrame::OnViewRefresh()
 		// check if its OHreplay
 		char className[20];
 		::GetClassName(pDoc->attached_hwnd,className, 20);
-		if(strcmp("OHREPLAY", className)==0) {
-
+		if(strcmp("OHREPLAY", className)==0) 
+		{
 			// if OHreplay send a tab keypress to goto next screen
 			KEYBDINPUT  kb={0};  
 			INPUT    Input={0};
@@ -472,6 +472,9 @@ void CMainFrame::OnViewRefresh()
 		::GetClientRect(pDoc->attached_hwnd, &newrect);
 		AdjustWindowRect(&newrect, GetWindowLong(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), GWL_STYLE), true);
 		SetWindowPos(NULL, 0, 0, newrect.right-newrect.left+4, newrect.bottom-newrect.top+47, SWP_NOMOVE);
+
+		// Instruct table-map dialog to update
+		theApp.m_TableMapDlg->update_display();
 
 		// Force re-draw
 		Invalidate(true);
