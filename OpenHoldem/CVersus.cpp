@@ -88,6 +88,9 @@ double CVersus::GetSymbol(const char *a, int *e)
 
 bool CVersus::GetCounts(void) 
 {
+	if (_versus_fh == -1)
+		return false;
+
 	int				i = 0, j = 0;
 	CardMask		plCards, oppCards, deadCards, comCardsScrape, comCardsEnum, comCardsAll, usedCards;
 	unsigned int	wintemp = 0, tietemp = 0, lostemp = 0, offset = 0;
@@ -119,12 +122,9 @@ bool CVersus::GetCounts(void)
 	// Get the lock
 	CSLock lock(m_critsec);
 
-	
 	if (!p_symbols->user_chair_confirmed())
 		return false;
 
-	if (_versus_fh == -1)
-		return false;
 
 	if (card_player[0] == CARD_NOCARD || card_player[0] == CARD_BACK ||
 		card_player[1] == CARD_NOCARD || card_player[1] == CARD_BACK)
