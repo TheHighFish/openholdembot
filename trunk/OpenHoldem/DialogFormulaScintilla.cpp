@@ -3587,6 +3587,26 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "icm_alliwin0 - icm_alliwin9", "my tournament equity if I push all-in and win against 0 - 9 callers");
 	AddSymbol(parent, "icm_allilose1 - icm_allilose9", "my tournament equity if I push all-in and lose against 0 - 9 callers ");
 
+	mainParent = parent = AddSymbolTitle("Hand multiplexor symbols", NULL, hCatItem);
+	AddSymbol(parent, "f$$X", "Evaluate the UDF that corresponds to my first card");
+	AddSymbol(parent, "f$$XX", "Evaluate the UDF that corresponds to my first card and second card");
+	AddSymbol(parent, "f$$XXx", "Evaluate the UDF that corresponds to my first card, second card and suited/unsuited state");
+
+	mainParent = parent = AddSymbolTitle("Memory symbols", NULL, hCatItem);
+	AddSymbol(parent, "me_st_", "Stores a value. Example: me_st_abc_123_45 - stores the value '123.45' in variable 'abc'.");
+	AddSymbol(parent, "me_re_", "Retrieves a previously stored value. Example: me_re_abc - retrieves the value from variable 'abc'.");
+
+	mainParent = parent = AddSymbolTitle("Hand Symbols", NULL, hCatItem);
+	AddSymbol(parent, "$RR", "You can reference your dealt hand directly by using the $ symbols. The general form of the $ hand symbols are: $RRs. The $ character is required followed by 1 or 2 standard card rank characters. The hand symbols are not case sensitive.");
+
+	mainParent = parent = AddSymbolTitle("Card Symbols", NULL, hCatItem);
+	AddSymbol(parent, "$$ccX", "the card value for common card X (X=0-4)");
+	AddSymbol(parent, "$$crX", "the rank value for common card X (X=0-4)");
+	AddSymbol(parent, "$$csX", "the suit value for common card X (X=0-4)");
+	AddSymbol(parent, "$$pcX", "the card value for player card X (X=0-1)");
+	AddSymbol(parent, "$$prX", "the rank value for player card X (X=0-1)");
+	AddSymbol(parent, "$$psX", "the suit value for player card X (X=0-1)");
+
 	m_SymbolTree.SortChildren(hRawItem);
 }
 
