@@ -430,8 +430,8 @@ EXSTYLE WS_EX_APPWINDOW
 CAPTION "Formula Editor"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "",IDC_SCINTILLA_FORMULA_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS | TVS_INFOTIP | WS_BORDER | WS_TABSTOP,7,26,105,178,WS_EX_TRANSPARENT
-    CONTROL         "",IDC_SYMBOL_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_INFOTIP | NOT WS_VISIBLE | WS_BORDER | WS_TABSTOP,7,25,105,178
+    CONTROL         "",IDC_SCINTILLA_FORMULA_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP | 0x800,7,26,105,178,WS_EX_TRANSPARENT
+    CONTROL         "",IDC_SYMBOL_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | NOT WS_VISIBLE | WS_BORDER | WS_TABSTOP | 0x800,7,25,105,178
     PUSHBUTTON      "Calc",IDC_SCINTILLA_CALC,219,7,50,14
     CONTROL         "ScntillaCtrl",IDC_SCINCTRL,"Scintilla",WS_TABSTOP,116,25,208,178
     DEFPUSHBUTTON   "OK",IDOK,157,211,50,14
@@ -504,7 +504,7 @@ BEGIN
     LTEXT           "Frame delay (0-9 frames)",IDC_STATIC,8,4,82,8
     LTEXT           "Entry to confirm (0-5000 ms)",IDC_STATIC,15,69,93,8
     CONTROL         "Engage autoplayer automatically upon chair identification",IDC_AUTO_AP,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,93,199,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,88,199,10
     EDITTEXT        IDC_SWAGDELAY2,113,47,28,14,ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "",IDC_SWAGDELAY2_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,141,47,11,14
     LTEXT           "Delete to entry (0-5000 ms)",IDC_STATIC,15,52,90,8
@@ -513,11 +513,13 @@ BEGIN
     LTEXT           "Select to delete (0-5000 ms)",IDC_STATIC,15,34,92,8
     GROUPBOX        "SWAG Delays",IDC_STATIC,8,20,150,63
     CONTROL         "Detect loss of focus on SWAG and skip confirm",IDC_FOCUSDETECT,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,107,165,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,99,165,10
     CONTROL         "Use 'comma' instead of 'dot' for fractional SWAGs",IDC_SWAGUSECOMMA,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,122,173,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,110,173,10
     CONTROL         "Only calculate standard function when on my turn",IDC_ONLY_CALC_ON_TURN,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,136,200,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,122,200,10
+    CONTROL         "Only act with balance stability",IDC_NEED_BALANCE_STABILITY,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,133,200,10
 END
 
 IDD_SAPREFS3 DIALOGEX 0, 0, 219, 155
@@ -943,13 +945,8 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", ""
-            VALUE "FileDescription", ""
             VALUE "FileVersion", "2.0.0.0"
-            VALUE "InternalName", ""
             VALUE "LegalCopyright", "Licensed under GPLv3"
-            VALUE "OriginalFilename", ""
-            VALUE "ProductName", ""
             VALUE "ProductVersion", "2.0.0.0"
         END
     END

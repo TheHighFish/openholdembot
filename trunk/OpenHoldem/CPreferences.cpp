@@ -73,6 +73,7 @@ void CPreferences::InitDefaults(void)
 	_focus_detect = false;
 	_swag_use_comma = false;
 	_calc_only_my_turn = false;
+	_need_balance_stability = false;
 
 	// scraper
 	_scrape_delay = 750;
@@ -241,6 +242,7 @@ void CPreferences::ReadPreferences()
 		ReadReg("focus_detect", &_focus_detect);
 		ReadReg("swag_use_comma", &_swag_use_comma);
 		ReadReg("calc_only_my_turn", &_calc_only_my_turn);
+		ReadReg("need_balance_stability", &_need_balance_stability);
 
 		// prefs - dll extension
 		ReadReg("dll_always_send_state", &_dll_always_send_state);
