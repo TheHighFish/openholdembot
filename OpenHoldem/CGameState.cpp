@@ -551,7 +551,8 @@ bool CGameState::ProcessThisFrame (void)
 	{
 		if (_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[0] != 0 && 
 			_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[1] != 0 &&
-			_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance_known != 1)
+			_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance_known != 1 &&
+			prefs.need_balance_stability()==true)
 		{
 			balance_stability = false;
 		}

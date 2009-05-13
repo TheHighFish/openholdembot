@@ -17,6 +17,7 @@ public:
 
 	// Analyzer
 	const unsigned int max_opponents() { return _max_opponents; }
+
 	// Autoplayer
 	const unsigned int frame_delay() { return _frame_delay; }
 	const unsigned int swag_delay_1() { return _swag_delay_1; }
@@ -26,6 +27,7 @@ public:
 	const bool focus_detect() { return _focus_detect; }
 	const bool swag_use_comma() { return _swag_use_comma; }
 	const bool calc_only_my_turn() { return _calc_only_my_turn; }
+	const bool need_balance_stability() { return _need_balance_stability; }
 
 	// Dll extension
 	const bool dll_always_send_state() { return _dll_always_send_state; }
@@ -150,6 +152,7 @@ public:
 
 	// Analyzer
 	void set_max_opponents(const unsigned int i) { ENT _max_opponents = i; WriteReg("max_opponents", (int) i); }
+
 	// Autoplayer
 	void set_frame_delay(const unsigned int i) { ENT _frame_delay = i; WriteReg("frame_delay", (int) i); }
 	void set_swag_delay_1(const unsigned int i) { ENT _swag_delay_1 = i; WriteReg("swag_delay_1", (int) i); }
@@ -159,27 +162,34 @@ public:
 	void set_focus_detect(const bool b) { ENT _focus_detect = b; WriteReg("focus_detect", (int) b!=false); }
 	void set_swag_use_comma(const bool b) { ENT _swag_use_comma = b; WriteReg("swag_use_comma", (int) b!=false); }
 	void set_calc_only_my_turn(const bool b) { ENT _calc_only_my_turn = b; WriteReg("calc_only_my_turn", (int) b!=false); }
+	void set_need_balance_stability(const bool b) { ENT _need_balance_stability = b; WriteReg("need_balance_stability", (int) b!=false); }
+
 	// Dll extension
 	void set_dll_always_send_state(const bool b) { ENT _dll_always_send_state = b; WriteReg("dll_always_send_state", b); }
 	void set_dll_load_on_startup(const bool b) { ENT _dll_load_on_startup = b; WriteReg("load_dll_on_startup", b); }
 	void set_dll_name(const CString s) { ENT _dll_name = s; WriteReg("dll_name", s); }
+
 	// Scraper
 	void set_scrape_delay(const unsigned int i) { ENT _scrape_delay = i; WriteReg("scrape_delay", (int) i); }
+
 	// Symbols
 	void set_sym_av_time(const double d) { ENT _sym_av_time = d; WriteReg("avtime", d); }
 	void set_sym_handrank_value(const CString s) { ENT _sym_handrank_value = s; WriteReg("handrank_value", s); }
 	void set_sym_disable_caching(const bool b) { ENT _sym_disable_caching = b; WriteReg("disable_caching", b); }
+
 	// ICM
 	void set_icm_prize1(const double d) { ENT _icm_prize1 = d; WriteReg("icm_prize1", d); }
 	void set_icm_prize2(const double d) { ENT _icm_prize2 = d; WriteReg("icm_prize2", d); }
 	void set_icm_prize3(const double d) { ENT _icm_prize3 = d; WriteReg("icm_prize3", d); }
 	void set_icm_prize4(const double d) { ENT _icm_prize4 = d; WriteReg("icm_prize4", d); }
 	void set_icm_prize5(const double d) { ENT _icm_prize5 = d; WriteReg("icm_prize5", d); }
+
 	// Replay Frames
 	void set_replay_record(const bool b) { ENT _replay_record = b; WriteReg("replay_record", b); }
 	void set_replay_record_every_change(const bool b) { ENT _replay_record_every_change = b; WriteReg("replay_record_every_change", b); }
 	void set_replay_max_frames(const int i) { ENT _replay_max_frames = i; WriteReg("replay_max_frames", i); }
 	void set_replay_record_every_change_playing(const bool b) { ENT _replay_record_every_change_playing = b; WriteReg("replay_record_every_change_playing", b); }
+
 	// Poker Tracker
 	void set_pt_version(const CString s) { ENT _pt_version = s; WriteReg("pt_version", s); }
 	void set_pt_ip_addr(const CString s) { ENT _pt_ip_addr = s; WriteReg("pt_ip_addr", s); }
@@ -190,26 +200,32 @@ public:
 	void set_pt_disable(const bool b) { ENT _pt_disable = b; WriteReg("pt_disable", b); }
 	void set_pt_update_delay(const int i) { ENT _pt_update_delay = i; WriteReg("pt_updatedelay", i); }
 	void set_pt_cache_refresh(const int i) { ENT _pt_cache_refresh = i; WriteReg("pt_cacherefresh", i); }
+
 	// Perl
 	void set_perl_default_formula(const CString s) { ENT _perl_default_formula = s; WriteReg("perl_default_formula", s); }
 	void set_perl_editor(const CString s) { ENT _perl_editor = s; WriteReg("perl_editor", s); }
 	void set_perl_load_default_formula(const bool b) { ENT _perl_load_default_formula = b; WriteReg("perl_load_default_formula", b); }
 	void set_perl_load_interpreter(const bool b) { ENT _perl_load_interpreter = b; WriteReg("perl_load_interpreter", b); }
+
 	//  PokerChat
 	void set_chat_enabled(const bool b) { ENT _chat_enabled = b; WriteReg("chat_enabled", b); }
 	void set_chat_min_delay(const int i) { ENT _chat_min_delay = i; WriteReg("chat_min_delay", i); }
 	void set_chat_random_delay(const int i) { ENT _chat_random_delay = i; WriteReg("chat_random_delay", i); }
+
 	// Log Symbol
 	void set_log_symbol_enabled(const bool b) { ENT _log_symbol_enabled = b; WriteReg("log_symbol_enabled", b); }
 	void set_log_symbol_max_log(const int b) { ENT _log_symbol_max_log = b; WriteReg("log_symbol_max_log", b); }
+
 	// Tracing
 	void set_trace_enabled(const bool b) { ENT _trace_enabled = b; WriteReg("trace_enabled", b); }
 	void set_trace_functions(const unsigned int i, const bool b) 
 	{ ENT _trace_functions[i] = b; CString regValue; regValue.Format("trace_functions%d", i+1);	WriteReg(regValue, b); }
+
 	// Logging and debugging
 	void set_disable_msgbox(const bool b) { ENT _disable_msgbox = b; WriteReg("disable_msgbox", b); }
 	void set_log_level(const int i) { ENT _log_level = i; WriteReg("log_level", i); }
 	void set_log_level_pt(const int i) { ENT _log_level_pt = i; WriteReg("log_level_pt", i); }
+
 	// PPro
 	void set_ppro_hostname(const CString s) { ENT _ppro_hostname = s; WriteReg("ppro_hostname", s); }
 	void set_ppro_port(const CString s) { ENT _ppro_port = s; WriteReg("ppro_port", s); }
@@ -223,16 +239,19 @@ public:
 	void set_ppro_ft_hhlog_format(const bool b) { ENT _ppro_ft_hhlog_format = b; WriteReg("ppro_ft_hhlog_format", b); }
 	void set_ppro_chips(const unsigned int i) { ENT _ppro_chips = i; WriteReg("ppro_chips", (int) i); }
 	void set_ppro_autoseat(const bool b) { ENT _ppro_autoseat = b; WriteReg("ppro_autoseat", b); }
+
 	// Formula window location
 	void set_formula_x(const int i) { ENT _formula_x = i; WriteReg("formula_x", i); }
 	void set_formula_y(const int i) { ENT _formula_y = i; WriteReg("formula_y", i); }
 	void set_formula_dx(const int i) { ENT _formula_dx = i; WriteReg("formula_dx", i); }
 	void set_formula_dy(const int i) { ENT _formula_dy = i; WriteReg("formula_dy", i); }
+
 	// Scraper window location
 	void set_scraper_x(const int i) { ENT _scraper_x = i; WriteReg("scraper_x", i); }
 	void set_scraper_y(const int i) { ENT _scraper_y = i; WriteReg("scraper_y", i); }
 	void set_scraper_dx(const int i) { ENT _scraper_dx = i; WriteReg("scraper_dx", i); }
 	void set_scraper_dy(const int i) { ENT _scraper_dy = i; WriteReg("scraper_dy", i); }
+
 	// Main window location
 	void set_main_x(const int i) { ENT _main_x = i; WriteReg("main_x", i); }
 	void set_main_y(const int i) { ENT _main_y = i; WriteReg("main_y", i); }
@@ -244,6 +263,7 @@ public:
 	void set_bbet(const double d) { ENT _bbet = d; WriteReg("bbet", d); }
 	void set_ante(const double d) { ENT _ante = d; WriteReg("ante", d); }
 	void set_gametype(const int i) { ENT _gametype = i; WriteReg("gametype", i); }
+
 	// Formula editor
 	void set_expand_list(const bool  b) { ENT _expand_list = b; WriteReg("expand_list", b); }
 	void set_expand_std(const bool b) { ENT _expand_std = b; WriteReg("expand_std", b); }
@@ -252,6 +272,7 @@ public:
 	void set_udf_group(const bool b) { ENT _udf_group = b; WriteReg("udf_group", b); }
 	void set_equal(const int i) { ENT _equal = i; WriteReg("equal", i); }
 	void set_precision(const int i) { ENT _precision = i; WriteReg("precision", i); }
+
 	// Debug logging
 	void set_fdebuglog(const bool b) { ENT _fdebuglog = b; WriteReg("fdebuglog", b); }
 	void set_fdebuglog_myturn(const bool b) { ENT _fdebuglog_myturn = b; WriteReg("fdebuglog_myturn", b); }
@@ -294,6 +315,7 @@ private:
 	bool			_focus_detect;
 	bool			_swag_use_comma;
 	bool			_calc_only_my_turn;
+	bool			_need_balance_stability;
 
 	// Dll extension
 	bool			_dll_always_send_state;
