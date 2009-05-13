@@ -38,6 +38,7 @@ BUG FIXES:
 - versus_path was undifined. We now take the OpenHoldem-installation-directory to search for versus.bin. [TheHighFish]
 - Surround database name in single quotes when testing PokerTracker connection
 - pcbits returned incorrect values (0x1F) for X2s. Thanks to Want2Learn for reporting it. [TheHighFish]
+- slider was not being found and jammed if it was not in the left-most position.  Thanks to the poster of issue 19 for the find and fix [OpenHoldem]
   
 MAINTENANCE:
 - Optimized symbol-lookup. [TheHighFish]

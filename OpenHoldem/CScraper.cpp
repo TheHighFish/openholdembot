@@ -1238,9 +1238,6 @@ void CScraper::ScrapeButtons()
 
 	if (handleCI!=p_tablemap->r$()->end() && slider!=p_tablemap->r$()->end() && _button_state[3]!="false")
 	{
-		ProcessRegion(handleCI);
-		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, handleCI->second.cur_bmp);
-
 		j = slider->second.right - handleCI->second.left;
 		text="";
 		
@@ -1253,7 +1250,10 @@ void CScraper::ScrapeButtons()
 			handleI->second.right += k;
 
 			handleCI = p_tablemap->r$()->find("i3handle");
+			ProcessRegion(handleCI);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, handleCI->second.cur_bmp);
 			trans.DoTransform(handleCI, hdcCompatible, &text);
+			SelectObject(hdcCompatible, old_bitmap);
 
 			handleI = p_tablemap->set_r$()->find("i3handle");
 			handleI->second.left -= k;
@@ -1273,8 +1273,6 @@ void CScraper::ScrapeButtons()
 		}
 
 		write_log(3, "i3handle, result %d,%d", handle_xy.x, handle_xy.y);
-			
-		SelectObject(hdcCompatible, old_bitmap);
 	}
 
 	__HDC_FOOTER
