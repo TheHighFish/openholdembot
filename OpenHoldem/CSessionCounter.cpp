@@ -30,6 +30,8 @@ CSessionCounter::CSessionCounter()
 	MessageBox(0, "Could not grab a session ID.\n"
 				  "Too many instances of OpenHoldem\n",
 				  "SessionCounter Error", MB_OK);
+
+	PostQuitMessage(0);
 }
 
 CSessionCounter::~CSessionCounter()
