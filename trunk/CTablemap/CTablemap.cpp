@@ -562,6 +562,8 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 					}
 				}
 			}
+			// Delete image, which is no longer needed.
+			hold_image.image->~RGBAImage();
 		}
 
 		// Unknown line type
