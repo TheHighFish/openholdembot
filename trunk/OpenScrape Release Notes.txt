@@ -1,4 +1,4 @@
-v2.0.0 2009-xx-xx
+v2.0.0 2009-05-22
 =================
 BUG FIXES:
 - Fixed a crash when you delete the last Hash from a hast type (Hash0 for example). This crash was only in the pre-release versions [spew]
