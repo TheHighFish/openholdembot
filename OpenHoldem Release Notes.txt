@@ -1,4 +1,4 @@
-v2.0.0 2009-xx-xx
+v2.0.0 2009-05-22
 =================
 BUG FIXES:
 - Applied fix from maintenance branch that addresses did* symbols not being reset between rounds. [OpenHoldem]
