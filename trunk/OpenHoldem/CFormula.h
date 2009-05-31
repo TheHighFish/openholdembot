@@ -106,94 +106,195 @@ private:
 //
 // Default bot specification follows
 //
-static const char * defaultCSnotes = "\r\nDefault demo bot for OpenHoldem.\r\n\
-Add your formula notes and comments here.";
+static const char * defaultCSnotes = "\
+Playbot3. Created by Matrix as an example of a prwin, \r\n\
+pot odds bot with the following bells and whistles:\r\n\
+Bet and call capping to limit pot chasing in marginal situations\r\n\
+EV's modified by proportion of bulls, bears and limpers \r\n\
+Autobet and Check Raise logic \r\n\
+Options for random trimming of decision levels to reduce predictability \r\n\
+Plenty of constants to trim to get the bot to play your way. \r\n\
+\r\n\
+EDITED 2005-10-30 to correct EV criteria and handrank oddity. \r\n\
+\r\n\
+EDITED 2009-05-31 by TheHighFish: \r\n\
+  * conversion to new ohf-format \r\n\
+  * comments for unused standard formulae \r\n\
+  * put some symbols into the debug-tab to demonstrate its usage \r\n\
+  * removed unused hand-lists";
+
 
 static const char * defaultCSalli = "\
-   0                                 // default is: do not alli\r\n\
-   || [ prwin >= 1.00 ]              // dead nuts\r\n\
-   || [ br==1 && islistalli ]        // listed opening hand\r\n\
-";
+   0                                     // default is do not alli \r\n\
+   || [ prwin >= 1.00 ]                  // dead nuts";
+
 
 static const char * defaultCSswag = "\
-   0                                 // default is: no stated wagers";
+// No stated wagers with a FL-bot.";
+
 
 static const char * defaultCSsrai = "\
-   0                                 // default is: no stated raises";
+// No stated raises with a FL-bot.";
 
 static const char * defaultCSrais = "\
-   0                                 // default is: do not rais\r\n\
-   || [ prwin >= 1.00 ]              // dead nuts\r\n\
+   0 \r\n\
+   ||    [ prwin >= 1.00 ]                  // dead nuts \r\n\
 \r\n\
-   || [ f$evrais > f$evcall && f$evrais>pot/2 ]  // majority share\r\n\
-   || [ br==1 && islistrais ]        // listed opening hand\r\n\
+   || br==1 \r\n\
+//round 1 logic \r\n\
+   ?\r\n\
+//bet-capping logic. \r\n\
+//We initially used some random modifications to prevent the bot being profiled too accurately \r\n\
+//prwin was modified by at max + or - 0.1 \r\n\
+//This is of questionable value, and made the bot difficult to tune \r\n\
+//e,g.   [(ncurrentbets==1)&&(prwin+((5-(10*randomround))/50)>0.4)] || \r\n\
+   ( \r\n\
+   [(ncurrentbets==3)&&(prwin>0.7)] ||  //change the >constants to taste \r\n\
+   [(ncurrentbets==2)&&(prwin>0.55)] || \r\n\
+   [(ncurrentbets==1)&&(prwin>0.4)] || //should be greater than have acted value \r\n\
+   [ncurrentbets<1] \r\n\
+   ) \r\n\
+//end of bet-capping logic \r\n\
 \r\n\
-   || [ f0                           // f0 button flag is on\r\n\
-        && br==1                     // preflop\r\n\
-        && isemptylistrais           // rais list is empty\r\n\
-        && handrank2652<=2652        // my hand has\r\n\
-           * (1.0 - e**(ln(0.50)/    // 50% chance hand better than all\r\n\
-//           nopponentsdealt         // tight (static)\r\n\
-             nopponents              // medium (p formula)\r\n\
-//           nopponentsplaying       // loose (dynamic)\r\n\
-             ))\r\n\
-           * betposition/nplayersplaying // dynamic betting position percentage\r\n\
-//         * dealposition/nplayersdealt  // static betting position percentage\r\n\
-      ]\r\n\
-";
+   &&\r\n\
+\r\n\
+//this determines if we want to raise at all pre-flop \r\n\
+   ( \r\n\
+   ncurrentbets<1 \r\n\
+   ? \r\n\
+//have not acted yet logic. Separate because prwin will probably increase through folds on first circuit \r\n\
+   ( \r\n\
+   handrank1000 < (300 - 20*nopponentsplaying)  //trim constants to taste \r\n\
+   ) \r\n\
+//end of have not acted yet logic \r\n\
+   : \r\n\
+//have acted logic \r\n\
+   ( \r\n\
+   prwin > 0.3 // constant should not be greater than the minimum possible prwin value which \r\n\
+                  // can match the ncurrentbets==1 capping value \r\n\
+   ) \r\n\
+//end of have acted logic \r\n\
+   ) \r\n\
+// end of preflop raise logic \r\n\
+   : \r\n\
+//post-flop logic \r\n\
+   ( \r\n\
+//bet-capping logic. \r\n\
+   ( \r\n\
+   [(ncurrentbets==3)&&(prwin>0.8)] || //change >constants to taste \r\n\
+   [(ncurrentbets==2)&&(prwin>0.6)] || \r\n\
+   [(ncurrentbets==1)&&(prwin>0.5)] || \r\n\
+   [ncurrentbets<1] || [ncurrentbets>=4] \r\n\
+   ) \r\n\
+//end of bet capping logic \r\n\
+   && \r\n\
+//check raise code - comment out active line if not wanted \r\n\
+   !( \r\n\
+   !ncurrentbets && [randomround > 0.75] && [prwin > 0.5] //adjust constants to taste, 0.75 = 1 in 4 \r\n\
+   ) \r\n\
+//end of check raise code \r\n\
+   && \r\n\
+//postflop raise logic \r\n\
+   ( \r\n\
+   0 \r\n\
+   || [ f$evrais>f$evcall && f$evrais>(pot/3) ]  // guesswork \r\n\
+   || \r\n\
+//autobet logic - comment out active line if not wanted \r\n\
+   ( \r\n\
+   br==2 && didraisround1 && !nbetstocall \r\n\
+   && [randomround > 0.5] && [prwin > 0.3] //adjust constants to taste \r\n\
+   ) \r\n\
+//end of autobet logic \r\n\
+   ) \r\n\
+//end of postflop raise logic \r\n\
+   ) \r\n\
+//end of f$rais";
 
 static const char * defaultCScall = "\
-   0                                 // default is: do not call\r\n\
-   || [ prwin >= 1.00 ]              // dead nuts\r\n\
-   || [ call  <= 0.00 ]              // zero call amount (check)\r\n\
-   || [ f$evcall > pot / nplayersdealt ]     // equal share\r\n\
-   || [ br==1 && islistcall ]        // listed opening hand\r\n\
+   0                                     // default is do not call \r\n\
+   || [ prwin >= 1.00 ]                  // dead nuts \r\n\
+   || [ call  <= 0.00 ]                  // zero call amount (check) \r\n\
+   || br==1 \r\n\
+//round 1 logic \r\n\
+   ? \r\n\
+//bet-capping logic. \r\n\
+   ( \r\n\
+   [handrank169 < 12] ||  //guard against a few top hands being wasted by prwin on a full table \r\n\
+   [(ncurrentbets==3)&&(prwin>0.3)] ||  //change the >constants to taste \r\n\
+   [(ncurrentbets==2)&&(prwin>0.25)] || \r\n\
+   [(ncurrentbets==1)&&(prwin>0.2)] || //should be greater than have acted value \r\n\
+   [ncurrentbets<1] || [ncurrentbets==4] \r\n\
+   ) \r\n\
+//end of bet-capping logic \r\n\
 \r\n\
-   || [!f0                           // f0 flag button is off\r\n\
-        && br==1                     // preflop\r\n\
-        && isemptylistcall           // call list is empty\r\n\
-        && prwin >= 1/               // fair chances against\r\n\
-             nopponentsdealt         // loose (static)\r\n\
-//           nopponents              // medium (p formula)\r\n\
-//           nopponentsplaying       // tight (dynamic)\r\n\
-      ]\r\n\
+   && \r\n\
 \r\n\
-   || [ f0                           // f0 flag button is on\r\n\
-        && br==1                     // preflop\r\n\
-        && isemptylistcall           // call list is empty\r\n\
-        && handrank2652<=2652        // fair chances against\r\n\
-           * (1-e**(ln(0.50)/        // 50% chance hand better than all\r\n\
-//           nopponentsdealt         // static and tight\r\n\
-             nopponents              // p formula and defense level\r\n\
-//           nopponentsplaying       // dynamic and loose\r\n\
-             ))\r\n\
-      ]\r\n\
-";
+//this determines if we want to call at all pre-flop \r\n\
+   ( \r\n\
+   ncurrentbets<1 \r\n\
+   ? \r\n\
+//have not acted yet logic. Separate because prwin will probably increase through folds on first circuit \r\n\
+   ( \r\n\
+   handrank1000 < (400 - 10*nopponentsplaying)  //trim constants to taste \r\n\
+//trim constants to taste \r\n\
+   ) \r\n\
+//end of have not acted yet logic \r\n\
+   : \r\n\
+//have acted logic \r\n\
+   ( \r\n\
+   prwin > 0.15 // constant should not be greater than the minimum possible prwin value which \r\n\
+                  // can match the ncurrentbets==1 capping value \r\n\
+   ) \r\n\
+//end of have acted logic \r\n\
+   ) \r\n\
+// end of preflop call logic \r\n\
+   : \r\n\
+//post-flop logic \r\n\
+   ( \r\n\
+//bet-capping logic. \r\n\
+   ( \r\n\
+   [(ncurrentbets==3)&&(prwin>0.5)] || //change >constants to taste \r\n\
+   [(ncurrentbets==2)&&(prwin>0.4)] || \r\n\
+   [(ncurrentbets==1)&&(prwin>0.3)] || \r\n\
+   [ncurrentbets<1] || [ncurrentbets>=4] \r\n\
+   ) \r\n\
+//end of bet capping logic \r\n\
+   && \r\n\
+//postflop call logic \r\n\
+   ( \r\n\
+   0 \r\n\
+   || [ f$evcall>pot/(nplayersdealt+2) ]  // guesswork \r\n\
+   ) \r\n\
+//end of postflop calle logic \r\n\
+   ) \r\n\
+//end of f$call";
 
 static const char * defaultCSprefold = "\
-   0                                  // default is: do not pre-fold any cards.\r\n";
+// Don't prefold anything \r\n\
+0";
 
 static const char * defaultCSdelay = "\
-   0                                  // default is: do not delay the action.\r\n";
+// No delay to act. \r\n\
+0";
 
 static const char * defaultCSchat = "\
-   0                                  // default is: do not chat.\r\n";
+// No chat. \r\n\
+0";
 
 static const char * defaultCSP = "// Number of opponents for the prwin simulation.\r\n\r\n\
-(nopponentsplaying<=0) ? 1 :\r\n\
-\r\n\
-nopponentsplaying + defcon*nopponentsfolded\r\n\
-";
+(nopponentsplaying==0) ? 0 : \r\n\
+nopponentsplaying + defcon*nopponentsfolded";
 
-static const char * defaultCSplay = "//------------------------------------------------------------------------\r\n\
-//    DISABLED RULE(S)\r\n\
-!0                       ? -1 :  // 0=disabled 1=enabled \r\n\
+static const char * defaultCSplay = "\
+//------------------------------------------------------------------------ \r\n\
+//    DISABLED RULE(S) \r\n\
+!1                       ? -1 :  // 0=disabled 1=enabled \r\n\
 !f9                      ? -1 :  // enabled when f9 is pressed \r\n\
-(elapsed%4)              ? -1 :  // disabled 3 out of 4 seconds \r\n\
+//(elapsed%4)              ? -1 :  // disabled 3 out of 4 seconds \r\n\
 \r\n\
 \r\n\
-//------------------------------------------------------------------------\r\n\
-//    LEAVE RULE\r\n\
+//------------------------------------------------------------------------ \r\n\
+//    LEAVE RULE \r\n\
 0                                // 0=off 1=on \r\n\
 && issittingout                  // i am sitting out \r\n\
 && elapsedhand >= 600            // 10 minutes since end of last hand \r\n\
@@ -201,28 +302,28 @@ static const char * defaultCSplay = "//-----------------------------------------
 \r\n\
                          ? -2 :  // leave the table \r\n\
 \r\n\
-//------------------------------------------------------------------------\r\n\
-//    SITIN RULE\r\n\
+//------------------------------------------------------------------------ \r\n\
+//    SITIN RULE \r\n\
+\r\n\
 0                                // 0=off 1=on \r\n\
 && issittingout                  // i am sitting out \r\n\
-&& (br==2 || br==3)              // it is the flop or turn \r\n\
-&& nopponentsdealt>=6            // 6 or more opponents \r\n\
-&& nchairsdealtright==2          // i am about to be big blind \r\n\
+//&& (br==2 || br==3)              // it is the flop or turn \r\n\
+&& (nopponentsdealt >= 2)             // 6 or more opponents \r\n\
+//&& nchairsdealtright==2          // i am about to be big blind \r\n\
 \r\n\
                          ?  1 :  // sitin \r\n\
 \r\n\
-//------------------------------------------------------------------------\r\n\
-//    SITOUT RULE\r\n\
-0                                // 0=off 1=on \r\n\
+//------------------------------------------------------------------------ \r\n\
+//    SITOUT RULE \r\n\
+1                                // 0=off 1=on \r\n\
 && issittingin                   // i am sitting in \r\n\
 && (br==2 || br==3)              // it is the flop or turn \r\n\
-&& nopponentsdealt<=5            // 5 or less opponents \r\n\
+&& (nopponentsdealt <= 1)             // 5 or less opponents \r\n\
 \r\n\
                          ?  0 :  // sitout \r\n\
 \r\n\
-//------------------------------------------------------------------------\r\n\
--1 // disabled\r\n\
-";
+//------------------------------------------------------------------------ \r\n\
+-1 // disabled"; 
 
 static const char * defaultCStest = "";
 
@@ -256,59 +357,63 @@ static const char * defaultCSdebug = "                 = elapsed\r\n\
 //
 // User defined functions: f$evrais and f$evcall
 //
-static const char * defaultCSevrais = "// User defined function f$evrais for the demo bot.\r\n\r\n\
-0                                // start with zero\r\n\
+static const char * defaultCSevrais = "\
+0                                        // start with zero \r\n\
 \r\n\
-// DEBITS HERE\r\n\
+// DEBITS HERE \r\n\
 \r\n\
-- call                           // calling cost\r\n\
-- bet                            // raising cost\r\n\
+- call                                   // calling cost \r\n\
+- bet                                    // raising cost \r\n\
 \r\n\
-// CREDITS HERE\r\n\
+// CREDITS HERE \r\n\
 \r\n\
-+  (\r\n\
++  ( \r\n\
 \r\n\
-      pot                        // current pot\r\n\
+      pot                                // current pot \r\n\
 \r\n\
-   + (call+bet*2)                // my call my bet and a call (minimum)\r\n\
+   + (call+bet*2)                        // my call my bet and a call (minimum) \r\n\
 \r\n\
-   + (raisshort-call-bet*2)      // additional callers\r\n\
-      * 0.00                     //   0% (tight)\r\n\
-//    * 0.50                     //  50% (guess)\r\n\
-//    * 1.00                     // 100% (loose)\r\n\
+   + (raisshort-call-bet*2)              // additional callers \r\n\
+      * 0.00                             //   0% (tight) \r\n\
+//    * 0.50                             //  50% (guess) \r\n\
+//    * 1.00                             // 100% (loose) \r\n\
 \r\n\
-   )\r\n\
+   ) \r\n\
 \r\n\
-   * (prwin+prtie/2)             // adjust for winning chances\r\n\
-   * (1+rake)                    // adjust for rake\r\n\
-";
-
-static const char * defaultCSevcall = "// User defined function f$evcall for the demo bot.\r\n\r\n\
-0                                // start with zero\r\n\
+   * (prwin+prtie/2)                     // adjust for winning chances \r\n\
+   * (1+rake)                            // adjust for rake \r\n\
+   * (1-((nopponentsraising/nopponentsplaying)/3)) //adjust constant for aggressors \r\n\
+   * (1+((nopponentschecking/nopponentsplaying)/5)) //adjust constant for lurkers \r\n\
+   * (1-((nopponentscalling/nopponentsplaying)/10)) //adjust constant for limpers";
+									  
+static const char * defaultCSevcall = "\
+0                                        // start with zero \r\n\
 \r\n\
-// DEBITS HERE\r\n\
+// DEBITS HERE \r\n\
 \r\n\
-- call                           // calling cost\r\n\
+- call                                   // calling cost \r\n\
 \r\n\
 \r\n\
-// CREDITS HERE\r\n\
+// CREDITS HERE \r\n\
 \r\n\
-+  (\r\n\
++  ( \r\n\
 \r\n\
-      pot                        // current pot\r\n\
+      pot                                // current pot \r\n\
 \r\n\
-   +  call                       // my call (minimum)\r\n\
+   +  call                               // my call (minimum) \r\n\
 \r\n\
-   + (callshort-call)            // additional callers\r\n\
-      * 0.00                     //   0% (tight)\r\n\
-//    * 0.50                     //  50% (guess)\r\n\
-//    * 1.00                     // 100% (loose)\r\n\
+   + (callshort-call)                    // additional callers \r\n\
+      //* 0.00                             //   0% (tight) \r\n\
+      * 0.50                             //  50% (guess) \r\n\
+//    * 1.00                             // 100% (loose) \r\n\
 \r\n\
-   )\r\n\
+   ) \r\n\
 \r\n\
-   * (prwin+prtie/2)             // adjust for winning chances\r\n\
-   * (1+rake)                    // adjust for rake\r\n\
-";
+   * (prwin+prtie/2)                     // adjust for winning chances \r\n\
+   * (1+rake)                            // adjust for rake \r\n\
+   * (1-((nopponentsraising/nopponentsplaying)/4)) //adjust constant for aggressors \r\n\
+   * (1+((nopponentschecking/nopponentsplaying)/10)) //adjust constant for lurkers \r\n\
+   * (1-((nopponentscalling/nopponentsplaying)/20)) //adjust constant for waiters ";
 
 static const double defaultdBankroll = 0.0;
 
