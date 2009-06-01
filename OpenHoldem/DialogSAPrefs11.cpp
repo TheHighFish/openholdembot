@@ -3,6 +3,8 @@
 
 #include "stdafx.h"
 
+#include <limits.h>
+
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs11.h"
 #include "CPreferences.h"
@@ -34,6 +36,8 @@ void CDlgSAPrefs11::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_DISABLE_MSGBOX, m_disable_msgbox);
 	DDX_Control(pDX, IDC_DEBUGLEVEL, m_DebugLevel);
 	DDX_Control(pDX, IDC_DEBUGLEVEL_PT, m_DebugLevel_PT);
+	DDX_Control(pDX, IDC_MAXIMUM_LOGSIZE, m_MaximumLogSize);
+	DDX_Control(pDX, IDC_MAXIMUM_LOGSIZE_SPIN, m_MaximumLogSize_Spin);
 }
 
 BOOL CDlgSAPrefs11::OnInitDialog()
@@ -77,6 +81,11 @@ BOOL CDlgSAPrefs11::OnInitDialog()
 	m_DebugLevel_PT.AddString("3");
 	text.Format("%d", prefs.log_level_pt());
 	m_DebugLevel_PT.SelectString(0, text.GetString());
+
+	m_MaximumLogSize.SetWindowText(text);
+	m_MaximumLogSize_Spin.SetRange(0, 999);
+	m_MaximumLogSize_Spin.SetPos(prefs.log_max_logsize());
+	m_MaximumLogSize_Spin.SetBuddy(&m_MaximumLogSize);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
