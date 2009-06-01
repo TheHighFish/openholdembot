@@ -1,7 +1,6 @@
 #include "stdafx.h"
 
 #include "..\..\dbghelp\dbghelp.h"
-
 #include "OpenHoldem.h"
 #include "CSymbols.h"
 #include "CScraper.h"
@@ -350,7 +349,24 @@ void start_log(void)
 		CSLock lock(log_critsec);
 
         fn.Format("%s\\oh_%lu.log", _startup_path, theApp._session_id);
+		
+		// Check, if file exists and size is too large
+		if ((log_fp = _fsopen(fn.GetString(), "r", _SH_DENYWR)) != 0)
+		{
+			DWORD file_size;
+			GetFileSize(log_fp, &file_size);
+			if (file_size >= (1E06 * prefs.log_max_logsize()))
+			{
+				fclose(log_fp);
+				remove(fn.GetString());
+			}
+			else
+			{
+				fclose(log_fp);
+			}
+		}
 
+		// Append (or create) log
 		if ((log_fp = _fsopen(fn.GetString(), "a", _SH_DENYWR)) != 0)
 		{
 			write_log(1, "! log file open\n");
