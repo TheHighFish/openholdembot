@@ -1,3 +1,13 @@
+v2.1.0 2009-xx-yy
+=================
+BUG FIXES:
+
+MAINTENANCE:
+
+NEW STUFF:
+- Added option to delete old log-files that exceed a given size. [THF]
+- Removed the old WinHoldem-default-bot. Replaced it with Playbot by Matrix. [THF]
+
 v2.0.0 2009-05-22
 =================
 BUG FIXES:
