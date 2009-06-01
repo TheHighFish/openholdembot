@@ -354,8 +354,9 @@ void start_log(void)
 		if ((log_fp = _fsopen(fn.GetString(), "r", _SH_DENYWR)) != 0)
 		{
 			DWORD file_size;
+			DWORD max_file_size = 1E06 * prefs.log_max_logsize();
 			GetFileSize(log_fp, &file_size);
-			if (file_size >= (1E06 * prefs.log_max_logsize()))
+			if (file_size > max_file_size)
 			{
 				fclose(log_fp);
 				remove(fn.GetString());
