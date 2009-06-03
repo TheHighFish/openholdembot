@@ -353,10 +353,10 @@ void start_log(void)
 		// Check, if file exists and size is too large
 		if ((log_fp = _fsopen(fn.GetString(), "r", _SH_DENYWR)) != 0)
 		{
-			DWORD file_size;
-			DWORD max_file_size = 1E06 * prefs.log_max_logsize();
-			GetFileSize(log_fp, &file_size);
-			if (file_size > max_file_size)
+			LARGE_INTEGER file_size;
+			unsigned long int max_file_size = 1E06 * prefs.log_max_logsize();
+			GetFileSizeEx(log_fp, &file_size);
+			if ((file_size.HighPart > 0) || (file_size.LowPart > max_file_size ))
 			{
 				fclose(log_fp);
 				remove(fn.GetString());
