@@ -291,7 +291,7 @@ void CMainFrame::OnEditDuplicateregion()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RMapCI				sel_region = p_tablemap->r$()->end();
-	HTREEITEM			parent;
+	HTREEITEM			parent = NULL;
 	CString				sel = "", selected_parent_text = "";
 		
 	// Get name of currently selected item
@@ -560,7 +560,7 @@ void CMainFrame::OnUpdateViewCurrentwindowsize(CCmdUI *pCmdUI)
 void CMainFrame::OnUpdateEditDuplicateregion(CCmdUI *pCmdUI)
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	HTREEITEM			parent;
+	HTREEITEM			parent = NULL;
 	CString				sel = "", selected_parent_text = "";
 		
 	// Get name of currently selected item
