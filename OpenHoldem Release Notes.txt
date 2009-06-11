@@ -1,6 +1,8 @@
 v2.1.0 2009-xx-yy
 =================
 BUG FIXES:
+- PokerPro-message 'TLCK' not supported due to missing documentation. Tournament-players will need to use the old
+  Poker-Pro-server (2007). Messagebox will give a hint. [THF]
 
 MAINTENANCE:
 
