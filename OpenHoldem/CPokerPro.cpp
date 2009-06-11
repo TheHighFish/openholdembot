@@ -570,6 +570,15 @@ void PokerPro::HandlePPMessage(const char* pbytes, const int nbytes)
 	case 'TLOS' :
 		HandleEventTournament			(pm);
 		break;
+		
+	case 'TLCK' :
+		MessageBox(0, "Message 'TLCK' received'\n."
+			"'TLCK' is undocumented and thus not supported.\n"
+			"If you want to simulate tournaments,\n" 
+			"please use an older version of the PPro-server\n" 
+			"according to the manual.\n",
+			"PokerPro-Error", 0);
+		break;
 
 	default		:
 		HandleEventUnknown		(pbytes);
