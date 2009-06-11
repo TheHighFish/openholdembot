@@ -723,8 +723,6 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	}
 	ar.WriteString("\r\n");
 
-	ar.Close();
-
 	return SUCCESS;	
 }
 
