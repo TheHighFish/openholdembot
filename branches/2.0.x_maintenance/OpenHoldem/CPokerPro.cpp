@@ -578,6 +578,7 @@ void PokerPro::HandlePPMessage(const char* pbytes, const int nbytes)
 			"please use an older version of the PPro-server\n" 
 			"according to the manual.\n",
 			"PokerPro-Error", 0);
+		break;
 
 	default		:
 		HandleEventUnknown		(pbytes);
