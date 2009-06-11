@@ -560,7 +560,7 @@ void CMainFrame::OnUpdateViewCurrentwindowsize(CCmdUI *pCmdUI)
 void CMainFrame::OnUpdateEditDuplicateregion(CCmdUI *pCmdUI)
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	HTREEITEM			parent;
+	HTREEITEM			parent = NULL;
 	CString				sel = "", selected_parent_text = "";
 		
 	// Get name of currently selected item
