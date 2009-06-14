@@ -1598,8 +1598,8 @@ void CScraper::ScrapeLimits()
 		}
 
 
-		// r$c0sblind
-		r_iter = p_tablemap->r$()->find("c0sblind");
+		// r$c0smallblind
+		r_iter = p_tablemap->r$()->find("c0smallblind");
 		if (r_iter != p_tablemap->r$()->end() && !_s_limit_info.found_sblind)
 		{
 			ProcessRegion(r_iter);
@@ -1613,11 +1613,11 @@ void CScraper::ScrapeLimits()
 			if (text!="")
 				set_sblind(trans.StringToMoney(text));
 
-			write_log(3, "c0sblind, result %s", j, text.GetString());
+			write_log(3, "c0smallblind, result %s", j, text.GetString());
 		}
 
-		// r$c0bblind
-		r_iter = p_tablemap->r$()->find("c0bblind");
+		// r$c0bigblind
+		r_iter = p_tablemap->r$()->find("c0bigblind");
 		if (r_iter != p_tablemap->r$()->end() && !_s_limit_info.found_bblind)
 		{
 			ProcessRegion(r_iter);
@@ -1631,7 +1631,7 @@ void CScraper::ScrapeLimits()
 			if (text!="")
 				set_bblind(trans.StringToMoney(text));
 
-			write_log(3, "c0bblind, result %s", j, text.GetString());
+			write_log(3, "c0bigblind, result %s", j, text.GetString());
 		}
 
 		// r$c0bigbet
