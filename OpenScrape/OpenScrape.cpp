@@ -187,7 +187,16 @@ void COpenScrapeApp::OnAppAbout()
 int COpenScrapeApp::ExitInstance()
 {
 	// classes
-	if (p_tablemap)  { delete p_tablemap; p_tablemap = NULL; }
+	if (p_tablemap)  
+	{ 
+		delete p_tablemap; 
+		p_tablemap = NULL; 
+	}
+	if (m_TableMapDlg) 
+	{ 
+		delete m_TableMapDlg;
+		m_TableMapDlg = NULL;
+	}
 
 	return CWinApp::ExitInstance();
 }
