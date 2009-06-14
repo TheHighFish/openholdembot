@@ -4,6 +4,7 @@ BUG FIXES:
 - PokerPro-message 'TLCK' not supported due to missing documentation. Tournament-players will need to use the old
   Poker-Pro-server (2007). Messagebox will give a hint. [THF]
 - OH didn't read c0smallblind and c0bigblind correctly when parsing tablemaps. Thanks to Epo for reporting. [THF]
+- Fixed some memory-leaks. [THF]
 
 MAINTENANCE:
 
