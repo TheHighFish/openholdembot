@@ -301,6 +301,7 @@ int COpenHoldemApp::ExitInstance()
 	if (p_perl)  { delete p_perl; p_perl = NULL; }
 	if (p_memory)  { delete p_memory; p_memory = NULL; }
 	if (p_versus)  { delete p_versus; p_versus = NULL; }
+	if (p_validator) { delete p_validator; p_validator = NULL; }
 
 	stop_log();
 
@@ -359,6 +360,9 @@ void COpenHoldemApp::OnForceCrash()
 {
 	int choice = MessageBox(0, "Do you REALLY want to CRASH?", "CONFIRMATION", 
 		MB_YESNO | MB_DEFBUTTON2 | MB_ICONEXCLAMATION | MB_TOPMOST);
+		//!!!
+	m_pRecentFileList = NULL;
+	return;
 	if (choice == IDYES) 
 	{
 		// FORCE A CRASH
