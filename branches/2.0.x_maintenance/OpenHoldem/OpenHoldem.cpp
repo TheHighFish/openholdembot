@@ -301,6 +301,7 @@ int COpenHoldemApp::ExitInstance()
 	if (p_perl)  { delete p_perl; p_perl = NULL; }
 	if (p_memory)  { delete p_memory; p_memory = NULL; }
 	if (p_versus)  { delete p_versus; p_versus = NULL; }
+	if (p_validator) { delete p_validator; p_validator = NULL; }
 
 	stop_log();
 
