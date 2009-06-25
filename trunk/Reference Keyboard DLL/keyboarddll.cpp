@@ -87,8 +87,6 @@ KEYBOARDDLL_API int SendString(const HWND hwnd, const RECT rect, const CString s
 	}
 
 	// Set focus to target window
-	int idTarget = GetWindowThreadProcessId(hwnd, NULL);
-	AttachThreadInput(GetCurrentThreadId(), idTarget, true);
 	SetFocus(hwnd);
 	SetForegroundWindow(hwnd);
 	SetActiveWindow(hwnd);
@@ -177,8 +175,6 @@ KEYBOARDDLL_API int SendKey(const HWND hwnd, const RECT rect, UINT vkey,
 	input_count++;
 
 	// Set focus to target window
-	int idTarget = GetWindowThreadProcessId(hwnd, NULL);
-	AttachThreadInput(GetCurrentThreadId(), idTarget, true);
 	SetFocus(hwnd);
 	SetForegroundWindow(hwnd);
 	SetActiveWindow(hwnd);
