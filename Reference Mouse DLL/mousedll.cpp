@@ -82,8 +82,6 @@ MOUSEDLL_API int MouseClick(const HWND hwnd, const RECT rect, const MouseButton 
 	}
 
 	// Set focus to target window
-	int idTarget = GetWindowThreadProcessId(hwnd, NULL);
-	AttachThreadInput(GetCurrentThreadId(), idTarget, true);
 	SetFocus(hwnd);
 	SetForegroundWindow(hwnd);
 	SetActiveWindow(hwnd);
@@ -147,8 +145,6 @@ MOUSEDLL_API int MouseClickDrag(const HWND hwnd, const RECT rect, const HWND res
 	input[2].mi.dwFlags = MOUSEEVENTF_LEFTUP;
 
 	// Set focus to target window
-	int idTarget = GetWindowThreadProcessId(hwnd, NULL);
-	AttachThreadInput(GetCurrentThreadId(), idTarget, true);
 	SetFocus(hwnd);
 	SetForegroundWindow(hwnd);
 	SetActiveWindow(hwnd);
