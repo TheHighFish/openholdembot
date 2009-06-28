@@ -52,6 +52,8 @@ struct SSymbols
 	double userchair;
 	double dealerchair;
 	double raischair;
+	// For internal use only: raischair_previous_frame
+	double raischair_previous_frame;
 
 	//ROUND&POSITIONS
 	double betround;
@@ -819,6 +821,9 @@ private:
 	void CalcRankbits(void);
 	void CalcHistory(void);
 	void CalcRunRon(void);
+
+	// For internal use only: raischair_previous_frame
+	void set_sym_raischair_previous_frame(const double d) { _sym.raischair_previous_frame = d;}
 
 	HandVal		_phandval[4], _chandval[4];	// for ishandup and ishandupcommon symbol calcs
 	time_t		_elapsedhold;				// The time we "sat down"
