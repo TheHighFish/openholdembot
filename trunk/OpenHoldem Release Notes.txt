@@ -5,6 +5,8 @@ BUG FIXES:
   Poker-Pro-server (2007). Messagebox will give a hint. [THF]
 - OH didn't read c0smallblind and c0bigblind correctly when parsing tablemaps. Thanks to Epo for reporting. [THF]
 - Fixed some memory-leaks. [THF]
+- raischair and ac_aggressor were wrong, when a player in late raised and another one in early position coldcalled.
+  OH does now search for the highest bet starting from the last known raiser instead of the SB. [THF]
 
 MAINTENANCE:
 
