@@ -19,6 +19,7 @@
 #include "CDllExtension.h"
 #include "CPerl.hpp"
 #include "CLogSymbols.h"
+#include "FloatingPoint_Comparisions.h"
 
 CGrammar::CGrammar(void)
 {
@@ -229,16 +230,20 @@ double CGrammar::DoEvaluateExpression(CFormula * const f, iter_t const& i, CEval
 	{
 		string type(i->value.begin(), i->value.end());
 		if (memcmp(type.c_str(), "<=", 2) == 0)
-			return EvaluateExpression(f, i->children.begin(), logCallingFunction, e) <= EvaluateExpression(f, i->children.begin()+1, logCallingFunction, e);
+			return (IsSmallerOrEqual(EvaluateExpression(f, i->children.begin(), logCallingFunction, e), 
+				EvaluateExpression(f, i->children.begin()+1, logCallingFunction, e)));
 
 		else if (memcmp(type.c_str(), ">=", 2) == 0)
-			return EvaluateExpression(f, i->children.begin(), logCallingFunction, e) >= EvaluateExpression(f, i->children.begin()+1, logCallingFunction, e);
+			return (IsGreaterOrEqual(EvaluateExpression(f, i->children.begin(), logCallingFunction, e), 
+				EvaluateExpression(f, i->children.begin()+1, logCallingFunction, e)));			
 
 		else if (memcmp(type.c_str(), "<", 1) == 0)
-			return EvaluateExpression(f, i->children.begin(), logCallingFunction, e) < EvaluateExpression(f, i->children.begin()+1, logCallingFunction, e);
-
+			return (IsSmaller(EvaluateExpression(f, i->children.begin(), logCallingFunction, e), 
+				EvaluateExpression(f, i->children.begin()+1, logCallingFunction, e)));
+			
 		else if (memcmp(type.c_str(), ">", 1) == 0)
-			return EvaluateExpression(f, i->children.begin(), logCallingFunction, e) > EvaluateExpression(f, i->children.begin()+1, logCallingFunction, e);
+			return (IsGreater(EvaluateExpression(f, i->children.begin(), logCallingFunction, e), 
+				EvaluateExpression(f, i->children.begin()+1, logCallingFunction, e)));
 	}
 
 	// Equality
@@ -246,10 +251,12 @@ double CGrammar::DoEvaluateExpression(CFormula * const f, iter_t const& i, CEval
 	{
 		string type(i->value.begin(), i->value.end());
 		if (memcmp(type.c_str(), "==", 2) == 0)
-			return EvaluateExpression(f, i->children.begin(), logCallingFunction, e) == EvaluateExpression(f, i->children.begin()+1, logCallingFunction, e);
+			return (IsEqual(EvaluateExpression(f, i->children.begin(), logCallingFunction, e), 
+				EvaluateExpression(f, i->children.begin()+1, logCallingFunction, e)));
 
 		else if (memcmp(type.c_str(), "!=", 2) == 0)
-			return EvaluateExpression(f, i->children.begin(), logCallingFunction, e) != EvaluateExpression(f, i->children.begin()+1, logCallingFunction, e);
+			return (!IsEqual(EvaluateExpression(f, i->children.begin(), logCallingFunction, e), 
+				EvaluateExpression(f, i->children.begin()+1, logCallingFunction, e)));
 	}
 
 	// Binary AND

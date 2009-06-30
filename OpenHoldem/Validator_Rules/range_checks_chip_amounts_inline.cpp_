@@ -97,7 +97,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol potcommon")
     PRECONDITION (true)
-    POSTCONDITION (gws("potcommon") >= 0)
+    POSTCONDITION (IsEqual(gws("potcommon"), 0));
     SYMBOLS_POSSIBLY_AFFECTED ("potcommon")
 END_TESTCASE
 
