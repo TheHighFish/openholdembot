@@ -6,6 +6,7 @@
 #include "CReplayFrame.h"
 #include "CSymbols.h"
 #include "CValidator.h"
+#include "FloatingPoint_Comparisions.h"
 
 
 CValidator *p_validator = NULL;
