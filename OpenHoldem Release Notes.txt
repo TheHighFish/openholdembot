@@ -17,6 +17,7 @@ BUG FIXES:
   
   This change fixes the problem for the build-in symbol-evaluator.
   DLL- and Perl-programmers have to take care about that rounding-problem themselves. [THF]
+- handresetmethod did confuse binary and hexadecimal constants. Thanks to epo for reporting it. [THF]
 
 MAINTENANCE:
 
