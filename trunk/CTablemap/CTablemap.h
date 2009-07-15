@@ -6,6 +6,8 @@
 #include "../CTransform/pdiff/RGBAImage.h"
 #include "../CCritSec/CCritSec.h"
 
+#define _0b0111 0x07
+
 ///////////////////////////////
 // structs
 ///////////////////////////////
@@ -176,9 +178,9 @@ public:
 									  else return BUTTON_SINGLECLICK; }
 
 	const int handresetmethod()		{ SMapCI it = _s$.find("handresetmethod"); 
-									  if (it==_s$.end()) return 0x0111;
+									  if (it==_s$.end()) return _0b0111;
 									  int n = strtoul(it->second.text.GetString(), NULL, 10); 
-									  return (n>=1 && n<=0x0111) ? n : 0x0111; }
+									  return (n>=1 && n<=_0b0111) ? n : _0b0111; }
 
 	const bool balancenumbersonly()	{ SMapCI it = _s$.find("balancenumbersonly"); 
 									  if (it==_s$.end()) return false;
