@@ -1,3 +1,29 @@
+v2.0.1 2009-07-17
+=================
+BUG FIXES:
+- PokerPro-message 'TLCK' not supported due to missing documentation. Tournament-players will need to use the old
+  Poker-Pro-server (2007). Messagebox will give a hint. [THF]
+- OH didn't read c0smallblind and c0bigblind correctly when parsing tablemaps. Thanks to Epo for reporting. [THF]
+- Fixed some memory-leaks. [THF]
+- raischair and ac_aggressor were wrong, when a player in late raised and another one in early position coldcalled.
+  OH does now search for the highest bet starting from the last known raiser instead of the SB. [THF]
+- OH used direct floating-point-comparisons, which could create strange results due to rounding-errors.
+  Created functions to replace the compare-operators (== != <= >= < >). E.g.
+  
+  inline bool IsSmaller(double a, double b)
+  {
+      return (a <= (b - epsilon));
+  }
+  
+  This change fixes the problem for the build-in symbol-evaluator.
+  DLL- and Perl-programmers have to take care about that rounding-problem themselves. [THF]
+- handresetmethod did confuse binary and hexadecimal constants. Thanks to epo for reporting it. [THF]
+- Fixed swag-problems introduced by rev. 696. [Spew]
+
+MAINTENANCE:
+
+NEW STUFF:
+
 v2.0.0 2009-05-22
 =================
 BUG FIXES:
