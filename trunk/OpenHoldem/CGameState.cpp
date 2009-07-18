@@ -555,6 +555,7 @@ bool CGameState::ProcessThisFrame (void)
 			prefs.need_balance_stability()==true)
 		{
 			balance_stability = false;
+			break;
 		}
 	}
 
