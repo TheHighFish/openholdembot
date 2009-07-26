@@ -1,6 +1,18 @@
 v2.1.0 2009-xx-yy
 =================
 BUG FIXES:
+- blinds and antes got not set correctly when scraped from the table 
+  instead of read from the titlebar. Thanks to epo for finding and fixing the bug. [THF]
+
+MAINTENANCE:
+
+NEW STUFF:
+- Added option to delete old log-files that exceed a given size. [THF]
+- Removed the old WinHoldem-default-bot. Replaced it with Playbot by Matrix. [THF]
+
+v2.0.1 2009-07-17
+=================
+BUG FIXES:
 - PokerPro-message 'TLCK' not supported due to missing documentation. Tournament-players will need to use the old
   Poker-Pro-server (2007). Messagebox will give a hint. [THF]
 - OH didn't read c0smallblind and c0bigblind correctly when parsing tablemaps. Thanks to Epo for reporting. [THF]
@@ -19,11 +31,6 @@ BUG FIXES:
   DLL- and Perl-programmers have to take care about that rounding-problem themselves. [THF]
 - handresetmethod did confuse binary and hexadecimal constants. Thanks to epo for reporting it. [THF]
 
-MAINTENANCE:
-
-NEW STUFF:
-- Added option to delete old log-files that exceed a given size. [THF]
-- Removed the old WinHoldem-default-bot. Replaced it with Playbot by Matrix. [THF]
 
 v2.0.0 2009-05-22
 =================
