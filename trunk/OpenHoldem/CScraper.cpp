@@ -1611,7 +1611,10 @@ void CScraper::ScrapeLimits()
 			text.Remove('$');
 
 			if (text!="")
+			{
 				set_sblind(trans.StringToMoney(text));
+				set_found_sblind(true);
+			}
 
 			write_log(3, "c0smallblind, result %s", j, text.GetString());
 		}
@@ -1629,7 +1632,10 @@ void CScraper::ScrapeLimits()
 			text.Remove('$');
 
 			if (text!="")
+			{
 				set_bblind(trans.StringToMoney(text));
+				set_found_bblind(true);
+			}
 
 			write_log(3, "c0bigblind, result %s", j, text.GetString());
 		}
@@ -1647,7 +1653,10 @@ void CScraper::ScrapeLimits()
 			text.Remove('$');
 
 			if (text!="")
+			{
 				set_bbet(trans.StringToMoney(text));
+				set_found_bbet(true);
+			}
 
 			write_log(3, "c0bigbet, result %s", j, text.GetString());
 		}
@@ -1665,7 +1674,10 @@ void CScraper::ScrapeLimits()
 			text.Remove('$');
 
 			if (text!="")
+			{
 				set_ante(trans.StringToMoney(text));
+				set_found_ante(true);
+			}
 
 			write_log(3, "c0ante, result %s", j, text.GetString());
 		}

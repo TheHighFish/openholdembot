@@ -4454,6 +4454,17 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "balance_rank", 12)==0 && strlen(a)==13)  			return p_game_state->SortedBalance(a[12]-'0');
 
 	*e = ERR_INVALID_SYM;
+
+	// Unknown symbol.
+	// Though we check the syntax, this can still happen
+	// by gws-calls from Perl or a DLL.
+	if (!prefs.disable_msgbox())
+	{
+		CString Message = CString("Unknown symbol in CSymbols::GetSymbolVal(): \"")
+			+ CString(a) + CString("\"");
+		MessageBox(0, Message, "ERROR", MB_OK);
+	}
+
 	return 0.0;
 }
 
