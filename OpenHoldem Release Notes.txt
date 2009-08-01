@@ -3,6 +3,10 @@ v2.1.0 2009-xx-yy
 BUG FIXES:
 - blinds and antes got not set correctly when scraped from the table 
   instead of read from the titlebar. Thanks to epo for finding and fixing the bug. [THF]
+- nopponentscalling: OH did incorrectly start searching for calling players at the first player after the button,
+  which caused problems, when players in early position coldcalled or raised.
+  We do now start at the first player with non-zero balance after the last known aggressor,
+  take him as the "oldest" bettor and then do a circular search for callers. [THF]
 
 MAINTENANCE:
 
