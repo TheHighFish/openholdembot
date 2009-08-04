@@ -7,6 +7,8 @@ BUG FIXES:
   which caused problems, when players in early position coldcalled or raised.
   We do now start at the first player with non-zero balance after the last known aggressor,
   take him as the "oldest" bettor and then do a circular search for callers. [THF]
+- handresetmethod did confuse HANDRESET_HANDNUM and HANDRESET_CARDS.
+  Thanks to Brdhse1 for providing the fix. [THF]
 
 MAINTENANCE:
 
