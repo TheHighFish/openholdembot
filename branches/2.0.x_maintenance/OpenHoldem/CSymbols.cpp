@@ -1010,13 +1010,14 @@ void CSymbols::CalcSymbols(void)
 		||
 
 		((hrm & HANDRESET_HANDNUM) &&
-			(player_card_cur[0]!=CARD_NOCARD && player_card_cur[0]!=CARD_BACK && player_card_cur[0]!=_player_card_last[0] ||
-			 player_card_cur[1]!=CARD_NOCARD && player_card_cur[1]!=CARD_BACK && player_card_cur[1]!=_player_card_last[1]))
+			_sym.handnumber != _handnumber_last)			
 		
 		||
 
 		((hrm & HANDRESET_CARDS) &&
-			_sym.handnumber != _handnumber_last)
+			(player_card_cur[0]!=CARD_NOCARD && player_card_cur[0]!=CARD_BACK && player_card_cur[0]!=_player_card_last[0] ||
+			 player_card_cur[1]!=CARD_NOCARD && player_card_cur[1]!=CARD_BACK && player_card_cur[1]!=_player_card_last[1]))
+			
 	   )
 	{
 		// Save for next pass
