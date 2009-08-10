@@ -562,8 +562,10 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 					}
 				}
 			}
-			// Delete image, which is no longer needed.
-			hold_image.image->~RGBAImage();
+			// Delete images later, when they are no longer needed,
+			// probably best in the destructor, otherwise we get a memory-leak.
+			// We can't delete them here, as we added a referece some line above: i$_insert(hold_image).
+			// hold_image.image->~RGBAImage();
 		}
 
 		// Unknown line type
