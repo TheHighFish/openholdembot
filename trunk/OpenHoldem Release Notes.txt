@@ -9,6 +9,8 @@ BUG FIXES:
   take him as the "oldest" bettor and then do a circular search for callers. [THF]
 - handresetmethod did confuse HANDRESET_HANDNUM and HANDRESET_CARDS.
   Thanks to Brdhse1 for providing the fix. [THF]
+- Fixed TM-image-problem introduced by rev. 810. Thanks to Brdhse1 and Tompalainen
+  for reporting it. [THF]
 
 MAINTENANCE:
 
