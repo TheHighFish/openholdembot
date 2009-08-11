@@ -21,6 +21,21 @@ CTablemap::CTablemap(void)
 
 CTablemap::~CTablemap(void)
 {
+	ClearTablemap();
+}
+
+void CTablemap::ClearIMap()
+{
+	IMap::iterator iter;
+	// For each image in the map: delete.
+	for(iter = _i$.begin(); iter != _i$.end(); iter++ ) 
+	{
+		// First value in the map is some index, internally created in i$_insert()
+		// Second value in the map is our image.
+		iter->second.image->~RGBAImage();
+	}
+	// Remove the contents of the map.
+	_i$.clear();
 }
 
 void CTablemap::ClearTablemap()
@@ -42,7 +57,8 @@ void CTablemap::ClearTablemap()
 		_h$[i].clear();
 	}
 
-	_i$.clear();
+	// Clear _i$-map and its contents
+	ClearIMap();
 }
 
 int CTablemap::LoadTablemap(const char *_filename, const char *version, const bool check_ws_date, int *linenum, const bool disable_msgbox,
