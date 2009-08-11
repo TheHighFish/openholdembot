@@ -2818,7 +2818,7 @@ void CDlgTableMap::create_tree(void)
 	parent = m_TableMapTree.InsertItem("Fonts");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
 	
-	for (i=0; i<3; i++)
+	for (i=0; i<=3; i++)
 	{
 		for (TMapCI t_iter=p_tablemap->t$(i)->begin(); t_iter!=p_tablemap->t$(i)->end(); t_iter++)
 		{
