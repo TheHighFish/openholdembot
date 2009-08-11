@@ -11,6 +11,7 @@ BUG FIXES:
   Thanks to Brdhse1 for providing the fix. [THF]
 - Fixed TM-image-problem introduced by rev. 810. Thanks to Brdhse1 and Tompalainen
   for reporting it. [THF]
+- Fixed main memory leak in CTablemap.cpp. Some mystrious 44-byte-blocks remain. [THF]
 
 MAINTENANCE:
 
