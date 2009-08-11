@@ -230,6 +230,10 @@ public:
 #undef ENT
 
 private:
+	// private functions
+	void ClearIMap();
+
+private:
 	// private variables - use public accessors and public mutators to address these
 	bool		_valid;
 	CString		_filename;
