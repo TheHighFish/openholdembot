@@ -2305,9 +2305,25 @@ void CDlgTableMap::OnBnClickedCreateImage()
 
 		// Populate new image record			
 		new_image.name = edit.m_result;
-		new_image.width = sel_region->second.right - sel_region->second.left + 1;
-		new_image.height = sel_region->second.bottom - sel_region->second.top + 1;
-		
+		if (sel_region->second.right < sel_region->second.left)
+		{
+			MessageBox("Image has negative width!", "ERROR", 0);
+			return;
+		}
+		else
+		{
+			new_image.width = sel_region->second.right - sel_region->second.left + 1;
+		}
+		if (sel_region->second.bottom < sel_region->second.top)
+		{
+			MessageBox("Image has negative height!", "ERROR", 0);
+			return;
+		}
+		else
+		{
+			new_image.height = sel_region->second.bottom - sel_region->second.top + 1;
+		}
+				
 		// Allocate space for "RGBAImage"
 		text = new_image.name + ".ppm";
 		new_image.image = new RGBAImage(new_image.width, new_image.height, text.GetString());
