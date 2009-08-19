@@ -12,6 +12,8 @@ BUG FIXES:
 - Fixed TM-image-problem introduced by rev. 810. Thanks to Brdhse1 and Tompalainen
   for reporting it. [THF]
 - Fixed main memory leak in CTablemap.cpp. Some mystrious 44-byte-blocks remain. [THF]
+- Fix: Confused IsEqual and IsGreaterOrEqual when fixing the rounding-error in rule 0069.
+  Thanks to PoundSand for reporting it. [THF] 
 
 MAINTENANCE:
 
