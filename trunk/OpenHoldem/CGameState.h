@@ -29,7 +29,6 @@ public:
 public:
 	// public accessors
 	const int oppdealt() { return _oppdealt; }
-	const int max_balance() { return _max_balance; }
 	const int hands_played() { return _hands_played; }
 	const SHoldemState * state(const int i) { if (i>=0 && i<=255) return &_state[i]; else return NULL; }
 	const int state_index() { return _state_index; }
@@ -42,7 +41,6 @@ public:
 private:
 	// private variables - use public accessors and public mutators to address these
 	int					_oppdealt;
-	double				_max_balance;
 	int					_hands_played;
 	bool				_new_hand;
 	SHoldemState		_state[256];
