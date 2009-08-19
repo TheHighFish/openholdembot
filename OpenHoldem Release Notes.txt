@@ -14,6 +14,7 @@ BUG FIXES:
 - Fixed main memory leak in CTablemap.cpp. Some mystrious 44-byte-blocks remain. [THF]
 - Fix: Confused IsEqual and IsGreaterOrEqual when fixing the rounding-error in rule 0069.
   Thanks to PoundSand for reporting it. [THF] 
+- maxbalance was sometime lower than balance. Thanks to PoundSand for reporting it. [THF]
 
 MAINTENANCE:
 
