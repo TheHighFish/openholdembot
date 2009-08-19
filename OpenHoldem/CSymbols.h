@@ -81,6 +81,7 @@ struct SSymbols
 
 	//CHIP AMOUNTS
 	double balance[11];				// "balance" is held in element 10, chair specific in elements 0-9
+	double max_balance;
 	double stack[10];				// chair specific in elements 0-9
 	double currentbet[11];			// "currentbet" is held in element 10, chair specific in elements 0-9
 	double call;
@@ -502,7 +503,12 @@ public:
 	void	set_sym_isaggmode(const double d) { ENT _sym.isaggmode = d;}
 
 	// chip amounts
-	void	set_sym_balance(const int i, const double d) {ENT if (i>=0 && i<=10) _sym.balance[i] = d;}
+	void	set_sym_balance(const int i, const double d) 
+	{
+		ENT 
+		if (i>=0 && i<=10) _sym.balance[i] = d;
+		if (i == 10) set_sym_max_balance_conditionally(d);
+	}
 	void	set_sym_stack(const int i, const double d) { ENT if (i>=0 && i<=9) _sym.stack[i] = d;}
 	void	set_sym_currentbet(const int i, const double d) { ENT if (i>=0 && i<=10) _sym.currentbet[i] = d;}
 	void	set_sym_call(const double d) { ENT _sym.call = d;}
@@ -782,6 +788,12 @@ public:
 #undef ENT
 
 private:
+	void	set_sym_max_balance_conditionally(const double d) 
+	{ 
+		// No ENT necessary and allowed, as we do call set_sym_max_balance_conditionally
+		// only inside set_sym_balance, which is already protected by the mutex!
+		if (d > _sym.max_balance) _sym.max_balance = d;
+	}
 	// private variables - use public accessors and public mutators to address these
 	SSymbols	_sym;
 	bool		_user_chair_confirmed;
