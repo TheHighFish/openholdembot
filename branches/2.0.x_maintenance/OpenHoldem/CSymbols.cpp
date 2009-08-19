@@ -4367,6 +4367,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	//CHIP AMOUNTS 2(2)
 	if (memcmp(a, "balance", 7)==0 && strlen(a)==7)						return _sym.balance[10];
 	if (memcmp(a, "balance", 7)==0 && strlen(a)==8)						return _sym.balance[a[7]-'0'];
+	if (memcmp(a, "maxbalance", 10)==0 && strlen(a)==10)  				return _sym.max_balance;
 	if (memcmp(a, "stack", 5)==0 && strlen(a)==6)						return _sym.stack[a[5]-'0'];
 	if (memcmp(a, "currentbet", 10)==0 && strlen(a)==10)				return _sym.currentbet[10];
 	if (memcmp(a, "currentbet", 10)==0 && strlen(a)==11)				return _sym.currentbet[a[10]-'0'];
@@ -4469,8 +4470,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "turnpct", 7)==0 && strlen(a)==7)  					return p_game_state->TurnPct();
 	if (memcmp(a, "riverpct", 8)==0 && strlen(a)==8)  					return p_game_state->RiverPct();
 	if (memcmp(a, "avgbetspf", 9)==0 && strlen(a)==9)  					return p_game_state->AvgBetsPf();
-	if (memcmp(a, "tablepfr", 8)==0 && strlen(a)==8)  					return p_game_state->TablePfr();
-	if (memcmp(a, "maxbalance", 10)==0 && strlen(a)==10)  				return p_game_state->max_balance();
+	if (memcmp(a, "tablepfr", 8)==0 && strlen(a)==8)  					return p_game_state->TablePfr();	
 	if (memcmp(a, "handsplayed", 11)==0 && strlen(a)==11)  				return p_game_state->hands_played();
 	if (memcmp(a, "balance_rank", 12)==0 && strlen(a)==13)  			return p_game_state->SortedBalance(a[12]-'0');
 

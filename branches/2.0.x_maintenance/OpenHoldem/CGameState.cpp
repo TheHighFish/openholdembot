@@ -12,7 +12,6 @@ CGameState::CGameState()
 {
 	_m_ndx = 0;
 	_hands_played = 0;
-	_max_balance = 0;
 	_oppdealt = 0;
 	_m_game_ndx = 0;
 	_m_ftr_ndx = 0;
@@ -637,10 +636,6 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 			}
 
 			// Track some stats
-			if (sym_balance > _max_balance)
-			{
-				_max_balance = sym_balance;
-			}
 			_hands_played++;
 
 			write_log(1, ">>> New hand %.0f\n", sym_handnumber);
