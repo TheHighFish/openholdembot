@@ -7,7 +7,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol vs$nhands")
     PRECONDITION (true)
-    POSTCONDITION ((gws("vs$nhands") >= 0) && (gws("vs$nhands") <= 2652))
+    POSTCONDITION (gws("vs$nhands") >= 0) 
     SYMBOLS_POSSIBLY_AFFECTED ("vs$nhands")
 END_TESTCASE
 
