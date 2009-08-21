@@ -50,7 +50,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("If there's a check button, then there can't be a call button and vice versa.")
     PRECONDITION (true)
-    POSTCONDITION (!((((int)gws("myturnbits") & BUTTON_CALL) == 0) && (((int)gws("myturnbits") & BUTTON_CHECK) != 0)))
+    POSTCONDITION (!((((int)gws("myturnbits") & BUTTON_CALL) != 0) && (((int)gws("myturnbits") & BUTTON_CHECK) != 0)))
     SYMBOLS_POSSIBLY_AFFECTED ("myturnbits")
 END_TESTCASE
 
