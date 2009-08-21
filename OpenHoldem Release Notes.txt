@@ -15,6 +15,7 @@ BUG FIXES:
 - Fix: Confused IsEqual and IsGreaterOrEqual when fixing the rounding-error in rule 0069.
   Thanks to PoundSand for reporting it. [THF] 
 - maxbalance was sometime lower than balance. Thanks to PoundSand for reporting it. [THF]
+- Validator: Typo in rule 0504 required to see a call button, when there was a check-button. [THF]
 
 MAINTENANCE:
 
