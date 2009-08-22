@@ -584,6 +584,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\DialogSAPrefs14.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogSAPrefs15.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\DialogSAPrefs2.cpp"
 					>
 				</File>
@@ -1214,6 +1222,14 @@
 				</File>
 				<File
 					RelativePath=".\DialogSAPrefs13.h"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogSAPrefs14.h"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogSAPrefs15.h"
 					>
 				</File>
 				<File
