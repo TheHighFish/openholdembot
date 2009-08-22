@@ -38,6 +38,8 @@
 #include "DialogSAPrefs11.h"
 #include "DialogSAPrefs12.h"
 #include "DialogSAPrefs13.h"
+#include "DialogSAPrefs14.h"
+#include "DialogSAPrefs15.h"
 
 #include "DialogSelectTable.h"
 #include "inlines/eval.h"
@@ -465,12 +467,16 @@ void CMainFrame::OnEditPreferences()
 	CDlgSAPrefs11 page11;
 	CDlgSAPrefs12 page12;
 	CDlgSAPrefs13 page13;
+	CDlgSAPrefs14 page14;
+	CDlgSAPrefs15 page15;
 
 	// add pages
 	dlg.AddPage(page1, "Analyzer");
+	dlg.AddPage(page14, "Auto-Connector");
 	dlg.AddPage(page2, "Autoplayer");
 	dlg.AddPage(page10, "Chat");
 	dlg.AddPage(page3, "DLL Extension");
+	dlg.AddPage(page15, "GUI");
 	dlg.AddPage(page7, "ICM");
 	dlg.AddPage(page11, "Logging");
 	dlg.AddPage(page13, "Obscure");

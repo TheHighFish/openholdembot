@@ -51,6 +51,8 @@
 #define IDD_SAPREFS12                   177
 #define IDD_SAPREFS13                   178
 #define IDD_CHARINUM                    179
+#define IDD_SAPREFS14                   180
+#define IDD_SAPREFS15                   181
 #define IDC_NEW                         1006
 #define IDC_DELETE                      1007
 #define IDC_RENAME                      1013
@@ -373,21 +375,26 @@
 #define IDC_ENABLE_TRACE2               1301
 #define IDC_DISABLE_MSGBOX              1301
 #define IDC_RECORD_EVERY_CHANGE_PLAYING 1302
-#define IDC_MAXIMUM_LOGSIZE             1303
-#define IDC_MAXIMUM_LOGSIZE_SPIN        1304
-#define IDC_OMF_CLASS_NAME              1305
-#define IDC_OMF_MUTEX_NAME              1306
-#define IDC_OMF_REG_NAME                1307
-#define IDC_RADIO_VALIDATOR_1           1308
-#define IDC_RADIO_VALIDATOR_2           1309
-#define IDC_RADIO_VALIDATOR_3           1310
-#define IDC_CHECK_VALIDATOR_STOP_ON_ERROR 1311
-#define IDC_PPRO_FULLTILTLOGFORMAT      1312
-#define IDC_SIMPLE_TITLE                1313
-#define IDC_CHECK_VALIDATOR_HEURISTIC_RULES 1314
-#define IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES 1315
-#define IDC_CHAIRNUM                    1316
+#define IDC_MAXIMUM_LOGSIZE             1302
+#define IDC_MAXIMUM_LOGSIZE_SPIN        1303
+#define IDC_OMF_CLASS_NAME              1304
+#define IDC_OMF_MUTEX_NAME              1305
+#define IDC_OMF_REG_NAME                1306
+#define IDC_RADIO_VALIDATOR_1           1306
+#define IDC_RADIO_VALIDATOR_2           1307
+#define IDC_RADIO_VALIDATOR_3           1308
+#define IDC_CHECK_VALIDATOR_STOP_ON_ERROR 1310
+#define IDC_PPRO_FULLTILTLOGFORMAT      1311
+#define IDC_SIMPLE_TITLE                1312
+#define IDC_CHECK_VALIDATOR_HEURISTIC_RULES 1313
+#define IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES 1313
+#define IDC_CHAIRNUM                    1315
 #define IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR 1317
+#define IDC_RADIO_TABLECONNECTION_MANUAL 1318
+#define IDC_RADIO_TABLECONNECTION_AUTOMATICAL 1319
+#define IDC_TABLECONNECTION_AUTO_ON_START 1320
+#define IDC_TABLE_CONNECTION_CLOSE_WHEN_TABLE_DISAPPEARS 1321
+#define IDC_GUI_START_MINIMIZED         1322
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -517,7 +524,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        180
 #define _APS_NEXT_COMMAND_VALUE         32986
-#define _APS_NEXT_CONTROL_VALUE         1318
+#define _APS_NEXT_CONTROL_VALUE         1323
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
