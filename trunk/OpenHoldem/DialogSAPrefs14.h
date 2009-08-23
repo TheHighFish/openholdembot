@@ -17,6 +17,10 @@ public:
 
 // Dialog Data
 	enum { IDD = IDD_SAPREFS14 };
+	CButton _autoconnector_connection_manually;
+	CButton _autoconnector_connection_automatically;
+	CButton _autoconnector_connect_on_start;
+	CButton _autoconnector_close_when_table_disappears;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
