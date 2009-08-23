@@ -173,6 +173,14 @@ void CPreferences::InitDefaults(void)
 	_validator_stop_on_error = true;
 	_validator_shoot_replayframe_on_error = true;
 
+	// Auto-connector
+	_autoconnector_connection_method = 0; // manually
+	_autoconnector_connect_on_start = 0;
+	_autoconnector_close_when_table_disappears = 0;
+
+	// GUI
+	_gui_start_minimized = false; 
+
 	// Obscure
 	_window_class_name = "OpenHoldem";
 	_mutex_name= "OHAntiColl";
@@ -341,6 +349,15 @@ void CPreferences::ReadPreferences()
 		ReadReg("validator_use_heuristic_rules", &_validator_use_heuristic_rules);
 		ReadReg("validator_stop_on_error", &_validator_stop_on_error);
 		ReadReg("validator_shoot_replayframe_on_error", &_validator_shoot_replayframe_on_error);
+
+		// Auto-connector
+		ReadReg("autoconnector_connection_method", &_autoconnector_connection_method);
+		ReadReg("autoconnector_connect_on_start ", & _autoconnector_connect_on_start);
+		ReadReg("autoconnector_close_when_table_disappears", &_autoconnector_close_when_table_disappears);
+
+		// GUI
+		ReadReg("gui_start_minimized", &_gui_start_minimized);
+
 
 		// obscure
 		ReadReg("window_class_name", &_window_class_name);

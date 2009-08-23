@@ -24,6 +24,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
+
+public:
+	CButton _gui_start_minimized;
 };
 
 #endif

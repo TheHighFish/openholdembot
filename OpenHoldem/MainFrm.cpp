@@ -196,7 +196,6 @@ CMainFrame::~CMainFrame()
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) 
 {
 	CString			t = "";
-
 	if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
 

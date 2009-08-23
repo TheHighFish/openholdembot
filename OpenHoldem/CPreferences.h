@@ -131,6 +131,14 @@ public:
 	const bool validator_use_heuristic_rules() { return _validator_use_heuristic_rules; }
 	const bool validator_shoot_replayframe_on_error() { return _validator_shoot_replayframe_on_error; }
 
+	// Auto-connector
+	const int autoconnector_connection_method() { return _autoconnector_connection_method; }
+	const bool autoconnector_connect_on_start() { return _autoconnector_connect_on_start; }
+	const bool autoconnector_close_when_table_disappears() { return _autoconnector_close_when_table_disappears; }
+
+	// GUI
+	const bool gui_start_minimized() { return _gui_start_minimized; }
+
 	// Misc
 	const int scraper_zoom() { return _scraper_zoom; }
 	// versus_path() is implemented in the cpp-file.
@@ -283,6 +291,14 @@ public:
 	void set_validator_stop_on_error(const bool b) { ENT _validator_stop_on_error = b; WriteReg("validator_stop_on_error", b); }
 	void set_validator_use_heuristic_rules(const bool b) { ENT _validator_use_heuristic_rules = b; WriteReg("validator_use_heuristic_rules", b); }
 	void set_validator_shoot_replayframe_on_error(const bool b) { ENT _validator_shoot_replayframe_on_error = b; WriteReg("validator_shoot_replayframe_on_error", b); }
+
+	// Auto-connector
+	void set_autoconnector_connection_method(const int i) { ENT _autoconnector_connection_method = i; WriteReg("autoconnector_connection_method", i); }
+	void set_autoconnector_connect_on_start(const bool b) { ENT _autoconnector_connect_on_start = b; WriteReg("autoconnector_connect_on_start", b); }
+	void set_autoconnector_close_when_table_disappears(const bool b) { ENT _autoconnector_close_when_table_disappears = b; WriteReg("autoconnector_close_when_table_disappear", b); }
+
+	// GUI
+	void set_gui_start_minimized(const bool b) { ENT _gui_start_minimized = b; WriteReg("gui_start_minimized", b); }
 
 	// Misc
 	// (No method for versus_path,
@@ -440,6 +456,14 @@ private:
 	bool			_validator_stop_on_error;
 	bool			_validator_use_heuristic_rules;
 	bool			_validator_shoot_replayframe_on_error;
+
+	// Auto-connector
+	int				_autoconnector_connection_method;
+	bool			_autoconnector_connect_on_start;
+	bool			_autoconnector_close_when_table_disappears;
+
+	// GUI
+	bool			_gui_start_minimized; 
 
 	// Misc
 	int				_scraper_zoom;
