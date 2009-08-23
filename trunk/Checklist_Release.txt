@@ -8,4 +8,5 @@
 * Add the Documentation
 * Add ReleaseNotes
 * Add "sources of code.txt"
+* Remove the *.lib, *.exp and *.pdb files.
 * Zip or rar and upload
