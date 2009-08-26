@@ -5,9 +5,10 @@
 #define BUTTON_CHECK 0x10
 
 
+// 0500 is heuristic, as some sites (e.g. Cake) show a call-button instead of check.
 BEGIN_TESTCASE
     TESTCASE_ID ("0500")
-    HEURISTIC_RULE (false)
+    HEURISTIC_RULE (true)
     REASONING ("If it's my turn, then there has to be always a fold button.")
     PRECONDITION (gws("ismyturn"))
     POSTCONDITION (((int)gws("myturnbits") & BUTTON_FOLD) != 0)
