@@ -3,6 +3,8 @@
 
 #include "resource.h"
 
+#include "SAPrefsDialog.h"
+
 // CDlgSAPrefs5 dialog
 
 class CDlgSAPrefs5 : public CSAPrefsSubDlg

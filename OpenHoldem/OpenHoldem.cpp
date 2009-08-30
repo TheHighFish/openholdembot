@@ -28,6 +28,7 @@
 #include "CPerl.hpp"
 #include "CSessionCounter.h"
 #include "CValidator.h"
+#include "CAutoConnector.h"
 
 #include "DialogFormulaScintilla.h"
 
@@ -146,6 +147,7 @@ BOOL COpenHoldemApp::InitInstance()
 	if (!p_memory)  p_memory = new CMemory;	
 	if (!p_versus)  p_versus = new CVersus;	
 	if (!p_validator) p_validator = new CValidator;
+	if (!p_autoconnector) p_autoconnector = new CAutoConnector;
 
 	// mouse.dll - failure in load is fatal
 	_mouse_dll = LoadLibrary("mouse.dll");
@@ -271,6 +273,12 @@ BOOL COpenHoldemApp::InitInstance()
 	m_pMainWnd->SetFocus();
 	m_pMainWnd->SetForegroundWindow();
 
+	// autoconnect on start, if preferred
+	if (prefs.autoconnector_connect_on_start())
+	{
+		p_autoconnector->Connect(0);//!!!
+	}
+
 	return TRUE;
 }
 
@@ -302,6 +310,7 @@ int COpenHoldemApp::ExitInstance()
 	if (p_memory)  { delete p_memory; p_memory = NULL; }
 	if (p_versus)  { delete p_versus; p_versus = NULL; }
 	if (p_validator) { delete p_validator; p_validator = NULL; }
+	if (p_autoconnector) { delete p_autoconnector; p_autoconnector = NULL; }
 
 	stop_log();
 
@@ -360,7 +369,6 @@ void COpenHoldemApp::OnForceCrash()
 {
 	int choice = MessageBox(0, "Do you REALLY want to CRASH?", "CONFIRMATION", 
 		MB_YESNO | MB_DEFBUTTON2 | MB_ICONEXCLAMATION | MB_TOPMOST);
-		//!!!
 	m_pRecentFileList = NULL;
 	return;
 	if (choice == IDYES) 

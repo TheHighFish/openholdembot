@@ -1,26 +1,26 @@
 #include "stdafx.h"
+
 #include <process.h>
 #include <float.h>
 
-#include "CScraper.h"
-#include "CSymbols.h"
-#include "CIteratorThread.h"
+#include "CAutoconnector.h"
 #include "CAutoplayer.h"
+#include "inlines/eval.h"
+#include "CGameState.h"
+#include "CGrammar.h"
+#include "CIteratorThread.h"
+#include "MainFrm.h"
+#include "OpenHoldem.h"
+#include "CPokerPro.h"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
-#include "CGameState.h"
+#include "CRunRon.h"
+#include "CScraper.h"
+#include "CSymbols.h"
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTransform\CTransform.h"
-#include "CGrammar.h"
 #include "CVersus.h"
-#include "CRunRon.h"
-#include "CPokerPro.h"
-#include "CGameState.h"
 
-#include "OpenHoldem.h"
-#include "MainFrm.h"
-
-#include "inlines/eval.h"
 
 CSymbols			*p_symbols = NULL;
 
@@ -959,7 +959,7 @@ void CSymbols::CalcSymbols(void)
 	set_sym_swagdelay(prefs.swag_delay_3());											// swagdelay
 	set_sym_allidelay(0);																// allidelay  (unused in OpenHoldem)
 	set_sym_version(VERSION_NUMBER);													// version
-	GetClassName(pMyMainWnd->attached_hwnd(), classname, 50);
+	GetClassName(p_autoconnector->attached_hwnd(), classname, 50);
 	if (strcmp(classname, "BRING")==0)
 		set_sym_isbring(1);																// isbring
 
@@ -1067,7 +1067,7 @@ void CSymbols::CalcSymbols(void)
 			StdDeck_cardToString(player_card_cur[0], card0);
 			StdDeck_cardToString(player_card_cur[1], card1);
 		}
-		GetWindowText(pMyMainWnd->attached_hwnd(), title, 512);
+		GetWindowText(p_autoconnector->attached_hwnd(), title, 512);
 		write_log(1, "\n*************************************************************\n"
 					 "HAND RESET (num:%.0f dealer:%.0f cards:%s%s): %s\n"
 					 "*************************************************************\n",

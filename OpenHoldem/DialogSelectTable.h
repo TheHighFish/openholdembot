@@ -2,6 +2,7 @@
 #define INC_DIALOGSELECTTABLE_H
 
 #include "HScrollListBox.h"
+#include "resource.h"
 
 // CDlgSelectTable dialog
 

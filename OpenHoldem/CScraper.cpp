@@ -1,25 +1,24 @@
 #include "StdAfx.h"
 
+#include "CAutoconnector.h"
+#include "CPokerPro.h"
 #include "CScraper.h"
-
+#include "CSymbols.h"
 #include "..\CTransform\CTransform.h"
 #include "..\CTransform\hash\lookup3.h"
-
-#include "CSymbols.h"
-#include "CPokerPro.h"
-
-#include "OpenHoldem.h"
 #include "MainFrm.h"
+#include "OpenHoldem.h"
+
 
 #define __HDC_HEADER 		HBITMAP		old_bitmap = NULL; \
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd); \
-	HDC				hdc = GetDC(pMyMainWnd->attached_hwnd()); \
+	HDC				hdc = GetDC(p_autoconnector->attached_hwnd()); \
 	HDC				hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL); \
 	HDC				hdcCompatible = CreateCompatibleDC(hdcScreen);
 
 #define __HDC_FOOTER	DeleteDC(hdcCompatible); \
 	DeleteDC(hdcScreen); \
-	ReleaseDC(pMyMainWnd->attached_hwnd(), hdc);
+	ReleaseDC(p_autoconnector->attached_hwnd(), hdc);
 
 CScraper *p_scraper = NULL;
 
@@ -167,7 +166,7 @@ int CScraper::DoScrape(void)
 
 	// Get bitmap of whole window
 	RECT		cr = {0};
-	GetClientRect(pMyMainWnd->attached_hwnd(), &cr);
+	GetClientRect(p_autoconnector->attached_hwnd(), &cr);
 
 	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_cur);
 	BitBlt(hdcCompatible, 0, 0, cr.right, cr.bottom, hdc, cr.left, cr.top, SRCCOPY);
@@ -176,7 +175,7 @@ int CScraper::DoScrape(void)
 	// get window title
 	_title[0] = '\0';
 	if (!p_pokerpro->IsConnected())
-		GetWindowText(pMyMainWnd->attached_hwnd(), _title, MAX_WINDOW_TITLE-1);
+		GetWindowText(p_autoconnector->attached_hwnd(), _title, MAX_WINDOW_TITLE-1);
 
 	// If the bitmaps are the same, then return now
 	if (BitmapsSame(_entire_window_last, _entire_window_cur) &&
@@ -185,7 +184,7 @@ int CScraper::DoScrape(void)
 	{
 		DeleteDC(hdcCompatible);
 		DeleteDC(hdcScreen);
-		ReleaseDC(pMyMainWnd->attached_hwnd(), hdc);
+		ReleaseDC(p_autoconnector->attached_hwnd(), hdc);
 
 		write_log(3, "...ending Scraper cadence early (no change).");
 		return NOTHING_CHANGED;
@@ -1493,7 +1492,7 @@ void CScraper::ScrapeLimits()
 		s_iter = p_tablemap->s$()->find("ttlimits");
 		if (s_iter != p_tablemap->s$()->end())
 		{
-			GetWindowText(pMyMainWnd->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
+			GetWindowText(p_autoconnector->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
 			titletext = c_titletext;
 		 	
 			trans.ParseStringBSL(
@@ -1513,7 +1512,7 @@ void CScraper::ScrapeLimits()
 			s_iter = p_tablemap->s$()->find(s.GetString());
 			if (s_iter != p_tablemap->s$()->end())
 			{
-				GetWindowText(pMyMainWnd->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
+				GetWindowText(p_autoconnector->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
 				titletext = c_titletext;
 	
 				trans.ParseStringBSL(
@@ -1885,7 +1884,7 @@ void CScraper::CreateBitmaps(void)
 
 	// Whole window
 	RECT			cr = {0};
-	GetClientRect(pMyMainWnd->attached_hwnd(), &cr);
+	GetClientRect(p_autoconnector->attached_hwnd(), &cr);
 	_entire_window_last = CreateCompatibleBitmap(hdcScreen, cr.right, cr.bottom);
 	set_entire_window_cur(CreateCompatibleBitmap(hdcScreen, cr.right, cr.bottom));
 
@@ -1945,7 +1944,7 @@ void CScraper::SetLimitInfo(const SLimitInfo LI)
 const double CScraper::DoChipScrape(RMapCI r_iter)
 {
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-	HDC				hdc = GetDC(pMyMainWnd->attached_hwnd());
+	HDC				hdc = GetDC(p_autoconnector->attached_hwnd());
 
 	int				j = 0, stackindex = 0, chipindex = 0;
 	int				hash_type = 0, pixcount = 0, chipwidth = 0, chipheight = 0;
@@ -1972,7 +1971,7 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 	// Check for bad parameters
 	if (r_iter == p_tablemap->r$()->end())
 	{
-		ReleaseDC(pMyMainWnd->attached_hwnd(), hdc);
+		ReleaseDC(p_autoconnector->attached_hwnd(), hdc);
 		return 0.;
 	}
 
@@ -1985,7 +1984,7 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 
 	else
 	{
-		ReleaseDC(pMyMainWnd->attached_hwnd(), hdc);
+		ReleaseDC(p_autoconnector->attached_hwnd(), hdc);
 		return 0.;
 	}
 
@@ -1994,7 +1993,7 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 	r_start = p_tablemap->r$()->find(s.GetString());
 	if (r_start == p_tablemap->r$()->end())
 	{
-		ReleaseDC(pMyMainWnd->attached_hwnd(), hdc);
+		ReleaseDC(p_autoconnector->attached_hwnd(), hdc);
 		return 0.;
 	}
 
@@ -2017,7 +2016,7 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 	HDC hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
 	HDC hdcCompat = CreateCompatibleDC(hdcScreen);
 	RECT rect;
-	GetClientRect(pMyMainWnd->attached_hwnd(), &rect);
+	GetClientRect(p_autoconnector->attached_hwnd(), &rect);
 	HBITMAP attached_bitmap = CreateCompatibleBitmap(hdcScreen, rect.right, rect.bottom);
 	HBITMAP	old_bitmap = (HBITMAP) SelectObject(hdcCompat, attached_bitmap);
 	BitBlt(hdcCompat, 0, 0, rect.right, rect.bottom, hdc, 0, 0, SRCCOPY);
@@ -2144,7 +2143,7 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 	DeleteDC(hdcCompat);
 	DeleteDC(hdcScreen);
 
-	ReleaseDC(pMyMainWnd->attached_hwnd(), hdc);
+	ReleaseDC(p_autoconnector->attached_hwnd(), hdc);
 	return result;
 }
 

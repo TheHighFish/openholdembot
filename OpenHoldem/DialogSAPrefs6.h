@@ -4,6 +4,8 @@
 #include "resource.h"
 #include "afxwin.h"
 
+#include "SAPrefsDialog.h"
+
 // CDlgSAPrefs6 dialog
 
 class CDlgSAPrefs6 : public CSAPrefsSubDlg
