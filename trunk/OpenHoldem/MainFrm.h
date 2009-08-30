@@ -83,21 +83,28 @@ public:
 
 public:
 	// public accessors
-	const HWND attached_hwnd() { return _attached_hwnd; }
 	const bool flags(const int i) { if (i>=0 && i<=19) return _flags[i]; else return false; }
 	const bool wait_cursor() { return _wait_cursor; }
 
 public:
+	void DisableButtonsOnConnect();
+	void EnableButtonsOnDisconnect();
+	void UnattachOHFromPokerWindow();
+public:
+	void UpdateWindowTitle();
+	void StartTimer();
+	void ResetDisplay();
+	void KillTimer();
+
+public:
 #define ENT CSLock lock(m_critsec);
 	// public mutators
-	void set_attached_hwnd(const HWND h) { ENT _attached_hwnd = h; }
 	void set_flags(const int i, const bool b) { ENT if (i>=0 && i<=19) _flags[i] = b; }
 	void set_wait_cursor(const bool b) { ENT _wait_cursor = b; }
 #undef ENT
 
 private:
 	// private variables - use public accessors and public mutators to address these
-	HWND			_attached_hwnd;	 // Table that we are attached to
 	bool			_flags[20];		 // Flags button status
 	bool			_wait_cursor;	 // Used if we need to display a wait cursor anywhere
 
@@ -107,8 +114,6 @@ private:
 	int CreateFlagsToolbar(void);
 	void AlignToolbars(void);
 	int CreateStatusBar(void);
-	
-	BOOL DoConnect(HWND target);
 
 	CStatusBar		_status_bar;
 	CMyToolBar		_tool_bar;

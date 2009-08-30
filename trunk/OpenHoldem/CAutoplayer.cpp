@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include <complex>
 
+#include "CAutoconnector.h"
 #include "CAutoplayer.h"
 #include "CSymbols.h"
 #include "CIteratorThread.h"
@@ -68,7 +69,7 @@ void CAutoplayer::DoChat(void)
 	// If we get a lock, do the action
 	if (_mutex.Lock(500))
 	{
-		(theApp._dll_keyboard_sendstring) (pMyMainWnd->attached_hwnd(), r, s, false, hwnd_focus, cur_pos);
+		(theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), r, s, false, hwnd_focus, cur_pos);
 		_mutex.Unlock();
 	}
 	// Clear old chat_message to allow new ones.
@@ -295,21 +296,21 @@ void CAutoplayer::DoSwag(void)
 		{
 			write_log(3, "Text selection; calling mouse.dll to double click: %d,%d %d,%d\n", rect_edit.left, rect_edit.top, 
 				rect_edit.right, rect_edit.bottom);
-			(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_edit, MouseLeft, 2, NULL, p_null);
+			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect_edit, MouseLeft, 2, NULL, p_null);
 		}
 
 		else if (p_tablemap->swagselectionmethod() == TEXTSEL_SINGLECLICK)
 		{
 			write_log(3, "Text selection; calling mouse.dll to single click: %d,%d %d,%d\n", rect_edit.left, rect_edit.top, 
 				rect_edit.right, rect_edit.bottom);
-			(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_edit, MouseLeft, 1, NULL, p_null);
+			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect_edit, MouseLeft, 1, NULL, p_null);
 		}
 
 		else if (p_tablemap->swagselectionmethod() == TEXTSEL_CLICKDRAG)
 		{
 			write_log(3, "Text selection; calling mouse.dll to click drag: %d,%d %d,%d\n", rect_edit.left, rect_edit.top, 
 				rect_edit.right, rect_edit.bottom);
-			(theApp._dll_mouse_click_drag) (pMyMainWnd->attached_hwnd(), rect_edit, NULL, p_null);
+			(theApp._dll_mouse_click_drag) (p_autoconnector->attached_hwnd(), rect_edit, NULL, p_null);
 		}
 
 		else if (p_tablemap->swagselectionmethod() == TEXTSEL_NOTHING)
@@ -324,7 +325,7 @@ void CAutoplayer::DoSwag(void)
 		}
 
 		// Check for stolen focus, and thus misswag
-		if (GetForegroundWindow() != pMyMainWnd->attached_hwnd())
+		if (GetForegroundWindow() != p_autoconnector->attached_hwnd())
 			lost_focus = true;
 
 		write_log(3, "Sleeping %dms.\n", prefs.swag_delay_1());
@@ -336,13 +337,13 @@ void CAutoplayer::DoSwag(void)
 		if (p_tablemap->swagdeletionmethod() == TEXTDEL_DELETE)
 		{
 			write_log(3, "Text deletion; calling keyboard.dll to press 'delete'\n");
-			(theApp._dll_keyboard_sendkey) (pMyMainWnd->attached_hwnd(), r_null, VK_DELETE, NULL, p_null);
+			(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_DELETE, NULL, p_null);
 		}
 
 		else if (p_tablemap->swagdeletionmethod() == TEXTDEL_BACKSPACE)
 		{
 			write_log(3, "Text deletion; calling keyboard.dll to press 'backspace'\n");
-			(theApp._dll_keyboard_sendkey) (pMyMainWnd->attached_hwnd(), r_null, VK_BACK, NULL, p_null);
+			(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_BACK, NULL, p_null);
 		}
 
 		else if (p_tablemap->swagdeletionmethod() == TEXTDEL_NOTHING)
@@ -357,7 +358,7 @@ void CAutoplayer::DoSwag(void)
 		}
 
 		// Check for stolen focus, and thus misswag
-		if (GetForegroundWindow() != pMyMainWnd->attached_hwnd())
+		if (GetForegroundWindow() != p_autoconnector->attached_hwnd())
 			lost_focus = true;
 
 		write_log(3, "Sleeping %dms.\n", prefs.swag_delay_2());
@@ -374,10 +375,10 @@ void CAutoplayer::DoSwag(void)
 
 		write_log(3, "Swag amount; calling keyboard.dll to swag: %s %d,%d %d,%d\n", swag_amt, rect_edit.left, rect_edit.top, 
 				rect_edit.right, rect_edit.bottom);
-		(theApp._dll_keyboard_sendstring) (pMyMainWnd->attached_hwnd(), rect_edit, swag_amt, prefs.swag_use_comma(), NULL, p_null);
+		(theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), rect_edit, swag_amt, prefs.swag_use_comma(), NULL, p_null);
 
 		// Check for stolen focus, and thus misswag
-		if (GetForegroundWindow() != pMyMainWnd->attached_hwnd())
+		if (GetForegroundWindow() != p_autoconnector->attached_hwnd())
 			lost_focus = true;
 
 		write_log(3, "Sleeping %dms.\n", prefs.swag_delay_3());
@@ -391,7 +392,7 @@ void CAutoplayer::DoSwag(void)
 			if (p_tablemap->swagconfirmationmethod() == BETCONF_ENTER)
 			{
 				write_log(3, "Confirmation; calling keyboard.dll to press 'Enter'\n");					
-				(theApp._dll_keyboard_sendkey) (pMyMainWnd->attached_hwnd(), r_null, VK_RETURN, hwnd_focus, cur_pos);
+				(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_RETURN, hwnd_focus, cur_pos);
 			}
 
 			else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET &&
@@ -420,13 +421,13 @@ void CAutoplayer::DoSwag(void)
 				{
 					write_log(3, "Confirmation; calling mouse.dll to double click bet button: %d,%d %d,%d\n", 
 						rect_button.left, rect_button.top, rect_button.right, rect_button.bottom);					
-					(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_button, MouseLeft, 2, hwnd_focus, cur_pos);
+					(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect_button, MouseLeft, 2, hwnd_focus, cur_pos);
 				}
 				else
 				{
 					write_log(3, "Confirmation; calling mouse.dll to single click bet button: %d,%d %d,%d\n", 
 						rect_button.left, rect_button.top, rect_button.right, rect_button.bottom);					
-					(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_button, MouseLeft, 1, hwnd_focus, cur_pos);
+					(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect_button, MouseLeft, 1, hwnd_focus, cur_pos);
 				}
 			}
 
@@ -567,12 +568,12 @@ void CAutoplayer::DoARCCF(void)
 			if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
 			{
 				write_log(3, "Calling mouse.dll to double click: %d,%d %d,%d\n", r.left, r.top, r.right, r.bottom);
-				(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), r, MouseLeft, 2, hwnd_focus, cur_pos);
+				(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), r, MouseLeft, 2, hwnd_focus, cur_pos);
 			}
 			else
 			{
 				write_log(3, "Calling mouse.dll to single click: %d,%d %d,%d\n", r.left, r.top, r.right, r.bottom);
-				(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), r, MouseLeft, 1, hwnd_focus, cur_pos);
+				(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), r, MouseLeft, 1, hwnd_focus, cur_pos);
 			}
 			
 			_mutex.Unlock();
@@ -668,7 +669,7 @@ void CAutoplayer::DoSlider(void)
 		r.bottom = r.top;		
 		
 		write_log(1, "Calling mouse.dll to jam from %d,%d to %d,%d\n", r.left, r.top, r.right, r.bottom);
-		(theApp._dll_mouse_click_drag) (pMyMainWnd->attached_hwnd(), r, NULL, p_null);
+		(theApp._dll_mouse_click_drag) (p_autoconnector->attached_hwnd(), r, NULL, p_null);
 
 		write_log(3, "Sleeping %dms.", prefs.swag_delay_3());
 		Sleep(prefs.swag_delay_3());
@@ -677,7 +678,7 @@ void CAutoplayer::DoSlider(void)
 		if (p_tablemap->swagconfirmationmethod() == BETCONF_ENTER)
 		{
 			write_log(3, "Confirmation; calling keyboard.dll to press 'Enter'\n");
-			(theApp._dll_keyboard_sendkey) (pMyMainWnd->attached_hwnd(), r_null, VK_RETURN, hwnd_focus, cur_pos);
+			(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_RETURN, hwnd_focus, cur_pos);
 		}
 
 		else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET &&
@@ -715,13 +716,13 @@ void CAutoplayer::DoSlider(void)
 			{
 				write_log(3, "Confirmation; calling mouse.dll to double click bet button: %d,%d %d,%d\n", 
 						rect_button.left, rect_button.top, rect_button.right, rect_button.bottom);	
-				(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_button, MouseLeft, 2, hwnd_focus, cur_pos);
+				(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect_button, MouseLeft, 2, hwnd_focus, cur_pos);
 			}
 			else
 			{
 				write_log(3, "Confirmation; calling mouse.dll to single click bet button: %d,%d %d,%d\n", 
 						rect_button.left, rect_button.top, rect_button.right, rect_button.bottom);	
-				(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), rect_button, MouseLeft, 1, hwnd_focus, cur_pos);
+				(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect_button, MouseLeft, 1, hwnd_focus, cur_pos);
 			}
 		}
 
@@ -776,7 +777,7 @@ void CAutoplayer::DoPrefold(void)
 	{
 		write_log(3, "Confirmation; calling mouse.dll to single click prefold button: %d,%d %d,%d\n", r.left, r.top, r.right, r.bottom);	
 
-		(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), r, MouseLeft, 1, hwnd_focus, cur_pos);
+		(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), r, MouseLeft, 1, hwnd_focus, cur_pos);
 
 		_mutex.Unlock();
 
@@ -1075,7 +1076,7 @@ void CAutoplayer::CheckBringKeyboard(void)
 	GetCursorPos(&cur_pos);
 
 	// Find position of "Keyboard" item on system menu
-	bringsysmenu = GetSystemMenu(pMyMainWnd->attached_hwnd(), false);
+	bringsysmenu = GetSystemMenu(p_autoconnector->attached_hwnd(), false);
 
 	mii.cbSize = sizeof(MENUITEMINFO);
 	mii.fMask = MIIM_STRING;
@@ -1142,9 +1143,9 @@ void CAutoplayer::CheckBringKeyboard(void)
 
 		if (_mutex.Lock(500)) 
 		{
-			SetFocus(pMyMainWnd->attached_hwnd());
-			SetForegroundWindow(pMyMainWnd->attached_hwnd());
-			SetActiveWindow(pMyMainWnd->attached_hwnd());
+			SetFocus(p_autoconnector->attached_hwnd());
+			SetForegroundWindow(p_autoconnector->attached_hwnd());
+			SetActiveWindow(p_autoconnector->attached_hwnd());
 			SendInput(input_count, input, sizeof(INPUT));
 			_mutex.Unlock();
 		}
@@ -1166,9 +1167,9 @@ void CAutoplayer::CheckBringKeyboard(void)
 
 		if (_mutex.Lock(500)) 
 		{
-			SetFocus(pMyMainWnd->attached_hwnd());
-			SetForegroundWindow(pMyMainWnd->attached_hwnd());
-			SetActiveWindow(pMyMainWnd->attached_hwnd());
+			SetFocus(p_autoconnector->attached_hwnd());
+			SetForegroundWindow(p_autoconnector->attached_hwnd());
+			SetActiveWindow(p_autoconnector->attached_hwnd());
 
 			SendInput(input_count, input, sizeof(INPUT));
 
@@ -1284,7 +1285,7 @@ void CAutoplayer::DoF$play(void)
 		if (_mutex.Lock(500)) 
 		{
 			write_log(3, "Calling mouse.dll to single click button: %d,%d %d,%d\n", r.left, r.top, r.right, r.bottom);	
-			(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), r, MouseLeft, 1, hwnd_focus, cur_pos);
+			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), r, MouseLeft, 1, hwnd_focus, cur_pos);
 
 			_mutex.Unlock();
 
@@ -1348,7 +1349,7 @@ void CAutoplayer::DoI86(void)
 		if (_mutex.Lock(500))
 		{
 			write_log(3, "Calling mouse.dll to single click button: %d,%d %d,%d\n", r.left, r.top, r.right, r.bottom);	
-			(theApp._dll_mouse_click) (pMyMainWnd->attached_hwnd(), r, MouseLeft, 1, hwnd_focus, cur_pos);
+			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), r, MouseLeft, 1, hwnd_focus, cur_pos);
 
 			_mutex.Unlock();
 

@@ -1,26 +1,26 @@
 #include "stdafx.h"
+
 #include <process.h>
 
-#include "OpenHoldem.h"
-#include "MainFrm.h"
-
-#include "CScraper.h"
-#include "CSymbols.h"
-#include "CFormula.h"
+#include "CAutoconnector.h"
 #include "CAutoplayer.h"
-#include "CIteratorThread.h"
+#include "CFormula.h"
+#include "CGameState.h"
 #include "CHeartbeatThread.h"
+#include "CIteratorThread.h"
+#include "CPokerPro.h"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
-#include "CGameState.h"
-#include "..\CTablemap\CTablemap.h"
 #include "CReplayFrame.h"
-#include "CValidator.h"
-
-#include "DialogScraperOutput.h"
-#include "CPokerPro.h"
-
+#include "CScraper.h"
 #include "..\..\Reference Scraper DLL\scraperdll.h"
+#include "CSymbols.h"
+#include "..\CTablemap\CTablemap.h"
+#include "CValidator.h"
+#include "DialogScraperOutput.h"
+#include "MainFrm.h"
+#include "OpenHoldem.h"
+
 
 CHeartbeatThread	*p_heartbeat_thread = NULL;
 CRITICAL_SECTION	CHeartbeatThread::cs_update_in_progress;
@@ -252,7 +252,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		CString *messageTitle = new CString();
 		if (!p_pokerpro->IsConnected())
 		{
-			GetWindowText(pMyMainWnd->attached_hwnd(), title, 512);
+			GetWindowText(p_autoconnector->attached_hwnd(), title, 512);
 			messageTitle->Format("%s - %s (%s)", p_formula->formula_name(), p_tablemap->sitename(), title);
 		}
 		else

@@ -4,6 +4,8 @@
 #include "resource.h"
 #include "afxwin.h"
 
+#include "SAPrefsDialog.h"
+
 
 // CDlgSAPrefs15 dialog
 
