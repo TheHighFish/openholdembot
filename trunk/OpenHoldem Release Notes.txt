@@ -1,6 +1,8 @@
 v2.1.0 2009-xx-yy
 ==============
 BUG FIXES:
+- When the autolayer was engaged it was still possible to load a new formula via the MRU-list.
+  This usually crashed the evaluator-engine, which had to operate on invalid data. [THF]
 
 MAINTENANCE:
 
