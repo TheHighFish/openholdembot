@@ -425,7 +425,6 @@ public:
 	void	set_stacks_at_hand_start(const int i, const int d) { ENT if (i>=0 && i<=9) _stacks_at_hand_start[i] = d; }
 
 	void	set_reset_stakes(const bool b) { ENT _reset_stakes = b;}
-	void	set_elapsedhold(time_t t) { ENT _elapsedhold = t;}
 	void	set_elapsedautohold(time_t t) { ENT _elapsedautohold = t;}
 
 	// All symbol mutators below
