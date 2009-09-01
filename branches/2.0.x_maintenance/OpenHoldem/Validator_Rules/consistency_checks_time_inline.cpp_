@@ -34,7 +34,7 @@ BEGIN_TESTCASE
     REASONING ("Once the first hand is finished, the session duration has to be greater than the duration of a hand.")
     PRECONDITION (gws("handsplayed") > 1)
     POSTCONDITION (gws("elapsed") > gws("elapsedhand"))
-    SYMBOLS_POSSIBLY_AFFECTED ("elapsed, elapsedhand")
+    SYMBOLS_POSSIBLY_AFFECTED ("elapsed, elapsedhand, handsplayed")
 END_TESTCASE
 
 
