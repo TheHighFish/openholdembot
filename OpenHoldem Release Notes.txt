@@ -17,6 +17,20 @@ BUG FIXES:
 - maxbalance was sometime lower than balance. Thanks to PoundSand for reporting it. [THF]
 - Validator: Fixed a typo in rule 0504, that required to see a call button, when there was a check-button. [THF]
 - Validator: Fixed incorrect assumption about the range of vs$nhands. [THF]
+- Support for five new casinos, which got added by PokerTracker. OH supports now
+   * PokerStars
+   * Party
+   * Full Tilt
+   * iPoker
+   * Everest
+   * OnGame
+   * Boss Media
+   * Cereus Network
+   * Pacific Poker
+   * Entraction
+   * MicroGaming [THF]
+   
+  
 
 MAINTENANCE:
 
