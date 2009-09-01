@@ -16,7 +16,9 @@ CPokerTrackerLookup::CPokerTrackerLookup()
 {
 	_pt2_siteid.clear();
 	_pt3_siteid.clear();
-
+	
+	// Documentation about PT3 sited_IDs:
+	// http://www.pokertracker.com/forums/viewtopic.php?f=18&t=20169&p=95629
 	_pt2_siteid.insert(std::pair<CString, int> ("Stars", 2));
 	_pt2_siteid.insert(std::pair<CString, int> ("Party", 3));
 	_pt2_siteid.insert(std::pair<CString, int> ("Ultimate", 4));
@@ -42,6 +44,11 @@ CPokerTrackerLookup::CPokerTrackerLookup()
 	_pt3_siteid.insert(std::pair<CString, int> ("iPoker", 400));
 	_pt3_siteid.insert(std::pair<CString, int> ("Everest", 500));
 	_pt3_siteid.insert(std::pair<CString, int> ("Ongame", 600));
+	_pt3_siteid.insert(std::pair<CString, int> ("Boss", 700));
+	_pt3_siteid.insert(std::pair<CString, int> ("Cereus", 800));
+	_pt3_siteid.insert(std::pair<CString, int> ("Pacific", 900));
+	_pt3_siteid.insert(std::pair<CString, int> ("B2B", 1000));
+	_pt3_siteid.insert(std::pair<CString, int> ("Microgaming", 1100));
 }
 
 CPokerTrackerLookup::~CPokerTrackerLookup()
