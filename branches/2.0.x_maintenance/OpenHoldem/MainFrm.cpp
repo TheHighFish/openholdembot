@@ -146,6 +146,11 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND(ID_POKERPRO_CONNECT, &CMainFrame::OnPokerproConnect)
 	ON_MESSAGE(WMA_SETWINDOWTEXT, OnSetWindowText)
 	ON_MESSAGE(WMA_DOCONNECT, &CMainFrame::OnConnectMessage)
+	
+	/*
+	// Last recently used files
+	ON_UPDATE_COMMAND_UI_RANGE(ID_FILE_MRU_FILE1, ID_FILE_MRU_FILE16, &CMainFrame::OnUpdateLRUList)
+	*/
 
 	ON_WM_SETCURSOR()
 	ON_WM_SYSCOMMAND()
@@ -2026,4 +2031,12 @@ void CMainFrame::OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI)
 void CMainFrame::OnUpdateEditForceuserchair(CCmdUI *pCmdUI)
 {
 	pCmdUI->Enable(!p_symbols->user_chair_confirmed() && _attached_hwnd!=NULL ? true : false);
+}
+
+void CMainFrame::OnUpdateLRUList(CCmdUI *pCmdUI)
+{
+	/*
+	This does not work, but shows once the default: "Recent file"
+	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
+	*/
 }

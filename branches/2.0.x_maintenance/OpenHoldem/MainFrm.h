@@ -57,6 +57,7 @@ protected: // create from serialization only
 	afx_msg void OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateMenuPerlLoad(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateMenuPerlLoadSpecificFormula(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateLRUList(CCmdUI *pCmdUI);
 
 	afx_msg void OnFormulaViewMainToolbar();
 	afx_msg void OnFormulaViewFlagsToolbar();
