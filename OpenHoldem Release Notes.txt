@@ -3,6 +3,12 @@ v2.1.0 2009-xx-yy
 BUG FIXES:
 - When the autolayer was engaged it was still possible to load a new formula via the MRU-list.
   This usually crashed the evaluator-engine, which had to operate on invalid data. [THF]
+- The symbol "elapsed" got reset a second time when the user-chair was detected 
+  (or the user-chair was forced). So it could be smaller than "elapsedhand" and "elapsedauto",
+  which both got only initialized once, when OH connected to a table, which caused validator-errors.
+  We removed that second reset of "elapsed" to avoid that issue.
+  This modification doesn't really change the nature of "elapsed", which measures the session-length,
+  as in practise the userchair gets detected very soon after the connection to a table. [THF]
 
 MAINTENANCE:
 
