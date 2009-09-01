@@ -982,9 +982,6 @@ void CSymbols::CalcSymbols(void)
 	if (!_user_chair_confirmed)
 	{
 		set_user_chair_confirmed(CalcUserChair());
-
-		if (_user_chair_confirmed)
-			time(&_elapsedhold);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1584,7 +1581,7 @@ void CSymbols::CalcTime(void)
 		t_midnight_time = mktime(&s_midnight_time);
 	set_sym_elapsedtoday(t_now_time - t_midnight_time);									// elapsedtoday
 
-	set_sym_elapsed(t_now_time - _elapsedhold);											// elapsed
+	set_sym_elapsed(t_now_time - _elapsedhold);                                         // elapsed
 	set_sym_elapsedhand(t_now_time - _elapsedhandhold);									// elapsedhand
 	set_sym_elapsedauto(t_now_time - _elapsedautohold);									// elapsedauto
 

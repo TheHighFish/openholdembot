@@ -1033,7 +1033,6 @@ void CMainFrame::OnEditForceuserchair()
 		p_symbols->set_user_chair_confirmed(true); 
 		time_t tm;
 		time(&tm);
-		p_symbols->set_elapsedhold(tm);
 		write_log(3, "Force set userchair to %d\n", dlg.chair);
 	}
 }
