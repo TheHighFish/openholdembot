@@ -2,14 +2,14 @@
 //
 
 #include "stdafx.h"
-#include "OpenHoldemDoc.h"
-#include "OpenHoldem.h"
-#include "MainFrm.h"
-
-#include "CPreferences.h"
+#include "CAutoplayer.h"
 #include "CDllExtension.h"
-
+#include "CPreferences.h"
 #include "DialogFormulaScintilla.h"
+#include "MainFrm.h"
+#include "OpenHoldem.h"
+#include "OpenHoldemDoc.h"
+
 
 // COpenHoldemDoc
 IMPLEMENT_DYNCREATE(COpenHoldemDoc, CDocument)
@@ -71,6 +71,35 @@ BOOL COpenHoldemDoc::OnNewDocument()
 // COpenHoldemDoc serialization
 void COpenHoldemDoc::Serialize(CArchive& ar) 
 {
+	// Extra caution, in case we want to load a formula,
+	// while the autoplayer is engaged.
+	// This currently can only happen via the MRU-list.
+	// The alternative way would be to disable that list...
+	//
+	// MainFrame.cpp:
+	// ON_UPDATE_COMMAND_UI_RANGE(ID_FILE_MRU_FILE1, ID_FILE_MRU_FILE16, &CMainFrame::OnUpdateLRUList)
+	//
+	// void CMainFrame::OnUpdateLRUList(CCmdUI *pCmdUI)
+	// {
+	//	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
+	// }
+	//
+	// Unfortunatelly this does not work, 
+	// but removes the list and replaces it once with the default: "Recent file".
+	//
+	// And there's very little information about both
+	// ON_UPDATE_COMMAND_UI_RANGE and temporary disabling of MRU-lists.
+	//
+	// So we decided to go that route.
+	//
+	if (p_autoplayer->autoplayer_engaged())
+	{
+		// This error can happen only in interactive mode,
+		// so there's no need to turn that Messagebox off
+		// depending on prefs.disable_msgbox()
+		MessageBox(0, "Can't load a formula while autoplayer engaged.", "ERROR", 0);
+		return;
+	}
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	// Writing a file
