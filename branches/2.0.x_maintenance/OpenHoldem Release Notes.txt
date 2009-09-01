@@ -1,3 +1,35 @@
+v2.0.2 2009-09-01
+==============
+BUG FIXES:
+- blinds and antes got not set correctly when scraped from the table 
+  instead of read from the titlebar. Thanks to epo for finding and fixing the bug. [THF]
+- nopponentscalling: OH did incorrectly start searching for calling players at the first player after the button,
+  which caused problems, when players in early position coldcalled or raised.
+  We do now start at the first player with non-zero balance after the last known aggressor,
+  take him as the "oldest" bettor and then do a circular search for callers. [THF]
+- handresetmethod did confuse HANDRESET_HANDNUM and HANDRESET_CARDS.
+  Thanks to Brdhse1 for providing the fix. [THF]
+- Fixed TM-image-problem introduced by rev. 810. Thanks to Brdhse1 and Tompalainen
+  for reporting it. [THF]
+- Fixed main memory leak in CTablemap.cpp. Some mystrious 44-byte-blocks remain. [THF]
+- Fix: Confused IsEqual and IsGreaterOrEqual when fixing the rounding-error in rule 0069.
+  Thanks to PoundSand for reporting it. [THF] 
+- maxbalance was sometime lower than balance. Thanks to PoundSand for reporting it. [THF]
+- Validator: Fixed a typo in rule 0504, that required to see a call button, when there was a check-button. [THF]
+- Validator: Fixed incorrect assumption about the range of vs$nhands. [THF]
+- Support for five new casinos, which got added by PokerTracker. OH supports now
+   * PokerStars
+   * Party
+   * Full Tilt
+   * iPoker
+   * Everest
+   * OnGame
+   * Boss Media
+   * Cereus Network
+   * Pacific Poker
+   * Entraction
+   * MicroGaming [THF]
+
 v2.0.1 2009-07-17
 =================
 BUG FIXES:
@@ -18,11 +50,7 @@ BUG FIXES:
   This change fixes the problem for the build-in symbol-evaluator.
   DLL- and Perl-programmers have to take care about that rounding-problem themselves. [THF]
 - handresetmethod did confuse binary and hexadecimal constants. Thanks to epo for reporting it. [THF]
-- Fixed swag-problems introduced by rev. 696. [Spew]
 
-MAINTENANCE:
-
-NEW STUFF:
 
 v2.0.0 2009-05-22
 =================
