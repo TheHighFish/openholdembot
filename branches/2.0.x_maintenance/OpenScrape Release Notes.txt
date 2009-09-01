@@ -1,3 +1,18 @@
+
+v2.0.2 2009-09-01
+==============
+BUG FIXES:
+- OS didn't handle t3-records. [BillW]
+- Images with negative width or negative height caused a crash.
+  Thanks to BBUK for reporting and to Ares for explaining. [THF]
+
+v2.0.1 2009-07-17
+=================
+BUG FIXES:
+- Initialized a pointer to NULL, which previously was not initialized. Thanks to fishyphil5 for the patch. [THF]
+- File-archive was closed incorrectly, which caused a crash for debug-builds. Thanks to fishyphil5 for the patch. [THF]
+- Fixed some memory leaks. [THF]
+
 v2.0.0 2009-05-22
 =================
 BUG FIXES:
