@@ -982,9 +982,6 @@ void CSymbols::CalcSymbols(void)
 	if (!_user_chair_confirmed)
 	{
 		set_user_chair_confirmed(CalcUserChair());
-
-		if (_user_chair_confirmed)
-			time(&_elapsedhold);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
