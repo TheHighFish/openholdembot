@@ -1,0 +1,116 @@
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Favourite Failures
+\end_layout
+
+\begin_layout Section
+OH does not connect to the table
+\end_layout
+
+\begin_layout Standard
+To recognize a table the following criteria have to match:
+\end_layout
+
+\begin_layout Itemize
+size of the window
+\end_layout
+
+\begin_layout Itemize
+table-title
+\end_layout
+
+\begin_layout Itemize
+maybe some tablepoints to distinguish similar maps (e.g.
+ FL, NL-SNG)
+\end_layout
+
+\begin_layout Standard
+Usually the problem is the window-size caused by incorrect system-settings;
+ Windows XP and Vista posses a higher titlebar than Windows 2000 classic-theme.
+\end_layout
+
+\begin_layout Section
+OH does not play
+\end_layout
+
+\begin_layout Standard
+Simple failure: You did not turn on the autoplayer.
+\end_layout
+
+\begin_layout Section
+The autoplayer-button can't be enabled
+\end_layout
+
+\begin_layout Standard
+The autoplayer can only be enabled, once OpenHoldem recognized your chair.
+ To do so OpenHoldem must see
+\end_layout
+
+\begin_layout Itemize
+your cards
+\end_layout
+
+\begin_layout Itemize
+some buttons, so OpenHoldem really knows, it is your turn and not a gamestate
+ with cards shown for your opponents.
+\end_layout
+
+\begin_layout Section
+OH calls any hand
+\end_layout
+
+\begin_layout Standard
+If OpenHoldem calls every hand --- except maybe the strong ones --- this
+ is probably neither a bug in OpenHoldem nor bad logic in the bot but a
+ problem with the Tablemap or with your settings again: It most probably
+ does not recognize your opponents bet, so OpenHoldem thinks, you have a
+ free check and calls.
+\end_layout
+
+\end_body
+\end_document
