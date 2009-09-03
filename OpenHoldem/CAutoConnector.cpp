@@ -592,6 +592,12 @@ void CAutoConnector::Disconnect()
 	
 	// Mark table as not attached
 	p_sharedmem->MarkPokerWindowAsUnAttached();
+
+	// Close OH, when table disappears and leaving enabled in preferences.
+	if (prefs.autoconnector_close_when_table_disappears())
+	{
+		PostQuitMessage(0);
+	}
 }
 
 
