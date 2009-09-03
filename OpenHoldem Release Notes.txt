@@ -9,6 +9,8 @@ BUG FIXES:
   We removed that second reset of "elapsed" to avoid that issue.
   This modification doesn't really change the nature of "elapsed", which measures the session-length,
   as in practise the userchair gets detected very soon after the connection to a table. [THF]
+- Error-message on unknown symbols. This feature did also detect some typos in rules
+  for the validator, which have been fixed now. [THF]
 
 MAINTENANCE:
 
