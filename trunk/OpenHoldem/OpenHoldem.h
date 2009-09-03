@@ -41,7 +41,6 @@ public:
 	keyboard_sendstring_t		_dll_keyboard_sendstring;
 	keyboard_sendkey_t			_dll_keyboard_sendkey;
 
-	unsigned long int	_session_id;
 	HMODULE				_mouse_dll;
 	HMODULE				_keyboard_dll;
 

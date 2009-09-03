@@ -1,6 +1,8 @@
 #ifndef INC_CSESSIONCOUNTER_H
 #define INC_CSESSIONCOUNTER_H
 
+static const int MAX_SESSION_IDS = 25;
+
 extern class CSessionCounter
 {
 public:
@@ -10,6 +12,7 @@ public:
 
 public:
 	// public accessors
+	// session_id() returns a value in the range 0..(MAX_SESSION_IDS - 1)
 	const unsigned int session_id() { return _session_id; }
 
 private:
@@ -17,10 +20,9 @@ private:
 	unsigned int _session_id;
 
 private:
-	// private functions and variables - not available via accessors or mutators	
-	static const int MAX_SESSION_IDS = 25;
+	// private functions and variables - not available via accessors or mutators		
 	HANDLE hMutex;
 
-} SessionCounter;
+} *p_sessioncounter;
 
 #endif //INC_CSESSIONCOUNTER_H

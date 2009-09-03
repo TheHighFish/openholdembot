@@ -4,28 +4,26 @@
 // menu options, menu edit commands
 
 #include "stdafx.h"
-
-#include "OpenHoldem.h"
-#include "OpenHoldemDoc.h"
-#include "MainFrm.h"
-
-#include "CScraper.h"
-#include "CSymbols.h"
-#include "CHeartbeatThread.h"
-#include "CPreferences.h"
+#include "CAutoplayer.h"
 #include "CFormula.h"
 #include "CGrammar.h"
-#include "CAutoplayer.h"
-
+#include "CHeartbeatThread.h"
+#include "CPreferences.h"
+#include "CScraper.h"
+#include "CSessionCounter.h"
+#include "CSymbols.h"
 #include "DialogFormulaScintilla.h"
-#include "DialogRename.h"
-#include "DialogNew.h"
-#include "DialogSettings.h"
 #include "DialogHandList.h"
+#include "DialogNew.h"
+#include "DialogRename.h"
+#include "DialogSettings.h"
+#include "MainFrm.h"
+#include "OpenHoldem.h"
+#include "OpenHoldemDoc.h"
+#include "../scintilla/include/SciLexer.h"
+#include "../scintilla/include/Scintilla.h"
 #include "WinMgr.h"
 
-#include "../scintilla/include/Scintilla.h"
-#include "../scintilla/include/SciLexer.h"
 
 // CDlgFormulaScintilla dialog
 CDlgFormulaScintilla	*m_formulaScintillaDlg = NULL;
@@ -2335,7 +2333,7 @@ void CDlgFormulaScintilla::WriteFDebugLog(bool write_header)
 
 	// write the line to the log
 	CString fn;
-	fn.Format("%s\\f$debug_%lu.log", _startup_path, theApp._session_id);
+	fn.Format("%s\\f$debug_%lu.log", _startup_path, p_sessioncounter->session_id());
 	FILE *fp;
 	if (fopen_s(&fp, fn.GetString(), "a")==0)
 	{

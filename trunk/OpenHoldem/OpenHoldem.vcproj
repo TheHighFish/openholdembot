@@ -393,6 +393,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CSharedMem.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CSymbols.cpp"
 				>
 			</File>
@@ -975,6 +979,10 @@
 			</File>
 			<File
 				RelativePath=".\CSessionCounter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CSharedMem.h"
 				>
 			</File>
 			<File
