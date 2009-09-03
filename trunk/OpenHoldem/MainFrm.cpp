@@ -717,6 +717,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 	{
 		if (!IsWindow(p_autoconnector->attached_hwnd()))
 		{
+			// Table disappeared
 			OnBnClickedRedCircle();
 		}
 	}
