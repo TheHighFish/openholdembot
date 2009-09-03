@@ -3,7 +3,7 @@
 #include "CPreferences.h"
 
 // Global instantiation of CSessionCounter class
-CSessionCounter SessionCounter;
+CSessionCounter *p_sessioncounter = NULL;
 
 CSessionCounter::CSessionCounter()
 {	

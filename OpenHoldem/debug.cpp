@@ -1,14 +1,16 @@
 #include "stdafx.h"
 
-#include "..\..\dbghelp\dbghelp.h"
-#include "OpenHoldem.h"
-#include "CSymbols.h"
-#include "CScraper.h"
 #include "CIteratorThread.h"
 #include "CPreferences.h"
+#include "CScraper.h"
+#include "CSessionCounter.h"
+#include "CSymbols.h"
 #include "..\CTablemap\CTablemap.h"
-#include "inlines/eval.h"
+#include "..\..\dbghelp\dbghelp.h"
 #include "debug.h"
+#include "inlines/eval.h"
+#include "OpenHoldem.h"
+
 
 //#include <vld.h>			// visual leak detector
 
@@ -348,7 +350,7 @@ void start_log(void)
         CString fn;
 		CSLock lock(log_critsec);
 
-        fn.Format("%s\\oh_%lu.log", _startup_path, theApp._session_id);
+        fn.Format("%s\\oh_%lu.log", _startup_path, p_sessioncounter->session_id());
 		
 		// Check, if file exists and size is too large
 		if ((log_fp = _fsopen(fn.GetString(), "r", _SH_DENYWR)) != 0)
@@ -682,7 +684,7 @@ void write_log_pokertracker(int level, char* fmt, ...)
 		return;
 
     CString fn;
-    fn.Format("%s\\oh_pt_%lu.log", _startup_path, theApp._session_id);
+    fn.Format("%s\\oh_pt_%lu.log", _startup_path, p_sessioncounter->session_id());
 
 	if ((fp = _fsopen(fn.GetString(), "a", _SH_DENYWR)) != 0)
 	{

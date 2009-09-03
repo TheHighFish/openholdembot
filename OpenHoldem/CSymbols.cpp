@@ -16,6 +16,7 @@
 #include "CPreferences.h"
 #include "CRunRon.h"
 #include "CScraper.h"
+#include "CSessionCounter.h"
 #include "CSymbols.h"
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTransform\CTransform.h"
@@ -954,7 +955,7 @@ void CSymbols::CalcSymbols(void)
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Global environment symbols
-	set_sym_session(theApp._session_id);												// session
+	set_sym_session(p_sessioncounter->session_id());												// session
 	set_sym_nopponentsmax(prefs.max_opponents());										// nopponentsmax
 	set_sym_swagdelay(prefs.swag_delay_3());											// swagdelay
 	set_sym_allidelay(0);																// allidelay  (unused in OpenHoldem)

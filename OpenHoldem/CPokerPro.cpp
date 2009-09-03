@@ -1,20 +1,20 @@
 #include "StdAfx.h"
 
-#include "CPokerPro.h"
+#include <string.h>
+#include <time.h>
 
-#include "OpenHoldem.h"
-
-#include "CScraper.h"
-#include "CSymbols.h"
-#include "CIteratorThread.h"
-#include "CHeartbeatThread.h"
 #include "CAutoplayer.h"
 #include "CGrammar.h"
-
-#include "DialogPPro.h"
+#include "CHeartbeatThread.h"
+#include "CIteratorThread.h"
+#include "CPokerPro.h"
 #include "CPreferences.h"
-#include <time.h>
-#include <string.h>
+#include "CScraper.h"
+#include "CSessionCounter.h"
+#include "CSymbols.h"
+#include "DialogPPro.h"
+#include "OpenHoldem.h"
+
 
 PokerPro		*p_pokerpro = NULL;
 
@@ -2291,7 +2291,7 @@ void PokerPro::WriteHH(const CString *s)
 
 	if (prefs.ppro_handhistory()) 
 	{
-		fn.Format("%s\\ppro\\%s_%lu.log", _startup_path, _ppdata.m_site_name, theApp._session_id);
+		fn.Format("%s\\ppro\\%s_%lu.log", _startup_path, _ppdata.m_site_name, p_sessioncounter->session_id());
 		fopen_s(&hh_fp, fn.GetString(), "a");
 		if (hh_fp==NULL) 
 		{

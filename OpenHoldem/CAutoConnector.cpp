@@ -13,6 +13,7 @@
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CScraper.h"
+#include "CSharedMem.h"
 #include "CSymbols.h"
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTransform\CTransform.h"
@@ -20,54 +21,6 @@
 #include "DialogSelectTable.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
-
-
-
-
-#include "stdafx.h"
-#include <process.h>
-
-#include "MainFrm.h"
-
-#include "CAutoConnector.h"
-#include "CAutoplayer.h"
-#include "CDllExtension.h"
-#include "CFormula.h"
-#include "CHeartbeatThread.h"
-#include "CIteratorThread.h"
-#include "CPerl.hpp"
-#include "CPokerPro.h"
-#include "CPokerTrackerThread.h"
-#include "CPreferences.h"
-#include "CReplayFrame.h"
-#include "CScraper.h"
-#include "CSymbols.h"
-#include "..\CTransform\CTransform.h"
-#include "CValidator.h"
-#include "DialogChairNum.h"
-#include "DialogFormulaScintilla.h"
-#include "DialogLockBlinds.h"
-#include "DialogPPro.h"
-#include "DialogSAPrefs1.h"
-#include "DialogSAPrefs2.h"
-#include "DialogSAPrefs3.h"
-#include "DialogSAPrefs4.h"
-#include "DialogSAPrefs5.h"
-#include "DialogSAPrefs6.h"
-#include "DialogSAPrefs7.h"
-#include "DialogSAPrefs8.h"
-#include "DialogSAPrefs9.h"
-#include "DialogSAPrefs10.h"
-#include "DialogSAPrefs11.h"
-#include "DialogSAPrefs12.h"
-#include "DialogSAPrefs13.h"
-#include "DialogSAPrefs14.h"
-#include "DialogSAPrefs15.h"
-#include "DialogScraperOutput.h"
-#include "inlines/eval.h"
-#include "OpenHoldem.h"
-#include "OpenHoldemDoc.h"
-#include "SAPrefsDialog.h"
 
 
 CAutoConnector						*p_autoconnector = NULL;
@@ -81,6 +34,7 @@ CAutoConnector::CAutoConnector()
 
 CAutoConnector::~CAutoConnector()
 {
+	p_sharedmem->MarkPokerWindowAsUnAttached();
 }
 
 
@@ -410,7 +364,16 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 	}
 	else 
 	{
-		SelectedItem = SelectTableMapAndWindow(N);
+		{
+			// Small extra code block to reduce the lifetime
+			// of the protecting mutex to a minimum.
+			//ENT;
+			SelectedItem = SelectTableMapAndWindow(N);
+			if (SelectedItem != -1)
+			{
+				p_sharedmem->MarkPokerWindowAsAttached(g_tlist[SelectedItem].hwnd);
+			}
+		}
 		if (SelectedItem != -1)
 		{
 			// Load correct tablemap, and save hwnd/rect/numchairs of table that we are "attached" to
@@ -626,6 +589,9 @@ void CAutoConnector::Disconnect()
 
 	// Stop logging
 	stop_log();
+	
+	// Mark table as not attached
+	p_sharedmem->MarkPokerWindowAsUnAttached();
 }
 
 
@@ -651,9 +617,7 @@ int CAutoConnector::SelectTableMapAndWindowManually(int Choices)
 
 	if (Choices == 1) 
 	{
-		//result = IDOK; !!!
 		// First (and only) item selected
-		//cstd.selected_item = 0;
 		return 0;
 	}
 	else if (Choices >= 2) 
@@ -691,6 +655,15 @@ int CAutoConnector::SelectTableMapAndWindowManually(int Choices)
 
 int CAutoConnector::SelectTableMapAndWindowAutomatically(int Choices)
 {
+	for (int i=0; i<Choices; i++) 
+	{
+		if (!p_sharedmem->PokerWindowAttached(g_tlist[i].hwnd))
+		{
+			MessageBox(0, "Table found", "Test", 0);
+			return i;
+		}
+	}
+	// No appropriate table found
 	return -1;
 }
 

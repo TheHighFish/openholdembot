@@ -5,32 +5,31 @@
 #include <psapi.h>
 #include <windows.h>
 
+#include "CAutoConnector.h"
+#include "CAutoplayer.h"
+#include "CDllExtension.h"
+#include "CFormula.h"
+#include "CGameState.h"
+#include "CGrammar.h"
+#include "CHeartbeatThread.h"
+#include "CIteratorThread.h"
+#include "CMemory.h"
+#include "CPerl.hpp"
+#include "CPokerPro.h"
+#include "CPokerTrackerThread.h"
+#include "CPreferences.h"
+#include "CScraper.h"
+#include "CSessionCounter.h"
+#include "CSharedMem.h"
+#include "CSymbols.h"
+#include "..\CTablemap\CTablemap.h"
+#include "CValidator.h"
+#include "CVersus.h"
+#include "DialogFormulaScintilla.h"
+#include "MainFrm.h"
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
 #include "OpenHoldemView.h"
-#include "MainFrm.h"
-
-#include "CScraper.h"
-#include "CSymbols.h"
-#include "..\CTablemap\CTablemap.h"
-#include "CFormula.h"
-#include "CAutoplayer.h"
-#include "CIteratorThread.h"
-#include "CHeartbeatThread.h"
-#include "CPokerTrackerThread.h"
-#include "CPreferences.h"
-#include "CDllExtension.h"
-#include "CGameState.h"
-#include "CMemory.h"
-#include "CVersus.h"
-#include "CGrammar.h"
-#include "CPokerPro.h"
-#include "CPerl.hpp"
-#include "CSessionCounter.h"
-#include "CValidator.h"
-#include "CAutoConnector.h"
-
-#include "DialogFormulaScintilla.h"
 
 
 #ifdef _DEBUG
@@ -91,8 +90,6 @@ BOOL COpenHoldemApp::InitInstance()
 	wc.hIcon = AfxGetApp()->LoadIcon(IDI_ICON1);
 	RegisterClass(&wc);
 
-	_session_id = SessionCounter.session_id();
-
 	// InitCommonControlsEx() is required on Windows XP if an application
 	// manifest specifies use of ComCtl32.dll version 6 or later to enable
 	// visual styles.  Otherwise, any window creation will fail.
@@ -134,6 +131,8 @@ BOOL COpenHoldemApp::InitInstance()
 	prefs.LoadPreferences(load_from_registry);
 
 	// Classes
+	if (!p_sessioncounter) p_sessioncounter = new CSessionCounter;
+	if (!p_sharedmem) p_sharedmem = new CSharedMem;
 	if (!p_pokerpro) p_pokerpro = new PokerPro;
 	if (!p_scraper)  p_scraper = new CScraper;
 	if (!p_symbols)  p_symbols = new CSymbols;
@@ -297,21 +296,27 @@ int COpenHoldemApp::ExitInstance()
 	}
 
 	// classes
-	if (p_pokerpro)  { delete p_pokerpro; p_pokerpro = NULL; }
-	if (p_scraper)  { delete p_scraper; p_scraper = NULL; }
-	if (p_symbols)  { delete p_symbols; p_symbols = NULL; }
-	if (p_tablemap)  { delete p_tablemap; p_tablemap = NULL; }
-	if (p_formula)  { delete p_formula; p_formula = NULL; }
-	if (p_autoplayer)  { delete p_autoplayer; p_autoplayer = NULL; }
-	if (p_pokertracker_thread)	{ delete p_pokertracker_thread; p_pokertracker_thread = NULL; }
-	if (p_dll_extension)  { delete p_dll_extension; p_dll_extension = NULL; }
-	if (p_game_state)  { delete p_game_state; p_game_state = NULL; }
-	if (p_perl)  { delete p_perl; p_perl = NULL; }
-	if (p_memory)  { delete p_memory; p_memory = NULL; }
-	if (p_versus)  { delete p_versus; p_versus = NULL; }
-	if (p_validator) { delete p_validator; p_validator = NULL; }
+	// Reverse order should be good,
+	// but we have to be careful, as sometimes we do some work in the destructors,
+	// that depends on other classes, e.g. the destructor of the autoconnector
+	// need its session_id (CSessionCounter).
 	if (p_autoconnector) { delete p_autoconnector; p_autoconnector = NULL; }
-
+	if (p_validator) { delete p_validator; p_validator = NULL; }
+	if (p_versus)  { delete p_versus; p_versus = NULL; }
+	if (p_memory)  { delete p_memory; p_memory = NULL; }
+	if (p_perl)  { delete p_perl; p_perl = NULL; }
+	if (p_game_state)  { delete p_game_state; p_game_state = NULL; }
+	if (p_dll_extension)  { delete p_dll_extension; p_dll_extension = NULL; }
+	if (p_pokertracker_thread)	{ delete p_pokertracker_thread; p_pokertracker_thread = NULL; }
+	if (p_autoplayer)  { delete p_autoplayer; p_autoplayer = NULL; }
+	if (p_formula)  { delete p_formula; p_formula = NULL; }
+	if (p_tablemap)  { delete p_tablemap; p_tablemap = NULL; }
+	if (p_symbols)  { delete p_symbols; p_symbols = NULL; }
+	if (p_scraper)  { delete p_scraper; p_scraper = NULL; }
+	if (p_pokerpro)  { delete p_pokerpro; p_pokerpro = NULL; }
+	if (p_sharedmem) { delete p_sharedmem; p_sharedmem = NULL; }
+	if (p_sessioncounter) { delete p_sessioncounter; p_sessioncounter = NULL; }
+	
 	stop_log();
 
 	Scintilla_ReleaseResources();
