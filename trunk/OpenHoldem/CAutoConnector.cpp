@@ -382,7 +382,6 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			p_tablemap->LoadTablemap((char *) g_tlist[SelectedItem].path.GetString(), VER_OPENSCRAPE_2, false, &line, 
 									 prefs.disable_msgbox(), &loaded_version);
 
-//!!!!!!!!!!!!
 			if ( (loaded_version == VER_OPENSCRAPE_1 || loaded_version == VER_OPENHOLDEM_2) && !prefs.disable_msgbox())
 			{
 				MessageBox(0, "You have loaded a version 1 table map for this poker table.\n\n"\
@@ -479,9 +478,9 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			p_heartbeat_thread = new CHeartbeatThread;
 
 			// Start timer that checks for continued existence of attached HWND
-			pMyMainWnd->StartTimer(); //!!!
+			pMyMainWnd->StartTimer();
 
-			// Reset display //!!!
+			// Reset display
 			pMyMainWnd->ResetDisplay();
 
 			// Start logging
@@ -553,7 +552,7 @@ void CAutoConnector::Disconnect()
 	// Clear "attached" info
 	set_attached_hwnd(NULL);
 
-	// Stop timer that checks for valid hwnd, then unattach OH. ///!!!
+	// Stop timer that checks for valid hwnd, then unattach OH.
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 	pMyMainWnd->KillTimer();
 	pMyMainWnd->UnattachOHFromPokerWindow();
@@ -571,7 +570,7 @@ void CAutoConnector::Disconnect()
 	// Change window title
 	pMyMainWnd->UpdateWindowTitle();
 
-	// Reset Display //!!!
+	// Reset Display 
 	pMyMainWnd->ResetDisplay();
 
 	// Reset "ScraperOutput" dialog, if it is live
@@ -603,7 +602,6 @@ void CAutoConnector::Disconnect()
 
 int CAutoConnector::SelectTableMapAndWindow(int Choices)
 {
-	MessageBox(0, "Connect()", "Connector", 0);
 	if (prefs.autoconnector_connection_method() == 0)
 	{
 		return SelectTableMapAndWindowManually(Choices);
@@ -665,7 +663,6 @@ int CAutoConnector::SelectTableMapAndWindowAutomatically(int Choices)
 	{
 		if (!p_sharedmem->PokerWindowAttached(g_tlist[i].hwnd))
 		{
-			MessageBox(0, "Table found", "Test", 0);
 			return i;
 		}
 	}

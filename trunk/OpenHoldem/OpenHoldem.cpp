@@ -275,7 +275,7 @@ BOOL COpenHoldemApp::InitInstance()
 	// autoconnect on start, if preferred
 	if (prefs.autoconnector_connect_on_start())
 	{
-		p_autoconnector->Connect(0);//!!!
+		p_autoconnector->Connect(0);
 	}
 
 	return TRUE;

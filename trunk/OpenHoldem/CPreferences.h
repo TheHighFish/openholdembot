@@ -295,7 +295,7 @@ public:
 	// Auto-connector
 	void set_autoconnector_connection_method(const int i) { ENT _autoconnector_connection_method = i; WriteReg("autoconnector_connection_method", i); }
 	void set_autoconnector_connect_on_start(const bool b) { ENT _autoconnector_connect_on_start = b; WriteReg("autoconnector_connect_on_start", b); }
-	void set_autoconnector_close_when_table_disappears(const bool b) { ENT _autoconnector_close_when_table_disappears = b; WriteReg("autoconnector_close_when_table_disappear", b); }
+	void set_autoconnector_close_when_table_disappears(const bool b) { ENT _autoconnector_close_when_table_disappears = b; WriteReg("autoconnector_close_when_table_disappears", b); }
 
 	// GUI
 	void set_gui_start_minimized(const bool b) { ENT _gui_start_minimized = b; WriteReg("gui_start_minimized", b); }

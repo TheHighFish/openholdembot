@@ -174,9 +174,9 @@ void CPreferences::InitDefaults(void)
 	_validator_shoot_replayframe_on_error = true;
 
 	// Auto-connector
-	_autoconnector_connection_method = 0; // manually
-	_autoconnector_connect_on_start = 0;
-	_autoconnector_close_when_table_disappears = 0;
+	_autoconnector_connection_method = 0; // 0 = manually; 1 = automatically
+	_autoconnector_connect_on_start = false;
+	_autoconnector_close_when_table_disappears = false;
 
 	// GUI
 	_gui_start_minimized = false; 
@@ -352,7 +352,7 @@ void CPreferences::ReadPreferences()
 
 		// Auto-connector
 		ReadReg("autoconnector_connection_method", &_autoconnector_connection_method);
-		ReadReg("autoconnector_connect_on_start ", & _autoconnector_connect_on_start);
+		ReadReg("autoconnector_connect_on_start", & _autoconnector_connect_on_start);
 		ReadReg("autoconnector_close_when_table_disappears", &_autoconnector_close_when_table_disappears);
 
 		// GUI
