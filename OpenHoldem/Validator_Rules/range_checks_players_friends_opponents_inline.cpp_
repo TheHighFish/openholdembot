@@ -78,10 +78,10 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0095")
     HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol nfriendssactive")
+    REASONING ("Range check for symbol nfriendsactive")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nfriendssactive") == 0) || (gws("nfriendssactive") == 1))
-    SYMBOLS_POSSIBLY_AFFECTED ("nfriendssactive")
+    POSTCONDITION ((gws("nfriendssactive") == 0) || (gws("nfriendsactive") == 1))
+    SYMBOLS_POSSIBLY_AFFECTED ("nfriendsactive")
 END_TESTCASE
 
 
@@ -128,10 +128,10 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("00100")
     HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol nopponentssactive")
+    REASONING ("Range check for symbol nopponentsactive")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nopponentssactive") >= 0) && (gws("nopponentssactive") <= 10))
-    SYMBOLS_POSSIBLY_AFFECTED ("nopponentssactive")
+    POSTCONDITION ((gws("nopponentsactive") >= 0) && (gws("nopponentsactive") <= 10))
+    SYMBOLS_POSSIBLY_AFFECTED ("nopponentsactive")
 END_TESTCASE
 
 
