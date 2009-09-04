@@ -219,7 +219,8 @@ BigBlind is here a global variable, that gets initialized immediatelly,
  when the DLL gets loaded.
  But the function gws uses a callback-pointer, that gets initialized later
  with one of the first messages from OpenHoldem to the DLL.
- So you dereference an undefined pointer and get a memory-access-error.
+ So you dereference an undefined pointer and crash because of a memory-access-er
+ror.
 \end_layout
 
 \begin_layout Standard
