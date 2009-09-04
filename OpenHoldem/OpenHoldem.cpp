@@ -259,7 +259,14 @@ BOOL COpenHoldemApp::InitInstance()
 		m_pMainWnd->PostMessage(WMA_SETWINDOWTEXT, 0, (LPARAM)NULL);
 
 	// The one and only window has been initialized, so show and update it
-	m_pMainWnd->ShowWindow(SW_SHOW);
+	if (prefs.gui_start_minimized())
+	{
+		m_pMainWnd->ShowWindow(SW_MINIMIZE);
+	}
+	else
+	{
+		m_pMainWnd->ShowWindow(SW_SHOW);
+	}
 	m_pMainWnd->UpdateWindow();
 	// call DragAcceptFiles only if there's a suffix
 	//  In an SDI app, this should occur after ProcessShellCommand
