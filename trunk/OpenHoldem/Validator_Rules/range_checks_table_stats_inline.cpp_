@@ -77,6 +77,6 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbols balance_rank0..balance_rank9")
     PRECONDITION (true)
-    POSTCONDITION ((gws("balance_rank0") >= gws("balance_rank1")) && (gws("balance_rank1") >= gws("balance_rank2")) && (gws("balance_rank2") >= gws("balance_rank3")) && (gws("balance_rank3") >= gws("balance_rank4")) && (gws("balance_rank4") >= gws("balance_rank5")) && (gws("balance_rank5") >= gws("balance_rank6")) && (gws("balance_rank6") >= gws("balance_rank7")) && (gws("balance_rank7") >= gws("balance_rank8")) && (gws("balance_rank8") >= gws("balance_rank9")) && (gws("balance_rank") >= 0))
+    POSTCONDITION ((gws("balance_rank0") >= gws("balance_rank1")) && (gws("balance_rank1") >= gws("balance_rank2")) && (gws("balance_rank2") >= gws("balance_rank3")) && (gws("balance_rank3") >= gws("balance_rank4")) && (gws("balance_rank4") >= gws("balance_rank5")) && (gws("balance_rank5") >= gws("balance_rank6")) && (gws("balance_rank6") >= gws("balance_rank7")) && (gws("balance_rank7") >= gws("balance_rank8")) && (gws("balance_rank8") >= gws("balance_rank9")) && (gws("balance_rank9") >= 0))
     SYMBOLS_POSSIBLY_AFFECTED ("balance_rank0, balance_rank1, balance_rank2, balance_rank3, balance_rank4, balance_rank5, balance_rank6, balance_rank7, balance_rank8, balance_rank9")
 END_TESTCASE
