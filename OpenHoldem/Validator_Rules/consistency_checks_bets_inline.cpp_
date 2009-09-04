@@ -154,13 +154,8 @@ BEGIN_TESTCASE
     TESTCASE_ID ("1215")
     HEURISTIC_RULE (false)
     REASONING ("If everybody did act once (read: I did act twice), everybody playing must have a positive bet in front of him or he must be allin and have a stack of 0. Partial rule for player 0.")
-    PRECONDITION (((gws("didcheck") + gws("didcall") + gws("didrais") + gws("didswag")) >= 2) && (TODO))
+    PRECONDITION (((gws("didchec") + gws("didcall") + gws("didrais") + gws("didswag")) >= 2) && (TODO))
     POSTCONDITION ()
     SYMBOLS_POSSIBLY_AFFECTED ("")
 END_TESTCASE
 */
- 
-
-
-
-

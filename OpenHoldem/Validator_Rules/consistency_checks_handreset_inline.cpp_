@@ -16,9 +16,9 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0601")
     HEURISTIC_RULE (false)
     REASONING ("If it is preflop and I did not yet act and I am not blind and it is not the first hand (to avoid problems, if I did post the first blind in some other position), then I can't have a bet in front of me (or something is going wrong, e.g. a false handreset, resetting the action symbols).")
-    PRECONDITION ((gws("betround") == 1) && !gws("didcheck") && !gws("didcall") && !gws("didrais") && ! gws("didswag") && (gws("dealposition") > 2) && (gws("handnumber") > 1))
+    PRECONDITION ((gws("betround") == 1) && !gws("didchec") && !gws("didcall") && !gws("didrais") && ! gws("didswag") && (gws("dealposition") > 2) && (gws("handnumber") > 1))
     POSTCONDITION (gws("currentbet") == 0)
-    SYMBOLS_POSSIBLY_AFFECTED ("betround, didcheck, didcall, didrais, didswag, dealposition, handnumber, currentbet")
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, didchec, didcall, didrais, didswag, dealposition, handnumber, currentbet")
 END_TESTCASE
 
 
