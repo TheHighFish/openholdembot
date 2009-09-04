@@ -1,0 +1,664 @@
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Preferences
+\end_layout
+
+\begin_layout Standard
+The preferences for OpenHoldem’s operation can be accessed via the Edit/Preferen
+ces menu item from the main window.
+ A description of each preference follows.
+\end_layout
+
+\begin_layout Standard
+Figure 5.18-45
+\end_layout
+
+\begin_layout Section
+OpenHoldem Preferences – Analyzer
+\end_layout
+
+\begin_layout Standard
+Analyzer preferences control how the OpenHoldem Iterator functions.
+ At the moment there is only one preference available here.
+ See the {The Iterator} section for more information.
+\end_layout
+
+\begin_layout Standard
+Max opponents: The OpenHoldem Iterator uses the value of the f$P function
+ as the number of opponents in its Monte Carlo simulation.
+ The maximum value that f$P can return is set here, any value of f$P greater
+ than this will result in the number specified in this preference being
+ used instead.
+\end_layout
+
+\begin_layout Standard
+Figure 5.18-46 
+\end_layout
+
+\begin_layout Section
+OpenHoldem Preferences – Autoplayer
+\end_layout
+
+\begin_layout Standard
+Autoplayer preferences control how the OpenHoldem Autoplayer functions.
+ See the {The Autoplayer} section for more information.
+\end_layout
+
+\begin_layout Standard
+Frame delay: This parameter specifies how many simultaneous identical screen
+ scrapes must occur prior to the Autoplayer taking action.
+ Generally, you want to have a stable poker screen before your take action,
+ and this setting will allow various animations and so forth to finish,
+ ensuring that your poker logic has correct game state information prior
+ to making a decision.
+ SWAG Delay, select to delete: For SWAG actions, this setting determines
+ how long (in milliseconds) that OpenHoldem will pause after performing
+ the SWAG Select action as specified in the Table Map, and prior to performing
+ the SWAG Delete action as specified in the Table Map.
+ These preferences are not set in the Table Map itself, as these are highly
+ dependent on your CPU and network capacity and utilization, and thus are
+ largely specific to your particular computing environment.
+ SWAG Delay, delete to entry: For SWAG actions, this setting determines
+ how long (in milliseconds) that OpenHoldem will pause after performing
+ the SWAG Delete action as specified in the Table Map and prior to performing
+ the SWAG Entry action.
+ These preferences are not set in the Table Map itself, as these are highly
+ dependent on your CPU and network capacity and utilization, and thus are
+ largely specific to your particular computing environment.
+ SWAG Delay, entry to confirm: For SWAG actions, this setting determines
+ how long (in milliseconds) that OpenHoldem will pause after performing
+ the SWAG Entry action, and prior to performing the SWAG Confirm action
+ as specified in the Table Map.
+ These preferences are not set in the Table Map itself, as these are highly
+ dependent on your CPU and network capacity and utilization, and thus are
+ largely specific to your particular computing environment.
+ Engage Autoplayer automatically…: This setting instructs OpenHoldem to
+ automatically start the Autoplayer when it has identified the user’s chair.
+ Detect loss of focus on SWAG..: The SWAG action is the longest running of
+ the poker actions, due to the need to select the text, delete it, enter
+ the bet and confirm it.
+ Occasionally, focus will be lost from the table that the SWAG action is
+ being executed on, either due to multi-tabling (maybe the casino is set
+ up to pop the table that requires your attention to the front?), or perhaps
+ due to you or your Automation solution clicking elsewhere when the Autoplayer
+ was working.
+ When this loss of focus occurs, and if this setting is checked, then OpenHoldem
+ will cancel the current SWAG attempt and retry on the next scrape cycle.
+ Use ‘comma’ instead of ‘dot’…: Some casinos require the use of the “comma”
+ as a decimal separator rather than the “dot”.
+ This setting will instruct OpenHoldem to use a comma if needed.
+ Eventually this setting should be moved to the Table Map file itself, as
+ it is casino-specific.
+ See the {Appendix B – Future TODOs} section.
+ Only calculate standard function on my turn: Normally, OpenHoldem will
+ calculate the primary functions on every scrape cycle.
+ This setting will instruct OpenHoldem to only calculate these primary functions
+ when it is your turn (card faces and action buttons are present).
+ It will also prevent the calculation of most of the CPU expensive symbols
+ including prwin/prlos/prtie, however the handrank symbols will be calculated
+ as these are commonly used in the f$prefold calculations.
+ f$prefold and f$play are still evaluated regardless if it is your turn
+ or not.
+ Only act with balance stability: In previous versions of OpenHoldem, the
+ Autoplayer would act even if you had critical misscrapes.
+ Once of those critical misscrapes is a missing player balance, due to the
+ balance box changing to “All-In” instead of zero, for example, when a player
+ goes all in.
+ Enabling this option will prevent the Autoplayer from acting when a balance
+ misscrape is detected.
+ If you do not require balance information in your bot logic, you can safely
+ leave this box unchecked.
+\end_layout
+
+\begin_layout Standard
+Figure 5.18-47 
+\end_layout
+
+\begin_layout Section
+OpenHoldem Preferences – Chat
+\end_layout
+
+\begin_layout Standard
+Chat preferences control how the OpenHoldem’s Chat feature in the Autoplayer
+ functions.
+ See the {f$chat} section for more information.
+\end_layout
+
+\begin_layout Standard
+Enable Chat: This parameter will completely disable the Chat feature if
+ unchecked Minimum delay: This is the minimum amount of time that Chat will
+ wait (in seconds) between the posting of messages to the chat box on the
+ Casino client.
+ This is a safety feature and is present to prevent accidental spamming
+ of the chat box.
+ Feel free to set this to “1” if you are overly confident in your configuration
+ skills.
+ Random delay: In addition to the “Minimum delay”, the amount of time specified
+ in this parameter (in seconds) will be used to randomly delay the entry
+ of a chat message into the chat box.
+ The setting here is the maximum amount of random delay.
+\end_layout
+
+\begin_layout Standard
+Figure 5.18-48
+\end_layout
+
+\begin_layout Section
+OpenHoldem Preferences - DLL Extension
+\end_layout
+
+\begin_layout Standard
+DLL Extension preferences control how the OpenHoldem works with a User DLL.
+ See the {User DLL} section for more information.
+\end_layout
+
+\begin_layout Standard
+Always send state messages…: By default, OpenHoldem will send “state” messages
+ to a loaded User DLL on every scrape cycle, regardless of whether or not
+ your player is currently in the hand.
+ If this box is unchecked, these “state” messages will not be sent when
+ you are “not playing”.
+ This can be useful to avoid unnecessary consumption of CPU in the DLL when
+ not needed.
+ Load DLL on startup?: If this setting is checked, OpenHoldem will try to
+ automatically load a User DLL when the program starts up.
+ The order in which files are tried is as follows: The DLL as specified
+ in the loaded Formula file The DLL as specified in this preferences window
+ (below) Name of DLL to load on startup: This specifies a DLL file to load
+ on startup.
+ This file is only attempted if the “Load DLL on startup” setting is checked.
+\end_layout
+
+\begin_layout Standard
+Figure 5.18-49 
+\end_layout
+
+\begin_layout Section
+OpenHoldem Preferences – ICM
+\end_layout
+
+\begin_layout Standard
+ICM preferences control how the OpenHoldem Independent Chip Model calculator
+ operates.
+ There are a plethora of resources online for understanding the Independent
+ Chip Model.
+ Start here: http://www.google.com/#hl=en&q=independent+chip+model 
+\end_layout
+
+\begin_layout Standard
+1st through 5th place: These settings specify the values of 1st through
+ 5th place of your tournament, and are directly used in the ICM Engine’s
+ calculations.
+ Specify percentages or absolute prize values here.
+ Percentages should add up to 100% if you want to ensure trusted results.
+ Enter zero if a prize is not paid out for the structure of the game you
+ are playing.
+\end_layout
+
+\begin_layout Standard
+Figure 5.18-50 
+\end_layout
+
+\begin_layout Section
+OpenHoldem Preferences – Logging
+\end_layout
+
+\begin_layout Standard
+Logging preferences control what information OpenHoldem will periodically
+ write to various log files.
+ 
+\end_layout
+
+\begin_layout Standard
+Enable Log Symbols: If this setting is checked, any log$ symbols that are
+ encountered in your OH-Script will be added to OpenHoldem’s log file.
+ Everytime a log$ symbol is accessed it will be flagged for logging.
+ You can use this to track which part of your formula is responsible for
+ the action taken by OpenHoldem.
+ You want to use the log$ symbol at the end of a logic block, to make sure
+ it only gets flagged when all the previous statements are true.
+ Maximum symbols: This is used in conjunction with the “Enable Log Symbols”
+ preference, and specifies the maximum number of log$ symbols that will
+ be logged per action.
+ When “Enable Log Symbols” enabled, up to four log$ symbols will be displayed
+ in OpenHoldem's main window in the center information box.
+ Enable Autoplayer Trace: This setting will enable tracing to the log file
+ of the Autoplayer’s evaluation process.
+ The primary functions that are traced are selected in the listbox control
+ directly below.
+ See the {Autoplayer Trace} sub-section in the {Validator} section for more
+ information.
+ Disable all runtime MessageBox…: This preference will prevent OpenHoldem
+ from displaying warning and error message boxes during runtime (when OpenHoldem
+ is connected to a table).
+ This is extraordinarily dangerous and should only be used when you have
+ a 100% stable bot that you want to move to a fully automated execution
+ model.
+ It is strongly advised that you do not check this option until you have
+ a very stable and thoroughly tested botting environment.
+ Debug output level: This will control the verbosity of the output written
+ to the log files.
+ Zero will disable all logging, and 3 is the highest level of logging.
+ At the time of this writing, detailed level-3 logging is available for
+ critical parts of OpenHoldem, including the heartbeat thread, the Screen
+ Scraper engine, and the Autoplayer engine.
+ Poker Tracker debug output level: This will control the verbosity of the
+ output written to the Poker Tracker log files.
+ Zero will disable all logging, and 3 is the highest level of logging.
+ 
+\end_layout
+
+\begin_layout Standard
+Figure 5.19-51 
+\end_layout
+
+\begin_layout Section
+OpenHoldem Preferences – Obscure
+\end_layout
+
+\begin_layout Standard
+Obscure preferences control various detectable components of OpenHoldem,
+ and are primarily useful in setting up a highly stealthed environment.
+ See the {Stealth} chapter for more information.
+ 
+\end_layout
+
+\begin_layout Standard
+Window Class Name: Every window running under Microsoft Windows has a specific
+ “class name” associated with it.
+ This is easily identifiable by the casinos’ poker software and it is suggested
+ that this be changed to something else.
+ Mutex Name: OpenHoldem uses system-wide mutexes to ensure that multiple
+ running instances of OpenHoldem do not interfere with each other when performin
+g Autoplayer actions.
+ The name of this system-wide mutex is easily identifiable by the casinos’
+ poker software and it is suggested that this be changed to something else.
+ Simple Main Window Title: By default, OpenHoldem will include all sorts
+ of useful information in its window title bar.
+ This useful information is also easily identifiable by the casinos’ poker
+ software.
+ Check this preference to use a simple window title instead.
+\end_layout
+
+\begin_layout Standard
+Figure 5.19-52 
+\end_layout
+
+\begin_layout Section
+OpenHoldem Preferences – Perl
+\end_layout
+
+\begin_layout Standard
+Perl preferences control how OpenHoldem interacts with the installed Perl
+ interpreter and your Perl formulas.
+ See the {Perl} section for more information on installing and configuring
+ Perl.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="2">
+<features>
+<column alignment="left" valignment="top" width="35text%">
+<column alignment="left" valignment="top" width="65text%">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Load Perl interpreter
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+When checked, this preference will cause the Perl interpreter to be loaded
+ into memory.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Load default Perl formula
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+When checked, this preference will cause the default Perl formula (as specified
+ in “Default formula” directly below) to be loaded on startup.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Default formula
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+This is the path to the Perl formula that will be loaded if the “Load default
+ Perl formula” preference is checked.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Perl editor
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+This is the path to the editor that will be launched when a Perl formula
+ is selected for editing from the Perl menu on the main window.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 5.19-53 
+\end_layout
+
+\begin_layout Section
+OpenHoldem Preferences - Poker Tracker
+\end_layout
+
+\begin_layout Standard
+Poker Tracker preferences control how OpenHoldem interacts with a Poker
+ Tracker database.
+ See the {PokerTracker} section for more information on using Poker Tracker
+ with OpenHoldem.
+\end_layout
+
+\begin_layout Standard
+Disable all Poker Tracker access: Checking this preference will completely
+ disable all Poker Tracker functionality in OpenHoldem.
+ If you make no use of any Poker Tracker symbols, then it is safe to check
+ this box.
+ Poker Tracker version: OpenHoldem supports interacting with both Poker
+ Tracker v2 and Poker Tracker v3 databases.
+ This setting will instruct OpenHoldem as to which flavor of Poker Tracker
+ you are using.
+ Host Name / IP Address, Port, Username, Password, DB Name: These are the
+ parameters that you entered when you setup your Poker Tracker PostgreSQL
+ database.
+ Enter them here so OpenHoldem knows how to connect to your database.
+ If you do not understand what these settings mean, please go here for more
+ information: http://www.pokertracker.com Update delay: OpenHoldem maintains
+ an internal cache of Poker Tracker statistics that it periodically queries
+ from the Poker Tracker database.
+ This setting determines the frequency that OpenHoldem will use (in seconds)
+ to consider re-querying those statistics.
+ This setting is akin to the “Scrape Delay” setting in the Scraper preferences
+ for the screen scraper engine.
+ This parameter does not need to be a particularly small value, as the informati
+on in Poker Tracker does not change that often itself.
+ Note: Just because this delay has expired, and the Poker Tracker query
+ engine “wakes up”, does not guarantee that every statistic will be updated.
+ Rather, this works in conjunction with the “Cache refresh” parameter below
+ to decide if a statistic needs updating or not.
+ Cache refresh: After the Poker Tracker query engine has been “woken up”,
+ because the delay specified in the “Update delay” parameter has expired,
+ the engine will scan through each of its statistics for every chair and
+ determine if that statistic needs updating or not.
+ If the duration between now and the last time that a given statistic was
+ retrieved from Poker Tracker is greater than this parameter (in seconds),
+ then the engine considers the statistic to be stale and will query Poker
+ Tracker for a new value.
+ Test: This button will test the connection to the Poker Tracker database
+ as specified by the above parameters and will report success or failure
+ codes.
+ Help with connecting to PostgreSQL databases can be found here: http://www.poker
+tracker.com, or here: http://www.postgresql.org 
+\end_layout
+
+\begin_layout Standard
+Figure 5.19-54 
+\end_layout
+
+\begin_layout Section
+OpenHoldem Preferences - Replay Frames
+\end_layout
+
+\begin_layout Standard
+Replay Frames preferences control how OpenHoldem collects Replay Frames
+ for offline development and debugging use.
+ See the {Replay Frames} section for more information on using Replay Frames.
+\end_layout
+
+\begin_layout Standard
+Automatically record replay frames: If this setting is checked, OpenHoldem
+ will automatically record Replay Frames.
+ The alternative is manual Replay Frame collection by using the “camera”
+ button on the main toolbar.
+ But do it on every change in table state: If the “Automatically record
+ replay frames” preference is checked, this option will be available to
+ instruct OpenHoldem to collect Replay Frames on every change in table state.
+ Typically, OpenHoldem only collects Replay Frames when it is your turn
+ to act.
+ Record every change when in hand: If the “Automatically record replay frames”
+ preference is checked, this option will be available to instruct OpenHoldem
+ to collect Replay Frames on every screen scrape cycle when you are in the
+ hand.
+ Typically, OpenHoldem only collects Replay Frames when it is your turn
+ to act.
+ Maximum frames to store: OpenHoldem will collect a maximum number of Replay
+ Frames as specified by this parameter, then it will reuse filenames starting
+ at the beginning.
+\end_layout
+
+\begin_layout Standard
+Figure 5.19-55 
+\end_layout
+
+\begin_layout Section
+OpenHoldem Preferences – Scraper
+\end_layout
+
+\begin_layout Standard
+Scraper preferences control how the OpenHoldem Screen Scraper engine functions.
+ At the moment there is only one preference available here.
+ See the {Creating a Table Map} section for more information.
+\end_layout
+
+\begin_layout Standard
+Scrape Delay: This parameter specifies the amount of time (in milliseconds)
+ that the OpenHoldem Screen Scraper engine will pause in between subsequent
+ screen scrape passes.
+ This amount of time does not specify the time from the beginning of scrape
+ 1 to the beginning of scrape 2, but rather the amount of delay between
+ the end of scrape 1 and the beginning of scrape 2.
+ The primary consideration for this parameter is that of CPU consumption,
+ and the default of 750ms seems to work well for most people.
+\end_layout
+
+\begin_layout Standard
+Figure 5.19-56
+\end_layout
+
+\begin_layout Section
+OpenHoldem Preferences – Symbols
+\end_layout
+
+\begin_layout Standard
+Symbols preferences control various aspects of OpenHoldem’s calculated symbols.
+ See the {Calculated SymbolsCreating a Table Map} section for more information.
+ 
+\end_layout
+
+\begin_layout Standard
+Time Period to Average Table Stats: As discussed in the {Calculated Symbols}
+ section, the Table Stats symbols (floppct, turnpct, riverpct, avgbetspf
+ and tablepfr) are calculated on a rolling time average.
+ The time frame (in minutes) specified by this parameter determines how
+ far back in time these averages are calculated.
+ For example, if this is set to 15 minutes, then the averages will be for
+ the last 15 minutes of activity at the table.
+ Value of “handrank”: handrank is a calculated symbol, and is set to one
+ of 169, 1000, 1326, 2652 or p.
+ Depending on the option selected here, handrank will be set equal to the
+ calculated handrank169, handrank1000, handrank1326, handrank2652 or handrankp
+ symbols.
+ This setting also determines the hand rank value that is displayed on the
+ main window’s status bar (see {Status Bar} for more information).
+ See section {Starting Hand } for more information on hand ranks.
+ Disable all symbol caching: The normal operation for the OpenHoldem parsing
+ and decision engine is to cache the results of each symbol that it calculates
+ in a given scrape cycle.
+ The reason for this, is that if a UDF is referenced 100 times in a given
+ function calculation, it makes sense to save the results of the first calculati
+on, and then reuse the results in the other 99 references.
+ This is just an efficient use of CPU resources.
+ By checking this preference, you instruct OpenHoldem to bypass this caching
+ and guarantee that each symbol is re-calculated each time it is needed.
+ Whether this option is checked or unchecked, dll$ symbols are never cached,
+ as if a caching of User DLL symbols is needed, that can easily be accommodated
+ in the DLL itself by the DLL developer.
+\end_layout
+
+\begin_layout Standard
+Figure 5.19-57 
+\end_layout
+
+\begin_layout Section
+OpenHoldem Preferences – Validator
+\end_layout
+
+\begin_layout Standard
+Validator preferences control various aspects of OpenHoldem’s Validator
+ engine.
+ See the {Validator} section for more information.
+ This is a new feature in OpenHoldem version 2.0.
+ The purpose of the Validator is to help people to develop more reliable
+ bots and Table Maps.
+ It will execute several hundred consistency-checks at the symbol level
+ to detect invalid game-states, mis-scrapes or incomplete information.
+ The Validator will write possible problems to the log-file and also show
+ a message box, as long as messages are not disabled.
+ The rules used by the Validator are always being refined and developed.
+ The discussion forum is the best place to keep on top of this
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.maxinmontreal.com/forums/viewtopic.php?f=189 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Enable Validator: This preference determines when the Validator is engaged
+ to do its work, either Never (completely off), when it is my turn, or always.
+ Use Heuristic Rules: Some rules are heuristic, i.e.
+ they are "common sense", but not always true.
+ Example: A game does usually not last longer than 2 minutes, so the autoplayer
+ has to act at least once per 120 seconds.
+ If it does not do so, there seems to be a problem.
+ Maybe the Table Map does not detect the players’ cards or the buttons.
+ This setting can result in false positives and is recommended for testing
+ only, but not for real-money-play.
+ Stop Autoplayer on error: If the Validator discovers an inconsistency,
+ and this preference is checked, the Autoplayer will be instructed to stop
+ Autoplaying.
+ 
+\end_layout
+
+\end_body
+\end_document
