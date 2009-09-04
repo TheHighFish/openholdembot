@@ -169,5 +169,63 @@ If OpenHoldem calls every hand --- except maybe the strong ones --- this
  free check and calls.
 \end_layout
 
+\begin_layout Section
+Perl (or the user-DLL) crashes immediatelly
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Reason: Usage of functionality, that is not yet initialized.
+\end_layout
+
+\begin_layout Standard
+The probably most prominent example is the usage of 
+\begin_inset Quotes eld
+\end_inset
+
+gws
+\begin_inset Quotes erd
+\end_inset
+
+ during the initialization-phase of Perl or a DLL.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+double BigBlind = gws(
+\begin_inset Quotes eld
+\end_inset
+
+bblind
+\begin_inset Quotes erd
+\end_inset
+
+);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+BigBlind is here a global variable, that gets initialized immediatelly,
+ when the DLL gets loaded.
+ But the function gws uses a callback-pointer, that gets initialized later
+ with one of the first messages from OpenHoldem to the DLL.
+ So you dereference an undefined pointer and get a memory-access-error.
+\end_layout
+
+\begin_layout Standard
+Very similar are debug messages into a file, that has not yet been opened
+ for writing or an inexpertly load-order of Perl-modules.
+\end_layout
+
 \end_body
 \end_document
