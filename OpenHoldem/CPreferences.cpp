@@ -181,6 +181,12 @@ void CPreferences::InitDefaults(void)
 	// GUI
 	_gui_start_minimized = false; 
 
+	// Rebuy
+	_rebuy_condition_no_cards = true;
+	_rebuy_condition_change_in_handnumber = true;
+	_rebuy_condition_heuristic_check_for_occlusion = true;
+	_rebuy_minimum_time_to_next_try = 30;
+
 	// Obscure
 	_window_class_name = "OpenHoldem";
 	_mutex_name= "OHAntiColl";
@@ -191,7 +197,6 @@ void CPreferences::InitDefaults(void)
 	_path_tm = "";
 	_path_perl = "";
 	_path_dll = "";
-
 }
 
 //
@@ -358,7 +363,12 @@ void CPreferences::ReadPreferences()
 		// GUI
 		ReadReg("gui_start_minimized", &_gui_start_minimized);
 
-
+		// Rebuy
+		ReadReg("rebuy_condition_no_cards", &_rebuy_condition_no_cards);
+		ReadReg("rebuy_condition_change_in_handnumber", &_rebuy_condition_change_in_handnumber);
+		ReadReg("rebuy_condition_heuristic_check_for_occlusion", &_rebuy_condition_heuristic_check_for_occlusion);
+		ReadReg("rebuy_minimum_time_to_next_try", &_rebuy_minimum_time_to_next_try);
+	
 		// obscure
 		ReadReg("window_class_name", &_window_class_name);
 		ReadReg("mutex_name", &_mutex_name);

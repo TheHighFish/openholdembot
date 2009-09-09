@@ -396,6 +396,7 @@ public:
 	const double		f$call() { return _f$call; }
 	const double		f$play() { return _f$play; }
 	const double		f$prefold() { return _f$prefold; }
+	const double		f$rebuy() { return _f$rebuy; }
 	const double		f$delay() { return _f$delay; }
 	const double		f$chat() { return _f$chat; }
 	const sprw1326		*prw1326() { return &_prw1326; }
@@ -415,6 +416,7 @@ public:
 	void	set_f$call(const double d) { ENT _f$call = d;}
 	void	set_f$play(const double d) { ENT _f$play = d;}
 	void	set_f$prefold(const double d) { ENT _f$prefold = d;}
+	void	set_f$rebuy(const double d) { ENT _f$rebuy = d;}
 	void	set_f$delay(const double d) { ENT _f$delay = d;}
 	void	set_f$chat(const double d) { ENT _f$chat = d;}
 	void	set_prw1326_useme(const int i) { ENT _prw1326.useme = i;}
@@ -796,7 +798,7 @@ private:
 	// private variables - use public accessors and public mutators to address these
 	SSymbols	_sym;
 	bool		_user_chair_confirmed;
-	double		_f$alli, _f$swag, _f$rais, _f$call, _f$play, _f$prefold, _f$chat, _f$delay;
+	double		_f$alli, _f$swag, _f$rais, _f$call, _f$play, _f$prefold, _f$rebuy, _f$chat, _f$delay;
 	double		_bigbet;
 	bool		_reset_stakes;							// set to true on new hand or on change in title bar text
 	double		_stacks_at_hand_start[10];				// Used in ICM calculator - ICM needs stacks at beginning of hand

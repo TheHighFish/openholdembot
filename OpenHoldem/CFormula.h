@@ -273,6 +273,12 @@ static const char * defaultCSprefold = "\
 // Don't prefold anything \r\n\
 0";
 
+static const char * defaultCSrebuy = "\
+// <=0 means: don't rebuy.\r\n\
+//  >0 means: target-amount.\r\n\
+// Default is: no rebuy.\r\n\
+0";
+
 static const char * defaultCSdelay = "\
 // No delay to act. \r\n\
 0";

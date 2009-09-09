@@ -52,6 +52,7 @@ void CFormula::SetDefaultBot()
 	func.func = "f$rais"; func.func_text = defaultCSrais; _formula.mFunction.Add(func);
 	func.func = "f$call"; func.func_text = defaultCScall; _formula.mFunction.Add(func);
 	func.func = "f$prefold"; func.func_text = defaultCSprefold; _formula.mFunction.Add(func);
+	func.func = "f$rebuy"; func.func_text = defaultCSrebuy; _formula.mFunction.Add(func);
 	func.func = "f$delay"; func.func_text = defaultCSdelay; _formula.mFunction.Add(func);
 	func.func = "f$chat"; func.func_text = defaultCSchat; _formula.mFunction.Add(func);
 	func.func = "f$P"; func.func_text = defaultCSP; _formula.mFunction.Add(func);
@@ -268,6 +269,10 @@ void CFormula::WriteFormula(CArchive& ar, bool use_new_OHF_style)
 	for (i=0; i<N; i++) 
 		if (_formula.mFunction[i].func == "f$prefold") 
 			ar.WriteString("##f$prefold##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
+
+	for (i=0; i<N; i++) 
+		if (_formula.mFunction[i].func == "f$rebuy") 
+			ar.WriteString("##f$rebuy##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
 	
 	// New standard formulas are
 	//   * f$delay
@@ -335,6 +340,7 @@ void CFormula::WriteFormula(CArchive& ar, bool use_new_OHF_style)
 				_formula.mFunction[i].func != "f$rais" &&
 				_formula.mFunction[i].func != "f$call" &&
 				_formula.mFunction[i].func != "f$prefold" &&
+				_formula.mFunction[i].func != "f$rebuy" &&
 				_formula.mFunction[i].func != "f$delay" &&
 				_formula.mFunction[i].func != "f$chat" &&
 				_formula.mFunction[i].func != "f$P" &&
@@ -477,6 +483,16 @@ void CFormula::CheckForDefaultFormulaEntries()
 	if (addit==true)  
 	{ 
 		func.func = "f$prefold"; 
+		_formula.mFunction.Add(func); 
+	}
+
+	// f$rebuy
+	addit = true;
+	for (i=0; i<N; i++)  
+		if (_formula.mFunction[i].func=="f$rebuy") addit = false;
+	if (addit==true)  
+	{ 
+		func.func = "f$rebuy"; 
 		_formula.mFunction.Add(func); 
 	}
 

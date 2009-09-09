@@ -21,20 +21,28 @@ bool COcclusionCheck::UserChairKnown()
 
 bool COcclusionCheck::UserBalanceNonZero()
 {
+	return true;
+	/*
 	int userchair = p_symbols->sym()->userchair;
 	return (UserChairKnown() && (p_game_state->m_player[userchair].m_balance_known == true)
 		&& (p_game_state->m_player[userchair].m_balance > 0.0));
+		*/
 }
 
 bool COcclusionCheck::UserNameKnown()
 {
+	return true;
+	/*
 	int userchair = p_symbols->sym()->userchair;
 	return (UserChairKnown() && (p_game_state->m_player[userchair].m_name_known == true)
 		&& (p_game_state->m_player[userchair].m_name != ""));
+		*/
 }
 
 bool COcclusionCheck::AnyOpponentNameKnown()
 {
+	return true;
+	/*
 	for (int i=0; i<=9; i++)
 	{
 		if ((i != userchair) && (p_game_state->m_player[i].m_name_known == true)
@@ -44,10 +52,13 @@ bool COcclusionCheck::AnyOpponentNameKnown()
 		}
 	}
 	return false;
+	*/
 }
 
 bool COcclusionCheck::AnyApponentBalanceNonZero()
 {
+	return true;
+	/*
 	for (int i=0; i<=9; i++)
 	{
 		if ((i != userchair) && (p_game_state->m_player[i].m_balance_known == true)
@@ -57,10 +68,13 @@ bool COcclusionCheck::AnyApponentBalanceNonZero()
 		}
 	}
 	return false;
+	*/
 }
 
 bool COcclusionCheck::UserBalanceOccluded()
 {
+	return true;
+	/*
 	// Result:
 	//  * true:  probably occlusion.
 	//  * false: probably no occlusion.
@@ -100,4 +114,5 @@ bool COcclusionCheck::UserBalanceOccluded()
 		// Probably full table occluded.
 		return true;
 	}
+	*/
 }

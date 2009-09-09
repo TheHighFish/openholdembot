@@ -130,25 +130,25 @@ public:
 	const bool validator_stop_on_error() { return _validator_stop_on_error; }
 	const bool validator_use_heuristic_rules() { return _validator_use_heuristic_rules; }
 	const bool validator_shoot_replayframe_on_error() { return _validator_shoot_replayframe_on_error; }
-
 	// Auto-connector
 	const int autoconnector_connection_method() { return _autoconnector_connection_method; }
 	const bool autoconnector_connect_on_start() { return _autoconnector_connect_on_start; }
 	const bool autoconnector_close_when_table_disappears() { return _autoconnector_close_when_table_disappears; }
-
 	// GUI
 	const bool gui_start_minimized() { return _gui_start_minimized; }
-
+	// Rebuy
+	const bool rebuy_condition_no_cards() { return _rebuy_condition_no_cards; }
+	const bool rebuy_condition_change_in_handnumber() { return _rebuy_condition_change_in_handnumber; }
+	const bool rebuy_condition_heuristic_check_for_occlusion() { return _rebuy_condition_heuristic_check_for_occlusion; }
+	const int  rebuy_minimum_time_to_next_try() { return _rebuy_minimum_time_to_next_try; }
 	// Misc
 	const int scraper_zoom() { return _scraper_zoom; }
 	// versus_path() is implemented in the cpp-file.
 	const CString versus_path(); 	
-
 	// Obscure
 	const CString &window_class_name()		{ return _window_class_name; }
 	const CString &mutex_name()				{ return _mutex_name; }
 	bool simple_window_title()				{ return _simple_window_title; }
-
 	// CFileDialog saved paths
 	const CString path_ohf()		{ return _path_ohf; }
 	const CString path_tm()			{ return _path_tm; }
@@ -287,6 +287,7 @@ public:
 	void set_fdebuglog(const bool b) { ENT _fdebuglog = b; WriteReg("fdebuglog", b); }
 	void set_fdebuglog_myturn(const bool b) { ENT _fdebuglog_myturn = b; WriteReg("fdebuglog_myturn", b); }
 
+	// Validator
 	void set_validator_enabled(const int i) { ENT _validator_enabled = i; WriteReg("validator_enabled", i); }
 	void set_validator_stop_on_error(const bool b) { ENT _validator_stop_on_error = b; WriteReg("validator_stop_on_error", b); }
 	void set_validator_use_heuristic_rules(const bool b) { ENT _validator_use_heuristic_rules = b; WriteReg("validator_use_heuristic_rules", b); }
@@ -299,6 +300,12 @@ public:
 
 	// GUI
 	void set_gui_start_minimized(const bool b) { ENT _gui_start_minimized = b; WriteReg("gui_start_minimized", b); }
+
+	// Rebuy
+	void set_rebuy_condition_no_cards(const bool b) { ENT _rebuy_condition_no_cards = b; WriteReg("rebuy_condition_no_cards", b); }
+	void set_rebuy_condition_change_in_handnumber(const bool b) { ENT _rebuy_condition_change_in_handnumber = b; WriteReg("ebuy_condition_change_in_handnumber", b); }
+	void set_rebuy_condition_heuristic_check_for_occlusion(const bool b) { ENT _rebuy_condition_heuristic_check_for_occlusion = b; WriteReg("rebuy_condition_heuristic_check_for_occlusion", b); }
+	void set_rebuy_minimum_time_to_next_try(const int i) { ENT _rebuy_minimum_time_to_next_try = i; WriteReg("rebuy_minimum_time_to_next_try", i); }
 
 	// Misc
 	// (No method for versus_path,
@@ -464,6 +471,12 @@ private:
 
 	// GUI
 	bool			_gui_start_minimized; 
+
+	// Rebuy
+	bool			_rebuy_condition_no_cards;
+	bool			_rebuy_condition_change_in_handnumber;
+	bool			_rebuy_condition_heuristic_check_for_occlusion;
+	int				_rebuy_minimum_time_to_next_try;
 
 	// Misc
 	int				_scraper_zoom;
