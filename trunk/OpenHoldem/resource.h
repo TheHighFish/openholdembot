@@ -53,6 +53,7 @@
 #define IDD_CHARINUM                    179
 #define IDD_SAPREFS14                   180
 #define IDD_SAPREFS15                   181
+#define IDD_SAPREFS16                   182
 #define IDC_NEW                         1006
 #define IDC_DELETE                      1007
 #define IDC_RENAME                      1013
@@ -393,9 +394,14 @@
 #define IDC_RADIO_AUTOCONNECTOR_1       1318
 #define IDC_RADIO_AUTOCONNECTOR_2       1319
 #define IDC_AUTOCONNECTOR_CONNECT_ON_START 1320
-#define IDC_TABLE_CONNECTION_CLOSE_WHEN_TABLE_DISAPPEARS 1321
 #define IDC_AUTOCONNECTOR_CLOSE_WHEN_TABLE_DISAPPEARS 1321
 #define IDC_GUI_START_MINIMIZED         1322
+#define IDC_REBUY_CHANGE_IN_HANDNUMBER  1323
+#define IDC_REBUY_NO_CARDS              1324
+#define IDC_REBUY_HEURISTIC_OCCLUSION_CHECK 1325
+#define IDC_STATIC_REBUY_MINIMUM_DELAY  1326
+#define IDC_EDIT1                       1327
+#define IDC_REBUY_EDIT_MINIMUM_DELAY    1327
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -525,7 +531,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        180
 #define _APS_NEXT_COMMAND_VALUE         32986
-#define _APS_NEXT_CONTROL_VALUE         1323
+#define _APS_NEXT_CONTROL_VALUE         1328
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

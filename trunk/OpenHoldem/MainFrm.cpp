@@ -40,6 +40,7 @@
 #include "DialogSAPrefs13.h"
 #include "DialogSAPrefs14.h"
 #include "DialogSAPrefs15.h"
+#include "DialogSAPrefs16.h"
 #include "DialogScraperOutput.h"
 #include "inlines/eval.h"
 #include "OpenHoldem.h"
@@ -498,22 +499,24 @@ void CMainFrame::OnEditPreferences()
 	CDlgSAPrefs13 page13;
 	CDlgSAPrefs14 page14;
 	CDlgSAPrefs15 page15;
+	CDlgSAPrefs16 page16;
 
 	// add pages
-	dlg.AddPage(page1, "Analyzer");
+	dlg.AddPage(page1,  "Analyzer");
 	dlg.AddPage(page14, "Auto-Connector");
-	dlg.AddPage(page2, "Autoplayer");
+	dlg.AddPage(page2,  "Autoplayer");
 	dlg.AddPage(page10, "Chat");
-	dlg.AddPage(page3, "DLL Extension");
+	dlg.AddPage(page3,  "DLL Extension");
 	dlg.AddPage(page15, "GUI");
-	dlg.AddPage(page7, "ICM");
+	dlg.AddPage(page7,  "ICM");
 	dlg.AddPage(page11, "Logging");
 	dlg.AddPage(page13, "Obscure");
-	dlg.AddPage(page9, "Perl");
-	dlg.AddPage(page6, "Poker Tracker");
-	dlg.AddPage(page8, "Replay Frames");
-	dlg.AddPage(page4, "Scraper");
-	dlg.AddPage(page5, "Symbols");
+	dlg.AddPage(page9,  "Perl");
+	dlg.AddPage(page6,  "Poker Tracker");
+	dlg.AddPage(page16, "Rebuy");
+	dlg.AddPage(page8,  "Replay Frames");
+	dlg.AddPage(page4,  "Scraper");
+	dlg.AddPage(page5,  "Symbols");
 	dlg.AddPage(page12, "Validator");	
 
 	// this one will be a child node on the tree

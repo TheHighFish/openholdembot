@@ -94,11 +94,12 @@ void CAutoplayer::DoAutoplayer(void)
 	write_log(3, "Number of visible buttons: %d\n", num_buttons_visible);
 
 
-	// Calculate f$play, f$prefold, f$delay and f$chat for use below
+	// Calculate f$play, f$prefold, f$rebuy, f$delay and f$chat for use below
 	write_log(3, "Calling CalcSecondaryFormulas.\n");
 	p_symbols->CalcSecondaryFormulas();
 	write_log(3, "Secondary formulas; f$play: %f\n", p_symbols->f$play());
 	write_log(3, "Secondary formulas; f$prefold: %f\n", p_symbols->f$prefold());
+	write_log(3, "Secondary formulas; f$rebuy: %f\n", p_symbols->f$rebuy());
 	write_log(3, "Secondary formulas; f$delay: %f\n", p_symbols->f$delay());
 	write_log(3, "Secondary formulas; f$chat: %f\n", p_symbols->f$chat());
 

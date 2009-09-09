@@ -576,6 +576,7 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_f$call(0);
 	set_f$play(0);
 	set_f$prefold(0);
+	set_f$rebuy(0);
 	set_f$delay(0);
 
 	set_bigbet(0);
@@ -689,6 +690,7 @@ void CSymbols::ResetSymbolsNewHand(void)
 	set_f$call(0);
 	set_f$play(0);
 	set_f$prefold(0);
+	set_f$rebuy(0);
 
 	// icm
 	for (i=0; i<=9; i++)
@@ -3832,16 +3834,19 @@ void CSymbols::CalcSecondaryFormulas(void)
 	int			e = SUCCESS;
 	CGrammar	gram;
 
-		e = SUCCESS;
+	e = SUCCESS;
 	set_f$play(gram.CalcF$symbol(p_formula, "f$play", prefs.trace_functions(nTracePlay), &e));
 
-		e = SUCCESS;
+	e = SUCCESS;
 	set_f$prefold(gram.CalcF$symbol(p_formula, "f$prefold", prefs.trace_functions(nTracePrefold), &e));
 
-		e = SUCCESS;
+	e = SUCCESS;
+	set_f$rebuy(gram.CalcF$symbol(p_formula, "f$rebuy", prefs.trace_functions(nTracePrefold), &e));
+
+	e = SUCCESS;
 	set_f$delay(gram.CalcF$symbol(p_formula, "f$delay", &e));
 
-		e = SUCCESS;
+	e = SUCCESS;
 	set_f$chat(gram.CalcF$symbol(p_formula, "f$chat", &e));
 }
 
