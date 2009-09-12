@@ -357,6 +357,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\COcclusionCheck.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CPerl.cpp"
 				>
 			</File>
@@ -374,6 +378,10 @@
 			</File>
 			<File
 				RelativePath=".\CPreferences.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CRebuyManagement.cpp"
 				>
 			</File>
 			<File
@@ -597,6 +605,10 @@
 				</File>
 				<File
 					RelativePath=".\DialogSAPrefs15.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogSAPrefs16.cpp"
 					>
 				</File>
 				<File
@@ -946,6 +958,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\COcclusionCheck.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CPerl.hpp"
 				>
 			</File>
@@ -963,6 +979,10 @@
 			</File>
 			<File
 				RelativePath=".\CPreferences.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CRebuyManagement.h"
 				>
 			</File>
 			<File
@@ -1246,6 +1266,10 @@
 				</File>
 				<File
 					RelativePath=".\DialogSAPrefs15.h"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogSAPrefs16.h"
 					>
 				</File>
 				<File

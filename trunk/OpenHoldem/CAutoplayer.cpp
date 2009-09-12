@@ -3,19 +3,19 @@
 
 #include "CAutoconnector.h"
 #include "CAutoplayer.h"
-#include "CSymbols.h"
-#include "CIteratorThread.h"
-#include "CHeartbeatThread.h"
-#include "CScraper.h"
-#include "CGrammar.h"
-#include "CPreferences.h"
-#include "CReplayFrame.h"
-
-#include "OpenHoldem.h"
-#include "MainFrm.h"
 #include "CGameState.h"
-
+#include "CGrammar.h"
+#include "CHeartbeatThread.h"
+#include "CIteratorThread.h"
+#include "CPreferences.h"
+#include "CRebuyManagement.h"
+#include "CReplayFrame.h"
+#include "CScraper.h"
+#include "CSymbols.h"
+#include "MainFrm.h"
+#include "OpenHoldem.h"
 #include "PokerChat.hpp"
+
 
 CAutoplayer	*p_autoplayer = NULL;
 
@@ -77,6 +77,15 @@ void CAutoplayer::DoChat(void)
 	ComputeFirstPossibleNextChatTime();
 }
 
+void CAutoplayer::DoRebuy(void)
+{
+	if (_mutex.Lock(500))
+	{
+		p_rebuymanagement->TryToRebuy();
+		_mutex.Unlock();
+	}
+}
+
 void CAutoplayer::DoAutoplayer(void) 
 {
 	int				x = 0;
@@ -115,8 +124,12 @@ void CAutoplayer::DoAutoplayer(void)
 	write_log(3, "Calling DoPrefold.\n");
 	DoPrefold();
 
-	//  2007.02.27 by THF
-	//
+	if (p_symbols->f$rebuy() > 0)
+	{
+		write_log(3, "Calling DoRebuy.\n");
+		DoRebuy();
+	}
+
 	//  Additional functionality: PokerChat
 	//	(Handle f$chat)
 	//
@@ -766,7 +779,7 @@ void CAutoplayer::DoPrefold(void)
 	if (_pre_fold_but == p_tablemap->r$()->end())  
 		return;
 
-	// Randomize click location
+	// Click location
 	RECT	r;
 	r.left = _pre_fold_but->second.left;
 	r.top = _pre_fold_but->second.top;
