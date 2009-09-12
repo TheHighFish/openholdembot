@@ -454,24 +454,36 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
 	// Setup the tree
 	HTREEITEM	parent = NULL;
 
-	parent = m_FormulaTree.InsertItem("Standard Functions");
+	// Tree: Notes
+	parent = m_FormulaTree.InsertItem("notes");
+	
+	// Tree: Autoplayer functions
+	parent = m_FormulaTree.InsertItem("Autoplayer Functions");
 	m_FormulaTree.SetItemState(parent, TVIS_BOLD | (prefs.expand_std() ? TVIS_EXPANDED : 0), TVIS_BOLD | (prefs.expand_std() ? TVIS_EXPANDED : 0) );
-	m_FormulaTree.InsertItem("notes", parent);
-	m_FormulaTree.InsertItem("dll", parent);
 	m_FormulaTree.InsertItem("f$alli", parent);
 	m_FormulaTree.InsertItem("f$swag", parent);
 	m_FormulaTree.InsertItem("f$srai", parent);
 	m_FormulaTree.InsertItem("f$rais", parent);
 	m_FormulaTree.InsertItem("f$call", parent);
 	m_FormulaTree.InsertItem("f$prefold", parent);
-	m_FormulaTree.InsertItem("f$rebuy", parent);
 	m_FormulaTree.InsertItem("f$delay", parent);
+
+	// Tree: Standard functions
+	parent = m_FormulaTree.InsertItem("Standard Functions");
+	m_FormulaTree.SetItemState(parent, TVIS_BOLD | (prefs.expand_std() ? TVIS_EXPANDED : 0), TVIS_BOLD | (prefs.expand_std() ? TVIS_EXPANDED : 0) );
+	m_FormulaTree.InsertItem("dll", parent);
 	m_FormulaTree.InsertItem("f$chat", parent);
+	m_FormulaTree.InsertItem("f$rebuy", parent);
 	m_FormulaTree.InsertItem("f$P", parent);
 	m_FormulaTree.InsertItem("f$play", parent);
+
+	// Tree: Debug functions functions
+	parent = m_FormulaTree.InsertItem("Debug Functions");
+	m_FormulaTree.SetItemState(parent, TVIS_BOLD | (prefs.expand_std() ? TVIS_EXPANDED : 0), TVIS_BOLD | (prefs.expand_std() ? TVIS_EXPANDED : 0) );
 	m_FormulaTree.InsertItem("f$test", parent);
 	m_FormulaTree.InsertItem("f$debug", parent);
 
+	// Tree: Handlists
 	parent = m_FormulaTree.InsertItem("Hand Lists");
 	m_FormulaTree.SetItemState(parent, TVIS_BOLD | (prefs.expand_list() ? TVIS_EXPANDED : 0), TVIS_BOLD | (prefs.expand_list() ? TVIS_EXPANDED : 0) );
 	N = (int) m_wrk_formula.formula()->mHandList.GetSize();
@@ -481,6 +493,7 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
 		m_FormulaTree.InsertItem(m_wrk_formula.formula()->mHandList[i].list, parent);
 	}
 
+	// Tree: UDFs
 	hUDFItem = parent = m_FormulaTree.InsertItem("User Defined Functions");
 	m_FormulaTree.SetItemState(parent, TVIS_BOLD | (prefs.expand_udf() ? TVIS_EXPANDED : 0), TVIS_BOLD | (prefs.expand_udf() ? TVIS_EXPANDED : 0) );
 	m_udf_group = prefs.udf_group();
