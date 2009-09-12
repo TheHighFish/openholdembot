@@ -55,6 +55,7 @@ private:
 	void DoF$play(void);
 	void DoI86(void);
 	void DoChat(void);
+	void DoRebuy(void);
 
 	RMapCI	_alli_but, _rais_but, _call_but, _chec_but, _fold_but;
 	RMapCI	_autopost_but, _sitin_but, _sitout_but, _leave_but, _pre_fold_but;

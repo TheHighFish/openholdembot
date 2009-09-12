@@ -18,6 +18,7 @@
 #include "CPokerPro.h"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
+#include "CRebuyManagement.h"
 #include "CScraper.h"
 #include "CSessionCounter.h"
 #include "CSharedMem.h"
@@ -147,6 +148,7 @@ BOOL COpenHoldemApp::InitInstance()
 	if (!p_versus)  p_versus = new CVersus;	
 	if (!p_validator) p_validator = new CValidator;
 	if (!p_autoconnector) p_autoconnector = new CAutoConnector;
+	if (!p_rebuymanagement) p_rebuymanagement = new CRebuyManagement;
 
 	// mouse.dll - failure in load is fatal
 	_mouse_dll = LoadLibrary("mouse.dll");
@@ -307,6 +309,7 @@ int COpenHoldemApp::ExitInstance()
 	// but we have to be careful, as sometimes we do some work in the destructors,
 	// that depends on other classes, e.g. the destructor of the autoconnector
 	// need its session_id (CSessionCounter).
+	if (p_rebuymanagement) { delete p_rebuymanagement; p_rebuymanagement = NULL; }
 	if (p_autoconnector) { delete p_autoconnector; p_autoconnector = NULL; }
 	if (p_validator) { delete p_validator; p_validator = NULL; }
 	if (p_versus)  { delete p_versus; p_versus = NULL; }
