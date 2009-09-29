@@ -46,11 +46,30 @@ theorems-ams
 \begin_body
 
 \begin_layout Chapter
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+PrWin
+\end_layout
+
+\end_inset
+
 PrWin
 \end_layout
 
 \begin_layout Section
-The Iterator
+The 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Iterator
+\end_layout
+
+\end_inset
+
+Iterator
 \end_layout
 
 \begin_layout Standard
@@ -98,6 +117,15 @@ There are a number of parameters that feed into the OpenHoldem iterator:
 \end_layout
 
 \begin_layout Itemize
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+f$P
+\end_layout
+
+\end_inset
+
 f$P:  The result of the f$P function directly determines the number of opponents
  that are simulated in the Iterator.
   The greater the number of opponents, the lower your chances of winning.
@@ -136,7 +164,17 @@ http://forum.winholdem.net/wbb/viewtopic.php?t=3742
 \end_layout
 
 \begin_layout Standard
-Standard deviation of prwin/prtie/prlos by Number of Iterations (NIT)
+Standard deviation of prwin/prtie/prlos by Number of Iterations (
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+NIT
+\end_layout
+
+\end_inset
+
+NIT)
 \end_layout
 
 \begin_layout Standard
@@ -176,6 +214,15 @@ Here is how to use the data in the above graphs: Decide what error you find
 \end_layout
 
 \begin_layout Section
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Weighted prwin
+\end_layout
+
+\end_inset
+
 Weighted prwin
 \end_layout
 
@@ -201,9 +248,18 @@ A weighted prwin is one which is calculated by making informed selections
 
 \begin_layout Standard
 To enable Weighted prwin, various user-defined functions in a formula file
- must be defined to return the following values, expressed as handrank169
- values (see {Calculated Symbols}):function explanation f$mustplayOpponents
- holding cards better than this are assumed always to play them.
+ must be defined to return the following values, expressed as 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+handrank169
+\end_layout
+
+\end_inset
+
+handrank169 values (see {Calculated Symbols}):function explanation f$mustplayOpp
+onents holding cards better than this are assumed always to play them.
  This allows for the situation where opponents slow play the strongest hands
  in the hope of milking more from the pot with them.f$topclipIndicates that
  hands better than this are less likely to be played, since the betting
@@ -216,47 +272,42 @@ To enable Weighted prwin, various user-defined functions in a formula file
  This is a reasonably accurate expression of the strength of cards which
  opponents are prepared to play.
  An example of its use could be: 
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
+\noun on
 ##f$willplay##
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
 handsplayed < 10 ? 72 :
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
 (180*floppct) > (nopponents*2+1) ? 180 * floppct :
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
 nopponents*2+1 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
 ##f$wontplay## 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
 f$willplay*1.4 
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -302,6 +353,15 @@ Note: If f$willplay evaluates to zero, prwin weighting will be turned off.
 \end_layout
 
 \begin_layout Section
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Enhanced prwin
+\end_layout
+
+\end_inset
+
 Enhanced prwin
 \end_layout
 
@@ -324,7 +384,17 @@ This approach allows the DLL coder to implement something very like the
 \end_layout
 
 \begin_layout Subsection
-How to use it from a DLL 
+How to use it from a 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+DLL
+\end_layout
+
+\end_inset
+
+DLL 
 \end_layout
 
 \begin_layout Standard
@@ -352,39 +422,34 @@ To use Enhanced prwin from a DLL, you need to declare the structures and
 \end_layout
 
 \begin_layout Standard
-\begin_inset listings
-inline false
-status open
 
-\begin_layout Plain Layout
-
+\noun on
 prw1326->chair[2].rankhi[0]=12; //Ah
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
 prw1326->chair[2].ranklo[0]=25; //Ad
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
 ...
  	
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
 prw1326->chair[2].rankhi[5]=25; //Ad
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
 prw1326->chair[2].ranklo[5]=51; //As
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -411,40 +476,33 @@ eight[i]=prw1326->chair[2].level; Once the hand was over you would not want
 \end_layout
 
 \begin_layout Standard
-\begin_inset listings
-inline false
-status open
 
-\begin_layout Plain Layout
-
+\emph on
 for(i=0;i<332;i++) 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\emph on
     prw1326->chair[3].weight[i]=prw1326->chair[3].level;
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\emph on
 for(i=332;i<663;i++)
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\emph on
     prw1326->chair[3].weight[i]=prw1326->chair[3].level*(663-i)/332;
 \end_layout
 
-\begin_layout Plain Layout
-
-prw1326->chair[3].limit=663;
-\end_layout
-
-\end_inset
-
-Because we have set .limit for the chair we do not need to bother about the
- weightings for the bottom half of the hand list, because they will never
- be considered.
+\begin_layout Standard
+prw1326->chair[3].limit=663;Because we have set .limit for the chair we do
+ not need to bother about the weightings for the bottom half of the hand
+ list, because they will never be considered.
  The procedure above would set a general profile for chair 3 based on pre-flop
  behavior.
   You might have a situation in which his betting behavior indicated that
@@ -515,38 +573,33 @@ There is a mechanism for synchronizing your setting of the prw1326 structure
 \end_layout
 
 \begin_layout Standard
-\begin_inset listings
-inline false
-status open
 
-\begin_layout Plain Layout
-
+\noun on
 double mycallback(void)
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
 {
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
     //do something here
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
     return 0;
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
 }
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -554,22 +607,16 @@ then you can set
 \end_layout
 
 \begin_layout Standard
-\begin_inset listings
-inline false
-status open
 
-\begin_layout Plain Layout
-
+\noun on
 prw1326->prw_callback=mycallback;
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
 prw1326->usecallback=1326;
-\end_layout
-
-\end_inset
-
+\noun default
 The return value is not used currently by OpenHoldem.
  
 \end_layout

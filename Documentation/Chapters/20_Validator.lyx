@@ -40,12 +40,29 @@ theorems-ams
 \tracking_changes false
 \output_changes false
 \author "" 
+\author "" 
 \end_header
 
 \begin_body
 
 \begin_layout Chapter
-Validator 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Validator
+\end_layout
+
+\end_inset
+
+Validator
+\begin_inset CommandInset label
+LatexCommand label
+name "cha:Validator"
+
+\end_inset
+
+ 
 \end_layout
 
 \begin_layout Section
@@ -54,7 +71,17 @@ Overview
 
 \begin_layout Standard
 The Validator is a new tool introduced with OH 2.0.0, that is aimed to help
- people to develop more reliable bots and Table Maps.
+ people to develop more reliable bots and 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Table Map
+\end_layout
+
+\end_inset
+
+Table Maps.
  It will execute several hundred consistency-checks at the symbol level
  to detect invalid game-states, mis-scrapes or incomplete information.
  The Validator will write possible problems to the log-file and also show
@@ -93,6 +120,10 @@ Preferences
 \end_layout
 
 \begin_layout Standard
+!!! move!!!
+\end_layout
+
+\begin_layout Standard
 The Validator offers several options, available at "Edit -> Preferences
  -> Validator".
  
@@ -121,7 +152,17 @@ Always: The validator will check all rules once per heartbeat-cycle.
 \end_layout
 
 \begin_layout Standard
-Use heuristic rules: Some rules are heuristic, i.e.
+Use 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+heuristic
+\end_layout
+
+\end_inset
+
+heuristic rules: Some rules are heuristic, i.e.
  they are "common sense", but not always true.
  Example: A game does usually not last longer than 2 minutes, so the Autoplayer
  has to act at least once per 120 seconds.
@@ -153,25 +194,65 @@ The Validator basically consists of a set of several hundred rules to be
 \end_layout
 
 \begin_layout Itemize
-a unique ID for the test case 
+a(n) unique ID for the test case 
 \end_layout
 
 \begin_layout Itemize
-a flag to distinguish heuristic and non-heuristic rules 
+a flag to distinguish 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+heuristic
+\end_layout
+
+\end_inset
+
+heuristic and non-heuristic rules 
 \end_layout
 
 \begin_layout Itemize
-some verbal reasoning 
+some verbal 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+reasoning
+\end_layout
+
+\end_inset
+
+reasoning 
 \end_layout
 
 \begin_layout Itemize
-a precondition, that checks, if a rule can be applied to the current game
+a 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+precondition
+\end_layout
+
+\end_inset
+
+precondition, that checks, if a rule can be applied to the current game
  state 
 \end_layout
 
 \begin_layout Itemize
-a postcondition, that has to be met, if a rule can be applied a list of
- symbols, that got used and are possibly affected in case of an error
+a 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+postcondition
+\end_layout
+
+\end_inset
+
+postcondition, that has to be met, if a rule can be applied a list of symbols,
+ that got used and are possibly affected in case of an error
 \end_layout
 
 \begin_layout Standard
@@ -179,55 +260,58 @@ In practice it looks like this:
 \end_layout
 
 \begin_layout Standard
-\begin_inset listings
-inline false
-status open
 
-\begin_layout Plain Layout
-
+\noun on
 BEGIN_TESTCASE
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
     TESTCASE_ID ("0501") 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
-    HEURISTIC_RULE (false) 
+\noun on
+HEURISTIC_RULE (false) 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
     REASONING ("If it's my turn, then there has to be always a check or
  a call button.") 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
     PRECONDITION ("ismyturn") 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
-  POSTCONDITION ((("myturnbits" & BUTTON_CHECK) != 0) || (("myturnbits"
- & BUTTON_CALL) != 0)) 
+\noun on
+    POSTCONDITION ((("myturnbits" & BUTTON_CHECK) != 0) 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
+        || (("myturnbits" & BUTTON_CALL) != 0)) 
+\end_layout
+
+\begin_layout Standard
+
+\noun on
     SYMBOLS_POSSIBLY_AFFECTED ("ismyturn, myturnbits") 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
 END_TESTCASE
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_body
