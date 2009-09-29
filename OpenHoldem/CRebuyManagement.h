@@ -26,7 +26,10 @@ private:
 	bool NoCards();
 	bool OcclusionCheck();
 	bool RebuyPossible();
-	void ExecuteUniversalRebuyScript();
+	// CAUTION! DO NOT USE THIS FUNCTION DIRECTLY!
+	// It has to be protected by a mutex.
+	// We assume, the autoplayer does that.
+	void ExecuteRebuyScript();
 
 private:
 	static const unsigned int UnknownCard = 0;

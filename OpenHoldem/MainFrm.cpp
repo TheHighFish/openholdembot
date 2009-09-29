@@ -172,7 +172,6 @@ static UINT indicators[] =
 CMainFrame::CMainFrame() 
 {
 	_autoplay_pressed = false;
-	//p_autoconnector->attached_hwnd() = NULL;!!!
 	_wait_cursor = false;
 
 	for (int i=0; i<=19; i++)
@@ -1480,7 +1479,7 @@ void CMainFrame::UpdateWindowTitle()
 void CMainFrame::StartTimer()
 {
 	// Start timer that checks for continued existence of attached HWND
-	SetTimer(HWND_CHECK_TIMER, 200, 0); //!!!
+	SetTimer(HWND_CHECK_TIMER, 200, 0);
 }
 
 void CMainFrame::ResetDisplay()

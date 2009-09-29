@@ -421,50 +421,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\DialogChairNum.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DialogFormulaScintilla.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DialogHandList.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DialogLockBlinds.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DialogNew.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DialogPpro.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DialogRename.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DialogScraperOutput.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DialogSelectTable.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DialogSettings.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DialogSitDown.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\MainFrm.cpp"
 				>
 			</File>
@@ -481,15 +437,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OpenHoldemView.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\PokerChat.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ScintillaWnd.cpp"
 				>
 			</File>
 			<File
@@ -519,10 +467,6 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\UPDialog.cpp"
-				>
 			</File>
 			<Filter
 				Name="winmgr"
@@ -573,86 +517,6 @@
 				</File>
 				<File
 					RelativePath="..\CTransform\pdiff\RGBAImage.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="prefs_dlg"
-				>
-				<File
-					RelativePath=".\DialogSAPrefs1.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs10.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs11.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs12.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs13.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs14.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs15.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs16.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs2.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs3.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs4.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs5.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs6.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs7.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs8.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs9.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\SAPrefsDialog.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\SAPrefsStatic.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\SAPrefsSubDlg.cpp"
 					>
 				</File>
 			</Filter>
@@ -895,6 +759,146 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="GUI"
+				>
+				<File
+					RelativePath=".\DialogChairNum.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogFormulaScintilla.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogHandList.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogLockBlinds.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogNew.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogPpro.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogRename.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogScraperOutput.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogSelectTable.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogSettings.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogSitDown.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\OpenHoldemView.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ScintillaWnd.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\UPDialog.cpp"
+					>
+				</File>
+				<Filter
+					Name="prefs_dlg"
+					>
+					<File
+						RelativePath=".\DialogSAPrefs1.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs10.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs11.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs12.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs13.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs14.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs15.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs16.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs2.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs3.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs4.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs5.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs6.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs7.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs8.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs9.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\SAPrefsDialog.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\SAPrefsStatic.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\SAPrefsSubDlg.cpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -1022,50 +1026,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\DialogChairNum.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DialogFormulaScintilla.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DialogHandList.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DialogLockBlinds.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DialogNew.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DialogPpro.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DialogRename.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DialogScraperOutput.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DialogSelectTable.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DialogSettings.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DialogSitDown.h"
-				>
-			</File>
-			<File
 				RelativePath=".\FloatingPoint_Comparisions.h"
 				>
 			</File>
@@ -1086,10 +1046,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OpenHoldemView.h"
-				>
-			</File>
-			<File
 				RelativePath=".\PerlEz.h"
 				>
 			</File>
@@ -1106,15 +1062,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ScintillaWnd.h"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\UPDialog.h"
 				>
 			</File>
 			<Filter
@@ -1238,86 +1186,6 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="prefs_dlg"
-				>
-				<File
-					RelativePath=".\DialogSAPrefs1.h"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs10.h"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs11.h"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs12.h"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs13.h"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs14.h"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs15.h"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs16.h"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs2.h"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs3.h"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs4.h"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs5.h"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs6.h"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs7.h"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs8.h"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs9.h"
-					>
-				</File>
-				<File
-					RelativePath=".\SAPrefsDialog.h"
-					>
-				</File>
-				<File
-					RelativePath=".\SAPrefsStatic.h"
-					>
-				</File>
-				<File
-					RelativePath=".\SAPrefsSubDlg.h"
-					>
-				</File>
-			</Filter>
-			<Filter
 				Name="postgres"
 				>
 				<File
@@ -1384,6 +1252,146 @@
 					RelativePath="..\CCritSec\CCritSec.h"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="GUI"
+				>
+				<File
+					RelativePath=".\DialogChairNum.h"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogFormulaScintilla.h"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogHandList.h"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogLockBlinds.h"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogNew.h"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogPpro.h"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogRename.h"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogScraperOutput.h"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogSelectTable.h"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogSettings.h"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogSitDown.h"
+					>
+				</File>
+				<File
+					RelativePath=".\OpenHoldemView.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ScintillaWnd.h"
+					>
+				</File>
+				<File
+					RelativePath=".\UPDialog.h"
+					>
+				</File>
+				<Filter
+					Name="prefs_dlg"
+					>
+					<File
+						RelativePath=".\DialogSAPrefs1.h"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs10.h"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs11.h"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs12.h"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs13.h"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs14.h"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs15.h"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs16.h"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs2.h"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs3.h"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs4.h"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs5.h"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs6.h"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs7.h"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs8.h"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs9.h"
+						>
+					</File>
+					<File
+						RelativePath=".\SAPrefsDialog.h"
+						>
+					</File>
+					<File
+						RelativePath=".\SAPrefsStatic.h"
+						>
+					</File>
+					<File
+						RelativePath=".\SAPrefsSubDlg.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter

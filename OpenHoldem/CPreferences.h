@@ -115,6 +115,8 @@ public:
 	const double ante() { return _ante; }
 	const int gametype() { return _gametype; }
 	// Formula editor
+	const bool expand_auto() { return _expand_auto; }
+	const bool expand_debug() { return _expand_debug; }
 	const bool expand_list() { return _expand_list; }
 	const bool expand_std() { return _expand_std; }
 	const bool expand_udf() { return _expand_udf; }
@@ -141,6 +143,7 @@ public:
 	const bool rebuy_condition_change_in_handnumber() { return _rebuy_condition_change_in_handnumber; }
 	const bool rebuy_condition_heuristic_check_for_occlusion() { return _rebuy_condition_heuristic_check_for_occlusion; }
 	const int  rebuy_minimum_time_to_next_try() { return _rebuy_minimum_time_to_next_try; }
+	const CString rebuy_script() { return _rebuy_script; }
 	// Misc
 	const int scraper_zoom() { return _scraper_zoom; }
 	// versus_path() is implemented in the cpp-file.
@@ -275,6 +278,8 @@ public:
 	void set_gametype(const int i) { ENT _gametype = i; WriteReg("gametype", i); }
 
 	// Formula editor
+	void set_expand_auto(const bool  b) { ENT _expand_list = b; WriteReg("expand_auto", b); }
+	void set_expand_debug(const bool  b) { ENT _expand_list = b; WriteReg("expand_debug", b); }
 	void set_expand_list(const bool  b) { ENT _expand_list = b; WriteReg("expand_list", b); }
 	void set_expand_std(const bool b) { ENT _expand_std = b; WriteReg("expand_std", b); }
 	void set_expand_udf(const bool b) { ENT _expand_udf = b; WriteReg("expand_udf", b); }
@@ -303,9 +308,10 @@ public:
 
 	// Rebuy
 	void set_rebuy_condition_no_cards(const bool b) { ENT _rebuy_condition_no_cards = b; WriteReg("rebuy_condition_no_cards", b); }
-	void set_rebuy_condition_change_in_handnumber(const bool b) { ENT _rebuy_condition_change_in_handnumber = b; WriteReg("ebuy_condition_change_in_handnumber", b); }
+	void set_rebuy_condition_change_in_handnumber(const bool b) { ENT _rebuy_condition_change_in_handnumber = b; WriteReg("rebuy_condition_change_in_handnumber", b); }
 	void set_rebuy_condition_heuristic_check_for_occlusion(const bool b) { ENT _rebuy_condition_heuristic_check_for_occlusion = b; WriteReg("rebuy_condition_heuristic_check_for_occlusion", b); }
 	void set_rebuy_minimum_time_to_next_try(const int i) { ENT _rebuy_minimum_time_to_next_try = i; WriteReg("rebuy_minimum_time_to_next_try", i); }
+	void set_rebuy_script(const CString s) { ENT _rebuy_script = s; WriteReg("rebuy_script", s); }
 
 	// Misc
 	// (No method for versus_path,
@@ -446,6 +452,8 @@ private:
 	int				_gametype;
 
 	// Formula editor
+	bool			_expand_auto;
+	bool			_expand_debug;
 	bool			_expand_list;
 	bool			_expand_std;
 	bool			_expand_udf;
@@ -477,6 +485,7 @@ private:
 	bool			_rebuy_condition_change_in_handnumber;
 	bool			_rebuy_condition_heuristic_check_for_occlusion;
 	int				_rebuy_minimum_time_to_next_try;
+	CString			_rebuy_script;
 
 	// Misc
 	int				_scraper_zoom;

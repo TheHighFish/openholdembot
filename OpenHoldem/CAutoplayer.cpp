@@ -220,7 +220,7 @@ void CAutoplayer::DoAutoplayer(void)
 	// do swag first since it is the odd one
 	if (p_symbols->f$swag() && !p_symbols->f$alli() && p_scraper->GetButtonState(3)) 
 	{
-		write_log(3, "Calling DoSwag.v");
+		write_log(3, "Calling DoSwag.\n");
 		DoSwag();
 	}
 	else 
@@ -473,7 +473,7 @@ void CAutoplayer::DoSwag(void)
 			p_heartbeat_thread->set_replay_recorded_this_turn(false);
 
 			// log it
-			write_logautoplay(1, "SWAG");
+			write_logautoplay(1, "SWAG\n");
 		}
 
 		_mutex.Unlock();
@@ -685,7 +685,7 @@ void CAutoplayer::DoSlider(void)
 		write_log(1, "Calling mouse.dll to jam from %d,%d to %d,%d\n", r.left, r.top, r.right, r.bottom);
 		(theApp._dll_mouse_click_drag) (p_autoconnector->attached_hwnd(), r, NULL, p_null);
 
-		write_log(3, "Sleeping %dms.", prefs.swag_delay_3());
+		write_log(3, "Sleeping %d ms\n.", prefs.swag_delay_3());
 		Sleep(prefs.swag_delay_3());
 
 		// Click confirmation button
@@ -749,7 +749,7 @@ void CAutoplayer::DoSlider(void)
 
 
 		write_logautoplay(1, "JAM");
-		write_log(1, "Jam complete: ", r.left, r.top, r.right, r.bottom);
+		write_log(1, "Jam complete: %d,%d,%d,%d\n", r.left, r.top, r.right, r.bottom);
 
 		// reset elapsedauto symbol
 		time_t my_time_t;
