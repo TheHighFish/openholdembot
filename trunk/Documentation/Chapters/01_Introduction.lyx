@@ -182,7 +182,7 @@ OpenHoldem is not a complete poker bot.
 
 \begin_layout Standard
 OpenHoldem does not allow for automated collusion.
-  Poker botting currently is in a gray area of legality and morality, with
+ Poker botting currently is in a gray area of legality and morality, with
  many strong perspectives on both sides of the argument.
   The OpenHoldem development team strongly believes that automated collusion
  is clearly illegal and immoral, and will not provide the facility to help
@@ -198,6 +198,15 @@ OpenHoldem is not a general-purpose poker botting engine for all styles
 \end_layout
 
 \begin_layout Section
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+WinHoldem
+\end_layout
+
+\end_inset
+
 WinHoldem heritage
 \end_layout
 
@@ -222,10 +231,7 @@ http://www.maxinmontreal.com/forums/viewtopic.php?p=28468
 
 \end_inset
 
-:
-\end_layout
-
-\begin_layout Standard
+: 
 \begin_inset Quotes eld
 \end_inset
 
@@ -234,8 +240,8 @@ For the first couple of years of its existence WH (WinHoldEm) was actively
  Although it was a commercial product   Ray Bornert put in an astonishing
  amount of time answering queries on the WH BBS, and seemed to respond to
  opinions and requests there pretty quickly.
-  One of the features he introduced were private forums (fora) which groups
- could request   and then run their own discussions and developments within
+ One of the features he introduced were private forums (fora) which groups
+ could request and then run their own discussions and developments within
  them.
    These must have been problem children for him.
  because there was a measure of falling-out,   squabbling and bad blood
@@ -444,7 +450,7 @@ http://www.nebutech.com
 \end_layout
 
 \begin_layout Itemize
-Dynamic window resizng class; Paul DiLascia; MSDN Magazine -- July 2001
+Dynamic window resizing class; Paul DiLascia; MSDN Magazine -- July 2001
 \end_layout
 
 \begin_layout Itemize
@@ -541,7 +547,7 @@ http://www.codeproject.com/win32/UPDialog.asp
 \begin_layout Itemize
 Netscape-style preferences dialog; Chris Losinger; 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 

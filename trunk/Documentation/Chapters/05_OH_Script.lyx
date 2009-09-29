@@ -46,6 +46,15 @@ theorems-ams
 \begin_body
 
 \begin_layout Chapter
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+OH
+\end_layout
+
+\end_inset
+
 OH-Script 
 \end_layout
 
@@ -54,12 +63,30 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-OpenHoldem's scripting language is very similar to the C programming expression
- syntax.
+OpenHoldem's 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+scripting language
+\end_layout
+
+\end_inset
+
+scripting language is very similar to the C programming expression syntax.
  If you already know and understand C programming then you have an advantage
  in that the OH scripting language should be very familiar.
- This section is largely based off of Ray Bornert's original WinHoldem "C-tutori
-al"
+ This section is largely based off of Ray Bornert's original WinHoldem "
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+C tutorial
+\end_layout
+
+\end_inset
+
+C-tutorial"
 \begin_inset Foot
 status open
 
@@ -83,14 +110,27 @@ http://www.winholdem.net/help/help-c.html
 \end_layout
 
 \begin_layout Section
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Syntax
+\end_layout
+
+\end_inset
+
 Syntax 
 \end_layout
 
 \begin_layout Standard
 The general syntax for OpenHoldem formulas is same as that of the C programming
  language.
- However, the formulas are strict R-VALUES (right side of an assignment
- expression), meaning that there is no assignment operator.
+ However, the formulas are strict 
+\emph on
+r-values
+\emph default
+ (right side of an assignment expression), meaning that there is no assignment
+ operator.
  
 \end_layout
 
@@ -101,10 +141,59 @@ Data Types
 \begin_layout Standard
 OH-Script is a programming language without typing.
  All values are stored as (double) floating point values on the expression
- stack, regardless if they are floating points, integers, booleans (logicals)
- or bit-vectors.
- For bitwise operations the values are first converted to integer values
- and then the operator is applied.
+ stack, regardless if they are 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+floating point
+\end_layout
+
+\end_inset
+
+floating points, 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+integer
+\end_layout
+
+\end_inset
+
+integers, 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+booleans
+\end_layout
+
+\end_inset
+
+booleans (
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+logical
+\end_layout
+
+\end_inset
+
+logicals) or 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+bit-vector
+\end_layout
+
+\end_inset
+
+bit-vectors.
+ For bitwise operations the values are first internally converted to integer
+ values and then the operator is applied.
  
 \end_layout
 
@@ -113,6 +202,10 @@ If a value is interpreted as numerical or boolean depends solely on the
  context.
  A common beginners mistake is to mix up boolean and numerical values, boolean
  and numerical operators
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 \begin_inset Marginal
 status open
 
@@ -130,12 +223,76 @@ status open
 .
 \end_layout
 
-\begin_layout Standard
-One of the main problems with floating-points are the inevitable??? rounding-err
-ors.
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Rounding error
+\end_layout
+
+\end_inset
+
+Rounding Errors
 \end_layout
 
 \begin_layout Standard
+One of the main problems with floating-points are the inevitable rounding
+ errors.
+ Rounding errors occur for numerical calculations, but also for conversions
+ of floating-point-numbers from 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+decimal format
+\end_layout
+
+\end_inset
+
+decimal format (OH-script) to the internal 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+binary
+\end_layout
+
+\end_inset
+
+binary representation
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://wikipedia/!!!
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 \begin_inset Marginal
 status open
 
@@ -153,15 +310,76 @@ status open
 
 \end_layout
 
-\begin_layout Standard
-relational and equality operators < <= > >= == !=
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-DLL- and Perl-users have to care about correct rounding themselves!
+Rounding errors are especially annoying when you compare two numbers, that
+ should be equal from an exact mathematical point of view but are only nearly
+ in practice.
+\end_layout
+
+\begin_layout Standard
+To overcome this problem OpenHoldem uses approximative comparision for relationa
+l and equality operators
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+< <= > >= == !=
+\end_layout
+
+\end_inset
+
+.
+ It will treat two numbers as 
+\begin_inset Quotes eld
+\end_inset
+
+equal
+\begin_inset Quotes erd
+\end_inset
+
+, when they differ by not more than 
+\begin_inset Formula $10^{^{-6}}$
+\end_inset
+
+.
+ This applies ofcourse only to OH-script; 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+DLL
+\end_layout
+
+\end_inset
+
+DLL- and 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Perl
+\end_layout
+
+\end_inset
+
+Perl-users have to care about correct rounding themselves!
 \end_layout
 
 \begin_layout Section
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Boolean
+\end_layout
+
+\end_inset
+
 Boolean Logic
 \end_layout
 
@@ -201,6 +419,15 @@ http://en.wikipedia.org/wiki/Boolean_logic
 \end_layout
 
 \begin_layout Section
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Operators
+\end_layout
+
+\end_inset
+
 Operators 
 \end_layout
 
@@ -715,8 +942,80 @@ Logical NOT ! False when the operand is true.
 
 \begin_layout Itemize
 Bitwise NOT ~ Logical NOT operation on a bit by bit basis.
- expression binary result a 11001001011101010110010101111010 ~a 0011011010001010
-1001101010000101 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="2">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+expression
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+binary result
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+11001001011101010110010101111010
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+~a
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+00110110100010101001101010000101
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+ 
 \end_layout
 
 \begin_layout Itemize
@@ -731,9 +1030,120 @@ Bit Count ` (not ANSI-C) Provides a count of the number of bits set in any
  integer value.
  Here are 3 examples of the number of bits that are set in some 32-bit integer
  numbers.
- a `a 0000000000000000000000000000000 0 0000000000000100000000000000000
- 1 0000010000000100000000000010000 3 1111111111111111111111111111111 32
+\begin_inset Newline newline
+\end_inset
+
  
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="2">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+`a
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0000000000000000000000000000000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0000000000000100000000000000000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0000010000000100000000000010000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1111111111111111111111111111111
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+32
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
@@ -763,13 +1173,15 @@ Subtract - a - b Standard algebraic subtraction on a and b.
 \end_layout
 
 \begin_layout Itemize
-Bitwise Shift Bitwise Shift Left << Slides the entire bit pattern to the
- left by N bits.
+Bitwise Shift Left << Slides the entire bit pattern to the left by N bits.
  Note that the leftmost bits are simply dropped and that the rightmost bits
  are filled with 0's.
  The shift magnitude is used as modulo 32, meaning that any shift N that
  is specified in excess of 32 bits has a N%32 operation performed prior
  to the shift.
+\begin_inset Newline newline
+\end_inset
+
  
 \begin_inset Tabular
 <lyxtabular version="3" rows="6" columns="2">
@@ -910,12 +1322,141 @@ Bitwise Shift Right >> Slide the entire bit pattern to the right by N bits.
  The shift magnitude is used as modulo 32, meaning that any shift N that
  is specified in excess of 32 bits has a N%32 operation performed prior
  to the shift.
- expression binary result a 11001001011101010110010101111010 a>>1 11100100101110
-101011001010111101 a>>7 11111111100100101110101011001010 a>>31 11111111111111111
-111111111111111 a>>32 11001001011101010110010101111010 a 01001001011101010110010
-101111010 a>>1 00100100101110101011001010111101 a>>7 000000001001001011101010110
-01010 a>>31 00000000000000000000000000000000 a>>32 01001001011101010110010101111
-010 
+ expression binary result.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="2">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+expression
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+binary result
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+11001001011101010110010101111010
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a>>1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+01100100101110101011001010111101
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a>>7
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+00000001100100101110101011001010
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a>>31
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+00000000000000000000000000000001
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a>>32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+11001001011101010110010101111010 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+ 
 \end_layout
 
 \begin_layout Itemize
@@ -944,84 +1485,932 @@ Not Equal != a b a != b -1 0 true 0 0 false +1 0 true
 
 \begin_layout Itemize
 Bitwise AND & Logical AND operation on a bit by bit basis.
+\begin_inset Newline newline
+\end_inset
+
  
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="2">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+expression
 \end_layout
 
-\begin_layout Itemize
-expression binary a 11001001011101010110010101111010 b 0100101001010010111000101
-0101111 a&b 01001000010100000110000000101010 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+binary
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+11001001011101010110010101111010
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+b
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+01001010010100101110001010101111
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a&b
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+01001000010100000110000000101010
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
 Bitwise OR | Logical OR operation on a bit by bit basis.
+\begin_inset Newline newline
+\end_inset
+
  
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="2">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+expression
 \end_layout
 
-\begin_layout Itemize
-expression binary a 11001001011101010110010101111010 b 0100101001010010111000101
-0101111 b 11001011011101111110011111111111 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+binary
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+11001001011101010110010101111010
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+b
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+01001010010100101110001010101111
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a | b
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+11001011011101111110011111111111
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
 Bitwise XOR ^ Logical XOR operation on a bit by bit basis.
- 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="2">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+expression
 \end_layout
 
-\begin_layout Itemize
-expression binary a 11001001011101010110010101111010 b 0100101001010010111000101
-0101111 a^b 10000011001001111000011111010101 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+binary
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+11001001011101010110010101111010
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+b
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+01001010010100101110001010101111
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a^b
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+10000011001001111000011111010101
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+ 
 \end_layout
 
 \begin_layout Itemize
 Logical AND && False when any operand is false.
  True when both operands are true.
+\begin_inset Newline newline
+\end_inset
+
  
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a
 \end_layout
 
-\begin_layout Itemize
-a b a && b false false false false true false true false false true true
- true 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+b
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a && b
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+false
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+false
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+false
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+false
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+false
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+false
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+false
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
 Logical XOR ^^ (not ANSI-C) False when operands are boolean equal.
  True when operands are not boolean equal.
  Note that "a^^b" is equivalent to "(a!=0)^(b!=0)".
+\begin_inset Newline newline
+\end_inset
+
  
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a
 \end_layout
 
-\begin_layout Itemize
-a b a ^^ b false false false false true true true false true true true false
- 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+b
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a ^^ b
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+false
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+false
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+false
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+false
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+false
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+false
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
 Logical OR || False when both operands are false.
  True when any operand is true.
+\begin_inset Newline newline
+\end_inset
+
  
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a
 \end_layout
 
-\begin_layout Itemize
-a b a || b false false false false true true true false true true true true
- 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+b
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a || b
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+false
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+false
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+false
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+false
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+false
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
 Conditional ?: Standard algorithmic if then else.
- "a ? b : c" means "If a then b else c" 
+ "a ? b : c" means "If a then b else c".
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="4">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a
 \end_layout
 
-\begin_layout Itemize
-a b c a ? b : c true any any b false any any c 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+b
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+c
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a ? b : c
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+any
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+any
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+b
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+false
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+any
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+any
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+c
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
 Grouping Operators ()[]{} Note that [] and {} are not ANSI-C.
- 
-\end_layout
-
-\begin_layout Itemize
-These grouping operators are used to either visibly separate sections of
+ These grouping operators are used to either visibly separate sections of
  your code for readability and maintainability purposes, or to affect the
  precedence of logical operation.
  Note that unlike WinHoldem's grouping syntax, there is no limitation on

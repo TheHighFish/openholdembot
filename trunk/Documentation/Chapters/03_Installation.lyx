@@ -46,7 +46,26 @@ theorems-ams
 \begin_body
 
 \begin_layout Chapter
-Installation and Setup
+\begin_inset Index
+status collapsed
+
+\begin_layout Plain Layout
+Installation
+\end_layout
+
+\end_inset
+
+Installation and 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Setup
+\end_layout
+
+\end_inset
+
+Setup
 \end_layout
 
 \begin_layout Section
@@ -60,20 +79,59 @@ OpenHoldem has been designed to work best on the 32-bit versions of Microsoft’
 \end_layout
 
 \begin_layout Standard
-We recommend you avoid Vista or its dependents (Windows 7, etc).
+We recommend you avoid 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Windows Vista
+\end_layout
+
+\end_inset
+
+Vista or its dependents (
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Windows 7
+\end_layout
+
+\end_inset
+
+Windows 7, etc).
  These operating systems add a lot of useless cruft and bloatware that is
  not useful in this hobby.
  Most of the poker botters you will interact with in the community use these
  systems as well, so as you learn and exchange ideas, it is useful to be
  on the same platform.
  This is especially true of Table Maps.
- A TableMap designed for Windows XP is not very likely to work on Vista
+ A TableMap designed for 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Windows XP
+\end_layout
+
+\end_inset
+
+Windows XP is not very likely to work on Vista
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 \begin_inset Marginal
 status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/Bomb.jpg
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Bomb.jpg
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -89,8 +147,17 @@ status open
 Finally, as you scale your botting operation up, you want to keep things
  as lightweight as possible to best utilize the limited computing resources
  at your disposal.
- For this reason, Windows 2000 is often the choice of poker botters due
- to its very lean profile.
+ For this reason, 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Windows 2000
+\end_layout
+
+\end_inset
+
+Windows 2000 is often the choice of poker botters due to its very lean profile.
 \end_layout
 
 \begin_layout Section
@@ -104,6 +171,15 @@ OpenHoldem requires specific system settings in order to correctly intuit
 \end_layout
 
 \begin_layout Subsection
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+color depth
+\end_layout
+
+\end_inset
+
 Color depth 
 \end_layout
 
@@ -114,7 +190,17 @@ The display color depth must be set to 24-bit or 32-bit.
 \end_layout
 
 \begin_layout Subsection
-Display resolution 
+Display 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+resolution
+\end_layout
+
+\end_inset
+
+resolution 
 \end_layout
 
 \begin_layout Standard
@@ -128,11 +214,20 @@ You need enough display resolution to contain both the poker client window
 \end_layout
 
 \begin_layout Subsection
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+font smoothing
+\end_layout
+
+\end_inset
+
 Font smoothing 
 \end_layout
 
 \begin_layout Standard
-Font smoothing must be turned off in order to interpret fort pixels correctly.
+Font smoothing must be turned off in order to interpret font pixels correctly.
  Our objective is to interpret the pixels as presented by the poker client,
  and not post-mangled by the operating system.
  To disable font smoothing, right click the desktop, and choose Properties-->App
@@ -141,15 +236,44 @@ earance-->Effects.
 \end_layout
 
 \begin_layout Subsection
-Window style (themes)
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Window style
+\end_layout
+
+\end_inset
+
+Window style (
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+themes
+\end_layout
+
+\end_inset
+
+themes)
 \end_layout
 
 \begin_layout Standard
 Windows 2000 only has one window style.
  There are no themes, there is no candy blue coloring around windows, so
  you are OK if you use Windows 2000.
- With Windows XP, it is suggested to use the “Classic” theme, which will
- present windows in the same style as Windows 2000.
+ With Windows XP, it is suggested to use the 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Classic theme
+\end_layout
+
+\end_inset
+
+“Classic” theme, which will present windows in the same style as Windows
+ 2000.
  You are of course free to use whatever theme you want, but be aware that
  public Table Maps usually do not work unless they are used with the same
  theme that they were designed for.
@@ -157,7 +281,17 @@ Windows 2000 only has one window style.
 \end_layout
 
 \begin_layout Subsection
-Windows XP and ClearType 
+Windows XP and 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+ClearType
+\end_layout
+
+\end_inset
+
+ClearType 
 \end_layout
 
 \begin_layout Standard
@@ -231,8 +365,35 @@ mpb directory.
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/Installation/OHDirectory.bmp
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Installation/OH_directory.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+test
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
 
 \end_inset
 
@@ -254,6 +415,15 @@ ManualMode.exe, OHReplay.exe, OpenHoldem.exe, OpenScrape.exe – these are the
 \end_layout
 
 \begin_layout Itemize
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+dbghelp.dll
+\end_layout
+
+\end_inset
+
 dbghelp.dll – this is a Microsoft file that is used to produce memory dumps
  on critical errors.
  These memory dumps are useful for the developers to diagnose issues.
@@ -261,13 +431,61 @@ dbghelp.dll – this is a Microsoft file that is used to produce memory dumps
 \end_layout
 
 \begin_layout Itemize
-keyboard.dll, mouse.dll, perl_callback.dll, scraper.dll, user.dll – these files
- are all extensions to OpenHoldem that you can use to customize the software.
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+keyboard.dll
+\end_layout
+
+\end_inset
+
+keyboard.dll, 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+mouse
+\end_layout
+
+\end_inset
+
+mouse.dll, 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+perl.dll
+\end_layout
+
+\end_inset
+
+perl_callback.dll, 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+scraper.dll
+\end_layout
+
+\end_inset
+
+scraper.dll, user.dll – these files are all extensions to OpenHoldem that
+ you can use to customize the software.
  More detail on all of these are provided in this document.
  
 \end_layout
 
 \begin_layout Itemize
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+versus.bin
+\end_layout
+
+\end_inset
+
 versus.bin – this file is the large lookup table that is used by the versus
  symbols that are described in this document.
  If you want to use versus symbols, you need this file.
@@ -288,8 +506,22 @@ Files with .txt extensions – these are the release notes for each of the
  Feel free to peruse these if you have problems falling asleep some night.
 \end_layout
 
+\begin_layout Itemize
+Files with .ini extensions !!!
+\end_layout
+
 \begin_layout Section
-Finding a Table Map 
+Finding a 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Table Map
+\end_layout
+
+\end_inset
+
+Table Map 
 \end_layout
 
 \begin_layout Standard
@@ -360,6 +592,121 @@ d and how they work.
  development team cannot be held accountable if you do something foolish
  on your own.
  Caveat emptor.
+\end_layout
+
+\begin_layout Section
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Uninstallation
+\end_layout
+
+\end_inset
+
+Uninstallation
+\end_layout
+
+\begin_layout Standard
+We hope, you will never have to uninstall OpenHoldem on any of your machines.
+ However we often see enthusiastic newbies, who download OpenHoldem and
+ naively install it to their one and only machine without any attempts to
+ stealth it.
+ And then they ask, how they can get their computer clean again - be it,
+ that they failed and want to play manually again, be it, that they want
+ to create a clean setup for production.
+\end_layout
+
+\begin_layout Standard
+Probably it is too late - you have already been flagged by your favourite
+ casino.
+ Anyway - the best way to get your PC 
+\begin_inset Quotes eld
+\end_inset
+
+clean
+\begin_inset Quotes erd
+\end_inset
+
+ again without a reinstallation:
+\end_layout
+
+\begin_layout Itemize
+Remove the complete installation directory and all other botting-related
+ files you may have on your computer: executables, formulae, tablemaps,
+ archives, logs, etc.
+\end_layout
+
+\begin_layout Itemize
+Take a registry-editor like regedit.exe and remove all 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+registry
+\end_layout
+
+\end_inset
+
+registry-entries, that indicate the use of OpenHoldem: HKEY_CURRENT_USER/SOFTWAR
+E/OPENHOLDEM.
+ And don't forget the last recently used files; search for 
+\begin_inset Quotes eld
+\end_inset
+
+openholdem
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+openscrape
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+manualmode
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+.ohf
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+.whf
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+.tm
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+maxinmontreal
+\begin_inset Quotes erd
+\end_inset
+
+ and maybe some others.
 \end_layout
 
 \end_body

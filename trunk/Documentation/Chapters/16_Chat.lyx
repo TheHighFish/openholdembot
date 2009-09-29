@@ -46,6 +46,15 @@ theorems-ams
 \begin_body
 
 \begin_layout Chapter
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Chat
+\end_layout
+
+\end_inset
+
 Chat
 \end_layout
 
@@ -76,118 +85,129 @@ A complete list of available symbols for formula
 \end_layout
 
 \begin_layout Standard
-\begin_inset listings
-inline false
-status open
 
-\begin_layout Plain Layout
-
+\noun on
 enum 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
 { 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
     no_simple_Chat = 0, 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
     simple_Chat_gg, 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
     simple_Chat_nh, 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
     simple_Chat_vnh, 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
     simple_Chat_n1, 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
     simple_Chat_wow, 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
     simple_Chat_lol, 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
     simple_Chat_rofl, 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
     simple_Chat_haha,
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
     simple_Chat_tu,
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
     simple_Chat_thx,
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
     simple_Chat_omg,
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
     simple_Chat_sick,
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
     simple_Chat_fu, 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
     simple_Chat_fish, 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
     simple_Chat_hi, 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
     simple_Chat_hello, 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
     simple_Chat_bye, 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
 };
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Section
@@ -216,18 +236,9 @@ At startup your DLL will receive an additional message "p_send_chat_message",
 \end_layout
 
 \begin_layout Standard
-\begin_inset listings
-inline false
-status open
 
-\begin_layout Plain Layout
-
+\noun on
 void SendChatMessage(char* new_message);
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard

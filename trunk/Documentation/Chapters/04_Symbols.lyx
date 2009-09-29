@@ -46,7 +46,17 @@ theorems-ams
 \begin_body
 
 \begin_layout Chapter
-Built-in Symbols
+Built-in 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Symbols
+\end_layout
+
+\end_inset
+
+Symbols
 \end_layout
 
 \begin_layout Standard
@@ -3370,12 +3380,21 @@ Note that the "friends" symbols are not interpreted the same way as they
  Thus if you are seated, nfriendsseated will resolve to 1.
  If you are not seated, nfriendsseated will resolve to zero.
  
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 \begin_inset Marginal
 status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/Bomb.jpg
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -4346,7 +4365,7 @@ ncommoncardspresent
 
 \begin_layout Plain Layout
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Something is wrong here
@@ -8453,23 +8472,18 @@ log$YourTextGoesHere When executed, adds your specified text to the log.
 
 \begin_layout Standard
 For example if you have the following f$rais-formula,
-\begin_inset listings
-inline false
-status open
+\end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
 ##f$rais##
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 
+\noun on
 [ br == 2 && (nsuited == 3 || nstraight == 3) && log$ItLives ]
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard

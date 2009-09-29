@@ -47,6 +47,13 @@ theorems-ams
 
 \begin_layout Chapter
 Creating a Table Map
+\begin_inset CommandInset label
+LatexCommand label
+name "cha:Creating-a-Table"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -92,7 +99,7 @@ mpb” directory that you set up above.
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_ArrangedWindows.bmp
+	filename ../Images/OpenScrape/OS_ArrangedWindows.bmp
 
 \end_inset
 
@@ -113,7 +120,7 @@ Connect OpenScrape to the casino table by clicking on the Green Circle Button
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_WindowSelection.bmp
+	filename ../Images/OpenScrape/OS_WindowSelection.bmp
 
 \end_inset
 
@@ -138,7 +145,7 @@ A static image of the poker table window will be displayed in OpenScrape’s
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_Connected.bmp
+	filename ../Images/OpenScrape/OS_Connected.bmp
 
 \end_inset
 
@@ -183,7 +190,7 @@ Main: Menu Options
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_FileMenu.bmp
+	filename ../Images/OpenScrape/OS_FileMenu.bmp
 
 \end_inset
 
@@ -197,7 +204,7 @@ Main: Menu Options
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_EditMenu.bmp
+	filename ../Images/OpenScrape/OS_EditMenu.bmp
 
 \end_inset
 
@@ -211,7 +218,7 @@ Main: Menu Options
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_ViewMenu.bmp
+	filename ../Images/OpenScrape/OS_ViewMenu.bmp
 
 \end_inset
 
@@ -297,7 +304,7 @@ Main: Toolbar
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_MainTollbar.bmp
+	filename ../Images/OpenScrape/OS_MainTollbar.bmp
 
 \end_inset
 
@@ -310,16 +317,38 @@ The toolbar on the main window performs the following actions, from left
  Toggle Region box display on or off Refresh the poker table image Display
  Help/About Note: Keyboard shortcuts exist for many of these menu options
  and toolbar buttons, in addition to the standard Windows keyboard shortcuts:
- F1 – Help/About F3 – Connect to window F4 – Toggle Region box display on
- or off F5 – Refresh the poker table image Control + U – Update Hashes Table
- Map: Buttons/fields The Table Map Editor window has a plethora of information
- on it, and various fields and controls will become enabled or disabled,
- depending on the type of map record selected.
+ 
+\end_layout
+
+\begin_layout Itemize
+F1 – Help/About 
+\end_layout
+
+\begin_layout Itemize
+F3 – Connect to window 
+\end_layout
+
+\begin_layout Itemize
+F4 – Toggle Region box display on or off 
+\end_layout
+
+\begin_layout Itemize
+F5 – Refresh the poker table image 
+\end_layout
+
+\begin_layout Itemize
+Control + U – Update Hashes 
+\end_layout
+
+\begin_layout Standard
+Table Map: Buttons/fields The Table Map Editor window has a plethora of
+ information on it, and various fields and controls will become enabled
+ or disabled, depending on the type of map record selected.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_TmEditorWindow.bmp
+	filename ../Images/OpenScrape/OS_TmEditorWindow.bmp
 
 \end_inset
 
@@ -417,9 +446,16 @@ Size records are used for one purpose only, to allow OpenHoldem’s “Green
  clientsize record.
  Use of clientsizemin and clientsizemax records should only be considered
  in unusual and exceptional cases.
- Manipulating size records using OpenScrape To create a new size record,
- select the “Sizes” category in the record tree display on the Table Map
- Editor window, and click the “New” button.
+ 
+\end_layout
+
+\begin_layout Subsection
+Manipulating size records using OpenScrape 
+\end_layout
+
+\begin_layout Standard
+To create a new size record, select the “Sizes” category in the record tree
+ display on the Table Map Editor window, and click the “New” button.
  A window will be displayed that allows you to enter the width and height
  parameters for this new record.
  To edit an existing size record, select the record in the record tree display
@@ -447,7 +483,7 @@ A note about window client sizes: Microsoft Windows provides several different
  Size: “.
  The width and height displayed in this menu can be entered directly into
  a clientsize record.
- 
+ !!! foot-note!!! more info!!!
 \end_layout
 
 \begin_layout Subsection
@@ -455,12 +491,14 @@ Technical reference
 \end_layout
 
 \begin_layout Standard
-In the Table Map (.tm) file, these records will be preceded with the characters
- "z$”.
- Size records have the following format: 
+In the Table Map (.tm) file, the size records will be preceded with the character
+s "z$”.
+ These records have the following format: 
 \end_layout
 
 \begin_layout Standard
+
+\family typewriter
 z$<name> <width> <height>
 \end_layout
 
@@ -471,21 +509,114 @@ z$<name> <width> <height>
 \end_layout
 
 \begin_layout Standard
-Valid size records and their descriptions: Record Description clientsize
- Specifies the exact client size of the poker table window.
- clientsizemin Specifies the minimum allowed client size of the poker table
- window.
- clientsizemax Specifies the maximum allowed client size of the poker table
- window.
+Valid size records and their descriptions:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="2">
+<features>
+<column alignment="left" valignment="top" width="25text%">
+<column alignment="left" valignment="top" width="75text%">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Size record
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Description
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+clientsize
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Specifies the exact client size of the poker table window.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+clientsizemin
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Specifies the minimum allowed client size of the poker table window.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+clientsizemax
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Specifies the maximum allowed client size of the poker table window.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
 Symbol Records 
 \end_layout
 
+\begin_layout Subsection
+Description 
+\end_layout
+
 \begin_layout Standard
-Description Symbol records are a general purpose record type that serves
- many different purposes within OpenHoldem and OpenScrape.
+Symbol records are a general purpose record type that serves many different
+ purposes within OpenHoldem and OpenScrape.
  The common characteristic of these records is that they all contain a name
  and a free-form text field.
  The interpretation of that text field is different, depending on the name
@@ -524,7 +655,7 @@ In the case of the “New” and “Edit” actions, the window that pops up als
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_NewEditWindow.bmp
+	filename ../Images/OpenScrape/OS_NewEditWindow.bmp
 
 \end_inset
 
@@ -541,9 +672,13 @@ These three fields allow you to test the parsing of the window’s title bar
  but this text can be overridden with anything you want to test parse.
 \end_layout
 
+\begin_layout Subsection
+Technical Reference
+\end_layout
+
 \begin_layout Standard
-Technical Reference In the Table Map (.tm) file, these records will be preceded
- with the characters "s$".
+In the Table Map (.tm) file, these records will be preceded with the characters
+ "s$".
  Symbol records have the following format: 
 \end_layout
 
@@ -556,21 +691,103 @@ s$<name> <text>
  of the record 
 \end_layout
 
+\begin_layout Subsection
+Valid symbol records 
+\end_layout
+
 \begin_layout Standard
-Valid symbol records and their descriptions: Record Description titletext,
- titletext0 - titletext9 When the “Green Circle Button” is pressed, OpenHoldem
- will look through each of these symbols and do a partial match of <text>
- to each window’s title bar text.
+\begin_inset Tabular
+<lyxtabular version="3" rows="22" columns="2">
+<features islongtable="true">
+<column alignment="left" valignment="top" width="25text%">
+<column alignment="left" valignment="top" width="75text%">
+<row endhead="true">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Symbol record 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ Description
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+titletext, titletext0 - titletext9
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+When the “Green Circle Button” is pressed, OpenHoldem will look through
+ each of these symbols and do a partial match of <text> to each window’s
+ title bar text.
  If any substring provided in any of these symbols matches, then the window
  is considered a match.
- !titletext,  !titletext0 -!titletext9 When the “Green Circle Button” is
- pressed, OpenHoldem will look through each of these symbols and do a partial
- match of <text> to each window’s title bar text.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+!titletext,  !titletext0 - !titletext9
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+When the “Green Circle Button” is pressed, OpenHoldem will look through
+ each of these symbols and do a partial match of <text> to each window’s
+ title bar text.
  If all substrings provided in all of these symbols do not match, then the
  window is considered a match.
- ttlimits, ttlimits0 - ttlimits9 These symbols are intended to provide a
- format string that is used to parse the window's titlebar text, and extract
- sblind, bblind, bigbet, ante and game type information.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ttlimits, ttlimits0 - ttlimits9
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+These symbols are intended to provide a format string that is used to parse
+ the window's titlebar text, and extract sblind, bblind, bigbet, ante and
+ game type information.
  The syntax usage of the format string is very much like the standard C-language
  format strings for scanf and printf.
  The placeholders use the caret character as the indicator and have the
@@ -582,7 +799,7 @@ Valid symbol records and their descriptions: Record Description titletext,
  indicator 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 For the integer and float numerics, the scanner will automatically accept
  and skip a leading dollar sign “$” or leading/trailing cent sign “¢” (ascii
  162 hex a2).
@@ -592,20 +809,20 @@ For the integer and float numerics, the scanner will automatically accept
  
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 The following case-insensitive strings are recognized for the ^L limit indicator
 : no limit, no-limit, nolimit, nl pot limit, pot-limit, potlimit, pl fixed
  limit, fixed-limit, fixedlimit, fl, limit 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 As an example, this title bar text "NL SNG Level VI 25/50 (2)" could be
  parsed with this format string "^L SNG Level ^R ^s/^b (^a)" to result in
  the sblind, bblind and game type being recognized.
  
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 If multiple ttlimits symbols are provided, then the engine will scan each
  in order, and extract matching information from the first time it is found.
  That means that if you specify ^s in both ttlimits and ttlimits3, for example,
@@ -616,21 +833,80 @@ If multiple ttlimits symbols are provided, then the engine will scan each
  file is intended to describe multiple Texas Hold’em game flavors.
  However, it is a best practice to define different game flavors in different
  Table Maps, and thus most Table Maps contain a single ttlimits symbol record.
- c0limits, c0limits0-c0limits9 These are text format strings with the same
- structure as the ttlimits records described above.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+c0limits, c0limits0-c0limits9
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+These are text format strings with the same structure as the ttlimits records
+ described above.
  They are intended to be used to extract blind/limit information from the
  c0limits regions using text transforms.
  As a poker site could certainly paint the various blind/limit information
  in different locations in the window, it is very likely that multiple c0limits
  records are required, if any are needed at all.
- sitename This record describes the name of the poker site that this Table
- Map is for.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+sitename
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+This record describes the name of the poker site that this Table Map is
+ for.
  It is good practice to include the number of chairs and game flavor that
  this Table Map is intended to be used for.
  You might have a "fulltilt9sng", "fulltilt6ring" and "fulltilt2ring" for
  different Table Map files for Full Tilt's various table layouts and flavors.
  This record is what is queried via the OpenHoldem "sitename$" symbol.
- network The name of the poker network that this Table Map is for.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+network
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The name of the poker network that this Table Map is for.
  This is used to determine the appropriate network to query Poker Tracker
  data for when s$sitename is not a Poker Tracker-supported site.
  OpenHoldem will first check s$sitename for a supported network name, then
@@ -638,54 +914,215 @@ If multiple ttlimits symbols are provided, then the engine will scan each
  
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Supported names for both s$sitename and s$network must be lowercase and
  are the following: stars, party, ultimate, absolute, microgaming, ongame,
  cryptologic, pacific, fulltilt, b2b, tribeca, worldpex, ipoker, tain, bodog,
  everest, boss, and betfair.
- nchairs The number of chairs that this Table Map supports.
+ !!! pt3x !!!
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+nchairs 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The number of chairs that this Table Map supports.
  The value of this record is what is returned via the OpenHoldem "nchairs"
  symbol.
- reseller Legacy support of WinScrape's symbol.
- Not particularly relevant in the open source OpenScrape world, but there
- if you need it.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+reseller 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Legacy support of WinScrape's symbol.
+ Not particularly relevant in the open source world, but there if you need
+ it.
  This is not used in the OpenHoldem engine anywhere, and is just metadata
  for the Table Map file.
- mechanic Legacy support of WinScrape's symbol.
- Not particularly relevant in the open source OpenScrape world, but there
- if you need it.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+mechanic 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Legacy support of WinScrape's symbol.
+ Not particularly relevant in the open source world, but there if you need
+ it.
  This is not used in the OpenHoldem engine anywhere, and is just metadata
  for the Table Map file.
- chairconfig Legacy support of WinScrape's symbol.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+chairconfig
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Legacy support of WinScrape's symbol.
  OpenHoldem does not adjust its display layout based on the value of this
  symbol like WinHoldem, and thus this is not used in the OpenHoldem engine
  anywhere.
- swagtextmethod Used by the Autoplayer to determine how to enter the f$swag
- amount into the swag entry box on the casino window.
- potmethod This is used to determine the appropriate site interpretation
- for the contents of c0pot0: 1: Common pot 2: Total pot, includes current
- bets and side bets activemethod This is used to determine how OH treats
- information from the pXactive and uXactive regions: 1: Inactive unless
- pXactive/uXactive returns true/active 2: Active unless pXactive/uXactive
- returns false/inactive/out/away t0type - t3type These symbols control which
- OCR algorithm will get used for the specific text transform 0-3.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+swagtextmethod 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Used by the Autoplayer to determine how to enter the f$swag amount into
+ the swag entry box on the casino window.
+ potmethod 
+\end_layout
+
+\begin_layout Plain Layout
+This is used to determine the appropriate site interpretation for the contents
+ of c0pot0: 1: Common pot 2: Total pot, includes current bets and side bets
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+activemethod 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+This is used to determine how OH treats information from the pXactive and
+ uXactive regions: 1: Inactive unless pXactive/uXactive returns true/active
+ 2: Active unless pXactive/uXactive returns false/inactive/out/away
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+t0type - t3type 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+These symbols control which OCR algorithm will get used for the specific
+ text transform 0-3.
  For example if the symbol h3type is defined as fuzzy then all regions with
  transform Text3 will use the fuzzy algorithm.
  The default value is "plain" if no symbol exists for a given group.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 The possible values for these symbols are "fuzzy", "plain", or a specific
  tolerance value.
  The default fuzzy text tolerance is 25%, but can be overridden by stating
  the value in this symbol, such as "0.355", which would cause the scraper
  engine to use the fuzzy text algorithm with a 35.5% tolerance value.
  Values of 0 are the same as "plain".
- swagselectionmethod * New Symbol in version 2.0; previously, this was a
- global preference set from the OpenHoldem preferences GUI.
+ 
 \end_layout
 
-\begin_layout Standard
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+swagselectionmethod 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+* New Symbol in version 2.0; previously, this was a global preference set
+ from the OpenHoldem preferences GUI.
+\end_layout
+
+\begin_layout Plain Layout
 This symbol instructs the Autoplayer how to take the first action in a SWAG
  sequence.
  A SWAG sequence always consists of: 1.
@@ -693,41 +1130,68 @@ This symbol instructs the Autoplayer how to take the first action in a SWAG
  delete the text in the SWAG box 3.
  enter the new bet in the SWAG box 4.
  confirm the SWAG bet amount.
-\end_layout
-
-\begin_layout Standard
-Valid values for this Symbol are available in a drop down control and are:
+ Valid values for this Symbol are available in a drop down control and are:
  "Sgl Click" – Single left click on the SWAG box to select the existing
  text "Dbl Click" – Double left click on the SWAG box to select the existing
  text "Click Drag" – Left click on the leftmost pixel of the SWAG box, drag
  to the rightmost pixel of the SWAG box, and then release the left mouse
  button to select the existing text "Nothing" – Skip the text selection
- step of the SWAG action swagdeletionmethod * New Symbol in version 2.0;
- previously, this was a global preference set from the OpenHoldem preferences
- GUI.
+ step of the SWAG action 
 \end_layout
 
-\begin_layout Standard
-This symbol instructs the Autoplayer how to take the second action in a
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+swagdeletionmethod
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+* New Symbol in version 2.0; previously, this was a global preference set
+ from the OpenHoldem preferences GUI.
+ This symbol instructs the Autoplayer how to take the second action in a
  SWAG sequence.
  A SWAG sequence always consists of: 1.
  select the text in the SWAG box 2.
  delete the text in the SWAG box 3.
  enter the new bet in the SWAG box 4.
  confirm the SWAG bet amount.
-\end_layout
-
-\begin_layout Standard
-Valid values for this Symbol are available in a drop down control and are:
+ Valid values for this Symbol are available in a drop down control and are:
  "Delete" – Press the “Delete” key to delete the selected text in the SWAG
  box "Backspace" – Press the “Backspace” key to delete the selected text
  in the SWAG box "Nothing" – Skip the text deletion step of the SWAG action
- swagconfirmationmethod * New Symbol in version 2.0; previously, this was
- a global preference set from the OpenHoldem preferences GUI.
+ 
 \end_layout
 
-\begin_layout Standard
-This symbol instructs the Autoplayer how to take the fourth action in a
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+swagconfirmationmethod
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+* New Symbol in version 2.0; previously, this was a global preference set
+ from the OpenHoldem preferences GUI.
+ This symbol instructs the Autoplayer how to take the fourth action in a
  SWAG sequence.
  A SWAG sequence always consists of: 1.
  select the text in the SWAG box 2.
@@ -736,27 +1200,62 @@ This symbol instructs the Autoplayer how to take the fourth action in a
  confirm the SWAG bet amount.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Valid values for this Symbol are available in a drop down control and are:
  "Enter" – Press the “Enter” key to confirm the SWAG bet entry "Click Bet"
  – Click the “Bet” button to confirm the SWAG bet entry "Nothing" – Skip
- the bet confirmation step of the SWAG action buttonclickmethod * New Symbol
- in version 2.0; previously, this was a global preference set from the OpenHoldem
- preferences GUI.
+ the bet confirmation step of the SWAG action
 \end_layout
 
-\begin_layout Standard
-This symbol instructs the Autoplayer how to click any button defined by
- the iXbutton region records.
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+buttonclickmethod
 \end_layout
 
-\begin_layout Standard
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+* New Symbol in version 2.0; previously, this was a global preference set
+ from the OpenHoldem preferences GUI.This symbol instructs the Autoplayer
+ how to click any button defined by the iXbutton region records.
+\end_layout
+
+\begin_layout Plain Layout
 Valid values for this Symbol are available in a drop down control and are:
  "Single" – Single left click on buttons "Double" – Double left click on
- buttons handresetmethod * New Symbol in version 2.0
+ buttons
 \end_layout
 
-\begin_layout Standard
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+handresetmethod 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+* New Symbol in version 2.0
+\end_layout
+
+\begin_layout Plain Layout
 This symbol identifies which scrape changes should be used as a trigger
  to identify a "hand reset" event.
  This is a bitmapped integer; only one of the selected scrape changes needs
@@ -764,7 +1263,7 @@ This symbol identifies which scrape changes should be used as a trigger
  
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 The values below are in hexadecimal format for explanatory purposes, but
  the value assigned to the handresetmethod symbol must be specified in decimal
  (base-10) format.
@@ -775,14 +1274,157 @@ od should be set to 5.
  as a “hand reset", then handresetmethod should be set to 1.
 \end_layout
 
-\begin_layout Standard
-Bits and meanings: 0x00000001 (bit 1) = dealer button 0x00000010 (bit 2)
- = handnumber 0x00000100 (bit 3) = player cards (not triggered by change
- to "no cards" or to "card backs") balancenumbersonly * New Symbol in version
- 2.0
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="3">
+<features>
+<column alignment="center" valignment="top" width="15col%">
+<column alignment="center" valignment="top" width="15col%">
+<column alignment="left" valignment="top" width="45col%">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bit
 \end_layout
 
-\begin_layout Standard
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+binary
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+meaning
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0b00000001
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+dealer button
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0b00000010
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+handnumber 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0b00000100
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+player cards (not triggered by change to "no cards" or to "card backs")
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+balancenumbersonly 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+* New Symbol in version 2.0
+\end_layout
+
+\begin_layout Plain Layout
 This Symbol instructs the screen scraper that all characters besides numbers
  (0-9 and dot/decimal separator) are stripped from the text transform result
  for balance regions.
@@ -790,10 +1432,30 @@ This Symbol instructs the screen scraper that all characters besides numbers
  information in their balance boxes.
  Setting this string to "True" or "Yes" will enable balance cleansing, any
  other value or the absence of this Symbol will result in no balance cleansing.
- chipscrapemethod * New Symbol in version 2.0
+ 
 \end_layout
 
-\begin_layout Standard
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+chipscrapemethod
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+* New Symbol in version 2.0
+\end_layout
+
+\begin_layout Plain Layout
 This Symbol instructs the “chip stack counter” within the screen scraper
  engine to act in one of three distinct modes of operation: If this Symbol
  is not present, or does not match one of the other formats, the “chip stack
@@ -808,10 +1470,30 @@ This Symbol instructs the “chip stack counter” within the screen scraper
  1 and 10 representing the number of stacks, and Y is an integer between
  1 and 20 representing the number of chips in each stack, then the scraper
  engine will check X times Y chip locations every time a chip count is required.
- Scraperdll * New Symbol in version 2.0
+ 
 \end_layout
 
-\begin_layout Standard
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Scraperdll
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+* New Symbol in version 2.0
+\end_layout
+
+\begin_layout Plain Layout
 This Symbol instructs OpenHoldem to load a user-supplied external scraper
  override DLL when this Table Map is used.
  This external DLL can be used to override the results of the internal scraper
@@ -826,13 +1508,27 @@ This Symbol instructs OpenHoldem to load a user-supplied external scraper
  
 \end_layout
 
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Region Records
 \end_layout
 
+\begin_layout Subsection
+Description 
+\end_layout
+
 \begin_layout Standard
-Description The purpose of the Region records is to describe named rectangular
- areas on a poker table, each of which contains an element of the game state.
+The purpose of the Region records is to describe named rectangular areas
+ on a poker table, each of which contains an element of the game state.
  These regions will “return” values to the OpenHoldem game state engine,
  depending on the type of transform selected.
 \end_layout
@@ -849,9 +1545,15 @@ An example will make this clearer.
  To do this we collect an image for that ace of hearts, then setup a region
  record that returns “Ah” to OpenHoldem when that ace of hearts is seen
  during real live game play.
- Manipulating region records using OpenScrape To create a new region record,
- select the “Regions” category in the record tree display on the Table Map
- Editor window, and click the “New” button.
+\end_layout
+
+\begin_layout Subsection
+Manipulating region records using OpenScrape
+\end_layout
+
+\begin_layout Standard
+To create a new region record, select the “Regions” category in the record
+ tree display on the Table Map Editor window, and click the “New” button.
  A window will be displayed that allows you to select the name of the region
  to create.
  After creating the record, you can use the controls on the right side of
@@ -966,12 +1668,28 @@ Note: Regions can also be moved by first selecting the region by left clicking
  the region to its new location.
 \end_layout
 
-\begin_layout Standard
-Note: Keyboard shortcuts also exist to move and resize regions: Arrow keys
- - Move the region 1 pixel Numpad keys 1, 3, 7, and 9 – Move the region
- diagonally 1 pixel Shift + Arrow keys - Move the region 5 pixels Control
- + Arrow keys - Resize the region by 1 pixel Control + Shift + Arrow keys
- – Resize the region by 5 pixels
+\begin_layout Subsection
+Keyboard shortcuts to move and resize regions
+\end_layout
+
+\begin_layout Itemize
+Arrow keys - Move the region 1 pixel 
+\end_layout
+
+\begin_layout Itemize
+Numpad keys 1, 3, 7, and 9 – Move the region diagonally 1 pixel 
+\end_layout
+
+\begin_layout Itemize
+Shift + Arrow keys - Move the region 5 pixels 
+\end_layout
+
+\begin_layout Itemize
+Control + Arrow keys - Resize the region by 1 pixel 
+\end_layout
+
+\begin_layout Itemize
+Control + Shift + Arrow keys – Resize the region by 5 pixels
 \end_layout
 
 \begin_layout Standard
@@ -1089,9 +1807,13 @@ In this case, the p0balance region was selected.
  you, and you can then move them where needed and adjust them appropriately.
 \end_layout
 
+\begin_layout Subsection
+Technical Reference
+\end_layout
+
 \begin_layout Standard
-Technical Reference In the Table Map (.tm) file, these records will be preceded
- with the characters "r$".
+In the Table Map (.tm) file, these records will be preceded with the characters
+ "r$".
  Region records have the following format: 
 \end_layout
 
@@ -1104,7 +1826,27 @@ r$<name> <left> <top> <right> <bottom> <color> <radius> <transform>
  and <bottom> are integer values within the casino table, where the upper
  left corner of the client area is considered to be 0, 0 <color> is a 1-8
  character hexadecimal number in the form AABBGGRR (Microsoft Window's COLORREF
- format).
+ format
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+!!!
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+).
  The usage of the color value is dependent on the transform selected.
  <radius> is an RGB color distance.
  <transform> describes the engine algorithm that should be used to interpret
@@ -1112,14 +1854,75 @@ r$<name> <left> <top> <right> <bottom> <color> <radius> <transform>
  
 \end_layout
 
+\begin_layout Subsection
+Valid Transforms And Their Desciption
+\end_layout
+
 \begin_layout Standard
-The available transforms are: Type Description N None - This is used for
- those regions that do not need a transform as their only purpose is to
- describe a rectangle for use by the scraper engine.
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="2">
+<features>
+<column alignment="center" valignment="top" width="15text%">
+<column alignment="left" valignment="top" width="85text%">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Transform
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Description
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+N (none)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+This is used for those regions that do not need a transform as their only
+ purpose is to describe a rectangle for use by the scraper engine.
  An example is button location (i0button - i9button) which informs the Autoplaye
 r engine of the allowed rectangle for mouse clicks.
- C Color - This is a calculation of the average RGB color for the entire
- region.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+C (color)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+This is a calculation of the average RGB color for the entire region.
  Used in conjunction with the radius, the engine will determine if the contents
  of the region, as seen during game play, match the color/radius as specified
  in the Table Map.
@@ -1129,14 +1932,54 @@ r engine of the allowed rectangle for mouse clicks.
  of the region falls within this cube, then a match is reported.
  A negative radius can also be specified, in which case if the average color
  of the region falls outside of the cube, then a match is reported.
- I Image - This transform does two things.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+I (image)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+This transform does two things.
  It first searches the Image records in the Table Map for a pixel-by-pixel
  match, and returns the value of that Image record if a match is found.
  If no pixel-by-pixel match is found, the transform then searches for the
- closest match, based on this perceptual difference algorithm: http://pdiff.sourc
-eforge.net/ There is an internal hard-coded limit, which prevents Image records
- from matching the region if 65% or more of available pixels of that region
- do not match.
+ closest match, based on an perceptual difference algorithm
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://pdiff.sourceforge.net/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ There is an internal hard-coded limit, which prevents Image records from
+ matching the region if 65% or more of available pixels of that region do
+ not match.
  If this limit did not exist, then clearly non-matching regions could return
  all sorts of junk.
  This exact-match-to-pdiff failover is automatic, and requires no additional
@@ -1144,14 +1987,71 @@ eforge.net/ There is an internal hard-coded limit, which prevents Image records
  and to collect the images.
  This is a powerful transform, but be aware that this power comes at the
  cost of CPU cycles.
- T Text - This is an OCR (http://en.wikipedia.org/wiki/Optical_character_recogniti
-on) algorithm for the purpose of converting screen pixels to ASCII text.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+T (text)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+This is an OCR
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://en.wikipedia.org/wiki/Optical_character_recognition
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+-algorithm for the purpose of converting screen pixels to ASCII text.
  The color cube specifications (as in the C transform) are used to separate
  the foreground from the background pixels.
  A lookup is then performed against the Font records in the Table Map on
  a character by character basis to produce a resultant text string.
- Hn Hash n - This transform reduces the contents of the rectangle to a 32-bit
- value.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Hn (hash n)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+This transform reduces the contents of the rectangle to a 32-bit value.
  OpenHoldem and OpenScrape use only a single, well respected hash algorithm
  that is open for public review.
  Because of the selection of this algorithm, we have not yet seen a hash
@@ -1167,7 +2067,7 @@ on) algorithm for the purpose of converting screen pixels to ASCII text.
  
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 The Type 0 hash algorithm uses all pixels in a region to calculate a hash.
  To use specific pixels in the region, use Types 1-3.
  Types 1-3 default to using all pixels in a region as well, but if Hash
@@ -1176,7 +2076,7 @@ The Type 0 hash algorithm uses all pixels in a region to calculate a hash.
  
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Once a region is hashed, the resultant 32-bit hash value is then looked
  up in the h$ records in the Table Map.
  If a match is found, the name of the h$ record is returned and acted on
@@ -1185,10 +2085,66 @@ Once a region is hashed, the resultant 32-bit hash value is then looked
  etc.) 
 \end_layout
 
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
-Valid region records and their descriptions: Record Description c0cardface0
- - c0cardface4 Common cards 0-4; represents the entire card, the best transforma
-tion is probably hash.
+-
+\end_layout
+
+\begin_layout Subsection
+Valid region records and their descriptions 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="38" columns="2">
+<features islongtable="true">
+<column alignment="center" valignment="top" width="15text%">
+<column alignment="center" valignment="top" width="85text%">
+<row endhead="true">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Record
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Description
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+c0cardface0 - c0cardface4 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Common cards 0-4; represents the entire card, the best transformation is
+ probably hash.
  Typically either c0cardfaceX is used, or c0cardfaceXrank / c0cardfaceXsuit,
  but not both.
  Valid results are a case-insensitive, two character string.
@@ -1202,28 +2158,123 @@ tion is probably text.
  but not both.
  Valid results are case-insensitive, and are one of “2”, “3”, “4”, “5”,
  “6”, “7”, “8”, “9”, “10”, “t”, “j”, “q”, “k”, or “a”.
- c0cardface0suit - c0cardface4suit Suit of common cards 0-4; the best transforma
-tion is probably text.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+c0cardface0suit - c0cardface4suit
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Suit of common cards 0-4; the best transformation is probably text.
  Typically either c0cardfaceX is used, or c0cardfaceXrank / c0cardfaceXsuit,
  but not both.
  Valid results are case-insensitive, and are one of “c”, “d”, “h” or “s”.
- c0handnumber, c0handnumber1 - c0handnumber9 Ten regions to specify where
- the game state engine should find the current handnumber.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+c0handnumber, c0handnumber1 - c0handnumber9
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ten regions to specify where the game state engine should find the current
+ handnumber.
  The first region found with valid numeric information will be used and
  the remainder skipped.
  c0handnumber is searched first, then c0handnumber1 to c0handnumber9 in
  that order.
- c0istournament Used to identify if this table is a tournament game.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+c0istournament
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Used to identify if this table is a tournament game.
  Any transform can be used equally well with this region.
  If the result from this region’s transform is anything besides blank (empty
  string) then this region is considered to represent a tournament game.
- c0smallblind Identifies the region on the poker table where the small blind
- can be found.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+c0smallblind 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Identifies the region on the poker table where the small blind can be found.
  Title text parsing is much easier to implement if that option is available,
  otherwise a text transformation can be used with this region to identify
  the small blind.
- c0bigblind Identifies the region on the poker table where the big blind
- can be found.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+c0bigblind
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Identifies the region on the poker table where the big blind can be found.
  Title text parsing is much easier to implement if that option is available,
  otherwise a text transformation can be used with this region to identify
  the big blind.
@@ -1232,32 +2283,146 @@ tion is probably text.
  Title text parsing is much easier to implement if that option is available,
  otherwise a text transformation can be used with this region to identify
  the big bet.
- c0ante Identifies the region on the poker table where the ante can be found.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+c0ante
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Identifies the region on the poker table where the ante can be found.
  Title text parsing is much easier to implement if that option is available,
  otherwise a text transformation can be used with this region to identify
  the ante.
- c0pot0 - c0pot4 The value of the main pot should be identified by c0pot0
- using a text transform.
- c0pot1 to c0pot4 can be used to identify side pots if required.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+c0pot0 - c0pot4 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The value of the main pot should be identified by c0pot0 using a text transform.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+c0pot1 to c0pot4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+can be used to identify side pots if required.
  c0potNchipXY See chip scraping instructions for p0chipXY - p9chipXY below.
  The difference is that the "N" refers to the different pots - N=0 is the
  main pot, N=1-4 are side pots.
- c0limits, c0limits0 - c0limits9 Identifies the region on the casino table
- where the limit information can be found; this region is used in conjunction
- with the Symbol records c0limits and c0limits0-c0limit9 text parse strings.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+c0limits, c0limits0 - c0limits9
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Identifies the region on the casino table where the limit information can
+ be found; this region is used in conjunction with the Symbol records c0limits
+ and c0limits0-c0limit9 text parse strings.
  This region should really only be used if title text parsing is not an
  option.
- i0button - i9button Specifies the rectangular area in which the Autoplayer
- can click the mouse for each button 0-9.
- i0label - i9label Specifies the action that should be associated with buttons
- 0-9.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+i0button - i9button
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Specifies the rectangular area in which the Autoplayer can click the mouse
+ for each button 0-9.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+i0label - i9label
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Specifies the action that should be associated with buttons 0-9.
  By default, and if not overridden here, button 0 will be interpreted as
  the fold button, 1 as the call button, 2 as the raise button and 3 as the
  allin button.
  
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 The return value from the transformation of this region (hash or text) will
  determine how the scraper engine interprets the button.
  All values are changed to lowercase and have spaces and '-' removed.
@@ -1272,10 +2437,29 @@ The return value from the transformation of this region (hash or text) will
  "prefold" : button is seen as the prefold button 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Examples: "All-In" will be recognized as allin; "Auto-post blinds" will
- be recognized as autopost i0labelY - i9labelY Where Y = 0 - 9.
- As an adjunct to the iXlabel regions, the iXlabelY region definitions allow
+ be recognized as autopost 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+i0labelY - i9labelY Where Y = 0 - 9.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+As an adjunct to the iXlabel regions, the iXlabelY region definitions allow
  the specification of an alternative location with alternate properties,
  such as color, for any button.
  The specification of these regions is exactly as that of the iXlabel regions
@@ -1283,8 +2467,27 @@ Examples: "All-In" will be recognized as allin; "Auto-post blinds" will
  The iXlabel regions are searched first, then the iXlabelY regions.
  The first region that resolves to a text value will stop any subsequent
  evaluations.
- i0state - i9state Specifies whether the button0 - button9 is live and available
- to be clicked.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+i0state - i9state
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Specifies whether the button0 - button9 is live and available to be clicked.
  The best transformation is hash or color.
  If the leftmost characters of the result from this region’s transform are
  either “true”, "on", "yes", "checked" or "lit" then the button will be
@@ -1292,15 +2495,72 @@ Examples: "All-In" will be recognized as allin; "Auto-post blinds" will
  If any other result is returned, such as "false", then the button will
  be seen as not available to be clicked.
  Results are case-insensitive.
- i3edit Specifies the rectangular region that can be used for entering a
- SWAG bet.
- i86button, i860button - i869button Similar to the i0button - i9button regions,
- however these regions are intended to be used to combat spam/popups that
- could occlude the poker window.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+i3edit
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Specifies the rectangular region that can be used for entering a SWAG bet.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+i86button, i860button - i869button
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Similar to the i0button - i9button regions, however these regions are intended
+ to be used to combat spam/popups that could occlude the poker window.
  If the corresponding state region returns true, the Autoplayer will try
  to click in this region to dismiss the spam/popup.
- i86state, i860state - i869state The corresponding state regions for the
- i86button, i860button - i869button regions above.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+i86state, i860state - i869state
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The corresponding state regions for the i86button, i860button - i869button
+ regions above.
  The best transformation is hash or color.
  If the leftmost characters of the result from this region’s transform are
  either “true”, "on", "yes", "checked" or "lit" then the button will be
@@ -1316,12 +2576,71 @@ Examples: "All-In" will be recognized as allin; "Auto-post blinds" will
  If any other result is returned, such as "false", "inactive", "out" or
  "away", then the chair is not considered to be active.
  Results are case-insensitive.
- p0balance - p9balance Used to identify a player's balance.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+p0balance - p9balance
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Used to identify a player's balance.
  It only makes sense to use a text transform for these regions.
- p0bet - p9bet Used to identify a player's bet.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+p0bet - p9bet
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Used to identify a player's bet.
  It only makes sense to use a text transform for these regions.
- p0cardback - p9cardback Used to identify when a seat 0-9 displays a card
- back.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+p0cardback - p9cardback
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Used to identify when a seat 0-9 displays a card back.
  The best transformation is hash or color.
  If the leftmost characters of the result from this region’s transform are
  either “true” or “cardback”, then the region is considered to be showing
@@ -1329,8 +2648,27 @@ Examples: "All-In" will be recognized as allin; "Auto-post blinds" will
  If any other result is returned, such as "false", then the chair is not
  considered to have be showing a cardback.
  Results are case-insensitive.
- p0cardface0 - p9cardface0 The first card for seats 0-9; represents the
- entire card.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+p0cardface0 - p9cardface0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The first card for seats 0-9; represents the entire card.
  The best transformation is probably hash.
  Typically either pXcardfaceY is used, or pXcardfaceYrank / pXcardfaceYsuit,
  but not both.
@@ -1339,8 +2677,26 @@ Examples: "All-In" will be recognized as allin; "Auto-post blinds" will
  “6”, “7”, “8”, “9”, “t”, “j”, “q”, “k”, or “a”.
  The second character is the suit and should be one of: “c”, “d”, “h” or
  “s”.
- p0cardface1 - p9cardface1 The second card for seats 0-9; represents the
- entire card.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+p0cardface1 - p9cardface1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The second card for seats 0-9; represents the entire card.
  The best transformation is probably hash.
  Typically either pXcardfaceY is used, or pXcardfaceYrank / pXcardfaceYsuit,
  but not both.
@@ -1349,21 +2705,77 @@ Examples: "All-In" will be recognized as allin; "Auto-post blinds" will
  “6”, “7”, “8”, “9”, “t”, “j”, “q”, “k”, or “a”.
  The second character is the suit and should be one of: “c”, “d”, “h” or
  “s”.
- p0cardface0rank - p9cardface0rank The rank of the first card for seats
- 0-9.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+p0cardface0rank - p9cardface0rank
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The rank of the first card for seats 0-9.
  The best transformation is probably text.
  Typically either pXcardfaceY is used, or pXcardfaceYrank / pXcardfaceYsuit,
  but not both.
  Valid results are case-insensitive, and are one of “2”, “3”, “4”, “5”,
  “6”, “7”, “8”, “9”, “10”, “t”, “j”, “q”, “k”, or “a”.
- p0cardface0suit - p9cardface0suit The suit of the first card for seats
- 0-9.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+p0cardface0suit - p9cardface0suit
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The suit of the first card for seats 0-9.
  The best transformation is probably text.
  Typically either pXcardfaceY is used, or pXcardfaceYrank / pXcardfaceYsuit,
  but not both.
  Valid results are case-insensitive, and are one of “c”, “d”, “h” or “s”.
- p0cardface1rank - p9cardface1rank The rank of the second card for seats
- 0-9.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+p0cardface1rank - p9cardface1rank
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The rank of the second card for seats 0-9.
  The best transformation is probably text.
  Typically either pXcardfaceY is used, or pXcardfaceYrank / pXcardfaceYsuit,
  but not both.
@@ -1375,8 +2787,27 @@ Examples: "All-In" will be recognized as allin; "Auto-post blinds" will
  Typically either pXcardfaceY is used, or pXcardfaceYrank / pXcardfaceYsuit,
  but not both.
  Valid results are case-insensitive, and are one of “c”, “d”, “h” or “s”.
- p0dealer - p9dealer Identifies if the dealer button is found for seat 0-9,
- or not.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+p0dealer - p9dealer
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Identifies if the dealer button is found for seat 0-9, or not.
  Color transforms are usually used for these regions, but hash, text or
  image transforms can be used too.
  If the leftmost characters of the result from this region’s transform are
@@ -1385,10 +2816,48 @@ Examples: "All-In" will be recognized as allin; "Auto-post blinds" will
  If any other result is returned, such as "false", then the chair is not
  considered to have the dealer button.
  Results are case-insensitive.
- p0name - p9name Identifies the name of the player in seat 0-9.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+p0name - p9name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Identifies the name of the player in seat 0-9.
  It only makes sense to use a text transform for these regions.
- p0seated - p9seated Identifies whether seat 0-9 is occupied (seated) or
- not.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+p0seated - p9seated
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Identifies whether seat 0-9 is occupied (seated) or not.
  Color transforms are usually used for these regions, but hash, text or
  image transforms can be used too.
  If the leftmost characters of the result from this region’s transform are
@@ -1396,13 +2865,33 @@ Examples: "All-In" will be recognized as allin; "Auto-post blinds" will
  If any other result is returned, such as "false" or "unseated", then the
  chair is not considered to be seated.
  Results are case-insensitive.
- p0chipXY - p9chipXY Note: Chip scraping should *only* be used if the actual
- numeric bet text cannot be found elsewhere on the poker table.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+p0chipXY - p9chipXY
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Note: Chip scraping should *only* be used if the actual numeric bet text
+ cannot be found elsewhere on the poker table.
  Text transformation is magnitudes of effort easier to accomplish.
  
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Step 1 : Ensure that the poker site uses static landings for all of the
  chip stacks.
  Step 2 : Determine the size of an individual chip, and should include any
@@ -1429,8 +2918,28 @@ Step 1 : Ensure that the poker site uses static landings for all of the
  there is a limit of 10 stacks that will be recognized by the engine.
  In a worst case situation, there may be 100 chip regions * 10 players =
  1000 region definitions required to scrape chips! (So now go look at scraping
- the bet text instead) u0active - u9active These are alternatives to the
- p0active-p9active regions, and are used for the player's seat.
+ the bet text instead) 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+u0active - u9active
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+These are alternatives to the p0active-p9active regions, and are used for
+ the player's seat.
  They are typically used when the player's seat changes appearance when
  it is the player's action, to avoid misscrapes due to change in color/size,
  whatever.
@@ -1446,40 +2955,118 @@ ce regions, and are used for the player's seat.
  it is the player's action, to avoid misscrapes due to change in color/size,
  whatever.
  It only makes sense to use a text transform for these regions.
- u0bet – u9bet * New Symbol in version 2.0
+ 
 \end_layout
 
-\begin_layout Standard
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+u0bet – u9bet
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+* New Symbol in version 2.0
+\end_layout
+
+\begin_layout Plain Layout
 These are alternatives to the p0bet-p9bet regions, and are used for the
  player's seat.
  They are typically used when the player's seat changes appearance when
  it is the player's action, to avoid misscrapes due to change in color/size,
  whatever.
  It only makes sense to use a text transform for these regions.
- u0cardface0 - u9cardface0 These are alternatives to the p0cardface0-p9cardface0
- regions, and are used for the player's seat.
- They are typically used when the player's seat changes appearance when
- it is the player's action, to avoid misscrapes due to change in color/size,
- whatever.
- Valid results are a case-insensitive, two character string.
- The first character is the rank and should be one of: “2”, “3”, “4”, “5”,
- “6”, “7”, “8”, “9”, “t”, “j”, “q”, “k”, or “a”.
- The second character is the suit and should be one of: “c”, “d”, “h” or
- “s”.
- u0cardface1 - u9cardface1 These are alternatives to the p0cardface1-p9cardface1
- regions, and are used for the player's seat.
- They are typically used when the player's seat changes appearance when
- it is the player's action, to avoid misscrapes due to change in color/size,
- whatever.
- Valid results are a case-insensitive, two character string.
- The first character is the rank and should be one of: “2”, “3”, “4”, “5”,
- “6”, “7”, “8”, “9”, “t”, “j”, “q”, “k”, or “a”.
- The second character is the suit and should be one of: “c”, “d”, “h” or
- “s”.
- u0dealer – u9dealer * New Symbol in version 2.0
 \end_layout
 
-\begin_layout Standard
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+u0cardface0 - u9cardface0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+These are alternatives to the p0cardface0-p9cardface0 regions, and are used
+ for the player's seat.
+ They are typically used when the player's seat changes appearance when
+ it is the player's action, to avoid misscrapes due to change in color/size,
+ whatever.
+ Valid results are a case-insensitive, two character string.
+ The first character is the rank and should be one of: “2”, “3”, “4”, “5”,
+ “6”, “7”, “8”, “9”, “t”, “j”, “q”, “k”, or “a”.
+ The second character is the suit and should be one of: “c”, “d”, “h” or
+ “s”.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+u0cardface1 - u9cardface1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+These are alternatives to the p0cardface1-p9cardface1 regions, and are used
+ for the player's seat.
+ They are typically used when the player's seat changes appearance when
+ it is the player's action, to avoid misscrapes due to change in color/size,
+ whatever.
+ Valid results are a case-insensitive, two character string.
+ The first character is the rank and should be one of: “2”, “3”, “4”, “5”,
+ “6”, “7”, “8”, “9”, “t”, “j”, “q”, “k”, or “a”.
+ The second character is the suit and should be one of: “c”, “d”, “h” or
+ “s”.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+u0dealer – u9dealer
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+* New Symbol in version 2.0
+\end_layout
+
+\begin_layout Plain Layout
 These are alternatives to the p0dealer-p9dealer regions, and are used for
  the player's seat.
  They are typically used when the player's seat changes appearance when
@@ -1493,14 +3080,53 @@ These are alternatives to the p0dealer-p9dealer regions, and are used for
  If any other result is returned, such as "false", then the chair is not
  considered to have the dealer button.
  Results are case-insensitive.
- uname, u0name - u9name These are alternatives to the p0name-p9name regions,
- and are used for the player's seat.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+uname, u0name - u9name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+These are alternatives to the p0name-p9name regions, and are used for the
+ player's seat.
  They are typically used when the player's seat changes appearance when
  it is the player's action, to avoid misscrapes due to change in color/size,
  whatever.
  It only makes sense to use a text transform for these regions.
- u0seated - u9seated These regions are alternatives to the p0seated-p9seated
- regions, and are used for the player's seat.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+u0seated - u9seated
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+These regions are alternatives to the p0seated-p9seated regions, and are
+ used for the player's seat.
  They are typically used when the player's seat changes appearance when
  it is the player's action, to avoid misscrapes due to change in color/size,
  whatever.
@@ -1511,9 +3137,27 @@ These are alternatives to the p0dealer-p9dealer regions, and are used for
  If any other result is returned, such as "false" or "unseated", then the
  chair is not considered to be seated.
  Results are case-insensitive.
- tablepointNNN These regions are used when the "Green Circle Button" is
- clicked on the OpenHoldem toolbar to "automagically" find a table to connect
- to.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+tablepointNNN
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+These regions are used when the "Green Circle Button" is clicked on the
+ OpenHoldem toolbar to "automagically" find a table to connect to.
  These regions must be one pixel wide by one pixel tall and must use a color
  transform.
  All tablepoint records must match the pixel colors on the casino window
@@ -1522,13 +3166,31 @@ These are alternatives to the p0dealer-p9dealer regions, and are used for
  
 \end_layout
 
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
 \begin_layout Section
 Font Records
 \end_layout
 
+\begin_layout Subsection
+Description 
+\end_layout
+
 \begin_layout Standard
-Description Font records are used as lookup records for Regions that utilize
- Text transformations.
+Font records are used as lookup records for Regions that utilize Text transforma
+tions.
  When a Text transformation is required for a region, the foreground pixels
  in that region will be scanned left to right, and the widest font record
  that matches those pixels will be considered a match.
@@ -1621,9 +3283,13 @@ tion, and their pixel layout to the list of Table Map records.
  with superfluous Font records.
 \end_layout
 
+\begin_layout Subsection
+Fuzzy fonts
+\end_layout
+
 \begin_layout Standard
-Fuzzy fonts “Fuzzy fonts” are sometimes used by casinos when displaying
- text on their poker interfaces.
+“Fuzzy fonts” are sometimes used by casinos when displaying text on their
+ poker interfaces.
  You can identify if a casino uses fuzzy fonts by looking closely at the
  pixel patterns for individual characters as they are displayed at different
  times or in different locations on the screen.
@@ -1635,9 +3301,12 @@ Fuzzy fonts “Fuzzy fonts” are sometimes used by casinos when displaying
 \end_layout
 
 \begin_layout Standard
-The general procedure for defining fuzzy font records is as follows: 1.Decide
- which fonts will be fuzzy, and create those in a different Font group from
- your other fonts (we will use group 1 “Text1” in this example).
+The general procedure for defining fuzzy font records is as follows:
+\end_layout
+
+\begin_layout Enumerate
+Decide which fonts will be fuzzy, and create those in a different Font group
+ from your other fonts (we will use group 1 “Text1” in this example).
  Fonts can be created with the font color defined as the foreground pixel
  color, or the background color as the foreground pixel color.
  In the case of the latter, the so-called inverse fonting may sometimes
@@ -1647,14 +3316,22 @@ The general procedure for defining fuzzy font records is as follows: 1.Decide
  color cube radius.
  If using the background color as the foreground pixel color, a radius of
  zero probably works best.
- 2.Create a t1type Symbol record (for the Text1 group), and set the free-form
+ 
+\end_layout
+
+\begin_layout Enumerate
+Create a t1type Symbol record (for the Text1 group), and set the free-form
  text to "fuzzy" for default tolerance (25%), or to a specific tolerance
  value (0.50 for 50%, 0.33 for 33%, for example).
  Experiment to find the best tolerance – all casinos are different in how
  they display fuzzy fonts.
  If this symbol is set to anything besides "fuzzy" or a floating point value,
  then the engine will used non-fuzzy font recognition engine.
- 3.You can also create multiple samples for various characters, and it will
+ 
+\end_layout
+
+\begin_layout Enumerate
+You can also create multiple samples for various characters, and it will
  help.
  The numbers “6”, “8”, and “3”, for example, are similar enough that distinguish
 ing fuzzy versions of these is difficult.
@@ -1663,9 +3340,13 @@ ing fuzzy versions of these is difficult.
  
 \end_layout
 
+\begin_layout Subsection
+Technical Reference 
+\end_layout
+
 \begin_layout Standard
-Technical Reference In the Table Map (.tm) file, these records will be preceded
- with the characters "t$".
+In the Table Map (.tm) file, these records will be preceded with the characters
+ "t$".
  Font records have the following format: 
 \end_layout
 
@@ -1689,9 +3370,13 @@ T<n>$<a> <x0> <x1> <x2> ...
 Hash Point Records
 \end_layout
 
+\begin_layout Subsection
+Description 
+\end_layout
+
 \begin_layout Standard
-Description The purpose of Hash Point records is to define the pixels within
- a region that are used in a hash calculation.
+The purpose of Hash Point records is to define the pixels within a region
+ that are used in a hash calculation.
  The “Hash0” transform always uses all pixels in a region to calculate its
  hash, so these records are only relevant for regions that use “Hash1”,
  “Hash2”, or “Hash3” transforms.
@@ -1712,8 +3397,15 @@ The points defined for a Hash Point group must fall within the boundaries
  For example, if you have card regions that are 10x20 pixels, then hash
  points (11,15) and (8,22) will be ignored, whereas hash points (5,5) and
  (9, 18) will be used in the hash calculation.
- Manipulating hash point records using OpenScrape There are two ways to
- create new Hash Point records:
+ 
+\end_layout
+
+\begin_layout Subsection
+Manipulating hash point records using OpenScrape
+\end_layout
+
+\begin_layout Standard
+There are two ways to create new Hash Point records:
 \end_layout
 
 \begin_layout Standard
@@ -1805,9 +3497,13 @@ Note: The Insert and Delete keys can also be used as a shortcut for adding
  and deleting individual Hash Point records.
 \end_layout
 
+\begin_layout Subsection
+Technical Reference 
+\end_layout
+
 \begin_layout Standard
-Technical Reference In the Table Map (.tm) file, these records will be preceded
- with the characters "p$".
+In the Table Map (.tm) file, these records will be preceded with the characters
+ "p$".
  Hash point records have the following format: 
 \end_layout
 
@@ -1826,10 +3522,13 @@ p<n>$ <x> <y>
 Hash Records
 \end_layout
 
+\begin_layout Subsection
+Description 
+\end_layout
+
 \begin_layout Standard
-Description The purpose of Hash Records is to allow for the rapid lookup
- of pixel patterns, without having to scan through each pixel in a region
- to find a match.
+The purpose of Hash Records is to allow for the rapid lookup of pixel patterns,
+ without having to scan through each pixel in a region to find a match.
  For example, if we have a card region specified to use a “Hash0” transform,
  the screen scraper engine will first reduce the pixels in that region to
  a 32-bit hash value.
@@ -1840,9 +3539,17 @@ Description The purpose of Hash Records is to allow for the rapid lookup
  group 0.
  If a matching 32-bit hash value is found, the screen scraper engine returns
  the <name> of the Hash Record to the game state engine.
- Manipulating hash records using OpenScrape Hash Records are created from
- specific Image records, so in order to create a Hash record, you must first
- have collected the associated Image record (see section {4.9}).
+ 
+\end_layout
+
+\begin_layout Subsection
+Manipulating hash records using OpenScrape
+\end_layout
+
+\begin_layout Standard
+Hash Records are created from specific Image records, so in order to create
+ a Hash record, you must first have collected the associated Image record
+ (see section {4.9}).
  
 \end_layout
 
@@ -1871,9 +3578,16 @@ Note: Only one Hash record can exist in a Table Map in each hash group for
 \end_layout
 
 \begin_layout Standard
-To create a new Hash records: 1.Select an Image record 2.Click the “Create
- Hash” button for the hash group that you want to create this Hash record
- in.
+To create a new Hash records: 
+\end_layout
+
+\begin_layout Enumerate
+Select an Image record 
+\end_layout
+
+\begin_layout Enumerate
+Click the “Create Hash” button for the hash group that you want to create
+ this Hash record in.
 \end_layout
 
 \begin_layout Standard
@@ -1914,8 +3628,12 @@ h<n>$<name> <value>
 Image Records 
 \end_layout
 
+\begin_layout Subsection
+Description
+\end_layout
+
 \begin_layout Standard
-Description Image records serve multiple purposes.
+Image records serve multiple purposes.
  The first purpose is for regions that use the Image transform.
  When a region requires this type of lookup, the screen scraper engine will
  first look for an exact pixel-for-pixel image match in the Image records,
@@ -1936,7 +3654,7 @@ Description Image records serve multiple purposes.
  matching, as the Hash lookup algorithm is orders of magnitude faster.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Subsection
 Manipulating image records using OpenScrape
 \end_layout
 
@@ -1984,15 +3702,45 @@ The name is dependent on what the image is used for, but for example, if
  values for each region)
 \end_layout
 
+\begin_layout Subsection
+Technical Reference 
+\end_layout
+
 \begin_layout Standard
-Technical Reference In the Table Map (.tm) file, these records will be preceded
- with the characters "i$".
+In the Table Map (.tm) file, these records will be preceded with the characters
+ "i$".
  Image records have the following format:
 \end_layout
 
 \begin_layout Standard
-i$<name> width height scanline0 scanline1 ...
- scanlineN
+
+\noun on
+i$<name> width height 
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+scanline0 
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+scanline1 
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+...
+ 
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+scanlineN
 \end_layout
 
 \begin_layout Standard
@@ -2036,15 +3784,15 @@ status open
  To do so it is  usually sufficient to
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Enumerate
 open the TM with the newest verion of OpenScrape
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Enumerate
 save it again
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Enumerate
 review, if it works
 \end_layout
 

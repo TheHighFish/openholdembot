@@ -46,6 +46,15 @@ theorems-ams
 \begin_body
 
 \begin_layout Section
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Poker Tracker
+\end_layout
+
+\end_inset
+
 Poker Tracker symbols
 \end_layout
 
@@ -61,12 +70,21 @@ Assuming all the prerequisites as described above are met, the following
 Version 3 of PokerTracker introduced new stats; some of them are now supported
  by OH.
  Be careful to not use PT3-stats with an installation of PT2!
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
 \begin_inset Marginal
 status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename Images/Bomb.jpg
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Bomb.jpg
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -79,11 +97,31 @@ status open
 \end_layout
 
 \begin_layout Subsection
-Ring symbols (PT2 + PT3)
+Ring symbols (
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+PT2
 \end_layout
 
-\begin_layout Standard
-asdf.!!!
+\end_inset
+
+PT2 + 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+PT3
+\end_layout
+
+\end_inset
+
+PT3)
+\begin_inset Newline newline
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -525,6 +563,10 @@ Poker Tracker folded big blind to steal for chair x
 
 \begin_layout Subsection
 Ring symbols for the "raischair" (PT2 + PT3)
+\begin_inset Newline newline
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -962,10 +1004,10 @@ Poker Tracker folded big blind to steal for raise chair
 
 \begin_layout Subsection
 Tournament symbols (PT2 + PT3)
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout Standard
-asdf!!
+
 \end_layout
 
 \begin_layout Standard
@@ -1423,6 +1465,10 @@ Poker Tracker folded big blind to steal for chair x
 
 \begin_layout Subsection
 Tournament symbols for the "raischair" (PT2 + PT3)
+\begin_inset Newline newline
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1836,7 +1882,7 @@ Poker Tracker folded small blind to steal for raise chair
 \begin_inset Text
 
 \begin_layout Plain Layout
-ptt_rfbbts Poker
+ptt_rfbbts 
 \end_layout
 
 \end_inset
@@ -1845,7 +1891,7 @@ ptt_rfbbts Poker
 \begin_inset Text
 
 \begin_layout Plain Layout
-Tracker folded big blind to steal for raise chair
+PokerTracker folded big blind to steal for raise chair
 \end_layout
 
 \end_inset
@@ -1855,10 +1901,6 @@ Tracker folded big blind to steal for raise chair
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 
 \end_layout
 
