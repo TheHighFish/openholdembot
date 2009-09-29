@@ -34,16 +34,16 @@ void CPreferences::InitDefaults(void)
 {
 	// Main window location
 	_main_x = _main_y = 0;
-	_main_dx = 800;
+	_main_dx = 640;
 	_main_dy = 400;
 
 	// Formula window location
 	_formula_x = _formula_y = 0;
-	_formula_dx = 700;
-	_formula_dy = 420;
+	_formula_dx = 640;
+	_formula_dy = 400;
 
 	// PPro window location
-	_ppro_x = _ppro_y = -1;
+	_ppro_x = _ppro_y = 0;
 	_ppro_dx = 555;
 	_ppro_dy = 577;
 
@@ -55,7 +55,7 @@ void CPreferences::InitDefaults(void)
 	// Formula editor
 	_precision = 4;
 	_equal = 12;
-	_udf_sort = _udf_group = _expand_std = _expand_list = _expand_udf = false;
+	_udf_sort = _udf_group = _expand_auto = _expand_debug = _expand_std = _expand_list = _expand_udf = false;
 
 	// analyzer
 	_max_opponents = 9;
@@ -186,6 +186,8 @@ void CPreferences::InitDefaults(void)
 	_rebuy_condition_change_in_handnumber = true;
 	_rebuy_condition_heuristic_check_for_occlusion = true;
 	_rebuy_minimum_time_to_next_try = 30;
+	_rebuy_script = "Rebuy.exe";
+
 
 	// Obscure
 	_window_class_name = "OpenHoldem";
@@ -236,8 +238,10 @@ void CPreferences::ReadPreferences()
 		ReadReg("equal", &_equal);
 		ReadReg("udf_sort", &_udf_sort);
 		ReadReg("udf_group", &_udf_group);		
-		ReadReg("expand_std", &_expand_std);
+		ReadReg("expand_auto", &_expand_auto);
+		ReadReg("expand_debug", &_expand_debug);
 		ReadReg("expand_list", &_expand_list);
+		ReadReg("expand_std", &_expand_std);
 		ReadReg("expand_udf", &_expand_udf);
 
 		// prefs - analyzer
@@ -368,6 +372,7 @@ void CPreferences::ReadPreferences()
 		ReadReg("rebuy_condition_change_in_handnumber", &_rebuy_condition_change_in_handnumber);
 		ReadReg("rebuy_condition_heuristic_check_for_occlusion", &_rebuy_condition_heuristic_check_for_occlusion);
 		ReadReg("rebuy_minimum_time_to_next_try", &_rebuy_minimum_time_to_next_try);
+		ReadReg("rebuy_script", &_rebuy_script);
 	
 		// obscure
 		ReadReg("window_class_name", &_window_class_name);

@@ -2,11 +2,9 @@
 #include <process.h>
 
 #include "CIteratorThread.h"
-
 #include "CScraper.h"
 #include "CSymbols.h"
 #include "CGrammar.h"
-
 #include "inlines/eval.h"
 
 CIteratorThread		*p_iterator_thread = NULL;
@@ -48,7 +46,7 @@ void CIteratorVars::ResetVars()
 
 CIteratorThread::CIteratorThread()
 {
-	write_log(3, "ITT: Iterator Thread starting.");
+	write_log(3, "ITT: Iterator Thread starting.\n");
 
 	// Create events
 	_m_stop_thread = CreateEvent(0, TRUE, FALSE, 0);
@@ -62,12 +60,12 @@ CIteratorThread::CIteratorThread()
 
 	iter_vars.set_iterator_thread_running(true);
 
-	write_log(3, "ITT: Iterator Thread started.");
+	write_log(3, "ITT: Iterator Thread started.\n");
 }
 
 CIteratorThread::~CIteratorThread()
 {
-	write_log(3, "ITT: Iterator Thread ending.");
+	write_log(3, "ITT: Iterator Thread ending.\n");
 
 	// Trigger thread to die
 	::SetEvent(_m_stop_thread);
@@ -81,7 +79,7 @@ CIteratorThread::~CIteratorThread()
 
 	p_iterator_thread = NULL;
 
-	write_log(3, "ITT: Iterator Thread ended.");
+	write_log(3, "ITT: Iterator Thread ended.\n");
 }
 
 UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
@@ -112,7 +110,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 	//
 	// Main iterator loop
 	//
-	write_log(3, "ITT: Start of main loop.");
+	write_log(3, "ITT: Start of main loop.\n");
 	for (nit=0; nit < iter_vars.nit(); nit++)
 	{
 		// Check event for thread stop signal
@@ -133,7 +131,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 		if (p_symbols->prw1326()->useme==1326 && (sym_br!=1 || p_symbols->prw1326()->preflop==1326))
 		{
-			write_log(3, "ITT: Using Matrix's enhanced prwin.");
+			write_log(3, "ITT: Using Matrix's enhanced prwin.\n");
 
 			//prw1326 active  Matrix 2008-05-08
 			k = nopp = 0; //k is used as an index into ocard[] 
@@ -235,7 +233,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 		else
 		{ 
 			// normal prwin opponent card selection
-			write_log(3, "ITT: Using standard prwin.");
+			write_log(3, "ITT: Using standard prwin.\n");
 
 			// if f$P<=13 then deal with random replacement algorithm, otherwise deal with swap algorithm
 			if (nopp <= 13)
@@ -376,7 +374,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 		if ((nit/1000 == (int) nit/1000) && nit>=1000)
 		{
-			write_log(3, "ITT: Progress: %d %.3f %.3f %.3f", nit, pParent->_win / (double) nit, pParent->_tie / (double) nit, pParent->_los / (double) nit);
+			write_log(3, "ITT: Progress: %d %.3f %.3f %.3f\n", nit, pParent->_win / (double) nit, pParent->_tie / (double) nit, pParent->_los / (double) nit);
 			iter_vars.set_iterator_thread_progress(nit);
 			iter_vars.set_prwin(pParent->_win / (double) nit);
 			iter_vars.set_prtie(pParent->_tie / (double) nit);
@@ -384,7 +382,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 		}
 	}
 
-	write_log(3, "ITT: End of main loop.");
+	write_log(3, "ITT: End of main loop.\n");
 
 	if (nit >= iter_vars.nit())
 	{

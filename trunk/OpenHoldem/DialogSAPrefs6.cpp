@@ -3,14 +3,13 @@
 
 #include "stdafx.h"
 
-#include "SAPrefsSubDlg.h"
-#include "DialogSAPrefs6.h"
-
 #include "CPokerTrackerThread.h"
-
+#include "CPreferences.h"
+#include "DialogSAPrefs6.h"
 #include "OpenHoldem.h"
 #include "MainFrm.h"
-#include "CPreferences.h"
+#include "SAPrefsSubDlg.h"
+
 
 // CDlgSAPrefs6 dialog
 

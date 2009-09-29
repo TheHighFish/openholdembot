@@ -4,7 +4,7 @@
 
 // Heuristic occlusion-check for rebuy.
 
-class COcclusionCheck
+extern class COcclusionCheck
 {
 public:
 	COcclusionCheck();
@@ -17,6 +17,6 @@ private:
 	bool UserNameKnown();
 	bool AnyOpponentNameKnown();
 	bool AnyApponentBalanceNonZero();
-};
+} *p_occlusioncheck;
 
 #endif

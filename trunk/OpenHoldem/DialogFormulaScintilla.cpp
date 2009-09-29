@@ -459,7 +459,7 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
 	
 	// Tree: Autoplayer functions
 	parent = m_FormulaTree.InsertItem("Autoplayer Functions");
-	m_FormulaTree.SetItemState(parent, TVIS_BOLD | (prefs.expand_std() ? TVIS_EXPANDED : 0), TVIS_BOLD | (prefs.expand_std() ? TVIS_EXPANDED : 0) );
+	m_FormulaTree.SetItemState(parent, TVIS_BOLD | (prefs.expand_auto() ? TVIS_EXPANDED : 0), TVIS_BOLD | (prefs.expand_std() ? TVIS_EXPANDED : 0) );
 	m_FormulaTree.InsertItem("f$alli", parent);
 	m_FormulaTree.InsertItem("f$swag", parent);
 	m_FormulaTree.InsertItem("f$srai", parent);
@@ -479,7 +479,7 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
 
 	// Tree: Debug functions functions
 	parent = m_FormulaTree.InsertItem("Debug Functions");
-	m_FormulaTree.SetItemState(parent, TVIS_BOLD | (prefs.expand_std() ? TVIS_EXPANDED : 0), TVIS_BOLD | (prefs.expand_std() ? TVIS_EXPANDED : 0) );
+	m_FormulaTree.SetItemState(parent, TVIS_BOLD | (prefs.expand_debug() ? TVIS_EXPANDED : 0), TVIS_BOLD | (prefs.expand_std() ? TVIS_EXPANDED : 0) );
 	m_FormulaTree.InsertItem("f$test", parent);
 	m_FormulaTree.InsertItem("f$debug", parent);
 
@@ -2899,8 +2899,12 @@ void CDlgFormulaScintilla::SaveSettingsToRegistry()
 		text = m_FormulaTree.GetItemText(hItem);
 		state = m_FormulaTree.GetItemState(hItem, TVIS_EXPANDED) & TVIS_EXPANDED;
 
-		if (text == "Standard Functions")
+		if (text == "Autoplayer Functions")
+			prefs.set_expand_auto(state);
+		else if (text == "Standard Functions")
 			prefs.set_expand_std(state);
+		else if (text == "Debug Functions")
+			prefs.set_expand_debug(state);
 		else if (text == "Hand Lists")
 			prefs.set_expand_list(state);
 		else if (text == "User Defined Functions")
@@ -2948,7 +2952,9 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
 		bNotesOrDllActive = (headingText == "notes" || headingText == "dll");
 		headingText = m_FormulaTree.GetItemText(parentItem);
 	}
-	if (headingText == "Standard Functions")			iWhichTypeSelected = 0;
+	if (headingText == "Autoplayer Functions")			iWhichTypeSelected = 0;
+	else if (headingText == "Standard Functions")		iWhichTypeSelected = 0;
+	else if (headingText == "Debug Functions")			iWhichTypeSelected = 0;
 	else if (headingText == "Hand Lists")				iWhichTypeSelected = 1;
 	else if (headingText == "User Defined Functions")	iWhichTypeSelected = 2;
 	else {

@@ -2,9 +2,12 @@
 #include <atlstr.h>
 #include <time.h>
 #include "CAutoconnector.h"
+#include "COcclusionCheck.h"
 #include "CPreferences.h"
 #include "CRebuyManagement.h"
+#include "CScraper.h"
 #include "CSymbols.h"
+#include "..\CTablemap\CTablemap.h"
 #include "debug.h"
 
 
@@ -31,7 +34,7 @@ bool CRebuyManagement::MinimumDelayElapsed()
 	double RebuyTimeDifference = difftime(CurrentTime, RebuyLastTime);
 	if (RebuyTimeDifference < MinimumTimeDifference)
 	{
-		write_log(3, "CRebuyManagement::MinimumDelayElapsed(): false");
+		write_log(3, "CRebuyManagement::MinimumDelayElapsed(): false\n");
 		return false;
 	}
 	return true;
@@ -47,32 +50,50 @@ bool CRebuyManagement::ChangeInHandNumber()
 	{
 		return true;
 	}
-	else
-	{
-		write_log(3, "CRebuyManagement::ChangeInHandNumber(): false");
-		return false;
-	}	
+	write_log(3, "CRebuyManagement::ChangeInHandNumber(): false\n");
+	return false;
 }
 
 bool CRebuyManagement::NoCards()
 {
-	if (!prefs.rebuy_condition_no_cards()) return true;
-	if (/*!(GameStateEngine.CasinoIsPokerAcademy() || GameStateEngine.CasinoIsManualMode())
-		&&*/ false /*!!!BettingAction_Does_Hero_Still_Hold_Cards*/)
+	if (!prefs.rebuy_condition_no_cards()) 
 	{
-		// We hold cards. No good time to rebuy,
-		// if we play at a real casino.
-		//Debug.Send_Message("CRebuyManagement::RebuyCondition_No_Cards: false: we hold cards.");	
-		return false;
+		return true;
 	}
-	//Debug.Send_Message("CRebuyManagement::RebuyCondition_No_Cards: true.");
-	return true;
+	double UserChair = p_symbols->sym()->userchair;
+	if ((UserChair < 0) || (UserChair > 9)) 
+	{
+		// "No cards", but not even seated.
+		// We should never get into that situation,
+		// as the autoplayer can't get enabled without a userchair.
+		// If all goes wrong, the rebuy-script has to handle that case.
+		return true;
+	}
+
+	const unsigned int Card0 = p_scraper->card_player(UserChair, 0);
+	int unsigned Card1 = p_scraper->card_player(UserChair, 1);
+	if (((Card0 == CARD_NOCARD) || (Card0 == WH_NOCARD))
+		&& ((Card1 == CARD_NOCARD) || (Card1 == WH_NOCARD)))
+	{
+		return true;
+	}
+	// We hold cards. No good time to rebuy,
+	// if we play at a real casino.
+	write_log(3, "CRebuyManagement::No_Cards: false: we hold cards.\n");	
+	return false;
 }
 
 bool CRebuyManagement::OcclusionCheck()
 {
-	if (!prefs.rebuy_condition_heuristic_check_for_occlusion()) return true;
-	//return (!OcclusionCheck.UserBalanceOccluded());
+	if (!prefs.rebuy_condition_heuristic_check_for_occlusion()) 
+	{
+		return true;
+	}
+	else if (p_occlusioncheck->UserBalanceOccluded())
+	{
+		write_log(3, "CRebuyManagement::OcclusionCheck: false (occluded)\n");
+		return false;
+	}
 	return true;
 }
 
@@ -84,48 +105,59 @@ bool CRebuyManagement::RebuyPossible()
 		&& NoCards()
 		&& OcclusionCheck())
 	{
-		write_log(3, "CRebuyManagement::RebuyPossible: true");
+		write_log(3, "CRebuyManagement::RebuyPossible: true\n");
 		return true;
 	}
 	else
 	{
-		write_log(3, "CRebuyManagement::RebuyPossible: false");
+		write_log(3, "CRebuyManagement::RebuyPossible: false\n");
 		return false;
 	}
 }
 
 void CRebuyManagement::TryToRebuy()
 {
-	write_log(3, "CRebuyManagement::TryToRebuy()");
+	write_log(3, "CRebuyManagement::TryToRebuy()\n");
 	if (RebuyPossible())
 	{
 		RebuyLastTime = CurrentTime;		
 		PreviousRebuyHandNumber = p_symbols->sym()->handnumber;
-		ExecuteUniversalRebuyScript();
+		ExecuteRebuyScript();
 	}
 }	
 
-void CRebuyManagement::ExecuteUniversalRebuyScript()
+void CRebuyManagement::ExecuteRebuyScript()
 {
 	// Call the external rebuy script.
 	//
 	// CAUTION! DO NOT USE THIS FUNCTION DIRECTLY!
 	// It has to be protected by a mutex.
+	// We assume, the autoplayer does that.
 	//
 	// Build command-line-options for rebuy-script
-	write_log(3, "CRebuyManagement::ExecuteUniversalRebuyScript");
-	//!!!CString Casino = GameStateEngine.GetCasinoName();
+	write_log(3, "CRebuyManagement::ExecuteRebuyScript");
+	CString Casino;
+	if (p_tablemap->s$()->find("sitename") != p_tablemap->s$()->end())
+	{
+		Casino = p_tablemap->s$()->find("sitename")->second.text.GetString();
+	}
+	else
+	{
+		Casino = "Undefined";
+	}
 	HWND WindowHandleOfThePokerTable = p_autoconnector->attached_hwnd();
 	double UserChair = p_symbols->sym()->userchair;
 	double Balance = p_symbols->sym()->balance[10];
+	double SmallBlind = p_symbols->sym()->sblind;
 	double BigBlind = p_symbols->sym()->bblind;
+	double BigBet = p_symbols->sym()->bet[2];	// Turnbet = big bet
 	double TargetAmount = p_symbols->f$rebuy();
+	CString RebuyScript = prefs.rebuy_script();
 	CString CommandLine;
-	CommandLine.Format(CString("%s %s %u %f %f %f %f"), 
-		CString("Universal_RebuyScript.exe"), 
-		/*Casino,*/ WindowHandleOfThePokerTable, 
-		UserChair, Balance, BigBlind, TargetAmount);
-	/* 
+	CommandLine.Format(CString("%s %s %u %f %f %f %f %f %f"), 
+		RebuyScript, Casino, WindowHandleOfThePokerTable, 
+		UserChair, Balance, SmallBlind, BigBlind, BigBet, TargetAmount);
+	/*
 	MessageBox(0, CommandLine, CString("CommandLine"), 0);
 	*/
 	// For some docu on "CreateProcess" see:
@@ -137,7 +169,7 @@ void CRebuyManagement::ExecuteUniversalRebuyScript()
 	memset(&StartupInfo, 0, sizeof(StartupInfo));
 	memset(&ProcessInfo, 0, sizeof(ProcessInfo));
 	StartupInfo.cb = sizeof(StartupInfo); 
-	write_log(3, "Rebuy: ", CommandLine);
+	write_log(3, "%s%s%s", "Rebuy: ", CommandLine, "\n");
 	if(CreateProcess(NULL, CommandLine.GetBuffer(), NULL, 
 		false, 0, NULL, NULL, 0, &StartupInfo, &ProcessInfo))
 	{
@@ -147,7 +179,9 @@ void CRebuyManagement::ExecuteUniversalRebuyScript()
 	}
 	else
 	{
-		write_log(0, "Calling rebuy-script failed.");
+		CString ErrorMessage = CString("Could not execute rebuy-script: ") + CString(RebuyScript) + "\n";
+		write_log(0, ErrorMessage.GetBuffer());
+		MessageBox(0, ErrorMessage.GetBuffer(), "Error", 0);
 	}
 }
 

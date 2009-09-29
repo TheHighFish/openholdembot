@@ -1,12 +1,13 @@
 // Heuristic occlusion-check for rebuy.
 
 #include "stdafx.h"
-//#include "Globals.h"
 #include "CGameState.h"
 #include "COcclusionCheck.h"
+#include "CSCraper.h"
 #include "CSymbols.h"
-//#include "OpenHoldemSymbols.h"
-//#include "WhUser.h"
+
+COcclusionCheck *p_occlusioncheck = NULL;
+
 
 COcclusionCheck::COcclusionCheck()
 {}
@@ -16,72 +17,89 @@ COcclusionCheck::~COcclusionCheck()
 
 bool COcclusionCheck::UserChairKnown()
 {
-	return (p_symbols->user_chair_confirmed());
+	if (p_symbols->user_chair_confirmed())
+	{
+		return true;
+	}
+	else
+	{
+		write_log(2, "COcclusionCheck::UserChairKnown: false\n");
+		return false;
+	}
 }
 
 bool COcclusionCheck::UserBalanceNonZero()
 {
-	return true;
-	/*
 	int userchair = p_symbols->sym()->userchair;
-	return (UserChairKnown() && (p_game_state->m_player[userchair].m_balance_known == true)
-		&& (p_game_state->m_player[userchair].m_balance > 0.0));
-		*/
+	if (UserChairKnown() && (p_symbols->sym()->balance > 0))
+	{
+		return true;
+	}
+	else
+	{
+		write_log(2, "COcclusionCheck::UserBalanceNonZero: false\n");
+		return false;
+	}
 }
 
 bool COcclusionCheck::UserNameKnown()
-{
-	return true;
-	/*
-	int userchair = p_symbols->sym()->userchair;
-	return (UserChairKnown() && (p_game_state->m_player[userchair].m_name_known == true)
-		&& (p_game_state->m_player[userchair].m_name != ""));
-		*/
+{	
+	int Userchair = p_symbols->sym()->userchair;
+	if ((Userchair < 0) || (Userchair > 9))
+	{
+		write_log(2, "COcclusionCheck::UserNameKnown: false; chair out of range\n");
+		return false;
+	}
+	else if (UserChairKnown() && (p_scraper->player_name(Userchair) != ""))
+	{	
+		return true;
+	}
+	else
+	{
+		write_log(2, "COcclusionCheck::UserNameKnown: false\n");
+		return false;
+	}
 }
 
 bool COcclusionCheck::AnyOpponentNameKnown()
 {
-	return true;
-	/*
+	int Userchair = p_symbols->sym()->userchair;
 	for (int i=0; i<=9; i++)
 	{
-		if ((i != userchair) && (p_game_state->m_player[i].m_name_known == true)
-			&& (strncmp(p_game_state->m_player[i].m_name, "", 0) != 0))
+		if ((i != Userchair) && (p_scraper->player_name(i) != ""))
 		{
 			return true;
 		}
 	}
+	write_log(2, "COcclusionCheck::AnyOpponentNameKnown: false\n");
 	return false;
-	*/
 }
 
 bool COcclusionCheck::AnyApponentBalanceNonZero()
 {
-	return true;
-	/*
+	int Userchair = p_symbols->sym()->userchair;
 	for (int i=0; i<=9; i++)
 	{
-		if ((i != userchair) && (p_game_state->m_player[i].m_balance_known == true)
-			&& (p_game_state->m_player[i].m_balance > 0.0))
+		if ((i != Userchair) && (p_symbols->sym()->balance[i] > 0))
 		{
 			return true;
 		}
 	}
+	write_log(2, "COcclusionCheck::AnyApponentBalanceNonZero: false\n");
 	return false;
-	*/
 }
 
 bool COcclusionCheck::UserBalanceOccluded()
 {
-	return true;
-	/*
 	// Result:
 	//  * true:  probably occlusion.
 	//  * false: probably no occlusion.
 	if (!UserChairKnown())
 	{
 		// Userchair not known; 
-		// Probably cards occluded.
+		// Something went completely wrong.
+		// For sure the balance is not known;
+		// We treat the table as "occluded".
 		return true;
 	}
 	else if (UserBalanceNonZero())
@@ -114,5 +132,4 @@ bool COcclusionCheck::UserBalanceOccluded()
 		// Probably full table occluded.
 		return true;
 	}
-	*/
 }

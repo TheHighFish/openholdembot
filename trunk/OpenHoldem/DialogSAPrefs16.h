@@ -24,8 +24,10 @@ protected:
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
 public:
-	CButton	_rebuy_condition_no_cards;
-	CButton	_rebuy_condition_change_in_handnumber;
-	CButton	_rebuy_condition_heuristic_check_for_occlusion;
-	CEdit	_rebuy_minimum_time_to_next_try;
+	CButton			_rebuy_condition_no_cards_Button;
+	CButton			_rebuy_condition_change_in_handnumber_Button;
+	CButton			_rebuy_condition_heuristic_check_for_occlusion_Button;
+	CSpinButtonCtrl	_rebuy_minimum_time_to_next_try_Spin;
+	CEdit			_rebuy_minimum_time_to_next_try_Edit;
+	CEdit			_rebuy_script_Edit;
 };
