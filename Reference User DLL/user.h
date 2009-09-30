@@ -37,9 +37,12 @@ struct holdem_state {
 
 typedef double (*process_message_t)(const char* message, const void* param );
 USERDLL_API double process_message( const char* message, const void* param );
-typedef double (*p_getsym_t)( int c, const char* psym, bool& iserr );
+typedef double	(*p_getsym_t)( int c, const char* psym, bool& iserr );
+typedef void	(*p_send_chat_t) (const char* message);
 
 extern	p_getsym_t		p_get_symbol;
+extern	p_send_chat_t	p_sendchat;
+
 
 double getsym( const char* name );
 double process_state(holdem_state* pstate);
