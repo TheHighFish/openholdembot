@@ -1,16 +1,25 @@
 v2.1.0 2009-xx-yy
 ==============
 BUG FIXES:
-- When the autolayer was engaged it was still possible to load a new formula via the MRU-list.
+- When the autolayer was engaged it was still possible to load a new formula via
+  the MRU-list.
   This usually crashed the evaluator-engine, which had to operate on invalid data. [THF]
 - The symbol "elapsed" got reset a second time when the user-chair was detected 
-  (or the user-chair was forced). So it could be smaller than "elapsedhand" and "elapsedauto",
-  which both got only initialized once, when OH connected to a table, which caused validator-errors.
+  (or the user-chair was forced). So it could be smaller than "elapsedhand"
+  and"elapsedauto",
+  which both got only initialized once, when OH connected to a table, which
+  caused validator-errors.
   We removed that second reset of "elapsed" to avoid that issue.
-  This modification doesn't really change the nature of "elapsed", which measures the session-length,
-  as in practise the userchair gets detected very soon after the connection to a table. [THF]
+  This modification doesn't really change the nature of "elapsed", which measures the
+  session-length,
+  as in practise the userchair gets detected very soon after the connection to a table.[THF]
 - Error-message on unknown symbols. This feature did also detect some typos in rules
   for the validator, which have been fixed now. [THF]
+- OpenHoldem did first start the IteratorThread and then mark it as running.
+  This was the source of an ugly race-condition; for low NITs the iteratorthread
+  could already be finished when it got marked as running. This killed the iterator in
+  future heartbeat-cycles. We swapped now the two instructions. Thanks to SuperTramp
+  for finding the problem and suggesting the fix. [THF]
 
 MAINTENANCE:
 
