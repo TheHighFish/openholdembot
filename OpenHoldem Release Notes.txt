@@ -20,6 +20,8 @@ BUG FIXES:
   could already be finished when it got marked as running. This killed the iterator in
   future heartbeat-cycles. We swapped now the two instructions. Thanks to SuperTramp
   for finding the problem and suggesting the fix. [THF]
+- User.DLL: Callback-pointer for custom chat-messages was missing. 
+  Thanks to poker_dog for reporting.[THF]
 
 MAINTENANCE:
 
