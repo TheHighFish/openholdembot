@@ -55,10 +55,12 @@ CIteratorThread::CIteratorThread()
 	// Initialize variables
 	InitIteratorLoop();
 
-	// Start thread
-	AfxBeginThread(IteratorThreadFunction, this);
-
+	// FIRST mark thread as running,
+	// THEN start thread.
+	// The other way can lead to an ugly race-condition,
+	// if the thread has already stopped, when we mark it as running.
 	iter_vars.set_iterator_thread_running(true);
+	AfxBeginThread(IteratorThreadFunction, this);
 
 	write_log(3, "ITT: Iterator Thread started.\n");
 }
