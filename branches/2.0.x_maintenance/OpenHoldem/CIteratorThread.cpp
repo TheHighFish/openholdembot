@@ -64,8 +64,6 @@ CIteratorThread::CIteratorThread()
 	iter_vars.set_iterator_thread_running(true);
 	AfxBeginThread(IteratorThreadFunction, this);
 
-	iter_vars.set_iterator_thread_running(true);
-
 	write_log(3, "ITT: Iterator Thread started.");
 }
 
