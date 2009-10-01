@@ -173,9 +173,13 @@ void CRebuyManagement::ExecuteRebuyScript()
 	if(CreateProcess(NULL, CommandLine.GetBuffer(), NULL, 
 		false, 0, NULL, NULL, 0, &StartupInfo, &ProcessInfo))
 	{
-		// Wait for termination of the rebuy-script for at most 30 seconds.
-		int ExitCode = WaitForSingleObject(ProcessInfo.hProcess, 30000);
-		// To do: exit code!!!
+		// Docu for WaitForSingleObject:
+		// http://msdn.microsoft.com/en-us/library/ms687032(VS.85).aspx
+		// It seems, none of the exitcodes is relevant for us.
+		//
+		// Wait for termination of the rebuy-script, if necessary forever,
+		// as we can't release the (autoplayer)mutex as long as the script is running.
+		int ExitCode = WaitForSingleObject(ProcessInfo.hProcess, INFINITE);
 	}
 	else
 	{
