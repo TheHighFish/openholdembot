@@ -1,14 +1,13 @@
 #include "StdAfx.h"
 
+#include "..\CCritSec\CCritSec.h"
 #include "CFormula.h"
-
-#include "OpenHoldemDoc.h"
-
+#include "CPreferences.h"
 #include "CSymbols.h"
 #include "..\CTransform\CTransform.h"
 #include "CGrammar.h"
+#include "OpenHoldemDoc.h"
 #include "UPDialog.h"
-#include "..\CCritSec\CCritSec.h"
 
 
 CFormula			*p_formula = NULL;
@@ -387,9 +386,14 @@ bool CFormula::ParseAllFormula(HWND hwnd, bool disable_msgbox)
 	data.pParent = this;
 	data.disable_msgbox = disable_msgbox;
 
-	CUPDialog		dlg_progress(hwnd, ParseLoop, &data, "Please wait", false);
-
-	dlg_progress.DoModal();
+	if (!prefs.gui_disable_progress_dialog())
+	{
+		// Create progress dialog.
+		// It will live longer as this codeblock,
+		// update automatically and die automatically.
+		CUPDialog dlg_progress(hwnd, ParseLoop, &data, "Please wait", false);
+		dlg_progress.DoModal();
+	}
 
 	return data.all_parsed;
 }

@@ -311,7 +311,7 @@ int COpenHoldemApp::ExitInstance()
 	// but we have to be careful, as sometimes we do some work in the destructors,
 	// that depends on other classes, e.g. the destructor of the autoconnector
 	// need its session_id (CSessionCounter).
-	if (!p_occlusioncheck) { delete p_occlusioncheck; p_occlusioncheck = NULL; }
+	if (p_occlusioncheck) { delete p_occlusioncheck; p_occlusioncheck = NULL; }
 	if (p_rebuymanagement) { delete p_rebuymanagement; p_rebuymanagement = NULL; }
 	if (p_autoconnector) { delete p_autoconnector; p_autoconnector = NULL; }
 	if (p_validator) { delete p_validator; p_validator = NULL; }

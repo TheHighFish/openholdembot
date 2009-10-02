@@ -138,6 +138,7 @@ public:
 	const bool autoconnector_close_when_table_disappears() { return _autoconnector_close_when_table_disappears; }
 	// GUI
 	const bool gui_start_minimized() { return _gui_start_minimized; }
+	const bool gui_disable_progress_dialog() { return _gui_disable_progress_dialog; }
 	// Rebuy
 	const bool rebuy_condition_no_cards() { return _rebuy_condition_no_cards; }
 	const bool rebuy_condition_change_in_handnumber() { return _rebuy_condition_change_in_handnumber; }
@@ -305,6 +306,7 @@ public:
 
 	// GUI
 	void set_gui_start_minimized(const bool b) { ENT _gui_start_minimized = b; WriteReg("gui_start_minimized", b); }
+	void set_gui_disable_progress_dialog(const bool b) { ENT _gui_disable_progress_dialog = b; WriteReg("gui_disable_progress_dialog", b); }
 
 	// Rebuy
 	void set_rebuy_condition_no_cards(const bool b) { ENT _rebuy_condition_no_cards = b; WriteReg("rebuy_condition_no_cards", b); }
@@ -479,6 +481,7 @@ private:
 
 	// GUI
 	bool			_gui_start_minimized; 
+	bool			_gui_disable_progress_dialog;
 
 	// Rebuy
 	bool			_rebuy_condition_no_cards;
