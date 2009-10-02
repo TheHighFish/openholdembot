@@ -28,7 +28,8 @@ protected:
 	virtual void OnOK();
 
 public:
-	CButton _gui_start_minimized;
+	CButton _gui_start_minimized_Button;
+	CButton _gui_disable_progress_dialog_Button;
 };
 
 #endif

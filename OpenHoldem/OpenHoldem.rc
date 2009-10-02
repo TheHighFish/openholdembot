@@ -942,6 +942,8 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "Start minimized",IDC_GUI_START_MINIMIZED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,59,8
+    CONTROL         "Don't show progress-dialog (formula-parsing)",IDC_GUI_Disable_Progress_Dialog,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,24,163,8
 END
 
 IDD_SAPREFS16 DIALOGEX 0, 0, 219, 155
@@ -1233,7 +1235,7 @@ BEGIN
     BEGIN
         VERTGUIDE, 4
         HORZGUIDE, 16
-        HORZGUIDE, 41
+        HORZGUIDE, 32
         HORZGUIDE, 71
         HORZGUIDE, 89
     END
