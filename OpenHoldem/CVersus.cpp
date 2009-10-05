@@ -60,6 +60,19 @@ double CVersus::GetSymbol(const char *a, int *e)
 	else if (memcmp(a, "vs$prtielo", 10)==0 && strlen(a)==10)	return _vsprtielo;
 	else if (memcmp(a, "vs$prloslo", 10)==0 && strlen(a)==10)	return _vsprloslo;
 
+	else if (memcmp(a, "vs$nhandshinow", 14)==0 && strlen(a)==14)	return _nhandshinow;
+	else if (memcmp(a, "vs$nhandstinow", 14)==0 && strlen(a)==14)	return _nhandstinow;
+	else if (memcmp(a, "vs$nhandslonow", 14)==0 && strlen(a)==14)	return _nhandslonow;
+	else if (memcmp(a, "vs$prwinhinow", 13)==0 && strlen(a)==13)	return _vsprwinhinow;
+	else if (memcmp(a, "vs$prtiehinow", 13)==0 && strlen(a)==13)	return _vsprtiehinow;
+	else if (memcmp(a, "vs$prloshinow", 13)==0 && strlen(a)==13)	return _vsprloshinow;
+	else if (memcmp(a, "vs$prwintinow", 13)==0 && strlen(a)==13)	return _vsprwintinow;
+	else if (memcmp(a, "vs$prtietinow", 13)==0 && strlen(a)==13)	return _vsprtietinow;
+	else if (memcmp(a, "vs$prlostinow", 13)==0 && strlen(a)==13)	return _vsprlostinow;
+	else if (memcmp(a, "vs$prwinlonow", 13)==0 && strlen(a)==13)	return _vsprwinlonow;
+	else if (memcmp(a, "vs$prtielonow", 13)==0 && strlen(a)==13)	return _vsprtielonow;
+	else if (memcmp(a, "vs$prloslonow", 13)==0 && strlen(a)==13)	return _vsprloslonow;
+
 	else if (memcmp(a, "vs$", 3)==0 &&
 			 ((memcmp(&a[4], "$pr", 3)==0 && strlen(a)==10) ||
 			  (memcmp(&a[5], "$pr", 3)==0 && strlen(a)==11) ||
@@ -95,7 +108,8 @@ bool CVersus::GetCounts(void)
 	CardMask		plCards, oppCards, deadCards, comCardsScrape, comCardsEnum, comCardsAll, usedCards;
 	unsigned int	wintemp = 0, tietemp = 0, lostemp = 0, offset = 0;
 	unsigned int	nhiwin = 0, nhitie = 0, nhilos = 0, ntiwin = 0, ntitie = 0, ntilos = 0, nlowin = 0, nlotie = 0, nlolos = 0;
-	unsigned int	c0rank = 0, c1rank = 0, temprank = 0;
+	unsigned int	nhinowwin = 0, nhinowtie = 0, nhinowlos = 0, ntinowwin = 0, ntinowtie = 0, ntinowlos = 0, nlonowwin = 0, nlonowtie = 0, nlonowlos = 0;
+   unsigned int	c0rank = 0, c1rank = 0, temprank = 0;
 	BYTE			byte[8] = {0};
 	long			pos = 0;
 	int				listnum = 0;
@@ -134,6 +148,13 @@ bool CVersus::GetCounts(void)
 
 	_nwin = _ntie = _nlos = _nhands = 0;
 	_nhandshi = _nhandsti = _nhandslo = 0;
+   _nhandshinow = _nhandstinow = _nhandslonow = 0;
+   _vsprwinhi = _vsprtiehi = _vsprloshi = 0;
+   _vsprwinti = _vsprtieti = _vsprlosti = 0;
+   _vsprwinlo = _vsprtielo = _vsprloslo = 0;
+   _vsprwinhinow = _vsprtiehinow = _vsprloshinow = 0;
+   _vsprwintinow = _vsprtietinow = _vsprlostinow = 0;
+   _vsprwinlonow = _vsprtielonow = _vsprloslonow = 0;
 	nhiwin = nhitie = nhilos = ntiwin = ntitie = ntilos = nlowin = nlotie = nlolos = 0;
 
 	// Clear counters
@@ -239,7 +260,9 @@ bool CVersus::GetCounts(void)
 	// FLOP, TURN, RIVER
 	else if (sym_br >= 2) 
 	{
-
+      CardMask		playerEvalCardsNow, oppEvalCardsNow;
+	   HandVal		player_hv_now = 0, opp_hv_now = 0; 
+         
 		// Common cards
 		CardMask_RESET(comCardsScrape);
 		if (sym_br >= 2) CardMask_SET(comCardsScrape, card_common[0]);
@@ -256,6 +279,10 @@ bool CVersus::GetCounts(void)
 		// all used cards
 		CardMask_OR(usedCards, comCardsScrape, plCards);
 
+      // eval player hand now
+      CardMask_OR(playerEvalCardsNow, plCards, comCardsScrape);
+	   player_hv_now = Hand_EVAL_N(playerEvalCardsNow, sym_br+3);
+	   
 		// Enumerate through all possible opponent hands (excludes already used cards)
 		for (i=0; i<=50; i++)
 		{
@@ -311,7 +338,33 @@ bool CVersus::GetCounts(void)
 						ntitie += tietemp;
 						ntilos += lostemp;
 					}
+               
+               //eval opponent cards now
+               CardMask_OR(oppEvalCardsNow, oppCards, comCardsScrape);
+	            opp_hv_now  = Hand_EVAL_N(oppEvalCardsNow, sym_br+3);
 
+	            if (player_hv_now < opp_hv_now)
+               {
+						_nhandshinow = _nhandshinow + 1;
+						nhinowwin += wintemp;
+						nhinowtie += tietemp;
+						nhinowlos += lostemp;
+               }
+	            else if (player_hv_now  > opp_hv_now)
+               {
+               	_nhandslonow = _nhandslonow + 1;
+						nlonowwin += wintemp;
+						nlonowtie += tietemp;
+						nlonowlos += lostemp;
+					}
+	            else
+               {
+                  _nhandstinow = _nhandstinow + 1;
+						ntinowwin += wintemp;
+						ntinowtie += tietemp;
+						ntinowlos += lostemp;
+               }
+		            
 					// Calculations for vs$xx$prwin, vs$xx$prtie, vs$xx$prlos
 					c0rank = StdDeck_RANK(i);
 					c1rank = StdDeck_RANK(j);
@@ -341,19 +394,46 @@ bool CVersus::GetCounts(void)
 	_vsprwin = (double) _nwin / ((double)  _nwin + (double) _ntie + (double) _nlos);
 	_vsprtie = (double) _ntie / ((double)  _nwin + (double) _ntie + (double) _nlos);
 	_vsprlos = (double) _nlos / ((double)  _nwin + (double) _ntie + (double) _nlos);
-
-	_vsprwinhi = (double) nhiwin / ((double)  nhiwin + (double) nhitie + (double) nhilos);
-	_vsprtiehi = (double) nhitie / ((double)  nhiwin + (double) nhitie + (double) nhilos);
-	_vsprloshi = (double) nhilos / ((double)  nhiwin + (double) nhitie + (double) nhilos);
-
-	_vsprwinti = (double) ntiwin / ((double)  ntiwin + (double) ntitie + (double) ntilos);
-	_vsprtieti = (double) ntitie / ((double)  ntiwin + (double) ntitie + (double) ntilos);
-	_vsprlosti = (double) ntilos / ((double)  ntiwin + (double) ntitie + (double) ntilos);
-
-	_vsprwinlo = (double) nlowin / ((double)  nlowin + (double) nlotie + (double) nlolos);
-	_vsprtielo = (double) nlotie / ((double)  nlowin + (double) nlotie + (double) nlolos);
-	_vsprloslo = (double) nlolos / ((double)  nlowin + (double) nlotie + (double) nlolos);
-
+   
+   if(_nhandshi>0)
+   {
+	   _vsprwinhi = (double) nhiwin / ((double)  nhiwin + (double) nhitie + (double) nhilos);
+	   _vsprtiehi = (double) nhitie / ((double)  nhiwin + (double) nhitie + (double) nhilos);
+	   _vsprloshi = (double) nhilos / ((double)  nhiwin + (double) nhitie + (double) nhilos);
+   }
+   if(_nhandsti>0)
+   {
+	   _vsprwinti = (double) ntiwin / ((double)  ntiwin + (double) ntitie + (double) ntilos);
+	   _vsprtieti = (double) ntitie / ((double)  ntiwin + (double) ntitie + (double) ntilos);
+	   _vsprlosti = (double) ntilos / ((double)  ntiwin + (double) ntitie + (double) ntilos);
+   }
+   if(_nhandslo>0)
+   {
+	   _vsprwinlo = (double) nlowin / ((double)  nlowin + (double) nlotie + (double) nlolos);
+	   _vsprtielo = (double) nlotie / ((double)  nlowin + (double) nlotie + (double) nlolos);
+	   _vsprloslo = (double) nlolos / ((double)  nlowin + (double) nlotie + (double) nlolos);
+   }
+	if (sym_br >= 2) 
+	{
+      if(_nhandshinow>0)
+      {
+         _vsprwinhinow = (double) nhinowwin / ((double)  nhinowwin + (double) nhinowtie + (double) nhinowlos);
+	      _vsprtiehinow = (double) nhinowtie / ((double)  nhinowwin + (double) nhinowtie + (double) nhinowlos);
+	      _vsprloshinow = (double) nhinowlos / ((double)  nhinowwin + (double) nhinowtie + (double) nhinowlos);
+      }
+      if(_nhandstinow>0)
+      {
+	      _vsprwintinow = (double) ntinowwin / ((double)  ntinowwin + (double) ntinowtie + (double) ntinowlos);
+	      _vsprtietinow = (double) ntinowtie / ((double)  ntinowwin + (double) ntinowtie + (double) ntinowlos);
+	      _vsprlostinow = (double) ntinowlos / ((double)  ntinowwin + (double) ntinowtie + (double) ntinowlos);
+      }
+      if(_nhandslonow>0)
+      {
+	      _vsprwinlonow = (double) nlonowwin / ((double)  nlonowwin + (double) nlonowtie + (double) nlonowlos);
+	      _vsprtielonow = (double) nlonowtie / ((double)  nlonowwin + (double) nlonowtie + (double) nlonowlos);
+	      _vsprloslonow = (double) nlonowlos / ((double)  nlonowwin + (double) nlonowtie + (double) nlonowlos);
+      }
+   }
 	return true;
 }
 
@@ -362,8 +442,6 @@ void CVersus::DoCalc(const CardMask plCards, const CardMask oppCards, const Card
 {
 	CardMask		playerEvalCards, oppEvalCards;
 	HandVal			player_hv = 0, opp_hv = 0;
-	unsigned int	player_pokval = 0, opp_pokval = 0;
-	double			dummy = 0.;
 
 	CardMask_OR(playerEvalCards, plCards, comCards);
 	CardMask_OR(oppEvalCards, oppCards, comCards);
@@ -371,13 +449,10 @@ void CVersus::DoCalc(const CardMask plCards, const CardMask oppCards, const Card
 	player_hv = Hand_EVAL_N(playerEvalCards, 7);
 	opp_hv = Hand_EVAL_N(oppEvalCards, 7);
 
-	player_pokval = p_symbols->CalcPokerval(player_hv, 7, &dummy, 0, 1);
-	opp_pokval = p_symbols->CalcPokerval(opp_hv, 7, &dummy, 0, 1);
-
-	if (player_pokval > opp_pokval)
+	if (player_hv > opp_hv)
 		*wintemp = *wintemp + 1;
 
-	else if (player_pokval < opp_pokval)
+	else if (player_hv < opp_hv)
 		*lostemp = *lostemp + 1;
 
 	else
