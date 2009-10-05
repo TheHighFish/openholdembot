@@ -404,8 +404,8 @@
 #define IDC_REBUY_EDIT_MINIMUM_DELAY    1327
 #define IDC_STATIC_REBUY_SCRIPT         1329
 #define IDC_REBUY_EDIT_SCRIPT           1330
-#define IDC_SPIN1                       1331
 #define IDC_REBUY_EDIT_MINIMUM_DELAY_SPIN 1331
+#define IDC_GUI_Disable_Progress_Dialog 1332
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -535,7 +535,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        180
 #define _APS_NEXT_COMMAND_VALUE         32986
-#define _APS_NEXT_CONTROL_VALUE         1332
+#define _APS_NEXT_CONTROL_VALUE         1333
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
