@@ -569,6 +569,19 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_vs$prtielo(0);
 	set_sym_vs$prloslo(0);
 
+	set_sym_vs$nhandshinow(0);
+	set_sym_vs$nhandstinow(0);
+	set_sym_vs$nhandslonow(0);
+	set_sym_vs$prwinhinow(0);
+	set_sym_vs$prtiehinow(0);
+	set_sym_vs$prloshinow(0);
+	set_sym_vs$prwintinow(0);
+	set_sym_vs$prtietinow(0);
+	set_sym_vs$prlostinow(0);
+	set_sym_vs$prwinlonow(0);
+	set_sym_vs$prtielonow(0);
+	set_sym_vs$prloslonow(0);
+
 	// action symbols
 	set_f$alli(0);
 	set_f$swag(0);
@@ -935,6 +948,19 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 	set_sym_vs$prwinlo(0);
 	set_sym_vs$prtielo(0);
 	set_sym_vs$prloslo(0);
+
+   set_sym_vs$nhandshinow(0);
+	set_sym_vs$nhandstinow(0);
+	set_sym_vs$nhandslonow(0);
+	set_sym_vs$prwinhinow(0);
+	set_sym_vs$prtiehinow(0);
+	set_sym_vs$prloshinow(0);
+	set_sym_vs$prwintinow(0);
+	set_sym_vs$prtietinow(0);
+	set_sym_vs$prlostinow(0);
+	set_sym_vs$prwinlonow(0);
+	set_sym_vs$prtielonow(0);
+	set_sym_vs$prloslonow(0);
 
 	// log$ symbols
 	logsymbols_collection_removeall();
@@ -4055,6 +4081,19 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "vs$prwinlo", 10)==0 && strlen(a)==10)  				return _sym.vs$prwinlo;
 		if (memcmp(a, "vs$prtielo", 10)==0 && strlen(a)==10)  				return _sym.vs$prtielo;
 		if (memcmp(a, "vs$prloslo", 10)==0 && strlen(a)==10)  				return _sym.vs$prloslo;
+
+	   if (memcmp(a, "vs$nhandshinow", 14)==0 && strlen(a)==14)	return _sym.vs$nhandshinow;
+	   if (memcmp(a, "vs$nhandstinow", 14)==0 && strlen(a)==14)	return _sym.vs$nhandstinow;
+	   if (memcmp(a, "vs$nhandslonow", 14)==0 && strlen(a)==14)	return _sym.vs$nhandslonow;
+	   if (memcmp(a, "vs$prwinhinow", 13)==0 && strlen(a)==13)	return _sym.vs$prwinhinow;
+	   if (memcmp(a, "vs$prtiehinow", 13)==0 && strlen(a)==13)	return _sym.vs$prtiehinow;
+	   if (memcmp(a, "vs$prloshinow", 13)==0 && strlen(a)==13)	return _sym.vs$prloshinow;
+	   if (memcmp(a, "vs$prwintinow", 13)==0 && strlen(a)==13)	return _sym.vs$prwintinow;
+	   if (memcmp(a, "vs$prtietinow", 13)==0 && strlen(a)==13)	return _sym.vs$prtietinow;
+	   if (memcmp(a, "vs$prlostinow", 13)==0 && strlen(a)==13)	return _sym.vs$prlostinow;
+	   if (memcmp(a, "vs$prwinlonow", 13)==0 && strlen(a)==13)	return _sym.vs$prwinlonow;
+	   if (memcmp(a, "vs$prtielonow", 13)==0 && strlen(a)==13)	return _sym.vs$prtielonow;
+	   if (memcmp(a, "vs$prloslonow", 13)==0 && strlen(a)==13)	return _sym.vs$prloslonow;
 	}
 
 	// Probabilities

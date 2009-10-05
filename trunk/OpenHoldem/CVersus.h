@@ -22,7 +22,11 @@ private:
 	double			_vsprwinhi, _vsprtiehi, _vsprloshi;
 	double			_vsprwinti, _vsprtieti, _vsprlosti;
 	double			_vsprwinlo, _vsprtielo, _vsprloslo;
-	int				_nlistwin[MAX_HAND_LISTS], _nlisttie[MAX_HAND_LISTS], _nlistlos[MAX_HAND_LISTS];
+   int				_nhandshinow, _nhandstinow, _nhandslonow;
+   double			_vsprwinhinow, _vsprtiehinow, _vsprloshinow;
+	double			_vsprwintinow, _vsprtietinow, _vsprlostinow;
+	double			_vsprwinlonow, _vsprtielonow, _vsprloslonow;
+   int				_nlistwin[MAX_HAND_LISTS], _nlisttie[MAX_HAND_LISTS], _nlistlos[MAX_HAND_LISTS];
 	int				_versus_fh;
 
 	CCritSec		m_critsec;

@@ -364,6 +364,20 @@ struct SSymbols
 	double vs$prwinlo;
 	double vs$prtielo;
 	double vs$prloslo;
+
+	double vs$nhandshinow;
+	double vs$nhandstinow;
+	double vs$nhandslonow;
+	double vs$prwinhinow;
+	double vs$prtiehinow;
+	double vs$prloshinow;
+	double vs$prwintinow;
+	double vs$prtietinow;
+	double vs$prlostinow;
+	double vs$prwinlonow;
+	double vs$prtielonow;
+	double vs$prloslonow;
+
 	bool   playing; //2008-03-25 Matrix
 };
 
@@ -784,6 +798,19 @@ public:
 	void	set_sym_vs$prwinlo(const double d) { ENT _sym.vs$prwinlo = d;}
 	void	set_sym_vs$prtielo(const double d) { ENT _sym.vs$prtielo = d;}
 	void	set_sym_vs$prloslo(const double d) { ENT _sym.vs$prloslo = d;}
+
+	void	set_sym_vs$nhandshinow(const double d) { ENT _sym.vs$nhandshinow = d;}
+	void	set_sym_vs$nhandstinow(const double d) { ENT _sym.vs$nhandstinow = d;}
+	void	set_sym_vs$nhandslonow(const double d) { ENT _sym.vs$nhandslonow = d;}
+	void	set_sym_vs$prwinhinow(const double d) { ENT _sym.vs$prwinhinow = d;}
+	void	set_sym_vs$prtiehinow(const double d) { ENT _sym.vs$prtiehinow = d;}
+	void	set_sym_vs$prloshinow(const double d) { ENT _sym.vs$prloshinow = d;}
+	void	set_sym_vs$prwintinow(const double d) { ENT _sym.vs$prwintinow = d;}
+	void	set_sym_vs$prtietinow(const double d) { ENT _sym.vs$prtietinow = d;}
+	void	set_sym_vs$prlostinow(const double d) { ENT _sym.vs$prlostinow = d;}
+	void	set_sym_vs$prwinlonow(const double d) { ENT _sym.vs$prwinlonow = d;}
+	void	set_sym_vs$prtielonow(const double d) { ENT _sym.vs$prtielonow = d;}
+	void	set_sym_vs$prloslonow(const double d) { ENT _sym.vs$prloslonow = d;}
 
 	void	set_sym_playing(const bool b) { ENT _sym.playing = b;}
 #undef ENT
