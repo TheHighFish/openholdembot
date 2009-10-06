@@ -145,6 +145,8 @@ public:
 	const CString sitename()		{ SMapCI it = _s$.find("sitename"); if (it!=_s$.end()) return it->second.text; else return ""; }
 	const CString network()			{ SMapCI it = _s$.find("network"); if (it!=_s$.end()) return it->second.text; else return ""; }
 
+	bool swagallin()				{ SMapCI it = _s$.find("swagallin"); return (it != _s$.end()); }
+
 	const int swagselectionmethod() { SMapCI it = _s$.find("swagselectionmethod");
 									  if (it==_s$.end()) return TEXTSEL_DOUBLECLICK;
 									  CString s=it->second.text;

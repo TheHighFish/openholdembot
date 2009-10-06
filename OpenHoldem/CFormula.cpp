@@ -70,6 +70,16 @@ void CFormula::SetDefaultBot()
 	_formula_name = "Default";
 }
 
+const char *CFormula::GetFunctionText(const char *name)
+{
+	for (int i=0; i<formula()->mFunction.GetSize(); i++)
+	{
+		if (!formula()->mFunction[i].func.Compare(name))
+			return formula()->mFunction[i].func_text.GetString();
+	}
+	return "";
+}
+
 // Reading a part of a formula, which may be spread
 // between two files in case of an old style whf / whx formula.
 void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine, bool disable_msgbox)

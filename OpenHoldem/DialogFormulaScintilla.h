@@ -66,6 +66,20 @@
 #define SCE_C_GLOBALCLASS 19
 #define MAX_STYLE_NUM 19
 
+class CScintillaInfo
+{
+public:
+	CScintillaInfo() { _pWnd = NULL; }
+	CScintillaInfo(CScintillaWnd *pWnd, const char *name) { _pWnd = pWnd; _name = name; }
+	CScintillaInfo(const CScintillaInfo &in) { operator=(in); }
+
+	CScintillaInfo &operator=(const CScintillaInfo &in) { _pWnd = in._pWnd; _name = in._name; return *this; }
+
+public:
+	CScintillaWnd *_pWnd;
+	CString _name;
+};
+
 class CDlgFormulaScintilla : public CDialog 
 {
 public:
@@ -78,8 +92,9 @@ public:
 	enum { IDD = IDD_FORMULA_SCINTILLA };
 	
 	CScintillaWnd	m_EmptyScinCtrl;
-	CArray<CScintillaWnd *, CScintillaWnd *> m_ScinArray;
+	CArray<CScintillaInfo, CScintillaInfo &> m_ScinArray;
 	CScintillaWnd	*m_pActiveScinCtrl;
+	CScintillaWnd	*FindScintillaWindow(const char *name);
 
 	CButton			m_ButtonAuto;
 	bool			m_wrote_fdebug_header;
@@ -103,10 +118,13 @@ protected:
 	afx_msg LRESULT OnWinMgr(WPARAM wp, LPARAM lp);
 	afx_msg void OnTvnSelchangingFormulaTree(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnTvnExpandedFormulaTree(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnTabSelectionChange(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnFunctionTabSelectionChange(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnSymbolTreeTipInfo(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnSymbolContextMenu(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedCancel();
+	afx_msg void OnSearchUpdate();
 	afx_msg void ToggleToolbar();
 	afx_msg void ToggleLineNumbers();
 	afx_msg void ToggleSelectionMargin();
@@ -146,8 +164,9 @@ protected:
 	void SetStyleColors(CScintillaWnd *pWnd, bool enabled);
 
 	BOOL CDlgFormulaScintilla::PreTranslateMessage(MSG* pMsg);
-	CScintillaWnd *SetupScintilla(CScintillaWnd *pWnd);
+	CScintillaWnd *SetupScintilla(CScintillaWnd *pWnd, const char *title);
 	void UpdateAllScintillaKeywords();
+	void ConstructKeywords(CString &keys);
 	void UpdateScintillaKeywords(CScintillaWnd *pWnd);
 	void DeleteScintilla(CScintillaWnd *pWnd);
 
@@ -155,6 +174,7 @@ protected:
 	void StopAutoButton();
 	bool PromptToSave();
 	void ResizeScintillaWindows();
+	void SelectFunctionTab(CScintillaWnd *pCurScin);
 
 	void PopulateSymbols();
 	HTREEITEM AddSymbolTitle(const char *title, const char *description=NULL, HTREEITEM parentItem=NULL);
@@ -162,10 +182,12 @@ protected:
 	HTREEITEM AddSymbol(HTREEITEM parentItem, const char *symbol, const char *description);
 	HTREEITEM hRawItem, hCatItem;
 
-	void	  PopulateUDFs();
+	void	  PopulateFormulaTree();
+	void	  ConditionallyAddFunction(const CString &name, const CString &content, const CString &filter, HTREEITEM hParent);
 	HTREEITEM FindUDFGroupItem(const char *groupName);
 	HTREEITEM FindUDFStartingItem(const char *groupName);
 	HTREEITEM MoveTreeItem(HTREEITEM hItem, HTREEITEM hNewParent, const char *name, bool bSelect);
+	HTREEITEM FindFormulaWithWindow(const CScintillaWnd *pWnd, HTREEITEM hFirstItem);
 	void	  GetGroupName(const char *functionName, CString &groupName);
 	void	  RemoveSingleItemGroups();
 	void	  GroupUDFs();
@@ -195,9 +217,11 @@ protected:
 	CTreeCtrl		m_SymbolTree;
 	CButton			m_ButtonCalc, m_FormulaCancel, m_FormulaApply, m_FormulaOK;
 	CEdit			m_CalcResult;
+	CEdit			m_SearchEdit;
 	CWinMgr			m_winMgr;				// window manager
 	CSizerBar		m_winMgrSizerBar;		// sizer bar
 	CTabCtrl		m_TabControl;
+	CTabCtrl		m_FunctionTab;
 
 	HACCEL			m_hEditAccelTable;
 	HACCEL			m_hDialogAccelTable;
@@ -217,6 +241,10 @@ protected:
 
 	// This is the copy of the formula class that is being worked on in the dialog
 	CFormula		m_wrk_formula;
+
+	CStringArray	m_standard_headings;
+	bool			m_standard_expand[4];
+	CStringArray	m_standard_functions[4];
 
 	// This is used for formula parsing and evaluation
 	CGrammar		gram;

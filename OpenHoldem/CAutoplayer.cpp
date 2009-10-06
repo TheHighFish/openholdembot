@@ -218,7 +218,12 @@ void CAutoplayer::DoAutoplayer(void)
 	}
 
 	// do swag first since it is the odd one
-	if (p_symbols->f$swag() && !p_symbols->f$alli() && p_scraper->GetButtonState(3)) 
+	bool bDoSwag = false; // I'm just breaking this out to be a little clearer (spew)
+	if (p_tablemap->swagallin() && p_symbols->f$alli() && p_scraper->GetButtonState(3))
+		bDoSwag = true;
+	if (p_symbols->f$swag() && !p_symbols->f$alli() && p_scraper->GetButtonState(3))
+		bDoSwag = true;
+	if (bDoSwag) 
 	{
 		write_log(3, "Calling DoSwag.\n");
 		DoSwag();
@@ -379,9 +384,12 @@ void CAutoplayer::DoSwag(void)
 		Sleep(prefs.swag_delay_2());
 
 
+		// if we are swagging allin then set the swag value to be our balance (spew)
+		CString swag_amt;
+		if (p_tablemap->swagallin() && p_symbols->f$alli())
+			f_swag = p_symbols->sym()->balance[10];
 
 		// SWAG AMOUNT ENTRY
-		CString swag_amt;
 		if (f_swag != (int) f_swag)
 			swag_amt.Format("%.2f", f_swag);
 		else
