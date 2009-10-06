@@ -106,6 +106,7 @@ protected:
 	virtual void OnCancel();
 	virtual void PostNcDestroy();
 	afx_msg void OnBnClickedApply();
+	afx_msg void OnBnClickedApplySave();
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedCalc();
 	afx_msg void OnNew();
@@ -243,8 +244,8 @@ protected:
 	CFormula		m_wrk_formula;
 
 	CStringArray	m_standard_headings;
-	bool			m_standard_expand[4];
-	CStringArray	m_standard_functions[4];
+	bool			m_standard_expand[3];
+	CStringArray	m_standard_functions[3];
 
 	// This is used for formula parsing and evaluation
 	CGrammar		gram;
