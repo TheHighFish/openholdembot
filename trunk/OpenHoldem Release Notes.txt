@@ -29,6 +29,7 @@ NEW STUFF:
 - Added option to delete old log-files that exceed a given size. [THF]
 - Removed the old WinHoldem-default-bot. Replaced it with Playbot by Matrix. [THF]
 - Improvements to the user interface of the Script dialog. [Spew]
+- Added "Apply and Save" to the formula dialog with CTRL-S as the shortcut. [Spew]
 - If the tablemap has the string "swagallin" OH will swag the player balance if f$alli is true. [Spew]
 
 

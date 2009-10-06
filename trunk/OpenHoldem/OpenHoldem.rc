@@ -211,6 +211,7 @@ BEGIN
     POPUP "&File"
     BEGIN
         MENUITEM "&Apply",                      ID_FORMULA_FILE_APPLY
+        MENUITEM "Apply and Save\tCtrl-S",      ID_FORMULA_FILE_APPLYANDSAVE
         MENUITEM "&OK",                         ID_FORMULA_FILE_OK
         MENUITEM "&Cancel",                     ID_FORMULA_FILE_CANCEL
     END
@@ -1480,6 +1481,7 @@ BEGIN
     "F",            ID_FORMULA_EDIT_FIND,   VIRTKEY, CONTROL, NOINVERT
     VK_F3,          ID_FORMULA_EDIT_FIND_NEXT, VIRTKEY, NOINVERT
     VK_F3,          ID_FORMULA_EDIT_FIND_PREV, VIRTKEY, SHIFT, NOINVERT
+    "S",            ID_FORMULA_FILE_APPLYANDSAVE, VIRTKEY, CONTROL, NOINVERT
 END
 
 #endif    // English (Canada) resources

@@ -166,36 +166,33 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 {
 	in_startup = true;
 
-	m_standard_headings.Add("");
 	m_standard_headings.Add("Autoplayer Functions");
 	m_standard_headings.Add("Standard Functions");
 	m_standard_headings.Add("Debug Functions");
 
-	m_standard_expand[0] = false;
-	m_standard_expand[1] = prefs.expand_auto();
-	m_standard_expand[2] = prefs.expand_std();
-	m_standard_expand[3] = prefs.expand_debug();
+	m_standard_expand[0] = prefs.expand_auto();
+	m_standard_expand[1] = prefs.expand_std();
+	m_standard_expand[2] = prefs.expand_debug();
 
-	ASSERT(m_standard_headings.GetSize() == 4);
+	ASSERT(m_standard_headings.GetSize() == 3);
 
-	m_standard_functions[0].Add("notes");
+	m_standard_functions[0].Add("f$alli");
+	m_standard_functions[0].Add("f$swag");
+	m_standard_functions[0].Add("f$srai");
+	m_standard_functions[0].Add("f$rais");
+	m_standard_functions[0].Add("f$call");
+	m_standard_functions[0].Add("f$prefold");
+	m_standard_functions[0].Add("f$delay");
 
-	m_standard_functions[1].Add("f$alli");
-	m_standard_functions[1].Add("f$swag");
-	m_standard_functions[1].Add("f$srai");
-	m_standard_functions[1].Add("f$rais");
-	m_standard_functions[1].Add("f$call");
-	m_standard_functions[1].Add("f$prefold");
-	m_standard_functions[1].Add("f$delay");
+	m_standard_functions[1].Add("notes");
+	m_standard_functions[1].Add("dll");
+	m_standard_functions[1].Add("f$chat");
+	m_standard_functions[1].Add("f$rebuy");
+	m_standard_functions[1].Add("f$P");
+	m_standard_functions[1].Add("f$play");
 
-	m_standard_functions[2].Add("dll");
-	m_standard_functions[2].Add("f$chat");
-	m_standard_functions[2].Add("f$rebuy");
-	m_standard_functions[2].Add("f$P");
-	m_standard_functions[2].Add("f$play");
-
-	m_standard_functions[3].Add("f$test");
-	m_standard_functions[3].Add("f$debug");
+	m_standard_functions[2].Add("f$test");
+	m_standard_functions[2].Add("f$debug");
 
 	// Copy current doc formula into working set
 	m_wrk_formula.ClearFormula();
@@ -252,6 +249,7 @@ void CDlgFormulaScintilla::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
 	// Menu items
 	ON_COMMAND(ID_FORMULA_FILE_APPLY, &CDlgFormulaScintilla::OnBnClickedApply)
+	ON_COMMAND(ID_FORMULA_FILE_APPLYANDSAVE, &CDlgFormulaScintilla::OnBnClickedApplySave)
 	ON_COMMAND(ID_FORMULA_FILE_OK, &CDlgFormulaScintilla::OnBnClickedOk)
 	ON_COMMAND(ID_FORMULA_FILE_CANCEL, &CDlgFormulaScintilla::OnBnClickedCancel)
 	ON_COMMAND(ID_FORMULA_EDIT_NEW, &CDlgFormulaScintilla::OnNew)
@@ -928,7 +926,7 @@ void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pR
 	StopAutoButton();
 
 	// A root item was selected or a UDF group item
-	if (m_FormulaTree.GetParentItem(m_FormulaTree.GetSelectedItem()) == NULL || m_FormulaTree.ItemHasChildren(m_FormulaTree.GetSelectedItem()))
+	if ((m_FormulaTree.GetParentItem(m_FormulaTree.GetSelectedItem()) == NULL && s != "notes") || m_FormulaTree.ItemHasChildren(m_FormulaTree.GetSelectedItem()))
 	{
 		if (m_pActiveScinCtrl)
 		{
@@ -2522,6 +2520,13 @@ void CDlgFormulaScintilla::InitDebugArray(void)
 		}
 		debug_ar.Add(debug_struct);
 	}
+}
+
+void CDlgFormulaScintilla::OnBnClickedApplySave()
+{
+	OnBnClickedApply();
+	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
+	pMyMainWnd->SendMessage(WM_COMMAND, ID_FILE_SAVE, 0);
 }
 
 void CDlgFormulaScintilla::OnBnClickedApply() 
