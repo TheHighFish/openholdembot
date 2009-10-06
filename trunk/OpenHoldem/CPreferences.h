@@ -279,8 +279,8 @@ public:
 	void set_gametype(const int i) { ENT _gametype = i; WriteReg("gametype", i); }
 
 	// Formula editor
-	void set_expand_auto(const bool  b) { ENT _expand_list = b; WriteReg("expand_auto", b); }
-	void set_expand_debug(const bool  b) { ENT _expand_list = b; WriteReg("expand_debug", b); }
+	void set_expand_auto(const bool  b) { ENT _expand_auto = b; WriteReg("expand_auto", b); }
+	void set_expand_debug(const bool  b) { ENT _expand_debug = b; WriteReg("expand_debug", b); }
 	void set_expand_list(const bool  b) { ENT _expand_list = b; WriteReg("expand_list", b); }
 	void set_expand_std(const bool b) { ENT _expand_std = b; WriteReg("expand_std", b); }
 	void set_expand_udf(const bool b) { ENT _expand_udf = b; WriteReg("expand_udf", b); }

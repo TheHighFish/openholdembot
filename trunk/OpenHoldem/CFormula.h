@@ -59,6 +59,7 @@ public:
 	void MarkCacheStale();
 	void ParseHandList(const CString &list_text, bool inlist[13][13]);
 	void CopyFormulaFrom(CFormula *f);
+	const char *GetFunctionText(const char *name);
 
 public:
 	// public accessors
