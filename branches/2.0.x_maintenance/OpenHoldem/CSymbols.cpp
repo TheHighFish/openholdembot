@@ -1532,13 +1532,13 @@ void CSymbols::CalcChipamtsLimits(void)
 
 void CSymbols::CalcNumbets(void)
 {
-		if (_user_chair_confirmed)
-		{
+	if (_user_chair_confirmed)
+	{
 		set_sym_nbetstocall(_sym.call / _sym.bet[4]);									// nbetstocall
 		set_sym_nbetstorais(_sym.nbetstocall + 1);										// nbetstorais
 		set_sym_ncurrentbets(
 			_sym.bet[4]==0 ? 0 : _sym.currentbet[(int) _sym.userchair] / _sym.bet[4]);	// ncurrentbets
-		}
+	}
 
 	set_sym_ncallbets(
 		_sym.bet[4]==0 ? 0 : _sym.currentbet[(int) _sym.raischair] / _sym.bet[4]);		// ncallbets
@@ -1845,8 +1845,11 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
-		if ((p_scraper->card_player(i, 0) != CARD_NOCARD && p_scraper->card_player(i, 1) != CARD_NOCARD) || p_scraper->player_bet(i) != 0)
-		{
+		if ((p_scraper->card_player(i, 0) != CARD_NOCARD 
+			|| p_scraper->card_player(i, 1) != CARD_NOCARD) 
+			|| (p_scraper->player_bet(i) != 0)					// betting or posting
+			|| p_scraper->IsStringActive(p_scraper->active(i)))	// active, i.e. sitting in; not strictly correct, as the player could be new at the table,
+		{														// but that avoids problems with fast folds
 			set_sym_playersdealtbits((int) _sym.playersdealtbits | (1<<i));				// playersdealtbits
 
 			if (_user_chair_confirmed && i!=_sym.userchair)
@@ -1968,37 +1971,37 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 
 void CSymbols::CalcRoundsPositions(void) 
 {
-		int			i = 0;
+	int			i = 0;
 
-		for (i=_sym.dealerchair+1; i<=_sym.dealerchair+p_tablemap->nchairs() && (i%p_tablemap->nchairs())!=_sym.userchair; i++)
-		{
-			if ((int)_sym.playersplayingbits & (1<<(i%p_tablemap->nchairs())))
-				set_sym_betposition(_sym.betposition + 1);								// betposition
+	for (i=_sym.dealerchair+1; i<=_sym.dealerchair+p_tablemap->nchairs() && (i%p_tablemap->nchairs())!=_sym.userchair; i++)
+	{
+		if ((int)_sym.playersplayingbits & (1<<(i%p_tablemap->nchairs())))
+			set_sym_betposition(_sym.betposition + 1);								// betposition
 
-			if ((int)_sym.playersdealtbits & (1<<(i%p_tablemap->nchairs())))
-				set_sym_dealposition(_sym.dealposition + 1);							// dealposition
-		}
+		if ((int)_sym.playersdealtbits & (1<<(i%p_tablemap->nchairs())))
+			set_sym_dealposition(_sym.dealposition + 1);							// dealposition
+	}
 
-		for (i=_sym.raischair+1; i<=_sym.raischair+p_tablemap->nchairs() && (i%p_tablemap->nchairs())!=_sym.userchair; i++)
-		{
-			if ((int)_sym.playersplayingbits & (1<<(i%p_tablemap->nchairs())))
-				set_sym_callposition(_sym.callposition + 1);							// callposition
-		}
+	for (i=_sym.raischair+1; i<=_sym.raischair+p_tablemap->nchairs() && (i%p_tablemap->nchairs())!=_sym.userchair; i++)
+	{
+		if ((int)_sym.playersplayingbits & (1<<(i%p_tablemap->nchairs())))
+			set_sym_callposition(_sym.callposition + 1);							// callposition
+	}
 
-		for (i=_sym.dealerchair+1; i<=_sym.dealerchair+p_tablemap->nchairs() && (i%p_tablemap->nchairs())!=_sym.userchair; i++)
-		{
-			if ((int)_sym.playersseatedbits & (1<<(i%p_tablemap->nchairs())))
-				set_sym_seatposition(_sym.seatposition + 1);							// seatposition
-		}
+	for (i=_sym.dealerchair+1; i<=_sym.dealerchair+p_tablemap->nchairs() && (i%p_tablemap->nchairs())!=_sym.userchair; i++)
+	{
+		if ((int)_sym.playersseatedbits & (1<<(i%p_tablemap->nchairs())))
+			set_sym_seatposition(_sym.seatposition + 1);							// seatposition
+	}
 
-		for (i=_sym.dealerchair+1; i<=_sym.dealerchair+p_tablemap->nchairs() && (i%p_tablemap->nchairs())!=_sym.raischair; i++)
-		{
-			if ((int)_sym.playersplayingbits & (1<<(i%p_tablemap->nchairs())))
-				set_sym_betpositionrais(_sym.betpositionrais + 1);						// betpositionrais
+	for (i=_sym.dealerchair+1; i<=_sym.dealerchair+p_tablemap->nchairs() && (i%p_tablemap->nchairs())!=_sym.raischair; i++)
+	{
+		if ((int)_sym.playersplayingbits & (1<<(i%p_tablemap->nchairs())))
+			set_sym_betpositionrais(_sym.betpositionrais + 1);						// betpositionrais
 
-			if ((int)_sym.playersdealtbits & (1<<(i%p_tablemap->nchairs())))
-				set_sym_dealpositionrais(_sym.dealpositionrais + 1);					// dealpositionrais
-		}
+		if ((int)_sym.playersdealtbits & (1<<(i%p_tablemap->nchairs())))
+			set_sym_dealpositionrais(_sym.dealpositionrais + 1);					// dealpositionrais
+	}
 }
 
 void CSymbols::CalcPokerValues(void)
