@@ -100,11 +100,11 @@ void CReplayFrame::CreateReplayFrame(void)
 	EnterCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
 
 		// Create bitmap file
-		path.Format("%s\\replay\\session_%lu\\frame%03d.bmp", _startup_path, p_sessioncounter->session_id(), _next_replay_frame);
+		path.Format("%s\\replay\\session_%lu\\frame%06d.bmp", _startup_path, p_sessioncounter->session_id(), _next_replay_frame);
 		CreateBMPFile(path.GetString(), p_scraper->entire_window_cur());
 
 		// Create HTML file
-		path.Format("%s\\replay\\session_%lu\\frame%03d.htm", _startup_path, p_sessioncounter->session_id(), _next_replay_frame);
+		path.Format("%s\\replay\\session_%lu\\frame%06d.htm", _startup_path, p_sessioncounter->session_id(), _next_replay_frame);
 		if (fopen_s(&fp, path.GetString(), "w")==0)
 		{
 			fprintf(fp, p_scraper->title());
@@ -115,13 +115,13 @@ void CReplayFrame::CreateReplayFrame(void)
 			fprintf(fp, "</style>\n");
 			fprintf(fp, "<body>\n");
 			fprintf(fp, "<font face=courier>\n");
-			fprintf(fp, "<img src=\"frame%03d.bmp\">\n", _next_replay_frame);
+			fprintf(fp, "<img src=\"frame%06d.bmp\">\n", _next_replay_frame);
 			fprintf(fp, "<br>\n");
-			fprintf(fp, "<a href=\"frame%03d.htm\">PREV</a>\n",
+			fprintf(fp, "<a href=\"frame%06d.htm\">PREV</a>\n",
 					_next_replay_frame-1 >= 0 ? _next_replay_frame-1 : prefs.replay_max_frames());
-			fprintf(fp, "<a href=\"frame%03d.htm\">NEXT</a>\n",
+			fprintf(fp, "<a href=\"frame%06d.htm\">NEXT</a>\n",
 					_next_replay_frame+1 < prefs.replay_max_frames() ? _next_replay_frame+1 : 0);
-			fprintf(fp, " [%lu.%03d] [%s]<br>\n", p_sessioncounter->session_id(), _next_replay_frame, now_time_str);
+			fprintf(fp, " [%lu.%06d] [%s]<br>\n", p_sessioncounter->session_id(), _next_replay_frame, now_time_str);
 			fprintf(fp, "<br>\n");
 			fprintf(fp, "<table>\n");
 			fprintf(fp, "<tr>\n");

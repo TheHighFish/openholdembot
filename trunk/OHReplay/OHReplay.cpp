@@ -267,8 +267,8 @@ void draw_cur_frame()
 	else
 	{
 		// Filenames
-		sprintf_s(szHtmFile, MAX_PATH, "%sframe%03d.htm", cur_working_path, cur_frame);
-		sprintf_s(szBmpFile, MAX_PATH, "%sframe%03d.bmp", cur_working_path, cur_frame);
+		sprintf_s(szHtmFile, MAX_PATH, "%sframe%06d.htm", cur_working_path, cur_frame);
+		sprintf_s(szBmpFile, MAX_PATH, "%sframe%06d.bmp", cur_working_path, cur_frame);
 
 		// Open bitmap file
 		hBmpFile = (HBITMAP) LoadImage(0, szBmpFile, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
@@ -326,7 +326,7 @@ void draw_cur_frame()
 
 		title[i] = '\0';
 		
-		sprintf_s(text, 2048, "%s [%03d]", title, cur_frame);
+		sprintf_s(text, 2048, "%s [%06d]", title, cur_frame);
 		SetWindowText(g_hWnd, text);
 	}
 }
@@ -336,7 +336,7 @@ void draw_cur_frame()
 //
 void open_frame()
 {
-	char			szFile[MAX_PATH], szFileTitle[MAX_PATH], szName[MAX_PATH], framenum[8];
+	char			szFile[MAX_PATH], szFileTitle[MAX_PATH], szName[MAX_PATH], framenum[MAX_PATH];
 	int				name_start, name_end;
 
 	// Select frame to open
@@ -350,8 +350,8 @@ void open_frame()
 		cur_working_path[name_start] = '\0';
 
 		// Extract frame number
-		sprintf_s(framenum, 8, "%s", szName+5);
-		framenum[3] = '\0';
+		sprintf_s(framenum, 11, "%s", szName+5);
+		framenum[6] = '\0';
 
 		cur_frame = atoi(framenum);
 
@@ -420,7 +420,7 @@ void prev_frame()
 	{
 		// Scan through all matches, find highest numbered one that is less than cur_frame
 		sprintf_s(framenum, MAX_PATH, "%s", FindFileData.cFileName+5);
-		framenum[3] = '\0';
+		framenum[6] = '\0';
 
 		if (atoi(framenum) > prev_frame && atoi(framenum)<cur_frame)
 			prev_frame = atoi(framenum);
@@ -431,7 +431,7 @@ void prev_frame()
 		while (FindNextFile(hFind, &FindFileData) != 0) 
 		{
 			sprintf_s(framenum, MAX_PATH, "%s", FindFileData.cFileName+5);
-			framenum[3] = '\0';
+			framenum[6] = '\0';
 
 			if (atoi(framenum) > prev_frame && atoi(framenum)<cur_frame)
 				prev_frame = atoi(framenum);
@@ -479,7 +479,7 @@ void next_frame()
 	{
 		// Scan through all matches, find lowest numbered one that is greater than cur_frame
 		sprintf_s(framenum, MAX_PATH, "%s", FindFileData.cFileName+5);
-		framenum[3] = '\0';
+		framenum[6] = '\0';
 
 		if (atoi(framenum) < next_frame && atoi(framenum)>cur_frame)
 			next_frame = atoi(framenum);
@@ -490,7 +490,7 @@ void next_frame()
 		while (FindNextFile(hFind, &FindFileData) != 0) 
 		{
 			sprintf_s(framenum, MAX_PATH, "%s", FindFileData.cFileName+5);
-			framenum[3] = '\0';
+			framenum[6] = '\0';
 
 			if (atoi(framenum) < next_frame && atoi(framenum)>cur_frame)
 				next_frame = atoi(framenum);
