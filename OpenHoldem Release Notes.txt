@@ -46,7 +46,12 @@ NEW STUFF:
   Please refer to the docu for more information. [THF]
 - Auto-connector: OH is now able to connect automatically to a new table without 
   any human interaction. Please refer to the docu for more information. [THF]
-
+- Added handling of WMA_DODISCONNECT and WMA_CONNECTEDHWND messages (in addition to existing WMA_DOCONNECT 
+  message).  WMA_CONNECTEDHWND can be used to 'query' a given OpenHoldem instance to see if it is connected to
+  a window or not.  This is primarily useful for automation in hoppers.  Sample code in the docu.
+  WMA_DODISCONNECT will disconnect OH from an attached window
+  WMA_CONNECTEDHWND will return the handle of the window that OH is attached to, zero otherwise [OpenHoldem]  
+   
 
 v2.0.2 2009-09-01
 ==============

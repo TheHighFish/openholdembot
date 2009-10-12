@@ -65,6 +65,8 @@ protected: // create from serialization only
 	afx_msg void OnDllLoadspecificfile();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg LRESULT OnConnectMessage(WPARAM, LPARAM hwnd);
+	afx_msg LRESULT OnDisconnectMessage(WPARAM, LPARAM);
+	afx_msg LRESULT OnConnectedHwndMessage(WPARAM, LPARAM);
 	afx_msg LRESULT OnSetWindowText(WPARAM, LPARAM title);
 	afx_msg void OnPerlLoadFormula();
 	afx_msg void OnPerlLoadSpecificFormula();

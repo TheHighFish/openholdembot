@@ -30,6 +30,9 @@ CArray <STableList, STableList>		g_tlist;
 CAutoConnector::CAutoConnector()
 {
 	p_sharedmem->MarkPokerWindowAsUnAttached();
+
+	// Clear "attached" info
+	set_attached_hwnd(NULL);
 }
 
 
