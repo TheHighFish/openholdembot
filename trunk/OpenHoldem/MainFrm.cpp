@@ -1049,6 +1049,17 @@ LRESULT CMainFrame::OnConnectMessage(WPARAM, LPARAM hwnd)
 	return p_autoconnector->Connect((HWND)hwnd);
 }
 
+LRESULT CMainFrame::OnDisconnectMessage(WPARAM, LPARAM)
+{
+	p_autoconnector->Disconnect();
+	return true;
+}
+
+LRESULT CMainFrame::OnConnectedHwndMessage(WPARAM, LPARAM)
+{
+	return (LRESULT) p_autoconnector->attached_hwnd();
+}
+
 LRESULT CMainFrame::OnSetWindowText(WPARAM, LPARAM title)
 {
 	if (title) {
