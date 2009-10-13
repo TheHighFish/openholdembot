@@ -428,7 +428,18 @@ An example AutoIT-hopper-code has been provided by USBFreak
 status open
 
 \begin_layout Plain Layout
-aaa
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.maxinmontreal.com/wiki/index.php5?title=System_Wide_Mutex_Handling_-_Sam
+ple_Code
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -437,11 +448,481 @@ aaa
 \end_layout
 
 \begin_layout Quotation
-\begin_inset Note Note
+========================================
+\end_layout
+
+\begin_layout Quotation
+System Wide Mutex Handling - Sample Code
+\end_layout
+
+\begin_layout Quotation
+Below are 3 functions you'll need if you plan to avoid OH and hopper "collisions
+" over mouse and keyboard inputs.
+ As you may know, OH ensures it can act on the table in a consistent manner
+ by seizing control of mouse / keyboard input (system wide mutex), performing
+ its actions (clicking buttons, entering text in swag field etc.) and then
+ releasing mutex so other applications can perform their tasks.
+\end_layout
+
+\begin_layout Quotation
+This works fine as long as you run one or few OH instances, and do not have
+ a very active hopper to manage them.
+ Once you are past that point and start running many tables with as many
+ OH instances, plus moving tables around, browsing lobby etc., a situation
+ where OH may interfere with hopper operations in the middle of an important
+ task occurs, resulting in very unpredictable behaviour.
+\end_layout
+
+\begin_layout Quotation
+To avoid such a possibility, you may want to implement mutex handling in
+ your hopper using below code.
+\end_layout
+
+\begin_layout Quotation
+The idea:
+\end_layout
+
+\begin_layout Enumerate
+Create mutex lock at the start of your hopper.
+ This seizes control of keyboard / mouse and no other application can send
+ any input using them until mutex is released/unlocked.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Find a good time in your hopper loop when game state is stable (no lobby
+ browsing, table opening / closing etc.) and release mutex for a period of
+ time (in my case this is (number of OH instances opened * 1) + 2 seconds).
+ This allows OH instances to grab mutex control for themselves, perform
+ any pending actions, and release mutex control again.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Once the predetermined period of time expires, create mutex lock again,
+ and proceed with hopper operations knowing nothing can interfere with mouse
+ / keyboard.
+ 
+\end_layout
+
+\begin_layout Enumerate
+At the end of your hopper, release/unlock mutex.
+ 
+\end_layout
+
+\begin_layout Standard
+Main hopper loop
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
 status open
 
 \begin_layout Plain Layout
-ToDo: Mutex
+
+;
+\lang english
+START YOUR HOPPER, CREATE MUTEX LOCK 
+\end_layout
+
+\begin_layout Plain Layout
+MutexLock() $Global_Mutex_Handle = _CreateMutex("OHAntiColl") 
+\end_layout
+
+\begin_layout Plain Layout
+;ENTERING HOPPER LOOP 
+\end_layout
+
+\begin_layout Plain Layout
+While (1) 
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\lang english
+;...
+ HOPPER OPERATIONS 
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\lang english
+;...
+ GAME STATE STABLE, UNLOCK MUTEX 
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\lang english
+MutexUnlock($Global_Mutex_Handle) 
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\lang english
+;...
+ WAIT FOR OH TO PERFORM ACTIONS 
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\lang english
+;...
+ TIME EXPIRED, CREATE MUTEX LOCK AGAIN 
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\lang english
+MutexLock() 
+\end_layout
+
+\begin_layout Plain Layout
+wend 
+\end_layout
+
+\begin_layout Plain Layout
+;END OF HOPPER, RELEASE MUTEX 
+\end_layout
+
+\begin_layout Plain Layout
+MutexUnlock($Global_Mutex_Handle) 
+\end_layout
+
+\begin_layout Plain Layout
+;END OF HOPPER, CLOSE MUTEX HANDLE 
+\end_layout
+
+\begin_layout Plain Layout
+Close_Mutex_Handle($Global_Mutex_Handle)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Hopper functions
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+Func _CreateMutex($sOccurenceName) 
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\lang english
+Local $ERROR_ALREADY_EXISTS = 183 
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\lang english
+$Global_Mutex_Handle = DllCall("kernel32.dll", 
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\lang english
+"int", "CreateMutex", "int", 0, 
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\lang english
+"long", 1, "str", $sOccurenceName) 
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\lang english
+$lastError = DllCall("kernel32.dll", "int", "GetLastError") 
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\lang english
+If $lastError[0] = $ERROR_ALREADY_EXISTS Then 
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\lang english
+Return SetError($lastError[0], $lastError[0], 
+\end_layout
+
+\begin_layout Plain Layout
+
+            
+\lang english
+$Global_Mutex_Handle[0]) 
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\lang english
+EndIf 
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\lang english
+Return SetError(0, 0, $Global_Mutex_Handle[0]) 
+\end_layout
+
+\begin_layout Plain Layout
+EndFunc ;==>_GetMutex
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Func MutexUnlock($Global_Mutex_Handle)        
+\end_layout
+
+\begin_layout Plain Layout
+
+    Local $releasemutex = DllCall("kernel32.dll", "int", 
+\end_layout
+
+\begin_layout Plain Layout
+
+        "ReleaseMutex", "long", $Global_Mutex_Handle)        
+\end_layout
+
+\begin_layout Plain Layout
+
+    Return (IsArray($releasemutex) And $releasemutex[0] > 0)  
+\end_layout
+
+\begin_layout Plain Layout
+
+EndFunc   ;==>_ReleaseMutex
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Func Close_Mutex_Handle($hMutex)        
+\end_layout
+
+\begin_layout Plain Layout
+
+    Local $aCH = DllCall("Kernel32.dll", "int", 
+\end_layout
+
+\begin_layout Plain Layout
+
+        "CloseHandle", "hwnd", $Global_Mutex_Handle)        
+\end_layout
+
+\begin_layout Plain Layout
+
+    Return (IsArray($aCH) And $aCH[0] > 0)    
+\end_layout
+
+\begin_layout Plain Layout
+
+EndFunc
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Func _API_WaitForSingleObject($Global_Mutex_Handle, $dwMilliseconds)
+\end_layout
+
+\begin_layout Plain Layout
+
+    Local $aResult = DllCall("kernel32.dll", "long", 
+\end_layout
+
+\begin_layout Plain Layout
+
+        "WaitForSingleObject", "long", $Global_Mutex_Handle, 
+\end_layout
+
+\begin_layout Plain Layout
+
+        "long", $dwMilliseconds)        
+\end_layout
+
+\begin_layout Plain Layout
+
+    Return $aResult[0]    
+\end_layout
+
+\begin_layout Plain Layout
+
+EndFunc   ;==>_API_WaitForSingleObject
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Func MutexLock()        
+\end_layout
+
+\begin_layout Plain Layout
+
+    While 1                
+\end_layout
+
+\begin_layout Plain Layout
+
+        $Global_Mutex_Handle = _CreateMutex("OHAntiColl");             
+   
+\end_layout
+
+\begin_layout Plain Layout
+
+        If @error = 0 Then                        
+\end_layout
+
+\begin_layout Plain Layout
+
+            ;SUCCESSFULLY CREATED AND LOCKED MUTEX                     
+   
+\end_layout
+
+\begin_layout Plain Layout
+
+            ExitLoop                
+\end_layout
+
+\begin_layout Plain Layout
+
+        Else                        
+\end_layout
+
+\begin_layout Plain Layout
+
+            ;WE WILL EXAMINE MUTEX TO SEE IF IT IS RELEASED   
+\end_layout
+
+\begin_layout Plain Layout
+
+            Local $result = _API_WaitForSingleObject(
+\end_layout
+
+\begin_layout Plain Layout
+
+                $Global_Mutex_Handle, 30000); 
+\end_layout
+
+\begin_layout Plain Layout
+
+            WAIT FOR MUTEX FOR 30 SECONDS                        
+\end_layout
+
+\begin_layout Plain Layout
+
+            If $result = 0 Or $result = 128 Then
+\end_layout
+
+\begin_layout Plain Layout
+
+                ;SUCCESSFULLY LOCKED MUTEX                             
+   
+\end_layout
+
+\begin_layout Plain Layout
+
+                ExitLoop                      
+\end_layout
+
+\begin_layout Plain Layout
+
+            EndIf                
+\end_layout
+
+\begin_layout Plain Layout
+
+        EndIf                
+\end_layout
+
+\begin_layout Plain Layout
+
+        ;WAIT A BIT BEFORE TRYING AGAIN
+\end_layout
+
+\begin_layout Plain Layout
+
+        ;WE ARE NOT PROCEEDING UNTIL WE HAVE CONTROL OF MUTEX          
+      
+\end_layout
+
+\begin_layout Plain Layout
+
+        Sleep(100)        
+\end_layout
+
+\begin_layout Plain Layout
+
+    WEnd    
+\end_layout
+
+\begin_layout Plain Layout
+
+EndFunc ;==>MutexLock
 \end_layout
 
 \end_inset
@@ -653,6 +1134,98 @@ Connecting To A Table
 
 \begin_layout Subsection
 Automatic reconnection
+\end_layout
+
+\begin_layout Section
+Setting process CPU affinity - Sample Code 
+\end_layout
+
+\begin_layout Standard
+In some cases it may be beneficial to force poker client process to work
+ off one CPU in multiprocessor machines (or dual VCPU VMs).
+ Good example is OnGame, which uses much more CPU on dual CPU machines than
+ on single CPU machines.
+ This is of course problem with their software but they are unlikely to
+ fix it.
+\end_layout
+
+\begin_layout Standard
+The downside is that poker software operations (browsing lobby, updates,
+ table management, etc.) are now forced to work with one CPU, so multitabling
+ (4+) may be taxing CPU0 - make sure to observe behaviour with and without
+ forcing affinity, and draw your own conclusions.
+\end_layout
+
+\begin_layout Standard
+Here is the code that will set poker client exe CPU affinity to CPU0 (first
+ CPU): Only one process should exist, $PokerClient_Exe is your lobby
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+Local $PIDs = ProcessList($PokerClient_Exe) 
+\end_layout
+
+\begin_layout Plain Layout
+Local $OpenProcessHandle = _WinAPI_OpenProcess(
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\lang english
+$PROCESS_QUERY_INFORMATION+$PROCESS_SET_INFORMATION, False, $PIDs[1][1])
+ 
+\end_layout
+
+\begin_layout Plain Layout
+Local $Process_Affinity_Before_Setting = _WinAPI_GetProcessAffinityMask(
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\lang english
+$OpenProcessHandle) 
+\end_layout
+
+\begin_layout Plain Layout
+;MsgBox(0,
+ 
+\lang english
+"Affinity Before Setting", $Process_Affinity_Before_Setting, 3)
+\end_layout
+
+\begin_layout Plain Layout
+_WinAPI_SetProcessAffinityMask($OpenProcessHandle, 0x01)
+\end_layout
+
+\begin_layout Plain Layout
+$Process_Affinity_After_Setting =
+ 
+\lang english
+_WinAPI_GetProcessAffinityMask(
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\lang english
+$OpenProcessHandle) 
+\end_layout
+
+\begin_layout Plain Layout
+;MsgBox(0,"Affinity After Setting", $Process_Affinity_After_Setting, 3)
+ 
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body
