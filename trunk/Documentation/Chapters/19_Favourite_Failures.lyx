@@ -328,6 +328,132 @@ free play
 free play and calls.
 \end_layout
 
+\begin_layout Standard
+Whenever you experience strange actions, you should ask yourself the following
+ questions
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://forum.winholdem.net/wbb/viewtopic.php?f=38&t=12408
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Itemize
+is the scraper reading the bet values correctly? 
+\end_layout
+
+\begin_layout Itemize
+is the scraper reading my cardfaces correctly? 
+\end_layout
+
+\begin_layout Itemize
+is the scraper reading opponent cardbacks correctly? 
+\end_layout
+
+\begin_layout Itemize
+do the blind values look sane? 
+\end_layout
+
+\begin_layout Itemize
+does the site provide handnumbers? 
+\end_layout
+
+\begin_layout Itemize
+are my action buttons being seen when my turn arrives?
+\end_layout
+
+\begin_layout Standard
+You can check the values for these symbols in the 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Debug-tab
+\end_layout
+
+\end_inset
+
+debug-tab of the 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Formula-editor
+\end_layout
+
+\end_inset
+
+formula-editor.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Better screenshot
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ = br 
+\end_layout
+
+\begin_layout Plain Layout
+
+ = sblind 
+\end_layout
+
+\begin_layout Plain Layout
+
+ = bblind 
+\end_layout
+
+\begin_layout Plain Layout
+
+ = handnumber 
+\end_layout
+
+\begin_layout Plain Layout
+
+ = nplayersdealt 
+\end_layout
+
+\begin_layout Plain Layout
+
+ = myturnbits
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 OH acts multiple times
 \end_layout
@@ -335,7 +461,7 @@ OH acts multiple times
 \begin_layout Standard
 
 \emph on
-Reason: Improper bring-delay and scraper-delays.
+Reason: Improper bring-delay and scraper-delay.
 \end_layout
 
 \begin_layout Standard
@@ -374,6 +500,14 @@ Heartbeat-cycle
 
 heart-beat-cycle starts, OH will scrape the exact same game-state another
  time and act another time.
+\end_layout
+
+\begin_layout Section
+OH Does Permanently Click Sitout / Sitin
+\end_layout
+
+\begin_layout Standard
+Todo!!!
 \end_layout
 
 \begin_layout Section

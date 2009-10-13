@@ -582,6 +582,18 @@ This option will cause OpenHoldem to start in minimzed mode.
  and don't want to accept the risk of occluding tables and causing misscrapes.
 \end_layout
 
+\begin_layout Itemize
+
+\emph on
+Disable preferences dialog (formula parsing): 
+\emph default
+If this option is checked OpenHoldem will not show the progress dailog when
+ parsion a formula (OHF).
+ This is meant to avoid occlusion in a production environment.
+ Currently the dialog is created (or not) once at startup, so changes in
+ this setting will only take effect, when you start OpenHoldem again.
+\end_layout
+
 \begin_layout Section
 OpenHoldem Preferences – 
 \begin_inset Index

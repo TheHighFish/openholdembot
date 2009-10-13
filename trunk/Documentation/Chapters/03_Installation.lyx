@@ -620,7 +620,15 @@ We hope, you will never have to uninstall OpenHoldem on any of your machines.
 \begin_layout Standard
 Probably it is too late - you have already been flagged by your favourite
  casino.
- Anyway - the best way to get your PC 
+ Anyway - the 
+\begin_inset Quotes eld
+\end_inset
+
+best
+\begin_inset Quotes erd
+\end_inset
+
+ way to get your PC 
 \begin_inset Quotes eld
 \end_inset
 
@@ -635,6 +643,11 @@ clean
 Remove the complete installation directory and all other botting-related
  files you may have on your computer: executables, formulae, tablemaps,
  archives, logs, etc.
+\end_layout
+
+\begin_layout Itemize
+Delete any desktop icons and delete any startmenu shortcut (if you have
+ created them) .
 \end_layout
 
 \begin_layout Itemize
@@ -707,6 +720,10 @@ maxinmontreal
 \end_inset
 
  and maybe some others.
+\end_layout
+
+\begin_layout Itemize
+Wipe your browser cache .
 \end_layout
 
 \end_body
