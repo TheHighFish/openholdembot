@@ -1187,7 +1187,7 @@ const int CMyHand::StrengthStraight(void)
 		//Board 3 to a straight, cards in rank 2 and rank 3
 		(isstraight && nstraightfillcommon==2 &&
 		 ( ( ($$pr0==((pokerval>>12)&0xf)) && ($$pr1==((pokerval>>8)&0xf))) ||
-		   ( ($$pr1==((pokerval>>12)&0xf)) && ($$pr0==((pokerval>>4)&0xf))) ) ) ||
+		   ( ($$pr1==((pokerval>>12)&0xf)) && ($$pr0==((pokerval>>8)&0xf))) ) ) ||
 
 		//Board 3 to a straight, cards in rank 2 and rank 4
 		(isstraight && nstraightfillcommon==2 &&
