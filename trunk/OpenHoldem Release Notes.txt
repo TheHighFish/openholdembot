@@ -27,6 +27,8 @@ BUG FIXES:
   Strictly speaking this is not really correct (e.g. a player could be sitting out and come back),
   but that is a case, that happens less frequently than fast folds in early position. [THF]
 - OpenHoldem uses now 6-digit-numbers for replayframes. [THF]
+- Fixed typo in CMyHand::StrengthStraight(void). Thanks to SamFisher for reporting it. [THF]
+
 
 MAINTENANCE:
 
