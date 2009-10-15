@@ -196,7 +196,12 @@ Scout will not work out of the box, guaranteed, but it can serve as a possible
 \end_layout
 
 \begin_layout Section
-Connect By 
+Connecting To A Table By 
+\end_layout
+
+\begin_layout Standard
+Version 2.0.0 of OpenHoldem introduced the ability to instruct OpenHoldem
+ to connect to a poker table by sending a connect message specifying a 
 \begin_inset Index
 status open
 
@@ -206,26 +211,18 @@ HWND
 
 \end_inset
 
-HWND
+HWND.
+ As of version 2.1.0, OpenHoldem also will process messages to disconnect
+ from a window and also to query what window OpenHoldem is connected to.
+ These functions are useful for automation reasons and permit you to explicitly
+ control the connection process without having to display the OpenHoldem
+ attach window.
+ In fact, you can have OpenHoldem hidden entirely during this process.
 \end_layout
 
 \begin_layout Standard
-Version 2.0.0 of OpenHoldem introduced the ability to instruct OpenHoldem
- to connect to a poker table by sending a connect message specifying a HWND
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-ddd
-\end_layout
-
-\end_inset
-
-.
- This is useful for automation reasons and permits you to explicitly control
- the connection process without having to display the OpenHoldem attach
- window.
- In fact, you can have OpenHoldem hidden entirely during this process.
+The following AutoIt script demonstrates how to instruct OpenHoldem to connect
+ to a window:
 \end_layout
 
 \begin_layout Standard
@@ -233,33 +230,141 @@ Example AutoIt Script
 \end_layout
 
 \begin_layout Standard
+\begin_inset listings
+inline false
+status open
 
-\noun on
-#include <WinAPI.au3> 
+\begin_layout Plain Layout
+Global Const $WMA_DOCONNECT = 0x8002 
+\end_layout
+
+\begin_layout Plain Layout
+Local $oh_hwnd = WinGetHandle("Default - OpenHoldem") 
+\end_layout
+
+\begin_layout Plain Layout
+Local $oh_manual_mode = WinGetHandle("OpenHoldem Poker") 
+\end_layout
+
+\begin_layout Plain Layout
+DllCall("user32.dll", "lresult", "SendMessage", "hwnd", 
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\lang english
+$oh_hwnd, "uint", $WMA_DOCONNECT, "wparam", 0, 
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\lang english
+"lparam", $oh_manual_mode)
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-
-\noun on
-Func AttachOH($OHhwnd,$POKERhwnd) 
+The following AutoIt script demonstrates how to instruct OpenHoldem to disconnec
+t from a window:
 \end_layout
 
 \begin_layout Standard
-
-\noun on
-_SendMessage($OHhwnd, 0x8002, 0, $POKERhwnd ) 
+Example AutoIt Script
 \end_layout
 
 \begin_layout Standard
+\begin_inset listings
+inline false
+status open
 
-\noun on
-Return 
+\begin_layout Plain Layout
+Global Const $WMA_DODISCONNECT = 0x8003 
+\end_layout
+
+\begin_layout Plain Layout
+Local $oh_hwnd = WinGetHandle("Default - OpenHoldem") 
+\end_layout
+
+\begin_layout Plain Layout
+DllCall("user32.dll", "lresult", "SendMessage", "hwnd", 
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\lang english
+$oh_hwnd, "uint", $WMA_DODISCONNECT, "wparam", 0, 
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\lang english
+"lparam", 0)
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
+The following AutoIt script demonstrates how to query OpenHoldem for the
+ window that it is connected to:
+\end_layout
 
-\noun on
-EndFunc
+\begin_layout Standard
+Example AutoIt Script
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+#Include <String.au3> 
+\end_layout
+
+\begin_layout Plain Layout
+Global Const $WMA_CONNECTEDHWND = 0x8004 
+\end_layout
+
+\begin_layout Plain Layout
+Local $oh_hwnd = WinGetHandle("Default - OpenHoldem") 
+\end_layout
+
+\begin_layout Plain Layout
+Local $a = DllCall("user32.dll", "lresult", "SendMessage", "hwnd", 
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\lang english
+$oh_hwnd, "uint", $WMA_CONNECTEDHWND, "wparam", 0, 
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\lang english
+"lparam", 0) 
+\end_layout
+
+\begin_layout Plain Layout
+ConsoleWrite("Connected to: " & Hex($a[0]) & @CRLF)
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -521,86 +626,80 @@ status open
 
 \begin_layout Plain Layout
 
-;
-\lang english
-START YOUR HOPPER, CREATE MUTEX LOCK 
+;START YOUR HOPPER, CREATE MUTEX LOCK 
 \end_layout
 
 \begin_layout Plain Layout
+
 MutexLock() $Global_Mutex_Handle = _CreateMutex("OHAntiColl") 
 \end_layout
 
 \begin_layout Plain Layout
+
 ;ENTERING HOPPER LOOP 
 \end_layout
 
 \begin_layout Plain Layout
+
 While (1) 
 \end_layout
 
 \begin_layout Plain Layout
 
-    
-\lang english
-;...
+    ;...
  HOPPER OPERATIONS 
 \end_layout
 
 \begin_layout Plain Layout
 
-    
-\lang english
-;...
+    ;...
  GAME STATE STABLE, UNLOCK MUTEX 
 \end_layout
 
 \begin_layout Plain Layout
 
-    
-\lang english
-MutexUnlock($Global_Mutex_Handle) 
+    MutexUnlock($Global_Mutex_Handle) 
 \end_layout
 
 \begin_layout Plain Layout
 
-    
-\lang english
-;...
+    ;...
  WAIT FOR OH TO PERFORM ACTIONS 
 \end_layout
 
 \begin_layout Plain Layout
 
-    
-\lang english
-;...
+    ;...
  TIME EXPIRED, CREATE MUTEX LOCK AGAIN 
 \end_layout
 
 \begin_layout Plain Layout
 
-    
-\lang english
-MutexLock() 
+    MutexLock() 
 \end_layout
 
 \begin_layout Plain Layout
+
 wend 
 \end_layout
 
 \begin_layout Plain Layout
+
 ;END OF HOPPER, RELEASE MUTEX 
 \end_layout
 
 \begin_layout Plain Layout
+
 MutexUnlock($Global_Mutex_Handle) 
 \end_layout
 
 \begin_layout Plain Layout
+
 ;END OF HOPPER, CLOSE MUTEX HANDLE 
 \end_layout
 
 \begin_layout Plain Layout
+
 Close_Mutex_Handle($Global_Mutex_Handle)
 \end_layout
 
@@ -619,80 +718,62 @@ inline false
 status open
 
 \begin_layout Plain Layout
+
 Func _CreateMutex($sOccurenceName) 
 \end_layout
 
 \begin_layout Plain Layout
 
-    
-\lang english
-Local $ERROR_ALREADY_EXISTS = 183 
+    Local $ERROR_ALREADY_EXISTS = 183 
 \end_layout
 
 \begin_layout Plain Layout
 
-    
-\lang english
-$Global_Mutex_Handle = DllCall("kernel32.dll", 
+    $Global_Mutex_Handle = DllCall("kernel32.dll", 
 \end_layout
 
 \begin_layout Plain Layout
 
-        
-\lang english
-"int", "CreateMutex", "int", 0, 
+        "int", "CreateMutex", "int", 0, 
 \end_layout
 
 \begin_layout Plain Layout
 
-        
-\lang english
-"long", 1, "str", $sOccurenceName) 
+        "long", 1, "str", $sOccurenceName) 
 \end_layout
 
 \begin_layout Plain Layout
 
-    
-\lang english
-$lastError = DllCall("kernel32.dll", "int", "GetLastError") 
+    $lastError = DllCall("kernel32.dll", "int", "GetLastError") 
 \end_layout
 
 \begin_layout Plain Layout
 
-    
-\lang english
-If $lastError[0] = $ERROR_ALREADY_EXISTS Then 
+    If $lastError[0] = $ERROR_ALREADY_EXISTS Then 
 \end_layout
 
 \begin_layout Plain Layout
 
-        
-\lang english
-Return SetError($lastError[0], $lastError[0], 
+        Return SetError($lastError[0], $lastError[0], 
 \end_layout
 
 \begin_layout Plain Layout
 
-            
-\lang english
-$Global_Mutex_Handle[0]) 
+            $Global_Mutex_Handle[0]) 
 \end_layout
 
 \begin_layout Plain Layout
 
-    
-\lang english
-EndIf 
+    EndIf 
 \end_layout
 
 \begin_layout Plain Layout
 
-    
-\lang english
-Return SetError(0, 0, $Global_Mutex_Handle[0]) 
+    Return SetError(0, 0, $Global_Mutex_Handle[0]) 
 \end_layout
 
 \begin_layout Plain Layout
+
 EndFunc ;==>_GetMutex
 \end_layout
 
@@ -1167,58 +1248,54 @@ inline false
 status open
 
 \begin_layout Plain Layout
+
 Local $PIDs = ProcessList($PokerClient_Exe) 
 \end_layout
 
 \begin_layout Plain Layout
+
 Local $OpenProcessHandle = _WinAPI_OpenProcess(
 \end_layout
 
 \begin_layout Plain Layout
 
-    
-\lang english
-$PROCESS_QUERY_INFORMATION+$PROCESS_SET_INFORMATION, False, $PIDs[1][1])
+    $PROCESS_QUERY_INFORMATION+$PROCESS_SET_INFORMATION, False, $PIDs[1][1])
  
 \end_layout
 
 \begin_layout Plain Layout
+
 Local $Process_Affinity_Before_Setting = _WinAPI_GetProcessAffinityMask(
 \end_layout
 
 \begin_layout Plain Layout
 
-    
-\lang english
-$OpenProcessHandle) 
+    $OpenProcessHandle) 
 \end_layout
 
 \begin_layout Plain Layout
-;MsgBox(0,
- 
-\lang english
-"Affinity Before Setting", $Process_Affinity_Before_Setting, 3)
+
+;MsgBox(0, "Affinity Before Setting", $Process_Affinity_Before_Setting,
+ 3)
 \end_layout
 
 \begin_layout Plain Layout
+
 _WinAPI_SetProcessAffinityMask($OpenProcessHandle, 0x01)
 \end_layout
 
 \begin_layout Plain Layout
-$Process_Affinity_After_Setting =
- 
-\lang english
-_WinAPI_GetProcessAffinityMask(
+
+$Process_Affinity_After_Setting = _WinAPI_GetProcessAffinityMask(
 \end_layout
 
 \begin_layout Plain Layout
 
-    
-\lang english
-$OpenProcessHandle) 
+    $OpenProcessHandle) 
 \end_layout
 
 \begin_layout Plain Layout
+
 ;MsgBox(0,"Affinity After Setting", $Process_Affinity_After_Setting, 3)
  
 \end_layout
