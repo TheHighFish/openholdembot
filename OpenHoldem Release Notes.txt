@@ -28,6 +28,9 @@ BUG FIXES:
   but that is a case, that happens less frequently than fast folds in early position. [THF]
 - OpenHoldem uses now 6-digit-numbers for replayframes. [THF]
 - Fixed typo in CMyHand::StrengthStraight(void). Thanks to SamFisher for reporting it. [THF]
+- OpenHoldem does now convert s$sitename and s$network internally to lower-cases.
+  The old behaviour was no bug (strictly speaking), but caused some confusions
+  for PokerTracker-users. [THF]
 
 
 MAINTENANCE:
