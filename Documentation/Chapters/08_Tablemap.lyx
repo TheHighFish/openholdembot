@@ -915,10 +915,15 @@ The name of the poker network that this Table Map is for.
 \end_layout
 
 \begin_layout Plain Layout
-Supported names for both s$sitename and s$network must be lowercase and
- are the following: stars, party, ultimate, absolute, microgaming, ongame,
- cryptologic, pacific, fulltilt, b2b, tribeca, worldpex, ipoker, tain, bodog,
- everest, boss, and betfair.
+Both s$sitename and s$network are not case-sensitive.
+ OpenHoldem converts them internally to lowercases.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+The following names are supported: stars, party, ultimate, absolute, microgaming
+, ongame, cryptologic, pacific, fulltilt, b2b, tribeca, worldpex, ipoker,
+ tain, bodog, everest, boss, and betfair.
  !!! pt3x !!!
 \end_layout
 
@@ -1118,8 +1123,8 @@ swagselectionmethod
 \begin_inset Text
 
 \begin_layout Plain Layout
-* New Symbol in version 2.0; previously, this was a global preference set
- from the OpenHoldem preferences GUI.
+New Symbol in version 2.0; previously, this was a global preference set from
+ the OpenHoldem preferences GUI.
 \end_layout
 
 \begin_layout Plain Layout
@@ -1156,8 +1161,8 @@ swagdeletionmethod
 \begin_inset Text
 
 \begin_layout Plain Layout
-* New Symbol in version 2.0; previously, this was a global preference set
- from the OpenHoldem preferences GUI.
+New Symbol in version 2.0; previously, this was a global preference set from
+ the OpenHoldem preferences GUI.
  This symbol instructs the Autoplayer how to take the second action in a
  SWAG sequence.
  A SWAG sequence always consists of: 1.
@@ -1189,8 +1194,8 @@ swagconfirmationmethod
 \begin_inset Text
 
 \begin_layout Plain Layout
-* New Symbol in version 2.0; previously, this was a global preference set
- from the OpenHoldem preferences GUI.
+New Symbol in version 2.0; previously, this was a global preference set from
+ the OpenHoldem preferences GUI.
  This symbol instructs the Autoplayer how to take the fourth action in a
  SWAG sequence.
  A SWAG sequence always consists of: 1.
@@ -1224,9 +1229,10 @@ buttonclickmethod
 \begin_inset Text
 
 \begin_layout Plain Layout
-* New Symbol in version 2.0; previously, this was a global preference set
- from the OpenHoldem preferences GUI.This symbol instructs the Autoplayer
- how to click any button defined by the iXbutton region records.
+New Symbol in version 2.0; previously, this was a global preference set from
+ the OpenHoldem preferences GUI.
+ This symbol instructs the Autoplayer how to click any button defined by
+ the iXbutton region records.
 \end_layout
 
 \begin_layout Plain Layout
@@ -1250,10 +1256,6 @@ handresetmethod
 </cell>
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
-
-\begin_layout Plain Layout
-* New Symbol in version 2.0
-\end_layout
 
 \begin_layout Plain Layout
 This symbol identifies which scrape changes should be used as a trigger
@@ -1421,10 +1423,6 @@ balancenumbersonly
 \begin_inset Text
 
 \begin_layout Plain Layout
-* New Symbol in version 2.0
-\end_layout
-
-\begin_layout Plain Layout
 This Symbol instructs the screen scraper that all characters besides numbers
  (0-9 and dot/decimal separator) are stripped from the text transform result
  for balance regions.
@@ -1450,10 +1448,6 @@ chipscrapemethod
 </cell>
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
-
-\begin_layout Plain Layout
-* New Symbol in version 2.0
-\end_layout
 
 \begin_layout Plain Layout
 This Symbol instructs the “chip stack counter” within the screen scraper
@@ -1488,10 +1482,6 @@ Scraperdll
 </cell>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
-
-\begin_layout Plain Layout
-* New Symbol in version 2.0
-\end_layout
 
 \begin_layout Plain Layout
 This Symbol instructs OpenHoldem to load a user-supplied external scraper

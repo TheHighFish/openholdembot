@@ -340,6 +340,7 @@ sitename$abc
 
 \begin_layout Plain Layout
 true if user defined string “abc” appears within the Table Map symbol s$sitename
+; case-sensitive; lower-cases are expected
 \end_layout
 
 \end_inset
@@ -359,7 +360,8 @@ network$def
 \begin_inset Text
 
 \begin_layout Plain Layout
-true if user defined string “def” appears within the Table Map symbol s$network
+true if user defined string “def” appears within the Table Map symbol s$network;
+ case-sensitive; lower-cases are expected
 \end_layout
 
 \end_inset
@@ -9961,6 +9963,7 @@ inline false
 status open
 
 \begin_layout Plain Layout
+
 ((nstraight==5) && (pcbits==1))
 \end_layout
 
@@ -9980,6 +9983,7 @@ inline false
 status open
 
 \begin_layout Plain Layout
+
 ((nstraight==5) && (pcbits&14))
 \end_layout
 
