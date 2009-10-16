@@ -19,36 +19,37 @@ CPokerTrackerLookup::CPokerTrackerLookup()
 	
 	// Documentation about PT3 sited_IDs:
 	// http://www.pokertracker.com/forums/viewtopic.php?f=18&t=20169&p=95629
-	_pt2_siteid.insert(std::pair<CString, int> ("Stars", 2));
-	_pt2_siteid.insert(std::pair<CString, int> ("Party", 3));
-	_pt2_siteid.insert(std::pair<CString, int> ("Ultimate", 4));
-	_pt2_siteid.insert(std::pair<CString, int> ("Absolute", 5));
-	_pt2_siteid.insert(std::pair<CString, int> ("Microgaming", 6));
-	_pt2_siteid.insert(std::pair<CString, int> ("Ongame", 7));
-	_pt2_siteid.insert(std::pair<CString, int> ("Cryptologic", 8));
-	_pt2_siteid.insert(std::pair<CString, int> ("Pacific", 9));
-	_pt2_siteid.insert(std::pair<CString, int> ("FullTilt", 11));
-	_pt2_siteid.insert(std::pair<CString, int> ("B2B", 12));
-	_pt2_siteid.insert(std::pair<CString, int> ("Tribeca", 13));
-	_pt2_siteid.insert(std::pair<CString, int> ("Worldpex", 14));
-	_pt2_siteid.insert(std::pair<CString, int> ("iPoker", 15));
-	_pt2_siteid.insert(std::pair<CString, int> ("Tain", 16));
-	_pt2_siteid.insert(std::pair<CString, int> ("Bodog", 17));
-	_pt2_siteid.insert(std::pair<CString, int> ("Everest", 18));
-	_pt2_siteid.insert(std::pair<CString, int> ("Boss", 19));
-	_pt2_siteid.insert(std::pair<CString, int> ("Betfair", 20));
+	// All sitenames and networknames have to be in LOWER-CASES!
+	_pt2_siteid.insert(std::pair<CString, int> ("stars", 2));
+	_pt2_siteid.insert(std::pair<CString, int> ("party", 3));
+	_pt2_siteid.insert(std::pair<CString, int> ("ultimate", 4));
+	_pt2_siteid.insert(std::pair<CString, int> ("absolute", 5));
+	_pt2_siteid.insert(std::pair<CString, int> ("microgaming", 6));
+	_pt2_siteid.insert(std::pair<CString, int> ("ongame", 7));
+	_pt2_siteid.insert(std::pair<CString, int> ("cryptologic", 8));
+	_pt2_siteid.insert(std::pair<CString, int> ("pacific", 9));
+	_pt2_siteid.insert(std::pair<CString, int> ("fulltilt", 11));
+	_pt2_siteid.insert(std::pair<CString, int> ("b2b", 12));
+	_pt2_siteid.insert(std::pair<CString, int> ("tribeca", 13));
+	_pt2_siteid.insert(std::pair<CString, int> ("worldpex", 14));
+	_pt2_siteid.insert(std::pair<CString, int> ("ipoker", 15));
+	_pt2_siteid.insert(std::pair<CString, int> ("tain", 16));
+	_pt2_siteid.insert(std::pair<CString, int> ("bodog", 17));
+	_pt2_siteid.insert(std::pair<CString, int> ("everest", 18));
+	_pt2_siteid.insert(std::pair<CString, int> ("boss", 19));
+	_pt2_siteid.insert(std::pair<CString, int> ("betfair", 20));
 
-	_pt3_siteid.insert(std::pair<CString, int> ("Stars", 100));
-	_pt3_siteid.insert(std::pair<CString, int> ("Party", 200));
-	_pt3_siteid.insert(std::pair<CString, int> ("FullTilt", 300));
-	_pt3_siteid.insert(std::pair<CString, int> ("iPoker", 400));
-	_pt3_siteid.insert(std::pair<CString, int> ("Everest", 500));
-	_pt3_siteid.insert(std::pair<CString, int> ("Ongame", 600));
-	_pt3_siteid.insert(std::pair<CString, int> ("Boss", 700));
-	_pt3_siteid.insert(std::pair<CString, int> ("Cereus", 800));
-	_pt3_siteid.insert(std::pair<CString, int> ("Pacific", 900));
-	_pt3_siteid.insert(std::pair<CString, int> ("B2B", 1000));
-	_pt3_siteid.insert(std::pair<CString, int> ("Microgaming", 1100));
+	_pt3_siteid.insert(std::pair<CString, int> ("stars", 100));
+	_pt3_siteid.insert(std::pair<CString, int> ("party", 200));
+	_pt3_siteid.insert(std::pair<CString, int> ("fulltilt", 300));
+	_pt3_siteid.insert(std::pair<CString, int> ("ipoker", 400));
+	_pt3_siteid.insert(std::pair<CString, int> ("everest", 500));
+	_pt3_siteid.insert(std::pair<CString, int> ("ongame", 600));
+	_pt3_siteid.insert(std::pair<CString, int> ("boss", 700));
+	_pt3_siteid.insert(std::pair<CString, int> ("cereus", 800));
+	_pt3_siteid.insert(std::pair<CString, int> ("pacific", 900));
+	_pt3_siteid.insert(std::pair<CString, int> ("b2b", 1000));
+	_pt3_siteid.insert(std::pair<CString, int> ("microgaming", 1100));
 }
 
 CPokerTrackerLookup::~CPokerTrackerLookup()
