@@ -256,6 +256,13 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			}
 			else
 			{
+				// Assure, sitename and network are lowercases.
+				if ((strLineType.Left(10) == "s$sitename") || (strLineType.Left(9) == "s$network"))
+				{
+					CString temp = hold_symbol.text.MakeLower();
+					hold_symbol.text = temp;
+				}
+
 				if (!s$_insert(hold_symbol))
 				{
 					if (!disable_msgbox)
