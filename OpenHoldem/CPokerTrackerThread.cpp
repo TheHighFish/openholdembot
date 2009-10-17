@@ -50,6 +50,8 @@ CPokerTrackerLookup::CPokerTrackerLookup()
 	_pt3_siteid.insert(std::pair<CString, int> ("pacific", 900));
 	_pt3_siteid.insert(std::pair<CString, int> ("b2b", 1000));
 	_pt3_siteid.insert(std::pair<CString, int> ("microgaming", 1100));
+	_pt3_siteid.insert(std::pair<CString, int> ("cake", 1200));
+	_pt3_siteid.insert(std::pair<CString, int> ("bodog", 1300));
 }
 
 CPokerTrackerLookup::~CPokerTrackerLookup()
