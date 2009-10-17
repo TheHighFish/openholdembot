@@ -26,11 +26,12 @@ BUG FIXES:
   We do now consider players as dealt, if they are active (e.g. sitting in).
   Strictly speaking this is not really correct (e.g. a player could be sitting out and come back),
   but that is a case, that happens less frequently than fast folds in early position. [THF]
-- OpenHoldem uses now 6-digit-numbers for replayframes. [THF]
+- OpenHoldem and OHReplay use now 6-digit-numbers for replayframes. [THF]
 - Fixed typo in CMyHand::StrengthStraight(void). Thanks to SamFisher for reporting it. [THF]
 - OpenHoldem does now convert s$sitename and s$network internally to lower-cases.
-  The old behaviour was no bug (strictly speaking), but caused some confusions
-  for PokerTracker-users. [THF]
+  The old behaviour was not really a bug, but caused some confusions for PokerTracker-users. [THF]
+- Some positional symbols were conservatively only calculated, when the userchair was confirmed,
+  although they didn't depend on that information. This has now been fixed. [THF]
 
 
 MAINTENANCE:
