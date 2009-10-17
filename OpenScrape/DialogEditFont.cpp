@@ -164,8 +164,14 @@ void CDlgEditFont::OnBnClickedOk()
 	COpenScrapeDoc			*pDoc = COpenScrapeDoc::GetDocument();
 
 	m_Character.GetWindowText(character);
-
-	OnOK();
+	if (character.GetLength() != 1)
+	{
+		MessageBox("Font requires exactly one character", "ERROR", MB_OK | MB_TOPMOST);
+	}
+	else
+	{
+		OnOK();
+	}
 }
 
 void CDlgEditFont::OnEnKillfocusCharacter()
