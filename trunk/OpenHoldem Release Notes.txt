@@ -32,6 +32,7 @@ BUG FIXES:
   The old behaviour was not really a bug, but caused some confusions for PokerTracker-users. [THF]
 - Some positional symbols were conservatively only calculated, when the userchair was confirmed,
   although they didn't depend on that information. This has now been fixed. [THF]
+- PT3-support for Cake and Bodog. Thanks to Serax for reporting the new sites and providing the code. [THF]
 
 
 MAINTENANCE:
