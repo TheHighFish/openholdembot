@@ -820,7 +820,8 @@ private:
 	void CalcNumbets(void);
 	void CalcFlags(void);
 	void CalcAutoplayer(void);
-	void CalcRoundsPositions(void);
+	void CalcPositionsUserchair(void);
+	void CalcPositionsNonUserchair(void);
 	void CalcPokerValues(void);
 	void CalcUnknownCards(void);
 	void CalcHandTests(void);
