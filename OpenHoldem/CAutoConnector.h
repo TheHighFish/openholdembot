@@ -29,7 +29,6 @@ private:
 private:
 	// private variables - use public accessors and public mutators to address these
 	HWND			_attached_hwnd;	 // Table that we are attached to
-	bool			_autoplay_pressed;
 } *p_autoconnector;
 
 #endif INC_CAUTOCONNECTOR_H
