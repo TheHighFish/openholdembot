@@ -686,6 +686,7 @@ void CMainFrame::OnBnClickedGreenCircle()
 void CMainFrame::OnBnClickedRedCircle() 
 {
 	p_autoconnector->Disconnect();
+	_autoplay_pressed = false;
 }
 
 void CMainFrame::OnEditForceuserchair()

@@ -545,7 +545,6 @@ void CAutoConnector::Disconnect()
 
 	// Make sure autoplayer is off
 	p_autoplayer->set_autoplayer_engaged(false);
-	_autoplay_pressed = false;
 
 	// Send "disconnect" to scraper DLL, if loaded
 	if (theApp._dll_scraper_process_message)
