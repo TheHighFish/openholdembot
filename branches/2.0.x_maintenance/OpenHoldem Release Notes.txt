@@ -35,31 +35,6 @@ BUG FIXES:
 - PT3-support for Cake and Bodog. Thanks to Serax for reporting the new sites and providing the code. [THF]
 
 
-MAINTENANCE:
-
-NEW STUFF:
-- Added option to delete old log-files that exceed a given size. [THF]
-- Removed the old WinHoldem-default-bot. Replaced it with Playbot by Matrix. [THF]
-- Improvements to the user interface of the Script dialog. [Spew]
-- Added "Apply and Save" to the formula dialog with CTRL-S as the shortcut. [Spew]
-- If the tablemap has the string "swagallin" OH will swag the player balance if f$alli is true. [Spew]
-- New versus symbols to get probabilities of winning/losing versus opponent hands
-  that are better (resp. worse or equal) than our hand now
-    vs$nhandshinow   vs$nhandstinow   vs$nhandslonow
-    vs$prwinhinow    vs$prtiehinow    vs$prloshinow
-    vs$prwintinow    vs$prtietinow    vs$prlostinow
-    vs$prwinlonow    vs$prtielonow    vs$prloslonow [Spud]
-- Ability to control external rebuy-scripts. 
-  Please refer to the docu for more information. [THF]
-- Auto-connector: OH is now able to connect automatically to a new table without 
-  any human interaction. Please refer to the docu for more information. [THF]
-- Added handling of WMA_DODISCONNECT and WMA_CONNECTEDHWND messages (in addition to existing WMA_DOCONNECT 
-  message).  WMA_CONNECTEDHWND can be used to 'query' a given OpenHoldem instance to see if it is connected to
-  a window or not.  This is primarily useful for automation in hoppers.  Sample code in the docu.
-  WMA_DODISCONNECT will disconnect OH from an attached window
-  WMA_CONNECTEDHWND will return the handle of the window that OH is attached to, zero otherwise [OpenHoldem]  
-   
-
 v2.0.2 2009-09-01
 ==============
 BUG FIXES:
