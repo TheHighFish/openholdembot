@@ -1,3 +1,8 @@
+v2.0.3 2009-10-23
+=================
+- OS allowed to create fonts with more or less than 1 character,
+  which caused malformed tablemaps.
+  This is now prevented by a sanity-check. [THF]
 
 v2.0.2 2009-09-01
 ==============
