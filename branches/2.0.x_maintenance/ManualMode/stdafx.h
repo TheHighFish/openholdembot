@@ -51,8 +51,8 @@
 
 
 // Version
-#define VERSION_NUMBER				2.00
-#define VERSION_TEXT				"2.0.0"  // change version number in ManualMode.rc also, when needed
+#define VERSION_NUMBER				2.04
+#define VERSION_TEXT				"2.0.4"  // change version number in ManualMode.rc also, when needed
 
 
 
