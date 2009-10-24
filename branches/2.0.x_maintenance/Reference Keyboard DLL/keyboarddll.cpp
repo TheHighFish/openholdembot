@@ -87,8 +87,12 @@ KEYBOARDDLL_API int SendString(const HWND hwnd, const RECT rect, const CString s
 	}
 
 	// Set focus to target window
-	int idTarget = GetWindowThreadProcessId(hwnd, NULL);
-	AttachThreadInput(GetCurrentThreadId(), idTarget, true);
+	//int idTarget = GetWindowThreadProcessId(hwnd, NULL);
+	//AttachThreadInput(GetCurrentThreadId(), idTarget, true);
+	// 
+	// For a future perfect fix see see
+	//http://msdn.microsoft.com/en-us/library/ms646311(VS.85).aspx
+	//http://msdn.microsoft.com/en-us/library/ms646310(VS.85).aspx
 	SetFocus(hwnd);
 	SetForegroundWindow(hwnd);
 	SetActiveWindow(hwnd);
