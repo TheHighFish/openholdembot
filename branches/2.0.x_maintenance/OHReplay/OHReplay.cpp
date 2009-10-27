@@ -406,7 +406,7 @@ void prev_frame()
 		return;
 
 	// Filename
-	sprintf_s(szHtmFile, MAX_PATH, "%sframe???.htm", cur_working_path);
+	sprintf_s(szHtmFile, MAX_PATH, "%sframe??????.htm", cur_working_path);
 
 	// Find first file that matches wildcard
 	hFind = FindFirstFile(szHtmFile, &FindFileData);
@@ -465,7 +465,7 @@ void next_frame()
 		return;
 
 	// Filename
-	sprintf_s(szHtmFile, MAX_PATH, "%sframe???.htm", cur_working_path);
+	sprintf_s(szHtmFile, MAX_PATH, "%s%s", cur_working_path, "frame??????.htm");
 
 	// Find first file that matches wildcard
 	hFind = FindFirstFile(szHtmFile, &FindFileData);
