@@ -23,7 +23,9 @@ NEW STUFF:
   a window or not.  This is primarily useful for automation in hoppers.  Sample code in the docu.
   WMA_DODISCONNECT will disconnect OH from an attached window
   WMA_CONNECTEDHWND will return the handle of the window that OH is attached to, zero otherwise [OpenHoldem]  
-
+- Added handling of new value for the "potmethod" symbol, "3".  potmethod=3, treats c0pot0-c0pot9 not as main pot/side pots, but 
+  rather as a way to find the best total pot.  The scraper engine will scrape all of c0pot0-c0pot9 and set the "pot" symbol to 
+  the highest scraped value.  Kind thanks to spud from Lab 1.  [OH]
 
 v2.0.4 2009-xx-yy
 =================
