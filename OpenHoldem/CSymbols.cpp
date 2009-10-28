@@ -1508,19 +1508,32 @@ void CSymbols::CalcBetBalanceStack(void)
 	set_sym_potplayer(_sym.potplayer + _sym.currentbet[i]);							// potplayer
 	}
 
-	if (_sym.potmethod == 2)															// pot, potcommon ->
+	// pot, potcommon, based on value of potmethod
+	if (_sym.potmethod == 2)															
 	{
-	set_sym_pot(p_scraper->pot(0));
-	set_sym_potcommon(_sym.pot - _sym.potplayer);
+		set_sym_pot(p_scraper->pot(0));
+		set_sym_potcommon(_sym.pot - _sym.potplayer);
 	}
-	else
+
+	else if(_sym.potmethod == 3) 
 	{
-	set_sym_potcommon(0);
+		_sym.pot = p_scraper->pot(0);
+
+		for (i=1; i<=4; i++)
+			_sym.pot = max(_sym.pot, p_scraper->pot(i));
+
+		_sym.potcommon = _sym.pot - _sym.potplayer;
+	}
+	
+	else  // potmethod == 1
+	{
+		set_sym_potcommon(0);
 		for (i=0; i<=4; i++)
 		set_sym_potcommon(_sym.potcommon + p_scraper->pot(i));
 
-	set_sym_pot(_sym.potcommon + _sym.potplayer);									// <- pot, potcommon
+		set_sym_pot(_sym.potcommon + _sym.potplayer);									
 	}
+	// <- pot, potcommon, based on value of potmethod
 }
 
 void CSymbols::CalcChipamtsLimits(void) 
