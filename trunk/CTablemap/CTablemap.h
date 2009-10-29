@@ -144,6 +144,7 @@ public:
 	const int activemethod()		{ SMapCI it = _s$.find("activemethod"); if (it!=_s$.end()) return strtoul(it->second.text.GetString(), NULL, 10); else return 0; }
 	const CString sitename()		{ SMapCI it = _s$.find("sitename"); if (it!=_s$.end()) return it->second.text; else return ""; }
 	const CString network()			{ SMapCI it = _s$.find("network"); if (it!=_s$.end()) return it->second.text; else return ""; }
+	const CString forcechair()		{ SMapCI it = _s$.find("forcechair"); if (it!=_s$.end()) return it->second.text; else return ""; }
 
 	bool swagallin()				{ SMapCI it = _s$.find("swagallin"); return (it != _s$.end()); }
 

@@ -460,7 +460,6 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 
 			CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 			pMyMainWnd->DisableButtonsOnConnect();
-			
 
 			// Make sure autoplayer is off
 			p_autoplayer->set_autoplayer_engaged(false);
@@ -525,6 +524,13 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 					  "*************************************************************\n",
 					  formula.GetString(), site.GetString(), title);
 
+			CString sForceChair = p_tablemap->forcechair();
+			if (!sForceChair.IsEmpty()) {
+				int iForceChair = atoi(sForceChair);
+				p_symbols->set_sym_chair(iForceChair);
+				p_symbols->set_sym_userchair(iForceChair);
+				p_symbols->set_user_chair_confirmed(true); 
+			}
 		}
 	}
 	return (SelectedItem != -1);
