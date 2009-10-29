@@ -1,6 +1,7 @@
 v2.1.0 2010-xx-yy         === 2.0.4. see below ===
 =================
 MAINTENANCE:
+- Fixed display of log$ information in the main window (Spew)
 
 NEW STUFF:
 - Added option to delete old log-files that exceed a given size. [THF]
@@ -18,6 +19,7 @@ NEW STUFF:
   Please refer to the docu for more information. [THF]
 - Auto-connector: OH is now able to connect automatically to a new table without 
   any human interaction. Please refer to the docu for more information. [THF]
+- TM setting to force the user chair on connection (forcechair = x) [Spew]
 - Added handling of WMA_DODISCONNECT and WMA_CONNECTEDHWND messages (in addition to existing WMA_DOCONNECT 
   message).  WMA_CONNECTEDHWND can be used to 'query' a given OpenHoldem instance to see if it is connected to
   a window or not.  This is primarily useful for automation in hoppers.  Sample code in the docu.
