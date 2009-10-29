@@ -224,7 +224,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 		update_it = true;
 	}
 
-	if (update_it || update_all) 
+	if (prefs.log_symbol_enabled() || update_it || update_all) 
 	{
 		DrawCenterInfoBox();
 	}
@@ -438,7 +438,7 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 
 	t.Append(s);
 
-	if (p_symbols->user_chair_confirmed() && sym_playing) 
+	if (prefs.log_symbol_enabled() && p_symbols->user_chair_confirmed() && sym_playing) 
 	{
 		for (int i=0; i<min(5, p_symbols->logsymbols_collection()->GetCount()); i++)
 		{
