@@ -404,6 +404,7 @@
 #define IDC_STATIC_REBUY_MINIMUM_DELAY  1326
 #define IDC_EDIT1                       1327
 #define IDC_REBUY_EDIT_MINIMUM_DELAY    1327
+#define IDC_RECONNECT_TIME_EDIT         1327
 #define IDC_STATIC_REBUY_SCRIPT         1329
 #define IDC_REBUY_EDIT_SCRIPT           1330
 #define IDC_REBUY_EDIT_MINIMUM_DELAY_SPIN 1331
@@ -413,6 +414,8 @@
 #define IDC_RADIO3                      1335
 #define IDC_RADIO_AUTOCONNECTOR_5       1335
 #define IDC_SCROLLBAR1                  1336
+#define IDC_SPIN1                       1337
+#define IDC_RECONNECT_TIME_SPIN         1337
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -544,7 +547,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        180
 #define _APS_NEXT_COMMAND_VALUE         32988
-#define _APS_NEXT_CONTROL_VALUE         1337
+#define _APS_NEXT_CONTROL_VALUE         1338
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
