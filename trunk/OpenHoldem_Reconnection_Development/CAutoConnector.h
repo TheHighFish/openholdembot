@@ -28,11 +28,13 @@ private:
 	int SelectTableMapAndWindowAutomatically(int Choices);
 private:
 	void Check_TM_Against_All_Windows(SWholeMap smap, HWND targetHWnd);
-private:
-	CCritSec		m_critsec;
+
 private:
 	// private variables - use public accessors and public mutators to address these
 	HWND			_attached_hwnd;	 // Table that we are attached to
+	bool			TablemapsInScraperFolderAlreadyParsed;
+private:
+	CCritSec		m_critsec;
 } *p_autoconnector;
 
 #endif INC_CAUTOCONNECTOR_H

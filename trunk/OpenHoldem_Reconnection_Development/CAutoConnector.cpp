@@ -30,10 +30,10 @@ CArray <STableList, STableList>		g_tlist;
 CAutoConnector::CAutoConnector()
 {
 	write_log(3, "CAutoConnector::CAutoConnector()");
-	p_sharedmem->MarkPokerWindowAsUnAttached();
 
-	// Clear "attached" info
+	p_sharedmem->MarkPokerWindowAsUnAttached();
 	set_attached_hwnd(NULL);
+	TablemapsInScraperFolderAlreadyParsed = false;
 }
 
 
@@ -41,8 +41,6 @@ CAutoConnector::~CAutoConnector()
 {
 	write_log(3, "CAutoConnector::~CAutoConnector()");
 	p_sharedmem->MarkPokerWindowAsUnAttached();
-
-	// Clear "attached" info
 	set_attached_hwnd(NULL);
 }
 
@@ -80,11 +78,12 @@ void CAutoConnector::ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData(
 void CAutoConnector::ParseAllTableMapsToLoadConnectionData()
 {
 	CString TableMapWildcard;
-
+	
 	TableMapWildcard.Format("%s\\scraper\\*.tm", _startup_path);
 	ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData(TableMapWildcard);	
 	TableMapWildcard.Format("%s\\scraper\\*.ws", _startup_path);
 	ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData(TableMapWildcard);
+	TablemapsInScraperFolderAlreadyParsed = true;
 }
 
 
@@ -352,6 +351,10 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 	CFileFind			hFile;
 
 	write_log(3, "CAutoConnector::Connect(..)");
+	if (!TablemapsInScraperFolderAlreadyParsed)
+	{
+		ParseAllTableMapsToLoadConnectionData();
+	}
 	// Clear global list for holding table candidates
 	g_tlist.RemoveAll();
 
