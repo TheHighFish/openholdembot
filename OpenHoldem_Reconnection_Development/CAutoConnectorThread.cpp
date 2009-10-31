@@ -29,11 +29,10 @@ UINT CAutoConnectorThread::AutoConnectorThreadFunction(LPVOID pParam)
 		{
 			if(p_autoconnector->TimeSinceLastFailedAttemptToConnect() > prefs.autoconnector_time_to_next_try())
 			{
-				MessageBox(0, "AutoConnectorThreadFunction()", "Debug", 0);
 				p_autoconnector->Connect(0);
-				Sleep(prefs.autoconnector_time_to_next_try() * 1000);
 			}
 		}
+		Sleep(prefs.autoconnector_time_to_next_try() * 1000);
 	}
 	return 0;
 }

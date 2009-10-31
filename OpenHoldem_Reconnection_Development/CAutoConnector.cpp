@@ -699,5 +699,5 @@ double CAutoConnector::TimeSinceLastFailedAttemptToConnect()
 	time_t LastFailedAttemptToConnect = p_sharedmem->GetTimeOfLastFailedAttemptToConnect(); //???
 	time_t CurrentTime;
 	time(&CurrentTime);
-	return difftime(LastFailedAttemptToConnect, CurrentTime);
+	return difftime(CurrentTime, LastFailedAttemptToConnect);
 }
