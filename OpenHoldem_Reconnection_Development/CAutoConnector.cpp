@@ -41,7 +41,11 @@ CAutoConnector::~CAutoConnector()
 {
 	write_log(3, "CAutoConnector::~CAutoConnector()");
 	p_sharedmem->MarkPokerWindowAsUnAttached();
+
+	// Clear "attached" info
+	set_attached_hwnd(NULL);
 }
+
 
 bool CAutoConnector::IsConnected()
 {
@@ -49,7 +53,42 @@ bool CAutoConnector::IsConnected()
 }
 
 
-// TODO? Move to CTablemap?
+void CAutoConnector::ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData(CString TableMapWildcard)
+{
+	CFileFind	hFile;
+	int			line = 0;
+
+	CString	current_path = p_tablemap->filepath();
+	BOOL bFound = hFile.FindFile(TableMapWildcard.GetString());
+	while (bFound)
+	{
+		bFound = hFile.FindNextFile();
+		if (!hFile.IsDots() && !hFile.IsDirectory() && hFile.GetFilePath()!=current_path)
+		{
+			int ret = p_tablemap->LoadTablemap((char *) hFile.GetFilePath().GetString(), VER_OPENSCRAPE_2, false, &line, prefs.disable_msgbox());
+			if (ret == SUCCESS)
+			{
+				// !!! TODO: save TM connection-data! 
+				// Check_TM_Against_All_Windows(smap, targetHWnd);
+				MessageBox(0, hFile.GetFilePath().GetString(), "Loading TM", 0);
+			}
+		}
+	}
+}
+
+
+void CAutoConnector::ParseAllTableMapsToLoadConnectionData()
+{
+	CString TableMapWildcard;
+
+	TableMapWildcard.Format("%s\\scraper\\*.tm", _startup_path);
+	ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData(TableMapWildcard);	
+	TableMapWildcard.Format("%s\\scraper\\*.ws", _startup_path);
+	ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData(TableMapWildcard);
+}
+
+
+// TODO? Move to CTablemap? // TODO !!! Rewrite for reconnector!
 void CAutoConnector::Check_TM_Against_All_Windows(SWholeMap smap, HWND targetHWnd)
 {
 	write_log(3, "CAutoConnector::Check_TM_Against_All_Windows(..)");
