@@ -34,6 +34,7 @@ CAutoConnector::CAutoConnector()
 	p_sharedmem->MarkPokerWindowAsUnAttached();
 	set_attached_hwnd(NULL);
 	TablemapsInScraperFolderAlreadyParsed = false;
+	NumberOfTableMapsLoaded = 0;
 }
 
 
@@ -60,15 +61,21 @@ void CAutoConnector::ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData(
 	BOOL bFound = hFile.FindFile(TableMapWildcard.GetString());
 	while (bFound)
 	{
+		if (NumberOfTableMapsLoaded >= k_MaxNumberOfTableMaps)
+		{
+			// TODO!!! Error!	
+			return;
+		}
 		bFound = hFile.FindNextFile();
 		if (!hFile.IsDots() && !hFile.IsDirectory() && hFile.GetFilePath()!=current_path)
 		{
 			int ret = p_tablemap->LoadTablemap((char *) hFile.GetFilePath().GetString(), VER_OPENSCRAPE_2, false, &line, prefs.disable_msgbox());
 			if (ret == SUCCESS)
 			{
-				// !!! TODO: save TM connection-data! 
-				// Check_TM_Against_All_Windows(smap, targetHWnd);
+				SWholeMap smap; // TODO!!! build it!
 				MessageBox(0, hFile.GetFilePath().GetString(), "Loading TM", 0);
+				ExtractConnectionDataFromCurrentTablemap(&smap);
+				NumberOfTableMapsLoaded++;
 			}
 		}
 	}
@@ -84,6 +91,81 @@ void CAutoConnector::ParseAllTableMapsToLoadConnectionData()
 	TableMapWildcard.Format("%s\\scraper\\*.ws", _startup_path);
 	ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData(TableMapWildcard);
 	TablemapsInScraperFolderAlreadyParsed = true;
+}
+
+
+void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
+{
+	CString s;
+	
+	write_log(3, "CAutoConnector::ExtractConnectionDataFromCurrentTablemap()");
+
+	// Extract client size information
+	ZMapCI z_iter = map->z$->end();
+	z_iter = map->z$->find("clientsize");
+	if (z_iter != map->z$->end())
+	{
+		TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeX = z_iter->second.width;
+		TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeY = z_iter->second.height;
+	}
+	z_iter = map->z$->find("clientsizemin");
+	if (z_iter != map->z$->end())
+	{
+		TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMinX = z_iter->second.width;
+		TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMinY = z_iter->second.height;
+	}
+	z_iter = map->z$->find("clientsizemax");
+	if (z_iter != map->z$->end())
+	{
+		TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMaxX = z_iter->second.width;
+		TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMaxY = z_iter->second.height;
+	}
+
+	// Extract title text information
+	SMapCI s_iter = map->s$->end();
+	s_iter = map->s$->find("titletext");
+	if (s_iter!=map->s$->end())
+		TablemapConnectionData[NumberOfTableMapsLoaded].TitleText =	s_iter->second.text;
+			
+	for (int i=0; i<=9; i++)
+	{
+		s.Format("titletext%d", i);
+		s_iter = map->s$->find(s.GetString());
+		if (s_iter!=map->s$->end())
+			TablemapConnectionData[NumberOfTableMapsLoaded].TitleText_0_9[i] =	s_iter->second.text;
+	}
+
+	// Extract negative title texs
+	s_iter = map->s$->find("!titletext");
+	if (s_iter!=map->s$->end())
+		TablemapConnectionData[NumberOfTableMapsLoaded].NegativeTitleText = s_iter->second.text;
+	
+	for (int i=0; i<=9; i++)
+	{
+		s.Format("!titletext%d", i);
+		s_iter = map->s$->find(s.GetString());
+		if (s_iter!=map->s$->end())
+			TablemapConnectionData[NumberOfTableMapsLoaded].NegativeTitleText_0_9[i] = s_iter->second.text;
+	}
+
+	// Extract the tablepoint
+	for (RMapCI r_iter=map->r$->begin(); r_iter!=map->r$->end(); r_iter++)
+	{
+		if (r_iter->second.name.Find("tablepoint") != -1 &&
+			r_iter->second.right - r_iter->second.left == 1 &&
+			r_iter->second.bottom - r_iter->second.top == 1 &&
+			r_iter->second.transform == "C")
+		{
+			TablemapConnectionData[NumberOfTableMapsLoaded].TablePoint.bottom = r_iter->second.bottom;
+			TablemapConnectionData[NumberOfTableMapsLoaded].TablePoint.top = r_iter->second.top;
+			TablemapConnectionData[NumberOfTableMapsLoaded].TablePoint.left = r_iter->second.left;
+			TablemapConnectionData[NumberOfTableMapsLoaded].TablePoint.right = r_iter->second.right;
+			TablemapConnectionData[NumberOfTableMapsLoaded].TablePoint.transform = r_iter->second.transform;
+			TablemapConnectionData[NumberOfTableMapsLoaded].TablePoint.color = r_iter->second.color;
+			TablemapConnectionData[NumberOfTableMapsLoaded].TablePoint.radius = r_iter->second.radius;
+			// We don't need the rest of the regions data for a tablepoint with colour transform
+		}
+	}
 }
 
 
@@ -355,6 +437,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 	{
 		ParseAllTableMapsToLoadConnectionData();
 	}
+
 	// Clear global list for holding table candidates
 	g_tlist.RemoveAll();
 
