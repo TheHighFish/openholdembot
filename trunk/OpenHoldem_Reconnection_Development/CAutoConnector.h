@@ -5,10 +5,9 @@
 #include "..\CTablemap\CTablemap.h"
 
 
-const int k_MaxNumberOfTableMaps = 25;
-
 typedef struct
 {
+	CString			FilePath;
 	unsigned int	ClientSizeX, ClientSizeY;
 	unsigned int	ClientSizeMinX, ClientSizeMinY;
 	unsigned int	ClientSizeMaxX, ClientSizeMaxY;
@@ -51,8 +50,6 @@ private:
 	bool		TablemapsInScraperFolderAlreadyParsed;
 	int			NumberOfTableMapsLoaded;
 	CCritSec	m_critsec;
-private:
-	t_TablemapConnectionData	TablemapConnectionData[k_MaxNumberOfTableMaps];
 } *p_autoconnector;
 
 #endif INC_CAUTOCONNECTOR_H
