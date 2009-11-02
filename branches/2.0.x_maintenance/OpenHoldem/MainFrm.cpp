@@ -1795,7 +1795,7 @@ bool check_window_match(SWholeMap *map, HWND h, RECT r, CString title)
 		return false;
 
 	// Check for no negative title text matches
-	good_neg_title = true;
+	good_neg_title = false;
 
 	s_iter = map->s$->find("!titletext");
 	if (s_iter!=map->s$->end())
@@ -1811,7 +1811,7 @@ bool check_window_match(SWholeMap *map, HWND h, RECT r, CString title)
 				good_neg_title = true;
 	}
 
-	if (!good_neg_title)
+	if (good_neg_title)
 		return false;
 
 	// Allocate heap space for BITMAPINFO
@@ -1875,9 +1875,9 @@ bool check_window_match(SWholeMap *map, HWND h, RECT r, CString title)
 			else
 			{
 				if (trans.IsInARGBColorCube((r_iter->second.color>>24)&0xff,
-											r_iter->second.color,
-											r_iter->second.color,
-											r_iter->second.color,
+											GetRValue(r_iter->second.color),
+											GetBValue(r_iter->second.color),
+											GetGValue(r_iter->second.color),
 											-r_iter->second.radius,
 											alpha, red, green, blue))
 				{
