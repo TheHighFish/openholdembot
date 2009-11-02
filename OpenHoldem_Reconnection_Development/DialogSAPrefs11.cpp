@@ -122,6 +122,9 @@ void CDlgSAPrefs11::OnOK()
 
 	m_DebugLevel_PT.GetWindowText(text);
 	prefs.set_log_level_pt(strtoul(text.GetString(), NULL, 10));
+
+	m_MaximumLogSize.GetWindowText(text);
+	prefs.set_log_max_logsize(strtoul(text.GetString(), NULL, 10));
 	
 	CSAPrefsSubDlg::OnOK();
 }
