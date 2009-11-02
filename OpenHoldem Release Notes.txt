@@ -1,7 +1,11 @@
 v2.1.0 2010-xx-yy         === 2.0.4. see below ===
 =================
+BUG FIXES:
+- Fixed display of log$ information in the main window. [Spew]
+- OpenHoldem did treat negative titles and negative radii incorrectly,
+  when trying to connect to a table. [THF]
+
 MAINTENANCE:
-- Fixed display of log$ information in the main window (Spew)
 
 NEW STUFF:
 - Added option to delete old log-files that exceed a given size. [THF]
@@ -31,7 +35,7 @@ NEW STUFF:
 
 v2.0.4 2009-xx-yy
 =================
-BUG FIXES:
+
 
 
 v2.0.3 2009-10-23
