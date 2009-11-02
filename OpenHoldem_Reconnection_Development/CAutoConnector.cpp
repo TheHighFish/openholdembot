@@ -278,7 +278,7 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 	}
 
 	// Check for no negative title text matches
-	good_neg_title = true;
+	good_neg_title = false;
 
 	if (title.Find(TablemapConnectionData[MapIndex].NegativeTitleText)!=-1)
 		good_neg_title = true;
@@ -289,7 +289,7 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 			good_neg_title = true;
 	}
 
-	if (!good_neg_title)
+	if (good_neg_title)
 	{
 		write_log(3, "negative title."); 
 		//MessageBox(0, "negative title", "Debug", 0);
@@ -343,7 +343,7 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 		if (TablemapConnectionData[MapIndex].TablePoint.radius >= 0)
 		{
 			
-			if (!trans.IsInARGBColorCube((Color>>24)&0xff,
+			if (!trans.IsInARGBColorCube((Color>>24)&0xff, // function GetAValue() does not exist
 										 GetRValue(Color),
 										 GetGValue(Color),
 										 GetBValue(Color),
@@ -357,10 +357,10 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 		// negative radius (logical not)
 		else
 		{
-			if (trans.IsInARGBColorCube((Color>>24)&0xff,
-										Color, //???
-										Color, // ???
-										Color, //???
+			if (trans.IsInARGBColorCube((Color>>24)&0xff, // function GetAValue() does not exist
+										GetRValue(Color), 
+										GetGValue(Color), 
+										GetBValue(Color), 
 										-TablemapConnectionData[MapIndex].TablePoint.radius,
 										alpha, red, green, blue))
 			{
