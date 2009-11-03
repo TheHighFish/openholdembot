@@ -15,6 +15,7 @@ typedef struct
 	CString			TitleText_0_9[10];
 	CString			NegativeTitleText;
 	CString			NegativeTitleText_0_9[10];
+	bool			TablePointPresent;
 	STablemapRegion	TablePoint;
 } t_TablemapConnectionData;
 
@@ -43,7 +44,7 @@ private:
 	int SelectTableMapAndWindowManually(int Choices);
 	int SelectTableMapAndWindowAutomatically(int Choices);
 private:
-	void Check_TM_Against_All_Windows(SWholeMap smap, HWND targetHWnd);
+	void Check_TM_Against_All_Windows(int TablemapIndex, HWND targetHWnd);
 private:
 	// private variables - use public accessors and public mutators to address these
 	HWND		_attached_hwnd;	 // Table that we are attached to
