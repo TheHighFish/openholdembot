@@ -132,9 +132,12 @@ BOOL COpenHoldemApp::InitInstance()
 	if (load_from_registry)
 		SetRegistryKey(_T("OpenHoldem"));
 	prefs.LoadPreferences(load_from_registry);
-
+	
 	// Classes
 	if (!p_sessioncounter) p_sessioncounter = new CSessionCounter;
+	// Start logging immediatelly after the loading the preferences
+	// and initializing the sessioncounter.
+	start_log();
 	if (!p_sharedmem) p_sharedmem = new CSharedMem;
 	if (!p_pokerpro) p_pokerpro = new PokerPro;
 	if (!p_scraper)  p_scraper = new CScraper;

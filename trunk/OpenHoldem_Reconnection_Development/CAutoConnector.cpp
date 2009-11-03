@@ -31,7 +31,7 @@ t_TablemapConnectionData			TablemapConnectionData[k_MaxNumberOfTableMaps];
 
 void CTableMapToSWholeMap(CTablemap *cmap, SWholeMap *smap)
 {
-	write_log(3, "CTableMapToSWholeMap: %s", p_tablemap->filepath());
+	write_log(0, "CTableMapToSWholeMap: %s", p_tablemap->filepath());
 	//MessageBox(0, "CTableMapToSWholeMap", "Debug", 0);
 	smap->z$ = p_tablemap->z$();
 	smap->s$ = p_tablemap->s$();
@@ -50,7 +50,7 @@ void CTableMapToSWholeMap(CTablemap *cmap, SWholeMap *smap)
 
 CAutoConnector::CAutoConnector()
 {
-	write_log(3, "CAutoConnector::CAutoConnector()");
+	write_log(0, "CAutoConnector::CAutoConnector()");
 	//MessageBox(0, "CAutoConnector::CAutoConnector()", "Debug", 0);
 
 	p_sharedmem->MarkPokerWindowAsUnAttached();
@@ -62,7 +62,7 @@ CAutoConnector::CAutoConnector()
 
 CAutoConnector::~CAutoConnector()
 {
-	write_log(3, "CAutoConnector::~CAutoConnector()");
+	write_log(0, "CAutoConnector::~CAutoConnector()");
 	//MessageBox(0, "CAutoConnector::~CAutoConnector()", "Debug", 0);
 	p_sharedmem->MarkPokerWindowAsUnAttached();
 	set_attached_hwnd(NULL);
@@ -81,7 +81,7 @@ void CAutoConnector::ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData(
 	SWholeMap	smap;
 	int			line = 0;
 
-	write_log(3, "ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData: %s", TableMapWildcard);
+	write_log(0, "ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData: %s", TableMapWildcard);
 	//MessageBox(0, "ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData", "Debug", 0);
 	CString	current_path = p_tablemap->filepath();
 	BOOL bFound = hFile.FindFile(TableMapWildcard.GetString());
@@ -113,7 +113,7 @@ void CAutoConnector::ParseAllTableMapsToLoadConnectionData()
 {
 	CString TableMapWildcard;
 	
-	write_log(3, "ParseAllTableMapsToLoadConnectionData");
+	write_log(0, "ParseAllTableMapsToLoadConnectionData");
 	//MessageBox(0, "ParseAllTableMapsToLoadConnectionData", "Debug", 0);
 	TableMapWildcard.Format("%s\\scraper\\*.tm", _startup_path);
 	ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData(TableMapWildcard);	
@@ -127,7 +127,7 @@ void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 {
 	CString s;
 	
-	write_log(3, "CAutoConnector::ExtractConnectionDataFromCurrentTablemap(): %s", map->filepath);
+	write_log(0, "CAutoConnector::ExtractConnectionDataFromCurrentTablemap(): %s", map->filepath);
 	//MessageBox(0, "CAutoConnector::ExtractConnectionDataFromCurrentTablemap()", "Debug", 0);
 
 	TablemapConnectionData[NumberOfTableMapsLoaded].FilePath = map->filepath;
@@ -203,7 +203,7 @@ void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 // TODO? Move to CTablemap? // TODO !!! Rewrite for reconnector!
 void CAutoConnector::Check_TM_Against_All_Windows(SWholeMap smap, HWND targetHWnd)
 {
-	write_log(3, "CAutoConnector::Check_TM_Against_All_Windows(..)");
+	write_log(0, "CAutoConnector::Check_TM_Against_All_Windows(..)");
 	//MessageBox(0, "CAutoConnector::Check_TM_Against_All_Windows(..)", "Debug", 0);
 
 	CTableMapToSWholeMap(p_tablemap, &smap); // !!! ToDo: remove param?
@@ -228,7 +228,7 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 	CTransform		trans;
 	CString			s;
 
-	write_log(3, "CAutoConnector::Check_TM_Against_Single_Window(..)");
+	write_log(0, "CAutoConnector::Check_TM_Against_Single_Window(..)");
 	//MessageBox(0, "CAutoConnector::Check_TM_Against_Single_Window(..)", "Debug", 0);
 	
 	// Check for exact match on client size
@@ -254,7 +254,7 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 
 	if (!good_size)
 	{
-		write_log(3, "bad size.");
+		write_log(0, "bad size.");
 		//MessageBox(0, "bad size", "Debug", 0);
 		return false;
 	}
@@ -272,7 +272,7 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 
 	if (!good_pos_title)
 	{
-		write_log(3, "no good title.");
+		write_log(0, "no good title.");
 		//MessageBox(0, "no good title", "Debug", 0);
 		return false;
 	}
@@ -291,7 +291,7 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 
 	if (good_neg_title)
 	{
-		write_log(3, "negative title."); 
+		write_log(0, "negative title."); 
 		//MessageBox(0, "negative title", "Debug", 0);
 		return false;
 	}
@@ -380,12 +380,12 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 
 	if (!good_table_points)
 	{
-		write_log(3, "bad tablepoint");
+		write_log(0, "bad tablepoint");
 		//MessageBox(0, "bad tablepopints", "Debug", 0);
 		return false;
 	}
 
-	write_log(3, "window ia a match");
+	write_log(0, "window ia a match");
 	//MessageBox(0, "window is a match", "Debug", 0);
 	return true;
 }
@@ -399,7 +399,7 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
 	STableList			tablelisthold;
 	SWholeMap			*map = (SWholeMap *) (lparam);
 
-	write_log(3, "EnumProcTopLevelWindowList(..)");
+	write_log(0, "EnumProcTopLevelWindowList(..)");
 	//MessageBox(0, "EnumProcTopLevelWindowList(..)", "Debug", 0);
 	// If this is not a top level window, then return
 	if (GetParent(hwnd) != NULL)
@@ -446,7 +446,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 	BOOL				bFound = false;
 	CFileFind			hFile;
 
-	write_log(3, "CAutoConnector::Connect(..)");
+	write_log(0, "CAutoConnector::Connect(..)");
 	//MessageBox(0, "CAutoConnector::Connect(..)", "Debug", 0);
 	if (!TablemapsInScraperFolderAlreadyParsed)
 	{
@@ -611,7 +611,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			// Reset display
 			pMyMainWnd->ResetDisplay();
 
-			// Start logging
+			// Start logging, in case the log-level got changed.
 			start_log();
 
 			if (targetHWnd == NULL) 
@@ -664,7 +664,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 
 void CAutoConnector::Disconnect()
 {
-	write_log(3, "CAutoConnector::Disconnect()");
+	write_log(0, "CAutoConnector::Disconnect()");
 	//MessageBox(0, "CAutoConnector::Disconnect()", "Debug", 0);
 	// stop threads
 	if (p_heartbeat_thread)
@@ -738,7 +738,7 @@ void CAutoConnector::Disconnect()
 
 int CAutoConnector::SelectTableMapAndWindow(int Choices)
 {
-	write_log(3, "CAutoConnector::SelectTableMapAndWindow(..)");
+	write_log(0, "CAutoConnector::SelectTableMapAndWindow(..)");
 	if (prefs.autoconnector_connection_method() == k_AutoConnector_Connect_Manually)
 	{
 		return SelectTableMapAndWindowManually(Choices);
@@ -756,7 +756,7 @@ int CAutoConnector::SelectTableMapAndWindowManually(int Choices)
 	CDlgSelectTable		cstd;
 	int					result = 0;
 
-	write_log(3, "CAutoConnector::SelectTableMapAndWindowManually(..)");
+	write_log(0, "CAutoConnector::SelectTableMapAndWindowManually(..)");
 	if (Choices == 1) 
 	{
 		// First (and only) item selected
@@ -797,7 +797,7 @@ int CAutoConnector::SelectTableMapAndWindowManually(int Choices)
 
 int CAutoConnector::SelectTableMapAndWindowAutomatically(int Choices)
 {
-	write_log(3, "CAutoConnector::SelectTableMapAndWindowAutomatically(..)");
+	write_log(0, "CAutoConnector::SelectTableMapAndWindowAutomatically(..)");
 	for (int i=0; i<Choices; i++) 
 	{
 		if (!p_sharedmem->PokerWindowAttached(g_tlist[i].hwnd))
