@@ -500,28 +500,28 @@ IDD_SAPREFS2 DIALOGEX 0, 0, 219, 155
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
+	LTEXT           "Frame delay (0-9 frames)",IDC_STATIC,8,4,82,8
     EDITTEXT        IDC_FRAMEDELAY,113,2,28,14,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_FRAMEDELAY_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,141,2,11,14
-    EDITTEXT        IDC_SWAGDELAY3,113,64,28,14,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_SWAGDELAY3_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,141,64,11,14
-    LTEXT           "Frame delay (0-9 frames)",IDC_STATIC,8,4,82,8
-    LTEXT           "Entry to confirm (0-5000 ms)",IDC_STATIC,15,69,93,8
-    CONTROL         "Engage autoplayer automatically upon chair identification",IDC_AUTO_AP,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,88,199,10
-    EDITTEXT        IDC_SWAGDELAY2,113,47,28,14,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_SWAGDELAY2_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,141,47,11,14
-    LTEXT           "Delete to entry (0-5000 ms)",IDC_STATIC,15,52,90,8
-    EDITTEXT        IDC_SWAGDELAY1,113,29,28,14,ES_AUTOHSCROLL | ES_NUMBER
+	CONTROL         "",IDC_FRAMEDELAY_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,141,2,11,14
+	GROUPBOX        "SWAG Delays",IDC_STATIC,8,20,150,63
+	LTEXT           "Select to delete (0-5000 ms)",IDC_STATIC,15,34,92,8
+	EDITTEXT        IDC_SWAGDELAY1,113,29,28,14,ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "",IDC_SWAGDELAY1_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,141,29,11,14
-    LTEXT           "Select to delete (0-5000 ms)",IDC_STATIC,15,34,92,8
-    GROUPBOX        "SWAG Delays",IDC_STATIC,8,20,150,63
-    CONTROL         "Detect loss of focus on SWAG and skip confirm",IDC_FOCUSDETECT,
+	LTEXT           "Delete to entry (0-5000 ms)",IDC_STATIC,15,52,90,8
+	EDITTEXT        IDC_SWAGDELAY2,113,47,28,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_SWAGDELAY2_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,141,47,11,14
+	LTEXT           "Entry to confirm (0-5000 ms)",IDC_STATIC,15,69,93,8
+	EDITTEXT        IDC_SWAGDELAY3,113,64,28,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_SWAGDELAY3_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,141,64,11,14
+   	CONTROL         "Engage autoplayer automatically upon chair identification",IDC_AUTO_AP,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,88,199,10
+	CONTROL         "Detect loss of focus on SWAG and skip confirm",IDC_FOCUSDETECT,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,99,165,10
-    CONTROL         "Use 'comma' instead of 'dot' for fractional SWAGs",IDC_SWAGUSECOMMA,
+	CONTROL         "Use 'comma' instead of 'dot' for fractional SWAGs",IDC_SWAGUSECOMMA,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,110,173,10
-    CONTROL         "Only calculate standard function when on my turn",IDC_ONLY_CALC_ON_TURN,
+	CONTROL         "Only calculate standard function when on my turn",IDC_ONLY_CALC_ON_TURN,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,122,200,10
-    CONTROL         "Only act with balance stability",IDC_NEED_BALANCE_STABILITY,
+	CONTROL         "Only act with balance stability",IDC_NEED_BALANCE_STABILITY,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,133,200,10
 END
 
@@ -529,11 +529,12 @@ IDD_SAPREFS3 DIALOGEX 0, 0, 219, 155
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         " Load DLL on startup?",IDC_LOAD_DLL_ON_STARTUP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,22,85,10
-    EDITTEXT        IDC_DLLNAME,120,36,80,12,ES_AUTOHSCROLL
-    LTEXT           "Name of DLL to load on startup",IDC_STATIC,4,40,116,8
-    CONTROL         "Always send state messages, even when not playing?",IDC_ALWAYS_SEND_STATE,
+	CONTROL         "Always send state messages, even when not playing?",IDC_ALWAYS_SEND_STATE,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,6,186,10
+    CONTROL         " Load DLL on startup?",IDC_LOAD_DLL_ON_STARTUP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,22,85,10
+    LTEXT           "Name of DLL to load on startup",IDC_STATIC,4,40,116,8
+	EDITTEXT        IDC_DLLNAME,120,36,80,12,ES_AUTOHSCROLL
+    
 END
 
 IDD_SAPREFS4 DIALOGEX 0, 0, 261, 159
@@ -549,11 +550,11 @@ IDD_SAPREFS5 DIALOGEX 0, 0, 219, 155
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
+	LTEXT           "Time period to average table stats (mins)",IDC_STATIC,4,8,133,8	
     EDITTEXT        IDC_AVTIME,143,4,57,12,ES_AUTOHSCROLL
-    LTEXT           "Time period to average table stats (mins)",IDC_STATIC,4,8,133,8
-    COMBOBOX        IDC_HANDRANKVALUE,143,36,69,81,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Value of ""handrank""",IDC_STATIC,4,40,64,8
     CONTROL         "Disable all symbol caching",IDC_DISABLE_CACHING,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,24,97,8
+    LTEXT           "Value of ""handrank""",IDC_STATIC,4,40,64,8
+	COMBOBOX        IDC_HANDRANKVALUE,143,36,69,81,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP    
 END
 
 IDD_SAPREFS6 DIALOGEX 0, 0, 219, 155
@@ -830,13 +831,13 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "Automatically record replay frames (when its my turn)",IDC_RECORD_FRAMES,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,188,8
-    EDITTEXT        IDC_MAXFRAMES,100,52,50,12,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_MAXFRAMES_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,150,52,11,12
-    LTEXT           "Maximum frames to store ",IDC_STATIC,4,56,96,8
-    CONTROL         "But do it on every change in table state",IDC_RECORD_EVERY_CHANGE,
+	CONTROL         "But do it on every change in table state",IDC_RECORD_EVERY_CHANGE,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,22,143,10
-    CONTROL         "Record every change when in hand",IDC_RECORD_EVERY_CHANGE_PLAYING,
+	CONTROL         "Record every change when in hand",IDC_RECORD_EVERY_CHANGE_PLAYING,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,40,147,8
+    LTEXT           "Maximum frames to store ",IDC_STATIC,4,56,96,8 
+	EDITTEXT        IDC_MAXFRAMES,100,52,50,12,ES_AUTOHSCROLL | ES_NUMBER
+	CONTROL         "",IDC_MAXFRAMES_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,150,52,11,12
 END
 
 IDD_SAPREFS9 DIALOGEX 0, 0, 237, 158
@@ -847,10 +848,10 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,90,8
     CONTROL         "    Load default Perl formula",IDC_LOAD_DEFAULT_PERL_FORMULA,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,24,106,8
-    EDITTEXT        IDC_PERL_EDITOR,110,52,90,12,ES_AUTOHSCROLL,WS_EX_ACCEPTFILES
-    EDITTEXT        IDC_DEFAULT_PERL_FORMULA,110,36,90,12,ES_AUTOHSCROLL,WS_EX_ACCEPTFILES
+	LTEXT           "Default formula",IDC_STATIC,4,40,61,8
+	EDITTEXT        IDC_DEFAULT_PERL_FORMULA,110,36,90,12,ES_AUTOHSCROLL,WS_EX_ACCEPTFILES
     LTEXT           "Perl editor",IDC_STATIC,4,56,44,8
-    LTEXT           "Default formula",IDC_STATIC,4,40,61,8
+	EDITTEXT        IDC_PERL_EDITOR,110,52,90,12,ES_AUTOHSCROLL,WS_EX_ACCEPTFILES
 END
 
 IDD_SAPREFS10 DIALOGEX 0, 0, 219, 155
@@ -885,7 +886,6 @@ BEGIN
     COMBOBOX        IDC_DEBUGLEVEL,158,111,29,63,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     COMBOBOX        IDC_DEBUGLEVEL_PT,158,128,29,74,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     LTEXT           "(0=off, 3=all)",IDC_STATIC,150,142,46,8
-    LTEXT           "Erase old logs larger than (MB)",IDC_STATIC,21,159,124,12
     EDITTEXT        IDC_MAXIMUM_LOGSIZE,140,156,37,14,ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "",IDC_MAXIMUM_LOGSIZE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,176,156,11,14
 END
@@ -898,10 +898,10 @@ BEGIN
     CONTROL         "Never",IDC_RADIO_VALIDATOR_1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,8,20,142,8
     CONTROL         "When it's my turn",IDC_RADIO_VALIDATOR_2,"Button",BS_AUTORADIOBUTTON,8,36,156,8
     CONTROL         "Always",IDC_RADIO_VALIDATOR_3,"Button",BS_AUTORADIOBUTTON,8,52,150,8
+	CONTROL         "Use heuristic rules",IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,82,179,8
     CONTROL         "Stop autoplayer on error",IDC_CHECK_VALIDATOR_STOP_ON_ERROR,
                     "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,8,98,166,8
-    CONTROL         "Use heuristic rules",IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,82,179,8
     CONTROL         "Shoot replay-frames on error",IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,114,189,8
 END
