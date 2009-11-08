@@ -110,7 +110,6 @@ void CDlgSAPrefs14::OnOK()
 	}
 
 	_autoconnector_time_to_next_try_edit.GetWindowText(text);
-	MessageBox(text, "text", 0);
 	if (strtoul(text.GetString(), 0, 10)<0 || strtoul(text.GetString(), 0, 10)>100) 
 	{
 		MessageBox("Invalid time to next connection attempt", "ERROR", MB_OK);
