@@ -1,9 +1,6 @@
 #include "stdafx.h"
 
 #include <afxwin.h>
-//#include <process.h>
-//#include <windows.h>
-//#include <WinUser.h>
 
 #include "CAutoConnector.h"
 #include "CAutoplayer.h"
@@ -22,11 +19,28 @@
 #include "MainFrm.h"
 #include "OpenHoldem.h"
 
+
 const int k_MaxNumberOfTableMaps = 25;
 
+
+typedef struct
+{
+	CString			FilePath;
+	unsigned int	ClientSizeX, ClientSizeY;
+	unsigned int	ClientSizeMinX, ClientSizeMinY;
+	unsigned int	ClientSizeMaxX, ClientSizeMaxY;
+	CString			TitleText;
+	CString			TitleText_0_9[10];
+	CString			NegativeTitleText;
+	CString			NegativeTitleText_0_9[10];
+	bool			TablePointPresent;
+	STablemapRegion	TablePoint;
+} t_TablemapConnectionData;
+
+
+t_TablemapConnectionData			TablemapConnectionData[k_MaxNumberOfTableMaps];
 CAutoConnector						*p_autoconnector = NULL;
 CArray <STableList, STableList>		g_tlist; 
-t_TablemapConnectionData			TablemapConnectionData[k_MaxNumberOfTableMaps];
 
 
 void CTableMapToSWholeMap(CTablemap *cmap, SWholeMap *smap)
@@ -44,7 +58,6 @@ void CTableMapToSWholeMap(CTablemap *cmap, SWholeMap *smap)
 	smap->i$ = p_tablemap->i$();
 	smap->filepath = p_tablemap->filepath();
 }
-
 
 
 CAutoConnector::CAutoConnector()
@@ -252,19 +265,19 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 	write_log(3, "Window title: %s\n", title);
 	
 	// Check for exact match on client size
-	if (!(r.right == TablemapConnectionData[MapIndex].ClientSizeX)
-		&& (r.bottom == TablemapConnectionData[MapIndex].ClientSizeY))
+	if (!((r.right == TablemapConnectionData[MapIndex].ClientSizeX)
+		&& (r.bottom == TablemapConnectionData[MapIndex].ClientSizeY)))
 	{
 		// Exact size didn't match.
 		// So check for client size that falls within min/max
-		if (!(TablemapConnectionData[MapIndex].ClientSizeMinX != 0 
-			&& TablemapConnectionData[MapIndex].ClientSizeMinY != 0 
-			&& TablemapConnectionData[MapIndex].ClientSizeMaxX != 0 
-			&& TablemapConnectionData[MapIndex].ClientSizeMaxY != 0 
-			&& r.right  >= (int) TablemapConnectionData[MapIndex].ClientSizeMinX
-			&& r.right  <= (int) TablemapConnectionData[MapIndex].ClientSizeMinY
-			&& r.bottom >= (int) TablemapConnectionData[MapIndex].ClientSizeMaxX
-			&& r.bottom <= (int) TablemapConnectionData[MapIndex].ClientSizeMaxY))
+		if (!((TablemapConnectionData[MapIndex].ClientSizeMinX != 0) 
+			&& (TablemapConnectionData[MapIndex].ClientSizeMinY != 0) 
+			&& (TablemapConnectionData[MapIndex].ClientSizeMaxX != 0) 
+			&& (TablemapConnectionData[MapIndex].ClientSizeMaxY != 0) 
+			&& (r.right  >= (int) TablemapConnectionData[MapIndex].ClientSizeMinX)
+			&& (r.right  <= (int) TablemapConnectionData[MapIndex].ClientSizeMinY)
+			&& (r.bottom >= (int) TablemapConnectionData[MapIndex].ClientSizeMaxX)
+			&& (r.bottom <= (int) TablemapConnectionData[MapIndex].ClientSizeMaxY)))
 		{
 			write_log(3, "No good size.\n");
 			return false;
@@ -414,7 +427,6 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
 	char				text[512] = {0};
 	RECT				crect = {0};
 	STableList			tablelisthold;
-	//SWholeMap			*map = (SWholeMap *) (lparam);
 	int					TablemapIndex = (int)(lparam);
 
 	write_log(3, "EnumProcTopLevelWindowList(..)\n");
@@ -455,7 +467,7 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
 }
 
 
-bool CAutoConnector::Connect(HWND targetHWnd)
+bool CAutoConnector::Connect(HWND targetHWnd) //!!!!
 {
 	int					N = 0, line = 0, ret = 0;
 	char				title[512] = {0};
@@ -487,28 +499,28 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 	for (int TablemapIndex=0; TablemapIndex<NumberOfTableMapsLoaded; TablemapIndex++)
 	{
 		write_log(3, "Going to check TM nr. %d out of %d\n", TablemapIndex, NumberOfTableMapsLoaded);
-		Check_TM_Against_All_Windows(TablemapIndex, targetHWnd);
+		Check_TM_Against_All_Windows(TablemapIndex, NULL);
 	}
 	
 	// Put global candidate table list in table select dialog variables
 	N = (int) g_tlist.GetSize();
 	if (N == 0) 
 	{
-		if (targetHWnd != NULL) {
-			int cySize = GetSystemMetrics(SM_CYSIZE);
-			int cyMenuSize = GetSystemMetrics(SM_CYMENU);
+		p_sharedmem->RememberTimeOfLastFailedAttemptToConnect();
 
-			if (!prefs.disable_msgbox())
-			{
-				if (cySize != 18 && cyMenuSize != 19)
-					MessageBox(0, "Cannot find table\n\n"
-							   "It appears that your settings are not configured according to OpenHoldem specifications.\n"
-							   "You must ensure that XP themes are not used (Use Windows Classic style) and\n"
-							   "font size is set to normal.\n\n"
-							   "For more info, look at the wiki documentation and the user forums", "Cannot find table", MB_OK);
-				else
-					MessageBox(0, "No valid tables found", "Cannot find table", MB_OK);
-			}
+		int cySize = GetSystemMetrics(SM_CYSIZE);
+		int cyMenuSize = GetSystemMetrics(SM_CYMENU);
+
+		if (!prefs.disable_msgbox()) // TODO!!! turn it off, when autoconnecting
+		{
+			if (cySize != 18 && cyMenuSize != 19)
+				MessageBox(0, "Cannot find table\n\n"
+						   "It appears that your settings are not configured according to OpenHoldem specifications.\n"
+						   "You must ensure that XP themes are not used (Use Windows Classic style) and\n"
+						   "font size is set to normal.\n\n"
+						   "For more info, look at the wiki documentation and the user forums", "Cannot find table", MB_OK);
+			else
+				MessageBox(0, "No valid tables found", "Cannot find table", MB_OK);
 		}
 	}
 	else 
@@ -521,6 +533,10 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			if (SelectedItem != -1)
 			{
 				p_sharedmem->MarkPokerWindowAsAttached(g_tlist[SelectedItem].hwnd);
+			}
+			else
+			{
+				p_sharedmem->RememberTimeOfLastFailedAttemptToConnect();
 			}
 		}
 		if (SelectedItem != -1)
@@ -576,7 +592,6 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 				{
 					CString		t = "";
 					t.Format("Unable to load %s\n\nError: %d", path, GetLastError());
-					//MessageBox(0, t, "OpenHoldem scraper.dll WARNING", MB_OK | MB_TOPMOST);
 				}
 			}
 			else
@@ -590,7 +605,6 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 					{
 						CString		t = "";
 						t.Format("Unable to find all symbols in scraper.dll");
-						//MessageBox(0, t, "OpenHoldem scraper.dll ERROR", MB_OK | MB_TOPMOST);
 					}
 
 					theApp.UnloadScraperDLL();
@@ -599,6 +613,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 				{
 					if (!prefs.disable_msgbox())		
 					{
+						//???
 					}
 				}
 			}
@@ -634,30 +649,27 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			// Start logging, in case the log-level got changed.
 			start_log();
 
-			if (targetHWnd == NULL) 
-			{
-				CWindowDC dc(NULL);
-				int nBitsPerPixel = dc.GetDeviceCaps(PLANES) * dc.GetDeviceCaps(BITSPIXEL);
+			CWindowDC dc(NULL);
+			int nBitsPerPixel = dc.GetDeviceCaps(PLANES) * dc.GetDeviceCaps(BITSPIXEL);
 
-				if (nBitsPerPixel < 24 && !prefs.disable_msgbox())
-					MessageBox(0, "It appears that your Display settings are not configured according to OpenHoldem specifications.\n"
-							   "24 bit color or higher is needed to reliably extract information from the poker client\n\n"
-							   "For more info, look at the wiki documentation and the user forums", 
-							   "Caution: Color Depth Too Low", MB_OK|MB_ICONWARNING);
+			if (nBitsPerPixel < 24 && !prefs.disable_msgbox())
+				MessageBox(0, "It appears that your Display settings are not configured according to OpenHoldem specifications.\n"
+						   "24 bit color or higher is needed to reliably extract information from the poker client\n\n"
+						   "For more info, look at the wiki documentation and the user forums", 
+						   "Caution: Color Depth Too Low", MB_OK|MB_ICONWARNING);
 
-				BOOL fontSmoothingEnabled = FALSE;
-				SystemParametersInfo(SPI_GETFONTSMOOTHING, 0, (LPVOID)&fontSmoothingEnabled, 0);
+			BOOL fontSmoothingEnabled = FALSE;
+			SystemParametersInfo(SPI_GETFONTSMOOTHING, 0, (LPVOID)&fontSmoothingEnabled, 0);
 
-				if (fontSmoothingEnabled && !prefs.disable_msgbox())
-					MessageBox(0, "It appears that font smoothing is enabled. In order for OpenHoldem to reliably\n"
-							   "extract information from the poker client you should disable Font Smoothing", 
-							   "Caution: Font smoothing is enabled", MB_OK|MB_ICONWARNING);
-			}
-
+			if (fontSmoothingEnabled && !prefs.disable_msgbox())
+				MessageBox(0, "It appears that font smoothing is enabled. In order for OpenHoldem to reliably\n"
+						   "extract information from the poker client you should disable Font Smoothing", 
+						   "Caution: Font smoothing is enabled", MB_OK|MB_ICONWARNING);
+			
 			// log OH title bar text and table reset
 			::GetWindowText(_attached_hwnd, title, 512);
 
-			CString site="";
+			CString site = "";
 			SMapCI site_i = p_tablemap->s$()->find("sitename");
 			if (site_i != p_tablemap->s$()->end())
 				site = site_i->second.text;
@@ -685,7 +697,6 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 void CAutoConnector::Disconnect()
 {
 	write_log(3, "CAutoConnector::Disconnect()");
-	//MessageBox(0, "CAutoConnector::Disconnect()", "Debug", 0);
 	// stop threads
 	if (p_heartbeat_thread)
 	{
@@ -822,10 +833,12 @@ int CAutoConnector::SelectTableMapAndWindowAutomatically(int Choices)
 	{
 		if (!p_sharedmem->PokerWindowAttached(g_tlist[i].hwnd))
 		{
+			write_log(3, "Chosen (table, TM)-pair in list: %d\n", i);
 			return i;
 		}
 	}
 	// No appropriate table found
+	write_log(3, "No appropriate table found.\n");
 	return -1;
 }
 
@@ -834,5 +847,7 @@ double CAutoConnector::TimeSinceLastFailedAttemptToConnect()
 	time_t LastFailedAttemptToConnect = p_sharedmem->GetTimeOfLastFailedAttemptToConnect(); //???
 	time_t CurrentTime;
 	time(&CurrentTime);
-	return difftime(CurrentTime, LastFailedAttemptToConnect);
+	double _TimeSinceLastFailedAttemptToConnect = difftime(CurrentTime, LastFailedAttemptToConnect);
+	write_log(3, "TimeSinceLastFailedAttemptToConnect %f\n", _TimeSinceLastFailedAttemptToConnect);
+	return _TimeSinceLastFailedAttemptToConnect;
 }
