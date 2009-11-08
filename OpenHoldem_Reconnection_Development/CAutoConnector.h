@@ -5,21 +5,6 @@
 #include "..\CTablemap\CTablemap.h"
 
 
-typedef struct
-{
-	CString			FilePath;
-	unsigned int	ClientSizeX, ClientSizeY;
-	unsigned int	ClientSizeMinX, ClientSizeMinY;
-	unsigned int	ClientSizeMaxX, ClientSizeMaxY;
-	CString			TitleText;
-	CString			TitleText_0_9[10];
-	CString			NegativeTitleText;
-	CString			NegativeTitleText_0_9[10];
-	bool			TablePointPresent;
-	STablemapRegion	TablePoint;
-} t_TablemapConnectionData;
-
-
 extern class CAutoConnector
 {
 public:
