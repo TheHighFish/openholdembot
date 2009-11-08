@@ -291,7 +291,7 @@ BOOL COpenHoldemApp::InitInstance()
 	// autoconnect on start, if preferred
 	if (prefs.autoconnector_when_to_connect() == k_AutoConnector_Connect_Once)
 	{
-		p_autoconnector->Connect(0);
+		p_autoconnector->Connect(NULL);
 	}
 	// Start thread anyway; permanent connection might be enabled later via preferences.
 	p_autoconnectorthread->StartThread();	
