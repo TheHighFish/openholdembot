@@ -84,6 +84,10 @@ CAutoConnector::~CAutoConnector()
 	write_log(3, "CAutoConnector::~CAutoConnector()\n");
 	p_sharedmem->MarkPokerWindowAsUnAttached();
 	set_attached_hwnd(NULL);
+
+	// Load all TMs once here in the constructor to reduce workload 
+	// in the Connection-method, which is synchronized by a mutex.
+	ParseAllTableMapsToLoadConnectionData();
 }
 
 
@@ -107,7 +111,7 @@ void CAutoConnector::ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData(
 		if (NumberOfTableMapsLoaded >= k_MaxNumberOfTableMaps)
 		{
 			write_log(1, "Error: Too many tablemaps. The autoconnector can only handle 25 TMs.", "Error", 0);
-			// !!! MsgBox
+			MessageBox(0, "To many tablemaps. The autoplayer can handle 25 at most.", "ERROR", 0);
 			return;
 		}
 		bFound = hFile.FindNextFile();
@@ -487,7 +491,7 @@ bool CAutoConnector::Connect(HWND targetHWnd) //!!!!
 
 	write_log(3, "CAutoConnector::Connect(..)\n");
 
-	ASSERT(_autoconnector_mutex.m_hObject != NULL); //!!!!
+	ASSERT(_autoconnector_mutex.m_hObject != NULL); 
 	if (!_autoconnector_mutex->Lock(500))
 	{
 		return false; //!!!! callers must check returnvalue
@@ -714,11 +718,8 @@ void CAutoConnector::Disconnect()
 	write_log(3, "CAutoConnector::Disconnect()");
 
 	// Wait for mutex - "forever" if necessary, as we have to clean up.
-	ASSERT(_mutex.m_hObject != NULL); //!!!!
-	while (!_autoconnector_mutex->Lock(INFINITE))
-	{
-		Sleep(1000);
-	}
+	ASSERT(_mutex.m_hObject != NULL); 
+	_autoconnector_mutex->Lock(INFINITE);
 
 	// stop threads
 	if (p_heartbeat_thread)
