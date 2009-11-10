@@ -64,6 +64,9 @@ CAutoConnector::CAutoConnector()
 {
 	write_log(3, "CAutoConnector::CAutoConnector()\n");
 
+	CString MutexName = prefs.mutex_name() + "AutoConnector";
+	_autoconnector_mutex = new CMutex(false, MutexName);
+
 	p_sharedmem->MarkPokerWindowAsUnAttached();
 	set_attached_hwnd(NULL);
 	TablemapsInScraperFolderAlreadyParsed = false;
@@ -73,6 +76,11 @@ CAutoConnector::CAutoConnector()
 
 CAutoConnector::~CAutoConnector()
 {
+	if (_autoconnector_mutex != NULL)
+	{
+		delete _autoconnector_mutex;
+		_autoconnector_mutex = NULL;
+	}
 	write_log(3, "CAutoConnector::~CAutoConnector()\n");
 	p_sharedmem->MarkPokerWindowAsUnAttached();
 	set_attached_hwnd(NULL);
@@ -246,7 +254,7 @@ void CAutoConnector::Check_TM_Against_All_Windows(int TablemapIndex, HWND target
 		EnumProcTopLevelWindowList(targetHWnd, (LPARAM) TablemapIndex);
 }
 
-// TODO? Move to CTablemap?
+
 // This function has to be global and can't be part of the class,
 // as it has to be called by the callback-function 
 // BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) 
@@ -479,6 +487,12 @@ bool CAutoConnector::Connect(HWND targetHWnd) //!!!!
 
 	write_log(3, "CAutoConnector::Connect(..)\n");
 
+	ASSERT(_autoconnector_mutex.m_hObject != NULL); //!!!!
+	if (!_autoconnector_mutex->Lock(500))
+	{
+		return false; //!!!! callers must check returnvalue
+	}
+
 	if (!TablemapsInScraperFolderAlreadyParsed)
 	{
 		ParseAllTableMapsToLoadConnectionData();
@@ -690,6 +704,7 @@ bool CAutoConnector::Connect(HWND targetHWnd) //!!!!
 			}
 		}
 	}
+	_autoconnector_mutex->Unlock();
 	return (SelectedItem != -1);
 }
 
@@ -697,6 +712,14 @@ bool CAutoConnector::Connect(HWND targetHWnd) //!!!!
 void CAutoConnector::Disconnect()
 {
 	write_log(3, "CAutoConnector::Disconnect()");
+
+	// Wait for mutex - "forever" if necessary, as we have to clean up.
+	ASSERT(_mutex.m_hObject != NULL); //!!!!
+	while (!_autoconnector_mutex->Lock(INFINITE))
+	{
+		Sleep(1000);
+	}
+
 	// stop threads
 	if (p_heartbeat_thread)
 	{
@@ -724,6 +747,12 @@ void CAutoConnector::Disconnect()
 	pMyMainWnd->KillTimer();
 	pMyMainWnd->UnattachOHFromPokerWindow();
 	pMyMainWnd->EnableButtonsOnDisconnect();
+
+	// Mark table as not attached
+	p_sharedmem->MarkPokerWindowAsUnAttached();
+
+	// Release mutex as soon as possible, after critical work is done
+	_autoconnector_mutex->Unlock();	
 
 	// Delete bitmaps
 	p_scraper->DeleteBitmaps();
@@ -756,10 +785,7 @@ void CAutoConnector::Disconnect()
 	// Stop logging
 	stop_log();
 	
-	// Mark table as not attached
-	p_sharedmem->MarkPokerWindowAsUnAttached();
-
-	// Close OH, when table disappears and leaving enabled in preferences.
+		// Close OH, when table disappears and leaving enabled in preferences.
 	if (prefs.autoconnector_close_when_table_disappears())
 	{
 		PostQuitMessage(0);

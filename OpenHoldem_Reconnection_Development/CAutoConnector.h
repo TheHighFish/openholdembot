@@ -36,6 +36,9 @@ private:
 	bool		TablemapsInScraperFolderAlreadyParsed;
 	int			NumberOfTableMapsLoaded;
 	CCritSec	m_critsec;
+private:
+	// Mutex used for cross-instance autoconnector coordination
+	CMutex		*_autoconnector_mutex;
 } *p_autoconnector;
 
 #endif INC_CAUTOCONNECTOR_H
