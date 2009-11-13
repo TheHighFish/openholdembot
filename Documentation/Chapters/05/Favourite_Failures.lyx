@@ -1,0 +1,564 @@
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Favourite Failures
+\end_layout
+
+\begin_layout Section
+OH does not connect to the table (I)
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Reason: Table not recognized because of incorrect system-settings.
+\end_layout
+
+\begin_layout Standard
+To recognize a table the following criteria have to match:
+\end_layout
+
+\begin_layout Itemize
+size of the window
+\end_layout
+
+\begin_layout Itemize
+table-title
+\end_layout
+
+\begin_layout Itemize
+maybe some tablepoints to distinguish similar maps (e.g.
+ FL, NL-SNG or different skins from the same network).
+\end_layout
+
+\begin_layout Standard
+Usually the problem is the window-size caused by incorrect system-settings;
+ 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Windows XP
+\end_layout
+
+\end_inset
+
+Windows XP and 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Windows Vista
+\end_layout
+
+\end_inset
+
+Vista posses a higher titlebar than 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Windows 2000
+\end_layout
+
+\end_inset
+
+Windows 2000 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+classic-theme
+\end_layout
+
+\end_inset
+
+classic-theme.
+\end_layout
+
+\begin_layout Section
+OH does not connect to the table (II)
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Reason: No 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+
+\emph on
+tablemap
+\end_layout
+
+\end_inset
+
+tablemap loaded.
+\end_layout
+
+\begin_layout Standard
+There are two ways to load a tablemap:
+\end_layout
+
+\begin_layout Itemize
+explicitely via the menu: Menu -> File -> Load Table Map
+\end_layout
+
+\begin_layout Itemize
+implicitely from the 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Index
+status collapsed
+
+\begin_layout Plain Layout
+scraper-folder
+\end_layout
+
+\end_inset
+
+scraper
+\begin_inset Quotes erd
+\end_inset
+
+-folder in the installation-directory of OpenHoldem.
+\end_layout
+
+\begin_layout Section
+OH does not play
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Reason: You did not turn on the 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+
+\emph on
+autoplayer
+\end_layout
+
+\end_inset
+
+autoplayer.
+\end_layout
+
+\begin_layout Standard
+Click the diamond-button to the right of the green and red circles in the
+ toolbar.
+\end_layout
+
+\begin_layout Standard
+!!! preferences
+\end_layout
+
+\begin_layout Section
+The 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+autoplayer
+\end_layout
+
+\end_inset
+
+autoplayer-button can't be enabled
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Reason: 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+
+\emph on
+Userchair
+\end_layout
+
+\end_inset
+
+Userchair not recognized.
+\end_layout
+
+\begin_layout Standard
+The autoplayer can only be enabled, after OpenHoldem has recognized your
+ chair.
+ To do so OpenHoldem must see
+\end_layout
+
+\begin_layout Itemize
+your cards
+\end_layout
+
+\begin_layout Itemize
+some 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+buttons
+\end_layout
+
+\end_inset
+
+buttons, so OpenHoldem really knows, it is your turn and not a gamestate
+ with cards shown for your opponents (i.e.
+ a showdown).
+\end_layout
+
+\begin_layout Section
+OH calls any hand
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Reason: Tablemap does not detect bet amounts.
+\end_layout
+
+\begin_layout Standard
+If OpenHoldem calls every hand --- except maybe the strong ones --- this
+ is probably neither a bug in OpenHoldem nor bad logic in the bot but a
+ problem with the Tablemap or with your settings again: The TM does most
+ probably not recognize your opponents bet, so OpenHoldem thinks, you have
+ a 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+free play
+\end_layout
+
+\end_inset
+
+free play and calls.
+\end_layout
+
+\begin_layout Standard
+Whenever you experience strange actions, you should ask yourself the following
+ questions (
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://forum.winholdem.net/wbb/viewtopic.php?f=38&t=12408
+\end_layout
+
+\end_inset
+
+):
+\end_layout
+
+\begin_layout Itemize
+is the scraper reading the bet values correctly? 
+\end_layout
+
+\begin_layout Itemize
+is the scraper reading my cardfaces correctly? 
+\end_layout
+
+\begin_layout Itemize
+is the scraper reading opponent cardbacks correctly? 
+\end_layout
+
+\begin_layout Itemize
+do the blind values look sane? 
+\end_layout
+
+\begin_layout Itemize
+does the site provide handnumbers? 
+\end_layout
+
+\begin_layout Itemize
+are my action buttons being seen when my turn arrives?
+\end_layout
+
+\begin_layout Standard
+You can check the values for these symbols in the 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Debug-tab
+\end_layout
+
+\end_inset
+
+debug-tab of the 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Formula-editor
+\end_layout
+
+\end_inset
+
+formula-editor.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Better screenshot
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ = br 
+\end_layout
+
+\begin_layout Plain Layout
+
+ = sblind 
+\end_layout
+
+\begin_layout Plain Layout
+
+ = bblind 
+\end_layout
+
+\begin_layout Plain Layout
+
+ = handnumber 
+\end_layout
+
+\begin_layout Plain Layout
+
+ = nplayersdealt 
+\end_layout
+
+\begin_layout Plain Layout
+
+ = myturnbits
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+OH does not work at ManualMode
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Reason: Not your turn or userchair not recognized.
+\end_layout
+
+\begin_layout Standard
+To work properly OpenHoldem must have recognized the userchair.
+ See !!! Also some symbols are only valid, when it is your turn to act.
+ So you should highlight some buttons in ManualMode.
+\end_layout
+
+\begin_layout Section
+OH acts multiple times
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Reason: Improper bring-delay and scraper-delay.
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Bring delay
+\end_layout
+
+\end_inset
+
+bring-delay should be equal or even smaller than the 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Scraper delay
+\end_layout
+
+\end_inset
+
+scraper-delay.
+ Otherwise it can happen, that OH acts, but bring doesn't display a new
+ image in time.
+ So when the next 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Heartbeat-cycle
+\end_layout
+
+\end_inset
+
+heart-beat-cycle starts, OH will scrape the exact same game-state another
+ time and act another time.
+\end_layout
+
+\begin_layout Section
+OH Does Permanently Click Sitout / Sitin
+\end_layout
+
+\begin_layout Standard
+Todo!!!
+\end_layout
+
+\begin_layout Section
+Perl (or the user-DLL) 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Crash
+\end_layout
+
+\end_inset
+
+crashes immediatelly
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Reason: Usage of functionality, that is not yet initialized.
+\end_layout
+
+\begin_layout Standard
+The probably most prominent example is the usage of the function 
+\begin_inset Quotes eld
+\end_inset
+
+getsym
+\begin_inset Quotes erd
+\end_inset
+
+ during the initialization-phase of 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Perl
+\end_layout
+
+\end_inset
+
+Perl or a 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+DLL
+\end_layout
+
+\end_inset
+
+DLL.
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+double BigBlind = getsym(
+\begin_inset Quotes eld
+\end_inset
+
+bblind
+\begin_inset Quotes erd
+\end_inset
+
+);
+\end_layout
+
+\begin_layout Standard
+BigBlind is here a global variable, that gets initialized immediatelly,
+ when the DLL gets loaded.
+ But the function getsym uses a callback-pointer, that gets initialized
+ later with one of the first messages from OpenHoldem to the DLL.
+ So you dereference an undefined pointer and crash because of a memory-access-er
+ror.
+\end_layout
+
+\begin_layout Standard
+Very similar are debug messages into a file, that has not yet been opened
+ for writing or an inexpertly load-order of Perl-modules, that do similar
+ stuff as descibed above during the phase of initialization.
+\end_layout
+
+\end_body
+\end_document
