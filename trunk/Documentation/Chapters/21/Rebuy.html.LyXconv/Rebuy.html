@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="Rebuy.tex"> 
+<meta name="date" content="2009-11-14 19:41:00"> 
+<link rel="stylesheet" type="text/css" href="Rebuy.css"> 
+</head><body 
+>
+   <h3 class="sectionHead"><span class="titlemark">0.1. </span> <a 
+ id="x1-10000.1"></a>OpenHoldem Preferences - Rebuy</h3>
+<!--l. 22--><p class="noindent" >Rebuy preferences control how OpenHoldem controls the external rebuy-script. See the
+{The Automation} section for more information.
+           <ul class="itemize1">
+        <li class="itemize"><span 
+class="ecti-1000">Change in handnumber: </span>This option will cause OpenHoldem to wait at
+        least for a new hand before doing a second rebuy. It is a simply sanity-check
+        to prevent too many rebuys, as most casinos will increase your balance
+        only after the end of the current hand.
+           </li>
+        <li class="itemize"><span 
+class="ecti-1000">No cards: </span>This option will prevent rebuys as long as you are involved in
+        a hand.
+           </li>
+        <li class="itemize"><span 
+class="ecti-1000">Heuristic   occlusion   check:   </span>Rebuys   are   especially   volatile   against
+        misscrapes  of  the  balance,  which  could  be  caused  e.g.  by  temporary
+        occlusion (The truths is: OpenHoldem will keep the last known balance, if
+        it can&#8217;t scrape the balance correctly. But it&#8217;s always good to have another
+        safety-net, isn&#8217;t it?). The option to do heuristic occlusion checks will cause
+        OpenHoldem to look at other players names and balances to guess, if heros
+        balance is occluded. In case of a probable occlusion the rebuy-process
+        won&#8217;t be started. Heuristic occlusion checks will add some extra safety,
+        but they won&#8217;t catch every misscrape; e.g. the very unfortunate case of a
+        partial occluded, but non-zero balance will still get accepted.
+           </li>
+        <li class="itemize"><span 
+class="ecti-1000">Minimum time to next rebuy:  </span>This  option  is  another  sanity  check  to
+        prevent to much rebuys in a short period of time. The time difference gets
+        specified in seconds.
+           </li>
+        <li class="itemize"><span 
+class="ecti-1000">Rebuy-script: </span>This is the path to the external script that will be launched
+        when a rebuy is required.</li></ul>
+    
+</body></html> 
+
+
+

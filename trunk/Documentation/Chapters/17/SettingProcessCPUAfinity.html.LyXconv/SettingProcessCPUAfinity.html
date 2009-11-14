@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="SettingProcessCPUAfinity.tex"> 
+<meta name="date" content="2009-11-13 23:00:00"> 
+<link rel="stylesheet" type="text/css" href="SettingProcessCPUAfinity.css"> 
+</head><body 
+>
+   <h3 class="sectionHead"><span class="titlemark">0.1. </span> <a 
+ id="x1-10000.1"></a>Setting process CPU affinity - Sample Code </h3>
+<!--l. 23--><p class="noindent" >In some cases it may be beneficial to force poker client process to work off
+one CPU in multiprocessor machines (or dual VCPU VMs). Good example is
+OnGame, which uses much more CPU on dual CPU machines than on single CPU
+machines. This is of course problem with their software but they are unlikely to fix
+it.
+<!--l. 29--><p class="indent" >   The downside is that poker software operations (browsing lobby, updates, table
+management, etc.) are now forced to work with one CPU, so multitabling (4+) may be
+taxing CPU0 - make sure to observe behaviour with and without forcing affinity, and
+draw your own conclusions.
+<!--l. 34--><p class="indent" >   Here is the code that will set poker client exe CPU affinity to CPU0 (first CPU):
+Only one process should exist, $PokerClient_Exe is your lobby
+   <!--l. 39-->
+   <div class="lstlisting" id="listing-1"><span class="label"><a 
+ id="x1-1001r1"></a></span>Local&#x00A0;$PIDs&#x00A0;=&#x00A0;ProcessList($PokerClient_Exe)&#x00A0;<br /><span class="label"><a 
+ id="x1-1002r2"></a></span>Local&#x00A0;$OpenProcessHandle&#x00A0;=&#x00A0;_WinAPI_OpenProcess(&#x00A0;<br /><span class="label"><a 
+ id="x1-1003r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;$PROCESS_QUERY_INFORMATION+$PROCESS_SET_INFORMATION,&#x00A0;False,&#x00A0;$PIDs[1][1])&#x00A0;<br /><span class="label"><a 
+ id="x1-1004r4"></a></span>Local&#x00A0;$Process_Affinity_Before_Setting&#x00A0;=&#x00A0;_WinAPI_GetProcessAffinityMask(&#x00A0;<br /><span class="label"><a 
+ id="x1-1005r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;$OpenProcessHandle)&#x00A0;<br /><span class="label"><a 
+ id="x1-1006r6"></a></span>;MsgBox(0,&#x00A0;"Affinity&#x00A0;Before&#x00A0;Setting",&#x00A0;$Process_Affinity_Before_Setting,&#x00A0;3)&#x00A0;<br /><span class="label"><a 
+ id="x1-1007r7"></a></span>_WinAPI_SetProcessAffinityMask($OpenProcessHandle,&#x00A0;0x01)&#x00A0;<br /><span class="label"><a 
+ id="x1-1008r8"></a></span>$Process_Affinity_After_Setting&#x00A0;=&#x00A0;_WinAPI_GetProcessAffinityMask(&#x00A0;<br /><span class="label"><a 
+ id="x1-1009r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;$OpenProcessHandle)&#x00A0;<br /><span class="label"><a 
+ id="x1-1010r10"></a></span>;MsgBox(0,"Affinity&#x00A0;After&#x00A0;Setting",&#x00A0;$Process_Affinity_After_Setting,&#x00A0;3)
+   </div>
+    
+</body></html> 
+
+
+
