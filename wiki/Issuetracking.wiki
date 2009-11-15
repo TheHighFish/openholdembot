@@ -17,7 +17,7 @@ Please report your problems here: http://www.maxinmontreal.com/forums/viewforum.
   * additional data to understand or reproduce the problem: tablemap, replay-frames, screenshots, log-files.
 
 We do very much appreciate, if you try to nail down the problem as much as possible,
-i.e. something that is reproducable singletabling without hopper and stealth in a test-environment like ManualMode or PokerAcademy.
-Everything else is probably an issue with your setup.
+i.e. you report a problem description, that is is reproducable singletabling without hopper and stealth in a test-environment like ManualMode or PokerAcademy.
+Everything else is usually an issue with your setup.
 
 *Thank you very much for your help!*
