@@ -4,7 +4,7 @@ The OpenHoldem project uses an issue tracker as part of the quality management.
 
 = Where to report =
 
-But we sometimes get problem reports by unknown people,
+Unfortunatelly we sometimes get problem reports by unknown people,
 lacking necessary information, so we can't deal with them.
 Therefore we appreciate, that you report problems in our forum,
 where we can ask back, if we have further questions.
