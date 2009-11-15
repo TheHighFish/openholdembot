@@ -1,5 +1,3 @@
-#summary Instructions how to report a problem.
-
 = OpenHoldem issue tracking =
 
 The OpenHoldem project uses an issue tracker as part of the quality management.
