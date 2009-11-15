@@ -1,0 +1,22 @@
+#summary Instructions how to report a problem.
+
+= OpenHoldem issue tracking =
+
+The OpenHoldem project uses an issue tracker as part of the quality management.
+
+= Where to report =
+
+But we sometimes get problem reports by unknown people,
+lacking necessary information, so we can't deal with them.
+Therefore we appreciate, that you report problems in our forum,
+where we can ask back, if we have further questions.
+Please report your problems there: http://www.maxinmontreal.com/forums/viewforum.php?f=156
+
+= Information required =
+  * software product and version
+  * details about your setup: with/without stealth (e.g. bring), real casino or test environment (e.g. PokerAcademy or ManualMode), with/without hopper, pure formula or DLL/Perl
+  * if possible exact steps to reproduce the problem (babysteps!)
+  * additional data to understand or reproduce the problem: tablemap, replay-frames, screenshots, log-files.
+
+
+*Thank you very much for your help!*
