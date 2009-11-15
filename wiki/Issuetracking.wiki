@@ -8,7 +8,7 @@ But we sometimes get problem reports by unknown people,
 lacking necessary information, so we can't deal with them.
 Therefore we appreciate, that you report problems in our forum,
 where we can ask back, if we have further questions.
-Please report your problems there: http://www.maxinmontreal.com/forums/viewforum.php?f=156
+Please report your problems here: http://www.maxinmontreal.com/forums/viewforum.php?f=156
 
 = Information required =
   * software product and version
