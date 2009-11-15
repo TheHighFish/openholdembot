@@ -8,8 +8,7 @@ Unfortunatelly we sometimes get problem reports by unknown people,
 lacking necessary information, so we can't deal with them.
 Therefore we appreciate, that you report problems in our forum,
 where we can ask back, if we have further questions.
-Please report your problems here: *http://www.maxinmontreal.com/forums/viewforum.php?f=156
-The developers will care about it and enter the issue to the issue-tracking-system,
+Please report your problems here: *http://www.maxinmontreal.com/forums/viewforum.php?f=156    The developers will care about it and enter the issue to the issue-tracking-system,
 as soon as the problem is verified and we have all necessary information.
 
 = Information required =
