@@ -97,6 +97,7 @@ MOUSEDLL_API int MouseClick(const HWND hwnd, const RECT rect, const MouseButton 
 		SetFocus(restore_focus);
 	}
 
+	// Remove that code-block, if you don't want to restore the mouse-cursor!
 	if (restore_cursor.x!=-1 && restore_cursor.y!=-1)
 	{
 		SetCursorPos(restore_cursor.x, restore_cursor.y);
@@ -160,6 +161,7 @@ MOUSEDLL_API int MouseClickDrag(const HWND hwnd, const RECT rect, const HWND res
 		SetFocus(restore_focus);
 	}
 
+	// Remove that code-block, if you don't want to restore the mouse-cursor!
 	if (restore_cursor.x!=-1 && restore_cursor.y!=-1)
 	{
 		SetCursorPos(restore_cursor.x, restore_cursor.y);
