@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include <io.h>
 #include <psapi.h>
 #include <windows.h>
 
@@ -38,6 +39,11 @@
 #define new DEBUG_NEW
 #endif
 
+//  File accessable?
+//  (<unistd.h> is not contained in MSCVPP)
+//
+#define F_OK 0
+
 char	_startup_path[MAX_PATH];
 
 // Supports MRU
@@ -53,6 +59,7 @@ extern bool Scintilla_ReleaseResources();
 BEGIN_MESSAGE_MAP(COpenHoldemApp, CWinApp)
 	ON_COMMAND(ID_APP_ABOUT, &COpenHoldemApp::OnAppAbout)
 	ON_COMMAND(ID_HELP_FORCECRASH, &COpenHoldemApp::OnForceCrash)	
+	ON_COMMAND(ID_HELP_HELP, &COpenHoldemApp::OnHelp)
 	// Standard file based document commands
 	ON_COMMAND(ID_FILE_NEW, &CWinApp::OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, &CWinApp::OnFileOpen)
@@ -392,6 +399,23 @@ void COpenHoldemApp::OnForceCrash()
 		// FORCE A CRASH
 		int *invalid_memory_access = NULL;
 		*invalid_memory_access = 0;
+	}
+}
+
+
+void COpenHoldemApp::OnHelp()
+{
+	if (_access("OpenHoldem_Manual.chm", F_OK) != 0)
+	{
+		MessageBox(0, "\"OpenHoldem_Manual.chm\" not found.\nPlease put it into your OpenHoldem folder.", "Error", 0);
+	}
+	else 
+	{
+		int RetValue = int(ShellExecute(NULL, "open", "OpenHoldem_Manual.chm", NULL, NULL, SW_SHOW));
+		if (RetValue <= 32)
+		{
+			MessageBox(0, "Error opening help-file", "Error", 0);
+		}
 	}
 }
 

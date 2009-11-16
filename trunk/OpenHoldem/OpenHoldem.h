@@ -29,6 +29,7 @@ public:
 	virtual BOOL InitInstance();
 	afx_msg void OnAppAbout();
 	afx_msg void OnForceCrash();
+	afx_msg void OnHelp();
 	DECLARE_MESSAGE_MAP()
 
 public:
