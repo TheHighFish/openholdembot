@@ -119,6 +119,7 @@ KEYBOARDDLL_API int SendString(const HWND hwnd, const RECT rect, const CString s
 		SetFocus(restore_focus);
 	}
 
+	// Remove that code-block, if you don't want to restore the mouse-cursor!
 	if (restore_cursor.x!=-1 && restore_cursor.y!=-1)
 	{
 		SetCursorPos(restore_cursor.x, restore_cursor.y);
@@ -190,6 +191,7 @@ KEYBOARDDLL_API int SendKey(const HWND hwnd, const RECT rect, UINT vkey,
 		SetFocus(restore_focus);
 	}
 
+	// Remove that code-block, if you don't want to restore the mouse-cursor!
 	if (restore_cursor.x!=-1 && restore_cursor.y!=-1)
 	{
 		SetCursorPos(restore_cursor.x, restore_cursor.y);
