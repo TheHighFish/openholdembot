@@ -531,6 +531,7 @@
 #define ID_EDIT_FORCEUSERCHAIR          32985
 #define ID_FILE_APPLYANDSAVE            32986
 #define ID_FORMULA_FILE_APPLYANDSAVE    32987
+#define ID_HELP_HELP                    32988
 #define ID_INDICATOR_STATUS_PLCARDS     61191
 
 // Next default values for new objects
@@ -538,7 +539,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        180
-#define _APS_NEXT_COMMAND_VALUE         32988
+#define _APS_NEXT_COMMAND_VALUE         32989
 #define _APS_NEXT_CONTROL_VALUE         1333
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
