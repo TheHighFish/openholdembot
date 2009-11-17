@@ -859,12 +859,6 @@ BOOL CMainFrame::DoConnect(HWND targetHWnd)
 
 					theApp.UnloadScraperDLL();
 				}
-				else
-				{
-					if (!prefs.disable_msgbox())		
-					{
-					}
-				}
 			}
 
 			// Disable buttons, menu items
