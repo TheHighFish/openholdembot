@@ -19,9 +19,9 @@
 
 #pragma data_seg(".ohshmem") // names are limited to 8 chars, including the dot.
 
-__declspec(allocate(".ohshmem"))	static	HWND		AttachedPokerWindows[MAX_SESSION_IDS] = { NULL };	// for the auto-connector
+__declspec(allocate(".ohshmem"))	static	HWND	AttachedPokerWindows[MAX_SESSION_IDS] = { NULL };	// for the auto-connector
 __declspec(allocate(".ohshmem"))	static	time_t	LastFailedAttemptToConnect;	// last time any instance failed; to avoid superflous attempts by other instances of OH
-__declspec(allocate(".ohshmem"))	int		session_id; // TEMP!!!
+__declspec(allocate(".ohshmem"))	static	int		SessionIdOfLastInstanceThatFailedToConnect; 
 
 #pragma data_seg()
 #pragma comment(linker, "/SECTION:.ohshmem,RWS")		// RWS: read, write, shared
@@ -77,8 +77,8 @@ void CSharedMem::RememberTimeOfLastFailedAttemptToConnect()
 	ENT;
 	time(&LastFailedAttemptToConnect);
 	write_log(3, "Set LastFailedAttemptToConnect %d\n", LastFailedAttemptToConnect);
-	session_id = p_sessioncounter->session_id();
-	write_log(3, "Failed session ID: %d\n", session_id);
+	SessionIdOfLastInstanceThatFailedToConnect = p_sessioncounter->session_id();
+	write_log(3, "Failed session ID: %d\n", SessionIdOfLastInstanceThatFailedToConnect);
 }
 
 
@@ -86,7 +86,7 @@ time_t CSharedMem::GetTimeOfLastFailedAttemptToConnect()
 {
 	ENT;
 	write_log(3, "Get LastFailedAttemptToConnect %d\n", LastFailedAttemptToConnect);
-	write_log(3, "Stored by failed session ID: %d\n", session_id);
+	write_log(3, "Stored by failed session ID: %d\n", SessionIdOfLastInstanceThatFailedToConnect);
 	return LastFailedAttemptToConnect;
 }
 

@@ -24,12 +24,13 @@ private:
 	void ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData(CString TableMapWildcard);
 	void ParseAllTableMapsToLoadConnectionData();
 	void ExtractConnectionDataFromCurrentTablemap(SWholeMap *map);
+	bool TablemapConnectionDataAlreadyStored(CString TablemapFilePath);
 private:
 	int SelectTableMapAndWindow(int Choices);
 	int SelectTableMapAndWindowManually(int Choices);
 	int SelectTableMapAndWindowAutomatically(int Choices);
 private:
-	void Check_TM_Against_All_Windows(int TablemapIndex, HWND targetHWnd);
+	void Check_TM_Against_All_Windows_Or_TargetHWND(int TablemapIndex, HWND targetHWnd);
 private:
 	// private variables - use public accessors and public mutators to address these
 	HWND		_attached_hwnd;	 // Table that we are attached to

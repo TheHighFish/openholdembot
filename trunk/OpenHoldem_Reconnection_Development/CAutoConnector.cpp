@@ -71,6 +71,10 @@ CAutoConnector::CAutoConnector()
 	set_attached_hwnd(NULL);
 	TablemapsInScraperFolderAlreadyParsed = false;
 	NumberOfTableMapsLoaded = 0;
+
+	// Parse all tablemaps once on startup.
+	// We want to avoid heavy workload in the connect()-function.
+	ParseAllTableMapsToLoadConnectionData();
 }
 
 
@@ -143,12 +147,31 @@ void CAutoConnector::ParseAllTableMapsToLoadConnectionData()
 }
 
 
+bool CAutoConnector::TablemapConnectionDataAlreadyStored(CString TablemapFilePath)
+{
+	for (int i=0; i<=NumberOfTableMapsLoaded; i++)
+	{
+		if (TablemapConnectionData[i].FilePath == TablemapFilePath)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+
 void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 {
 	CString s;
 	
 	write_log(3, "CAutoConnector::ExtractConnectionDataFromCurrentTablemap(): %s\n", map->filepath);
 	write_log(3, "NumberOfTableMapsLoaded: %d\n", NumberOfTableMapsLoaded);
+
+	// Avoiding to store the data twice, e.g. when we load a known TM manually
+	if (TablemapConnectionDataAlreadyStored(map->filepath))
+	{
+		return;
+	}
 
 	TablemapConnectionData[NumberOfTableMapsLoaded].FilePath = map->filepath;
 	// Extract client size information
@@ -248,7 +271,7 @@ void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 }
 
 
-void CAutoConnector::Check_TM_Against_All_Windows(int TablemapIndex, HWND targetHWnd)
+void CAutoConnector::Check_TM_Against_All_Windows_Or_TargetHWND(int TablemapIndex, HWND targetHWnd)
 {
 	write_log(3, "CAutoConnector::Check_TM_Against_All_Windows(..)\n");
 
@@ -479,7 +502,7 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
 }
 
 
-bool CAutoConnector::Connect(HWND targetHWnd) //!!!!
+bool CAutoConnector::Connect(HWND targetHWnd)
 {
 	int					N = 0, line = 0, ret = 0;
 	char				title[512] = {0};
@@ -494,7 +517,17 @@ bool CAutoConnector::Connect(HWND targetHWnd) //!!!!
 	ASSERT(_autoconnector_mutex.m_hObject != NULL); 
 	if (!_autoconnector_mutex->Lock(500))
 	{
-		return false; //!!!! callers must check returnvalue
+		return false; 
+	}
+
+	// Adding connection data for current TM, in case we loaded a TM manually.
+	if (p_tablemap->valid())
+	{
+		if (!TablemapConnectionDataAlreadyStored(p_tablemap->filepath()))
+		{
+			CTableMapToSWholeMap(p_tablemap, &smap);
+			ExtractConnectionDataFromCurrentTablemap(&smap);
+		}
 	}
 
 	if (!TablemapsInScraperFolderAlreadyParsed)
@@ -505,19 +538,10 @@ bool CAutoConnector::Connect(HWND targetHWnd) //!!!!
 	// Clear global list for holding table candidates
 	g_tlist.RemoveAll();
 
-	/*
-	// First check explicitly loaded/last used tablemap // TODO!!!
-	current_path = "";
-	if (p_tablemap->valid())
-	{
-		Check_TM_Against_All_Windows(smap, targetHWnd);
-		current_path = p_tablemap->filepath();
-	}*/
-
 	for (int TablemapIndex=0; TablemapIndex<NumberOfTableMapsLoaded; TablemapIndex++)
 	{
 		write_log(3, "Going to check TM nr. %d out of %d\n", TablemapIndex, NumberOfTableMapsLoaded);
-		Check_TM_Against_All_Windows(TablemapIndex, NULL);
+		Check_TM_Against_All_Windows_Or_TargetHWND(TablemapIndex, targetHWnd);
 	}
 	
 	// Put global candidate table list in table select dialog variables
@@ -529,7 +553,7 @@ bool CAutoConnector::Connect(HWND targetHWnd) //!!!!
 		int cySize = GetSystemMetrics(SM_CYSIZE);
 		int cyMenuSize = GetSystemMetrics(SM_CYMENU);
 
-		if (!prefs.disable_msgbox()) // TODO!!! turn it off, when autoconnecting
+		if (!prefs.disable_msgbox() && prefs.autoconnector_when_to_connect() != k_AutoConnector_Connect_Permanent)
 		{
 			if (cySize != 18 && cyMenuSize != 19)
 				MessageBox(0, "Cannot find table\n\n"
@@ -544,9 +568,6 @@ bool CAutoConnector::Connect(HWND targetHWnd) //!!!!
 	else 
 	{
 		{
-			// Small extra code block to reduce the lifetime
-			// of the protecting mutex to a minimum.
-			// ENT; TODO!!!
 			SelectedItem = SelectTableMapAndWindow(N);
 			if (SelectedItem != -1)
 			{
@@ -626,13 +647,6 @@ bool CAutoConnector::Connect(HWND targetHWnd) //!!!!
 					}
 
 					theApp.UnloadScraperDLL();
-				}
-				else
-				{
-					if (!prefs.disable_msgbox())		
-					{
-						//???
-					}
 				}
 			}
 
