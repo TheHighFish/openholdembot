@@ -2,11 +2,11 @@
 //
 
 #include "stdafx.h"
-#include <io.h>
 #include <psapi.h>
 #include <windows.h>
 
 #include "CAutoConnector.h"
+#include "CAutoConnectorThread.h"
 #include "CAutoplayer.h"
 #include "CDllExtension.h"
 #include "CFormula.h"
@@ -39,11 +39,6 @@
 #define new DEBUG_NEW
 #endif
 
-//  File accessable?
-//  (<unistd.h> is not contained in MSCVPP)
-//
-#define F_OK 0
-
 char	_startup_path[MAX_PATH];
 
 // Supports MRU
@@ -59,7 +54,6 @@ extern bool Scintilla_ReleaseResources();
 BEGIN_MESSAGE_MAP(COpenHoldemApp, CWinApp)
 	ON_COMMAND(ID_APP_ABOUT, &COpenHoldemApp::OnAppAbout)
 	ON_COMMAND(ID_HELP_FORCECRASH, &COpenHoldemApp::OnForceCrash)	
-	ON_COMMAND(ID_HELP_HELP, &COpenHoldemApp::OnHelp)
 	// Standard file based document commands
 	ON_COMMAND(ID_FILE_NEW, &CWinApp::OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, &CWinApp::OnFileOpen)
@@ -138,9 +132,12 @@ BOOL COpenHoldemApp::InitInstance()
 	if (load_from_registry)
 		SetRegistryKey(_T("OpenHoldem"));
 	prefs.LoadPreferences(load_from_registry);
-
+	
 	// Classes
 	if (!p_sessioncounter) p_sessioncounter = new CSessionCounter;
+	// Start logging immediatelly after the loading the preferences
+	// and initializing the sessioncounter.
+	start_log();
 	if (!p_sharedmem) p_sharedmem = new CSharedMem;
 	if (!p_pokerpro) p_pokerpro = new PokerPro;
 	if (!p_scraper)  p_scraper = new CScraper;
@@ -158,6 +155,7 @@ BOOL COpenHoldemApp::InitInstance()
 	if (!p_autoconnector) p_autoconnector = new CAutoConnector;
 	if (!p_rebuymanagement) p_rebuymanagement = new CRebuyManagement;
 	if (!p_occlusioncheck) p_occlusioncheck = new COcclusionCheck;
+	if (!p_autoconnectorthread) p_autoconnectorthread = new CAutoConnectorThread; 
 
 	// mouse.dll - failure in load is fatal
 	_mouse_dll = LoadLibrary("mouse.dll");
@@ -291,10 +289,12 @@ BOOL COpenHoldemApp::InitInstance()
 	m_pMainWnd->SetForegroundWindow();
 
 	// autoconnect on start, if preferred
-	if (prefs.autoconnector_connect_on_start())
+	if (prefs.autoconnector_when_to_connect() == k_AutoConnector_Connect_Once)
 	{
-		p_autoconnector->Connect(0);
+		p_autoconnector->Connect(NULL);
 	}
+	// Start thread anyway; permanent connection might be enabled later via preferences.
+	p_autoconnectorthread->StartThread();	
 
 	return TRUE;
 }
@@ -314,10 +314,11 @@ int COpenHoldemApp::ExitInstance()
 	}
 
 	// classes
-	// Reverse order should be good,
+	// Releasing in reverse order should be good,
 	// but we have to be careful, as sometimes we do some work in the destructors,
 	// that depends on other classes, e.g. the destructor of the autoconnector
-	// need its session_id (CSessionCounter).
+	// needs its session_id (CSessionCounter).
+	if (p_autoconnectorthread) { delete p_autoconnectorthread; p_autoconnectorthread = NULL; } 
 	if (p_occlusioncheck) { delete p_occlusioncheck; p_occlusioncheck = NULL; }
 	if (p_rebuymanagement) { delete p_rebuymanagement; p_rebuymanagement = NULL; }
 	if (p_autoconnector) { delete p_autoconnector; p_autoconnector = NULL; }
@@ -399,23 +400,6 @@ void COpenHoldemApp::OnForceCrash()
 		// FORCE A CRASH
 		int *invalid_memory_access = NULL;
 		*invalid_memory_access = 0;
-	}
-}
-
-
-void COpenHoldemApp::OnHelp()
-{
-	if (_access("OpenHoldem_Manual.chm", F_OK) != 0)
-	{
-		MessageBox(0, "\"OpenHoldem_Manual.chm\" not found.\nPlease put it into your OpenHoldem folder.", "Error", 0);
-	}
-	else 
-	{
-		int RetValue = int(ShellExecute(NULL, "open", "OpenHoldem_Manual.chm", NULL, NULL, SW_SHOW));
-		if (RetValue <= 32)
-		{
-			MessageBox(0, "Error opening help-file", "Error", 0);
-		}
 	}
 }
 
