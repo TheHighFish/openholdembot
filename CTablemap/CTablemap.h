@@ -198,6 +198,8 @@ public:
 
 	const CString scraperdll()		{ SMapCI it = _s$.find("scraperdll"); if (it!=_s$.end()) return it->second.text; else return ""; }
 
+	const CString scraperpredll()	{ SMapCI it = _s$.find("scraperpredll"); if (it!=_s$.end()) return it->second.text; else return ""; }
+
 	const bool valid() { return _valid; }
 	const CString filename() { return _filename; }
 	const CString filepath() { return _filepath; }

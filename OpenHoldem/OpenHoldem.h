@@ -13,6 +13,7 @@
 #include "..\..\Reference Mouse DLL\mousedll.h"
 #include "..\..\Reference Keyboard DLL\keyboarddll.h"
 #include "..\..\Reference Scraper DLL\scraperdll.h"
+#include "..\..\Reference Scraper-Pre DLL\scraperpredll.h"
 
 // COpenHoldemApp:
 // See OpenHoldem.cpp for the implementation of this class
@@ -44,10 +45,15 @@ public:
 	HMODULE				_mouse_dll;
 	HMODULE				_keyboard_dll;
 
-	void						UnloadScraperDLL();
-	HMODULE						_scraper_dll;
-	scraper_process_message_t	_dll_scraper_process_message;
-	scraper_override_t			_dll_scraper_override;
+	void							UnloadScraperDLL();
+	void							UnloadScraperPreDLL();
+
+	HMODULE							_scraper_dll;
+	scraper_process_message_t		_dll_scraper_process_message;
+	scraper_override_t				_dll_scraper_override;
+
+	HMODULE							_scraperpre_dll;
+	scraperpre_process_message_t	_dll_scraperpre_process_message;
 };
 
 extern COpenHoldemApp theApp;

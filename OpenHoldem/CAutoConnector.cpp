@@ -618,13 +618,14 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			theApp.UnloadScraperDLL();
 			CString filename = p_tablemap->scraperdll();
 			if (!filename.IsEmpty()) {
-				int index = p_tablemap->filepath().ReverseFind('\\');
+				int index = filename.ReverseFind('\\');
 				if (index > 0)
-					path.Format("%s\\%s", p_tablemap->filepath().Left(index), filename);
+					path.Format("%s\\%s", filename.Left(index), filename);
 				else
 					path = filename;
 				theApp._scraper_dll = LoadLibrary(path);
 			}
+
 			if (theApp._scraper_dll==NULL)
 			{
 				if (!filename.IsEmpty() && !prefs.disable_msgbox())		
@@ -648,7 +649,54 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 
 					theApp.UnloadScraperDLL();
 				}
+				else
+				{
+					write_log(1, "scraper.dll loaded, ProcessMessage and OverrideScraper found.\n");
+				}
 			}
+
+			// scraperpre.dll - failure in load is NOT fatal
+			theApp.UnloadScraperPreDLL();
+			filename = p_tablemap->scraperpredll();
+			if (!filename.IsEmpty()) {
+				int index = filename.ReverseFind('\\');
+				if (index > 0)
+					path.Format("%s\\%s", filename.Left(index), filename);
+				else
+					path = filename;
+				theApp._scraperpre_dll = LoadLibrary(path);
+			}
+
+			if (theApp._scraperpre_dll==NULL)
+			{
+				if (!filename.IsEmpty() && !prefs.disable_msgbox())		
+				{
+					CString		t = "";
+					t.Format("Unable to load %s\n\nError: %d", path, GetLastError());
+					MessageBox(0, t, "OpenHoldem scraperpre.dll WARNING", MB_OK | MB_TOPMOST);
+				}
+			}
+			else
+			{
+				theApp._dll_scraperpre_process_message = (scraperpre_process_message_t) GetProcAddress(theApp._scraperpre_dll, "ProcessMessage");
+
+				if (theApp._dll_scraperpre_process_message==NULL)
+				{
+					if (!prefs.disable_msgbox())		
+					{
+						CString		t = "";
+						t.Format("Unable to find symbols in scraperpre.dll");
+						MessageBox(0, t, "OpenHoldem scraperpre.dll ERROR", MB_OK | MB_TOPMOST);
+					}
+
+					theApp.UnloadScraperPreDLL();
+				}
+				else
+				{
+					write_log(1, "scraperpre.dll loaded, ProcessMessage found.\n");
+				}
+			}
+
 
 			CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 			pMyMainWnd->DisableButtonsOnConnect();
@@ -665,6 +713,10 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			// Send "connect" and HWND to scraper DLL, if loaded
 			if (theApp._dll_scraper_process_message)
 				(theApp._dll_scraper_process_message) ("connect", &_attached_hwnd);
+
+			// Send "connect" and HWND to scraper pre DLL, if loaded
+			if (theApp._dll_scraperpre_process_message)
+				(theApp._dll_scraperpre_process_message) ("connect", &_attached_hwnd);
 
 			// start heartbeat thread
 			if (p_heartbeat_thread)
@@ -753,6 +805,12 @@ void CAutoConnector::Disconnect()
 			(theApp._dll_scraper_process_message) ("disconnect", NULL);
 
 	theApp.UnloadScraperDLL();
+
+	// Send "disconnect" to scraperpre DLL, if loaded
+	if (theApp._dll_scraperpre_process_message)
+			(theApp._dll_scraperpre_process_message) ("disconnect", NULL);
+
+	theApp.UnloadScraperPreDLL();
 
 	// Clear "attached" info
 	set_attached_hwnd(NULL);
