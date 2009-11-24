@@ -20,7 +20,11 @@ public:
 	enum { IDD = IDD_SAPREFS14 };
 	CButton _autoconnector_connection_manually;
 	CButton _autoconnector_connection_automatically;
-	CButton _autoconnector_connect_on_start;
+	CButton _autoconnector_connect_never;
+	CButton _autoconnector_connect_once;
+	CButton _autoconnector_connect_permanent;
+	CEdit	_autoconnector_time_to_next_try_edit;
+	CSpinButtonCtrl _autoconnector_time_to_next_try_spin;
 	CButton _autoconnector_close_when_table_disappears;
 
 protected:

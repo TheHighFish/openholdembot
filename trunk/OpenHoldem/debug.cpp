@@ -129,7 +129,7 @@ LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers)
 	char flpath[MAX_PATH];
     char msg[1000];
 
-    // Create a minidump
+	// Create a minidump
 	GenerateDump(pExceptionPointers);
 
     sprintf_s(flpath, MAX_PATH, "%s\\fatal error.log", _startup_path);

@@ -640,7 +640,7 @@ void CDlgPpro::DoTableSelect(void)
 			}
 		}
 
-		// Start logging
+		// Start logging, in case the log-level got changed.
 		start_log();
 
 		write_log(1, "%s - %s(%s)\n", p_formula->formula_name().GetString(), p_pokerpro->ppdata()->m_site_name, p_pokerpro->ppdata()->m_tinf.m_name);

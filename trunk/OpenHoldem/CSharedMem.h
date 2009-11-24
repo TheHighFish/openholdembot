@@ -5,7 +5,13 @@
 // of multiple instances of OpenHoldem.
 //
 // For an introduction to shared memory see
-// !!!
+//   * http://www.programmersheaven.com/mb/Win32API/156366/156366/shared-memory-and-dll/
+//   * http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2006/n2044.html
+//   * http://www.codeproject.com/KB/threads/SharedMemory_IPC_Threads.aspx
+//   * http://www.fstsoft.de/shared.htm (german)
+//
+// We chose the first solution for its simplicity
+
 
 extern class CSharedMem
 {
@@ -17,6 +23,8 @@ public:
 	bool PokerWindowAttached(HWND Window);
 	void MarkPokerWindowAsAttached(HWND Window);
 	void MarkPokerWindowAsUnAttached();
+	void RememberTimeOfLastFailedAttemptToConnect();
+	time_t GetTimeOfLastFailedAttemptToConnect();
 private:
 	#define ENT CSLock lock(m_critsec);
 private:
