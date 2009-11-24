@@ -1,13 +1,19 @@
 #include "StdAfx.h"
 
-#include "CAutoconnector.h"
-#include "CPokerPro.h"
 #include "CScraper.h"
-#include "CSymbols.h"
+
 #include "..\CTransform\CTransform.h"
 #include "..\CTransform\hash\lookup3.h"
-#include "MainFrm.h"
+
+#include "CSymbols.h"
+#include "CPokerPro.h"
+
 #include "OpenHoldem.h"
+#include "MainFrm.h"
+
+#include "CAutoconnector.h"
+
+#include "..\..\Reference Scraper-Pre DLL\scraperpredll.h"
 
 
 #define __HDC_HEADER 		HBITMAP		old_bitmap = NULL; \
@@ -308,7 +314,7 @@ void CScraper::ScrapeCommonCards()
 	unsigned int	card = CARD_NOCARD;
 	CString			cardstr = "", rankstr = "", suitstr = "";
 	CTransform		trans;
-	CString			s = "";
+	CString			s = "", t = "";
 	RMapCI			r_iter1 = p_tablemap->r$()->end(), r_iter2 = p_tablemap->r$()->end();
 
 	for (int i=0; i<=4; i++)
@@ -324,6 +330,12 @@ void CScraper::ScrapeCommonCards()
 			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter1->second.cur_bmp);
 			trans.DoTransform(r_iter1, hdcCompatible, &cardstr);
 			SelectObject(hdcCompatible, old_bitmap);
+
+			// Give scraper-pre DLL a chance to modify transform output
+			if (theApp._dll_scraperpre_process_message)
+			{
+				(theApp._dll_scraperpre_process_message) (s.GetString(), &cardstr);
+			}
 
 			if (cardstr!="")
 			{
@@ -349,8 +361,8 @@ void CScraper::ScrapeCommonCards()
 		s.Format("c0cardface%drank", i);
 		r_iter1 = p_tablemap->r$()->find(s.GetString());
 
-		s.Format("c0cardface%dsuit", i);
-		r_iter2 = p_tablemap->r$()->find(s.GetString());
+		t.Format("c0cardface%dsuit", i);
+		r_iter2 = p_tablemap->r$()->find(t.GetString());
 
 		if (r_iter1 != p_tablemap->r$()->end() && r_iter2 != p_tablemap->r$()->end() && card==CARD_NOCARD)
 		{
@@ -360,11 +372,23 @@ void CScraper::ScrapeCommonCards()
 			trans.DoTransform(r_iter1, hdcCompatible, &rankstr);
 			SelectObject(hdcCompatible, old_bitmap);
 
+			// Give scraper-pre DLL a chance to modify transform output
+			if (theApp._dll_scraperpre_process_message)
+			{
+				(theApp._dll_scraperpre_process_message) (s.GetString(), &rankstr);
+			}
+
 			// Get suit
 			ProcessRegion(r_iter2);
 			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter2->second.cur_bmp);
 			trans.DoTransform(r_iter2, hdcCompatible, &suitstr);
 			SelectObject(hdcCompatible, old_bitmap);
+
+			// Give scraper-pre DLL a chance to modify transform output
+			if (theApp._dll_scraperpre_process_message)
+			{
+				(theApp._dll_scraperpre_process_message) (t.GetString(), &suitstr);
+			}
 
 			if (rankstr=="10") rankstr="T";
 
@@ -395,7 +419,7 @@ void CScraper::ScrapePlayerCards(int chair)
 	bool				got_new_scrape = false;
 	CString				cardstr = "", rankstr = "", suitstr = "";
 	CTransform			trans;
-	CString				s = "";
+	CString				s = "", t="";
 	RMapCI				r_iter1 = p_tablemap->r$()->end(), r_iter2 = p_tablemap->r$()->end();
 
 	// Check for bad parameters
@@ -421,6 +445,12 @@ void CScraper::ScrapePlayerCards(int chair)
 			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter1->second.cur_bmp);
 			trans.DoTransform(r_iter1, hdcCompatible, &cardstr);
 			SelectObject(hdcCompatible, old_bitmap);
+
+			// Give scraper-pre DLL a chance to modify transform output
+			if (theApp._dll_scraperpre_process_message)
+			{
+				(theApp._dll_scraperpre_process_message) (s.GetString(), &cardstr);
+			}
 
 			if (cardstr!="")
 			{
@@ -451,6 +481,12 @@ void CScraper::ScrapePlayerCards(int chair)
 			trans.DoTransform(r_iter1, hdcCompatible, &cardstr);
 			SelectObject(hdcCompatible, old_bitmap);
 
+			// Give scraper-pre DLL a chance to modify transform output
+			if (theApp._dll_scraperpre_process_message)
+			{
+				(theApp._dll_scraperpre_process_message) (s.GetString(), &cardstr);
+			}
+
 			if (cardstr!="" && card==CARD_NOCARD)
 			{
 				StdDeck_stringToCard((char *) cardstr.GetString(), (int *) &card);
@@ -474,8 +510,8 @@ void CScraper::ScrapePlayerCards(int chair)
 		s.Format("p%dcardface%drank", chair, j);
 		r_iter1 = p_tablemap->r$()->find(s.GetString());
 
-		s.Format("p%dcardface%dsuit", chair, j);
-		r_iter2 = p_tablemap->r$()->find(s.GetString());
+		t.Format("p%dcardface%dsuit", chair, j);
+		r_iter2 = p_tablemap->r$()->find(t.GetString());
 
 		if (r_iter1!=p_tablemap->r$()->end() && r_iter2!=p_tablemap->r$()->end() && card==CARD_NOCARD)
 		{
@@ -485,11 +521,23 @@ void CScraper::ScrapePlayerCards(int chair)
 			trans.DoTransform(r_iter1, hdcCompatible, &rankstr);
 			SelectObject(hdcCompatible, old_bitmap);
 
+			// Give scraper-pre DLL a chance to modify transform output
+			if (theApp._dll_scraperpre_process_message)
+			{
+				(theApp._dll_scraperpre_process_message) (s.GetString(), &rankstr);
+			}
+
 			// Get suit
 			ProcessRegion(r_iter2);
 			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter2->second.cur_bmp);
 			trans.DoTransform(r_iter2, hdcCompatible, &suitstr);
 			SelectObject(hdcCompatible, old_bitmap);
+
+			// Give scraper-pre DLL a chance to modify transform output
+			if (theApp._dll_scraperpre_process_message)
+			{
+				(theApp._dll_scraperpre_process_message) (t.GetString(), &suitstr);
+			}
 
 			if (rankstr=="10") rankstr="T";
 
@@ -523,6 +571,12 @@ void CScraper::ScrapePlayerCards(int chair)
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter1->second.cur_bmp);
 		trans.DoTransform(r_iter1, hdcCompatible, &cardstr);
 		SelectObject(hdcCompatible, old_bitmap);
+
+		// Give scraper-pre DLL a chance to modify transform output
+		if (theApp._dll_scraperpre_process_message)
+		{
+			(theApp._dll_scraperpre_process_message) (s.GetString(), &cardstr);
+		}
 
 		if (IsStringCardback(cardstr))
 		{
@@ -575,6 +629,12 @@ void CScraper::ScrapeSeated(int chair)
 		trans.DoTransform(r_iter, hdcCompatible, &result);
 		SelectObject(hdcCompatible, old_bitmap);
 
+		// Give scraper-pre DLL a chance to modify transform output
+		if (theApp._dll_scraperpre_process_message)
+		{
+			(theApp._dll_scraperpre_process_message) (s.GetString(), &result);
+		}
+
 		if (result!="")
 			set_seated(chair, result);
 
@@ -591,6 +651,12 @@ void CScraper::ScrapeSeated(int chair)
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		trans.DoTransform(r_iter, hdcCompatible, &result);
 		SelectObject(hdcCompatible, old_bitmap);
+
+		// Give scraper-pre DLL a chance to modify transform output
+		if (theApp._dll_scraperpre_process_message)
+		{
+			(theApp._dll_scraperpre_process_message) (s.GetString(), &result);
+		}
 
 		if (result!="")
 			set_seated(chair, result);
@@ -632,6 +698,12 @@ void CScraper::ScrapeActive(int chair)
 		trans.DoTransform(r_iter, hdcCompatible, &result);
 		SelectObject(hdcCompatible, old_bitmap);
 
+		// Give scraper-pre DLL a chance to modify transform output
+		if (theApp._dll_scraperpre_process_message)
+		{
+			(theApp._dll_scraperpre_process_message) (s.GetString(), &result);
+		}
+
 		set_active(chair, result);
 
 		write_log(3, "p%dactive, result %s\n", chair, result.GetString());
@@ -648,6 +720,12 @@ void CScraper::ScrapeActive(int chair)
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		trans.DoTransform(r_iter, hdcCompatible, &result);
 		SelectObject(hdcCompatible, old_bitmap);
+
+		// Give scraper-pre DLL a chance to modify transform output
+		if (theApp._dll_scraperpre_process_message)
+		{
+			(theApp._dll_scraperpre_process_message) (s.GetString(), &result);
+		}
 
 		set_active(chair, result);
 		write_log(3, "u%dactive, result %s\n", chair, result.GetString());
@@ -690,6 +768,12 @@ void CScraper::ScrapeDealer(int chair)
 		trans.DoTransform(r_iter, hdcCompatible, &result);
 		SelectObject(hdcCompatible, old_bitmap);
 
+		// Give scraper-pre DLL a chance to modify transform output
+		if (theApp._dll_scraperpre_process_message)
+		{
+			(theApp._dll_scraperpre_process_message) (s.GetString(), &result);
+		}
+
 		if (IsStringDealer(result))
 			found_dealer = true;
 
@@ -705,6 +789,12 @@ void CScraper::ScrapeDealer(int chair)
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		trans.DoTransform(r_iter, hdcCompatible, &result);
 		SelectObject(hdcCompatible, old_bitmap);
+
+		// Give scraper-pre DLL a chance to modify transform output
+		if (theApp._dll_scraperpre_process_message)
+		{
+			(theApp._dll_scraperpre_process_message) (s.GetString(), &result);
+		}
 
 		if (IsStringDealer(result))
 			found_dealer = true;
@@ -745,13 +835,20 @@ void CScraper::ScrapeName(int chair)
 	got_new_scrape = false;
 
 	// Player name uname
-	r_iter = p_tablemap->r$()->find("uname");
+	s.Format("uname");
+	r_iter = p_tablemap->r$()->find(s.GetString());
 	if (r_iter != p_tablemap->r$()->end() && p_symbols->user_chair_confirmed() && chair==sym_chair && is_seated)
 	{
 		ProcessRegion(r_iter);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
+
+		// Give scraper-pre DLL a chance to modify transform output
+		if (theApp._dll_scraperpre_process_message)
+		{
+			(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+		}
 
 		if (ret==ERR_GOOD_SCRAPE_GENERAL && text!="")
 			got_new_scrape = true;
@@ -769,6 +866,12 @@ void CScraper::ScrapeName(int chair)
 		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
 
+		// Give scraper-pre DLL a chance to modify transform output
+		if (theApp._dll_scraperpre_process_message)
+		{
+			(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+		}
+
 		if (ret==ERR_GOOD_SCRAPE_GENERAL && text!="")
 			got_new_scrape = true;
 
@@ -784,6 +887,12 @@ void CScraper::ScrapeName(int chair)
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
+
+		// Give scraper-pre DLL a chance to modify transform output
+		if (theApp._dll_scraperpre_process_message)
+		{
+			(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+		}
 
 		if (ret==ERR_GOOD_SCRAPE_GENERAL && text!="")
 			got_new_scrape = true;
@@ -833,13 +942,20 @@ void CScraper::ScrapeBalance(int chair)
 	set_sitting_out(chair, false);
 
 	// Player balance ubalance
-	r_iter = p_tablemap->r$()->find("ubalance");
+	s.Format("ubalance");
+	r_iter = p_tablemap->r$()->find(s.GetString());
 	if (r_iter != p_tablemap->r$()->end() && p_symbols->user_chair_confirmed() && chair==sym_chair && is_seated)
 	{
 		ProcessRegion(r_iter);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
+
+		// Give scraper-pre DLL a chance to modify transform output
+		if (theApp._dll_scraperpre_process_message)
+		{
+			(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+		}
 
 		if (ret == ERR_GOOD_SCRAPE_GENERAL)
 		{
@@ -893,6 +1009,12 @@ void CScraper::ScrapeBalance(int chair)
 		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
 
+		// Give scraper-pre DLL a chance to modify transform output
+		if (theApp._dll_scraperpre_process_message)
+		{
+			(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+		}
+
 		if (ret == ERR_GOOD_SCRAPE_GENERAL)
 		{
 			if (IsStringAllin(text))
@@ -944,6 +1066,12 @@ void CScraper::ScrapeBalance(int chair)
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
+
+		// Give scraper-pre DLL a chance to modify transform output
+		if (theApp._dll_scraperpre_process_message)
+		{
+			(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+		}
 
 		if (ret == ERR_GOOD_SCRAPE_GENERAL)
 		{
@@ -1010,7 +1138,7 @@ void CScraper::ScrapeBet(int chair)
 {
 	CString				text = "";
 	CTransform			trans;
-	CString				s = "";
+	CString				s = "", t="";
 	RMapCI				r_iter = p_tablemap->r$()->end();
 
 	// Check for bad parameters
@@ -1030,6 +1158,12 @@ void CScraper::ScrapeBet(int chair)
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
+
+		// Give scraper-pre DLL a chance to modify transform output
+		if (theApp._dll_scraperpre_process_message)
+		{
+			(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+		}
 
 		text.Remove(',');
 		text.Remove('$');
@@ -1052,6 +1186,12 @@ void CScraper::ScrapeBet(int chair)
 		trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
 
+		// Give scraper-pre DLL a chance to modify transform output
+		if (theApp._dll_scraperpre_process_message)
+		{
+			(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+		}
+
 		text.Remove(',');
 		text.Remove('$');
 
@@ -1069,8 +1209,17 @@ void CScraper::ScrapeBet(int chair)
 	if (r_iter != p_tablemap->r$()->end() && _player_bet[chair] == 0)
 	{
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_cur);
-		set_player_bet(chair, DoChipScrape(r_iter));
+		double chipscrape_res = DoChipScrape(r_iter);
 		SelectObject(hdcCompatible, old_bitmap);
+
+		// Give scraper-pre DLL a chance to modify transform output
+		t.Format("%.2f", chipscrape_res);
+		if (theApp._dll_scraperpre_process_message)
+		{
+			(theApp._dll_scraperpre_process_message) (s.GetString(), &t);
+		}
+
+		set_player_bet(chair, strtod(t.GetString(), 0));
 
 		write_log(3, "p%dchipXY, result %f\n", chair, _player_bet[chair]);
 	}
@@ -1122,6 +1271,12 @@ void CScraper::ScrapeButtons()
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
 
+			// Give scraper-pre DLL a chance to modify transform output
+			if (theApp._dll_scraperpre_process_message)
+			{
+				(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+			}
+
 			if (text!="")
 				set_button_state(j, text);
 
@@ -1143,6 +1298,12 @@ void CScraper::ScrapeButtons()
 			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
+
+			// Give scraper-pre DLL a chance to modify transform output
+			if (theApp._dll_scraperpre_process_message)
+			{
+				(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+			}
 
 			if (text!="")
 				set_i86X_button_state(j, text);
@@ -1169,6 +1330,12 @@ void CScraper::ScrapeButtons()
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
 
+			// Give scraper-pre DLL a chance to modify transform output
+			if (theApp._dll_scraperpre_process_message)
+			{
+				(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+			}
+
 			if (text!="")
 				set_button_label(j, text);
 
@@ -1186,6 +1353,12 @@ void CScraper::ScrapeButtons()
 				old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 				trans.DoTransform(r_iter, hdcCompatible, &text);
 				SelectObject(hdcCompatible, old_bitmap);
+
+				// Give scraper-pre DLL a chance to modify transform output
+				if (theApp._dll_scraperpre_process_message)
+				{
+					(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+				}
 
 				if (text!="")
 					set_button_label(j, text);
@@ -1216,6 +1389,12 @@ void CScraper::ScrapeButtons()
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
+
+		// Give scraper-pre DLL a chance to modify transform output
+		if (theApp._dll_scraperpre_process_message)
+		{
+			(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+		}
 
 		if (text!="")
 			set_i86_button_state(text);
@@ -1283,7 +1462,7 @@ void CScraper::ScrapePots()
 	int					j = 0;
 	CString				text = "";
 	CTransform			trans;
-	CString				s = "";
+	CString				s = "", t="";
 	RMapCI				r_iter = p_tablemap->r$()->end();
 
 	for (j=0; j<=9; j++)
@@ -1300,6 +1479,12 @@ void CScraper::ScrapePots()
 			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
+
+			// Give scraper-pre DLL a chance to modify transform output
+			if (theApp._dll_scraperpre_process_message)
+			{
+				(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+			}
 
 			text.Remove(',');
 			text.Remove('$');
@@ -1329,8 +1514,17 @@ void CScraper::ScrapePots()
 			//SelectObject(hdcCompatible, old_bitmap);
 
 			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_cur);
-			set_pot(j, DoChipScrape(r_iter));
+			double chipscrape_res = DoChipScrape(r_iter);
 			SelectObject(hdcCompatible, old_bitmap);
+
+			// Give scraper-pre DLL a chance to modify transform output
+			t.Format("%.2f", chipscrape_res);
+			if (theApp._dll_scraperpre_process_message)
+			{
+				(theApp._dll_scraperpre_process_message) (s.GetString(), &t);
+			}
+
+			set_pot(j, strtod(t.GetString(), 0));
 
 			if (_pot_last[j] != _pot[j])
 			{
@@ -1397,6 +1591,12 @@ void CScraper::ScrapeLimits()
 		trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
 
+		// Give scraper-pre DLL a chance to modify transform output
+		if (theApp._dll_scraperpre_process_message)
+		{
+			(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+		}
+
 		if (text!="")
 			istournament = true;
 		else
@@ -1422,6 +1622,12 @@ void CScraper::ScrapeLimits()
 		trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
 
+		// Give scraper-pre DLL a chance to modify transform output
+		if (theApp._dll_scraperpre_process_message)
+		{
+			(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+		}
+
 		if (text!="")
 		{
 			handnumber = GetHandnumFromString(text);
@@ -1444,6 +1650,12 @@ void CScraper::ScrapeLimits()
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
 			
+			// Give scraper-pre DLL a chance to modify transform output
+			if (theApp._dll_scraperpre_process_message)
+			{
+				(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+			}
+
 			if (text!="")
 			{
 				handnumber = GetHandnumFromString (text);
@@ -1495,6 +1707,12 @@ void CScraper::ScrapeLimits()
 			GetWindowText(p_autoconnector->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
 			titletext = c_titletext;
 		 	
+			// Give scraper-pre DLL a chance to modify title text
+			if (theApp._dll_scraperpre_process_message)
+			{
+				(theApp._dll_scraperpre_process_message) ("ttlimits", &titletext);
+			}
+
 			trans.ParseStringBSL(
 				titletext, s_iter->second.text, NULL,
 				&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_istournament, 
@@ -1515,6 +1733,12 @@ void CScraper::ScrapeLimits()
 				GetWindowText(p_autoconnector->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
 				titletext = c_titletext;
 	
+				// Give scraper-pre DLL a chance to modify title text
+				if (theApp._dll_scraperpre_process_message)
+				{
+					(theApp._dll_scraperpre_process_message) (s.GetString(), &titletext);
+				}
+
 				trans.ParseStringBSL(
 					titletext, s_iter->second.text, NULL,
 					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_istournament, 
@@ -1527,14 +1751,21 @@ void CScraper::ScrapeLimits()
 		}
 
 		// r$c0limits, s$c0limits
-		r_iter = p_tablemap->r$()->find("c0limits");
-		s_iter = p_tablemap->s$()->find("c0limits");
+		s.Format("c0limits");
+		r_iter = p_tablemap->r$()->find(s.GetString());
+		s_iter = p_tablemap->s$()->find(s.GetString());
 		if (r_iter!=p_tablemap->r$()->end() && s_iter!=p_tablemap->s$()->end())
 		{
 			ProcessRegion(r_iter);
 			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
+
+			// Give scraper-pre DLL a chance to modify transform output
+			if (theApp._dll_scraperpre_process_message)
+			{
+				(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+			}
 
 			if (text!="")
 			{
@@ -1554,7 +1785,6 @@ void CScraper::ScrapeLimits()
 			// r$c0limitsX, s$c0limitsX
 			s.Format("c0limits%d", j);
 			r_iter = p_tablemap->r$()->find(s.GetString());
-			s.Format("c0limits%d", j);
 			s_iter = p_tablemap->s$()->find(s.GetString());
 
 			if (r_iter!=p_tablemap->r$()->end() && s_iter!=p_tablemap->s$()->end())
@@ -1563,6 +1793,12 @@ void CScraper::ScrapeLimits()
 				old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 				trans.DoTransform(r_iter, hdcCompatible, &text);
 				SelectObject(hdcCompatible, old_bitmap);
+
+				// Give scraper-pre DLL a chance to modify transform output
+				if (theApp._dll_scraperpre_process_message)
+				{
+					(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+				}
 
 				if (text!="")
 				{
@@ -1598,13 +1834,20 @@ void CScraper::ScrapeLimits()
 
 
 		// r$c0smallblind
-		r_iter = p_tablemap->r$()->find("c0smallblind");
+		s.Format("c0smallblind");
+		r_iter = p_tablemap->r$()->find(s.GetString());
 		if (r_iter != p_tablemap->r$()->end() && !_s_limit_info.found_sblind)
 		{
 			ProcessRegion(r_iter);
 			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
+
+			// Give scraper-pre DLL a chance to modify transform output
+			if (theApp._dll_scraperpre_process_message)
+			{
+				(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+			}
 
 			text.Remove(',');
 			text.Remove('$');
@@ -1619,13 +1862,20 @@ void CScraper::ScrapeLimits()
 		}
 
 		// r$c0bigblind
-		r_iter = p_tablemap->r$()->find("c0bigblind");
+		s.Format("c0bigblind");
+		r_iter = p_tablemap->r$()->find(s.GetString());
 		if (r_iter != p_tablemap->r$()->end() && !_s_limit_info.found_bblind)
 		{
 			ProcessRegion(r_iter);
 			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
+
+			// Give scraper-pre DLL a chance to modify transform output
+			if (theApp._dll_scraperpre_process_message)
+			{
+				(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+			}
 
 			text.Remove(',');
 			text.Remove('$');
@@ -1640,13 +1890,20 @@ void CScraper::ScrapeLimits()
 		}
 
 		// r$c0bigbet
-		r_iter = p_tablemap->r$()->find("c0bigbet");
+		s.Format("c0bigbet");
+		r_iter = p_tablemap->r$()->find(s.GetString());
 		if (r_iter != p_tablemap->r$()->end() && !_s_limit_info.found_bbet)
 		{
 			ProcessRegion(r_iter);
 			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
+
+			// Give scraper-pre DLL a chance to modify transform output
+			if (theApp._dll_scraperpre_process_message)
+			{
+				(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+			}
 
 			text.Remove(',');
 			text.Remove('$');
@@ -1661,13 +1918,20 @@ void CScraper::ScrapeLimits()
 		}
 
 		// r$c0ante
-		r_iter = p_tablemap->r$()->find("c0ante");
+		s.Format("c0ante");
+		r_iter = p_tablemap->r$()->find(s.GetString());
 		if (r_iter != p_tablemap->r$()->end() && !_s_limit_info.found_ante)
 		{
 			ProcessRegion(r_iter);
 			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
+
+			// Give scraper-pre DLL a chance to modify transform output
+			if (theApp._dll_scraperpre_process_message)
+			{
+				(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+			}
 
 			text.Remove(',');
 			text.Remove('$');

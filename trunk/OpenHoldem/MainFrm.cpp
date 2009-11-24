@@ -171,7 +171,7 @@ static UINT indicators[] =
 // CMainFrame construction/destruction
 CMainFrame::CMainFrame() 
 {
-	_autoplay_pressed = false;
+	//_autoplay_pressed = false;
 	_wait_cursor = false;
 
 	for (int i=0; i<=19; i++)
@@ -686,7 +686,7 @@ void CMainFrame::OnBnClickedGreenCircle()
 void CMainFrame::OnBnClickedRedCircle() 
 {
 	p_autoconnector->Disconnect();
-	_autoplay_pressed = false;
+	//_autoplay_pressed = false;
 }
 
 void CMainFrame::OnEditForceuserchair()
@@ -744,11 +744,11 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 				((p_symbols->user_chair_confirmed() && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)) ||
 				 p_pokerpro->ppdata()->m_userchair!=-1))
 		{
-			if (!_autoplay_pressed)
+			//if (!_autoplay_pressed)
 			{
 				m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
 				OnAutoplayer();
-				_autoplay_pressed = true;
+				//_autoplay_pressed = true;
 			}
 		}
 

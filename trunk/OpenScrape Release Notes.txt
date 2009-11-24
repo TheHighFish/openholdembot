@@ -1,3 +1,8 @@
+v2.1.0 2010-xx-xx
+=================
+- Added "scraperpredll" to valid s$strings list.  This new symbols instructs OpenHoldem to load the specified external scraperpre
+  DLL file. [OpenHoldem]
+
 v2.0.3 2009-10-23
 =================
 - OS allowed to create fonts with more or less than 1 character,
