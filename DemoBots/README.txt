@@ -14,6 +14,12 @@ and the opportunity to contribute,
 please visit our forums. You are welcome.
 www.maxinmontreal.com/forums.
 
+DLL- and Perl-bots
+==================
+OpenHoldem provides the opportunity to code a bot
+in C(++) or Perl, though that topic is considered to be a bit "advenced".
+You will find some demo-bots in the C++ and Perl-section of the forum.
+
 LICENSE
 =======
 This is a collection of poker bots, which have been published 
