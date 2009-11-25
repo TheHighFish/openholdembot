@@ -1,11 +1,13 @@
 #include <fstream>
 #include "CPokerAction.h"
+#include "CSymbols.h"
 
 using namespace std;
 
 class CHandHistory
 {
 public:
+	CHandHistory();
 	void makeHistory();
 
 private:
@@ -16,22 +18,23 @@ private:
 	void roundStart();
 	void checkBetround();
 	void scanPlayerChanges();
+    void GetPCstring(char *c, unsigned int c0, unsigned int c1);
+	void GetBCstring(char *c, unsigned int c0);
+	int DealPosition (const int chairnum);
 
 	ofstream outfile;
-	CPokerAction	action;
+	CPokerAction action;
 	string splayername[10];
 	bool allChecks[4];
 	bool alreadySet[50];
-	char userCards[4];
-    char totalCards[17];
 	char playername[16];
 	double currentbetx[10];
 	double playerbalance[10];
 	double potplayer;
 	double sblind;
 	double bblind;
-	unsigned int card_common[5];
-	unsigned int card_player[10][2];
+	char card_common[5][5];
+	char card_player[10][5];
 	int prevplayerbalance[10];
 	int prevbetx[10];
 	int seatsPlaying[10];

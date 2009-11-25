@@ -5,13 +5,14 @@
 #include "CHandHistory.h"
 
 #include "CGameState.h"
-#include "CPokerAction.h"
-#include "CMemory.h"
-#include "CSymbols.h"
 #include "CScraper.h"
 
 using namespace std;
 
+CHandHistory::CHandHistory()
+{
+	gameNumber = 83910;
+}
 void CHandHistory::makeHistory()
 {
 	updateSymbols();
@@ -42,18 +43,17 @@ void CHandHistory::updateSymbols()
 	raischair = (int) p_symbols->sym()->raischair;
 	dealerchair = (int) p_symbols->sym()->dealerchair;
 	for(int i=0;i<5;i++)
-		card_common[i]=p_scraper->card_common(i);
-	for(int i=0;i<10;i++)
-		for(int j=0;j<2;j++)
-			card_player[i][j]=p_scraper->card_player(i,j);
+		GetBCstring(card_common[i], p_scraper->card_common(i));
+
 	for(int i=0;i<10;i++)
 	{
+		GetPCstring(card_player[i], p_scraper->card_player(i,0), p_scraper->card_player(i,1));
 		playersplayingbits[i]=(cbits>>i)&1;
 		currentbetx[i]= p_symbols->sym()->currentbet[i];
 		playerbalance[i]= p_symbols->sym()->balance[i];
 		strncpy_s(playername, 16, p_scraper->player_name(i).GetString(), _TRUNCATE);
-		splayername[i]=playername;
-		//ac_dealpos[i] = action.DealPosition(i);
+		splayername[i] = playername;
+		ac_dealpos[i] = DealPosition(i);
 	}
 	for(int i=0;i<10;i++)
 	{
@@ -86,25 +86,25 @@ void CHandHistory::roundStart()
 }
 void CHandHistory::checkBetround()
 {
-	if(alreadySet[40]==false&&card_player[userchair][0]!=CARD_NOCARD&&card_player[userchair][1]!=CARD_NOCARD)
+	if(alreadySet[40]==false&&card_player[userchair][0]!=NULL&&card_player[userchair][1]!=NULL)
 	{
-		outfile<<"Dealt to "<<splayername[4]<<" [ "<<userCards[0]<<userCards[1]
-		<<" "<<userCards[2]<<userCards[3]<<" ]"<<endl;
+		outfile<<"Dealt to "<<splayername[4]<<" [ "<<card_player[userchair][0]<<card_player[userchair][1]
+		<<" "<<card_player[userchair][2]<<card_player[userchair][3]<<" ]"<<endl;
 		passChecks=0;
 		alreadySet[40]=true;
 	}
-	if(alreadySet[41]==false&&card_common[0]!=CARD_NOCARD&&card_common[1]!=CARD_NOCARD&&card_common[2]!=CARD_NOCARD)
+	if(alreadySet[41]==false&&card_common[0][1]!=NULL&&card_common[1][1]!=NULL&&card_common[2][1]!=NULL)
 	{
 		outfile<<"** Dealing Flop ** : [ "
-			<<totalCards[7]<<totalCards[8]<<", "
-			<<totalCards[9]<<totalCards[10]<<", "
-			<<totalCards[11]<<totalCards[12]<<" ]"<<endl;
+			<<card_common[0][0]<<card_common[0][1]<<", "
+			<<card_common[1][0]<<card_common[1][1]<<", "
+			<<card_common[2][0]<<card_common[2][1]<<" ]"<<endl;
 		whosturn=postflopstart;
 		alreadySet[41]=true;
 		passChecks=0;
 		maxBet=0;
 	}
-	if(alreadySet[42]==false&&card_common[3]!=CARD_NOCARD)
+	if(alreadySet[42]==false&&card_common[3][1]!=NULL)
 	{
 		if(allChecks[1]==true)
 		{
@@ -115,13 +115,13 @@ void CHandHistory::checkBetround()
 				i=(i+1)%10;
 			}while(i!=dealerchair);
 		}
-		outfile<<"** Dealing Turn ** : [ "<<totalCards[13]<<totalCards[14]<<" ]"<<endl;
+		outfile<<"** Dealing Turn ** : [ "<<card_common[3][0]<<card_common[3][1]<<" ]"<<endl;
 		whosturn=postflopstart;
 		alreadySet[42]=true;
 		passChecks=0;
 		maxBet=0;
 	}
-	if(alreadySet[43]==false&&card_common[4]!=CARD_NOCARD)
+	if(alreadySet[43]==false&&card_common[4][1]!=NULL)
 	{
 		if(allChecks[2]==true)
 		{
@@ -132,7 +132,7 @@ void CHandHistory::checkBetround()
 				i=(i+1)%10;
 			}while(i!=dealerchair);
 		}
-		outfile<<"** Dealing River ** : [ "<<totalCards[15]<<totalCards[16]<<" ]"<<endl;
+		outfile<<"** Dealing River ** : [ "<<card_common[4][0]<<card_common[4][1]<<" ]"<<endl;
 		whosturn=postflopstart;
 		alreadySet[43]=true;
 		passChecks=0;
@@ -240,7 +240,62 @@ string CHandHistory::setDate()
 bool CHandHistory::isShowdown()
 {
 	for(int i=0;i<10;i++)
-//		if(pCards[i][0]!=pCards[i][1]&&i!=4&&playersplayingbits[i]!=0)return true;
+		if(card_player[i][1]!=NULL&&i!=userchair&&playersplayingbits[i]!=0)return true;
 
 	return false;
+}
+void CHandHistory::GetPCstring(char *c, unsigned int c0, unsigned int c1)
+{
+	char		card0[10] = {0}, card1[10] = {0};
+
+	// figure out the card string to search for
+	if (StdDeck_RANK(c0) >= StdDeck_RANK(c1))
+	{
+		StdDeck_cardToString(c0, card0);
+		StdDeck_cardToString(c1, card1);
+	}
+	else
+	{
+		StdDeck_cardToString(c1, card0);
+		StdDeck_cardToString(c0, card1);
+	}
+	c[0] = card0[0];
+	c[1] = card0[1];
+	c[2] = card1[0];
+	c[3] = card1[1];
+
+	c[4]='\0';
+}
+void CHandHistory::GetBCstring(char *c, unsigned int c0)
+{
+	char		card0[10] = {0};
+
+	// figure out the card string to search for
+		StdDeck_cardToString(c0, card0);
+
+	c[0] = card0[0];
+	c[1] = card0[1];
+
+	c[3]='\0';
+}
+int CHandHistory::DealPosition (const int chairnum)
+{
+	int		i = 0;
+	int		dealposchair = 0 ;
+	int		e = SUCCESS;
+	int		sym_dealerchair = (int) p_symbols->sym()->dealerchair;
+	int		sym_playersdealtbits = (int) p_symbols->sym()->playersdealtbits;
+
+	if (chairnum<0 || chairnum>9)
+		return dealposchair;
+
+	for (i=sym_dealerchair+1; i<=sym_dealerchair+10; i++)
+	{
+		if ((sym_playersdealtbits>>(i%10))&1)
+			dealposchair++;
+
+		if (i%10==chairnum)
+			i=99;
+	}
+	return ((sym_playersdealtbits>>chairnum)&1) ? dealposchair : 0 ;
 }
