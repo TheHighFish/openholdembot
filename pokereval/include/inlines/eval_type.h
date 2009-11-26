@@ -25,13 +25,15 @@
 #ifndef __EVAL_TYPE_H__
 #define __EVAL_TYPE_H__
 
+#include "poker_defs.h"
+
 /* This table packs n_bits, is_straight, and (n_bits > 5) into one byte,
    as follows:
    Bit 0:   n_bits > 5
    Bit 1:   is_straight
    Bit 2-6: n_bits
 */
-extern uint8 nBitsAndStrTable[StdDeck_N_RANKMASKS];
+extern "C" uint8 nBitsAndStrTable[StdDeck_N_RANKMASKS];
 
 static inline int 
 StdDeck_StdRules_EVAL_TYPE( StdDeck_CardMask cards, int n_cards )
