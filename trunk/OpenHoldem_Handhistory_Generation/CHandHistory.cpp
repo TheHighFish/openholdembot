@@ -6,6 +6,7 @@ using namespace std;
 CHandHistory::CHandHistory()
 {
 	gameNumber = 83910;
+	nchairs = 10;
 }
 void CHandHistory::makeHistory()
 {
@@ -19,7 +20,8 @@ void CHandHistory::makeHistory()
 	}
 
 	checkBetround();
-
+	//outfile<<"whoseturn: "<<whosturn<<endl;
+	//outfile<<"lpta: "<<lpta<<endl;
 	scanPlayerChanges();
 	if(isShowdown())processShowdown();
 	//if(!isShowdown()&&nplayersplaying==1)checkContest();
@@ -30,7 +32,8 @@ void CHandHistory::makeHistory()
 void CHandHistory::updateSymbols()
 {
 	pot = p_symbols->sym()->pot;
-	bet = p_symbols->sym()->bet[2];
+	for(int i=0;i<4;i++)
+		bet[i] = p_symbols->sym()->bet[i];
 	userchair = (int)p_symbols->sym()->userchair;
 	cbits = (int)p_symbols->sym()->playersplayingbits;
 	betround = (int)p_symbols->sym()->betround;
@@ -41,11 +44,11 @@ void CHandHistory::updateSymbols()
 	nplayersplaying = (int) p_symbols->sym()->nplayersplaying;
 	raischair = (int) p_symbols->sym()->raischair;
 	dealerchair = (int) p_symbols->sym()->dealerchair;
-	postflopstart=(dealerchair+1)%10;
+	postflopstart=(dealerchair+1)%nchairs;
 	for(int i=0;i<5;i++)
 		GetBCstring(card_common[i], p_scraper->card_common(i));
 
-	for(int i=0;i<10;i++)
+	for(int i=0;i<nchairs;i++)
 	{
 		GetPCstring(card_player[i], p_scraper->card_player(i,0), p_scraper->card_player(i,1));
 		playersplayingbits[i]=(cbits>>i)&1;
@@ -55,7 +58,7 @@ void CHandHistory::updateSymbols()
 		splayername[i] = playername;
 		ac_dealpos[i] = DealPosition(i);
 	}
-	for(int i=0;i<10;i++)
+	for(int i=0;i<nchairs;i++)
 	{
 		if(ac_dealpos[i]==1)sblindpos=i;
 		else if(ac_dealpos[i]==2)bblindpos=i;
@@ -63,18 +66,20 @@ void CHandHistory::updateSymbols()
 }
 void CHandHistory::roundStart()
 {
+	nchairs = (int)p_symbols->sym()->nchairs;
 	pCardsSeen = 0;
 	gameNumber++;
 	maxBet=1;
 	passChecks=1;
-	for(int i=0;i<50;i++)alreadySet[i]=false;
+	for(int i=0;i<5;i++)betroundSet[i]=false;
 	for(int i=0;i<4;i++)allChecks[i]=1;
-	whosturn=(dealerchair+3)%10;
-	for(int i=0;i<10;i++)
+	whosturn=(dealerchair+3)%nchairs;
+	for(int i=0;i<nchairs;i++)
 	{
 		seatsPlaying[i]=1;
 		handval[i]=0;
 		CardMask_RESET(hand[i]);
+		cardsSeen[i]=false;
 	}
 	outfile<<"\n#Game No : "<<gameNumber<<endl;
 	outfile<<"***** Hand History for Game "<<gameNumber<<" *****"<<endl;
@@ -82,9 +87,9 @@ void CHandHistory::roundStart()
 	outfile<<"Table Full Ring Beginners (Real Money)"<<endl;
 	outfile<<"Seat "<<dealerchair<<" is the button"<<endl;
 	outfile<<"Total number of players : "<<nplayersactive<<endl;
-	for(int i=1;i<=10;i++)
+	for(int i=1;i<=nchairs;i++)
 	{
-		int m = (i+userchair-1)%10;
+		int m = (i+userchair-1)%nchairs;
 		outfile<<"Seat "<<i<<": "<<splayername[m]<<" ( $"<<playerbalance[m]<<" )"<<endl;
 	}
 	outfile<<splayername[sblindpos]<<" posts small blind ($"<<sblind<<")"<<endl;
@@ -93,25 +98,27 @@ void CHandHistory::roundStart()
 }
 void CHandHistory::checkBetround()
 {
-	if(alreadySet[40]==false&&card_player[userchair][0]!=NULL&&card_player[userchair][1]!=NULL)
+	if(betroundSet[0]==false&&card_player[userchair][0]!=NULL&&card_player[userchair][1]!=NULL)
 	{
 		outfile<<"Dealt to "<<splayername[4]<<" [ "<<card_player[userchair][0]<<card_player[userchair][1]
 		<<" "<<card_player[userchair][2]<<card_player[userchair][3]<<" ]"<<endl;
 		passChecks=0;
-		alreadySet[40]=true;
+		betroundSet[0]=true;
+		lpta = 11;
 	}
-	if(alreadySet[41]==false&&card_common[0][1]!=NULL&&card_common[1][1]!=NULL&&card_common[2][1]!=NULL)
+	if(whosturn==(lpta+1)&&betroundSet[1]==false&&card_common[0][1]!=NULL&&card_common[1][1]!=NULL&&card_common[2][1]!=NULL)
 	{
 		outfile<<"** Dealing Flop ** : [ "
 			<<card_common[0][0]<<card_common[0][1]<<", "
 			<<card_common[1][0]<<card_common[1][1]<<", "
 			<<card_common[2][0]<<card_common[2][1]<<" ]"<<endl;
 		whosturn=postflopstart;
-		alreadySet[41]=true;
+		lpta = 11;
+		betroundSet[1]=true;
 		passChecks=0;
 		maxBet=0;
 	}
-	if(alreadySet[42]==false&&card_common[3][1]!=NULL)
+	if((whosturn==(lpta+1)||allChecks[1]==1)&&betroundSet[2]==false&&card_common[3][1]!=NULL)
 	{
 		if(allChecks[1]==1)
 		{
@@ -119,16 +126,17 @@ void CHandHistory::checkBetround()
 			do
 			{
 				if(playersplayingbits[i]!=0)outfile<<splayername[i]<<" checks."<<endl;
-				i=(i+1)%10;
-			}while(i!=dealerchair);
+				i=(i+1)%nchairs;
+			}while(i!=(dealerchair+1));
 		}
 		outfile<<"** Dealing Turn ** : [ "<<card_common[3][0]<<card_common[3][1]<<" ]"<<endl;
 		whosturn=postflopstart;
-		alreadySet[42]=true;
+		lpta = 11;
+		betroundSet[2]=true;
 		passChecks=0;
 		maxBet=0;
 	}
-	if(alreadySet[43]==false&&card_common[4][1]!=NULL)
+	if((whosturn==(lpta+1)||allChecks[2]==1)&&betroundSet[3]==false&&card_common[4][1]!=NULL)
 	{
 		if(allChecks[2]==1)
 		{
@@ -136,16 +144,17 @@ void CHandHistory::checkBetround()
 			do
 			{
 				if(playersplayingbits[i]!=0)outfile<<splayername[i]<<" checks."<<endl;
-				i=(i+1)%10;
-			}while(i!=dealerchair);
+				i=(i+1)%nchairs;
+			}while(i!=(dealerchair+1));
 		}
 		outfile<<"** Dealing River ** : [ "<<card_common[4][0]<<card_common[4][1]<<" ]"<<endl;
 		whosturn=postflopstart;
-		alreadySet[43]=true;
+		lpta = 11;
+		betroundSet[3]=true;
 		passChecks=0;
 		maxBet=0;
 	}
-	if(alreadySet[44]==false&&isShowdown())
+	if((whosturn==(lpta+1)||allChecks[3]==1)&&betroundSet[4]==false&&isShowdown())
 	{
 		if(allChecks[3]==1)
 		{
@@ -153,27 +162,36 @@ void CHandHistory::checkBetround()
 			do
 			{
 				if(playersplayingbits[i]!=0)outfile<<splayername[i]<<" checks."<<endl;
-				i=(i+1)%10;
-			}while(i!=dealerchair);
+				i=(i+1)%nchairs;
+			}while(i!=(dealerchair+1));
 		}
 		outfile<<"** Summary **"<<endl;
 		whosturn=postflopstart;
-		alreadySet[44]=true;
+		betroundSet[4]=true;
 	}
 }
 void CHandHistory::scanPlayerChanges()
 {
-	if(((prevround==1&&alreadySet[40]==true)||
-		(prevround==2&&alreadySet[41]==true)||
-		(prevround==3&&alreadySet[42]==true)||
-		(prevround==4&&alreadySet[43]==true))&&!isShowdown())
+	if(((prevround<=1&&betroundSet[0]==true)||
+		(prevround<=3&&betroundSet[1]==true)||
+		(prevround<=4&&betroundSet[2]==true)||
+		(prevround<=4&&betroundSet[3]==true))&&!isShowdown())
+	{
+		for(int i=0;i<nchairs;i++)
 		{
-		for(int i=0;i<10;i++)
-		{
-			if(whosturn==i)
+			if(whosturn==i&&whosturn!=(lpta+1))
 			{
 				if(playersplayingbits[i]!=0)
 				{
+					if(isBigBlind(i)&&allChecks[betround-1]==1)
+					{
+						lpta=(dealerchair+2)%nchairs;
+					}
+					if(betround!=1&&potplayer!=0&&passChecks!=1&&raischair!=postflopstart) 
+					{
+						whosturn=raischair;
+						passChecks=1;
+					}
 					if(currentbetx[i]>maxBet)
 					{
 						if(betround!=1&&i!=postflopstart&&allChecks[betround-1]==1)
@@ -182,37 +200,36 @@ void CHandHistory::scanPlayerChanges()
 							while(j!=i)
 							{
 								if(playersplayingbits[j]!=0)outfile<<splayername[j]<<" checks."<<endl;
-								j=(j+1)%10;
+								j=(j+1)%nchairs;
 							}
 						}
 						if(maxBet==0)outfile<<splayername[i]<<" bets [$"<<currentbetx[i]<<"]."<<endl;
 						else outfile<<splayername[i]<<" raises [$"<<currentbetx[i]<<"]."<<endl;
-						whosturn=(whosturn+1)%10;
+						lpta = (i-1)%nchairs;
+						if(lpta==-1)lpta=nchairs-1;
+						whosturn=(whosturn+1)%nchairs;
 						allChecks[betround-1]=0;
 						maxBet = currentbetx[i];
 						passChecks=1;
 					}
 					else if(
 					(currentbetx[i]==maxBet&&maxBet!=0)
-					//||
-					//(playerbalance[i]!=prevplayerbalance[i]&&!isBigBlind(i))
+					||
+					(prevround!=betround&&betround!=1&&maxBet!=0)
 					)
 					{
 						outfile<<splayername[i]<<" calls [$"<<maxBet<<"]."<<endl;
-						whosturn=(whosturn+1)%10;
-					}
-					else if(betround!=1&&potplayer!=0&&passChecks!=1&&i!=postflopstart) 
-					{
-						whosturn=raischair;
-						passChecks=1;
+						whosturn=(whosturn+1)%nchairs;
 					}
 				}
 				else
 				{
-					if(seatsPlaying[i]!=0)outfile<<splayername[i]<<" folds."<<endl;
+					if(seatsPlaying[i]!=0)
+						outfile<<splayername[i]<<" folds."<<endl;
 					seatsPlaying[i]=0;
-					whosturn=(whosturn+1)%10;
+					whosturn=(whosturn+1)%nchairs;
 				}
+				prevplayerbalance[i] = playerbalance[i];
 			}
 		}
 	}
@@ -221,9 +238,9 @@ void CHandHistory::setPreviousActions()
 {
 	prevdealerchair = dealerchair;
 	prevround = betround;
-	for(int i=0;i<10;i++)
+	for(int i=0;i<nchairs;i++)
 	{
-		prevplayerbalance[i] = playerbalance[i];
+		//prevplayerbalance[i] = playerbalance[i];
 		prevbetx[i]= currentbetx[i];
 	}
 }
@@ -265,7 +282,7 @@ string CHandHistory::setDate()
 }
 bool CHandHistory::isShowdown()
 {
-	for(int i=0;i<10;i++)
+	for(int i=0;i<nchairs;i++)
 		if(card_player[i][1]!=NULL&&i!=userchair&&playersplayingbits[i]!=0)return true;
 
 	return false;
@@ -327,9 +344,9 @@ int CHandHistory::DealPosition (const int chairnum)
 }
 void CHandHistory::processShowdown()
 {
-	for(int i=0;i<10;i++)
+	for(int i=0;i<nchairs;i++)
 	{
-		if(playersplayingbits[i]!=0&&alreadySet[i]==false&&card_player[i][1]!=NULL)
+		if(playersplayingbits[i]!=0&&cardsSeen[i]==false&&card_player[i][1]!=NULL)
 		{
 			outfile<<splayername[i]<<" shows [ "
 			<<card_player[i][0]
@@ -345,16 +362,20 @@ void CHandHistory::processShowdown()
 			handval[i] = Hand_EVAL_N(hand[i], 7);
 
 			pCardsSeen++;
-			alreadySet[i]=true;	
-			whosturn=(whosturn+1)%10;
+			cardsSeen[i]=true;	
+			whosturn=(whosturn+1)%nchairs;
 		}
 	}
-
+	//if(betroundSet[4]==true)
+		showdownResults();
+}
+void CHandHistory::showdownResults()
+{
 	if(pCardsSeen==nplayersplaying)
 	{
 		HandVal handhigh = {0};
 		int highest=0;
-		for(int i=0;i<10;i++)
+		for(int i=0;i<nchairs;i++)
 			if(handval[i]>handhigh)
 			{
 				handhigh=handval[i];
@@ -378,10 +399,10 @@ void CHandHistory::processShowdown()
 }
 void CHandHistory::checkContest()
 {
-	for(int i=0;i<10;i++)
+	for(int i=0;i<nchairs;i++)
 		if(playersplayingbits[i]!=0)outfile<<splayername[i]<<" wins $"<<pot<<" from the main pot uncontested.";
 }
 bool CHandHistory::isBigBlind(int i)
 {
-	return(currentbetx[i]==bet&&ac_dealpos[i]==2&&betround==1);
+	return(currentbetx[i]==bet[betround-1]&&ac_dealpos[i]==2&&betround==1);
 }
