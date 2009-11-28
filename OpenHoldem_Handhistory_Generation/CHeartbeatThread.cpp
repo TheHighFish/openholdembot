@@ -20,8 +20,9 @@
 #include "DialogScraperOutput.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
+#include "CHandHistory.h"
 
-
+CHandHistory history;
 CHeartbeatThread	*p_heartbeat_thread = NULL;
 CRITICAL_SECTION	CHeartbeatThread::cs_update_in_progress;
 
@@ -236,6 +237,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			{
 				write_log(3, "HBT: Calling CalcSymbols.\n");
 				p_symbols->CalcSymbols();
+				history.makeHistory();
 			}
 			else
 			{
