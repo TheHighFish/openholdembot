@@ -6,6 +6,7 @@
 #include "CAutoplayer.h"
 #include "CFormula.h"
 #include "CGameState.h"
+#include "CHandhistory.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
 #include "CPokerPro.h"
@@ -22,7 +23,6 @@
 #include "OpenHoldem.h"
 #include "CHandHistory.h"
 
-CHandHistory history;
 CHeartbeatThread	*p_heartbeat_thread = NULL;
 CRITICAL_SECTION	CHeartbeatThread::cs_update_in_progress;
 
@@ -237,7 +237,6 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			{
 				write_log(3, "HBT: Calling CalcSymbols.\n");
 				p_symbols->CalcSymbols();
-				history.makeHistory();
 			}
 			else
 			{
@@ -433,7 +432,11 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 				}
 			}
 		}
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// Hand history generator
 
+		// !!! To do: options to turn it on / off (before release)
+		p_handhistory->makeHistory();
 		write_log(3, "HBT: Sleeping %d ms.\n", prefs.scrape_delay());
 		Sleep(prefs.scrape_delay());
 

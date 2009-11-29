@@ -12,6 +12,7 @@
 #include "CFormula.h"
 #include "CGameState.h"
 #include "CGrammar.h"
+#include "CHandHistory.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
 #include "CMemory.h"
@@ -156,6 +157,7 @@ BOOL COpenHoldemApp::InitInstance()
 	if (!p_rebuymanagement) p_rebuymanagement = new CRebuyManagement;
 	if (!p_occlusioncheck) p_occlusioncheck = new COcclusionCheck;
 	if (!p_autoconnectorthread) p_autoconnectorthread = new CAutoConnectorThread; 
+	if (!p_handhistory) p_handhistory = new CHandHistory;
 
 	// mouse.dll - failure in load is fatal
 	_mouse_dll = LoadLibrary("mouse.dll");
@@ -318,6 +320,7 @@ int COpenHoldemApp::ExitInstance()
 	// but we have to be careful, as sometimes we do some work in the destructors,
 	// that depends on other classes, e.g. the destructor of the autoconnector
 	// needs its session_id (CSessionCounter).
+	if (p_handhistory) { delete p_handhistory; p_handhistory = NULL; }
 	if (p_autoconnectorthread) { delete p_autoconnectorthread; p_autoconnectorthread = NULL; } 
 	if (p_occlusioncheck) { delete p_occlusioncheck; p_occlusioncheck = NULL; }
 	if (p_rebuymanagement) { delete p_rebuymanagement; p_rebuymanagement = NULL; }
