@@ -1,3 +1,7 @@
+#ifndef _INC_CHANDHISTORY_H
+
+#define _INC_CHANDHISTORY_H
+
 #include <fstream>
 #include <tchar.h>
 #include <Windows.h>
@@ -15,7 +19,7 @@
 
 using namespace std;
 
-class CHandHistory
+extern class CHandHistory
 {
 public:
 	CHandHistory();
@@ -95,4 +99,6 @@ private:
 	int prevround;	//Betround in previous scrape
 	int prevdealerchair;	//Dealer chair in previous scrape
 	int lpta; //Last player to act on round
-};
+} *p_handhistory;
+
+#endif // _INC_CHANDHISTORY_H

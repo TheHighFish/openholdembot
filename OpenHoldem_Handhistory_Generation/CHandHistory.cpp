@@ -3,6 +3,8 @@
 
 using namespace std;
 
+CHandHistory *p_handhistory = NULL;
+
 CHandHistory::CHandHistory()
 {
 	gameNumber = 83910;
