@@ -39,14 +39,18 @@ void CAutoplayer::DoChat(void)
 	HWND			hwnd_focus = GetFocus();
 	POINT			cur_pos = {0};
 
-	if (f_chat == 0)
+	if ((f_chat == 0) && (_the_chat_message == NULL))
 		return;
 
 	if (!IsChatAllowed())
 		return;
 
-	if (_the_chat_message == NULL)
-		return;
+	// Selecting a chat message (or no one).
+	// This message will then be processed by the autoplayer,
+	// when it's time to click the buttons.
+	// Works only, if we don't have an unhandled chat message.
+	write_log(3, "Calling RegisterChatMessage.\n");
+	RegisterChatMessage(f_chat);
 
 	::GetCursorPos(&cur_pos);
 
@@ -118,16 +122,9 @@ void CAutoplayer::DoAutoplayer(void)
 	//  Additional functionality: PokerChat
 	//	(Handle f$chat)
 	//
-	//  Selecting a chat message (or no one).
-	//	This message will then be processed by the autoplayer,
-	//	when it's time to click the buttons.
-	//
-	write_log(3, "Calling RegisterChatMessage.\n");
-	RegisterChatMessage(p_symbols->f$chat());
-
 	//  Avoiding unnecessary calls to DoChat(),
 	//	especially mouse movements to the chat box.
-	if ((p_symbols->f$chat() != 0) && IsChatAllowed())
+	if (IsChatAllowed() && ((p_symbols->f$chat() != 0) || (_the_chat_message != NULL)))
 	{
 		write_log(3, "Calling DoChat.\n");
 		DoChat();
