@@ -16,7 +16,7 @@
 #include "CRunRon.h"
 #include "CPokerPro.h"
 #include "CGameState.h"
-
+#include "MagicNumbers.h"
 #include "OpenHoldem.h"
 #include "MainFrm.h"
 
@@ -692,6 +692,14 @@ void CSymbols::ResetSymbolsNewHand(void)
 	// icm
 	for (i=0; i<=9; i++)
 		set_stacks_at_hand_start(i, 0);
+
+	// callbits, raisbits, etc.
+	for (i=k_betround_preflop; i<=k_betround_river; i++)
+	{
+		set_sym_callbits(0, i);
+		set_sym_raisbits(0, i);
+		set_sym_foldbits(0, i);
+	}
 
 	set_sym_raischair_previous_frame(-1);
 }
@@ -1742,8 +1750,9 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 	double	lastbet = 0.;
 	bool	sblindfound = false, bblindfound = false, found_userchair = false;
 	int		FirstPossiblePaiser = 0, LastPossibleRaiser = 0;
+	int		betround = _sym.betround;
 
-	// Raischair, nopponentsraising
+	// Raischair, nopponentsraising, raisbits
 	//
 	// Don't start searching for the highest bet at the button.
 	// This method will fail, if a player in late raises and a player in early coldcalls.
@@ -1769,6 +1778,8 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 		{
 			lastbet = p_bet;
 			set_sym_raischair(i%p_tablemap->nchairs());									// raischair
+			int new_raisbits = _sym.raisbits[betround] | k_exponents[i];
+			set_sym_raisbits(new_raisbits, betround);
 			if ((i%p_tablemap->nchairs()) != _sym.userchair)
 				set_sym_nopponentsraising(_sym.nopponentsraising + 1);					// nopponentsraising
 		}
@@ -1798,6 +1809,8 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 		if ((p_scraper->player_bet(i%p_tablemap->nchairs()) == CurrentBet) && (CurrentBet > 0))
 		{
 			set_sym_nopponentscalling(_sym.nopponentscalling + 1);
+			int new_callbits = _sym.callbits[betround] | k_exponents[i];
+			set_sym_callbits(new_callbits, betround);
 		}
 		else if (p_scraper->player_bet(i%p_tablemap->nchairs()) > CurrentBet)
 		{
@@ -1968,6 +1981,35 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 			set_sym_nplayerscallshort(_sym.nplayerscallshort + 1);						// nplayerscallshort
 		}
 	}
+	// foldbits (very late, as they depend on the dealt symbols)
+	int new_foldbits = 0;
+	for (int i=0; i<10; i++)
+	{
+		if (p_scraper->card_player(i, 0) == CARD_NOCARD &&
+			p_scraper->card_player(i, 1) == CARD_NOCARD)
+		{
+			new_foldbits |= k_exponents[i];
+		}
+	}
+	// remove players, who didn't get dealt.
+	new_foldbits &= int(_sym.playersdealtbits);
+	// remove players, who folded in earlier betting-rounds.
+	if (betround == 2)
+	{
+		new_foldbits &= ~_sym.foldbits[0];
+	}
+	else if (betround == 3)
+	{
+		new_foldbits &= ~_sym.foldbits[0];
+		new_foldbits &= ~_sym.foldbits[1];
+	}
+	else if (betround == 4)	
+	{
+		new_foldbits &= ~_sym.foldbits[0];
+		new_foldbits &= ~_sym.foldbits[1];
+		new_foldbits &= ~_sym.foldbits[2];
+	}
+	set_sym_foldbits(new_foldbits, betround);
 }
 
 void CSymbols::CalcPositionsUserchair(void) 
@@ -4404,6 +4446,11 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "royalflush", 10)==0 && strlen(a)==10)				return _sym.royalflush;
 	if (memcmp(a, "fiveofakind", 11)==0 && strlen(a)==11)				return _sym.fiveofakind;
 
+	// callbits, raisbits, etc. 
+	if (memcmp(a, "raisbits", 8)==0 && strlen(a)==9)  					return _sym.raisbits[(a[8]-'0') - 1];
+	if (memcmp(a, "callbits", 8)==0 && strlen(a)==9)  					return _sym.callbits[(a[8]-'0') - 1];
+	if (memcmp(a, "foldbits", 8)==0 && strlen(a)==9)  					return _sym.foldbits[(a[8]-'0') - 1];
+
 	//FLAGS
 	if (memcmp(a, "fmax", 4)==0 && strlen(a)==4)						return _sym.fmax;
 	if (memcmp(a, "f", 1)==0 && strlen(a)==2)							return _sym.f[a[1]-'0'];
@@ -4464,9 +4511,6 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 
 	// GameState symbols
 	if (memcmp(a, "lastraised", 10)==0 && strlen(a)==11)  				return p_game_state->LastRaised(a[10]-'0');
-	if (memcmp(a, "raisbits", 8)==0 && strlen(a)==9)  					return p_game_state->RaisBits(a[8]-'0');
-	if (memcmp(a, "callbits", 8)==0 && strlen(a)==9)  					return p_game_state->CallBits(a[8]-'0');
-	if (memcmp(a, "foldbits", 8)==0 && strlen(a)==9)  					return p_game_state->FoldBits(a[8]-'0');
 	if (memcmp(a, "oppdealt", 8)==0 && strlen(a)==8)  					return p_game_state->oppdealt();
 	if (memcmp(a, "floppct", 7)==0 && strlen(a)==7)  					return p_game_state->FlopPct();
 	if (memcmp(a, "turnpct", 7)==0 && strlen(a)==7)  					return p_game_state->TurnPct();

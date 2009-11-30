@@ -1,10 +1,10 @@
 #include "stdafx.h"
 
 #include "CGameState.h"
-
 #include "CSymbols.h"
 #include "CScraper.h"
 #include "CPreferences.h"
+#include "MagicNumbers.h"
 
 CGameState			*p_game_state = NULL;
 
@@ -252,50 +252,6 @@ const int CGameState::LastRaised(const int round)
 	}
 
 	return last_raised;
-}
-
-const int CGameState::RaisBits(const int round)
-{
-	int i = 0, bits = 0;
-
-	for (i=0; i<=9; i++)
-	{
-		if (_chair_actions[i][round-1][w_raised] ||
-				_chair_actions[i][round-1][w_reraised])
-		{
-			bits|=_exponents[i];
-		}
-	}
-	return bits;
-}
-
-const int CGameState::CallBits(const int round)
-{
-	int i = 0, bits = 0;
-
-	for (i=0; i<=9; i++)
-	{
-		if (_chair_actions[i][round-1][w_called] ||
-				_chair_actions[i][round-1][w_posted_bb])
-		{
-			bits|=_exponents[i];
-		}
-	}
-	return bits;
-}
-
-const int CGameState::FoldBits(const int round)
-{
-	int i = 0, bits = 0;
-
-	for (i=0; i<=9; i++)
-	{
-		if (_chair_actions[i][round-1][w_folded])
-		{
-			bits|=_exponents[i];
-		}
-	}
-	return bits;
 }
 
 const double CGameState::FlopPct(void)
@@ -929,8 +885,6 @@ void CGameState::DumpState(void)
 		write_log(3, "m_balance_known:%d\n", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance_known);
 	}
 }
-
-unsigned int CGameState::_exponents[11]={1,2,4,8,16,32,64,128,256,512,1024};
 
 const char *CGameState::_hist_sym_strings[200] = 
 {
