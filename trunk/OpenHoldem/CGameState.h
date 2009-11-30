@@ -15,9 +15,6 @@ public:
 	void CaptureState(const char *title);
 	bool ProcessThisFrame(void);
 	const int LastRaised(const int round);
-	const int RaisBits(const int round);
-	const int CallBits(const int round);
-	const int FoldBits(const int round);
 	const double FlopPct(void);
 	const double TurnPct(void);
 	const double RiverPct(void);

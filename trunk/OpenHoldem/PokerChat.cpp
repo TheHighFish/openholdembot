@@ -25,9 +25,10 @@
 
 #include "CPreferences.h"
 
-
 using namespace std;
 
+
+char *_the_chat_message = NULL;
 
 const unsigned short int max_length_of_simple_messages = 9;
 
@@ -128,13 +129,12 @@ PointerTypeSendChatMessage GetPointerToSendChatMessage()
 //	Use f$chat as "the_MessageIndex".
 void RegisterChatMessage(double message_index)
 {
-	unsigned int the_chat_index = message_index;
+	int the_chat_index = floor(message_index + 0.1);
 
-	if (the_chat_index < first_chat_message)
+	if ((the_chat_index < first_chat_message) || (the_chat_index > last_chat_message))
+	{
 		return;
-
-	if (the_chat_index > last_chat_message)
-		return;
+	}
 
 	char* the_message = _message_table[the_chat_index];
 	SendChatMessage(the_message);

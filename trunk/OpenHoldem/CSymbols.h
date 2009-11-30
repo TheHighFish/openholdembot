@@ -1,6 +1,9 @@
 #ifndef INC_CSYMBOLS_H
 #define INC_CSYMBOLS_H
 
+#include <assert.h>
+#include "MagicNumbers.h"
+
 // Symbol structure
 struct SSymbols 
 {
@@ -215,6 +218,11 @@ struct SSymbols
 	double friendsdealtbits;
 	double friendsplayingbits;
 	double friendsblindbits;
+
+	//CALLBITS, RAISBITS etc.
+	int raisbits[4];
+	int callbits[4];
+	int foldbits[4];
 
 	//FLAGS
 	double fmax;
@@ -649,6 +657,11 @@ public:
 	void	set_sym_friendsdealtbits(const double d) { ENT _sym.friendsdealtbits = d;}
 	void	set_sym_friendsplayingbits(const double d) { ENT _sym.friendsplayingbits = d;}
 	void	set_sym_friendsblindbits(const double d) { ENT _sym.friendsblindbits = d;}
+
+	// callbits, raisbits, etc.
+	void	set_sym_raisbits(const int i, const int betround) { ENT assert(betround >= k_betround_preflop); assert(betround <= k_betround_river); _sym.raisbits[betround-1] = i; }
+	void	set_sym_callbits(const int i, const int betround) { ENT assert(betround >= k_betround_preflop); assert(betround <= k_betround_river); _sym.callbits[betround-1] = i; }
+	void	set_sym_foldbits(const int i, const int betround) { ENT assert(betround >= k_betround_preflop); assert(betround <= k_betround_river); _sym.foldbits[betround-1] = i; }
 
 	//flags
 	void	set_sym_fmax(const double d) { ENT _sym.fmax = d;}
