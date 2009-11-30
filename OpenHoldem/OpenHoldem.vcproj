@@ -1038,6 +1038,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MagicNumbers.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MainFrm.h"
 				>
 			</File>

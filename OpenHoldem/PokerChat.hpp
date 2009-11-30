@@ -88,6 +88,6 @@ void RegisterChatMessage(double message_index);
 //  Pointer to the chatmessage to store it,
 //	until it is processed and send to the keyboard
 //
-static char *_the_chat_message;
+extern char *_the_chat_message;
 
 #endif //INC_POKERCHAT_HPP
