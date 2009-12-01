@@ -104,12 +104,13 @@ KEYBOARDDLL_API int SendString(const HWND hwnd, const RECT rect, const CString s
 	short KeyScan;
 	for (i=0; i<strlength; i++)
 	{
+		Sleep(20);
 		if (use_comma && ch_str[i]=='.')
 			ch_str[i] = ',';
 		KeyScan = VkKeyScan(ch_str[i]);
 		PlayKeyboardEvent(LOBYTE(KeyScan), HIBYTE(KeyScan));
-		Sleep(5);
 	}
+	Sleep(20);
 
 	// Restore previous window state and cursor position
 	if (restore_focus!=NULL)
