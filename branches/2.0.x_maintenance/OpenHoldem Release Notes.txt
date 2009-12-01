@@ -1,5 +1,20 @@
-v2.0.3 2009-10-23
+v2.0.4 2009-12-01
 =================
+BUG FIXES:
+- Fixed display of log$ information in the main window. [Spew]
+- OpenHoldem did treat negative titles and negative radii incorrectly,
+  when trying to connect to a table. [THF]
+- Raisbits, foldbits and callbits didn't work (again).
+  That code has now been moved from CGamestate to CSymbols
+  and the info gets calculated as part of the "playersraising"-info,
+  which is known to be working and pretty robust. [THF]
+- Chat did not work (again). Got fixed, but the code is a bit messy. [THF]
+- Keyboard.dll: As suggested by "aandryunin" we do now Sleep() before sending any input (and still after).
+  We hope, that improves the swag-problems. [THF].
+
+
+v2.0.3 2009-10-23
+==============
 BUG FIXES:
 - When the autolayer was engaged it was still possible to load a new formula via
   the MRU-list.
@@ -32,7 +47,7 @@ BUG FIXES:
   The old behaviour was not really a bug, but caused some confusions for PokerTracker-users. [THF]
 - Some positional symbols were conservatively only calculated, when the userchair was confirmed,
   although they didn't depend on that information. This has now been fixed. [THF]
-- PT3-support for Cake and Bodog. Thanks to Serax for reporting the new sites and providing the code. [THF]
+- PT3-support for Cake and Bodog. Thanks to Serax for reporting the new sites and providing the code. [THF]   
 
 
 v2.0.2 2009-09-01
