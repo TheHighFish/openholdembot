@@ -1,6 +1,10 @@
 v2.1.0 2010-xx-yy         === 2.0.4. see below ===
 =================
 BUG FIXES:
+- The new callbits and raisbits code had an index-problem.
+  Thanks to Skyzzo and Ganadai for reporting. [THF]
+- The mh_str_quads did put invalid string to the IsHand()-function.
+  Thanks to Lavezzi for reporting and to Loose_Passive for finding the bug. [THF]
 
 MAINTENANCE:
 
@@ -33,7 +37,7 @@ NEW STUFF:
 "scraperpre" works just like other user-extensible DLLs.  It is different from scraper override, in that the string types that come out of the transform engine are passed to the DLL, rather than the final resultant types (doubles).  This makes the interface very straightforward.  The scraper engine will pass transformed strings to a user-coded DLL, the DLL can do whatever massaging is necessary, and then the engine will continue with what the DLL passes back for further processing.  In the above example, the scraperpre DLL could be used to simply strip everything off of the scraped pot string after + or (.  The engine would then get "150" back, which would then be processed into the correct double type. [OpenHoldem]
 
 
-v2.0.4 2009-xx-yy
+v2.0.4 2009-12-01
 =================
 BUG FIXES:
 - Fixed display of log$ information in the main window. [Spew]
