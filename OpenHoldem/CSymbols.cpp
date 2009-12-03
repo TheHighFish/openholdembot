@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+#include <assert.h>
 #include <process.h>
 #include <float.h>
 
@@ -1821,7 +1822,7 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 		{
 			lastbet = p_bet;
 			set_sym_raischair(i%p_tablemap->nchairs());									// raischair
-			int new_raisbits = _sym.raisbits[betround] | k_exponents[i];
+			int new_raisbits = _sym.raisbits[betround] | k_exponents[i%p_tablemap->nchairs()];
 			set_sym_raisbits(new_raisbits, betround);
 			if ((i%p_tablemap->nchairs()) != _sym.userchair)
 				set_sym_nopponentsraising(_sym.nopponentsraising + 1);					// nopponentsraising
@@ -1851,7 +1852,7 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 		// Exact match required. Players being allin don't count as callers.
 		if ((p_scraper->player_bet(i%p_tablemap->nchairs()) == CurrentBet) && (CurrentBet > 0))
 		{
-			int new_callbits = _sym.callbits[betround] | k_exponents[i];
+			int new_callbits = _sym.callbits[betround] | k_exponents[i%p_tablemap->nchairs()];
 			set_sym_callbits(new_callbits, betround);
 			set_sym_nopponentscalling(_sym.nopponentscalling + 1);
 		}
@@ -2026,12 +2027,12 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 	}
 	// foldbits (very late, as they depend on the dealt symbols)
 	int new_foldbits = 0;
-	for (int i=0; i<10; i++)
+	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		if (p_scraper->card_player(i, 0) == CARD_NOCARD &&
 			p_scraper->card_player(i, 1) == CARD_NOCARD)
 		{
-			new_foldbits |= k_exponents[i];
+			new_foldbits |= k_exponents[i%p_tablemap->nchairs()];
 		}
 	}
 	// remove players, who didn't get dealt.
@@ -4506,9 +4507,9 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "fiveofakind", 11)==0 && strlen(a)==11)				return _sym.fiveofakind;
 
 	// callbits, raisbits, etc. 
-	if (memcmp(a, "raisbits", 8)==0 && strlen(a)==9)  					return _sym.raisbits[(a[8]-'0') - 1];
-	if (memcmp(a, "callbits", 8)==0 && strlen(a)==9)  					return _sym.callbits[(a[8]-'0') - 1];
-	if (memcmp(a, "foldbits", 8)==0 && strlen(a)==9)  					return _sym.foldbits[(a[8]-'0') - 1];
+	if (memcmp(a, "raisbits", 8)==0 && strlen(a)==9)  					return _sym.raisbits[a[8]-'0'];
+	if (memcmp(a, "callbits", 8)==0 && strlen(a)==9)  					return _sym.callbits[a[8]-'0'];
+	if (memcmp(a, "foldbits", 8)==0 && strlen(a)==9)  					return _sym.foldbits[a[8]-'0'];
 
 	//FLAGS
 	if (memcmp(a, "fmax", 4)==0 && strlen(a)==4)						return _sym.fmax;
@@ -4607,6 +4608,7 @@ const double CSymbols::IsHand(const char *a, int *e)
 			*e = ERR_INVALID_SYM;
 		return 0;
 	}
+	assert(a[0] == "$");
 
 	// passed in symbol query
 	for (i=1; i<(int) strlen(a); i++)
