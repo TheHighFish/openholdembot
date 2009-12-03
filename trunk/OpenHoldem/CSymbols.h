@@ -219,10 +219,11 @@ struct SSymbols
 	double friendsplayingbits;
 	double friendsblindbits;
 
-	//CALLBITS, RAISBITS etc.
-	int raisbits[4];
-	int callbits[4];
-	int foldbits[4];
+	// CALLBITS, RAISBITS etc.
+	// To avoid confusion we use bits 1..4, bit 0 is unused.
+	int raisbits[k_number_of_betrounds+1];
+	int callbits[k_number_of_betrounds+1];
+	int foldbits[k_number_of_betrounds+1];
 
 	//FLAGS
 	double fmax;
@@ -659,9 +660,9 @@ public:
 	void	set_sym_friendsblindbits(const double d) { ENT _sym.friendsblindbits = d;}
 
 	// callbits, raisbits, etc.
-	void	set_sym_raisbits(const int i, const int betround) { ENT assert(betround >= k_betround_preflop); assert(betround <= k_betround_river); _sym.raisbits[betround-1] = i; }
-	void	set_sym_callbits(const int i, const int betround) { ENT assert(betround >= k_betround_preflop); assert(betround <= k_betround_river); _sym.callbits[betround-1] = i; }
-	void	set_sym_foldbits(const int i, const int betround) { ENT assert(betround >= k_betround_preflop); assert(betround <= k_betround_river); _sym.foldbits[betround-1] = i; }
+	void	set_sym_raisbits(const int i, const int betround) { ENT assert(betround >= k_betround_preflop); assert(betround <= k_betround_river); _sym.raisbits[betround] = i; }
+	void	set_sym_callbits(const int i, const int betround) { ENT assert(betround >= k_betround_preflop); assert(betround <= k_betround_river); _sym.callbits[betround] = i; }
+	void	set_sym_foldbits(const int i, const int betround) { ENT assert(betround >= k_betround_preflop); assert(betround <= k_betround_river); _sym.foldbits[betround] = i; }
 
 	//flags
 	void	set_sym_fmax(const double d) { ENT _sym.fmax = d;}

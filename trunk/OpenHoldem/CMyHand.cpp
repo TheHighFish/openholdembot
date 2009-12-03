@@ -805,7 +805,7 @@ const int CMyHand::StrengthQuads(void)
 		// nuts
 		(isfourofakind && nhandshi==0 && !(pokervalcommon&fourofakind)) ||
 		// Board quads, I have an Ace
-		(isfourofakind && (pokervalcommon&fourofakind) && p_symbols->IsHand("Ax") )
+		(isfourofakind && (pokervalcommon&fourofakind) && p_symbols->IsHand("$Ax") )
 	)
 	{
 		strength=5;
@@ -834,7 +834,7 @@ const int CMyHand::StrengthQuads(void)
 	else if
 	(
 		// Board quads, I have a King
-		(isfourofakind && (pokervalcommon&fourofakind) && p_symbols->IsHand("Kx") )
+		(isfourofakind && (pokervalcommon&fourofakind) && p_symbols->IsHand("$Kx") )
 	)
 	{
 		strength=2;
