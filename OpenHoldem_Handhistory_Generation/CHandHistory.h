@@ -37,7 +37,7 @@ private:
 	bool isShowdown();
 	//Runs at the beginning of each match; sets initial variables
 	void roundStart();
-	//Sets betround-dependent variables
+	//Sets betround-dependent variables 
 	void checkBetround();
 	//Constantly scans the table for player changes, moving around
 	//the table using whosturn
@@ -52,10 +52,12 @@ private:
 	//Calculates ac_dealpos
 	int DealPosition (const int chairnum);
 	//Experimental, checks if the pot is uncontested
-	void checkContest();
+	void outputUncontested(int j);
 	//Checks if passed chair is big blind 
 	//(big blind pos, current bet=1, current betround=1)
 	bool isBigBlind(int i);
+	void checkAll();
+	string findLimit();
 
 	ofstream outfile;
 	CPokerAction action;
@@ -63,9 +65,12 @@ private:
 	HandVal handval[10];	//Holds hand value for all players
 	CardMask hand[10];		//Holds CardMask of hand for all players
 	int allChecks[4];
-	bool betroundSet[5];	//Checks if statements have already been run
+	bool betroundSet[7];	//Checks if statements have already been run
 	bool cardsSeen[10];
+	bool playerSeated[10];
+	bool seatsPlaying[10];
 	char playername[16];
+	string handText[10];
 	double currentbetx[10];
 	double playerbalance[10];
 	double potplayer;
@@ -73,13 +78,13 @@ private:
 	double bblind;
 	double pot;
 	double bet[4];
+	double rake;
 	char card_common[5][5];
 	char card_player[10][5];
 	int nchairs;
 	int pCardsSeen;
 	int prevplayerbalance[10];
 	int prevbetx[10];
-	int seatsPlaying[10];
 	int ac_dealpos[10];
 	int playersplayingbits[10];
 	int nplayersactive;
