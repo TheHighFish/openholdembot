@@ -1,4 +1,0 @@
-LIBRARY	scraperpre
-EXPORTS
-   ProcessMessage    @1
-   
