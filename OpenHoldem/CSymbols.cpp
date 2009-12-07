@@ -1793,7 +1793,7 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 {
 	double	lastbet = 0.;
 	bool	sblindfound = false, bblindfound = false, found_userchair = false;
-	int		FirstPossiblePaiser = 0, LastPossibleRaiser = 0;
+	int		FirstPossibleRaiser = 0, LastPossibleRaiser = 0;
 	int		betround = _sym.betround;
 
 	// Raischair, nopponentsraising, raisbits
@@ -1804,17 +1804,17 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 	if (_sym.raischair_previous_frame == -1)
 	{
 		// Start with the first player after the dealer
-		FirstPossiblePaiser = _sym.dealerchair + 1;
+		FirstPossibleRaiser = _sym.dealerchair + 1;
 	}
 	else
 	{
 		// Start with the player after last known raiser
-		FirstPossiblePaiser = _sym.raischair_previous_frame;
+		FirstPossibleRaiser = _sym.raischair_previous_frame;
 	}
 	// For technical reasons (for-loop) we handle the modulo-operation inside the loop
-	LastPossibleRaiser = FirstPossiblePaiser + p_tablemap->nchairs() - 1;
+	LastPossibleRaiser = FirstPossibleRaiser + p_tablemap->nchairs() - 1;
 
-	for (int i=FirstPossiblePaiser; i<=LastPossibleRaiser; i++)
+	for (int i=FirstPossibleRaiser; i<=LastPossibleRaiser; i++)
 	{
 		double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
 
@@ -4608,7 +4608,7 @@ const double CSymbols::IsHand(const char *a, int *e)
 			*e = ERR_INVALID_SYM;
 		return 0;
 	}
-	assert(a[0] == "$");
+	assert(a[0] == '$');
 
 	// passed in symbol query
 	for (i=1; i<(int) strlen(a); i++)

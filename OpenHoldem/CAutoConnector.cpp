@@ -655,19 +655,19 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 				}
 			}
 
-			// scraperpre.dll - failure in load is NOT fatal
-			theApp.UnloadScraperPreDLL();
-			filename = p_tablemap->scraperpredll();
+			// scraperpreprocessor.dll - failure in load is NOT fatal
+			theApp.Unload_ScraperPreprocessor_DLL();
+			filename = p_tablemap->scraperpreprocessor_dll();
 			if (!filename.IsEmpty()) {
 				int index = filename.ReverseFind('\\');
 				if (index > 0)
 					path.Format("%s\\%s", filename.Left(index), filename);
 				else
 					path = filename;
-				theApp._scraperpre_dll = LoadLibrary(path);
+				theApp._scraperpreprocessor_dll = LoadLibrary(path);
 			}
 
-			if (theApp._scraperpre_dll==NULL)
+			if (theApp._scraperpreprocessor_dll==NULL)
 			{
 				if (!filename.IsEmpty() && !prefs.disable_msgbox())		
 				{
@@ -678,9 +678,9 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			}
 			else
 			{
-				theApp._dll_scraperpre_process_message = (scraperpre_process_message_t) GetProcAddress(theApp._scraperpre_dll, "ProcessMessage");
+				theApp._dll_scraperpreprocessor_process_message = (scraperpreprocessor_process_message_t) GetProcAddress(theApp._scraperpreprocessor_dll, "ProcessMessage");
 
-				if (theApp._dll_scraperpre_process_message==NULL)
+				if (theApp._dll_scraperpreprocessor_process_message==NULL)
 				{
 					if (!prefs.disable_msgbox())		
 					{
@@ -689,11 +689,11 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 						MessageBox(0, t, "OpenHoldem scraperpre.dll ERROR", MB_OK | MB_TOPMOST);
 					}
 
-					theApp.UnloadScraperPreDLL();
+					theApp.Unload_ScraperPreprocessor_DLL();
 				}
 				else
 				{
-					write_log(1, "scraperpre.dll loaded, ProcessMessage found.\n");
+					write_log(1, "scraperpreprocessor.dll loaded, ProcessMessage found.\n");
 				}
 			}
 
@@ -715,8 +715,8 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 				(theApp._dll_scraper_process_message) ("connect", &_attached_hwnd);
 
 			// Send "connect" and HWND to scraper pre DLL, if loaded
-			if (theApp._dll_scraperpre_process_message)
-				(theApp._dll_scraperpre_process_message) ("connect", &_attached_hwnd);
+			if (theApp._dll_scraperpreprocessor_process_message)
+				(theApp._dll_scraperpreprocessor_process_message) ("connect", &_attached_hwnd);
 
 			// start heartbeat thread
 			if (p_heartbeat_thread)
@@ -807,10 +807,10 @@ void CAutoConnector::Disconnect()
 	theApp.UnloadScraperDLL();
 
 	// Send "disconnect" to scraperpre DLL, if loaded
-	if (theApp._dll_scraperpre_process_message)
-			(theApp._dll_scraperpre_process_message) ("disconnect", NULL);
+	if (theApp._dll_scraperpreprocessor_process_message)
+			(theApp._dll_scraperpreprocessor_process_message) ("disconnect", NULL);
 
-	theApp.UnloadScraperPreDLL();
+	theApp.Unload_ScraperPreprocessor_DLL();
 
 	// Clear "attached" info
 	set_attached_hwnd(NULL);
