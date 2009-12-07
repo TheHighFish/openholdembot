@@ -396,14 +396,8 @@ bool CFormula::ParseAllFormula(HWND hwnd, bool disable_msgbox)
 	data.pParent = this;
 	data.disable_msgbox = disable_msgbox;
 
-	if (!prefs.gui_disable_progress_dialog())
-	{
-		// Create progress dialog.
-		// It will live longer as this codeblock,
-		// update automatically and die automatically.
-		CUPDialog dlg_progress(hwnd, ParseLoop, &data, "Please wait", false);
-		dlg_progress.DoModal();
-	}
+	CUPDialog dlg_progress(hwnd, ParseLoop, &data, "Please wait", false);
+	dlg_progress.DoModal();
 
 	return data.all_parsed;
 }
@@ -769,6 +763,7 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 	double			time_elapsed = 0.;
 	sData			*data = (sData*) (pCUPDUPData->GetAppData());
 	CGrammar		gram;
+	bool			gui_enable_progress_dialog = !prefs.gui_disable_progress_dialog();
 
 	pCUPDUPData->SetProgress("", 0, false);
 
@@ -784,7 +779,7 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 		s.Format("Parsing formula set %s : %.0f%%", data->pParent->formula()->mFunction[i].func.GetString(), (double) i / (double) N * 100.0);
 		QueryPerformanceCounter(&ecount);
 		time_elapsed = ((double) (ecount.LowPart - bcount.LowPart))/((double) lFrequency.LowPart);
-		pCUPDUPData->SetProgress(s.GetString(), (int) ((double) i / (double) N * 100.0), time_elapsed>=3.0);
+		pCUPDUPData->SetProgress(s.GetString(), (int) ((double) i / (double) N * 100.0), ((time_elapsed>=3.0) && gui_enable_progress_dialog));
 
 		// Parse it if it is dirty, and not notes, dll or f$debug
 		if (data->pParent->formula()->mFunction[i].dirty == true &&
@@ -851,7 +846,7 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 		}
 	}
 
-	pCUPDUPData->SetProgress("", 100, true);
+	pCUPDUPData->SetProgress("", 100, gui_enable_progress_dialog);
 
 	return true;
 }

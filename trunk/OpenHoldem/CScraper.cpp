@@ -13,7 +13,7 @@
 
 #include "CAutoconnector.h"
 
-#include "..\..\Reference Scraper-Pre DLL\scraperpredll.h"
+#include "..\..\Reference Scraper-Pre DLL\scraper_preprocessor_dll.h"
 
 
 #define __HDC_HEADER 		HBITMAP		old_bitmap = NULL; \
@@ -332,9 +332,9 @@ void CScraper::ScrapeCommonCards()
 			SelectObject(hdcCompatible, old_bitmap);
 
 			// Give scraper-pre DLL a chance to modify transform output
-			if (theApp._dll_scraperpre_process_message)
+			if (theApp._dll_scraperpreprocessor_process_message)
 			{
-				(theApp._dll_scraperpre_process_message) (s.GetString(), &cardstr);
+				(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &cardstr);
 			}
 
 			if (cardstr!="")
@@ -373,9 +373,9 @@ void CScraper::ScrapeCommonCards()
 			SelectObject(hdcCompatible, old_bitmap);
 
 			// Give scraper-pre DLL a chance to modify transform output
-			if (theApp._dll_scraperpre_process_message)
+			if (theApp._dll_scraperpreprocessor_process_message)
 			{
-				(theApp._dll_scraperpre_process_message) (s.GetString(), &rankstr);
+				(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &rankstr);
 			}
 
 			// Get suit
@@ -385,9 +385,9 @@ void CScraper::ScrapeCommonCards()
 			SelectObject(hdcCompatible, old_bitmap);
 
 			// Give scraper-pre DLL a chance to modify transform output
-			if (theApp._dll_scraperpre_process_message)
+			if (theApp._dll_scraperpreprocessor_process_message)
 			{
-				(theApp._dll_scraperpre_process_message) (t.GetString(), &suitstr);
+				(theApp._dll_scraperpreprocessor_process_message) (t.GetString(), &suitstr);
 			}
 
 			if (rankstr=="10") rankstr="T";
@@ -447,9 +447,9 @@ void CScraper::ScrapePlayerCards(int chair)
 			SelectObject(hdcCompatible, old_bitmap);
 
 			// Give scraper-pre DLL a chance to modify transform output
-			if (theApp._dll_scraperpre_process_message)
+			if (theApp._dll_scraperpreprocessor_process_message)
 			{
-				(theApp._dll_scraperpre_process_message) (s.GetString(), &cardstr);
+				(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &cardstr);
 			}
 
 			if (cardstr!="")
@@ -482,9 +482,9 @@ void CScraper::ScrapePlayerCards(int chair)
 			SelectObject(hdcCompatible, old_bitmap);
 
 			// Give scraper-pre DLL a chance to modify transform output
-			if (theApp._dll_scraperpre_process_message)
+			if (theApp._dll_scraperpreprocessor_process_message)
 			{
-				(theApp._dll_scraperpre_process_message) (s.GetString(), &cardstr);
+				(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &cardstr);
 			}
 
 			if (cardstr!="" && card==CARD_NOCARD)
@@ -522,9 +522,9 @@ void CScraper::ScrapePlayerCards(int chair)
 			SelectObject(hdcCompatible, old_bitmap);
 
 			// Give scraper-pre DLL a chance to modify transform output
-			if (theApp._dll_scraperpre_process_message)
+			if (theApp._dll_scraperpreprocessor_process_message)
 			{
-				(theApp._dll_scraperpre_process_message) (s.GetString(), &rankstr);
+				(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &rankstr);
 			}
 
 			// Get suit
@@ -534,9 +534,9 @@ void CScraper::ScrapePlayerCards(int chair)
 			SelectObject(hdcCompatible, old_bitmap);
 
 			// Give scraper-pre DLL a chance to modify transform output
-			if (theApp._dll_scraperpre_process_message)
+			if (theApp._dll_scraperpreprocessor_process_message)
 			{
-				(theApp._dll_scraperpre_process_message) (t.GetString(), &suitstr);
+				(theApp._dll_scraperpreprocessor_process_message) (t.GetString(), &suitstr);
 			}
 
 			if (rankstr=="10") rankstr="T";
@@ -573,9 +573,9 @@ void CScraper::ScrapePlayerCards(int chair)
 		SelectObject(hdcCompatible, old_bitmap);
 
 		// Give scraper-pre DLL a chance to modify transform output
-		if (theApp._dll_scraperpre_process_message)
+		if (theApp._dll_scraperpreprocessor_process_message)
 		{
-			(theApp._dll_scraperpre_process_message) (s.GetString(), &cardstr);
+			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &cardstr);
 		}
 
 		if (IsStringCardback(cardstr))
@@ -630,9 +630,9 @@ void CScraper::ScrapeSeated(int chair)
 		SelectObject(hdcCompatible, old_bitmap);
 
 		// Give scraper-pre DLL a chance to modify transform output
-		if (theApp._dll_scraperpre_process_message)
+		if (theApp._dll_scraperpreprocessor_process_message)
 		{
-			(theApp._dll_scraperpre_process_message) (s.GetString(), &result);
+			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &result);
 		}
 
 		if (result!="")
@@ -653,9 +653,9 @@ void CScraper::ScrapeSeated(int chair)
 		SelectObject(hdcCompatible, old_bitmap);
 
 		// Give scraper-pre DLL a chance to modify transform output
-		if (theApp._dll_scraperpre_process_message)
+		if (theApp._dll_scraperpreprocessor_process_message)
 		{
-			(theApp._dll_scraperpre_process_message) (s.GetString(), &result);
+			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &result);
 		}
 
 		if (result!="")
@@ -699,9 +699,9 @@ void CScraper::ScrapeActive(int chair)
 		SelectObject(hdcCompatible, old_bitmap);
 
 		// Give scraper-pre DLL a chance to modify transform output
-		if (theApp._dll_scraperpre_process_message)
+		if (theApp._dll_scraperpreprocessor_process_message)
 		{
-			(theApp._dll_scraperpre_process_message) (s.GetString(), &result);
+			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &result);
 		}
 
 		set_active(chair, result);
@@ -722,9 +722,9 @@ void CScraper::ScrapeActive(int chair)
 		SelectObject(hdcCompatible, old_bitmap);
 
 		// Give scraper-pre DLL a chance to modify transform output
-		if (theApp._dll_scraperpre_process_message)
+		if (theApp._dll_scraperpreprocessor_process_message)
 		{
-			(theApp._dll_scraperpre_process_message) (s.GetString(), &result);
+			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &result);
 		}
 
 		set_active(chair, result);
@@ -769,9 +769,9 @@ void CScraper::ScrapeDealer(int chair)
 		SelectObject(hdcCompatible, old_bitmap);
 
 		// Give scraper-pre DLL a chance to modify transform output
-		if (theApp._dll_scraperpre_process_message)
+		if (theApp._dll_scraperpreprocessor_process_message)
 		{
-			(theApp._dll_scraperpre_process_message) (s.GetString(), &result);
+			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &result);
 		}
 
 		if (IsStringDealer(result))
@@ -791,9 +791,9 @@ void CScraper::ScrapeDealer(int chair)
 		SelectObject(hdcCompatible, old_bitmap);
 
 		// Give scraper-pre DLL a chance to modify transform output
-		if (theApp._dll_scraperpre_process_message)
+		if (theApp._dll_scraperpreprocessor_process_message)
 		{
-			(theApp._dll_scraperpre_process_message) (s.GetString(), &result);
+			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &result);
 		}
 
 		if (IsStringDealer(result))
@@ -845,9 +845,9 @@ void CScraper::ScrapeName(int chair)
 		SelectObject(hdcCompatible, old_bitmap);
 
 		// Give scraper-pre DLL a chance to modify transform output
-		if (theApp._dll_scraperpre_process_message)
+		if (theApp._dll_scraperpreprocessor_process_message)
 		{
-			(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 		}
 
 		if (ret==ERR_GOOD_SCRAPE_GENERAL && text!="")
@@ -867,9 +867,9 @@ void CScraper::ScrapeName(int chair)
 		SelectObject(hdcCompatible, old_bitmap);
 
 		// Give scraper-pre DLL a chance to modify transform output
-		if (theApp._dll_scraperpre_process_message)
+		if (theApp._dll_scraperpreprocessor_process_message)
 		{
-			(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 		}
 
 		if (ret==ERR_GOOD_SCRAPE_GENERAL && text!="")
@@ -889,9 +889,9 @@ void CScraper::ScrapeName(int chair)
 		SelectObject(hdcCompatible, old_bitmap);
 
 		// Give scraper-pre DLL a chance to modify transform output
-		if (theApp._dll_scraperpre_process_message)
+		if (theApp._dll_scraperpreprocessor_process_message)
 		{
-			(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 		}
 
 		if (ret==ERR_GOOD_SCRAPE_GENERAL && text!="")
@@ -952,9 +952,9 @@ void CScraper::ScrapeBalance(int chair)
 		SelectObject(hdcCompatible, old_bitmap);
 
 		// Give scraper-pre DLL a chance to modify transform output
-		if (theApp._dll_scraperpre_process_message)
+		if (theApp._dll_scraperpreprocessor_process_message)
 		{
-			(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 		}
 
 		if (ret == ERR_GOOD_SCRAPE_GENERAL)
@@ -1010,9 +1010,9 @@ void CScraper::ScrapeBalance(int chair)
 		SelectObject(hdcCompatible, old_bitmap);
 
 		// Give scraper-pre DLL a chance to modify transform output
-		if (theApp._dll_scraperpre_process_message)
+		if (theApp._dll_scraperpreprocessor_process_message)
 		{
-			(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 		}
 
 		if (ret == ERR_GOOD_SCRAPE_GENERAL)
@@ -1068,9 +1068,9 @@ void CScraper::ScrapeBalance(int chair)
 		SelectObject(hdcCompatible, old_bitmap);
 
 		// Give scraper-pre DLL a chance to modify transform output
-		if (theApp._dll_scraperpre_process_message)
+		if (theApp._dll_scraperpreprocessor_process_message)
 		{
-			(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 		}
 
 		if (ret == ERR_GOOD_SCRAPE_GENERAL)
@@ -1160,9 +1160,9 @@ void CScraper::ScrapeBet(int chair)
 		SelectObject(hdcCompatible, old_bitmap);
 
 		// Give scraper-pre DLL a chance to modify transform output
-		if (theApp._dll_scraperpre_process_message)
+		if (theApp._dll_scraperpreprocessor_process_message)
 		{
-			(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 		}
 
 		text.Remove(',');
@@ -1187,9 +1187,9 @@ void CScraper::ScrapeBet(int chair)
 		SelectObject(hdcCompatible, old_bitmap);
 
 		// Give scraper-pre DLL a chance to modify transform output
-		if (theApp._dll_scraperpre_process_message)
+		if (theApp._dll_scraperpreprocessor_process_message)
 		{
-			(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 		}
 
 		text.Remove(',');
@@ -1214,9 +1214,9 @@ void CScraper::ScrapeBet(int chair)
 
 		// Give scraper-pre DLL a chance to modify transform output
 		t.Format("%.2f", chipscrape_res);
-		if (theApp._dll_scraperpre_process_message)
+		if (theApp._dll_scraperpreprocessor_process_message)
 		{
-			(theApp._dll_scraperpre_process_message) (s.GetString(), &t);
+			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &t);
 		}
 
 		set_player_bet(chair, strtod(t.GetString(), 0));
@@ -1272,9 +1272,9 @@ void CScraper::ScrapeButtons()
 			SelectObject(hdcCompatible, old_bitmap);
 
 			// Give scraper-pre DLL a chance to modify transform output
-			if (theApp._dll_scraperpre_process_message)
+			if (theApp._dll_scraperpreprocessor_process_message)
 			{
-				(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+				(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 			}
 
 			if (text!="")
@@ -1300,9 +1300,9 @@ void CScraper::ScrapeButtons()
 			SelectObject(hdcCompatible, old_bitmap);
 
 			// Give scraper-pre DLL a chance to modify transform output
-			if (theApp._dll_scraperpre_process_message)
+			if (theApp._dll_scraperpreprocessor_process_message)
 			{
-				(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+				(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 			}
 
 			if (text!="")
@@ -1331,9 +1331,9 @@ void CScraper::ScrapeButtons()
 			SelectObject(hdcCompatible, old_bitmap);
 
 			// Give scraper-pre DLL a chance to modify transform output
-			if (theApp._dll_scraperpre_process_message)
+			if (theApp._dll_scraperpreprocessor_process_message)
 			{
-				(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+				(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 			}
 
 			if (text!="")
@@ -1355,9 +1355,9 @@ void CScraper::ScrapeButtons()
 				SelectObject(hdcCompatible, old_bitmap);
 
 				// Give scraper-pre DLL a chance to modify transform output
-				if (theApp._dll_scraperpre_process_message)
+				if (theApp._dll_scraperpreprocessor_process_message)
 				{
-					(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+					(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 				}
 
 				if (text!="")
@@ -1391,9 +1391,9 @@ void CScraper::ScrapeButtons()
 		SelectObject(hdcCompatible, old_bitmap);
 
 		// Give scraper-pre DLL a chance to modify transform output
-		if (theApp._dll_scraperpre_process_message)
+		if (theApp._dll_scraperpreprocessor_process_message)
 		{
-			(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 		}
 
 		if (text!="")
@@ -1481,9 +1481,9 @@ void CScraper::ScrapePots()
 			SelectObject(hdcCompatible, old_bitmap);
 
 			// Give scraper-pre DLL a chance to modify transform output
-			if (theApp._dll_scraperpre_process_message)
+			if (theApp._dll_scraperpreprocessor_process_message)
 			{
-				(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+				(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 			}
 
 			text.Remove(',');
@@ -1519,9 +1519,9 @@ void CScraper::ScrapePots()
 
 			// Give scraper-pre DLL a chance to modify transform output
 			t.Format("%.2f", chipscrape_res);
-			if (theApp._dll_scraperpre_process_message)
+			if (theApp._dll_scraperpreprocessor_process_message)
 			{
-				(theApp._dll_scraperpre_process_message) (s.GetString(), &t);
+				(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &t);
 			}
 
 			set_pot(j, strtod(t.GetString(), 0));
@@ -1592,9 +1592,9 @@ void CScraper::ScrapeLimits()
 		SelectObject(hdcCompatible, old_bitmap);
 
 		// Give scraper-pre DLL a chance to modify transform output
-		if (theApp._dll_scraperpre_process_message)
+		if (theApp._dll_scraperpreprocessor_process_message)
 		{
-			(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 		}
 
 		if (text!="")
@@ -1623,9 +1623,9 @@ void CScraper::ScrapeLimits()
 		SelectObject(hdcCompatible, old_bitmap);
 
 		// Give scraper-pre DLL a chance to modify transform output
-		if (theApp._dll_scraperpre_process_message)
+		if (theApp._dll_scraperpreprocessor_process_message)
 		{
-			(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 		}
 
 		if (text!="")
@@ -1651,9 +1651,9 @@ void CScraper::ScrapeLimits()
 			SelectObject(hdcCompatible, old_bitmap);
 			
 			// Give scraper-pre DLL a chance to modify transform output
-			if (theApp._dll_scraperpre_process_message)
+			if (theApp._dll_scraperpreprocessor_process_message)
 			{
-				(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+				(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 			}
 
 			if (text!="")
@@ -1708,9 +1708,9 @@ void CScraper::ScrapeLimits()
 			titletext = c_titletext;
 		 	
 			// Give scraper-pre DLL a chance to modify title text
-			if (theApp._dll_scraperpre_process_message)
+			if (theApp._dll_scraperpreprocessor_process_message)
 			{
-				(theApp._dll_scraperpre_process_message) ("ttlimits", &titletext);
+				(theApp._dll_scraperpreprocessor_process_message) ("ttlimits", &titletext);
 			}
 
 			trans.ParseStringBSL(
@@ -1734,9 +1734,9 @@ void CScraper::ScrapeLimits()
 				titletext = c_titletext;
 	
 				// Give scraper-pre DLL a chance to modify title text
-				if (theApp._dll_scraperpre_process_message)
+				if (theApp._dll_scraperpreprocessor_process_message)
 				{
-					(theApp._dll_scraperpre_process_message) (s.GetString(), &titletext);
+					(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &titletext);
 				}
 
 				trans.ParseStringBSL(
@@ -1762,9 +1762,9 @@ void CScraper::ScrapeLimits()
 			SelectObject(hdcCompatible, old_bitmap);
 
 			// Give scraper-pre DLL a chance to modify transform output
-			if (theApp._dll_scraperpre_process_message)
+			if (theApp._dll_scraperpreprocessor_process_message)
 			{
-				(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+				(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 			}
 
 			if (text!="")
@@ -1795,9 +1795,9 @@ void CScraper::ScrapeLimits()
 				SelectObject(hdcCompatible, old_bitmap);
 
 				// Give scraper-pre DLL a chance to modify transform output
-				if (theApp._dll_scraperpre_process_message)
+				if (theApp._dll_scraperpreprocessor_process_message)
 				{
-					(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+					(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 				}
 
 				if (text!="")
@@ -1844,9 +1844,9 @@ void CScraper::ScrapeLimits()
 			SelectObject(hdcCompatible, old_bitmap);
 
 			// Give scraper-pre DLL a chance to modify transform output
-			if (theApp._dll_scraperpre_process_message)
+			if (theApp._dll_scraperpreprocessor_process_message)
 			{
-				(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+				(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 			}
 
 			text.Remove(',');
@@ -1872,9 +1872,9 @@ void CScraper::ScrapeLimits()
 			SelectObject(hdcCompatible, old_bitmap);
 
 			// Give scraper-pre DLL a chance to modify transform output
-			if (theApp._dll_scraperpre_process_message)
+			if (theApp._dll_scraperpreprocessor_process_message)
 			{
-				(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+				(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 			}
 
 			text.Remove(',');
@@ -1900,9 +1900,9 @@ void CScraper::ScrapeLimits()
 			SelectObject(hdcCompatible, old_bitmap);
 
 			// Give scraper-pre DLL a chance to modify transform output
-			if (theApp._dll_scraperpre_process_message)
+			if (theApp._dll_scraperpreprocessor_process_message)
 			{
-				(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+				(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 			}
 
 			text.Remove(',');
@@ -1928,9 +1928,9 @@ void CScraper::ScrapeLimits()
 			SelectObject(hdcCompatible, old_bitmap);
 
 			// Give scraper-pre DLL a chance to modify transform output
-			if (theApp._dll_scraperpre_process_message)
+			if (theApp._dll_scraperpreprocessor_process_message)
 			{
-				(theApp._dll_scraperpre_process_message) (s.GetString(), &text);
+				(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 			}
 
 			text.Remove(',');
