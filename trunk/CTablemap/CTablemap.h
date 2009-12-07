@@ -196,9 +196,9 @@ public:
 									  if (it==_s$.end()) return "";
 									  else return it->second.text; }
 
-	const CString scraperdll()		{ SMapCI it = _s$.find("scraperdll"); if (it!=_s$.end()) return it->second.text; else return ""; }
+	const CString scraperdll()		{ SMapCI it = _s$.find("scraperprocessordll"); if (it!=_s$.end()) return it->second.text; else return ""; }
 
-	const CString scraperpredll()	{ SMapCI it = _s$.find("scraperpredll"); if (it!=_s$.end()) return it->second.text; else return ""; }
+	const CString scraperpreprocessor_dll()	{ SMapCI it = _s$.find("scraperpreprocessordll"); if (it!=_s$.end()) return it->second.text; else return ""; }
 
 	const bool valid() { return _valid; }
 	const CString filename() { return _filename; }
