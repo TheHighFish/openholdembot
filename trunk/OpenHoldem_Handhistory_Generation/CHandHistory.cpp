@@ -39,6 +39,7 @@ void CHandHistory::updateSymbols()
 		bet[i] = p_symbols->sym()->bet[i];
 	userchair = (int)p_symbols->sym()->userchair;
 	cbits = (int)p_symbols->sym()->playersplayingbits;
+	dbits = (int)p_symbols->sym()->playersdealtbits;
 	betround = (int)p_symbols->sym()->betround;
 	potplayer = p_symbols->sym()->potplayer;
 	sblind = p_symbols->sym()->sblind;
@@ -54,12 +55,11 @@ void CHandHistory::updateSymbols()
 	{
 		GetPCstring(card_player[i], p_scraper->card_player(i,0), p_scraper->card_player(i,1));
 		playersplayingbits[i]=(cbits>>i)&1;
+		playersdealtbits[i]=(dbits>>i)&1;
 		currentbetx[i]= p_symbols->sym()->currentbet[i];
 		playerbalance[i]= p_symbols->sym()->balance[i];
 		strncpy_s(playername, 16, p_scraper->player_name(i).GetString(), _TRUNCATE);
 		splayername[i] = playername;
-		playerSeated[i]=false;
-		if(splayername[i]!="")playerSeated[i]=true;
 	}
 
 }
@@ -95,7 +95,7 @@ void CHandHistory::roundStart()
 	for(int i=1;i<=nchairs;i++)
 	{
 		int m = (i+userchair-1)%nchairs;
-		if(splayername[m]!="")
+		if(playersdealtbits[m]==1)
 		{
 			outfile<<"Seat "<<i<<": "<<splayername[m]<<" ( $"<<playerbalance[m]<<" in chips)";
 			if (m==dealerchair) outfile<<" DEALER"<<endl;
@@ -223,7 +223,7 @@ void CHandHistory::scanPlayerChanges()
 				}
 				else
 				{
-					if(seatsPlaying[i]==true&&playerSeated[i]==true)
+					if(seatsPlaying[i]==true&&playersdealtbits[i]==1)
 						outfile<<splayername[i]<<": Fold"<<endl;
 					seatsPlaying[i]=false;
 					whosturn=(whosturn+1)%nchairs;
@@ -307,17 +307,24 @@ void CHandHistory::GetBCstring(char *c, unsigned int c0)
 }
 int CHandHistory::DealPosition (const int chairnum)
 {
-	int		dealposchair = 0;
-	int		count = 1;
-	int		i = (dealerchair+1)%nchairs;
+	int		i = 0;
+	int		dealposchair = 0 ;
+	int		e = SUCCESS;
+	int		sym_dealerchair = (int) p_symbols->sym()->dealerchair;
+	int		sym_playersdealtbits = (int) p_symbols->sym()->playersdealtbits;
 
-	while(i!=chairnum)
+	if (chairnum<0 || chairnum>9)
+		return dealposchair;
+
+	for (i=sym_dealerchair+1; i<=sym_dealerchair+10; i++)
 	{
-		if(playerSeated[i]==true) count++;
-		i=(i+1)%nchairs;
-	}
+		if ((sym_playersdealtbits>>(i%10))&1)
+			dealposchair++;
 
-	return count;
+		if (i%10==chairnum)
+			i=99;
+	}
+	return ((sym_playersdealtbits>>chairnum)&1) ? dealposchair : 0 ;
 }
 void CHandHistory::processShowdown()
 {

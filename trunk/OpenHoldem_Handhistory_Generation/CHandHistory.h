@@ -67,7 +67,6 @@ private:
 	int allChecks[4];
 	bool betroundSet[7];	//Checks if statements have already been run
 	bool cardsSeen[10];
-	bool playerSeated[10];
 	bool seatsPlaying[10];
 	char playername[16];
 	string handText[10];
@@ -87,6 +86,7 @@ private:
 	int prevbetx[10];
 	int ac_dealpos[10];
 	int playersplayingbits[10];
+	int playersdealtbits[10];
 	int nplayersactive;
 	int nplayersplaying;
 	int raischair;
@@ -94,6 +94,7 @@ private:
 	int betround;
 	int postflopstart;	//Starting seat after flop
 	int cbits;		//players playing bits
+	int dbits;
 	int gameNumber;
 	int sblindpos;
 	int bblindpos;
