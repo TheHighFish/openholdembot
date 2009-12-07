@@ -17,7 +17,7 @@ char * const s$strings[67] = { "titletext", "titletext0", "titletext1", "titlete
 							   "c0limits8", "c0limits9", 
 							   "sitename", "network", "nchairs", "reseller", "mechanic", "chairconfig", "swagtextmethod", "potmethod", "activemethod", 
 							   "defaultlabels", "t0type", "t1type", "t2type", "t3type", "swagselectionmethod", "swagdeletionmethod", 
-							   "swagconfirmationmethod", "buttonclickmethod", "handresetmethod", "balancenumbersonly", "scraperdll", "scraperpredll",
+							   "swagconfirmationmethod", "buttonclickmethod", "handresetmethod", "balancenumbersonly", "scraperdll", "scraperpreprocessordll",
 							   "chipscrapemethod"};
 
 int	const num_r$strings = 359;
