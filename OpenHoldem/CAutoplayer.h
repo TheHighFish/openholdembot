@@ -46,6 +46,7 @@ private:
 private:
 	// private functions and variables - not available via accessors or mutators
 	const int CountSameScrape(void);
+	void DoAllin(void);
 	void DoSwag(void);
 	void DoARCCF(void);
 	void DoSlider(void);

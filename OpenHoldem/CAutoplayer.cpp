@@ -88,6 +88,92 @@ void CAutoplayer::DoRebuy(void)
 	}
 }
 
+void CAutoplayer::DoAllin(void)
+{
+	RECT allin_button;
+	RECT raise_button;
+	POINT point_null = {-1, -1};
+	POINT cur_pos    = {0, 0};
+	bool allin_button_defined = false;
+	bool raise_button_defined = false;
+	int number_of_clicks = 1; // Default is: single click with the mouse
+
+	write_log(3, "Starting DoAllin...\n");
+	::GetCursorPos(&cur_pos);
+
+	// If we get a lock, do the action
+	if (!_mutex.Lock(500))
+	{
+		write_log(3, "...ending DoSwag early (could not get mutex lock).\n");
+		return;
+	}
+
+	if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
+	{
+		number_of_clicks = 2;
+	}
+
+	if (_alli_but!=p_tablemap->r$()->end())
+	{
+		allin_button.left = _alli_but->second.left;
+		allin_button.top = _alli_but->second.top;
+		allin_button.right = _alli_but->second.right;
+		allin_button.bottom = _alli_but->second.bottom;
+		allin_button_defined = true;
+	}
+
+	if (_rais_but!=p_tablemap->r$()->end())
+	{
+		// raise-button
+		raise_button.left = _rais_but->second.left;
+		raise_button.top = _rais_but->second.top;
+		raise_button.right = _rais_but->second.right;
+		raise_button.bottom = _rais_but->second.bottom;
+		raise_button_defined = true;
+	}
+	if (p_tablemap->allinmethod() == 1)
+	{
+		// Clicking max (or allin) and then raise
+		if (allin_button_defined && raise_button_defined)
+		{
+			write_log(3, "Text selection; calling mouse.dll to single click allin: %d,%d %d,%d\n", 
+				allin_button.left, allin_button.top, allin_button.right, allin_button.bottom);
+			// Click the allin button.
+			// Don't restore the position after the first click (point_null).
+			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), allin_button, MouseLeft, number_of_clicks, NULL, point_null);
+			write_log(3, "Text selection; calling mouse.dll to single click raise: %d,%d %d,%d\n", 
+				raise_button.left, raise_button.top, raise_button.right, raise_button.bottom);
+			// Click the raise button;
+			// Then restore the mouse position (cur_pos)
+			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), raise_button, MouseLeft, number_of_clicks, NULL, cur_pos);
+		}
+		else
+		{
+			write_log(1, "....Ending DoAllin early (no allin-button or no raise-button).\n");
+		}
+	}
+	else  if (p_tablemap->allinmethod() == 2)
+	{
+		// Clicking only max (or allin)
+		if (allin_button_defined)
+		{
+			write_log(3, "Text selection; calling mouse.dll to single click allin: %d,%d %d,%d\n", 
+				allin_button.left, allin_button.top, allin_button.right, allin_button.bottom);
+			// Click the raise button;
+			// Then restore the mouse position (cur_pos)
+			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), allin_button, MouseLeft, number_of_clicks, NULL, cur_pos);
+		}
+		else
+		{
+			write_log(1, "....Ending DoAllin early (no allin-button).\n");
+		}
+	}
+	// Third case (default): swagging the balance
+	// (p_tablemap->allinmethod() == 0)
+	// This will be handled by the swag-code.
+	_mutex.Unlock();	
+}
+
 void CAutoplayer::DoAutoplayer(void) 
 {
 	int				x = 0;
@@ -212,9 +298,14 @@ void CAutoplayer::DoAutoplayer(void)
 		}
 	}
 
+	if (p_symbols->f$alli())
+	{
+		DoAllin();
+	}
+
 	// do swag first since it is the odd one
 	bool bDoSwag = false; // I'm just breaking this out to be a little clearer (spew)
-	if (p_tablemap->swagallin() && p_symbols->f$alli() && p_scraper->GetButtonState(3))
+	if ((p_tablemap->allinmethod() == 0) && p_symbols->f$alli() && p_scraper->GetButtonState(3))
 		bDoSwag = true;
 	if (p_symbols->f$swag() && !p_symbols->f$alli() && p_scraper->GetButtonState(3))
 		bDoSwag = true;
@@ -270,7 +361,7 @@ void CAutoplayer::DoSwag(void)
 	double			f_swag = p_symbols->f$swag();
 	RMapCI			r_edit = p_tablemap->r$()->find("i3edit");
 	RMapCI			r_button = p_tablemap->r$()->find("i3button");
-	POINT			p_null = {-1, -1};
+	POINT			point_null = {-1, -1};
 	RECT			r_null = {-1, -1, -1, -1};
 
 	write_log(3, "Starting DoSwag...\n");
@@ -310,21 +401,21 @@ void CAutoplayer::DoSwag(void)
 		{
 			write_log(3, "Text selection; calling mouse.dll to double click: %d,%d %d,%d\n", rect_edit.left, rect_edit.top, 
 				rect_edit.right, rect_edit.bottom);
-			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect_edit, MouseLeft, 2, NULL, p_null);
+			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect_edit, MouseLeft, 2, NULL, point_null);
 		}
 
 		else if (p_tablemap->swagselectionmethod() == TEXTSEL_SINGLECLICK)
 		{
 			write_log(3, "Text selection; calling mouse.dll to single click: %d,%d %d,%d\n", rect_edit.left, rect_edit.top, 
 				rect_edit.right, rect_edit.bottom);
-			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect_edit, MouseLeft, 1, NULL, p_null);
+			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect_edit, MouseLeft, 1, NULL, point_null);
 		}
 
 		else if (p_tablemap->swagselectionmethod() == TEXTSEL_CLICKDRAG)
 		{
 			write_log(3, "Text selection; calling mouse.dll to click drag: %d,%d %d,%d\n", rect_edit.left, rect_edit.top, 
 				rect_edit.right, rect_edit.bottom);
-			(theApp._dll_mouse_click_drag) (p_autoconnector->attached_hwnd(), rect_edit, NULL, p_null);
+			(theApp._dll_mouse_click_drag) (p_autoconnector->attached_hwnd(), rect_edit, NULL, point_null);
 		}
 
 		else if (p_tablemap->swagselectionmethod() == TEXTSEL_NOTHING)
@@ -351,13 +442,13 @@ void CAutoplayer::DoSwag(void)
 		if (p_tablemap->swagdeletionmethod() == TEXTDEL_DELETE)
 		{
 			write_log(3, "Text deletion; calling keyboard.dll to press 'delete'\n");
-			(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_DELETE, NULL, p_null);
+			(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_DELETE, NULL, point_null);
 		}
 
 		else if (p_tablemap->swagdeletionmethod() == TEXTDEL_BACKSPACE)
 		{
 			write_log(3, "Text deletion; calling keyboard.dll to press 'backspace'\n");
-			(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_BACK, NULL, p_null);
+			(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_BACK, NULL, point_null);
 		}
 
 		else if (p_tablemap->swagdeletionmethod() == TEXTDEL_NOTHING)
@@ -381,7 +472,7 @@ void CAutoplayer::DoSwag(void)
 
 		// if we are swagging allin then set the swag value to be our balance (spew)
 		CString swag_amt;
-		if (p_tablemap->swagallin() && p_symbols->f$alli())
+		if ((p_tablemap->allinmethod() == 0) && p_symbols->f$alli())
 			f_swag = p_symbols->sym()->balance[10];
 
 		// SWAG AMOUNT ENTRY
@@ -392,7 +483,7 @@ void CAutoplayer::DoSwag(void)
 
 		write_log(3, "Swag amount; calling keyboard.dll to swag: %s %d,%d %d,%d\n", swag_amt, rect_edit.left, rect_edit.top, 
 				rect_edit.right, rect_edit.bottom);
-		(theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), rect_edit, swag_amt, prefs.swag_use_comma(), NULL, p_null);
+		(theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), rect_edit, swag_amt, prefs.swag_use_comma(), NULL, point_null);
 
 		// Check for stolen focus, and thus misswag
 		if (GetForegroundWindow() != p_autoconnector->attached_hwnd())
@@ -658,7 +749,7 @@ void CAutoplayer::DoSlider(void)
 	RMapCI			slider = p_tablemap->r$()->find("i3slider");
 	RMapCI			handle = p_tablemap->r$()->find("i3handle");
 	RMapCI			r_button = p_tablemap->r$()->find("i3button");
-	POINT			p_null = {-1, -1};
+	POINT			point_null = {-1, -1};
 	RECT			r_null = {-1, -1, -1, -1};
 
 	write_log(3, "Starting DoSlider...\n");
@@ -686,7 +777,7 @@ void CAutoplayer::DoSlider(void)
 		r.bottom = r.top;		
 		
 		write_log(1, "Calling mouse.dll to jam from %d,%d to %d,%d\n", r.left, r.top, r.right, r.bottom);
-		(theApp._dll_mouse_click_drag) (p_autoconnector->attached_hwnd(), r, NULL, p_null);
+		(theApp._dll_mouse_click_drag) (p_autoconnector->attached_hwnd(), r, NULL, point_null);
 
 		write_log(3, "Sleeping %d ms\n.", prefs.swag_delay_3());
 		Sleep(prefs.swag_delay_3());

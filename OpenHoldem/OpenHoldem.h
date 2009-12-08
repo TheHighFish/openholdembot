@@ -13,7 +13,7 @@
 #include "..\..\Reference Mouse DLL\mousedll.h"
 #include "..\..\Reference Keyboard DLL\keyboarddll.h"
 #include "..\..\Reference Scraper DLL\scraperdll.h"
-#include "..\..\Reference Scraper-Pre DLL\scraper_preprocessor_dll.h"
+#include "..\..\Reference Scraper-Preprocessor DLL\scraper_preprocessor_dll.h"
 
 // COpenHoldemApp:
 // See OpenHoldem.cpp for the implementation of this class
