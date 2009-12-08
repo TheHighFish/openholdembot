@@ -13,7 +13,7 @@
 
 #include "CAutoconnector.h"
 
-#include "..\..\Reference Scraper-Pre DLL\scraper_preprocessor_dll.h"
+#include "..\..\Reference Scraper-Preprocessor DLL\scraper_preprocessor_dll.h"
 
 
 #define __HDC_HEADER 		HBITMAP		old_bitmap = NULL; \

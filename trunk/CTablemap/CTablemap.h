@@ -146,7 +146,7 @@ public:
 	const CString network()			{ SMapCI it = _s$.find("network"); if (it!=_s$.end()) return it->second.text; else return ""; }
 	const CString forcechair()		{ SMapCI it = _s$.find("forcechair"); if (it!=_s$.end()) return it->second.text; else return ""; }
 
-	bool swagallin()				{ SMapCI it = _s$.find("swagallin"); return (it != _s$.end()); }
+	const int allinmethod()			{ SMapCI it = _s$.find("allinmethod"); if (it!=_s$.end()) return strtoul(it->second.text.GetString(), NULL, 10); else return 0; } // !!!Todo: Default?
 
 	const int swagselectionmethod() { SMapCI it = _s$.find("swagselectionmethod");
 									  if (it==_s$.end()) return TEXTSEL_DOUBLECLICK;
