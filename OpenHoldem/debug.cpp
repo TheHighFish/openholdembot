@@ -260,15 +260,17 @@ void start_log(void)
 		{
 			LARGE_INTEGER file_size;
 			unsigned long int max_file_size = 1E06 * prefs.log_max_logsize();
-			GetFileSizeEx(log_fp, &file_size);
-			if ((file_size.HighPart > 0) || (file_size.LowPart > max_file_size ))
+			if (GetFileSizeEx(log_fp, &file_size))
 			{
-				fclose(log_fp);
-				remove(fn.GetString());
-			}
-			else
-			{
-				fclose(log_fp);
+				if ((file_size.HighPart > 0) || (file_size.LowPart > max_file_size ))
+				{
+					fclose(log_fp);
+					remove(fn.GetString());
+				}
+				else
+				{
+					fclose(log_fp);
+				}
 			}
 		}
 
