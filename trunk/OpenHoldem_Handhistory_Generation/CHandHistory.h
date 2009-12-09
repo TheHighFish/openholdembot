@@ -56,7 +56,6 @@ private:
 	//Checks if passed chair is big blind 
 	//(big blind pos, current bet=1, current betround=1)
 	bool isBigBlind(int i);
-	void checkAll();
 	string findLimit();
 
 	ofstream outfile;
@@ -66,7 +65,7 @@ private:
 	CardMask hand[10];		//Holds CardMask of hand for all players
 	int allChecks[4];
 	bool betroundSet[7];	//Checks if statements have already been run
-	bool cardsSeen[10];
+	bool cardsSeen[10];		//Increments as player's cards are seen at showdown
 	bool seatsPlaying[10];
 	char playername[16];
 	string handText[10];
@@ -76,6 +75,7 @@ private:
 	double sblind;
 	double bblind;
 	double pot;
+	double prevpot;
 	double bet[4];
 	double rake;
 	char card_common[5][5];
@@ -94,7 +94,7 @@ private:
 	int betround;
 	int postflopstart;	//Starting seat after flop
 	int cbits;		//players playing bits
-	int dbits;
+	int dbits;		//players dealt bits
 	int gameNumber;
 	int sblindpos;
 	int bblindpos;
