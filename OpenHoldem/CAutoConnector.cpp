@@ -126,7 +126,6 @@ void CAutoConnector::ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData(
 			{
 				CTableMapToSWholeMap(p_tablemap, &smap);
 				ExtractConnectionDataFromCurrentTablemap(&smap);
-				NumberOfTableMapsLoaded++;
 				write_log(3, "Number of TMs loaded: %d\n", NumberOfTableMapsLoaded);
 			}
 		}
@@ -268,6 +267,7 @@ void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 			TablemapConnectionData[NumberOfTableMapsLoaded].TablePointPresent = false;
 		}
 	}
+	NumberOfTableMapsLoaded++;
 }
 
 
