@@ -56,6 +56,7 @@ private:
 	//Checks if passed chair is big blind 
 	//(big blind pos, current bet=1, current betround=1)
 	bool isBigBlind(int i);
+	//Output table limit type
 	string findLimit();
 
 	ofstream outfile;
@@ -63,7 +64,7 @@ private:
 	string splayername[10];
 	HandVal handval[10];	//Holds hand value for all players
 	CardMask hand[10];		//Holds CardMask of hand for all players
-	int allChecks[4];
+	bool allChecks[4];
 	bool betroundSet[7];	//Checks if statements have already been run
 	bool cardsSeen[10];		//Increments as player's cards are seen at showdown
 	bool seatsPlaying[10];
