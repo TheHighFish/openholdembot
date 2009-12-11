@@ -73,6 +73,9 @@ protected: // create from serialization only
 	afx_msg void OnPerlEditMainFormula();
 	afx_msg void OnPerlCheckSyntax();
 	afx_msg void OnPerlReloadFormula();
+	afx_msg void OnHelp();
+	afx_msg void OnHelpWiki();
+	afx_msg void OnHelpForums();
 
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);

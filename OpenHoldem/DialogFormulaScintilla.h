@@ -156,6 +156,7 @@ protected:
 	afx_msg void OnFormulaDebugMyturn();
 	afx_msg void OnFormulaViewSortudf();
 	afx_msg void OnFormulaViewGroupudf();
+	afx_msg void OnHelp();
 	afx_msg void OnHelpWiki();
 	afx_msg void OnHelpForums();
 	void SortUdfTree();

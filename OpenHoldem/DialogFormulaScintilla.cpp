@@ -4,6 +4,7 @@
 // menu options, menu edit commands
 
 #include "stdafx.h"
+#include <io.h>
 #include "CAutoplayer.h"
 #include "CFormula.h"
 #include "CGrammar.h"
@@ -18,6 +19,7 @@
 #include "DialogRename.h"
 #include "DialogSettings.h"
 #include "MainFrm.h"
+#include "MagicNumbers.h"
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
 #include "../scintilla/include/SciLexer.h"
@@ -276,6 +278,7 @@ BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
 	ON_COMMAND(ID_FORMULA_VIEW_SYNTAXCOLORING, &CDlgFormulaScintilla::ToggleSyntaxColoring)
 	ON_COMMAND(ID_FORMULA_DEBUG_LOGFDEBUG, &CDlgFormulaScintilla::OnFormulaDebugLogfdebug)
 
+	ON_COMMAND(ID_HELP, &CDlgFormulaScintilla::OnHelp)
 	ON_COMMAND(ID_HELP_DOCUMENTATIONWIKI, &CDlgFormulaScintilla::OnHelpWiki)
 	ON_COMMAND(ID_HELP_FORUMS, &CDlgFormulaScintilla::OnHelpForums)
 
@@ -295,6 +298,7 @@ BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_MORE_PRECISION, &CDlgFormulaScintilla::OnBnClickedMorePrecision)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_EQUAL_LEFT, &CDlgFormulaScintilla::OnBnClickedEqualLeft)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_EQUAL_RIGHT, &CDlgFormulaScintilla::OnBnClickedEqualRight)
+	//ON_COMMAND(ID_FORMULA_TOOLBAR_HELP, &CMainFrame::OnHelp()) !!!
 
 	// Buttons
 	ON_BN_CLICKED(IDOK, &CDlgFormulaScintilla::OnBnClickedOk)
@@ -2864,6 +2868,22 @@ void CDlgFormulaScintilla::OnFormulaDebugLogfdebug()
 	HandleEnables(true);
 }
 
+void CDlgFormulaScintilla::OnHelp()
+{
+	if (_access("OpenHoldem_Manual.chm", F_OK) != 0)
+	{
+		MessageBox("\"OpenHoldem_Manual.chm\" not found.\nPlease put it into your OpenHoldem folder.", "Error", 0);
+	}
+	else 
+	{
+		int RetValue = int(ShellExecute(NULL, "open", "OpenHoldem_Manual.chm", NULL, NULL, SW_SHOW));
+		if (RetValue <= 32)
+		{
+			MessageBox("Error opening help-file", "Error", 0);
+		}
+	}
+}
+
 void CDlgFormulaScintilla::OnHelpWiki()
 {
 	ShellExecute(NULL, "open", "http://www.maxinmontreal.com/wiki/index.php5?title=Main_Page", "", "", SW_SHOWDEFAULT);
@@ -2871,7 +2891,7 @@ void CDlgFormulaScintilla::OnHelpWiki()
 
 void CDlgFormulaScintilla::OnHelpForums()
 {
-	ShellExecute(NULL, "open", "http://www.maxinmontreal.com/forums", "", "", SW_SHOWDEFAULT);
+	ShellExecute(NULL, "open", "http://www.maxinmontreal.com/forums/index.php", "", "", SW_SHOWDEFAULT);
 }
 
 void CDlgFormulaScintilla::OnFormulaDebugMyturn() 
