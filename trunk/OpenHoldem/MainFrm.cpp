@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include <io.h>
 #include <process.h>
 
 #include "MainFrm.h"
@@ -43,6 +44,7 @@
 #include "DialogSAPrefs16.h"
 #include "DialogScraperOutput.h"
 #include "inlines/eval.h"
+#include "MagicNumbers.h"
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
 #include "SAPrefsDialog.h"
@@ -99,6 +101,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND(ID_PERL_RELOADFORMULA, &CMainFrame::OnPerlReloadFormula)
 	ON_COMMAND(ID_PERL_CHECKSYNTAX, &CMainFrame::OnPerlCheckSyntax)
 	ON_COMMAND(ID_PERL_EDITMAINFORMULA, &CMainFrame::OnPerlEditMainFormula)
+	ON_COMMAND(ID_HELP_HELP, &CMainFrame::OnHelp)
+	ON_COMMAND(ID_HELP_DOCUMENTATIONWIKI, &CMainFrame::OnHelpWiki)
+	ON_COMMAND(ID_HELP_FORUMS, &CMainFrame::OnHelpForums)
 
 	// Main toolbar
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_GREENCIRCLE, &CMainFrame::OnBnClickedGreenCircle)
@@ -112,6 +117,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_LOCK_BLINDS, &CMainFrame::OnLockBlinds)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, &CMainFrame::OnScraperOutput)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_SHOOTFRAME, &CMainFrame::OnViewShootreplayframe)
+	ON_BN_CLICKED(ID_MAIN_TOOLBAR_HELP, &CMainFrame::OnHelp)
 
 	// Flags toolbar
 	ON_BN_CLICKED(ID_NUMBER0, &CMainFrame::OnClickedFlags)
@@ -297,6 +303,9 @@ int CMainFrame::CreateMainToolbar(void)
 
 	// Start shoot replay frame button disabled
 	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, false);
+
+	// Make help button sticky
+	/*m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_HELP, &tbi);!!!*/
 
 	// Title of floating main toolbar
 	m_MainToolBar.SetWindowText("Main");
@@ -1241,7 +1250,6 @@ void CMainFrame::OnLockBlinds(void)
 
 			p_scraper->SetLockedBlinds(LB);
 		}
-
 	}
 }
 
@@ -1502,4 +1510,31 @@ void CMainFrame::ResetDisplay()
 void CMainFrame::KillTimer()
 {
 	CFrameWnd::KillTimer(HWND_CHECK_TIMER);
+}
+
+void CMainFrame::OnHelp()
+{
+	if (_access("OpenHoldem_Manual.chm", F_OK) != 0)
+	{
+		MessageBox("\"OpenHoldem_Manual.chm\" not found.\nPlease put it into your OpenHoldem folder.", "Error", 0);
+	}
+	else 
+	{
+		int RetValue = int(ShellExecute(NULL, "open", "OpenHoldem_Manual.chm", NULL, NULL, SW_SHOW));
+		if (RetValue <= 32)
+		{
+			MessageBox("Error opening help-file", "Error", 0);
+		}
+	}
+}
+
+
+void CMainFrame::OnHelpWiki()
+{
+	ShellExecute(NULL, "open", "http://www.maxinmontreal.com/wiki/index.php5?title=Main_Page", "", "", SW_SHOWDEFAULT);
+}
+
+void CMainFrame::OnHelpForums()
+{
+	ShellExecute(NULL, "open", "http://www.maxinmontreal.com/forums/index.php", "", "", SW_SHOWDEFAULT);
 }
