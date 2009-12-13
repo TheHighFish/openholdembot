@@ -58,14 +58,16 @@ private:
 	bool isBigBlind(int i);
 	//Output table limit type
 	string findLimit();
+	bool cardsDealt();
+	string getFileName();
 
-	ofstream outfile;
+	fstream outfile;
 	CPokerAction action;
 	string splayername[10];
 	HandVal handval[10];	//Holds hand value for all players
 	CardMask hand[10];		//Holds CardMask of hand for all players
 	bool allChecks[4];
-	bool betroundSet[7];	//Checks if statements have already been run
+	bool betroundSet[8];	//Checks if statements have already been run
 	bool cardsSeen[10];		//Increments as player's cards are seen at showdown
 	bool seatsPlaying[10];
 	char playername[16];
