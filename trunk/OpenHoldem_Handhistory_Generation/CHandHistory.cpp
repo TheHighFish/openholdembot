@@ -14,17 +14,17 @@ void CHandHistory::makeHistory()
 {
 	updateSymbols();
 
-	outfile.open("HandHistoryTest.txt", fstream::app);
+	char filename[100];
+	strcpy(filename, getFileName().c_str());
+	outfile.open(filename, fstream::app);
 
 	if(prevdealerchair!=dealerchair&&betround==1) 
 	{
 		roundStart(); 
 	}
-	//outfile<<"whosturn: "<<whosturn<<endl;
-	//outfile<<"lpta: "<<lpta<<endl;
 	checkBetround();
 
-	if(betroundSet[5]==false)scanPlayerChanges();
+	if(betroundSet[5]==false&&betroundSet[7]==true)scanPlayerChanges();
 
 	if(isShowdown())processShowdown();
 
@@ -69,11 +69,11 @@ void CHandHistory::roundStart()
 	nchairs = (int)p_symbols->sym()->nchairs;
 	pCardsSeen = 0;
 	gameNumber++;
-	maxBet=1;
+	maxBet=bblind;
 	passChecks=1;
 	lpta = -5;
 	int utg;
-	for(int i=0;i<7;i++)betroundSet[i]=false;
+	for(int i=0;i<8;i++)betroundSet[i]=false;
 	for(int i=0;i<4;i++)allChecks[i]=true;
 	for(int i=0;i<nchairs;i++)
 		ac_dealpos[i] = DealPosition(i);
@@ -164,6 +164,11 @@ void CHandHistory::checkBetround()
 		outfile<<"*** SUMMARY ***"<<endl;
 		outfile<<"Total pot $"<<pot<<" Rake $"<<(rake*pot)<<endl;
 		betroundSet[4]=true;
+	}
+	//Precondition: Cards have been dealt out
+	if(betroundSet[7]==false&&cardsDealt())
+	{
+		betroundSet[7]=true;
 	}
 }
 void CHandHistory::scanPlayerChanges()
@@ -413,6 +418,14 @@ bool CHandHistory::isBigBlind(int i)
 	//Determines if chair passed is the big blind
 	return(currentbetx[i]==bet[betround-1]&&ac_dealpos[i]==2&&betround==1);
 }
+bool CHandHistory::cardsDealt()
+{
+	//If any cardbacks are showing, cards have been dealt
+	for(int i=0;i<nchairs;i++)
+		if(p_scraper->card_player(i, 0)==CARD_BACK) return true;
+
+	return false;
+}
 string CHandHistory::findLimit()
 {
 	int lim = (int)p_symbols->sym()->lim;
@@ -421,4 +434,28 @@ string CHandHistory::findLimit()
 	else if(lim==1)str="PL";
 	else if(lim==2)str="FL";
 	return str;
+}
+string CHandHistory::getFileName()
+{
+	//To be revised later; edit title so only relevant information is included
+	stringstream ss;
+	ss<<p_scraper->title()<<".txt";
+	string s;
+	string inbuf;
+	s=ss.str()+" ";
+	inbuf.insert(0, s);
+	string search_string = "/";
+	string replace_string = "-";
+	int location = 0;
+	do{
+		location = inbuf.find(search_string);
+		if(location>=0)
+		{
+			string tmpstring = inbuf.substr(0,location);
+			tmpstring += replace_string;
+			tmpstring += inbuf.substr(location+search_string.length(), inbuf.length());
+			inbuf = tmpstring;
+		}
+	} while (location>=0);
+	return inbuf;
 }
