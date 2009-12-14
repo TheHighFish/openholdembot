@@ -11,6 +11,7 @@
 #include "CSymbols.h"
 #include "CScraper.h"
 #include "CGameState.h"
+#include "CSessionCounter.h"
 
 #include "poker_defs.h"
 #include "enumerate.h"
@@ -59,7 +60,6 @@ private:
 	//Output table limit type
 	string findLimit();
 	bool cardsDealt();
-	string getFileName();
 
 	fstream outfile;
 	CPokerAction action;

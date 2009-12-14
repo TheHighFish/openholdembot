@@ -14,16 +14,25 @@ void CHandHistory::makeHistory()
 {
 	updateSymbols();
 
-	char filename[100];
-	strcpy(filename, getFileName().c_str());
+	//Append to (or create if it does not exist) a handhistory file
+	//using the session id as the name
+	stringstream ss;
+	ss<<"handhistory_"<<p_sessioncounter->session_id()<<".txt";
+	string s=ss.str()+" ";
+	char filename[20];
+	strcpy(filename, s.c_str());
 	outfile.open(filename, fstream::app);
 
+	//Precondition: New round
 	if(prevdealerchair!=dealerchair&&betround==1) 
 	{
 		roundStart(); 
 	}
+
 	checkBetround();
 
+	//Precondition: Cards have been dealt and the round summary has not
+	//been printed
 	if(betroundSet[5]==false&&betroundSet[7]==true)scanPlayerChanges();
 
 	if(isShowdown())processShowdown();
@@ -434,28 +443,4 @@ string CHandHistory::findLimit()
 	else if(lim==1)str="PL";
 	else if(lim==2)str="FL";
 	return str;
-}
-string CHandHistory::getFileName()
-{
-	//To be revised later; edit title so only relevant information is included
-	stringstream ss;
-	ss<<p_scraper->title()<<".txt";
-	string s;
-	string inbuf;
-	s=ss.str()+" ";
-	inbuf.insert(0, s);
-	string search_string = "/";
-	string replace_string = "-";
-	int location = 0;
-	do{
-		location = inbuf.find(search_string);
-		if(location>=0)
-		{
-			string tmpstring = inbuf.substr(0,location);
-			tmpstring += replace_string;
-			tmpstring += inbuf.substr(location+search_string.length(), inbuf.length());
-			inbuf = tmpstring;
-		}
-	} while (location>=0);
-	return inbuf;
 }
