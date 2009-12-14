@@ -9,6 +9,8 @@ CHandHistory::CHandHistory()
 {
 	gameNumber = 83910;	//Temporary starting game number
 	nchairs = 10;	//Initialized to max value, updated later
+	newRoundFlag=false;
+	for(int i=0;i<8;i++)betroundSet[i]=false;
 }
 void CHandHistory::makeHistory()
 {
@@ -25,15 +27,18 @@ void CHandHistory::makeHistory()
 
 	//Precondition: New round
 	if(prevdealerchair!=dealerchair&&betround==1) 
-	{
-		roundStart(); 
-	}
+		newRoundFlag=true;
+	//Precondition: New round flag has been set and cards dealt
+	if(newRoundFlag==true&&betroundSet[7]==true)
+		roundStart();
 
 	checkBetround();
 
 	//Precondition: Cards have been dealt and the round summary has not
 	//been printed
-	if(betroundSet[5]==false&&betroundSet[7]==true)scanPlayerChanges();
+	if(betroundSet[5]==false&&
+		betroundSet[6]==false&&
+		betroundSet[8]==true)scanPlayerChanges();
 
 	if(isShowdown())processShowdown();
 
@@ -75,6 +80,7 @@ void CHandHistory::updateSymbols()
 }
 void CHandHistory::roundStart()
 {
+	newRoundFlag=false;
 	nchairs = (int)p_symbols->sym()->nchairs;
 	pCardsSeen = 0;
 	gameNumber++;
@@ -107,7 +113,7 @@ void CHandHistory::roundStart()
 	{
 		int m = (i+userchair-1)%nchairs;
 		//Precondition: Player chair has been dealt
-		if(playersdealtbits[m]==1)
+		if(isPlaying(m))
 		{
 			outfile<<"Seat "<<i<<": "<<splayername[m]<<" ( $"<<playerbalance[m]<<" in chips)";
 			if (m==dealerchair) outfile<<" DEALER"<<endl;
@@ -116,14 +122,16 @@ void CHandHistory::roundStart()
 	}
 	outfile<<splayername[sblindpos]<<": Post SB $"<<sblind<<endl;
 	outfile<<splayername[bblindpos]<<": Post BB $"<<bblind<<endl;
+	outfile<<"*** HOLE CARDS ***"<<endl;
+	betroundSet[8]=true;
 }
 void CHandHistory::checkBetround()
 {
 	//Precondition: Has not been run, user cards visible
-	if(betroundSet[0]==false&&card_player[userchair][0]!=NULL&&card_player[userchair][1]!=NULL)
+	if(betroundSet[0]==false&&betroundSet[9]==true&&
+		card_player[userchair][0]!=NULL&&card_player[userchair][1]!=NULL)
 	{
-		outfile<<"*** HOLE CARDS ***"<<endl;
-		outfile<<"Dealt to "<<splayername[4]<<" [ "<<card_player[userchair][1]<<card_player[userchair][0]
+		outfile<<"Dealt to "<<splayername[userchair]<<" [ "<<card_player[userchair][1]<<card_player[userchair][0]
 		<<" "<<card_player[userchair][3]<<card_player[userchair][2]<<" ]"<<endl;
 		passChecks=0;
 		betroundSet[0]=true;
@@ -239,15 +247,14 @@ void CHandHistory::scanPlayerChanges()
 			else
 			{
 				//If they have not been reported as folding, output a fold
-				if(seatsPlaying[i]==true&&playersdealtbits[i]==1)
+				if(seatsPlaying[i]==true&&isPlaying(i))
 					outfile<<splayername[i]<<": Fold"<<endl;
 				seatsPlaying[i]=false;
 				whosturn=(whosturn+1)%nchairs;	//Increment whosturn
 				int nplayersin=0;
 				for(int i=0;i<nchairs;i++)
-				{
 					if(seatsPlaying[i]==true) nplayersin++;
-				}
+
 				//If there is only one player left, run outputUncontested function
 				if(nplayersin==1)
 					for(int j=0;j<nchairs;j++)
@@ -431,7 +438,7 @@ bool CHandHistory::cardsDealt()
 {
 	//If any cardbacks are showing, cards have been dealt
 	for(int i=0;i<nchairs;i++)
-		if(p_scraper->card_player(i, 0)==CARD_BACK) return true;
+		if(p_scraper->card_player(i, 0)==CARD_BACK&&p_scraper->card_player(i, 1)==CARD_BACK) return true;
 
 	return false;
 }
@@ -443,4 +450,9 @@ string CHandHistory::findLimit()
 	else if(lim==1)str="PL";
 	else if(lim==2)str="FL";
 	return str;
+}
+bool CHandHistory::isPlaying(int i)
+{
+	if(playersdealtbits[i]==1&&playerbalance[i]!=0)return true;
+	else return false;
 }

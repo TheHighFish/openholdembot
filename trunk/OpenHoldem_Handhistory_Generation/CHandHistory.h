@@ -60,6 +60,7 @@ private:
 	//Output table limit type
 	string findLimit();
 	bool cardsDealt();
+	bool isPlaying(int i);
 
 	fstream outfile;
 	CPokerAction action;
@@ -67,9 +68,24 @@ private:
 	HandVal handval[10];	//Holds hand value for all players
 	CardMask hand[10];		//Holds CardMask of hand for all players
 	bool allChecks[4];
-	bool betroundSet[8];	//Checks if statements have already been run
+	bool betroundSet[9];	//Checks if statements have already been run
+	/*
+	TO BE UPDATED
+	Because every poker game has specific events that must happen only once,
+	and in order, I created an array of boolean variables to keep track
+	betroundSet[0] - user hole cards
+	betroundSet[1] - flop
+	betroundSet[2] - turn
+	betroundSet[3] - river
+	betroundSet[4] - showdown
+	betroundSet[5] - showdown cards displayed
+	betroundSet[6] - uncontested pot
+	betroundSet[7] - cards dealt
+	betroundSet[8] - betround start
+	*/
 	bool cardsSeen[10];		//Increments as player's cards are seen at showdown
 	bool seatsPlaying[10];
+	bool newRoundFlag;
 	char playername[16];
 	string handText[10];
 	double currentbetx[10];
