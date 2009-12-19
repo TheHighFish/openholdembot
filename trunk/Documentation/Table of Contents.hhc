@@ -81,6 +81,12 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="How OpenHoldem works">
 			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="How OpenHoldem works">
+				<param name="Local" value="Chapters\04\How_OH_Works.html.LyXconv\How_OH_Works.html">
+				</OBJECT>
+		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Favourite Failures">
 			</OBJECT>

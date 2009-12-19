@@ -529,7 +529,7 @@ f$alli
 \end_inset
 
 f$alli function evaluates to non-zero, and an all-in control is present
- (slider/SWAG box) then move all-in 
+ (slider/Swag box) then move all-in 
 \end_layout
 
 \begin_layout Enumerate
@@ -543,11 +543,7 @@ f$swag
 
 \end_inset
 
-f$swag
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
+ (
 \begin_inset Quotes eld
 \end_inset
 
@@ -555,7 +551,7 @@ Swag
 \begin_inset Quotes erd
 \end_inset
 
- is an ??? by Ray E.
+ is a neologism by Ray E.
  Bornert II and means 
 \begin_inset Quotes eld
 \end_inset
@@ -564,13 +560,8 @@ stated wager
 \begin_inset Quotes erd
 \end_inset
 
-.
-\end_layout
-
-\end_inset
-
- function evaluates to non-zero, and the SWAG box is present, then enter
- the f$swag result into the SWAG box and confirm the bet 
+) f$swag function evaluates to non-zero, and the Swag box is present, then
+ enter the f$swag result into the Swag box and confirm the bet.
 \end_layout
 
 \begin_layout Enumerate
@@ -926,20 +917,23 @@ C++.
  to a Perl- or C++-function.
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
+
 ##f$note##
 \end_layout
 
 \begin_layout Plain Layout
+
 // Very small OH-formula, that redirects 
 \end_layout
 
 \begin_layout Plain Layout
+
 // primary functions to Perl- or C++-functions.
 \end_layout
 
@@ -948,10 +942,12 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
+
 ##f$alli##
 \end_layout
 
 \begin_layout Plain Layout
+
 dll$alli
 \end_layout
 
@@ -960,10 +956,12 @@ dll$alli
 \end_layout
 
 \begin_layout Plain Layout
+
 ##f$swag##
 \end_layout
 
 \begin_layout Plain Layout
+
 dll$swag
 \end_layout
 
@@ -972,10 +970,12 @@ dll$swag
 \end_layout
 
 \begin_layout Plain Layout
+
 ##f$rais##
 \end_layout
 
 \begin_layout Plain Layout
+
 pl_rais
 \end_layout
 
@@ -984,10 +984,12 @@ pl_rais
 \end_layout
 
 \begin_layout Plain Layout
+
 ##f$call##
 \end_layout
 
 \begin_layout Plain Layout
+
 pl_call
 \end_layout
 
@@ -1020,12 +1022,8 @@ Playbot
 \end_inset
 
 Playbot by Matrix.
- It is a very early case-study about prwin-based
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-Short for 
+ It is a very early case-study about prwin-based bots; prwin is an abbreviation
+ for 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1033,27 +1031,13 @@ probability of win
 \begin_inset Quotes erd
 \end_inset
 
-
-\end_layout
-
-\end_inset
-
- bots.
+.
  Prwin-based bots try to code the decision with very few and small mathematical
  formulae, contrary to scenario-based bots, that code hundreds or thousands
  of different situations.
- Playbot is able to value-bet, protect and semi-bluff!!!??? But ofcourse
- it is no guaranteed money-maker at any level online
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-Though it is much better than the old WinHoldem-default-bot.
-\end_layout
-
-\end_inset
-
-.
+ Playbot is able to value-bet, protect and semi-bluff!!!??? Thus it is much
+ better than the old WinHoldem-default-bot.
+ But ofcourse it is no guaranteed money-maker at any level online.
 \end_layout
 
 \begin_layout Subsection
