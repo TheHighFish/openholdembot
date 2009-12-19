@@ -61,6 +61,7 @@ private:
 	string findLimit();
 	bool cardsDealt();
 	bool isPlaying(int i);
+	bool hasMucked(int i);
 
 	fstream outfile;
 	CPokerAction action;
@@ -114,7 +115,7 @@ private:
 	int postflopstart;	//Starting seat after flop
 	int cbits;		//players playing bits
 	int dbits;		//players dealt bits
-	int gameNumber;
+	long int gameNumber;
 	int sblindpos;
 	int bblindpos;
 	int userchair;
