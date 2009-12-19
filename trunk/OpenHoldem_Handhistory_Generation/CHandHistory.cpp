@@ -7,10 +7,15 @@ CHandHistory *p_handhistory = NULL;
 
 CHandHistory::CHandHistory()
 {
-	gameNumber = 83910;	//Temporary starting game number
+	time_t seconds;
+	time(&seconds);
+	srand((unsigned int) seconds);
+	double randomnum = rand();
+	//Attempt to create a random starting game number
+	gameNumber = ((int)pow(randomnum,2))%10000000;	
 	nchairs = 10;	//Initialized to max value, updated later
 	newRoundFlag=false;
-	for(int i=0;i<8;i++)betroundSet[i]=false;
+	for(int i=0;i<9;i++)betroundSet[i]=false;
 }
 void CHandHistory::makeHistory()
 {
@@ -26,12 +31,14 @@ void CHandHistory::makeHistory()
 	outfile.open(filename, fstream::app);
 
 	//Precondition: New round
-	if(prevdealerchair!=dealerchair&&betround==1) 
+	if(prevdealerchair!=dealerchair&&betround==1) {
 		newRoundFlag=true;
+		for(int i=0;i<9;i++)betroundSet[i]=false;
+	}
 	//Precondition: New round flag has been set and cards dealt
 	if(newRoundFlag==true&&betroundSet[7]==true)
 		roundStart();
-
+	//outfile<<"betround0 "<<betroundSet[0]<<" betround8 "<<betroundSet[8]<<endl;
 	checkBetround();
 
 	//Precondition: Cards have been dealt and the round summary has not
@@ -48,7 +55,8 @@ void CHandHistory::makeHistory()
 }
 void CHandHistory::updateSymbols()
 {
-	pot = p_symbols->sym()->pot;
+	if (p_symbols->sym()->pot!=0||betround<=1)
+		pot = p_symbols->sym()->pot;
 	rake = p_symbols->sym()->rake;
 	userchair = (int)p_symbols->sym()->userchair;
 	cbits = (int)p_symbols->sym()->playersplayingbits;
@@ -71,12 +79,13 @@ void CHandHistory::updateSymbols()
 		GetPCstring(card_player[i], p_scraper->card_player(i,0), p_scraper->card_player(i,1));
 		playersplayingbits[i]=(cbits>>i)&1;
 		playersdealtbits[i]=(dbits>>i)&1;
-		currentbetx[i]= p_symbols->sym()->currentbet[i];
+		//If the player is playing, update the symbol. This condition used for muck detection.
+		if(playersplayingbits[i]!=0)
+			currentbetx[i]= p_symbols->sym()->currentbet[i];
 		playerbalance[i]= p_symbols->sym()->balance[i];
 		strncpy_s(playername, 16, p_scraper->player_name(i).GetString(), _TRUNCATE);
 		splayername[i] = playername;
 	}
-
 }
 void CHandHistory::roundStart()
 {
@@ -88,7 +97,6 @@ void CHandHistory::roundStart()
 	passChecks=1;
 	lpta = -5;
 	int utg;
-	for(int i=0;i<8;i++)betroundSet[i]=false;
 	for(int i=0;i<4;i++)allChecks[i]=true;
 	for(int i=0;i<nchairs;i++)
 		ac_dealpos[i] = DealPosition(i);
@@ -128,7 +136,7 @@ void CHandHistory::roundStart()
 void CHandHistory::checkBetround()
 {
 	//Precondition: Has not been run, user cards visible
-	if(betroundSet[0]==false&&betroundSet[9]==true&&
+	if(betroundSet[0]==false&&betroundSet[8]==true&&
 		card_player[userchair][0]!=NULL&&card_player[userchair][1]!=NULL)
 	{
 		outfile<<"Dealt to "<<splayername[userchair]<<" [ "<<card_player[userchair][1]<<card_player[userchair][0]
@@ -243,8 +251,8 @@ void CHandHistory::scanPlayerChanges()
 					whosturn=(whosturn+1)%nchairs;	//Increment whosturn
 				}
 			}
-			//Precondition: Player is not playing
-			else
+			//Precondition: Player is not playing or folded
+			else if(!hasMucked(i))
 			{
 				//If they have not been reported as folding, output a fold
 				if(seatsPlaying[i]==true&&isPlaying(i))
@@ -402,7 +410,7 @@ void CHandHistory::showdownResults()
 				handhigh=handval[i];
 				highest = i;
 			}
-			outfile<<splayername[highest]<<": wins $"<<prevpot<<" from the main pot with ";
+			outfile<<splayername[highest]<<": wins $"<<pot<<" from the main pot with ";
 		int currentType = Hand_EVAL_TYPE(hand[highest],7);	//Find hand type
 		switch(currentType)
 		{
@@ -436,11 +444,17 @@ bool CHandHistory::isBigBlind(int i)
 }
 bool CHandHistory::cardsDealt()
 {
+	int playersdealt=0;
+
 	//If any cardbacks are showing, cards have been dealt
 	for(int i=0;i<nchairs;i++)
-		if(p_scraper->card_player(i, 0)==CARD_BACK&&p_scraper->card_player(i, 1)==CARD_BACK) return true;
-
-	return false;
+		if(p_scraper->card_player(i, 0)==CARD_BACK&&p_scraper->card_player(i, 1)==CARD_BACK)
+			playersdealt++;
+		
+	if(playersdealt>=2)
+		return true;
+	else 
+		return false;
 }
 string CHandHistory::findLimit()
 {
@@ -455,4 +469,12 @@ bool CHandHistory::isPlaying(int i)
 {
 	if(playersdealtbits[i]==1&&playerbalance[i]!=0)return true;
 	else return false;
+}
+bool CHandHistory::hasMucked(int i)
+{
+	//Precondition: Betround is 4, player has called and has not folded
+	if(betround==4&&currentbetx[i]==maxBet&&seatsPlaying[i]==true)
+		return true;
+
+	return false;
 }
