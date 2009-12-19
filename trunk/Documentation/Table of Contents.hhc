@@ -312,6 +312,10 @@
 				<param name="Local" value="Chapters\29_Handrank\Handrank.html.LyXconv\Handrank.html">
 				<param name="URL" value="Chapters\29\Handrank.html.LyXconv\Handrank.html">
 				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Memory Symbols">
+				<param name="Local" value="Chapters\15\Memory_Symbols.html.LyXconv\Memory_Symbols.html">
+				</OBJECT>
 		</UL>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
