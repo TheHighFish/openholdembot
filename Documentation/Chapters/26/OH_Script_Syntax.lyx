@@ -86,27 +86,18 @@ C tutorial
 
 \end_inset
 
-C-tutorial"
-\begin_inset Foot
+C-tutorial" (
+\begin_inset Flex URL
 status open
 
 \begin_layout Plain Layout
-\begin_inset Flex URL
-status collapsed
 
-\begin_layout Plain Layout
-
-http://www.winholdem.net/help/help-c.html 
+http://www.winholdem.net/help/help-c.html
 \end_layout
 
 \end_inset
 
-
-\end_layout
-
-\end_inset
-
-.
+).
 \end_layout
 
 \begin_layout Section
@@ -201,31 +192,7 @@ bit-vectors.
 If a value is interpreted as numerical or boolean depends solely on the
  context.
  A common beginners mistake is to mix up boolean and numerical values, boolean
- and numerical operators
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-\begin_inset Marginal
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../Images/Bomb.jpg
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\end_inset
-
-
+ and numerical operators.
 \end_layout
 
 \begin_layout Section
@@ -265,11 +232,7 @@ binary
 
 \end_inset
 
-binary representation
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
+binary representation (
 \begin_inset Flex URL
 status open
 
@@ -280,39 +243,7 @@ http://en.wikipedia.org/wiki/Binary_numeral_system
 
 \end_inset
 
-
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-\begin_inset Marginal
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../Images/Bomb.jpg
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
+).
 \end_layout
 
 \begin_layout Standard
@@ -323,17 +254,7 @@ Rounding errors are especially annoying when you compare two numbers, that
 
 \begin_layout Standard
 To overcome this problem OpenHoldem uses approximative comparision for relationa
-l and equality operators
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-< <= > >= == !=
-\end_layout
-
-\end_inset
-
-.
+l and equality operators (< <= > >= == !=).
  It will treat two numbers as 
 \begin_inset Quotes eld
 \end_inset
@@ -394,13 +315,9 @@ A boolean expression is composed of logical operators (not, and, or, xor)
  are considered to be true (1).
  If the numeric value in question is not zero then it is considered to be
  true for boolean purposes.
- Reams of material have been written on boolean logic
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
+ Reams of material have been written on boolean logic (
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -409,12 +326,7 @@ http://en.wikipedia.org/wiki/Boolean_logic
 
 \end_inset
 
-
-\end_layout
-
-\end_inset
-
-.
+).
  
 \end_layout
 
