@@ -313,6 +313,10 @@
 			</OBJECT>
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Syntax">
+				<param name="Local" value="Chapters\26\OH_Script_Syntax.html.LyXconv\OH_Script_Syntax.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Hand Lists">
 				<param name="Local" value="Chapters\11\Handlists.html.LyXconv\Handlists.html">
 				</OBJECT>
