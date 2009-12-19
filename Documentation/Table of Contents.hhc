@@ -246,21 +246,12 @@
 				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Poker Pro Server">
+			<param name="Name" value="ManualMode">
 			</OBJECT>
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Poker Pro Server">
-				<param name="Local" value="Chapters\09\PokerPro.html.LyXconv\PokerPro.html">
-				</OBJECT>
-		</UL>
-		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Validator">
-			</OBJECT>
-		<UL>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Validator">
-				<param name="Local" value="Chapters\10\Validator.html.LyXconv\Validator.html">
+				<param name="Name" value="ManualMode">
+				<param name="Local" value="Chapters\20\ManualMode.html.LyXconv\ManualMode.html">
 				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
@@ -273,12 +264,30 @@
 				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="ManualMode">
+			<param name="Name" value="Poker Pro Server">
 			</OBJECT>
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="ManualMode">
-				<param name="Local" value="Chapters\20\ManualMode.html.LyXconv\ManualMode.html">
+				<param name="Name" value="Poker Pro Server">
+				<param name="Local" value="Chapters\09\PokerPro.html.LyXconv\PokerPro.html">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Poker Tracker">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Poker Tracker">
+				<param name="Local" value="Chapters\16\PokerTracker.html.LyXconv\PokerTracker.html">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Validator">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Validator">
+				<param name="Local" value="Chapters\10\Validator.html.LyXconv\Validator.html">
 				</OBJECT>
 		</UL>
 	</UL>
@@ -315,6 +324,10 @@
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Memory Symbols">
 				<param name="Local" value="Chapters\15\Memory_Symbols.html.LyXconv\Memory_Symbols.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Logging">
+				<param name="Local" value="Chapters\23\Logging.html.LyXconv\Logging.html">
 				</OBJECT>
 		</UL>
 	</UL>
