@@ -345,6 +345,10 @@
 				<param name="Name" value="Scraper-DLL">
 				<param name="Local" value="Chapters\08\ScraperDLL.html.LyXconv\ScraperDLL.html">
 				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Scraper-Preprocessor-DLL">
+				<param name="Local" value="Chapters\08\Scraper-Preprocessor.html.LyXconv\Scraper-Preprocessor.html">
+				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Automation">

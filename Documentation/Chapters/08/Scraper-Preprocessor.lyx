@@ -2,8 +2,11 @@
 \lyxformat 345
 \begin_document
 \begin_header
-\textclass article
+\textclass amsbook
 \use_default_options true
+\begin_modules
+theorems-ams
+\end_modules
 \language english
 \inputencoding auto
 \font_roman default
@@ -17,6 +20,7 @@
 
 \graphics default
 \paperfontsize default
+\spacing single
 \use_hyperref false
 \papersize default
 \use_geometry false
@@ -43,67 +47,66 @@
 
 \begin_layout Section
 \begin_inset Index
-status open
+status collapsed
 
 \begin_layout Plain Layout
-Scraper-Preprocessor DLL
+Scraper DLL
 \end_layout
 
 \end_inset
 
 Scraper-Preprocessor 
 \begin_inset Index
-status open
-
-\begin_layout Plain Layout
-DLL
-\end_layout
-
-\end_inset
-
-DLL
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Needs to be changed!!!
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The scraper override DLL extension provides for a user-specified override
- of the output of the screen scraper engine.
- Sometimes, better game state information can be retrieved from poker client
- controls that are not scrapable by the pixel-driven scraper engine in OpenHolde
-m, such as by parsing the chat box.
- Parsing the chat box would require direct memory reading of the poker client,
- or DLL injection.
- The approach for such a chat box parsing is beyond the scope of this document,
- but a good discussion on the topic can be found on CodingTheWheel (
-\begin_inset Flex URL
 status collapsed
 
 \begin_layout Plain Layout
-
-http://www.codingthewheel.com/archives/how-i-built-a-working-online-poker-bot-7
+DLL
 \end_layout
 
 \end_inset
 
-): 
+DLL
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Scraper-Prepreprocessor-DLL"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-Immediately after the screen scrape is complete, OpenHoldem will pass a
- pointer to a structure containing the results of the scrape to your override
- DLL.
+The scraper-preprocessor DLL extension was added in OH 2.1.0.
+ Some casinos have started displaying unusual information in various regions
+ that do not have an obvious way to be handled with the current OH design,
+ other than scraper override.
+ One casino, for example, displays pots like this "150 + (300)".
+ "150" is the amount that is committed to the pot in previous rounds, and
+ "+ (300)" is the amount that has been bet by players so far in this round.
+ Scraper override is intended to be used with DLL injection or chat box
+ parsing techniques, and what is needed here is a way to massage the transform
+ engine's output before it gets converted internally into consumable numbers.
+\end_layout
+
+\begin_layout Standard
+"scraper-preprocessor" works just like other user DLL extensions.
+ It is different from scraper override, in that the string types that come
+ out of the transform engine are passed to the DLL, rather than the final
+ resultant types (doubles).
+ This makes the interface very straightforward.
+ The scraper engine will pass transformed strings to a user-coded DLL, the
+ DLL can do whatever massaging is necessary, and then the engine will continue
+ with what the DLL passes back for further processing.
+ In the above example, the scraper-preprocessor DLL could be used to simply
+ strip everything off of the scraped pot string after + or (.
+ The engine would then get "150" back, which would then be processed into
+ the correct double type.
+ 
+\end_layout
+
+\begin_layout Standard
+Immediately after transforming each region, OpenHoldem will pass a pointer
+ to a structure containing the results of the scrape to your override DLL.
  This is not a const pointer reference, so any of the members of the struct
  can be changed directly.
  The prototype for the method called by OpenHoldem is quite straightforward:
@@ -115,8 +118,8 @@ inline false
 status open
 
 \begin_layout Plain Layout
-
-SCRAPERDLL_API void OverrideScraper(SScraperState *state);
+SCRAPER_PREPROCESSOR_DLL_API void ProcessMessage(const char *message, const
+ void *param);
 \end_layout
 
 \end_inset
@@ -125,228 +128,177 @@ SCRAPERDLL_API void OverrideScraper(SScraperState *state);
 \end_layout
 
 \begin_layout Standard
-No casting required.
- The members of the SScraperState struct are as follows:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-struct SScraperState 
-\end_layout
-
-\begin_layout Plain Layout
-
-{ 
-\end_layout
-
-\begin_layout Plain Layout
-
-    char title[512];
-\end_layout
-
-\begin_layout Plain Layout
-
-    unsigned int card_common[5]; 
-\end_layout
-
-\begin_layout Plain Layout
-
-    unsigned int card_player[10][2]; 
-\end_layout
-
-\begin_layout Plain Layout
-
-    unsigned int card_player_for_display[2]; 
-\end_layout
-
-\begin_layout Plain Layout
-
-    bool dealer[10]; 
-\end_layout
-
-\begin_layout Plain Layout
-
-    bool sitting_out[10]; 
-\end_layout
-
-\begin_layout Plain Layout
-
-    CString seated[10]; 
-\end_layout
-
-\begin_layout Plain Layout
-
-    CString active[10]; 
-\end_layout
-
-\begin_layout Plain Layout
-
-    CString name[10]; 
-\end_layout
-
-\begin_layout Plain Layout
-
-    double balance[10]; 
-\end_layout
-
-\begin_layout Plain Layout
-
-    bool name_good_scrape[10]; 
-\end_layout
-
-\begin_layout Plain Layout
-
-    bool balance_good_scrape[10]; 
-\end_layout
-
-\begin_layout Plain Layout
-
-    double bet[10]; double pot[10]; 
-\end_layout
-
-\begin_layout Plain Layout
-
-    CString button_state[10]; 
-\end_layout
-
-\begin_layout Plain Layout
-
-    CString i86X_button_state[10]; 
-\end_layout
-
-\begin_layout Plain Layout
-
-    CString i86_button_state; 
-\end_layout
-
-\begin_layout Plain Layout
-
-    CString button_label[10]; 
-\end_layout
-
-\begin_layout Plain Layout
-
-    double sblind; 
-\end_layout
-
-\begin_layout Plain Layout
-
-    double bblind; 
-\end_layout
-
-\begin_layout Plain Layout
-
-    double bbet; 
-\end_layout
-
-\begin_layout Plain Layout
-
-    double ante; 
-\end_layout
-
-\begin_layout Plain Layout
-
-    LimitType limit; 
-\end_layout
-
-\begin_layout Plain Layout
-
-    double handnumber; 
-\end_layout
-
-\begin_layout Plain Layout
-
-    bool istournament; 
-\end_layout
-
-\begin_layout Plain Layout
-
-};
-\end_layout
-
+The 
+\begin_inset Quotes eld
 \end_inset
 
+message
+\begin_inset Quotes erd
+\end_inset
 
+ parameter will contain the name of the region that was just transformed.
+ Using our example above for the strange pot, this could be 
+\begin_inset Quotes eld
+\end_inset
+
+c0pot0
+\begin_inset Quotes erd
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
-Any of these can be changed like so (which will give you four-of-a-kind
- Aces)
+The 
+\begin_inset Quotes eld
+\end_inset
+
+param
+\begin_inset Quotes erd
+\end_inset
+
+ parameter will contain the actual transformed string, as a pointer to a
+ CString type.
+ Continuing the example above, this would be 
+\begin_inset Quotes eld
+\end_inset
+
+150 + (300)
+\begin_inset Quotes erd
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
+Handling this strange pot format could be as easy as code like this:
+\end_layout
+
+\begin_layout Plain Layout
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
-
-SCRAPERDLL_API void OverrideScraper(SScraperState *state) 
+SCRAPER_PREPROCESSOR_DLL_API void ProcessMessage(const char *message, 
 \end_layout
 
 \begin_layout Plain Layout
 
+    
+\lang english
+const void *param) 
+\end_layout
+
+\begin_layout Plain Layout
 { 
 \end_layout
 
 \begin_layout Plain Layout
 
-    state->card_common[0] = StdDeck_MAKE_CARD(
+    
+\lang english
+if (message==NULL) return;
 \end_layout
 
 \begin_layout Plain Layout
 
-        StdDeck_Rank_ACE,     StdDeck_Suit_HEARTS); 
+    
+\lang english
+if (strncmp(message, "connect", 7)==0) target_hwnd = (HWND *) param;
 \end_layout
 
 \begin_layout Plain Layout
 
-    state->card_common[1] = StdDeck_MAKE_CARD(
+    
+\lang english
+if (strncmp(message, "disconnect", 10)==0) target_hwnd = (HWND *) NULL;
 \end_layout
 
 \begin_layout Plain Layout
 
-        StdDeck_Rank_ACE, StdDeck_Suit_DIAMONDS); 
+    
+\lang english
+if (strncmp(message, "c0pot0", 6)==0) 
 \end_layout
 
 \begin_layout Plain Layout
 
-    state->card_common[2] = StdDeck_MAKE_CARD(
+    
+\lang english
+{
 \end_layout
 
 \begin_layout Plain Layout
 
-        StdDeck_Rank_ACE, StdDeck_Suit_SPADES); 
+        
+\lang english
+CString *s = (CString *) param;
 \end_layout
 
 \begin_layout Plain Layout
 
-    state->card_common[3] = StdDeck_MAKE_CARD(
+        
+\lang english
+int index;
 \end_layout
 
 \begin_layout Plain Layout
 
-        StdDeck_Rank_ACE, StdDeck_Suit_CLUBS); 
+        
+\lang english
+index = s->Find('('); 
 \end_layout
 
 \begin_layout Plain Layout
 
+        
+\lang english
+if (index==0) s->Empty(); 
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\lang english
+if (index>0) *s = s->Left(index-1);
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\lang english
+index = s->Find('+'); 
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\lang english
+if (index==0) s->Empty(); 
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\lang english
+if (index>0) *s = s->Left(index-1);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\lang english
+} 
+\end_layout
+
+\begin_layout Plain Layout
 }
 \end_layout
 
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-And on return, OpenHoldem will instantly use the changed values instead
- of the scraped values.
 \end_layout
 
 \end_body
