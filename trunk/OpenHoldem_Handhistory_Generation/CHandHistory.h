@@ -62,6 +62,8 @@ private:
 	bool cardsDealt();
 	bool isPlaying(int i);
 	bool hasMucked(int i);
+	void checkSeats(int i, int j);
+
 
 	fstream outfile;
 	CPokerAction action;
@@ -87,6 +89,7 @@ private:
 	bool cardsSeen[10];		//Increments as player's cards are seen at showdown
 	bool seatsPlaying[10];
 	bool newRoundFlag;
+	bool postBlind[10];
 	char playername[16];
 	string handText[10];
 	double currentbetx[10];

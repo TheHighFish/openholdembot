@@ -109,6 +109,7 @@ void CHandHistory::roundStart()
 	whosturn=utg;
 	for(int i=0;i<nchairs;i++)
 	{
+		postBlind[i]=false;
 		seatsPlaying[i]=true;
 		handval[i]=0;
 		CardMask_RESET(hand[i]);
@@ -130,13 +131,19 @@ void CHandHistory::roundStart()
 	}
 	outfile<<splayername[sblindpos]<<": Post SB $"<<sblind<<endl;
 	outfile<<splayername[bblindpos]<<": Post BB $"<<bblind<<endl;
+	for(int i=0;i<nchairs;i++)
+		if(currentbetx[i]==bblind&&i!=(bblindpos+1)%nchairs&&i!=bblindpos)
+		{
+			postBlind[i]=true;
+			outfile<<splayername[i]<<": Post BB $"<<bblind<<endl;
+		}
 	outfile<<"*** HOLE CARDS ***"<<endl;
 	betroundSet[8]=true;
 }
 void CHandHistory::checkBetround()
 {
 	//Precondition: Has not been run, user cards visible
-	if(betroundSet[0]==false&&betroundSet[8]==true&&
+	if(betroundSet[0]==false&&betroundSet[8]==true&&userchair!=0&&
 		card_player[userchair][0]!=NULL&&card_player[userchair][1]!=NULL)
 	{
 		outfile<<"Dealt to "<<splayername[userchair]<<" [ "<<card_player[userchair][1]<<card_player[userchair][0]
@@ -147,7 +154,10 @@ void CHandHistory::checkBetround()
 	}
 	//Precondition: Has iterated through all players OR bblind has checked and hasn't been run and flop cards visible
 	if((whosturn==((lpta+1)%nchairs)||allChecks[0]==true)
-		&&betroundSet[1]==false&&card_common[0][1]!=NULL&&card_common[1][1]!=NULL&&card_common[2][1]!=NULL)
+		&&betroundSet[1]==false
+		&&betroundSet[4]==false
+		&&betroundSet[6]==false
+		&&card_common[0][1]!=NULL&&card_common[1][1]!=NULL&&card_common[2][1]!=NULL)
 	{
 		if(allChecks[0]==true) outfile<<splayername[bblindpos]<<": Check"<<endl;
 		outfile<<"*** FLOP *** [ "
@@ -162,7 +172,11 @@ void CHandHistory::checkBetround()
 	}
 	//Precondition: Has iterated through all players OR players checked and hasn't been run and turn card visible
 	if((whosturn==((lpta+1)%nchairs)||allChecks[1]==true)
-		&&betroundSet[1]==true&&betroundSet[2]==false&&card_common[3][1]!=NULL)
+		&&betroundSet[1]==true
+		&&betroundSet[2]==false
+		&&betroundSet[4]==false
+		&&betroundSet[6]==false
+		&&card_common[3][1]!=NULL)
 	{
 		outfile<<"*** TURN *** [ "<<card_common[3][1]<<card_common[3][0]<<" ]"<<endl;
 		whosturn=postflopstart;
@@ -173,7 +187,11 @@ void CHandHistory::checkBetround()
 	}
 	//Precondition: Has iterated through all players OR players checked and hasn't been run and river card visible
 	if((whosturn==((lpta+1)%nchairs)||allChecks[2]==true)
-		&&betroundSet[2]==true&&betroundSet[3]==false&&card_common[4][1]!=NULL)
+		&&betroundSet[2]==true
+		&&betroundSet[3]==false
+		&&betroundSet[4]==false
+		&&betroundSet[6]==false
+		&&card_common[4][1]!=NULL)
 	{
 		outfile<<"*** RIVER *** [ "<<card_common[4][1]<<card_common[4][0]<<" ]"<<endl;
 		whosturn=postflopstart;
@@ -184,7 +202,9 @@ void CHandHistory::checkBetround()
 	}
 	//Precondition: Has iterated through all players, hasn't been run, and is showdown
 	if((whosturn==((lpta+1)%nchairs)||allChecks[3]==true)
-		&&betroundSet[3]==true&&betroundSet[4]==false&&betroundSet[6]==false&&isShowdown())
+		&&betroundSet[3]==true
+		&&betroundSet[4]==false
+		&&betroundSet[6]==false&&isShowdown())
 	{
 		outfile<<"*** SUMMARY ***"<<endl;
 		outfile<<"Total pot $"<<pot<<" Rake $"<<(rake*pot)<<endl;
@@ -203,7 +223,7 @@ void CHandHistory::scanPlayerChanges()
 	{
 		//Precondition: It is the player's turn, and they are not past the
 		//last to act
-		if(whosturn==i&&whosturn!=(lpta+1)%10)
+		if(whosturn==i&&whosturn!=(lpta+1)%nchairs)
 		{
 			//Precondition: Player is playing
 			if(playersplayingbits[i]!=0)
@@ -225,11 +245,7 @@ void CHandHistory::scanPlayerChanges()
 					if(betround!=1&&i!=postflopstart&&allChecks[betround-1]==true)
 					{
 						int j=postflopstart;
-						while(j!=i)
-						{
-							if(playersplayingbits[j]!=0)outfile<<splayername[j]<<" Check"<<endl;
-							j=(j+1)%nchairs;
-						}
+						checkSeats(i, j);
 					}
 					if(maxBet==0)outfile<<splayername[i]<<": Bet $"<<currentbetx[i]<<endl;
 					else outfile<<splayername[i]<<": Raise $"<<currentbetx[i]<<endl;
@@ -239,10 +255,11 @@ void CHandHistory::scanPlayerChanges()
 					allChecks[betround-1]=false;
 					maxBet = currentbetx[i];
 					passChecks=1;
-				}
+				} 
 				//Precondition: Player has called
 				else if(
-				(currentbetx[i]==maxBet&&maxBet!=0&&!isBigBlind(i))
+				(currentbetx[i]==maxBet&&maxBet!=0&&!isBigBlind(i)&&
+				!(postBlind[i]==true&&currentbetx[i]==bblind&&betround==1))
 				||
 				(prevround!=betround&&betround!=1&&maxBet!=0)
 				)
@@ -250,8 +267,31 @@ void CHandHistory::scanPlayerChanges()
 					outfile<<splayername[i]<<": Call $"<<maxBet<<endl;
 					whosturn=(whosturn+1)%nchairs;	//Increment whosturn
 				}
+				/* 
+				Attempts to check players who have posted the blind early.
+				Precondition: Betround one, player posted blinds early, and no one
+				has raised
+				*/
+				else if(betround==1&&postBlind[i]==true&&maxBet==bblind)
+				{
+					int nta=-5;	//Next to act, initialized to safe value
+					int count=0;
+					while (nta<0) //While next to act hasn't been found
+					{
+						int j=(i+count)%nchairs;
+						if(isPlaying(j)==true)
+							nta=j;	//If player is playing, set next to act
+						else
+							count++;
+					}
+					if(currentbetx[nta]!=0)
+					{
+						outfile<<splayername[i]<<": Check"<<endl;
+						whosturn=(whosturn+1)%nchairs;	//Increment whosturn
+					}
+				}
 			}
-			//Precondition: Player is not playing or folded
+			//Precondition: Player has folded
 			else if(!hasMucked(i))
 			{
 				//If they have not been reported as folding, output a fold
@@ -477,4 +517,12 @@ bool CHandHistory::hasMucked(int i)
 		return true;
 
 	return false;
+}
+void CHandHistory::checkSeats(int i, int j)
+{
+	while(j!=i)
+	{
+		if(playersplayingbits[j]!=0)outfile<<splayername[j]<<" Check"<<endl;
+		j=(j+1)%nchairs;
+	}
 }
