@@ -176,7 +176,6 @@ void CPreferences::InitDefaults(void)
 	// Auto-connector
 	_autoconnector_connection_method = k_AutoConnector_Connect_Manually;
 	_autoconnector_when_to_connect = k_AutoConnector_Connect_Never;
-	_autoconnector_time_to_next_try = 10;
 	_autoconnector_close_when_table_disappears = false;
 
 	// GUI
@@ -364,7 +363,6 @@ void CPreferences::ReadPreferences()
 		// Auto-connector
 		ReadReg("autoconnector_connection_method", &_autoconnector_connection_method);
 		ReadReg("autoconnector_when_to_connect", & _autoconnector_when_to_connect);
-		ReadReg("autoconnector_time_to_next_try", &_autoconnector_time_to_next_try);
 		ReadReg("autoconnector_close_when_table_disappears", &_autoconnector_close_when_table_disappears);
 
 		// GUI

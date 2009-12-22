@@ -144,7 +144,6 @@ public:
 	// Auto-connector
 	const int autoconnector_connection_method() { return _autoconnector_connection_method; }
 	const int autoconnector_when_to_connect() { return _autoconnector_when_to_connect; }
-	const int autoconnector_time_to_next_try() { return _autoconnector_time_to_next_try; }
 	const bool autoconnector_close_when_table_disappears() { return _autoconnector_close_when_table_disappears; }
 	// GUI
 	const bool gui_start_minimized() { return _gui_start_minimized; }
@@ -312,7 +311,6 @@ public:
 	// Auto-connector
 	void set_autoconnector_connection_method(const int i) { ENT _autoconnector_connection_method = i; WriteReg("autoconnector_connection_method", i); }
 	void set_autoconnector_when_to_connect(const int i) { ENT _autoconnector_when_to_connect = i; WriteReg("autoconnector_when_to_connect", i); }
-	void set_autoconnector_time_to_next_try(const int i) { ENT _autoconnector_time_to_next_try = i; WriteReg("autoconnector_time_to_next_try", i); }
 	void set_autoconnector_close_when_table_disappears(const bool b) { ENT _autoconnector_close_when_table_disappears = b; WriteReg("autoconnector_close_when_table_disappears", b); }
 
 	// GUI
@@ -488,7 +486,6 @@ private:
 	// Auto-connector
 	int				_autoconnector_connection_method;
 	int				_autoconnector_when_to_connect;
-	int				_autoconnector_time_to_next_try;
 	bool			_autoconnector_close_when_table_disappears;
 
 	// GUI

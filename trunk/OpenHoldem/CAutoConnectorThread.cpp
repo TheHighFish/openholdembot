@@ -29,7 +29,7 @@ UINT CAutoConnectorThread::AutoConnectorThreadFunction(LPVOID pParam)
 	{
 		if ((prefs.autoconnector_when_to_connect() == k_AutoConnector_Connect_Permanent) && !p_autoconnector->IsConnected())
 		{
-			if(p_autoconnector->TimeSinceLastFailedAttemptToConnect() > prefs.autoconnector_time_to_next_try())
+			if(p_autoconnector->TimeSinceLastFailedAttemptToConnect() > 1 /* seconds */)
 			{
 				p_autoconnector->Connect(NULL);
 			}
@@ -38,7 +38,7 @@ UINT CAutoConnectorThread::AutoConnectorThreadFunction(LPVOID pParam)
 				write_log(3, "Reconnection blocked. Other instance failed previously.\n");
 			}
 		}
-		Sleep(prefs.autoconnector_time_to_next_try() * 1000);
+		Sleep(1000); // 1000 milli-seconds
 	}
 	return 0;
 }
