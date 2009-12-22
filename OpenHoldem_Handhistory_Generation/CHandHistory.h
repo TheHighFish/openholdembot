@@ -63,7 +63,9 @@ private:
 	bool isPlaying(int i);
 	bool hasMucked(int i);
 	void checkSeats(int i, int j);
-
+	double getSB(double i);
+	void potUpdate(int i); //Beta function keeps track of multiple pots
+	void resetVars();
 
 	fstream outfile;
 	CPokerAction action;
@@ -95,9 +97,9 @@ private:
 	double currentbetx[10];
 	double playerbalance[10];
 	double potplayer;
-	double sblind;
 	double bblind;
 	double pot;
+	double multipot[4];
 	double prevpot;
 	double bet[4];
 	double rake;
@@ -115,6 +117,7 @@ private:
 	int raischair;
 	int dealerchair;
 	int betround;
+	int utg;
 	int postflopstart;	//Starting seat after flop
 	int cbits;		//players playing bits
 	int dbits;		//players dealt bits
@@ -128,6 +131,15 @@ private:
 	int prevround;	//Betround in previous scrape
 	int prevdealerchair;	//Dealer chair in previous scrape
 	int lpta; //Last player to act on round
+
+	/*-------------Side Pots Variables----------------*/
+	bool allin[10];		//True if player is allin
+	bool allinflag[4];	//True if a player is allin in current betting round
+	int potnum;		//Number of active pot
+	double activepot[4];	//Holds pots, 0-Main, 1-3-Side pots
+	double allincall[4];	//Amount to call allin raise
+	double playerbet[10][4];
+
 } *p_handhistory;
 
 #endif // _INC_CHANDHISTORY_H
