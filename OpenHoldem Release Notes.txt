@@ -13,7 +13,10 @@ NEW STUFF:
 - Removed the old WinHoldem-default-bot. Replaced it with Playbot by Matrix. [THF]
 - Improvements to the user interface of the Script dialog. [Spew]
 - Added "Apply and Save" to the formula dialog with CTRL-S as the shortcut. [Spew]
-- If the tablemap has the string "swagallin" OH will swag the player balance if f$alli is true. [Spew]
+- New TM symbol allinmethod.
+    0: swag the balance (default)
+    1: click max (or allin), then raise
+    2: click only max (or allin) [Spew and THF]
 - New versus symbols to get probabilities of winning/losing versus opponent hands
   that are better (resp. worse or equal) than our hand now
     vs$nhandshinow   vs$nhandstinow   vs$nhandslonow
