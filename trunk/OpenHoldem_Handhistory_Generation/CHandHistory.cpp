@@ -38,7 +38,7 @@ void CHandHistory::makeHistory()
 	//Precondition: New round flag has been set and cards dealt
 	if(newRoundFlag==true&&betroundSet[7]==true)
 		roundStart();
-	//outfile<<"betround0 "<<betroundSet[0]<<" betround8 "<<betroundSet[8]<<endl;
+
 	checkBetround();
 
 	//Precondition: Cards have been dealt and the round summary has not
@@ -63,7 +63,6 @@ void CHandHistory::updateSymbols()
 	dbits = (int)p_symbols->sym()->playersdealtbits;
 	betround = (int)p_symbols->sym()->betround;
 	potplayer = p_symbols->sym()->potplayer;
-	sblind = p_symbols->sym()->sblind;
 	bblind = p_symbols->sym()->bblind;
 	nplayersactive = (int) p_symbols->sym()->nplayersactive;
 	nplayersplaying = (int) p_symbols->sym()->nplayersplaying;
@@ -82,40 +81,21 @@ void CHandHistory::updateSymbols()
 		//If the player is playing, update the symbol. This condition used for muck detection.
 		if(playersplayingbits[i]!=0)
 			currentbetx[i]= p_symbols->sym()->currentbet[i];
-		playerbalance[i]= p_symbols->sym()->balance[i];
+		if(p_symbols->sym()->balance[i]!=0||betround<=1)
+			playerbalance[i]= p_symbols->sym()->balance[i];
 		strncpy_s(playername, 16, p_scraper->player_name(i).GetString(), _TRUNCATE);
 		splayername[i] = playername;
 	}
 }
 void CHandHistory::roundStart()
 {
-	newRoundFlag=false;
-	nchairs = (int)p_symbols->sym()->nchairs;
-	pCardsSeen = 0;
-	gameNumber++;
-	maxBet=bblind;
-	passChecks=1;
-	lpta = -5;
-	int utg;
-	for(int i=0;i<4;i++)allChecks[i]=true;
-	for(int i=0;i<nchairs;i++)
-		ac_dealpos[i] = DealPosition(i);
-	for(int i=0;i<nchairs;i++)
-	{
-		if(ac_dealpos[i]==1)sblindpos=i;
-		else if(ac_dealpos[i]==2)bblindpos=i;
-		else if(ac_dealpos[i]==3)utg=i;
-	}
-	whosturn=utg;
-	for(int i=0;i<nchairs;i++)
-	{
-		postBlind[i]=false;
-		seatsPlaying[i]=true;
-		handval[i]=0;
-		CardMask_RESET(hand[i]);
-		cardsSeen[i]=false;
-		handText[i]="";
-	}
+	resetVars();
+	bool SBfound=true;
+
+	//Records if there is no small blind
+	if(p_symbols->sym()->currentbet[sblindpos]==0)
+		SBfound=false;
+
 	outfile<<"\nGAME #"<<gameNumber<<": Texas Hold'em "<<findLimit()<<" $"<<bblind<<"/$"<<(bblind*2)<<" "<<setDate()<<endl;
 	outfile<<"Table "<<p_scraper->title()<<endl;
 	for(int i=1;i<=nchairs;i++)
@@ -124,12 +104,14 @@ void CHandHistory::roundStart()
 		//Precondition: Player chair has been dealt
 		if(isPlaying(m))
 		{
-			outfile<<"Seat "<<i<<": "<<splayername[m]<<" ( $"<<playerbalance[m]<<" in chips)";
+			double balance = playerbalance[m] + currentbetx[m];
+			outfile<<"Seat "<<i<<": "<<splayername[m]<<" ( $"<<balance<<" in chips)";
 			if (m==dealerchair) outfile<<" DEALER"<<endl;
 			else outfile<<endl;
 		}
 	}
-	outfile<<splayername[sblindpos]<<": Post SB $"<<sblind<<endl;
+	if(SBfound)
+		outfile<<splayername[sblindpos]<<": Post SB $"<<getSB(bblind)<<endl;
 	outfile<<splayername[bblindpos]<<": Post BB $"<<bblind<<endl;
 	for(int i=0;i<nchairs;i++)
 		if(currentbetx[i]==bblind&&i!=(bblindpos+1)%nchairs&&i!=bblindpos)
@@ -228,6 +210,8 @@ void CHandHistory::scanPlayerChanges()
 			//Precondition: Player is playing
 			if(playersplayingbits[i]!=0)
 			{
+				if(betround==1&&i==bblindpos&&lpta==-5)
+					lpta = bblindpos;
 				/* 
 				Detects previous checks; if it is not preflop, and amount in the
 				the player pot is not zero, checks have not been passed and someone has
@@ -238,8 +222,13 @@ void CHandHistory::scanPlayerChanges()
 					whosturn=raischair;
 					passChecks=1;
 				}
+				//Pass players who are allin
+				if(allin[i]==true)
+				{
+					whosturn=(whosturn+1)%nchairs;
+				}
 				//Precondition: Player has raised
-				if(currentbetx[i]>maxBet)
+				else if(currentbetx[i]>maxBet)
 				{
 					//If there were players who checked, output checks
 					if(betround!=1&&i!=postflopstart&&allChecks[betround-1]==true)
@@ -247,13 +236,19 @@ void CHandHistory::scanPlayerChanges()
 						int j=postflopstart;
 						checkSeats(i, j);
 					}
-					if(maxBet==0)outfile<<splayername[i]<<": Bet $"<<currentbetx[i]<<endl;
-					else outfile<<splayername[i]<<": Raise $"<<currentbetx[i]<<endl;
+					maxBet = currentbetx[i];
+					playerbet[i][betround-1]=maxBet;
+					if((int)p_symbols->sym()->lim!=2)potUpdate(i);
+					if(allin[i]==true)
+						outfile<<splayername[i]<<": Allin $"<<currentbetx[i]<<endl;
+					else if(maxBet==0)
+						outfile<<splayername[i]<<": Bet $"<<currentbetx[i]<<endl;
+					else 
+						outfile<<splayername[i]<<": Raise $"<<currentbetx[i]<<endl;
 					lpta = (i-1)%nchairs;	//Set lpta to seat behind raiser
 					if(lpta==-1)lpta=nchairs-1;
 					whosturn=(whosturn+1)%nchairs;	//Increment whosturn
 					allChecks[betround-1]=false;
-					maxBet = currentbetx[i];
 					passChecks=1;
 				} 
 				//Precondition: Player has called
@@ -261,10 +256,14 @@ void CHandHistory::scanPlayerChanges()
 				(currentbetx[i]==maxBet&&maxBet!=0&&!isBigBlind(i)&&
 				!(postBlind[i]==true&&currentbetx[i]==bblind&&betround==1))
 				||
-				(prevround!=betround&&betround!=1&&maxBet!=0)
-				)
+				(prevround!=betround&&betround!=1&&maxBet!=0))
 				{
-					outfile<<splayername[i]<<": Call $"<<maxBet<<endl;
+					if((int)p_symbols->sym()->lim!=2)potUpdate(i);
+					if(allin[i]==true)
+						outfile<<splayername[i]<<": Allin $"<<prevplayerbalance[i]<<endl;
+					else
+						outfile<<splayername[i]<<": Call $"<<maxBet<<endl;
+					playerbet[i][betround-1]=maxBet;
 					whosturn=(whosturn+1)%nchairs;	//Increment whosturn
 				}
 				/* 
@@ -320,7 +319,8 @@ void CHandHistory::setPreviousActions()
 	if(isShowdown())prevround = 5;
 	for(int i=0;i<nchairs;i++)
 	{
-		prevplayerbalance[i] = playerbalance[i];
+		if(playerbalance[i]!=0)
+			prevplayerbalance[i] = playerbalance[i];
 		prevbetx[i]= currentbetx[i];
 	}
 }
@@ -465,6 +465,11 @@ void CHandHistory::showdownResults()
             case StdRules_HandType_STFLUSH: outfile<<"a Straight Flush."<<endl; break;
 		}
 		betroundSet[5]=true;
+		/*outfile<<"activepot[0] = "<<activepot[0]<<endl;
+		outfile<<"activepot[1] = "<<activepot[1]<<endl;
+		outfile<<"activepot[2] = "<<activepot[2]<<endl;
+		outfile<<"activepot[3] = "<<activepot[3]<<endl;
+		outfile<<"potnum = "<<potnum<<endl;*/
 	}
 }
 void CHandHistory::outputUncontested(int j)
@@ -475,6 +480,11 @@ void CHandHistory::outputUncontested(int j)
 		outfile<<"Total pot $"<<prevpot<<" Rake $"<<(rake*prevpot)<<endl;
 		outfile<<splayername[j]<<": wins $"<<prevpot<<endl;
 		betroundSet[6]=true;
+		/*outfile<<"activepot[0] = "<<activepot[0]<<endl;
+		outfile<<"activepot[1] = "<<activepot[1]<<endl;
+		outfile<<"activepot[2] = "<<activepot[2]<<endl;
+		outfile<<"activepot[3] = "<<activepot[3]<<endl;
+		outfile<<"potnum = "<<potnum<<endl;*/
 	}
 }
 bool CHandHistory::isBigBlind(int i)
@@ -507,7 +517,7 @@ string CHandHistory::findLimit()
 }
 bool CHandHistory::isPlaying(int i)
 {
-	if(playersdealtbits[i]==1&&playerbalance[i]!=0)return true;
+	if(playersdealtbits[i]==1&&playerbalance[i]>.01)return true;
 	else return false;
 }
 bool CHandHistory::hasMucked(int i)
@@ -525,4 +535,112 @@ void CHandHistory::checkSeats(int i, int j)
 		if(playersplayingbits[j]!=0)outfile<<splayername[j]<<" Check"<<endl;
 		j=(j+1)%nchairs;
 	}
+}
+double CHandHistory::getSB(double i)
+{
+	if(i==.02) return .01;
+	else if(i==.05) return .02;
+	else if(i==.1) return .05;
+	else if(i==.2) return .1;
+	else if(i==.25) return .1;
+	else if(i==.30) return .15;
+	else if(i==.40) return .20;
+	else if(i==.50) return .25;
+	else if(i==1) return .5;
+	else if(i==2) return 1;
+	else if(i==4) return 2;
+	else if(i==6) return 3;
+	else if(i==8) return 4;
+	else if(i==10) return 5;
+	else if(i==16) return 8;
+	else if(i==20) return 10;
+	else if(i==24) return 12;
+	else if(i==30) return 15;
+	else if(i==40) return 20;
+	else if(i==50) return 25;
+	else if(i==60) return 30;
+	else if(i==80) return 40;
+	else if(i==100) return 50;
+	else if(i==200) return 100;
+	else if(i==400) return 200;
+	else if(i==600) return 300;
+	else if(i==800) return 400;
+	else if(i==1000) return 500;
+	else if(i==2000) return 1000;
+	else if(i==3000) return 1500;
+	else if(i==4000) return 2000;
+	else if(i==6000) return 3000;
+	else if(i==20000) return 10000;
+	else return 0;
+}
+void CHandHistory::potUpdate(int i)
+{
+	//Precondition: Player has gone allin, and this hasn't been caught yet
+	if((playerbalance[i]<=maxBet||playerbalance[i]==0)&&allin[i]==false) 
+	{
+		//Flags current betting round
+		allinflag[betround-1]=true;
+		//Amount to call=current bet of allin player
+		allincall[betround-1]=currentbetx[i];	
+		activepot[potnum]=pot;	//Set current pot to pot
+		potnum++;		//Advance pots
+		allin[i]=true;	
+	}
+	if((allinflag[prevround-1]==true||allinflag[betround-1]==true)&&allin[i]==false)
+	{
+		if(currentbetx[i]>0)
+		{
+			if(currentbetx[i]<=allincall[betround-1])
+				//Add to previous pot
+				activepot[potnum-1]+=currentbetx[i]-prevbetx[i];
+			else if(currentbetx[i]>allincall[betround-1])
+			{
+				//Add to previous pot
+				activepot[potnum-1]+=allincall[betround-1];
+				//Add to current pot
+				activepot[potnum]+=currentbetx[i]-allincall[betround-1];
+			}
+		}
+		else
+			activepot[potnum-1]+=maxBet-playerbet[i][prevround];
+	}
+	//Active pot= Total pot - other pots
+	activepot[potnum]=pot;
+	for(int i=1;i<(potnum+1);i++)
+		activepot[potnum]-=activepot[potnum-i];
+}
+void CHandHistory::resetVars()
+{
+	newRoundFlag=false;
+	nchairs = (int)p_symbols->sym()->nchairs;
+	pCardsSeen = 0;
+	gameNumber++;
+	maxBet=bblind;
+	passChecks=1;
+	lpta = -5;
+	potnum = 0;
+	for(int i=0;i<4;i++)
+	{
+		allChecks[i]=true;
+		activepot[i]=0;
+		allincall[i]=0;
+		allinflag[i]=false;
+	}
+	for(int i=0;i<nchairs;i++)
+	{
+		for(int j=0;j<4;j++)
+			playerbet[i][j]=0;
+		ac_dealpos[i] = DealPosition(i);
+		if(ac_dealpos[i]==1)sblindpos=i;
+		else if(ac_dealpos[i]==2)bblindpos=i;
+		else if(ac_dealpos[i]==3)utg=i;
+		allin[i]=false;
+		postBlind[i]=false;
+		seatsPlaying[i]=true;
+		handval[i]=0;
+		CardMask_RESET(hand[i]);
+		cardsSeen[i]=false;
+		handText[i]="";
+	}
+	whosturn=utg;
 }
