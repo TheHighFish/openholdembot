@@ -30,8 +30,6 @@ void CDlgSAPrefs14::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_RADIO_AUTOCONNECTOR_3, _autoconnector_connect_never);
 	DDX_Control(pDX, IDC_RADIO_AUTOCONNECTOR_4, _autoconnector_connect_once);
 	DDX_Control(pDX, IDC_RADIO_AUTOCONNECTOR_5, _autoconnector_connect_permanent);
-	DDX_Control(pDX, IDC_RECONNECT_TIME_EDIT, _autoconnector_time_to_next_try_edit);
-	DDX_Control(pDX, IDC_RECONNECT_TIME_SPIN, _autoconnector_time_to_next_try_spin);
 	DDX_Control(pDX, IDC_AUTOCONNECTOR_CLOSE_WHEN_TABLE_DISAPPEARS, _autoconnector_close_when_table_disappears);
 }
 
@@ -70,12 +68,6 @@ BOOL CDlgSAPrefs14::OnInitDialog()
 		_autoconnector_connect_permanent.SetCheck(true);
 	}
 
-	text.Format("%d", prefs.autoconnector_time_to_next_try());
-	_autoconnector_time_to_next_try_edit.SetWindowText(text);
-	_autoconnector_time_to_next_try_spin.SetRange(0, 100);
-	_autoconnector_time_to_next_try_spin.SetPos(prefs.autoconnector_time_to_next_try());
-	_autoconnector_time_to_next_try_spin.SetBuddy(&_autoconnector_time_to_next_try_edit);
-
 	_autoconnector_close_when_table_disappears.SetCheck(prefs.autoconnector_close_when_table_disappears());
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -85,8 +77,6 @@ BOOL CDlgSAPrefs14::OnInitDialog()
 
 void CDlgSAPrefs14::OnOK()
 {
-	CString text;
-
 	if (_autoconnector_connection_manually.GetCheck() == true)
 	{
 		prefs.set_autoconnector_connection_method(k_AutoConnector_Connect_Manually);
@@ -108,14 +98,6 @@ void CDlgSAPrefs14::OnOK()
 	{
 		prefs.set_autoconnector_when_to_connect(k_AutoConnector_Connect_Permanent);
 	}
-
-	_autoconnector_time_to_next_try_edit.GetWindowText(text);
-	if (strtoul(text.GetString(), 0, 10)<0 || strtoul(text.GetString(), 0, 10)>100) 
-	{
-		MessageBox("Invalid time to next connection attempt", "ERROR", MB_OK);
-		return;
-	}
-	prefs.set_autoconnector_time_to_next_try(strtoul(text.GetString(), 0, 10));
 
 	prefs.set_autoconnector_close_when_table_disappears(_autoconnector_close_when_table_disappears.GetCheck());
 	CSAPrefsSubDlg::OnOK();
