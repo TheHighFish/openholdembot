@@ -96,8 +96,35 @@ Familiarizing yourself with OHReplay
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OHReplay/OHReplayMainWindow.bmp
+	filename Images/OHReplay.PNG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+OHReplay
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
 
 \end_inset
 
@@ -135,15 +162,6 @@ Clicking on the System Menu (red spades symbol) on the OHReplay window will
  bring up the system context menu.
  Selecting this entry will bring up the same file open dialog as using F2
  or Ctrl-O.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OHReplay/OHReplayOptions.bmp
-
-\end_inset
-
-
 \end_layout
 
 \end_body
