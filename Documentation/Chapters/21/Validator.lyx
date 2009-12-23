@@ -152,7 +152,7 @@ Autoplayer will be instructed to stop autoplaying.
 \begin_layout Standard
 
 \emph on
-!!! Shoot replay-frame on error: 
+Shoot replay-frame on error: 
 \emph default
 If the Validator discovers an inconsistency, and this preference is checked,
  OpenHoldem will shoot a 
@@ -167,6 +167,42 @@ replay
 
 replay-frame and store it in the replay-folder.
  The replay frame will help you to find the source of the error.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/Validator.PNG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Preferences: Validator
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body

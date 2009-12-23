@@ -81,8 +81,43 @@ Disable preferences dialog (formula parsing):
 If this option is checked OpenHoldem will not show the progress dailog when
  parsion a formula (OHF).
  This is meant to avoid occlusion in a production environment.
- Currently the dialog is created (or not) once at startup, so changes in
- this setting will only take effect, when you start OpenHoldem again.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/GUI.PNG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Preferences: GUI
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body
