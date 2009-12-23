@@ -40,6 +40,7 @@ theorems-ams
 \tracking_changes false
 \output_changes false
 \author "" 
+\author "" 
 \end_header
 
 \begin_body
@@ -193,6 +194,33 @@ http://www.microsoft.com/typography/cleartype/tuner/Step1.aspx
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Subsection
+Language settings
+\end_layout
+
+\begin_layout Standard
+Your language settings affect the behaviour of your system in several ways:
+ 
+\end_layout
+
+\begin_layout Itemize
+how to display special characters 
+\end_layout
+
+\begin_layout Itemize
+what to use as the decimal separator: dot or comma.
+\end_layout
+
+\begin_layout Standard
+This may seem to be nearly irrelevant, but can affect the scraper engine
+ and the autoplayer severly, even upto complete failure.
+ The only settings, that are guaranteed to work, are english ones.
+ Others may or may not be compatible.
+ If you are new to botting, be smart and stay on the safe side; there have
+ been more than enough lengthy threads by desperate newbies, mostly caused
+ by incorrect settings.
 \end_layout
 
 \end_body

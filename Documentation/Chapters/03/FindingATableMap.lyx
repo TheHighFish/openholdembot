@@ -40,6 +40,7 @@ theorems-ams
 \tracking_changes false
 \output_changes false
 \author "" 
+\author "" 
 \end_header
 
 \begin_body
@@ -81,9 +82,9 @@ The OpenHoldem project team does not provide official Table Maps for any
  and make minor or comprehensive changes to the pixels as they are displayed
  on the screen.
  These changes most often require changes to the table map as well.
- The OpenHoldem Project development team is a group of volunteers – we do
- not get paid for this, we have real lives and real families, and do this
- as a hobby.
+ The OpenHoldem Project development team is a group of volunteers --- we
+ do not get paid for this, we have real lives and real families, and do
+ this as a hobby.
  Maintaining working Table Maps would be a more than full time job, and
  thus instead, we put the power in your hands; we provide Table Map creation
  tools and testing tools to allow you to be self-sufficient.
@@ -112,7 +113,7 @@ http://www.maxinmontreal.com/wiki/index.php5?title=Table_Maps
 d and how they work.
  The forums have a lot of discussion on maps, and you can likely find maps
  attached to posts; same caveats apply as to the Wiki maps.
- You can try buying or trading maps with other community members – be cautious
+ You can try exchanging maps with other community members --- be cautious
  with this, however, and make sure you protect your interests; the OpenHoldem
  development team cannot be held accountable if you do something foolish
  on your own.
