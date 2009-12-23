@@ -187,7 +187,7 @@ Once OpenHoldem has been connected to a table, it will enter into a continuous
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="9" columns="2">
+<lyxtabular version="3" rows="10" columns="2">
 <features>
 <column alignment="left" valignment="top" width="25text%">
 <column alignment="left" valignment="top" width="75text%">
@@ -247,7 +247,7 @@ scraper engine to scrape and interpret the current pixels on the poker window
 \begin_inset Text
 
 \begin_layout Plain Layout
-Scraper override
+Scraper preprocessor
 \end_layout
 
 \end_inset
@@ -261,15 +261,64 @@ If a
 status open
 
 \begin_layout Plain Layout
+Scraper Preprocessor DLL
+\end_layout
+
+\end_inset
+
+Scraper Preprocessor DLL is loaded, then execute a textual preprocessing
+ for the input from the scraper; this is meant mainly for casinos, which
+ display non-numerical values, such as 
+\begin_inset Quotes eld
+\end_inset
+
+pot: (150 + 300)
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Scraper override
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+If a 
+\begin_inset Index
+status collapsed
+
+\begin_layout Plain Layout
 Scraper DLL
 \end_layout
 
 \end_inset
 
 Scraper Override DLL
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:Scraper-Override-DLL"
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -523,13 +572,28 @@ If the
 status open
 
 \begin_layout Plain Layout
+f$prefold
+\end_layout
+
+\end_inset
+
+f$prefold function evaluates to non-zero, and a fold control is present,
+ then fold.
+\end_layout
+
+\begin_layout Enumerate
+Else if the 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
 f$alli
 \end_layout
 
 \end_inset
 
 f$alli function evaluates to non-zero, and an all-in control is present
- (slider/Swag box) then move all-in 
+ (slider/Swag box), then move all-in 
 \end_layout
 
 \begin_layout Enumerate
@@ -629,7 +693,7 @@ To determine when and which action to take the Autoplayer performs the following
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="7" columns="2">
+<lyxtabular version="3" rows="8" columns="2">
 <features>
 <column alignment="left" valignment="top" width="25text%">
 <column alignment="left" valignment="top" width="75text%">
@@ -765,6 +829,37 @@ Handle
 status open
 
 \begin_layout Plain Layout
+f$rebuy
+\end_layout
+
+\end_inset
+
+ f$rebuy
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+If f$rebuy evaluates to non-zero and the rebuy-conditions specified in the
+ preferences are met, then execute an external rebuy-script.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Handle 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
 f$chat
 \end_layout
 
@@ -809,9 +904,10 @@ Isfinalanswer
 \begin_inset Text
 
 \begin_layout Plain Layout
-Determine the value of the isfinalanswer symbol – if the Iterator has finished,
- at least one action button is visible, we are “playing”, the number of
- sequential stable frames have been seen and the time value in 
+Determine the value of the isfinalanswer symbol --- if the Iterator has
+ finished, at least one action button is visible, we are “playing”, the
+ number of sequential stable frames have been seen and the time value in
+ 
 \begin_inset Index
 status open
 
@@ -875,7 +971,8 @@ OH-Script
 \end_layout
 
 \begin_layout Standard
-...
+The necessary are only primary functions, like f$alli, f$rais, f$call, etc.
+ !!!
 \end_layout
 
 \begin_layout Standard
@@ -1021,9 +1118,10 @@ Playbot
 
 \end_inset
 
-Playbot by Matrix.
- It is a very early case-study about prwin-based bots; prwin is an abbreviation
- for 
+The OpenHoldem default bot is Playbot by Matrix.
+ It is a very early case-study about prwin-based bots, meant for Fixed Limit
+ Texas Hold'em.
+ Prwin-based bots (short for 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1031,12 +1129,12 @@ probability of win
 \begin_inset Quotes erd
 \end_inset
 
-.
- Prwin-based bots try to code the decision with very few and small mathematical
- formulae, contrary to scenario-based bots, that code hundreds or thousands
- of different situations.
- Playbot is able to value-bet, protect and semi-bluff!!!??? Thus it is much
- better than the old WinHoldem-default-bot.
+) try to code the decision with very few and small mathematical formulae,
+ contrary to scenario-based bots, that code hundreds or thousands of different
+ situations.
+ Playbot despite its small size is able to value-bet, protect and control
+ the pot-size with some bet-capping logic.
+ Thus it is much better than the old WinHoldem-default-bot.
  But ofcourse it is no guaranteed money-maker at any level online.
 \end_layout
 
