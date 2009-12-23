@@ -54,7 +54,7 @@ In this directory are the following files:
 \end_layout
 
 \begin_layout Itemize
-ManualMode.exe, OHReplay.exe, OpenHoldem.exe, OpenScrape.exe – these are the
+ManualMode.exe, OHReplay.exe, OpenHoldem.exe, OpenScrape.exe --- these are the
  main files for each of the programs in the OpenHoldem project.
  Details on how to use each of these are throughout this manual.
 \end_layout
@@ -69,7 +69,7 @@ dbghelp.dll
 
 \end_inset
 
-dbghelp.dll – this is a Microsoft file that is used to produce memory dumps
+dbghelp.dll --- this is a Microsoft file that is used to produce memory dumps
  on critical errors.
  These memory dumps are useful for the developers to diagnose issues.
  
@@ -115,8 +115,8 @@ scraper.dll
 
 \end_inset
 
-scraper.dll, user.dll – these files are all extensions to OpenHoldem that
- you can use to customize the software.
+scraper.dll, scraper_preprocessor.dll, user.dll --- these files are all extensions
+ to OpenHoldem that you can use to customize the software.
  More detail on all of these are provided in this document.
  
 \end_layout
@@ -131,28 +131,33 @@ versus.bin
 
 \end_inset
 
-versus.bin – this file is the large lookup table that is used by the versus
+versus.bin --- this file is the large lookup table that is used by the versus
  symbols that are described in this document.
  If you want to use versus symbols, you need this file.
 \end_layout
 
 \begin_layout Itemize
-Files with .pdb extensions – these files contain the debug symbols that are
- required if you want to diagnose crashes or simply trace execution in a
- debugger.
+Files with .pdb extensions --- these files contain the debug symbols that
+ are required if you want to diagnose crashes or simply trace execution
+ in a debugger.
  If you need these, you know how to use these.
  If you don’t know what these are, you can safely ignore or delete them.
  
 \end_layout
 
 \begin_layout Itemize
-Files with .txt extensions – these are the release notes for each of the
+Files with .txt extensions --- these are the release notes for each of the
  programs in the project.
  Feel free to peruse these if you have problems falling asleep some night.
 \end_layout
 
 \begin_layout Itemize
-Files with .ini extensions !!!
+Files with .ini extensions --- these are configuration files; they can be
+ used for easy deployment on new machines or to avoid traces in the registry.
+\end_layout
+
+\begin_layout Itemize
+OpenHoldem Project 2.1.0 Manual.chm --- this manual.
 \end_layout
 
 \end_body
