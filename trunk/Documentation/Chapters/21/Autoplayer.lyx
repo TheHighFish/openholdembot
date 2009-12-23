@@ -109,10 +109,17 @@ SWAG Delay, select to delete
  These preferences are not set in the Table Map itself, as these are highly
  dependent on your CPU and network capacity and utilization, and thus are
  largely specific to your particular computing environment.
- SWAG Delay, delete to entry: For SWAG actions, this setting determines
- how long (in milliseconds) that OpenHoldem will pause after performing
- the SWAG Delete action as specified in the Table Map and prior to performing
- the SWAG Entry action.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+SWAG Delay, delete to entry
+\emph default
+: For SWAG actions, this setting determines how long (in milliseconds) that
+ OpenHoldem will pause after performing the SWAG Delete action as specified
+ in the Table Map and prior to performing the SWAG Entry action.
  These preferences are not set in the Table Map itself, as these are highly
  dependent on your CPU and network capacity and utilization, and thus are
  largely specific to your particular computing environment.
@@ -250,7 +257,39 @@ balance stability
 \end_layout
 
 \begin_layout Standard
-Figure 5.18-47 
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/Autoplayer.PNG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Preferences: Autoplayer
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body
