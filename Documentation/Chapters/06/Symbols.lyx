@@ -5907,6 +5907,13 @@ History
 \end_layout
 
 \begin_layout Standard
+The action-symbols (didrais, didcall, etc.) mean: what the autoplayer did,
+ not what the user did or what happened in the hand.
+ That does regulary confuse new users and is a problem when simulating hands
+ in ManualMode or with Replay Frames.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="14" columns="2">
 <features>
@@ -9787,8 +9794,35 @@ OpenHoldem classifies and orders poker hands into a single 32bit value.
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/Symbols/PokerValue.bmp
+	filename Images/PokerValue.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+PokerValue
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
 
 \end_inset
 
