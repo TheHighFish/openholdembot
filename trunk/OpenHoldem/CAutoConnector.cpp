@@ -887,14 +887,11 @@ int CAutoConnector::SelectTableMapAndWindowManually(int Choices)
 	int					result = 0;
 
 	write_log(3, "CAutoConnector::SelectTableMapAndWindowManually(..)\n");
-	if (Choices == 1) 
+	
+	for (int i=0; i<Choices; i++) 
 	{
-		// First (and only) item selected
-		return 0;
-	}
-	else if (Choices >= 2) 
-	{
-		for (int i=0; i<Choices; i++) 
+		// Build list of tables, that do not yet get served.
+		if (!p_sharedmem->PokerWindowAttached(g_tlist[i].hwnd))
 		{
 			tablelisthold.hwnd = g_tlist[i].hwnd;
 			tablelisthold.title = g_tlist[i].title;
@@ -905,21 +902,27 @@ int CAutoConnector::SelectTableMapAndWindowManually(int Choices)
 			tablelisthold.crect.bottom = g_tlist[i].crect.bottom;
 			cstd.tlist.Add(tablelisthold);
 		}
+	}
+	int NumberOfNonAttachedTables = cstd.tlist.GetSize(); //???
+	if (NumberOfNonAttachedTables == 0)
+	{
+		return -1;
 
-		// Display table select dialog
-		result = cstd.DoModal();
-		if (result == IDOK) 
-		{
-			return cstd.selected_item;
-		}
-		else
-		{
-			return -1;
-		}
+	}
+	else if (NumberOfNonAttachedTables == 1)
+	{
+		// Exactly one window, not yet served.
+		// First (and only) item selected
+		return 0;
+	}
+	// Display table select dialog
+	result = cstd.DoModal();
+	if (result == IDOK) 
+	{
+		return cstd.selected_item;
 	}
 	else
 	{
-		// 0 (or even less) windows and TMs.
 		return -1;
 	}
 }
