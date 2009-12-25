@@ -3302,7 +3302,7 @@ int CDlgTableMap::OnCreate(LPCREATESTRUCT lpCreateStruct)
 void CDlgTableMap::UpdateStatus(void)
 {
 	int			i, k, fontNum, cardNum;
-	CString		statusFonts, statusCards, node_text, node_group, fontSet;
+	CString		statusFonts, statusCards, node_text, fontSet;
 	HTREEITEM	node;
 
 	statusFonts = "";
@@ -3330,7 +3330,6 @@ void CDlgTableMap::UpdateStatus(void)
 		{
 			node = m_TableMapTree.GetChildItem(node);
 			node_text = m_TableMapTree.GetItemText(node);
-			node_group = node_text[3];
 			// ...and the first node is a font we need in the proper set...
 			if ((strncmp (node_text, &fontsList[i], 1) == 0) && (node_text[3] == fontSet))
 			{
