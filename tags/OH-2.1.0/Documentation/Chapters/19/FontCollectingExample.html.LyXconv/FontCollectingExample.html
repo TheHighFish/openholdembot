@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="FontCollectingExample.tex"> 
+<meta name="date" content="2009-11-14 19:20:00"> 
+<link rel="stylesheet" type="text/css" href="FontCollectingExample.css"> 
+</head><body 
+>
+   <h3 class="sectionHead"><span class="titlemark">0.1. </span> <a 
+ id="x1-10000.1"></a>Font collection example </h3>
+<!--l. 23--><p class="noindent" >This example on collecting fonts was reproduced from the Wiki
+(<a 
+href="http://www.maxinmontreal.com/wiki/index.php5?title=Collecting_text" class="url" ><span 
+class="ectt-1000">http://www.maxinmontreal.com/wiki/index.php5?title=Collecting_text</span></a>).
+<!--l. 25--><p class="indent" >   We start with nothing except a table that we need to extract fonts from, here I am
+using a Notepad document for simplicity.
+<!--l. 28--><p class="indent" >   Figure 9.4-67 Font collection example - notepad
+<!--l. 30--><p class="indent" >   Next we fire up OpenScrape, and attach it to our "Table". Then we build a region
+around the area we are working on. "New" / "Region" / name it characters / Use the
+coordinate editor to enclose the Region. You can also "shift-drag" the rectangle around
+to place it.
+<!--l. 36--><p class="indent" >   Figure 9.4-68 Font collection example - region
+<!--l. 38--><p class="indent" >   Set the region to the correct "transform", Type 0 in this case. Use the
+eyedropper to highlight the foreground pixels until we have nice seperation
+in the "Pixel seperation" field. Press "Create Font". We are presented with
+the "Add font characters" window. Highlight each "?" in turn and enter the
+correct character. "OK" to save. "Sort" when done here, then "save" on main
+GUI.
+<!--l. 47--><p class="indent" >   If you hit the problem of openscrape seeing two letters as one because they have
+touching pixels then you will need to collect them seperately. Make a new temporary
+region that only encloses one character (call it char), capture the problem characters
+individualy and all should be good.
+<!--l. 53--><p class="indent" >   Figure 9.4-69 Font collection example - add characters
+<!--l. 55--><p class="indent" >   Here is the result after collecting only "A", you can see this by clicking inside the
+"characters" Region.
+<!--l. 59--><p class="indent" >   Figure 9.4-70 Font collection example &#8211; &#8220;A&#8221; collected
+<!--l. 62--><p class="indent" >   Note "A,B,C" are already present in the Table Map.
+<!--l. 65--><p class="indent" >   Figure 9.4-71 Font collection example - "ABC" collected
+<!--l. 68--><p class="indent" >   So on we go collecting fonts, here we collect "D" .
+<!--l. 71--><p class="indent" >   Figure 9.4-72 Font collection example - collecting "D"  
+</body></html> 
+
+
+
