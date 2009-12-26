@@ -1,13 +1,5 @@
 v2.1.0 2010-xx-yy         === 2.0.4. see below ===
 =================
-BUG FIXES:
-- The new callbits and raisbits code had an index-problem.
-  Thanks to Skyzzo and Ganadai for reporting. [THF]
-- The mh_str_quads did put invalid string to the IsHand()-function.
-  Thanks to Lavezzi for reporting and to Loose_Passive for finding the bug. [THF]
-
-MAINTENANCE:
-
 NEW STUFF:
 - Added option to delete old log-files that exceed a given size. [THF]
 - Removed the old WinHoldem-default-bot. Replaced it with Playbot by Matrix. [THF]
@@ -33,11 +25,30 @@ NEW STUFF:
   a window or not.  This is primarily useful for automation in hoppers.  Sample code in the docu.
   WMA_DODISCONNECT will disconnect OH from an attached window
   WMA_CONNECTEDHWND will return the handle of the window that OH is attached to, zero otherwise [OpenHoldem]  
-- Added handling of new value for the "potmethod" symbol, "3".  potmethod=3, treats c0pot0-c0pot9 not as main pot/side pots, but 
-  rather as a way to find the best total pot.  The scraper engine will scrape all of c0pot0-c0pot9 and set the "pot" symbol to 
-  the highest scraped value.  Kind thanks to spud from Lab 1.  [OH]
-- Added a new capability extension called "scraperpre".  Some casinos have started displaying unusual information in various regions that do not have an obvious way to be handled with the current OH design, other than scraper override.  One casino, for example, displays pots like this "150 + (300)".  "150" is the amount that is committed to the pot in previous rounds, and "+ (300)" is the amount that has been bet by players so far in this round.  Scraper override is intended to be used with DLL injection or chat box parsing techniques, and what is needed here is a way to massage the transform engine's output before it gets converted internally into consumable numbers.
-"scraperpre" works just like other user-extensible DLLs.  It is different from scraper override, in that the string types that come out of the transform engine are passed to the DLL, rather than the final resultant types (doubles).  This makes the interface very straightforward.  The scraper engine will pass transformed strings to a user-coded DLL, the DLL can do whatever massaging is necessary, and then the engine will continue with what the DLL passes back for further processing.  In the above example, the scraperpre DLL could be used to simply strip everything off of the scraped pot string after + or (.  The engine would then get "150" back, which would then be processed into the correct double type. [OpenHoldem]
+- Added handling of new value for the "potmethod" symbol, "3".  potmethod=3, 
+  treats c0pot0-c0pot9 not as main pot/side pots, but rather as a way to find the best total pot.  
+  The scraper engine will scrape all of c0pot0-c0pot9 and set the "pot" symbol to the highest scraped value.  
+  Kind thanks to spud from Lab 1.  [OH]
+- Added a new capability extension called "scraperpre".  
+  Some casinos have started displaying unusual information in various regions that do not have an obvious way 
+  to be handled with the current OH design, other than scraper override.  
+  One casino, for example, displays pots like this "150 + (300)".  "150" is the amount that is committed to the pot 
+  in previous rounds, and "+ (300)" is the amount that has been bet by players so far in this round.  
+  Scraper override is intended to be used with DLL injection or chat box parsing techniques, 
+  and what is needed here is a way to massage the transform engine's output before it gets converted internally 
+  into consumable numbers. "scraperpre" works just like other user-extensible DLLs.  
+  It is different from scraper override, in that the string types that come out of the transform engine are passed 
+  to the DLL, rather than the final resultant types (doubles).  This makes the interface very straightforward.  
+  The scraper engine will pass transformed strings to a user-coded DLL, the DLL can do whatever massaging is necessary, 
+  and then the engine will continue with what the DLL passes back for further processing.  
+  In the above example, the scraperpre DLL could be used to simply strip everything off of the scraped pot string 
+  after + or (.  The engine would then get "150" back, which would then be processed into the correct double type. [OpenHoldem]
+
+BUG FIXES:
+- The new callbits and raisbits code had an index-problem.
+  Thanks to Skyzzo and Ganadai for reporting. [THF]
+- The mh_str_quads did put invalid string to the IsHand()-function.
+  Thanks to Lavezzi for reporting and to Loose_Passive for finding the bug. [THF]
 
 
 v2.0.4 2009-12-01
