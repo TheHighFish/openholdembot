@@ -1,0 +1,209 @@
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Section
+OpenHoldem Preferences – 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Validator
+\end_layout
+
+\end_inset
+
+Validator
+\end_layout
+
+\begin_layout Standard
+Validator preferences control various aspects of OpenHoldem’s Validator
+ engine.
+ See the {Validator} section for more information.
+ This is a new feature in OpenHoldem version 2.0.
+ The purpose of the Validator is to help people to develop more reliable
+ bots and Table Maps.
+ It will execute several hundred 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Consistency-checks
+\end_layout
+
+\end_inset
+
+consistency-checks at the symbol level to detect invalid game-states, 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Mis-scrapes
+\end_layout
+
+\end_inset
+
+mis-scrapes or incomplete information.
+ The Validator will write possible problems to the log-file and also show
+ a message box, as long as messages are not disabled.
+ The rules used by the Validator are always being refined and developed.
+ The discussion forum is the best place to keep on top of this (
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.maxinmontreal.com/forums/viewtopic.php?f=189 
+\end_layout
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Enable Validator
+\emph default
+: This preference determines when the Validator is engaged to do its work,
+ either never (completely off), when it is my turn, or always.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Use Heuristic Rules
+\emph default
+: Some rules are heuristic, i.e.
+ they are "common sense", but not always true.
+ Example: A game does usually not last longer than 2 minutes, so the autoplayer
+ has to act at least once per 120 seconds.
+ If it does not do so, there seems to be a problem.
+ Maybe the Table Map does not detect the players cards or the buttons.
+ This setting can result in false positives and is recommended for testing
+ only, but not for real-money-play.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Stop Autoplayer on error
+\emph default
+: If the Validator discovers an inconsistency, and this preference is checked,
+ the 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Autoplayer
+\end_layout
+
+\end_inset
+
+Autoplayer will be instructed to stop autoplaying.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Shoot replay-frame on error: 
+\emph default
+If the Validator discovers an inconsistency, and this preference is checked,
+ OpenHoldem will shoot a 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+replay
+\end_layout
+
+\end_inset
+
+replay-frame and store it in the replay-folder.
+ The replay frame will help you to find the source of the error.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/Validator.PNG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Preferences: Validator
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
