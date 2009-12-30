@@ -1,4 +1,10 @@
-v2.1.0 2010-xx-yy         === 2.0.4. see below ===
+v2.1.1 2010-xx-xx  
+=================
+BUG FIXES:
+- Re-enabled the ability to disable autoplayer after it has been engaged.  This was mistakenly removed in the 2.1.0 release.
+  [OpenHoldem]
+  
+v2.1.0 2010-12-26         === 2.0.4. see below ===
 =================
 NEW STUFF:
 - Added option to delete old log-files that exceed a given size. [THF]

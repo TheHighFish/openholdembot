@@ -125,7 +125,7 @@ private:
 	CString			_status_plcards, _status_comcards, _status_pokerhand, _status_prwin, _status_nopp;
 	CString			_status_nit, _status_action, _status_handrank;
 	RECT			_table_view_size;
-	//bool			_autoplay_pressed;
+	bool			_autoplay_pressed;
 	RECT			_prev_att_rect, _prev_wrect;
 
 	CCritSec		m_critsec;
