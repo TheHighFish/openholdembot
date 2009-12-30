@@ -83,6 +83,7 @@ BOOL CDlgSAPrefs11::OnInitDialog()
 	text.Format("%d", prefs.log_level_pt());
 	m_DebugLevel_PT.SelectString(0, text.GetString());
 
+	text.Format("%d", prefs.log_max_logsize());
 	m_MaximumLogSize.SetWindowText(text);
 	m_MaximumLogSize_Spin.SetRange(0, 999);
 	m_MaximumLogSize_Spin.SetPos(prefs.log_max_logsize());
