@@ -189,6 +189,9 @@ void CPreferences::InitDefaults(void)
 	_rebuy_minimum_time_to_next_try = 30;
 	_rebuy_script = "Rebuy.exe";
 
+	// Configuration check
+	_configurationcheck_disable_less_critical_checks = false;
+
 
 	// Obscure
 	_window_class_name = "OpenHoldem";
@@ -375,6 +378,9 @@ void CPreferences::ReadPreferences()
 		ReadReg("rebuy_condition_heuristic_check_for_occlusion", &_rebuy_condition_heuristic_check_for_occlusion);
 		ReadReg("rebuy_minimum_time_to_next_try", &_rebuy_minimum_time_to_next_try);
 		ReadReg("rebuy_script", &_rebuy_script);
+
+		// Configuration check
+		ReadReg("configurationcheck_disable_less_critical_checks", &_configurationcheck_disable_less_critical_checks);
 	
 		// obscure
 		ReadReg("window_class_name", &_window_class_name);
