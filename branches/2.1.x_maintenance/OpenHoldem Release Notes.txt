@@ -4,6 +4,14 @@ BUG FIXES:
 - Re-enabled the ability to disable autoplayer after it has been engaged.  This was mistakenly removed in the 2.1.0 release.
   [OpenHoldem]
 - Max_Logsize got set incorrectly in the preferences dialog. That has now been fixed. [THF]
+
+NEW STUFF:
+- Additional checks for incorrect system configurations,
+  like keyboard settings and correctly installed libraries. 
+  As a default the checks are enabled for new users,
+  but the not so critical ones can be disabled by experienced users. [THF]
+
+
   
 v2.1.0 2010-12-26        
 =================

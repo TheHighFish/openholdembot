@@ -732,23 +732,6 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 
 			// Start logging, in case the log-level got changed.
 			start_log();
-
-			CWindowDC dc(NULL);
-			int nBitsPerPixel = dc.GetDeviceCaps(PLANES) * dc.GetDeviceCaps(BITSPIXEL);
-
-			if (nBitsPerPixel < 24 && !prefs.disable_msgbox())
-				MessageBox(0, "It appears that your Display settings are not configured according to OpenHoldem specifications.\n"
-						   "24 bit color or higher is needed to reliably extract information from the poker client\n\n"
-						   "For more info, look at the wiki documentation and the user forums", 
-						   "Caution: Color Depth Too Low", MB_OK|MB_ICONWARNING);
-
-			BOOL fontSmoothingEnabled = FALSE;
-			SystemParametersInfo(SPI_GETFONTSMOOTHING, 0, (LPVOID)&fontSmoothingEnabled, 0);
-
-			if (fontSmoothingEnabled && !prefs.disable_msgbox())
-				MessageBox(0, "It appears that font smoothing is enabled. In order for OpenHoldem to reliably\n"
-						   "extract information from the poker client you should disable Font Smoothing", 
-						   "Caution: Font smoothing is enabled", MB_OK|MB_ICONWARNING);
 			
 			// log OH title bar text and table reset
 			::GetWindowText(_attached_hwnd, title, 512);

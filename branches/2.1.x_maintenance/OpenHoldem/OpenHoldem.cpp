@@ -8,6 +8,7 @@
 #include "CAutoConnector.h"
 #include "CAutoConnectorThread.h"
 #include "CAutoplayer.h"
+#include "CConfigurationCheck.h"
 #include "CDllExtension.h"
 #include "CFormula.h"
 #include "CGameState.h"
@@ -138,6 +139,7 @@ BOOL COpenHoldemApp::InitInstance()
 	// Start logging immediatelly after the loading the preferences
 	// and initializing the sessioncounter.
 	start_log();
+	if (!p_cconfigurationcheck) p_cconfigurationcheck = new CConfigurationCheck;
 	if (!p_sharedmem) p_sharedmem = new CSharedMem;
 	if (!p_pokerpro) p_pokerpro = new PokerPro;
 	if (!p_scraper)  p_scraper = new CScraper;
@@ -337,6 +339,7 @@ int COpenHoldemApp::ExitInstance()
 	if (p_pokerpro)  { delete p_pokerpro; p_pokerpro = NULL; }
 	if (p_sharedmem) { delete p_sharedmem; p_sharedmem = NULL; }
 	if (p_sessioncounter) { delete p_sessioncounter; p_sessioncounter = NULL; }
+	if (p_cconfigurationcheck) { delete p_cconfigurationcheck; p_cconfigurationcheck = NULL; }
 	
 	stop_log();
 
