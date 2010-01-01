@@ -64,8 +64,10 @@ private:
 	bool hasMucked(int i);
 	void checkSeats(int i, int j);
 	double getSB(double i);
-	void potUpdate(int i); //Beta function keeps track of multiple pots
+	void potUpdate(int i);	//Beta function keeps track of multiple pots
 	void resetVars();
+	bool NothingChanged();	//Nothing changed since last scrape
+	void writeHistory();	//Writes history to text file
 
 	fstream outfile;
 	CPokerAction action;
@@ -96,6 +98,7 @@ private:
 	string handText[10];
 	double currentbetx[10];
 	double playerbalance[10];
+	double prevplayerbalance[10];
 	double potplayer;
 	double bblind;
 	double pot;
@@ -103,11 +106,11 @@ private:
 	double prevpot;
 	double bet[4];
 	double rake;
+	double maxBet;		//Maximum bet on table
 	char card_common[5][5];
 	char card_player[10][5];
-	int nchairs;
+	int nchairs; 
 	int pCardsSeen;
-	int prevplayerbalance[10];
 	int prevbetx[10];
 	int ac_dealpos[10];
 	int playersplayingbits[10];
@@ -126,7 +129,6 @@ private:
 	int bblindpos;
 	int userchair;
 	int passChecks;	//Whether checks have been passed over or not
-	int maxBet;		//Maximum bet on table
 	int whosturn;	//Turn determinant; used to move sequentially through seats
 	int prevround;	//Betround in previous scrape
 	int prevdealerchair;	//Dealer chair in previous scrape

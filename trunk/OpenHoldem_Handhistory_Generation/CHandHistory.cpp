@@ -16,11 +16,16 @@ CHandHistory::CHandHistory()
 	nchairs = 10;	//Initialized to max value, updated later
 	newRoundFlag=false;
 	for(int i=0;i<9;i++)betroundSet[i]=false;
+	for(int i=0;i<10;i++)playerbalance[i]=0;
 }
 void CHandHistory::makeHistory()
 {
 	updateSymbols();
-
+	if(!NothingChanged()) writeHistory();
+	setPreviousActions();
+}
+void CHandHistory::writeHistory()
+{
 	//Append to (or create if it does not exist) a handhistory file
 	//using the session id as the name
 	stringstream ss;
@@ -38,7 +43,9 @@ void CHandHistory::makeHistory()
 	//Precondition: New round flag has been set and cards dealt
 	if(newRoundFlag==true&&betroundSet[7]==true)
 		roundStart();
-
+	//outfile<<"whosturn: "<<whosturn<<endl;
+	//outfile<<"lpta: "<<lpta<<endl;
+	//outfile<<"maxbet: "<<maxBet<<endl;
 	checkBetround();
 
 	//Precondition: Cards have been dealt and the round summary has not
@@ -50,8 +57,6 @@ void CHandHistory::makeHistory()
 	if(isShowdown())processShowdown();
 
 	outfile.close();
-
-	setPreviousActions();
 }
 void CHandHistory::updateSymbols()
 {
@@ -81,8 +86,7 @@ void CHandHistory::updateSymbols()
 		//If the player is playing, update the symbol. This condition used for muck detection.
 		if(playersplayingbits[i]!=0)
 			currentbetx[i]= p_symbols->sym()->currentbet[i];
-		if(p_symbols->sym()->balance[i]!=0||betround<=1)
-			playerbalance[i]= p_symbols->sym()->balance[i];
+		playerbalance[i]= p_symbols->sym()->balance[i];
 		strncpy_s(playername, 16, p_scraper->player_name(i).GetString(), _TRUNCATE);
 		splayername[i] = playername;
 	}
@@ -210,6 +214,7 @@ void CHandHistory::scanPlayerChanges()
 			//Precondition: Player is playing
 			if(playersplayingbits[i]!=0)
 			{
+				//Prevents loops during first betround if utg called and dealer checked
 				if(betround==1&&i==bblindpos&&lpta==-5)
 					lpta = bblindpos;
 				/* 
@@ -224,9 +229,7 @@ void CHandHistory::scanPlayerChanges()
 				}
 				//Pass players who are allin
 				if(allin[i]==true)
-				{
 					whosturn=(whosturn+1)%nchairs;
-				}
 				//Precondition: Player has raised
 				else if(currentbetx[i]>maxBet)
 				{
@@ -317,7 +320,7 @@ void CHandHistory::setPreviousActions()
 	prevround = betround;
 	prevpot = pot;
 	if(isShowdown())prevround = 5;
-	for(int i=0;i<nchairs;i++)
+	for(int i=0;i<nchairs;i++) 
 	{
 		if(playerbalance[i]!=0)
 			prevplayerbalance[i] = playerbalance[i];
@@ -433,7 +436,7 @@ void CHandHistory::processShowdown()
 		showdownResults();
 }
 void CHandHistory::showdownResults()
-{
+{ 
 	//Precondition: All players' hole cards have been seen and
 	//the showdown results haven't been displayed
 	if(pCardsSeen==nplayersplaying&&betroundSet[5]==false)
@@ -538,40 +541,9 @@ void CHandHistory::checkSeats(int i, int j)
 }
 double CHandHistory::getSB(double i)
 {
-	if(i==.02) return .01;
-	else if(i==.05) return .02;
-	else if(i==.1) return .05;
-	else if(i==.2) return .1;
+	if(i==.05) return .02;
 	else if(i==.25) return .1;
-	else if(i==.30) return .15;
-	else if(i==.40) return .20;
-	else if(i==.50) return .25;
-	else if(i==1) return .5;
-	else if(i==2) return 1;
-	else if(i==4) return 2;
-	else if(i==6) return 3;
-	else if(i==8) return 4;
-	else if(i==10) return 5;
-	else if(i==16) return 8;
-	else if(i==20) return 10;
-	else if(i==24) return 12;
-	else if(i==30) return 15;
-	else if(i==40) return 20;
-	else if(i==50) return 25;
-	else if(i==60) return 30;
-	else if(i==80) return 40;
-	else if(i==100) return 50;
-	else if(i==200) return 100;
-	else if(i==400) return 200;
-	else if(i==600) return 300;
-	else if(i==800) return 400;
-	else if(i==1000) return 500;
-	else if(i==2000) return 1000;
-	else if(i==3000) return 1500;
-	else if(i==4000) return 2000;
-	else if(i==6000) return 3000;
-	else if(i==20000) return 10000;
-	else return 0;
+	else return i/2;
 }
 void CHandHistory::potUpdate(int i)
 {
@@ -643,4 +615,15 @@ void CHandHistory::resetVars()
 		handText[i]="";
 	}
 	whosturn=utg;
+}
+bool CHandHistory::NothingChanged()
+{
+	bool same = true;
+	for(int i=0;i<nchairs;i++)
+		if(prevplayerbalance[i]!=playerbalance[i]||prevbetx[i]!=currentbetx[i])
+			same = false;
+	if(pot!=prevpot||betround!=prevround||prevdealerchair!=dealerchair)
+		same = false;
+
+	return same;
 }
