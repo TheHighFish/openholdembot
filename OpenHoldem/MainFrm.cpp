@@ -42,6 +42,7 @@
 #include "DialogSAPrefs14.h"
 #include "DialogSAPrefs15.h"
 #include "DialogSAPrefs16.h"
+#include "DialogSAPrefs17.h"
 #include "DialogScraperOutput.h"
 #include "inlines/eval.h"
 #include "MagicNumbers.h"
@@ -508,12 +509,14 @@ void CMainFrame::OnEditPreferences()
 	CDlgSAPrefs14 page14;
 	CDlgSAPrefs15 page15;
 	CDlgSAPrefs16 page16;
+	CDlgSAPrefs17 page17;
 
 	// add pages
 	dlg.AddPage(page1,  "Analyzer");
 	dlg.AddPage(page14, "Auto-Connector");
 	dlg.AddPage(page2,  "Autoplayer");
 	dlg.AddPage(page10, "Chat");
+	dlg.AddPage(page17, "Configuration Check");
 	dlg.AddPage(page3,  "DLL Extension");
 	dlg.AddPage(page15, "GUI");
 	dlg.AddPage(page7,  "ICM");
