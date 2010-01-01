@@ -154,6 +154,8 @@ public:
 	const bool rebuy_condition_heuristic_check_for_occlusion() { return _rebuy_condition_heuristic_check_for_occlusion; }
 	const int  rebuy_minimum_time_to_next_try() { return _rebuy_minimum_time_to_next_try; }
 	const CString rebuy_script() { return _rebuy_script; }
+	// Configuration check
+	const bool configurationcheck_disable_less_critical_checks() { return _configurationcheck_disable_less_critical_checks; }
 	// Misc
 	const int scraper_zoom() { return _scraper_zoom; }
 	// versus_path() is implemented in the cpp-file.
@@ -323,6 +325,9 @@ public:
 	void set_rebuy_condition_heuristic_check_for_occlusion(const bool b) { ENT _rebuy_condition_heuristic_check_for_occlusion = b; WriteReg("rebuy_condition_heuristic_check_for_occlusion", b); }
 	void set_rebuy_minimum_time_to_next_try(const int i) { ENT _rebuy_minimum_time_to_next_try = i; WriteReg("rebuy_minimum_time_to_next_try", i); }
 	void set_rebuy_script(const CString s) { ENT _rebuy_script = s; WriteReg("rebuy_script", s); }
+
+	// Configuration check
+	void set_configurationcheck_disable_less_critical_checks(const bool b) { ENT _configurationcheck_disable_less_critical_checks = b; WriteReg("configurationcheck_disable_less_critical_checks", b); }
 
 	// Misc
 	// (No method for versus_path,
@@ -498,6 +503,9 @@ private:
 	bool			_rebuy_condition_heuristic_check_for_occlusion;
 	int				_rebuy_minimum_time_to_next_try;
 	CString			_rebuy_script;
+
+	// Configuration check
+	bool			_configurationcheck_disable_less_critical_checks;
 
 	// Misc
 	int				_scraper_zoom;

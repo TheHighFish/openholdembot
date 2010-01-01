@@ -313,6 +313,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CConfigurationCheck.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CDllExtension.cpp"
 				>
 			</File>
@@ -919,6 +923,10 @@
 			</File>
 			<File
 				RelativePath=".\CAutoplayer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CConfigurationCheck.h"
 				>
 			</File>
 			<File
