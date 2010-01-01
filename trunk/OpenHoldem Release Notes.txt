@@ -1,18 +1,25 @@
-v2.2.0 2010-xx-xx  
+v2.1.1 2010-xx-xx  
 =================
 BUG FIXES:
 - Re-enabled the ability to disable autoplayer after it has been engaged.  This was mistakenly removed in the 2.1.0 release.
   [OpenHoldem]
+- Max_Logsize got set incorrectly in the preferences dialog. That has now been fixed. [THF]
 
-v2.1.0 2009-12-26        
+NEW STUFF:
+- Additional checks for incorrect system configurations,
+  like keyboard settings and correctly installed libraries. 
+  As a default the checks are enabled for new users,
+  but the not so critical ones can be disabled by experienced users. [THF]
+
+
+  
+v2.1.0 2010-12-26        
 =================
 NEW STUFF:
 - Added option to delete old log-files that exceed a given size. [THF]
 - Removed the old WinHoldem-default-bot. Replaced it with Playbot by Matrix. [THF]
 - Improvements to the user interface of the Script dialog. [Spew]
 - Added "Apply and Save" to the formula dialog with CTRL-S as the shortcut. [Spew]
-- Option for the GUI to start minimized and to disable the progress dialog.
-  That is especially useful to avoid occlusion, when you have to start new bots during a session. [THF]
 - New TM symbol allinmethod.
     0: swag the balance (default)
     1: click max (or allin), then raise
@@ -37,19 +44,19 @@ NEW STUFF:
   treats c0pot0-c0pot9 not as main pot/side pots, but rather as a way to find the best total pot.  
   The scraper engine will scrape all of c0pot0-c0pot9 and set the "pot" symbol to the highest scraped value.  
   Kind thanks to spud from Lab 1.  [OH]
-- Added a new capability extension called "scraper-preprocessor".  
+- Added a new capability extension called "scraperpre".  
   Some casinos have started displaying unusual information in various regions that do not have an obvious way 
   to be handled with the current OH design, other than scraper override.  
   One casino, for example, displays pots like this "150 + (300)".  "150" is the amount that is committed to the pot 
   in previous rounds, and "+ (300)" is the amount that has been bet by players so far in this round.  
   Scraper override is intended to be used with DLL injection or chat box parsing techniques, 
   and what is needed here is a way to massage the transform engine's output before it gets converted internally 
-  into consumable numbers. "scraper-preprocessor" works just like other user-extensible DLLs.  
+  into consumable numbers. "scraperpre" works just like other user-extensible DLLs.  
   It is different from scraper override, in that the string types that come out of the transform engine are passed 
   to the DLL, rather than the final resultant types (doubles).  This makes the interface very straightforward.  
   The scraper engine will pass transformed strings to a user-coded DLL, the DLL can do whatever massaging is necessary, 
   and then the engine will continue with what the DLL passes back for further processing.  
-  In the above example, the scraper-preprocessor DLL could be used to simply strip everything off of the scraped pot string 
+  In the above example, the scraperpre DLL could be used to simply strip everything off of the scraped pot string 
   after + or (.  The engine would then get "150" back, which would then be processed into the correct double type. [OpenHoldem]
 
 BUG FIXES:
