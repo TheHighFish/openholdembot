@@ -40,7 +40,6 @@ void CConfigurationCheck::CheckKeyboardSettings()
 {
 	TCHAR KeyboardLayout[KL_NAMELENGTH];
 	bool Success = GetKeyboardLayoutName((LPSTR)&KeyboardLayout);
-	MessageBox(0, KeyboardLayout, "Layout", 0);
 
 	if (Success && (_tcscmp(KeyboardLayout, k_KeyboardLayout_UK_US_English) != 0))
 	{
@@ -82,7 +81,7 @@ void CConfigurationCheck::CheckMicrosoftVisualCppRuntimeLibrary()
 	}
 	else
 	{
-		MessageBox(0, "MSVRT 8.0 (2005) could not be found.\n"
+		MessageBox(0, "MSVCRT 8.0 (2005) could not be found.\n"
 				"That DLL is required by Perl_callback.dll.\n"
 				"If you don't use Perl, you can ignore that message.\n"
 				"Otherwise please install the correct runtime libraries.\n",

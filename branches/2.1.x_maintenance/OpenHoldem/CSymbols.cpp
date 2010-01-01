@@ -3924,18 +3924,23 @@ void CSymbols::CalcSecondaryFormulas(void)
 
 	e = SUCCESS;
 	set_f$play(gram.CalcF$symbol(p_formula, "f$play", prefs.trace_functions(nTracePlay), &e));
+	write_log(3, "Secondary formulas; f$play: %f\n", p_symbols->f$play());
 
 	e = SUCCESS;
 	set_f$prefold(gram.CalcF$symbol(p_formula, "f$prefold", prefs.trace_functions(nTracePrefold), &e));
-
+	write_log(3, "Secondary formulas; f$prefold: %f\n", p_symbols->f$prefold());
+	
 	e = SUCCESS;
 	set_f$rebuy(gram.CalcF$symbol(p_formula, "f$rebuy", prefs.trace_functions(nTracePrefold), &e));
-
+	write_log(3, "Secondary formulas; f$rebuy: %f\n", p_symbols->f$rebuy());
+	
 	e = SUCCESS;
 	set_f$delay(gram.CalcF$symbol(p_formula, "f$delay", &e));
-
+	write_log(3, "Secondary formulas; f$delay: %f\n", p_symbols->f$delay());
+	
 	e = SUCCESS;
 	set_f$chat(gram.CalcF$symbol(p_formula, "f$chat", &e));
+	write_log(3, "Secondary formulas; f$chat: %f\n", p_symbols->f$chat());
 }
 
 void CSymbols::CalcAutoTrace()
