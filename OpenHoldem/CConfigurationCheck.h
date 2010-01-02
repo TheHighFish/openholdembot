@@ -11,7 +11,7 @@ private:
 private:
 	void CheckKeyboardSettings();
 	void CheckColourDepth();
-	void CheckMicrosoftVisualCppRuntimeLibrary();
+	void CheckForMissingLibraries();
 	void CheckFontSmoothing();
 } *p_cconfigurationcheck;
 

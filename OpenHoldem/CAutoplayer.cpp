@@ -206,11 +206,8 @@ void CAutoplayer::DoAutoplayer(void)
 	write_log(3, "Calling DoPrefold.\n");
 	DoPrefold();
 
-	Beep(440, 100);
-	Sleep(200);
 	if (p_symbols->f$rebuy() > 0)
 	{
-		Beep(880, 100);
 		write_log(3, "Calling DoRebuy.\n");
 		DoRebuy();
 	}
