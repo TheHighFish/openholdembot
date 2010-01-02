@@ -5,6 +5,8 @@
 #include "COcclusionCheck.h"
 #include "CSCraper.h"
 #include "CSymbols.h"
+#include "debug.h"
+
 
 COcclusionCheck *p_occlusioncheck = NULL;
 
@@ -100,36 +102,42 @@ bool COcclusionCheck::UserBalanceOccluded()
 		// Something went completely wrong.
 		// For sure the balance is not known;
 		// We treat the table as "occluded".
+		write_log(3, "COcclusionCheck: user chair not known. Assuming occlusion\n");
 		return true;
 	}
 	else if (UserBalanceNonZero())
 	{
 		// Balance known (non-zero).
 		// Probably not occluded.
+		write_log(3, "COcclusionCheck: user balance non-zero. Assuming all is ok\n");
 		return false;
 	}
 	else if (UserNameKnown())
 	{
 		// Username known, but balance zero.
 		// Username (and probably balance) not occluded.
+		write_log(3, "COcclusionCheck: user name known. Assuming all is ok\n");
 		return false;
 	}
 	else if (AnyOpponentNameKnown())
 	{
 		// Other name(s) known, but username not.
 		// Username (and probably balance) occluded.
+		write_log(3, "COcclusionCheck: user name and balance not known, but opponents. Assuming occlusion\n");
 		return true;
 	}
 	else if(AnyApponentBalanceNonZero())
 	{
-		// No names known, at least one other balance known (non-zeor).
+		// No names known, at least one other balance known (non-zero).
 		// TM does probably not support names, no occlusion.
+		write_log(3,"COcclusionCheck: TM does probably not support names, other balances known. Assuming no occulsion\n.");
 		return false;
 	}
 	else
 	{
 		// No names known, no other balances known or all zero.
 		// Probably full table occluded.
+		write_log(3,"COcclusionCheck: No names and balances known at all. Assuming occlusion.\n");
 		return true;
 	}
 }

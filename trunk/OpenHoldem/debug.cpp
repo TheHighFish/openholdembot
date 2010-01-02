@@ -103,27 +103,6 @@ char * get_now_time(char * timebuf)
     return timebuf;
 }
 
-void logfatal (char* fmt, ...) 
-{
-    char		buff[10000] ;
-    va_list		ap;
-    char		fatallogpath[MAX_PATH];
-    FILE		*fatallog;
-    char		nowtime[26];
-
-    sprintf_s(fatallogpath, MAX_PATH, "%s\\fatal error.log", _startup_path);
-    if (fopen_s(&fatallog, fatallogpath, "a")==0)
-	{
-		va_start(ap, fmt);
-		vsprintf_s(buff, 10000, fmt, ap);
-		get_now_time(nowtime);
-		fprintf(fatallog, "%s> %s", nowtime, buff);
-
-		va_end(ap);
-		fclose(fatallog);
-	}
-}
-
 LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers) 
 {
 	char flpath[MAX_PATH];
