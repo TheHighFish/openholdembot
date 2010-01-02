@@ -10,6 +10,10 @@ CConfigurationCheck *p_cconfigurationcheck = 0;
 // http://msdn.microsoft.com/en-us/goglobal/bb895996.aspx
 const TCHAR k_KeyboardLayout_UK_US_English[KL_NAMELENGTH] = "00000409";
 
+const int k_NumberOfRequiredLibraries = 4;
+char k_RequiredLibraries[k_NumberOfRequiredLibraries][13] = {"DBGHELP.DLL",
+	"MSVCRT80.dll", "MSVCP80D.DLL", "MSVCR80D.DLL"};
+
 
 CConfigurationCheck::CConfigurationCheck()
 {
@@ -36,6 +40,25 @@ void CConfigurationCheck::CheckEverything()
 	}
 }
 
+void CConfigurationCheck::CheckForMissingLibraries()
+{
+	for (int i=0; i<k_NumberOfRequiredLibraries; i++)
+	{
+		HMODULE hMSVCRT = LoadLibrary(k_RequiredLibraries[i]);
+		if (hMSVCRT != NULL)
+		{
+			FreeLibrary(hMSVCRT);
+		}
+		else
+		{
+			CString ErrorMessage = CString(k_RequiredLibraries[i]) +  CString("could not be loaded.\n")
+				+ CString("That library may be required by OpenHoldem and/or Perl.\n")
+				+ CString("If your setup causes problems you should install the missing DLLs.\n");
+			MessageBox(0, ErrorMessage, "Caution: Missing library", MB_OK|MB_ICONWARNING);
+		}
+	}
+}
+
 void CConfigurationCheck::CheckKeyboardSettings()
 {
 	TCHAR KeyboardLayout[KL_NAMELENGTH];
@@ -57,8 +80,8 @@ void CConfigurationCheck::CheckColourDepth()
 	int nBitsPerPixel = dc.GetDeviceCaps(PLANES) * dc.GetDeviceCaps(BITSPIXEL);
 	if (nBitsPerPixel < 24 && !prefs.disable_msgbox())
 		MessageBox(0, "It appears that your Display settings are not configured according to OpenHoldem specifications.\n"
-				   "24 bit color or higher is needed to reliably extract information from the poker client\n\n"
-				   "For more info, look at the wiki documentation and the user forums", 
+				   "24 bit color or higher is needed to reliably extract information from the poker client.\n\n"
+				   "For more info, look at the manual and the user forums", 
 				   "Caution: Color Depth Too Low", MB_OK|MB_ICONWARNING);
 }
 
@@ -67,24 +90,9 @@ void CConfigurationCheck::CheckFontSmoothing()
 	BOOL fontSmoothingEnabled = FALSE;
 	SystemParametersInfo(SPI_GETFONTSMOOTHING, 0, (LPVOID)&fontSmoothingEnabled, 0);
 	if (fontSmoothingEnabled && !prefs.disable_msgbox())
-		MessageBox(0, "It appears that font smoothing is enabled. In order for OpenHoldem to reliably\n"
-				   "extract information from the poker client you should disable Font Smoothing", 
-				   "Caution: Font smoothing is enabled", MB_OK|MB_ICONWARNING);
-}
-
-void CConfigurationCheck::CheckMicrosoftVisualCppRuntimeLibrary()
-{
-	HMODULE hMSVCRT = LoadLibrary("MSVCRT80.dll");
-	if (hMSVCRT != NULL)
-	{
-		FreeLibrary(hMSVCRT);
-	}
-	else
-	{
-		MessageBox(0, "MSVCRT 8.0 (2005) could not be found.\n"
-				"That DLL is required by Perl_callback.dll.\n"
-				"If you don't use Perl, you can ignore that message.\n"
-				"Otherwise please install the correct runtime libraries.\n",
-				"Caution: MSVCRT 8.0 not found", MB_OK|MB_ICONWARNING);
-	}
+		MessageBox(0, "It appears that font smoothing is enabled.\n" 
+					"In order for OpenHoldem to reliably\n"
+					"extract information from the poker client\n" 
+					"you should disable Font Smoothing.", 
+					"Caution: Font smoothing is enabled", MB_OK|MB_ICONWARNING);
 }
