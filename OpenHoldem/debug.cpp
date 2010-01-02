@@ -227,41 +227,42 @@ void start_log(void)
 	if (prefs.log_level()==0)
 		return;
 	
-	if (log_fp==NULL) 
-	{
-        CString fn;
-		CSLock lock(log_critsec);
+	if (log_fp!=NULL)
+		return;
 
-        fn.Format("%s\\oh_%lu.log", _startup_path, p_sessioncounter->session_id());
-		
-		// Check, if file exists and size is too large
-		if ((log_fp = _fsopen(fn.GetString(), "r", _SH_DENYWR)) != 0)
+    CString fn;
+	CSLock lock(log_critsec);
+
+    fn.Format("%s\\oh_%lu.log", _startup_path, p_sessioncounter->session_id());
+	
+	// Check, if file exists and size is too large
+	if ((log_fp = _fsopen(fn.GetString(), "r", _SH_DENYWR)) != 0)
+	{
+		LARGE_INTEGER file_size;
+		unsigned long int max_file_size = 1E06 * prefs.log_max_logsize();
+		if (GetFileSizeEx(log_fp, &file_size))
 		{
-			LARGE_INTEGER file_size;
-			unsigned long int max_file_size = 1E06 * prefs.log_max_logsize();
-			if (GetFileSizeEx(log_fp, &file_size))
+			if ((file_size.HighPart > 0) || (file_size.LowPart > max_file_size ))
 			{
-				if ((file_size.HighPart > 0) || (file_size.LowPart > max_file_size ))
-				{
-					fclose(log_fp);
-					remove(fn.GetString());
-				}
-				else
-				{
-					fclose(log_fp);
-				}
+				fclose(log_fp);
+				remove(fn.GetString());
 			}
 		}
-
-		// Append (or create) log
-		if ((log_fp = _fsopen(fn.GetString(), "a", _SH_DENYWR)) != 0)
+		else
 		{
-			write_log(1, "! log file open\n");
-			fprintf(log_fp, "yyyy.mm.dd hh:mm:ss -  # hand commoncard rank poker  win  los  tie  P      nit bestaction - play*      call       bet       pot   balance - FCRA FCRA swag\n");
-			fprintf(log_fp, "----------------------------------------------------------------------------------------------------------------------------------------------------------\n");
-			fflush(log_fp);
+			fclose(log_fp);
 		}
-    }
+	}
+
+	// Append (or create) log
+	if ((log_fp = _fsopen(fn.GetString(), "a", _SH_DENYWR)) != 0)
+	{
+		write_log(1, "! log file open\n");
+		fprintf(log_fp, "yyyy.mm.dd hh:mm:ss -  # hand commoncard rank poker  win  los  tie  P      nit bestaction - play*      call       bet       pot   balance - FCKRA FCKRA swag\n");
+		fprintf(log_fp, "----------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+		fflush(log_fp);
+	}
+
 }
 
 void write_log(int level, char* fmt, ...) 
