@@ -36,7 +36,7 @@ void CConfigurationCheck::CheckEverything()
 	if (!prefs.configurationcheck_disable_less_critical_checks())
 	{
 		CheckKeyboardSettings();
-		CheckMicrosoftVisualCppRuntimeLibrary();
+		CheckForMissingLibraries();
 	}
 }
 
@@ -51,7 +51,7 @@ void CConfigurationCheck::CheckForMissingLibraries()
 		}
 		else
 		{
-			CString ErrorMessage = CString(k_RequiredLibraries[i]) +  CString("could not be loaded.\n")
+			CString ErrorMessage = CString(k_RequiredLibraries[i]) +  CString(" could not be loaded.\n")
 				+ CString("That library may be required by OpenHoldem and/or Perl.\n")
 				+ CString("If your setup causes problems you should install the missing DLLs.\n");
 			MessageBox(0, ErrorMessage, "Caution: Missing library", MB_OK|MB_ICONWARNING);
