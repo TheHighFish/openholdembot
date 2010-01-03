@@ -11,6 +11,7 @@
 #include "CRebuyManagement.h"
 #include "CReplayFrame.h"
 #include "CScraper.h"
+#include "CStableFramesCounter.h"
 #include "CSymbols.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
@@ -79,12 +80,15 @@ void CAutoplayer::DoChat(void)
 	ComputeFirstPossibleNextChatTime();
 }
 
-void CAutoplayer::DoRebuy(void)
+void CAutoplayer::DoRebuyIfNeccessary(void)
 {
-	if (_mutex.Lock(500))
+	if (p_symbols->f$rebuy() > 0)
 	{
-		p_rebuymanagement->TryToRebuy();
-		_mutex.Unlock();
+		if (_mutex.Lock(500))
+		{
+			p_rebuymanagement->TryToRebuy();
+			_mutex.Unlock();
+		}
 	}
 }
 
@@ -172,13 +176,12 @@ void CAutoplayer::DoAllin(void)
 	// (p_tablemap->allinmethod() == 0)
 	// This will be handled by the swag-code.
 	_mutex.Unlock();	
+	p_stableframescounter->ResetOnAutoplayerAction();
 }
 
 void CAutoplayer::DoAutoplayer(void) 
 {
-	int				x = 0;
-	int				num_buttons_visible = 0;
-	int				delay = 0;
+	int	num_buttons_visible = 0;
 
 	write_log(3, "Starting Autoplayer cadence...\n");
 
@@ -206,11 +209,9 @@ void CAutoplayer::DoAutoplayer(void)
 	write_log(3, "Calling DoPrefold.\n");
 	DoPrefold();
 
-	if (p_symbols->f$rebuy() > 0)
-	{
-		write_log(3, "Calling DoRebuy.\n");
-		DoRebuy();
-	}
+	// Rebuy
+	write_log(3, "Calling DoRebuyIfNeccessary.\n");	
+	DoRebuyIfNeccessary();
 
 	//  Additional functionality: PokerChat
 	//	(Handle f$chat)
@@ -223,9 +224,8 @@ void CAutoplayer::DoAutoplayer(void)
 		DoChat();
 	}
 
-	// Get count of stable frames for use a little bit further down
-	x = CountSameScrape();
-	write_log(3, "Number of stable frames: % d\n", x);
+	int NumberOfStableFrames = p_stableframescounter->GetNumberOfStableFrames();
+	write_log(3, "Number of stable frames: % d\n", NumberOfStableFrames);
 
 	bool isFinalAnswer = true;
 
@@ -250,10 +250,12 @@ void CAutoplayer::DoAutoplayer(void)
 		isFinalAnswer = false;
 	}
 
-	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return
-	delay = p_symbols->f$delay() / prefs.scrape_delay();	// scale f$delay to a number of scrapes
+	// Scale f$delay to a number of scrapes
+	// Avoid division by zero; we use milliseconds, so +1 doesn't change much.
+	int additional_frames_to_wait = p_symbols->f$delay() / (prefs.scrape_delay() + 1);	
 
-	if (x < (int) prefs.frame_delay() + delay)
+	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return.
+	if (NumberOfStableFrames < (prefs.frame_delay() + additional_frames_to_wait))
 	{
 		write_log(3, "Not Final Answer because we don't have enough stable frames, or have not waited f$delay milliseconds\n");
 		isFinalAnswer = false;
@@ -270,10 +272,6 @@ void CAutoplayer::DoAutoplayer(void)
 	// and take the appropriate action
 	write_log(3, "Calling CalcPrimaryFormulas with final answer.\n");
 	p_symbols->CalcPrimaryFormulas(isFinalAnswer);
-	write_log(3, "Primary formulas; f$alli: %f\n", p_symbols->f$alli());
-	write_log(3, "Primary formulas; f$swag: %f\n", p_symbols->f$swag());
-	write_log(3, "Primary formulas; f$rais: %f\n", p_symbols->f$rais());
-	write_log(3, "Primary formulas; f$call: %f\n", p_symbols->f$call());
 
 	if(!isFinalAnswer)
 	{
@@ -381,191 +379,186 @@ void CAutoplayer::DoSwag(void)
 		return;
 	}
 
+	RECT rect_edit;
+	rect_edit.left = r_edit->second.left;
+	rect_edit.top = r_edit->second.top;
+	rect_edit.right = r_edit->second.right;
+	rect_edit.bottom = r_edit->second.bottom;
+
+	// TEXT SELECTION
+	if (p_tablemap->swagselectionmethod() == TEXTSEL_DOUBLECLICK)
+	{
+		write_log(3, "Text selection; calling mouse.dll to double click: %d,%d %d,%d\n", rect_edit.left, rect_edit.top, 
+			rect_edit.right, rect_edit.bottom);
+		(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect_edit, MouseLeft, 2, NULL, point_null);
+	}
+
+	else if (p_tablemap->swagselectionmethod() == TEXTSEL_SINGLECLICK)
+	{
+		write_log(3, "Text selection; calling mouse.dll to single click: %d,%d %d,%d\n", rect_edit.left, rect_edit.top, 
+			rect_edit.right, rect_edit.bottom);
+		(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect_edit, MouseLeft, 1, NULL, point_null);
+	}
+
+	else if (p_tablemap->swagselectionmethod() == TEXTSEL_CLICKDRAG)
+	{
+		write_log(3, "Text selection; calling mouse.dll to click drag: %d,%d %d,%d\n", rect_edit.left, rect_edit.top, 
+			rect_edit.right, rect_edit.bottom);
+		(theApp._dll_mouse_click_drag) (p_autoconnector->attached_hwnd(), rect_edit, NULL, point_null);
+	}
+
+	else if (p_tablemap->swagselectionmethod() == TEXTSEL_NOTHING)
+	{
+	}
+
 	else
 	{
+		write_log(3, "...ending DoSwag early (invalid swagselectionmethod).\n");
+		_mutex.Unlock();
+		return;
+	}
 
-		RECT rect_edit;
-		rect_edit.left = r_edit->second.left;
-		rect_edit.top = r_edit->second.top;
-		rect_edit.right = r_edit->second.right;
-		rect_edit.bottom = r_edit->second.bottom;
+	// Check for stolen focus, and thus misswag
+	if (GetForegroundWindow() != p_autoconnector->attached_hwnd())
+		lost_focus = true;
 
-		// TEXT SELECTION
-		if (p_tablemap->swagselectionmethod() == TEXTSEL_DOUBLECLICK)
+	write_log(3, "Sleeping %dms.\n", prefs.swag_delay_1());
+	Sleep(prefs.swag_delay_1());
+
+
+
+	// TEXT DELETION
+	if (p_tablemap->swagdeletionmethod() == TEXTDEL_DELETE)
+	{
+		write_log(3, "Text deletion; calling keyboard.dll to press 'delete'\n");
+		(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_DELETE, NULL, point_null);
+	}
+
+	else if (p_tablemap->swagdeletionmethod() == TEXTDEL_BACKSPACE)
+	{
+		write_log(3, "Text deletion; calling keyboard.dll to press 'backspace'\n");
+		(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_BACK, NULL, point_null);
+	}
+
+	else if (p_tablemap->swagdeletionmethod() == TEXTDEL_NOTHING)
+	{
+	}
+
+	else
+	{
+		write_log(3, "...ending DoSwag early (invalid swagdeletionmethod).\n");
+		_mutex.Unlock();
+		return;
+	}
+
+	// Check for stolen focus, and thus misswag
+	if (GetForegroundWindow() != p_autoconnector->attached_hwnd())
+		lost_focus = true;
+
+	write_log(3, "Sleeping %dms.\n", prefs.swag_delay_2());
+	Sleep(prefs.swag_delay_2());
+
+
+	// if we are swagging allin then set the swag value to be our balance (spew)
+	CString swag_amt;
+	if ((p_tablemap->allinmethod() == 0) && p_symbols->f$alli())
+		f_swag = p_symbols->sym()->balance[10];
+
+	// SWAG AMOUNT ENTRY
+	if (f_swag != (int) f_swag)
+		swag_amt.Format("%.2f", f_swag);
+	else
+		swag_amt.Format("%.0f", f_swag);
+
+	write_log(3, "Swag amount; calling keyboard.dll to swag: %s %d,%d %d,%d\n", swag_amt, rect_edit.left, rect_edit.top, 
+			rect_edit.right, rect_edit.bottom);
+	(theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), rect_edit, swag_amt, prefs.swag_use_comma(), NULL, point_null);
+
+	// Check for stolen focus, and thus misswag
+	if (GetForegroundWindow() != p_autoconnector->attached_hwnd())
+		lost_focus = true;
+
+	write_log(3, "Sleeping %dms.\n", prefs.swag_delay_3());
+	Sleep(prefs.swag_delay_3());
+
+	// BET CONFIRMATION ACTION
+	if (!lost_focus || !prefs.focus_detect())
+	{
+		if (p_tablemap->swagconfirmationmethod() == BETCONF_ENTER)
 		{
-			write_log(3, "Text selection; calling mouse.dll to double click: %d,%d %d,%d\n", rect_edit.left, rect_edit.top, 
-				rect_edit.right, rect_edit.bottom);
-			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect_edit, MouseLeft, 2, NULL, point_null);
+			write_log(3, "Confirmation; calling keyboard.dll to press 'Enter'\n");					
+			(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_RETURN, hwnd_focus, cur_pos);
 		}
 
-		else if (p_tablemap->swagselectionmethod() == TEXTSEL_SINGLECLICK)
+		else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET &&
+				 (_rais_but!=p_tablemap->r$()->end() || r_button!=p_tablemap->r$()->end()) )
 		{
-			write_log(3, "Text selection; calling mouse.dll to single click: %d,%d %d,%d\n", rect_edit.left, rect_edit.top, 
-				rect_edit.right, rect_edit.bottom);
-			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect_edit, MouseLeft, 1, NULL, point_null);
-		}
+			RECT rect_button;
 
-		else if (p_tablemap->swagselectionmethod() == TEXTSEL_CLICKDRAG)
-		{
-			write_log(3, "Text selection; calling mouse.dll to click drag: %d,%d %d,%d\n", rect_edit.left, rect_edit.top, 
-				rect_edit.right, rect_edit.bottom);
-			(theApp._dll_mouse_click_drag) (p_autoconnector->attached_hwnd(), rect_edit, NULL, point_null);
-		}
-
-		else if (p_tablemap->swagselectionmethod() == TEXTSEL_NOTHING)
-		{
-		}
-
-		else
-		{
-			write_log(3, "...ending DoSwag early (invalid swagselectionmethod).\n");
-			_mutex.Unlock();
-			return;
-		}
-
-		// Check for stolen focus, and thus misswag
-		if (GetForegroundWindow() != p_autoconnector->attached_hwnd())
-			lost_focus = true;
-
-		write_log(3, "Sleeping %dms.\n", prefs.swag_delay_1());
-		Sleep(prefs.swag_delay_1());
-
-
-
-		// TEXT DELETION
-		if (p_tablemap->swagdeletionmethod() == TEXTDEL_DELETE)
-		{
-			write_log(3, "Text deletion; calling keyboard.dll to press 'delete'\n");
-			(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_DELETE, NULL, point_null);
-		}
-
-		else if (p_tablemap->swagdeletionmethod() == TEXTDEL_BACKSPACE)
-		{
-			write_log(3, "Text deletion; calling keyboard.dll to press 'backspace'\n");
-			(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_BACK, NULL, point_null);
-		}
-
-		else if (p_tablemap->swagdeletionmethod() == TEXTDEL_NOTHING)
-		{
-		}
-
-		else
-		{
-			write_log(3, "...ending DoSwag early (invalid swagdeletionmethod).\n");
-			_mutex.Unlock();
-			return;
-		}
-
-		// Check for stolen focus, and thus misswag
-		if (GetForegroundWindow() != p_autoconnector->attached_hwnd())
-			lost_focus = true;
-
-		write_log(3, "Sleeping %dms.\n", prefs.swag_delay_2());
-		Sleep(prefs.swag_delay_2());
-
-
-		// if we are swagging allin then set the swag value to be our balance (spew)
-		CString swag_amt;
-		if ((p_tablemap->allinmethod() == 0) && p_symbols->f$alli())
-			f_swag = p_symbols->sym()->balance[10];
-
-		// SWAG AMOUNT ENTRY
-		if (f_swag != (int) f_swag)
-			swag_amt.Format("%.2f", f_swag);
-		else
-			swag_amt.Format("%.0f", f_swag);
-
-		write_log(3, "Swag amount; calling keyboard.dll to swag: %s %d,%d %d,%d\n", swag_amt, rect_edit.left, rect_edit.top, 
-				rect_edit.right, rect_edit.bottom);
-		(theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), rect_edit, swag_amt, prefs.swag_use_comma(), NULL, point_null);
-
-		// Check for stolen focus, and thus misswag
-		if (GetForegroundWindow() != p_autoconnector->attached_hwnd())
-			lost_focus = true;
-
-		write_log(3, "Sleeping %dms.\n", prefs.swag_delay_3());
-		Sleep(prefs.swag_delay_3());
-
-
-
-		// BET CONFIRMATION ACTION
-		if (!lost_focus || !prefs.focus_detect())
-		{
-			if (p_tablemap->swagconfirmationmethod() == BETCONF_ENTER)
+			// use i3button region if it exists, otherwise use the bet/raise button region
+			if (r_button!=p_tablemap->r$()->end())
 			{
-				write_log(3, "Confirmation; calling keyboard.dll to press 'Enter'\n");					
-				(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_RETURN, hwnd_focus, cur_pos);
+				rect_button.left = r_button->second.left;
+				rect_button.top = r_button->second.top;
+				rect_button.right = r_button->second.right;
+				rect_button.bottom = r_button->second.bottom;
 			}
-
-			else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET &&
-					 (_rais_but!=p_tablemap->r$()->end() || r_button!=p_tablemap->r$()->end()) )
-			{
-				RECT rect_button;
-
-				// use i3button region if it exists, otherwise use the bet/raise button region
-				if (r_button!=p_tablemap->r$()->end())
-				{
-					rect_button.left = r_button->second.left;
-					rect_button.top = r_button->second.top;
-					rect_button.right = r_button->second.right;
-					rect_button.bottom = r_button->second.bottom;
-				}
-				else
-				{
-					rect_button.left = _rais_but->second.left;
-					rect_button.top = _rais_but->second.top;
-					rect_button.right = _rais_but->second.right;
-					rect_button.bottom = _rais_but->second.bottom;
-				}
-
-				if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
-
-				{
-					write_log(3, "Confirmation; calling mouse.dll to double click bet button: %d,%d %d,%d\n", 
-						rect_button.left, rect_button.top, rect_button.right, rect_button.bottom);					
-					(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect_button, MouseLeft, 2, hwnd_focus, cur_pos);
-				}
-				else
-				{
-					write_log(3, "Confirmation; calling mouse.dll to single click bet button: %d,%d %d,%d\n", 
-						rect_button.left, rect_button.top, rect_button.right, rect_button.bottom);					
-					(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect_button, MouseLeft, 1, hwnd_focus, cur_pos);
-				}
-			}
-
-			else if (p_tablemap->swagconfirmationmethod() == BETCONF_NOTHING)
-			{
-			}
-
 			else
 			{
-				write_log(3, "...ending DoSwag early (invalid swagconfirmationmethod).\n");
-				_mutex.Unlock();
-				return;
+				rect_button.left = _rais_but->second.left;
+				rect_button.top = _rais_but->second.top;
+				rect_button.right = _rais_but->second.right;
+				rect_button.bottom = _rais_but->second.bottom;
 			}
 
-			// record didswag/prevaction
-			int sym_br = (int) p_symbols->sym()->br;
+			if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
 
-			set_didswag(4, p_symbols->sym()->didswag[4] + 1);
-			set_didswag(sym_br-1, p_symbols->sym()->didswag[sym_br-1] + 1);
-			set_prevaction(PREVACT_SWAG);
-
-			p_symbols->UpdateAutoplayerInfo();
-
-			// reset elapsedauto symbol
-			time_t my_time_t;
-			time(&my_time_t);
-			p_symbols->set_elapsedautohold(my_time_t);
-
-			p_heartbeat_thread->set_replay_recorded_this_turn(false);
-
-			// log it
-			write_logautoplay(1, "SWAG\n");
+			{
+				write_log(3, "Confirmation; calling mouse.dll to double click bet button: %d,%d %d,%d\n", 
+					rect_button.left, rect_button.top, rect_button.right, rect_button.bottom);					
+				(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect_button, MouseLeft, 2, hwnd_focus, cur_pos);
+			}
+			else
+			{
+				write_log(3, "Confirmation; calling mouse.dll to single click bet button: %d,%d %d,%d\n", 
+					rect_button.left, rect_button.top, rect_button.right, rect_button.bottom);					
+				(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect_button, MouseLeft, 1, hwnd_focus, cur_pos);
+			}
 		}
 
-		_mutex.Unlock();
+		else if (p_tablemap->swagconfirmationmethod() == BETCONF_NOTHING)
+		{
+		}
+
+		else
+		{
+			write_log(3, "...ending DoSwag early (invalid swagconfirmationmethod).\n");
+			_mutex.Unlock();
+			return;
+		}
+
+		// record didswag/prevaction
+		int sym_br = (int) p_symbols->sym()->br;
+
+		set_didswag(4, p_symbols->sym()->didswag[4] + 1);
+		set_didswag(sym_br-1, p_symbols->sym()->didswag[sym_br-1] + 1);
+		set_prevaction(PREVACT_SWAG);
+
+		p_symbols->UpdateAutoplayerInfo();
+
+		// reset elapsedauto symbol
+		time_t my_time_t;
+		time(&my_time_t);
+		p_symbols->set_elapsedautohold(my_time_t);
+
+		p_heartbeat_thread->set_replay_recorded_this_turn(false);
+
+		// log it
+		write_logautoplay(1, "SWAG\n");
 	}
+
+	_mutex.Unlock();
+	p_stableframescounter->ResetOnAutoplayerAction();
 
 	write_log(3, "...ending DoSwag, 'didswag' now: %d\n", p_symbols->sym()->didswag[4]);
 }
@@ -664,68 +657,65 @@ void CAutoplayer::DoARCCF(void)
 			return;
 		}
 
+		if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
+		{
+			write_log(3, "Calling mouse.dll to double click: %d,%d %d,%d\n", r.left, r.top, r.right, r.bottom);
+			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), r, MouseLeft, 2, hwnd_focus, cur_pos);
+		}
 		else
 		{
-
-			if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
-			{
-				write_log(3, "Calling mouse.dll to double click: %d,%d %d,%d\n", r.left, r.top, r.right, r.bottom);
-				(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), r, MouseLeft, 2, hwnd_focus, cur_pos);
-			}
-			else
-			{
-				write_log(3, "Calling mouse.dll to single click: %d,%d %d,%d\n", r.left, r.top, r.right, r.bottom);
-				(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), r, MouseLeft, 1, hwnd_focus, cur_pos);
-			}
-			
-			_mutex.Unlock();
-
-			// record did*/prevaction
-			int sym_br = (int) p_symbols->sym()->br;
-
-			switch (do_click)
-			{
-				case 4:  // allin
-					set_prevaction(PREVACT_ALLI);
-					write_logautoplay(1, "ALLI");
-					break;
-
-				case 3:  // raise
-					set_didrais(4, p_symbols->sym()->didrais[4] + 1);
-					set_didrais(sym_br-1, p_symbols->sym()->didrais[sym_br-1] + 1);
-					set_prevaction(PREVACT_RAIS);
-					write_logautoplay(1, "RAIS");
-					break;
-
-				case 2:  // call
-					set_didcall(4, p_symbols->sym()->didcall[4] + 1);
-					set_didcall(sym_br-1, p_symbols->sym()->didcall[sym_br-1] + 1);
-					set_prevaction(PREVACT_CALL);
-					write_logautoplay(1, "CALL");
-					break;
-
-				case 1:  // check
-					set_didchec(4, p_symbols->sym()->didchec[4] + 1);
-					set_didchec(sym_br-1, p_symbols->sym()->didchec[sym_br-1] + 1);
-					set_prevaction(PREVACT_CHEC);
-					write_logautoplay(1, "CHEC");
-					break;
-
-				case 0:  // fold
-					set_prevaction(PREVACT_FOLD);
-					write_logautoplay(1, "FOLD");
-					break;
-			}
-
-			p_symbols->UpdateAutoplayerInfo();
-
-			// reset elapsedauto symbol
-			time_t my_time_t;
-			time(&my_time_t);
-			p_symbols->set_elapsedautohold(my_time_t);
-
-			p_heartbeat_thread->set_replay_recorded_this_turn(false);
+			write_log(3, "Calling mouse.dll to single click: %d,%d %d,%d\n", r.left, r.top, r.right, r.bottom);
+			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), r, MouseLeft, 1, hwnd_focus, cur_pos);
 		}
+		
+		_mutex.Unlock();
+		p_stableframescounter->ResetOnAutoplayerAction();
+
+		// record did*/prevaction
+		int sym_br = (int) p_symbols->sym()->br;
+
+		switch (do_click)
+		{
+			case 4:  // allin
+				set_prevaction(PREVACT_ALLI);
+				write_logautoplay(1, "ALLI");
+				break;
+
+			case 3:  // raise
+				set_didrais(4, p_symbols->sym()->didrais[4] + 1);
+				set_didrais(sym_br-1, p_symbols->sym()->didrais[sym_br-1] + 1);
+				set_prevaction(PREVACT_RAIS);
+				write_logautoplay(1, "RAIS");
+				break;
+
+			case 2:  // call
+				set_didcall(4, p_symbols->sym()->didcall[4] + 1);
+				set_didcall(sym_br-1, p_symbols->sym()->didcall[sym_br-1] + 1);
+				set_prevaction(PREVACT_CALL);
+				write_logautoplay(1, "CALL");
+				break;
+
+			case 1:  // check
+				set_didchec(4, p_symbols->sym()->didchec[4] + 1);
+				set_didchec(sym_br-1, p_symbols->sym()->didchec[sym_br-1] + 1);
+				set_prevaction(PREVACT_CHEC);
+				write_logautoplay(1, "CHEC");
+				break;
+
+			case 0:  // fold
+				set_prevaction(PREVACT_FOLD);
+				write_logautoplay(1, "FOLD");
+				break;
+		}
+
+		p_symbols->UpdateAutoplayerInfo();
+
+		// reset elapsedauto symbol
+		time_t my_time_t;
+		time(&my_time_t);
+		p_symbols->set_elapsedautohold(my_time_t);
+
+		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 	}
 
 	write_log(3, "...ending DoARCCF, 'didrais'/'didcall'/'didchec' now: %d\n", 
@@ -846,6 +836,7 @@ void CAutoplayer::DoSlider(void)
 	}
 
 	_mutex.Unlock();
+	p_stableframescounter->ResetOnAutoplayerAction();
 
 	write_log(3, "...ending DoSlider.\n");
 }
@@ -898,69 +889,6 @@ void CAutoplayer::DoPrefold(void)
 	p_symbols->CalcAutoTrace();
 	write_log(3, "...ending DoPrefold.\n");
 }
-
-const int CAutoplayer::CountSameScrape(void) 
-{
-	int						i = 0;
-	static unsigned int		card_common_last[5] = {0};
-	static unsigned int		card_player_last[10][2] = {0};
-	static bool				dealer_last[10] = {0};
-	static double			playerbalance_last[10] = {0};
-	static double			playerbet_last[10] = {0};
-	static double			myturnbitslast = 0;
-	bool					same_scrape = false;
-	static int				num_same_scrapes = 0;
-
-	// These items need to be the same to count as a identical frame:
-	// - up and down cards
-	// - button position
-	// - playerbets
-	// - playerbalances
-	// - button states
-	same_scrape = true;
-	for (i=0; i<=4; i++)
-		if (p_scraper->card_common(i) != card_common_last[i])  
-			same_scrape = false;
-
-	for (i=0; i<=9; i++)
-	{
-		if (p_scraper->card_player(i, 0) != card_player_last[i][0])  same_scrape = false;
-		if (p_scraper->card_player(i, 1) != card_player_last[i][1])  same_scrape = false;
-		if (p_scraper->dealer(i) != dealer_last[i])  same_scrape = false;
-		if (p_scraper->player_balance(i) != playerbalance_last[i])  same_scrape = false;
-		if (p_scraper->player_bet(i) != playerbet_last[i])  same_scrape = false;
-	}
-
-	int e = SUCCESS;
-	int sym_myturnbits = (int) p_symbols->sym()->myturnbits;
-
-	if (sym_myturnbits != myturnbitslast)  same_scrape = false;
-
-	if (same_scrape)
-	{
-		num_same_scrapes++;
-	}
-	else
-	{
-		for (i=0; i<5; i++)
-		{
-			card_common_last[i] = p_scraper->card_common(i);
-		}
-		for (i=0; i<10; i++)
-		{
-			card_player_last[i][0] = p_scraper->card_player(i, 0);
-			card_player_last[i][1] = p_scraper->card_player(i, 1);
-			dealer_last[i] = p_scraper->dealer(i);
-			playerbalance_last[i] = p_scraper->player_balance(i);
-			playerbet_last[i] = p_scraper->player_bet(i);
-		}
-		myturnbitslast = sym_myturnbits;
-		num_same_scrapes = 0;
-	}
-
-	return num_same_scrapes;
-}
-
 
 int CAutoplayer::GetR$ButtonIndices(void)
 {

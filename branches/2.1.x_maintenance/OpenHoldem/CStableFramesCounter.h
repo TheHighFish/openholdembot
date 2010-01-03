@@ -1,7 +1,7 @@
 #ifndef _INC_CSTABLEFRAMESCOUNTER_H
 #define _INC_CSTABLEFRAMESCOUNTER_H
 
-class CStableFramesCounter
+extern class CStableFramesCounter
 {
 public:
 	CStableFramesCounter();
@@ -11,6 +11,8 @@ public:
 	int  GetNumberOfStableFrames();
 private:
 	void Reset();
-};
+private:
+	int _NumberOfStableFrames;
+} *p_stableframescounter;
 
 #endif // _INC_CSTABLEFRAMESCOUNTER_H

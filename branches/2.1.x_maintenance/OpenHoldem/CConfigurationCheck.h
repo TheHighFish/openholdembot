@@ -13,6 +13,6 @@ private:
 	void CheckColourDepth();
 	void CheckForMissingLibraries();
 	void CheckFontSmoothing();
-} *p_cconfigurationcheck;
+} *p_configurationcheck;
 
 #endif // INC_CCONFIGURATIONCHECK_H

@@ -25,6 +25,7 @@
 #include "CScraper.h"
 #include "CSessionCounter.h"
 #include "CSharedMem.h"
+#include "CStableFramesCounter.h"
 #include "CSymbols.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CValidator.h"
@@ -77,6 +78,60 @@ COpenHoldemApp::~COpenHoldemApp()
 
 // The one and only COpenHoldemApp object
 COpenHoldemApp theApp;
+
+void COpenHoldemApp::InstanciateAllSingletonsExceptSessionCounter()
+{
+	if (!p_configurationcheck) p_configurationcheck = new CConfigurationCheck;
+	if (!p_sharedmem) p_sharedmem = new CSharedMem;
+	if (!p_stableframescounter) p_stableframescounter = new CStableFramesCounter;
+	if (!p_pokerpro) p_pokerpro = new PokerPro;
+	if (!p_scraper)  p_scraper = new CScraper;
+	if (!p_symbols)  p_symbols = new CSymbols;
+	if (!p_tablemap)  p_tablemap = new CTablemap;
+	if (!p_formula)  p_formula = new CFormula;
+	if (!p_autoplayer)  p_autoplayer = new CAutoplayer(false, prefs.mutex_name());
+	if (!p_pokertracker_thread)  p_pokertracker_thread = new CPokerTrackerThread;
+	if (!p_dll_extension)  p_dll_extension = new CDllExtension;
+	if (!p_game_state)  p_game_state = new CGameState;
+	if (!p_perl)  p_perl = new CPerl;
+	if (!p_memory)  p_memory = new CMemory;	
+	if (!p_versus)  p_versus = new CVersus;	
+	if (!p_validator) p_validator = new CValidator;
+	if (!p_autoconnector) p_autoconnector = new CAutoConnector;
+	if (!p_rebuymanagement) p_rebuymanagement = new CRebuyManagement;
+	if (!p_occlusioncheck) p_occlusioncheck = new COcclusionCheck;
+	if (!p_autoconnectorthread) p_autoconnectorthread = new CAutoConnectorThread;
+}
+
+void COpenHoldemApp::DeleteAllSingletons()
+{
+	// Global instances.
+	// Releasing in reverse order should be good,
+	// but we have to be careful, as sometimes we do some work in the destructors,
+	// that depends on other classes, e.g. the destructor of the autoconnector
+	// needs its session_id (CSessionCounter).
+	if (p_autoconnectorthread) { delete p_autoconnectorthread; p_autoconnectorthread = NULL; } 
+	if (p_occlusioncheck) { delete p_occlusioncheck; p_occlusioncheck = NULL; }
+	if (p_rebuymanagement) { delete p_rebuymanagement; p_rebuymanagement = NULL; }
+	if (p_autoconnector) { delete p_autoconnector; p_autoconnector = NULL; }
+	if (p_validator) { delete p_validator; p_validator = NULL; }
+	if (p_versus)  { delete p_versus; p_versus = NULL; }
+	if (p_memory)  { delete p_memory; p_memory = NULL; }
+	if (p_perl)  { delete p_perl; p_perl = NULL; }
+	if (p_game_state)  { delete p_game_state; p_game_state = NULL; }
+	if (p_dll_extension)  { delete p_dll_extension; p_dll_extension = NULL; }
+	if (p_pokertracker_thread)	{ delete p_pokertracker_thread; p_pokertracker_thread = NULL; }
+	if (p_autoplayer)  { delete p_autoplayer; p_autoplayer = NULL; }
+	if (p_formula)  { delete p_formula; p_formula = NULL; }
+	if (p_tablemap)  { delete p_tablemap; p_tablemap = NULL; }
+	if (p_symbols)  { delete p_symbols; p_symbols = NULL; }
+	if (p_scraper)  { delete p_scraper; p_scraper = NULL; }
+	if (p_pokerpro)  { delete p_pokerpro; p_pokerpro = NULL; }
+	if (p_stableframescounter) { delete p_stableframescounter; p_stableframescounter = NULL; }
+	if (p_sharedmem) { delete p_sharedmem; p_sharedmem = NULL; }
+	if (p_sessioncounter) { delete p_sessioncounter; p_sessioncounter = NULL; }
+	if (p_configurationcheck) { delete p_configurationcheck; p_configurationcheck = NULL; }
+}
 
 // COpenHoldemApp initialization
 BOOL COpenHoldemApp::InitInstance()
@@ -139,25 +194,7 @@ BOOL COpenHoldemApp::InitInstance()
 	// Start logging immediatelly after the loading the preferences
 	// and initializing the sessioncounter.
 	start_log();
-	if (!p_cconfigurationcheck) p_cconfigurationcheck = new CConfigurationCheck;
-	if (!p_sharedmem) p_sharedmem = new CSharedMem;
-	if (!p_pokerpro) p_pokerpro = new PokerPro;
-	if (!p_scraper)  p_scraper = new CScraper;
-	if (!p_symbols)  p_symbols = new CSymbols;
-	if (!p_tablemap)  p_tablemap = new CTablemap;
-	if (!p_formula)  p_formula = new CFormula;
-	if (!p_autoplayer)  p_autoplayer = new CAutoplayer(false, prefs.mutex_name());
-	if (!p_pokertracker_thread)  p_pokertracker_thread = new CPokerTrackerThread;
-	if (!p_dll_extension)  p_dll_extension = new CDllExtension;
-	if (!p_game_state)  p_game_state = new CGameState;
-	if (!p_perl)  p_perl = new CPerl;
-	if (!p_memory)  p_memory = new CMemory;	
-	if (!p_versus)  p_versus = new CVersus;	
-	if (!p_validator) p_validator = new CValidator;
-	if (!p_autoconnector) p_autoconnector = new CAutoConnector;
-	if (!p_rebuymanagement) p_rebuymanagement = new CRebuyManagement;
-	if (!p_occlusioncheck) p_occlusioncheck = new COcclusionCheck;
-	if (!p_autoconnectorthread) p_autoconnectorthread = new CAutoConnectorThread; 
+	InstanciateAllSingletonsExceptSessionCounter(); 
 
 	// mouse.dll - failure in load is fatal
 	_mouse_dll = LoadLibrary("mouse.dll");
@@ -301,50 +338,26 @@ BOOL COpenHoldemApp::InitInstance()
 	return TRUE;
 }
 
-int COpenHoldemApp::ExitInstance()
+void COpenHoldemApp::StopThreads()
 {
 	if (p_iterator_thread) 
 	{
 		delete p_iterator_thread;
 		p_iterator_thread = NULL;
 	}
-
 	if (p_heartbeat_thread)
 	{
 		delete p_heartbeat_thread;
 		p_heartbeat_thread = NULL;
 	}
+}
 
-	// classes
-	// Releasing in reverse order should be good,
-	// but we have to be careful, as sometimes we do some work in the destructors,
-	// that depends on other classes, e.g. the destructor of the autoconnector
-	// needs its session_id (CSessionCounter).
-	if (p_autoconnectorthread) { delete p_autoconnectorthread; p_autoconnectorthread = NULL; } 
-	if (p_occlusioncheck) { delete p_occlusioncheck; p_occlusioncheck = NULL; }
-	if (p_rebuymanagement) { delete p_rebuymanagement; p_rebuymanagement = NULL; }
-	if (p_autoconnector) { delete p_autoconnector; p_autoconnector = NULL; }
-	if (p_validator) { delete p_validator; p_validator = NULL; }
-	if (p_versus)  { delete p_versus; p_versus = NULL; }
-	if (p_memory)  { delete p_memory; p_memory = NULL; }
-	if (p_perl)  { delete p_perl; p_perl = NULL; }
-	if (p_game_state)  { delete p_game_state; p_game_state = NULL; }
-	if (p_dll_extension)  { delete p_dll_extension; p_dll_extension = NULL; }
-	if (p_pokertracker_thread)	{ delete p_pokertracker_thread; p_pokertracker_thread = NULL; }
-	if (p_autoplayer)  { delete p_autoplayer; p_autoplayer = NULL; }
-	if (p_formula)  { delete p_formula; p_formula = NULL; }
-	if (p_tablemap)  { delete p_tablemap; p_tablemap = NULL; }
-	if (p_symbols)  { delete p_symbols; p_symbols = NULL; }
-	if (p_scraper)  { delete p_scraper; p_scraper = NULL; }
-	if (p_pokerpro)  { delete p_pokerpro; p_pokerpro = NULL; }
-	if (p_sharedmem) { delete p_sharedmem; p_sharedmem = NULL; }
-	if (p_sessioncounter) { delete p_sessioncounter; p_sessioncounter = NULL; }
-	if (p_cconfigurationcheck) { delete p_cconfigurationcheck; p_cconfigurationcheck = NULL; }
-	
+int COpenHoldemApp::ExitInstance()
+{
+	StopThreads();
+	DeleteAllSingletons();
 	stop_log();
-
 	Scintilla_ReleaseResources();
-
 	return CWinApp::ExitInstance();
 }
 
@@ -382,9 +395,11 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
+
 CDlgAbout::CDlgAbout() : CDialog(CDlgAbout::IDD) 
 {
 }
+
 
 void CDlgAbout::DoDataExchange(CDataExchange* pDX) 
 {
