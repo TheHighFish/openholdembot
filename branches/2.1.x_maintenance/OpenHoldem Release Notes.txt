@@ -6,6 +6,11 @@ BUG FIXES:
 - Max_Logsize got set incorrectly in the preferences dialog. That has now been fixed. [THF]
 - The logfile did sometimes not get opened correctly due to mis-placed brackets
   in the feature to control the size of the log-file. This has now been fixed. [THF]
+- Rebuy did only work when autoplayer-actions took place, but not, when heros balance fell to zero.
+  Calling the rebuy-function has now been moved from auto-player to the heartbeat-cycle. [THF]
+- Some people reported incorrect duplicate actions, when the action was very fast.
+  To avoid this we do now reset the counter for stable frames after autoplayer-actions,
+  as we expect some changes to appear. [THF]
 
 NEW STUFF:
 - Additional checks for incorrect system configurations,
