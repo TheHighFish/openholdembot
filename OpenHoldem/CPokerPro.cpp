@@ -11,6 +11,7 @@
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSessionCounter.h"
+#include "CStableFramesCounter.h"
 #include "CSymbols.h"
 #include "DialogPPro.h"
 #include "OpenHoldem.h"
@@ -2007,74 +2008,8 @@ void PokerPro::DoScrape(void)
 	p_scraper->set_button_state(7, "true");
 }
 
-// Copied from CAutoplayer.cpp to be used for f$delay (4-4-2008) Spektre
-const int PokerPro::CountSameScrapes(void) 
-{
-	int						i = 0;
-	static unsigned int		card_common_last[5] = {0};
-	static unsigned int		card_player_last[10][2] = {0};
-	static bool				dealer_last[10] = {0};
-	static double			playerbalance_last[10] = {0};
-	static double			playerbet_last[10] = {0};
-	static double			myturnbitslast = 0;
-	bool					same_scrape=false;
-	static int				num_same_scrapes=0;
-
-	int sym_myturnbits = (int) p_symbols->sym()->myturnbits;
-
-	// These items need to be the same to count as a identical frame:
-	// - up and down cards
-	// - button position
-	// - playerbets
-	// - playerbalances
-	// - button states
-	same_scrape = true;
-	for (i=0; i<=4; i++)
-	{
-		if (p_scraper->card_common(i) != card_common_last[i])  same_scrape = false;
-	}
-
-	for (i=0; i<=9; i++)
-	{
-		if (p_scraper->card_player(i, 0) != card_player_last[i][0])  same_scrape = false;
-		if (p_scraper->card_player(i, 1) != card_player_last[i][1])  same_scrape = false;
-		if (p_scraper->dealer(i) != dealer_last[i])  same_scrape = false;
-		if (p_scraper->player_balance(i) != playerbalance_last[i])  same_scrape = false;
-		if (p_scraper->player_bet(i) != playerbet_last[i])  same_scrape = false;
-	}
-
-	if (sym_myturnbits != myturnbitslast)  same_scrape = false;
-
-	if (same_scrape)
-	{
-		num_same_scrapes++;
-	}
-	else
-	{
-		for (i=0; i<=4; i++)
-		{
-			card_common_last[i] = p_scraper->card_common(i);
-		}
-		for (i=0; i<=9; i++)
-		{
-			card_player_last[i][0] = p_scraper->card_player(i, 0);
-			card_player_last[i][1] = p_scraper->card_player(i, 1);
-			dealer_last[i] = p_scraper->dealer(i);
-			playerbalance_last[i] = p_scraper->player_balance(i);
-			playerbet_last[i] = p_scraper->player_bet(i);
-		}
-		myturnbitslast = sym_myturnbits;
-		num_same_scrapes = 0;
-	}
-
-	return num_same_scrapes;
-}
-
-
 void PokerPro::DoAutoplayer(void) 
 {
-	int				x = 0, delay = 0;
-
 	int sym_myturnbits = (int) p_symbols->sym()->myturnbits;
 	int sym_br = (int) p_symbols->sym()->br;
 
@@ -2101,9 +2036,6 @@ void PokerPro::DoAutoplayer(void)
 		SendSitin(_ppdata.m_userchair);	// sit in
 	}
 
-	// Get count of stable frames for use a little bit further down
-	x = CountSameScrapes();
-
 	// If iterator thread is still iterating, then return
 	if (iter_vars.iterator_thread_running()) 
 		return;
@@ -2112,10 +2044,11 @@ void PokerPro::DoAutoplayer(void)
 	if (!sym_myturnbits) 
 		return;
 
-	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return (added Spektre 2008-04-03)
-	delay = p_symbols->f$delay() / prefs.scrape_delay();	// scale f$delay to a number of scrapes
+	// scale f$delay to a number of scrapes
+	int additional_frames_to_wait = p_symbols->f$delay() / (prefs.scrape_delay() + 1);	
 
-	if (x < (int) prefs.frame_delay() + delay) 
+	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return.
+	if (p_stableframescounter->GetNumberOfStableFrames() < (prefs.frame_delay() + additional_frames_to_wait))
 		return;
 
 	// Now that we got through all of the above, we are ready to evaluate the primary formulas
