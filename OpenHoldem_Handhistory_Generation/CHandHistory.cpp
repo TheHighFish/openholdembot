@@ -21,19 +21,19 @@ CHandHistory::CHandHistory()
 void CHandHistory::makeHistory()
 {
 	updateSymbols();
-	if(!NothingChanged()) writeHistory();
+	//if(!NothingChanged()) still not working all the time
+		writeHistory();
 	setPreviousActions();
 }
 void CHandHistory::writeHistory()
 {
 	//Append to (or create if it does not exist) a handhistory file
 	//using the session id as the name
+	CreateDirectory("handhistory",NULL);
 	stringstream ss;
-	ss<<"handhistory_"<<p_sessioncounter->session_id()<<".txt";
+	ss<<"handhistory/handhistory_"<<p_sessioncounter->session_id()<<".txt";
 	string s=ss.str()+" ";
-	char filename[20];
-	strcpy(filename, s.c_str());
-	outfile.open(filename, fstream::app);
+	outfile.open(s.c_str(), fstream::app);
 
 	//Precondition: New round
 	if(prevdealerchair!=dealerchair&&betround==1) {
@@ -43,9 +43,6 @@ void CHandHistory::writeHistory()
 	//Precondition: New round flag has been set and cards dealt
 	if(newRoundFlag==true&&betroundSet[7]==true)
 		roundStart();
-	//outfile<<"whosturn: "<<whosturn<<endl;
-	//outfile<<"lpta: "<<lpta<<endl;
-	//outfile<<"maxbet: "<<maxBet<<endl;
 	checkBetround();
 
 	//Precondition: Cards have been dealt and the round summary has not
@@ -109,9 +106,12 @@ void CHandHistory::roundStart()
 		if(isPlaying(m))
 		{
 			double balance = playerbalance[m] + currentbetx[m];
-			outfile<<"Seat "<<i<<": "<<splayername[m]<<" ( $"<<balance<<" in chips)";
-			if (m==dealerchair) outfile<<" DEALER"<<endl;
-			else outfile<<endl;
+			if(balance>=0)
+			{
+				outfile<<"Seat "<<i<<": "<<splayername[m]<<" ( $"<<balance<<" in chips)";
+				if (m==dealerchair) outfile<<" DEALER"<<endl;
+				else outfile<<endl;
+			}
 		}
 	}
 	if(SBfound)
@@ -239,15 +239,19 @@ void CHandHistory::scanPlayerChanges()
 						int j=postflopstart;
 						checkSeats(i, j);
 					}
+					double temp = maxBet;
 					maxBet = currentbetx[i];
 					playerbet[i][betround-1]=maxBet;
 					if((int)p_symbols->sym()->lim!=2)potUpdate(i);
 					if(allin[i]==true)
-						outfile<<splayername[i]<<": Allin $"<<currentbetx[i]<<endl;
-					else if(maxBet==0)
-						outfile<<splayername[i]<<": Bet $"<<currentbetx[i]<<endl;
+						outfile<<splayername[i]<<": Allin $"<<(currentbetx[i]-prevprevbetx[i])<<endl;
+					else if(temp==0)
+						if(currentbetx[i]!=prevbetx[i])
+							outfile<<splayername[i]<<": Bet $"<<(currentbetx[i]-prevbetx[i])<<endl;
+						else
+							outfile<<splayername[i]<<": Bet $"<<(currentbetx[i]-prevprevbetx[i])<<endl;
 					else 
-						outfile<<splayername[i]<<": Raise $"<<currentbetx[i]<<endl;
+						outfile<<splayername[i]<<": Raise $"<<(currentbetx[i]-prevprevbetx[i])<<endl;
 					lpta = (i-1)%nchairs;	//Set lpta to seat behind raiser
 					if(lpta==-1)lpta=nchairs-1;
 					whosturn=(whosturn+1)%nchairs;	//Increment whosturn
@@ -265,7 +269,7 @@ void CHandHistory::scanPlayerChanges()
 					if(allin[i]==true)
 						outfile<<splayername[i]<<": Allin $"<<prevplayerbalance[i]<<endl;
 					else
-						outfile<<splayername[i]<<": Call $"<<maxBet<<endl;
+						outfile<<splayername[i]<<": Call $"<<(maxBet-prevprevbetx[i])<<endl;
 					playerbet[i][betround-1]=maxBet;
 					whosturn=(whosturn+1)%nchairs;	//Increment whosturn
 				}
@@ -324,6 +328,7 @@ void CHandHistory::setPreviousActions()
 	{
 		if(playerbalance[i]!=0)
 			prevplayerbalance[i] = playerbalance[i];
+		prevprevbetx[i]=prevbetx[i];
 		prevbetx[i]= currentbetx[i];
 	}
 }
@@ -520,7 +525,7 @@ string CHandHistory::findLimit()
 }
 bool CHandHistory::isPlaying(int i)
 {
-	if(playersdealtbits[i]==1&&playerbalance[i]>.01)return true;
+	if(playersdealtbits[i]==1&&playerbalance[i]>=0)return true;
 	else return false;
 }
 bool CHandHistory::hasMucked(int i)
@@ -535,7 +540,7 @@ void CHandHistory::checkSeats(int i, int j)
 {
 	while(j!=i)
 	{
-		if(playersplayingbits[j]!=0)outfile<<splayername[j]<<" Check"<<endl;
+		if(playersplayingbits[j]!=0)outfile<<splayername[j]<<": Check"<<endl;
 		j=(j+1)%nchairs;
 	}
 }
@@ -613,6 +618,8 @@ void CHandHistory::resetVars()
 		CardMask_RESET(hand[i]);
 		cardsSeen[i]=false;
 		handText[i]="";
+		prevbetx[i]=0;
+		prevprevbetx[i]=0;
 	}
 	whosturn=utg;
 }

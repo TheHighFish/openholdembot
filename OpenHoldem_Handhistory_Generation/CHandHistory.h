@@ -12,7 +12,7 @@
 #include "CScraper.h"
 #include "CGameState.h"
 #include "CSessionCounter.h"
-
+#include "OpenHoldem.h"
 #include "poker_defs.h"
 #include "enumerate.h"
 #include "inlines/eval.h"
@@ -97,12 +97,14 @@ private:
 	char playername[16];
 	string handText[10];
 	double currentbetx[10];
+	double prevprevbetx[10];
 	double playerbalance[10];
 	double prevplayerbalance[10];
 	double potplayer;
 	double bblind;
 	double pot;
 	double multipot[4];
+	double prevbetx[10];
 	double prevpot;
 	double bet[4];
 	double rake;
@@ -111,7 +113,6 @@ private:
 	char card_player[10][5];
 	int nchairs; 
 	int pCardsSeen;
-	int prevbetx[10];
 	int ac_dealpos[10];
 	int playersplayingbits[10];
 	int playersdealtbits[10];
