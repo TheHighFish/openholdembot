@@ -379,6 +379,9 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			iswait = false;
 		}
 
+		write_log(3, "HBT: autoplayer_engaged(): %i\n", p_autoplayer->autoplayer_engaged());
+		write_log(3, "HBT: user_chair_confirmed(): %i\n", p_symbols->user_chair_confirmed());
+		write_log(3, "HBT: iswait: %i\n", iswait);
 		// If autoplayer is engaged, we know our chair, and the DLL hasn't told us to wait, then go do it!
 		if (p_autoplayer->autoplayer_engaged() && p_symbols->user_chair_confirmed() && !iswait)
 		{
@@ -401,6 +404,10 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			// take action
 			write_log(3, "HBT: Calling CalcPrimaryFormulas without isfinalanswer.\n");
 			p_symbols->CalcPrimaryFormulas(false);
+			// Calculate secondary formulas, as we need f$rebuy
+			write_log(3, "Calling CalcSecondaryFormulas.\n");
+			p_symbols->CalcSecondaryFormulas();
+			p_autoplayer->DoRebuyIfNeccessary();
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////

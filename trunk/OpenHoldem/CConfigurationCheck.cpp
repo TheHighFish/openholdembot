@@ -4,7 +4,7 @@
 #include "CPreferences.h"
 
 
-CConfigurationCheck *p_cconfigurationcheck = 0;
+CConfigurationCheck *p_configurationcheck = 0;
 
 // A full list of keyboard layout codes can be found here:
 // http://msdn.microsoft.com/en-us/goglobal/bb895996.aspx

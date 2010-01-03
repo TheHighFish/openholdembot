@@ -54,6 +54,11 @@ public:
 
 	HMODULE							_scraperpreprocessor_dll;
 	scraperpreprocessor_process_message_t	_dll_scraperpreprocessor_process_message;
+
+private:
+	void InstanciateAllSingletonsExceptSessionCounter();
+	void DeleteAllSingletons();
+	void StopThreads();	
 };
 
 extern COpenHoldemApp theApp;

@@ -3904,15 +3904,19 @@ void CSymbols::CalcPrimaryFormulas(const bool final_answer)
 
 	e = SUCCESS;
 	set_f$alli(gram.CalcF$symbol(p_formula, "f$alli", (final_answer && prefs.trace_functions(nTraceAlli)), &e));
-
+	write_log(3, "Primary formulas; f$alli: %f\n", p_symbols->f$alli());
+	
 	e = SUCCESS;
 	set_f$swag(gram.CalcF$symbol(p_formula, "f$swag", (final_answer && prefs.trace_functions(nTraceSwag)), &e));
+	write_log(3, "Primary formulas; f$swag: %f\n", p_symbols->f$swag());
 
 	e = SUCCESS;
 	set_f$rais(gram.CalcF$symbol(p_formula, "f$rais", (final_answer && prefs.trace_functions(nTraceRais)), &e));
+	write_log(3, "Primary formulas; f$rais: %f\n", p_symbols->f$rais());
 
 	e = SUCCESS;
 	set_f$call(gram.CalcF$symbol(p_formula, "f$call", (final_answer && prefs.trace_functions(nTraceCall)), &e));
+	write_log(3, "Primary formulas; f$call: %f\n", p_symbols->f$call());
 
 	CalcAutoTrace();
 }

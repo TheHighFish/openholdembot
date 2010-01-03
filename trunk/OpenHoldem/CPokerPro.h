@@ -151,7 +151,6 @@ private:
 	void setHHFilename(void);
 	const CString FT_string_PokerVal(int in_hand_value);
 	const CString FT_FullCardName(unsigned char in_card_value);
-	const int CountSameScrapes(void);						// Added to handle delay  (4-3-2008)  Spektre 
 
 	WSADATA		_wsadata;
 	char		_data[ppsock__nmsgmax][ppsock__msgsizmax];
