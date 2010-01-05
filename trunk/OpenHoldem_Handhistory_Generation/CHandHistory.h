@@ -1,22 +1,9 @@
 #ifndef _INC_CHANDHISTORY_H
-
 #define _INC_CHANDHISTORY_H
 
 #include <fstream>
-#include <tchar.h>
-#include <Windows.h>
-#include <sstream>
 
 #include "CPokerAction.h"
-#include "CSymbols.h"
-#include "CScraper.h"
-#include "CGameState.h"
-#include "CSessionCounter.h"
-#include "OpenHoldem.h"
-#include "poker_defs.h"
-#include "enumerate.h"
-#include "inlines/eval.h"
-#include "inlines/eval_type.h"
 
 using namespace std;
 
@@ -24,51 +11,36 @@ extern class CHandHistory
 {
 public:
 	CHandHistory();
-	//Main function, calls other functions based on table state
+	//~CHandHistory();
 	void makeHistory();
 
 private:
-	//Updates needed symbols
-	void updateSymbols();
-	//Sets previous table variables
-	void setPreviousActions();
-	//Returns date for output in history
-	string setDate();
-	//Checks if there is a showdown
-	bool isShowdown();
-	//Runs at the beginning of each match; sets initial variables
-	void roundStart();
-	//Sets betround-dependent variables 
-	void checkBetround();
-	//Constantly scans the table for player changes, moving around
-	//the table using whosturn
-	void scanPlayerChanges();
-	//Processes showdown info, including hands and hand values
-	void processShowdown();
-	//Gets a string readout of player cards
-	void showdownResults();
+	const string setDate(void);
+	const string findLimit(void);
+	const int DealPosition (const int chairnum);
+	const double getSB(const double i);
+	const bool NothingChanged(void);
+	const bool isBigBlind(const int i);
+	const bool isShowdown(void);
+	const bool cardsDealt(void);
+	const bool isPlaying(const int i);
+	const bool hasMucked(const int i);
+	void updateSymbols(void);
+	void setPreviousActions(void);
+	void roundStart(void);
+	void checkBetround(void);
+	void scanPlayerChanges(void);
+	void processShowdown(void);
+	void showdownResults(void);
     void GetPCstring(char *c, unsigned int c0, unsigned int c1);
-	//Gets a string readout of board cards
 	void GetBCstring(char *c, unsigned int c0);
-	//Calculates ac_dealpos
-	int DealPosition (const int chairnum);
-	//Experimental, checks if the pot is uncontested
-	void outputUncontested(int j);
-	//Checks if passed chair is big blind 
-	//(big blind pos, current bet=1, current betround=1)
-	bool isBigBlind(int i);
-	//Output table limit type
-	string findLimit();
-	bool cardsDealt();
-	bool isPlaying(int i);
-	bool hasMucked(int i);
-	void checkSeats(int i, int j);
-	double getSB(double i);
-	void potUpdate(int i);	//Beta function keeps track of multiple pots
-	void resetVars();
-	bool NothingChanged();	//Nothing changed since last scrape
-	void writeHistory();	//Writes history to text file
+	void outputUncontested(const int j);
+	void checkSeats(const int i, int j);
+	void writeHistory(void);
+	void potUpdate(const int i);
+	void resetVars(void);
 
+private:
 	fstream outfile;
 	CPokerAction action;
 	string splayername[10];
@@ -94,41 +66,25 @@ private:
 	bool seatsPlaying[10];
 	bool newRoundFlag;
 	bool postBlind[10];
-	char playername[16];
 	string handText[10];
 	double currentbetx[10];
 	double prevprevbetx[10];
 	double playerbalance[10];
 	double prevplayerbalance[10];
-	double potplayer;
-	double bblind;
 	double pot;
-	double multipot[4];
 	double prevbetx[10];
 	double prevpot;
 	double bet[4];
-	double rake;
 	double maxBet;		//Maximum bet on table
-	char card_common[5][5];
 	char card_player[10][5];
-	int nchairs; 
 	int pCardsSeen;
 	int ac_dealpos[10];
 	int playersplayingbits[10];
 	int playersdealtbits[10];
-	int nplayersactive;
-	int nplayersplaying;
-	int raischair;
-	int dealerchair;
-	int betround;
-	int utg;
 	int postflopstart;	//Starting seat after flop
-	int cbits;		//players playing bits
-	int dbits;		//players dealt bits
 	long int gameNumber;
 	int sblindpos;
 	int bblindpos;
-	int userchair;
 	int passChecks;	//Whether checks have been passed over or not
 	int whosturn;	//Turn determinant; used to move sequentially through seats
 	int prevround;	//Betround in previous scrape
@@ -142,7 +98,7 @@ private:
 	double activepot[4];	//Holds pots, 0-Main, 1-3-Side pots
 	double allincall[4];	//Amount to call allin raise
 	double playerbet[10][4];
-
+	double multipot[4];
 } *p_handhistory;
 
 #endif // _INC_CHANDHISTORY_H
