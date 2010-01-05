@@ -1,5 +1,19 @@
 #include "stdafx.h"
+#include <tchar.h>
+#include <Windows.h>
+#include <sstream>
+
 #include "CHandHistory.h"
+
+#include "CSymbols.h"
+#include "CScraper.h"
+#include "CGameState.h"
+#include "CSessionCounter.h"
+#include "OpenHoldem.h"
+#include "poker_defs.h"
+#include "enumerate.h"
+#include "inlines/eval.h"
+#include "inlines/eval_type.h"
 
 using namespace std;
 
@@ -13,7 +27,6 @@ CHandHistory::CHandHistory()
 	double randomnum = rand();
 	//Attempt to create a random starting game number
 	gameNumber = ((int)pow(randomnum,2))%10000000;	
-	nchairs = 10;	//Initialized to max value, updated later
 	newRoundFlag=false;
 	for(int i=0;i<9;i++)betroundSet[i]=false;
 	for(int i=0;i<10;i++)playerbalance[i]=0;
@@ -21,12 +34,14 @@ CHandHistory::CHandHistory()
 void CHandHistory::makeHistory()
 {
 	updateSymbols();
-	//if(!NothingChanged()) still not working all the time
-		writeHistory();
+	writeHistory();
 	setPreviousActions();
 }
 void CHandHistory::writeHistory()
 {
+	int				betround = (int) p_symbols->sym()->betround;
+	int				dealerchair = (int) p_symbols->sym()->dealerchair;
+
 	//Append to (or create if it does not exist) a handhistory file
 	//using the session id as the name
 	CreateDirectory("handhistory",NULL);
@@ -57,24 +72,17 @@ void CHandHistory::writeHistory()
 }
 void CHandHistory::updateSymbols()
 {
+	int				nchairs = (int)p_symbols->sym()->nchairs;
+	int				betround = (int) p_symbols->sym()->betround;
+	int				cbits = (int) p_symbols->sym()->playersplayingbits;
+	int				dbits = (int) p_symbols->sym()->playersdealtbits;
+
 	if (p_symbols->sym()->pot!=0||betround<=1)
 		pot = p_symbols->sym()->pot;
-	rake = p_symbols->sym()->rake;
-	userchair = (int)p_symbols->sym()->userchair;
-	cbits = (int)p_symbols->sym()->playersplayingbits;
-	dbits = (int)p_symbols->sym()->playersdealtbits;
-	betround = (int)p_symbols->sym()->betround;
-	potplayer = p_symbols->sym()->potplayer;
-	bblind = p_symbols->sym()->bblind;
-	nplayersactive = (int) p_symbols->sym()->nplayersactive;
-	nplayersplaying = (int) p_symbols->sym()->nplayersplaying;
-	raischair = (int) p_symbols->sym()->raischair;
-	dealerchair = (int) p_symbols->sym()->dealerchair;
 	postflopstart=sblindpos;
 	for(int i=0;i<4;i++)
 		bet[i] = p_symbols->sym()->bet[i];
-	for(int i=0;i<5;i++)	//Set board card letters
-		GetBCstring(card_common[i], p_scraper->card_common(i));
+
 	for(int i=0;i<nchairs;i++)	//Set individual player variables
 	{
 		GetPCstring(card_player[i], p_scraper->card_player(i,0), p_scraper->card_player(i,1));
@@ -84,15 +92,20 @@ void CHandHistory::updateSymbols()
 		if(playersplayingbits[i]!=0)
 			currentbetx[i]= p_symbols->sym()->currentbet[i];
 		playerbalance[i]= p_symbols->sym()->balance[i];
+		char	playername [16];
 		strncpy_s(playername, 16, p_scraper->player_name(i).GetString(), _TRUNCATE);
 		splayername[i] = playername;
 	}
 }
 void CHandHistory::roundStart()
 {
-	resetVars();
-	bool SBfound=true;
+	double			bblind = p_symbols->sym()->bblind;
+	int				userchair = (int) p_symbols->sym()->userchair;
+	int				nchairs = (int)p_symbols->sym()->nchairs;
+	int				dealerchair = (int) p_symbols->sym()->dealerchair;
+	bool			SBfound = true;
 
+	resetVars();
 	//Records if there is no small blind
 	if(p_symbols->sym()->currentbet[sblindpos]==0)
 		SBfound=false;
@@ -128,6 +141,14 @@ void CHandHistory::roundStart()
 }
 void CHandHistory::checkBetround()
 {
+	double		rake = p_symbols->sym()->rake;
+	int			userchair = (int) p_symbols->sym()->userchair;
+	int			nchairs = (int) p_symbols->sym()->nchairs;
+	char		card_common[5][5];
+
+	for(int i=0;i<5;i++)	//Set board card letters
+		GetBCstring(card_common[i], p_scraper->card_common(i));
+
 	//Precondition: Has not been run, user cards visible
 	if(betroundSet[0]==false&&betroundSet[8]==true&&userchair!=0&&
 		card_player[userchair][0]!=NULL&&card_player[userchair][1]!=NULL)
@@ -204,6 +225,12 @@ void CHandHistory::checkBetround()
 }
 void CHandHistory::scanPlayerChanges()
 {
+	double			bblind = p_symbols->sym()->bblind;
+	double			potplayer = p_symbols->sym()->potplayer;
+	int				betround = (int) p_symbols->sym()->betround;
+	int				nchairs = (int) p_symbols->sym()->nchairs;
+	int				raischair = (int) p_symbols->sym()->raischair;
+
 	//Iterates through all chairs
 	for(int i=0;i<nchairs;i++) 
 	{
@@ -320,23 +347,29 @@ void CHandHistory::scanPlayerChanges()
 }
 void CHandHistory::setPreviousActions()
 {
+	int				betround = (int) p_symbols->sym()->betround;
+	int				nchairs = (int) p_symbols->sym()->nchairs;
+	int				dealerchair = (int) p_symbols->sym()->dealerchair;
+
 	prevdealerchair = dealerchair;
 	prevround = betround;
 	prevpot = pot;
+
 	if(isShowdown())prevround = 5;
+
 	for(int i=0;i<nchairs;i++) 
 	{
 		if(playerbalance[i]!=0)
 			prevplayerbalance[i] = playerbalance[i];
-		prevprevbetx[i]=prevbetx[i];
-		prevbetx[i]= currentbetx[i];
+		prevprevbetx[i] = prevbetx[i];
+		prevbetx[i] = currentbetx[i];
 	}
 }
-string CHandHistory::setDate()
+const string CHandHistory::setDate()
 {
-	SYSTEMTIME st;
-	GetSystemTime(&st);
+	SYSTEMTIME			st;
 
+	GetSystemTime(&st);
 	stringstream ss;
 	string s;
 	ss<<st.wYear<<"-"<<st.wMonth<<"-"<<st.wDay<<" "<<st.wHour<<":"<<st.wMinute<<":"<<st.wSecond;
@@ -344,11 +377,15 @@ string CHandHistory::setDate()
 
 	return s;
 }
-bool CHandHistory::isShowdown()
+const bool CHandHistory::isShowdown()
 {
+	int				userchair = (int) p_symbols->sym()->userchair;
+	int				nchairs = (int) p_symbols->sym()->nchairs;
+
 	//If a player other than the user has cards showing, it is showdown
 	for(int i=0;i<nchairs;i++)
-		if(card_player[i][1]!=NULL&&i!=userchair&&playersplayingbits[i]!=0)return true;
+		if(card_player[i][1]!=NULL&&(i!=userchair||userchair==0)&&playersplayingbits[i]!=0)
+			return true;
 
 	return false;
 }
@@ -386,7 +423,7 @@ void CHandHistory::GetBCstring(char *c, unsigned int c0)
 
 	c[3]='\0';
 }
-int CHandHistory::DealPosition (const int chairnum)
+const int CHandHistory::DealPosition (const int chairnum)
 {
 	//DealPosition function used elsewhere in OH, haven't gotten around to accessing
 	//the private function
@@ -411,6 +448,8 @@ int CHandHistory::DealPosition (const int chairnum)
 }
 void CHandHistory::processShowdown()
 {
+	int				nchairs = (int)p_symbols->sym()->nchairs;
+
 	for(int i=0;i<nchairs;i++)
 	{
 		//Precondition: Player is playing, their cards haven't been processed yet
@@ -442,6 +481,9 @@ void CHandHistory::processShowdown()
 }
 void CHandHistory::showdownResults()
 { 
+	int				nchairs = (int) p_symbols->sym()->nchairs;
+	int				nplayersplaying = (int) p_symbols->sym()->nplayersplaying;
+
 	//Precondition: All players' hole cards have been seen and
 	//the showdown results haven't been displayed
 	if(pCardsSeen==nplayersplaying&&betroundSet[5]==false)
@@ -473,36 +515,31 @@ void CHandHistory::showdownResults()
             case StdRules_HandType_STFLUSH: outfile<<"a Straight Flush."<<endl; break;
 		}
 		betroundSet[5]=true;
-		/*outfile<<"activepot[0] = "<<activepot[0]<<endl;
-		outfile<<"activepot[1] = "<<activepot[1]<<endl;
-		outfile<<"activepot[2] = "<<activepot[2]<<endl;
-		outfile<<"activepot[3] = "<<activepot[3]<<endl;
-		outfile<<"potnum = "<<potnum<<endl;*/
 	}
 }
-void CHandHistory::outputUncontested(int j)
+void CHandHistory::outputUncontested(const int j)
 {
+	double			rake = p_symbols->sym()->rake;
+
 	if(betroundSet[6]==false)
 	{
 		outfile<<"*** SUMMARY ***"<<endl;
 		outfile<<"Total pot $"<<prevpot<<" Rake $"<<(rake*prevpot)<<endl;
 		outfile<<splayername[j]<<": wins $"<<prevpot<<endl;
 		betroundSet[6]=true;
-		/*outfile<<"activepot[0] = "<<activepot[0]<<endl;
-		outfile<<"activepot[1] = "<<activepot[1]<<endl;
-		outfile<<"activepot[2] = "<<activepot[2]<<endl;
-		outfile<<"activepot[3] = "<<activepot[3]<<endl;
-		outfile<<"potnum = "<<potnum<<endl;*/
 	}
 }
-bool CHandHistory::isBigBlind(int i)
+const bool CHandHistory::isBigBlind(const int i)
 {
+	int			betround = (int) p_symbols->sym()->betround;
+
 	//Determines if chair passed is the big blind
 	return(currentbetx[i]==bet[betround-1]&&ac_dealpos[i]==2&&betround==1);
 }
-bool CHandHistory::cardsDealt()
+const bool CHandHistory::cardsDealt()
 {
-	int playersdealt=0;
+	int				nchairs = (int) p_symbols->sym()->nchairs;
+	int				playersdealt = 0;
 
 	//If any cardbacks are showing, cards have been dealt
 	for(int i=0;i<nchairs;i++)
@@ -514,44 +551,54 @@ bool CHandHistory::cardsDealt()
 	else 
 		return false;
 }
-string CHandHistory::findLimit()
+const string CHandHistory::findLimit()
 {
-	int lim = (int)p_symbols->sym()->lim;
-	string str;
+	int				lim = (int) p_symbols->sym()->lim;
+	string			str = "";
+
 	if(lim==0)str="NL";
 	else if(lim==1)str="PL";
 	else if(lim==2)str="FL";
 	return str;
 }
-bool CHandHistory::isPlaying(int i)
+const bool CHandHistory::isPlaying(const int i)
 {
-	if(playersdealtbits[i]==1&&playerbalance[i]>=0)return true;
-	else return false;
+	if(playersdealtbits[i]==1&&playerbalance[i]>=0)
+		return true;
+
+	else 
+		return false;
 }
-bool CHandHistory::hasMucked(int i)
+const bool CHandHistory::hasMucked(const int i)
 {
+	int				betround = (int) p_symbols->sym()->betround;
+
 	//Precondition: Betround is 4, player has called and has not folded
-	if(betround==4&&currentbetx[i]==maxBet&&seatsPlaying[i]==true)
+	if(betround==4&&(currentbetx[i]==maxBet||playerbalance[i]==(prevplayerbalance[i]-maxBet))&&seatsPlaying[i]==true)
 		return true;
 
 	return false;
 }
-void CHandHistory::checkSeats(int i, int j)
+void CHandHistory::checkSeats(const int i, int j)
 {
+	int				nchairs = (int) p_symbols->sym()->nchairs;
+
 	while(j!=i)
 	{
 		if(playersplayingbits[j]!=0)outfile<<splayername[j]<<": Check"<<endl;
 		j=(j+1)%nchairs;
 	}
 }
-double CHandHistory::getSB(double i)
+const double CHandHistory::getSB(const double i)
 {
 	if(i==.05) return .02;
 	else if(i==.25) return .1;
 	else return i/2;
 }
-void CHandHistory::potUpdate(int i)
+void CHandHistory::potUpdate(const int i)
 {
+	int			betround = (int) p_symbols->sym()->betround;
+
 	//Precondition: Player has gone allin, and this hasn't been caught yet
 	if((playerbalance[i]<=maxBet||playerbalance[i]==0)&&allin[i]==false) 
 	{
@@ -588,8 +635,11 @@ void CHandHistory::potUpdate(int i)
 }
 void CHandHistory::resetVars()
 {
+	double			bblind = p_symbols->sym()->bblind;
+	int				nchairs = (int) p_symbols->sym()->nchairs;
+	int				utg = 0;
+
 	newRoundFlag=false;
-	nchairs = (int)p_symbols->sym()->nchairs;
 	pCardsSeen = 0;
 	gameNumber++;
 	maxBet=bblind;
@@ -623,12 +673,17 @@ void CHandHistory::resetVars()
 	}
 	whosturn=utg;
 }
-bool CHandHistory::NothingChanged()
+const bool CHandHistory::NothingChanged()
 {
-	bool same = true;
+	int				betround = (int) p_symbols->sym()->betround;
+	int				nchairs = (int) p_symbols->sym()->nchairs;
+	int				dealerchair = (int) p_symbols->sym()->dealerchair;
+	bool			same = true;
+
 	for(int i=0;i<nchairs;i++)
 		if(prevplayerbalance[i]!=playerbalance[i]||prevbetx[i]!=currentbetx[i])
 			same = false;
+
 	if(pot!=prevpot||betround!=prevround||prevdealerchair!=dealerchair)
 		same = false;
 
