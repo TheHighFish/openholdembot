@@ -1,4 +1,4 @@
-#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -6,6 +6,8 @@
 \use_default_options true
 \begin_modules
 theorems-ams
+eqs-within-sections
+figs-within-sections
 \end_modules
 \language english
 \inputencoding auto
@@ -154,10 +156,7 @@ status open
 
 \begin_layout Plain Layout
 
-\family typewriter
-ppm 
-\lang english
-install Win32::API
+ppm install Win32::API
 \end_layout
 
 \end_inset
@@ -174,9 +173,8 @@ inline false
 status open
 
 \begin_layout Plain Layout
- 
-\family typewriter
-set PATH = C:
+
+ set PATH = C:
 \backslash
 Programs
 \backslash
@@ -334,16 +332,6 @@ http://www.maxinmontreal.com/forums/viewtopic.php?p=20129
 
 \end_inset
 
-
-\begin_inset Note Note
-status collapsed
-
-\begin_layout Plain Layout
-!!!download package!!!
-\end_layout
-
-\end_inset
-
 .
  It contains including:
 \end_layout
@@ -365,18 +353,20 @@ To use it, you have to adapt the following lines according to your system
  settings: 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
+
 use lib "C:
 \backslash
 ..."
 \end_layout
 
 \begin_layout Plain Layout
+
 use constant the_DebugFile => "..."
 \end_layout
 
