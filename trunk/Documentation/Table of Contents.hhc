@@ -5,11 +5,14 @@
 <!-- Sitemap 1.0 -->
 </HEAD><BODY>
 <OBJECT type="text/site properties">
+	<param name="Background" value="0xc0c0c0">
+	<param name="Window Styles" value="0x800025">
 	<param name="ImageType" value="Folder">
 </OBJECT>
 <UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Introduction">
+		<param name="Local" value="Chapters\33\Titlepage.html.LyXconv\Titlepage.html">
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
@@ -322,8 +325,7 @@
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Starting Hand Ranking">
-				<param name="Local" value="Chapters\29_Handrank\Handrank.html.LyXconv\Handrank.html">
-				<param name="URL" value="Chapters\29\Handrank.html.LyXconv\Handrank.html">
+				<param name="Local" value="Chapters\29\Handrank.html.LyXconv\Handrank.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Memory Symbols">
