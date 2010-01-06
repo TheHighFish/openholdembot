@@ -1,4 +1,4 @@
-#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -6,6 +6,8 @@
 \use_default_options true
 \begin_modules
 theorems-ams
+eqs-within-sections
+figs-within-sections
 \end_modules
 \language english
 \inputencoding auto
@@ -166,15 +168,6 @@ This setting will cause OpenHoldem to try to auto-connect once every N seconds.
 \end_layout
 
 \end_deeper
-\begin_layout Itemize
-
-\emph on
-Time between attempts to connect
-\emph default
-: This option is pretty self-explanatory.
- It specifies the time to wait (in seconds) until the next attempt to connect.
-\end_layout
-
 \begin_layout Itemize
 
 \emph on
