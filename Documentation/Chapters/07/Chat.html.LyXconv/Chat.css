@@ -1,5 +1,6 @@
  
 /* start css.sty */
+body { background-color:#E4DDDD; }
 .small-caps{font-variant: small-caps; }
 p.noindent { text-indent: 0em }
 td p.noindent { text-indent: 0em; margin-top:0em; }

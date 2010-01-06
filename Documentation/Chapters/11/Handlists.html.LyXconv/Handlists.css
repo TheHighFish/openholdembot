@@ -1,5 +1,6 @@
  
 /* start css.sty */
+body { background-color:#E4DDDD; }
 .ectt-1000{ font-family: monospace;}
 .ectt-1000{ font-family: monospace;}
 p.noindent { text-indent: 0em }
@@ -137,5 +138,6 @@ td.td11{ padding-left:5pt; padding-right:5pt; }
 table[rules] {border-left:solid black 0.4pt; border-right:solid black 0.4pt; }
 .hline hr, .cline hr{ height : 1px; margin:0px; }
 div.array {text-align:center;}
+.figure img.graphics {margin-left:10%;}
 /* end css.sty */
 
