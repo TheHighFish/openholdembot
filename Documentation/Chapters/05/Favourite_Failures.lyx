@@ -1,4 +1,4 @@
-#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -6,6 +6,8 @@
 \use_default_options true
 \begin_modules
 theorems-ams
+eqs-within-sections
+figs-within-sections
 \end_modules
 \language english
 \inputencoding auto
@@ -198,10 +200,8 @@ autoplayer.
 \begin_layout Standard
 Click the diamond-button to the right of the green and red circles in the
  toolbar.
-\end_layout
-
-\begin_layout Standard
-!!! preferences
+ Alternatively chance the preferences to automatically engage the autoplayer
+ upon chair-detection.
 \end_layout
 
 \begin_layout Section
@@ -355,19 +355,6 @@ formula-editor.
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Better screenshot
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 \begin_inset listings
 inline false
 status open
@@ -419,8 +406,9 @@ Reason: Not your turn or userchair not recognized.
 
 \begin_layout Standard
 To work properly OpenHoldem must have recognized the userchair.
- See !!! Also some symbols are only valid, when it is your turn to act.
- So you should highlight some buttons in ManualMode.
+ Also some symbols are only valid, when it is your turn to act.
+ So you should highlight some buttons in ManualMode; just click them; usually
+ they are grey, which means not existent.
 \end_layout
 
 \begin_layout Section
@@ -472,11 +460,37 @@ heart-beat-cycle starts, OH will scrape the exact same game-state another
 \end_layout
 
 \begin_layout Section
-OH Does Permanently Click Sitout / Sitin
+OH Does permanently click sitout / sitin
 \end_layout
 
 \begin_layout Standard
-Todo!!!
+
+\emph on
+Reason: Table Map does not correctly scrape sitin/sitout.
+\end_layout
+
+\begin_layout Standard
+The Table Map does probably not correctly determine the state of the sitin-
+ or sitout-region; as a consequence the bot will think, his action had no
+ effect and will try over and over again.
+ There is a funny legend back from the ancient times of WinHoldem or OPI:
+ the Table Map (a built-in feature of the software at those times) once
+ again failed because of a casino-update.
+ As a consequence lots of 
+\begin_inset Quotes eld
+\end_inset
+
+players
+\begin_inset Quotes erd
+\end_inset
+
+ were suddenly sitting in and sitting out once per second.
+ It must have been a devilish joy for their opponents; innummerable bots
+ got reported and finally busted.
+\end_layout
+
+\begin_layout Standard
+So do always remember: Bots are very stupid and very volatile beings.
 \end_layout
 
 \begin_layout Section
