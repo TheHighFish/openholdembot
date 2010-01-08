@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- html --> 
 <meta name="src" content="RegionRecords.tex"> 
-<meta name="date" content="2009-11-14 21:16:00"> 
+<meta name="date" content="2009-12-25 23:26:00"> 
 <link rel="stylesheet" type="text/css" href="RegionRecords.css"> 
 </head><body 
 >
@@ -15,11 +15,11 @@
  id="x1-10000.1"></a>Region Records</h3>
    <h4 class="subsectionHead"><span class="titlemark">0.1.1. </span> <a 
  id="x1-20000.1.1"></a>Description </h4>
-<!--l. 34--><p class="noindent" >The purpose of the Region records is to describe named rectangular areas on a poker
+<!--l. 36--><p class="noindent" >The purpose of the Region records is to describe named rectangular areas on a poker
 table, each of which contains an element of the game state. These regions will &#8220;return&#8221;
 values to the OpenHoldem game state engine, depending on the type of transform
 selected.
-<!--l. 40--><p class="indent" >   An example will make this clearer. Each seat at the table will have two cards in
+<!--l. 42--><p class="indent" >   An example will make this clearer. Each seat at the table will have two cards in
 front it, and we want our screen scraper to tell the OpenHoldem game state
 engine what those cards are. If the casino client displays a group of pixels for
 our first hole card, that to a human being looks like an ace of hearts, we need
@@ -30,7 +30,7 @@ collect an image for that ace of hearts, then setup a region record that returns
 play.
    <h4 class="subsectionHead"><span class="titlemark">0.1.2. </span> <a 
  id="x1-30000.1.2"></a>Manipulating region records using OpenScrape</h4>
-<!--l. 55--><p class="noindent" >To create a new region record, select the &#8220;Regions&#8221; category in the record tree display on
+<!--l. 57--><p class="noindent" >To create a new region record, select the &#8220;Regions&#8221; category in the record tree display on
 the Table Map Editor window, and click the &#8220;New&#8221; button. A window will be displayed
 that allows you to select the name of the region to create. After creating the record, you
 can use the controls on the right side of the Table Map Editor window, as described
@@ -42,18 +42,18 @@ changed, as described below. To delete an existing region record, select the
 record in the record tree display on the Table Map Editor window, and click
 the &#8220;Delete&#8221; button. A window will be displayed asking for verification of this
 action.
-<!--l. 71--><p class="indent" >   Note: The Insert and Delete keys can also be used as a shortcut for adding and
+<!--l. 73--><p class="indent" >   Note: The Insert and Delete keys can also be used as a shortcut for adding and
 deleting Region records.
-<!--l. 74--><p class="indent" >   Note: Regions can also be selected by left clicking within the region&#8217;s flashing red
+<!--l. 76--><p class="indent" >   Note: Regions can also be selected by left clicking within the region&#8217;s flashing red
 rectangle that is layered on top of the poker table image on the Main window. If multiple
 regions are layered on top of each other, clicking again on the same area will select the
 next region below the selected region. This only works for two regions. If three or
 more regions are layered on top of each other, the selection tree will need to be
 used.
-<!--l. 82--><p class="indent" >   The majority of the right side of the Table Map Editor window is used to manipulate
+<!--l. 84--><p class="indent" >   The majority of the right side of the Table Map Editor window is used to manipulate
 the parameters of the region record.
-<!--l. 85--><p class="indent" >   Figure 4.5-11 OpenScrape Rectangle Group Box
-<!--l. 87--><p class="indent" >   Starting at the top, there is a rectangle group box. This group box allows you to
+<!--l. 87--><p class="indent" >   Figure 4.5-11 OpenScrape Rectangle Group Box
+<!--l. 89--><p class="indent" >   Starting at the top, there is a rectangle group box. This group box allows you to
 define the extents (left, right, top, bottom) of the region record&#8217;s bounding rectangle.
 The bounds are inclusive &#8211; in other words, a rectangle defined as left=0, right=5, top=0
 and bottom=6 will be 6 pixels wide and 7 pixels high. The rectangle settings can be
@@ -61,33 +61,55 @@ direct entered into the controls, you can use the spinners next to the controls,
 
 can use the rectangle drawing tool to quickly draw the rectangle on the poker
 table.
-<!--l. 96--><p class="indent" >   To use the rectangle drawing tool, click once on this control:
-<!--l. 98--><p class="indent" >   <img 
-src="RegionRecords0x.png" alt="PIC" class="graphics" width="200.75pt" height="100.375pt" ><!--tex4ht:graphics  
-name="RegionRecords0x.png" src="C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_RectangleDrawTool.bmp\Gin@ext "  
+<!--l. 98--><p class="indent" >   To use the rectangle drawing tool, click once on this control:
+<!--l. 101--><p class="indent" >   <hr class="figure"><div class="figure" 
+>
+
+<a 
+ id="x1-30011"></a>
+
+<!--l. 102--><p class="noindent" ><img 
+src="RegionRecords0x.png" alt="PIC" class="graphics" width="75.28125pt" height="37.13875pt" ><!--tex4ht:graphics  
+name="RegionRecords0x.png" src="0E__Dokumente_und_Einstellungen_Development_Des___ion_Chapters_22_Images_OS_RectangleDrawTool.eps"  
 -->
-<!--l. 100--><p class="indent" >   ...then move your mouse cursor to the Main OpenScrape window where the image of
+<br /> <div class="caption" 
+><span class="id">Figure&#x00A0;0.1.1: </span><span  
+class="content">OpenScrape: Rectangle Drawing Tool</span></div><!--tex4ht:label?: x1-30011 -->
+
+<!--l. 108--><p class="indent" >   </div><hr class="endfigure">
+<!--l. 111--><p class="indent" >   ...then move your mouse cursor to the Main OpenScrape window where the image of
 the poker table is displayed. The mouse cursor will change to look like crosshairs with an
 arrow pointing right and down. Left click and hold the mouse button anywhere on the
 poker table image to define the left-top corner of the rectangle. Drag to the right and
 down, and when you reach the right-bottom corner of the rectangle, release the left
 mouse button.
-<!--l. 108--><p class="indent" >   A zoomed view of the region is displayed in the box at the bottom right of the Table
+<!--l. 119--><p class="indent" >   A zoomed view of the region is displayed in the box at the bottom right of the Table
 Map Editor window. The Table Map Editor window can be enlarged, if needed, to show
 the entire region. Use the Zoom Level control to adjust the zoom level in this
 display.
-<!--l. 113--><p class="indent" >   <img 
-src="RegionRecords1x.png" alt="PIC" class="graphics" width="200.75pt" height="100.375pt" ><!--tex4ht:graphics  
-name="RegionRecords1x.png" src="C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_NudgeGroupBox.bmp\Gin@ext "  
+<!--l. 125--><p class="indent" >   <hr class="figure"><div class="figure" 
+>
+
+<a 
+ id="x1-30022"></a>
+
+<!--l. 126--><p class="noindent" ><img 
+src="RegionRecords1x.png" alt="PIC" class="graphics" width="56.20999pt" height="37.13875pt" ><!--tex4ht:graphics  
+name="RegionRecords1x.png" src="1E__Dokumente_und_Einstellungen_Development_Des___ntation_Chapters_22_Images_OS_NudgeGroupBox.eps"  
 -->
-<!--l. 115--><p class="indent" >   To the right of the rectangle group box is the nudge group box. These controls allow
+<br /> <div class="caption" 
+><span class="id">Figure&#x00A0;0.1.2: </span><span  
+class="content">OpenScrape: Nudge Group Box</span></div><!--tex4ht:label?: x1-30022 -->
+
+<!--l. 132--><p class="indent" >   </div><hr class="endfigure">
+<!--l. 135--><p class="indent" >   To the right of the rectangle group box is the nudge group box. These controls allow
 you to adjust the size and position of the region record&#8217;s rectangle in a variety of ways.
 The group of six controls on the left, starting from top left and moving clockwise, allow
 you to make the rectangle taller, shorter, thinner, smaller, bigger and wider. The group
 of 8 controls on the right, starting from top left and moving clockwise, allow you to
 move the rectangle up-left, up, up-right, right, down-right, down, down-left, and
 left.
-<!--l. 124--><p class="indent" >   Note: Regions can also be moved by first selecting the region by left clicking within
+<!--l. 144--><p class="indent" >   Note: Regions can also be moved by first selecting the region by left clicking within
 the region&#8217;s flashing red rectangle on the poker table image on the Main window,
 then by holding the Shift key and dragging and dropping the region to its new
 location.
@@ -96,7 +118,6 @@ location.
            <ul class="itemize1">
         <li class="itemize">Arrow keys - Move the region 1 pixel
            </li>
-
         <li class="itemize">Numpad keys 1, 3, 7, and 9 &#8211; Move the region diagonally 1 pixel
            </li>
         <li class="itemize">Shift + Arrow keys - Move the region 5 pixels
@@ -104,11 +125,17 @@ location.
         <li class="itemize">Control + Arrow keys - Resize the region by 1 pixel
            </li>
         <li class="itemize">Control + Shift + Arrow keys &#8211; Resize the region by 5 pixels</li></ul>
-<!--l. 140--><p class="noindent" ><img 
-src="RegionRecords2x.png" alt="PIC" class="graphics" width="200.75pt" height="100.375pt" ><!--tex4ht:graphics  
-name="RegionRecords2x.png" src="C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_RegionRecordParameters.bmp\Gin@ext "  
+<!--l. 161--><p class="noindent" ><hr class="figure"><div class="figure" 
+><a 
+ id="x1-40013"></a><img 
+src="RegionRecords2x.png" alt="PIC" class="graphics" width="124.465pt" height="26.09749pt" ><!--tex4ht:graphics  
+name="RegionRecords2x.png" src="2E__Dokumente_und_Einstellungen_Development_Des___hapters_22_Images_OS_RegionRecordParameters.eps"  
 -->
-<!--l. 142--><p class="indent" >   The next set of controls allows you to set the remainder of the parameters on a
+<br /> <div class="caption" 
+><span class="id">Figure&#x00A0;0.1.3: </span><span  
+class="content">OpenScrape: Region Record Parameters</span></div><!--tex4ht:label?: x1-40013 -->
+<!--l. 168--><p class="noindent" ></div><hr class="endfigure">
+<!--l. 171--><p class="indent" >   The next set of controls allows you to set the remainder of the parameters on a
 region record. Here you can set the type of transform, the radius of the RGB color cube,
 and the center color of the RGB color cube. The use of RGB color cubes for
 transforms of type Color and Text is described in the technical reference below.
@@ -118,32 +145,53 @@ eyedropper, click once on the eyedropper button, then hover over the region&#821
 display at the bottom of the Table Map Editor window. When the color you
 want is present in the four color fields, click the left mouse button to lock them
 in.
-<!--l. 154--><p class="indent" >   As a helpful reference, the &#8220;Avg Color&#8221; fields are populated with the calculated
+<!--l. 183--><p class="indent" >   As a helpful reference, the &#8220;Avg Color&#8221; fields are populated with the calculated
 average color of all pixels in the region. This is useful for finding RGB color cube centers
 and for text transform separations.
-<!--l. 159--><p class="indent" >   <img 
-src="RegionRecords3x.png" alt="PIC" class="graphics" width="200.75pt" height="100.375pt" ><!--tex4ht:graphics  
-name="RegionRecords3x.png" src="C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_TransformResultPreview.bmp\Gin@ext "  
+<!--l. 189--><p class="indent" >   <hr class="figure"><div class="figure" 
+>
+
+<a 
+ id="x1-40024"></a>
+
+<!--l. 190--><p class="noindent" ><img 
+src="RegionRecords3x.png" alt="PIC" class="graphics" width="72.26999pt" height="11.04124pt" ><!--tex4ht:graphics  
+name="RegionRecords3x.png" src="3E__Dokumente_und_Einstellungen_Development_Des___hapters_22_Images_OS_TransformResultPreview.eps"  
 -->
-<!--l. 161--><p class="indent" >   This field provides an instant preview of the results of combining the current pixels
+<br /> <div class="caption" 
+><span class="id">Figure&#x00A0;0.1.4: </span><span  
+class="content">OpenScrape: Transform Result Preview</span></div><!--tex4ht:label?: x1-40024 -->
+
+<!--l. 196--><p class="indent" >   </div><hr class="endfigure">
+<!--l. 199--><p class="indent" >   This field provides an instant preview of the results of combining the current pixels
 in the region with the current transform for that region. If this is a Text transform, the
 actual transformed ASCII text is displayed. If this is a Color transform, True or False is
 displayed, depending if the region&#8217;s average color is inside or outside of the defined RGB
 color cube. If this is a Hash transform, the value of the matching Hash record is
 displayed. If this is an Image transform, the value of the matching Image record is
 displayed.
+<!--l. 210--><p class="indent" >   <hr class="figure"><div class="figure" 
+>
 
-<!--l. 171--><p class="indent" >   <img 
-src="RegionRecords4x.png" alt="PIC" class="graphics" width="200.75pt" height="100.375pt" ><!--tex4ht:graphics  
-name="RegionRecords4x.png" src="C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_PixelSeparationDisplay.bmp\Gin@ext "  
+<a 
+ id="x1-40035"></a>
+
+<!--l. 211--><p class="noindent" ><img 
+src="RegionRecords4x.png" alt="PIC" class="graphics" width="137.51375pt" height="69.25874pt" ><!--tex4ht:graphics  
+name="RegionRecords4x.png" src="4E__Dokumente_und_Einstellungen_Development_Des___hapters_22_Images_OS_PixelSeparationDisplay.eps"  
 -->
-<!--l. 173--><p class="indent" >   If your region is defined to have a Text transform, then the Pixel Separation window
+<br /> <div class="caption" 
+><span class="id">Figure&#x00A0;0.1.5: </span><span  
+class="content">OpenScrape: Pixel Separation Display</span></div><!--tex4ht:label?: x1-40035 -->
+
+<!--l. 217--><p class="indent" >   </div><hr class="endfigure">
+<!--l. 220--><p class="indent" >   If your region is defined to have a Text transform, then the Pixel Separation window
 will be populated with a preview of this separation. The key to good Text transformation
 is the separation of foreground pixel colors from background pixel colors. In this display,
 foreground pixels will be shown as an &#8220;X&#8221;, and background pixels as a blank space. The
 size of the font used in this display can be adjusted with the &#8220;+&#8221; and &#8220;-&#8220; buttons to the
 right.
-<!--l. 182--><p class="indent" >   Note: Remember that the whole purpose of a region definition, with a given type of
+<!--l. 229--><p class="indent" >   Note: Remember that the whole purpose of a region definition, with a given type of
 transformation, is to tell the screen scraper what the pixels mean that are displayed on
 the screen within that region. The return value of the transformation is provided to the
 OpenHoldem game state engine which then uses those values to establish the
@@ -155,13 +203,13 @@ color that lets the screen scraper identify foreground from background pixels,
 and then collect each of the individual font characters (more on this below) so
 that the screen scraper engine can look up the actual ASCII text for these
 pixels.
-<!--l. 197--><p class="indent" >   The Edit menu of on the Main window contains a &#8220;Duplicate Region&#8221; entry, which is
+<!--l. 244--><p class="indent" >   The Edit menu of on the Main window contains a &#8220;Duplicate Region&#8221; entry, which is
 intended to allow the quick creation of related region records. First, select a
 region record from the tree display on the Table Map Editor window, then select
 Edit/Duplicate Region from the Main window. This action will display this
 window:
-<!--l. 204--><p class="indent" >   Figure 4.5-17 OpenScrape Duplicate Region window
-<!--l. 206--><p class="indent" >   In this case, the p0balance region was selected. You are given the option to
+<!--l. 251--><p class="indent" >   Figure 4.5-17 OpenScrape Duplicate Region window
+<!--l. 253--><p class="indent" >   In this case, the p0balance region was selected. You are given the option to
 duplicate the selected region record to other region records of the same type.
 In this case, all of the unpopulated pXbalance and uXbalance region records
 are candidates. You can select one or more than one destination record here
@@ -171,12 +219,11 @@ created for you, and you can then move them where needed and adjust them
 appropriately.
    <h4 class="subsectionHead"><span class="titlemark">0.1.4. </span> <a 
  id="x1-50000.1.4"></a>Technical Reference</h4>
-<!--l. 218--><p class="noindent" >In the Table Map (.tm) file, these records will be preceded with the characters "r$".
+<!--l. 265--><p class="noindent" >In the Table Map (.tm) file, these records will be preceded with the characters "r$".
 Region records have the following format:
-<!--l. 222--><p class="indent" >   r$&#x003C;name&#x003E; &#x003C;left&#x003E; &#x003C;top&#x003E; &#x003C;right&#x003E; &#x003C;bottom&#x003E; &#x003C;color&#x003E; &#x003C;radius&#x003E; &#x003C;transform&#x003E;
-<!--l. 224--><p class="indent" >   &#x003C;name&#x003E; is the name of the record (see table below) &#x003C;left&#x003E;, &#x003C;top&#x003E;, &#x003C;right&#x003E; and
+<!--l. 269--><p class="indent" >   r$&#x003C;name&#x003E; &#x003C;left&#x003E; &#x003C;top&#x003E; &#x003C;right&#x003E; &#x003C;bottom&#x003E; &#x003C;color&#x003E; &#x003C;radius&#x003E; &#x003C;transform&#x003E;
+<!--l. 271--><p class="indent" >   &#x003C;name&#x003E; is the name of the record (see table below) &#x003C;left&#x003E;, &#x003C;top&#x003E;, &#x003C;right&#x003E; and
 &#x003C;bottom&#x003E; are integer values within the casino table, where the upper left corner of the
-
 client area is considered to be 0, 0 &#x003C;color&#x003E; is a 1-8 character hexadecimal number in the
 form AABBGGRR (Microsoft Window&#8217;s COLORREF format (<a 
 href="!!!" class="url" ><span 
@@ -194,14 +241,14 @@ id="TBL-1-1"></colgroup><colgroup id="TBL-1-2g"><col
 id="TBL-1-2"></colgroup><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-1-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-1-1"  
-class="td11"> <!--l. 238--><p class="noindent" >Transform    </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-1-2"  
-class="td11"> <!--l. 238--><p class="noindent" >Description                                                                              </td>
+class="td11"> <!--l. 285--><p class="noindent" >Transform    </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-1-2"  
+class="td11"> <!--l. 285--><p class="noindent" >Description                                                                              </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-2-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-2-1"  
-class="td11"> <!--l. 241--><p class="noindent" >N (none)       </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-2-2"  
-class="td11"> <!--l. 241--><p class="noindent" >This
+class="td11"> <!--l. 288--><p class="noindent" >N (none)       </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-2-2"  
+class="td11"> <!--l. 288--><p class="noindent" >This
   is
   used
   for
@@ -251,8 +298,8 @@ class="td11"> <!--l. 241--><p class="noindent" >This
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-3-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-3-1"  
-class="td11"> <!--l. 246--><p class="noindent" >C (color)       </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-3-2"  
-class="td11"> <!--l. 246--><p class="noindent" >This
+class="td11"> <!--l. 293--><p class="noindent" >C (color)       </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-3-2"  
+class="td11"> <!--l. 293--><p class="noindent" >This
   is
   a
   calculation
@@ -374,8 +421,8 @@ class="td11"> <!--l. 246--><p class="noindent" >This
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-4-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-4-1"  
-class="td11"> <!--l. 257--><p class="noindent" >I (image)       </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-4-2"  
-class="td11"> <!--l. 257--><p class="noindent" >This
+class="td11"> <!--l. 304--><p class="noindent" >I (image)       </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-4-2"  
+class="td11"> <!--l. 304--><p class="noindent" >This
   transform
   does
   two
@@ -522,8 +569,8 @@ class="ectt-1000">http://pdiff.sourceforge.net/</span></a>).
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-5-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-5-1"  
-class="td11"> <!--l. 271--><p class="noindent" >T (text)        </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-5-2"  
-class="td11"> <!--l. 271--><p class="noindent" >This
+class="td11"> <!--l. 318--><p class="noindent" >T (text)        </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-5-2"  
+class="td11"> <!--l. 318--><p class="noindent" >This
   is
   an
   OCR-algorithm
@@ -587,8 +634,8 @@ class="ectt-1000">http://en.wikipedia.org/wiki/Optical_character_recognition</sp
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-6-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-6-1"  
-class="td11"> <!--l. 278--><p class="noindent" >Hn (hash n)   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-6-2"  
-class="td11"> <!--l. 278--><p class="noindent" >This
+class="td11"> <!--l. 325--><p class="noindent" >Hn (hash n)   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-6-2"  
+class="td11"> <!--l. 325--><p class="noindent" >This
   transform
   reduces
   the
@@ -718,7 +765,7 @@ class="td11"> <!--l. 278--><p class="noindent" >This
   for
   that
   region.
-  <!--l. 290--><p class="noindent" >The
+  <!--l. 337--><p class="noindent" >The
   Type
   0
   hash
@@ -783,7 +830,7 @@ class="td11"> <!--l. 278--><p class="noindent" >This
   of
   the
   hash.
-  <!--l. 296--><p class="noindent" >Once
+  <!--l. 343--><p class="noindent" >Once
   a
   region
   is
@@ -846,7 +893,7 @@ class="td11">             </td> </tr></table>
    <h4 class="subsectionHead"><span class="titlemark">0.1.6. </span> <a 
  id="x1-70000.1.6"></a>Valid region records and their descriptions </h4>
 <a 
- id="x1-7001r1"></a>   <!--l. 309--><div class="longtable"> <table id="TBL-2" class="longtable" 
+ id="x1-7001r1"></a>   <!--l. 356--><div class="longtable"> <table id="TBL-2" class="longtable" 
 cellspacing="0" cellpadding="0" rules="groups" 
 ><colgroup id="TBL-2-1g"><col 
 id="TBL-2-1"></colgroup><colgroup id="TBL-2-2g"><col 
@@ -856,14 +903,14 @@ id="TBL-2-2"></colgroup>
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-1-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-1-1"  
 class="td11">
- <!--l. 309--><p class="noindent" >Record        </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-1-2"  
+ <!--l. 356--><p class="noindent" >Record        </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-1-2"  
 class="td11">
- <!--l. 309--><p class="noindent" >Description                                                                              </td>
+ <!--l. 356--><p class="noindent" >Description                                                                              </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-2-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-2-1"  
 class="td11">
- <!--l. 311--><p class="noindent" >           </td>
+ <!--l. 358--><p class="noindent" >           </td>
 </tr><tr  
  style="vertical-align:baseline;" id="TBL-2-3-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-3-1"  
 class="td11">            </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-3-2"  
@@ -872,11 +919,11 @@ class="td11"></td></tr>
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-4-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-4-1"  
 class="td11">
- <!--l. 313--><p class="noindent" >c0cardface0
+ <!--l. 360--><p class="noindent" >c0cardface0
   -
   c0cardface4   </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-4-2"  
 class="td11">
- <!--l. 313--><p class="noindent" >Common cards 0-4; represents the entire card, the best
+ <!--l. 360--><p class="noindent" >Common cards 0-4; represents the entire card, the best
   transformation is probably hash. Typically either c0cardfaceX is used,
   or c0cardfaceXrank / c0cardfaceXsuit, but not both. Valid results are
   a case-insensitive, two character string. The first character is the rank
@@ -891,11 +938,11 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-5-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-5-1"  
 class="td11">
- <!--l. 338--><p class="noindent" >c0cardface0suit
+ <!--l. 385--><p class="noindent" >c0cardface0suit
   -
   c0cardface4suit </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-5-2"  
 class="td11">
- <!--l. 338--><p class="noindent" >Suit of common cards 0-4; the best transformation is probably text.
+ <!--l. 385--><p class="noindent" >Suit of common cards 0-4; the best transformation is probably text.
   Typically either c0cardfaceX is used, or c0cardfaceXrank /
   c0cardfaceXsuit, but not both. Valid results are case-insensitive, and
   are one of &#8220;c&#8221;, &#8220;d&#8221;, &#8220;h&#8221; or &#8220;s&#8221;.                                                      </td>
@@ -903,12 +950,12 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-6-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-6-1"  
 class="td11">
- <!--l. 344--><p class="noindent" >c0handnumber,
+ <!--l. 391--><p class="noindent" >c0handnumber,
   c0handnumber1
   -
   c0handnumber9 </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-6-2"  
 class="td11">
- <!--l. 344--><p class="noindent" >Ten regions to specify where the game state engine should find the
+ <!--l. 391--><p class="noindent" >Ten regions to specify where the game state engine should find the
   current handnumber. The first region found with valid numeric
   information will be used and the remainder skipped. c0handnumber is
   searched first, then c0handnumber1 to c0handnumber9 in that order.  </td>
@@ -916,9 +963,9 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-7-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-7-1"  
 class="td11">
- <!--l. 349--><p class="noindent" >c0istournament </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-7-2"  
+ <!--l. 396--><p class="noindent" >c0istournament </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-7-2"  
 class="td11">
- <!--l. 349--><p class="noindent" >Used to identify if this table is a tournament game. Any transform
+ <!--l. 396--><p class="noindent" >Used to identify if this table is a tournament game. Any transform
   can be used equally well with this region. If the result from this
   region&#8217;s transform is anything besides blank (empty string) then this
   region is considered to represent a tournament game.                        </td>
@@ -926,9 +973,9 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-8-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-8-1"  
 class="td11">
- <!--l. 354--><p class="noindent" >c0smallblind </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-8-2"  
+ <!--l. 401--><p class="noindent" >c0smallblind </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-8-2"  
 class="td11">
- <!--l. 354--><p class="noindent" >Identifies the region on the poker table where the small blind can be
+ <!--l. 401--><p class="noindent" >Identifies the region on the poker table where the small blind can be
   found. Title text parsing is much easier to implement if that option is
   available, otherwise a text transformation can be used with this
   region to identify the small blind.                                                 </td>
@@ -936,9 +983,9 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-9-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-9-1"  
 class="td11">
- <!--l. 359--><p class="noindent" >c0bigblind    </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-9-2"  
+ <!--l. 406--><p class="noindent" >c0bigblind    </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-9-2"  
 class="td11">
- <!--l. 359--><p class="noindent" >Identifies the region on the poker table where the big blind can be
+ <!--l. 406--><p class="noindent" >Identifies the region on the poker table where the big blind can be
   found. Title text parsing is much easier to implement if that option is
   available, otherwise a text transformation can be used with this
   region to identify the big blind. c0bigbet Identifies the region on the
@@ -949,9 +996,9 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-10-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-10-1"  
 class="td11">
- <!--l. 368--><p class="noindent" >c0ante         </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-10-2"  
+ <!--l. 415--><p class="noindent" >c0ante         </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-10-2"  
 class="td11">
- <!--l. 368--><p class="noindent" >Identifies the region on the poker table where the ante can be found.
+ <!--l. 415--><p class="noindent" >Identifies the region on the poker table where the ante can be found.
   Title text parsing is much easier to implement if that option is
   available, otherwise a text transformation can be used with this
   region to identify the ante.                                                          </td>
@@ -959,19 +1006,19 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-11-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-11-1"  
 class="td11">
- <!--l. 373--><p class="noindent" >c0pot0 -
+ <!--l. 420--><p class="noindent" >c0pot0 -
   c0pot4         </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-11-2"  
 class="td11">
- <!--l. 373--><p class="noindent" >The value of the main pot should be identified by c0pot0 using a text
+ <!--l. 420--><p class="noindent" >The value of the main pot should be identified by c0pot0 using a text
   transform.                                                                                </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-12-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-12-1"  
 class="td11">
- <!--l. 376--><p class="noindent" >c0pot1 to
+ <!--l. 423--><p class="noindent" >c0pot1 to
   c0pot4         </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-12-2"  
 class="td11">
- <!--l. 376--><p class="noindent" >can be used to identify side pots if required. c0potNchipXY See chip
+ <!--l. 423--><p class="noindent" >can be used to identify side pots if required. c0potNchipXY See chip
   scraping instructions for p0chipXY - p9chipXY below. The difference
   is that the "N" refers to the different pots - N=0 is the main pot,
   N=1-4 are side pots.                                                                  </td>
@@ -979,11 +1026,11 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-13-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-13-1"  
 class="td11">
- <!--l. 381--><p class="noindent" >c0limits,
+ <!--l. 428--><p class="noindent" >c0limits,
   c0limits0 -
   c0limits9      </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-13-2"  
 class="td11">
- <!--l. 381--><p class="noindent" >Identifies the region on the casino table where the limit information
+ <!--l. 428--><p class="noindent" >Identifies the region on the casino table where the limit information
   can be found; this region is used in conjunction with the Symbol
   records c0limits and c0limits0-c0limit9 text parse strings. This region
   should really only be used if title text parsing is not an option.          </td>
@@ -991,23 +1038,23 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-14-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-14-1"  
 class="td11">
- <!--l. 386--><p class="noindent" >i0button -
+ <!--l. 433--><p class="noindent" >i0button -
   i9button       </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-14-2"  
 class="td11">
- <!--l. 386--><p class="noindent" >Specifies the rectangular area in which the Autoplayer can click the
+ <!--l. 433--><p class="noindent" >Specifies the rectangular area in which the Autoplayer can click the
   mouse for each button 0-9.                                                          </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-15-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-15-1"  
 class="td11">
- <!--l. 389--><p class="noindent" >i0label -
+ <!--l. 436--><p class="noindent" >i0label -
   i9label         </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-15-2"  
 class="td11">
- <!--l. 389--><p class="noindent" >Specifies the action that should be associated with buttons 0-9. By
+ <!--l. 436--><p class="noindent" >Specifies the action that should be associated with buttons 0-9. By
   default, and if not overridden here, button 0 will be interpreted as the
   fold button, 1 as the call button, 2 as the raise button and 3 as the
   allin button.
-  <!--l. 394--><p class="noindent" >The return value from the transformation of this region (hash or text)
+  <!--l. 441--><p class="noindent" >The return value from the transformation of this region (hash or text)
   will determine how the scraper engine interprets the button. All
   values are changed to lowercase and have spaces and &#8217;-&#8217; removed.
   Only the leftmost characters will be tested "allin", "a11in", "allln",
@@ -1020,18 +1067,18 @@ class="td11">
   "s1tout", "sit0ut", "s1t0ut"&#x00A0;: button is seen as the sitout button
   "leave"&#x00A0;: button is seen as the leave button "prefold"&#x00A0;: button is seen
   as the prefold button
-  <!--l. 417--><p class="noindent" >Examples: "All-In" will be recognized as allin; "Auto-post blinds"
+  <!--l. 464--><p class="noindent" >Examples: "All-In" will be recognized as allin; "Auto-post blinds"
   will be recognized as autopost                                                      </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-16-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-16-1"  
 class="td11">
- <!--l. 421--><p class="noindent" >i0labelY -
+ <!--l. 468--><p class="noindent" >i0labelY -
   i9labelY
   Where Y =
   0 - 9.           </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-16-2"  
 class="td11">
- <!--l. 421--><p class="noindent" >As an adjunct to the iXlabel regions, the iXlabelY region definitions
+ <!--l. 468--><p class="noindent" >As an adjunct to the iXlabel regions, the iXlabelY region definitions
   allow the specification of an alternative location with alternate
   properties, such as color, for any button. The specification of these
   regions is exactly as that of the iXlabel regions with an addition of a
@@ -1042,10 +1089,10 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-17-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-17-1"  
 class="td11">
- <!--l. 429--><p class="noindent" >i0state -
+ <!--l. 476--><p class="noindent" >i0state -
   i9state         </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-17-2"  
 class="td11">
- <!--l. 429--><p class="noindent" >Specifies whether the button0 - button9 is live and available to be
+ <!--l. 476--><p class="noindent" >Specifies whether the button0 - button9 is live and available to be
   clicked. The best transformation is hash or color. If the leftmost
   characters of the result from this region&#8217;s transform are either &#8220;true&#8221;,
   "on", "yes", "checked" or "lit" then the button will be seen as
@@ -1056,19 +1103,19 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-18-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-18-1"  
 class="td11">
- <!--l. 439--><p class="noindent" >i3edit          </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-18-2"  
+ <!--l. 486--><p class="noindent" >i3edit          </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-18-2"  
 class="td11">
- <!--l. 439--><p class="noindent" >Specifies the rectangular region that can be used for entering a
+ <!--l. 486--><p class="noindent" >Specifies the rectangular region that can be used for entering a
   SWAG bet.                                                                              </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-19-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-19-1"  
 class="td11">
- <!--l. 442--><p class="noindent" >i86button,
+ <!--l. 489--><p class="noindent" >i86button,
   i860button -
   i869button    </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-19-2"  
 class="td11">
- <!--l. 442--><p class="noindent" >Similar to the i0button - i9button regions, however these regions are
+ <!--l. 489--><p class="noindent" >Similar to the i0button - i9button regions, however these regions are
   intended to be used to combat spam/popups that could occlude the
   poker window. If the corresponding state region returns true, the
   Autoplayer will try to click in this region to dismiss the spam/popup.  </td>
@@ -1076,11 +1123,11 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-20-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-20-1"  
 class="td11">
- <!--l. 447--><p class="noindent" >i86state,
+ <!--l. 494--><p class="noindent" >i86state,
   i860state -
   i869state      </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-20-2"  
 class="td11">
- <!--l. 447--><p class="noindent" >The corresponding state regions for the i86button, i860button -
+ <!--l. 494--><p class="noindent" >The corresponding state regions for the i86button, i860button -
   i869button regions above. The best transformation is hash or color. If
   the leftmost characters of the result from this region&#8217;s transform are
   either &#8220;true&#8221;, "on", "yes", "checked" or "lit" then the button will be
@@ -1097,29 +1144,29 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-21-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-21-1"  
 class="td11">
- <!--l. 466--><p class="noindent" >p0balance -
+ <!--l. 513--><p class="noindent" >p0balance -
   p9balance     </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-21-2"  
 class="td11">
- <!--l. 466--><p class="noindent" >Used to identify a player&#8217;s balance. It only makes sense to use a text
+ <!--l. 513--><p class="noindent" >Used to identify a player&#8217;s balance. It only makes sense to use a text
   transform for these regions.                                                         </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-22-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-22-1"  
 class="td11">
- <!--l. 469--><p class="noindent" >p0bet -
+ <!--l. 516--><p class="noindent" >p0bet -
   p9bet          </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-22-2"  
 class="td11">
- <!--l. 469--><p class="noindent" >Used to identify a player&#8217;s bet. It only makes sense to use a text
+ <!--l. 516--><p class="noindent" >Used to identify a player&#8217;s bet. It only makes sense to use a text
   transform for these regions.                                                         </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-23-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-23-1"  
 class="td11">
- <!--l. 472--><p class="noindent" >p0cardback
+ <!--l. 519--><p class="noindent" >p0cardback
   -
   p9cardback   </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-23-2"  
 class="td11">
- <!--l. 472--><p class="noindent" >Used to identify when a seat 0-9 displays a card back. The best
+ <!--l. 519--><p class="noindent" >Used to identify when a seat 0-9 displays a card back. The best
   transformation is hash or color. If the leftmost characters of the result
   from this region&#8217;s transform are either &#8220;true&#8221; or &#8220;cardback&#8221;, then the
   region is considered to be showing a cardback. If any other result is
@@ -1129,18 +1176,18 @@ class="td11">
 </tr><tr  
  style="vertical-align:baseline;" id="TBL-2-24-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-24-1"  
 class="td11">
- <!--l. 479--><p class="noindent" >           </td>
+ <!--l. 526--><p class="noindent" >           </td>
 
    </tr>
 <tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-25-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-25-1"  
 class="td11">
- <!--l. 480--><p class="noindent" >p0cardface0
+ <!--l. 527--><p class="noindent" >p0cardface0
   -
   p9cardface0  </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-25-2"  
 class="td11">
- <!--l. 480--><p class="noindent" >The first card for seats 0-9; represents the entire card. The best
+ <!--l. 527--><p class="noindent" >The first card for seats 0-9; represents the entire card. The best
   transformation is probably hash. Typically either pXcardfaceY is
   used, or pXcardfaceYrank / pXcardfaceYsuit, but not both. Valid
   results are a case-insensitive, two character string. The first character
@@ -1151,11 +1198,11 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-26-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-26-1"  
 class="td11">
- <!--l. 495--><p class="noindent" >p0cardface1
+ <!--l. 542--><p class="noindent" >p0cardface1
   -
   p9cardface1  </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-26-2"  
 class="td11">
- <!--l. 495--><p class="noindent" >The second card for seats 0-9; represents the entire card. The best
+ <!--l. 542--><p class="noindent" >The second card for seats 0-9; represents the entire card. The best
   transformation is probably hash. Typically either pXcardfaceY is
   used, or pXcardfaceYrank / pXcardfaceYsuit, but not both. Valid
   results are a case-insensitive, two character string. The first character
@@ -1166,11 +1213,11 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-27-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-27-1"  
 class="td11">
- <!--l. 510--><p class="noindent" >p0cardface0rank
+ <!--l. 557--><p class="noindent" >p0cardface0rank
   -
   p9cardface0rank </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-27-2"  
 class="td11">
- <!--l. 510--><p class="noindent" >The rank of the first card for seats 0-9. The best transformation is
+ <!--l. 557--><p class="noindent" >The rank of the first card for seats 0-9. The best transformation is
   probably text. Typically either pXcardfaceY is used, or
   pXcardfaceYrank / pXcardfaceYsuit, but not both. Valid results are
   case-insensitive, and are one of &#8220;2&#8221;, &#8220;3&#8221;, &#8220;4&#8221;, &#8220;5&#8221;, &#8220;6&#8221;, &#8220;7&#8221;, &#8220;8&#8221;, &#8220;9&#8221;,
@@ -1179,11 +1226,11 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-28-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-28-1"  
 class="td11">
- <!--l. 521--><p class="noindent" >p0cardface0suit
+ <!--l. 568--><p class="noindent" >p0cardface0suit
   -
   p9cardface0suit </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-28-2"  
 class="td11">
- <!--l. 521--><p class="noindent" >The suit of the first card for seats 0-9. The best transformation is
+ <!--l. 568--><p class="noindent" >The suit of the first card for seats 0-9. The best transformation is
   probably text. Typically either pXcardfaceY is used, or
   pXcardfaceYrank / pXcardfaceYsuit, but not both. Valid results are
   case-insensitive, and are one of &#8220;c&#8221;, &#8220;d&#8221;, &#8220;h&#8221; or &#8220;s&#8221;.                           </td>
@@ -1191,11 +1238,11 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-29-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-29-1"  
 class="td11">
- <!--l. 527--><p class="noindent" >p0cardface1rank
+ <!--l. 574--><p class="noindent" >p0cardface1rank
   -
   p9cardface1rank </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-29-2"  
 class="td11">
- <!--l. 527--><p class="noindent" >The rank of the second card for seats 0-9. The best transformation is
+ <!--l. 574--><p class="noindent" >The rank of the second card for seats 0-9. The best transformation is
   probably text. Typically either pXcardfaceY is used, or
   pXcardfaceYrank / pXcardfaceYsuit, but not both. Valid results are
   case-insensitive, and are one of &#8220;2&#8221;, &#8220;3&#8221;, &#8220;4&#8221;, &#8220;5&#8221;, &#8220;6&#8221;, &#8220;7&#8221;, &#8220;8&#8221;, &#8220;9&#8221;,
@@ -1208,10 +1255,10 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-30-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-30-1"  
 class="td11">
- <!--l. 544--><p class="noindent" >p0dealer -
+ <!--l. 591--><p class="noindent" >p0dealer -
   p9dealer       </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-30-2"  
 class="td11">
- <!--l. 544--><p class="noindent" >Identifies if the dealer button is found for seat 0-9, or not. Color
+ <!--l. 591--><p class="noindent" >Identifies if the dealer button is found for seat 0-9, or not. Color
   transforms are usually used for these regions, but hash, text or image
   transforms can be used too. If the leftmost characters of the result
   from this region&#8217;s transform are either &#8220;true&#8221; or &#8220;dealer&#8221;, then the
@@ -1222,19 +1269,19 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-31-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-31-1"  
 class="td11">
- <!--l. 553--><p class="noindent" >p0name -
+ <!--l. 600--><p class="noindent" >p0name -
   p9name        </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-31-2"  
 class="td11">
- <!--l. 553--><p class="noindent" >Identifies the name of the player in seat 0-9. It only makes sense to
+ <!--l. 600--><p class="noindent" >Identifies the name of the player in seat 0-9. It only makes sense to
   use a text transform for these regions.                                           </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-32-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-32-1"  
 class="td11">
- <!--l. 556--><p class="noindent" >p0seated -
+ <!--l. 603--><p class="noindent" >p0seated -
   p9seated      </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-32-2"  
 class="td11">
- <!--l. 556--><p class="noindent" >Identifies whether seat 0-9 is occupied (seated) or not. Color
+ <!--l. 603--><p class="noindent" >Identifies whether seat 0-9 is occupied (seated) or not. Color
   transforms are usually used for these regions, but hash, text or image
   transforms can be used too. If the leftmost characters of the result
   from this region&#8217;s transform are either &#8220;true&#8221; or &#8220;seated&#8221;, then the
@@ -1245,13 +1292,13 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-33-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-33-1"  
 class="td11">
- <!--l. 565--><p class="noindent" >p0chipXY -
+ <!--l. 612--><p class="noindent" >p0chipXY -
   p9chipXY     </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-33-2"  
 class="td11">
- <!--l. 565--><p class="noindent" >Note: Chip scraping should *only* be used if the actual numeric bet
+ <!--l. 612--><p class="noindent" >Note: Chip scraping should *only* be used if the actual numeric bet
   text cannot be found elsewhere on the poker table. Text
   transformation is magnitudes of effort easier to accomplish.
-  <!--l. 569--><p class="noindent" >Step 1&#x00A0;: Ensure that the poker site uses static landings for all of the
+  <!--l. 616--><p class="noindent" >Step 1&#x00A0;: Ensure that the poker site uses static landings for all of the
   chip stacks. Step 2&#x00A0;: Determine the size of an individual chip, and
   should include any portion of the chip that is painted anywhere
   within the window regardless of how faded or transparent. Step 3&#x00A0;:
@@ -1279,10 +1326,10 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-34-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-34-1"  
 class="td11">
- <!--l. 593--><p class="noindent" >u0active -
+ <!--l. 640--><p class="noindent" >u0active -
   u9active       </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-34-2"  
 class="td11">
- <!--l. 593--><p class="noindent" >These are alternatives to the p0active-p9active regions, and are used
+ <!--l. 640--><p class="noindent" >These are alternatives to the p0active-p9active regions, and are used
   for the player&#8217;s seat. They are typically used when the player&#8217;s seat
   changes appearance when it is the player&#8217;s action, to avoid misscrapes
   due to change in color/size, whatever. Any transform can be used
@@ -1301,11 +1348,11 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-35-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-35-1"  
 class="td11">
- <!--l. 610--><p class="noindent" >u0bet &#8211;
+ <!--l. 657--><p class="noindent" >u0bet &#8211;
   u9bet          </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-35-2"  
 class="td11">
- <!--l. 610--><p class="noindent" >* New Symbol in version 2.0
-  <!--l. 612--><p class="noindent" >These are alternatives to the p0bet-p9bet regions, and are used for
+ <!--l. 657--><p class="noindent" >* New Symbol in version 2.0
+  <!--l. 659--><p class="noindent" >These are alternatives to the p0bet-p9bet regions, and are used for
   the player&#8217;s seat. They are typically used when the player&#8217;s seat
   changes appearance when it is the player&#8217;s action, to avoid misscrapes
   due to change in color/size, whatever. It only makes sense to use a
@@ -1314,11 +1361,11 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-36-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-36-1"  
 class="td11">
- <!--l. 618--><p class="noindent" >u0cardface0
+ <!--l. 665--><p class="noindent" >u0cardface0
   -
   u9cardface0  </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-36-2"  
 class="td11">
- <!--l. 618--><p class="noindent" >These are alternatives to the p0cardface0-p9cardface0 regions, and
+ <!--l. 665--><p class="noindent" >These are alternatives to the p0cardface0-p9cardface0 regions, and
   are used for the player&#8217;s seat. They are typically used when the
   player&#8217;s seat changes appearance when it is the player&#8217;s action, to
   avoid misscrapes due to change in color/size, whatever. Valid results
@@ -1330,11 +1377,11 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-37-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-37-1"  
 class="td11">
- <!--l. 634--><p class="noindent" >u0cardface1
+ <!--l. 681--><p class="noindent" >u0cardface1
   -
   u9cardface1  </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-37-2"  
 class="td11">
- <!--l. 634--><p class="noindent" >These are alternatives to the p0cardface1-p9cardface1 regions, and
+ <!--l. 681--><p class="noindent" >These are alternatives to the p0cardface1-p9cardface1 regions, and
   are used for the player&#8217;s seat. They are typically used when the
   player&#8217;s seat changes appearance when it is the player&#8217;s action, to
   avoid misscrapes due to change in color/size, whatever. Valid results
@@ -1346,11 +1393,11 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-38-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-38-1"  
 class="td11">
- <!--l. 650--><p class="noindent" >u0dealer &#8211;
+ <!--l. 697--><p class="noindent" >u0dealer &#8211;
   u9dealer       </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-38-2"  
 class="td11">
- <!--l. 650--><p class="noindent" >* New Symbol in version 2.0
-  <!--l. 652--><p class="noindent" >These are alternatives to the p0dealer-p9dealer regions, and are used
+ <!--l. 697--><p class="noindent" >* New Symbol in version 2.0
+  <!--l. 699--><p class="noindent" >These are alternatives to the p0dealer-p9dealer regions, and are used
   for the player&#8217;s seat. They are typically used when the player&#8217;s seat
   changes appearance when it is the player&#8217;s action, to avoid misscrapes
   due to change in color/size, whatever. Color transforms are usually
@@ -1364,11 +1411,11 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-39-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-39-1"  
 class="td11">
- <!--l. 664--><p class="noindent" >uname,
+ <!--l. 711--><p class="noindent" >uname,
   u0name -
   u9name        </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-39-2"  
 class="td11">
- <!--l. 664--><p class="noindent" >These are alternatives to the p0name-p9name regions, and are used
+ <!--l. 711--><p class="noindent" >These are alternatives to the p0name-p9name regions, and are used
   for the player&#8217;s seat. They are typically used when the player&#8217;s seat
   changes appearance when it is the player&#8217;s action, to avoid misscrapes
   due to change in color/size, whatever. It only makes sense to use a
@@ -1377,10 +1424,10 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-40-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-40-1"  
 class="td11">
- <!--l. 670--><p class="noindent" >u0seated -
+ <!--l. 717--><p class="noindent" >u0seated -
   u9seated      </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-40-2"  
 class="td11">
- <!--l. 670--><p class="noindent" >These regions are alternatives to the p0seated-p9seated regions, and
+ <!--l. 717--><p class="noindent" >These regions are alternatives to the p0seated-p9seated regions, and
   are used for the player&#8217;s seat. They are typically used when the
   player&#8217;s seat changes appearance when it is the player&#8217;s action, to
   avoid misscrapes due to change in color/size, whatever. Color
@@ -1394,9 +1441,9 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-41-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-41-1"  
 class="td11">
- <!--l. 682--><p class="noindent" >tablepointNNN </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-41-2"  
+ <!--l. 729--><p class="noindent" >tablepointNNN </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-41-2"  
 class="td11">
- <!--l. 682--><p class="noindent" >These regions are used when the "Green Circle Button" is clicked on
+ <!--l. 729--><p class="noindent" >These regions are used when the "Green Circle Button" is clicked on
   the OpenHoldem toolbar to "automagically" find a table to connect
   to. These regions must be one pixel wide by one pixel tall and must
   use a color transform. All tablepoint records must match the pixel
@@ -1413,15 +1460,15 @@ class="td11">            </td>
 </tr><tr  
  style="vertical-align:baseline;" id="TBL-2-44-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-44-1"  
 class="td11">
- <!--l. 690--><p class="noindent" >           </td>
+ <!--l. 737--><p class="noindent" >           </td>
 </tr><tr  
  style="vertical-align:baseline;" id="TBL-2-45-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-45-1"  
 class="td11">
- <!--l. 690--><p class="noindent" >           </td>
+ <!--l. 737--><p class="noindent" >           </td>
 </tr><tr  
  style="vertical-align:baseline;" id="TBL-2-46-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-46-1"  
 class="td11">
- <!--l. 690--><p class="noindent" >           </td>
+ <!--l. 737--><p class="noindent" >           </td>
    </tr>
    </table></div>
     

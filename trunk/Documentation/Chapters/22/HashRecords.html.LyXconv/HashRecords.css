@@ -1,5 +1,6 @@
  
 /* start css.sty */
+body { background-color:#E4DDDD; }
 p.noindent { text-indent: 0em }
 td p.noindent { text-indent: 0em; margin-top:0em; }
 p.nopar { text-indent: 0em; }
@@ -118,5 +119,6 @@ table.multline, table.multline-star {width:100%;}
 td.gather {text-align:center; }
 table.gather {width:100%;}
 div.gather-star {text-align:center;}
+.figure img.graphics {margin-left:10%;}
 /* end css.sty */
 

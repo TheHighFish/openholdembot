@@ -7,15 +7,15 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- html --> 
 <meta name="src" content="SymbolRecords.tex"> 
-<meta name="date" content="2009-11-14 21:14:00"> 
+<meta name="date" content="2009-12-25 23:59:00"> 
 <link rel="stylesheet" type="text/css" href="SymbolRecords.css"> 
 </head><body 
 >
-   <h3 class="sectionHead"><span class="titlemark">0.1. </span> <a 
- id="x1-10000.1"></a>Symbol Records </h3>
-   <h4 class="subsectionHead"><span class="titlemark">0.1.1. </span> <a 
- id="x1-20000.1.1"></a>Description </h4>
-<!--l. 34--><p class="noindent" >Symbol records are a general purpose record type that serves many different purposes
+   <h3 class="sectionHead"><a 
+ id="x1-1000"></a>Symbol Records </h3>
+   <h4 class="subsectionHead"><a 
+ id="x1-2000"></a>Description </h4>
+<!--l. 38--><p class="noindent" >Symbol records are a general purpose record type that serves many different purposes
 within OpenHoldem and OpenScrape. The common characteristic of these records is that
 they all contain a name and a free-form text field. The interpretation of that text field is
 different, depending on the name of the symbol record. The table in the technical
@@ -31,35 +31,35 @@ change the record name itself. To delete an existing symbol record, select the
 record in the record tree display on the Table Map Editor window, and click
 the &#8220;Delete&#8221; button. A window will be displayed asking for verification of this
 action.
-<!--l. 55--><p class="indent" >   Note: The Insert and Delete keys can also be used as a shortcut for adding and
+<!--l. 59--><p class="indent" >   Note: The Insert and Delete keys can also be used as a shortcut for adding and
 deleting Symbol records.
-<!--l. 58--><p class="indent" >   In the case of the &#8220;New&#8221; and &#8220;Edit&#8221; actions, the window that pops up also contains a
+<!--l. 62--><p class="indent" >   In the case of the &#8220;New&#8221; and &#8220;Edit&#8221; actions, the window that pops up also contains a
 field for &#8220;Titlebar text&#8221;, a button to parse the title bar text, and a field to display the
 parse results. These three controls are only relevant if the record name is one of the
 ttlimits types. If a ttlimits record type is selected, these fields will be enabled, otherwise
 they will be grayed out.
-<!--l. 66--><p class="indent" >   <img 
+<!--l. 70--><p class="indent" >   <img 
 src="SymbolRecords0x.png" alt="PIC" class="graphics" width="193.72374pt" height="142.53249pt" ><!--tex4ht:graphics  
 name="SymbolRecords0x.png" src="0E__Dokumente_und_Einstellungen_Development_Des___entation_Images_OpenScrape_OS_NewEditWindow.eps"  
 -->
-<!--l. 68--><p class="indent" >   These three fields allow you to test the parsing of the window&#8217;s title bar text with
+<!--l. 72--><p class="indent" >   These three fields allow you to test the parsing of the window&#8217;s title bar text with
 the parse string that is specified in the &#8220;String&#8221; field, and see the results of this parse in
 the results field at the bottom of the window. The &#8220;Titlebar text&#8221; field is initially
 populated with the titlebar text of the window that OpenScrape is attached to (via the
 &#8220;Green Circle Button&#8221;), but this text can be overridden with anything you want to test
 parse.
 
-   <h4 class="subsectionHead"><span class="titlemark">0.1.2. </span> <a 
- id="x1-30000.1.2"></a>Technical Reference</h4>
-<!--l. 80--><p class="noindent" >In the Table Map (.tm) file, these records will be preceded with the characters "s$".
+   <h4 class="subsectionHead"><a 
+ id="x1-3000"></a>Technical Reference</h4>
+<!--l. 84--><p class="noindent" >In the Table Map (.tm) file, these records will be preceded with the characters "s$".
 Symbol records have the following format:
-<!--l. 84--><p class="indent" >   s$&#x003C;name&#x003E; &#x003C;text&#x003E;
-<!--l. 86--><p class="indent" >   &#x003C;name&#x003E; is the name of the record (see table below) &#x003C;text&#x003E; is the content of the
+<!--l. 88--><p class="indent" >   s$&#x003C;name&#x003E; &#x003C;text&#x003E;
+<!--l. 90--><p class="indent" >   &#x003C;name&#x003E; is the name of the record (see table below) &#x003C;text&#x003E; is the content of the
 record
-   <h4 class="subsectionHead"><span class="titlemark">0.1.3. </span> <a 
- id="x1-40000.1.3"></a>Valid symbol records </h4>
+   <h4 class="subsectionHead"><a 
+ id="x1-4000"></a>Valid symbol records </h4>
 <a 
- id="x1-4001r1"></a>   <!--l. 94--><div class="longtable"> <table id="TBL-1" class="longtable" 
+ id="x1-4001r1"></a>   <!--l. 98--><div class="longtable"> <table id="TBL-1" class="longtable" 
 cellspacing="0" cellpadding="0" rules="groups" 
 ><colgroup id="TBL-1-1g"><col 
 id="TBL-1-1"></colgroup><colgroup id="TBL-1-2g"><col 
@@ -69,15 +69,15 @@ id="TBL-1-2"></colgroup>
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-1-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-1-1"  
 class="td11">
- <!--l. 94--><p class="noindent" >Symbol
+ <!--l. 98--><p class="noindent" >Symbol
   record                    </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-1-2"  
 class="td11">
- <!--l. 94--><p class="noindent" >Description                                                                    </td>
+ <!--l. 98--><p class="noindent" >Description                                                                    </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-2-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-2-1"  
 class="td11">
- <!--l. 96--><p class="noindent" >                  </td>
+ <!--l. 100--><p class="noindent" >                  </td>
 </tr><tr  
  style="vertical-align:baseline;" id="TBL-1-3-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-3-1"  
 class="td11">                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-3-2"  
@@ -86,12 +86,12 @@ class="td11"></td></tr>
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-4-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-4-1"  
 class="td11">
- <!--l. 98--><p class="noindent" >titletext,
+ <!--l. 102--><p class="noindent" >titletext,
   titletext0
   -
   titletext9                </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-4-2"  
 class="td11">
- <!--l. 98--><p class="noindent" >When
+ <!--l. 102--><p class="noindent" >When
   the
   &#8220;Green
   Circle
@@ -140,12 +140,12 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-5-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-5-1"  
 class="td11">
- <!--l. 104--><p class="noindent" >!titletext,&#x00A0;
+ <!--l. 108--><p class="noindent" >!titletext,&#x00A0;
   !titletext0
   -
   !titletext9                </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-5-2"  
 class="td11">
- <!--l. 104--><p class="noindent" >When
+ <!--l. 108--><p class="noindent" >When
   the
   &#8220;Green
   Circle
@@ -196,12 +196,12 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-6-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-6-1"  
 class="td11">
- <!--l. 110--><p class="noindent" >ttlimits,
+ <!--l. 114--><p class="noindent" >ttlimits,
   ttlimits0
   -
   ttlimits9                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-6-2"  
 class="td11">
- <!--l. 110--><p class="noindent" >These
+ <!--l. 114--><p class="noindent" >These
   symbols
   are
   intended
@@ -333,7 +333,7 @@ class="td11">
   ^L
   limit
   indicator
-  <!--l. 125--><p class="noindent" >For
+  <!--l. 129--><p class="noindent" >For
   the
   integer
   and
@@ -395,7 +395,7 @@ class="tcrm-1000">¢</span>&#8221;
   and
   1000000
   respectively).
-  <!--l. 133--><p class="noindent" >The
+  <!--l. 137--><p class="noindent" >The
   following
   case-insensitive
   strings
@@ -422,7 +422,7 @@ class="tcrm-1000">¢</span>&#8221;
   fixedlimit,
   fl,
   limit
-  <!--l. 137--><p class="noindent" >As
+  <!--l. 141--><p class="noindent" >As
   an
   example,
   this
@@ -459,7 +459,7 @@ class="tcrm-1000">¢</span>&#8221;
   type
   being
   recognized.
-  <!--l. 143--><p class="noindent" >If
+  <!--l. 147--><p class="noindent" >If
   multiple
   ttlimits
   symbols
@@ -576,10 +576,10 @@ class="tcrm-1000">¢</span>&#8221;
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-7-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-7-1"  
 class="td11">
- <!--l. 155--><p class="noindent" >c0limits,
+ <!--l. 159--><p class="noindent" >c0limits,
   c0limits0-c0limits9    </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-7-2"  
 class="td11">
- <!--l. 155--><p class="noindent" >These
+ <!--l. 159--><p class="noindent" >These
   are
   text
   format
@@ -648,9 +648,9 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-8-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-8-1"  
 class="td11">
- <!--l. 162--><p class="noindent" >sitename                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-8-2"  
+ <!--l. 166--><p class="noindent" >sitename                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-8-2"  
 class="td11">
- <!--l. 162--><p class="noindent" >This
+ <!--l. 166--><p class="noindent" >This
   record
   describes
   the
@@ -724,9 +724,9 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-9-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-9-1"  
 class="td11">
- <!--l. 171--><p class="noindent" >network                  </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-9-2"  
+ <!--l. 175--><p class="noindent" >network                  </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-9-2"  
 class="td11">
- <!--l. 171--><p class="noindent" >The
+ <!--l. 175--><p class="noindent" >The
   name
   of
   the
@@ -772,7 +772,7 @@ class="td11">
   name,
   then
   s$network.
-  <!--l. 176--><p class="noindent" >Both
+  <!--l. 180--><p class="noindent" >Both
   s$sitename
   and
   s$network
@@ -785,7 +785,7 @@ class="td11">
   internally
   to
   lowercases.
-  <!--l. 179--><p class="noindent" >The
+  <!--l. 183--><p class="noindent" >The
   following
   names
   are
@@ -816,9 +816,9 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-10-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-10-1"  
 class="td11">
- <!--l. 184--><p class="noindent" >nchairs                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-10-2"  
+ <!--l. 188--><p class="noindent" >nchairs                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-10-2"  
 class="td11">
- <!--l. 184--><p class="noindent" >The
+ <!--l. 188--><p class="noindent" >The
   number
   of
   chairs
@@ -845,9 +845,9 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-11-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-11-1"  
 class="td11">
- <!--l. 188--><p class="noindent" >reseller                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-11-2"  
+ <!--l. 192--><p class="noindent" >reseller                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-11-2"  
 class="td11">
- <!--l. 188--><p class="noindent" >Legacy
+ <!--l. 192--><p class="noindent" >Legacy
   support
   of
   WinScrape&#8217;s
@@ -888,9 +888,9 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-12-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-12-1"  
 class="td11">
- <!--l. 193--><p class="noindent" >mechanic                </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-12-2"  
+ <!--l. 197--><p class="noindent" >mechanic                </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-12-2"  
 class="td11">
- <!--l. 193--><p class="noindent" >Legacy
+ <!--l. 197--><p class="noindent" >Legacy
   support
   of
   WinScrape&#8217;s
@@ -931,9 +931,9 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-13-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-13-1"  
 class="td11">
- <!--l. 198--><p class="noindent" >chairconfig              </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-13-2"  
+ <!--l. 202--><p class="noindent" >chairconfig              </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-13-2"  
 class="td11">
- <!--l. 198--><p class="noindent" >Legacy
+ <!--l. 202--><p class="noindent" >Legacy
   support
   of
   WinScrape&#8217;s
@@ -969,9 +969,9 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-14-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-14-1"  
 class="td11">
- <!--l. 202--><p class="noindent" >swagtextmethod       </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-14-2"  
+ <!--l. 206--><p class="noindent" >swagtextmethod       </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-14-2"  
 class="td11">
- <!--l. 202--><p class="noindent" >Used
+ <!--l. 206--><p class="noindent" >Used
   by
   the
   Autoplayer
@@ -993,7 +993,7 @@ class="td11">
   casino
   window.
   potmethod
-  <!--l. 205--><p class="noindent" >This
+  <!--l. 209--><p class="noindent" >This
   is
   used
   to
@@ -1023,9 +1023,9 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-15-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-15-1"  
 class="td11">
- <!--l. 209--><p class="noindent" >activemethod           </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-15-2"  
+ <!--l. 213--><p class="noindent" >activemethod           </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-15-2"  
 class="td11">
- <!--l. 209--><p class="noindent" >This
+ <!--l. 213--><p class="noindent" >This
   is
   used
   to
@@ -1056,11 +1056,11 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-16-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-16-1"  
 class="td11">
- <!--l. 213--><p class="noindent" >t0type
+ <!--l. 217--><p class="noindent" >t0type
   -
   t3type                    </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-16-2"  
 class="td11">
- <!--l. 213--><p class="noindent" >These
+ <!--l. 217--><p class="noindent" >These
   symbols
   control
   which
@@ -1109,7 +1109,7 @@ class="td11">
   a
   given
   group.
-  <!--l. 219--><p class="noindent" >The
+  <!--l. 223--><p class="noindent" >The
   possible
   values
   for
@@ -1173,9 +1173,9 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-17-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-17-1"  
 class="td11">
- <!--l. 226--><p class="noindent" >swagselectionmethod </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-17-2"  
+ <!--l. 230--><p class="noindent" >swagselectionmethod </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-17-2"  
 class="td11">
- <!--l. 226--><p class="noindent" >New
+ <!--l. 230--><p class="noindent" >New
   Symbol
   in
   version
@@ -1192,7 +1192,7 @@ class="td11">
   OpenHoldem
   preferences
   GUI.
-  <!--l. 229--><p class="noindent" >This
+  <!--l. 233--><p class="noindent" >This
   symbol
   instructs
   the
@@ -1337,9 +1337,9 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-18-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-18-1"  
 class="td11">
- <!--l. 243--><p class="noindent" >swagdeletionmethod  </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-18-2"  
+ <!--l. 247--><p class="noindent" >swagdeletionmethod  </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-18-2"  
 class="td11">
- <!--l. 243--><p class="noindent" >New
+ <!--l. 247--><p class="noindent" >New
   Symbol
   in
   version
@@ -1467,9 +1467,9 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-19-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-19-1"  
 class="td11">
- <!--l. 256--><p class="noindent" >swagconfirmationmethod </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-19-2"  
+ <!--l. 260--><p class="noindent" >swagconfirmationmethod </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-19-2"  
 class="td11">
- <!--l. 256--><p class="noindent" >New
+ <!--l. 260--><p class="noindent" >New
   Symbol
   in
   version
@@ -1538,7 +1538,7 @@ class="td11">
   SWAG
   bet
   amount.
-  <!--l. 263--><p class="noindent" >Valid
+  <!--l. 267--><p class="noindent" >Valid
   values
   for
   this
@@ -1592,9 +1592,9 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-20-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-20-1"  
 class="td11">
- <!--l. 271--><p class="noindent" >buttonclickmethod    </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-20-2"  
+ <!--l. 275--><p class="noindent" >buttonclickmethod    </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-20-2"  
 class="td11">
- <!--l. 271--><p class="noindent" >New
+ <!--l. 275--><p class="noindent" >New
   Symbol
   in
   version
@@ -1627,7 +1627,7 @@ class="td11">
   iXbutton
   region
   records.
-  <!--l. 276--><p class="noindent" >Valid
+  <!--l. 280--><p class="noindent" >Valid
   values
   for
   this
@@ -1659,9 +1659,9 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-21-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-21-1"  
 class="td11">
- <!--l. 281--><p class="noindent" >handresetmethod      </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-21-2"  
+ <!--l. 285--><p class="noindent" >handresetmethod      </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-21-2"  
 class="td11">
- <!--l. 281--><p class="noindent" >This
+ <!--l. 285--><p class="noindent" >This
   symbol
   identifies
   which
@@ -1705,7 +1705,7 @@ class="td11">
   a
   "hand
   reset".
-  <!--l. 287--><p class="noindent" >The
+  <!--l. 291--><p class="noindent" >The
   values
   below
   are
@@ -1797,40 +1797,40 @@ id="TBL-2-3"></colgroup><tr
 class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-1-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-1-1"  
 class="td11">
-<!--l. 298--><p class="noindent" >bit             </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-1-2"  
+<!--l. 302--><p class="noindent" >bit             </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-1-2"  
 class="td11">
-<!--l. 298--><p class="noindent" >binary        </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-1-3"  
+<!--l. 302--><p class="noindent" >binary        </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-1-3"  
 class="td11">
-<!--l. 298--><p class="noindent" >meaning                                      </td>
+<!--l. 302--><p class="noindent" >meaning                                      </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr 
 class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-2-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-2-1"  
 class="td11">
-<!--l. 301--><p class="noindent" >1                </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-2-2"  
+<!--l. 305--><p class="noindent" >1                </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-2-2"  
 class="td11">
-<!--l. 301--><p class="noindent" >0b00000001 </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-2-3"  
+<!--l. 305--><p class="noindent" >0b00000001 </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-2-3"  
 class="td11">
-<!--l. 301--><p class="noindent" >dealer
+<!--l. 305--><p class="noindent" >dealer
 button                                        </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-3-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-3-1"  
 class="td11">
-<!--l. 303--><p class="noindent" >2                </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-3-2"  
+<!--l. 307--><p class="noindent" >2                </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-3-2"  
 class="td11">
-<!--l. 303--><p class="noindent" >0b00000010 </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-3-3"  
+<!--l. 307--><p class="noindent" >0b00000010 </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-3-3"  
 class="td11">
-<!--l. 303--><p class="noindent" >handnumber                                </td>
+<!--l. 307--><p class="noindent" >handnumber                                </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-4-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-4-1"  
 class="td11">
-<!--l. 305--><p class="noindent" >3                </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-4-2"  
+<!--l. 309--><p class="noindent" >3                </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-4-2"  
 class="td11">
-<!--l. 305--><p class="noindent" >0b00000100 </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-4-3"  
+<!--l. 309--><p class="noindent" >0b00000100 </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-4-3"  
 class="td11">
-<!--l. 305--><p class="noindent" >player
+<!--l. 309--><p class="noindent" >player
 cards
 (not
 triggered
@@ -1852,9 +1852,9 @@ class="td11">           </td>
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-22-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-22-1"  
 class="td11">
- <!--l. 310--><p class="noindent" >balancenumbersonly  </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-22-2"  
+ <!--l. 314--><p class="noindent" >balancenumbersonly  </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-22-2"  
 class="td11">
- <!--l. 310--><p class="noindent" >This
+ <!--l. 314--><p class="noindent" >This
   Symbol
   instructs
   the
@@ -1924,9 +1924,9 @@ class="td11">
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-23-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-23-1"  
 class="td11">
- <!--l. 319--><p class="noindent" >chipscrapemethod     </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-23-2"  
+ <!--l. 323--><p class="noindent" >chipscrapemethod     </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-23-2"  
 class="td11">
- <!--l. 319--><p class="noindent" >This
+ <!--l. 323--><p class="noindent" >This
   Symbol
   instructs
   the
@@ -2101,16 +2101,16 @@ class="td11">
 </tr><tr  
  style="vertical-align:baseline;" id="TBL-1-24-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-24-1"  
 class="td11">
- <!--l. 334--><p class="noindent" >                  </td>
+ <!--l. 338--><p class="noindent" >                  </td>
 
    </tr>
 <tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-25-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-25-1"  
 class="td11">
- <!--l. 335--><p class="noindent" >Scraperdll               </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-25-2"  
+ <!--l. 339--><p class="noindent" >Scraperdll               </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-25-2"  
 class="td11">
- <!--l. 335--><p class="noindent" >This
+ <!--l. 339--><p class="noindent" >This
   Symbol
   instructs
   OpenHoldem
@@ -2235,20 +2235,18 @@ class="td11">                   </td>
 </tr><tr  
  style="vertical-align:baseline;" id="TBL-1-28-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-28-1"  
 class="td11">
- <!--l. 346--><p class="noindent" >                  </td>
+ <!--l. 350--><p class="noindent" >                  </td>
 </tr><tr  
  style="vertical-align:baseline;" id="TBL-1-29-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-29-1"  
 class="td11">
- <!--l. 346--><p class="noindent" >                  </td>
+ <!--l. 350--><p class="noindent" >                  </td>
 </tr><tr  
  style="vertical-align:baseline;" id="TBL-1-30-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-30-1"  
 class="td11">
- <!--l. 346--><p class="noindent" >                  </td>
+ <!--l. 350--><p class="noindent" >                  </td>
    </tr>
    </table></div>
-<!--l. 348--><p class="noindent" >-
-   <h3 class="sectionHead"><span class="titlemark">0.2. </span> <a 
- id="x1-50000.2"></a></h3>
+<!--l. 352--><p class="noindent" >-
     
 </body></html> 
 
