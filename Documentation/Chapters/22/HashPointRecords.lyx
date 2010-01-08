@@ -1,4 +1,4 @@
-#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -6,6 +6,8 @@
 \use_default_options true
 \begin_modules
 theorems-ams
+eqs-within-sections
+figs-within-sections
 \end_modules
 \language english
 \inputencoding auto
@@ -29,8 +31,8 @@ theorems-ams
 \cite_engine basic
 \use_bibtopic false
 \paperorientation portrait
-\secnumdepth 3
-\tocdepth 3
+\secnumdepth -2
+\tocdepth -2
 \paragraph_separation indent
 \defskip medskip
 \quotes_language english
@@ -95,8 +97,35 @@ There are two ways to create new Hash Point records:
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_CreateHashPoint.bmp
+	filename Images/OS_NewHashPoint.bmp
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+OpenScrape: Hash Point Editor
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
 
 \end_inset
 
@@ -113,8 +142,31 @@ There are two ways to create new Hash Point records:
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_NewHashPoint.bmp
+	filename Images/OS_NewHashPointConfirmation.bmp
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+OpenScrape: New Hash Point
+\end_layout
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -137,8 +189,35 @@ After selecting an Image record in the “Sample Image” control (note you
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_NewHashPointWithImage.bmp
+	filename Images/OS_NewHashPointWithImage.bmp
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+OpenScrape: Creating a new HashPoint
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
 
 \end_inset
 
@@ -195,10 +274,6 @@ p<n>$ <x> <y>
  are the coordinates of the point, relative to the region's rectangle, the
  top left corner of which is 0,0.
  
-\end_layout
-
-\begin_layout Section
-
 \end_layout
 
 \end_body

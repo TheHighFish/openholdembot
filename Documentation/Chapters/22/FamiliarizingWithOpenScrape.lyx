@@ -1,4 +1,4 @@
-#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -6,6 +6,8 @@
 \use_default_options true
 \begin_modules
 theorems-ams
+eqs-within-sections
+figs-within-sections
 \end_modules
 \language english
 \inputencoding auto
@@ -64,57 +66,36 @@ Main: Menu Options
 \end_layout
 
 \begin_layout Standard
-\begin_inset Tabular
-<lyxtabular version="3" rows="1" columns="3">
-<features>
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
+\begin_inset Float figure
+wide false
+sideways false
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename ../../Images/OpenScrape/OS_FileMenu.bmp
+	filename Images/OS_FileMenu.png
+	scale 99.9
 
 \end_inset
 
 
 \end_layout
 
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
+\begin_layout Plain Layout
+\begin_inset Caption
 
 \begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../../Images/OpenScrape/OS_EditMenu.bmp
+OpenScrape: File Menu
+\end_layout
 
 \end_inset
 
 
 \end_layout
 
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
 \begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../../Images/OpenScrape/OS_ViewMenu.bmp
-
-\end_inset
-
 
 \end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
 
 \end_inset
 
@@ -124,6 +105,39 @@ Main: Menu Options
 \begin_layout Standard
 The File menu contains the standard Windows options to open and save Table
  Map files.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/OS_EditMenu.png
+	scale 99.9
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+OpenScrape: Edit Menu
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -144,6 +158,39 @@ Duplicate Region: This option will allow you to easily duplicate Regions.
  For example, once you have the player 1 card locations defined, you might
  want to copy those to players 2-10 to make things easier on yourself.
  More on Regions later.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/OS_ViewMenu.png
+	scale 99.9
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+OpenScrape: View Menu
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -189,8 +236,36 @@ Main: Toolbar
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
 \begin_inset Graphics
-	filename ../../Images/OpenScrape/OS_MainTollbar.bmp
+	filename Images/OS_MainTollbar.png
+	scale 99.9
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+OpenScrape: Main Toolbar
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
 
 \end_inset
 
@@ -233,8 +308,36 @@ Table Map: Buttons/fields The Table Map Editor window has a plethora of
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
 \begin_inset Graphics
-	filename ../../Images/OpenScrape/OS_TmEditorWindow.bmp
+	filename Images/OS_TmEditorWindow.png
+	scale 99.9
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+OpenScrape: Table Map Editor
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
 
 \end_inset
 
