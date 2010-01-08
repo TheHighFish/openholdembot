@@ -421,6 +421,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CTableLimits.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CValidator.cpp"
 				>
 			</File>
@@ -1039,6 +1043,10 @@
 			</File>
 			<File
 				RelativePath=".\CSymbols.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CTableLimits.h"
 				>
 			</File>
 			<File
