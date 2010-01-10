@@ -259,7 +259,7 @@ buttons
 
 buttons, so OpenHoldem really knows, it is your turn and not a gamestate
  with cards shown for your opponents (i.e.
- a showdown).
+ at showdown).
 \end_layout
 
 \begin_layout Section
@@ -491,6 +491,27 @@ players
 
 \begin_layout Standard
 So do always remember: Bots are very stupid and very volatile beings.
+\end_layout
+
+\begin_layout Section
+OH does work locally, but not remotely with bring
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Reason: Different system configurations on your casino-machine amd your
+ bot-machine.
+\end_layout
+
+\begin_layout Standard
+It is a quite common beginners mistake to setup the casino-machine in a
+ different way than the bot-machine.
+ The casino-client will be rendered in a different way, so OpenHoldem will
+ no longer be able to scrape the screenshots displayed by bring.
+ If you don't want to install OH on the casino-machine to check the settings,
+ the only way to fix that problem is a careful manual walk-through (experts
+ could clone a VM or deploy some registry-settings).
 \end_layout
 
 \begin_layout Section
