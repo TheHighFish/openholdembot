@@ -99,6 +99,9 @@
 				<param name="Local" value="Chapters\05\Favourite_Failures.html.LyXconv\Favourite_Failures.html">
 				</OBJECT>
 		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Beginners Questions">
+			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Table Maps">
