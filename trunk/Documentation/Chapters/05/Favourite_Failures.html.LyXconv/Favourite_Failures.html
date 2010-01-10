@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- html --> 
 <meta name="src" content="Favourite_Failures.tex"> 
-<meta name="date" content="2009-12-25 21:32:00"> 
+<meta name="date" content="2010-01-09 21:07:00"> 
 <link rel="stylesheet" type="text/css" href="Favourite_Failures.css"> 
 </head><body 
 >
@@ -56,7 +56,7 @@ To do so OpenHoldem must see
         <li class="itemize">your cards
            </li>
         <li class="itemize">some buttons, so OpenHoldem really knows, it is your turn and not a
-        gamestate with cards shown for your opponents (i.e. a showdown).</li></ul>
+        gamestate with cards shown for your opponents (i.e. at showdown).</li></ul>
    <h3 class="sectionHead"><span class="titlemark">1.5. </span> <a 
  id="x1-60001.5"></a>OH calls any hand</h3>
 <!--l. 82--><p class="noindent" ><span 
@@ -124,12 +124,22 @@ devilish joy for their opponents; innummerable bots got reported and finally
 busted.
 <!--l. 150--><p class="indent" >   So do always remember: Bots are very stupid and very volatile beings.
    <h3 class="sectionHead"><span class="titlemark">1.9. </span> <a 
- id="x1-100001.9"></a>Perl (or the user-DLL) crashes immediatelly</h3>
-<!--l. 155--><p class="noindent" ><span 
+ id="x1-100001.9"></a>OH does work locally, but not remotely with bring</h3>
+<!--l. 156--><p class="noindent" ><span 
+class="ecti-1000">Reason: Different system configurations on your casino-machine amd your bot-machine.</span>
+<!--l. 158--><p class="indent" >   It is a quite common beginners mistake to setup the casino-machine in a different
+way than the bot-machine. The casino-client will be rendered in a different way, so
+OpenHoldem will no longer be able to scrape the screenshots displayed by bring. If you
+don&#8217;t want to install OH on the casino-machine to check the settings, the only way to fix
+that problem is a careful manual walk-through (experts could clone a VM or deploy some
+registry-settings).
+   <h3 class="sectionHead"><span class="titlemark">1.10. </span> <a 
+ id="x1-110001.10"></a>Perl (or the user-DLL) crashes immediatelly</h3>
+<!--l. 169--><p class="noindent" ><span 
 class="ecti-1000">Reason: Usage of functionality, that is not yet initialized.</span>
-<!--l. 157--><p class="indent" >   The probably most prominent example is the usage of the function &#8220;getsym&#8221; during
+<!--l. 171--><p class="indent" >   The probably most prominent example is the usage of the function &#8220;getsym&#8221; during
 the initialization-phase of Perl or a DLL.
-<!--l. 160--><p class="indent" >   <span 
+<!--l. 174--><p class="indent" >   <span 
 class="eccc-1000"><span 
 class="small-caps">D</span><span 
 class="small-caps">O</span><span 
@@ -155,11 +165,11 @@ class="small-caps">L</span><span
 class="small-caps">I</span><span 
 class="small-caps">N</span><span 
 class="small-caps">D</span>&#8221;);</span>
-<!--l. 162--><p class="indent" >   BigBlind is here a global variable, that gets initialized immediatelly, when the DLL
+<!--l. 176--><p class="indent" >   BigBlind is here a global variable, that gets initialized immediatelly, when the DLL
 gets loaded. But the function getsym uses a callback-pointer, that gets initialized later
 with one of the first messages from OpenHoldem to the DLL. So you dereference an
 undefined pointer and crash because of a memory-access-error.
-<!--l. 168--><p class="indent" >   Very similar are debug messages into a file, that has not yet been opened for writing
+<!--l. 182--><p class="indent" >   Very similar are debug messages into a file, that has not yet been opened for writing
 or an inexpertly load-order of Perl-modules, that do similar stuff as descibed above
 during the phase of initialization.  
 </body></html> 
