@@ -4,6 +4,7 @@
 #include "CSymbols.h"
 #include "CScraper.h"
 #include "CPreferences.h"
+#include "CTableLimits.h"
 #include "MagicNumbers.h"
 
 CGameState			*p_game_state = NULL;
@@ -522,6 +523,8 @@ bool CGameState::ProcessThisFrame (void)
 
 void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstate_changed)
 {
+	double			sym_sblind = p_tablelimits->sblind();
+	double			sym_bblind = p_tablelimits->bblind();
 	int				from_chair = 0, to_chair = 0;
 	int				i = 0, j = 0, k = 0;
 	int				sym_br = (int) p_symbols->sym()->br;
@@ -529,8 +532,6 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 	bool			sym_ismyturn = (bool) p_symbols->sym()->ismyturn;
 	double			sym_balance = p_symbols->sym()->balance[10];
 	double			sym_handnumber = p_symbols->sym()->handnumber;
-	double			sym_sblind = p_symbols->sym()->sblind;
-	double			sym_bblind = p_symbols->sym()->bblind;
 
 	_m_holdem_state[ (++_m_ndx)&0xff ] = *pstate;
 

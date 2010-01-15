@@ -155,7 +155,8 @@ public:
 	const int  rebuy_minimum_time_to_next_try() { return _rebuy_minimum_time_to_next_try; }
 	const CString rebuy_script() { return _rebuy_script; }
 	// Configuration check
-	const bool configurationcheck_disable_less_critical_checks() { return _configurationcheck_disable_less_critical_checks; }
+	const bool configurationcheck_perl_dependencies() { return _configurationcheck_perl_dependencies; }
+	const bool configurationcheck_keyboard_settings() { return _configurationcheck_keyboard_settings; }
 	// Misc
 	const int scraper_zoom() { return _scraper_zoom; }
 	// versus_path() is implemented in the cpp-file.
@@ -327,7 +328,8 @@ public:
 	void set_rebuy_script(const CString s) { ENT _rebuy_script = s; WriteReg("rebuy_script", s); }
 
 	// Configuration check
-	void set_configurationcheck_disable_less_critical_checks(const bool b) { ENT _configurationcheck_disable_less_critical_checks = b; WriteReg("configurationcheck_disable_less_critical_checks", b); }
+	void set_configurationcheck_perl_dependencies(const bool b) { ENT _configurationcheck_perl_dependencies = b; WriteReg("configurationcheck_perl_dependencies", b); }
+	void set_configurationcheck_keyboard_settings(const bool b) { ENT _configurationcheck_keyboard_settings = b; WriteReg("configurationcheck_keyboard_settings", b); }
 
 	// Misc
 	// (No method for versus_path,
@@ -505,7 +507,8 @@ private:
 	CString			_rebuy_script;
 
 	// Configuration check
-	bool			_configurationcheck_disable_less_critical_checks;
+	bool			_configurationcheck_perl_dependencies;
+	bool			_configurationcheck_keyboard_settings;
 
 	// Misc
 	int				_scraper_zoom;

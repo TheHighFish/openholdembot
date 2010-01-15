@@ -9,6 +9,7 @@
 #include "CScraper.h"
 #include "CSymbols.h"
 #include "..\CTablemap\CTablemap.h"
+#include "CTableLimits.h"
 #include "CHeartbeatThread.h"
 #include "CPreferences.h"
 
@@ -167,8 +168,8 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 	CDC			*pDC = GetDC();
 
 	double		sym_handnumber = p_symbols->sym()->handnumber;
-	double		sym_bblind = p_symbols->sym()->bblind;
-	double		sym_sblind = p_symbols->sym()->sblind;
+	double		sym_bblind = p_tablelimits->bblind();
+	double		sym_sblind = p_tablelimits->sblind();
 	int			sym_lim = (int) p_symbols->sym()->lim;
 	bool		sym_istournament = (bool) p_symbols->sym()->istournament;
 	double		sym_ante = p_symbols->sym()->ante;
@@ -335,9 +336,9 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	CDC			*pDC = GetDC();
 	int			height = 80;
 	
+	double sym_bblind		= p_tablelimits->bblind();
+	double sym_sblind		= p_tablelimits->sblind();
 	double sym_handnumber	= p_symbols->sym()->handnumber;
-	double sym_bblind		= p_symbols->sym()->bblind;
-	double sym_sblind		= p_symbols->sym()->sblind;
 	int sym_lim				= (int) p_symbols->sym()->lim;
 	bool sym_istournament	= (bool) p_symbols->sym()->istournament;
 	double sym_ante			= p_symbols->sym()->ante;

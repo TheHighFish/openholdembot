@@ -190,8 +190,8 @@ void CPreferences::InitDefaults(void)
 	_rebuy_script = "Rebuy.exe";
 
 	// Configuration check
-	_configurationcheck_disable_less_critical_checks = false;
-
+	_configurationcheck_perl_dependencies = true;
+	_configurationcheck_keyboard_settings = true;
 
 	// Obscure
 	_window_class_name = "OpenHoldem";
@@ -380,7 +380,8 @@ void CPreferences::ReadPreferences()
 		ReadReg("rebuy_script", &_rebuy_script);
 
 		// Configuration check
-		ReadReg("configurationcheck_disable_less_critical_checks", &_configurationcheck_disable_less_critical_checks);
+		ReadReg("configurationcheck_perl_dependencies", &_configurationcheck_perl_dependencies);
+		ReadReg("configurationcheck_keyboard_settings", &_configurationcheck_keyboard_settings);
 	
 		// obscure
 		ReadReg("window_class_name", &_window_class_name);

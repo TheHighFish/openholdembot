@@ -32,10 +32,12 @@ void CConfigurationCheck::CheckEverything()
 
 	// Check non-critical things, if checks are not disabled.
 	// OpenHoldem may or may not work, if these are not right.
-	// ToDo: Preferences!!!
-	if (!prefs.configurationcheck_disable_less_critical_checks())
+	if (prefs.configurationcheck_keyboard_settings())
 	{
 		CheckKeyboardSettings();
+	}
+	if (prefs.configurationcheck_perl_dependencies())
+	{
 		CheckForMissingLibraries();
 	}
 }

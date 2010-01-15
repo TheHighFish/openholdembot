@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#include "CSymbols.h"
+
 #include <assert.h>
 #include <process.h>
 #include <float.h>
@@ -19,7 +21,7 @@
 #include "CRunRon.h"
 #include "CScraper.h"
 #include "CSessionCounter.h"
-#include "CSymbols.h"
+#include "CTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTransform\CTransform.h"
 #include "CVersus.h"
@@ -202,8 +204,6 @@ CSymbols::~CSymbols()
 
 void CSymbols::ResetSymbolsFirstTime(void)
 {
-	int		i = 0;
-
 	// general
 	set_sym_ismanual(0);
 	set_sym_isppro(0);
@@ -227,9 +227,15 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_nit(0);
 
 	// limits
+	// !!! tablelimits
+	/*
 	set_sym_bblind(0);
 	set_sym_sblind(0);
+	*/
 	set_sym_ante(0);
+	p_tablelimits->ResetOnConnection();
+
+
 	set_sym_lim(-1);
 	set_sym_isnl(0);
 	set_sym_ispl(0);
@@ -269,7 +275,8 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_random(0);
 	set_sym_randomhand(0);
 
-	for (i=0; i<5; i++)
+	// Index k_number_of_betrounds+1 is for general random number
+	for (int i=0; i<(k_number_of_betrounds+1); i++)
 		set_sym_randomround(i, 0);
 
 	set_sym_prwin(0);
@@ -282,16 +289,18 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_isaggmode(0);
 
 	// chip amounts
-	for (i=0; i<11; i++)
+	// Index k_max_number_of_players+1 is for hero
+	for (int i=0; i<(k_max_number_of_players+1); i++)
 	{
 		set_sym_balance(i, 0);
 		set_sym_currentbet(i, 0);
 	}
 
-	for (i=0; i<10; i++)
+	for (int i=0; i<k_max_number_of_players; i++)
 		set_sym_stack(i, 0);
 
-	for (i=0; i<5; i++)
+	// Index k_number_of_betrounds+1 is for current round
+	for (int i=0; i<(k_number_of_betrounds+1); i++)
 		set_sym_bet(i, 0);
 
 	set_sym_pot(0);
@@ -313,7 +322,7 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_islistrais(0);
 	set_sym_islistalli(0);
 
-	for (i=0; i<MAX_HAND_LISTS; i++) 
+	for (int i=0; i<MAX_HAND_LISTS; i++) 
 		set_sym_islist(i, 0);
 
 	set_sym_isemptylistcall(0);
@@ -332,21 +341,21 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_npcbits(0);
 
 	// hand tests
-	for (i=0; i<=1; i++)
+	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
 		set_sym_$$pc(i, WH_NOCARD);
 		set_sym_$$pr(i, 0);
 		set_sym_$$ps(i, 0);
 	}
 
-	for (i=0; i<=4; i++)
+	for (int i=0; i<k_number_of_community_cards; i++)
 	{
 		set_sym_$$cc(i, WH_NOCARD);
 		set_sym_$$cs(i, 0);
 		set_sym_$$cr(i, 0);
 	}
 
-	for (i=0; i<=3; i++)
+	for (int i=0; i<=3; i++) // ??? WTF is 3?
 	{
 		_phandval[i] = 0;
 		_chandval[i] = 0;
@@ -511,7 +520,8 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_isfinalanswer(0);
 
 	// history
-	for (i=0; i<=4; i++)
+	// Index k_number_of_betrounds+1 is for current round
+	for (int i=0; i<(k_number_of_betrounds+1); i++)
 	{
 		set_sym_nplayersround(i, 0);
 		set_sym_nbetsround(i, 0);
@@ -598,7 +608,7 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_reset_stakes(true);
 
 	// icm
-	for (i=0; i<=9; i++)
+	for (int i=0; i<k_max_number_of_players; i++)
 		set_stacks_at_hand_start(i, 0);
 
 	// Reset semi-persistent hand state when we instantiate CSymbols.
@@ -620,8 +630,6 @@ void CSymbols::ResetSymbolsFirstTime(void)
 
 void CSymbols::ResetSymbolsNewHand(void)
 {
-	int		i = 0;
-
 	// handrank
 	set_sym_handrank169(0);
 	set_sym_handrank2652(0);
@@ -630,14 +638,14 @@ void CSymbols::ResetSymbolsNewHand(void)
 	set_sym_handrank(0);
 
 	// chip amounts
-	for (i=0; i<=4; i++)
+	for (int i=0; i<=4; i++)
 		set_sym_bet(i, 0);
 
 	// list tests
 	set_sym_islistcall(0);
 	set_sym_islistrais(0);
 	set_sym_islistalli(0);0;
-	for (i=0; i<MAX_HAND_LISTS; i++)
+	for (int i=0; i<MAX_HAND_LISTS; i++)
 		set_sym_islist(i, 0);
 
 	set_sym_isemptylistcall(0);
@@ -649,21 +657,21 @@ void CSymbols::ResetSymbolsNewHand(void)
 	set_sym_nlistmin(-1);
 
 	// hand tests
-	for (i=0; i<=1; i++)
+	for (int i=0; i<=1; i++)
 	{
 		set_sym_$$pc(i, WH_NOCARD);
 		set_sym_$$pr(i, 0);
 		set_sym_$$ps(i, 0);
 	}
 
-	for (i=0; i<=4; i++)
+	for (int i=0; i<=4; i++)
 	{
 		set_sym_$$cc(i, WH_NOCARD);
 		set_sym_$$cs(i, 0);
 		set_sym_$$cr(i, 0);
 	}
 
-	for (i=0; i<=3; i++)
+	for (int i=0; i<=3; i++)
 	{
 		_phandval[i]=0;
 		_chandval[i]=0;
@@ -688,7 +696,7 @@ void CSymbols::ResetSymbolsNewHand(void)
 	time(&_elapsedhandhold);
 
 	// history
-	for (i=0; i<=4; i++)
+	for (int i=0; i<=4; i++)
 	{
 		set_sym_nplayersround(i, 0);
 		set_sym_nbetsround(i, 0);
@@ -708,11 +716,11 @@ void CSymbols::ResetSymbolsNewHand(void)
 	set_f$rebuy(0);
 
 	// icm
-	for (i=0; i<=9; i++)
+	for (int i=0; i<=9; i++)
 		set_stacks_at_hand_start(i, 0);
 
 	// callbits, raisbits, etc.
-	for (i=k_betround_preflop; i<=k_betround_river; i++)
+	for (int i=k_betround_preflop; i<=k_betround_river; i++)
 	{
 		set_sym_callbits(0, i);
 		set_sym_raisbits(0, i);
@@ -1182,10 +1190,11 @@ void CSymbols::CalcSymbols(void)
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Other scraped items
-	if (_reset_stakes || _sym.sblind==0 || _sym.bblind==0 ||
+	//!!!
+	if (_reset_stakes || _sym.sblind()==0 || _sym.bblind()==0 ||
 		(p_pokerpro->IsConnected() && p_pokerpro->ppdata()->m_tinf.m_tid != 0))
 	{
-		CalcStakes();	// bblind/sblind/bbet/ante/lim
+		CalcStakes();	// bblind/sblind/bbet/ante/lim !!!
 		set_reset_stakes(false);
 	}
 
@@ -1195,10 +1204,13 @@ void CSymbols::CalcSymbols(void)
 
 	set_sym_istournament((double) p_scraper->s_limit_info()->istournament);					// istournament
 
+	/*
+	//!!!
 	set_sym_bet(0, _sym.bblind);															// bet1
 	set_sym_bet(1, _sym.bblind);															// bet2
 	set_sym_bet(2, (_bigbet!=0 ? _bigbet : (_sym.isnl || _sym.ispl ? _sym.bblind : _sym.bblind*2)));	// bet3
 	set_sym_bet(3, (_bigbet!=0 ? _bigbet : (_sym.isnl || _sym.ispl ? _sym.bblind : _sym.bblind*2)));	// bet4
+	*/
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	CalcBetBalanceStack();				// bets, balances, stacks
@@ -1295,145 +1307,7 @@ bool CSymbols::CalcUserChair(void)
 
 void CSymbols::CalcStakes(void)
 {
-	int		i = 0;
-	bool	found_inferred_sb = false, found_inferred_bb = false;
-
-	set_sym_sblind(0);
-	set_sym_bblind(0);
-	set_bigbet(0);
-	set_sym_ante(0);
-
-		// Save the parts we scraped successfully
-		if (p_scraper->s_limit_info()->found_sblind)
-		set_sym_sblind(p_scraper->s_limit_info()->sblind);									// sblind
-
-		if (p_scraper->s_limit_info()->found_bblind)
-		set_sym_bblind(p_scraper->s_limit_info()->bblind);									// bblind
-
-		if (p_scraper->s_limit_info()->found_ante)
-		set_sym_ante(p_scraper->s_limit_info()->ante);										// ante
-
-		if (p_scraper->s_limit_info()->found_limit)
-		set_sym_lim(p_scraper->s_limit_info()->limit);										// lim
-
-		if (p_scraper->s_limit_info()->found_bbet)
-		set_bigbet(p_scraper->s_limit_info()->bbet);
-
-		// Figure out bb/sb based on game type
-		if (_sym.lim == LIMIT_NL || _sym.lim == LIMIT_PL)
-		{
-			if (_sym.sblind==0)
-			{
-				if (p_scraper->s_limit_info()->found_sb_bb)
-				set_sym_sblind(p_scraper->s_limit_info()->sb_bb);
-			}
-
-			if (_sym.bblind==0)
-			{
-				if (p_scraper->s_limit_info()->found_bb_BB)
-				set_sym_bblind(p_scraper->s_limit_info()->bb_BB);
-			}
-
-			if (_bigbet==0)
-			{
-				if (p_scraper->s_limit_info()->found_bb_BB)
-				set_bigbet(p_scraper->s_limit_info()->bb_BB);
-
-				else if (p_scraper->s_limit_info()->found_sb_bb)
-				set_bigbet(p_scraper->s_limit_info()->sb_bb*2);
-
-				else if (_sym.bblind!=0)
-				set_bigbet(_sym.bblind);
-
-				else if (_sym.sblind!=0)
-				set_bigbet(_sym.sblind*2);
-
-			}
-		}
-
-		else if (_sym.lim == LIMIT_FL || _sym.lim == -1)
-		{
-			if (_sym.sblind==0)
-			{
-				if (p_scraper->s_limit_info()->found_sb_bb)
-				set_sym_sblind(p_scraper->s_limit_info()->sb_bb);
-			}
-
-			if (_sym.bblind==0)
-			{
-				if (p_scraper->s_limit_info()->found_bb_BB)
-				set_sym_bblind(p_scraper->s_limit_info()->bb_BB);
-			}
-
-			if (_bigbet==0)
-			{
-				if (p_scraper->s_limit_info()->found_bb_BB)
-				set_bigbet(p_scraper->s_limit_info()->bb_BB*2);
-
-				else if (p_scraper->s_limit_info()->found_sb_bb)
-				set_bigbet(p_scraper->s_limit_info()->sb_bb*4);
-
-				else if (_sym.bblind!=0)
-				set_bigbet(_sym.bblind*2);
-
-				else if (_sym.sblind!=0)
-				set_bigbet(_sym.sblind*4);
-			}
-		}
-
-	// If we have NOT locked the blinds then do this stuff
-	if (!p_scraper->s_lock_blinds()->blinds_are_locked) 
-	{
-			// if we still do not have blinds, then infer them from the posted bets
-			if (_sym.br == 1 && (_sym.sblind==0 || _sym.bblind==0))
-			{
-				for (i=_sym.dealerchair+1; i<=_sym.dealerchair+p_tablemap->nchairs(); i++)
-				{
-					if (p_scraper->card_player(i%p_tablemap->nchairs(), 0) != CARD_NOCARD && 
-						p_scraper->card_player(i%p_tablemap->nchairs(), 0) != CARD_NOCARD)
-					{
-						if (p_scraper->player_bet(i%p_tablemap->nchairs()) != 0 && !found_inferred_sb)
-						{
-							if (_sym.sblind==0)
-							{
-							set_sym_sblind(p_scraper->player_bet(i%p_tablemap->nchairs()));
-								found_inferred_sb = true;
-							}
-						}
-
-						else if (p_scraper->player_bet(i%p_tablemap->nchairs()) != 0 && found_inferred_sb && !found_inferred_bb)
-						{
-							if (_sym.bblind==0)
-							{
-								// !heads up - normal blinds
-								if (i%p_tablemap->nchairs() != _sym.dealerchair)
-								{
-								set_sym_bblind(p_scraper->player_bet(i%p_tablemap->nchairs()));
-								}
-								// heads up - reversed blinds
-								else
-								{
-								set_sym_bblind(_sym.sblind);
-								set_sym_sblind(p_scraper->player_bet(i%p_tablemap->nchairs()));
-								}
-								found_inferred_bb = true;
-							}
-						}
-					}
-				}
-
-				// check for reasonableness
-				if (_sym.bblind > _sym.sblind*3+0.001)
-				set_sym_bblind(_sym.sblind*2);
-
-				if (_sym.sblind > _sym.bblind+0.001)
-				set_sym_sblind(_sym.bblind/2);
-
-				if (_bigbet > _sym.bblind*2+0.001 || _bigbet < _sym.bblind*2-0.001)
-				set_bigbet(_sym.bblind*2);
-
-			}
-		}
+	// !!!
 }
 
 void CSymbols::CalcBetBalanceStack(void)
@@ -1866,7 +1740,7 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 	{
 		double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
 
-		if (!sblindfound && p_bet<=_sym.sblind)
+		if (!sblindfound && p_bet<=_sym.sblind()) 
 		{
 			sblindfound = true;
 			set_sym_playersblindbits((int) _sym.playersblindbits | (1<<(i%p_tablemap->nchairs())));  // playersblindbits
@@ -1883,7 +1757,7 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 			}
 		}
 
-		else if (!bblindfound && p_bet<=_sym.bblind)
+		else if (!bblindfound && p_bet<=_sym.bblind())
 		{
 			bblindfound = true;
 			set_sym_bblindbits(0); //prwin change
@@ -4556,8 +4430,8 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "defcon", 6)==0 && strlen(a)==6)						return _sym.defcon;
 
 	// LIMITS 3(3)
-	if (memcmp(a, "bblind", 6)==0 && strlen(a)==6)						return _sym.bblind;
-	if (memcmp(a, "sblind", 6)==0 && strlen(a)==6)						return _sym.sblind;
+	if (memcmp(a, "bblind", 6)==0 && strlen(a)==6)						return _sym.bblind();
+	if (memcmp(a, "sblind", 6)==0 && strlen(a)==6)						return _sym.sblind();
 	if (memcmp(a, "ante", 4)==0 && strlen(a)==4)						return _sym.ante;
 	if (memcmp(a, "lim", 3)==0 && strlen(a)==3)							return _sym.lim;
 
