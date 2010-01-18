@@ -102,6 +102,12 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Beginners Questions">
 			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Beginners Questions">
+				<param name="Local" value="Chapters\34\Beginners_Questions.html.LyXconv\Beginners_Questions.html">
+				</OBJECT>
+		</UL>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Table Maps">
@@ -168,9 +174,18 @@
 				<param name="Name" value="Font Collecting Example">
 				<param name="Local" value="Chapters\19\FontCollectingExample.html.LyXconv\FontCollectingExample.html">
 				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Expert Tricks">
+			</OBJECT>
+		<UL>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Expert Tricks">
-				<param name="Local" value="Chapters\19\ExpertTricks.html.LyXconv\ExpertTricks.html">
+				<param name="Name" value="Scraping &quot;10&quot; as T">
+				<param name="Local" value="Chapters\35\Scraping_10_As_T.html.LyXconv\scraping_10_as_t.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Scraping blinking Fonts and Graphics">
+				<param name="Local" value="Chapters\35\Scraping_Blinking_Fonts_And_Graphics.html.LyXconv\Scraping_Blinking_Fonts_And_Graphics.html">
 				</OBJECT>
 		</UL>
 	</UL>
@@ -310,8 +325,16 @@
 				<param name="Local" value="Chapters\06\Symbols.html.LyXconv\Symbols.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Symbols (Poker Tracker)">
+				<param name="Name" value="Symbols (Poker Tracker 2 &amp; 3)">
 				<param name="Local" value="Chapters\06\Symbols_PokerTracker.html.LyXconv\Symbols_PokerTracker.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Symbols (Poker Tracker 3 only)">
+				<param name="Local" value="Chapters\06\Symbols_PokerTracker_Version_3.html.LyXconv\Symbols_PokerTracker_Version_3.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Starting Hand Ranking">
+				<param name="Local" value="Chapters\29\Handrank.html.LyXconv\Handrank.html">
 				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
@@ -325,10 +348,6 @@
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Hand Lists">
 				<param name="Local" value="Chapters\11\Handlists.html.LyXconv\Handlists.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Starting Hand Ranking">
-				<param name="Local" value="Chapters\29\Handrank.html.LyXconv\Handrank.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Memory Symbols">
