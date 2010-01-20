@@ -310,8 +310,8 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 			&& (TablemapConnectionData[MapIndex].ClientSizeMaxX != 0) 
 			&& (TablemapConnectionData[MapIndex].ClientSizeMaxY != 0) 
 			&& (r.right  >= (int) TablemapConnectionData[MapIndex].ClientSizeMinX)
-			&& (r.right  <= (int) TablemapConnectionData[MapIndex].ClientSizeMinY)
-			&& (r.bottom >= (int) TablemapConnectionData[MapIndex].ClientSizeMaxX)
+			&& (r.right  <= (int) TablemapConnectionData[MapIndex].ClientSizeMaxX)
+			&& (r.bottom >= (int) TablemapConnectionData[MapIndex].ClientSizeMinY)
 			&& (r.bottom <= (int) TablemapConnectionData[MapIndex].ClientSizeMaxY)))
 		{
 			write_log(3, "No good size.\n");
