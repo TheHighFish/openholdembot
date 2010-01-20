@@ -11,6 +11,8 @@ BUG FIXES:
 - Some people reported incorrect duplicate actions, when the action was very fast.
   To avoid this we do now reset the counter for stable frames after autoplayer-actions,
   as we expect some changes to appear. [THF]
+- The auto-connector did treat tablemaps with min/max-clientsize incorrectly.
+  Thanks to Nomade for finding the bug and providing the fix. [THF]
 
 NEW STUFF:
 - Additional checks for incorrect system configurations,
