@@ -441,6 +441,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Median.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MyCToolBar.cpp"
 				>
 			</File>
@@ -1071,6 +1075,10 @@
 			</File>
 			<File
 				RelativePath=".\MainFrm.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Median.h"
 				>
 			</File>
 			<File
