@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CTableLimits.h"
 
+#include <assert.h>
 #include "CScraper.h"
 #include "CSymbols.h"
 #include "Median.h"
@@ -50,11 +51,6 @@ void CTableLimits::UnLockBlindsManually()
 
 void CTableLimits::LockBlindsManually(double small_blind, double big_blind, double big_bet)
 {
-	LockBlinds(small_blind, big_blind, big_bet);
-}
-
-void CTableLimits::LockBlinds(double small_blind, double big_blind, double big_bet)
-{
 	tablelimit_locked_manually.sblind = small_blind; 
 	tablelimit_locked_manually.bblind = big_blind;
 	tablelimit_locked_manually.bbet   = big_bet;
@@ -67,51 +63,46 @@ void CTableLimits::LockBlinds(double small_blind, double big_blind, double big_b
 
 void CTableLimits::AutoLockBlindsForCashgamesAfterNHands()
 {
-	if (1) //!!!blinds_autolocked)
+	if (blinds_locked_for_complete_session || (p_symbols->sym()->istournament))
 	{
 		return;
 	}
-	if (1) // enough hands !!!
+	if (number_of_saved_tablelimits == k_number_of_hands_to_autolock_blinds_for_cashgames)
 	{
 		// We simply take the median as the "correct" value.
 		// This works, as long as less than half of the values are too small
 		// and less than half of the values are too high.
 		// Rasonable assumption, otherwise we have a serious problem anyway.
-		double median_sblind = median(tablelimits_first_N_hands_sblind, k_number_of_hands_to_autolock_blinds_for_cashgames);
-		double median_bblind = median(tablelimits_first_N_hands_bblind, k_number_of_hands_to_autolock_blinds_for_cashgames);
-		double median_bbet   = median(tablelimits_first_N_hands_bbet,   k_number_of_hands_to_autolock_blinds_for_cashgames);
-		LockBlinds(median_sblind, median_bblind, median_bbet);
+		tablelimit_locked_for_complete_session.sblind = median(tablelimits_first_N_hands_sblind, k_number_of_hands_to_autolock_blinds_for_cashgames);
+		tablelimit_locked_for_complete_session.bblind = median(tablelimits_first_N_hands_bblind, k_number_of_hands_to_autolock_blinds_for_cashgames);
+		tablelimit_locked_for_complete_session.bbet   = median(tablelimits_first_N_hands_bbet,   k_number_of_hands_to_autolock_blinds_for_cashgames);
+		blinds_locked_for_complete_session = true;
 	}
-	
 }
-/*
-void CTableLimits::RememberBlindsForCashgames()
-{
 
-}
-*/
-/*
 bool CTableLimits::ReasonableBlindsForCurrentHand()
 {
 	return true;
 }
-*/
-/*
+
+void CTableLimits::RememberBlindsForCashgames()
+{
+	if (number_of_saved_tablelimits < k_number_of_hands_to_autolock_blinds_for_cashgames)
+	{
+		tablelimits_first_N_hands_sblind[number_of_saved_tablelimits] = tablelimit_locked_for_current_hand.sblind;
+		tablelimits_first_N_hands_bblind[number_of_saved_tablelimits] = tablelimit_locked_for_current_hand.bblind;
+		tablelimits_first_N_hands_bbet[number_of_saved_tablelimits]   = tablelimit_locked_for_current_hand.bbet;
+		number_of_saved_tablelimits++;
+	}
+}
+
 void CTableLimits::AutoLockBlindsForCurrentHand()
 {
-	blinds_locked_for_current_hand = 0;
-	tablelimit_locked_for_current_hand.sblind = 0; //!!!
-	tablelimit_locked_for_current_hand.bblind = 0;
-	tablelimit_locked_for_current_hand.bbet	  = 0;
-	//RememberBlindsForCashgames();
-}
-*/
-void CTableLimits::AutoLockBlindsForCurrentHandIfReasonable()
-{
-	if (!blinds_locked_for_current_hand /*&& ReasonableBlindsForCurrentHand()*/)
-	{
-		//AutoLockBlindsForCurrentHand();
-	}
+	blinds_locked_for_current_hand = true;
+	tablelimit_locked_for_current_hand.sblind = tablelimit_unreliable_input.sblind;
+	tablelimit_locked_for_current_hand.bblind = tablelimit_unreliable_input.bblind;
+	tablelimit_locked_for_current_hand.bbet	  = tablelimit_unreliable_input.bbet;
+	RememberBlindsForCashgames();
 }
 
 void CTableLimits::SetSmallBlind(double small_blind)
@@ -129,6 +120,20 @@ void CTableLimits::SetBigBet(double big_bet)
 	tablelimit_unreliable_input.bbet = big_bet;
 }
 
+void CTableLimits::SetAnte(double ante)
+{
+	// Not yet implemented, as antes are very rarely used.
+	if (ante != 0)
+	{
+		assert(false);
+	}
+}
+
+void CTableLimits::SetGametype(int new_gametype)
+{
+	gametype = new_gametype;
+}
+
 bool CTableLimits::FirstActionThisHandAndEnoughStableFrames()
 {
 	// Enough stable frames?
@@ -140,20 +145,14 @@ bool CTableLimits::FirstActionThisHandAndEnoughStableFrames()
 	return false;
 }
 
-/*void CTableLimits::ComputeStableTableLimits()
+void CTableLimits::AutoLockBlinds()
 {
-	//!!!
-	if (FirstActionThisHandAndEnoughStableFrames())
+	if (!blinds_locked_for_current_hand && ReasonableBlindsForCurrentHand())
 	{
-		tablelimit_first_N_hands[0].sblind = stable_sblind; //0!!!
-		tablelimit_first_N_hands[0].bblind = stable_bblind;
-		tablelimit_first_N_hands[0].bbet   = stable_bigbet;
-		
+		AutoLockBlindsForCurrentHand();
 	}
 }
 
-
-*/
 void CTableLimits::CalcTableLimits()
 {
 	// This is basically the old function CSymbols::CalcStakes()
@@ -278,6 +277,7 @@ void CTableLimits::CalcTableLimits()
 				SetBigBet(bblind()*2);
 		}
 	}
+	AutoLockBlinds();
 }
 
 double CTableLimits::sblind()

@@ -37,10 +37,11 @@ private:
 public:
 	// private functions
 private:
+	void AutoLockBlinds();
 	void AutoLockBlindsForCurrentHand();
-	void AutoLockBlindsForCurrentHandIfReasonable();
 	void AutoLockBlindsForCashgamesAfterNHands();
-	void LockBlinds(double small_blind, double big_blind, double big_bet);
+	bool ReasonableBlindsForCurrentHand();
+	void RememberBlindsForCashgames();
 	void UnLockBlindsManually();
 	bool FirstActionThisHandAndEnoughStableFrames();
 	// private data members
