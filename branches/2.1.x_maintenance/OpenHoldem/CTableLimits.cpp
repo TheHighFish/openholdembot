@@ -31,6 +31,8 @@ void CTableLimits::ResetOnConnection()
 		tablelimits_first_N_hands_bbet[i]   = 0;
 	}
 	ResetOnHandreset();
+	_ante = 0;
+	_gametype = -1;
 }
 
 void CTableLimits::ResetOnHandreset()
@@ -338,4 +340,14 @@ double CTableLimits::bbet()
 	{
 		return tablelimit_unreliable_input.bbet;
 	}
+}
+
+double CTableLimits::ante()
+{
+	return _ante; //!!!
+}
+
+double CTableLimits::gametype()
+{
+	return _gametype; //!!!
 }

@@ -27,6 +27,8 @@ public:
 	double sblind();
 	double bblind();
 	double bbet();
+	double ante();
+	int gametype();
 private:
 	void SetSmallBlind(double small_blind);
 	void SetBigBlind(double big_blind);
@@ -61,7 +63,8 @@ private:
 	double tablelimits_first_N_hands_bblind[k_number_of_hands_to_autolock_blinds_for_cashgames];
 	double tablelimits_first_N_hands_bbet[k_number_of_hands_to_autolock_blinds_for_cashgames];
 private:
-	int gametype;
+	int		_gametype;
+	double	_ante;
 } *p_tablelimits;
 
 #endif // INC_CTABLELIMITS_H

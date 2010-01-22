@@ -2,6 +2,7 @@
 #define INC_CSYMBOLS_H
 
 #include <assert.h>
+#include "CTableLimits.h"
 #include "MagicNumbers.h"
 
 // Symbol structure
@@ -29,17 +30,18 @@ struct SSymbols
 	double nit;
 	double bankroll;
 
-	
-	//!!! TABLE-LIMITS
-	double bblind() { return 0; }
-	double sblind() { return 0; }
+	// TABLE-LIMITS
+	// Accessors stay part of CSymbols for backward compatibility.
+	// The logic got isolated in CTableLimits.
+	double bblind() { return p_tablelimits->bblind(); }
+	double sblind() { return p_tablelimits->sblind(); }
+	double ante()   { return p_tablelimits->ante(); }
+	double lim()    { return p_tablelimits->gametype(); }
+	double isnl()   { return (p_tablelimits->gametype() == LIMIT_NL); }
+	double ispl()   { return (p_tablelimits->gametype() == LIMIT_PL); }
+	double isfl()   { return (p_tablelimits->gametype() == LIMIT_FL); }
 
 	//LIMITS
-	double ante;
-	double lim;
-	double isnl;
-	double ispl;
-	double isfl;
 	double sraiprev;
 	double sraimin;
 	double sraimax;
@@ -415,7 +417,7 @@ public:
 public:
 	// public accessors
 	const bool			user_chair_confirmed() { return _user_chair_confirmed; }
-	const double		bigbet() { return _bigbet; }
+	const double		bigbet() { return p_tablelimits->bbet(); }
 	const double		f$alli() { return _f$alli; }
 	const double		f$swag() { return _f$swag; }
 	const double		f$rais() { return _f$rais; }
@@ -435,7 +437,6 @@ public:
 #define ENT CSLock lock(m_critsec);
 	// public mutators
 	void	set_user_chair_confirmed(const bool b) { ENT _user_chair_confirmed = b;}
-	void	set_bigbet(const double d) { ENT _bigbet = d;}
 	void	set_f$alli(const double d) { ENT _f$alli = d;}
 	void	set_f$swag(const double d) { ENT _f$swag = d;}
 	void	set_f$rais(const double d) { ENT _f$rais = d;}
@@ -479,16 +480,6 @@ public:
 	void	set_sym_nit(const double d) { ENT _sym.nit = d;}
 
 	// limits
-	// !!! tablelimits
-	/*
-	void	set_sym_bblind(const double d) { ENT _sym.bblind = d;}
-	void	set_sym_sblind(const double d) { ENT _sym.sblind = d;}
-	*/
-	void	set_sym_ante(const double d) { ENT _sym.ante = d;}
-	void	set_sym_lim(const double d) { ENT _sym.lim = d;}
-	void	set_sym_isnl(const double d) { ENT _sym.isnl = d;}
-	void	set_sym_ispl(const double d) { ENT _sym.ispl = d;}
-	void	set_sym_isfl(const double d) { ENT _sym.isfl = d;}
 	void	set_sym_sraiprev(const double d) { ENT _sym.sraiprev = d;}
 	void	set_sym_sraimin(const double d) { ENT _sym.sraimin = d;}
 	void	set_sym_sraimax(const double d) { ENT _sym.sraimax = d;}
@@ -847,7 +838,6 @@ private:
 	SSymbols	_sym;
 	bool		_user_chair_confirmed;
 	double		_f$alli, _f$swag, _f$rais, _f$call, _f$play, _f$prefold, _f$rebuy, _f$chat, _f$delay;
-	double		_bigbet;
 	bool		_reset_stakes;							// set to true on new hand or on change in title bar text
 	double		_stacks_at_hand_start[10];				// Used in ICM calculator - ICM needs stacks at beginning of hand
 	time_t		_elapsedautohold;						// The time since autoplayer acted
@@ -863,7 +853,6 @@ private:
 	void ResetSymbolsNewRound(void);
 	void ResetSymbolsEveryCalc(void);
 	bool CalcUserChair(void);
-	void CalcStakes(void);
 	void CalcBetBalanceStack(void);
 	void CalcPlayersFriendsOpponents(void);
 	void CalcChipamtsLimits(void);
