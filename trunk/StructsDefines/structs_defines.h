@@ -253,6 +253,33 @@ struct sprw1326
 	sprw1326_chair  chair[10];  //structures for each chair
 };
 
+//player history structure
+
+struct History{
+	char card_player[5];
+	bool dealt;
+	bool postBlind;
+	bool seatIsPlaying;
+	bool cardsSeen;
+	bool hasFolded;
+	double startBalance;
+	double currentBalance;
+	double endBalance;
+	double prevBalance;
+	double currentBet;
+	double prevBet;
+	double prevprevBet;
+	double bet[4][4];
+	int action[4][4];
+	int ac_dealpos;
+	int playersPlayingBits;
+	int bets;
+	int calls;
+	int actionCount;
+	CardMask hand;
+	HandVal handval;
+};
+
 // PokerTracker support
 // This enum is used for both PT2 and PT3
 enum PT_Stats 
