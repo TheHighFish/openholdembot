@@ -255,7 +255,8 @@ struct sprw1326
 
 //player history structure
 
-struct History{
+struct phistory_chair
+{
 	char card_player[5];
 	bool dealt;
 	bool postBlind;
@@ -278,6 +279,11 @@ struct History{
 	int actionCount;
 	CardMask hand;
 	HandVal handval;
+};
+
+struct phistory
+{
+	phistory_chair chair[10];
 };
 
 // PokerTracker support
