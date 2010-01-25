@@ -560,7 +560,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 						   "It appears that your settings are not configured according to OpenHoldem specifications.\n"
 						   "You must ensure that XP themes are not used (Use Windows Classic style) and\n"
 						   "font size is set to normal.\n\n"
-						   "For more info, look at the wiki documentation and the user forums", "Cannot find table", MB_OK);
+						   "For more info, read the manual and visit the user forums", "Cannot find table", MB_OK);
 			else
 				MessageBox(0, "No valid tables found", "Cannot find table", MB_OK);
 		}

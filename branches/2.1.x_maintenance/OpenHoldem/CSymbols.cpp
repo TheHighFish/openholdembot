@@ -4446,7 +4446,8 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (!prefs.disable_msgbox())
 	{
 		CString Message = CString("Unknown symbol in CSymbols::GetSymbolVal(): \"")
-			+ CString(a) + CString("\"");
+			+ CString(a) + CString("\"\nThat is most probably a typo in the symbols name.\n")
+			+ CString("Please check your formula, and your DLL or Perl-script.");
 		MessageBox(0, Message, "ERROR", MB_OK);
 	}
 
