@@ -170,9 +170,9 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 	double		sym_handnumber = p_symbols->sym()->handnumber;
 	double		sym_bblind = p_tablelimits->bblind();
 	double		sym_sblind = p_tablelimits->sblind();
-	int			sym_lim = (int) p_symbols->sym()->lim;
+	double		sym_ante = p_tablelimits->ante();
+	int			sym_lim = p_tablelimits->gametype();
 	bool		sym_istournament = (bool) p_symbols->sym()->istournament;
-	double		sym_ante = p_symbols->sym()->ante;
 	double		sym_pot = p_symbols->sym()->pot;
 
 	// Get size of current client window
@@ -338,10 +338,10 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	
 	double sym_bblind		= p_tablelimits->bblind();
 	double sym_sblind		= p_tablelimits->sblind();
+	double sym_ante			= p_tablelimits->ante();
+	int sym_lim				= p_tablelimits->gametype();
 	double sym_handnumber	= p_symbols->sym()->handnumber;
-	int sym_lim				= (int) p_symbols->sym()->lim;
 	bool sym_istournament	= (bool) p_symbols->sym()->istournament;
-	double sym_ante			= p_symbols->sym()->ante;
 	double sym_pot			= p_symbols->sym()->pot;
 	bool sym_playing		= (bool) p_symbols->sym()->playing;
 

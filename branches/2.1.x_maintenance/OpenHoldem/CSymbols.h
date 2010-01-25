@@ -30,16 +30,17 @@ struct SSymbols
 	double nit;
 	double bankroll;
 
-	// TABLE-LIMITS
-	// Accessors stay part of CSymbols for backward compatibility.
+	// TABLE-LIMITS 
+	// Accessors could become part of CSymbols again,
+	// in case we chance it to a class in the future
 	// The logic got isolated in CTableLimits.
-	double bblind() { return p_tablelimits->bblind(); }
-	double sblind() { return p_tablelimits->sblind(); }
-	double ante()   { return p_tablelimits->ante(); }
-	double lim()    { return p_tablelimits->gametype(); }
-	double isnl()   { return (p_tablelimits->gametype() == LIMIT_NL); }
-	double ispl()   { return (p_tablelimits->gametype() == LIMIT_PL); }
-	double isfl()   { return (p_tablelimits->gametype() == LIMIT_FL); }
+	// double bblind() 
+	// double sblind() 
+	// double ante()   
+	// double lim()    
+	// double isnl()   
+	// double ispl()   
+	// double isfl()   
 
 	//LIMITS
 	double sraiprev;
@@ -453,7 +454,6 @@ public:
 	void	symboltrace_collection_removeall() { ENT _symboltrace_collection.RemoveAll();}
 	void	set_stacks_at_hand_start(const int i, const int d) { ENT if (i>=0 && i<=9) _stacks_at_hand_start[i] = d; }
 
-	void	set_reset_stakes(const bool b) { ENT _reset_stakes = b;}
 	void	set_elapsedautohold(time_t t) { ENT _elapsedautohold = t;}
 
 	// All symbol mutators below
@@ -533,7 +533,6 @@ public:
 	void	set_sym_stack(const int i, const double d) { ENT if (i>=0 && i<=9) _sym.stack[i] = d;}
 	void	set_sym_currentbet(const int i, const double d) { ENT if (i>=0 && i<=10) _sym.currentbet[i] = d;}
 	void	set_sym_call(const double d) { ENT _sym.call = d;}
-	//!!!
 	void	set_sym_bet(const int i, const double d) { ENT if (i>=0 && i<=4) _sym.bet[i] = d;}
 	void	set_sym_pot(const double d) { ENT _sym.pot = d;}
 	void	set_sym_potcommon(const double d) { ENT _sym.potcommon = d;}
@@ -838,7 +837,7 @@ private:
 	SSymbols	_sym;
 	bool		_user_chair_confirmed;
 	double		_f$alli, _f$swag, _f$rais, _f$call, _f$play, _f$prefold, _f$rebuy, _f$chat, _f$delay;
-	bool		_reset_stakes;							// set to true on new hand or on change in title bar text
+	
 	double		_stacks_at_hand_start[10];				// Used in ICM calculator - ICM needs stacks at beginning of hand
 	time_t		_elapsedautohold;						// The time since autoplayer acted
 	CArray <CString, CString>   _logsymbols_collection; // Used to track the log$ symbols

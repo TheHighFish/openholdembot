@@ -209,8 +209,6 @@ int CScraper::DoScrape(void)
 		set_found_sb_bb(false);
 		set_found_bb_BB(false);
 		set_found_limit(false);
-
-		p_symbols->set_reset_stakes(true);
 	}
 
 	// Copy into "last" bitmap

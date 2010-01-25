@@ -59,10 +59,6 @@ void CTableLimits::LockBlindsManually(double small_blind, double big_blind, doub
 	blinds_locked_manually = true;
 }
 
-// UnlockBlinds!!!
-
-
-
 void CTableLimits::AutoLockBlindsForCashgamesAfterNHands()
 {
 	if (blinds_locked_for_complete_session || (p_symbols->sym()->istournament))
@@ -84,7 +80,17 @@ void CTableLimits::AutoLockBlindsForCashgamesAfterNHands()
 
 bool CTableLimits::ReasonableBlindsForCurrentHand()
 {
-	return true;
+	// The blinds are "reasonable" after the calculation,
+	// so we check for stable frames, i.e. isfinalanswer.
+	// Could probably be improved.
+	if (p_symbols->sym()->isfinalanswer)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 void CTableLimits::RememberBlindsForCashgames()
@@ -124,27 +130,12 @@ void CTableLimits::SetBigBet(double big_bet)
 
 void CTableLimits::SetAnte(double ante)
 {
-	// Not yet implemented, as antes are very rarely used.
-	if (ante != 0)
-	{
-		assert(false);
-	}
+	_ante = ante;
 }
 
-void CTableLimits::SetGametype(int new_gametype)
+void CTableLimits::SetGametype(int gametype)
 {
-	gametype = new_gametype;
-}
-
-bool CTableLimits::FirstActionThisHandAndEnoughStableFrames()
-{
-	// Enough stable frames?
-	// !!! Make sure, isfinalanswer gets calculated before the limits
-	if (p_symbols->sym()->isfinalanswer)
-	{
-		return (0); //!!!
-	}
-	return false;
+	_gametype = gametype;
 }
 
 void CTableLimits::AutoLockBlinds()
@@ -152,6 +143,7 @@ void CTableLimits::AutoLockBlinds()
 	if (!blinds_locked_for_current_hand && ReasonableBlindsForCurrentHand())
 	{
 		AutoLockBlindsForCurrentHand();
+		AutoLockBlindsForCashgamesAfterNHands();
 	}
 }
 
@@ -180,7 +172,7 @@ void CTableLimits::CalcTableLimits()
 	if (p_scraper->s_limit_info()->found_bbet)
 		SetBigBet(p_scraper->s_limit_info()->bbet);
 	// Figure out bb/sb based on game type
-	if (gametype == LIMIT_NL || gametype == LIMIT_PL)
+	if (gametype() == LIMIT_NL || gametype() == LIMIT_PL)
 	{
 		if (sblind()==0)
 		{
@@ -204,7 +196,7 @@ void CTableLimits::CalcTableLimits()
 				SetBigBet(sblind()*2);
 		}
 	}
-	else if (gametype == LIMIT_FL || gametype == -1)
+	else if (gametype() == LIMIT_FL || gametype() == -1)
 	{
 		if (sblind()==0)
 		{
@@ -344,10 +336,6 @@ double CTableLimits::bbet()
 
 double CTableLimits::ante()
 {
-	return _ante; //!!!
+	return _ante; 
 }
 
-double CTableLimits::gametype()
-{
-	return _gametype; //!!!
-}

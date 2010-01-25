@@ -28,13 +28,17 @@ public:
 	double bblind();
 	double bbet();
 	double ante();
-	int gametype();
+public:
+	int gametype()		{ return _gametype; }	// former p_symbols->sym()->lim
+	double isnl()		{ return (gametype() == LIMIT_NL); }
+	double ispl()		{ return (gametype() == LIMIT_PL); }
+	double isfl()		{ return (gametype() == LIMIT_FL); }
 private:
 	void SetSmallBlind(double small_blind);
 	void SetBigBlind(double big_blind);
 	void SetBigBet(double big_bet);
 	void SetAnte(double ante);
-	void SetGametype(int gametype);
+	void SetGametype(int gametype); 
 	// public accessors
 public:
 	// private functions
@@ -45,7 +49,6 @@ private:
 	bool ReasonableBlindsForCurrentHand();
 	void RememberBlindsForCashgames();
 	void UnLockBlindsManually();
-	bool FirstActionThisHandAndEnoughStableFrames();
 	// private data members
 private:
 	bool blinds_locked_for_current_hand; 
@@ -59,6 +62,9 @@ private:
 private:
 	static const int k_number_of_hands_to_autolock_blinds_for_cashgames = 5;
 	int number_of_saved_tablelimits;
+private:
+	// We store the table-limits for the first N hands in separate arrays
+	// instead of TableLimit structures, as we need to operate on arrays later (median function).
 	double tablelimits_first_N_hands_sblind[k_number_of_hands_to_autolock_blinds_for_cashgames];
 	double tablelimits_first_N_hands_bblind[k_number_of_hands_to_autolock_blinds_for_cashgames];
 	double tablelimits_first_N_hands_bbet[k_number_of_hands_to_autolock_blinds_for_cashgames];
