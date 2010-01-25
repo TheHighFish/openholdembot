@@ -4,6 +4,7 @@
 #include <assert.h>
 #include "CScraper.h"
 #include "CSymbols.h"
+#include "debug.h"
 #include "Median.h"
 
 
@@ -22,6 +23,7 @@ CTableLimits::~CTableLimits()
 
 void CTableLimits::ResetOnConnection()
 {
+	write_log(3, "CTableLimits::ResetOnConnection()\n");
 	blinds_locked_for_complete_session = false;
 	number_of_saved_tablelimits = 0;
 	for (int i=0; i<k_number_of_hands_to_autolock_blinds_for_cashgames; i++)
@@ -37,22 +39,25 @@ void CTableLimits::ResetOnConnection()
 
 void CTableLimits::ResetOnHandreset()
 {
+	write_log(3, "CTableLimits::ResetOnHandreset()\n");
 	blinds_locked_for_current_hand = false;
 	tablelimit_locked_for_current_hand.sblind = 0;
 	tablelimit_locked_for_current_hand.bblind = 0;
 	tablelimit_locked_for_current_hand.bbet   = 0;
 }
 
-void CTableLimits::UnLockBlindsManually()
+void CTableLimits::UnLockBlindsManually() // TODO!!!
 {
+	write_log(3, "CTableLimits::UnLockBlindsManually()\n");
 	blinds_locked_manually = false;
 	tablelimit_locked_manually.sblind = 0;
 	tablelimit_locked_manually.bblind = 0;
 	tablelimit_locked_manually.bbet   = 0;
 }
 
-void CTableLimits::LockBlindsManually(double small_blind, double big_blind, double big_bet)
+void CTableLimits::LockBlindsManually(double small_blind, double big_blind, double big_bet)// TODO!!!
 {
+	write_log(3, "CTableLimits::LockBlindsManually()\n");
 	tablelimit_locked_manually.sblind = small_blind; 
 	tablelimit_locked_manually.bblind = big_blind;
 	tablelimit_locked_manually.bbet   = big_bet;
@@ -61,6 +66,7 @@ void CTableLimits::LockBlindsManually(double small_blind, double big_blind, doub
 
 void CTableLimits::AutoLockBlindsForCashgamesAfterNHands()
 {
+	write_log(3, "CTableLimits::AutoLockBlindsForCashgamesAfterNHands()\n");
 	if (blinds_locked_for_complete_session || (p_symbols->sym()->istournament))
 	{
 		return;
@@ -75,6 +81,8 @@ void CTableLimits::AutoLockBlindsForCashgamesAfterNHands()
 		tablelimit_locked_for_complete_session.bblind = median(tablelimits_first_N_hands_bblind, k_number_of_hands_to_autolock_blinds_for_cashgames);
 		tablelimit_locked_for_complete_session.bbet   = median(tablelimits_first_N_hands_bbet,   k_number_of_hands_to_autolock_blinds_for_cashgames);
 		blinds_locked_for_complete_session = true;
+		write_log(3, "Blinds locked at %f / %f / %f\n", tablelimit_locked_for_complete_session.sblind, 
+			tablelimit_locked_for_complete_session.bblind, tablelimit_locked_for_complete_session.bbet);
 	}
 }
 
@@ -95,6 +103,7 @@ bool CTableLimits::ReasonableBlindsForCurrentHand()
 
 void CTableLimits::RememberBlindsForCashgames()
 {
+	write_log(3, "CTableLimits::RememberBlindsForCashgames()\n");
 	if (number_of_saved_tablelimits < k_number_of_hands_to_autolock_blinds_for_cashgames)
 	{
 		tablelimits_first_N_hands_sblind[number_of_saved_tablelimits] = tablelimit_locked_for_current_hand.sblind;
@@ -106,10 +115,13 @@ void CTableLimits::RememberBlindsForCashgames()
 
 void CTableLimits::AutoLockBlindsForCurrentHand()
 {
+	write_log(3, "CTableLimits::AutoLockBlindsForCurrentHand()");
 	blinds_locked_for_current_hand = true;
 	tablelimit_locked_for_current_hand.sblind = tablelimit_unreliable_input.sblind;
 	tablelimit_locked_for_current_hand.bblind = tablelimit_unreliable_input.bblind;
 	tablelimit_locked_for_current_hand.bbet	  = tablelimit_unreliable_input.bbet;
+	write_log(3, "Locked blinds at %f / %f / %f\n", tablelimit_locked_for_current_hand.sblind,
+		tablelimit_locked_for_current_hand.bblind, tablelimit_locked_for_current_hand.bbet);
 	RememberBlindsForCashgames();
 }
 
@@ -140,6 +152,7 @@ void CTableLimits::SetGametype(int gametype)
 
 void CTableLimits::AutoLockBlinds()
 {
+	write_log(3, "CTableLimits::AutoLockBlinds()\n");
 	if (!blinds_locked_for_current_hand && ReasonableBlindsForCurrentHand())
 	{
 		AutoLockBlindsForCurrentHand();
@@ -152,8 +165,9 @@ void CTableLimits::CalcTableLimits()
 	// This is basically the old function CSymbols::CalcStakes()
 	// with some extension at the end to auto-lock the blinds,
 	// if the values are reasonable.
-	int		i = 0;
 	bool	found_inferred_sb = false, found_inferred_bb = false;
+
+	write_log(3, "CTableLimits::CalcTableLimits()\n");
 
 	SetSmallBlind(0);
 	SetBigBlind(0);
@@ -227,7 +241,7 @@ void CTableLimits::CalcTableLimits()
 		// if we still do not have blinds, then infer them from the posted bets
 		if (p_symbols->sym()->br == 1 && (sblind()==0 || bblind()==0))
 		{
-			for (i=p_symbols->sym()->dealerchair+1; i<=p_symbols->sym()->dealerchair+p_tablemap->nchairs(); i++)
+			for (int i=p_symbols->sym()->dealerchair+1; i<=p_symbols->sym()->dealerchair+p_tablemap->nchairs(); i++)
 			{
 				if (p_scraper->card_player(i%p_tablemap->nchairs(), 0) != CARD_NOCARD && 
 					p_scraper->card_player(i%p_tablemap->nchairs(), 0) != CARD_NOCARD)
