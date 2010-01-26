@@ -265,11 +265,11 @@ struct phistory_chair
 	bool hasFolded;
 	double startBalance;
 	double currentBalance;
-	double endBalance;
 	double prevBalance;
+	double endBalance;
 	double currentBet;
 	double prevBet;
-	double prevprevBet;
+	double totalPot[4];
 	double bet[4][4];
 	int action[4][4];
 	int ac_dealpos;
