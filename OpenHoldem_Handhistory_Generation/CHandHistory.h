@@ -3,8 +3,6 @@
  
 #include <fstream>
 
-//#include "CPokerAction.h"
-
 using namespace std;
 
 extern class CHandHistory
@@ -42,7 +40,6 @@ private:
 
 private:
 	fstream outfile;
-	//CPokerAction action;
 	string playerName[10];
 	string handText[10];
 	bool allin[10];				//True if player is allin
@@ -56,6 +53,7 @@ private:
 	bool showdownReady;
 	bool newRoundFlag;
 	bool passChecks;			//Whether checks have been passed over or not
+	double middleBet[10];
 	double pot;
 	double prevpot;
 	double bet[4];
