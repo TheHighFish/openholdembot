@@ -20,6 +20,7 @@ public:
 public:
 	void ResetOnConnection();
 	void ResetOnHandreset();
+	void ResetEachHeartBeatCycle();
 	void CalcTableLimits();
 	void LockBlindsManually(double small_blind, double big_blind, double big_bet);
 public:
@@ -49,6 +50,9 @@ private:
 	bool ReasonableBlindsForCurrentHand();
 	void RememberBlindsForCashgames();
 	void UnLockBlindsManually();
+	void CalcTableLimits_NL_PL();
+	void CalcTableLimits_FL_AndUnknownGametype();
+	void CalcTableLimitsFromPostedBets();
 	// private data members
 private:
 	bool blinds_locked_for_current_hand; 

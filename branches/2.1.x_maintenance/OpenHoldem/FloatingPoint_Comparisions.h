@@ -39,4 +39,17 @@ inline bool IsGreaterOrEqual(double a, double b)
 	return (a > (b - epsilon));
 }
 
+// Numbers very close to zero can cause problems,
+// so we create functions for that.
+inline bool IsTrue(double d)
+{
+	return ((d >= 0.5) || (d <= -0.5));
+}
+
+inline bool IsFalse(double d)
+{
+	return (!IsTrue(d));
+}
+
+
 #endif // #ifndef INC_FLOATINGPOINT_COMPARISIONS_H

@@ -730,7 +730,7 @@ void CSymbols::ResetSymbolsNewRound(void)
 
 void CSymbols::ResetSymbolsEveryCalc(void)
 {
-	int		i = 0;
+	p_tablelimits->ResetEachHeartBeatCycle();
 
 	// general
 	set_sym_isbring(0);
@@ -756,10 +756,10 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 	set_sym_betpositionrais(1);
 
 	// chip amounts
-	for (i=0; i<=10; i++)
+	for (int i=0; i<=10; i++)
 		set_sym_currentbet(i, 0);
 
-	for (i=0; i<=9; i++)
+	for (int i=0; i<=9; i++)
 		set_sym_stack(i, 0);
 
 	set_sym_pot(0);
@@ -832,7 +832,7 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 	// flags
 	set_sym_fmax(0);
 	set_sym_fbits(0);
-	for (i=0; i<=19; i++)
+	for (int i=0; i<=19; i++)
 		set_sym_f(i, 0);
 
 	// (un)known cards
@@ -4447,7 +4447,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	{
 		CString Message = CString("Unknown symbol in CSymbols::GetSymbolVal(): \"")
 			+ CString(a) + CString("\"\nThat is most probably a typo in the symbols name.\n")
-			+ CString("Please check your formula, and your DLL or Perl-script.");
+			+ CString("Please check your formula and your DLL or Perl-script.");
 		MessageBox(0, Message, "ERROR", MB_OK);
 	}
 
