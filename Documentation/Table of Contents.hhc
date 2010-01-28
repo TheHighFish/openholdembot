@@ -321,6 +321,10 @@
 			</OBJECT>
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Importand remarks and common pitfalls">
+				<param name="Local" value="Chapters\06\Important_Remarks.html.LyXconv\Important_Remarks.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Symbols">
 				<param name="Local" value="Chapters\06\Symbols.html.LyXconv\Symbols.html">
 				</OBJECT>
