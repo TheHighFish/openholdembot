@@ -22,13 +22,16 @@ public:
 	void ResetOnHandreset();
 	void ResetEachHeartBeatCycle();
 	void CalcTableLimits();
-	void LockBlindsManually(double small_blind, double big_blind, double big_bet);
+	void LockBlindsManually(double small_blind, double big_blind, double big_bet, double ante, int gametype);
+	void UnLockBlindsManually();
 public:
 	// public accessors, formerly part of the symbol-structure.
 	double sblind();
 	double bblind();
 	double bbet();
 	double ante();
+public:
+	bool BlindsLockedManually() { return blinds_locked_manually; }
 public:
 	int gametype()		{ return _gametype; }	// former p_symbols->sym()->lim
 	double isnl()		{ return (gametype() == LIMIT_NL); }
@@ -49,7 +52,6 @@ private:
 	void AutoLockBlindsForCashgamesAfterNHands();
 	bool ReasonableBlindsForCurrentHand();
 	void RememberBlindsForCashgames();
-	void UnLockBlindsManually();
 	void CalcTableLimits_NL_PL();
 	void CalcTableLimits_FL_AndUnknownGametype();
 	void CalcTableLimitsFromPostedBets();

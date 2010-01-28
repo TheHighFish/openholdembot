@@ -2,10 +2,12 @@
 #include "CTableLimits.h"
 
 #include <assert.h>
+#include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbols.h"
 #include "debug.h"
 #include "FloatingPoint_Comparisions.h"
+#include "MagicNumbers.h"
 #include "Median.h"
 
 
@@ -64,14 +66,20 @@ void CTableLimits::UnLockBlindsManually() // TODO!!!
 	tablelimit_locked_manually.bbet   = 0;
 }
 
-void CTableLimits::LockBlindsManually(double small_blind, double big_blind, double big_bet, int gametype)// TODO!!!
+void CTableLimits::LockBlindsManually(double small_blind, double big_blind, double big_bet, double ante, int gametype)
 {
 	write_log(3, "CTableLimits::LockBlindsManually()\n");
 	blinds_locked_manually = true;
 	tablelimit_locked_manually.sblind = small_blind; 
 	tablelimit_locked_manually.bblind = big_blind;
 	tablelimit_locked_manually.bbet   = big_bet;
-	// gametype!!!
+	// gametype!!! ante
+	// Save locked blinds info for future use 
+	prefs.set_sblind(small_blind);
+	prefs.set_bblind(big_blind);
+	prefs.set_bbet(big_bet);
+	prefs.set_ante(ante);
+	prefs.set_gametype(gametype);
 }
 
 void CTableLimits::AutoLockBlindsForCashgamesAfterNHands()
@@ -339,10 +347,10 @@ void CTableLimits::CalcTableLimits()
 	}
 
 	// If we have NOT locked the blinds then do this stuff
-	if (!p_scraper->s_lock_blinds()->blinds_are_locked) 
+	if (blinds_locked_manually) 
 	{
 		// if we still do not have blinds, then infer them from the posted bets
-		if (p_symbols->sym()->br == 1 && (sblind()==0 || bblind()==0))
+		if (p_symbols->sym()->br == k_betround_preflop && (sblind()==0 || bblind()==0))
 		{
 			CalcTableLimitsFromPostedBets();			
 		}
