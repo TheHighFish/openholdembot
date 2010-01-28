@@ -82,13 +82,13 @@ http://www.winholdem.net/help/help-formula.html#symbols
 These symbols take output from the scraper engine, from Table Map parameters,
  and from your formula functions to derive various bits of data that are
  useful when instructing the OpenHoldem Autoplayer how to act.
- 
+ All symbols described here are available for OH-script, DLL and Perl likewise.
 \end_layout
 
 \begin_layout Standard
 The set of symbols got extended over time - not all of them are available
  for all versions of OpenHoldem.
- This list reflects
+ The list in the manual reflects the latest version of OpenHoldem.
 \end_layout
 
 \begin_layout Section
@@ -323,7 +323,7 @@ Meaning
 \begin_inset Text
 
 \begin_layout Plain Layout
-sitename$abc
+sitename$casino
 \end_layout
 
 \end_inset
@@ -332,8 +332,8 @@ sitename$abc
 \begin_inset Text
 
 \begin_layout Plain Layout
-true if user defined string “abc” appears within the Table Map symbol s$sitename
-; case-sensitive; lower-cases are expected
+true if user defined string “casino” appears within the Table Map symbol
+ s$sitename; case-sensitive; lower-cases are expected
 \end_layout
 
 \end_inset
@@ -344,7 +344,7 @@ true if user defined string “abc” appears within the Table Map symbol s$site
 \begin_inset Text
 
 \begin_layout Plain Layout
-network$def
+network$casino
 \end_layout
 
 \end_inset
@@ -353,8 +353,8 @@ network$def
 \begin_inset Text
 
 \begin_layout Plain Layout
-true if user defined string “def” appears within the Table Map symbol s$network;
- case-sensitive; lower-cases are expected
+true if user defined string “casino” appears within the Table Map symbol
+ s$network; case-sensitive; lower-cases are expected
 \end_layout
 
 \end_inset
@@ -414,8 +414,19 @@ swagtextmethod
 \begin_inset Text
 
 \begin_layout Plain Layout
-the site interpretation for swag edit text (Table Map symbol) 1=f$srai 2=f$srai+
-call 3=f$srai+call+currentbet
+the site interpretation for swag edit text (Table Map symbol) 
+\end_layout
+
+\begin_layout Itemize
+1=f$srai 
+\end_layout
+
+\begin_layout Itemize
+2=f$srai+call 
+\end_layout
+
+\begin_layout Itemize
+3=f$srai+call+currentbet
 \end_layout
 
 \end_inset
@@ -1059,7 +1070,7 @@ raising chair number (0-9)
 \begin_inset Text
 
 \begin_layout Plain Layout
-chair$abc
+chair$name
 \end_layout
 
 \end_inset
@@ -1068,7 +1079,7 @@ chair$abc
 \begin_inset Text
 
 \begin_layout Plain Layout
-player “abc” chair number (0-9); -1 if not found
+player “name” chair number (0-9); -1 if not found
 \end_layout
 
 \end_inset
@@ -1079,7 +1090,7 @@ player “abc” chair number (0-9); -1 if not found
 \begin_inset Text
 
 \begin_layout Plain Layout
-chairbit$abc
+chairbit$name
 \end_layout
 
 \end_inset
@@ -1088,7 +1099,7 @@ chairbit$abc
 \begin_inset Text
 
 \begin_layout Plain Layout
-player “abc” chairbit (1 << chair$abc); 0 if not found 
+player “abc” chairbit (1 << chair$name); 0 if not found 
 \end_layout
 
 \end_inset
@@ -1197,7 +1208,7 @@ your bet position (1=sblind,2=bblind,...,nplayersdealt=dealer); betposition
 \begin_inset Text
 
 \begin_layout Plain Layout
-dealposition
+dealposition(*)
 \end_layout
 
 \end_inset
@@ -1218,7 +1229,7 @@ your deal position (1=sblind,2=bblind ...
 \begin_inset Text
 
 \begin_layout Plain Layout
-originaldealposition
+originaldealposition(*)
 \end_layout
 
 \end_inset
@@ -1280,7 +1291,7 @@ your seat position relative to the dealer (does count players seated, but
 \begin_inset Text
 
 \begin_layout Plain Layout
-dealpositionrais
+dealpositionrais(*)
 \end_layout
 
 \end_inset
@@ -4370,7 +4381,7 @@ number of players active (including you) (0-10)
 \begin_inset Text
 
 \begin_layout Plain Layout
-nplayersdealt
+nplayersdealt(*)
 \end_layout
 
 \end_inset
@@ -4470,7 +4481,7 @@ nfriendsactive
 \begin_inset Text
 
 \begin_layout Plain Layout
-nfriendsdealt
+nfriendsdealt(*)
 \end_layout
 
 \end_inset
@@ -4570,7 +4581,7 @@ number of opponents active (not including you) (0-9)
 \begin_inset Text
 
 \begin_layout Plain Layout
-nopponentsdealt
+nopponentsdealt(*)
 \end_layout
 
 \end_inset
@@ -4754,7 +4765,7 @@ number of players that must call to stay in the hand nchairsdealtright number
 \begin_inset Text
 
 \begin_layout Plain Layout
-nchairsdealtleft
+nchairsdealtleft(*)
 \end_layout
 
 \end_inset
@@ -4814,7 +4825,7 @@ bits 9-0: 1=active 0=inactive
 \begin_inset Text
 
 \begin_layout Plain Layout
-playersdealtbits
+playersdealtbits(*)
 \end_layout
 
 \end_inset
@@ -4914,7 +4925,7 @@ bits 9-0: 1=active 0=inactive
 \begin_inset Text
 
 \begin_layout Plain Layout
-opponentsdealtbits
+opponentsdealtbits(*)
 \end_layout
 
 \end_inset
@@ -5014,7 +5025,7 @@ bits 9-0: 1=active 0=inactive, you only
 \begin_inset Text
 
 \begin_layout Plain Layout
-friendsdealtbits
+friendsdealtbits(*)
 \end_layout
 
 \end_inset
@@ -6792,7 +6803,9 @@ isfinalanswer
 
 \begin_layout Plain Layout
 true when autoplayer preparing to act; false any other time.
- 
+ This symbols is especially useful for DLL-programmers who sometimes have
+ to make sure, that certain parts of the code are executed exactly once
+ per action.
 \end_layout
 
 \end_inset
@@ -8650,8 +8663,6 @@ rankhi, rankhicommon, rankhiplayer, rankhipoker, srankhi, srankhicommon,
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\emph on
 RANK LO
 \end_layout
 
@@ -8980,7 +8991,7 @@ which chairs folded in round x
 \begin_inset Text
 
 \begin_layout Plain Layout
-oppdealt
+oppdealt(*)
 \end_layout
 
 \end_inset
@@ -9060,7 +9071,7 @@ preflop position of the userchair (SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6)
 \begin_inset Text
 
 \begin_layout Plain Layout
-ac_prefloprais_pos
+ac_prefloprais_pos (*)
 \end_layout
 
 \end_inset
@@ -9166,7 +9177,7 @@ returns bet position of specified chair
 \begin_inset Text
 
 \begin_layout Plain Layout
-ac_dealposx (x=0-9)
+ac_dealposx (x=0-9) (*)
 \end_layout
 
 \end_inset
@@ -9497,10 +9508,6 @@ mh_str_onepair
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 
 \end_layout
 
@@ -10411,10 +10418,6 @@ A single card value is stored in a single 8-bit byte.
  The card rank is stored in the hi-order 4 bit nibble (bits 7-4).
  The card suit is stored in the lo-order 4 bit nibble (bits 3-0).
  The valid values for card rank are 1-14 as follows: 
-\end_layout
-
-\begin_layout Standard
-
 \end_layout
 
 \begin_layout Standard
