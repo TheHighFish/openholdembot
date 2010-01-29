@@ -448,6 +448,10 @@
 			</OBJECT>
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="The Truth about Stealth">
+				<param name="Local" value="Chapters\18\The_Truth_about_Stealth.html.LyXconv\The_Truth_about_Stealth.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Stealth">
 				<param name="Local" value="Chapters\18\Stealth.html.LyXconv\Stealth.html">
 				</OBJECT>

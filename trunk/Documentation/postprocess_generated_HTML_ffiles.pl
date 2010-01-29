@@ -33,7 +33,7 @@ sub wanted
 		open($outfile, '>Temp.tmp');
 		while (<$infile>)
 		{
-
+			# Remove crippled width and height of images
 			s/width="\d+\.\d*pt"//g; 
 			s/height="\d+\.\d*pt"//g;
 			print $outfile $_;
@@ -51,7 +51,25 @@ sub wanted
 	# Lyx-files
 	elsif (index($filename, ".lyx") > 0)
 	{
-	
+		open($infile, $filename);
+		open($outfile, '>Temp.tmp');
+		while (<$infile>)
+		{
+			# Default numbering
+			#\secnumdepth 3
+			#\tocdepth 3
+			# Numbering completely disabled
+			#\secnumdepth -2
+			#\tocdepth -2
+			s/\\secnumdepth.*/\\secnumdepth -2/g; 
+			s/\\tocdepth.*/\\tocdepth -2/g;
+			print $outfile $_;
+			#print $_;
+		}
+		close($infile);
+		close($outfile);
+		unlink($filename);
+		rename('Temp.tmp', $filename);
 	}
 }
 
