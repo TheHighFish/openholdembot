@@ -1,6 +1,6 @@
  
 /* start css.sty */
-@media print
+body { background-color:#E4DDDD; }
 p.noindent { text-indent: 0em }
 td p.noindent { text-indent: 0em; margin-top:0em; }
 p.nopar { text-indent: 0em; }
