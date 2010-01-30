@@ -14,11 +14,13 @@ BUG FIXES:
 - The auto-connector did treat tablemaps with min/max-clientsize incorrectly.
   Thanks to Nomade for finding the bug and providing the fix. [THF]
 - Detecting blind-values correctly is an errorprone task, especially when scraping it from the table.
+  There could be cases, where somebody raises and SB folds and the blinds do suddenly double-up.
   This has now been improved by auto-locking the blinds
   * for the current hands, as soon as the values are reasonable
   * for the entire session after N hands (cashgame only).
   Still needs further work, as the input from the scraper-engine seems to be quite dissatisfactory,
-  at least when testing at PokerAcademy, but that may be related to missing stable frames [THF]
+  at least when testing at PokerAcademy, but that may be related to missing stable frames.
+  Thanks to Nomade for providing replay-frames to reproduce the problem. [THF]
 
 NEW STUFF:
 - Additional checks for incorrect system configurations,
