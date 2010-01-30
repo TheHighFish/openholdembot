@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include "MagicNumbers.h"
 #include "OpenHoldem.h"
 #include "DialogLockBlinds.h"
 
@@ -43,11 +44,11 @@ BOOL CDlgLockBlinds::OnInitDialog()
 	m_GameType.AddString("Pot Limit");
 	m_GameType.AddString("No Limit");
 
-	if (gametype == LIMIT_NL) 
+	if (gametype == k_gametype_NL) 
 	{
 		m_GameType.SelectString(0, "No Limit");
 	}
-	else if (gametype == LIMIT_PL) 
+	else if (gametype == k_gametype_PL) 
 	{
 		m_GameType.SelectString(0, "Pot Limit");
 	}
@@ -81,15 +82,15 @@ void CDlgLockBlinds::OnBnClickedOk()
 
 	if (m_GameType.GetCurSel()==0) 
 	{
-		gametype = LIMIT_FL;
+		gametype = k_gametype_FL;
 	}
 	else if (m_GameType.GetCurSel()==1) 
 	{
-		gametype = LIMIT_PL;
+		gametype = k_gametype_PL;
 	}
 	else if (m_GameType.GetCurSel()==2) 
 	{
-		gametype = LIMIT_NL;
+		gametype = k_gametype_NL;
 	}
 
 	OnOK();

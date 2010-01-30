@@ -401,16 +401,16 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	if ((int) sym_sblind != sym_sblind || (int) sym_bblind != sym_bblind) 
 	{
 		s.Format("  %s%s %.2f/%.2f/%.2f\n",
-				 (sym_lim == LIMIT_NL ? "NL" : sym_lim == LIMIT_PL ? "PL" :
-				  sym_lim == LIMIT_FL ? "FL" : "?L"),
+				 (sym_lim == k_gametype_NL ? "NL" : sym_lim == k_gametype_PL ? "PL" :
+				  sym_lim == k_gametype_FL ? "FL" : "?L"),
 				 (sym_istournament ? "T" : ""),
 				 sym_sblind, sym_bblind, p_symbols->bigbet());
 	}
 	else 
 	{
 		s.Format("  %s%s %.0f/%.0f/%.0f\n",
-				 (sym_lim == LIMIT_NL ? "NL" : sym_lim == LIMIT_PL ? "PL" :
-				  sym_lim == LIMIT_FL ? "FL" : "?L"),
+				 (sym_lim == k_gametype_NL ? "NL" : sym_lim == k_gametype_PL ? "PL" :
+				  sym_lim == k_gametype_FL ? "FL" : "?L"),
 				 (sym_istournament ? "T" : ""),
 				 sym_sblind, sym_bblind, p_symbols->bigbet());
 	}

@@ -2,6 +2,7 @@
 
 #include "debug.h"
 #include "CPreferences.h"
+#include "MagicNumbers.h"
 
 // CPreferences needs to be globally created, in order to provide saved settings to CMainFrame::PreCreateWindow method
 CPreferences		prefs;
@@ -98,7 +99,7 @@ void CPreferences::InitDefaults(void)
 	_bblind = 10;
 	_bbet = 20;
 	_ante = 0;
-	_gametype = LIMIT_NL;
+	_gametype = k_gametype_NL;
 
 	// f$debug logging
 	_fdebuglog = false;

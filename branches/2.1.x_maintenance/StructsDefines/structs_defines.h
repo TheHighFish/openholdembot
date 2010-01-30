@@ -63,11 +63,6 @@ typedef boost::spirit::node_val_data_factory<const char *> int_factory_t;
 #define WH_CARDBACK		0xff
 #define WH_NOCARD		0
 
-// Limits
-#define LIMIT_NL		0
-#define LIMIT_PL		1
-#define LIMIT_FL		2
-
 // Hand Lists
 #define MAX_HAND_LISTS	1000		// e.g. islist0 - islist999 Matrix 2008-05-14
 

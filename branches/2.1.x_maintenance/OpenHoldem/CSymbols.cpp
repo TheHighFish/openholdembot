@@ -289,10 +289,6 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	for (int i=0; i<k_max_number_of_players; i++)
 		set_sym_stack(i, 0);
 
-	// Index k_number_of_betrounds+1 is for current round
-	for (int i=0; i<(k_number_of_betrounds+1); i++)
-		set_sym_bet(i, 0);
-
 	set_sym_pot(0);
 	set_sym_potcommon(0);
 	set_sym_potplayer(0);
@@ -625,10 +621,6 @@ void CSymbols::ResetSymbolsNewHand(void)
 	set_sym_handrank1326(0);
 	set_sym_handrank1000(0);
 	set_sym_handrank(0);
-
-	// chip amounts
-	for (int i=0; i<=4; i++)
-		set_sym_bet(i, 0);
 
 	// list tests
 	set_sym_islistcall(0);
@@ -1175,22 +1167,9 @@ void CSymbols::CalcSymbols(void)
 	set_sym_activemethod(p_tablemap->activemethod());										// activemethod
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Other scraped items
-	//!!!
-	if (p_tablelimits->sblind()==0 || p_tablelimits->bblind()==0 ||
-		(p_pokerpro->IsConnected() && p_pokerpro->ppdata()->m_tinf.m_tid != 0))
-	{
-		p_tablelimits->CalcTableLimits();
-	}
-
+	// Table limits 
+	p_tablelimits->CalcTableLimits();
 	set_sym_istournament((double) p_scraper->s_limit_info()->istournament);					// istournament
-
-	// Move to CTableLimits!!!
-	set_sym_bet(0, p_tablelimits->bblind());															// bet1
-	set_sym_bet(1, p_tablelimits->bblind());															// bet2
-	set_sym_bet(2, (p_tablelimits->bbet()!=0 ? p_tablelimits->bbet() : (p_tablelimits->isnl() || p_tablelimits->ispl() ? p_tablelimits->bblind() : p_tablelimits->bblind()*2)));	// bet3
-	set_sym_bet(3, (p_tablelimits->bbet()!=0 ? p_tablelimits->bbet() : (p_tablelimits->isnl() || p_tablelimits->ispl() ? p_tablelimits->bblind() : p_tablelimits->bblind()*2)));	// bet4
-	
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	CalcBetBalanceStack();				// bets, balances, stacks
@@ -1290,8 +1269,6 @@ void CSymbols::CalcBetBalanceStack(void)
 	int				i = 0, j = 0, oppcount = 0;
 	double			stack[10] = {0}, temp = 0.;
 
-	set_sym_bet(4, _sym.bet[(int) (_sym.br-1)]);													// bet
-
 	for (i=0; i<_sym.nchairs; i++)
 		set_sym_balance(i, _sym.nchairs>i ? p_scraper->player_balance(i) : 0);						// balance0-9
 
@@ -1347,8 +1324,8 @@ void CSymbols::CalcBetBalanceStack(void)
 			// fixed limit
 			if (p_tablelimits->isfl())
 			{
-				if (temp/_sym.bet[4]<=4)
-				set_sym_currentbet(i, temp);										// currentbet0-9
+				if (temp/p_tablelimits->bet()<=4)
+					set_sym_currentbet(i, temp);									// currentbet0-9
 			}
 
 			// no limit, pot limit
@@ -1412,7 +1389,7 @@ void CSymbols::CalcChipamtsLimits(void)
 		}
 	}
 
-	set_sym_raisshort(_sym.callshort + _sym.bet[4] * _sym.nplayersplaying);				// raisshort
+	set_sym_raisshort(_sym.callshort + p_tablelimits->bet() * _sym.nplayersplaying);				// raisshort
 
 	next_largest_bet = 0;
 	for (i=0; i<p_tablemap->nchairs(); i++)
@@ -1436,14 +1413,16 @@ void CSymbols::CalcNumbets(void)
 {
 	if (_user_chair_confirmed)
 	{
-		set_sym_nbetstocall(_sym.call / _sym.bet[4]);									// nbetstocall
+		set_sym_nbetstocall(_sym.call / p_tablelimits->bet());							// nbetstocall
 		set_sym_nbetstorais(_sym.nbetstocall + 1);										// nbetstorais
 		set_sym_ncurrentbets(
-			_sym.bet[4]==0 ? 0 : _sym.currentbet[(int) _sym.userchair] / _sym.bet[4]);	// ncurrentbets
+			p_tablelimits->bet()==0 ? 0 : 
+			_sym.currentbet[(int) _sym.userchair] / p_tablelimits->bet());				// ncurrentbets
 	}
 
 	set_sym_ncallbets(
-		_sym.bet[4]==0 ? 0 : _sym.currentbet[(int) _sym.raischair] / _sym.bet[4]);		// ncallbets
+		p_tablelimits->bet()==0 ? 0 : 
+		_sym.currentbet[(int) _sym.raischair] / p_tablelimits->bet());					// ncallbets
 	set_sym_nraisbets(_sym.ncallbets + 1);												// nraisbets
 }
 
@@ -3159,27 +3138,27 @@ void CSymbols::CalcHistory(void)
 	double		maxbet = 0.;
 	int			i = 0;
 
-		if (_sym.nplayersround[(int) _sym.br-1]==0)
-		{
-		set_sym_nplayersround((int) _sym.br-1, _sym.nplayersplaying);						// nplayersroundx
-		}
-	set_sym_nplayersround(4, _sym.nplayersround[(int) _sym.br-1]);							// nplayersround
+	if (_sym.nplayersround[(int) _sym.br-1]==0)
+	{
+		set_sym_nplayersround((int) _sym.br-1, _sym.nplayersplaying);					// nplayersroundx
+	}
+	set_sym_nplayersround(4, _sym.nplayersround[(int) _sym.br-1]);						// nplayersround
 
-		maxbet = 0;
-		for (i=0; i<p_tablemap->nchairs(); i++)
+	maxbet = 0;
+	for (i=0; i<p_tablemap->nchairs(); i++)
+	{
+		if (_sym.currentbet[i] > maxbet)
 		{
-			if (_sym.currentbet[i] > maxbet)
-			{
-				maxbet = _sym.currentbet[i];
-			}
+			maxbet = _sym.currentbet[i];
 		}
+	}
 
-		maxbet /= (_sym.bet[4]==0 ? 1 : _sym.bet[4]);
-		if (maxbet > _sym.nbetsround[(int) _sym.br-1])
-		{
-		set_sym_nbetsround((int) _sym.br-1, maxbet);										// nbetsroundx
-		}
-	set_sym_nbetsround(4, _sym.nbetsround[(int) _sym.br-1]);								// nbetsround
+	maxbet /= (p_tablelimits->bet()==0 ? 1 : p_tablelimits->bet());
+	if (maxbet > _sym.nbetsround[(int) _sym.br-1])
+	{
+		set_sym_nbetsround((int) p_tablelimits->bet(_sym.betround), maxbet);										// nbetsroundx
+	}
+	set_sym_nbetsround(4, _sym.nbetsround[(int) p_tablelimits->bet(_sym.betround)]);	// nbetsround
 }
 
 
@@ -4334,8 +4313,8 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "currentbet", 10)==0 && strlen(a)==10)				return _sym.currentbet[10];
 	if (memcmp(a, "currentbet", 10)==0 && strlen(a)==11)				return _sym.currentbet[a[10]-'0'];
 	if (memcmp(a, "call", 4)==0 && strlen(a)==4)						return _sym.call;
-	if (memcmp(a, "bet", 3)==0 && strlen(a)==3)							return _sym.bet[4];
-	if (memcmp(a, "bet", 3)==0 && strlen(a)==4)							return _sym.bet[a[3]-'0'-1];
+	if (memcmp(a, "bet", 3)==0 && strlen(a)==3)							return p_tablelimits->bet();
+	if (memcmp(a, "bet", 3)==0 && strlen(a)==4)							return p_tablelimits->bet(a[3]-'0');
 	
 	if (memcmp(a, "callshort", 9)==0 && strlen(a)==9)					return _sym.callshort;
 	if (memcmp(a, "raisshort", 9)==0 && strlen(a)==9)					return _sym.raisshort;

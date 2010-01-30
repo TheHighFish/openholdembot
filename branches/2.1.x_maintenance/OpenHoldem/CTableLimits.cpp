@@ -2,6 +2,7 @@
 #include "CTableLimits.h"
 
 #include <assert.h>
+#include "CPokerPro.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbols.h"
@@ -47,6 +48,7 @@ void CTableLimits::ResetOnHandreset()
 	tablelimit_locked_for_current_hand.sblind = 0;
 	tablelimit_locked_for_current_hand.bblind = 0;
 	tablelimit_locked_for_current_hand.bbet   = 0;
+	ResetBets();
 }
 
 void CTableLimits::ResetEachHeartBeatCycle()
@@ -57,17 +59,33 @@ void CTableLimits::ResetEachHeartBeatCycle()
 	tablelimit_unreliable_input.bbet = 0;
 }
 
+void CTableLimits::ResetBets()
+{
+	for (int i=k_betround_preflop; i<=k_betround_river; i++)
+	{
+		SetBet(i, 0);
+	}
+}
+
 void CTableLimits::UnLockBlindsManually() // TODO!!!
 {
 	write_log(3, "CTableLimits::UnLockBlindsManually()\n");
 	blinds_locked_manually = false;
-	tablelimit_locked_manually.sblind = 0;
-	tablelimit_locked_manually.bblind = 0;
-	tablelimit_locked_manually.bbet   = 0;
+	tablelimit_locked_manually.sblind   = 0;
+	tablelimit_locked_manually.bblind   = 0;
+	tablelimit_locked_manually.bbet     = 0;
+	/*tablelimit_locked_manually.ante     = 0;
+	tablelimit_locked_manually.gametype = -1;*/
 }
 
 void CTableLimits::LockBlindsManually(double small_blind, double big_blind, double big_bet, double ante, int gametype)
 {
+	assert(small_blind >= 0);
+	assert(big_blind >= 0);
+	assert(big_bet >= 0);
+	assert(ante >= 0);
+	assert(gametype >= k_gametype_unknown);
+	assert(gametype <= k_gametype_FL);
 	write_log(3, "CTableLimits::LockBlindsManually()\n");
 	blinds_locked_manually = true;
 	tablelimit_locked_manually.sblind = small_blind; 
@@ -118,7 +136,8 @@ bool CTableLimits::ReasonableBlindsForCurrentHand()
 	// so we check for non-zero blinds.
 	// Maybe we should also check for stable frames (isfinalanswer),
 	// but that requires waiting until it is our turn.
-	if (p_symbols->sym()->isfinalanswer && (sblind() > 0) && (bblind() > 0) && (bbet() > 0))
+	if (/*p_symbols->sym()->isfinalanswer!!! &&*/ (sblind() >= 0.01) 
+		&& (bblind() >= sblind()) && (bbet() >= bblind()))
 	{
 		write_log(3, "CTableLimits: ReasonableBlindsForCurrentHand(): true\n");
 		return true;
@@ -161,27 +180,41 @@ void CTableLimits::AutoLockBlindsForCurrentHand()
 
 void CTableLimits::SetSmallBlind(double small_blind)
 {
+	assert(small_blind >= 0);
 	tablelimit_unreliable_input.sblind = small_blind; 
 }
 
 void CTableLimits::SetBigBlind(double big_blind)
 {
+	assert(big_blind >= 0);
 	tablelimit_unreliable_input.bblind = big_blind;
 }
 
 void CTableLimits::SetBigBet(double big_bet)
 {
+	assert(big_bet >= 0);
 	tablelimit_unreliable_input.bbet = big_bet;
 }
 
 void CTableLimits::SetAnte(double ante)
 {
+	assert(ante >= 0);
 	_ante = ante;
 }
 
 void CTableLimits::SetGametype(int gametype)
 {
+	assert(gametype >= k_gametype_unknown);
+	assert(gametype <= k_gametype_FL);
 	_gametype = gametype;
+}
+
+void CTableLimits::SetBet(int betround, double bet)
+{
+	assert(betround >= k_betround_preflop);
+	assert(betround <= k_betround_river);
+	assert(bet >= 0);
+	_betsizes_for_all_bettingrounds[betround] = bet;
 }
 
 void CTableLimits::AutoLockBlinds()
@@ -220,6 +253,28 @@ void CTableLimits::CalcTableLimits_NL_PL()
 		else if (sblind()!=0)
 			SetBigBet(sblind()*2);
 	}
+}
+
+bool CTableLimits::IsCalculationNeccessary()
+{
+	write_log(3, "CTableLimits::IsCalculationNeccessary()\n");
+	if (sblind()==0)
+	{
+		write_log(3, "CTableLimits: sblind=0, calculation neccessary.\n");
+		return true;
+	}
+	if (bblind()==0)
+	{
+		write_log(3, "CTableLimits: bblind=0, calculation neccessary.\n");
+		return true;
+	}
+	if (p_pokerpro->IsConnected() && p_pokerpro->ppdata()->m_tinf.m_tid != 0)
+	{
+		write_log(3, "CTableLimits: PPro requires calculation.\n");
+		return true;
+	}
+	write_log(3, "CTableLimits: no calculatoin neccessary.\n");
+	return false;
 }
 
 void CTableLimits::CalcTableLimits_FL_AndUnknownGametype()
@@ -289,11 +344,23 @@ void CTableLimits::CalcTableLimitsFromPostedBets()
 			}
 		}
 	}
-	// check for reasonableness
+}
+
+void CTableLimits::AdjustForReasonableness()
+{
+	write_log(3, "CTableLimits::CheckForReasonableness()\n");
 	if (IsGreater(bblind(), (sblind()*3)))
 	{
-		SetBigBlind(sblind()*2);
-		write_log(3, "CTableLimits: adjusting BB\n");
+		if (IsGreater(sblind(), 0))
+		{
+			SetBigBlind(sblind()*2);
+			write_log(3, "CTableLimits: adjusting BB\n");
+		}
+		else
+		{
+			SetSmallBlind(bblind()/2);
+			write_log(3, "CTableLimits: adjusting SB\n");
+		}
 	}
 	if (IsGreaterOrEqual(sblind(), bblind()))
 	{
@@ -314,6 +381,10 @@ void CTableLimits::CalcTableLimits()
 	// with some extension at the end to auto-lock the blinds,
 	// if the values are reasonable.
 	write_log(3, "CTableLimits::CalcTableLimits()\n");
+	if (!IsCalculationNeccessary())
+	{
+		return;
+	}
 
 	SetSmallBlind(0);
 	SetBigBlind(0);
@@ -322,13 +393,13 @@ void CTableLimits::CalcTableLimits()
 
 	// Save the parts we scraped successfully
 	if (p_scraper->s_limit_info()->found_sblind)
-		SetSmallBlind(p_scraper->s_limit_info()->sblind);									// sblind
+		SetSmallBlind(p_scraper->s_limit_info()->sblind);								// sblind
 	if (p_scraper->s_limit_info()->found_bblind)
 		SetBigBlind(p_scraper->s_limit_info()->bblind);									// bblind
 	if (p_scraper->s_limit_info()->found_ante)
 		SetAnte(p_scraper->s_limit_info()->ante);										// ante
 	if (p_scraper->s_limit_info()->found_limit)
-		SetGametype(p_scraper->s_limit_info()->limit);										// lim
+		SetGametype(p_scraper->s_limit_info()->limit);									// lim
 	if (p_scraper->s_limit_info()->found_bbet)
 		SetBigBet(p_scraper->s_limit_info()->bbet);
 
@@ -337,11 +408,11 @@ void CTableLimits::CalcTableLimits()
 	write_log(3, "CTableLimits: input from scraper: big bet:     %f\n", tablelimit_unreliable_input.bbet);
 	write_log(3, "CTableLimits: input from scraper: gametype:    %d\n", _gametype);             
 	// Figure out bb/sb based on game type
-	if (gametype() == LIMIT_NL || gametype() == LIMIT_PL)
+	if (gametype() == k_gametype_NL || gametype() == k_gametype_PL)
 	{
 		CalcTableLimits_NL_PL();
 	}
-	else if (gametype() == LIMIT_FL || gametype() == -1)
+	else if (gametype() == k_gametype_FL || gametype() == k_gametype_unknown)
 	{
 		CalcTableLimits_FL_AndUnknownGametype();
 	}
@@ -358,7 +429,17 @@ void CTableLimits::CalcTableLimits()
 	write_log(3, "CTableLimits: calculated result: small blind: %f\n", sblind());
 	write_log(3, "CTableLimits: calculated result: big blind:   %f\n", bblind());
 	write_log(3, "CTableLimits: calculated result: big bet:     %f\n", bbet());
+	AdjustForReasonableness();
+	write_log(3, "CTableLimits: adjusted result: small blind: %f\n", sblind());
+	write_log(3, "CTableLimits: adjusted result: big blind:   %f\n", bblind());
+	write_log(3, "CTableLimits: adjusted result: big bet:     %f\n", bbet());
+	
 	AutoLockBlinds();
+	// Calc miminum betsizes for every streeet (after! we have potentially locked the blinds)
+	SetBet(k_betround_preflop, p_tablelimits->bblind());															
+	SetBet(k_betround_flop,    p_tablelimits->bblind());															
+	SetBet(k_betround_turn,    (p_tablelimits->bbet()!=0 ? p_tablelimits->bbet() : (p_tablelimits->isnl() || p_tablelimits->ispl() ? p_tablelimits->bblind() : p_tablelimits->bblind()*2)));	
+	SetBet(k_betround_river,   (p_tablelimits->bbet()!=0 ? p_tablelimits->bbet() : (p_tablelimits->isnl() || p_tablelimits->ispl() ? p_tablelimits->bblind() : p_tablelimits->bblind()*2)));	
 }
 
 double CTableLimits::sblind()
@@ -426,3 +507,14 @@ double CTableLimits::ante()
 	return _ante; 
 }
 
+double CTableLimits::bet(int betround)
+{
+	assert(betround >= k_betround_preflop);
+	assert(betround <= k_betround_river);
+	return (_betsizes_for_all_bettingrounds[betround]);
+}
+
+double CTableLimits::bet()
+{
+	return (bet(p_symbols->sym()->betround));
+}

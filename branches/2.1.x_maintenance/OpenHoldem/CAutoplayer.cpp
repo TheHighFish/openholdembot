@@ -297,9 +297,9 @@ void CAutoplayer::DoAutoplayer(void)
 
 	// do swag first since it is the odd one
 	bool bDoSwag = false; // I'm just breaking this out to be a little clearer (spew)
-	if ((p_tablemap->allinmethod() == 0) && p_symbols->f$alli() && p_scraper->GetButtonState(3))
+	if ((p_tablemap->allinmethod() == 0) && p_symbols->f$alli() && p_scraper->GetButtonState(3)) //!!! //!!!
 		bDoSwag = true;
-	if (p_symbols->f$swag() && !p_symbols->f$alli() && p_scraper->GetButtonState(3))
+	if (p_symbols->f$swag() && !p_symbols->f$alli() && p_scraper->GetButtonState(3)) //!!!
 		bDoSwag = true;
 	if (bDoSwag) 
 	{
@@ -308,7 +308,7 @@ void CAutoplayer::DoAutoplayer(void)
 	}
 	else 
 	{
-		if (p_symbols->f$alli() && p_scraper->GetButtonState(3))
+		if (p_symbols->f$alli() && p_scraper->GetButtonState(3)) //!!!
 		{
 			write_log(3, "Calling DoSlider.\n");
 			DoSlider();
@@ -364,7 +364,7 @@ void CAutoplayer::DoSwag(void)
 		write_log(3, "...ending DoSwag early (no edit field).\n");
 		return;
 	}
-	if (!p_scraper->GetButtonState(3))
+	if (!p_scraper->GetButtonState(3))//!!!
 	{
 		write_log(3, "...ending DoSwag early (no edit button).\n");
 		return;

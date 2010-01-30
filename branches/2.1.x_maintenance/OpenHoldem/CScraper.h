@@ -77,7 +77,6 @@ public:
 	const bool			handle_found_at_xy() { return _handle_found_at_xy; }
 	const POINT			handle_xy() { return _handle_xy; }
 	const SLimitInfo*	s_limit_info() { return &_s_limit_info; }
-	/*const SLockBlinds*	s_lock_blinds() { return &_s_lock_blinds; }*/
 	const HBITMAP		entire_window_cur() { return _entire_window_cur; }
 	const LARGE_INTEGER	clocks_hold() { return _clocks_hold; }
 

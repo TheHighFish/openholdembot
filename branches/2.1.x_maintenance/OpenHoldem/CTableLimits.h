@@ -1,6 +1,8 @@
 #ifndef INC_CTABLELIMITS_H
 #define INC_CTABLELIMITS_H
 
+#include "MagicNumbers.h"
+
 struct STableLimit
 {
 	double sblind;
@@ -30,19 +32,22 @@ public:
 	double bblind();
 	double bbet();
 	double ante();
+	double bet(int betround);
+	double bet(); // for current betting round
 public:
 	bool BlindsLockedManually() { return blinds_locked_manually; }
 public:
 	int gametype()		{ return _gametype; }	// former p_symbols->sym()->lim
-	double isnl()		{ return (gametype() == LIMIT_NL); }
-	double ispl()		{ return (gametype() == LIMIT_PL); }
-	double isfl()		{ return (gametype() == LIMIT_FL); }
+	double isnl()		{ return (gametype() == k_gametype_NL); }
+	double ispl()		{ return (gametype() == k_gametype_PL); }
+	double isfl()		{ return (gametype() == k_gametype_FL); }
 private:
 	void SetSmallBlind(double small_blind);
 	void SetBigBlind(double big_blind);
 	void SetBigBet(double big_bet);
 	void SetAnte(double ante);
 	void SetGametype(int gametype); 
+	void SetBet(int betround, double bet);
 	// public accessors
 public:
 	// private functions
@@ -52,9 +57,12 @@ private:
 	void AutoLockBlindsForCashgamesAfterNHands();
 	bool ReasonableBlindsForCurrentHand();
 	void RememberBlindsForCashgames();
+	bool IsCalculationNeccessary();
 	void CalcTableLimits_NL_PL();
 	void CalcTableLimits_FL_AndUnknownGametype();
 	void CalcTableLimitsFromPostedBets();
+	void AdjustForReasonableness();
+	void ResetBets();
 	// private data members
 private:
 	bool blinds_locked_for_current_hand; 
@@ -77,6 +85,8 @@ private:
 private:
 	int		_gametype;
 	double	_ante;
+	// Index 1..4 is for current bettinground, 0 is unused
+	double _betsizes_for_all_bettingrounds[k_number_of_betrounds+1]; 
 } *p_tablelimits;
 
 #endif // INC_CTABLELIMITS_H

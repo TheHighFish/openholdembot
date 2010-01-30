@@ -94,7 +94,6 @@ struct SSymbols
 	double stack[10];				// chair specific in elements 0-9
 	double currentbet[11];			// "currentbet" is held in element 10, chair specific in elements 0-9
 	double call;
-	double bet[5];					// "bet" is held in element 4, round specific in elements 0-3
 	double pot;
 	double potcommon;
 	double potplayer;
@@ -533,7 +532,6 @@ public:
 	void	set_sym_stack(const int i, const double d) { ENT if (i>=0 && i<=9) _sym.stack[i] = d;}
 	void	set_sym_currentbet(const int i, const double d) { ENT if (i>=0 && i<=10) _sym.currentbet[i] = d;}
 	void	set_sym_call(const double d) { ENT _sym.call = d;}
-	void	set_sym_bet(const int i, const double d) { ENT if (i>=0 && i<=4) _sym.bet[i] = d;}
 	void	set_sym_pot(const double d) { ENT _sym.pot = d;}
 	void	set_sym_potcommon(const double d) { ENT _sym.potcommon = d;}
 	void	set_sym_potplayer(const double d) { ENT _sym.potplayer = d;}
