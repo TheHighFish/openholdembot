@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "CSymbols.h"
 
 #include <assert.h>
 #include <process.h>
@@ -19,7 +20,6 @@
 #include "CRunRon.h"
 #include "CScraper.h"
 #include "CSessionCounter.h"
-#include "CSymbols.h"
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTransform\CTransform.h"
 #include "CVersus.h"
@@ -589,7 +589,9 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_f$swag(0);
 	set_f$rais(0);
 	set_f$call(0);
-	set_f$play(0);
+	set_f$sitin(0);
+	set_f$sitout(0);
+	set_f$leave(0);
 	set_f$prefold(0);
 	set_f$rebuy(0);
 	set_f$delay(0);
@@ -703,7 +705,9 @@ void CSymbols::ResetSymbolsNewHand(void)
 	set_f$swag(0);
 	set_f$rais(0);
 	set_f$call(0);
-	set_f$play(0);
+	set_f$sitin(0);
+	set_f$sitout(0);
+	set_f$leave(0);
 	set_f$prefold(0);
 	set_f$rebuy(0);
 
@@ -3927,8 +3931,14 @@ void CSymbols::CalcSecondaryFormulas(void)
 	CGrammar	gram;
 
 	e = SUCCESS;
-	set_f$play(gram.CalcF$symbol(p_formula, "f$play", prefs.trace_functions(nTracePlay), &e));
-	write_log(3, "Secondary formulas; f$play: %f\n", p_symbols->f$play());
+	set_f$sitin(gram.CalcF$symbol(p_formula, "f$sitin", prefs.trace_functions(nTraceSitIn), &e));
+	write_log(3, "Secondary formulas; f$sitin: %f\n", p_symbols->f$sitin());
+
+	set_f$sitout(gram.CalcF$symbol(p_formula, "f$sitout", prefs.trace_functions(nTraceSitOut), &e));
+	write_log(3, "Secondary formulas; f$sitout: %f\n", p_symbols->f$sitout());
+
+	set_f$leave(gram.CalcF$symbol(p_formula, "f$leave", prefs.trace_functions(nTraceLeave), &e));
+	write_log(3, "Secondary formulas; f$leave: %f\n", p_symbols->f$leave());
 
 	e = SUCCESS;
 	set_f$prefold(gram.CalcF$symbol(p_formula, "f$prefold", prefs.trace_functions(nTracePrefold), &e));

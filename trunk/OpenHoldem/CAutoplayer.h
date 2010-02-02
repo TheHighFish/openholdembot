@@ -53,7 +53,7 @@ private:
 	void DoPrefold(void);
 	int GetR$ButtonIndices(void);
 	void CheckBringKeyboard(void);
-	void DoF$play(void);
+	void CAutoplayer::DoF$Sitin_Sitout_Leave(void);
 	void DoI86(void);
 	void DoChat(void);
 

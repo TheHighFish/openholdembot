@@ -417,7 +417,9 @@ public:
 	const double		f$swag() { return _f$swag; }
 	const double		f$rais() { return _f$rais; }
 	const double		f$call() { return _f$call; }
-	const double		f$play() { return _f$play; }
+	const double		f$sitin()  { return _f$sitin; }
+	const double		f$sitout() { return _f$sitout; }
+	const double		f$leave()  { return _f$leave; }
 	const double		f$prefold() { return _f$prefold; }
 	const double		f$rebuy() { return _f$rebuy; }
 	const double		f$delay() { return _f$delay; }
@@ -432,22 +434,24 @@ public:
 #define ENT CSLock lock(m_critsec);
 	// public mutators
 	void	set_user_chair_confirmed(const bool b) { ENT _user_chair_confirmed = b;}
-	void	set_bigbet(const double d) { ENT _bigbet = d;}
-	void	set_f$alli(const double d) { ENT _f$alli = d;}
-	void	set_f$swag(const double d) { ENT _f$swag = d;}
-	void	set_f$rais(const double d) { ENT _f$rais = d;}
-	void	set_f$call(const double d) { ENT _f$call = d;}
-	void	set_f$play(const double d) { ENT _f$play = d;}
-	void	set_f$prefold(const double d) { ENT _f$prefold = d;}
-	void	set_f$rebuy(const double d) { ENT _f$rebuy = d;}
-	void	set_f$delay(const double d) { ENT _f$delay = d;}
-	void	set_f$chat(const double d) { ENT _f$chat = d;}
-	void	set_prw1326_useme(const int i) { ENT _prw1326.useme = i;}
-	void	logsymbols_collection_add(const char *s) { ENT _logsymbols_collection.Add(s);}
-	void	logsymbols_collection_removeall() { ENT _logsymbols_collection.RemoveAll();}
-	void	symboltrace_collection_add(const char *s) { ENT _symboltrace_collection.Add(s);}
-	void	symboltrace_collection_removeall() { ENT _symboltrace_collection.RemoveAll();}
-	void	set_stacks_at_hand_start(const int i, const int d) { ENT if (i>=0 && i<=9) _stacks_at_hand_start[i] = d; }
+	void	set_bigbet(const double d)		{ ENT _bigbet = d;}
+	void	set_f$alli(const double d)		{ ENT _f$alli = d;}
+	void	set_f$swag(const double d)		{ ENT _f$swag = d;}
+	void	set_f$rais(const double d)		{ ENT _f$rais = d;}
+	void	set_f$call(const double d)		{ ENT _f$call = d;}
+	void	set_f$sitin(const double d)		{ ENT _f$sitin = d;}
+	void	set_f$sitout(const double d)	{ ENT _f$sitout = d;}
+	void	set_f$leave(const double d)		{ ENT _f$leave = d;}
+	void	set_f$prefold(const double d)	{ ENT _f$prefold = d;}
+	void	set_f$rebuy(const double d)		{ ENT _f$rebuy = d;}
+	void	set_f$delay(const double d)		{ ENT _f$delay = d;}
+	void	set_f$chat(const double d)		{ ENT _f$chat = d;}
+	void	set_prw1326_useme(const int i)	{ ENT _prw1326.useme = i;}
+	void	logsymbols_collection_add(const char *s)	{ ENT _logsymbols_collection.Add(s);}
+	void	logsymbols_collection_removeall()			{ ENT _logsymbols_collection.RemoveAll();}
+	void	symboltrace_collection_add(const char *s)	{ ENT _symboltrace_collection.Add(s);}
+	void	symboltrace_collection_removeall()			{ ENT _symboltrace_collection.RemoveAll();}
+	void	set_stacks_at_hand_start(const int i, const int d)	{ ENT if (i>=0 && i<=9) _stacks_at_hand_start[i] = d; }
 
 	void	set_reset_stakes(const bool b) { ENT _reset_stakes = b;}
 	void	set_elapsedautohold(time_t t) { ENT _elapsedautohold = t;}
@@ -839,7 +843,9 @@ private:
 	// private variables - use public accessors and public mutators to address these
 	SSymbols	_sym;
 	bool		_user_chair_confirmed;
-	double		_f$alli, _f$swag, _f$rais, _f$call, _f$play, _f$prefold, _f$rebuy, _f$chat, _f$delay;
+	double		_f$alli, _f$swag, _f$rais, _f$call; 
+	double		_f$sitin, _f$sitout, _f$leave; 
+	double		_f$prefold, _f$rebuy, _f$chat, _f$delay;
 	double		_bigbet;
 	bool		_reset_stakes;							// set to true on new hand or on change in title bar text
 	double		_stacks_at_hand_start[10];				// Used in ICM calculator - ICM needs stacks at beginning of hand

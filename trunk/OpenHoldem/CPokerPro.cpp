@@ -2013,27 +2013,22 @@ void PokerPro::DoAutoplayer(void)
 	int sym_myturnbits = (int) p_symbols->sym()->myturnbits;
 	int sym_br = (int) p_symbols->sym()->br;
 
-	// Calculate f$play, f$prefold, f$rebuy, f$delay and f$chat for use below
+	// Calculate f$sitin, f$sitout, f$leave, f$prefold, f$rebuy, f$delay and f$chat for use below
 	p_symbols->CalcSecondaryFormulas();
 
 	////////////////////////////////////////////////////////////////////////////////
-	// f$play
-	if (p_symbols->f$play()==-2) 
+	// f$sitin, f$sitout, f$leave
+	if (p_symbols->f$leave()==true) 
 	{
-		SendStand(_ppdata.m_userchair);	   // leave table
+		SendStand(_ppdata.m_userchair);	 
 	}
-	else if (p_symbols->f$play()==-1) 
-	{ 
-	}										// no action
-																
-	else if (p_symbols->f$play()==0 && p_scraper->GetButtonState(6)) 
+	else if (p_symbols->f$sitout()==true && p_scraper->GetButtonState(6)) 
 	{
-		SendSitout(_ppdata.m_userchair);	// sit out
+		SendSitout(_ppdata.m_userchair);	
 	}
-
-	else if (p_symbols->f$play()==1 && p_scraper->GetButtonState(5)) 
+	else if (p_symbols->f$sitin()==true && p_scraper->GetButtonState(5)) 
 	{
-		SendSitin(_ppdata.m_userchair);	// sit in
+		SendSitin(_ppdata.m_userchair);	
 	}
 
 	// If iterator thread is still iterating, then return

@@ -1,11 +1,11 @@
 #include "StdAfx.h"
+#include "CFormula.h"
 
 #include "..\CCritSec\CCritSec.h"
-#include "CFormula.h"
-#include "CPreferences.h"
-#include "CSymbols.h"
 #include "..\CTransform\CTransform.h"
 #include "CGrammar.h"
+#include "CPreferences.h"
+#include "CSymbols.h"
 #include "OpenHoldemDoc.h"
 #include "UPDialog.h"
 
@@ -43,21 +43,23 @@ void CFormula::SetDefaultBot()
 
 	func.dirty = true;
 
-	func.func = "notes"; func.func_text = defaultCSnotes; _formula.mFunction.Add(func);
-	func.func = "dll"; func.func_text = ""; _formula.mFunction.Add(func);
-	func.func = "f$alli"; func.func_text = defaultCSalli; _formula.mFunction.Add(func);
-	func.func = "f$swag"; func.func_text = defaultCSswag; _formula.mFunction.Add(func);
-	func.func = "f$srai"; func.func_text = defaultCSsrai; _formula.mFunction.Add(func);
-	func.func = "f$rais"; func.func_text = defaultCSrais; _formula.mFunction.Add(func);
-	func.func = "f$call"; func.func_text = defaultCScall; _formula.mFunction.Add(func);
-	func.func = "f$prefold"; func.func_text = defaultCSprefold; _formula.mFunction.Add(func);
-	func.func = "f$rebuy"; func.func_text = defaultCSrebuy; _formula.mFunction.Add(func);
-	func.func = "f$delay"; func.func_text = defaultCSdelay; _formula.mFunction.Add(func);
-	func.func = "f$chat"; func.func_text = defaultCSchat; _formula.mFunction.Add(func);
-	func.func = "f$P"; func.func_text = defaultCSP; _formula.mFunction.Add(func);
-	func.func = "f$play"; func.func_text = defaultCSplay; _formula.mFunction.Add(func);
-	func.func = "f$test"; func.func_text = defaultCStest; _formula.mFunction.Add(func);
-	func.func = "f$debug"; func.func_text = defaultCSdebug; _formula.mFunction.Add(func);
+	func.func = "notes";		func.func_text = defaultCSnotes;	_formula.mFunction.Add(func);
+	func.func = "dll";			func.func_text = defaultCSdll;		_formula.mFunction.Add(func);
+	func.func = "f$alli";		func.func_text = defaultCSalli;		_formula.mFunction.Add(func);
+	func.func = "f$swag";		func.func_text = defaultCSswag;		_formula.mFunction.Add(func);
+	func.func = "f$srai";		func.func_text = defaultCSsrai;		_formula.mFunction.Add(func);
+	func.func = "f$rais";		func.func_text = defaultCSrais;		_formula.mFunction.Add(func);
+	func.func = "f$call";		func.func_text = defaultCScall;		_formula.mFunction.Add(func);
+	func.func = "f$prefold";	func.func_text = defaultCSprefold;	_formula.mFunction.Add(func);
+	func.func = "f$rebuy";		func.func_text = defaultCSrebuy;	_formula.mFunction.Add(func);
+	func.func = "f$delay";		func.func_text = defaultCSdelay;	_formula.mFunction.Add(func);
+	func.func = "f$chat";		func.func_text = defaultCSchat;		_formula.mFunction.Add(func);
+	func.func = "f$P";			func.func_text = defaultCSP;		_formula.mFunction.Add(func);
+	func.func = "f$sitin";		func.func_text = defaultCSsitin;	_formula.mFunction.Add(func);
+	func.func = "f$sitout";		func.func_text = defaultCSsitout;	_formula.mFunction.Add(func);
+	func.func = "f$leave";		func.func_text = defaultCSleave;	_formula.mFunction.Add(func);
+	func.func = "f$test";		func.func_text = defaultCStest;		_formula.mFunction.Add(func);
+	func.func = "f$debug";		func.func_text = defaultCSdebug;	_formula.mFunction.Add(func);
 	_formula.dBankroll = defaultdBankroll;
 	_formula.dDefcon = defaultdDefcon;
 	_formula.dRake = defaultdRake;
@@ -317,8 +319,16 @@ void CFormula::WriteFormula(CArchive& ar, bool use_new_OHF_style)
 			ar.WriteString("##f$P##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
 	
 	for (i=0; i<N; i++) 
-		if (_formula.mFunction[i].func == "f$play") 
-			ar.WriteString("##f$play##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
+		if (_formula.mFunction[i].func == "f$sitin") 
+			ar.WriteString("##f$sitin##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
+
+	for (i=0; i<N; i++) 
+		if (_formula.mFunction[i].func == "f$sitout") 
+			ar.WriteString("##f$sitout##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
+
+	for (i=0; i<N; i++) 
+		if (_formula.mFunction[i].func == "f$leave") 
+			ar.WriteString("##f$leave##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
 	
 	for (i=0; i<N; i++) 
 		if (_formula.mFunction[i].func == "f$test") 
@@ -353,7 +363,9 @@ void CFormula::WriteFormula(CArchive& ar, bool use_new_OHF_style)
 				_formula.mFunction[i].func != "f$delay" &&
 				_formula.mFunction[i].func != "f$chat" &&
 				_formula.mFunction[i].func != "f$P" &&
-				_formula.mFunction[i].func != "f$play" &&
+				_formula.mFunction[i].func != "f$sitin" &&
+				_formula.mFunction[i].func != "f$sitout" &&
+				_formula.mFunction[i].func != "f$leave" &&
 				_formula.mFunction[i].func != "f$test" &&
 				_formula.mFunction[i].func != "f$debug" ) 
 			{
@@ -402,167 +414,48 @@ bool CFormula::ParseAllFormula(HWND hwnd, bool disable_msgbox)
 	return data.all_parsed;
 }
 
-void CFormula::CheckForDefaultFormulaEntries()
+void CFormula::AddDefaultFunctionIfFunctionDoesNotExist(CString FunctionName)
 {
-	int			N = 0, i = 0;
-	bool		addit = false;
-	SFunction	func;	
-	
-	N = (int) _formula.mFunction.GetSize();
+	int size_of_formula_set = _formula.mFunction.GetSize();
+	for (int i=0; i<size_of_formula_set; i++)  
+	{
+		if (_formula.mFunction[i].func=="notes") 
+		{
+			// Formula found.
+			// Nothing to be done.
+			return;
+		}
+	}
+	// Formula not found.
+	// Add the standard one.
+	SFunction func;
 	func.func_text = ""; 
 	func.dirty = true; 
+	func.func = FunctionName; 
+	_formula.mFunction.Add(func); 
+}
 
+void CFormula::CheckForDefaultFormulaEntries()
+{
 	CSLock lock(m_critsec);
 
-	// notes
-	addit = true;
-	for (i=0; i<N; i++)  
-		if (_formula.mFunction[i].func=="notes") addit = false;
-	if (addit==true)  
-	{ 
-		func.func = "notes"; 
-		_formula.mFunction.Add(func); 
-	}
-
-	// dll
-	addit = true;
-	for (i=0; i<N; i++)  
-		if (_formula.mFunction[i].func=="dll") addit = false;
-	if (addit==true)  
-	{ 
-		func.func = "dll"; 
-		_formula.mFunction.Add(func); 
-	}
-
-	// f$alli
-	addit = true;
-	for (i=0; i<N; i++)  
-		if (_formula.mFunction[i].func=="f$alli") addit = false;
-	if (addit==true)  
-	{ 
-		func.func = "f$alli"; 
-		_formula.mFunction.Add(func); 
-	}
-
-	// f$swag
-	addit = true;
-	for (i=0; i<N; i++)  
-		if (_formula.mFunction[i].func=="f$swag") addit = false;
-	if (addit==true)  
-	{ 
-		func.func = "f$swag"; 
-		_formula.mFunction.Add(func); 
-	}
-
-	// f$srai
-	addit = true;
-	for (i=0; i<N; i++)  
-		if (_formula.mFunction[i].func=="f$srai") addit = false;
-	if (addit==true)  
-	{ 
-		func.func = "f$srai"; 
-		_formula.mFunction.Add(func); 
-	}
-
-	// f$rais
-	addit = true;
-	for (i=0; i<N; i++)  
-		if (_formula.mFunction[i].func=="f$rais") addit = false;
-	if (addit==true)  
-	{ 
-		func.func = "f$rais"; 
-		_formula.mFunction.Add(func); 
-	}
-
-	// f$call
-	addit = true;
-	for (i=0; i<N; i++)  
-		if (_formula.mFunction[i].func=="f$call") addit = false;
-	if (addit==true)  
-	{ 
-		func.func = "f$call"; 
-		_formula.mFunction.Add(func); 
-	}
-
-	// f$prefold
-	addit = true;
-	for (i=0; i<N; i++)  
-		if (_formula.mFunction[i].func=="f$prefold") addit = false;
-	if (addit==true)  
-	{ 
-		func.func = "f$prefold"; 
-		_formula.mFunction.Add(func); 
-	}
-
-	// f$rebuy
-	addit = true;
-	for (i=0; i<N; i++)  
-		if (_formula.mFunction[i].func=="f$rebuy") addit = false;
-	if (addit==true)  
-	{ 
-		func.func = "f$rebuy"; 
-		_formula.mFunction.Add(func); 
-	}
-
-	// f$delay
-	addit = true;
-	for (i=0; i<N; i++)  
-		if (_formula.mFunction[i].func=="f$delay") addit = false;
-	if (addit==true)  
-	{ 
-		func.func = "f$delay"; 
-		_formula.mFunction.Add(func); 
-	}
-
-	// f$chat
-	addit = true;
-	for (i=0; i<N; i++)  
-		if (_formula.mFunction[i].func=="f$chat") addit = false;
-	if (addit==true)  
-	{ 
-		func.func = "f$chat"; 
-		_formula.mFunction.Add(func); 
-	}
-
-	// f$P
-	addit = true;
-	for (i=0; i<N; i++)  
-		if (_formula.mFunction[i].func=="f$P") addit = false;
-	if (addit==true)  
-	{ 
-		func.func = "f$P"; 
-		_formula.mFunction.Add(func); 
-	}
-
-	// f$play
-	addit = true;
-	for (i=0; i<N; i++)  
-		if (_formula.mFunction[i].func=="f$play") addit = false;
-	if (addit==true)  
-	{ 
-		func.func = "f$play"; 
-		_formula.mFunction.Add(func); 
-	}
-
-	// f$test
-	addit = true;
-	for (i=0; i<N; i++)  
-		if (_formula.mFunction[i].func=="f$test") addit = false;
-	if (addit==true)  
-	{ 
-		func.func = "f$test"; 
-		_formula.mFunction.Add(func); 
-	}
-
-	// f$debug
-	addit = true;
-	for (i=0; i<N; i++)  
-		if (_formula.mFunction[i].func=="f$debug") addit = false;
-	if (addit==true)  
-	{ 
-		func.func = "f$debug"; 
-		_formula.mFunction.Add(func); 
-	}
+	AddDefaultFunctionIfFunctionDoesNotExist("notes");
+	AddDefaultFunctionIfFunctionDoesNotExist("dll");
+	AddDefaultFunctionIfFunctionDoesNotExist("f$alli");
+	AddDefaultFunctionIfFunctionDoesNotExist("f$swag");
+	AddDefaultFunctionIfFunctionDoesNotExist("f$srai");
+	AddDefaultFunctionIfFunctionDoesNotExist("f$rais");
+	AddDefaultFunctionIfFunctionDoesNotExist("f$call");
+	AddDefaultFunctionIfFunctionDoesNotExist("f$prefold");
+	AddDefaultFunctionIfFunctionDoesNotExist("f$rebuy");
+	AddDefaultFunctionIfFunctionDoesNotExist("f$delay");
+	AddDefaultFunctionIfFunctionDoesNotExist("f$chat");
+	AddDefaultFunctionIfFunctionDoesNotExist("f$P");
+	AddDefaultFunctionIfFunctionDoesNotExist("f$sitin");
+	AddDefaultFunctionIfFunctionDoesNotExist("f$sitout");
+	AddDefaultFunctionIfFunctionDoesNotExist("f$leave");
+	AddDefaultFunctionIfFunctionDoesNotExist("f$test");
+	AddDefaultFunctionIfFunctionDoesNotExist("f$debug");
 }
 
 void CFormula::MarkCacheStale()

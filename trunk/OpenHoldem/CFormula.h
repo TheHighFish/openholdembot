@@ -55,6 +55,7 @@ public:
 	void WriteFormula(CArchive& ar, bool use_new_OHF_style);
 	void CreateHandListMatrices();
 	bool ParseAllFormula(HWND hwnd, bool disable_msgbox);
+	void AddDefaultFunctionIfFunctionDoesNotExist(CString FunctionName);
 	void CheckForDefaultFormulaEntries();
 	void MarkCacheStale();
 	void ParseHandList(const CString &list_text, bool inlist[13][13]);
@@ -122,7 +123,13 @@ EDITED 2009-05-31 by TheHighFish: \r\n\
   * conversion to new ohf-format \r\n\
   * comments for unused standard formulae \r\n\
   * put some symbols into the debug-tab to demonstrate its usage \r\n\
-  * removed unused hand-lists";
+  * removed unused hand-lists \r\n\
+ \r\n\
+EDITED 2010-02-02 by TheHighFish: \r\n\
+  * new formulae f$sitin, f$sitout, f§leave \r\n\
+    instead of the old f$play";
+
+static const char * defaultCSdll = "";
 
 
 static const char * defaultCSalli = "\
@@ -292,45 +299,21 @@ static const char * defaultCSP = "// Number of opponents for the prwin simulatio
 (nopponentsplaying==0) ? 0 : \r\n\
 nopponentsplaying + defcon*nopponentsfolded";
 
-static const char * defaultCSplay = "\
-//------------------------------------------------------------------------ \r\n\
-//    DISABLED RULE(S) \r\n\
-!1                       ? -1 :  // 0=disabled 1=enabled \r\n\
-!f9                      ? -1 :  // enabled when f9 is pressed \r\n\
-//(elapsed%4)              ? -1 :  // disabled 3 out of 4 seconds \r\n\
-\r\n\
-\r\n\
-//------------------------------------------------------------------------ \r\n\
-//    LEAVE RULE \r\n\
-0                                // 0=off 1=on \r\n\
-&& issittingout                  // i am sitting out \r\n\
-&& elapsedhand >= 600            // 10 minutes since end of last hand \r\n\
-&& elapsedauto >= 600            // 10 minutes since autoplayer has acted \r\n\
-\r\n\
-                         ? -2 :  // leave the table \r\n\
-\r\n\
-//------------------------------------------------------------------------ \r\n\
-//    SITIN RULE \r\n\
-\r\n\
-0                                // 0=off 1=on \r\n\
-&& issittingout                  // i am sitting out \r\n\
-//&& (br==2 || br==3)              // it is the flop or turn \r\n\
-&& (nopponentsdealt >= 2)             // 6 or more opponents \r\n\
-//&& nchairsdealtright==2          // i am about to be big blind \r\n\
-\r\n\
-                         ?  1 :  // sitin \r\n\
-\r\n\
-//------------------------------------------------------------------------ \r\n\
-//    SITOUT RULE \r\n\
-1                                // 0=off 1=on \r\n\
-&& issittingin                   // i am sitting in \r\n\
-&& (br==2 || br==3)              // it is the flop or turn \r\n\
-&& (nopponentsdealt <= 1)             // 5 or less opponents \r\n\
-\r\n\
-                         ?  0 :  // sitout \r\n\
-\r\n\
-//------------------------------------------------------------------------ \r\n\
--1 // disabled"; 
+static const char * defaultCSsitin = "\
+issittingout                  // i am sitting out \r\n\
+&& (br==2 || br==3)           // it is the flop or turn \r\n\
+&& (nopponentsdealt >= 6)     // 6 or more opponents \r\n\
+&& nchairsdealtright==2       // i am about to be big blind";
+
+static const char * defaultCSsitout = "\
+issittingin                   // i am sitting in \r\n\
+&& (br==2 || br==3)           // it is the flop or turn \r\n\
+&& (nopponentsdealt < 6)      // 5 or less opponents";
+
+static const char * defaultCSleave = "\
+issittingout                  // i am sitting out \r\n\
+&& elapsedhand >= 600         // 10 minutes since end of last hand \r\n\
+&& elapsedauto >= 600         // 10 minutes since autoplayer has acted";
 
 static const char * defaultCStest = "";
 
