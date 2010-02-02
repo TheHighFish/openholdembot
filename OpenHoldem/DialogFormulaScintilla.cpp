@@ -79,7 +79,9 @@ char * keywords = "ismanual isppro site nchairs isbring session handnumber "
 				  "vs$prwinlo vs$prtielo vs$prloslo "
               "vs$prwinhinow vs$prtiehinow vs$prloshinow vs$prwintinow vs$prtietinow vs$prlostinow "
 				  "vs$prwinlonow vs$prtielonow vs$prloslonow vs$nhandshinow vs$nhandstinow vs$nhandslonow "
-				  "f$alli f$swag f$srai f$rais f$call f$prefold f$rebuy f$delay f$chat f$P f$play f$test "
+				  "f$alli f$swag f$srai f$rais f$call f$prefold f$rebuy f$delay f$chat f$P "
+				  "f$sitin f$sitout f$leave "
+				  "f$test "
 				  "lastraised1 lastraised2 lastraised3 lastraised4 "
 				  "raisbits1 raisbits2 raisbits3 raisbits4 "
 				  "callbits1 callbits2 callbits3 callbits4 "
@@ -191,7 +193,9 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 	m_standard_functions[1].Add("f$chat");
 	m_standard_functions[1].Add("f$rebuy");
 	m_standard_functions[1].Add("f$P");
-	m_standard_functions[1].Add("f$play");
+	m_standard_functions[1].Add("f$sitin");
+	m_standard_functions[1].Add("f$sitout");
+	m_standard_functions[1].Add("f$leave");
 
 	m_standard_functions[2].Add("f$test");
 	m_standard_functions[2].Add("f$debug");

@@ -65,6 +65,7 @@ BOOL CDlgSAPrefs16::OnInitDialog()
 void CDlgSAPrefs16::OnOK()
 {
 	CString text = "";
+
 	prefs.set_rebuy_condition_no_cards(_rebuy_condition_no_cards_Button.GetCheck() == true);
 	prefs.set_rebuy_condition_change_in_handnumber(_rebuy_condition_change_in_handnumber_Button.GetCheck() == true);
 	prefs.set_rebuy_condition_heuristic_check_for_occlusion(_rebuy_condition_heuristic_check_for_occlusion_Button.GetCheck() == true);

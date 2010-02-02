@@ -58,9 +58,11 @@ BOOL CDlgSAPrefs11::OnInitDialog()
 	m_TraceList.AddString("f$swag");
 	m_TraceList.AddString("f$rais");
 	m_TraceList.AddString("f$call");
-	m_TraceList.AddString("f$play");
 	m_TraceList.AddString("f$prefold");
 	m_TraceList.AddString("f$rebuy");
+	m_TraceList.AddString("f$sitin");
+	m_TraceList.AddString("f$sitout");
+	m_TraceList.AddString("f$leave");
 
 	for (int i=0;i<nTraceFunctions;i++)
 	{

@@ -193,13 +193,13 @@ void CAutoplayer::DoAutoplayer(void)
 	num_buttons_visible = GetR$ButtonIndices();
 	write_log(3, "Number of visible buttons: %d\n", num_buttons_visible);
 
-	// Calculate f$play, f$prefold, f$rebuy, f$delay and f$chat for use below
+	// Calculate f$sitin, f$sitout, f$leave, f$prefold, f$rebuy, f$delay and f$chat for use below
 	write_log(3, "Calling CalcSecondaryFormulas.\n");
 	p_symbols->CalcSecondaryFormulas();
 
-	// Handle f$play
-	write_log(3, "Calling DoF$play.\n");
-	DoF$play();
+	// Handle f$sitin, f$sitout, f$leave (formerly f$play)
+	write_log(3, "Calling DoF$Sitin_Sitout_Leave.\n");
+	DoF$Sitin_Sitout_Leave();
 
 	// Handle i86buttons
 	write_log(3, "Calling DoI86.\n");
@@ -1214,23 +1214,38 @@ void CAutoplayer::CheckBringKeyboard(void)
 	}
 }
 
-void CAutoplayer::DoF$play(void) 
+void CAutoplayer::DoF$Sitin_Sitout_Leave(void) 
 {
 	bool			do_click = false;
 	HWND			hwnd_focus = GetFocus();
 	POINT			cur_pos = {0};
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-	double			f_play = p_symbols->f$play();
+	double			f_sitin  = p_symbols->f$sitin();
+	double			f_sitout = p_symbols->f$sitout();
+	double			f_leave  = p_symbols->f$leave();
 	RECT			r = {0};
 
-	write_log(3, "Starting DoF$play...\n");
+	write_log(3, "Starting DoF$Sitin_Sitout_Leave...\n");
+	// Disable 3 out of 4 heartbeats as previously in the f$play-formula
+	// to avoid permanent/multiple clicking, when the casino 
+	// does not react immediatelly.
+	// !!! when we have a small scrape-delay
+	// !!! ((elapsed % 4) != 0) doesn't guarantee correct execution.
+	// !!! Strictly speaking we need a counter of heartbeats.
+	// !!! replace by heartbeatcounter as soon as implemented
+	if ((int(p_symbols->sym()->elapsed) % 4) != 0)
+	{
+		write_log(3, "DoF$Sitin_Sitout_Leave disabled for the current heartbeat.\n");
+		write_log(3, "Leaving DoF$Sitin_Sitout_Leave early.\n");
+		return;
+	}
 
 	::GetCursorPos(&cur_pos);
 
 	do_click = false;
 
 	// leave table
-	if (f_play==-2 && _leave_but!=p_tablemap->r$()->end())
+	if (f_leave==true && _leave_but!=p_tablemap->r$()->end())
 	{
 		r.left = _leave_but->second.left;
 		r.top = _leave_but->second.top;
@@ -1238,16 +1253,11 @@ void CAutoplayer::DoF$play(void)
 		r.bottom = _leave_but->second.bottom;
 
 		do_click = true;
-		write_log(3, "Found valid f$play (leave) / leave button combination.\n");
-	}
-
-	// no action
-	else if (f_play==-1)
-	{
+		write_log(3, "f$leave is true (leave) and leave button exists.\n");
 	}
 
 	// sit out
-	else if (f_play==0 && 
+	else if (f_sitout==true && 
 			 ( (_sitout_but!=p_tablemap->r$()->end() && _sitout_state==false) || 
 			   (_sitin_but!=p_tablemap->r$()->end() && _sitin_state==true) ) )
 	{
@@ -1269,11 +1279,11 @@ void CAutoplayer::DoF$play(void)
 		}
 
 		do_click = true;
-		write_log(3, "Found valid f$play (sitout) / sitout button combination.\n");
+		write_log(3, "f$sitout is true and sitout button exists.\n");
 	}
 
 	// sit in
-	else if (f_play==1 && 
+	else if (f_sitin==true && 
 			 ( (_sitin_but!=p_tablemap->r$()->end() && _sitin_state==false) || 
 			   (_sitout_but!=p_tablemap->r$()->end() && _sitout_state==true) ) )
 	{
@@ -1294,11 +1304,11 @@ void CAutoplayer::DoF$play(void)
 		}
 
 		do_click = true;
-		write_log(3, "Found valid f$play (sitin) / sitin button combination.\n");
+		write_log(3, "f$sitin is true and sitin button exists.\n");
 	}
 
 	// Autopost
-	else if (f_play==1 && _autopost_but!=p_tablemap->r$()->end() && _autopost_state==false)
+	else if (f_sitin==true && _autopost_but!=p_tablemap->r$()->end() && _autopost_state==false)
 	{
 		r.left = _autopost_but->second.left;
 		r.top = _autopost_but->second.top;
@@ -1306,7 +1316,7 @@ void CAutoplayer::DoF$play(void)
 		r.bottom = _autopost_but->second.bottom;
 
 		do_click = true;
-		write_log(3, "Found valid f$play (sitin) / autopost button combination.\n");
+		write_log(3, "Found valid f$sitin / autopost button combination.\n");
 	}
 
 	if (do_click)
@@ -1326,7 +1336,7 @@ void CAutoplayer::DoF$play(void)
 		}
 	}
 
-	write_log(3, "...ending DoF$play.\n");
+	write_log(3, "...ending DoF$Sitin_Sitout_Leave.\n");
 }
 
 void CAutoplayer::DoI86(void) 
