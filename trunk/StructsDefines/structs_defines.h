@@ -253,7 +253,7 @@ struct sprw1326
 	sprw1326_chair  chair[10];  //structures for each chair
 };
 
-//player history structure
+//player history structure		Demonthus 2010-02-05
 
 struct phistory_chair
 {
@@ -269,7 +269,7 @@ struct phistory_chair
 	double endBalance;
 	double currentBet;
 	double prevBet;
-	double totalPot[4];
+	double totalIn[4];
 	double bet[4][4];
 	int action[4][4];
 	int ac_dealpos;
@@ -281,8 +281,15 @@ struct phistory_chair
 	HandVal handval;
 };
 
+//player history structure		Demonthus 2010-02-05
+
 struct phistory
 {
+	int whosturn;
+	int sblindpos;
+	int bblindpos;
+	int utg;
+	int lpta;
 	phistory_chair chair[10];
 };
 
