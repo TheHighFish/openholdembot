@@ -61,13 +61,8 @@ private:
 	int pCardsSeen;
 	int postflopstart;			//Starting seat after flop
 	long int gameNumber;
-	int sblindpos;
-	int bblindpos;
-	int utg;
-	int whosturn;				//Turn determinant; used to move sequentially through seats
 	int prevround;				//Betround in previous scrape
 	int prevdealerchair;		//Dealer chair in previous scrape
-	int lpta;					//Last player to act on round
 	char card_global[5][5];
 	phistory    _history;		//phistory data structure Demonthus 2010-01-23
 
