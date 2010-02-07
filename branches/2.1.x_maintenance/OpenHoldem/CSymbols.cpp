@@ -996,12 +996,14 @@ void CSymbols::CalcSymbols(void)
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Identification of dealerchair
+	write_log(3, "nachirs: %d\n", p_tablemap->nchairs());
 	for (i=0; i < p_tablemap->nchairs(); i++)
 	{
 		if (p_scraper->dealer(i))
 		{
+			write_log(3, "Setting dealerchair to %d\n", i);
 			set_sym_dealerchair(i);														// dealerchair
-			i = p_tablemap->nchairs() + 1;
+			break;
 		}
 	}
 

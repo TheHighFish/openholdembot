@@ -8,9 +8,8 @@ struct STableLimit
 	double sblind;
 	double bblind;
 	double bbet;
-	// We don't deal with antes for the moment,
-	// as they are rarely used and of minor importance 
-	// for correct table-limits, blind-sizes, etc.
+	// We don't deal with antes here, as they are very rarely used.
+	// They get stored separately and not auto-locked.
 };
 
 extern class CTableLimits
@@ -46,8 +45,8 @@ private:
 	void SetBigBlind(double big_blind);
 	void SetBigBet(double big_bet);
 	void SetAnte(double ante);
-	void SetGametype(int gametype); 
 	void SetBet(int betround, double bet);
+	void SetGametype(int gametype); 
 	// public accessors
 public:
 	// private functions
@@ -60,7 +59,13 @@ private:
 	bool IsCalculationNeccessary();
 	void CalcTableLimits_NL_PL();
 	void CalcTableLimits_FL_AndUnknownGametype();
-	void CalcTableLimitsFromPostedBets();
+	void SwapBlindsIfSbGreaterThanBBAndNotZero();
+	void SearchTableForSbAndBbValue();
+	void CalcBetsizesForEveryStreet();
+	void AcceptNewValuesIfGood();
+	double GuessSmallBlindFromBigBlind();
+	double GuessBigBlindFromSmallBlind();
+	double GuessBigBetFromBigBlind();
 	void AdjustForReasonableness();
 	void ResetBets();
 	// private data members
@@ -70,6 +75,7 @@ private:
 	bool blinds_locked_manually;
 private:
 	STableLimit tablelimit_unreliable_input;
+	STableLimit tablelimit_last_known_good_value;
 	STableLimit tablelimit_locked_for_current_hand;
 	STableLimit tablelimit_locked_for_complete_session;
 	STableLimit tablelimit_locked_manually;
