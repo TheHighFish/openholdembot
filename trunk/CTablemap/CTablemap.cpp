@@ -227,7 +227,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 
 					if (z_iter != _z$.end())
 					{
-						t.Format("'%s' skipped, as this size record already exists.", strLine);
+						t.Format("'%s' skipped, as this size record already exists.\nYou have to fix that tablemap.", strLine);
 						MessageBox(NULL, t.GetString(), "ERROR adding size record", MB_OK | MB_TOPMOST);			
 					}
 					else
@@ -270,7 +270,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 						SMapCI s_iter = _s$.find(hold_symbol.name);
 						if (s_iter != _s$.end())
 						{
-							t.Format("'%s' skipped, as this string/symbol record already exists.", strLine);
+							t.Format("'%s' skipped, as this string/symbol record already exists.\nYou have to fix that tablemap.", strLine);
 							MessageBox(NULL, t.GetString(), "ERROR adding string/symbol record", MB_OK | MB_TOPMOST);			
 						}
 						else
@@ -347,7 +347,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 					RMapCI r_iter = _r$.find(hold_region.name);
 					if (r_iter != _r$.end())
 					{
-						t.Format("'%s' skipped, as this region record already exists.", strLine);
+						t.Format("'%s' skipped, as this region record already exists.\nYou have to fix that tablemap.", strLine);
 						MessageBox(NULL, t.GetString(), "ERROR adding region record", MB_OK | MB_TOPMOST);			
 					}
 					else
@@ -386,7 +386,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			if (font_group<0 || font_group>3)
 			{
 				if (!disable_msgbox)
-					MessageBox(NULL, strLine, "Invalid font group", MB_OK | MB_TOPMOST);
+					MessageBox(NULL, strLine, "Invalid font group\nFont groups have to be in the range [0..3]", MB_OK | MB_TOPMOST);
 
 				return ERR_SYNTAX;
 			}
@@ -408,7 +408,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 					TMapCI t_iter = _t$[font_group].find(hold_font.hexmash);
 					if (t_iter != _t$[font_group].end())
 					{
-						t.Format("'%s' skipped, as this character already exists in group %d as '%c'.",
+						t.Format("'%s' skipped, as this character already exists in group %d as '%c'.\nYou have to fix that tablemap.",
 							strLine, font_group, t_iter->second.ch);
 						MessageBox(NULL, t.GetString(), "ERROR adding font record", MB_OK | MB_TOPMOST);			
 					}
@@ -432,7 +432,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			if (hashpoint_group<0 || hashpoint_group>3)
 			{
 				if (!disable_msgbox)
-					MessageBox(NULL, strLine, "Invalid hash point group", MB_OK | MB_TOPMOST);
+					MessageBox(NULL, strLine, "Invalid hash point group\nHash point groups have to be in the range [0..3]", MB_OK | MB_TOPMOST);
 	
 				return ERR_SYNTAX;
 			}
@@ -459,7 +459,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 					PMapCI p_iter = _p$[hashpoint_group].find(((hold_hash_point.x&0xffff)<<16) | (hold_hash_point.y&0xffff));
 					if (p_iter != _p$[hashpoint_group].end())
 					{
-						t.Format("'%s' skipped, as hash point (%d, %d) already exists in group %d.", 
+						t.Format("'%s' skipped, as hash point (%d, %d) already exists in group %d.\nYou have to fix that tablemap.", 
 							strLine, hold_hash_point.x, hold_hash_point.y, hashpoint_group);
 						MessageBox(NULL, t.GetString(), "ERROR adding hash point record", MB_OK | MB_TOPMOST);			
 					}
@@ -482,7 +482,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 			if (hash_group<0 || hash_group>3)
 			{
 				if (!disable_msgbox)
-					MessageBox(NULL, strLine, "Invalid hash group", MB_OK | MB_TOPMOST);
+					MessageBox(NULL, strLine, "Invalid hash group\nHash groups have to be in the range [0..3]", MB_OK | MB_TOPMOST);
 	
 				return ERR_SYNTAX;
 			}
@@ -505,7 +505,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 					HMapCI h_iter = _h$[hash_group].find(hold_hash_value.hash);
 					if (h_iter != _h$[hash_group].end())
 					{
-						t.Format("'%s' skipped, as hash %08x already exists in group %d.", 
+						t.Format("'%s' skipped, as hash %08x already exists in group %d.\nYou have to fix that tablemap.", 
 							strLine, hold_hash_value.hash, hash_group);
 						MessageBox(NULL, t.GetString(), "ERROR adding hash record", MB_OK | MB_TOPMOST);			
 					}
@@ -575,7 +575,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 					IMapCI i_iter = _i$.find(CreateI$Index(hold_image.name, hold_image.width, hold_image.height, hold_image.pixel));
 					if (i_iter != _i$.end())
 					{
-						t.Format("'%s' skipped, as image already exists as '%s', with identical width, height and pixels.", 
+						t.Format("'%s' skipped, as image already exists as '%s', with identical width, height and pixels.\nYou have to fix that tablemap.", 
 							strLineType, i_iter->second.name);
 						MessageBox(NULL, t.GetString(), "ERROR adding image record", MB_OK | MB_TOPMOST);			
 					}
@@ -595,7 +595,9 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 		else 
 		{
 			if (!disable_msgbox)
-				MessageBox(NULL, strLine, "ERROR Unknown Line Type", MB_OK | MB_TOPMOST);
+				MessageBox(NULL, strLine, 
+					"ERROR Unknown Line Type\nSome line in your tablemap is completely wrong and can't be processed at all.", 
+					MB_OK | MB_TOPMOST);
 	
 			return ERR_UNK_LN_TYPE;
 		}
