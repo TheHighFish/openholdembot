@@ -471,8 +471,17 @@ double CTableLimits::GuessBigBlindFromSmallBlind()
 
 double CTableLimits::GuessBigBetFromBigBlind()
 {
-	write_log(3, "CTableLimits::GuessBigBetFromBigBlind()()\n");
-	return (tablelimit_unreliable_input.bblind*2);
+	write_log(3, "CTableLimits::GuessBigBetFromBigBlind()\n");
+	if ((gametype() == k_gametype_NL) || (gametype() == k_gametype_PL))
+	{
+		write_log(3, "CTableLimits::GuessBigBetFromBigBlind() BB = bb\n");
+		return (tablelimit_unreliable_input.bblind);
+	}
+	else
+	{
+		write_log(3, "CTableLimits::GuessBigBetFromBigBlind() BB = 2*bb\n");
+		return (tablelimit_unreliable_input.bblind*2);
+	}
 }
 
 void CTableLimits::AdjustForReasonableness()
