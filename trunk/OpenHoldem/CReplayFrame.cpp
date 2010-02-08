@@ -6,6 +6,7 @@
 #include "CScraper.h"
 #include "CSessionCounter.h"
 #include "CSymbols.h"
+#include "CTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 #include "OpenHoldem.h"
 
@@ -183,9 +184,9 @@ void CReplayFrame::CreateReplayFrame(void)
 
 			// Table for: sb, bb, BB
 			fprintf(fp, "<table align=center border=4 cellpadding=1 cellspacing=1>\n");
-			fprintf(fp, "<tr><th>sb</th><td>%11.2f</td></tr>\n", p_symbols->sym()->sblind);
-			fprintf(fp, "<tr><th>bb</th><td>%11.2f</td></tr>\n", p_symbols->sym()->bblind);
-			fprintf(fp, "<tr><th>BB</th><td>%11.2f</td></tr>\n", p_symbols->bigbet());
+			fprintf(fp, "<tr><th>sb</th><td>%11.2f</td></tr>\n", p_tablelimits->sblind());
+			fprintf(fp, "<tr><th>bb</th><td>%11.2f</td></tr>\n", p_tablelimits->bblind());
+			fprintf(fp, "<tr><th>BB</th><td>%11.2f</td></tr>\n", p_tablelimits->bbet());
 			fprintf(fp, "</table>\n");
 
 			// Table for: common cards

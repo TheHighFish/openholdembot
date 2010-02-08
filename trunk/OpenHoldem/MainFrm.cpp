@@ -20,6 +20,7 @@
 #include "CReplayFrame.h"
 #include "CScraper.h"
 #include "CSymbols.h"
+#include "CTableLimits.h"
 #include "..\CTransform\CTransform.h"
 #include "CValidator.h"
 #include "DialogChairNum.h"
@@ -304,9 +305,6 @@ int CMainFrame::CreateMainToolbar(void)
 
 	// Start shoot replay frame button disabled
 	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, false);
-
-	// Make help button sticky
-	/*m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_HELP, &tbi);!!!*/
 
 	// Title of floating main toolbar
 	m_MainToolBar.SetWindowText("Main");
@@ -1219,39 +1217,13 @@ void CMainFrame::OnLockBlinds(void)
 
 		if (lockblinds_dlg.DoModal() == IDOK) 
 		{
-			// Tell CScraper about our locked blinds
-			SLockBlinds LB;
-			LB.blinds_are_locked = true;
-			LB.sblind = lockblinds_dlg.sblind;
-			LB.bblind = lockblinds_dlg.bblind;
-			LB.bbet = lockblinds_dlg.bbet;
-			LB.ante = lockblinds_dlg.ante;
-			LB.gametype = lockblinds_dlg.gametype;
-
-			p_scraper->SetLockedBlinds(LB);
-
-			// Save locked blinds info for future use
-			prefs.set_sblind(lockblinds_dlg.sblind);
-			prefs.set_bblind(lockblinds_dlg.bblind);
-			prefs.set_bbet(lockblinds_dlg.bbet);
-			prefs.set_ante(lockblinds_dlg.ante);
-			prefs.set_gametype(lockblinds_dlg.gametype);
-			
+			p_tablelimits->LockBlindsManually(lockblinds_dlg.sblind, lockblinds_dlg.bblind,
+				lockblinds_dlg.bbet, lockblinds_dlg.ante, lockblinds_dlg.gametype);
 		}
 		else 
 		{
+			p_tablelimits->UnLockBlindsManually();
 			m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_LOCK_BLINDS, false);
-
-			// Tell CScraper about our *not* locked blinds
-			SLockBlinds LB;
-			LB.blinds_are_locked = false;
-			LB.sblind = 0.;
-			LB.bblind = 0.;
-			LB.bbet = 0.;
-			LB.ante = 0.;
-			LB.gametype = 0;
-
-			p_scraper->SetLockedBlinds(LB);
 		}
 	}
 }

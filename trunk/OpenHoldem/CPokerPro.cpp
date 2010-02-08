@@ -1964,9 +1964,9 @@ void PokerPro::DoScrape(void)
 	LI.ante = atof(money);
 	LI.found_ante = true;
 
-	LI.limit = (_ppdata.m_ginf[_ppdata.m_tinf.m_tid].m_lim&0x7)==0 ? LIMIT_NL :
-			   (_ppdata.m_ginf[_ppdata.m_tinf.m_tid].m_lim&0x7)==1 ? LIMIT_PL : 
-			   LIMIT_FL;
+	LI.limit = (_ppdata.m_ginf[_ppdata.m_tinf.m_tid].m_lim&0x7)==0 ? k_gametype_NL :
+			   (_ppdata.m_ginf[_ppdata.m_tinf.m_tid].m_lim&0x7)==1 ? k_gametype_PL : 
+			   k_gametype_FL;
 	LI.found_limit = true;
 
 	LI.istournament = (_ppdata.m_ginf[_ppdata.m_tinf.m_tid].m_tmode&0x1) && _ppdata.m_ginf[_ppdata.m_tinf.m_tid].m_tlevel;
@@ -1994,10 +1994,10 @@ void PokerPro::DoScrape(void)
 	}
 	if (_autoplayer_can_act) 
 	{
-		p_scraper->set_button_state(3, p_scraper->s_limit_info()->limit==LIMIT_NL ? "true" : "false");
+		p_scraper->set_button_state(3, p_scraper->s_limit_info()->limit==k_gametype_NL ? "true" : "false");
 		p_scraper->set_button_state(2, 
 			_ppdata.m_pinf[_ppdata.m_userchair].m_balance > GetCurrentBet() - _ppdata.m_pinf[_ppdata.m_userchair].m_betAmount &&
-			((p_scraper->s_limit_info()->limit==LIMIT_NL || p_scraper->s_limit_info()->limit==LIMIT_PL) ||
+			((p_scraper->s_limit_info()->limit==k_gametype_NL || p_scraper->s_limit_info()->limit==k_gametype_PL) ||
 			  GetCurrentBet() < (_ppdata.m_tinf.m_maxNBets&0xf)*GetBetX()) ? "true" : "false");
 		p_scraper->set_button_state(1, GetCurrentBet() - _ppdata.m_pinf[_ppdata.m_userchair].m_betAmount > 0 ? "true" : "false");
 		p_scraper->set_button_state(4, GetCurrentBet() - _ppdata.m_pinf[_ppdata.m_userchair].m_betAmount == 0 ? "true" : "false");

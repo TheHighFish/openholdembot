@@ -2,9 +2,10 @@
 
 #include "CPokerAction.h"
 
-#include "CSymbols.h"
-#include "CPokerTrackerThread.h"
 #include "CGameState.h"
+#include "CPokerTrackerThread.h"
+#include "CSymbols.h"
+#include "CTableLimits.h"
 
 CPokerAction::CPokerAction()
 {
@@ -262,7 +263,7 @@ const bool CPokerAction::FirstIntoPot (void)
 	int		e = SUCCESS;
 
 	result = p_symbols->sym()->br==1 ? 
-		p_symbols->sym()->potplayer <= p_symbols->sym()->sblind + p_symbols->sym()->bblind : 
+		p_symbols->sym()->potplayer <= p_tablelimits->sblind() + p_tablelimits->bblind() : 
 		p_symbols->sym()->potplayer <= 0.1 ;
 
 	return result;

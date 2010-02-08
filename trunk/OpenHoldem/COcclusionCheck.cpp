@@ -1,8 +1,9 @@
 // Heuristic occlusion-check for rebuy.
 
 #include "stdafx.h"
-#include "CGameState.h"
 #include "COcclusionCheck.h"
+
+#include "CGameState.h"
 #include "CSCraper.h"
 #include "CSymbols.h"
 #include "debug.h"

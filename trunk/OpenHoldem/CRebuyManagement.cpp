@@ -8,6 +8,7 @@
 #include "CScraper.h"
 #include "CSymbols.h"
 #include "..\CTablemap\CTablemap.h"
+#include "CTableLimits.h"
 #include "debug.h"
 
 
@@ -146,11 +147,11 @@ void CRebuyManagement::ExecuteRebuyScript()
 		Casino = "Undefined";
 	}
 	HWND WindowHandleOfThePokerTable = p_autoconnector->attached_hwnd();
+	double SmallBlind = p_tablelimits->sblind();
+	double BigBlind = p_tablelimits->bblind();
+	double BigBet = p_tablelimits->bbet();
 	double UserChair = p_symbols->sym()->userchair;
 	double Balance = p_symbols->sym()->balance[10];
-	double SmallBlind = p_symbols->sym()->sblind;
-	double BigBlind = p_symbols->sym()->bblind;
-	double BigBet = p_symbols->sym()->bet[2];	// Turnbet = big bet
 	double TargetAmount = p_symbols->f$rebuy();
 	CString RebuyScript = prefs.rebuy_script();
 	CString CommandLine;

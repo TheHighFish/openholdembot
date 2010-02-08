@@ -27,6 +27,7 @@
 #include "CSharedMem.h"
 #include "CStableFramesCounter.h"
 #include "CSymbols.h"
+#include "CTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CValidator.h"
 #include "CVersus.h"
@@ -84,6 +85,7 @@ void COpenHoldemApp::InstanciateAllSingletonsExceptSessionCounter()
 	if (!p_configurationcheck) p_configurationcheck = new CConfigurationCheck;
 	if (!p_sharedmem) p_sharedmem = new CSharedMem;
 	if (!p_stableframescounter) p_stableframescounter = new CStableFramesCounter;
+	if (!p_tablelimits) p_tablelimits = new CTableLimits;
 	if (!p_pokerpro) p_pokerpro = new PokerPro;
 	if (!p_scraper)  p_scraper = new CScraper;
 	if (!p_symbols)  p_symbols = new CSymbols;
@@ -127,6 +129,7 @@ void COpenHoldemApp::DeleteAllSingletons()
 	if (p_symbols)  { delete p_symbols; p_symbols = NULL; }
 	if (p_scraper)  { delete p_scraper; p_scraper = NULL; }
 	if (p_pokerpro)  { delete p_pokerpro; p_pokerpro = NULL; }
+	if (p_tablelimits) { delete p_tablelimits; p_tablelimits = NULL; }
 	if (p_stableframescounter) { delete p_stableframescounter; p_stableframescounter = NULL; }
 	if (p_sharedmem) { delete p_sharedmem; p_sharedmem = NULL; }
 	if (p_sessioncounter) { delete p_sessioncounter; p_sessioncounter = NULL; }

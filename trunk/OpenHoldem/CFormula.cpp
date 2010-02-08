@@ -223,7 +223,10 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine, bool disable_
 	else if (content == FTfunc) 
 	{
 		func.func_text.TrimRight("\r\n");
-		_formula.mFunction.Add(func);
+		if (!DoesFormulaAlreadyExist(func.func))
+		{
+			_formula.mFunction.Add(func);
+		}
 	}
 }
 
@@ -743,3 +746,19 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 
 	return true;
 }
+
+bool CFormula::DoesFormulaAlreadyExist(const CString new_name)
+{
+	int number_of_formulae = _formula.mFunction.GetCount(); 
+	for (int i=0; i<number_of_formulae; i++)
+	{
+		write_log(3, "CFormula::DoesFormulaAlreadyExist(): [%s] == [%s]\n",
+			new_name, _formula.mFunction[i].func);
+		if (new_name == _formula.mFunction[i].func)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+

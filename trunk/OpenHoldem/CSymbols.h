@@ -2,6 +2,7 @@
 #define INC_CSYMBOLS_H
 
 #include <assert.h>
+#include "CTableLimits.h"
 #include "MagicNumbers.h"
 
 // Symbol structure
@@ -29,14 +30,19 @@ struct SSymbols
 	double nit;
 	double bankroll;
 
+	// TABLE-LIMITS 
+	// Accessors could become part of CSymbols again,
+	// in case we chance it to a class in the future
+	// The logic got isolated in CTableLimits.
+	// double bblind() 
+	// double sblind() 
+	// double ante()   
+	// double lim()    
+	// double isnl()   
+	// double ispl()   
+	// double isfl()   
+
 	//LIMITS
-	double bblind;
-	double sblind;
-	double ante;
-	double lim;
-	double isnl;
-	double ispl;
-	double isfl;
 	double sraiprev;
 	double sraimin;
 	double sraimax;
@@ -84,11 +90,11 @@ struct SSymbols
 
 	//CHIP AMOUNTS
 	double balance[11];				// "balance" is held in element 10, chair specific in elements 0-9
-	double max_balance;
+	double maxbalance;
+	double originalbalance;
 	double stack[10];				// chair specific in elements 0-9
 	double currentbet[11];			// "currentbet" is held in element 10, chair specific in elements 0-9
 	double call;
-	double bet[5];					// "bet" is held in element 4, round specific in elements 0-3
 	double pot;
 	double potcommon;
 	double potplayer;
@@ -412,7 +418,7 @@ public:
 public:
 	// public accessors
 	const bool			user_chair_confirmed() { return _user_chair_confirmed; }
-	const double		bigbet() { return _bigbet; }
+	const double		bigbet() { return p_tablelimits->bbet(); }
 	const double		f$alli() { return _f$alli; }
 	const double		f$swag() { return _f$swag; }
 	const double		f$rais() { return _f$rais; }
@@ -453,7 +459,6 @@ public:
 	void	symboltrace_collection_removeall()			{ ENT _symboltrace_collection.RemoveAll();}
 	void	set_stacks_at_hand_start(const int i, const int d)	{ ENT if (i>=0 && i<=9) _stacks_at_hand_start[i] = d; }
 
-	void	set_reset_stakes(const bool b) { ENT _reset_stakes = b;}
 	void	set_elapsedautohold(time_t t) { ENT _elapsedautohold = t;}
 
 	// All symbol mutators below
@@ -480,13 +485,6 @@ public:
 	void	set_sym_nit(const double d) { ENT _sym.nit = d;}
 
 	// limits
-	void	set_sym_bblind(const double d) { ENT _sym.bblind = d;}
-	void	set_sym_sblind(const double d) { ENT _sym.sblind = d;}
-	void	set_sym_ante(const double d) { ENT _sym.ante = d;}
-	void	set_sym_lim(const double d) { ENT _sym.lim = d;}
-	void	set_sym_isnl(const double d) { ENT _sym.isnl = d;}
-	void	set_sym_ispl(const double d) { ENT _sym.ispl = d;}
-	void	set_sym_isfl(const double d) { ENT _sym.isfl = d;}
 	void	set_sym_sraiprev(const double d) { ENT _sym.sraiprev = d;}
 	void	set_sym_sraimin(const double d) { ENT _sym.sraimin = d;}
 	void	set_sym_sraimax(const double d) { ENT _sym.sraimax = d;}
@@ -535,12 +533,15 @@ public:
 	{
 		ENT 
 		if (i>=0 && i<=10) _sym.balance[i] = d;
-		if (i == 10) set_sym_max_balance_conditionally(d);
+		if (i == 10) 
+		{
+			set_sym_maxbalance_conditionally(d);
+			set_sym_originalbalance_conditionally(d);
+		}
 	}
 	void	set_sym_stack(const int i, const double d) { ENT if (i>=0 && i<=9) _sym.stack[i] = d;}
 	void	set_sym_currentbet(const int i, const double d) { ENT if (i>=0 && i<=10) _sym.currentbet[i] = d;}
 	void	set_sym_call(const double d) { ENT _sym.call = d;}
-	void	set_sym_bet(const int i, const double d) { ENT if (i>=0 && i<=4) _sym.bet[i] = d;}
 	void	set_sym_pot(const double d) { ENT _sym.pot = d;}
 	void	set_sym_potcommon(const double d) { ENT _sym.potcommon = d;}
 	void	set_sym_potplayer(const double d) { ENT _sym.potplayer = d;}
@@ -829,25 +830,34 @@ public:
 	void	set_sym_vs$prwinlonow(const double d) { ENT _sym.vs$prwinlonow = d;}
 	void	set_sym_vs$prtielonow(const double d) { ENT _sym.vs$prtielonow = d;}
 	void	set_sym_vs$prloslonow(const double d) { ENT _sym.vs$prloslonow = d;}
-
 	void	set_sym_playing(const bool b) { ENT _sym.playing = b;}
+
+private:
+	void	reset_sym_maxbalance() { ENT _sym.maxbalance = 0; }
+	void	set_sym_maxbalance_conditionally(const double d) 
+	{ 
+		// No ENT necessary and allowed, as we do call set_sym_maxbalance_conditionally
+		// only inside set_sym_balance, which is already protected by the mutex!
+		if (d > _sym.maxbalance) _sym.maxbalance = d;
+	}
+
+	void	reset_sym_originalbalance() { ENT _sym.originalbalance = 0; }
+	void	set_sym_originalbalance_conditionally(const double d) 
+	{ 
+		// No ENT necessary and allowed, as we do call set_sym_originalbalance_conditionally
+		// only inside set_sym_balance, which is already protected by the mutex!
+		if (_sym.originalbalance <= 0) _sym.originalbalance = d;
+	}
 #undef ENT
 
 private:
-	void	set_sym_max_balance_conditionally(const double d) 
-	{ 
-		// No ENT necessary and allowed, as we do call set_sym_max_balance_conditionally
-		// only inside set_sym_balance, which is already protected by the mutex!
-		if (d > _sym.max_balance) _sym.max_balance = d;
-	}
 	// private variables - use public accessors and public mutators to address these
 	SSymbols	_sym;
 	bool		_user_chair_confirmed;
 	double		_f$alli, _f$swag, _f$rais, _f$call; 
 	double		_f$sitin, _f$sitout, _f$leave; 
 	double		_f$prefold, _f$rebuy, _f$chat, _f$delay;
-	double		_bigbet;
-	bool		_reset_stakes;							// set to true on new hand or on change in title bar text
+	
 	double		_stacks_at_hand_start[10];				// Used in ICM calculator - ICM needs stacks at beginning of hand
 	time_t		_elapsedautohold;						// The time since autoplayer acted
 	CArray <CString, CString>   _logsymbols_collection; // Used to track the log$ symbols
@@ -862,7 +872,6 @@ private:
 	void ResetSymbolsNewRound(void);
 	void ResetSymbolsEveryCalc(void);
 	bool CalcUserChair(void);
-	void CalcStakes(void);
 	void CalcBetBalanceStack(void);
 	void CalcPlayersFriendsOpponents(void);
 	void CalcChipamtsLimits(void);

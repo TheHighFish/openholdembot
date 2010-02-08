@@ -526,7 +526,7 @@ void write_logautoplay(int level, const char * action)
         fprintf(log_fp, "%-5s %9.2f %9.2f %9.2f ", 
 			action, 
 			p_symbols->sym()->call, 
-			p_symbols->sym()->bet[4], 
+			p_tablelimits->bet(), 
 			p_symbols->sym()->pot);
 		fprintf(log_fp, "%9.2f - %s %s %.2f\n", 
 			p_symbols->sym()->balance[10], 

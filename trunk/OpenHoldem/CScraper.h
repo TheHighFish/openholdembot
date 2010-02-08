@@ -26,16 +26,6 @@ struct SLimitInfo
 	bool	found_bb_BB;
 };
 
-struct SLockBlinds
-{
-	bool	blinds_are_locked;
-	double	sblind;
-	double	bblind;
-	double	bbet;
-	double	ante;
-	int		gametype;
-};
-
 extern class CScraper 
 {
 public:
@@ -46,7 +36,6 @@ public:
 	void ClearScrapeAreas(void);
 	void CreateBitmaps(void);
 	void DeleteBitmaps(void);
-	void SetLockedBlinds(const SLockBlinds LB);
 	void SetLimitInfo(const SLimitInfo LI);
 	const bool GetButtonState(const int button_index);
 	const bool IsCommonAnimation(void);
@@ -88,7 +77,6 @@ public:
 	const bool			handle_found_at_xy() { return _handle_found_at_xy; }
 	const POINT			handle_xy() { return _handle_xy; }
 	const SLimitInfo*	s_limit_info() { return &_s_limit_info; }
-	const SLockBlinds*	s_lock_blinds() { return &_s_lock_blinds; }
 	const HBITMAP		entire_window_cur() { return _entire_window_cur; }
 	const LARGE_INTEGER	clocks_hold() { return _clocks_hold; }
 
@@ -136,13 +124,6 @@ public:
 	void	set_handle_xy(const POINT p) { ENT _handle_xy.x = p.x; _handle_xy.y = p.y;}
 	void	set_entire_window_cur(const HBITMAP h) { ENT _entire_window_cur = h;}
 	void	delete_entire_window_cur() { ENT DeleteObject(_entire_window_cur);}
-	void	set_LB_blinds_are_locked(const bool b) { ENT _s_lock_blinds.blinds_are_locked = b;}
-	void	set_LB_sblind(const double d) { ENT _s_lock_blinds.sblind = d;}
-	void	set_LB_bblind(const double d) { ENT _s_lock_blinds.bblind = d;}
-	void	set_LB_bbet(const double d) { ENT _s_lock_blinds.bbet = d;}
-	void	set_LB_ante(const double d) { ENT _s_lock_blinds.ante = d;}
-	void	set_LB_gametype(const int i) { ENT _s_lock_blinds.gametype = i;}
-
 #undef ENT
 	
 private:
@@ -155,10 +136,7 @@ private:
 	CString				_button_state[10], _i86X_button_state[10], _i86_button_state, _button_label[10];
 	bool				_handle_found_at_xy;
 	POINT				_handle_xy;
-
-	SLimitInfo			_s_limit_info;
-	SLockBlinds			_s_lock_blinds;
-
+	SLimitInfo			_s_limit_info; 
 	LARGE_INTEGER		_clocks_hold;			// used for "clocks" symbol
 	HBITMAP				_entire_window_cur;
 

@@ -19,4 +19,4 @@ private:
 	bool AnyApponentBalanceNonZero();
 } *p_occlusioncheck;
 
-#endif
+#endif // __LIB_COCCLUSIONCHECK_H

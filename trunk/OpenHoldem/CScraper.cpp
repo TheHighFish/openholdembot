@@ -1,19 +1,15 @@
 #include "StdAfx.h"
-
 #include "CScraper.h"
 
 #include "..\CTransform\CTransform.h"
 #include "..\CTransform\hash\lookup3.h"
-
-#include "CSymbols.h"
-#include "CPokerPro.h"
-
-#include "OpenHoldem.h"
-#include "MainFrm.h"
-
-#include "CAutoconnector.h"
-
 #include "..\..\Reference Scraper-Preprocessor DLL\scraper_preprocessor_dll.h"
+#include "CAutoconnector.h"
+#include "CPokerPro.h"
+#include "CSymbols.h"
+#include "CTableLimits.h"
+#include "MainFrm.h"
+#include "OpenHoldem.h"
 
 
 #define __HDC_HEADER 		HBITMAP		old_bitmap = NULL; \
@@ -31,8 +27,6 @@ CScraper *p_scraper = NULL;
 CScraper::CScraper(void)
 {
 	ClearScrapeAreas();
-
-	_s_lock_blinds.blinds_are_locked = false;
 }
 
 CScraper::~CScraper(void)
@@ -209,8 +203,6 @@ int CScraper::DoScrape(void)
 		set_found_sb_bb(false);
 		set_found_bb_BB(false);
 		set_found_limit(false);
-
-		p_symbols->set_reset_stakes(true);
 	}
 
 	// Copy into "last" bitmap
@@ -1666,22 +1658,22 @@ void CScraper::ScrapeLimits()
 			write_log(3, "c0handnumber%d, result %s\n", j, text.GetString());
 		}
 	}
-
-	if (_s_lock_blinds.blinds_are_locked)
+	if (p_tablelimits->BlindsLockedManually()) 
 	{
-		set_sblind(_s_lock_blinds.sblind);
+		set_sblind(p_tablelimits->sblind());
 		set_found_sblind(true);
-		set_bblind(_s_lock_blinds.bblind);
+		set_bblind(p_tablelimits->bblind());
 		set_found_bblind(true);
-		set_bbet(_s_lock_blinds.bbet);
+		set_bbet(p_tablelimits->bbet());
 		set_found_bbet(true);
-		set_ante(_s_lock_blinds.ante);
+		set_ante(p_tablelimits->ante());
 		set_found_ante(true);
-		set_limit(_s_lock_blinds.gametype);
+		set_limit(p_tablelimits->gametype());
 		set_found_limit(true);
 
 		write_log(3, "Locked blinds, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", 
-			_s_lock_blinds.sblind, _s_lock_blinds.bblind, _s_lock_blinds.bbet, _s_lock_blinds.ante, _s_lock_blinds.gametype);
+			p_tablelimits->sblind(), p_tablelimits->bblind(), p_tablelimits->bbet(), 
+			p_tablelimits->ante(), p_tablelimits->gametype());
 	}
 
 	else
@@ -1720,7 +1712,8 @@ void CScraper::ScrapeLimits()
 				&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
 
 			write_log(3, "ttlimits, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", 
-				_s_lock_blinds.sblind, _s_lock_blinds.bblind, _s_lock_blinds.bbet, _s_lock_blinds.ante, _s_lock_blinds.gametype);
+				p_tablelimits->sblind(), p_tablelimits->bblind(), p_tablelimits->bbet(), 
+				p_tablelimits->ante(), p_tablelimits->gametype());
 		}
 
 		// s$ttlimitsX - Scrape blinds/stakes/limit info from title text
@@ -1746,7 +1739,8 @@ void CScraper::ScrapeLimits()
 					&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
 
 				write_log(3, "ttlimits%d, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", j,
-					_s_lock_blinds.sblind, _s_lock_blinds.bblind, _s_lock_blinds.bbet, _s_lock_blinds.ante, _s_lock_blinds.gametype);
+					p_tablelimits->sblind(), p_tablelimits->bblind(), p_tablelimits->bbet(), 
+					p_tablelimits->ante(), p_tablelimits->gametype()); 
 			}
 		}
 
@@ -1776,7 +1770,8 @@ void CScraper::ScrapeLimits()
 					&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
 
 				write_log(3, "c0limits, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", 
-					_s_lock_blinds.sblind, _s_lock_blinds.bblind, _s_lock_blinds.bbet, _s_lock_blinds.ante, _s_lock_blinds.gametype);
+					p_tablelimits->sblind(), p_tablelimits->bblind(), p_tablelimits->bbet(), 
+					p_tablelimits->ante(), p_tablelimits->gametype());
 			}
 		}
 
@@ -1809,7 +1804,8 @@ void CScraper::ScrapeLimits()
 				}
 
 				write_log(3, "c0limits%d, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", j,
-					_s_lock_blinds.sblind, _s_lock_blinds.bblind, _s_lock_blinds.bbet, _s_lock_blinds.ante, _s_lock_blinds.gametype);
+					p_tablelimits->sblind(), p_tablelimits->bblind(), p_tablelimits->bbet(), 
+					p_tablelimits->ante(), p_tablelimits->gametype());
 			}
 
 			// save what we just scanned through
@@ -2176,16 +2172,6 @@ void CScraper::DeleteBitmaps(void)
 		DeleteObject(r_iter->second.last_bmp); r_iter->second.last_bmp=NULL;
 		DeleteObject(r_iter->second.cur_bmp); r_iter->second.cur_bmp=NULL;
 	}
-}
-
-void CScraper::SetLockedBlinds(const SLockBlinds LB)
-{
-	set_LB_blinds_are_locked(LB.blinds_are_locked);
-	set_LB_sblind(LB.sblind);
-	set_LB_bblind(LB.bblind);
-	set_LB_bbet(LB.bbet);
-	set_LB_ante(LB.ante);
-	set_LB_gametype(LB.gametype);
 }
 
 void CScraper::SetLimitInfo(const SLimitInfo LI)
