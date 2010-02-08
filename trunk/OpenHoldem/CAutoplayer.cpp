@@ -1220,7 +1220,6 @@ void CAutoplayer::DoF$Sitin_Sitout_Leave(void)
 	HWND			hwnd_focus = GetFocus();
 	POINT			cur_pos = {0};
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-	double			f_play = p_symbols->f$play();
 	double			f_sitin  = p_symbols->f$sitin();
 	double			f_sitout = p_symbols->f$sitout();
 	double			f_leave  = p_symbols->f$leave();

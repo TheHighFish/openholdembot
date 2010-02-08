@@ -440,7 +440,6 @@ public:
 #define ENT CSLock lock(m_critsec);
 	// public mutators
 	void	set_user_chair_confirmed(const bool b) { ENT _user_chair_confirmed = b;}
-	void	set_bigbet(const double d)		{ ENT _bigbet = d;}
 	void	set_f$alli(const double d)		{ ENT _f$alli = d;}
 	void	set_f$swag(const double d)		{ ENT _f$swag = d;}
 	void	set_f$rais(const double d)		{ ENT _f$rais = d;}
