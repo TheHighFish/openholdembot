@@ -1,4 +1,28 @@
-v2.1.1 2010-xx-xx  
+v 2.2.0 2010-xx-yy (v 2.1.2 see below)
+==================
+NEW STUFF:
+==========
+- f$play has been quite a messy concept for a long time.
+  It finally got replaced by 3 individual functions: f$sitin, f$sitout and f$leave.
+  There will be a warning on old formulae and the user will need to make
+  some small changes to his formula set. [THF]
+- new symbol: originalbalance, which remebers the balance at the start of a session. [THF]
+
+MAINTENANCE:
+============
+- removing code-clones in CFormula.cpp [THF]
+
+
+v2.1.2 2010.xx-yy
+=================
+BUG FIXES:
+==========
+- Several bug-fixes and improvements to the new class CTableLimits,
+  that detects and auto-locks blind-values. Thanks to Nomade, Skyzzo and 
+  Winngy for their help with testing and replay-frames. [THF]
+
+
+v2.1.1 2010-01-30  
 =================
 BUG FIXES:
 - Re-enabled the ability to disable autoplayer after it has been engaged.  This was mistakenly removed in the 2.1.0 release.
@@ -11,6 +35,16 @@ BUG FIXES:
 - Some people reported incorrect duplicate actions, when the action was very fast.
   To avoid this we do now reset the counter for stable frames after autoplayer-actions,
   as we expect some changes to appear. [THF]
+- The auto-connector did treat tablemaps with min/max-clientsize incorrectly.
+  Thanks to Nomade for finding the bug and providing the fix. [THF]
+- Detecting blind-values correctly is an errorprone task, especially when scraping it from the table.
+  There could be cases, where somebody raises and SB folds and the blinds do suddenly double-up.
+  This has now been improved by auto-locking the blinds
+  * for the current hands, as soon as the values are reasonable
+  * for the entire session after N hands (cashgame only).
+  Still needs further work, as the input from the scraper-engine seems to be quite dissatisfactory,
+  at least when testing at PokerAcademy, but that may be related to missing stable frames.
+  Thanks to Nomade for providing replay-frames to reproduce the problem. [THF]
 
 NEW STUFF:
 - Additional checks for incorrect system configurations,
