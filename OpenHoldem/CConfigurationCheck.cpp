@@ -10,9 +10,9 @@ CConfigurationCheck *p_configurationcheck = 0;
 // http://msdn.microsoft.com/en-us/goglobal/bb895996.aspx
 const TCHAR k_KeyboardLayout_UK_US_English[KL_NAMELENGTH] = "00000409";
 
-const int k_NumberOfRequiredLibraries = 4;
-char k_RequiredLibraries[k_NumberOfRequiredLibraries][13] = {"DBGHELP.DLL",
-	"MSVCRT80.dll", "MSVCP80D.DLL", "MSVCR80D.DLL"};
+const int k_NumberOfRequiredLibraries = 3;
+char k_RequiredLibraries[k_NumberOfRequiredLibraries][13] = {"MSVCRT80.dll", 
+	"MSVCP80D.DLL", "MSVCR80D.DLL"};
 
 
 CConfigurationCheck::CConfigurationCheck()
@@ -32,15 +32,18 @@ void CConfigurationCheck::CheckEverything()
 
 	// Check non-critical things, if checks are not disabled.
 	// OpenHoldem may or may not work, if these are not right.
-	// ToDo: Preferences!!!
-	if (!prefs.configurationcheck_disable_less_critical_checks())
+	if (prefs.configurationcheck_keyboard_settings())
 	{
 		CheckKeyboardSettings();
-		CheckForMissingLibraries();
 	}
+	if (prefs.configurationcheck_perl_dependencies())
+	{
+		CheckForMissingPerlLibraries();
+	}
+
 }
 
-void CConfigurationCheck::CheckForMissingLibraries()
+void CConfigurationCheck::CheckForMissingPerlLibraries()
 {
 	for (int i=0; i<k_NumberOfRequiredLibraries; i++)
 	{
@@ -52,8 +55,9 @@ void CConfigurationCheck::CheckForMissingLibraries()
 		else
 		{
 			CString ErrorMessage = CString(k_RequiredLibraries[i]) +  CString(" could not be loaded.\n")
-				+ CString("That library may be required by OpenHoldem and/or Perl.\n")
-				+ CString("If your setup causes problems you should install the missing DLLs.\n");
+				+ CString("That library may be required by Perl.\n")
+				+ CString("If you don't use Perl you may turn that warning off.\n")
+				+ CString("If your setup causes problems you should install the missing DLL(s).\n");
 			MessageBox(0, ErrorMessage, "Caution: Missing library", MB_OK|MB_ICONWARNING);
 		}
 	}
@@ -69,7 +73,11 @@ void CConfigurationCheck::CheckKeyboardSettings()
 		MessageBox(0, "You seem to have non-english keyboard settings.\n"
 				"Keyboard settings affect especially the decimal point in numbers\n"
 				"and therefore the scraper-engine and the auto-player.\n"
-				"If you continue, OpenHoldem may or may not work as expected.\n",
+				"If you continue, OpenHoldem may or may not work as expected.\n"
+				"If you are an experienced user with a working setup\n"
+				"you may turn this warning off.\n"
+				"If you are new to OpenHoldem or encounter problems\n"
+				"you should fix your keyboard settings\n",
 				"Caution: Improper keyboard settings", MB_OK|MB_ICONWARNING);
 	}
 }

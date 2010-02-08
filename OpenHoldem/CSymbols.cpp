@@ -3773,7 +3773,6 @@ void CSymbols::CalcSecondaryFormulas(void)
 	e = SUCCESS;
 	set_f$sitin(gram.CalcF$symbol(p_formula, "f$sitin", prefs.trace_functions(nTraceSitIn), &e));
 	write_log(3, "Secondary formulas; f$sitin: %f\n", p_symbols->f$sitin());
-	write_log(3, "Secondary formulas; f$play: %f\n", p_symbols->f$play());
 
 	set_f$sitout(gram.CalcF$symbol(p_formula, "f$sitout", prefs.trace_functions(nTraceSitOut), &e));
 	write_log(3, "Secondary formulas; f$sitout: %f\n", p_symbols->f$sitout());
