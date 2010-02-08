@@ -61,6 +61,8 @@ public:
 	void ParseHandList(const CString &list_text, bool inlist[13][13]);
 	void CopyFormulaFrom(CFormula *f);
 	const char *GetFunctionText(const char *name);
+private:
+	bool DoesFormulaAlreadyExist(const CString new_name);
 
 public:
 	// public accessors

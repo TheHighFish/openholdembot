@@ -16,6 +16,16 @@ const int k_betround_river		= 4;
 const int k_max_number_of_players = 10;
 
 // Number of cards
+const int k_number_of_community_cards  = 5;
+const int k_number_of_cards_per_player = 2;
+
+// Game type
+const int k_gametype_unknown = -1;
+const int k_gametype_NL      =  0;
+const int k_gametype_PL  	 =  1;
+const int k_gametype_FL      =  2;
+
+// Number of cards
 const int k_number_of_community_cards = 5;
 const int k_number_of_cards_per_player = 2;
 

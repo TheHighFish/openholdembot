@@ -421,6 +421,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CTableLimits.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CValidator.cpp"
 				>
 			</File>
@@ -434,6 +438,10 @@
 			</File>
 			<File
 				RelativePath=".\MainFrm.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Median.cpp"
 				>
 			</File>
 			<File
@@ -1042,6 +1050,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CTableLimits.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CValidator.h"
 				>
 			</File>
@@ -1063,6 +1075,10 @@
 			</File>
 			<File
 				RelativePath=".\MainFrm.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Median.h"
 				>
 			</File>
 			<File

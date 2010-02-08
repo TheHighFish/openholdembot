@@ -2,6 +2,7 @@
 
 #include "debug.h"
 #include "CPreferences.h"
+#include "MagicNumbers.h"
 
 // CPreferences needs to be globally created, in order to provide saved settings to CMainFrame::PreCreateWindow method
 CPreferences		prefs;
@@ -98,7 +99,7 @@ void CPreferences::InitDefaults(void)
 	_bblind = 10;
 	_bbet = 20;
 	_ante = 0;
-	_gametype = LIMIT_NL;
+	_gametype = k_gametype_NL;
 
 	// f$debug logging
 	_fdebuglog = false;
@@ -190,7 +191,8 @@ void CPreferences::InitDefaults(void)
 	_rebuy_script = "Rebuy.exe";
 
 	// Configuration check
-	_configurationcheck_disable_less_critical_checks = false;
+	_configurationcheck_perl_dependencies = true;
+	_configurationcheck_keyboard_settings = true;
 
 
 	// Obscure
@@ -380,7 +382,8 @@ void CPreferences::ReadPreferences()
 		ReadReg("rebuy_script", &_rebuy_script);
 
 		// Configuration check
-		ReadReg("configurationcheck_disable_less_critical_checks", &_configurationcheck_disable_less_critical_checks);
+		ReadReg("configurationcheck_perl_dependencies", &_configurationcheck_perl_dependencies);
+		ReadReg("configurationcheck_keyboard_settings", &_configurationcheck_keyboard_settings);
 	
 		// obscure
 		ReadReg("window_class_name", &_window_class_name);

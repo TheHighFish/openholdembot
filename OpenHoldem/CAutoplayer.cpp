@@ -193,7 +193,7 @@ void CAutoplayer::DoAutoplayer(void)
 	num_buttons_visible = GetR$ButtonIndices();
 	write_log(3, "Number of visible buttons: %d\n", num_buttons_visible);
 
-	// Calculate f$sitin, f$sitout, f$leave, f$prefold, f$rebuy, f$delay and f$chat for use below
+	// Calculate f$play, f$prefold, f$rebuy, f$delay and f$chat for use below
 	write_log(3, "Calling CalcSecondaryFormulas.\n");
 	p_symbols->CalcSecondaryFormulas();
 
@@ -297,9 +297,9 @@ void CAutoplayer::DoAutoplayer(void)
 
 	// do swag first since it is the odd one
 	bool bDoSwag = false; // I'm just breaking this out to be a little clearer (spew)
-	if ((p_tablemap->allinmethod() == 0) && p_symbols->f$alli() && p_scraper->GetButtonState(3))
+	if ((p_tablemap->allinmethod() == 0) && p_symbols->f$alli() && p_scraper->GetButtonState(3)) //!!! //!!!
 		bDoSwag = true;
-	if (p_symbols->f$swag() && !p_symbols->f$alli() && p_scraper->GetButtonState(3))
+	if (p_symbols->f$swag() && !p_symbols->f$alli() && p_scraper->GetButtonState(3)) //!!!
 		bDoSwag = true;
 	if (bDoSwag) 
 	{
@@ -308,7 +308,7 @@ void CAutoplayer::DoAutoplayer(void)
 	}
 	else 
 	{
-		if (p_symbols->f$alli() && p_scraper->GetButtonState(3))
+		if (p_symbols->f$alli() && p_scraper->GetButtonState(3)) //!!!
 		{
 			write_log(3, "Calling DoSlider.\n");
 			DoSlider();
@@ -364,7 +364,7 @@ void CAutoplayer::DoSwag(void)
 		write_log(3, "...ending DoSwag early (no edit field).\n");
 		return;
 	}
-	if (!p_scraper->GetButtonState(3))
+	if (!p_scraper->GetButtonState(3))//!!!
 	{
 		write_log(3, "...ending DoSwag early (no edit button).\n");
 		return;
@@ -1220,6 +1220,7 @@ void CAutoplayer::DoF$Sitin_Sitout_Leave(void)
 	HWND			hwnd_focus = GetFocus();
 	POINT			cur_pos = {0};
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
+	double			f_play = p_symbols->f$play();
 	double			f_sitin  = p_symbols->f$sitin();
 	double			f_sitout = p_symbols->f$sitout();
 	double			f_leave  = p_symbols->f$leave();
