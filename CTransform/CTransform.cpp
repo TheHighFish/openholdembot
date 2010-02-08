@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include <Math.h>
 
+#include "..\OpenHoldem\MagicNumbers.h"
 #include "CTransform.h"
 
 #ifdef OPENHOLDEM_PROGRAM
@@ -1116,7 +1117,7 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 				{
 					if(!*found_limit)
 					{
-						*limit = LIMIT_NL; 
+						*limit = k_gametype_NL; 
 						*found_limit=true; 
 					}
 				}
@@ -1133,7 +1134,7 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 				{
 					if(!*found_limit)
 					{
-						*limit = LIMIT_NL; 
+						*limit = k_gametype_NL; 
 						*found_limit=true; 
 					}
 				}
@@ -1150,7 +1151,7 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 				{
 					if(!*found_limit)
 					{
-						*limit = LIMIT_NL; 
+						*limit = k_gametype_NL; 
 						*found_limit=true; 
 					}
 				}
@@ -1168,7 +1169,7 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 				{
 					if(!*found_limit)
 					{
-						*limit = LIMIT_PL; 
+						*limit = k_gametype_PL; 
 						*found_limit=true; 
 					}
 				}
@@ -1185,7 +1186,7 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 				{
 					if(!*found_limit)
 					{
-						*limit = LIMIT_PL; 
+						*limit = k_gametype_PL; 
 						*found_limit=true; 
 					}
 				}
@@ -1202,7 +1203,7 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 				{
 					if(!*found_limit)
 					{
-						*limit = LIMIT_PL; 
+						*limit = k_gametype_PL; 
 						*found_limit=true; 
 					}
 				}
@@ -1220,7 +1221,7 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 				{
 					if(!*found_limit)
 					{
-						*limit = LIMIT_FL; 
+						*limit = k_gametype_FL; 
 						*found_limit=true; 
 					}
 				}
@@ -1237,7 +1238,7 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 				{
 					if(!*found_limit)
 					{
-						*limit = LIMIT_FL; 
+						*limit = k_gametype_FL; 
 						*found_limit=true; 
 					}
 				}
@@ -1254,7 +1255,7 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 				{
 					if(!*found_limit)
 					{
-						*limit = LIMIT_FL; 
+						*limit = k_gametype_FL; 
 						*found_limit=true; 
 					}
 				}
@@ -1271,7 +1272,7 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 				{
 					if(!*found_limit)
 					{
-						*limit = LIMIT_FL; 
+						*limit = k_gametype_FL; 
 						*found_limit=true; 
 					}
 				}
