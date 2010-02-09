@@ -1,7 +1,6 @@
 v 2.2.0 2010-xx-yy (v 2.1.2 see below)
 ==================
 NEW STUFF:
-==========
 - f$play has been quite a messy concept for a long time.
   It finally got replaced by 3 individual functions: f$sitin, f$sitout and f$leave.
   There will be a warning on old formulae and the user will need to make
@@ -9,17 +8,16 @@ NEW STUFF:
 - new symbol: originalbalance, which remebers the balance at the start of a session. [THF]
 
 MAINTENANCE:
-============
 - removing code-clones in CFormula.cpp [THF]
 
 
 v2.1.2 2010.xx-yy
 =================
 BUG FIXES:
-==========
 - Several bug-fixes and improvements to the new class CTableLimits,
   that detects and auto-locks blind-values. Thanks to Nomade, Skyzzo and 
   Winngy for their help with testing and replay-frames. [THF]
+- Warnings when parsing files with duplicate formulae or handlists.[THF]
 
 
 v2.1.1 2010-01-30  
