@@ -63,6 +63,7 @@ public:
 	const char *GetFunctionText(const char *name);
 private:
 	bool DoesFormulaAlreadyExist(const CString new_name);
+	bool DoesHandlistAlreadyExist(const CString new_name);
 
 public:
 	// public accessors
