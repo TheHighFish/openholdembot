@@ -647,7 +647,15 @@ void CFormula::CopyFormulaFrom(CFormula *f)
 	{
 		list.list = f->formula()->mHandList[from_iter].list;
 		list.list_text = f->formula()->mHandList[from_iter].list_text;
-		_formula.mHandList.Add(list);
+		if (DoesFormulaAlreadyExist(list.list))
+		{
+			CString ErrorMessage = "Handlist does already exist: " + list.list;
+			MessageBox(0, ErrorMessage, "Error", 0);
+		}
+		else
+		{
+			_formula.mHandList.Add(list); 
+		}
 	}
 
 	// Copy name
