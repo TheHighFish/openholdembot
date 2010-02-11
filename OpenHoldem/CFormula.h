@@ -53,7 +53,7 @@ public:
 	void ReadFormulaFile(CArchive& ar, bool ignoreFirstLine);
 	void WriteFormula(CArchive& ar);
 	void CreateHandListMatrices();
-	bool ParseAllFormula(HWND hwnd);
+	bool ParseAllFormula(HWND hwnd, bool disable_msgbox);
 	void AddDefaultFunctionIfFunctionDoesNotExist(CString FunctionName);
 	void CheckForDefaultFormulaEntries();
 	void MarkCacheStale();

@@ -347,7 +347,7 @@ void CFormula::CreateHandListMatrices()
 	}
 }
 
-bool CFormula::ParseAllFormula(HWND hwnd)
+bool CFormula::ParseAllFormula(HWND hwnd, bool disable_msgbox)
 {
 	// returns true for successful parse of all trees, false otherwise
 	sData			data;

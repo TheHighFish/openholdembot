@@ -23,10 +23,9 @@ CDlgSAPrefs18::~CDlgSAPrefs18()
 void CDlgSAPrefs18::DoDataExchange(CDataExchange* pDX)
 {
 	CSAPrefsSubDlg::DoDataExchange(pDX);
-	/*
-	DDX_Control(pDX, IDC_CONFIGURATION_KEYBOARD_SETTINGS, m_ConfigurationKeyboardSettings_Button);
-	DDX_Control(pDX, IDC_CONFIGURATION_PERL_DEPENDENCIES, m_ConfigurationPerlDependencies_Button);
-	*/
+	DDX_Control(pDX, IDC_RADIO_SCRAPE_ALWAYS, _scrape_always_nutton);
+	DDX_Control(pDX, IDC_RADIO_SCRAPE_ON_CARDS, _scrape_when_cards_button);
+	DDX_Control(pDX, IDC_RADIO_SCRAPE_ON_MYTURN, _scrape_when_my_turn_button);
 }
 
 BEGIN_MESSAGE_MAP(CDlgSAPrefs18, CSAPrefsSubDlg)
@@ -36,19 +35,39 @@ END_MESSAGE_MAP()
 BOOL CDlgSAPrefs18::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
-	/*
-	m_ConfigurationKeyboardSettings_Button.SetCheck(prefs.configurationcheck_keyboard_settings() != 0);
-	m_ConfigurationPerlDependencies_Button.SetCheck(prefs.configurationcheck_perl_dependencies() != 0);
-	*/
+	if (prefs.lazy_scraping_when_to_scrape() == k_lazy_scraping_myturn)
+	{
+		_scrape_when_my_turn_button.SetCheck(true);
+	}
+	else if (prefs.lazy_scraping_when_to_scrape() == k_lazy_scraping_cards)
+	{
+		_scrape_when_cards_button.SetCheck(true);
+	}
+	else
+	{
+		// Default: k_lazy_scraping_always
+		_scrape_always_nutton.SetCheck(true);
+	}
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
 void CDlgSAPrefs18::OnOK()
 {
-	/*
-	prefs.set_configurationcheck_keyboard_settings(m_ConfigurationKeyboardSettings_Button.GetCheck());
-	prefs.set_configurationcheck_perl_dependencies(m_ConfigurationPerlDependencies_Button.GetCheck());
-	*/
+
+	if (_scrape_when_cards_button.GetCheck())
+	{
+		prefs.set_lazy_scraping_when_to_scrape(k_lazy_scraping_cards);
+	}
+	else if (_scrape_when_my_turn_button.GetCheck())
+	{
+		prefs.set_lazy_scraping_when_to_scrape(k_lazy_scraping_myturn);
+	}
+	else
+	{
+		// Default: k_lazy_scraping_always
+		prefs.set_lazy_scraping_when_to_scrape(k_lazy_scraping_always);
+
+	}
 	CSAPrefsSubDlg::OnOK();
 }
