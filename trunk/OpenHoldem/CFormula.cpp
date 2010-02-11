@@ -15,7 +15,6 @@ CFormula			*p_formula = NULL;
 CFormula::CFormula(void)
 {
 	ClearFormula();
-	_formula_name = "";
 }
 
 CFormula::~CFormula(void)
@@ -29,7 +28,6 @@ void CFormula::ClearFormula()
 	_formula.dBankroll = _formula.dDefcon = _formula.dRake = _formula.dNit = 0.0;
 	_formula.mHandList.RemoveAll();
 	_formula.mFunction.RemoveAll();
-
 	_formula_name = "";
 }
 
@@ -40,9 +38,7 @@ void CFormula::SetDefaultBot()
 	ClearFormula();
 
 	CSLock lock(m_critsec);
-
 	func.dirty = true;
-
 	func.func = "notes";		func.func_text = defaultCSnotes;	_formula.mFunction.Add(func);
 	func.func = "dll";			func.func_text = defaultCSdll;		_formula.mFunction.Add(func);
 	func.func = "f$alli";		func.func_text = defaultCSalli;		_formula.mFunction.Add(func);
@@ -84,7 +80,7 @@ const char *CFormula::GetFunctionText(const char *name)
 
 // Reading a part of a formula, which may be spread
 // between two files in case of an old style whf / whx formula.
-void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine, bool disable_msgbox)
+void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 {
 	CString		strOneLine = ""; 
 	int			content = 0;
@@ -106,12 +102,10 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine, bool disable_
 	func.func = "";
 	while(ar.ReadString(strOneLine)) 
 	{ 
-
 		// If this line marks the beginning of a function, then save the previously
 		// collected function, and start a new one
 		if (strOneLine.Mid(0,2)=="##") 
 		{
-
 			// Save the previously collected function
 			if (content == FTlist) 
 			{
@@ -140,8 +134,6 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine, bool disable_
 					_formula.mFunction.Add(func);
 				}
 			}
-
-
 			// Get the function name				
 			start = strOneLine.Find("##",0);
 
@@ -160,13 +152,10 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine, bool disable_
 				strcpy_s(funcname, 256, strOneLine.GetString()+start+2);
 				funcname[strOneLine.GetLength()]='\0';
 				
-				if (!disable_msgbox)
-				{
-					CString the_ErrorMessage = "Malformed function header!\nMissing trailing '##'.\n" 
-						+ strOneLine + "\n"
-						+ "Trying to continue...";
-					OH_MessageBox(the_ErrorMessage, "Syntax Error", MB_OK | MB_ICONEXCLAMATION);
-				}
+				CString the_ErrorMessage = "Malformed function header!\nMissing trailing '##'.\n" 
+					+ strOneLine + "\n"
+					+ "Trying to continue...";
+				OH_MessageBox(the_ErrorMessage, "Syntax Error", MB_OK | MB_ICONEXCLAMATION);
 			}
 
 			else 
@@ -259,10 +248,31 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine, bool disable_
 	}
 }
 
-void CFormula::WriteFormula(CArchive& ar, bool use_new_OHF_style) 
+bool CFormula::IsStandardFormula(CString formula_name)
+{
+	return ((formula_name == "notes")  || (formula_name == "dll")
+		|| (formula_name == "f$alli")  || (formula_name == "f$swag")
+		|| (formula_name == "f$srai")  || (formula_name == "f$rais")
+		|| (formula_name == "f$call")  || (formula_name == "f$prefold")
+		|| (formula_name == "f$rebuy") || (formula_name == "f$delay")
+		|| (formula_name == "f$chat")  || (formula_name == "f$P")
+		|| (formula_name == "f$sitin") || (formula_name == "f$sitout")
+		|| (formula_name == "f$leave") || (formula_name == "f$test")
+		|| (formula_name == "f$debug"));
+}
+
+void CFormula::WriteStandardFunction(CArchive& ar, CString name)
+{
+	int	number_of_functions = (int) _formula.mFunction.GetSize();
+
+	for (int i=0; i<number_of_functions; i++) 
+		if (_formula.mFunction[i].func == name) 
+			ar.WriteString("##" + name + "##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
+}
+
+void CFormula::WriteFormula(CArchive& ar) 
 {
 	CString		s = "";
-	int			i = 0, N = (int) _formula.mFunction.GetSize();
 	char		nowtime[26] = {0};
 
 	//  First write the standard formula functions...
@@ -273,105 +283,31 @@ void CFormula::WriteFormula(CArchive& ar, bool use_new_OHF_style)
 	//  
 	s.Format("##%s##\r\n\r\n", get_time(nowtime)); ar.WriteString(s);
 
-	for (i=0; i<N; i++) 
-		if (_formula.mFunction[i].func == "notes") 
-			ar.WriteString("##notes##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n"); 
-
-	for (i=0; i<N; i++) 
-		if (_formula.mFunction[i].func == "dll")
-			ar.WriteString("##dll##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
-
+	WriteStandardFunction(ar, "notes");
+	WriteStandardFunction(ar, "dll");
+	// ToDo: Check, if that can be done the normal way too?
 	s.Format("##bankroll##\r\n%f\r\n\r\n", _formula.dBankroll); ar.WriteString(s);
-	
 	s.Format("##defcon##\r\n%f\r\n\r\n", _formula.dDefcon); ar.WriteString(s);
-	
 	s.Format("##rake##\r\n%f\r\n\r\n", _formula.dRake); ar.WriteString(s);
-	
 	s.Format("##nit##\r\n%d\r\n\r\n", (int) _formula.dNit); ar.WriteString(s);
-	
-	for (i=0; i<N; i++) 
-		if (_formula.mFunction[i].func == "f$alli")
-			ar.WriteString("##f$alli##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
-	
-	for (i=0; i<N; i++) 
-		if (_formula.mFunction[i].func == "f$swag") 
-			ar.WriteString("##f$swag##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
-	
-	for (i=0; i<N; i++) 
-		if (_formula.mFunction[i].func == "f$srai") 
-			ar.WriteString("##f$srai##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
-	
-	for (i=0; i<N; i++) 
-		if (_formula.mFunction[i].func == "f$rais") 
-			ar.WriteString("##f$rais##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
-	
-	for (i=0; i<N; i++) 
-		if (_formula.mFunction[i].func == "f$call") 
-			ar.WriteString("##f$call##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
-	
-	for (i=0; i<N; i++) 
-		if (_formula.mFunction[i].func == "f$prefold") 
-			ar.WriteString("##f$prefold##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
-
-	for (i=0; i<N; i++) 
-		if (_formula.mFunction[i].func == "f$rebuy") 
-			ar.WriteString("##f$rebuy##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
-	
-	// New standard formulas are
-	//   * f$delay
-	//   * f$chat
-	//
-	// Old standard formulas are:
-	//   * f$evrais 
-	//   * f§evcall
-	//
-	if (use_new_OHF_style)
-	{
-		for (i=0; i<N; i++) 
-			if (_formula.mFunction[i].func == "f$delay") 
-				ar.WriteString("##f$delay##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
-	
-		for (i=0; i<N; i++) 
-			if (_formula.mFunction[i].func == "f$chat") 
-				ar.WriteString("##f$chat##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
-	}
-	else
-	{
-		for (i=0; i<N; i++) 
-			if (_formula.mFunction[i].func == "f$evrais") 
-				ar.WriteString("##f$evrais##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
-	
-		for (i=0; i<N; i++) 
-			if (_formula.mFunction[i].func == "f$evcall") 
-				ar.WriteString("##f$evcall##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
-	}
-
-	for (i=0; i<N; i++) 
-		if (_formula.mFunction[i].func == "f$P") 
-			ar.WriteString("##f$P##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
-	
-	for (i=0; i<N; i++) 
-		if (_formula.mFunction[i].func == "f$sitin") 
-			ar.WriteString("##f$sitin##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
-
-	for (i=0; i<N; i++) 
-		if (_formula.mFunction[i].func == "f$sitout") 
-			ar.WriteString("##f$sitout##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
-
-	for (i=0; i<N; i++) 
-		if (_formula.mFunction[i].func == "f$leave") 
-			ar.WriteString("##f$leave##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
-	
-	for (i=0; i<N; i++) 
-		if (_formula.mFunction[i].func == "f$test") 
-			ar.WriteString("##f$test##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
-	
-	for (i=0; i<N; i++) 
-		if (_formula.mFunction[i].func == "f$debug") 
-			ar.WriteString("##f$debug##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
+	WriteStandardFunction(ar, "f$alli");
+	WriteStandardFunction(ar, "f$swag");
+	WriteStandardFunction(ar, "f$srai");
+	WriteStandardFunction(ar, "f$rais");
+	WriteStandardFunction(ar, "f$call");
+	WriteStandardFunction(ar, "f$prefold");
+	WriteStandardFunction(ar, "f$rebuy");
+	WriteStandardFunction(ar, "f$delay");
+	WriteStandardFunction(ar, "f$chat");
+	WriteStandardFunction(ar, "f$P");
+	WriteStandardFunction(ar, "f$sitin");
+	WriteStandardFunction(ar, "f$sitout");
+	WriteStandardFunction(ar, "f$leave");
+	WriteStandardFunction(ar, "f$test");
+	WriteStandardFunction(ar, "f$debug");
 
 	// handlists for both ohf and old whf style
-	for (i=0; i<(int) _formula.mHandList.GetSize(); i++) 
+	for (int i=0; i<(int) _formula.mHandList.GetSize(); i++) 
 		ar.WriteString("##" + _formula.mHandList[i].list + "##\r\n" + _formula.mHandList[i].list_text + "\r\n\r\n");
 
 	// User defined functions for new ohf style only.
@@ -379,58 +315,39 @@ void CFormula::WriteFormula(CArchive& ar, bool use_new_OHF_style)
 	// we only have to generate an ohf file and (for technical reasons)
 	// recreate the old whf (which is already open for storing).
 	//
-	if (use_new_OHF_style)
+	for (int i=0; i<(int) _formula.mFunction.GetSize(); i++) 
 	{
-		for (i=0; i<(int) _formula.mFunction.GetSize(); i++) 
+		if (!IsStandardFormula(_formula.mFunction[i].func))
 		{
-			if (_formula.mFunction[i].func != "notes" &&
-				_formula.mFunction[i].func != "dll" &&
-				_formula.mFunction[i].func != "f$alli" &&
-				_formula.mFunction[i].func != "f$swag" &&
-				_formula.mFunction[i].func != "f$srai" &&
-				_formula.mFunction[i].func != "f$rais" &&
-				_formula.mFunction[i].func != "f$call" &&
-				_formula.mFunction[i].func != "f$prefold" &&
-				_formula.mFunction[i].func != "f$rebuy" &&
-				_formula.mFunction[i].func != "f$delay" &&
-				_formula.mFunction[i].func != "f$chat" &&
-				_formula.mFunction[i].func != "f$P" &&
-				_formula.mFunction[i].func != "f$sitin" &&
-				_formula.mFunction[i].func != "f$sitout" &&
-				_formula.mFunction[i].func != "f$leave" &&
-				_formula.mFunction[i].func != "f$test" &&
-				_formula.mFunction[i].func != "f$debug" ) 
-			{
-				ar.WriteString("##" + _formula.mFunction[i].func + "##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
-			}
+			ar.WriteString("##" + _formula.mFunction[i].func + "##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
 		}
 	}
 }
 
 void CFormula::CreateHandListMatrices()
 {
-	int			listnum = 0, i = 0, j = 0;
 	CString		token = "";
 
 	CSLock lock(m_critsec);
 
-	for (listnum=0; listnum<MAX_HAND_LISTS; listnum++)
-		for (i=0; i<=12; i++)
-			for (j=0; j<=12; j++)
+	for (int listnum=0; listnum<MAX_HAND_LISTS; listnum++)
+		for (int i=0; i<=12; i++)
+			for (int j=0; j<=12; j++)
 				_formula.inlist[listnum][i][j] = false;
 
-	for (i=0; i<(int) _formula.mHandList.GetSize(); i++)
+	for (int i=0; i<(int) _formula.mHandList.GetSize(); i++)
 	{
-		listnum = atoi(_formula.mHandList[i].list.Mid(4).GetString());
-		
-		if(listnum>=MAX_HAND_LISTS)
-			continue;
-		
+		int listnum = atoi(_formula.mHandList[i].list.Mid(4).GetString());
+		if (listnum>=MAX_HAND_LISTS)			
+		{
+			OH_MessageBox("List number too high.", "Error", 0);
+			break;
+		}
 		ParseHandList(_formula.mHandList[i].list_text, _formula.inlist[listnum]);
 	}
 }
 
-bool CFormula::ParseAllFormula(HWND hwnd, bool disable_msgbox)
+bool CFormula::ParseAllFormula(HWND hwnd)
 {
 	// returns true for successful parse of all trees, false otherwise
 	sData			data;
@@ -438,12 +355,10 @@ bool CFormula::ParseAllFormula(HWND hwnd, bool disable_msgbox)
 	data.all_parsed = true;
 	data.calling_hwnd = hwnd;
 	data.pParent = this;
-	data.disable_msgbox = disable_msgbox;
 
 	CUPDialog dlg_progress(hwnd, ParseLoop, &data, "Please wait", false);
 	dlg_progress.DoModal();
 
-	// Here???
 	WarnAboutOutdatedConcepts();
 
 	return data.all_parsed;
@@ -559,7 +474,7 @@ void CFormula::CopyFormulaFrom(CFormula *f)
 {
 	SHandList		list;
 	SFunction		func;
-	int				from_count = 0, to_count = 0, from_iter = 0, to_iter = 0;
+	int				from_count = 0, to_count = 0;
 	bool			addit = false, deleteit = false;
 
 	// Init locals
@@ -575,11 +490,11 @@ void CFormula::CopyFormulaFrom(CFormula *f)
 
 	// handle deleted udfs
 	to_count = (int) _formula.mFunction.GetSize();
-	for (to_iter=0; to_iter<to_count; to_iter++)
+	for (int to_iter=0; to_iter<to_count; to_iter++)
 	{
 		from_count = (int) f->formula()->mFunction.GetSize();
 		deleteit = true;
-		for (from_iter=0; from_iter<from_count; from_iter++)
+		for (int from_iter=0; from_iter<from_count; from_iter++)
 		{
 			if (_formula.mFunction[to_iter].func == f->formula()->mFunction[from_iter].func)
 			{
@@ -597,11 +512,11 @@ void CFormula::CopyFormulaFrom(CFormula *f)
 
 	// handle new/changed udfs
 	from_count = (int) f->formula()->mFunction.GetSize();
-	for (from_iter=0; from_iter<from_count; from_iter++)
+	for (int from_iter=0; from_iter<from_count; from_iter++)
 	{
 		to_count = (int) _formula.mFunction.GetSize();
 		addit = true;
-		for (to_iter=0; to_iter<to_count; to_iter++)
+		for (int to_iter=0; to_iter<to_count; to_iter++)
 		{
 			if (_formula.mFunction[to_iter].func == f->formula()->mFunction[from_iter].func)
 			{
@@ -646,7 +561,7 @@ void CFormula::CopyFormulaFrom(CFormula *f)
 	// Copy hand lists
 	_formula.mHandList.RemoveAll();
 	from_count = (int) f->formula()->mHandList.GetSize();
-	for (from_iter=0; from_iter<from_count; from_iter++)
+	for (int from_iter=0; from_iter<from_count; from_iter++)
 	{
 		list.list = f->formula()->mHandList[from_iter].list;
 		list.list_text = f->formula()->mHandList[from_iter].list_text;
@@ -699,7 +614,7 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 	double			time_elapsed = 0.;
 	sData			*data = (sData*) (pCUPDUPData->GetAppData());
 	CGrammar		gram;
-	bool			gui_enable_progress_dialog = !prefs.gui_disable_progress_dialog();
+	bool            gui_enable_progress_dialog = !prefs.gui_disable_progress_dialog();
 
 	pCUPDUPData->SetProgress("", 0, false);
 
@@ -744,33 +659,26 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 						colnum++;
 					}
 				}
-
-				if (!data->disable_msgbox)
-				{
-					s.Format("Error in parse of %s\nLine: %d  Character: %d\n\nNear:\n \"%s\"",
-							 data->pParent->formula()->mFunction[i].func.GetString(),
-							 linenum, colnum,
-							 data->pParent->formula()->mFunction[i].func_text.Mid(stopchar, 40).GetString());
-					OH_MessageBox(s, "PARSE ERROR", MB_OK);
-				}
+				s.Format("Error in parse of %s\nLine: %d  Character: %d\n\nNear:\n \"%s\"",
+					 data->pParent->formula()->mFunction[i].func.GetString(),
+					 linenum, colnum,
+					 data->pParent->formula()->mFunction[i].func_text.Mid(stopchar, 40).GetString());
+				OH_MessageBox(s, "PARSE ERROR", MB_OK);
 
 				data->all_parsed = false;
 			}
 
 			else if (gram.parse_symbol_stop_strs()->GetSize() != 0)
 			{
-				if (!data->disable_msgbox)
+				s.Format("Error in parse of %s\n\nInvalid symbols:\n",
+					 data->pParent->formula()->mFunction[i].func.GetString());
+				for (j=0; j<gram.parse_symbol_stop_strs()->GetSize(); j++)
 				{
-					s.Format("Error in parse of %s\n\nInvalid symbols:\n",
-							 data->pParent->formula()->mFunction[i].func.GetString());
-					for (j=0; j<gram.parse_symbol_stop_strs()->GetSize(); j++)
-					{
-						s.Append("   ");
-						s.Append(gram.parse_symbol_stop_strs()->GetAt(j).c_str());
-						s.Append("\n");
-					}
-					OH_MessageBox(s, "PARSE ERROR", MB_OK);
+					s.Append("   ");
+					s.Append(gram.parse_symbol_stop_strs()->GetAt(j).c_str());
+					s.Append("\n");
 				}
+				OH_MessageBox(s, "PARSE ERROR", MB_OK);
 
 				data->all_parsed = false;
 			}
@@ -781,7 +689,6 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 			}
 		}
 	}
-
 	pCUPDUPData->SetProgress("", 100, gui_enable_progress_dialog);
 
 	return true;
