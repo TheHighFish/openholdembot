@@ -106,10 +106,9 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 	// Writing a file
 	if (ar.IsStoring()) 
 	{
-		// Store archive in the specified format,
-		// whether it is OHF or WHF.
+		// Store archive in the new OpenHoldem format
 		bool use_new_OHF_format = !IsWinHoldemFormat(ar.GetFile()->GetFileName());
-		p_formula->WriteFormula(ar, use_new_OHF_format);
+		p_formula->WriteFormula(ar);
 		// Do not close this archive here.
 		// It's expected to stay open at this point!
 		if (IsWinHoldemFormat(ar.GetFile()->GetFileName())) 
@@ -126,7 +125,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 			OHF_File.Open(the_new_FileName, CFile::modeCreate | CFile::modeWrite);
 			CArchive OHF_Archive(&OHF_File, CArchive::store);
 			// Write new style formula (OHF) in any case
-			p_formula->WriteFormula(OHF_Archive, true);
+			p_formula->WriteFormula(OHF_Archive);
 			// Close archive and file
 			OHF_Archive.Close();
 			OHF_File.Close();		
@@ -175,7 +174,7 @@ void COpenHoldemDoc::ReadFormula(CArchive& ar)
 	//   * ohf 
 	//   * whf and optional whx
 	// In the latter case we have to read both files. 
-	p_formula->ReadFormulaFile(ar, true, prefs.disable_msgbox());
+	p_formula->ReadFormulaFile(ar, true);
 
 	CFile *cf_whf = ar.GetFile();  
 	CString CSpath = cf_whf->GetFilePath(); 
@@ -191,7 +190,7 @@ void COpenHoldemDoc::ReadFormula(CArchive& ar)
 			{ 
 				CArchive ar_whx(&cf_whx, CArchive::load);   
 				// Read whx file, too. //???	
-				p_formula->ReadFormulaFile(ar_whx, false, prefs.disable_msgbox());	
+				p_formula->ReadFormulaFile(ar_whx, false);	
 			}
 	}
 

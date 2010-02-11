@@ -16,6 +16,7 @@ public:
 	CDlgSAPrefs14(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CDlgSAPrefs14();
 
+private:
 // Dialog Data
 	enum { IDD = IDD_SAPREFS14 };
 	CButton _autoconnector_connection_manually;

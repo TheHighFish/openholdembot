@@ -11,11 +11,9 @@ const int k_AutoConnector_Connect_Never		= 0;
 const int k_AutoConnector_Connect_Once		= 1;
 const int k_AutoConnector_Connect_Permanent	= 2;
 
-const int k_lazy_scraping_always           = 0;
-const int k_lazy_scraping_myturn           = 1;
-const int k_lazy_scraping_myturn_or_sitout = 2;
-const int k_lazy_scraping_cards            = 3;
-const int k_lazy_scraping_cards_or_sitout  = 4;
+const int k_lazy_scraping_always = 0;
+const int k_lazy_scraping_myturn = 1;
+const int k_lazy_scraping_cards  = 2;
 
 
 extern class CPreferences
