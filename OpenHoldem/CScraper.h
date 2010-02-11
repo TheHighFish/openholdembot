@@ -141,6 +141,9 @@ private:
 	HBITMAP				_entire_window_cur;
 
 private:
+	void CScraper::DoBasicScrape();
+	void CompleteBasicScrapeToFullScrape();
+private:
 	// private functions and variables - not available via accessors or mutators
 	void ScrapeCommonCards();
 	void ScrapePlayerCards(const int chair);

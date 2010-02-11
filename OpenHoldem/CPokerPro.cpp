@@ -14,6 +14,7 @@
 #include "CStableFramesCounter.h"
 #include "CSymbols.h"
 #include "DialogPPro.h"
+#include "OH_MessageBox.h"
 #include "OpenHoldem.h"
 
 
@@ -573,7 +574,7 @@ void PokerPro::HandlePPMessage(const char* pbytes, const int nbytes)
 		break;
 		
 	case 'TLCK' :
-		MessageBox(0, "Message 'TLCK' received'\n."
+		OH_MessageBox_Interactive("Message 'TLCK' received'\n."
 			"'TLCK' is undocumented and thus not supported.\n"
 			"If you want to simulate tournaments,\n" 
 			"please use an older version of the PPro-server\n" 
@@ -2140,8 +2141,7 @@ void PokerPro::Publish(CString *text, const int flags)
 
 	if (flags & PUBLISH_ERR) 
 	{
-		if (!prefs.disable_msgbox())
-			MessageBox(NULL, *text, "PPRO: ERROR", MB_OK | MB_TOPMOST);
+		OH_MessageBox_Interactive(*text, "PPRO: ERROR", MB_OK | MB_TOPMOST);
 	}
 }
 

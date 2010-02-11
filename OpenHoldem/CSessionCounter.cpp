@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CSessionCounter.h"
 #include "CPreferences.h"
+#include "OH_MessageBox.h"
 
 // Global instantiation of CSessionCounter class
 CSessionCounter *p_sessioncounter = NULL;
@@ -27,9 +28,9 @@ CSessionCounter::CSessionCounter()
 	}
 
 	// Otherwise: We failed. No ID available.
-	MessageBox(0, "Could not grab a session ID.\n"
-				  "Too many instances of OpenHoldem\n",
-				  "SessionCounter Error", MB_OK);
+	OH_MessageBox("Could not grab a session ID.\n"
+		"Too many instances of OpenHoldem\n",
+		"SessionCounter Error", MB_OK);
 
 	PostQuitMessage(0);
 }

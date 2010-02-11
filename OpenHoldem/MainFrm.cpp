@@ -44,9 +44,11 @@
 #include "DialogSAPrefs15.h"
 #include "DialogSAPrefs16.h"
 #include "DialogSAPrefs17.h"
+#include "DialogSAPrefs18.h"
 #include "DialogScraperOutput.h"
 #include "inlines/eval.h"
 #include "MagicNumbers.h"
+#include "OH_MessageBox.h"
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
 #include "SAPrefsDialog.h"
@@ -508,6 +510,7 @@ void CMainFrame::OnEditPreferences()
 	CDlgSAPrefs15 page15;
 	CDlgSAPrefs16 page16;
 	CDlgSAPrefs17 page17;
+	CDlgSAPrefs18 page18;
 
 	// add pages
 	dlg.AddPage(page1,  "Analyzer");
@@ -518,6 +521,7 @@ void CMainFrame::OnEditPreferences()
 	dlg.AddPage(page3,  "DLL Extension");
 	dlg.AddPage(page15, "GUI");
 	dlg.AddPage(page7,  "ICM");
+	dlg.AddPage(page18, "Lazy Scraping");
 	dlg.AddPage(page11, "Logging");
 	dlg.AddPage(page13, "Obscure");
 	dlg.AddPage(page9,  "Perl");
@@ -652,13 +656,13 @@ void CMainFrame::OnFileLoadTableMap()
 			e.Format("This is an OpenHoldem v1 profile (.ohdb1).\n"
 					 "OpenHoldem versions 1.2.0 and higher require v2 Profiles (.ohdb2),\n"
 					 "or OpenScrape Table Maps.\n");
-			MessageBox(e, "Table map load error", MB_OK);
+			OH_MessageBox(e, "Table map load error", MB_OK);
 		}
 
 		else if ( (loaded_version == VER_OPENSCRAPE_1 || loaded_version == VER_OPENHOLDEM_2) 
 				  && !prefs.disable_msgbox())
 		{
-			MessageBox("This is a version 1 table map.\n\n"\
+			OH_MessageBox("This is a version 1 table map.\n\n"\
 					   "Version 2.0.0 and higher of OpenHoldem use a new format (version 2).  This\n"\
 					   "table map has been loaded, but it is highly unlikely to work correctly until\n"\
 					   "it has been opened in OpenScrape version 2.0.0 or higher, and adjustments\n"\
@@ -671,7 +675,7 @@ void CMainFrame::OnFileLoadTableMap()
 		else if (ret != SUCCESS && !prefs.disable_msgbox())
 		{
 			e.Format("Error code: %d  line: %d", ret, line);
-			MessageBox(e, "Table map load error", MB_OK);
+			OH_MessageBox(e, "Table map load error", MB_OK);
 		}
 		
 		if (ret == SUCCESS)
@@ -1280,13 +1284,13 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
 		{
 			if (m_formulaScintillaDlg->m_dirty && !prefs.disable_msgbox())
 			{
-				if (MessageBox("The Formula Editor has un-applied (and unsaved) changes.\n"
+				if (OH_MessageBox_Interactive("The Formula Editor has un-applied (and unsaved) changes.\n"
 							   "Really exit?", "Unsaved formula warning", MB_YESNO) == IDNO)
-			{
-				return;
+				{
+					return;
+				}
 			}
 		}
-	}
 	}
 	CFrameWnd::OnSysCommand(nID, lParam);
 }
@@ -1491,14 +1495,14 @@ void CMainFrame::OnHelp()
 {
 	if (_access("OpenHoldem_Manual.chm", F_OK) != 0)
 	{
-		MessageBox("\"OpenHoldem_Manual.chm\" not found.\nPlease put it into your OpenHoldem folder.", "Error", 0);
+		OH_MessageBox_Interactive("\"OpenHoldem_Manual.chm\" not found.\nPlease put it into your OpenHoldem folder.", "Error", 0);
 	}
 	else 
 	{
 		int RetValue = int(ShellExecute(NULL, "open", "OpenHoldem_Manual.chm", NULL, NULL, SW_SHOW));
 		if (RetValue <= 32)
 		{
-			MessageBox("Error opening help-file", "Error", 0);
+			OH_MessageBox_Interactive("Error opening help-file", "Error", 0);
 		}
 	}
 }

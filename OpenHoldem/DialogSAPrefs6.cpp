@@ -8,6 +8,7 @@
 #include "DialogSAPrefs6.h"
 #include "OpenHoldem.h"
 #include "MainFrm.h"
+#include "OH_MessageBox.h"
 #include "SAPrefsSubDlg.h"
 
 
@@ -150,12 +151,12 @@ void CDlgSAPrefs6::OnBnClickedPtTest()
 		if (PQisthreadsafe()) 
 		{
 			write_log_pokertracker(1, "Test: PostgreSQL library is thread safe.\n\n");
-			MessageBox("PostgreSQL DB opened successfully", "Success", MB_OK);
+			OH_MessageBox_Interactive("PostgreSQL DB opened successfully", "Success", MB_OK);
 		}
 		else 
 		{
 			write_log_pokertracker(1, "Test: PostgreSQL library is *NOT* thread safe!  This is a problem!\n\n");
-			MessageBox("PostgreSQL DB opened successfully, but\nPostgreSQL library is *NOT* thread safe!\nThis is a problem!",
+			OH_MessageBox_Interactive("PostgreSQL DB opened successfully, but\nPostgreSQL library is *NOT* thread safe!\nThis is a problem!",
 					   "Success (partial)", MB_OK);
 		}
 		PQfinish(pgconn);
@@ -168,7 +169,7 @@ void CDlgSAPrefs6::OnBnClickedPtTest()
 		e += "\nConn string:";
 		e += conn_str;
 
-		MessageBox(e.GetString(), "ERROR", MB_OK);
+		OH_MessageBox_Interactive(e.GetString(), "ERROR", MB_OK);
 
 		PQfinish(pgconn);
 	}

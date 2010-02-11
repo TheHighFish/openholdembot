@@ -2,7 +2,7 @@
 
 #include "CConfigurationCheck.h"
 #include "CPreferences.h"
-
+#include "OH_MessageBox.h"
 
 CConfigurationCheck *p_configurationcheck = 0;
 
@@ -58,7 +58,7 @@ void CConfigurationCheck::CheckForMissingPerlLibraries()
 				+ CString("That library may be required by Perl.\n")
 				+ CString("If you don't use Perl you may turn that warning off.\n")
 				+ CString("If your setup causes problems you should install the missing DLL(s).\n");
-			MessageBox(0, ErrorMessage, "Caution: Missing library", MB_OK|MB_ICONWARNING);
+			OH_MessageBox(ErrorMessage, "Caution: Missing library", MB_OK|MB_ICONWARNING);
 		}
 	}
 }
@@ -70,7 +70,7 @@ void CConfigurationCheck::CheckKeyboardSettings()
 
 	if (Success && (_tcscmp(KeyboardLayout, k_KeyboardLayout_UK_US_English) != 0))
 	{
-		MessageBox(0, "You seem to have non-english keyboard settings.\n"
+		OH_MessageBox("You seem to have non-english keyboard settings.\n"
 				"Keyboard settings affect especially the decimal point in numbers\n"
 				"and therefore the scraper-engine and the auto-player.\n"
 				"If you continue, OpenHoldem may or may not work as expected.\n"
@@ -87,7 +87,7 @@ void CConfigurationCheck::CheckColourDepth()
 	CWindowDC dc(NULL);
 	int nBitsPerPixel = dc.GetDeviceCaps(PLANES) * dc.GetDeviceCaps(BITSPIXEL);
 	if (nBitsPerPixel < 24 && !prefs.disable_msgbox())
-		MessageBox(0, "It appears that your Display settings are not configured according to OpenHoldem specifications.\n"
+		OH_MessageBox("It appears that your Display settings are not configured according to OpenHoldem specifications.\n"
 				   "24 bit color or higher is needed to reliably extract information from the poker client.\n\n"
 				   "For more info, look at the manual and the user forums", 
 				   "Caution: Color Depth Too Low", MB_OK|MB_ICONWARNING);
@@ -98,7 +98,7 @@ void CConfigurationCheck::CheckFontSmoothing()
 	BOOL fontSmoothingEnabled = FALSE;
 	SystemParametersInfo(SPI_GETFONTSMOOTHING, 0, (LPVOID)&fontSmoothingEnabled, 0);
 	if (fontSmoothingEnabled && !prefs.disable_msgbox())
-		MessageBox(0, "It appears that font smoothing is enabled.\n" 
+		OH_MessageBox("It appears that font smoothing is enabled.\n" 
 					"In order for OpenHoldem to reliably\n"
 					"extract information from the poker client\n" 
 					"you should disable Font Smoothing.", 

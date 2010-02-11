@@ -18,6 +18,7 @@
 
 #include "DialogPPro.h"
 #include "DialogSitDown.h"
+#include "OH_MessageBox.h"
 
 // CDlgPpro dialog
 CDlgPpro			*m_pproDlg;
@@ -204,7 +205,7 @@ void CDlgPpro::OnBnClickedConnectButton()
 
 		// connect
 		if (p_pokerpro->Connect(prefs.ppro_hostname().GetString(), prefs.ppro_port().GetString()) < 0) {
-			MessageBox("connection failed", "PPro connect error", MB_OK);
+			OH_MessageBox("connection failed", "PPro connect error", MB_OK);
 			return;
 		}
 
@@ -217,7 +218,7 @@ void CDlgPpro::OnBnClickedConnectButton()
 		int ret = p_pokerpro->SendLogin(prefs.ppro_username().GetString(), prefs.ppro_password().GetString());
 		if ( ret < 0) 
 		{
-			MessageBox("login failed", "PPro connect error", MB_OK);
+			OH_MessageBox("login failed", "PPro connect error", MB_OK);
 			return;
 		}
 

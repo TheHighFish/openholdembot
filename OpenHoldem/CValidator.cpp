@@ -7,7 +7,7 @@
 #include "CSymbols.h"
 #include "CValidator.h"
 #include "FloatingPoint_Comparisions.h"
-
+#include "OH_MessageBox.h"
 
 CValidator *p_validator = NULL;
 
@@ -96,7 +96,7 @@ void CValidator::ValidateSingleRule()
 			// Show error message, if appropriate
 			if (!prefs.disable_msgbox())
 			{
-				MessageBox(NULL, the_ErrorMessage, "Validator Error", 
+				OH_MessageBox(the_ErrorMessage, "Validator Error", 
 					MB_OK | MB_TOPMOST | MB_ICONEXCLAMATION); 
 			}
 			// Log error message

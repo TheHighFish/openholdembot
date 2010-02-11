@@ -11,6 +11,12 @@ const int k_AutoConnector_Connect_Never		= 0;
 const int k_AutoConnector_Connect_Once		= 1;
 const int k_AutoConnector_Connect_Permanent	= 2;
 
+const int k_lazy_scraping_always           = 0;
+const int k_lazy_scraping_myturn           = 1;
+const int k_lazy_scraping_myturn_or_sitout = 2;
+const int k_lazy_scraping_cards            = 3;
+const int k_lazy_scraping_cards_or_sitout  = 4;
+
 
 extern class CPreferences
 {
@@ -157,6 +163,8 @@ public:
 	// Configuration check
 	const bool configurationcheck_perl_dependencies() { return _configurationcheck_perl_dependencies; }
 	const bool configurationcheck_keyboard_settings() { return _configurationcheck_keyboard_settings; }
+	// Lazy scraping
+	const int lazy_scraping_when_to_scrape() { return _lazy_scraping_when_to_scrape; }
 	// Misc
 	const int scraper_zoom() { return _scraper_zoom; }
 	// versus_path() is implemented in the cpp-file.
@@ -330,6 +338,9 @@ public:
 	// Configuration check
 	void set_configurationcheck_perl_dependencies(const bool b) { ENT _configurationcheck_perl_dependencies = b; WriteReg("configurationcheck_perl_dependencies", b); }
 	void set_configurationcheck_keyboard_settings(const bool b) { ENT _configurationcheck_keyboard_settings = b; WriteReg("configurationcheck_keyboard_settings", b); }
+
+	// Lazy scraping
+	void set_lazy_scraping_when_to_scrape(const int i) { ENT _lazy_scraping_when_to_scrape = i;WriteReg("lazy_scraping_when_to_scrape", i); }
 
 	// Misc
 	// (No method for versus_path,
@@ -509,6 +520,9 @@ private:
 	// Configuration check
 	bool			_configurationcheck_perl_dependencies;
 	bool			_configurationcheck_keyboard_settings;
+
+	// Lazy scraping
+	int				_lazy_scraping_when_to_scrape;
 
 	// Misc
 	int				_scraper_zoom;

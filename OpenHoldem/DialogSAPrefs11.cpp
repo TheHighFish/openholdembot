@@ -8,6 +8,8 @@
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs11.h"
 #include "CPreferences.h"
+#include "OH_MessageBox.h"
+
 
 #define MAX_MAX_LOG 1000000
 
@@ -113,7 +115,7 @@ void CDlgSAPrefs11::OnOK()
 
 	m_MaximumLog.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)<0 || strtoul(text.GetString(), 0, 10)>MAX_MAX_LOG) {
-		MessageBox("Invalid maximum log amount!", "ERROR", MB_OK);
+		OH_MessageBox_Interactive("Invalid maximum log amount!", "ERROR", MB_OK);
 		return;
 	}
 	prefs.set_log_symbol_max_log(strtoul(text.GetString(), 0, 10));
@@ -136,7 +138,7 @@ void CDlgSAPrefs11::OnOK()
 void CDlgSAPrefs11::OnBnClickedDisableMsgbox()
 {
 	if (m_disable_msgbox.GetCheck()==BST_CHECKED)
-		MessageBox("Warning: Selecting this option instructs OpenHoldem to refrain from\n"
+		OH_MessageBox_Interactive("Warning: Selecting this option instructs OpenHoldem to refrain from\n"
 				   "displaying ANY runtime informational or error message boxes.  Examples\n"
 				   "include parse errors, DLL load errors, etc.  It is strongly advised that\n"
 				   "this option only be usedin a production environment that has been\n"

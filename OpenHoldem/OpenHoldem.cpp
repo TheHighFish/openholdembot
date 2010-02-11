@@ -33,6 +33,7 @@
 #include "CVersus.h"
 #include "DialogFormulaScintilla.h"
 #include "MainFrm.h"
+#include "OH_MessageBox.h"
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
 #include "OpenHoldemView.h"
@@ -205,7 +206,7 @@ BOOL COpenHoldemApp::InitInstance()
 	{
 		CString		t = "";
 		t.Format("Unable to load mouse.dll, error: %d\n\nExiting.", GetLastError());
-		MessageBox(NULL, t, "OpenHoldem mouse.dll ERROR", MB_OK | MB_TOPMOST);
+		OH_MessageBox(t, "OpenHoldem mouse.dll ERROR", MB_OK | MB_TOPMOST);
 		return false;
 	}
 	else
@@ -218,7 +219,7 @@ BOOL COpenHoldemApp::InitInstance()
 		{
 			CString		t = "";
 			t.Format("Unable to find all symbols in mouse.dll");
-			MessageBox(NULL, t, "OpenHoldem mouse.dll ERROR", MB_OK | MB_TOPMOST);
+			OH_MessageBox(t, "OpenHoldem mouse.dll ERROR", MB_OK | MB_TOPMOST);
 
 			FreeLibrary(_mouse_dll);
 			_mouse_dll = NULL;
@@ -232,7 +233,7 @@ BOOL COpenHoldemApp::InitInstance()
 	{
 		CString		t = "";
 		t.Format("Unable to load keyboard.dll, error: %d\n\nExiting.", GetLastError());
-		MessageBox(NULL, t, "OpenHoldem keyboard.dll ERROR", MB_OK | MB_TOPMOST);
+		OH_MessageBox(t, "OpenHoldem keyboard.dll ERROR", MB_OK | MB_TOPMOST);
 		return false;
 	}
 	else
@@ -245,7 +246,7 @@ BOOL COpenHoldemApp::InitInstance()
 		{
 			CString		t = "";
 			t.Format("Unable to find all symbols in keyboard.dll");
-			MessageBox(NULL, t, "OpenHoldem keyboard.dll ERROR", MB_OK | MB_TOPMOST);
+			OH_MessageBox(t, "OpenHoldem keyboard.dll ERROR", MB_OK | MB_TOPMOST);
 
 			FreeLibrary(_keyboard_dll);
 			_keyboard_dll = NULL;
@@ -422,8 +423,8 @@ void COpenHoldemApp::OnAppAbout()
 
 void COpenHoldemApp::OnForceCrash() 
 {
-	int choice = MessageBox(0, "Do you REALLY want to CRASH?", "CONFIRMATION", 
-		MB_YESNO | MB_DEFBUTTON2 | MB_ICONEXCLAMATION | MB_TOPMOST);
+	int choice = OH_MessageBox_Interactive("Do you REALLY want to CRASH?", 
+		"CONFIRMATION", MB_YESNO | MB_DEFBUTTON2 | MB_ICONEXCLAMATION | MB_TOPMOST);
 	if (choice == IDYES) 
 	{
 		// FORCE A CRASH

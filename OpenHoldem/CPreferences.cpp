@@ -193,7 +193,9 @@ void CPreferences::InitDefaults(void)
 	// Configuration check
 	_configurationcheck_perl_dependencies = true;
 	_configurationcheck_keyboard_settings = true;
-
+	
+	// Lazy scraping
+	_lazy_scraping_when_to_scrape = k_lazy_scraping_always;
 
 	// Obscure
 	_window_class_name = "OpenHoldem";
@@ -384,6 +386,9 @@ void CPreferences::ReadPreferences()
 		// Configuration check
 		ReadReg("configurationcheck_perl_dependencies", &_configurationcheck_perl_dependencies);
 		ReadReg("configurationcheck_keyboard_settings", &_configurationcheck_keyboard_settings);
+
+		// Lazy scraping
+		ReadReg("lazy_scraping_when_to_scrape", &_lazy_scraping_when_to_scrape);
 	
 		// obscure
 		ReadReg("window_class_name", &_window_class_name);

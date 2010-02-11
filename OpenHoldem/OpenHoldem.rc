@@ -332,7 +332,7 @@ CAPTION "About this program"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            128,IDC_STATIC,11,17,20,20
-    LTEXT           "Version 2.1.0",IDC_STATIC,40,10,119,8,SS_NOPREFIX
+    LTEXT           "Version 2.2.0",IDC_STATIC,40,10,119,8,SS_NOPREFIX
     LTEXT           "Licensed under GPLv3",IDC_STATIC,40,25,119,8
     DEFPUSHBUTTON   "OK",IDOK,178,7,50,16,WS_GROUP
 END
@@ -984,6 +984,19 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,23,166,8
 END
 
+IDD_SAPREFS18 DIALOGEX 0, 0, 219, 154
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "when I hold card or I sit out",IDC_RADIO_SCRAPE_ON_CARDS_OR_SITOUT,
+                    "Button",BS_AUTORADIOBUTTON,4,46,96,8
+    CONTROL         "when I hold card",IDC_RADIO_SCRAPE_ON_CARDS,"Button",BS_AUTORADIOBUTTON,4,30,69,10
+    CONTROL         "always",IDC_RADIO_SCRAPE_ALWAYS,"Button",BS_AUTORADIOBUTTON,4,16,38,10
+    CONTROL         "when it is my turn",IDC_RADIO_SCRAPE_ON_MYTURN,"Button",BS_AUTORADIOBUTTON,4,61,73,10
+    CONTROL         "when it is my turn or I sit out",IDC_RADIO_SCRAPE_ON_MYTURN_OR_SITOUT,
+                    "Button",BS_AUTORADIOBUTTON,4,77,108,10
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1282,6 +1295,16 @@ BEGIN
     END
 
     IDD_SAPREFS17, DIALOG
+    BEGIN
+        VERTGUIDE, 4
+        VERTGUIDE, 100
+        VERTGUIDE, 170
+        BOTTOMMARGIN, 145
+        HORZGUIDE, 16
+        HORZGUIDE, 149
+    END
+
+    IDD_SAPREFS18, DIALOG
     BEGIN
         VERTGUIDE, 4
         VERTGUIDE, 100

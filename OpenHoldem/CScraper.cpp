@@ -33,14 +33,25 @@ CScraper::~CScraper(void)
 {
 }
 
+void CScraper::DoBasicScrape()
+{
+
+}
+
+void CScraper::CompleteBasicScrapeToFullScrape()
+{
+
+}
+
+
+
+
 void CScraper::ClearScrapeAreas(void)
 {
-	int i=0;
-
-	for (i=0; i<=4; i++)
+	for (int i=0; i<k_number_of_community_cards; i++)
 		set_card_common(i, CARD_NOCARD);
 
-	for (i=0; i<=9; i++)
+	for (int i=0; i<k_max_number_of_players; i++)
 	{
 		set_card_player(i, 0, CARD_NOCARD);
 		set_card_player(i, 1, CARD_NOCARD);
@@ -87,10 +98,10 @@ void CScraper::ClearScrapeAreas(void)
 
 	// change detection
 	_ucf_last=false;
-	for (i=0; i<=4; i++)
+	for (int i=0; i<k_number_of_community_cards; i++)
 		_card_common_last[i]=CARD_NOCARD;
 
-	for (i=0; i<=9; i++)
+	for (int i=0; i<k_max_number_of_players; i++)
 	{
 		_card_player_last[i][0]=CARD_NOCARD;
 		_card_player_last[i][1]=CARD_NOCARD;
@@ -122,11 +133,10 @@ void CScraper::ClearScrapeAreas(void)
 // returns true if common cards are in the middle of an animation
 const bool CScraper::IsCommonAnimation(void)
 {
-	bool			animation = false;  // By default there is no animation going on
 	int				flop_card_count = 0;
 
 	// Count all the flop cards
-	for (int i=0; i<=2; i++)
+	for (int i=0; i<k_number_of_flop_cards; i++)
 	{
 		if (_card_common[i] != CARD_NOCARD)
 		{
@@ -136,25 +146,24 @@ const bool CScraper::IsCommonAnimation(void)
 
 	// If there are some flop cards present,
 	// but not all 3 then there is an animation going on
-	if (flop_card_count > 0 && flop_card_count < 3)
+	if (flop_card_count > 0 && flop_card_count < k_number_of_flop_cards)
 	{
-		animation = true;
+		return true;
 	}
 	// If the turn card is present,
 	// but not all 3 flop cards are present then there is an animation going on
-	else if (_card_common[3] != CARD_NOCARD && flop_card_count != 3)
+	else if (_card_common[3] != CARD_NOCARD && flop_card_count != k_number_of_flop_cards)
 	{
-		animation = true;
+		return true;
 	}
 	// If the river card is present,
 	// but the turn card isn't
 	// OR not all 3 flop cards are present then there is an animation going on
-	else if (_card_common[4] != CARD_NOCARD && (_card_common[3] == CARD_NOCARD || flop_card_count != 3))
+	else if (_card_common[4] != CARD_NOCARD && (_card_common[3] == CARD_NOCARD || flop_card_count != k_number_of_flop_cards))
 	{
-		animation = true;
+		return true;
 	}
-
-	return animation;
+	return false;
 }
 
 // returns true if window has changed and we processed the changes, false otherwise
@@ -2041,7 +2050,7 @@ const bool CScraper::BitmapsSame(HBITMAP HBitmapLeft, HBITMAP HBitmapRight)
 	if (HBitmapLeft == HBitmapRight)
 		return true;
 
-	if (NULL == HBitmapLeft || NULL == HBitmapRight)
+	if ((HBitmapLeft == NULL) || (HBitmapRight == NULL))
 		return false;
 
 
@@ -2120,7 +2129,7 @@ const bool CScraper::BitmapsSame(HBITMAP HBitmapLeft, HBITMAP HBitmapRight)
 						0 != GetDIBits(hdc, HBitmapRight, 0, pBitmapInfoRight->bmiHeader.biHeight, pRightBits, pBitmapInfoRight, DIB_RGB_COLORS))
 				{
 					// compare the actual bitmap bits of the two bitmaps
-					bSame = 0 == memcmp(pLeftBits, pRightBits, pBitmapInfoLeft->bmiHeader.biSizeImage);
+					bSame = (0 == memcmp(pLeftBits, pRightBits, pBitmapInfoLeft->bmiHeader.biSizeImage));
 				}
 			}
 

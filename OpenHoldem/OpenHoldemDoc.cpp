@@ -7,6 +7,7 @@
 #include "CPreferences.h"
 #include "DialogFormulaScintilla.h"
 #include "MainFrm.h"
+#include "OH_MessageBox.h"
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
 
@@ -97,7 +98,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 		// This error can happen only in interactive mode,
 		// so there's no need to turn that Messagebox off
 		// depending on prefs.disable_msgbox()
-		MessageBox(0, "Can't load a formula while autoplayer engaged.", "ERROR", 0);
+		OH_MessageBox("Can't load a formula while autoplayer engaged.", "ERROR", 0);
 		return;
 	}
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
@@ -118,7 +119,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 			CString the_new_FileName = GetPathName();
 			the_new_FileName.Replace("whf", "ohf");		
 			// Notification
-			MessageBox(0, "Converting file formats\n{whf, whx} -> {ohf}",
+			OH_MessageBox_Interactive("Converting file formats\n{whf, whx} -> {ohf}",
 				"File Conversion", MB_OK | MB_ICONINFORMATION);	
 			// Open new style formula (OHF)	
 			CFile OHF_File;

@@ -17,6 +17,7 @@ const int k_max_number_of_players = 10;
 
 // Number of cards
 const int k_number_of_community_cards  = 5;
+const int k_number_of_flop_cards       = 3;  
 const int k_number_of_cards_per_player = 2;
 
 // Game type

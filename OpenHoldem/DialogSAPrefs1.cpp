@@ -6,6 +6,7 @@
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs1.h"
 #include "CPreferences.h"
+#include "OH_MessageBox.h"
 
 // CDlgSAPrefs1 dialog
 
@@ -54,7 +55,7 @@ void CDlgSAPrefs1::OnOK()
 
 	m_MaxOpponents.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)<1 || strtoul(text.GetString(), 0, 10)>MAX_OPPONENTS) {
-		MessageBox("Invalid Max Opponents", "ERROR", MB_OK);
+		OH_MessageBox_Interactive("Invalid Max Opponents", "ERROR", MB_OK);
 		return;
 	}
 	prefs.set_max_opponents(strtoul(text.GetString(), 0, 10));
