@@ -6,9 +6,9 @@
 #include "CGrammar.h"
 #include "CPreferences.h"
 #include "CSymbols.h"
+#include "OH_MessageBox.h"
 #include "OpenHoldemDoc.h"
 #include "UPDialog.h"
-
 
 CFormula			*p_formula = NULL;
 
@@ -120,7 +120,7 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine, bool disable_
 				if (DoesFormulaAlreadyExist(list.list))
 				{
 					CString ErrorMessage = "Handlist does already exist: " + list.list;
-					MessageBox(0, ErrorMessage, "Error", 0);
+					OH_MessageBox(ErrorMessage, "Error", 0);
 				}
 				else
 				{
@@ -133,7 +133,7 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine, bool disable_
 				if (DoesFormulaAlreadyExist(func.func))
 				{
 					CString ErrorMessage = "Function does already exist: " + func.func;
-					MessageBox(0, ErrorMessage, "Error", 0);
+					OH_MessageBox(ErrorMessage, "Error", 0);
 				}
 				else
 				{
@@ -165,7 +165,7 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine, bool disable_
 					CString the_ErrorMessage = "Malformed function header!\nMissing trailing '##'.\n" 
 						+ strOneLine + "\n"
 						+ "Trying to continue...";
-					MessageBox(0, the_ErrorMessage, "Syntax Error", MB_OK | MB_ICONEXCLAMATION);
+					OH_MessageBox(the_ErrorMessage, "Syntax Error", MB_OK | MB_ICONEXCLAMATION);
 				}
 			}
 
@@ -237,7 +237,7 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine, bool disable_
 		if (DoesFormulaAlreadyExist(list.list))
 		{
 			CString ErrorMessage = "Handlist does already exist: " + list.list;
-			MessageBox(0, ErrorMessage, "Error", 0);
+			OH_MessageBox(ErrorMessage, "Error", 0);
 		}
 		else
 		{
@@ -250,7 +250,7 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine, bool disable_
 		if (DoesFormulaAlreadyExist(func.func))
 		{
 			CString ErrorMessage = "Function does already exist: " + func.func;
-			MessageBox(0, ErrorMessage, "Error", 0);
+			OH_MessageBox(ErrorMessage, "Error", 0);
 		}
 		else
 		{
@@ -442,6 +442,9 @@ bool CFormula::ParseAllFormula(HWND hwnd, bool disable_msgbox)
 
 	CUPDialog dlg_progress(hwnd, ParseLoop, &data, "Please wait", false);
 	dlg_progress.DoModal();
+
+	// Here???
+	WarnAboutOutdatedConcepts();
 
 	return data.all_parsed;
 }
@@ -650,7 +653,7 @@ void CFormula::CopyFormulaFrom(CFormula *f)
 		if (DoesFormulaAlreadyExist(list.list))
 		{
 			CString ErrorMessage = "Handlist does already exist: " + list.list;
-			MessageBox(0, ErrorMessage, "Error", 0);
+			OH_MessageBox(ErrorMessage, "Error", 0);
 		}
 		else
 		{
@@ -748,7 +751,7 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 							 data->pParent->formula()->mFunction[i].func.GetString(),
 							 linenum, colnum,
 							 data->pParent->formula()->mFunction[i].func_text.Mid(stopchar, 40).GetString());
-					MessageBox(data->calling_hwnd, s, "PARSE ERROR", MB_OK);
+					OH_MessageBox(s, "PARSE ERROR", MB_OK);
 				}
 
 				data->all_parsed = false;
@@ -766,7 +769,7 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 						s.Append(gram.parse_symbol_stop_strs()->GetAt(j).c_str());
 						s.Append("\n");
 					}
-					MessageBox(data->calling_hwnd, s, "PARSE ERROR", MB_OK);
+					OH_MessageBox(s, "PARSE ERROR", MB_OK);
 				}
 
 				data->all_parsed = false;
@@ -812,4 +815,21 @@ bool CFormula::DoesHandlistAlreadyExist(const CString new_name)
 		}
 	}
 	return false;
+}
+
+void CFormula::WarnAboutOutdatedConcepts()
+{
+	if (DoesFormulaAlreadyExist("f$play"))
+	{
+		OH_MessageBox("Your formula set contains a function f$play.\n"
+			"The play-formula is an outdated messy concept,\n"
+			"that got abolished in OpenHoldem 2.2.0.\n"
+			"It got replaced by three separate functions:\n"
+			"  * f$sitin\n"
+			"  * f$sitout\n"
+			"  * f$leave\n"
+			"Please refer to the manual about how to adapt\n"
+			"your formula set.",
+			"Error", 0);
+	}
 }

@@ -10,7 +10,7 @@
 #include "..\CTablemap\CTablemap.h"
 #include "CTableLimits.h"
 #include "debug.h"
-
+#include "OH_MessageBox.h"
 
 CRebuyManagement *p_rebuymanagement = NULL;
 
@@ -186,7 +186,7 @@ void CRebuyManagement::ExecuteRebuyScript()
 	{
 		CString ErrorMessage = CString("Could not execute rebuy-script: ") + CString(RebuyScript) + "\n";
 		write_log(1, ErrorMessage.GetBuffer());
-		MessageBox(0, ErrorMessage.GetBuffer(), "Error", 0);
+		OH_MessageBox(ErrorMessage.GetBuffer(), "Error", 0);
 	}
 }
 

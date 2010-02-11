@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "CSymbols.h"
 
-#include "CSymbols.h"
-
 #include <assert.h>
 #include <process.h>
 #include <float.h>
@@ -26,6 +24,7 @@
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTransform\CTransform.h"
 #include "CVersus.h"
+#include "OH_MessageBox.h"
 
 
 CSymbols			*p_symbols = NULL;
@@ -4450,7 +4449,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 		CString Message = CString("Unknown symbol in CSymbols::GetSymbolVal(): \"")
 			+ CString(a) + CString("\"\nThat is most probably a typo in the symbols name.\n")
 			+ CString("Please check your formula and your DLL or Perl-script.");
-		MessageBox(0, Message, "ERROR", MB_OK);
+		OH_MessageBox(Message, "ERROR", MB_OK);
 	}
 
 	return 0.0;

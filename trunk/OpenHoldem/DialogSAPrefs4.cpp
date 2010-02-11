@@ -6,6 +6,7 @@
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs4.h"
 #include "CPreferences.h"
+#include "OH_MessageBox.h"
 
 // CDlgSAPrefs4 dialog
 
@@ -54,7 +55,7 @@ void CDlgSAPrefs4::OnOK()
 
 	m_ScrapeDelay.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)<MIN_SCRAPEDELAY || strtoul(text.GetString(), 0, 10)>MAX_SCRAPEDELAY) {
-		MessageBox("Invalid Scrape Delay", "ERROR", MB_OK);
+		OH_MessageBox_Interactive("Invalid Scrape Delay", "ERROR", MB_OK);
 		return;
 	}
 	prefs.set_scrape_delay(strtoul(text.GetString(), 0, 10));

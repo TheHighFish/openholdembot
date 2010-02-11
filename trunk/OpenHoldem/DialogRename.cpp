@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "OpenHoldem.h"
 #include "DialogRename.h"
+#include "OH_MessageBox.h"
 
 // CDlgRename dialog
 
@@ -52,12 +53,12 @@ void CDlgRename::OnBnClickedOk()
 	// Changing a list
 	if (memcmp(oldstr, "list", 4)==0 && memcmp(newstr, "list", 4)!=0) 
 	{
-		MessageBox("Lists must begin with the name 'list'.\r\ne.g. 'list45'", "Invalid Name", MB_ICONERROR);
+		OH_MessageBox_Interactive("Lists must begin with the name 'list'.\r\ne.g. 'list45'", "Invalid Name", MB_ICONERROR);
 		return;
 	}
 	else if (memcmp(oldstr, "list", 4)==0 && memcmp(newstr, "list", 4)==0 && strlen(newstr)==4) 
 	{
-		MessageBox("Lists must begin with the name 'list'\r\nand be followed by a number.\r\ne.g. 'list45'", "Invalid Name", MB_ICONERROR);
+		OH_MessageBox_Interactive("Lists must begin with the name 'list'\r\nand be followed by a number.\r\ne.g. 'list45'", "Invalid Name", MB_ICONERROR);
 		return;
 	}
 	else if (memcmp(oldstr, "list", 4)==0) 
@@ -66,7 +67,7 @@ void CDlgRename::OnBnClickedOk()
 		{
 			if (newstr[i]<'0' || newstr[i]>'9') 
 			{
-				MessageBox("Lists must begin with the name 'list'\r\nand have all numbers to end.\r\ne.g. 'list45'", "Invalid Name", MB_ICONERROR);
+				OH_MessageBox_Interactive("Lists must begin with the name 'list'\r\nand have all numbers to end.\r\ne.g. 'list45'", "Invalid Name", MB_ICONERROR);
 				return;
 			}
 		}
@@ -75,12 +76,12 @@ void CDlgRename::OnBnClickedOk()
 	// Changing a UDF
 	else if (memcmp(oldstr, "f$", 2)==0 && memcmp(newstr, "f$", 2)!=0) 
 	{
-		MessageBox("UDF's must begin with the name 'f$'.\r\ne.g. 'f$myfunc'", "Invalid Name", MB_ICONERROR);
+		OH_MessageBox_Interactive("UDF's must begin with the name 'f$'.\r\ne.g. 'f$myfunc'", "Invalid Name", MB_ICONERROR);
 		return;
 	}
 	else if (memcmp(oldstr, "f$", 2)==0 && strlen(newstr)==2) 
 	{
-		MessageBox("UDF's must begin with the name 'f$'\r\nand be followed be the name of the function.\r\ne.g. 'f$myfunc'", "Invalid Name", MB_ICONERROR);
+		OH_MessageBox_Interactive("UDF's must begin with the name 'f$'\r\nand be followed be the name of the function.\r\ne.g. 'f$myfunc'", "Invalid Name", MB_ICONERROR);
 		return;
 	}
 

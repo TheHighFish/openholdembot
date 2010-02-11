@@ -20,6 +20,7 @@
 #include "DialogSettings.h"
 #include "MainFrm.h"
 #include "MagicNumbers.h"
+#include "OH_MessageBox.h"
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
 #include "../scintilla/include/SciLexer.h"
@@ -1165,7 +1166,7 @@ void CDlgFormulaScintilla::OnNew()
 			}
 			if (bAlreadyExists) 
 			{
-				MessageBox("Cannot proceed as list already exists");
+				OH_MessageBox_Interactive("Cannot proceed as list already exists", "Error", 0);
 				return;
 			}
 
@@ -1200,7 +1201,7 @@ void CDlgFormulaScintilla::OnNew()
 
 			if (bAlreadyExists) 
 			{
-				MessageBox("Cannot proceed as this function already exists");
+				OH_MessageBox_Interactive("Cannot proceed as this function already exists", "Error", 0);
 				return;
 			}
 
@@ -1283,7 +1284,7 @@ void CDlgFormulaScintilla::OnRename()
 			}
 			if (bAlreadyExists) 
 			{
-				MessageBox("Cannot rename to a list that already exists");
+				OH_MessageBox_Interactive("Cannot rename to a list that already exists", "Error", 0);
 				PostMessage(WM_COMMAND, ID_FORMULA_EDIT_RENAME);
 			} 
 			else 
@@ -1320,7 +1321,7 @@ void CDlgFormulaScintilla::OnRename()
 
 			if (bAlreadyExists) 
 			{
-				MessageBox("Cannot rename to a formula that already exists");
+				OH_MessageBox_Interactive("Cannot rename to a formula that already exists", "Error", 0);
 				PostMessage(WM_COMMAND, ID_FORMULA_EDIT_RENAME);
 			} 
 			else 
@@ -1412,7 +1413,7 @@ void CDlgFormulaScintilla::OnDelete()
 
 	StopAutoButton();
 
-	if (IDYES != MessageBox("REALLY delete \"" + m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem()) + "\" ?", "Confirm Delete", MB_YESNO | MB_ICONWARNING)) 
+	if (IDYES != OH_MessageBox_Interactive("REALLY delete \"" + m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem()) + "\" ?", "Confirm Delete", MB_YESNO | MB_ICONWARNING)) 
 	{
 		HandleEnables(true);
 		return;
@@ -2171,7 +2172,7 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
 		s.Append("preventing calculation.\n");
 		s.Append("These errors need to be corrected before the 'Calc'\n");
 		s.Append("button can be used.");
-		MessageBox(s, "PARSE ERROR(s)", MB_OK);
+		OH_MessageBox(s, "PARSE ERROR(s)", MB_OK);
 		return;
 	}
 
@@ -2264,7 +2265,7 @@ void CDlgFormulaScintilla::OnBnClickedAuto()
 			s.Append("preventing calculation of this formula.\n");
 			s.Append("These errors need to be corrected before the 'Auto'\n");
 			s.Append("button can be used.");
-			MessageBox(s, "PARSE ERROR(s)", MB_OK);
+			OH_MessageBox(s, "PARSE ERROR(s)", MB_OK);
 
 			// All we need to do is remove the Auto Check since the button text hasn't been
 			// updated yet and ok_to_update_debug has already been set to false
@@ -2546,7 +2547,7 @@ void CDlgFormulaScintilla::OnBnClickedApply()
 	// If autoplayer is engaged, dis-engage it
 	if (p_autoplayer->autoplayer_engaged())
 	{
-		if (MessageBox("Autoplayer is currently enabled.\nWould you like to disable the autoplayer?",
+		if (OH_MessageBox_Interactive("Autoplayer is currently enabled.\nWould you like to disable the autoplayer?",
 					   "Disable Autoplayer?", MB_YESNO) == IDYES)
 		{
 			pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
@@ -2565,7 +2566,7 @@ void CDlgFormulaScintilla::OnBnClickedApply()
 
 	if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd(), false))
 	{
-		if (MessageBox("There are errors in the working formula set.\n\n"
+		if (OH_MessageBox_Interactive("There are errors in the working formula set.\n\n"
 					   "Would you still like to apply changes in the working set to the main set?\n\n"
 					   "Note that if you choose yes here, then the main formula set will \n"
 					   "contain errors, will likely not act as you expect, and may cause you\n"
@@ -2608,7 +2609,7 @@ void CDlgFormulaScintilla::OnBnClickedOk()
 	// If autoplayer is engaged, dis-engage it
 	if (p_autoplayer->autoplayer_engaged())
 	{
-		if (MessageBox("Autoplayer is currently enabled.\nWould you like to disable the autoplayer?",
+		if (OH_MessageBox_Interactive("Autoplayer is currently enabled.\nWould you like to disable the autoplayer?",
 					   "Disable Autoplayer?", MB_YESNO) == IDYES)
 		{
 			pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
@@ -2629,7 +2630,7 @@ void CDlgFormulaScintilla::OnBnClickedOk()
 
 	if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd(), false))
 	{
-		if (MessageBox("There are errors in the working formula set.\n\n"
+		if (OH_MessageBox_Interactive("There are errors in the working formula set.\n\n"
 					   "Would you still like to apply changes in the working set to the main set "
 					   "and exit the formula editor?\n\n"
 					   "Note that if you choose yes here, then the main formula set will\n"
@@ -2670,7 +2671,7 @@ bool CDlgFormulaScintilla::PromptToSave()
 	COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
 	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
-	int response = MessageBox("You have made changes to this formula.\n\nDo you want to apply changes?", 
+	int response = OH_MessageBox_Interactive("You have made changes to this formula.\n\nDo you want to apply changes?", 
 				   "Save changes?", 
 				   MB_YESNOCANCEL);
 	if (response == IDYES)
@@ -2683,7 +2684,7 @@ bool CDlgFormulaScintilla::PromptToSave()
 
 		if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd(), false))
 		{
-			if (MessageBox("There are errors in the working formula set.\n\n"
+			if (OH_MessageBox_Interactive("There are errors in the working formula set.\n\n"
 						   "Would you still like to apply changes in the working set to the main set "
 						   "and exit the formula editor?\n\n"
 						   "Note that if you choose yes here, then the main formula set will\n"
@@ -2876,14 +2877,14 @@ void CDlgFormulaScintilla::OnHelp()
 {
 	if (_access("OpenHoldem_Manual.chm", F_OK) != 0)
 	{
-		MessageBox("\"OpenHoldem_Manual.chm\" not found.\nPlease put it into your OpenHoldem folder.", "Error", 0);
+		OH_MessageBox("\"OpenHoldem_Manual.chm\" not found.\nPlease put it into your OpenHoldem folder.", "Error", 0);
 	}
 	else 
 	{
 		int RetValue = int(ShellExecute(NULL, "open", "OpenHoldem_Manual.chm", NULL, NULL, SW_SHOW));
 		if (RetValue <= 32)
 		{
-			MessageBox("Error opening help-file", "Error", 0);
+			OH_MessageBox("Error opening help-file", "Error", 0);
 		}
 	}
 }

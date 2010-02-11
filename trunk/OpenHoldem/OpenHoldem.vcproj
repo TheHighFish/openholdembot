@@ -449,6 +449,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OH_MessageBox.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenHoldem.cpp"
 				>
 			</File>
@@ -878,6 +882,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\DialogSAPrefs18.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\DialogSAPrefs2.cpp"
 						>
 					</File>
@@ -1083,6 +1091,10 @@
 			</File>
 			<File
 				RelativePath=".\MyCToolBar.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OH_MessageBox.h"
 				>
 			</File>
 			<File
@@ -1397,6 +1409,10 @@
 					</File>
 					<File
 						RelativePath=".\DialogSAPrefs17.h"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs18.h"
 						>
 					</File>
 					<File

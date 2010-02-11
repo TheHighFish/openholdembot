@@ -1,16 +1,19 @@
 #include "stdafx.h"
+#include "CVersus.h"
+
 #include <io.h>
 #include <fcntl.h>
 
-#include "CVersus.h"
+#include "inlines/eval.h"
 
 #include "CScraper.h"
 #include "CSymbols.h"
 #include "CPreferences.h"
 #include "CFormula.h"
 #include "CDllExtension.h"
+#include "OH_MessageBox.h"
 
-#include "inlines/eval.h"
+
 
 CVersus		*p_versus = NULL;
 
@@ -27,7 +30,7 @@ CVersus::CVersus()
 
 	if (_versus_fh == -1 && !prefs.disable_msgbox())
 	{
-		MessageBox(NULL, "Could not open versus.bin.\nVersus functions will be disabled.\n", "Versus Error", MB_OK | MB_TOPMOST);
+		OH_MessageBox("Could not open versus.bin.\nVersus functions will be disabled.\n", "Versus Error", MB_OK | MB_TOPMOST);
 	}
 }
 

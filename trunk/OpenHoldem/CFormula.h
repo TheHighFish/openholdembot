@@ -64,6 +64,7 @@ public:
 private:
 	bool DoesFormulaAlreadyExist(const CString new_name);
 	bool DoesHandlistAlreadyExist(const CString new_name);
+	void WarnAboutOutdatedConcepts();
 
 public:
 	// public accessors

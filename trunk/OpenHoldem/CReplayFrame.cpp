@@ -8,6 +8,7 @@
 #include "CSymbols.h"
 #include "CTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
+#include "OH_MessageBox.h"
 #include "OpenHoldem.h"
 
 
@@ -81,7 +82,7 @@ void CReplayFrame::CreateReplayFrame(void)
 	if (free_bytes_for_user_on_disk.QuadPart < FREE_SPACE_NEEDED_FOR_REPLAYFRAME) 
 	{
 		if (!prefs.disable_msgbox())
-			MessageBox(NULL, "Not enough disk space to create replay-frame.", "ERROR", 0);
+			OH_MessageBox("Not enough disk space to create replay-frame.", "ERROR", 0);
 
 		return;
 	}

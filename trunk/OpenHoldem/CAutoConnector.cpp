@@ -17,6 +17,7 @@
 #include "DialogScraperOutput.h"
 #include "DialogSelectTable.h"
 #include "MainFrm.h"
+#include "OH_MessageBox.h"
 #include "OpenHoldem.h"
 
 
@@ -115,7 +116,7 @@ void CAutoConnector::ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData(
 		if (NumberOfTableMapsLoaded >= k_MaxNumberOfTableMaps)
 		{
 			write_log(1, "Error: Too many tablemaps. The autoconnector can only handle 25 TMs.", "Error", 0);
-			MessageBox(0, "To many tablemaps. The autoplayer can handle 25 at most.", "ERROR", 0);
+			OH_MessageBox("To many tablemaps. The autoplayer can handle 25 at most.", "ERROR", 0);
 			return;
 		}
 		bFound = hFile.FindNextFile();
@@ -553,16 +554,16 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 		int cySize = GetSystemMetrics(SM_CYSIZE);
 		int cyMenuSize = GetSystemMetrics(SM_CYMENU);
 
-		if (!prefs.disable_msgbox() && prefs.autoconnector_when_to_connect() != k_AutoConnector_Connect_Permanent)
+		if (prefs.autoconnector_when_to_connect() != k_AutoConnector_Connect_Permanent)
 		{
 			if (cySize != 18 && cyMenuSize != 19)
-				MessageBox(0, "Cannot find table\n\n"
+				OH_MessageBox("Cannot find table\n\n"
 						   "It appears that your settings are not configured according to OpenHoldem specifications.\n"
 						   "You must ensure that XP themes are not used (Use Windows Classic style) and\n"
 						   "font size is set to normal.\n\n"
 						   "For more info, read the manual and visit the user forums", "Cannot find table", MB_OK);
 			else
-				MessageBox(0, "No valid tables found", "Cannot find table", MB_OK);
+				OH_MessageBox("No valid tables found", "Cannot find table", MB_OK);
 		}
 	}
 	else 
@@ -586,9 +587,9 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			p_tablemap->LoadTablemap((char *) g_tlist[SelectedItem].path.GetString(), VER_OPENSCRAPE_2, false, &line, 
 									 prefs.disable_msgbox(), &loaded_version);
 
-			if ( (loaded_version == VER_OPENSCRAPE_1 || loaded_version == VER_OPENHOLDEM_2) && !prefs.disable_msgbox())
+			if ( (loaded_version == VER_OPENSCRAPE_1 || loaded_version == VER_OPENHOLDEM_2))
 			{
-				MessageBox(0, "You have loaded a version 1 table map for this poker table.\n\n"\
+				OH_MessageBox("You have loaded a version 1 table map for this poker table.\n\n"\
 						   "Version 2.0.0 and higher of OpenHoldem use a new format (version 2).  This\n"\
 						   "table map has been loaded, but it is highly unlikely to work correctly until\n"\
 						   "it has been opened in OpenScrape version 2.0.0 or higher, and adjustments\n"\
@@ -669,11 +670,11 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 
 			if (theApp._scraperpreprocessor_dll==NULL)
 			{
-				if (!filename.IsEmpty() && !prefs.disable_msgbox())		
+				if (!filename.IsEmpty())		
 				{
 					CString		t = "";
 					t.Format("Unable to load %s\n\nError: %d", path, GetLastError());
-					MessageBox(0, t, "OpenHoldem scraperpre.dll WARNING", MB_OK | MB_TOPMOST);
+					OH_MessageBox(t, "OpenHoldem scraperpre.dll WARNING", MB_OK | MB_TOPMOST);
 				}
 			}
 			else
@@ -682,13 +683,9 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 
 				if (theApp._dll_scraperpreprocessor_process_message==NULL)
 				{
-					if (!prefs.disable_msgbox())		
-					{
-						CString		t = "";
-						t.Format("Unable to find symbols in scraperpre.dll");
-						MessageBox(0, t, "OpenHoldem scraperpre.dll ERROR", MB_OK | MB_TOPMOST);
-					}
-
+					CString		t = "";
+					t.Format("Unable to find symbols in scraperpre.dll");
+					OH_MessageBox(t, "OpenHoldem scraperpre.dll ERROR", MB_OK | MB_TOPMOST);
 					theApp.Unload_ScraperPreprocessor_DLL();
 				}
 				else

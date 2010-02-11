@@ -55,6 +55,7 @@
 #define IDD_SAPREFS15                   181
 #define IDD_SAPREFS16                   182
 #define IDD_SAPREFS17                   183
+#define IDD_SAPREFS18                   184
 #define IDC_NEW                         1006
 #define IDC_DELETE                      1007
 #define IDC_RENAME                      1013
@@ -414,12 +415,18 @@
 #define IDC_RADIO_AUTOCONNECTOR_4       1334
 #define IDC_RADIO3                      1335
 #define IDC_RADIO_AUTOCONNECTOR_5       1335
+#define IDC_RADIO_SCRAPE_ALWAYS         1335
 #define IDC_SCROLLBAR1                  1336
 #define IDC_SPIN1                       1337
 #define IDC_RECONNECT_TIME_SPIN         1337
 #define IDC_CONFIGURATION_DISABLE_LESS_CRITICAL_CHECKS 1338
 #define IDC_CONFIGURATION_KEYBOARD_SETTINGS 1338
 #define IDC_CONFIGURATION_PERL_DEPENDENCIES 1339
+#define IDC_RADIO_SCRAPE_ON_CARDS_OR_SITOUT 1339
+#define IDC_RADIO_SCRAPE_ON_CARDS       1340
+#define IDC_RADIO_SCRAPE_ON_MYTURN      1341
+#define IDC_RADIO5                      1342
+#define IDC_RADIO_SCRAPE_ON_MYTURN_OR_SITOUT 1342
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -554,7 +561,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        180
 #define _APS_NEXT_COMMAND_VALUE         32993
-#define _APS_NEXT_CONTROL_VALUE         1339
+#define _APS_NEXT_CONTROL_VALUE         1343
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

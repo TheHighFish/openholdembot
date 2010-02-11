@@ -6,6 +6,7 @@
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs2.h"
 #include "CPreferences.h"
+#include "OH_MessageBox.h"
 
 
 // CDlgSAPrefs2 dialog
@@ -96,7 +97,7 @@ void CDlgSAPrefs2::OnOK()
 	m_FrameDelay.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)>MAX_FRAMEDELAY)
 	{
-		MessageBox("Invalid Frame Delay", "ERROR", MB_OK);
+		OH_MessageBox_Interactive("Invalid Frame Delay", "ERROR", MB_OK);
 		return;
 	}
 	prefs.set_frame_delay(strtoul(text.GetString(), 0, 10));
@@ -104,7 +105,7 @@ void CDlgSAPrefs2::OnOK()
 	m_SwagDelay1.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)>MAX_SWAGDELAY1)
 	{
-		MessageBox("Invalid Swag Delay (Select to Delete)", "ERROR", MB_OK);
+		OH_MessageBox_Interactive("Invalid Swag Delay (Select to Delete)", "ERROR", MB_OK);
 		return;
 	}
 	prefs.set_swag_delay_1(strtoul(text.GetString(), 0, 10));
@@ -112,7 +113,7 @@ void CDlgSAPrefs2::OnOK()
 	m_SwagDelay2.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)>MAX_SWAGDELAY2)
 	{
-		MessageBox("Invalid Swag Delay (Delete to Entry)", "ERROR", MB_OK);
+		OH_MessageBox_Interactive("Invalid Swag Delay (Delete to Entry)", "ERROR", MB_OK);
 		return;
 	}
 	prefs.set_swag_delay_2(strtoul(text.GetString(), 0, 10));
@@ -120,7 +121,7 @@ void CDlgSAPrefs2::OnOK()
 	m_SwagDelay3.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)>MAX_SWAGDELAY3) 
 	{
-		MessageBox("Invalid Swag Delay (Entry to Confirm)", "ERROR", MB_OK);
+		OH_MessageBox_Interactive("Invalid Swag Delay (Entry to Confirm)", "ERROR", MB_OK);
 		return;
 	}
 	prefs.set_swag_delay_3(strtoul(text.GetString(), 0, 10));

@@ -9,6 +9,7 @@
 #include "..\..\dbghelp\dbghelp.h"
 #include "debug.h"
 #include "inlines/eval.h"
+#include "OH_MessageBox.h"
 #include "OpenHoldem.h"
 
 
@@ -116,7 +117,7 @@ LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers)
     strcat_s(msg, 1000, "A minidump has been created in your\n");
 	strcat_s(msg, 1000, "OpenHoldem startup directory.\n");
     strcat_s(msg, 1000, "\n\nOpenHoldem will shut down when you click OK.");
-    MessageBox(NULL, msg, "FATAL ERROR", MB_OK | MB_ICONEXCLAMATION | MB_TOPMOST);
+    OH_MessageBox(msg, "FATAL ERROR", MB_OK | MB_ICONEXCLAMATION | MB_TOPMOST);
 
     return EXCEPTION_EXECUTE_HANDLER;
 }

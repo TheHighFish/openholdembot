@@ -22,7 +22,7 @@
 #include "CIteratorThread.h"
 #include "CPreferences.h"
 #include "CDllExtension.h"
-
+#include "OH_MessageBox.h"
 
 using namespace std;
 
@@ -133,11 +133,8 @@ CPerl::CPerl()
 	{
 		_formula_loaded = false;
 		_interpreter_not_loaded = true;
-
-		if (!prefs.disable_msgbox())
-			MessageBox(NULL, "Could not create Perl interpreter.", "Perl Error", MB_OK | MB_TOPMOST);
+		OH_MessageBox("Could not create Perl interpreter.", "Perl Error", MB_OK | MB_TOPMOST);
 	}
-
 	SendCallbackPointers();
 }
 
@@ -199,9 +196,7 @@ double CPerl::GetPerlSymbol(const char *symbol)
 							_result_buffer,
 							_size_of_result_buffer,
 							EMPTY_STRING 				//  Format string for additional parameters
-						);							//  No additional parameters
-	//MessageBox(NULL, (string(symbol) + string(": ") + string(_result_buffer)).c_str(),
-	//	"Result" , 0);
+						);								//  No additional parameters
 
 	DoErrorCheck(error_code);
 	//  No further error check here.
@@ -218,17 +213,13 @@ void CPerl::EditMainFormulaFile()
 
 	if (_access(my_favourite_Editor, F_OK) != 0)
 	{
-		if (!prefs.disable_msgbox())
-			MessageBox(NULL, "Could not start editor.\nExecutable not found or not accessible.", "Perl Error", MB_OK | MB_TOPMOST);
-
+		OH_MessageBox("Could not start editor.\nExecutable not found or not accessible.", "Perl Error", MB_OK | MB_TOPMOST);
 		return;
 	}
 
 	if (_actual_formula_file == "")
 	{
-		if (!prefs.disable_msgbox())
-			MessageBox(NULL, "Formula undefined.", "Perl Error", MB_OK | MB_TOPMOST);
-
+		OH_MessageBox("Formula undefined.", "Perl Error", MB_OK | MB_TOPMOST);
 		return;
 	}
 
@@ -246,8 +237,8 @@ void CPerl::EditMainFormulaFile()
 							 NULL);						  //  end of parameter list
 	if (errno == -1 && !prefs.disable_msgbox())
 	{
-		MessageBox(NULL, "Editor terminated with runtime error.",
-				   "Perl Error", MB_OK | MB_TOPMOST);
+		OH_MessageBox("Editor terminated with runtime error.",
+					"Perl Error", MB_OK | MB_TOPMOST);
 	}
 }
 
@@ -260,8 +251,7 @@ void CPerl::LoadFormulaFile(string new_formula_file)
 	if (_access(new_formula_file.c_str(), F_OK) != 0)
 	{
 		//  Script to load not accessible
-		if (!prefs.disable_msgbox())
-			MessageBox(NULL, "Could not load Perl Formula.\nFile not found or not accessible.", "Perl Error", MB_OK | MB_TOPMOST);
+		OH_MessageBox("Could not load Perl Formula.\nFile not found or not accessible.", "Perl Error", MB_OK | MB_TOPMOST);
 
 		//  Prepare continuation without default file
 		_interpreter = (*P_PerlEzCreate)
@@ -288,14 +278,12 @@ void CPerl::LoadFormulaFile(string new_formula_file)
 	}
 	else
 	{
-		if (!prefs.disable_msgbox())
-			MessageBox(NULL, "Unable to load formula.\n"
-							 "Could not create Perl interpreter object.\n\n"
-							 "Probable reasons:\n"
-							 "* Syntax error in your Perl file.\n"
-							 "* Failure at initialization.",
-							 "Perl Error", MB_OK | MB_TOPMOST);
-
+		OH_MessageBox("Unable to load formula.\n"
+			"Could not create Perl interpreter object.\n\n"
+			"Probable reasons:\n"
+			"* Syntax error in your Perl file.\n"
+			"* Failure at initialization.",
+			"Perl Error", MB_OK | MB_TOPMOST);
 		_interpreter_not_loaded = true;
 		_formula_loaded = false;
 	}
@@ -325,17 +313,13 @@ void CPerl::CheckSyntax()
 	//	as this implies, the formula got loaded with success.
 	if (_actual_formula_file == "")
 	{
-		if (!prefs.disable_msgbox())
-			MessageBox(NULL, "Formula undefined.", "Perl Error", MB_OK | MB_TOPMOST);
-
+		OH_MessageBox("Formula undefined.", "Perl Error", MB_OK | MB_TOPMOST);
 		return;
 	}
 
 	if (_access(_actual_formula_file.c_str(), F_OK) != 0)
 	{
-		if (!prefs.disable_msgbox())
-			MessageBox(NULL, "Could not load Perl Formula.\nFile not found or not accessible.", "Perl Error", MB_OK | MB_TOPMOST);
-
+		OH_MessageBox("Could not load Perl Formula.\nFile not found or not accessible.", "Perl Error", MB_OK | MB_TOPMOST);
 		return;
 	}
 
@@ -377,16 +361,12 @@ bool CPerl::LoadDLL(void)
 	HINSTANCE Perl_Lib = LoadLibrary("PerlEz.dll");
 	if (Perl_Lib == NULL)
 	{
-		if (!prefs.disable_msgbox())
-		{
-			DWORD ErrorCode = GetLastError();
-			CString ErrorMessage;
-			ErrorMessage.Format("%s%d%s",
-				"PerlEz.DLL not found. \nPlease check your installation and your systems PATH variable\n\nErrorCode: [",
-				ErrorCode, "]");
-			MessageBox(NULL, ErrorMessage, "Perl Error", MB_OK | MB_TOPMOST);
-			
-		}
+		DWORD ErrorCode = GetLastError();
+		CString ErrorMessage;
+		ErrorMessage.Format("%s%d%s",
+			"PerlEz.DLL not found. \nPlease check your installation and your systems PATH variable\n\nErrorCode: [",
+			ErrorCode, "]");
+		OH_MessageBox(ErrorMessage, "Perl Error", MB_OK | MB_TOPMOST);
 		return false;
 	}
 
@@ -399,12 +379,9 @@ bool CPerl::LoadDLL(void)
 	if ((P_PerlEzCall == NULL) || (P_PerlEzCreate == NULL) ||
 			(P_PerlEzDelete == NULL))
 	{
-		if (!prefs.disable_msgbox())
-			MessageBox(NULL, "PerlEz.DLL seems to be invalid. \nPlease check your installation.", "Perl Error", MB_OK | MB_TOPMOST);
-
+		OH_MessageBox("PerlEz.DLL seems to be invalid. \nPlease check your installation.", "Perl Error", MB_OK | MB_TOPMOST);
 		return false;
 	}
-
 	return true;
 }
 
@@ -496,9 +473,7 @@ void CPerl::DoErrorCheck(const int error_code)
 		error_message = "Perl: Cannot allocate more memory.";
 		break;
 	}
-
-	if (!prefs.disable_msgbox())
-		MessageBox(NULL, error_message.c_str(), "Perl Error", MB_OK | MB_TOPMOST);
+	OH_MessageBox(error_message.c_str(), "Perl Error", MB_OK | MB_TOPMOST);
 
 }
 
