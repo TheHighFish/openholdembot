@@ -40,7 +40,6 @@ struct	sData
 	bool		all_parsed;
 	HWND		calling_hwnd;
 	CFormula	*pParent;
-	bool		disable_msgbox;
 };
 
 extern class CFormula 
@@ -51,21 +50,16 @@ public:
 	~CFormula();
 	void ClearFormula();
 	void SetDefaultBot();
-	void ReadFormulaFile(CArchive& ar, bool ignoreFirstLine, bool disable_msgbox);
-	void WriteFormula(CArchive& ar, bool use_new_OHF_style);
+	void ReadFormulaFile(CArchive& ar, bool ignoreFirstLine);
+	void WriteFormula(CArchive& ar);
 	void CreateHandListMatrices();
-	bool ParseAllFormula(HWND hwnd, bool disable_msgbox);
+	bool ParseAllFormula(HWND hwnd);
 	void AddDefaultFunctionIfFunctionDoesNotExist(CString FunctionName);
 	void CheckForDefaultFormulaEntries();
 	void MarkCacheStale();
 	void ParseHandList(const CString &list_text, bool inlist[13][13]);
 	void CopyFormulaFrom(CFormula *f);
 	const char *GetFunctionText(const char *name);
-private:
-	bool DoesFormulaAlreadyExist(const CString new_name);
-	bool DoesHandlistAlreadyExist(const CString new_name);
-	void WarnAboutOutdatedConcepts();
-
 public:
 	// public accessors
 	const SFormula * formula() { return &_formula; }
@@ -93,6 +87,13 @@ public:
 	void set_nit(const double d) { ENT _formula.dNit = d; }
 	tpi_type * set_tpi(const int i) { if (i>=0 && i<_formula.mFunction.GetSize()) return &_formula.mFunction[i].tpi; else return NULL; }
 #undef ENT
+
+private:
+	bool IsStandardFormula(CString formula_name);
+	void WriteStandardFunction(CArchive& ar, CString name);
+	bool DoesFormulaAlreadyExist(const CString new_name);
+	bool DoesHandlistAlreadyExist(const CString new_name);
+	void WarnAboutOutdatedConcepts();
 
 private:
 	// private variables - use public accessors and public mutators to address these
