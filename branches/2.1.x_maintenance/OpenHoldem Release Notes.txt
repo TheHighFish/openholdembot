@@ -1,3 +1,11 @@
+v2.1.2 2010.02.12
+=================
+BUG FIXES:
+- Several bug-fixes and improvements to the new class CTableLimits,
+  that detects and auto-locks blind-values. Thanks to Nomade, Skyzzo and 
+  Winngy for their help with testing and replay-frames. [THF]
+- Warnings when parsing files with duplicate formulae or handlists.[THF]
+
 v2.1.1 2010-01-30
 =================
 BUG FIXES:
