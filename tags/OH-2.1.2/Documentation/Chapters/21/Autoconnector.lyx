@@ -1,0 +1,229 @@
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Section
+OpenHoldem Preferences – 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Autoconnector
+\end_layout
+
+\end_inset
+
+Autoconnector
+\end_layout
+
+\begin_layout Standard
+Autoconnector preferences control how the OpenHoldem Autoconnector functions.
+ See the {The Automation} section for more information.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Window selection:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\emph on
+Manual choice: 
+\emph default
+The default classical method.
+ If exactly one table and exactly one matching tablemap exist OpenHoldem
+ will connect to that table directly, otherwise it will present a dialog
+ with a list of choices for manual selection.
+ This behaviour was quite inconvenient in production, but is still supported
+ for backward compatibility.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Automatical choice: 
+\emph default
+This option will pick the first available table on every attempt to connect,
+ that is not yet attached to another instance of OpenHoldem.
+ If no such table is available, it will fall silently.
+ If multiple tablemaps in the 
+\begin_inset Index
+status collapsed
+
+\begin_layout Plain Layout
+Scraper-folder
+\end_layout
+
+\end_inset
+
+scraper-folder fit to that table it will also pick the 
+\begin_inset Quotes eld
+\end_inset
+
+first
+\begin_inset Quotes erd
+\end_inset
+
+ one, so be careful, if you want to keep different versions of the same
+ map.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\emph on
+Auto-Connect 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\emph on
+Never: 
+\emph default
+The default classical method.
+ If exactly one table and exactly one matching tablemap exist OpenHoldem
+ will connect to that table directly, otherwise it will present a dialog
+ with a list of choices for manual selection.
+ This behaviour was quite inconvenient in production, but is still supported
+ for backward compatibility.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Once on start: 
+\emph default
+This option will cause OpenHoldem to auto-connect exactly once on start.
+ This setting is especially useful in combination with the option to automatical
+ly choose a table.
+ If no table exists, that fits to a tablemap --- or if all such tables are
+ already getting served --- , it will fail silently and behave the default
+ way, waiting for the green button or a connection-message.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Permanent
+\emph default
+\noun on
+: 
+\noun default
+This setting will cause OpenHoldem to try to auto-connect once every N seconds.
+ After some refactoring OpenHoldem does now cache the connection-data of
+ all known table maps and all instances of OpenHoldem are now synchronized.
+ If one instance fails to connect, the other ones will be blocked for the
+ next N seconds.
+ So the system-load is now astonishing low, even with dozens of instances
+ waiting for tables.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\emph on
+Time between attempts to connect
+\emph default
+: This option is pretty self-explanatory.
+ It specifies the time to wait (in seconds) until the next attempt to connect.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Close OH when table disappears: 
+\emph default
+This option will terminate OpenHoldem, when the poker table stops to exist,
+ e.g.
+ when the table got closed by the hopper or when you get moved to another
+ table in a MTT.
+ This method is for you, if your philosophy to do reconnects is to close
+ OpenHoldem and to simply fire up another instance or if you want to easily
+ shut your botting system down at the end of a session.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/AutoConnector.PNG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Preferences:Autoconnector 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
