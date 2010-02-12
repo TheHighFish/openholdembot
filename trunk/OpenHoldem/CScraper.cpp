@@ -29,23 +29,6 @@ CScraper::CScraper(void)
 	ClearScrapeAreas();
 }
 
-CScraper::~CScraper(void)
-{
-}
-
-void CScraper::DoBasicScrape()
-{
-
-}
-
-void CScraper::CompleteBasicScrapeToFullScrape()
-{
-
-}
-
-
-
-
 void CScraper::ClearScrapeAreas(void)
 {
 	for (int i=0; i<k_number_of_community_cards; i++)
@@ -167,7 +150,7 @@ const bool CScraper::IsCommonAnimation(void)
 }
 
 // returns true if window has changed and we processed the changes, false otherwise
-int CScraper::DoScrape(void)
+int CScraper::CompleteBasicScrapeToFullScrape()
 {
 	write_log(3, "Starting Scraper cadence...\n");
 	
@@ -235,9 +218,6 @@ int CScraper::DoScrape(void)
 	// Player information
 	for (int i=0; i<=9; i++)
 	{
-		write_log(3, "Calling ScrapePlayerCards, chair %d.\n", i);
-		ScrapePlayerCards(i);
-	
 		write_log(3, "Calling ScrapeSeated, chair %d.\n", i);
 		ScrapeSeated(i);
 	
@@ -264,10 +244,6 @@ int CScraper::DoScrape(void)
 			set_balance_good_scrape(i, false);
 		}
 	}
-
-	write_log(3, "Calling ScrapeButtons.\n");
-	ScrapeButtons();		// Buttons
-
 	write_log(3, "Calling ScrapePots.\n");
 	ScrapePots();		// Pots
 
@@ -1234,7 +1210,7 @@ void CScraper::ScrapeBet(int chair)
 	__HDC_FOOTER
 }
 
-void CScraper::ScrapeButtons() 
+void CScraper::DoBasicScrapeButtons()
 {
 	__HDC_HEADER
 
@@ -1245,6 +1221,8 @@ void CScraper::ScrapeButtons()
 	CString				s = "";
 	RMapCI				r_iter = p_tablemap->r$()->end(), slider = p_tablemap->r$()->end(), handleCI = p_tablemap->r$()->end();
 	RMapI				handleI = p_tablemap->set_r$()->end();
+
+	write_log(3, "CScraper::DoBasicScrapeButtons()\n");
 
 	set_button_label(0, "fold");
 	set_button_label(1, "call");
@@ -1455,6 +1433,16 @@ void CScraper::ScrapeButtons()
 	}
 
 	__HDC_FOOTER
+}
+
+void CScraper::DoBasicScrapeAllPlayerCards()
+{
+	write_log(3, "CScraper::DoBasicScrapeAllPlayerCards()\n");
+	for (int i=0; i<=9; i++)
+	{
+		write_log(3, "Calling ScrapePlayerCards, chair %d.\n", i);
+		ScrapePlayerCards(i);
+	}
 }
 
 void CScraper::ScrapePots()

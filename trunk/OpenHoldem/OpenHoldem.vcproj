@@ -349,6 +349,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CLazyScraper.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CLevDistance.cpp"
 				>
 			</File>
@@ -983,6 +987,10 @@
 			</File>
 			<File
 				RelativePath=".\CIteratorThread.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CLazyScraper.h"
 				>
 			</File>
 			<File

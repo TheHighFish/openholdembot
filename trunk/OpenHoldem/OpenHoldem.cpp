@@ -15,6 +15,7 @@
 #include "CGrammar.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
+#include "CLazyScraper.h"
 #include "CMemory.h"
 #include "COcclusioncheck.h"
 #include "CPerl.hpp"
@@ -89,6 +90,7 @@ void COpenHoldemApp::InstanciateAllSingletonsExceptSessionCounter()
 	if (!p_tablelimits) p_tablelimits = new CTableLimits;
 	if (!p_pokerpro) p_pokerpro = new PokerPro;
 	if (!p_scraper)  p_scraper = new CScraper;
+	if (!p_lazyscraper)	p_lazyscraper = new CLazyScraper;
 	if (!p_symbols)  p_symbols = new CSymbols;
 	if (!p_tablemap)  p_tablemap = new CTablemap;
 	if (!p_formula)  p_formula = new CFormula;
@@ -128,6 +130,7 @@ void COpenHoldemApp::DeleteAllSingletons()
 	if (p_formula)  { delete p_formula; p_formula = NULL; }
 	if (p_tablemap)  { delete p_tablemap; p_tablemap = NULL; }
 	if (p_symbols)  { delete p_symbols; p_symbols = NULL; }
+	if (p_lazyscraper)	{ delete p_lazyscraper; p_lazyscraper = NULL; }
 	if (p_scraper)  { delete p_scraper; p_scraper = NULL; }
 	if (p_pokerpro)  { delete p_pokerpro; p_pokerpro = NULL; }
 	if (p_tablelimits) { delete p_tablelimits; p_tablelimits = NULL; }

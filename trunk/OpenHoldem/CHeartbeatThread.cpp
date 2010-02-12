@@ -8,6 +8,7 @@
 #include "CGameState.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
+#include "CLazyScraper.h"
 #include "CPokerPro.h"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
@@ -101,7 +102,8 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			if (!p_pokerpro->IsConnected())
 			{
 				write_log(3, "HBT: Calling DoScrape.\n");
-				new_scrape = p_scraper->DoScrape();
+				new_scrape = true; //!!!
+				p_lazyscraper->DoScrape();
 
 				LARGE_INTEGER PerformanceCount;
 				QueryPerformanceCounter(&PerformanceCount);

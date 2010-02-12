@@ -32,7 +32,11 @@ public:
 	// public functions
 	CScraper(void);
 	~CScraper(void);
-	int DoScrape(void);
+public:
+	void DoBasicScrapeButtons();
+	void DoBasicScrapeAllPlayerCards();
+	int  CompleteBasicScrapeToFullScrape();
+public:
 	void ClearScrapeAreas(void);
 	void CreateBitmaps(void);
 	void DeleteBitmaps(void);
@@ -141,9 +145,6 @@ private:
 	HBITMAP				_entire_window_cur;
 
 private:
-	void CScraper::DoBasicScrape();
-	void CompleteBasicScrapeToFullScrape();
-private:
 	// private functions and variables - not available via accessors or mutators
 	void ScrapeCommonCards();
 	void ScrapePlayerCards(const int chair);
@@ -153,7 +154,6 @@ private:
 	void ScrapeName(const int chair);
 	void ScrapeBalance(const int chair);
 	void ScrapeBet(const int chair);
-	void ScrapeButtons();
 	void ScrapePots();
 	void ScrapeLimits();
 	const double GetHandnumFromString(const CString t);
