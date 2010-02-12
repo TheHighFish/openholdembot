@@ -115,12 +115,28 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine, bool disable_
 			{
 				// Strip the LFCR off the last line (we need to add CRLF for all but the last line)
 				list.list_text.TrimRight("\r\n");
-				_formula.mHandList.Add(list); 
+				if (DoesFormulaAlreadyExist(list.list))
+				{
+					CString ErrorMessage = "Handlist does already exist: " + list.list;
+					MessageBox(0, ErrorMessage, "Error", 0);
+				}
+				else
+				{
+					_formula.mHandList.Add(list); 
+				}
 			}
 			else if (content == FTfunc) 
 			{
 				func.func_text.TrimRight("\r\n");
-				_formula.mFunction.Add(func);
+				if (DoesFormulaAlreadyExist(func.func))
+				{
+					CString ErrorMessage = "Function does already exist: " + func.func;
+					MessageBox(0, ErrorMessage, "Error", 0);
+				}
+				else
+				{
+					_formula.mFunction.Add(func);
+				}
 			}
 
 
@@ -216,12 +232,29 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine, bool disable_
 	if (content == FTlist) 
 	{
 		list.list_text.TrimRight("\r\n");
-		_formula.mHandList.Add(list); 
+		if (DoesFormulaAlreadyExist(list.list))
+		{
+			CString ErrorMessage = "Handlist does already exist: " + list.list;
+			MessageBox(0, ErrorMessage, "Error", 0);
+		}
+		else
+		{
+			_formula.mHandList.Add(list); 
+		}
 	}
 	else if (content == FTfunc) 
 	{
 		func.func_text.TrimRight("\r\n");
 		_formula.mFunction.Add(func);
+		if (DoesFormulaAlreadyExist(func.func))
+		{
+			CString ErrorMessage = "Function does already exist: " + func.func;
+			MessageBox(0, ErrorMessage, "Error", 0);
+		}
+		else
+		{
+			_formula.mFunction.Add(func);
+		}
 	}
 }
 
@@ -722,7 +755,15 @@ void CFormula::CopyFormulaFrom(CFormula *f)
 	{
 		list.list = f->formula()->mHandList[from_iter].list;
 		list.list_text = f->formula()->mHandList[from_iter].list_text;
-		_formula.mHandList.Add(list);
+		if (DoesFormulaAlreadyExist(list.list))
+		{
+			CString ErrorMessage = "Handlist does already exist: " + list.list;
+			MessageBox(0, ErrorMessage, "Error", 0);
+		}
+		else
+		{
+			_formula.mHandList.Add(list); 
+		}
 	}
 
 	// Copy name
@@ -849,4 +890,34 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 	pCUPDUPData->SetProgress("", 100, gui_enable_progress_dialog);
 
 	return true;
+}
+
+bool CFormula::DoesFormulaAlreadyExist(const CString new_name)
+{
+	int number_of_formulae = _formula.mFunction.GetCount(); 
+	for (int i=0; i<number_of_formulae; i++)
+	{
+		write_log(3, "CFormula::DoesFormulaAlreadyExist(): [%s] == [%s]\n",
+			new_name, _formula.mFunction[i].func);
+		if (new_name == _formula.mFunction[i].func)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool CFormula::DoesHandlistAlreadyExist(const CString new_name)
+{
+	int number_of_handlists = _formula.mHandList.GetCount(); 
+	for (int i=0; i<number_of_handlists; i++)
+	{
+		write_log(3, "CFormula::DoesHandlistAlreadyExist(): [%s] == [%s]\n",
+			new_name, _formula.mHandList[i].list);
+		if (new_name == _formula.mHandList[i].list)
+		{
+			return true;
+		}
+	}
+	return false;
 }
