@@ -33,7 +33,7 @@ void CTablemap::ClearIMap()
 	{
 		// First value in the map is some index, internally created in i$_insert()
 		// Second value in the map is our image.
-		iter->second.image->~RGBAImage();
+		delete iter->second.image;
 	}
 	// Remove the contents of the map.
 	_i$.clear();

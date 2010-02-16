@@ -110,6 +110,7 @@ struct SWholeMap
 
 extern class CTablemap 
 {
+	friend class CTablemapAccess;
 public:
 	// public functions
 	CTablemap(void);
@@ -128,12 +129,15 @@ public:
 	// public accessors
 	const ZMap *z$() { return &_z$; }
 	const SMap *s$() { return &_s$; }
-	const RMap *r$() { return &_r$; }
 	const TMap *t$(const int i) { if (i>=0 && i<=3) return &_t$[i]; else return NULL; }
 	const PMap *p$(const int i) { if (i>=0 && i<=3) return &_p$[i]; else return NULL; }
 	const HMap *h$(const int i) { if (i>=0 && i<=3) return &_h$[i]; else return NULL; }
 	const IMap *i$() { return &_i$; }
+	// Ongoing work: Making all the iterators private and providing
+	// accessor-functions in CTablemapAccess.
+	const RMap *r$() { return &_r$; }
 
+public:
 	/* commonly used strings */
 	const int nchairs()				{ SMapCI it = _s$.find("nchairs"); 
 									  if (it==_s$.end()) return 10;
