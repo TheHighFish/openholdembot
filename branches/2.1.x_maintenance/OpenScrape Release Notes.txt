@@ -4,7 +4,7 @@ BUG FIXES:
 - The code to modify or delete the character "(" failed,
   as the lookup of the font-type was not able to handle 
   the special case "( (N)" with 2 open brackets  
-  instead of usual one bracket "X (N)". That has been fixed. 
+  instead of usually one bracket "X (N)". That has been fixed. 
   Thanks to Funnydwag and Winny for reporting and reproducing the problem. 
   [THF]
 
