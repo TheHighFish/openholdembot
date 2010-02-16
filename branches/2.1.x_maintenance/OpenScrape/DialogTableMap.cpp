@@ -904,7 +904,7 @@ void CDlgTableMap::update_display(void)
 			m_Delete.EnableWindow(true);
 
 			// Display selected hash value record
-			int hash_type = strtoul(sel_text.Mid(sel_text.Find("(")+1, 1).GetString(), NULL, 10);
+			int hash_type = GetType(sel_text);
 			bool displayed = false;
 			for (HMapCI h_iter=p_tablemap->h$(hash_type)->begin(); h_iter!=p_tablemap->h$(hash_type)->end() && !displayed; h_iter++)
 			{
@@ -1246,7 +1246,7 @@ void CDlgTableMap::update_t$_display(void)
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
 
 	// Get record lookup info from name
-	int font_type = strtoul(sel_text.Mid(sel_text.Find("(")+1, 1).GetString(), NULL, 10);
+	int font_type = GetType(sel_text);
 	if (font_type<0 || font_type>3)
 		return;
 
@@ -1687,6 +1687,24 @@ void CDlgTableMap::OnBnClickedNew()
 	}
 }
 
+int CDlgTableMap::GetType(CString selected_text)
+{
+	int type = 0;
+	// Special case: The character "(", as here the string starts with "( (",
+	// e.g. "( (0), whereas the normal case is e..g. "x (0)".
+	CString LeftSide = selected_text.Left(3);
+	if (LeftSide == "( (")
+	{
+		type = strtoul(sel_text.Mid(sel_text.Find("( (")+3, 1).GetString(), NULL, 10);
+	}
+	else
+	{
+		// Normal case:
+		type = strtoul(sel_text.Mid(sel_text.Find("(")+1, 1).GetString(), NULL, 10);
+	}	
+	return type;
+}
+
 void CDlgTableMap::OnBnClickedDelete()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
@@ -1732,7 +1750,7 @@ void CDlgTableMap::OnBnClickedDelete()
 	
 	else if (type_text == "Fonts")
 	{
-		int font_type = strtoul(sel_text.Mid(sel_text.Find("(")+1, 1).GetString(), NULL, 10);
+		int font_type = GetType(sel_text);
 		if (font_type<0 || font_type>3)
 			return;
 
@@ -1740,7 +1758,7 @@ void CDlgTableMap::OnBnClickedDelete()
 
 		if (p_tablemap->t$_erase(font_type, hexmash))
 			item_deleted = true;
-	}
+ 	}
 	
 	else if (type_text == "Hash Points")
 	{
@@ -1754,7 +1772,7 @@ void CDlgTableMap::OnBnClickedDelete()
 	
 	else if (type_text == "Hashes")
 	{
-		int hash_type = strtoul(sel_text.Mid(sel_text.Find("(")+1, 1).GetString(), NULL, 10);
+		int hash_type = GetType(sel_text);
 		for (HMapCI h_iter=p_tablemap->h$(hash_type)->begin(); h_iter!=p_tablemap->h$(hash_type)->end(); h_iter++)
 		{
 			int start=0;
@@ -2068,7 +2086,7 @@ void CDlgTableMap::OnBnClickedEdit()
 	else if (type_text == "Fonts")
 	{
 		// Get selected font record
-		int font_group = strtoul(sel_text.Mid(sel_text.Find("(")+1, 1).GetString(), NULL, 10);
+		int font_group = GetType(sel_text);
 		if (font_group<0 || font_group>3)
 			return;
 
