@@ -74,6 +74,7 @@ protected:
 	void CreateHash(int hash_type);
 	void SaveNodeExpansionState(CArray <bool, bool> *node_state);
 	void RestoreNodeExpansionState(CArray <bool, bool> *node_state);
+	int GetType(CString selected_text)
 	HTREEITEM InsertGroupedRegion(CString itemText);
 
 	CStatic				m_BitmapFrame;
