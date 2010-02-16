@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="8,00"
 	Name="2. OpenScrape"
 	ProjectGUID="{24FC33AE-EECA-44F8-924C-D3658612C383}"
 	RootNamespace="OpenScrape"
@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;..\spirit-1.8.5-miniboost&quot;;..\hscroll-list-box"
+				AdditionalIncludeDirectories="..\spirit-1.8.5-miniboost;..\pokereval\include\inlines;..\pokereval\include;..\postgres;..\winmgr;..\hscroll-list-box"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
