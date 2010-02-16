@@ -1695,12 +1695,12 @@ int CDlgTableMap::GetType(CString selected_text)
 	CString LeftSide = selected_text.Left(3);
 	if (LeftSide == "( (")
 	{
-		type = strtoul(sel_text.Mid(sel_text.Find("( (")+3, 1).GetString(), NULL, 10);
+		type = strtoul(selected_text.Mid(selected_text.Find("( (")+3, 1).GetString(), NULL, 10);
 	}
 	else
 	{
 		// Normal case:
-		type = strtoul(sel_text.Mid(sel_text.Find("(")+1, 1).GetString(), NULL, 10);
+		type = strtoul(selected_text.Mid(selected_text.Find("(")+1, 1).GetString(), NULL, 10);
 	}	
 	return type;
 }
