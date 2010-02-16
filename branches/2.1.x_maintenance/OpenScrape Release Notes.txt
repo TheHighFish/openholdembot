@@ -1,10 +1,22 @@
-v2.1.0 2010-xx-xx
+v2.1.3 2010-xx-yy
 =================
+BUG FIXES:
+- The code to modify or delete the character "(" failed,
+  as the lookup of the font-type was not able to handle 
+  the special case "( (N)" with 2 open brackets  
+  instead of usual one bracket "X (N)". That has been fixed. 
+  Thanks to Funnydwag and Winny for reporting and reproducing the problem. 
+  [THF]
+
+v2.1.0 2009-12-26
+=================
+NEW STUFF
 - Added "scraperpredll" to valid s$strings list.  This new symbols instructs OpenHoldem to load the specified external scraperpre
   DLL file. [OpenHoldem]
 
 v2.0.3 2009-10-23
 =================
+BUG FIXES:
 - OS allowed to create fonts with more or less than 1 character,
   which caused malformed tablemaps.
   This is now prevented by a sanity-check. [THF]
