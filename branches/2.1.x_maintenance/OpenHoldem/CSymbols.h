@@ -750,13 +750,15 @@ public:
 	void	set_sym_isfinalanswer(const double d) { ENT _sym.isfinalanswer = d;}
 
 	// history
-	void	set_sym_nplayersround(const int i, const double d) { ENT if (i>=0 && i<=4) _sym.nplayersround[i] = d;}
+	// 0..3 are for flop..river, 4 is for the current round
+	// candidate for refactoring
+	void	set_sym_nplayersround(const int betround, const double d) { ENT if (betround>=0 && betround<=4) _sym.nplayersround[betround] = d;}
+	void	set_sym_nbetsround(const int betround, const double d) { ENT if (betround>=0 && betround<=4) _sym.nbetsround[betround] = d;}
+	void	set_sym_didchec(const int betround, const double d) { ENT if (betround>=0 && betround<=4) _sym.didchec[betround] = d;}
+	void	set_sym_didcall(const int betround, const double d) { ENT if (betround>=0 && betround<=4) _sym.didcall[betround] = d;}
+	void	set_sym_didrais(const int betround, const double d) { ENT if (betround>=0 && betround<=4) _sym.didrais[betround] = d;}
+	void	set_sym_didswag(const int betround, const double d) { ENT if (betround>=0 && betround<=4) _sym.didswag[betround] = d;}
 	void	set_sym_prevaction(const double d) { ENT _sym.prevaction = d;}
-	void	set_sym_nbetsround(const int i, const double d) { ENT if (i>=0 && i<=4) _sym.nbetsround[i] = d;}
-	void	set_sym_didchec(const int i, const double d) { ENT if (i>=0 && i<=4) _sym.didchec[i] = d;}
-	void	set_sym_didcall(const int i, const double d) { ENT if (i>=0 && i<=4) _sym.didcall[i] = d;}
-	void	set_sym_didrais(const int i, const double d) { ENT if (i>=0 && i<=4) _sym.didrais[i] = d;}
-	void	set_sym_didswag(const int i, const double d) { ENT if (i>=0 && i<=4) _sym.didswag[i] = d;}
 
 	//run$ ron$
 	void	set_sym_ron$royfl(const double d) { ENT _sym.ron$royfl = d;}

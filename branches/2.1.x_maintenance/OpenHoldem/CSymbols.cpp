@@ -3158,7 +3158,7 @@ void CSymbols::CalcHistory(void)
 	maxbet /= (p_tablelimits->bet()==0 ? 1 : p_tablelimits->bet());
 	if (maxbet > _sym.nbetsround[(int) _sym.br-1])
 	{
-		set_sym_nbetsround((int) p_tablelimits->bet(_sym.betround), maxbet);										// nbetsroundx
+		set_sym_nbetsround((int) _sym.br-1, maxbet);									// nbetsroundx
 	}
 	set_sym_nbetsround(4, _sym.nbetsround[(int) p_tablelimits->bet(_sym.betround)]);	// nbetsround
 }
@@ -4369,7 +4369,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "nclockspersecond", 16)==0 && strlen(a)==16)			return _sym.nclockspersecond;
 	if (memcmp(a, "ncps", 4)==0 && strlen(a)==4)						return _sym.ncps;
 
-	// HISTORY 
+	// HISTORY S
 	// Part 3(3)
 	if (memcmp(a, "prevaction", 10)==0 && strlen(a)==10)				return _sym.prevaction;
 	if (memcmp(a, "nbetsround", 10)==0 && strlen(a)==10)				return _sym.nbetsround[4];
