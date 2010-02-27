@@ -259,23 +259,22 @@ struct phistory_chair
 	bool postBlind;
 	bool seatIsPlaying;
 	bool cardsSeen;
-	bool hasFolded;
 	double startBalance;
 	double currentBalance;
 	double prevBalance;
 	double endBalance;
-	double currentBet;
+	double currentBet; 
 	double prevBet;
 	double totalIn[4];
-	double bet[4][4];
-	int action[4][4];
+	double bet[4][8];
+	int action[4][8];
 	int ac_dealpos;
 	int playersPlayingBits;
 	int bets;
 	int calls;
 	int actionCount;
 	CardMask hand;
-	HandVal handval;
+	HandVal handval; 
 };
 
 //player history structure		Demonthus 2010-02-05
