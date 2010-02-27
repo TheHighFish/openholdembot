@@ -21,12 +21,10 @@ CHandHistory *p_handhistory = NULL;
 
 CHandHistory::CHandHistory()
 {
-	time_t seconds;
-	time(&seconds);
-	srand((unsigned int) seconds);
-	double randomnum = rand();
 	//Attempt to create a random starting game number
-	gameNumber = ((int)pow(randomnum,2))%10000000;	
+	unsigned long seconds = time(NULL);
+	gameNumber = (100000000*p_sessioncounter->session_id()) + seconds/8; 
+
 	newRoundFlag=false;
 	for(int i=0;i<10;i++)_history.chair[i].currentBalance=0;
 }
@@ -376,7 +374,7 @@ const string CHandHistory::setDate()
 {
 	SYSTEMTIME			st;
 
-	GetSystemTime(&st);
+	GetLocalTime(&st);
 	stringstream ss;
 	string s;
 	ss<<st.wYear<<"-"<<st.wMonth<<"-"<<st.wDay<<" "<<st.wHour<<":"<<st.wMinute<<":"<<st.wSecond;
@@ -615,7 +613,6 @@ void CHandHistory::resetVars()
 		_history.chair[i].seatIsPlaying=true;
 		_history.chair[i].cardsSeen=false;
 		_history.chair[i].dealt=false;
-		_history.chair[i].hasFolded=false;
 		_history.chair[i].handval=0;
 		handText[i]="";
 		middleBet[i]=0;
@@ -627,7 +624,7 @@ void CHandHistory::resetVars()
 		for(int j=0;j<4;j++)
 		{
 			_history.chair[i].totalIn[j]=0;
-			for(int k=0;k<4;k++)
+			for(int k=0;k<8;k++)
 			{
 				_history.chair[i].bet[j][k]=0;
 				_history.chair[i].action[j][k]=0;
@@ -663,12 +660,13 @@ void CHandHistory::SetAction(int pnum, int action, double amount, int br)
 	_history.chair[pnum].action[br][count]=action;
 	_history.chair[pnum].bet[br][count]=amount;
 
-	if(_history.chair[pnum].actionCount<4)
+	if(_history.chair[pnum].actionCount<8)
 		_history.chair[pnum].actionCount++;
 }
 void CHandHistory::ReconstructHand(bool contested)
 {
 	bool			potbetinto = true;
+	bool			hasFolded[10];
 	double			rake = p_symbols->sym()->rake;
 	double			bblind = p_symbols->sym()->bblind;
 	double			calculatedPot = 0;
@@ -680,7 +678,10 @@ void CHandHistory::ReconstructHand(bool contested)
 	int				wt = _history.utg;
 
 	for(int i=0;i<nchairs;i++)
+	{
+		hasFolded[i] = false;
 		_history.chair[i].actionCount=0;
+	}
 
 	//Append to (or create if it does not exist) a handhistory file
 	//using the session id as the name
@@ -689,6 +690,8 @@ void CHandHistory::ReconstructHand(bool contested)
 	ss<<"handhistory/handhistory_"<<p_sessioncounter->session_id()<<".txt";
 	string s=ss.str()+" ";
 	outfile.open(s.c_str(), fstream::app);
+	outfile.precision(2);
+	outfile.setf(ios::fixed,ios::floatfield);
 
 	for(int i=0;i<nchairs;i++)
 		for(int j=0;j<4;j++)
@@ -723,7 +726,7 @@ void CHandHistory::ReconstructHand(bool contested)
 		outfile<<"Dealt to "<<playerName[userchair]<<" [ "<<_history.chair[userchair].card_player[1]<<_history.chair[userchair].card_player[0]
 		<<" "<<_history.chair[userchair].card_player[3]<<_history.chair[userchair].card_player[2]<<" ]"<<endl;
 	}
-	while(_history.chair[wt].action[betround][_history.chair[wt].actionCount]!=4&&betround<4)
+	while(betround<4)
 	{
 		string name = playerName[wt];
 		int count = _history.chair[wt].actionCount;
@@ -734,7 +737,7 @@ void CHandHistory::ReconstructHand(bool contested)
 			if(action==1)
 			{
 				outfile<<name<<": Fold"<<endl;
-				_history.chair[wt].hasFolded=true;
+				hasFolded[wt]=true;
 			}
 			else if(action==2)
 				if(bet==0)
@@ -751,7 +754,7 @@ void CHandHistory::ReconstructHand(bool contested)
 					outfile<<name<<": Raise $"<<bet<<endl;
 			else if(action==0)
 			{
-				if(!_history.chair[wt].hasFolded)
+				if(!hasFolded[wt])
 				{
 					betround++;
 					wt = postflopstart;
