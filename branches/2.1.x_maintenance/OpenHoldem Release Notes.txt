@@ -10,8 +10,6 @@ BUG FIXES:
 - CTableLimits: taking care of special cases like 0.02/0.05/0.10 and
   0.05/0.15/0.39 [Ganadai and THF]
 
-dailyodys_2007@yahoo.fr
-
 v2.1.2 2010.02.12
 =================
 BUG FIXES:
