@@ -449,15 +449,20 @@ void CTableLimits::SearchTableForSbAndBbValue()
 double CTableLimits::GuessSmallBlindFromBigBlind()
 {
 	write_log(3, "CTableLimits::GuessSmallBlindFromBigBlind()\n");
-	// Special case: 0.10/0.25
-	if (IsEqual(tablelimit_unreliable_input.bblind, 0.25))
-	{
-		return 0.10;
-	}
-	// Special case: 0.02/0.05
+	// Special case: 0.02/0.05/0.10
 	if (IsEqual(tablelimit_unreliable_input.bblind, 0.05))
 	{
 		return 0.02;
+	}
+	// Special case: 0.05/0.15/0.30
+	if (IsEqual(tablelimit_unreliable_input.bblind, 0.15))
+	{
+		return 0.05;
+	}
+	// Special case: 0.10/0.25/0.50
+	if (IsEqual(tablelimit_unreliable_input.bblind, 0.25))
+	{
+		return 0.10;
 	}
 	return (tablelimit_unreliable_input.bblind / 2);
 }

@@ -1076,12 +1076,12 @@ void CSymbols::CalcSymbols(void)
 			set_stacks_at_hand_start(i, p_scraper->player_balance(i) + p_scraper->player_bet(i));
 
 		// log new hand
-		if (player_card_cur[0]==CARD_NOCARD || player_card_cur[0]==CARD_NOCARD)
+		if (player_card_cur[0]==CARD_NOCARD || player_card_cur[1]==CARD_NOCARD)
 		{
 			strcpy_s(card0, 10, "NONE");
 			strcpy_s(card1, 10, "");
 		}
-		else if (player_card_cur[1]==CARD_BACK || player_card_cur[1]==CARD_BACK)
+		else if (player_card_cur[0]==CARD_BACK || player_card_cur[1]==CARD_BACK)
 		{
 			strcpy_s(card0, 10, "BACKS");
 			strcpy_s(card1, 10, "");
@@ -3160,7 +3160,7 @@ void CSymbols::CalcHistory(void)
 	{
 		set_sym_nbetsround((int) _sym.br-1, maxbet);									// nbetsroundx
 	}
-	set_sym_nbetsround(4, _sym.nbetsround[(int) p_tablelimits->bet(_sym.betround)]);	// nbetsround
+	set_sym_nbetsround(4, maxbet);	// nbetsround
 }
 
 

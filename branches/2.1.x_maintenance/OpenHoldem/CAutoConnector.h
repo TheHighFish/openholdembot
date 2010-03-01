@@ -17,9 +17,6 @@ public:
 public:
 	// public mutators
 	const HWND attached_hwnd() { return _attached_hwnd; }
-	#define ENT CSLock lock(m_critsec);
-	void set_attached_hwnd(const HWND h) { ENT _attached_hwnd = h; }
-	#undef ENT
 private:
 	void ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData(CString TableMapWildcard);
 	void ParseAllTableMapsToLoadConnectionData();
@@ -31,6 +28,9 @@ private:
 	int SelectTableMapAndWindowAutomatically(int Choices);
 private:
 	void Check_TM_Against_All_Windows_Or_TargetHWND(int TablemapIndex, HWND targetHWnd);
+	#define ENT CSLock lock(m_critsec);
+	void set_attached_hwnd(const HWND h) { ENT _attached_hwnd = h; }
+	#undef ENT
 private:
 	// private variables - use public accessors and public mutators to address these
 	HWND		_attached_hwnd;	 // Table that we are attached to
