@@ -97,7 +97,10 @@ void CHandHistory::roundStart()
 	if(p_symbols->sym()->currentbet[_history.sblindpos]==0)
 		SBfound=false;
 	else
+	{
 		_history.chair[_history.sblindpos].totalIn[0]=getSB(bblind);
+		//_history.chair[_history.sblindpos].bet[0][0] = getSB(bblind);
+	}
 
 	//Assign put value of bblind in total pot
 	_history.chair[_history.bblindpos].totalIn[0]=bblind;
@@ -264,7 +267,7 @@ void CHandHistory::scanPlayerChanges()
 					else if(temp==0)
 						SetAction(i, 3, _history.chair[i].currentBet, betround);
 					else 
-						SetAction(i, 3, (_history.chair[i].currentBet-_history.chair[i].prevBet), betround);
+						SetAction(i, 3, (_history.chair[i].currentBet-_history.chair[i].totalIn[betround-1]), betround);
 
 					_history.lpta = (i-1)%nchairs;	//Set _history.lpta to seat behind raiser
 					if(_history.lpta==-1)_history.lpta=nchairs-1;
@@ -285,7 +288,12 @@ void CHandHistory::scanPlayerChanges()
 					if(allin[i]==true)
 						SetAction(i, 2, _history.chair[i].prevBalance, prevround);
 					else
-						SetAction(i, 2, (maxBet-_history.chair[i].prevBet), prevround);
+					{
+						int br = prevround -1;
+						if(br>3)
+							br=3;
+						SetAction(i, 2, (maxBet-_history.chair[i].totalIn[br]), prevround);
+					}
 
 					_history.whosturn=(_history.whosturn+1)%nchairs;	//Increment _history.whosturn
 				}
@@ -675,6 +683,7 @@ void CHandHistory::ReconstructHand(bool contested)
 	int				dealerchair = (int) p_symbols->sym()->dealerchair;
 	int				betround = 0;
 	int				prevround = 0;
+	int				nplayersin = 0;
 	int				wt = _history.utg;
 
 	for(int i=0;i<nchairs;i++)
@@ -707,6 +716,7 @@ void CHandHistory::ReconstructHand(bool contested)
 			outfile<<"Seat "<<(i+1)<<": "<<playerName[i]<<" ( $"<<_history.chair[i].startBalance<<" in chips)";
 			if (i==dealerchair) outfile<<" DEALER"<<endl;
 			else outfile<<endl;
+			nplayersin++;
 		}
 	}
 	if(SBfound)
@@ -726,7 +736,7 @@ void CHandHistory::ReconstructHand(bool contested)
 		outfile<<"Dealt to "<<playerName[userchair]<<" [ "<<_history.chair[userchair].card_player[1]<<_history.chair[userchair].card_player[0]
 		<<" "<<_history.chair[userchair].card_player[3]<<_history.chair[userchair].card_player[2]<<" ]"<<endl;
 	}
-	while(betround<4)
+	while(betround<4&&nplayersin>1)
 	{
 		string name = playerName[wt];
 		int count = _history.chair[wt].actionCount;
@@ -738,6 +748,7 @@ void CHandHistory::ReconstructHand(bool contested)
 			{
 				outfile<<name<<": Fold"<<endl;
 				hasFolded[wt]=true;
+				nplayersin--;
 			}
 			else if(action==2)
 				if(bet==0)
