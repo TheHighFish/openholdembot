@@ -157,6 +157,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND(ID_POKERPRO_CONNECT, &CMainFrame::OnPokerproConnect)
 	ON_MESSAGE(WMA_SETWINDOWTEXT, OnSetWindowText)
 	ON_MESSAGE(WMA_DOCONNECT, &CMainFrame::OnConnectMessage)
+	ON_MESSAGE(WMA_DODISCONNECT, &CMainFrame::OnDisconnectMessage)
+	ON_MESSAGE(WMA_CONNECTEDHWND, &CMainFrame::OnConnectedHwndMessage)
 
 	ON_WM_SETCURSOR()
 	ON_WM_SYSCOMMAND()
