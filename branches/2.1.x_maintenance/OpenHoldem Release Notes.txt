@@ -1,4 +1,15 @@
-v2.1.3 2010.xx-yy
+v2.1.3 2010.03-03
+=================
+BUG FIXES:
+- Fixing a copy-and-paste-error in CFormula.cpp.
+  Thanks to Bibi34 for reporting. [THF]
+- Adding some forgotten code to the message-map.
+  Thanks to Vlad2048 for reporting. [Spew]
+- Fix for autoconnector-problems with manual connection
+  and exactly 1 non-served table left.
+  Thanks to Mad4it for reporting and helping to find the bug. [THF] 
+
+v2.1.3 2010.03-03
 =================
 BUG FIXES:
 - Fixing last known memory leak in CTablemap.
