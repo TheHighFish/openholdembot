@@ -883,9 +883,9 @@ int CAutoConnector::SelectTableMapAndWindowManually(int Choices)
 	STableList			tablelisthold;
 	CDlgSelectTable		cstd;
 	int					result = 0;
+	int					original_index_for_list_with_single_non_served_window;
 
 	write_log(3, "CAutoConnector::SelectTableMapAndWindowManually()\n");
-	
 	for (int i=0; i<Choices; i++) 
 	{
 		// Build list of tables, that do not yet get served.
@@ -899,11 +899,12 @@ int CAutoConnector::SelectTableMapAndWindowManually(int Choices)
 			tablelisthold.crect.right = g_tlist[i].crect.right;
 			tablelisthold.crect.bottom = g_tlist[i].crect.bottom;
 			cstd.tlist.Add(tablelisthold);
+			original_index_for_list_with_single_non_served_window = i;
 			write_log(3, "CAutoConnector: Adding window to the list [%s], [%i]\n",
 				g_tlist[i].title, g_tlist[i].hwnd);
 		}
 	}
-	int NumberOfNonAttachedTables = cstd.tlist.GetSize(); //???
+	int NumberOfNonAttachedTables = cstd.tlist.GetSize(); 
 	if (NumberOfNonAttachedTables == 0)
 	{
 		write_log(3, "CAutoConnector::SelectTableMapAndWindowManually(): all windows served; exiting\n");
@@ -914,7 +915,9 @@ int CAutoConnector::SelectTableMapAndWindowManually(int Choices)
 		// Exactly one window, not yet served.
 		// First (and only) item selected
 		write_log(3, "CAutoConnector::SelectTableMapAndWindowManually(): exactly one free table; choosing that one\n");
-		return 0;
+		// We have to return the index in the original list,
+		// not the index (0) in the temporary list of the dialog.
+		return original_index_for_list_with_single_non_served_window;
 	}
 	// Display table select dialog
 	write_log(3, "CAutoConnector::SelectTableMapAndWindowManually(): multiple free tables; going to display a dialog\n");

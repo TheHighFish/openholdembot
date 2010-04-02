@@ -2040,16 +2040,19 @@ void CSymbols::CalcPokerValues(void)
 	{
 	set_sym_isstraight(1);	 													// isstraight
 
-		// If it is an Ace high straight
+		// Higher straights are possible,
+		// * if I use only one of my cards and it is not an ace-high-straight
+		// * if one of my cards makes the bottom of the sdtraight
+		//   and it is not an ace-high-straight. !!!
 		if (StdDeck_RANK(HandVal_TOP_CARD(handval)) == 12 )
 		{
-		set_sym_ishistraight(1);												// ishistraight
+			set_sym_ishistraight(1);												// ishistraight
 		}
 	}
 
 	else if (HandVal_HANDTYPE(handval) == HandType_TRIPS)
 	{
-	set_sym_isthreeofakind(1);	 												// isthreeofakind
+		set_sym_isthreeofakind(1);	 												// isthreeofakind
 	}
 
 	else if (HandVal_HANDTYPE(handval) == HandType_TWOPAIR)
