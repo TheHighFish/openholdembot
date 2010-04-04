@@ -11,7 +11,7 @@ private:
 private:
 	void CheckKeyboardSettings();
 	void CheckColourDepth();
-	void CheckForMissingPerlLibraries();
+	void CheckForMissingMSVCRT();
 	void CheckFontSmoothing();
 } *p_configurationcheck;
 

@@ -10,10 +10,6 @@ CConfigurationCheck *p_configurationcheck = 0;
 // http://msdn.microsoft.com/en-us/goglobal/bb895996.aspx
 const TCHAR k_KeyboardLayout_UK_US_English[KL_NAMELENGTH] = "00000409";
 
-const int k_NumberOfRequiredLibraries = 3;
-char k_RequiredLibraries[k_NumberOfRequiredLibraries][13] = {"MSVCRT80.dll", 
-	"MSVCP80D.DLL", "MSVCR80D.DLL"};
-
 
 CConfigurationCheck::CConfigurationCheck()
 {
@@ -38,28 +34,45 @@ void CConfigurationCheck::CheckEverything()
 	}
 	if (prefs.configurationcheck_perl_dependencies())
 	{
-		CheckForMissingPerlLibraries();
+		CheckForMissingMSVCRT();
 	}
 
 }
 
-void CConfigurationCheck::CheckForMissingPerlLibraries()
+void CConfigurationCheck::CheckForMissingMSVCRT()
 {
-	for (int i=0; i<k_NumberOfRequiredLibraries; i++)
+	DWORD dwData;					
+	HKEY hKey;
+	DWORD dwType = REG_DWORD; 
+	DWORD dwSize = sizeof(DWORD)*2;
+	char p_szKey[64] = "SOFTWARE\\Microsoft\\DevDiv\\VC\\Servicing\\8.0\\RED\\1033\\";
+	bool libraries_installed = false;
+
+	if (RegOpenKeyEx(HKEY_LOCAL_MACHINE,
+                     p_szKey,
+                     0,
+                     KEY_QUERY_VALUE,
+                     &hKey) == ERROR_SUCCESS) 
 	{
-		HMODULE hMSVCRT = LoadLibrary(k_RequiredLibraries[i]);
-		if (hMSVCRT != NULL)
+		if(RegQueryValueEx(hKey, 
+						   "Install", 
+						   NULL, 
+						   &dwType, 
+						   (LPBYTE)&dwData, 
+						   &dwSize) == ERROR_SUCCESS && dwData == 1)
 		{
-			FreeLibrary(hMSVCRT);
+			libraries_installed = true;  
 		}
-		else
-		{
-			CString ErrorMessage = CString(k_RequiredLibraries[i]) +  CString(" could not be loaded.\n")
-				+ CString("That library may be required by Perl.\n")
-				+ CString("If you don't use Perl you may turn that warning off.\n")
-				+ CString("If your setup causes problems you should install the missing DLL(s).\n");
-			MessageBox(0, ErrorMessage, "Caution: Missing library", MB_OK|MB_ICONWARNING);
-		}
+	}
+	RegCloseKey(hKey);
+	if (!libraries_installed)
+	{
+		MessageBox(0, "Unable to detect\n"
+			"Microsoft Visual C++ 2005 redistributable runtime library.\n" 
+			"\n"
+			"This library is necessary for Perl users.\n"
+			"If you don't use Perl you may turn this warning off.",
+			"Caution: MSVCRT 8.0 missing", MB_OK|MB_ICONWARNING);
 	}
 }
 
