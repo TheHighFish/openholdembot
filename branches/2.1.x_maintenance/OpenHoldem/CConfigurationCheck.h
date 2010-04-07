@@ -13,6 +13,9 @@ private:
 	void CheckColourDepth();
 	void CheckForMissingMSVCRT();
 	void CheckFontSmoothing();
+private:
+	bool CheckOfPerlInstallationNecessary();
+	bool DoesRegistryKeyExist(CString registry_path, CString key_name);
 } *p_configurationcheck;
 
 #endif // INC_CCONFIGURATIONCHECK_H

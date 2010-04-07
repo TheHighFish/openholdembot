@@ -32,40 +32,55 @@ void CConfigurationCheck::CheckEverything()
 	{
 		CheckKeyboardSettings();
 	}
-	if (prefs.configurationcheck_perl_dependencies())
+	if (CheckOfPerlInstallationNecessary())
 	{
 		CheckForMissingMSVCRT();
 	}
 
 }
 
-void CConfigurationCheck::CheckForMissingMSVCRT()
+bool CConfigurationCheck::CheckOfPerlInstallationNecessary()
+{
+	// We better make that check dependend of the perl-preferences,
+	// instead of a separate option that might be turned off
+	// or might confuse other users.
+	return (prefs.perl_load_default_formula() || prefs.perl_load_interpreter());
+}
+
+bool CConfigurationCheck::DoesRegistryKeyExist(CString registry_path, CString key_name)
 {
 	DWORD dwData;					
 	HKEY hKey;
 	DWORD dwType = REG_DWORD; 
 	DWORD dwSize = sizeof(DWORD)*2;
-	char p_szKey[64] = "SOFTWARE\\Microsoft\\DevDiv\\VC\\Servicing\\8.0\\RED\\1033\\";
-	bool libraries_installed = false;
 
 	if (RegOpenKeyEx(HKEY_LOCAL_MACHINE,
-                     p_szKey,
+                     registry_path,
                      0,
                      KEY_QUERY_VALUE,
                      &hKey) == ERROR_SUCCESS) 
 	{
 		if(RegQueryValueEx(hKey, 
-						   "Install", 
+						   key_name, 
 						   NULL, 
 						   &dwType, 
 						   (LPBYTE)&dwData, 
 						   &dwSize) == ERROR_SUCCESS && dwData == 1)
 		{
-			libraries_installed = true;  
+			RegCloseKey(hKey);
+			return true;  
 		}
 	}
 	RegCloseKey(hKey);
-	if (!libraries_installed)
+	return false;
+}
+
+void CConfigurationCheck::CheckForMissingMSVCRT()
+{
+	char p_szKey[64] = "SOFTWARE\\Microsoft\\DevDiv\\VC\\Servicing\\8.0\\RED\\1033\\";
+	char p_szName[8] = "Install";
+
+	if (!DoesRegistryKeyExist(p_szKey, p_szName))
 	{
 		MessageBox(0, "Unable to detect\n"
 			"Microsoft Visual C++ 2005 redistributable runtime library.\n" 
