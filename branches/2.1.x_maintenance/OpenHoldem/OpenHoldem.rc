@@ -978,10 +978,8 @@ IDD_SAPREFS17 DIALOGEX 0, 0, 219, 154
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Check keyboard settings",IDC_CONFIGURATION_KEYBOARD_SETTINGS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,166,8
-    CONTROL         "Check Perl dependencies",IDC_CONFIGURATION_PERL_DEPENDENCIES,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,23,166,8
+    CONTROL         "Check keyboard settings (UK english or US english)",IDC_CONFIGURATION_KEYBOARD_SETTINGS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,176,8
 END
 
 
@@ -1283,9 +1281,10 @@ BEGIN
 
     IDD_SAPREFS17, DIALOG
     BEGIN
+        RIGHTMARGIN, 218
         VERTGUIDE, 4
         VERTGUIDE, 100
-        VERTGUIDE, 170
+        VERTGUIDE, 180
         BOTTOMMARGIN, 145
         HORZGUIDE, 16
         HORZGUIDE, 149

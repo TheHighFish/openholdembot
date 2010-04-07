@@ -24,7 +24,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CButton m_ConfigurationKeyboardSettings_Button;
-	CButton m_ConfigurationPerlDependencies_Button;
 	virtual BOOL OnInitDialog();
 
 protected:

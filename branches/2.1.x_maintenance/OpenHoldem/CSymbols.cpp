@@ -1922,6 +1922,26 @@ void CSymbols::CalcPositionsNonUserchair(void)
 	}
 }
 
+bool CSymbols::IsHigherStraightPossible(HandVal	handval)
+{
+	assert((HandVal_HANDTYPE(handval) == HandType_STRAIGHT));
+	if (StdDeck_RANK(HandVal_TOP_CARD(handval)) == StdDeck_Rank_ACE)
+	{
+		return false;												
+	}
+	// Otherwise:
+	// Check for all higher 5-card-straight,
+	// if only 2 or less are missing
+	int current_top_end = HandVal_TOP_CARD(handval);
+	for (int i=(current_top_end+1); i<=StdDeck_Rank_ACE; i++)
+	{
+		// TODO!!!
+		return true;
+	}
+	return false;
+}
+
+
 void CSymbols::CalcPokerValues(void)
 {
 	int				i = 0;
@@ -1981,7 +2001,7 @@ void CSymbols::CalcPokerValues(void)
 
 	set_sym_pcbits(0);
 	set_sym_pokerval(CalcPokerval(handval, nCards, &_sym.pcbits,					// pcbits
-									 p_scraper->card_player(_sym.userchair, 0), 
+				  				  p_scraper->card_player(_sym.userchair, 0), 
 								  p_scraper->card_player(_sym.userchair, 1)));		// pokerval
 
 	set_sym_npcbits(bitcount(_sym.pcbits));											// npcbits
@@ -2017,36 +2037,31 @@ void CSymbols::CalcPokerValues(void)
 		// If we have a pocket Ace in our flush
 		if (StdDeck_RANK(HandVal_TOP_CARD(handval)) == 12 && ((int)_sym.pcbits & 0x10))
 		{
-		set_sym_ishiflush(1);
+			set_sym_ishiflush(1);
 		}
 		// If we have a pocket King, and it's the second best card in our flush
 		else if (StdDeck_RANK(HandVal_SECOND_CARD(handval)) == 11 && ((int)_sym.pcbits & 0x8))
 		{
-		set_sym_ishiflush(1);
+			set_sym_ishiflush(1);
 		}
 		// If we have a pocket Queen, and it's the third best card in our flush
 		else if (StdDeck_RANK(HandVal_THIRD_CARD(handval)) == 10 && ((int)_sym.pcbits & 0x4))
 		{
-		set_sym_ishiflush(1);
+			set_sym_ishiflush(1);
 		}
 		// If we have a pocket Jack, and it's the fourth best card in our flush
 		else if (StdDeck_RANK(HandVal_FOURTH_CARD(handval)) == 9 && ((int)_sym.pcbits & 0x2))
 		{
-		set_sym_ishiflush(1);
+			set_sym_ishiflush(1);
 		}																		// <- ishiflush
 	}
 
 	else if (HandVal_HANDTYPE(handval) == HandType_STRAIGHT)
 	{
-	set_sym_isstraight(1);	 													// isstraight
-
-		// Higher straights are possible,
-		// * if I use only one of my cards and it is not an ace-high-straight
-		// * if one of my cards makes the bottom of the sdtraight
-		//   and it is not an ace-high-straight. !!!
-		if (StdDeck_RANK(HandVal_TOP_CARD(handval)) == 12 )
+	    set_sym_isstraight(true);	 													// isstraight
+		if (!IsHigherStraightPossible(handval))
 		{
-			set_sym_ishistraight(1);												// ishistraight
+			set_sym_ishistraight(true);
 		}
 	}
 
@@ -2057,7 +2072,7 @@ void CSymbols::CalcPokerValues(void)
 
 	else if (HandVal_HANDTYPE(handval) == HandType_TWOPAIR)
 	{
-	set_sym_istwopair(1); 														// istwopair
+		set_sym_istwopair(true); 													// istwopair
 	}
 
 	else if (HandVal_HANDTYPE(handval) == HandType_ONEPAIR)
@@ -2067,30 +2082,30 @@ void CSymbols::CalcPokerValues(void)
 		// hi lo med pair
 		if (nCards == 2)
 		{
-		set_sym_ishipair(1);													// ishipair
+			set_sym_ishipair(1);												// ishipair
 		}
 		else if (nCards >= 5)
 		{
 			if ((int) StdDeck_RANK(HandVal_TOP_CARD(handval)) >= hi_common_rank)
 			{
-			set_sym_ishipair(1);												// ishipair
+				set_sym_ishipair(1);											// ishipair
 			}
 			else if ((int) StdDeck_RANK(HandVal_TOP_CARD(handval)) < hi_common_rank &&
 					 (int) StdDeck_RANK(HandVal_TOP_CARD(handval)) > lo_common_rank)
 			{
-			set_sym_ismidpair(1);												// ismidpair
+				set_sym_ismidpair(1);											// ismidpair
 			}
 			else
 			{
-			set_sym_islopair(1);												// islopair
+				set_sym_islopair(1);											// islopair
 			}
 		}
 	}
 	else if (HandVal_HANDTYPE(handval) == HandType_NOPAIR)
 	{
-	set_sym_ishicard(1); 														// ishicard
+		set_sym_ishicard(1); 													// ishicard
 	}
-	set_sym_isfiveofakind(0);														// isfiveofakind
+	set_sym_isfiveofakind(0);													// isfiveofakind
 
 
 	///////////////////////////////////////////////////////////////////
@@ -2135,7 +2150,7 @@ void CSymbols::CalcPokerValues(void)
 		_chandval[(int)_sym.br-1] = (int)_sym.pokervalcommon&0xff000000; //change from previous handval assignment 2008-03-02
 		if (_sym.br>1 &&	_chandval[(int)_sym.br-1] > _chandval[(int)_sym.br-2])
 		{
-		set_sym_ishandupcommon(1);															// ishandupcommon
+			set_sym_ishandupcommon(1);														// ishandupcommon
 		}
 }
 

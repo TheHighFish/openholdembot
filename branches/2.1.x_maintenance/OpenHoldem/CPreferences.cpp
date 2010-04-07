@@ -191,7 +191,6 @@ void CPreferences::InitDefaults(void)
 	_rebuy_script = "Rebuy.exe";
 
 	// Configuration check
-	_configurationcheck_perl_dependencies = true;
 	_configurationcheck_keyboard_settings = true;
 
 	// Obscure
@@ -381,7 +380,6 @@ void CPreferences::ReadPreferences()
 		ReadReg("rebuy_script", &_rebuy_script);
 
 		// Configuration check
-		ReadReg("configurationcheck_perl_dependencies", &_configurationcheck_perl_dependencies);
 		ReadReg("configurationcheck_keyboard_settings", &_configurationcheck_keyboard_settings);
 	
 		// obscure

@@ -827,6 +827,7 @@ public:
 #undef ENT
 
 private:
+	bool	IsHigherStraightPossible(HandVal	handval);
 	void	set_sym_max_balance_conditionally(const double d) 
 	{ 
 		// No ENT necessary and allowed, as we do call set_sym_max_balance_conditionally
