@@ -18,7 +18,8 @@ DLL- and Perl-bots
 ==================
 OpenHoldem provides the opportunity to code a bot
 in C(++) or Perl, though that topic is considered to be a bit "advanced".
-You will find some demo-bots in the C++ and Perl-section of the forum.
+You will find some really good demo-bots in the C++ and Perl-section of the forum.
+Just register and say hello.
 
 LICENSE
 =======
