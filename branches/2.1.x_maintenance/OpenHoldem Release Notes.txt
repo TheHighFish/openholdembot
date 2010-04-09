@@ -10,6 +10,8 @@ BUG FIXES:
   Thanks to Mad4it for reporting and helping to find the bug. [THF] 
 - Configuration-checks: better test for MSVCRT 8.0,
   which is necessary for Perl. Thanks to F1x3r for providing the code. [THF]
+- Syntax highlighting now for *all* symbols.
+  Thanks to Sturmzealot for reporting. [THF]
 
 
 v2.1.3 2010.03-03
