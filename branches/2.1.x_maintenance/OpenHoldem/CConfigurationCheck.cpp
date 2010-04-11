@@ -35,6 +35,8 @@ void CConfigurationCheck::CheckEverything()
 	if (CheckOfPerlInstallationNecessary())
 	{
 		CheckForMissingMSVCRT();
+		CheckForMissingActivePerl();
+		CheckForPerlPath();
 	}
 
 }
@@ -46,49 +48,114 @@ bool CConfigurationCheck::CheckOfPerlInstallationNecessary()
 	// or might confuse other users.
 	return (prefs.perl_load_default_formula() || prefs.perl_load_interpreter());
 }
-
-bool CConfigurationCheck::DoesRegistryKeyExist(CString registry_path, CString key_name)
+bool CConfigurationCheck::OpenKey(CString registry_path)
 {
-	DWORD dwData;					
 	HKEY hKey;
-	DWORD dwType = REG_DWORD; 
-	DWORD dwSize = sizeof(DWORD)*2;
 
-	if (RegOpenKeyEx(HKEY_LOCAL_MACHINE,
-                     registry_path,
-                     0,
-                     KEY_QUERY_VALUE,
-                     &hKey) == ERROR_SUCCESS) 
+	if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, registry_path, 0, KEY_QUERY_VALUE, &hKey) == ERROR_SUCCESS) 
 	{
-		if(RegQueryValueEx(hKey, 
-						   key_name, 
-						   NULL, 
-						   &dwType, 
-						   (LPBYTE)&dwData, 
-						   &dwSize) == ERROR_SUCCESS && dwData == 1)
-		{
-			RegCloseKey(hKey);
-			return true;  
-		}
+		RegCloseKey(hKey);
+		return true;
 	}
 	RegCloseKey(hKey);
 	return false;
 }
 
+
+CString CConfigurationCheck::GetValue(int type, CString registry_path, CString key_name)
+{
+  DWORD dwData, nBytes, dwType;
+  CString value;
+  HKEY pKey;
+
+  // Open the Key
+  if (RegOpenKeyEx(HKEY_LOCAL_MACHINE,registry_path,0,KEY_QUERY_VALUE,&pKey) == ERROR_SUCCESS)
+  {
+    switch(type)
+    {
+      //REG_DWORD
+      case 0 :
+
+        if (RegQueryValueEx(pKey,key_name,NULL,&dwType,(LPBYTE)&dwData,&nBytes) == ERROR_SUCCESS)
+        {
+          value.Format("%d", dwData);
+          RegCloseKey(pKey);
+          return value;
+        }
+      //REG_EXPAND_SZ
+      case 1 :
+
+        if (RegQueryValueEx(pKey,key_name,NULL,&dwType,0,&nBytes) == ERROR_SUCCESS)
+        {
+          // Allocate string buffer
+          LPTSTR buffer = value.GetBuffer(nBytes/sizeof(TCHAR));
+          // Read string
+          VERIFY(RegQueryValueEx(pKey,key_name,NULL,0,(LPBYTE)buffer,&nBytes) == ERROR_SUCCESS);
+          // Release string buffer
+          value.ReleaseBuffer();
+          RegCloseKey(pKey);
+          return value;
+        }
+
+      default :
+        return NULL;
+    }
+  }
+}
+
 void CConfigurationCheck::CheckForMissingMSVCRT()
 {
-	char p_szKey[64] = "SOFTWARE\\Microsoft\\DevDiv\\VC\\Servicing\\8.0\\RED\\1033\\";
-	char p_szName[8] = "Install";
+	CString p_szKeyCRT = "SOFTWARE\\Microsoft\\DevDiv\\VC\\Servicing\\8.0\\RED\\1033\\";
+	CString p_szNameCRT = "Install";
+	bool installed = false;
 
-	if (!DoesRegistryKeyExist(p_szKey, p_szName))
+	if (OpenKey(p_szKeyCRT) && atoi(GetValue(0, p_szKeyCRT, p_szNameCRT)) == 1)
+	{
+		installed = true;
+	}
+	if (installed == false)
 	{
 		MessageBox(0, "Unable to detect\n"
-			"Microsoft Visual C++ 2005 redistributable runtime library.\n" 
+			"Microsoft Visual C++ 2005 redistributable runtime library.\n"
 			"\n"
 			"This library is necessary for Perl users.\n"
 			"If you don't use Perl you may turn this warning off.",
 			"Caution: MSVCRT 8.0 missing", MB_OK|MB_ICONWARNING);
 	}
+}
+
+void CConfigurationCheck::CheckForMissingActivePerl()
+{
+	CString p_szKeyAP = "SOFTWARE\\Activestate\\ActivePerl\\";
+
+	if (!OpenKey(p_szKeyAP))
+	{
+		MessageBox(0, "Unable to detect\n"
+			"ActiveState ActivePerl.\n" 
+			"\n"
+			"This version is required for Perl users.\n"
+			"If you installed ActivePerl manually or,\n"
+			"if you don't use Perl you may turn this warning off.",
+			"Caution: ActivePerl missing", MB_OK|MB_ICONWARNING);
+	}
+}
+
+void CConfigurationCheck::CheckForPerlPath()
+{
+  CString p_szKeyP = "SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment\\";
+  CString p_szNameP = "Path";
+
+  CString path = GetValue(1, p_szKeyP, p_szNameP);
+  path.MakeLower();
+
+  if (path.Find("perl") == -1)
+  {
+    	MessageBox(0, "Path\n"
+			"Perl was not correctly detected in your Path.\n"
+			"\n"
+			"If you don't use Perl you may turn this warning off.",
+			"Caution: Perl not found in %PATH%", MB_OK|MB_ICONWARNING);
+  }
 }
 
 void CConfigurationCheck::CheckKeyboardSettings()
@@ -117,7 +184,7 @@ void CConfigurationCheck::CheckColourDepth()
 	if (nBitsPerPixel < 24 && !prefs.disable_msgbox())
 		MessageBox(0, "It appears that your Display settings are not configured according to OpenHoldem specifications.\n"
 				   "24 bit color or higher is needed to reliably extract information from the poker client.\n\n"
-				   "For more info, look at the manual and the user forums", 
+				   "For more info, look at the manual and the user forums",
 				   "Caution: Color Depth Too Low", MB_OK|MB_ICONWARNING);
 }
 
@@ -126,9 +193,9 @@ void CConfigurationCheck::CheckFontSmoothing()
 	BOOL fontSmoothingEnabled = FALSE;
 	SystemParametersInfo(SPI_GETFONTSMOOTHING, 0, (LPVOID)&fontSmoothingEnabled, 0);
 	if (fontSmoothingEnabled && !prefs.disable_msgbox())
-		MessageBox(0, "It appears that font smoothing is enabled.\n" 
+		MessageBox(0, "It appears that font smoothing is enabled.\n"
 					"In order for OpenHoldem to reliably\n"
-					"extract information from the poker client\n" 
-					"you should disable Font Smoothing.", 
+					"extract information from the poker client\n"
+					"you should disable Font Smoothing.",
 					"Caution: Font smoothing is enabled", MB_OK|MB_ICONWARNING);
 }
