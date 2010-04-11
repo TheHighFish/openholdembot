@@ -8,11 +8,15 @@ BUG FIXES:
 - Fix for autoconnector-problems with manual connection
   and exactly 1 non-served table left.
   Thanks to Mad4it for reporting and helping to find the bug. [THF] 
-- Configuration-checks: better test for MSVCRT 8.0,
-  which is necessary for Perl. Thanks to F1x3r for providing the code. [THF]
 - Syntax highlighting now for *all* symbols.
   Thanks to Sturmzealot for reporting. [THF]
 
+NEW STUFF:
+- Configuration-checks (for Perl-users):
+  * testing for correct installation of Perl
+  * testing, if PATH-variable contains Perl-directory
+  * better test for MSVCRT 8.0, which is necessary for Perl. 
+  [F1x3r]
 
 v2.1.3 2010.03-03
 =================
