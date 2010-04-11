@@ -496,15 +496,27 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
 	// See if it matches the currently loaded table map
 	if (Check_TM_Against_Single_Window(TablemapIndex, hwnd, crect, title))
 	{
-		write_log(3, "CAutoConnector: Adding window candidate to the list: [%d]\n", hwnd);
-		tablelisthold.hwnd = hwnd;
-		tablelisthold.title = title;
-		tablelisthold.path = TablemapConnectionData[TablemapIndex].FilePath;
-		tablelisthold.crect.left = crect.left;
-		tablelisthold.crect.top = crect.top;
-		tablelisthold.crect.right = crect.right;
-		tablelisthold.crect.bottom = crect.bottom;
-		g_tlist.Add(tablelisthold);
+		// Filter out served tables already here,
+		// otherwise the other list used in the dialog
+		// to select windows manually will cause us lots of headaches,
+		// as the lists will be of different size 
+		// and the indexes will not match.
+		if (p_sharedmem->PokerWindowAttached(hwnd))
+		{
+			write_log(3, "CAutoConnector: Window candidate already served: [%d]\n", hwnd);
+		}
+		else
+		{
+			write_log(3, "CAutoConnector: Adding window candidate to the list: [%d]\n", hwnd);
+			tablelisthold.hwnd = hwnd;
+			tablelisthold.title = title;
+			tablelisthold.path = TablemapConnectionData[TablemapIndex].FilePath;
+			tablelisthold.crect.left = crect.left;
+			tablelisthold.crect.top = crect.top;
+			tablelisthold.crect.right = crect.right;
+			tablelisthold.crect.bottom = crect.bottom;
+			g_tlist.Add(tablelisthold);
+		}
 	}
 
 	return true;  // keep processing through entire list of windows
@@ -883,26 +895,22 @@ int CAutoConnector::SelectTableMapAndWindowManually(int Choices)
 	STableList			tablelisthold;
 	CDlgSelectTable		cstd;
 	int					result = 0;
-	int					original_index_for_list_with_single_non_served_window;
 
 	write_log(3, "CAutoConnector::SelectTableMapAndWindowManually()\n");
 	for (int i=0; i<Choices; i++) 
 	{
 		// Build list of tables, that do not yet get served.
-		if (!p_sharedmem->PokerWindowAttached(g_tlist[i].hwnd))
-		{
-			tablelisthold.hwnd = g_tlist[i].hwnd;
-			tablelisthold.title = g_tlist[i].title;
-			tablelisthold.path = g_tlist[i].path;
-			tablelisthold.crect.left = g_tlist[i].crect.left;
-			tablelisthold.crect.top = g_tlist[i].crect.top;
-			tablelisthold.crect.right = g_tlist[i].crect.right;
-			tablelisthold.crect.bottom = g_tlist[i].crect.bottom;
-			cstd.tlist.Add(tablelisthold);
-			original_index_for_list_with_single_non_served_window = i;
-			write_log(3, "CAutoConnector: Adding window to the list [%s], [%i]\n",
-				g_tlist[i].title, g_tlist[i].hwnd);
-		}
+		assert(!p_sharedmem->PokerWindowAttached(g_tlist[i].hwnd));
+		tablelisthold.hwnd = g_tlist[i].hwnd;
+		tablelisthold.title = g_tlist[i].title;
+		tablelisthold.path = g_tlist[i].path;
+		tablelisthold.crect.left = g_tlist[i].crect.left;
+		tablelisthold.crect.top = g_tlist[i].crect.top;
+		tablelisthold.crect.right = g_tlist[i].crect.right;
+		tablelisthold.crect.bottom = g_tlist[i].crect.bottom;
+		cstd.tlist.Add(tablelisthold);
+		write_log(3, "CAutoConnector: Adding window to the list [%s], [%i]\n",
+		g_tlist[i].title, g_tlist[i].hwnd);
 	}
 	int NumberOfNonAttachedTables = cstd.tlist.GetSize(); 
 	if (NumberOfNonAttachedTables == 0)
@@ -917,7 +925,8 @@ int CAutoConnector::SelectTableMapAndWindowManually(int Choices)
 		write_log(3, "CAutoConnector::SelectTableMapAndWindowManually(): exactly one free table; choosing that one\n");
 		// We have to return the index in the original list,
 		// not the index (0) in the temporary list of the dialog.
-		return original_index_for_list_with_single_non_served_window;
+		const int k_original_index_for_list_with_single_non_served_window = 0;
+		return k_original_index_for_list_with_single_non_served_window;
 	}
 	// Display table select dialog
 	write_log(3, "CAutoConnector::SelectTableMapAndWindowManually(): multiple free tables; going to display a dialog\n");
