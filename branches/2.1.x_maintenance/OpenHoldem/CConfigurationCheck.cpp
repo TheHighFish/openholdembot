@@ -10,7 +10,6 @@ CConfigurationCheck *p_configurationcheck = 0;
 // http://msdn.microsoft.com/en-us/goglobal/bb895996.aspx
 const TCHAR k_KeyboardLayout_UK_US_English[KL_NAMELENGTH] = "00000409";
 
-
 CConfigurationCheck::CConfigurationCheck()
 {
 	CheckEverything();
@@ -38,7 +37,6 @@ void CConfigurationCheck::CheckEverything()
 		CheckForMissingActivePerl();
 		CheckForPerlPath();
 	}
-
 }
 
 bool CConfigurationCheck::CheckOfPerlInstallationNecessary()
@@ -48,78 +46,88 @@ bool CConfigurationCheck::CheckOfPerlInstallationNecessary()
 	// or might confuse other users.
 	return (prefs.perl_load_default_formula() || prefs.perl_load_interpreter());
 }
+
 bool CConfigurationCheck::OpenKey(CString registry_path)
 {
 	HKEY hKey;
 
-	if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, registry_path, 0, KEY_QUERY_VALUE, &hKey) == ERROR_SUCCESS) 
+	if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, registry_path, 0, KEY_QUERY_VALUE, &hKey) == ERROR_SUCCESS)
 	{
 		RegCloseKey(hKey);
 		return true;
 	}
+
 	RegCloseKey(hKey);
 	return false;
 }
 
-
 CString CConfigurationCheck::GetValue(int type, CString registry_path, CString key_name)
 {
-  DWORD dwData, nBytes, dwType;
-  CString value;
-  HKEY pKey;
+	DWORD dwData, nBytes, dwType;
+	CString value;
+	HKEY pKey;
 
-  // Open the Key
-  if (RegOpenKeyEx(HKEY_LOCAL_MACHINE,registry_path,0,KEY_QUERY_VALUE,&pKey) == ERROR_SUCCESS)
-  {
-    switch(type)
-    {
-      //REG_DWORD
-      case 0 :
+	// Open the Key
+	if (RegOpenKeyEx(HKEY_LOCAL_MACHINE,registry_path,0,KEY_QUERY_VALUE,&pKey) == ERROR_SUCCESS)
+	{
+		switch(type)
+    		{
+      			//REG_DWORD
+      			case 0 :
 
-        if (RegQueryValueEx(pKey,key_name,NULL,&dwType,(LPBYTE)&dwData,&nBytes) == ERROR_SUCCESS)
-        {
-          value.Format("%d", dwData);
-          RegCloseKey(pKey);
-          return value;
-        }
-      //REG_EXPAND_SZ
-      case 1 :
+        			if (RegQueryValueEx(pKey,key_name,NULL,&dwType,(LPBYTE)&dwData,&nBytes) == ERROR_SUCCESS)
+        			{
+          				value.Format("%d", dwData);
+          				RegCloseKey(pKey);
+          				return value;
+        			}
 
-        if (RegQueryValueEx(pKey,key_name,NULL,&dwType,0,&nBytes) == ERROR_SUCCESS)
-        {
-          // Allocate string buffer
-          LPTSTR buffer = value.GetBuffer(nBytes/sizeof(TCHAR));
-          // Read string
-          VERIFY(RegQueryValueEx(pKey,key_name,NULL,0,(LPBYTE)buffer,&nBytes) == ERROR_SUCCESS);
-          // Release string buffer
-          value.ReleaseBuffer();
-          RegCloseKey(pKey);
-          return value;
-        }
+      			//REG_EXPAND_SZ
+      			case 1 :
 
-      default :
-        return NULL;
-    }
-  }
+        			if (RegQueryValueEx(pKey,key_name,NULL,&dwType,0,&nBytes) == ERROR_SUCCESS)
+        			{
+          				// Allocate string buffer
+          				LPTSTR buffer = value.GetBuffer(nBytes/sizeof(TCHAR));
+          				// Read string
+          				VERIFY(RegQueryValueEx(pKey,key_name,NULL,0,(LPBYTE)buffer,&nBytes) == ERROR_SUCCESS);
+          				// Release string buffer
+          				value.ReleaseBuffer();
+          				RegCloseKey(pKey);
+          				return value;
+        			}
+
+      			default :
+        			return NULL;
+    		}
+  	}
+
+  	else
+  	{
+    		return NULL;
+  	}
 }
 
 void CConfigurationCheck::CheckForMissingMSVCRT()
 {
 	CString p_szKeyCRT = "SOFTWARE\\Microsoft\\DevDiv\\VC\\Servicing\\8.0\\RED\\1033\\";
 	CString p_szNameCRT = "Install";
+
 	bool installed = false;
 
 	if (OpenKey(p_szKeyCRT) && atoi(GetValue(0, p_szKeyCRT, p_szNameCRT)) == 1)
 	{
 		installed = true;
 	}
+
 	if (installed == false)
 	{
 		MessageBox(0, "Unable to detect\n"
 			"Microsoft Visual C++ 2005 redistributable runtime library.\n"
 			"\n"
 			"This library is necessary for Perl users.\n"
-			"If you don't use Perl you may turn this warning off.",
+			"if you don't use Perl you may turn this warning off\n"
+			"by not loading the perl interpreter by default.",
 			"Caution: MSVCRT 8.0 missing", MB_OK|MB_ICONWARNING);
 	}
 }
@@ -131,11 +139,11 @@ void CConfigurationCheck::CheckForMissingActivePerl()
 	if (!OpenKey(p_szKeyAP))
 	{
 		MessageBox(0, "Unable to detect\n"
-			"ActiveState ActivePerl.\n" 
+			"ActiveState ActivePerl.\n"
 			"\n"
 			"This version is required for Perl users.\n"
-			"If you installed ActivePerl manually or,\n"
-			"if you don't use Perl you may turn this warning off.",
+			"if you don't use Perl you may turn this warning off\n"
+			"by not loading the perl interpreter by default.",
 			"Caution: ActivePerl missing", MB_OK|MB_ICONWARNING);
 	}
 }
@@ -146,14 +154,14 @@ void CConfigurationCheck::CheckForPerlPath()
   CString p_szNameP = "Path";
 
   CString path = GetValue(1, p_szKeyP, p_szNameP);
-  path.MakeLower();
 
-  if (path.Find("perl") == -1)
+  if (path.Find("Perl") == -1)
   {
     	MessageBox(0, "Path\n"
 			"Perl was not correctly detected in your Path.\n"
 			"\n"
-			"If you don't use Perl you may turn this warning off.",
+			"If you don't use Perl you may turn this warning off\n"
+			"by not loading the perl interpreter by default.",
 			"Caution: Perl not found in %PATH%", MB_OK|MB_ICONWARNING);
   }
 }
