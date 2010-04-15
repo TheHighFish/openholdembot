@@ -117,8 +117,8 @@ void CAutoConnector::ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData(
 	{
 		if (NumberOfTableMapsLoaded >= k_MaxNumberOfTableMaps)
 		{
-			write_log(1, "Error: Too many tablemaps. The autoconnector can only handle 25 TMs.", "Error", 0);
-			MessageBox(0, "To many tablemaps. The autoplayer can handle 25 at most.", "ERROR", 0);
+			write_log(1, "CAutoConnector: Error: Too many tablemaps. The autoconnector can only handle 25 TMs.", "Error", 0);
+			MessageBox(0, "To many tablemaps. The auto-connector can handle 25 at most.", "ERROR", 0);
 			return;
 		}
 		bFound = hFile.FindNextFile();
@@ -669,13 +669,14 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 					{
 						CString		t = "";
 						t.Format("Unable to find all symbols in scraper.dll");
+						MessageBox(0, t, "Error", 0);
 					}
 
 					theApp.UnloadScraperDLL();
 				}
 				else
 				{
-					write_log(1, "scraper.dll loaded, ProcessMessage and OverrideScraper found.\n");
+					write_log(1, "CAutoConnector: scraper.dll loaded, ProcessMessage and OverrideScraper found.\n");
 				}
 			}
 
@@ -766,7 +767,6 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 				site = site_i->second.text;
 
 			CString formula = p_formula->formula_name();
-
 			write_log(1, "\n*************************************************************\n"
 					  "TABLE RESET %s - %s(%s)\n"
 					  "*************************************************************\n",
@@ -789,7 +789,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 
 void CAutoConnector::Disconnect()
 {
-	write_log(3, "CAutoConnector::Disconnect()");
+	write_log(3, "CAutoConnector::Disconnect()\n");
 
 	// Wait for mutex - "forever" if necessary, as we have to clean up.
 	ASSERT(_autoconnector_mutex->m_hObject != NULL); 
@@ -797,16 +797,19 @@ void CAutoConnector::Disconnect()
 	_autoconnector_mutex->Lock(INFINITE);
 
 	// stop threads
+	write_log(3, "CAutoConnector: Stopping heartbeat-thread\n");
 	if (p_heartbeat_thread)
 	{
 		delete p_heartbeat_thread;
 		p_heartbeat_thread = NULL;
 	}
 
+	write_log(3, "CAutoConnector: Stopping PokerTracker thread\n");
 	if (p_pokertracker_thread)
 		p_pokertracker_thread->StopThread();
 
 	// Make sure autoplayer is off
+	write_log(3, "CAutoConnector: Stopping autoplayer\n");
 	p_autoplayer->set_autoplayer_engaged(false);
 
 	// Send "disconnect" to scraper DLL, if loaded
@@ -831,6 +834,7 @@ void CAutoConnector::Disconnect()
 	pMyMainWnd->EnableButtonsOnDisconnect();
 
 	// Mark table as not attached
+	write_log(3, "CAutoConnector: Marking table as not attached\n");
 	p_sharedmem->MarkPokerWindowAsUnAttached();
 
 	// Release mutex as soon as possible, after critical work is done

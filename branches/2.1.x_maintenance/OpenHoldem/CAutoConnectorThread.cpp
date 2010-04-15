@@ -31,11 +31,12 @@ UINT CAutoConnectorThread::AutoConnectorThreadFunction(LPVOID pParam)
 		{
 			if(p_autoconnector->TimeSinceLastFailedAttemptToConnect() > 1 /* seconds */)
 			{
+				write_log(3, "CAutoConnectorThread: going to call Connect()");
 				p_autoconnector->Connect(NULL);
 			}
 			else
 			{
-				write_log(3, "Reconnection blocked. Other instance failed previously.\n");
+				write_log(3, "CAutoConnectorThread: Reconnection blocked. Other instance failed previously.\n");
 			}
 		}
 		Sleep(1000); // 1000 milli-seconds
