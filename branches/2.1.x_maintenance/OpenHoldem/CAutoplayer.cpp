@@ -365,12 +365,6 @@ void CAutoplayer::DoSwag(void)
 		write_log(3, "...ending DoSwag early (no edit field).\n");
 		return;
 	}
-	if (!p_scraper->GetButtonState(3))//!!!
-	{
-		write_log(3, "...ending DoSwag early (no edit button).\n");
-		return;
-	}
-
 	::GetCursorPos(&cur_pos);
 
 	// If we get a lock, do the action
