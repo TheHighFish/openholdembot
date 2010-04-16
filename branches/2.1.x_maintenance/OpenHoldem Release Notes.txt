@@ -10,6 +10,10 @@ BUG FIXES:
   Thanks to Mad4it for reporting and helping to find the bug. [THF] 
 - Syntax highlighting now for *all* symbols.
   Thanks to Sturmzealot for reporting. [THF]
+- Removing unnecessary check for i3button in swag-code,
+  which did prevent using the normal raise-button for swag.
+  Thanks to BillW for pointing out the problem 
+  and for doing some research on Rays original design. [THF]
 
 NEW STUFF:
 - Configuration-checks (for Perl-users):
