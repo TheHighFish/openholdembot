@@ -192,6 +192,8 @@ void CPreferences::InitDefaults(void)
 
 	// Configuration check
 	_configurationcheck_keyboard_settings = true;
+	_configurationcheck_theme_settings = true;
+	_configurationcheck_font_settings = true;
 
 	// Obscure
 	_window_class_name = "OpenHoldem";
@@ -350,7 +352,7 @@ void CPreferences::ReadPreferences()
 			regValue.Format("trace_functions%d", i+1);
 			ReadReg(regValue, &_trace_functions[i]);
 		}
-		
+
 		// Logging and debugging
 		ReadReg("disable_msgbox", &_disable_msgbox);
 		ReadReg("log_level", &_log_level);
@@ -381,7 +383,9 @@ void CPreferences::ReadPreferences()
 
 		// Configuration check
 		ReadReg("configurationcheck_keyboard_settings", &_configurationcheck_keyboard_settings);
-	
+		ReadReg("configurationcheck_theme_settings", &_configurationcheck_theme_settings);
+		ReadReg("configurationcheck_font_settings", &_configurationcheck_font_settings);
+
 		// obscure
 		ReadReg("window_class_name", &_window_class_name);
 		ReadReg("mutex_name", &_mutex_name);

@@ -24,6 +24,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CButton m_ConfigurationKeyboardSettings_Button;
+	CButton m_ConfigurationThemeSettings_Button;
+	CButton m_ConfigurationFontSettings_Button;
 	virtual BOOL OnInitDialog();
 
 protected:
@@ -31,6 +33,7 @@ protected:
 
 public:
 	afx_msg void OnEnChangeMaxopponents();
+	afx_msg void OnBnClickedCheck1();
 };
 
 

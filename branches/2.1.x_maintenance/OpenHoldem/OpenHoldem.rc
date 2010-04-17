@@ -980,6 +980,10 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "Check keyboard settings (UK english or US english)",IDC_CONFIGURATION_KEYBOARD_SETTINGS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,176,8
+    CONTROL         "Check Windows Theme Settings",IDC_CONFIGURATION_THEME_SETTINGS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,23,176,10
+    CONTROL         "Check Font Smoothing Settings",IDC_CONFIGURATION_FONT_SETTINGS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,38,176,10
 END
 
 
