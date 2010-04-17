@@ -97,34 +97,34 @@ CString CConfigurationCheck::GetValue(CString mhive, int type, CString registry_
 	{
 		switch(type)
 		{
-		//REG_DWORD
-		case 0 :
+			//REG_DWORD
+			case 0 :
 
-			if(RegQueryValueEx(pKey,key_name,NULL,&dwType,(LPBYTE)&dwData,&nBytes)==ERROR_SUCCESS)
-			{
-				value.Format("%d", dwData);
-				RegCloseKey(pKey);
-				return value;
-			}
+				if(RegQueryValueEx(pKey,key_name,NULL,&dwType,(LPBYTE)&dwData,&nBytes)==ERROR_SUCCESS)
+				{
+					value.Format("%d", dwData);
+					RegCloseKey(pKey);
+					return value;
+				}
 
-		//REG_SZ, REG_EXPAND_SZ
-		case 1 :
+			//REG_SZ, REG_EXPAND_SZ
+			case 1 :
 
-			if(RegQueryValueEx(pKey,key_name,NULL,&dwType,0,&nBytes)==ERROR_SUCCESS)
-			{
-				// Allocate string buffer
-				LPTSTR buffer = value.GetBuffer(nBytes/sizeof(TCHAR));
-				// Read string
-				VERIFY(RegQueryValueEx(pKey,key_name,NULL,0,(LPBYTE)buffer,&nBytes)==ERROR_SUCCESS);
-				// Release string buffer
-				value.ReleaseBuffer();
-				//printf("Get SZ Value OK\n");
-				RegCloseKey(pKey);
-				return value;
-			}
+				if(RegQueryValueEx(pKey,key_name,NULL,&dwType,0,&nBytes)==ERROR_SUCCESS)
+				{
+					// Allocate string buffer
+					LPTSTR buffer = value.GetBuffer(nBytes/sizeof(TCHAR));
+					// Read string
+					VERIFY(RegQueryValueEx(pKey,key_name,NULL,0,(LPBYTE)buffer,&nBytes)==ERROR_SUCCESS);
+					// Release string buffer
+					value.ReleaseBuffer();
+					//printf("Get SZ Value OK\n");
+					RegCloseKey(pKey);
+					return value;
+				}
 
-		default :
-			return NULL;
+			default :
+				return NULL;
 		}
 	}
 	else
@@ -183,12 +183,9 @@ void CConfigurationCheck::CheckForClassicalTheme()
 		classic_theme = true;
 	}
 
-	else if (OpenKey("HKCU", p_szKeyThemeActive))
+	else if (atoi(GetValue("HKCU", 1, p_szKeyThemeActive, p_szNameThemeActive)) == 0)
 	{
-		if (atoi(GetValue("HKCU", 1, p_szKeyThemeActive, p_szNameThemeActive)) == 0)
-		{
-			classic_theme = true;
-		}
+		classic_theme = true;
 	}
 
 	if (classic_theme == false)
@@ -211,9 +208,9 @@ void CConfigurationCheck::CheckForFontSmoothing()
 
 	bool font_smoothing = true;
 
-	if (OpenKey("HKCU", p_szKeyFontSmoothing))
+	if (atoi(GetValue("HKCU", 1, p_szKeyFontSmoothing, p_szNameFontSmooth)) == 0)
 	{
-		if (atoi(GetValue("HKCU", 1, p_szKeyFontSmoothing, p_szNameFontSmooth)) == 0)
+		if (atoi(GetValue("HKCU", 0, p_szKeyFontSmoothing, p_szNameFontSmoothType)) == 0)
 		{
 			font_smoothing = false;
 		}
@@ -221,7 +218,7 @@ void CConfigurationCheck::CheckForFontSmoothing()
 
 	if (font_smoothing == true)
 	{
-		if (OpenKey("HKCU", p_szKeyFontSmoothing))
+		if (atoi(GetValue("HKCU", 1, p_szKeyFontSmoothing, p_szNameFontSmooth)) == 2)
 		{
 			int FontSmoothType = atoi(GetValue("HKCU", 0, p_szKeyFontSmoothing, p_szNameFontSmoothType));
 
@@ -255,7 +252,7 @@ void CConfigurationCheck::CheckForMissingMSVCRT()
 
 	bool installed = false;
 
-	if (OpenKey("HKLM", p_szKeyCRT) && atoi(GetValue("HKLM", 0, p_szKeyCRT, p_szNameCRT)) == 1)
+	if (atoi(GetValue("HKLM", 0, p_szKeyCRT, p_szNameCRT)) == 1)
 	{
 		installed = true;
 	}
