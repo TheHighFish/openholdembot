@@ -1,0 +1,226 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Outdated Features and Incompatibilities between OpenHoldem and WinHoldem
+\end_layout
+
+\begin_layout Standard
+The original main goal of the OpenHoldem development team was the attempt
+ to create a WinHoldem-compatible botting-platform to support existing bots,
+ DLLs and TableMaps.
+ However there has been functionality such as 
+\begin_inset Quotes eld
+\end_inset
+
+Teaming
+\begin_inset Quotes erd
+\end_inset
+
+, that always has been a tabu for the OpenHoldem development team.
+ Other functionality did never get implemented due to lack of documentation
+ and practical relevance.
+ And now that OpenHoldem is far more advanced and WinHoldem is practically
+ dead, backward-compatibility is no longer such an important issue.
+ Recently the development team does revisit some features that look a bit
+ mal-designed and tries to improve them carefully, trying to affect the
+ end-user as little as possible.
+\end_layout
+
+\begin_layout Standard
+This chapter will tell you about such incompatibilities.
+\end_layout
+
+\begin_layout Section
+No collusion aka 
+\begin_inset Quotes eld
+\end_inset
+
+Teaming
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+OpenHoldem does not support any kind of collusion.
+ This does affect the "friend"-symbols, that do now consider only the user
+ as friend.
+ There is no support for WinHoldems WinTellem-server and card-sharing either
+ because such features are illegal and --- even more important --- because
+ we consider them unfair too.
+\end_layout
+
+\begin_layout Section
+TableMaps
+\end_layout
+
+\begin_layout Standard
+Table Maps are in a different format due to hypothetical copyright-issues;
+ conversion of a WinHoldem "profile" to a OpenHoldem "Table Map" is possible
+ if you open the WH profile in OpenScrape (though this is no longer of any
+ practical relevance, as all WinHoldem-
+\begin_inset Quotes erd
+\end_inset
+
+profiles
+\begin_inset Quotes erd
+\end_inset
+
+ are supposed to be outdated and there is no longer any maintenance going
+ on).
+\end_layout
+
+\begin_layout Section
+Formula-File-Format
+\end_layout
+
+\begin_layout Standard
+The formula is saved in a single file instead of two.
+ It uses the extension *.ohf instead of *.whf and *.whx.
+ Old WH-formulae will be converted once they get saved.
+ OpenHoldem does still use a plain-text-format, so *.ohf-files can be edited
+ using your favourite text-editor.
+ 
+\end_layout
+
+\begin_layout Section
+Standard-Functions
+\end_layout
+
+\begin_layout Standard
+OpenHoldem got 3 new standard-functions: f$prefold, f$delay and f$chat.
+ 
+\end_layout
+
+\begin_layout Standard
+f$play will soon get replaced by f$sitin, f$sitout and f$leave in OpenHoldem
+ 2.2.0, as that separate functions are a much cleaner way to handle these
+ decisions.
+\end_layout
+
+\begin_layout Standard
+f$evrais and f$evcall have been degraded to user-defined-functions, as they
+ are of no general use for the majority of pokerbots.
+ 
+\end_layout
+
+\begin_layout Section
+ManualMode
+\end_layout
+
+\begin_layout Standard
+ManualMode is not directly integrated into OpenHoldem, but became a stand-alone
+ application.
+ This did simplify the GUI of OpenHoldem extremely and made it far more
+ easy to use.
+ 
+\end_layout
+
+\begin_layout Section
+Statistic-symbols: 
+\begin_inset Quotes eld
+\end_inset
+
+risk of ruin
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The symbols to calculate 
+\begin_inset Quotes eld
+\end_inset
+
+risk of ruin
+\begin_inset Quotes erd
+\end_inset
+
+ have never been implemented due to lack of documentation and lack of practical
+ relevance.
+ As of OpenHoldem 2.0.0 the risk-of-ruin-symbols are officially abolished
+ and removed from the code-base.
+ The original documentation for these symbols can be found here: 
+\end_layout
+
+\begin_layout Itemize
+WinHoldEm Help - Formula Editor (
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.winholdem.net/help/help-formula.html
+\end_layout
+
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+WinHoldem-Forum: Risk Of Ruin (
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://forum.winholdem.net/wbb/viewtopic.php?t=2120
+\end_layout
+
+\end_inset
+
+)
+\end_layout
+
+\end_body
+\end_document
