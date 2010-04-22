@@ -3,7 +3,7 @@
 
 #include <boost/spirit/tree/ast.hpp>
 //!!!#include "..\pokereval\include\handval.h"
-#include "MagicNumbers.h"
+#include "../../OpenHoldem/MagicNumbers.h"
 
 typedef boost::spirit::node_val_data_factory<const char *> int_factory_t;
 
