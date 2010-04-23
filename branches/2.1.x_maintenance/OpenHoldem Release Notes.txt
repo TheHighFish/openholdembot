@@ -1,4 +1,4 @@
-v2.1.4 2010.xx.yy
+v2.1.4 2010.04.23
 =================
 BUG FIXES:
 - Fixing a copy-and-paste-error in CFormula.cpp.
@@ -16,7 +16,9 @@ BUG FIXES:
   and for doing some research on Rays original design. [THF]
 
 NEW STUFF:
-- Configuration-checks (for Perl-users):
+- Configuration-checks:
+  * Font-smoothing
+  * Windows theme
   * testing for correct installation of Perl
   * testing, if PATH-variable contains Perl-directory
   * better test for MSVCRT 8.0, which is necessary for Perl. 
