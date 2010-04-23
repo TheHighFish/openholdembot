@@ -1,0 +1,28 @@
+V2.0.4 2009-xx-yy
+=================
+BUG FIXES:
+- OHReplay used a buffer of 3 bytes when creating filenames with 6-digit number.
+  Thanks to Pokerage and BillW for reporting and to Poker_Dog for providing the fix. [THF]
+
+v2.0.3 2009-10-23
+=================
+BUG FIXES:
+- OpenHoldem and OHReplay use now 6-digit-numbers for replayframes. [THF]
+
+v2.0.0 2009-05-22
+=================
+BUG FIXES:
+MAINTENANCE:
+- Removal of identifying information from Properties/Version display in Windows Explorer. [OpenHoldem]
+
+NEW STUFF:
+
+
+v1.0.1 2008-10-21
+=================
+MAINTENANCE - All level 3 compiler warnings have been addressed.
+
+
+v1.0.0 2008-03-15
+=================
+- Initial public release.
