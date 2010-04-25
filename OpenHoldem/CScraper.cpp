@@ -29,6 +29,11 @@ CScraper::CScraper(void)
 	ClearScrapeAreas();
 }
 
+CScraper::~CScraper(void)
+{
+	ClearScrapeAreas();
+}
+
 void CScraper::ClearScrapeAreas(void)
 {
 	for (int i=0; i<k_number_of_community_cards; i++)

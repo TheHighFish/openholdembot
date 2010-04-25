@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;..\spirit-1.8.5-miniboost&quot;;..\pokereval\include;..\postgres;..\winmgr;&quot;..\hscroll-list-box&quot;"
+				AdditionalIncludeDirectories="&quot;..\spirit-1.8.5-miniboost&quot;;..\pokereval\include;..\pokereval\include\inlines;..\postgres;..\winmgr;&quot;..\hscroll-list-box&quot;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;OEMRESOURCE"
 				MinimalRebuild="false"
 				ExceptionHandling="1"
@@ -581,6 +581,10 @@
 							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
 						/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\CTablemapAccess.cpp"
+					>
 				</File>
 			</Filter>
 			<Filter
@@ -1312,6 +1316,10 @@
 					RelativePath="..\CTablemap\CTablemap.h"
 					>
 				</File>
+				<File
+					RelativePath=".\CTableMapAccess.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="CCritSec"
@@ -1350,6 +1358,10 @@
 				</File>
 				<File
 					RelativePath=".\DialogRename.h"
+					>
+				</File>
+				<File
+					RelativePath=".\DialogSAPrefs9.h"
 					>
 				</File>
 				<File
@@ -1449,10 +1461,6 @@
 					</File>
 					<File
 						RelativePath=".\DialogSAPrefs8.h"
-						>
-					</File>
-					<File
-						RelativePath=".\DialogSAPrefs9.h"
 						>
 					</File>
 					<File

@@ -3,6 +3,8 @@
 
 #include "..\CCritSec\CCritSec.h"
 
+extern long int	_heartbeat_counter;
+
 extern class CHeartbeatThread
 {
 public:
@@ -17,7 +19,8 @@ public:
 
 public:
 	// public accessors
-	const bool				replay_recorded_this_turn() { return _replay_recorded_this_turn; }
+	bool		replay_recorded_this_turn() { return _replay_recorded_this_turn; }
+	long int	heartbeat_counter() { return _heartbeat_counter; }
 
 public:
 #define ENT CSLock lock(m_critsec);
@@ -33,11 +36,10 @@ private:
 	// private functions and variables - not available via accessors or mutators
 	static UINT HeartbeatThreadFunction(LPVOID pParam);
 
-	HANDLE		_m_stop_thread;
-	HANDLE		_m_wait_thread;
+	HANDLE			_m_stop_thread;
+	HANDLE			_m_wait_thread;
 
-	CCritSec	m_critsec;
-
+	CCritSec		m_critsec;
 } *p_heartbeat_thread;
 
 #endif //INC_CHEARTBEATTHREAD_H
