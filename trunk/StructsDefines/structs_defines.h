@@ -2,8 +2,8 @@
 #define INC_STRUCTS_DEFINES_H
 
 #include <boost/spirit/tree/ast.hpp>
-//!!!#include "..\pokereval\include\handval.h"
-#include "../../OpenHoldem/MagicNumbers.h"
+//#include "..\pokereval\include\handval.h" //!!!
+#include "..\OpenHoldem\MagicNumbers.h"
 
 typedef boost::spirit::node_val_data_factory<const char *> int_factory_t;
 
@@ -86,8 +86,6 @@ struct phistory_chair
 	int bets;
 	int calls;
 	int actionCount;
-	CardMask hand;
-	HandVal handval; 
 };
 
 //player history structure		Demonthus 2010-02-05
