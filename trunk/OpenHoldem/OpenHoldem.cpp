@@ -29,6 +29,7 @@
 #include "CStableFramesCounter.h"
 #include "CSymbols.h"
 #include "CTableLimits.h"
+#include "CTablemapAccess.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CValidator.h"
 #include "CVersus.h"
@@ -93,6 +94,7 @@ void COpenHoldemApp::InstanciateAllSingletonsExceptSessionCounter()
 	if (!p_lazyscraper)	p_lazyscraper = new CLazyScraper;
 	if (!p_symbols)  p_symbols = new CSymbols;
 	if (!p_tablemap)  p_tablemap = new CTablemap;
+	if (!p_tablemap_access)  p_tablemap_access = new CTablemapAccess;
 	if (!p_formula)  p_formula = new CFormula;
 	if (!p_autoplayer)  p_autoplayer = new CAutoplayer(false, prefs.mutex_name());
 	if (!p_pokertracker_thread)  p_pokertracker_thread = new CPokerTrackerThread;
@@ -128,6 +130,7 @@ void COpenHoldemApp::DeleteAllSingletons()
 	if (p_pokertracker_thread)	{ delete p_pokertracker_thread; p_pokertracker_thread = NULL; }
 	if (p_autoplayer)  { delete p_autoplayer; p_autoplayer = NULL; }
 	if (p_formula)  { delete p_formula; p_formula = NULL; }
+	if (p_tablemap_access)  { delete p_tablemap_access; p_tablemap_access = NULL; }
 	if (p_tablemap)  { delete p_tablemap; p_tablemap = NULL; }
 	if (p_symbols)  { delete p_symbols; p_symbols = NULL; }
 	if (p_lazyscraper)	{ delete p_lazyscraper; p_lazyscraper = NULL; }

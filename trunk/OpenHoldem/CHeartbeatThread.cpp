@@ -25,10 +25,13 @@
 
 CHeartbeatThread	*p_heartbeat_thread = NULL;
 CRITICAL_SECTION	CHeartbeatThread::cs_update_in_progress;
+long int			_heartbeat_counter = 0;
 
 CHeartbeatThread::CHeartbeatThread()
 {
 	InitializeCriticalSectionAndSpinCount(&cs_update_in_progress, 4000);
+
+	_heartbeat_counter = 0;
 
 	// Create events
 	_m_stop_thread = CreateEvent(0, TRUE, FALSE, 0);
@@ -73,6 +76,8 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 	int					nbytes = 0, result = 0;
 	fd_set				fd;
 	timeval				tv;
+
+	_heartbeat_counter++;
 
 	// Seed the RNG
 	srand((unsigned)GetTickCount());
