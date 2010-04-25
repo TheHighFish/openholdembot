@@ -362,24 +362,24 @@ private:
 	unsigned int		_swag_delay_1;
 	unsigned int		_swag_delay_2;
 	unsigned int		_swag_delay_3;
-	bool			_ap_auto;
-	bool			_focus_detect;
-	bool			_swag_use_comma;
-	bool			_calc_only_my_turn;
-	bool			_need_balance_stability;
+	bool				_ap_auto;
+	bool				_focus_detect;
+	bool				_swag_use_comma;
+	bool				_calc_only_my_turn;
+	bool				_need_balance_stability;
 
 	// Dll extension
-	bool			_dll_always_send_state;
-	bool			_dll_load_on_startup;
-	CString			_dll_name;
+	bool				_dll_always_send_state;
+	bool				_dll_load_on_startup;
+	CString				_dll_name;
 
 	// Scraper
 	unsigned int		_scrape_delay;
 
 	// Symbols
-	double			_sym_av_time;
-	CString			_sym_handrank_value;
-	bool			_sym_disable_caching;
+	double				_sym_av_time;
+	CString				_sym_handrank_value;
+	bool				_sym_disable_caching;
 
 	// ICM
 	double			_icm_prize1;
@@ -392,7 +392,7 @@ private:
 	bool			_replay_record;
 	bool			_replay_record_every_change_playing;
 	bool			_replay_record_every_change;
-	int			_replay_max_frames;
+	int				_replay_max_frames;
 
 	// Poker Tracker
 	CString			_pt_version;
@@ -402,8 +402,8 @@ private:
 	CString			_pt_user;
 	CString			_pt_pass;
 	bool			_pt_disable;
-	int			_pt_update_delay;
-	int			_pt_cache_refresh;
+	int				_pt_update_delay;
+	int				_pt_cache_refresh;
 
 	// Perl
 	CString			_perl_default_formula;
@@ -413,12 +413,12 @@ private:
 
 	//  PokerChat
 	bool			_chat_enabled;
-	int			_chat_min_delay;
-	int			_chat_random_delay;
+	int				_chat_min_delay;
+	int				_chat_random_delay;
 
 	// Log Symbol
 	bool			_log_symbol_enabled;
-	int			_log_symbol_max_log;
+	int				_log_symbol_max_log;
 
 	// Tracing
 	bool			_trace_enabled;
@@ -426,9 +426,9 @@ private:
 
 	// Logging & MessageBox
 	bool			_disable_msgbox;
-	int			_log_level;
-	int			_log_level_pt;
-	int			_log_max_logsize;
+	int				_log_level;
+	int				_log_level_pt;
+	int				_log_max_logsize;
 
 	// PPro
 	CString			_ppro_hostname;
@@ -469,7 +469,7 @@ private:
 	double			_bblind;
 	double			_bbet;
 	double			_ante;
-	int			_gametype;
+	int				_gametype;
 
 	// Formula editor
 	bool			_expand_auto;
@@ -479,22 +479,22 @@ private:
 	bool			_expand_udf;
 	bool			_udf_sort;
 	bool			_udf_group;
-	int			_equal;
-	int			_precision;
+	int				_equal;
+	int				_precision;
 
 	// Debug logging
 	bool			_fdebuglog;
 	bool			_fdebuglog_myturn;
 
 	// Validator
-	int			_validator_enabled;
+	int				_validator_enabled;
 	bool			_validator_stop_on_error;
 	bool			_validator_use_heuristic_rules;
 	bool			_validator_shoot_replayframe_on_error;
 
 	// Auto-connector
-	int			_autoconnector_connection_method;
-	int			_autoconnector_when_to_connect;
+	int				_autoconnector_connection_method;
+	int				_autoconnector_when_to_connect;
 	bool			_autoconnector_close_when_table_disappears;
 
 	// GUI
@@ -505,7 +505,7 @@ private:
 	bool			_rebuy_condition_no_cards;
 	bool			_rebuy_condition_change_in_handnumber;
 	bool			_rebuy_condition_heuristic_check_for_occlusion;
-	int			_rebuy_minimum_time_to_next_try;
+	int				_rebuy_minimum_time_to_next_try;
 	CString			_rebuy_script;
 
 	// Configuration check
@@ -514,7 +514,7 @@ private:
 	bool			_configurationcheck_font_settings;
 
 	// Misc
-	int			_scraper_zoom;
+	int				_scraper_zoom;
 
 	// Obscure
 	CString			_window_class_name;
