@@ -31,65 +31,148 @@
 // CDlgFormulaScintilla dialog
 CDlgFormulaScintilla	*m_formulaScintillaDlg = NULL;
 
-char * keywords = "ismanual isppro site nchairs isbring session handnumber "
-				  "sitename$ network$ swagdelay allidelay swagtextmethod potmethod activemethod rake nit bankroll bblind sblind "
-				  "ante lim isnl ispl isfl sraiprev sraimin sraimax istournament handrank "
-				  "handrank169 handrank2652 handrank1326 handrank1000 handrankp chair userchair "
-				  "dealerchair raischair chair$ chairbit$ betround br betposition dealposition "
-				  "callposition seatposition dealpositionrais betpositionrais prwin prtie prlos "
-				  "random randomhand randomround randomround1 randomround2 randomround3 randomround4 "
-				  "defcon isdefmode isaggmode balance balance0 "
-				  "balance1 balance2 balance3 balance4 balance5 balance6 balance7 balance8 balance9 "
-				  "stack0 stack1 stack2 stack3 stack4 stack5 stack6 stack7 stack8 stack9 currentbet "
-				  "currentbet0 currentbet1 currentbet2 currentbet3 currentbet4 currentbet5 currentbet6 "
-				  "currentbet7 currentbet8 currentbet9 call bet bet1 bet2 bet3 bet4 pot potcommon "
-				  "potplayer callshort raisshort nbetstocall nbetstorais ncurrentbets ncallbets nraisbets "
-				  "islistcall islistrais islistalli isemptylistcall isemptylistrais isemptylistalli "
-				  "nlistmax nlistmin pokerval pokervalplayer pokervalcommon pcbits npcbits hicard onepair "
-				  "twopair threeofakind straight flush fullhouse fourofakind straightflush royalflush "
-				  "fiveofakind ishandup ishandupcommon ishicard isonepair istwopair isthreeofakind isstraight "
-				  "isflush isfullhouse isfourofakind isstraightflush isroyalflush isfiveofakind ispair "
-				  "issuited isconnector ishipair islopair ismidpair ishistraight ishiflush nopponents "
-				  "nopponentsmax nplayersseated nplayersactive nplayersdealt nplayersplaying nplayersblind "
+char * keywords = // Standard functions
+				  "f$alli f$swag f$srai f$rais f$call f$prefold f$rebuy f$delay f$chat f$P f$play f$test f$sitin f$sitout f$leave"
+				  // General
+				  "ismanual isppro site nchairs isbring session handnumber version "
+				  // Tablemap
+				  "sitename$ network$ swagdelay allidelay swagtextmethod " 
+				  // Tablemap, undocumented
+				  "potmethod activemethod "
+				  // Formula File
+				  "rake nit bankroll "
+				  // Limits
+				  "bblind sblind ante lim isnl ispl isfl sraiprev sraimin sraimax istournament "
+				  // Hand Rank
+				  "handrank handrank169 handrank2652 handrank1326 handrank1000 handrankp "
+				  // Chairs
+				  "chair userchair dealerchair raischair chair$ chairbit$ "
+				  // Rounds / Positions
+				  "betround br betposition dealposition callposition seatposition dealpositionrais betpositionrais "
+				  // Probabilities
+				  "prwin prtie prlos prwinnow prlosnow random randomhand randomround randomround1 randomround2 randomround3 randomround4 "
+				  // F$P Formula
+				  "defcon isdefmode isaggmode "
+				  // Chip Amounts
+				  "balance balance0 balance1 balance2 balance3 balance4 balance5 balance6 balance7 balance8 balance9 "
+				  "stack0 stack1 stack2 stack3 stack4 stack5 stack6 stack7 stack8 stack9 "
+				  "currentbet currentbet0 currentbet1 currentbet2 currentbet3 currentbet4 currentbet5 currentbet6 currentbet7 currentbet8 currentbet9 "
+				  "call bet bet1 bet2 bet3 bet4 pot potcommon potplayer callshort raisshort "
+				  // Number of Bets	
+				  "nbetstocall nbetstorais ncurrentbets ncallbets nraisbets "
+				  // List Tests
+				  "islistcall islistrais islistalli isemptylistcall isemptylistrais isemptylistalli nlistmax nlistmin pokerval "
+				  // Poker Values
+				  "pokervalplayer pokervalcommon pcbits npcbits "
+				  // Poker Value Constants
+				  "hicard onepair twopair threeofakind straight flush fullhouse fourofakind straightflush royalflush fiveofakind "
+				  // Hand Tests
+				  "ishandup ishandupcommon ishicard isonepair istwopair isthreeofakind isstraight "
+				  "isflush isfullhouse isfourofakind isstraightflush isroyalflush isfiveofakind "
+				  // Pocket Tests
+				  "ispair issuited isconnector "
+				  // Pocket / Common Tests
+				  "ishipair islopair ismidpair ishistraight ishiflush "
+				  // Players, Friends, Opponents
+				  "nopponents nopponentsmax nplayersseated nplayersactive nplayersdealt nplayersplaying nplayersblind "
 				  "nopponentsseated nopponentsactive nopponentsdealt nopponentsplaying nopponentsblind "
 				  "nfriendsseated nfriendsactive nfriendsdealt nfriendsplaying nfriendsblind "
 				  "nopponentschecking nopponentscalling nopponentsraising nopponentsbetting nopponentsfolded "
 				  "nplayerscallshort nchairsdealtright nchairsdealtleft playersseatedbits playersactivebits "
 				  "playersdealtbits playersplayingbits playersblindbits opponentsseatedbits opponentsactivebits "
 				  "opponentsdealtbits opponentsplayingbits opponentsblindbits friendsseatedbits friendsactivebits "
-				  "friendsdealtbits friendsplayingbits friendsblindbits fmax f0 f1 f2 f3 f4 f5 "
-				  "f6 f7 f8 f9 f10 f11 f12 f13 f14 f15 f16 f17 f18 f19 ncommoncardspresent ncommoncardsknown nflopc nouts ncardsknown ncardsunknown "
-				  "ncardsbetter nhands nhandshi nhandslo nhandsti prwinnow prlosnow nsuited nsuitedcommon "
-				  "tsuit tsuitcommon nranked nrankedcommon trank trankcommon nstraight nstraightcommon "
-				  "nstraightfill nstraightfillcommon nstraightflush nstraightflushcommon nstraightflushfill "
-				  "nstraightflushfillcommon rankbits rankbitscommon rankbitsplayer rankbitspoker srankbits "
-				  "srankbitscommon srankbitsplayer srankbitspoker rankhi rankhicommon rankhiplayer rankhipoker "
-				  "srankhi srankhicommon srankhiplayer srankhipoker ranklo ranklocommon rankloplayer ranklopoker "
-				  "sranklo sranklocommon srankloplayer sranklopoker elapsed elapsedhand elapsedauto elapsedtoday "
-				  "elapsed1970 clocks nclockspersecond ncps myturnbits ismyturn issittingin issittingout "
-				  "isautopost isfinalanswer nplayersround1 nplayersround2 nplayersround3 nplayersround4 "
+				  "friendsdealtbits friendsplayingbits friendsblindbits "
+				  // Flags
+				  "fmax f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14 f15 f16 f17 f18 f19 "
+				  // Common Cards
+				  "ncommoncardspresent ncommoncardsknown nflopc "
+				  // (Un)known Cards
+				  "nouts ncardsknown ncardsunknown ncardsbetter "
+				  // nhands
+				  "nhands nhandshi nhandslo nhandsti " 
+				  // Flushes / Straights / Sets
+				  "nsuited nsuitedcommon tsuit tsuitcommon nranked nrankedcommon trank trankcommon nstraight nstraightcommon "
+				  "nstraightfill nstraightfillcommon nstraightflush nstraightflushcommon nstraightflushfill nstraightflushfillcommon "
+				  // Rank Bits
+				  "rankbits rankbitscommon rankbitsplayer rankbitspoker srankbits "
+				  "srankbitscommon srankbitsplayer srankbitspoker "
+				  // Rank Hi
+				  "rankhi rankhicommon rankhiplayer rankhipoker srankhi srankhicommon srankhiplayer srankhipoker "
+				  // Rank Lo
+				  "ranklo ranklocommon rankloplayer ranklopoker sranklo sranklocommon srankloplayer sranklopoker "
+				  // Time
+				  "elapsed elapsedhand elapsedauto elapsedtoday "
+				  "elapsed1970 clocks nclockspersecond ncps "
+				  // Autoplayer
+				  "myturnbits ismyturn issittingin issittingout "
+				  "isautopost isfinalanswer "
+				  // History
+				  "nplayersround1 nplayersround2 nplayersround3 nplayersround4 "
 				  "nplayersround prevaction didchec didcall didrais didswag nbetsround1 nbetsround2 nbetsround3 "
 				  "nbetsround4 nbetsround didchecround1 didchecround2 didchecround3 didchecround4 "
 				  "didcallround1 didcallround2 didcallround3 didcallround4 didraisround1 didraisround2 "
 				  "didraisround3 didraisround4 didswaground1 didswaground2 didswaground3 didswaground4 "
+				  // RON / RUN	
 				  "ron$royfl ron$strfl ron$4kind ron$fullh ron$flush ron$strai ron$3kind ron$2pair ron$1pair "
 				  "ron$hcard ron$total ron$pokervalmax ron$prnuts ron$prbest ron$clocks run$royfl run$strfl "
 				  "run$4kind run$fullh run$flush run$strai run$3kind run$2pair run$1pair run$hcard run$total "
-				  "run$pokervalmax run$prnuts run$prbest run$clocks vs$nhands vs$nhandshi vs$nhandsti vs$nhandslo "
+				  "run$pokervalmax run$prnuts run$prbest run$clocks "
+				  // Versus
+				  "vs$nhands vs$nhandshi vs$nhandsti vs$nhandslo "
 				  "vs$prwin vs$prtie vs$prlos vs$prwinhi vs$prtiehi vs$prloshi vs$prwinti vs$prtieti vs$prlosti "
 				  "vs$prwinlo vs$prtielo vs$prloslo "
-              "vs$prwinhinow vs$prtiehinow vs$prloshinow vs$prwintinow vs$prtietinow vs$prlostinow "
+                  "vs$prwinhinow vs$prtiehinow vs$prloshinow vs$prwintinow vs$prtietinow vs$prlostinow "
 				  "vs$prwinlonow vs$prtielonow vs$prloslonow vs$nhandshinow vs$nhandstinow vs$nhandslonow "
-				  "f$alli f$swag f$srai f$rais f$call f$prefold f$rebuy f$delay f$chat f$P "
-				  "f$sitin f$sitout f$leave "
-				  "f$test "
+				  // History	
+				  "hi_"
+				  //Table statistics 
+				  "floppct turnpct riverpct avgbetspf tablepfr maxbalance handsplayed "
+				  // Action
 				  "lastraised1 lastraised2 lastraised3 lastraised4 "
 				  "raisbits1 raisbits2 raisbits3 raisbits4 "
 				  "callbits1 callbits2 callbits3 callbits4 "
 				  "foldbits1 foldbits2 foldbits3 foldbits4 "
-				  "oppdealt floppct turnpct riverpct avgbetspf tablepfr maxbalance handsplayed "
+				  "oppdealt "
+				  "ac_aggressor ac_agchair_after ac_preflop_pos ac_prefloprais_pos "
+				  "ac_postflop_pos ac_pf_bets ac_first_into_pot "
+				  "ac_betpos0 ac_betpos1 ac_betpos2 ac_betpos3 ac_betpos4 ac_betpos5 ac_betpos6 ac_betpos7 ac_betpos8 ac_betpos9 "
+				  "ac_dealpos0 ac_dealpos1 ac_dealpos2 ac_dealpos3 ac_dealpos4 ac_dealpos5 ac_dealpos6 ac_dealpos7 ac_dealpos8 ac_dealpos9 "
+				  // MyHand
+				  "mh_3straight00 mh_3straight01 mh_3straight10 mh_3straight11 "
+				  "mh_bottomsd mh_nsuitedbetter mh_kickerbetter mh_nouts mh_str_quads mh_str_fullhouse "
+				  "mh_str_flush mh_str_straight mh_str_trips mh_str_twopair mh_str_onepair "
+				  // Logging
+				  "log$ "
+				  // ICM calculator
+				  "icm icm_fold icm_callwin icm_calllose icm_calltie "
+				  "icm_alliwin0 icm_alliwin1 icm_alliwin2 icm_alliwin3 icm_alliwin4 "
+				  "icm_alliwin5 icm_alliwin8 icm_alliwin7 icm_alliwin8 icm_alliwin9 "
+				  "icm_allilose0 icm_allilose1 icm_allilose2 icm_allilose3 icm_allilose4 "
+				  "icm_allilose5 icm_allilose6 icm_allilose7 icm_allilose8 icm_allilose9 "
+				  "icm_alliwinSB icm_alliwinBB icm_alliwinUTG icm_alliwinUTG1 icm_alliwinUTG2 icm_alliwinUTG3 "
+				  "icm_alliwinUTG4 icm_alliwinUTG5 icm_alliwinUTG6 icm_alliwinCO icm_alliwinD "
+				  "icm_allitieSB icm_allitieBB icm_allitieUTG icm_allitieUTG1 icm_allitieUTG2 "
+				  "icm_allitieUTG3 icm_allitieUTG4 icm_allitieUTG5 icm_allitieUTG6 icm_allitieCO "
+				  "icm_allitieD icm_alliloseSB icm_alliloseBB icm_alliloseUTG icm_alliloseUTG1 "
+				  "icm_alliloseUTG2 icm_alliloseUTG3 icm_alliloseUTG4 icm_alliloseUTG5 icm_alliloseUTG6 "
+				  "icm_alliloseCO icm_alliloseD "
+				  // Hand multiplexor
+				  " f$$ "
+				  // Memory Symbols
+				  "me_st_ me_re_ "
+				  // Card Symbols
+				  "$$pc0 $$pc1 $$pr0 $$pr1 $$ps0 $$ps1 "
+				  "$$cc0 $$cc1 $$cc2 $$cc3 $$cc4 "
+				  "$$cr0 $$cr1 $$cr2 $$cr3 $$cr4 "
+				  "$$cs0 $$cs1 $$cs2 $$cs3 $$cs4 "
+				  // Undocumented
 				  "balance_rank0 balance_rank1 balance_rank2 balance_rank3 balance_rank4 balance_rank5 "
 				  "balance_rank6 balance_rank7 balance_rank8 balance_rank9 "
+				  // Poker Tracker ring symbols
+				  "pt_icon pt_hands pt_pfr pt_aggp pt_aggf pt_aggt pt_aggr "
+				  "pt_aggtot pt_aggtotnopf pt_floppct pt_turnpct pt_riverpct pt_vpip pt_pf_rfi "
+				  "pt_pf_cr pt_pfats pt_wsdp pt_wssd pt_fbbts pt_fsbts "
+				  // Poker Tracker tournament symbols
 				  "ptt_icon ptt_hands ptt_pfr ptt_aggp ptt_aggf ptt_aggt ptt_aggr "
 				  "ptt_aggtot ptt_aggtotnopf ptt_floppct ptt_turnpct ptt_riverpct ptt_vpip ptt_pf_rfi "
 				  "ptt_pf_cr ptt_pfats ptt_wsdp ptt_wssd ptt_fbbts ptt_fsbts ";

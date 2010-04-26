@@ -191,9 +191,10 @@ void CPreferences::InitDefaults(void)
 	_rebuy_script = "Rebuy.exe";
 
 	// Configuration check
-	_configurationcheck_perl_dependencies = true;
 	_configurationcheck_keyboard_settings = true;
-	
+	_configurationcheck_theme_settings = true;
+	_configurationcheck_font_settings = true;
+
 	// Lazy scraping
 	_lazy_scraping_when_to_scrape = k_lazy_scraping_always;
 
@@ -354,7 +355,7 @@ void CPreferences::ReadPreferences()
 			regValue.Format("trace_functions%d", i+1);
 			ReadReg(regValue, &_trace_functions[i]);
 		}
-		
+
 		// Logging and debugging
 		ReadReg("disable_msgbox", &_disable_msgbox);
 		ReadReg("log_level", &_log_level);
@@ -384,12 +385,13 @@ void CPreferences::ReadPreferences()
 		ReadReg("rebuy_script", &_rebuy_script);
 
 		// Configuration check
-		ReadReg("configurationcheck_perl_dependencies", &_configurationcheck_perl_dependencies);
-		ReadReg("configurationcheck_keyboard_settings", &_configurationcheck_keyboard_settings);
+		ReadReg("configurationcheck_keyboard_settings", &_configurationcheck_keyboard_settings);	
+		ReadReg("configurationcheck_theme_settings", &_configurationcheck_theme_settings);
+		ReadReg("configurationcheck_font_settings", &_configurationcheck_font_settings);
 
 		// Lazy scraping
 		ReadReg("lazy_scraping_when_to_scrape", &_lazy_scraping_when_to_scrape);
-	
+
 		// obscure
 		ReadReg("window_class_name", &_window_class_name);
 		ReadReg("mutex_name", &_mutex_name);

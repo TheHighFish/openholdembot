@@ -24,10 +24,12 @@ void CDlgSAPrefs17::DoDataExchange(CDataExchange* pDX)
 {
 	CSAPrefsSubDlg::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_CONFIGURATION_KEYBOARD_SETTINGS, m_ConfigurationKeyboardSettings_Button);
-	DDX_Control(pDX, IDC_CONFIGURATION_PERL_DEPENDENCIES, m_ConfigurationPerlDependencies_Button);
+	DDX_Control(pDX, IDC_CONFIGURATION_THEME_SETTINGS, m_ConfigurationThemeSettings_Button);
+	DDX_Control(pDX, IDC_CONFIGURATION_FONT_SETTINGS, m_ConfigurationFontSettings_Button);
 }
 
 BEGIN_MESSAGE_MAP(CDlgSAPrefs17, CSAPrefsSubDlg)
+  ON_BN_CLICKED(IDC_CHECK1, &CDlgSAPrefs17::OnBnClickedCheck1)
 END_MESSAGE_MAP()
 
 // CDlgSAPrefs1 message handlers
@@ -35,7 +37,8 @@ BOOL CDlgSAPrefs17::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
 	m_ConfigurationKeyboardSettings_Button.SetCheck(prefs.configurationcheck_keyboard_settings() != 0);
-	m_ConfigurationPerlDependencies_Button.SetCheck(prefs.configurationcheck_perl_dependencies() != 0);
+	m_ConfigurationThemeSettings_Button.SetCheck(prefs.configurationcheck_theme_settings() != 0);
+	m_ConfigurationFontSettings_Button.SetCheck(prefs.configurationcheck_font_settings() != 0);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -44,6 +47,12 @@ BOOL CDlgSAPrefs17::OnInitDialog()
 void CDlgSAPrefs17::OnOK()
 {
 	prefs.set_configurationcheck_keyboard_settings(m_ConfigurationKeyboardSettings_Button.GetCheck());
-	prefs.set_configurationcheck_perl_dependencies(m_ConfigurationPerlDependencies_Button.GetCheck());
+	prefs.set_configurationcheck_theme_settings(m_ConfigurationThemeSettings_Button.GetCheck());
+	prefs.set_configurationcheck_font_settings(m_ConfigurationFontSettings_Button.GetCheck());
 	CSAPrefsSubDlg::OnOK();
+}
+
+void CDlgSAPrefs17::OnBnClickedCheck1()
+{
+  // TODO: Add your control notification handler code here
 }

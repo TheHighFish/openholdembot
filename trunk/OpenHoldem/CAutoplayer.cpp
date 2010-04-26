@@ -156,6 +156,7 @@ void CAutoplayer::DoAllin(void)
 			// Click the allin button.
 			// Don't restore the position after the first click (point_null).
 			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), allin_button, MouseLeft, number_of_clicks, NULL, point_null);
+			//!!! delay required
 			write_log(3, "Text selection; calling mouse.dll to single click raise: %d,%d %d,%d\n", 
 				raise_button.left, raise_button.top, raise_button.right, raise_button.bottom);
 			// Click the raise button;
@@ -374,12 +375,6 @@ void CAutoplayer::DoSwag(void)
 		write_log(3, "...ending DoSwag early (no edit field).\n");
 		return;
 	}
-	if (!p_scraper->GetButtonState(3))//!!!
-	{
-		write_log(3, "...ending DoSwag early (no edit button).\n");
-		return;
-	}
-
 	::GetCursorPos(&cur_pos);
 
 	// If we get a lock, do the action

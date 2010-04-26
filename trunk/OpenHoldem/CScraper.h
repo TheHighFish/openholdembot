@@ -31,7 +31,7 @@ extern class CScraper
 public:
 	// public functions
 	CScraper(void);
-	~CScraper(void) {}
+	~CScraper(void);
 public:
 	void DoBasicScrapeButtons();
 	void DoBasicScrapeAllPlayerCards();
