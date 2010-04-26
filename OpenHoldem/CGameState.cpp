@@ -910,7 +910,7 @@ const char *CGameState::_hist_sym_strings[200] =
 	"ishipair", "islopair", "ismidpair", "ishistraight", "ishiflush", 
 
 	//(UN)KNOWN CARDS (2)
-	"nouts", "ncardsbetter", 
+	"ncardsbetter", 
 
 	//NHANDS (6)
 	"nhands", "nhandshi", "nhandslo", "nhandsti", "prwinnow", "prlosnow", 

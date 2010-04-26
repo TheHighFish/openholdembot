@@ -4295,7 +4295,10 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	{
 		CString Message = CString("Unknown symbol in CSymbols::GetSymbolVal(): \"")
 			+ CString(a) + CString("\"\nThat is most probably a typo in the symbols name.\n")
-			+ CString("Please check your formula and your DLL or Perl-script.");
+			+ CString("Please check your formula and your DLL or Perl-script.\n\n")
+			+ CString("Also some old WinHoldem-symbols got removed from the code-base,\n")
+			+ CString("because they were mis-conceptions and hardly ever used.\n")
+			+ CString("Please refer to the manual for more information about that case.");
 		OH_MessageBox(Message, "ERROR", MB_OK);
 	}
 
