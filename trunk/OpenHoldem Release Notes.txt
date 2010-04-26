@@ -9,6 +9,14 @@ NEW STUFF:
 
 MAINTENANCE:
 - removing code-clones in CFormula.cpp [THF]
+- Removing friend-symbols, as OpenHoldem does not support any kind of collusion.
+  Only nfriendsseated, nfriendsactive and  nfriendsplaying 
+  do still exist for backward compatibility,
+  as some veterans use them for f$sitin, f$sitout and f$leave. [THF]
+- Removing the symbol nouts, as Ray E. Bornerts definition
+  of "outs" is plain nonsense and completely useless.
+  mh_nouts is a way better built-in outs-counter 
+  and there are also some good counters in the forum. [THF]
 
 v2.1.4 2010-04-23
 =================
