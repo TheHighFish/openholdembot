@@ -407,14 +407,7 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_opponentsblindbits(0);
 	set_sym_nfriendsseated(0);
 	set_sym_nfriendsactive(0);
-	set_sym_nfriendsdealt(0);
 	set_sym_nfriendsplaying(0);
-	set_sym_nfriendsblind(0);
-	set_sym_friendsseatedbits(0);
-	set_sym_friendsactivebits(0);
-	set_sym_friendsdealtbits(0);
-	set_sym_friendsplayingbits(0);
-	set_sym_friendsblindbits(0);
 
 	// common cards
 	set_sym_ncommoncardspresent(0);
@@ -1719,11 +1712,6 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 				set_sym_opponentsblindbits(
 				(int) _sym.opponentsblindbits | (1<<(i%p_tablemap->nchairs())));				// opponentsblindbits
 			}
-
-			if (_user_chair_confirmed && (i%p_tablemap->nchairs()) == _sym.userchair)
-			{
-				set_sym_friendsblindbits((int) _sym.friendsblindbits | (1<<(i%p_tablemap->nchairs())));  // friendsblindbits
-			}
 		}
 
 		else if (!bblindfound && p_bet<=p_tablelimits->bblind())
@@ -1742,7 +1730,6 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 
 	set_sym_nplayersblind(bitcount(_sym.playersblindbits));								// nplayersblind
 	set_sym_nopponentsblind(bitcount(_sym.opponentsblindbits));							// nopponentsblind
-	set_sym_nfriendsblind(bitcount(_sym.friendsblindbits));								// nfriendsblind
 
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
@@ -1757,10 +1744,6 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 			{
 				set_sym_opponentsdealtbits((int) _sym.opponentsdealtbits | (1<<i));		// opponentsdealtbits
 			}
-			if (_user_chair_confirmed && i==_sym.userchair)
-			{
-				set_sym_friendsdealtbits((int) _sym.friendsdealtbits | (1<<i));			// friendsdealtbits
-			}
 		}
 
 		if (p_scraper->card_player(i, 0) != CARD_NOCARD && p_scraper->card_player(i, 1) != CARD_NOCARD)
@@ -1773,7 +1756,7 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 			}
 			if (_user_chair_confirmed && i==_sym.userchair)
 			{
-				set_sym_friendsplayingbits((int) _sym.friendsplayingbits | (1<<i));		// friendsplayingbits
+				set_sym_nfriendsplaying(1);												// hero playing
 			}
 		}
 
@@ -1787,20 +1770,20 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 			}
 			if (_user_chair_confirmed && i==_sym.userchair)
 			{
-				set_sym_friendsseatedbits((int) _sym.friendsseatedbits | (1<<i));		// friendsseatedbits
+				set_sym_nfriendsseated(1);												// hero seated
 			}
 		}
 
 		if (p_scraper->IsStringActive(p_scraper->active(i)))
 		{
-			set_sym_playersactivebits((int) _sym.playersactivebits | (1<<i));				// playersactivebits
+			set_sym_playersactivebits((int) _sym.playersactivebits | (1<<i));			// playersactivebits
 			if (_user_chair_confirmed && i!=_sym.userchair)
 			{
 				set_sym_opponentsactivebits((int) _sym.opponentsactivebits | (1<<i));	// opponentsactivebits
 			}
 			if (_user_chair_confirmed && i==_sym.userchair)
 			{
-				set_sym_friendsactivebits((int) _sym.friendsactivebits | (1<<i));		// friendsactivebits
+				set_sym_nfriendsactive(1);												// friendsactivebits
 			}
 		}
 	}
@@ -1813,10 +1796,6 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 	set_sym_nopponentsactive(bitcount(_sym.opponentsactivebits));						// nopponentsactive
 	set_sym_nopponentsdealt(bitcount(_sym.opponentsdealtbits));							// nopponentsdealt
 	set_sym_nopponentsplaying(bitcount(_sym.opponentsplayingbits));						// nopponentsplaying
-	set_sym_nfriendsseated(bitcount(_sym.friendsseatedbits));							// nfriendsseated
-	set_sym_nfriendsactive(bitcount(_sym.friendsactivebits));							// nfriendsactive
-	set_sym_nfriendsdealt(bitcount(_sym.friendsdealtbits));								// nfriendsdealt
-	set_sym_nfriendsplaying(bitcount(_sym.friendsplayingbits));							// nfriendsplaying
 
 	found_userchair = false;
 	lastbet = 0;
@@ -3883,9 +3862,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	{
 		if (memcmp(a, "nfriendsseated", 14)==0 && strlen(a)==14)			return _sym.nfriendsseated;
 		if (memcmp(a, "nfriendsactive", 14)==0 && strlen(a)==14)			return _sym.nfriendsactive;
-		if (memcmp(a, "nfriendsdealt", 13)==0 && strlen(a)==13)				return _sym.nfriendsdealt;
 		if (memcmp(a, "nfriendsplaying", 15)==0 && strlen(a)==15)			return _sym.nfriendsplaying;
-		if (memcmp(a, "nfriendsblind", 13)==0 && strlen(a)==13)				return _sym.nfriendsblind;
 	}
 
 	// PLAYERS FRIENDS OPPONENTS 4(7)	
@@ -3916,14 +3893,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	}
 
 	//PLAYERS FRIENDS OPPONENTS 7(7)
-	if (memcmp(a, "friends", 7)==0)
-	{
-		if (memcmp(a, "friendsseatedbits", 17)==0 && strlen(a)==17)			return _sym.friendsseatedbits;
-		if (memcmp(a, "friendsactivebits", 17)==0 && strlen(a)==17)			return _sym.friendsactivebits;
-		if (memcmp(a, "friendsdealtbits", 16)==0 && strlen(a)==16)			return _sym.friendsdealtbits;
-		if (memcmp(a, "friendsplayingbits", 18)==0 && strlen(a)==18)		return _sym.friendsplayingbits;
-		if (memcmp(a, "friendsblindbits", 16)==0 && strlen(a)==16)			return _sym.friendsblindbits;
-	}
+	// friendbits completely removed
 
 	// LIST TESTS 1(2)
 	if (memcmp(a, "islist", 6) == 0)
