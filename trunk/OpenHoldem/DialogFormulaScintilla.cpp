@@ -87,7 +87,7 @@ char * keywords = // Standard functions
 				  // Common Cards
 				  "ncommoncardspresent ncommoncardsknown nflopc "
 				  // (Un)known Cards
-				  "nouts ncardsknown ncardsunknown ncardsbetter "
+				  "ncardsknown ncardsunknown ncardsbetter "
 				  // nhands
 				  "nhands nhandshi nhandslo nhandsti " 
 				  // Flushes / Straights / Sets
@@ -3543,7 +3543,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "nflopc", "short for ncommoncardsknown");
 
 	mainParent = parent = AddSymbolTitle("(Un)known Cards", NULL, hCatItem);
-	AddSymbol(parent, "nouts", "the total number of unseen single cards that if dealt to the board might put your hand in the lead. to be counted as an out, the card must be able to bump your level and your new level must be higher than the resulting common level");
 	AddSymbol(parent, "ncardsknown", "total number of cards you can see (yours and commons)");
 	AddSymbol(parent, "ncardsunknown", "total number of cards you cannot see (deck and opponents)");
 	AddSymbol(parent, "ncardsbetter", "total number of single unknown cards that can beat you, e.g. if the board is four suited in hearts, and you have two spades, then ncardsbetter will be at least 9, because of the possible flush.");
