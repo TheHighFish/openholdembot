@@ -36,9 +36,7 @@ char * keywords = // Standard functions
 				  // General
 				  "ismanual isppro site nchairs isbring session handnumber version "
 				  // Tablemap
-				  "sitename$ network$ swagdelay allidelay swagtextmethod " 
-				  // Tablemap, undocumented
-				  "potmethod activemethod "
+				  "sitename$ network$ "
 				  // Formula File
 				  "rake nit bankroll "
 				  // Limits
@@ -60,10 +58,8 @@ char * keywords = // Standard functions
 				  "call bet bet1 bet2 bet3 bet4 pot potcommon potplayer callshort raisshort "
 				  // Number of Bets	
 				  "nbetstocall nbetstorais ncurrentbets ncallbets nraisbets "
-				  // List Tests
-				  "islistcall islistrais islistalli isemptylistcall isemptylistrais isemptylistalli nlistmax nlistmin pokerval "
 				  // Poker Values
-				  "pokervalplayer pokervalcommon pcbits npcbits "
+				  "pokerval pokervalplayer pokervalcommon pcbits npcbits "
 				  // Poker Value Constants
 				  "hicard onepair twopair threeofakind straight flush fullhouse fourofakind straightflush royalflush fiveofakind "
 				  // Hand Tests
@@ -76,12 +72,11 @@ char * keywords = // Standard functions
 				  // Players, Friends, Opponents
 				  "nopponents nopponentsmax nplayersseated nplayersactive nplayersdealt nplayersplaying nplayersblind "
 				  "nopponentsseated nopponentsactive nopponentsdealt nopponentsplaying nopponentsblind "
-				  "nfriendsseated nfriendsactive nfriendsdealt nfriendsplaying nfriendsblind "
+				  "nfriendsseated nfriendsactive nfriendsplaying "
 				  "nopponentschecking nopponentscalling nopponentsraising nopponentsbetting nopponentsfolded "
 				  "nplayerscallshort nchairsdealtright nchairsdealtleft playersseatedbits playersactivebits "
 				  "playersdealtbits playersplayingbits playersblindbits opponentsseatedbits opponentsactivebits "
-				  "opponentsdealtbits opponentsplayingbits opponentsblindbits friendsseatedbits friendsactivebits "
-				  "friendsdealtbits friendsplayingbits friendsblindbits "
+				  "opponentsdealtbits opponentsplayingbits opponentsblindbits "
 				  // Flags
 				  "fmax f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14 f15 f16 f17 f18 f19 "
 				  // Common Cards
@@ -3337,13 +3332,8 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "version", "returns the version number of OpenHoldem that is currently running");
 
 	mainParent = parent = AddSymbolTitle("Table Map symbols", NULL, hCatItem);
-	AddSymbol(parent, "_sitename$abc", "true if user defined string abc appears within the Table Map symbol _s$_sitename");
-	AddSymbol(parent, "_network$def", "true if user defined string def appears within the Table Map symbol _s$_network");
-	AddSymbol(parent, "swagdelay", "autoplayer delay in milliseconds between swag keystrokes and button click");
-	AddSymbol(parent, "allidelay", "autoplayer delay in milliseconds between alli slider jam and button click");
-	AddSymbol(parent, "_swagtextmethod", "the site interpretation for swag edit text (Table Map symbol) 1=f$srai 2=f$srai+call 3=f$srai+call+currentbet");
-	AddSymbol(parent, "_potmethod", "the site interpretation for the contents of c0pot0 (Table Map symbol) 1=common (default) 2=total");
-	AddSymbol(parent, "_activemethod", " 1=inactive unless pXactive returns true/active (default) 2=active unless pXactive returns false/inactive/out/away");
+	AddSymbol(parent, "sitename$abc", "true if user defined string abc appears within the Table Map symbol _s$_sitename");
+	AddSymbol(parent, "network$def", "true if user defined string def appears within the Table Map symbol _s$_network");
 
 	mainParent = parent = AddSymbolTitle("Formula file", NULL, hCatItem);
 	AddSymbol(parent, "rake", "percentage amount added/subtracted to/from the pot");
@@ -3432,15 +3422,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "nraisbets", "total number of bets you would have on the table if you raise");
 
 	mainParent = parent = AddSymbolTitle("List Tests", NULL, hCatItem);
-	AddSymbol(parent, "islist0 - islist99 ", "true if your hand is in the numbered (0-99) list");
-	AddSymbol(parent, "islistcall", "true if your hand is in list 0");
-	AddSymbol(parent, "islistrais", "true if your hand is in list 1");
-	AddSymbol(parent, "islistalli", "true if your hand is in list 7");
-	AddSymbol(parent, "isemptylistcall", "true if the call list is empty");
-	AddSymbol(parent, "isemptylistrais", "true if the rais list is empty");
-	AddSymbol(parent, "isemptylistalli", "true if the alli list is empty");
-	AddSymbol(parent, "nlistmax", "highest list number in which your hand is listed");
-	AddSymbol(parent, "nlistmin", "lowest list number in which your hand is listed");
+	AddSymbol(parent, "islist0 - islist999 ", "true if your hand is in the numbered (0-999) list");
 
 	mainParent = parent = AddSymbolTitle("Poker Values", NULL, hCatItem);
 	AddSymbol(parent, "pokerval", "absolute poker value for your 5 card hand");
@@ -3500,9 +3482,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "nplayersblind", "number of players blind (including you) (0-10)");
 	AddSymbol(parent, "nfriendsseated", "1 of you are seated, 0 otherwise (0-1)");
 	AddSymbol(parent, "nfriendssactive", "1 of you are active, 0 otherwise (0-1)");
-	AddSymbol(parent, "nfriendsdealt", "1 of you are dealt, 0 otherwise (0-1)");
 	AddSymbol(parent, "nfriendsplaying", "1 of you are playing, 0 otherwise (0-1)");
-	AddSymbol(parent, "nfriendsblind", "1 of you are in a blind, 0 otherwise (0-1)");
 	AddSymbol(parent, "nopponentsseated", "number of opponents seated (not including you) (0-9)");
 	AddSymbol(parent, "nopponentssactive", "number of opponents active (not including you) (0-9)");
 	AddSymbol(parent, "nopponentsdealt", "number of opponents dealt (not including you) (0-9)");
@@ -3526,11 +3506,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "opponentsdealtbits", "bits 9-0: 1=dealt 0=notdealt");
 	AddSymbol(parent, "opponentsplayingbits", "bits 9-0: 1=playing 0=notplaying");
 	AddSymbol(parent, "opponentsblindbits", "bits 9-0: 1=blind 0=notblind");
-	AddSymbol(parent, "friendsseatedbits", "bits 9-0: 1=seated 0=unseated, you only");
-	AddSymbol(parent, "friendsactivebits", "bits 9-0: 1=active 0=inactive, you only");
-	AddSymbol(parent, "friendsdealtbits", "bits 9-0: 1=dealt 0=notdealt, you only");
-	AddSymbol(parent, "friendsplayingbits", "bits 9-0: 1=playing 0=notplaying, you only");
-	AddSymbol(parent, "friendsblindbits", "bits 9-0: 1=blind 0=notblind, you only");
 
 	mainParent = parent = AddSymbolTitle("Flags", NULL, hCatItem);
 	AddSymbol(parent, "fmax", "highest numbered flag button pressed");
