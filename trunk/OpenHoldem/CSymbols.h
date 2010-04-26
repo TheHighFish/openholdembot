@@ -109,17 +109,7 @@ struct SSymbols
 	double nraisbets;
 
 	//LIST TESTS
-	double islistcall;
-	double islistrais;
-	double islistalli;
 	double islist[MAX_HAND_LISTS];
-	double isemptylistcall;
-	double isemptylistrais;
-	double isemptylistalli;
-
-	//LIST NUMBERS
-	double nlistmax;
-	double nlistmin;
 
 	//POKER VALUES
 	double pokerval;
@@ -546,17 +536,7 @@ public:
 	void	set_sym_nraisbets(const double d) { ENT _sym.nraisbets = d;}
 
 	// list tests
-	void	set_sym_islistcall(const double d) { ENT _sym.islistcall = d;}
-	void	set_sym_islistrais(const double d) { ENT _sym.islistrais = d;}
-	void	set_sym_islistalli(const double d) { ENT _sym.islistalli = d;}
 	void	set_sym_islist(const int i, const double d) { ENT if (i>=0 && i<MAX_HAND_LISTS) _sym.islist[i] = d;}
-	void	set_sym_isemptylistcall(const double d) { ENT _sym.isemptylistcall = d;}
-	void	set_sym_isemptylistrais(const double d) { ENT _sym.isemptylistrais = d;}
-	void	set_sym_isemptylistalli(const double d) { ENT _sym.isemptylistalli = d;}
-
-	// list numbers
-	void	set_sym_nlistmax(const double d) { ENT _sym.nlistmax = d;}
-	void	set_sym_nlistmin(const double d) { ENT _sym.nlistmin = d;}
 
 	// poker values
 	void	set_sym_pokerval(const double d) { ENT _sym.pokerval = d;}
