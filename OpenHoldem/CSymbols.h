@@ -186,9 +186,7 @@ struct SSymbols
 
 	double nfriendsseated;
 	double nfriendsactive;
-	double nfriendsdealt;
 	double nfriendsplaying;
-	double nfriendsblind;
 	
 	double nopponentsseated;
 	double nopponentsactive;
@@ -218,12 +216,6 @@ struct SSymbols
 	double opponentsplayingbits;
 	double opponentsblindbits;
 	double bblindbits; //prwin change
-
-	double friendsseatedbits;
-	double friendsactivebits;
-	double friendsdealtbits;
-	double friendsplayingbits;
-	double friendsblindbits;
 
 	// CALLBITS, RAISBITS etc.
 	// To avoid confusion we use bits 1..4, bit 0 is unused.
@@ -654,15 +646,8 @@ public:
 	void	set_sym_bblindbits(const double d) { ENT _sym.bblindbits = d; };
 	void	set_sym_nfriendsseated(const double d) { ENT _sym.nfriendsseated = d;}
 	void	set_sym_nfriendsactive(const double d) { ENT _sym.nfriendsactive = d;}
-	void	set_sym_nfriendsdealt(const double d) { ENT _sym.nfriendsdealt = d;}
 	void	set_sym_nfriendsplaying(const double d) { ENT _sym.nfriendsplaying = d;}
-	void	set_sym_nfriendsblind(const double d) { ENT _sym.nfriendsblind = d;}
-	void	set_sym_friendsseatedbits(const double d) { ENT _sym.friendsseatedbits = d;}
-	void	set_sym_friendsactivebits(const double d) { ENT _sym.friendsactivebits = d;}
-	void	set_sym_friendsdealtbits(const double d) { ENT _sym.friendsdealtbits = d;}
-	void	set_sym_friendsplayingbits(const double d) { ENT _sym.friendsplayingbits = d;}
-	void	set_sym_friendsblindbits(const double d) { ENT _sym.friendsblindbits = d;}
-
+	
 	// callbits, raisbits, etc.
 	void	set_sym_raisbits(const int i, const int betround) { ENT assert(betround >= k_betround_preflop); assert(betround <= k_betround_river); _sym.raisbits[betround] = i; }
 	void	set_sym_callbits(const int i, const int betround) { ENT assert(betround >= k_betround_preflop); assert(betround <= k_betround_river); _sym.callbits[betround] = i; }
