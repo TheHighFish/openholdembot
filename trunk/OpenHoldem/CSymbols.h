@@ -234,7 +234,6 @@ struct SSymbols
 	double nflopc;
 
 	//(UN)KNOWN CARDS
-	double nouts;
 	double ncardsknown;
 	double ncardsunknown;
 	double ncardsbetter;
@@ -664,7 +663,6 @@ public:
 	void	set_sym_nflopc(const double d) { ENT _sym.nflopc = d;}
 
 	// (un)known cards
-	void	set_sym_nouts(const double d) { ENT _sym.nouts = d;}
 	void	set_sym_ncardsknown(const double d) { ENT _sym.ncardsknown = d;}
 	void	set_sym_ncardsunknown(const double d) { ENT _sym.ncardsunknown = d;}
 	void	set_sym_ncardsbetter(const double d) { ENT _sym.ncardsbetter = d;}

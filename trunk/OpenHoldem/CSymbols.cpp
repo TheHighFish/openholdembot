@@ -415,7 +415,6 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_nflopc(0);
 
 	// (un)known cards
-	set_sym_nouts(0);
 	set_sym_ncardsknown(0);
 	set_sym_ncardsunknown(0);
 	set_sym_ncardsbetter(0);
@@ -827,7 +826,6 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 		set_sym_f(i, 0);
 
 	// (un)known cards
-	set_sym_nouts(0);
 	set_sym_ncardsknown(0);
 	set_sym_ncardsunknown(0);
 	set_sym_ncardsbetter(0);
@@ -2207,17 +2205,9 @@ void CSymbols::CalcUnknownCards(void)
 					handval_common_plus1 = Hand_EVAL_N(commonCards, ncommonCards+1);
 					CardMask_UNSET(commonCards, i);
 
-				if (_sym.br<4 && 
-					HandVal_HANDTYPE(handval_std_plus1) > HandVal_HANDTYPE(handval_std) &&
-					CalcPokerval(handval_std_plus1, nstdCards+1, &dummy, CARD_NOCARD, CARD_NOCARD) > _sym.pokerval &&
-					HandVal_HANDTYPE(handval_std_plus1) > HandVal_HANDTYPE(handval_common_plus1))
-					{
-					set_sym_nouts(_sym.nouts+1);										// nouts
-					}
-
 					if (CalcPokerval(handval_common_plus1, ncommonCards+1, &dummy, CARD_NOCARD, CARD_NOCARD) > _sym.pokerval)
 					{
-					set_sym_ncardsbetter(_sym.ncardsbetter+1);							// ncardsbetter
+						set_sym_ncardsbetter(_sym.ncardsbetter+1);							// ncardsbetter
 					}
 				}
 			}
@@ -3892,9 +3882,6 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "opponentsblindbits", 18)==0 && strlen(a)==18)		return _sym.opponentsblindbits;
 	}
 
-	//PLAYERS FRIENDS OPPONENTS 7(7)
-	// friendbits completely removed
-
 	// LIST TESTS 1(2)
 	if (memcmp(a, "islist", 6) == 0)
 	{
@@ -4368,9 +4355,6 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "ncommoncardspresent", 19)==0 && strlen(a)==19)		return _sym.ncommoncardspresent;
 	if (memcmp(a, "ncommoncardsknown", 17)==0 && strlen(a)==17)			return _sym.ncommoncardsknown;
 	if (memcmp(a, "nflopc", 6)==0 && strlen(a)==6)						return _sym.nflopc;
-
-	//(UN)KNOWN CARDS 3(3)
-	if (memcmp(a, "nouts", 5)==0 && strlen(a)==5)						return _sym.nouts;	
 	
 	// TIME 2(2)	
 	if (memcmp(a, "clocks", 6)==0 && strlen(a)==6)						return _sym.clocks;
