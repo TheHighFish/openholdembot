@@ -447,7 +447,7 @@ void CFormula::ParseHandList(const CString &list_text, bool inlist[13][13])
 
 		token_card1_rank = CardIdentHelper(*pStr++);
 
-		if (token_card0_rank == -1)
+		if (token_card1_rank == -1)
 			continue;
 
 		// make card0 have the higher rank

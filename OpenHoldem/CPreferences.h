@@ -159,9 +159,10 @@ public:
 	const int  rebuy_minimum_time_to_next_try() { return _rebuy_minimum_time_to_next_try; }
 	const CString rebuy_script() { return _rebuy_script; }
 	// Configuration check
-	const bool configurationcheck_perl_dependencies() { return _configurationcheck_perl_dependencies; }
 	const bool configurationcheck_keyboard_settings() { return _configurationcheck_keyboard_settings; }
-	// Lazy scraping
+	const bool configurationcheck_theme_settings() { return _configurationcheck_theme_settings; }
+	const bool configurationcheck_font_settings() { return _configurationcheck_font_settings; }
+   	// Lazy scraping
 	const int lazy_scraping_when_to_scrape() { return _lazy_scraping_when_to_scrape; }
 	// Misc
 	const int scraper_zoom() { return _scraper_zoom; }
@@ -169,13 +170,13 @@ public:
 	const CString versus_path(); 	
 	// Obscure
 	const CString &window_class_name()		{ return _window_class_name; }
-	const CString &mutex_name()				{ return _mutex_name; }
-	bool simple_window_title()				{ return _simple_window_title; }
+	const CString &mutex_name()			{ return _mutex_name; }
+	bool simple_window_title()			{ return _simple_window_title; }
 	// CFileDialog saved paths
-	const CString path_ohf()		{ return _path_ohf; }
-	const CString path_tm()			{ return _path_tm; }
-	const CString path_perl()		{ return _path_perl; }
-	const CString path_dll()		{ return _path_dll; }
+	const CString path_ohf()	{ return _path_ohf; }
+	const CString path_tm()		{ return _path_tm; }
+	const CString path_perl()	{ return _path_perl; }
+	const CString path_dll()	{ return _path_dll; }
 
 public:
 	// public mutators
@@ -334,8 +335,9 @@ public:
 	void set_rebuy_script(const CString s) { ENT _rebuy_script = s; WriteReg("rebuy_script", s); }
 
 	// Configuration check
-	void set_configurationcheck_perl_dependencies(const bool b) { ENT _configurationcheck_perl_dependencies = b; WriteReg("configurationcheck_perl_dependencies", b); }
 	void set_configurationcheck_keyboard_settings(const bool b) { ENT _configurationcheck_keyboard_settings = b; WriteReg("configurationcheck_keyboard_settings", b); }
+	void set_configurationcheck_theme_settings(const bool b) { ENT _configurationcheck_theme_settings = b; WriteReg("configurationcheck_theme_settings", b); }
+	void set_configurationcheck_font_settings(const bool b) { ENT _configurationcheck_font_settings = b; WriteReg("configurationcheck_font_settings", b); }
 
 	// Lazy scraping
 	void set_lazy_scraping_when_to_scrape(const int i) { ENT _lazy_scraping_when_to_scrape = i;WriteReg("lazy_scraping_when_to_scrape", i); }
@@ -347,8 +349,8 @@ public:
 
 	// Obscure
 	void set_window_class_name(const CString &s)	{ ENT _window_class_name = s; WriteReg("window_class_name", s); }
-	void set_mutex_name(const CString &s)			{ ENT _mutex_name= s; WriteReg("mutex_name", s); }
-	void set_simple_window_title(bool in)			{ ENT _simple_window_title= in; WriteReg("simple_window_title", (int) in!=false); }
+	void set_mutex_name(const CString &s)		{ ENT _mutex_name= s; WriteReg("mutex_name", s); }
+	void set_simple_window_title(bool in)		{ ENT _simple_window_title= in; WriteReg("simple_window_title", (int) in!=false); }
 
 	// CFileDialog saved paths
 	void set_path_ohf(const CString s)		{ ENT _path_ohf = s; WriteReg("last_path_ohf", s); }
@@ -362,13 +364,13 @@ private:
 	// private variables - use public accessors and public mutators to address these
 
 	// Analyzer
-	unsigned int	_max_opponents;
+	unsigned int		_max_opponents;
 
 	// Autoplayer
-	unsigned int	_frame_delay;
-	unsigned int	_swag_delay_1;
-	unsigned int	_swag_delay_2;
-	unsigned int	_swag_delay_3;
+	unsigned int		_frame_delay;
+	unsigned int		_swag_delay_1;
+	unsigned int		_swag_delay_2;
+	unsigned int		_swag_delay_3;
 	bool			_ap_auto;
 	bool			_focus_detect;
 	bool			_swag_use_comma;
@@ -381,7 +383,7 @@ private:
 	CString			_dll_name;
 
 	// Scraper
-	unsigned int	_scrape_delay;
+	unsigned int		_scrape_delay;
 
 	// Symbols
 	double			_sym_av_time;
@@ -399,7 +401,7 @@ private:
 	bool			_replay_record;
 	bool			_replay_record_every_change_playing;
 	bool			_replay_record_every_change;
-	int				_replay_max_frames;
+	int			_replay_max_frames;
 
 	// Poker Tracker
 	CString			_pt_version;
@@ -409,8 +411,8 @@ private:
 	CString			_pt_user;
 	CString			_pt_pass;
 	bool			_pt_disable;
-	int				_pt_update_delay;
-	int				_pt_cache_refresh;
+	int			_pt_update_delay;
+	int			_pt_cache_refresh;
 
 	// Perl
 	CString			_perl_default_formula;
@@ -420,12 +422,12 @@ private:
 
 	//  PokerChat
 	bool			_chat_enabled;
-	int				_chat_min_delay;
-	int				_chat_random_delay;
+	int			_chat_min_delay;
+	int			_chat_random_delay;
 
 	// Log Symbol
 	bool			_log_symbol_enabled;
-	int				_log_symbol_max_log;
+	int			_log_symbol_max_log;
 
 	// Tracing
 	bool			_trace_enabled;
@@ -433,9 +435,9 @@ private:
 
 	// Logging & MessageBox
 	bool			_disable_msgbox;
-	int				_log_level;
-	int				_log_level_pt;
-	int				_log_max_logsize;
+	int			_log_level;
+	int			_log_level_pt;
+	int			_log_max_logsize;
 
 	// PPro
 	CString			_ppro_hostname;
@@ -448,35 +450,35 @@ private:
 	int				_ppro_chips;
 
 	// Formula window location
-	int				_formula_x;	
-	int				_formula_y;
-	int				_formula_dx;
-	int				_formula_dy;
+	int			_formula_x;	
+	int			_formula_y;
+	int			_formula_dx;
+	int			_formula_dy;
 
 	// Scraper window location
-	int				_scraper_x;
-	int				_scraper_y;
-	int				_scraper_dx;
-	int				_scraper_dy;
+	int			_scraper_x;
+	int			_scraper_y;
+	int			_scraper_dx;
+	int			_scraper_dy;
 
 	// Main window location
-	int				_main_x;
-	int				_main_y;
-	int				_main_dx;
-	int				_main_dy;
+	int			_main_x;
+	int			_main_y;
+	int			_main_dx;
+	int			_main_dy;
 
 	// PPro window location
-	int				_ppro_x;
-	int				_ppro_y;
-	int				_ppro_dx;
-	int				_ppro_dy;
+	int			_ppro_x;
+	int			_ppro_y;
+	int			_ppro_dx;
+	int			_ppro_dy;
 
 	// Blind locking
 	double			_sblind;
 	double			_bblind;
 	double			_bbet;
 	double			_ante;
-	int				_gametype;
+	int			_gametype;
 
 	// Formula editor
 	bool			_expand_auto;
@@ -486,22 +488,22 @@ private:
 	bool			_expand_udf;
 	bool			_udf_sort;
 	bool			_udf_group;
-	int				_equal;
-	int				_precision;
+	int			_equal;
+	int			_precision;
 
 	// Debug logging
 	bool			_fdebuglog;
 	bool			_fdebuglog_myturn;
 
 	// Validator
-	int				_validator_enabled;
+	int			_validator_enabled;
 	bool			_validator_stop_on_error;
 	bool			_validator_use_heuristic_rules;
 	bool			_validator_shoot_replayframe_on_error;
 
 	// Auto-connector
-	int				_autoconnector_connection_method;
-	int				_autoconnector_when_to_connect;
+	int			_autoconnector_connection_method;
+	int			_autoconnector_when_to_connect;
 	bool			_autoconnector_close_when_table_disappears;
 
 	// GUI
@@ -512,18 +514,19 @@ private:
 	bool			_rebuy_condition_no_cards;
 	bool			_rebuy_condition_change_in_handnumber;
 	bool			_rebuy_condition_heuristic_check_for_occlusion;
-	int				_rebuy_minimum_time_to_next_try;
+	int			_rebuy_minimum_time_to_next_try;
 	CString			_rebuy_script;
 
 	// Configuration check
-	bool			_configurationcheck_perl_dependencies;
 	bool			_configurationcheck_keyboard_settings;
+	bool			_configurationcheck_theme_settings;
+	bool			_configurationcheck_font_settings;
 
 	// Lazy scraping
 	int				_lazy_scraping_when_to_scrape;
 
 	// Misc
-	int				_scraper_zoom;
+	int			_scraper_zoom;
 
 	// Obscure
 	CString			_window_class_name;
