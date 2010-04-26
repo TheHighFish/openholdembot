@@ -217,13 +217,6 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_handnumber(0);
 	set_sym_version(VERSION_NUMBER);
 
-	// profile
-	set_sym_swagdelay(0);
-	set_sym_allidelay(0);
-	set_sym_swagtextmethod(3);
-	set_sym_potmethod(1);
-	set_sym_activemethod(1);
-
 	// formula
 	set_sym_rake(0);
 	set_sym_bankroll(0);
@@ -957,9 +950,7 @@ void CSymbols::CalcSymbols(void)
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Global environment symbols
 	set_sym_session(p_sessioncounter->session_id());												// session
-	set_sym_nopponentsmax(prefs.max_opponents());										// nopponentsmax
-	set_sym_swagdelay(prefs.swag_delay_3());											// swagdelay
-	set_sym_allidelay(0);																// allidelay  (unused in OpenHoldem)
+	set_sym_nopponentsmax(prefs.max_opponents());										// nopponentsmax										
 	set_sym_version(VERSION_NUMBER);													// version
 	GetClassName(p_autoconnector->attached_hwnd(), classname, 50);
 	if (strcmp(classname, "BRING")==0)
@@ -1138,9 +1129,6 @@ void CSymbols::CalcSymbols(void)
 	set_sym_defcon(p_formula->formula()->dDefcon);											// defcon
 	set_sym_isdefmode(p_formula->formula()->dDefcon == 0.0);								// isdefmode
 	set_sym_isaggmode(p_formula->formula()->dDefcon == 1.0);								// isaggmode
-	set_sym_swagtextmethod(p_tablemap->swagtextmethod()); 									// swagtextmethod
-	set_sym_potmethod(p_tablemap->potmethod());												// potmethod
-	set_sym_activemethod(p_tablemap->activemethod());										// activemethod
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Table limits 
@@ -1328,13 +1316,13 @@ void CSymbols::CalcBetBalanceStack(void)
 	}
 
 	// pot, potcommon, based on value of potmethod
-	if (_sym.potmethod == 2)															
+	if (p_tablemap->potmethod() == 2)															
 	{
 		set_sym_pot(p_scraper->pot(0));
 		set_sym_potcommon(_sym.pot - _sym.potplayer);
 	}
 
-	else if(_sym.potmethod == 3) 
+	else if(p_tablemap->potmethod() == 3) 
 	{
 		_sym.pot = p_scraper->pot(0);
 
@@ -1344,7 +1332,7 @@ void CSymbols::CalcBetBalanceStack(void)
 		_sym.potcommon = _sym.pot - _sym.potplayer;
 	}
 	
-	else  // potmethod == 1
+	else  // potmethod() == 1
 	{
 		set_sym_potcommon(0);
 		for (i=0; i<=4; i++)
@@ -4172,8 +4160,6 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "pot", 3)==0 && strlen(a)==3)							return _sym.pot;
 		if (memcmp(a, "potcommon", 9)==0 && strlen(a)==9)					return _sym.potcommon;
 		if (memcmp(a, "potplayer", 9)==0 && strlen(a)==9)					return _sym.potplayer;	
-		// PROFILE 1(2)
-		if (memcmp(a, "potmethod", 9)==0 && strlen(a)==9)					return _sym.potmethod;
 	}
 
 	// Various symbols below
@@ -4280,11 +4266,6 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	//PROFILE
 	if (memcmp(a, "sitename$", 9)==0)									return p_tablemap->sitename().Find(&a[9])!=-1;
 	if (memcmp(a, "network$", 8)==0)									return p_tablemap->network().Find(&a[8])!=-1;
-	if (memcmp(a, "swagdelay", 9)==0 && strlen(a)==9)					return _sym.swagdelay;
-	if (memcmp(a, "allidelay", 9)==0 && strlen(a)==9)					return _sym.allidelay;
-	if (memcmp(a, "swagtextmethod", 14)==0 && strlen(a)==14)			return _sym.swagtextmethod;
-
-	if (memcmp(a, "activemethod", 12)==0 && strlen(a)==12)				return _sym.activemethod;
 
 	//FORMULA FILE
 	if (memcmp(a, "rake", 4)==0 && strlen(a)==4)						return _sym.rake;

@@ -18,13 +18,6 @@ struct SSymbols
 	double handnumber;
 	double version;
 
-	//PROFILE
-	double swagdelay;
-	double allidelay;
-	double swagtextmethod;
-	double potmethod;
-	double activemethod;
-
 	//FORMULA FILE
 	double rake;
 	double nit;
@@ -451,13 +444,6 @@ public:
 	void	set_sym_session(const double d) { ENT _sym.session = d;};
 	void	set_sym_handnumber(const double d) { ENT _sym.handnumber = d;}
 	void	set_sym_version(const double d) { ENT _sym.version = d;}
-
-	// profile
-	void	set_sym_swagdelay(const double d) { ENT _sym.swagdelay = d;}
-	void	set_sym_allidelay(const double d) { ENT _sym.allidelay = d;}
-	void	set_sym_swagtextmethod(const double d) { ENT _sym.swagtextmethod = d;}
-	void	set_sym_potmethod(const double d) { ENT _sym.potmethod = d;}
-	void	set_sym_activemethod(const double d) { ENT _sym.activemethod = d;}
 
 	// formula
 	void	set_sym_rake(const double d) { ENT _sym.rake = d;}
