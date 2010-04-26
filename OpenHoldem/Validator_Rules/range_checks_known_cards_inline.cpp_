@@ -3,16 +3,6 @@
 //
 
 BEGIN_TESTCASE
-    TESTCASE_ID ("0132")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol nouts")
-    PRECONDITION (true)
-    POSTCONDITION ((gws("nouts") >= 0) && (gws("nouts") <= 50))
-    SYMBOLS_POSSIBLY_AFFECTED ("nouts")
-END_TESTCASE
-
-
-BEGIN_TESTCASE
     TESTCASE_ID ("0133")
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ncardsknown")

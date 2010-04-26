@@ -85,15 +85,6 @@ BEGIN_TESTCASE
 END_TESTCASE
 
 
-BEGIN_TESTCASE
-    TESTCASE_ID ("0096")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol nfriendsdealt")
-    PRECONDITION (true)
-    POSTCONDITION ((gws("nfriendsdealt") == 0) || (gws("nfriendsdealt") == 1))
-    SYMBOLS_POSSIBLY_AFFECTED ("nfriendsdealt")
-END_TESTCASE
-
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0097")
@@ -102,16 +93,6 @@ BEGIN_TESTCASE
     PRECONDITION (true)
     POSTCONDITION ((gws("nfriendsplaying") == 0) || (gws("nfriendsplaying") == 1))
     SYMBOLS_POSSIBLY_AFFECTED ("nfriendsplaying")
-END_TESTCASE
-
-
-BEGIN_TESTCASE
-    TESTCASE_ID ("0098")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol nfriendsblind")
-    PRECONDITION (true)
-    POSTCONDITION ((gws("nfriendsblind") == 0) || (gws("nfriendsblind") == 1))
-    SYMBOLS_POSSIBLY_AFFECTED ("nfriendsblind")
 END_TESTCASE
 
 
@@ -343,54 +324,3 @@ BEGIN_TESTCASE
     POSTCONDITION ((gws("opponentsblindbits") >= 0) && (gws("opponentsblindbits") <= 1023))
     SYMBOLS_POSSIBLY_AFFECTED ("opponentsblindbits")
 END_TESTCASE
-
-
-BEGIN_TESTCASE
-    TESTCASE_ID ("0122")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol friendsseatedbits")
-    PRECONDITION (true)
-    POSTCONDITION ((gws("friendsseatedbits") >= 0) && (gws("friendsseatedbits") <= 512))
-    SYMBOLS_POSSIBLY_AFFECTED ("friendsseatedbits")
-END_TESTCASE
-
-
-BEGIN_TESTCASE
-    TESTCASE_ID ("0123")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol friendsactivebits")
-    PRECONDITION (true)
-    POSTCONDITION ((gws("friendsactivebits") >= 0) && (gws("friendsactivebits") <= 512))
-    SYMBOLS_POSSIBLY_AFFECTED ("friendsactivebits")
-END_TESTCASE
-
-
-BEGIN_TESTCASE
-    TESTCASE_ID ("0124")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol friendsdealtbits")
-    PRECONDITION (true)
-    POSTCONDITION ((gws("friendsdealtbits") >= 0) && (gws("friendsdealtbits") <= 512))
-    SYMBOLS_POSSIBLY_AFFECTED ("friendsdealtbits")
-END_TESTCASE
-
-
-BEGIN_TESTCASE
-    TESTCASE_ID ("0125")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol friendsplayingbits")
-    PRECONDITION (true)
-    POSTCONDITION ((gws("friendsplayingbits") >= 0) && (gws("friendsplayingbits") <= 512))
-    SYMBOLS_POSSIBLY_AFFECTED ("friendsplayingbits")
-END_TESTCASE
-
-
-BEGIN_TESTCASE
-    TESTCASE_ID ("0126")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol friendsblindbits")
-    PRECONDITION (true)
-    POSTCONDITION ((gws("friendsblindbits") >= 0) && (gws("friendsblindbits") <= 1023))
-    SYMBOLS_POSSIBLY_AFFECTED ("friendsblindbits")
-END_TESTCASE
-
