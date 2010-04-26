@@ -21,6 +21,11 @@ MAINTENANCE:
   and which are to our best knowledge unused:
   islistcall, islistrais, islistalli, isemptylistcall, isemptylistrais,
   isemptylistalli, nlistmax, nlistmin. [THF]
+- Removed some symbols, which were accessible 
+  at the formula-level without necessity:
+  swagdelay, allidelay, swagtextmethod, potmethod, activemethod
+  IMO the TM-symbols should only be used by OH internally,
+  but not by the user at the formula-level. [THF] 
 
 v2.1.4 2010-04-23
 =================
