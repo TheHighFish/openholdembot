@@ -306,20 +306,8 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_nraisbets(0);
 
 	// list tests
-	set_sym_islistcall(0);
-	set_sym_islistrais(0);
-	set_sym_islistalli(0);
-
 	for (int i=0; i<MAX_HAND_LISTS; i++) 
 		set_sym_islist(i, 0);
-
-	set_sym_isemptylistcall(0);
-	set_sym_isemptylistrais(0);
-	set_sym_isemptylistalli(0);
-
-	// list numbers
-	set_sym_nlistmax(-1);
-	set_sym_nlistmin(-1);
 
 	// poker values
 	set_sym_pokerval(0);
@@ -619,19 +607,8 @@ void CSymbols::ResetSymbolsNewHand(void)
 	set_sym_handrank(0);
 
 	// list tests
-	set_sym_islistcall(0);
-	set_sym_islistrais(0);
-	set_sym_islistalli(0);0;
 	for (int i=0; i<MAX_HAND_LISTS; i++)
 		set_sym_islist(i, 0);
-
-	set_sym_isemptylistcall(0);
-	set_sym_isemptylistrais(0);
-	set_sym_isemptylistalli(0);
-
-	// list numbers
-	set_sym_nlistmax(-1);
-	set_sym_nlistmin(-1);
 
 	// hand tests
 	for (int i=0; i<=1; i++)
@@ -2298,7 +2275,6 @@ void CSymbols::CalcListTests(void)
 
 
 	N = p_formula->formula()->mHandList.GetSize();
-
 	for (i=0; i<N; i++)
 	{
 		listnum = atoi(p_formula->formula()->mHandList[i].list.Mid(4).GetString());
@@ -2307,70 +2283,6 @@ void CSymbols::CalcListTests(void)
 			(StdDeck_SUIT(c0)!=StdDeck_SUIT(c1) && p_formula->formula()->inlist[listnum][StdDeck_RANK(c1)][StdDeck_RANK(c0)]))
 		{
 			set_sym_islist(listnum, 1);													// islistxx
-
-				if (listnum < _sym.nlistmin || _sym.nlistmin == -1)
-				{
-				set_sym_nlistmin(listnum);												// nlistmin
-				}
-				if (listnum > _sym.nlistmax)
-				{
-				set_sym_nlistmax(listnum);												// nlistmax
-				}
-		}
-	}
-
-	// islistcall, islistrais, islistalli, isemptylistcall, isemptylistrais, isemptylistalli
-	N = p_formula->formula()->mHandList.GetSize();
-
-	set_sym_isemptylistcall(1);
-	set_sym_isemptylistrais(1);
-	set_sym_isemptylistalli(1);
-
-	for (i=0; i<N; i++)
-	{
-		listnum = atoi(p_formula->formula()->mHandList[i].list.Mid(4).GetString());
-
-		if (listnum == 0)
-		{
-			if (_sym.islist[listnum])
-			{
-				set_sym_islistcall(1);													// islistcall
-			}
-
-			tokpos = 0;
-			p_formula->formula()->mHandList[i].list_text.Tokenize(" \t", tokpos);
-			if (tokpos != -1)
-			{
-				set_sym_isemptylistcall(0);												// isemptylistcall
-			}
-		}
-
-		else if (listnum == 1)
-		{
-			if (_sym.islist[listnum])
-			{
-				set_sym_islistrais(1);													// islistrais
-			}
-			tokpos = 0;
-			p_formula->formula()->mHandList[i].list_text.Tokenize(" \t", tokpos);
-			if (tokpos != -1)
-			{
-				set_sym_isemptylistrais(0);												// isemptylistrais
-			}
-		}
-
-		else if (listnum == 7)
-		{
-			if (_sym.islist[listnum])
-			{
-				set_sym_islistalli(1);													// islistalli
-			}
-			tokpos = 0;
-			p_formula->formula()->mHandList[i].list_text.Tokenize(" \t", tokpos);
-			if (tokpos != -1)
-			{
-				set_sym_isemptylistalli(0);												// isemptylistalli
-			}
 		}
 	}
 }
@@ -3885,9 +3797,6 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	// LIST TESTS 1(2)
 	if (memcmp(a, "islist", 6) == 0)
 	{
-		if (memcmp(a, "islistcall", 10)==0 && strlen(a)==10)				return _sym.islistcall;
-		if (memcmp(a, "islistrais", 10)==0 && strlen(a)==10)				return _sym.islistrais;
-		if (memcmp(a, "islistalli", 10)==0 && strlen(a)==10)				return _sym.islistalli;
 		if (memcmp(a, "islist", 6)==0 && (strlen(a)<10) && (atoi(a+6)<MAX_HAND_LISTS)) return _sym.islist[atoi(a+6)]; //Matrix 2008-05-14
 	}
 
@@ -4057,15 +3966,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "run$clocks", 10)==0 && strlen(a)==10)				return _sym.run$clocks;
 	}
 
-	// LIST TESTS 2(2)
-	if (memcmp(a, "isemptylist", 11) == 0)
-	{
-		if (memcmp(a, "isemptylistcall", 15)==0 && strlen(a)==15)			return _sym.isemptylistcall;
-		if (memcmp(a, "isemptylistrais", 15)==0 && strlen(a)==15)			return _sym.isemptylistrais;
-		if (memcmp(a, "isemptylistalli", 15)==0 && strlen(a)==15)			return _sym.isemptylistalli;
-	}
-
-	// History symbols
+		// History symbols
 	if (memcmp(a, "hi_", 3)==0)
 	{
 		char	sym[50] = {0};
@@ -4169,13 +4070,6 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "$", 1)==0)  											return IsHand(a, e);
 	}
 
-	// LIST NUMBERS
-	if (memcmp(a, "nlist", 5)==0)
-	{
-		if (memcmp(a, "nlistmax", 8)==0 && strlen(a)==8)					return _sym.nlistmax;
-		if (memcmp(a, "nlistmin", 8)==0 && strlen(a)==8)					return _sym.nlistmin;
-	}
-	
 	// POKER VALUES 1(2)
 	if (memcmp(a, "pokerval", 8)==0)
 	{
