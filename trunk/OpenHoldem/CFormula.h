@@ -54,7 +54,7 @@ public:
 	void WriteFormula(CArchive& ar);
 	void CreateHandListMatrices();
 	bool ParseAllFormula(HWND hwnd, bool disable_msgbox);
-	void AddDefaultFunctionIfFunctionDoesNotExist(CString FunctionName);
+	void AddDefaultFunctionIfFunctionDoesNotExist(const CString &FunctionName);
 	void CheckForDefaultFormulaEntries();
 	void MarkCacheStale();
 	void ParseHandList(const CString &list_text, bool inlist[13][13]);

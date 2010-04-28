@@ -364,15 +364,14 @@ bool CFormula::ParseAllFormula(HWND hwnd, bool disable_msgbox)
 	return data.all_parsed;
 }
 
-void CFormula::AddDefaultFunctionIfFunctionDoesNotExist(CString FunctionName)
+void CFormula::AddDefaultFunctionIfFunctionDoesNotExist(const CString &FunctionName)
 {
 	int size_of_formula_set = _formula.mFunction.GetSize();
 	for (int i=0; i<size_of_formula_set; i++)  
 	{
-		if (_formula.mFunction[i].func=="notes") 
+		if (!_formula.mFunction[i].func.Compare(FunctionName)) 
 		{
-			// Formula found.
-			// Nothing to be done.
+			// Formula found. No need to create it.
 			return;
 		}
 	}
