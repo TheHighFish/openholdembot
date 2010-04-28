@@ -259,12 +259,12 @@ void CTableLimits::CalcTableLimits_NL_PL()
 		if (p_scraper->s_limit_info()->found_sb_bb)
 			SetSmallBlind(p_scraper->s_limit_info()->sb_bb);
 	}
-	if (tablelimit_unreliable_input.sblind==0)
+	if (tablelimit_unreliable_input.bblind==0)
 	{
 		if (p_scraper->s_limit_info()->found_bb_BB)
 			SetBigBlind(p_scraper->s_limit_info()->bb_BB);
 	}
-	if (tablelimit_unreliable_input.bblind==0)
+	if (tablelimit_unreliable_input.bbet==0)
 	{
 		if (p_scraper->s_limit_info()->found_bb_BB)
 			SetBigBet(p_scraper->s_limit_info()->bb_BB);
