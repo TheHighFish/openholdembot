@@ -500,6 +500,18 @@ void CDlgFormulaScintilla::ConstructKeywords(CString &keys)
 		keys.AppendFormat(" pt_fbbts%d", i);
 		keys.AppendFormat(" pt_fsbts%d", i);
 	}
+	for (i=0;i<13;i++)
+	{
+		for (int j=0;j<13;j++)
+		{
+			keys.AppendFormat(" $%c%c", card_chars[i], card_chars[j]);
+			if (i!=j) {
+				keys.AppendFormat(" $%c%cs", card_chars[i], card_chars[j]);
+				keys.AppendFormat(" $%c%co", card_chars[i], card_chars[j]);
+			}
+		}
+	}
+
 }
 
 void CDlgFormulaScintilla::UpdateScintillaKeywords(CScintillaWnd *pWnd) 
