@@ -321,7 +321,7 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 			&& (r.bottom >= (int) TablemapConnectionData[MapIndex].ClientSizeMinY)
 			&& (r.bottom <= (int) TablemapConnectionData[MapIndex].ClientSizeMaxY)))
 		{
-			write_log(3, "CAutoConnector: No good size.\n");
+			write_log(3, "CAutoConnector: No good size. Width=%d Height=%d\n", r.right, r.bottom);
 			return false;
 		}
 	}
