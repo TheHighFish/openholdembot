@@ -26,6 +26,9 @@ const int k_gametype_NL      =  0;
 const int k_gametype_PL  	 =  1;
 const int k_gametype_FL      =  2;
 
+// DLL
+const int k_number_of_holdem_states_for_DLL = 256;
+
 //  File accessable?
 //  (<unistd.h> is not contained in MSCVPP)
 const int F_OK = 0;

@@ -64,7 +64,7 @@ void CGameState::ProcessGameState(const SHoldemState *pstate)
 	if (pstate->m_dealer_chair != _m_holdem_state[(_m_ndx)&0xff].m_dealer_chair)
 		pstate_changed = true;
 
-	for (i=0; i<10; i++)
+	for (i=0; i<k_max_number_of_players; i++)
 	{
 		if (pstate->m_player[i].m_balance != _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance)
 			pstate_changed = true;
@@ -82,7 +82,7 @@ void CGameState::ProcessGameState(const SHoldemState *pstate)
 				pstate->m_player[i].m_cards[0] != 0 && pstate->m_player[i].m_cards[1] != 0)
 			pstate_changed = true;
 	}
-	for (i=0; i<=4; i++)
+	for (i=0; i<k_number_of_community_cards; i++)
 	{
 		if (pstate->m_cards[i] != _m_holdem_state[(_m_ndx)&0xff].m_cards[i])
 			pstate_changed = true;
@@ -97,7 +97,7 @@ void CGameState::ProcessGameState(const SHoldemState *pstate)
 	{
 		for (i=0; i<_hist_sym_count; i++)
 		{
-			for (j=0; j<4; j++)
+			for (j=0; j<k_number_of_betrounds; j++)
 			{
 				_hist_sym[i][j] = 0.0;
 			}
@@ -148,11 +148,11 @@ void CGameState::CaptureState(const char *title)
 	_state[_state_index&0xff].m_title[63] = '\0';
 
 	// Pot information
-	for (i=0; i<=9; i++)
+	for (i=0; i<k_max_number_of_players; i++)
 		_state[_state_index&0xff].m_pot[i] = p_scraper->pot(i);
 
 	// Common cards
-	for (i=0; i<=4; i++)
+	for (i=0; i<k_number_of_community_cards; i++)
 	{
 		if (p_scraper->card_common(i) == CARD_BACK)
 		{
@@ -184,7 +184,7 @@ void CGameState::CaptureState(const char *title)
 	_state[_state_index&0xff].m_dealer_chair = sym_dealerchair;
 
 	// loop through all 10 player chairs
-	for (i=0; i<=9; i++)
+	for (i=0; i<k_max_number_of_players; i++)
 	{
 
 		// player name, balance, currentbet
@@ -193,7 +193,7 @@ void CGameState::CaptureState(const char *title)
 		_state[_state_index&0xff].m_player[i].m_currentbet = p_symbols->sym()->currentbet[i];
 
 		// player cards
-		for (j=0; j<=1; j++)
+		for (j=0; j<k_number_of_cards_per_player; j++)
 		{
 			if (p_scraper->card_player(i, j) == CARD_BACK)
 			{
@@ -233,21 +233,21 @@ const int CGameState::LastRaised(const int round)
 	if (round<1 || round>4)
 		return last_raised;
 
-	for (i=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+1; i<=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+10; i++)
+	for (i=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+1; i<=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chairk_max_number_of_players; i++)
 	{
-		if (_chair_actions[i%10][round-1][w_reraised])
+		if (_chair_actions[i%k_max_number_of_players][round-1][w_reraised])
 		{
-			last_raised=i%10;
+			last_raised=i%k_max_number_of_players;
 		}
 	}
 
 	if (last_raised==-1)
 	{
-		for (i=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+1; i<=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+10; i++)
+		for (i=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+1; i<=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+k_max_number_of_players; i++)
 		{
-			if (_chair_actions[i%10][round-1][w_raised])
+			if (_chair_actions[i%k_max_number_of_players][round-1][w_raised])
 			{
-				last_raised=i%10;
+				last_raised=i%k_max_number_of_players;
 			}
 		}
 	}
@@ -468,16 +468,16 @@ const double CGameState::OHSymHist(const char * sym, const int round)
 const double CGameState::SortedBalance(const int rank)
 {
 	int		i = 0, n = 0;
-	double	stacks[10] = {0.};
+	double	stacks[k_max_number_of_players] = {0.};
 	double	temp = 0.;
 
-	for (int i=0; i<=9; i++)
+	for (int i=0; i<k_max_number_of_players; i++)
 		stacks[i] = _m_holdem_state[_m_ndx].m_player[i].m_balance + _m_holdem_state[_m_ndx].m_player[i].m_currentbet;
 
 	// bubble sort stacks
-	for (i=0; i<=8; i++)
+	for (i=0; i<(k_max_number_of_players-1); i++)
 	{
-		for (n=i+1; n<=9; n++)
+		for (n=i+1; n<k_max_number_of_players; n++)
 		{
 			if (stacks[i] < stacks[n])
 			{
@@ -503,7 +503,7 @@ bool CGameState::ProcessThisFrame (void)
 
 	// check if all balances are known (indicates stability of info passed to DLL)
 	balance_stability = true;
-	for (i=0; i<10; i++)
+	for (i=0; i<k_max_number_of_players; i++)
 	{
 		if (_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[0] != 0 && 
 			_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[1] != 0 &&
@@ -543,15 +543,15 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 	{
 
 		// Check for end of hand situation
-		for (i=0; i<10; i++)
+		for (i=0; i<k_max_number_of_players; i++)
 		{
 			// if new card fronts have appeared, then players are showing down, and its the end of the hand
-			if ( _m_holdem_state[(_m_ndx-1)&0xff].m_player[i%10].m_cards[0] == 255 &&		// was card backs last scrape
-					_m_holdem_state[(_m_ndx-1)&0xff].m_player[i%10].m_cards[1] == 255 &&		// was card backs last scrape
-					_m_holdem_state[(_m_ndx)&0xff].m_player[i%10].m_cards[0] != 255 &&		// is not card backs this scrape
-					_m_holdem_state[(_m_ndx)&0xff].m_player[i%10].m_cards[1] != 255 &&		// is not card backs this scrape
-					_m_holdem_state[(_m_ndx)&0xff].m_player[i%10].m_cards[0] != 0 &&			// is not 'no cards' this scrape
-					_m_holdem_state[(_m_ndx)&0xff].m_player[i%10].m_cards[1] != 0 &&			// is not 'no cards' this scrape
+			if ( _m_holdem_state[(_m_ndx-1)&0xff].m_player[i%k_max_number_of_players].m_cards[0]    == CARD_BACK &&		// was card backs last scrape
+					_m_holdem_state[(_m_ndx-1)&0xff].m_player[i%k_max_number_of_players].m_cards[1] == CARD_BACK &&		// was card backs last scrape
+					_m_holdem_state[(_m_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[0]   != CARD_BACK &&		// is not card backs this scrape
+					_m_holdem_state[(_m_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[1]   != CARD_BACK &&		// is not card backs this scrape
+					_m_holdem_state[(_m_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[0]   != WH_NOCARD &&		// is not 'no cards' this scrape
+					_m_holdem_state[(_m_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[1]   != WH_NOCARD &&		// is not 'no cards' this scrape
 					i != sym_userchair &&												// it's not me
 					_end_of_hand==false )
 			{
@@ -584,9 +584,9 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 			_big_blind_posted = false;
 			_bets_last = 0.0;
 			_end_of_hand = false;
-			for (i=0; i<10; i++)
+			for (i=0; i<k_max_number_of_players; i++)
 			{
-				for (j=0; j<4; j++)
+				for (j=0; j<k_number_of_betrounds; j++)
 				{
 					for (k=0; k<w_num_action_types; k++)
 						_chair_actions[i][j][k] = w_noaction;
@@ -661,14 +661,14 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 				if (sym_br == 1 && _m_game_state[(_m_game_ndx)&0xff].m_player[sym_userchair].m_currentbet == sym_sblind)
 				{
 					from_chair = sym_userchair;
-					to_chair = sym_userchair-1+10;
+					to_chair = sym_userchair-1+k_max_number_of_players;
 				}
 
 				// if i am the bb, then iterate from dlr+1 to mychair
 				else if (sym_br == 1 && _m_game_state[(_m_game_ndx)&0xff].m_player[sym_userchair].m_currentbet == sym_bblind)
 				{
 					from_chair = _m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+1;
-					to_chair = sym_userchair-1+10;
+					to_chair = sym_userchair-1+k_max_number_of_players;
 				}
 
 				// if the dlr chair < mychair, then iterate from dlr+1 to mychair-1
@@ -682,7 +682,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 				else
 				{
 					from_chair = _m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+1;
-					to_chair = sym_userchair-1+10;
+					to_chair = sym_userchair-1+k_max_number_of_players;
 				}
 
 			}
@@ -690,7 +690,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 			else
 			{
 				from_chair = sym_userchair+1;
-				to_chair = sym_userchair-1+10;
+				to_chair = sym_userchair-1+k_max_number_of_players;
 			}
 
 			// now iterate through the chairs and see what everybody did
@@ -698,32 +698,32 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 			{
 				// if the currentbet for the chair is the sb and the last bet was zero and br==1
 				// and the player has cards, then we know the chair ***POSTED THE SMALL BLIND***
-				if (_m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet == sym_sblind &&
+				if (_m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_currentbet == sym_sblind &&
 						_bets_last==0 &&
-						_m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_cards[0]!=0 &&
-						_m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_cards[1]!=0 &&
+						_m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[0]!=0 &&
+						_m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[1]!=0 &&
 						sym_br == 1)
 				{
 					_chair_actions[i%10][sym_br-1][w_posted_sb] = true;
 					_bets_last = _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet;
 					write_log(1, ">>> Chair %d (%s) posted the sb: $%.2f\n", i%10,
-							  _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_name,
-							  _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet);
+							  _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_name,
+							  _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_currentbet);
 				}
 
 				// if the currentbet for the chair is the bb and the last bet was the sb and br==1
 				// and the player has cards, then we know the chair ***POSTED THE BIG BLIND***
-				else if (_m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet == sym_bblind &&
+				else if (_m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_currentbet == sym_bblind &&
 						 _bets_last == sym_sblind &&
-						 _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_cards[0]!=0 &&
-						 _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_cards[1]!=0 &&
+						 _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[0]!=0 &&
+						 _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[1]!=0 &&
 						 sym_br == 1)
 				{
 					_chair_actions[i%10][(int) sym_br-1][w_posted_bb] = true;
 					_bets_last = _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet;
 					write_log(1, ">>> Chair %d (%s) posted the bb: $%.2f\n", i%10,
-							  _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_name,
-							  _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet);
+							  _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_name,
+							  _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_currentbet);
 				}
 
 				// if the currentbet for the chair is greater than the last bet and it's not the end of the hand,
@@ -877,7 +877,7 @@ void CGameState::DumpState(void)
 	write_log(3, "m_is_playing: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_is_playing);
 	write_log(3, "m_is_posting: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_is_posting);
 	write_log(3, "m_dealer_chair: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_dealer_chair);
-	for (i=0; i<10; i++) {
+	for (i=0; i<k_max_number_of_players; i++) {
 		write_log(3, "m_player[%d].m_name:%s  ", i, _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_name);
 		write_log(3, "m_balance:%.2f  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance);
 		write_log(3, "m_currentbet:%.2f  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_currentbet);
@@ -909,7 +909,7 @@ const char *CGameState::_hist_sym_strings[200] =
 	//POCKET/COMMON TESTS (5)
 	"ishipair", "islopair", "ismidpair", "ishistraight", "ishiflush", 
 
-	//(UN)KNOWN CARDS (2)
+	//(UN)KNOWN CARDS (1)
 	"ncardsbetter", 
 
 	//NHANDS (6)
