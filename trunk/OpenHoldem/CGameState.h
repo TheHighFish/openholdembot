@@ -75,7 +75,7 @@ private:
 	int					_ftr_nplayersdealt_last;
 
 	double				_hist_sym[200][4];
-	static const int	_hist_sym_count=121;
+	static const int	_hist_sym_count=119;
 	static unsigned int	_exponents[11];
 	static const char	*_hist_sym_strings[200];
 
