@@ -3,6 +3,7 @@
 
 #include "CDllExtension.h"
 #include "..\CCritSec\CCritSec.h"
+#include "MagicNumbers.h"
 
 extern class CGameState 
 {
@@ -40,7 +41,7 @@ private:
 	int					_oppdealt;
 	int					_hands_played;
 	bool				_new_hand;
-	SHoldemState		_state[256];
+	SHoldemState		_state[k_number_of_holdem_states_for_DLL];
 	unsigned char		_state_index;
 
 private:
@@ -49,9 +50,9 @@ private:
 	void ProcessFtrEngine(const SHoldemState *pstate) ;
 	void DumpState(void) ;
 
-	SHoldemState		_m_holdem_state[256];
+	SHoldemState		_m_holdem_state[k_number_of_holdem_states_for_DLL];
 	unsigned char		_m_ndx;
-	ftr_info			_m_ftr[256];
+	ftr_info			_m_ftr[k_number_of_holdem_states_for_DLL]; // ??? WTF is ftr?
 	int					_m_ftr_ndx;
 	int					_nopponentsplaying_last;
 	bool				_process_game_state;
@@ -69,15 +70,15 @@ private:
 
 	SHoldemState		_m_game_state[256];
 	unsigned char		_m_game_ndx;
-	bool				_chair_actions[10][4][w_num_action_types];   // 10 chairs, 4 rounds, number of action types
+	bool				_chair_actions[k_max_number_of_players][k_number_of_betrounds][w_num_action_types];   // 10 chairs, 4 rounds, number of action types
 	int					_ftr_dealer_chair_last;
 	int					_ftr_nflopc_last;
 	int					_ftr_nplayersdealt_last;
 
-	double				_hist_sym[200][4];
 	static const int	_hist_sym_count=120;
+	double				_hist_sym[_hist_sym_count][k_number_of_betrounds];
 	static unsigned int	_exponents[11];
-	static const char	*_hist_sym_strings[200];
+	static const char	*_hist_sym_strings[_hist_sym_count];
 
 	CCritSec			m_critsec;
 
