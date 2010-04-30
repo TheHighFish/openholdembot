@@ -734,4 +734,19 @@ void CFormula::WarnAboutOutdatedConcepts()
 			"your formula set.",
 			"Error", 0);
 	}
+	if (DoesFormulaAlreadyExist("f$swag") 
+		|| DoesFormulaAlreadyExist("f$srai")
+		|| DoesFormulaAlreadyExist("f$swag_adjust"))
+	{
+		OH_MessageBox("Your formula set contains old \"swag\"-functions.\n"
+			"\"Swagging\" is an outdated messy concept,\n"
+			"where the user had to care about everything.\n\n"
+			"f$swag and its supporting functions and symbols\n"
+			"got finally replaced by a single function f$betsize\n"
+			"and OpenHoldem cares about all the rest automatically.\n\n"
+			"Please refer to the manual about how to adapt\n"
+			"your formula set.",
+			"Error", 0);
+
+	}
 }
