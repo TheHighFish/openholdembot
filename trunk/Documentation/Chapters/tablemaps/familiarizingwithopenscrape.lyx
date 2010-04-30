@@ -1,4 +1,4 @@
-#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -6,6 +6,8 @@
 \use_default_options true
 \begin_modules
 theorems-ams
+eqs-within-sections
+figs-within-sections
 \end_modules
 \language english
 \inputencoding auto
@@ -199,11 +201,40 @@ Main: Toolbar
 
 \begin_layout Standard
 The toolbar on the main window performs the following actions, from left
- to right: New Table Map Open Table Map Save Table Map Connect to window
- Toggle Region box display on or off Refresh the poker table image Display
- Help/About Note: Keyboard shortcuts exist for many of these menu options
- and toolbar buttons, in addition to the standard Windows keyboard shortcuts:
- 
+ to right: 
+\end_layout
+
+\begin_layout Itemize
+New Table Map 
+\end_layout
+
+\begin_layout Itemize
+Open Table Map 
+\end_layout
+
+\begin_layout Itemize
+Save Table Map 
+\end_layout
+
+\begin_layout Itemize
+Connect to window 
+\end_layout
+
+\begin_layout Itemize
+Toggle Region box display on or off 
+\end_layout
+
+\begin_layout Itemize
+Refresh the poker table image 
+\end_layout
+
+\begin_layout Itemize
+Display Help/About 
+\end_layout
+
+\begin_layout Remark
+Keyboard shortcuts exist for many of these menu options and toolbar buttons,
+ in addition to the standard Windows keyboard shortcuts: 
 \end_layout
 
 \begin_layout Itemize
