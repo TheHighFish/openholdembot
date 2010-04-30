@@ -1,4 +1,4 @@
-#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -6,6 +6,8 @@
 \use_default_options true
 \begin_modules
 theorems-ams
+eqs-within-sections
+figs-within-sections
 \end_modules
 \language english
 \inputencoding auto
@@ -51,7 +53,16 @@ First thing’s first: connect to the poker window
 
 \begin_layout Standard
 Start a casino, and open up a play money table.
- You can even use “observer” mode for this activity if you like.
+ For the greatest part of building a table map you could even use “observer”
+ mode if you like; only few things like buttons will require a 
+\begin_inset Quotes eld
+\end_inset
+
+real
+\begin_inset Quotes erd
+\end_inset
+
+ account .
  Alternatively, once you learn how to use saved frames and OHReplay, you
  can also connect OpenScrape to these saved frames while offline from the
  casino.
