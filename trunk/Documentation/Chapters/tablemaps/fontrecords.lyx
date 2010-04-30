@@ -1,4 +1,4 @@
-#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -6,6 +6,8 @@
 \use_default_options true
 \begin_modules
 theorems-ams
+eqs-within-sections
+figs-within-sections
 \end_modules
 \language english
 \inputencoding auto
@@ -65,7 +67,7 @@ tions.
  of ASCII characters.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Subsection
 Manipulating font records using OpenScrape
 \end_layout
 
@@ -87,16 +89,29 @@ The “Create Font” button on the Table Map Editor window is used to create
 \end_layout
 
 \begin_layout Standard
-To create new font records: 1.Select a Region record that has a text transform
- 2.Ensure that the Region’s color parameters provide good separation of foregroun
-d and background pixels (preview in the Pixel Separation field) 3.Click the
- “Create Font” button
+To create new font records: 
 \end_layout
 
-\begin_layout Standard
-Note: The number of the text transform in the region (Text0, Text1, Text2,
- or Text3) determines which Font record group (0 to 3) the new fonts will
- be added to.
+\begin_layout Enumerate
+Select a Region record that has a text transform 
+\end_layout
+
+\begin_layout Enumerate
+Ensure that the Region’s color parameters provide good separation of foreground
+ and background pixels (preview in the Pixel Separation field) 
+\end_layout
+
+\begin_layout Enumerate
+Click the “Create Font” button
+\end_layout
+
+\begin_layout Remark
+The number of the text transform in the region (Text0, Text1, Text2, or
+ Text3) determines which Font record group (0 to 3) the new fonts will be
+ added to.
+ Multiple font record groups may be necessary if the casino uses multiple
+ fonts or if fonts are blinking or otherwise highlighted when it is a players
+ turn.
 \end_layout
 
 \begin_layout Standard
