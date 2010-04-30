@@ -2061,10 +2061,10 @@ void PokerPro::DoAutoplayer(void)
 		Sleep(500);
 		p_autoplayer->set_prevaction(PREVACT_ALLI);
 	}
-	else if (p_symbols->f$swag() && p_scraper->GetButtonState(2) && _autoplayer_can_act) 
+	else if (p_symbols->f$betsize() && p_scraper->GetButtonState(2) && _autoplayer_can_act) 
 	{
 		Sleep(500);
-		SendAction('SBET', (int) (p_symbols->f$swag()*100));
+		SendAction('SBET', (int) (p_symbols->f$betsize()*100));
 		_autoplayer_can_act = false;
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		Sleep(500);

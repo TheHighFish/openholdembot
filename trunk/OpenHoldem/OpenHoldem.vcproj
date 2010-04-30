@@ -496,6 +496,10 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\SwagAdjustment.cpp"
+				>
+			</File>
 			<Filter
 				Name="winmgr"
 				>
@@ -1135,6 +1139,10 @@
 			</File>
 			<File
 				RelativePath=".\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SwagAdjustment.h"
 				>
 			</File>
 			<Filter

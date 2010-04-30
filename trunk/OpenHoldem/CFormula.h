@@ -125,15 +125,18 @@ Plenty of constants to trim to get the bot to play your way. \r\n\
 \r\n\
 EDITED 2005-10-30 to correct EV criteria and handrank oddity. \r\n\
 \r\n\
-EDITED 2009-05-31 by TheHighFish: \r\n\
+EDITED 2009-05-31 by THF: \r\n\
   * conversion to new ohf-format \r\n\
   * comments for unused standard formulae \r\n\
   * put some symbols into the debug-tab to demonstrate its usage \r\n\
   * removed unused hand-lists \r\n\
  \r\n\
-EDITED 2010-02-02 by TheHighFish: \r\n\
-  * new formulae f$sitin, f$sitout, f§leave \r\n\
-    instead of the old f$play";
+EDITED 2010-02-02 by THF: \r\n\
+  * new formulae f$sitin, f$sitout, f$leave \r\n\
+    instead of the old f$play \r\n\
+	EDITED 2010-04-27 by THF: \r\n\
+  * replaced f$betsize, f$srai etc. by f$betsize";
+
 
 static const char * defaultCSdll = "";
 
@@ -143,12 +146,8 @@ static const char * defaultCSalli = "\
    || [ prwin >= 1.00 ]                  // dead nuts";
 
 
-static const char * defaultCSswag = "\
-// No stated wagers with a FL-bot.";
-
-
-static const char * defaultCSsrai = "\
-// No stated raises with a FL-bot.";
+static const char * defaultCSbetsize = "\
+// No user-defined bet-size for a FL-bot.";
 
 static const char * defaultCSrais = "\
    0 \r\n\

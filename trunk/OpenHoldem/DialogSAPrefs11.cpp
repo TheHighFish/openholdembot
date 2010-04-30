@@ -57,7 +57,7 @@ BOOL CDlgSAPrefs11::OnInitDialog()
 
 	m_EnableTrace.SetCheck(prefs.trace_enabled() ? BST_CHECKED : BST_UNCHECKED);
 	m_TraceList.AddString("f$alli");
-	m_TraceList.AddString("f$swag");
+	m_TraceList.AddString("f$betsize");
 	m_TraceList.AddString("f$rais");
 	m_TraceList.AddString("f$call");
 	m_TraceList.AddString("f$prefold");
