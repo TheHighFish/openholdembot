@@ -68,16 +68,15 @@ private:
 	bool				_big_blind_posted;
 	double				_bets_last;
 
-	SHoldemState		_m_game_state[256];
+	SHoldemState		_m_game_state[k_number_of_holdem_states_for_DLL];
 	unsigned char		_m_game_ndx;
 	bool				_chair_actions[k_max_number_of_players][k_number_of_betrounds][w_num_action_types];   // 10 chairs, 4 rounds, number of action types
 	int					_ftr_dealer_chair_last;
 	int					_ftr_nflopc_last;
 	int					_ftr_nplayersdealt_last;
 
-	static const int	_hist_sym_count=120;
+	static const int	_hist_sym_count = 120;
 	double				_hist_sym[_hist_sym_count][k_number_of_betrounds];
-	static unsigned int	_exponents[11];
 	static const char	*_hist_sym_strings[_hist_sym_count];
 
 	CCritSec			m_critsec;
