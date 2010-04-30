@@ -5,6 +5,11 @@ NEW STUFF:
   It finally got replaced by 3 individual functions: f$sitin, f$sitout and f$leave.
   There will be a warning on old formulae and the user will need to make
   some small changes to his formula set. [THF]
+- f$swag has been quite a messy concept for a long time.
+  f$swag and its supporting functions 
+  (f$srai, sraimin, sraimax, swagtextmethod and f$swag_adjust)
+  got replaced by a single function f$betsize 
+  and OH does automatically care about the rest. [THF]
 - new symbol: originalbalance, which remebers the balance at the start of a session. [THF]
 
 MAINTENANCE:
