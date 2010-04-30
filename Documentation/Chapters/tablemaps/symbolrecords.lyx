@@ -145,7 +145,7 @@ Valid symbol records
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="23" columns="2">
+<lyxtabular version="3" rows="24" columns="2">
 <features islongtable="true">
 <column alignment="left" valignment="top" width="25text%">
 <column alignment="left" valignment="top" width="75text%">
@@ -603,6 +603,38 @@ Legacy support of WinScrape's symbol.
 \begin_inset Text
 
 \begin_layout Plain Layout
+allinmethod
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Used by the Autoplayer to determine how to go allin
+\end_layout
+
+\begin_layout Itemize
+0: swag the balance (default) 
+\end_layout
+
+\begin_layout Itemize
+1: click max (or allin), then click raise 
+\end_layout
+
+\begin_layout Itemize
+2: click only max (or allin)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 swagtextmethod 
 \end_layout
 
@@ -625,6 +657,7 @@ inline false
 status open
 
 \begin_layout Plain Layout
+
 f$swag = f$srai + f$swag_adjust
 \end_layout
 
@@ -1287,10 +1320,6 @@ This Symbol instructs OpenHoldem to load a user-supplied external scraper
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 
 \end_layout
 
