@@ -557,7 +557,7 @@ void CSymbols::ResetSymbolsFirstTime(void)
 
 	// action symbols
 	set_f$alli(0);
-	set_f$swag(0);
+	set_f$betsize(0);
 	set_f$rais(0);
 	set_f$call(0);
 	set_f$sitin(0);
@@ -655,7 +655,7 @@ void CSymbols::ResetSymbolsNewHand(void)
 
 	// action symbols
 	set_f$alli(0);
-	set_f$swag(0);
+	set_f$betsize(0);
 	set_f$rais(0);
 	set_f$call(0);
 	set_f$sitin(0);
@@ -3637,8 +3637,8 @@ void CSymbols::CalcPrimaryFormulas(const bool final_answer)
 	write_log(3, "Primary formulas; f$alli: %f\n", p_symbols->f$alli());
 	
 	e = SUCCESS;
-	set_f$swag(gram.CalcF$symbol(p_formula, "f$swag", (final_answer && prefs.trace_functions(nTraceSwag)), &e));
-	write_log(3, "Primary formulas; f$swag: %f\n", p_symbols->f$swag());
+	set_f$betsize(gram.CalcF$symbol(p_formula, "f$betsize", (final_answer && prefs.trace_functions(nTraceSwag)), &e));
+	write_log(3, "Primary formulas; f$betsize: %f\n", p_symbols->f$betsize());
 
 	e = SUCCESS;
 	set_f$rais(gram.CalcF$symbol(p_formula, "f$rais", (final_answer && prefs.trace_functions(nTraceRais)), &e));

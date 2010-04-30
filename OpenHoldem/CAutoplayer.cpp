@@ -17,6 +17,7 @@
 #include "MainFrm.h"
 #include "OpenHoldem.h"
 #include "PokerChat.hpp"
+#include "SwagAdjustment.h"
 
 
 CAutoplayer	*p_autoplayer = NULL;
@@ -312,7 +313,7 @@ void CAutoplayer::DoAutoplayer(void)
 	bool bDoSwag = false; // I'm just breaking this out to be a little clearer (spew)
 	if ((p_tablemap->allinmethod() == 0) && p_symbols->f$alli() && p_scraper->GetButtonState(3)) //!!! //!!!
 		bDoSwag = true;
-	if (p_symbols->f$swag() && !p_symbols->f$alli() && p_scraper->GetButtonState(3)) //!!!
+	if (p_symbols->f$betsize() && !p_symbols->f$alli() && p_scraper->GetButtonState(3)) //!!!
 		bDoSwag = true;
 	if (bDoSwag) 
 	{
@@ -363,7 +364,7 @@ void CAutoplayer::DoSwag(void)
 	POINT			cur_pos = {0};
 	bool			lost_focus = false;
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-	double			f_swag = p_symbols->f$swag();
+	double			f_swag = p_symbols->f$betsize();
 	POINT			point_null = {-1, -1};
 	RECT			r_null = {-1, -1, -1, -1};
 
@@ -462,12 +463,14 @@ void CAutoplayer::DoSwag(void)
 		f_swag = p_symbols->sym()->balance[10];
 
 	// SWAG AMOUNT ENTRY
-	if (f_swag != (int) f_swag)
-		swag_amt.Format("%.2f", f_swag);
+	double swag_adjusted = SwagAmountAdjusted(f_swag);
+	if (swag_adjusted != (int) swag_adjusted)
+		swag_amt.Format("%.2f", swag_adjusted);
 	else
-		swag_amt.Format("%.0f", f_swag);
+		swag_amt.Format("%.0f", swag_adjusted);
 
-	write_log(3, "Swag amount; calling keyboard.dll to swag: %s %d,%d %d,%d\n", 
+	write_log(3, "Swag amount (not adjusted): %.2f\n", f_swag);
+	write_log(3, "Swag amount; calling keyboard.dll to swag (adjusted): %s %d,%d %d,%d\n", 
 		swag_amt, i3_edit_region.left, i3_edit_region.top, i3_edit_region.right, i3_edit_region.bottom);
 	(theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), i3_edit_region, swag_amt, prefs.swag_use_comma(), NULL, point_null);
 
@@ -598,7 +601,7 @@ void CAutoplayer::DoARCCF(void)
 	}
 
 	// CHECK
-	// None of f$alli, f$swag, f$rais, f$call are > 0 or no buttons related to
+	// None of f$alli, f$betsize, f$rais, f$call are > 0 or no buttons related to
 	// these actions can be found. If there is a check button, then click it.
 	else if (check_button_defined)
 	{
@@ -608,7 +611,7 @@ void CAutoplayer::DoARCCF(void)
 	}
 
 	// FOLD
-	// None of f$alli, f$swag, f$rais, f$call are > 0 or no buttons related to
+	// None of f$alli, f$betsize, f$rais, f$call are > 0 or no buttons related to
 	// these actions can be found. If there is a fold button, then click it, otherwise we have a serious problem.
 	else if (fold_button_defined)
 	{

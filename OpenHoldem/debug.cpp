@@ -466,14 +466,14 @@ void write_logautoplay(int level, const char * action)
         // best action
         if (strcmp(action, "SWAG")==0) 
 		{
-            bestaction.Format("$%.2f", p_symbols->f$swag());
+            bestaction.Format("$%.2f", p_symbols->f$betsize());
         }
         else 
 		{
             if (p_symbols->f$alli())
                 bestaction = "Allin";
 
-            else if (p_symbols->f$swag())
+            else if (p_symbols->f$betsize())
                 bestaction = "SWAG";
 
             else if (p_symbols->f$rais())
@@ -503,7 +503,7 @@ void write_logautoplay(int level, const char * action)
 
         // fcra formula status
         fcra_formula_status.Format("%s%s%s%s",
-                                   !p_symbols->f$alli() && !p_symbols->f$rais() && !p_symbols->f$call() && !p_symbols->f$swag() ? "F" : ".",
+                                   !p_symbols->f$alli() && !p_symbols->f$rais() && !p_symbols->f$call() && !p_symbols->f$betsize() ? "F" : ".",
                                    p_symbols->f$call() ? "C" : ".",
                                    p_symbols->f$rais() ? "R" : ".",
                                    p_symbols->f$alli() ? "A" : ".");
@@ -533,7 +533,7 @@ void write_logautoplay(int level, const char * action)
 			p_symbols->sym()->balance[10], 
 			fcra_seen.GetString(), 
 			fcra_formula_status.GetString(), 
-			p_symbols->f$swag() );
+			p_symbols->f$betsize() );
 
 		if (prefs.trace_enabled() && p_symbols->symboltrace_collection()->GetSize() > 0)
 		{

@@ -42,8 +42,7 @@ void CFormula::SetDefaultBot()
 	func.func = "notes";		func.func_text = defaultCSnotes;	_formula.mFunction.Add(func);
 	func.func = "dll";			func.func_text = defaultCSdll;		_formula.mFunction.Add(func);
 	func.func = "f$alli";		func.func_text = defaultCSalli;		_formula.mFunction.Add(func);
-	func.func = "f$swag";		func.func_text = defaultCSswag;		_formula.mFunction.Add(func);
-	func.func = "f$srai";		func.func_text = defaultCSsrai;		_formula.mFunction.Add(func);
+	func.func = "f$betsize";	func.func_text = defaultCSbetsize;	_formula.mFunction.Add(func);
 	func.func = "f$rais";		func.func_text = defaultCSrais;		_formula.mFunction.Add(func);
 	func.func = "f$call";		func.func_text = defaultCScall;		_formula.mFunction.Add(func);
 	func.func = "f$prefold";	func.func_text = defaultCSprefold;	_formula.mFunction.Add(func);
@@ -250,15 +249,14 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 
 bool CFormula::IsStandardFormula(CString formula_name)
 {
-	return ((formula_name == "notes")  || (formula_name == "dll")
-		|| (formula_name == "f$alli")  || (formula_name == "f$swag")
-		|| (formula_name == "f$srai")  || (formula_name == "f$rais")
-		|| (formula_name == "f$call")  || (formula_name == "f$prefold")
-		|| (formula_name == "f$rebuy") || (formula_name == "f$delay")
-		|| (formula_name == "f$chat")  || (formula_name == "f$P")
-		|| (formula_name == "f$sitin") || (formula_name == "f$sitout")
-		|| (formula_name == "f$leave") || (formula_name == "f$test")
-		|| (formula_name == "f$debug"));
+	return ((formula_name == "notes")	|| (formula_name == "dll")
+		|| (formula_name == "f$alli")	|| (formula_name == "f$betsize")
+		|| (formula_name == "f$rais")	|| (formula_name == "f$call")  
+		|| (formula_name == "f$prefold")|| (formula_name == "f$rebuy") 
+		|| (formula_name == "f$delay")	|| (formula_name == "f$chat")	
+		|| (formula_name == "f$P")		|| (formula_name == "f$sitin")	
+		|| (formula_name == "f$sitout")	|| (formula_name == "f$leave")	
+		|| (formula_name == "f$test")	|| (formula_name == "f$debug"));
 }
 
 void CFormula::WriteStandardFunction(CArchive& ar, CString name)
@@ -291,8 +289,7 @@ void CFormula::WriteFormula(CArchive& ar)
 	s.Format("##rake##\r\n%f\r\n\r\n", _formula.dRake); ar.WriteString(s);
 	s.Format("##nit##\r\n%d\r\n\r\n", (int) _formula.dNit); ar.WriteString(s);
 	WriteStandardFunction(ar, "f$alli");
-	WriteStandardFunction(ar, "f$swag");
-	WriteStandardFunction(ar, "f$srai");
+	WriteStandardFunction(ar, "f$betsize");
 	WriteStandardFunction(ar, "f$rais");
 	WriteStandardFunction(ar, "f$call");
 	WriteStandardFunction(ar, "f$prefold");
@@ -391,8 +388,7 @@ void CFormula::CheckForDefaultFormulaEntries()
 	AddDefaultFunctionIfFunctionDoesNotExist("notes");
 	AddDefaultFunctionIfFunctionDoesNotExist("dll");
 	AddDefaultFunctionIfFunctionDoesNotExist("f$alli");
-	AddDefaultFunctionIfFunctionDoesNotExist("f$swag");
-	AddDefaultFunctionIfFunctionDoesNotExist("f$srai");
+	AddDefaultFunctionIfFunctionDoesNotExist("f$betsize");
 	AddDefaultFunctionIfFunctionDoesNotExist("f$rais");
 	AddDefaultFunctionIfFunctionDoesNotExist("f$call");
 	AddDefaultFunctionIfFunctionDoesNotExist("f$prefold");

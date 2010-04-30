@@ -392,19 +392,19 @@ public:
 public:
 	// public accessors
 	const bool			user_chair_confirmed() { return _user_chair_confirmed; }
-	const double		bigbet() { return p_tablelimits->bbet(); }
-	const double		f$alli() { return _f$alli; }
-	const double		f$swag() { return _f$swag; }
-	const double		f$rais() { return _f$rais; }
-	const double		f$call() { return _f$call; }
-	const double		f$sitin()  { return _f$sitin; }
-	const double		f$sitout() { return _f$sitout; }
-	const double		f$leave()  { return _f$leave; }
-	const double		f$prefold() { return _f$prefold; }
-	const double		f$rebuy() { return _f$rebuy; }
-	const double		f$delay() { return _f$delay; }
-	const double		f$chat() { return _f$chat; }
-	const sprw1326		*prw1326() { return &_prw1326; }
+	const double		bigbet()	{ return p_tablelimits->bbet(); }
+	const double		f$alli()	{ return _f$alli; }
+	const double		f$betsize()	{ return _f$betsize; }
+	const double		f$rais()	{ return _f$rais; }
+	const double		f$call()	{ return _f$call; }
+	const double		f$sitin()	{ return _f$sitin; }
+	const double		f$sitout()	{ return _f$sitout; }
+	const double		f$leave()	{ return _f$leave; }
+	const double		f$prefold()	{ return _f$prefold; }
+	const double		f$rebuy()	{ return _f$rebuy; }
+	const double		f$delay()	{ return _f$delay; }
+	const double		f$chat()	{ return _f$chat; }
+	const sprw1326		*prw1326()	{ return &_prw1326; }
 	const CArray <CString, CString> *logsymbols_collection() { return &_logsymbols_collection; }
 	const CArray <CString, CString> *symboltrace_collection() { return &_symboltrace_collection; }
 	const double		stacks_at_hand_start(const int n) { if (n>=0 && n<=9) return _stacks_at_hand_start[n]; else return 0.; }
@@ -415,7 +415,7 @@ public:
 	// public mutators
 	void	set_user_chair_confirmed(const bool b) { ENT _user_chair_confirmed = b;}
 	void	set_f$alli(const double d)		{ ENT _f$alli = d;}
-	void	set_f$swag(const double d)		{ ENT _f$swag = d;}
+	void	set_f$betsize(const double d)		{ ENT _f$betsize = d;}
 	void	set_f$rais(const double d)		{ ENT _f$rais = d;}
 	void	set_f$call(const double d)		{ ENT _f$call = d;}
 	void	set_f$sitin(const double d)		{ ENT _f$sitin = d;}
@@ -804,7 +804,7 @@ private:
 	// private variables - use public accessors and public mutators to address these
 	SSymbols	_sym;
 	bool		_user_chair_confirmed;
-	double		_f$alli, _f$swag, _f$rais, _f$call; 
+	double		_f$alli, _f$betsize, _f$rais, _f$call; 
 	double		_f$sitin, _f$sitout, _f$leave; 
 	double		_f$prefold, _f$rebuy, _f$chat, _f$delay;
 	
