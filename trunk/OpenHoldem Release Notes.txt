@@ -11,6 +11,7 @@ NEW STUFF:
   got replaced by a single function f$betsize 
   and OH does automatically care about the rest. [THF]
 - new symbol: originalbalance, which remebers the balance at the start of a session. [THF]
+- display state of the buttons sitin, sitout, leave, autopost and prefold in the GUI. [THF]
 
 MAINTENANCE:
 - Removed code-clones in CFormula.cpp [THF]
@@ -26,7 +27,7 @@ MAINTENANCE:
   and which are to our best knowledge unused:
   islistcall, islistrais, islistalli, isemptylistcall, isemptylistrais,
   isemptylistalli, nlistmax, nlistmin. [THF]
-- Removed some symbols, which were accessible 
+- Removed some TM symbols, which were accessible 
   at the formula-level without necessity:
   swagdelay, allidelay, swagtextmethod, potmethod, activemethod
   IMO the TM-symbols should only be used by OH internally,
