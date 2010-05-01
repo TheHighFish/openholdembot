@@ -133,9 +133,12 @@ versus.bin
 
 \end_inset
 
-versus.bin --- this file is the large lookup table that is used by the versus
- symbols that are described in this document.
- If you want to use versus symbols, you need this file.
+versus.bin --- this file is a large lookup table that is mandatory for the
+ versus symbols.
+ As the versus database is quite large and does not change it is not included
+ in the archives with recent executables.
+ It is available as a separate download at google-code and should be extracted
+ to the OpenHoldem directory.
 \end_layout
 
 \begin_layout Itemize

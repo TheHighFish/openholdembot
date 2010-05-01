@@ -366,7 +366,7 @@ Replay frames
 
 \end_inset
 
-replay frame
+ replay frame
 \end_layout
 
 \end_inset
@@ -700,8 +700,7 @@ Explanation
 \begin_inset Text
 
 \begin_layout Plain Layout
-Handle f$sitin, f$sitout and f$leave (for older versions up to 2.1.x: handle
- f$play)
+Handle f$sitin, f$sitout and f$leave 
 \end_layout
 
 \end_inset
@@ -710,8 +709,8 @@ Handle f$sitin, f$sitout and f$leave (for older versions up to 2.1.x: handle
 \begin_inset Text
 
 \begin_layout Plain Layout
-Evaluate the f$sitin, f$sitout and f$leave (formerly combined to f$play)
- functions and take action depending on their return values.
+Evaluate the f$sitin, f$sitout and f$leave functions and take action depending
+ on their return values.
 \end_layout
 
 \end_inset
