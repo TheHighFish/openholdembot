@@ -95,18 +95,18 @@
 			</OBJECT>
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="How OpenHoldem works">
-				<param name="Local" value="Chapters\how_oh_works\how_oh_works_title.html.LyXconv\how_oh_works_title.html">
+				<param name="Name" value="How OpenHoldem Works">
+				<param name="Local" value="Chapters\how_oh_works\How_OH_Works.html.LyXconv\how_oh_works.html">
 				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Favourite Failures">
-			<param name="Local" value="Chapters\favourite_failues\favourite_failures_title.html.LyXconv\favourite_failures_title.html">
+			<param name="Local" value="Chapters\favourite_failures\favourite_failures_title.html.LyXconv\favourite_failures_title.html">
 			</OBJECT>
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Favourite Failures">
-				<param name="Local" value="Chapters\favourite_failues\Favourite_Failures.html.LyXconv\Favourite_Failures.html">
+				<param name="Local" value="Chapters\favourite_failures\Favourite_Failures.html.LyXconv\favourite_failures.html">
 				</OBJECT>
 		</UL>
 	</UL>
