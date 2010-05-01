@@ -644,54 +644,23 @@ swagtextmethod
 \begin_inset Text
 
 \begin_layout Plain Layout
-Used by the Autoplayer to determine how to enter the f$swag amount into
+Used by the Autoplayer to determine how to enter the f$betsize amount into
  the swag entry box on the casino window.
  This is necessary, as bets and raises get interpreted differently by different
  casinos.
- Therefore WinHoldem did introduce the following logic:
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-f$swag = f$srai + f$swag_adjust
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-where f$srai means 
-\begin_inset Quotes eld
-\end_inset
-
-stated rais
-\begin_inset Quotes erd
-\end_inset
-
- and f$swag_adjust is a casino-specific adjustment.
-\end_layout
-
-\begin_layout Plain Layout
-The following values for swagtextmethod are valid and mean:
+ 
 \end_layout
 
 \begin_layout Enumerate
-f$swag_adjust = 0
+Enter (f$betsize - currentbet - call)
 \end_layout
 
 \begin_layout Enumerate
-f$swag_adjust = currentbet
+Enter (f$betsize - currentbet)
 \end_layout
 
 \begin_layout Enumerate
-f$swag_adjust = currentbet + call
+Enter f$betsize without any adjustment.
 \end_layout
 
 \begin_layout Plain Layout
@@ -699,14 +668,23 @@ Default: 3
 \end_layout
 
 \begin_layout Plain Layout
-(
-\emph on
-Attention
-\emph default
-: Currently all these computations have to be done by the user at the formula
- level, using f$srai, f$swag_adjust and swagtextmethod.
- This is some crappy design inherited from WinHoldem; a future version of
- OpenHoldem will handle such adjustments internally.)
+As an example let us assume, that you are short-stacked in a SNG.
+ Your balance is 9 big blinds before you have to post the big blind.
+ Everybody folds and button raises to 3 big blinds.
+ You want to push (f$betsize = 9).
+ What amount should you enter for different casinos?
+\end_layout
+
+\begin_layout Enumerate
+6 bbs --- the amount that exceeds the previous raise of 3 bbs.
+\end_layout
+
+\begin_layout Enumerate
+8 bbs --- the amount you have to add to your current bet of 1 bb.
+\end_layout
+
+\begin_layout Enumerate
+9 bbs --- your future current bet after have you raised.
 \end_layout
 
 \end_inset
