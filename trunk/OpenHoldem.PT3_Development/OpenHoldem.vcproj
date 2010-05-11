@@ -1130,6 +1130,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PokerTracker_Queries_Version_3.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ppmessage.h"
 				>
 			</File>
