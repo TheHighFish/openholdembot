@@ -1,4 +1,4 @@
-#ifndef _INC_MAGICNUMBERS_H
+#ifndef _INC_MAGICNUMBERS_H 
 
 #define _INC_MAGICNUMBERS_H
 
@@ -12,8 +12,13 @@ const int k_betround_flop		= 2;
 const int k_betround_turn		= 3;
 const int k_betround_river		= 4;
 
-// Number of players
-const int k_max_number_of_players = 10;
+// Players
+const int k_max_number_of_players    = 10;
+const int k_max_length_of_playername = 30;
+
+// Chairs
+const int k_min_chair_number = 0;
+const int k_max_chair_number = k_max_number_of_players - 1;
 
 // Number of cards
 const int k_number_of_community_cards  = 5;

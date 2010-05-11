@@ -28,7 +28,6 @@ CDlgSAPrefs6::~CDlgSAPrefs6()
 void CDlgSAPrefs6::DoDataExchange(CDataExchange* pDX)
 {
 	CSAPrefsSubDlg::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_PT_VERSION, m_pt_version);
 	DDX_Control(pDX, IDC_PT_IP, m_pt_ip);
 	DDX_Control(pDX, IDC_PT_PORT, m_pt_port);
 	DDX_Control(pDX, IDC_PT_USER, m_pt_user);
@@ -53,13 +52,6 @@ BOOL CDlgSAPrefs6::OnInitDialog()
 	CSAPrefsSubDlg::OnInitDialog();
 
 	m_pt_disable.SetCheck(!prefs.pt_disable() ? BST_UNCHECKED : BST_CHECKED);
-
-	m_pt_version.AddString("2");
-	m_pt_version.AddString("3");
-	if (prefs.pt_version() == "2" || prefs.pt_version() == "3")
-		m_pt_version.SelectString(0, prefs.pt_version().GetString());
-	else
-		m_pt_version.SelectString(0, "2");
 
 	m_pt_ip.SetWindowText(prefs.pt_ip_addr().GetString());
 	m_pt_port.SetWindowText(prefs.pt_port().GetString());
@@ -88,9 +80,6 @@ void CDlgSAPrefs6::OnOK()
 	CString			text = "";
 
 	prefs.set_pt_disable(m_pt_disable.GetCheck() == BST_CHECKED ? true : false);
-
-	m_pt_version.GetWindowText(text);
-	prefs.set_pt_version(text);
 
 	m_pt_ip.GetWindowText(text);
 	prefs.set_pt_ip_addr(text);
