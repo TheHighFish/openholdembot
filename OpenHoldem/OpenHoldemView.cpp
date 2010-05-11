@@ -463,13 +463,15 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 void COpenHoldemView::DrawButtonIndicators(void) 
 {
 	int			i = 0;
-	bool		fold_drawn = false, call_drawn = false, check_drawn = false, raise_drawn = false, allin_drawn = false;
+	bool		fold_drawn, call_drawn, check_drawn, raise_drawn, allin_drawn;
+	bool		autopost_drawn, sitin_drawn, sitout_drawn, leave_drawn, prefold_drawn = false;
 	RECT		cr = {0};
 
 
 	// Get size of current client window
 	GetClientRect(&cr);
 
+	autopost_drawn = sitin_drawn = sitout_drawn = leave_drawn = prefold_drawn = false;
 	fold_drawn = call_drawn = check_drawn = raise_drawn = allin_drawn = false;
 
 	for (i=0; i<=9; i++) 
@@ -502,6 +504,31 @@ void COpenHoldemView::DrawButtonIndicators(void)
 				DrawSpecificButtonIndicator(i, 'A', cr.right-16, cr.bottom-16, cr.right-2, cr.bottom-2);
 				allin_drawn = true;
 			}
+			else if (p_scraper->IsStringAutopost(p_scraper->button_label(i))) 
+			{
+				DrawSpecificButtonIndicator(i, 'T', cr.left+2,  cr.bottom-16, cr.left+16, cr.bottom-2);
+				autopost_drawn = true;
+			}
+			else if (p_scraper->IsStringSitin(p_scraper->button_label(i))) 
+			{
+				DrawSpecificButtonIndicator(i, 'I', cr.left+19, cr.bottom-16, cr.left+33, cr.bottom-2);
+				sitin_drawn = true;
+			}
+			else if (p_scraper->IsStringSitout(p_scraper->button_label(i))) 
+			{
+				DrawSpecificButtonIndicator(i, 'O', cr.left+36, cr.bottom-16, cr.left+50, cr.bottom-2);
+				sitout_drawn = true;
+			}
+			else if (p_scraper->IsStringLeave(p_scraper->button_label(i))) 
+			{
+				DrawSpecificButtonIndicator(i, 'L', cr.left+53, cr.bottom-16, cr.left+67, cr.bottom-2);
+				leave_drawn = true;
+			}
+			else if (p_scraper->IsStringPrefold(p_scraper->button_label(i))) 
+			{
+				DrawSpecificButtonIndicator(i, 'P', cr.left+70, cr.bottom-16, cr.left+84, cr.bottom-2);
+				prefold_drawn = true;
+			}
 		}
 	}
 
@@ -520,6 +547,21 @@ void COpenHoldemView::DrawButtonIndicators(void)
 
 	if (!allin_drawn)
 		DrawSpecificButtonIndicator(-1, 'A', cr.right-16, cr.bottom-16, cr.right-2, cr.bottom-2);
+
+	if (!autopost_drawn) 
+		DrawSpecificButtonIndicator(-1, 'T', cr.left+2,  cr.bottom-16, cr.left+16, cr.bottom-2);
+
+	if (!sitin_drawn) 
+		DrawSpecificButtonIndicator(-1, 'I', cr.left+19, cr.bottom-16, cr.left+33, cr.bottom-2);
+
+	if (!sitout_drawn)
+		DrawSpecificButtonIndicator(-1, 'O', cr.left+36, cr.bottom-16, cr.left+50, cr.bottom-2);
+
+	if (!leave_drawn)
+		DrawSpecificButtonIndicator(-1, 'L', cr.left+53, cr.bottom-16, cr.left+67, cr.bottom-2);
+
+	if (!prefold_drawn)
+		DrawSpecificButtonIndicator(-1, 'P', cr.left+70, cr.bottom-16, cr.left+84, cr.bottom-2);
 }
 
 void COpenHoldemView::DrawSpecificButtonIndicator(const int button_num, const char ch, const int left, 
@@ -576,6 +618,36 @@ void COpenHoldemView::DrawSpecificButtonIndicator(const int button_num, const ch
 				pDC->SetTextColor(COLOR_GREEN);
 			}
 			else if (ch=='A') 
+			{
+				pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
+				pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
+				pDC->SetTextColor(COLOR_BLACK);
+			}
+			else if (ch=='T') 
+			{
+				pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
+				pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
+				pDC->SetTextColor(COLOR_BLUE);
+			}
+			else if (ch=='I') 
+			{
+				pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
+				pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
+				pDC->SetTextColor(COLOR_GREEN);
+			}
+			else if (ch=='O') 
+			{
+				pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
+				pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
+				pDC->SetTextColor(COLOR_YELLOW);
+			}
+			else if (ch=='L') 
+			{
+				pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
+				pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
+				pDC->SetTextColor(COLOR_RED);
+			}
+			else if (ch=='P') 
 			{
 				pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
 				pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
