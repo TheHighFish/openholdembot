@@ -1929,15 +1929,55 @@ bool CSymbols::IsHigherStraightPossible(HandVal	handval)
 	{
 		return false;												
 	}
+
 	// Otherwise:
 	// Check for all higher 5-card-straight,
 	// if only 2 or less are missing
-	int current_top_end = HandVal_TOP_CARD(handval);
-	for (int i=(current_top_end+1); i<=StdDeck_Rank_ACE; i++)
+	int i = 0, rank = 0, suit = 0;
+	unsigned int rankbits_common = 0;
+
+	CardMask      comCards = {0};
+	CardMask_RESET(comCards);
+
+	// common cards
+	for (i=0; i<=4; i++)
 	{
-		// TODO!!!
-		return true;
+		if (p_scraper->card_common(i) != CARD_BACK &&
+			 p_scraper->card_common(i) != CARD_NOCARD)
+		{
+			CardMask_SET(comCards, p_scraper->card_common(i));
+		}
 	}
+
+
+	for (suit=StdDeck_Suit_FIRST; suit<=StdDeck_Suit_LAST; suit++)
+	{
+		for (rank=StdDeck_Rank_LAST; rank>=StdDeck_Rank_FIRST; rank--)
+		{
+			if (CardMask_CARD_IS_SET(comCards, StdDeck_MAKE_CARD(rank, suit)))
+			{
+				rankbits_common |= (1<<(rank+2));
+				if (rank == Rank_ACE)
+				{
+				   rankbits_common |= (1<<1);
+				}
+			}
+		}
+	}
+
+	int current_top_end = StdDeck_RANK(HandVal_TOP_CARD(handval))+2;
+	int j = 10;
+
+	for (int k = 14; k >= (current_top_end+1); k--)
+	{   
+		
+		if (bitcount((rankbits_common>>j)&0x1f) >= 3)
+		{
+			return true;
+		}
+		j--;
+	}
+
 	return false;
 }
 
