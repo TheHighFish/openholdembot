@@ -198,6 +198,9 @@ void CPreferences::InitDefaults(void)
 	// Lazy scraping
 	_lazy_scraping_when_to_scrape = k_lazy_scraping_always;
 
+	// Handhistory generator
+	_handhistory_generator_enable = false;
+
 	// Obscure
 	_window_class_name = "OpenHoldem";
 	_mutex_name= "OHAntiColl";
@@ -391,6 +394,9 @@ void CPreferences::ReadPreferences()
 
 		// Lazy scraping
 		ReadReg("lazy_scraping_when_to_scrape", &_lazy_scraping_when_to_scrape);
+
+		// Handhistory_generator
+		ReadReg("handhistory_generator_enable", &_handhistory_generator_enable);
 
 		// obscure
 		ReadReg("window_class_name", &_window_class_name);

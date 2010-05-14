@@ -164,6 +164,9 @@ public:
 	const bool configurationcheck_font_settings() { return _configurationcheck_font_settings; }
    	// Lazy scraping
 	const int lazy_scraping_when_to_scrape() { return _lazy_scraping_when_to_scrape; }
+	// Handhistory generator
+	const bool handhistory_generator_enable() { return _handhistory_generator_enable; }
+
 	// Misc
 	const int scraper_zoom() { return _scraper_zoom; }
 	// versus_path() is implemented in the cpp-file.
@@ -342,6 +345,9 @@ public:
 	// Lazy scraping
 	void set_lazy_scraping_when_to_scrape(const int i) { ENT _lazy_scraping_when_to_scrape = i;WriteReg("lazy_scraping_when_to_scrape", i); }
 
+	// Handhistory generator
+	void set_handhistory_generator_enable(const bool b) { ENT _handhistory_generator_enable = b; WriteReg("handhistory_generator_enable", b); }
+
 	// Misc
 	// (No method for versus_path,
 	// as this attribute is nowhere set.) 
@@ -514,7 +520,7 @@ private:
 	bool			_rebuy_condition_no_cards;
 	bool			_rebuy_condition_change_in_handnumber;
 	bool			_rebuy_condition_heuristic_check_for_occlusion;
-	int			_rebuy_minimum_time_to_next_try;
+	int				_rebuy_minimum_time_to_next_try;
 	CString			_rebuy_script;
 
 	// Configuration check
@@ -525,8 +531,11 @@ private:
 	// Lazy scraping
 	int				_lazy_scraping_when_to_scrape;
 
+	// Handhistory generator
+	bool			_handhistory_generator_enable;
+
 	// Misc
-	int			_scraper_zoom;
+	int				_scraper_zoom;
 
 	// Obscure
 	CString			_window_class_name;

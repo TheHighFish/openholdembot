@@ -337,6 +337,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CHandHistory.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CHeartbeatThread.cpp"
 				>
 			</File>
@@ -898,6 +902,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\DialogSAPrefs19.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\DialogSAPrefs2.cpp"
 						>
 					</File>
@@ -983,6 +991,10 @@
 			</File>
 			<File
 				RelativePath=".\CGrammar.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CHandHistory.h"
 				>
 			</File>
 			<File
@@ -1441,6 +1453,10 @@
 					</File>
 					<File
 						RelativePath=".\DialogSAPrefs18.h"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs19.h"
 						>
 					</File>
 					<File
