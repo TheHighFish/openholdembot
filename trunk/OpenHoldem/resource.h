@@ -56,6 +56,7 @@
 #define IDD_SAPREFS16                   182
 #define IDD_SAPREFS17                   183
 #define IDD_SAPREFS18                   184
+#define IDD_SAPREFS19                   185
 #define IDC_NEW                         1006
 #define IDC_DELETE                      1007
 #define IDC_RENAME                      1013
@@ -429,6 +430,7 @@
 #define IDC_RADIO_SCRAPE_ON_MYTURN      1345
 #define IDC_RADIO5                      1346
 #define IDC_RADIO_SCRAPE_ON_MYTURN_OR_SITOUT 1347
+#define IDC_HANDHISTORY_GENERATOR_ENABLE 1347
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -563,7 +565,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        180
 #define _APS_NEXT_COMMAND_VALUE         32993
-#define _APS_NEXT_CONTROL_VALUE         1347
+#define _APS_NEXT_CONTROL_VALUE         1348
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -8,6 +8,8 @@
 #include "CPreferences.h"
 #include "CFormula.h"
 #include "CGrammar.h"
+#include "CHandHistory.h"
+
 #include "PokerChat.hpp"
 #include "Cversus.h"
 #include "CIteratorThread.h"
@@ -131,6 +133,10 @@ void CDllExtension::LoadDll(const char * path)
 			//pass "prw1326" message (address of prw1326 structure)
 			//  2008-05-08 Matrix
 			(_process_message) ("prw1326", p_symbols->prw1326());
+			
+			//pass "history" message (address of history structure)
+			//  2010-01-23 Demonthus
+			(_process_message) ("history", p_handhistory->history());
 
 			//  2008.02.27 by THF
 			//

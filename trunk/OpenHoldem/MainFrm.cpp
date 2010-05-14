@@ -45,6 +45,7 @@
 #include "DialogSAPrefs16.h"
 #include "DialogSAPrefs17.h"
 #include "DialogSAPrefs18.h"
+#include "DialogSAPrefs19.h"
 #include "DialogScraperOutput.h"
 #include "inlines/eval.h"
 #include "MagicNumbers.h"
@@ -513,6 +514,7 @@ void CMainFrame::OnEditPreferences()
 	CDlgSAPrefs16 page16;
 	CDlgSAPrefs17 page17;
 	CDlgSAPrefs18 page18;
+	CDlgSAPrefs19 page19;
 
 	// add pages
 	dlg.AddPage(page1,  "Analyzer");
@@ -522,6 +524,7 @@ void CMainFrame::OnEditPreferences()
 	dlg.AddPage(page17, "Configuration Check");
 	dlg.AddPage(page3,  "DLL Extension");
 	dlg.AddPage(page15, "GUI");
+	dlg.AddPage(page19, "Handhistory generator");
 	dlg.AddPage(page7,  "ICM");
 	dlg.AddPage(page18, "Lazy Scraping");
 	dlg.AddPage(page11, "Logging");
