@@ -1,3 +1,10 @@
+v2.1.5 2010-xx-yy
+=================
+BUG FIXES:
+- The symbol ishighstraight did not work for all best straights,
+  but only for ace-high-straights. Thanky to Mad4IT for reporting. [F1x3r]
+
+
 v2.1.4 2010-04-23
 =================
 BUG FIXES:
