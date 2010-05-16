@@ -196,6 +196,13 @@ CSymbols::CSymbols()
 		_prw1326.chair[i]=_prw1326.vanilla_chair ;
 
 	//end of handrank initialisation
+
+	// Betround will be indirectly used 
+	// when a formula gets loaded and verified.
+	// (it gets used for symbol lookups).
+	// So it should have a meaningful value,
+	// even before we connect to a table.
+	set_sym_betround(k_betround_preflop);
 }
 
 CSymbols::~CSymbols()
@@ -806,7 +813,7 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 	set_sym_nopponents(0);
 	set_sym_nopponentschecking(0);
 	set_sym_nopponentscalling(0);
-	set_sym_nopponentsraising(0);
+	set_sym_nopponentsraising(0); 
 	set_sym_nopponentsbetting(0);
 	set_sym_nopponentsfolded(0);
 	set_sym_nplayerscallshort(0);
@@ -1621,7 +1628,7 @@ void CSymbols::CalcProbabilities(void)
 
 void CSymbols::CalcPlayersFriendsOpponents(void)
 {
-	double	lastbet = 0.;
+	double	last_bet;
 	bool	sblindfound = false, bblindfound = false, found_userchair = false;
 	int		FirstPossibleRaiser = 0, LastPossibleRaiser = 0;
 	int		betround = _sym.betround;
@@ -1635,29 +1642,35 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 	{
 		// Start with the first player after the dealer
 		FirstPossibleRaiser = _sym.dealerchair + 1;
+		last_bet = 0;
 	}
 	else
 	{
 		// Start with the player after last known raiser
-		FirstPossibleRaiser = _sym.raischair_previous_frame;
+		FirstPossibleRaiser = _sym.raischair_previous_frame + 1;
+		last_bet = p_scraper->player_bet(_sym.raischair_previous_frame);
 	}
 	// For technical reasons (for-loop) we handle the modulo-operation inside the loop
 	LastPossibleRaiser = FirstPossibleRaiser + p_tablemap->nchairs() - 1;
-
+	
 	for (int i=FirstPossibleRaiser; i<=LastPossibleRaiser; i++)
 	{
 		double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
 
-		if (p_bet > lastbet)
+		if (p_bet > last_bet)
 		{
-			lastbet = p_bet;
+			last_bet = p_bet;
 			set_sym_raischair(i%p_tablemap->nchairs());									// raischair
 			int new_raisbits = _sym.raisbits[betround] | k_exponents[i%p_tablemap->nchairs()];
-			set_sym_raisbits(new_raisbits, betround);
-			if ((i%p_tablemap->nchairs()) != _sym.userchair)
-				set_sym_nopponentsraising(_sym.nopponentsraising + 1);					// nopponentsraising
+			set_sym_raisbits(new_raisbits, betround);		
 		}
 	}
+	int opponents_raise_bits = _sym.raisbits[betround]; //!!!
+	if ((_sym.userchair >= 0) && (_sym.userchair <= 9))
+	{
+		opponents_raise_bits &= ~k_exponents[int(_sym.userchair)];
+	}
+	set_sym_nopponentsraising(bitcount(opponents_raise_bits));							// nopponentsraising
 
 	// nopponentscalling
 	//
@@ -1806,7 +1819,6 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 	set_sym_nfriendsplaying(bitcount(_sym.friendsplayingbits));							// nfriendsplaying
 
 	found_userchair = false;
-	lastbet = 0;
 	for (int i=_sym.dealerchair+1; i<=_sym.dealerchair+p_tablemap->nchairs() && _user_chair_confirmed; i++)
 	{
 		double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
