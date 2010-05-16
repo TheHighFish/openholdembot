@@ -86,6 +86,8 @@ struct phistory_chair
 	int bets;
 	int calls;
 	int actionCount;
+	CardMask hand;
+    HandVal handval; 
 };
 
 //player history structure		Demonthus 2010-02-05
