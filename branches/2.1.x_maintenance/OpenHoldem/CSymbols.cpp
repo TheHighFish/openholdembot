@@ -95,10 +95,26 @@ int handrank2652[10][169] =
 
 CSymbols::CSymbols()
 {
-	int			i = 0, j = 0, k = 0, vndx = 0;
-	char		*ptr = NULL;
-
 	ResetSymbolsFirstTime();
+	InitHandranktTableForPrwin();
+
+	// Betround will be indirectly used 
+	// when a formula gets loaded and verified.
+	// (it gets used for symbol lookups).
+	// So it should have a meaningful value,
+	// even before we connect to a table.
+	set_sym_betround(k_betround_preflop);
+}
+
+CSymbols::~CSymbols()
+{
+}
+
+void CSymbols::InitHandranktTableForPrwin()
+{
+	int		i = 0, j = 0, k = 0; 
+	int		vndx = 0;
+	char	*ptr = NULL;
 
 	//Initialise the handrank tables used by prwin
 	vndx=0; //used to provide an offset into the vanilla table
@@ -196,17 +212,6 @@ CSymbols::CSymbols()
 		_prw1326.chair[i]=_prw1326.vanilla_chair ;
 
 	//end of handrank initialisation
-
-	// Betround will be indirectly used 
-	// when a formula gets loaded and verified.
-	// (it gets used for symbol lookups).
-	// So it should have a meaningful value,
-	// even before we connect to a table.
-	set_sym_betround(k_betround_preflop);
-}
-
-CSymbols::~CSymbols()
-{
 }
 
 void CSymbols::ResetSymbolsFirstTime(void)
