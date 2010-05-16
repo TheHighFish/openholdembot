@@ -1066,6 +1066,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DefaultBot.h"
+				>
+			</File>
+			<File
 				RelativePath=".\FloatingPoint_Comparisions.h"
 				>
 			</File>

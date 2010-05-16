@@ -6,6 +6,7 @@
 #include "CSymbols.h"
 #include "..\CTransform\CTransform.h"
 #include "CGrammar.h"
+#include "DefaultBot.h"
 #include "OpenHoldemDoc.h"
 #include "UPDialog.h"
 
