@@ -1,13 +1,16 @@
 v2.1.5 2010-xx-yy
 =================
 BUG FIXES:
-- The symbol ishighstraight did not work for all best straights,
+- The symbol ishistraight did not work for all best straights,
   but only for ace-high-straights. This has now been fixed.
   Thanks to Mad4IT for reporting. [F1x3r]
 - betround was used for symbol lookups when loading the first formula,
   but not yet initialized. 
   This was pretty harmless, but threw an assertion in debug-mode. 
   Thanks to Gecko for motivating me to fix it. [THF]
+- OpenHoldem was not able to use both absolute and relative filenames
+  to load scraper(preprocessor)-DLLs. Thanks to Ljmj
+  for reporting the problem and for providing the fix. [THF] 
 
 
 v2.1.4 2010-04-23
