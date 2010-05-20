@@ -137,7 +137,7 @@ void CDlgSAPrefs11::OnBnClickedDisableMsgbox()
 		MessageBox("Warning: Selecting this option instructs OpenHoldem to refrain from\n"
 				   "displaying ANY runtime informational or error message boxes.  Examples\n"
 				   "include parse errors, DLL load errors, etc.  It is strongly advised that\n"
-				   "this option only be usedin a production environment that has been\n"
+				   "this option only be used in a production environment that has been\n"
 				   "completely and thoroughly tested for proper behavior.\n\n"
 				   "Note that interactive messages are not disabled, such as when using the\n"
 				   "formula editor and the PokerPro dialog.", "WARNING", MB_OK);
