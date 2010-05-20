@@ -11,6 +11,9 @@ BUG FIXES:
 - OpenHoldem was not able to use both absolute and relative filenames
   to load scraper(preprocessor)-DLLs. Thanks to Ljmj
   for reporting the problem and for providing the fix. [THF] 
+- Applying a formula while the autoplayer is engaged is an extremely bad idea
+  (PEBKAC) and could lose the whole formula. Trying to fix this issue
+  (stupid user) with improved warning messages. Nothing more we can do. [THF] 
 
 
 v2.1.4 2010-04-23
