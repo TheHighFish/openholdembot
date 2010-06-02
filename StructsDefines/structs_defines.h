@@ -102,20 +102,4 @@ struct phistory
 	phistory_chair chair[k_max_number_of_players];
 };
 
-// PokerTracker support
-// This enum is used for both PT2 and PT3
-enum PT_Stats 
-{
-	pt_icon, pt_hands, pt_pfr, pt_aggp, pt_aggf,
-	pt_aggt, pt_aggr, pt_aggtot, pt_aggtotnopf, pt_floppct,
-	pt_turnpct, pt_riverpct, pt_vpip, pt_pf_rfi, pt_pf_cr,
-	pt_pfats, pt_wsdp, pt_wssd, pt_fbbts, pt_fsbts,
-	ptt_icon, ptt_hands, ptt_pfr, ptt_aggp, ptt_aggf,
-	ptt_aggt, ptt_aggr, ptt_aggtot, ptt_aggtotnopf, ptt_floppct,
-	ptt_turnpct, ptt_riverpct, ptt_vpip, ptt_pf_rfi, ptt_pf_cr,
-	ptt_pfats, ptt_wsdp, ptt_wssd, ptt_fbbts, ptt_fsbts, 
-	pt_min = pt_icon,
-	pt_max = ptt_fsbts
-};
-
 #endif /* INC_STRUCTS_DEFINES_H */
