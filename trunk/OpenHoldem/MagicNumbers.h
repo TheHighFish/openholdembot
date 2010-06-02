@@ -26,6 +26,11 @@ const int k_gametype_NL      =  0;
 const int k_gametype_PL  	 =  1;
 const int k_gametype_FL      =  2;
 
+// buttons, pots and other scraper constants
+const int k_max_number_of_buttons = 10;
+const int k_max_number_of_i86X_buttons = 10;
+const int k_max_number_of_pots = 10;
+
 // DLL
 const int k_number_of_holdem_states_for_DLL = 256;
 
