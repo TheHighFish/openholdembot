@@ -70,9 +70,10 @@
 #include "evx_defs.h"
 //#include "inlines/evx_inlines.h"
 
-
+// Important project headers
 #include "debug.h"
 #include "..\StructsDefines\structs_defines.h"
+#include "MagicNumbers.h"
 
 
 #endif //INC_STDAFX_H

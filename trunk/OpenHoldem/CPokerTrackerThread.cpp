@@ -1,44 +1,27 @@
 #include "StdAfx.h"
+#include "CPokerTrackerThread.h"
+
+#include <assert.h>
 #include <process.h>
 #include <comdef.h>
-
 #include "CSymbols.h"
-#include "CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CGameState.h"
 #include "CLevDistance.h"
 #include "..\CTablemap\CTablemap.h"
+#include "MagicNumbers.h"
+#include "PokerTracker_Queries_Version_3.h"
 
 CPokerTrackerThread	*p_pokertracker_thread = NULL;
 CPokerTrackerLookup pt_lookup;
 
 CPokerTrackerLookup::CPokerTrackerLookup()
 {
-	_pt2_siteid.clear();
 	_pt3_siteid.clear();
 	
 	// Documentation about PT3 sited_IDs:
 	// http://www.pokertracker.com/forums/viewtopic.php?f=18&t=20169&p=95629
 	// All sitenames and networknames have to be in LOWER-CASES!
-	_pt2_siteid.insert(std::pair<CString, int> ("stars", 2));
-	_pt2_siteid.insert(std::pair<CString, int> ("party", 3));
-	_pt2_siteid.insert(std::pair<CString, int> ("ultimate", 4));
-	_pt2_siteid.insert(std::pair<CString, int> ("absolute", 5));
-	_pt2_siteid.insert(std::pair<CString, int> ("microgaming", 6));
-	_pt2_siteid.insert(std::pair<CString, int> ("ongame", 7));
-	_pt2_siteid.insert(std::pair<CString, int> ("cryptologic", 8));
-	_pt2_siteid.insert(std::pair<CString, int> ("pacific", 9));
-	_pt2_siteid.insert(std::pair<CString, int> ("fulltilt", 11));
-	_pt2_siteid.insert(std::pair<CString, int> ("b2b", 12));
-	_pt2_siteid.insert(std::pair<CString, int> ("tribeca", 13));
-	_pt2_siteid.insert(std::pair<CString, int> ("worldpex", 14));
-	_pt2_siteid.insert(std::pair<CString, int> ("ipoker", 15));
-	_pt2_siteid.insert(std::pair<CString, int> ("tain", 16));
-	_pt2_siteid.insert(std::pair<CString, int> ("bodog", 17));
-	_pt2_siteid.insert(std::pair<CString, int> ("everest", 18));
-	_pt2_siteid.insert(std::pair<CString, int> ("boss", 19));
-	_pt2_siteid.insert(std::pair<CString, int> ("betfair", 20));
-
 	_pt3_siteid.insert(std::pair<CString, int> ("stars", 100));
 	_pt3_siteid.insert(std::pair<CString, int> ("party", 200));
 	_pt3_siteid.insert(std::pair<CString, int> ("fulltilt", 300));
@@ -60,16 +43,12 @@ CPokerTrackerLookup::~CPokerTrackerLookup()
 
 const int CPokerTrackerLookup::GetSiteId()
 {
-	CString version = prefs.pt_version();
 	CString network = p_tablemap->network();
-
-	// Input parameter "version" needs to be "2" or "3" for PT version 2 or PT version 3, respectively
-	if (version!="2" && version!="3")
-		return -1;
 
 	if (p_symbols->sym()->isppro)
 	{
-		return 3;
+		// Treat PokerPro-Server as PartyPoker.
+		return 200;
 	}
 	else
 	{
@@ -78,15 +57,10 @@ const int CPokerTrackerLookup::GetSiteId()
 		{
 			std::map<CString, int>::const_iterator lookup, end;
 
-			if (version=="3")
+			// Lookup site-id for version 3
 			{
 				lookup = _pt3_siteid.find(network.GetString());
-				end = _pt3_siteid.end();
-			}
-			else
-			{
-				lookup = _pt2_siteid.find(network.GetString());
-				end = _pt2_siteid.end();
+				end    = _pt3_siteid.end();
 			}
 
 			if (lookup==end)
@@ -100,17 +74,10 @@ const int CPokerTrackerLookup::GetSiteId()
 		{
 			std::map<CString, int>::const_iterator lookup, end;
 
-			//Is s$sitename one of the supported PT sites?  Return the proper site_id for db queries.
-			if (version=="3")
-			{
-				lookup = _pt3_siteid.begin();
-				end = _pt3_siteid.end();
-			}
-			else
-			{
-				lookup = _pt2_siteid.begin();
-				end = _pt2_siteid.end();
-			}
+			// Is s$sitename one of the supported PT sites?  Return the proper site_id for db queries.
+			// PT version 3 only
+			lookup = _pt3_siteid.begin();
+			end = _pt3_siteid.end();
 
 			while (lookup!=end)
 			{
@@ -123,17 +90,10 @@ const int CPokerTrackerLookup::GetSiteId()
 				lookup++;
 			}
 
-			//Is s$network one of the supported PT sites?  Return the proper site_id for db queries.
-			if (version=="3")
-			{
-				lookup = _pt3_siteid.begin();
-				end = _pt3_siteid.end();
-			}
-			else
-			{
-				lookup = _pt2_siteid.begin();
-				end = _pt2_siteid.end();
-			}
+			// Is s$network one of the supported PT sites?  Return the proper site_id for db queries.
+			// PT version 3 only
+			lookup = _pt3_siteid.begin();
+			end = _pt3_siteid.end();
 
 			while (lookup!=end)
 			{
@@ -147,33 +107,28 @@ const int CPokerTrackerLookup::GetSiteId()
 			}
 		}
 	}
-
 	return -1 ;
 }
 
 
-
-
 CPokerTrackerThread::CPokerTrackerThread()
 {
-	int				i = 0, j = 0;
-
 	// Initialize variables
 	_pt_thread = NULL;
 
 	_conn_str.Format("host=%s port=%s user=%s password=%s dbname='%s'",  
 		prefs.pt_ip_addr(), prefs.pt_port(), prefs.pt_user(), prefs.pt_pass(), prefs.pt_dbname());
 
-	for (i=0; i<=9; i++)
+	for (int i=0; i<k_max_number_of_players; i++)
 	{
-		for (j=pt_min; j<=pt_max; j++)
+		for (int j=pt_min; j<=pt_max; j++)
 		{
 			_player_stats[i].stat[j] = -1.0 ;
 			_player_stats[i].t_elapsed[j] = -1 ;
 		}
 		_player_stats[i].found = false ;
-		strcpy_s(_player_stats[i].pt_name, 30, "") ;
-		strcpy_s(_player_stats[i].scraped_name, 30, "") ;
+		strcpy_s(_player_stats[i].pt_name, k_max_length_of_playername, "") ;
+		strcpy_s(_player_stats[i].scraped_name, k_max_length_of_playername, "") ;
 	}
 
 	_connected = false;
@@ -355,22 +310,27 @@ void CPokerTrackerThread::Disconnect(void)
 		PQfinish(_pgconn);
 }
 
+//!!!
+#define k_min_chair_number 0
+#define k_max_chair_number 9
+
 bool CPokerTrackerThread::CheckName (int m_chr)
 {
-	int			i = 0;
-	char		oh_scraped_name[30] = {0}, best_name[30] = {0}, likename[100] = {0};
+	char		oh_scraped_name[k_max_length_of_playername] = {0}; 
+	char		best_name[k_max_length_of_playername] = {0};
+	char		likename[k_max_length_of_playername] = {0};
 	bool		result = false, ok_scrape = false;
 
-	if (m_chr<0 || m_chr>9)
-		return false;
+	assert(m_chr >= k_min_chair_number); 
+	assert(m_chr <= k_max_chair_number);
 
 	if (p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[m_chr].m_name_known == 0)
 		return false;
 
-	strcpy_s(oh_scraped_name, 30, p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[m_chr].m_name);
+	strcpy_s(oh_scraped_name, k_max_length_of_playername, p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[m_chr].m_name);
 
 	// Check for bad name scrape
-	for (i=0; i<(int) strlen(oh_scraped_name); i++)
+	for (int i=0; i<(int) strlen(oh_scraped_name); i++)
 	{
 		if (oh_scraped_name[i]!='l' && oh_scraped_name[i]!='i' && oh_scraped_name[i]!='.' && oh_scraped_name[i]!=',')
 		{
@@ -389,15 +349,15 @@ bool CPokerTrackerThread::CheckName (int m_chr)
 	// chair and search again
 	if (_player_stats[m_chr].found && strcmp(_player_stats[m_chr].scraped_name, oh_scraped_name)!=0)
 	{
-		for (i=pt_min; i<=pt_max; i++)
+		for (int i=pt_min; i<=pt_max; i++)
 		{
 			_player_stats[m_chr].stat[i] = -1.0 ;
 			_player_stats[m_chr].t_elapsed[i] = -1 ;
 		}
 
 		_player_stats[m_chr].found = false ;
-		strcpy_s(_player_stats[m_chr].pt_name, 30, "") ;
-		strcpy_s(_player_stats[m_chr].scraped_name, 30, "") ;
+		strcpy_s(_player_stats[m_chr].pt_name, k_max_length_of_playername, "") ;
+		strcpy_s(_player_stats[m_chr].scraped_name, k_max_length_of_playername, "") ;
 	}
 
 	// We have not found the name in PT, go find it
@@ -408,13 +368,12 @@ bool CPokerTrackerThread::CheckName (int m_chr)
 	if (!result)
 	{
 		likename[0]='%';
-		for (i=0; i<(int) strlen(oh_scraped_name); i++)
+		for (int i=0; i<(int) strlen(oh_scraped_name); i++)
 		{
 			likename[i*2+1]=oh_scraped_name[i];
 			likename[i*2+2]='%';
 		}
-
-		likename[(i-1)*2+3]='\0';
+		likename[strlen(oh_scraped_name)*2+1]='\0';
 		result = QueryName(likename, oh_scraped_name, best_name);
 	}
 
@@ -427,14 +386,14 @@ bool CPokerTrackerThread::CheckName (int m_chr)
 	if (result)
 	{
 		_player_stats[m_chr].found = true;
-		strcpy_s(_player_stats[m_chr].pt_name, 30, best_name);
-		strcpy_s(_player_stats[m_chr].scraped_name, 30, oh_scraped_name);
+		strcpy_s(_player_stats[m_chr].pt_name, k_max_length_of_playername, best_name);
+		strcpy_s(_player_stats[m_chr].scraped_name, k_max_length_of_playername, oh_scraped_name);
 	}
 	else
 	{
 		_player_stats[m_chr].found = false ;
-		strcpy_s(_player_stats[m_chr].pt_name, 30, "");
-		strcpy_s(_player_stats[m_chr].scraped_name, 30, "");
+		strcpy_s(_player_stats[m_chr].pt_name, k_max_length_of_playername, "");
+		strcpy_s(_player_stats[m_chr].scraped_name, k_max_length_of_playername, "");
 	}
 
 	return result;
@@ -442,10 +401,8 @@ bool CPokerTrackerThread::CheckName (int m_chr)
 
 double CPokerTrackerThread::GetStat (int m_chr, PT_Stats stat)
 {
-	double		x = 0.;
-
-	if (m_chr<0 || m_chr>9)
-		return 0.0;
+	assert(m_chr >= k_min_chair_number); 
+	assert(m_chr <= k_max_chair_number);
 
 	return _player_stats[m_chr].stat[stat];
 }
@@ -453,10 +410,12 @@ double CPokerTrackerThread::GetStat (int m_chr, PT_Stats stat)
 double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 {
 	PGresult	*res = NULL;
-	char		strQry[2000] = {0}, strQry1[2000] = {0}, strQry2[2000] = {0};
+	char		strQry[k_max_length_of_query] = {0};
+	char		strQry1[k_max_length_of_query] = {0};
+	char		strQry2[k_max_length_of_query] = {0};
 	const char	*n = NULL;
 	double		result = -1.0;
-	char		siteidstr[5] = {0};
+	char		siteidstr[k_max_length_of_site_id] = {0};
 	int			siteid = 0;
 
 	int sym_elapsed = (int) p_symbols->sym()->elapsed;
@@ -469,8 +428,10 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)
 		return result;
 
-	if (m_chr<0 || m_chr>9 || stat<pt_min || stat>pt_max)
-		return result;
+	assert(m_chr >= k_min_chair_number);
+	assert(m_chr <= k_max_chair_number);
+	assert(stat >= pt_min);
+	assert(stat <= pt_max);
 
 	// If we already have stats cached for the player, the timeout has not expired,
 	// return the value from the cache...
@@ -485,34 +446,31 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 	else
 	{
 		// get query string for the requested statistic
-		if (prefs.pt_version()=="3")
-			strcpy_s(strQry, 2000, query_str3[stat]);
-		else
-			strcpy_s(strQry, 2000, query_str2[stat]);
+		strcpy_s(strQry, k_max_length_of_query, query_str3[stat]);
 
 		// Insert the player name in the query string
-		strcpy_s(strQry1, 2000, strQry);  // move the query into temp str 1
+		strcpy_s(strQry1, k_max_length_of_query, strQry);  // move the query into temp str 1
 		while ((n=strstr(strQry1, "%SCREENNAME%"))!=NULL) // find the token in temp str 1
 		{
-			strcpy_s(strQry2, 2000, strQry1);  // move the query into temp str 2
+			strcpy_s(strQry2, k_max_length_of_query, strQry1);  // move the query into temp str 2
 			strQry2[n-strQry1]='\0';  // cut off temp str 2 at the beginning of the token
-			strcat_s(strQry2, 2000, _player_stats[m_chr].pt_name);  // append the player name to temp str 2
-			strcat_s(strQry2, 2000, n+12); // append the portion of temp str 1 after the token to temp str 2
-			strcpy_s(strQry, 2000, strQry2); // move temp str 2 into the original query
-			strcpy_s(strQry1, 2000, strQry);  // move the query into temp str 1
+			strcat_s(strQry2, k_max_length_of_query, _player_stats[m_chr].pt_name);  // append the player name to temp str 2
+			strcat_s(strQry2, k_max_length_of_query, n+12); // append the portion of temp str 1 after the token to temp str 2
+			strcpy_s(strQry, k_max_length_of_query, strQry2); // move temp str 2 into the original query
+			strcpy_s(strQry1, k_max_length_of_query, strQry);  // move the query into temp str 1
 		}
 
 		// Insert the site id in the query string
-		sprintf_s(siteidstr, 5, "%d", siteid);
-		strcpy_s(strQry1, 2000, strQry);  // move the query into temp str 1
+		sprintf_s(siteidstr, k_max_length_of_site_id, "%d", siteid);
+		strcpy_s(strQry1, k_max_length_of_query, strQry);  // move the query into temp str 1
 		while ((n=strstr(strQry1, "%SITEID%"))!=NULL)   // find the token in temp str 1
 		{
-			strcpy_s(strQry2, 2000, strQry1);  // move the query into temp str 2
+			strcpy_s(strQry2, k_max_length_of_query, strQry1);  // move the query into temp str 2
 			strQry2[n-strQry1]='\0';  // cut off temp str 2 at the beginning of the token
-			strcat_s(strQry2, 2000, siteidstr);  // append the site id to temp str 2
-			strcat_s(strQry2, 2000, n+8); // append the portion of temp str 1 after the token to temp str 2
-			strcpy_s(strQry, 2000, strQry2); // move temp str 2 into the original query
-			strcpy_s(strQry1, 2000, strQry);  // move the query into temp str 1
+			strcat_s(strQry2, k_max_length_of_query, siteidstr);  // append the site id to temp str 2
+			strcat_s(strQry2, k_max_length_of_query, n+8); // append the portion of temp str 1 after the token to temp str 2
+			strcpy_s(strQry, k_max_length_of_query, strQry2); // move temp str 2 into the original query
+			strcpy_s(strQry1, k_max_length_of_query, strQry);  // move the query into temp str 1
 		}
 
 		// Do the query against the PT database
@@ -586,14 +544,14 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 
 bool CPokerTrackerThread::QueryName (const char * query_name, const char * scraped_name, char * best_name)
 {
-	char		strQry[1000] = {0};
-	int			i = 0, lev_dist = 0, bestLD = 0, bestLDindex = 0;
-	PGresult	*res = NULL;
-	char		siteidstr[5] = {0};
-	bool		result = false;
+	char			strQry[k_max_length_of_query] = {0};
+	int				lev_dist = 0, bestLD = 0, bestLDindex = 0;
+	PGresult		*res = NULL;
+	char			siteidstr[k_max_length_of_site_id] = {0};
+	bool			result = false;
 	CLevDistance	myLD;
-	int			siteid = 0;
-	static int	_last_siteid = -1;
+	int				siteid = 0;
+	static int		_last_siteid = -1;
 
 	//No more unnecessary queries when we don't even have a siteid to check
 	siteid = pt_lookup.GetSiteId();
@@ -612,25 +570,14 @@ bool CPokerTrackerThread::QueryName (const char * query_name, const char * scrap
 	if (strlen(query_name)==0)
 		return false;
 
-	sprintf_s(siteidstr, 5, "%d", siteid);
+	sprintf_s(siteidstr, k_max_length_of_site_id, "%d", siteid);
 
 	// PT version 3 name query
-	if (prefs.pt_version()=="3")
-	{
-		strcpy_s(strQry, 1000, "SELECT player_name FROM player WHERE player_name like '");
-		strcat_s(strQry, 1000, query_name);
-		strcat_s(strQry, 1000, "' AND id_site=");
-		strcat_s(strQry, 1000, siteidstr);
-	}
-	// PT version 2 name query
-	else
-	{
-		strcpy_s(strQry, 1000, "SELECT screen_name FROM players WHERE screen_name like '");
-		strcat_s(strQry, 1000, query_name);
-		strcat_s(strQry, 1000, "' AND main_site_id=");
-		strcat_s(strQry, 1000, siteidstr);
-	}
-
+	strcpy_s(strQry, k_max_length_of_query, "SELECT player_name FROM player WHERE player_name like '");
+	strcat_s(strQry, k_max_length_of_query, query_name);
+	strcat_s(strQry, k_max_length_of_query, "' AND id_site=");
+	strcat_s(strQry, k_max_length_of_query, siteidstr);
+	
 	try
 	{
 		res = PQexec(_pgconn, strQry);
@@ -656,7 +603,7 @@ bool CPokerTrackerThread::QueryName (const char * query_name, const char * scrap
 	// If we get one tuple, all is good - return the one name
 	if (PQntuples(res) == 1)
 	{
-		strcpy_s(best_name, 30, PQgetvalue(res, 0, 0));
+		strcpy_s(best_name, k_max_length_of_playername, PQgetvalue(res, 0, 0));
 		result = true;
 	}
 
@@ -665,7 +612,7 @@ bool CPokerTrackerThread::QueryName (const char * query_name, const char * scrap
 	else if ((PQntuples(res) > 1))
 	{
 		bestLD = 999;
-		for (i=0; i<PQntuples(res); i++)
+		for (int i=0; i<PQntuples(res); i++)
 		{
 			lev_dist = myLD.LD(scraped_name, PQgetvalue(res, i, 0));
 
@@ -677,7 +624,7 @@ bool CPokerTrackerThread::QueryName (const char * query_name, const char * scrap
 		}
 		if (bestLD != 999)
 		{
-			strcpy_s(best_name, 30, PQgetvalue(res, bestLDindex, 0));
+			strcpy_s(best_name, k_max_length_of_playername, PQgetvalue(res, bestLDindex, 0));
 			result = true;
 		}
 		else
@@ -692,27 +639,23 @@ bool CPokerTrackerThread::QueryName (const char * query_name, const char * scrap
 
 void CPokerTrackerThread::ClearStats (void)
 {
-	int		i = 0, j = 0;
-
-	for (i=0; i<=9; i++)
+	for (int i=0; i<=9; i++)
 	{
-		for (j=pt_min; j<=pt_max; j++)
+		for (int j=pt_min; j<=pt_max; j++)
 		{
 			_player_stats[i].stat[j] = -1.0;
 			_player_stats[i].t_elapsed[j] = -1;
 		}
 
 		_player_stats[i].found = false ;
-		strcpy_s(_player_stats[i].pt_name, 30, "");
-		strcpy_s(_player_stats[i].scraped_name, 30, "");
+		strcpy_s(_player_stats[i].pt_name, k_max_length_of_playername, "");
+		strcpy_s(_player_stats[i].scraped_name, k_max_length_of_playername, "");
 	}
 }
 
 UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 {
 	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
-
-	int		i = 0, j = 0;
 
 	bool sym_issittingin = (bool) p_symbols->sym()->issittingin;
 	bool sym_isppro = (bool) p_symbols->sym()->isppro;
@@ -726,14 +669,14 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 
 		if (pParent->_connected && PQstatus(pParent->_pgconn) == CONNECTION_OK)
 		{
-			for (i=0; i<=9; i++)
+			for (int i=0; i<=9; i++)
 			{
 				if (sym_issittingin || sym_isppro || sym_ismanual)
 				{
 					if (pParent->CheckName(i))
 					{
 
-						for (j=pt_min; j<=pt_max; j++)
+						for (int j=pt_min; j<=pt_max; j++)
 						{
 							pParent->UpdateStat(i, j);
 						}
@@ -742,7 +685,7 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 			}
 		}
 
-		for (i=0; i < prefs.pt_update_delay() && 
+		for (int i=0; i < prefs.pt_update_delay() && 
 				  ::WaitForSingleObject(pParent->_m_stop_thread, 0)!=WAIT_OBJECT_0; i++)
 			Sleep(1000);
 	}

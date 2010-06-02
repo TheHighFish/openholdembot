@@ -196,6 +196,13 @@ CSymbols::CSymbols()
 		_prw1326.chair[i]=_prw1326.vanilla_chair ;
 
 	//end of handrank initialisation
+
+	// Betround will be indirectly used 
+	// when a formula gets loaded and verified.
+	// (it gets used for symbol lookups).
+	// So it should have a meaningful value,
+	// even before we connect to a table.
+	set_sym_betround(k_betround_preflop);
 }
 
 CSymbols::~CSymbols()

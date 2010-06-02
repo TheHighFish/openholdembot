@@ -138,7 +138,6 @@
 #define IDC_LOCK_BLINDS_ANTE            1080
 #define IDC_COMBO1                      1081
 #define IDC_LOCK_BLINDS_GAME_TYPE       1081
-#define IDC_PT_VERSION                  1081
 #define IDC_DEBUGLEVEL                  1081
 #define IDC_REGIONLIST                  1083
 #define IDC_SCRAPERRESULT               1084
