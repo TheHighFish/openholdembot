@@ -829,6 +829,7 @@ public:
 private:
 	void	InitHandranktTableForPrwin();
 	bool	IsHigherStraightPossible(HandVal	handval);
+	bool	DidAct(void);
 	void	set_sym_max_balance_conditionally(const double d) 
 	{ 
 		// No ENT necessary and allowed, as we do call set_sym_max_balance_conditionally

@@ -1631,6 +1631,24 @@ void CSymbols::CalcProbabilities(void)
 	}
 }
 
+// Did autoplayer act this br
+bool CSymbols::DidAct(void)
+{
+    bool acted = false;
+
+    int didchec = p_autoplayer->didchec(4);
+    int didcall = p_autoplayer->didcall(4);
+    int didrais = p_autoplayer->didrais(4);
+    int didswag = p_autoplayer->didswag(4);
+
+    if (didchec || didcall || didrais || didswag)
+    {
+        acted = true;
+    }
+
+    return acted;
+}
+
 void CSymbols::CalcPlayersFriendsOpponents(void)
 {
 	double	last_bet;
@@ -1670,12 +1688,28 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 			set_sym_raisbits(new_raisbits, betround);		
 		}
 	}
-	int opponents_raise_bits = _sym.raisbits[betround]; //!!!
-	if ((_sym.userchair >= 0) && (_sym.userchair <= 9))
-	{
-		opponents_raise_bits &= ~k_exponents[int(_sym.userchair)];
-	}
-	set_sym_nopponentsraising(bitcount(opponents_raise_bits));							// nopponentsraising
+
+    // nopponentsraising
+    int userchair = _sym.userchair;
+    int first_possible_raiser = userchair + 1;
+    int last_possible_raiser = userchair + p_tablemap->nchairs() - 1;
+    int opponents_raising = 0;
+
+    double current_maximum_bet = 0;
+    if (DidAct()){current_maximum_bet = p_scraper->player_bet(userchair);}
+
+    for (int i=first_possible_raiser; i<=last_possible_raiser; i++)
+    {
+        int current_players_chair = i % p_tablemap->nchairs();
+        double current_players_bet = p_scraper->player_bet(current_players_chair);
+        if (current_players_bet > current_maximum_bet)
+        {
+            current_maximum_bet = current_players_bet;
+            opponents_raising++;
+        }
+    }
+
+    set_sym_nopponentsraising(opponents_raising);
 
 	// nopponentscalling
 	//
