@@ -14,6 +14,14 @@ BUG FIXES:
 - Applying a formula while the autoplayer is engaged is an extremely bad idea
   (PEBKAC) and could lose the whole formula. Trying to fix this issue
   (stupid user) with improved warning messages. Nothing more we can do. [THF] 
+- Fixed yet another problem with nopponentsraising. [F1x3r]
+- Historically all hi_symbols (and some others) keep the value they had 
+  at heros last turn in betting round X, as heros turn is the only time
+  when we get stable frames, so scraping or even guessing what happened behind hero
+  would be completely unreliable. 
+  However some other symbols like nbetsroundX get now adapted for heros action,
+  assuming that his action gets executed correctly.
+  Thanks to Gecko for "motivating" me to fix this "bug". [THF]
 
 
 v2.1.4 2010-04-23
