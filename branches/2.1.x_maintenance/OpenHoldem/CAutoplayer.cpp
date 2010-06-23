@@ -24,11 +24,12 @@ CAutoplayer::CAutoplayer(BOOL bInitiallyOwn, LPCTSTR lpszName) : _mutex(bInitial
 {
 	ASSERT(_mutex.m_hObject != NULL);
 
+	// Why no seed???
+
 	// Seed RNG
 	//srand((unsigned)time( NULL ));
 
 	set_autoplayer_engaged(false);
-	ResetHand();
 }
 
 CAutoplayer::~CAutoplayer(void) 
@@ -324,27 +325,6 @@ void CAutoplayer::DoAutoplayer(void)
 	write_log(3, "...ending Autoplayer cadence.\n");
 }
 
-void CAutoplayer::ResetHand(void) 
-{
-	for (int i=0; i<=4; i++)
-	{
-		set_didchec(i,0);
-		set_didcall(i,0);
-		set_didrais(i,0);
-		set_didswag(i,0);
-	}
-
-	set_prevaction(-1);
-}
-
-void CAutoplayer::ResetRound(void) 
-{
-	set_didchec(4,0);
-	set_didcall(4,0);
-	set_didrais(4,0);
-	set_didswag(4,0);
-}
-
 void CAutoplayer::DoSwag(void) 
 {
 	HWND			hwnd_focus = GetFocus();
@@ -532,24 +512,10 @@ void CAutoplayer::DoSwag(void)
 			return;
 		}
 
-		// record didswag/prevaction
-		int sym_br = (int) p_symbols->sym()->br;
-
-		set_didswag(4, p_symbols->sym()->didswag[4] + 1);
-		set_didswag(sym_br-1, p_symbols->sym()->didswag[sym_br-1] + 1);
-		set_prevaction(PREVACT_SWAG);
-
-		p_symbols->UpdateAutoplayerInfo();
-
-		// reset elapsedauto symbol
-		time_t my_time_t;
-		time(&my_time_t);
-		p_symbols->set_elapsedautohold(my_time_t);
+		p_symbols->UpdateAutoplayerInfo(k_action_swag);
+		write_logautoplay(1, "SWAG\n");
 
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
-
-		// log it
-		write_logautoplay(1, "SWAG\n");
 	}
 
 	_mutex.Unlock();
@@ -560,7 +526,7 @@ void CAutoplayer::DoSwag(void)
 
 void CAutoplayer::DoARCCF(void) 
 {
-	int				do_click = 0;
+	ActionConstant	do_click = k_action_undefined;
 	HWND			hwnd_focus = GetFocus();
 	POINT			cur_pos = {0};
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
@@ -576,7 +542,7 @@ void CAutoplayer::DoARCCF(void)
 
 	RECT			r;
 
-	do_click = -1;
+	do_click = k_action_undefined;
 
 	// ALLIN
 	if (alli && sym_myturnbits&0x8 && _alli_but!=p_tablemap->r$()->end())
@@ -585,7 +551,7 @@ void CAutoplayer::DoARCCF(void)
 		r.top = _alli_but->second.top;
 		r.right = _alli_but->second.right;
 		r.bottom =_alli_but->second.bottom;
-		do_click = 4;
+		do_click = k_action_allin;
 		write_log(3, "Found valid f$alli formula/allin button combination.\n");
 	}
 
@@ -596,7 +562,7 @@ void CAutoplayer::DoARCCF(void)
 		r.top = _rais_but->second.top;
 		r.right = _rais_but->second.right;
 		r.bottom =_rais_but->second.bottom;
-		do_click = 3;
+		do_click = k_action_raise;
 		write_log(3, "Found valid f$rais formula/raise button combination.\n");
 	}
 
@@ -607,7 +573,7 @@ void CAutoplayer::DoARCCF(void)
 		r.top = _call_but->second.top;
 		r.right = _call_but->second.right;
 		r.bottom =_call_but->second.bottom;
-		do_click = 2;
+		do_click = k_action_call;
 		write_log(3, "Found valid f$call formula/call button combination.\n");
 	}
 
@@ -620,7 +586,7 @@ void CAutoplayer::DoARCCF(void)
 		r.top = _chec_but->second.top;
 		r.right = _chec_but->second.right;
 		r.bottom =_chec_but->second.bottom;
-		do_click = 1;
+		do_click = k_action_check;
 		write_log(3, "Found valid check button (all primary formulas = 0).\n");
 	}
 
@@ -633,11 +599,11 @@ void CAutoplayer::DoARCCF(void)
 		r.top = _fold_but->second.top;
 		r.right = _fold_but->second.right;
 		r.bottom =_fold_but->second.bottom;
-		do_click = 0;
+		do_click = k_action_fold;
 		write_log(3, "Found valid fold button (all primary formulas = 0).\n");
 	}
 
-	if (do_click<0)
+	if (do_click == k_action_undefined)
 	{
 		write_log(3, "...ending DoARCCF early (no relevant primary formula/available button combination).\n");
 		return;
@@ -669,52 +635,15 @@ void CAutoplayer::DoARCCF(void)
 		// record did*/prevaction
 		int sym_br = (int) p_symbols->sym()->br;
 
-		switch (do_click)
-		{
-			case 4:  // allin
-				set_prevaction(PREVACT_ALLI);
-				write_logautoplay(1, "ALLI");
-				break;
-
-			case 3:  // raise
-				set_didrais(4, p_symbols->sym()->didrais[4] + 1);
-				set_didrais(sym_br-1, p_symbols->sym()->didrais[sym_br-1] + 1);
-				set_prevaction(PREVACT_RAIS);
-				write_logautoplay(1, "RAIS");
-				break;
-
-			case 2:  // call
-				set_didcall(4, p_symbols->sym()->didcall[4] + 1);
-				set_didcall(sym_br-1, p_symbols->sym()->didcall[sym_br-1] + 1);
-				set_prevaction(PREVACT_CALL);
-				write_logautoplay(1, "CALL");
-				break;
-
-			case 1:  // check
-				set_didchec(4, p_symbols->sym()->didchec[4] + 1);
-				set_didchec(sym_br-1, p_symbols->sym()->didchec[sym_br-1] + 1);
-				set_prevaction(PREVACT_CHEC);
-				write_logautoplay(1, "CHEC");
-				break;
-
-			case 0:  // fold
-				set_prevaction(PREVACT_FOLD);
-				write_logautoplay(1, "FOLD");
-				break;
-		}
-
-		p_symbols->UpdateAutoplayerInfo();
-
-		// reset elapsedauto symbol
-		time_t my_time_t;
-		time(&my_time_t);
-		p_symbols->set_elapsedautohold(my_time_t);
+		// Writing 4-digit-name of action, e.g "ALLI" or "RAIS" to the log.
+		write_logautoplay(1, ActionConstantNames[do_click]);
+		p_symbols->AdaptSymbolsForUsersAction(do_click);
 
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 	}
 
 	write_log(3, "...ending DoARCCF, 'didrais'/'didcall'/'didchec' now: %d\n", 
-		p_symbols->sym()->didrais[4], p_symbols->sym()->didcall[4], p_symbols->sym()->didchec[4]);
+	p_symbols->sym()->didrais[4], p_symbols->sym()->didcall[4], p_symbols->sym()->didchec[4]);
 }
 
 void CAutoplayer::DoSlider(void) 
@@ -869,16 +798,7 @@ void CAutoplayer::DoPrefold(void)
 
 		_mutex.Unlock();
 
-		// reset elapsedauto symbol
-		time_t my_time_t;
-		time(&my_time_t);
-		p_symbols->set_elapsedautohold(my_time_t);
-
-		// set prevaction
-		set_prevaction(PREVACT_FOLD);
-
-		p_symbols->UpdateAutoplayerInfo();
-
+		p_symbols->UpdateAutoplayerInfo(k_action_fold);
 		write_logautoplay(1, "FOLD");
 	}
 	p_symbols->CalcAutoTrace();

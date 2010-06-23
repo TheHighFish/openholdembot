@@ -108,14 +108,6 @@ typedef boost::spirit::node_val_data_factory<const char *> int_factory_t;
 #define HANDRESET_HANDNUM	0x02	// 0b0010
 #define HANDRESET_CARDS		0x04	// 0b0100
 
-// Autoplayer prevaction
-#define PREVACT_FOLD		-1
-#define PREVACT_CHEC		0
-#define PREVACT_CALL		1
-#define PREVACT_RAIS		2
-#define PREVACT_SWAG		3
-#define PREVACT_ALLI		4
-
 // Game state engine
 #define w_noaction			0			//chair has not acted
 #define	w_folded			1			//fold action

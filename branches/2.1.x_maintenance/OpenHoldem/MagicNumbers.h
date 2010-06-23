@@ -25,9 +25,37 @@ const int k_gametype_NL      =  0;
 const int k_gametype_PL  	 =  1;
 const int k_gametype_FL      =  2;
 
+// Flags
+const int k_number_of_flags = 20;
+
 //  File accessable?
 //  (<unistd.h> is not contained in MSCVPP)
 const int F_OK = 0;
 
+// "This must not happen."
+// It is better to have a named constant then to write "assert(false);".
+const bool k_this_must_not_happen = false;
+
+// Action constants for the autoplayer
+enum ActionConstant
+{
+	k_action_undefined = 0,
+	k_action_fold,
+	k_action_check,
+	k_action_call,
+	k_action_raise,		// min-raise
+	k_action_swag,		// "stated wager", i.e. using f$betsize
+	k_action_allin
+};
+
+// 4 digit names of action-constants for use in the autoplayer-log.
+CString ActionConstantNames[k_action_allin+1] =
+{"UNDF", "FOLD", "CHEC", "CALL", "RAIS", "SWAG", "ALLI"};
+
+// Index for current betting round in arrays
+// we prefer to store values for preflop..river in 1..4
+// and use index 0 for the current round.
+// The old code did it differently (4 for the current round)
+const int k_storage_index_for_current_round = 0;
 
 #endif // _INC_MAGICNUMBERS_H

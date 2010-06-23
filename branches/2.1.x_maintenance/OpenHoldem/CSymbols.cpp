@@ -639,7 +639,9 @@ void CSymbols::ResetSymbolsNewHand(void)
 	set_sym_islistrais(0);
 	set_sym_islistalli(0);0;
 	for (int i=0; i<MAX_HAND_LISTS; i++)
+	{
 		set_sym_islist(i, 0);
+	}
 
 	set_sym_isemptylistcall(0);
 	set_sym_isemptylistrais(0);
@@ -650,21 +652,21 @@ void CSymbols::ResetSymbolsNewHand(void)
 	set_sym_nlistmin(-1);
 
 	// hand tests
-	for (int i=0; i<=1; i++)
+	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
 		set_sym_$$pc(i, WH_NOCARD);
 		set_sym_$$pr(i, 0);
 		set_sym_$$ps(i, 0);
 	}
 
-	for (int i=0; i<=4; i++)
+	for (int i=0; i<k_number_of_community_cards; i++)
 	{
 		set_sym_$$cc(i, WH_NOCARD);
 		set_sym_$$cs(i, 0);
 		set_sym_$$cr(i, 0);
 	}
 
-	for (int i=0; i<=3; i++)
+	for (int i=0; i<=3; i++) // WTF is 3???
 	{
 		_phandval[i]=0;
 		_chandval[i]=0;
@@ -689,7 +691,7 @@ void CSymbols::ResetSymbolsNewHand(void)
 	time(&_elapsedhandhold);
 
 	// history
-	for (int i=0; i<=4; i++)
+	for (int i=0; i<=k_number_of_betrounds; i++)
 	{
 		set_sym_nplayersround(i, 0);
 		set_sym_nbetsround(i, 0);
@@ -709,8 +711,10 @@ void CSymbols::ResetSymbolsNewHand(void)
 	set_f$rebuy(0);
 
 	// icm
-	for (int i=0; i<=9; i++)
+	for (int i=0; i<k_max_number_of_players; i++)
+	{
 		set_stacks_at_hand_start(i, 0);
+	}
 
 	// callbits, raisbits, etc.
 	for (int i=k_betround_preflop; i<=k_betround_river; i++)
@@ -984,8 +988,9 @@ void CSymbols::CalcSymbols(void)
 {
 	int					i = 0;
 	char				classname[50] = {0}, title[512] = {0};
-	unsigned int		player_card_cur[2] = {0};
-	char				card0[10] = {0}, card1[10] = {0};
+	unsigned int		player_card_cur[k_number_of_cards_per_player] = {0};
+	char				card0[k_max_number_of_players] = {0}; 
+	char				card1[k_max_number_of_players] = {0};
 	CGrammar			gram;
 	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
@@ -1069,9 +1074,6 @@ void CSymbols::CalcSymbols(void)
 		// Update game_state so it knows that a new hand has happened
 		p_game_state->set_new_hand(true);
 
-		// Reset autoplayer structures
-		p_autoplayer->ResetHand();
-
 		// Reset symbols and display
 		ResetSymbolsNewHand();
 		InvalidateRect(theApp.m_pMainWnd->GetSafeHwnd(), NULL, true);
@@ -1084,7 +1086,7 @@ void CSymbols::CalcSymbols(void)
 		set_sym_randomround(3, (double) rand() / (double) RAND_MAX);					// randomround4
 
 		// icm
-		for (i=0; i<=9; i++)
+		for (i=0; i<k_max_number_of_players; i++)
 			set_stacks_at_hand_start(i, p_scraper->player_balance(i) + p_scraper->player_bet(i));
 
 		// log new hand
@@ -1114,7 +1116,7 @@ void CSymbols::CalcSymbols(void)
 	// common cards
 	set_sym_nflopc(0);
 
-	for (i=0; i<=4; i++)
+	for (i=0; i<k_number_of_community_cards; i++)
 	{
 		if (p_scraper->card_common(i) != CARD_NOCARD)
 			set_sym_nflopc(_sym.nflopc+1);													// nflopc
@@ -1154,9 +1156,6 @@ void CSymbols::CalcSymbols(void)
 	if (_sym.br != _br_last)
 	{
 		_br_last = _sym.br;
-
-		// Reset autoplayer structures
-		p_autoplayer->ResetRound();
 
 		// Reset symbols
 		ResetSymbolsNewRound();
@@ -1245,7 +1244,7 @@ bool CSymbols::CalcUserChair(void)
 	int				i = 0;
 	int				num_buttons_enabled = 0;
 
-	for (i=0; i<=9; i++)
+	for (i=0; i<10; i++) //!!!
 	{
 		CString button_label = p_scraper->button_label(i);
 
@@ -1280,16 +1279,16 @@ bool CSymbols::CalcUserChair(void)
 
 void CSymbols::CalcBetBalanceStack(void)
 {
-	int				i = 0, j = 0, oppcount = 0;
+	int				oppcount = 0;
 	double			stack[10] = {0}, temp = 0.;
 
-	for (i=0; i<_sym.nchairs; i++)
+	for (int i=0; i<_sym.nchairs; i++)
 		set_sym_balance(i, _sym.nchairs>i ? p_scraper->player_balance(i) : 0);						// balance0-9
 
 	set_sym_balance(10, _user_chair_confirmed ? p_scraper->player_balance(_sym.userchair) : 0);		// balance
 
 	// simple bubble sort for 10 stack values
-	for (i=0; i<_sym.nchairs; i++)
+	for (int i=0; i<_sym.nchairs; i++)
 	{
 		if (p_scraper->card_player(i, 0) != CARD_NOCARD && p_scraper->card_player(i, 1) != CARD_NOCARD)
 			stack[i] = _sym.balance[i];
@@ -1298,9 +1297,9 @@ void CSymbols::CalcBetBalanceStack(void)
 			stack[i] = 0;
 	}
 
-	for (i=0; i<_sym.nchairs-1; i++)
+	for (int i=0; i<_sym.nchairs-1; i++)
 	{
-		for (j=i+1; j<_sym.nchairs; j++)
+		for (int j=i+1; j<_sym.nchairs; j++)
 		{
 			if (stack[i]<stack[j])
 			{
@@ -1312,22 +1311,23 @@ void CSymbols::CalcBetBalanceStack(void)
 	}
 
 
-	for (i=0; i<_sym.nchairs; i++)
+	for (int i=0; i<_sym.nchairs; i++)
+	{
 		set_sym_stack(i, _sym.nchairs>i ? stack[i] : 0);									// stack0-9
-
+	}
 
 	//
 	// currentbet sanity check
 	//
 	// Get count of opponents
 	oppcount=0;
-	for (i=0; i<_sym.nchairs; i++)
+	for (int i=0; i<_sym.nchairs; i++)
 	{
 		if (p_scraper->card_player(i, 0) == CARD_BACK && p_scraper->card_player(i, 1) == CARD_BACK && i != _sym.userchair)
 			oppcount+=1;
 	}
 
-	for (i=0; i<_sym.nchairs; i++)
+	for (int i=0; i<_sym.nchairs; i++)
 	{
 		temp = _sym.nchairs>i ? p_scraper->player_bet(i) : 0;
 
@@ -1353,9 +1353,9 @@ void CSymbols::CalcBetBalanceStack(void)
 	set_sym_currentbet(10, _user_chair_confirmed ? p_scraper->player_bet(_sym.userchair) : 0);			// currentbet
 
 	set_sym_potplayer(0);
-	for (i=0; i<_sym.nchairs; i++)
+	for (int i=0; i<_sym.nchairs; i++)
 	{
-	set_sym_potplayer(_sym.potplayer + _sym.currentbet[i]);							// potplayer
+		set_sym_potplayer(_sym.potplayer + _sym.currentbet[i]);							// potplayer
 	}
 
 	// pot, potcommon, based on value of potmethod
@@ -1369,7 +1369,7 @@ void CSymbols::CalcBetBalanceStack(void)
 	{
 		_sym.pot = p_scraper->pot(0);
 
-		for (i=1; i<=4; i++)
+		for (int i=1; i<=4; i++)
 			_sym.pot = max(_sym.pot, p_scraper->pot(i));
 
 		_sym.potcommon = _sym.pot - _sym.potplayer;
@@ -1378,8 +1378,10 @@ void CSymbols::CalcBetBalanceStack(void)
 	else  // potmethod == 1
 	{
 		set_sym_potcommon(0);
-		for (i=0; i<=4; i++)
-		set_sym_potcommon(_sym.potcommon + p_scraper->pot(i));
+		for (int i=0; i<=4; i++)
+		{
+			set_sym_potcommon(_sym.potcommon + p_scraper->pot(i));
+		}
 
 		set_sym_pot(_sym.potcommon + _sym.potplayer);									
 	}
@@ -1636,10 +1638,10 @@ bool CSymbols::DidAct(void)
 {
     bool acted = false;
 
-    int didchec = p_autoplayer->didchec(4);
-    int didcall = p_autoplayer->didcall(4);
-    int didrais = p_autoplayer->didrais(4);
-    int didswag = p_autoplayer->didswag(4);
+    int didchec = _sym.didchec[4];
+    int didcall = _sym.didcall[4];
+    int didrais = _sym.didrais[4];
+    int didswag = _sym.didswag[4];
 
     if (didchec || didcall || didrais || didswag)
     {
@@ -1708,7 +1710,6 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
             opponents_raising++;
         }
     }
-
     set_sym_nopponentsraising(opponents_raising);
 
 	// nopponentscalling
@@ -3893,21 +3894,6 @@ void CSymbols::CalcAutoTrace()
 	double ignore = gram.CalcF$symbol(p_formula, "f$autotrace", true, &e);
 }
 
-void CSymbols::UpdateAutoplayerInfo(void)
-{
-	int		i = 0;
-
-	set_sym_prevaction(p_autoplayer->prevaction());
-
-		for (i=0; i<=4; i++)
-		{
-		set_sym_didchec(i, p_autoplayer->didchec(i));
-		set_sym_didcall(i, p_autoplayer->didcall(i));
-		set_sym_didrais(i, p_autoplayer->didrais(i));
-		set_sym_didswag(i, p_autoplayer->didswag(i));
-		}
-}
-
 const double CSymbols::GetSymbolVal(const char *a, int *e)
 {
 	// Look up a symbol value.
@@ -4686,4 +4672,93 @@ const double CSymbols::Chairbit$(const char *a)
 	}
 
 	return bits;
+}
+
+void CSymbols::AdaptSymbolsForUsersAction(const ActionConstant action)
+{
+	set_prevaction(action);
+
+	int user_chair = p_symbols->sym()->userchair;
+	int betround = p_symbols->sym()->betround;
+
+	// Adapting the did...symbols
+	switch (action)
+	{
+		case k_action_fold:			
+			// No "didfold"
+			break;
+		case k_action_check:
+			set_didchec(4, p_symbols->sym()->didchec[4] + 1);
+			set_didchec(betround-1, p_symbols->sym()->didchec[betround-1] + 1);
+			break;
+		case k_action_call:
+			set_didcall(4, p_symbols->sym()->didcall[4] + 1);
+			set_didcall(betround-1, p_symbols->sym()->didcall[betround-1] + 1);
+			break;
+		case k_action_raise:
+			set_didrais(4, p_symbols->sym()->didrais[4] + 1);
+			set_didrais(betround-1, p_symbols->sym()->didrais[betround-1] + 1);
+			break;
+		case k_action_swag:
+			set_didswag(4, p_symbols->sym()->didswag[4] + 1);
+			set_didswag(betround-1, p_symbols->sym()->didswag[betround-1] + 1);
+			break;
+		case k_action_allin:
+			// No "didallin"
+			break;
+		default: 
+			assert(k_this_must_not_happen);
+			break;
+	}
+
+	if ((action == k_action_raise) || (action == k_action_swag) 
+		|| (action == k_action_allin))
+	{
+		// We are raising, therefore we become the aggressor
+
+		// Pot and bets
+		double new_pot = 0;
+		double new_bet = 0;
+		double new_number_of_bets = 0;
+
+		double bet = p_tablelimits->bet(_sym.betround);
+		assert(bet > 0);	
+
+		if (action == k_action_raise) 
+		{
+			assert(f$rais() > 0);
+			new_number_of_bets = _sym.nraisbets;
+			new_bet = new_number_of_bets * bet;
+			new_pot = _sym.pot + new_bet - _sym.currentbet[10];
+		}
+		else if (action == k_action_swag) 
+		{
+			assert(f$swag() > 0);
+			new_bet = f$swag(); // !!! That's not correct, but will be for OH 2.2.0 because of swagadjustment
+			new_number_of_bets = new_bet / bet; 
+			new_pot = _sym.pot + f$swag() - _sym.currentbet[10];
+		}
+		else if (action == k_action_allin)
+		{
+			assert(f$alli() > 0);
+			new_bet = _sym.balance[10] + _sym.currentbet[10];
+			new_number_of_bets = new_bet / bet;
+			new_pot = _sym.pot + _sym.balance[10] - _sym.currentbet[10];
+		}
+		else
+		{
+			assert(k_this_must_not_happen);
+		}
+		set_sym_pot(new_pot);
+		set_sym_nbetsround(_sym.betround-1, new_number_of_bets);
+		set_sym_nbetsround(4 /*k_storage_index_for_current_round*/, new_number_of_bets);
+		set_sym_currentbet(_sym.betround-1, new_bet);
+		set_sym_currentbet(4 /*k_storage_index_for_current_round*/, new_bet);
+	}
+	
+
+	// reset elapsedauto symbol, as the autoplayer has acted.
+	time_t my_time_t;
+	time(&my_time_t);
+	p_symbols->set_elapsedautohold(my_time_t);
 }

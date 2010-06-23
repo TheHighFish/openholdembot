@@ -408,7 +408,8 @@ public:
 	void CalcPrimaryFormulas(const bool final_answer);
 	void CalcSecondaryFormulas(void);
 	void CalcAutoTrace(void);
-	void UpdateAutoplayerInfo(void);
+	void UpdateAutoplayerInfo(const ActionConstant action);
+	void AdaptSymbolsForUsersAction(const ActionConstant action);
 	const double GetSymbolVal(const char *a, int *e);
 	const double CalcPokerval(const HandVal handval, const int ncards, double *pcbits, const int pcard0, const int pcard1);
 	const void GetCardstring(char *c, const unsigned int c0, const unsigned int c1);
@@ -661,7 +662,7 @@ public:
 
 	//flags
 	void	set_sym_fmax(const double d) { ENT _sym.fmax = d;}
-	void	set_sym_f(const int i, const double d) { ENT if (i>=0 && i<=19) _sym.f[i] = d;}
+	void	set_sym_f(const int i, const double d) { ENT assert(i>=0); assert(i<k_number_of_flags); _sym.f[i] = d;}
 	void	set_sym_fbits(const double d) { ENT _sym.fbits = d;}
 
 	// common cards
@@ -824,6 +825,12 @@ public:
 	void	set_sym_vs$prloslonow(const double d) { ENT _sym.vs$prloslonow = d;}
 
 	void	set_sym_playing(const bool b) { ENT _sym.playing = b;}
+private:
+	void	set_prevaction(const int i) { ENT _sym.prevaction = i; }
+	void	set_didchec(const int n, const int i) { ENT assert(n>=0); assert(n<=4); _sym.didchec[n] = i; }
+	void	set_didcall(const int n, const int i) { ENT assert(n>=0); assert(n<=4); _sym.didcall[n] = i; }
+	void	set_didrais(const int n, const int i) { ENT assert(n>=0); assert(n<=4); _sym.didrais[n] = i; }
+	void	set_didswag(const int n, const int i) { ENT assert(n>=0); assert(n<=4); _sym.didswag[n] = i; }
 #undef ENT
 
 private:
