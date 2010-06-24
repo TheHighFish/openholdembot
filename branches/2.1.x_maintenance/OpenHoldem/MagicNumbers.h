@@ -49,7 +49,7 @@ enum ActionConstant
 };
 
 // 4 digit names of action-constants for use in the autoplayer-log.
-CString ActionConstantNames[k_action_allin+1] =
+const CString ActionConstantNames[k_action_allin+1] =
 {"UNDF", "FOLD", "CHEC", "CALL", "RAIS", "SWAG", "ALLI"};
 
 // Index for current betting round in arrays

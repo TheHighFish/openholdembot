@@ -512,7 +512,7 @@ void CAutoplayer::DoSwag(void)
 			return;
 		}
 
-		p_symbols->UpdateAutoplayerInfo(k_action_swag);
+		p_symbols->AdaptSymbolsForUsersAction(k_action_swag);
 		write_logautoplay(1, "SWAG\n");
 
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
@@ -798,7 +798,7 @@ void CAutoplayer::DoPrefold(void)
 
 		_mutex.Unlock();
 
-		p_symbols->UpdateAutoplayerInfo(k_action_fold);
+		p_symbols->AdaptSymbolsForUsersAction(k_action_fold);
 		write_logautoplay(1, "FOLD");
 	}
 	p_symbols->CalcAutoTrace();

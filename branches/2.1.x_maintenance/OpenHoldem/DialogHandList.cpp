@@ -201,18 +201,18 @@ BOOL CDlgHandList::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	int			i = 0, j = 0;
 	CString		s = "";
 
 	// Set title and static text control
 	s.Format("Hand List Editor - list%d", hand_list_num);
 	SetWindowText(s.GetString());
 	s.Format("Hand list: %d", hand_list_num);
+	MessageBox(s, "Init", 0); //!!!
 	m_HandList_Name.SetWindowText(s.GetString());
 
 	// Set checked/unchecked status of each box
-	for (i=0; i<=12; i++) {
-		for (j=0; j<=12; j++) {
+	for (int i=0; i<=12; i++) {
+		for (int j=0; j<=12; j++) {
 			m_Check[i][j].SetCheck(checked[i][j] ? BST_CHECKED : BST_UNCHECKED);
 		}
 	}
@@ -224,11 +224,9 @@ BOOL CDlgHandList::OnInitDialog()
 
 void CDlgHandList::OnCheckClick(UINT controlID)
 {
-	int			i = 0, j = 0;
-
 	nhands = 0;
-	for (i=0; i<=12; i++) {
-		for (j=0; j<=12; j++) {
+	for (int i=0; i<=12; i++) {
+		for (int j=0; j<=12; j++) {
 			checked[i][j] = m_Check[i][j].GetCheck() & BST_CHECKED;
 			if (checked[i][j]) {
 				if (i==j) nhands += 6;
@@ -239,6 +237,7 @@ void CDlgHandList::OnCheckClick(UINT controlID)
 	}
 	CString comment = "";
 	comment.Format("%d/1326=%.2f%%", nhands, ((double)nhands/1326.0)*100.0);
+	MessageBox(comment, "Init", 0); //!!!
 	m_CommentST.SetWindowText(comment);
 }
 
