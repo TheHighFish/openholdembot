@@ -49,8 +49,11 @@ enum ActionConstant
 };
 
 // 4 digit names of action-constants for use in the autoplayer-log.
-const CString ActionConstantNames[k_action_allin+1] =
+const CString k_action_constant_names[k_action_allin+1] =
 {"UNDF", "FOLD", "CHEC", "CALL", "RAIS", "SWAG", "ALLI"};
+
+// for rank to card translation
+const static char *k_card_chars = "23456789TJQKA";
 
 // Index for current betting round in arrays
 // we prefer to store values for preflop..river in 1..4

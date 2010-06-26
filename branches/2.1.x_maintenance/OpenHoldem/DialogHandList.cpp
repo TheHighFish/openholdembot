@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "DialogHandList.h"
+#include "MagicNumbers.h"
 
 // CDlgHandList dialog
 CDlgHandList::CDlgHandList(CWnd* pParent /*=NULL*/)
@@ -207,7 +208,6 @@ BOOL CDlgHandList::OnInitDialog()
 	s.Format("Hand List Editor - list%d", hand_list_num);
 	SetWindowText(s.GetString());
 	s.Format("Hand list: %d", hand_list_num);
-	MessageBox(s, "Init", 0); //!!!
 	m_HandList_Name.SetWindowText(s.GetString());
 
 	// Set checked/unchecked status of each box
@@ -229,15 +229,17 @@ void CDlgHandList::OnCheckClick(UINT controlID)
 		for (int j=0; j<=12; j++) {
 			checked[i][j] = m_Check[i][j].GetCheck() & BST_CHECKED;
 			if (checked[i][j]) {
+				// pairs	
 				if (i==j) nhands += 6;
+				// unsuited
 				else if (i<j) nhands += 12;
+				// suited
 				else nhands += 4;
 			}
 		}
 	}
 	CString comment = "";
 	comment.Format("%d/1326=%.2f%%", nhands, ((double)nhands/1326.0)*100.0);
-	MessageBox(comment, "Init", 0); //!!!
 	m_CommentST.SetWindowText(comment);
 }
 
@@ -246,4 +248,70 @@ void CDlgHandList::OnBnClickedOk()
 	OnCheckClick(0);
 
 	OnOK();
+}
+
+CString CDlgHandList::GetHandListAsString()
+{
+	CString	handlist = "";
+	bool	do_crlf = false;
+
+	// Pairs
+	// Hands at the diagonal in the editor
+	for (int i=12; i>=0; i--)
+	{
+		if (checked[i][i])
+		{
+			handlist += k_card_chars[i];
+			handlist += k_card_chars[i];
+			handlist += "  ";
+			do_crlf = true;
+		}
+	}
+	if (do_crlf)
+	{
+		handlist += "\r\n";
+	}
+
+	// Suited hands
+	// Above the diagonal in the editor
+	do_crlf = false;
+	for (int i=12; i>=1; i--)
+	{
+		for (int j=i-1; j>=0; j--)
+		{
+			if (checked[i][j])
+			{
+				handlist += k_card_chars[i];
+				handlist += k_card_chars[j];
+				handlist += "s ";
+				do_crlf = true;
+			}
+		}
+	}
+	if (do_crlf)
+	{
+		handlist += "\r\n";
+	}
+
+	// Unsuited hands.
+	// Below the diagonal in the editor
+	do_crlf = false;
+	for (int i=11; i>=0; i--)
+	{
+		for (int j=12; j>=i+1; j--)
+		{
+			if (checked[i][j])
+			{
+				handlist += k_card_chars[i];
+				handlist += k_card_chars[j];
+				handlist += "  ";
+				do_crlf = true;
+			}
+		}
+	}
+	if (do_crlf)
+	{
+		handlist += "\r\n";
+	}
+	return handlist;
 }
