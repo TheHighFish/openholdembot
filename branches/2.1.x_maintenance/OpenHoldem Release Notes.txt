@@ -22,6 +22,9 @@ BUG FIXES:
   However some other symbols like nbetsroundX get now adapted for heros action,
   assuming that his action gets executed correctly.
   Thanks to Gecko for "motivating" me to fix this "bug". [THF]
+- Comments inside handlists got overwritten when the editor-dialog
+  changed a handlist. This has now been changed.
+  Thanks to Trom for reporting. [THF]
 
 
 v2.1.4 2010-04-23
