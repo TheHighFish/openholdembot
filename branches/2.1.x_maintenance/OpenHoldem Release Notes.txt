@@ -1,4 +1,4 @@
-v2.1.5 2010-xx-yy
+v2.1.5 2010-06-28
 =================
 BUG FIXES:
 - The symbol ishistraight did not work for all best straights,
@@ -25,6 +25,11 @@ BUG FIXES:
 - Comments inside handlists got overwritten when the editor-dialog
   changed a handlist. This has now been changed.
   Thanks to Trom for reporting. [THF]
+- The autoplayer trace did not work for f$allin. This has now been fixed.
+  Thanks to CrumbleSunday for reporting. 
+  Temporarily the autoplayer-trace for f$play, f$rebuy (but not the primary functions)
+  will be written every heartbeat, but that will easily be resolved 
+  with some other changes in the upcoming OH 2.2.0 [THF] 
 
 
 v2.1.4 2010-04-23
