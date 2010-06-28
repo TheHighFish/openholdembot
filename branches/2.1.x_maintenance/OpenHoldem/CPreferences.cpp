@@ -156,8 +156,6 @@ void CPreferences::InitDefaults(void)
 	_log_symbol_max_log = 5;
 
 	_trace_enabled = false;
-	for (int i=0;i<nTraceFunctions;i++)
-		_trace_functions[i] = false;
 
 	// Logging and debugging
 	_disable_msgbox = false;
@@ -347,11 +345,6 @@ void CPreferences::ReadPreferences()
 		ReadReg("trace_enabled", &_trace_enabled);
 
 		CString regValue;
-		for (int i=0;i<nTraceFunctions;i++) 
-		{
-			regValue.Format("trace_functions%d", i+1);
-			ReadReg(regValue, &_trace_functions[i]);
-		}
 
 		// Logging and debugging
 		ReadReg("disable_msgbox", &_disable_msgbox);

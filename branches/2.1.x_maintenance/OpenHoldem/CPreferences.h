@@ -83,7 +83,6 @@ public:
 	const int log_symbol_max_log() { return _log_symbol_max_log; }
 	// Tracing
 	const bool trace_enabled() { return _trace_enabled; }
-	const bool trace_functions(unsigned int i) { return _trace_functions[i]; }
 	// Logging and debugging
 	const bool disable_msgbox() { return _disable_msgbox; }
 	const int log_level() { return _log_level; }
@@ -244,8 +243,6 @@ public:
 
 	// Tracing
 	void set_trace_enabled(const bool b) { ENT _trace_enabled = b; WriteReg("trace_enabled", b); }
-	void set_trace_functions(const unsigned int i, const bool b) 
-	{ ENT _trace_functions[i] = b; CString regValue; regValue.Format("trace_functions%d", i+1);	WriteReg(regValue, b); }
 
 	// Logging and debugging
 	void set_disable_msgbox(const bool b) { ENT _disable_msgbox = b; WriteReg("disable_msgbox", b); }
@@ -422,7 +419,6 @@ private:
 
 	// Tracing
 	bool			_trace_enabled;
-	bool			_trace_functions[nTraceFunctions];
 
 	// Logging & MessageBox
 	bool			_disable_msgbox;

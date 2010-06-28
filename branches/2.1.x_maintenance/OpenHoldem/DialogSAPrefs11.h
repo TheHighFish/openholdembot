@@ -26,7 +26,6 @@ protected:
 public:
 	CButton m_EnableLog, m_EnableTrace, m_disable_msgbox;
 	CEdit m_MaximumLog, m_MaximumLogSize;
-	CCheckListBox m_TraceList;
 	CSpinButtonCtrl m_MaximumLog_Spin, m_MaximumLogSize_Spin;
 	virtual BOOL OnInitDialog();
 	CComboBox m_DebugLevel, m_DebugLevel_PT;

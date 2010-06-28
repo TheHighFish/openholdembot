@@ -32,7 +32,6 @@ void CDlgSAPrefs11::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_MAXIMUM_LOG, m_MaximumLog);
 	DDX_Control(pDX, IDC_MAXIMUM_LOG_SPIN, m_MaximumLog_Spin);
 	DDX_Control(pDX, IDC_ENABLE_TRACE, m_EnableTrace);
-	DDX_Control(pDX, IDC_TRACE_LIST, m_TraceList);
 	DDX_Control(pDX, IDC_DISABLE_MSGBOX, m_disable_msgbox);
 	DDX_Control(pDX, IDC_DEBUGLEVEL, m_DebugLevel);
 	DDX_Control(pDX, IDC_DEBUGLEVEL_PT, m_DebugLevel_PT);
@@ -46,26 +45,13 @@ BOOL CDlgSAPrefs11::OnInitDialog()
 	CString		text = "";
 
 	m_EnableLog.SetCheck(prefs.log_symbol_enabled() ? BST_CHECKED : BST_UNCHECKED);
+	m_EnableTrace.SetCheck(prefs.trace_enabled() ? BST_CHECKED : BST_UNCHECKED);
 
 	text.Format("%d", prefs.log_symbol_max_log());
 	m_MaximumLog.SetWindowText(text);
 	m_MaximumLog_Spin.SetRange(0, (short) MAX_MAX_LOG);
 	m_MaximumLog_Spin.SetPos(prefs.log_symbol_max_log());
 	m_MaximumLog_Spin.SetBuddy(&m_MaximumLog);
-
-	m_EnableTrace.SetCheck(prefs.trace_enabled() ? BST_CHECKED : BST_UNCHECKED);
-	m_TraceList.AddString("f$alli");
-	m_TraceList.AddString("f$swag");
-	m_TraceList.AddString("f$rais");
-	m_TraceList.AddString("f$call");
-	m_TraceList.AddString("f$play");
-	m_TraceList.AddString("f$prefold");
-	m_TraceList.AddString("f$rebuy");
-
-	for (int i=0;i<nTraceFunctions;i++)
-	{
-		m_TraceList.SetCheck(i, prefs.trace_functions(i));
-	}
 
 	m_disable_msgbox.SetCheck(prefs.disable_msgbox() ? BST_CHECKED : BST_UNCHECKED);
 
@@ -104,10 +90,6 @@ void CDlgSAPrefs11::OnOK()
 
 	prefs.set_log_symbol_enabled(m_EnableLog.GetCheck()==BST_CHECKED ? true : false);
 	prefs.set_trace_enabled(m_EnableTrace.GetCheck()==BST_CHECKED ? true : false);
-	for (int i=0;i<nTraceFunctions;i++)
-	{
-		prefs.set_trace_functions(i, m_TraceList.GetCheck(i));		
-	}
 
 	m_MaximumLog.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)<0 || strtoul(text.GetString(), 0, 10)>MAX_MAX_LOG) {

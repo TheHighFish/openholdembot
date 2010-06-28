@@ -340,23 +340,7 @@ void CTableLimits::SwapBlindsIfSbGreaterThanBBAndNotZero()
 		tablelimit_unreliable_input.bblind = temp;
 	}
 }
-/*
-// !!! Code-clone!
-// Needs refactoring!
-// CSymbols->... not yet calculated, when we need it!
-int dealerchair()
-{
-	for (int i=0; i < p_tablemap->nchairs(); i++)
-	{
-		if (p_scraper->dealer(i))
-		{
-			write_log(3, "CTableLimits dealerchair: %d\n", i);
-			return i;
-		}
-	}
-	return -1;
-}
-*/
+
 void CTableLimits::SearchTableForSbAndBbValue()
 {
 	bool	found_inferred_sb = false, found_inferred_bb = false;

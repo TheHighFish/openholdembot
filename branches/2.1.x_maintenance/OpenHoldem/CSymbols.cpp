@@ -3843,19 +3843,19 @@ void CSymbols::CalcPrimaryFormulas(const bool final_answer)
 	set_sym_isfinalanswer(final_answer);
 
 	e = SUCCESS;
-	set_f$alli(gram.CalcF$symbol(p_formula, "f$alli", (final_answer && prefs.trace_functions(nTraceAlli)), &e));
+	set_f$alli(gram.CalcF$symbol(p_formula, "f$alli", (final_answer && prefs.trace_enabled()), &e));
 	write_log(3, "Primary formulas; f$alli: %f\n", p_symbols->f$alli());
 	
 	e = SUCCESS;
-	set_f$swag(gram.CalcF$symbol(p_formula, "f$swag", (final_answer && prefs.trace_functions(nTraceSwag)), &e));
+	set_f$swag(gram.CalcF$symbol(p_formula, "f$swag", (final_answer && prefs.trace_enabled()), &e));
 	write_log(3, "Primary formulas; f$swag: %f\n", p_symbols->f$swag());
 
 	e = SUCCESS;
-	set_f$rais(gram.CalcF$symbol(p_formula, "f$rais", (final_answer && prefs.trace_functions(nTraceRais)), &e));
+	set_f$rais(gram.CalcF$symbol(p_formula, "f$rais", (final_answer && prefs.trace_enabled()), &e));
 	write_log(3, "Primary formulas; f$rais: %f\n", p_symbols->f$rais());
 
 	e = SUCCESS;
-	set_f$call(gram.CalcF$symbol(p_formula, "f$call", (final_answer && prefs.trace_functions(nTraceCall)), &e));
+	set_f$call(gram.CalcF$symbol(p_formula, "f$call", (final_answer && prefs.trace_enabled()), &e));
 	write_log(3, "Primary formulas; f$call: %f\n", p_symbols->f$call());
 
 	CalcAutoTrace();
@@ -3867,15 +3867,15 @@ void CSymbols::CalcSecondaryFormulas(void)
 	CGrammar	gram;
 
 	e = SUCCESS;
-	set_f$play(gram.CalcF$symbol(p_formula, "f$play", prefs.trace_functions(nTracePlay), &e));
+	set_f$play(gram.CalcF$symbol(p_formula, "f$play", prefs.trace_enabled(), &e));
 	write_log(3, "Secondary formulas; f$play: %f\n", p_symbols->f$play());
 
 	e = SUCCESS;
-	set_f$prefold(gram.CalcF$symbol(p_formula, "f$prefold", prefs.trace_functions(nTracePrefold), &e));
+	set_f$prefold(gram.CalcF$symbol(p_formula, "f$prefold", prefs.trace_enabled(), &e));
 	write_log(3, "Secondary formulas; f$prefold: %f\n", p_symbols->f$prefold());
 	
 	e = SUCCESS;
-	set_f$rebuy(gram.CalcF$symbol(p_formula, "f$rebuy", prefs.trace_functions(nTracePrefold), &e));
+	set_f$rebuy(gram.CalcF$symbol(p_formula, "f$rebuy", prefs.trace_enabled(), &e));
 	write_log(3, "Secondary formulas; f$rebuy: %f\n", p_symbols->f$rebuy());
 	
 	e = SUCCESS;
@@ -3885,13 +3885,15 @@ void CSymbols::CalcSecondaryFormulas(void)
 	e = SUCCESS;
 	set_f$chat(gram.CalcF$symbol(p_formula, "f$chat", &e));
 	write_log(3, "Secondary formulas; f$chat: %f\n", p_symbols->f$chat());
+
+	CalcAutoTrace();
 }
 
 void CSymbols::CalcAutoTrace()
 {
 	int			e = SUCCESS;
 	CGrammar	gram;
-	double ignore = gram.CalcF$symbol(p_formula, "f$autotrace", true, &e);
+	double		ignore = gram.CalcF$symbol(p_formula, "f$autotrace", true, &e);
 }
 
 const double CSymbols::GetSymbolVal(const char *a, int *e)
