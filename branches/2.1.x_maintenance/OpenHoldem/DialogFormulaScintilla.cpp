@@ -2593,21 +2593,31 @@ void CDlgFormulaScintilla::OnBnClickedApplySave()
 	pMyMainWnd->SendMessage(WM_COMMAND, ID_FILE_SAVE, 0);
 }
 
+void CDlgFormulaScintilla::WarnAboutAutoplayerWhenApplyingFormulaAndTurnAutoplayerOff()
+{
+	MessageBox("Editing the formula while the autoplayer is enabled\n"
+		"is an extremely insane idea\n"
+		"(like changing wheels while driving on the highway).\n\n"
+		"We will have to turn the autoplayer off,\n"
+		"but nevertheless you might lose your complete formula.\n"
+		"Please make a backup and then press ok\n"
+		"and never ever do such stupid things again.",
+		"Warning", MB_OK | MB_TOPMOST);
+	// There might be a race-condition somewhere, nobody really knows.
+	// Trying to reduce the risk for evil outcomes...
+	Sleep(1000);
+	p_autoplayer->set_autoplayer_engaged(false);	
+}
+
 void CDlgFormulaScintilla::OnBnClickedApply() 
 {
 	CMenu				*file_menu = this->GetMenu()->GetSubMenu(0);
 	COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
-	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	// If autoplayer is engaged, dis-engage it
 	if (p_autoplayer->autoplayer_engaged())
 	{
-		if (MessageBox("Autoplayer is currently enabled.\nWould you like to disable the autoplayer?",
-					   "Disable Autoplayer?", MB_YESNO) == IDYES)
-		{
-			pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
-			p_autoplayer->set_autoplayer_engaged(false);
-		}
+		WarnAboutAutoplayerWhenApplyingFormulaAndTurnAutoplayerOff();
 	}
 
 	// Save settings to registry
@@ -2664,19 +2674,7 @@ void CDlgFormulaScintilla::OnBnClickedOk()
 	// If autoplayer is engaged, dis-engage it
 	if (p_autoplayer->autoplayer_engaged())
 	{
-		MessageBox("Editing the formula while the autoplayer is enabled\n"
-			"is an extremely insane idea\n"
-			"(like changing wheels while driving on the highway).\n\n"
-			"We will have to turn the autoplayer off,\n"
-			"but nevertheless you might lose your complete formula.\n"
-			"Please make a backup and then press ok\n"
-			"and never ever do such stupid things again.",
-			"Warning", MB_OK | MB_TOPMOST);
-		pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
-		p_autoplayer->set_autoplayer_engaged(false);
-		// There might be a race-condition somewhere, nobody really knows.
-		// Trying to reduce the risk for evil outcomes...
-		Sleep(1000);
+		WarnAboutAutoplayerWhenApplyingFormulaAndTurnAutoplayerOff();		
 	}
 
 	StopAutoButton();
