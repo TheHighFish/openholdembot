@@ -2,10 +2,10 @@
 //
 
 #include "stdafx.h"
+#include "MainFrm.h"
+
 #include <io.h>
 #include <process.h>
-
-#include "MainFrm.h"
 
 #include "CAutoConnector.h"
 #include "CAutoplayer.h"
@@ -51,10 +51,7 @@
 #include "OpenHoldemDoc.h"
 #include "SAPrefsDialog.h"
 
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
+CMainFrame *p_mainframe = 0;
 
 // CMainFrame
 

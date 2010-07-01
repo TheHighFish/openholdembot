@@ -10,7 +10,7 @@
 #define		UPDATE_STATUS_BAR_TIMER			3
 #define		ATTACH_WINDOW_TIMER				4
 
-class CMainFrame : public CFrameWnd 
+extern class CMainFrame : public CFrameWnd 
 {
 protected: // create from serialization only
 	DECLARE_DYNCREATE(CMainFrame)
@@ -129,7 +129,7 @@ private:
 	RECT			_prev_att_rect, _prev_wrect;
 
 	CCritSec		m_critsec;
-};
+} *p_mainframe;
 
 // used by EnumProcTopLevelWindowList function
 extern CArray <STableList, STableList>		g_tlist; 

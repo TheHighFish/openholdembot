@@ -36,6 +36,23 @@ CAutoplayer::~CAutoplayer(void)
 {
 }
 
+#define ENT CSLock lock(m_critsec);
+	
+void CAutoplayer::set_autoplayer_engaged(const bool to_be_enabled_or_not) 
+{ 
+	ENT 
+	_autoplayer_engaged = to_be_enabled_or_not; 
+	// Set correct button state
+	// We have to be careful, as during initialization the GUI does not yet exist.
+	CMainFrame *pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
+	if (pMyMainWnd != NULL)
+	{
+		pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, to_be_enabled_or_not);
+	}
+}
+
+#undef ENT
+
 void CAutoplayer::DoChat(void)
 {
 	double			f_chat = p_symbols->f$chat();

@@ -20,17 +20,8 @@ public:
 	const bool autoplayer_engaged() { return _autoplayer_engaged; }
 
 public:
-#define ENT CSLock lock(m_critsec);
 	// public mutators
-	
-	void set_autoplayer_engaged(const bool to_be_enabled_or_not) 
-	{ 
-		ENT _autoplayer_engaged = to_be_enabled_or_not; 
-		// Set correct button state
-		CMainFrame *pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-		pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, to_be_enabled_or_not);
-	}
-#undef ENT
+	void set_autoplayer_engaged(const bool to_be_enabled_or_not);
 
 private:
 	// private variables - use public accessors and public mutators to address these
