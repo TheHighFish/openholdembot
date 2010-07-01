@@ -3842,20 +3842,25 @@ void CSymbols::CalcPrimaryFormulas(const bool final_answer)
 
 	set_sym_isfinalanswer(final_answer);
 
+	write_log(3, "IsFinalAnswer: %i\n", final_answer);
+	write_log(3, "Trace enabled: %i\n", prefs.trace_enabled());
+
+	bool trace_needed = final_answer && prefs.trace_enabled();
+
 	e = SUCCESS;
-	set_f$alli(gram.CalcF$symbol(p_formula, "f$alli", (final_answer && prefs.trace_enabled()), &e));
+	set_f$alli(gram.CalcF$symbol(p_formula, "f$alli", trace_needed, &e));
 	write_log(3, "Primary formulas; f$alli: %f\n", p_symbols->f$alli());
 	
 	e = SUCCESS;
-	set_f$swag(gram.CalcF$symbol(p_formula, "f$swag", (final_answer && prefs.trace_enabled()), &e));
+	set_f$swag(gram.CalcF$symbol(p_formula, "f$swag", trace_needed, &e));
 	write_log(3, "Primary formulas; f$swag: %f\n", p_symbols->f$swag());
 
 	e = SUCCESS;
-	set_f$rais(gram.CalcF$symbol(p_formula, "f$rais", (final_answer && prefs.trace_enabled()), &e));
+	set_f$rais(gram.CalcF$symbol(p_formula, "f$rais", trace_needed, &e));
 	write_log(3, "Primary formulas; f$rais: %f\n", p_symbols->f$rais());
 
 	e = SUCCESS;
-	set_f$call(gram.CalcF$symbol(p_formula, "f$call", (final_answer && prefs.trace_enabled()), &e));
+	set_f$call(gram.CalcF$symbol(p_formula, "f$call", trace_needed, &e));
 	write_log(3, "Primary formulas; f$call: %f\n", p_symbols->f$call());
 
 	CalcAutoTrace();
