@@ -259,8 +259,10 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_chair(0);
 	set_sym_userchair(0);
 	set_sym_dealerchair(0);
+
 	set_sym_raischair_previous_frame(-1);
-	set_sym_raischair(0);
+	set_sym_raischair(-1);
+
 	set_user_chair_confirmed(false);
 
 	// rounds positions
@@ -725,6 +727,7 @@ void CSymbols::ResetSymbolsNewHand(void)
 	}
 
 	set_sym_raischair_previous_frame(-1);
+	set_sym_raischair(-1);
 }
 
 void CSymbols::ResetSymbolsNewRound(void)
@@ -733,7 +736,9 @@ void CSymbols::ResetSymbolsNewRound(void)
 	set_sym_didcall(4, 0);
 	set_sym_didrais(4, 0);
 	set_sym_didswag(4, 0);
+
 	set_sym_raischair_previous_frame(-1);
+	set_sym_raischair(-1);
 }
 
 void CSymbols::ResetSymbolsEveryCalc(void)
@@ -753,7 +758,6 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 
 	// chairs
 	set_sym_raischair_previous_frame(_sym.raischair);
-	set_sym_raischair(0);
 
 	// rounds positions
 	set_sym_betposition(1);
@@ -1393,7 +1397,7 @@ void CSymbols::CalcChipamtsLimits(void)
 	int				i = 0;
 	int				next_largest_bet = 0;
 
-	set_sym_call(_user_chair_confirmed ?
+	set_sym_call((_user_chair_confirmed && _sym.raischair != -1) ?
 			   _sym.currentbet[(int) _sym.raischair] - _sym.currentbet[(int) _sym.userchair] : 0); // call
 
 	for (i=_sym.raischair+1; i<_sym.raischair+p_tablemap->nchairs(); i++)
