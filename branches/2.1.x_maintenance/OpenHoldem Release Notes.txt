@@ -1,3 +1,9 @@
+v2.1.6 2010-07-xx
+=================
+- The symbol "call" got broken by a previous bug-fix.
+  Thanks to kTrader for reporting. [F1x3r]
+
+
 v2.1.5 2010-07-01
 =================
 BUG FIXES:
