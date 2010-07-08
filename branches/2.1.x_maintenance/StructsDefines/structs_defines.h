@@ -32,10 +32,18 @@ typedef boost::spirit::node_val_data_factory<const char *> int_factory_t;
 #define ERR_INVALID_FUNC_SYM		11
 #define ERR_INVALID_DLL_SYM			12
 #define ERR_INVALID_EXPR			13
+// No error code 14
 #define ERR_DIV_ZERO				15
 #define ERR_INVALID_F$$_REF			16
 #define ERR_BAD_PARSE				17
 #define ERR_INCOMPLETEMASTER		18
+
+const CString k_tablemap_errors_and_parse_errors_explained[19] =	
+	{"success", "unexpected end of file", "invalid syntax", "incorrect version",
+	"not a master file", "hash collision", "invalid region size", "unknown line type",
+	"invalid hash type", "missing equal sign", "invalid symbol", "invalid function symbol",
+	"invalid DLL symbol", "invalid expression", "this can't happen, as this error-code is unused", "division by zero", 
+	"invalid f$$-reference", "bad parse", "incomplete master file"};
 
 // Scraper error codes
 #define ERR_FIELD_TOO_LARGE			-1
