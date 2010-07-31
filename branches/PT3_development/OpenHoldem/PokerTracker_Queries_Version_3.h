@@ -3,7 +3,7 @@
 #define INC_POKERTRACKER_QUERIES_VERSION_3_H
 
 
-const int k_number_of_pokertracker_stats = 40;
+const int k_number_of_pokertracker_stats = 49;
 
 const int k_max_lenght_of_stats_name = 15;	// 14 + 1 char for NULL
 
@@ -20,11 +20,14 @@ enum PT_Stats
 	pt_aggtotnopf,	pt_floppct,		pt_turnpct,		pt_riverpct, 
 	pt_vpip,		pt_pf_rfi,		pt_pf_cr,		pt_pfats, 
 	pt_wsdp,		pt_wssd,		pt_fbbts,		pt_fsbts,
-	ptt_icon,		ptt_hands,		ptt_pfr,		ptt_aggp, 
-	ptt_aggf,		ptt_aggt,		ptt_aggr,		ptt_aggtot, 
-	ptt_aggtotnopf, ptt_floppct,	ptt_turnpct,	ptt_riverpct, 
-	ptt_vpip,		ptt_pf_rfi,		ptt_pf_cr,		ptt_pfats, 
-	ptt_wsdp,		ptt_wssd,		ptt_fbbts,		ptt_fsbts, 
+	pt_cbetflop,	pt_f3bettot,	pt_f3betpflop,	pt_f3betflop,
+	pt_f3betturn,	pt_f3betriver,	pt_fcbetflop,	pt_fcbetturn,
+	pt_fcbetriver,	ptt_icon,		ptt_hands,		ptt_pfr,		
+	ptt_aggp,		ptt_aggf,		ptt_aggt,		ptt_aggr,		
+	ptt_aggtot,		ptt_aggtotnopf, ptt_floppct,	ptt_turnpct,	
+	ptt_riverpct, 	ptt_vpip,		ptt_pf_rfi,		ptt_pf_cr,		
+	ptt_pfats,		ptt_wsdp,		ptt_wssd,		ptt_fbbts,		
+	ptt_fsbts, 
 	// End of stats
 	// Specification of minimu and maximum
 	// These have to be adapted, when new stats are added.
@@ -39,11 +42,14 @@ const CString stat_str[k_number_of_pokertracker_stats]/*[k_max_lenght_of_stats_n
 	"pt_aggtotnopf",	"pt_floppct",		"pt_turnpct",		"pt_riverpct", 
 	"pt_vpip",			"pt_pf_rfi",		"pt_pf_cr",			"pt_pfats",	
 	"pt_wsdp",			"pt_wssd",			"pt_fbbts",			"pt_fsbts",
-	"ptt_icon",			"ptt_hands",		"ptt_pfr",			"ptt_aggp", 
-	"ptt_aggf",			"ptt_aggt",			"ptt_aggr",			"ptt_aggtot", 
-	"ptt_aggtotnopf",	"ptt_floppct",		"ptt_turnpct",		"ptt_riverpct", 
-	"ptt_vpip",			"ptt_pf_rfi",		"ptt_pf_cr",		"ptt_pfats", 
-	"ptt_wsdp",			"ptt_wssd",			"ptt_fbbts",		"ptt_fsbts"
+	"pt_cbetflop",		"pt_f3bettot",		"pt_f3betpflop",	"pt_f3betflop",
+	"pt_f3betturn",		"pt_f3betriver",	"pt_fcbetflop",		"pt_fcbetturn",
+	"pt_fcbetriver",	"ptt_icon",			"ptt_hands",		"ptt_pfr",			
+	"ptt_aggp",			"ptt_aggf",			"ptt_aggt",			"ptt_aggr",			
+	"ptt_aggtot",		"ptt_aggtotnopf",	"ptt_floppct",		"ptt_turnpct",		
+	"ptt_riverpct", 	"ptt_vpip",			"ptt_pf_rfi",		"ptt_pf_cr",		
+	"ptt_pfats",		"ptt_wsdp",			"ptt_wssd",			"ptt_fbbts",		
+	"ptt_fsbts"
 };
 
 
@@ -270,7 +276,92 @@ const CString query_str3[k_number_of_pokertracker_stats] = {
         P.player_name like '%SCREENNAME%' AND \
 		P.id_site=%SITEID%",
 
+/****************** KYO ADDED START # new stats: 9 ***************************************/
+/* PT3 RING query to get cbet on FLOP */
+"SELECT (case when (count(*)!=0) \
+			then cast(sum(case when S.flg_f_cbet = 't' then 1 else 0 end) as real) \
+				/ cast(sum(case when S.flg_f_cbet_opp = 't' then 1 else 0 end) as real) \
+			else (-1) end) as result \
+FROM	player as P, holdem_hand_player_statistics as S \
+WHERE	S.id_player = P.id_player AND \
+		P.player_name LIKE '%SCREENNAME%' AND \
+		P.id_site=%SITEID%",
 
+/* PT3 RING query to get TOTAL fold to 3 bet percentage */
+"SELECT (case when (count(*)!=0) then \
+			(cast(sum(case when (S.enum_p_3bet_action = 'F' or S.enum_f_3bet_action = 'F' or S.enum_t_3bet_action = 'F' or S.enum_r_3bet_action = 'F') then 1 else 0 end) as real) / \
+			cast(sum(case when  (S.flg_p_3bet_def_opp = 't' or S.flg_f_3bet_def_opp = 't' or S.flg_t_3bet_def_opp = 't' or S.flg_r_3bet_def_opp = 't') then 1 else 0 end) as real)) \
+		else (-1) end) as result \
+		FROM player as P, holdem_hand_player_statistics as S \
+		WHERE S.id_player = P.id_player \
+		AND P.player_name LIKE '%SCREENNAME%'",
+
+/* PT3 RING query to get PREFLOP fold to 3 bet percentage */
+"select (case when (count(*)!=0) then \
+			cast(sum(case when S.enum_p_3bet_action = 'F' then 1 else 0 end) as real) / \
+			cast(sum(case when S.flg_p_3bet_def_opp = 't' then 1 else 0 end) as real) \
+		else (-1) end) as result \
+		FROM player as P, holdem_hand_player_statistics as S \
+		WHERE S.id_player = P.id_player \
+		AND P.player_name LIKE '%SCREENNAME%'", 
+
+/* PT3 RING query to get FLOP fold to 3 bet percentage */
+"select (case when (count(*)!=0) then \
+			cast(sum(case when S.enum_f_3bet_action = 'F' then 1 else 0 end) as real) / \
+			cast(sum(case when S.flg_f_3bet_def_opp = 't' then 1 else 0 end) as real) \
+		else (-1) end) as result \
+		FROM player as P, holdem_hand_player_statistics as S \
+		WHERE S.id_player = P.id_player \
+		AND P.player_name LIKE '%SCREENNAME%'", 
+
+/* PT3 RING query to get TURN fold to 3 bet percentage */
+"select (case when (count(*)!=0) then \
+			cast(sum(case when S.enum_t_3bet_action = 'F' then 1 else 0 end) as real) / \
+			cast(sum(case when S.flg_t_3bet_def_opp = 't' then 1 else 0 end) as real) \
+		else (-1) end) as result \
+		FROM player as P, holdem_hand_player_statistics as S \
+		WHERE S.id_player = P.id_player \
+		AND P.player_name LIKE '%SCREENNAME%'", 
+
+/* PT3 RING query to get RIVER fold to 3 bet percentage */
+"select (case when (count(*)!=0) then \
+			cast(sum(case when S.enum_r_3bet_action = 'F' then 1 else 0 end) as real) / \
+			cast(sum(case when S.flg_r_3bet_def_opp = 't' then 1 else 0 end) as real) \
+		else (-1) end) as result \
+		FROM player as P, holdem_hand_player_statistics as S \
+		WHERE S.id_player = P.id_player \
+		AND P.player_name LIKE '%SCREENNAME%'", 
+
+/* PT RING query to get FLOP fold to cbet percentage */
+"select (case when (count(*)!=0) then \
+			cast(sum(case when S.enum_f_cbet_action = 'F' then 1 else 0 end) as real) / \
+			cast(sum(case when S.flg_f_cbet_def_opp = 't' then 1 else 0 end) as real) \
+		else (-1) end) as result \
+		FROM player as P, holdem_hand_player_statistics as S \
+		WHERE S.id_player = P.id_player \
+		AND P.player_name LIKE '%SCREENNAME%'",
+
+/* PT RING query to get TURN fold to cbet percentage */
+"select (case when (count(*)!=0) then \
+			cast(sum(case when S.enum_t_cbet_action = 'F' then 1 else 0 end) as real) / \
+			cast(sum(case when S.flg_t_cbet_def_opp = 't' then 1 else 0 end) as real) \
+		else (-1) end) as result \
+		FROM player as P, holdem_hand_player_statistics as S \
+		WHERE S.id_player = P.id_player \
+		AND P.player_name LIKE '%SCREENNAME%'",
+
+/* PT RING query to get RIVER fold to cbet percentage */
+"select (case when (count(*)!=0) then \
+			cast(sum(case when S.enum_r_cbet_action = 'F' then 1 else 0 end) as real) / \
+			cast(sum(case when S.flg_r_cbet_def_opp = 't' then 1 else 0 end) as real) \
+		else (-1) end) as result \
+		FROM player as P, holdem_hand_player_statistics as S \
+		WHERE S.id_player = P.id_player \
+		AND P.player_name LIKE '%SCREENNAME%'",
+
+
+
+/************************** KYO ADDED ENDS ***********************************************/
 
 // TOURNAMENT STATISTICS
 /* PT3 TOURNAMENT query to get icon */

@@ -214,6 +214,16 @@ const double CPokerTrackerThread::ProcessQuery (const char * s)
 	else if (memcmp(s,"pt_fbbts",8)==0)				return GetStat(s[8]-'0', pt_fbbts);
 	else if (memcmp(s,"pt_fsbts",8)==0)				return GetStat(s[8]-'0', pt_fsbts);
 
+	else if (memcmp(s,"pt_cbetflop",11)==0)			return GetStat(s[11]-'0', pt_cbetflop);
+	else if (memcmp(s,"pt_f3bettot",11)==0)			return GetStat(s[11]-'0', pt_f3bettot);
+	else if (memcmp(s,"pt_f3betpflop",15)==0)		return GetStat(s[15]-'0', pt_f3betpflop);
+	else if (memcmp(s,"pt_f3betflop",12)==0)		return GetStat(s[12]-'0', pt_f3betflop);
+	else if (memcmp(s,"pt_f3betturn",12)==0)		return GetStat(s[12]-'0', pt_f3betturn);
+	else if (memcmp(s,"pt_f3betriver",13)==0)		return GetStat(s[13]-'0', pt_f3betriver);
+	else if (memcmp(s,"pt_fcbetflop",12)==0)		return GetStat(s[12]-'0', pt_fcbetflop);
+	else if (memcmp(s,"pt_fcbetturn",12)==0)		return GetStat(s[12]-'0', pt_fcbetturn);
+	else if (memcmp(s,"pt_fcbetriver",13)==0)		return GetStat(s[12]-'0', pt_fcbetriver);
+
 	else if (memcmp(s,"pt_ricon",8)==0)				return GetStat(sym_raischair, pt_icon);
 	else if (memcmp(s,"pt_rpfr",7)==0)				return GetStat(sym_raischair, pt_pfr);
 	else if (memcmp(s,"pt_raggtotnopf",14)==0)		return GetStat(sym_raischair, pt_aggtotnopf);
@@ -234,6 +244,16 @@ const double CPokerTrackerThread::ProcessQuery (const char * s)
 	else if (memcmp(s,"pt_rwssd",8)==0)				return GetStat(sym_raischair, pt_wssd);
 	else if (memcmp(s,"pt_rfbbts",9)==0)			return GetStat(sym_raischair, pt_fbbts);
 	else if (memcmp(s,"pt_rfsbts",9)==0)			return GetStat(sym_raischair, pt_fsbts);
+
+	else if (memcmp(s,"pt_rcbetflop",11)==0)		return GetStat(sym_raischair, pt_cbetflop);
+	else if (memcmp(s,"pt_rf3bettot",11)==0)		return GetStat(sym_raischair, pt_f3bettot);
+	else if (memcmp(s,"pt_rf3betpflop",15)==0)		return GetStat(sym_raischair, pt_f3betpflop);
+	else if (memcmp(s,"pt_rf3betflop",12)==0)		return GetStat(sym_raischair, pt_f3betflop);
+	else if (memcmp(s,"pt_rf3betturn",12)==0)		return GetStat(sym_raischair, pt_f3betturn);
+	else if (memcmp(s,"pt_rf3betriver",13)==0)		return GetStat(sym_raischair, pt_f3betriver);
+	else if (memcmp(s,"pt_rfcbetflop",12)==0)		return GetStat(sym_raischair, pt_fcbetflop);
+	else if (memcmp(s,"pt_rfcbetturn",12)==0)		return GetStat(sym_raischair, pt_fcbetturn);
+	else if (memcmp(s,"pt_rfcbetriver",13)==0)		return GetStat(sym_raischair, pt_fcbetriver);
 
 	else if (memcmp(s,"ptt_iconlastr",13)==0)		return GetStat(p_game_state->LastRaised(s[13]-'0'), ptt_icon);
 	else if (memcmp(s,"ptt_icon",8)==0)				return GetStat(s[8]-'0', ptt_icon);
