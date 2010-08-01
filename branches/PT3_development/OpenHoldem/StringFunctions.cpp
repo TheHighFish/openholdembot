@@ -1,13 +1,13 @@
 #include <stdafx.h>
 #include "StringFunctions.h"
 
-bool StringIsExactMatch(char *string_a, char *string_b)
+bool StringIsExactMatch(const char *string_a, const char *string_b)
 {
 	return ((strlen(string_a) == strlen(string_b))
 		&& StringAIsPrefixOfStringB(string_a, string_b));
 }
 
-bool StringAIsPrefixOfStringB(char *string_a, char *string_b)
+bool StringAIsPrefixOfStringB(const char *string_a, const char *string_b)
 {
 	if (strlen(string_a) > strlen(string_b))
 	{

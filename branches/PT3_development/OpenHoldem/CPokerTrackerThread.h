@@ -40,6 +40,7 @@ private:
 	double UpdateStat (const int m_chair, const int stat);
 	void ClearStats(void);
 	bool QueryName (const char * query_name, const char * scraped_name, char * best_name);
+	void WarnAboutInvalidPTSymbol(CString s);
 
 	CString			_conn_str;
 	bool			_connected;

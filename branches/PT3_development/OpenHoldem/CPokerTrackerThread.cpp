@@ -10,7 +10,9 @@
 #include "CLevDistance.h"
 #include "..\CTablemap\CTablemap.h"
 #include "MagicNumbers.h"
+#include "OH_MessageBox.h"
 #include "PokerTracker_Queries_Version_3.h"
+#include "StringFunctions.h"
 
 CPokerTrackerThread	*p_pokertracker_thread = NULL;
 CPokerTrackerLookup pt_lookup;
@@ -185,120 +187,175 @@ void CPokerTrackerThread::StopThread()
 	}
 }
 
+void CPokerTrackerThread::WarnAboutInvalidPTSymbol(CString s)
+{
+	CString error_message = "Error: Invalid PT-symbol: " + s;
+	OH_MessageBox(error_message, "Error", 0);
+}
+
 const double CPokerTrackerThread::ProcessQuery (const char * s)
 {
 	int		sym_raischair = (int) p_symbols->sym()->raischair;
 
 	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)  
-		return 0.0;
+		return -1.0;
 
-	if	    (memcmp(s,"pt_iconlastr",12)==0)		return GetStat(p_game_state->LastRaised(s[12]-'0'), pt_icon);
-	else if (memcmp(s,"pt_icon",7)==0)				return GetStat(s[7]-'0', pt_icon);
-	else if (memcmp(s,"pt_pfr",6)==0)				return GetStat(s[6]-'0', pt_pfr);
-	else if (memcmp(s,"pt_aggtotnopf",13)==0)		return GetStat(s[13]-'0', pt_aggtotnopf);
-	else if (memcmp(s,"pt_aggtot",9)==0)			return GetStat(s[9]-'0', pt_aggtot);
-	else if (memcmp(s,"pt_aggp",7)==0)				return GetStat(s[7]-'0', pt_aggp);
-	else if (memcmp(s,"pt_aggf",7)==0)				return GetStat(s[7]-'0', pt_aggf);
-	else if (memcmp(s,"pt_aggt",7)==0)				return GetStat(s[7]-'0', pt_aggt);
-	else if (memcmp(s,"pt_aggr",7)==0)				return GetStat(s[7]-'0', pt_aggr);
-	else if (memcmp(s,"pt_floppct",10)==0)			return GetStat(s[10]-'0', pt_floppct);
-	else if (memcmp(s,"pt_turnpct",10)==0)			return GetStat(s[10]-'0', pt_turnpct);
-	else if (memcmp(s,"pt_riverpct",11)==0)			return GetStat(s[11]-'0', pt_riverpct);
-	else if (memcmp(s,"pt_vpip",7)==0)				return GetStat(s[7]-'0', pt_vpip);
-	else if (memcmp(s,"pt_hands",8)==0)				return GetStat(s[8]-'0', pt_hands);
-	else if (memcmp(s,"pt_pf_rfi",9)==0)			return GetStat(s[9]-'0', pt_pf_rfi);
-	else if (memcmp(s,"pt_pf_cr",8)==0)				return GetStat(s[8]-'0', pt_pf_cr);
-	else if (memcmp(s,"pt_pfats",8)==0)				return GetStat(s[8]-'0', pt_pfats);
-	else if (memcmp(s,"pt_wsdp",7)==0)				return GetStat(s[7]-'0', pt_wsdp);
-	else if (memcmp(s,"pt_wssd",7)==0)				return GetStat(s[7]-'0', pt_wssd);
-	else if (memcmp(s,"pt_fbbts",8)==0)				return GetStat(s[8]-'0', pt_fbbts);
-	else if (memcmp(s,"pt_fsbts",8)==0)				return GetStat(s[8]-'0', pt_fsbts);
+	// ATTENTION!
+	//  
+	// Be very careful, if a string is a prefix of multiple symbols,
+	// e.g. "pt_vpip" is a prefix of both "pt_vpipX" and "pt_vpipsbX".
+	// Take care to handle those cases correctly!
 
-	else if (memcmp(s,"pt_cbetflop",11)==0)			return GetStat(s[11]-'0', pt_cbetflop);
-	else if (memcmp(s,"pt_f3bettot",11)==0)			return GetStat(s[11]-'0', pt_f3bettot);
-	else if (memcmp(s,"pt_f3betpflop",15)==0)		return GetStat(s[15]-'0', pt_f3betpflop);
-	else if (memcmp(s,"pt_f3betflop",12)==0)		return GetStat(s[12]-'0', pt_f3betflop);
-	else if (memcmp(s,"pt_f3betturn",12)==0)		return GetStat(s[12]-'0', pt_f3betturn);
-	else if (memcmp(s,"pt_f3betriver",13)==0)		return GetStat(s[13]-'0', pt_f3betriver);
-	else if (memcmp(s,"pt_fcbetflop",12)==0)		return GetStat(s[12]-'0', pt_fcbetflop);
-	else if (memcmp(s,"pt_fcbetturn",12)==0)		return GetStat(s[12]-'0', pt_fcbetturn);
-	else if (memcmp(s,"pt_fcbetriver",13)==0)		return GetStat(s[12]-'0', pt_fcbetriver);
+	// PokerTracker ring game symbols for the raise-chair
+	if (StringAIsPrefixOfStringB("pt_r", s)
+		&& !StringAIsPrefixOfStringB("pt_riverpct", s))
+	{
+		if		(StringIsExactMatch("pt_ricon", s))			return GetStat(sym_raischair, pt_icon);
+		else if (StringIsExactMatch("pt_rpfr", s))			return GetStat(sym_raischair, pt_pfr);
+		else if (StringIsExactMatch("pt_raggtotnopf", s))	return GetStat(sym_raischair, pt_aggtotnopf);
+		else if (StringIsExactMatch("pt_raggtot", s))		return GetStat(sym_raischair, pt_aggtot);
+		else if (StringIsExactMatch("pt_raggp", s))			return GetStat(sym_raischair, pt_aggp);
+		else if (StringIsExactMatch("pt_raggf", s))			return GetStat(sym_raischair, pt_aggf);
+		else if (StringIsExactMatch("pt_raggt", s))			return GetStat(sym_raischair, pt_aggt);
+		else if (StringIsExactMatch("pt_raggr", s))			return GetStat(sym_raischair, pt_aggr);
+		else if (StringIsExactMatch("pt_rfloppct", s))		return GetStat(sym_raischair, pt_floppct);
+		else if (StringIsExactMatch("pt_rturnpct", s))		return GetStat(sym_raischair, pt_turnpct);
+		else if (StringIsExactMatch("pt_rriverpct", s))		return GetStat(sym_raischair, pt_riverpct);
+		else if (StringIsExactMatch("pt_rvpip", s))			return GetStat(sym_raischair, pt_vpip);
+		else if (StringIsExactMatch("pt_rhands", s))		return GetStat(sym_raischair, pt_hands);
+		else if (StringIsExactMatch("pt_rpf_rfi", s))		return GetStat(sym_raischair, pt_pf_rfi);
+		else if (StringIsExactMatch("pt_rpf_cr", s))		return GetStat(sym_raischair, pt_pf_cr);
+		else if (StringIsExactMatch("pt_rpfats", s))		return GetStat(sym_raischair, pt_pfats);
+		else if (StringIsExactMatch("pt_rwsdp", s))			return GetStat(sym_raischair, pt_wsdp);
+		else if (StringIsExactMatch("pt_rwssd", s))			return GetStat(sym_raischair, pt_wssd);
+		else if (StringIsExactMatch("pt_rfbbts", s))		return GetStat(sym_raischair, pt_fbbts);
+		else if (StringIsExactMatch("pt_rfsbts", s))		return GetStat(sym_raischair, pt_fsbts);
 
-	else if (memcmp(s,"pt_ricon",8)==0)				return GetStat(sym_raischair, pt_icon);
-	else if (memcmp(s,"pt_rpfr",7)==0)				return GetStat(sym_raischair, pt_pfr);
-	else if (memcmp(s,"pt_raggtotnopf",14)==0)		return GetStat(sym_raischair, pt_aggtotnopf);
-	else if (memcmp(s,"pt_raggtot",10)==0)			return GetStat(sym_raischair, pt_aggtot);
-	else if (memcmp(s,"pt_raggp",8)==0)				return GetStat(sym_raischair, pt_aggp);
-	else if (memcmp(s,"pt_raggf",8)==0)				return GetStat(sym_raischair, pt_aggf);
-	else if (memcmp(s,"pt_raggt",8)==0)				return GetStat(sym_raischair, pt_aggt);
-	else if (memcmp(s,"pt_raggr",8)==0)				return GetStat(sym_raischair, pt_aggr);
-	else if (memcmp(s,"pt_rfloppct",11)==0)			return GetStat(sym_raischair, pt_floppct);
-	else if (memcmp(s,"pt_rturnpct",11)==0)			return GetStat(sym_raischair, pt_turnpct);
-	else if (memcmp(s,"pt_rriverpct",12)==0)		return GetStat(sym_raischair, pt_riverpct);
-	else if (memcmp(s,"pt_rvpip",8)==0)				return GetStat(sym_raischair, pt_vpip);
-	else if (memcmp(s,"pt_rhands",9)==0)			return GetStat(sym_raischair, pt_hands);
-	else if (memcmp(s,"pt_rpf_rfi",10)==0)			return GetStat(sym_raischair, pt_pf_rfi);
-	else if (memcmp(s,"pt_rpf_cr",9)==0)			return GetStat(sym_raischair, pt_pf_cr);
-	else if (memcmp(s,"pt_rpfats",9)==0)			return GetStat(sym_raischair, pt_pfats);
-	else if (memcmp(s,"pt_rwsdp",8)==0)				return GetStat(sym_raischair, pt_wsdp);
-	else if (memcmp(s,"pt_rwssd",8)==0)				return GetStat(sym_raischair, pt_wssd);
-	else if (memcmp(s,"pt_rfbbts",9)==0)			return GetStat(sym_raischair, pt_fbbts);
-	else if (memcmp(s,"pt_rfsbts",9)==0)			return GetStat(sym_raischair, pt_fsbts);
+		else if (StringIsExactMatch("pt_rcbetflop", s))		return GetStat(sym_raischair, pt_cbetflop);
+		else if (StringIsExactMatch("pt_rf3bettot", s))		return GetStat(sym_raischair, pt_f3bettot);
+		else if (StringIsExactMatch("pt_rf3betpflop", s))	return GetStat(sym_raischair, pt_f3betpflop);
+		else if (StringIsExactMatch("pt_rf3betflop", s))	return GetStat(sym_raischair, pt_f3betflop);
+		else if (StringIsExactMatch("pt_rf3betturn", s))	return GetStat(sym_raischair, pt_f3betturn);
+		else if (StringIsExactMatch("pt_rf3betriver", s))	return GetStat(sym_raischair, pt_f3betriver);
+		else if (StringIsExactMatch("pt_rfcbetflop", s))	return GetStat(sym_raischair, pt_fcbetflop);
+		else if (StringIsExactMatch("pt_rfcbetturn", s))	return GetStat(sym_raischair, pt_fcbetturn);
+		else if (StringIsExactMatch("pt_rfcbetriver",s))	return GetStat(sym_raischair, pt_fcbetriver);
+		else
+		{
+			// Invalid ring game symbol
+			WarnAboutInvalidPTSymbol(s);
+			return -1.0;
+		}
+	}
+	// PokerTracker ring game symbols for chair X
+	else if (StringAIsPrefixOfStringB("pt_", s))
+	{
+		if	    (StringAIsPrefixOfStringB("pt_iconlastr", s))		return GetStat(p_game_state->LastRaised(s[12]-'0'), pt_icon);
+		else if (StringAIsPrefixOfStringB("pt_icon", s))			return GetStat(s[7]-'0', pt_icon);
+		else if (StringAIsPrefixOfStringB("pt_pfr",s ))				return GetStat(s[6]-'0', pt_pfr);
+		else if (StringAIsPrefixOfStringB("pt_aggtotnopf", s))		return GetStat(s[13]-'0', pt_aggtotnopf);
+		else if (StringAIsPrefixOfStringB("pt_aggtot", s))			return GetStat(s[9]-'0', pt_aggtot);
+		else if (StringAIsPrefixOfStringB("pt_aggp", s))			return GetStat(s[7]-'0', pt_aggp);
+		else if (StringAIsPrefixOfStringB("pt_aggf", s))			return GetStat(s[7]-'0', pt_aggf);
+		else if (StringAIsPrefixOfStringB("pt_aggt", s))			return GetStat(s[7]-'0', pt_aggt);
+		else if (StringAIsPrefixOfStringB("pt_aggr", s))			return GetStat(s[7]-'0', pt_aggr);
+		else if (StringAIsPrefixOfStringB("pt_floppct", s))			return GetStat(s[10]-'0', pt_floppct);
+		else if (StringAIsPrefixOfStringB("pt_turnpct", s))			return GetStat(s[10]-'0', pt_turnpct);
+		else if (StringAIsPrefixOfStringB("pt_riverpct", s))		return GetStat(s[11]-'0', pt_riverpct);
+		else if (StringAIsPrefixOfStringB("pt_vpip", s))			return GetStat(s[7]-'0', pt_vpip);
+		else if (StringAIsPrefixOfStringB("pt_hands", s))			return GetStat(s[8]-'0', pt_hands);
+		else if (StringAIsPrefixOfStringB("pt_pf_rfi", s))			return GetStat(s[9]-'0', pt_pf_rfi);
+		else if (StringAIsPrefixOfStringB("pt_pf_cr", s))			return GetStat(s[8]-'0', pt_pf_cr);
+		else if (StringAIsPrefixOfStringB("pt_pfats", s))			return GetStat(s[8]-'0', pt_pfats);
+		else if (StringAIsPrefixOfStringB("pt_wsdp", s))			return GetStat(s[7]-'0', pt_wsdp);
+		else if (StringAIsPrefixOfStringB("pt_wssd",s))				return GetStat(s[7]-'0', pt_wssd);
+		else if (StringAIsPrefixOfStringB("pt_fbbts", s))			return GetStat(s[8]-'0', pt_fbbts);
+		else if (StringAIsPrefixOfStringB("pt_fsbts", s))			return GetStat(s[8]-'0', pt_fsbts);
 
-	else if (memcmp(s,"pt_rcbetflop",11)==0)		return GetStat(sym_raischair, pt_cbetflop);
-	else if (memcmp(s,"pt_rf3bettot",11)==0)		return GetStat(sym_raischair, pt_f3bettot);
-	else if (memcmp(s,"pt_rf3betpflop",15)==0)		return GetStat(sym_raischair, pt_f3betpflop);
-	else if (memcmp(s,"pt_rf3betflop",12)==0)		return GetStat(sym_raischair, pt_f3betflop);
-	else if (memcmp(s,"pt_rf3betturn",12)==0)		return GetStat(sym_raischair, pt_f3betturn);
-	else if (memcmp(s,"pt_rf3betriver",13)==0)		return GetStat(sym_raischair, pt_f3betriver);
-	else if (memcmp(s,"pt_rfcbetflop",12)==0)		return GetStat(sym_raischair, pt_fcbetflop);
-	else if (memcmp(s,"pt_rfcbetturn",12)==0)		return GetStat(sym_raischair, pt_fcbetturn);
-	else if (memcmp(s,"pt_rfcbetriver",13)==0)		return GetStat(sym_raischair, pt_fcbetriver);
-
-	else if (memcmp(s,"ptt_iconlastr",13)==0)		return GetStat(p_game_state->LastRaised(s[13]-'0'), ptt_icon);
-	else if (memcmp(s,"ptt_icon",8)==0)				return GetStat(s[8]-'0', ptt_icon);
-	else if (memcmp(s,"ptt_pfr",7)==0)				return GetStat(s[7]-'0', ptt_pfr);
-	else if (memcmp(s,"ptt_aggtotnopf",14)==0)		return GetStat(s[14]-'0', ptt_aggtotnopf);
-	else if (memcmp(s,"ptt_aggtot",10)==0)			return GetStat(s[10]-'0', ptt_aggtot);
-	else if (memcmp(s,"ptt_aggp",8)==0)				return GetStat(s[8]-'0', ptt_aggp);
-	else if (memcmp(s,"ptt_aggf",8)==0)				return GetStat(s[8]-'0', ptt_aggf);
-	else if (memcmp(s,"ptt_aggt",8)==0)				return GetStat(s[8]-'0', ptt_aggt);
-	else if (memcmp(s,"ptt_aggr",8)==0)				return GetStat(s[8]-'0', ptt_aggr);
-	else if (memcmp(s,"ptt_floppct",11)==0)			return GetStat(s[11]-'0', ptt_floppct);
-	else if (memcmp(s,"ptt_turnpct",11)==0)			return GetStat(s[11]-'0', ptt_turnpct);
-	else if (memcmp(s,"ptt_riverpct",12)==0)		return GetStat(s[12]-'0', ptt_riverpct);
-	else if (memcmp(s,"ptt_vpip",8)==0)				return GetStat(s[8]-'0', ptt_vpip);
-	else if (memcmp(s,"ptt_hands",9)==0)			return GetStat(s[9]-'0', ptt_hands);
-	else if (memcmp(s,"ptt_pf_rfi",10)==0)			return GetStat(s[10]-'0', ptt_pf_rfi);
-	else if (memcmp(s,"ptt_pf_cr",9)==0)			return GetStat(s[9]-'0', ptt_pf_cr);
-	else if (memcmp(s,"ptt_pfats",9)==0)			return GetStat(s[9]-'0', ptt_pfats);
-	else if (memcmp(s,"ptt_wsdp",8)==0)				return GetStat(s[8]-'0', ptt_wsdp);
-	else if (memcmp(s,"ptt_wssd",8)==0)				return GetStat(s[8]-'0', ptt_wssd);
-	else if (memcmp(s,"ptt_fbbts",9)==0)			return GetStat(s[9]-'0', ptt_fbbts);
-	else if (memcmp(s,"ptt_fsbts",9)==0)			return GetStat(s[9]-'0', ptt_fsbts);
-
-	else if (memcmp(s,"ptt_ricon",9)==0)			return GetStat(sym_raischair, ptt_icon);
-	else if (memcmp(s,"ptt_rpfr",8)==0)				return GetStat(sym_raischair, ptt_pfr);
-	else if (memcmp(s,"ptt_raggtotnopf",15)==0)		return GetStat(sym_raischair, ptt_aggtotnopf);
-	else if (memcmp(s,"ptt_raggtot",11)==0)			return GetStat(sym_raischair, ptt_aggtot);
-	else if (memcmp(s,"ptt_raggp",9)==0)			return GetStat(sym_raischair, ptt_aggp);
-	else if (memcmp(s,"ptt_raggf",9)==0)			return GetStat(sym_raischair, ptt_aggf);
-	else if (memcmp(s,"ptt_raggt",9)==0)			return GetStat(sym_raischair, ptt_aggt);
-	else if (memcmp(s,"ptt_raggr",9)==0)			return GetStat(sym_raischair, ptt_aggr);
-	else if (memcmp(s,"ptt_rfloppct",12)==0)		return GetStat(sym_raischair, ptt_floppct);
-	else if (memcmp(s,"ptt_rturnpct",12)==0)		return GetStat(sym_raischair, ptt_turnpct);
-	else if (memcmp(s,"ptt_rriverpct",13)==0)		return GetStat(sym_raischair, ptt_riverpct);
-	else if (memcmp(s,"ptt_rvpip",9)==0)			return GetStat(sym_raischair, ptt_vpip);
-	else if (memcmp(s,"ptt_rhands",10)==0)			return GetStat(sym_raischair, ptt_hands);
-	else if (memcmp(s,"ptt_rpf_rfi",11)==0)			return GetStat(sym_raischair, ptt_pf_rfi);
-	else if (memcmp(s,"ptt_rpf_cr",10)==0)			return GetStat(sym_raischair, ptt_pf_cr);
-	else if (memcmp(s,"ptt_rpfats",10)==0)			return GetStat(sym_raischair, ptt_pfats);
-	else if (memcmp(s,"ptt_rwsdp",8)==0)			return GetStat(sym_raischair, ptt_wsdp);
-	else if (memcmp(s,"ptt_rwssd",8)==0)			return GetStat(sym_raischair, ptt_wssd);
-	else if (memcmp(s,"ptt_rfbbts",9)==0)			return GetStat(sym_raischair, ptt_fbbts);
-	else if (memcmp(s,"ptt_rfsbts",9)==0)			return GetStat(sym_raischair, ptt_fsbts);
-
-	else return 0.0;
+		else if (StringAIsPrefixOfStringB("pt_cbetflop", s))		return GetStat(s[11]-'0', pt_cbetflop);
+		else if (StringAIsPrefixOfStringB("pt_f3bettot", s))		return GetStat(s[11]-'0', pt_f3bettot);
+		else if (StringAIsPrefixOfStringB("pt_f3betpflop", s))		return GetStat(s[15]-'0', pt_f3betpflop);
+		else if (StringAIsPrefixOfStringB("pt_f3betflop", s))		return GetStat(s[12]-'0', pt_f3betflop);
+		else if (StringAIsPrefixOfStringB("pt_f3betturn", s))		return GetStat(s[12]-'0', pt_f3betturn);
+		else if (StringAIsPrefixOfStringB("pt_f3betriver", s))		return GetStat(s[13]-'0', pt_f3betriver);
+		else if (StringAIsPrefixOfStringB("pt_fcbetflop", s))		return GetStat(s[12]-'0', pt_fcbetflop);
+		else if (StringAIsPrefixOfStringB("pt_fcbetturn", s))		return GetStat(s[12]-'0', pt_fcbetturn);
+		else if (StringAIsPrefixOfStringB("pt_fcbetriver", s))		return GetStat(s[12]-'0', pt_fcbetriver);
+		else
+		{
+			// Invalid ring game symbol
+			WarnAboutInvalidPTSymbol(s);
+			return -1.0;
+		}
+	}
+	// Poker Tracker tournament symbols for raise-chair
+	else if (StringAIsPrefixOfStringB("ptt_r", s)
+		&& !StringAIsPrefixOfStringB("ptt_riverpct", s))
+	{
+		if		(StringIsExactMatch("ptt_ricon", s))		return GetStat(sym_raischair, ptt_icon);
+		else if (StringIsExactMatch("ptt_rpfr", s))			return GetStat(sym_raischair, ptt_pfr);
+		else if (StringIsExactMatch("ptt_raggtotnopf", s))	return GetStat(sym_raischair, ptt_aggtotnopf);
+		else if (StringIsExactMatch("ptt_raggtot", s))		return GetStat(sym_raischair, ptt_aggtot);
+		else if (StringIsExactMatch("ptt_raggp", s))		return GetStat(sym_raischair, ptt_aggp);
+		else if (StringIsExactMatch("ptt_raggf", s))		return GetStat(sym_raischair, ptt_aggf);
+		else if (StringIsExactMatch("ptt_raggt", s))		return GetStat(sym_raischair, ptt_aggt);
+		else if (StringIsExactMatch("ptt_raggr", s))		return GetStat(sym_raischair, ptt_aggr);
+		else if (StringIsExactMatch("ptt_rfloppct", s))		return GetStat(sym_raischair, ptt_floppct);
+		else if (StringIsExactMatch("ptt_rturnpct", s))		return GetStat(sym_raischair, ptt_turnpct);
+		else if (StringIsExactMatch("ptt_rriverpct", s))	return GetStat(sym_raischair, ptt_riverpct);
+		else if (StringIsExactMatch("ptt_rvpip", s))		return GetStat(sym_raischair, ptt_vpip);
+		else if (StringIsExactMatch("ptt_rhands", s))		return GetStat(sym_raischair, ptt_hands);
+		else if (StringIsExactMatch("ptt_rpf_rfi", s))		return GetStat(sym_raischair, ptt_pf_rfi);
+		else if (StringIsExactMatch("ptt_rpf_cr", s))		return GetStat(sym_raischair, ptt_pf_cr);
+		else if (StringIsExactMatch("ptt_rpfats", s))		return GetStat(sym_raischair, ptt_pfats);
+		else if (StringIsExactMatch("ptt_rwsdp", s))		return GetStat(sym_raischair, ptt_wsdp);
+		else if (StringIsExactMatch("ptt_rwssd", s))		return GetStat(sym_raischair, ptt_wssd);
+		else if (StringIsExactMatch("ptt_rfbbts", s))		return GetStat(sym_raischair, ptt_fbbts);
+		else if (StringIsExactMatch("ptt_rfsbts", s))		return GetStat(sym_raischair, ptt_fsbts);
+		else
+		{
+			// Invalid tournament symbol
+			WarnAboutInvalidPTSymbol(s);
+			return -1.0;
+		}
+	}
+	// Poker Tracker tournament symbols for chair x
+	else if (StringIsExactMatch("ptt_", s))
+	{
+		if		(StringAIsPrefixOfStringB("ptt_iconlastr", s))		return GetStat(p_game_state->LastRaised(s[13]-'0'), ptt_icon);
+		else if (StringAIsPrefixOfStringB("ptt_icon", s))			return GetStat(s[8]-'0', ptt_icon);
+		else if (StringAIsPrefixOfStringB("ptt_pfr", s))			return GetStat(s[7]-'0', ptt_pfr);
+		else if (StringAIsPrefixOfStringB("ptt_aggtotnopf", s))		return GetStat(s[14]-'0', ptt_aggtotnopf);
+		else if (StringAIsPrefixOfStringB("ptt_aggtot", s))			return GetStat(s[10]-'0', ptt_aggtot);
+		else if (StringAIsPrefixOfStringB("ptt_aggp", s))			return GetStat(s[8]-'0', ptt_aggp);
+		else if (StringAIsPrefixOfStringB("ptt_aggf", s))			return GetStat(s[8]-'0', ptt_aggf);
+		else if (StringAIsPrefixOfStringB("ptt_aggt", s))			return GetStat(s[8]-'0', ptt_aggt);
+		else if (StringAIsPrefixOfStringB("ptt_aggr", s))			return GetStat(s[8]-'0', ptt_aggr);
+		else if (StringAIsPrefixOfStringB("ptt_floppct", s))		return GetStat(s[11]-'0', ptt_floppct);
+		else if (StringAIsPrefixOfStringB("ptt_turnpct", s))		return GetStat(s[11]-'0', ptt_turnpct);
+		else if (StringAIsPrefixOfStringB("ptt_riverpct", s))		return GetStat(s[12]-'0', ptt_riverpct);
+		else if (StringAIsPrefixOfStringB("ptt_vpip", s))			return GetStat(s[8]-'0', ptt_vpip);
+		else if (StringAIsPrefixOfStringB("ptt_hands", s))			return GetStat(s[9]-'0', ptt_hands);
+		else if (StringAIsPrefixOfStringB("ptt_pf_rfi", s))			return GetStat(s[10]-'0', ptt_pf_rfi);
+		else if (StringAIsPrefixOfStringB("ptt_pf_cr", s))			return GetStat(s[9]-'0', ptt_pf_cr);
+		else if (StringAIsPrefixOfStringB("ptt_pfats", s))			return GetStat(s[9]-'0', ptt_pfats);
+		else if (StringAIsPrefixOfStringB("ptt_wsdp", s))			return GetStat(s[8]-'0', ptt_wsdp);
+		else if (StringAIsPrefixOfStringB("ptt_wssd", s))			return GetStat(s[8]-'0', ptt_wssd);
+		else if (StringAIsPrefixOfStringB("ptt_fbbts", s))			return GetStat(s[9]-'0', ptt_fbbts);
+		else if (StringAIsPrefixOfStringB("ptt_fsbts", s))			return GetStat(s[9]-'0', ptt_fsbts);
+		else
+		{
+			// Invalid tournament symbol
+			WarnAboutInvalidPTSymbol(s);
+			return -1.0;
+		}
+	}
+	else
+	{
+		// Completely invalid symbol
+		WarnAboutInvalidPTSymbol(s);
+		return -1.0;
+	}
 }
 
 void CPokerTrackerThread::Connect(void)
@@ -362,7 +419,7 @@ bool CPokerTrackerThread::CheckName (int m_chr)
 		return false;
 
 	// We already have the name, and it has not changed since we last checked, so do nothing
-	//if (_player_stats[m_chr].found && strcmp(_player_stats[m_chr].scraped_name, oh_scraped_name)==0)
+	//if (_player_stats[m_chr].found && strcmp(_player_stats[m_chr].scraped_name, oh_scraped_name))
 	//	return true;
 
 	// We think we have the name, but it has changed since we last checked...reset stats for this
@@ -587,7 +644,7 @@ bool CPokerTrackerThread::QueryName (const char * query_name, const char * scrap
 	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)
 		return false;
 
-	if (strlen(query_name)==0)
+	if (strlen(query_name))
 		return false;
 
 	sprintf_s(siteidstr, k_max_length_of_site_id, "%d", siteid);
