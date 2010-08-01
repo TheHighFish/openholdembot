@@ -197,8 +197,12 @@ const double CPokerTrackerThread::ProcessQuery (const char * s)
 {
 	int		sym_raischair = (int) p_symbols->sym()->raischair;
 
-	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)  
+	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)
+	{
+		OH_MessageBox("Not connected to PokerTracker database.\n"
+			"Can't use PokerTracker symbols.", "Error", 0);
 		return -1.0;
+	}
 
 	// ATTENTION!
 	//  
