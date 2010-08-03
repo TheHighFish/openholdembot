@@ -171,12 +171,20 @@
 			</OBJECT>
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="How to create a Table Map">
-				<param name="Local" value="Chapters\scraping_in_practice\HowToCreateATablemap.html.LyXconv\HowToCreateATablemap.html">
+				<param name="Name" value="Getting started">
+				<param name="Local" value="Chapters\scraping_in_practice\getting_started.html.LyXconv\getting_started.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Font Collecting Example">
+				<param name="Name" value="Hashing Images">
+				<param name="Local" value="Chapters\scraping_in_practice\hashing_images.html.LyXconv\hashing_images.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Collecting Fonts">
 				<param name="Local" value="Chapters\scraping_in_practice\FontCollectingExample.html.LyXconv\FontCollectingExample.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="How to create a Table Map">
+				<param name="Local" value="Chapters\scraping_in_practice\HowToCreateATablemap.html.LyXconv\HowToCreateATablemap.html">
 				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
@@ -462,6 +470,31 @@
 			<param name="Local" value="Chapters\dll\dll_title.html.LyXconv\dll_title.html">
 			</OBJECT>
 		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="DLL-Tutorial">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Compiling the first DLL">
+					<param name="Local" value="Chapters\dll_tutorial\part_a_compiling_the_first_dll.html.LyXconv\part_a_compiling_the_first_dll.html">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Basic Overview over the DLL Structure and Examples">
+					<param name="Local" value="Chapters\dll_tutorial\part_b_basic_overview.html.LyXconv\part_b_basic_overview.html">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Setting up the *.ohf File for DLL Use">
+					<param name="Local" value="Chapters\dll_tutorial\part_c_setting_up_ohf_for_dll.html.LyXconv\part_c_setting_up_ohf_for_dll.html">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="A basic Preflop Bot for Deepstack No Limit HoldEm">
+					<param name="Local" value="Chapters\dll_tutorial\part_d_a_basic_preflop_bot.html.LyXconv\part_d_a_basic_preflop_bot.html">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Using prw1326">
+					<param name="Local" value="Chapters\dll_tutorial\part_e_using_prw1326.html.LyXconv\part_e_using_prw1326.html">
+					</OBJECT>
+			</UL>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="User-DLL">
 				<param name="Local" value="Chapters\dll\dll.html.LyXconv\dll.html">
