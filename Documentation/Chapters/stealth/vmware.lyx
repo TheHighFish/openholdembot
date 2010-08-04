@@ -139,7 +139,8 @@ http://www.vmware.com
 \end_layout
 
 \begin_layout Standard
-You will also need a Windows installation disk.
+You will also need a Windows installation disk or an ISO-image of e.g.
+ TinyXP.
  I am using a Windows XP Professional installation DVD, which I'm going
  to install as my "virtual" operating system.
  
@@ -196,7 +197,8 @@ Click the "New Virtual Machine" icon and a window will appear.
  Now choose which operating system you want to install on your virtual computer.
  Here, I selected the "Microsoft Windows" option, and the version I selected
  was "Windows XP, Professional".
- 
+ if you want to install from a CD-image and not from a real CD then just
+ point VMware to the location of the ISO-image.
 \end_layout
 
 \begin_layout Standard
@@ -237,12 +239,18 @@ The next window asks you to decide how big the virtual computer's virtual
  hard drive is going to be.
  The suggested 8GB is quite enough for the purposes of playing poker.
  Click "Finish" when you are ready.
- 
+ Some operating-systems like Windows 2000 or TinyXP will be satisfied with
+ a bit less disk space, but don't forget that you also need space for casino-sof
+tware, hand-histories and maybe PokerTracker.
+ Better safe than sorry.
 \end_layout
 
 \begin_layout Standard
-VMware will spend quite a few minutes creating the virtual computer.
- 
+VMware will thereafter spend quite a few minutes creating the virtual computer.
+ Wait until the installation is complete.
+ You should be looking at a brand-new installation of Windows XP.
+ If you can run Solitaire (click "Start - All Programs - Games - Solitaire")
+ then you are ready to move on to the next step.
 \end_layout
 
 \begin_layout Subsection
@@ -497,32 +505,38 @@ On your real computer, find the new window again and type "ping x.x.x.x", then
  
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
+
 Pinging 192.168.1.7 with 32 bytes of data: 
 \end_layout
 
 \begin_layout Plain Layout
+
 Reply from 192.168.1.7: bytes=32 time<1ms TTL=128
 \end_layout
 
 \begin_layout Plain Layout
+
 Reply from 192.168.1.7: bytes=32 time<1ms TTL=128 
 \end_layout
 
 \begin_layout Plain Layout
+
 Reply from 192.168.1.7: bytes=32 time<1ms TTL=128 
 \end_layout
 
 \begin_layout Plain Layout
+
 Reply from 192.168.1.7: bytes=32 time<1ms TTL=128 
 \end_layout
 
 \begin_layout Plain Layout
+
 Ping statistics for 192.168.1.7: (and so on) 
 \end_layout
 
@@ -542,36 +556,42 @@ If the network isn't set up properly, you will see something like this...
  
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
+
 Pinging 192.168.1.7 with 32 bytes of data: 
 \end_layout
 
 \begin_layout Plain Layout
+
 Request timed out.
  
 \end_layout
 
 \begin_layout Plain Layout
+
 Request timed out.
  
 \end_layout
 
 \begin_layout Plain Layout
+
 Request timed out.
  
 \end_layout
 
 \begin_layout Plain Layout
+
 Request timed out.
  
 \end_layout
 
 \begin_layout Plain Layout
+
 Ping statistics for 192.168.1.7: (and so on) 
 \end_layout
 
@@ -961,7 +981,18 @@ Now you need to install some software that will allow OpenHoldem (on the
 On the virtual computer, log in as the stealth user.
  Now go to the official WinHoldem site (See {Bring}) and download "bring.exe"
  (from the "stealth" page).
- Download it directly into the Ninja folder.
+ Download it directly into the Ninja folder: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.winholdem.net/bring/
+\end_layout
+
+\end_inset
+
+.
  
 \end_layout
 
@@ -1142,24 +1173,28 @@ eeee is the "port" number.
 Here are the changes I made to my bring.ini file: 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
+
 # remotehost port password
 \end_layout
 
 \begin_layout Plain Layout
+
 -------------------------------- 
 \end_layout
 
 \begin_layout Plain Layout
+
 a 192.168.1.7 80 secret 
 \end_layout
 
 \begin_layout Plain Layout
+
 -------------------------------- 
 \end_layout
 
@@ -1219,6 +1254,7 @@ inline false
 status open
 
 \begin_layout Plain Layout
+
 bring -s 80 secret 
 \end_layout
 
@@ -1259,6 +1295,7 @@ inline false
 status open
 
 \begin_layout Plain Layout
+
 a 192.168.1.7 80 secret 
 \end_layout
 
@@ -1403,6 +1440,7 @@ inline false
 status open
 
 \begin_layout Plain Layout
+
 bring -s 80 secret 
 \end_layout
 
@@ -1455,6 +1493,7 @@ We're going to make one more security check using the program Gaze.
 status collapsed
 
 \begin_layout Plain Layout
+
 http://forum.winholdem.net/wbb/viewtopic.php?t=1114
 \end_layout
 
@@ -1489,24 +1528,28 @@ The results of the test have been saved to a file on the desktop called
  
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
+
 Sat Jun 23 17:40:42 2007 
 \end_layout
 
 \begin_layout Plain Layout
+
 == 
 \end_layout
 
 \begin_layout Plain Layout
+
 PROCESSES 
 \end_layout
 
 \begin_layout Plain Layout
+
 == 
 \end_layout
 
@@ -1515,31 +1558,37 @@ PROCESSES
 \end_layout
 
 \begin_layout Plain Layout
+
 == 
 \end_layout
 
 \begin_layout Plain Layout
+
 PROCESS NAME: [System Process] 
 \end_layout
 
 \begin_layout Plain Layout
--- WARNING: OpenProcess failed with error 87 (The parameter is incorrect
-)
+
+-- WARNING: OpenProcess failed with error 87 (The parameter is incorrect)
 \end_layout
 
 \begin_layout Plain Layout
+
 process ID = 0x00000000 
 \end_layout
 
 \begin_layout Plain Layout
+
 thread count = 1 parent 
 \end_layout
 
 \begin_layout Plain Layout
+
 process ID = 0x00000000 
 \end_layout
 
 \begin_layout Plain Layout
+
 Priority Base = 0 
 \end_layout
 
@@ -1555,53 +1604,64 @@ You want to read the report on “bring.exe" (however you renamed it).
  
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
+
 == 
 \end_layout
 
 \begin_layout Plain Layout
+
 PROCESS NAME: bring.exe 
 \end_layout
 
 \begin_layout Plain Layout
+
 -- WARNING: OpenProcess failed with error 5 (Access is denied) 
 \end_layout
 
 \begin_layout Plain Layout
+
 process ID = 0x00000EE8 
 \end_layout
 
 \begin_layout Plain Layout
+
 thread count = 1 
 \end_layout
 
 \begin_layout Plain Layout
+
 parent process ID = 0x00000EDC 
 \end_layout
 
 \begin_layout Plain Layout
+
 Priority Base = 8 
 \end_layout
 
 \begin_layout Plain Layout
+
 WARNING: CreateToolhelp32Snapshot (of modules) failed with error 5 (Access
  is denied) 
 \end_layout
 
 \begin_layout Plain Layout
+
 THREAD ID = 0x00000EEC
 \end_layout
 
 \begin_layout Plain Layout
+
 base priority = 8 
 \end_layout
 
 \begin_layout Plain Layout
+
 delta priority = 0 
 \end_layout
 
