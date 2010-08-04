@@ -483,7 +483,7 @@ Bring delay
 
 \end_inset
 
-bring-delay should be equal or even smaller than the 
+bring-delay should be somewhat smaller than the 
 \begin_inset Index
 status open
 
@@ -508,6 +508,14 @@ Heartbeat-cycle
 
 heart-beat-cycle starts, OH will scrape the exact same game-state another
  time and act another time.
+ 
+\end_layout
+
+\begin_layout Remark
+This problem has been improved by marking frames as unstable when OpenHoldem
+ acts, so OpenHoldem has to wait for a certain number of stable frames again.
+ However the problem may still appear, if your scraper- and bring-delay
+ do mismatch or if you don't wait for stable frames.
 \end_layout
 
 \begin_layout Section
@@ -545,7 +553,7 @@ So always remember: Bots are very stupid and very volatile beings.
 \end_layout
 
 \begin_layout Section
-OpenScrape does recognize something, but OH does not
+OpenScrape does recognize something, but OH does not (I)
 \end_layout
 
 \begin_layout Standard
@@ -581,6 +589,26 @@ first
  To be able to auto-connect, OpenHoldem has to load all tablemaps once on
  startup and keep some parts in memory, so you should restart OpenHoldem
  when you change your maps.
+\end_layout
+
+\begin_layout Section
+OpenScrape does recognize something, but OH does not (II)
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Reason: Halfmade tablemap
+\end_layout
+
+\begin_layout Standard
+Scraping is the most time-consuming part of the heartbeat-cycle, so OpenHoldem
+ does implement some reasonable optimizations.
+ It will only scrape names, bets and balances of a certain chair, if that
+ chair is occupied.
+ If OpenScrape and your tablemap are able to scrape those regions but OpenHoldem
+ doesn't do so, then you have most probably forgotten to define pxseated
+ or uxseated.
 \end_layout
 
 \begin_layout Section
@@ -979,7 +1007,7 @@ This way mis-scrapes will not be able to defeat your fine strategy.
  of trash.
  The same problem might occur in all functions that might act on unstable
  frames (when it is not your turn), especially f$prefold, f$sitin, f$sitout,
- f$leave (formerly f$play), f$rebuy and f$chat.
+ f$leave, f$rebuy and f$chat.
 \end_layout
 
 \end_body
