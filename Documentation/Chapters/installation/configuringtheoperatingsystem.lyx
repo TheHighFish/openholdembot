@@ -54,7 +54,14 @@ Configuring the operating system
 \begin_layout Standard
 OpenHoldem requires specific system settings in order to correctly intuit
  the game state from the pixels on-screen, and to correctly take poker actions.
- 
+ They have to be configured the right way before you can start working at
+ your bot.
+ Newer versions of OpenHoldem help you with this task; they execute automatical
+ configuration checks and diagnose incorrect settings.
+ However: you shouldn't rely completely on these configuration checks.
+ Better get things right in advance.
+ And be extra careful, if you use a two-computer-stealth-setup: then it
+ is a must to setup both PCs in absolutely the same way.
 \end_layout
 
 \begin_layout Subsection
@@ -225,9 +232,14 @@ how to display special characters
 what to use as the decimal separator: dot or comma.
 \end_layout
 
+\begin_layout Itemize
+the language used by your poker-client
+\end_layout
+
 \begin_layout Standard
-This may seem to be nearly irrelevant, but can affect the scraper engine
- and the autoplayer severly, even up to complete failure.
+Language settings may seem to be nearly irrelevant if you are a newbie,
+ but incorrect settings can affect the scraper engine and the autoplayer
+ severly, even up to complete failure.
  The only settings, that are guaranteed to work are english ones.
  Others may or may not be compatible.
  If you are new to botting be smart and stay on the safe side; there have

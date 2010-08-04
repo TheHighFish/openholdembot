@@ -115,11 +115,36 @@ http://www.maxinmontreal.com/wiki/index.php5?title=Table_Maps
 d and how they work.
  The forums have a lot of discussion on maps, and you can likely find maps
  attached to posts; same caveats apply as to the Wiki maps.
- You can try exchanging maps with other community members --- be cautious
- with this, however, and make sure you protect your interests; the OpenHoldem
- development team cannot be held accountable if you do something foolish
- on your own.
- Caveat emptor.
+ 
+\end_layout
+
+\begin_layout Standard
+Most probably you will experience some problems if you fix or create your
+ first map.
+ Feel welcome to ask for assistance in the forums.
+ There are always some friendly people who are willing to help.
+ But please
+\end_layout
+
+\begin_layout Itemize
+explain as good as possible what you problem is.
+\end_layout
+
+\begin_layout Itemize
+provide some screenshots for further explanations.
+\end_layout
+
+\begin_layout Itemize
+provide the table map, so that we can see what is wrong or what needs to
+ be done.
+\end_layout
+
+\begin_layout Itemize
+provide some replay-frames for critical situations.
+\end_layout
+
+\begin_layout Standard
+Helping can be so tough if you have to ask all day for missing information.
 \end_layout
 
 \end_body
