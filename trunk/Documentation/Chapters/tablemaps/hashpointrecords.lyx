@@ -1,4 +1,4 @@
-#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -6,6 +6,8 @@
 \use_default_options true
 \begin_modules
 theorems-ams
+eqs-within-sections
+figs-within-sections
 \end_modules
 \language english
 \inputencoding auto
@@ -96,7 +98,7 @@ There are two ways to create new Hash Point records:
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_CreateHashPoint.bmp
+	filename images/OS_NewHashPoint.png
 
 \end_inset
 
@@ -114,7 +116,7 @@ There are two ways to create new Hash Point records:
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_NewHashPoint.bmp
+	filename images/OS_NewHashPointWithImage.png
 
 \end_inset
 
@@ -138,7 +140,7 @@ After selecting an Image record in the “Sample Image” control (note you
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_NewHashPointWithImage.bmp
+	filename images/OS_NewHashPointConfirmation.png
 
 \end_inset
 

@@ -78,7 +78,7 @@ Main: Menu Options
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename ../../Images/OpenScrape/OS_FileMenu.bmp
+	filename images/OS_FileMenu.png
 
 \end_inset
 
@@ -92,7 +92,7 @@ Main: Menu Options
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename ../../Images/OpenScrape/OS_EditMenu.bmp
+	filename images/OS_EditMenu.png
 
 \end_inset
 
@@ -106,7 +106,7 @@ Main: Menu Options
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename ../../Images/OpenScrape/OS_ViewMenu.bmp
+	filename images/OS_ViewMenu.png
 
 \end_inset
 
@@ -192,7 +192,7 @@ Main: Toolbar
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename ../../Images/OpenScrape/OS_MainTollbar.bmp
+	filename images/OS_MainTollbar.png
 
 \end_inset
 
@@ -265,7 +265,7 @@ Table Map: Buttons/fields The Table Map Editor window has a plethora of
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename ../../Images/OpenScrape/OS_TmEditorWindow.bmp
+	filename images/OS_TmEditorWindow.png
 
 \end_inset
 
