@@ -81,7 +81,7 @@ mpb” directory that you set up above.
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename ../../Images/OpenScrape/OS_ArrangedWindows.bmp
+	filename images/OS_ArrangedWindows.png
 
 \end_inset
 
@@ -102,7 +102,7 @@ Connect OpenScrape to the casino table by clicking on the Green Circle Button
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename ../../Images/OpenScrape/OS_WindowSelection.bmp
+	filename images/OS_WindowSelection.png
 
 \end_inset
 
@@ -127,7 +127,7 @@ A static image of the poker table window will be displayed in OpenScrape’s
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename ../../Images/OpenScrape/OS_Connected.bmp
+	filename images/OS_Connected.png
 
 \end_inset
 

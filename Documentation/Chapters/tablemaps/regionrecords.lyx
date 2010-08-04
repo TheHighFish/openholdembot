@@ -1,4 +1,4 @@
-#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -6,6 +6,8 @@
 \use_default_options true
 \begin_modules
 theorems-ams
+eqs-within-sections
+figs-within-sections
 \end_modules
 \language english
 \inputencoding auto
@@ -120,7 +122,7 @@ The majority of the right side of the Table Map Editor window is used to
 \end_layout
 
 \begin_layout Standard
-Figure 4.5-11 OpenScrape Rectangle Group Box
+Figure 4.5-11 OpenScrape Rectangle Group Box !!!
 \end_layout
 
 \begin_layout Standard
@@ -141,7 +143,7 @@ To use the rectangle drawing tool, click once on this control:
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_RectangleDrawTool.bmp
+	filename images/OS_RectangleDrawTool.png
 
 \end_inset
 
@@ -169,7 +171,7 @@ A zoomed view of the region is displayed in the box at the bottom right
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_NudgeGroupBox.bmp
+	filename images/OS_NudgeGroupBox.png
 
 \end_inset
 
@@ -221,7 +223,7 @@ Control + Shift + Arrow keys – Resize the region by 5 pixels
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_RegionRecordParameters.bmp
+	filename images/OS_RegionRecordParameters.png
 
 \end_inset
 
@@ -253,7 +255,7 @@ As a helpful reference, the “Avg Color” fields are populated with the calcul
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_TransformResultPreview.bmp
+	filename images/OS_TransformResultPreview.png
 
 \end_inset
 
@@ -274,7 +276,7 @@ This field provides an instant preview of the results of combining the current
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_PixelSeparationDisplay.bmp
+	filename images/OS_PixelSeparationDisplay.png
 
 \end_inset
 

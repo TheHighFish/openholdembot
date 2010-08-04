@@ -1,4 +1,4 @@
-#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -6,6 +6,8 @@
 \use_default_options true
 \begin_modules
 theorems-ams
+eqs-within-sections
+figs-within-sections
 \end_modules
 \language english
 \inputencoding auto
@@ -77,11 +79,19 @@ Manipulating hash records using OpenScrape
 Hash Records are created from specific Image records, so in order to create
  a Hash record, you must first have collected the associated Image record
  (see section {4.9}).
- 
 \end_layout
 
 \begin_layout Standard
-Figure 4.8-23 OpenScrape Create Hash Record buttons
+\begin_inset Graphics
+	filename images/OS_CreateHashPointRecord.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+OpenScrape Create Hash Record buttons!!!
 \end_layout
 
 \begin_layout Standard

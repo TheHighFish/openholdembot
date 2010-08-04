@@ -73,7 +73,7 @@ Manipulating font records using OpenScrape
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_CreateFont.bmp
+	filename images/OS_CreateFont.png
 
 \end_inset
 
@@ -122,7 +122,7 @@ Assuming that some of the pixels in the selected region represent unknown
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/OpenScrape/OS_AddFontRecord.bmp
+	filename images/OS_AddFontRecord.png
 
 \end_inset
 
