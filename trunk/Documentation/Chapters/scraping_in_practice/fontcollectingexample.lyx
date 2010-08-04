@@ -1,4 +1,4 @@
-#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -6,6 +6,8 @@
 \use_default_options true
 \begin_modules
 theorems-ams
+eqs-within-sections
+figs-within-sections
 \end_modules
 \language english
 \inputencoding auto
@@ -55,7 +57,7 @@ Font
 
 \end_inset
 
-Font collection example 
+Collection fonts
 \end_layout
 
 \begin_layout Standard
@@ -80,20 +82,30 @@ We start with nothing except a table that we need to extract fonts from,
 \end_layout
 
 \begin_layout Standard
-Figure 9.4-67 Font collection example - notepad
+\begin_inset Graphics
+	filename images_font_collection/Text1.jpg
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
 Next we fire up OpenScrape, and attach it to our "Table".
  Then we build a region around the area we are working on.
- "New" / "Region" / name it characters / Use the coordinate editor to enclose
- the Region.
+ Click "New" -> "Region" and name it characters.
+ Use the coordinate editor to enclose the Region.
  You can also "shift-drag" the rectangle around to place it.
  
 \end_layout
 
 \begin_layout Standard
-Figure 9.4-68 Font collection example - region
+\begin_inset Graphics
+	filename images_font_collection/Text2.jpg
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -117,7 +129,12 @@ If you hit the problem of openscrape seeing two letters as one because they
 \end_layout
 
 \begin_layout Standard
-Figure 9.4-69 Font collection example - add characters
+\begin_inset Graphics
+	filename images_font_collection/Text3.jpg
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -127,23 +144,38 @@ Here is the result after collecting only "A", you can see this by clicking
 \end_layout
 
 \begin_layout Standard
-Figure 9.4-70 Font collection example – “A” collected
+\begin_inset Graphics
+	filename images_font_collection/Text4.jpg
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-Note "A,B,C" are already present in the Table Map.
+"A,B,C" are already present in the Table Map.
 \end_layout
 
 \begin_layout Standard
-Figure 9.4-71 Font collection example - "ABC" collected
+\begin_inset Graphics
+	filename images_font_collection/Text5.jpg
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-So on we go collecting fonts, here we collect "D" .
+So on we go collecting fonts, here we collect "D".
 \end_layout
 
 \begin_layout Standard
-Figure 9.4-72 Font collection example - collecting "D"
+\begin_inset Graphics
+	filename images_font_collection/Text6.jpg
+
+\end_inset
+
+
 \end_layout
 
 \end_body
