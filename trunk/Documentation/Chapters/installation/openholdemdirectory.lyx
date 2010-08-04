@@ -56,8 +56,8 @@ In this directory are the following files:
 \end_layout
 
 \begin_layout Itemize
-ManualMode.exe, OHReplay.exe, OpenHoldem.exe, OpenScrape.exe --- these are the
- main files for each of the programs in the OpenHoldem project.
+ManualMode.exe, OHReplay.exe, OpenHoldem.exe, OpenScrape.exe, Rebuy.exe --- these
+ are the main files for each of the programs in the OpenHoldem project.
  Details on how to use each of these are throughout this manual.
 \end_layout
 
@@ -162,7 +162,7 @@ Files with .ini extensions --- these are configuration files; they can be
 \end_layout
 
 \begin_layout Itemize
-OpenHoldem Project 2.1.0 Manual.chm --- this manual.
+OpenHoldem_Manual.chm --- this manual.
 \end_layout
 
 \end_body

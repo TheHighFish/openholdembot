@@ -167,6 +167,35 @@ In summary, OpenHoldem will connect to a window if it matches the client
  size, title text and pixel colors as specified in a Table Map.
 \end_layout
 
+\begin_layout Standard
+After this list of table-candidates has been created, tables that already
+ get served get removed from the list.
+ There is usually not much benefit if you connect multiple bots to the same
+ table.
+ After that a table gets chosen:
+\end_layout
+
+\begin_layout Itemize
+if there is exactly one window OpenHoldem will choose this one and connect.
+\end_layout
+
+\begin_layout Itemize
+if there are multiple candidates OpenHoldem will show a popup-dialog to
+ ask the user or it will choose the 
+\begin_inset Quotes eld
+\end_inset
+
+first
+\begin_inset Quotes erd
+\end_inset
+
+ table, depending on your auto-connector-settings.
+\end_layout
+
+\begin_layout Standard
+And then the fun begins...
+\end_layout
+
 \begin_layout Section
 The 
 \begin_inset Index
@@ -571,7 +600,7 @@ f$alli
 \end_inset
 
 f$alli function evaluates to non-zero, and an all-in control is present
- (slider/Swag box), then move all-in 
+ (slider/Swag box/allin-button), then move all-in .
 \end_layout
 
 \begin_layout Enumerate
@@ -580,30 +609,14 @@ Else if the
 status open
 
 \begin_layout Plain Layout
-f$swag
+f$betsize
 \end_layout
 
 \end_inset
 
- (
-\begin_inset Quotes eld
-\end_inset
-
-Swag
-\begin_inset Quotes erd
-\end_inset
-
- is a neologism by Ray E.
- Bornert II and means 
-\begin_inset Quotes eld
-\end_inset
-
-stated wager
-\begin_inset Quotes erd
-\end_inset
-
-) f$swag function evaluates to non-zero, and the Swag box is present, then
- enter the f$swag result into the Swag box and confirm the bet.
+ f$betsize function evaluates to non-zero, and an input box is present,
+ then adapt the betsize according to a casino-specific input method, enter
+ the result and confirm the bet.
 \end_layout
 
 \begin_layout Enumerate
@@ -965,15 +978,7 @@ shall I raise, and how much?
 \begin_inset Quotes erd
 \end_inset
 
- --- f$swag (swag means 
-\begin_inset Quotes eld
-\end_inset
-
-stated wager
-\begin_inset Quotes erd
-\end_inset
-
-)
+ --- f$betsize 
 \end_layout
 
 \begin_layout Itemize
