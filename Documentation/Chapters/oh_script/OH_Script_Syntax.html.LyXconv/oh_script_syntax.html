@@ -1,0 +1,890 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="oh_script_syntax.tex"> 
+<meta name="date" content="2010-05-06 22:33:00"> 
+<link rel="stylesheet" type="text/css" href="oh_script_syntax.css"> 
+</head><body bgcolor="#CCCCFF" 
+>
+
+
+   <h2 class="chapterHead"><span class="titlemark"></span></><a 
+ id="x1-10001"></a>OH-Script </h2>
+   <h3 class="sectionHead"><a 
+ id="x1-20001"></a>Introduction </h3>
+<!--l. 36--><p class="noindent" >OpenHoldem&#8217;s scripting language is very similar to the C programming expression
+syntax. If you already know and understand C programming then you have
+an advantage in that the OH scripting language should be very familiar. This
+section is largely based off of Ray Bornert&#8217;s original WinHoldem "C-tutorial"
+(<a 
+href="http://www.winholdem.net/help/help-c.html" class="url" ><span 
+class="ectt-1000">http://www.winholdem.net/help/help-c.html</span></a>).
+   <h3 class="sectionHead"><a 
+ id="x1-30001"></a>Syntax </h3>
+<!--l. 46--><p class="noindent" >The general syntax for OpenHoldem formulas is same as that of the C programming
+language. However, the formulas are strict <span 
+class="ecti-1000">r-values </span>(right side of an assignment
+expression), meaning that there is no assignment operator.
+   <h3 class="sectionHead"><a 
+ id="x1-40001"></a>Data Types</h3>
+<!--l. 54--><p class="noindent" >OH-Script is a programming language without typing. All values are stored as (double)
+floating point values on the expression stack, regardless if they are floating
+points, integers, booleans (logicals) or bit-vectors. For bitwise operations the
+values are first internally converted to integer values and then the operator is
+applied.
+<!--l. 61--><p class="indent" >   If a value is interpreted as numerical or boolean depends solely on the context. A
+common beginners mistake is to mix up boolean and numerical values, boolean and
+numerical operators.
+   <h3 class="sectionHead"><a 
+ id="x1-50001"></a>Rounding Errors</h3>
+<!--l. 68--><p class="noindent" >One of the main problems with floating-points are the inevitable rounding errors
+(<a 
+href="http://floating-point-gui.de/" class="url" ><span 
+class="ectt-1000">http://floating-point-gui.de/</span></a>).. Rounding errors occur for numerical calculations, but
+also for conversions of floating-point-numbers from decimal format (OH-script) to the internal
+binary representation (<a 
+href="http://en.wikipedia.org/wiki/Binary_numeral_system" class="url" ><span 
+class="ectt-1000">http://en.wikipedia.org/wiki/Binary_numeral_system</span></a>).
+<!--l. 74--><p class="indent" >   Rounding errors are especially annoying when you compare two numbers, that
+should be equal from an exact mathematical point of view but are only nearly in
+practice.
+<!--l. 78--><p class="indent" >   To overcome this problem OpenHoldem uses approximative comparision
+for relational and equality operators (&#x003C; &#x003C;= &#x003E; &#x003E;= == !=). It will treat two
+numbers as &#8220;equal&#8221;, when they differ by not more than <span 
+class="cmr-10">10</span><sup><sup><span 
+class="cmsy-5">-</span><span 
+class="cmr-5">6</span></sup>
+    </sup>. This applies ofcourse
+only to OH-script; DLL- and Perl-users have to care about correct rounding
+themselves!
+   <h3 class="sectionHead"><a 
+ id="x1-60001"></a>Boolean Logic</h3>
+<!--l. 87--><p class="noindent" >A boolean expression is composed of logical operators (not, and, or, xor) and operands.
+All boolean operands have only two values - true and false. Each logical operand has a
+very well defined operation upon the operand(s) in the expression, with a very well
+defined result. When any numeric value is used in conjunction with a logical operator,
+any zero values are considered to be false (0) and any non-zero values are considered to
+be true (1). If the numeric value in question is not zero then it is considered to be true
+for boolean purposes. Reams of material have been written on boolean logic
+
+(<a 
+href="http://en.wikipedia.org/wiki/Boolean_logic " class="url" ><span 
+class="ectt-1000">http://en.wikipedia.org/wiki/Boolean_logic</span></a>).
+   <h3 class="sectionHead"><a 
+ id="x1-70001"></a>Operators </h3>
+<!--l. 100--><p class="noindent" >These operators are listed in order of precedence.
+
+   <div class="tabular"> <table id="TBL-1" class="tabular" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-1-1g"><col 
+id="TBL-1-1"></colgroup><colgroup id="TBL-1-2g"><col 
+id="TBL-1-2"></colgroup><colgroup id="TBL-1-3g"><col 
+id="TBL-1-3"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-1-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-1-1"  
+class="td11"> <!--l. 104--><p class="noindent" >Category                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-1-2"  
+class="td11"> <!--l. 104--><p class="noindent" >Operator(s)                             </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-1-3"  
+class="td11"> <!--l. 104--><p class="noindent" >Associativity                 </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-2-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-2-1"  
+class="td11"> <!--l. 107--><p class="noindent" >Exponentiation               </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-2-2"  
+class="td11"> <!--l. 107--><p class="noindent" >**
+  ln
+  (not
+  standard
+  ANSI
+  C)                                         </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-2-3"  
+class="td11"> <!--l. 107--><p class="noindent" >Right
+  to
+  Left                             </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-3-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-3-1"  
+class="td11"> <!--l. 109--><p class="noindent" >Unary                           </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-3-2"  
+class="td11"> <!--l. 109--><p class="noindent" >!
+  ~
+  -
+  &#8216;                                            </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-3-3"  
+class="td11"> <!--l. 109--><p class="noindent" >Right
+  to
+  Left                             </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-4-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-4-1"  
+class="td11"> <!--l. 111--><p class="noindent" >Multiplicative                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-4-2"  
+class="td11"> <!--l. 111--><p class="noindent" >*
+  /&#x00A0;%                                       </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-4-3"  
+class="td11"> <!--l. 111--><p class="noindent" >Left
+  to
+  Right                           </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-5-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-5-1"  
+class="td11"> <!--l. 113--><p class="noindent" >Additive                        </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-5-2"  
+class="td11"> <!--l. 113--><p class="noindent" >+
+  -                                            </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-5-3"  
+class="td11"> <!--l. 113--><p class="noindent" >Left
+  to
+  Right                           </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-6-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-6-1"  
+class="td11"> <!--l. 115--><p class="noindent" >Bitwise
+  Shift                             </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-6-2"  
+class="td11"> <!--l. 115--><p class="noindent" >&#x003C;&#xFEFF;&#x003C;
+  &#x003E;&#xFEFF;&#x003E;                                        </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-6-3"  
+class="td11"> <!--l. 115--><p class="noindent" >Left
+  to
+  Right                           </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-7-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-7-1"  
+class="td11"> <!--l. 117--><p class="noindent" >Relational                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-7-2"  
+class="td11"> <!--l. 117--><p class="noindent" >&#x003C;
+  &#x003E;
+  &#x003C;=
+  &#x003E;=                                        </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-7-3"  
+class="td11"> <!--l. 117--><p class="noindent" >Left
+  to
+  Right                           </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-8-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-8-1"  
+class="td11"> <!--l. 119--><p class="noindent" >Equality                        </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-8-2"  
+class="td11"> <!--l. 119--><p class="noindent" >==&#x00A0;!=                                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-8-3"  
+class="td11"> <!--l. 119--><p class="noindent" >Left
+  to
+  Right                           </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-9-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-9-1"  
+class="td11"> <!--l. 121--><p class="noindent" >Bitwise                         </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-9-2"  
+class="td11"> <!--l. 121--><p class="noindent" >AND
+  &amp;                                          </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-9-3"  
+class="td11"> <!--l. 121--><p class="noindent" >Left
+  to
+  Right                           </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-10-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-10-1"  
+class="td11"> <!--l. 123--><p class="noindent" >Bitwise                         </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-10-2"  
+class="td11"> <!--l. 123--><p class="noindent" >XOR
+  ^                                           </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-10-3"  
+class="td11"> <!--l. 123--><p class="noindent" >Left
+  to
+  Right                           </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-11-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-11-1"  
+class="td11"> <!--l. 125--><p class="noindent" >Bitwise                         </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-11-2"  
+class="td11"> <!--l. 125--><p class="noindent" >OR
+  |                                            </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-11-3"  
+class="td11"> <!--l. 125--><p class="noindent" >Left
+  to
+  Right                           </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-12-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-12-1"  
+class="td11"> <!--l. 127--><p class="noindent" >Logical                          </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-12-2"  
+class="td11"> <!--l. 127--><p class="noindent" >AND
+  &amp;&amp;                                        </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-12-3"  
+class="td11"> <!--l. 127--><p class="noindent" >Left
+  to
+  Right                           </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-13-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-13-1"  
+class="td11"> <!--l. 129--><p class="noindent" >Logical                          </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-13-2"  
+class="td11"> <!--l. 129--><p class="noindent" >XOR
+  ^^
+  (not
+  standard
+  ANSI
+  C)                                         </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-13-3"  
+class="td11"> <!--l. 129--><p class="noindent" >Left
+  to
+  Right                           </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-14-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-14-1"  
+class="td11"> <!--l. 131--><p class="noindent" >Logical                          </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-14-2"  
+class="td11"> <!--l. 131--><p class="noindent" >OR
+  ||                                           </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-14-3"  
+class="td11"> <!--l. 131--><p class="noindent" >Left
+  to
+  Right                           </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-15-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-15-1"  
+class="td11"> <!--l. 133--><p class="noindent" >Conditional                    </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-15-2"  
+class="td11"> <!--l. 133--><p class="noindent" >?:                                          </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-15-3"  
+class="td11"> <!--l. 133--><p class="noindent" >Right
+  to
+  Left                             </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-16-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-16-1"  
+class="td11"> <!--l. 135--><p class="noindent" >Group                           </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-16-2"  
+class="td11"> <!--l. 135--><p class="noindent" >()
+  []
+  {}
+  (not
+  standard
+  ANSI
+  C)                                         </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-16-3"  
+class="td11"> <!--l. 135--><p class="noindent" >Left
+  to
+  Right                           </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-17-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-17-1"  
+class="td11">                       </td> </tr></table>
+
+</div>
+           <ul class="itemize1">
+        <li class="itemize">Exponentiation  Power  **  (not  ANSI-C)  a  **  b  Standard  algebraic
+        exponentiation on a and b. a is raised to the power of b.
+           </li>
+        <li class="itemize">Natural Log ln (not ANSI-C) ln a Standard algebraic natural log of a a
+        == e ** (ln a)
+           </li>
+        <li class="itemize">Natural Log Base e (not ANSI-C) e == ln(1) e == 2.71828182845905
+           </li>
+        <li class="itemize">Unary A unary operator takes a single operand.
+           </li>
+        <li class="itemize">Logical NOT&#x00A0;! False when the operand is true. True when the operand is
+        false. a &#x00A0;!a false true true false 0 1
+           </li>
+        <li class="itemize">Bitwise NOT ~ Logical NOT operation on a bit by bit basis.<br 
+class="newline" /><!--tex4ht:inline--><div class="tabular"> <table id="TBL-2" class="tabular" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-2-1g"><col 
+id="TBL-2-1"></colgroup><colgroup id="TBL-2-2g"><col 
+id="TBL-2-2"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-1-"><td  style="white-space:nowrap; text-align:center;" id="TBL-2-1-1"  
+class="td11"> expression  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-1-2"  
+class="td11">           binary result                 </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-2-"><td  style="white-space:nowrap; text-align:center;" id="TBL-2-2-1"  
+class="td11">     a        </td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-2-2"  
+class="td11"> 11001001011101010110010101111010  </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-3-"><td  style="white-space:nowrap; text-align:center;" id="TBL-2-3-1"  
+class="td11"> ~a </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-2-3-2"  
+class="td11"> 00110110100010101001101010000101</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-4-"><td  style="white-space:nowrap; text-align:center;" id="TBL-2-4-1"  
+class="td11">           </td> </tr></table></div>
+           </li>
+        <li class="itemize">Negation - A good example is the minus sign when it is used to alter the sign of
+        a value. Example: "a + b / -4" The minus sign in front of the 4 is a unary
+        minus.
+           </li>
+        <li class="itemize">Bit Count &#8216; (not ANSI-C) Provides a count of the number of bits set in any
+        integer value. Here are 3 examples of the number of bits that are set in some
+        32-bit integer numbers.<br 
+class="newline" /><!--tex4ht:inline--><div class="tabular"> <table id="TBL-3" class="tabular" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-3-1g"><col 
+id="TBL-3-1"></colgroup><colgroup id="TBL-3-2g"><col 
+id="TBL-3-2"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-1-"><td  style="white-space:nowrap; text-align:center;" id="TBL-3-1-1"  
+class="td11">               a                        </td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-1-2"  
+class="td11"> &#8216;a  </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-2-"><td  style="white-space:nowrap; text-align:center;" id="TBL-3-2-1"  
+class="td11"> 0000000000000000000000000000000 </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-3-2-2"  
+class="td11"> 0</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-3-"><td  style="white-space:nowrap; text-align:center;" id="TBL-3-3-1"  
+class="td11"> 0000000000000100000000000000000  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-3-2"  
+class="td11"> 1  </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-4-"><td  style="white-space:nowrap; text-align:center;" id="TBL-3-4-1"  
+class="td11"> 0000010000000100000000000010000 </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-3-4-2"  
+class="td11"> 3</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-5-"><td  style="white-space:nowrap; text-align:center;" id="TBL-3-5-1"  
+class="td11"> 1111111111111111111111111111111  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-3-5-2"  
+class="td11"> 32  </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-3-6-"><td  style="white-space:nowrap; text-align:center;" id="TBL-3-6-1"  
+class="td11"> </td> </tr></table>
+        </div>
+           </li>
+        <li class="itemize">Multiplicative Multiply * a * b Standard algebraic multiplication on a and
+        b.
+           </li>
+        <li class="itemize">Divide / a / b Standard algebraic division on a and b.
+           </li>
+        <li class="itemize">Modulo&#x00A0;% a&#x00A0;% b Standard algebraic modulo on a and b.
+           </li>
+        <li class="itemize">Additive Add + a + b Standard algebraic addition on a and b.
+           </li>
+        <li class="itemize">Subtract - a - b Standard algebraic subtraction on a and b.
+           </li>
+        <li class="itemize">Bitwise Shift Left &#x003C;&#xFEFF;&#x003C; Slides the entire bit pattern to the left by N bits. Note
+        that the leftmost bits are simply dropped and that the rightmost bits are filled
+        with 0&#8217;s. The shift magnitude is used as modulo 32, meaning that any shift N
+        that is specified in excess of 32 bits has a N%32 operation performed prior to
+        the shift.<br 
+class="newline" /><!--tex4ht:inline--><div class="tabular"> <table id="TBL-4" class="tabular" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-4-1g"><col 
+id="TBL-4-1"></colgroup><colgroup id="TBL-4-2g"><col 
+id="TBL-4-2"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-4-1-"><td  style="white-space:nowrap; text-align:center;" id="TBL-4-1-1"  
+class="td11"> expression  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-4-1-2"  
+class="td11">           binary result                 </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-4-2-"><td  style="white-space:nowrap; text-align:center;" id="TBL-4-2-1"  
+class="td11">     a        </td><td  style="white-space:nowrap; text-align:center;" id="TBL-4-2-2"  
+class="td11"> 11001001011101010110010101111010  </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-4-3-"><td  style="white-space:nowrap; text-align:center;" id="TBL-4-3-1"  
+class="td11"> a&#x003C;&#xFEFF;&#x003C;1 </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-4-3-2"  
+class="td11"> 10010010111010101100101011110100</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-4-4-"><td  style="white-space:nowrap; text-align:center;" id="TBL-4-4-1"  
+class="td11">   a&#x003C;&#xFEFF;&#x003C;7     </td><td  style="white-space:nowrap; text-align:center;" id="TBL-4-4-2"  
+class="td11"> 10111010101100101011110100000000  </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-4-5-"><td  style="white-space:nowrap; text-align:center;" id="TBL-4-5-1"  
+class="td11"> a&#x003C;&#xFEFF;&#x003C;31 </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-4-5-2"  
+class="td11"> 00000000000000000000000000000000</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-4-6-"><td  style="white-space:nowrap; text-align:center;" id="TBL-4-6-1"  
+class="td11">   a&#x003C;&#xFEFF;&#x003C;32    </td><td  style="white-space:nowrap; text-align:center;" id="TBL-4-6-2"  
+class="td11"> 11001001011101010110010101111010  </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-4-7-"><td  style="white-space:nowrap; text-align:center;" id="TBL-4-7-1"  
+class="td11"> </td> </tr></table>
+        </div>
+           </li>
+        <li class="itemize">Bitwise Shift Right &#x003E;&#xFEFF;&#x003E; Slide the entire bit pattern to the right by N bits. Note
+        that the rightmost bits are dropped and that the leftmost bits are filled
+        with the leftmost bit of the operand. The shift magnitude is used as
+        modulo 32, meaning that any shift N that is specified in excess of 32 bits
+        has a N%32 operation performed prior to the shift. expression binary
+        result.<br 
+class="newline" /><!--tex4ht:inline--><div class="tabular"> <table id="TBL-5" class="tabular" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-5-1g"><col 
+id="TBL-5-1"></colgroup><colgroup id="TBL-5-2g"><col 
+id="TBL-5-2"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-1-"><td  style="white-space:nowrap; text-align:center;" id="TBL-5-1-1"  
+class="td11"> expression  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-1-2"  
+class="td11">           binary result                 </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-2-"><td  style="white-space:nowrap; text-align:center;" id="TBL-5-2-1"  
+class="td11">     a        </td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-2-2"  
+class="td11"> 11001001011101010110010101111010  </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-3-"><td  style="white-space:nowrap; text-align:center;" id="TBL-5-3-1"  
+class="td11"> a&#x003E;&#xFEFF;&#x003E;1 </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-5-3-2"  
+class="td11"> 01100100101110101011001010111101</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-4-"><td  style="white-space:nowrap; text-align:center;" id="TBL-5-4-1"  
+class="td11">   a&#x003E;&#xFEFF;&#x003E;7     </td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-4-2"  
+class="td11"> 00000001100100101110101011001010  </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-5-"><td  style="white-space:nowrap; text-align:center;" id="TBL-5-5-1"  
+class="td11"> a&#x003E;&#xFEFF;&#x003E;31 </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-5-5-2"  
+class="td11"> 00000000000000000000000000000001</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-6-"><td  style="white-space:nowrap; text-align:center;" id="TBL-5-6-1"  
+class="td11">   a&#x003E;&#xFEFF;&#x003E;32    </td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-6-2"  
+class="td11"> 11001001011101010110010101111010  </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-7-"><td  style="white-space:nowrap; text-align:center;" id="TBL-5-7-1"  
+class="td11"> </td> </tr></table>
+        </div>
+           </li>
+        <li class="itemize">Relational Less Than &#x003C; a b a &#x003C; b -1 0 true 0 0 false +1 0 false
+           </li>
+        <li class="itemize">Greater Than &#x003E; a b a &#x003E; b -1 0 false 0 0 false +1 0 true
+           </li>
+        <li class="itemize">Less Than Or Equal &#x003C;= a b a &#x003C;= b -1 0 true 0 0 true +1 0 false
+           </li>
+        <li class="itemize">Greater Than or Equal &#x003E;= a b a &#x003E;= b -1 0 false 0 0 true +1 0 true
+           </li>
+        <li class="itemize">Equality Equal == a b a == b -1 0 false 0 0 true +1 0 false
+           </li>
+        <li class="itemize">Not Equal&#x00A0;!= a b a&#x00A0;!= b -1 0 true 0 0 false +1 0 true
+           </li>
+        <li class="itemize">Bitwise AND &amp; Logical AND operation on a bit by bit basis.<br 
+class="newline" /><!--tex4ht:inline--><div class="tabular"> <table id="TBL-6" class="tabular" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-6-1g"><col 
+id="TBL-6-1"></colgroup><colgroup id="TBL-6-2g"><col 
+id="TBL-6-2"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-1-"><td  style="white-space:nowrap; text-align:center;" id="TBL-6-1-1"  
+class="td11"> expression  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-6-1-2"  
+class="td11">              binary                     </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-2-"><td  style="white-space:nowrap; text-align:center;" id="TBL-6-2-1"  
+class="td11">     a        </td><td  style="white-space:nowrap; text-align:center;" id="TBL-6-2-2"  
+class="td11"> 11001001011101010110010101111010  </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-3-"><td  style="white-space:nowrap; text-align:center;" id="TBL-6-3-1"  
+class="td11"> b </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-6-3-2"  
+class="td11"> 01001010010100101110001010101111</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-4-"><td  style="white-space:nowrap; text-align:center;" id="TBL-6-4-1"  
+class="td11">    a&amp;b      </td><td  style="white-space:nowrap; text-align:center;" id="TBL-6-4-2"  
+class="td11"> 01001000010100000110000000101010  </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-6-5-"><td  style="white-space:nowrap; text-align:center;" id="TBL-6-5-1"  
+class="td11"> </td> </tr></table>
+        </div>
+           </li>
+        <li class="itemize">Bitwise OR | Logical OR operation on a bit by bit basis.<br 
+class="newline" /><!--tex4ht:inline--><div class="tabular"> <table id="TBL-7" class="tabular" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-7-1g"><col 
+id="TBL-7-1"></colgroup><colgroup id="TBL-7-2g"><col 
+id="TBL-7-2"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-7-1-"><td  style="white-space:nowrap; text-align:center;" id="TBL-7-1-1"  
+class="td11"> expression  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-7-1-2"  
+class="td11">              binary                     </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-7-2-"><td  style="white-space:nowrap; text-align:center;" id="TBL-7-2-1"  
+class="td11">     a        </td><td  style="white-space:nowrap; text-align:center;" id="TBL-7-2-2"  
+class="td11"> 11001001011101010110010101111010  </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-7-3-"><td  style="white-space:nowrap; text-align:center;" id="TBL-7-3-1"  
+class="td11"> b </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-7-3-2"  
+class="td11"> 01001010010100101110001010101111</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-7-4-"><td  style="white-space:nowrap; text-align:center;" id="TBL-7-4-1"  
+class="td11">    a | b      </td><td  style="white-space:nowrap; text-align:center;" id="TBL-7-4-2"  
+class="td11"> 11001011011101111110011111111111  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-7-5-"><td  style="white-space:nowrap; text-align:center;" id="TBL-7-5-1"  
+class="td11">           </td> </tr></table></div>
+           </li>
+        <li class="itemize">Bitwise XOR ^ Logical XOR operation on a bit by bit basis.<br 
+class="newline" /><!--tex4ht:inline--><div class="tabular"> <table id="TBL-8" class="tabular" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-8-1g"><col 
+id="TBL-8-1"></colgroup><colgroup id="TBL-8-2g"><col 
+id="TBL-8-2"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-8-1-"><td  style="white-space:nowrap; text-align:center;" id="TBL-8-1-1"  
+class="td11"> expression  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-8-1-2"  
+class="td11">              binary                     </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-8-2-"><td  style="white-space:nowrap; text-align:center;" id="TBL-8-2-1"  
+class="td11">     a        </td><td  style="white-space:nowrap; text-align:center;" id="TBL-8-2-2"  
+class="td11"> 11001001011101010110010101111010  </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-8-3-"><td  style="white-space:nowrap; text-align:center;" id="TBL-8-3-1"  
+class="td11"> b </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-8-3-2"  
+class="td11"> 01001010010100101110001010101111</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-8-4-"><td  style="white-space:nowrap; text-align:center;" id="TBL-8-4-1"  
+class="td11">    a^b      </td><td  style="white-space:nowrap; text-align:center;" id="TBL-8-4-2"  
+class="td11"> 10000011001001111000011111010101  </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-8-5-"><td  style="white-space:nowrap; text-align:center;" id="TBL-8-5-1"  
+class="td11"> </td> </tr></table>
+        </div>
+           </li>
+        <li class="itemize">Logical AND &amp;&amp; False when any operand is false. True when both operands
+        are true.<br 
+class="newline" /><!--tex4ht:inline--><div class="tabular"> <table id="TBL-9" class="tabular" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-9-1g"><col 
+id="TBL-9-1"></colgroup><colgroup id="TBL-9-2g"><col 
+id="TBL-9-2"></colgroup><colgroup id="TBL-9-3g"><col 
+id="TBL-9-3"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-9-1-"><td  style="white-space:nowrap; text-align:center;" id="TBL-9-1-1"  
+class="td11">  a   </td><td  style="white-space:nowrap; text-align:center;" id="TBL-9-1-2"  
+class="td11">  b    </td><td  style="white-space:nowrap; text-align:center;" id="TBL-9-1-3"  
+class="td11"> a &amp;&amp; b  </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-9-2-"><td  style="white-space:nowrap; text-align:center;" id="TBL-9-2-1"  
+class="td11"> false </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-9-2-2"  
+class="td11"> false </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-9-2-3"  
+class="td11"> false</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-9-3-"><td  style="white-space:nowrap; text-align:center;" id="TBL-9-3-1"  
+class="td11"> false  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-9-3-2"  
+class="td11"> true  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-9-3-3"  
+class="td11">  false    </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-9-4-"><td  style="white-space:nowrap; text-align:center;" id="TBL-9-4-1"  
+class="td11"> true </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-9-4-2"  
+class="td11"> false </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-9-4-3"  
+class="td11"> false</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-9-5-"><td  style="white-space:nowrap; text-align:center;" id="TBL-9-5-1"  
+class="td11"> true  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-9-5-2"  
+class="td11"> true  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-9-5-3"  
+class="td11">  true    </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-9-6-"><td  style="white-space:nowrap; text-align:center;" id="TBL-9-6-1"  
+class="td11"> </td> </tr></table>
+        </div>
+           </li>
+        <li class="itemize">Logical XOR ^^ (not ANSI-C) False when operands are boolean equal. True
+        when operands are not boolean equal. Note that "a^^b" is equivalent to
+        "(a!=0)^(b!=0)".<br 
+class="newline" /><!--tex4ht:inline--><div class="tabular"> <table id="TBL-10" class="tabular" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-10-1g"><col 
+id="TBL-10-1"></colgroup><colgroup id="TBL-10-2g"><col 
+id="TBL-10-2"></colgroup><colgroup id="TBL-10-3g"><col 
+id="TBL-10-3"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-10-1-"><td  style="white-space:nowrap; text-align:center;" id="TBL-10-1-1"  
+class="td11">  a   </td><td  style="white-space:nowrap; text-align:center;" id="TBL-10-1-2"  
+class="td11">  b    </td><td  style="white-space:nowrap; text-align:center;" id="TBL-10-1-3"  
+class="td11"> a ^^ b  </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-10-2-"><td  style="white-space:nowrap; text-align:center;" id="TBL-10-2-1"  
+class="td11"> false </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-10-2-2"  
+class="td11"> false </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-10-2-3"  
+class="td11"> false</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-10-3-"><td  style="white-space:nowrap; text-align:center;" id="TBL-10-3-1"  
+class="td11"> false  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-10-3-2"  
+class="td11"> true  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-10-3-3"  
+class="td11">  true   </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-10-4-"><td  style="white-space:nowrap; text-align:center;" id="TBL-10-4-1"  
+class="td11"> true </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-10-4-2"  
+class="td11"> false </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-10-4-3"  
+class="td11"> true</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-10-5-"><td  style="white-space:nowrap; text-align:center;" id="TBL-10-5-1"  
+class="td11"> true  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-10-5-2"  
+class="td11"> true  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-10-5-3"  
+class="td11">  false   </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-10-6-"><td  style="white-space:nowrap; text-align:center;" id="TBL-10-6-1"  
+class="td11"> </td> </tr></table>
+        </div>
+           </li>
+        <li class="itemize">Logical OR || False when both operands are false. True when any operand is
+        true.<br 
+class="newline" /><!--tex4ht:inline--><div class="tabular"> <table id="TBL-11" class="tabular" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-11-1g"><col 
+id="TBL-11-1"></colgroup><colgroup id="TBL-11-2g"><col 
+id="TBL-11-2"></colgroup><colgroup id="TBL-11-3g"><col 
+id="TBL-11-3"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-11-1-"><td  style="white-space:nowrap; text-align:center;" id="TBL-11-1-1"  
+class="td11">  a   </td><td  style="white-space:nowrap; text-align:center;" id="TBL-11-1-2"  
+class="td11">  b    </td><td  style="white-space:nowrap; text-align:center;" id="TBL-11-1-3"  
+class="td11"> a || b  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-11-2-"><td  style="white-space:nowrap; text-align:center;" id="TBL-11-2-1"  
+class="td11"> false  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-11-2-2"  
+class="td11"> false  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-11-2-3"  
+class="td11"> false  </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-11-3-"><td  style="white-space:nowrap; text-align:center;" id="TBL-11-3-1"  
+class="td11"> false </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-11-3-2"  
+class="td11"> true </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-11-3-3"  
+class="td11"> true</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-11-4-"><td  style="white-space:nowrap; text-align:center;" id="TBL-11-4-1"  
+class="td11"> true  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-11-4-2"  
+class="td11"> false  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-11-4-3"  
+class="td11"> true  </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-11-5-"><td  style="white-space:nowrap; text-align:center;" id="TBL-11-5-1"  
+class="td11"> true </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-11-5-2"  
+class="td11"> true </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-11-5-3"  
+class="td11"> true</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-11-6-"><td  style="white-space:nowrap; text-align:center;" id="TBL-11-6-1"  
+class="td11">      </td> </tr></table></div>
+           </li>
+        <li class="itemize">Conditional&#x00A0;?: Standard algorithmic if then else. "a&#x00A0;? b&#x00A0;: c" means "If a then b
+        else c".<br 
+class="newline" /><!--tex4ht:inline--><div class="tabular"> <table id="TBL-12" class="tabular" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-12-1g"><col 
+id="TBL-12-1"></colgroup><colgroup id="TBL-12-2g"><col 
+id="TBL-12-2"></colgroup><colgroup id="TBL-12-3g"><col 
+id="TBL-12-3"></colgroup><colgroup id="TBL-12-4g"><col 
+id="TBL-12-4"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-12-1-"><td  style="white-space:nowrap; text-align:center;" id="TBL-12-1-1"  
+class="td11">  a   </td><td  style="white-space:nowrap; text-align:center;" id="TBL-12-1-2"  
+class="td11">  b   </td><td  style="white-space:nowrap; text-align:center;" id="TBL-12-1-3"  
+class="td11">  c   </td><td  style="white-space:nowrap; text-align:center;" id="TBL-12-1-4"  
+class="td11"> a&#x00A0;? b&#x00A0;: c  </td></tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-12-2-"><td  style="white-space:nowrap; text-align:center;" id="TBL-12-2-1"  
+class="td11"> true </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-12-2-2"  
+class="td11"> any </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-12-2-3"  
+class="td11"> any </td> <td  style="white-space:nowrap; text-align:center;" id="TBL-12-2-4"  
+class="td11"> b</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-12-3-"><td  style="white-space:nowrap; text-align:center;" id="TBL-12-3-1"  
+class="td11"> false  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-12-3-2"  
+class="td11"> any  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-12-3-3"  
+class="td11"> any  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-12-3-4"  
+class="td11">    c       </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-12-4-"><td  style="white-space:nowrap; text-align:center;" id="TBL-12-4-1"  
+class="td11">      </td> </tr></table></div>
+           </li>
+        <li class="itemize">Grouping Operators ()[]{} Note that [] and {} are not ANSI-C. These grouping
+        operators are used to either visibly separate sections of your code for
+        readability and maintainability purposes, or to affect the precedence of
+        logical operation. Note that unlike WinHoldem&#8217;s grouping syntax,
+        there is no limitation on how the various grouping operators can be
+        nested.</li></ul>
+   <h3 class="sectionHead"><a 
+ id="x1-80001"></a>Numeric Constants Floating point constants</h3>
+<!--l. 346--><p class="noindent" >All numeric constants are treated internally as double floating point values
+in base 2. Floating Point Numeric Constants 123.456 0.987 192837465 .5 17.
+5.4321e-76
+<!--l. 350--><p class="indent" >   Integer constants There are 4 integer options available as well that allow you to
+select the base of the constant. The 4 available bases are: 16, 8, 4, 2. Prefixing a numeric
+constant with a zero followed by a letter (see table below) will specify the numeric base
+of the constant.
+<!--l. 356--><p class="indent" >   Letter Base Name x 16 Hex o 8 Octal (non-standard ANSI C) q 4 Quadal
+(non-standard ANSI C) b 2 Binary (non-standard ANSI C)
+<!--l. 359--><p class="indent" >   Examples:
+
+   <div class="tabular"> <table id="TBL-13" class="tabular" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-13-1g"><col 
+id="TBL-13-1"></colgroup><colgroup id="TBL-13-2g"><col 
+id="TBL-13-2"></colgroup><colgroup id="TBL-13-3g"><col 
+id="TBL-13-3"></colgroup><colgroup id="TBL-13-4g"><col 
+id="TBL-13-4"></colgroup><colgroup id="TBL-13-5g"><col 
+id="TBL-13-5"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-1-"><td  style="white-space:wrap; text-align:left;" id="TBL-13-1-1"  
+class="td11">        <!--l. 363--><p class="noindent" >Decimal  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-1-2"  
+class="td11">           <!--l. 363--><p class="noindent" >Hex  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-1-3"  
+class="td11">          <!--l. 363--><p class="noindent" >Octal  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-1-4"  
+class="td11">         <!--l. 363--><p class="noindent" >Quadal  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-1-5"  
+class="td11">         <!--l. 363--><p class="noindent" >Binary  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-2-"><td  style="white-space:wrap; text-align:left;" id="TBL-13-2-1"  
+class="td11">              <!--l. 366--><p class="noindent" >0   </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-2-2"  
+class="td11">            <!--l. 366--><p class="noindent" >0x0  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-2-3"  
+class="td11">            <!--l. 366--><p class="noindent" >0o0  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-2-4"  
+class="td11">            <!--l. 366--><p class="noindent" >0q0  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-2-5"  
+class="td11">            <!--l. 366--><p class="noindent" >0b0  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-3-"><td  style="white-space:wrap; text-align:left;" id="TBL-13-3-1"  
+class="td11">              <!--l. 368--><p class="noindent" >1   </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-3-2"  
+class="td11">            <!--l. 368--><p class="noindent" >0x1  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-3-3"  
+class="td11">            <!--l. 368--><p class="noindent" >0o1  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-3-4"  
+class="td11">            <!--l. 368--><p class="noindent" >0q1  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-3-5"  
+class="td11">            <!--l. 368--><p class="noindent" >0b1  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-4-"><td  style="white-space:wrap; text-align:left;" id="TBL-13-4-1"  
+class="td11">              <!--l. 370--><p class="noindent" >2   </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-4-2"  
+class="td11">            <!--l. 370--><p class="noindent" >0x2  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-4-3"  
+class="td11">            <!--l. 370--><p class="noindent" >0o2  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-4-4"  
+class="td11">            <!--l. 370--><p class="noindent" >0q2  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-4-5"  
+class="td11">           <!--l. 370--><p class="noindent" >0b10  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-5-"><td  style="white-space:wrap; text-align:left;" id="TBL-13-5-1"  
+class="td11">              <!--l. 372--><p class="noindent" >3   </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-5-2"  
+class="td11">            <!--l. 372--><p class="noindent" >0x3  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-5-3"  
+class="td11">            <!--l. 372--><p class="noindent" >0o3  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-5-4"  
+class="td11">            <!--l. 372--><p class="noindent" >0q3  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-5-5"  
+class="td11">           <!--l. 372--><p class="noindent" >0b11  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-6-"><td  style="white-space:wrap; text-align:left;" id="TBL-13-6-1"  
+class="td11">              <!--l. 374--><p class="noindent" >4   </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-6-2"  
+class="td11">            <!--l. 374--><p class="noindent" >0x4  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-6-3"  
+class="td11">            <!--l. 374--><p class="noindent" >0o4  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-6-4"  
+class="td11">           <!--l. 374--><p class="noindent" >0q10  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-6-5"  
+class="td11">          <!--l. 374--><p class="noindent" >0b100  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-7-"><td  style="white-space:wrap; text-align:left;" id="TBL-13-7-1"  
+class="td11">              <!--l. 376--><p class="noindent" >5   </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-7-2"  
+class="td11">            <!--l. 376--><p class="noindent" >0x5  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-7-3"  
+class="td11">            <!--l. 376--><p class="noindent" >0o5  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-7-4"  
+class="td11">           <!--l. 376--><p class="noindent" >0q11  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-7-5"  
+class="td11">          <!--l. 376--><p class="noindent" >0b101  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-8-"><td  style="white-space:wrap; text-align:left;" id="TBL-13-8-1"  
+class="td11">              <!--l. 378--><p class="noindent" >6   </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-8-2"  
+class="td11">            <!--l. 378--><p class="noindent" >0x6  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-8-3"  
+class="td11">            <!--l. 378--><p class="noindent" >0o6  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-8-4"  
+class="td11">           <!--l. 378--><p class="noindent" >0q12  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-8-5"  
+class="td11">          <!--l. 378--><p class="noindent" >0b110  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-9-"><td  style="white-space:wrap; text-align:left;" id="TBL-13-9-1"  
+class="td11">              <!--l. 380--><p class="noindent" >7   </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-9-2"  
+class="td11">            <!--l. 380--><p class="noindent" >0x7  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-9-3"  
+class="td11">            <!--l. 380--><p class="noindent" >0o7  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-9-4"  
+class="td11">           <!--l. 380--><p class="noindent" >0q13  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-9-5"  
+class="td11">          <!--l. 380--><p class="noindent" >0b111  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-10-"><td  style="white-space:wrap; text-align:left;" id="TBL-13-10-1"  
+class="td11">              <!--l. 382--><p class="noindent" >8   </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-10-2"  
+class="td11">            <!--l. 382--><p class="noindent" >0x8  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-10-3"  
+class="td11">           <!--l. 382--><p class="noindent" >0o10  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-10-4"  
+class="td11">           <!--l. 382--><p class="noindent" >0q20  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-10-5"  
+class="td11">         <!--l. 382--><p class="noindent" >0b1000  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-11-"><td  style="white-space:wrap; text-align:left;" id="TBL-13-11-1"  
+class="td11">              <!--l. 384--><p class="noindent" >9   </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-11-2"  
+class="td11">            <!--l. 384--><p class="noindent" >0x9  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-11-3"  
+class="td11">           <!--l. 384--><p class="noindent" >0o11  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-11-4"  
+class="td11">           <!--l. 384--><p class="noindent" >0q21  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-11-5"  
+class="td11">         <!--l. 384--><p class="noindent" >0b1001  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-12-"><td  style="white-space:wrap; text-align:left;" id="TBL-13-12-1"  
+class="td11">             <!--l. 386--><p class="noindent" >10   </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-12-2"  
+class="td11">           <!--l. 386--><p class="noindent" >0xA  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-12-3"  
+class="td11">           <!--l. 386--><p class="noindent" >0o12  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-12-4"  
+class="td11">           <!--l. 386--><p class="noindent" >0q22  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-12-5"  
+class="td11">         <!--l. 386--><p class="noindent" >0b1010  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-13-"><td  style="white-space:wrap; text-align:left;" id="TBL-13-13-1"  
+class="td11">             <!--l. 388--><p class="noindent" >11   </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-13-2"  
+class="td11">           <!--l. 388--><p class="noindent" >0xB  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-13-3"  
+class="td11">           <!--l. 388--><p class="noindent" >0o13  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-13-4"  
+class="td11">           <!--l. 388--><p class="noindent" >0q23  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-13-5"  
+class="td11">         <!--l. 388--><p class="noindent" >0b1011  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-14-"><td  style="white-space:wrap; text-align:left;" id="TBL-13-14-1"  
+class="td11">             <!--l. 390--><p class="noindent" >12   </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-14-2"  
+class="td11">           <!--l. 390--><p class="noindent" >0xC  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-14-3"  
+class="td11">           <!--l. 390--><p class="noindent" >0o14  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-14-4"  
+class="td11">           <!--l. 390--><p class="noindent" >0q30  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-14-5"  
+class="td11">         <!--l. 390--><p class="noindent" >0b1100  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-15-"><td  style="white-space:wrap; text-align:left;" id="TBL-13-15-1"  
+class="td11">             <!--l. 392--><p class="noindent" >13   </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-15-2"  
+class="td11">           <!--l. 392--><p class="noindent" >0xD  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-15-3"  
+class="td11">           <!--l. 392--><p class="noindent" >0o15  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-15-4"  
+class="td11">           <!--l. 392--><p class="noindent" >0q31  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-15-5"  
+class="td11">         <!--l. 392--><p class="noindent" >0b1101  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-16-"><td  style="white-space:wrap; text-align:left;" id="TBL-13-16-1"  
+class="td11">             <!--l. 394--><p class="noindent" >14   </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-16-2"  
+class="td11">           <!--l. 394--><p class="noindent" >0xE  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-16-3"  
+class="td11">           <!--l. 394--><p class="noindent" >0o16  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-16-4"  
+class="td11">           <!--l. 394--><p class="noindent" >0q32  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-16-5"  
+class="td11">         <!--l. 394--><p class="noindent" >0b1110  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-17-"><td  style="white-space:wrap; text-align:left;" id="TBL-13-17-1"  
+class="td11">             <!--l. 396--><p class="noindent" >15   </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-17-2"  
+class="td11">           <!--l. 396--><p class="noindent" >0xF  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-17-3"  
+class="td11">           <!--l. 396--><p class="noindent" >0o17  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-17-4"  
+class="td11">           <!--l. 396--><p class="noindent" >0q33  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-17-5"  
+class="td11">         <!--l. 396--><p class="noindent" >0b1111  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-18-"><td  style="white-space:wrap; text-align:left;" id="TBL-13-18-1"  
+class="td11">             <!--l. 398--><p class="noindent" >16   </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-18-2"  
+class="td11">           <!--l. 398--><p class="noindent" >0x10  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-18-3"  
+class="td11">           <!--l. 398--><p class="noindent" >0o20  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-18-4"  
+class="td11">          <!--l. 398--><p class="noindent" >0q100  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-18-5"  
+class="td11">        <!--l. 398--><p class="noindent" >0b10000  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-19-"><td  style="white-space:wrap; text-align:left;" id="TBL-13-19-1"  
+class="td11">             <!--l. 400--><p class="noindent" >31   </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-19-2"  
+class="td11">           <!--l. 400--><p class="noindent" >0x1F  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-19-3"  
+class="td11">           <!--l. 400--><p class="noindent" >0o37  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-19-4"  
+class="td11">          <!--l. 400--><p class="noindent" >0q133  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-19-5"  
+class="td11">        <!--l. 400--><p class="noindent" >0b11111  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-20-"><td  style="white-space:wrap; text-align:left;" id="TBL-13-20-1"  
+class="td11">            <!--l. 402--><p class="noindent" >127   </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-20-2"  
+class="td11">           <!--l. 402--><p class="noindent" >0x7F  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-20-3"  
+class="td11">          <!--l. 402--><p class="noindent" >0o177  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-20-4"  
+class="td11">         <!--l. 402--><p class="noindent" >0q1333  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-20-5"  
+class="td11">      <!--l. 402--><p class="noindent" >0b1111111  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-21-"><td  style="white-space:wrap; text-align:left;" id="TBL-13-21-1"  
+class="td11">            <!--l. 404--><p class="noindent" >255   </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-21-2"  
+class="td11">          <!--l. 404--><p class="noindent" >0xFF  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-21-3"  
+class="td11">          <!--l. 404--><p class="noindent" >0o377  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-21-4"  
+class="td11">         <!--l. 404--><p class="noindent" >0q3333  </td><td  style="white-space:wrap; text-align:left;" id="TBL-13-21-5"  
+class="td11">     <!--l. 404--><p class="noindent" >0b11111111  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-13-22-"><td  style="white-space:wrap; text-align:left;" id="TBL-13-22-1"  
+class="td11">                </td> </tr></table></div> 
+</body></html> 
+
+
+

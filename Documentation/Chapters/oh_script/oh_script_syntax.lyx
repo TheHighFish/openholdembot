@@ -1,4 +1,4 @@
-#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -6,6 +6,8 @@
 \use_default_options true
 \begin_modules
 theorems-ams
+eqs-within-sections
+figs-within-sections
 \end_modules
 \language english
 \inputencoding auto
@@ -210,7 +212,18 @@ Rounding Errors
 
 \begin_layout Standard
 One of the main problems with floating-points are the inevitable rounding
- errors.
+ errors (
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://floating-point-gui.de/
+\end_layout
+
+\end_inset
+
+)..
  Rounding errors occur for numerical calculations, but also for conversions
  of floating-point-numbers from 
 \begin_inset Index
