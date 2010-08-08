@@ -377,6 +377,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\COpenPPL.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CPerl.cpp"
 				>
 			</File>
@@ -1099,6 +1103,10 @@
 			</File>
 			<File
 				RelativePath=".\debug.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DefaultBot.h"
 				>
 			</File>
 			<File
