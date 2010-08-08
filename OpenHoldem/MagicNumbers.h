@@ -230,4 +230,7 @@ const int k_assumed_max_number_of_actions_per_player_and_round = 8;
 // PrWin
 const int k_number_of_pocketcard_combinations_without_order = 1326;
 
+// For assertions of codes, that should never be executed
+const bool k_ThisMustNotHappen = false;
+
 #endif // _INC_MAGICNUMBERS_H
