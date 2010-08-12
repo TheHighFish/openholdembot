@@ -4684,3 +4684,46 @@ const double CSymbols::Chairbit$(const char *a)
 
 	return bits;
 }
+
+void CSymbols::RecordPrevAction(const ActionConstant action)
+{
+	set_prevaction(action);
+
+	int user_chair = p_symbols->sym()->userchair;
+	int betround = p_symbols->sym()->betround;
+
+	// Adapting the did...symbols
+	switch (action)
+	{
+		case k_action_fold:			
+			// No "didfold"
+			break;
+		case k_action_check:
+			set_didchec(4, p_symbols->sym()->didchec[4] + 1);
+			set_didchec(betround-1, p_symbols->sym()->didchec[betround-1] + 1);
+			break;
+		case k_action_call:
+			set_didcall(4, p_symbols->sym()->didcall[4] + 1);
+			set_didcall(betround-1, p_symbols->sym()->didcall[betround-1] + 1);
+			break;
+		case k_action_raise:
+			set_didrais(4, p_symbols->sym()->didrais[4] + 1);
+			set_didrais(betround-1, p_symbols->sym()->didrais[betround-1] + 1);
+			break;
+		case k_action_swag:
+			set_didswag(4, p_symbols->sym()->didswag[4] + 1);
+			set_didswag(betround-1, p_symbols->sym()->didswag[betround-1] + 1);
+			break;
+		case k_action_allin:
+			// No "didallin"
+			break;
+		default: 
+			assert(k_this_must_not_happen);
+			break;
+	}
+
+	// reset elapsedauto symbol, as the autoplayer has acted.
+	time_t my_time_t;
+	time(&my_time_t);
+	p_symbols->set_elapsedautohold(my_time_t);
+}

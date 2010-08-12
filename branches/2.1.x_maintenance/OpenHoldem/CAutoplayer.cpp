@@ -528,7 +528,8 @@ void CAutoplayer::DoSwag(void)
 			_mutex.Unlock();
 			return;
 		}
-
+		
+		p_symbols->RecordPrevAction(k_action_swag);
 		write_logautoplay(1, "SWAG\n");
 
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
@@ -653,7 +654,8 @@ void CAutoplayer::DoARCCF(void)
 
 		// Writing 4-digit-name of action, e.g "ALLI" or "RAIS" to the log.
 		write_logautoplay(1, k_action_constant_names[do_click]);
-
+		p_symbols->RecordPrevAction(do_click);
+		
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 	}
 
@@ -812,7 +814,8 @@ void CAutoplayer::DoPrefold(void)
 		(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), r, MouseLeft, 1, hwnd_focus, cur_pos);
 
 		_mutex.Unlock();
-
+		
+		p_symbols->RecordPrevAction(k_action_fold);
 		write_logautoplay(1, "FOLD");
 	}
 	p_symbols->CalcAutoTrace();

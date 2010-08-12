@@ -2063,6 +2063,7 @@ void PokerPro::DoAutoplayer(void)
 		_autoplayer_can_act = false;
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		Sleep(500);
+		p_symbols->RecordPrevAction(k_action_allin);
 	}
 	else if (p_symbols->f$swag() && p_scraper->GetButtonState(2) && _autoplayer_can_act) 
 	{
@@ -2071,6 +2072,7 @@ void PokerPro::DoAutoplayer(void)
 		_autoplayer_can_act = false;
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		Sleep(500);
+		p_symbols->RecordPrevAction(k_action_swag);
 	}
 	else if (p_symbols->f$rais() && p_scraper->GetButtonState(2) && _autoplayer_can_act) 
 	{
@@ -2079,6 +2081,7 @@ void PokerPro::DoAutoplayer(void)
 		_autoplayer_can_act = false;
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		Sleep(500);
+		p_symbols->RecordPrevAction(k_action_raise);
 	}
 	else if (p_symbols->f$call() && p_scraper->GetButtonState(1) && _autoplayer_can_act) 
 	{
@@ -2087,6 +2090,7 @@ void PokerPro::DoAutoplayer(void)
 		_autoplayer_can_act = false;
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		Sleep(500);
+		p_symbols->RecordPrevAction(k_action_call);
 	}
 	else if (p_scraper->GetButtonState(4) && _autoplayer_can_act) 
 	{
@@ -2095,6 +2099,7 @@ void PokerPro::DoAutoplayer(void)
 		_autoplayer_can_act = false;
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		Sleep(500);
+		p_symbols->RecordPrevAction(k_action_check);
 	}
 	else if (_autoplayer_can_act) 
 	{
@@ -2103,6 +2108,7 @@ void PokerPro::DoAutoplayer(void)
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		_autoplayer_can_act = false;
 		Sleep(500);
+		p_symbols->RecordPrevAction(k_action_fold);
 	}
 }
 
