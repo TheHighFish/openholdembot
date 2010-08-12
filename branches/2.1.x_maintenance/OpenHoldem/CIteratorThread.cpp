@@ -88,23 +88,23 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 {
 	CIteratorThread *pParent = static_cast<CIteratorThread*>(pParam);
 
-	int				i = 0, j = 0, k = 0, randfix = 0;
+	int		i = 0, j = 0, k = 0, randfix = 0;
 	unsigned int	nit = 0;
-	CardMask		addlcomCards = {0}, evalCards = {0}, usedCards = {0}, temp_usedCards = {0};
+	CardMask	addlcomCards = {0}, evalCards = {0}, usedCards = {0}, temp_usedCards = {0};
 	unsigned int	ocard[MAX_OPPONENTS*2] = {0}, card = 0, pl_pokval = 0, opp_pokval = 0, opp_pokvalmax = 0;
-	HandVal			pl_hv = 0, opp_hv = 0;
-	double			dummy = 0;
+	HandVal		pl_hv = 0, opp_hv = 0;
+	double		dummy = 0;
 	unsigned int	deck[52] = {0}, x = 0, swap = 0;
-	int				numberOfCards = 0;
+	int		numberOfCards = 0;
 
-	int				sym_br = (int) p_symbols->sym()->br;
-	int				sym_playersplayingbits = (int) p_symbols->sym()->playersplayingbits;
-	double			sym_nbetsround = p_symbols->sym()->nbetsround[0];
-	int				sym_bblindbits = (int) p_symbols->sym()->bblindbits;
-	bool			sym_didcall = (bool) p_symbols->sym()->didcall[0];
-	int				sym_nopponents = (int) p_symbols->sym()->nopponents;
+	int		sym_br = (int) p_symbols->sym()->br;
+	int		sym_playersplayingbits = (int) p_symbols->sym()->playersplayingbits;
+	double		sym_nbetsround = p_symbols->sym()->nbetsround[0];
+	int		sym_bblindbits = (int) p_symbols->sym()->bblindbits;
+	bool		sym_didcall = (bool) p_symbols->sym()->didcall[0];
+	int		sym_nopponents = (int) p_symbols->sym()->nopponents;
 
-	int				nopp = sym_nopponents <= MAX_OPPONENTS ? sym_nopponents : MAX_OPPONENTS;
+	int		nopp = sym_nopponents <= MAX_OPPONENTS ? sym_nopponents : MAX_OPPONENTS;
 
 	// Seed the RNG
 	srand((unsigned)GetTickCount());
@@ -124,14 +124,15 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 		}
 
 		CardMask_OR(usedCards, pParent->_plCards, pParent->_comCards);
+
 		//Correct the protection aganst low f$willplay/f$wontplay - Matrix 2008-12-22
 		if (pParent->_willplay && (pParent->_willplay<nopp*2+1) )
-			pParent->_willplay=nopp*2+1; //too low a value can give lockup
+			pParent->_willplay = nopp*2+1; //too low a value can give lockup
+
 		if (pParent->_wontplay<pParent->_willplay)
 			pParent->_wontplay=pParent->_willplay; //wontplay cannot safely be less than willplay
 
-
-		if (p_symbols->prw1326()->useme==1326 && (sym_br!=1 || p_symbols->prw1326()->preflop==1326))
+		if (p_symbols->prw1326()->useme == 1326 && (sym_br !=1 || p_symbols->prw1326()->preflop==1326))
 		{
 			write_log(3, "ITT: Using Matrix's enhanced prwin.\n");
 
@@ -141,10 +142,10 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 			// loop through active opponents
 			for(i=0; i<=9; i++) 
 			{
-				if (i==(int) p_symbols->sym()->userchair)
+				if (i == (int) p_symbols->sym()->userchair)
 					continue; //skip our own chair!
 
-				if (!((sym_playersplayingbits) & (1<<i)))
+				if (!((sym_playersplayingbits)&(1<<i)))
 					continue; //skip inactive chairs 
 
 				nopp++; //we have to use actual opponents for prw1326 calculations
@@ -156,18 +157,18 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 				{
 					do 
 					{
-						card = rand() & 63;
+						card = rand()&63;
 					}
-					while (card>51 || CardMask_CARD_IS_SET(usedCards, card));
+					while (card > 51 || CardMask_CARD_IS_SET(usedCards, card));
 					
 					CardMask_SET(usedCards, card);
 					ocard[k++] = card;
 
 					do 
 					{
-						card = rand() & 63;
+						card = rand()&63;
 					}
-					while (card>51 || CardMask_CARD_IS_SET(usedCards, card));
+					while (card > 51 || CardMask_CARD_IS_SET(usedCards, card));
 					
 					CardMask_SET(usedCards, card);
 					ocard[k++] = card;
@@ -181,10 +182,10 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 				{ //find a possible hand for this chair NOTE: may want to put in loop limits to prevent hanging
 					do 
 					{
-						j=rand();
-					} while (j>=randfix);
+						j = rand();
+					} while (j >= randfix);
 
-					j = j % p_symbols->prw1326()->chair[i].limit; //j is now any one of the allowed hands
+					j = j%p_symbols->prw1326()->chair[i].limit; //j is now any one of the allowed hands
 
 					if(CardMask_CARD_IS_SET(usedCards, p_symbols->prw1326()->chair[i].rankhi[j] ))
 						continue; //hand contains dead card
@@ -192,16 +193,16 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 					if(CardMask_CARD_IS_SET(usedCards, p_symbols->prw1326()->chair[i].ranklo[j] ))
 						continue; //hand contains dead card
 
-//					if(symbols.prw1326.chair[i].ignore)break; //chair marked as not to be weighted
+					//if(symbols.prw1326.chair[i].ignore)break; //chair marked as not to be weighted
 
 					if(p_symbols->prw1326()->chair[i].level <= p_symbols->prw1326()->chair[i].weight[j])
 						break; //hand marked as always uae
 
 					//check if we want a player who is BB and has not VPIP'd to be analysed further
-//					if(symbols.prw1326.bblimp)
-//					{
-//					if ((symbols.sym.nbetsround[0]<1.1) && ((int)symbols.sym.bblindbits&(1<<i)))break;
-//					}
+					// if(symbols.prw1326.bblimp)
+					//{
+					//if ((symbols.sym.nbetsround[0]<1.1) && ((int)symbols.sym.bblindbits&(1<<i)))break;
+					//}
 
 					//we should really do a 'randfix' here for the case where RAND_MAX is not an integral
 					//multiple of .level, but the bias introduced is trivial compared to other uncertainties.
@@ -224,9 +225,10 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 			for (i=0; i<(5 - pParent->_ncomCards); i++)
 			{
 				do {
-					card = rand() & 63;
+					card = rand()&63;
 				}
 				while (card>51 ||CardMask_CARD_IS_SET(usedCards, card));
+
 				CardMask_SET(usedCards, card);
 				CardMask_SET(addlcomCards, card);
 			}
@@ -242,7 +244,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 			{
 				// random replacement algorithm
 				// opponent cards
-				for (i=0; i<nopp*2; i+=2)
+				for (i=0; i < nopp*2; i+=2)
 				{
 					temp_usedCards=usedCards;
 					do
@@ -250,16 +252,16 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 						usedCards=temp_usedCards; //reset the card mask to clear settings from failed card assignments
 
 						do {
-							card = rand() & 63;
+							card = rand()&63;
 						}
-						while (card>51 || CardMask_CARD_IS_SET(usedCards, card));
+						while (card > 51 || CardMask_CARD_IS_SET(usedCards, card));
 						CardMask_SET(usedCards, card);
 						ocard[i] = card;
 
 						do {
-							card = rand() & 63;
+							card = rand()&63;
 						}
-						while (card>51 || CardMask_CARD_IS_SET(usedCards, card));
+						while (card > 51 || CardMask_CARD_IS_SET(usedCards, card));
 						CardMask_SET(usedCards, card);
 						ocard[i+1] = card;
 
@@ -279,9 +281,9 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 							}
 						}
 					}
-					while (!pParent->InRange(ocard[i], ocard[i+1], pParent->_willplay, 
-							pParent->_wontplay, pParent->_topclip, pParent->_mustplay));
+					while (!pParent->InRange(ocard[i], ocard[i+1], pParent->_willplay, pParent->_wontplay, pParent->_topclip, pParent->_mustplay));
 				}
+
 				// additional common cards
 				CardMask_RESET(addlcomCards);
 				for (i=0; i<(5 - pParent->_ncomCards); i++)
@@ -289,7 +291,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 					do {
 						card = rand() & 63;
 					}
-					while (card>51 ||CardMask_CARD_IS_SET(usedCards, card));
+					while (card > 51 || CardMask_CARD_IS_SET(usedCards, card));
 					CardMask_SET(usedCards, card);
 					CardMask_SET(addlcomCards, card);
 				}
@@ -300,10 +302,9 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 				// swap alogorithm
 				//weighted prwin not implemented for this case
 				numberOfCards=52;
-				for (i=0; i<numberOfCards; i++)
-					deck[i] = i;
+				for (i=0; i<numberOfCards; i++) deck[i] = i;
 
-				while (numberOfCards>=1)
+				while (numberOfCards >= 1)
 				{
 					x = rand() % numberOfCards;
 					numberOfCards--;
@@ -317,7 +318,8 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 				// opponent cards
 				x = 0;
-				for (i=0; i<nopp*2; i++)
+
+				for (i=0; i < nopp*2; i++)
 				{
 					while (CardMask_CARD_IS_SET(usedCards, deck[x]) && x<=51) {
 						x++;
@@ -327,9 +329,9 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 				// additional common cards
 				CardMask_RESET(addlcomCards);
-				for (i=0; i<(5 - pParent->_ncomCards); i++)
+				for (i=0; i < (5 - pParent->_ncomCards); i++)
 				{
-					while (CardMask_CARD_IS_SET(usedCards, deck[x]) && x<=51) {
+					while (CardMask_CARD_IS_SET(usedCards, deck[x]) && x <= 51) {
 						x++;
 					}
 					CardMask_SET(addlcomCards, deck[x++]);
@@ -366,7 +368,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 					opp_pokvalmax = opp_pokval;
 			}
 		}
-		if (i!=nopp+1000)
+		if (i != nopp+1000)
 		{
 			if (pl_pokval > opp_pokvalmax)
 				pParent->_win++;
@@ -374,7 +376,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 				pParent->_tie++;
 		}
 
-		if ((nit/1000 == (int) nit/1000) && nit>=1000)
+		if ((nit/1000 == (int) nit/1000) && nit >= 1000)
 		{
 			write_log(3, "ITT: Progress: %d %.3f %.3f %.3f\n", nit, pParent->_win / (double) nit, pParent->_tie / (double) nit, pParent->_los / (double) nit);
 			iter_vars.set_iterator_thread_progress(nit);
@@ -424,7 +426,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 void CIteratorThread::InitIteratorLoop()
 {
-	int			i = 0, e = SUCCESS;
+	int		i = 0, e = SUCCESS;
 	CGrammar	gram;
 
 	// Set starting status and parameters
@@ -462,6 +464,7 @@ void CIteratorThread::InitIteratorLoop()
 			_nplCards++;
 		}
 	}
+
 	for (i=0; i<=4; i++)
 	{
 		if (iter_vars.ccard(i) != CARD_BACK && iter_vars.ccard(i) != CARD_NOCARD)
@@ -471,7 +474,7 @@ void CIteratorThread::InitIteratorLoop()
 		}
 	}
 
-	//Weighted prwin only for nopponents <=13
+	//Weighted prwin only for nopponents <= 13
 	e = SUCCESS;
 	_willplay = (int) gram.CalcF$symbol(p_formula, "f$willplay", &e);
 	e = SUCCESS;
@@ -482,9 +485,8 @@ void CIteratorThread::InitIteratorLoop()
 	_topclip = (int) gram.CalcF$symbol(p_formula, "f$topclip", &e);
 
 	// Call prw1326 callback if needed
-	if (p_symbols->prw1326()->useme==1326 && 
-		p_symbols->prw1326()->usecallback==1326 && 
-		(p_symbols->sym()->br!=1 || p_symbols->prw1326()->preflop==1326) )
+	if (p_symbols->prw1326()->useme==1326 && p_symbols->prw1326()->usecallback == 1326 && 
+		(p_symbols->sym()->br != 1 || p_symbols->prw1326()->preflop == 1326) )
 	{
 		p_symbols->prw1326()->prw_callback(); //Matrix 2008-05-09
 	}
@@ -513,45 +515,44 @@ int CIteratorThread::InRange(const int card1, const int card2, const int willpla
 	*/
 
 	extern int pair2ranko[170], pair2ranks[170];
-	int i = card1%13;
-	int j = card2%13;
-	int	hrank=0;
+	int 	i = card1%13;
+	int 	j = card2%13;
+	int	hrank = 0;
 
 	if (j>i) //normalise the card order
 	{
-		i=j;
-		j=card1%13;
+		i = j;
+		j = card1%13;
 	}
-	i=i*13+j; //offset into handrank table
 
-	if (card1/13==card2/13)  //same suit
-		hrank=pair2ranks[i]; //suited
+	i = i*13+j; //offset into handrank table
+
+	if (card1/13 == card2/13)  //same suit
+		hrank = pair2ranks[i]; //suited
 	else
-		hrank=pair2ranko[i]; //not suited
+		hrank = pair2ranko[i]; //not suited
 
-	if (hrank>=wontplay)return 0; //no good, never play these
+	if (hrank >= wontplay) return 0; //no good, never play these
 
-	if (hrank<=mustplay) return 1; //OK, assumed opponent will always play these
+	if (hrank <= mustplay) return 1; //OK, assumed opponent will always play these
 
-	if ((hrank>topclip)&&(hrank<=willplay))return 1;//OK, in the 100% region
+	if ((hrank > topclip) && (hrank <= willplay))return 1;//OK, in the 100% region
 
 	//we now handle the probability slopes
-	if (hrank<=topclip) //handle the good cards not likely to be one-betted with
+	if (hrank <= topclip) //handle the good cards not likely to be one-betted with
 	{
-		j=topclip-rand()%topclip;
-		if (hrank>j)return 1; //OK
-		else return 0; //nogood
+		j = topclip-rand()%topclip;
+		if (hrank > j) return 1; //OK
+		else return 0; //no good
 	}
 
 	//now finish with poorish hands of reduced probability
-	j=wontplay-willplay;
-	if (j<3)
-		return 1; //protect ourselves from effect of bad wontplay
+	j = wontplay-willplay;
+	if (j < 3) return 1; //protect ourselves from effect of bad wontplay
 
-	j=willplay+rand()%j;
+	j = willplay+rand()%j;
 
-	if (hrank<j)
-		return 1; //OK
+	if (hrank < j) return 1; //OK
 
 	return 0; //no good
 }

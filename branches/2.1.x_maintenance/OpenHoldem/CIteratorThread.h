@@ -19,8 +19,8 @@ public:
 	const double		prwin() { return _prwin; }
 	const double		prtie() { return _prtie; }
 	const double		prlos() { return _prlos; }
-	const bool			iterator_thread_running() { return _iterator_thread_running; }
-	const bool			iterator_thread_complete() { return _iterator_thread_complete; }
+	const bool		iterator_thread_running() { return _iterator_thread_running; }
+	const bool		iterator_thread_complete() { return _iterator_thread_complete; }
 	const unsigned int	iterator_thread_progress() { return _iterator_thread_progress; }
 	const unsigned int	nit() { return _nit; }
 	const unsigned int	f$p() { return _f$p; }
@@ -51,9 +51,9 @@ private:
 	unsigned int	_br;
 	unsigned int	_pcard[2];
 	unsigned int	_ccard[5];
-	double			_prwin, _prtie, _prlos;
-	bool			_iterator_thread_running;
-	bool			_iterator_thread_complete;
+	double		_prwin, _prtie, _prlos;
+	bool		_iterator_thread_running;
+	bool		_iterator_thread_complete;
 	unsigned int	_iterator_thread_progress;
 
 private:
@@ -73,15 +73,14 @@ public:
 private:
 	// private functions and variables - not available via accessors or mutators
 	static UINT IteratorThreadFunction(LPVOID pParam);
-	int InRange(const int card1, const int card2, const int willplay, 
-				const int wontplay, const int topclip, const int mustplay);
+	int InRange(const int card1, const int card2, const int willplay, const int wontplay, const int topclip, const int mustplay);
 	void InitIteratorLoop(void);
 
 	// variables for iterator loop
 	CardMask		_plCards, _comCards;
-	int				_nplCards, _ncomCards;
+	int			_nplCards, _ncomCards;
 	double			_win, _tie, _los;
-	int				_willplay, _wontplay, _mustplay, _topclip;
+	int			_willplay, _wontplay, _mustplay, _topclip;
 
 	HANDLE			_m_stop_thread;
 	HANDLE			_m_wait_thread;
