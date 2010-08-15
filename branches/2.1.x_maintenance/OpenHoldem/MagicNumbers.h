@@ -15,6 +15,9 @@ const int k_betround_river		= 4;
 // Number of players
 const int k_max_number_of_players = 10;
 
+// Number of (side)pots
+const int k_max_number_of_pots = 10;
+
 // Number of cards
 const int k_number_of_community_cards  = 5;
 const int k_number_of_cards_per_player = 2;

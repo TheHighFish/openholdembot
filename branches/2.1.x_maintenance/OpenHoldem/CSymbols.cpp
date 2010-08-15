@@ -297,6 +297,8 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	for (int i=0; i<(k_max_number_of_players+1); i++)
 	{
 		set_sym_balance(i, 0);
+		//!!!
+		write_log(1, "Resetting currentbet\n");
 		set_sym_currentbet(i, 0);
 	}
 
@@ -769,7 +771,11 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 
 	// chip amounts
 	for (int i=0; i<=10; i++)
+	{
+		//!!!
+		write_log(1, "Resetting currentbet\n");
 		set_sym_currentbet(i, 0);
+	}
 
 	for (int i=0; i<=9; i++)
 		set_sym_stack(i, 0);
@@ -1343,18 +1349,31 @@ void CSymbols::CalcBetBalanceStack(void)
 			if (p_tablelimits->isfl())
 			{
 				if (temp/p_tablelimits->bet()<=4)
+				{
 					set_sym_currentbet(i, temp);									// currentbet0-9
+					//!!!
+					write_log(1, "setting currentbet for FL\n");
+				}
 			}
 
 			// no limit, pot limit
 			else
 			{
-				set_sym_currentbet(i, temp); 										// currentbet0-9
+				set_sym_currentbet(i, temp); 
+				// currentbet0-9
+				//!!!
+				write_log(1, "setting currentbet for NL/PL\n");
 			}
 		}
 	}
 
 	set_sym_currentbet(10, _user_chair_confirmed ? p_scraper->player_bet(_sym.userchair) : 0);			// currentbet
+	//!!!
+	write_log(1, "setting currentbet conditionally\n");
+	write_log(1, "currentbet: user_chair_confirmed: %d\n", _user_chair_confirmed);
+	write_log(1, "currentbet: userchair: %f\n", _sym.userchair);
+	write_log(1, "currentbet: bet: %f\n", p_scraper->player_bet(_sym.userchair));
+
 
 	set_sym_potplayer(0);
 	for (int i=0; i<_sym.nchairs; i++)
@@ -4687,32 +4706,74 @@ const double CSymbols::Chairbit$(const char *a)
 
 void CSymbols::RecordPrevAction(const ActionConstant action)
 {
+	write_log(3, "CSymbols::AdaptSymbolsForUsersAction(%d)\n", action);
 	set_prevaction(action);
 
-	int user_chair = p_symbols->sym()->userchair;
-	int betround = p_symbols->sym()->betround;
+	// !!! Most things temporary disabled, as this causes only problems
+	// Only needed for Gecko
 
-	// Adapting the did...symbols
+	int user_chair = p_symbols->sym()->userchair;
+	int betround = int(p_symbols->sym()->betround);
+
+	double bet = p_tablelimits->bet(_sym.betround);
+	assert(bet > 0);	
+
+	// Initializing "new" values with known old ones
+	double new_pot = _sym.pot;
+	double new_bet = _sym.currentbet[10];
+	double new_number_of_bets = new_bet / bet;
+
+	// Adapting symbols depending on our action
 	switch (action)
 	{
-		case k_action_fold:			
-			// No "didfold"
+		case k_action_fold:	
+			write_log(3, "Adjusting symbols for users action: fold - nothing to do\n");
+			// Did-symbols - no "didfold"
+			// Bets and pot - nothing to adapt
 			break;
 		case k_action_check:
+			write_log(3, "Adjusting symbols for users action: check\n");
+			// Did-symbols
 			set_didchec(4, p_symbols->sym()->didchec[4] + 1);
 			set_didchec(betround-1, p_symbols->sym()->didchec[betround-1] + 1);
+			// Bets and pot
+			new_number_of_bets = _sym.ncallbets;
+			new_bet = new_number_of_bets * bet;
+			new_pot = _sym.pot + new_bet - _sym.currentbet[10];
 			break;
 		case k_action_call:
+			assert(f$call() > 0);
+			write_log(3, "Adjusting symbols for users action: call\n");
+			// Did-symbols
 			set_didcall(4, p_symbols->sym()->didcall[4] + 1);
 			set_didcall(betround-1, p_symbols->sym()->didcall[betround-1] + 1);
+			// Bets and pot
+			new_number_of_bets = _sym.ncallbets;
+			new_bet = new_number_of_bets * bet;
+			new_pot = _sym.pot + new_bet - _sym.currentbet[10];
 			break;
 		case k_action_raise:
+			assert(f$rais() > 0);
+			write_log(3, "Adjusting symbols for users action: raise\n");
+			// Did-symbols
 			set_didrais(4, p_symbols->sym()->didrais[4] + 1);
 			set_didrais(betround-1, p_symbols->sym()->didrais[betround-1] + 1);
+			// Bets and pot
+			new_number_of_bets = _sym.nraisbets;
+			new_bet = new_number_of_bets * bet;
+			new_pot = _sym.pot + new_bet - _sym.currentbet[10];
 			break;
 		case k_action_swag:
+			assert(f$swag() > 0);
+			write_log(3, "Adjusting symbols for users action: swag\n");
+			// Did-symbols
 			set_didswag(4, p_symbols->sym()->didswag[4] + 1);
 			set_didswag(betround-1, p_symbols->sym()->didswag[betround-1] + 1);
+			// Bets and pot
+			// Disabled till OH 2.2 as it causes bad side-effects for the call symbol.
+			new_bet = _sym.currentbet[10]; // f$swag(); // !!! That's not correct, but will be for OH 2.2.0 because of swagadjustment
+			new_number_of_bets = new_bet / bet; 
+			new_pot = _sym.pot + f$swag() - _sym.currentbet[10];
 			break;
 		case k_action_allin:
 			// No "didallin"
