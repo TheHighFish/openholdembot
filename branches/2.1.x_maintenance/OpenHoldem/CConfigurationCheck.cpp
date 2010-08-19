@@ -23,12 +23,12 @@ void CConfigurationCheck::CheckEverything()
 	// Check really critical settings in any case.
 	// OpenHoldem will never work, if these are not right.
 	CheckColourDepth();
+	CheckForSwapMouseBtns();
 
 	// OpenHoldem may or may not work, if these are not right.
 	if (prefs.configurationcheck_input_settings())
 	{
 		CheckKeyboardSettings();
-		CheckForSwapMouseBtns();
 	}
 
 	if (prefs.configurationcheck_theme_settings())
@@ -178,15 +178,15 @@ void CConfigurationCheck::CheckForSwapMouseBtns()
 
 	if (SwapBtns == true)
 	{
-		MessageBox(0, "Swap Mouse Buttons functionality detected.\n\n"
-						"The autoplayer has to generate mouse-events\n" 
-						"via a very low-level system-interface,\n"
-						"and windows might swap these hardware-events\n"
-						"for their inverse logical responses\n\n"
-						"if a casino no longer interprets mouse-events correctly,\n"
-						"then this is out of our area of responsibility.\n\n"
-						"You have Been Warned !",
-						"Caution: Swap Mouse Buttons Activated", MB_OK|MB_ICONWARNING);
+		MessageBox(0, "It appears that your Mouse settings are not configured according to OpenHoldem specifications.\n\n"
+			
+			"The autoplayer has to generate mouse-events via a very low-level system-interface,\n"
+			"and windows might/will swap these hardware-events for their inverse logical responses.\n\n"
+			"This means Casinos clients will no longer interpret mouse-events correctly !\n"
+			"Please Disable the - Swap Mouse Buttons - option in :\n\n"
+			"Control Panel-> Mouse.\n\n"
+			"and restart your user session in order to proceed\n",
+			"Caution: Swap Mouse Buttons Activated", MB_OK|MB_ICONWARNING);
 	}
 }
 

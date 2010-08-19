@@ -976,7 +976,7 @@ IDD_SAPREFS17 DIALOGEX 0, 0, 219, 154
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Check mouse and keyboard settings",IDC_CONFIGURATION_INPUT_SETTINGS,
+    CONTROL         "Check keyboard layout settings (english - UK, US)",IDC_CONFIGURATION_INPUT_SETTINGS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,176,8
     CONTROL         "Check Windows Theme Settings",IDC_CONFIGURATION_THEME_SETTINGS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,23,176,10
