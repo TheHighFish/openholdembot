@@ -17,6 +17,7 @@ private:
 	CString GetValue(CString mhive, int type, CString registry_path, CString key_name);
 	void CheckColourDepth();
 	void CheckKeyboardSettings();
+   void CheckForSwapMouseBtns();
 	void CheckForClassicalTheme();
 	void CheckForFontSmoothing();
 

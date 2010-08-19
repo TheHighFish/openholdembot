@@ -154,7 +154,7 @@ public:
 	const int  rebuy_minimum_time_to_next_try() { return _rebuy_minimum_time_to_next_try; }
 	const CString rebuy_script() { return _rebuy_script; }
 	// Configuration check
-	const bool configurationcheck_keyboard_settings() { return _configurationcheck_keyboard_settings; }
+	const bool configurationcheck_input_settings() { return _configurationcheck_input_settings; }
 	const bool configurationcheck_theme_settings() { return _configurationcheck_theme_settings; }
 	const bool configurationcheck_font_settings() { return _configurationcheck_font_settings; }
 	// Misc
@@ -326,7 +326,7 @@ public:
 	void set_rebuy_script(const CString s) { ENT _rebuy_script = s; WriteReg("rebuy_script", s); }
 
 	// Configuration check
-	void set_configurationcheck_keyboard_settings(const bool b) { ENT _configurationcheck_keyboard_settings = b; WriteReg("configurationcheck_keyboard_settings", b); }
+	void set_configurationcheck_input_settings(const bool b) { ENT _configurationcheck_input_settings = b; WriteReg("configurationcheck_input_settings", b); }
 	void set_configurationcheck_theme_settings(const bool b) { ENT _configurationcheck_theme_settings = b; WriteReg("configurationcheck_theme_settings", b); }
 	void set_configurationcheck_font_settings(const bool b) { ENT _configurationcheck_font_settings = b; WriteReg("configurationcheck_font_settings", b); }
 
@@ -505,7 +505,7 @@ private:
 	CString			_rebuy_script;
 
 	// Configuration check
-	bool			_configurationcheck_keyboard_settings;
+	bool			_configurationcheck_input_settings;
 	bool			_configurationcheck_theme_settings;
 	bool			_configurationcheck_font_settings;
 

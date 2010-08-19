@@ -25,9 +25,10 @@ void CConfigurationCheck::CheckEverything()
 	CheckColourDepth();
 
 	// OpenHoldem may or may not work, if these are not right.
-	if (prefs.configurationcheck_keyboard_settings())
+	if (prefs.configurationcheck_input_settings())
 	{
 		CheckKeyboardSettings();
+      CheckForSwapMouseBtns();
 	}
 
 	if (prefs.configurationcheck_theme_settings())
@@ -160,6 +161,32 @@ void CConfigurationCheck::CheckKeyboardSettings()
 				"If you are new to OpenHoldem or encounter problems\n"
 				"you should fix your keyboard settings\n",
 				"Caution: Improper keyboard settings", MB_OK|MB_ICONWARNING);
+	}
+}
+
+void CConfigurationCheck::CheckForSwapMouseBtns()
+{
+	CString p_szKeySwapBtns = "Control Panel\\Mouse\\";
+	CString p_szNameSwapBtns = "SwapMouseButtons";
+
+	bool SwapBtns = false;
+
+	if (atoi(GetValue("HKCU", 1, p_szKeySwapBtns, p_szNameSwapBtns)) == 1)
+	{
+		SwapBtns = true;
+	}
+
+	if (SwapBtns == true)
+	{
+		MessageBox(0, "Swap Mouse Buttons functionality detected.\n\n"
+         "The autoplayer has to generate mouse-events\n" 
+         "via a very low-level system-interface,\n"
+			"and windows might swap these hardware-events\n"
+         "for their inverse logical responses\n\n"
+         "if a casino no longer interprets mouse-events correctly,\n"
+         "then this is out of our area of responsibility.\n\n"
+			"You have Been Warned !",
+			"Caution: Swap Mouse Buttons Activated", MB_OK|MB_ICONWARNING);
 	}
 }
 

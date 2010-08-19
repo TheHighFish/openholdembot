@@ -189,7 +189,7 @@ void CPreferences::InitDefaults(void)
 	_rebuy_script = "Rebuy.exe";
 
 	// Configuration check
-	_configurationcheck_keyboard_settings = true;
+	_configurationcheck_input_settings = true;
 	_configurationcheck_theme_settings = true;
 	_configurationcheck_font_settings = true;
 
@@ -375,7 +375,7 @@ void CPreferences::ReadPreferences()
 		ReadReg("rebuy_script", &_rebuy_script);
 
 		// Configuration check
-		ReadReg("configurationcheck_keyboard_settings", &_configurationcheck_keyboard_settings);
+		ReadReg("configurationcheck_input_settings", &_configurationcheck_input_settings);
 		ReadReg("configurationcheck_theme_settings", &_configurationcheck_theme_settings);
 		ReadReg("configurationcheck_font_settings", &_configurationcheck_font_settings);
 
