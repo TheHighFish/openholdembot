@@ -78,15 +78,15 @@ CAutoConnector::CAutoConnector()
 	// We want to avoid heavy workload in the connect()-function.
 	ParseAllTableMapsToLoadConnectionData();
 
-   CString dup_status = TablemapConnectionDataDuplicated(); 
+	CString dup_status = TablemapConnectionDataDuplicated(); 
 
 	if(dup_status != "-1")
 	{
 		CString		n = "";
 		n.Format("It seems you have multiple versions of the same map in your scraper folder.\n\n"\
-               "SITENAME = %s\n\n"\
-               "This will cause problems as the autoconnector won't be able to decide which one to use.\n"\
-               "Please remove the superfluous maps from the scraper folder.\n", dup_status);
+					"SITENAME = %s\n\n"\
+					"This will cause problems as the autoconnector won't be able to decide which one to use.\n"\
+					"Please remove the superfluous maps from the scraper folder.\n", dup_status);
 		MessageBox(0, (LPCTSTR) n, "Warning ! Duplicate SiteName ", MB_OK|MB_ICONWARNING);
 	}
 }
