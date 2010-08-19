@@ -106,6 +106,7 @@ struct SWholeMap
 	const HMap	*h$[4];
 	const IMap	*i$;
 	CString filepath;
+	CString sitename;
 };
 
 extern class CTablemap 
