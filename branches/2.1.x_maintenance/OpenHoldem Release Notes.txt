@@ -2,6 +2,16 @@ v2.1.6 2010-07-xx
 =================
 - The symbol "call" got broken by a previous bug-fix.
   Thanks to kTrader for reporting. [F1x3r]
+- Trying to adapt the history-symbols after an action did break
+  some other symbols like currentbetX. 
+  Thanks to BadHabit for reporting. [F1x3r]
+- Detecting the blinds was a bit unreliable
+  ("blinds" means blind-posters here, not bet.amounts),
+  as OpenHoldem assumed, that always the two seats after the button are blinds,
+  even if they were empty. This has now been corrected.
+  Special care has been taken for situations that are headsup or become headsup.
+  Thanks to Mjoe2 for reporting this old problem again and providing a good screenshot 
+  that motivated us to do the fix. [F1x3r]
 
 
 v2.1.5 2010-07-01
