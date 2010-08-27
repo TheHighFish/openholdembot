@@ -414,6 +414,7 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_playersdealtbits(0);
 	set_sym_playersplayingbits(0);
 	set_sym_playersblindbits(0);
+	set_sym_bblindbits(0);
 	set_sym_opponentsseatedbits(0);
 	set_sym_opponentsactivebits(0);
 	set_sym_opponentsdealtbits(0);
@@ -687,6 +688,7 @@ void CSymbols::ResetSymbolsNewHand(void)
 	set_sym_playersseatedbits(0);
 	set_sym_playersdealtbits(0);
 	set_sym_playersblindbits(0);
+	set_sym_bblindbits(0);
 	set_sym_opponentsseatedbits(0);
 	set_sym_opponentsdealtbits(0);
 	set_sym_opponentsblindbits(0);
@@ -1678,6 +1680,7 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 {
 	double	last_bet;
 	bool	sblindfound = false, bblindfound = false, found_userchair = false;
+	int		sbchair = -1;
 	int		FirstPossibleRaiser = 0, LastPossibleRaiser = 0;
 	int		betround = _sym.betround;
 
@@ -1768,45 +1771,6 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 		}
 	}
 
-	for (int i=_sym.dealerchair+1; i<=_sym.dealerchair+p_tablemap->nchairs(); i++)
-	{
-		double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
-
-		if (!sblindfound && p_bet<=p_tablelimits->sblind()) 
-		{
-			sblindfound = true;
-			set_sym_playersblindbits((int) _sym.playersblindbits | (1<<(i%p_tablemap->nchairs())));  // playersblindbits
-
-			if (_user_chair_confirmed && (i%p_tablemap->nchairs()) != _sym.userchair)
-			{
-				set_sym_opponentsblindbits(
-				(int) _sym.opponentsblindbits | (1<<(i%p_tablemap->nchairs())));				// opponentsblindbits
-			}
-
-			if (_user_chair_confirmed && (i%p_tablemap->nchairs()) == _sym.userchair)
-			{
-				set_sym_friendsblindbits((int) _sym.friendsblindbits | (1<<(i%p_tablemap->nchairs())));  // friendsblindbits
-			}
-		}
-
-		else if (!bblindfound && p_bet<=p_tablelimits->bblind())
-		{
-			bblindfound = true;
-			set_sym_bblindbits(0); //prwin change
-			set_sym_playersblindbits((int) _sym.playersblindbits | (1<<(i%p_tablemap->nchairs())));	// playersblindbits
-			if (_user_chair_confirmed && (i%p_tablemap->nchairs()) != _sym.userchair)
-			{
-				set_sym_opponentsblindbits((int) _sym.opponentsblindbits | (1<<(i%p_tablemap->nchairs())));	// opponentsblindbits
-				set_sym_bblindbits(  //prwin change
-				(int) _sym.bblindbits | (1<<(i%p_tablemap->nchairs())));			// big blind bit
-			}
-		}
-	}
-
-	set_sym_nplayersblind(bitcount(_sym.playersblindbits));								// nplayersblind
-	set_sym_nopponentsblind(bitcount(_sym.opponentsblindbits));							// nopponentsblind
-	set_sym_nfriendsblind(bitcount(_sym.friendsblindbits));								// nfriendsblind
-
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		if ((p_scraper->card_player(i, 0) != CARD_NOCARD 
@@ -1880,6 +1844,82 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 	set_sym_nfriendsactive(bitcount(_sym.friendsactivebits));							// nfriendsactive
 	set_sym_nfriendsdealt(bitcount(_sym.friendsdealtbits));								// nfriendsdealt
 	set_sym_nfriendsplaying(bitcount(_sym.friendsplayingbits));							// nfriendsplaying
+
+	// Blind bits.
+	if (_sym.br == 1 && !DidAct())
+	{
+		if (_sym.nplayersdealt >= 3)
+		{
+			for (int i=_sym.dealerchair+1; i<=_sym.dealerchair+p_tablemap->nchairs(); i++)
+			{
+				double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
+
+				if (!sblindfound && p_bet <= p_tablelimits->sblind() && p_bet > 0) 
+				{
+					sblindfound = true;
+					sbchair = i%p_tablemap->nchairs();
+					set_sym_playersblindbits(1<<(i%p_tablemap->nchairs()));  // playersblindbits
+
+					if (_user_chair_confirmed && i%p_tablemap->nchairs() != _sym.userchair)
+						set_sym_opponentsblindbits((int) _sym.opponentsblindbits | (1<<(i%p_tablemap->nchairs())));	// opponentsblindbits
+				}
+
+				else if (sblindfound && !bblindfound && p_bet<=p_tablelimits->bblind() && p_bet > p_tablelimits->sblind())
+				{
+					if (i%p_tablemap->nchairs() != sbchair)
+					{
+						bblindfound = true;
+						//prwin change
+						set_sym_bblindbits(1<<(i%p_tablemap->nchairs()));			// big blind bit
+						set_sym_playersblindbits((int) _sym.playersblindbits | (1<<(i%p_tablemap->nchairs())));	// playersblindbits
+
+						if (_user_chair_confirmed && i%p_tablemap->nchairs() != _sym.userchair)
+							set_sym_opponentsblindbits((int) _sym.opponentsblindbits | (1<<(i%p_tablemap->nchairs())));	// opponentsblindbits
+					}
+				}
+			}
+		}
+
+		// HU
+		else if (_sym.nplayersdealt == 2)
+		{
+			// Dealerchair Playing => real HU
+			if ((int)_sym.playersplayingbits&(1<<(int)_sym.dealerchair))
+			{
+				bblindfound = true;
+				sblindfound = true;
+				sbchair = _sym.dealerchair;
+				//prwin change
+				set_sym_bblindbits((int)_sym.playersplayingbits&(~(1<<((int)sbchair)))); // bblindbits
+			}
+	
+			else
+			{
+				// Reverse search for bb
+				for (int i=_sym.dealerchair+p_tablemap->nchairs()-1; i>=_sym.dealerchair; i--)
+				{
+					double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
+
+					// 1st before dealer is bb
+					if ((!sblindfound || !bblindfound) && p_bet <= p_tablelimits->bblind() && p_bet > p_tablelimits->sblind()) 
+					{
+						sblindfound = true;
+						bblindfound = true;
+						//prwin change
+						set_sym_bblindbits(1<<(i%p_tablemap->nchairs())); // bblindbits
+					}
+				}
+			}
+
+			set_sym_playersblindbits(_sym.playersdealtbits);
+			
+			if (_user_chair_confirmed)
+				set_sym_opponentsblindbits((int)_sym.playersdealtbits&(~(1<<((int)_sym.userchair)))); // nopponentsblindbits
+		}
+
+		set_sym_nplayersblind(bitcount(_sym.playersblindbits));								// nplayersblind
+		set_sym_nopponentsblind(bitcount(_sym.opponentsblindbits));							// nopponentsblind
+	}
 
 	found_userchair = false;
 	for (int i=_sym.dealerchair+1; i<=_sym.dealerchair+p_tablemap->nchairs() && _user_chair_confirmed; i++)
@@ -4471,6 +4511,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "fiveofakind", 11)==0 && strlen(a)==11)				return _sym.fiveofakind;
 
 	// callbits, raisbits, etc. 
+	if (memcmp(a, "bblindbits", 10)==0 && strlen(a)==10)  				return _sym.bblindbits;
 	if (memcmp(a, "raisbits", 8)==0 && strlen(a)==9)  					return _sym.raisbits[a[8]-'0'];
 	if (memcmp(a, "callbits", 8)==0 && strlen(a)==9)  					return _sym.callbits[a[8]-'0'];
 	if (memcmp(a, "foldbits", 8)==0 && strlen(a)==9)  					return _sym.foldbits[a[8]-'0'];
