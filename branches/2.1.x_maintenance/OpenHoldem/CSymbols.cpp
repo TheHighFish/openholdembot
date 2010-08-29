@@ -3947,7 +3947,7 @@ void CSymbols::CalcSecondaryFormulas(void)
 	write_log(3, "Secondary formulas; f$rebuy: %f\n", p_symbols->f$rebuy());
 	
 	e = SUCCESS;
-	set_f$delay(gram.CalcF$symbol(p_formula, "f$delay", &e));
+	set_f$delay(gram.CalcF$symbol(p_formula, "f$delay", prefs.trace_enabled(), &e));
 	write_log(3, "Secondary formulas; f$delay: %f\n", p_symbols->f$delay());
 	
 	e = SUCCESS;
