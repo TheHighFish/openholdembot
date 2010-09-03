@@ -1,3 +1,21 @@
+v2.1.7 2010-09-xx
+=================
+BUG FIXES:
+- Fixed broken title of replay-frames, which has to be in the first line as plain text
+  (which is not standard HTML, but good old WinHoldem design).
+  Thanks to qwerty for reporting the problem and to Poker_Dog 
+  for pointing out the mistake. [THF]
+- Default for user-dll (preferences.dll_name) is no longer "user.dll", but "".
+  Setting the string to "user.dll" whenever it was empty
+  caused problems for the people who wanted to have it undefined:
+  http://www.maxinmontreal.com/forums/viewtopic.php?f=112&t=11556
+  Thanks to JumpingFences for pointing out the problem. [THF]
+- OpenHoldem was loading some DLLs using absolute paths.
+  This was breaking standard windows behaviour:
+  http://msdn.microsoft.com/en-us/library/ms682586(VS.85).aspx
+  Thanks to JumpingFences for pointing out the problem and his detailed explanations. [THF]
+
+
 v2.1.6 2010-08-29
 =================
 BUG FIXES:
