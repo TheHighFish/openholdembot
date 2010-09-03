@@ -146,7 +146,7 @@ char * keywords = // Standard functions
 				  // ICM calculator
 				  "icm icm_fold icm_callwin icm_calllose icm_calltie "
 				  "icm_alliwin0 icm_alliwin1 icm_alliwin2 icm_alliwin3 icm_alliwin4 "
-				  "icm_alliwin5 icm_alliwin8 icm_alliwin7 icm_alliwin8 icm_alliwin9 "
+				  "icm_alliwin5 icm_alliwin6 icm_alliwin7 icm_alliwin8 icm_alliwin9 "
 				  "icm_allilose0 icm_allilose1 icm_allilose2 icm_allilose3 icm_allilose4 "
 				  "icm_allilose5 icm_allilose6 icm_allilose7 icm_allilose8 icm_allilose9 "
 				  "icm_alliwinSB icm_alliwinBB icm_alliwinUTG icm_alliwinUTG1 icm_alliwinUTG2 icm_alliwinUTG3 "
