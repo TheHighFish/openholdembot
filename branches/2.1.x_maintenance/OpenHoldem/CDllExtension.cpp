@@ -44,6 +44,7 @@ void CDllExtension::LoadDll(const char * path)
 	// try to load specific patch if passed in as a parameter
 	if (strlen(path))
 	{
+		SetCurrentDirectory(_startup_path);
 		_hmod_dll = LoadLibrary(path);
 		err1 = GetLastError();
 
@@ -79,18 +80,16 @@ void CDllExtension::LoadDll(const char * path)
 		// Try to load dll from the ##dll## section, if it is specified
 		if (formula_dll != "")
 		{
-			t.Format("%s\\%s", _startup_path, formula_dll.GetString());
 			SetCurrentDirectory(_startup_path);
-			_hmod_dll = LoadLibrary(t.GetString());
+			_hmod_dll = LoadLibrary(formula_dll.GetString());
 			err1 = GetLastError();
 		}
 
 		// If dll is still not loaded, load from name in Edit/Preferences
 		if (_hmod_dll==NULL)
 		{
-			t.Format("%s\\%s", _startup_path, prefs.dll_name().GetString());
 			SetCurrentDirectory(_startup_path);
-			_hmod_dll = LoadLibrary(t.GetString());
+			_hmod_dll = LoadLibrary(prefs.dll_name().GetString());
 			err2 = GetLastError();
 		}
 

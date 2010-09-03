@@ -677,6 +677,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			theApp.UnloadScraperDLL();
 			CString filename = p_tablemap->scraperdll();
 			if (!filename.IsEmpty()) {
+				SetCurrentDirectory(_startup_path);
 				theApp._scraper_dll = LoadLibrary(filename);
 			}
 
@@ -713,6 +714,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			theApp.Unload_ScraperPreprocessor_DLL();
 			filename = p_tablemap->scraperpreprocessor_dll();
 			if (!filename.IsEmpty()) {
+				SetCurrentDirectory(_startup_path);
 				theApp._scraperpreprocessor_dll = LoadLibrary(filename);
 			}
 
