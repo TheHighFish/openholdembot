@@ -60,7 +60,7 @@ enum ActionConstant
 };
 
 // 4 digit names of action-constants for use in the autoplayer-log.
-const char*  k_action_constant_names[k_action_allin+1] =
+static const char*  k_action_constant_names[k_action_allin+1] =
 {"UNDF", "FOLD", "CHEC", "CALL", "RAIS", "SWAG", "ALLI"};
 
 // for rank to card translation

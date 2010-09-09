@@ -891,6 +891,7 @@ private:
 	static double _dealerchair_last;
 	static double _handnumber_last;
 	static int _br_last;
+	static int _bblindbits_last;
 	static unsigned int _player_card_last[2];
 
 	CCritSec			m_critsec;
