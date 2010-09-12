@@ -1,4 +1,4 @@
-v2.1.7 2010-09-xx
+v2.1.7 2010-09-12
 =================
 BUG FIXES:
 - Fixed broken title of replay-frames, which has to be in the first line as plain text
@@ -17,7 +17,17 @@ BUG FIXES:
 - OpenHoldem crashed in optimized release-mode after using the formula editor
   very late at termination of the program, as a string object got accessed
   that had already been released. Thanks to JumpingFences for fixing the bug
-  and to BillW for testing and confriming the fix. [THF]
+  and to BillW for testing and confirming the fix. [THF]
+- The symbol "playersblindbits" was incorrectly assuming, that always the next two chairs 
+  after the dealer were the blinds. This has now been fixed.
+  Thanks to Mjoe2 for reporting the problem [F1x3r]
+- Some casinos (currently we are only aware of FullTilt) use a "dead button", 
+  if one of the blinds did bust in the previous hand.
+  This caused problems with the code to detect blinds and with the ICM symbols.
+  Thanks to CrumbleSunday for reporting the issue and for Poker_Dog 
+  for contributing to the solution. [F1x3r]
+- Fixed a memory leak in the formula editor. 
+  Thanks to JumpingFences for reporting the problem and fixing the bug. [THF]
 
 
 v2.1.6 2010-08-29
