@@ -4,6 +4,8 @@
 // menu options, menu edit commands
 
 #include "stdafx.h"
+#include "DialogFormulaScintilla.h"
+
 #include <io.h>
 #include "CAutoplayer.h"
 #include "CFormula.h"
@@ -13,7 +15,6 @@
 #include "CScraper.h"
 #include "CSessionCounter.h"
 #include "CSymbols.h"
-#include "DialogFormulaScintilla.h"
 #include "DialogHandList.h"
 #include "DialogNew.h"
 #include "DialogRename.h"
@@ -48,7 +49,7 @@ char * keywords = // Standard functions
 				  // Rounds / Positions
 				  "betround br betposition dealposition callposition seatposition dealpositionrais betpositionrais "
 				  // Probabilities
-				  "prwin prtie prlos prwinnow prlosnow random randomhand randomround randomround1 randomround2 randomround3 randomround4 "
+				  "prwin prtie prlos prwinnow prlosnow random randomhand randomheartbeat randomround randomround1 randomround2 randomround3 randomround4 "
 				  // F$P Formula
 				  "defcon isdefmode isaggmode "
 				  // Chip Amounts
@@ -197,9 +198,6 @@ static UINT indicators[] =
 	ID_SEPARATOR,		   // status line indicator
 	ID_INDICATOR_FORMULA_CURPOS,
 };
-
-// for rank to card translation
-static char * card_chars = "23456789TJQKA";
 
 // Window map tells CWinMgr how to position dialog controls
 BEGIN_WINDOW_MAP(ScintillaFormulaMap)
@@ -1738,6 +1736,34 @@ void CDlgFormulaScintilla::OnSettings()
 	}
 }
 
+CString CDlgFormulaScintilla::ExtractCommentFromHandList(CString HandListAsString)
+{
+	int		length = HandListAsString.GetLength();
+	bool	inside_comment = false;
+	CString	comment = "";
+
+	for (int i=0; i<length; i++)
+	{
+		char current_char = HandListAsString.GetAt(i);
+		// We check only for a single slash as beginning of a comment,
+		// but that should be ok for handlists (not for formulas).
+		if (current_char == '/')
+		{
+			inside_comment = true;
+		}
+		if (inside_comment)
+		{
+			comment += current_char;
+		}
+		if (current_char == '\n')
+		{
+			// Comments end automatically at the end of the line
+			inside_comment = false;
+		}
+	}
+	return comment;
+}
+
 void CDlgFormulaScintilla::OnHandList() 
 {
 	CDlgHandList		myDialog;
@@ -1745,14 +1771,16 @@ void CDlgFormulaScintilla::OnHandList()
 	int					list_index = 0, i = 0, j = 0;
 	CMenu				*file_menu = this->GetMenu()->GetSubMenu(0);
 	CString				token = "", hand = "", newstring = "";
-	bool				do_crlf = false;
-
+	
 	// Find appropriate list in the internal structure
 	list_index = -1;
 	for (i=0; i<m_wrk_formula.formula()->mHandList.GetSize() && list_index == -1; i++) 
 	{
 		if (m_wrk_formula.formula()->mHandList[i].list == s)
+		{
 			list_index = i;
+			break;
+		}
 	}
 	if (list_index == -1)  return;
 
@@ -1764,65 +1792,12 @@ void CDlgFormulaScintilla::OnHandList()
 	// Start dialog
 	if (myDialog.DoModal() == IDOK) 
 	{
-
-		// Save handlist as string and update display
-		newstring = "";
-		// pairs
-		do_crlf = false;
-		for (i=12; i>=0; i--)
-		{
-			if (myDialog.checked[i][i])
-			{
-				newstring += card_chars[i];
-				newstring += card_chars[i];
-				newstring += "  ";
-				do_crlf = true;
-			}
-		}
-
-		if (do_crlf)
-			newstring += "\r\n";
-
-		// suiteds
-		do_crlf = false;
-		for (i=12; i>=1; i--)
-		{
-			for (j=i-1; j>=0; j--)
-			{
-				if (myDialog.checked[i][j])
-				{
-					newstring += card_chars[i];
-					newstring += card_chars[j];
-					newstring += "s ";
-					do_crlf = true;
-				}
-			}
-		}
-
-		if (do_crlf)
-			newstring += "\r\n";
-
-		// unsuiteds
-		do_crlf = false;
-		for (i=11; i>=0; i--)
-		{
-			for (j=12; j>=i+1; j--)
-			{
-				if (myDialog.checked[i][j])
-				{
-					newstring += card_chars[i];
-					newstring += card_chars[j];
-					newstring += "  ";
-					do_crlf = true;
-				}
-			}
-		}
-
-		if (do_crlf)
-			newstring += "\r\n";
+		CString old_comment = ExtractCommentFromHandList(m_wrk_formula.formula()->mHandList[list_index].list_text);
+		CString new_handlist_without_comment = myDialog.GetHandListAsString();
+		CString new_handlist_with_comment = old_comment + new_handlist_without_comment;
 
 		// save it internally
-		m_wrk_formula.set_list_text(list_index, newstring);
+		m_wrk_formula.set_list_text(list_index, new_handlist_with_comment);
 
 		// update scintilla window
 		CScintillaWnd *pCurScin = reinterpret_cast<CScintillaWnd *>(m_FormulaTree.GetItemData(m_FormulaTree.GetSelectedItem()));
@@ -2627,21 +2602,31 @@ void CDlgFormulaScintilla::OnBnClickedApplySave()
 	pMyMainWnd->SendMessage(WM_COMMAND, ID_FILE_SAVE, 0);
 }
 
+void CDlgFormulaScintilla::WarnAboutAutoplayerWhenApplyingFormulaAndTurnAutoplayerOff()
+{
+	MessageBox("Editing the formula while the autoplayer is enabled\n"
+		"is an extremely insane idea\n"
+		"(like changing wheels while driving on the highway).\n\n"
+		"We will have to turn the autoplayer off,\n"
+		"but nevertheless you might lose your complete formula.\n"
+		"Please make a backup and then press ok\n"
+		"and never ever do such stupid things again.",
+		"Warning", MB_OK | MB_TOPMOST);
+	// There might be a race-condition somewhere, nobody really knows.
+	// Trying to reduce the risk for evil outcomes...
+	Sleep(1000);
+	p_autoplayer->set_autoplayer_engaged(false);	
+}
+
 void CDlgFormulaScintilla::OnBnClickedApply() 
 {
 	CMenu				*file_menu = this->GetMenu()->GetSubMenu(0);
 	COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
-	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	// If autoplayer is engaged, dis-engage it
 	if (p_autoplayer->autoplayer_engaged())
 	{
-		if (OH_MessageBox_Interactive("Autoplayer is currently enabled.\nWould you like to disable the autoplayer?",
-					   "Disable Autoplayer?", MB_YESNO) == IDYES)
-		{
-			pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
-			p_autoplayer->set_autoplayer_engaged(false);
-		}
+		WarnAboutAutoplayerWhenApplyingFormulaAndTurnAutoplayerOff();
 	}
 
 	// Save settings to registry
@@ -2698,12 +2683,7 @@ void CDlgFormulaScintilla::OnBnClickedOk()
 	// If autoplayer is engaged, dis-engage it
 	if (p_autoplayer->autoplayer_engaged())
 	{
-		if (OH_MessageBox_Interactive("Autoplayer is currently enabled.\nWould you like to disable the autoplayer?",
-					   "Disable Autoplayer?", MB_YESNO) == IDYES)
-		{
-			pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
-			p_autoplayer->set_autoplayer_engaged(false);
-		}
+		WarnAboutAutoplayerWhenApplyingFormulaAndTurnAutoplayerOff();		
 	}
 
 	StopAutoButton();
@@ -3028,67 +3008,6 @@ void CDlgFormulaScintilla::OnFormulaViewSortudf()
 		SortUdfTree();
 
 	HandleEnables(true);
-#if 0 // Spew's work in progress printing
-	CPrintDialog dlg(FALSE);
-	if (dlg.DoModal() == IDOK)
-	{
-		// Get a handle to the printer device context (DC).
-		HDC hdc = dlg.GetPrinterDC();
-		CDC *pPrinterDC = CDC::FromHandle(hdc);
-		ASSERT(hdc);
-
-		AfxInitRichEdit2();
-		CRichEditCtrl re;
-		CRect rect(0, 0, 100, 100);
-		re.Create(WS_CHILD|ES_MULTILINE, rect, this, 111122);
-		re.SetSel(0,1);
-		long selStart = m_pActiveScinCtrl->GetSelectionStart();
-		long selEnd = GetSelectionEnd();
-		m_pActiveScinCtrl->SelectAll();
-		m_pActiveScinCtrl->Copy();
-		m_pActiveScinCtrl->SendMessage(SCI_SETSEL, selStart, selEnd);
-		re.Paste();
-
-		CHARFORMAT2 cf;
-		re.GetDefaultCharFormat(cf);
-		cf.
-
-		DOCINFO docinfo;
-		memset(&docinfo, 0, sizeof(docinfo));
-		docinfo.cbSize = sizeof(docinfo);
-		docinfo.lpszDocName = _T("Spew Test");
-
-		if (pPrinterDC->StartDoc(&docinfo) >= 0) {
-			if (pPrinterDC->StartPage() >= 0) {
-				FORMATRANGE fr;
-				// Get the page width and height from the printer.
-				long lPageWidth = ::MulDiv(pPrinterDC->GetDeviceCaps(PHYSICALWIDTH), 1440, pPrinterDC->GetDeviceCaps(LOGPIXELSX));
-				long lPageHeight = ::MulDiv(pPrinterDC->GetDeviceCaps(PHYSICALHEIGHT), 1440, pPrinterDC->GetDeviceCaps(LOGPIXELSY));
-				CRect rcPage(0, 0, lPageWidth, lPageHeight);
-
-				// Format the text and render it to the printer.
-				fr.hdc = pPrinterDC->m_hDC;
-				fr.hdcTarget = pPrinterDC->m_hDC;
-				fr.rc = rcPage;
-				fr.rcPage = rcPage;
-				fr.chrg.cpMin = 0;
-				fr.chrg.cpMax = -1;
-				re.FormatRange(&fr, TRUE);
-
-				// Update the display with the new formatting.
-				RECT rcClient;
-				re.GetClientRect(&rcClient);
-				re.DisplayBand(&rcClient);
-				pPrinterDC->EndPage();
-			}
-			pPrinterDC->EndDoc();
-		}
-		re.DestroyWindow();
-
-	   // Clean up.
-	   pPrinterDC->DeleteDC();
-	}
-#endif
 }
 
 void CDlgFormulaScintilla::SortUdfTree()
@@ -3397,7 +3316,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "prtie", "the probability of pushing this hand (0.000 - 1.000)");
 	AddSymbol(parent, "prwinnow", "probability that all opponents have a lower hand right now");
 	AddSymbol(parent, "prlosnow", "probability that any opponents have a higher hand right now");
-	AddSymbol(parent, "random", "random number between (0.000-1.000)");
+	AddSymbol(parent, "random", "random number between (0.000-1.000) - gets evaluated once per heartbeat.");
 	AddSymbol(parent, "randomhand", "random number between (0.000-1.000) for the hand");
 	AddSymbol(parent, "randomround", "random number between (0.000-1.000) for the current round");
 	AddSymbol(parent, "randomround1 - randomround4", "random number between (0.000-1.000) for round 1 - 4");
@@ -3889,3 +3808,4 @@ bool CDlgFormulaScintilla::WriteProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CF
 
 	return pApp->WriteProfileString(lpszKey, lpszVal, s)!=0;
 }
+

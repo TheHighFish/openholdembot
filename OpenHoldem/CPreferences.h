@@ -86,7 +86,6 @@ public:
 	const int log_symbol_max_log() { return _log_symbol_max_log; }
 	// Tracing
 	const bool trace_enabled() { return _trace_enabled; }
-	const bool trace_functions(unsigned int i) { return _trace_functions[i]; }
 	// Logging and debugging
 	const bool disable_msgbox() { return _disable_msgbox; }
 	const int log_level() { return _log_level; }
@@ -158,7 +157,7 @@ public:
 	const int  rebuy_minimum_time_to_next_try() { return _rebuy_minimum_time_to_next_try; }
 	const CString rebuy_script() { return _rebuy_script; }
 	// Configuration check
-	const bool configurationcheck_keyboard_settings() { return _configurationcheck_keyboard_settings; }
+	const bool configurationcheck_input_settings() { return _configurationcheck_input_settings; }
 	const bool configurationcheck_theme_settings() { return _configurationcheck_theme_settings; }
 	const bool configurationcheck_font_settings() { return _configurationcheck_font_settings; }
    	// Lazy scraping
@@ -251,8 +250,6 @@ public:
 
 	// Tracing
 	void set_trace_enabled(const bool b) { ENT _trace_enabled = b; WriteReg("trace_enabled", b); }
-	void set_trace_functions(const unsigned int i, const bool b) 
-	{ ENT _trace_functions[i] = b; CString regValue; regValue.Format("trace_functions%d", i+1);	WriteReg(regValue, b); }
 
 	// Logging and debugging
 	void set_disable_msgbox(const bool b) { ENT _disable_msgbox = b; WriteReg("disable_msgbox", b); }
@@ -336,7 +333,7 @@ public:
 	void set_rebuy_script(const CString s) { ENT _rebuy_script = s; WriteReg("rebuy_script", s); }
 
 	// Configuration check
-	void set_configurationcheck_keyboard_settings(const bool b) { ENT _configurationcheck_keyboard_settings = b; WriteReg("configurationcheck_keyboard_settings", b); }
+	void set_configurationcheck_input_settings(const bool b) { ENT _configurationcheck_input_settings = b; WriteReg("configurationcheck_input_settings", b); }
 	void set_configurationcheck_theme_settings(const bool b) { ENT _configurationcheck_theme_settings = b; WriteReg("configurationcheck_theme_settings", b); }
 	void set_configurationcheck_font_settings(const bool b) { ENT _configurationcheck_font_settings = b; WriteReg("configurationcheck_font_settings", b); }
 
@@ -375,24 +372,24 @@ private:
 	unsigned int		_swag_delay_1;
 	unsigned int		_swag_delay_2;
 	unsigned int		_swag_delay_3;
-	bool			_ap_auto;
-	bool			_focus_detect;
-	bool			_swag_use_comma;
-	bool			_calc_only_my_turn;
-	bool			_need_balance_stability;
+	bool				_ap_auto;
+	bool				_focus_detect;
+	bool				_swag_use_comma;
+	bool				_calc_only_my_turn;
+	bool				_need_balance_stability;
 
 	// Dll extension
-	bool			_dll_always_send_state;
-	bool			_dll_load_on_startup;
-	CString			_dll_name;
+	bool				_dll_always_send_state;
+	bool				_dll_load_on_startup;
+	CString				_dll_name;
 
 	// Scraper
 	unsigned int		_scrape_delay;
 
 	// Symbols
-	double			_sym_av_time;
-	CString			_sym_handrank_value;
-	bool			_sym_disable_caching;
+	double				_sym_av_time;
+	CString				_sym_handrank_value;
+	bool				_sym_disable_caching;
 
 	// ICM
 	double			_icm_prize1;
@@ -405,7 +402,7 @@ private:
 	bool			_replay_record;
 	bool			_replay_record_every_change_playing;
 	bool			_replay_record_every_change;
-	int			_replay_max_frames;
+	int				_replay_max_frames;
 
 	// Poker Tracker
 	CString			_pt_ip_addr;
@@ -414,8 +411,8 @@ private:
 	CString			_pt_user;
 	CString			_pt_pass;
 	bool			_pt_disable;
-	int			_pt_update_delay;
-	int			_pt_cache_refresh;
+	int				_pt_update_delay;
+	int				_pt_cache_refresh;
 
 	// Perl
 	CString			_perl_default_formula;
@@ -425,22 +422,21 @@ private:
 
 	//  PokerChat
 	bool			_chat_enabled;
-	int			_chat_min_delay;
-	int			_chat_random_delay;
+	int				_chat_min_delay;
+	int				_chat_random_delay;
 
 	// Log Symbol
 	bool			_log_symbol_enabled;
-	int			_log_symbol_max_log;
+	int				_log_symbol_max_log;
 
 	// Tracing
 	bool			_trace_enabled;
-	bool			_trace_functions[nTraceFunctions];
 
 	// Logging & MessageBox
 	bool			_disable_msgbox;
-	int			_log_level;
-	int			_log_level_pt;
-	int			_log_max_logsize;
+	int				_log_level;
+	int				_log_level_pt;
+	int				_log_max_logsize;
 
 	// PPro
 	CString			_ppro_hostname;
@@ -481,7 +477,7 @@ private:
 	double			_bblind;
 	double			_bbet;
 	double			_ante;
-	int			_gametype;
+	int				_gametype;
 
 	// Formula editor
 	bool			_expand_auto;
@@ -491,22 +487,22 @@ private:
 	bool			_expand_udf;
 	bool			_udf_sort;
 	bool			_udf_group;
-	int			_equal;
-	int			_precision;
+	int				_equal;
+	int				_precision;
 
 	// Debug logging
 	bool			_fdebuglog;
 	bool			_fdebuglog_myturn;
 
 	// Validator
-	int			_validator_enabled;
+	int				_validator_enabled;
 	bool			_validator_stop_on_error;
 	bool			_validator_use_heuristic_rules;
 	bool			_validator_shoot_replayframe_on_error;
 
 	// Auto-connector
-	int			_autoconnector_connection_method;
-	int			_autoconnector_when_to_connect;
+	int				_autoconnector_connection_method;
+	int				_autoconnector_when_to_connect;
 	bool			_autoconnector_close_when_table_disappears;
 
 	// GUI
@@ -521,7 +517,7 @@ private:
 	CString			_rebuy_script;
 
 	// Configuration check
-	bool			_configurationcheck_keyboard_settings;
+	bool			_configurationcheck_input_settings;
 	bool			_configurationcheck_theme_settings;
 	bool			_configurationcheck_font_settings;
 

@@ -11,6 +11,7 @@ public:
 	CDlgHandList(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CDlgHandList();
 	virtual BOOL OnInitDialog();
+	CString GetHandListAsString();
 
 	enum { IDD = IDD_HANDLIST };
 	int		hand_list_num;

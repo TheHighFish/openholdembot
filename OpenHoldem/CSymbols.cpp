@@ -95,10 +95,26 @@ int handrank2652[10][169] =
 
 CSymbols::CSymbols()
 {
-	int			i = 0, j = 0, k = 0, vndx = 0;
-	char		*ptr = NULL;
-
 	ResetSymbolsFirstTime();
+	InitHandranktTableForPrwin();
+
+	// Betround will be indirectly used 
+	// when a formula gets loaded and verified.
+	// (it gets used for symbol lookups).
+	// So it should have a meaningful value,
+	// even before we connect to a table.
+	set_sym_betround(k_betround_preflop);
+}
+
+CSymbols::~CSymbols()
+{
+}
+
+void CSymbols::InitHandranktTableForPrwin()
+{
+	int		i = 0, j = 0, k = 0; 
+	int		vndx = 0;
+	char	*ptr = NULL;
 
 	//Initialise the handrank tables used by prwin
 	vndx=0; //used to provide an offset into the vanilla table
@@ -205,10 +221,6 @@ CSymbols::CSymbols()
 	set_sym_betround(k_betround_preflop);
 }
 
-CSymbols::~CSymbols()
-{
-}
-
 void CSymbols::ResetSymbolsFirstTime(void)
 {
 	// Table-limits
@@ -247,8 +259,10 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_chair(0);
 	set_sym_userchair(0);
 	set_sym_dealerchair(0);
+
 	set_sym_raischair_previous_frame(-1);
-	set_sym_raischair(0);
+	set_sym_raischair(-1);
+
 	set_user_chair_confirmed(false);
 
 	// rounds positions
@@ -283,6 +297,8 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	for (int i=0; i<(k_max_number_of_players+1); i++)
 	{
 		set_sym_balance(i, 0);
+		//!!!
+		write_log(1, "Resetting currentbet\n");
 		set_sym_currentbet(i, 0);
 	}
 	reset_sym_maxbalance();
@@ -388,6 +404,7 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_playersdealtbits(0);
 	set_sym_playersplayingbits(0);
 	set_sym_playersblindbits(0);
+	set_sym_bblindbits(0);
 	set_sym_opponentsseatedbits(0);
 	set_sym_opponentsactivebits(0);
 	set_sym_opponentsdealtbits(0);
@@ -608,24 +625,26 @@ void CSymbols::ResetSymbolsNewHand(void)
 
 	// list tests
 	for (int i=0; i<MAX_HAND_LISTS; i++)
+	{
 		set_sym_islist(i, 0);
+	}
 
 	// hand tests
-	for (int i=0; i<=1; i++)
+	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
 		set_sym_$$pc(i, WH_NOCARD);
 		set_sym_$$pr(i, 0);
 		set_sym_$$ps(i, 0);
 	}
 
-	for (int i=0; i<=4; i++)
+	for (int i=0; i<k_number_of_community_cards; i++)
 	{
 		set_sym_$$cc(i, WH_NOCARD);
 		set_sym_$$cs(i, 0);
 		set_sym_$$cr(i, 0);
 	}
 
-	for (int i=0; i<=3; i++)
+	for (int i=0; i<=3; i++) // WTF is 3???
 	{
 		_phandval[i]=0;
 		_chandval[i]=0;
@@ -642,6 +661,7 @@ void CSymbols::ResetSymbolsNewHand(void)
 	set_sym_playersseatedbits(0);
 	set_sym_playersdealtbits(0);
 	set_sym_playersblindbits(0);
+	set_sym_bblindbits(0);
 	set_sym_opponentsseatedbits(0);
 	set_sym_opponentsdealtbits(0);
 	set_sym_opponentsblindbits(0);
@@ -650,7 +670,7 @@ void CSymbols::ResetSymbolsNewHand(void)
 	time(&_elapsedhandhold);
 
 	// history
-	for (int i=0; i<=4; i++)
+	for (int i=0; i<=k_number_of_betrounds; i++)
 	{
 		set_sym_nplayersround(i, 0);
 		set_sym_nbetsround(i, 0);
@@ -672,8 +692,10 @@ void CSymbols::ResetSymbolsNewHand(void)
 	set_f$rebuy(0);
 
 	// icm
-	for (int i=0; i<=9; i++)
+	for (int i=0; i<k_max_number_of_players; i++)
+	{
 		set_stacks_at_hand_start(i, 0);
+	}
 
 	// callbits, raisbits, etc.
 	for (int i=k_betround_preflop; i<=k_betround_river; i++)
@@ -684,6 +706,7 @@ void CSymbols::ResetSymbolsNewHand(void)
 	}
 
 	set_sym_raischair_previous_frame(-1);
+	set_sym_raischair(-1);
 }
 
 void CSymbols::ResetSymbolsNewRound(void)
@@ -692,7 +715,9 @@ void CSymbols::ResetSymbolsNewRound(void)
 	set_sym_didcall(4, 0);
 	set_sym_didrais(4, 0);
 	set_sym_didswag(4, 0);
+
 	set_sym_raischair_previous_frame(-1);
+	set_sym_raischair(-1);
 }
 
 void CSymbols::ResetSymbolsEveryCalc(void)
@@ -712,7 +737,6 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 
 	// chairs
 	set_sym_raischair_previous_frame(_sym.raischair);
-	set_sym_raischair(0);
 
 	// rounds positions
 	set_sym_betposition(1);
@@ -724,7 +748,11 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 
 	// chip amounts
 	for (int i=0; i<=10; i++)
+	{
+		//!!!
+		write_log(1, "Resetting currentbet\n");
 		set_sym_currentbet(i, 0);
+	}
 
 	for (int i=0; i<=9; i++)
 		set_sym_stack(i, 0);
@@ -781,7 +809,7 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 	set_sym_nopponents(0);
 	set_sym_nopponentschecking(0);
 	set_sym_nopponentscalling(0);
-	set_sym_nopponentsraising(0);
+	set_sym_nopponentsraising(0); 
 	set_sym_nopponentsbetting(0);
 	set_sym_nopponentsfolded(0);
 	set_sym_nplayerscallshort(0);
@@ -946,8 +974,9 @@ void CSymbols::CalcSymbols(void)
 {
 	int					i = 0;
 	char				classname[50] = {0}, title[512] = {0};
-	unsigned int		player_card_cur[2] = {0};
-	char				card0[10] = {0}, card1[10] = {0};
+	unsigned int		player_card_cur[k_number_of_cards_per_player] = {0};
+	char				card0[k_max_number_of_players] = {0}; 
+	char				card1[k_max_number_of_players] = {0};
 	CGrammar			gram;
 	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
@@ -1029,9 +1058,6 @@ void CSymbols::CalcSymbols(void)
 		// Update game_state so it knows that a new hand has happened
 		p_game_state->set_new_hand(true);
 
-		// Reset autoplayer structures
-		p_autoplayer->ResetHand();
-
 		// Reset symbols and display
 		ResetSymbolsNewHand();
 		InvalidateRect(theApp.m_pMainWnd->GetSafeHwnd(), NULL, true);
@@ -1044,7 +1070,7 @@ void CSymbols::CalcSymbols(void)
 		set_sym_randomround(3, (double) rand() / (double) RAND_MAX);					// randomround4
 
 		// icm
-		for (i=0; i<=9; i++)
+		for (i=0; i<k_max_number_of_players; i++)
 			set_stacks_at_hand_start(i, p_scraper->player_balance(i) + p_scraper->player_bet(i));
 
 		// log new hand
@@ -1074,7 +1100,7 @@ void CSymbols::CalcSymbols(void)
 	// common cards
 	set_sym_nflopc(0);
 
-	for (i=0; i<=4; i++)
+	for (i=0; i<k_number_of_community_cards; i++)
 	{
 		if (p_scraper->card_common(i) != CARD_NOCARD)
 			set_sym_nflopc(_sym.nflopc+1);													// nflopc
@@ -1114,9 +1140,6 @@ void CSymbols::CalcSymbols(void)
 	if (_sym.br != _br_last)
 	{
 		_br_last = _sym.br;
-
-		// Reset autoplayer structures
-		p_autoplayer->ResetRound();
 
 		// Reset symbols
 		ResetSymbolsNewRound();
@@ -1202,7 +1225,7 @@ bool CSymbols::CalcUserChair(void)
 	int				i = 0;
 	int				num_buttons_enabled = 0;
 
-	for (i=0; i<=9; i++)
+	for (i=0; i<10; i++) //!!!
 	{
 		CString button_label = p_scraper->button_label(i);
 
@@ -1237,10 +1260,10 @@ bool CSymbols::CalcUserChair(void)
 
 void CSymbols::CalcBetBalanceStack(void)
 {
-	int				i = 0, j = 0, oppcount = 0;
+	int				oppcount = 0;
 	double			stack[10] = {0}, temp = 0.;
 
-	for (i=0; i<_sym.nchairs; i++)
+	for (int i=0; i<_sym.nchairs; i++)
 		set_sym_balance(i, _sym.nchairs>i ? p_scraper->player_balance(i) : 0);						// balance0-9
 
 	if (_user_chair_confirmed)
@@ -1253,7 +1276,7 @@ void CSymbols::CalcBetBalanceStack(void)
 	}
 
 	// simple bubble sort for 10 stack values
-	for (i=0; i<_sym.nchairs; i++)
+	for (int i=0; i<_sym.nchairs; i++)
 	{
 		if (p_scraper->card_player(i, 0) != CARD_NOCARD && p_scraper->card_player(i, 1) != CARD_NOCARD)
 			stack[i] = _sym.balance[i];
@@ -1262,9 +1285,9 @@ void CSymbols::CalcBetBalanceStack(void)
 			stack[i] = 0;
 	}
 
-	for (i=0; i<_sym.nchairs-1; i++)
+	for (int i=0; i<_sym.nchairs-1; i++)
 	{
-		for (j=i+1; j<_sym.nchairs; j++)
+		for (int j=i+1; j<_sym.nchairs; j++)
 		{
 			if (stack[i]<stack[j])
 			{
@@ -1276,22 +1299,23 @@ void CSymbols::CalcBetBalanceStack(void)
 	}
 
 
-	for (i=0; i<_sym.nchairs; i++)
+	for (int i=0; i<_sym.nchairs; i++)
+	{
 		set_sym_stack(i, _sym.nchairs>i ? stack[i] : 0);									// stack0-9
-
+	}
 
 	//
 	// currentbet sanity check
 	//
 	// Get count of opponents
 	oppcount=0;
-	for (i=0; i<_sym.nchairs; i++)
+	for (int i=0; i<_sym.nchairs; i++)
 	{
 		if (p_scraper->card_player(i, 0) == CARD_BACK && p_scraper->card_player(i, 1) == CARD_BACK && i != _sym.userchair)
 			oppcount+=1;
 	}
 
-	for (i=0; i<_sym.nchairs; i++)
+	for (int i=0; i<_sym.nchairs; i++)
 	{
 		temp = _sym.nchairs>i ? p_scraper->player_bet(i) : 0;
 
@@ -1303,23 +1327,36 @@ void CSymbols::CalcBetBalanceStack(void)
 			if (p_tablelimits->isfl())
 			{
 				if (temp/p_tablelimits->bet()<=4)
+				{
 					set_sym_currentbet(i, temp);									// currentbet0-9
+					//!!!
+					write_log(1, "setting currentbet for FL\n");
+				}
 			}
 
 			// no limit, pot limit
 			else
 			{
-				set_sym_currentbet(i, temp); 										// currentbet0-9
+				set_sym_currentbet(i, temp); 
+				// currentbet0-9
+				//!!!
+				write_log(1, "setting currentbet for NL/PL\n");
 			}
 		}
 	}
 
 	set_sym_currentbet(10, _user_chair_confirmed ? p_scraper->player_bet(_sym.userchair) : 0);			// currentbet
+	//!!!
+	write_log(1, "setting currentbet conditionally\n");
+	write_log(1, "currentbet: user_chair_confirmed: %d\n", _user_chair_confirmed);
+	write_log(1, "currentbet: userchair: %f\n", _sym.userchair);
+	write_log(1, "currentbet: bet: %f\n", p_scraper->player_bet(_sym.userchair));
+
 
 	set_sym_potplayer(0);
-	for (i=0; i<_sym.nchairs; i++)
+	for (int i=0; i<_sym.nchairs; i++)
 	{
-	set_sym_potplayer(_sym.potplayer + _sym.currentbet[i]);							// potplayer
+		set_sym_potplayer(_sym.potplayer + _sym.currentbet[i]);							// potplayer
 	}
 
 	// pot, potcommon, based on value of potmethod
@@ -1333,7 +1370,7 @@ void CSymbols::CalcBetBalanceStack(void)
 	{
 		_sym.pot = p_scraper->pot(0);
 
-		for (i=1; i<=4; i++)
+		for (int i=1; i<=4; i++)
 			_sym.pot = max(_sym.pot, p_scraper->pot(i));
 
 		_sym.potcommon = _sym.pot - _sym.potplayer;
@@ -1342,8 +1379,10 @@ void CSymbols::CalcBetBalanceStack(void)
 	else  // potmethod() == 1
 	{
 		set_sym_potcommon(0);
-		for (i=0; i<=4; i++)
-		set_sym_potcommon(_sym.potcommon + p_scraper->pot(i));
+		for (int i=0; i<=4; i++)
+		{
+			set_sym_potcommon(_sym.potcommon + p_scraper->pot(i));
+		}
 
 		set_sym_pot(_sym.potcommon + _sym.potplayer);									
 	}
@@ -1355,7 +1394,7 @@ void CSymbols::CalcChipamtsLimits(void)
 	int				i = 0;
 	int				next_largest_bet = 0;
 
-	set_sym_call(_user_chair_confirmed ?
+	set_sym_call((_user_chair_confirmed && _sym.raischair != -1) ?
 			   _sym.currentbet[(int) _sym.raischair] - _sym.currentbet[(int) _sym.userchair] : 0); // call
 
 	for (i=_sym.raischair+1; i<_sym.raischair+p_tablemap->nchairs(); i++)
@@ -1595,10 +1634,29 @@ void CSymbols::CalcProbabilities(void)
 	}
 }
 
+// Did autoplayer act this br
+bool CSymbols::DidAct(void)
+{
+    bool acted = false;
+
+    int didchec = _sym.didchec[4];
+    int didcall = _sym.didcall[4];
+    int didrais = _sym.didrais[4];
+    int didswag = _sym.didswag[4];
+
+    if (didchec || didcall || didrais || didswag)
+    {
+        acted = true;
+    }
+
+    return acted;
+}
+
 void CSymbols::CalcPlayersFriendsOpponents(void)
 {
-	double	lastbet = 0.;
+	double	last_bet;
 	bool	sblindfound = false, bblindfound = false, found_userchair = false;
+	int		sbchair = -1;
 	int		FirstPossibleRaiser = 0, LastPossibleRaiser = 0;
 	int		betround = _sym.betround;
 
@@ -1611,29 +1669,50 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 	{
 		// Start with the first player after the dealer
 		FirstPossibleRaiser = _sym.dealerchair + 1;
+		last_bet = 0;
 	}
 	else
 	{
 		// Start with the player after last known raiser
-		FirstPossibleRaiser = _sym.raischair_previous_frame;
+		FirstPossibleRaiser = _sym.raischair_previous_frame + 1;
+		last_bet = p_scraper->player_bet(_sym.raischair_previous_frame);
 	}
 	// For technical reasons (for-loop) we handle the modulo-operation inside the loop
 	LastPossibleRaiser = FirstPossibleRaiser + p_tablemap->nchairs() - 1;
-
+	
 	for (int i=FirstPossibleRaiser; i<=LastPossibleRaiser; i++)
 	{
 		double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
 
-		if (p_bet > lastbet)
+		if (p_bet > last_bet)
 		{
-			lastbet = p_bet;
+			last_bet = p_bet;
 			set_sym_raischair(i%p_tablemap->nchairs());									// raischair
 			int new_raisbits = _sym.raisbits[betround] | k_exponents[i%p_tablemap->nchairs()];
-			set_sym_raisbits(new_raisbits, betround);
-			if ((i%p_tablemap->nchairs()) != _sym.userchair)
-				set_sym_nopponentsraising(_sym.nopponentsraising + 1);					// nopponentsraising
+			set_sym_raisbits(new_raisbits, betround);		
 		}
 	}
+
+    // nopponentsraising
+    int userchair = _sym.userchair;
+    int first_possible_raiser = userchair + 1;
+    int last_possible_raiser = userchair + p_tablemap->nchairs() - 1;
+    int opponents_raising = 0;
+
+    double current_maximum_bet = 0;
+    if (DidAct()){current_maximum_bet = p_scraper->player_bet(userchair);}
+
+    for (int i=first_possible_raiser; i<=last_possible_raiser; i++)
+    {
+        int current_players_chair = i % p_tablemap->nchairs();
+        double current_players_bet = p_scraper->player_bet(current_players_chair);
+        if (current_players_bet > current_maximum_bet)
+        {
+            current_maximum_bet = current_players_bet;
+            opponents_raising++;
+        }
+    }
+    set_sym_nopponentsraising(opponents_raising);
 
 	// nopponentscalling
 	//
@@ -1667,39 +1746,6 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 			CurrentBet = p_scraper->player_bet(i%p_tablemap->nchairs());
 		}
 	}
-
-	for (int i=_sym.dealerchair+1; i<=_sym.dealerchair+p_tablemap->nchairs(); i++)
-	{
-		double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
-
-		if (!sblindfound && p_bet<=p_tablelimits->sblind()) 
-		{
-			sblindfound = true;
-			set_sym_playersblindbits((int) _sym.playersblindbits | (1<<(i%p_tablemap->nchairs())));  // playersblindbits
-
-			if (_user_chair_confirmed && (i%p_tablemap->nchairs()) != _sym.userchair)
-			{
-				set_sym_opponentsblindbits(
-				(int) _sym.opponentsblindbits | (1<<(i%p_tablemap->nchairs())));				// opponentsblindbits
-			}
-		}
-
-		else if (!bblindfound && p_bet<=p_tablelimits->bblind())
-		{
-			bblindfound = true;
-			set_sym_bblindbits(0); //prwin change
-			set_sym_playersblindbits((int) _sym.playersblindbits | (1<<(i%p_tablemap->nchairs())));	// playersblindbits
-			if (_user_chair_confirmed && (i%p_tablemap->nchairs()) != _sym.userchair)
-			{
-				set_sym_opponentsblindbits((int) _sym.opponentsblindbits | (1<<(i%p_tablemap->nchairs())));	// opponentsblindbits
-				set_sym_bblindbits(  //prwin change
-				(int) _sym.bblindbits | (1<<(i%p_tablemap->nchairs())));			// big blind bit
-			}
-		}
-	}
-
-	set_sym_nplayersblind(bitcount(_sym.playersblindbits));								// nplayersblind
-	set_sym_nopponentsblind(bitcount(_sym.opponentsblindbits));							// nopponentsblind
 
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
@@ -1767,8 +1813,83 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 	set_sym_nopponentsdealt(bitcount(_sym.opponentsdealtbits));							// nopponentsdealt
 	set_sym_nopponentsplaying(bitcount(_sym.opponentsplayingbits));						// nopponentsplaying
 
+	// Blind bits.
+	if (_sym.br == 1 && !DidAct())
+	{
+		if (_sym.nplayersdealt >= 3)
+		{
+			for (int i=_sym.dealerchair+1; i<=_sym.dealerchair+p_tablemap->nchairs(); i++)
+			{
+				double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
+
+				if (!sblindfound && p_bet <= p_tablelimits->sblind() && p_bet > 0) 
+				{
+					sblindfound = true;
+					sbchair = i%p_tablemap->nchairs();
+					set_sym_playersblindbits(1<<(i%p_tablemap->nchairs()));  // playersblindbits
+
+					if (_user_chair_confirmed && i%p_tablemap->nchairs() != _sym.userchair)
+						set_sym_opponentsblindbits((int) _sym.opponentsblindbits | (1<<(i%p_tablemap->nchairs())));	// opponentsblindbits
+				}
+
+				else if (sblindfound && !bblindfound && p_bet<=p_tablelimits->bblind() && p_bet > p_tablelimits->sblind())
+				{
+					if (i%p_tablemap->nchairs() != sbchair)
+					{
+						bblindfound = true;
+						//prwin change
+						set_sym_bblindbits(1<<(i%p_tablemap->nchairs()));			// big blind bit
+						set_sym_playersblindbits((int) _sym.playersblindbits | (1<<(i%p_tablemap->nchairs())));	// playersblindbits
+
+						if (_user_chair_confirmed && i%p_tablemap->nchairs() != _sym.userchair)
+							set_sym_opponentsblindbits((int) _sym.opponentsblindbits | (1<<(i%p_tablemap->nchairs())));	// opponentsblindbits
+					}
+				}
+			}
+		}
+
+		// HU
+		else if (_sym.nplayersdealt == 2)
+		{
+			// Dealerchair Playing => real HU
+			if ((int)_sym.playersplayingbits&(1<<(int)_sym.dealerchair))
+			{
+				bblindfound = true;
+				sblindfound = true;
+				sbchair = _sym.dealerchair;
+				//prwin change
+				set_sym_bblindbits((int)_sym.playersplayingbits&(~(1<<((int)sbchair)))); // bblindbits
+			}
+	
+			else
+			{
+				// Reverse search for bb
+				for (int i=_sym.dealerchair+p_tablemap->nchairs()-1; i>=_sym.dealerchair; i--)
+				{
+					double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
+
+					// 1st before dealer is bb
+					if ((!sblindfound || !bblindfound) && p_bet <= p_tablelimits->bblind() && p_bet > p_tablelimits->sblind()) 
+					{
+						sblindfound = true;
+						bblindfound = true;
+						//prwin change
+						set_sym_bblindbits(1<<(i%p_tablemap->nchairs())); // bblindbits
+					}
+				}
+			}
+
+			set_sym_playersblindbits(_sym.playersdealtbits);
+			
+			if (_user_chair_confirmed)
+				set_sym_opponentsblindbits((int)_sym.playersdealtbits&(~(1<<((int)_sym.userchair)))); // nopponentsblindbits
+		}
+
+		set_sym_nplayersblind(bitcount(_sym.playersblindbits));								// nplayersblind
+		set_sym_nopponentsblind(bitcount(_sym.opponentsblindbits));							// nopponentsblind
+	}
+
 	found_userchair = false;
-	lastbet = 0;
 	for (int i=_sym.dealerchair+1; i<=_sym.dealerchair+p_tablemap->nchairs() && _user_chair_confirmed; i++)
 	{
 		double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
@@ -1891,15 +2012,55 @@ bool CSymbols::IsHigherStraightPossible(HandVal	handval)
 	{
 		return false;												
 	}
+
 	// Otherwise:
 	// Check for all higher 5-card-straight,
 	// if only 2 or less are missing
-	int current_top_end = HandVal_TOP_CARD(handval);
-	for (int i=(current_top_end+1); i<=StdDeck_Rank_ACE; i++)
+	int i = 0, rank = 0, suit = 0;
+	unsigned int rankbits_common = 0;
+
+	CardMask      comCards = {0};
+	CardMask_RESET(comCards);
+
+	// common cards
+	for (i=0; i<=4; i++)
 	{
-		// TODO!!!
-		return true;
+		if (p_scraper->card_common(i) != CARD_BACK &&
+			 p_scraper->card_common(i) != CARD_NOCARD)
+		{
+			CardMask_SET(comCards, p_scraper->card_common(i));
+		}
 	}
+
+
+	for (suit=StdDeck_Suit_FIRST; suit<=StdDeck_Suit_LAST; suit++)
+	{
+		for (rank=StdDeck_Rank_LAST; rank>=StdDeck_Rank_FIRST; rank--)
+		{
+			if (CardMask_CARD_IS_SET(comCards, StdDeck_MAKE_CARD(rank, suit)))
+			{
+				rankbits_common |= (1<<(rank+2));
+				if (rank == Rank_ACE)
+				{
+				   rankbits_common |= (1<<1);
+				}
+			}
+		}
+	}
+
+	int current_top_end = StdDeck_RANK(HandVal_TOP_CARD(handval))+2;
+	int j = 10;
+
+	for (int k = 14; k >= (current_top_end+1); k--)
+	{   
+		
+		if (bitcount((rankbits_common>>j)&0x1f) >= 3)
+		{
+			return true;
+		}
+		j--;
+	}
+
 	return false;
 }
 
@@ -3639,8 +3800,13 @@ void CSymbols::CalcPrimaryFormulas(const bool final_answer)
 
 	set_sym_isfinalanswer(final_answer);
 
+	write_log(3, "IsFinalAnswer: %i\n", final_answer);
+	write_log(3, "Trace enabled: %i\n", prefs.trace_enabled());
+
+	bool trace_needed = final_answer && prefs.trace_enabled();
+
 	e = SUCCESS;
-	set_f$alli(gram.CalcF$symbol(p_formula, "f$alli", (final_answer && prefs.trace_functions(nTraceAlli)), &e));
+	set_f$alli(gram.CalcF$symbol(p_formula, "f$alli", trace_needed, &e));
 	write_log(3, "Primary formulas; f$alli: %f\n", p_symbols->f$alli());
 	
 	e = SUCCESS;
@@ -3648,7 +3814,7 @@ void CSymbols::CalcPrimaryFormulas(const bool final_answer)
 	write_log(3, "Primary formulas; f$betsize: %f\n", p_symbols->f$betsize());
 
 	e = SUCCESS;
-	set_f$rais(gram.CalcF$symbol(p_formula, "f$rais", (final_answer && prefs.trace_functions(nTraceRais)), &e));
+	set_f$rais(gram.CalcF$symbol(p_formula, "f$rais", trace_needed, &e));
 	write_log(3, "Primary formulas; f$rais: %f\n", p_symbols->f$rais());
 
 	e = SUCCESS;
@@ -3674,42 +3840,29 @@ void CSymbols::CalcSecondaryFormulas(void)
 	write_log(3, "Secondary formulas; f$leave: %f\n", p_symbols->f$leave());
 
 	e = SUCCESS;
-	set_f$prefold(gram.CalcF$symbol(p_formula, "f$prefold", prefs.trace_functions(nTracePrefold), &e));
+	set_f$prefold(gram.CalcF$symbol(p_formula, "f$prefold", prefs.trace_enabled(), &e));
 	write_log(3, "Secondary formulas; f$prefold: %f\n", p_symbols->f$prefold());
 	
 	e = SUCCESS;
-	set_f$rebuy(gram.CalcF$symbol(p_formula, "f$rebuy", prefs.trace_functions(nTracePrefold), &e));
+	set_f$rebuy(gram.CalcF$symbol(p_formula, "f$rebuy", prefs.trace_enabled(), &e));
 	write_log(3, "Secondary formulas; f$rebuy: %f\n", p_symbols->f$rebuy());
 	
 	e = SUCCESS;
-	set_f$delay(gram.CalcF$symbol(p_formula, "f$delay", &e));
+	set_f$delay(gram.CalcF$symbol(p_formula, "f$delay", prefs.trace_enabled(), &e));
 	write_log(3, "Secondary formulas; f$delay: %f\n", p_symbols->f$delay());
 	
 	e = SUCCESS;
 	set_f$chat(gram.CalcF$symbol(p_formula, "f$chat", &e));
 	write_log(3, "Secondary formulas; f$chat: %f\n", p_symbols->f$chat());
+
+	CalcAutoTrace();
 }
 
 void CSymbols::CalcAutoTrace()
 {
 	int			e = SUCCESS;
 	CGrammar	gram;
-	double ignore = gram.CalcF$symbol(p_formula, "f$autotrace", true, &e);
-}
-
-void CSymbols::UpdateAutoplayerInfo(void)
-{
-	int		i = 0;
-
-	set_sym_prevaction(p_autoplayer->prevaction());
-
-		for (i=0; i<=4; i++)
-		{
-		set_sym_didchec(i, p_autoplayer->didchec(i));
-		set_sym_didcall(i, p_autoplayer->didcall(i));
-		set_sym_didrais(i, p_autoplayer->didrais(i));
-		set_sym_didswag(i, p_autoplayer->didswag(i));
-		}
+	double		ignore = gram.CalcF$symbol(p_formula, "f$autotrace", true, &e);
 }
 
 const double CSymbols::GetSymbolVal(const char *a, int *e)
@@ -4228,6 +4381,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "fiveofakind", 11)==0 && strlen(a)==11)				return _sym.fiveofakind;
 
 	// callbits, raisbits, etc. 
+	if (memcmp(a, "bblindbits", 10)==0 && strlen(a)==10)  				return _sym.bblindbits;
 	if (memcmp(a, "raisbits", 8)==0 && strlen(a)==9)  					return _sym.raisbits[a[8]-'0'];
 	if (memcmp(a, "callbits", 8)==0 && strlen(a)==9)  					return _sym.callbits[a[8]-'0'];
 	if (memcmp(a, "foldbits", 8)==0 && strlen(a)==9)  					return _sym.foldbits[a[8]-'0'];
@@ -4454,4 +4608,89 @@ const double CSymbols::Chairbit$(const char *a)
 	}
 
 	return bits;
+}
+
+void CSymbols::RecordPrevAction(const ActionConstant action)
+{
+	write_log(3, "CSymbols::AdaptSymbolsForUsersAction(%d)\n", action);
+	set_prevaction(action);
+
+	// !!! Most things temporary disabled, as this causes only problems
+	// Only needed for Gecko
+
+	int user_chair = p_symbols->sym()->userchair;
+	int betround = int(p_symbols->sym()->betround);
+
+	double bet = p_tablelimits->bet(_sym.betround);
+	assert(bet > 0);	
+
+	// Initializing "new" values with known old ones
+	double new_pot = _sym.pot;
+	double new_bet = _sym.currentbet[10];
+	double new_number_of_bets = new_bet / bet;
+
+	// Adapting symbols depending on our action
+	switch (action)
+	{
+		case k_action_fold:	
+			write_log(3, "Adjusting symbols for users action: fold - nothing to do\n");
+			// Did-symbols - no "didfold"
+			// Bets and pot - nothing to adapt
+			break;
+		case k_action_check:
+			write_log(3, "Adjusting symbols for users action: check\n");
+			// Did-symbols
+			set_didchec(4, p_symbols->sym()->didchec[4] + 1);
+			set_didchec(betround-1, p_symbols->sym()->didchec[betround-1] + 1);
+			// Bets and pot
+			new_number_of_bets = _sym.ncallbets;
+			new_bet = new_number_of_bets * bet;
+			new_pot = _sym.pot + new_bet - _sym.currentbet[10];
+			break;
+		case k_action_call:
+			assert(f$call() > 0);
+			write_log(3, "Adjusting symbols for users action: call\n");
+			// Did-symbols
+			set_didcall(4, p_symbols->sym()->didcall[4] + 1);
+			set_didcall(betround-1, p_symbols->sym()->didcall[betround-1] + 1);
+			// Bets and pot
+			new_number_of_bets = _sym.ncallbets;
+			new_bet = new_number_of_bets * bet;
+			new_pot = _sym.pot + new_bet - _sym.currentbet[10];
+			break;
+		case k_action_raise:
+			assert(f$rais() > 0);
+			write_log(3, "Adjusting symbols for users action: raise\n");
+			// Did-symbols
+			set_didrais(4, p_symbols->sym()->didrais[4] + 1);
+			set_didrais(betround-1, p_symbols->sym()->didrais[betround-1] + 1);
+			// Bets and pot
+			new_number_of_bets = _sym.nraisbets;
+			new_bet = new_number_of_bets * bet;
+			new_pot = _sym.pot + new_bet - _sym.currentbet[10];
+			break;
+		case k_action_swag:
+			assert(f$swag() > 0);
+			write_log(3, "Adjusting symbols for users action: swag\n");
+			// Did-symbols
+			set_didswag(4, p_symbols->sym()->didswag[4] + 1);
+			set_didswag(betround-1, p_symbols->sym()->didswag[betround-1] + 1);
+			// Bets and pot
+			// Disabled till OH 2.2 as it causes bad side-effects for the call symbol.
+			new_bet = _sym.currentbet[10]; // f$swag(); // !!! That's not correct, but will be for OH 2.2.0 because of swagadjustment
+			new_number_of_bets = new_bet / bet; 
+			new_pot = _sym.pot + f$swag() - _sym.currentbet[10];
+			break;
+		case k_action_allin:
+			// No "didallin"
+			break;
+		default: 
+			assert(k_this_must_not_happen);
+			break;
+	}
+
+	// reset elapsedauto symbol, as the autoplayer has acted.
+	time_t my_time_t;
+	time(&my_time_t);
+	p_symbols->set_elapsedautohold(my_time_t);
 }
