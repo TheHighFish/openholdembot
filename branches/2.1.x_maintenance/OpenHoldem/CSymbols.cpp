@@ -1904,7 +1904,7 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 			// SB not found correction.
 			// Will only apply if we are the bb + missed action(s). most common case. 
 			// Restrictions : 3 or less players were dealt or last bb is active
-			if (sbchair == -1 && bbchair == _sym.userchair && (_sym.nplayersdealt <= 3 || (int)_sym.playersplayingbits & _bblindbits_last))
+			if (sbchair == -1 && bbchair == _sym.userchair && (_sym.nplayersdealt < 3 || (int)_sym.playersplayingbits & _bblindbits_last))
 			{
 				for (int i=_sym.dealerchair+1; i<_sym.dealerchair+p_tablemap->nchairs(); i++)
 				{
@@ -1942,7 +1942,6 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 
 				else
 					set_sym_nchairsdealtleft(_sym.nchairsdealtleft + 1);				// nchairsdealtleft
-
 			}
 		}
 

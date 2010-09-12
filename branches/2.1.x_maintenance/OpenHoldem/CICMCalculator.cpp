@@ -15,10 +15,14 @@
 
 #include "stdafx.h"
 
-#include "CICMCalculator.h"
-
+#include "CScraper.h"
+#include "CTableLimits.h"
+#include "..\CTablemap\CTablemap.h"
 #include "CSymbols.h"
 #include "CPreferences.h"
+
+#include "CICMCalculator.h"
+
 
 double P(int i, int n, double *s, int N)
 {
@@ -223,6 +227,8 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 				stacks[sym_userchair]+= (sym_pot + extra);
 			}
 		}
+
+		return GetChairFromDealPos(pquery + 8);
 	}
 
 	else if (strncmp(pquery,"_allilose",9)==0)
@@ -352,6 +358,7 @@ double CICMCalculator::EquityICM(double *stacks, double *prizes, int playerNB, i
 	// him after all opponents who had stacks at the start of this
 	// hand.  This will not tie-break if two players bust on the
 	// same hand.
+
 	if (stacks[player] == 0.)
 	{
 		int place = 0;
@@ -386,36 +393,67 @@ double CICMCalculator::GetPlayerCurrentBet(int pos)
 
 int CICMCalculator::GetChairFromDealPos(const char* pquery)
 {
-	int			sym_nplayersseated =  (int) p_symbols->sym()->nplayersseated;
 	int			sym_playersseatedbits =  (int) p_symbols->sym()->playersseatedbits;
+	int			sym_nplayersseated =  (int) p_symbols->sym()->nplayersseated;
+
 	int			sym_dealerchair =  (int) p_symbols->sym()->dealerchair;
+	int			sym_nplayersblind =  (int) p_symbols->sym()->nplayersblind;
 
 	int			chair = -1;
+	int			sb_offset = 1, hu_offset = 0;
 
+	
+	// Since nplayersblind is set quite late, search for sb, 
+	// just in case nplayersblind is incomplete 
+	for (int i=sym_dealerchair+1; i<=sym_dealerchair+p_tablemap->nchairs(); i++)
+	{
+		double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
+
+		if (p_bet > 0 && p_bet <= p_tablelimits->sblind())
+			sb_offset = 0;
+	}
+
+	// if 2 players posted blinds, no sb_offset should exist.
+	if (sb_offset == 1 && sym_nplayersblind == 2)
+		sb_offset = 0;
+
+	// If only 2 players active, we are HU.
+	if (sym_nplayersseated == 2)
+		hu_offset = 1;
+
+	
 	if (sym_nplayersseated > 0)
 	{
 		int dealPos = -1;
 
 		if (strcmp(pquery,"SB")==0)
-			dealPos = 1;
+		{
+			// Will only set if SB is playing
+			if (sb_offset == 0)
+				dealPos = 1 - hu_offset;
+		}
 		else if (strcmp(pquery,"BB")==0)
-			dealPos = 2;
+			dealPos = 2 - sb_offset - hu_offset;
 		else if (strcmp(pquery,"UTG")==0)
-			dealPos = 3;
+			dealPos = 3 - sb_offset - hu_offset;
 		else if (strcmp(pquery,"UTG1")==0)
-			dealPos = 4;
+			dealPos = 4 - sb_offset - hu_offset;
 		else if (strcmp(pquery,"UTG2")==0)
-			dealPos = 5;
+			dealPos = 5 - sb_offset - hu_offset;
 		else if (strcmp(pquery,"UTG3")==0)
-			dealPos = 6;
+			dealPos = 6 - sb_offset - hu_offset;
 		else if (strcmp(pquery,"UTG4")==0)
-			dealPos = 7;
+			dealPos = 7 - sb_offset - hu_offset;
 		else if (strcmp(pquery,"UTG5")==0)
-			dealPos = 8;
+			dealPos = 8 - sb_offset - hu_offset;
 		else if (strcmp(pquery,"UTG6")==0)
-			dealPos = 9;
+			dealPos = 9 - sb_offset - hu_offset;
 		else if (strcmp(pquery,"D")==0)
-			dealPos = 0;
+		{
+			// Will only set if Dealer is playing
+			if (sym_playersseatedbits & k_exponents[sym_dealerchair])
+				dealPos = 0;
+		}
 		else if (strcmp(pquery,"CO")==0)
 			dealPos = sym_nplayersseated - 1;
 
