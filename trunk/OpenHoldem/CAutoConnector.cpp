@@ -27,6 +27,7 @@ const int k_MaxNumberOfTableMaps = 25;
 typedef struct
 {
 	CString			FilePath;
+	CString			SiteName;
 	unsigned int	ClientSizeX, ClientSizeY;
 	unsigned int	ClientSizeMinX, ClientSizeMinY;
 	unsigned int	ClientSizeMaxX, ClientSizeMaxY;
@@ -58,6 +59,7 @@ void CTableMapToSWholeMap(CTablemap *cmap, SWholeMap *smap)
 	}
 	smap->i$ = p_tablemap->i$();
 	smap->filepath = p_tablemap->filepath();
+	smap->sitename = p_tablemap->sitename();
 }
 
 
@@ -76,6 +78,18 @@ CAutoConnector::CAutoConnector()
 	// Parse all tablemaps once on startup.
 	// We want to avoid heavy workload in the connect()-function.
 	ParseAllTableMapsToLoadConnectionData();
+
+	CString dup_status = TablemapConnectionDataDuplicated(); 
+
+	if(dup_status != "-1")
+	{
+		CString		n = "";
+		n.Format("It seems you have multiple versions of the same map in your scraper folder.\n\n"\
+					"SITENAME = %s\n\n"\
+					"This will cause problems as the autoconnector won't be able to decide which one to use.\n"\
+					"Please remove the superfluous maps from the scraper folder.\n", dup_status);
+		MessageBox(0, (LPCTSTR) n, "Warning ! Duplicate SiteName ", MB_OK|MB_ICONWARNING);
+	}
 }
 
 
@@ -164,6 +178,25 @@ bool CAutoConnector::TablemapConnectionDataAlreadyStored(CString TablemapFilePat
 	return false;
 }
 
+CString CAutoConnector::TablemapConnectionDataDuplicated()
+{
+   CString dup_site = "";
+
+   for (int i=0; i<=NumberOfTableMapsLoaded; i++)
+   {
+      for (int j=i+1; j<=NumberOfTableMapsLoaded; j++)
+      {
+         if (TablemapConnectionData[i].SiteName == TablemapConnectionData[j].SiteName)
+         {
+            dup_site = TablemapConnectionData[j].SiteName;
+            write_log(3, "CAutoConnector::TablemapConnectionDataDuplicated [%s] [true]\n", dup_site);
+            return dup_site;
+         }
+      }
+   }
+
+   return "-1";
+}
 
 void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 {
@@ -180,6 +213,8 @@ void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 	}
 
 	TablemapConnectionData[NumberOfTableMapsLoaded].FilePath = map->filepath;
+	TablemapConnectionData[NumberOfTableMapsLoaded].SiteName = map->sitename;
+	
 	// Extract client size information
 	ZMapCI z_iter = map->z$->end();
 	z_iter = map->z$->find("clientsize");
@@ -530,7 +565,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 	char				title[512] = {0};
 	int					SelectedItem = -1;
 	SWholeMap			smap;
-	CString				path = "", current_path = "";
+	CString				current_path = "";
 	BOOL				bFound = false;
 	CFileFind			hFile;
 
@@ -562,7 +597,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 
 	// Clear global list for holding table candidates
 	g_tlist.RemoveAll();
-
+	
 	for (int TablemapIndex=0; TablemapIndex<NumberOfTableMapsLoaded; TablemapIndex++)
 	{
 		write_log(3, "CAutoConnector: Going to check TM nr. %d out of %d\n", TablemapIndex, NumberOfTableMapsLoaded);
@@ -643,12 +678,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			theApp.UnloadScraperDLL();
 			CString filename = p_tablemap->scraperdll();
 			if (!filename.IsEmpty()) {
-				int index = filename.ReverseFind('\\');
-				if (index > 0)
-					path.Format("%s\\%s", filename.Left(index), filename);
-				else
-					path = filename;
-				theApp._scraper_dll = LoadLibrary(path);
+				theApp._scraper_dll = LoadLibrary(filename);
 			}
 
 			if (theApp._scraper_dll==NULL)
@@ -656,7 +686,8 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 				if (!filename.IsEmpty() && !prefs.disable_msgbox())		
 				{
 					CString		t = "";
-					t.Format("Unable to load %s\n\nError: %d", path, GetLastError());
+					t.Format("Unable to load %s\n\nError: %d", filename, GetLastError());
+					MessageBox(0, t, "Error", 0);
 				}
 			}
 			else
@@ -668,16 +699,14 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 				{
 					if (!prefs.disable_msgbox())		
 					{
-						CString		t = "";
-						t.Format("Unable to find all symbols in scraper.dll");
-						MessageBox(0, t, "Error", 0);
+						MessageBox(0, "Unable to find all symbols in scraper.dll", "Error", 0);
 					}
 
 					theApp.UnloadScraperDLL();
 				}
 				else
 				{
-					write_log(1, "CAutoConnector: scraper.dll loaded, ProcessMessage and OverrideScraper found.\n");
+					write_log(1, "CAutoConnector: scraper.dll (%s) loaded, ProcessMessage and OverrideScraper found.\n", filename);
 				}
 			}
 
@@ -685,12 +714,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			theApp.Unload_ScraperPreprocessor_DLL();
 			filename = p_tablemap->scraperpreprocessor_dll();
 			if (!filename.IsEmpty()) {
-				int index = filename.ReverseFind('\\');
-				if (index > 0)
-					path.Format("%s\\%s", filename.Left(index), filename);
-				else
-					path = filename;
-				theApp._scraperpreprocessor_dll = LoadLibrary(path);
+				theApp._scraperpreprocessor_dll = LoadLibrary(filename);
 			}
 
 			if (theApp._scraperpreprocessor_dll==NULL)
@@ -698,7 +722,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 				if (!filename.IsEmpty())		
 				{
 					CString		t = "";
-					t.Format("Unable to load %s\n\nError: %d", path, GetLastError());
+					t.Format("Unable to load %s\n\nError: %d", filename, GetLastError());
 					OH_MessageBox(t, "OpenHoldem scraperpre.dll WARNING", MB_OK | MB_TOPMOST);
 				}
 			}

@@ -20,6 +20,10 @@ const int k_max_length_of_playername = 30;
 const int k_min_chair_number = 0;
 const int k_max_chair_number = k_max_number_of_players - 1;
 
+// Number of (side)pots
+const int k_max_number_of_pots = 10;
+
+
 // Number of cards
 const int k_number_of_community_cards  = 5;
 const int k_number_of_flop_cards       = 3;  
@@ -39,12 +43,19 @@ const int k_max_number_of_pots = 10;
 // DLL
 const int k_number_of_holdem_states_for_DLL = 256;
 
+// Flags
+const int k_number_of_flags = 20;
+
 //  File accessable?
 //  (<unistd.h> is not contained in MSCVPP)
 const int F_OK = 0;
 
 // thread timeout
 #define THREAD_WAIT					3000
+
+// "This must not happen."
+// It is better to have a named constant then to write "assert(false);".
+const bool k_this_must_not_happen = false;
 
 // numeric constants
 #define M_E			2.7182818284590452354
@@ -232,5 +243,30 @@ const int k_number_of_pocketcard_combinations_without_order = 1326;
 
 // For assertions of codes, that should never be executed
 const bool k_ThisMustNotHappen = false;
+
+// Action constants for the autoplayer
+enum ActionConstant
+{
+	k_action_undefined = 0,
+	k_action_fold,
+	k_action_check,
+	k_action_call,
+	k_action_raise,		// min-raise
+	k_action_swag,		// "stated wager", i.e. using f$betsize
+	k_action_allin
+};
+
+// 4 digit names of action-constants for use in the autoplayer-log.
+const CString k_action_constant_names[k_action_allin+1] =
+{"UNDF", "FOLD", "CHEC", "CALL", "RAIS", "SWAG", "ALLI"};
+
+// for rank to card translation
+const static char *k_card_chars = "23456789TJQKA";
+
+// Index for current betting round in arrays
+// we prefer to store values for preflop..river in 1..4
+// and use index 0 for the current round.
+// The old code did it differently (4 for the current round)
+const int k_storage_index_for_current_round = 0;
 
 #endif // _INC_MAGICNUMBERS_H

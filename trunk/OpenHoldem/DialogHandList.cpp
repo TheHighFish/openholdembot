@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "DialogHandList.h"
+#include "MagicNumbers.h"
 
 // CDlgHandList dialog
 CDlgHandList::CDlgHandList(CWnd* pParent /*=NULL*/)
@@ -201,7 +202,6 @@ BOOL CDlgHandList::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	int			i = 0, j = 0;
 	CString		s = "";
 
 	// Set title and static text control
@@ -211,8 +211,8 @@ BOOL CDlgHandList::OnInitDialog()
 	m_HandList_Name.SetWindowText(s.GetString());
 
 	// Set checked/unchecked status of each box
-	for (i=0; i<=12; i++) {
-		for (j=0; j<=12; j++) {
+	for (int i=0; i<=12; i++) {
+		for (int j=0; j<=12; j++) {
 			m_Check[i][j].SetCheck(checked[i][j] ? BST_CHECKED : BST_UNCHECKED);
 		}
 	}
@@ -224,15 +224,16 @@ BOOL CDlgHandList::OnInitDialog()
 
 void CDlgHandList::OnCheckClick(UINT controlID)
 {
-	int			i = 0, j = 0;
-
 	nhands = 0;
-	for (i=0; i<=12; i++) {
-		for (j=0; j<=12; j++) {
+	for (int i=0; i<=12; i++) {
+		for (int j=0; j<=12; j++) {
 			checked[i][j] = m_Check[i][j].GetCheck() & BST_CHECKED;
 			if (checked[i][j]) {
+				// pairs	
 				if (i==j) nhands += 6;
+				// unsuited
 				else if (i<j) nhands += 12;
+				// suited
 				else nhands += 4;
 			}
 		}
@@ -247,4 +248,70 @@ void CDlgHandList::OnBnClickedOk()
 	OnCheckClick(0);
 
 	OnOK();
+}
+
+CString CDlgHandList::GetHandListAsString()
+{
+	CString	handlist = "";
+	bool	do_crlf = false;
+
+	// Pairs
+	// Hands at the diagonal in the editor
+	for (int i=12; i>=0; i--)
+	{
+		if (checked[i][i])
+		{
+			handlist += k_card_chars[i];
+			handlist += k_card_chars[i];
+			handlist += "  ";
+			do_crlf = true;
+		}
+	}
+	if (do_crlf)
+	{
+		handlist += "\r\n";
+	}
+
+	// Suited hands
+	// Above the diagonal in the editor
+	do_crlf = false;
+	for (int i=12; i>=1; i--)
+	{
+		for (int j=i-1; j>=0; j--)
+		{
+			if (checked[i][j])
+			{
+				handlist += k_card_chars[i];
+				handlist += k_card_chars[j];
+				handlist += "s ";
+				do_crlf = true;
+			}
+		}
+	}
+	if (do_crlf)
+	{
+		handlist += "\r\n";
+	}
+
+	// Unsuited hands.
+	// Below the diagonal in the editor
+	do_crlf = false;
+	for (int i=11; i>=0; i--)
+	{
+		for (int j=12; j>=i+1; j--)
+		{
+			if (checked[i][j])
+			{
+				handlist += k_card_chars[i];
+				handlist += k_card_chars[j];
+				handlist += "  ";
+				do_crlf = true;
+			}
+		}
+	}
+	if (do_crlf)
+	{
+		handlist += "\r\n";
+	}
+	return handlist;
 }

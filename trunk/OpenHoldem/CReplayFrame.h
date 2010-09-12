@@ -14,6 +14,13 @@ public:
 private:
 	// private functions and variables - not available via accessors or mutators
 	CString GetCardHtml(unsigned int card);
+	CString GetPlayerInfoAsHTML();
+	CString GetButtonStatesAsHTML();
+	CString GetBlindInfoAsHTML();
+	CString GetCommonCardsAsHTML();
+	CString GetPotsAsHTML();
+	CString GetLinksToPrevAndNextFile();
+	void CreateBitMapFile();
 
 	int			_next_replay_frame;
 

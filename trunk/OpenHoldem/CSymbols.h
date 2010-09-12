@@ -74,6 +74,7 @@ struct SSymbols
 	double prtie;
 	double random;
 	double randomhand;
+	double randomheartbeat;
 	double randomround[5];				// "randomround" is held in element 4, round specific in elements 0-3
 
 	//P FORMULA
@@ -298,6 +299,7 @@ struct SSymbols
 	//HISTORY
 	double nplayersround[5];		// "nplayersround" is held in element 4, round specific in elements 0-3
 	double prevaction;
+	double botslastaction[5];		// "botslastaction" s held in element 4, round specific in elements 0-3
 	double nbetsround[5];			// "nbetsround" is held in element 4, round specific in elements 0-3
 	double didchec[5];				// "didchec" is held in element 4, round specific in elements 0-3
 	double didcall[5];				// "didcall" is held in element 4, round specific in elements 0-3
@@ -383,7 +385,7 @@ public:
 	void CalcPrimaryFormulas(const bool final_answer);
 	void CalcSecondaryFormulas(void);
 	void CalcAutoTrace(void);
-	void UpdateAutoplayerInfo(void);
+	void RecordPrevAction(const ActionConstant action);
 	const double GetSymbolVal(const char *a, int *e);
 	const double CalcPokerval(const HandVal handval, const int ncards, double *pcbits, const int pcard0, const int pcard1);
 	const void GetCardstring(char *c, const unsigned int c0, const unsigned int c1);
@@ -487,6 +489,7 @@ public:
 	void	set_sym_prtie(const double d) { ENT _sym.prtie = d;}
 	void	set_sym_random(const double d) { ENT _sym.random = d;}
 	void	set_sym_randomhand(const double d) { ENT _sym.randomhand = d;}
+	void	set_sym_randomheartbeat(const double d) { ENT _sym.randomheartbeat = d;}
 	void	set_sym_randomround(const int i, const double d) { ENT _sym.randomround[i] = d;}
 
 	// p formula
@@ -620,7 +623,7 @@ public:
 
 	//flags
 	void	set_sym_fmax(const double d) { ENT _sym.fmax = d;}
-	void	set_sym_f(const int i, const double d) { ENT if (i>=0 && i<=19) _sym.f[i] = d;}
+	void	set_sym_f(const int i, const double d) { ENT assert(i>=0); assert(i<k_number_of_flags); _sym.f[i] = d;}
 	void	set_sym_fbits(const double d) { ENT _sym.fbits = d;}
 
 	// common cards
@@ -717,6 +720,7 @@ public:
 	void	set_sym_didrais(const int betround, const double d) { ENT if (betround>=0 && betround<=4) _sym.didrais[betround] = d;}
 	void	set_sym_didswag(const int betround, const double d) { ENT if (betround>=0 && betround<=4) _sym.didswag[betround] = d;}
 	void	set_sym_prevaction(const double d) { ENT _sym.prevaction = d;}
+	void	set_sym_botslastaction(const int betround, const double d) { ENT if (betround>=0 && betround<=4) _sym.botslastaction[betround] = d;}
 
 	//run$ ron$
 	void	set_sym_ron$royfl(const double d) { ENT _sym.ron$royfl = d;}
@@ -783,7 +787,9 @@ public:
 	void	set_sym_playing(const bool b) { ENT _sym.playing = b;}
 
 private:
+	void	InitHandranktTableForPrwin();
 	bool	IsHigherStraightPossible(HandVal	handval);
+	bool	DidAct(void);
 	void	reset_sym_maxbalance() { ENT _sym.maxbalance = 0; }
 	void	set_sym_max_balance_conditionally(const double d) 
 	{ 

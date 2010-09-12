@@ -2,10 +2,10 @@
 //
 
 #include "stdafx.h"
+#include "MainFrm.h"
+
 #include <io.h>
 #include <process.h>
-
-#include "MainFrm.h"
 
 #include "CAutoConnector.h"
 #include "CAutoplayer.h"
@@ -54,10 +54,7 @@
 #include "OpenHoldemDoc.h"
 #include "SAPrefsDialog.h"
 
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
+CMainFrame *p_mainframe = 0;
 
 // CMainFrame
 
@@ -88,6 +85,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 
 	//  Menu commands
 	ON_COMMAND(ID_FILE_OPEN, &CMainFrame::OnFileOpen)
+	ON_COMMAND(ID_FILE_LOAD_OPENPPL, &CMainFrame::OnFileLoadOpenPPL)
 	ON_COMMAND(ID_FILE_LOADTABLEMAP, &CMainFrame::OnFileLoadTableMap)
 	ON_COMMAND(ID_FILE_CONNECT, &CMainFrame::OnBnClickedGreenCircle)
 	ON_COMMAND(ID_FILE_DISCONNECT, &CMainFrame::OnBnClickedRedCircle)
@@ -695,6 +693,11 @@ void CMainFrame::OnFileLoadTableMap()
 			prefs.set_path_tm(cfd.GetPathName());
 		}
 	}
+}
+
+void CMainFrame::OnFileLoadOpenPPL()
+{
+	Beep(440, 200);
 }
 
 void CMainFrame::OnBnClickedGreenCircle() 
