@@ -444,9 +444,7 @@ void CMainFrame::OnEditFormula()
 	{
 		BOOL	bWasShown = ::IsWindow(m_formulaScintillaDlg->m_hWnd) && m_formulaScintillaDlg->IsWindowVisible();
 
-		m_formulaScintillaDlg->EndDialog(IDCANCEL);
-		delete m_formulaScintillaDlg;
-		m_formulaScintillaDlg = NULL;
+		m_formulaScintillaDlg->DestroyWindow();
 
 		if (bWasShown)
 			return;
