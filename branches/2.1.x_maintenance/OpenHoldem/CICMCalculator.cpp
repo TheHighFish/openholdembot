@@ -227,8 +227,6 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 				stacks[sym_userchair]+= (sym_pot + extra);
 			}
 		}
-
-		return GetChairFromDealPos(pquery + 8);
 	}
 
 	else if (strncmp(pquery,"_allilose",9)==0)
