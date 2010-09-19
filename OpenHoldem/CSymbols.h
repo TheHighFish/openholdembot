@@ -144,7 +144,6 @@ struct SSymbols
 	double isfourofakind;
 	double isstraightflush;
 	double isroyalflush;
-	double isfiveofakind;
 
 	//POCKET TESTS
 	double ispair;
@@ -566,7 +565,6 @@ public:
 	void	set_sym_isfourofakind(const double d) { ENT _sym.isfourofakind = d;}
 	void	set_sym_isstraightflush(const double d) { ENT _sym.isstraightflush = d;}
 	void	set_sym_isroyalflush(const double d) { ENT _sym.isroyalflush = d;}
-	void	set_sym_isfiveofakind(const double d) { ENT _sym.isfiveofakind = d;}
 
 	// pocket tests
 	void	set_sym_ispair(const double d) { ENT _sym.ispair = d;}

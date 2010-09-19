@@ -65,7 +65,7 @@ char * keywords = // Standard functions
 				  "hicard onepair twopair threeofakind straight flush fullhouse fourofakind straightflush royalflush fiveofakind "
 				  // Hand Tests
 				  "ishandup ishandupcommon ishicard isonepair istwopair isthreeofakind isstraight "
-				  "isflush isfullhouse isfourofakind isstraightflush isroyalflush isfiveofakind "
+				  "isflush isfullhouse isfourofakind isstraightflush isroyalflush"
 				  // Pocket Tests
 				  "ispair issuited isconnector "
 				  // Pocket / Common Tests
@@ -497,14 +497,14 @@ void CDlgFormulaScintilla::ConstructKeywords(CString &keys)
 		keys.AppendFormat(" pt_fbbts%d", i);
 		keys.AppendFormat(" pt_fsbts%d", i);
 	}
-	for (i=0;i<13;i++)
+	for (i=0; i<k_number_of_different_cardranks; i++)
 	{
-		for (int j=0;j<13;j++)
+		for (int j=0; j<k_number_of_different_cardranks;j ++)
 		{
-			keys.AppendFormat(" $%c%c", card_chars[i], card_chars[j]);
+			keys.AppendFormat(" $%c%c", k_card_chars[i], k_card_chars[j]);
 			if (i!=j) {
-				keys.AppendFormat(" $%c%cs", card_chars[i], card_chars[j]);
-				keys.AppendFormat(" $%c%co", card_chars[i], card_chars[j]);
+				keys.AppendFormat(" $%c%cs", k_card_chars[i], k_card_chars[j]);
+				keys.AppendFormat(" $%c%co", k_card_chars[i], k_card_chars[j]);
 			}
 		}
 	}
@@ -3388,7 +3388,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "isfourofakind", "true when you have four of a kind");
 	AddSymbol(parent, "isstraightflush", "true when you have a straight flush");
 	AddSymbol(parent, "isroyalflush", "true when you have a royal flush");
-	AddSymbol(parent, "isfiveofakind", "true when you have a five of a kind");
 
 	mainParent = parent = AddSymbolTitle("Pocket Tests", NULL, hCatItem);
 	AddSymbol(parent, "ispair", "true when your two dealt pocket cards are rank equal (0-1)");
@@ -3599,7 +3598,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	*PROBABILITIES: prwin, prlos, prtie
 	*CHIP AMOUNTS: balance, balance0, balance1, balance2, balance3, balance4, balance5, balance6, balance7, balance8, balance9, stack0, stack1, stack2, stack3, stack4, stack5, stack6, stack7, stack8, stack9
 	*POKER VALUES: pokerval, pokervalplayer, pokervalcommon, pcbits, npcbits
-	*HAND TESTS: ishandup, ishandupcommon, ishicard, isonepair, istwopair, isthreeofakind, isstraight, isflush, isfullhouse, isfourofakind, isstraightflush, isroyalflush, isfiveofakind
+	*HAND TESTS: ishandup, ishandupcommon, ishicard, isonepair, istwopair, isthreeofakind, isstraight, isflush, isfullhouse, isfourofakind, isstraightflush, isroyalflush, 
 	*POCKET/COMMON TESTS: ishipair, islopair, ismidpair, ishistraight, ishiflush
 	*(UN)KNOWN CARDS: nouts, ncardsbetter
 	*NHANDS: nhands, nhandshi, nhandslo, nhandsti, prwinnow, prlosnow

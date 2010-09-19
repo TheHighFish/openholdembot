@@ -364,7 +364,6 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_isfourofakind(0);
 	set_sym_isstraightflush(0);
 	set_sym_isroyalflush(0);
-	set_sym_isfiveofakind(0);
 
 	// pocket tests
 	set_sym_ispair(0);
@@ -791,7 +790,6 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 	set_sym_isfourofakind(0);
 	set_sym_isstraightflush(0);
 	set_sym_isroyalflush(0);
-	set_sym_isfiveofakind(0);
 
 	// pocket tests
 	set_sym_ispair(0);
@@ -2227,8 +2225,7 @@ void CSymbols::CalcPokerValues(void)
 	else if (HandVal_HANDTYPE(handval) == HandType_NOPAIR)
 	{
 		set_sym_ishicard(1); 													// ishicard
-	}
-	set_sym_isfiveofakind(0);													// isfiveofakind
+	}													// isfiveofakind
 
 
 	///////////////////////////////////////////////////////////////////
@@ -3810,7 +3807,7 @@ void CSymbols::CalcPrimaryFormulas(const bool final_answer)
 	write_log(3, "Primary formulas; f$alli: %f\n", p_symbols->f$alli());
 	
 	e = SUCCESS;
-	set_f$betsize(gram.CalcF$symbol(p_formula, "f$betsize", (final_answer && prefs.trace_functions(nTraceSwag)), &e));
+	set_f$betsize(gram.CalcF$symbol(p_formula, "f$betsize", (final_answer && trace_needed), &e));
 	write_log(3, "Primary formulas; f$betsize: %f\n", p_symbols->f$betsize());
 
 	e = SUCCESS;
@@ -3818,7 +3815,7 @@ void CSymbols::CalcPrimaryFormulas(const bool final_answer)
 	write_log(3, "Primary formulas; f$rais: %f\n", p_symbols->f$rais());
 
 	e = SUCCESS;
-	set_f$call(gram.CalcF$symbol(p_formula, "f$call", (final_answer && prefs.trace_functions(nTraceCall)), &e));
+	set_f$call(gram.CalcF$symbol(p_formula, "f$call", (final_answer && trace_needed), &e));
 	write_log(3, "Primary formulas; f$call: %f\n", p_symbols->f$call());
 
 	CalcAutoTrace();
@@ -3830,13 +3827,13 @@ void CSymbols::CalcSecondaryFormulas(void)
 	CGrammar	gram;
 
 	e = SUCCESS;
-	set_f$sitin(gram.CalcF$symbol(p_formula, "f$sitin", prefs.trace_functions(nTraceSitIn), &e));
+	set_f$sitin(gram.CalcF$symbol(p_formula, "f$sitin", prefs.trace_enabled(), &e));
 	write_log(3, "Secondary formulas; f$sitin: %f\n", p_symbols->f$sitin());
 
-	set_f$sitout(gram.CalcF$symbol(p_formula, "f$sitout", prefs.trace_functions(nTraceSitOut), &e));
+	set_f$sitout(gram.CalcF$symbol(p_formula, "f$sitout", prefs.trace_enabled(), &e));
 	write_log(3, "Secondary formulas; f$sitout: %f\n", p_symbols->f$sitout());
 
-	set_f$leave(gram.CalcF$symbol(p_formula, "f$leave", prefs.trace_functions(nTraceLeave), &e));
+	set_f$leave(gram.CalcF$symbol(p_formula, "f$leave", prefs.trace_enabled(), &e));
 	write_log(3, "Secondary formulas; f$leave: %f\n", p_symbols->f$leave());
 
 	e = SUCCESS;
@@ -3852,7 +3849,7 @@ void CSymbols::CalcSecondaryFormulas(void)
 	write_log(3, "Secondary formulas; f$delay: %f\n", p_symbols->f$delay());
 	
 	e = SUCCESS;
-	set_f$chat(gram.CalcF$symbol(p_formula, "f$chat", &e));
+	set_f$chat(gram.CalcF$symbol(p_formula, "f$chat", prefs.trace_enabled(), &e));
 	write_log(3, "Secondary formulas; f$chat: %f\n", p_symbols->f$chat());
 
 	CalcAutoTrace();
@@ -4184,7 +4181,6 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "isfourofakind", 13)==0 && strlen(a)==13)				return _sym.isfourofakind;
 		if (memcmp(a, "isstraightflush", 15)==0 && strlen(a)==15)			return _sym.isstraightflush;
 		if (memcmp(a, "isroyalflush", 12)==0 && strlen(a)==12)				return _sym.isroyalflush;
-		if (memcmp(a, "isfiveofakind", 13)==0 && strlen(a)==13)				return _sym.isfiveofakind;
 
 		// POCKET TESTS
 		if (memcmp(a, "ispair", 6)==0 && strlen(a)==6)						return _sym.ispair;
