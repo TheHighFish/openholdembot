@@ -32,6 +32,96 @@ MAINTENANCE:
   swagdelay, allidelay, swagtextmethod, potmethod, activemethod
   IMO the TM-symbols should only be used by OH internally,
   but not by the user at the formula-level. [THF] 
+- Removed isfiveofakind, as it was completely superfluos.
+  Thanks to JumpingFences for pointing this out. [THF]
+
+
+v2.1.7 2010-09-12
+=================
+BUG FIXES:
+- Fixed broken title of replay-frames, which has to be in the first line as plain text
+  (which is not standard HTML, but good old WinHoldem design).
+  Thanks to qwerty for reporting the problem and to Poker_Dog
+  for pointing out the mistake. [THF]
+- Default for user-dll (preferences.dll_name) is no longer "user.dll", but "".
+  Setting the string to "user.dll" whenever it was empty
+  caused problems for the people who wanted to have it undefined:
+  http://www.maxinmontreal.com/forums/viewtopic.php?f=112&t=11556
+  Thanks to JumpingFences for pointing out the problem. [THF]
+- OpenHoldem was loading some DLLs using absolute paths.
+  This was breaking standard windows behaviour:
+  http://msdn.microsoft.com/en-us/library/ms682586(VS.85).aspx
+  Thanks to JumpingFences for pointing out the problem and his detailed explanations. [THF]
+- OpenHoldem crashed in optimized release-mode after using the formula editor
+  very late at termination of the program, as a string object got accessed
+  that had already been released. Thanks to JumpingFences for fixing the bug
+  and to BillW for testing and confirming the fix. [THF]
+- The symbol "playersblindbits" was incorrectly assuming, that always the next two chairs
+  after the dealer were the blinds. This has now been fixed.
+  Thanks to Mjoe2 for reporting the problem [F1x3r]
+- Some casinos (currently we are only aware of FullTilt) use a "dead button",
+  if one of the blinds did bust in the previous hand.
+  This caused problems with the code to detect blinds and with the ICM symbols.
+  Thanks to CrumbleSunday for reporting the issue and for Poker_Dog
+  for contributing to the solution. [F1x3r]
+- Fixed a memory leak in the formula editor.
+  Thanks to JumpingFences for reporting the problem and fixing the bug. [THF]
+
+
+v2.1.6 2010-08-29
+=================
+BUG FIXES:
+- The symbol "call" got broken by a previous bug-fix.
+  Thanks to kTrader for reporting. [F1x3r]
+- Trying to adapt the history-symbols after an action did break
+  some other symbols like currentbetX.
+  Thanks to BadHabit for reporting. [F1x3r]
+- Detecting the blinds was a bit unreliable
+  ("blinds" means blind-posters here, not bet.amounts),
+  as OpenHoldem assumed, that always the two seats after the button are blinds,
+  even if they were empty. This has now been corrected.
+  Special care has been taken for situations that are headsup or become headsup.
+  Thanks to Mjoe2 for reporting this old problem again and providing a good screenshot
+  that motivated us to do the fix. [F1x3r]
+
+MAINTENANCE:
+- Now also logging f$delay (optionally). [THF]
+- Some minor improvements to the replay-frames (HTML-file). [THF] 
+
+
+v2.1.5 2010-07-01
+=================
+BUG FIXES:
+- The symbol ishistraight did not work for all best straights,
+  but only for ace-high-straights. This has now been fixed.
+  Thanks to Mad4IT for reporting. [F1x3r]
+- betround was used for symbol lookups when loading the first formula,
+  but not yet initialized.
+  This was pretty harmless, but threw an assertion in debug-mode.
+  Thanks to Gecko for motivating me to fix it. [THF]
+- OpenHoldem was not able to use both absolute and relative filenames
+  to load scraper(preprocessor)-DLLs. Thanks to Ljmj
+  for reporting the problem and for providing the fix. [THF]
+- Applying a formula while the autoplayer is engaged is an extremely bad idea
+  (PEBKAC) and could lose the whole formula. Trying to fix this issue
+  (stupid user) with improved warning messages. Nothing more we can do. [THF]
+- Fixed yet another problem with nopponentsraising. [F1x3r]
+- Historically all hi_symbols (and some others) keep the value they had
+  at heros last turn in betting round X, as heros turn is the only time
+  when we get stable frames, so scraping or even guessing what happened behind hero
+  would be completely unreliable.
+  However some other symbols like nbetsroundX get now adapted for heros action,
+  assuming that his action gets executed correctly.
+  Thanks to Gecko for "motivating" me to fix this "bug". [THF]
+- Comments inside handlists got overwritten when the editor-dialog
+  changed a handlist. This has now been changed.
+  Thanks to Trom for reporting. [THF]
+- The autoplayer trace did not work for f$allin. This has now been fixed.
+  Thanks to CrumbleSunday for reporting.
+  Temporarily the autoplayer-trace for f$play, f$rebuy (but not the primary functions)
+  will be written every heartbeat, but that will easily be resolved
+  with some other changes in the upcoming OH 2.2.0 [THF]
+
 
 v2.1.4 2010-04-23
 =================
@@ -58,6 +148,7 @@ NEW STUFF:
   * testing, if PATH-variable contains Perl-directory
   * better test for MSVCRT 8.0, which is necessary for Perl. 
   [F1x3r]
+
 
 v2.1.3 2010-03-03
 =================
