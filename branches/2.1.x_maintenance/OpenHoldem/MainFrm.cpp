@@ -1275,7 +1275,7 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
 	{
 		if (m_formulaScintillaDlg)
 		{
-			if (m_formulaScintillaDlg->m_dirty && !prefs.disable_msgbox())
+			if (m_formulaScintillaDlg->m_dirty)
 			{
 				if (MessageBox("The Formula Editor has un-applied (and unsaved) changes.\n"
 							   "Really exit?", "Unsaved formula warning", MB_YESNO) == IDNO)
