@@ -1,0 +1,259 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="ManualMode.tex"> 
+<meta name="date" content="2009-11-14 19:06:00"> 
+<link rel="stylesheet" type="text/css" href="ManualMode.css"> 
+</head><body 
+>
+
+
+   <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;1</span><br /><a 
+ id="x1-10001"></a>ManualMode </h2>
+   <h3 class="sectionHead"><span class="titlemark">1.1. </span> <a 
+ id="x1-20001.1"></a>Description</h3>
+<!--l. 32--><p class="noindent" >ManualMode is a tool for simulating a poker game state offine. It allows you to set any
+game state you can think of, including your cards, buttons, etc.
+<!--l. 36--><p class="indent" >   A Table Map is included with the ManualMode tool to allow OpenHoldem to
+connect to the ManualMode main window and scrape the game state 100% correctly into
+the OpenHoldem engine. This will allow for offline construction of bot logic and the easy
+setup of various game state situations, some of which are very rare online (think Straight
+Flushes).
+   <h3 class="sectionHead"><span class="titlemark">1.2. </span> <a 
+ id="x1-30001.2"></a>Familiarizing yourself with ManualMode</h3>
+<!--l. 45--><p class="noindent" ><img 
+src="ManualMode0x.png" alt="PIC" class="graphics" width="200.75pt" height="100.375pt" ><!--tex4ht:graphics  
+name="ManualMode0x.png" src="C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/ManualMode/MMMainWindow.bmp\Gin@ext "  
+-->
+<!--l. 47--><p class="indent" >   The ManualMode interface is quite intuitive. All relevant elements on the poker table
+are visible at all times, either populated with objects (like cards or bets), or outlined in
+white dashed lines if not populated. Each game state element is interacted with slightly
+differently and is discussed below. In general, however, right-clicking on any element will
+bring up a list
+           <ol  class="enumerate1" >
+        <li 
+  class="enumerate" id="x1-3002x1">Common  Cards:  Right-clicking  on  each  common  card  will  bring  up  a
+        context
+           </li>
+        <li 
+  class="enumerate" id="x1-3004x2">Sit  Down/Stand  Up:  OpenHoldem  recognizes  the  difference  between
+        sitting in at a chair, and sitting in a game and being dealt a hand. allowing
+        the player to Sit Down or Stand Up from the selected chair.
+           </li>
+        <li 
+  class="enumerate" id="x1-3006x3">Sit In/Sit Out: OpenHoldem recognizes the difference between sitting in
+        at a chair, and sitting in a game and being dealt a hand. cards will bring
+        up a context menu allowing the player to Sit In to the game or Sit out from
+        the game. table. up a context menu allowing the assignment of the dealer
+        button to the selected chair. around the table anti-clockwise or clockwise.
+           </li>
+        <li 
+  class="enumerate" id="x1-3008x4">Player Cards: Right-clicking on either of a player&#8217;s cards will bring up a
+        context menu allowing the selection of rank/suit, &#8220;cardbacks&#8221; or &#8220;no card&#8221;.
+        Note: prior to assigning cards, a player must have &#8220;Sat In&#8221; the game.
+           </li>
+        <li 
+  class="enumerate" id="x1-3010x5">Player Names: Right-clicking on the player&#8217;s name rectangle will pop up
+        a window prompting for a string to use as the player&#8217;s name. Note: prior
+        to assigning names, a player must have &#8220;Sat Down&#8221; at the table.
+           </li>
+        <li 
+  class="enumerate" id="x1-3012x6">Player Balances: Right-clicking on the player&#8217;s balance rectangle will pop
+
+        up a window prompting for a string to use as the player&#8217;s balance. Note:
+        prior to assigning balances, a player must have &#8220;Sat Down&#8221; at the table.
+           </li>
+        <li 
+  class="enumerate" id="x1-3014x7">Player Bets: Right-clicking on the player&#8217;s bet rectangle will pop up a
+        window prompting for a string to use as the player&#8217;s bet. Note: prior to
+        assigning bets, a player must have &#8220;Sat In&#8221; the game.
+           </li>
+        <li 
+  class="enumerate" id="x1-3016x8">Dealer Button: Right-clicking on either of a player&#8217;s cards will bring up a
+        context menu allowing the assignment of the dealer button to the selected
+        chair. The &#8220;D-&#8221; and &#8220;D+&#8220; buttons can also be clicked to move the dealer
+        button around the table anti-clockwise or clockwise.
+           </li>
+        <li 
+  class="enumerate" id="x1-3018x9">Blinds/Limits: Right-clicking on the center information box will pop up
+        a window in which the small blind, big blind, big bet, ante, game type
+        (FL, PL, NL), network (useful if integrating with {PokerTracker}), and
+        tournament indicator can be set. Buttons: Left-clicking on any game-state
+        button on the table will toggle its state from on to off. These include
+        the FCKRA buttons on the bottom right (fold, call, check, table, prefold,
+        autopost).</li></ol>
+<!--l. 95--><p class="noindent" >There are some shortcuts built into ManualMode to allow easier setup of from the table. As
+players are added, they will Sit Down, Sit In, and will be assigned a name and balance.
+Players will be added from chair 0 to chair 9, depending on what is open, and removed in
+reverse order. for a string to be entered. The format of the macro string is
+described here: {Macros} Betting: Left-clicking (right click to set a specific
+SWAG).
+<!--l. 103--><p class="indent" >   Note: When ManualMode detects a betting round change (i.e. 0 to 3, 3 to 4 or 4 to 5
+common cards), then all player bets will be collected into the pot, and all player bets will
+be reset to zero.
+   <h3 class="sectionHead"><span class="titlemark">1.3. </span> <a 
+ id="x1-40001.3"></a>ManualMode Options </h3>
+<!--l. 110--><p class="noindent" >Clicking on the System Menu (green spades symbol) on the ManualMode window will
+bring up the system context menu. Selecting this entry will bring up the following
+window:
+<!--l. 114--><p class="indent" >   <img 
+src="ManualMode1x.png" alt="PIC" class="graphics" width="200.75pt" height="100.375pt" ><!--tex4ht:graphics  
+name="ManualMode1x.png" src="C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/ManualMode/MMOptions.bmp\Gin@ext "  
+-->
+<!--l. 116--><p class="indent" >   On this window is only one option at the moment, to move the right-click popup
+menu so it does not show up on top of the ManualMode window. The reason for this is
+that the popup menu will overlay the game state elements, and cause havoc if
+you have connected an OpenHoldem instance to this ManualMode window.
+The drawback is that the popup menu appears in a different location from
+where you right-clicked, and is somewhat disconcerting until you get used to
+
+it.
+   <h4 class="subsectionHead"><span class="titlemark">1.3.1. </span> <a 
+ id="x1-50001.3.1"></a>Macros </h4>
+<!--l. 127--><p class="noindent" >A macro string is a series of characters executed one at a time, left to right. The meaning
+of each character is as follows:
+
+   <div class="tabular"> <table id="TBL-1" class="tabular" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-1-1g"><col 
+id="TBL-1-1"></colgroup><colgroup id="TBL-1-2g"><col 
+id="TBL-1-2"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-1-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-1-1"  
+class="td11"> <!--l. 132--><p class="noindent" >Character               </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-1-2"  
+class="td11"> <!--l. 132--><p class="noindent" >Meaning                                                                       </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-2-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-2-1"  
+class="td11"> <!--l. 135--><p class="noindent" >R
+  (uppercase)              </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-2-2"  
+class="td11"> <!--l. 135--><p class="noindent" >Reset
+  the
+  game
+  state                                                                            </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-3-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-3-1"  
+class="td11"> <!--l. 137--><p class="noindent" >P
+  (uppercase)              </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-3-2"  
+class="td11"> <!--l. 137--><p class="noindent" >Sit
+  in
+  a
+  player
+  at
+  this
+  chair,
+  default
+  name,
+  default
+  balance,
+  and
+  cardbacks                                                                      </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-4-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-4-1"  
+class="td11"> <!--l. 140--><p class="noindent" >p
+  (lowercase)               </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-4-2"  
+class="td11"> <!--l. 140--><p class="noindent" >Unseat
+  a
+  player
+  at
+  this
+  chair                                                                            </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-5-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-5-1"  
+class="td11"> <!--l. 142--><p class="noindent" >b
+  (lowercase)               </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-5-2"  
+class="td11"> <!--l. 142--><p class="noindent" >Set
+  the
+  small
+  blind
+  at
+  this
+  chair                                                                            </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-6-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-6-1"  
+class="td11"> <!--l. 144--><p class="noindent" >B
+  (uppercase)              </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-6-2"  
+class="td11"> <!--l. 144--><p class="noindent" >Set
+  the
+  big
+  blind
+  at
+  this
+  chair                                                                            </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-7-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-7-1"  
+class="td11"> <!--l. 146--><p class="noindent" >23456789tjqka           </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-7-2"  
+class="td11"> <!--l. 146--><p class="noindent" >Set
+  the
+  rank
+  of
+  the
+  players
+  cards
+  at
+  this
+  chair,
+  or
+  common
+  cards
+  (player
+  first,
+  common
+  next)                                                                            </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-8-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-8-1"  
+class="td11"> <!--l. 149--><p class="noindent" >cdhs                        </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-8-2"  
+class="td11"> <!--l. 149--><p class="noindent" >See
+  the
+  suit
+  of
+  the
+  players
+  cards
+  at
+  this
+  chair,
+  or
+  common
+  cards
+  (player
+  first,
+  common
+  next)                                                                            </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-9-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-9-1"  
+class="td11"> <!--l. 152--><p class="noindent" >n                            </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-9-2"  
+class="td11"> <!--l. 152--><p class="noindent" >Set
+  the
+  dealer
+  to
+  this
+  chair                                                                            </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-10-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-10-1"  
+class="td11">                    </td> </tr></table>
+
+</div>
+<!--l. 156--><p class="indent" >   The default macro provided (&#8220;RPPPPPPPPPPbB&#8221;) will reset the table, set 10
+players, and set chair 0 as the small blind and chair 1 as the big blind.
+<!--l. 160--><p class="indent" >   A macro of &#8220;RPPnAhAsPbPBPPP&#8221; will reset the table, seat 7 players, assign the
+user to chair 1 with the button and deal Ah As as hole cards, assign chair 2 to the small
+blind and assign chair 3 to the big blind.  
+</body></html> 
+
+
+
