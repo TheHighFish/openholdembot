@@ -3248,8 +3248,8 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "dealerchair", "dealer chair number (0-9)");
 	AddSymbol(parent, "raischair", "raising chair number (0-9)");
 	AddSymbol(parent, "oppchair", "raising chair number (0-9)");
-	AddSymbol(parent, "chai_r$abc", "player abc chair number (0-9); -1 if not found");
-	AddSymbol(parent, "chairbi_t$abc", "player abc chairbit (1 << chai_r$abc); 0 if not found");
+	AddSymbol(parent, "chair$abc", "player abc chair number (0-9); -1 if not found");
+	AddSymbol(parent, "chairbit$abc", "player abc chairbit (1 << chai_r$abc); 0 if not found");
 
 	mainParent = parent = AddSymbolTitle("Rounds / Positions", NULL, hCatItem);
 	AddSymbol(parent, "betround", "betting round (1-4) 1=preflop, 2=flop, 3=turn, 4=river");
