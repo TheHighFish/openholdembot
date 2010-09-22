@@ -49,11 +49,12 @@
 // ======================================================================================
 
 // Version
-#define VERSION_NUMBER				2.00
-#define VERSION_TEXT				"2.0.0"  // change version number in OpenScrape.rc also, when needed
+#define VERSION_NUMBER				2.20
+#define VERSION_TEXT				"2.2.0"  // change version number in OpenScrape.rc also, when needed
 
 
 #include "debug.h"
 #include "..\StructsDefines\structs_defines.h"
+
 
 #endif //INC_STDAFX_H
