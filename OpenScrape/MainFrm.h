@@ -40,6 +40,9 @@ public:
 	// Flag indicating whether red regions are shown or not
 	bool show_regions;
 
+private:
+	void SetTablemapSizeIfUnknown(int size_x, int size_y);
+
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;

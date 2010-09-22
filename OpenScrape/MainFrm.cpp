@@ -424,6 +424,22 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 	CFrameWnd::OnTimer(nIDEvent);
 }
 
+void CMainFrame::SetTablemapSizeIfUnknown(int size_x, int size_y)
+{
+	return;
+	if ((size_x > 0) && (size_y > 0)) //!!! and tm loaded!
+	{
+		CString	text;
+		text.Format("z$clientsize not yet defined.\nSetting it automatically to (%d, %d).",
+			size_x, size_y);
+		if (MessageBox(text, "Info: z$clientsize", MB_YESNO) == IDYES)
+		{
+			//z$clientsize
+
+		}
+	}
+}
+
 void CMainFrame::OnViewRefresh()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
@@ -467,6 +483,11 @@ void CMainFrame::OnViewRefresh()
 		pDoc->attached_rect.top = crect.top;
 		pDoc->attached_rect.right = crect.right;
 		pDoc->attached_rect.bottom = crect.bottom;
+
+		// Set
+		int size_x = crect.right - crect.left + 1;
+		int size_y = crect.bottom - crect.top + 1;
+		SetTablemapSizeIfUnknown(size_x, size_y);
 
 		// Resize window
 		::GetClientRect(pDoc->attached_hwnd, &newrect);

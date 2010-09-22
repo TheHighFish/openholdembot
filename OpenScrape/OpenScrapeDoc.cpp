@@ -2,12 +2,14 @@
 //
 
 #include "stdafx.h"
-#include "OpenScrape.h"
-#include "MainFrm.h"
 #include "OpenScrapeDoc.h"
+
 #include "../CTransform/hash/lookup3.h"
+#include "../StructsDefines/structs_defines.h"
 #include "DialogTableMap.h"
 #include "global.h"
+#include "MainFrm.h"
+#include "OpenScrape.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -182,7 +184,7 @@ void COpenScrapeDoc::Serialize(CArchive& ar)
 
 		else if (ret != SUCCESS)
 		{
-			s.Format("Error %d loading table map.", ret);
+			s.Format("Error %d loading table map: %s.", ret, k_tablemap_errors_and_parse_errors_explained[ret]);
 			MessageBox(pMyMainWnd->GetSafeHwnd(), s.GetString(), "Table map load error", MB_OK);
 			is_dirty = false;
 			valid_open = false;
