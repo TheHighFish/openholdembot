@@ -18,7 +18,6 @@ public:
 
 public:
 	// public accessors
-	const int didswag(const int n) { if (n>=0 && n<=4) return _didswag[n]; else return 0; }
 	const bool autoplayer_engaged() { return _autoplayer_engaged; }
 
 public:

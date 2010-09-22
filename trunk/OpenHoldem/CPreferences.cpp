@@ -82,7 +82,11 @@ void CPreferences::InitDefaults(void)
 	// dll
 	_dll_always_send_state = true;
 	_dll_load_on_startup = false;
-	_dll_name = "user.dll";
+	// Default is: empty string
+	// Setting the string to "user.dll" whenever it is empty
+	// caused problems for the people who want it undefined:
+	// http://www.maxinmontreal.com/forums/viewtopic.php?f=112&t=11556
+	_dll_name = "";
 
 	// Ppro
 	_ppro_hostname = "127.0.0.1";
@@ -188,7 +192,7 @@ void CPreferences::InitDefaults(void)
 	_rebuy_script = "Rebuy.exe";
 
 	// Configuration check
-	_configurationcheck_input_settings = true;
+	_configurationcheck_keyboard_settings = true;
 	_configurationcheck_theme_settings = true;
 	_configurationcheck_font_settings = true;
 

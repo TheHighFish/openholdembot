@@ -33,15 +33,11 @@ BOOL COpenHoldemDoc::OnNewDocument()
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	if (!CDocument::OnNewDocument())
-	return FALSE;
+		return FALSE;
 
 	// Kill the formula dialog, if it is open
 	if(m_formulaScintillaDlg) 
-	{
-		delete m_formulaScintillaDlg;
-		m_formulaScintillaDlg	=	NULL;
-		pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
-	}
+		m_formulaScintillaDlg->DestroyWindow();
 
 	// Default bot
 	p_formula->SetDefaultBot();
@@ -136,12 +132,8 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 	{
 		// Kill the formula dialog, if it is open
 		if(m_formulaScintillaDlg) 
-		{
-			delete m_formulaScintillaDlg;
-			m_formulaScintillaDlg	=	NULL;
-			pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
-		}
-
+			m_formulaScintillaDlg->DestroyWindow();
+			
 		// Read ohf / whf file
 		ReadFormula(ar);
 		SetModifiedFlag(false);

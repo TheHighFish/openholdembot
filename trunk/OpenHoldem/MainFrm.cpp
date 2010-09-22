@@ -448,9 +448,7 @@ void CMainFrame::OnEditFormula()
 	{
 		BOOL	bWasShown = ::IsWindow(m_formulaScintillaDlg->m_hWnd) && m_formulaScintillaDlg->IsWindowVisible();
 
-		m_formulaScintillaDlg->EndDialog(IDCANCEL);
-		delete m_formulaScintillaDlg;
-		m_formulaScintillaDlg = NULL;
+		m_formulaScintillaDlg->DestroyWindow();
 
 		if (bWasShown)
 			return;
@@ -1290,7 +1288,7 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
 	{
 		if (m_formulaScintillaDlg)
 		{
-			if (m_formulaScintillaDlg->m_dirty && !prefs.disable_msgbox())
+			if (m_formulaScintillaDlg->m_dirty)
 			{
 				if (OH_MessageBox_Interactive("The Formula Editor has un-applied (and unsaved) changes.\n"
 							   "Really exit?", "Unsaved formula warning", MB_YESNO) == IDNO)

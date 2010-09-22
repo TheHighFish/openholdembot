@@ -142,7 +142,7 @@ char * keywords = // Standard functions
 				  // ICM calculator
 				  "icm icm_fold icm_callwin icm_calllose icm_calltie "
 				  "icm_alliwin0 icm_alliwin1 icm_alliwin2 icm_alliwin3 icm_alliwin4 "
-				  "icm_alliwin5 icm_alliwin8 icm_alliwin7 icm_alliwin8 icm_alliwin9 "
+				  "icm_alliwin5 icm_alliwin6 icm_alliwin7 icm_alliwin8 icm_alliwin9 "
 				  "icm_allilose0 icm_allilose1 icm_allilose2 icm_allilose3 icm_allilose4 "
 				  "icm_allilose5 icm_allilose6 icm_allilose7 icm_allilose8 icm_allilose9 "
 				  "icm_alliwinSB icm_alliwinBB icm_alliwinUTG icm_alliwinUTG1 icm_alliwinUTG2 icm_alliwinUTG3 "
@@ -658,9 +658,11 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
 
 void CDlgFormulaScintilla::OnCancel()
 {
-	m_formulaScintillaDlg = NULL;
+	if (m_dirty)
+		if(!PromptToSave())
+			return;
 
-	CDialog::OnCancel();
+	DestroyWindow();
 }
 
 void CDlgFormulaScintilla::RemoveSingleItemGroups()
@@ -1873,31 +1875,22 @@ BOOL CDlgFormulaScintilla::DestroyWindow()
 	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	StopAutoButton();
-
 	SaveSettingsToRegistry();
-
-	if (m_dirty) 
-	{
-		if (!PromptToSave())
-			return FALSE;
-	}
-
 	CloseFindReplaceDialog();
+	m_wrk_formula.ClearFormula();
+	editfont.DeleteObject();
 
 	// Uncheck formula button on main toolbar
 	pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
-	m_wrk_formula.ClearFormula();
+
 	return CDialog::DestroyWindow();
 }
 
 void CDlgFormulaScintilla::PostNcDestroy()
 {
-	editfont.DeleteObject();
-
-	delete m_formulaScintillaDlg;
-	m_formulaScintillaDlg	=	NULL;
-
 	CDialog::PostNcDestroy();
+	delete this;
+	m_formulaScintillaDlg	=	NULL;
 }
 
 BOOL CDlgFormulaScintilla::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
@@ -2686,11 +2679,6 @@ void CDlgFormulaScintilla::OnBnClickedOk()
 		WarnAboutAutoplayerWhenApplyingFormulaAndTurnAutoplayerOff();		
 	}
 
-	StopAutoButton();
-
-	// Save settings to registry
-	SaveSettingsToRegistry();
-
 	// Re-calc working set hand lists
 	m_wrk_formula.CreateHandListMatrices();
 
@@ -2716,7 +2704,6 @@ void CDlgFormulaScintilla::OnBnClickedOk()
 	// Copy working set to global set
 	p_formula->CopyFormulaFrom(&m_wrk_formula);
 
-	m_wrk_formula.ClearFormula();
 	pDoc->SetModifiedFlag(true);
 	m_dirty = false;
 
@@ -2729,10 +2716,7 @@ void CDlgFormulaScintilla::OnBnClickedOk()
 	// Re-calc symbols
 	p_symbols->CalcSymbols();
 
-	// Uncheck formula button on main toolbar
-	pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
-
-	OnOK();
+	DestroyWindow();
 }
 
 bool CDlgFormulaScintilla::PromptToSave()
@@ -2770,7 +2754,6 @@ bool CDlgFormulaScintilla::PromptToSave()
 		// Copy working set to global set
 		p_formula->CopyFormulaFrom(&m_wrk_formula);
 
-		m_wrk_formula.ClearFormula();
 		pDoc->SetModifiedFlag(true);
 
 		// Re-calc global set hand lists
@@ -2779,9 +2762,6 @@ bool CDlgFormulaScintilla::PromptToSave()
 		// Re-parse global set
 		p_formula->ParseAllFormula(this->GetSafeHwnd(), false);
 
-		// Uncheck formula button on main toolbar
-		pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
-
 		m_dirty = false;
 
 		return true;
@@ -2789,13 +2769,7 @@ bool CDlgFormulaScintilla::PromptToSave()
 	
 	if (response == IDNO)
 	{
-		m_wrk_formula.ClearFormula();
-
-		// Uncheck formula button on main toolbar
-		pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
-
 		m_dirty = false;
-
 		return true;
 	}
 
@@ -2804,31 +2778,12 @@ bool CDlgFormulaScintilla::PromptToSave()
 
 void CDlgFormulaScintilla::OnBnClickedCancel()
 {
-	COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
-	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-
-	StopAutoButton();
-
-	SaveSettingsToRegistry();
-
 	// Prompt for changes if needed
-	if (m_dirty) 
-	{
-		if (PromptToSave()) 
-		{
-			CloseFindReplaceDialog();
-			OnCancel();
-		}
-	}
-	else {
-		m_wrk_formula.ClearFormula();
+	if (m_dirty)
+		if(!PromptToSave())
+			return;
 
-		// Uncheck formula button on main toolbar
-		pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
-		CloseFindReplaceDialog();
-
-		OnCancel();
-	}
+	DestroyWindow();
 }
 
 void CDlgFormulaScintilla::OnSearchUpdate()
@@ -3297,8 +3252,8 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "dealerchair", "dealer chair number (0-9)");
 	AddSymbol(parent, "raischair", "raising chair number (0-9)");
 	AddSymbol(parent, "oppchair", "raising chair number (0-9)");
-	AddSymbol(parent, "chai_r$abc", "player abc chair number (0-9); -1 if not found");
-	AddSymbol(parent, "chairbi_t$abc", "player abc chairbit (1 << chai_r$abc); 0 if not found");
+	AddSymbol(parent, "chair$abc", "player abc chair number (0-9); -1 if not found");
+	AddSymbol(parent, "chairbit$abc", "player abc chairbit (1 << chai_r$abc); 0 if not found");
 
 	mainParent = parent = AddSymbolTitle("Rounds / Positions", NULL, hCatItem);
 	AddSymbol(parent, "betround", "betting round (1-4) 1=preflop, 2=flop, 3=turn, 4=river");

@@ -1025,9 +1025,9 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "FileVersion", "2.1.6.0"
+            VALUE "FileVersion", "2.1.7.0"
             VALUE "LegalCopyright", "Licensed under GPLv3"
-            VALUE "ProductVersion", "2.1.6.0"
+            VALUE "ProductVersion", "2.1.7.0"
         END
     END
     BLOCK "VarFileInfo"

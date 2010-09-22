@@ -26,7 +26,7 @@ void CConfigurationCheck::CheckEverything()
 	CheckForSwapMouseBtns();
 
 	// OpenHoldem may or may not work, if these are not right.
-	if (prefs.configurationcheck_input_settings())
+	if (prefs.configurationcheck_keyboard_settings())
 	{
 		CheckKeyboardSettings();
 	}
