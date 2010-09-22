@@ -101,8 +101,15 @@ void CReplayFrame::CreateReplayFrame(void)
 	path.Format("%s\\replay\\session_%lu\\frame%06d.htm", _startup_path, p_sessioncounter->session_id(), _next_replay_frame);
 	if (fopen_s(&fp, path.GetString(), "w")==0)
 	{
+		// First line has to be the "title" of the table.
+		// This is no longer valid HTML, but the way Ray.E.Bornert did it
+		// for WinHoldem and WinScrape.
+		fprintf(fp, "%s\n", p_scraper->title());
 		// HTML header
 		fprintf(fp, "<html>\n");
+		fprintf(fp, "  <head>\n");
+		fprintf(fp, "    <title>%s</title>\n", p_scraper->title());
+		fprintf(fp, "  </head>");
 		fprintf(fp, "<style>\n");
 		fprintf(fp, "td {text-align:right;}\n");
 		fprintf(fp, "</style>\n");

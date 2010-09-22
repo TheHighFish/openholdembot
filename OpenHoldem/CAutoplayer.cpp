@@ -61,7 +61,7 @@ void CAutoplayer::GetNeccessaryTablemapObjects()
 		button_name.Format("i86%dbutton", i);
 		i86X_buttons_defined[i] = p_tablemap_access->GetTableMapRect(button_name, &i86X_buttons[i]);
 	}
-	ENT 
+	CSLock lock(m_critsec); // Needed???
 	_autoplayer_engaged = to_be_enabled_or_not; 
 	// Set correct button state
 	// We have to be careful, as during initialization the GUI does not yet exist.

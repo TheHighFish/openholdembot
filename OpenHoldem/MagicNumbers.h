@@ -2,6 +2,14 @@
 
 #define _INC_MAGICNUMBERS_H
 
+// ATTENTION!
+//   Do only use elementary data-types here.
+//   Complex data-types like objects (especially CStrings)
+//   will cause problems during initialization and termination,
+//   if they get accessed but are not yet initialized or no longer valid.
+//   http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=11724
+//   (Same problem like the singletons in OpenHoldem.cpp)
+
 // Used for bit-calculations: 2^N
 const int k_exponents[11] = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024};
 
@@ -19,10 +27,6 @@ const int k_max_length_of_playername = 30;
 // Chairs
 const int k_min_chair_number = 0;
 const int k_max_chair_number = k_max_number_of_players - 1;
-
-// Number of (side)pots
-const int k_max_number_of_pots = 10;
-
 
 // Number of cards
 const int k_number_of_community_cards  = 5;
@@ -257,11 +261,12 @@ enum ActionConstant
 };
 
 // 4 digit names of action-constants for use in the autoplayer-log.
-const CString k_action_constant_names[k_action_allin+1] =
+const static char *k_action_constant_names[k_action_allin+1] =
 {"UNDF", "FOLD", "CHEC", "CALL", "RAIS", "SWAG", "ALLI"};
 
 // for rank to card translation
 const static char *k_card_chars = "23456789TJQKA";
+const int k_number_of_different_cardranks = 13;
 
 // Index for current betting round in arrays
 // we prefer to store values for preflop..river in 1..4

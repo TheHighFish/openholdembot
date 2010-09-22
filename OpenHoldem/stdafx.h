@@ -33,6 +33,10 @@
 
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
 
+// Turn warnings off
+#define _CRT_SECURE_NO_DEPRECATE 1 // 
+#pragma warning(disable:4805)      // unsafe mix of type X and type 'bool' in operation
+
 // turns off MFC's hiding of some common and often safely ignored warning messages
 #define _AFX_ALL_WARNINGS
 
