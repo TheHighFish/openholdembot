@@ -63,7 +63,6 @@ protected: // create from serialization only
 	afx_msg void OnFormulaViewStatusbar();
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg void OnDllLoadspecificfile();
-	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg LRESULT OnConnectMessage(WPARAM, LPARAM hwnd);
 	afx_msg LRESULT OnDisconnectMessage(WPARAM, LPARAM);
 	afx_msg LRESULT OnConnectedHwndMessage(WPARAM, LPARAM);

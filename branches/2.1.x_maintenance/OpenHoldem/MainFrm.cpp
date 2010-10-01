@@ -442,6 +442,16 @@ void CMainFrame::OnEditFormula()
 {
 	if (m_formulaScintillaDlg) 
 	{
+		if (m_formulaScintillaDlg->m_dirty)
+		{
+			if (MessageBox("The Formula Editor has un-applied changes.\n"
+						   "Really exit?", "Formula Editor", MB_ICONWARNING|MB_YESNO) == IDNO)
+			{
+				m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, true);
+				return;
+			}
+		}
+
 		BOOL	bWasShown = ::IsWindow(m_formulaScintillaDlg->m_hWnd) && m_formulaScintillaDlg->IsWindowVisible();
 
 		m_formulaScintillaDlg->DestroyWindow();
@@ -613,14 +623,18 @@ void CMainFrame::SetMainWindowTitle(LPCSTR title)
 
 void CMainFrame::OnFileOpen() 
 {
+    COpenHoldemDoc *pDoc = (COpenHoldemDoc *)this->GetActiveDocument();   
+   
+    if (!pDoc->SaveModified())
+        return;        // leave the original one
+
 	CFileDialog			cfd(true);
 
 	cfd.m_ofn.lpstrInitialDir = prefs.path_ohf();
 	cfd.m_ofn.lpstrFilter = "OpenHoldem Files (.ohf)\0*.ohf\0WinHoldem Files (.whf)\0*.whf\0All files (*.*)\0*.*\0\0";
 	cfd.m_ofn.lpstrTitle = "Select Formula file to OPEN";
 	if (cfd.DoModal() == IDOK)
-	{			
-		COpenHoldemDoc *pDoc = (COpenHoldemDoc *)this->GetActiveDocument();		
+	{				
 		pDoc->OnOpenDocument(cfd.GetPathName());
 		pDoc->SetPathName(cfd.GetPathName());
 		// Update window title, registry
@@ -1267,25 +1281,6 @@ BOOL CMainFrame::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	}
 
 	return CFrameWnd::OnSetCursor(pWnd, nHitTest, message);
-}
-
-void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
-{
-	if (nID == SC_CLOSE)
-	{
-		if (m_formulaScintillaDlg)
-		{
-			if (m_formulaScintillaDlg->m_dirty)
-			{
-				if (MessageBox("The Formula Editor has un-applied (and unsaved) changes.\n"
-							   "Really exit?", "Unsaved formula warning", MB_YESNO) == IDNO)
-			{
-				return;
-			}
-		}
-	}
-	}
-	CFrameWnd::OnSysCommand(nID, lParam);
 }
 
 void CMainFrame::OnPerlLoadFormula() 
