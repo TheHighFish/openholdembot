@@ -659,7 +659,7 @@ void CAutoplayer::DoARCCF(void)
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 	}
 
-	write_log(3, "...ending DoARCCF, 'didrais'/'didcall'/'didchec' now: %d\n", 
+	write_log(3, "...ending DoARCCF, 'didrais'/'didcall'/'didchec' now: %d %d %d\n", 
 	p_symbols->sym()->didrais[4], p_symbols->sym()->didcall[4], p_symbols->sym()->didchec[4]);
 }
 
