@@ -653,7 +653,7 @@ void CAutoplayer::DoARCCF(void)
 		int sym_br = (int) p_symbols->sym()->br;
 
 		// Writing 4-digit-name of action, e.g "ALLI" or "RAIS" to the log.
-		write_logautoplay(1, k_action_constant_names[do_click]);
+		write_logautoplay(1, ActionConstantNames(do_click));
 		p_symbols->RecordPrevAction(do_click);
 		
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
