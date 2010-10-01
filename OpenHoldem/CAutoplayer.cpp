@@ -62,9 +62,9 @@ void CAutoplayer::GetNeccessaryTablemapObjects()
 		i86X_buttons_defined[i] = p_tablemap_access->GetTableMapRect(button_name, &i86X_buttons[i]);
 	}
 	CSLock lock(m_critsec); // Needed???
-	_autoplayer_engaged = to_be_enabled_or_not; 
 	// Set correct button state
 	// We have to be careful, as during initialization the GUI does not yet exist.
+	bool to_be_enabled_or_not = _autoplayer_engaged; 
 	CMainFrame *pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 	if (pMyMainWnd != NULL)
 	{

@@ -4609,7 +4609,7 @@ const double CSymbols::Chairbit$(const char *a)
 void CSymbols::RecordPrevAction(const ActionConstant action)
 {
 	write_log(3, "CSymbols::AdaptSymbolsForUsersAction(%d)\n", action);
-	set_prevaction(action);
+	set_sym_prevaction(action);
 
 	// !!! Most things temporary disabled, as this causes only problems
 	// Only needed for Gecko
@@ -4636,8 +4636,8 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 		case k_action_check:
 			write_log(3, "Adjusting symbols for users action: check\n");
 			// Did-symbols
-			set_didchec(4, p_symbols->sym()->didchec[4] + 1);
-			set_didchec(betround-1, p_symbols->sym()->didchec[betround-1] + 1);
+			set_sym_didchec(4, p_symbols->sym()->didchec[4] + 1);
+			set_sym_didchec(betround-1, p_symbols->sym()->didchec[betround-1] + 1);
 			// Bets and pot
 			new_number_of_bets = _sym.ncallbets;
 			new_bet = new_number_of_bets * bet;
@@ -4647,8 +4647,8 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 			assert(f$call() > 0);
 			write_log(3, "Adjusting symbols for users action: call\n");
 			// Did-symbols
-			set_didcall(4, p_symbols->sym()->didcall[4] + 1);
-			set_didcall(betround-1, p_symbols->sym()->didcall[betround-1] + 1);
+			set_sym_didcall(4, p_symbols->sym()->didcall[4] + 1);
+			set_sym_didcall(betround-1, p_symbols->sym()->didcall[betround-1] + 1);
 			// Bets and pot
 			new_number_of_bets = _sym.ncallbets;
 			new_bet = new_number_of_bets * bet;
@@ -4658,24 +4658,24 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 			assert(f$rais() > 0);
 			write_log(3, "Adjusting symbols for users action: raise\n");
 			// Did-symbols
-			set_didrais(4, p_symbols->sym()->didrais[4] + 1);
-			set_didrais(betround-1, p_symbols->sym()->didrais[betround-1] + 1);
+			set_sym_didrais(4, p_symbols->sym()->didrais[4] + 1);
+			set_sym_didrais(betround-1, p_symbols->sym()->didrais[betround-1] + 1);
 			// Bets and pot
 			new_number_of_bets = _sym.nraisbets;
 			new_bet = new_number_of_bets * bet;
 			new_pot = _sym.pot + new_bet - _sym.currentbet[10];
 			break;
 		case k_action_swag:
-			assert(f$swag() > 0);
-			write_log(3, "Adjusting symbols for users action: swag\n");
+			assert(f$betsize() > 0);
+			write_log(3, "Adjusting symbols for users action: betsize\n");
 			// Did-symbols
-			set_didswag(4, p_symbols->sym()->didswag[4] + 1);
-			set_didswag(betround-1, p_symbols->sym()->didswag[betround-1] + 1);
+			set_sym_didswag(4, p_symbols->sym()->didswag[4] + 1);
+			set_sym_didswag(betround-1, p_symbols->sym()->didswag[betround-1] + 1);
 			// Bets and pot
 			// Disabled till OH 2.2 as it causes bad side-effects for the call symbol.
 			new_bet = _sym.currentbet[10]; // f$swag(); // !!! That's not correct, but will be for OH 2.2.0 because of swagadjustment
 			new_number_of_bets = new_bet / bet; 
-			new_pot = _sym.pot + f$swag() - _sym.currentbet[10];
+			new_pot = _sym.pot + f$betsize() - _sym.currentbet[10];
 			break;
 		case k_action_allin:
 			// No "didallin"
