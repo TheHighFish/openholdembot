@@ -289,28 +289,24 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Create replay frame, if one of the 'every change' options is selected
 
-		if (prefs.replay_record())
+		if ( // If its my turn
+			 (prefs.replay_record() && p_symbols->sym()->ismyturn && !p_heartbeat_thread->replay_recorded_this_turn()) ||
+
+			 // Every change
+			 (prefs.replay_record_every_change() && new_scrape!=NOTHING_CHANGED) ||
+
+			 // Every change and I'm playing
+			 (prefs.replay_record_every_change_playing() && (p_symbols->user_chair_confirmed() &&
+			   !(p_scraper->card_player(p_symbols->sym()->chair, 0)==CARD_NOCARD ||
+			     p_scraper->card_player(p_symbols->sym()->chair, 0)==CARD_BACK ||
+			     p_scraper->card_player(p_symbols->sym()->chair, 1)==CARD_NOCARD ||
+			     p_scraper->card_player(p_symbols->sym()->chair, 1)==CARD_BACK))&& new_scrape != NOTHING_CHANGED)
+		   )
 		{
-			if ( 
-				 // If its my turn
-				 (p_symbols->sym()->ismyturn && !p_heartbeat_thread->replay_recorded_this_turn()) ||
-
-				 // Every change
-				 (prefs.replay_record_every_change() && new_scrape!=NOTHING_CHANGED) ||
-
-				 // Every change and I'm playing
-				 (prefs.replay_record_every_change_playing() && (p_symbols->user_chair_confirmed() &&
-				   !(p_scraper->card_player(p_symbols->sym()->chair, 0)==CARD_NOCARD ||
-				     p_scraper->card_player(p_symbols->sym()->chair, 0)==CARD_BACK ||
-				     p_scraper->card_player(p_symbols->sym()->chair, 1)==CARD_NOCARD ||
-				     p_scraper->card_player(p_symbols->sym()->chair, 1)==CARD_BACK))&& new_scrape != NOTHING_CHANGED)
-			   )
-			{
-				write_log(3, "HBT: Calling CreateReplayFrame.\n");
-				CReplayFrame   crf;
-				crf.CreateReplayFrame();
-				p_heartbeat_thread->set_replay_recorded_this_turn(true);
-			}
+			write_log(3, "HBT: Calling CreateReplayFrame.\n");
+			CReplayFrame   crf;
+			crf.CreateReplayFrame();
+			p_heartbeat_thread->set_replay_recorded_this_turn(true);
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////

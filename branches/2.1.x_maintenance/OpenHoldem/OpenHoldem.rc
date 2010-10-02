@@ -835,15 +835,17 @@ IDD_SAPREFS8 DIALOGEX 0, 0, 219, 155
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Automatically record replay frames (when its my turn)",IDC_RECORD_FRAMES,
+    CONTROL         "Record replay frames",IDC_RECORD_FRAMES,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,188,8
-    CONTROL         "But do it on every change in table state",IDC_RECORD_EVERY_CHANGE,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,22,143,10
-    CONTROL         "Record every change when in hand",IDC_RECORD_EVERY_CHANGE_PLAYING,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,40,147,8
-    EDITTEXT        IDC_MAXFRAMES,100,52,50,12,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_MAXFRAMES_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,150,52,11,12
-    LTEXT           "Maximum frames to store ",IDC_STATIC,4,56,96,8
+    CONTROL         "On change in table state",IDC_RECORD_EVERY_CHANGE,
+                    "Button",BS_AUTORADIOBUTTON,20,52,143,10
+    CONTROL         "On change in table state when in hand",IDC_RECORD_EVERY_CHANGE_PLAYING,
+                    "Button",BS_AUTORADIOBUTTON,20,68,147,8
+    EDITTEXT        IDC_MAXFRAMES,100,99,50,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_MAXFRAMES_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,150,99,11,12
+    LTEXT           "Maximum frames to store ",IDC_STATIC,4,103,96,8
+    CONTROL         "When it's my turn",IDC_RECORD_MY_TURN,"Button",BS_AUTORADIOBUTTON,20,36,138,10
+    GROUPBOX        "Record",IDC_STATIC,13,24,175,63
 END
 
 IDD_SAPREFS9 DIALOGEX 0, 0, 237, 158
