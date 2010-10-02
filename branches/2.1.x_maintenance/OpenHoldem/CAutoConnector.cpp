@@ -875,6 +875,7 @@ void CAutoConnector::Disconnect()
 
 	// Reset symbols
 	p_symbols->ResetSymbolsFirstTime();
+	p_symbols->set_sym_betround(k_betround_preflop);
 
 	// Change window title
 	pMyMainWnd->UpdateWindowTitle();
