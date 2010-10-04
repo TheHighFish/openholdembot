@@ -297,18 +297,6 @@ void CAutoplayer::DoAutoplayer(void)
 		return;
 	}
 
-	// save replay frame, if needed
-	if (prefs.replay_record())
-	{
-		if (p_symbols->sym()->ismyturn && !p_heartbeat_thread->replay_recorded_this_turn())
-		{
-			write_log(3, "Calling CreateReplayFrame.\n");
-			CReplayFrame   crf;
-			crf.CreateReplayFrame();
-			p_heartbeat_thread->set_replay_recorded_this_turn(true);
-		}
-	}
-
 	if (p_symbols->f$alli())
 	{
 		DoAllin();

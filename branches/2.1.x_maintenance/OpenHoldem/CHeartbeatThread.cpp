@@ -290,7 +290,8 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		// Create replay frame, if one of the 'every change' options is selected
 
 		if ( // If its my turn
-			 (prefs.replay_record() && p_symbols->sym()->ismyturn && !p_heartbeat_thread->replay_recorded_this_turn()) ||
+			 (prefs.replay_record() && p_symbols->sym()->ismyturn && 
+			 !p_heartbeat_thread->replay_recorded_this_turn() && new_scrape!=NOTHING_CHANGED) ||
 
 			 // Every change
 			 (prefs.replay_record_every_change() && new_scrape!=NOTHING_CHANGED) ||
