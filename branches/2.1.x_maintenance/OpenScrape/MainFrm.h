@@ -12,6 +12,8 @@ protected: // create from serialization only
 	DECLARE_DYNCREATE(CMainFrame)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnViewRefresh();
+	afx_msg void OnViewPrev();
+	afx_msg void OnViewNext();
 	afx_msg void OnViewShowregionboxes();
 	afx_msg void OnEditUpdatehashes();
 	afx_msg void OnEditDuplicateregion();

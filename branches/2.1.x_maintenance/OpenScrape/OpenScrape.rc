@@ -89,7 +89,10 @@ BEGIN
     BUTTON      ID_MAIN_TOOLBAR_GREENCIRCLE
     SEPARATOR
     BUTTON      ID_MAIN_TOOLBAR_REDRECTANGLE
+    SEPARATOR
+    BUTTON      ID_MAIN_TOOLBAR_PREV
     BUTTON      ID_MAIN_TOOLBAR_REFRESH
+    BUTTON      ID_MAIN_TOOLBAR_NEXT
     SEPARATOR
     BUTTON      ID_APP_ABOUT
 END
@@ -130,7 +133,9 @@ BEGIN
         MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
         MENUITEM "&Connect To Window\tF3",      ID_VIEW_CONNECTTOWINDOW
         MENUITEM "Show &Region Boxes\tF4",      ID_VIEW_SHOWREGIONBOXES
-        MENUITEM "Re&fresh\tF5",                ID_VIEW_REFRESH
+        MENUITEM "Previous Frame",              ID_VIEW_PREV
+        MENUITEM "Re&fresh",                    ID_VIEW_REFRESH
+        MENUITEM "Next Frame\tF5",              ID_VIEW_NEXT
         POPUP "&Group Regions"
         BEGIN
             MENUITEM "By &Type",                    ID_GROUPREGIONS_BYTYPE
@@ -169,7 +174,7 @@ BEGIN
     VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
     VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
     VK_F3,          ID_VIEW_CONNECTTOWINDOW, VIRTKEY, NOINVERT
-    VK_F5,          ID_VIEW_REFRESH,        VIRTKEY, NOINVERT
+    VK_F5,          ID_VIEW_NEXT,           VIRTKEY, NOINVERT
     VK_F4,          ID_VIEW_SHOWREGIONBOXES, VIRTKEY, NOINVERT
     VK_F1,          ID_APP_ABOUT,           VIRTKEY, NOINVERT
 END
@@ -186,7 +191,7 @@ CAPTION "About this program"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            128,IDC_STATIC,11,17,20,20
-    LTEXT           "Version 2.0.0",IDC_STATIC,40,10,119,8,SS_NOPREFIX
+    LTEXT           "Version 2.0.1",IDC_STATIC,40,10,119,8,SS_NOPREFIX
     LTEXT           "Licensed under GPLv3",IDC_STATIC,40,25,119,8
     DEFPUSHBUTTON   "OK",IDOK,178,7,50,16,WS_GROUP
 END
@@ -425,9 +430,9 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "FileVersion", "2.0.0.0"
+            VALUE "FileVersion", "2.0.1.0"
             VALUE "LegalCopyright", "Licensed under GPLv3"
-            VALUE "ProductVersion", "2.0.0.0"
+            VALUE "ProductVersion", "2.0.1.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -658,6 +663,12 @@ BEGIN
     ID_MAIN_TOOLBAR_GREENCIRCLE "Capture top-level window\nCapture window"
     ID_MAIN_TOOLBAR_REDRECTANGLE "Show/Hide Region Boxes\nRegion boxes"
     ID_MAIN_TOOLBAR_REFRESH "Refresh captured window\nRefresh"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_MAIN_TOOLBAR_PREV    "Previous frame\nPrevious"
+    ID_MAIN_TOOLBAR_NEXT    "Next frame\nNext"
 END
 
 STRINGTABLE 

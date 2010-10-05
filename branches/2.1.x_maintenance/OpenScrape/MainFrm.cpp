@@ -31,6 +31,10 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_REDRECTANGLE, &CMainFrame::OnViewShowregionboxes)
 	ON_COMMAND(ID_VIEW_REFRESH, &CMainFrame::OnViewRefresh)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_REFRESH, &CMainFrame::OnViewRefresh)
+	ON_COMMAND(ID_VIEW_PREV, &CMainFrame::OnViewPrev)
+	ON_BN_CLICKED(ID_MAIN_TOOLBAR_PREV, &CMainFrame::OnViewPrev)
+	ON_COMMAND(ID_VIEW_NEXT, &CMainFrame::OnViewNext)
+	ON_BN_CLICKED(ID_MAIN_TOOLBAR_NEXT, &CMainFrame::OnViewNext)
 
 	ON_COMMAND(ID_EDIT_UPDATEHASHES, &CMainFrame::OnEditUpdatehashes)
 	ON_WM_TIMER()
@@ -425,6 +429,138 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 }
 
 void CMainFrame::OnViewRefresh()
+{
+	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+	RECT				crect, newrect;
+
+	if (pDoc->attached_hwnd)
+	{
+		// bring attached window to front
+		::SetFocus(pDoc->attached_hwnd);
+		::SetForegroundWindow(pDoc->attached_hwnd);
+		::SetActiveWindow(pDoc->attached_hwnd);
+
+		SaveBmpPbits();
+
+		// Update saved rect
+		::GetClientRect(pDoc->attached_hwnd, &crect);
+		pDoc->attached_rect.left = crect.left;
+		pDoc->attached_rect.top = crect.top;
+		pDoc->attached_rect.right = crect.right;
+		pDoc->attached_rect.bottom = crect.bottom;
+
+		// Resize window
+		::GetClientRect(pDoc->attached_hwnd, &newrect);
+		AdjustWindowRect(&newrect, GetWindowLong(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), GWL_STYLE), true);
+		SetWindowPos(NULL, 0, 0, newrect.right-newrect.left+4, newrect.bottom-newrect.top+47, SWP_NOMOVE);
+
+		// Instruct table-map dialog to update
+		theApp.m_TableMapDlg->update_display();
+
+		// Force re-draw
+		Invalidate(true);
+		theApp.m_TableMapDlg->Invalidate(true);
+		
+		// bring open scrape back to front
+		::SetFocus(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
+		::SetForegroundWindow(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
+		::SetActiveWindow(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
+
+	}
+
+	else 
+	{
+		OnViewConnecttowindow();
+	}
+}
+
+void CMainFrame::OnViewPrev()
+{
+	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+	RECT				crect, newrect;
+
+	if (pDoc->attached_hwnd)
+	{
+		// bring attached window to front
+		::SetFocus(pDoc->attached_hwnd);
+		::SetForegroundWindow(pDoc->attached_hwnd);
+		::SetActiveWindow(pDoc->attached_hwnd);
+
+		// check if its OHreplay
+		char className[20];
+		::GetClassName(pDoc->attached_hwnd,className, 20);
+		if(strcmp("OHREPLAY", className)==0) 
+		{
+			// if OHreplay send a tab keypress to goto next screen
+			KEYBDINPUT  kb={0};  
+			INPUT    Input={0};
+
+			kb.wVk  = VK_SHIFT; 
+			Input.type  = INPUT_KEYBOARD;
+			Input.ki  = kb;
+			::SendInput(1,&Input,sizeof(Input));
+			::ZeroMemory(&kb,sizeof(KEYBDINPUT));
+			::ZeroMemory(&Input,sizeof(INPUT));
+
+			kb.wVk  = VK_TAB; 
+			Input.type  = INPUT_KEYBOARD;
+			Input.ki  = kb;
+			::SendInput(1,&Input,sizeof(Input)); 
+			::ZeroMemory(&kb,sizeof(KEYBDINPUT));
+			::ZeroMemory(&Input,sizeof(INPUT));
+			
+			// generate up 		
+			kb.dwFlags  =  KEYEVENTF_KEYUP;
+			kb.wVk  = VK_TAB; 
+			Input.type  =  INPUT_KEYBOARD;
+			Input.ki  =  kb;
+			::SendInput(1,&Input,sizeof(Input));
+			::ZeroMemory(&kb,sizeof(KEYBDINPUT));
+			::ZeroMemory(&Input,sizeof(INPUT));
+
+			kb.dwFlags  =  KEYEVENTF_KEYUP;
+			kb.wVk  = VK_SHIFT; 
+			Input.type  =  INPUT_KEYBOARD;
+			Input.ki  =  kb;
+			::SendInput(1,&Input,sizeof(Input));
+		}
+
+		Sleep(100); // little time to allow for redraw
+		SaveBmpPbits();
+
+		// Update saved rect
+		::GetClientRect(pDoc->attached_hwnd, &crect);
+		pDoc->attached_rect.left = crect.left;
+		pDoc->attached_rect.top = crect.top;
+		pDoc->attached_rect.right = crect.right;
+		pDoc->attached_rect.bottom = crect.bottom;
+
+		// Resize window
+		::GetClientRect(pDoc->attached_hwnd, &newrect);
+		AdjustWindowRect(&newrect, GetWindowLong(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), GWL_STYLE), true);
+		SetWindowPos(NULL, 0, 0, newrect.right-newrect.left+4, newrect.bottom-newrect.top+47, SWP_NOMOVE);
+
+		// Instruct table-map dialog to update
+		theApp.m_TableMapDlg->update_display();
+
+		// Force re-draw
+		Invalidate(true);
+		theApp.m_TableMapDlg->Invalidate(true);
+		
+		// bring open scrape back to front
+		::SetFocus(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
+		::SetForegroundWindow(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
+		::SetActiveWindow(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
+
+	}
+
+	else 
+	{
+		OnViewConnecttowindow();
+	}
+}
+
+void CMainFrame::OnViewNext()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RECT				crect, newrect;
