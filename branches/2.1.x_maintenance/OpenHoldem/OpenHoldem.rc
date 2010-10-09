@@ -1485,6 +1485,12 @@ STRINGTABLE
 BEGIN
     ID_MAIN_TOOLBAR_LOCK_BLINDS "Lock table blinds\nLock blinds"
     ID_MAIN_TOOLBAR_SCRAPER_OUTPUT "Scraper output\nScraper output"
+	ID_MAIN_TOOLBAR_SHOOTFRAME "Shoot frame\nShoot frame"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_MAIN_TOOLBAR_HELP "Help\nHelp"
 END
 
 STRINGTABLE 
