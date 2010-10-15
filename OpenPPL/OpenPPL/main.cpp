@@ -122,6 +122,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			}
 			else
 			{
+				//std::cout << "##f$" << text << "##\n";
 				assert(k_assert_this_must_not_happen);
 			}
 		} 
@@ -330,16 +331,24 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 		boost::spirit::rule<Scanner> openPPL_code, option_settings_to_be_ignored, 
 			single_option, option_name, option_value,
 
+			symbol_section,
 			preflop_section, 
 			flop_section, 
 			turn_section, 
 			river_section, 
+			symbol_definition,
 			when_section,
+			when_section_r,
 			when_condition_sequence_with_action,
 			when_condition_sequence_without_action,
 			//when_condition_sequence_with_action_and_fold_force,
 			when_condition_with_action,
 			when_condition_without_action,
+			when_condition_with_return_statement,
+			when_condition_sequence_with_return_statement,
+			when_condition_without_return_statement,
+			when_condition_sequence_without_return_statement,
+			return_statement,
 			when_condition,
 			condition,
 			expression,
@@ -375,6 +384,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			keyword_on,
 			keyword_off,
 			keyword_custom,
+			keyword_symbols,
 			keyword_preflop,
 			keyword_flop,
 			keyword_turn,
@@ -408,6 +418,10 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			keyword_suited,
 			keyword_hand,
 			keyword_board,
+			keyword_new,
+			keyword_symbol,
+			keyword_return,
+			keyword_end,
 			card_expression,
 			board_expression,
 			hand_expression
@@ -419,8 +433,9 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// Whole PPL-file
 			openPPL_code = option_settings_to_be_ignored
 				>> keyword_custom [print_header()][print_options()]
+				>> !symbol_section
 				>> preflop_section [print_newline()] [print_newline()]
-				>>  flop_section [print_newline()][print_newline()] 
+				>> flop_section [print_newline()][print_newline()] 
 				>> turn_section [print_newline()][print_newline()] 
 				>> river_section [print_newline()][print_newline()]
 				>> end_p[print_predefined_action_constants()][print_technical_functions()]; 
@@ -436,6 +451,18 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// Start of custom code
 			keyword_custom = str_p("custom") | "Custom" | "CUSTOM";
 
+			// User defined symbols
+			symbol_section = keyword_symbols >> *symbol_definition;
+			keyword_new = str_p("new") | "New";
+			keyword_symbols = str_p("symbols") | "Symbols";
+			keyword_symbol = str_p("symbol") | "Symbol";
+			keyword_end = str_p("end") | "End";
+			symbol_definition = keyword_new >> keyword_symbol
+				>> symbol//[print_function_header_for_betting_round()] 
+				>> when_section_r
+				>> keyword_end >> keyword_symbol;
+
+
 			// Preflop, flop, turn, river
 			preflop_section = keyword_preflop[print_function_header_for_betting_round()] >> when_section;
 			keyword_preflop = str_p("preflop") | "Preflop" | "PREFLOP";
@@ -448,7 +475,10 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			when_section = !when_condition_sequence_with_action 
 				>> when_condition_sequence_without_action[print_fold_as_last_alternative_for_when_condition_sequence()];
 
-			// When-condition sequences
+			when_section_r = !when_condition_sequence_with_return_statement 
+				>> when_condition_sequence_without_return_statement[print_fold_as_last_alternative_for_when_condition_sequence()];
+
+			// When-condition sequences (with action)
 			keyword_when = str_p("when") | "When" | "WHEN";
 			when_condition = keyword_when >> condition;
 			when_condition_with_action = when_condition[print_questionmark_for_condition()]
@@ -459,6 +489,20 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			//>> *when_condition_without_action;
 			when_condition_without_action = when_condition >> *when_condition_with_action;
 			when_condition_sequence_without_action = *when_condition_without_action;
+
+			// When-condition sequences (with return statement)
+			when_condition_with_return_statement = when_condition[print_questionmark_for_condition()]
+				>> return_statement[print_colon_for_condition()][print_newline()];
+			when_condition_sequence_with_return_statement = *when_condition_with_return_statement;
+			//when_condition_sequence_with_action_and_fold_force =
+			//when_condition_sequence_with_action >> when_others_fold_force;
+			//>> *when_condition_without_action;
+			when_condition_without_return_statement = when_condition >> *when_condition_with_return_statement;
+			when_condition_sequence_without_return_statement = *when_condition_without_return_statement;
+
+			// Return statement
+			keyword_return = str_p("return") | "Return";
+			return_statement = keyword_return >> expression >> keyword_force;
 			
 			// Conditions
 			condition = expression;
