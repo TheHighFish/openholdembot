@@ -1,0 +1,85 @@
+//***********************************************************
+//
+// OpenPPL Library
+//
+// Supporting functions for the OpenPPL converter
+//
+// Contributors:
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Nik0
+//   Poker_Dog
+//   Stangelnator
+//   TheHighFish
+//   Want2Learn
+//   Zolp
+//
+//***********************************************************
+
+//***********************************************************
+//
+// OpenPPL - BettingAction Symbols
+//
+//***********************************************************
+
+##f$OpenPPL_BotRaisedBeforeFlop##
+(didraisround1 || didswaground1)
+
+##f$OpenPPL_NoBettingOnTurn##
+(nbetsround3 == 0)
+
+##f$OpenPPL_BotRaisedOnFlop##
+(didraisround2 || didswaground2)
+
+##f$OpenPPL_NoBettingOnFlop##
+(nbetsround2 == 0)
+
+##f$OpenPPL_BotCalledBeforeFlop##
+didcallround1
+
+##f$OpenPPL_BotRaisedOnTurn##
+didraisround3
+
+##f$OpenPPL_CalledOnFlop##
+didcallround2
+
+##f$OpenPPL_CalledOnTurn##
+didcallround3
+
+//***********************************************************
+//
+// OpenPPL - Betsizes and Stacksizes
+//
+//***********************************************************
+
+//***********************************************************
+//
+// OpenPPL - Board Symbols
+//
+//***********************************************************
+
+//***********************************************************
+//
+// OpenPPL - Hand(Strength) Symbols
+//
+//***********************************************************
+
+//***********************************************************
+//
+// OpenPPL - Other Symbols
+//
+//***********************************************************
+
+//***********************************************************
+//
+// OpenPPL - Players and Opponents
+//
+//***********************************************************
+
+//***********************************************************
+//
+// OpenPPL - Position Symbols
+//
+//***********************************************************
