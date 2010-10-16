@@ -24,20 +24,14 @@
 //
 //***********************************************************
 
+##f$OpenPPL_BotCalledBeforeFlop##
+didcallround1
+
 ##f$OpenPPL_BotRaisedBeforeFlop##
 (didraisround1 || didswaground1)
 
-##f$OpenPPL_NoBettingOnTurn##
-(nbetsround3 == 0)
-
 ##f$OpenPPL_BotRaisedOnFlop##
 (didraisround2 || didswaground2)
-
-##f$OpenPPL_NoBettingOnFlop##
-(nbetsround2 == 0)
-
-##f$OpenPPL_BotCalledBeforeFlop##
-didcallround1
 
 ##f$OpenPPL_BotRaisedOnTurn##
 didraisround3
@@ -47,6 +41,13 @@ didcallround2
 
 ##f$OpenPPL_CalledOnTurn##
 didcallround3
+
+##f$OpenPPL_NoBettingOnFlop##
+(nbetsround2 == 0)
+
+##f$OpenPPL_NoBettingOnTurn##
+(nbetsround3 == 0)
+
 
 //***********************************************************
 //
@@ -59,6 +60,73 @@ didcallround3
 // OpenPPL - Board Symbols
 //
 //***********************************************************
+
+##f$OpenPPL_AcePresentOnFlop##
+($$cr0 == 14) || ($$cr1 == 14) || ($$cr2 == 14)
+
+##f$OpenPPL_FlushPossible##
+(nsuitedcommon >= 3)
+
+##f$OpenPPL_FlushPossibleOnFlop##
+($$cs0==$$cs1 && $$cs0==$$cs2)
+
+##f$OpenPPL_FourOf1SuiteOnTurn##
+($$cs0==$$cs1 && $$cs2==$$cs3 && $$cs0==$$cs3)
+
+##f$OpenPPL_OneCardFlushPossible##
+(nsuitedcommon >=4)
+
+##f$OpenPPL_PairOnBoard##
+(nrankedcommon >= 2)
+
+##f$OpenPPL_PairOnFlop##
+($$cr0==$$cr1 || $$cr1==$$cr2 || $$cr0==$$cr2)
+
+##f$OpenPPL_QuadsOnBoard##
+(nrankedcommon == 4)
+
+##f$OpenPPL_SuitsOnFlop##
+($$cs0==$$cs1 && $$cs1==$$cs2) ? 1 :
+(($$cs0==$$cs1 && $$cs1!=$$cs2) || ($$cs0==$$cs2 && $$cs0!=$$cs1) || ($$cs0!=$$cs1 && $$cs1==$$cs2)) ? 2 :
+($$cs0!=$$cs1 && $$cs1!=$$cs2 && $$cs0!=$$cs2) ? 3 : 0
+
+##f$OpenPPL_StraightFlushPossible##
+`((srankbitscommon>>10)&0x1f) >= 3 ? 1 :
+`((srankbitscommon>>9)&0x1f) >= 3 ? 1 :
+`((srankbitscommon>>8)&0x1f) >= 3 ? 1 :
+`((srankbitscommon>>7)&0x1f) >= 3 ? 1 :
+`((srankbitscommon>>6)&0x1f) >= 3 ? 1 :
+`((srankbitscommon>>5)&0x1f) >= 3 ? 1 :
+`((srankbitscommon>>4)&0x1f) >= 3 ? 1 :
+`((srankbitscommon>>3)&0x1f) >= 3 ? 1 :
+`((srankbitscommon>>2)&0x1f) >= 3 ? 1 :
+`((srankbitscommon>>1)&0x1f) >= 3 ? 1 : 0
+
+##f$OpenPPL_StraightOnBoard##
+(nstraightcommon >= 5)
+
+##f$OpenPPL_ThreeCardStraightOnBoard##
+nstraightcommon >= 3
+
+##f$TopFlopCard##
+$$cr0 >= $$cr1 && $$cr0 >= $$cr2 ? $$cr0 :
+$$cr1 >= $$cr0 && $$cr1 >= $$cr2 ? $$cr1 :
+$$cr2 >= $$cr0 && $$cr2 >= $$cr1 ? $$cr2 : -1
+
+##f$OpenPPL_TopFlopCardPairedonRiver##
+f$TopFlopCard == $$cr4 ? 1 : 0
+
+##f$OpenPPL_TopFlopCardPairedonTurn##
+f$TopFlopCard == $$cr3 ? 1 : 0
+
+##f$OpenPPL_TripsOnBoard##
+(nrankedcommon >= 3)
+
+#f$OpenPPL_TripsOnBoardOnTurn#
+($$cr0 == $$cr1 && $$cr1 == $$cr2) ? 1 :
+($$cr0 == $$cr1 && $$cr1 == $$cr3) ? 1 :
+($$cr0 == $$cr2 && $$cr2 == $$cr3) ? 1 :
+($$cr1 == $$cr2 && $$cr2 == $$cr3) ? 1 : 0
 
 //***********************************************************
 //
