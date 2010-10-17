@@ -14,6 +14,7 @@
 const bool k_assert_this_must_not_happen = false;
 
 using namespace boost::spirit;
+using namespace std;
 
 // http://www.highscore.de/cpp/boost/parser.html
 // http://www.boost.org/doc/libs/1_35_0/libs/spirit/doc/operators.html
@@ -324,6 +325,59 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 		} 
 	};
 
+	struct print_hand_expression
+	{
+		void operator()(const char *begin, const char *end) const 
+		{
+			std::string text = std::string(begin, end);
+			cout << "$";
+			int length = text.length();
+			for (int i=0; i<length; i++)
+			{
+				char next_char = toupper(text[i]);
+				if (next_char >= '0' && next_char <= '9')
+				{
+					cout << next_char;
+				}
+				else if ((next_char == 'T') || (next_char == 'J')
+					|| (next_char == 'Q') || (next_char == 'K') || (next_char == 'A'))
+				{
+					cout << next_char;
+				}
+				else if (next_char == 'S')
+				{
+					// Suited
+					cout << "s";
+					// Stop processing this part of the input,
+					// as the rest is not relevant.
+					break;
+				}
+			}
+		}
+	};
+
+	struct print_OpenPPL_Library
+	{ 
+		void operator()(const char *begin, const char *end) const 
+		{ 
+			string Line;
+			ifstream OpenPPL_Library("OpenPPL_Library.ohf");
+			if (OpenPPL_Library.is_open())
+			{
+				while (OpenPPL_Library.good())
+				{
+					getline (OpenPPL_Library, Line);
+					cout << Line << endl;
+				}
+				OpenPPL_Library.close();
+			}
+			else 
+			{
+				MessageBox(0, "Unable to open \"OpenPPL_Library.ohf\"", "Error", 0);
+			}
+		}
+	};
+
 	template <typename Scanner>
 
 	struct definition 
@@ -433,7 +487,8 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				>> flop_section [print_newline()][print_newline()] 
 				>> turn_section [print_newline()][print_newline()] 
 				>> river_section [print_newline()][print_newline()]
-				>> end_p[print_predefined_action_constants()][print_technical_functions()]; 
+				>> end_p[print_predefined_action_constants()]
+					[print_technical_functions()][print_OpenPPL_Library()]; 
 			  
 			// Option settings - to be ignored
 			option_settings_to_be_ignored = *single_option;
@@ -514,9 +569,8 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			keyword_hand = str_p("hand") | "Hand" | "HAND";
 			card_expression = lexeme_d[+card_constant] >> !keyword_suited;
 			board_expression = keyword_board >> str_p("=")[print_operator()] >> card_expression;
-			hand_expression = keyword_hand >> str_p("=")[print_operator()] >> card_expression;
+			hand_expression = keyword_hand >> (str_p("=") >> card_expression)[print_hand_expression()];
 				 
-
 			// Actions (and return statements)
 			// We handle boths in the same way, as it simplifies things a lot.
 			action = predefined_action 
