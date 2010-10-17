@@ -338,16 +338,11 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			river_section, 
 			symbol_definition,
 			when_section,
-			when_section_r,
 			when_condition_sequence_with_action,
 			when_condition_sequence_without_action,
 			//when_condition_sequence_with_action_and_fold_force,
 			when_condition_with_action,
 			when_condition_without_action,
-			when_condition_with_return_statement,
-			when_condition_sequence_with_return_statement,
-			when_condition_without_return_statement,
-			when_condition_sequence_without_return_statement,
 			return_statement,
 			when_condition,
 			condition,
@@ -459,9 +454,8 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			keyword_end = str_p("end") | "End";
 			symbol_definition = keyword_new >> keyword_symbol
 				>> symbol//[print_function_header_for_betting_round()] 
-				>> when_section_r
+				>> when_section
 				>> keyword_end >> keyword_symbol;
-
 
 			// Preflop, flop, turn, river
 			preflop_section = keyword_preflop[print_function_header_for_betting_round()] >> when_section;
@@ -475,9 +469,6 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			when_section = !when_condition_sequence_with_action 
 				>> when_condition_sequence_without_action[print_fold_as_last_alternative_for_when_condition_sequence()];
 
-			when_section_r = !when_condition_sequence_with_return_statement 
-				>> when_condition_sequence_without_return_statement[print_fold_as_last_alternative_for_when_condition_sequence()];
-
 			// When-condition sequences (with action)
 			keyword_when = str_p("when") | "When" | "WHEN";
 			when_condition = keyword_when >> condition;
@@ -489,20 +480,6 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			//>> *when_condition_without_action;
 			when_condition_without_action = when_condition >> *when_condition_with_action;
 			when_condition_sequence_without_action = *when_condition_without_action;
-
-			// When-condition sequences (with return statement)
-			when_condition_with_return_statement = when_condition[print_questionmark_for_condition()]
-				>> return_statement[print_colon_for_condition()][print_newline()];
-			when_condition_sequence_with_return_statement = *when_condition_with_return_statement;
-			//when_condition_sequence_with_action_and_fold_force =
-			//when_condition_sequence_with_action >> when_others_fold_force;
-			//>> *when_condition_without_action;
-			when_condition_without_return_statement = when_condition >> *when_condition_with_return_statement;
-			when_condition_sequence_without_return_statement = *when_condition_without_return_statement;
-
-			// Return statement
-			keyword_return = str_p("return") | "Return";
-			return_statement = keyword_return >> expression >> keyword_force;
 			
 			// Conditions
 			condition = expression;
@@ -540,8 +517,12 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			hand_expression = keyword_hand >> str_p("=")[print_operator()] >> card_expression;
 				 
 
-			//Actions
-			action = predefined_action | fixed_betsize_action | relative_betsize_action;
+			// Actions (and return statements)
+			// We handle boths in the same way, as it simplifies things a lot.
+			action = predefined_action 
+				| fixed_betsize_action 
+				| relative_betsize_action
+				| return_statement;
 			predefined_action = keyword_predefined_action[print_predefined_action()] >> keyword_force;
 			keyword_force = (str_p("force") | "Force" | "FORCE");
 			keyword_beep = (str_p("beep") | "Beep" | "BEEP")[error_beep_not_supported()];
@@ -569,6 +550,10 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				>> percentage_operator[print_percentage_operator()][print_relative_potsize_action()] 
 				>> keyword_force;
 			keyword_others = str_p("others") | "Others" | "OTHERS";
+
+			// Return statement
+			keyword_return = str_p("return") | "Return";
+			return_statement = keyword_return >> expression >> keyword_force;
 
 			// When others
 			when_others_fold_force = keyword_when >> keyword_others >> keyword_fold >> keyword_force;
