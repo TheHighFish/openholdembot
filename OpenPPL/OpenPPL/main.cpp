@@ -553,7 +553,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			additive_expression = multiplicative_expression >> *(additive_operator >> multiplicative_expression);
 			relational_operator = (str_p("<=") | ">=" | "<" | ">")[print_operator()];
 			relational_expression = additive_expression >> *(relational_operator >> additive_expression);
-			equality_expression = longest_d[hand_expression | board_expression | (relational_expression >> *(str_p("=")[print_operator()] >> relational_expression))];
+			equality_expression = /*longest_d[*/hand_expression | board_expression | (relational_expression >> *(str_p("=")[print_operator()] >> relational_expression))/*]*/;
 			keyword_and = (str_p("and") | "And" | "AND")[print_operator()];
 			and_expression = equality_expression >> *(keyword_and >> equality_expression);
 			keyword_xor = (str_p("xor") | "Xor" | "XOr" | "XOR")[print_operator()];
