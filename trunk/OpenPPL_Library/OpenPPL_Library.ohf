@@ -134,6 +134,12 @@ f$TopFlopCard == $$cr3 ? 1 : 0
 //
 //***********************************************************
 
+#f$OpenPPL_Have2ndBestKicker
+(mh_kickerbetter == 1)
+
+#f$OpenPPL_Have3ndBestKicker
+(mh_kickerbetter == 2)
+
 //***********************************************************
 //
 // OpenPPL - Other Symbols
