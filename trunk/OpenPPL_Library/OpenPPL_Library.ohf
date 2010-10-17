@@ -1,8 +1,12 @@
 //***********************************************************
 //
 // OpenPPL Library
+//   Supporting functions for the OpenPPL converter
 //
-// Supporting functions for the OpenPPL converter
+// OpenPPL is part of the OpenHoldem project
+//   Download page:         http://code.google.com/p/openholdembot/
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
 // Contributors:
 //   CoolBotMe123
@@ -36,6 +40,15 @@ didcallround1
 ##f$OpenPPL_BotRaisedOnTurn##
 didraisround3
 
+##f$OpenPPL_BotsActionsOnFlop##
+(didchecround2 + didcallround2 + didraisround2 + didswaground2)
+
+##f$OpenPPL_BotsActionsOnThisRound##
+(didchec + didcall + didrais + didswag)
+
+##OpenPPL_BotsActionsPreflop##
+(didchecround1 + didcallround1 + didraisround1 + didswaground1)
+
 ##f$OpenPPL_CalledOnFlop##
 didcallround2
 
@@ -55,6 +68,18 @@ didcallround3
 //
 //***********************************************************
 
+##f$OpenPPL_AmountToCall##
+(bblind > 0) ? (call / bblind) : 0
+
+##f$OpenPPL_BigBlindSize##
+bet1
+
+##f$OpenPPL_PotSize##
+(bblind > 0) ? (pot / bblind) : 0
+
+##f$OpenPPL_StackSize##
+(bblind > 0) ? (balance / bblind) : 0
+
 //***********************************************************
 //
 // OpenPPL - Board Symbols
@@ -67,14 +92,26 @@ didcallround3
 ##f$OpenPPL_FlushPossible##
 (nsuitedcommon >= 3)
 
+##f$OpenPPL_FlushOnBoard##
+($$cs0==$$cs1 && $$cs0==$$cs2 && $$cs0==$$cs3 && $$cs0==$$cs4)
+
 ##f$OpenPPL_FlushPossibleOnFlop##
 ($$cs0==$$cs1 && $$cs0==$$cs2)
+
+##f$OpenPPL_FlushPossibleOnTurn##
+[  ($$cs0==$$cs1 && $$cs0==$$cs2)
+|| ($$cs0==$$cs1 && $$cs0==$$cs3)
+|| ($$cs0==$$cs2 && $$cs0==$$cs3)
+|| ($$cs1==$$cs2 && $$cs1==$$cs3) ]
 
 ##f$OpenPPL_FourOf1SuiteOnTurn##
 ($$cs0==$$cs1 && $$cs2==$$cs3 && $$cs0==$$cs3)
 
 ##f$OpenPPL_OneCardFlushPossible##
 (nsuitedcommon >=4)
+
+##f$OpenPPL_OneCardStraightPossible##
+(nstraightfillcommon <= 1)
 
 ##f$OpenPPL_PairOnBoard##
 (nrankedcommon >= 2)
@@ -84,6 +121,15 @@ didcallround3
 
 ##f$OpenPPL_QuadsOnBoard##
 (nrankedcommon == 4)
+
+##f$OpenPPL_QueenPresentOnFlop##
+($$cr0==12 ||$$cr1==12 ||$$cr2==12)
+
+##f$OpenPPL_RiverCardisOvercardToBoard##
+[  $$cr4 > $$cr0
+&& $$cr4 > $$cr1
+&& $$cr4 > $$cr2
+&& $$cr4 > $$cr3) ]
 
 ##f$OpenPPL_SuitsOnFlop##
 ($$cs0==$$cs1 && $$cs1==$$cs2) ? 1 :
@@ -104,6 +150,44 @@ didcallround3
 
 ##f$OpenPPL_StraightOnBoard##
 (nstraightcommon >= 5)
+
+##f$OpenPPL_StraightPossible##
+(nstraightfillcommon <= 2)
+
+##f$RankBitsCommOnFlop##
+  ($$cr0 != 14 ? 2**$$cr0 : (0x4002))
+| ($$cr1 != 14 ? 2**$$cr1 : (0x4002))
+| ($$cr2 != 14 ? 2**$$cr2 : (0x4002))
+
+##f$RankBitsCommOnTurn##
+  ($$cr0 != 14 ? 2**$$cr0 : (0x4002))
+| ($$cr1 != 14 ? 2**$$cr1 : (0x4002))
+| ($$cr2 != 14 ? 2**$$cr2 : (0x4002))
+| ($$cr3 != 14 ? 2**$$cr3 : (0x4002))
+
+##f$OpenPPL_StraightPossibleOnFlop##
+`((f$RankBitsCommOnFlop>>10)&0x1f) >= 3 ? 1 :
+`((f$RankBitsCommOnFlop>>9)&0x1f) >= 3 ? 1 :
+`((f$RankBitsCommOnFlop>>8)&0x1f) >= 3 ? 1 :
+`((f$RankBitsCommOnFlop>>7)&0x1f) >= 3 ? 1 :
+`((f$RankBitsCommOnFlop>>6)&0x1f) >= 3 ? 1 :
+`((f$RankBitsCommOnFlop>>5)&0x1f) >= 3 ? 1 :
+`((f$RankBitsCommOnFlop>>4)&0x1f) >= 3 ? 1 :
+`((f$RankBitsCommOnFlop>>3)&0x1f) >= 3 ? 1 :
+`((f$RankBitsCommOnFlop>>2)&0x1f) >= 3 ? 1 :
+`((f$RankBitsCommOnFlop>>1)&0x1f) >= 3 ? 1 : 0
+
+##f$StraightPossibleOnTurn##
+`((f$RankBitsCommOnTurn>>10)&0x1f) >= 3 ? 1 :
+`((f$RankBitsCommOnTurn>>9)&0x1f) >= 3 ? 1 :
+`((f$RankBitsCommOnTurn>>8)&0x1f) >= 3 ? 1 :
+`((f$RankBitsCommOnTurn>>7)&0x1f) >= 3 ? 1 :
+`((f$RankBitsCommOnTurn>>6)&0x1f) >= 3 ? 1 :
+`((f$RankBitsCommOnTurn>>5)&0x1f) >= 3 ? 1 :
+`((f$RankBitsCommOnTurn>>4)&0x1f) >= 3 ? 1 :
+`((f$RankBitsCommOnTurn>>3)&0x1f) >= 3 ? 1 :
+`((f$RankBitsCommOnTurn>>2)&0x1f) >= 3 ? 1 :
+`((f$RankBitsCommOnTurn>>1)&0x1f) >= 3 ? 1 : 0
 
 ##f$OpenPPL_ThreeCardStraightOnBoard##
 nstraightcommon >= 3
@@ -127,6 +211,20 @@ f$TopFlopCard == $$cr3 ? 1 : 0
 ($$cr0 == $$cr1 && $$cr1 == $$cr3) ? 1 :
 ($$cr0 == $$cr2 && $$cr2 == $$cr3) ? 1 :
 ($$cr1 == $$cr2 && $$cr2 == $$cr3) ? 1 : 0
+
+##f$OpenPPL_TurnCardisOvercardToBoard##
+[  $$cr3 > $$cr0
+&& $$cr3 > $$cr1
+&& $$cr3 > $$cr2 ]
+
+##f$OpenPPL_TurnCardPaired##
+($$cr3 == $$cr4)
+
+##f$OpenPPL_TwoPairOnBoard##
+(pokervalcommon & istwopair) || (pokervalcommon & isfullhouse)
+
+##f$WheelPossible##
+`((rankbitscommon & 0b111110) >= 3) ? 1 : 0
 
 //***********************************************************
 //
@@ -158,6 +256,37 @@ f$TopFlopCard == $$cr3 ? 1 : 0
 // OpenPPL - Players and Opponents
 //
 //***********************************************************
+
+##f$OpenPPL_OpponentIsAllin
+`f$Opponents_AllinBits > 0
+
+##f$Opponents_AllinBits##
+(betround == 1) ?
+[0
+|(((opponentsplayingbits & (1<<0)) && currentbet0>0 && balance0==0) ? 1<<0 : 0)
+|(((opponentsplayingbits & (1<<1)) && currentbet1>0 && balance1==0) ? 1<<1 : 0)
+|(((opponentsplayingbits & (1<<2)) && currentbet2>0 && balance2==0) ? 1<<2 : 0)
+|(((opponentsplayingbits & (1<<3)) && currentbet3>0 && balance3==0) ? 1<<3 : 0)
+|(((opponentsplayingbits & (1<<4)) && currentbet4>0 && balance4==0) ? 1<<4 : 0)
+|(((opponentsplayingbits & (1<<5)) && currentbet5>0 && balance5==0) ? 1<<5 : 0)
+|(((opponentsplayingbits & (1<<6)) && currentbet6>0 && balance6==0) ? 1<<6 : 0)
+|(((opponentsplayingbits & (1<<7)) && currentbet7>0 && balance7==0) ? 1<<7 : 0)
+|(((opponentsplayingbits & (1<<8)) && currentbet8>0 && balance8==0) ? 1<<8 : 0)
+|(((opponentsplayingbits & (1<<9)) && currentbet9>0 && balance9==0) ? 1<<9 : 0)
+]
+:
+[0
+|(((opponentsplayingbits & (1<<0)) && balance0==0) ? 1<<0 : 0)
+|(((opponentsplayingbits & (1<<1)) && balance1==0) ? 1<<1 : 0)
+|(((opponentsplayingbits & (1<<2)) && balance2==0) ? 1<<2 : 0)
+|(((opponentsplayingbits & (1<<3)) && balance3==0) ? 1<<3 : 0)
+|(((opponentsplayingbits & (1<<4)) && balance4==0) ? 1<<4 : 0)
+|(((opponentsplayingbits & (1<<5)) && balance5==0) ? 1<<5 : 0)
+|(((opponentsplayingbits & (1<<6)) && balance6==0) ? 1<<6 : 0)
+|(((opponentsplayingbits & (1<<7)) && balance7==0) ? 1<<7 : 0)
+|(((opponentsplayingbits & (1<<8)) && balance8==0) ? 1<<8 : 0)
+|(((opponentsplayingbits & (1<<9)) && balance9==0) ? 1<<9 : 0)
+]
 
 ##f$OpenPPL_OpponentsLeft##
 nopponentsplaying
