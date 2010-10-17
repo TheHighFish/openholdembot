@@ -2,15 +2,19 @@
 #define INC_CODESNIPPETS_H
 
 static const char *k_code_snippet_license =
-	"//***********************************************************\n"
-	"//                                                           \n"
-	"//  Converted with OpenPPL 1.0                               \n"
-	"//                                                           \n"
-	"//  OpenPPL is part of the OpenHoldem project                \n"  
-	"//  and got licensed under GNU General Public License        \n"
-	"//  http://www.gnu.org/licenses/gpl-3.0.html                 \n"
-	"//                                                           \n"
-	"//***********************************************************\n\n\n";
+	"//************************************************************************\n"
+	"//                                                                        \n"
+	"// Converted with OpenPPL 1.0                                             \n"
+	"//                                                                        \n"
+	"// OpenPPL is part of the OpenHoldem project                              \n"
+	"//   Download page:         http://code.google.com/p/openholdembot/       \n"
+	"//   Forums:                http://www.maxinmontreal.com/forums/index.php \n"
+	"//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html          \n"
+	"//                                                                        \n" 
+	"// The original PPL (Poker Programming Language) got invented by          \n"
+	"//   Shanky Bonusbost:      http://www.bonusbots.com/supportforum/YaBB.pl \n"
+	"//                                                                        \n"
+	"//************************************************************************\n\n\n";
 
 static const char *k_code_snippet_options =
 	"//***********************************************************\n"
