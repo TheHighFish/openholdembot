@@ -8,6 +8,9 @@
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbost:      http://www.bonusbots.com/supportforum/YaBB.pl
+//
 // Contributors:
 //   CoolBotMe123
 //   CrumbleSunday
@@ -112,6 +115,13 @@ bet1
 
 ##f$OpenPPL_OneCardStraightPossible##
 (nstraightfillcommon <= 1)
+
+##f$OpenPPL_OvercardsOnBoard##
+(($$cr0 > rankhiplayer) ? 1 : 0) +
+(($$cr1 > rankhiplayer) ? 1 : 0) +
+(($$cr2 > rankhiplayer) ? 1 : 0) +
+(($$cr3 > rankhiplayer) ? 1 : 0) +
+(($$cr4 > rankhiplayer) ? 1 : 0)
 
 ##f$OpenPPL_PairOnBoard##
 (nrankedcommon >= 2)
@@ -232,11 +242,27 @@ f$TopFlopCard == $$cr3 ? 1 : 0
 //
 //***********************************************************
 
+##f$OpenPPL_HadOverPairOnFlop##
+[  ispair
+&& $$pr0 > $$cr0
+&& $$pr0 > $$cr1
+&& $$pr0 > $$cr2 ]
+
 ##f$OpenPPL_Have2ndBestKicker##
 (mh_kickerbetter == 1)
 
 ##f$OpenPPL_Have3ndBestKicker##
 (mh_kickerbetter == 2)
+
+##f$OpenPPL_HaveBestKicker##
+(mh_kickerbetter == 0)
+
+##f$OpenPPL_HaveFlushDraw##
+(nsuited >= 4)
+
+##f$OpenPPL_HaveSet##
+[  ispair
+&& (($$pr0==$$cr0) || ($$pr0==$$cr1) || ($$pr0==$$cr2) || ($$pr0==$$cr3) || ($$pr0==$$cr4)) ]
 
 //***********************************************************
 //
