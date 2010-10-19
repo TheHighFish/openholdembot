@@ -265,9 +265,26 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			MessageBox(0, "Error: \"Beep\" is no valid action for OpenPPL, as\n\n"
 				"* OpenHoldem is meant as a bot, not as a tool for manual play\n"
 				"* Human and bot competing for the mouse just calls for troubles.\n\n"
-				"Please complete your profile so that all actions are specified.",
+				"Please complete your formula so that all actions are specified.",
 				"Error", 0);
 		}
+	};
+
+	struct error_specific_suits_not_supported
+	{
+		void operator()(const char *begin, const char *end) const 
+		{
+			MessageBox(0, "Error: Specific suits are not supported by OpenPPL\n"
+				"  as they do not matter and are not supported by OH-script.\n\n"
+				"Example:\n"
+				"  When hand = AcT call  force\n"
+				"  When hand = AT  raise force\n\n"
+				"Coding this way is the old way to randomize actions\n"
+				"  before randomization go introduced into PPL.\n\n"
+				"We are sorry, but you should change this part of your formula.\n",
+				"Error", 0);
+		}
+
 	};
 
 	struct print_fold_as_last_alternative_for_when_condition_sequence
@@ -463,7 +480,9 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			keyword_others,
 			when_others_fold_force,
 			when_others_when_others,
+			suit_constant,
 			card_constant,
+			card_expression_with_specific_suits,
 			keyword_suited,
 			keyword_hand,
 			keyword_board,
@@ -567,7 +586,11 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			keyword_suited = str_p("suited") | "Suited" | "SUITED";
 			keyword_board = str_p("board") | "Board" | "BOARD";
 			keyword_hand = str_p("hand") | "Hand" | "HAND";
-			card_expression = lexeme_d[+card_constant] >> !keyword_suited;
+			suit_constant = ch_p("C") | "c" | "D"| "d" | "H" | "h" | "S" | "s";
+			card_expression = longest_d[card_expression_with_specific_suits
+				| (lexeme_d[+card_constant] >> !keyword_suited)]; 
+			card_expression_with_specific_suits = card_constant >> suit_constant >> *(card_constant >> !suit_constant)
+				[error_specific_suits_not_supported()];
 			board_expression = keyword_board >> str_p("=")[print_operator()] >> card_expression;
 			hand_expression = keyword_hand >> (str_p("=") >> card_expression)[print_hand_expression()];
 				 
@@ -671,6 +694,20 @@ int main(int argc, char *argv[])
 		  // http://live.boost.org/doc/libs/1_34_0/libs/spirit/example/fundamental/position_iterator/position_iterator.cpp
 		  file_position parse_error_position;
 		  //parse_error_position = pi.first.get_position(); 
+		  if (erroneous_input.Left(2).MakeLower() == "nd")
+		  {
+			MessageBox(0, 
+				"The erroneous input begins with \"nd\".\n\n"
+				"You probably have an expression like\n"
+				"  \"hand = ... and...\"\n" 
+				"  or \"board = ... and ...\".\n"
+				"  where the parser greadily accepts the \"a\" of \"and\" as an ace.\n\n"
+				"We recommend you to bracket this expression:\n"
+				"  \"when (hand = ...) and ...\"\n",
+				"OpenPPL: Syntax Error", 0);	
+		  }
+		  else
+		  {
 		  CString error_message;
 		  error_message.Format("%s%d%s%d%s%s%s",
 			  "Stopped at [line: ", 
@@ -687,6 +724,7 @@ int main(int argc, char *argv[])
 			  "  * missing \"when others fold force\" at the end of a block\n"
 			  "  * misspelling of keywords\n");
 		  MessageBox(0, error_message, "OpenPPL: Syntax Error", 0);
+		  }
 		}
 	}
 } 
