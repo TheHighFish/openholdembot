@@ -17,6 +17,7 @@
 //   Dr.Kaktuz
 //   Efu
 //   Nik0
+//   NPNG
 //   Poker_Dog
 //   Stangelnator
 //   TheHighFish
@@ -41,7 +42,7 @@ didcallround1
 (didraisround2 || didswaground2)
 
 ##f$OpenPPL_BotRaisedOnTurn##
-didraisround3
+(didraisround3 || didswaground3)
 
 ##f$OpenPPL_BotsActionsOnFlop##
 (didchecround2 + didcallround2 + didraisround2 + didswaground2)
@@ -139,7 +140,28 @@ bet1
 [  $$cr4 > $$cr0
 && $$cr4 > $$cr1
 && $$cr4 > $$cr2
-&& $$cr4 > $$cr3) ]
+&& $$cr4 > $$cr3 ]
+
+##f$SecondTopFlopCard##
+$$cr0 >= $$cr1 && $$cr0 >= $$cr2 && $$cr1 >= $$cr2 ? $$cr1 :
+$$cr0 >= $$cr1 && $$cr0 >= $$cr2 && $$cr1 <= $$cr2 ? $$cr2 :
+$$cr1 >= $$cr0 && $$cr1 >= $$cr2 && $$cr0 >= $$cr2 ? $$cr0 :
+$$cr1 >= $$cr0 && $$cr1 >= $$cr2 && $$cr0 <= $$cr2 ? $$cr2 :
+$$cr2 >= $$cr0 && $$cr2 >= $$cr1 && $$cr0 >= $$cr1 ? $$cr0 :
+$$cr2 >= $$cr0 && $$cr2 >= $$cr1 && $$cr0 <= $$cr1 ? $$cr1 : -1
+
+##f$OpenPPL_SecondTopFlopCardPairedonRiver##
+f$SecondTopFlopCard == $$cr4 ? 1 : 0
+
+##f$OpenPPL_SecondTopFlopCardPairedonTurn##
+f$SecondTopFlopCard == $$cr3 ? 1 : 0
+
+##f$OpenPPL_SuitsOnBoard##
+($$cs0==$$cs1 && $$cs1==$$cs2 ? 1 :
+($$cs0==$$cs1 && $$cs1!=$$cs2) || ($$cs0==$$cs2 && $$cs0!=$$cs1) || ($$cs0!=$$cs1 && $$cs1==$$cs2) ? 2 :
+$$cs0!=$$cs1 && $$cs1!=$$cs2 && $$cs0!=$$cs2 ? 3 : 0) +
+(($$cs3!=$$cs0) && ($$cs3!=$$cs1) && ($$cs3!=$$cs2)) ? 1 : 0) +
+(($$cs4!=$$cs0) && ($$cs4!=$$cs1) && ($$cs4!=$$cs2) && ($$cs4!=$$cs3)) ? 1 : 0)
 
 ##f$OpenPPL_SuitsOnFlop##
 ($$cs0==$$cs1 && $$cs1==$$cs2) ? 1 :
@@ -282,6 +304,12 @@ f$TopFlopCard == $$cr3 ? 1 : 0
 // OpenPPL - Players and Opponents
 //
 //***********************************************************
+
+##Opponents##
+nopponentsplaying
+
+##OpponentsAtTable##
+nopponentsdealt
 
 ##f$OpenPPL_OpponentIsAllin
 `f$Opponents_AllinBits > 0
