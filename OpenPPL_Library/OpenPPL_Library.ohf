@@ -20,6 +20,7 @@
 //   NPNG
 //   Poker_Dog
 //   Stangelnator
+//   SteveG1963
 //   TheHighFish
 //   Want2Learn
 //   Zolp
@@ -83,6 +84,13 @@ bet1
 
 ##f$OpenPPL_StackSize##
 (bblind > 0) ? (balance / bblind) : 0
+
+##f$OpenPPL_TotalInvested##
+br==1 && nbetsround>0 ? ncurrentbets*bblind :
+br==2 && nbetsround1>0 ? ((nbetsround1+ncurrentbets)*bblind) :
+br==3 && nbetsround1>0 ? ((nbetsround1+nbetsround2 + ncurrentbets)*bblind) :
+br==4 && nbetsround1>0 ? ((nbetsround1+nbetsround2+nbetsround3+ncurrentbets)*bblind):
+0
 
 //***********************************************************
 //
@@ -160,8 +168,8 @@ f$SecondTopFlopCard == $$cr3 ? 1 : 0
 ($$cs0==$$cs1 && $$cs1==$$cs2 ? 1 :
 ($$cs0==$$cs1 && $$cs1!=$$cs2) || ($$cs0==$$cs2 && $$cs0!=$$cs1) || ($$cs0!=$$cs1 && $$cs1==$$cs2) ? 2 :
 $$cs0!=$$cs1 && $$cs1!=$$cs2 && $$cs0!=$$cs2 ? 3 : 0) +
-(($$cs3!=$$cs0) && ($$cs3!=$$cs1) && ($$cs3!=$$cs2)) ? 1 : 0) +
-(($$cs4!=$$cs0) && ($$cs4!=$$cs1) && ($$cs4!=$$cs2) && ($$cs4!=$$cs3)) ? 1 : 0)
+((($$cs3!=$$cs0) && ($$cs3!=$$cs1) && ($$cs3!=$$cs2)) ? 1 : 0) +
+((($$cs4!=$$cs0) && ($$cs4!=$$cs1) && ($$cs4!=$$cs2) && ($$cs4!=$$cs3)) ? 1 : 0)
 
 ##f$OpenPPL_SuitsOnFlop##
 ($$cs0==$$cs1 && $$cs1==$$cs2) ? 1 :
