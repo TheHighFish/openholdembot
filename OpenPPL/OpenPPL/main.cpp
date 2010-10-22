@@ -660,19 +660,27 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 int main(int argc, char *argv[]) 
 { 
 	CString InputFile;
-	/*p_symbol_table = new(CSymbolTable);*/
-	if (argc <= 1)
+	if (argc != 2)
 	{
 		// One argument is always present
 		// It is the name of the executable in argv[0]
-		InputFile = "input.txt";
-		MessageBox(0, "No inputfile specified.\nAssuming \"input.txt\"", "Warning", 0);
+		// The other one is the desired input file
+		CString error_message = 
+			"No input file specified.\n"
+			"Syntax to be used at the command line:\n"
+			"\n"
+			"OpenPPL INPUTFILE.txt > OUTPUTFILE.ohf";
+
+		MessageBox(0, error_message, "Error", 0);
+		exit(-1);
 	}
 	else
 	{
 		// Using the first real argument
 		InputFile = argv[1];
 	}
+	//!!!p_symbol_table = new(CSymbolTable);
+
 	std::ifstream fs(InputFile); 
 	std::ostringstream ss; 
 	ss << fs.rdbuf(); 
