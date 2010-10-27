@@ -16,9 +16,12 @@
 //   CrumbleSunday
 //   Dr.Kaktuz
 //   Efu
+//   Fn101
+//   KaeKruse
 //   Nik0
 //   NPNG
 //   Poker_Dog
+//   Satanikut
 //   Stangelnator
 //   SteveG1963
 //   TheHighFish
@@ -46,13 +49,13 @@ didcallround1
 (didraisround3 || didswaground3)
 
 ##f$OpenPPL_BotsActionsOnFlop##
-(didchecround2 + didcallround2 + didraisround2 + didswaground2)
+(didcallround2 + didraisround2 + didswaground2)
 
 ##f$OpenPPL_BotsActionsOnThisRound##
-(didchec + didcall + didrais + didswag)
+(didcall + didrais + didswag)
 
 ##OpenPPL_BotsActionsPreflop##
-(didchecround1 + didcallround1 + didraisround1 + didswaground1)
+(didcallround1 + didraisround1 + didswaground1)
 
 ##f$OpenPPL_CalledOnFlop##
 didcallround2
@@ -116,8 +119,14 @@ br==4 && nbetsround1>0 ? ((nbetsround1+nbetsround2+nbetsround3+ncurrentbets)*bbl
 || ($$cs0==$$cs2 && $$cs0==$$cs3)
 || ($$cs1==$$cs2 && $$cs1==$$cs3) ]
 
+##f$OpenPPL_FourCardsToWheelOnBoard##
+`(rankbitscommon&0b0000000000111110) >= 4
+
 ##f$OpenPPL_FourOf1SuiteOnTurn##
 ($$cs0==$$cs1 && $$cs2==$$cs3 && $$cs0==$$cs3)
+
+##f$OpenPPL_FullHouseOnBoard##
+(pokervalcommon & fullhouse)
 
 ##f$OpenPPL_OneCardFlushPossible##
 (nsuitedcommon >=4)
