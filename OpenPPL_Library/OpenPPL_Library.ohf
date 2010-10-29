@@ -69,7 +69,6 @@ didcallround3
 ##f$OpenPPL_NoBettingOnTurn##
 (nbetsround3 == 0)
 
-
 //***********************************************************
 //
 // OpenPPL - Betsizes and Stacksizes
@@ -384,3 +383,39 @@ nopponentsplaying
 // OpenPPL - Position Symbols
 //
 //***********************************************************
+
+##f$DealPositionLastRaiser##
+(ac_aggressor == 0) ? ac_dealposx0 :
+(ac_aggressor == 1) ? ac_dealposx1 :
+(ac_aggressor == 2) ? ac_dealposx2 :
+(ac_aggressor == 3) ? ac_dealposx3 :
+(ac_aggressor == 4) ? ac_dealposx4 :
+(ac_aggressor == 5) ? ac_dealposx5 :
+(ac_aggressor == 6) ? ac_dealposx6 :
+(ac_aggressor == 7) ? ac_dealposx7 :
+(ac_aggressor == 8) ? ac_dealposx8 :
+(ac_aggressor == 9) ? ac_dealposx9 :
+-1
+
+##f$OpenPPL_LastRaiserPosition##
+// Big blind
+(f$DealPositionLastRaiser == 2) ? 0 :
+// Small blind
+(f$DealPositionLastRaiser == 1) ? 1 :
+// Normal players:
+// BU = 2, CO = 3
+(nplayersdealt - $DealPositionLastRaiser + 2)
+
+##f$OpenPPL_First##
+0
+
+##f$OpenPPL_Middle##
+1
+
+##f$OpenPPL_Last##
+2
+
+##f$OpenPPL_Position##
+(betposition == 1) ? f$OpenPPL_First :
+(betposition == nplayersplaying) ? f$OpenPPL_Last :
+f$OpenPPL_Middle
