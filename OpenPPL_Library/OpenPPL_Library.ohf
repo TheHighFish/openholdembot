@@ -16,6 +16,7 @@
 //   CrumbleSunday
 //   Dr.Kaktuz
 //   Efu
+//   F1x3r
 //   Fn101
 //   KaeKruse
 //   Kyo
@@ -365,6 +366,9 @@ nopponentsdealt
 ##f$OpenPPL_OpponentsLeft##
 nopponentsplaying
 
+##f$OpenPPL_OpponentsOnFlop##
+(nplayersround2 - 1)
+
 ##f$OpenPPL_OpponentsWithLowerStack##
 ((balance0 < balance) && (playersseatedbits & 0x0001) ? 1:0)+
 ((balance1 < balance) && (playersseatedbits & 0x0002) ? 1:0)+
@@ -402,9 +406,9 @@ nopponentsplaying
 -1
 
 ##f$OpenPPL_LastRaiserPosition##
-// Big blind
+// Big blind = 0
 (f$DealPositionLastRaiser == 2) ? 0 :
-// Small blind
+// Small blind = 1
 (f$DealPositionLastRaiser == 1) ? 1 :
 // Normal players:
 // BU = 2, CO = 3
