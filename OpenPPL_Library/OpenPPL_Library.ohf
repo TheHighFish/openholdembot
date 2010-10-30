@@ -18,6 +18,7 @@
 //   Efu
 //   Fn101
 //   KaeKruse
+//   Kyo
 //   Nik0
 //   NPNG
 //   Poker_Dog
@@ -38,6 +39,9 @@
 
 ##f$OpenPPL_BotCalledBeforeFlop##
 didcallround1
+
+##f$OpenPPL_BotIsLastRaiser##
+(ac_aggressor==userchair)
 
 ##f$OpenPPL_BotRaisedBeforeFlop##
 (didraisround1 || didswaground1)
@@ -385,16 +389,16 @@ nopponentsplaying
 //***********************************************************
 
 ##f$DealPositionLastRaiser##
-(ac_aggressor == 0) ? ac_dealposx0 :
-(ac_aggressor == 1) ? ac_dealposx1 :
-(ac_aggressor == 2) ? ac_dealposx2 :
-(ac_aggressor == 3) ? ac_dealposx3 :
-(ac_aggressor == 4) ? ac_dealposx4 :
-(ac_aggressor == 5) ? ac_dealposx5 :
-(ac_aggressor == 6) ? ac_dealposx6 :
-(ac_aggressor == 7) ? ac_dealposx7 :
-(ac_aggressor == 8) ? ac_dealposx8 :
-(ac_aggressor == 9) ? ac_dealposx9 :
+(ac_aggressor == 0) ? ac_dealpos0 :
+(ac_aggressor == 1) ? ac_dealpos1 :
+(ac_aggressor == 2) ? ac_dealpos2 :
+(ac_aggressor == 3) ? ac_dealpos3 :
+(ac_aggressor == 4) ? ac_dealpos4 :
+(ac_aggressor == 5) ? ac_dealpos5 :
+(ac_aggressor == 6) ? ac_dealpos6 :
+(ac_aggressor == 7) ? ac_dealpos7 :
+(ac_aggressor == 8) ? ac_dealpos8 :
+(ac_aggressor == 9) ? ac_dealpos9 :
 -1
 
 ##f$OpenPPL_LastRaiserPosition##
@@ -404,7 +408,7 @@ nopponentsplaying
 (f$DealPositionLastRaiser == 1) ? 1 :
 // Normal players:
 // BU = 2, CO = 3
-(nplayersdealt - $DealPositionLastRaiser + 2)
+(nplayersdealt - f$DealPositionLastRaiser + 2)
 
 ##f$OpenPPL_First##
 0
