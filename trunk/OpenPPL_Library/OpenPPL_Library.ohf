@@ -294,8 +294,14 @@ f$TopFlopCard == $$cr3 ? 1 : 0
 ##f$OpenPPL_Have2ndBestKicker##
 (mh_kickerbetter == 1)
 
-##f$OpenPPL_Have3ndBestKicker##
+##f$OpenPPL_Have2ndNutFlushDraw##
+f$OpenPPL_HaveFlushDraw && (f$NumberOfUnknownSuitedOvercards == 1)
+
+##f$OpenPPL_Have3rdBestKicker##
 (mh_kickerbetter == 2)
+
+##f$OpenPPL_Have3rdNutFlushDraw##
+f$OpenPPL_HaveFlushDraw && (f$NumberOfUnknownSuitedOvercards == 2)
 
 ##f$OpenPPL_HaveBestKicker##
 (mh_kickerbetter == 0)
@@ -306,6 +312,10 @@ f$TopFlopCard == $$cr3 ? 1 : 0
 ##f$OpenPPL_HaveSet##
 [  ispair
 && (($$pr0==$$cr0) || ($$pr0==$$cr1) || ($$pr0==$$cr2) || ($$pr0==$$cr3) || ($$pr0==$$cr4)) ]
+
+##f$NumberOfUnknownSuitedOvercards##
+// Unknown suited cards are cards, which are not on board and not in heroes hand.
+`((~srankbits & 0x7fff) >> srankhiplayer)
 
 //***********************************************************
 //
@@ -411,7 +421,7 @@ nopponentsplaying
 // Small blind = 1
 (f$DealPositionLastRaiser == 1) ? 1 :
 // Normal players:
-// BU = 2, CO = 3
+// BU = 2, CO = 3, ...
 (nplayersdealt - f$DealPositionLastRaiser + 2)
 
 ##f$OpenPPL_First##
