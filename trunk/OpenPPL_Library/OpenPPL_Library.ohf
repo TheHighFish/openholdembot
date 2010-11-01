@@ -294,20 +294,47 @@ f$TopFlopCard == $$cr3 ? 1 : 0
 ##f$OpenPPL_Have2ndBestKicker##
 (mh_kickerbetter == 1)
 
+##f$OpenPPL_Have2ndNutFlush##
+[f$OpenPPL_HaveFlush && (f$NumberOfUnknownSuitedOvercards == 1)]
+
 ##f$OpenPPL_Have2ndNutFlushDraw##
 f$OpenPPL_HaveFlushDraw && (f$NumberOfUnknownSuitedOvercards == 1)
 
 ##f$OpenPPL_Have3rdBestKicker##
 (mh_kickerbetter == 2)
 
+##f$OpenPPL_Have3rdNutFlush##
+[f$OpenPPL_HaveFlush && (f$NumberOfUnknownSuitedOvercards == 2)]
+
 ##f$OpenPPL_Have3rdNutFlushDraw##
 f$OpenPPL_HaveFlushDraw && (f$NumberOfUnknownSuitedOvercards == 2)
+
+##f$OpenPPL_Have4thNutFlush##
+[f$OpenPPL_HaveFlush && (f$NumberOfUnknownSuitedOvercards == 3)]
+
+##f$OpenPPL_Have4thNutFlushDraw##
+f$OpenPPL_HaveFlushDraw && (f$NumberOfUnknownSuitedOvercards == 3)
+
+##f$OpenPPL_Have5thNutFlush##
+[f$OpenPPL_HaveFlush && (f$NumberOfUnknownSuitedOvercards == 4)]
+
+##f$OpenPPL_Have5thNutFlushDraw##
+f$OpenPPL_HaveFlushDraw && (f$NumberOfUnknownSuitedOvercards == 4)
 
 ##f$OpenPPL_HaveBestKicker##
 (mh_kickerbetter == 0)
 
 ##f$OpenPPL_HaveFlushDraw##
 (nsuited >= 4)
+
+##f$OpenPPL_HaveNutFlush##
+[f$OpenPPL_HaveFlush && (f$NumberOfUnknownSuitedOvercards == 0)]
+
+##f$openPPL_HaveNutFlushCard##
+(f$NumberOfUnknownSuitedOvercards == 0)
+
+##f$OpenPPL_HaveNutFlushDraw##
+f$OpenPPL_HaveFlushDraw && (f$NumberOfUnknownSuitedOvercards == 0)
 
 ##f$OpenPPL_HaveSet##
 [  ispair
