@@ -152,7 +152,35 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ErrorMessages.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.001.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\main.002.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\main.003.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -167,6 +195,18 @@
 				RelativePath=".\main.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\position.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -179,6 +219,10 @@
 			</File>
 			<File
 				RelativePath=".\CSymbolTable.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ErrorMessages.h"
 				>
 			</File>
 		</Filter>
