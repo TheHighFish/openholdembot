@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include "CodeSnippets.h"
 #include "CSymbolTable.h"
+#include "ErrorMessages.h"
 
 
 const bool k_assert_this_must_not_happen = false;
@@ -24,6 +25,15 @@ using namespace std;
 // http://www.ibm.com/developerworks/aix/library/au-boost_parser/index.html
 
 int bracket_counter = 0;
+
+boost::spirit::parse_info<> pi;
+
+CString ErroneousCodeSnippet()
+{
+	CString rest_of_input = pi.stop;
+	CString erroneous_code_snippet = rest_of_input.Left(100);
+	return erroneous_code_snippet;
+}
 
 // skip grammar
 struct skip_grammar : public grammar<skip_grammar>
@@ -262,11 +272,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 	{
 		void operator()(const char *begin, const char *end) const 
 		{
-			MessageBox(0, "Error: \"Beep\" is no valid action for OpenPPL, as\n\n"
-				"* OpenHoldem is meant as a bot, not as a tool for manual play\n"
-				"* Human and bot competing for the mouse just calls for troubles.\n\n"
-				"Please complete your formula so that all actions are specified.",
-				"Error", 0);
+			ErrorMessage(k_error_beep_not_supported, ErroneousCodeSnippet());
 		}
 	};
 
@@ -274,15 +280,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 	{
 		void operator()(const char *begin, const char *end) const 
 		{
-			MessageBox(0, "Error: Specific suits are not supported by OpenPPL\n"
-				"  as they do not matter and are not supported by OH-script.\n\n"
-				"Example:\n"
-				"  When hand = AcT call  force\n"
-				"  When hand = AT  raise force\n\n"
-				"Coding this way is the old way to randomize actions\n"
-				"  before randomization go introduced into PPL.\n\n"
-				"We are sorry, but you should change this part of your formula.\n",
-				"Error", 0);
+			ErrorMessage(k_error_specific_suits_not_supported, ErroneousCodeSnippet());
 		}
 
 	};
@@ -690,11 +688,11 @@ int main(int argc, char *argv[])
 	skip_grammar skip;
 	// Case insensitive parsing: 
 	// http://www.ibm.com/developerworks/aix/library/au-boost_parser/index.html
-	boost::spirit::parse_info<> pi = boost::spirit::parse(data.c_str(), /*as_lower_d*/g, skip); 
+	pi = boost::spirit::parse(data.c_str(), /*as_lower_d*/g, skip); 
 	if (!pi.hit) 
 	{
-		CString rest_of_input = pi.stop;
-		CString erroneous_input = rest_of_input.Left(100);
+		//CString rest_of_input = pi.stop;
+		CString erroneous_input = ErroneousCodeSnippet();//rest_of_input.Left(100);
 		if (erroneous_input.GetLength() > 0)
 		{
 		  // Examples about how to use the position operator:
@@ -704,15 +702,7 @@ int main(int argc, char *argv[])
 		  //parse_error_position = pi.first.get_position(); 
 		  if (erroneous_input.Left(2).MakeLower() == "nd")
 		  {
-			MessageBox(0, 
-				"The erroneous input begins with \"nd\".\n\n"
-				"You probably have an expression like\n"
-				"  \"hand = ... and...\"\n" 
-				"  or \"board = ... and ...\".\n"
-				"  where the parser greadily accepts the \"a\" of \"and\" as an ace.\n\n"
-				"We recommend you to bracket this expression:\n"
-				"  \"when (hand = ...) and ...\"\n",
-				"OpenPPL: Syntax Error", 0);	
+			ErrorMessage(k_error_card_expression_needs_brackets, ErroneousCodeSnippet());	
 		  }
 		  else
 		  {
@@ -732,6 +722,7 @@ int main(int argc, char *argv[])
 			  "  * missing \"when others fold force\" at the end of a block\n"
 			  "  * misspelling of keywords\n");
 		  MessageBox(0, error_message, "OpenPPL: Syntax Error", 0);
+		  //ErrorMessage(error_message);
 		  }
 		}
 	}
