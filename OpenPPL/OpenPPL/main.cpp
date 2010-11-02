@@ -28,9 +28,9 @@ int bracket_counter = 0;
 
 boost::spirit::parse_info<> pi;
 
-CString ErroneousCodeSnippet()
+CString ErroneousCodeSnippet(const char *begin_of_erroneous_code_snippet)
 {
-	CString rest_of_input = pi.stop;
+	CString rest_of_input = begin_of_erroneous_code_snippet;
 	CString erroneous_code_snippet = rest_of_input.Left(100);
 	return erroneous_code_snippet;
 }
@@ -272,7 +272,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 	{
 		void operator()(const char *begin, const char *end) const 
 		{
-			ErrorMessage(k_error_beep_not_supported, ErroneousCodeSnippet());
+			ErrorMessage(k_error_beep_not_supported, ErroneousCodeSnippet(begin));
 		}
 	};
 
@@ -280,7 +280,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 	{
 		void operator()(const char *begin, const char *end) const 
 		{
-			ErrorMessage(k_error_specific_suits_not_supported, ErroneousCodeSnippet());
+			ErrorMessage(k_error_specific_suits_not_supported, ErroneousCodeSnippet(begin));
 		}
 
 	};
@@ -692,7 +692,7 @@ int main(int argc, char *argv[])
 	if (!pi.hit) 
 	{
 		//CString rest_of_input = pi.stop;
-		CString erroneous_input = ErroneousCodeSnippet();//rest_of_input.Left(100);
+		CString erroneous_input = ErroneousCodeSnippet(pi.stop);//rest_of_input.Left(100);
 		if (erroneous_input.GetLength() > 0)
 		{
 		  // Examples about how to use the position operator:
@@ -702,7 +702,7 @@ int main(int argc, char *argv[])
 		  //parse_error_position = pi.first.get_position(); 
 		  if (erroneous_input.Left(2).MakeLower() == "nd")
 		  {
-			ErrorMessage(k_error_card_expression_needs_brackets, ErroneousCodeSnippet());	
+			ErrorMessage(k_error_card_expression_needs_brackets, ErroneousCodeSnippet(pi.stop));	
 		  }
 		  else
 		  {
