@@ -36,6 +36,43 @@ static const char *error_messages[k_number_of_error_codes] =
 	"\n"
 	"We recommend you to bracket this expression:\n"
 	"\"when (hand = ...) and ...\"\n",
+
+	// k_error_action_without_force
+	"Error: Missing keyword \"Force\".\n"
+	"\n"
+	"OpenPPL does not provide any default bot logic in the background,\n"
+	"so all user-defined actions are final and the keyword \"Force\" is mandatory.\n",
+
+	// k_error_missing_code_section
+	"Error: Missing code section.\n"
+	"\n"
+	"OpenPPL does not provide any default bot logic,\n"
+	"so the code sections for preflop, flop, turn and river\n"
+	"are all mandatory.\n",
+
+	// k_error_missing_closing_bracket
+	"Error: Missing closing bracket.\n"
+	"\n"
+	"We miss a closing bracket near that location,\n"
+	"but it might also be any other kind of syntax error,\n"
+	"e.g. a misspelled keyword or a missing operator.\n",
+
+	// k_error_missing_keyword_custom
+	"Error: Missing keyword \"Custom\".\n"
+	"\n"
+	"It seems. the option settings are over.\n"
+	"Now we expect \"Custom\" followed by symbol definitions and user defined code.\n"
+	"But there also may be an error in the option settings.\n",
+
+	// k_error_general
+	"General syntax error.\n"	
+	"\n"
+	"No detailed desription available.\n"
+	"Common mistakes are:\n"
+	"* misspelling of keywords\n"
+	"* illegal characters)\n"
+	"\n"
+	"Maybe you even did something very special?\n"
 };
 
 void ErrorMessage(int error_code, CString invalid_code_snippet)
