@@ -282,7 +282,38 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 		{
 			ErrorMessage(k_error_specific_suits_not_supported, ErroneousCodeSnippet(begin));
 		}
+	};
 
+	struct error_action_without_force
+	{
+		void operator()(const char *begin, const char *end) const 
+		{
+			ErrorMessage(k_error_action_without_force, ErroneousCodeSnippet(begin));
+		}
+	};
+
+	struct error_missing_code_section
+	{
+		void operator()(const char *begin, const char *end) const 
+		{
+			ErrorMessage(k_error_missing_code_section, ErroneousCodeSnippet(begin));
+		}
+	};
+
+	struct error_missing_closing_bracket
+	{
+		void operator()(const char *begin, const char *end) const 
+		{
+			ErrorMessage(k_error_missing_closing_bracket, ErroneousCodeSnippet(begin));
+		}
+	};
+
+	struct error_missing_keyword_custom
+	{
+		void operator()(const char *begin, const char *end) const 
+		{
+			ErrorMessage(k_error_missing_keyword_custom, ErroneousCodeSnippet(begin));
+		}
 	};
 
 	struct print_fold_as_last_alternative_for_when_condition_sequence
@@ -397,14 +428,21 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 
 	struct definition 
 	{ 
-		boost::spirit::rule<Scanner> openPPL_code, option_settings_to_be_ignored, 
-			single_option, option_name, option_value,
-
+		boost::spirit::rule<Scanner> 
+			openPPL_code, 
+			option_settings_to_be_ignored, 
+			single_option, 
+			option_name, 
+			option_value,
+			custom_sections,
+			missing_keyword_custom,
 			symbol_section,
+			code_sections,
 			preflop_section, 
 			flop_section, 
 			turn_section, 
 			river_section, 
+			missing_code_section,
 			symbol_definition,
 			when_section,
 			when_condition_sequence_with_action,
@@ -420,6 +458,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			
 			terminal_expression,		
 			bracket_expression,
+			missing_closing_bracket_expression,
 			operand_expression,
 			unary_operator,
 			unary_expression,
@@ -435,6 +474,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			xor_expression,
 			or_expression,
 			action,
+			action_without_force,
 			predefined_action,
 			fixed_betsize_action,
 			relative_betsize_action,
@@ -490,7 +530,8 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			keyword_end,
 			card_expression,
 			board_expression,
-			hand_expression
+			hand_expression,
+			erroneous_action_without_force
 			;
 
 		definition(const json_grammar &self) 
@@ -498,14 +539,13 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			using namespace boost::spirit; 
 			// Whole PPL-file
 			openPPL_code = option_settings_to_be_ignored
-				>> keyword_custom [print_header()][print_options()]
-				>> !symbol_section
-				>> preflop_section [print_newline()] [print_newline()]
-				>> flop_section [print_newline()][print_newline()] 
-				>> turn_section [print_newline()][print_newline()] 
-				>> river_section [print_newline()][print_newline()]
+				>> ((keyword_custom [print_header()][print_options()] >> custom_sections)
+					| missing_keyword_custom);
+			custom_sections = !symbol_section
+				>> (code_sections | missing_code_section)
 				>> end_p[print_predefined_action_constants()]
-					[print_technical_functions()][print_OpenPPL_Library()]; 
+					[print_technical_functions()][print_OpenPPL_Library()];
+			missing_keyword_custom = (str_p("") >> custom_sections)[error_missing_keyword_custom()];
 			  
 			// Option settings - to be ignored
 			option_settings_to_be_ignored = *single_option;
@@ -530,6 +570,10 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				>> keyword_end >> keyword_symbol;
 
 			// Preflop, flop, turn, river
+			code_sections = preflop_section [print_newline()][print_newline()]
+				>> flop_section [print_newline()][print_newline()] 
+				>> turn_section [print_newline()][print_newline()] 
+				>> river_section [print_newline()][print_newline()];
 			preflop_section = keyword_preflop[print_function_header_for_betting_round()] >> when_section;
 			keyword_preflop = str_p("preflop") | "Preflop" | "PREFLOP";
 			flop_section = keyword_flop[print_function_header_for_betting_round()] >> when_section;
@@ -540,6 +584,15 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			keyword_river = str_p("river") | "River" | "RIVER";
 			when_section = !when_condition_sequence_with_action 
 				>> when_condition_sequence_without_action[print_fold_as_last_alternative_for_when_condition_sequence()];
+			missing_code_section =
+				// missing river
+				((preflop_section >> flop_section >> turn_section >> str_p("")[error_missing_code_section()])
+				// missing turn
+				|((preflop_section >> flop_section) >> str_p("")[error_missing_code_section()]) 
+				// missing flop
+				|(preflop_section >> str_p("")[error_missing_code_section()]) 
+				// missing preflop
+				|(str_p("")[error_missing_code_section()]));
 
 			// When-condition sequences (with action)
 			keyword_when = str_p("when") | "When" | "WHEN";
@@ -559,7 +612,9 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// Expressions
 			expression = or_expression;
 			bracket_expression = str_p("(")[print_bracket()] >> expression >> str_p(")")[print_bracket()];
-			operand_expression = terminal_expression | bracket_expression;
+			missing_closing_bracket_expression = (str_p("(") >> expression) >> str_p("")[error_missing_closing_bracket()];
+			operand_expression = terminal_expression | bracket_expression 
+				| missing_closing_bracket_expression;
 			keyword_not = (str_p("not") | "Not" | "NOT")[print_operator()];
 			unary_operator = (keyword_not | "-")[print_operator()];
 			unary_expression = !unary_operator >> operand_expression;
@@ -594,11 +649,13 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				 
 			// Actions (and return statements)
 			// We handle boths in the same way, as it simplifies things a lot.
-			action = predefined_action 
+			action = (action_without_force >> keyword_force)
+				| erroneous_action_without_force;
+			action_without_force = predefined_action 
 				| fixed_betsize_action 
 				| relative_betsize_action
 				| return_statement;
-			predefined_action = keyword_predefined_action[print_predefined_action()] >> keyword_force;
+			predefined_action = keyword_predefined_action[print_predefined_action()];
 			keyword_force = (str_p("force") | "Force" | "FORCE");
 			keyword_beep = (str_p("beep") | "Beep" | "BEEP")[error_beep_not_supported()];
 			keyword_call = str_p("call") | "Call" | "CALL";
@@ -620,11 +677,11 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				| keyword_raisepot | keyword_raisemax |	keyword_raise | keyword_fold
 				| keyword_betmin | keyword_bethalfpot
 				| keyword_betpot | keyword_betmax | keyword_bet | keyword_sitout];
-			fixed_betsize_action = (keyword_bet | keyword_raise) >> number >> keyword_force;
+			fixed_betsize_action = (keyword_bet | keyword_raise) >> number;
 			relative_betsize_action = (keyword_bet | keyword_raise) >> number[print_number()] 
-				>> percentage_operator[print_percentage_operator()][print_relative_potsize_action()] 
-				>> keyword_force;
+				>> percentage_operator[print_percentage_operator()][print_relative_potsize_action()] ;
 			keyword_others = str_p("others") | "Others" | "OTHERS";
+			erroneous_action_without_force = action_without_force[error_action_without_force()];
 
 			// Return statement
 			keyword_return = str_p("return") | "Return";
@@ -706,24 +763,12 @@ int main(int argc, char *argv[])
 		  }
 		  else
 		  {
-		  CString error_message;
-		  error_message.Format("%s%d%s%d%s%s%s",
-			  "Stopped at [line: ", 
-			  12345, //parse_error_position.line,
-			  ", column: ",
-			  67890, //parse_error_position.column,	
-			  "]\n================================\n\n", 
-			  erroneous_input,
-			  "\n================================\n\n"
-			  "Common mistakes are:\n"
-			  "  * malformed brackets\n"
-			  "  * missing keyword \"custom\"\n"
-			  "  * missing preflop / flop / turn or river section\n"
-			  "  * missing \"when others fold force\" at the end of a block\n"
-			  "  * misspelling of keywords\n");
-		  MessageBox(0, error_message, "OpenPPL: Syntax Error", 0);
-		  //ErrorMessage(error_message);
+			ErrorMessage(k_error_general, ErroneousCodeSnippet(pi.stop));
+		  
 		  }
 		}
 	}
 } 
+
+//missing keyword \"custom\"\n"
+//			  "  * missing \"when others fold force\" at the end of a block\n"
