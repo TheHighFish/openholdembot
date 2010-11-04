@@ -1,0 +1,16 @@
+// "Beep" not supported
+custom
+
+symbols
+
+preflop
+when others beep force
+
+flop
+when others fold force
+
+turn
+when others fold force
+
+river
+when others fold force

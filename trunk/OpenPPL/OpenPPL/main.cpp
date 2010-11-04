@@ -1,4 +1,4 @@
-#include <afxwin.h>
+//#include <afxwin.h>
 #include <afx.h>
 #include <boost/spirit.hpp> 
 #include <boost/spirit/iterator/position_iterator.hpp>
@@ -316,6 +316,22 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 		}
 	};
 
+	struct error_missing_brackets_for_card_expression
+	{
+		void operator()(const char *begin, const char *end) const 
+		{
+			ErrorMessage(k_error_missing_brackets_for_card_expression, ErroneousCodeSnippet(begin));
+		}
+	};
+
+	struct error_invalid_character
+		{
+		void operator()(const char *begin, const char *end) const 
+		{
+			ErrorMessage(k_error_invalid_character, ErroneousCodeSnippet(begin));
+		}
+	};
+
 	struct print_fold_as_last_alternative_for_when_condition_sequence
 	{ 
 		void operator()(const char *begin, const char *end) const 
@@ -529,9 +545,13 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			keyword_return,
 			keyword_end,
 			card_expression,
-			board_expression,
-			hand_expression,
-			erroneous_action_without_force
+			board_expression_with_brackets,
+			hand_expression_with_brackets,
+			board_expression_without_brackets,
+			hand_expression_without_brackets,
+			erroneous_action_without_force,
+			invalid_character,
+			invalid_symbol
 			;
 
 		definition(const json_grammar &self) 
@@ -625,7 +645,9 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			additive_expression = multiplicative_expression >> *(additive_operator >> multiplicative_expression);
 			relational_operator = (str_p("<=") | ">=" | "<" | ">")[print_operator()];
 			relational_expression = additive_expression >> *(relational_operator >> additive_expression);
-			equality_expression = /*longest_d[*/hand_expression | board_expression | (relational_expression >> *(str_p("=")[print_operator()] >> relational_expression))/*]*/;
+			equality_expression = /*longest_d[*/hand_expression_with_brackets | board_expression_with_brackets 
+				| hand_expression_without_brackets | board_expression_without_brackets
+				| (relational_expression >> *(str_p("=")[print_operator()] >> relational_expression))/*]*/;
 			keyword_and = (str_p("and") | "And" | "AND")[print_operator()];
 			and_expression = equality_expression >> *(keyword_and >> equality_expression);
 			keyword_xor = (str_p("xor") | "Xor" | "XOr" | "XOR")[print_operator()];
@@ -644,8 +666,14 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				| (lexeme_d[+card_constant] >> !keyword_suited)]; 
 			card_expression_with_specific_suits = card_constant >> suit_constant >> *(card_constant >> !suit_constant)
 				[error_specific_suits_not_supported()];
-			board_expression = keyword_board >> str_p("=")[print_operator()] >> card_expression;
-			hand_expression = keyword_hand >> (str_p("=") >> card_expression)[print_hand_expression()];
+			board_expression_with_brackets = str_p("(") >> keyword_board 
+				>> str_p("=")[print_operator()] >> card_expression >> ")";
+			hand_expression_with_brackets = (str_p("(") >> keyword_hand 
+				>> str_p("=") >> card_expression)[print_hand_expression()] >> ")";
+			board_expression_without_brackets = (keyword_board 
+				>> str_p("=")[print_operator()] >> card_expression)[error_missing_brackets_for_card_expression()];
+			hand_expression_without_brackets = (keyword_hand 
+				>> str_p("=") >> card_expression)[error_missing_brackets_for_card_expression()];
 				 
 			// Actions (and return statements)
 			// We handle boths in the same way, as it simplifies things a lot.
@@ -702,7 +730,14 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// otherwise things like "When x Bet force" would treat "x Bet force"
 			// as a single keyword and cause an error.
 			// http://www.boost.org/doc/libs/1_40_0/libs/spirit/classic/doc/quickref.html
-			symbol = lexeme_d[alpha_p >> *alnum_p][print_keyword()];
+			symbol = (lexeme_d[alpha_p >> *alnum_p][print_keyword()]) | invalid_symbol;
+
+			// "Symbols" cintaining invalid cahracters
+			invalid_character = str_p(";")  | "," | ":" | "|" | "@" | "€" | "!" | "\\"
+				| "\""  | "§" | "$" | "&" | "?" | "´" | "´" | "[" | "]"
+				| "^" | "°" | "{" | "}" | "#" | "³" | "²";
+			invalid_symbol = (*alnum_p >> invalid_character 
+				>> *(alnum_p | invalid_character))[error_invalid_character()];
 		} 
 
 		const boost::spirit::rule<Scanner> &start() 
@@ -757,15 +792,7 @@ int main(int argc, char *argv[])
 		  // http://live.boost.org/doc/libs/1_34_0/libs/spirit/example/fundamental/position_iterator/position_iterator.cpp
 		  file_position parse_error_position;
 		  //parse_error_position = pi.first.get_position(); 
-		  if (erroneous_input.Left(2).MakeLower() == "nd")
-		  {
-			ErrorMessage(k_error_card_expression_needs_brackets, ErroneousCodeSnippet(pi.stop));	
-		  }
-		  else
-		  {
-			ErrorMessage(k_error_general, ErroneousCodeSnippet(pi.stop));
-		  
-		  }
+		  ErrorMessage(k_error_general, ErroneousCodeSnippet(pi.stop));
 		}
 	}
 } 
