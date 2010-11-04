@@ -93,10 +93,10 @@ bet1
 (bblind > 0) ? (balance / bblind) : 0
 
 ##f$OpenPPL_TotalInvested##
-br==1 && nbetsround>0 ? ncurrentbets*bblind :
-br==2 && nbetsround1>0 ? ((nbetsround1+ncurrentbets)*bblind) :
-br==3 && nbetsround1>0 ? ((nbetsround1+nbetsround2 + ncurrentbets)*bblind) :
-br==4 && nbetsround1>0 ? ((nbetsround1+nbetsround2+nbetsround3+ncurrentbets)*bblind):
+br==1 && nbetsround>0 ? ncurrentbets * bblind :
+br==2 && nbetsround1>0 ? ((nbetsround1 + ncurrentbets) * bblind) :
+br==3 && nbetsround1>0 ? ((nbetsround1 + nbetsround2 + ncurrentbets) * bblind) :
+br==4 && nbetsround1>0 ? ((nbetsround1 + nbetsround2 +n betsround3 + ncurrentbets) * bblind):
 0
 
 //***********************************************************
@@ -330,7 +330,7 @@ f$OpenPPL_HaveFlushDraw && (f$NumberOfUnknownSuitedOvercards == 4)
 ##f$OpenPPL_HaveNutFlush##
 [f$OpenPPL_HaveFlush && (f$NumberOfUnknownSuitedOvercards == 0)]
 
-##f$openPPL_HaveNutFlushCard##
+##f$OpenPPL_HaveNutFlushCard##
 (f$NumberOfUnknownSuitedOvercards == 0)
 
 ##f$OpenPPL_HaveNutFlushDraw##
@@ -464,3 +464,4 @@ nopponentsplaying
 (betposition == 1) ? f$OpenPPL_First :
 (betposition == nplayersplaying) ? f$OpenPPL_Last :
 f$OpenPPL_Middle
+
