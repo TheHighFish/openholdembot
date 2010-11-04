@@ -1,6 +1,7 @@
 #include <afxwin.h>
 #include "ErrorMessages.h"
 #include <assert.h>
+#include <iostream> 
 #include <windows.h>
 
 static const char *error_messages[k_number_of_error_codes] =
@@ -25,17 +26,6 @@ static const char *error_messages[k_number_of_error_codes] =
 	"before randomization go introduced into PPL.\n"
 	"\n"
 	"We are sorry, but you should change this part of your formula.\n",
-
-	// k_error_card_expression_needs_brackets
-	"The erroneous input begins with \"nd\".\n"
-	"\n"
-	"You probably have an expression like\n"
-	"\"hand = ... and...\"\n" 
-	"or \"board = ... and ...\".\n"
-	"where the parser greadily accepts the \"a\" of \"and\" as an ace.\n"
-	"\n"
-	"We recommend you to bracket this expression:\n"
-	"\"when (hand = ...) and ...\"\n",
 
 	// k_error_action_without_force
 	"Error: Missing keyword \"Force\".\n"
@@ -64,6 +54,39 @@ static const char *error_messages[k_number_of_error_codes] =
 	"Now we expect \"Custom\" followed by symbol definitions and user defined code.\n"
 	"But there also may be an error in the option settings.\n",
 
+	// k_error_missing_brackets_for_card_expression
+	"Error: no brackets around card expressions.\n"
+	"\n"
+	"Our parser is a bit greeddy.\n"
+	"So lets assume, you have the following expressions:\n"
+	"\n"
+	"When Hand = TT And...Raise Force\n" 
+	"When Board = 456 Call Force\n"
+	"\n"
+	"In the first case it will take the \"A\" of \"And\" as an ace,\n"
+	"in the second case it will take \"6 C\" as a 6 of clubs.\n"
+	"\n"
+	"Therefore it is strictly required to bracket all hand- and board-expressions.\n",
+
+	//k_error_invalid_character,
+	"Error: invalid character(s).\n"
+	"\n"
+	"At or near the critical code location is at least one invalid character.\n"
+	"LEGAL characters are:\n"
+	"[A-Z]\n"
+	"[a-z]\n"
+	"[0-9]\n"
+	"// one-line-comments followed by arbitrary characters\n"
+	"/* multi-line comments */\n"
+	"Spaces, tabs and new lines\n"
+	"[+-*/%] operators\n"
+	"[()] brackets\n"
+	"[_] underscores\n"
+	"[<=>] comparisions\n"
+	"[.] the decimal point in numbers\n"
+	"\n"
+	"Please get rid of the superfluos characters.\n",
+
 	// k_error_general
 	"General syntax error.\n"	
 	"\n"
@@ -74,6 +97,14 @@ static const char *error_messages[k_number_of_error_codes] =
 	"\n"
 	"Maybe you even did something very special?\n"
 };
+
+void TerminateProcessing()
+{
+	using namespace std;
+	cout << endl << endl << "Error: Processing stopped due to syntax errors." << endl;
+	cout << "Output incomplete and unusable." << endl << endl;
+	exit(-1);
+}
 
 void ErrorMessage(int error_code, CString invalid_code_snippet)
 {
@@ -89,4 +120,5 @@ void ErrorMessage(int error_code, CString invalid_code_snippet)
 	CString error_message = error_explanation + separator_line
 		+ invalid_code_snippet + separator_line + error_location;
 	MessageBox(0, error_message, "OpenPPL: Syntax Error", 0);
+	TerminateProcessing();
 }
