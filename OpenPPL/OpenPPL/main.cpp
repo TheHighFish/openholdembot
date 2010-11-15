@@ -7,15 +7,18 @@
 #include <iostream> 
 #include <sstream> 
 #include <stdio.h>
+#include "Board.h"
 #include "CodeSnippets.h"
 #include "CSymbolTable.h"
 #include "ErrorMessages.h"
 
+using namespace boost::spirit;
+using namespace std;
 
 const bool k_assert_this_must_not_happen = false;
 
-using namespace boost::spirit;
-using namespace std;
+bool when_others_fold_force_detected = false;
+bool when_others_when_others_fold_force_detected = false;
 
 // http://www.highscore.de/cpp/boost/parser.html
 // http://www.boost.org/doc/libs/1_35_0/libs/spirit/doc/operators.html
@@ -62,6 +65,50 @@ struct skip_grammar : public grammar<skip_grammar>
 
 struct json_grammar: public boost::spirit::grammar<json_grammar> 
 { 
+	struct debug_1
+	{ 
+		void operator()(const char *begin, const char *end) const 
+		{ 
+			MessageBox(0, "1", "Debug", 0);
+		} 
+	};
+
+	struct debug_2
+	{ 
+		void operator()(const char *begin, const char *end) const 
+		{ 
+			MessageBox(0, "2", "Debug", 0);
+		} 
+	};
+
+	struct reset_variables
+	{
+		void operator()(const char *begin, const char *end) const
+		{
+			when_others_fold_force_detected = false;
+			when_others_when_others_fold_force_detected = false;
+			debug_1();
+		}
+	};
+
+	struct set_when_others_fold_force
+	{
+		void operator()(const char *begin, const char *end) const
+		{
+			when_others_fold_force_detected = true;
+			debug_2();
+		}
+	};
+
+ 	struct set_when_others_when_others_fold_force
+	{
+		void operator()(const char *begin, const char *end) const
+		{
+			when_others_when_others_fold_force_detected = true;
+			debug_2();
+		}
+	};
+
 	struct print_number 
 	{ 
 		void operator()(const char *begin, const char *end) const 
@@ -83,6 +130,14 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 		void operator()(const char *begin, const char *end) const 
 		{ 
 			std::cout << k_code_snippet_options; 
+		} 
+	};
+
+	struct print_prime_coded_board_ranks
+	{ 
+		void operator()(const char *begin, const char *end) const 
+		{ 
+			std::cout << k_code_snipped_prime_coded_board_ranks; 
 		} 
 	};
 
@@ -215,6 +270,24 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 		} 
 	}; 
 
+	struct print_comment_for_open_ended_when_condition
+	{ 
+		void operator()(const char *begin, const char *end) const 
+		{ 
+			std::cout << "// Starting open-ended when-condition" << endl;
+			std::cout << "// " << std::string(begin, end) << endl; 
+		} 
+	}; 
+
+	struct print_when_others_fold_force
+	{ 
+		void operator()(const char *begin, const char *end) const 
+		{ 
+			std::cout << "// When Others Fold Force" << endl;
+			std::cout << "f$Action_Fold" << endl; 
+		} 
+	}; 
+
 	struct print_bracket 
 	{ 
 		void operator()(const char *begin, const char *end) const 
@@ -265,6 +338,24 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 		void operator()(const char *begin, const char *end) const 
 		{ 
 			std::cout << " :"; 
+		} 
+	};
+
+	struct print_non_suited_board_expression
+	{ 
+		void operator()(const char *begin, const char *end) const 
+		{ 
+			CString text = std::string(begin, end).c_str();
+			generate_code_for_non_suited_board(text);
+		} 
+	};
+
+	struct print_suited_board_expression
+	{ 
+		void operator()(const char *begin, const char *end) const 
+		{ 
+			CString text = std::string(begin, end).c_str();
+			generate_code_for_suited_board(text);
 		} 
 	};
 
@@ -464,6 +555,8 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			when_condition_sequence_with_action,
 			when_condition_sequence_without_action,
 			//when_condition_sequence_with_action_and_fold_force,
+			open_ended_when_condition_sequence,
+			open_ended_when_condition,
 			when_condition_with_action,
 			when_condition_without_action,
 			return_statement,
@@ -533,10 +626,14 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			keyword_sitout,
 			keyword_others,
 			when_others_fold_force,
-			when_others_when_others,
+			when_others_when_others_fold_force,
 			suit_constant,
 			card_constant,
 			card_expression_with_specific_suits,
+			non_suited_card_expression,
+			suited_card_expression,
+			non_suited_board_expression,
+			suited_board_expression,
 			keyword_suited,
 			keyword_hand,
 			keyword_board,
@@ -559,12 +656,15 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			using namespace boost::spirit; 
 			// Whole PPL-file
 			openPPL_code = option_settings_to_be_ignored
-				>> ((keyword_custom [print_header()][print_options()] >> custom_sections)
+				>> ((keyword_custom [print_header()][print_options()] 
+				>> custom_sections)
 					| missing_keyword_custom);
 			custom_sections = !symbol_section
-				>> (code_sections | missing_code_section)
-				>> end_p[print_predefined_action_constants()]
-					[print_technical_functions()][print_OpenPPL_Library()];
+				>> (code_sections/* | missing_code_section !!!*/)
+				>> end_p[print_prime_coded_board_ranks()]
+					[print_predefined_action_constants()]
+					[print_technical_functions()]
+					[print_OpenPPL_Library()];
 			missing_keyword_custom = (str_p("") >> custom_sections)[error_missing_keyword_custom()];
 			  
 			// Option settings - to be ignored
@@ -584,7 +684,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			keyword_symbols = str_p("symbols") | "Symbols";
 			keyword_symbol = str_p("symbol") | "Symbol";
 			keyword_end = str_p("end") | "End";
-			symbol_definition = keyword_new >> keyword_symbol
+			symbol_definition = keyword_new >> keyword_symbol[reset_variables()]
 				>> symbol//[print_function_header_for_betting_round()] 
 				>> when_section
 				>> keyword_end >> keyword_symbol;
@@ -594,16 +694,24 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				>> flop_section [print_newline()][print_newline()] 
 				>> turn_section [print_newline()][print_newline()] 
 				>> river_section [print_newline()][print_newline()];
-			preflop_section = keyword_preflop[print_function_header_for_betting_round()] >> when_section;
+			preflop_section = keyword_preflop[print_function_header_for_betting_round()][reset_variables()]
+				>> when_section;
 			keyword_preflop = str_p("preflop") | "Preflop" | "PREFLOP";
-			flop_section = keyword_flop[print_function_header_for_betting_round()] >> when_section;
+			flop_section = keyword_flop[print_function_header_for_betting_round()][reset_variables()] 
+				>> when_section;
 			keyword_flop = str_p("flop") | "Flop" | "FLOP";
-			turn_section = keyword_turn[print_function_header_for_betting_round()] >> when_section;
+			turn_section = keyword_turn[print_function_header_for_betting_round()][reset_variables()] 
+				>> when_section;
 			keyword_turn = str_p("turn") | "Turn" | "TURN";
-			river_section = keyword_river[print_function_header_for_betting_round()] >> when_section;
+			river_section = keyword_river[print_function_header_for_betting_round()][reset_variables()] 
+				>> when_section;
 			keyword_river = str_p("river") | "River" | "RIVER";
-			when_section = !when_condition_sequence_with_action 
+			/*!!!!when_section = !when_condition_sequence_with_action 
 				>> when_condition_sequence_without_action[print_fold_as_last_alternative_for_when_condition_sequence()];
+				*/
+			when_section = !when_condition_sequence_with_action >> 
+				(!(open_ended_when_condition_sequence >> when_others_when_others_fold_force)
+					| when_others_fold_force);
 			missing_code_section =
 				// missing river
 				((preflop_section >> flop_section >> turn_section >> str_p("")[error_missing_code_section()])
@@ -623,8 +731,16 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			//when_condition_sequence_with_action_and_fold_force =
 			//when_condition_sequence_with_action >> when_others_fold_force;
 			//>> *when_condition_without_action;
-			when_condition_without_action = when_condition >> *when_condition_with_action;
-			when_condition_sequence_without_action = *when_condition_without_action;
+			open_ended_when_condition_sequence = *(open_ended_when_condition >> when_condition_sequence_with_action);
+			//!!!!when_condition_without_action = when_condition >> *when_condition_with_action;
+			//!!!!when_condition_sequence_without_action = *when_condition_without_action;
+
+			// When Others Fold Force
+			keyword_others = str_p("others") | "Others" | "OTHERS";
+			when_others_fold_force = (keyword_when >> keyword_others >> keyword_fold 
+				>> keyword_force)[print_when_others_fold_force()][set_when_others_fold_force()];
+			when_others_when_others_fold_force = (keyword_when >> keyword_others 
+				>> when_others_fold_force)[print_when_others_fold_force()][set_when_others_when_others_fold_force()];
 			
 			// Conditions
 			condition = expression;
@@ -662,12 +778,19 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			keyword_board = str_p("board") | "Board" | "BOARD";
 			keyword_hand = str_p("hand") | "Hand" | "HAND";
 			suit_constant = ch_p("C") | "c" | "D"| "d" | "H" | "h" | "S" | "s";
-			card_expression = longest_d[card_expression_with_specific_suits
-				| (lexeme_d[+card_constant] >> !keyword_suited)]; 
+			card_expression = /*longest_d[*/card_expression_with_specific_suits
+				| suited_card_expression
+				| non_suited_card_expression; 
+			suited_card_expression = (lexeme_d[+card_constant] >> keyword_suited);
+			non_suited_card_expression = (lexeme_d[+card_constant]);
 			card_expression_with_specific_suits = card_constant >> suit_constant >> *(card_constant >> !suit_constant)
 				[error_specific_suits_not_supported()];
-			board_expression_with_brackets = str_p("(") >> keyword_board 
-				>> str_p("=")[print_operator()] >> card_expression >> ")";
+			board_expression_with_brackets = str_p("(") 
+				>> (suited_board_expression | non_suited_board_expression) >> ")";
+			suited_board_expression = (keyword_board >> str_p("=") 
+				>> suited_card_expression)[print_suited_board_expression()];
+			non_suited_board_expression = (keyword_board >> str_p("=") 
+				>> non_suited_card_expression)[print_non_suited_board_expression()];	
 			hand_expression_with_brackets = (str_p("(") >> keyword_hand 
 				>> str_p("=") >> card_expression)[print_hand_expression()] >> ")";
 			board_expression_without_brackets = (keyword_board 
@@ -714,10 +837,6 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// Return statement
 			keyword_return = str_p("return") | "Return";
 			return_statement = keyword_return >> expression >> keyword_force;
-
-			// When others
-			when_others_fold_force = keyword_when >> keyword_others >> keyword_fold >> keyword_force;
-			when_others_when_others = keyword_when >> keyword_others >> when_others_fold_force;
 
 			// Terminal expressions
 			terminal_expression = number[print_number()] | boolean_constant | symbol;
