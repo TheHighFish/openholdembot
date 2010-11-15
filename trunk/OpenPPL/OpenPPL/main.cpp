@@ -791,8 +791,8 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				>> suited_card_expression)[print_suited_board_expression()];
 			non_suited_board_expression = (keyword_board >> str_p("=") 
 				>> non_suited_card_expression)[print_non_suited_board_expression()];	
-			hand_expression_with_brackets = (str_p("(") >> keyword_hand 
-				>> str_p("=") >> card_expression)[print_hand_expression()] >> ")";
+			hand_expression_with_brackets = str_p("(") >> keyword_hand 
+				>> str_p("=") >> card_expression[print_hand_expression()] >> ")";
 			board_expression_without_brackets = (keyword_board 
 				>> str_p("=")[print_operator()] >> card_expression)[error_missing_brackets_for_card_expression()];
 			hand_expression_without_brackets = (keyword_hand 
