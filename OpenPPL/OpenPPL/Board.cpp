@@ -1,6 +1,7 @@
 #include "Board.h"
 #include <assert.h>
-#include <iostream> 
+#include <iomanip>
+#include <iostream>
 
 using namespace std;
 
@@ -14,22 +15,23 @@ void generate_code_for_suited_board(CString board_expression)
 		// Process cards, skip the rest (blanks, etc.)
 		switch (next_card)
 		{
-			case '2': user_defined_rankbits |= 0x0004;
-			case '3': user_defined_rankbits |= 0x0008;
-			case '4': user_defined_rankbits |= 0x0010;
-			case '5': user_defined_rankbits |= 0x0020;
-			case '6': user_defined_rankbits |= 0x0040;
-			case '7': user_defined_rankbits |= 0x0080;
-			case '8': user_defined_rankbits |= 0x0100;
-			case '9': user_defined_rankbits |= 0x0200;
-			case 't': user_defined_rankbits |= 0x0400;
-			case 'j': user_defined_rankbits |= 0x0800;
-			case 'q': user_defined_rankbits |= 0x1000;
-			case 'k': user_defined_rankbits |= 0x2000;
+			case '2': user_defined_rankbits |= 0x0004; break;
+			case '3': user_defined_rankbits |= 0x0008; break;
+			case '4': user_defined_rankbits |= 0x0010; break;
+			case '5': user_defined_rankbits |= 0x0020; break;
+			case '6': user_defined_rankbits |= 0x0040; break;
+			case '7': user_defined_rankbits |= 0x0080; break;
+			case '8': user_defined_rankbits |= 0x0100; break;
+			case '9': user_defined_rankbits |= 0x0200; break;
+			case 't': user_defined_rankbits |= 0x0400; break;
+			case 'j': user_defined_rankbits |= 0x0800; break;
+			case 'q': user_defined_rankbits |= 0x1000; break;
+			case 'k': user_defined_rankbits |= 0x2000; break;
 			case 'a':
 				{
 					// Ace is both high and low.
 					user_defined_rankbits |= 0x4002;
+					break;
 				}
 			case 's': 
 				{
@@ -42,8 +44,13 @@ void generate_code_for_suited_board(CString board_expression)
 		}
 	}
 End_Of_Loop:
-	cout << "(rankbitss & " << user_defined_rankbits << " == " 
-		<< user_defined_rankbits << ")";
+	cout << "(rankbitss & " 
+		 // hexadecimal output to cout or a stream according to
+		 // http://www.math.uni-bayreuth.de/~rbaier/lectures/c++_intro/html/node51.html
+		 << hex << showbase << user_defined_rankbits
+		 << " == " 
+		 << hex << showbase << user_defined_rankbits
+		 << ")";
 }
 
 // Prime-coded board ranks
@@ -86,6 +93,3 @@ void generate_code_for_non_suited_board(CString board_expression)
 	}
 	cout << ") == 0)";
 }
-
-
-
