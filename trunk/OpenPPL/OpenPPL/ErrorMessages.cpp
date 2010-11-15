@@ -103,7 +103,7 @@ void TerminateProcessing()
 	using namespace std;
 	cout << endl << endl << "Error: Processing stopped due to syntax errors." << endl;
 	cout << "Output incomplete and unusable." << endl << endl;
-	exit(-1);
+	//!!!exit(-1);
 }
 
 void ErrorMessage(int error_code, CString invalid_code_snippet)
