@@ -34,7 +34,6 @@ CSymbols			*p_symbols = NULL;
 double CSymbols::_dealerchair_last = -1;
 double CSymbols::_handnumber_last = -1;
 int CSymbols::_br_last = -1;
-int	CSymbols::_bblindbits_last = -1;
 
 unsigned int CSymbols::_player_card_last[2] = {CARD_NOCARD, CARD_NOCARD};
 
@@ -1083,7 +1082,6 @@ void CSymbols::CalcSymbols(void)
 		_player_card_last[1] = player_card_cur[1];
 		_handnumber_last = _sym.handnumber;
 		_br_last = -1;	// ensure betround reset
-		_bblindbits_last = _sym.bblindbits;
 
 		// Update game_state so it knows that a new hand has happened
 		p_game_state->set_new_hand(true);
@@ -1847,84 +1845,6 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 	set_sym_nfriendsdealt(bitcount(_sym.friendsdealtbits));								// nfriendsdealt
 	set_sym_nfriendsplaying(bitcount(_sym.friendsplayingbits));							// nfriendsplaying
 
-	// Blind Bits
-	// Will only set these if we are playing
-	// otherwise results make no sense ...
-	if (_sym.br == 1 && !DidAct() && _user_chair_confirmed && ((int)_sym.playersplayingbits & k_exponents[(int)_sym.userchair]))
-	{
-		// Heads-Up
-		if (_sym.nplayersdealt == 2 && ((int)_sym.playersplayingbits & (1<<(int)_sym.dealerchair)))
-		{	
-			sbchair = _sym.dealerchair;
-			set_sym_bblindbits((int)_sym.playersplayingbits ^ k_exponents[sbchair]);						// bblindbits
-			set_sym_playersblindbits((int)_sym.playersplayingbits);											// playersblindbits
-			set_sym_opponentsblindbits((int)_sym.playersplayingbits ^ k_exponents[(int)_sym.userchair]);	// playersblindbits
-		}
-
-		else
-		{
-			// Is Hero SB or BB ?
-			my_bet = p_scraper->player_bet(_sym.userchair);
-
-			if (my_bet <= p_tablelimits->bblind() && my_bet > p_tablelimits->sblind())
-			{
-				bbchair = _sym.userchair;
-				set_sym_bblindbits(k_exponents[bbchair]);
-				set_sym_playersblindbits(k_exponents[(int)_sym.userchair]);
-			}
-
-			else if(my_bet <= p_tablelimits->sblind() && my_bet > 0)
-			{
-				sbchair = _sym.userchair;
-				set_sym_playersblindbits(k_exponents[(int)_sym.userchair]);
-			}
-
-			for (int i=_sym.dealerchair+1; i<_sym.dealerchair+p_tablemap->nchairs(); i++)
-			{
-				p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
-
-				// search SB
-				if (sbchair == -1 && p_bet <= p_tablelimits->sblind() && p_bet > 0 && i%p_tablemap->nchairs() != _sym.userchair) 
-				{
-					sbchair = i%p_tablemap->nchairs();
-					set_sym_playersblindbits((int)_sym.playersblindbits | k_exponents[sbchair]);			// playersblindbits
-					set_sym_opponentsblindbits((int)_sym.opponentsblindbits | k_exponents[sbchair]);		// opponentsblindbits
-				}
-				// search BB
-				if (bbchair == -1 && p_bet <= p_tablelimits->bblind() && p_bet > p_tablelimits->sblind() && 
-					i%p_tablemap->nchairs() != _sym.userchair && i%p_tablemap->nchairs() != sbchair)
-				{
-					bbchair = i%p_tablemap->nchairs();	
-					set_sym_bblindbits(k_exponents[bbchair]);												// big blind bit
-					set_sym_playersblindbits((int)_sym.playersblindbits | k_exponents[bbchair]);			// playersblindbits
-					set_sym_opponentsblindbits((int)_sym.opponentsblindbits | k_exponents[bbchair]);		// opponentsblindbits
-				}
-			}
-
-			// SB not found correction.
-			// Will only apply if we are the bb + missed action(s). most common case. 
-			// Restrictions : 3 or less players were dealt or last bb is active
-			if (sbchair == -1 && bbchair == _sym.userchair && (_sym.nplayersdealt < 3 || (int)_sym.playersplayingbits & _bblindbits_last))
-			{
-				for (int i=_sym.dealerchair+1; i<_sym.dealerchair+p_tablemap->nchairs(); i++)
-				{
-					p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
-
-					// 1st caller/raiser after dealer is sb
-					if (p_bet >= p_tablelimits->bblind() && sbchair == -1 && i%p_tablemap->nchairs() != _sym.userchair)
-					{
-						sbchair = i%p_tablemap->nchairs();
-						set_sym_playersblindbits((int)_sym.playersblindbits | k_exponents[sbchair]);
-						set_sym_opponentsblindbits((int)_sym.opponentsblindbits | k_exponents[sbchair]);	// opponentsblindbits
-					}
-				}
-			}
-		}
-
-		set_sym_nplayersblind(bitcount(_sym.playersblindbits));												// nplayersblind
- 		set_sym_nopponentsblind(bitcount(_sym.opponentsblindbits));											// nopponentsblind
-	}
-
 	found_userchair = false;
 	for (int i=_sym.dealerchair+1; i<=_sym.dealerchair+p_tablemap->nchairs() && _user_chair_confirmed; i++)
 	{
@@ -1973,6 +1893,83 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 			set_sym_nplayerscallshort(_sym.nplayerscallshort + 1);						// nplayerscallshort
 		}
 	}
+
+// Blind Bits
+	// Will only set these if we are playing
+	// otherwise results make no sense ...
+	if (_sym.br == 1 && !DidAct() && _user_chair_confirmed && ((int)_sym.playersplayingbits & k_exponents[(int)_sym.userchair]))
+	{
+		// Heads-Up
+		if (_sym.nplayersdealt == 2 && ((int)_sym.playersplayingbits & (1<<(int)_sym.dealerchair)))
+		{	
+			sbchair = _sym.dealerchair;
+			set_sym_bblindbits((int)_sym.playersplayingbits ^ k_exponents[sbchair]);						// bblindbits
+			set_sym_playersblindbits((int)_sym.playersplayingbits);											// playersblindbits
+			set_sym_opponentsblindbits((int)_sym.playersplayingbits ^ k_exponents[(int)_sym.userchair]);	// playersblindbits
+		}
+
+		else
+		{
+			// Is Hero SB or BB ?
+			my_bet = p_scraper->player_bet(_sym.userchair);
+
+			if(my_bet <= p_tablelimits->sblind() && my_bet > 0)
+			{
+				sbchair = _sym.userchair;
+				set_sym_playersblindbits(k_exponents[(int)_sym.userchair]);
+			}
+
+			if (my_bet <= p_tablelimits->bblind() && my_bet > p_tablelimits->sblind())
+			{
+				bbchair = _sym.userchair;
+				set_sym_bblindbits(k_exponents[bbchair]);
+				set_sym_playersblindbits(k_exponents[(int)_sym.userchair]);
+			}
+
+			for (int i=_sym.dealerchair+1; i<_sym.dealerchair+p_tablemap->nchairs(); i++)
+			{
+				p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
+
+				// search SB
+				if (sbchair == -1 && p_bet <= p_tablelimits->sblind() && p_bet > 0) 
+				{
+					sbchair = i%p_tablemap->nchairs();
+					set_sym_playersblindbits((int)_sym.playersblindbits | k_exponents[sbchair]);			// playersblindbits
+					set_sym_opponentsblindbits((int)_sym.opponentsblindbits | k_exponents[sbchair]);		// opponentsblindbits
+				}
+				// search BB
+				if (bbchair == -1 && p_bet <= p_tablelimits->bblind() && p_bet > p_tablelimits->sblind() && i%p_tablemap->nchairs() != sbchair)
+				{
+					bbchair = i%p_tablemap->nchairs();	
+					set_sym_bblindbits(k_exponents[bbchair]);												// big blind bit
+					set_sym_playersblindbits((int)_sym.playersblindbits | k_exponents[bbchair]);			// playersblindbits
+					set_sym_opponentsblindbits((int)_sym.opponentsblindbits | k_exponents[bbchair]);		// opponentsblindbits
+				}
+			}
+
+			// SB not found correction.
+			// Will only apply if we are the bb + missed action(s). most common case. 
+			// Restrictions : 3 or less players were dealt or last bb is active
+			if (sbchair == -1 && (_sym.nplayersdealt < 3 || (bbchair == _sym.userchair && _sym.nchairsdealtright == 1)))
+			{
+				for (int i=_sym.dealerchair+1; i<_sym.dealerchair+p_tablemap->nchairs(); i++)
+				{
+					p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
+
+					// 1st caller/raiser after dealer is sb
+					if (p_bet >= p_tablelimits->bblind() && sbchair == -1 && i%p_tablemap->nchairs() != bbchair)
+					{
+						sbchair = i%p_tablemap->nchairs();
+						set_sym_playersblindbits((int)_sym.playersblindbits | k_exponents[sbchair]);
+						set_sym_opponentsblindbits((int)_sym.opponentsblindbits | k_exponents[sbchair]);	// opponentsblindbits
+					}
+				}
+			}
+		}
+		set_sym_nopponentsblind(bitcount(_sym.opponentsblindbits));	
+		sbchair != _sym.userchair ? set_sym_nplayersblind(bitcount(_sym.playersblindbits)) : set_sym_nplayersblind(2);											// nopponentsblind
+	}
+
 	// foldbits (very late, as they depend on the dealt symbols)
 	int new_foldbits = 0;
 	for (int i=0; i<p_tablemap->nchairs(); i++)
