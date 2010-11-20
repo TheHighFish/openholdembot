@@ -39,6 +39,9 @@
 //
 //***********************************************************
 
+##f$Bets##
+(nopponentsbetting > 0) ? 1 : 0
+
 ##f$BotCalledBeforeFlop##
 didcallround1
 
@@ -298,10 +301,10 @@ f$TopFlopCard == $$cr3 ? 1 : 0
 ##f$Have2ndBestKicker##
 (mh_kickerbetter == 1)
 
-##Have2ndBestOverpair##
+##f$Have2ndBestOverpair##
 ($KK && $$cr0 < 13 && $$cr1 < 13 && $$cr2 < 13 && $$cr3 < 13 && $cr4 < 13 )
 
-##Have2ndBestOverpairOrBetter##
+##f$Have2ndBestOverpairOrBetter##
 (Have2ndBestOverpair || HaveBestOverpairOrBetter)
 
 ##f$Have2ndNutFlush##
@@ -380,10 +383,10 @@ f$HaveStraight
 //
 //***********************************************************
 
-##Opponents##
+##f$Opponents##
 nopponentsplaying
 
-##OpponentsAtTable##
+##f$OpponentsAtTable##
 nopponentsdealt
 
 ##f$OpponentIsAllin
