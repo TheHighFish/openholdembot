@@ -12,7 +12,7 @@ static const char *k_code_snippet_license =
 	"//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html          \n"
 	"//                                                                        \n" 
 	"// The original PPL (Poker Programming Language) got invented by          \n"
-	"//   Shanky Bonusbost:      http://www.bonusbots.com/supportforum/YaBB.pl \n"
+	"//   Shanky Bonusbots:      http://www.bonusbots.com/supportforum/YaBB.pl \n"
 	"//                                                                        \n"
 	"//************************************************************************\n"
 	"\n"

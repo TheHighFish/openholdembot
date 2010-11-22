@@ -150,13 +150,6 @@
 			<File
 				RelativePath=".\Board.cpp"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\CSymbolTable.cpp"
@@ -165,6 +158,18 @@
 			<File
 				RelativePath=".\ErrorMessages.cpp"
 				>
+			</File>
+			<File
+				RelativePath=".\ListOfSyntaxElements_Inc.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\main.001.cpp"
@@ -220,6 +225,18 @@
 			</File>
 			<File
 				RelativePath=".\position.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\SemanticActions_Inc.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
