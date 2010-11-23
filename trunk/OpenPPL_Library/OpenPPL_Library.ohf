@@ -64,6 +64,10 @@ didcallround1
 ##f$OpenPPL_BotsActionsOnThisRound##
 (didcall + didrais + didswag)
 
+##f$OpenPPL_BotsActionsOnThisRoundIncludingChecks##
+// Folds and allins are not relevant, as then the hand is over for us.
+(didchec || didcall || didswag || didrais)
+
 ##BotsActionsPreflop##
 (didcallround1 + didraisround1 + didswaground1)
 
@@ -78,6 +82,12 @@ didcallround3
 
 ##f$OpenPPL_NoBettingOnTurn##
 (nbetsround3 == 0)
+
+##RaisesSinceLastPlay##
+// nopponentsraising calls the raising opponents for one circuit
+(f$OpenPPL_BotsActionsOnThisRoundIncludingChecks > 0) ? nopponentsraising :
+// Otherwise: our first action: undefined
+-1
 
 //***********************************************************
 //
@@ -322,6 +332,12 @@ f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 1)
 
 ##f$OpenPPL_Have3rdNutFlushDraw##
 f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 2)
+
+##f$OpenPPL_Have3rdBestOverpair##
+$QQ && $$cr0 < 12 && $$cr1 < 12 && $$cr2 < 12 && $$cr3 < 12 && $cr4 < 12
+
+##f$OpenPPL_Have3rdBestOverpairOrBetter##
+(f$OpenPPL_Have3rdBestOverpair ||  f$OpenPPL_Have2ndBestOverpairOrbetter)
 
 ##f$OpenPPL_Have4thNutFlush##
 [f$OpenPPL_HaveFlush && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 3)]
