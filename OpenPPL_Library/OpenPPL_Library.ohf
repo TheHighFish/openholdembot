@@ -9,7 +9,7 @@
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
 // The original PPL (Poker Programming Language) got invented by
-//   Shanky Bonusbost:      http://www.bonusbots.com/supportforum/YaBB.pl
+//   Shanky Bonusbots:      http://www.bonusbots.com/supportforum/YaBB.pl
 //
 // Contributors:
 //   Bob3456
@@ -19,6 +19,7 @@
 //   Efu
 //   F1x3r
 //   Fn101
+//   JConner
 //   KaeKruse
 //   Kyo
 //   Nik0
@@ -39,43 +40,43 @@
 //
 //***********************************************************
 
-##f$Bets##
+##f$OpenPPL_Bets##
 (nopponentsbetting > 0) ? 1 : 0
 
-##f$BotCalledBeforeFlop##
+##f$OpenPPL_BotCalledBeforeFlop##
 didcallround1
 
-##f$BotIsLastRaiser##
+##f$OpenPPL_BotIsLastRaiser##
 (ac_aggressor==userchair)
 
-##f$BotRaisedBeforeFlop##
+##f$OpenPPL_BotRaisedBeforeFlop##
 (didraisround1 || didswaground1)
 
-##f$BotRaisedOnFlop##
+##f$OpenPPL_BotRaisedOnFlop##
 (didraisround2 || didswaground2)
 
-##f$BotRaisedOnTurn##
+##f$OpenPPL_BotRaisedOnTurn##
 (didraisround3 || didswaground3)
 
-##f$BotsActionsOnFlop##
+##f$OpenPPL_BotsActionsOnFlop##
 (didcallround2 + didraisround2 + didswaground2)
 
-##f$BotsActionsOnThisRound##
+##f$OpenPPL_BotsActionsOnThisRound##
 (didcall + didrais + didswag)
 
 ##BotsActionsPreflop##
 (didcallround1 + didraisround1 + didswaground1)
 
-##f$CalledOnFlop##
+##f$OpenPPL_CalledOnFlop##
 didcallround2
 
-##f$CalledOnTurn##
+##f$OpenPPL_CalledOnTurn##
 didcallround3
 
-##f$NoBettingOnFlop##
+##f$OpenPPL_NoBettingOnFlop##
 (nbetsround2 == 0)
 
-##f$NoBettingOnTurn##
+##f$OpenPPL_NoBettingOnTurn##
 (nbetsround3 == 0)
 
 //***********************************************************
@@ -84,19 +85,19 @@ didcallround3
 //
 //***********************************************************
 
-##f$AmountToCall##
+##f$OpenPPL_AmountToCall##
 (bblind > 0) ? (call / bblind) : 0
 
-##f$BigBlindSize##
+##f$OpenPPL_BigBlindSize##
 bet1
 
-##f$PotSize##
+##f$OpenPPL_PotSize##
 (bblind > 0) ? (pot / bblind) : 0
 
-##f$StackSize##
+##f$OpenPPL_StackSize##
 (bblind > 0) ? (balance / bblind) : 0
 
-##f$TotalInvested##
+##f$OpenPPL_TotalInvested##
 br==1 && nbetsround>0 ? ncurrentbets * bblind :
 br==2 && nbetsround1>0 ? ((nbetsround1 + ncurrentbets) * bblind) :
 br==3 && nbetsround1>0 ? ((nbetsround1 + nbetsround2 + ncurrentbets) * bblind) :
@@ -109,65 +110,65 @@ br==4 && nbetsround1>0 ? ((nbetsround1 + nbetsround2 +n betsround3 + ncurrentbet
 //
 //***********************************************************
 
-##f$AcePresentOnFlop##
+##f$OpenPPL_AcePresentOnFlop##
 ($$cr0 == 14) || ($$cr1 == 14) || ($$cr2 == 14)
 
-##f$FlushPossible##
+##f$OpenPPL_FlushPossible##
 (nsuitedcommon >= 3)
 
-##f$FlushOnBoard##
+##f$OpenPPL_FlushOnBoard##
 ($$cs0==$$cs1 && $$cs0==$$cs2 && $$cs0==$$cs3 && $$cs0==$$cs4)
 
-##f$FlushPossibleOnFlop##
+##f$OpenPPL_FlushPossibleOnFlop##
 ($$cs0==$$cs1 && $$cs0==$$cs2)
 
-##f$FlushPossibleOnTurn##
+##f$OpenPPL_FlushPossibleOnTurn##
 [  ($$cs0==$$cs1 && $$cs0==$$cs2)
 || ($$cs0==$$cs1 && $$cs0==$$cs3)
 || ($$cs0==$$cs2 && $$cs0==$$cs3)
 || ($$cs1==$$cs2 && $$cs1==$$cs3) ]
 
-##f$FourCardsToWheelOnBoard##
+##f$OpenPPL_FourCardsToWheelOnBoard##
 `(rankbitscommon&0b0000000000111110) >= 4
 
-##f$FourOf1SuiteOnTurn##
+##f$OpenPPL_FourOf1SuiteOnTurn##
 ($$cs0==$$cs1 && $$cs2==$$cs3 && $$cs0==$$cs3)
 
-##f$FullHouseOnBoard##
+##f$OpenPPL_FullHouseOnBoard##
 (pokervalcommon & fullhouse)
 
-##f$OneCardFlushPossible##
+##f$OpenPPL_OneCardFlushPossible##
 (nsuitedcommon >=4)
 
-##f$OneCardStraightPossible##
+##f$OpenPPL_OneCardStraightPossible##
 (nstraightfillcommon <= 1)
 
-##f$OvercardsOnBoard##
+##f$OpenPPL_OvercardsOnBoard##
 (($$cr0 > rankhiplayer) ? 1 : 0) +
 (($$cr1 > rankhiplayer) ? 1 : 0) +
 (($$cr2 > rankhiplayer) ? 1 : 0) +
 (($$cr3 > rankhiplayer) ? 1 : 0) +
 (($$cr4 > rankhiplayer) ? 1 : 0)
 
-##f$PairOnBoard##
+##f$OpenPPL_PairOnBoard##
 (nrankedcommon >= 2)
 
-##f$PairOnFlop##
+##f$OpenPPL_PairOnFlop##
 ($$cr0==$$cr1 || $$cr1==$$cr2 || $$cr0==$$cr2)
 
-##f$QuadsOnBoard##
+##f$OpenPPL_QuadsOnBoard##
 (nrankedcommon == 4)
 
-##f$QueenPresentOnFlop##
+##f$OpenPPL_QueenPresentOnFlop##
 ($$cr0==12 ||$$cr1==12 ||$$cr2==12)
 
-##f$RiverCardisOvercardToBoard##
+##f$OpenPPL_RiverCardisOvercardToBoard##
 [  $$cr4 > $$cr0
 && $$cr4 > $$cr1
 && $$cr4 > $$cr2
 && $$cr4 > $$cr3 ]
 
-##f$SecondTopFlopCard##
+##f$OpenPPL_SecondTopFlopCard##
 $$cr0 >= $$cr1 && $$cr0 >= $$cr2 && $$cr1 >= $$cr2 ? $$cr1 :
 $$cr0 >= $$cr1 && $$cr0 >= $$cr2 && $$cr1 <= $$cr2 ? $$cr2 :
 $$cr1 >= $$cr0 && $$cr1 >= $$cr2 && $$cr0 >= $$cr2 ? $$cr0 :
@@ -175,25 +176,25 @@ $$cr1 >= $$cr0 && $$cr1 >= $$cr2 && $$cr0 <= $$cr2 ? $$cr2 :
 $$cr2 >= $$cr0 && $$cr2 >= $$cr1 && $$cr0 >= $$cr1 ? $$cr0 :
 $$cr2 >= $$cr0 && $$cr2 >= $$cr1 && $$cr0 <= $$cr1 ? $$cr1 : -1
 
-##f$SecondTopFlopCardPairedonRiver##
-f$SecondTopFlopCard == $$cr4 ? 1 : 0
+##f$OpenPPL_SecondTopFlopCardPairedonRiver##
+f$OpenPPL_SecondTopFlopCard == $$cr4 ? 1 : 0
 
-##f$SecondTopFlopCardPairedonTurn##
-f$SecondTopFlopCard == $$cr3 ? 1 : 0
+##f$OpenPPL_SecondTopFlopCardPairedonTurn##
+f$OpenPPL_SecondTopFlopCard == $$cr3 ? 1 : 0
 
-##f$SuitsOnBoard##
+##f$OpenPPL_SuitsOnBoard##
 ($$cs0==$$cs1 && $$cs1==$$cs2 ? 1 :
 ($$cs0==$$cs1 && $$cs1!=$$cs2) || ($$cs0==$$cs2 && $$cs0!=$$cs1) || ($$cs0!=$$cs1 && $$cs1==$$cs2) ? 2 :
 $$cs0!=$$cs1 && $$cs1!=$$cs2 && $$cs0!=$$cs2 ? 3 : 0) +
 ((($$cs3!=$$cs0) && ($$cs3!=$$cs1) && ($$cs3!=$$cs2)) ? 1 : 0) +
 ((($$cs4!=$$cs0) && ($$cs4!=$$cs1) && ($$cs4!=$$cs2) && ($$cs4!=$$cs3)) ? 1 : 0)
 
-##f$SuitsOnFlop##
+##f$OpenPPL_SuitsOnFlop##
 ($$cs0==$$cs1 && $$cs1==$$cs2) ? 1 :
 (($$cs0==$$cs1 && $$cs1!=$$cs2) || ($$cs0==$$cs2 && $$cs0!=$$cs1) || ($$cs0!=$$cs1 && $$cs1==$$cs2)) ? 2 :
 ($$cs0!=$$cs1 && $$cs1!=$$cs2 && $$cs0!=$$cs2) ? 3 : 0
 
-##f$StraightFlushPossible##
+##f$OpenPPL_StraightFlushPossible##
 `((srankbitscommon>>10)&0x1f) >= 3 ? 1 :
 `((srankbitscommon>>9)&0x1f) >= 3 ? 1 :
 `((srankbitscommon>>8)&0x1f) >= 3 ? 1 :
@@ -205,82 +206,82 @@ $$cs0!=$$cs1 && $$cs1!=$$cs2 && $$cs0!=$$cs2 ? 3 : 0) +
 `((srankbitscommon>>2)&0x1f) >= 3 ? 1 :
 `((srankbitscommon>>1)&0x1f) >= 3 ? 1 : 0
 
-##f$StraightOnBoard##
+##f$OpenPPL_StraightOnBoard##
 (nstraightcommon >= 5)
 
-##f$StraightPossible##
+##f$OpenPPL_StraightPossible##
 (nstraightfillcommon <= 2)
 
-##f$RankBitsCommOnFlop##
+##f$OpenPPL_RankBitsCommOnFlop##
   ($$cr0 != 14 ? 2**$$cr0 : (0x4002))
 | ($$cr1 != 14 ? 2**$$cr1 : (0x4002))
 | ($$cr2 != 14 ? 2**$$cr2 : (0x4002))
 
-##f$RankBitsCommOnTurn##
+##f$OpenPPL_RankBitsCommOnTurn##
   ($$cr0 != 14 ? 2**$$cr0 : (0x4002))
 | ($$cr1 != 14 ? 2**$$cr1 : (0x4002))
 | ($$cr2 != 14 ? 2**$$cr2 : (0x4002))
 | ($$cr3 != 14 ? 2**$$cr3 : (0x4002))
 
-##f$StraightPossibleOnFlop##
-`((f$RankBitsCommOnFlop>>10)&0x1f) >= 3 ? 1 :
-`((f$RankBitsCommOnFlop>>9)&0x1f) >= 3 ? 1 :
-`((f$RankBitsCommOnFlop>>8)&0x1f) >= 3 ? 1 :
-`((f$RankBitsCommOnFlop>>7)&0x1f) >= 3 ? 1 :
-`((f$RankBitsCommOnFlop>>6)&0x1f) >= 3 ? 1 :
-`((f$RankBitsCommOnFlop>>5)&0x1f) >= 3 ? 1 :
-`((f$RankBitsCommOnFlop>>4)&0x1f) >= 3 ? 1 :
-`((f$RankBitsCommOnFlop>>3)&0x1f) >= 3 ? 1 :
-`((f$RankBitsCommOnFlop>>2)&0x1f) >= 3 ? 1 :
-`((f$RankBitsCommOnFlop>>1)&0x1f) >= 3 ? 1 : 0
+##f$OpenPPL_StraightPossibleOnFlop##
+`((f$OpenPPL_RankBitsCommOnFlop>>10)&0x1f) >= 3 ? 1 :
+`((f$OpenPPL_RankBitsCommOnFlop>>9)&0x1f) >= 3 ? 1 :
+`((f$OpenPPL_RankBitsCommOnFlop>>8)&0x1f) >= 3 ? 1 :
+`((f$OpenPPL_RankBitsCommOnFlop>>7)&0x1f) >= 3 ? 1 :
+`((f$OpenPPL_RankBitsCommOnFlop>>6)&0x1f) >= 3 ? 1 :
+`((f$OpenPPL_RankBitsCommOnFlop>>5)&0x1f) >= 3 ? 1 :
+`((f$OpenPPL_RankBitsCommOnFlop>>4)&0x1f) >= 3 ? 1 :
+`((f$OpenPPL_RankBitsCommOnFlop>>3)&0x1f) >= 3 ? 1 :
+`((f$OpenPPL_RankBitsCommOnFlop>>2)&0x1f) >= 3 ? 1 :
+`((f$OpenPPL_RankBitsCommOnFlop>>1)&0x1f) >= 3 ? 1 : 0
 
-##f$StraightPossibleOnTurn##
-`((f$RankBitsCommOnTurn>>10)&0x1f) >= 3 ? 1 :
-`((f$RankBitsCommOnTurn>>9)&0x1f) >= 3 ? 1 :
-`((f$RankBitsCommOnTurn>>8)&0x1f) >= 3 ? 1 :
-`((f$RankBitsCommOnTurn>>7)&0x1f) >= 3 ? 1 :
-`((f$RankBitsCommOnTurn>>6)&0x1f) >= 3 ? 1 :
-`((f$RankBitsCommOnTurn>>5)&0x1f) >= 3 ? 1 :
-`((f$RankBitsCommOnTurn>>4)&0x1f) >= 3 ? 1 :
-`((f$RankBitsCommOnTurn>>3)&0x1f) >= 3 ? 1 :
-`((f$RankBitsCommOnTurn>>2)&0x1f) >= 3 ? 1 :
-`((f$RankBitsCommOnTurn>>1)&0x1f) >= 3 ? 1 : 0
+##f$OpenPPL_StraightPossibleOnTurn##
+`((f$OpenPPL_RankBitsCommOnTurn>>10)&0x1f) >= 3 ? 1 :
+`((f$OpenPPL_RankBitsCommOnTurn>>9)&0x1f) >= 3 ? 1 :
+`((f$OpenPPL_RankBitsCommOnTurn>>8)&0x1f) >= 3 ? 1 :
+`((f$OpenPPL_RankBitsCommOnTurn>>7)&0x1f) >= 3 ? 1 :
+`((f$OpenPPL_RankBitsCommOnTurn>>6)&0x1f) >= 3 ? 1 :
+`((f$OpenPPL_RankBitsCommOnTurn>>5)&0x1f) >= 3 ? 1 :
+`((f$OpenPPL_RankBitsCommOnTurn>>4)&0x1f) >= 3 ? 1 :
+`((f$OpenPPL_RankBitsCommOnTurn>>3)&0x1f) >= 3 ? 1 :
+`((f$OpenPPL_RankBitsCommOnTurn>>2)&0x1f) >= 3 ? 1 :
+`((f$OpenPPL_RankBitsCommOnTurn>>1)&0x1f) >= 3 ? 1 : 0
 
-##f$ThreeCardStraightOnBoard##
+##f$OpenPPL_ThreeCardStraightOnBoard##
 nstraightcommon >= 3
 
-##f$TopFlopCard##
+##f$OpenPPL_TopFlopCard##
 $$cr0 >= $$cr1 && $$cr0 >= $$cr2 ? $$cr0 :
 $$cr1 >= $$cr0 && $$cr1 >= $$cr2 ? $$cr1 :
 $$cr2 >= $$cr0 && $$cr2 >= $$cr1 ? $$cr2 : -1
 
-##f$TopFlopCardPairedonRiver##
-f$TopFlopCard == $$cr4 ? 1 : 0
+##f$OpenPPL_TopFlopCardPairedonRiver##
+f$OpenPPL_TopFlopCard == $$cr4 ? 1 : 0
 
-##f$TopFlopCardPairedonTurn##
-f$TopFlopCard == $$cr3 ? 1 : 0
+##f$OpenPPL_TopFlopCardPairedonTurn##
+f$OpenPPL_TopFlopCard == $$cr3 ? 1 : 0
 
-##f$TripsOnBoard##
+##f$OpenPPL_TripsOnBoard##
 (nrankedcommon >= 3)
 
-##f$TripsOnBoardOnTurn##
+##f$OpenPPL_TripsOnBoardOnTurn##
 ($$cr0 == $$cr1 && $$cr1 == $$cr2) ? 1 :
 ($$cr0 == $$cr1 && $$cr1 == $$cr3) ? 1 :
 ($$cr0 == $$cr2 && $$cr2 == $$cr3) ? 1 :
 ($$cr1 == $$cr2 && $$cr2 == $$cr3) ? 1 : 0
 
-##f$TurnCardisOvercardToBoard##
+##f$OpenPPL_TurnCardisOvercardToBoard##
 [  $$cr3 > $$cr0
 && $$cr3 > $$cr1
 && $$cr3 > $$cr2 ]
 
-##f$TurnCardPaired##
+##f$OpenPPL_TurnCardPaired##
 ($$cr3 == $$cr4)
 
-##f$TwoPairOnBoard##
+##f$OpenPPL_TwoPairOnBoard##
 (pokervalcommon & istwopair) || (pokervalcommon & isfullhouse)
 
-##f$WheelPossible##
+##f$OpenPPL_WheelPossible##
 `((rankbitscommon & 0b111110) >= 3) ? 1 : 0
 
 //***********************************************************
@@ -289,80 +290,84 @@ f$TopFlopCard == $$cr3 ? 1 : 0
 //
 //***********************************************************
 
-##f$HadOverPairOnFlop##
+##f$OpenPPL_HadOverPairOnFlop##
 [  ispair
 && $$pr0 > $$cr0
 && $$pr0 > $$cr1
 && $$pr0 > $$cr2 ]
 
-##f$HadPairOnFlop##
+##f$OpenPPL_HadPairOnFlop##
 (ispair || pr0==$$cr0 || pr0==$$cr1 || pr0==$$cr2  || pr1==$$cr0 || pr1==$$cr1  || pr1==$$cr2)
 
-##f$Have2ndBestKicker##
+##f$OpenPPL_Have2ndBestKicker##
 (mh_kickerbetter == 1)
 
-##f$Have2ndBestOverpair##
+##f$OpenPPL_Have2ndBestOverpair##
 ($KK && $$cr0 < 13 && $$cr1 < 13 && $$cr2 < 13 && $$cr3 < 13 && $cr4 < 13 )
 
-##f$Have2ndBestOverpairOrBetter##
+##f$OpenPPL_Have2ndBestOverpairOrBetter##
 (Have2ndBestOverpair || HaveBestOverpairOrBetter)
 
-##f$Have2ndNutFlush##
-[f$HaveFlush && (f$NumberOfUnknownSuitedOvercards == 1)]
+##f$OpenPPL_Have2ndNutFlush##
+[f$OpenPPL_HaveFlush && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 1)]
 
-##f$Have2ndNutFlushDraw##
-f$HaveFlushDraw && (f$NumberOfUnknownSuitedOvercards == 1)
+##f$OpenPPL_Have2ndNutFlushDraw##
+f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 1)
 
-##f$Have3rdBestKicker##
+##f$OpenPPL_Have3rdBestKicker##
 (mh_kickerbetter == 2)
 
-##f$Have3rdNutFlush##
-[f$HaveFlush && (f$NumberOfUnknownSuitedOvercards == 2)]
+##f$OpenPPL_Have3rdNutFlush##
+[f$OpenPPL_HaveFlush && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 2)]
 
-##f$Have3rdNutFlushDraw##
-f$HaveFlushDraw && (f$NumberOfUnknownSuitedOvercards == 2)
+##f$OpenPPL_Have3rdNutFlushDraw##
+f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 2)
 
-##f$Have4thNutFlush##
-[f$HaveFlush && (f$NumberOfUnknownSuitedOvercards == 3)]
+##f$OpenPPL_Have4thNutFlush##
+[f$OpenPPL_HaveFlush && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 3)]
 
-##f$Have4thNutFlushDraw##
-f$HaveFlushDraw && (f$NumberOfUnknownSuitedOvercards == 3)
+##f$OpenPPL_Have4thNutFlushDraw##
+f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 3)
 
-##f$Have5thNutFlush##
-[f$HaveFlush && (f$NumberOfUnknownSuitedOvercards == 4)]
+##f$OpenPPL_Have5thNutFlush##
+[f$OpenPPL_HaveFlush && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 4)]
 
-##f$Have5thNutFlushDraw##
-f$HaveFlushDraw && (f$NumberOfUnknownSuitedOvercards == 4)
+##f$OpenPPL_Have5thNutFlushDraw##
+f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 4)
 
-##f$HaveBestKicker##
+##f$OpenPPL_HaveBackdoorNutFlushDraw##
+f$OpenPPL_HaveNutflush || f$OpenPPL_HavenutFlushDraw
+|| (f$OpenPPL_BackoorFlushDraw && f$OpenPPL_NumberOfUnknownSuitedOvercards == 0)
+
+##f$OpenPPL_HaveBestKicker##
 (mh_kickerbetter == 0)
 
-##f$HaveFlushDraw##
+##f$OpenPPL_HaveFlushDraw##
 (nsuited >= 4)
 
-##f$HaveNutFlush##
-[f$HaveFlush && (f$NumberOfUnknownSuitedOvercards == 0)]
+##f$OpenPPL_HaveNutFlush##
+[f$OpenPPL_HaveFlush && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 0)]
 
-##f$HaveNutFlushCard##
-(f$NumberOfUnknownSuitedOvercards == 0)
+##f$OpenPPL_HaveNutFlushCard##
+(f$OpenPPL_NumberOfUnknownSuitedOvercards == 0)
 
-##f$HaveNutFlushDraw##
-f$HaveFlushDraw && (f$NumberOfUnknownSuitedOvercards == 0)
+##f$OpenPPL_HaveNutFlushDraw##
+f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 0)
 
-##f$HaveNutStraightFlush##
+##f$OpenPPL_HaveNutStraightFlush##
 isstraightflush && (nhandshi == 0)
 
-##f$HaveSet##
+##f$OpenPPL_HaveSet##
 [  ispair
 && (($$pr0==$$cr0) || ($$pr0==$$cr1) || ($$pr0==$$cr2) || ($$pr0==$$cr3) || ($$pr0==$$cr4)) ]
 
-##f$HaveUnderStraight##
-f$HaveStraight
+##f$OpenPPL_HaveUnderStraight##
+f$OpenPPL_HaveStraight
 && (pcbits == 0b00011 || pcbits == 0b00001)
 
-##f$NumberOfUnknownSuitedOvercards##
+##f$OpenPPL_NumberOfUnknownSuitedOvercards##
 // Unknown suited cards are cards, which are not on board and not in heroes hand.
-`((~srankbits & 0x7fff) >> srankhiplayer)
+`((~srankbits & 0x7fff) >> srankhi)
 
 //***********************************************************
 //
@@ -370,11 +375,11 @@ f$HaveStraight
 //
 //***********************************************************
 
-##f$Others##
+##f$OpenPPL_Others##
 // Always true
 1
 
-##f$Random##
+##f$OpenPPL_Random##
 [ random*100 ]
 
 //***********************************************************
@@ -383,16 +388,16 @@ f$HaveStraight
 //
 //***********************************************************
 
-##f$Opponents##
+##f$OpenPPL_Opponents##
 nopponentsplaying
 
-##f$OpponentsAtTable##
+##f$OpenPPL_OpponentsAtTable##
 nopponentsdealt
 
-##f$OpponentIsAllin
-`f$Opponents_AllinBits > 0
+##f$OpenPPL_OpponentIsAllin
+`f$OpenPPL_Opponents_AllinBits > 0
 
-##f$Opponents_AllinBits##
+##f$OpenPPL_Opponents_AllinBits##
 (betround == 1) ?
 [0
 |(((opponentsplayingbits & (1<<0)) && currentbet0>0 && balance0==0) ? 1<<0 : 0)
@@ -420,13 +425,13 @@ nopponentsdealt
 |(((opponentsplayingbits & (1<<9)) && balance9==0) ? 1<<9 : 0)
 ]
 
-##f$OpponentsLeft##
+##f$OpenPPL_OpponentsLeft##
 nopponentsplaying
 
-##f$OpponentsOnFlop##
+##f$OpenPPL_OpponentsOnFlop##
 (nplayersround2 - 1)
 
-##f$OpponentsWithLowerStack##
+##f$OpenPPL_OpponentsWithLowerStack##
 ((balance0 < balance) && (playersseatedbits & 0x0001) ? 1:0)+
 ((balance1 < balance) && (playersseatedbits & 0x0002) ? 1:0)+
 ((balance2 < balance) && (playersseatedbits & 0x0004) ? 1:0)+
@@ -438,7 +443,7 @@ nopponentsplaying
 ((balance8 < balance) && (playersseatedbits & 0x0100) ? 1:0)+
 ((balance9 < balance) && (playersseatedbits & 0x0200) ? 1:0)
 
-##f$StillToAct##
+##f$OpenPPL_StillToAct##
 (dealposition > 2) ? (nchairsdealtleft + 2) :
 (dealposition == 1) ? 1 :
 0
@@ -449,7 +454,7 @@ nopponentsplaying
 //
 //***********************************************************
 
-##f$DealPositionLastRaiser##
+##f$OpenPPL_DealPositionLastRaiser##
 (ac_aggressor == 0) ? ac_dealpos0 :
 (ac_aggressor == 1) ? ac_dealpos1 :
 (ac_aggressor == 2) ? ac_dealpos2 :
@@ -462,26 +467,26 @@ nopponentsplaying
 (ac_aggressor == 9) ? ac_dealpos9 :
 -1
 
-##f$LastRaiserPosition##
+##f$OpenPPL_LastRaiserPosition##
 // Big blind = 0
-(f$DealPositionLastRaiser == 2) ? 0 :
+(f$OpenPPL_DealPositionLastRaiser == 2) ? 0 :
 // Small blind = 1
-(f$DealPositionLastRaiser == 1) ? 1 :
+(f$OpenPPL_DealPositionLastRaiser == 1) ? 1 :
 // Normal players:
 // BU = 2, CO = 3, ...
-(nplayersdealt - f$DealPositionLastRaiser + 2)
+(nplayersdealt - f$OpenPPL_DealPositionLastRaiser + 2)
 
-##f$First##
+##f$OpenPPL_First##
 0
 
-##f$Middle##
+##f$OpenPPL_Middle##
 1
 
-##f$Last##
+##f$OpenPPL_Last##
 2
 
-##f$Position##
-(betposition == 1) ? f$First :
-(betposition == nplayersplaying) ? f$Last :
-f$Middle
+##f$OpenPPL_Position##
+(betposition == 1) ? f$OpenPPL_First :
+(betposition == nplayersplaying) ? f$OpenPPL_Last :
+f$OpenPPL_Middle
 
