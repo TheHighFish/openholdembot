@@ -300,6 +300,11 @@ f$OpenPPL_TopFlopCard == $$cr3 ? 1 : 0
 //
 //***********************************************************
 
+##f$OpenPPL_HadTwoPairOnFlop##
+   ($$pr0 == $$cr0 || $$pr0 == $$cr1 || $$pr0 == $$cr2)
+&& ($$pr1 == $$cr1 || $$pr1 == $$cr1 || $$pr1 == $$cr2)
+&& !ispair
+
 ##f$OpenPPL_HadOverPairOnFlop##
 [  ispair
 && $$pr0 > $$cr0
