@@ -108,10 +108,10 @@ bet1
 (bblind > 0) ? (balance / bblind) : 0
 
 ##f$OpenPPL_TotalInvested##
-br==1 && nbetsround>0 ? ncurrentbets * bblind :
-br==2 && nbetsround1>0 ? ((nbetsround1 + ncurrentbets) * bblind) :
-br==3 && nbetsround1>0 ? ((nbetsround1 + nbetsround2 + ncurrentbets) * bblind) :
-br==4 && nbetsround1>0 ? ((nbetsround1 + nbetsround2 +n betsround3 + ncurrentbets) * bblind):
+(br==1 && nbetsround>0)  ? (ncurrentbets * bblind) :
+(br==2 && nbetsround1>0) ? ((nbetsround1 + ncurrentbets) * bblind) :
+(br==3 && nbetsround1>0) ? ((nbetsround1 + nbetsround2 + ncurrentbets) * bblind) :
+(br==4 && nbetsround1>0) ? ((nbetsround1 + nbetsround2 +n betsround3 + ncurrentbets) * bblind):
 0
 
 //***********************************************************
@@ -310,7 +310,7 @@ f$OpenPPL_TopFlopCard == $$cr3 ? 1 : 0
 && $$pr0 > $$cr2 ]
 
 ##f$OpenPPL_HadPairOnFlop##
-(ispair || pr0==$$cr0 || pr0==$$cr1 || pr0==$$cr2  || pr1==$$cr0 || pr1==$$cr1  || pr1==$$cr2)
+(ispair || $$pr0==$$cr0 || $$pr0==$$cr1 || $$pr0==$$cr2  || $$pr1==$$cr0 || $$pr1==$$cr1  || $$pr1==$$cr2)
 
 ##f$OpenPPL_HadPairOnTurn##
 f$OpenPPL_HadPairOnFlop || f$OpenPPL_FlopCardPairedonTurn || $$pr0 == $$cr3 || $$pr1 == $$cr3
@@ -327,10 +327,10 @@ f$OpenPPL_HadPairOnFlop || f$OpenPPL_FlopCardPairedonTurn || $$pr0 == $$cr3 || $
 f$OpenPPL_Have2ndBestKicker || f$OpenPPL_HaveBestKickerOrBetter
 
 ##f$OpenPPL_Have2ndBestOverpair##
-($KK && $$cr0 < 13 && $$cr1 < 13 && $$cr2 < 13 && $$cr3 < 13 && $cr4 < 13 )
+($KK && $$cr0 < 13 && $$cr1 < 13 && $$cr2 < 13 && $$cr3 < 13 && $$cr4 < 13 )
 
 ##f$OpenPPL_Have2ndBestOverpairOrBetter##
-(Have2ndBestOverpair || HaveBestOverpairOrBetter)
+(f$OpenPPL_Have2ndBestOverpair ||f$OpenPPL_HaveBestOverpairOrBetter)
 
 ##f$OpenPPL_Have2ndNutFlush##
 [f$OpenPPL_HaveFlush && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 1)]
@@ -351,7 +351,7 @@ f$OpenPPL_Have3ndBestKicker || f$OpenPPL_Have2ndBestKickerOrBetter
 f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 2)
 
 ##f$OpenPPL_Have3rdBestOverpair##
-$QQ && $$cr0 < 12 && $$cr1 < 12 && $$cr2 < 12 && $$cr3 < 12 && $cr4 < 12
+$QQ && $$cr0 < 12 && $$cr1 < 12 && $$cr2 < 12 && $$cr3 < 12 && $$cr4 < 12
 
 ##f$OpenPPL_Have3rdBestOverpairOrBetter##
 (f$OpenPPL_Have3rdBestOverpair ||  f$OpenPPL_Have2ndBestOverpairOrbetter)
@@ -370,11 +370,11 @@ f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 4)
 
 ##f$OpenPPL_HaveBackdoor2ndNutFlushDraw##
 f$OpenPPL_Have2ndNutFlush || f$OpenPPL_Have2ndNutFlushDraw
-|| (f$OpenPPL_HaveBackoorFlushDraw && f$OpenPPL_NumberOfUnknownSuitedOvercards == 1)
+|| (f$OpenPPL_HaveBackdoorFlushDraw && f$OpenPPL_NumberOfUnknownSuitedOvercards == 1)
 
 ##f$OpenPPL_HaveBackdoor3rdNutFlushDraw##
 f$OpenPPL_Have3rdNutFlush || f$OpenPPL_Have3rdNutFlushDraw
-|| (f$OpenPPL_HaveBackoorFlushDraw && f$OpenPPL_NumberOfUnknownSuitedOvercards == 2)
+|| (f$OpenPPL_HaveBackdoorFlushDraw && f$OpenPPL_NumberOfUnknownSuitedOvercards == 2)
 
 ##f$OpenPPL_HaveBackdoorNutFlushDraw##
 f$OpenPPL_HaveNutflush || f$OpenPPL_HavenutFlushDraw
@@ -384,10 +384,10 @@ f$OpenPPL_HaveNutflush || f$OpenPPL_HavenutFlushDraw
 (mh_kickerbetter == 0)
 
 ##f$OpenPPL_HaveBestKickerOrBetter##
-(f$OpenPPL_HaveBestkicker || f$OpenPPL_Havepair  || f$OpenPPL_HaveOvertPairOrBetter)
+(f$OpenPPL_HaveBestkicker || f$OpenPPL_Havepair  || f$OpenPPL_HaveOverPairOrBetter)
 
 ##f$OpenPPL_HaveBestOverPair##
-($AA && $$cr0 < 14 && $$cr1 < 14 && $$cr2 < 14 && $$cr3 < 14 && $cr4 < 14 )
+($AA && $$cr0 < 14 && $$cr1 < 14 && $$cr2 < 14 && $$cr3 < 14 && $$cr4 < 14 )
 
 ##f$OpenPPL_HaveBestOverPairOrBetter##
 (f$OpenPPL_HaveBestOverPair || f$OpenPPL_HaveTwoPair ||  f$OpenPPL_HaveSet
@@ -398,7 +398,7 @@ f$OpenPPL_HaveNutflush || f$OpenPPL_HavenutFlushDraw
 (nsuited >= 4)
 
 ##f$OpenPPL_HaveNothing##
-!f$OpenPPL_Havepair && !f$OpenPPL_Overcards=2 && !f$OpenPPL_HaveBestOverPairOrBetter
+!f$OpenPPL_Havepair && !f$OpenPPL_Overcards==2 && !f$OpenPPL_HaveBestOverPairOrBetter
 && !HaveBackDoorFlushDraw && !HaveBackDoorStraightDraw
 
 ##f$OpenPPL_HaveNutFlush##
@@ -450,7 +450,7 @@ nopponentsplaying
 ##f$OpenPPL_OpponentsAtTable##
 nopponentsdealt
 
-##f$OpenPPL_OpponentIsAllin
+##f$OpenPPL_OpponentIsAllin##
 `f$OpenPPL_Opponents_AllinBits > 0
 
 ##f$OpenPPL_Opponents_AllinBits##
