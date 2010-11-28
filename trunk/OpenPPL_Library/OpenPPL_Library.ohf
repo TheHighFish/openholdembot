@@ -83,7 +83,7 @@ didcallround3
 ##f$OpenPPL_NoBettingOnTurn##
 (nbetsround3 == 0)
 
-##RaisesSinceLastPlay##
+##f$RaisesSinceLastPlay##
 // nopponentsraising calls the raising opponents for one circuit
 (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks > 0) ? nopponentsraising :
 // Otherwise: our first action: undefined
@@ -417,6 +417,12 @@ isstraightflush && (nhandshi == 0)
 [  ispair
 && (($$pr0==$$cr0) || ($$pr0==$$cr1) || ($$pr0==$$cr2) || ($$pr0==$$cr3) || ($$pr0==$$cr4)) ]
 
+##f$OpenPPL_HaveTrips##
+!ispair
+&&   [(pokerval & threeofakind) && !(pokervalcommon & threeofakind)
+  || ((pokerval & fullhouse)    &&  (pokerval & fullhouse) && `(pcbits &0b11100) == 1)
+  ||  (pokerval & fourofakind)  && !(pokervalcommon & fourofakind)]
+
 ##f$OpenPPL_HaveUnderStraight##
 f$OpenPPL_HaveStraight
 && (pcbits == 0b00011 || pcbits == 0b00001)
@@ -545,4 +551,16 @@ nopponentsplaying
 (betposition == 1) ? f$OpenPPL_First :
 (betposition == nplayersplaying) ? f$OpenPPL_Last :
 f$OpenPPL_Middle
+
+//***********************************************************
+//
+// OpenPPL - Initialization of memory symbols
+//
+// For history symbols and other information,
+// that can't be retrieved from OH-symbols
+// and from the current gamestate only.
+//
+//***********************************************************
+
+##f$OpenPPL_InitMemorySymbols##
 
