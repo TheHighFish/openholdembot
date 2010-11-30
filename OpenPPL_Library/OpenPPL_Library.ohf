@@ -508,6 +508,36 @@ f$OpenPPL_HaveNutflush || f$OpenPPL_HavenutFlushDraw
 || f$OpenPPL_HaveTrips || f$OpenPPL_HaveStraight || f$OpenPPL_Haveflush
 || f$OpenPPL_HaveFullHouse || f$OpenPPL_HaveQuads || f$OpenPPL_HaveStraightFlush)
 
+##f$lowestBitOfRankBitsCommon##
+(1>>ranklocommon)
+
+##RankBitsCommonWithoutlowestBit##
+// we negate lowest-bit and then do an and-operation
+rankbitscommon & ~f$lowestBitOfRankBitsCommon
+
+##f$LowestBoardCard##
+ranklocommon
+
+f$2ndLowestBoardCard
+(f$RankBitsCommonWithoutlowestBit & 0b000000000000100) != 1 ?  2 :
+(f$RankBitsCommonWithoutlowestBit & 0b000000000001000) != 1 ?  3 :
+(f$RankBitsCommonWithoutlowestBit & 0b000000000010000) != 1 ?  4 :
+(f$RankBitsCommonWithoutlowestBit & 0b000000000100000) != 1 ?  5 :
+(f$RankBitsCommonWithoutlowestBit & 0b000000001000000) != 1 ?  6 :
+(f$RankBitsCommonWithoutlowestBit & 0b000000010000000) != 1 ?  7 :
+(f$RankBitsCommonWithoutlowestBit & 0b000000100000000) != 1 ?  8 :
+(f$RankBitsCommonWithoutlowestBit & 0b000001000000000) != 1 ?  9 :
+(f$RankBitsCommonWithoutlowestBit & 0b000010000000000) != 1 ? 10 :
+(f$RankBitsCommonWithoutlowestBit & 0b000100000000000) != 1 ? 11 :
+(f$RankBitsCommonWithoutlowestBit & 0b001000000000000) != 1 ? 12 :
+(f$RankBitsCommonWithoutlowestBit & 0b010000000000000) != 1 ? 13 :
+(f$RankBitsCommonWithoutlowestBit & 0b100000000000000) != 1 ? 14 :
+-1
+
+##OpenPPL_ HaveBottomTwoPair##
+($$pr0 == LowestBoardCard && $$pr1 == 2ndLowestBoardCard)
+|| (pr0 == 2ndLowestBoardCard && $$pr1 == LowestBoardCard)
+
 ##f$OpenPPL_HaveFlushDraw##
 (nsuited >= 4)
 
@@ -534,7 +564,7 @@ isstraightflush && (nhandshi == 0)
 ##f$OpenPPL_HaveTrips##
 !ispair
 &&   [(pokerval & threeofakind) && !(pokervalcommon & threeofakind)
-  || ((pokerval & fullhouse)    &&  (pokerval & fullhouse) && `(pcbits &0b11100) == 1)
+  || ((pokerval & fullhouse)    && `(pcbits &0b11100) == 1)
   ||  (pokerval & fourofakind)  && !(pokervalcommon & fourofakind)]
 
 ##f$OpenPPL_HaveUnderStraight##
