@@ -148,6 +148,10 @@ bet1
 ##f$OpenPPL_AcePresentOnFlop##
 ($$cr0 == 14) || ($$cr1 == 14) || ($$cr2 == 14)
 
+##f$OpenPPL_ExactlyOneStraightPossibleOnFlop##
+[f$OpenPPL_StraightPossibleOnFlop && f$OpenPPL_AcePresentOnFlop && ((f$OpenPPL_LowestFlopCard >= 10) || (f$OpenPPL_TopFlopCard <= 5))]
+|| [f$OpenPPL_StraightPossibleOnFlop && (f$OpenPPL_TopFlopCard - f$OpenPPL_LowestFlopCard <= 4)]
+
 ##f$OpenPPL_FlopCardPairedonTurn##
 $$cr0 == $$cr3 || $$cr1 == $$cr3 || $$cr2 == $$cr3
 
@@ -175,6 +179,12 @@ $$cr0 == $$cr3 || $$cr1 == $$cr3 || $$cr2 == $$cr3
 ##f$OpenPPL_FullHouseOnBoard##
 (pokervalcommon & fullhouse)
 
+##OpenPPL_LowCardsOnBoard##
+`f$OpenPPL_RankBitsCommonLowCardsOnly
+
+##f$OpenPPL_MoreThanOneStraightPossibleOnFlop##
+f$OpenPPL_StraightPossibleOnFlop && !f$OpenPPL_ExactlyOneStraightPossibleOnFlop
+
 ##f$OpenPPL_OneCardFlushPossible##
 (nsuitedcommon >=4)
 
@@ -183,6 +193,10 @@ $$cr0 == $$cr3 || $$cr1 == $$cr3 || $$cr2 == $$cr3
 
 ##f$OpenPPL_OneCardStraightPossible##
 (nstraightfillcommon <= 1)
+
+##f$OpenPPL_OpenEndedStraightDrawPossibleOnFlop##
+[(f$OpenPPL_TopFlopCard - f$OpenPPL_2ndTopFlopCard <= 3) && (f$OpenPPL_TopFlopCard != 14)]
+|| [(f$OpenPPL_2ndTopFlopCard - f$OpenPPL_LowestFlopCard <= 3) && (f$OpenPPL_LowestFlopCard >= 2)]
 
 ##f$OpenPPL_OvercardsOnBoard##
 (($$cr0 > rankhiplayer) ? 1 : 0) +
@@ -208,7 +222,7 @@ f$OpenPPL_LowestFlopCard == $$cr3 ? 1 : 0
 ##f$OpenPPL_PairOnTurn##
    f$OpenPPL_PairOnFlop
 || f$OpenPPL_TopFlopCardPairedonTurn
-|| f$OpenPPL_SecondTopFlopCardPairedOnTurn
+|| f$OpenPPL_2ndTopFlopCardPairedOnTurn
 || f$OpenPPL_LowestFlopCardPairedOnTurn
 
 ##f$OpenPPL_QuadsOnBoard##
@@ -217,13 +231,17 @@ f$OpenPPL_LowestFlopCard == $$cr3 ? 1 : 0
 ##f$OpenPPL_QueenPresentOnFlop##
 ($$cr0==12 ||$$cr1==12 ||$$cr2==12)
 
+##f$OpenPPL_RankBitsCommonLowCardsOnly##
+// Bits 8..ace(low), last bit is unused
+(rankbitscommon & 0b111111110)
+
 ##f$OpenPPL_RiverCardisOvercardToBoard##
 [  $$cr4 > $$cr0
 && $$cr4 > $$cr1
 && $$cr4 > $$cr2
 && $$cr4 > $$cr3 ]
 
-##f$OpenPPL_SecondTopFlopCard##
+##f$OpenPPL_2ndTopFlopCard##
 $$cr0 >= $$cr1 && $$cr0 >= $$cr2 && $$cr1 >= $$cr2 ? $$cr1 :
 $$cr0 >= $$cr1 && $$cr0 >= $$cr2 && $$cr1 <= $$cr2 ? $$cr2 :
 $$cr1 >= $$cr0 && $$cr1 >= $$cr2 && $$cr0 >= $$cr2 ? $$cr0 :
@@ -231,15 +249,15 @@ $$cr1 >= $$cr0 && $$cr1 >= $$cr2 && $$cr0 <= $$cr2 ? $$cr2 :
 $$cr2 >= $$cr0 && $$cr2 >= $$cr1 && $$cr0 >= $$cr1 ? $$cr0 :
 $$cr2 >= $$cr0 && $$cr2 >= $$cr1 && $$cr0 <= $$cr1 ? $$cr1 : -1
 
-##f$OpenPPL_SecondTopFlopCardPairedOnRiver##
-f$OpenPPL_SecondTopFlopCard == $$cr4 ? 1 : 0
+##f$OpenPPL_2ndTopFlopCardPairedOnRiver##
+f$OpenPPL_2ndTopFlopCard == $$cr4 ? 1 : 0
 
-##f$OpenPPL_SecondTopFlopCardPairedOnTurn##
-f$OpenPPL_SecondTopFlopCard == $$cr3 ? 1 : 0
+##f$OpenPPL_2ndTopFlopCardPairedOnTurn##
+f$OpenPPL_2ndTopFlopCard == $$cr3 ? 1 : 0
 
 ##f$OpenPPL_srankbitshero##
  (($$ps0==tsuit ? ($$pr0!=14 ? 2**$$pr0 : 0b100000000000010) : 0)
-| ($$ps1==tsuit ? ($$pr1!=14 ? 2**$$pr1 : 0b100000000000010) : 0)))
+| ($$ps1==tsuit ? ($$pr1!=14 ? 2**$$pr1 : 0b100000000000010) : 0))
 
 ##f$OpenPPL_srankavailable##
 // Available suited cards for other players,
@@ -257,7 +275,6 @@ f$OpenPPL_SecondTopFlopCard == $$cr3 ? 1 : 0
 `((srankbitscommon>> 3)&0x1f) >= 3 && `(((srankbitscommon>> 3)&0x1f)|((f$OpenPPL_srankavailable>> 3)&0x1f)) == 5 ? 1 :
 `((srankbitscommon>> 2)&0x1f) >= 3 && `(((srankbitscommon>> 2)&0x1f)|((f$OpenPPL_srankavailable>> 2)&0x1f)) == 5 ? 1 :
 `((srankbitscommon>> 1)&0x1f) >= 3 && `(((srankbitscommon>> 1)&0x1f)|((f$OpenPPL_srankavailable>> 1)&0x1f)) == 5 ? 1 : 0
-
 
 ##f$OpenPPL_SuitsOnBoard##
 ($$cs0==$$cs1 && $$cs1==$$cs2 ? 1 :
@@ -357,6 +374,14 @@ f$OpenPPL_TopFlopCard == $$cr3 ? 1 : 0
 
 ##f$OpenPPL_TwoPairOnBoard##
 (pokervalcommon & istwopair) || (pokervalcommon & isfullhouse)
+
+##f$OpenPPL_UncoordinatedFlop##
+!f$OpenPPL_PairOnFlop
+// No possible flush: guaranteed by the next condition...
+// three different suits
+&& (f$OpenPPL_SuitsOnFlop == 3)
+&& !f$OpenPPL_StraightPossibleOnFlop
+&& !f$OpenPPL_OpenEndedStraightDrawPossibleOnFlop
 
 ##f$OpenPPL_WheelPossible##
 `((rankbitscommon & 0b111110) >= 3) ? 1 : 0
