@@ -148,6 +148,16 @@ bet1
 ##f$OpenPPL_AcePresentOnFlop##
 ($$cr0 == 14) || ($$cr1 == 14) || ($$cr2 == 14)
 
+##f$OpenPPL_DoubleGutShotOnBoard##
+((rankbitscommon>>8)&0x7f) == 0x5d ? 1 :
+((rankbitscommon>>7)&0x7f) == 0x5d ? 1 :
+((rankbitscommon>>6)&0x7f) == 0x5d ? 1 :
+((rankbitscommon>>5)&0x7f) == 0x5d ? 1 :
+((rankbitscommon>>4)&0x7f) == 0x5d ? 1 :
+((rankbitscommon>>3)&0x7f) == 0x5d ? 1 :
+((rankbitscommon>>2)&0x7f) == 0x5d ? 1 :
+((rankbitscommon>>1)&0x7f) == 0x5d ? 1 : 0
+
 ##f$OpenPPL_ExactlyOneStraightPossibleOnFlop##
 [f$OpenPPL_StraightPossibleOnFlop && f$OpenPPL_AcePresentOnFlop && ((f$OpenPPL_LowestFlopCard >= 10) || (f$OpenPPL_TopFlopCard <= 5))]
 || [f$OpenPPL_StraightPossibleOnFlop && (f$OpenPPL_TopFlopCard - f$OpenPPL_LowestFlopCard <= 4)]
@@ -203,6 +213,9 @@ f$OpenPPL_StraightPossibleOnFlop && !f$OpenPPL_ExactlyOneStraightPossibleOnFlop
 (`((f$rankbitscommonturn>>2)&0x1f) >= 3 ? 1 : 0)+
 (`((f$rankbitscommonturn>>1)&0x1f) >= 3 ? 1 : 0)
 
+##f$OpenPPL_MoreThanOneOneCardStraightPossible##
+f$OpenPPL_DoubleGutShotOnBoard || f$OpenPPL_OpenEndedStraightDrawOnBoard
+
 ##f$OpenPPL_MoreThanOneStraightPossibleOnTurn##
 (betround >= 3 || f$OpenPPL_NumberOfStraightsPossibleOnTurn < 2) ? 0 : 1
 
@@ -215,24 +228,15 @@ f$OpenPPL_StraightPossibleOnFlop && !f$OpenPPL_ExactlyOneStraightPossibleOnFlop
 ##f$OpenPPL_OneCardStraightPossible##
 (nstraightfillcommon <= 1)
 
+##f$OpenPPL_Only1OneCardStraightPossible##
+f$OpenPPL_OneCardStraightPossible && !f$OpenPPL_MoreThanOneOneCardStraightPossible
+
+##f$OpenPPL_OpenEndedStraightDrawOnBoard##
+(nstraightcommon == 4 && (`((rankbitscommon>>10)&0x1f) < 4) && (`((rankbitscommon>>1)&0x1f) < 4)) ? 1 : 0
+
 ##f$OpenPPL_OpenEndedStraightDrawPossibleOnFlop##
 [(f$OpenPPL_TopFlopCard - f$OpenPPL_2ndTopFlopCard <= 3) && (f$OpenPPL_TopFlopCard != 14)]
 || [(f$OpenPPL_2ndTopFlopCard - f$OpenPPL_LowestFlopCard <= 3) && (f$OpenPPL_LowestFlopCard >= 2)]
-
-##f$OpenPPL_NumberOfOneCardStraightsPossible##
-(`((rankbitscommon>>10)&0x1f) == 4 ? 1 : 0) +
-(`((rankbitscommon>> 9)&0x1f) == 4 ? 1 : 0) +
-(`((rankbitscommon>> 8)&0x1f) == 4 ? 1 : 0) +
-(`((rankbitscommon>> 7)&0x1f) == 4 ? 1 : 0) +
-(`((rankbitscommon>> 6)&0x1f) == 4 ? 1 : 0) +
-(`((rankbitscommon>> 5)&0x1f) == 4 ? 1 : 0) +
-(`((rankbitscommon>> 4)&0x1f) == 4 ? 1 : 0) +
-(`((rankbitscommon>> 3)&0x1f) == 4 ? 1 : 0) +
-(`((rankbitscommon>> 2)&0x1f) == 4 ? 1 : 0) +
-(`((rankbitscommon>> 1)&0x1f) == 4 ? 1 : 0)
-
-##f$OpenPPL_Only1OneCardStraightPossible##
-f$OpenPPL_NumberOfOneCardStraightsPossible == 1 ? 1 : 0
 
 ##f$OpenPPL_OvercardsOnBoard##
 (($$cr0 > rankhiplayer) ? 1 : 0) +
