@@ -185,6 +185,27 @@ $$cr0 == $$cr3 || $$cr1 == $$cr3 || $$cr2 == $$cr3
 ##f$OpenPPL_MoreThanOneStraightPossibleOnFlop##
 f$OpenPPL_StraightPossibleOnFlop && !f$OpenPPL_ExactlyOneStraightPossibleOnFlop
 
+##f$rankbitscommonturn##
+($$cr0 != 14 ? 2**$$cr0 : (0x4002))
+| ($$cr1 != 14 ? 2**$$cr1 : (0x4002))
+| ($$cr2 != 14 ? 2**$$cr2 : (0x4002))
+| ($$cr3 != 14 ? 2**$$cr3 : (0x4002))
+
+##f$OpenPPL_NumberOfStraightsPossibleOnTurn##
+(`((f$rankbitscommonturn>>10)&0x1f) >= 3 ? 1 : 0)+
+(`((f$rankbitscommonturn>>9)&0x1f) >= 3 ? 1 : 0)+
+(`((f$rankbitscommonturn>>8)&0x1f) >= 3 ? 1 : 0)+
+(`((f$rankbitscommonturn>>7)&0x1f) >= 3 ? 1 : 0)+
+(`((f$rankbitscommonturn>>6)&0x1f) >= 3 ? 1 : 0)+
+(`((f$rankbitscommonturn>>5)&0x1f) >= 3 ? 1 : 0)+
+(`((f$rankbitscommonturn>>4)&0x1f) >= 3 ? 1 : 0)+
+(`((f$rankbitscommonturn>>3)&0x1f) >= 3 ? 1 : 0)+
+(`((f$rankbitscommonturn>>2)&0x1f) >= 3 ? 1 : 0)+
+(`((f$rankbitscommonturn>>1)&0x1f) >= 3 ? 1 : 0)
+
+##f$OpenPPL_MoreThanOneStraightPossibleOnTurn##
+(betround >= 3 || f$OpenPPL_NumberOfStraightsPossibleOnTurn < 2) ? 0 : 1
+
 ##f$OpenPPL_OneCardFlushPossible##
 (nsuitedcommon >=4)
 
@@ -197,6 +218,21 @@ f$OpenPPL_StraightPossibleOnFlop && !f$OpenPPL_ExactlyOneStraightPossibleOnFlop
 ##f$OpenPPL_OpenEndedStraightDrawPossibleOnFlop##
 [(f$OpenPPL_TopFlopCard - f$OpenPPL_2ndTopFlopCard <= 3) && (f$OpenPPL_TopFlopCard != 14)]
 || [(f$OpenPPL_2ndTopFlopCard - f$OpenPPL_LowestFlopCard <= 3) && (f$OpenPPL_LowestFlopCard >= 2)]
+
+##f$OpenPPL_NumberOfOneCardStraightsPossible##
+(`((rankbitscommon>>10)&0x1f) == 4 ? 1 : 0) +
+(`((rankbitscommon>> 9)&0x1f) == 4 ? 1 : 0) +
+(`((rankbitscommon>> 8)&0x1f) == 4 ? 1 : 0) +
+(`((rankbitscommon>> 7)&0x1f) == 4 ? 1 : 0) +
+(`((rankbitscommon>> 6)&0x1f) == 4 ? 1 : 0) +
+(`((rankbitscommon>> 5)&0x1f) == 4 ? 1 : 0) +
+(`((rankbitscommon>> 4)&0x1f) == 4 ? 1 : 0) +
+(`((rankbitscommon>> 3)&0x1f) == 4 ? 1 : 0) +
+(`((rankbitscommon>> 2)&0x1f) == 4 ? 1 : 0) +
+(`((rankbitscommon>> 1)&0x1f) == 4 ? 1 : 0)
+
+##f$OpenPPL_Only1OneCardStraightPossible##
+f$OpenPPL_NumberOfOneCardStraightsPossible == 1 ? 1 : 0
 
 ##f$OpenPPL_OvercardsOnBoard##
 (($$cr0 > rankhiplayer) ? 1 : 0) +
