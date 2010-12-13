@@ -202,7 +202,7 @@ $$cr0 == $$cr3 || $$cr1 == $$cr3 || $$cr2 == $$cr3
 f$OpenPPL_StraightPossibleOnFlop && !f$OpenPPL_ExactlyOneStraightPossibleOnFlop
 
 ##f$OpenPPL_MoreThanOneStraightPossibleOnRiver##
-(betround < = 4 || f$OpenPPL_NumberOfStraightsPossibleOnRiver < 2) ? 0 : 1
+(betround <= 4 || f$OpenPPL_NumberOfStraightsPossibleOnRiver < 2) ? 0 : 1
 
 ##f$rankbitscommonturn##
 ($$cr0 != 14 ? 2**$$cr0 : (0x4002))
@@ -226,7 +226,7 @@ rankbitscommon
 (`((f$rankbitscommonturn>>2)&0x1f) >= 3 ? 1 : 0)+
 (`((f$rankbitscommonturn>>1)&0x1f) >= 3 ? 1 : 0)
 
-##f$NumberOfStraightsPossibleOnRiver##
+##f$OpenPPL_NumberOfStraightsPossibleOnRiver##
 (`((f$rankbitscommonriver>>10)&0x1f) >= 3 ? 1 : 0)+
 (`((f$rankbitscommonriver>>9)&0x1f) >= 3 ? 1 : 0)+
 (`((f$rankbitscommonriver>>8)&0x1f) >= 3 ? 1 : 0)+
@@ -242,7 +242,7 @@ rankbitscommon
 f$OpenPPL_DoubleGutShotOnBoard || f$OpenPPL_OpenEndedStraightDrawOnBoard
 
 ##f$OpenPPL_MoreThanOneStraightPossibleOnTurn##
-!OpenPPL_PairOnBoard
+!f$OpenPPL_PairOnBoard
 && [(f$OpenPPL_BestBoardCard - f$OpenPPL_LowestBoardCard)<= 4 || (f$OpenPPL_2ndBestBoardCard <= 5)]
 && f$OpenPPL_AcePresentOnTurn
 
@@ -287,9 +287,9 @@ $$cr2 <= $$cr0 && $$cr2 <=  $$cr1 ? $$cr2 : -1
 f$OpenPPL_LowestFlopCard == $$cr3 ? 1 : 0
 
 ##f$OpenPPL_OnlyOneStraightPossible##
-! (MoreThanOneStraightPossibleOnFlop
-   || MoreThanOneStraightPossibleOnTurn
-   || MoreThanOneStraightPossibleOnRiver)
+! (f$OpenPPL_MoreThanOneStraightPossibleOnFlop
+   || f$OpenPPL_MoreThanOneStraightPossibleOnTurn
+   || f$OpenPPL_MoreThanOneStraightPossibleOnRiver)
 
 ##f$OpenPPL_PairOnTurn##
    f$OpenPPL_PairOnFlop
@@ -728,6 +728,9 @@ isstraightflush && (nhandshi == 0)
   || ((pokerval & fullhouse)    && `(pcbits &0b11100) == 1)
   ||  (pokerval & fourofakind)  && !(pokervalcommon & fourofakind)]
 
+##f$OpenPPL_HaveStraightFlush##
+(isstraightflush || isroyalflush)
+
 ##f$OpenPPL_HaveUnderStraight##
 f$OpenPPL_HaveStraight
 && (pcbits == 0b00011 || pcbits == 0b00001)
@@ -910,9 +913,6 @@ f$OpenPPL_Middle
 0
 
 ##f$OpenPPL_HaveQuads##
-0
-
-##f$OpenPPL_HaveStraightFlush##
 0
 
 ##f$OpenPPL_HaveFullHouse##
