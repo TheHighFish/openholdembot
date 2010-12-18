@@ -156,8 +156,13 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine, bool disable_
 				// Trying to continue gracefully.				
 				// Skipping is not possible,
 				// as this crashes the formula editor.											
-				strcpy_s(funcname, 256, strOneLine.GetString()+start+2);
-				funcname[strOneLine.GetLength()]='\0';
+				int number_of_chars_to_copy = (strOneLine.GetLength() < k_max_size_of_function_name) ?
+					strOneLine.GetLength() : k_max_size_of_function_name;
+				strncpy_s(funcname, 
+					k_max_size_of_function_name, 
+					strOneLine.GetString()+start+2,
+					number_of_chars_to_copy);
+				funcname[number_of_chars_to_copy]='\0';
 				
 				if (!disable_msgbox)
 				{

@@ -76,4 +76,7 @@ const static char *k_card_chars = "23456789TJQKA";
 // The old code did it differently (4 for the current round)
 const int k_storage_index_for_current_round = 0;
 
+// Functions names, both user-defined and standard, e.g. "f$alli"
+const int k_max_size_of_function_name = 256;
+
 #endif // _INC_MAGICNUMBERS_H

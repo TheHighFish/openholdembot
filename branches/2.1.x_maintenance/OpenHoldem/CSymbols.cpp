@@ -298,7 +298,7 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	{
 		set_sym_balance(i, 0);
 		//!!!
-		write_log(1, "Resetting currentbet\n");
+		write_log(3, "Resetting currentbet\n");
 		set_sym_currentbet(i, 0);
 	}
 
@@ -776,7 +776,7 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 	{
 		//!!!
 		write_log(1, "Resetting currentbet\n");
-		set_sym_currentbet(i, 0);
+		set_sym_currentbet(3, 0);
 	}
 
 	for (int i=0; i<=9; i++)
@@ -1354,7 +1354,7 @@ void CSymbols::CalcBetBalanceStack(void)
 				{
 					set_sym_currentbet(i, temp);									// currentbet0-9
 					//!!!
-					write_log(1, "setting currentbet for FL\n");
+					write_log(3, "setting currentbet for FL\n");
 				}
 			}
 
@@ -1364,17 +1364,17 @@ void CSymbols::CalcBetBalanceStack(void)
 				set_sym_currentbet(i, temp); 
 				// currentbet0-9
 				//!!!
-				write_log(1, "setting currentbet for NL/PL\n");
+				write_log(3, "setting currentbet for NL/PL\n");
 			}
 		}
 	}
 
 	set_sym_currentbet(10, _user_chair_confirmed ? p_scraper->player_bet(_sym.userchair) : 0);			// currentbet
 	//!!!
-	write_log(1, "setting currentbet conditionally\n");
-	write_log(1, "currentbet: user_chair_confirmed: %d\n", _user_chair_confirmed);
-	write_log(1, "currentbet: userchair: %f\n", _sym.userchair);
-	write_log(1, "currentbet: bet: %f\n", p_scraper->player_bet(_sym.userchair));
+	write_log(3, "setting currentbet conditionally\n");
+	write_log(3, "currentbet: user_chair_confirmed: %d\n", _user_chair_confirmed);
+	write_log(3, "currentbet: userchair: %f\n", _sym.userchair);
+	write_log(3, "currentbet: bet: %f\n", p_scraper->player_bet(_sym.userchair));
 
 
 	set_sym_potplayer(0);
