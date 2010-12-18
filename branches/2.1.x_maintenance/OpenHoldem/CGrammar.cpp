@@ -486,8 +486,15 @@ double CGrammar::DoCalcF$symbol(CFormula * const f, char *symbol, CEvalInfoFunct
 	if (_RecursionDepth > _MAX_RECURSION_DEPTH)
 	{
 		if (!prefs.disable_msgbox())
-			MessageBox(0, "Recursion to deep.\nProbably endless.\nStopping autoplayer.", "ERROR", 0);
-
+		{
+			CString error_message = CString(
+				"Recursion to deep.\n"
+				"Probably endless.\n"
+				"Stopping autoplayer.\n"
+				"\n"
+				"Last function: ") + symbol;
+			MessageBox(0, error_message, "ERROR", 0);
+		}
 		p_autoplayer->set_autoplayer_engaged(false);
 		_RecursionDepth--;
 		return 0.0;
