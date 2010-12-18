@@ -287,9 +287,10 @@ $$cr2 <= $$cr0 && $$cr2 <=  $$cr1 ? $$cr2 : -1
 f$OpenPPL_LowestFlopCard == $$cr3 ? 1 : 0
 
 ##f$OpenPPL_OnlyOneStraightPossible##
-! (f$OpenPPL_MoreThanOneStraightPossibleOnFlop
-   || f$OpenPPL_MoreThanOneStraightPossibleOnTurn
-   || f$OpenPPL_MoreThanOneStraightPossibleOnRiver)
+f$OpenPPL_StraightPossible
+&& ![f$OpenPPL_MoreThanOneStraightPossibleOnFlop
+  || f$OpenPPL_MoreThanOneStraightPossibleOnTurn
+  || f$OpenPPL_MoreThanOneStraightPossibleOnRiver]
 
 ##f$OpenPPL_PairOnTurn##
    f$OpenPPL_PairOnFlop
