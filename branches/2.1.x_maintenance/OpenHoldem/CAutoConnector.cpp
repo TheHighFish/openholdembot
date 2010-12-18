@@ -87,7 +87,7 @@ CAutoConnector::CAutoConnector()
 					"SITENAME = %s\n\n"\
 					"This will cause problems as the autoconnector won't be able to decide which one to use.\n"\
 					"Please remove the superfluous maps from the scraper folder.\n", dup_status);
-		MessageBox(0, (LPCTSTR) n, "Warning ! Duplicate SiteName ", MB_OK|MB_ICONWARNING);
+		MessageBox(0, (LPCTSTR) n, "Warning! Duplicate SiteName", MB_OK|MB_ICONWARNING);
 	}
 }
 

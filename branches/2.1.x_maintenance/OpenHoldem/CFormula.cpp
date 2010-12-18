@@ -87,7 +87,7 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine, bool disable_
 {
 	CString		strOneLine = ""; 
 	int			content = 0;
-	char		funcname[256] = {0};
+	char		funcname[k_max_size_of_function_name] = {0};
 	int			start = 0, end = 0;
 		
 	SFunction	func;	
@@ -170,8 +170,14 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine, bool disable_
 
 			else 
 			{
-				strcpy_s(funcname, 256, strOneLine.GetString()+start+2);
-				funcname[end-2]='\0';
+				int size_of_function_name = end - start + 1;    
+				assert(size_of_function_name < k_max_size_of_function_name);
+				// strncpy_s: http://msdn.microsoft.com/de-de/library/5dae5d43(v=vs.80).aspx
+				strncpy_s(funcname,                              // Destination
+					k_max_size_of_function_name * sizeof(char),  // Size of destination
+					strOneLine.GetString() + start + 2,          // Start of source (without leading "##")
+					size_of_function_name);						 // Elements to copy	
+				funcname[end-2] = '\0';							 // Remove trailing "##"	
 			}
 
 			if (strcmp(funcname, "bankroll") == 0) { _formula.dBankroll = 0.0; content = FTbankroll; }
