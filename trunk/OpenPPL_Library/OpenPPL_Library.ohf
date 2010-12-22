@@ -204,39 +204,39 @@ f$OpenPPL_StraightPossibleOnFlop && !f$OpenPPL_ExactlyOneStraightPossibleOnFlop
 ##f$OpenPPL_MoreThanOneStraightPossibleOnRiver##
 (betround <= 4 || f$OpenPPL_NumberOfStraightsPossibleOnRiver < 2) ? 0 : 1
 
-##f$rankbitscommonturn##
+##f$OpenPPL_rankbitscommonturn##
 ($$cr0 != 14 ? 2**$$cr0 : (0x4002))
 | ($$cr1 != 14 ? 2**$$cr1 : (0x4002))
 | ($$cr2 != 14 ? 2**$$cr2 : (0x4002))
 | ($$cr3 != 14 ? 2**$$cr3 : (0x4002))
 
-##f$rankbitscommonriver##
+##f$OpenPPL_rankbitscommonriver##
 // As this can only be called at the river it is identical to rankbiscommon
 rankbitscommon
 
 ##f$OpenPPL_NumberOfStraightsPossibleOnTurn##
-(`((f$rankbitscommonturn>>10)&0x1f) >= 3 ? 1 : 0)+
-(`((f$rankbitscommonturn>>9)&0x1f) >= 3 ? 1 : 0)+
-(`((f$rankbitscommonturn>>8)&0x1f) >= 3 ? 1 : 0)+
-(`((f$rankbitscommonturn>>7)&0x1f) >= 3 ? 1 : 0)+
-(`((f$rankbitscommonturn>>6)&0x1f) >= 3 ? 1 : 0)+
-(`((f$rankbitscommonturn>>5)&0x1f) >= 3 ? 1 : 0)+
-(`((f$rankbitscommonturn>>4)&0x1f) >= 3 ? 1 : 0)+
-(`((f$rankbitscommonturn>>3)&0x1f) >= 3 ? 1 : 0)+
-(`((f$rankbitscommonturn>>2)&0x1f) >= 3 ? 1 : 0)+
-(`((f$rankbitscommonturn>>1)&0x1f) >= 3 ? 1 : 0)
+(`((f$OpenPPL_rankbitscommonturn>>10)&0x1f) >= 3 ? 1 : 0)+
+(`((f$OpenPPL_rankbitscommonturn>>9)&0x1f) >= 3 ? 1 : 0)+
+(`((f$OpenPPL_rankbitscommonturn>>8)&0x1f) >= 3 ? 1 : 0)+
+(`((f$OpenPPL_rankbitscommonturn>>7)&0x1f) >= 3 ? 1 : 0)+
+(`((f$OpenPPL_rankbitscommonturn>>6)&0x1f) >= 3 ? 1 : 0)+
+(`((f$OpenPPL_rankbitscommonturn>>5)&0x1f) >= 3 ? 1 : 0)+
+(`((f$OpenPPL_rankbitscommonturn>>4)&0x1f) >= 3 ? 1 : 0)+
+(`((f$OpenPPL_rankbitscommonturn>>3)&0x1f) >= 3 ? 1 : 0)+
+(`((f$OpenPPL_rankbitscommonturn>>2)&0x1f) >= 3 ? 1 : 0)+
+(`((f$OpenPPL_rankbitscommonturn>>1)&0x1f) >= 3 ? 1 : 0)
 
 ##f$OpenPPL_NumberOfStraightsPossibleOnRiver##
-(`((f$rankbitscommonriver>>10)&0x1f) >= 3 ? 1 : 0)+
-(`((f$rankbitscommonriver>>9)&0x1f) >= 3 ? 1 : 0)+
-(`((f$rankbitscommonriver>>8)&0x1f) >= 3 ? 1 : 0)+
-(`((f$rankbitscommonriver>>7)&0x1f) >= 3 ? 1 : 0)+
-(`((f$rankbitscommonriver>>6)&0x1f) >= 3 ? 1 : 0)+
-(`((f$rankbitscommonriver>>5)&0x1f) >= 3 ? 1 : 0)+
-(`((f$rankbitscommonriver>>4)&0x1f) >= 3 ? 1 : 0)+
-(`((f$rankbitscommonriver>>3)&0x1f) >= 3 ? 1 : 0)+
-(`((f$rankbitscommonriver>>2)&0x1f) >= 3 ? 1 : 0)+
-(`((f$rankbitscommonriver>>1)&0x1f) >= 3 ? 1 : 0)
+(`((f$OpenPPL_rankbitscommonriver>>10)&0x1f) >= 3 ? 1 : 0)+
+(`((f$OpenPPL_rankbitscommonriver>>9)&0x1f) >= 3 ? 1 : 0)+
+(`((f$OpenPPL_rankbitscommonriver>>8)&0x1f) >= 3 ? 1 : 0)+
+(`((f$OpenPPL_rankbitscommonriver>>7)&0x1f) >= 3 ? 1 : 0)+
+(`((f$OpenPPL_rankbitscommonriver>>6)&0x1f) >= 3 ? 1 : 0)+
+(`((f$OpenPPL_rankbitscommonriver>>5)&0x1f) >= 3 ? 1 : 0)+
+(`((f$OpenPPL_rankbitscommonriver>>4)&0x1f) >= 3 ? 1 : 0)+
+(`((f$OpenPPL_rankbitscommonriver>>3)&0x1f) >= 3 ? 1 : 0)+
+(`((f$OpenPPL_rankbitscommonriver>>2)&0x1f) >= 3 ? 1 : 0)+
+(`((f$OpenPPL_rankbitscommonriver>>1)&0x1f) >= 3 ? 1 : 0)
 
 ##f$OpenPPL_MoreThanOneOneCardStraightPossible##
 f$OpenPPL_DoubleGutShotOnBoard || f$OpenPPL_OpenEndedStraightDrawOnBoard
@@ -828,6 +828,136 @@ nopponentsplaying
 //
 //***********************************************************
 
+##f$OpenPPL_BigBlindChair##
+ac_dealpos0 == 2 ? 0 :
+ac_dealpos1 == 2 ? 1 :
+ac_dealpos2 == 2 ? 2 :
+ac_dealpos3 == 2 ? 3 :
+ac_dealpos4 == 2 ? 4 :
+ac_dealpos5 == 2 ? 5 :
+ac_dealpos6 == 2 ? 6 :
+ac_dealpos7 == 2 ? 7 :
+ac_dealpos8 == 2 ? 8 :
+ac_dealpos9 == 2 ? 9 :
+-1
+
+##f$OpenPPL_SmallBlindChair##
+ac_dealpos0 == 1 ? 0 :
+ac_dealpos1 == 1 ? 1 :
+ac_dealpos2 == 1 ? 2 :
+ac_dealpos3 == 1 ? 3 :
+ac_dealpos4 == 1 ? 4 :
+ac_dealpos5 == 1 ? 5 :
+ac_dealpos6 == 1 ? 6 :
+ac_dealpos7 == 1 ? 7 :
+ac_dealpos8 == 1 ? 8 :
+ac_dealpos9 == 1 ? 9 :
+-1
+
+##f$OpenPPL_ButtonChair##
+ac_dealpos0 == nplayersdealt ? 0 :
+ac_dealpos1 == nplayersdealt ? 1 :
+ac_dealpos2 == nplayersdealt ? 2 :
+ac_dealpos3 == nplayersdealt ? 3 :
+ac_dealpos4 == nplayersdealt ? 4 :
+ac_dealpos5 == nplayersdealt ? 5 :
+ac_dealpos6 == nplayersdealt ? 6 :
+ac_dealpos7 == nplayersdealt ? 7 :
+ac_dealpos8 == nplayersdealt ? 8 :
+ac_dealpos9 == nplayersdealt ? 9 :
+-1
+
+##f$OpenPPL_CutOffChairChair##
+ac_dealpos0 == (nplayersdealt - 1) ? 0 :
+ac_dealpos1 == (nplayersdealt - 1) ? 1 :
+ac_dealpos2 == (nplayersdealt - 1) ? 2 :
+ac_dealpos3 == (nplayersdealt - 1) ? 3 :
+ac_dealpos4 == (nplayersdealt - 1) ? 4 :
+ac_dealpos5 == (nplayersdealt - 1) ? 5 :
+ac_dealpos6 == (nplayersdealt - 1) ? 6 :
+ac_dealpos7 == (nplayersdealt - 1) ? 7 :
+ac_dealpos8 == (nplayersdealt - 1) ? 8 :
+ac_dealpos9 == (nplayersdealt - 1) ? 9 :
+-1
+
+##f$OpenPPL_MiddlePosition3Chair##
+ac_dealpos0 == (nplayersdealt - 2) ? 0 :
+ac_dealpos1 == (nplayersdealt - 2) ? 1 :
+ac_dealpos2 == (nplayersdealt - 2) ? 2 :
+ac_dealpos3 == (nplayersdealt - 2) ? 3 :
+ac_dealpos4 == (nplayersdealt - 2) ? 4 :
+ac_dealpos5 == (nplayersdealt - 2) ? 5 :
+ac_dealpos6 == (nplayersdealt - 2) ? 6 :
+ac_dealpos7 == (nplayersdealt - 2) ? 7 :
+ac_dealpos8 == (nplayersdealt - 2) ? 8 :
+ac_dealpos9 == (nplayersdealt - 2) ? 9 :
+-1
+
+##f$OpenPPL_MiddlePosition2Chair##
+ac_dealpos0 == (nplayersdealt - 3) ? 0 :
+ac_dealpos1 == (nplayersdealt - 3) ? 1 :
+ac_dealpos2 == (nplayersdealt - 3) ? 2 :
+ac_dealpos3 == (nplayersdealt - 3) ? 3 :
+ac_dealpos4 == (nplayersdealt - 3) ? 4 :
+ac_dealpos5 == (nplayersdealt - 3) ? 5 :
+ac_dealpos6 == (nplayersdealt - 3) ? 6 :
+ac_dealpos7 == (nplayersdealt - 3) ? 7 :
+ac_dealpos8 == (nplayersdealt - 3) ? 8 :
+ac_dealpos9 == (nplayersdealt - 3) ? 9 :
+-1
+
+##f$OpenPPL_MiddlePosition1Chair##
+ac_dealpos0 == (nplayersdealt - 4) ? 0 :
+ac_dealpos1 == (nplayersdealt - 4) ? 1 :
+ac_dealpos2 == (nplayersdealt - 4) ? 2 :
+ac_dealpos3 == (nplayersdealt - 4) ? 3 :
+ac_dealpos4 == (nplayersdealt - 4) ? 4 :
+ac_dealpos5 == (nplayersdealt - 4) ? 5 :
+ac_dealpos6 == (nplayersdealt - 4) ? 6 :
+ac_dealpos7 == (nplayersdealt - 4) ? 7 :
+ac_dealpos8 == (nplayersdealt - 4) ? 8 :
+ac_dealpos9 == (nplayersdealt - 4) ? 9 :
+-1
+
+##f$OpenPPL_EarlyPosition3Chair##
+ac_dealpos0 == (nplayersdealt - 5) ? 0 :
+ac_dealpos1 == (nplayersdealt - 5) ? 1 :
+ac_dealpos2 == (nplayersdealt - 5) ? 2 :
+ac_dealpos3 == (nplayersdealt - 5) ? 3 :
+ac_dealpos4 == (nplayersdealt - 5) ? 4 :
+ac_dealpos5 == (nplayersdealt - 5) ? 5 :
+ac_dealpos6 == (nplayersdealt - 5) ? 6 :
+ac_dealpos7 == (nplayersdealt - 5) ? 7 :
+ac_dealpos8 == (nplayersdealt - 5) ? 8 :
+ac_dealpos9 == (nplayersdealt - 5) ? 9 :
+-1
+
+##f$OpenPPL_EarlyPosition2Chair##
+ac_dealpos0 == (nplayersdealt - 6) ? 0 :
+ac_dealpos1 == (nplayersdealt - 6) ? 1 :
+ac_dealpos2 == (nplayersdealt - 6) ? 2 :
+ac_dealpos3 == (nplayersdealt - 6) ? 3 :
+ac_dealpos4 == (nplayersdealt - 6) ? 4 :
+ac_dealpos5 == (nplayersdealt - 6) ? 5 :
+ac_dealpos6 == (nplayersdealt - 6) ? 6 :
+ac_dealpos7 == (nplayersdealt - 6) ? 7 :
+ac_dealpos8 == (nplayersdealt - 6) ? 8 :
+ac_dealpos9 == (nplayersdealt - 6) ? 9 :
+-1
+
+##f$OpenPPL_EarlyPosition1Chair##
+ac_dealpos0 == (nplayersdealt - 7) ? 0 :
+ac_dealpos1 == (nplayersdealt - 7) ? 1 :
+ac_dealpos2 == (nplayersdealt - 7) ? 2 :
+ac_dealpos3 == (nplayersdealt - 7) ? 3 :
+ac_dealpos4 == (nplayersdealt - 7) ? 4 :
+ac_dealpos5 == (nplayersdealt - 7) ? 5 :
+ac_dealpos6 == (nplayersdealt - 7) ? 6 :
+ac_dealpos7 == (nplayersdealt - 7) ? 7 :
+ac_dealpos8 == (nplayersdealt - 7) ? 8 :
+ac_dealpos9 == (nplayersdealt - 7) ? 9 :
+-1
+
 ##f$OpenPPL_DealPositionLastRaiser##
 (ac_aggressor == 0) ? ac_dealpos0 :
 (ac_aggressor == 1) ? ac_dealpos1 :
@@ -839,6 +969,105 @@ nopponentsplaying
 (ac_aggressor == 7) ? ac_dealpos7 :
 (ac_aggressor == 8) ? ac_dealpos8 :
 (ac_aggressor == 9) ? ac_dealpos9 :
+-1
+
+##f$OpenPPL_EarlyPosition1Calling##
+(callbits1 >> f$OpenPPL_EarlyPosition1Chair) & 1 == 1
+
+##f$OpenPPL_EarlyPosition2Calling##
+(callbits1 >> f$OpenPPL_EarlyPosition2Chair) & 1 == 1
+
+##f$OpenPPL_EarlyPosition3Calling##
+(callbits1 >> f$OpenPPL_EarlyPosition3Chair) & 1 == 1
+
+##f$OpenPPL_MiddlePosition1Calling##
+(callbits1 >> f$OpenPPL_MiddlePosition1Chair) & 1 == 1
+
+##f$OpenPPL_MiddlePosition2Calling##
+(callbits1 >> f$OpenPPL_MiddlePosition2Chair) & 1 == 1
+
+##f$OpenPPL_MiddlePosition3Calling##
+(callbits1 >> f$OpenPPL_MiddlePosition3Chair) & 1 == 1
+
+##f$OpenPPL_CutOffCalling##
+(callbits1 >> f$OpenPPL_CutOffChair) & 1 == 1
+
+##f$OpenPPL_ButtonCalling##
+(callbits1 >> f$OpenPPL_ButtonChair) & 1 == 1
+
+##f$OpenPPL_SmallBlindCalling##
+(callbits1 >> f$OpenPPL_SmallBlindChair) & 1 == 1
+
+##f$OpenPPL_BigBlindCalling##
+(callbits1 >> f$OpenPPL_BigBlindChair) & 11 == 1
+
+##f$OpenPPL_EarlyPosition1Raising##
+[(raisbits1 >> f$OpenPPL_EarlyPosition1Chair) & 1 == 1]
+
+##f$OpenPPL_EarlyPosition2Raising##
+[(raisbits1 >> f$OpenPPL_EarlyPosition2Chair) & 1 == 1]
+
+##f$OpenPPL_EarlyPosition3Raising##
+[(raisbits1 >> f$OpenPPL_EarlyPosition3Chair) & 1 == 1]
+
+##f$OpenPPL_MiddlePosition1Raising##
+[(raisbits1 >> f$OpenPPL_MiddlePosition1Chair) & 1 == 1]
+
+##f$OpenPPL_MiddlePosition2Raising##
+[(raisbits1 >> f$OpenPPL_MiddlePosition2Chair) & 1 == 1]
+
+##f$OpenPPL_MiddlePosition3Raising##
+[(raisbits1 >> f$OpenPPL_MiddlePosition3Chair) & 1 == 1]
+
+##f$OpenPPL_CutOffRaising##
+[(raisbits1 >> f$OpenPPL_CutOffChair) & 1 == 1]
+
+##f$OpenPPL_ButtonRaising##
+[(raisbits1 >> f$OpenPPL_ButtonChair) & 1 == 1]
+
+##f$OpenPPL_SmallBlindRaising##
+[(raisbits1 >> f$OpenPPL_SmallBlindChair) & 1 == 1]
+
+##f$OpenPPL_BigBlindRaising##
+[(raisbits1 >> f$OpenPPL_BigBlindChair) & 1 == 1]
+
+##f$OpenPPL_FirstCallerPosition##
+f$OpenPPL_EarlyPosition1Calling ? 9 :
+f$OpenPPL_EarlyPosition2Calling ? 8 :
+f$OpenPPL_EarlyPosition3Calling ? 7 :
+f$OpenPPL_MiddlePosition1Calling ? 6 :
+f$OpenPPL_MiddlePosition2Calling ? 5 :
+f$OpenPPL_MiddlePosition3Calling ? 4 :
+f$OpenPPL_CutOffCalling ? 3 :
+f$OpenPPL_ButtonCalling ? 2 :
+f$OpenPPL_SmallBlindCalling ? 1 :
+// Can't be button (0), as it is for the first orbit preflop only
+-1
+
+##f$OpenPPL_FirstRaiserPosition##
+f$OpenPPL_EarlyPosition1Raising ? 9 :
+f$OpenPPL_EarlyPosition2Raising ? 8 :
+f$OpenPPL_EarlyPosition3Raising ? 7 :
+f$OpenPPL_MiddlePosition1Raising ? 6 :
+f$OpenPPL_MiddlePosition2Raising ? 5 :
+f$OpenPPL_MiddlePosition3Raising ? 4 :
+f$OpenPPL_CutOffRaising ? 3 :
+f$OpenPPL_ButtonRaising ? 2 :
+f$OpenPPL_SmallBlindRaising ? 1 :
+// Can't be button (0), as it is for the first orbit preflop only
+-1
+
+##f$OpenPPL_LastCallerPosition##
+// Can't be button (0), as it is for the first orbit preflop only
+f$OpenPPL_SmallBlindCalling ? 1 :
+f$OpenPPL_ButtonCalling ? 2 :
+f$OpenPPL_CutOffCalling ? 3 :
+f$OpenPPL_MiddlePosition3Calling ? 4 :
+f$OpenPPL_MiddlePosition2Calling ? 5 :
+f$OpenPPL_MiddlePosition1Calling ? 6 :
+f$OpenPPL_EarlyPosition3Calling ? 7 :
+f$OpenPPL_EarlyPosition2Calling ? 8 :
+f$OpenPPL_EarlyPosition1Calling ? 9 :
 -1
 
 ##f$OpenPPL_LastRaiserPosition##
