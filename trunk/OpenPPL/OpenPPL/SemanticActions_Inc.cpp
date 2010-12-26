@@ -12,7 +12,7 @@ struct debug_1
 { 
 	void operator()(const char *begin, const char *end) const 
 	{ 
-		MessageBox(0, "1", "Debug", 0);
+//		MessageBox(0, "1", "Debug", 0);
 	} 
 };
 
@@ -20,7 +20,7 @@ struct debug_2
 { 
 	void operator()(const char *begin, const char *end) const 
 	{ 
-		MessageBox(0, "2", "Debug", 0);
+//		MessageBox(0, "2", "Debug", 0);
 	} 
 };
 
@@ -97,8 +97,8 @@ struct print_OpenPPL_Library
 struct print_number 
 	{ 
 		void operator()(const char *begin, const char *end) const 
-		{ 
-			std::cout << std::string(begin, end); 
+		{  
+			current_output << std::string(begin, end);
 		} 
 	};
 
@@ -107,59 +107,59 @@ struct print_operator
 	void operator()(const char *begin, const char *end) const 
 	{ 
 		std::string text = std::string(begin, end);
-		std::cout << " " << text << " ";
+		current_output << " " << text << " ";
 		return;
 		// Some operators have to be translated,
 		// as they are named differently in OpenPPL and OH-script.
 		if (text == "and")
 		{
-			std::cout << "&&";
+			current_output << "&&";
 		}
 		else if (text == "or")
 		{
-			std::cout << "||";
+			current_output << "||";
 		}
 		else if (text == "xor")
 		{
-			std::cout << "^^";
+			current_output << "^^";
 		}
 		else if (text == "not")
 		{
-			std::cout << "!";
+			current_output << "!";
 		}
 		else if (text == "bitand")
 		{
-			std::cout << "&";
+			current_output << "&";
 		}
 		else if (text == "bitor")
 		{
-			std::cout << "|";
+			current_output << "|";
 		}
 		else if (text == "bitxor")
 		{
-			std::cout << "^";
+			current_output << "^";
 		}
 		else if (text == "bitnot")
 		{
-			std::cout << "~";
+			current_output << "~";
 		}
 		else if (text == "=")
 		{
-			std::cout << "==";
+			current_output << "==";
 		}
 		else if (text == "mod")
 		{
 			// Modulo needs special treatment,
 			// as "%" gets used as the percentage-operator in OpenPPL.
-			std::cout << "%";
+			current_output << "%";
 		}
 		else
 		{
 			// No translation necessary
 			// The operators are names the same way in both languages.
-			std::cout << text;
+			current_output << text;
 		}
-		std::cout << " ";
+		current_output << " ";
 	} 
 };
 
@@ -170,15 +170,15 @@ struct print_bracket
 		std::string text = std::string(begin, end);
 		if (text == "(")
 		{
-			char open_brackets[4] = "[({";
-			std::cout << open_brackets[bracket_counter%3];
+			char open_brackets[4] = "([{";
+			current_output << open_brackets[bracket_counter%3];
 			bracket_counter++;
 		}
 		else
 		{
 			bracket_counter--;
-			char close_brackets[4] = "])}";
-			std::cout << close_brackets[bracket_counter%3];
+			char close_brackets[4] = ")]}";
+			current_output << close_brackets[bracket_counter%3];
 			bracket_counter++;
 		}
 	} 
@@ -188,7 +188,7 @@ struct print_percentage_operator
 { 
 	void operator()(const char *begin, const char *end) const 
 	{ 
-		std::cout << "/100 * "; 
+		current_output << "/100 * ";
 	} 
 };
 
@@ -200,39 +200,41 @@ struct print_predefined_action
 		std::transform(begin, end, text.begin(), std::tolower);
 		if ((text == "call") || (text == "play"))
 		{
-			std::cout << " f$Action_Call";
+			current_output << "f$Action_Call";
 		}
 		else if ((text == "raisemin") || (text == "betmin"))
 		{
-			std::cout << " f$Action_RaiseMin";
+			current_output << "f$Action_RaiseMin";
 		}
 		else if ((text == "raisehalfpot") || (text == "bethalfpot"))
 		{
-			std::cout << " f$Action_RaiseHalfPot";
+			current_output << "f$Action_RaiseHalfPot";
 		}
 		else if ((text == "raisepot") || (text == "betpot"))
 		{
-			std::cout << " f$Action_RaisePot";
+			current_output << "f$Action_RaisePot";
 		}
 		else if ((text == "raisemax") || (text == "betmax"))
 		{
-			std::cout << " f$Action_RaiseMax";
-		}
+			current_output << "f$Action_RaiseMax";
+		}		
 		else if ((text == "raise") || (text == "bet"))
 		{
-			std::cout << " f$Action_Raise";
+			current_output << "f$Action_Raise";
 		}
 		else if (text == "fold")
 		{
-			std::cout << " f$Action_Fold";
+			current_output <<  "f$Action_Fold";
 		}
 		else if (text == "sitout")
 		{
-			std::cout << " f$Action_SitOut";
+			current_output << "f$Action_SitOut";
 		}
 		// Beep not supported and handled otherwhere.
 	} 
 };
+
+
 
 // Error messages
 

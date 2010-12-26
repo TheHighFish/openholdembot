@@ -21,6 +21,31 @@ bool when_others_fold_force_detected = false;
 bool when_others_when_others_fold_force_detected = false;
 bool open_ended_when_condition_detected = false;
 
+int when_conditions_since_last_action = 0;
+
+// Stringstreams for the generated output
+// We have to use two of them and can't output directly,
+// as we have to reuse the code for open-ended when-conditions.
+// Example:
+//
+// When A
+//   When a1...
+//   When a1...
+// When B
+//
+// has to be translated to
+//
+// (A && a1) ? ... :
+// (A && a2) ? ... :
+// (B && ..)
+stringstream current_open_ended_when_condition;
+stringstream current_when_condition;
+stringstream current_output;
+
+// Remembering the original source to generate meaningful comments.
+string original_source_of_current_when_condition;
+string original_source_of_current_open_ended_when_condition;
+
 // http://www.highscore.de/cpp/boost/parser.html
 // http://www.boost.org/doc/libs/1_35_0/libs/spirit/doc/operators.html
 // http://www.boost.org/doc/libs/1_34_1/libs/spirit/doc/primitives.html
@@ -73,6 +98,122 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 // and AFAIK we can't distribute it over multiple modules.
 #include "SemanticActions_Inc.cpp"
 
+
+// stream handling
+struct reset_output_streams
+{ 
+	void operator()(const char *begin, const char *end) const 
+	{ 
+		current_open_ended_when_condition.str("");
+		current_open_ended_when_condition.clear();
+		current_when_condition.str("");
+		current_when_condition.clear();
+		current_output.str("");
+		current_output.clear();
+		//MessageBox(0, "Reset", "Debug", 0);
+	} 
+};
+
+struct flush_current_output_streams
+{ 
+	void operator()(const char *begin, const char *end) const 
+	{
+		if (current_open_ended_when_condition.str() != "")
+		{
+			cout << current_open_ended_when_condition.str() << " && ";
+		}
+		cout << current_output.str() << endl;;
+	} 
+};
+
+
+
+struct handle_action
+{
+	void operator()(const char *begin, const char *end) const 
+	{
+		when_conditions_since_last_action = 0;
+		if (open_ended_when_condition_detected)
+		{
+			cout << current_open_ended_when_condition.str() << "  &&  "
+				 << current_when_condition.str() << " ? " 
+				 << current_output.str() << " :" << endl;
+		}
+		else
+		{
+			cout << current_when_condition.str() << " ? "
+				 << current_output.str() << " :" << endl;
+		}
+		//cout << "ACTION: " << current_output.str() << endl;
+		current_output.str("");
+		current_output.clear();
+	}
+};
+
+struct handle_when_condition
+{
+	void operator()(const char *begin, const char *end) const 
+	{
+		assert(when_conditions_since_last_action >= 0);
+		when_conditions_since_last_action++;
+		if (when_conditions_since_last_action == 1)
+		{
+			original_source_of_current_when_condition = string(begin, end);
+			current_when_condition.str("");
+			current_when_condition.clear();
+			current_when_condition << current_output.str();
+			//cout << "WHEN CONDITION: " << current_when_condition.str() << endl;
+			current_output.str("");
+			current_output.clear();
+		}
+		else if (when_conditions_since_last_action == 2)
+		{
+			open_ended_when_condition_detected = true;
+			original_source_of_current_open_ended_when_condition =
+				original_source_of_current_when_condition;
+			current_open_ended_when_condition.str("");
+			current_open_ended_when_condition.clear();
+			current_open_ended_when_condition << current_when_condition.str();
+			current_when_condition.str("");
+			current_when_condition.clear();
+			current_when_condition << current_output.str();
+			//cout << "WHEN CONDITION (OPEN ENDED): " << current_open_ended_when_condition.str() << endl;
+			//cout << "WHEN CONDITION: " << current_when_condition.str() << endl;
+			cout << "//" << endl;
+			cout << "// Starting open-ended when-condition" << endl;
+			cout << "// " << original_source_of_current_open_ended_when_condition << endl;
+			cout << "//" << endl;
+			current_output.str("");
+			current_output.clear();
+		}
+		else
+		{
+			//MessageBox(0, "Error: wc > 2", "Debug", 0);
+		}
+	}
+};
+
+struct extra_brackets_for_condition
+	{ 
+		// We need extra brackets for conditions, otherwise we might get problems,
+		// if we combine open-ended when-conditions and normal when conditions
+		// with and-operators, as the operators in conditions might be 
+		// of lower priority.
+		void operator()(const char *begin, const char *end) const 
+		{ 
+			current_output << "[ "; 
+		} 
+	};
+
+struct extra_closing_brackets_for_condition
+	{ 
+		void operator()(const char *begin, const char *end) const 
+		{ 
+			current_output << " ]"; 
+		} 
+	};
+
+
 	struct reset_variables
 	{
 		void operator()(const char *begin, const char *end) const
@@ -87,7 +228,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 	{
 		void operator()(const char *begin, const char *end) const
 		{
-			MessageBox(0, "set_when_others_fold_force_detected", "Debug", 0);
+			//MessageBox(0, "set_when_others_fold_force_detected", "Debug", 0);
 			when_others_fold_force_detected = true;
 		}
 	};
@@ -96,7 +237,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 	{
 		void operator()(const char *begin, const char *end) const
 		{
-			MessageBox(0, "set_when_others_when_others_fold_force_detected", "Debug", 0);
+			//MessageBox(0, "set_when_others_when_others_fold_force_detected", "Debug", 0);
 			when_others_when_others_fold_force_detected = true;
 		}
 	};
@@ -105,7 +246,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 	{
 		void operator()(const char *begin, const char *end) const
 		{
-			MessageBox(0, "set_open_ended_when_condition_detected", "Debug", 0);
+			//MessageBox(0, "set_open_ended_when_condition_detected", "Debug", 0);
 			open_ended_when_condition_detected = true;
 			debug_2();
 		}
@@ -115,26 +256,35 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 	{
 		void operator()(const char *begin, const char *end) const
 		{ 
-			MessageBox(0, "check_for_correct_when_others_fold_force", "Debug", 0);
+			//MessageBox(0, "check_for_correct_when_others_fold_force", "Debug", 0);
 
 			bool correct_when_others_fold_force = false;
 			if (open_ended_when_condition_detected && !when_others_when_others_fold_force_detected)
 			{
-				MessageBox(0, "woff", "Error", 0); //!!!
+				//MessageBox(0, "woff", "Error", 0); //!!!
 			}
 			else if (!open_ended_when_condition_detected && !when_others_fold_force_detected)
 			{
-				MessageBox(0, "wowoff", "Error", 0); //!!!
+				//MessageBox(0, "wowoff", "Error", 0); //!!!
 			}
 		}
 	};
-	
+
+	struct print_comment_for_open_ended_when_condition
+	{
+		void operator()(const char *begin, const char *end) const
+		{
+			std::string text = std::string(begin, end);
+			cout << "// Starting open-ended when-condition" << endl;
+			cout << "// " << text << endl;
+		}
+	};
 
 	struct print_newline
 	{ 
 		void operator()(const char *begin, const char *end) const 
 		{ 
-			std::cout << std::endl; 
+			current_output << std::endl; 
 		} 
 	};
 
@@ -144,24 +294,23 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 		{ 
 			std::string text = std::string(begin, end);
 			if (text == "preflop")
-			{
-				std::cout << "##f$preflop##\n"; 
+			{ 
+				current_output << "##f$preflop##" << endl;
 			}
 			else if (text == "flop")
 			{
-				std::cout << "##f$flop##\n"; 
+				current_output << "##f$flop##" << endl; 
 			}
 			else if (text == "turn")
 			{
-				std::cout << "##f$turn##\n"; 
+				current_output << "##f$turn##" << endl; 
 			}
 			else if (text == "river")
 			{
-				std::cout << "##f$river##\n"; 
+				current_output << "##f$river##" << endl;
 			}
 			else
 			{
-				//std::cout << "##f$" << text << "##\n";
 				assert(k_assert_this_must_not_happen);
 			}
 		} 
@@ -176,18 +325,9 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				// OpenPPL symbols and user-defined symbols 
 				// get translated to f$...OH-script-symbols.
 				// So we prepend "f$"
-				std::cout << "f$";
+				current_output << "f$";
 			}
-			std::cout << std::string(begin, end); 
-		} 
-	}; 
-
-	struct print_comment_for_open_ended_when_condition
-	{ 
-		void operator()(const char *begin, const char *end) const 
-		{ 
-			std::cout << "// Starting open-ended when-condition" << endl;
-			std::cout << "// " << std::string(begin, end) << endl; 
+			current_output << std::string(begin, end);
 		} 
 	}; 
 
@@ -195,36 +335,16 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 	{ 
 		void operator()(const char *begin, const char *end) const 
 		{ 
-			std::cout << "// When Others Fold Force" << endl;
-			std::cout << "f$Action_Fold" << endl; 
+			current_output << "// When Others Fold Force" << endl;
+			current_output << "f$Action_Fold" << endl; 
 		} 
-	}; 
-
-	
-
-	
+	};
 
 	struct print_relative_potsize_action
 	{ 
 		void operator()(const char *begin, const char *end) const 
 		{ 
-			std::cout << "pot"; 
-		} 
-	};
-
-	struct print_questionmark_for_condition
-	{ 
-		void operator()(const char *begin, const char *end) const 
-		{ 
-			std::cout << " ? "; 
-		} 
-	};
-
-	struct print_colon_for_condition
-	{ 
-		void operator()(const char *begin, const char *end) const 
-		{ 
-			std::cout << " :"; 
+			current_output << "pot";
 		} 
 	};
 
@@ -314,7 +434,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 	{ 
 		void operator()(const char *begin, const char *end) const 
 		{ 
-			std::cout << "//\n"
+			current_output << "//\n"
 				"// Undefined action\n"
 				"// No backup action available (no built-in default bot)\n"
 				"// Going to fold\n"
@@ -323,31 +443,29 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 		} 
 	};
 
-
-
 	struct print_hand_expression
 	{
 		void operator()(const char *begin, const char *end) const 
 		{
 			std::string text = std::string(begin, end);
-			cout << "$";
+			current_output << "$";
 			int length = text.length();
 			for (int i=0; i<length; i++)
 			{
 				char next_char = toupper(text[i]);
 				if (next_char >= '0' && next_char <= '9')
 				{
-					cout << next_char;
+					current_output << next_char;
 				}
 				else if ((next_char == 'T') || (next_char == 'J')
 					|| (next_char == 'Q') || (next_char == 'K') || (next_char == 'A'))
 				{
-					cout << next_char;
+					current_output << next_char;
 				}
 				else if (next_char == 'S')
 				{
 					// Suited
-					cout << "s";
+					current_output << "s";
 					// Stop processing this part of the input,
 					// as the rest is not relevant.
 					break;
@@ -355,8 +473,6 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			}
 		}
 	};
-
-	
 
 	template <typename Scanner>
 
@@ -376,12 +492,14 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			using namespace boost::spirit; 
 			// Whole PPL-file
 			openPPL_code = option_settings_to_be_ignored
-				>> ((keyword_custom [print_license()][print_options()] 
+				>> ((keyword_custom [print_license()][print_options()]
+					[reset_output_streams()]
 				>> custom_sections)
 					| missing_keyword_custom);
 			custom_sections = !symbol_section
 				>> (code_sections/* | missing_code_section !!!*/)
-				>> end_p[print_prime_coded_board_ranks()]
+				>> end_p[flush_current_output_streams()]
+					[print_prime_coded_board_ranks()]
 					[print_predefined_action_constants()]
 					[print_technical_functions()]
 					[print_OpenPPL_Library()];
@@ -414,24 +532,27 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				>> flop_section [print_newline()][print_newline()] 
 				>> turn_section [print_newline()][print_newline()] 
 				>> river_section [print_newline()][print_newline()];
-			preflop_section = (keyword_preflop[print_function_header_for_betting_round()][reset_variables()]
+			preflop_section = (keyword_preflop[print_function_header_for_betting_round()]
+				[flush_current_output_streams()][reset_variables()][reset_output_streams()]
 				>> when_section)[check_for_correct_when_others_fold_force()]
 					[print_when_others_fold_force()];
 			keyword_preflop = str_p("preflop") | "Preflop" | "PREFLOP";
-			flop_section = (keyword_flop[print_function_header_for_betting_round()][reset_variables()] 
+			flop_section = (keyword_flop[print_function_header_for_betting_round()]
+				[flush_current_output_streams()][reset_variables()][reset_output_streams()]
 				>> when_section)[check_for_correct_when_others_fold_force()]
 					[print_when_others_fold_force()];
 			keyword_flop = str_p("flop") | "Flop" | "FLOP";
-			turn_section = (keyword_turn[print_function_header_for_betting_round()][reset_variables()] 
+			turn_section = (keyword_turn[print_function_header_for_betting_round()]
+				[flush_current_output_streams()][reset_variables()][reset_output_streams()]
 				>> when_section)[check_for_correct_when_others_fold_force()]
 					[print_when_others_fold_force()];
 			keyword_turn = str_p("turn") | "Turn" | "TURN";
-			river_section = (keyword_river[print_function_header_for_betting_round()][reset_variables()] 
+			river_section = (keyword_river[print_function_header_for_betting_round()]
+				[flush_current_output_streams()][reset_variables()][reset_output_streams()]
 				>> when_section)[check_for_correct_when_others_fold_force()]
 					[print_when_others_fold_force()];
 			keyword_river = str_p("river") | "River" | "RIVER";
-			when_section = !when_condition_sequence_with_action >> 
-				!open_ended_when_condition_sequence;
+			when_section = when_condition_sequence;
 			missing_code_section =
 				// missing river
 				((preflop_section >> flop_section >> turn_section >> str_p("")[error_missing_code_section()])
@@ -444,20 +565,11 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 
 			// When-condition sequences (with action)
 			keyword_when = str_p("when") | "When" | "WHEN";
-			when_condition = (keyword_when >> condition)[print_questionmark_for_condition()];
-			when_condition_with_action = 
-				when_others_when_others_fold_force
-				|
-				when_others_fold_force
-				|
-				(when_condition	>> action[print_colon_for_condition()][print_newline()]);
-			when_condition_sequence_with_action = *when_condition_with_action;
-			open_ended_when_condition_sequence = *(
-				when_others_when_others_fold_force				
-				|
-				(open_ended_when_condition[set_open_ended_when_condition_detected()] >> when_condition_sequence_with_action));
-			open_ended_when_condition = str_p("")[print_bracket()] >> when_condition/*[print_closing_bracket()]*/;
-		
+			when_condition = (keyword_when >> condition)[handle_when_condition()];
+			when_condition_sequence = *(when_others_when_others_fold_force
+				| when_others_fold_force
+				| when_condition
+				| action);
 
 			// When Others Fold Force
 			keyword_others = str_p("others") | "Others" | "OTHERS";
@@ -467,7 +579,8 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				>> when_others_fold_force)[set_when_others_when_others_fold_force_detected()];
 			
 			// Conditions
-			condition = expression;
+			condition = str_p("")[extra_brackets_for_condition()] >> expression
+				[extra_closing_brackets_for_condition()];
 
 			// Expressions
 			expression = or_expression;
@@ -525,6 +638,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// Actions (and return statements)
 			// We handle boths in the same way, as it simplifies things a lot.
 			action = (action_without_force >> keyword_force)
+					[handle_action()]//[flush_current_output_streams()][reset_output_streams()]
 				| erroneous_action_without_force;
 			action_without_force = predefined_action 
 				| fixed_betsize_action 
@@ -540,6 +654,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			keyword_raisehalfpot = str_p("raisehalfpot") | "Raisehalfpot" | "RaiseHalfPot" | "RAISEHALFPOT";
 			keyword_raisepot = str_p("raisepot") | "Raisepot" | "RaisePot" | "RAISEPOT";
 			keyword_raisemax = str_p("raisemax") | "Raisemax" | "RaiseMax" | "RAISEMAX";
+			keyword_allin = str_p("allin") | "Allin" | "ALLIN";
 			keyword_fold = str_p("fold") | "Fold" | "FOLD";
 			keyword_bet = str_p("bet") | "Bet" | "BET";
 			keyword_betmin = str_p("betmin") | "Betmin" | "BetMin" | "BETMIN";
@@ -604,7 +719,7 @@ int main(int argc, char *argv[])
 			"\n"
 			"OpenPPL INPUTFILE.txt > OUTPUTFILE.ohf";
 
-		MessageBox(0, error_message, "Error", 0);
+		//MessageBox(0, error_message, "Error", 0);
 		exit(-1);
 	}
 	else
