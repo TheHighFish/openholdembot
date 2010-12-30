@@ -14,6 +14,8 @@ enum error_codes
 	k_error_missing_keyword_custom,
 	k_error_missing_brackets_for_card_expression,
 	k_error_invalid_character,
+	k_error_too_many_open_ended_when_conditions,
+	k_error_missing_when_others_fold_force,
 	k_error_general,
 	// Last one: this is no error code,
 	// but used for creating and indexing of arrays.

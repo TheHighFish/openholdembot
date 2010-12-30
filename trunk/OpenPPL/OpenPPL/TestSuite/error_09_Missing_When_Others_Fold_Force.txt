@@ -1,9 +1,10 @@
+// "Beep" not supported
 custom
 
 symbols
 
 preflop
-when others fold force
+when A Call Force
 
 flop
 when others fold force
