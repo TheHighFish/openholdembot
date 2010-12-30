@@ -98,224 +98,6 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 // and AFAIK we can't distribute it over multiple modules.
 #include "SemanticActions_Inc.cpp"
 
-
-// stream handling
-struct reset_output_streams
-{ 
-	void operator()(const char *begin, const char *end) const 
-	{ 
-		current_open_ended_when_condition.str("");
-		current_open_ended_when_condition.clear();
-		current_when_condition.str("");
-		current_when_condition.clear();
-		current_output.str("");
-		current_output.clear();
-		//MessageBox(0, "Reset", "Debug", 0);
-	} 
-};
-
-struct flush_current_output_streams
-{ 
-	void operator()(const char *begin, const char *end) const 
-	{
-		if (current_open_ended_when_condition.str() != "")
-		{
-			cout << current_open_ended_when_condition.str() << " && ";
-		}
-		cout << current_output.str() << endl;;
-	} 
-};
-
-
-
-struct handle_action
-{
-	void operator()(const char *begin, const char *end) const 
-	{
-		when_conditions_since_last_action = 0;
-		if (open_ended_when_condition_detected)
-		{
-			cout << current_open_ended_when_condition.str() << "  &&  "
-				 << current_when_condition.str() << " ? " 
-				 << current_output.str() << " :" << endl;
-		}
-		else
-		{
-			cout << current_when_condition.str() << " ? "
-				 << current_output.str() << " :" << endl;
-		}
-		//cout << "ACTION: " << current_output.str() << endl;
-		current_output.str("");
-		current_output.clear();
-	}
-};
-
-struct handle_when_condition
-{
-	void operator()(const char *begin, const char *end) const 
-	{
-		assert(when_conditions_since_last_action >= 0);
-		when_conditions_since_last_action++;
-		if (when_conditions_since_last_action == 1)
-		{
-			original_source_of_current_when_condition = string(begin, end);
-			current_when_condition.str("");
-			current_when_condition.clear();
-			current_when_condition << current_output.str();
-			//cout << "WHEN CONDITION: " << current_when_condition.str() << endl;
-			current_output.str("");
-			current_output.clear();
-		}
-		else if (when_conditions_since_last_action == 2)
-		{
-			open_ended_when_condition_detected = true;
-			original_source_of_current_open_ended_when_condition =
-				original_source_of_current_when_condition;
-			current_open_ended_when_condition.str("");
-			current_open_ended_when_condition.clear();
-			current_open_ended_when_condition << current_when_condition.str();
-			current_when_condition.str("");
-			current_when_condition.clear();
-			current_when_condition << current_output.str();
-			//cout << "WHEN CONDITION (OPEN ENDED): " << current_open_ended_when_condition.str() << endl;
-			//cout << "WHEN CONDITION: " << current_when_condition.str() << endl;
-			cout << "//" << endl;
-			cout << "// Starting open-ended when-condition" << endl;
-			cout << "// " << original_source_of_current_open_ended_when_condition << endl;
-			cout << "//" << endl;
-			current_output.str("");
-			current_output.clear();
-		}
-		else
-		{
-			//MessageBox(0, "Error: wc > 2", "Debug", 0);
-		}
-	}
-};
-
-struct extra_brackets_for_condition
-	{ 
-		// We need extra brackets for conditions, otherwise we might get problems,
-		// if we combine open-ended when-conditions and normal when conditions
-		// with and-operators, as the operators in conditions might be 
-		// of lower priority.
-		void operator()(const char *begin, const char *end) const 
-		{ 
-			current_output << "[ "; 
-		} 
-	};
-
-struct extra_closing_brackets_for_condition
-	{ 
-		void operator()(const char *begin, const char *end) const 
-		{ 
-			current_output << " ]"; 
-		} 
-	};
-
-
-	struct reset_variables
-	{
-		void operator()(const char *begin, const char *end) const
-		{
-			when_others_fold_force_detected = false;
-			when_others_when_others_fold_force_detected = false;
-			open_ended_when_condition_detected = false;
-		}
-	};
-
-	struct set_when_others_fold_force_detected
-	{
-		void operator()(const char *begin, const char *end) const
-		{
-			//MessageBox(0, "set_when_others_fold_force_detected", "Debug", 0);
-			when_others_fold_force_detected = true;
-		}
-	};
-
- 	struct set_when_others_when_others_fold_force_detected
-	{
-		void operator()(const char *begin, const char *end) const
-		{
-			//MessageBox(0, "set_when_others_when_others_fold_force_detected", "Debug", 0);
-			when_others_when_others_fold_force_detected = true;
-		}
-	};
-
-	struct set_open_ended_when_condition_detected
-	{
-		void operator()(const char *begin, const char *end) const
-		{
-			//MessageBox(0, "set_open_ended_when_condition_detected", "Debug", 0);
-			open_ended_when_condition_detected = true;
-			debug_2();
-		}
-	};
-
-	struct check_for_correct_when_others_fold_force
-	{
-		void operator()(const char *begin, const char *end) const
-		{ 
-			//MessageBox(0, "check_for_correct_when_others_fold_force", "Debug", 0);
-
-			bool correct_when_others_fold_force = false;
-			if (open_ended_when_condition_detected && !when_others_when_others_fold_force_detected)
-			{
-				//MessageBox(0, "woff", "Error", 0); //!!!
-			}
-			else if (!open_ended_when_condition_detected && !when_others_fold_force_detected)
-			{
-				//MessageBox(0, "wowoff", "Error", 0); //!!!
-			}
-		}
-	};
-
-	struct print_comment_for_open_ended_when_condition
-	{
-		void operator()(const char *begin, const char *end) const
-		{
-			std::string text = std::string(begin, end);
-			cout << "// Starting open-ended when-condition" << endl;
-			cout << "// " << text << endl;
-		}
-	};
-
-	struct print_newline
-	{ 
-		void operator()(const char *begin, const char *end) const 
-		{ 
-			current_output << std::endl; 
-		} 
-	};
-
-	struct print_function_header_for_betting_round
-	{
-		void operator()(const char *begin, const char *end) const 
-		{ 
-			std::string text = std::string(begin, end);
-			if (text == "preflop")
-			{ 
-				current_output << "##f$preflop##" << endl;
-			}
-			else if (text == "flop")
-			{
-				current_output << "##f$flop##" << endl; 
-			}
-			else if (text == "turn")
-			{
-				current_output << "##f$turn##" << endl; 
-			}
-			else if (text == "river")
-			{
-				current_output << "##f$river##" << endl;
-			}
-			else
-			{
-				assert(k_assert_this_must_not_happen);
-			}
-		} 
-	};
-
 	struct print_keyword
 	{ 
 		void operator()(const char *begin, const char *end) const 
@@ -330,149 +112,6 @@ struct extra_closing_brackets_for_condition
 			current_output << std::string(begin, end);
 		} 
 	}; 
-
-	struct print_when_others_fold_force
-	{ 
-		void operator()(const char *begin, const char *end) const 
-		{ 
-			current_output << "// When Others Fold Force" << endl;
-			current_output << "f$Action_Fold" << endl; 
-		} 
-	};
-
-	struct print_relative_potsize_action
-	{ 
-		void operator()(const char *begin, const char *end) const 
-		{ 
-			current_output << "pot";
-		} 
-	};
-
-	struct print_non_suited_board_expression
-	{ 
-		void operator()(const char *begin, const char *end) const 
-		{ 
-			CString text = std::string(begin, end).c_str();
-			generate_code_for_non_suited_board(text);
-		} 
-	};
-
-	struct print_suited_board_expression
-	{ 
-		void operator()(const char *begin, const char *end) const 
-		{ 
-			CString text = std::string(begin, end).c_str();
-			generate_code_for_suited_board(text);
-		} 
-	};
-
-	struct error_beep_not_supported
-	{
-		void operator()(const char *begin, const char *end) const 
-		{
-			ErrorMessage(k_error_beep_not_supported, ErroneousCodeSnippet(begin));
-		}
-	};
-
-	struct error_specific_suits_not_supported
-	{
-		void operator()(const char *begin, const char *end) const 
-		{
-			ErrorMessage(k_error_specific_suits_not_supported, ErroneousCodeSnippet(begin));
-		}
-	};
-
-	struct error_action_without_force
-	{
-		void operator()(const char *begin, const char *end) const 
-		{
-			ErrorMessage(k_error_action_without_force, ErroneousCodeSnippet(begin));
-		}
-	};
-
-	struct error_missing_code_section
-	{
-		void operator()(const char *begin, const char *end) const 
-		{
-			ErrorMessage(k_error_missing_code_section, ErroneousCodeSnippet(begin));
-		}
-	};
-
-	struct error_missing_closing_bracket
-	{
-		void operator()(const char *begin, const char *end) const 
-		{
-			ErrorMessage(k_error_missing_closing_bracket, ErroneousCodeSnippet(begin));
-		}
-	};
-
-	struct error_missing_keyword_custom
-	{
-		void operator()(const char *begin, const char *end) const 
-		{
-			ErrorMessage(k_error_missing_keyword_custom, ErroneousCodeSnippet(begin));
-		}
-	};
-
-	struct error_missing_brackets_for_card_expression
-	{
-		void operator()(const char *begin, const char *end) const 
-		{
-			ErrorMessage(k_error_missing_brackets_for_card_expression, ErroneousCodeSnippet(begin));
-		}
-	};
-
-	struct error_invalid_character
-		{
-		void operator()(const char *begin, const char *end) const 
-		{
-			ErrorMessage(k_error_invalid_character, ErroneousCodeSnippet(begin));
-		}
-	};
-
-	struct print_fold_as_last_alternative_for_when_condition_sequence
-	{ 
-		void operator()(const char *begin, const char *end) const 
-		{ 
-			current_output << "//\n"
-				"// Undefined action\n"
-				"// No backup action available (no built-in default bot)\n"
-				"// Going to fold\n"
-				"//\n"
-				"f$Action_Fold\n\n"; 
-		} 
-	};
-
-	struct print_hand_expression
-	{
-		void operator()(const char *begin, const char *end) const 
-		{
-			std::string text = std::string(begin, end);
-			current_output << "$";
-			int length = text.length();
-			for (int i=0; i<length; i++)
-			{
-				char next_char = toupper(text[i]);
-				if (next_char >= '0' && next_char <= '9')
-				{
-					current_output << next_char;
-				}
-				else if ((next_char == 'T') || (next_char == 'J')
-					|| (next_char == 'Q') || (next_char == 'K') || (next_char == 'A'))
-				{
-					current_output << next_char;
-				}
-				else if (next_char == 'S')
-				{
-					// Suited
-					current_output << "s";
-					// Stop processing this part of the input,
-					// as the rest is not relevant.
-					break;
-				}
-			}
-		}
-	};
 
 	template <typename Scanner>
 
@@ -493,12 +132,11 @@ struct extra_closing_brackets_for_condition
 			// Whole PPL-file
 			openPPL_code = option_settings_to_be_ignored
 				>> ((keyword_custom [print_license()][print_options()]
-					[reset_output_streams()]
 				>> custom_sections)
 					| missing_keyword_custom);
 			custom_sections = !symbol_section
 				>> (code_sections/* | missing_code_section !!!*/)
-				>> end_p[flush_current_output_streams()]
+				>> end_p
 					[print_prime_coded_board_ranks()]
 					[print_predefined_action_constants()]
 					[print_technical_functions()]
@@ -518,39 +156,35 @@ struct extra_closing_brackets_for_condition
 
 			// User defined symbols
 			symbol_section = keyword_symbols >> *symbol_definition;
-			keyword_new = str_p("new") | "New";
-			keyword_symbols = str_p("symbols") | "Symbols";
-			keyword_symbol = str_p("symbol") | "Symbol";
-			keyword_end = str_p("end") | "End";
+			keyword_new = str_p("new") | "New" | "NEW";
+			keyword_symbols = str_p("symbols") | "Symbols" | "SYMBOLS";
+			keyword_symbol = str_p("symbol") | "Symbol" | "SYMBOL";
+			keyword_end = str_p("end") | "End" | "END";
 			symbol_definition = keyword_new >> keyword_symbol[reset_variables()]
 				>> symbol//[print_function_header_for_betting_round()] 
 				>> when_section
 				>> keyword_end >> keyword_symbol;
 
 			// Preflop, flop, turn, river
-			code_sections = preflop_section[print_newline()][print_newline()]
-				>> flop_section [print_newline()][print_newline()] 
-				>> turn_section [print_newline()][print_newline()] 
-				>> river_section [print_newline()][print_newline()];
+			code_sections = preflop_section
+				>> flop_section 
+				>> turn_section 
+				>> river_section;
 			preflop_section = (keyword_preflop[print_function_header_for_betting_round()]
-				[flush_current_output_streams()][reset_variables()][reset_output_streams()]
 				>> when_section)[check_for_correct_when_others_fold_force()]
-					[print_when_others_fold_force()];
+					[print_when_others_fold_force()][reset_variables()];
 			keyword_preflop = str_p("preflop") | "Preflop" | "PREFLOP";
 			flop_section = (keyword_flop[print_function_header_for_betting_round()]
-				[flush_current_output_streams()][reset_variables()][reset_output_streams()]
 				>> when_section)[check_for_correct_when_others_fold_force()]
-					[print_when_others_fold_force()];
+					[print_when_others_fold_force()][reset_variables()];
 			keyword_flop = str_p("flop") | "Flop" | "FLOP";
 			turn_section = (keyword_turn[print_function_header_for_betting_round()]
-				[flush_current_output_streams()][reset_variables()][reset_output_streams()]
 				>> when_section)[check_for_correct_when_others_fold_force()]
-					[print_when_others_fold_force()];
+					[print_when_others_fold_force()][reset_variables()];
 			keyword_turn = str_p("turn") | "Turn" | "TURN";
 			river_section = (keyword_river[print_function_header_for_betting_round()]
-				[flush_current_output_streams()][reset_variables()][reset_output_streams()]
 				>> when_section)[check_for_correct_when_others_fold_force()]
-					[print_when_others_fold_force()];
+					[print_when_others_fold_force()][reset_variables()];
 			keyword_river = str_p("river") | "River" | "RIVER";
 			when_section = when_condition_sequence;
 			missing_code_section =
@@ -636,9 +270,9 @@ struct extra_closing_brackets_for_condition
 				>> str_p("=") >> card_expression)[error_missing_brackets_for_card_expression()];
 				 
 			// Actions (and return statements)
-			// We handle boths in the same way, as it simplifies things a lot.
+			// We handle both in the same way, as it simplifies things a lot.
 			action = (action_without_force >> keyword_force)
-					[handle_action()]//[flush_current_output_streams()][reset_output_streams()]
+					[handle_action()]
 				| erroneous_action_without_force;
 			action_without_force = predefined_action 
 				| fixed_betsize_action 
@@ -727,7 +361,9 @@ int main(int argc, char *argv[])
 		// Using the first real argument
 		InputFile = argv[1];
 	}
-	//!!!p_symbol_table = new(CSymbolTable);
+	p_symbol_table = new(CSymbolTable);
+	p_symbol_table->AddSymbolsFromFile("OpenPPL_Library.ohf");
+	p_symbol_table->AddSymbolsFromFile(InputFile);
 
 	std::ifstream fs(InputFile); 
 	std::ostringstream ss; 
@@ -754,6 +390,3 @@ int main(int argc, char *argv[])
 		}
 	}
 } 
-
-//missing keyword \"custom\"\n"
-//			  "  * missing \"when others fold force\" at the end of a block\n"

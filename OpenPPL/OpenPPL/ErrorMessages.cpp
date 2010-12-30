@@ -22,7 +22,7 @@ static const char *error_messages[k_number_of_error_codes] =
 	"When hand = AcT call  force\n"
 	"When hand = AT  raise force\n"
 	"\n"
-	"Coding this way is the old way to randomize actions\n"
+	"Coding this way was the old way to randomize actions\n"
 	"before randomization go introduced into PPL.\n"
 	"\n"
 	"We are sorry, but you should change this part of your formula.\n",
@@ -85,7 +85,34 @@ static const char *error_messages[k_number_of_error_codes] =
 	"[<=>] comparisions\n"
 	"[.] the decimal point in numbers\n"
 	"\n"
-	"Please get rid of the superfluos characters.\n",
+	"Please get rid of the superfluous characters.\n",
+
+	// k_error_too_many_open_ended_when_conditions
+	"Error: Too many open-ended when-conditions.\n"
+	"\n"
+	"There is only one open-ended when-condition allowed.\n"
+	"Code like\n"
+	"\n"
+	"When A\n"
+	"  When B\n"
+	"    When C RaiseMax force\n"
+	"\n"
+	"is not possible with OpenPPL, as it would not be clear,\n"
+	"how the conditions are nested.\n",
+
+	// k_error_missing_when_others_fold_force
+	"Error: Missing \"When Others Fold Force\".\n"
+	"\n"
+	"OpenPPL does not provide any default bot logic in the background,\n"
+	"so all main code sections (preflop, flop, turn and river)\n"
+	"have to be explicitly terminated by\n"
+	"\n"
+	"When Others Fold Force\n"
+	"or\n"
+	"When Others\n"
+	"  When Others Fold Force.\n"
+	"\n"
+	"Please complete your formula so that all actions are specified.\n",
 
 	// k_error_general
 	"General syntax error.\n"	
@@ -103,7 +130,7 @@ void TerminateProcessing()
 	using namespace std;
 	cout << endl << endl << "Error: Processing stopped due to syntax errors." << endl;
 	cout << "Output incomplete and unusable." << endl << endl;
-	//!!!exit(-1);
+	exit(-1);
 }
 
 void ErrorMessage(int error_code, CString invalid_code_snippet)
