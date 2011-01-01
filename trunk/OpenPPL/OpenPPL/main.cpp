@@ -98,21 +98,6 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 // and AFAIK we can't distribute it over multiple modules.
 #include "SemanticActions_Inc.cpp"
 
-	struct print_keyword
-	{ 
-		void operator()(const char *begin, const char *end) const 
-		{ 
-			if (1/*p_symbol_table->IsOpenPPLSymbol()*/)
-			{
-				// OpenPPL symbols and user-defined symbols 
-				// get translated to f$...OH-script-symbols.
-				// So we prepend "f$"
-				current_output << "f$";
-			}
-			current_output << std::string(begin, end);
-		} 
-	}; 
-
 	template <typename Scanner>
 
 	struct definition 
@@ -315,14 +300,14 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			terminal_expression = number[print_number()] | boolean_constant | symbol;
 			number = real_p;
 			keyword_true = str_p("true") | "True" | "TRUE";
-			keyword_false = (str_p("false") | "False" | "FALSE")[print_keyword()];
-			boolean_constant = keyword_true | keyword_false;
+			keyword_false = (str_p("false") | "False" | "FALSE";
+			boolean_constant = (keyword_true | keyword_false)[print_symbol()];
 			// "Symbol" is a lexeme - we have to be very careful here.
 			// We have to use the lexeme_d directive to disable skipping of whitespace,
 			// otherwise things like "When x Bet force" would treat "x Bet force"
 			// as a single keyword and cause an error.
 			// http://www.boost.org/doc/libs/1_40_0/libs/spirit/classic/doc/quickref.html
-			symbol = (lexeme_d[alpha_p >> *alnum_p][print_keyword()]) | invalid_symbol;
+			symbol = (lexeme_d[alpha_p >> *alnum_p][print_symbol()]) | invalid_symbol;
 
 			// "Symbols" cintaining invalid cahracters
 			invalid_character = str_p(";")  | "," | ":" | "|" | "@" | "€" | "!" | "\\"

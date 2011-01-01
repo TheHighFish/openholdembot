@@ -40,15 +40,6 @@ struct print_predefined_action_constants
 	} 
 };
 
-struct print_relative_potsize_action
-{ 
-	void operator()(const char *begin, const char *end) const 
-	{ 
-		current_output << "pot";
-	} 
-};
-
-
 struct print_technical_functions
 { 
 	void operator()(const char *begin, const char *end) const 
@@ -83,6 +74,25 @@ struct print_OpenPPL_Library
 // Easy to translate tokens
 //
 
+struct print_symbol
+	{ 
+		void operator()(const char *begin, const char *end) const 
+		{ 
+			std::string symbol = std::string(begin, end);
+			if (p_symbol_table->IsOpenPPLSymbol(symbol.c_str()))
+			{
+				// OpenPPL symbols and user-defined symbols 
+				// get translated to f$...OH-script-symbols.
+				// So we prepend "f$"
+				current_output << p_symbol_table->GetStandardizedSymbolName(symbol.c_str());
+			}
+			else
+			{
+				current_output << symbol;
+			}
+		} 
+	}; 
+
 struct print_function_header_for_betting_round
 {
 	void operator()(const char *begin, const char *end) const 
@@ -116,6 +126,14 @@ struct print_number
 	void operator()(const char *begin, const char *end) const 
 	{  
 		current_output << std::string(begin, end);
+	} 
+};
+
+struct print_relative_potsize_action
+{ 
+	void operator()(const char *begin, const char *end) const 
+	{ 
+		current_output << "pot";
 	} 
 };
 
