@@ -18,6 +18,8 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
+			UseOfMFC="2"
+			ManagedExtensions="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -37,6 +39,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;E:\Dokumente und Einstellungen\Development\Desktop\boost_1_44_0&quot;;&quot;E:\Dokumente und Einstellungen\Development\Desktop\boost_1_44_0\boost\config&quot;;&quot;E:\Dokumente und Einstellungen\Development\Desktop\boost_1_44_0\boost\spirit\include&quot;"
+				RuntimeLibrary="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
