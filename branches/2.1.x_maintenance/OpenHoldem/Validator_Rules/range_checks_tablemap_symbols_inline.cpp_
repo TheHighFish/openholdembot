@@ -26,7 +26,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0011")
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol swagtextmethod")
-    PRECONDITION (true)
+    PRECONDITION ((gws("isnl") == 1) || (gws("istournament") == 1))
     POSTCONDITION ((gws("swagtextmethod") == 1) || (gws("swagtextmethod") == 2) || (gws("swagtextmethod") == 3))
-    SYMBOLS_POSSIBLY_AFFECTED ("swagtextmethod")
+    SYMBOLS_POSSIBLY_AFFECTED ("isnl", "istournament", "swagtextmethod")
 END_TESTCASE
