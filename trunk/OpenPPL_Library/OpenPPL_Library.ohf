@@ -984,11 +984,28 @@ ranklocommon
 ($$pr0 == f$OpenPPL_LowestBoardCard && $$pr1 == f$OpenPPL_2ndLowestBoardCard)
 || ($$pr0 == f$OpenPPL_2ndLowestBoardCard && $$pr1 == f$OpenPPL_LowestBoardCard)
 
+##f$OpenPPL_HaveDoubleGutshotDraw##
+   `((rankbits>>1) & 0b1011101) == 5  // A_345_7
+|| `((rankbits>>2) & 0b1011101) == 5  // 2_456_8
+|| `((rankbits>>3) & 0b1011101) == 5  // 3_567_9
+|| `((rankbits>>4) & 0b1011101) == 5  // 4_678_T
+|| `((rankbits>>5) & 0b1011101) == 5  // 5_789_J
+|| `((rankbits>>6) & 0b1011101) == 5  // 6_89T_Q
+|| `((rankbits>>7) & 0b1011101) == 5  // 8_9TJ_K
+|| `((rankbits>>8) & 0b1011101) == 5  // 9_TJQ_A
+|| `((rankbits>>1) & 0b11011011) == 6 // A2_45_78
+|| `((rankbits>>2) & 0b11011011) == 6 // 23_56_89
+|| `((rankbits>>3) & 0b11011011) == 6 // 34_67_9T
+|| `((rankbits>>4) & 0b11011011) == 6 // 45_78_TJ
+|| `((rankbits>>5) & 0b11011011) == 6 // 56_89_JQ
+|| `((rankbits>>6) & 0b11011011) == 6 // 67_9T_QK
+|| `((rankbits>>7) & 0b11011011) == 6 // 78_TJ_KA
+
 ##f$OpenPPL_HaveFlushDraw##
 (nsuited >= 4)
 
 ##f$OpenPPL_HaveNothing##
-!f$OpenPPL_HavePair && !f$OpenPPL_Overcards==2 && !f$OpenPPL_HaveBestOverpairOrBetter
+!f$OpenPPL_HavePair && !(f$OpenPPL_Overcards == 2) && !f$OpenPPL_HaveBestOverpairOrBetter
 && !f$OpenPPL_HaveBackdoorFlushDraw && !f$OpenPPL_HaveBackdoorStraightDraw
 
 ##f$OpenPPL_HaveNutFlush##
@@ -1003,6 +1020,18 @@ f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 0)
 ##f$OpenPPL_HaveNutStraightFlush##
 isstraightflush && (nhandshi == 0)
 
+##f$OpenPPL_HaveOpenEndedStraightDraw##
+f$OpenPPL_HaveStraight
+|| (rankbits & 0b111100) == 0b111100      // 5432
+|| ((rankbits>>1) & 0b111100) == 0b111100 // 6543
+|| ((rankbits>>2) & 0b111100) == 0b111100 // 7654
+|| ((rankbits>>3) & 0b111100) == 0b111100 // 8765
+|| ((rankbits>>4) & 0b111100) == 0b111100 // 9876
+|| ((rankbits>>5) & 0b111100) == 0b111100 // T987
+|| ((rankbits>>6) & 0b111100) == 0b111100 // JT98
+|| ((rankbits>>7) & 0b111100) == 0b111100 // QJT9
+|| ((rankbits>>8) & 0b111100) == 0b111100 // KQJT
+
 ##f$OpenPPL_HaveSet##
 [  ispair
 && (($$pr0==$$cr0) || ($$pr0==$$cr1) || ($$pr0==$$cr2) || ($$pr0==$$cr3) || ($$pr0==$$cr4)) ]
@@ -1012,6 +1041,12 @@ isstraightflush && (nhandshi == 0)
 &&   [(pokerval & threeofakind) && !(pokervalcommon & threeofakind)
   || ((pokerval & fullhouse)    && `(pcbits &0b11100) == 1)
   ||  (pokerval & fourofakind)  && !(pokervalcommon & fourofakind)]
+
+##f$OpenPPL_HaveStraight##
+nstraightfill==0
+
+##f$OpenPPL_HaveStraightDraw##
+f$OpenPPL_HaveOpenEndedStraightDraw || f$OpenPPL_HaveDoubleGutshotDraw
 
 ##f$OpenPPL_HaveStraightFlush##
 (isstraightflush || isroyalflush)
@@ -1417,9 +1452,6 @@ f$OpenPPL_Middle
 0
 
 ##f$OpenPPL_HaveFlush##
-0
-
-##f$OpenPPL_HaveStraight##
 0
 
 ##f$OpenPPL_HaveQuads##
