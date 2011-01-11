@@ -68,7 +68,7 @@ didcallround1
 
 ##f$OpenPPL_BotsActionsOnThisRoundIncludingChecks##
 // Folds and allins are not relevant, as then the hand is over for us.
-(didchec || didcall || didswag || didrais)
+(didchec + didcall + didswag + didrais)
 
 ##BotsActionsPreflop##
 (didcallround1 + didraisround1 + didswaground1)
@@ -256,7 +256,7 @@ f$OpenPPL_SmallBlindStartingStacksize > f$OpenPPL_MaxStillToActStacksizeAfterSma
   f$OpenPPL_SmallBlindStartingStacksize : f$OpenPPL_MaxStillToActStacksizeAfterSmallBlind
 
 ##f$OpenPPL_MaxStillToActStacksizeAfterCutOff##
-f$OpenPPL_ButtonStartingStacksize > f$OpenPPL_MaxStillToActStacksizeAfterButton?
+f$OpenPPL_ButtonStartingStacksize > f$OpenPPL_MaxStillToActStacksizeAfterButton ?
   f$OpenPPL_ButtonStartingStacksize : f$OpenPPL_MaxStillToActStacksizeAfterButton
 
 ##f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition3##
@@ -264,23 +264,23 @@ f$OpenPPL_CutOffStartingStacksize > f$OpenPPL_MaxStillToActStacksizeAfterCutOff?
   f$OpenPPL_CutOffStartingStacksize : f$OpenPPL_MaxStillToActStacksizeAfterCutOff
 
 ##f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition2##
-f$OpenPPL_MiddlePosition3StartingStacksize > f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition3?
+f$OpenPPL_MiddlePosition3StartingStacksize > f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition3 ?
   f$OpenPPL_MiddlePosition3StartingStacksize : f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition3
 
 ##f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition1##
-f$OpenPPL_MiddlePosition2StartingStacksize > f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition2?
+f$OpenPPL_MiddlePosition2StartingStacksize > f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition2 ?
   f$OpenPPL_MiddlePosition2StartingStacksize : f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition2
 
 ##f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition3##
-f$OpenPPL_MiddlePosition1StartingStacksize > f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition1?
+f$OpenPPL_MiddlePosition1StartingStacksize > f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition1 ?
   f$OpenPPL_MiddlePosition1StartingStacksize : f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition1
 
 ##f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition2##
-f$OpenPPL_EarlyPosition3StartingStacksize > f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition3?
+f$OpenPPL_EarlyPosition3StartingStacksize > f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition3 ?
   f$OpenPPL_EarlyPosition3StartingStacksize : f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition3
 
 ##f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition1##
-f$OpenPPL_EarlyPosition2StartingStacksize > f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition2?
+f$OpenPPL_EarlyPosition2StartingStacksize > f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition2 ?
   f$OpenPPL_EarlyPosition2StartingStacksize : f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition2
 
 ##f$OpenPPL_MinStillToActStacksizeAfterSmallBlind##
@@ -292,31 +292,31 @@ f$OpenPPL_SmallBlindStartingStacksize < f$OpenPPL_MinStillToActStacksizeAfterSma
   f$OpenPPL_SmallBlindStartingStacksize : f$OpenPPL_MinStillToActStacksizeAfterSmallBlind
 
 ##f$OpenPPL_MinStillToActStacksizeAfterCutOff##
-f$OpenPPL_ButtonStartingStacksize < f$OpenPPL_MinStillToActStacksizeAfterButton?
+f$OpenPPL_ButtonStartingStacksize < f$OpenPPL_MinStillToActStacksizeAfterButton ?
   f$OpenPPL_ButtonStartingStacksize : f$OpenPPL_MinStillToActStacksizeAfterButton
 
 ##f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition3##
-f$OpenPPL_CutOffStartingStacksize < f$OpenPPL_MinStillToActStacksizeAfterCutOff?
+f$OpenPPL_CutOffStartingStacksize < f$OpenPPL_MinStillToActStacksizeAfterCutOff ?
   f$OpenPPL_CutOffStartingStacksize : f$OpenPPL_MinStillToActStacksizeAfterCutOff
 
 ##f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition2##
-f$OpenPPL_MiddlePosition3StartingStacksize < f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition3?
+f$OpenPPL_MiddlePosition3StartingStacksize < f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition3 ?
   f$OpenPPL_MiddlePosition3StartingStacksize : f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition3
 
 ##f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition1##
-f$OpenPPL_MiddlePosition2StartingStacksize < f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition2?
+f$OpenPPL_MiddlePosition2StartingStacksize < f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition2 ?
   f$OpenPPL_MiddlePosition2StartingStacksize : f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition2
 
 ##f$OpenPPL_MinStillToActStacksizeAfterEarlyPosition3##
-f$OpenPPL_MiddlePosition1StartingStacksize < f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition1?
+f$OpenPPL_MiddlePosition1StartingStacksize < f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition1 ?
   f$OpenPPL_MiddlePosition1StartingStacksize : f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition1
 
 ##f$OpenPPL_MinStillToActStacksizeAfterEarlyPosition2##
-f$OpenPPL_EarlyPosition3StartingStacksize < f$OpenPPL_MinStillToActStacksizeAfterEarlyPosition3?
+f$OpenPPL_EarlyPosition3StartingStacksize < f$OpenPPL_MinStillToActStacksizeAfterEarlyPosition3 ?
   f$OpenPPL_EarlyPosition3StartingStacksize : f$OpenPPL_MinStillToActStacksizeAfterEarlyPosition3
 
 ##f$OpenPPL_MinStillToActStacksizeAfterEarlyPosition1##
-f$OpenPPL_EarlyPosition2StartingStacksize < f$OpenPPL_MinStillToActStacksizeAfterEarlyPosition2?
+f$OpenPPL_EarlyPosition2StartingStacksize < f$OpenPPL_MinStillToActStacksizeAfterEarlyPosition2 ?
   f$OpenPPL_EarlyPosition2StartingStacksize : f$OpenPPL_MinStillToActStacksizeAfterEarlyPosition2
 
 ##f$OpenPPL_InitMaxOpponentStacksize##
@@ -347,6 +347,17 @@ nplayersdealt == 3 ?
   (balance_rank2 == balance ? balance_rank1 : balance_rank2) :
 nplayersdealt == 2 ?
   (balance_rank1 == balance ? balance_rank0 : balance_rank1) : -1
+
+##f$CalculateStartingstacksize##
+// Precondition: first hand, preflop
+bblind > 0 ? (currentbet + balance) / bblind : 0
+
+##f$OpenPPL_InitStartingStacksize##
+((handsplayed == 0 || f$OpenPPL_StartingStacksize == 0) && (betround == 1)) ?
+  me_st_MemStartingStacksize_f$CalculateStartingstacksize : 0
+
+##f$OpenPPL_StartingStacksize##
+me_re_MemStartingStacksize
 
 //*****************************************************************************
 //
@@ -397,10 +408,10 @@ chair == f$OpenPPL_EarlyPosition1Chair  ? f$OpenPPL_MinStillToActStacksizeAfterE
 (bblind > 0) ? (balance / bblind) : 0
 
 ##f$OpenPPL_TotalInvested##
-(betround == 1 && nbetsround>0)  ? (ncurrentbets * bblind) :
-(betround == 2 && nbetsround1>0) ? ((nbetsround1 + ncurrentbets) * bblind) :
-(betround == 3 && nbetsround1>0) ? ((nbetsround1 + nbetsround2 + ncurrentbets) * bblind) :
-(betround == 4 && nbetsround1>0) ? ((nbetsround1 + nbetsround2 + nbetsround3 + ncurrentbets) * bblind) :
+(betround == 1 && nbetsround > 0)  ? (ncurrentbets * bblind) :
+(betround == 2 && nbetsround1 > 0) ? ((nbetsround1 + ncurrentbets) * bblind) :
+(betround == 3 && nbetsround1 > 0) ? ((nbetsround1 + nbetsround2 + ncurrentbets) * bblind) :
+(betround == 4 && nbetsround1 > 0) ? ((nbetsround1 + nbetsround2 + nbetsround3 + ncurrentbets) * bblind) :
 0
 
 //*****************************************************************************
@@ -439,42 +450,44 @@ f$OpenPPL_AcePresentOnFlop || ($$cr3 == 14)
 rankhicommon
 
 ##f$OpenPPL_DoubleGutShotOnBoard##
-((rankbitscommon>>8)&0x7f) == 0x5d ? 1 :
-((rankbitscommon>>7)&0x7f) == 0x5d ? 1 :
-((rankbitscommon>>6)&0x7f) == 0x5d ? 1 :
-((rankbitscommon>>5)&0x7f) == 0x5d ? 1 :
-((rankbitscommon>>4)&0x7f) == 0x5d ? 1 :
-((rankbitscommon>>3)&0x7f) == 0x5d ? 1 :
-((rankbitscommon>>2)&0x7f) == 0x5d ? 1 :
-((rankbitscommon>>1)&0x7f) == 0x5d ? 1 : 0
+((rankbitscommon >> 8) &0x7f) == 0x5d ? 1 :
+((rankbitscommon >> 7) &0x7f) == 0x5d ? 1 :
+((rankbitscommon >> 6) &0x7f) == 0x5d ? 1 :
+((rankbitscommon >> 5) &0x7f) == 0x5d ? 1 :
+((rankbitscommon >> 4) &0x7f) == 0x5d ? 1 :
+((rankbitscommon >> 3) &0x7f) == 0x5d ? 1 :
+((rankbitscommon >> 2) &0x7f) == 0x5d ? 1 :
+((rankbitscommon >> 1) &0x7f) == 0x5d ? 1 : 0
 
 ##f$OpenPPL_ExactlyOneStraightPossibleOnFlop##
-[f$OpenPPL_StraightPossibleOnFlop && f$OpenPPL_AcePresentOnFlop && ((f$OpenPPL_LowestFlopCard >= 10) || (f$OpenPPL_TopFlopCard <= 5))]
+   [f$OpenPPL_StraightPossibleOnFlop && f$OpenPPL_AcePresentOnFlop && ((f$OpenPPL_LowestFlopCard >= 10) || (f$OpenPPL_TopFlopCard <= 5))]
 || [f$OpenPPL_StraightPossibleOnFlop && (f$OpenPPL_TopFlopCard - f$OpenPPL_LowestFlopCard <= 4)]
 
 ##f$OpenPPL_FlopCardPairedonTurn##
-$$cr0 == $$cr3 || $$cr1 == $$cr3 || $$cr2 == $$cr3
+   $$cr0 == $$cr3
+|| $$cr1 == $$cr3
+|| $$cr2 == $$cr3
 
 ##f$OpenPPL_FlushPossible##
 (nsuitedcommon >= 3)
 
 ##f$OpenPPL_FlushOnBoard##
-($$cs0==$$cs1 && $$cs0==$$cs2 && $$cs0==$$cs3 && $$cs0==$$cs4)
+($$cs0 == $$cs1 && $$cs0 == $$cs2 && $$cs0 == $$cs3 && $$cs0 == $$cs4)
 
 ##f$OpenPPL_FlushPossibleOnFlop##
-($$cs0==$$cs1 && $$cs0==$$cs2)
+($$cs0 == $$cs1 && $$cs0 == $$cs2)
 
 ##f$OpenPPL_FlushPossibleOnTurn##
-[  ($$cs0==$$cs1 && $$cs0==$$cs2)
-|| ($$cs0==$$cs1 && $$cs0==$$cs3)
-|| ($$cs0==$$cs2 && $$cs0==$$cs3)
-|| ($$cs1==$$cs2 && $$cs1==$$cs3) ]
+[  ($$cs0 == $$cs1 && $$cs0 == $$cs2)
+|| ($$cs0 == $$cs1 && $$cs0 == $$cs3)
+|| ($$cs0 == $$cs2 && $$cs0 == $$cs3)
+|| ($$cs1 == $$cs2 && $$cs1 == $$cs3) ]
 
 ##f$OpenPPL_FourCardsToWheelOnBoard##
 `(rankbitscommon&0b0000000000111110) >= 4
 
 ##f$OpenPPL_FourOf1SuiteOnTurn##
-($$cs0==$$cs1 && $$cs2==$$cs3 && $$cs0==$$cs3)
+($$cs0 == $$cs1 && $$cs2 == $$cs3 && $$cs0 == $$cs3)
 
 ##f$OpenPPL_FullHouseOnBoard##
 (pokervalcommon & fullhouse)
@@ -488,39 +501,33 @@ f$OpenPPL_StraightPossibleOnFlop && !f$OpenPPL_ExactlyOneStraightPossibleOnFlop
 ##f$OpenPPL_MoreThanOneStraightPossibleOnRiver##
 (betround <= 4 || f$OpenPPL_NumberOfStraightsPossibleOnRiver < 2) ? 0 : 1
 
-##f$OpenPPL_rankbitscommonturn##
-($$cr0 != 14 ? 2**$$cr0 : (0x4002))
-| ($$cr1 != 14 ? 2**$$cr1 : (0x4002))
-| ($$cr2 != 14 ? 2**$$cr2 : (0x4002))
-| ($$cr3 != 14 ? 2**$$cr3 : (0x4002))
-
 ##f$OpenPPL_rankbitscommonriver##
 // As this can only be called at the river it is identical to rankbiscommon
 rankbitscommon
 
 ##f$OpenPPL_NumberOfStraightsPossibleOnTurn##
-(`((f$OpenPPL_rankbitscommonturn>>10)&0x1f) >= 3 ? 1 : 0)+
-(`((f$OpenPPL_rankbitscommonturn>>9)&0x1f) >= 3 ? 1 : 0)+
-(`((f$OpenPPL_rankbitscommonturn>>8)&0x1f) >= 3 ? 1 : 0)+
-(`((f$OpenPPL_rankbitscommonturn>>7)&0x1f) >= 3 ? 1 : 0)+
-(`((f$OpenPPL_rankbitscommonturn>>6)&0x1f) >= 3 ? 1 : 0)+
-(`((f$OpenPPL_rankbitscommonturn>>5)&0x1f) >= 3 ? 1 : 0)+
-(`((f$OpenPPL_rankbitscommonturn>>4)&0x1f) >= 3 ? 1 : 0)+
-(`((f$OpenPPL_rankbitscommonturn>>3)&0x1f) >= 3 ? 1 : 0)+
-(`((f$OpenPPL_rankbitscommonturn>>2)&0x1f) >= 3 ? 1 : 0)+
-(`((f$OpenPPL_rankbitscommonturn>>1)&0x1f) >= 3 ? 1 : 0)
+(`((f$OpenPPL_RankBitsCommonTurn >> 10) & 0x1f) >= 3 ? 1 : 0) +
+(`((f$OpenPPL_RankBitsCommonTurn >>  9) & 0x1f) >= 3 ? 1 : 0) +
+(`((f$OpenPPL_RankBitsCommonTurn >>  8) & 0x1f) >= 3 ? 1 : 0) +
+(`((f$OpenPPL_RankBitsCommonTurn >>  7) & 0x1f) >= 3 ? 1 : 0) +
+(`((f$OpenPPL_RankBitsCommonTurn >>  6) & 0x1f) >= 3 ? 1 : 0) +
+(`((f$OpenPPL_RankBitsCommonTurn >>  5) & 0x1f) >= 3 ? 1 : 0) +
+(`((f$OpenPPL_RankBitsCommonTurn >>  4) & 0x1f) >= 3 ? 1 : 0) +
+(`((f$OpenPPL_RankBitsCommonTurn >>  3) & 0x1f) >= 3 ? 1 : 0) +
+(`((f$OpenPPL_RankBitsCommonTurn >>  2) & 0x1f) >= 3 ? 1 : 0) +
+(`((f$OpenPPL_RankBitsCommonTurn >>  1) & 0x1f) >= 3 ? 1 : 0)
 
 ##f$OpenPPL_NumberOfStraightsPossibleOnRiver##
-(`((f$OpenPPL_rankbitscommonriver>>10)&0x1f) >= 3 ? 1 : 0)+
-(`((f$OpenPPL_rankbitscommonriver>>9)&0x1f) >= 3 ? 1 : 0)+
-(`((f$OpenPPL_rankbitscommonriver>>8)&0x1f) >= 3 ? 1 : 0)+
-(`((f$OpenPPL_rankbitscommonriver>>7)&0x1f) >= 3 ? 1 : 0)+
-(`((f$OpenPPL_rankbitscommonriver>>6)&0x1f) >= 3 ? 1 : 0)+
-(`((f$OpenPPL_rankbitscommonriver>>5)&0x1f) >= 3 ? 1 : 0)+
-(`((f$OpenPPL_rankbitscommonriver>>4)&0x1f) >= 3 ? 1 : 0)+
-(`((f$OpenPPL_rankbitscommonriver>>3)&0x1f) >= 3 ? 1 : 0)+
-(`((f$OpenPPL_rankbitscommonriver>>2)&0x1f) >= 3 ? 1 : 0)+
-(`((f$OpenPPL_rankbitscommonriver>>1)&0x1f) >= 3 ? 1 : 0)
+(`((f$OpenPPL_rankbitscommonriver >> 10) & 0x1f) >= 3 ? 1 : 0) +
+(`((f$OpenPPL_rankbitscommonriver >>  9) & 0x1f) >= 3 ? 1 : 0) +
+(`((f$OpenPPL_rankbitscommonriver >>  8) & 0x1f) >= 3 ? 1 : 0) +
+(`((f$OpenPPL_rankbitscommonriver >>  7) & 0x1f) >= 3 ? 1 : 0) +
+(`((f$OpenPPL_rankbitscommonriver >>  6) & 0x1f) >= 3 ? 1 : 0) +
+(`((f$OpenPPL_rankbitscommonriver >>  5) & 0x1f) >= 3 ? 1 : 0) +
+(`((f$OpenPPL_rankbitscommonriver >>  4) & 0x1f) >= 3 ? 1 : 0) +
+(`((f$OpenPPL_rankbitscommonriver >>  3) & 0x1f) >= 3 ? 1 : 0) +
+(`((f$OpenPPL_rankbitscommonriver >>  2) & 0x1f) >= 3 ? 1 : 0) +
+(`((f$OpenPPL_rankbitscommonriver >>  1) & 0x1f) >= 3 ? 1 : 0)
 
 ##f$OpenPPL_MoreThanOneOneCardStraightPossible##
 f$OpenPPL_DoubleGutShotOnBoard || f$OpenPPL_OpenEndedStraightDrawOnBoard
@@ -531,7 +538,7 @@ f$OpenPPL_DoubleGutShotOnBoard || f$OpenPPL_OpenEndedStraightDrawOnBoard
 && f$OpenPPL_AcePresentOnTurn
 
 ##f$OpenPPL_OneCardFlushPossible##
-(nsuitedcommon >=4)
+(nsuitedcommon >= 4)
 
 ##f$OpenPPL_OneCardStraightFlushPossible##
 (nstraightflushfillcommon <= 1)
@@ -543,7 +550,7 @@ f$OpenPPL_DoubleGutShotOnBoard || f$OpenPPL_OpenEndedStraightDrawOnBoard
 f$OpenPPL_OneCardStraightPossible && !f$OpenPPL_MoreThanOneOneCardStraightPossible
 
 ##f$OpenPPL_OpenEndedStraightDrawOnBoard##
-(nstraightcommon == 4 && (`((rankbitscommon>>10)&0x1f) < 4) && (`((rankbitscommon>>1)&0x1f) < 4)) ? 1 : 0
+(nstraightcommon == 4 && (`((rankbitscommon >> 10) & 0x1f) < 4) && (`((rankbitscommon >> 1) & 0x1f) < 4)) ? 1 : 0
 
 ##f$OpenPPL_OpenEndedStraightDrawPossibleOnFlop##
 [(f$OpenPPL_TopFlopCard - f$OpenPPL_2ndTopFlopCard <= 3) && (f$OpenPPL_TopFlopCard != 14)]
@@ -560,7 +567,7 @@ f$OpenPPL_OneCardStraightPossible && !f$OpenPPL_MoreThanOneOneCardStraightPossib
 (nrankedcommon >= 2)
 
 ##f$OpenPPL_PairOnFlop##
-($$cr0==$$cr1 || $$cr1==$$cr2 || $$cr0==$$cr2)
+($$cr0 == $$cr1 || $$cr1 == $$cr2 || $$cr0 == $$cr2)
 
 ##f$OpenPPL_LowestFlopCard##
 $$cr0 <= $$cr1 && $$cr0 <=  $$cr2 ? $$cr0 :
@@ -622,40 +629,38 @@ f$OpenPPL_2ndTopFlopCard == $$cr3 ? 1 : 0
 ~(srankbitscommon | f$OpenPPL_srankbitshero)
 
 ##f$OpenPPL_StraightFlushPossibleByOthers##
-`((srankbitscommon>>10)&0x1f) >= 3 && `(((srankbitscommon>>10)&0x1f)|((f$OpenPPL_srankavailable>>10)&0x1f)) == 5 ? 1 :
-`((srankbitscommon>> 9)&0x1f) >= 3 && `(((srankbitscommon>> 9)&0x1f)|((f$OpenPPL_srankavailable>> 9)&0x1f)) == 5 ? 1 :
-`((srankbitscommon>> 8)&0x1f) >= 3 && `(((srankbitscommon>> 8)&0x1f)|((f$OpenPPL_srankavailable>> 8)&0x1f)) == 5 ? 1 :
-`((srankbitscommon>> 7)&0x1f) >= 3 && `(((srankbitscommon>> 7)&0x1f)|((f$OpenPPL_srankavailable>> 7)&0x1f)) == 5 ? 1 :
-`((srankbitscommon>> 6)&0x1f) >= 3 && `(((srankbitscommon>> 6)&0x1f)|((f$OpenPPL_srankavailable>> 6)&0x1f)) == 5 ? 1 :
-`((srankbitscommon>> 5)&0x1f) >= 3 && `(((srankbitscommon>> 5)&0x1f)|((f$OpenPPL_srankavailable>> 5)&0x1f)) == 5 ? 1 :
-`((srankbitscommon>> 4)&0x1f) >= 3 && `(((srankbitscommon>> 4)&0x1f)|((f$OpenPPL_srankavailable>> 4)&0x1f)) == 5 ? 1 :
-`((srankbitscommon>> 3)&0x1f) >= 3 && `(((srankbitscommon>> 3)&0x1f)|((f$OpenPPL_srankavailable>> 3)&0x1f)) == 5 ? 1 :
-`((srankbitscommon>> 2)&0x1f) >= 3 && `(((srankbitscommon>> 2)&0x1f)|((f$OpenPPL_srankavailable>> 2)&0x1f)) == 5 ? 1 :
-`((srankbitscommon>> 1)&0x1f) >= 3 && `(((srankbitscommon>> 1)&0x1f)|((f$OpenPPL_srankavailable>> 1)&0x1f)) == 5 ? 1 : 0
+`(((srankbitscommon >> 10) & 0x1f) >= 3 && `(((srankbitscommon >> 10) & 0x1f) | ((f$OpenPPL_srankavailable>>10) & 0x1f)) == 5) ? 1 :
+`(((srankbitscommon >>  9) & 0x1f) >= 3 && `(((srankbitscommon >>  9) & 0x1f) | ((f$OpenPPL_srankavailable>> 9) & 0x1f)) == 5) ? 1 :
+`(((srankbitscommon >>  8) & 0x1f) >= 3 && `(((srankbitscommon >>  8) & 0x1f) | ((f$OpenPPL_srankavailable>> 8) & 0x1f)) == 5) ? 1 :
+`(((srankbitscommon >>  7) & 0x1f) >= 3 && `(((srankbitscommon >>  7) & 0x1f) | ((f$OpenPPL_srankavailable>> 7) & 0x1f)) == 5) ? 1 :
+`(((srankbitscommon >>  6) & 0x1f) >= 3 && `(((srankbitscommon >>  6) & 0x1f) | ((f$OpenPPL_srankavailable>> 6) & 0x1f)) == 5) ? 1 :
+`(((srankbitscommon >>  5) & 0x1f) >= 3 && `(((srankbitscommon >>  5) & 0x1f) | ((f$OpenPPL_srankavailable>> 5) & 0x1f)) == 5) ? 1 :
+`(((srankbitscommon >>  4) & 0x1f) >= 3 && `(((srankbitscommon >>  4) & 0x1f) | ((f$OpenPPL_srankavailable>> 4) & 0x1f)) == 5) ? 1 :
+`(((srankbitscommon >>  3) & 0x1f) >= 3 && `(((srankbitscommon >>  3) & 0x1f) | ((f$OpenPPL_srankavailable>> 3) & 0x1f)) == 5) ? 1 :
+`(((srankbitscommon >>  2) & 0x1f) >= 3 && `(((srankbitscommon >>  2) & 0x1f) | ((f$OpenPPL_srankavailable>> 2) & 0x1f)) == 5) ? 1 :
+`(((srankbitscommon >>  1) & 0x1f) >= 3 && `(((srankbitscommon >>  1) & 0x1f) | ((f$OpenPPL_srankavailable>> 1) & 0x1f)) == 5) ? 1 : 0
 
 ##f$OpenPPL_SuitsOnBoard##
-($$cs0==$$cs1 && $$cs1==$$cs2 ? 1 :
-($$cs0==$$cs1 && $$cs1!=$$cs2) || ($$cs0==$$cs2 && $$cs0!=$$cs1) || ($$cs0!=$$cs1 && $$cs1==$$cs2) ? 2 :
-$$cs0!=$$cs1 && $$cs1!=$$cs2 && $$cs0!=$$cs2 ? 3 : 0) +
-((($$cs3!=$$cs0) && ($$cs3!=$$cs1) && ($$cs3!=$$cs2)) ? 1 : 0) +
-((($$cs4!=$$cs0) && ($$cs4!=$$cs1) && ($$cs4!=$$cs2) && ($$cs4!=$$cs3)) ? 1 : 0)
+f$OpenPPL_SuitsOnFlop +
+((($$cs3 != $$cs0) && ($$cs3 != $$cs1) && ($$cs3 != $$cs2)) ? 1 : 0) +
+((($$cs4 != $$cs0) && ($$cs4 != $$cs1) && ($$cs4 != $$cs2) && ($$cs4 != $$cs3)) ? 1 : 0)
 
 ##f$OpenPPL_SuitsOnFlop##
-($$cs0==$$cs1 && $$cs1==$$cs2) ? 1 :
-(($$cs0==$$cs1 && $$cs1!=$$cs2) || ($$cs0==$$cs2 && $$cs0!=$$cs1) || ($$cs0!=$$cs1 && $$cs1==$$cs2)) ? 2 :
-($$cs0!=$$cs1 && $$cs1!=$$cs2 && $$cs0!=$$cs2) ? 3 : 0
+ ($$cs0 == $$cs1 && $$cs1 == $$cs2) ? 1 :
+(($$cs0 == $$cs1 && $$cs1 != $$cs2) || ($$cs0 == $$cs2 && $$cs0 != $$cs1) || ($$cs0 != $$cs1 && $$cs1 == $$cs2)) ? 2 :
+($$cs0 != $$cs1 && $$cs1 != $$cs2 && $$cs0 != $$cs2) ? 3 : 0
 
 ##f$OpenPPL_StraightFlushPossible##
-`((srankbitscommon>>10)&0x1f) >= 3 ? 1 :
-`((srankbitscommon>>9)&0x1f) >= 3 ? 1 :
-`((srankbitscommon>>8)&0x1f) >= 3 ? 1 :
-`((srankbitscommon>>7)&0x1f) >= 3 ? 1 :
-`((srankbitscommon>>6)&0x1f) >= 3 ? 1 :
-`((srankbitscommon>>5)&0x1f) >= 3 ? 1 :
-`((srankbitscommon>>4)&0x1f) >= 3 ? 1 :
-`((srankbitscommon>>3)&0x1f) >= 3 ? 1 :
-`((srankbitscommon>>2)&0x1f) >= 3 ? 1 :
-`((srankbitscommon>>1)&0x1f) >= 3 ? 1 : 0
+`((srankbitscommon >> 10) & 0x1f) >= 3 ? 1 :
+`((srankbitscommon >> 9) & 0x1f) >= 3 ? 1 :
+`((srankbitscommon >> 8) & 0x1f) >= 3 ? 1 :
+`((srankbitscommon >> 7) & 0x1f) >= 3 ? 1 :
+`((srankbitscommon >> 6) & 0x1f) >= 3 ? 1 :
+`((srankbitscommon >> 5) & 0x1f) >= 3 ? 1 :
+`((srankbitscommon >> 4) & 0x1f) >= 3 ? 1 :
+`((srankbitscommon >> 3) & 0x1f) >= 3 ? 1 :
+`((srankbitscommon >> 2) & 0x1f) >= 3 ? 1 :
+`((srankbitscommon >> 1) & 0x1f) >= 3 ? 1 : 0
 
 ##f$OpenPPL_StraightOnBoard##
 (nstraightcommon >= 5)
@@ -668,35 +673,35 @@ $$cs0!=$$cs1 && $$cs1!=$$cs2 && $$cs0!=$$cs2 ? 3 : 0) +
 | ($$cr1 != 14 ? 2**$$cr1 : (0x4002))
 | ($$cr2 != 14 ? 2**$$cr2 : (0x4002))
 
-##f$OpenPPL_RankBitsCommOnTurn##
+##f$OpenPPL_RankBitsCommonTurn##
   ($$cr0 != 14 ? 2**$$cr0 : (0x4002))
 | ($$cr1 != 14 ? 2**$$cr1 : (0x4002))
 | ($$cr2 != 14 ? 2**$$cr2 : (0x4002))
 | ($$cr3 != 14 ? 2**$$cr3 : (0x4002))
 
 ##f$OpenPPL_StraightPossibleOnFlop##
-`((f$OpenPPL_RankBitsCommOnFlop>>10)&0x1f) >= 3 ? 1 :
-`((f$OpenPPL_RankBitsCommOnFlop>>9)&0x1f) >= 3 ? 1 :
-`((f$OpenPPL_RankBitsCommOnFlop>>8)&0x1f) >= 3 ? 1 :
-`((f$OpenPPL_RankBitsCommOnFlop>>7)&0x1f) >= 3 ? 1 :
-`((f$OpenPPL_RankBitsCommOnFlop>>6)&0x1f) >= 3 ? 1 :
-`((f$OpenPPL_RankBitsCommOnFlop>>5)&0x1f) >= 3 ? 1 :
-`((f$OpenPPL_RankBitsCommOnFlop>>4)&0x1f) >= 3 ? 1 :
-`((f$OpenPPL_RankBitsCommOnFlop>>3)&0x1f) >= 3 ? 1 :
-`((f$OpenPPL_RankBitsCommOnFlop>>2)&0x1f) >= 3 ? 1 :
-`((f$OpenPPL_RankBitsCommOnFlop>>1)&0x1f) >= 3 ? 1 : 0
+`(((f$OpenPPL_RankBitsCommOnFlop >> 10) & 0x1f) >= 3) ? 1 :
+`(((f$OpenPPL_RankBitsCommOnFlop >>  9) & 0x1f) >= 3) ? 1 :
+`(((f$OpenPPL_RankBitsCommOnFlop >>  8) & 0x1f) >= 3) ? 1 :
+`(((f$OpenPPL_RankBitsCommOnFlop >>  7) & 0x1f) >= 3) ? 1 :
+`(((f$OpenPPL_RankBitsCommOnFlop >>  6) & 0x1f) >= 3) ? 1 :
+`(((f$OpenPPL_RankBitsCommOnFlop >>  5) & 0x1f) >= 3) ? 1 :
+`(((f$OpenPPL_RankBitsCommOnFlop >>  4) & 0x1f) >= 3) ? 1 :
+`(((f$OpenPPL_RankBitsCommOnFlop >>  3) & 0x1f) >= 3) ? 1 :
+`(((f$OpenPPL_RankBitsCommOnFlop >>  2) & 0x1f) >= 3) ? 1 :
+`(((f$OpenPPL_RankBitsCommOnFlop >>  1) & 0x1f) >= 3) ? 1 : 0
 
 ##f$OpenPPL_StraightPossibleOnTurn##
-`((f$OpenPPL_RankBitsCommOnTurn>>10)&0x1f) >= 3 ? 1 :
-`((f$OpenPPL_RankBitsCommOnTurn>>9)&0x1f) >= 3 ? 1 :
-`((f$OpenPPL_RankBitsCommOnTurn>>8)&0x1f) >= 3 ? 1 :
-`((f$OpenPPL_RankBitsCommOnTurn>>7)&0x1f) >= 3 ? 1 :
-`((f$OpenPPL_RankBitsCommOnTurn>>6)&0x1f) >= 3 ? 1 :
-`((f$OpenPPL_RankBitsCommOnTurn>>5)&0x1f) >= 3 ? 1 :
-`((f$OpenPPL_RankBitsCommOnTurn>>4)&0x1f) >= 3 ? 1 :
-`((f$OpenPPL_RankBitsCommOnTurn>>3)&0x1f) >= 3 ? 1 :
-`((f$OpenPPL_RankBitsCommOnTurn>>2)&0x1f) >= 3 ? 1 :
-`((f$OpenPPL_RankBitsCommOnTurn>>1)&0x1f) >= 3 ? 1 : 0
+`(((f$OpenPPL_RankBitsCommonTurn >> 10) & 0x1f) >= 3) ? 1 :
+`(((f$OpenPPL_RankBitsCommonTurn >>  9) & 0x1f) >= 3) ? 1 :
+`(((f$OpenPPL_RankBitsCommonTurn >>  8) & 0x1f) >= 3) ? 1 :
+`(((f$OpenPPL_RankBitsCommonTurn >>  7) & 0x1f) >= 3) ? 1 :
+`(((f$OpenPPL_RankBitsCommonTurn >>  6) & 0x1f) >= 3) ? 1 :
+`(((f$OpenPPL_RankBitsCommonTurn >>  5) & 0x1f) >= 3) ? 1 :
+`(((f$OpenPPL_RankBitsCommonTurn >>  4) & 0x1f) >= 3) ? 1 :
+`(((f$OpenPPL_RankBitsCommonTurn >>  3) & 0x1f) >= 3) ? 1 :
+`(((f$OpenPPL_RankBitsCommonTurn >>  2) & 0x1f) >= 3) ? 1 :
+`(((f$OpenPPL_RankBitsCommonTurn >>  1) & 0x1f) >= 3) ? 1 : 0
 
 ##f$OpenPPL_ThreeCardStraightOnBoard##
 nstraightcommon >= 3
@@ -756,7 +761,7 @@ f$OpenPPL_TopFlopCard == $$cr3 ? 1 : 0
 && $$pr0 > $$cr2 ]
 
 ##f$OpenPPL_HadPairOnFlop##
-(ispair || $$pr0==$$cr0 || $$pr0==$$cr1 || $$pr0==$$cr2  || $$pr1==$$cr0 || $$pr1==$$cr1  || $$pr1==$$cr2)
+(ispair || $$pr0 == $$cr0 || $$pr0 == $$cr1 || $$pr0 == $$cr2  || $$pr1 == $$cr0 || $$pr1 == $$cr1  || $$pr1 == $$cr2)
 
 ##f$OpenPPL_HadPairOnTurn##
 f$OpenPPL_HadPairOnFlop || f$OpenPPL_FlopCardPairedonTurn || $$pr0 == $$cr3 || $$pr1 == $$cr3
@@ -776,7 +781,7 @@ f$OpenPPL_Have2ndBestKicker || f$OpenPPL_HaveBestKickerOrBetter
 ($KK && $$cr0 < 13 && $$cr1 < 13 && $$cr2 < 13 && $$cr3 < 13 && $$cr4 < 13 )
 
 ##f$OpenPPL_Have2ndBestOverpairOrBetter##
-(f$OpenPPL_Have2ndBestOverpair ||f$OpenPPL_HaveBestOverpairOrBetter)
+(f$OpenPPL_Have2ndBestOverpair || f$OpenPPL_HaveBestOverpairOrBetter)
 
 ##f$OpenPPL_Have2ndNutFlush##
 [f$OpenPPL_HaveFlush && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 1)]
@@ -950,9 +955,15 @@ f$OpenPPL_HaveNutFlush || f$OpenPPL_HaveNutFlushDraw
 ($AA && $$cr0 < 14 && $$cr1 < 14 && $$cr2 < 14 && $$cr3 < 14 && $$cr4 < 14 )
 
 ##f$OpenPPL_HaveBestOverpairOrBetter##
-(f$OpenPPL_HaveBestOverpair || f$OpenPPL_HaveTwoPair ||  f$OpenPPL_HaveSet
-|| f$OpenPPL_HaveTrips || f$OpenPPL_HaveStraight || f$OpenPPL_HaveFlush
-|| f$OpenPPL_HaveFullHouse || f$OpenPPL_HaveQuads || f$OpenPPL_HaveStraightFlush)
+  (f$OpenPPL_HaveBestOverpair
+|| f$OpenPPL_HaveTwoPair
+|| f$OpenPPL_HaveSet
+|| f$OpenPPL_HaveTrips
+|| f$OpenPPL_HaveStraight
+|| f$OpenPPL_HaveFlush
+|| f$OpenPPL_HaveFullHouse
+|| f$OpenPPL_HaveQuads
+|| f$OpenPPL_HaveStraightFlush)
 
 ##f$OpenPPL_lowestBitOfRankBitsCommon##
 (1>>ranklocommon)
@@ -985,24 +996,30 @@ ranklocommon
 || ($$pr0 == f$OpenPPL_2ndLowestBoardCard && $$pr1 == f$OpenPPL_LowestBoardCard)
 
 ##f$OpenPPL_HaveDoubleGutshotDraw##
-   `((rankbits>>1) & 0b1011101) == 5  // A_345_7
-|| `((rankbits>>2) & 0b1011101) == 5  // 2_456_8
-|| `((rankbits>>3) & 0b1011101) == 5  // 3_567_9
-|| `((rankbits>>4) & 0b1011101) == 5  // 4_678_T
-|| `((rankbits>>5) & 0b1011101) == 5  // 5_789_J
-|| `((rankbits>>6) & 0b1011101) == 5  // 6_89T_Q
-|| `((rankbits>>7) & 0b1011101) == 5  // 8_9TJ_K
-|| `((rankbits>>8) & 0b1011101) == 5  // 9_TJQ_A
-|| `((rankbits>>1) & 0b11011011) == 6 // A2_45_78
-|| `((rankbits>>2) & 0b11011011) == 6 // 23_56_89
-|| `((rankbits>>3) & 0b11011011) == 6 // 34_67_9T
-|| `((rankbits>>4) & 0b11011011) == 6 // 45_78_TJ
-|| `((rankbits>>5) & 0b11011011) == 6 // 56_89_JQ
-|| `((rankbits>>6) & 0b11011011) == 6 // 67_9T_QK
-|| `((rankbits>>7) & 0b11011011) == 6 // 78_TJ_KA
+   `((rankbits >> 1) & 0b1011101) == 5  // A_345_7
+|| `((rankbits >> 2) & 0b1011101) == 5  // 2_456_8
+|| `((rankbits >> 3) & 0b1011101) == 5  // 3_567_9
+|| `((rankbits >> 4) & 0b1011101) == 5  // 4_678_T
+|| `((rankbits >> 5) & 0b1011101) == 5  // 5_789_J
+|| `((rankbits >> 6) & 0b1011101) == 5  // 6_89T_Q
+|| `((rankbits >> 7) & 0b1011101) == 5  // 8_9TJ_K
+|| `((rankbits >> 8) & 0b1011101) == 5  // 9_TJQ_A
+|| `((rankbits >> 1) & 0b11011011) == 6 // A2_45_78
+|| `((rankbits >> 2) & 0b11011011) == 6 // 23_56_89
+|| `((rankbits >> 3) & 0b11011011) == 6 // 34_67_9T
+|| `((rankbits >> 4) & 0b11011011) == 6 // 45_78_TJ
+|| `((rankbits >> 5) & 0b11011011) == 6 // 56_89_JQ
+|| `((rankbits >> 6) & 0b11011011) == 6 // 67_9T_QK
+|| `((rankbits >> 7) & 0b11011011) == 6 // 78_TJ_KA
+
+##f$OpenPPL_HaveFlush##
+(nsuited >= 5)
 
 ##f$OpenPPL_HaveFlushDraw##
 (nsuited >= 4)
+
+##f$OpenPPL_HaveFullHouse##
+isfullhouse || f$OpenPPL_HaveQuads
 
 ##f$OpenPPL_HaveNothing##
 !f$OpenPPL_HavePair && !(f$OpenPPL_Overcards == 2) && !f$OpenPPL_HaveBestOverpairOrBetter
@@ -1022,19 +1039,27 @@ isstraightflush && (nhandshi == 0)
 
 ##f$OpenPPL_HaveOpenEndedStraightDraw##
 f$OpenPPL_HaveStraight
-|| (rankbits & 0b111100) == 0b111100      // 5432
-|| ((rankbits>>1) & 0b111100) == 0b111100 // 6543
-|| ((rankbits>>2) & 0b111100) == 0b111100 // 7654
-|| ((rankbits>>3) & 0b111100) == 0b111100 // 8765
-|| ((rankbits>>4) & 0b111100) == 0b111100 // 9876
-|| ((rankbits>>5) & 0b111100) == 0b111100 // T987
-|| ((rankbits>>6) & 0b111100) == 0b111100 // JT98
-|| ((rankbits>>7) & 0b111100) == 0b111100 // QJT9
-|| ((rankbits>>8) & 0b111100) == 0b111100 // KQJT
+|| ((rankbits >> 0) & 0b111100) == 0b111100 // 5432
+|| ((rankbits >> 1) & 0b111100) == 0b111100 // 6543
+|| ((rankbits >> 2) & 0b111100) == 0b111100 // 7654
+|| ((rankbits >> 3) & 0b111100) == 0b111100 // 8765
+|| ((rankbits >> 4) & 0b111100) == 0b111100 // 9876
+|| ((rankbits >> 5) & 0b111100) == 0b111100 // T987
+|| ((rankbits >> 6) & 0b111100) == 0b111100 // JT98
+|| ((rankbits >> 7) & 0b111100) == 0b111100 // QJT9
+|| ((rankbits >> 8) & 0b111100) == 0b111100 // KQJT
+
+##f$OpenPPL_HaveQuads##
+[ isfourofakind && (nrankedcommon < 4) ]
+
+##f$OpenPPL_HavePair##
+[  $$pr0==$$pr1
+|| $$pr0==$$cr0 || $$pr0==$$cr1 || $$pr0==$$cr2 || $$pr0==$$cr3 || $$pr0==$$cr4
+|| $$pr1==$$cr0 || $$pr1==$$cr1 || $$pr1==$$cr2 || $$pr1==$$cr3 || $$pr1==$$cr4 ]
 
 ##f$OpenPPL_HaveSet##
 [  ispair
-&& (($$pr0==$$cr0) || ($$pr0==$$cr1) || ($$pr0==$$cr2) || ($$pr0==$$cr3) || ($$pr0==$$cr4)) ]
+&& (($$pr0 == $$cr0) || ($$pr0 == $$cr1) || ($$pr0 == $$cr2) || ($$pr0 == $$cr3) || ($$pr0 == $$cr4)) ]
 
 ##f$OpenPPL_HaveTrips##
 !ispair
@@ -1043,13 +1068,16 @@ f$OpenPPL_HaveStraight
   ||  (pokerval & fourofakind)  && !(pokervalcommon & fourofakind)]
 
 ##f$OpenPPL_HaveStraight##
-nstraightfill==0
+nstraightfill == 0
 
 ##f$OpenPPL_HaveStraightDraw##
 f$OpenPPL_HaveOpenEndedStraightDraw || f$OpenPPL_HaveDoubleGutshotDraw
 
 ##f$OpenPPL_HaveStraightFlush##
 (isstraightflush || isroyalflush)
+
+##f$OpenPPL_HaveTwoPair##
+`(rankbitsplayer & rankbitscommon) == 2
 
 ##f$OpenPPL_HaveUnderStraight##
 f$OpenPPL_HaveStraight
@@ -1058,6 +1086,11 @@ f$OpenPPL_HaveStraight
 ##f$OpenPPL_NumberOfUnknownSuitedOvercards##
 // Unknown suited cards are cards, which are not on board and not in heroes hand.
 `((~srankbits & 0x7fff) >> srankhi)
+
+##f$OpenPPL_Overcards##
+$$pr0>rankhicommon && $$pr1>rankhicommon ? 2 :
+$$pr0>rankhicommon || $$pr1>rankhicommon ? 1 :
+$$pr0<=rankhicommon && $$pr1<=rankhicommon ? 0 : 0
 
 //*****************************************************************************
 //
@@ -1073,7 +1106,7 @@ isfinalanswer
 1
 
 ##f$OpenPPL_Random##
-[ random*100 ]
+[ random * 100 ]
 
 //*****************************************************************************
 //
@@ -1093,29 +1126,29 @@ nopponentsdealt
 ##f$OpenPPL_Opponents_AllinBits##
 (betround == 1) ?
 [0
-|(((opponentsplayingbits & (1<<0)) && currentbet0>0 && balance0==0) ? 1<<0 : 0)
-|(((opponentsplayingbits & (1<<1)) && currentbet1>0 && balance1==0) ? 1<<1 : 0)
-|(((opponentsplayingbits & (1<<2)) && currentbet2>0 && balance2==0) ? 1<<2 : 0)
-|(((opponentsplayingbits & (1<<3)) && currentbet3>0 && balance3==0) ? 1<<3 : 0)
-|(((opponentsplayingbits & (1<<4)) && currentbet4>0 && balance4==0) ? 1<<4 : 0)
-|(((opponentsplayingbits & (1<<5)) && currentbet5>0 && balance5==0) ? 1<<5 : 0)
-|(((opponentsplayingbits & (1<<6)) && currentbet6>0 && balance6==0) ? 1<<6 : 0)
-|(((opponentsplayingbits & (1<<7)) && currentbet7>0 && balance7==0) ? 1<<7 : 0)
-|(((opponentsplayingbits & (1<<8)) && currentbet8>0 && balance8==0) ? 1<<8 : 0)
-|(((opponentsplayingbits & (1<<9)) && currentbet9>0 && balance9==0) ? 1<<9 : 0)
+|(((opponentsplayingbits & (1 << 0)) && (currentbet0 > 0) && (balance0 == 0)) ? 1 << 0 : 0)
+|(((opponentsplayingbits & (1 << 1)) && (currentbet1 > 0) && (balance1 == 0)) ? 1 << 1 : 0)
+|(((opponentsplayingbits & (1 << 2)) && (currentbet2 > 0) && (balance2 == 0)) ? 1 << 2 : 0)
+|(((opponentsplayingbits & (1 << 3)) && (currentbet3 > 0) && (balance3 == 0)) ? 1 << 3 : 0)
+|(((opponentsplayingbits & (1 << 4)) && (currentbet4 > 0) && (balance4 == 0)) ? 1 << 4 : 0)
+|(((opponentsplayingbits & (1 << 5)) && (currentbet5 > 0) && (balance5 == 0)) ? 1 << 5 : 0)
+|(((opponentsplayingbits & (1 << 6)) && (currentbet6 > 0) && (balance6 == 0)) ? 1 << 6 : 0)
+|(((opponentsplayingbits & (1 << 7)) && (currentbet7 > 0) && (balance7 == 0)) ? 1 << 7 : 0)
+|(((opponentsplayingbits & (1 << 8)) && (currentbet8 > 0) && (balance8 == 0)) ? 1 << 8 : 0)
+|(((opponentsplayingbits & (1 << 9)) && (currentbet9 > 0) && (balance9 == 0)) ? 1 << 9 : 0)
 ]
 :
 [0
-|(((opponentsplayingbits & (1<<0)) && balance0==0) ? 1<<0 : 0)
-|(((opponentsplayingbits & (1<<1)) && balance1==0) ? 1<<1 : 0)
-|(((opponentsplayingbits & (1<<2)) && balance2==0) ? 1<<2 : 0)
-|(((opponentsplayingbits & (1<<3)) && balance3==0) ? 1<<3 : 0)
-|(((opponentsplayingbits & (1<<4)) && balance4==0) ? 1<<4 : 0)
-|(((opponentsplayingbits & (1<<5)) && balance5==0) ? 1<<5 : 0)
-|(((opponentsplayingbits & (1<<6)) && balance6==0) ? 1<<6 : 0)
-|(((opponentsplayingbits & (1<<7)) && balance7==0) ? 1<<7 : 0)
-|(((opponentsplayingbits & (1<<8)) && balance8==0) ? 1<<8 : 0)
-|(((opponentsplayingbits & (1<<9)) && balance9==0) ? 1<<9 : 0)
+|(((opponentsplayingbits & (1 << 0)) && balance0 == 0) ? 1 << 0 : 0)
+|(((opponentsplayingbits & (1 << 1)) && balance1 == 0) ? 1 << 1 : 0)
+|(((opponentsplayingbits & (1 << 2)) && balance2 == 0) ? 1 << 2 : 0)
+|(((opponentsplayingbits & (1 << 3)) && balance3 == 0) ? 1 << 3 : 0)
+|(((opponentsplayingbits & (1 << 4)) && balance4 == 0) ? 1 << 4 : 0)
+|(((opponentsplayingbits & (1 << 5)) && balance5 == 0) ? 1 << 5 : 0)
+|(((opponentsplayingbits & (1 << 6)) && balance6 == 0) ? 1 << 6 : 0)
+|(((opponentsplayingbits & (1 << 7)) && balance7 == 0) ? 1 << 7 : 0)
+|(((opponentsplayingbits & (1 << 8)) && balance8 == 0) ? 1 << 8 : 0)
+|(((opponentsplayingbits & (1 << 9)) && balance9 == 0) ? 1 << 9 : 0)
 ]
 
 ##f$OpenPPL_OpponentsLeft##
@@ -1125,15 +1158,15 @@ nopponentsplaying
 (nplayersround2 - 1)
 
 ##f$OpenPPL_OpponentsWithLowerStack##
-((balance0 < balance) && (playersseatedbits & 0x0001) ? 1:0)+
-((balance1 < balance) && (playersseatedbits & 0x0002) ? 1:0)+
-((balance2 < balance) && (playersseatedbits & 0x0004) ? 1:0)+
-((balance3 < balance) && (playersseatedbits & 0x0008) ? 1:0)+
-((balance4 < balance) && (playersseatedbits & 0x0010) ? 1:0)+
-((balance5 < balance) && (playersseatedbits & 0x0020) ? 1:0)+
-((balance6 < balance) && (playersseatedbits & 0x0040) ? 1:0)+
-((balance7 < balance) && (playersseatedbits & 0x0080) ? 1:0)+
-((balance8 < balance) && (playersseatedbits & 0x0100) ? 1:0)+
+((balance0 < balance) && (playersseatedbits & 0x0001) ? 1:0) +
+((balance1 < balance) && (playersseatedbits & 0x0002) ? 1:0) +
+((balance2 < balance) && (playersseatedbits & 0x0004) ? 1:0) +
+((balance3 < balance) && (playersseatedbits & 0x0008) ? 1:0) +
+((balance4 < balance) && (playersseatedbits & 0x0010) ? 1:0) +
+((balance5 < balance) && (playersseatedbits & 0x0020) ? 1:0) +
+((balance6 < balance) && (playersseatedbits & 0x0040) ? 1:0) +
+((balance7 < balance) && (playersseatedbits & 0x0080) ? 1:0) +
+((balance8 < balance) && (playersseatedbits & 0x0100) ? 1:0) +
 ((balance9 < balance) && (playersseatedbits & 0x0200) ? 1:0)
 
 ##f$OpenPPL_StillToAct##
@@ -1364,29 +1397,29 @@ f$OpenPPL_SmallBlindCalling ? 1 :
 -1
 
 ##f$OpenPPL_FirstRaiserPosition##
-f$OpenPPL_EarlyPosition1Raising ? 9 :
-f$OpenPPL_EarlyPosition2Raising ? 8 :
-f$OpenPPL_EarlyPosition3Raising ? 7 :
+f$OpenPPL_EarlyPosition1Raising  ? 9 :
+f$OpenPPL_EarlyPosition2Raising  ? 8 :
+f$OpenPPL_EarlyPosition3Raising  ? 7 :
 f$OpenPPL_MiddlePosition1Raising ? 6 :
 f$OpenPPL_MiddlePosition2Raising ? 5 :
 f$OpenPPL_MiddlePosition3Raising ? 4 :
-f$OpenPPL_CutOffRaising ? 3 :
-f$OpenPPL_ButtonRaising ? 2 :
-f$OpenPPL_SmallBlindRaising ? 1 :
+f$OpenPPL_CutOffRaising          ? 3 :
+f$OpenPPL_ButtonRaising          ? 2 :
+f$OpenPPL_SmallBlindRaising      ? 1 :
 // Can't be button (0), as it is for the first orbit preflop only
 -1
 
 ##f$OpenPPL_LastCallerPosition##
 // Can't be button (0), as it is for the first orbit preflop only
-f$OpenPPL_SmallBlindCalling ? 1 :
-f$OpenPPL_ButtonCalling ? 2 :
-f$OpenPPL_CutOffCalling ? 3 :
+f$OpenPPL_SmallBlindCalling      ? 1 :
+f$OpenPPL_ButtonCalling          ? 2 :
+f$OpenPPL_CutOffCalling          ? 3 :
 f$OpenPPL_MiddlePosition3Calling ? 4 :
 f$OpenPPL_MiddlePosition2Calling ? 5 :
 f$OpenPPL_MiddlePosition1Calling ? 6 :
-f$OpenPPL_EarlyPosition3Calling ? 7 :
-f$OpenPPL_EarlyPosition2Calling ? 8 :
-f$OpenPPL_EarlyPosition1Calling ? 9 :
+f$OpenPPL_EarlyPosition3Calling  ? 7 :
+f$OpenPPL_EarlyPosition2Calling  ? 8 :
+f$OpenPPL_EarlyPosition1Calling  ? 9 :
 -1
 
 ##f$OpenPPL_LastRaiserPosition##
@@ -1436,29 +1469,12 @@ f$OpenPPL_Middle
 ##f$OpenPPL_HaveBackdoorFlushDraw##
 0
 
-##f$OpenPPL_HavePair##
-0
-
 ##f$OpenPPL_HaveOverpairOrBetter##
-0
-
-##f$OpenPPL_HaveTwoPair##
 0
 
 ##f$OpenPPL_HaveBackdoorStraightDraw##
 0
 
-##f$OpenPPL_Overcards##
-0
-
-##f$OpenPPL_HaveFlush##
-0
-
-##f$OpenPPL_HaveQuads##
-0
-
-##f$OpenPPL_HaveFullHouse##
-0
 
 //*****************************************************************************
 //
