@@ -2768,37 +2768,37 @@ void CSymbols::CalcFlushesStraightsSets(void)
 		}
 	}
 
-		// nsuited, tsuit
-		max = 0;
-		CardMask_AND(suittestCards, plCards, spadesCards);
-		n = StdDeck_numCards(suittestCards);
-		if ( n>max && n>0)
-		{
-			max = n;
+	// nsuited, tsuit
+	max = 0;
+	CardMask_AND(suittestCards, plCards, spadesCards);
+	n = StdDeck_numCards(suittestCards);
+	if ( n>max && n>0)
+	{
+		max = n;
 		set_sym_tsuit(WH_SUIT_SPADES);
-		}
-		CardMask_AND(suittestCards, plCards, heartsCards);
-		n = StdDeck_numCards(suittestCards);
-		if ( n>max && n>0)
-		{
-			max = n;
+	}
+	CardMask_AND(suittestCards, plCards, heartsCards);
+	n = StdDeck_numCards(suittestCards);
+	if ( n>max && n>0)
+	{
+		max = n;
 		set_sym_tsuit(WH_SUIT_HEARTS);
-		}
-		CardMask_AND(suittestCards, plCards, diamondsCards);
-		n = StdDeck_numCards(suittestCards);
-		if ( n>max && n>0)
-		{
-			max = n;
+	}
+	CardMask_AND(suittestCards, plCards, diamondsCards);
+	n = StdDeck_numCards(suittestCards);
+	if ( n>max && n>0)
+	{
+		max = n;
 		set_sym_tsuit(WH_SUIT_DIAMONDS);
-		}
-		CardMask_AND(suittestCards, plCards, clubsCards);
-		n = StdDeck_numCards(suittestCards);
-		if ( n>max && n>0)
-		{
-			max = n;
-		set_sym_tsuit(WH_SUIT_CLUBS);													// tsuit
-		}
-	set_sym_nsuited(max);																// nsuited
+	}
+	CardMask_AND(suittestCards, plCards, clubsCards);
+	n = StdDeck_numCards(suittestCards);
+	if ( n>max && n>0)
+	{
+		max = n;
+		set_sym_tsuit(WH_SUIT_CLUBS);												// tsuit
+	}
+	set_sym_nsuited(max);															// nsuited
 
 		// nsuitedcommon, tsuitcommon
 		max = 0;
@@ -2807,30 +2807,30 @@ void CSymbols::CalcFlushesStraightsSets(void)
 		if ( n>max && n>0)
 		{
 			max = n;
-		set_sym_tsuitcommon(WH_SUIT_SPADES);
+			set_sym_tsuitcommon(WH_SUIT_SPADES);
 		}
 		CardMask_AND(suittestCards, comCards, heartsCards);
 		n = StdDeck_numCards(suittestCards);
 		if ( n>max && n>0)
 		{
 			max = n;
-		set_sym_tsuitcommon(WH_SUIT_HEARTS);
+			set_sym_tsuitcommon(WH_SUIT_HEARTS);
 		}
 		CardMask_AND(suittestCards, comCards, diamondsCards);
 		n = StdDeck_numCards(suittestCards);
 		if ( n>max && n>0)
 		{
 			max = n;
-		set_sym_tsuitcommon(WH_SUIT_DIAMONDS);
+			set_sym_tsuitcommon(WH_SUIT_DIAMONDS);
 		}
 		CardMask_AND(suittestCards, comCards, clubsCards);
 		n = StdDeck_numCards(suittestCards);
 		if ( n>max && n>0)
 		{
 			max = n;
-		set_sym_tsuitcommon(WH_SUIT_CLUBS);												// tsuitcommon
+			set_sym_tsuitcommon(WH_SUIT_CLUBS);												// tsuitcommon
 		}
-	set_sym_nsuitedcommon(max);															// nsuitedcommon
+		set_sym_nsuitedcommon(max);															// nsuitedcommon
 
 		// nranked, trank
 		max = 0;
@@ -3189,7 +3189,8 @@ void CSymbols::CalcRankbits(void)
 							(1<<(((int)_sym.pokerval>>8)&0xf)) |
 							(1<<(((int)_sym.pokerval>>4)&0xf)) |
 						(1<<(((int)_sym.pokerval>>0)&0xf)));
-	set_sym_rankbitspoker(_sym.rankbitspoker + (((int)_sym.rankbitspoker&0x4000) ? (1<<1) : 0)); //ace
+	// Take care about ace (low bit)
+	set_sym_rankbitspoker(_sym.rankbitspoker + (((int)_sym.rankbitspoker&0x4000) ? (1<<1) : 0)); 
 
 		for (i=14; i>=2; i--)
 		{
