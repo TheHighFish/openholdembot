@@ -3184,12 +3184,12 @@ void CSymbols::CalcRankbits(void)
 				}
 			}
 		}
-	set_sym_rankbitspoker((1<<(((int)_sym.pokerval>>16)&0xf)) +							// rankbitspoker
-							(1<<(((int)_sym.pokerval>>12)&0xf)) +
-							(1<<(((int)_sym.pokerval>>8)&0xf)) +
-							(1<<(((int)_sym.pokerval>>4)&0xf)) +
+	set_sym_rankbitspoker((1<<(((int)_sym.pokerval>>16)&0xf)) |							// rankbitspoker
+							(1<<(((int)_sym.pokerval>>12)&0xf)) |
+							(1<<(((int)_sym.pokerval>>8)&0xf)) |
+							(1<<(((int)_sym.pokerval>>4)&0xf)) |
 						(1<<(((int)_sym.pokerval>>0)&0xf)));
-	set_sym_rankbitspoker(_sym.rankbitspoker + ((int)_sym.rankbitspoker&0x4000) ? (1<<1) : 0); //ace
+	set_sym_rankbitspoker(_sym.rankbitspoker + (((int)_sym.rankbitspoker&0x4000) ? (1<<1) : 0)); //ace
 
 		for (i=14; i>=2; i--)
 		{
@@ -3276,16 +3276,16 @@ void CSymbols::CalcRankbits(void)
 
 	set_sym_srankbitspoker( 															// srankbitspoker
 			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD((((int)_sym.pokerval>>16)&0xf)-2, plcomsuit)) ?
-			 (1<<(((int)_sym.pokerval>>16)&0xf)) : 0) +
+			 (1<<(((int)_sym.pokerval>>16)&0xf)) : 0) |
 			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD((((int)_sym.pokerval>>12)&0xf)-2, plcomsuit)) ?
-			 (1<<(((int)_sym.pokerval>>12)&0xf)) : 0) +
+			 (1<<(((int)_sym.pokerval>>12)&0xf)) : 0) |
 			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD((((int)_sym.pokerval>>8)&0xf)-2, plcomsuit)) ?
-			 (1<<(((int)_sym.pokerval>>8)&0xf)) : 0) +
+			 (1<<(((int)_sym.pokerval>>8)&0xf)) : 0) |
 			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD((((int)_sym.pokerval>>4)&0xf)-2, plcomsuit)) ?
-			 (1<<(((int)_sym.pokerval>>4)&0xf)) : 0) +
+			 (1<<(((int)_sym.pokerval>>4)&0xf)) : 0) |
 			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD((((int)_sym.pokerval>>0)&0xf)-2, plcomsuit)) ?
 		 (1<<(((int)_sym.pokerval>>0)&0xf)) : 0));
-	set_sym_srankbitspoker(_sym.srankbitspoker + ((int)_sym.srankbitspoker&0x4000) ? (1<<1) : 0); //ace
+	set_sym_srankbitspoker(_sym.srankbitspoker + (((int)_sym.srankbitspoker&0x4000) ? (1<<1) : 0)); //ace
 
 		for (i=14; i>=2; i--)
 		{
