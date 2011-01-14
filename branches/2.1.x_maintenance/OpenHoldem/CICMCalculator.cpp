@@ -83,7 +83,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 	int			sym_playersseatedbits =  (int) p_symbols->sym()->playersseatedbits;
 	double		sym_pot = p_symbols->sym()->pot;
 	double		sym_call = p_symbols->sym()->call;
-   double		sym_currentbet[MAX_PLAYERS]={0};
+	double		sym_currentbet[MAX_PLAYERS]={0};
 
 	for (i = 0; i < MAX_PLAYERS; i++)
 	{
@@ -96,14 +96,22 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 
 	if (strncmp(pquery,"_fold",5)==0)
 	{
-		double win = sym_pot / sym_nopponentsplaying;
+		double to_split = p_symbols->sym()->potcommon;
 
 		for (i = 0; i < MAX_PLAYERS; i++)
 		{
 			if ((sym_opponentsplayingbits>>i)&1)
-			{
+				stacks[i] += sym_currentbet[i];
+			else
+				to_split += sym_currentbet[i];
+		}
+
+		double win = to_split / sym_nopponentsplaying;
+
+		for (i = 0; i < MAX_PLAYERS; i++)
+		{
+			if ((sym_opponentsplayingbits>>i)&1)
 				stacks[i] += win;
-			}
 		}
 	}
 
