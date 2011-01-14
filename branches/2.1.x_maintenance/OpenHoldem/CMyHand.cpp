@@ -1675,5 +1675,8 @@ const int CMyHand::StrengthOnePair(void)
 			strength-=1;
 	}
 
+	if(strength < 0)
+		strength = 0;
+
 	return strength;
 }
