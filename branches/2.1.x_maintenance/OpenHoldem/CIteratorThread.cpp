@@ -90,7 +90,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 	int				i = 0, j = 0, k = 0, randfix = 0;
 	unsigned int	nit = 0;
-	CardMask		addlcomCards = {0}, evalCards = {0}, usedCards = {0}, temp_usedCards = {0};
+	CardMask		addlcomCards = {0}, evalCards = {0}, opp_evalCards = {0}, usedCards = {0}, temp_usedCards = {0};
 	unsigned int	ocard[MAX_OPPONENTS*2] = {0}, card = 0, pl_pokval = 0, opp_pokval = 0, opp_pokvalmax = 0;
 	HandVal			pl_hv = 0, opp_hv = 0;
 	double			dummy = 0;
@@ -349,10 +349,11 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 		opp_pokvalmax = 0;
 		for (i=0; i<nopp; i++)
 		{
-			CardMask_OR(evalCards, pParent->_comCards, addlcomCards);
-			CardMask_SET(evalCards, ocard[i*2]);
-			CardMask_SET(evalCards, ocard[(i*2)+1]);
-			opp_hv = Hand_EVAL_N(evalCards, 7);
+			CardMask_RESET(opp_evalCards);
+			CardMask_OR(opp_evalCards, pParent->_comCards, addlcomCards);
+			CardMask_SET(opp_evalCards, ocard[i*2]);
+			CardMask_SET(opp_evalCards, ocard[(i*2)+1]);
+			opp_hv = Hand_EVAL_N(opp_evalCards, 7);
 			opp_pokval = p_symbols->CalcPokerval(opp_hv, 7, &dummy, CARD_NOCARD, CARD_NOCARD);
 
 			if (opp_pokval>pl_pokval)
