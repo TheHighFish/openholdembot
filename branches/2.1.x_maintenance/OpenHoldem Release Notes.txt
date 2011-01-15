@@ -3,7 +3,8 @@ v2.1.8 2011-01-15
 BUG FIXES:
 - OH tried to get the symbol "scraperprocessordll" from the tablemap
   instead of "scraperdll". Thanks to Vasyatko and Want2Learn for reporting. [THF]
-- The formula editor was handling unsaved formulas in several different ways (inconsistently).     [JumpingFences]
+- The formula editor was handling unsaved formulas in several different ways (inconsistently).
+  [JumpingFences]
 - The action constants for prevaction were no longer consistent to WinHoldem
   due to code improvements. Thanks to Qwerty for reporting. [THF]
 - Improving the auto-detection of blinds (guessing from the bets),
