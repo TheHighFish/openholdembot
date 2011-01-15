@@ -163,7 +163,8 @@ void CAutoplayer::DoAllin(void)
 			// Click the allin button.
 			// Don't restore the position after the first click (point_null).
 			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), allin_button, MouseLeft, number_of_clicks, NULL, point_null);
-			//!!! delay required
+			// Same delay as 'Entry to confirm swag'? 
+			Sleep(prefs.swag_delay_3());
 			write_log(3, "Text selection; calling mouse.dll to single click raise: %d,%d %d,%d\n", 
 				raise_button.left, raise_button.top, raise_button.right, raise_button.bottom);
 			// Click the raise button;
