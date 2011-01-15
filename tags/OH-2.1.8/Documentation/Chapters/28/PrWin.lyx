@@ -1,0 +1,658 @@
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+PrWin
+\end_layout
+
+\end_inset
+
+PrWin
+\end_layout
+
+\begin_layout Section
+The 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Iterator
+\end_layout
+
+\end_inset
+
+Iterator
+\end_layout
+
+\begin_layout Standard
+OpenHoldem includes a Monte Carlo Holdem simulator for use in calculating
+ various statistics for use by your bot logic, the primary of which are
+ the prwin/prtie/prlos trio.
+  There are many resources on the Internet for learning about Monte Carlo
+ poker simulations, a good place to start is here: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://pokerforprogrammers.blogspot.com
+\end_layout
+
+\end_inset
+
+, but there are plenty of other resources too
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.google.com/#hl=en&q=monte+carlo+poker+simulation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+There are a number of parameters that feed into the OpenHoldem iterator:
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+f$P
+\end_layout
+
+\end_inset
+
+f$P:  The result of the f$P function directly determines the number of opponents
+ that are simulated in the Iterator.
+  The greater the number of opponents, the lower your chances of winning.
+  The lower the number of opponents, the higher your chances of winning.
+\end_layout
+
+\begin_layout Itemize
+Table level hand weightings:  This is discussed in detail here:  {Weighted
+ prwin}
+\end_layout
+
+\begin_layout Itemize
+Opponent level hand weightings:  This is discussed in detail here:  {Enhanced
+ prwin}Iterations and Standard DeviationThis material was originally produced
+ by BuckyBall
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://forum.winholdem.net/wbb/viewtopic.php?t=3742 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Standard deviation of prwin/prtie/prlos by Number of Iterations (
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+NIT
+\end_layout
+
+\end_inset
+
+NIT)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/PrWin/StandardDeviationByIterations.bmp
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/PrWin/ProbabilityByPrWin.bmp
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Here is how to use the data in the above graphs: Decide what error you find
+ acceptable 99% of the time.
+ For example, if you are happy with getting prwin's of 0.846 - 0.852 99% of
+ the time for AA headsup preflop, your error would be (0.849) +- 0.003.
+ That error is "3 standard deviations".
+ To get 1 standard deviation, divide by 3 (to give std.
+ dev.
+ = 0.001).
+ Find that standard deviation in the top chart and read off the number of
+ iterations required.
+ In our case, it would be 100,000 required iterations.
+ The prwin values you obtain will be within 1 standard deviation 67% of
+ the time, within 2 standard deviations 95% of the time, and within 3 standard
+ deviations 99% of the time.
+ 
+\end_layout
+
+\begin_layout Section
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Weighted prwin
+\end_layout
+
+\end_inset
+
+Weighted prwin
+\end_layout
+
+\begin_layout Standard
+A weighted prwin is one which is calculated by making informed selections
+ of the cards that opponents are likely to hold, and using these cards in
+ the calculation of your win probability.
+  Factors which can be used to make inferences about cards include willingness
+ to pay to see flop, betting behavior when faced by common cards, and historical
+ information about opponent behavior.
+  Essentially it aims to put your opponents on cards as accurately as possible.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/PrWin/WeightedPrWinModel.bmp
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To enable Weighted prwin, various user-defined functions in a formula file
+ must be defined to return the following values, expressed as 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+handrank169
+\end_layout
+
+\end_inset
+
+handrank169 values (see {Calculated Symbols}):function explanation f$mustplayOpp
+onents holding cards better than this are assumed always to play them.
+ This allows for the situation where opponents slow play the strongest hands
+ in the hope of milking more from the pot with them.f$topclipIndicates that
+ hands better than this are less likely to be played, since the betting
+ level is too low.f$willplayHands better than this will be played.f$wontplayHands
+ worse than this are highly unlikely to be played.The success in using a
+ model of this sort depends on the data available to allow the formula developer
+ to devise appropriate expressions for the f$functions outlined above.
+ Currently in OpenHoldem the most accessible is floppct - the percentage
+ of opponents seeing the flop averaged over a user definable period.
+ This is a reasonably accurate expression of the strength of cards which
+ opponents are prepared to play.
+ An example of its use could be: 
+\noun on
+##f$willplay##
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+handsplayed < 10 ? 72 :
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+(180*floppct) > (nopponents*2+1) ? 180 * floppct :
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+nopponents*2+1 
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+##f$wontplay## 
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+f$willplay*1.4 
+\end_layout
+
+\begin_layout Standard
+Note: If f$willplay evaluates to zero, prwin weighting will be turned off.
+ f$wontplay should not be less than f$willplay.Although this is primitive
+ it gives the single greatest advantage of using a weighted prwin rather
+ than an unweighted one; it eliminates the cards from the calculation which
+ opponents are unlikely to invest any money in.
+  Since it depends on statistical information a constant value is given
+ until floppct has had time to establish itself.
+ The '180' is because 90 is the midpoint of handrank169 at which the number
+ of hands above and below are the same (the stronger hands tend to have
+ fewer possible examples).
+ Ideally the calculation should be based on betting averages at different
+ levels, since it is what opponents are prepared to pay that determines
+ the probable strength of their hand, and should be recorded on an opponent
+ (and even position) basis.
+  The problem with more refined data accumulation is that it takes an increasing
+ number of hands to gain significance, and is sensitive to changes in playing
+ conditions, such as the number of players, which can alter opponent behavior.
+ Nevertheless statistics of this sort have been used successfully in other
+ bots based on a weighted prwin, and may be available from OpenHoldem in
+ the future.
+ The OpenHoldem weighted prwin uses a handrank169 table (see {Starting Hand
+ }) which is based on published data about hands players actually take to
+ flop, and varies from conventional ones giving win probabilities, particularly
+ in the way it favors suited hands!  In the absence of statistical support
+ it is not recommended that you implement f$topclip or f$mustplay unless
+ you have a good picture of the standard of play at a table.
+ If f$willplay is absent, or returns a zero value, the prwin weighting is
+ turned off.
+  It will also be turned off if your f$P function specifies more than 13
+ opponents.
+  If your opponents at flop include a big blind who has not been raised,
+ no weighting will be applied to his hand, since no assumptions can be made
+ about it.
+    nopponentscalling+nopponentsraising+nopponentschecking*floppct+0.49 //make
+ an estimate for opponents who have still to actThis attempts to estimate
+ the number of opponents you are likely to face when you act pre-flop, and
+ is most significant when you are in early position.
+ Whilst the principle is valid, that actual function should be thoroughly
+ tested in practice.
+\end_layout
+
+\begin_layout Section
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Enhanced prwin
+\end_layout
+
+\end_inset
+
+Enhanced prwin
+\end_layout
+
+\begin_layout Subsection
+Overview
+\end_layout
+
+\begin_layout Standard
+This approach allows the DLL coder to implement something very like the
+ {Weighted prwin}, but at opponent chair level; to trim the probabilities
+ of certain opponent hands as the hand develops; or to switch to an approach
+ where only limited Hand Lists are considered for an opponent (possibly
+ without any relative weighting).
+  Please bear in mind that with Enhanced prwin, OpenHoldem is completely
+ dependent on you to set up the prw1326 structure, and any errors you make
+ will affect the reliability of the result; or cause OpenHoldem to hang
+ or crash.
+  It is not a feature for the novice coder to experiment with.
+ 
+\end_layout
+
+\begin_layout Subsection
+How to use it from a 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+DLL
+\end_layout
+
+\end_inset
+
+DLL 
+\end_layout
+
+\begin_layout Standard
+To use Enhanced prwin from a DLL, you need to declare the structures and
+ pick up the pointer to them as described here: {prw1326}.
+  To switch OpenHoldem to a calculation using data in the structure which
+ you have generated you need to set:prw1326->useme = 1326; If this is all
+ you do OpenHoldem will switch at flop and after to an enhanced calculation
+ using the vanilla hand profiles it set up for each chair at initialization.
+  This will probably give slightly worse results than a well-configured
+ {Weighted prwin}, since the profiles are static! Now assume that at the
+ flop you become convinced that chair 2 has a pair of aces.
+  No other ace is known, so he can have six possible hands.
+  You want to set the structure so that OpenHoldem only calculates prwin
+ using those hands for that opponent.
+  First we need to note how OpenHoldem (or more specifically the PokerEval
+ library) represents cards.
+  Card rank 2 to Ace is represented by 0 to 12.
+  You then add a number representing the suit.
+  For hearts add 0, for diamonds add 13, for clubs add 26, and for spades
+ add 39.
+  Ac is thus 12+26=38.
+  The six pairs he can have are AhAd, AhAc, AhAs, AdAc, AdAs and AcAs.
+  You set the first six positions in the [1326] arrays:
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+prw1326->chair[2].rankhi[0]=12; //Ah
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+prw1326->chair[2].ranklo[0]=25; //Ad
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+...
+ 	
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+prw1326->chair[2].rankhi[5]=25; //Ad
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+prw1326->chair[2].ranklo[5]=51; //As
+\end_layout
+
+\begin_layout Standard
+Since you only want six card pairs to be considered you set:prw1326->chair[2].lim
+it=6; Finally you set the weighting for each hand.
+  As each hand is considered equally probable:for(i=0;i<6;i++)prw1326->chair[2].w
+eight[i]=prw1326->chair[2].level; Once the hand was over you would not want
+ to leave chair 2 as having a pair of aces.
+ prw1326->chair[2]=prw1326->vanilla_chair; would reset it.
+ This was an example of using prw1326 to set an opponent on a hand list.
+  We chose a very small list for ease of illustration, but it is worth noting
+ that this can be dangerous.
+  If another opponent had a hand list which included a pair of aces, and
+ an ace appeared on common, then there would be a risk that OpenHoldem could
+ not find enough cards to satisfy an iteration and would hang.
+  Since the iteration process is so CPU intensive we did not include code
+ to catch this situation.
+ Now let us suppose that chair 3 is a tight player.
+  You think he will only place money on the upper half of the cards, and
+ will only reliably pay for the top 25%.
+  In this case you would want to take the vanilla profile and change the
+ weightings on it.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+for(i=0;i<332;i++) 
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+    prw1326->chair[3].weight[i]=prw1326->chair[3].level;
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+for(i=332;i<663;i++)
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+    prw1326->chair[3].weight[i]=prw1326->chair[3].level*(663-i)/332;
+\end_layout
+
+\begin_layout Standard
+prw1326->chair[3].limit=663;Because we have set .limit for the chair we do
+ not need to bother about the weightings for the bottom half of the hand
+ list, because they will never be considered.
+ The procedure above would set a general profile for chair 3 based on pre-flop
+ behavior.
+  You might have a situation in which his betting behavior indicated that
+ he might well have a jack in his hand.
+  One response would be to traverse the hand list and reduce the weighting
+ for any hand which did not contain a jack.
+  A quicker technique is to increase the .level value (which automatically
+ reduced the probability for all hands) and then increase the weighting
+ only for hands containing a jack.
+  It can be very useful to build up indexes in your DLL which show the hands
+ which contain aces, kings etc, and also for those which contain suited
+ cards.
+  This can speed up this sort of operation considerably.
+ 
+\end_layout
+
+\begin_layout Subsection
+prw1326->preflop
+\end_layout
+
+\begin_layout Standard
+prw1326->preflop=1326; 
+\end_layout
+
+\begin_layout Subsection
+prw1326->bblimp
+\end_layout
+
+\begin_layout Standard
+If this is set non-zero then Enhanced prwin will not attempt any weighting
+ for a chair who has not voluntarily put any money into the pot pre-flop
+ (i.e.
+ an unraised BB).
+  Please note that this is not set by default, but is a flag which should
+ be set for the prwin calculation to be wholly realistic.
+\end_layout
+
+\begin_layout Subsection
+prw1326->chair[x].ignore 
+\end_layout
+
+\begin_layout Standard
+If this is set non-zero then Enhanced prwin will not attempt any weighting
+ for chair x.
+  The Iterator will make no assumptions about the chair hand list.
+  The chair itself will still be included in the prwin calculation if it
+ is still playing, but it is just treated as if it was an unraised BB, so
+ that it could have any available hand.
+ 
+\end_layout
+
+\begin_layout Subsection
+Callback
+\end_layout
+
+\begin_layout Standard
+There is a mechanism for synchronizing your setting of the prw1326 structure
+ with the prwin cycle.
+  You can specify a callback function which will be invoked immediately
+ before the prwin iteration loop is started.
+ You can use this to copy a local structure image over prw1326.
+  Any code here should be short, simple and clean.
+  Avoid get_symbol calls, logging or complex external functions.
+  If you think the callback function is a good place to make a couple of
+ hundred Poker Tracker queries then the OpenHoldem developers reserve the
+ right to be offensively unsympathetic to you.
+  If you have callback function in your code of type: 
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+double mycallback(void)
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+{
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+    //do something here
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+    return 0;
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+}
+\end_layout
+
+\begin_layout Standard
+then you can set 
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+prw1326->prw_callback=mycallback;
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+prw1326->usecallback=1326;
+\noun default
+The return value is not used currently by OpenHoldem.
+ 
+\end_layout
+
+\begin_layout Subsection
+Notes
+\end_layout
+
+\begin_layout Standard
+The simple minded technique for getting a random number between 0 and X
+ is rand()%X.
+  Unfortunately the rand() function returns an integer between 0 and 32767,
+ and if X is not a sub-multiple of 32768 then the result is biased (only
+ slightly if X is not too large).
+  You can code to eliminate this, but in an iterated piece of code this
+ introduces an extra CPU load.
+  Currently in prw1326 we do this elimination on the random numbers used
+ to select the hand from the hand list, but not on the .weight / .level assessment
+ since the default .level of 1024 does not introduce any bias.
+  The effect of an unfortunate choice of .level (such as one > 16384) would
+ be to cause hands with a low .weight to be over-represented in the calculations.
+ If you want to set an opponent on a limited hand list there are two ways
+ you can do it with prw1326; you can take a 1326 list and set the weight
+ of the unwanted hands to zero, or you can create a sequence of just those
+ hands you are interested in and set .limit so that only they are considered.
+  Both will produce the same result, but the latter is more CPU-efficient,
+ particularly for a short list, since the Iterator does not have to waste
+ time rejecting many hands with a zero .weight.
+ When you unload a DLL from the OpenHoldem menu, the .useme and .usecallback
+ flags will be cleared but nothing else in the prw1326 structure will be
+ changed.
+  Another loaded dll will then find the structure as the previous one left
+ it, so you cannot assume the initial OpenHoldem initialization unless you
+ do careful housekeeping to restore it on DLL exit.
+ 
+\end_layout
+
+\end_body
+\end_document
