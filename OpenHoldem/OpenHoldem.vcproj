@@ -349,14 +349,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\COpenPPL.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\COpenPPLGrammar.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CPokerPro.cpp"
 				>
 			</File>
@@ -390,6 +382,10 @@
 			</File>
 			<File
 				RelativePath=".\debug.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MagicNumbers.cpp"
 				>
 			</File>
 			<File

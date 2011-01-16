@@ -249,20 +249,24 @@ const int k_number_of_pocketcard_combinations_without_order = 1326;
 const bool k_ThisMustNotHappen = false;
 
 // Action constants for the autoplayer
+// have to be backward compatible to WinHoldem
+// http://www.maxinmontreal.com/wiki/index.php5?title=OpenHoldem:EndUserDocumentation:Symbols#History
+// (-1=fold 0=chec 1=call 2=rais 3=swag 4=alli)
 enum ActionConstant
 {
-	k_action_undefined = 0,
-	k_action_fold,
-	k_action_check,
-	k_action_call,
-	k_action_raise,		// min-raise
-	k_action_swag,		// "stated wager", i.e. using f$betsize
-	k_action_allin
+	k_action_undefined = -2,
+	k_action_fold = -1,
+	k_action_check = 0,		// new in OpenHoldem
+	k_action_call = 1,
+	k_action_raise = 2,		// min-raise
+	k_action_swag = 3,		// "stated wager", i.e. using f$betsize
+	k_action_allin = 4
 };
 
-// 4 digit names of action-constants for use in the autoplayer-log.
-const static char *k_action_constant_names[k_action_allin+1] =
-{"UNDF", "FOLD", "CHEC", "CALL", "RAIS", "SWAG", "ALLI"};
+// Function to access the name of the action constants.
+// As fold is negative we can no longer use the constants 
+// as indices for an array.
+const char* ActionConstantNames(int action_constant);
 
 // for rank to card translation
 const static char *k_card_chars = "23456789TJQKA";
@@ -273,5 +277,8 @@ const int k_number_of_different_cardranks = 13;
 // and use index 0 for the current round.
 // The old code did it differently (4 for the current round)
 const int k_storage_index_for_current_round = 0;
+
+// Functions names, both user-defined and standard, e.g. "f$alli"
+const int k_max_size_of_function_name = 256;
 
 #endif // _INC_MAGICNUMBERS_H

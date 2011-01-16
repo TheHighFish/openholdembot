@@ -12,7 +12,7 @@ protected:
 
 public:
 	static COpenHoldemDoc* GetDocument();
-
+    BOOL SaveModified();
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
 	virtual ~COpenHoldemDoc();
