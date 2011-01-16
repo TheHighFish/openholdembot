@@ -2610,6 +2610,7 @@ void CDlgTableMap::OnBnClickedFontplus()
 {
 	separation_font_size++;
 	lf_fixed.lfHeight = separation_font_size;
+	separation_font.DeleteObject();
 	separation_font.CreateFontIndirect(&lf_fixed);
 	m_PixelSeparation.SetFont(&separation_font);
 	Invalidate(false);
@@ -2619,6 +2620,7 @@ void CDlgTableMap::OnBnClickedFontminus()
 {
 	separation_font_size--;
 	lf_fixed.lfHeight = separation_font_size;
+	separation_font.DeleteObject();
 	separation_font.CreateFontIndirect(&lf_fixed);
 	m_PixelSeparation.SetFont(&separation_font);
 	Invalidate(false);

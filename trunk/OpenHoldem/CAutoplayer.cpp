@@ -168,7 +168,8 @@ void CAutoplayer::DoAllin(void)
 			// Click the allin button.
 			// Don't restore the position after the first click (point_null).
 			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), allin_button, MouseLeft, number_of_clicks, NULL, point_null);
-			//!!! delay required
+			// Same delay as 'Entry to confirm swag'? 
+			Sleep(prefs.swag_delay_3());
 			write_log(3, "Text selection; calling mouse.dll to single click raise: %d,%d %d,%d\n", 
 				raise_button.left, raise_button.top, raise_button.right, raise_button.bottom);
 			// Click the raise button;
@@ -301,18 +302,6 @@ void CAutoplayer::DoAutoplayer(void)
 	if(!isFinalAnswer)
 	{
 		return;
-	}
-
-	// save replay frame, if needed
-	if (prefs.replay_record())
-	{
-		if (p_symbols->sym()->ismyturn && !p_heartbeat_thread->replay_recorded_this_turn())
-		{
-			write_log(3, "Calling CreateReplayFrame.\n");
-			CReplayFrame   crf;
-			crf.CreateReplayFrame();
-			p_heartbeat_thread->set_replay_recorded_this_turn(true);
-		}
 	}
 
 	if (p_symbols->f$alli())
@@ -629,13 +618,13 @@ void CAutoplayer::DoARCCF(void)
 		int sym_br = (int) p_symbols->sym()->br;
 
 		// Writing 4-digit-name of action, e.g "ALLI" or "RAIS" to the log.
-		write_logautoplay(1, k_action_constant_names[do_click]);
+		write_logautoplay(1, ActionConstantNames(do_click));
 		p_symbols->RecordPrevAction(do_click);
 		
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 	}
 
-	write_log(3, "...ending DoARCCF, 'didrais'/'didcall'/'didchec' now: %d\n", 
+	write_log(3, "...ending DoARCCF, 'didrais'/'didcall'/'didchec' now: %d %d %d\n", 
 	p_symbols->sym()->didrais[4], p_symbols->sym()->didcall[4], p_symbols->sym()->didchec[4]);
 }
 

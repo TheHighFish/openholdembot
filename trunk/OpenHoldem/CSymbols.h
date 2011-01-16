@@ -389,6 +389,7 @@ public:
 	const double CalcPokerval(const HandVal handval, const int ncards, double *pcbits, const int pcard0, const int pcard1);
 	const void GetCardstring(char *c, const unsigned int c0, const unsigned int c1);
 	const double IsHand(const char *a, int *e=NULL);
+	bool	DidAct(void);
 
 public:
 	// public accessors
@@ -787,7 +788,6 @@ public:
 private:
 	void	InitHandranktTableForPrwin();
 	bool	IsHigherStraightPossible(HandVal	handval);
-	bool	DidAct(void);
 	void	reset_sym_maxbalance() { ENT _sym.maxbalance = 0; }
 	void	set_sym_max_balance_conditionally(const double d) 
 	{ 
@@ -856,7 +856,6 @@ private:
 	static double _dealerchair_last;
 	static double _handnumber_last;
 	static int _br_last;
-	static int _bblindbits_last;
 	static unsigned int _player_card_last[2];
 
 	CCritSec			m_critsec;
