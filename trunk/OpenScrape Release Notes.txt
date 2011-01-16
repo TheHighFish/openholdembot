@@ -1,3 +1,9 @@
+v2.1.8 2011-01-15
+=================
+BUG FIXES:
+- OpenScrape crashed when pressing the "+" and "-" buttons for the pixel separation view.
+  This has now been fixed. [JumpingFences]
+
 v2.1.6 2010-07-xx
 =================
 MAINTENANCE:
