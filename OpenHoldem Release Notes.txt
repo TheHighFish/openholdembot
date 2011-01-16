@@ -36,6 +36,70 @@ MAINTENANCE:
   Thanks to JumpingFences for pointing this out. [THF]
 
 
+v2.1.8 2011-01-15
+=================
+BUG FIXES:
+- OH tried to get the symbol "scraperprocessordll" from the tablemap
+  instead of "scraperdll". Thanks to Vasyatko and Want2Learn for reporting. [THF]
+- The formula editor was handling unsaved formulas in several different ways (inconsistently).
+  [JumpingFences]
+- The action constants for prevaction were no longer consistent to WinHoldem
+  due to code improvements. Thanks to Qwerty for reporting. [THF]
+- Improving the auto-detection of blinds (guessing from the bets),
+  which caused incorrect results, in case of
+    * tournaments (no blind locking)
+    * super-fast-action, so that we don't get a frame before our turn
+    * SB raises or cold-calls
+    * we are BB, so that we get a stable frame only after SBs action.
+  This case gets now handled, too. [F1x3r]
+- srankbits, srankbitspoker, srankhipoker, etc. were returning incorrect
+  results due to missing brackets in an arithmetic expression.
+  This has now been fixed. [JumpingFences]
+- OH tried to read the complete function into the fixed-sized space for the functions name
+  and then truncate it. This caused a buffer oberflow in case of large functions.
+  Thanks to KaeKruse for reprting the bug and providing a formula to reproduce it. [THF]
+- There were some typos in the symbol names used by the validator.
+  This caused false positives. Thanks to MasterNet for reporting. [THF]
+- Betround was undefined after disconnecting from a table,
+  but still used as part of an assertion. This caused a warning in debug-mode and got now fixed.
+  [JumpingFences]
+- Added a missing Sleep() to the autoplayer-code between two clicks for the new allin-method.
+  Without it clicking max, then raise didn't work at some casinos.
+  Thanks to Poker_Dog for reporting and to Qwerty for submittina a patch. [THF]
+
+
+v2.1.8 2011-01-15
+=================
+BUG FIXES:
+- OH tried to get the symbol "scraperprocessordll" from the tablemap
+  instead of "scraperdll". Thanks to Vasyatko and Want2Learn for reporting. [THF]
+- The formula editor was handling unsaved formulas in several different ways (inconsistently).
+  [JumpingFences]
+- The action constants for prevaction were no longer consistent to WinHoldem
+  due to code improvements. Thanks to Qwerty for reporting. [THF]
+- Improving the auto-detection of blinds (guessing from the bets),
+  which caused incorrect results, in case of
+    * tournaments (no blind locking)
+    * super-fast-action, so that we don't get a frame before our turn
+    * SB raises or cold-calls
+    * we are BB, so that we get a stable frame only after SBs action.
+  This case gets now handled, too. [F1x3r]
+- srankbits, srankbitspoker, srankhipoker, etc. were returning incorrect
+  results due to missing brackets in an arithmetic expression.
+  This has now been fixed. [JumpingFences]
+- OH tried to read the complete function into the fixed-sized space for the functions name
+  and then truncate it. This caused a buffer oberflow in case of large functions.
+  Thanks to KaeKruse for reprting the bug and providing a formula to reproduce it. [THF]
+- There were some typos in the symbol names used by the validator.
+  This caused false positives. Thanks to MasterNet for reporting. [THF]
+- Betround was undefined after disconnecting from a table,
+  but still used as part of an assertion. This caused a warning in debug-mode and got now fixed.
+  [JumpingFences]
+- Added a missing Sleep() to the autoplayer-code between two clicks for the new allin-method.
+  Without it clicking max, then raise didn't work at some casinos.
+  Thanks to Poker_Dog for reporting and to Qwerty for submittina a patch. [THF]
+
+
 v2.1.7 2010-09-12
 =================
 BUG FIXES:
