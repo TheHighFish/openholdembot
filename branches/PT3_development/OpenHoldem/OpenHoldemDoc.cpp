@@ -28,20 +28,33 @@ COpenHoldemDoc::~COpenHoldemDoc()
 {
 }
 
+BOOL COpenHoldemDoc::SaveModified()
+{
+	if (m_formulaScintillaDlg)
+	{
+		if (m_formulaScintillaDlg->m_dirty)
+		{
+			if (MessageBox(NULL, "The Formula Editor has un-applied changes.\n"
+						   "Really exit?", "Formula Editor", MB_ICONWARNING|MB_YESNO) == IDNO)
+			{
+				return false;
+			}
+		}
+
+		// Kill the formula dialog
+		if(m_formulaScintillaDlg) 
+			m_formulaScintillaDlg->DestroyWindow();
+
+	}
+	return CDocument::SaveModified();
+}
+
 BOOL COpenHoldemDoc::OnNewDocument() 
 {
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	if (!CDocument::OnNewDocument())
-	return FALSE;
-
-	// Kill the formula dialog, if it is open
-	if(m_formulaScintillaDlg) 
-	{
-		delete m_formulaScintillaDlg;
-		m_formulaScintillaDlg	=	NULL;
-		pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
-	}
+		return FALSE;
 
 	// Default bot
 	p_formula->SetDefaultBot();
@@ -134,13 +147,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 	// Reading a file
 	else 
 	{
-		// Kill the formula dialog, if it is open
-		if(m_formulaScintillaDlg) 
-		{
-			delete m_formulaScintillaDlg;
-			m_formulaScintillaDlg	=	NULL;
-			pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
-		}
+        // The formula editor gets now handled automatically (Rev. 1425)
 
 		// Read ohf / whf file
 		ReadFormula(ar);

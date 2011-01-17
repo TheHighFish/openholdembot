@@ -23,7 +23,7 @@ CDlgSAPrefs17::~CDlgSAPrefs17()
 void CDlgSAPrefs17::DoDataExchange(CDataExchange* pDX)
 {
 	CSAPrefsSubDlg::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_CONFIGURATION_KEYBOARD_SETTINGS, m_ConfigurationKeyboardSettings_Button);
+	DDX_Control(pDX, IDC_CONFIGURATION_INPUT_SETTINGS, m_ConfigurationInputSettings_Button);
 	DDX_Control(pDX, IDC_CONFIGURATION_THEME_SETTINGS, m_ConfigurationThemeSettings_Button);
 	DDX_Control(pDX, IDC_CONFIGURATION_FONT_SETTINGS, m_ConfigurationFontSettings_Button);
 }
@@ -36,7 +36,7 @@ END_MESSAGE_MAP()
 BOOL CDlgSAPrefs17::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
-	m_ConfigurationKeyboardSettings_Button.SetCheck(prefs.configurationcheck_keyboard_settings() != 0);
+	m_ConfigurationInputSettings_Button.SetCheck(prefs.configurationcheck_keyboard_settings() != 0);
 	m_ConfigurationThemeSettings_Button.SetCheck(prefs.configurationcheck_theme_settings() != 0);
 	m_ConfigurationFontSettings_Button.SetCheck(prefs.configurationcheck_font_settings() != 0);
 
@@ -46,7 +46,7 @@ BOOL CDlgSAPrefs17::OnInitDialog()
 
 void CDlgSAPrefs17::OnOK()
 {
-	prefs.set_configurationcheck_keyboard_settings(m_ConfigurationKeyboardSettings_Button.GetCheck());
+	prefs.set_configurationcheck_keyboard_settings(m_ConfigurationInputSettings_Button.GetCheck());
 	prefs.set_configurationcheck_theme_settings(m_ConfigurationThemeSettings_Button.GetCheck());
 	prefs.set_configurationcheck_font_settings(m_ConfigurationFontSettings_Button.GetCheck());
 	CSAPrefsSubDlg::OnOK();

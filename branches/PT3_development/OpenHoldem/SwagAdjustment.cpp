@@ -65,12 +65,14 @@ double SwagAmountAjustedToCasino(double amount_to_raise_to)
 	double swag_amount_ajusted_to_casino = amount_to_raise_to;
 	// WinHoldems f$srai should return, what we want to add to (call + currentbet)
 	// so we have to calculate our adjustment the other way.
+	// http://www.winholdem.net/help/help-formula.html
+	// http://forum.winholdem.net/wbb/viewtopic.php?t=1849
 	if (p_tablemap->swagtextmethod() == 2)
 	{
 		// Old adjustment: call, so currentbet is too much
 		swag_amount_ajusted_to_casino = amount_to_raise_to - p_symbols->sym()->currentbet[10];
 	}
-	else if (p_tablemap->swagtextmethod() == 2)
+	else if (p_tablemap->swagtextmethod() == 3)
 	{
 		// Old adjustment: call + currentbet.
 		// Everything fine, nothing to do.

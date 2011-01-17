@@ -12,9 +12,9 @@ BEGIN_TESTCASE
     TESTCASE_ID ("1201")
     HEURISTIC_RULE (false)
     REASONING ("If some players are betting, but I did not yet act, then there must be a positive amount to call.")
-    PRECONDITION ((gws("nplayersbetting") > 0) && !(gws("didrais") || gws("didcall") || gws("didswag")))
+    PRECONDITION ((gws("nopponentsbetting") > 0) && !(gws("didrais") || gws("didcall") || gws("didswag")))
     POSTCONDITION (gws("nbetstocall") > 0)
-    SYMBOLS_POSSIBLY_AFFECTED ("nplayersbetting, didrais, didcall, didswag, nbetstocall")
+    SYMBOLS_POSSIBLY_AFFECTED ("nopponentsbetting, didrais, didcall, didswag, nbetstocall")
 END_TESTCASE
 
 

@@ -2059,7 +2059,7 @@ void PokerPro::DoAutoplayer(void)
 		_autoplayer_can_act = false;
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		Sleep(500);
-		p_autoplayer->set_prevaction(PREVACT_ALLI);
+		p_symbols->RecordPrevAction(k_action_allin);
 	}
 	else if (p_symbols->f$betsize() && p_scraper->GetButtonState(2) && _autoplayer_can_act) 
 	{
@@ -2068,9 +2068,7 @@ void PokerPro::DoAutoplayer(void)
 		_autoplayer_can_act = false;
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		Sleep(500);
-		p_autoplayer->set_didswag(4, 1);
-		p_autoplayer->set_didswag(sym_br-1, 1);
-		p_autoplayer->set_prevaction(PREVACT_SWAG);
+		p_symbols->RecordPrevAction(k_action_swag);
 	}
 	else if (p_symbols->f$rais() && p_scraper->GetButtonState(2) && _autoplayer_can_act) 
 	{
@@ -2079,9 +2077,7 @@ void PokerPro::DoAutoplayer(void)
 		_autoplayer_can_act = false;
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		Sleep(500);
-		p_autoplayer->set_didrais(4, 1);
-		p_autoplayer->set_didrais(sym_br-1, 1);
-		p_autoplayer->set_prevaction(PREVACT_RAIS);
+		p_symbols->RecordPrevAction(k_action_raise);
 	}
 	else if (p_symbols->f$call() && p_scraper->GetButtonState(1) && _autoplayer_can_act) 
 	{
@@ -2090,9 +2086,7 @@ void PokerPro::DoAutoplayer(void)
 		_autoplayer_can_act = false;
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		Sleep(500);
-		p_autoplayer->set_didcall(4, 1);
-		p_autoplayer->set_didcall(sym_br-1, 1);
-		p_autoplayer->set_prevaction(PREVACT_CALL);
+		p_symbols->RecordPrevAction(k_action_call);
 	}
 	else if (p_scraper->GetButtonState(4) && _autoplayer_can_act) 
 	{
@@ -2101,9 +2095,7 @@ void PokerPro::DoAutoplayer(void)
 		_autoplayer_can_act = false;
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		Sleep(500);
-		p_autoplayer->set_didchec(4, 1);
-		p_autoplayer->set_didchec(sym_br-1, 1);
-		p_autoplayer->set_prevaction(PREVACT_CHEC);
+		p_symbols->RecordPrevAction(k_action_check);
 	}
 	else if (_autoplayer_can_act) 
 	{
@@ -2112,10 +2104,8 @@ void PokerPro::DoAutoplayer(void)
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		_autoplayer_can_act = false;
 		Sleep(500);
-		p_autoplayer->set_prevaction(PREVACT_FOLD);
+		p_symbols->RecordPrevAction(k_action_fold);
 	}
-
-	p_symbols->UpdateAutoplayerInfo();
 }
 
 void PokerPro::Publish(CString *text, const int flags) 

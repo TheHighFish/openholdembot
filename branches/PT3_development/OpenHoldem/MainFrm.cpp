@@ -2,10 +2,10 @@
 //
 
 #include "stdafx.h"
+#include "MainFrm.h"
+
 #include <io.h>
 #include <process.h>
-
-#include "MainFrm.h"
 
 #include "CAutoConnector.h"
 #include "CAutoplayer.h"
@@ -54,10 +54,7 @@
 #include "OpenHoldemDoc.h"
 #include "SAPrefsDialog.h"
 
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
+CMainFrame *p_mainframe = 0;
 
 // CMainFrame
 
@@ -88,6 +85,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 
 	//  Menu commands
 	ON_COMMAND(ID_FILE_OPEN, &CMainFrame::OnFileOpen)
+	ON_COMMAND(ID_FILE_LOAD_OPENPPL, &CMainFrame::OnFileLoadOpenPPL)
 	ON_COMMAND(ID_FILE_LOADTABLEMAP, &CMainFrame::OnFileLoadTableMap)
 	ON_COMMAND(ID_FILE_CONNECT, &CMainFrame::OnBnClickedGreenCircle)
 	ON_COMMAND(ID_FILE_DISCONNECT, &CMainFrame::OnBnClickedRedCircle)
@@ -448,11 +446,19 @@ void CMainFrame::OnEditFormula()
 {
 	if (m_formulaScintillaDlg) 
 	{
+		if (m_formulaScintillaDlg->m_dirty)
+		{
+			if (MessageBox("The Formula Editor has un-applied changes.\n"
+						   "Really exit?", "Formula Editor", MB_ICONWARNING|MB_YESNO) == IDNO)
+			{
+				m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, true);
+				return;
+			}
+		}
+
 		BOOL	bWasShown = ::IsWindow(m_formulaScintillaDlg->m_hWnd) && m_formulaScintillaDlg->IsWindowVisible();
 
-		m_formulaScintillaDlg->EndDialog(IDCANCEL);
-		delete m_formulaScintillaDlg;
-		m_formulaScintillaDlg = NULL;
+		m_formulaScintillaDlg->DestroyWindow();
 
 		if (bWasShown)
 			return;
@@ -625,14 +631,18 @@ void CMainFrame::SetMainWindowTitle(LPCSTR title)
 
 void CMainFrame::OnFileOpen() 
 {
+    COpenHoldemDoc *pDoc = (COpenHoldemDoc *)this->GetActiveDocument();   
+   
+    if (!pDoc->SaveModified())
+        return;        // leave the original one
+
 	CFileDialog			cfd(true);
 
 	cfd.m_ofn.lpstrInitialDir = prefs.path_ohf();
 	cfd.m_ofn.lpstrFilter = "OpenHoldem Files (.ohf)\0*.ohf\0WinHoldem Files (.whf)\0*.whf\0All files (*.*)\0*.*\0\0";
 	cfd.m_ofn.lpstrTitle = "Select Formula file to OPEN";
 	if (cfd.DoModal() == IDOK)
-	{			
-		COpenHoldemDoc *pDoc = (COpenHoldemDoc *)this->GetActiveDocument();		
+	{				
 		pDoc->OnOpenDocument(cfd.GetPathName());
 		pDoc->SetPathName(cfd.GetPathName());
 		// Update window title, registry
@@ -695,6 +705,11 @@ void CMainFrame::OnFileLoadTableMap()
 			prefs.set_path_tm(cfd.GetPathName());
 		}
 	}
+}
+
+void CMainFrame::OnFileLoadOpenPPL()
+{
+	Beep(440, 200);
 }
 
 void CMainFrame::OnBnClickedGreenCircle() 
@@ -1287,7 +1302,7 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
 	{
 		if (m_formulaScintillaDlg)
 		{
-			if (m_formulaScintillaDlg->m_dirty && !prefs.disable_msgbox())
+			if (m_formulaScintillaDlg->m_dirty)
 			{
 				if (OH_MessageBox_Interactive("The Formula Editor has un-applied (and unsaved) changes.\n"
 							   "Really exit?", "Unsaved formula warning", MB_YESNO) == IDNO)

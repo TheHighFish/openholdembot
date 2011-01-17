@@ -6,6 +6,7 @@
 #include "CGrammar.h"
 #include "CPreferences.h"
 #include "CSymbols.h"
+#include "DefaultBot.h"
 #include "OH_MessageBox.h"
 #include "OpenHoldemDoc.h"
 #include "UPDialog.h"
@@ -83,7 +84,7 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 {
 	CString		strOneLine = ""; 
 	int			content = 0;
-	char		funcname[256] = {0};
+	char		funcname[k_max_size_of_function_name] = {0};
 	int			start = 0, end = 0;
 		
 	SFunction	func;	
@@ -148,8 +149,13 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 				// Trying to continue gracefully.				
 				// Skipping is not possible,
 				// as this crashes the formula editor.											
-				strcpy_s(funcname, 256, strOneLine.GetString()+start+2);
-				funcname[strOneLine.GetLength()]='\0';
+				int number_of_chars_to_copy = (strOneLine.GetLength() < k_max_size_of_function_name) ?
+					strOneLine.GetLength() : k_max_size_of_function_name;
+				strncpy_s(funcname, 
+					k_max_size_of_function_name, 
+					strOneLine.GetString()+start+2,
+					number_of_chars_to_copy);
+				funcname[number_of_chars_to_copy]='\0';
 				
 				CString the_ErrorMessage = "Malformed function header!\nMissing trailing '##'.\n" 
 					+ strOneLine + "\n"
@@ -159,8 +165,14 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 
 			else 
 			{
-				strcpy_s(funcname, 256, strOneLine.GetString()+start+2);
-				funcname[end-2]='\0';
+				int size_of_function_name = end - start + 1;    
+				assert(size_of_function_name < k_max_size_of_function_name);
+				// strncpy_s: http://msdn.microsoft.com/de-de/library/5dae5d43(v=vs.80).aspx
+				strncpy_s(funcname,                              // Destination
+					k_max_size_of_function_name * sizeof(char),  // Size of destination
+					strOneLine.GetString() + start + 2,          // Start of source (without leading "##")
+					size_of_function_name);						 // Elements to copy	
+				funcname[end-2] = '\0';							 // Remove trailing "##"	
 			}
 
 			if (strcmp(funcname, "bankroll") == 0) { _formula.dBankroll = 0.0; content = FTbankroll; }

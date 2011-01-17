@@ -159,7 +159,9 @@ BEGIN
         MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE
         MENUITEM "Save &As...\tCtrl+A",         ID_FILE_SAVE_AS
         MENUITEM SEPARATOR
-        MENUITEM "&Load Table Map\tCtrl+L",     ID_FILE_LOADTABLEMAP
+        MENUITEM "&Load OpenPPL\tCtrl+L",       ID_FILE_LOAD_OPENPPL
+        MENUITEM SEPARATOR
+        MENUITEM "Load Table &Map\tCtrl+M",     ID_FILE_LOADTABLEMAP
         MENUITEM SEPARATOR
         MENUITEM "&Connect\tCtrl+T",            ID_FILE_CONNECT
         MENUITEM "&Disconnect\tCtrl-D",         ID_FILE_DISCONNECT
@@ -833,15 +835,17 @@ IDD_SAPREFS8 DIALOGEX 0, 0, 219, 155
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Automatically record replay frames (when its my turn)",IDC_RECORD_FRAMES,
+    CONTROL         "Record replay frames",IDC_RECORD_FRAMES,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,188,8
-    CONTROL         "But do it on every change in table state",IDC_RECORD_EVERY_CHANGE,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,22,143,10
-    CONTROL         "Record every change when in hand",IDC_RECORD_EVERY_CHANGE_PLAYING,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,40,147,8
-    EDITTEXT        IDC_MAXFRAMES,100,52,50,12,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_MAXFRAMES_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,150,52,11,12
-    LTEXT           "Maximum frames to store ",IDC_STATIC,4,56,96,8
+    CONTROL         "On change in table state",IDC_RECORD_EVERY_CHANGE,
+                    "Button",BS_AUTORADIOBUTTON,20,52,143,10
+    CONTROL         "On change in table state when in hand",IDC_RECORD_EVERY_CHANGE_PLAYING,
+                    "Button",BS_AUTORADIOBUTTON,20,68,147,8
+    EDITTEXT        IDC_MAXFRAMES,100,99,50,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_MAXFRAMES_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,150,99,11,12
+    LTEXT           "Maximum frames to store ",IDC_STATIC,4,103,96,8
+    CONTROL         "When it's my turn",IDC_RECORD_MY_TURN,"Button",BS_AUTORADIOBUTTON,20,36,138,10
+    GROUPBOX        "Record",IDC_STATIC,13,24,175,63
 END
 
 IDD_SAPREFS9 DIALOGEX 0, 0, 237, 158
@@ -877,22 +881,20 @@ IDD_SAPREFS11 DIALOGEX 0, 0, 219, 182
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Enable Log Symbols",IDC_ENABLE_LOG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,6,82,10
-    EDITTEXT        IDC_MAXIMUM_LOG,165,4,37,14,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_MAXIMUM_LOG_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,201,4,11,14
-    LTEXT           "Maximum symbol amount to log ",IDC_STATIC,103,7,54,8
-    CONTROL         "Enable Autoplayer Trace",IDC_ENABLE_TRACE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,21,156,10
-    LISTBOX         IDC_TRACE_LIST,24,36,163,48,LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Enable Log Symbols",IDC_ENABLE_LOG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,6,94,10
+    EDITTEXT        IDC_MAXIMUM_LOG,163,18,31,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_MAXIMUM_LOG_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,194,18,11,14
+    LTEXT           "Maximum symbol amount to log ",IDC_STATIC,6,24,76,8
+    CONTROL         "Enable Autoplayer Trace",IDC_ENABLE_TRACE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,40,139,8
     CONTROL         "Disable all runtime MessageBox popups",IDC_DISABLE_MSGBOX,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,9,95,156,10
-    LTEXT           "Debug output level",IDC_STATIC,21,115,62,8
-    LTEXT           "PokerTracker debug output level",IDC_STATIC,21,131,105,8
-    COMBOBOX        IDC_DEBUGLEVEL,158,111,29,63,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_DEBUGLEVEL_PT,158,128,29,74,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "(0=off, 3=all)",IDC_STATIC,150,142,46,8
-    LTEXT           "Erase old logs larger than (MB)",IDC_STATIC,21,159,124,12
-    EDITTEXT        IDC_MAXIMUM_LOGSIZE,140,156,37,14,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_MAXIMUM_LOGSIZE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,176,156,11,14
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,56,157,8
+    LTEXT           "Debug output level  (0=off; 3=all)",IDC_STATIC,6,72,157,8
+    LTEXT           "PokerTracker debug output level  (0=off; 3=all)",IDC_STATIC,6,88,157,8
+    COMBOBOX        IDC_DEBUGLEVEL,163,68,42,63,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_DEBUGLEVEL_PT,163,84,42,74,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Erase old logs larger than (MB)",IDC_STATIC,6,104,116,8
+    EDITTEXT        IDC_MAXIMUM_LOGSIZE,163,98,31,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_MAXIMUM_LOGSIZE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,194,98,11,14
 END
 
 IDD_SAPREFS12 DIALOGEX 0, 0, 219, 154
@@ -976,7 +978,7 @@ IDD_SAPREFS17 DIALOGEX 0, 0, 219, 154
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Check keyboard settings (UK english or US english)",IDC_CONFIGURATION_KEYBOARD_SETTINGS,
+    CONTROL         "Check keyboard layout settings (english - UK, US)",IDC_CONFIGURATION_INPUT_SETTINGS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,176,8
     CONTROL         "Check Windows Theme Settings",IDC_CONFIGURATION_THEME_SETTINGS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,23,176,10
@@ -1025,9 +1027,9 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "FileVersion", "2.1.4.0"
+            VALUE "FileVersion", "2.1.8.0"
             VALUE "LegalCopyright", "Licensed under GPLv3"
-            VALUE "ProductVersion", "2.1.4.0"
+            VALUE "ProductVersion", "2.1.8.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -1221,8 +1223,18 @@ BEGIN
 
     IDD_SAPREFS11, DIALOG
     BEGIN
-        VERTGUIDE, 187
+        VERTGUIDE, 6
+        VERTGUIDE, 163
+        VERTGUIDE, 194
+        VERTGUIDE, 205
         BOTTOMMARGIN, 180
+        HORZGUIDE, 16
+        HORZGUIDE, 32
+        HORZGUIDE, 48
+        HORZGUIDE, 64
+        HORZGUIDE, 80
+        HORZGUIDE, 96
+        HORZGUIDE, 112
     END
 
     IDD_SAPREFS12, DIALOG
@@ -1307,6 +1319,8 @@ BEGIN
         VERTGUIDE, 180
         BOTTOMMARGIN, 145
         HORZGUIDE, 16
+        HORZGUIDE, 29
+        HORZGUIDE, 43
         HORZGUIDE, 149
     END
 
@@ -1513,6 +1527,12 @@ STRINGTABLE
 BEGIN
     ID_MAIN_TOOLBAR_LOCK_BLINDS "Lock table blinds\nLock blinds"
     ID_MAIN_TOOLBAR_SCRAPER_OUTPUT "Scraper output\nScraper output"
+	ID_MAIN_TOOLBAR_SHOOTFRAME "Shoot frame\nShoot frame"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_MAIN_TOOLBAR_HELP "Help\nHelp"
 END
 
 STRINGTABLE 
@@ -1520,6 +1540,11 @@ BEGIN
     ID_PERL_LOADFORMULA     "Load the mostt recent Perl formula"
     ID_PERL_LOADSPECIFICFORMULA "Select a Perl formula to load"
     ID_PERL_EDITMAINFORMULA "Invoke the favorite Perl editor to edit the main formula file"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_LOAD_OPENPPL    "Load ""AutoProfileHoldem.txt""."
 END
 
 #endif    // English (U.S.) resources

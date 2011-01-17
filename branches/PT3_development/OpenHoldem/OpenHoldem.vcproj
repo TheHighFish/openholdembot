@@ -317,19 +317,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CDllExtension.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CEvalInfo.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CFormula.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CGameState.cpp"
 				>
 			</File>
 			<File
@@ -345,10 +333,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CICMCalculator.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CIteratorThread.cpp"
 				>
 			</File>
@@ -361,27 +345,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CLogSymbols.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CMemory.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CMyHand.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\COcclusionCheck.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CPerl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CPokerAction.cpp"
 				>
 			</File>
 			<File
@@ -405,19 +369,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CRunRon.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CScraper.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CSessionCounter.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CSharedMem.cpp"
 				>
 			</File>
 			<File
@@ -425,23 +377,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CSymbols.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CTableLimits.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CValidator.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\CVersus.cpp"
+				RelativePath=".\debug.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\debug.cpp"
+				RelativePath=".\MagicNumbers.cpp"
 				>
 			</File>
 			<File
@@ -955,6 +899,78 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="Synchronization"
+				>
+				<File
+					RelativePath=".\CSessionCounter.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CSharedMem.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Symbols"
+				>
+				<File
+					RelativePath=".\CGameState.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CICMCalculator.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CLogSymbols.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CMemory.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CMyHand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CPokerAction.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CRunRon.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbols.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CTableLimits.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CVersus.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Programming the Bot"
+				>
+				<File
+					RelativePath=".\CDllExtension.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CFormula.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CPerl.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -978,19 +994,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CDllExtension.h"
-				>
-			</File>
-			<File
 				RelativePath=".\CEvalInfo.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CFormula.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CGameState.h"
 				>
 			</File>
 			<File
@@ -1006,10 +1010,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CICMCalculator.h"
-				>
-			</File>
-			<File
 				RelativePath=".\CIteratorThread.h"
 				>
 			</File>
@@ -1022,27 +1022,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CLogSymbols.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CMemory.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CMyHand.h"
-				>
-			</File>
-			<File
 				RelativePath=".\COcclusionCheck.h"
 				>
 			</File>
 			<File
-				RelativePath=".\CPerl.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CPokerAction.h"
+				RelativePath=".\COpenPPLGrammar.h"
 				>
 			</File>
 			<File
@@ -1066,19 +1050,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CRunRon.h"
-				>
-			</File>
-			<File
 				RelativePath=".\CScraper.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CSessionCounter.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CSharedMem.h"
 				>
 			</File>
 			<File
@@ -1086,23 +1058,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CSymbols.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CTableLimits.h"
-				>
-			</File>
-			<File
 				RelativePath=".\CValidator.h"
 				>
 			</File>
 			<File
-				RelativePath=".\CVersus.h"
+				RelativePath=".\debug.h"
 				>
 			</File>
 			<File
-				RelativePath=".\debug.h"
+				RelativePath=".\DefaultBot.h"
 				>
 			</File>
 			<File
@@ -1138,15 +1102,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\PerlEz.h"
-				>
-			</File>
-			<File
 				RelativePath=".\PokerChat.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\PokerTracker_Queries_Version_3.h"
 				>
 			</File>
 			<File
@@ -1354,10 +1310,50 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="CCritSec"
+				Name="Symbols"
 				>
 				<File
-					RelativePath="..\CCritSec\CCritSec.h"
+					RelativePath=".\CGameState.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CICMCalculator.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CLogSymbols.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CMemory.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CMyHand.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CPokerAction.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CRunRon.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbols.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CTableLimits.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CVersus.h"
+					>
+				</File>
+				<File
+					RelativePath=".\PokerTracker_Queries_Version_3.h"
 					>
 				</File>
 			</Filter>
@@ -1390,10 +1386,6 @@
 				</File>
 				<File
 					RelativePath=".\DialogRename.h"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSAPrefs9.h"
 					>
 				</File>
 				<File
@@ -1500,6 +1492,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\DialogSAPrefs9.h"
+						>
+					</File>
+					<File
 						RelativePath=".\SAPrefsDialog.h"
 						>
 					</File>
@@ -1512,6 +1508,50 @@
 						>
 					</File>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="Synchronization"
+				>
+				<File
+					RelativePath=".\CSessionCounter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CSharedMem.h"
+					>
+				</File>
+				<Filter
+					Name="CCritSec"
+					>
+					<File
+						RelativePath="..\CCritSec\CCritSec.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="Programming the Bot"
+				>
+				<File
+					RelativePath=".\CDllExtension.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CFormula.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CPerl.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\DefaultBot.h"
+					>
+				</File>
+				<File
+					RelativePath=".\PerlEz.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

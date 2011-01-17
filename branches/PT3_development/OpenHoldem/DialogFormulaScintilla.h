@@ -256,6 +256,8 @@ protected:
 private:
 	bool WriteProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, CDC* pDC=NULL);
 	bool GetProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, CDC* pDC=NULL);
+	CString ExtractCommentFromHandList(CString HandListAsString);
+	void WarnAboutAutoplayerWhenApplyingFormulaAndTurnAutoplayerOff();
 };
 
 extern CDlgFormulaScintilla	*m_formulaScintillaDlg;

@@ -82,7 +82,11 @@ void CPreferences::InitDefaults(void)
 	// dll
 	_dll_always_send_state = true;
 	_dll_load_on_startup = false;
-	_dll_name = "user.dll";
+	// Default is: empty string
+	// Setting the string to "user.dll" whenever it is empty
+	// caused problems for the people who want it undefined:
+	// http://www.maxinmontreal.com/forums/viewtopic.php?f=112&t=11556
+	_dll_name = "";
 
 	// Ppro
 	_ppro_hostname = "127.0.0.1";
@@ -155,8 +159,6 @@ void CPreferences::InitDefaults(void)
 	_log_symbol_max_log = 5;
 
 	_trace_enabled = false;
-	for (int i=0;i<nTraceFunctions;i++)
-		_trace_functions[i] = false;
 
 	// Logging and debugging
 	_disable_msgbox = false;
@@ -351,11 +353,6 @@ void CPreferences::ReadPreferences()
 		ReadReg("trace_enabled", &_trace_enabled);
 
 		CString regValue;
-		for (int i=0;i<nTraceFunctions;i++) 
-		{
-			regValue.Format("trace_functions%d", i+1);
-			ReadReg(regValue, &_trace_functions[i]);
-		}
 
 		// Logging and debugging
 		ReadReg("disable_msgbox", &_disable_msgbox);
