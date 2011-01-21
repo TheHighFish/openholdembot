@@ -289,8 +289,8 @@ void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 	for (RMapCI r_iter=map->r$->begin(); r_iter!=map->r$->end(); r_iter++)
 	{
 		if (r_iter->second.name.Find("tablepoint") != -1 &&
-			r_iter->second.right - r_iter->second.left == 1 &&
-			r_iter->second.bottom - r_iter->second.top == 1 &&
+			(r_iter->second.right == r_iter->second.left) &&
+			(r_iter->second.bottom == r_iter->second.top)  &&
 			r_iter->second.transform == "C")
 		{
 			TablemapConnectionData[NumberOfTableMapsLoaded].TablePointPresent = true;
