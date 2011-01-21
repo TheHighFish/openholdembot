@@ -32,6 +32,7 @@ public:
 
 private:
 	// private functions and variables - not available via accessors or mutators
+	static void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair);
 	static UINT PokertrackerThreadFunction(LPVOID pParam);
 	void Connect(void);
 	void Disconnect(void);

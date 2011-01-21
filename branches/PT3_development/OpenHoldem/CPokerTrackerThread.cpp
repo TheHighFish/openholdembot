@@ -734,7 +734,7 @@ void CPokerTrackerThread::ClearStats (void)
 	}
 }
 
-UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
+void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair)
 {
 	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
 
@@ -744,25 +744,40 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 
 	while (::WaitForSingleObject(pParent->_m_stop_thread, 0) != WAIT_OBJECT_0)
 	{
-
 		if (!pParent->_connected)
 			pParent->Connect();
 
 		if (pParent->_connected && PQstatus(pParent->_pgconn) == CONNECTION_OK)
 		{
-			for (int i=0; i<=9; i++)
+			if (sym_issittingin || sym_isppro || sym_ismanual)
 			{
-				if (sym_issittingin || sym_isppro || sym_ismanual)
+				if (pParent->CheckName(chair))
 				{
-					if (pParent->CheckName(i))
+					for (int i=pt_min; i<=pt_max; i++)
 					{
-
-						for (int j=pt_min; j<=pt_max; j++)
-						{
-							pParent->UpdateStat(i, j);
-						}
+						pParent->UpdateStat(chair, i);
 					}
 				}
+			}
+		}
+	}
+}
+
+
+UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
+{
+	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
+
+	while (::WaitForSingleObject(pParent->_m_stop_thread, 0) != WAIT_OBJECT_0)
+	{
+		if (!pParent->_connected)
+			pParent->Connect();
+
+		if (pParent->_connected && PQstatus(pParent->_pgconn) == CONNECTION_OK)
+		{
+			for (int chair=0; chair<k_max_number_of_players; chair++)
+			{
+				GetStatsForChair(pParam, chair);
 			}
 		}
 
@@ -770,7 +785,6 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 				  ::WaitForSingleObject(pParent->_m_stop_thread, 0)!=WAIT_OBJECT_0; i++)
 			Sleep(1000);
 	}
-
 	// Set event
 	::SetEvent(pParent->_m_wait_thread);
 	return 0;
