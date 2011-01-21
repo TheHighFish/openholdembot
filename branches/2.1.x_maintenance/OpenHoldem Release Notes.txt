@@ -36,6 +36,9 @@ BUG FIXES:
 - Added a missing Sleep() to the autoplayer-code between two clicks for the new allin-method.
   Without it clicking max, then raise didn't work at some casinos.
   Thanks to Poker_Dog for reporting and to Qwerty for submittina a patch. [THF]
+- icm_fold could be wrong, because we assumed the pot is splitted
+  between non folded opponents. This is a bug, current bets should not be splitted, 
+  but only the common pot. The bets of folded players should be given back. [Spud]
 
 
 v2.1.7 2010-09-12
