@@ -423,19 +423,19 @@ chair == f$OpenPPL_EarlyPosition1Chair  ? f$OpenPPL_MinStillToActStacksizeAfterE
 ##f$OpenPPL_2ndBestBoardCard##
 // Only considering individual ranks, paired cards get ignored this way
 // 14 (ace) can't happen, but anyway...
-(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b100000000000000) != 1 ? 14 :
-(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b010000000000000) != 1 ? 13 :
-(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b001000000000000) != 1 ? 12 :
-(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000100000000000) != 1 ? 11 :
-(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000010000000000) != 1 ? 10 :
-(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000001000000000) != 1 ?  9 :
-(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000100000000) != 1 ?  8 :
-(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000010000000) != 1 ?  7 :
-(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000001000000) != 1 ?  6 :
-(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000000100000) != 1 ?  5 :
-(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000000010000) != 1 ?  4 :
-(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000000001000) != 1 ?  3 :
-(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000000000100) != 1 ?  2 :
+(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b100000000000000) != 0 ? f$OpenPPL_ConstCardAce :
+(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b010000000000000) != 0 ? f$OpenPPL_ConstCardKing :
+(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b001000000000000) != 0 ? f$OpenPPL_ConstCardQueen :
+(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000100000000000) != 0 ? f$OpenPPL_ConstCardJack :
+(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000010000000000) != 0 ? f$OpenPPL_ConstCardTen :
+(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000001000000000) != 0 ? f$OpenPPL_ConstCardNine :
+(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000100000000) != 0 ? f$OpenPPL_ConstCardEight :
+(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000010000000) != 0 ? f$OpenPPL_ConstCardSeven :
+(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000001000000) != 0 ? f$OpenPPL_ConstCardSix :
+(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000000100000) != 0 ? f$OpenPPL_ConstCardFive :
+(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000000010000) != 0 ? f$OpenPPL_ConstCardFour :
+(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000000001000) != 0 ? f$OpenPPL_ConstCardThree :
+(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000000000100) != 0 ? f$OpenPPL_ConstCardTwo :
 // Last two bits are ace (low) and unused.
 // Both ignored.
 -1
@@ -879,19 +879,19 @@ $QQ && $$cr0 < 12 && $$cr1 < 12 && $$cr2 < 12 && $$cr3 < 12 && $$cr4 < 12
 ##f$OpenPPL_3rdBestBoardCard##
 // Only considering individual ranks, paired cards get ignored this way
 // 14 (ace) can't happen, but anyway...
-(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b100000000000000) != 1 ? 14 :
-(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b010000000000000) != 1 ? 13 :
-(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b001000000000000) != 1 ? 12 :
-(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b000100000000000) != 1 ? 11 :
-(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b000010000000000) != 1 ? 10 :
-(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b000001000000000) != 1 ?  9 :
-(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b000000100000000) != 1 ?  8 :
-(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b000000010000000) != 1 ?  7 :
-(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b000000001000000) != 1 ?  6 :
-(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b000000000100000) != 1 ?  5 :
-(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b000000000010000) != 1 ?  4 :
-(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b000000000001000) != 1 ?  3 :
-(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b000000000000100) != 1 ?  2 :
+(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b100000000000000) != 0 ? f$OpenPPL_ConstCardAce :
+(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b010000000000000) != 0 ? f$OpenPPL_ConstCardKing :
+(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b001000000000000) != 0 ? f$OpenPPL_ConstCardQueen :
+(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b000100000000000) != 0 ? f$OpenPPL_ConstCardJack :
+(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b000010000000000) != 0 ? f$OpenPPL_ConstCardTen :
+(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b000001000000000) != 0 ? f$OpenPPL_ConstCardNine :
+(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b000000100000000) != 0 ? f$OpenPPL_ConstCardEight :
+(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b000000010000000) != 0 ? f$OpenPPL_ConstCardSeven :
+(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b000000001000000) != 0 ? f$OpenPPL_ConstCardSix :
+(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b000000000100000) != 0 ? f$OpenPPL_ConstCardFive :
+(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b000000000010000) != 0 ? f$OpenPPL_ConstCardFour :
+(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b000000000001000) != 0 ? f$OpenPPL_ConstCardThree :
+(f$OpenPPL_RankBitsCommonWithoutTopTwoBits & 0b000000000000100) != 0 ? f$OpenPPL_ConstCardTwo :
 // Last two bits are ace (low) and unused.
 // Both ignored.
 -1
@@ -923,19 +923,19 @@ f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 3)
 ##f$OpenPPL_4thBestBoardCard##
 // Only considering individual ranks, paired cards get ignored this way
 // 14 (ace) can't happen, but anyway...
-(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b100000000000000) != 1 ? 14 :
-(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b010000000000000) != 1 ? 13 :
-(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b001000000000000) != 1 ? 12 :
-(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b000100000000000) != 1 ? 11 :
-(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b000010000000000) != 1 ? 10 :
-(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b000001000000000) != 1 ?  9 :
-(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b000000100000000) != 1 ?  8 :
-(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b000000010000000) != 1 ?  7 :
-(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b000000001000000) != 1 ?  6 :
-(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b000000000100000) != 1 ?  5 :
-(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b000000000010000) != 1 ?  4 :
-(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b000000000001000) != 1 ?  3 :
-(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b000000000000100) != 1 ?  2 :
+(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b100000000000000) != 0 ? f$OpenPPL_ConstCardAce :
+(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b010000000000000) != 0 ? f$OpenPPL_ConstCardKing :
+(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b001000000000000) != 0 ? f$OpenPPL_ConstCardQueen :
+(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b000100000000000) != 0 ? f$OpenPPL_ConstCardJack :
+(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b000010000000000) != 0 ? f$OpenPPL_ConstCardTen :
+(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b000001000000000) != 0 ? f$OpenPPL_ConstCardNine :
+(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b000000100000000) != 0 ? f$OpenPPL_ConstCardEight :
+(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b000000010000000) != 0 ? f$OpenPPL_ConstCardSeven :
+(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b000000001000000) != 0 ? f$OpenPPL_ConstCardSix :
+(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b000000000100000) != 0 ? f$OpenPPL_ConstCardFive :
+(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b000000000010000) != 0 ? f$OpenPPL_ConstCardFour :
+(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b000000000001000) != 0 ? f$OpenPPL_ConstCardThree :
+(f$OpenPPL_RankBitsCommonWithoutTopThreeBits & 0b000000000000100) != 0 ? f$OpenPPL_ConstCardTwo :
 // Last two bits are ace (low) and unused.
 // Both ignored.
 -1
@@ -958,19 +958,19 @@ f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 4)
 ##f$OpenPPL_5thBestBoardCard##
 // Only considering individual ranks, paired cards get ignored this way
 // 14 (ace) can't happen, but anyway...
-(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b100000000000000) != 1 ? 14 :
-(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b010000000000000) != 1 ? 13 :
-(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b001000000000000) != 1 ? 12 :
-(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b000100000000000) != 1 ? 11 :
-(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b000010000000000) != 1 ? 10 :
-(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b000001000000000) != 1 ?  9 :
-(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b000000100000000) != 1 ?  8 :
-(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b000000010000000) != 1 ?  7 :
-(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b000000001000000) != 1 ?  6 :
-(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b000000000100000) != 1 ?  5 :
-(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b000000000010000) != 1 ?  4 :
-(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b000000000001000) != 1 ?  3 :
-(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b000000000000100) != 1 ?  2 :
+(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b100000000000000) != 0 ? f$OpenPPL_ConstCardAce :
+(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b010000000000000) != 0 ? f$OpenPPL_ConstCardKing :
+(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b001000000000000) != 0 ? f$OpenPPL_ConstCardQueen :
+(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b000100000000000) != 0 ? f$OpenPPL_ConstCardJack :
+(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b000010000000000) != 0 ? f$OpenPPL_ConstCardTen :
+(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b000001000000000) != 0 ? f$OpenPPL_ConstCardNine :
+(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b000000100000000) != 0 ? f$OpenPPL_ConstCardEight :
+(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b000000010000000) != 0 ? f$OpenPPL_ConstCardSeven :
+(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b000000001000000) != 0 ? f$OpenPPL_ConstCardSix :
+(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b000000000100000) != 0 ? f$OpenPPL_ConstCardFive :
+(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b000000000010000) != 0 ? f$OpenPPL_ConstCardFour :
+(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b000000000001000) != 0 ? f$OpenPPL_ConstCardThree :
+(f$OpenPPL_RankBitsCommonWithoutTopFourBits & 0b000000000000100) != 0 ? f$OpenPPL_ConstCardTwo :
 // Last two bits are ace (low) and unused.
 // Both ignored.
 -1
