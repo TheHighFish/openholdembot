@@ -88,6 +88,24 @@ didcallround3
 ##f$OpenPPL_NoBettingOnTurn##
 (nbetsround3 == 0)
 
+##f$OpenPPL_NoVillainBetOrRaisedOnFlop##
+((raisbits2 & ~(1<<userchair)) == 0)
+
+##f$OpenPPL_NoVillainBetOrRaisedOnTurn##
+((raisbits3 & ~(1<<userchair)) == 0)
+
+##f$OpenPPL_OpponentCalledOnFlop##
+  ((didraisround2 + didswaground2) == 1)
+&& !didchecround2
+&& !didcallround2
+&& f$OpenPPL_NoVillainBetOrRaisedOnFlop
+
+##f$OpenPPL_OpponentCalledOnTurn##
+  ((didraisround3 + didswaground3) == 1)
+&& !didchecround3
+&& !didcallround3
+&& f$OpenPPL_NoVillainBetOrRaisedOnTurn
+
 ##f$OpenPPL_RaisesSinceLastPlay##
 // nopponentsraising calls the raising opponents for one circuit
 (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks > 0) ? nopponentsraising :
