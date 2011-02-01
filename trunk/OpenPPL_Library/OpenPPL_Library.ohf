@@ -182,7 +182,7 @@ f$OpenPPL_MiddlePosition3Chair == 5 ? f$OpenPPL_Chair5StartingStacksize :
 f$OpenPPL_MiddlePosition3Chair == 6 ? f$OpenPPL_Chair6StartingStacksize :
 f$OpenPPL_MiddlePosition3Chair == 7 ? f$OpenPPL_Chair7StartingStacksize :
 f$OpenPPL_MiddlePosition3Chair == 8 ? f$OpenPPL_Chair8StartingStacksize :
-f$OpenPPL_MiddlePosition3Chair == 9 ? f$OpenPPL_Chair9StartingStacksize :0
+f$OpenPPL_MiddlePosition3Chair == 9 ? f$OpenPPL_Chair9StartingStacksize : 0
 
 ##f$OpenPPL_MiddlePosition2StartingStacksize##
 f$OpenPPL_MiddlePosition2Chair == 0 ? f$OpenPPL_Chair0StartingStacksize :
@@ -254,7 +254,7 @@ f$OpenPPL_BigBlindChair == 5 ? f$OpenPPL_Chair5StartingStacksize :
 f$OpenPPL_BigBlindChair == 6 ? f$OpenPPL_Chair6StartingStacksize :
 f$OpenPPL_BigBlindChair == 7 ? f$OpenPPL_Chair7StartingStacksize :
 f$OpenPPL_BigBlindChair == 8 ? f$OpenPPL_Chair8StartingStacksize :
-f$OpenPPL_BigBlindChair == 9 ? f$OpenPPL_Chair9StartingStacksize :0
+f$OpenPPL_BigBlindChair == 9 ? f$OpenPPL_Chair9StartingStacksize : 0
 
 ##f$OpenPPL_SmallBlindStartingStacksize##
 f$OpenPPL_SmallBlindChair == 0 ? f$OpenPPL_Chair0StartingStacksize :
@@ -400,15 +400,15 @@ me_re_MaxOpponentStacksize
 
 ##f$OpenPPL_MaxStillToActStacksize##
 chair == f$OpenPPL_BigBlindChair        ? -1 :
-chair == f$OpenPPL_SmallBlindChair      ? f$OpenPPL_MaxStillToActStacksizeAfterSmallBlind :
-chair == f$OpenPPL_ButtonChair          ? f$OpenPPL_MaxStillToActStacksizeAfterButton :
-chair == f$OpenPPL_CutOffChair          ? f$OpenPPL_MaxStillToActStacksizeAfterCutOff :
+chair == f$OpenPPL_SmallBlindChair      ? f$OpenPPL_MaxStillToActStacksizeAfterSmallBlind      :
+chair == f$OpenPPL_ButtonChair          ? f$OpenPPL_MaxStillToActStacksizeAfterButton          :
+chair == f$OpenPPL_CutOffChair          ? f$OpenPPL_MaxStillToActStacksizeAfterCutOff          :
 chair == f$OpenPPL_MiddlePosition3Chair ? f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition3 :
 chair == f$OpenPPL_MiddlePosition2Chair ? f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition2 :
 chair == f$OpenPPL_MiddlePosition1Chair ? f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition1 :
-chair == f$OpenPPL_EarlyPosition3Chair  ? f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition3 :
-chair == f$OpenPPL_EarlyPosition2Chair  ? f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition2 :
-chair == f$OpenPPL_EarlyPosition1Chair  ? f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition1 : -1
+chair == f$OpenPPL_EarlyPosition3Chair  ? f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition3  :
+chair == f$OpenPPL_EarlyPosition2Chair  ? f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition2  :
+chair == f$OpenPPL_EarlyPosition1Chair  ? f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition1  : -1
 
 ##f$OpenPPL_MinStillToActStacksize##
 chair == f$OpenPPL_BigBlindChair        ? -1:
@@ -1008,7 +1008,7 @@ f$OpenPPL_Have3rdNutFlush || f$OpenPPL_Have3rdNutFlushDraw
 || (f$OpenPPL_HaveBackdoorFlushDraw && f$OpenPPL_NumberOfUnknownSuitedOvercards == 2)
 
 ##f$OpenPPL_HaveBackdoorFlushDraw##
-(br <= 3) && nsuited >= 3)
+(br <= 3) && (nsuited >= 3)
 
 ##f$OpenPPL_HaveBackdoorNutFlushDraw##
 f$OpenPPL_HaveNutFlush || f$OpenPPL_HaveNutFlushDraw
@@ -1143,93 +1143,93 @@ rankbitscommon | 0b000000000001000
 rankbitscommon | 0b000000000000100
 
 ##f$OpenPPL_BestPossibleStraightForVillainIfAceHitsTheBoard##
-(f$OpenPPL_RankBitsCommonWithAdditionalAce & 0b111110000000000) >= 3 ? f$OpenPPL_ConstCardAce :
+`(f$OpenPPL_RankBitsCommonWithAdditionalAce & 0b111110000000000) >= 3 ? f$OpenPPL_ConstCardAce :
 // We can ignore all straights without an ace here
-(f$OpenPPL_RankBitsCommonWithAdditionalAce & 0b000000000111110) >= 3 ? f$OpenPPL_ConstCardFive :
+`(f$OpenPPL_RankBitsCommonWithAdditionalAce & 0b000000000111110) >= 3 ? f$OpenPPL_ConstCardFive :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForVillainIfKingHitsTheBoard##
-(f$OpenPPL_RankBitsCommonWithAdditionalKing & 0b111110000000000) >= 3 ? f$OpenPPL_ConstCardAce :
-(f$OpenPPL_RankBitsCommonWithAdditionalKing & 0b011111000000000) >= 3 ? f$OpenPPL_ConstCardKing :
+`(f$OpenPPL_RankBitsCommonWithAdditionalKing & 0b111110000000000) >= 3 ? f$OpenPPL_ConstCardAce :
+`(f$OpenPPL_RankBitsCommonWithAdditionalKing & 0b011111000000000) >= 3 ? f$OpenPPL_ConstCardKing :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForVillainIfQueenHitsTheBoard##
-(f$OpenPPL_RankBitsCommonWithAdditionalQueen & 0b111110000000000) >= 3 ? f$OpenPPL_ConstCardAce :
-(f$OpenPPL_RankBitsCommonWithAdditionalQueen & 0b011111000000000) >= 3 ? f$OpenPPL_ConstCardKing :
-(f$OpenPPL_RankBitsCommonWithAdditionalQueen & 0b001111100000000) >= 3 ? f$OpenPPL_ConstCardQueen :
+`(f$OpenPPL_RankBitsCommonWithAdditionalQueen & 0b111110000000000) >= 3 ? f$OpenPPL_ConstCardAce :
+`(f$OpenPPL_RankBitsCommonWithAdditionalQueen & 0b011111000000000) >= 3 ? f$OpenPPL_ConstCardKing :
+`(f$OpenPPL_RankBitsCommonWithAdditionalQueen & 0b001111100000000) >= 3 ? f$OpenPPL_ConstCardQueen :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForVillainIfJackHitsTheBoard##
-(f$OpenPPL_RankBitsCommonWithAdditionalJack & 0b111110000000000) >= 3 ? f$OpenPPL_ConstCardAce :
-(f$OpenPPL_RankBitsCommonWithAdditionalJack & 0b011111000000000) >= 3 ? f$OpenPPL_ConstCardKing :
-(f$OpenPPL_RankBitsCommonWithAdditionalJack & 0b001111100000000) >= 3 ? f$OpenPPL_ConstCardQueen :
-(f$OpenPPL_RankBitsCommonWithAdditionalJack & 0b000111110000000) >= 3 ? f$OpenPPL_ConstCardJack :
+`(f$OpenPPL_RankBitsCommonWithAdditionalJack & 0b111110000000000) >= 3 ? f$OpenPPL_ConstCardAce :
+`(f$OpenPPL_RankBitsCommonWithAdditionalJack & 0b011111000000000) >= 3 ? f$OpenPPL_ConstCardKing :
+`(f$OpenPPL_RankBitsCommonWithAdditionalJack & 0b001111100000000) >= 3 ? f$OpenPPL_ConstCardQueen :
+`(f$OpenPPL_RankBitsCommonWithAdditionalJack & 0b000111110000000) >= 3 ? f$OpenPPL_ConstCardJack :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForVillainIfTenHitsTheBoard##
-(f$OpenPPL_RankBitsCommonWithAdditionalTen & 0b111110000000000) >= 3 ? f$OpenPPL_ConstCardAce :
-(f$OpenPPL_RankBitsCommonWithAdditionalTen & 0b011111000000000) >= 3 ? f$OpenPPL_ConstCardKing :
-(f$OpenPPL_RankBitsCommonWithAdditionalTen & 0b001111100000000) >= 3 ? f$OpenPPL_ConstCardQueen :
-(f$OpenPPL_RankBitsCommonWithAdditionalTen & 0b000111110000000) >= 3 ? f$OpenPPL_ConstCardJack :
-(f$OpenPPL_RankBitsCommonWithAdditionalTen & 0b000011111000000) >= 3 ? f$OpenPPL_ConstCardTen :
+`(f$OpenPPL_RankBitsCommonWithAdditionalTen & 0b111110000000000) >= 3 ? f$OpenPPL_ConstCardAce :
+`(f$OpenPPL_RankBitsCommonWithAdditionalTen & 0b011111000000000) >= 3 ? f$OpenPPL_ConstCardKing :
+`(f$OpenPPL_RankBitsCommonWithAdditionalTen & 0b001111100000000) >= 3 ? f$OpenPPL_ConstCardQueen :
+`(f$OpenPPL_RankBitsCommonWithAdditionalTen & 0b000111110000000) >= 3 ? f$OpenPPL_ConstCardJack :
+`(f$OpenPPL_RankBitsCommonWithAdditionalTen & 0b000011111000000) >= 3 ? f$OpenPPL_ConstCardTen :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForVillainIfNineHitsTheBoard##
-(f$OpenPPL_RankBitsCommonWithAdditionalNine & 0b011111000000000) >= 3 ? f$OpenPPL_ConstCardKing :
-(f$OpenPPL_RankBitsCommonWithAdditionalNine & 0b001111100000000) >= 3 ? f$OpenPPL_ConstCardQueen :
-(f$OpenPPL_RankBitsCommonWithAdditionalNine & 0b000111110000000) >= 3 ? f$OpenPPL_ConstCardJack :
-(f$OpenPPL_RankBitsCommonWithAdditionalNine & 0b000011111000000) >= 3 ? f$OpenPPL_ConstCardTen :
-(f$OpenPPL_RankBitsCommonWithAdditionalNine & 0b000001111100000) >= 3 ? f$OpenPPL_ConstCardNine :
+`(f$OpenPPL_RankBitsCommonWithAdditionalNine & 0b011111000000000) >= 3 ? f$OpenPPL_ConstCardKing :
+`(f$OpenPPL_RankBitsCommonWithAdditionalNine & 0b001111100000000) >= 3 ? f$OpenPPL_ConstCardQueen :
+`(f$OpenPPL_RankBitsCommonWithAdditionalNine & 0b000111110000000) >= 3 ? f$OpenPPL_ConstCardJack :
+`(f$OpenPPL_RankBitsCommonWithAdditionalNine & 0b000011111000000) >= 3 ? f$OpenPPL_ConstCardTen :
+`(f$OpenPPL_RankBitsCommonWithAdditionalNine & 0b000001111100000) >= 3 ? f$OpenPPL_ConstCardNine :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForVillainIfEightHitsTheBoard##
-(f$OpenPPL_RankBitsCommonWithAdditionalEight & 0b001111100000000) >= 3 ? f$OpenPPL_ConstCardQueen :
-(f$OpenPPL_RankBitsCommonWithAdditionalEight & 0b000111110000000) >= 3 ? f$OpenPPL_ConstCardJack :
-(f$OpenPPL_RankBitsCommonWithAdditionalEight & 0b000011111000000) >= 3 ? f$OpenPPL_ConstCardTen :
-(f$OpenPPL_RankBitsCommonWithAdditionalEight & 0b000001111100000) >= 3 ? f$OpenPPL_ConstCardNine :
-(f$OpenPPL_RankBitsCommonWithAdditionalEight & 0b000000111110000) >= 3 ? f$OpenPPL_ConstCardEight :
+`(f$OpenPPL_RankBitsCommonWithAdditionalEight & 0b001111100000000) >= 3 ? f$OpenPPL_ConstCardQueen :
+`(f$OpenPPL_RankBitsCommonWithAdditionalEight & 0b000111110000000) >= 3 ? f$OpenPPL_ConstCardJack :
+`(f$OpenPPL_RankBitsCommonWithAdditionalEight & 0b000011111000000) >= 3 ? f$OpenPPL_ConstCardTen :
+`(f$OpenPPL_RankBitsCommonWithAdditionalEight & 0b000001111100000) >= 3 ? f$OpenPPL_ConstCardNine :
+`(f$OpenPPL_RankBitsCommonWithAdditionalEight & 0b000000111110000) >= 3 ? f$OpenPPL_ConstCardEight :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForVillainIfSevenHitsTheBoard##
-(f$OpenPPL_RankBitsCommonWithAdditionalSeven & 0b000111110000000) >= 3 ? f$OpenPPL_ConstCardJack :
-(f$OpenPPL_RankBitsCommonWithAdditionalSeven & 0b000011111000000) >= 3 ? f$OpenPPL_ConstCardTen :
-(f$OpenPPL_RankBitsCommonWithAdditionalSeven & 0b000001111100000) >= 3 ? f$OpenPPL_ConstCardNine :
-(f$OpenPPL_RankBitsCommonWithAdditionalSeven & 0b000000111110000) >= 3 ? f$OpenPPL_ConstCardEight :
-(f$OpenPPL_RankBitsCommonWithAdditionalSeven & 0b000000011111000) >= 3 ? f$OpenPPL_ConstCardSeven :
+`(f$OpenPPL_RankBitsCommonWithAdditionalSeven & 0b000111110000000) >= 3 ? f$OpenPPL_ConstCardJack :
+`(f$OpenPPL_RankBitsCommonWithAdditionalSeven & 0b000011111000000) >= 3 ? f$OpenPPL_ConstCardTen :
+`(f$OpenPPL_RankBitsCommonWithAdditionalSeven & 0b000001111100000) >= 3 ? f$OpenPPL_ConstCardNine :
+`(f$OpenPPL_RankBitsCommonWithAdditionalSeven & 0b000000111110000) >= 3 ? f$OpenPPL_ConstCardEight :
+`(f$OpenPPL_RankBitsCommonWithAdditionalSeven & 0b000000011111000) >= 3 ? f$OpenPPL_ConstCardSeven :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForVillainIfSixHitsTheBoard##
-(f$OpenPPL_RankBitsCommonWithAdditionalSix & 0b000011111000000) >= 3 ? f$OpenPPL_ConstCardTen :
-(f$OpenPPL_RankBitsCommonWithAdditionalSix & 0b000001111100000) >= 3 ? f$OpenPPL_ConstCardNine :
-(f$OpenPPL_RankBitsCommonWithAdditionalSix & 0b000000111110000) >= 3 ? f$OpenPPL_ConstCardEight :
-(f$OpenPPL_RankBitsCommonWithAdditionalSix & 0b000000011111000) >= 3 ? f$OpenPPL_ConstCardSeven :
-(f$OpenPPL_RankBitsCommonWithAdditionalSix & 0b000000001111100) >= 3 ? f$OpenPPL_ConstCardSix :
+`(f$OpenPPL_RankBitsCommonWithAdditionalSix & 0b000011111000000) >= 3 ? f$OpenPPL_ConstCardTen :
+`(f$OpenPPL_RankBitsCommonWithAdditionalSix & 0b000001111100000) >= 3 ? f$OpenPPL_ConstCardNine :
+`(f$OpenPPL_RankBitsCommonWithAdditionalSix & 0b000000111110000) >= 3 ? f$OpenPPL_ConstCardEight :
+`(f$OpenPPL_RankBitsCommonWithAdditionalSix & 0b000000011111000) >= 3 ? f$OpenPPL_ConstCardSeven :
+`(f$OpenPPL_RankBitsCommonWithAdditionalSix & 0b000000001111100) >= 3 ? f$OpenPPL_ConstCardSix :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForVillainIfFiveHitsTheBoard##
-(f$OpenPPL_RankBitsCommonWithAdditionalFive & 0b000001111100000) >= 3 ? f$OpenPPL_ConstCardNine :
-(f$OpenPPL_RankBitsCommonWithAdditionalFive & 0b000000111110000) >= 3 ? f$OpenPPL_ConstCardEight :
-(f$OpenPPL_RankBitsCommonWithAdditionalFive & 0b000000011111000) >= 3 ? f$OpenPPL_ConstCardSeven :
-(f$OpenPPL_RankBitsCommonWithAdditionalFive & 0b000000001111100) >= 3 ? f$OpenPPL_ConstCardSix :
-(f$OpenPPL_RankBitsCommonWithAdditionalFive & 0b000000000111110) >= 3 ? f$OpenPPL_ConstCardFive :
+`(f$OpenPPL_RankBitsCommonWithAdditionalFive & 0b000001111100000) >= 3 ? f$OpenPPL_ConstCardNine :
+`(f$OpenPPL_RankBitsCommonWithAdditionalFive & 0b000000111110000) >= 3 ? f$OpenPPL_ConstCardEight :
+`(f$OpenPPL_RankBitsCommonWithAdditionalFive & 0b000000011111000) >= 3 ? f$OpenPPL_ConstCardSeven :
+`(f$OpenPPL_RankBitsCommonWithAdditionalFive & 0b000000001111100) >= 3 ? f$OpenPPL_ConstCardSix :
+`(f$OpenPPL_RankBitsCommonWithAdditionalFive & 0b000000000111110) >= 3 ? f$OpenPPL_ConstCardFive :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForVillainIfFourHitsTheBoard##
-(f$OpenPPL_RankBitsCommonWithAdditionalFour & 0b000000111110000) >= 3 ? f$OpenPPL_ConstCardEight :
-(f$OpenPPL_RankBitsCommonWithAdditionalFour & 0b000000011111000) >= 3 ? f$OpenPPL_ConstCardSeven :
-(f$OpenPPL_RankBitsCommonWithAdditionalFour & 0b000000001111100) >= 3 ? f$OpenPPL_ConstCardSix :
-(f$OpenPPL_RankBitsCommonWithAdditionalFour & 0b000000000111110) >= 3 ? f$OpenPPL_ConstCardFive :
+`(f$OpenPPL_RankBitsCommonWithAdditionalFour & 0b000000111110000) >= 3 ? f$OpenPPL_ConstCardEight :
+`(f$OpenPPL_RankBitsCommonWithAdditionalFour & 0b000000011111000) >= 3 ? f$OpenPPL_ConstCardSeven :
+`(f$OpenPPL_RankBitsCommonWithAdditionalFour & 0b000000001111100) >= 3 ? f$OpenPPL_ConstCardSix :
+`(f$OpenPPL_RankBitsCommonWithAdditionalFour & 0b000000000111110) >= 3 ? f$OpenPPL_ConstCardFive :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForVillainIfThreeHitsTheBoard##
-(f$OpenPPL_RankBitsCommonWithAdditionalThree & 0b000000011111000) >= 3 ? f$OpenPPL_ConstCardSeven :
-(f$OpenPPL_RankBitsCommonWithAdditionalThree & 0b000000001111100) >= 3 ? f$OpenPPL_ConstCardSix :
-(f$OpenPPL_RankBitsCommonWithAdditionalThree & 0b000000000111110) >= 3 ? f$OpenPPL_ConstCardFive :
+`(f$OpenPPL_RankBitsCommonWithAdditionalThree & 0b000000011111000) >= 3 ? f$OpenPPL_ConstCardSeven :
+`(f$OpenPPL_RankBitsCommonWithAdditionalThree & 0b000000001111100) >= 3 ? f$OpenPPL_ConstCardSix :
+`(f$OpenPPL_RankBitsCommonWithAdditionalThree & 0b000000000111110) >= 3 ? f$OpenPPL_ConstCardFive :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForVillainIfTwoHitsTheBoard##
-(f$OpenPPL_RankBitsCommonWithAdditionalTwo & 0b000000001111100) >= 3 ? f$OpenPPL_ConstCardSix :
-(f$OpenPPL_RankBitsCommonWithAdditionalTwo & 0b000000000111110) >= 3 ? f$OpenPPL_ConstCardFive :
+`(f$OpenPPL_RankBitsCommonWithAdditionalTwo & 0b000000001111100) >= 3 ? f$OpenPPL_ConstCardSix :
+`(f$OpenPPL_RankBitsCommonWithAdditionalTwo & 0b000000000111110) >= 3 ? f$OpenPPL_ConstCardFive :
 -1
 
 ##f$OpenPPL_RankBitsWithAdditionalAce##
@@ -1272,93 +1272,93 @@ rankbits | 0b000000000001000
 rankbits | 0b000000000000100
 
 ##f$OpenPPL_BestPossibleStraightForUsIfAceHitsTheBoard##
-(f$OpenPPL_RankBitsWithAdditionalAce & 0b111110000000000) >= 5 ? f$OpenPPL_ConstCardAce :
+`(f$OpenPPL_RankBitsWithAdditionalAce & 0b111110000000000) >= 5 ? f$OpenPPL_ConstCardAce :
 // We can ignore all straights without an ace here
-(f$OpenPPL_RankBitsWithAdditionalAce & 0b000000000111110) >= 5 ? f$OpenPPL_ConstCardFive :
+`(f$OpenPPL_RankBitsWithAdditionalAce & 0b000000000111110) >= 5 ? f$OpenPPL_ConstCardFive :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForUsIfKingHitsTheBoard##
-(f$OpenPPL_RankBitsWithAdditionalKing & 0b111110000000000) >= 5 ? f$OpenPPL_ConstCardAce :
-(f$OpenPPL_RankBitsWithAdditionalKing & 0b011111000000000) >= 5 ? f$OpenPPL_ConstCardKing :
+`(f$OpenPPL_RankBitsWithAdditionalKing & 0b111110000000000) >= 5 ? f$OpenPPL_ConstCardAce :
+`(f$OpenPPL_RankBitsWithAdditionalKing & 0b011111000000000) >= 5 ? f$OpenPPL_ConstCardKing :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForUsIfQueenHitsTheBoard##
-(f$OpenPPL_RankBitsWithAdditionalQueen & 0b111110000000000) >= 5 ? f$OpenPPL_ConstCardAce :
-(f$OpenPPL_RankBitsWithAdditionalQueen & 0b011111000000000) >= 5 ? f$OpenPPL_ConstCardKing :
-(f$OpenPPL_RankBitsWithAdditionalQueen & 0b001111100000000) >= 5 ? f$OpenPPL_ConstCardQueen :
+`(f$OpenPPL_RankBitsWithAdditionalQueen & 0b111110000000000) >= 5 ? f$OpenPPL_ConstCardAce :
+`(f$OpenPPL_RankBitsWithAdditionalQueen & 0b011111000000000) >= 5 ? f$OpenPPL_ConstCardKing :
+`(f$OpenPPL_RankBitsWithAdditionalQueen & 0b001111100000000) >= 5 ? f$OpenPPL_ConstCardQueen :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForUsIfJackHitsTheBoard##
-(f$OpenPPL_RankBitsWithAdditionalJack & 0b111110000000000) >= 5 ? f$OpenPPL_ConstCardAce :
-(f$OpenPPL_RankBitsWithAdditionalJack & 0b011111000000000) >= 5 ? f$OpenPPL_ConstCardKing :
-(f$OpenPPL_RankBitsWithAdditionalJack & 0b001111100000000) >= 5 ? f$OpenPPL_ConstCardQueen :
-(f$OpenPPL_RankBitsWithAdditionalJack & 0b000111110000000) >= 5 ? f$OpenPPL_ConstCardJack :
+`(f$OpenPPL_RankBitsWithAdditionalJack & 0b111110000000000) >= 5 ? f$OpenPPL_ConstCardAce :
+`(f$OpenPPL_RankBitsWithAdditionalJack & 0b011111000000000) >= 5 ? f$OpenPPL_ConstCardKing :
+`(f$OpenPPL_RankBitsWithAdditionalJack & 0b001111100000000) >= 5 ? f$OpenPPL_ConstCardQueen :
+`(f$OpenPPL_RankBitsWithAdditionalJack & 0b000111110000000) >= 5 ? f$OpenPPL_ConstCardJack :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForUsIfTenHitsTheBoard##
-(f$OpenPPL_RankBitsWithAdditionalTen & 0b111110000000000) >= 5 ? f$OpenPPL_ConstCardAce :
-(f$OpenPPL_RankBitsWithAdditionalTen & 0b011111000000000) >= 5 ? f$OpenPPL_ConstCardKing :
-(f$OpenPPL_RankBitsWithAdditionalTen & 0b001111100000000) >= 5 ? f$OpenPPL_ConstCardQueen :
-(f$OpenPPL_RankBitsWithAdditionalTen & 0b000111110000000) >= 5 ? f$OpenPPL_ConstCardJack :
-(f$OpenPPL_RankBitsWithAdditionalTen & 0b000011111000000) >= 5 ? f$OpenPPL_ConstCardTen :
+`(f$OpenPPL_RankBitsWithAdditionalTen & 0b111110000000000) >= 5 ? f$OpenPPL_ConstCardAce :
+`(f$OpenPPL_RankBitsWithAdditionalTen & 0b011111000000000) >= 5 ? f$OpenPPL_ConstCardKing :
+`(f$OpenPPL_RankBitsWithAdditionalTen & 0b001111100000000) >= 5 ? f$OpenPPL_ConstCardQueen :
+`(f$OpenPPL_RankBitsWithAdditionalTen & 0b000111110000000) >= 5 ? f$OpenPPL_ConstCardJack :
+`(f$OpenPPL_RankBitsWithAdditionalTen & 0b000011111000000) >= 5 ? f$OpenPPL_ConstCardTen :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForUsIfNineHitsTheBoard##
-(f$OpenPPL_RankBitsWithAdditionalNine & 0b011111000000000) >= 5 ? f$OpenPPL_ConstCardKing :
-(f$OpenPPL_RankBitsWithAdditionalNine & 0b001111100000000) >= 5 ? f$OpenPPL_ConstCardQueen :
-(f$OpenPPL_RankBitsWithAdditionalNine & 0b000111110000000) >= 5 ? f$OpenPPL_ConstCardJack :
-(f$OpenPPL_RankBitsWithAdditionalNine & 0b000011111000000) >= 5 ? f$OpenPPL_ConstCardTen :
-(f$OpenPPL_RankBitsWithAdditionalNine & 0b000001111100000) >= 5 ? f$OpenPPL_ConstCardNine :
+`(f$OpenPPL_RankBitsWithAdditionalNine & 0b011111000000000) >= 5 ? f$OpenPPL_ConstCardKing :
+`(f$OpenPPL_RankBitsWithAdditionalNine & 0b001111100000000) >= 5 ? f$OpenPPL_ConstCardQueen :
+`(f$OpenPPL_RankBitsWithAdditionalNine & 0b000111110000000) >= 5 ? f$OpenPPL_ConstCardJack :
+`(f$OpenPPL_RankBitsWithAdditionalNine & 0b000011111000000) >= 5 ? f$OpenPPL_ConstCardTen :
+`(f$OpenPPL_RankBitsWithAdditionalNine & 0b000001111100000) >= 5 ? f$OpenPPL_ConstCardNine :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForUsIfEightHitsTheBoard##
-(f$OpenPPL_RankBitsWithAdditionalEight & 0b001111100000000) >= 5 ? f$OpenPPL_ConstCardQueen :
-(f$OpenPPL_RankBitsWithAdditionalEight & 0b000111110000000) >= 5 ? f$OpenPPL_ConstCardJack :
-(f$OpenPPL_RankBitsWithAdditionalEight & 0b000011111000000) >= 5 ? f$OpenPPL_ConstCardTen :
-(f$OpenPPL_RankBitsWithAdditionalEight & 0b000001111100000) >= 5 ? f$OpenPPL_ConstCardNine :
-(f$OpenPPL_RankBitsWithAdditionalEight & 0b000000111110000) >= 5 ? f$OpenPPL_ConstCardEight :
+`(f$OpenPPL_RankBitsWithAdditionalEight & 0b001111100000000) >= 5 ? f$OpenPPL_ConstCardQueen :
+`(f$OpenPPL_RankBitsWithAdditionalEight & 0b000111110000000) >= 5 ? f$OpenPPL_ConstCardJack :
+`(f$OpenPPL_RankBitsWithAdditionalEight & 0b000011111000000) >= 5 ? f$OpenPPL_ConstCardTen :
+`(f$OpenPPL_RankBitsWithAdditionalEight & 0b000001111100000) >= 5 ? f$OpenPPL_ConstCardNine :
+`(f$OpenPPL_RankBitsWithAdditionalEight & 0b000000111110000) >= 5 ? f$OpenPPL_ConstCardEight :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForUsIfSevenHitsTheBoard##
-(f$OpenPPL_RankBitsWithAdditionalSeven & 0b000111110000000) >= 5 ? f$OpenPPL_ConstCardJack :
-(f$OpenPPL_RankBitsWithAdditionalSeven & 0b000011111000000) >= 5 ? f$OpenPPL_ConstCardTen :
-(f$OpenPPL_RankBitsWithAdditionalSeven & 0b000001111100000) >= 5 ? f$OpenPPL_ConstCardNine :
-(f$OpenPPL_RankBitsWithAdditionalSeven & 0b000000111110000) >= 5 ? f$OpenPPL_ConstCardEight :
-(f$OpenPPL_RankBitsWithAdditionalSeven & 0b000000011111000) >= 5 ? f$OpenPPL_ConstCardSeven :
+`(f$OpenPPL_RankBitsWithAdditionalSeven & 0b000111110000000) >= 5 ? f$OpenPPL_ConstCardJack :
+`(f$OpenPPL_RankBitsWithAdditionalSeven & 0b000011111000000) >= 5 ? f$OpenPPL_ConstCardTen :
+`(f$OpenPPL_RankBitsWithAdditionalSeven & 0b000001111100000) >= 5 ? f$OpenPPL_ConstCardNine :
+`(f$OpenPPL_RankBitsWithAdditionalSeven & 0b000000111110000) >= 5 ? f$OpenPPL_ConstCardEight :
+`(f$OpenPPL_RankBitsWithAdditionalSeven & 0b000000011111000) >= 5 ? f$OpenPPL_ConstCardSeven :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForUsIfSixHitsTheBoard##
-(f$OpenPPL_RankBitsWithAdditionalSix & 0b000011111000000) >= 5 ? f$OpenPPL_ConstCardTen :
-(f$OpenPPL_RankBitsWithAdditionalSix & 0b000001111100000) >= 5 ? f$OpenPPL_ConstCardNine :
-(f$OpenPPL_RankBitsWithAdditionalSix & 0b000000111110000) >= 5 ? f$OpenPPL_ConstCardEight :
-(f$OpenPPL_RankBitsWithAdditionalSix & 0b000000011111000) >= 5 ? f$OpenPPL_ConstCardSeven :
-(f$OpenPPL_RankBitsWithAdditionalSix & 0b000000001111100) >= 5 ? f$OpenPPL_ConstCardSix :
+`(f$OpenPPL_RankBitsWithAdditionalSix & 0b000011111000000) >= 5 ? f$OpenPPL_ConstCardTen :
+`(f$OpenPPL_RankBitsWithAdditionalSix & 0b000001111100000) >= 5 ? f$OpenPPL_ConstCardNine :
+`(f$OpenPPL_RankBitsWithAdditionalSix & 0b000000111110000) >= 5 ? f$OpenPPL_ConstCardEight :
+`(f$OpenPPL_RankBitsWithAdditionalSix & 0b000000011111000) >= 5 ? f$OpenPPL_ConstCardSeven :
+`(f$OpenPPL_RankBitsWithAdditionalSix & 0b000000001111100) >= 5 ? f$OpenPPL_ConstCardSix :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForUsIfFiveHitsTheBoard##
-(f$OpenPPL_RankBitsWithAdditionalFive & 0b000001111100000) >= 5 ? f$OpenPPL_ConstCardNine :
-(f$OpenPPL_RankBitsWithAdditionalFive & 0b000000111110000) >= 5 ? f$OpenPPL_ConstCardEight :
-(f$OpenPPL_RankBitsWithAdditionalFive & 0b000000011111000) >= 5 ? f$OpenPPL_ConstCardSeven :
-(f$OpenPPL_RankBitsWithAdditionalFive & 0b000000001111100) >= 5 ? f$OpenPPL_ConstCardSix :
-(f$OpenPPL_RankBitsWithAdditionalFive & 0b000000000111110) >= 5 ? f$OpenPPL_ConstCardFive :
+`(f$OpenPPL_RankBitsWithAdditionalFive & 0b000001111100000) >= 5 ? f$OpenPPL_ConstCardNine :
+`(f$OpenPPL_RankBitsWithAdditionalFive & 0b000000111110000) >= 5 ? f$OpenPPL_ConstCardEight :
+`(f$OpenPPL_RankBitsWithAdditionalFive & 0b000000011111000) >= 5 ? f$OpenPPL_ConstCardSeven :
+`(f$OpenPPL_RankBitsWithAdditionalFive & 0b000000001111100) >= 5 ? f$OpenPPL_ConstCardSix :
+`(f$OpenPPL_RankBitsWithAdditionalFive & 0b000000000111110) >= 5 ? f$OpenPPL_ConstCardFive :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForUsIfFourHitsTheBoard##
-(f$OpenPPL_RankBitsWithAdditionalFour & 0b000000111110000) >= 5 ? f$OpenPPL_ConstCardEight :
-(f$OpenPPL_RankBitsWithAdditionalFour & 0b000000011111000) >= 5 ? f$OpenPPL_ConstCardSeven :
-(f$OpenPPL_RankBitsWithAdditionalFour & 0b000000001111100) >= 5 ? f$OpenPPL_ConstCardSix :
-(f$OpenPPL_RankBitsWithAdditionalFour & 0b000000000111110) >= 5 ? f$OpenPPL_ConstCardFive :
+`(f$OpenPPL_RankBitsWithAdditionalFour & 0b000000111110000) >= 5 ? f$OpenPPL_ConstCardEight :
+`(f$OpenPPL_RankBitsWithAdditionalFour & 0b000000011111000) >= 5 ? f$OpenPPL_ConstCardSeven :
+`(f$OpenPPL_RankBitsWithAdditionalFour & 0b000000001111100) >= 5 ? f$OpenPPL_ConstCardSix :
+`(f$OpenPPL_RankBitsWithAdditionalFour & 0b000000000111110) >= 5 ? f$OpenPPL_ConstCardFive :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForUsIfThreeHitsTheBoard##
-(f$OpenPPL_RankBitsWithAdditionalThree & 0b000000011111000) >= 5 ? f$OpenPPL_ConstCardSeven :
-(f$OpenPPL_RankBitsWithAdditionalThree & 0b000000001111100) >= 5 ? f$OpenPPL_ConstCardSix :
-(f$OpenPPL_RankBitsWithAdditionalThree & 0b000000000111110) >= 5 ? f$OpenPPL_ConstCardFive :
+`(f$OpenPPL_RankBitsWithAdditionalThree & 0b000000011111000) >= 5 ? f$OpenPPL_ConstCardSeven :
+`(f$OpenPPL_RankBitsWithAdditionalThree & 0b000000001111100) >= 5 ? f$OpenPPL_ConstCardSix :
+`(f$OpenPPL_RankBitsWithAdditionalThree & 0b000000000111110) >= 5 ? f$OpenPPL_ConstCardFive :
 -1
 
 ##f$OpenPPL_BestPossibleStraightForUsIfTwoHitsTheBoard##
-(f$OpenPPL_RankBitsWithAdditionalTqo & 0b000000001111100) >= 5 ? f$OpenPPL_ConstCardSix :
-(f$OpenPPL_RankBitsWithAdditionalTqo & 0b000000000111110) >= 5 ? f$OpenPPL_ConstCardFive :
+`(f$OpenPPL_RankBitsWithAdditionalTwo & 0b000000001111100) >= 5 ? f$OpenPPL_ConstCardSix :
+`(f$OpenPPL_RankBitsWithAdditionalTwo & 0b000000000111110) >= 5 ? f$OpenPPL_ConstCardFive :
 -1
 
 ##f$OpenPPL_GetBestPossibleStraightIfAceHitsTheBoard##
@@ -1496,9 +1496,9 @@ f$OpenPPL_HaveStraight
 `((~srankbits & 0x7fff) >> srankhi)
 
 ##f$OpenPPL_Overcards##
-$$pr0>rankhicommon && $$pr1>rankhicommon ? 2 :
-$$pr0>rankhicommon || $$pr1>rankhicommon ? 1 :
-$$pr0<=rankhicommon && $$pr1<=rankhicommon ? 0 : 0
+(($$pr0 > rankhicommon)  && ($$pr1 > rankhicommon))  ? 2 :
+(($$pr0 > rankhicommon)  || ($$pr1 > rankhicommon))  ? 1 :
+(($$pr0 <= rankhicommon) && ($$pr1 <= rankhicommon)) ? 0 : 0
 
 //*****************************************************************************
 //
@@ -1792,14 +1792,14 @@ ac_dealpos9 == (nplayersdealt - 7) ? 9 :
 [(raisbits1 >> f$OpenPPL_BigBlindChair) & 1 == 1]
 
 ##f$OpenPPL_FirstCallerPosition##
-f$OpenPPL_EarlyPosition1Calling ? 9 :
-f$OpenPPL_EarlyPosition2Calling ? 8 :
-f$OpenPPL_EarlyPosition3Calling ? 7 :
+f$OpenPPL_EarlyPosition1Calling  ? 9 :
+f$OpenPPL_EarlyPosition2Calling  ? 8 :
+f$OpenPPL_EarlyPosition3Calling  ? 7 :
 f$OpenPPL_MiddlePosition1Calling ? 6 :
 f$OpenPPL_MiddlePosition2Calling ? 5 :
 f$OpenPPL_MiddlePosition3Calling ? 4 :
-f$OpenPPL_CutOffCalling ? 3 :
-f$OpenPPL_ButtonCalling ? 2 :
+f$OpenPPL_CutOffCalling          ? 3 :
+f$OpenPPL_ButtonCalling          ? 2 :
 f$OpenPPL_SmallBlindCalling ? 1 :
 // Can't be button (0), as it is for the first orbit preflop only
 -1
@@ -1836,7 +1836,7 @@ f$OpenPPL_EarlyPosition1Calling  ? 9 :
 // Small blind = 1
 (f$OpenPPL_DealPositionLastRaiser == 1) ? 1 :
 // Normal players:
-// BU = 2, CO = 3, ...
+// Button = 2, CutOff = 3, ...
 (nplayersdealt - f$OpenPPL_DealPositionLastRaiser + 2)
 
 ##f$OpenPPL_First##
