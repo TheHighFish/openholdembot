@@ -172,10 +172,18 @@ char * keywords = // Standard functions
 				  "pt_icon pt_hands pt_pfr pt_aggp pt_aggf pt_aggt pt_aggr "
 				  "pt_aggtot pt_aggtotnopf pt_floppct pt_turnpct pt_riverpct pt_vpip pt_pf_rfi "
 				  "pt_pf_cr pt_pfats pt_wsdp pt_wssd pt_fbbts pt_fsbts "
+				  // Poker Tracker ring symbols for the "raischair"
+				  "pt_ricon pt_rhands pt_rpfr pt_raggp pt_raggf pt_raggt pt_raggr "
+				  "pt_raggtot pt_raggtotnopf pt_rfloppct pt_rturnpct pt_rriverpct pt_rvpip pt_rpf_rfi "
+				  "pt_rpf_cr pt_rpfats pt_rwsdp pt_rwssd pt_rfbbts pt_rfsbts "
 				  // Poker Tracker tournament symbols
 				  "ptt_icon ptt_hands ptt_pfr ptt_aggp ptt_aggf ptt_aggt ptt_aggr "
 				  "ptt_aggtot ptt_aggtotnopf ptt_floppct ptt_turnpct ptt_riverpct ptt_vpip ptt_pf_rfi "
-				  "ptt_pf_cr ptt_pfats ptt_wsdp ptt_wssd ptt_fbbts ptt_fsbts ";
+				  "ptt_pf_cr ptt_pfats ptt_wsdp ptt_wssd ptt_fbbts ptt_fsbts "
+					// Poker Tracker tournament symbols for the "raischair"
+				  "ptt_ricon ptt_rhands ptt_rpfr ptt_raggp ptt_raggf ptt_raggt ptt_raggr "
+				  "ptt_raggtot ptt_raggtotnopf ptt_rfloppct ptt_rturnpct ptt_rriverpct ptt_rvpip ptt_rpf_rfi "
+				  "ptt_rpf_cr ptt_rpfats ptt_rwsdp ptt_rwssd ptt_rfbbts ptt_rfsbts ";
 
 #define ID_SCIN_SIZERBAR 5555
 
