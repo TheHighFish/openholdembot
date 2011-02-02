@@ -1589,10 +1589,10 @@ void CScraper::ScrapeLimits()
 			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 		}
 
-		if (text!="")
-			istournament = true;
-		else
+		if (text == "" || text == "false")
 			istournament = false;
+		else 
+			istournament = true;
 
 		set_istournament(istournament);
 
