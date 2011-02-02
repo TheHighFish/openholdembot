@@ -12,6 +12,8 @@ BUG FIXES:
     * SB raises or cold-calls
     * we are BB, so that we get a stable frame only after SBs action.
   This case gets now handled, too. [F1x3r]
+- The Formula dialog did not highlight all PT-symbols.
+  Thnks to Qwerty for submitting the patch. [THF]
 
 v2.1.8 2011-01-15
 =================
