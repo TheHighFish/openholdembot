@@ -45,8 +45,18 @@
 //
 //*****************************************************************************
 
+##f$InitBets##
+// Do nothing, if we already acted more than once (bet, raise, call),
+// as then everything is already initialized
+(BotsActionsOnThisRound > 1) ? 0 :
+(nopponentsbetting == 0) ? me_st_MemBets_0 :
+// nopponentsbetting >= 1
+(f$BotsLastAction == Bet) ? me_st_MemBets_0 :
+(AmountToCall > 0) ? me_st_MemBets_1 :
+me_st_MemBets_0
+
 ##f$OpenPPL_Bets##
-(nopponentsbetting > 0) ? 1 : 0
+me_re_MemBets
 
 ##f$OpenPPL_BotCalledBeforeFlop##
 didcallround1
@@ -74,6 +84,9 @@ didcallround1
 (didchec + didcall + didswag + didrais)
 
 ##BotsActionsPreflop##
+// Checks are not counted per definition
+// (After a check the game is usually over,
+// except when we post the first blind without being big blind.)
 (didcallround1 + didraisround1 + didswaground1)
 
 ##f$OpenPPL_CalledOnFlop##
@@ -474,28 +487,28 @@ chair == f$OpenPPL_EarlyPosition1Chair  ? f$OpenPPL_MinStillToActStacksizeAfterE
 ##f$OpenPPL_2ndBestBoardCard##
 // Only considering individual ranks, paired cards get ignored this way
 // 14 (ace) can't happen, but anyway...
-(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b100000000000000) != 0 ? f$OpenPPL_ConstCardAce :
-(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b010000000000000) != 0 ? f$OpenPPL_ConstCardKing :
+(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b100000000000000) != 0 ? f$OpenPPL_ConstCardAce   :
+(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b010000000000000) != 0 ? f$OpenPPL_ConstCardKing  :
 (f$OpenPPL_RankBitsCommonWithoutTopBit & 0b001000000000000) != 0 ? f$OpenPPL_ConstCardQueen :
-(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000100000000000) != 0 ? f$OpenPPL_ConstCardJack :
-(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000010000000000) != 0 ? f$OpenPPL_ConstCardTen :
-(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000001000000000) != 0 ? f$OpenPPL_ConstCardNine :
+(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000100000000000) != 0 ? f$OpenPPL_ConstCardJack  :
+(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000010000000000) != 0 ? f$OpenPPL_ConstCardTen   :
+(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000001000000000) != 0 ? f$OpenPPL_ConstCardNine  :
 (f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000100000000) != 0 ? f$OpenPPL_ConstCardEight :
 (f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000010000000) != 0 ? f$OpenPPL_ConstCardSeven :
-(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000001000000) != 0 ? f$OpenPPL_ConstCardSix :
-(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000000100000) != 0 ? f$OpenPPL_ConstCardFive :
-(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000000010000) != 0 ? f$OpenPPL_ConstCardFour :
+(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000001000000) != 0 ? f$OpenPPL_ConstCardSix   :
+(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000000100000) != 0 ? f$OpenPPL_ConstCardFive  :
+(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000000010000) != 0 ? f$OpenPPL_ConstCardFour  :
 (f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000000001000) != 0 ? f$OpenPPL_ConstCardThree :
-(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000000000100) != 0 ? f$OpenPPL_ConstCardTwo :
+(f$OpenPPL_RankBitsCommonWithoutTopBit & 0b000000000000100) != 0 ? f$OpenPPL_ConstCardTwo   :
 // Last two bits are ace (low) and unused.
 // Both ignored.
 -1
 
 ##f$OpenPPL_AcePresentOnFlop##
-($$cr0 == 14) || ($$cr1 == 14) || ($$cr2 == 14)
+($$cr0 == f$OpenPPL_ConstCardAce) || ($$cr1 == f$OpenPPL_ConstCardAce) || ($$cr2 == f$OpenPPL_ConstCardAce)
 
 ##f$OpenPPL_AcePresentOnTurn##
-f$OpenPPL_AcePresentOnFlop || ($$cr3 == 14)
+f$OpenPPL_AcePresentOnFlop || ($$cr3 == f$OpenPPL_ConstCardAce)
 
 ##f$OpenPPL_BestBoardCard##
 rankhicommon
@@ -604,8 +617,8 @@ f$OpenPPL_OneCardStraightPossible && !f$OpenPPL_MoreThanOneOneCardStraightPossib
 (nstraightcommon == 4 && (`((rankbitscommon >> 10) & 0x1f) < 4) && (`((rankbitscommon >> 1) & 0x1f) < 4)) ? 1 : 0
 
 ##f$OpenPPL_OpenEndedStraightDrawPossibleOnFlop##
-[(f$OpenPPL_TopFlopCard - f$OpenPPL_2ndTopFlopCard <= 3) && (f$OpenPPL_TopFlopCard != 14)]
-|| [(f$OpenPPL_2ndTopFlopCard - f$OpenPPL_LowestFlopCard <= 3) && (f$OpenPPL_LowestFlopCard >= 2)]
+[(f$OpenPPL_TopFlopCard - f$OpenPPL_2ndTopFlopCard <= 3) && (f$OpenPPL_TopFlopCard != f$OpenPPL_ConstCardAce)]
+|| [(f$OpenPPL_2ndTopFlopCard - f$OpenPPL_LowestFlopCard <= 3) && (f$OpenPPL_LowestFlopCard >= f$OpenPPL_ConstCardTwo)]
 
 ##f$OpenPPL_OvercardsOnBoard##
 (($$cr0 > rankhiplayer) ? 1 : 0) +
@@ -644,7 +657,9 @@ f$OpenPPL_StraightPossible
 (nrankedcommon == 4)
 
 ##f$OpenPPL_QueenPresentOnFlop##
-($$cr0==12 ||$$cr1==12 ||$$cr2==12)
+   ($$cr0==f$OpenPPL_ConstCardQueen)
+|| ($$cr1==f$OpenPPL_ConstCardQueen)
+|| ($$cr2==f$OpenPPL_ConstCardQueen)
 
 ##f$OpenPPL_RankBitsCommonLowCardsOnly##
 // Bits 8..ace(low), last bit is unused
@@ -671,8 +686,8 @@ f$OpenPPL_2ndTopFlopCard == $$cr4 ? 1 : 0
 f$OpenPPL_2ndTopFlopCard == $$cr3 ? 1 : 0
 
 ##f$OpenPPL_srankbitshero##
- (($$ps0==tsuit ? ($$pr0!=14 ? 2**$$pr0 : 0b100000000000010) : 0)
-| ($$ps1==tsuit ? ($$pr1!=14 ? 2**$$pr1 : 0b100000000000010) : 0))
+ (($$ps0==tsuit ? ($$pr0!=f$OpenPPL_ConstCardAce ? 2**$$pr0 : 0b100000000000010) : 0)
+| ($$ps1==tsuit ? ($$pr1!=f$OpenPPL_ConstCardAce ? 2**$$pr1 : 0b100000000000010) : 0))
 
 ##f$OpenPPL_srankavailable##
 // Available suited cards for other players,
@@ -720,15 +735,15 @@ f$OpenPPL_SuitsOnFlop +
 (nstraightfillcommon <= 2)
 
 ##f$OpenPPL_RankBitsCommOnFlop##
-  ($$cr0 != 14 ? 2**$$cr0 : (0x4002))
-| ($$cr1 != 14 ? 2**$$cr1 : (0x4002))
-| ($$cr2 != 14 ? 2**$$cr2 : (0x4002))
+  ($$cr0 != f$OpenPPL_ConstCardAce ? 2**$$cr0 : 0b100000000000010)
+| ($$cr1 != f$OpenPPL_ConstCardAce ? 2**$$cr1 : 0b100000000000010)
+| ($$cr2 != f$OpenPPL_ConstCardAce ? 2**$$cr2 : 0b100000000000010)
 
 ##f$OpenPPL_RankBitsCommonTurn##
-  ($$cr0 != 14 ? 2**$$cr0 : (0x4002))
-| ($$cr1 != 14 ? 2**$$cr1 : (0x4002))
-| ($$cr2 != 14 ? 2**$$cr2 : (0x4002))
-| ($$cr3 != 14 ? 2**$$cr3 : (0x4002))
+  ($$cr0 != f$OpenPPL_ConstCardAce ? 2**$$cr0 : 0b100000000000010)
+| ($$cr1 != f$OpenPPL_ConstCardAce ? 2**$$cr1 : 0b100000000000010)
+| ($$cr2 != f$OpenPPL_ConstCardAce ? 2**$$cr2 : 0b100000000000010)
+| ($$cr3 != f$OpenPPL_ConstCardAce ? 2**$$cr3 : 0b100000000000010)
 
 ##f$OpenPPL_StraightPossibleOnFlop##
 `(((f$OpenPPL_RankBitsCommOnFlop >> 10) & 0x1f) >= 3) ? 1 :
@@ -874,7 +889,12 @@ f$OpenPPL_HadPairOnFlop || f$OpenPPL_FlopCardPairedonTurn || $$pr0 == $$cr3 || $
 f$OpenPPL_Have2ndBestKicker || f$OpenPPL_HaveBestKickerOrBetter
 
 ##f$OpenPPL_Have2ndBestOverpair##
-($KK && $$cr0 < 13 && $$cr1 < 13 && $$cr2 < 13 && $$cr3 < 13 && $$cr4 < 13 )
+   ($KK
+&& $$cr0 < f$OpenPPL_ConstCardKing
+&& $$cr1 < f$OpenPPL_ConstCardKing
+&& $$cr2 < f$OpenPPL_ConstCardKing
+&& $$cr3 < f$OpenPPL_ConstCardKing
+&& $$cr4 < f$OpenPPL_ConstCardKing)
 
 ##f$OpenPPL_Have2ndBestOverpairOrBetter##
 (f$OpenPPL_Have2ndBestOverpair || f$OpenPPL_HaveBestOverpairOrBetter)
@@ -925,7 +945,12 @@ f$OpenPPL_RankBitsCommonWithoutTopThreeBits & ~f$OpenPPL_4thTopBitOfRankBitsComm
 f$OpenPPL_Have3rdBestKicker || f$OpenPPL_Have2ndBestKickerOrBetter
 
 ##f$OpenPPL_Have3rdBestOverpair##
-$QQ && $$cr0 < 12 && $$cr1 < 12 && $$cr2 < 12 && $$cr3 < 12 && $$cr4 < 12
+   $QQ
+&& $$cr0 < f$OpenPPL_ConstCardQueen
+&& $$cr1 < f$OpenPPL_ConstCardQueen
+&& $$cr2 < f$OpenPPL_ConstCardQueen
+&& $$cr3 < f$OpenPPL_ConstCardQueen
+&& $$cr4 < f$OpenPPL_ConstCardQueen
 
 ##f$OpenPPL_3rdBestBoardCard##
 // Only considering individual ranks, paired cards get ignored this way
@@ -1051,7 +1076,12 @@ f$OpenPPL_HaveNutFlush || f$OpenPPL_HaveNutFlushDraw
 (f$OpenPPL_HaveBestKicker || f$OpenPPL_HavePair  || f$OpenPPL_HaveOverpairOrBetter)
 
 ##f$OpenPPL_HaveBestOverpair##
-($AA && $$cr0 < 14 && $$cr1 < 14 && $$cr2 < 14 && $$cr3 < 14 && $$cr4 < 14 )
+   ($AA
+&& $$cr0 < f$OpenPPL_ConstCardAce
+&& $$cr1 < f$OpenPPL_ConstCardAce
+&& $$cr2 < f$OpenPPL_ConstCardAce
+&& $$cr3 < f$OpenPPL_ConstCardAce
+&& $$cr4 < f$OpenPPL_ConstCardAce)
 
 ##f$OpenPPL_HaveBestOverpairOrBetter##
   (f$OpenPPL_HaveBestOverpair
@@ -1075,19 +1105,19 @@ rankbitscommon & ~f$OpenPPL_lowestBitOfRankBitsCommon
 ranklocommon
 
 ##f$OpenPPL_2ndLowestBoardCard##
-(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b000000000000100) != 1 ?  2 :
-(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b000000000001000) != 1 ?  3 :
-(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b000000000010000) != 1 ?  4 :
-(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b000000000100000) != 1 ?  5 :
-(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b000000001000000) != 1 ?  6 :
-(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b000000010000000) != 1 ?  7 :
-(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b000000100000000) != 1 ?  8 :
-(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b000001000000000) != 1 ?  9 :
-(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b000010000000000) != 1 ? 10 :
-(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b000100000000000) != 1 ? 11 :
-(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b001000000000000) != 1 ? 12 :
-(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b010000000000000) != 1 ? 13 :
-(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b100000000000000) != 1 ? 14 :
+(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b000000000000100) != 1 ? f$OpenPPL_ConstCardTwo   :
+(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b000000000001000) != 1 ? f$OpenPPL_ConstCardThree :
+(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b000000000010000) != 1 ? f$OpenPPL_ConstCardFour  :
+(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b000000000100000) != 1 ? f$OpenPPL_ConstCardFive  :
+(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b000000001000000) != 1 ? f$OpenPPL_ConstCardSix   :
+(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b000000010000000) != 1 ? f$OpenPPL_ConstCardSeven :
+(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b000000100000000) != 1 ? f$OpenPPL_ConstCardEight :
+(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b000001000000000) != 1 ? f$OpenPPL_ConstCardNine  :
+(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b000010000000000) != 1 ? f$OpenPPL_ConstCardTen   :
+(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b000100000000000) != 1 ? f$OpenPPL_ConstCardJack  :
+(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b001000000000000) != 1 ? f$OpenPPL_ConstCardQueen :
+(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b010000000000000) != 1 ? f$OpenPPL_ConstCardKing  :
+(f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b100000000000000) != 1 ? f$OpenPPL_ConstCardAce   :
 -1
 
 ##OpenPPL_HaveBottomTwoPair##
@@ -1443,7 +1473,7 @@ rankbits | 0b000000000000100
    (f$OpenPPL_BestPossibleStraightForUsIfTwoHitsTheBoard != -1)
 && (f$OpenPPL_BestPossibleStraightForUsIfTwoHitsTheBoard >= f$OpenPPL_BestPossibleStraightForVillainIfTwoHitsTheBoard)
 
-##f$OpenPPL_NumberOfCardranksThatGiveMeTheBestPossibleStraight##
+##f$OpenPPL_NumberOfCardranksThatGiveUsTheBestPossibleStraight##
   f$OpenPPL_GetBestPossibleStraightIfAceHitsTheBoard
 + f$OpenPPL_GetBestPossibleStraightIfKingHitsTheBoard
 + f$OpenPPL_GetBestPossibleStraightIfQueenHitsTheBoard
@@ -1459,12 +1489,12 @@ rankbits | 0b000000000000100
 + f$OpenPPL_GetBestPossibleStraightIfTwoHitsTheBoard
 
 ##f$OpenPPL_HaveNutStraightDraw##
-(nsuitedcommon < 2) && (f$OpenPPL_NumberOfCardranksThatGiveMeTheBestPossibleStraight >= 2)
+(nsuitedcommon < 2) && (f$OpenPPL_NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 2)
 
 ##f$OpenPPL_HaveInsideNutStraightDraw##
-   (nsuitedcommon < 2)  && (f$OpenPPL_NumberOfCardranksThatGiveMeTheBestPossibleStraight >= 1)
-|| (nsuitedcommon == 2) && (f$OpenPPL_NumberOfCardranksThatGiveMeTheBestPossibleStraight >= 2)
-|| (nsuitedcommon == 3) && (f$OpenPPL_NumberOfCardranksThatGiveMeTheBestPossibleStraight >= 2)
+   (nsuitedcommon < 2)  && (f$OpenPPL_NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 1)
+|| (nsuitedcommon == 2) && (f$OpenPPL_NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 2)
+|| (nsuitedcommon == 3) && (f$OpenPPL_NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 2)
 
 ##f$OpenPPL_HaveNutStraightFlush##
 isstraightflush && (nhandshi == 0)
@@ -1536,8 +1566,12 @@ f$OpenPPL_HaveStraight
 //
 //*****************************************************************************
 
-##f$OpenPPL_IsFinalAnswer##
-isfinalanswer
+##f$OpenPPL_IsFinalTable##
+// Only supported by OpenHoldem 2.2.0
+// Currently deactivated
+//
+// isfinaltable
+0
 
 ##f$OpenPPL_Others##
 // Always true
@@ -1894,12 +1928,12 @@ f$OpenPPL_Middle
 //*****************************************************************************
 
 ##f$OpenPPL_InitMemorySymbols##
-  f$OpenPPL_InitMaxOpponentStacksize
-+ f$OpenPPL_InitMinOpponentStacksize
+  f$InitBets
 + f$OpenPPL_InitRaisesBeforeFlop
 + f$OpenPPL_InitRaisesOnFlop
 + f$OpenPPL_InitRaisesOnTurn
-
++ f$OpenPPL_InitMaxOpponentStacksize
++ f$OpenPPL_InitMinOpponentStacksize
 
 //*****************************************************************************
 //
