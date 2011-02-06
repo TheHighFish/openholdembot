@@ -45,14 +45,14 @@
 //
 //*****************************************************************************
 
-##f$InitBets##
+##f$OpenPPL_InitBets##
 // Do nothing, if we already acted more than once (bet, raise, call),
 // as then everything is already initialized
-(BotsActionsOnThisRound > 1) ? 0 :
+(f$OpenPPL_BotsActionsOnThisRound > 1) ? 0 :
 (nopponentsbetting == 0) ? me_st_MemBets_0 :
 // nopponentsbetting >= 1
-(f$BotsLastAction == Bet) ? me_st_MemBets_0 :
-(AmountToCall > 0) ? me_st_MemBets_1 :
+(f$OpenPPL_BotsLastAction == f$OpenPPL_Bet) ? me_st_MemBets_0 :
+(f$OpenPPL_AmountToCall > 0) ? me_st_MemBets_1 :
 me_st_MemBets_0
 
 ##f$OpenPPL_Bets##
@@ -111,25 +111,27 @@ nopponentscalling
 ((raisbits3 & ~(1<<userchair)) == 0)
 
 ##f$OpenPPL_OpponentCalledOnFlop##
-  ((didraisround2 + didswaground2) == 1)
+   (betround > 2)
+&& ((didraisround2 + didswaground2) == 1)
 && !didchecround2
 && !didcallround2
 && f$OpenPPL_NoVillainBetOrRaisedOnFlop
 
 ##f$OpenPPL_OpponentCalledOnTurn##
-  ((didraisround3 + didswaground3) == 1)
+   (betround > 3)
+&& ((didraisround3 + didswaground3) == 1)
 && !didchecround3
 && !didcallround3
 && f$OpenPPL_NoVillainBetOrRaisedOnTurn
 
 ##f$OpenPPL_InitRaisesBeforeFlop##
-(betround == 1) ? me_st_MemRaisesBeforeFlop : 0
+(betround == 1) ? me_st_MemRaisesBeforeFlop_f$OpenPPL_Raises : 0
 
 ##f$OpenPPL_InitRaisesOnFlop##
-(betround == 2) ? me_st_MemRaisesOnFlop : 0
+(betround == 2) ? me_st_MemRaisesOnFlop_f$OpenPPL_Raises : 0
 
 ##f$OpenPPL_InitRaisesOnTurn##
-(betround == 3) ? me_st_MemRaisesOnTurn : 0
+(betround == 3) ? me_st_MemRaisesOnTurn_f$OpenPPL_Raises : 0
 
 ##f$OpenPPL_NumberOfRaisesBeforeFlop##
 (betround > 1) ? me_re_MemRaisesBeforeFlop : 0
@@ -1928,12 +1930,13 @@ f$OpenPPL_Middle
 //*****************************************************************************
 
 ##f$OpenPPL_InitMemorySymbols##
-  f$InitBets
+  f$OpenPPL_InitBets
 + f$OpenPPL_InitRaisesBeforeFlop
 + f$OpenPPL_InitRaisesOnFlop
 + f$OpenPPL_InitRaisesOnTurn
 + f$OpenPPL_InitMaxOpponentStacksize
 + f$OpenPPL_InitMinOpponentStacksize
++ f$OpenPPL_InitStartingStacksize
 
 //*****************************************************************************
 //
@@ -1948,6 +1951,12 @@ f$OpenPPL_Middle
 ##f$OpenPPL_Raises##
 0
 
+##f$OpenPPL_BotsLastAction##
+0
+
+##f$OpenPPL_Bet##
+// To be added by the translator
+0
 
 //*****************************************************************************
 //
