@@ -1,4 +1,4 @@
-//***********************************************************************************************
+//*****************************************************************************
 //
 // OpenPPL Library
 //   Supporting functions for the OpenPPL converter
@@ -41,6 +41,76 @@
 
 //*****************************************************************************
 //
+//  Predefined action constants
+//  ===========================
+//
+//  Positive values mean: betsizes (in big-blinds)
+//
+//  Negative values mean: predefined actions, that have to be translated later
+//  to standard OpenHoldem autoplayer actions.
+//
+//  Note: Beep is not supported.
+//
+//*****************************************************************************
+
+##f$Action_Call##
+-1
+
+##f$Action_Play##
+f$Action_Call
+
+##f$Action_Check##
+(f$OpenPPL_AmountToCall <= 0) ? f$Action_Call : f$Action_Fold
+
+##f$Action_Raise##
+-2
+
+##f$Action_RaiseMin##
+f$Action_Raise
+
+##f$Action_RaiseHalfPot##
+[1/2 * f$OpenPPL_PotSize]
+
+##f$Action_RaisePot##
+f$OpenPPL_PotSize
+
+##f$Action_RaiseMax##
+-3
+
+##f$Action_Fold##
+-4
+
+##f$Action_Bet##
+f$Action_Raise
+
+##f$Action_BetMin##
+f$Action_Bet
+
+##f$Action_BetHalfPot##
+f$Action_RaiseHalfPot
+
+##f$Action_BetPot##
+f$Action_RaiseHalfPot
+
+##f$Action_BetMax##
+f$Action_RaiseMax
+
+##f$Action_None##
+-5
+
+##f$Action_SitOut##
+-6
+
+##f$OpenPPL_UndefinedReturnValue##
+// Every user-defined function ends with this return-value
+// mainly to ensure syntactical correctness
+// and to avoid undefined return values.
+// OpenHoldem would return 0, when a return-value was not specified,
+// but this might be meaningful in most contexts.
+-1
+
+//*****************************************************************************
+//
 // OpenPPL - BettingAction Symbols
 //
 //*****************************************************************************
@@ -51,7 +121,7 @@
 (f$OpenPPL_BotsActionsOnThisRound > 1) ? 0 :
 (nopponentsbetting == 0) ? me_st_MemBets_0 :
 // nopponentsbetting >= 1
-(f$OpenPPL_BotsLastAction == f$OpenPPL_Bet) ? me_st_MemBets_0 :
+(f$OpenPPL_BotsLastAction == f$Action_Bet) ? me_st_MemBets_0 :
 (f$OpenPPL_AmountToCall > 0) ? me_st_MemBets_1 :
 me_st_MemBets_0
 
@@ -83,11 +153,43 @@ didcallround1
 // Folds and allins are not relevant, as then the hand is over for us.
 (didchec + didcall + didswag + didrais)
 
-##BotsActionsPreflop##
+##f$OpenPPL_BotsActionsPreflop##
 // Checks are not counted per definition
 // (After a check the game is usually over,
 // except when we post the first blind without being big blind.)
 (didcallround1 + didraisround1 + didswaground1)
+
+##f$OpenPPL_InitBotsLastAction##
+// Call = Play
+   (f$Decision == f$Action_Call)
+|| (f$Decision == f$Action_Play) ? me_st_MemBotsLastAction_f$Action_Call :
+// Fold
+(f$Decision == f$Action_Fold) ? me_st_MemBotsLastAction_f$Action_Fold :
+// Check
+(f$Decision == f$Action_Check) ? me_st_MemBotsLastAction_f$Action_Check :
+// Bet, Raise, BetHalfPot, BetPot, etc.
+// Also handling positive values for f$Decision, which mean betsizes.
+[  (f$Decision == f$Action_Raise)
+|| (f$Decision == f$Action_RaiseMin)
+|| (f$Decision == f$Action_RaiseHalfPot)
+|| (f$Decision == f$Action_RaiseMax)
+|| (f$Decision == f$Action_Bet)
+|| (f$Decision == f$Action_BetMin)
+|| (f$Decision == f$Action_BetHalfPot)
+|| (f$Decision == f$Action_BetMax)
+|| (f$Decision > 0)] ?
+[(ncallbets == 0) ? me_st_MemBotsLastAction_f$Action_Bet : me_st_MemBotsLastAction_f$Action_Raise] :
+// Other cases: handling them as "None"
+f$Action_None
+
+##f$OpenPPL_BotsLastAction##
+me_re_MemBotsLastAction
+
+##f$OpenPPL_InitBotsLastPreflopAction##
+(betround == 1) ? me_st_MemBotsLastPreflopAction_f$OpenPPL_BotsLastAction : 0
+
+##f$OpenPPL_BotsLastPreflopAction##
+me_re_MemBotsLastPreflopAction
 
 ##f$OpenPPL_CalledOnFlop##
 didcallround2
@@ -1931,6 +2033,8 @@ f$OpenPPL_Middle
 
 ##f$OpenPPL_InitMemorySymbols##
   f$OpenPPL_InitBets
++ f$OpenPPL_InitBotsLastAction
++ f$OpenPPL_InitBotsLastPreflopAction
 + f$OpenPPL_InitRaisesBeforeFlop
 + f$OpenPPL_InitRaisesOnFlop
 + f$OpenPPL_InitRaisesOnTurn
@@ -1951,11 +2055,7 @@ f$OpenPPL_Middle
 ##f$OpenPPL_Raises##
 0
 
-##f$OpenPPL_BotsLastAction##
-0
-
-##f$OpenPPL_Bet##
-// To be added by the translator
+##f$Decision##
 0
 
 //*****************************************************************************
