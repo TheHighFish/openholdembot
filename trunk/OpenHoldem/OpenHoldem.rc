@@ -835,8 +835,7 @@ IDD_SAPREFS8 DIALOGEX 0, 0, 219, 155
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Record replay frames",IDC_RECORD_FRAMES,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,188,8
+    CONTROL         "Record replay frames",IDC_RECORD_FRAMES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,188,8
     CONTROL         "On change in table state",IDC_RECORD_EVERY_CHANGE,
                     "Button",BS_AUTORADIOBUTTON,20,52,143,10
     CONTROL         "On change in table state when in hand",IDC_RECORD_EVERY_CHANGE_PLAYING,
@@ -956,6 +955,10 @@ BEGIN
     CONTROL         "Start minimized",IDC_GUI_START_MINIMIZED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,59,8
     CONTROL         "Don't show progress-dialog (formula-parsing)",IDC_GUI_Disable_Progress_Dialog,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,24,163,8
+    LTEXT           "Info Box Size  (5, 50)",IDC_INFOBOX_STATIC,17,63,69,8
+    EDITTEXT        IDC_INFOBOXSIZE_EDIT,122,66,29,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_INFOBOXSIZE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,151,66,9,14
+    LTEXT           "(Requires restarting OH)",IDC_STATIC,16,72,106,8
 END
 
 IDD_SAPREFS16 DIALOGEX 0, 0, 219, 155
@@ -1296,7 +1299,7 @@ BEGIN
         HORZGUIDE, 16
         HORZGUIDE, 32
         HORZGUIDE, 71
-        HORZGUIDE, 89
+        HORZGUIDE, 80
     END
 
     IDD_SAPREFS16, DIALOG
@@ -1527,12 +1530,17 @@ STRINGTABLE
 BEGIN
     ID_MAIN_TOOLBAR_LOCK_BLINDS "Lock table blinds\nLock blinds"
     ID_MAIN_TOOLBAR_SCRAPER_OUTPUT "Scraper output\nScraper output"
-	ID_MAIN_TOOLBAR_SHOOTFRAME "Shoot frame\nShoot frame"
 END
 
 STRINGTABLE 
 BEGIN
-    ID_MAIN_TOOLBAR_HELP "Help\nHelp"
+    ID_MAIN_TOOLBAR_SHOOTFRAME "Shoot frame\nShoot frame"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_MAIN_TOOLBAR_HELP    "Help\nHelp"
+    ID_FILE_LOAD_OPENPPL    "Load ""AutoProfileHoldem.txt""."
 END
 
 STRINGTABLE 
@@ -1540,11 +1548,6 @@ BEGIN
     ID_PERL_LOADFORMULA     "Load the mostt recent Perl formula"
     ID_PERL_LOADSPECIFICFORMULA "Select a Perl formula to load"
     ID_PERL_EDITMAINFORMULA "Invoke the favorite Perl editor to edit the main formula file"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_FILE_LOAD_OPENPPL    "Load ""AutoProfileHoldem.txt""."
 END
 
 #endif    // English (U.S.) resources
