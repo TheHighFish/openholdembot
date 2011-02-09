@@ -294,11 +294,10 @@ void CSymbols::ResetSymbolsFirstTime(void)
 
 	// chip amounts
 	// Index k_max_number_of_players+1 is for hero
+	write_log(3, "Resetting currentbets and balances for all players\n");
 	for (int i=0; i<(k_max_number_of_players+1); i++)
 	{
 		set_sym_balance(i, 0);
-		//!!!
-		write_log(3, "Resetting currentbet\n");
 		set_sym_currentbet(i, 0);
 	}
 
@@ -772,10 +771,10 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 	set_sym_betpositionrais(1);
 
 	// chip amounts
-	for (int i=0; i<=10; i++)
+	// Index k_max_number_of_players+1 is for hero
+	write_log(3, "Resetting currentbets for all players\n");
+	for (int i=0; i<(k_max_number_of_players+1); i++)
 	{
-		//!!!
-		write_log(1, "Resetting currentbet\n");
 		set_sym_currentbet(3, 0);
 	}
 
