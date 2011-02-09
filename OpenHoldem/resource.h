@@ -407,6 +407,8 @@
 #define IDC_EDIT1                       1327
 #define IDC_REBUY_EDIT_MINIMUM_DELAY    1327
 #define IDC_RECONNECT_TIME_EDIT         1327
+#define IDC_INFOBOXSIZE                 1327
+#define IDC_INFOBOXSIZE_EDIT            1327
 #define IDC_STATIC_REBUY_SCRIPT         1329
 #define IDC_REBUY_EDIT_SCRIPT           1330
 #define IDC_REBUY_EDIT_MINIMUM_DELAY_SPIN 1331
@@ -419,6 +421,7 @@
 #define IDC_SCROLLBAR1                  1336
 #define IDC_SPIN1                       1337
 #define IDC_RECONNECT_TIME_SPIN         1337
+#define IDC_INFOBOXSIZE_SPIN            1337
 #define IDC_CONFIGURATION_DISABLE_LESS_CRITICAL_CHECKS 1338
 #define IDC_CONFIGURATION_PERL_DEPENDENCIES 1339
 #define IDC_CONFIGURATION_INPUT_SETTINGS 1340
@@ -431,6 +434,7 @@
 #define IDC_RADIO_SCRAPE_ON_MYTURN_OR_SITOUT 1347
 #define IDC_HANDHISTORY_GENERATOR_ENABLE 1347
 #define IDC_RECORD_MY_TURN              1348
+#define IDC_INFOBOX_STATIC              1349
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -567,7 +571,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        180
 #define _APS_NEXT_COMMAND_VALUE         32995
-#define _APS_NEXT_CONTROL_VALUE         1349
+#define _APS_NEXT_CONTROL_VALUE         1350
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

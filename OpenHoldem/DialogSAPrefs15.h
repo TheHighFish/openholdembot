@@ -3,7 +3,6 @@
 
 #include "resource.h"
 #include "afxwin.h"
-
 #include "SAPrefsDialog.h"
 
 
@@ -22,14 +21,17 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
+	virtual BOOL	OnInitDialog();
 	DECLARE_MESSAGE_MAP()
-	virtual BOOL OnInitDialog();
 	virtual void OnOK();
 
 public:
-	CButton _gui_start_minimized_Button;
-	CButton _gui_disable_progress_dialog_Button;
+	
+	CButton			_gui_start_minimized_Button;
+	CButton			_gui_disable_progress_dialog_Button;
+
+	CEdit			m_InfoboxSize_Edit;
+	CSpinButtonCtrl m_InfoboxSize_Spin;
 };
 
 #endif

@@ -334,7 +334,7 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	RECT		cr = {0};
 	int			left = 0, top = 0, right = 0, bottom = 0;
 	CDC			*pDC = GetDC();
-	int			height = 80;
+	int			height = prefs.infobox_size();
 	
 	double sym_bblind		= p_tablelimits->bblind();
 	double sym_sblind		= p_tablelimits->sblind();
@@ -1170,7 +1170,7 @@ void COpenHoldemView::DrawPlayerBet(const int chair)
 	_logfont.lfWeight = FW_NORMAL;
 	cFont.CreateFontIndirect(&_logfont);
 	oldfont = pDC->SelectObject(&cFont);
-	pDC->SetTextColor(COLOR_WHITE);
+	pDC->SetTextColor(COLOR_BLACK);
 
 	// Format text
 	if (p_scraper->player_bet(chair) != 0) 
