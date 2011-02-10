@@ -398,12 +398,13 @@ BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
 	ON_NOTIFY(TVN_SELCHANGING, IDC_SCINTILLA_FORMULA_TREE, &CDlgFormulaScintilla::OnTvnSelchangingFormulaTree)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_SCINTILLA_FORMULA_TREE, &CDlgFormulaScintilla::OnTvnSelchangedFormulaTree)
 	ON_NOTIFY(TVN_ITEMEXPANDED, IDC_SCINTILLA_FORMULA_TREE, &CDlgFormulaScintilla::OnTvnExpandedFormulaTree)
+	ON_NOTIFY(NM_RCLICK, IDC_SCINTILLA_FORMULA_TREE, OnTreeContextMenu)
 
 	ON_NOTIFY(TCN_SELCHANGE, IDC_FORMULA_TAB, OnTabSelectionChange)
 	ON_NOTIFY(TCN_SELCHANGE, IDC_FUNCTIONS_TAB, OnFunctionTabSelectionChange)
 
 	ON_NOTIFY(TVN_GETINFOTIP, IDC_SYMBOL_TREE, OnSymbolTreeTipInfo)
-	ON_NOTIFY(NM_RCLICK, IDC_SYMBOL_TREE, OnSymbolContextMenu)
+	ON_NOTIFY(NM_RCLICK, IDC_SYMBOL_TREE, OnTreeContextMenu)
 
 	ON_EN_UPDATE(IDC_SEARCH_ED, OnSearchUpdate)
 
@@ -949,16 +950,17 @@ void CDlgFormulaScintilla::OnSymbolTreeTipInfo(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = 0;
 }
 
-void CDlgFormulaScintilla::OnSymbolContextMenu(NMHDR *pNMHDR, LRESULT *pResult)
+void CDlgFormulaScintilla::OnTreeContextMenu(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	CPoint cursorPos, clientPos;
 	cursorPos.x= GetCurrentMessage()->pt.x;
 	cursorPos.y= GetCurrentMessage()->pt.y;
 	clientPos = cursorPos;
-	m_SymbolTree.ScreenToClient(&clientPos);
-	HTREEITEM hItem = m_SymbolTree.HitTest(clientPos);
+	CTreeCtrl *theTree = (CTreeCtrl*)theTree->FromHandle(pNMHDR->hwndFrom);
+	theTree->ScreenToClient(&clientPos);
+	HTREEITEM hItem = theTree->HitTest(clientPos);
 
-	if (hItem != NULL && m_SymbolTree.GetChildItem(hItem) == NULL) 
+	if (hItem != NULL && theTree->GetChildItem(hItem) == NULL) 
 	{
 		CMenu contextMenu;
 		contextMenu.LoadMenu(IDR_FORMULA_SYMBOL_MENU);
@@ -968,7 +970,7 @@ void CDlgFormulaScintilla::OnSymbolContextMenu(NMHDR *pNMHDR, LRESULT *pResult)
 			if (OpenClipboard() && EmptyClipboard()) 
 			{
 				CString symbol;
-				symbol = m_SymbolTree.GetItemText(hItem);
+				symbol = theTree->GetItemText(hItem);
 
 				HANDLE hMem = ::GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE , symbol.GetLength()+1);
 				if (hMem) 
