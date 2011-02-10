@@ -123,7 +123,7 @@ protected:
 	afx_msg void OnTabSelectionChange(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnFunctionTabSelectionChange(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnSymbolTreeTipInfo(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnSymbolContextMenu(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnTreeContextMenu(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedCancel();
 	afx_msg void OnSearchUpdate();
 	afx_msg void ToggleToolbar();
