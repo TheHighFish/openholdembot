@@ -276,7 +276,7 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_betpositionrais(1);
 
 	// probabilities
-	set_sym_random(0);
+	set_sym_randomheartbeat(0);
 	set_sym_randomhand(0);
 
 	// Index k_number_of_betrounds+1 is for general random number
@@ -1612,7 +1612,7 @@ void CSymbols::CalcProbabilities(void)
 	bool				need_recalc = false;
 	int					i = 0;
 
-	set_sym_random((double) rand() / (double) RAND_MAX);								// random
+	set_sym_randomheartbeat((double) rand() / (double) RAND_MAX);								// random
 	set_sym_randomround(4, _sym.randomround[(int) (_sym.br-1)]);						// randomround
 
 	set_sym_prwin(iter_vars.prwin());													// prwin
@@ -4163,10 +4163,12 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	// Part 1(2): random...-symbols
 	if (memcmp(a, "random", 6) == 0)
 	{
-		if (memcmp(a, "random", 6)==0 && strlen(a)==6)						return _sym.random;
+		if (memcmp(a, "randomheartbeat", 15)==0 && strlen(a)==15)			return _sym.randomheartbeat;
 		if (memcmp(a, "randomhand", 10)==0 && strlen(a)==10)				return _sym.randomhand;
 		if (memcmp(a, "randomround", 11)==0 && strlen(a)==11)				return _sym.randomround[4];
 		if (memcmp(a, "randomround", 11)==0 && strlen(a)==12)				return _sym.randomround[a[11]-'0'-1];
+		// "random" gets calculated each time new
+		if (memcmp(a, "random", 6) == 0 && strlen(a)==6)					return ((double) rand() / (double) RAND_MAX);
 	}
 
 	// History

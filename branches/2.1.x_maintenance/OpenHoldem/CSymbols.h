@@ -79,7 +79,7 @@ struct SSymbols
 	double prwin;
 	double prlos;
 	double prtie;
-	double random;
+	double randomheartbeat;
 	double randomhand;
 	double randomround[5];				// "randomround" is held in element 4, round specific in elements 0-3
 
@@ -514,7 +514,7 @@ public:
 	void	set_sym_prwin(const double d) { ENT _sym.prwin = d;}
 	void	set_sym_prlos(const double d) { ENT _sym.prlos = d;}
 	void	set_sym_prtie(const double d) { ENT _sym.prtie = d;}
-	void	set_sym_random(const double d) { ENT _sym.random = d;}
+	void	set_sym_randomheartbeat(const double d) { ENT _sym.randomheartbeat = d;}
 	void	set_sym_randomhand(const double d) { ENT _sym.randomhand = d;}
 	void	set_sym_randomround(const int i, const double d) { ENT _sym.randomround[i] = d;}
 
