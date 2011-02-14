@@ -20,7 +20,12 @@ BUG FIXES:
 - There was no delay between multiple button-clicks (like "max" and "raise" to go allin),
   which caused problems on some casinos. This has now been fixed. There also is a 
   new auto-player-option "click-delay" to configure the timing.
-  Thanks to Querty to submit the patch. [THF]
+  Thanks to Querty who submitted the patch. [THF]
+- Epsilon-expressions caused crashes inside brackets.
+  We fixed it by completely disallowing empty expressions,
+  which (as a side-effect) also means, that every standard function 
+  has now to return a value (e.g. 0 )and can't be left empty,
+  if it doesn't get used. Thanks to BrassKnuckles for reporting the problem. [THF]
 
 v2.1.8 2011-01-15
 =================

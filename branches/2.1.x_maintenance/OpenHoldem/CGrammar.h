@@ -260,7 +260,11 @@ struct exec_grammar : public grammar<exec_grammar>
 
 			cond_expr = logical_or_expr >> *(root_node_d[QUEST_OP] >> cond_expr >> COLON_OP >> cond_expr);
 
-			expression = cond_expr | epsilon_p;
+			// Epsilon-expressions are no longer allowed to avoid crashed,
+			// when the expsilon expression gets evaluated inside brackets
+			// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=12232&start=0
+			// expression = cond_expr | epsilon_p;
+			expression = cond_expr;
 
 			//  End grammar definition
 		}
