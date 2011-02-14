@@ -164,11 +164,17 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 				ss.i86_button_state = p_scraper->i86_button_state();
 
 				ss.sblind = p_scraper->s_limit_info()->sblind;
+				ss.found_sblind = p_scraper->s_limit_info()->found_sblind;
 				ss.bblind = p_scraper->s_limit_info()->bblind;
+				ss.found_bblind = p_scraper->s_limit_info()->found_bblind;
 				ss.bbet = p_scraper->s_limit_info()->bbet;
+				ss.found_bbet = p_scraper->s_limit_info()->found_bbet;
 				ss.ante = p_scraper->s_limit_info()->ante;
+				ss.found_ante = p_scraper->s_limit_info()->found_ante;
 				ss.limit = (LimitType) p_scraper->s_limit_info()->limit;
+				ss.found_limit = p_scraper->s_limit_info()->found_limit;
 				ss.handnumber = p_scraper->s_limit_info()->handnumber;
+				ss.found_handnumber = p_scraper->s_limit_info()->found_handnumber;
 				ss.istournament = p_scraper->s_limit_info()->istournament;
 
 				// Call the scraper override
@@ -216,11 +222,17 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 				p_scraper->set_i86_button_state(ss.i86_button_state);
 
 				p_scraper->set_sblind(ss.sblind);
+				p_scraper->set_found_sblind(ss.found_sblind);
 				p_scraper->set_bblind(ss.bblind);
+				p_scraper->set_found_bblind(ss.found_bblind);
 				p_scraper->set_bbet(ss.bbet);
+				p_scraper->set_found_bbet(ss.found_bbet);
 				p_scraper->set_ante(ss.ante);
+				p_scraper->set_found_ante(ss.found_ante);
 				p_scraper->set_limit(ss.limit);
+				p_scraper->set_found_limit(ss.found_limit);
 				p_scraper->set_handnumber(ss.handnumber);
+				p_scraper->set_found_handnumber(ss.found_handnumber);
 				p_scraper->set_istournament(ss.istournament);
 
 			}

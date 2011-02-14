@@ -26,6 +26,9 @@ BUG FIXES:
   which (as a side-effect) also means, that every standard function 
   has now to return a value (e.g. 0 )and can't be left empty,
   if it doesn't get used. Thanks to BrassKnuckles for reporting the problem. [THF]
+- Scraper-DLL: Some variables got ignored when changed by the scraper-DLL
+  (e.g. "limit"), as limit_found didn't get affected. This has now been changed.
+  Thanks to Ljmj for submitting the patch. [THF]
 
 v2.1.8 2011-01-15
 =================
