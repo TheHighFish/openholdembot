@@ -14,6 +14,13 @@ BUG FIXES:
   This case gets now handled, too. [F1x3r]
 - The Formula dialog did not highlight all PT-symbols.
   Thnks to Qwerty for submitting the patch. [THF]
+- Random didn't get calculated each time new, but only once per heartbeat,
+  contrary to the docu. This has now been fixed. Additionally a symbol
+  "randomheartbeat" got introduced. Thanks to StangelNator for reporting. [THF]
+- There was no delay between multiple button-clicks (like "max" and "raise" to go allin),
+  which caused problems on some casinos. This has now been fixed. There also is a 
+  new auto-player-option "click-delay" to configure the timing.
+  Thanks to Querty to submit the patch. [THF]
 
 v2.1.8 2011-01-15
 =================
