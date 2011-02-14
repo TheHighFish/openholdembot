@@ -87,7 +87,9 @@ MOUSEDLL_API int MouseClick(const HWND hwnd, const RECT rect, const MouseButton 
 	SetActiveWindow(hwnd);
 
 	// Send input
+	Sleep(100);
 	SendInput(clicks*2, input, sizeof(INPUT));
+	Sleep(100);
 
 	// Restore previous window state and cursor position
 	if (restore_focus!=NULL)

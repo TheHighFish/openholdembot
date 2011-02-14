@@ -29,6 +29,7 @@ public:
 
 	// Autoplayer
 	const unsigned int frame_delay() { return _frame_delay; }
+	const unsigned int click_delay() { return _click_delay; }
 	const unsigned int swag_delay_1() { return _swag_delay_1; }
 	const unsigned int swag_delay_2() { return _swag_delay_2; }
 	const unsigned int swag_delay_3() { return _swag_delay_3; }
@@ -180,6 +181,7 @@ public:
 
 	// Autoplayer
 	void set_frame_delay(const unsigned int i) { ENT _frame_delay = i; WriteReg("frame_delay", (int) i); }
+	void set_click_delay(const unsigned int i) { ENT _click_delay = i; WriteReg("click_delay", (int) i); }
 	void set_swag_delay_1(const unsigned int i) { ENT _swag_delay_1 = i; WriteReg("swag_delay_1", (int) i); }
 	void set_swag_delay_2(const unsigned int i) { ENT _swag_delay_2 = i; WriteReg("swag_delay_2", (int) i); }
 	void set_swag_delay_3(const unsigned int i) { ENT _swag_delay_3 = i; WriteReg("swag_delay_3", (int) i); }
@@ -356,6 +358,7 @@ private:
 
 	// Autoplayer
 	unsigned int		_frame_delay;
+	unsigned int		_click_delay;
 	unsigned int		_swag_delay_1;
 	unsigned int		_swag_delay_2;
 	unsigned int		_swag_delay_3;

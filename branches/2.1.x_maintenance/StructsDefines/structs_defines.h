@@ -76,7 +76,8 @@ const CString k_tablemap_errors_and_parse_errors_explained[19] =
 
 // Preferences
 #define MAX_OPPONENTS		22	
-#define MAX_FRAMEDELAY		9	
+#define MAX_FRAMEDELAY		9
+#define MAX_CLICKDELAY		5000
 #define MAX_SWAGDELAY1		5000	
 #define MAX_SWAGDELAY2		5000	
 #define MAX_SWAGDELAY3		5000	

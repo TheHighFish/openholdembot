@@ -624,6 +624,9 @@ void CAutoplayer::DoARCCF(void)
 			return;
 		}
 
+		//Mutex locked -> Click_delay
+		Sleep(prefs.click_delay());
+		
 		if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
 		{
 			write_log(3, "Calling mouse.dll to double click: %d,%d %d,%d\n", r.left, r.top, r.right, r.bottom);

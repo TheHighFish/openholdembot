@@ -67,6 +67,7 @@ void CPreferences::InitDefaults(void)
 
 	// autoplayer
 	_frame_delay = 2;
+	_click_delay  = 250;
 	_swag_delay_1 = 400;
 	_swag_delay_2 = 400;
 	_swag_delay_3 = 700;
@@ -257,6 +258,7 @@ void CPreferences::ReadPreferences()
 
 		// prefs - autoplayer
 		ReadReg("frame_delay", &_frame_delay);
+		ReadReg("click_delay", &_click_delay);
 		ReadReg("swag_delay_1", &_swag_delay_1);
 		ReadReg("swag_delay_2", &_swag_delay_2);
 		//  If a key "swag_delay" exists, use this as "swag_delay_3",

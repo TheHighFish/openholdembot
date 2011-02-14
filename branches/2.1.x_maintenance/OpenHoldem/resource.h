@@ -97,6 +97,9 @@
 #define IDC_SWAGDELAY1                  1040
 #define IDC_SCRAPEDELAY_SPIN            1041
 #define IDC_SWAGDELAY1_SPIN             1041
+#define IDC_CLICKDELAY                  1042
+#define IDC_FRAMEDELAY_SPIN2            1043
+#define IDC_CLICKDELAY_SPIN             1043
 #define IDC_COMBO2                      1052
 #define IDC_HANDRANKVALUE               1052
 #define IDC_DEBUGLEVEL_PT               1052
