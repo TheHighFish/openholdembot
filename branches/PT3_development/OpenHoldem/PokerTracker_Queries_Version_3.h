@@ -32,8 +32,34 @@ enum PT_Stats
 	// Specification of minimu and maximum
 	// These have to be adapted, when new stats are added.
 	pt_min = pt_icon,
-	pt_max = ptt_fsbts
+	pt_max = ptt_fsbts,
+	pt_ring_min = pt_icon,
+	pt_ring_max = pt_fcbetriver,
+	pt_tourney_min = ptt_icon,
+	pt_tourney_max = ptt_fsbts
 };
+
+
+enum PT_Groups
+{
+	pt_group_basic = 1,
+	pt_group_advanced = 2,
+	pt_group_positional = 3
+};
+
+enum PT_UpdateTypes
+{
+	pt_updateType_noUpdate = 0,
+	pt_updateType_updateBasic = 1,
+	pt_updateType_updateAll = 2
+};
+
+enum PT_StatTypes
+{
+	pt_statType_Ring = 0,
+	pt_statType_Tourney = 1
+};
+
 
 // These are for PokerTracker version 3 stats
 const CString stat_str[k_number_of_pokertracker_stats]/*[k_max_lenght_of_stats_name]*/ = {

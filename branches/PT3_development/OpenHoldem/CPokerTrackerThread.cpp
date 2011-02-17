@@ -121,22 +121,102 @@ CPokerTrackerThread::CPokerTrackerThread()
 	_conn_str.Format("host=%s port=%s user=%s password=%s dbname='%s'",  
 		prefs.pt_ip_addr(), prefs.pt_port(), prefs.pt_user(), prefs.pt_pass(), prefs.pt_dbname());
 
-	for (int i=0; i<k_max_number_of_players; i++)
-	{
-		for (int j=pt_min; j<=pt_max; j++)
-		{
-			_player_stats[i].stat[j] = -1.0 ;
-			_player_stats[i].t_elapsed[j] = -1 ;
-		}
-		_player_stats[i].found = false ;
-		strcpy_s(_player_stats[i].pt_name, k_max_length_of_playername, "") ;
-		strcpy_s(_player_stats[i].scraped_name, k_max_length_of_playername, "") ;
-	}
+	ClearAllStats();
 
 	_connected = false;
 	_m_stop_thread = NULL;
 	_m_wait_thread = NULL;
+	SetStatGroups();
+	SetStatTypes();
 }
+
+void CPokerTrackerThread::SetStatGroups()
+{
+	/* Ring symbols */
+	_m_statGroup[pt_icon] = pt_group_advanced;
+	_m_statGroup[pt_hands] = pt_group_basic;
+	_m_statGroup[pt_pfr] = pt_group_basic;
+	_m_statGroup[pt_aggp] = pt_group_basic;
+	_m_statGroup[pt_aggf] = pt_group_basic;
+	_m_statGroup[pt_aggt] = pt_group_advanced;
+	_m_statGroup[pt_aggr] = pt_group_basic;
+	_m_statGroup[pt_aggtot] = pt_group_basic;
+	_m_statGroup[pt_aggtotnopf] = pt_group_basic;
+	_m_statGroup[pt_floppct] = pt_group_basic;
+	_m_statGroup[pt_turnpct] = pt_group_advanced;
+	_m_statGroup[pt_riverpct] = pt_group_advanced;
+	_m_statGroup[pt_vpip] = pt_group_basic;
+	_m_statGroup[pt_pf_rfi] = pt_group_basic;
+	_m_statGroup[pt_pf_cr] = pt_group_basic;
+	_m_statGroup[pt_pfats] = pt_group_basic;
+	_m_statGroup[pt_wsdp] = pt_group_advanced;
+	_m_statGroup[pt_wssd] = pt_group_advanced;
+	_m_statGroup[pt_fbbts] = pt_group_basic;
+	_m_statGroup[pt_fsbts] = pt_group_basic;
+	_m_statGroup[pt_cbetflop] = pt_group_advanced;
+	_m_statGroup[pt_f3bettot] = pt_group_advanced;
+	_m_statGroup[pt_f3betpflop] = pt_group_basic;
+	_m_statGroup[pt_f3betflop] = pt_group_advanced;
+	_m_statGroup[pt_f3betturn] = pt_group_advanced;
+	_m_statGroup[pt_f3betriver] = pt_group_advanced;
+	_m_statGroup[pt_fcbetflop] = pt_group_advanced;
+	_m_statGroup[pt_fcbetturn] = pt_group_advanced;
+	_m_statGroup[pt_fcbetriver] = pt_group_advanced;
+
+	/* Tournament symbols */
+	_m_statGroup[ptt_icon] = pt_group_advanced;
+	_m_statGroup[ptt_hands] = pt_group_basic;
+	_m_statGroup[ptt_pfr] = pt_group_basic;
+	_m_statGroup[ptt_aggp] = pt_group_basic;
+	_m_statGroup[ptt_aggf] = pt_group_basic;
+	_m_statGroup[ptt_aggt] = pt_group_advanced;
+	_m_statGroup[ptt_aggr] = pt_group_basic;
+	_m_statGroup[ptt_aggtot] = pt_group_basic;
+	_m_statGroup[ptt_aggtotnopf] = pt_group_basic;
+	_m_statGroup[ptt_floppct] = pt_group_basic;
+	_m_statGroup[ptt_turnpct] = pt_group_advanced;
+	_m_statGroup[ptt_riverpct] = pt_group_advanced;
+	_m_statGroup[ptt_vpip] = pt_group_basic;
+	_m_statGroup[ptt_pf_rfi] = pt_group_basic;
+	_m_statGroup[ptt_pf_cr] = pt_group_basic;
+	_m_statGroup[ptt_pfats] = pt_group_basic;
+	_m_statGroup[ptt_wsdp] = pt_group_advanced;
+	_m_statGroup[ptt_wssd] = pt_group_advanced;
+	_m_statGroup[ptt_fbbts] = pt_group_basic;
+	_m_statGroup[ptt_fsbts] = pt_group_basic;
+}
+
+void CPokerTrackerThread::SetRingStatsState(bool enabled)
+{
+	for (int i = pt_ring_min; i <= pt_ring_max; ++i)
+	{	
+		_m_enabled_stats[i] = enabled;
+	}
+}
+void CPokerTrackerThread::SetTourneyStatsState(bool enabled)
+{
+	for (int i = pt_tourney_min; i <= pt_tourney_max; ++i)
+	{	
+		_m_enabled_stats[i] = enabled;
+	}
+}
+
+void CPokerTrackerThread::SetStatTypes()
+{
+	int i;
+	/* Ring symbols */
+	for (i = pt_ring_min; i <= pt_ring_max; ++i)
+	{	
+		_m_stat_type[i] = pt_statType_Ring;
+	}
+	
+	/* Tournament symbols */
+	for (i = pt_tourney_min; i <= pt_tourney_max; ++i)
+	{	
+		_m_stat_type[i] = pt_statType_Tourney;
+	}
+}
+
 
 CPokerTrackerThread::~CPokerTrackerThread()
 {
@@ -391,104 +471,147 @@ void CPokerTrackerThread::Disconnect(void)
 		PQfinish(_pgconn);
 }
 
-//!!!
-#define k_min_chair_number 0
-#define k_max_chair_number 9
 
-bool CPokerTrackerThread::CheckName (int m_chr)
+
+/* When running this function, chair is the chair to IGNORE 
+   That's because this function is running while GetStatsForChair is running,
+   And we wouldn't like to interrupt its order and ability to detect name changes
+   In the seat it's getting stats for*/ 
+void CPokerTrackerThread::ReportSeatChanges(int chair)
 {
-	char		oh_scraped_name[k_max_length_of_playername] = {0}; 
-	char		best_name[k_max_length_of_playername] = {0};
-	char		likename[k_max_length_of_playername] = {0};
+	int i;
+	bool nameChanged;
+	char currentScrapeName[k_max_length_of_playername];
+	write_log_pokertracker(3, "ReportSeatChanges: started\n");
+	for (i = k_min_chair_number; i < k_max_chair_number; ++i)
+	{
+		if (i != chair)
+		{
+			memcpy(currentScrapeName, _player_stats[i].scraped_name, k_max_length_of_playername);
+			CheckName(i, nameChanged);
+			if (nameChanged)
+			{
+				/* Scrapped name got changed. Clear stats for that chair */
+				write_log_pokertracker(2, "ReportSeatChanges: chair [%d]: new player sat down in chair! oldscrape[%s] newscrape[%s].\n", i, currentScrapeName, _player_stats[i].scraped_name);
+				/* Clear stats but leave the new name intact */
+				ClearSeatStats(i, false);
+			}
+		}
+	}
+}
+
+/*Returns true if found an appropriate name in the DB for chr, or false if 
+  it did not found such name. Also changes nameChanged if the name was found but 
+  changed since the last time we've called CheckName function */
+bool CPokerTrackerThread::CheckName(int chr, bool &nameChanged)
+{
+	char		oh_scraped_name[k_max_length_of_playername]; 
+	char		best_name[k_max_length_of_playername];
 	bool		result = false, ok_scrape = false;
+	int			i;
 
-	assert(m_chr >= k_min_chair_number); 
-	assert(m_chr <= k_max_chair_number);
 
-	if (p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[m_chr].m_name_known == 0)
+	assert(chr >= k_min_chair_number); 
+	assert(chr <= k_max_chair_number);
+	
+	memset(oh_scraped_name, 0, k_max_length_of_playername);
+	memset(best_name, 0, k_max_length_of_playername);
+	
+	nameChanged = false;
+	if (p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chr].m_name_known == 0)
 		return false;
 
-	strcpy_s(oh_scraped_name, k_max_length_of_playername, p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[m_chr].m_name);
+	strcpy_s(oh_scraped_name, k_max_length_of_playername, p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chr].m_name);
 
 	// Check for bad name scrape
-	for (int i=0; i<(int) strlen(oh_scraped_name); i++)
+	int len = (int) strlen(oh_scraped_name);
+	for (i = 0; i < len; ++i)
 	{
 		if (oh_scraped_name[i]!='l' && oh_scraped_name[i]!='i' && oh_scraped_name[i]!='.' && oh_scraped_name[i]!=',')
 		{
 			ok_scrape = true;
-			i = strlen(oh_scraped_name);
+			break;
 		}
 	}
 	if (!ok_scrape)
 		return false;
 
 	// We already have the name, and it has not changed since we last checked, so do nothing
-	//if (_player_stats[m_chr].found && strcmp(_player_stats[m_chr].scraped_name, oh_scraped_name))
-	//	return true;
+	if (_player_stats[chr].found && 0 == strcmp(_player_stats[chr].scraped_name, oh_scraped_name))
+		return true;
+	
+	nameChanged = true;
 
-	// We think we have the name, but it has changed since we last checked...reset stats for this
-	// chair and search again
-	if (_player_stats[m_chr].found && strcmp(_player_stats[m_chr].scraped_name, oh_scraped_name)!=0)
-	{
-		for (int i=pt_min; i<=pt_max; i++)
-		{
-			_player_stats[m_chr].stat[i] = -1.0 ;
-			_player_stats[m_chr].t_elapsed[i] = -1 ;
-		}
-
-		_player_stats[m_chr].found = false ;
-		strcpy_s(_player_stats[m_chr].pt_name, k_max_length_of_playername, "") ;
-		strcpy_s(_player_stats[m_chr].scraped_name, k_max_length_of_playername, "") ;
-	}
 
 	// We have not found the name in PT, go find it
 	// First see if we can find the exact scraped name
-	result = QueryName(oh_scraped_name, oh_scraped_name, best_name);
-
-	// Query with "%n%a%m%e%"
-	if (!result)
-	{
-		likename[0]='%';
-		for (int i=0; i<(int) strlen(oh_scraped_name); i++)
-		{
-			likename[i*2+1]=oh_scraped_name[i];
-			likename[i*2+2]='%';
-		}
-		likename[strlen(oh_scraped_name)*2+1]='\0';
-		result = QueryName(likename, oh_scraped_name, best_name);
-	}
-
-	// Query with "%"
-	if (!result)
-	{
-		result = QueryName("%", oh_scraped_name, best_name);
-	}
+	result = FindName(oh_scraped_name, best_name);
 
 	if (result)
 	{
-		_player_stats[m_chr].found = true;
-		strcpy_s(_player_stats[m_chr].pt_name, k_max_length_of_playername, best_name);
-		strcpy_s(_player_stats[m_chr].scraped_name, k_max_length_of_playername, oh_scraped_name);
+		SetPlayerName(chr, true, best_name, oh_scraped_name);
 	}
 	else
 	{
-		_player_stats[m_chr].found = false ;
-		strcpy_s(_player_stats[m_chr].pt_name, k_max_length_of_playername, "");
-		strcpy_s(_player_stats[m_chr].scraped_name, k_max_length_of_playername, "");
+		SetPlayerName(chr, false, "", "");
 	}
 
 	return result;
 }
 
-double CPokerTrackerThread::GetStat (int m_chr, PT_Stats stat)
+void CPokerTrackerThread::SetPlayerName(int chr, bool found, const char* pt_name, const char* scraped_name)
 {
-	assert(m_chr >= k_min_chair_number); 
-	assert(m_chr <= k_max_chair_number);
-
-	return _player_stats[m_chr].stat[stat];
+	_player_stats[chr].found = found;
+	memcpy(_player_stats[chr].pt_name, pt_name, k_max_length_of_playername);
+	memcpy(_player_stats[chr].scraped_name, scraped_name, k_max_length_of_playername);
+	write_log_pokertracker(2, "SetPlayerName: Done. ptname[%s] scrapedName[%s]\n", _player_stats[chr].pt_name, _player_stats[chr].scraped_name);
 }
 
-double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
+
+//Short Algorithm to query the DB for the best name. returns true if best name is populated.
+bool CPokerTrackerThread::FindName(const char *oh_scraped_name, char *best_name)
+{
+	char		likename[k_max_length_of_playername];
+	memset(likename, 0, k_max_length_of_playername);
+	
+	bool result = QueryName(oh_scraped_name, oh_scraped_name, best_name);
+
+	if (!result)
+	{
+		/*  Escalation #1: scraped name not found in DB as it is */
+		/*  Try query with "%n%a%m%e%" */
+		likename[0] = '%';
+		int i;
+		int len = (int)strlen(oh_scraped_name);
+		for (i = 0; i < len; ++i)
+		{
+			likename[i*2 + 1] = oh_scraped_name[i];
+			likename[i*2 + 2] = '%';
+		}
+		likename[len*2 + 1] = '\0';
+		result = QueryName(likename, oh_scraped_name, best_name);
+	}
+
+	if (!result)
+	{
+		/*  Escalation #2: "%n%a%m%e%" not found in DB*/
+		/*  Try query with "%" to get all names */
+		result = QueryName("%", oh_scraped_name, best_name);
+	}
+	return result;
+}
+
+double CPokerTrackerThread::GetStat(int chr, PT_Stats stat)
+{
+	assert(chr >= k_min_chair_number); 
+	assert(chr <= k_max_chair_number);
+
+	return _player_stats[chr].stat[stat];
+
+		
+}
+
+double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 {
 	PGresult	*res = NULL;
 	char		strQry[k_max_length_of_query] = {0};
@@ -514,17 +637,19 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 	assert(stat >= pt_min);
 	assert(stat <= pt_max);
 
+	/* TS 01/25/2011.  Update means update... we will not back off now :-) */
+	
 	// If we already have stats cached for the player, the timeout has not expired,
 	// return the value from the cache...
-	if (sym_elapsed - _player_stats[m_chr].t_elapsed[stat] < prefs.pt_cache_refresh() &&
-		_player_stats[m_chr].t_elapsed[stat] != -1 &&
-		_player_stats[m_chr].stat[stat] != -1)
-	{
-		result = _player_stats[m_chr].stat[stat];
-	}
+	//if (sym_elapsed - _player_stats[m_chr].t_elapsed[stat] < prefs.pt_cache_refresh() &&
+		//_player_stats[m_chr].t_elapsed[stat] != -1 &&
+		//_player_stats[m_chr].stat[stat] != -1)
+	//{
+		//result = _player_stats[m_chr].stat[stat];
+	//}
 
 	// ...otherwise query the database
-	else
+	//else
 	{
 		// get query string for the requested statistic
 		strcpy_s(strQry, k_max_length_of_query, query_str3[stat]);
@@ -623,7 +748,7 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 	return result;
 }
 
-bool CPokerTrackerThread::QueryName (const char * query_name, const char * scraped_name, char * best_name)
+bool CPokerTrackerThread::QueryName(const char * query_name, const char * scraped_name, char * best_name)
 {
 	char			strQry[k_max_length_of_query] = {0};
 	int				lev_dist = 0, bestLD = 0, bestLDindex = 0;
@@ -641,14 +766,14 @@ bool CPokerTrackerThread::QueryName (const char * query_name, const char * scrap
 	// siteid has changed -- we're using ManualMode
 	if (siteid != _last_siteid)
 	{
-		ClearStats();
+		ClearAllStats();
 		_last_siteid = siteid;
 	}
 
 	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)
 		return false;
 
-	if (strlen(query_name))
+	if (0 == strlen(query_name))
 		return false;
 
 	sprintf_s(siteidstr, k_max_length_of_site_id, "%d", siteid);
@@ -718,74 +843,329 @@ bool CPokerTrackerThread::QueryName (const char * query_name, const char * scrap
 	return result;
 }
 
-void CPokerTrackerThread::ClearStats (void)
-{
-	for (int i=0; i<=9; i++)
-	{
-		for (int j=pt_min; j<=pt_max; j++)
-		{
-			_player_stats[i].stat[j] = -1.0;
-			_player_stats[i].t_elapsed[j] = -1;
-		}
 
-		_player_stats[i].found = false ;
-		strcpy_s(_player_stats[i].pt_name, k_max_length_of_playername, "");
-		strcpy_s(_player_stats[i].scraped_name, k_max_length_of_playername, "");
+void CPokerTrackerThread::ClearSeatStats(int chr, bool clearNameAndFound)
+{
+	assert(chr >= k_min_chair_number); 
+	assert(chr <= k_max_chair_number);
+	int j;
+	for (j = pt_min; j <= pt_max; ++j)
+	{
+		_player_stats[chr].stat[j] = -1.0;
+		_player_stats[chr].t_elapsed[j] = -1;
+	}
+	if (clearNameAndFound)
+	{
+		_player_stats[chr].found = false;
+		memset(_player_stats[chr].pt_name, 0, k_max_length_of_playername);
+		memset(_player_stats[chr].scraped_name, 0, k_max_length_of_playername);
+	}
+	_player_stats[chr].skipped_updates = k_advanced_stat_update_every;
+}
+
+void CPokerTrackerThread::ClearAllStats()
+{
+	int i;
+	for (i = 0; i <= 9; ++i)
+	{
+		ClearSeatStats(i);
 	}
 }
 
-void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair)
+// Returns 1 for basic stats only, and 2 for all
+int CPokerTrackerThread::GetUpdateType(int chr)
+{
+	if (_player_stats[chr].skipped_updates == k_advanced_stat_update_every)
+	{
+		write_log_pokertracker(3, "GetUpdateType: update type for chair [%d] is update ALL\n", chr);
+		return pt_updateType_updateAll;
+	}
+	write_log_pokertracker(3, "GetUpdateType: update type for chair [%d] is update Basic only\n", chr);
+	return pt_updateType_updateBasic;
+}
+
+
+void CPokerTrackerThread::RecalcSkippedUpdates(int chr)
+{
+	if (_player_stats[chr].skipped_updates == k_advanced_stat_update_every)
+		_player_stats[chr].skipped_updates = 1;
+	else
+		++_player_stats[chr].skipped_updates;
+}
+
+
+int CPokerTrackerThread::SkipUpdateCondition(int stat, int chair)
+{
+	int statGroup = _m_statGroup[stat]; // puts in statgroup the group of this stat, that is basic/advanced/positional
+	int result;
+	int updateType = GetUpdateType(chair); // get the current update type, that is either basic or all
+
+	if (updateType == pt_updateType_updateBasic && (statGroup == pt_group_advanced || statGroup == pt_group_positional))
+		result = 1;
+	else
+		result = 0;
+	return result;
+}
+
+void CPokerTrackerThread::SetHandsStat()
+{
+	int tourney = p_symbols->sym()->istournament;
+	if (tourney)
+	{
+		_m_handsStats = ptt_hands;
+		_m_min_hands_for_slower_update = k_min_hands_slower_updates_tourney;
+		SetRingStatsState(false);
+		SetTourneyStatsState(true);
+	}
+	else
+	{
+		_m_handsStats = pt_hands;
+		_m_min_hands_for_slower_update = k_min_hands_slower_updates_ring;
+		SetRingStatsState(true);
+		SetTourneyStatsState(false);
+	}
+}
+
+int CPokerTrackerThread::SkipUpdateForChair(int chair, char* reason)
+{
+	memset(reason,0,100);
+	int userchair = p_symbols->sym()->userchair;
+	if (userchair == chair)
+	{
+		memcpy(reason, "User sits in this chair", 100);
+		return pt_updateType_noUpdate;
+	}
+	
+	int hands = (int)GetStat(chair, _m_handsStats);
+	if (hands > _m_min_hands_for_slower_update)
+	{
+		if (GetUpdateType(chair) == pt_updateType_updateAll)
+			return pt_updateType_updateAll;
+		else
+		{
+			memcpy(reason, "User has lots of hands", 100);
+			return pt_updateType_noUpdate;
+		}
+	}
+	return pt_updateType_updateAll;
+}
+
+
+void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTime)
 {
 	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
-
-	bool sym_issittingin = (bool) p_symbols->sym()->issittingin;
-	bool sym_isppro = (bool) p_symbols->sym()->isppro;
-	bool sym_ismanual = (bool) p_symbols->sym()->ismanual;
-
-	while (::WaitForSingleObject(pParent->_m_stop_thread, 0) != WAIT_OBJECT_0)
+	bool		nameChanged = false;
+	bool		sym_issittingin = (bool) p_symbols->sym()->issittingin;
+	bool		sym_isppro = (bool) p_symbols->sym()->isppro;
+	bool		sym_ismanual = (bool) p_symbols->sym()->ismanual;
+	int			i;
+	int			updateType;
+	char        reason[100];
+	int         updatedCount = 0;
+	int			checkAllChairs = 1;
+	
+	if (pParent->CheckName(chair, nameChanged) == false)
 	{
-		if (!pParent->_connected)
-			pParent->Connect();
+		/* Note that checkname fail just when starting, doesn't necessarily mean that there's no user
+		   in that chair, but only that the scraper failed to find one. This could be due to lobby window
+		   that hides poker window behind it. We make this check once, and if we are good, the update iteration
+		   is good to go. if we are not, we assume that this seat is not taken. */ 
+		write_log_pokertracker(2, "GetStatsForChair[%d] had been started.\n", chair);
+		write_log_pokertracker(2, "GetStatsForChair[%d] had been skipped. Reason: [CheckName failed]\n", chair);
+		return;
+	}
+	const char* playerscrapedName = pParent->GetPlayerScrapedName(chair);
+	write_log_pokertracker(2, "GetStatsForChair[%d][%s] had been started.\n", chair, playerscrapedName);
+	
+	/* Check if there's a complete update cycle skipping for that chair */
+	updateType = pParent->SkipUpdateForChair(chair, reason);
+	if (updateType == pt_updateType_noUpdate)
+	{
+		write_log_pokertracker(2, "GetStatsForChair for chair [%d] had been skipped. Reason: [%s]\n", chair, reason);
+		pParent->RecalcSkippedUpdates(chair);
+		return;
+	}
 
-		if (pParent->_connected && PQstatus(pParent->_pgconn) == CONNECTION_OK)
+	/* Make sure all other seats contain the appropriate players */ 
+	pParent->ReportSeatChanges(chair);  
+
+	if (!pParent->_connected)
+		pParent->Connect();
+	
+	
+	if (pParent->_connected && PQstatus(pParent->_pgconn) == CONNECTION_OK)
+	{
+		if (sym_issittingin || sym_isppro || sym_ismanual)
 		{
-			if (sym_issittingin || sym_isppro || sym_ismanual)
+			for (i = pt_min; i <= pt_max; ++i)
 			{
-				if (pParent->CheckName(chair))
+				/* Every few iterations, we need to verify that the seats we already have stats on, 
+			       did not change. This task is totally irrelevant for the current function
+				   we're on, that is GetStatsForChair. But if we won't do this every now and then,
+				   we might find ourselves updating stats for chair 1, for 1 minute, while the player
+				   in chair 3 stood up and someone else replaced him. we cannot let this go unnoticed */
+				if (i % 10 == 4) pParent->ReportSeatChanges(chair);
+			
+				/* CheckName is necessary before each update.
+				   There's a short interval between any two updates, and it's possible that the player
+				   had stood up during the update process. But it also possible that the poker lobby was 
+				   hiding our poker window, or some popup temporarily was over it, and that's why CheckName fails.
+				   Since we cannot know which one caused checkname to fail, we would continue to update, as 
+				   long as we have a found name, and as long as the name did't get changed. 
+				   So what we do care about, is the situation were the name got replaced by another name,
+				   in that case, we stop the update for the current chair  			   */ 
+
+
+				pParent->CheckName(chair, nameChanged);
+				/* Note that Checkname might return false, with IsFound(chair) returning true.
+				   When IsFound returns false the situation must be that we no longer have anyone
+				   Sitting in that chair*/
+				if (pParent->IsFound(chair))
 				{
-					for (int i=pt_min; i<=pt_max; i++)
+					/* Verify therad_stop is false */ 
+					if (LightSleep(0, pParent)) 
+						return; 
+					/* verify that name did not get changed */
+					if (i > pt_min && nameChanged)
 					{
-						pParent->UpdateStat(chair, i);
+						/* Name got changed while we search for stats for current chair
+						   Clear stats for this seat and return                   */
+						write_log_pokertracker(2, "GetStatsForChair chair [%d] had changed name getting stat for chair. Clearing stats for chair.\n", chair);
+						/* Clear stats, but leave the new name intact */
+						pParent->ClearSeatStats(chair, false); 
+						return;
 					}
+					if (!pParent->StatEnabled(i))
+					{
+						/* Skip disabled stats */
+						write_log_pokertracker(3, "GetStatsForChair: Updating stats [%d] for chair [%d] had been skipped. Reason: [stat is disabled]\n", i, chair);
+					}
+					else if (pParent->SkipUpdateCondition(i, chair))
+					{
+						/* Updating stat i should be skipped this time */
+						/* advanced/positional stats are updated every k_advanced_stat_update_every cycles */
+						write_log_pokertracker(3, "GetStatsForChair: Updating stats [%d] for chair [%d] had been skipped. Reason: [advanced/positional stats cycle [%d of %d]]\n", i, chair, pParent->GetSkippedUpdates(chair) , k_advanced_stat_update_every);
+					}
+					else
+					{
+						/* Update... */
+						write_log_pokertracker(3, "GetStatsForChair updating stats [%d] for chair [%d]...\n", i, chair);
+						pParent->UpdateStat(chair, i);
+						++updatedCount;
+					}
+					/* Sleep between two updates (even if skipped) */
+					if (LightSleep(sleepTime, pParent)) 
+						return;
+				}
+				else
+				{
+					/* We couldn't find any user sitting on that chair. Give message*/
+					write_log_pokertracker(2, "GetStatsForChair for chair [%d] had been skipped. Reason: [user not found (user stood up?)]\n", chair);
+					return;
 				}
 			}
 		}
 	}
+	pParent->ReportUpdateComplete(updatedCount, chair);
+	pParent->RecalcSkippedUpdates(chair);
+}
+
+void CPokerTrackerThread::ReportUpdateComplete(int updatedCount, int chair)
+{
+	write_log_pokertracker(2, "Updates for chair [%d][%s] had been completed. Total [%d] updated stats\n", chair, _player_stats[chair].scraped_name, updatedCount);
+}
+
+bool CPokerTrackerThread::IsFound(int chair)
+{
+	return _player_stats[chair].found;
 }
 
 
 UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 {
 	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
-
+	bool			sym_issittingin = (bool) p_symbols->sym()->issittingin;
+	bool			sym_isppro = (bool) p_symbols->sym()->isppro;
+	bool			sym_ismanual = (bool) p_symbols->sym()->ismanual;
+	int				chr = 0;
+	int				iteration = 0;
+	int				players;
+	int				sleepTime;
+	bool			dummy;
+	
 	while (::WaitForSingleObject(pParent->_m_stop_thread, 0) != WAIT_OBJECT_0)
 	{
+		write_log_pokertracker(2, "PTthread iteration %d had started\n", ++iteration);
+		pParent->SetHandsStat();
 		if (!pParent->_connected)
 			pParent->Connect();
-
+	
+		/* Count the number of players */ 
+		players = 0;
 		if (pParent->_connected && PQstatus(pParent->_pgconn) == CONNECTION_OK)
 		{
-			for (int chair=0; chair<k_max_number_of_players; chair++)
+			if (sym_issittingin || sym_isppro || sym_ismanual)
 			{
-				GetStatsForChair(pParam, chair);
+				for (chr = 0; chr < k_max_number_of_players; ++chr)
+				{
+					if (pParent->CheckName(chr, dummy))
+					{
+						++players;
+					}
+				}
 			}
 		}
-
-		for (int i=0; i < prefs.pt_update_delay() && 
-				  ::WaitForSingleObject(pParent->_m_stop_thread, 0)!=WAIT_OBJECT_0; i++)
-			Sleep(1000);
+		write_log_pokertracker(2, "Players count is %d\n", players);
+		
+		//Define sleeptime for current ptrhead iteration
+		if (players > 0)
+		{
+			sleepTime = (int) ((double)(prefs.pt_cache_refresh() * 1000) / (double)(pt_max * players));
+			write_log_pokertracker(2, "sleepTime set to %d\n", sleepTime);
+		}
+		else
+		{
+			write_log_pokertracker(2, "Players is zero, sleeping 10 seconds...\n");
+			LightSleep(10000, pParent);
+			continue;
+		}
+		
+		if (pParent->_connected && PQstatus(pParent->_pgconn) == CONNECTION_OK)
+		{
+			for (chr = 0; chr < k_max_number_of_players; ++chr)
+			{
+				GetStatsForChair(pParam, chr, sleepTime);
+				/* Verify therad_stop is false */ 
+				if (LightSleep(0, pParent)) 
+					break; 
+			}
+		}
 	}
 	// Set event
 	::SetEvent(pParent->_m_wait_thread);
+	return 0;
+}
+
+/*Sleeps but wakes up on stop thread event
+We use this function since we never want the thread to ignore the stop_thread event while it's sleeping*/
+int	CPokerTrackerThread::LightSleep(int sleepTime, CPokerTrackerThread *pParent)
+{
+	if ( sleepTime > 0)
+	{
+		int i = 0;
+		int iterations = 20;
+		int sleepSlice = (int) ((double)sleepTime / (double)iterations);
+		for (i = 0; i < 20; ++i)
+		{
+			Sleep(sleepSlice);
+			if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
+				return 1;
+		}
+	}
+	else
+	{
+		if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
+				return 1;
+	}
 	return 0;
 }
