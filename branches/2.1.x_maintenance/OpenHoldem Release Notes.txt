@@ -2,33 +2,45 @@ v2.1.9 2011-xx-yy
 =================
 BUG FIXES: 
 - Tablepoints got handled incorrectly by the auto-connector.
-  This took some point to get detected, as they get rarely used.
+  This took some time to get detected, as they get rarely used.
   Thanks to Vasyatko for reporting the bug and for providing
-  replay-frames to reproduce the problem. [JumpingFences]
+  replay-frames to reproduce the problem. 
+  [JumpingFences]
 - Improving the auto-detection of blinds (guessing from the bets),
   which caused incorrect results, in case of
     * tournaments (no blind locking)
     * super-fast-action, so that we don't get a frame before our turn
     * SB raises or cold-calls
     * we are BB, so that we get a stable frame only after SBs action.
-  This case gets now handled, too. [F1x3r]
+  This case gets now handled, too. 
+  [F1x3r]
 - The Formula dialog did not highlight all PT-symbols.
-  Thnks to Qwerty for submitting the patch. [THF]
-- Random didn't get calculated each time new, but only once per heartbeat,
+  Thanks to Qwerty for submitting the patch. 
+  [THF]
+- "Random" didn't get calculated each time new, but only once per heartbeat,
   contrary to the docu. This has now been fixed. Additionally a symbol
-  "randomheartbeat" got introduced. Thanks to StangelNator for reporting. [THF]
+  "randomheartbeat" got introduced. Thanks to StangelNator for reporting. 
+  [THF]
 - There was no delay between multiple button-clicks (like "max" and "raise" to go allin),
   which caused problems on some casinos. This has now been fixed. There also is a 
   new auto-player-option "click-delay" to configure the timing.
-  Thanks to Querty who submitted the patch. [THF]
+  Thanks to Querty who submitted the patch. 
+  [THF]
 - Epsilon-expressions caused crashes inside brackets.
   We fixed it by completely disallowing empty expressions,
   which (as a side-effect) also means, that every standard function 
   has now to return a value (e.g. 0 )and can't be left empty,
-  if it doesn't get used. Thanks to BrassKnuckles for reporting the problem. [THF]
+  even if it doesn't get used. Thanks to BrassKnuckles for reporting the problem. 
+  [THF]
 - Scraper-DLL: Some variables got ignored when changed by the scraper-DLL
   (e.g. "limit"), as limit_found didn't get affected. This has now been changed.
-  Thanks to Ljmj for submitting the patch. [THF]
+  Thanks to Ljmj for submitting the patch. 
+  [THF]
+- Using too much memory symbols could create a buffer-overflow.
+  There were also some problems with the code-quality of the CMemory-class.
+  This has now been fixed. Thanks to Stangelnator and Gecko for finding the bug. 
+  [THF]
+
 
 v2.1.8 2011-01-15
 =================
