@@ -905,7 +905,7 @@ const char *CGameState::_hist_sym_strings[_hist_sym_count] =
 	//POKER VALUES (5)
 	"pokerval", "pokervalplayer", "pokervalcommon", "pcbits", "npcbits", 
 
-	//HAND TESTS (13)
+	//HAND TESTS (12)
 	"ishandup", "ishandupcommon", "ishicard", "isonepair", "istwopair", "isthreeofakind", 
 	"isstraight", "isflush", "isfullhouse", "isfourofakind", "isstraightflush", "isroyalflush", 
 	
