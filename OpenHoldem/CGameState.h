@@ -75,7 +75,7 @@ private:
 	int					_ftr_nflopc_last;
 	int					_ftr_nplayersdealt_last;
 
-	static const int	_hist_sym_count = 120;
+	static const int	_hist_sym_count = 119;
 	double				_hist_sym[_hist_sym_count][k_number_of_betrounds];
 	static const char	*_hist_sym_strings[_hist_sym_count];
 
