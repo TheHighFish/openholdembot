@@ -1,7 +1,15 @@
 //#include <afxwin.h>
 #include <afx.h>
+
+//!!!
+#include <boost/spirit/core.hpp>
+
 #include <boost/spirit.hpp> 
 #include <boost/spirit/iterator/position_iterator.hpp>
+
+// !!!
+#include <boost/spirit/utility/functor_parser.hpp>
+
 #include <assert.h>
 #include <fstream> 
 #include <iostream> 
@@ -115,20 +123,23 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 		{ 
 			using namespace boost::spirit; 
 			// Whole PPL-file
+			
 			openPPL_code = option_settings_to_be_ignored
-				>> ((keyword_custom [print_license()][print_options()]
+				>> ((keyword_custom [print_license()]
+					[print_options()][print_user_defined_functions()]
 				>> custom_sections)
 					| missing_keyword_custom);
-			custom_sections = !symbol_section
+					
+			custom_sections = !symbol_section[print_main_code_sections()]
 				>> (code_sections/* | missing_code_section !!!*/)
 				>> end_p
 					[print_prime_coded_board_ranks()]
-					[print_predefined_action_constants()]
 					[print_technical_functions()]
 					[print_OpenPPL_Library()];
 			missing_keyword_custom = (str_p("") >> custom_sections)[error_missing_keyword_custom()];
 			  
 			// Option settings - to be ignored
+			
 			option_settings_to_be_ignored = *single_option;
 			single_option = option_name >> '=' >> option_value;
 			option_name = alpha_p >> *(alnum_p | "-");
@@ -146,9 +157,10 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			keyword_symbol = str_p("symbol") | "Symbol" | "SYMBOL";
 			keyword_end = str_p("end") | "End" | "END";
 			symbol_definition = keyword_new >> keyword_symbol[reset_variables()]
-				>> symbol//[print_function_header_for_betting_round()] 
+				>> symbol[print_function_header_for_betting_round()] 
 				>> when_section
-				>> keyword_end >> keyword_symbol;
+				>> keyword_end >> keyword_symbol[reset_variables()]
+					[print_default_return_value_for_user_defined_symbol()];
 
 			// Preflop, flop, turn, river
 			code_sections = preflop_section
@@ -172,6 +184,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 					[print_when_others_fold_force()][reset_variables()];
 			keyword_river = str_p("river") | "River" | "RIVER";
 			when_section = when_condition_sequence;
+			
 			missing_code_section =
 				// missing river
 				((preflop_section >> flop_section >> turn_section >> str_p("")[error_missing_code_section()])
@@ -181,6 +194,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				|(preflop_section >> str_p("")[error_missing_code_section()]) 
 				// missing preflop
 				|(str_p("")[error_missing_code_section()]));
+			
 
 			// When-condition sequences (with action)
 			keyword_when = str_p("when") | "When" | "WHEN";
@@ -217,6 +231,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			additive_expression = multiplicative_expression >> *(additive_operator >> multiplicative_expression);
 			relational_operator = (str_p("<=") | ">=" | "<" | ">")[print_operator()];
 			relational_expression = additive_expression >> *(relational_operator >> additive_expression);
+			
 			equality_expression = /*longest_d[*/hand_expression_with_brackets | board_expression_with_brackets 
 				| hand_expression_without_brackets | board_expression_without_brackets
 				| (relational_expression >> *(str_p("=")[print_operator()] >> relational_expression))/*]*/;
@@ -228,12 +243,14 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			or_expression = xor_expression >> *(keyword_or >> xor_expression);
 
 			// Hand and board expressions
+			
 			card_constant = lexeme_d[ch_p("A") | "a" | "K" | "k" | "Q" | "q" | "J" | "j" |
 				"T" | "t" | "9" | "8" | "7" | "6" | "5" | "4" | "3" | "2"];
 			keyword_suited = str_p("suited") | "Suited" | "SUITED";
 			keyword_board = str_p("board") | "Board" | "BOARD";
 			keyword_hand = str_p("hand") | "Hand" | "HAND";
 			suit_constant = ch_p("C") | "c" | "D"| "d" | "H" | "h" | "S" | "s";
+			
 			card_expression = /*longest_d[*/card_expression_with_specific_suits
 				| suited_card_expression
 				| non_suited_card_expression; 
@@ -256,6 +273,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				 
 			// Actions (and return statements)
 			// We handle both in the same way, as it simplifies things a lot.
+			
 			action = (action_without_force >> keyword_force)
 					[handle_action()]
 				| erroneous_action_without_force;
@@ -273,6 +291,8 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			keyword_raisehalfpot = str_p("raisehalfpot") | "Raisehalfpot" | "RaiseHalfPot" | "RAISEHALFPOT";
 			keyword_raisepot = str_p("raisepot") | "Raisepot" | "RaisePot" | "RAISEPOT";
 			keyword_raisemax = str_p("raisemax") | "Raisemax" | "RaiseMax" | "RAISEMAX";
+			// "Allin" is no standard PPL-action,
+			// but it is a convenient extension for somewhat confused users.
 			keyword_allin = str_p("allin") | "Allin" | "ALLIN";
 			keyword_fold = str_p("fold") | "Fold" | "FOLD";
 			keyword_bet = str_p("bet") | "Bet" | "BET";
@@ -293,14 +313,14 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			erroneous_action_without_force = action_without_force[error_action_without_force()];
 
 			// Return statement
-			keyword_return = str_p("return") | "Return";
+			keyword_return = str_p("return") | "Return" | "RETURN";
 			return_statement = keyword_return >> expression >> keyword_force;
 
 			// Terminal expressions
 			terminal_expression = number[print_number()] | boolean_constant | symbol;
 			number = real_p;
 			keyword_true = str_p("true") | "True" | "TRUE";
-			keyword_false = (str_p("false") | "False" | "FALSE";
+			keyword_false = str_p("false") | "False" | "FALSE";
 			boolean_constant = (keyword_true | keyword_false)[print_symbol()];
 			// "Symbol" is a lexeme - we have to be very careful here.
 			// We have to use the lexeme_d directive to disable skipping of whitespace,
@@ -359,6 +379,18 @@ int main(int argc, char *argv[])
 	skip_grammar skip;
 	// Case insensitive parsing: 
 	// http://www.ibm.com/developerworks/aix/library/au-boost_parser/index.html
+
+	//!!!
+	typedef position_iterator<char const*> iterator_t;
+	const char* data_as_const_char = data.c_str();
+	const char* InputFile_as_const_char = InputFile;
+	iterator_t begin(data_as_const_char, (data.c_str() + strlen(data.c_str())), InputFile_as_const_char);
+    iterator_t end;
+    begin.set_tabchars(8);
+	//!!!
+	//parse(begin, end, /*as_lower_d*/g, skip); 
+
+
 	pi = boost::spirit::parse(data.c_str(), /*as_lower_d*/g, skip); 
 	if (!pi.hit) 
 	{

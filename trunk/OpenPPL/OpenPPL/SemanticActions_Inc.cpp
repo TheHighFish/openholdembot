@@ -24,19 +24,27 @@ struct print_options
 	} 
 };
 
+struct print_user_defined_functions
+{ 
+	void operator()(const char *begin, const char *end) const 
+	{ 
+		std::cout << k_code_snippet_user_defined_functions; 
+	} 
+};
+
+struct print_main_code_sections
+{ 
+	void operator()(const char *begin, const char *end) const 
+	{ 
+		std::cout << k_code_snippet_start_of_code_sections; 
+	} 
+};
+
 struct print_prime_coded_board_ranks
 { 
 	void operator()(const char *begin, const char *end) const 
 	{ 
 		std::cout << k_code_snipped_prime_coded_board_ranks; 
-	} 
-};
-
-struct print_predefined_action_constants
-{ 
-	void operator()(const char *begin, const char *end) const 
-	{ 
-		std::cout << k_code_snippet_predefined_constants; 
 	} 
 };
 
@@ -116,8 +124,11 @@ struct print_function_header_for_betting_round
 		}
 		else
 		{
-			assert(k_assert_this_must_not_happen);
+			// User defined function ("New Symbol ...")
+			cout << "##f$OpenPPL_" << text << "##" << endl;
 		}
+		current_output.str("");
+		current_output.clear();
 	} 
 };
 
@@ -249,7 +260,7 @@ struct print_predefined_action
 		{
 			current_output << "f$Action_RaisePot";
 		}
-		else if ((text == "raisemax") || (text == "betmax"))
+		else if ((text == "raisemax") || (text == "betmax") || (text == "allin"))
 		{
 			current_output << "f$Action_RaiseMax";
 		}		
@@ -345,6 +356,18 @@ struct print_when_others_fold_force
 		cout << "//" << endl;
 		cout << "f$Action_Fold" << endl << endl << endl; 
 	} 
+};
+
+struct print_default_return_value_for_user_defined_symbol
+{ 
+	void operator()(const char *begin, const char *end) const 
+	{
+		cout << "//" << endl;
+		cout << "// To ensure syntactical completeness" << endl;
+		cout << "// and to take care about undefined cases..." << endl;
+		cout << "//" << endl;
+		cout << "f$OpenPPL_UndefinedReturnValue" << endl << endl << endl; 
+	}
 };
 
 //
