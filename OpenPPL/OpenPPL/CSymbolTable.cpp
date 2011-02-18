@@ -6,6 +6,7 @@
 
 CSymbolTable *p_symbol_table = 0; //NULL;
 
+
 CSymbolTable::CSymbolTable()
 {
 	ClearSymbolTable();
@@ -48,12 +49,14 @@ void CSymbolTable::AddSymbolsFromFile(CString filename)
 			}
 			// User defined function from the OpenPPL-library
 			CString new_symbol = next_line.Mid(2, next_line.GetLength()-4);
+			// Add symbol as is
 			AddSymbol(new_symbol);
 		}
 		else if (next_line.Left(11).MakeLower() == "new symbol ")
 		{
 			// User defined function from the OpenPPL-file
 			CString new_symbol = next_line.Mid(11, next_line.GetLength()-11);
+			// Add symbol with standardized name ("f$OpenPPL_")
 			AddSymbol(new_symbol);
 		}
 	}
@@ -83,7 +86,7 @@ bool CSymbolTable::IsOpenPPLSymbol(CString symbol)
 	// All other symbols will be treated as standard OpenHoldem symbols.
 	//
 	// Docu on find(): http://www.cplusplus.com/reference/stl/map/find/
-	return (known_symbols.find(symbol) != known_symbols.end());
+	return (known_symbols.find(GetStandardizedSymbolName(symbol)) != known_symbols.end());
 }
 
 CString CSymbolTable::GetStandardizedSymbolName(CString symbol)
@@ -91,13 +94,13 @@ CString CSymbolTable::GetStandardizedSymbolName(CString symbol)
 	// Standardized OpenPPL-symbols should start with "OpenPPL_",
 	// be it a name from the library or a UDF ("New Symbol ...").
 	// Only OpenHoldem symbols don't have this prefix.
-	if (symbol.Left(8) == "OpenPPL_")
+	if (symbol.Left(10) == "f$OpenPPL_")
 	{
 		return symbol;
 	}
 	else
 	{
-		CString standardized_symbol_name = "OpenPPL_" + symbol;
+		CString standardized_symbol_name = "f$OpenPPL_" + symbol;
 		return standardized_symbol_name;
 	}
 }
