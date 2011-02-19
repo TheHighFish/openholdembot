@@ -183,12 +183,6 @@ void CPreferences::InitDefaults(void)
 	// GUI
 	_gui_start_minimized = false; 
 	_gui_disable_progress_dialog = false;
-	_infobox_display = true;
-	_infobox_hand = true;
-	_infobox_limit = true;
-	_infobox_pot = true;
-	_infobox_logsyms = false;
-	_infobox_size = 50;
 
 	// Rebuy
 	_rebuy_condition_no_cards = true;
@@ -380,12 +374,6 @@ void CPreferences::ReadPreferences()
 		// GUI
 		ReadReg("gui_start_minimized", &_gui_start_minimized);
 		ReadReg("gui_disable_progress_dialog", &_gui_disable_progress_dialog);
-		ReadReg("infobox_display", &_infobox_display);
-		ReadReg("infobox_hand", &_infobox_hand);
-		ReadReg("infobox_limit", &_infobox_limit);
-		ReadReg("infobox_pot", &_infobox_pot);
-		ReadReg("infobox_logsyms", &_infobox_logsyms);
-		ReadReg("infobox_size", &_infobox_size);
 
 		// Rebuy
 		ReadReg("rebuy_condition_no_cards", &_rebuy_condition_no_cards);

@@ -150,12 +150,6 @@ public:
 	// GUI
 	const bool gui_start_minimized() { return _gui_start_minimized; }
 	const bool gui_disable_progress_dialog() { return _gui_disable_progress_dialog; }
-	const bool infobox_display() { return _infobox_display; }
-	const bool infobox_hand() { return _infobox_hand; }
-	const bool infobox_limit() { return _infobox_limit; }
-	const bool infobox_pot() { return _infobox_pot; }
-	const bool infobox_logsyms() { return _infobox_logsyms; }
-	const unsigned int infobox_size() { return _infobox_size; }
 	// Rebuy
 	const bool rebuy_condition_no_cards() { return _rebuy_condition_no_cards; }
 	const bool rebuy_condition_change_in_handnumber() { return _rebuy_condition_change_in_handnumber; }
@@ -330,12 +324,6 @@ public:
 	// GUI
 	void set_gui_start_minimized(const bool b) { ENT _gui_start_minimized = b; WriteReg("gui_start_minimized", b); }
 	void set_gui_disable_progress_dialog(const bool b) { ENT _gui_disable_progress_dialog = b; WriteReg("gui_disable_progress_dialog", b); }
-	void set_infobox_display(const bool b) { ENT _infobox_display = b; WriteReg("infobox_display", b); }
-	void set_infobox_hand(const bool b) { ENT _infobox_hand = b; WriteReg("infobox_hand", b); }
-	void set_infobox_limit(const bool b) { ENT _infobox_limit = b; WriteReg("infobox_limit", b); }
-	void set_infobox_pot(const bool b) { ENT _infobox_pot = b; WriteReg("infobox_pot", b); }
-	void set_infobox_logsyms(const bool b) { ENT _infobox_logsyms = b; WriteReg("infobox_logsyms", b); }
-	void set_infobox_size(const unsigned int i) { ENT _infobox_size = i; WriteReg("infobox_size", (int) i); }
 
 	// Rebuy
 	void set_rebuy_condition_no_cards(const bool b) { ENT _rebuy_condition_no_cards = b; WriteReg("rebuy_condition_no_cards", b); }
@@ -520,12 +508,6 @@ private:
 	// GUI
 	bool			_gui_start_minimized; 
 	bool			_gui_disable_progress_dialog;
-	bool			_infobox_display;
-	bool			_infobox_hand;
-	bool			_infobox_limit;
-	bool			_infobox_pot;
-	bool			_infobox_logsyms;
-	unsigned int	_infobox_size;
 
 	// Rebuy
 	bool			_rebuy_condition_no_cards;
