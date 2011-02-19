@@ -225,7 +225,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 		update_it = true;
 	}
 
-	if (prefs.log_symbol_enabled() || update_it || update_all) 
+	if (prefs.infobox_display() && (prefs.log_symbol_enabled() || update_it || update_all)) 
 	{
 		DrawCenterInfoBox();
 	}
@@ -334,8 +334,8 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	RECT		cr = {0};
 	int			left = 0, top = 0, right = 0, bottom = 0;
 	CDC			*pDC = GetDC();
-	int			height = prefs.infobox_size();
-	
+	int			height = 0;
+		
 	double sym_bblind		= p_tablelimits->bblind();
 	double sym_sblind		= p_tablelimits->sblind();
 	double sym_ante			= p_tablelimits->ante();
@@ -345,8 +345,10 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	double sym_pot			= p_symbols->sym()->pot;
 	bool sym_playing		= (bool) p_symbols->sym()->playing;
 
-	if (prefs.log_symbol_enabled())
-		height += 40;
+	if (prefs.infobox_logsyms())
+		height = prefs.infobox_size() + 16*prefs.log_symbol_max_log();
+	else
+		height = prefs.infobox_size();
 
 	// Get size of current client window
 	GetClientRect(&cr);
@@ -379,67 +381,77 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	rect.bottom = bottom;
 
 	t = "";
-	// handnumber
-	if (sym_handnumber != 0) 
+
+	if (prefs.infobox_hand())
 	{
-		if ((int) sym_handnumber != sym_handnumber) 
+		// handnumber
+		if (sym_handnumber != 0) 
 		{
-			s.Format("  Hand #: %f\n", sym_handnumber);
+			if ((int) sym_handnumber != sym_handnumber) 
+			{
+				s.Format("  Hand #: %f\n", sym_handnumber);
+			}
+			else 
+			{
+				s.Format("  Hand #: %.0f\n", sym_handnumber);
+			}
 		}
 		else 
 		{
-			s.Format("  Hand #: %.0f\n", sym_handnumber);
-		}
-	}
-	else 
-	{
-		s.Format("  Hand #: -\n");
-	}
-	t.Append(s);
-
-	// blinds/type
-	if ((int) sym_sblind != sym_sblind || (int) sym_bblind != sym_bblind) 
-	{
-		s.Format("  %s%s %.2f/%.2f/%.2f\n",
-				 (sym_lim == k_gametype_NL ? "NL" : sym_lim == k_gametype_PL ? "PL" :
-				  sym_lim == k_gametype_FL ? "FL" : "?L"),
-				 (sym_istournament ? "T" : ""),
-				 sym_sblind, sym_bblind, p_symbols->bigbet());
-	}
-	else 
-	{
-		s.Format("  %s%s %.0f/%.0f/%.0f\n",
-				 (sym_lim == k_gametype_NL ? "NL" : sym_lim == k_gametype_PL ? "PL" :
-				  sym_lim == k_gametype_FL ? "FL" : "?L"),
-				 (sym_istournament ? "T" : ""),
-				 sym_sblind, sym_bblind, p_symbols->bigbet());
-	}
-	t.Append(s);
-
-	// ante
-	if (sym_ante != 0) 
-	{
-		if ((int) sym_ante != sym_ante) 
-		{
-			s.Format("  Ante: %.2f\n", sym_ante);
-		}
-		else 
-		{
-			s.Format("  Ante: %.0f\n", sym_ante);
+			s.Format("  Hand #: -\n");
 		}
 		t.Append(s);
 	}
 
-	// Pot
-	if ((int) sym_pot != sym_pot) 
-		s.Format("  Pot: %.2f\n", sym_pot);
+	if (prefs.infobox_limit())
+	{
+		// blinds/type
+		if ((int) sym_sblind != sym_sblind || (int) sym_bblind != sym_bblind) 
+		{
+			s.Format("  %s%s %.2f/%.2f/%.2f\n",
+					 (sym_lim == k_gametype_NL ? "NL" : sym_lim == k_gametype_PL ? "PL" :
+					  sym_lim == k_gametype_FL ? "FL" : "?L"),
+					 (sym_istournament ? "T" : ""),
+					 sym_sblind, sym_bblind, p_symbols->bigbet());
+		}
+		else 
+		{
+			s.Format("  %s%s %.0f/%.0f/%.0f\n",
+					 (sym_lim == k_gametype_NL ? "NL" : sym_lim == k_gametype_PL ? "PL" :
+					  sym_lim == k_gametype_FL ? "FL" : "?L"),
+					 (sym_istournament ? "T" : ""),
+					 sym_sblind, sym_bblind, p_symbols->bigbet());
+		}
+		t.Append(s);
 
-	else 
-		s.Format("  Pot: %.0f\n", sym_pot);
+		// ante
+		if (sym_ante != 0) 
+		{
+			if ((int) sym_ante != sym_ante) 
+			{
+				s.Format("  Ante: %.2f\n", sym_ante);
+			}
+			else 
+			{
+				s.Format("  Ante: %.0f\n", sym_ante);
+			}
+			t.Append(s);
+		}
+	}
 
-	t.Append(s);
+	if (prefs.infobox_pot())
+	{
+		// Pot
+		if ((int) sym_pot != sym_pot) 
+			s.Format("  Pot: %.2f\n", sym_pot);
 
-	if (prefs.log_symbol_enabled() && p_symbols->user_chair_confirmed() && sym_playing) 
+		else 
+			s.Format("  Pot: %.0f\n", sym_pot);
+
+		t.Append(s);
+	}
+
+	if (prefs.infobox_logsyms() && prefs.log_symbol_enabled() && p_symbols->user_chair_confirmed() && sym_playing) 
 	{
 		for (int i=0; i<min(5, p_symbols->logsymbols_collection()->GetCount()); i++)
 		{

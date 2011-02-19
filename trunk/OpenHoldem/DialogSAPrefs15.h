@@ -30,8 +30,14 @@ public:
 	CButton			_gui_start_minimized_Button;
 	CButton			_gui_disable_progress_dialog_Button;
 
-	CEdit			m_InfoboxSize_Edit;
-	CSpinButtonCtrl m_InfoboxSize_Spin;
+	CButton			m_DisplayInfobox_Check;
+	CButton			m_DisplayHand_Check;
+	CButton			m_DisplayLimit_Check;
+	CButton			m_DisplayPot_Check;
+	CButton			m_DisplayLogsyms_Check;
+
+
+	afx_msg void OnBnClickedDisplayInfobox();
 };
 
 #endif
