@@ -955,13 +955,6 @@ BEGIN
     CONTROL         "Start minimized",IDC_GUI_START_MINIMIZED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,59,8
     CONTROL         "Don't show progress-dialog (formula-parsing)",IDC_GUI_Disable_Progress_Dialog,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,24,163,8
-    LTEXT           "Note: Changes require OH restart",IDC_STATIC,30,138,160,8
-    CONTROL         "Display Info Box",IDC_INFOBOX_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,60,68,8
-    GROUPBOX        "Info Box Settings",IDC_STATIC,16,70,173,77
-    CONTROL         "Display Log Symbols",IDC_INFOBOX_LOGSYMS_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,30,120,80,8
-    CONTROL         "Display Hand Number",IDC_INFOBOX_HAND_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,30,86,104,10
-    CONTROL         "Display Limit Info",IDC_INFOBOX_LIMIT_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,30,97,106,10
-    CONTROL         "Display Pot",IDC_INFOBOX_POT_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,30,108,122,10
 END
 
 IDD_SAPREFS16 DIALOGEX 0, 0, 219, 155
@@ -1299,12 +1292,8 @@ BEGIN
     IDD_SAPREFS15, DIALOG
     BEGIN
         VERTGUIDE, 4
-        VERTGUIDE, 16
-        VERTGUIDE, 30
-        BOTTOMMARGIN, 147
         HORZGUIDE, 16
         HORZGUIDE, 32
-        HORZGUIDE, 70
     END
 
     IDD_SAPREFS16, DIALOG
