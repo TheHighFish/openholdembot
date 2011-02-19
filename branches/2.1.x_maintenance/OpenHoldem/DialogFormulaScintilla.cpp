@@ -2433,26 +2433,26 @@ void CDlgFormulaScintilla::CreateDebugTab(CString *cs)
 				switch (debug_ar[i].error) 
 				{
 					case ERR_INVALID_SYM:
-						newline.Append("ERR: sym  = ");
+						newline.Append("ERR: invalid symbol       = ");
 						break;
 					case ERR_INVALID_FUNC_SYM:
-						newline.Append("ERR: f$   = ");
+						newline.Append("ERROR: invalid function   = ");
 						break;
 					case ERR_INVALID_DLL_SYM:
-						newline.Append("ERR: dll$ = ");
+						newline.Append("ERROR: invalid DLL        = ");
 						break;
 					case ERR_INVALID_EXPR:
-						newline.Append("ERR: expr = ");
+						newline.Append("ERROR: invalid expression = ");
 						break;
 					case ERR_DIV_ZERO:
-						newline.Append("ERR: div0 = ");
+						newline.Append("ERROR: division by zero   = ");
 						break;
 					case ERR_BAD_PARSE:
-						newline.Append("ERR: pars = ");
+						newline.Append("ERROR: invalid syntax     = ");
 						break;
 					default:
-						newline.Append("ERR: unkn = ");
-						break;
+						newline.Append("ERROR: (no detailed info) = ");
+						break;				
 				}
 
 				//newline.Append("ERROR = ");
