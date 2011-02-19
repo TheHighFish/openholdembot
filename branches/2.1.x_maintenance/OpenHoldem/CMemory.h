@@ -2,6 +2,7 @@
 #define INC_MEMORY_H
 
 #include "..\CCritSec\CCritSec.h"
+#include "MagicNumbers.h"
 
 // Forward declaration
 class CEvalInfoFunction;
@@ -28,8 +29,8 @@ private:
 	double RetrieveValue(const char * pquery, int *e);
 
 	int		_var_count;
-	char	_var_name[512][64];
-	double	_var_value[512];
+	char	_var_name[k_max_number_of_memory_symbols][k_max_length_of_memory_symbols];
+	double	_var_value[k_max_number_of_memory_symbols];
 
 	CCritSec			m_critsec;
 
