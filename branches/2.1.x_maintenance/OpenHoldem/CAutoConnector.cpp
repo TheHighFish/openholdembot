@@ -286,6 +286,7 @@ void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 	}
 
 	// Extract the tablepoint
+    TablemapConnectionData[NumberOfTableMapsLoaded].TablePointPresent = false;
 	for (RMapCI r_iter=map->r$->begin(); r_iter!=map->r$->end(); r_iter++)
 	{
 		if (r_iter->second.name.Find("tablepoint") != -1 &&
@@ -301,11 +302,7 @@ void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 			TablemapConnectionData[NumberOfTableMapsLoaded].TablePoint.transform = r_iter->second.transform;
 			TablemapConnectionData[NumberOfTableMapsLoaded].TablePoint.color = r_iter->second.color;
 			TablemapConnectionData[NumberOfTableMapsLoaded].TablePoint.radius = r_iter->second.radius;
-			// We don't need the rest of the regions data for a tablepoint with colour transform
-		}
-		else
-		{
-			TablemapConnectionData[NumberOfTableMapsLoaded].TablePointPresent = false;
+			break;// We don't need the rest of the regions data for a tablepoint with colour transform
 		}
 	}
 	NumberOfTableMapsLoaded++;
@@ -420,8 +417,8 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 		bmi = (BITMAPINFO *) HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, info_len);
 
 		// Check table points for match
-		width = TablemapConnectionData[MapIndex].TablePoint.right - TablemapConnectionData[MapIndex].TablePoint.left;
-		height = TablemapConnectionData[MapIndex].TablePoint.bottom - TablemapConnectionData[MapIndex].TablePoint.top;
+        width = r.right - r.left;
+        height = r.bottom - r.top;
 		hdcScreen = GetDC(h);
 		hdcCompatible = CreateCompatibleDC(hdcScreen);
 		hbmScreen = CreateCompatibleBitmap(hdcScreen, width, height);
