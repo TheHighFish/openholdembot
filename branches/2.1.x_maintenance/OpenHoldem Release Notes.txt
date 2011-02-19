@@ -40,6 +40,9 @@ BUG FIXES:
   There were also some problems with the code-quality of the CMemory-class.
   This has now been fixed. Thanks to Stangelnator and Gecko for finding the bug. 
   [THF]
+- There was a memory-overflow when too many memory-symbols got used and OH could crash.
+  We do now prevent this, throw an error and stop the autoplayer.
+  Thanks to Stangelnator for reporting the bug and providing useful info. [THF]
 
 
 v2.1.8 2011-01-15
