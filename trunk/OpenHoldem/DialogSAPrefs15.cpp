@@ -96,44 +96,30 @@ void CDlgSAPrefs15::OnOK()
 		if (m_DisplayPot_Check.GetCheck() == BST_CHECKED)
 			selected += 1;
 
-		switch(selected)
+		if (selected == 0)
 		{
-			case 0:
-				if (m_DisplayLogsyms_Check.GetCheck() == BST_UNCHECKED)
-				{
-					prefs.set_infobox_hand(true);
-					m_DisplayHand_Check.SetCheck(BST_CHECKED);
-					prefs.set_infobox_limit(true);
-					m_DisplayLimit_Check.SetCheck(BST_CHECKED);
-					prefs.set_infobox_pot(true);
-					m_DisplayPot_Check.SetCheck(BST_CHECKED);
+			if (m_DisplayLogsyms_Check.GetCheck() == BST_UNCHECKED)
+			{
+				prefs.set_infobox_hand(true);
+				m_DisplayHand_Check.SetCheck(BST_CHECKED);
+				prefs.set_infobox_limit(true);
+				m_DisplayLimit_Check.SetCheck(BST_CHECKED);
+				prefs.set_infobox_pot(true);
+				m_DisplayPot_Check.SetCheck(BST_CHECKED);
 
-					prefs.set_infobox_size(48);
-					OH_MessageBox_Interactive("Warning: Info Box is set to be displayed but no option was selected\n"
-					"Enabling defaults\n", "WARNING", MB_OK);
-				}
-				else
-					prefs.set_infobox_size(0);
-
-				break;
-			case 1:
-				prefs.set_infobox_size(16);
-				break;
-			case 2:
-				prefs.set_infobox_size(32);
-				break;
-			case 3:
 				prefs.set_infobox_size(48);
-				break;
-			default:
-				prefs.set_infobox_size(48);
-				break;
+				OH_MessageBox_Interactive("Warning: Info Box is set to be displayed but no option was selected\n"
+				"Enabling defaults\n", "WARNING", MB_OK);
+			}
+			else
+				prefs.set_infobox_size(0);
 		}
+		else
+			prefs.set_infobox_size(16*selected);
 	}
 	else
-	{
 		prefs.set_infobox_display(false);
-	}
+
 
 	CSAPrefsSubDlg::OnOK();
 }

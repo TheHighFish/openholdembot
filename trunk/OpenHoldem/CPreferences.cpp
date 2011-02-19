@@ -187,7 +187,7 @@ void CPreferences::InitDefaults(void)
 	_infobox_hand = true;
 	_infobox_limit = true;
 	_infobox_pot = true;
-	_infobox_logsyms = true;
+	_infobox_logsyms = false;
 	_infobox_size = 50;
 
 	// Rebuy
