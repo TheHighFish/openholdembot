@@ -403,6 +403,8 @@ public:
 	~CSymbols();
 	void ResetSymbolsFirstTime(void);
 	void CalcSymbols(void);
+	int HandNumberInRange(const double handnumber);
+	int DigitsCount(double handnumber);
 	void CalcTime(void);
 	void CalcProbabilities(void);
 	void CalcPrimaryFormulas(const bool final_answer);
@@ -894,6 +896,8 @@ private:
 	static unsigned int _player_card_last[2];
 
 	CCritSec			m_critsec;
+	int					m_handnumberMinExpectedDigits;
+	int					m_handnumberMaxExpectedDigits;
 
 } *p_symbols;
 

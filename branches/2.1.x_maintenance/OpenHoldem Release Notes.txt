@@ -1,6 +1,9 @@
 v2.1.9 2011-02-20
 =================
 BUG FIXES: 
+- Handnumber changes is now ranged between min digits and max digits.
+  symbols s$handnumminexpecteddigits and s$handnummaxexpecteddigits were added to CTableMap.h
+  [TripleSeven]
 - Tablepoints got handled incorrectly by the auto-connector.
   This took some time to get detected, as they get rarely used.
   Thanks to Vasyatko for reporting the bug and for providing

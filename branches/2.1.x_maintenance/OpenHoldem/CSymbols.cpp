@@ -108,6 +108,8 @@ CSymbols::CSymbols()
 
 CSymbols::~CSymbols()
 {
+	m_handnumberMinExpectedDigits = -1;
+	m_handnumberMaxExpectedDigits = -1;
 }
 
 void CSymbols::InitHandranktTableForPrwin()
@@ -994,6 +996,36 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 	symboltrace_collection_removeall();
 }
 
+int CSymbols::DigitsCount(double handnumber)
+{
+	int count = 0;
+	while (handnumber >= 1)
+	{
+		handnumber /= 10;
+		++count;
+	}
+	return count;
+}
+
+int CSymbols::HandNumberInRange(double handnumber)
+{
+	if (m_handnumberMinExpectedDigits == -1 || m_handnumberMaxExpectedDigits == -1) 
+	{
+		m_handnumberMinExpectedDigits = p_tablemap->handnumminexpecteddigits();
+		m_handnumberMaxExpectedDigits = p_tablemap->handnummaxexpecteddigits();
+	}
+	int handnumberActualDigits = DigitsCount(handnumber);
+	/* Handnumber should adhere digits count. if no expectation present, we accept the handnumber as in range
+	   to support older table maps         */
+	if ((m_handnumberMaxExpectedDigits >= handnumberActualDigits && 
+		m_handnumberMinExpectedDigits <= handnumberActualDigits) ||
+		
+		(m_handnumberMaxExpectedDigits == 0 &&  
+		m_handnumberMinExpectedDigits == 0 ))   
+		
+		return 1;
+	return 0;
+}
 
 void CSymbols::CalcSymbols(void)
 {
@@ -1004,6 +1036,7 @@ void CSymbols::CalcSymbols(void)
 	char				card1[k_max_number_of_players] = {0};
 	CGrammar			gram;
 	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
+	double				handnumber;
 
 	// Clear em, before we start
 	ResetSymbolsEveryCalc();
@@ -1055,7 +1088,17 @@ void CSymbols::CalcSymbols(void)
 		player_card_cur[0] = player_card_cur[1] = CARD_NOCARD;
 	}
 
-	set_sym_handnumber(p_scraper->s_limit_info()->handnumber);									// handnumber
+	
+	handnumber = p_scraper->s_limit_info()->handnumber;
+	if (HandNumberInRange(handnumber)) 
+	{
+		write_log(3, "Setting handnumber to [%f]\n", handnumber);
+		set_sym_handnumber(handnumber);
+	}
+	else
+	{
+		write_log(3, "Setting handnumber to [%f] was skipped. reason:[digits number not in range]\n", handnumber);
+	}
 
 	// New hand is triggered by change in dealerchair (button moves), or change in userchair's cards (as long as it is not
 	// a change to nocards or cardbacks), or a change in handnumber
@@ -4827,4 +4870,6 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 	time_t my_time_t;
 	time(&my_time_t);
 	p_symbols->set_elapsedautohold(my_time_t);
+	m_handnumberMinExpectedDigits = -1;
+	m_handnumberMaxExpectedDigits = -1;
 }
