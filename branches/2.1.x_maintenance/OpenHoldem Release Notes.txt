@@ -1,4 +1,4 @@
-v2.1.9 2011-xx-yy
+v2.1.9 2011-02-20
 =================
 BUG FIXES: 
 - Tablepoints got handled incorrectly by the auto-connector.
@@ -36,15 +36,12 @@ BUG FIXES:
   (e.g. "limit"), as limit_found didn't get affected. This has now been changed.
   Thanks to Ljmj for submitting the patch. 
   [THF]
-- Using too much memory symbols could create a buffer-overflow.
-  There were also some problems with the code-quality of the CMemory-class.
-  This has now been fixed. Thanks to Stangelnator and Gecko for finding the bug. 
-  [THF]
 - There was a memory-overflow when too many memory-symbols got used and OH could crash.
   We do now prevent this, throw an error and stop the autoplayer.
   Thanks to Stangelnator for reporting the bug and providing useful info. [THF]
 - The autoplayer-trace did get logged only for the default allinmethod (0 = swag),
-  but not for 1 and 2. This got now fixed. Thanks to for reporting. [THF]
+  but not for 1 and 2. This got now fixed. Thanks to Gonhilda and CrumbleSunday for reporting. 
+  [THF]
 
 
 v2.1.8 2011-01-15
