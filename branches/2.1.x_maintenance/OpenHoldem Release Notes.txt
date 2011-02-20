@@ -43,6 +43,8 @@ BUG FIXES:
 - There was a memory-overflow when too many memory-symbols got used and OH could crash.
   We do now prevent this, throw an error and stop the autoplayer.
   Thanks to Stangelnator for reporting the bug and providing useful info. [THF]
+- The autoplayer-trace did get logged only for the default allinmethod (0 = swag),
+  but not for 1 and 2. This got now fixed. Thanks to for reporting. [THF]
 
 
 v2.1.8 2011-01-15
