@@ -9,14 +9,6 @@ BUG FIXES:
   Thanks to Vasyatko for reporting the bug and for providing
   replay-frames to reproduce the problem. 
   [JumpingFences]
-- Improving the auto-detection of blinds (guessing from the bets),
-  which caused incorrect results, in case of
-    * tournaments (no blind locking)
-    * super-fast-action, so that we don't get a frame before our turn
-    * SB raises or cold-calls
-    * we are BB, so that we get a stable frame only after SBs action.
-  This case gets now handled, too. 
-  [F1x3r]
 - The Formula dialog did not highlight all PT-symbols.
   Thanks to Qwerty for submitting the patch. 
   [THF]
