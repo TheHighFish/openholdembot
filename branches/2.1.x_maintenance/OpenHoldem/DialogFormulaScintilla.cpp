@@ -3650,7 +3650,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "pt_raggp", "Poker Tracker preflop aggression for raise chair");
 	AddSymbol(parent, "pt_raggf", "Poker Tracker flop aggression for raise chair");
 	AddSymbol(parent, "pt_raggt", "Poker Tracker turn aggression for raise chair");
-	AddSymbol(parent, "pt_raggrv", "Poker Tracker river aggression for raise chair");
+	AddSymbol(parent, "pt_raggr", "Poker Tracker river aggression for raise chair");
 	AddSymbol(parent, "pt_rfloppct", "Poker Tracker saw flop pct for raise chair");
 	AddSymbol(parent, "pt_rturnpct", "Poker Tracker saw turn pct for raise chair");
 	AddSymbol(parent, "pt_rriverpct", "Poker Tracker saw river pct for raise chair");
