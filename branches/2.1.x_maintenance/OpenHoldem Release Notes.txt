@@ -27,10 +27,9 @@ BUG FIXES:
   Thanks to Querty who submitted the patch. 
   [THF]
 - Epsilon-expressions caused crashes inside brackets.
-  We fixed it by completely disallowing empty expressions,
-  which (as a side-effect) also means, that every standard function 
-  has now to return a value (e.g. 0 )and can't be left empty,
-  even if it doesn't get used. Thanks to BrassKnuckles for reporting the problem. 
+  We fixed it by completely disallowing empty expressions inside other expressions.
+  Only standard formulas, that don't get used are allowed to stay empty.
+  Thanks to BrassKnuckles for reporting the problem. 
   [THF]
 - Scraper-DLL: Some variables got ignored when changed by the scraper-DLL
   (e.g. "limit"), as limit_found didn't get affected. This has now been changed.
