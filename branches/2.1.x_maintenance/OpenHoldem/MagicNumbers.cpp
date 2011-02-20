@@ -20,6 +20,8 @@ const char* ActionConstantNames(int action_constant)
 		return "RAIS";
 	else if (action_constant == k_action_swag)
 		return "SWAG";
+	else if (action_constant == k_action_jam)
+		return "JAM";
 	else if (action_constant == k_action_allin)
 		return "ALLI";
 	else 

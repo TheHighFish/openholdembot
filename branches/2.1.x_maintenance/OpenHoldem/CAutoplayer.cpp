@@ -170,6 +170,7 @@ void CAutoplayer::DoAllin(void)
 			// Click the raise button;
 			// Then restore the mouse position (cur_pos)
 			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), raise_button, MouseLeft, number_of_clicks, NULL, cur_pos);
+			write_logautoplay(1, ActionConstantNames(k_action_allin));
 		}
 		else
 		{
@@ -186,6 +187,7 @@ void CAutoplayer::DoAllin(void)
 			// Click the raise button;
 			// Then restore the mouse position (cur_pos)
 			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), allin_button, MouseLeft, number_of_clicks, NULL, cur_pos);
+			write_logautoplay(1, ActionConstantNames(k_action_allin));
 		}
 		else
 		{
@@ -519,7 +521,7 @@ void CAutoplayer::DoSwag(void)
 		}
 		
 		p_symbols->RecordPrevAction(k_action_swag);
-		write_logautoplay(1, "SWAG\n");
+		write_logautoplay(1, ActionConstantNames(k_action_swag));
 
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 	}
@@ -759,7 +761,7 @@ void CAutoplayer::DoSlider(void)
 		}
 
 
-		write_logautoplay(1, "JAM");
+		write_logautoplay(1, ActionConstantNames(k_action_jam));
 		write_log(1, "Jam complete: %d,%d,%d,%d\n", r.left, r.top, r.right, r.bottom);
 
 		// reset elapsedauto symbol
@@ -808,7 +810,7 @@ void CAutoplayer::DoPrefold(void)
 		_mutex.Unlock();
 		
 		p_symbols->RecordPrevAction(k_action_fold);
-		write_logautoplay(1, "FOLD");
+		write_logautoplay(1, ActionConstantNames(k_action_fold));
 	}
 	p_symbols->CalcAutoTrace();
 	write_log(3, "...ending DoPrefold.\n");

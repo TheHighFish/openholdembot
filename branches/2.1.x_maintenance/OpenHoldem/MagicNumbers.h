@@ -66,7 +66,8 @@ enum ActionConstant
 	k_action_call = 1,
 	k_action_raise = 2,		// min-raise
 	k_action_swag = 3,		// "stated wager", i.e. using f$betsize
-	k_action_allin = 4
+	k_action_allin = 4,
+	k_action_jam = 5        // not really an action, but required for correctly logging the slider.
 };
 
 // Function to access the name of the action constants.

@@ -2433,13 +2433,13 @@ void CDlgFormulaScintilla::CreateDebugTab(CString *cs)
 				switch (debug_ar[i].error) 
 				{
 					case ERR_INVALID_SYM:
-						newline.Append("ERR: invalid symbol       = ");
+						newline.Append("ERROR: invalid symbol     = ");
 						break;
 					case ERR_INVALID_FUNC_SYM:
 						newline.Append("ERROR: invalid function   = ");
 						break;
 					case ERR_INVALID_DLL_SYM:
-						newline.Append("ERROR: invalid DLL        = ");
+						newline.Append("ERROR: invalid DLL-symbol = ");
 						break;
 					case ERR_INVALID_EXPR:
 						newline.Append("ERROR: invalid expression = ");

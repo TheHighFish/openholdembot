@@ -286,7 +286,7 @@ void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 	}
 
 	// Extract the tablepoint
-    TablemapConnectionData[NumberOfTableMapsLoaded].TablePointPresent = false;
+	TablemapConnectionData[NumberOfTableMapsLoaded].TablePointPresent = false;
 	for (RMapCI r_iter=map->r$->begin(); r_iter!=map->r$->end(); r_iter++)
 	{
 		if (r_iter->second.name.Find("tablepoint") != -1 &&
@@ -302,7 +302,8 @@ void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 			TablemapConnectionData[NumberOfTableMapsLoaded].TablePoint.transform = r_iter->second.transform;
 			TablemapConnectionData[NumberOfTableMapsLoaded].TablePoint.color = r_iter->second.color;
 			TablemapConnectionData[NumberOfTableMapsLoaded].TablePoint.radius = r_iter->second.radius;
-			break;// We don't need the rest of the regions data for a tablepoint with colour transform
+			//We don't need the rest of the regions data for a tablepoint with colour transform
+			break;
 		}
 	}
 	NumberOfTableMapsLoaded++;
