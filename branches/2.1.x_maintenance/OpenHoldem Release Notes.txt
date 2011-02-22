@@ -1,6 +1,8 @@
 v2.1.9 2011-02-20
 =================
 BUG FIXES: 
+- CFormula: Reading formula file: mistakanly verified if formula exist when supposed to verify if handlist exist
+  [TripleSeven]
 - Handnumber changes is now ranged between min digits and max digits.
   symbols s$handnumminexpecteddigits and s$handnummaxexpecteddigits were added to CTableMap.h
   [TripleSeven]

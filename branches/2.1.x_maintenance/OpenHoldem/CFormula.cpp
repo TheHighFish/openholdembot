@@ -116,7 +116,7 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine, bool disable_
 			{
 				// Strip the LFCR off the last line (we need to add CRLF for all but the last line)
 				list.list_text.TrimRight("\r\n");
-				if (DoesFormulaAlreadyExist(list.list))
+				if (DoesHandlistAlreadyExist(list.list))
 				{
 					CString ErrorMessage = "Handlist does already exist: " + list.list;
 					MessageBox(0, ErrorMessage, "Error", 0);
