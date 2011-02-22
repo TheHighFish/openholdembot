@@ -777,7 +777,7 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 	write_log(3, "Resetting currentbets for all players\n");
 	for (int i=0; i<(k_max_number_of_players+1); i++)
 	{
-		set_sym_currentbet(3, 0);
+		set_sym_currentbet(i, 0);
 	}
 
 	for (int i=0; i<=9; i++)

@@ -43,7 +43,7 @@ const int k_gametype_FL      =  2;
 const int k_number_of_flags = 20;
 
 // Memory symbols
-const int k_max_number_of_memory_symbols = 512;
+const int k_max_number_of_memory_symbols = 2048;
 const int k_max_length_of_memory_symbols = 64;
 
 //  File accessable?
