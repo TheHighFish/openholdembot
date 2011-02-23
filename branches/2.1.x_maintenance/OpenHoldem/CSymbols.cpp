@@ -992,8 +992,9 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 
 	// log$ symbols
 	logsymbols_collection_removeall();
-
 	symboltrace_collection_removeall();
+	m_handnumberMinExpectedDigits = -1;
+	m_handnumberMaxExpectedDigits = -1;
 }
 
 int CSymbols::DigitsCount(double handnumber)
@@ -1013,17 +1014,30 @@ int CSymbols::HandNumberInRange(double handnumber)
 	{
 		m_handnumberMinExpectedDigits = p_tablemap->handnumminexpecteddigits();
 		m_handnumberMaxExpectedDigits = p_tablemap->handnummaxexpecteddigits();
+		if (m_handnumberMaxExpectedDigits == 0 && m_handnumberMinExpectedDigits == 0 )
+		{
+			/* Handnumber should adhere digits count. if no expectation present, we accept the handnumber as in range
+			   to support older table maps         */
+			write_log(3, "Handnumber expected digits range is off. to enable, put symbols [s$handnumminexpecteddigits] and [s$handnummaxexpecteddigits] in your tablemap\n");
+		}
+		else
+		{
+			write_log(3, "Handnumber expected digits range is on. expected range: [%d - %d]\n", m_handnumberMinExpectedDigits, m_handnumberMaxExpectedDigits);
+		}
 	}
 	int handnumberActualDigits = DigitsCount(handnumber);
-	/* Handnumber should adhere digits count. if no expectation present, we accept the handnumber as in range
-	   to support older table maps         */
-	if ((m_handnumberMaxExpectedDigits >= handnumberActualDigits && 
-		m_handnumberMinExpectedDigits <= handnumberActualDigits) ||
-		
-		(m_handnumberMaxExpectedDigits == 0 &&  
-		m_handnumberMinExpectedDigits == 0 ))   
-		
+	
+	if (m_handnumberMaxExpectedDigits == 0 && m_handnumberMinExpectedDigits == 0)
+	{
+		write_log(3, "Handnumber actual digits [%d] is in range. reason[expected digits rule is disabled]\n", handnumberActualDigits);
 		return 1;
+	}
+	if (handnumberActualDigits <= m_handnumberMaxExpectedDigits && handnumberActualDigits >= m_handnumberMinExpectedDigits)
+	{
+		write_log(3, "Handnumber actual digits [%d] is in range. reason[adheres digits rule]\n", handnumberActualDigits);
+		return 1;
+	}
+	write_log(3, "Handnumber actual digits [%d] is out of range. expected range[%d - %d]\n", handnumberActualDigits, m_handnumberMinExpectedDigits, m_handnumberMaxExpectedDigits);
 	return 0;
 }
 
@@ -1092,12 +1106,12 @@ void CSymbols::CalcSymbols(void)
 	handnumber = p_scraper->s_limit_info()->handnumber;
 	if (HandNumberInRange(handnumber)) 
 	{
-		write_log(3, "Setting handnumber to [%f]\n", handnumber);
+		write_log(3, "Setting Handnumber to [%f]\n", handnumber);
 		set_sym_handnumber(handnumber);
 	}
 	else
 	{
-		write_log(3, "Setting handnumber to [%f] was skipped. reason:[digits number not in range]\n", handnumber);
+		write_log(3, "Setting Handnumber to [%f] was skipped. reason:[digits number not in range]\n", handnumber);
 	}
 
 	// New hand is triggered by change in dealerchair (button moves), or change in userchair's cards (as long as it is not
@@ -4870,6 +4884,4 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 	time_t my_time_t;
 	time(&my_time_t);
 	p_symbols->set_elapsedautohold(my_time_t);
-	m_handnumberMinExpectedDigits = -1;
-	m_handnumberMaxExpectedDigits = -1;
 }
