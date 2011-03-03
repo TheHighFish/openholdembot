@@ -34,8 +34,6 @@ typedef struct
 	CString			TitleText_0_9[10];
 	CString			NegativeTitleText;
 	CString			NegativeTitleText_0_9[10];
-	bool			TablePointPresent;
-	STablemapRegion	TablePoint;
 } t_TablemapConnectionData;
 
 
@@ -284,28 +282,6 @@ void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 		else
 			TablemapConnectionData[NumberOfTableMapsLoaded].NegativeTitleText_0_9[i] = "";
 	}
-
-	// Extract the tablepoint
-	TablemapConnectionData[NumberOfTableMapsLoaded].TablePointPresent = false;
-	for (RMapCI r_iter=map->r$->begin(); r_iter!=map->r$->end(); r_iter++)
-	{
-		if (r_iter->second.name.Find("tablepoint") != -1 &&
-			(r_iter->second.right == r_iter->second.left) &&
-			(r_iter->second.bottom == r_iter->second.top)  &&
-			r_iter->second.transform == "C")
-		{
-			TablemapConnectionData[NumberOfTableMapsLoaded].TablePointPresent = true;
-			TablemapConnectionData[NumberOfTableMapsLoaded].TablePoint.bottom = r_iter->second.bottom;
-			TablemapConnectionData[NumberOfTableMapsLoaded].TablePoint.top = r_iter->second.top;
-			TablemapConnectionData[NumberOfTableMapsLoaded].TablePoint.left = r_iter->second.left;
-			TablemapConnectionData[NumberOfTableMapsLoaded].TablePoint.right = r_iter->second.right;
-			TablemapConnectionData[NumberOfTableMapsLoaded].TablePoint.transform = r_iter->second.transform;
-			TablemapConnectionData[NumberOfTableMapsLoaded].TablePoint.color = r_iter->second.color;
-			TablemapConnectionData[NumberOfTableMapsLoaded].TablePoint.radius = r_iter->second.radius;
-			//We don't need the rest of the regions data for a tablepoint with colour transform
-			break;
-		}
-	}
 	NumberOfTableMapsLoaded++;
 }
 
@@ -408,86 +384,6 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 	{
 		write_log(3, "CAutoConnector: Negative title.\n"); 
 		return false;
-	}
-
-	if (TablemapConnectionData[MapIndex].TablePointPresent)
-	{
-		// Allocate heap space for BITMAPINFO
-		BITMAPINFO	*bmi;
-		int			info_len = sizeof(BITMAPINFOHEADER) + 1024;
-		bmi = (BITMAPINFO *) HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, info_len);
-
-		// Check table points for match
-        width = r.right - r.left;
-        height = r.bottom - r.top;
-		hdcScreen = GetDC(h);
-		hdcCompatible = CreateCompatibleDC(hdcScreen);
-		hbmScreen = CreateCompatibleBitmap(hdcScreen, width, height);
-		hOldScreenBitmap = (HBITMAP) SelectObject(hdcCompatible, hbmScreen);
-		BitBlt(hdcCompatible, 0, 0, width, height, hdcScreen, 0, 0, SRCCOPY);
-
-		// Populate BITMAPINFOHEADER
-		bmi->bmiHeader.biSize = sizeof(bmi->bmiHeader);
-		bmi->bmiHeader.biBitCount = 0;
-		GetDIBits(hdcCompatible, hbmScreen, 0, 0, NULL, bmi, DIB_RGB_COLORS);
-
-		// Get the actual argb bit information
-		bmi->bmiHeader.biHeight = -bmi->bmiHeader.biHeight;
-		pBits = new BYTE[bmi->bmiHeader.biSizeImage];
-		GetDIBits(hdcCompatible, hbmScreen, 0, height, pBits, bmi, DIB_RGB_COLORS);
-
-		good_table_points = true;
-
-		x = TablemapConnectionData[MapIndex].TablePoint.left;
-		y = TablemapConnectionData[MapIndex].TablePoint.top;
-
-		int pbits_loc = y*width*4 + x*4;
-		alpha = pBits[pbits_loc + 3];
-		red = pBits[pbits_loc + 2];
-		green = pBits[pbits_loc + 1];
-		blue = pBits[pbits_loc + 0];
-
-		COLORREF Color = TablemapConnectionData[MapIndex].TablePoint.color; 
-		// positive radius
-		if (TablemapConnectionData[MapIndex].TablePoint.radius >= 0)
-		{
-			if (!trans.IsInARGBColorCube((Color>>24)&0xff, // function GetAValue() does not exist
-										 GetRValue(Color),
-										 GetGValue(Color),
-										 GetBValue(Color),
-										 TablemapConnectionData[MapIndex].TablePoint.radius,
-										 alpha, red, green, blue))
-			{
-				good_table_points = false;
-			}
-		}
-		// negative radius (logical not)
-		else
-		{
-			if (trans.IsInARGBColorCube((Color>>24)&0xff, // function GetAValue() does not exist
-										GetRValue(Color), 
-										GetGValue(Color), 
-										GetBValue(Color), 
-										-TablemapConnectionData[MapIndex].TablePoint.radius,
-										alpha, red, green, blue))
-			{
-				good_table_points = false;
-			}
-		}
-
-		// Clean up
-		HeapFree(GetProcessHeap(), NULL, bmi);
-		delete []pBits;
-		SelectObject(hdcCompatible, hOldScreenBitmap);
-		DeleteObject(hbmScreen);
-		DeleteDC(hdcCompatible);
-		ReleaseDC(h, hdcScreen);
-
-		if (!good_table_points)
-		{
-			write_log(3, "CAutoConnector: No good tablepoint\n");
-			return false;
-		}
 	}
 
 	write_log(3, "CAutoConnector: Window ia a match\n");

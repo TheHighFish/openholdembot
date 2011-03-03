@@ -1,7 +1,7 @@
 v2.1.9.1 2011-xx-yy
 =================
 BUG FIXES: 
-- CFormula: Reading formula file: mistakanly verified if formula exist when supposed to verify if handlist exists.
+- CFormula: Reading formula file: mistakenly verified if formula exist when supposed to verify if handlist exists.
   [TripleSeven]
   
 NEW STUFF:

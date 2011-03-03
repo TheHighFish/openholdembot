@@ -20,9 +20,9 @@ char * const s$strings[67] = { "titletext", "titletext0", "titletext1", "titlete
 							   "swagconfirmationmethod", "buttonclickmethod", "handresetmethod", "balancenumbersonly", "scraperdll", "scraperpreprocessordll",
 							   "chipscrapemethod"};
 
-int	const num_r$strings = 359;
-// r$tablepointXXX is a special case, as XXX can be anything in any order - it will always show up in the drop down list
-char * const r$strings[359] = { "c0cardface0", "c0cardface1", "c0cardface2", "c0cardface3", "c0cardface4", 
+int	const num_r$strings = 358;
+
+char * const r$strings[358] = { "c0cardface0", "c0cardface1", "c0cardface2", "c0cardface3", "c0cardface4", 
 								"c0cardface0rank", "c0cardface1rank", "c0cardface2rank", "c0cardface3rank", "c0cardface4rank", 
 								"c0cardface0suit", "c0cardface1suit", "c0cardface2suit", "c0cardface3suit", "c0cardface4suit", 
 								"c0handnumber", "c0handnumber1", "c0handnumber2", "c0handnumber3", "c0handnumber4", "c0handnumber5", "c0handnumber6",
@@ -100,9 +100,8 @@ char * const r$strings[359] = { "c0cardface0", "c0cardface1", "c0cardface2", "c0
 								"uname", "u0name", "u1name", "u2name", "u3name", "u4name", "u5name", "u6name", "u7name", 
 								"u8name", "u9name", 
 								"u0seated", "u1seated", "u2seated", "u3seated", "u4seated", "u5seated", "u6seated", "u7seated", 
-								"u8seated", "u9seated", 
-								"tablepoint"};
-								//62
+								"u8seated", "u9seated"};
+								//61
 
 
 
