@@ -15,7 +15,6 @@ struct SSymbols
 	double nchairs;
 	double isbring;
 	double session;
-	double handnumber;
 	double version;
 
 	//PROFILE
@@ -403,8 +402,6 @@ public:
 	~CSymbols();
 	void ResetSymbolsFirstTime(void);
 	void CalcSymbols(void);
-	int HandNumberInRange(const double handnumber);
-	int DigitsCount(double handnumber);
 	void CalcTime(void);
 	void CalcProbabilities(void);
 	void CalcPrimaryFormulas(const bool final_answer);
@@ -466,7 +463,6 @@ public:
 	void	set_sym_nchairs(const double d) { ENT _sym.nchairs = d;}
 	void	set_sym_isbring(const double d) { ENT _sym.isbring = d;}
 	void	set_sym_session(const double d) { ENT _sym.session = d;};
-	void	set_sym_handnumber(const double d) { ENT _sym.handnumber = d;}
 	void	set_sym_version(const double d) { ENT _sym.version = d;}
 
 	// profile
@@ -890,14 +886,9 @@ private:
 	time_t		_elapsedhold;				// The time we "sat down"
 	time_t		_elapsedhandhold;			// The time since start of last hand
 
-	static double _dealerchair_last;
-	static double _handnumber_last;
 	static int _br_last;
-	static unsigned int _player_card_last[2];
 
 	CCritSec			m_critsec;
-	int					m_handnumberMinExpectedDigits;
-	int					m_handnumberMaxExpectedDigits;
 
 } *p_symbols;
 

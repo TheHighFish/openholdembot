@@ -115,7 +115,7 @@ void CScraper::ClearScrapeAreas(void)
 	_bb_BB_last=0;
 	_bbet_last=0;
 	_ante_last=0;
-	_handnumber_last=0;
+	_handnumber_last= "";
 	strcpy_s(_title_last, 512, "");
 }
 
@@ -1547,7 +1547,7 @@ void CScraper::ScrapeLimits()
 {
 	__HDC_HEADER
 	int					j = 0;
-	double				handnumber = 0.;
+	CString				handnumber = "";
 	bool				istournament = false;
 	CString				text = "";
 	CString				titletext = "";
@@ -1572,7 +1572,7 @@ void CScraper::ScrapeLimits()
 	// information in the titlebar we won't overwrite the values we scraped
 	// from the istournament/handnumber regions.
 	istournament = false;
-	handnumber = 0.0;
+	handnumber = "";
 
 	// c0istournament
 	r_iter = p_tablemap->r$()->find("c0istournament");
@@ -1689,7 +1689,7 @@ void CScraper::ScrapeLimits()
 		// the l_ locals so that we don't blindly overwrite the
 		// information we scraped from those specific regions with
 		// default values if we can't find them in the titlebar.
-		double l_handnumber = handnumber;
+		CString l_handnumber = handnumber;
 		bool l_istournament = istournament;
 
 		// s$ttlimits - Scrape blinds/stakes/limit info from title text
@@ -2013,26 +2013,23 @@ void CScraper::ScrapeLimits()
 	__HDC_FOOTER
 }
 
-const double CScraper::GetHandnumFromString(CString t)
+const CString CScraper::GetHandnumFromString(CString t)
 {
-	char		newstr[256] = {0};
-	int			i = 0, newpos = 0;
+	CString resulting_handumber_digits_only;
 
 	// Check for bad parameters
 	if (!t || t == "")
-		return 0.;
+		return "";
 
-	for (i=0; i<t.GetLength(); i++) 
+	for (int i=0; i<t.GetLength(); i++) 
 	{
 		if (t.Mid(i,1) >= "0" && t.Mid(i,1) <= "9")
 		{
-			newstr[newpos++] = t.Mid(i,1)[0];
+			resulting_handumber_digits_only.Append(t.Mid(i,1));
 		}
 	}
 
-	newstr[newpos] = 0;
-
-	return atof(newstr);
+	return resulting_handumber_digits_only;
 }
 
 

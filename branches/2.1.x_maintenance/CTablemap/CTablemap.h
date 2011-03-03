@@ -148,8 +148,6 @@ public:
 	const CString forcechair()		{ SMapCI it = _s$.find("forcechair"); if (it!=_s$.end()) return it->second.text; else return ""; }
 
 	const int allinmethod()			{ SMapCI it = _s$.find("allinmethod"); if (it!=_s$.end()) return strtoul(it->second.text.GetString(), NULL, 10); else return 0; } 
-	const int handnumminexpecteddigits() { SMapCI it = _s$.find("handnumminexpecteddigits"); if (it!=_s$.end()) return strtoul(it->second.text.GetString(), NULL, 10); else return 0; } 
-	const int handnummaxexpecteddigits() { SMapCI it = _s$.find("handnummaxexpecteddigits"); if (it!=_s$.end()) return strtoul(it->second.text.GetString(), NULL, 10); else return 0; } 
 
 	const int swagselectionmethod() { SMapCI it = _s$.find("swagselectionmethod");
 									  if (it==_s$.end()) return TEXTSEL_DOUBLECLICK;
@@ -187,6 +185,24 @@ public:
 									  if (it==_s$.end()) return _0b0111;
 									  int n = strtoul(it->second.text.GetString(), NULL, 10); 
 									  return (n>=1 && n<=_0b0111) ? n : _0b0111; }
+
+	const int HandNumberMinExpectedDigits() 
+	{ 
+		SMapCI it = _s$.find("handnumber_min_expected_digits"); 
+		if (it!=_s$.end()) 
+			return strtoul(it->second.text.GetString(), NULL, 10); 
+		else 
+			return 0; 
+	} 
+
+	const int HandNumberMaxExpectedDigits() 
+	{ 
+		SMapCI it = _s$.find("handnumber_max_expected_digits"); 
+		if (it!=_s$.end()) 
+			return strtoul(it->second.text.GetString(), NULL, 10); 
+		else 
+			return 0; 
+	} 
 
 	const bool balancenumbersonly()	{ SMapCI it = _s$.find("balancenumbersonly"); 
 									  if (it==_s$.end()) return false;

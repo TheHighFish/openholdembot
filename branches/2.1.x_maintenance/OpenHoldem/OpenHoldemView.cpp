@@ -2,20 +2,20 @@
 //
 
 #include "stdafx.h"
-#include "OpenHoldemDoc.h"
 #include "OpenHoldemView.h"
-#include "OpenHoldem.h"
 
-#include "CScraper.h"
-#include "CSymbols.h"
-#include "..\CTablemap\CTablemap.h"
-#include "CTableLimits.h"
+#include "CHandresetDetector.h"
 #include "CHeartbeatThread.h"
 #include "CPreferences.h"
-
+#include "CScraper.h"
+#include "CSymbols.h"
+#include "CTableLimits.h"
+#include "..\CTablemap\CTablemap.h"
+#include "OpenHoldem.h"
+#include "OpenHoldemDoc.h"
 
 // Table layouts
-int		cc[5][2] = 
+int		cc[k_number_of_community_cards][2] = 
 { 
 	{-(CARDSIZEX*2 + 3*2 + CARDSIZEX/2), -(CARDSIZEY/2)},	// absolutes
 	{-(CARDSIZEX*1 + 3*1 + CARDSIZEX/2), -(CARDSIZEY/2)},
@@ -97,7 +97,8 @@ COpenHoldemView::COpenHoldemView()
 	_logfont.lfPitchAndFamily = 0;
 	strcpy_s(_logfont.lfFaceName, 32, "Times New Roman");
 
-	_handnumber_last = _sblind_last = _bblind_last = _lim_last = _ante_last = _pot_last = 0.;
+	_handnumber_last = "";
+	_sblind_last = _bblind_last = _lim_last = _ante_last = _pot_last = 0.;
 	_iterator_thread_progress_last = 0;
 	
 	for (i = 0; i<=4; i++)
@@ -167,7 +168,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 	RECT		cr = {0};
 	CDC			*pDC = GetDC();
 
-	double		sym_handnumber = p_symbols->sym()->handnumber;
+	CString		sym_handnumber = p_handreset_detector->GetHandNumber();
 	double		sym_bblind = p_tablelimits->bblind();
 	double		sym_sblind = p_tablelimits->sblind();
 	double		sym_ante = p_tablelimits->ante();
@@ -340,7 +341,7 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	double sym_sblind		= p_tablelimits->sblind();
 	double sym_ante			= p_tablelimits->ante();
 	int sym_lim				= p_tablelimits->gametype();
-	double sym_handnumber	= p_symbols->sym()->handnumber;
+	CString sym_handnumber	= p_handreset_detector->GetHandNumber();
 	bool sym_istournament	= (bool) p_symbols->sym()->istournament;
 	double sym_pot			= p_symbols->sym()->pot;
 	bool sym_playing		= (bool) p_symbols->sym()->playing;
@@ -380,16 +381,9 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 
 	t = "";
 	// handnumber
-	if (sym_handnumber != 0) 
+	if (sym_handnumber != "") 
 	{
-		if ((int) sym_handnumber != sym_handnumber) 
-		{
-			s.Format("  Hand #: %f\n", sym_handnumber);
-		}
-		else 
-		{
-			s.Format("  Hand #: %.0f\n", sym_handnumber);
-		}
+		s.Format("  Hand #: %s\n", sym_handnumber);
 	}
 	else 
 	{

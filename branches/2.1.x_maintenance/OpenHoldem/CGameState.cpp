@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "CGameState.h"
+#include "CHandresetDetector.h"
 #include "CSymbols.h"
 #include "CScraper.h"
 #include "CPreferences.h"
@@ -531,7 +532,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 	int				sym_userchair = (int) p_symbols->sym()->userchair;
 	bool			sym_ismyturn = (bool) p_symbols->sym()->ismyturn;
 	double			sym_balance = p_symbols->sym()->balance[10];
-	double			sym_handnumber = p_symbols->sym()->handnumber;
+	CString			sym_handnumber = p_handreset_detector->GetHandNumber();
 
 	_m_holdem_state[ (++_m_ndx)&0xff ] = *pstate;
 
@@ -596,7 +597,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 			// Track some stats
 			_hands_played++;
 
-			write_log(1, ">>> New hand %.0f\n", sym_handnumber);
+			write_log(1, ">>> New hand %.0s\n", sym_handnumber);
 		}
 
 		// first time to act in the hand//

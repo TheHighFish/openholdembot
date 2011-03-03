@@ -43,7 +43,7 @@ struct SScraperState
 	bool				found_ante;
 	LimitType			limit;
 	bool				found_limit;
-	double				handnumber;
+	CString				handnumber;
 	bool				found_handnumber;
 	bool				istournament;
 };

@@ -2,6 +2,7 @@
 #include <atlstr.h>
 #include <time.h>
 #include "CAutoconnector.h"
+#include "CHandresetDetector.h"
 #include "COcclusionCheck.h"
 #include "CPreferences.h"
 #include "CRebuyManagement.h"
@@ -19,7 +20,7 @@ CRebuyManagement::CRebuyManagement()
 {
 	// Init time of last rebuy in a reasonable way at startup.
 	time(&RebuyLastTime);
-	PreviousRebuyHandNumber = -1;
+	PreviousRebuyHandNumber = "";
 }
 
 CRebuyManagement::~CRebuyManagement()	
@@ -47,7 +48,7 @@ bool CRebuyManagement::ChangeInHandNumber()
 	{
 		return true;
 	}
-	else if (p_symbols->sym()->handnumber > PreviousRebuyHandNumber)
+	else if (p_handreset_detector->GetHandNumber() > PreviousRebuyHandNumber)
 	{
 		return true;
 	}
@@ -122,7 +123,7 @@ void CRebuyManagement::TryToRebuy()
 	if (RebuyPossible())
 	{
 		RebuyLastTime = CurrentTime;		
-		PreviousRebuyHandNumber = p_symbols->sym()->handnumber;
+		PreviousRebuyHandNumber = p_handreset_detector->GetHandNumber();
 		ExecuteRebuyScript();
 	}
 }	

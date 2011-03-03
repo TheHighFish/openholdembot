@@ -11,6 +11,7 @@
 #include "inlines/eval.h"
 #include "CGameState.h"
 #include "CGrammar.h"
+#include "CHandresetDetector.h"
 #include "CIteratorThread.h"
 #include "MainFrm.h"
 #include "MagicNumbers.h"
@@ -31,11 +32,7 @@ CSymbols			*p_symbols = NULL;
 
 // These can not be function scoped statics because we need to be able to
 // reset them when we connect to a table.
-double CSymbols::_dealerchair_last = -1;
-double CSymbols::_handnumber_last = -1;
 int CSymbols::_br_last = -1;
-
-unsigned int CSymbols::_player_card_last[2] = {CARD_NOCARD, CARD_NOCARD};
 
 char handrank169[10][169][4] =
 {
@@ -108,8 +105,6 @@ CSymbols::CSymbols()
 
 CSymbols::~CSymbols()
 {
-	m_handnumberMinExpectedDigits = -1;
-	m_handnumberMaxExpectedDigits = -1;
 }
 
 void CSymbols::InitHandranktTableForPrwin()
@@ -228,7 +223,6 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_nchairs(0);
 	set_sym_isbring(0);
 	set_sym_session(1);
-	set_sym_handnumber(0);
 	set_sym_version(VERSION_NUMBER);
 
 	// profile
@@ -613,11 +607,7 @@ void CSymbols::ResetSymbolsFirstTime(void)
 		set_stacks_at_hand_start(i, 0);
 
 	// Reset semi-persistent hand state when we instantiate CSymbols.
-	CSymbols::_dealerchair_last = -1;
-	CSymbols::_handnumber_last = -1;
 	CSymbols::_br_last = -1;
-	CSymbols::_player_card_last[0] = CARD_NOCARD;
-	CSymbols::_player_card_last[1] = CARD_NOCARD;
 
 	// log$ symbols
 	logsymbols_collection_removeall();
@@ -993,53 +983,8 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 	// log$ symbols
 	logsymbols_collection_removeall();
 	symboltrace_collection_removeall();
-	m_handnumberMinExpectedDigits = -1;
-	m_handnumberMaxExpectedDigits = -1;
 }
 
-int CSymbols::DigitsCount(double handnumber)
-{
-	int count = 0;
-	while (handnumber >= 1)
-	{
-		handnumber /= 10;
-		++count;
-	}
-	return count;
-}
-
-int CSymbols::HandNumberInRange(double handnumber)
-{
-	if (m_handnumberMinExpectedDigits == -1 || m_handnumberMaxExpectedDigits == -1) 
-	{
-		m_handnumberMinExpectedDigits = p_tablemap->handnumminexpecteddigits();
-		m_handnumberMaxExpectedDigits = p_tablemap->handnummaxexpecteddigits();
-		if (m_handnumberMaxExpectedDigits == 0 && m_handnumberMinExpectedDigits == 0 )
-		{
-			/* Handnumber should adhere digits count. if no expectation present, we accept the handnumber as in range
-			   to support older table maps         */
-			write_log(3, "Handnumber expected digits range is off. to enable, put symbols [s$handnumminexpecteddigits] and [s$handnummaxexpecteddigits] in your tablemap\n");
-		}
-		else
-		{
-			write_log(3, "Handnumber expected digits range is on. expected range: [%d - %d]\n", m_handnumberMinExpectedDigits, m_handnumberMaxExpectedDigits);
-		}
-	}
-	int handnumberActualDigits = DigitsCount(handnumber);
-	
-	if (m_handnumberMaxExpectedDigits == 0 && m_handnumberMinExpectedDigits == 0)
-	{
-		write_log(3, "Handnumber actual digits [%d] is in range. reason[expected digits rule is disabled]\n", handnumberActualDigits);
-		return 1;
-	}
-	if (handnumberActualDigits <= m_handnumberMaxExpectedDigits && handnumberActualDigits >= m_handnumberMinExpectedDigits)
-	{
-		write_log(3, "Handnumber actual digits [%d] is in range. reason[adheres digits rule]\n", handnumberActualDigits);
-		return 1;
-	}
-	write_log(3, "Handnumber actual digits [%d] is out of range. expected range[%d - %d]\n", handnumberActualDigits, m_handnumberMinExpectedDigits, m_handnumberMaxExpectedDigits);
-	return 0;
-}
 
 void CSymbols::CalcSymbols(void)
 {
@@ -1050,7 +995,6 @@ void CSymbols::CalcSymbols(void)
 	char				card1[k_max_number_of_players] = {0};
 	CGrammar			gram;
 	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-	double				handnumber;
 
 	// Clear em, before we start
 	ResetSymbolsEveryCalc();
@@ -1102,41 +1046,10 @@ void CSymbols::CalcSymbols(void)
 		player_card_cur[0] = player_card_cur[1] = CARD_NOCARD;
 	}
 
-	
-	handnumber = p_scraper->s_limit_info()->handnumber;
-	if (HandNumberInRange(handnumber)) 
-	{
-		write_log(3, "Setting Handnumber to [%f]\n", handnumber);
-		set_sym_handnumber(handnumber);
-	}
-	else
-	{
-		write_log(3, "Setting Handnumber to [%f] was skipped. reason:[digits number not in range]\n", handnumber);
-	}
-
-	// New hand is triggered by change in dealerchair (button moves), or change in userchair's cards (as long as it is not
-	// a change to nocards or cardbacks), or a change in handnumber
-	int hrm = p_tablemap->handresetmethod();
-	if (((hrm & HANDRESET_DEALER) && _sym.dealerchair != _dealerchair_last)
-			
-		||
-
-		((hrm & HANDRESET_HANDNUM) &&
-			_sym.handnumber != _handnumber_last)			
-		
-		||
-
-		((hrm & HANDRESET_CARDS) &&
-			(player_card_cur[0]!=CARD_NOCARD && player_card_cur[0]!=CARD_BACK && player_card_cur[0]!=_player_card_last[0] ||
-			 player_card_cur[1]!=CARD_NOCARD && player_card_cur[1]!=CARD_BACK && player_card_cur[1]!=_player_card_last[1]))
-			
-	   )
+	p_handreset_detector->OnNewHeartbeat();
+	if (p_handreset_detector->IsHandreset())
 	{
 		// Save for next pass
-		_dealerchair_last = _sym.dealerchair;
-		_player_card_last[0] = player_card_cur[0];
-		_player_card_last[1] = player_card_cur[1];
-		_handnumber_last = _sym.handnumber;
 		_br_last = -1;	// ensure betround reset
 
 		// Update game_state so it knows that a new hand has happened
@@ -1175,9 +1088,10 @@ void CSymbols::CalcSymbols(void)
 		}
 		GetWindowText(p_autoconnector->attached_hwnd(), title, 512);
 		write_log(1, "\n*************************************************************\n"
-					 "HAND RESET (num:%.0f dealer:%.0f cards:%s%s): %s\n"
+					 "HAND RESET (num: %s dealer: %.0f cards: %s%s): %s\n"
 					 "*************************************************************\n",
-				  _sym.handnumber, _sym.dealerchair, card0, card1, title);
+				  p_handreset_detector->GetHandNumber(), 
+				  _sym.dealerchair, card0, card1, title);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -4601,7 +4515,6 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "site", 4)==0 && strlen(a)==4)						return _sym.site;
 	if (memcmp(a, "nchairs", 7)==0 && strlen(a)==7)						return _sym.nchairs;
 	if (memcmp(a, "session", 7)==0 && strlen(a)==7)						return _sym.session;
-	if (memcmp(a, "handnumber", 10)==0 && strlen(a)==10)				return _sym.handnumber;
 	if (memcmp(a, "version", 7)==0 && strlen(a)==7)						return _sym.version;
 
 	//P FORMULA

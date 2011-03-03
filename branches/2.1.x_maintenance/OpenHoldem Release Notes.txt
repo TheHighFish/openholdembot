@@ -1,10 +1,28 @@
 v2.1.9.1 2011-xx-yy
 =================
-- CFormula: Reading formula file: mistakanly verified if formula exist when supposed to verify if handlist exist
+BUG FIXES: 
+- CFormula: Reading formula file: mistakanly verified if formula exist when supposed to verify if handlist exists.
   [TripleSeven]
-- Handnumber changes is now ranged between min digits and max digits.
-  symbols s$handnumminexpecteddigits and s$handnummaxexpecteddigits were added to CTableMap.h
+  
+NEW STUFF:
+- Handnumber is now optionally ranged between s$handnumber_min_expected_digits 
+  and s$handnumber_max_expected_digits to reduce the risk of handresets by occlusion.
+  s$handnumber_min_expected_digits and s$handnumber_max_expected_digits can now 
+  be set in the tablemap.
   [TripleSeven]
+  
+MAINTENANCE:
+- Removing symbol "handnumber" for various reasons from the formula level:
+    * there is no need for it at the formula level.
+    * it may contain characters and therefore doesn't fit into a double.
+    * its length may exceed the precision of double.
+  "Handnumber" gets now used only internally to trigger handresets. 
+  This work gets now done in a new class CHandResetDetector.
+  [THF]
+- Removing tablepoints completely, as they were never implemented completely
+  and there is no need for it.
+  http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=12444
+  [THF]
 
 
 v2.1.9 2011-02-20

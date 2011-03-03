@@ -13,6 +13,7 @@
 #include "CFormula.h"
 #include "CGameState.h"
 #include "CGrammar.h"
+#include "CHandresetDetector.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
 #include "CMemory.h"
@@ -82,6 +83,7 @@ COpenHoldemApp theApp;
 
 void COpenHoldemApp::InstanciateAllSingletonsExceptSessionCounter()
 {
+	if (!p_handreset_detector)  p_handreset_detector = new CHandresetDetector;
 	if (!p_configurationcheck)	p_configurationcheck = new CConfigurationCheck;
 	if (!p_sharedmem)			p_sharedmem = new CSharedMem;
 	if (!p_stableframescounter)	p_stableframescounter = new CStableFramesCounter;
@@ -136,6 +138,7 @@ void COpenHoldemApp::DeleteAllSingletons()
 	if (p_sharedmem)			{ delete p_sharedmem; p_sharedmem = NULL; }
 	if (p_sessioncounter)		{ delete p_sessioncounter; p_sessioncounter = NULL; }
 	if (p_configurationcheck)	{ delete p_configurationcheck; p_configurationcheck = NULL; }
+	if (p_handreset_detector)   { delete p_handreset_detector; p_handreset_detector = NULL; }
 }
 
 // COpenHoldemApp initialization
