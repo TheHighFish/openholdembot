@@ -1,6 +1,10 @@
 v2.1.9.1 2011-xx-yy
 =================
 BUG FIXES: 
+- The check for duplicated TMs did not work if a sitename did not exist in the TM.
+  We added now a warning for missing sitenames.
+  Thanks to Folder for reporting the issue and to F1x3r for finding the bug.
+  [THF]
 - CFormula: Reading formula file: mistakenly verified if formula exist when supposed to verify if handlist exists.
   [TripleSeven]
   
