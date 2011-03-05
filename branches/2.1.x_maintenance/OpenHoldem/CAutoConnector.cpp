@@ -76,17 +76,7 @@ CAutoConnector::CAutoConnector()
 	// We want to avoid heavy workload in the connect()-function.
 	ParseAllTableMapsToLoadConnectionData();
 
-	CString dup_status = TablemapConnectionDataDuplicated(); 
-
-	if(dup_status != "-1")
-	{
-		CString		n = "";
-		n.Format("It seems you have multiple versions of the same map in your scraper folder.\n\n"\
-					"SITENAME = %s\n\n"\
-					"This will cause problems as the autoconnector won't be able to decide which one to use.\n"\
-					"Please remove the superfluous maps from the scraper folder.\n", dup_status);
-		MessageBox(0, (LPCTSTR) n, "Warning! Duplicate SiteName", MB_OK|MB_ICONWARNING);
-	}
+	CheckForDuplicatedTablemaps(); 
 }
 
 
@@ -175,24 +165,25 @@ bool CAutoConnector::TablemapConnectionDataAlreadyStored(CString TablemapFilePat
 	return false;
 }
 
-CString CAutoConnector::TablemapConnectionDataDuplicated()
+CString CAutoConnector::CheckForDuplicatedTablemaps()
 {
-   CString dup_site = "";
-
-   for (int i=0; i<=NumberOfTableMapsLoaded; i++)
-   {
-      for (int j=i+1; j<=NumberOfTableMapsLoaded; j++)
-      {
-         if (TablemapConnectionData[i].SiteName == TablemapConnectionData[j].SiteName)
-         {
-            dup_site = TablemapConnectionData[j].SiteName;
-            write_log(3, "CAutoConnector::TablemapConnectionDataDuplicated [%s] [true]\n", dup_site);
-            return dup_site;
-         }
-      }
-   }
-
-   return "-1";
+	for (int i=0; i<NumberOfTableMapsLoaded; i++)
+	{
+		for (int j=i+1; j<NumberOfTableMapsLoaded; j++)
+		{
+			if (TablemapConnectionData[i].SiteName == TablemapConnectionData[j].SiteName)
+			{
+				write_log(3, "CAutoConnector::TablemapConnectionDataDuplicated [%s] [true]\n", 
+					TablemapConnectionData[i].SiteName);
+				n.Format("It seems you have multiple versions of the same map in your scraper folder.\n\n"\
+					"SITENAME = %s\n\n"\
+					"This will cause problems as the autoconnector won't be able to decide which one to use.\n"\
+					"Please remove the superfluous maps from the scraper folder.\n", 
+					TablemapConnectionData[i].SiteName);
+				MessageBox(0, (LPCTSTR) n, "Warning! Duplicate SiteName", MB_OK|MB_ICONWARNING);
+			}
+		}
+	}
 }
 
 void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
@@ -211,6 +202,16 @@ void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 
 	TablemapConnectionData[NumberOfTableMapsLoaded].FilePath = map->filepath;
 	TablemapConnectionData[NumberOfTableMapsLoaded].SiteName = map->sitename;
+
+	if (map->sitename == "")
+	{
+		CString error_message;
+		error_message.Formst("Tablemap contains no sitename.\n"
+			"Sitenames are necessary to recognize duplicate TMs\n"
+			"(and for other features like PokerTracker).\n\n",
+			"%s", map->filepath);
+		MessageBox(0, error_message, "Warning", 0);
+	}
 	
 	// Extract client size information
 	ZMapCI z_iter = map->z$->end();
