@@ -165,8 +165,9 @@ bool CAutoConnector::TablemapConnectionDataAlreadyStored(CString TablemapFilePat
 	return false;
 }
 
-CString CAutoConnector::CheckForDuplicatedTablemaps()
+void CAutoConnector::CheckForDuplicatedTablemaps()
 {
+	CString error_message = "";
 	for (int i=0; i<NumberOfTableMapsLoaded; i++)
 	{
 		for (int j=i+1; j<NumberOfTableMapsLoaded; j++)
@@ -175,12 +176,12 @@ CString CAutoConnector::CheckForDuplicatedTablemaps()
 			{
 				write_log(3, "CAutoConnector::TablemapConnectionDataDuplicated [%s] [true]\n", 
 					TablemapConnectionData[i].SiteName);
-				n.Format("It seems you have multiple versions of the same map in your scraper folder.\n\n"\
+				error_message.Format("It seems you have multiple versions of the same map in your scraper folder.\n\n"\
 					"SITENAME = %s\n\n"\
 					"This will cause problems as the autoconnector won't be able to decide which one to use.\n"\
 					"Please remove the superfluous maps from the scraper folder.\n", 
 					TablemapConnectionData[i].SiteName);
-				MessageBox(0, (LPCTSTR) n, "Warning! Duplicate SiteName", MB_OK|MB_ICONWARNING);
+				MessageBox(0, (LPCTSTR) error_message, "Warning! Duplicate SiteName", MB_OK|MB_ICONWARNING);
 			}
 		}
 	}
@@ -206,7 +207,7 @@ void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 	if (map->sitename == "")
 	{
 		CString error_message;
-		error_message.Formst("Tablemap contains no sitename.\n"
+		error_message.Format("Tablemap contains no sitename.\n"
 			"Sitenames are necessary to recognize duplicate TMs\n"
 			"(and for other features like PokerTracker).\n\n",
 			"%s", map->filepath);
