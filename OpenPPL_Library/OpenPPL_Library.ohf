@@ -200,6 +200,13 @@ didcallround3
 ##f$OpenPPL_CallsSinceLastRaise##
 nopponentscalling
 
+##f$OpenPPL_Folds##
+(betround == 1) ? (nplayersdealt  - nopponentsplaying - 1) :
+(betround == 2) ? (nplayersround2 - nopponentsplaying - 1) :
+(betround == 3) ? (nplayersround3 - nopponentsplaying - 1) :
+(betround == 4) ? (nplayersround4 - nopponentsplaying - 1) :
+0
+
 ##f$handsplayed##
 handsplayed
 
