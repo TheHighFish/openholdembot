@@ -197,6 +197,17 @@ didcallround2
 ##f$OpenPPL_CalledOnTurn##
 didcallround3
 
+##f$AddNopponentscalling##
+f$OpenPPL_Calls + nopponentscalling
+
+##OpenPPL_InitCalls##
+(f$OpenPPL_BotsActionsOnThisRound == 0) ?
+  me_st_MemCalls_f$nopponentscalling :
+  me_st_MemCalls_f$AddNopponentscalling
+
+##f$OpenPPL_Calls##
+me_re_MemCalls
+
 ##f$OpenPPL_CallsSinceLastRaise##
 nopponentscalling
 
@@ -642,16 +653,16 @@ nplayersdealt == 2 ?
   (balance_rank1 == balance ? balance_rank0 : balance_rank1) : -1
 
 ##f$OpenPPLCalculateOpponentsWithHigherStack##
-(((Balance0 + currentbet0) > (balance + currentbet)) ? 1: 0)
-+ (((Balance1 + currentbet1) > (balance + currentbet)) ? 1: 0)
-+ (((Balance2 + currentbet2) > (balance + currentbet)) ? 1: 0)
-+ (((Balance3 + currentbet3) > (balance + currentbet)) ? 1: 0)
-+ (((Balance4 + currentbet4) > (balance + currentbet)) ? 1: 0)
-+ (((Balance5 + currentbet5) > (balance + currentbet)) ? 1: 0)
-+ (((Balance6 + currentbet6) > (balance + currentbet)) ? 1: 0)
-+ (((Balance7 + currentbet7) > (balance + currentbet)) ? 1: 0)
-+ (((Balance8 + currentbet8) > (balance + currentbet)) ? 1: 0)
-+ (((Balance9 + currentbet9) > (balance + currentbet)) ? 1: 0)
+  (((balance0 + currentbet0) > (balance + currentbet)) ? 1: 0)
++ (((balance1 + currentbet1) > (balance + currentbet)) ? 1: 0)
++ (((balance2 + currentbet2) > (balance + currentbet)) ? 1: 0)
++ (((balance3 + currentbet3) > (balance + currentbet)) ? 1: 0)
++ (((balance4 + currentbet4) > (balance + currentbet)) ? 1: 0)
++ (((balance5 + currentbet5) > (balance + currentbet)) ? 1: 0)
++ (((balance6 + currentbet6) > (balance + currentbet)) ? 1: 0)
++ (((balance7 + currentbet7) > (balance + currentbet)) ? 1: 0)
++ (((balance8 + currentbet8) > (balance + currentbet)) ? 1: 0)
++ (((balance9 + currentbet9) > (balance + currentbet)) ? 1: 0)
 
 ##f$OpenPPL_InitOpponentsWithHigherStack##
 (betround == 1) ? me_st_MemOpponentsWithHigherStack_f$OpenPPLCalculateOpponentsWithHigherStack : 0
@@ -2347,9 +2358,6 @@ f$OpenPPL_Middle
 
 
 ##f$OpenPPL_HaveBackdoorStraightDraw##
-0
-
-##f$OpenPPL_Raises##
 0
 
 ##f$OpenPPL_Decision##
