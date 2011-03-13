@@ -230,6 +230,86 @@ nopponentscalling
 (betround == 4) ? (nplayersround4 - nopponentsplaying - 1) :
 0
 
+##f$OpenPPL_Chair0CheckiongInFrontOfHero##
+   (currentbet0 == 0)
+&& (playersactivebits & 0b0000000001)
+&& (ac_dealpos0 < originaldealposition)
+
+##f$OpenPPL_Chair1CheckiongInFrontOfHero##
+   (currentbet1 == 0)
+&& (playersactivebits & 0b0000000010)
+&& (ac_dealpos1 < originaldealposition)
+
+##f$OpenPPL_Chair2CheckiongInFrontOfHero##
+   (currentbet2 == 0)
+&& (playersactivebits & 0b0000000100)
+&& (ac_dealpos2 < originaldealposition)
+
+##f$OpenPPL_Chair3CheckiongInFrontOfHero##
+   (currentbet3 == 0)
+&& (playersactivebits & 0b0000001000)
+&& (ac_dealpos3 < originaldealposition)
+
+##f$OpenPPL_Chair4CheckiongInFrontOfHero##
+   (currentbet4 == 0)
+&& (playersactivebits & 0b0000010000)
+&& (ac_dealpos4 < originaldealposition)
+
+##f$OpenPPL_Chair5CheckiongInFrontOfHero##
+   (currentbet5 == 0)
+&& (playersactivebits & 0b0000100000)
+&& (ac_dealpos5 < originaldealposition)
+
+##f$OpenPPL_Chair6CheckiongInFrontOfHero##
+   (currentbet6 == 0)
+&& (playersactivebits & 0b0001000000)
+&& (ac_dealpos6 < originaldealposition)
+
+##f$OpenPPL_Chair7CheckiongInFrontOfHero##
+   (currentbet7 == 0)
+&& (playersactivebits & 0b0010000000)
+&& (ac_dealpos7 < originaldealposition)
+
+##f$OpenPPL_Chair8CheckiongInFrontOfHero##
+   (currentbet8 == 0)
+&& (playersactivebits & 0b0100000000)
+&& (ac_dealpos8 < originaldealposition)
+
+##f$OpenPPL_Chair9CheckiongInFrontOfHero##
+   (currentbet9 == 0)
+&& (playersactivebits & 0b1000000000)
+&& (ac_dealpos9 < originaldealposition)
+
+##f$OpenPPL_ChecksAfterHero##
+// Valid second orbit only
+// All active players with a zero bet
+nopponentschecking
+
+##f$OpenPPL_ChecksInFrontOfHero##
+// Valid first orbit only
+  f$OpenPPL_Chair0CheckiongInFrontOfHero
++ f$OpenPPL_Chair1CheckiongInFrontOfHero
++ f$OpenPPL_Chair2CheckiongInFrontOfHero
++ f$OpenPPL_Chair3CheckiongInFrontOfHero
++ f$OpenPPL_Chair4CheckiongInFrontOfHero
++ f$OpenPPL_Chair5CheckiongInFrontOfHero
++ f$OpenPPL_Chair6CheckiongInFrontOfHero
++ f$OpenPPL_Chair7CheckiongInFrontOfHero
++ f$OpenPPL_Chair8CheckiongInFrontOfHero
++ f$OpenPPL_Chair9CheckiongInFrontOfHero
+
+##f$OpenPPL_CalculateChecks##
+(f$OpenPPL_BotsActionsOnThisRound == 0) ? f$OpenPPL_ChecksInFrontOfHero :
+// Stored value of checks on previous orbit plus players behind
+(f$OpenPPL_BotsActionsOnThisRound == 1) ? (f$OpenPPL_Checks + f$OpenPPL_ChecksAfterHero) :
+0
+
+##f$OpenPPL_InitChecks##
+(f$OpenPPL_BotsActionsOnThisRound <= 1) ? me_st_MemChecks_f$OpenPPL_CalculateChecks : 0
+
+##f$OpenPPL_Checks##
+me_re_MemChecks
+
 ##f$handsplayed##
 handsplayed
 
