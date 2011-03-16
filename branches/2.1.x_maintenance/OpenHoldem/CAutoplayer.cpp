@@ -764,6 +764,8 @@ void CAutoplayer::DoSlider(void)
 		write_logautoplay(1, ActionConstantNames(k_action_jam));
 		write_log(1, "Jam complete: %d,%d,%d,%d\n", r.left, r.top, r.right, r.bottom);
 
+		p_heartbeat_thread->set_replay_recorded_this_turn(false);
+
 		// reset elapsedauto symbol
 		time_t my_time_t;
 		time(&my_time_t);
