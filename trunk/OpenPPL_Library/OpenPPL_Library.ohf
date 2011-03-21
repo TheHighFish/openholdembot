@@ -9,9 +9,11 @@
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
 // The original PPL (Poker Programming Language) got invented by
-//   Shanky Bonusbots:      http://www.bonusbots.com/supportforum/YaBB.pl
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
 // Required OpenHoldem version: 2.2.0 or later
+//   Symbols not working with 2.1.x:
+//     * isfinaltable
 //
 // Contributors:
 //   Bob3456
@@ -220,8 +222,33 @@ f$OpenPPL_Calls + nopponentscalling
 ##f$OpenPPL_Calls##
 me_re_MemCalls
 
+##f$LastRaiserCurrentBet##
+raischair == 0 ? currentbet0 :
+raischair == 1 ? currentbet1 :
+raischair == 2 ? currentbet2 :
+raischair == 3 ? currentbet3 :
+raischair == 4 ? currentbet4 :
+raischair == 5 ? currentbet5 :
+raischair == 6 ? currentbet6 :
+raischair == 7 ? currentbet7 :
+raischair == 8 ? currentbet8 :
+raischair == 9 ? currentbet9 :
+-1
+
+##f$PlayersRaisingOrColdCallingTheLastRaise##
+  (currentbet0 == f$LastRaiserCurrentBet ? 1 : 0)
++ (currentbet1 == f$LastRaiserCurrentBet ? 1 : 0)
++ (currentbet2 == f$LastRaiserCurrentBet ? 1 : 0)
++ (currentbet3 == f$LastRaiserCurrentBet ? 1 : 0)
++ (currentbet4 == f$LastRaiserCurrentBet ? 1 : 0)
++ (currentbet5 == f$LastRaiserCurrentBet ? 1 : 0)
++ (currentbet6 == f$LastRaiserCurrentBet ? 1 : 0)
++ (currentbet7 == f$LastRaiserCurrentBet ? 1 : 0)
++ (currentbet8 == f$LastRaiserCurrentBet ? 1 : 0)
++ (currentbet9 == f$LastRaiserCurrentBet ? 1 : 0)
+
 ##f$OpenPPL_CallsSinceLastRaise##
-nopponentscalling
+(f$PlayersRaisingOrColdCallingTheLastRaise - 1)
 
 ##f$OpenPPL_Folds##
 (betround == 1) ? (nplayersdealt  - nopponentsplaying - 1) :
@@ -2058,6 +2085,52 @@ f$OpenPPL_HaveStraight
 ##f$OpenPPL_NumberOfUnknownSuitedOvercards##
 // Unknown suited cards are cards, which are not on board and not in heroes hand.
 `((~srankbits & 0x7fff) >> srankhi)
+
+##f$OpenPPL_BoardKicker_FourOfAKindOnBoard##
+(betround == 4) ? f$OpenPPL_HighestUnpairedBoardCard : 2
+
+##f$OpenPPL_NutFullHouseOrFourOfAKind_FourOfAKindOnBoard##
+// PreCondition: FourOfAKindOnBoard
+//
+// case 1: we play the board. e.g. 8888Q, we have J5
+[rankhiplayer < f$OpenPPL_BoardKicker_FourOfAKindOnBoard] ?
+[
+	// case 1A: common kicker is higher then quads, e.g. 8888Q.
+   (f$OpenPPL_BoardKicker_FourOfAKindOnBoard > trankcommon ) ? (f$OpenPPL_ConstCardAce - rankhiplayer + 1) :
+   // case 1B: common kicker is lower than quads
+   (f$OpenPPL_ConstCardAce - rankhiplayer + 1)
+] :
+// Otherwise: case 2: One of our cards is better then the nonpaired board card, e.g. 88885, we have J2
+[
+   // case 2A: Our kicker is better than quads, too (better than all board cards)
+   (rankhiplayer > trankcommon) ? (f$OpenPPL_ConstCardAce - rankhiplayer + 1) :
+   // case 2B: Our kicker is worse than quads, e.g. 88885, we have 72
+   (f$OpenPPL_ConstCardAce - rankhiplayer)
+]
+
+##f$OpenPPL_NutFullHouseOrFourOfAKind_FullHouseOnBoard##
+0
+
+##f$OpenPPL_NutFullHouseOrFourOfAKind_ThreeOfAKindOnBoard##
+0
+
+##f$OpenPPL_NutFullHouseOrFourOfAKind_TwoPairsOnBoard##
+0
+
+##f$OpenPPL_NutFullHouseOrFourOfAKind_PairOnBoard##
+0
+
+##f$OpenPPL_NutFullHouseOrFourOfAKind##
+(rankbitscommon & fourofakind ) ? f$OpenPPL_NutFullHouseOrFourOfAKind_FourOfAKindOnBoard :
+(rankbitscommon & fullhouse   ) ? f$OpenPPL_NutFullHouseOrFourOfAKind_FullHouseOnBoard :
+(rankbitscommon & threeofakind) ? f$OpenPPL_NutFullHouseOrFourOfAKind_ThreeOfAKindOnBoard :
+(rankbitscommon & twopair     ) ? f$OpenPPL_NutFullHouseOrFourOfAKind_TwoPairsOnBoard :
+(rankbitscommon & onepair     ) ? f$OpenPPL_NutFullHouseOrFourOfAKind_PairOnBoard :
+// Otherwise: no full house
+// Docu says: this case is 0; and this special case needs extra care.
+// However returning a high number instead of -1 seems better to me,
+// as it indicates the weakness and avoids any pitfalls.
+999
 
 ##f$OpenPPL_Overcards##
 (($$pr0 > rankhicommon)  && ($$pr1 > rankhicommon))  ? 2 :
