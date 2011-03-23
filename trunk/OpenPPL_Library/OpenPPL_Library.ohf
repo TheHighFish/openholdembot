@@ -997,6 +997,10 @@ f$OpenPPL_OneCardStraightPossible && !f$OpenPPL_MoreThanOneOneCardStraightPossib
 [(f$OpenPPL_TopFlopCard - f$OpenPPL_2ndTopFlopCard <= 3) && (f$OpenPPL_TopFlopCard != f$OpenPPL_ConstCardAce)]
 || [(f$OpenPPL_2ndTopFlopCard - f$OpenPPL_LowestFlopCard <= 3) && (f$OpenPPL_LowestFlopCard >= f$OpenPPL_ConstCardTwo)]
 
+##f$OpenPPL_IndividualOverCardsOnBoard##
+// Works like OvercardsOnBoard, except that it counts cards only once
+`[rankbitscommon >> (rankhiplayer + 1)]
+
 ##f$OpenPPL_OvercardsOnBoard##
 (($$cr0 > rankhiplayer) ? 1 : 0) +
 (($$cr1 > rankhiplayer) ? 1 : 0) +
@@ -2111,8 +2115,40 @@ f$OpenPPL_HaveStraight
 ##f$OpenPPL_NutFullHouseOrFourOfAKind_FullHouseOnBoard##
 0
 
+##f$OpenPPL_RankOfSetOnBoard##
+// Precondition: set on board
+trankcommon
+
 ##f$OpenPPL_NutFullHouseOrFourOfAKind_ThreeOfAKindOnBoard##
-0
+// Case 1: we have the quads: the nuts
+(rankhiplayer == f$OpenPPL_RankOfSetOnBoard) || (rankloplayer ==f$OpenPPL_RankOfSetOnBoard) ? 1 :
+// Otherwise: we have a fullhouse with either a pocket-pair or pair a board-card.
+// Case 2: Pocket-pair
+ispair ?
+[
+    // Everybody who has a higher pocket pair or hits a higher board-card
+    // or hits the set will get a better hand
+    (f$OpenPPL_RankOfSetOnBoard > rankhiplayer) ? (f$OpenPPL_ConstCardAce - rankhiplayer) :
+    // Otherwise: set is lower, so there is 1 additional card, that loses for us
+    (f$OpenPPL_ConstCardAce - rankhiplayer + 1)
+] :
+// Case 3: We pair the board
+[
+    // Same logic applies as above:
+    // Case 3A: Our higher card hits the board
+    (rankhiplayer == f$OpenPPL_BestBoardCard) || (rankhiplayer == f$OpenPPL_2ndBestBoardCard) || (rankhiplayer == f$OpenPPL_3rdBestBoardCard) ?
+    [
+        (f$OpenPPL_RankOfSetOnBoard > rankhiplayer) ? (f$OpenPPL_ConstCardAce - rankhiplayer) :
+        // Otherwise: set is lower, so there is 1 additional card, that loses for us
+        (f$OpenPPL_ConstCardAce - rankhiplayer + 1)
+    ] :
+    [
+        // Otherwise rankloplayer paired:
+        (f$OpenPPL_RankOfSetOnBoard > rankloplayer) ? (f$OpenPPL_ConstCardAce - rankloplayer) :
+        // Otherwise: set is lower, so there is 1 additional card, that loses for us
+        (f$OpenPPL_ConstCardAce - rankloplayer + 1)
+    ]
+]
 
 ##f$OpenPPL_NutFullHouseOrFourOfAKind_TwoPairsOnBoard##
 0
