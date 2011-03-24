@@ -3383,7 +3383,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "nfriendsplaying", "1 of you are playing, 0 otherwise (0-1)");
 	AddSymbol(parent, "nfriendsblind", "1 of you are in a blind, 0 otherwise (0-1)");
 	AddSymbol(parent, "nopponentsseated", "number of opponents seated (not including you) (0-9)");
-	AddSymbol(parent, "nopponentssactive", "number of opponents active (not including you) (0-9)");
+	AddSymbol(parent, "nopponentsactive", "number of opponents active (not including you) (0-9)");
 	AddSymbol(parent, "nopponentsdealt", "number of opponents dealt (not including you) (0-9)");
 	AddSymbol(parent, "nopponentsplaying", "number of opponents playing (not including you) (0-9)");
 	AddSymbol(parent, "nopponentsblind", "number of opponents blind (not including you) (0-9)");
