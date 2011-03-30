@@ -166,34 +166,34 @@ didcallround1
 // This has to be done *before* we call the Decision-function,
 // as we might call BotsLastAction there.
 // For the same reason InitBotsLastAction should be the last Init-routine to be called.
-([(betround == 1) && (f$OpenPPL_BotsActionsOnThisRound == 0)] ? me_st_MemBotsLastAction_f$Action_None :
+([(betround == 1) && (f$OpenPPL_BotsActionsOnThisRound == 0)] ? me_st_MemBotsLastAction_f$OpenPPL_Action_None :
 // "Initialize" first action on other rounds to last value of last round,
 // i.e. do nothing and keep the old value.
 [[(betround == 1) && (f$OpenPPL_BotsActionsOnThisRound == 0)] ? 0 : 0])
-// Then we call f$Decision and store BotsLastAction for the next time...
+// Then we call f$OpenPPL_Decision and store BotsLastAction for the next time...
 + [
 // Call = Play
-   (f$Decision == f$Action_Call)
-|| (f$Decision == f$Action_Play) ? me_st_MemBotsLastAction_f$Action_Call :
+   (f$OpenPPL_Decision == f$OpenPPL_Action_Call)
+|| (f$OpenPPL_Decision == f$OpenPPL_Action_Play) ? me_st_MemBotsLastAction_f$OpenPPL_Action_Call :
 // Fold
-(f$Decision == f$Action_Fold) ? me_st_MemBotsLastAction_f$Action_Fold :
+(f$OpenPPL_Decision == f$OpenPPL_Action_Fold) ? me_st_MemBotsLastAction_f$OpenPPL_Action_Fold :
 // Check
-(f$Decision == f$Action_Check) ? me_st_MemBotsLastAction_f$Action_Check :
+(f$OpenPPL_Decision == f$OpenPPL_Action_Check) ? me_st_MemBotsLastAction_f$OpenPPL_Action_Check :
 // Bet, Raise, BetHalfPot, BetPot, etc.
-// Also handling positive values for f$Decision, which mean betsizes.
-[  (f$Decision == f$Action_Raise)
-|| (f$Decision == f$Action_RaiseMin)
-|| (f$Decision == f$Action_RaiseHalfPot)
-|| (f$Decision == f$Action_RaiseMax)
-|| (f$Decision == f$Action_Bet)
-|| (f$Decision == f$Action_BetMin)
-|| (f$Decision == f$Action_BetHalfPot)
-|| (f$Decision == f$Action_BetMax)
-|| (f$Decision > 0)] ?
-[(ncallbets == 0) ? me_st_MemBotsLastAction_f$Action_Bet : me_st_MemBotsLastAction_f$Action_Raise] :
+// Also handling positive values for f$OpenPPL_Decision, which mean betsizes.
+[  (f$OpenPPL_Decision == f$OpenPPL_Action_Raise)
+|| (f$OpenPPL_Decision == f$OpenPPL_Action_RaiseMin)
+|| (f$OpenPPL_Decision == f$OpenPPL_Action_RaiseHalfPot)
+|| (f$OpenPPL_Decision == f$OpenPPL_Action_RaiseMax)
+|| (f$OpenPPL_Decision == f$OpenPPL_Action_Bet)
+|| (f$OpenPPL_Decision == f$OpenPPL_Action_BetMin)
+|| (f$OpenPPL_Decision == f$OpenPPL_Action_BetHalfPot)
+|| (f$OpenPPL_Decision == f$OpenPPL_Action_BetMax)
+|| (f$OpenPPL_Decision > 0)] ?
+[(ncallbets == 0) ? me_st_MemBotsLastAction_f$OpenPPL_Action_Bet : me_st_MemBotsLastAction_f$OpenPPL_Action_Raise] :
 // Other cases: this should not happen
 // Handling them as "None"
-me_st_MemBotsLastAction_f$Action_None
+me_st_MemBotsLastAction_f$OpenPPL_Action_None
 ]
 
 ##f$OpenPPL_BotsLastAction##
@@ -211,18 +211,18 @@ didcallround2
 ##f$OpenPPL_CalledOnTurn##
 didcallround3
 
-##f$AddNopponentscalling##
+##f$OpenPPL_AddNopponentscalling##
 f$OpenPPL_Calls + nopponentscalling
 
 ##OpenPPL_InitCalls##
 (f$OpenPPL_BotsActionsOnThisRound == 0) ?
-  me_st_MemCalls_f$nopponentscalling :
-  me_st_MemCalls_f$AddNopponentscalling
+  me_st_MemCalls_f$OpenPPL_nopponentscalling :
+  me_st_MemCalls_f$OpenPPL_AddNopponentscalling
 
 ##f$OpenPPL_Calls##
 me_re_MemCalls
 
-##f$LastRaiserCurrentBet##
+##f$OpenPPL_LastRaiserCurrentBet##
 raischair == 0 ? currentbet0 :
 raischair == 1 ? currentbet1 :
 raischair == 2 ? currentbet2 :
@@ -235,20 +235,20 @@ raischair == 8 ? currentbet8 :
 raischair == 9 ? currentbet9 :
 -1
 
-##f$PlayersRaisingOrColdCallingTheLastRaise##
-  (currentbet0 == f$LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet1 == f$LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet2 == f$LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet3 == f$LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet4 == f$LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet5 == f$LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet6 == f$LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet7 == f$LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet8 == f$LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet9 == f$LastRaiserCurrentBet ? 1 : 0)
+##f$OpenPPL_PlayersRaisingOrColdCallingTheLastRaise##
+  (currentbet0 == f$OpenPPL_LastRaiserCurrentBet ? 1 : 0)
++ (currentbet1 == f$OpenPPL_LastRaiserCurrentBet ? 1 : 0)
++ (currentbet2 == f$OpenPPL_LastRaiserCurrentBet ? 1 : 0)
++ (currentbet3 == f$OpenPPL_LastRaiserCurrentBet ? 1 : 0)
++ (currentbet4 == f$OpenPPL_LastRaiserCurrentBet ? 1 : 0)
++ (currentbet5 == f$OpenPPL_LastRaiserCurrentBet ? 1 : 0)
++ (currentbet6 == f$OpenPPL_LastRaiserCurrentBet ? 1 : 0)
++ (currentbet7 == f$OpenPPL_LastRaiserCurrentBet ? 1 : 0)
++ (currentbet8 == f$OpenPPL_LastRaiserCurrentBet ? 1 : 0)
++ (currentbet9 == f$OpenPPL_LastRaiserCurrentBet ? 1 : 0)
 
 ##f$OpenPPL_CallsSinceLastRaise##
-(f$PlayersRaisingOrColdCallingTheLastRaise - 1)
+(f$OpenPPL_PlayersRaisingOrColdCallingTheLastRaise - 1)
 
 ##f$OpenPPL_Folds##
 (betround == 1) ? (nplayersdealt  - nopponentsplaying - 1) :
@@ -337,124 +337,6 @@ nopponentschecking
 ##f$OpenPPL_Checks##
 me_re_MemChecks
 
-##f$handsplayed##
-handsplayed
-
-##f$br##
-br
-
-##f$OpenPPL_Raises##
-f$CalcMemRaises > 0 ? (br > 1 ? (me_re_MemRaises -1 + me_st_MemRaises_f$CalcMemRaises) : (me_re_MemRaises + me_st_MemRaises_f$CalcMemRaises)) : 0
-
-##f$CalcMemRaises##
-
-handsplayed <= 1 ? //initalize variables -- is there an other way???
-me_st_MemBr_f$br + me_st_MemHandsplayed_f$handsplayed +me_st_MemRaises_0 :
-(
-((playersplayingbits & 1) ? ((playersplayingbits & 512) ? (currentbet0>currentbet9+sblind ? 1 : 0) :
-(playersplayingbits & 256) ? (currentbet0>currentbet8+sblind ? 1 : 0) :
-(playersplayingbits & 128) ? (currentbet0>currentbet7+sblind ? 1 : 0) :
-(playersplayingbits & 64) ? (currentbet0>currentbet6+sblind ? 1 : 0) :
-(playersplayingbits & 32) ? (currentbet0>currentbet5+sblind ? 1 : 0) :
-(playersplayingbits & 16) ? (currentbet0>currentbet4+sblind ? 1 : 0) :
-(playersplayingbits &8) ? (currentbet0>currentbet3+sblind ? 1 : 0) :
-(playersplayingbits & 4) ? (currentbet0>currentbet2+sblind ? 1 : 0) :
-(playersplayingbits & 2) ? (currentbet0>currentbet1+sblind ? 1 : 0) :
-0):0) +
-((playersplayingbits & 2) ? ((playersplayingbits & 1) ? (currentbet1>currentbet0+sblind ? 1 : 0) :
-(playersplayingbits & 512) ? (currentbet1>currentbet9+sblind ? 1 : 0) :
-(playersplayingbits & 256) ? (currentbet1>currentbet8+sblind ? 1 : 0) :
-(playersplayingbits & 128) ? (currentbet1>currentbet7+sblind ? 1 : 0) :
-(playersplayingbits & 64) ? (currentbet1>currentbet6+sblind ? 1 : 0) :
-(playersplayingbits & 32) ? (currentbet1>currentbet5+sblind ? 1 : 0) :
-(playersplayingbits & 16) ? (currentbet1>currentbet4+sblind ? 1 : 0) :
-(playersplayingbits &8) ? (currentbet1>currentbet3+sblind ? 1 : 0) :
-(playersplayingbits & 4) ? (currentbet1>currentbet2+sblind ? 1 : 0) :
-0):0) +
-((playersplayingbits & 4) ? ((playersplayingbits & 2) ? (currentbet2>currentbet1+sblind ? 1 : 0) :
-(playersplayingbits & 1) ? (currentbet2>currentbet0+sblind ? 1 : 0) :
-(playersplayingbits & 512) ? (currentbet2>currentbet9+sblind ? 1 : 0) :
-(playersplayingbits & 256) ? (currentbet2>currentbet8+sblind ? 1 : 0) :
-(playersplayingbits & 128) ? (currentbet2>currentbet7+sblind ? 1 : 0) :
-(playersplayingbits & 64) ? (currentbet2>currentbet6+sblind ? 1 : 0) :
-(playersplayingbits & 32) ? (currentbet2>currentbet5+sblind ? 1 : 0) :
-(playersplayingbits & 16) ? (currentbet2>currentbet4+sblind ? 1 : 0) :
-(playersplayingbits &8) ? (currentbet2>currentbet3+sblind ? 1 : 0) :
-0):0) +
-((playersplayingbits &8) ? ((playersplayingbits & 4) ? (currentbet3>currentbet2+sblind ? 1 : 0) :
-(playersplayingbits & 2) ? (currentbet3>currentbet1+sblind ? 1 : 0) :
-(playersplayingbits & 1) ? (currentbet3>currentbet0+sblind ? 1 : 0) :
-(playersplayingbits & 512) ? (currentbet3>currentbet9+sblind ? 1 : 0) :
-(playersplayingbits & 256) ? (currentbet3>currentbet8+sblind ? 1 : 0) :
-(playersplayingbits & 128) ? (currentbet3>currentbet7+sblind ? 1 : 0) :
-(playersplayingbits & 64) ? (currentbet3>currentbet6+sblind ? 1 : 0) :
-(playersplayingbits & 32) ? (currentbet3>currentbet5+sblind ? 1 : 0) :
-(playersplayingbits & 16) ? (currentbet3>currentbet4+sblind ? 1 : 0) :
-0):0) +
-((playersplayingbits & 16) ?((playersplayingbits &8) ? (currentbet4>currentbet3+sblind ? 1 : 0) :
-(playersplayingbits & 4) ? (currentbet4>currentbet2+sblind ? 1 : 0) :
-(playersplayingbits & 2) ? (currentbet4>currentbet1+sblind ? 1 : 0) :
-(playersplayingbits & 1) ? (currentbet4>currentbet0+sblind ? 1 : 0) :
-(playersplayingbits & 512) ? (currentbet4>currentbet9+sblind ? 1 : 0) :
-(playersplayingbits & 256) ? (currentbet4>currentbet8+sblind ? 1 : 0) :
-(playersplayingbits & 128) ? (currentbet4>currentbet7+sblind ? 1 : 0) :
-(playersplayingbits & 64) ? (currentbet4>currentbet6+sblind ? 1 : 0) :
-(playersplayingbits & 32) ? (currentbet4>currentbet5+sblind ? 1 : 0) :
-0):0) +
-((playersplayingbits & 32) ?((playersplayingbits & 16) ? (currentbet5>currentbet4+sblind ? 1 : 0) :
-(playersplayingbits &8) ? (currentbet5>currentbet3+sblind ? 1 : 0) :
-(playersplayingbits & 4) ? (currentbet5>currentbet2+sblind ? 1 : 0) :
-(playersplayingbits & 2) ? (currentbet5>currentbet1+sblind ? 1 : 0) :
-(playersplayingbits & 1) ? (currentbet5>currentbet0+sblind ? 1 : 0) :
-(playersplayingbits & 512) ? (currentbet5>currentbet9+sblind ? 1 : 0) :
-(playersplayingbits & 256) ? (currentbet5>currentbet8+sblind ? 1 : 0) :
-(playersplayingbits & 128) ? (currentbet5>currentbet7+sblind ? 1 : 0) :
-(playersplayingbits & 64) ? (currentbet5>currentbet6+sblind ? 1 : 0) :
-0):0)+
-((playersplayingbits & 64) ?((playersplayingbits & 32) ? (currentbet6>currentbet5+sblind ? 1 : 0) :
-(playersplayingbits & 16) ? (currentbet6>currentbet4+sblind ? 1 : 0) :
-(playersplayingbits &8) ? (currentbet6>currentbet3+sblind ? 1 : 0) :
-(playersplayingbits & 4) ? (currentbet6>currentbet2+sblind ? 1 : 0) :
-(playersplayingbits & 2) ? (currentbet6>currentbet1+sblind ? 1 : 0) :
-(playersplayingbits & 1) ? (currentbet6>currentbet0+sblind ? 1 : 0) :
-(playersplayingbits & 512) ? (currentbet6>currentbet9+sblind ? 1 : 0) :
-(playersplayingbits & 256) ? (currentbet6>currentbet8+sblind ? 1 : 0) :
-(playersplayingbits & 128) ? (currentbet6>currentbet7+sblind ? 1 : 0) :
-0):0)+
-((playersplayingbits & 128) ?((playersplayingbits & 64) ? (currentbet7>currentbet6+sblind ? 1 : 0) :
-(playersplayingbits & 32) ? (currentbet7>currentbet5+sblind ? 1 : 0) :
-(playersplayingbits & 16) ? (currentbet7>currentbet4+sblind ? 1 : 0) :
-(playersplayingbits &8) ? (currentbet7>currentbet3+sblind ? 1 : 0) :
-(playersplayingbits & 4) ? (currentbet7>currentbet2+sblind ? 1 : 0) :
-(playersplayingbits & 2) ? (currentbet7>currentbet1+sblind ? 1 : 0) :
-(playersplayingbits & 1) ? (currentbet7>currentbet0+sblind ? 1 : 0) :
-(playersplayingbits & 512) ? (currentbet7>currentbet9+sblind ? 1 : 0) :
-(playersplayingbits & 256) ? (currentbet7>currentbet8+sblind ? 1 : 0) :
-0):0)+
-((playersplayingbits & 256) ?((playersplayingbits & 128) ? (currentbet8>currentbet7+sblind ? 1 : 0) :
-(playersplayingbits & 64) ? (currentbet8>currentbet6+sblind ? 1 : 0) :
-(playersplayingbits & 32) ? (currentbet8>currentbet5+sblind ? 1 : 0) :
-(playersplayingbits & 16) ? (currentbet8>currentbet4+sblind ? 1 : 0) :
-(playersplayingbits &8) ? (currentbet8>currentbet3+sblind ? 1 : 0) :
-(playersplayingbits & 4) ? (currentbet8>currentbet2+sblind ? 1 : 0) :
-(playersplayingbits & 2) ? (currentbet8>currentbet1+sblind ? 1 : 0) :
-(playersplayingbits & 1) ? (currentbet8>currentbet0+sblind ? 1 : 0) :
-(playersplayingbits & 512) ? (currentbet8>currentbet9+sblind ? 1 : 0) :
-0):0)+
-((playersplayingbits & 512) ?((playersplayingbits & 256) ? (currentbet9>currentbet8+sblind ? 1 : 0) :
-(playersplayingbits & 128) ? (currentbet9>currentbet7+sblind ? 1 : 0) :
-(playersplayingbits & 64) ? (currentbet9>currentbet6+sblind ? 1 : 0) :
-(playersplayingbits & 32) ? (currentbet9>currentbet5+sblind ? 1 : 0) :
-(playersplayingbits & 16) ? (currentbet9>currentbet4+sblind ? 1 : 0) :
-(playersplayingbits &8) ? (currentbet9>currentbet3+sblind ? 1 : 0) :
-(playersplayingbits & 4) ? (currentbet9>currentbet2+sblind ? 1 : 0) :
-(playersplayingbits & 2) ? (currentbet9>currentbet1+sblind ? 1 : 0) :
-(playersplayingbits & 1) ? (currentbet9>currentbet0+sblind ? 1 : 0) :
-0):0)+
-(me_st_MemBr_f$br + me_st_MemHandsplayed_f$handsplayed) + //These values are needed to determine if its the first action round or any further
-(me_re_MemBr == br && me_re_MemHandsplayed == handsplayed ? me_re_MemRaises : me_st_MemRaises_0) //If its first action round stored raises gets set back to zero, if not stored raises gets added to the actually seen raises on the table
-)
-
 ##f$OpenPPL_NoBettingOnFlop##
 (nbetsround2 == 0)
 
@@ -499,6 +381,16 @@ me_st_MemBr_f$br + me_st_MemHandsplayed_f$handsplayed +me_st_MemRaises_0 :
 ##f$OpenPPL_NumberOfRaisesOnTurn##
 (betround > 3) ? me_re_MemRaisesOnTurn : 0
 
+##f$OpenPPL_Calculate_Raises##
+me_re_MemRaises+f$OpenPPL_RaisesSinceLastPlay
+
+##f$OpenPPL_InitRaises##
+(f$OpenPPL_BotsActionsOnThisRound == 0) ? me_st_MemRaises_f$OpenPPL_RaisesSinceLastPlay :
+f$OpenPPL_Calculate_Raises
+
+##f$OpenPPL_Raises##
+me_re_MemRaises
+
 ##f$OpenPPL_RaisesBeforeFlop##
 (f$OpenPPL_NumberOfRaisesBeforeFlop > 0)
 
@@ -508,10 +400,47 @@ me_st_MemBr_f$br + me_st_MemHandsplayed_f$handsplayed +me_st_MemRaises_0 :
 ##f$OpenPPL_RaisesOnTurn##
 (f$OpenPPL_NumberOfRaisesOnTurn > 0)
 
+##f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPostflop##
+(nopponentsraising > 0) ? (nopponentsraising - 1) : 0
+
+##f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopInSmallBlind##
+// If we are in small-blind, there is 1 opponent "blind-raising",
+(nopponentsraising - 1)
+
+##f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopInBigBlind##
+// If we are in small-blind, there *was* 1 opponent "blind-raising",
+// but he does no longer get counted, as he either did fold,
+// did call or did truely raise
+nopponentsraising
+
+##f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopNotInTheBlinds##
+// There are (usually) 2 blindraisers which should not get countet
+(nopponentsraising - 2)
+
+##f$OpenPPL_RaisesBeforeOurFirstAction##
+(betround > 1) ? f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPostflop :
+(dealposition == 1) ? f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopInSmallBlind :
+(dealposition == 2) ? f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopInBigBlind :
+f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopNotInTheBlinds
+
+##f$OpenPPL_RaisesSinceLastPlayOnOurSecondAction##
+// If we checked the first time the bettor sits behind us.
+[didchec && (nopponentsraising > 0) ] ? (nopponentsraising - 1) :
+[didchec && (nopponentsraising == 0)] ? 0 :
+// Otherwise: either we were the first bettor
+// or there was a bet and maybe raises in front of us,
+// so all technical "raises" behind us are true raises
+nopponentsraising
+
+##f$OpenPPL_RaisesSinceLastPlayAfterOurSecondAction##
+// Now all technical raises are true raises, no bettors possible
+nopponentsraising
+
 ##f$OpenPPL_RaisesSinceLastPlay##
-// nopponentsraising calls the raising opponents for one circuit
-(f$OpenPPL_BotsActionsOnThisRoundIncludingChecks > 0) ? nopponentsraising :
-// Otherwise: our first action: undefined
+(f$OpenPPL_BotsActionsOnThisRound == 0) ? f$OpenPPL_RaisesBeforeOurFirstAction :
+(f$OpenPPL_BotsActionsOnThisRound == 1) ? f$OpenPPL_RaisesSinceLastPlayOnOurSecondAction :
+(f$OpenPPL_BotsActionsOnThisRound >= 2) ? f$OpenPPL_RaisesSinceLastPlayAfterOurSecondAction :
+// This should not happen
 -1
 
 //*****************************************************************************
@@ -771,7 +700,7 @@ nplayersdealt == 3 ?
 nplayersdealt == 2 ?
   (balance_rank1 == balance ? balance_rank0 : balance_rank1) : -1
 
-##f$OpenPPLCalculateOpponentsWithHigherStack##
+##f$OpenPPL_OpenPPLCalculateOpponentsWithHigherStack##
   (((balance0 + currentbet0) > (balance + currentbet)) ? 1: 0)
 + (((balance1 + currentbet1) > (balance + currentbet)) ? 1: 0)
 + (((balance2 + currentbet2) > (balance + currentbet)) ? 1: 0)
@@ -784,7 +713,7 @@ nplayersdealt == 2 ?
 + (((balance9 + currentbet9) > (balance + currentbet)) ? 1: 0)
 
 ##f$OpenPPL_InitOpponentsWithHigherStack##
-(betround == 1) ? me_st_MemOpponentsWithHigherStack_f$OpenPPLCalculateOpponentsWithHigherStack : 0
+(betround == 1) ? me_st_MemOpponentsWithHigherStack_f$OpenPPL_OpenPPLCalculateOpponentsWithHigherStack : 0
 
 ##f$OpenPPL_OpponentsWithHigherStack##
 me_re_MemOpponentsWithHigherStack
@@ -2157,14 +2086,14 @@ ispair ?
 0
 
 ##f$OpenPPL_NutFullHouseOrFourOfAKind##
-(rankbitscommon & fourofakind ) ? f$OpenPPL_NutFullHouseOrFourOfAKind_FourOfAKindOnBoard :
-(rankbitscommon & fullhouse   ) ? f$OpenPPL_NutFullHouseOrFourOfAKind_FullHouseOnBoard :
-(rankbitscommon & threeofakind) ? f$OpenPPL_NutFullHouseOrFourOfAKind_ThreeOfAKindOnBoard :
-(rankbitscommon & twopair     ) ? f$OpenPPL_NutFullHouseOrFourOfAKind_TwoPairsOnBoard :
-(rankbitscommon & onepair     ) ? f$OpenPPL_NutFullHouseOrFourOfAKind_PairOnBoard :
+f$OpenPPL_QuadsOnBoard     ? f$OpenPPL_NutFullHouseOrFourOfAKind_FourOfAKindOnBoard :
+f$OpenPPL_FullHouseOnBoard ? f$OpenPPL_NutFullHouseOrFourOfAKind_FullHouseOnBoard :
+f$OpenPPL_TripsOnBoard     ? f$OpenPPL_NutFullHouseOrFourOfAKind_ThreeOfAKindOnBoard :
+f$OpenPPL_TwoPairOnBoard   ? f$OpenPPL_NutFullHouseOrFourOfAKind_TwoPairsOnBoard :
+f$OpenPPL_PairOnBoard      ? f$OpenPPL_NutFullHouseOrFourOfAKind_PairOnBoard :
 // Otherwise: no full house
 // Docu says: this case is 0; and this special case needs extra care.
-// However returning a high number instead of -1 seems better to me,
+// However returning a high number instead of 0 seems better to me,
 // as it indicates the weakness and avoids any pitfalls.
 999
 
@@ -2557,13 +2486,10 @@ f$OpenPPL_Middle
 //
 //*****************************************************************************
 
-##f$Decision##
+##f$OpenPPL_Decision##
 0
 
 ##f$OpenPPL_HaveBackdoorStraightDraw##
-0
-
-##f$OpenPPL_Decision##
 0
 
 ##f$OpenPPL_HighCardOfBestPossibleStraight##
