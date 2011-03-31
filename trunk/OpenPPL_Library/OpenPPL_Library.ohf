@@ -1299,6 +1299,20 @@ f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 1)
 (f$OpenPPL_HighCardOfBestPossibleStraight == f$OpenPPL_ConstCardSix)   ? f$OpenPPL_HighCardOf2ndBestPossibleStraightIfBestStraightIsSixHigh   :
 -1
 
+##f$OpenPPL_HighCardOfOurStraight##
+`(rankbits & 0b111110000000000) = 5 ? f$OpenPPL_ConstCardAce   :
+`(rankbits & 0b011111000000000) = 5 ? f$OpenPPL_ConstCardKing  :
+`(rankbits & 0b001111100000000) = 5 ? f$OpenPPL_ConstCardQueen :
+`(rankbits & 0b000111110000000) = 5 ? f$OpenPPL_ConstCardJack  :
+`(rankbits & 0b000011111000000) = 5 ? f$OpenPPL_ConstCardTen   :
+`(rankbits & 0b000001111100000) = 5 ? f$OpenPPL_ConstCardNine  :
+`(rankbits & 0b000000111110000) = 5 ? f$OpenPPL_ConstCardEight :
+`(rankbits & 0b000000011111000) = 5 ? f$OpenPPL_ConstCardSeven :
+`(rankbits & 0b000000001111100) = 5 ? f$OpenPPL_ConstCardSix   :
+`(rankbits & 0b000000000111110) = 5 ? f$OpenPPL_ConstCardFive  :
+// This should not happen
+-1
+
 ##f$OpenPPL_Have2ndNutStraight##
 f$OpenPPL_HaveStraight
 && (f$OpenPPL_HighCardOf2ndBestPossibleStraight == f$OpenPPL_HighCardOfOurStraight)
@@ -2543,8 +2557,7 @@ f$OpenPPL_Middle
 ##f$OpenPPL_HighCardOfBestPossibleStraight##
 0
 
-##f$OpenPPL_HighCardOfOurStraight##
-0
+
 
 //*****************************************************************************
 //
