@@ -2037,6 +2037,10 @@ f$OpenPPL_HaveStraight
 ##f$OpenPPL_BoardKicker_FourOfAKindOnBoard##
 (betround == 4) ? f$OpenPPL_HighestUnpairedBoardCard : 2
 
+##f$OpenPPL_NFH4OAK_PairOnBoard_WeHitQuads##
+// With a single pair on board and quads for us we have the dead nuts
+1
+
 ##f$OpenPPL_NutFullHouseOrFourOfAKind_FourOfAKindOnBoard##
 // PreCondition: FourOfAKindOnBoard
 //
