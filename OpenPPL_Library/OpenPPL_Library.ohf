@@ -1550,7 +1550,8 @@ isfullhouse || f$OpenPPL_HaveQuads
 
 ##f$OpenPPL_HaveNothing##
 !f$OpenPPL_HavePair && !(f$OpenPPL_Overcards == 2) && !f$OpenPPL_HaveBestOverpairOrBetter
-&& !f$OpenPPL_HaveBackdoorFlushDraw && !f$OpenPPL_HaveBackdoorStraightDraw
+&& !f$OpenPPL_HaveBackdoorFlushDraw
+// && !f$OpenPPL_HaveBackdoorStraightDraw
 
 ##f$OpenPPL_HaveNutFlush##
 [f$OpenPPL_HaveFlush && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 0)]
@@ -2042,7 +2043,29 @@ f$OpenPPL_HaveStraight
 ]
 
 ##f$OpenPPL_NutFullHouseOrFourOfAKind_FullHouseOnBoard##
-0
+// Precondition: FH on board
+// There are 7 cases:
+//
+// 1) we pair both board-cards, so we have quads and nobody can have better quads
+[(rankhiplayer = f$OpenPPL_BestBoardCard) && (rankloplayer == f$OpenPPL_2ndBestBoardCard)] ? f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairBothBoardCards :
+//
+// 2) we pair the set on board, which is higher than the pair, so we get the best quads
+[((rankhiplayer == f$RankOfSetOnBoard) || (rankloplayer == f$RankOfSetOnBoard)) && (f$RankOfSetOnBoard > 2ndBestBoardCard)] ? f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairHighSetOnBoard :
+//
+// 3) we pair the set on board, which is lower than the pair, so somebody could have better quads
+[((rankhiplayer == f$RankOfSetOnBoard) || (rankloplayer == f$RankOfSetOnBoard)) && (f$RankOfSetOnBoard < 2ndBestBoardCard)] ? f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairLowSetOnBoard :
+//
+// 4) we pair the pair on board, which is higher than the set, so we get a better FH, but there are still quads possible
+[((rankhiplayer == f$RankOfPairOnBoardWithFullHouseOnBoard) || (rankloplayer == f$RankOfPairOnBoardWithFullHouseOnBoard)) && (f$RankOfPairOnBoardWithFullHouseOnBoard > f$RankOfSetOnBoard)] ? f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairHighPairOnBoard :
+//
+// 5) we pair the pair on board, which is lower than the set, so we play the board, but one kind of quads is no longer possible
+[((rankhiplayer == f$RankOfPairOnBoardWithFullHouseOnBoard) || (rankloplayer == f$RankOfPairOnBoardWithFullHouseOnBoard)) && (f$RankOfPairOnBoardWithFullHouseOnBoard < f$RankOfSetOnBoard)] ? f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairLowPairOnBoard :
+//
+// 6) we don't pair anything, but have an overpair to the pair on board (we probably have to distinguish, if it is higher than the set or lower)
+[ispair && (rankhiplayer != f$OpenPPL_BestBoardCard) && (rankhiplayer != f$OpenPPL_2ndBestBoardCard) && (rankhiplayer > f$RankOfPairOnBoardWithFullHouseOnBoard)] ? f$OpenPPL_NFH4OAK_FullHouseOnBoard_WeHaveOverPairToPair :
+//
+// 7) we don't have an overpair to the pair and therefore play the board (probably again 2 cases)
+f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePlayTheBoard
 
 ##f$OpenPPL_RankOfSetOnBoard##
 // Precondition: set on board
@@ -2080,10 +2103,35 @@ ispair ?
 ]
 
 ##f$OpenPPL_NutFullHouseOrFourOfAKind_TwoPairsOnBoard##
-0
+// 5 basic cases
+//
+// 1) we complete the higher pair to quads
+[ispair && rankhiplayer == f$RankOfTopPairOnBoard] ? f$OpenPPL_NFH4OAK_TwoPairsOnBoard_WeHitTopQuads :
+//
+// 2) we complete the lower pair to quads
+[ispair && rankhiplayer == f$RankOfBottomPairOnBoard] ? f$OpenPPL_NFH4OAK_TwoPairsOnBoard_WeBottomTopQuads :
+//
+// 3) we pair both pairs: no quads possible, but:
+//   * maybe 1 higher FH, if anybody pairs the higher pair and the last board-card, if it is higher than the low pair
+//   * maybe 2 higher FHs, as above, if anybody pairs the completes the left board-card to higher trips
+[(rankhiplayer == f$RankOfTopPairOnBoard) && (rankloplayer == f$RankOfBottomPairOnBoard)] ? f$OpenPPL_NFH4OAK_TwoPairsOnBoard_WePairBothPairs :
+//
+// 4) we pair the higher board-card; probably several cases
+[(rankhiplayer == f$RankOfTopPairOnBoard) || (rankloplayer == f$RankOfTopPairOnBoard)] ? f$OpenPPL_NFH4OAK_TwoPairsOnBoard_WeHitTopSet :
+//
+// 5) we pair the lower board card; probably several cases
+[(rankhiplayer == f$RankOfBottomPairOnBoard) || (rankloplayer == f$RankOfBottomPairOnBoard)] ? f$OpenPPL_NFH4OAK_TwoPairsOnBoard_WeHitBottomSet :
+//
+// This should not happen
+-1
 
 ##f$OpenPPL_NutFullHouseOrFourOfAKind_PairOnBoard##
-0
+// Precondition: we have FH or quads, there is a pair on board.
+[ispair && (rankhiplayer == trankcommon)] ? f$OpenPPL_NFH4OAK_PairOnBoard_WeHitQuads :
+[ispair && (pokerval & fullhouse)] ? f$OpenPPL_NFH4OAK_PairOnBoard_WeHitASetWithPocketPair :
+[pokerval & fullhouse] ? f$OpenPPL_NFH4OAK_PairOnBoard_WeHitThePairAndAnotherCard :
+// This should not happen
+-1
 
 ##f$OpenPPL_NutFullHouseOrFourOfAKind##
 f$OpenPPL_QuadsOnBoard     ? f$OpenPPL_NutFullHouseOrFourOfAKind_FourOfAKindOnBoard :
@@ -2490,7 +2538,7 @@ f$OpenPPL_Middle
 0
 
 ##f$OpenPPL_HaveBackdoorStraightDraw##
-0
+// No standard PPL. but suggested
 
 ##f$OpenPPL_HighCardOfBestPossibleStraight##
 0
