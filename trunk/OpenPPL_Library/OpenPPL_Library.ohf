@@ -1300,16 +1300,16 @@ f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 1)
 -1
 
 ##f$OpenPPL_HighCardOfOurStraight##
-`(rankbits & 0b111110000000000) = 5 ? f$OpenPPL_ConstCardAce   :
-`(rankbits & 0b011111000000000) = 5 ? f$OpenPPL_ConstCardKing  :
-`(rankbits & 0b001111100000000) = 5 ? f$OpenPPL_ConstCardQueen :
-`(rankbits & 0b000111110000000) = 5 ? f$OpenPPL_ConstCardJack  :
-`(rankbits & 0b000011111000000) = 5 ? f$OpenPPL_ConstCardTen   :
-`(rankbits & 0b000001111100000) = 5 ? f$OpenPPL_ConstCardNine  :
-`(rankbits & 0b000000111110000) = 5 ? f$OpenPPL_ConstCardEight :
-`(rankbits & 0b000000011111000) = 5 ? f$OpenPPL_ConstCardSeven :
-`(rankbits & 0b000000001111100) = 5 ? f$OpenPPL_ConstCardSix   :
-`(rankbits & 0b000000000111110) = 5 ? f$OpenPPL_ConstCardFive  :
+`(rankbits & 0b111110000000000) == 5 ? f$OpenPPL_ConstCardAce   :
+`(rankbits & 0b011111000000000) == 5 ? f$OpenPPL_ConstCardKing  :
+`(rankbits & 0b001111100000000) == 5 ? f$OpenPPL_ConstCardQueen :
+`(rankbits & 0b000111110000000) == 5 ? f$OpenPPL_ConstCardJack  :
+`(rankbits & 0b000011111000000) == 5 ? f$OpenPPL_ConstCardTen   :
+`(rankbits & 0b000001111100000) == 5 ? f$OpenPPL_ConstCardNine  :
+`(rankbits & 0b000000111110000) == 5 ? f$OpenPPL_ConstCardEight :
+`(rankbits & 0b000000011111000) == 5 ? f$OpenPPL_ConstCardSeven :
+`(rankbits & 0b000000001111100) == 5 ? f$OpenPPL_ConstCardSix   :
+`(rankbits & 0b000000000111110) == 5 ? f$OpenPPL_ConstCardFive  :
 // This should not happen
 -1
 
@@ -2037,6 +2037,25 @@ f$OpenPPL_HaveStraight
 ##f$OpenPPL_BoardKicker_FourOfAKindOnBoard##
 (betround == 4) ? f$OpenPPL_HighestUnpairedBoardCard : 2
 
+##f$OpenPPL_NFH4OAK_PairOnBoard_WeHitASetWithPocketPair##
+// 2 is the lowest rank possible, because quads are still possible
+2
+// For each rank in the common cards above the rank in the pocket cards, theres a higher FH possible.
++  (rankbitscommon & 0b000000000001000 > rankbitsplayer ? 1 : 0)
++ (rankbitscommon & 0b000000000010000 > rankbitsplayer ? 1 : 0)
++ (rankbitscommon & 0b000000000100000 > rankbitsplayer ? 1 : 0)
++ (rankbitscommon & 0b000000001000000 > rankbitsplayer ? 1 : 0)
++ (rankbitscommon & 0b000000010000000 > rankbitsplayer ? 1 : 0)
++ (rankbitscommon & 0b000000100000000 > rankbitsplayer ? 1 : 0)
++ (rankbitscommon & 0b000001000000000 > rankbitsplayer ? 1 : 0)
++ (rankbitscommon & 0b000010000000000 > rankbitsplayer ? 1 : 0)
++ (rankbitscommon & 0b000100000000000 > rankbitsplayer ? 1 : 0)
++ (rankbitscommon & 0b001000000000000 > rankbitsplayer ? 1 : 0)
++ (rankbitscommon & 0b010000000000000 > rankbitsplayer ? 1 : 0)
++ (rankbitscommon & 0b100000000000000 > rankbitsplayer ? 1 : 0)
+// If the Pair on board is higher than our pocket-pair it got already counted
+- ((trankcommon > rankhiplayer) ? 1 : 0)
+
 ##f$OpenPPL_NFH4OAK_PairOnBoard_WeHitQuads##
 // With a single pair on board and quads for us we have the dead nuts
 1
@@ -2065,10 +2084,10 @@ f$OpenPPL_HaveStraight
 // There are 7 cases:
 //
 // 1) we pair both board-cards, so we have quads and nobody can have better quads
-[(rankhiplayer = f$OpenPPL_BestBoardCard) && (rankloplayer == f$OpenPPL_2ndBestBoardCard)] ? f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairBothBoardCards :
+[(rankhiplayer == f$OpenPPL_BestBoardCard) && (rankloplayer == f$OpenPPL_2ndBestBoardCard)] ? f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairBothBoardCards :
 //
 // 2) we pair the set on board, which is higher than the pair, so we get the best quads
-[((rankhiplayer == f$RankOfSetOnBoard) || (rankloplayer == f$RankOfSetOnBoard)) && (f$RankOfSetOnBoard > 2ndBestBoardCard)] ? f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairHighSetOnBoard :
+[((rankhiplayer == f$RankOfSetOnBoard) || (rankloplayer == f$RankOfSetOnBoard)) && (f$RankOfSetOnBoard > f$OpenPPL_2ndBestBoardCard)] ? 1: 1/*f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairHighSetOnBoard :
 //
 // 3) we pair the set on board, which is lower than the pair, so somebody could have better quads
 [((rankhiplayer == f$RankOfSetOnBoard) || (rankloplayer == f$RankOfSetOnBoard)) && (f$RankOfSetOnBoard < 2ndBestBoardCard)] ? f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairLowSetOnBoard :
@@ -2084,6 +2103,7 @@ f$OpenPPL_HaveStraight
 //
 // 7) we don't have an overpair to the pair and therefore play the board (probably again 2 cases)
 f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePlayTheBoard
+*/
 
 ##f$OpenPPL_RankOfSetOnBoard##
 // Precondition: set on board
@@ -2127,7 +2147,7 @@ ispair ?
 [ispair && rankhiplayer == f$RankOfTopPairOnBoard] ? f$OpenPPL_NFH4OAK_TwoPairsOnBoard_WeHitTopQuads :
 //
 // 2) we complete the lower pair to quads
-[ispair && rankhiplayer == f$RankOfBottomPairOnBoard] ? f$OpenPPL_NFH4OAK_TwoPairsOnBoard_WeBottomTopQuads :
+[ispair && rankhiplayer == f$RankOfBottomPairOnBoard] ? f$OpenPPL_NFH4OAK_TwoPairsOnBoard_WeHitBottomQuads :
 //
 // 3) we pair both pairs: no quads possible, but:
 //   * maybe 1 higher FH, if anybody pairs the higher pair and the last board-card, if it is higher than the low pair
@@ -2557,11 +2577,61 @@ f$OpenPPL_Middle
 
 ##f$OpenPPL_HaveBackdoorStraightDraw##
 // No standard PPL. but suggested
+f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 
 ##f$OpenPPL_HighCardOfBestPossibleStraight##
-0
+f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 
+##f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED##
+-1
 
+##f$OpenPPL_NFH4OAK_FullHouseOnBoard_WeHaveOverPairToPair##
+f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+
+##f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePlayTheBoard##
+f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+
+##f$OpenPPL_NFH4OAK_PairOnBoard_WeHitThePairAndAnotherCard##
+f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+
+##f$OpenPPL_NFH4OAK_TwoPairsOnBoard_WeHitTopSet##
+f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+
+##f$OpenPPL_NFH4OAK_TwoPairsOnBoard_WeHitBottomQuads##
+f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+
+##f$OpenPPL_NFH4OAK_TwoPairsOnBoard_WeHitTopQuads##
+f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+
+##f$OpenPPL_NFH4OAK_TwoPairsOnBoard_WePairBothPairs##
+f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+
+##f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairBothBoardCards##
+f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+
+##f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairHighSetOnBoard##
+f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+
+##f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairLowSetOnBoard##
+f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+
+##f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairHighPairOnBoard##
+f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+
+##f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairLowPairOnBoard##
+f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+
+##f$RankOfSetOnBoard##
+f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+
+##f$RankOfTopPairOnBoard##
+f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+
+##f$RankOfBottomPairOnBoard##
+f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+
+##f$OpenPPL_NFH4OAK_TwoPairsOnBoard_WeHitBottomSet##
+f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 
 //*****************************************************************************
 //
