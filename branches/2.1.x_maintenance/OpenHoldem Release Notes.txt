@@ -7,6 +7,9 @@ BUG FIXES:
   [THF]
 - CFormula: Reading formula file: mistakenly verified if formula exist when supposed to verify if handlist exists.
   [TripleSeven]
+- Frame recording in "its my turn" mode did not record with autoplayer off. Fixed it
+  and made sure only one frame gets saved for each turn [JF].
+- Autoplayer action for allinmethod 1 and 2 was not setting frame recording flag [JF].
   
 NEW STUFF:
 - Handnumber is now optionally ranged between s$handnumber_min_expected_digits 
