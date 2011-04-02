@@ -304,7 +304,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		if ( // If its my turn
 			 (prefs.replay_record() && 
 			  p_symbols->sym()->ismyturn && 
-			  new_scrape!=NOTHING_CHANGED &&
+			  ((new_scrape&BUTTONSTATE_CHANGED) != NOTHING_CHANGED) &&
 			  (!p_heartbeat_thread->replay_recorded_this_turn() || !p_autoplayer->autoplayer_engaged())) 
 			 
 			 ||
@@ -325,7 +325,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			write_log(3, "HBT: Calling CreateReplayFrame.\n");
 			CReplayFrame   crf;
 			crf.CreateReplayFrame();
-			p_heartbeat_thread->set_replay_recorded_this_turn(true);
+			p_heartbeat_thread->set_replay_recorded_this_turn(p_autoplayer->autoplayer_engaged());
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////
