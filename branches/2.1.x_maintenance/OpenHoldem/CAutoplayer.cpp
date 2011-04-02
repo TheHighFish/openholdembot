@@ -171,6 +171,7 @@ void CAutoplayer::DoAllin(void)
 			// Then restore the mouse position (cur_pos)
 			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), raise_button, MouseLeft, number_of_clicks, NULL, cur_pos);
 			write_logautoplay(1, ActionConstantNames(k_action_allin));
+		    p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		}
 		else
 		{
@@ -188,6 +189,7 @@ void CAutoplayer::DoAllin(void)
 			// Then restore the mouse position (cur_pos)
 			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), allin_button, MouseLeft, number_of_clicks, NULL, cur_pos);
 			write_logautoplay(1, ActionConstantNames(k_action_allin));
+		    p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		}
 		else
 		{
