@@ -114,6 +114,19 @@ static const char *error_messages[k_number_of_error_codes] =
 	"\n"
 	"Please complete your formula so that all actions are specified.\n",
 
+	// k_error_unknown_symbol
+
+	"Unknown symbol\n"
+	"\n"
+	"The translator detected an unknown symbol,\n"
+	"that seems to be neither an OpenPPL-symbol\n"
+	"nor an OpenHoldem symbol.\n"
+	"\n"
+	"Most probably it is simply misspelled.\n"
+	"Please also note, that OpenHoldem is case-sensitive.\n"
+	"\n"
+	"However we will try to continue translating....\n",
+
 	// k_error_general
 	"General syntax error.\n"	
 	"\n"

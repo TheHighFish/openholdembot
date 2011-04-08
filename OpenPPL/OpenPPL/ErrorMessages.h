@@ -5,7 +5,6 @@ void ErrorMessage(int error_code, CString invalid_code_snippet);
 
 enum error_codes
 {
-
 	k_error_beep_not_supported = 0,
 	k_error_specific_suits_not_supported,
 	k_error_action_without_force,
@@ -16,6 +15,7 @@ enum error_codes
 	k_error_invalid_character,
 	k_error_too_many_open_ended_when_conditions,
 	k_error_missing_when_others_fold_force,
+	k_error_unknown_symbol,
 	k_error_general,
 	// Last one: this is no error code,
 	// but used for creating and indexing of arrays.

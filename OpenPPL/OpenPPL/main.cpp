@@ -1,14 +1,7 @@
 //#include <afxwin.h>
 #include <afx.h>
-
-//!!!
-#include <boost/spirit/core.hpp>
-
 #include <boost/spirit.hpp> 
 #include <boost/spirit/iterator/position_iterator.hpp>
-
-// !!!
-#include <boost/spirit/utility/functor_parser.hpp>
 
 #include <assert.h>
 #include <fstream> 
@@ -19,6 +12,7 @@
 #include "CodeSnippets.h"
 #include "CSymbolTable.h"
 #include "ErrorMessages.h"
+#include "ListOfOpenHoldemSymbolPrefixes.h"
 
 using namespace boost::spirit;
 using namespace std;
@@ -129,9 +123,8 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 					[print_options()][print_user_defined_functions()]
 				>> custom_sections)
 					| missing_keyword_custom);
-					
 			custom_sections = !symbol_section[print_main_code_sections()]
-				>> (code_sections/* | missing_code_section !!!*/)
+				>> (code_sections) // | missing_code_section !!!
 				>> end_p
 					[print_prime_coded_board_ranks()]
 					[print_technical_functions()]
@@ -232,9 +225,10 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			relational_operator = (str_p("<=") | ">=" | "<" | ">")[print_operator()];
 			relational_expression = additive_expression >> *(relational_operator >> additive_expression);
 			
-			equality_expression = /*longest_d[*/hand_expression_with_brackets | board_expression_with_brackets 
+			equality_expression = longest_d[
+			/*equality_expression =*/ hand_expression_with_brackets | board_expression_with_brackets 
 				| hand_expression_without_brackets | board_expression_without_brackets
-				| (relational_expression >> *(str_p("=")[print_operator()] >> relational_expression))/*]*/;
+				| (relational_expression >> *(str_p("=")[print_operator()] >> relational_expression))];
 			keyword_and = (str_p("and") | "And" | "AND")[print_operator()];
 			and_expression = equality_expression >> *(keyword_and >> equality_expression);
 			keyword_xor = (str_p("xor") | "Xor" | "XOr" | "XOR")[print_operator()];
@@ -251,7 +245,8 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			keyword_hand = str_p("hand") | "Hand" | "HAND";
 			suit_constant = ch_p("C") | "c" | "D"| "d" | "H" | "h" | "S" | "s";
 			
-			card_expression = /*longest_d[*/card_expression_with_specific_suits
+			// card_expression = longest_d[
+			card_expression = card_expression_with_specific_suits
 				| suited_card_expression
 				| non_suited_card_expression; 
 			suited_card_expression = (lexeme_d[+card_constant] >> keyword_suited);
@@ -328,7 +323,6 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// as a single keyword and cause an error.
 			// http://www.boost.org/doc/libs/1_40_0/libs/spirit/classic/doc/quickref.html
 			symbol = (lexeme_d[alpha_p >> *alnum_p][print_symbol()]) | invalid_symbol;
-
 			// "Symbols" cintaining invalid cahracters
 			invalid_character = str_p(";")  | "," | ":" | "|" | "@" | "€" | "!" | "\\"
 				| "\""  | "§" | "$" | "&" | "?" | "´" | "´" | "[" | "]"
@@ -370,6 +364,8 @@ int main(int argc, char *argv[])
 	p_symbol_table->AddSymbolsFromFile("OpenPPL_Library.ohf");
 	p_symbol_table->AddSymbolsFromFile(InputFile);
 
+	p_list_of_openholdem_symbol_prefixes = new(ListOfOpenHoldemSymbolPrefixes);
+
 	std::ifstream fs(InputFile); 
 	std::ostringstream ss; 
 	ss << fs.rdbuf(); 
@@ -381,14 +377,17 @@ int main(int argc, char *argv[])
 	// http://www.ibm.com/developerworks/aix/library/au-boost_parser/index.html
 
 	//!!!
+	/*
 	typedef position_iterator<char const*> iterator_t;
 	const char* data_as_const_char = data.c_str();
 	const char* InputFile_as_const_char = InputFile;
 	iterator_t begin(data_as_const_char, (data.c_str() + strlen(data.c_str())), InputFile_as_const_char);
     iterator_t end;
     begin.set_tabchars(8);
-	//!!!
+	*/
+	
 	//parse(begin, end, /*as_lower_d*/g, skip); 
+	//!!!
 
 
 	pi = boost::spirit::parse(data.c_str(), /*as_lower_d*/g, skip); 

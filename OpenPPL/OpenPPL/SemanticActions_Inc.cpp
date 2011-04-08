@@ -1,3 +1,5 @@
+#include "ListOfOpenHoldemSymbolPrefixes.h"
+
 // SemanticActions_Inc.cpp
 //
 // This file gets included as pure CPP as part of the parser definition,
@@ -83,23 +85,32 @@ struct print_OpenPPL_Library
 //
 
 struct print_symbol
+{ 
+	void operator()(const char *begin, const char *end) const 
 	{ 
-		void operator()(const char *begin, const char *end) const 
-		{ 
-			std::string symbol = std::string(begin, end);
-			if (p_symbol_table->IsOpenPPLSymbol(symbol.c_str()))
-			{
-				// OpenPPL symbols and user-defined symbols 
-				// get translated to f$...OH-script-symbols.
-				// So we prepend "f$"
-				current_output << p_symbol_table->GetStandardizedSymbolName(symbol.c_str());
-			}
-			else
-			{
-				current_output << symbol;
-			}
-		} 
-	}; 
+		std::string symbol = std::string(begin, end);
+		if (p_symbol_table->IsOpenPPLSymbol(symbol.c_str()))
+		{
+			// OpenPPL symbols and user-defined symbols 
+			// get translated to f$...OH-script-symbols.
+			// So we prepend "f$"
+			current_output << p_symbol_table->GetStandardizedSymbolName(symbol.c_str());
+		}
+		else if (p_list_of_openholdem_symbol_prefixes->LooksLikeOpenHoldemSymbol(CString(symbol.c_str())))
+		{
+			current_output << symbol;
+		}
+		else
+		{
+			ErrorMessage(k_error_unknown_symbol, ErroneousCodeSnippet(begin));
+			// Output anyway, as 
+			//   * some symbols are missing, that will be removed soon
+			//   * some new symbols might be missing, but the translation
+			//     should work anyway.
+			current_output << symbol;
+		}
+	} 
+}; 
 
 struct print_function_header_for_betting_round
 {

@@ -83,6 +83,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			>
@@ -103,6 +104,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="&quot;E:\Dokumente und Einstellungen\Development\Desktop\OH_SVN\trunk\boost_1_44_0\boost&quot;;&quot;E:\Dokumente und Einstellungen\Development\Desktop\OH_SVN\trunk\boost_1_44_0&quot;;&quot;E:\Dokumente und Einstellungen\Development\Desktop\OH_SVN\trunk\spirit-1.8.5-miniboost\boost\spirit&quot;;&quot;E:\Dokumente und Einstellungen\Development\Desktop\OH_SVN\trunk\spirit-1.8.5-miniboost\boost\spirit\iterator&quot;;&quot;E:\Dokumente und Einstellungen\Development\Desktop\OH_SVN\trunk\spirit-1.8.5-miniboost\boost\preprocessor&quot;;&quot;E:\Dokumente und Einstellungen\Development\Desktop\OH_SVN\trunk\spirit-1.8.5-miniboost\boost&quot;;&quot;E:\Dokumente und Einstellungen\Development\Desktop\OH_SVN\trunk\spirit-1.8.5-miniboost&quot;"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -163,10 +165,22 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ListOfOpenHoldemSymbolPrefixes.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ListOfSyntaxElements_Inc.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -185,12 +199,28 @@
 						Name="VCCLCompilerTool"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\main.002.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -209,12 +239,28 @@
 						Name="VCCLCompilerTool"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\main.005.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -233,9 +279,21 @@
 						Name="VCCLCompilerTool"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\main.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\position.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -245,12 +303,9 @@
 						Name="VCCLCompilerTool"
 					/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\position.cpp"
-				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -262,6 +317,14 @@
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -289,6 +352,10 @@
 			</File>
 			<File
 				RelativePath=".\ErrorMessages.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ListOfOpenHoldemSymbolPrefixes.h"
 				>
 			</File>
 		</Filter>
