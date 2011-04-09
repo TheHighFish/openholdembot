@@ -2572,8 +2572,9 @@ f$OpenPPL_Middle
 //
 //*****************************************************************************
 
-##f$OpenPPL_Decision##
-0
+// Will be added by the translator
+//##f$OpenPPL_Decision##
+//0
 
 ##f$OpenPPL_HaveBackdoorStraightDraw##
 // No standard PPL. but suggested
