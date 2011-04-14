@@ -440,8 +440,7 @@ nopponentsraising
 (f$OpenPPL_BotsActionsOnThisRound == 0) ? f$OpenPPL_RaisesBeforeOurFirstAction :
 (f$OpenPPL_BotsActionsOnThisRound == 1) ? f$OpenPPL_RaisesSinceLastPlayOnOurSecondAction :
 (f$OpenPPL_BotsActionsOnThisRound >= 2) ? f$OpenPPL_RaisesSinceLastPlayAfterOurSecondAction :
-// This should not happen
--1
+f$OpenPPL_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 
 //*****************************************************************************
 //
@@ -1310,8 +1309,7 @@ f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 1)
 `(rankbits & 0b000000011111000) == 5 ? f$OpenPPL_ConstCardSeven :
 `(rankbits & 0b000000001111100) == 5 ? f$OpenPPL_ConstCardSix   :
 `(rankbits & 0b000000000111110) == 5 ? f$OpenPPL_ConstCardFive  :
-// This should not happen
--1
+f$OpenPPL_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 
 ##f$OpenPPL_Have2ndNutStraight##
 f$OpenPPL_HaveStraight
@@ -2160,16 +2158,14 @@ ispair ?
 // 5) we pair the lower board card; probably several cases
 [(rankhiplayer == f$RankOfBottomPairOnBoard) || (rankloplayer == f$RankOfBottomPairOnBoard)] ? f$OpenPPL_NFH4OAK_TwoPairsOnBoard_WeHitBottomSet :
 //
-// This should not happen
--1
+f$OpenPPL_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 
 ##f$OpenPPL_NutFullHouseOrFourOfAKind_PairOnBoard##
 // Precondition: we have FH or quads, there is a pair on board.
 [ispair && (rankhiplayer == trankcommon)] ? f$OpenPPL_NFH4OAK_PairOnBoard_WeHitQuads :
 [ispair && (pokerval & fullhouse)] ? f$OpenPPL_NFH4OAK_PairOnBoard_WeHitASetWithPocketPair :
 [pokerval & fullhouse] ? f$OpenPPL_NFH4OAK_PairOnBoard_WeHitThePairAndAnotherCard :
-// This should not happen
--1
+f$OpenPPL_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 
 ##f$OpenPPL_NutFullHouseOrFourOfAKind##
 f$OpenPPL_QuadsOnBoard     ? f$OpenPPL_NutFullHouseOrFourOfAKind_FourOfAKindOnBoard :
@@ -2214,8 +2210,15 @@ f$OpenPPL_PairOnBoard      ? f$OpenPPL_NutFullHouseOrFourOfAKind_PairOnBoard :
 //
 //*****************************************************************************
 
+##f$OpenPPL_PlayersAtStartOfThisRound##
+(betround == 1) ? nplayersround1 :
+(betround == 2) ? nplayersround2 :
+(betround == 3) ? nplayersround3 :
+(betround == 4) ? nplayersround4 :
+f$OpenPPL_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+
 ##f$OpenPPL_Opponents##
-nopponentsplaying
+(f$OpenPPL_PlayersAtStartOfThisRound - 1)
 
 ##f$OpenPPL_OpponentsAtTable##
 nopponentsdealt
@@ -2576,6 +2579,9 @@ f$OpenPPL_Middle
 //##f$OpenPPL_Decision##
 //0
 
+##f$OpenPPL_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY##
+-1
+
 ##f$OpenPPL_HaveBackdoorStraightDraw##
 // No standard PPL. but suggested
 f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
@@ -2587,7 +2593,17 @@ f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 -1
 
 ##f$OpenPPL_NFH4OAK_FullHouseOnBoard_WeHaveOverPairToPair##
-f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+// 3 is the best strength possible, because two quads are always possible
+3
+// 1 overpair for each overcard = 1 higher full house
++ (f$OpenPPL_ConstCardAce - rankhiplayer)
+// Higher set possible with pair onboard?
++ [(f$OpenPPL_RankOfPairOnBoard > rankhiplayer) ? 1 : 0 ]
+// If the cards on board are higher than our pair,
+// we have to subtract them again, as otherwise we count them twice,
+// as set/quads and overpair.
++ [(f$OpenPPL_RankOfPairOnBoard > rankhiplayer) ? -1 : 0 ]
++ [(f$OpenPPL_RankOfSetOnBoard > rankhiplayer) ? -1 : 0 ]
 
 ##f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePlayTheBoard##
 f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
