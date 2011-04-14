@@ -2606,7 +2606,13 @@ f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 + [(f$OpenPPL_RankOfSetOnBoard > rankhiplayer) ? -1 : 0 ]
 
 ##f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePlayTheBoard##
-f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+// 3 is the best strength possible, because two quads are always possible
+3
+// 1 overpair for each overcard = 1 higher full house
++ (f$OpenPPL_ConstCardAce - rankhiplayer)
+// +1 if the pair is higher as the set (higher set possible)
+// -1 if the pair is higher as the set (counted twice as overpair / set)
+// but these cases neutralize each other
 
 ##f$OpenPPL_NFH4OAK_PairOnBoard_WeHitThePairAndAnotherCard##
 f$NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
