@@ -734,8 +734,11 @@ me_re_MemStartingStacksize
 //
 //*****************************************************************************
 
+##f$OpenPPL_DollarsToCall##
+(call <= balance) ? call : balance
+
 ##f$OpenPPL_AmountToCall##
-(bblind > 0) ? (call / bblind) : 0
+(bblind > 0) ? (f$OpenPPL_DollarsToCall / bblind) : 0
 
 ##f$OpenPPL_BetSize##
 ncallbets
@@ -1572,7 +1575,8 @@ isfullhouse || f$OpenPPL_HaveQuads
 (f$OpenPPL_NumberOfUnknownSuitedOvercards == 0)
 
 ##f$OpenPPL_HaveNutFlushDraw##
-f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 0)
+[f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 0)]
+|| f$OpenPPL_HaveNutStraightFlush
 
 ##f$OpenPPL_RankBitsCommonWithAdditionalAce##
 rankbitscommon | 0b100000000000010
