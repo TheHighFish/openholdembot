@@ -2265,16 +2265,16 @@ nopponentsplaying
 (nplayersround2 - 1)
 
 ##f$OpenPPL_OpponentsWithLowerStack##
-((balance0 < balance) && (playersseatedbits & 0x0001) ? 1:0) +
-((balance1 < balance) && (playersseatedbits & 0x0002) ? 1:0) +
-((balance2 < balance) && (playersseatedbits & 0x0004) ? 1:0) +
-((balance3 < balance) && (playersseatedbits & 0x0008) ? 1:0) +
-((balance4 < balance) && (playersseatedbits & 0x0010) ? 1:0) +
-((balance5 < balance) && (playersseatedbits & 0x0020) ? 1:0) +
-((balance6 < balance) && (playersseatedbits & 0x0040) ? 1:0) +
-((balance7 < balance) && (playersseatedbits & 0x0080) ? 1:0) +
-((balance8 < balance) && (playersseatedbits & 0x0100) ? 1:0) +
-((balance9 < balance) && (playersseatedbits & 0x0200) ? 1:0)
+  (((balance0 + currentbet0) < (balance + currentbet)) && (playersseatedbits & 0x0001) ? 1:0)
++ (((balance1 + currentbet1) < (balance + currentbet)) && (playersseatedbits & 0x0002) ? 1:0)
++ (((balance2 + currentbet2) < (balance + currentbet)) && (playersseatedbits & 0x0004) ? 1:0)
++ (((balance3 + currentbet3) < (balance + currentbet)) && (playersseatedbits & 0x0008) ? 1:0)
++ (((balance4 + currentbet4) < (balance + currentbet)) && (playersseatedbits & 0x0010) ? 1:0)
++ (((balance5 + currentbet5) < (balance + currentbet)) && (playersseatedbits & 0x0020) ? 1:0)
++ (((balance6 + currentbet6) < (balance + currentbet)) && (playersseatedbits & 0x0040) ? 1:0)
++ (((balance7 + currentbet7) < (balance + currentbet)) && (playersseatedbits & 0x0080) ? 1:0)
++ (((balance8 + currentbet8) < (balance + currentbet)) && (playersseatedbits & 0x0100) ? 1:0)
++ (((balance9 + currentbet9) < (balance + currentbet)) && (playersseatedbits & 0x0200) ? 1:0)
 
 ##f$OpenPPL_StillToAct##
 (dealposition > 2) ? (nchairsdealtleft + 2) :
@@ -2709,6 +2709,3 @@ f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 // OpenPPL - the glory end
 //
 //*****************************************************************************
-
-
-
