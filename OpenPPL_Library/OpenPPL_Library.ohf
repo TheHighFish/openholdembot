@@ -2707,15 +2707,17 @@ f$OpenPPL_Middle
 
 //*****************************************************************************
 //
-// Not yet implemented - but already used
+// OpenPPL - Various functions of minor importance or to do
 //
 //*****************************************************************************
 
+// ##f$OpenPPL_Decision##
 // Will be added by the translator
-//##f$OpenPPL_Decision##
-//0
 
 ##f$OpenPPL_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY##
+-1
+
+##f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED##
 -1
 
 ##f$OpenPPL_HaveBackdoorStraightDraw##
@@ -2724,9 +2726,6 @@ f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 
 ##f$OpenPPL_HighCardOfBestPossibleStraight##
 f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
-
-##f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED##
--1
 
 ##f$OpenPPL_RankOfTopPairOnBoard##
 f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
