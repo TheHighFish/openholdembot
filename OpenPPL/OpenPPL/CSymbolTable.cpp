@@ -10,6 +10,7 @@ CSymbolTable *p_symbol_table = 0; //NULL;
 CSymbolTable::CSymbolTable()
 {
 	ClearSymbolTable();
+	_generation_of_symboltable_in_progress = true;
 }
 
 CSymbolTable::~CSymbolTable()
@@ -24,6 +25,7 @@ void CSymbolTable::ClearSymbolTable()
 
 void CSymbolTable::AddSymbolsFromFile(CString filename)
 {
+	_generation_of_symboltable_in_progress = true;
 	std::ifstream input_file(filename); 
 	if (!input_file.is_open())
 	{
@@ -50,6 +52,7 @@ void CSymbolTable::AddSymbolsFromFile(CString filename)
 			// User defined function from the OpenPPL-library
 			CString new_symbol = next_line.Mid(2, next_line.GetLength()-4);
 			// Add symbol as is
+			//MessageBox(0, new_symbol, "Adding as is...", 0);
 			AddSymbol(new_symbol);
 		}
 		else if (next_line.Left(11).MakeLower() == "new symbol ")
@@ -57,10 +60,12 @@ void CSymbolTable::AddSymbolsFromFile(CString filename)
 			// User defined function from the OpenPPL-file
 			CString new_symbol = next_line.Mid(11, next_line.GetLength()-11);
 			// Add symbol with standardized name ("f$OpenPPL_")
+			//MessageBox(0, new_symbol, "Trying to add...", 0);
 			AddSymbol(new_symbol);
 		}
 	}
 	input_file.close();
+	_generation_of_symboltable_in_progress = false;
 }
 
 void CSymbolTable::AddSymbol(CString new_symbol)
@@ -74,8 +79,12 @@ void CSymbolTable::AddSymbol(CString new_symbol)
 	}
 	else
 	{
-		//MessageBox(0, new_symbol, "Adding symbol", 0);
-		known_symbols[new_symbol] = true;
+		// Use the lowercase name as lookup-key 
+		// and store the correct name.
+		CString new_symbol_lowercase = new_symbol;
+		new_symbol_lowercase.MakeLower();
+		//MessageBox(0, new_symbol, "Inserting", 0);
+		known_symbols[new_symbol_lowercase] = new_symbol;
 	}
 }
 
@@ -86,7 +95,25 @@ bool CSymbolTable::IsOpenPPLSymbol(CString symbol)
 	// All other symbols will be treated as standard OpenHoldem symbols.
 	//
 	// Docu on find(): http://www.cplusplus.com/reference/stl/map/find/
-	return (known_symbols.find(GetStandardizedSymbolName(symbol)) != known_symbols.end());
+	CString standardized_symbol_lowercase = GetStandardizedSymbolName(symbol).MakeLower();
+	CSMap::const_iterator find_result = known_symbols.find(standardized_symbol_lowercase);
+	if (find_result == known_symbols.end())
+	{
+		//if (!GenerationOfSymboltableInProgress())
+		//	MessageBox(0, standardized_symbol_lowercase, "not found", 0);
+		return false;
+	}
+	// Check for exact match
+	if (find_result->second == GetStandardizedSymbolName(symbol))
+	{
+		return true;
+	}
+	else
+	{
+		//if (!GenerationOfSymboltableInProgress())
+		//	MessageBox(0, find_result->second, GetStandardizedSymbolName(symbol), 0);
+		return (false);
+	}
 }
 
 CString CSymbolTable::GetStandardizedSymbolName(CString symbol)
@@ -103,4 +130,9 @@ CString CSymbolTable::GetStandardizedSymbolName(CString symbol)
 		CString standardized_symbol_name = "f$OpenPPL_" + symbol;
 		return standardized_symbol_name;
 	}
+}
+
+bool CSymbolTable::GenerationOfSymboltableInProgress()
+{
+	return _generation_of_symboltable_in_progress;
 }

@@ -116,15 +116,16 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 		definition(const json_grammar &self) 
 		{ 
 			using namespace boost::spirit; 
+
 			// Whole PPL-file
-			
 			openPPL_code = option_settings_to_be_ignored
 				>> ((keyword_custom [print_license()]
-					[print_options()][print_user_defined_functions()]
+					[print_options()][print_comment_for_list_section()]
 				>> custom_sections)
 					| missing_keyword_custom);
-			custom_sections = !symbol_section[print_main_code_sections()]
-				>> (code_sections) // | missing_code_section !!!
+			custom_sections = !list_section[print_user_defined_functions()]
+				>> !symbol_section[print_main_code_sections()]
+				>> (code_sections | missing_code_section)
 				>> end_p
 					[print_prime_coded_board_ranks()]
 					[print_technical_functions()]
@@ -132,7 +133,6 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			missing_keyword_custom = (str_p("") >> custom_sections)[error_missing_keyword_custom()];
 			  
 			// Option settings - to be ignored
-			
 			option_settings_to_be_ignored = *single_option;
 			single_option = option_name >> '=' >> option_value;
 			option_name = alpha_p >> *(alnum_p | "-");
@@ -142,6 +142,16 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 
 			// Start of custom code
 			keyword_custom = str_p("custom") | "Custom" | "CUSTOM";
+
+			// user defined lists
+			list_section = keyword_lists >> *list_definition;
+			keyword_lists = str_p("lists") | "Lists" | "LISTS";
+			list_definition = keyword_new >> keyword_list
+				>> number[print_list_header()] >> list_content;
+			list_content = end_of_list || (next_line_of_list >> end_of_list);
+			next_line_of_list = (anychar_p - eol_p - end_p) >> (eol_p | end_p);
+			end_of_list = keyword_end >> keyword_list;
+			keyword_list = str_p("list") | "List" | "LIST";
 
 			// User defined symbols
 			symbol_section = keyword_symbols >> *symbol_definition;
@@ -214,7 +224,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			missing_closing_bracket_expression = (str_p("(") >> expression) >> str_p("")[error_missing_closing_bracket()];
 			operand_expression = terminal_expression | bracket_expression 
 				| missing_closing_bracket_expression;
-			keyword_not = (str_p("not") | "Not" | "NOT")[print_operator()];
+			keyword_not = (str_p("not") | "Not" | "NOT");
 			unary_operator = (keyword_not | "-")[print_operator()];
 			unary_expression = !unary_operator >> operand_expression;
 			percentage_operator = str_p("%");
@@ -225,10 +235,10 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			relational_operator = (str_p("<=") | ">=" | "<" | ">")[print_operator()];
 			relational_expression = additive_expression >> *(relational_operator >> additive_expression);
 			
-			equality_expression = longest_d[
+			equality_expression = /*longest_d[*/
 			/*equality_expression =*/ hand_expression_with_brackets | board_expression_with_brackets 
 				| hand_expression_without_brackets | board_expression_without_brackets
-				| (relational_expression >> *(str_p("=")[print_operator()] >> relational_expression))];
+				| (relational_expression >> *(str_p("=")[print_operator()] >> relational_expression))/*]*/;
 			keyword_and = (str_p("and") | "And" | "AND")[print_operator()];
 			and_expression = equality_expression >> *(keyword_and >> equality_expression);
 			keyword_xor = (str_p("xor") | "Xor" | "XOr" | "XOR")[print_operator()];
@@ -272,9 +282,16 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			action = (action_without_force >> keyword_force)
 					[handle_action()]
 				| erroneous_action_without_force;
-			action_without_force = predefined_action 
+			// No longest_d[] for action_without_force,
+            // otherwise Boost Spirit tries to evaluate everything,
+            // Causing superfluos output. Therefore we simply start
+            // with the longest expression first:
+            // 1. Raise X % 
+            // 2. Raise X
+			// 3. Raise	 
+			action_without_force = relative_betsize_action
 				| fixed_betsize_action 
-				| relative_betsize_action
+				| predefined_action
 				| return_statement;
 			predefined_action = keyword_predefined_action[print_predefined_action()];
 			keyword_force = (str_p("force") | "Force" | "FORCE");
@@ -301,7 +318,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				| keyword_raisepot | keyword_raisemax |	keyword_raise | keyword_fold
 				| keyword_betmin | keyword_bethalfpot
 				| keyword_betpot | keyword_betmax | keyword_bet | keyword_sitout];
-			fixed_betsize_action = (keyword_bet | keyword_raise) >> number;
+			fixed_betsize_action = (keyword_bet | keyword_raise) >> number[print_comment_for_fixed_betsize()];
 			relative_betsize_action = (keyword_bet | keyword_raise) >> number[print_number()] 
 				>> percentage_operator[print_percentage_operator()][print_relative_potsize_action()] ;
 			keyword_others = str_p("others") | "Others" | "OTHERS";
@@ -375,20 +392,6 @@ int main(int argc, char *argv[])
 	skip_grammar skip;
 	// Case insensitive parsing: 
 	// http://www.ibm.com/developerworks/aix/library/au-boost_parser/index.html
-
-	//!!!
-	/*
-	typedef position_iterator<char const*> iterator_t;
-	const char* data_as_const_char = data.c_str();
-	const char* InputFile_as_const_char = InputFile;
-	iterator_t begin(data_as_const_char, (data.c_str() + strlen(data.c_str())), InputFile_as_const_char);
-    iterator_t end;
-    begin.set_tabchars(8);
-	*/
-	
-	//parse(begin, end, /*as_lower_d*/g, skip); 
-	//!!!
-
 
 	pi = boost::spirit::parse(data.c_str(), /*as_lower_d*/g, skip); 
 	if (!pi.hit) 

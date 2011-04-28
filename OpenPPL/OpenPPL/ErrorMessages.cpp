@@ -123,9 +123,7 @@ static const char *error_messages[k_number_of_error_codes] =
 	"nor an OpenHoldem symbol.\n"
 	"\n"
 	"Most probably it is simply misspelled.\n"
-	"Please also note, that OpenHoldem is case-sensitive.\n"
-	"\n"
-	"However we will try to continue translating....\n",
+	"Please also note, that OpenHoldem is case-sensitive.\n",
 
 	// k_error_general
 	"General syntax error.\n"	
@@ -155,7 +153,8 @@ void ErrorMessage(int error_code, CString invalid_code_snippet)
 	int error_line = 123;
 	int error_column = 456;
 	CString error_location;
-	error_location.Format("Line %d\nColumn %d\n", error_line, error_column);
+	//error_location.Format("Line: %d\nColumn: %d\n", error_line, error_column);
+	error_location.Format("Line: [not yet implemented]\nColumn: [not yet implemented]\n");
 	CString separator_line = "\n============================================================\n\n";
 	CString error_message = error_explanation + separator_line
 		+ invalid_code_snippet + separator_line + error_location;
