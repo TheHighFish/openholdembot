@@ -13,12 +13,15 @@ public:
 	void AddSymbolsFromFile(CString filename);
 	bool IsOpenPPLSymbol(CString symbol);
 	CString GetStandardizedSymbolName(CString symbol);
+	bool GenerationOfSymboltableInProgress();
 private:
 	void ClearSymbolTable();
 	void AddSymbol(CString new_symbol);
 private:
 	// http://www.cplusplus.com/reference/stl/map/
-	map<CString, bool> known_symbols;
+	typedef map<CString, CString> CSMap;
+	CSMap known_symbols;
+	bool _generation_of_symboltable_in_progress;
 } *p_symbol_table;
 
 #endif INC_CSYMBOLTABLE_H

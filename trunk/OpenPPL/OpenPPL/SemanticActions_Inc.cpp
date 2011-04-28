@@ -26,6 +26,14 @@ struct print_options
 	} 
 };
 
+struct print_comment_for_list_section
+{
+	void operator()(const char *begin, const char *end) const 
+	{ 
+		std::cout << k_code_snippet_list_section; 
+	}
+};
+
 struct print_user_defined_functions
 { 
 	void operator()(const char *begin, const char *end) const 
@@ -100,7 +108,7 @@ struct print_symbol
 		{
 			current_output << symbol;
 		}
-		else
+		else if (!p_symbol_table->GenerationOfSymboltableInProgress())
 		{
 			ErrorMessage(k_error_unknown_symbol, ErroneousCodeSnippet(begin));
 			// Output anyway, as 
@@ -143,6 +151,17 @@ struct print_function_header_for_betting_round
 	} 
 };
 
+struct print_list_header
+{
+	void operator()(const char *begin, const char *end) const 
+	{ 
+		std::string text = std::string(begin, end);
+		cout << "##list" << text << "##" << endl;
+		current_output.str("");
+		current_output.clear();;
+	} 
+};
+
 struct print_number 
 { 
 	void operator()(const char *begin, const char *end) const 
@@ -151,11 +170,19 @@ struct print_number
 	} 
 };
 
+struct print_comment_for_fixed_betsize
+{ 
+	void operator()(const char *begin, const char *end) const 
+	{ 
+		current_output << " /*** big blinds ***/";
+	} 
+};
+
 struct print_relative_potsize_action
 { 
 	void operator()(const char *begin, const char *end) const 
 	{ 
-		current_output << "pot";
+		current_output << "f$OpenPPL_PotSize";
 	} 
 };
 
@@ -163,18 +190,18 @@ struct print_operator
 { 
 	void operator()(const char *begin, const char *end) const 
 	{ 
-		std::string text = std::string(begin, end);
-		current_output << " " << text << " ";
-		return;
+		std::string original_text = std::string(begin, end);
+		CString text = original_text.c_str();
+		text.MakeLower();
 		// Some operators have to be translated,
 		// as they are named differently in OpenPPL and OH-script.
 		if (text == "and")
 		{
-			current_output << "&&";
+			current_output << " && ";
 		}
 		else if (text == "or")
 		{
-			current_output << "||";
+			current_output << " || ";
 		}
 		else if (text == "xor")
 		{
@@ -182,41 +209,42 @@ struct print_operator
 		}
 		else if (text == "not")
 		{
-			current_output << "!";
+			// No space after unary operator
+			current_output << " !";
 		}
 		else if (text == "bitand")
 		{
-			current_output << "&";
+			current_output << " & ";
 		}
 		else if (text == "bitor")
 		{
-			current_output << "|";
+			current_output << " | ";
 		}
 		else if (text == "bitxor")
 		{
-			current_output << "^";
+			current_output << " ^ ";
 		}
 		else if (text == "bitnot")
 		{
-			current_output << "~";
+			// No space after unary operator
+			current_output << " ~";
 		}
 		else if (text == "=")
 		{
-			current_output << "==";
+			current_output << " == ";
 		}
 		else if (text == "mod")
 		{
 			// Modulo needs special treatment,
 			// as "%" gets used as the percentage-operator in OpenPPL.
-			current_output << "%";
+			current_output << " % ";
 		}
 		else
 		{
 			// No translation necessary
 			// The operators are names the same way in both languages.
-			current_output << text;
-		}
-		current_output << " ";
+			current_output << " " << text << " ";
+		};
 	} 
 };
 
@@ -257,35 +285,35 @@ struct print_predefined_action
 		std::transform(begin, end, text.begin(), std::tolower);
 		if ((text == "call") || (text == "play"))
 		{
-			current_output << "f$Action_Call";
+			current_output << "f$OpenPPL_Action_Call";
 		}
 		else if ((text == "raisemin") || (text == "betmin"))
 		{
-			current_output << "f$Action_RaiseMin";
+			current_output << "f$OpenPPL_Action_RaiseMin";
 		}
 		else if ((text == "raisehalfpot") || (text == "bethalfpot"))
 		{
-			current_output << "f$Action_RaiseHalfPot";
+			current_output << "f$OpenPPL_Action_RaiseHalfPot";
 		}
 		else if ((text == "raisepot") || (text == "betpot"))
 		{
-			current_output << "f$Action_RaisePot";
+			current_output << "f$OpenPPL_Action_RaisePot";
 		}
 		else if ((text == "raisemax") || (text == "betmax") || (text == "allin"))
 		{
-			current_output << "f$Action_RaiseMax";
+			current_output << "f$OpenPPL_Action_RaiseMax";
 		}		
 		else if ((text == "raise") || (text == "bet"))
 		{
-			current_output << "f$Action_Raise";
+			current_output << "f$OpenPPL_Action_Raise";
 		}
 		else if (text == "fold")
 		{
-			current_output <<  "f$Action_Fold";
+			current_output <<  "f$OpenPPL_Action_Fold";
 		}
 		else if (text == "sitout")
 		{
-			current_output << "f$Action_SitOut";
+			current_output << "f$OpenPPL_Action_SitOut";
 		}
 		// Beep not supported and handled otherwhere.
 	} 
@@ -365,7 +393,7 @@ struct print_when_others_fold_force
 		cout << "//" << endl;
 		cout << "// When Others Fold Force" << endl;
 		cout << "//" << endl;
-		cout << "f$Action_Fold" << endl << endl << endl; 
+		cout << "f$OpenPPL_Action_Fold" << endl << endl << endl; 
 	} 
 };
 
