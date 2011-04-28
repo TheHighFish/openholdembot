@@ -833,7 +833,7 @@ rankhicommon
 
 ##f$OpenPPL_ExactlyOneStraightPossibleOnFlop##
    [f$OpenPPL_StraightPossibleOnFlop && f$OpenPPL_AcePresentOnFlop && ((f$OpenPPL_LowestFlopCard >= 10) || (f$OpenPPL_TopFlopCard <= 5))]
-|| [f$OpenPPL_StraightPossibleOnFlop && (f$OpenPPL_TopFlopCard - f$OpenPPL_LowestFlopCard <= 4)]
+|| [f$OpenPPL_StraightPossibleOnFlop && (f$OpenPPL_TopFlopCard - f$OpenPPL_LowestFlopCard == 4)]
 
 ##f$OpenPPL_FlopCardPairedonTurn##
    $$cr0 == $$cr3
@@ -1007,16 +1007,7 @@ f$OpenPPL_2ndTopFlopCard == $$cr3 ? 1 : 0
 ~(srankbitscommon | f$OpenPPL_srankbitshero)
 
 ##f$OpenPPL_StraightFlushPossibleByOthers##
-`(((srankbitscommon >> 10) & 0x1f) >= 3 && `(((srankbitscommon >> 10) & 0x1f) | ((f$OpenPPL_srankavailable>>10) & 0x1f)) == 5) ? 1 :
-`(((srankbitscommon >>  9) & 0x1f) >= 3 && `(((srankbitscommon >>  9) & 0x1f) | ((f$OpenPPL_srankavailable>> 9) & 0x1f)) == 5) ? 1 :
-`(((srankbitscommon >>  8) & 0x1f) >= 3 && `(((srankbitscommon >>  8) & 0x1f) | ((f$OpenPPL_srankavailable>> 8) & 0x1f)) == 5) ? 1 :
-`(((srankbitscommon >>  7) & 0x1f) >= 3 && `(((srankbitscommon >>  7) & 0x1f) | ((f$OpenPPL_srankavailable>> 7) & 0x1f)) == 5) ? 1 :
-`(((srankbitscommon >>  6) & 0x1f) >= 3 && `(((srankbitscommon >>  6) & 0x1f) | ((f$OpenPPL_srankavailable>> 6) & 0x1f)) == 5) ? 1 :
-`(((srankbitscommon >>  5) & 0x1f) >= 3 && `(((srankbitscommon >>  5) & 0x1f) | ((f$OpenPPL_srankavailable>> 5) & 0x1f)) == 5) ? 1 :
-`(((srankbitscommon >>  4) & 0x1f) >= 3 && `(((srankbitscommon >>  4) & 0x1f) | ((f$OpenPPL_srankavailable>> 4) & 0x1f)) == 5) ? 1 :
-`(((srankbitscommon >>  3) & 0x1f) >= 3 && `(((srankbitscommon >>  3) & 0x1f) | ((f$OpenPPL_srankavailable>> 3) & 0x1f)) == 5) ? 1 :
-`(((srankbitscommon >>  2) & 0x1f) >= 3 && `(((srankbitscommon >>  2) & 0x1f) | ((f$OpenPPL_srankavailable>> 2) & 0x1f)) == 5) ? 1 :
-`(((srankbitscommon >>  1) & 0x1f) >= 3 && `(((srankbitscommon >>  1) & 0x1f) | ((f$OpenPPL_srankavailable>> 1) & 0x1f)) == 5) ? 1 : 0
+(nstraightflushfillcommon <= 2)
 
 ##f$OpenPPL_SuitsOnBoard##
 f$OpenPPL_SuitsOnFlop +
