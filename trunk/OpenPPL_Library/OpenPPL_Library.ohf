@@ -27,6 +27,7 @@
 //   JConner
 //   KaeKruse
 //   Kyo
+//   MerzkiyTipon
 //   Morello
 //   MrRuder
 //   Nik0
@@ -2716,7 +2717,17 @@ f$OpenPPL_Middle
 f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 
 ##f$OpenPPL_HighCardOfBestPossibleStraight##
-f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+`(rankbitscommon & 0b111110000000000) >= 3 ? f$OpenPPL_ConstCardAce   :
+`(rankbitscommon & 0b011111000000000) >= 3 ? f$OpenPPL_ConstCardKing  :
+`(rankbitscommon & 0b001111100000000) >= 3 ? f$OpenPPL_ConstCardQueen :
+`(rankbitscommon & 0b000111110000000) >= 3 ? f$OpenPPL_ConstCardJack  :
+`(rankbitscommon & 0b000011111000000) >= 3 ? f$OpenPPL_ConstCardTen   :
+`(rankbitscommon & 0b000001111100000) >= 3 ? f$OpenPPL_ConstCardNine  :
+`(rankbitscommon & 0b000000111110000) >= 3 ? f$OpenPPL_ConstCardEight :
+`(rankbitscommon & 0b000000011111000) >= 3 ? f$OpenPPL_ConstCardSeven :
+`(rankbitscommon & 0b000000001111100) >= 3 ? f$OpenPPL_ConstCardSix   :
+`(rankbitscommon & 0b000000000111110) >= 3 ? f$OpenPPL_ConstCardFive  :
+-1
 
 ##f$OpenPPL_RankOfTopPairOnBoard##
 f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED

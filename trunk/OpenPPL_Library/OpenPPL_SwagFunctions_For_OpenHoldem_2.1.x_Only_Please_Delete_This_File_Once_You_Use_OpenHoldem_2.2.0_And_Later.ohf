@@ -27,6 +27,7 @@
 //   JConner
 //   KaeKruse
 //   Kyo
+//   MerzkiyTipon
 //   Morello
 //   MrRuder
 //   Nik0
@@ -46,7 +47,7 @@
 //  OpenPPL - Swag Functions
 //  ========================
 //
-//  Swag-functions for OpenHoldem_2.1.x only.
+//  Swag-functions for OpenHoldem 2.1.x only.
 //  Please delete this file once you use OpenHoldem 2.2.0 and later.txt.
 //
 //  Swagging (swag = stated wager, a Ray-E.-Bornesian abbreviation)
@@ -58,11 +59,31 @@
 //*****************************************************************************
 
 ##f$OpenPPL_BetsizeAdjustedToMinimumRaise##
+(f$OpenPPL_Betsize < ) ? : f$OpenPPL_BetSize
+
+##f$OpenPPL_PotLimitPotSize##
+// The pot for potsize calculations is the current pot
+// plus the amount if we call
+(pot + call)
 
 ##f$OpenPPL_BetsizeAdjustedToGameType##
+// In PotLimit we can only raise by pot-size ;-)
+[ispl && (f$OpenPPL_BetsizeAdjustedToMinimumRaise > 2 * f$OpenPPL_PotLimitPotSize)] ?
+(2 * f$OpenPPL_PotLimitPotSize) : f$OpenPPL_BetsizeAdjustedToMinimumRaise
 
 ##f$OpenPPL_BetsizeAdjustedToUsersBalance##
+(f$OpenPPL_BetsizeAdjustedToGameType > (balance + currentbet)) ?
+(balance + currentbet) : f$OpenPPL_BetsizeAdjustedToGameType
 
 ##f$OpenPPL_BetsizeAdjustedToCasinosInputRequirements##
+// There are 3 different ways, how casinos treat swagged input.
+//
+// Swag means, the final bet will be:
+// 1)
+// 2)
+// 3)
+// As our f$betsize function treats case X as normal and not case 1,
+// we have to do some small calculations in the other direction.
 
 ##f$swag##
+f$OpenPPL_BetsizeAdjustedToCasinosInputRequirements
