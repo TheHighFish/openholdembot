@@ -445,242 +445,242 @@ f$OpenPPL_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 
 //*****************************************************************************
 //
-// OpenPPL - Betsizes and Stacksizes - supporting technical functions
+// OpenPPL - Betsizes and StackSizes - supporting technical functions
 //
 //*****************************************************************************
 
-##f$OpenPPL_Chair0StartingStacksize##
+##f$OpenPPL_Chair0StartingStackSize##
 balance0 + currentbet0
 
-##f$OpenPPL_Chair1StartingStacksize##
+##f$OpenPPL_Chair1StartingStackSize##
 balance1 + currentbet1
 
-##f$OpenPPL_Chair2StartingStacksize##
+##f$OpenPPL_Chair2StartingStackSize##
 balance2 + currentbet2
 
-##f$OpenPPL_Chair3StartingStacksize##
+##f$OpenPPL_Chair3StartingStackSize##
 balance3 + currentbet3
 
-##f$OpenPPL_Chair4StartingStacksize##
+##f$OpenPPL_Chair4StartingStackSize##
 balance4 + currentbet4
 
-##f$OpenPPL_Chair5StartingStacksize##
+##f$OpenPPL_Chair5StartingStackSize##
 balance5 + currentbet5
 
-##f$OpenPPL_Chair6StartingStacksize##
+##f$OpenPPL_Chair6StartingStackSize##
 balance6 + currentbet6
 
-##f$OpenPPL_Chair7StartingStacksize##
+##f$OpenPPL_Chair7StartingStackSize##
 balance7 + currentbet7
 
-##f$OpenPPL_Chair8StartingStacksize##
+##f$OpenPPL_Chair8StartingStackSize##
 balance8 + currentbet8
 
-##f$OpenPPL_Chair9StartingStacksize##
+##f$OpenPPL_Chair9StartingStackSize##
 balance9 + currentbet9
 
-##f$OpenPPL_ButtonStartingStacksize##
-f$OpenPPL_ButtonChair == 0 ? f$OpenPPL_Chair0StartingStacksize :
-f$OpenPPL_ButtonChair == 1 ? f$OpenPPL_Chair1StartingStacksize :
-f$OpenPPL_ButtonChair == 2 ? f$OpenPPL_Chair2StartingStacksize :
-f$OpenPPL_ButtonChair == 3 ? f$OpenPPL_Chair3StartingStacksize :
-f$OpenPPL_ButtonChair == 4 ? f$OpenPPL_Chair4StartingStacksize :
-f$OpenPPL_ButtonChair == 5 ? f$OpenPPL_Chair5StartingStacksize :
-f$OpenPPL_ButtonChair == 6 ? f$OpenPPL_Chair6StartingStacksize :
-f$OpenPPL_ButtonChair == 7 ? f$OpenPPL_Chair7StartingStacksize :
-f$OpenPPL_ButtonChair == 8 ? f$OpenPPL_Chair8StartingStacksize :
-f$OpenPPL_ButtonChair == 9 ? f$OpenPPL_Chair9StartingStacksize : 0
+##f$OpenPPL_ButtonStartingStackSize##
+f$OpenPPL_ButtonChair == 0 ? f$OpenPPL_Chair0StartingStackSize :
+f$OpenPPL_ButtonChair == 1 ? f$OpenPPL_Chair1StartingStackSize :
+f$OpenPPL_ButtonChair == 2 ? f$OpenPPL_Chair2StartingStackSize :
+f$OpenPPL_ButtonChair == 3 ? f$OpenPPL_Chair3StartingStackSize :
+f$OpenPPL_ButtonChair == 4 ? f$OpenPPL_Chair4StartingStackSize :
+f$OpenPPL_ButtonChair == 5 ? f$OpenPPL_Chair5StartingStackSize :
+f$OpenPPL_ButtonChair == 6 ? f$OpenPPL_Chair6StartingStackSize :
+f$OpenPPL_ButtonChair == 7 ? f$OpenPPL_Chair7StartingStackSize :
+f$OpenPPL_ButtonChair == 8 ? f$OpenPPL_Chair8StartingStackSize :
+f$OpenPPL_ButtonChair == 9 ? f$OpenPPL_Chair9StartingStackSize : 0
 
-##f$OpenPPL_CutOffStartingStacksize##
-f$OpenPPL_CutOffChair == 0 ? f$OpenPPL_Chair0StartingStacksize :
-f$OpenPPL_CutOffChair == 1 ? f$OpenPPL_Chair1StartingStacksize :
-f$OpenPPL_CutOffChair == 2 ? f$OpenPPL_Chair2StartingStacksize :
-f$OpenPPL_CutOffChair == 3 ? f$OpenPPL_Chair3StartingStacksize :
-f$OpenPPL_CutOffChair == 4 ? f$OpenPPL_Chair4StartingStacksize :
-f$OpenPPL_CutOffChair == 5 ? f$OpenPPL_Chair5StartingStacksize :
-f$OpenPPL_CutOffChair == 6 ? f$OpenPPL_Chair6StartingStacksize :
-f$OpenPPL_CutOffChair == 7 ? f$OpenPPL_Chair7StartingStacksize :
-f$OpenPPL_CutOffChair == 8 ? f$OpenPPL_Chair8StartingStacksize :
-f$OpenPPL_CutOffChair == 9 ? f$OpenPPL_Chair9StartingStacksize : 0
+##f$OpenPPL_CutOffStartingStackSize##
+f$OpenPPL_CutOffChair == 0 ? f$OpenPPL_Chair0StartingStackSize :
+f$OpenPPL_CutOffChair == 1 ? f$OpenPPL_Chair1StartingStackSize :
+f$OpenPPL_CutOffChair == 2 ? f$OpenPPL_Chair2StartingStackSize :
+f$OpenPPL_CutOffChair == 3 ? f$OpenPPL_Chair3StartingStackSize :
+f$OpenPPL_CutOffChair == 4 ? f$OpenPPL_Chair4StartingStackSize :
+f$OpenPPL_CutOffChair == 5 ? f$OpenPPL_Chair5StartingStackSize :
+f$OpenPPL_CutOffChair == 6 ? f$OpenPPL_Chair6StartingStackSize :
+f$OpenPPL_CutOffChair == 7 ? f$OpenPPL_Chair7StartingStackSize :
+f$OpenPPL_CutOffChair == 8 ? f$OpenPPL_Chair8StartingStackSize :
+f$OpenPPL_CutOffChair == 9 ? f$OpenPPL_Chair9StartingStackSize : 0
 
-##f$OpenPPL_MiddlePosition3StartingStacksize##
-f$OpenPPL_MiddlePosition3Chair == 0 ? f$OpenPPL_Chair0StartingStacksize :
-f$OpenPPL_MiddlePosition3Chair == 1 ? f$OpenPPL_Chair1StartingStacksize :
-f$OpenPPL_MiddlePosition3Chair == 2 ? f$OpenPPL_Chair2StartingStacksize :
-f$OpenPPL_MiddlePosition3Chair == 3 ? f$OpenPPL_Chair3StartingStacksize :
-f$OpenPPL_MiddlePosition3Chair == 4 ? f$OpenPPL_Chair4StartingStacksize :
-f$OpenPPL_MiddlePosition3Chair == 5 ? f$OpenPPL_Chair5StartingStacksize :
-f$OpenPPL_MiddlePosition3Chair == 6 ? f$OpenPPL_Chair6StartingStacksize :
-f$OpenPPL_MiddlePosition3Chair == 7 ? f$OpenPPL_Chair7StartingStacksize :
-f$OpenPPL_MiddlePosition3Chair == 8 ? f$OpenPPL_Chair8StartingStacksize :
-f$OpenPPL_MiddlePosition3Chair == 9 ? f$OpenPPL_Chair9StartingStacksize : 0
+##f$OpenPPL_MiddlePosition3StartingStackSize##
+f$OpenPPL_MiddlePosition3Chair == 0 ? f$OpenPPL_Chair0StartingStackSize :
+f$OpenPPL_MiddlePosition3Chair == 1 ? f$OpenPPL_Chair1StartingStackSize :
+f$OpenPPL_MiddlePosition3Chair == 2 ? f$OpenPPL_Chair2StartingStackSize :
+f$OpenPPL_MiddlePosition3Chair == 3 ? f$OpenPPL_Chair3StartingStackSize :
+f$OpenPPL_MiddlePosition3Chair == 4 ? f$OpenPPL_Chair4StartingStackSize :
+f$OpenPPL_MiddlePosition3Chair == 5 ? f$OpenPPL_Chair5StartingStackSize :
+f$OpenPPL_MiddlePosition3Chair == 6 ? f$OpenPPL_Chair6StartingStackSize :
+f$OpenPPL_MiddlePosition3Chair == 7 ? f$OpenPPL_Chair7StartingStackSize :
+f$OpenPPL_MiddlePosition3Chair == 8 ? f$OpenPPL_Chair8StartingStackSize :
+f$OpenPPL_MiddlePosition3Chair == 9 ? f$OpenPPL_Chair9StartingStackSize : 0
 
-##f$OpenPPL_MiddlePosition2StartingStacksize##
-f$OpenPPL_MiddlePosition2Chair == 0 ? f$OpenPPL_Chair0StartingStacksize :
-f$OpenPPL_MiddlePosition2Chair == 1 ? f$OpenPPL_Chair1StartingStacksize :
-f$OpenPPL_MiddlePosition2Chair == 2 ? f$OpenPPL_Chair2StartingStacksize :
-f$OpenPPL_MiddlePosition2Chair == 3 ? f$OpenPPL_Chair3StartingStacksize :
-f$OpenPPL_MiddlePosition2Chair == 4 ? f$OpenPPL_Chair4StartingStacksize :
-f$OpenPPL_MiddlePosition2Chair == 5 ? f$OpenPPL_Chair5StartingStacksize :
-f$OpenPPL_MiddlePosition2Chair == 6 ? f$OpenPPL_Chair6StartingStacksize :
-f$OpenPPL_MiddlePosition2Chair == 7 ? f$OpenPPL_Chair7StartingStacksize :
-f$OpenPPL_MiddlePosition2Chair == 8 ? f$OpenPPL_Chair8StartingStacksize :
-f$OpenPPL_MiddlePosition2Chair == 9 ? f$OpenPPL_Chair9StartingStacksize : 0
+##f$OpenPPL_MiddlePosition2StartingStackSize##
+f$OpenPPL_MiddlePosition2Chair == 0 ? f$OpenPPL_Chair0StartingStackSize :
+f$OpenPPL_MiddlePosition2Chair == 1 ? f$OpenPPL_Chair1StartingStackSize :
+f$OpenPPL_MiddlePosition2Chair == 2 ? f$OpenPPL_Chair2StartingStackSize :
+f$OpenPPL_MiddlePosition2Chair == 3 ? f$OpenPPL_Chair3StartingStackSize :
+f$OpenPPL_MiddlePosition2Chair == 4 ? f$OpenPPL_Chair4StartingStackSize :
+f$OpenPPL_MiddlePosition2Chair == 5 ? f$OpenPPL_Chair5StartingStackSize :
+f$OpenPPL_MiddlePosition2Chair == 6 ? f$OpenPPL_Chair6StartingStackSize :
+f$OpenPPL_MiddlePosition2Chair == 7 ? f$OpenPPL_Chair7StartingStackSize :
+f$OpenPPL_MiddlePosition2Chair == 8 ? f$OpenPPL_Chair8StartingStackSize :
+f$OpenPPL_MiddlePosition2Chair == 9 ? f$OpenPPL_Chair9StartingStackSize : 0
 
-##f$OpenPPL_MiddlePosition1StartingStacksize##
-f$OpenPPL_MiddlePosition1Chair == 0 ? f$OpenPPL_Chair0StartingStacksize :
-f$OpenPPL_MiddlePosition1Chair == 1 ? f$OpenPPL_Chair1StartingStacksize :
-f$OpenPPL_MiddlePosition1Chair == 2 ? f$OpenPPL_Chair2StartingStacksize :
-f$OpenPPL_MiddlePosition1Chair == 3 ? f$OpenPPL_Chair3StartingStacksize :
-f$OpenPPL_MiddlePosition1Chair == 4 ? f$OpenPPL_Chair4StartingStacksize :
-f$OpenPPL_MiddlePosition1Chair == 5 ? f$OpenPPL_Chair5StartingStacksize :
-f$OpenPPL_MiddlePosition1Chair == 6 ? f$OpenPPL_Chair6StartingStacksize :
-f$OpenPPL_MiddlePosition1Chair == 7 ? f$OpenPPL_Chair7StartingStacksize :
-f$OpenPPL_MiddlePosition1Chair == 8 ? f$OpenPPL_Chair8StartingStacksize :
-f$OpenPPL_MiddlePosition1Chair == 9 ? f$OpenPPL_Chair9StartingStacksize : 0
+##f$OpenPPL_MiddlePosition1StartingStackSize##
+f$OpenPPL_MiddlePosition1Chair == 0 ? f$OpenPPL_Chair0StartingStackSize :
+f$OpenPPL_MiddlePosition1Chair == 1 ? f$OpenPPL_Chair1StartingStackSize :
+f$OpenPPL_MiddlePosition1Chair == 2 ? f$OpenPPL_Chair2StartingStackSize :
+f$OpenPPL_MiddlePosition1Chair == 3 ? f$OpenPPL_Chair3StartingStackSize :
+f$OpenPPL_MiddlePosition1Chair == 4 ? f$OpenPPL_Chair4StartingStackSize :
+f$OpenPPL_MiddlePosition1Chair == 5 ? f$OpenPPL_Chair5StartingStackSize :
+f$OpenPPL_MiddlePosition1Chair == 6 ? f$OpenPPL_Chair6StartingStackSize :
+f$OpenPPL_MiddlePosition1Chair == 7 ? f$OpenPPL_Chair7StartingStackSize :
+f$OpenPPL_MiddlePosition1Chair == 8 ? f$OpenPPL_Chair8StartingStackSize :
+f$OpenPPL_MiddlePosition1Chair == 9 ? f$OpenPPL_Chair9StartingStackSize : 0
 
-##f$OpenPPL_EarlyPosition3StartingStacksize##
-f$OpenPPL_EarlyPosition3Chair == 0 ? f$OpenPPL_Chair0StartingStacksize :
-f$OpenPPL_EarlyPosition3Chair == 1 ? f$OpenPPL_Chair1StartingStacksize :
-f$OpenPPL_EarlyPosition3Chair == 2 ? f$OpenPPL_Chair2StartingStacksize :
-f$OpenPPL_EarlyPosition3Chair == 3 ? f$OpenPPL_Chair3StartingStacksize :
-f$OpenPPL_EarlyPosition3Chair == 4 ? f$OpenPPL_Chair4StartingStacksize :
-f$OpenPPL_EarlyPosition3Chair == 5 ? f$OpenPPL_Chair5StartingStacksize :
-f$OpenPPL_EarlyPosition3Chair == 6 ? f$OpenPPL_Chair6StartingStacksize :
-f$OpenPPL_EarlyPosition3Chair == 7 ? f$OpenPPL_Chair7StartingStacksize :
-f$OpenPPL_EarlyPosition3Chair == 8 ? f$OpenPPL_Chair8StartingStacksize :
-f$OpenPPL_EarlyPosition3Chair == 9 ? f$OpenPPL_Chair9StartingStacksize : 0
+##f$OpenPPL_EarlyPosition3StartingStackSize##
+f$OpenPPL_EarlyPosition3Chair == 0 ? f$OpenPPL_Chair0StartingStackSize :
+f$OpenPPL_EarlyPosition3Chair == 1 ? f$OpenPPL_Chair1StartingStackSize :
+f$OpenPPL_EarlyPosition3Chair == 2 ? f$OpenPPL_Chair2StartingStackSize :
+f$OpenPPL_EarlyPosition3Chair == 3 ? f$OpenPPL_Chair3StartingStackSize :
+f$OpenPPL_EarlyPosition3Chair == 4 ? f$OpenPPL_Chair4StartingStackSize :
+f$OpenPPL_EarlyPosition3Chair == 5 ? f$OpenPPL_Chair5StartingStackSize :
+f$OpenPPL_EarlyPosition3Chair == 6 ? f$OpenPPL_Chair6StartingStackSize :
+f$OpenPPL_EarlyPosition3Chair == 7 ? f$OpenPPL_Chair7StartingStackSize :
+f$OpenPPL_EarlyPosition3Chair == 8 ? f$OpenPPL_Chair8StartingStackSize :
+f$OpenPPL_EarlyPosition3Chair == 9 ? f$OpenPPL_Chair9StartingStackSize : 0
 
-##f$OpenPPL_EarlyPosition2StartingStacksize##
-f$OpenPPL_EarlyPosition2Chair == 0 ? f$OpenPPL_Chair0StartingStacksize :
-f$OpenPPL_EarlyPosition2Chair == 1 ? f$OpenPPL_Chair1StartingStacksize :
-f$OpenPPL_EarlyPosition2Chair == 2 ? f$OpenPPL_Chair2StartingStacksize :
-f$OpenPPL_EarlyPosition2Chair == 3 ? f$OpenPPL_Chair3StartingStacksize :
-f$OpenPPL_EarlyPosition2Chair == 4 ? f$OpenPPL_Chair4StartingStacksize :
-f$OpenPPL_EarlyPosition2Chair == 5 ? f$OpenPPL_Chair5StartingStacksize :
-f$OpenPPL_EarlyPosition2Chair == 6 ? f$OpenPPL_Chair6StartingStacksize :
-f$OpenPPL_EarlyPosition2Chair == 7 ? f$OpenPPL_Chair7StartingStacksize :
-f$OpenPPL_EarlyPosition2Chair == 8 ? f$OpenPPL_Chair8StartingStacksize :
-f$OpenPPL_EarlyPosition2Chair == 9 ? f$OpenPPL_Chair9StartingStacksize : 0
+##f$OpenPPL_EarlyPosition2StartingStackSize##
+f$OpenPPL_EarlyPosition2Chair == 0 ? f$OpenPPL_Chair0StartingStackSize :
+f$OpenPPL_EarlyPosition2Chair == 1 ? f$OpenPPL_Chair1StartingStackSize :
+f$OpenPPL_EarlyPosition2Chair == 2 ? f$OpenPPL_Chair2StartingStackSize :
+f$OpenPPL_EarlyPosition2Chair == 3 ? f$OpenPPL_Chair3StartingStackSize :
+f$OpenPPL_EarlyPosition2Chair == 4 ? f$OpenPPL_Chair4StartingStackSize :
+f$OpenPPL_EarlyPosition2Chair == 5 ? f$OpenPPL_Chair5StartingStackSize :
+f$OpenPPL_EarlyPosition2Chair == 6 ? f$OpenPPL_Chair6StartingStackSize :
+f$OpenPPL_EarlyPosition2Chair == 7 ? f$OpenPPL_Chair7StartingStackSize :
+f$OpenPPL_EarlyPosition2Chair == 8 ? f$OpenPPL_Chair8StartingStackSize :
+f$OpenPPL_EarlyPosition2Chair == 9 ? f$OpenPPL_Chair9StartingStackSize : 0
 
-##f$OpenPPL_EarlyPosition1StartingStacksize##
-f$OpenPPL_EarlyPosition1Chair == 0 ? f$OpenPPL_Chair0StartingStacksize :
-f$OpenPPL_EarlyPosition1Chair == 1 ? f$OpenPPL_Chair1StartingStacksize :
-f$OpenPPL_EarlyPosition1Chair == 2 ? f$OpenPPL_Chair2StartingStacksize :
-f$OpenPPL_EarlyPosition1Chair == 3 ? f$OpenPPL_Chair3StartingStacksize :
-f$OpenPPL_EarlyPosition1Chair == 4 ? f$OpenPPL_Chair4StartingStacksize :
-f$OpenPPL_EarlyPosition1Chair == 5 ? f$OpenPPL_Chair5StartingStacksize :
-f$OpenPPL_EarlyPosition1Chair == 6 ? f$OpenPPL_Chair6StartingStacksize :
-f$OpenPPL_EarlyPosition1Chair == 7 ? f$OpenPPL_Chair7StartingStacksize :
-f$OpenPPL_EarlyPosition1Chair == 8 ? f$OpenPPL_Chair8StartingStacksize :
-f$OpenPPL_EarlyPosition1Chair == 9 ? f$OpenPPL_Chair9StartingStacksize : 0
+##f$OpenPPL_EarlyPosition1StartingStackSize##
+f$OpenPPL_EarlyPosition1Chair == 0 ? f$OpenPPL_Chair0StartingStackSize :
+f$OpenPPL_EarlyPosition1Chair == 1 ? f$OpenPPL_Chair1StartingStackSize :
+f$OpenPPL_EarlyPosition1Chair == 2 ? f$OpenPPL_Chair2StartingStackSize :
+f$OpenPPL_EarlyPosition1Chair == 3 ? f$OpenPPL_Chair3StartingStackSize :
+f$OpenPPL_EarlyPosition1Chair == 4 ? f$OpenPPL_Chair4StartingStackSize :
+f$OpenPPL_EarlyPosition1Chair == 5 ? f$OpenPPL_Chair5StartingStackSize :
+f$OpenPPL_EarlyPosition1Chair == 6 ? f$OpenPPL_Chair6StartingStackSize :
+f$OpenPPL_EarlyPosition1Chair == 7 ? f$OpenPPL_Chair7StartingStackSize :
+f$OpenPPL_EarlyPosition1Chair == 8 ? f$OpenPPL_Chair8StartingStackSize :
+f$OpenPPL_EarlyPosition1Chair == 9 ? f$OpenPPL_Chair9StartingStackSize : 0
 
-##f$OpenPPL_BigBlindStartingStacksize##
-f$OpenPPL_BigBlindChair == 0 ? f$OpenPPL_Chair0StartingStacksize :
-f$OpenPPL_BigBlindChair == 1 ? f$OpenPPL_Chair1StartingStacksize :
-f$OpenPPL_BigBlindChair == 2 ? f$OpenPPL_Chair2StartingStacksize :
-f$OpenPPL_BigBlindChair == 3 ? f$OpenPPL_Chair3StartingStacksize :
-f$OpenPPL_BigBlindChair == 4 ? f$OpenPPL_Chair4StartingStacksize :
-f$OpenPPL_BigBlindChair == 5 ? f$OpenPPL_Chair5StartingStacksize :
-f$OpenPPL_BigBlindChair == 6 ? f$OpenPPL_Chair6StartingStacksize :
-f$OpenPPL_BigBlindChair == 7 ? f$OpenPPL_Chair7StartingStacksize :
-f$OpenPPL_BigBlindChair == 8 ? f$OpenPPL_Chair8StartingStacksize :
-f$OpenPPL_BigBlindChair == 9 ? f$OpenPPL_Chair9StartingStacksize : 0
+##f$OpenPPL_BigBlindStartingStackSize##
+f$OpenPPL_BigBlindChair == 0 ? f$OpenPPL_Chair0StartingStackSize :
+f$OpenPPL_BigBlindChair == 1 ? f$OpenPPL_Chair1StartingStackSize :
+f$OpenPPL_BigBlindChair == 2 ? f$OpenPPL_Chair2StartingStackSize :
+f$OpenPPL_BigBlindChair == 3 ? f$OpenPPL_Chair3StartingStackSize :
+f$OpenPPL_BigBlindChair == 4 ? f$OpenPPL_Chair4StartingStackSize :
+f$OpenPPL_BigBlindChair == 5 ? f$OpenPPL_Chair5StartingStackSize :
+f$OpenPPL_BigBlindChair == 6 ? f$OpenPPL_Chair6StartingStackSize :
+f$OpenPPL_BigBlindChair == 7 ? f$OpenPPL_Chair7StartingStackSize :
+f$OpenPPL_BigBlindChair == 8 ? f$OpenPPL_Chair8StartingStackSize :
+f$OpenPPL_BigBlindChair == 9 ? f$OpenPPL_Chair9StartingStackSize : 0
 
-##f$OpenPPL_SmallBlindStartingStacksize##
-f$OpenPPL_SmallBlindChair == 0 ? f$OpenPPL_Chair0StartingStacksize :
-f$OpenPPL_SmallBlindChair == 1 ? f$OpenPPL_Chair1StartingStacksize :
-f$OpenPPL_SmallBlindChair == 2 ? f$OpenPPL_Chair2StartingStacksize :
-f$OpenPPL_SmallBlindChair == 3 ? f$OpenPPL_Chair3StartingStacksize :
-f$OpenPPL_SmallBlindChair == 4 ? f$OpenPPL_Chair4StartingStacksize :
-f$OpenPPL_SmallBlindChair == 5 ? f$OpenPPL_Chair5StartingStacksize :
-f$OpenPPL_SmallBlindChair == 6 ? f$OpenPPL_Chair6StartingStacksize :
-f$OpenPPL_SmallBlindChair == 7 ? f$OpenPPL_Chair7StartingStacksize :
-f$OpenPPL_SmallBlindChair == 8 ? f$OpenPPL_Chair8StartingStacksize :
-f$OpenPPL_SmallBlindChair == 9 ? f$OpenPPL_Chair9StartingStacksize :0
+##f$OpenPPL_SmallBlindStartingStackSize##
+f$OpenPPL_SmallBlindChair == 0 ? f$OpenPPL_Chair0StartingStackSize :
+f$OpenPPL_SmallBlindChair == 1 ? f$OpenPPL_Chair1StartingStackSize :
+f$OpenPPL_SmallBlindChair == 2 ? f$OpenPPL_Chair2StartingStackSize :
+f$OpenPPL_SmallBlindChair == 3 ? f$OpenPPL_Chair3StartingStackSize :
+f$OpenPPL_SmallBlindChair == 4 ? f$OpenPPL_Chair4StartingStackSize :
+f$OpenPPL_SmallBlindChair == 5 ? f$OpenPPL_Chair5StartingStackSize :
+f$OpenPPL_SmallBlindChair == 6 ? f$OpenPPL_Chair6StartingStackSize :
+f$OpenPPL_SmallBlindChair == 7 ? f$OpenPPL_Chair7StartingStackSize :
+f$OpenPPL_SmallBlindChair == 8 ? f$OpenPPL_Chair8StartingStackSize :
+f$OpenPPL_SmallBlindChair == 9 ? f$OpenPPL_Chair9StartingStackSize :0
 
-##f$OpenPPL_MaxStillToActStacksizeAfterSmallBlind##
+##f$OpenPPL_MaxStillToActStackSizeAfterSmallBlind##
 // Only one player behind SB, so it is easy
-f$OpenPPL_BigBlindStartingStacksize
+f$OpenPPL_BigBlindStartingStackSize
 
-##f$OpenPPL_MaxStillToActStacksizeAfterButton##
-f$OpenPPL_SmallBlindStartingStacksize > f$OpenPPL_MaxStillToActStacksizeAfterSmallBlind ?
-  f$OpenPPL_SmallBlindStartingStacksize : f$OpenPPL_MaxStillToActStacksizeAfterSmallBlind
+##f$OpenPPL_MaxStillToActStackSizeAfterButton##
+f$OpenPPL_SmallBlindStartingStackSize > f$OpenPPL_MaxStillToActStackSizeAfterSmallBlind ?
+  f$OpenPPL_SmallBlindStartingStackSize : f$OpenPPL_MaxStillToActStackSizeAfterSmallBlind
 
-##f$OpenPPL_MaxStillToActStacksizeAfterCutOff##
-f$OpenPPL_ButtonStartingStacksize > f$OpenPPL_MaxStillToActStacksizeAfterButton ?
-  f$OpenPPL_ButtonStartingStacksize : f$OpenPPL_MaxStillToActStacksizeAfterButton
+##f$OpenPPL_MaxStillToActStackSizeAfterCutOff##
+f$OpenPPL_ButtonStartingStackSize > f$OpenPPL_MaxStillToActStackSizeAfterButton ?
+  f$OpenPPL_ButtonStartingStackSize : f$OpenPPL_MaxStillToActStackSizeAfterButton
 
-##f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition3##
-f$OpenPPL_CutOffStartingStacksize > f$OpenPPL_MaxStillToActStacksizeAfterCutOff?
-  f$OpenPPL_CutOffStartingStacksize : f$OpenPPL_MaxStillToActStacksizeAfterCutOff
+##f$OpenPPL_MaxStillToActStackSizeAfterMiddlePosition3##
+f$OpenPPL_CutOffStartingStackSize > f$OpenPPL_MaxStillToActStackSizeAfterCutOff?
+  f$OpenPPL_CutOffStartingStackSize : f$OpenPPL_MaxStillToActStackSizeAfterCutOff
 
-##f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition2##
-f$OpenPPL_MiddlePosition3StartingStacksize > f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition3 ?
-  f$OpenPPL_MiddlePosition3StartingStacksize : f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition3
+##f$OpenPPL_MaxStillToActStackSizeAfterMiddlePosition2##
+f$OpenPPL_MiddlePosition3StartingStackSize > f$OpenPPL_MaxStillToActStackSizeAfterMiddlePosition3 ?
+  f$OpenPPL_MiddlePosition3StartingStackSize : f$OpenPPL_MaxStillToActStackSizeAfterMiddlePosition3
 
-##f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition1##
-f$OpenPPL_MiddlePosition2StartingStacksize > f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition2 ?
-  f$OpenPPL_MiddlePosition2StartingStacksize : f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition2
+##f$OpenPPL_MaxStillToActStackSizeAfterMiddlePosition1##
+f$OpenPPL_MiddlePosition2StartingStackSize > f$OpenPPL_MaxStillToActStackSizeAfterMiddlePosition2 ?
+  f$OpenPPL_MiddlePosition2StartingStackSize : f$OpenPPL_MaxStillToActStackSizeAfterMiddlePosition2
 
-##f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition3##
-f$OpenPPL_MiddlePosition1StartingStacksize > f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition1 ?
-  f$OpenPPL_MiddlePosition1StartingStacksize : f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition1
+##f$OpenPPL_MaxStillToActStackSizeAfterEarlyPosition3##
+f$OpenPPL_MiddlePosition1StartingStackSize > f$OpenPPL_MaxStillToActStackSizeAfterMiddlePosition1 ?
+  f$OpenPPL_MiddlePosition1StartingStackSize : f$OpenPPL_MaxStillToActStackSizeAfterMiddlePosition1
 
-##f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition2##
-f$OpenPPL_EarlyPosition3StartingStacksize > f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition3 ?
-  f$OpenPPL_EarlyPosition3StartingStacksize : f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition3
+##f$OpenPPL_MaxStillToActStackSizeAfterEarlyPosition2##
+f$OpenPPL_EarlyPosition3StartingStackSize > f$OpenPPL_MaxStillToActStackSizeAfterEarlyPosition3 ?
+  f$OpenPPL_EarlyPosition3StartingStackSize : f$OpenPPL_MaxStillToActStackSizeAfterEarlyPosition3
 
-##f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition1##
-f$OpenPPL_EarlyPosition2StartingStacksize > f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition2 ?
-  f$OpenPPL_EarlyPosition2StartingStacksize : f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition2
+##f$OpenPPL_MaxStillToActStackSizeAfterEarlyPosition1##
+f$OpenPPL_EarlyPosition2StartingStackSize > f$OpenPPL_MaxStillToActStackSizeAfterEarlyPosition2 ?
+  f$OpenPPL_EarlyPosition2StartingStackSize : f$OpenPPL_MaxStillToActStackSizeAfterEarlyPosition2
 
-##f$OpenPPL_MinStillToActStacksizeAfterSmallBlind##
+##f$OpenPPL_MinStillToActStackSizeAfterSmallBlind##
 // Only one player behind SB, so it is easy
-f$OpenPPL_BigBlindStartingStacksize
+f$OpenPPL_BigBlindStartingStackSize
 
-##f$OpenPPL_MinStillToActStacksizeAfterButton##
-f$OpenPPL_SmallBlindStartingStacksize < f$OpenPPL_MinStillToActStacksizeAfterSmallBlind ?
-  f$OpenPPL_SmallBlindStartingStacksize : f$OpenPPL_MinStillToActStacksizeAfterSmallBlind
+##f$OpenPPL_MinStillToActStackSizeAfterButton##
+f$OpenPPL_SmallBlindStartingStackSize < f$OpenPPL_MinStillToActStackSizeAfterSmallBlind ?
+  f$OpenPPL_SmallBlindStartingStackSize : f$OpenPPL_MinStillToActStackSizeAfterSmallBlind
 
-##f$OpenPPL_MinStillToActStacksizeAfterCutOff##
-f$OpenPPL_ButtonStartingStacksize < f$OpenPPL_MinStillToActStacksizeAfterButton ?
-  f$OpenPPL_ButtonStartingStacksize : f$OpenPPL_MinStillToActStacksizeAfterButton
+##f$OpenPPL_MinStillToActStackSizeAfterCutOff##
+f$OpenPPL_ButtonStartingStackSize < f$OpenPPL_MinStillToActStackSizeAfterButton ?
+  f$OpenPPL_ButtonStartingStackSize : f$OpenPPL_MinStillToActStackSizeAfterButton
 
-##f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition3##
-f$OpenPPL_CutOffStartingStacksize < f$OpenPPL_MinStillToActStacksizeAfterCutOff ?
-  f$OpenPPL_CutOffStartingStacksize : f$OpenPPL_MinStillToActStacksizeAfterCutOff
+##f$OpenPPL_MinStillToActStackSizeAfterMiddlePosition3##
+f$OpenPPL_CutOffStartingStackSize < f$OpenPPL_MinStillToActStackSizeAfterCutOff ?
+  f$OpenPPL_CutOffStartingStackSize : f$OpenPPL_MinStillToActStackSizeAfterCutOff
 
-##f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition2##
-f$OpenPPL_MiddlePosition3StartingStacksize < f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition3 ?
-  f$OpenPPL_MiddlePosition3StartingStacksize : f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition3
+##f$OpenPPL_MinStillToActStackSizeAfterMiddlePosition2##
+f$OpenPPL_MiddlePosition3StartingStackSize < f$OpenPPL_MinStillToActStackSizeAfterMiddlePosition3 ?
+  f$OpenPPL_MiddlePosition3StartingStackSize : f$OpenPPL_MinStillToActStackSizeAfterMiddlePosition3
 
-##f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition1##
-f$OpenPPL_MiddlePosition2StartingStacksize < f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition2 ?
-  f$OpenPPL_MiddlePosition2StartingStacksize : f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition2
+##f$OpenPPL_MinStillToActStackSizeAfterMiddlePosition1##
+f$OpenPPL_MiddlePosition2StartingStackSize < f$OpenPPL_MinStillToActStackSizeAfterMiddlePosition2 ?
+  f$OpenPPL_MiddlePosition2StartingStackSize : f$OpenPPL_MinStillToActStackSizeAfterMiddlePosition2
 
-##f$OpenPPL_MinStillToActStacksizeAfterEarlyPosition3##
-f$OpenPPL_MiddlePosition1StartingStacksize < f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition1 ?
-  f$OpenPPL_MiddlePosition1StartingStacksize : f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition1
+##f$OpenPPL_MinStillToActStackSizeAfterEarlyPosition3##
+f$OpenPPL_MiddlePosition1StartingStackSize < f$OpenPPL_MinStillToActStackSizeAfterMiddlePosition1 ?
+  f$OpenPPL_MiddlePosition1StartingStackSize : f$OpenPPL_MinStillToActStackSizeAfterMiddlePosition1
 
-##f$OpenPPL_MinStillToActStacksizeAfterEarlyPosition2##
-f$OpenPPL_EarlyPosition3StartingStacksize < f$OpenPPL_MinStillToActStacksizeAfterEarlyPosition3 ?
-  f$OpenPPL_EarlyPosition3StartingStacksize : f$OpenPPL_MinStillToActStacksizeAfterEarlyPosition3
+##f$OpenPPL_MinStillToActStackSizeAfterEarlyPosition2##
+f$OpenPPL_EarlyPosition3StartingStackSize < f$OpenPPL_MinStillToActStackSizeAfterEarlyPosition3 ?
+  f$OpenPPL_EarlyPosition3StartingStackSize : f$OpenPPL_MinStillToActStackSizeAfterEarlyPosition3
 
-##f$OpenPPL_MinStillToActStacksizeAfterEarlyPosition1##
-f$OpenPPL_EarlyPosition2StartingStacksize < f$OpenPPL_MinStillToActStacksizeAfterEarlyPosition2 ?
-  f$OpenPPL_EarlyPosition2StartingStacksize : f$OpenPPL_MinStillToActStacksizeAfterEarlyPosition2
+##f$OpenPPL_MinStillToActStackSizeAfterEarlyPosition1##
+f$OpenPPL_EarlyPosition2StartingStackSize < f$OpenPPL_MinStillToActStackSizeAfterEarlyPosition2 ?
+  f$OpenPPL_EarlyPosition2StartingStackSize : f$OpenPPL_MinStillToActStackSizeAfterEarlyPosition2
 
-##f$OpenPPL_InitMaxOpponentStacksize##
-(br == 1 ? me_st_MaxOpponentStacksize_f$OpenPPL_MaxOpponentStacksizeCalculation : 0)
+##f$OpenPPL_InitMaxOpponentStackSize##
+(br == 1 ? me_st_MaxOpponentStackSize_f$OpenPPL_MaxOpponentStackSizeCalculation : 0)
 
-##f$OpenPPL_InitMinOpponentStacksize##
-(br == 1 ? me_st_MinOpponentStacksize_f$OpenPPL_MinOpponentStacksizeCalculation : 0)
+##f$OpenPPL_InitMinOpponentStackSize##
+(br == 1 ? me_st_MinOpponentStackSize_f$OpenPPL_MinOpponentStackSizeCalculation : 0)
 
-##f$OpenPPL_MaxOpponentStacksizeCalculation##
+##f$OpenPPL_MaxOpponentStackSizeCalculation##
 balance_rank0 == balance ? balance_rank1 : balance_rank0
 
-##f$OpenPPL_MinOpponentStacksizeCalculation##
+##f$OpenPPL_MinOpponentStackSizeCalculation##
 nplayersdealt == 10 ?
   (balance_rank9 == balance ? balance_rank8 : balance_rank9) :
 nplayersdealt == 9 ?
@@ -718,20 +718,20 @@ nplayersdealt == 2 ?
 ##f$OpenPPL_OpponentsWithHigherStack##
 me_re_MemOpponentsWithHigherStack
 
-##f$OpenPPL_CalculateStartingstacksize##
+##f$OpenPPL_CalculateStartingStackSize##
 // Precondition: first hand, preflop
 bblind > 0 ? (currentbet + balance) / bblind : 0
 
-##f$OpenPPL_InitStartingStacksize##
-((handsplayed == 0 || f$OpenPPL_StartingStacksize == 0) && (betround == 1)) ?
-  me_st_MemStartingStacksize_f$OpenPPL_CalculateStartingstacksize : 0
+##f$OpenPPL_InitStartingStackSize##
+((handsplayed == 0 || f$OpenPPL_StartingStackSize == 0) && (betround == 1)) ?
+  me_st_MemStartingStackSize_f$OpenPPL_CalculateStartingStackSize : 0
 
-##f$OpenPPL_StartingStacksize##
-me_re_MemStartingStacksize
+##f$OpenPPL_StartingStackSize##
+me_re_MemStartingStackSize
 
 //*****************************************************************************
 //
-// OpenPPL - Betsizes and Stacksizes
+// OpenPPL - Betsizes and StackSizes
 //
 //*****************************************************************************
 
@@ -747,37 +747,37 @@ ncallbets
 ##f$OpenPPL_BigBlindSize##
 bet1
 
-##f$OpenPPL_MaxOpponentStacksize##
-me_re_MaxOpponentStacksize
+##f$OpenPPL_MaxOpponentStackSize##
+me_re_MaxOpponentStackSize
 
-##f$OpenPPL_MaxStillToActStacksize##
+##f$OpenPPL_MaxStillToActStackSize##
 chair == f$OpenPPL_BigBlindChair        ? -1 :
-chair == f$OpenPPL_SmallBlindChair      ? f$OpenPPL_MaxStillToActStacksizeAfterSmallBlind      :
-chair == f$OpenPPL_ButtonChair          ? f$OpenPPL_MaxStillToActStacksizeAfterButton          :
-chair == f$OpenPPL_CutOffChair          ? f$OpenPPL_MaxStillToActStacksizeAfterCutOff          :
-chair == f$OpenPPL_MiddlePosition3Chair ? f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition3 :
-chair == f$OpenPPL_MiddlePosition2Chair ? f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition2 :
-chair == f$OpenPPL_MiddlePosition1Chair ? f$OpenPPL_MaxStillToActStacksizeAfterMiddlePosition1 :
-chair == f$OpenPPL_EarlyPosition3Chair  ? f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition3  :
-chair == f$OpenPPL_EarlyPosition2Chair  ? f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition2  :
-chair == f$OpenPPL_EarlyPosition1Chair  ? f$OpenPPL_MaxStillToActStacksizeAfterEarlyPosition1  : -1
+chair == f$OpenPPL_SmallBlindChair      ? f$OpenPPL_MaxStillToActStackSizeAfterSmallBlind      :
+chair == f$OpenPPL_ButtonChair          ? f$OpenPPL_MaxStillToActStackSizeAfterButton          :
+chair == f$OpenPPL_CutOffChair          ? f$OpenPPL_MaxStillToActStackSizeAfterCutOff          :
+chair == f$OpenPPL_MiddlePosition3Chair ? f$OpenPPL_MaxStillToActStackSizeAfterMiddlePosition3 :
+chair == f$OpenPPL_MiddlePosition2Chair ? f$OpenPPL_MaxStillToActStackSizeAfterMiddlePosition2 :
+chair == f$OpenPPL_MiddlePosition1Chair ? f$OpenPPL_MaxStillToActStackSizeAfterMiddlePosition1 :
+chair == f$OpenPPL_EarlyPosition3Chair  ? f$OpenPPL_MaxStillToActStackSizeAfterEarlyPosition3  :
+chair == f$OpenPPL_EarlyPosition2Chair  ? f$OpenPPL_MaxStillToActStackSizeAfterEarlyPosition2  :
+chair == f$OpenPPL_EarlyPosition1Chair  ? f$OpenPPL_MaxStillToActStackSizeAfterEarlyPosition1  : -1
 
-##f$OpenPPL_MinStillToActStacksize##
+##f$OpenPPL_MinStillToActStackSize##
 chair == f$OpenPPL_BigBlindChair        ? -1:
-chair == f$OpenPPL_SmallBlindChair      ? f$OpenPPL_MinStillToActStacksizeAfterSmallBlind      :
-chair == f$OpenPPL_ButtonChair          ? f$OpenPPL_MinStillToActStacksizeAfterButton          :
-chair == f$OpenPPL_CutOffChair          ? f$OpenPPL_MinStillToActStacksizeAfterCutOff          :
-chair == f$OpenPPL_MiddlePosition3Chair ? f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition3 :
-chair == f$OpenPPL_MiddlePosition2Chair ? f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition2 :
-chair == f$OpenPPL_MiddlePosition1Chair ? f$OpenPPL_MinStillToActStacksizeAfterMiddlePosition1 :
-chair == f$OpenPPL_EarlyPosition3Chair  ? f$OpenPPL_MinStillToActStacksizeAfterEarlyPosition3  :
-chair == f$OpenPPL_EarlyPosition2Chair  ? f$OpenPPL_MinStillToActStacksizeAfterEarlyPosition2  :
-chair == f$OpenPPL_EarlyPosition1Chair  ? f$OpenPPL_MinStillToActStacksizeAfterEarlyPosition1  : -1
+chair == f$OpenPPL_SmallBlindChair      ? f$OpenPPL_MinStillToActStackSizeAfterSmallBlind      :
+chair == f$OpenPPL_ButtonChair          ? f$OpenPPL_MinStillToActStackSizeAfterButton          :
+chair == f$OpenPPL_CutOffChair          ? f$OpenPPL_MinStillToActStackSizeAfterCutOff          :
+chair == f$OpenPPL_MiddlePosition3Chair ? f$OpenPPL_MinStillToActStackSizeAfterMiddlePosition3 :
+chair == f$OpenPPL_MiddlePosition2Chair ? f$OpenPPL_MinStillToActStackSizeAfterMiddlePosition2 :
+chair == f$OpenPPL_MiddlePosition1Chair ? f$OpenPPL_MinStillToActStackSizeAfterMiddlePosition1 :
+chair == f$OpenPPL_EarlyPosition3Chair  ? f$OpenPPL_MinStillToActStackSizeAfterEarlyPosition3  :
+chair == f$OpenPPL_EarlyPosition2Chair  ? f$OpenPPL_MinStillToActStackSizeAfterEarlyPosition2  :
+chair == f$OpenPPL_EarlyPosition1Chair  ? f$OpenPPL_MinStillToActStackSizeAfterEarlyPosition1  : -1
 
 ##f$OpenPPL_PotSize##
 (bblind > 0) ? (pot / bblind) : 0
 
-##f$OpenPPL_Stacksize##
+##f$OpenPPL_StackSize##
 (bblind > 0) ? (balance / bblind) : 0
 
 ##f$OpenPPL_TotalInvested##
@@ -2411,6 +2411,18 @@ nopponentsplaying
 //
 //*****************************************************************************
 
+##f$OpenPPL_Button##
+// Usually used as "In Button", but "In" is a fillerword and superfluous.
+(dealposition == nplayersdealt)
+
+##f$OpenPPL_SmallBlind##
+// Usually used as "In SmallBlind", but "In" is a fillerword and superfluous.
+(dealposition == 1)
+
+##f$OpenPPL_BigBlind##
+// Usually used as "In BigBlind", but "In" is a fillerword and superfluous.
+(dealposition == 2)
+
 ##f$OpenPPL_BigBlindChair##
 ac_dealpos0 == 2 ? 0 :
 ac_dealpos1 == 2 ? 1 :
@@ -2693,9 +2705,9 @@ f$OpenPPL_Middle
 + f$OpenPPL_InitRaisesBeforeFlop
 + f$OpenPPL_InitRaisesOnFlop
 + f$OpenPPL_InitRaisesOnTurn
-+ f$OpenPPL_InitMaxOpponentStacksize
-+ f$OpenPPL_InitMinOpponentStacksize
-+ f$OpenPPL_InitStartingStacksize
++ f$OpenPPL_InitMaxOpponentStackSize
++ f$OpenPPL_InitMinOpponentStackSize
++ f$OpenPPL_InitStartingStackSize
 
 //*****************************************************************************
 //
