@@ -37,6 +37,7 @@
 //   Stangelnator
 //   SteveG1963
 //   TheHighFish
+//   ThemAndMe
 //   Want2Learn
 //   Zolp
 //
@@ -59,31 +60,68 @@
 //*****************************************************************************
 
 ##f$OpenPPL_BetsizeAdjustedToMinimumRaise##
+//
+// If we raise in NL, we should at least raise as much
+// as the raiser before us.
+// Most casinos reject to small raises again and again,
+// until we time out.
+// Some users won't take care, but we adjust the betsize
+// automatically as part of our service. ;-)
+//
 (f$OpenPPL_Betsize < ) ? : f$OpenPPL_BetSize
 
 ##f$OpenPPL_PotLimitPotSize##
+//
 // The pot for potsize calculations is the current pot
 // plus the amount if we call
+//
 (pot + call)
 
 ##f$OpenPPL_BetsizeAdjustedToGameType##
+//
 // In PotLimit we can only raise by pot-size ;-)
+// Some casinos adjust the raise automatically,
+// but some reject it again and again, until we time out.
+//
 [ispl && (f$OpenPPL_BetsizeAdjustedToMinimumRaise > 2 * f$OpenPPL_PotLimitPotSize)] ?
 (2 * f$OpenPPL_PotLimitPotSize) : f$OpenPPL_BetsizeAdjustedToMinimumRaise
 
 ##f$OpenPPL_BetsizeAdjustedToUsersBalance##
+//
+// We obviously can't raise more than our balance.
+// Some casinos adjust the raise automatically,
+// but some reject it again and again, until we time out.
+//
 (f$OpenPPL_BetsizeAdjustedToGameType > (balance + currentbet)) ?
 (balance + currentbet) : f$OpenPPL_BetsizeAdjustedToGameType
 
 ##f$OpenPPL_BetsizeAdjustedToCasinosInputRequirements##
+//
 // There are 3 different ways, how casinos treat swagged input.
 //
-// Swag means, the final bet will be:
-// 1)
-// 2)
-// 3)
-// As our f$betsize function treats case X as normal and not case 1,
+// Lets assume, we enter f$swag = f$srai at a certain casino.
+// The following swagtextmethods means, the final bet will be:
+// 1) call + currentbet + f$srai
+// 2) currentbet + f$srai
+// 3) f$srai
+// Therefore f$swag should return
+// (according to http://forum.winholdem.net/wbb/viewtopic.php?t=1849)
+// 1)  raise    f$srai
+// 2)  spend    f$srai + call
+// 3)  result   f$srai + call + currentbet
+// As our f$betsize function treats case 3 as normal and not case 1,
 // we have to do some small calculations in the other direction.
+//
+(swagtextmethod == 1) ? [f$OpenPPL_BetsizeAdjustedToUsersBalance - currentbet - call] :
+(swagtextmethod == 2) ? [f$OpenPPL_BetsizeAdjustedToUsersBalance - currentbet] :
+(swagtextmethod == 3) ? [f$OpenPPL_BetsizeAdjustedToUsersBalance] :
+f$OpenPPL_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 
 ##f$swag##
 f$OpenPPL_BetsizeAdjustedToCasinosInputRequirements
+
+//*****************************************************************************
+//
+// OpenPPL - end of swag functions for OpenHoldem 2.1.x
+//
+//*****************************************************************************
