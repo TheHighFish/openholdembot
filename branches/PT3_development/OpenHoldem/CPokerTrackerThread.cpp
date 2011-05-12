@@ -621,6 +621,8 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 	double		result = -1.0;
 	char		siteidstr[k_max_length_of_site_id] = {0};
 	int			siteid = 0;
+	clock_t		updStart, updEnd;
+	int			duration;
 
 	int sym_elapsed = (int) p_symbols->sym()->elapsed;
 
@@ -680,6 +682,7 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 		}
 
 		// Do the query against the PT database
+		updStart = clock();
 		try
 		{
 			// See if we can find the player name in the database
@@ -697,6 +700,11 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 			write_log_pokertracker(3, _T("\tDescription = %s\n"), (LPCTSTR) bstrDescription);
 			write_log_pokertracker(3, _T("\tQuery = [%s]\n"), strQry);
 		}
+		
+		updEnd = clock();
+		duration = (int) ((double)(updEnd - updStart) / 1000);
+		if (duration >= 3)
+			write_log_pokertracker(2, "Query time in seconds: [%d]\n", duration);
 
 		// Check query return code
 		if (PQresultStatus(res) != PGRES_TUPLES_OK)
@@ -962,7 +970,6 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 	int			updateType;
 	char        reason[100];
 	int         updatedCount = 0;
-	int			checkAllChairs = 1;
 	
 	if (pParent->CheckName(chair, nameChanged) == false)
 	{
@@ -1092,10 +1099,13 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 	int				players;
 	int				sleepTime;
 	bool			dummy;
-	
+	clock_t			iterStart, iterEnd;
+	int				iterDurationMS;
+
 	while (::WaitForSingleObject(pParent->_m_stop_thread, 0) != WAIT_OBJECT_0)
 	{
-		write_log_pokertracker(2, "PTthread iteration %d had started\n", ++iteration);
+		iterStart = clock();
+		write_log_pokertracker(2, "PTthread iteration [%d] had started\n", ++iteration);
 		pParent->SetHandsStat();
 		if (!pParent->_connected)
 			pParent->Connect();
@@ -1115,17 +1125,17 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 				}
 			}
 		}
-		write_log_pokertracker(2, "Players count is %d\n", players);
+		write_log_pokertracker(2, "Players count is [%d]\n", players);
 		
 		//Define sleeptime for current ptrhead iteration
-		if (players > 0)
+		if (players > 1)
 		{
 			sleepTime = (int) ((double)(prefs.pt_cache_refresh() * 1000) / (double)(pt_max * players));
 			write_log_pokertracker(2, "sleepTime set to %d\n", sleepTime);
 		}
 		else
 		{
-			write_log_pokertracker(2, "Players is zero, sleeping 10 seconds...\n");
+			write_log_pokertracker(2, "Not enough players to justify iteration, sleeping 10 seconds...\n");
 			LightSleep(10000, pParent);
 			continue;
 		}
@@ -1140,8 +1150,18 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 					break; 
 			}
 		}
+		iterEnd = clock();
+		iterDurationMS = (int) ((double)(iterEnd - iterStart));
+		write_log_pokertracker(2, "PTthread iteration [%d] had ended, duration time in ms: [%d]\n", ++iteration, iterDurationMS);
+		if (iterDurationMS <= 10000)
+		{
+			write_log_pokertracker(3, "sleeping [%d] ms because iteration was too quick.\n", 10000 - iterDurationMS);
+			if (LightSleep(10000 - iterDurationMS, pParent)) 
+				break; 
+		}
 	}
 	// Set event
+	write_log_pokertracker(3, "PokertrackerThreadFunction: outside while loop...\n");
 	::SetEvent(pParent->_m_wait_thread);
 	return 0;
 }
@@ -1150,22 +1170,29 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 We use this function since we never want the thread to ignore the stop_thread event while it's sleeping*/
 int	CPokerTrackerThread::LightSleep(int sleepTime, CPokerTrackerThread *pParent)
 {
+	write_log_pokertracker(3, "LightSleep: called with sleepTime[%d]\n", sleepTime);
 	if ( sleepTime > 0)
 	{
 		int i = 0;
 		int iterations = 20;
 		int sleepSlice = (int) ((double)sleepTime / (double)iterations);
-		for (i = 0; i < 20; ++i)
+		for (i = 0; i < iterations; ++i)
 		{
 			Sleep(sleepSlice);
 			if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
+			{
+				write_log_pokertracker(3, "LightSleep: _m_stop_thread signal received\n");
 				return 1;
+			}
 		}
 	}
 	else
 	{
 		if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
-				return 1;
+		{
+			write_log_pokertracker(3, "LightSleep: _m_stop_thread signal received\n");
+			return 1;
+		}
 	}
 	return 0;
 }
