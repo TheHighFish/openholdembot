@@ -332,6 +332,10 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\UserDefinedVariables.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -356,6 +360,10 @@
 			</File>
 			<File
 				RelativePath=".\ListOfOpenHoldemSymbolPrefixes.h"
+				>
+			</File>
+			<File
+				RelativePath=".\main.h"
 				>
 			</File>
 		</Filter>

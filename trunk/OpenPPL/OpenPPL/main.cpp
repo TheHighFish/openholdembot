@@ -59,6 +59,24 @@ int bracket_counter = 0;
 
 boost::spirit::parse_info<> pi;
 
+void AddSwagFunctionsForOH_2_1_x_IfExistent()
+{
+	const CString swag_file_name = "OpenPPL_SwagFunctions_For_OpenHoldem_2.1.x_Only_Please_Delete_This_File_Once_You_Use_OpenHoldem_2.2.0_And_Later.ohf";
+	fstream swag_file(swag_file_name);
+	// We wrote the swag-functions and know, that 1000 is way too much.
+	// This file will never be changed, so we should be on the safe side.
+	const int max_line_length = 1000;
+	char next_line[max_line_length];
+	if (swag_file.is_open())
+	{
+		while (!swag_file.eof())
+		{
+			swag_file.getline(next_line, max_line_length);
+			cout << next_line << endl;
+		}
+	}
+}
+
 CString ErroneousCodeSnippet(const char *begin_of_erroneous_code_snippet)
 {
 	CString rest_of_input = begin_of_erroneous_code_snippet;
@@ -78,7 +96,9 @@ struct skip_grammar : public grammar<skip_grammar>
 				=   space_p
 				|   "//" >> *(anychar_p - eol_p - end_p) >> (eol_p | end_p)	 // C++ comment
 				|   "/*" >> *(anychar_p - "*/") >> "*/"	// C comment
-				|	as_lower_d["in"]					// Useless fill-word "In SmallBlind"
+				|	as_lower_d["in "]					// Useless fill-word "In " like "In SmallBlind"
+														// Space is necessary here, otherwise we damage
+														// valid words starting with "in".
 				;
 		}
 
@@ -235,10 +255,9 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			relational_operator = (str_p("<=") | ">=" | "<" | ">")[print_operator()];
 			relational_expression = additive_expression >> *(relational_operator >> additive_expression);
 			
-			equality_expression = /*longest_d[*/
-			/*equality_expression =*/ hand_expression_with_brackets | board_expression_with_brackets 
-				| hand_expression_without_brackets | board_expression_without_brackets
-				| (relational_expression >> *(str_p("=")[print_operator()] >> relational_expression))/*]*/;
+			equality_expression = hand_expression_with_brackets | board_expression_with_brackets 
+                | hand_expression_without_brackets | board_expression_without_brackets
+				| (relational_expression >> *(str_p("=")[print_operator()] >> relational_expression));
 			keyword_and = (str_p("and") | "And" | "AND")[print_operator()];
 			and_expression = equality_expression >> *(keyword_and >> equality_expression);
 			keyword_xor = (str_p("xor") | "Xor" | "XOr" | "XOR")[print_operator()];
@@ -247,38 +266,42 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			or_expression = xor_expression >> *(keyword_or >> xor_expression);
 
 			// Hand and board expressions
-			
 			card_constant = lexeme_d[ch_p("A") | "a" | "K" | "k" | "Q" | "q" | "J" | "j" |
 				"T" | "t" | "9" | "8" | "7" | "6" | "5" | "4" | "3" | "2"];
 			keyword_suited = str_p("suited") | "Suited" | "SUITED";
 			keyword_board = str_p("board") | "Board" | "BOARD";
 			keyword_hand = str_p("hand") | "Hand" | "HAND";
-			suit_constant = ch_p("C") | "c" | "D"| "d" | "H" | "h" | "S" | "s";
+			suit_constant = lexeme_d[ch_p("C") | "c" | "D"| "d" | "H" | "h" | "S" | "s"];
 			
 			// card_expression = longest_d[
 			card_expression = card_expression_with_specific_suits
 				| suited_card_expression
-				| non_suited_card_expression; 
-			suited_card_expression = (lexeme_d[+card_constant] >> keyword_suited);
+				| non_suited_card_expression
+				| invalid_card_expression;
+			suited_card_expression = (non_suited_card_expression >> keyword_suited);
 			non_suited_card_expression = (lexeme_d[+card_constant]);
+			invalid_card_expression = lexeme_d[+alnum_p][error_invalid_card_expression()];
 			card_expression_with_specific_suits = card_constant >> suit_constant >> *(card_constant >> !suit_constant)
 				[error_specific_suits_not_supported()];
-			board_expression_with_brackets = str_p("(") 
-				>> (suited_board_expression | non_suited_board_expression) >> ")";
-			suited_board_expression = (keyword_board >> str_p("=") 
-				>> suited_card_expression)[print_suited_board_expression()];
-			non_suited_board_expression = (keyword_board >> str_p("=") 
-				>> non_suited_card_expression)[print_non_suited_board_expression()];	
+
+			// hand expression
 			hand_expression_with_brackets = str_p("(") >> keyword_hand 
-				>> str_p("=") >> card_expression[print_hand_expression()] >> ")";
+                    >> str_p("=") >> card_expression[print_hand_expression()] >> ")";            
+            hand_expression_without_brackets = (keyword_hand 
+                    >> str_p("=") >> card_expression)[error_missing_brackets_for_card_expression()];
+
+			// board expressions
+			board_expression_with_brackets = str_p("(") 
+                    >> (suited_board_expression | non_suited_board_expression) >> ")";
 			board_expression_without_brackets = (keyword_board 
-				>> str_p("=")[print_operator()] >> card_expression)[error_missing_brackets_for_card_expression()];
-			hand_expression_without_brackets = (keyword_hand 
-				>> str_p("=") >> card_expression)[error_missing_brackets_for_card_expression()];
-				 
+                    >> str_p("=")[print_operator()] >> card_expression)[error_missing_brackets_for_card_expression()];
+			suited_board_expression = (keyword_board >> str_p("=") 
+					>> suited_card_expression)[print_suited_board_expression()];
+			non_suited_board_expression = (keyword_board >> str_p("=") 
+					>> non_suited_card_expression)[print_non_suited_board_expression()];	                        
+                                 
 			// Actions (and return statements)
 			// We handle both in the same way, as it simplifies things a lot.
-			
 			action = (action_without_force >> keyword_force)
 					[handle_action()]
 				| erroneous_action_without_force;
@@ -323,6 +346,12 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				>> percentage_operator[print_percentage_operator()][print_relative_potsize_action()] ;
 			keyword_others = str_p("others") | "Others" | "OTHERS";
 			erroneous_action_without_force = action_without_force[error_action_without_force()];
+
+			// UserDefined Variables
+			/*
+			user_defined_variable = lexeme_d[user_prefix >> *alnum_p];
+			user_prefix = str_p("user") | "User" | "USER";
+			*/
 
 			// Return statement
 			keyword_return = str_p("return") | "Return" | "RETURN";
@@ -407,5 +436,11 @@ int main(int argc, char *argv[])
 		  //parse_error_position = pi.first.get_position(); 
 		  ErrorMessage(k_error_general, ErroneousCodeSnippet(pi.stop));
 		}
+	}
+	else
+	{
+		// Translation sucessfully finished.
+		// Last step: add swag-functions for OH 2.1.x if necessary.
+		AddSwagFunctionsForOH_2_1_x_IfExistent();
 	}
 } 

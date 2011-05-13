@@ -108,14 +108,29 @@ struct print_symbol
 		{
 			current_output << symbol;
 		}
+		// Ubknown symbol
 		else if (!p_symbol_table->GenerationOfSymboltableInProgress())
 		{
-			ErrorMessage(k_error_unknown_symbol, ErroneousCodeSnippet(begin));
-			// Output anyway, as 
-			//   * some symbols are missing, that will be removed soon
-			//   * some new symbols might be missing, but the translation
-			//     should work anyway.
-			current_output << symbol;
+			CString c_symbol = symbol.c_str();
+			if (c_symbol.MakeLower().Right(6) == "suited")
+			{
+				ErrorMessage(k_error_unknown_symbol_ending_with_suited, 
+					ErroneousCodeSnippet(begin));
+			}
+			else if (c_symbol.MakeLower().Left(2) == "in")
+			{
+				ErrorMessage(k_error_unknown_symbol_beginning_with_in, 
+					ErroneousCodeSnippet(begin));
+			}
+			else
+			{
+				ErrorMessage(k_error_unknown_symbol, ErroneousCodeSnippet(begin));
+					// Output anyway, as 
+					//   * some symbols are missing, that will be removed soon
+					//   * some new symbols might be missing, but the translation
+					//     should work anyway.
+					current_output << symbol;
+			}
 		}
 	} 
 }; 
@@ -253,18 +268,21 @@ struct print_bracket
 	void operator()(const char *begin, const char *end) const 
 	{ 
 		std::string text = std::string(begin, end);
+		const int k_number_of_different_brackets = 2;
 		if (text == "(")
 		{
-			char open_brackets[4] = "([{";
-			current_output << open_brackets[bracket_counter%3];
+			// OpenHoldem supports 3 kinds of brackets: (), [], {}
+			// We only use the first 2 pairs, because the 3rd one
+			// does IMO look too similar to the first one.
+			char open_brackets[k_number_of_different_brackets + 1] = "([";
+			current_output << open_brackets[bracket_counter % k_number_of_different_brackets];
 			bracket_counter++;
 		}
 		else
 		{
 			bracket_counter--;
-			char close_brackets[4] = ")]}";
-			current_output << close_brackets[bracket_counter%3];
-			bracket_counter++;
+			char close_brackets[k_number_of_different_brackets + 1] = ")]";
+			current_output << close_brackets[bracket_counter % k_number_of_different_brackets];
 		}
 	} 
 };
@@ -483,30 +501,8 @@ struct print_hand_expression
 {
 	void operator()(const char *begin, const char *end) const 
 	{
-		std::string text = std::string(begin, end);
-		current_output << "$";
-		int length = text.length();
-		for (int i=0; i<length; i++)
-		{
-			char next_char = toupper(text[i]);
-			if (next_char >= '0' && next_char <= '9')
-			{
-				current_output << next_char;
-			}
-			else if ((next_char == 'T') || (next_char == 'J')
-				|| (next_char == 'Q') || (next_char == 'K') || (next_char == 'A'))
-			{
-				current_output << next_char;
-			}
-			else if (next_char == 'S')
-			{
-				// Suited
-				current_output << "s";
-				// Stop processing this part of the input,
-				// as the rest is not relevant.
-				break;
-			}
-		}
+		CString text = std::string(begin, end).c_str();
+		generate_code_for_hand_expression(text);
 	}
 };
 
@@ -553,6 +549,14 @@ struct error_specific_suits_not_supported
 	void operator()(const char *begin, const char *end) const 
 	{
 		ErrorMessage(k_error_specific_suits_not_supported, ErroneousCodeSnippet(begin));
+	}
+};
+
+struct error_invalid_card_expression
+	{
+	void operator()(const char *begin, const char *end) const 
+	{
+		ErrorMessage(k_error_invalid_card_expression, ErroneousCodeSnippet(begin));
 	}
 };
 

@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <iomanip>
 #include <iostream>
+#include "Main.h"
 
 using namespace std;
 
@@ -44,8 +45,8 @@ void generate_code_for_suited_board(CString board_expression)
 		}
 	}
 End_Of_Loop:
-	cout << "(srankbits & " 
-		 // hexadecimal output to cout or a stream according to
+	current_output << "(srankbits & " 
+		 // hexadecimal output to current_output or a stream according to
 		 // http://www.math.uni-bayreuth.de/~rbaier/lectures/c++_intro/html/node51.html
 		 << hex << showbase << user_defined_rankbits
 		 << " == " 
@@ -68,28 +69,77 @@ End_Of_Loop:
 void generate_code_for_non_suited_board(CString board_expression)
 {
 	assert(board_expression.Left(5).MakeLower() == "board");
-	cout << "(f$prime_coded_board_ranks % (1";
+	current_output << "(f$prime_coded_board_ranks % (1";
 	for (int i=5; i<board_expression.GetLength(); i++)
 	{
 		char next_card = board_expression.MakeLower()[i];
 		// Process cards, skip the rest (blanks, etc.)
 		switch (next_card)
 		{
-			case '2': cout << " * f$PrimeCode_2"; break;
-			case '3': cout << " * f$PrimeCode_3"; break;
-			case '4': cout << " * f$PrimeCode_4"; break;
-			case '5': cout << " * f$PrimeCode_5"; break;
-			case '6': cout << " * f$PrimeCode_6"; break;
-			case '7': cout << " * f$PrimeCode_7"; break;
-			case '8': cout << " * f$PrimeCode_8"; break;
-			case '9': cout << " * f$PrimeCode_9"; break;
-			case 't': cout << " * f$PrimeCode_T"; break;
-			case 'j': cout << " * f$PrimeCode_J"; break;
-			case 'q': cout << " * f$PrimeCode_Q"; break;
-			case 'k': cout << " * f$PrimeCode_K"; break;
-			case 'a': cout << " * f$PrimeCode_A"; break;
+			case '2': current_output << " * f$PrimeCode_2"; break;
+			case '3': current_output << " * f$PrimeCode_3"; break;
+			case '4': current_output << " * f$PrimeCode_4"; break;
+			case '5': current_output << " * f$PrimeCode_5"; break;
+			case '6': current_output << " * f$PrimeCode_6"; break;
+			case '7': current_output << " * f$PrimeCode_7"; break;
+			case '8': current_output << " * f$PrimeCode_8"; break;
+			case '9': current_output << " * f$PrimeCode_9"; break;
+			case 't': current_output << " * f$PrimeCode_T"; break;
+			case 'j': current_output << " * f$PrimeCode_J"; break;
+			case 'q': current_output << " * f$PrimeCode_Q"; break;
+			case 'k': current_output << " * f$PrimeCode_K"; break;
+			case 'a': current_output << " * f$PrimeCode_A"; break;
 			default: break;
 		}
 	}
-	cout << ") == 0)";
+	current_output << ") == 0)";
+}
+
+void generate_code_for_hand_expression(CString hand_expression)
+{
+	// Translates something like KQ to $KQ
+	// and A Suited to $AXs
+	int number_of_cards = 0;
+	//!!!
+	current_output << "[CE: " << hand_expression << "] ";
+
+	current_output << CString("$");
+	int length = hand_expression.GetLength();
+	for (int i=0; i<length; i++)
+	{
+		char next_char = toupper(hand_expression[i]);
+		if (next_char >= '0' && next_char <= '9')
+		{
+			current_output << CString(next_char);
+			number_of_cards++;
+		}
+		else if ((next_char == 'T') || (next_char == 'J')
+			|| (next_char == 'Q') || (next_char == 'K') || (next_char == 'A'))
+		{
+			current_output << CString(next_char);
+			number_of_cards++;
+		}
+		// Cards processed and end or keyword "suited" reached?
+		else if (i >= (length - 1) || next_char == 'S')
+		{
+			// Fewer than 2 cards specified?
+			// Then we have to generate code like "$AX Suited" or "$XX";
+			if (number_of_cards == 1)
+			{
+				current_output << CString("X");
+			}
+			else if (number_of_cards == 0)
+			{
+				current_output << CString("XX");
+			}
+			// Suited?
+			if (next_char == 'S')
+			{
+				current_output << CString("s");
+				// Stop processing this part of the input,
+				// as the rest is not relevant.
+				break;
+			}
+		}
+	}
 }
