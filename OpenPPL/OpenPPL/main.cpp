@@ -274,8 +274,8 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			suit_constant = lexeme_d[ch_p("C") | "c" | "D"| "d" | "H" | "h" | "S" | "s"];
 			
 			// card_expression = longest_d[
-			card_expression = card_expression_with_specific_suits
-				| suited_card_expression
+			card_expression = suited_card_expression
+				| card_expression_with_specific_suits
 				| non_suited_card_expression
 				| invalid_card_expression;
 			suited_card_expression = (non_suited_card_expression >> keyword_suited);
