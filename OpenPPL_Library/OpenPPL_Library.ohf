@@ -50,7 +50,7 @@
 //
 //  Positive values mean: betsizes (in big-blinds)
 //
-//  Negative values mean: predefined actions, that have to be translated later
+//  Zero and negative values mean: predefined actions, that have to be translated later
 //  to standard OpenHoldem autoplayer actions.
 //
 //  Note: Beep is not supported.
@@ -67,7 +67,11 @@ f$OpenPPL_Action_Call
 (f$OpenPPL_AmountToCall <= 0) ? f$OpenPPL_Action_Call : f$OpenPPL_Action_Fold
 
 ##f$OpenPPL_Action_Raise##
--2
+// Note: When "Raise X% (PotSize)" is used, but the potsize got misscraped
+// (as zero), this will lead to a final action of "0".
+// To make this library more robust (against bad tablemaps of our users ;-)
+// we take "0" as a normal (min-) raise, so we won't fail completely.
+0
 
 ##f$OpenPPL_Action_RaiseMin##
 f$OpenPPL_Action_Raise
@@ -79,10 +83,10 @@ f$OpenPPL_Action_Raise
 f$OpenPPL_PotSize
 
 ##f$OpenPPL_Action_RaiseMax##
--3
+-2
 
 ##f$OpenPPL_Action_Fold##
--4
+-3
 
 ##f$OpenPPL_Action_Bet##
 f$OpenPPL_Action_Raise
@@ -100,10 +104,10 @@ f$OpenPPL_Action_RaiseHalfPot
 f$OpenPPL_Action_RaiseMax
 
 ##f$OpenPPL_Action_None##
--5
+-4
 
 ##f$OpenPPL_Action_SitOut##
--6
+-5
 
 ##f$OpenPPL_UndefinedReturnValue##
 // Every user-defined function ends with this return-value
@@ -2753,6 +2757,6 @@ f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 
 //*****************************************************************************
 //
-// OpenPPL - end of supporting functions
+// OpenPPL - the glory end
 //
 //*****************************************************************************
