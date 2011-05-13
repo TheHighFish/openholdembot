@@ -27,6 +27,16 @@ static const char *error_messages[k_number_of_error_codes] =
 	"\n"
 	"We are sorry, but you should change this part of your formula.\n",
 
+	// k_error_invalid_card_expression
+	"Error: Invalid card expression.\n"
+	"\n"
+	"A card expression looks e.g. like\n"
+	"  * AA\n"
+	"  * AK Suited\n"
+	"  * ATT\n"
+	"  * AcAs\n"
+	"  * 3456\n",
+
 	// k_error_action_without_force
 	"Error: Missing keyword \"Force\".\n"
 	"\n"
@@ -115,7 +125,6 @@ static const char *error_messages[k_number_of_error_codes] =
 	"Please complete your formula so that all actions are specified.\n",
 
 	// k_error_unknown_symbol
-
 	"Unknown symbol\n"
 	"\n"
 	"The translator detected an unknown symbol,\n"
@@ -124,6 +133,28 @@ static const char *error_messages[k_number_of_error_codes] =
 	"\n"
 	"Most probably it is simply misspelled.\n"
 	"Please also note, that OpenHoldem is case-sensitive.\n",
+
+	// k_error_unknown_symbol_ending_with_suited
+	"Unknown symbol\n"
+	"\n"
+	"The translator detected an unknown symbol,\n"
+	"that seems to be neither an OpenPPL-symbol\n"
+	"nor an OpenHoldem symbol.\n"
+	"\n"
+	"As the symbol ends on \"suited\" we assume,\n"
+	"that you simply forgot a space, e.g.\n"
+	"\"Asuited\" instead of \"A suited\".\n",
+
+	// k_error_unknown_symbol_beginning_with_in
+	"Unknown symbol\n"
+	"\n"
+	"The translator detected an unknown symbol,\n"
+	"that seems to be neither an OpenPPL-symbol\n"
+	"nor an OpenHoldem symbol.\n"
+	"\n"
+	"As the symbol begins with \"in\" we assume,\n"
+	"that you simply forgot a space, e.g.\n"
+	"\"InBigBlind\" instead of \"In BigBlind\".\n",
 
 	// k_error_general
 	"General syntax error.\n"	
