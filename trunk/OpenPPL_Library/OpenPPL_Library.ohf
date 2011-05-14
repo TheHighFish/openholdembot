@@ -57,56 +57,56 @@
 //
 //*****************************************************************************
 
-##f$OpenPPL_Action_Call##
+##f$OpenPPL_Call##
 -1
 
-##f$OpenPPL_Action_Play##
-f$OpenPPL_Action_Call
+##f$OpenPPL_Play##
+f$OpenPPL_Call
 
-##f$OpenPPL_Action_Check##
-(f$OpenPPL_AmountToCall <= 0) ? f$OpenPPL_Action_Call : f$OpenPPL_Action_Fold
+##f$OpenPPL_Check##
+(f$OpenPPL_AmountToCall <= 0) ? f$OpenPPL_Call : f$OpenPPL_Fold
 
-##f$OpenPPL_Action_Raise##
+##f$OpenPPL_Raise##
 // Note: When "Raise X% (PotSize)" is used, but the potsize got misscraped
 // (as zero), this will lead to a final action of "0".
 // To make this library more robust (against bad tablemaps of our users ;-)
 // we take "0" as a normal (min-) raise, so we won't fail completely.
 0
 
-##f$OpenPPL_Action_RaiseMin##
-f$OpenPPL_Action_Raise
+##f$OpenPPL_RaiseMin##
+f$OpenPPL_Raise
 
-##f$OpenPPL_Action_RaiseHalfPot##
+##f$OpenPPL_RaiseHalfPot##
 [1/2 * f$OpenPPL_PotSize]
 
-##f$OpenPPL_Action_RaisePot##
+##f$OpenPPL_RaisePot##
 f$OpenPPL_PotSize
 
-##f$OpenPPL_Action_RaiseMax##
+##f$OpenPPL_RaiseMax##
 -2
 
-##f$OpenPPL_Action_Fold##
+##f$OpenPPL_Fold##
 -3
 
-##f$OpenPPL_Action_Bet##
-f$OpenPPL_Action_Raise
+##f$OpenPPL_Bet##
+f$OpenPPL_Raise
 
-##f$OpenPPL_Action_BetMin##
-f$OpenPPL_Action_Bet
+##f$OpenPPL_BetMin##
+f$OpenPPL_Bet
 
-##f$OpenPPL_Action_BetHalfPot##
-f$OpenPPL_Action_RaiseHalfPot
+##f$OpenPPL_BetHalfPot##
+f$OpenPPL_RaiseHalfPot
 
-##f$OpenPPL_Action_BetPot##
-f$OpenPPL_Action_RaiseHalfPot
+##f$OpenPPL_BetPot##
+f$OpenPPL_RaiseHalfPot
 
-##f$OpenPPL_Action_BetMax##
-f$OpenPPL_Action_RaiseMax
+##f$OpenPPL_BetMax##
+f$OpenPPL_RaiseMax
 
-##f$OpenPPL_Action_None##
+##f$OpenPPL_None##
 -4
 
-##f$OpenPPL_Action_SitOut##
+##f$OpenPPL_SitOut##
 -5
 
 ##f$OpenPPL_UndefinedReturnValue##
@@ -129,7 +129,7 @@ f$OpenPPL_Action_RaiseMax
 (f$OpenPPL_BotsActionsOnThisRound > 1) ? 0 :
 (nopponentsbetting == 0) ? me_st_MemBets_0 :
 // nopponentsbetting >= 1
-(f$OpenPPL_BotsLastAction == f$OpenPPL_Action_Bet) ? me_st_MemBets_0 :
+(f$OpenPPL_BotsLastAction == f$OpenPPL_Bet) ? me_st_MemBets_0 :
 (f$OpenPPL_AmountToCall > 0) ? me_st_MemBets_1 :
 me_st_MemBets_0
 
@@ -172,34 +172,34 @@ didcallround1
 // This has to be done *before* we call the Decision-function,
 // as we might call BotsLastAction there.
 // For the same reason InitBotsLastAction should be the last Init-routine to be called.
-([(betround == 1) && (f$OpenPPL_BotsActionsOnThisRound == 0)] ? me_st_MemBotsLastAction_f$OpenPPL_Action_None :
+([(betround == 1) && (f$OpenPPL_BotsActionsOnThisRound == 0)] ? me_st_MemBotsLastAction_f$OpenPPL_None :
 // "Initialize" first action on other rounds to last value of last round,
 // i.e. do nothing and keep the old value.
 [[(betround == 1) && (f$OpenPPL_BotsActionsOnThisRound == 0)] ? 0 : 0])
 // Then we call f$OpenPPL_Decision and store BotsLastAction for the next time...
 + [
 // Call = Play
-   (f$OpenPPL_Decision == f$OpenPPL_Action_Call)
-|| (f$OpenPPL_Decision == f$OpenPPL_Action_Play) ? me_st_MemBotsLastAction_f$OpenPPL_Action_Call :
+   (f$OpenPPL_Decision == f$OpenPPL_Call)
+|| (f$OpenPPL_Decision == f$OpenPPL_Play) ? me_st_MemBotsLastAction_f$OpenPPL_Call :
 // Fold
-(f$OpenPPL_Decision == f$OpenPPL_Action_Fold) ? me_st_MemBotsLastAction_f$OpenPPL_Action_Fold :
+(f$OpenPPL_Decision == f$OpenPPL_Fold) ? me_st_MemBotsLastAction_f$OpenPPL_Fold :
 // Check
-(f$OpenPPL_Decision == f$OpenPPL_Action_Check) ? me_st_MemBotsLastAction_f$OpenPPL_Action_Check :
+(f$OpenPPL_Decision == f$OpenPPL_Check) ? me_st_MemBotsLastAction_f$OpenPPL_Check :
 // Bet, Raise, BetHalfPot, BetPot, etc.
 // Also handling positive values for f$OpenPPL_Decision, which mean betsizes.
-[  (f$OpenPPL_Decision == f$OpenPPL_Action_Raise)
-|| (f$OpenPPL_Decision == f$OpenPPL_Action_RaiseMin)
-|| (f$OpenPPL_Decision == f$OpenPPL_Action_RaiseHalfPot)
-|| (f$OpenPPL_Decision == f$OpenPPL_Action_RaiseMax)
-|| (f$OpenPPL_Decision == f$OpenPPL_Action_Bet)
-|| (f$OpenPPL_Decision == f$OpenPPL_Action_BetMin)
-|| (f$OpenPPL_Decision == f$OpenPPL_Action_BetHalfPot)
-|| (f$OpenPPL_Decision == f$OpenPPL_Action_BetMax)
+[  (f$OpenPPL_Decision == f$OpenPPL_Raise)
+|| (f$OpenPPL_Decision == f$OpenPPL_RaiseMin)
+|| (f$OpenPPL_Decision == f$OpenPPL_RaiseHalfPot)
+|| (f$OpenPPL_Decision == f$OpenPPL_RaiseMax)
+|| (f$OpenPPL_Decision == f$OpenPPL_Bet)
+|| (f$OpenPPL_Decision == f$OpenPPL_BetMin)
+|| (f$OpenPPL_Decision == f$OpenPPL_BetHalfPot)
+|| (f$OpenPPL_Decision == f$OpenPPL_BetMax)
 || (f$OpenPPL_Decision > 0)] ?
-[(ncallbets == 0) ? me_st_MemBotsLastAction_f$OpenPPL_Action_Bet : me_st_MemBotsLastAction_f$OpenPPL_Action_Raise] :
+[(ncallbets == 0) ? me_st_MemBotsLastAction_f$OpenPPL_Bet : me_st_MemBotsLastAction_f$OpenPPL_Raise] :
 // Other cases: this should not happen
 // Handling them as "None"
-me_st_MemBotsLastAction_f$OpenPPL_Action_None
+me_st_MemBotsLastAction_f$OpenPPL_None
 ]
 
 ##f$OpenPPL_BotsLastAction##
@@ -1174,7 +1174,7 @@ f$OpenPPL_TopFlopCard == $$cr3 ? 1 : 0
 //
 //*****************************************************************************
 
-##f$OpenPPL_HadOverpairOnFlop##
+##f$OpenPPL_HadOverPairOnFlop##
 [  ispair
 && $$pr0 > $$cr0
 && $$pr0 > $$cr1
@@ -1197,7 +1197,7 @@ f$OpenPPL_HadPairOnFlop || f$OpenPPL_FlopCardPairedonTurn || $$pr0 == $$cr3 || $
 ##f$OpenPPL_Have2ndBestKickerOrBetter##
 f$OpenPPL_Have2ndBestKicker || f$OpenPPL_HaveBestKickerOrBetter
 
-##f$OpenPPL_Have2ndBestOverpair##
+##f$OpenPPL_Have2ndBestOverPair##
    ($KK
 && $$cr0 < f$OpenPPL_ConstCardKing
 && $$cr1 < f$OpenPPL_ConstCardKing
@@ -1205,8 +1205,8 @@ f$OpenPPL_Have2ndBestKicker || f$OpenPPL_HaveBestKickerOrBetter
 && $$cr3 < f$OpenPPL_ConstCardKing
 && $$cr4 < f$OpenPPL_ConstCardKing)
 
-##f$OpenPPL_Have2ndBestOverpairOrBetter##
-(f$OpenPPL_Have2ndBestOverpair || f$OpenPPL_HaveBestOverpairOrBetter)
+##f$OpenPPL_Have2ndBestOverPairOrBetter##
+(f$OpenPPL_Have2ndBestOverPair || f$OpenPPL_HaveBestOverPairOrBetter)
 
 ##f$OpenPPL_Have2ndNutFlush##
 [f$OpenPPL_HaveFlush && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 1)]
@@ -1315,6 +1315,9 @@ f$OpenPPL_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 f$OpenPPL_HaveStraight
 && (f$OpenPPL_HighCardOf2ndBestPossibleStraight == f$OpenPPL_HighCardOfOurStraight)
 
+##f$OpenPPL_Have2ndOverPair##
+ispair && ($$pr0 < f$OpenPPL_BestBoardCard) && ($$pr0 > f$OpenPPL_2ndBestBoardCard)
+
 ##f$OpenPPL_Have2ndTopPair##
 $$pr0 == f$OpenPPL_2ndBestBoardCard || $$pr1 == f$OpenPPL_2ndBestBoardCard
 
@@ -1354,7 +1357,7 @@ f$OpenPPL_RankBitsCommonWithoutTopThreeBits & ~f$OpenPPL_4thTopBitOfRankBitsComm
 ##f$OpenPPL_Have3rdBestKickerOrBetter##
 f$OpenPPL_Have3rdBestKicker || f$OpenPPL_Have2ndBestKickerOrBetter
 
-##f$OpenPPL_Have3rdBestOverpair##
+##f$OpenPPL_Have3rdBestOverPair##
    $QQ
 && $$cr0 < f$OpenPPL_ConstCardQueen
 && $$cr1 < f$OpenPPL_ConstCardQueen
@@ -1382,8 +1385,8 @@ f$OpenPPL_Have3rdBestKicker || f$OpenPPL_Have2ndBestKickerOrBetter
 // Both ignored.
 -1
 
-##f$OpenPPL_Have3rdBestOverpairOrBetter##
-(f$OpenPPL_Have3rdBestOverpair ||  f$OpenPPL_Have2ndBestOverpairOrBetter)
+##f$OpenPPL_Have3rdBestOverPairOrBetter##
+(f$OpenPPL_Have3rdBestOverPair ||  f$OpenPPL_Have2ndBestOverPairOrBetter)
 
 ##f$OpenPPL_Have3rdNutFlush##
 [f$OpenPPL_HaveFlush && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 2)]
@@ -1391,7 +1394,7 @@ f$OpenPPL_Have3rdBestKicker || f$OpenPPL_Have2ndBestKickerOrBetter
 ##f$OpenPPL_Have3rdNutFlushDraw##
 f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 2)
 
-##f$OpenPPL_Have3rdOverpair##
+##f$OpenPPL_Have3rdOverPair##
 ispair && ($$pr0 < f$OpenPPL_2ndBestBoardCard) && ($$pr0 > f$OpenPPL_3rdBestBoardCard)
 
 ##f$OpenPPL_Have3rdTopPair##
@@ -1426,7 +1429,7 @@ f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 3)
 // Both ignored.
 -1
 
-##f$OpenPPL_Have4thOverpair##
+##f$OpenPPL_Have4thOverPair##
 ispair && ($$pr0 < f$OpenPPL_3rdBestBoardCard) && ($$pr0 > f$OpenPPL_4thBestBoardCard)
 
 ##f$OpenPPL_Have4thTopPair##
@@ -1461,7 +1464,7 @@ f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 4)
 // Both ignored.
 -1
 
-##f$OpenPPL_Have5thOverpair##
+##f$OpenPPL_Have5thOverPair##
 ispair && ($$pr0 < f$OpenPPL_4thBestBoardCard) && ($$pr0 > f$OpenPPL_5thBestBoardCard)
 
 ##f$OpenPPL_HaveBackdoor2ndNutFlushDraw##
@@ -1483,9 +1486,9 @@ f$OpenPPL_HaveNutFlush || f$OpenPPL_HaveNutFlushDraw
 (mh_kickerbetter == 0)
 
 ##f$OpenPPL_HaveBestKickerOrBetter##
-(f$OpenPPL_HaveBestKicker || f$OpenPPL_HavePair  || f$OpenPPL_HaveOverpairOrBetter)
+(f$OpenPPL_HaveBestKicker || f$OpenPPL_HavePair  || f$OpenPPL_HaveOverPairOrBetter)
 
-##f$OpenPPL_HaveBestOverpair##
+##f$OpenPPL_HaveBestOverPair##
    ($AA
 && $$cr0 < f$OpenPPL_ConstCardAce
 && $$cr1 < f$OpenPPL_ConstCardAce
@@ -1493,8 +1496,8 @@ f$OpenPPL_HaveNutFlush || f$OpenPPL_HaveNutFlushDraw
 && $$cr3 < f$OpenPPL_ConstCardAce
 && $$cr4 < f$OpenPPL_ConstCardAce)
 
-##f$OpenPPL_HaveBestOverpairOrBetter##
-  (f$OpenPPL_HaveBestOverpair
+##f$OpenPPL_HaveBestOverPairOrBetter##
+  (f$OpenPPL_HaveBestOverPair
 || f$OpenPPL_HaveTwoPair
 || f$OpenPPL_HaveSet
 || f$OpenPPL_HaveTrips
@@ -1504,12 +1507,12 @@ f$OpenPPL_HaveNutFlush || f$OpenPPL_HaveNutFlushDraw
 || f$OpenPPL_HaveQuads
 || f$OpenPPL_HaveStraightFlush)
 
-##f$OpenPPL_lowestBitOfRankBitsCommon##
+##f$OpenPPL_LowestBitOfRankBitsCommon##
 (1>>ranklocommon)
 
 ##f$OpenPPL_RankBitsCommonWithoutLowestBit##
 // we negate lowest-bit and then do an and-operation
-rankbitscommon & ~f$OpenPPL_lowestBitOfRankBitsCommon
+rankbitscommon & ~f$OpenPPL_LowestBitOfRankBitsCommon
 
 ##f$OpenPPL_LowestBoardCard##
 ranklocommon
@@ -1561,7 +1564,7 @@ ranklocommon
 isfullhouse || f$OpenPPL_HaveQuads
 
 ##f$OpenPPL_HaveNothing##
-!f$OpenPPL_HavePair && !(f$OpenPPL_Overcards == 2) && !f$OpenPPL_HaveBestOverpairOrBetter
+!f$OpenPPL_HavePair && !(f$OpenPPL_Overcards == 2) && !f$OpenPPL_HaveBestOverPairOrBetter
 && !f$OpenPPL_HaveBackdoorFlushDraw
 // && !f$OpenPPL_HaveBackdoorStraightDraw
 
@@ -1926,11 +1929,11 @@ f$OpenPPL_HaveStraight
 ##f$OpenPPL_HaveQuads##
 [ isfourofakind && (nrankedcommon < 4) ]
 
-##f$OpenPPL_HaveOverpair##
+##f$OpenPPL_HaveOverPair##
 ispair && (rankhiplayer > rankhicommon)
 
-##f$OpenPPL_HaveOverpairOrBetter##
-f$OpenPPL_HaveOverpair || f$OpenPPL_HaveBestOverpairOrBetter
+##f$OpenPPL_HaveOverPairOrBetter##
+f$OpenPPL_HaveOverPair || f$OpenPPL_HaveBestOverPairOrBetter
 
 ##f$OpenPPL_HavePair##
 [  $$pr0==$$pr1
@@ -2022,8 +2025,17 @@ rankbitscommon
    [(betround > 1) && ($$pr0 == f$OpenPPL_HighestUnpairedBoardCard)]
 || [(betround > 1) && ($$pr1 == f$OpenPPL_HighestUnpairedBoardCard)]
 
+##f$OpenPPL_HaveTopPair##
+[ $$pr0==rankhicommon || $$pr1==rankhicommon ]
+
+##f$OpenPPL_HaveTopTwoPair##
+(f$OpenPPL_HaveTopPair && f$OpenPPL_Have2ndTopPair)
+
 ##f$OpenPPL_HaveTwoPair##
 `(rankbitsplayer & rankbitscommon) == 2
+
+##f$OpenPPL_HaveUnderPair##
+[ ispair && rankhiplayer<ranklocommon ]
 
 ##f$OpenPPL_HaveUnderStraight##
 f$OpenPPL_HaveStraight
@@ -2039,23 +2051,23 @@ f$OpenPPL_HaveStraight
 ##f$OpenPPL_NFH4OAK_FullHouseOnBoard_WeHaveOverPairToPair##
 // 3 is the best strength possible, because two quads are always possible
 3
-// 1 overpair for each overcard = 1 higher full house
+// 1 OverPair for each overcard = 1 higher full house
 + (f$OpenPPL_ConstCardAce - rankhiplayer)
 // Higher set possible with pair onboard?
 + [(f$OpenPPL_RankOfPairOnBoard > rankhiplayer) ? 1 : 0 ]
 // If the cards on board are higher than our pair,
 // we have to subtract them again, as otherwise we count them twice,
-// as set/quads and overpair.
+// as set/quads and OverPair.
 + [(f$OpenPPL_RankOfPairOnBoard > rankhiplayer) ? -1 : 0 ]
 + [(f$OpenPPL_RankOfSetOnBoard  > rankhiplayer) ? -1 : 0 ]
 
 ##f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePlayTheBoard##
 // 3 is the best strength possible, because two quads are always possible
 3
-// 1 overpair for each overcard = 1 higher full house
+// 1 OverPair for each overcard = 1 higher full house
 + (f$OpenPPL_ConstCardAce - rankhiplayer)
 // +1 if the pair is higher as the set (higher set possible)
-// -1 if the pair is higher as the set (counted twice as overpair / set)
+// -1 if the pair is higher as the set (counted twice as OverPair / set)
 // but these cases neutralize each other
 
 ##f$OpenPPL_RankOfPairOfFullHouse##
@@ -2160,8 +2172,8 @@ f$OpenPPL_HaveStraight
 // One quads possible, so the bestcase is second nuts
 2
 // Bbecause the set does have a higher rank then our pair,
-// with the rank of the set theres no overpair possible,
-// and therefore are only 11 overpairs possible instead of 12 if we do have 22 pair,
+// with the rank of the set theres no OverPair possible,
+// and therefore are only 11 OverPairs possible instead of 12 if we do have 22 pair,
 // 10 if we have 33 pair, etc.
 + (13 - f$OpenPPL_RankOfBottomPairOnBoard)
 
@@ -2226,10 +2238,10 @@ f$OpenPPL_HaveStraight
 // 5) we pair the pair on board, which is lower than the set, so we play the board, but one kind of quads is no longer possible
 [((rankhiplayer == f$OpenPPL_RankOfPairOnBoardWithFullHouseOnBoard) || (rankloplayer == f$OpenPPL_RankOfPairOnBoardWithFullHouseOnBoard)) && (f$OpenPPL_RankOfPairOnBoardWithFullHouseOnBoard < f$OpenPPL_RankOfSetOnBoard)] ? f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairLowPairOnBoard :
 //
-// 6) we don't pair anything, but have an overpair to the pair on board (we probably have to distinguish, if it is higher than the set or lower)
+// 6) we don't pair anything, but have an OverPair to the pair on board (we probably have to distinguish, if it is higher than the set or lower)
 [ispair && (rankhiplayer != f$OpenPPL_BestBoardCard) && (rankhiplayer != f$OpenPPL_2ndBestBoardCard) && (rankhiplayer > f$OpenPPL_RankOfPairOnBoardWithFullHouseOnBoard)] ? f$OpenPPL_NFH4OAK_FullHouseOnBoard_WeHaveOverPairToPair :
 //
-// 7) we don't have an overpair to the pair and therefore play the board (probably again 2 cases)
+// 7) we don't have an OverPair to the pair and therefore play the board (probably again 2 cases)
 f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePlayTheBoard
 */
 
@@ -2316,6 +2328,9 @@ f$OpenPPL_PairOnBoard      ? f$OpenPPL_NutFullHouseOrFourOfAKind_PairOnBoard :
 (($$pr0 > rankhicommon)  && ($$pr1 > rankhicommon))  ? 2 :
 (($$pr0 > rankhicommon)  || ($$pr1 > rankhicommon))  ? 1 :
 (($$pr0 <= rankhicommon) && ($$pr1 <= rankhicommon)) ? 0 : 0
+
+##f$OpenPPL_PairInHand##
+ispair
 
 //*****************************************************************************
 //
