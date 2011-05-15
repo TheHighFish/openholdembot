@@ -1467,6 +1467,12 @@ f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 4)
 ##f$OpenPPL_Have5thOverPair##
 ispair && ($$pr0 < f$OpenPPL_4thBestBoardCard) && ($$pr0 > f$OpenPPL_5thBestBoardCard)
 
+##f$OpenPPL_HaveAnyKindOfInsideStraightDraw##
+// Note: This does also count straightdraws at the board,
+// where we don't contribute any card. Special care should be taken
+// in f$OpenPPL_HaveInsideStraightDraw
+(nstraightfill <= 1)
+
 ##f$OpenPPL_HaveBackdoor2ndNutFlushDraw##
 f$OpenPPL_Have2ndNutFlush || f$OpenPPL_Have2ndNutFlushDraw
 || (f$OpenPPL_HaveBackdoorFlushDraw && f$OpenPPL_NumberOfUnknownSuitedOvercards == 1)
@@ -1577,6 +1583,9 @@ isfullhouse || f$OpenPPL_HaveQuads
 ##f$OpenPPL_HaveNutFlushDraw##
 [f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 0)]
 || f$OpenPPL_HaveNutStraightFlush
+
+##f$OpenPPL_HaveNutStraight##
+ishistraight
 
 ##f$OpenPPL_RankBitsCommonWithAdditionalAce##
 rankbitscommon | 0b100000000000010
@@ -1910,6 +1919,9 @@ rankbits | 0b000000000000100
    (nsuitedcommon < 2)  && (f$OpenPPL_NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 1)
 || (nsuitedcommon == 2) && (f$OpenPPL_NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 2)
 || (nsuitedcommon == 3) && (f$OpenPPL_NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 2)
+
+##f$OpenPPL_HaveInsideStraightDraw##
+f$OpenPPL_HaveAnyKindOfInsideStraightDraw
 
 ##f$OpenPPL_HaveNutStraightFlush##
 isstraightflush && (nhandshi == 0)
