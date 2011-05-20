@@ -870,6 +870,12 @@ rankhicommon
 ##f$OpenPPL_FullHouseOnBoard##
 (pokervalcommon & fullhouse)
 
+##f$OpenPPL_HighestRankOnFlop##
+[($$cr0 >= $$cr1) && ($$cr0 >= $$cr2)] ? $$cr0 :
+[($$cr1 >= $$cr0) && ($$cr1 >= $$cr2)] ? $$cr1 :
+[($$cr2 >= $$cr0) && ($$cr2 >= $$cr1)] ? $$cr2 :
+0
+
 ##f$OpenPPL_LowCardsOnBoard##
 `f$OpenPPL_RankBitsCommonLowCardsOnly
 
@@ -1185,6 +1191,9 @@ f$OpenPPL_TopFlopCard == $$cr3 ? 1 : 0
 
 ##f$OpenPPL_HadPairOnTurn##
 f$OpenPPL_HadPairOnFlop || f$OpenPPL_FlopCardPairedonTurn || $$pr0 == $$cr3 || $$pr1 == $$cr3
+
+##f$OpenPPL_HadTopPairOnFlop##
+[($$pr0 == f$HighestRankOnFlop) || ($$pr1 == f$HighestRankOnFlop)]
 
 ##f$OpenPPL_HadTwoPairOnFlop##
    ($$pr0 == $$cr0 || $$pr0 == $$cr1 || $$pr0 == $$cr2)
@@ -1538,6 +1547,9 @@ ranklocommon
 (f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b010000000000000) != 1 ? f$OpenPPL_ConstCardKing  :
 (f$OpenPPL_RankBitsCommonWithoutLowestBit & 0b100000000000000) != 1 ? f$OpenPPL_ConstCardAce   :
 -1
+
+##f$OpenPPL_HaveBottomPair##
+[ isonepair && (rankhiplayer == ranklocommon || rankloplayer == ranklocommon) ]
 
 ##f$OpenPPL_HaveBottomTwoPair##
 ($$pr0 == f$OpenPPL_LowestBoardCard && $$pr1 == f$OpenPPL_2ndLowestBoardCard)
@@ -1916,9 +1928,7 @@ rankbits | 0b000000000000100
 (nsuitedcommon < 2) && (f$OpenPPL_NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 2)
 
 ##f$OpenPPL_HaveInsideNutStraightDraw##
-   (nsuitedcommon < 2)  && (f$OpenPPL_NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 1)
-|| (nsuitedcommon == 2) && (f$OpenPPL_NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 2)
-|| (nsuitedcommon == 3) && (f$OpenPPL_NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 2)
+(f$NumberOfCardranksThatGiveMeTheBestPossibleStraight >= 1)
 
 ##f$OpenPPL_HaveInsideStraightDraw##
 f$OpenPPL_HaveAnyKindOfInsideStraightDraw
@@ -2343,6 +2353,11 @@ f$OpenPPL_PairOnBoard      ? f$OpenPPL_NutFullHouseOrFourOfAKind_PairOnBoard :
 
 ##f$OpenPPL_PairInHand##
 ispair
+
+##f$OpenPPL_SuitsInHand##
+($$ps0 == $$ps1) ? 1 :
+($$ps0 != $$ps1) ? 2 :
+0
 
 //*****************************************************************************
 //
