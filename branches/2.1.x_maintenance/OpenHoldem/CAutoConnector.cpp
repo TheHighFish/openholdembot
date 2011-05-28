@@ -181,7 +181,8 @@ void CAutoConnector::CheckForDuplicatedTablemaps()
 					"This will cause problems as the autoconnector won't be able to decide which one to use.\n"\
 					"Please remove the superfluous maps from the scraper folder.\n", 
 					TablemapConnectionData[i].SiteName);
-				MessageBox(0, (LPCTSTR) error_message, "Warning! Duplicate SiteName", MB_OK|MB_ICONWARNING);
+				MessageBox(0, (LPCTSTR) error_message, 
+					"Warning! Duplicate SiteName", MB_OK|MB_ICONWARNING);
 			}
 		}
 	}
