@@ -3,9 +3,10 @@ v2.1.9.1 2011-xx-yy
 BUG FIXES: 
 - The check for duplicated TMs did not work if a sitename did not exist in the TM.
   We added now a warning for missing sitenames.
-  Thanks to Folder for reporting the issue and to F1x3r for finding the bug.
+  Thanks to Folder for reporting the issue and to Strikles for finding the bug.
   [THF]
-- CFormula: Reading formula file: mistakenly verified if formula exist when supposed to verify if handlist exists.
+- CFormula: Reading formula file: mistakenly verified if formula exist 
+  when supposed to verify if handlist exists.
   [TripleSeven]
 - Frame recording in "its my turn" mode did not record with autoplayer off. Fixed it
   and made sure only one frame gets saved for each turn [JF].
@@ -17,6 +18,19 @@ NEW STUFF:
   s$handnumber_min_expected_digits and s$handnumber_max_expected_digits can now 
   be set in the tablemap.
   [TripleSeven]
+- PT3-support for more sites:
+  * betfair
+  * cryptologic
+  * ultimate
+  * absolute
+  * wpex
+  * tribeca
+  * merge
+  * winamax
+  * everleaf
+  * yatahay
+  Thanks to SteveG1963 and Strikles for providing the code. 
+  [THF]
   
 MAINTENANCE:
 - Removing symbol "handnumber" for various reasons from the formula level:
@@ -29,6 +43,8 @@ MAINTENANCE:
 - Removing tablepoints completely, as they were never implemented completely
   and there is no need for it.
   http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=12444
+  [THF]
+- Enabling autoplayer-trace per default to reduce "problem" reports by newbies.
   [THF]
 
 
@@ -120,12 +136,12 @@ BUG FIXES:
   and to BillW for testing and confirming the fix. [THF]
 - The symbol "playersblindbits" was incorrectly assuming, that always the next two chairs 
   after the dealer were the blinds. This has now been fixed.
-  Thanks to Mjoe2 for reporting the problem [F1x3r]
+  Thanks to Mjoe2 for reporting the problem [Strikles]
 - Some casinos (currently we are only aware of FullTilt) use a "dead button", 
   if one of the blinds did bust in the previous hand.
   This caused problems with the code to detect blinds and with the ICM symbols.
   Thanks to CrumbleSunday for reporting the issue and for Poker_Dog 
-  for contributing to the solution. [F1x3r]
+  for contributing to the solution. [Strikles]
 - Fixed a memory leak in the formula editor. 
   Thanks to JumpingFences for reporting the problem and fixing the bug. [THF]
 
@@ -134,17 +150,17 @@ v2.1.6 2010-08-29
 =================
 BUG FIXES:
 - The symbol "call" got broken by a previous bug-fix.
-  Thanks to kTrader for reporting. [F1x3r]
+  Thanks to kTrader for reporting. [Strikles]
 - Trying to adapt the history-symbols after an action did break
   some other symbols like currentbetX. 
-  Thanks to BadHabit for reporting. [F1x3r]
+  Thanks to BadHabit for reporting. [Strikles]
 - Detecting the blinds was a bit unreliable
   ("blinds" means blind-posters here, not bet.amounts),
   as OpenHoldem assumed, that always the two seats after the button are blinds,
   even if they were empty. This has now been corrected.
   Special care has been taken for situations that are headsup or become headsup.
   Thanks to Mjoe2 for reporting this old problem again and providing a good screenshot 
-  that motivated us to do the fix. [F1x3r]
+  that motivated us to do the fix. [Strikles]
 
 MAINTENANCE:
 - Now also logging f$delay (optionally). [THF]
@@ -155,7 +171,7 @@ v2.1.5 2010-07-01
 BUG FIXES:
 - The symbol ishistraight did not work for all best straights,
   but only for ace-high-straights. This has now been fixed.
-  Thanks to Mad4IT for reporting. [F1x3r]
+  Thanks to Mad4IT for reporting. [Strikles]
 - betround was used for symbol lookups when loading the first formula,
   but not yet initialized. 
   This was pretty harmless, but threw an assertion in debug-mode. 
@@ -166,7 +182,7 @@ BUG FIXES:
 - Applying a formula while the autoplayer is engaged is an extremely bad idea
   (PEBKAC) and could lose the whole formula. Trying to fix this issue
   (stupid user) with improved warning messages. Nothing more we can do. [THF] 
-- Fixed yet another problem with nopponentsraising. [F1x3r]
+- Fixed yet another problem with nopponentsraising. [Strikles]
 - Historically all hi_symbols (and some others) keep the value they had 
   at heros last turn in betting round X, as heros turn is the only time
   when we get stable frames, so scraping or even guessing what happened behind hero
@@ -208,7 +224,7 @@ NEW STUFF:
   * testing for correct installation of Perl
   * testing, if PATH-variable contains Perl-directory
   * better test for MSVCRT 8.0, which is necessary for Perl. 
-  [F1x3r]
+  [Strikles]
 
 v2.1.3 2010-03-03
 =================

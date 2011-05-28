@@ -1498,22 +1498,22 @@ void CSymbols::CalcAutoplayer(void)
 				CString button_label = p_scraper->button_label(i);
 
 				if (p_scraper->IsStringFold(button_label))
-				set_sym_myturnbits((int) _sym.myturnbits | (1<<0));
+					set_sym_myturnbits((int) _sym.myturnbits | (1<<0));
 
 				else if (p_scraper->IsStringCall(button_label))
-				set_sym_myturnbits((int) _sym.myturnbits | (1<<1));
+					set_sym_myturnbits((int) _sym.myturnbits | (1<<1));
 
 				else if (p_scraper->IsStringRaise(button_label) || button_label.MakeLower() == "swag")
-				set_sym_myturnbits((int) _sym.myturnbits | (1<<2));
+					set_sym_myturnbits((int) _sym.myturnbits | (1<<2));
 
 				else if (p_scraper->IsStringCheck(button_label))
-				set_sym_myturnbits((int) _sym.myturnbits | (1<<4));
+					set_sym_myturnbits((int) _sym.myturnbits | (1<<4));
 
 				else if (p_scraper->IsStringAllin(button_label))
-				set_sym_myturnbits((int) _sym.myturnbits | (1<<3));
+					set_sym_myturnbits((int) _sym.myturnbits | (1<<3));
 
 				else if (p_scraper->IsStringAutopost(button_label))
-				set_sym_isautopost(1);													// isautopost
+					set_sym_isautopost(1);													// isautopost
 
 			}
 		}

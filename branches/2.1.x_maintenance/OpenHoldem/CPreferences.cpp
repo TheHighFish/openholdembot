@@ -160,7 +160,7 @@ void CPreferences::InitDefaults(void)
 	_log_symbol_enabled = false;
 	_log_symbol_max_log = 5;
 
-	_trace_enabled = false;
+	_trace_enabled = true;
 
 	// Logging and debugging
 	_disable_msgbox = false;

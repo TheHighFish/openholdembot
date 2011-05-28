@@ -52,6 +52,17 @@ CPokerTrackerLookup::CPokerTrackerLookup()
 	_pt3_siteid.insert(std::pair<CString, int> ("microgaming", 1100));
 	_pt3_siteid.insert(std::pair<CString, int> ("cake", 1200));
 	_pt3_siteid.insert(std::pair<CString, int> ("bodog", 1300));
+	_pt3_siteid.insert(std::pair<CString, int> ("betfair", 1400));
+	_pt3_siteid.insert(std::pair<CString, int> ("cryptologic", 1500));
+	_pt3_siteid.insert(std::pair<CString, int> ("ultimate", 1600));
+	_pt3_siteid.insert(std::pair<CString, int> ("absolute", 1700));
+	_pt3_siteid.insert(std::pair<CString, int> ("wpex", 1800));
+	_pt3_siteid.insert(std::pair<CString, int> ("tribeca", 1900));
+	// 2000 not (yet) supported, whatever it is
+	_pt3_siteid.insert(std::pair<CString, int> ("merge", 2100));
+	_pt3_siteid.insert(std::pair<CString, int> ("winamax", 2200));
+	_pt3_siteid.insert(std::pair<CString, int> ("everleaf", 2300));
+	_pt3_siteid.insert(std::pair<CString, int> ("yatahay", 2400));
 }
 
 CPokerTrackerLookup::~CPokerTrackerLookup()
