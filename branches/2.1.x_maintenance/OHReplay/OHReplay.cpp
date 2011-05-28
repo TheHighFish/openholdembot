@@ -1,11 +1,10 @@
 // OHReplay.cpp : Defines the entry point for the application.
 //
-
 #include "stdafx.h"
-
-#include <stdio.h>
-
 #include "OHReplay.h"
+
+#include <atlstr.h>
+#include <stdio.h>
 #include "Registry.h"
 
 //
@@ -349,8 +348,28 @@ void open_frame()
 		memcpy(cur_working_path, szFile, name_start);  // save in global var for future use
 		cur_working_path[name_start] = '\0';
 
+		// Verifying correct format of name, e.g. "frame000000.htm".
+		// Renamed frames cause a crash
+		// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=12960
+		// ".htm" got already truncated at the end...
+		CString name_to_verify = szName;
+		if ((name_to_verify.GetLength() != 11)
+			|| (name_to_verify.Left(5) != "frame"))
+		{
+			MessageBox(0, "Incorrect filename.\n"
+				"Replay-frames have to be named like \"frame012345.htm\".\n"
+				"\n"
+				"Ignoring this frame.\n",
+				"Error", 0);
+			return;
+		}
 		// Extract frame number
-		sprintf_s(framenum, 11, "%s", szName+5);
+		// 11 bytzes to extract after "frame": 
+		// 6 digits, 4 for ".htm" and 1 for NULL.
+		const int number_of_bytes_after_frame_prefix = 11; 
+		sprintf_s(framenum, number_of_bytes_after_frame_prefix, 
+			"%s", szName+5);
+		// Truncating ".htm".
 		framenum[6] = '\0';
 
 		cur_frame = atoi(framenum);

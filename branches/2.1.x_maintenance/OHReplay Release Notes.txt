@@ -1,3 +1,12 @@
+v2.1.9.1 2011-xx-yy
+===================
+BUG FIXES: 
+- OHR crashed if used with renamed replay-frames, 
+  as it assumes a filename of the format "frame012345.htm".
+  A runtime-check has been added to avoid the crash.
+  Thanks to Buchas for reporting.
+  [THF]
+
 V2.0.4 2009-xx-yy
 =================
 BUG FIXES:
