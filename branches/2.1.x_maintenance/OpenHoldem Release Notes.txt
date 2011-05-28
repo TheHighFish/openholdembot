@@ -46,6 +46,9 @@ MAINTENANCE:
   [THF]
 - Enabling autoplayer-trace per default to reduce "problem" reports by newbies.
   [THF]
+- Improving some rules of the validator.
+  Thanks to Nik0 for identifying some critical ones.
+  [THF]
 
 
 v2.1.9 2011-02-20
