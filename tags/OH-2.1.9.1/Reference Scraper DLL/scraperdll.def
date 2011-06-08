@@ -1,0 +1,5 @@
+LIBRARY	scraper
+EXPORTS
+   ProcessMessage    @1
+   OverrideScraper   @2
+   
