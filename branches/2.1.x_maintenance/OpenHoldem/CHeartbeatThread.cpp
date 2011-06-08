@@ -305,16 +305,11 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Create replay frame
 
-		if ( // If its my turn
-			 (prefs.replay_record() && 
-			  p_symbols->sym()->ismyturn && 
-			  ((new_scrape&BUTTONSTATE_CHANGED) != NOTHING_CHANGED) &&
-			  (!p_heartbeat_thread->replay_recorded_this_turn() || !p_autoplayer->autoplayer_engaged())) 
-			 
-			 ||
-
 		static double last_br = 0; 
 		static double last_ncallbets = -1; 
+
+		last_br = p_symbols->sym()->br;
+		last_ncallbets = p_symbols->sym()->ncallbets;
 
 		if (p_handreset_detector->IsHandreset() ||
 			p_symbols->sym()->br != last_br ||
@@ -323,13 +318,10 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		}
 
-		last_br = p_symbols->sym()->br;
-		last_ncallbets = p_symbols->sym()->ncallbets;
-
 		if ( // If it's my turn, and we have enough stable frames
 			(prefs.replay_record() &&
 			p_symbols->sym()->ismyturn &&
-			NumberOfStableFrames >= prefs.frame_delay()) &&
+			p_stableframescounter->NumberOfStableFrames() >= prefs.frame_delay()) &&
 			!p_heartbeat_thread->replay_recorded_this_turn()
 			 
 			 ||
