@@ -10,7 +10,11 @@ BUG FIXES:
   [TripleSeven]
 - Frame recording in "its my turn" mode did not record with autoplayer off. Fixed it
   and made sure only one frame gets saved for each turn [JF].
-- Autoplayer action for allinmethod 1 and 2 was not setting frame recording flag [JF].
+- Autoplayer action for allinmethod 1 and 2 was not setting frame recording flag. 
+  [JF]
+- Replayframes on my turn did get now taken on exactly the same heartbeat 
+  where the autoplayer acts. Thanky to VitaliKK2005 for providing the patch.
+  [THF]
   
 NEW STUFF:
 - Handnumber is now optionally ranged between s$handnumber_min_expected_digits 
