@@ -1,4 +1,4 @@
-v2.1.9.1 2011-xx-yy
+v2.1.9.1 2011-06-08
 ===================
 BUG FIXES: 
 - The check for duplicated TMs did not work if a sitename did not exist in the TM.
@@ -17,7 +17,7 @@ BUG FIXES:
   [THF]
   
 NEW STUFF:
-- Handnumber is now optionally ranged between s$handnumber_min_expected_digits 
+- TM-symbol "handnumber" is now optionally ranged between s$handnumber_min_expected_digits 
   and s$handnumber_max_expected_digits to reduce the risk of handresets by occlusion.
   s$handnumber_min_expected_digits and s$handnumber_max_expected_digits can now 
   be set in the tablemap.
@@ -37,7 +37,7 @@ NEW STUFF:
   [THF]
   
 MAINTENANCE:
-- Removing symbol "handnumber" for various reasons from the formula level:
+- Removing formula symbol "handnumber" for various reasons from the formula level:
     * there is no need for it at the formula level.
     * it may contain characters and therefore doesn't fit into a double.
     * its length may exceed the precision of double.

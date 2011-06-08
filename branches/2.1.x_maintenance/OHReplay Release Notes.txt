@@ -1,4 +1,4 @@
-v2.1.9.1 2011-xx-yy
+v2.1.9.1 2011-06-08
 ===================
 BUG FIXES: 
 - OHR crashed if used with renamed replay-frames, 
