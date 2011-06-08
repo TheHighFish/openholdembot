@@ -1015,7 +1015,7 @@ void CSymbols::CalcSymbols(void)
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Identification of dealerchair
-	write_log(3, "nchirs: %d\n", p_tablemap->nchairs());
+	write_log(3, "nchairs: %d\n", p_tablemap->nchairs());
 	for (i=0; i < p_tablemap->nchairs(); i++)
 	{
 		if (p_scraper->dealer(i))
