@@ -248,7 +248,7 @@ void CAutoplayer::DoAutoplayer(void)
 		DoChat();
 	}
 
-	int NumberOfStableFrames = p_stableframescounter->GetNumberOfStableFrames();
+	int NumberOfStableFrames = p_stableframescounter->NumberOfStableFrames();
 	write_log(3, "Number of stable frames: % d\n", NumberOfStableFrames);
 
 	bool isFinalAnswer = true;
@@ -524,8 +524,6 @@ void CAutoplayer::DoSwag(void)
 		
 		p_symbols->RecordPrevAction(k_action_swag);
 		write_logautoplay(1, ActionConstantNames(k_action_swag));
-
-		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 	}
 
 	_mutex.Unlock();
@@ -651,8 +649,6 @@ void CAutoplayer::DoARCCF(void)
 		// Writing 4-digit-name of action, e.g "ALLI" or "RAIS" to the log.
 		write_logautoplay(1, ActionConstantNames(do_click));
 		p_symbols->RecordPrevAction(do_click);
-		
-		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 	}
 
 	write_log(3, "...ending DoARCCF, 'didrais'/'didcall'/'didchec' now: %d %d %d\n", 

@@ -8,7 +8,8 @@ public:
 	~CStableFramesCounter();
 public:
 	void ResetOnAutoplayerAction();
-	int  GetNumberOfStableFrames();
+	int  NumberOfStableFrames() {return _NumberOfStableFrames;}
+	int  UpdateNumberOfStableFrames();
 private:
 	void Reset();
 private:

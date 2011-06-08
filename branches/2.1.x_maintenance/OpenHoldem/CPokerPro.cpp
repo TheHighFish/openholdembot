@@ -2050,7 +2050,7 @@ void PokerPro::DoAutoplayer(void)
 	int additional_frames_to_wait = p_symbols->f$delay() / (prefs.scrape_delay() + 1);	
 
 	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return.
-	if (p_stableframescounter->GetNumberOfStableFrames() < (prefs.frame_delay() + additional_frames_to_wait))
+	if (p_stableframescounter->UpdateNumberOfStableFrames() < (prefs.frame_delay() + additional_frames_to_wait))
 		return;
 
 	// Now that we got through all of the above, we are ready to evaluate the primary formulas

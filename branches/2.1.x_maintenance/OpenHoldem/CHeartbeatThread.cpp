@@ -6,6 +6,7 @@
 #include "CAutoplayer.h"
 #include "CFormula.h"
 #include "CGameState.h"
+#include "CHandresetDetector.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
 #include "CPokerPro.h"
@@ -14,6 +15,7 @@
 #include "CReplayFrame.h"
 #include "CScraper.h"
 #include "..\..\Reference Scraper DLL\scraperdll.h"
+#include "CStableFramesCounter.h"
 #include "CSymbols.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CValidator.h"
@@ -241,6 +243,8 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			////////////////////////////////////////////////////////////////////////////////////////////
 			// Caclulate symbols
 
+			p_handreset_detector->OnNewHeartbeat();
+
 			// mark symbol result cache as stale
 			p_formula->MarkCacheStale();
 
@@ -299,13 +303,34 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////
-		// Create replay frame, if one of the 'every change' options is selected
+		// Create replay frame
 
 		if ( // If its my turn
 			 (prefs.replay_record() && 
 			  p_symbols->sym()->ismyturn && 
 			  ((new_scrape&BUTTONSTATE_CHANGED) != NOTHING_CHANGED) &&
 			  (!p_heartbeat_thread->replay_recorded_this_turn() || !p_autoplayer->autoplayer_engaged())) 
+			 
+			 ||
+
+		static double last_br = 0; 
+		static double last_ncallbets = -1; 
+
+		if (p_handreset_detector->IsHandreset() ||
+			p_symbols->sym()->br != last_br ||
+			p_symbols->sym()->ncallbets != last_ncallbets)
+		{
+			p_heartbeat_thread->set_replay_recorded_this_turn(false);
+		}
+
+		last_br = p_symbols->sym()->br;
+		last_ncallbets = p_symbols->sym()->ncallbets;
+
+		if ( // If it's my turn, and we have enough stable frames
+			(prefs.replay_record() &&
+			p_symbols->sym()->ismyturn &&
+			NumberOfStableFrames >= prefs.frame_delay()) &&
+			!p_heartbeat_thread->replay_recorded_this_turn()
 			 
 			 ||
 

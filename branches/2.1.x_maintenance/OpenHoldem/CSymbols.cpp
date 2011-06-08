@@ -1046,7 +1046,6 @@ void CSymbols::CalcSymbols(void)
 		player_card_cur[0] = player_card_cur[1] = CARD_NOCARD;
 	}
 
-	p_handreset_detector->OnNewHeartbeat();
 	if (p_handreset_detector->IsHandreset())
 	{
 		// Save for next pass

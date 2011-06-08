@@ -30,7 +30,7 @@ void CStableFramesCounter::ResetOnAutoplayerAction()
 	Reset();
 }
 
-int CStableFramesCounter::GetNumberOfStableFrames()
+int CStableFramesCounter::UpdateNumberOfStableFrames()
 {
 	// Static variables to keep the last game-state.
 	static unsigned int	card_common_last[k_number_of_community_cards] = {0};
