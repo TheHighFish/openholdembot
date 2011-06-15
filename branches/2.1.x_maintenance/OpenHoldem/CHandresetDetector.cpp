@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CHandresetDetector.h"
 
+#include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbols.h"
 #include "..\CTablemap\CTablemap.h"
@@ -117,12 +118,12 @@ void CHandresetDetector::OnNewHeartbeat()
 	}
 	if (IsValidHandNumber(p_scraper->s_limit_info()->handnumber))
 	{
-		write_log(3, "Setting handnumber to [%s]\n", handnumber);
+		write_log(prefs.debug_alltherest(), "Setting handnumber to [%s]\n", handnumber);
 		handnumber = p_scraper->s_limit_info()->handnumber;	
 	}
 	else
 	{
-		write_log(3, "Setting handnumber to [%s] was skipped. Reason: [digits number not in range]\n", handnumber);
+		write_log(prefs.debug_alltherest(), "Setting handnumber to [%s] was skipped. Reason: [digits number not in range]\n", handnumber);
 	}
 	int userchair = (int) p_symbols->sym()->userchair;
 	for (int i=0; i<k_number_of_cards_per_player; i++)

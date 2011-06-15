@@ -80,7 +80,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 	while (true)
 	{
-		write_log(3, "HBT: Heartbeat start\n");
+		write_log(prefs.debug_heartbeat(), "HBT: Heartbeat start\n");
 
 		// Check event for stop thread
 		if(::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
@@ -102,7 +102,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 			if (!p_pokerpro->IsConnected())
 			{
-				write_log(3, "HBT: Calling DoScrape.\n");
+				write_log(prefs.debug_heartbeat(), "HBT: Calling DoScrape.\n");
 				new_scrape = p_scraper->DoScrape();
 
 				LARGE_INTEGER PerformanceCount;
@@ -113,7 +113,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			{
 				if (p_pokerpro->ppdata()->m_tinf.m_tid != 0)
 				{
-					write_log(3, "HBT: Calling PokerPro for scraper data.\n");
+					write_log(prefs.debug_heartbeat(), "HBT: Calling PokerPro for scraper data.\n");
 					p_pokerpro->DoScrape();
 				}
 			}
@@ -180,7 +180,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 				ss.istournament = p_scraper->s_limit_info()->istournament;
 
 				// Call the scraper override
-				write_log(3, "HBT: Sending scraper data to override DLL.\n");
+				write_log(prefs.debug_heartbeat(), "HBT: Sending scraper data to override DLL.\n");
 				(theApp._dll_scraper_override) (&ss);
 
 				// Replace values in p_scraper with those provided by scraper dll
@@ -250,14 +250,14 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 			if (new_scrape!=NOTHING_CHANGED || (p_pokerpro->IsConnected() && p_pokerpro->ppdata()->m_tinf.m_tid != 0))
 			{
-				write_log(3, "HBT: Calling CalcSymbols.\n");
+				write_log(prefs.debug_heartbeat(), "HBT: Calling CalcSymbols.\n");
 				p_symbols->CalcSymbols();
 			}
 			else
 			{
-				write_log(3, "HBT: Calling CalcTime.\n");
+				write_log(prefs.debug_heartbeat(), "HBT: Calling CalcTime.\n");
 				p_symbols->CalcTime();
-				write_log(3, "HBT: Calling CalcProbabilities.\n");
+				write_log(prefs.debug_heartbeat(), "HBT: Calling CalcProbabilities.\n");
 				p_symbols->CalcProbabilities();
 			}
 
@@ -296,7 +296,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		{
 			if (p_iterator_thread)
 			{
-				write_log(3, "HBT: Stopping iterator thread.\n");
+				write_log(prefs.debug_heartbeat(), "HBT: Stopping iterator thread.\n");
 				delete p_iterator_thread;
 				p_iterator_thread = NULL;
 			}
@@ -339,7 +339,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			     p_scraper->card_player(p_symbols->sym()->chair, 1)==CARD_BACK))&& new_scrape != NOTHING_CHANGED)
 		   )
 		{
-			write_log(3, "HBT: Calling CreateReplayFrame.\n");
+			write_log(prefs.debug_heartbeat(), "HBT: Calling CreateReplayFrame.\n");
 			CReplayFrame   crf;
 			crf.CreateReplayFrame();
 			p_heartbeat_thread->set_replay_recorded_this_turn(p_autoplayer->autoplayer_engaged());
@@ -352,14 +352,14 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 		if (p_symbols->sym()->issittingin && !prefs.pt_disable() && p_pokertracker_thread)
 		{
-			write_log(3, "HBT: Starting PokerTracker thread.\n");
+			write_log(prefs.debug_heartbeat(), "HBT: Starting PokerTracker thread.\n");
 			p_pokertracker_thread->StartThread();
 		}
 
 		// Stop Poker Tracker Thread if not needed any longer
 		if (!p_symbols->sym()->issittingin && p_pokertracker_thread)
 		{
-			write_log(3, "HBT: Stopping PokerTracker thread.\n");
+			write_log(prefs.debug_heartbeat(), "HBT: Stopping PokerTracker thread.\n");
 			p_pokertracker_thread->StopThread();
 		}
 
@@ -374,19 +374,19 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Save state
-		write_log(3, "HBT: Calling CaptureState.\n");
+		write_log(prefs.debug_heartbeat(), "HBT: Calling CaptureState.\n");
 		p_game_state->CaptureState(title);
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Game state engine
-		write_log(3, "HBT: Calling ProcessGameState.\n");
+		write_log(prefs.debug_heartbeat(), "HBT: Calling ProcessGameState.\n");
 		p_game_state->ProcessGameState(p_game_state->state((p_game_state->state_index()-1)&0xff));
-		write_log(3, "HBT: Calling ProcessFtr.\n");
+		write_log(prefs.debug_heartbeat(), "HBT: Calling ProcessFtr.\n");
 		p_game_state->ProcessFtr(p_game_state->state((p_game_state->state_index()-1)&0xff));
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// OH-Validator
-		write_log(3, "HBT: Calling ValidateGameState.\n");
+		write_log(prefs.debug_heartbeat(), "HBT: Calling ValidateGameState.\n");
 		p_validator->ValidateGameState();
 
 		////////////////////////////////////////////////////////////////////////////////////////////
@@ -396,7 +396,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			 p_symbols->user_chair_confirmed()) ||
 			prefs.dll_always_send_state())
 		{
-			write_log(3, "HBT: Calling PassStateToDll.\n");
+			write_log(prefs.debug_heartbeat(), "HBT: Calling PassStateToDll.\n");
 			p_dll_extension->PassStateToDll(p_game_state->state((p_game_state->state_index()-1)&0xff));
 		}
 
@@ -411,21 +411,21 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			iswait = false;
 		}
 
-		write_log(3, "HBT: autoplayer_engaged(): %i\n", p_autoplayer->autoplayer_engaged());
-		write_log(3, "HBT: user_chair_confirmed(): %i\n", p_symbols->user_chair_confirmed());
-		write_log(3, "HBT: iswait: %i\n", iswait);
+		write_log(prefs.debug_heartbeat(), "HBT: autoplayer_engaged(): %i\n", p_autoplayer->autoplayer_engaged());
+		write_log(prefs.debug_heartbeat(), "HBT: user_chair_confirmed(): %i\n", p_symbols->user_chair_confirmed());
+		write_log(prefs.debug_heartbeat(), "HBT: iswait: %i\n", iswait);
 		// If autoplayer is engaged, we know our chair, and the DLL hasn't told us to wait, then go do it!
 		if (p_autoplayer->autoplayer_engaged() && p_symbols->user_chair_confirmed() && !iswait)
 		{
 			if (!p_pokerpro->IsConnected())
 			{
-				write_log(3, "HBT: Calling DoAutoplayer.\n");
+				write_log(prefs.debug_heartbeat(), "HBT: Calling DoAutoplayer.\n");
 				p_autoplayer->DoAutoplayer();
 			}
 
 			else if (p_pokerpro->ppdata()->m_tinf.m_tid != 0)
 			{
-				write_log(3, "HBT: Calling PokerPro DoAutoplayer.\n");
+				write_log(prefs.debug_heartbeat(), "HBT: Calling PokerPro DoAutoplayer.\n");
 				p_pokerpro->DoAutoplayer();
 			}
 		}
@@ -434,10 +434,10 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			// Calc primary formulas anyway, so main window can display its information correctly
 			// but set final_answer param to false, since we are not actually using this info to
 			// take action
-			write_log(3, "HBT: Calling CalcPrimaryFormulas without isfinalanswer.\n");
+			write_log(prefs.debug_heartbeat(), "HBT: Calling CalcPrimaryFormulas without isfinalanswer.\n");
 			p_symbols->CalcPrimaryFormulas(false);
 			// Calculate secondary formulas, as we need f$rebuy
-			write_log(3, "Calling CalcSecondaryFormulas.\n");
+			write_log(prefs.debug_heartbeat(), "Calling CalcSecondaryFormulas.\n");
 			p_symbols->CalcSecondaryFormulas();
 			p_autoplayer->DoRebuyIfNeccessary();
 		}
@@ -471,9 +471,9 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			}
 		}
 
-		write_log(3, "HBT: Sleeping %d ms.\n", prefs.scrape_delay());
+		write_log(prefs.debug_heartbeat(), "HBT: Sleeping %d ms.\n", prefs.scrape_delay());
 		Sleep(prefs.scrape_delay());
 
-		write_log(3, "HBT: Heartbeat end.\n");
+		write_log(prefs.debug_heartbeat(), "HBT: Heartbeat end.\n");
 	}
 }

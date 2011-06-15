@@ -1,9 +1,10 @@
 #include "stdafx.h"
 
-#include "MagicNumbers.h"
+#include "CPreferences.h"
 #include "CScraper.h"
 #include "CStableFramesCounter.h"
 #include "CSymbols.h"
+#include "MagicNumbers.h"
 
 // We create s single global instance,
 // as the counter is needed for both autoplayer and PPro.
@@ -96,6 +97,6 @@ int CStableFramesCounter::UpdateNumberOfStableFrames()
 		myturnbitslast = sym_myturnbits;
 		_NumberOfStableFrames = 0;
 	}
-	write_log(3, "Number of stable frames: %d\n", _NumberOfStableFrames);
+	write_log(prefs.debug_stableframescounter(), "Number of stable frames: %d\n", _NumberOfStableFrames);
 	return _NumberOfStableFrames;
 }

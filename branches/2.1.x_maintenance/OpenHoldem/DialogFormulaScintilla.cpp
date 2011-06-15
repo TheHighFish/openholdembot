@@ -139,7 +139,8 @@ char * keywords = // Standard functions
 				  "ac_dealpos0 ac_dealpos1 ac_dealpos2 ac_dealpos3 ac_dealpos4 ac_dealpos5 ac_dealpos6 ac_dealpos7 ac_dealpos8 ac_dealpos9 "
 				  // MyHand
 				  "mh_3straight00 mh_3straight01 mh_3straight10 mh_3straight11 "
-				  "mh_bottomsd mh_nsuitedbetter mh_kickerbetter mh_nouts mh_str_quads mh_str_fullhouse "
+				  "mh_bottomsd mh_nsuitedbetter mh_kickerbetter mh_nouts "
+				  "mh_str_strflush mh_str_quads mh_str_fullhouse "
 				  "mh_str_flush mh_str_straight mh_str_trips mh_str_twopair mh_str_onepair "
 				  // Logging
 				  "log$ "

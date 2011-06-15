@@ -290,7 +290,7 @@ void CSymbols::ResetSymbolsFirstTime(void)
 
 	// chip amounts
 	// Index k_max_number_of_players+1 is for hero
-	write_log(3, "Resetting currentbets and balances for all players\n");
+	write_log(prefs.debug_symbolengine(), "Resetting currentbets and balances for all players\n");
 	for (int i=0; i<(k_max_number_of_players+1); i++)
 	{
 		set_sym_balance(i, 0);
@@ -764,7 +764,7 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 
 	// chip amounts
 	// Index k_max_number_of_players+1 is for hero
-	write_log(3, "Resetting currentbets for all players\n");
+	write_log(prefs.debug_symbolengine(), "Resetting currentbets for all players\n");
 	for (int i=0; i<(k_max_number_of_players+1); i++)
 	{
 		set_sym_currentbet(i, 0);
@@ -1015,12 +1015,12 @@ void CSymbols::CalcSymbols(void)
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Identification of dealerchair
-	write_log(3, "nchairs: %d\n", p_tablemap->nchairs());
+	write_log(prefs.debug_symbolengine(), "nchairs: %d\n", p_tablemap->nchairs());
 	for (i=0; i < p_tablemap->nchairs(); i++)
 	{
 		if (p_scraper->dealer(i))
 		{
-			write_log(3, "Setting dealerchair to %d\n", i);
+			write_log(prefs.debug_symbolengine(), "Setting dealerchair to %d\n", i);
 			set_sym_dealerchair(i);														// dealerchair
 			break;
 		}
@@ -1323,7 +1323,7 @@ void CSymbols::CalcBetBalanceStack(void)
 				{
 					set_sym_currentbet(i, temp);									// currentbet0-9
 					//!!!
-					write_log(3, "setting currentbet for FL\n");
+					write_log(prefs.debug_symbolengine(), "setting currentbet for FL\n");
 				}
 			}
 
@@ -1333,17 +1333,17 @@ void CSymbols::CalcBetBalanceStack(void)
 				set_sym_currentbet(i, temp); 
 				// currentbet0-9
 				//!!!
-				write_log(3, "setting currentbet for NL/PL\n");
+				write_log(prefs.debug_symbolengine(), "setting currentbet for NL/PL\n");
 			}
 		}
 	}
 
 	set_sym_currentbet(10, _user_chair_confirmed ? p_scraper->player_bet(_sym.userchair) : 0);			// currentbet
 	//!!!
-	write_log(3, "setting currentbet conditionally\n");
-	write_log(3, "currentbet: user_chair_confirmed: %d\n", _user_chair_confirmed);
-	write_log(3, "currentbet: userchair: %f\n", _sym.userchair);
-	write_log(3, "currentbet: bet: %f\n", p_scraper->player_bet(_sym.userchair));
+	write_log(prefs.debug_symbolengine(), "setting currentbet conditionally\n");
+	write_log(prefs.debug_symbolengine(), "currentbet: user_chair_confirmed: %d\n", _user_chair_confirmed);
+	write_log(prefs.debug_symbolengine(), "currentbet: userchair: %f\n", _sym.userchair);
+	write_log(prefs.debug_symbolengine(), "currentbet: bet: %f\n", p_scraper->player_bet(_sym.userchair));
 
 
 	set_sym_potplayer(0);
@@ -3872,26 +3872,26 @@ void CSymbols::CalcPrimaryFormulas(const bool final_answer)
 
 	set_sym_isfinalanswer(final_answer);
 
-	write_log(3, "IsFinalAnswer: %i\n", final_answer);
-	write_log(3, "Trace enabled: %i\n", prefs.trace_enabled());
+	write_log(prefs.debug_symbolengine(), "IsFinalAnswer: %i\n", final_answer);
+	write_log(prefs.debug_symbolengine(), "Trace enabled: %i\n", prefs.trace_enabled());
 
 	bool trace_needed = final_answer && prefs.trace_enabled();
 
 	e = SUCCESS;
 	set_f$alli(gram.CalcF$symbol(p_formula, "f$alli", trace_needed, &e));
-	write_log(3, "Primary formulas; f$alli: %f\n", p_symbols->f$alli());
+	write_log(prefs.debug_symbolengine(), "Primary formulas; f$alli: %f\n", p_symbols->f$alli());
 	
 	e = SUCCESS;
 	set_f$swag(gram.CalcF$symbol(p_formula, "f$swag", trace_needed, &e));
-	write_log(3, "Primary formulas; f$swag: %f\n", p_symbols->f$swag());
+	write_log(prefs.debug_symbolengine(), "Primary formulas; f$swag: %f\n", p_symbols->f$swag());
 
 	e = SUCCESS;
 	set_f$rais(gram.CalcF$symbol(p_formula, "f$rais", trace_needed, &e));
-	write_log(3, "Primary formulas; f$rais: %f\n", p_symbols->f$rais());
+	write_log(prefs.debug_symbolengine(), "Primary formulas; f$rais: %f\n", p_symbols->f$rais());
 
 	e = SUCCESS;
 	set_f$call(gram.CalcF$symbol(p_formula, "f$call", trace_needed, &e));
-	write_log(3, "Primary formulas; f$call: %f\n", p_symbols->f$call());
+	write_log(prefs.debug_symbolengine(), "Primary formulas; f$call: %f\n", p_symbols->f$call());
 
 	CalcAutoTrace();
 }
@@ -3903,23 +3903,23 @@ void CSymbols::CalcSecondaryFormulas(void)
 
 	e = SUCCESS;
 	set_f$play(gram.CalcF$symbol(p_formula, "f$play", prefs.trace_enabled(), &e));
-	write_log(3, "Secondary formulas; f$play: %f\n", p_symbols->f$play());
+	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$play: %f\n", p_symbols->f$play());
 
 	e = SUCCESS;
 	set_f$prefold(gram.CalcF$symbol(p_formula, "f$prefold", prefs.trace_enabled(), &e));
-	write_log(3, "Secondary formulas; f$prefold: %f\n", p_symbols->f$prefold());
+	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$prefold: %f\n", p_symbols->f$prefold());
 	
 	e = SUCCESS;
 	set_f$rebuy(gram.CalcF$symbol(p_formula, "f$rebuy", prefs.trace_enabled(), &e));
-	write_log(3, "Secondary formulas; f$rebuy: %f\n", p_symbols->f$rebuy());
+	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$rebuy: %f\n", p_symbols->f$rebuy());
 	
 	e = SUCCESS;
 	set_f$delay(gram.CalcF$symbol(p_formula, "f$delay", prefs.trace_enabled(), &e));
-	write_log(3, "Secondary formulas; f$delay: %f\n", p_symbols->f$delay());
+	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$delay: %f\n", p_symbols->f$delay());
 	
 	e = SUCCESS;
 	set_f$chat(gram.CalcF$symbol(p_formula, "f$chat", &e));
-	write_log(3, "Secondary formulas; f$chat: %f\n", p_symbols->f$chat());
+	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$chat: %f\n", p_symbols->f$chat());
 
 	CalcAutoTrace();
 }
@@ -4715,7 +4715,7 @@ const double CSymbols::Chairbit$(const char *a)
 
 void CSymbols::RecordPrevAction(const ActionConstant action)
 {
-	write_log(3, "CSymbols::AdaptSymbolsForUsersAction(%d)\n", action);
+	write_log(prefs.debug_symbolengine(), "CSymbols::AdaptSymbolsForUsersAction(%d)\n", action);
 	set_prevaction(action);
 
 	// !!! Most things temporary disabled, as this causes only problems
@@ -4736,12 +4736,12 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 	switch (action)
 	{
 		case k_action_fold:	
-			write_log(3, "Adjusting symbols for users action: fold - nothing to do\n");
+			write_log(prefs.debug_symbolengine(), "Adjusting symbols for users action: fold - nothing to do\n");
 			// Did-symbols - no "didfold"
 			// Bets and pot - nothing to adapt
 			break;
 		case k_action_check:
-			write_log(3, "Adjusting symbols for users action: check\n");
+			write_log(prefs.debug_symbolengine(), "Adjusting symbols for users action: check\n");
 			// Did-symbols
 			set_didchec(4, p_symbols->sym()->didchec[4] + 1);
 			set_didchec(betround-1, p_symbols->sym()->didchec[betround-1] + 1);
@@ -4752,7 +4752,7 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 			break;
 		case k_action_call:
 			assert(f$call() > 0);
-			write_log(3, "Adjusting symbols for users action: call\n");
+			write_log(prefs.debug_symbolengine(), "Adjusting symbols for users action: call\n");
 			// Did-symbols
 			set_didcall(4, p_symbols->sym()->didcall[4] + 1);
 			set_didcall(betround-1, p_symbols->sym()->didcall[betround-1] + 1);
@@ -4763,7 +4763,7 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 			break;
 		case k_action_raise:
 			assert(f$rais() > 0);
-			write_log(3, "Adjusting symbols for users action: raise\n");
+			write_log(prefs.debug_symbolengine(), "Adjusting symbols for users action: raise\n");
 			// Did-symbols
 			set_didrais(4, p_symbols->sym()->didrais[4] + 1);
 			set_didrais(betround-1, p_symbols->sym()->didrais[betround-1] + 1);
@@ -4774,7 +4774,7 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 			break;
 		case k_action_swag:
 			assert(f$swag() > 0);
-			write_log(3, "Adjusting symbols for users action: swag\n");
+			write_log(prefs.debug_symbolengine(), "Adjusting symbols for users action: swag\n");
 			// Did-symbols
 			set_didswag(4, p_symbols->sym()->didswag[4] + 1);
 			set_didswag(betround-1, p_symbols->sym()->didswag[betround-1] + 1);

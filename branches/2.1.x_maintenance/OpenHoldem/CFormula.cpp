@@ -906,11 +906,11 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 bool CFormula::DoesFormulaAlreadyExist(const CString new_name)
 {
 	int number_of_formulae = _formula.mFunction.GetCount(); 
-	write_log(3, "CFormula::DoesFormulaAlreadyExist(): number_of_formulae = [%d]\n", 
+	write_log(prefs.debug_alltherest(), "CFormula::DoesFormulaAlreadyExist(): number_of_formulae = [%d]\n", 
 		number_of_formulae);
 	for (int i=0; i<number_of_formulae; i++)
 	{
-		write_log(3, "CFormula::DoesFormulaAlreadyExist(): [%s] == [%s]\n",
+		write_log(prefs.debug_alltherest(), "CFormula::DoesFormulaAlreadyExist(): [%s] == [%s]\n",
 			new_name, _formula.mFunction[i].func);
 		if (new_name == _formula.mFunction[i].func)
 		{
@@ -925,7 +925,7 @@ bool CFormula::DoesHandlistAlreadyExist(const CString new_name)
 	int number_of_handlists = _formula.mHandList.GetCount(); 
 	for (int i=0; i<number_of_handlists; i++)
 	{
-		write_log(3, "CFormula::DoesHandlistAlreadyExist(): [%s] == [%s]\n",
+		write_log(prefs.debug_alltherest(), "CFormula::DoesHandlistAlreadyExist(): [%s] == [%s]\n",
 			new_name, _formula.mHandList[i].list);
 		if (new_name == _formula.mHandList[i].list)
 		{

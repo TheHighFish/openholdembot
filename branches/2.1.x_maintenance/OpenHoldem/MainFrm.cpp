@@ -44,6 +44,7 @@
 #include "DialogSAPrefs15.h"
 #include "DialogSAPrefs16.h"
 #include "DialogSAPrefs17.h"
+#include "DialogSAPrefs20.h"
 #include "DialogScraperOutput.h"
 #include "inlines/eval.h"
 #include "MagicNumbers.h"
@@ -515,6 +516,7 @@ void CMainFrame::OnEditPreferences()
 	CDlgSAPrefs15 page15;
 	CDlgSAPrefs16 page16;
 	CDlgSAPrefs17 page17;
+	CDlgSAPrefs20 page20;
 
 	// add pages
 	dlg.AddPage(page1,  "Analyzer");
@@ -522,6 +524,7 @@ void CMainFrame::OnEditPreferences()
 	dlg.AddPage(page2,  "Autoplayer");
 	dlg.AddPage(page10, "Chat");
 	dlg.AddPage(page17, "Configuration Check");
+	dlg.AddPage(page20, "Debugging");
 	dlg.AddPage(page3,  "DLL Extension");
 	dlg.AddPage(page15, "GUI");
 	dlg.AddPage(page7,  "ICM");
@@ -721,7 +724,7 @@ void CMainFrame::OnEditForceuserchair()
 		p_symbols->set_user_chair_confirmed(true); 
 		time_t tm;
 		time(&tm);
-		write_log(3, "Force set userchair to %d\n", dlg.chair);
+		write_log(prefs.debug_alltherest(), "Force set userchair to %d\n", dlg.chair);
 	}
 }
 

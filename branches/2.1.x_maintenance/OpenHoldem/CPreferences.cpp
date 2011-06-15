@@ -168,6 +168,23 @@ void CPreferences::InitDefaults(void)
 	_log_level_pt = 1;
 	_log_max_logsize = 10; // MB
 
+	// Debugging
+	_debug_autoconnector = false;
+	_debug_autoplayer = false;
+	_debug_heartbeat = false;
+	_debug_prwin = false;
+	_debug_icm = false;
+	_debug_occlusionchecker = false;
+	_debug_pokertracker = false;
+	_debug_rebuy = false;
+	_debug_replayframes = false;
+	_debug_scraper = false;
+	_debug_sessioncounter = false;
+	_debug_stableframescounter = false;
+	_debug_symbolengine = false;
+	_debug_blindlocking = false;
+	_debug_alltherest = false;
+
 	// Validator
 	//   0 = disabled
 	//   1 = when it's my turn
@@ -350,13 +367,28 @@ void CPreferences::ReadPreferences()
 
 		ReadReg("trace_enabled", &_trace_enabled);
 
-		CString regValue;
-
 		// Logging and debugging
 		ReadReg("disable_msgbox", &_disable_msgbox);
 		ReadReg("log_level", &_log_level);
 		ReadReg("log_level_pt", &_log_level_pt);
 		ReadReg("log_max_logsize", &_log_max_logsize);
+
+		// Debugging
+		ReadReg("debug_autoconnector", &_debug_autoconnector);
+		ReadReg("debug_autoplayer", &_debug_autoplayer);
+		ReadReg("debug_heartbeat", &_debug_heartbeat);
+		ReadReg("debug_prwin", &_debug_prwin);
+		ReadReg("debug_icm", &_debug_icm);
+		ReadReg("debug_occlusionchecker", &_debug_occlusionchecker);
+		ReadReg("debug_pokertracker", &_debug_pokertracker);
+		ReadReg("debug_rebuy", &_debug_rebuy);
+		ReadReg("debug_replayframes", &_debug_replayframes);
+		ReadReg("debug_scraper", &_debug_scraper);
+		ReadReg("debug_sessioncounter", &_debug_sessioncounter);
+		ReadReg("debug_stableframescounter", &_debug_stableframescounter);
+		ReadReg("debug_symbolengine", &_debug_symbolengine);
+		ReadReg("debug_blindlocking", &_debug_blindlocking);
+		ReadReg("debug_alltherest", &_debug_alltherest);
 
 		// Validator
 		ReadReg("validator_enabled", &_validator_enabled);

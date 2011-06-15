@@ -237,12 +237,12 @@ void CDlgPpro::OnBnClickedConnectButton()
 		if (p_heartbeat_thread)
 		{
 			delete p_heartbeat_thread;
-			write_log(3, "Stopped heartbeat thread: %08x\n", p_heartbeat_thread);
+			write_log(prefs.debug_alltherest(), "Stopped heartbeat thread: %08x\n", p_heartbeat_thread);
 			p_heartbeat_thread = NULL;
 		}
 
 		p_heartbeat_thread = new CHeartbeatThread;
-		write_log(3, "Started heartbeat thread: %08x\n", p_heartbeat_thread);
+		write_log(prefs.debug_alltherest(), "Started heartbeat thread: %08x\n", p_heartbeat_thread);
 	}
 }
 

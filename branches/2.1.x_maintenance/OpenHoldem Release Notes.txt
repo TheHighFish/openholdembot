@@ -1,3 +1,14 @@
+v2.1.9.1 2011-xx-yy
+===================
+MAINTENANCE:
+- No longer warning about missing versus.bin at startup, but only 
+  if versus-symbols get used. 
+  [THF]
+- Improved debugging messages, as Level 2 was unused and level 3
+  produced way too much data. There is now an extra tab in preferences
+  that enables the user to specify what exactly to log.
+  [THF]
+
 v2.1.9.1 2011-06-08
 ===================
 BUG FIXES: 
@@ -12,7 +23,7 @@ BUG FIXES:
   and made sure only one frame gets saved for each turn [JF].
 - Autoplayer action for allinmethod 1 and 2 was not setting frame recording flag. 
   [JF]
-- Replayframes on my turn did get now taken on exactly the same heartbeat 
+- Replayframes on my turn do get now taken on exactly the same heartbeat 
   where the autoplayer acts. Thanky to VitaliKK2005 for providing the patch.
   [THF]
   

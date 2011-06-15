@@ -6,7 +6,7 @@
 
 #include "SAPrefsDialog.h"
 
-// CDlgSAPrefs12 dialog
+// CDlgSAPrefs13 dialog
 
 class CDlgSAPrefs13 : public CSAPrefsSubDlg
 {
