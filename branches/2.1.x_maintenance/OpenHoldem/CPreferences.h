@@ -86,8 +86,6 @@ public:
 	const bool trace_enabled() { return _trace_enabled; }
 	// Logging and debugging
 	const bool disable_msgbox() { return _disable_msgbox; }
-	const int log_level() { return _log_level; }
-	const int log_level_pt() { return _log_level_pt; }
 	const int log_max_logsize() { return _log_max_logsize; }
 
 	// Debugging
@@ -266,8 +264,6 @@ public:
 
 	// Logging and debugging
 	void set_disable_msgbox(const bool b) { ENT _disable_msgbox = b; WriteReg("disable_msgbox", b); }
-	void set_log_level(const int i) { ENT _log_level = i; WriteReg("log_level", i); }
-	void set_log_level_pt(const int i) { ENT _log_level_pt = i; WriteReg("log_level_pt", i); }
 	void set_log_max_logsize(const int b) { ENT _log_max_logsize = b; WriteReg("log_max_logsize", b); }
 
 	// Debugging
@@ -460,8 +456,6 @@ private:
 
 	// Logging & MessageBox
 	bool			_disable_msgbox;
-	int				_log_level;
-	int				_log_level_pt;
 	int				_log_max_logsize;
 
 	// Debugging

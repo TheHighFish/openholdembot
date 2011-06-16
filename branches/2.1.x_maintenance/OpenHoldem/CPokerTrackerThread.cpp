@@ -207,7 +207,7 @@ void CPokerTrackerThread::StartThread()
 
 		_pt_thread = AfxBeginThread(PokertrackerThreadFunction, this);
 
-		write_log_pokertracker(1, "Started Poker Tracker thread.\n");
+		write_log_pokertracker(prefs.debug_pokertracker(), "Started Poker Tracker thread.\n");
 	}
 }
 
@@ -225,7 +225,7 @@ void CPokerTrackerThread::StopThread()
 
 		Disconnect();
 
-		write_log_pokertracker(1, "Stopped Poker Tracker thread.\n");
+		write_log_pokertracker(prefs.debug_pokertracker(), "Stopped Poker Tracker thread.\n");
 	}
 
 	// Close handles
@@ -343,7 +343,7 @@ void CPokerTrackerThread::Connect(void)
 
 	if (PQstatus(_pgconn) == CONNECTION_OK)
 	{
-		write_log_pokertracker(1, "PostgreSQL DB opened successfully <%s/%s/%s>\n", 
+		write_log_pokertracker(prefs.debug_pokertracker(), "PostgreSQL DB opened successfully <%s/%s/%s>\n", 
 			prefs.pt_ip_addr(), 
 			prefs.pt_port(), 
 			prefs.pt_dbname());
@@ -352,7 +352,7 @@ void CPokerTrackerThread::Connect(void)
 	}
 	else
 	{
-		write_log_pokertracker(1, "ERROR opening PostgreSQL DB: %s\n\n", PQerrorMessage(_pgconn));
+		write_log_pokertracker(prefs.debug_pokertracker(), "ERROR opening PostgreSQL DB: %s\n\n", PQerrorMessage(_pgconn));
 		PQfinish(_pgconn);
 		_connected = false;
 	}
@@ -530,19 +530,19 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 		try
 		{
 			// See if we can find the player name in the database
-			write_log_pokertracker(3, "Querying %s for m_chr %d: %s\n", stat_str[stat], m_chr, strQry);
+			write_log_pokertracker(prefs.debug_pokertracker(), "Querying %s for m_chr %d: %s\n", stat_str[stat], m_chr, strQry);
 			res = PQexec(_pgconn, strQry);
 		}
 		catch (_com_error &e)
 		{
-			write_log_pokertracker(3, "ERROR\n");
-			write_log_pokertracker(3, _T("\tCode = %08lx\n"), e.Error());
-			write_log_pokertracker(3, _T("\tCode meaning = %s\n"), e.ErrorMessage());
+			write_log_pokertracker(prefs.debug_pokertracker(), "ERROR\n");
+			write_log_pokertracker(prefs.debug_pokertracker(), _T("\tCode = %08lx\n"), e.Error());
+			write_log_pokertracker(prefs.debug_pokertracker(), _T("\tCode meaning = %s\n"), e.ErrorMessage());
 			_bstr_t bstrSource(e.Source());
 			_bstr_t bstrDescription(e.Description());
-			write_log_pokertracker(3, _T("\tSource = %s\n"), (LPCTSTR) bstrSource);
-			write_log_pokertracker(3, _T("\tDescription = %s\n"), (LPCTSTR) bstrDescription);
-			write_log_pokertracker(3, _T("\tQuery = [%s]\n"), strQry);
+			write_log_pokertracker(prefs.debug_pokertracker(), _T("\tSource = %s\n"), (LPCTSTR) bstrSource);
+			write_log_pokertracker(prefs.debug_pokertracker(), _T("\tDescription = %s\n"), (LPCTSTR) bstrDescription);
+			write_log_pokertracker(prefs.debug_pokertracker(), _T("\tQuery = [%s]\n"), strQry);
 		}
 
 		// Check query return code
@@ -551,28 +551,28 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 			switch (PQresultStatus(res))
 			{
 			case PGRES_COMMAND_OK:
-				write_log_pokertracker(3, "PGRES_COMMAND_OK: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+				write_log_pokertracker(prefs.debug_pokertracker(), "PGRES_COMMAND_OK: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
 				break;
 			case PGRES_EMPTY_QUERY:
-				write_log_pokertracker(3, "PGRES_EMPTY_QUERY: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+				write_log_pokertracker(prefs.debug_pokertracker(), "PGRES_EMPTY_QUERY: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
 				break;
 			case PGRES_BAD_RESPONSE:
-				write_log_pokertracker(3, "PGRES_BAD_RESPONSE: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+				write_log_pokertracker(prefs.debug_pokertracker(), "PGRES_BAD_RESPONSE: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
 				break;
 			case PGRES_COPY_OUT:
-				write_log_pokertracker(3, "PGRES_COPY_OUT: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+				write_log_pokertracker(prefs.debug_pokertracker(), "PGRES_COPY_OUT: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
 				break;
 			case PGRES_COPY_IN:
-				write_log_pokertracker(3, "PGRES_COPY_IN: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+				write_log_pokertracker(prefs.debug_pokertracker(), "PGRES_COPY_IN: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
 				break;
 			case PGRES_NONFATAL_ERROR:
-				write_log_pokertracker(3, "PGRES_NONFATAL_ERROR: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+				write_log_pokertracker(prefs.debug_pokertracker(), "PGRES_NONFATAL_ERROR: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
 				break;
 			case PGRES_FATAL_ERROR:
-				write_log_pokertracker(3, "PGRES_FATAL_ERROR: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+				write_log_pokertracker(prefs.debug_pokertracker(), "PGRES_FATAL_ERROR: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
 				break;
 			default:
-				write_log_pokertracker(3, "GENERIC ERROR: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+				write_log_pokertracker(prefs.debug_pokertracker(), "GENERIC ERROR: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
 				break;
 			}
 		}
@@ -581,7 +581,7 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 			if (PQgetisnull(res,0,0) != 1)
 			{
 				result = atof(PQgetvalue(res,0,0));
-				write_log_pokertracker(2, "Query %s for m_chr %d success: %f\n", stat_str[stat], m_chr, result);
+				write_log_pokertracker(prefs.debug_pokertracker(), "Query %s for m_chr %d success: %f\n", stat_str[stat], m_chr, result);
 			}
 		}
 
@@ -648,14 +648,14 @@ bool CPokerTrackerThread::QueryName (const char * query_name, const char * scrap
 	}
 	catch (_com_error &e)
 	{
-		write_log_pokertracker(3, "Postgres Query error:\n");
-		write_log_pokertracker(3, "\tCode = %08lx\n", e.Error());
-		write_log_pokertracker(3, "\tCode meaning = %s\n", e.ErrorMessage());
+		write_log_pokertracker(prefs.debug_pokertracker(), "Postgres Query error:\n");
+		write_log_pokertracker(prefs.debug_pokertracker(), "\tCode = %08lx\n", e.Error());
+		write_log_pokertracker(prefs.debug_pokertracker(), "\tCode meaning = %s\n", e.ErrorMessage());
 		_bstr_t bstrSource(e.Source());
 		_bstr_t bstrDescription(e.Description());
-		write_log_pokertracker(3, "\tSource = %s\n", (LPCTSTR) bstrSource);
-		write_log_pokertracker(3, "\tDescription = %s\n", (LPCTSTR) bstrDescription);
-		write_log_pokertracker(3, "\tQuery = [%s]\n", strQry);
+		write_log_pokertracker(prefs.debug_pokertracker(), "\tSource = %s\n", (LPCTSTR) bstrSource);
+		write_log_pokertracker(prefs.debug_pokertracker(), "\tDescription = %s\n", (LPCTSTR) bstrDescription);
+		write_log_pokertracker(prefs.debug_pokertracker(), "\tQuery = [%s]\n", strQry);
 	}
 
 	// We got nothing, return false

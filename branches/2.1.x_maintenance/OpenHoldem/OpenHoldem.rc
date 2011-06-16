@@ -891,9 +891,7 @@ BEGIN
     CONTROL         "Disable all runtime MessageBox popups",IDC_DISABLE_MSGBOX,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,56,157,8
     LTEXT           "Debug output level  (0=off; 3=all)",IDC_STATIC,6,72,157,8
-    LTEXT           "PokerTracker debug output level  (0=off; 3=all)",IDC_STATIC,6,88,157,8
     COMBOBOX        IDC_DEBUGLEVEL,163,68,42,63,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_DEBUGLEVEL_PT,163,84,42,74,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Erase old logs larger than (MB)",IDC_STATIC,6,104,116,8
     EDITTEXT        IDC_MAXIMUM_LOGSIZE,163,98,31,14,ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "",IDC_MAXIMUM_LOGSIZE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,194,98,11,14

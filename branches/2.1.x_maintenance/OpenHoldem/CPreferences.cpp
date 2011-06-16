@@ -164,8 +164,6 @@ void CPreferences::InitDefaults(void)
 
 	// Logging and debugging
 	_disable_msgbox = false;
-	_log_level = 1;
-	_log_level_pt = 1;
 	_log_max_logsize = 10; // MB
 
 	// Debugging
@@ -369,8 +367,6 @@ void CPreferences::ReadPreferences()
 
 		// Logging and debugging
 		ReadReg("disable_msgbox", &_disable_msgbox);
-		ReadReg("log_level", &_log_level);
-		ReadReg("log_level_pt", &_log_level_pt);
 		ReadReg("log_max_logsize", &_log_max_logsize);
 
 		// Debugging

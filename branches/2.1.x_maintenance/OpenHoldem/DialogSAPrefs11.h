@@ -28,7 +28,6 @@ public:
 	CEdit m_MaximumLog, m_MaximumLogSize;
 	CSpinButtonCtrl m_MaximumLog_Spin, m_MaximumLogSize_Spin;
 	virtual BOOL OnInitDialog();
-	CComboBox m_DebugLevel, m_DebugLevel_PT;
 
 protected:
 	virtual void OnOK();

@@ -146,15 +146,15 @@ void CDlgSAPrefs6::OnBnClickedPtTest()
 
 	if (PQstatus(pgconn) == CONNECTION_OK) 
 	{
-		write_log_pokertracker(1, "Test: PostgreSQL DB opened successfully <%s/%s/%s>\n", ip_addr, port, dbname);
+		write_log_pokertracker(prefs.debug_pokertracker(), "Test: PostgreSQL DB opened successfully <%s/%s/%s>\n", ip_addr, port, dbname);
 		if (PQisthreadsafe()) 
 		{
-			write_log_pokertracker(1, "Test: PostgreSQL library is thread safe.\n\n");
+			write_log_pokertracker(prefs.debug_pokertracker(), "Test: PostgreSQL library is thread safe.\n\n");
 			MessageBox("PostgreSQL DB opened successfully", "Success", MB_OK);
 		}
 		else 
 		{
-			write_log_pokertracker(1, "Test: PostgreSQL library is *NOT* thread safe!  This is a problem!\n\n");
+			write_log_pokertracker(prefs.debug_pokertracker(), "Test: PostgreSQL library is *NOT* thread safe!  This is a problem!\n\n");
 			MessageBox("PostgreSQL DB opened successfully, but\nPostgreSQL library is *NOT* thread safe!\nThis is a problem!",
 					   "Success (partial)", MB_OK);
 		}
@@ -162,7 +162,7 @@ void CDlgSAPrefs6::OnBnClickedPtTest()
 	}
 	else 
 	{
-		write_log_pokertracker(1, "Test: ERROR opening PostgreSQL DB: %s\n\n", PQerrorMessage(pgconn));
+		write_log_pokertracker(prefs.debug_pokertracker(), "Test: ERROR opening PostgreSQL DB: %s\n\n", PQerrorMessage(pgconn));
 		e = "ERROR opening PostgreSQL DB:\n";
 		e += PQerrorMessage(pgconn);
 		e += "\nConn string:";
