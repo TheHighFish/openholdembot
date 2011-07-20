@@ -65,10 +65,10 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0007")
     HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol handnumber")
+    REASONING ("Range check for symbol handsplayed")
     PRECONDITION (true)
-    POSTCONDITION (gws("handnumber") >= 0)
-    SYMBOLS_POSSIBLY_AFFECTED ("handnumber")
+    POSTCONDITION (gws("handsplayed") >= 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("handsplayed")
 END_TESTCASE
 
 
