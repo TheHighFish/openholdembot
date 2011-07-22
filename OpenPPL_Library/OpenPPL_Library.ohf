@@ -2682,7 +2682,7 @@ f$OpenPPL_MiddlePosition2Calling ? 5 :
 f$OpenPPL_MiddlePosition3Calling ? 4 :
 f$OpenPPL_CutOffCalling          ? 3 :
 f$OpenPPL_ButtonCalling          ? 2 :
-f$OpenPPL_SmallBlindCalling ? 1 :
+f$OpenPPL_SmallBlindCalling      ? 1 :
 // Can't be button (0), as it is for the first orbit preflop only
 -1
 
@@ -2734,6 +2734,25 @@ f$OpenPPL_EarlyPosition1Calling  ? 9 :
 (betposition == 1) ? f$OpenPPL_First :
 (betposition == nplayersplaying) ? f$OpenPPL_Last :
 f$OpenPPL_Middle
+
+//*****************************************************************************
+//
+// OpenPPL - Poker Tracker Symbols
+//
+//*****************************************************************************
+
+##f$OpenPPL_PT_LastRaiserPFR##
+(raischair == 0) ? pt_pfr0 :
+(raischair == 1) ? pt_pfr1 :
+(raischair == 2) ? pt_pfr2 :
+(raischair == 3) ? pt_pfr3 :
+(raischair == 4) ? pt_pfr4 :
+(raischair == 5) ? pt_pfr5 :
+(raischair == 6) ? pt_pfr6 :
+(raischair == 7) ? pt_pfr7 :
+(raischair == 8) ? pt_pfr8 :
+(raischair == 9) ? pt_pfr9 :
+-1
 
 //*****************************************************************************
 //
