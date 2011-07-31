@@ -1,11 +1,14 @@
 v2.1.9.1 2011-xx-yy
 ===================
 MAINTENANCE:
+  foldbits previous round exclusion correction : 
+  indexes are mapped to betround [1 to 4]
+  [Strikles]
 - Minor corrections to CAutoplayer for f$delay honoring.
   a) NumberOfStableFrames needed updating.
   b) f$delay scaling division by 0 test discarded 1 interval.
   c) Inequality between signed and unsigned int resulted in promotion.
-  [strikles]
+  [Strikles]
 - No longer warning about missing versus.bin at startup, but only 
   if versus-symbols get used. 
   [THF]

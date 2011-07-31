@@ -606,6 +606,14 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	for (int i=0; i<k_max_number_of_players; i++)
 		set_stacks_at_hand_start(i, 0);
 
+	// callbits, raisbits, etc.
+	for (int i=0; i<=k_betround_river; i++)
+	{
+		set_sym_callbits(0, i);
+		set_sym_raisbits(0, i);
+		set_sym_foldbits(0, i);
+	}
+
 	// Reset semi-persistent hand state when we instantiate CSymbols.
 	CSymbols::_br_last = -1;
 
@@ -714,7 +722,7 @@ void CSymbols::ResetSymbolsNewHand(void)
 	}
 
 	// callbits, raisbits, etc.
-	for (int i=k_betround_preflop; i<=k_betround_river; i++)
+	for (int i=0; i<=k_betround_river; i++)
 	{
 		set_sym_callbits(0, i);
 		set_sym_raisbits(0, i);
@@ -1949,23 +1957,25 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 			new_foldbits |= k_exponents[i%p_tablemap->nchairs()];
 		}
 	}
+
 	// remove players, who didn't get dealt.
 	new_foldbits &= int(_sym.playersdealtbits);
+
 	// remove players, who folded in earlier betting-rounds.
 	if (betround == 2)
 	{
-		new_foldbits &= ~_sym.foldbits[0];
+		new_foldbits &= (~_sym.foldbits[1]);
 	}
 	else if (betround == 3)
 	{
-		new_foldbits &= ~_sym.foldbits[0];
-		new_foldbits &= ~_sym.foldbits[1];
+		new_foldbits &= (~_sym.foldbits[1]);
+		new_foldbits &= (~_sym.foldbits[2]);
 	}
-	else if (betround == 4)	
+	else if (betround == 4)   
 	{
-		new_foldbits &= ~_sym.foldbits[0];
-		new_foldbits &= ~_sym.foldbits[1];
-		new_foldbits &= ~_sym.foldbits[2];
+		new_foldbits &= (~_sym.foldbits[1]);
+		new_foldbits &= (~_sym.foldbits[2]);
+		new_foldbits &= (~_sym.foldbits[3]);
 	}
 	set_sym_foldbits(new_foldbits, betround);
 }
