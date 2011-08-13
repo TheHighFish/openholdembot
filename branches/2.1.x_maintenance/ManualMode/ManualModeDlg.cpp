@@ -1457,12 +1457,14 @@ void CManualModeDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 								 atof(playerbet[click_chair].GetString()) - 
 								 atof(edit.m_result.GetString());
 
-			if (new_balance != new_balance) 
+			if (new_balance != int(new_balance)) 
 			{
+				// Display as floating point with 2 decimals
 				playerbalance[click_chair].Format("%.2f", new_balance);
 			}
 			else 
 			{
+				// Display as integer
 				playerbalance[click_chair].Format("%.0f", new_balance);
 			}
 
