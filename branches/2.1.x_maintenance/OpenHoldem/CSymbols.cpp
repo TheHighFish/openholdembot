@@ -607,7 +607,7 @@ void CSymbols::ResetSymbolsFirstTime(void)
 		set_stacks_at_hand_start(i, 0);
 
 	// callbits, raisbits, etc.
-	for (int i=k_betround_preflop; i<=k_betround_river; i++)
+	for (int i=k_betround_current; i<=k_betround_river; i++)
 	{
 		set_sym_callbits(0, i);
 		set_sym_raisbits(0, i);
@@ -722,7 +722,7 @@ void CSymbols::ResetSymbolsNewHand(void)
 	}
 
 	// callbits, raisbits, etc.
-	for (int i=k_betround_preflop; i<=k_betround_river; i++)
+	for (int i=k_betround_current; i<=k_betround_river; i++)
 	{
 		set_sym_callbits(0, i);
 		set_sym_raisbits(0, i);

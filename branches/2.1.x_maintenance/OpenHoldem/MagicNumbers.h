@@ -14,7 +14,11 @@
 const int k_exponents[11] = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024};
 
 // Betting rounds
+// Some data-structures use an additional value for the current round.
+// This is IMO (THF) superfluous and  dangerous, but lots of work
+// and even more dangerous to change.
 const int k_number_of_betrounds = 4;
+const int k_betround_current	= 0;
 const int k_betround_preflop	= 1;
 const int k_betround_flop		= 2;
 const int k_betround_turn		= 3;

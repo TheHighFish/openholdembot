@@ -249,6 +249,7 @@ void CAutoplayer::DoAutoplayer(void)
 	}
 
 	int NumberOfStableFrames = p_stableframescounter->UpdateNumberOfStableFrames();
+	write_log(prefs.debug_autoplayer(), "Number of stable frames: % d\n", NumberOfStableFrames);
 
 	bool isFinalAnswer = true;
 
@@ -516,7 +517,7 @@ void CAutoplayer::DoSwag(void)
 
 		else
 		{
-			write_log(prefs.debug_autoplayer(), "...ending DoSwag early (invalid swagconfirmationmethod).\n");
+			write_log(prefs.debug_autoplayer(), "...ending DoSwag early (invalid swagconfirmationmethod or no raise button).\n");
 			_mutex.Unlock();
 			return;
 		}
