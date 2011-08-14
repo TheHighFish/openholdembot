@@ -654,9 +654,9 @@ public:
 	void	set_sym_friendsblindbits(const double d) { ENT _sym.friendsblindbits = d;}
 
 	// callbits, raisbits, etc.
-	void	set_sym_raisbits(const int i, const int betround) { ENT assert(betround >= k_betround_preflop); assert(betround <= k_betround_river); _sym.raisbits[betround] = i; }
-	void	set_sym_callbits(const int i, const int betround) { ENT assert(betround >= k_betround_preflop); assert(betround <= k_betround_river); _sym.callbits[betround] = i; }
-	void	set_sym_foldbits(const int i, const int betround) { ENT assert(betround >= k_betround_preflop); assert(betround <= k_betround_river); _sym.foldbits[betround] = i; }
+	void	set_sym_raisbits(const int i, const int betround) { ENT assert(betround >= k_betround_current); assert(betround <= k_betround_river); _sym.raisbits[betround] = i; }
+	void	set_sym_callbits(const int i, const int betround) { ENT assert(betround >= k_betround_current); assert(betround <= k_betround_river); _sym.callbits[betround] = i; }
+	void	set_sym_foldbits(const int i, const int betround) { ENT assert(betround >= k_betround_current); assert(betround <= k_betround_river); _sym.foldbits[betround] = i; }
 
 	//flags
 	void	set_sym_fmax(const double d) { ENT _sym.fmax = d;}
