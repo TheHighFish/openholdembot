@@ -52,6 +52,14 @@ bool CMemory::RightValueIsNumber(char first_character_of_right_value)
 	return isdigit(first_character_of_right_value);
 }
 
+bool CMemory::RightValueIsMemorySymbol(const char *value)
+{
+	// Right hand values starting with "me_re" are memory_symbols,
+	// e.g. used like "me_st_OldValue_me_re_CurrentValue".
+	CString cst_value = value;
+	return (cst_value.Left(5) == "me_re");
+}
+
 void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunction, int *e)
 {
 	// !!! Bad code
@@ -109,22 +117,28 @@ void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunct
 		set_var_value(index, atof(value));
 		set_var_name(index, var);
 	}
+	else if (RightValueIsMemorySymbol(value))
+	{
+		result = RetrieveValue(value, e);
+		set_var_value(index, result);
+		set_var_name(index, var);
+	}
 	else
 	{
-		// Right-hand-value is not a number, but either
+		// Right-hand-value is neither a number, nor  a memory symbol, but either
 		// 1) a function (f$...)
 		// 2) a symbol
-		// 3) a memory symbol (me_re_X)
 		//
 		// All of them can be evaluated "the normal way".
 		*e = SUCCESS;
 		result = gram.DoCalcF$symbol(p_formula, value, logCallingFunction, logCallingFunction!=NULL, e);
 
-		if (*e == SUCCESS)
+		//if (*e == SUCCESS)
 		{
 			set_var_value(index, result);
 			set_var_name(index, var);
 		}
+		/*
 		else
 		{
 			*e = ERR_INVALID_EXPR;
@@ -132,7 +146,7 @@ void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunct
 			// otherwise we get a reach the maximum number of symbols soon,
 			// despite we didn't save anything.
 			set_var_count(_var_count - 1);
-		}
+		}*/
 	}
 }
 
