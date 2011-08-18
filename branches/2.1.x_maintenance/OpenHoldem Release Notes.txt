@@ -1,7 +1,11 @@
-v2.1.9.1 2011-xx-yy
+v2.1.9.2 2011-xx-yy
 ===================
-MAINTENANCE:
-  foldbits previous round exclusion correction : 
+BUG FIXES: 
+- Small fixes to the validator (handnumber no longer a symbol,
+  binary instead of logical negation, etc.). Thanks to Nik0
+  for finding the problems. 
+  [THF]
+- foldbits previous round exclusion correction : 
   indexes are mapped to betround [1 to 4]
   [Strikles]
 - Minor corrections to CAutoplayer for f$delay honoring.
@@ -9,6 +13,14 @@ MAINTENANCE:
   b) f$delay scaling division by 0 test discarded 1 interval.
   c) Inequality between signed and unsigned int resulted in promotion.
   [Strikles]
+- Improved memory symbols, which allow now nearly arbitrary values at the right hand side:
+  * numbers,  e.g. me_st_Pi_3_141
+  * symbols,  e.g. me_st_MyChair_userchair
+  * function, e.g. me_st_CallFunction_f$call
+  * memory symbols, e.g. me_st_OldValue_me_re_CurrentValue
+  [THF]
+
+MAINTENANCE:
 - No longer warning about missing versus.bin at startup, but only 
   if versus-symbols get used. 
   [THF]
@@ -16,6 +28,7 @@ MAINTENANCE:
   produced way too much data. There is now an extra tab in preferences
   that enables the user to specify what exactly to log.
   [THF]
+  
 
 v2.1.9.1 2011-06-08
 ===================
