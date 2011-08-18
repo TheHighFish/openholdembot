@@ -43,6 +43,15 @@ const double CMemory::ProcessQuery(const char * pquery, CEvalInfoFunction **logC
 }
 
 
+bool CMemory::RightValueIsNumber(char first_character_of_right_value)
+{
+	// Number constants inside memory expressions are quite limited.
+	// They are always integer or floats in "simple" decimal format,
+	// even without a minus sign.
+	// so they always start with 0..9
+	return isdigit(first_character_of_right_value);
+}
+
 void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunction, int *e)
 {
 	// !!! Bad code
@@ -65,7 +74,7 @@ void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunct
 	int index = next_free_slot;
 	for (int i=0; i<=_var_count; i++)
 	{
-		if (strlen(var)==strlen(_var_name[i]) && memcmp(var, _var_name[i], strlen(var))==0)
+		if (strlen(var)==strlen(_var_name[i]) && memcmp(var, _var_name[i], strlen(var)) == 0)
 		{
 			index = i;
 			break;
@@ -87,13 +96,31 @@ void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunct
 		set_var_count(next_free_slot);
 	}
 
-	//store the value
-	if (memcmp(value, "f$" , 2) == 0)
+	MessageBox(0, value, "Trying to evaluate", 0);
+	if (RightValueIsNumber(value[0]))
 	{
+		if (strstr(value, "_") != NULL)
+		{
+			// Number with "decimal point"
+			// Get it right and replace it.
+			value[strstr(value, "_")  -value]='.';
+		}
+
+		set_var_value(index, atof(value));
+		set_var_name(index, var);
+	}
+	else
+	{
+		// Right-hand-value is not a number, but either
+		// 1) a function (f$...)
+		// 2) a symbol
+		// 3) a memory symbol (me_re_X)
+		//
+		// All of them can be evaluated "the normal way".
 		*e = SUCCESS;
 		result = gram.DoCalcF$symbol(p_formula, value, logCallingFunction, logCallingFunction!=NULL, e);
 
-		if (*e==SUCCESS)
+		if (*e == SUCCESS)
 		{
 			set_var_value(index, result);
 			set_var_name(index, var);
@@ -101,16 +128,11 @@ void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunct
 		else
 		{
 			*e = ERR_INVALID_EXPR;
+			// And decreasing the var_count again,
+			// otherwise we get a reach the maximum number of symbols soon,
+			// despite we didn't save anything.
+			set_var_count(_var_count - 1);
 		}
-
-	}
-	else
-	{
-		if (strstr(value, "_")!=NULL)
-			value[strstr(value, "_")-value]='.';
-
-		set_var_value(index, atof(value));
-		set_var_name(index, var);
 	}
 }
 

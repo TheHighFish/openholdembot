@@ -25,6 +25,7 @@ private:
 
 private:
 	// private functions and variables - not available via accessors or mutators
+	bool RightValueIsNumber(char first_character_of_right_value);
 	void StoreValue(const char * pquery, CEvalInfoFunction **logCallingFunction, int *e);
 	double RetrieveValue(const char * pquery, int *e);
 
