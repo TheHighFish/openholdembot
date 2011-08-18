@@ -468,7 +468,7 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 	// all other symbols
 	else
 	{
-		return p_symbols->GetSymbolVal(sym.c_str(), e);;
+		return p_symbols->GetSymbolVal(sym.c_str(), e);
 	}
 
 	return 0;

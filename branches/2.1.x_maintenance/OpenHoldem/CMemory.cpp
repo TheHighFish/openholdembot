@@ -1,11 +1,10 @@
 #include "stdafx.h"
-
 #include "CMemory.h"
 
 #include "CAutoplayer.h"
-#include "CSymbols.h"
 #include "CFormula.h"
 #include "CGrammar.h"
+#include "CSymbols.h"
 
 CMemory		*p_memory = NULL;
 
@@ -25,7 +24,7 @@ CMemory::~CMemory()
 
 const double CMemory::ProcessQuery(const char * pquery, CEvalInfoFunction **logCallingFunction, int *e)
 {
-	if (memcmp(pquery, "me_st_", 6)==0)
+	if (memcmp(pquery, "me_st_", 6) == 0)
 	{
 		*e = SUCCESS;
 		StoreValue(pquery, logCallingFunction, e);
@@ -57,7 +56,13 @@ bool CMemory::RightValueIsMemorySymbol(const char *value)
 	// Right hand values starting with "me_re" are memory_symbols,
 	// e.g. used like "me_st_OldValue_me_re_CurrentValue".
 	CString cst_value = value;
-	return (cst_value.Left(5) == "me_re");
+	return (cst_value.Left(6) == "me_re_");
+}
+
+bool CMemory::RightValueIsFunction(const char *value)
+{
+	CString cst_value = value;
+	return (cst_value.Left(2) == "f$");
 }
 
 void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunction, int *e)
@@ -72,10 +77,10 @@ void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunct
 	// Copy without "me_st_"
 	strcpy_s(var, 512, &pquery[6]);
 
+	// Get the name of the symbol, up to the next underscore
 	if (strstr(var, "_") != NULL)
 		var[strstr(var, "_")-var] = '\0';
-
-	strcpy_s(value, 512, &pquery[6+strlen(var)+1]);
+	strcpy_s(value, 512, &pquery[6 + strlen(var) + 1]);
 
 	// see if we already have this variable name
 	int next_free_slot = _var_count + 1;
@@ -104,7 +109,6 @@ void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunct
 		set_var_count(next_free_slot);
 	}
 
-	MessageBox(0, value, "Trying to evaluate", 0);
 	if (RightValueIsNumber(value[0]))
 	{
 		if (strstr(value, "_") != NULL)
@@ -123,22 +127,16 @@ void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunct
 		set_var_value(index, result);
 		set_var_name(index, var);
 	}
-	else
+	else if (RightValueIsFunction(value))
 	{
-		// Right-hand-value is neither a number, nor  a memory symbol, but either
-		// 1) a function (f$...)
-		// 2) a symbol
-		//
-		// All of them can be evaluated "the normal way".
 		*e = SUCCESS;
 		result = gram.DoCalcF$symbol(p_formula, value, logCallingFunction, logCallingFunction!=NULL, e);
 
-		//if (*e == SUCCESS)
+		if (*e == SUCCESS)
 		{
 			set_var_value(index, result);
 			set_var_name(index, var);
 		}
-		/*
 		else
 		{
 			*e = ERR_INVALID_EXPR;
@@ -146,18 +144,24 @@ void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunct
 			// otherwise we get a reach the maximum number of symbols soon,
 			// despite we didn't save anything.
 			set_var_count(_var_count - 1);
-		}*/
+		}
+	}
+	else
+	{
+		// Must be a normal symbol
+		result = p_symbols->GetSymbolVal(value, e);
+		set_var_value(index, result);
+		set_var_name(index, var);
 	}
 }
 
 double CMemory::RetrieveValue(const char * pquery, int *e)
 {
-	int			i = 0;
 	char		var[512] = {0};
 
 	strcpy_s(var, 512, &pquery[6]);
 
-	for (i=0; i<=_var_count; i++)
+	for (int i=0; i<=_var_count; i++)
 	{
 		if (strlen(var)==strlen(_var_name[i]) && memcmp(var, _var_name[i], strlen(var))==0)
 		{
