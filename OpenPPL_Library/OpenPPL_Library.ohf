@@ -2742,17 +2742,7 @@ f$OpenPPL_Middle
 //*****************************************************************************
 
 ##f$OpenPPL_PT_LastRaiserPFR##
-(raischair == 0) ? pt_pfr0 :
-(raischair == 1) ? pt_pfr1 :
-(raischair == 2) ? pt_pfr2 :
-(raischair == 3) ? pt_pfr3 :
-(raischair == 4) ? pt_pfr4 :
-(raischair == 5) ? pt_pfr5 :
-(raischair == 6) ? pt_pfr6 :
-(raischair == 7) ? pt_pfr7 :
-(raischair == 8) ? pt_pfr8 :
-(raischair == 9) ? pt_pfr9 :
--1
+(raischair != -1) ? pt_rpfr : -1
 
 //*****************************************************************************
 //
