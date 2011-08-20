@@ -105,18 +105,32 @@ void CGameInfoDlg::OnBnClickedOk()
 	m_BigBlind.GetWindowText(m_bblind);
 	m_BigBet.GetWindowText(m_bigbet);
 	m_Ante.GetWindowText(m_ante);
-	if (m_GameType.GetCurSel()==0) {
+	// The constants here are not identical with the gametype constants
+	// we use elsewhere. The constants used here simply depend on the order 
+	// of choices in the drop-down-box.
+	if (m_GameType.GetCurSel() == 0) {
 		m_gametype = LIMIT_FL;
 	}
-	else if (m_GameType.GetCurSel()==1) {
+	else if (m_GameType.GetCurSel() == 1) {
 		m_gametype = LIMIT_PL;
 	}
-	else if (m_GameType.GetCurSel()==2) {
+	else if (m_GameType.GetCurSel() == 2) {
 		m_gametype = LIMIT_NL;
+	}
+	else 
+	{
+		// This should not happem, but the user can edit the input
+		m_gametype = LIMIT_FL;
 	}
 
 	m_Network.GetLBText(m_Network.GetCurSel(), m_network);
 
+	int network_selection = m_Network.GetCurSel();
+	if(network_selection != CB_ERR)
+	{
+		m_Network.GetLBText(network_selection, m_network);
+	}
+	
 	m_tournament = m_Tournament.GetCheck() & BST_CHECKED;
 
 	if (pPlacement == NULL) 
