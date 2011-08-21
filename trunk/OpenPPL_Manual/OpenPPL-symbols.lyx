@@ -4829,7 +4829,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Opponents
 \end_layout
 
 \end_inset
@@ -4838,7 +4838,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+The number of opponents that are currently in the hand
 \end_layout
 
 \end_inset
@@ -4847,7 +4847,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -4858,7 +4858,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+OpponentsAtTable
 \end_layout
 
 \end_inset
@@ -4867,7 +4867,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+The number of opponents that were dealt cards this hand
 \end_layout
 
 \end_inset
@@ -4876,7 +4876,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -4887,7 +4887,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+OpponentsLeft
 \end_layout
 
 \end_inset
@@ -4896,7 +4896,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+The number of opponents that are still in the hand
 \end_layout
 
 \end_inset
@@ -4905,7 +4905,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -4916,7 +4916,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+OpponentsOnFlop
 \end_layout
 
 \end_inset
@@ -4925,7 +4925,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+The number of opponents that saw the flop
 \end_layout
 
 \end_inset
@@ -4934,7 +4934,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -4945,7 +4945,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+OpponentsWithHigherStack
 \end_layout
 
 \end_inset
@@ -4954,7 +4954,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+The number of opponents that are seated and have higher balance than yourself
 \end_layout
 
 \end_inset
@@ -4963,7 +4963,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -4974,7 +4974,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+OpponentsWithLowerStack
 \end_layout
 
 \end_inset
@@ -4983,7 +4983,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+The number of opponents that are seated and have less balance than yourself
 \end_layout
 
 \end_inset
@@ -4992,7 +4992,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -5003,7 +5003,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+StillToAct
 \end_layout
 
 \end_inset
@@ -5012,7 +5012,8 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+The number of opponents that have not yet acted in the hand when it is your
+ turn
 \end_layout
 
 \end_inset
@@ -5021,7 +5022,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+First orbit preflop only
 \end_layout
 
 \end_inset
@@ -5079,7 +5080,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+FirstCallerPosition
 \end_layout
 
 \end_inset
@@ -5088,7 +5089,11 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
+The position of the first caller 
+\end_layout
 
+\begin_layout Plain Layout
+(big blind = 0, small blind = 1, then counter-clockwise till UTG = 9)
 \end_layout
 
 \end_inset
@@ -5097,7 +5102,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+First orbit preflop only
 \end_layout
 
 \end_inset
@@ -5108,7 +5113,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+FirstRaiserPosition
 \end_layout
 
 \end_inset
@@ -5117,7 +5122,11 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
+The position of the first raiser
+\end_layout
 
+\begin_layout Plain Layout
+(big blind = 0, small blind = 1, then counter-clockwise till UTG = 9)
 \end_layout
 
 \end_inset
@@ -5126,7 +5135,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+First orbit preflop only
 \end_layout
 
 \end_inset
@@ -5137,7 +5146,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+LastCallerPosition
 \end_layout
 
 \end_inset
@@ -5146,7 +5155,11 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
+The position of the last caller
+\end_layout
 
+\begin_layout Plain Layout
+(big blind = 0, small blind = 1, then counter-clockwise till UTG = 9)
 \end_layout
 
 \end_inset
@@ -5155,7 +5168,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -5166,7 +5179,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+LastRaiserPosition
 \end_layout
 
 \end_inset
@@ -5175,7 +5188,11 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
+The position of the last raiser
+\end_layout
 
+\begin_layout Plain Layout
+(big blind = 0, small blind = 1, then counter-clockwise till UTG = 9)
 \end_layout
 
 \end_inset
@@ -5184,7 +5201,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -5195,7 +5212,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Position
 \end_layout
 
 \end_inset
@@ -5204,7 +5221,11 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
+Our position
+\end_layout
 
+\begin_layout Plain Layout
+(big blind = 0, small blind = 1, then counter-clockwise till UTG = 9)
 \end_layout
 
 \end_inset
@@ -5213,7 +5234,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
