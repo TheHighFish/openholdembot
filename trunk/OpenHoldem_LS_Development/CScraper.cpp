@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "CScraper.h"
 
+#include <assert.h>
 #include "..\CTransform\CTransform.h"
 #include "..\CTransform\hash\lookup3.h"
 #include "..\..\Reference Scraper-Preprocessor DLL\scraper_preprocessor_dll.h"
@@ -8,6 +9,7 @@
 #include "CPokerPro.h"
 #include "CSymbols.h"
 #include "CTableLimits.h"
+#include "MagicNumbers.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
 
@@ -22,7 +24,9 @@
 	DeleteDC(hdcScreen); \
 	ReleaseDC(p_autoconnector->attached_hwnd(), hdc);
 
+
 CScraper *p_scraper = NULL;
+
 
 CScraper::CScraper(void)
 {
@@ -37,7 +41,9 @@ CScraper::~CScraper(void)
 void CScraper::ClearScrapeAreas(void)
 {
 	for (int i=0; i<k_number_of_community_cards; i++)
+	{
 		set_card_common(i, CARD_NOCARD);
+	}
 
 	for (int i=0; i<k_max_number_of_players; i++)
 	{
@@ -51,9 +57,19 @@ void CScraper::ClearScrapeAreas(void)
 		set_name_good_scrape(i, false);
 		set_player_balance(i, 0.0);
 		set_balance_good_scrape(i, false);
-		set_i86X_button_state(i, "false");
+		
+	}
+	for (int i=0; i<k_max_number_of_buttons; i++)
+	{
 		set_button_state(i, "false");
 		set_button_label(i, "");
+	}
+	for (int i=0; i<k_max_number_of_i86X_buttons; i++)
+	{
+		set_i86X_button_state(i, "false");
+	}
+	for (int i=0; i<k_max_number_of_pots; i++)
+	{
 		set_pot(i, 0.);
 	}
 	set_i86_button_state("false");
@@ -87,8 +103,9 @@ void CScraper::ClearScrapeAreas(void)
 	// change detection
 	_ucf_last=false;
 	for (int i=0; i<k_number_of_community_cards; i++)
+	{
 		_card_common_last[i]=CARD_NOCARD;
-
+	}
 	for (int i=0; i<k_max_number_of_players; i++)
 	{
 		_card_player_last[i][0]=CARD_NOCARD;
@@ -99,9 +116,18 @@ void CScraper::ClearScrapeAreas(void)
 		_name_last[i]="";
 		_balance_last[i]=0;
 		_playerbet_last[i]=0;
+	}
+	for (int i=0; i<k_max_number_of_buttons; i++)
+	{
 		_button_state_last[i]="";
-		_i86X_button_state_last[i]="";
 		_button_label_last[i]="";
+	}
+	for (int i=0; i<k_max_number_of_i86X_buttons; i++)
+	{
+		_i86X_button_state_last[i]="";
+	}
+	for (int i=0; i<k_max_number_of_pots; i++)
+	{
 		_pot_last[i]=0;
 	}
 
@@ -152,6 +178,288 @@ const bool CScraper::IsCommonAnimation(void)
 		return true;
 	}
 	return false;
+}
+
+void CScraper::ScrapeHeroesCards()
+{
+	p_scraper->ScrapePlayerCards(true, false);
+}
+
+void CScraper::ScrapeOpponentsCards()
+{
+	p_scraper->ScrapePlayerCards(false, true);
+}
+
+void CScraper::ScrapeAllCards()
+{
+	p_scraper->ScrapePlayerCards(true, true);
+}
+
+void CScraper::ScrapePlayerCards(bool scrape_heroes_cards, bool scrape_opponents_cards)
+{
+	int number_of_chairs = p_tablemap->nchairs();
+	bool user_chair_known = p_symbols->user_chair_confirmed();
+	for (int i=0; i<number_of_chairs; i++)
+	{
+		bool is_user_chair = (user_chair_known ? (p_symbols->sym()->userchair == i) : false);
+		bool is_opponents_chair = (user_chair_known ? (p_symbols->sym()->userchair != i) : true);
+		bool is_scrape_needed =  !user_chair_known
+			|| (is_user_chair && scrape_heroes_cards)
+			|| (is_opponents_chair && scrape_opponents_cards);
+		if (is_scrape_needed)
+		{
+			ScrapePlayerCards(i);
+		}
+	}
+}
+
+void CScraper::ScreapeI3SliderHandle()
+{
+	__HDC_HEADER
+
+	RMapCI	handleCI  = p_tablemap->r$()->end();
+	RMapI	handleI   = p_tablemap->set_r$()->end();
+	RMapCI	slider    = p_tablemap->r$()->end();
+	POINT	handle_xy = {0, 0};
+	CTransform			trans;
+
+	handleCI = p_tablemap->r$()->find("i3handle");
+	slider = p_tablemap->r$()->find("i3slider");
+
+	if (handleCI!=p_tablemap->r$()->end() && slider!=p_tablemap->r$()->end() && _button_state[3]!="false")
+	{
+		int length_of_sliderbar = slider->second.right - handleCI->second.left;
+		CString text = "";
+		
+		_handle_found_at_xy = false;
+		
+		
+		for (int k=0; k<=length_of_sliderbar; k++)
+		{
+			handleI = p_tablemap->set_r$()->find("i3handle");
+			handleI->second.left += k;
+			handleI->second.right += k;
+
+			handleCI = p_tablemap->r$()->find("i3handle");
+			ProcessRegion(handleCI);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, handleCI->second.cur_bmp);
+			trans.DoTransform(handleCI, hdcCompatible, &text);
+			SelectObject(hdcCompatible, old_bitmap);
+
+			handleI = p_tablemap->set_r$()->find("i3handle");
+			handleI->second.left -= k;
+			handleI->second.right -= k;
+			if (text == "handle" || text == "true") 
+			{
+				handleCI = p_tablemap->r$()->find("i3handle");
+				handle_xy.x = handleCI->second.left + k;
+				handle_xy.y = handleCI->second.top;
+
+				set_handle_found_at_xy(true);
+				set_handle_xy(handle_xy);
+				break;
+			}			
+		}
+		write_log(3, "i3handle, result %d,%d\n", handle_xy.x, handle_xy.y);
+	}
+	__HDC_FOOTER
+}
+
+void CScraper::ScrapeInterfaceButtons()
+{
+	__HDC_HEADER
+
+	CString				s = "";
+	CString				text = "";
+	CTransform			trans;
+	RMapCI				r_iter = p_tablemap->r$()->end();
+
+	write_log(3, "CScraper::ScrapeInterfaceButtons()\n");
+
+	for (int j=0; j<k_max_number_of_i86X_buttons; j++)
+	{
+		set_i86X_button_state(j, "false");
+	}
+	
+	for (int j=0; j<k_max_number_of_i86X_buttons; j++)
+	{
+		// i86X button state i86Xstate
+		s.Format("i86%dstate", j);
+		r_iter = p_tablemap->r$()->find(s.GetString());
+		if (r_iter != p_tablemap->r$()->end())
+		{
+			ProcessRegion(r_iter);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+			trans.DoTransform(r_iter, hdcCompatible, &text);
+			SelectObject(hdcCompatible, old_bitmap);
+
+			// Give scraper-pre DLL a chance to modify transform output
+			if (theApp._dll_scraperpreprocessor_process_message)
+			{
+				(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
+			}
+
+			if (text!="")
+				set_i86X_button_state(j, text);
+
+			if (_i86X_button_state_last[j] != _i86X_button_state[j])
+			{
+				_i86X_button_state_last[j] = _i86X_button_state[j];
+				_scrape_something_changed |= BUTTONSTATE_CHANGED;
+			}
+			write_log(3, "i86%dstate, result %s\n", j, text.GetString());
+		}
+	}
+	
+	// i86 button state
+	s.Format("i86state");
+	r_iter = p_tablemap->r$()->find(s.GetString());
+	if (r_iter != p_tablemap->r$()->end())
+	{
+		ProcessRegion(r_iter);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+		trans.DoTransform(r_iter, hdcCompatible, &text);
+		SelectObject(hdcCompatible, old_bitmap);
+
+		// Give scraper-pre DLL a chance to modify transform output
+		if (theApp._dll_scraperpreprocessor_process_message)
+		{
+			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
+		}
+
+		if (text!="")
+			set_i86_button_state(text);
+		else
+			set_i86_button_state("false");
+
+		if (_i86_button_state_last != _i86_button_state)
+		{
+			_i86_button_state_last = _i86_button_state;
+			_scrape_something_changed |= BUTTONSTATE_CHANGED;
+		}
+
+		write_log(3, "i86state, result %s\n", text.GetString());
+	}
+	__HDC_FOOTER
+}
+
+void CScraper::ScrapeActionButtons()
+{
+	__HDC_HEADER
+
+	CString				text = "";
+	CString				s = "";
+	CTransform			trans;
+	RMapCI				r_iter = p_tablemap->r$()->end();
+
+	write_log(3, "CScraper::ScrapeActionButtons()\n");
+
+	set_button_label(0, "fold");
+	set_button_label(1, "call");
+	set_button_label(2, "raise");
+	set_button_label(3, "allin");
+	for (int j=4; j<k_max_number_of_buttons; j++)
+	{
+		set_button_label(j, "");
+	}
+	for (int j=0; j<k_max_number_of_buttons; j++)
+	{
+		set_button_state(j, "false");
+	}
+
+	for (int j=0; j<k_max_number_of_buttons; j++)
+	{
+		// Button state iXstate
+		s.Format("i%dstate", j);
+		r_iter = p_tablemap->r$()->find(s.GetString());
+		if (r_iter != p_tablemap->r$()->end())
+		{
+			ProcessRegion(r_iter);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+			trans.DoTransform(r_iter, hdcCompatible, &text);
+			SelectObject(hdcCompatible, old_bitmap);
+
+			// Give scraper-pre DLL a chance to modify transform output
+			if (theApp._dll_scraperpreprocessor_process_message)
+			{
+				(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
+			}
+
+			if (text!="")
+				set_button_state(j, text);
+
+			if (_button_state_last[j] != _button_state[j])
+			{
+				_button_state_last[j] = _button_state[j];
+				_scrape_something_changed |= BUTTONSTATE_CHANGED;
+			}
+
+			write_log(3, "i%dstate, result %s\n", j, text.GetString());
+		}
+	
+		// Button label
+		// First check iXlabel
+		text = "";
+
+		s.Format("i%dlabel", j);
+		r_iter = p_tablemap->r$()->find(s.GetString());
+		if (r_iter != p_tablemap->r$()->end())
+		{
+			ProcessRegion(r_iter);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+			trans.DoTransform(r_iter, hdcCompatible, &text);
+			SelectObject(hdcCompatible, old_bitmap);
+
+			// Give scraper-pre DLL a chance to modify transform output
+			if (theApp._dll_scraperpreprocessor_process_message)
+			{
+				(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
+			}
+
+			if (text!="")
+				set_button_label(j, text);
+
+			write_log(3, "i%dlabel, result %s\n", j, text.GetString());
+		}
+
+		// Second check iXlabelY
+		for (int k=0; k<k_max_number_of_buttons && text == ""; k++)
+		{
+			s.Format("i%dlabel%d", j, k);
+			r_iter = p_tablemap->r$()->find(s.GetString());
+			if (r_iter != p_tablemap->r$()->end())
+			{
+				ProcessRegion(r_iter);
+				old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+				trans.DoTransform(r_iter, hdcCompatible, &text);
+				SelectObject(hdcCompatible, old_bitmap);
+
+				// Give scraper-pre DLL a chance to modify transform output
+				if (theApp._dll_scraperpreprocessor_process_message)
+				{
+					(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
+				}
+
+				if (text!="")
+					set_button_label(j, text);
+
+				write_log(3, "i%dlabel%d, result %s\n", j, k, text.GetString());
+			}
+		}
+
+		if (_button_label_last[j] != _button_label[j])
+		{
+			_button_label_last[j] = _button_label[j];
+			_scrape_something_changed |= BUTTONLABEL_CHANGED;
+		}
+	}
+
+	// When using MM, grab i5state for PT network
+	if ((bool) p_symbols->sym()->ismanual)
+	{
+		p_tablemap->set_network(p_scraper->button_state(5));
+	}
+	__HDC_FOOTER
 }
 
 // returns true if window has changed and we processed the changes, false otherwise
@@ -216,12 +524,20 @@ int CScraper::CompleteBasicScrapeToFullScrape()
 	// update symbols, etc.
 	_scrape_something_changed = NOTHING_CHANGED;
 
+	// Slider handle
+	write_log(3, "Calling ScreapeI3SliderHandle.\n");
+	ScreapeI3SliderHandle();
+
+	// Interface buttons (i86x)
+	write_log(3, "Calling ScrapeInterfaceButtons\n");
+	ScrapeInterfaceButtons();
+
 	// Common cards
 	write_log(3, "Calling ScrapeCommonCards.\n");
 	ScrapeCommonCards();
 
 	// Player information
-	for (int i=0; i<=9; i++)
+	for (int i=0; i<k_max_number_of_players; i++)
 	{
 		write_log(3, "Calling ScrapeSeated, chair %d.\n", i);
 		ScrapeSeated(i);
@@ -250,10 +566,10 @@ int CScraper::CompleteBasicScrapeToFullScrape()
 		}
 	}
 	write_log(3, "Calling ScrapePots.\n");
-	ScrapePots();		// Pots
+	ScrapePots();		
 
 	write_log(3, "Calling ScrapeLimits.\n");
-	ScrapeLimits();		// limits
+	ScrapeLimits();		
 
 	write_log(3, "...ending Scraper cadence, changed: %d\n", _scrape_something_changed);
 
@@ -299,7 +615,7 @@ void CScraper::ScrapeCommonCards()
 	CString			s = "", t = "";
 	RMapCI			r_iter1 = p_tablemap->r$()->end(), r_iter2 = p_tablemap->r$()->end();
 
-	for (int i=0; i<=4; i++)
+	for (int i=0; i<k_number_of_community_cards; i++)
 	{
 		card = CARD_NOCARD;
 
@@ -405,8 +721,8 @@ void CScraper::ScrapePlayerCards(int chair)
 	RMapCI				r_iter1 = p_tablemap->r$()->end(), r_iter2 = p_tablemap->r$()->end();
 
 	// Check for bad parameters
-	if (chair < 0 || chair >= p_tablemap->nchairs())
-		return;
+	assert(chair >= 0);
+	assert(chair < p_tablemap->nchairs());
 
 	__HDC_HEADER
 
@@ -414,7 +730,7 @@ void CScraper::ScrapePlayerCards(int chair)
 
 	// Player cards
 	got_new_scrape = false;
-	for (int j=0; j<=1; j++)
+	for (int j=0; j<k_number_of_cards_per_player; j++)
 	{
 		card = CARD_NOCARD;
 
@@ -594,8 +910,8 @@ void CScraper::ScrapeSeated(int chair)
 	RMapCI				r_iter = p_tablemap->r$()->end();
 
 	// Check for bad parameters
-	if (chair < 0 || chair >= p_tablemap->nchairs())
-		return;
+	assert(chair >= 0);
+	assert(chair < p_tablemap->nchairs());
 
 	__HDC_HEADER
 
@@ -663,8 +979,8 @@ void CScraper::ScrapeActive(int chair)
 	RMapCI				r_iter = p_tablemap->r$()->end();
 
 	// Check for bad parameters
-	if (chair < 0 || chair >= p_tablemap->nchairs())
-		return;
+	assert(chair >= 0);
+	assert(chair < p_tablemap->nchairs());
 
 	__HDC_HEADER
 
@@ -731,8 +1047,8 @@ void CScraper::ScrapeDealer(int chair)
 	RMapCI				r_iter = p_tablemap->r$()->end();
 
 	// Check for bad parameters
-	if (chair < 0 || chair >= p_tablemap->nchairs())
-		return;
+	assert(chair >= 0);
+	assert(chair < p_tablemap->nchairs());
 
 	__HDC_HEADER
 
@@ -807,8 +1123,8 @@ void CScraper::ScrapeName(int chair)
 	RMapCI				r_iter = p_tablemap->r$()->end();
 
 	// Check for bad parameters
-	if (chair < 0 || chair >= p_tablemap->nchairs())
-		return;
+	assert(chair >= 0);
+	assert(chair < p_tablemap->nchairs());
 
 	__HDC_HEADER
 
@@ -912,8 +1228,8 @@ void CScraper::ScrapeBalance(int chair)
 	RMapCI				r_iter = p_tablemap->r$()->end();
 
 	// Check for bad parameters
-	if (chair < 0 || chair >= p_tablemap->nchairs())
-		return;
+	assert(chair >= 0);
+	assert(chair < p_tablemap->nchairs());
 
 	__HDC_HEADER
 
@@ -1124,8 +1440,8 @@ void CScraper::ScrapeBet(int chair)
 	RMapCI				r_iter = p_tablemap->r$()->end();
 
 	// Check for bad parameters
-	if (chair < 0 || chair >= p_tablemap->nchairs())
-		return;
+	assert(chair >= 0);
+	assert(chair < p_tablemap->nchairs());
 
 	__HDC_HEADER
 
@@ -1215,241 +1531,6 @@ void CScraper::ScrapeBet(int chair)
 	__HDC_FOOTER
 }
 
-void CScraper::DoBasicScrapeButtons()
-{
-	__HDC_HEADER
-
-	int					j = 0, k = 0;
-	CString				text = "";
-	POINT				handle_xy = {0};
-	CTransform			trans;
-	CString				s = "";
-	RMapCI				r_iter = p_tablemap->r$()->end(), slider = p_tablemap->r$()->end(), handleCI = p_tablemap->r$()->end();
-	RMapI				handleI = p_tablemap->set_r$()->end();
-
-	write_log(3, "CScraper::DoBasicScrapeButtons()\n");
-
-	set_button_label(0, "fold");
-	set_button_label(1, "call");
-	set_button_label(2, "raise");
-	set_button_label(3, "allin");
-	for (j=4; j<=9; j++)
-	{
-		set_button_label(j, "");
-	}
-	for (j=0; j<=9; j++)
-	{
-		set_button_state(j, "false");
-		set_i86X_button_state(j, "false");
-	}
-
-	for (j=0; j<=9; j++)
-	{
-		// Button state iXstate
-		s.Format("i%dstate", j);
-		r_iter = p_tablemap->r$()->find(s.GetString());
-		if (r_iter != p_tablemap->r$()->end())
-		{
-			ProcessRegion(r_iter);
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
-			trans.DoTransform(r_iter, hdcCompatible, &text);
-			SelectObject(hdcCompatible, old_bitmap);
-
-			// Give scraper-pre DLL a chance to modify transform output
-			if (theApp._dll_scraperpreprocessor_process_message)
-			{
-				(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
-			}
-
-			if (text!="")
-				set_button_state(j, text);
-
-			if (_button_state_last[j] != _button_state[j])
-			{
-				_button_state_last[j] = _button_state[j];
-				_scrape_something_changed |= BUTTONSTATE_CHANGED;
-			}
-
-			write_log(3, "i%dstate, result %s\n", j, text.GetString());
-		}
-
-		// i86X button state i86Xstate
-		s.Format("i86%dstate", j);
-		r_iter = p_tablemap->r$()->find(s.GetString());
-		if (r_iter != p_tablemap->r$()->end())
-		{
-			ProcessRegion(r_iter);
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
-			trans.DoTransform(r_iter, hdcCompatible, &text);
-			SelectObject(hdcCompatible, old_bitmap);
-
-			// Give scraper-pre DLL a chance to modify transform output
-			if (theApp._dll_scraperpreprocessor_process_message)
-			{
-				(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
-			}
-
-			if (text!="")
-				set_i86X_button_state(j, text);
-
-			if (_i86X_button_state_last[j] != _i86X_button_state[j])
-			{
-				_i86X_button_state_last[j] = _i86X_button_state[j];
-				_scrape_something_changed |= BUTTONSTATE_CHANGED;
-			}
-
-			write_log(3, "i86%dstate, result %s\n", j, text.GetString());
-		}
-
-		// Button label
-		// First check iXlabel
-		text = "";
-
-		s.Format("i%dlabel", j);
-		r_iter = p_tablemap->r$()->find(s.GetString());
-		if (r_iter != p_tablemap->r$()->end())
-		{
-			ProcessRegion(r_iter);
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
-			trans.DoTransform(r_iter, hdcCompatible, &text);
-			SelectObject(hdcCompatible, old_bitmap);
-
-			// Give scraper-pre DLL a chance to modify transform output
-			if (theApp._dll_scraperpreprocessor_process_message)
-			{
-				(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
-			}
-
-			if (text!="")
-				set_button_label(j, text);
-
-			write_log(3, "i%dlabel, result %s\n", j, text.GetString());
-		}
-
-		// Second check iXlabelY
-		for (k=0; k<=9 && text == ""; k++)
-		{
-			s.Format("i%dlabel%d", j, k);
-			r_iter = p_tablemap->r$()->find(s.GetString());
-			if (r_iter != p_tablemap->r$()->end())
-			{
-				ProcessRegion(r_iter);
-				old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
-				trans.DoTransform(r_iter, hdcCompatible, &text);
-				SelectObject(hdcCompatible, old_bitmap);
-
-				// Give scraper-pre DLL a chance to modify transform output
-				if (theApp._dll_scraperpreprocessor_process_message)
-				{
-					(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
-				}
-
-				if (text!="")
-					set_button_label(j, text);
-
-				write_log(3, "i%dlabel%d, result %s\n", j, k, text.GetString());
-			}
-		}
-
-		if (_button_label_last[j] != _button_label[j])
-		{
-			_button_label_last[j] = _button_label[j];
-			_scrape_something_changed |= BUTTONLABEL_CHANGED;
-		}
-	}
-
-	// When using MM, grab i5state for PT network
-	if ((bool) p_symbols->sym()->ismanual)
-	{
-		p_tablemap->set_network(p_scraper->button_state(5));
-	}
-
-	// i86 button state
-	s.Format("i86state");
-	r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end())
-	{
-		ProcessRegion(r_iter);
-		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
-		trans.DoTransform(r_iter, hdcCompatible, &text);
-		SelectObject(hdcCompatible, old_bitmap);
-
-		// Give scraper-pre DLL a chance to modify transform output
-		if (theApp._dll_scraperpreprocessor_process_message)
-		{
-			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
-		}
-
-		if (text!="")
-			set_i86_button_state(text);
-		else
-			set_i86_button_state("false");
-
-		if (_i86_button_state_last != _i86_button_state)
-		{
-			_i86_button_state_last = _i86_button_state;
-			_scrape_something_changed |= BUTTONSTATE_CHANGED;
-		}
-
-		write_log(3, "i86state, result %s\n", text.GetString());
-	}
-
-	// find handle
-	handleCI = p_tablemap->r$()->find("i3handle");
-	slider = p_tablemap->r$()->find("i3slider");
-
-	if (handleCI!=p_tablemap->r$()->end() && slider!=p_tablemap->r$()->end() && _button_state[3]!="false")
-	{
-		j = slider->second.right - handleCI->second.left;
-		text="";
-		
-		_handle_found_at_xy = false;
-		
-		for (k=0; k<=j; k++)
-		{
-			handleI = p_tablemap->set_r$()->find("i3handle");
-			handleI->second.left += k;
-			handleI->second.right += k;
-
-			handleCI = p_tablemap->r$()->find("i3handle");
-			ProcessRegion(handleCI);
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, handleCI->second.cur_bmp);
-			trans.DoTransform(handleCI, hdcCompatible, &text);
-			SelectObject(hdcCompatible, old_bitmap);
-
-			handleI = p_tablemap->set_r$()->find("i3handle");
-			handleI->second.left -= k;
-			handleI->second.right -= k;
-			if (text == "handle" || text == "true") 
-				break;
-		}
-
-		if (text!="" && k <= j)
-		{
-			handleCI = p_tablemap->r$()->find("i3handle");
-			handle_xy.x = handleCI->second.left + k;
-			handle_xy.y = handleCI->second.top;
-
-			set_handle_found_at_xy(true);
-			set_handle_xy(handle_xy);
-		}
-
-		write_log(3, "i3handle, result %d,%d\n", handle_xy.x, handle_xy.y);
-	}
-
-	__HDC_FOOTER
-}
-
-void CScraper::DoBasicScrapeAllPlayerCards()
-{
-	write_log(3, "CScraper::DoBasicScrapeAllPlayerCards()\n");
-	for (int i=0; i<=9; i++)
-	{
-		write_log(3, "Calling ScrapePlayerCards, chair %d.\n", i);
-		ScrapePlayerCards(i);
-	}
-}
-
 void CScraper::ScrapePots()
 {
 	__HDC_HEADER
@@ -1459,10 +1540,10 @@ void CScraper::ScrapePots()
 	CString				s = "", t="";
 	RMapCI				r_iter = p_tablemap->r$()->end();
 
-	for (j=0; j<=9; j++)
+	for (j=0; j<k_max_number_of_pots; j++)
 		set_pot(j, 0);
 
-	for (j=0; j<=9; j++)
+	for (j=0; j<k_max_number_of_pots; j++)
 	{
 		// r$c0potX
 		s.Format("c0pot%d", j);

@@ -26,9 +26,10 @@ public:
 	virtual BOOL OnInitDialog();
 
 private:
-	CButton _scrape_always_nutton;
-	CButton _scrape_when_cards_button;
 	CButton _scrape_when_my_turn_button;
+	CButton _scrape_when_sitin_sitout_leave_button;
+	CButton _scrape_when_cards_button;
+	CButton _scrape_always_button;
 
 protected:
 	virtual void OnOK();
