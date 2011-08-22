@@ -81,7 +81,7 @@ BettingAction Symbols
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="34" columns="3">
+<lyxtabular version="3" rows="32" columns="3">
 <features islongtable="true">
 <column alignment="left" valignment="top" width="33text%">
 <column alignment="left" valignment="top" width="33text%">
@@ -120,7 +120,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-Have2ndBestKicker
+Bets
 \end_layout
 
 \end_inset
@@ -129,7 +129,8 @@ Have2ndBestKicker
 \begin_inset Text
 
 \begin_layout Plain Layout
-There is only one card that is better than our current kicker
+The number of bets made this betting round, can only be 0 or 1 since the
+ 2nd bet is a raise
 \end_layout
 
 \end_inset
@@ -138,7 +139,7 @@ There is only one card that is better than our current kicker
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -149,7 +150,7 @@ There is only one card that is better than our current kicker
 \begin_inset Text
 
 \begin_layout Plain Layout
-Have2ndBestKickerOrBetter
+BotCalledBeforeFlop
 \end_layout
 
 \end_inset
@@ -158,7 +159,7 @@ Have2ndBestKickerOrBetter
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have the best or second best kicker
+We called preflop, can also be used on the flop and will be true if we called
 \end_layout
 
 \end_inset
@@ -167,7 +168,7 @@ We have the best or second best kicker
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -178,7 +179,7 @@ We have the best or second best kicker
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+BotIsLastRaiser
 \end_layout
 
 \end_inset
@@ -187,7 +188,7 @@ We have the best or second best kicker
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the betting / raising initiative
 \end_layout
 
 \end_inset
@@ -196,7 +197,7 @@ We have the best or second best kicker
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -207,7 +208,7 @@ We have the best or second best kicker
 \begin_inset Text
 
 \begin_layout Plain Layout
-Have2ndBestOverpairOrBetter
+BotRaisedBeforeFlop
 \end_layout
 
 \end_inset
@@ -216,7 +217,8 @@ Have2ndBestOverpairOrBetter
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have the second best overpair (KK with A on board) or a stronger hand
+We raised preflop, can also be used on the preflop and will be true if we
+ bet or raised
 \end_layout
 
 \end_inset
@@ -225,7 +227,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -236,7 +238,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+BotRaisedOnFlop
 \end_layout
 
 \end_inset
@@ -245,7 +247,8 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We bet or raised on the flop, can also be used on the flop and will be true
+ if we bet or raised
 \end_layout
 
 \end_inset
@@ -254,7 +257,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Postflop only
 \end_layout
 
 \end_inset
@@ -265,7 +268,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+BotRaisedOnTurn
 \end_layout
 
 \end_inset
@@ -274,7 +277,8 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We bet or raised on the turn, can also be used on the turn and will be true
+ if we bet or raised
 \end_layout
 
 \end_inset
@@ -283,7 +287,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Turn and river only
 \end_layout
 
 \end_inset
@@ -294,7 +298,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+BotsActionsOnFlop
 \end_layout
 
 \end_inset
@@ -303,7 +307,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Number of actions where we put money in the pot on the flop
 \end_layout
 
 \end_inset
@@ -312,7 +316,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+All-ins are not counted obviously (as then the game would be over anyway)
 \end_layout
 
 \end_inset
@@ -323,7 +327,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+BotsActionsOnThisRound
 \end_layout
 
 \end_inset
@@ -332,7 +336,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Number of actions this betting round where we put money in the pot
 \end_layout
 
 \end_inset
@@ -341,7 +345,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+All-ins are not counted obviously (as then the game would be over anyway)
 \end_layout
 
 \end_inset
@@ -352,7 +356,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+BotsActionsOnThisRoundIncludingChecks
 \end_layout
 
 \end_inset
@@ -361,7 +365,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Number of checks + number of actions where we put money in the pot
 \end_layout
 
 \end_inset
@@ -370,7 +374,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+All-ins are not counted obviously (as then the game would be over anyway)
 \end_layout
 
 \end_inset
@@ -381,7 +385,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+BotsActionsPreflop
 \end_layout
 
 \end_inset
@@ -390,7 +394,8 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Number of actions where we put money in the pot preflop, all-ins are not
+ counted
 \end_layout
 
 \end_inset
@@ -399,7 +404,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -410,7 +415,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+BotsLastAction
 \end_layout
 
 \end_inset
@@ -419,7 +424,8 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Bots last action, can be one of the following: none, beep, raise, bet, call,
+ or check
 \end_layout
 
 \end_inset
@@ -428,7 +434,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -439,7 +445,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+BotsLastPreflopAction
 \end_layout
 
 \end_inset
@@ -448,7 +454,8 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Bots last action preflop, can be one of the following: none, beep, raise,
+ bet, call, or check
 \end_layout
 
 \end_inset
@@ -457,7 +464,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -468,7 +475,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+CalledOnFlop
 \end_layout
 
 \end_inset
@@ -477,7 +484,8 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We called on the flop, may also be used on the flop and will be true if
+ we called
 \end_layout
 
 \end_inset
@@ -486,7 +494,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Postflop only
 \end_layout
 
 \end_inset
@@ -497,7 +505,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+CalledOnTurn
 \end_layout
 
 \end_inset
@@ -506,7 +514,8 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We called on the turn, may also be used on the turn and will be true if
+ we called
 \end_layout
 
 \end_inset
@@ -515,7 +524,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Turn and river only
 \end_layout
 
 \end_inset
@@ -526,7 +535,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Calls
 \end_layout
 
 \end_inset
@@ -535,7 +544,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+The number of calls by opponents on this betting round
 \end_layout
 
 \end_inset
@@ -544,7 +553,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -555,7 +564,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+CallsSinceLastRaise
 \end_layout
 
 \end_inset
@@ -564,7 +573,8 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+The number of calls by all opponents since the last raise by an opponent
+ on the current betting round
 \end_layout
 
 \end_inset
@@ -573,7 +583,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -584,7 +594,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Checks
 \end_layout
 
 \end_inset
@@ -593,7 +603,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+The number of checks made by opponents this betting round
 \end_layout
 
 \end_inset
@@ -602,7 +612,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -613,7 +623,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Folds
 \end_layout
 
 \end_inset
@@ -622,7 +632,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+The number of folds this betting round
 \end_layout
 
 \end_inset
@@ -631,7 +641,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -642,7 +652,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+NoBettingOnFlop
 \end_layout
 
 \end_inset
@@ -651,7 +661,8 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+No bets/raises were made on the flop, may also be used on the flop and will
+ be true if there were no bets/raises
 \end_layout
 
 \end_inset
@@ -660,7 +671,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Postflop only
 \end_layout
 
 \end_inset
@@ -671,7 +682,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+NoBettingOnTurn
 \end_layout
 
 \end_inset
@@ -680,7 +691,8 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+No bets/raises were made on the turn, may also be used on the turn and will
+ be true if there were no bets/raises
 \end_layout
 
 \end_inset
@@ -689,7 +701,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -700,7 +712,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+NumberOfRaisesBeforeFlop
 \end_layout
 
 \end_inset
@@ -709,7 +721,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+The number of raises before the flop made by opponents
 \end_layout
 
 \end_inset
@@ -718,7 +730,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -729,7 +741,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+NumberOfRaisesOnFlop
 \end_layout
 
 \end_inset
@@ -738,7 +750,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+The number of raises on the flop made by opponents
 \end_layout
 
 \end_inset
@@ -747,7 +759,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Postflop only
 \end_layout
 
 \end_inset
@@ -758,7 +770,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+NumberOfRaisesOnTurn
 \end_layout
 
 \end_inset
@@ -767,7 +779,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+The number of raises on the turn made by opponents
 \end_layout
 
 \end_inset
@@ -776,7 +788,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Turn and river only
 \end_layout
 
 \end_inset
@@ -787,7 +799,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+OpponentCalledOnFlop
 \end_layout
 
 \end_inset
@@ -796,7 +808,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+An opponent called on flop, and did not raise or bet
 \end_layout
 
 \end_inset
@@ -805,7 +817,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Postflop only
 \end_layout
 
 \end_inset
@@ -816,7 +828,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+OpponentCalledOnTurn
 \end_layout
 
 \end_inset
@@ -825,7 +837,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+An opponent called on turn, and did not raise or bet
 \end_layout
 
 \end_inset
@@ -834,7 +846,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Turn and river only
 \end_layout
 
 \end_inset
@@ -845,7 +857,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+OpponentIsAllin
 \end_layout
 
 \end_inset
@@ -854,7 +866,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+An opponent is all in, there may still be other players in the hand
 \end_layout
 
 \end_inset
@@ -863,7 +875,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -874,7 +886,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Raises
 \end_layout
 
 \end_inset
@@ -883,7 +895,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+The number of raises made by opponents this betting round
 \end_layout
 
 \end_inset
@@ -892,7 +904,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -903,7 +915,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+RaisesBeforeFlop
 \end_layout
 
 \end_inset
@@ -912,7 +924,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+An opponent raised before flop
 \end_layout
 
 \end_inset
@@ -921,7 +933,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -932,7 +944,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+RaisesOnFlop
 \end_layout
 
 \end_inset
@@ -941,7 +953,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+An opponent raised on flop
 \end_layout
 
 \end_inset
@@ -950,7 +962,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Postflop only
 \end_layout
 
 \end_inset
@@ -961,7 +973,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+RaisesOnTurn
 \end_layout
 
 \end_inset
@@ -970,7 +982,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+An opponent raised on turn
 \end_layout
 
 \end_inset
@@ -979,65 +991,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
+Turn and river only
 \end_layout
 
 \end_inset
@@ -1048,7 +1002,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+RaisesSinceLastPlay
 \end_layout
 
 \end_inset
@@ -1057,7 +1011,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+The number of raises since our last action
 \end_layout
 
 \end_inset
@@ -1066,7 +1020,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -1087,9 +1041,9 @@ Betsizes And Stacksizes
 \begin_inset Tabular
 <lyxtabular version="3" rows="11" columns="3">
 <features>
-<column alignment="left" valignment="top" width="0">
-<column alignment="left" valignment="top" width="0">
-<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="33text%">
+<column alignment="left" valignment="top" width="33text%">
+<column alignment="left" valignment="top" width="33text%">
 <row>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
@@ -2815,7 +2769,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have2ndBestKicker
 \end_layout
 
 \end_inset
@@ -2824,7 +2778,36 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
+There is only one card that is better than our current kicker
+\end_layout
 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Have2ndBestKickerOrBetter
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+We have the best or second best kicker
 \end_layout
 
 \end_inset
@@ -2873,7 +2856,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have2ndBestOverpairOrBetter
 \end_layout
 
 \end_inset
@@ -2882,36 +2865,7 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
+We have the second best overpair (KK with A on board) or a stronger hand
 \end_layout
 
 \end_inset
@@ -5838,169 +5792,6 @@ Our position
 
 \begin_layout Plain Layout
 None
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-Stacksize Symbols
-\end_layout
-
-\begin_layout Standard
-\begin_inset Tabular
-<lyxtabular version="3" rows="5" columns="3">
-<features islongtable="true">
-<column alignment="left" valignment="top" width="33text%">
-<column alignment="left" valignment="top" width="33text%">
-<column alignment="left" valignment="top" width="33text%">
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Name
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Meaning
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Limitations
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
 \end_layout
 
 \end_inset
