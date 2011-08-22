@@ -2705,7 +2705,7 @@ Hand and HandStrength Symbols
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="84" columns="3">
+<lyxtabular version="3" rows="87" columns="3">
 <features islongtable="true">
 <column alignment="left" valignment="top" width="33text%">
 <column alignment="left" valignment="top" width="33text%">
@@ -2734,6 +2734,180 @@ Meaning
 
 \begin_layout Plain Layout
 Limitations
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+HadOverpairOnFlop
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Our pocketpair is of higher rank than the highest ranked common card
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+HadPairOnFlop
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+We had a pair on the flop
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+HadPairOnTurn
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+We had a pair on the turn
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+HadTopPairOnFlop
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Have/had top pair on flop
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+HadTopPairOnTurn
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Have/had top pair on turn
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+HadTwoPairOnFlop
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+We had two pair on the flop
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \end_inset
@@ -2802,35 +2976,6 @@ We have the best or second best kicker
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 Have2ndBestOverpairOrBetter
 \end_layout
 
@@ -2860,36 +3005,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
+Have2ndNutFlush
 \end_layout
 
 \end_inset
@@ -2898,7 +3014,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the second best flush possible
 \end_layout
 
 \end_inset
@@ -2918,7 +3034,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have2ndNutFlushDraw
 \end_layout
 
 \end_inset
@@ -2927,7 +3043,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the second best flush draw
 \end_layout
 
 \end_inset
@@ -2947,7 +3063,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have2ndNutStraight
 \end_layout
 
 \end_inset
@@ -2956,7 +3072,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the second best straight possible
 \end_layout
 
 \end_inset
@@ -2976,7 +3092,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have2ndOverPair
 \end_layout
 
 \end_inset
@@ -2985,7 +3101,8 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have a hole pair which is between the highest board card and the 2nd
+ highest card rank on board
 \end_layout
 
 \end_inset
@@ -3005,7 +3122,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have2ndTopPair
 \end_layout
 
 \end_inset
@@ -3014,7 +3131,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the second highest pair
 \end_layout
 
 \end_inset
@@ -3034,7 +3151,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have2ndTopSet
 \end_layout
 
 \end_inset
@@ -3043,7 +3160,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the second best set
 \end_layout
 
 \end_inset
@@ -3063,7 +3180,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have3rdBestKicker
 \end_layout
 
 \end_inset
@@ -3072,7 +3189,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the third best kicker
 \end_layout
 
 \end_inset
@@ -3092,7 +3209,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have3rdBestKickerOrBetter
 \end_layout
 
 \end_inset
@@ -3101,7 +3218,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the third best kicker or better
 \end_layout
 
 \end_inset
@@ -3121,7 +3238,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have3rdBestOverpairOrBetter
 \end_layout
 
 \end_inset
@@ -3130,7 +3247,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the third best overpair or a better hand
 \end_layout
 
 \end_inset
@@ -3150,7 +3267,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have3rdNutFlush
 \end_layout
 
 \end_inset
@@ -3159,7 +3276,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the 3rd best flush
 \end_layout
 
 \end_inset
@@ -3179,7 +3296,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have3rdNutFlushDraw
 \end_layout
 
 \end_inset
@@ -3188,7 +3305,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the 3rd best flushdraw
 \end_layout
 
 \end_inset
@@ -3208,7 +3325,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have3rdOverpair
 \end_layout
 
 \end_inset
@@ -3217,7 +3334,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the 3rd highest overpair
 \end_layout
 
 \end_inset
@@ -3237,7 +3354,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have3rdTopPair
 \end_layout
 
 \end_inset
@@ -3246,7 +3363,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+we have the 3rd highest pair
 \end_layout
 
 \end_inset
@@ -3266,7 +3383,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have3rdTopSet
 \end_layout
 
 \end_inset
@@ -3275,7 +3392,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the 3rd highest set
 \end_layout
 
 \end_inset
@@ -3295,7 +3412,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have4thNutFlush
 \end_layout
 
 \end_inset
@@ -3304,7 +3421,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the 4th highest flush
 \end_layout
 
 \end_inset
@@ -3324,7 +3441,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have4thNutFlushDraw
 \end_layout
 
 \end_inset
@@ -3333,7 +3450,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the 4th highest flushdraw
 \end_layout
 
 \end_inset
@@ -3353,7 +3470,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have4thOverpair
 \end_layout
 
 \end_inset
@@ -3362,7 +3479,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the 4th overpair
 \end_layout
 
 \end_inset
@@ -3382,7 +3499,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have4thTopPair
 \end_layout
 
 \end_inset
@@ -3391,7 +3508,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the 4th pair
 \end_layout
 
 \end_inset
@@ -3411,7 +3528,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have4thTopSet
 \end_layout
 
 \end_inset
@@ -3420,7 +3537,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We Have the 4th highest set
 \end_layout
 
 \end_inset
@@ -3440,7 +3557,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have5thNutFlush
 \end_layout
 
 \end_inset
@@ -3449,7 +3566,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the 5th highest flush
 \end_layout
 
 \end_inset
@@ -3469,7 +3586,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have5thNutFlushDraw
 \end_layout
 
 \end_inset
@@ -3478,7 +3595,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the 5th highest flushdraw 
 \end_layout
 
 \end_inset
@@ -3498,7 +3615,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have5thOverpair
 \end_layout
 
 \end_inset
@@ -3507,7 +3624,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the 5th overpair
 \end_layout
 
 \end_inset
@@ -3527,7 +3644,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveBackdoor2ndNutFlushDraw
 \end_layout
 
 \end_inset
@@ -3536,7 +3653,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the 2nd highest backdoor nut flush draw
 \end_layout
 
 \end_inset
@@ -3556,7 +3673,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveBackdoor3rdNutFlushDraw
 \end_layout
 
 \end_inset
@@ -3565,7 +3682,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the 3rd highest backdoor nut flush draw
 \end_layout
 
 \end_inset
@@ -3585,7 +3702,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveBackdoorFlushDraw
 \end_layout
 
 \end_inset
@@ -3594,7 +3711,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have a flush, flushdraw or a backdoor flushdraw
 \end_layout
 
 \end_inset
@@ -3614,7 +3731,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveBackdoorNutFlushDraw
 \end_layout
 
 \end_inset
@@ -3623,7 +3740,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have a backdoor nut flush draw
 \end_layout
 
 \end_inset
@@ -3643,7 +3760,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveBackdoorStraightDraw
 \end_layout
 
 \end_inset
@@ -3652,7 +3769,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+True, if we need 2 cards to complete a straight
 \end_layout
 
 \end_inset
@@ -3672,7 +3789,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveBestKicker
 \end_layout
 
 \end_inset
@@ -3681,7 +3798,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the best kicker
 \end_layout
 
 \end_inset
@@ -3701,7 +3818,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveBestKickerOrBetter
 \end_layout
 
 \end_inset
@@ -3710,7 +3827,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the best kicker or a better hand
 \end_layout
 
 \end_inset
@@ -3730,7 +3847,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveBestOverpairOrBetter
 \end_layout
 
 \end_inset
@@ -3739,7 +3856,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have the best overpair or a better hand
 \end_layout
 
 \end_inset
@@ -3759,7 +3876,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveBottomPair
 \end_layout
 
 \end_inset
@@ -3768,7 +3885,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have a hole card that is paired with the lowest card o board
 \end_layout
 
 \end_inset
@@ -3788,7 +3905,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveBottomSet
 \end_layout
 
 \end_inset
@@ -3797,7 +3914,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the lowest set possible
 \end_layout
 
 \end_inset
@@ -3817,7 +3934,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveBottomTwoPair
 \end_layout
 
 \end_inset
@@ -3826,7 +3943,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have bottom two pair
 \end_layout
 
 \end_inset
@@ -3846,7 +3963,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveDoubleGutshotDraw
 \end_layout
 
 \end_inset
@@ -3855,7 +3972,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have a double gut shot draw
 \end_layout
 
 \end_inset
@@ -3875,7 +3992,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveFlush
 \end_layout
 
 \end_inset
@@ -3884,7 +4001,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have a flush
 \end_layout
 
 \end_inset
@@ -3904,7 +4021,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveFlushDraw
 \end_layout
 
 \end_inset
@@ -3913,7 +4030,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have a flushdraw
 \end_layout
 
 \end_inset
@@ -3933,7 +4050,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveFullHouse
 \end_layout
 
 \end_inset
@@ -3942,7 +4059,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have a full house
 \end_layout
 
 \end_inset
@@ -3962,7 +4079,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveInsideNutStraightDraw
 \end_layout
 
 \end_inset
@@ -3971,7 +4088,11 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+True if the bot has an inside nut straight draw.
+ An inside nut straight draw is defined as a hand with at least 4 ‘outs’
+ to a nut straight.
+ Unlike NutStraightDraw, outs that make a flush possible are not excluded
+ 
 \end_layout
 
 \end_inset
@@ -3991,7 +4112,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveInsideStraightDraw
 \end_layout
 
 \end_inset
@@ -4000,7 +4121,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have an inside straight draw
 \end_layout
 
 \end_inset
@@ -4020,7 +4141,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveNothing
 \end_layout
 
 \end_inset
@@ -4029,7 +4150,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have nothing (no pair, overcards, flushdraw or straightdraw)
 \end_layout
 
 \end_inset
@@ -4049,7 +4170,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveNutFlush
 \end_layout
 
 \end_inset
@@ -4058,7 +4179,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the nut flush
 \end_layout
 
 \end_inset
@@ -4078,7 +4199,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveNutFlushCard 
 \end_layout
 
 \end_inset
@@ -4087,7 +4208,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the nut flush card
 \end_layout
 
 \end_inset
@@ -4107,7 +4228,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveNutFlushDraw
 \end_layout
 
 \end_inset
@@ -4116,7 +4237,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the nut flush draw
 \end_layout
 
 \end_inset
@@ -4136,7 +4257,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveNuts
 \end_layout
 
 \end_inset
@@ -4145,7 +4266,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the best hand possible at this time
 \end_layout
 
 \end_inset
@@ -4165,7 +4286,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveNutStraight
 \end_layout
 
 \end_inset
@@ -4174,7 +4295,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the best possible straight
 \end_layout
 
 \end_inset
@@ -4194,7 +4315,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveNutStraightDraw
 \end_layout
 
 \end_inset
@@ -4203,7 +4324,9 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+True, if we have a draw to the best straight; thisd means: if we hit no
+ better straight is possible.
+ E.g.87 at a board of 643.
 \end_layout
 
 \end_inset
@@ -4223,7 +4346,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveNutStraightFlush
 \end_layout
 
 \end_inset
@@ -4232,7 +4355,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the nut straight flush
 \end_layout
 
 \end_inset
@@ -4252,7 +4375,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveOpenEndedStraightDraw
 \end_layout
 
 \end_inset
@@ -4261,7 +4384,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have an open ended straight draw
 \end_layout
 
 \end_inset
@@ -4281,7 +4404,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveOverPair
 \end_layout
 
 \end_inset
@@ -4290,7 +4413,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have a pocketpair higher than any card on the board
 \end_layout
 
 \end_inset
@@ -4310,7 +4433,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HavePair
 \end_layout
 
 \end_inset
@@ -4319,7 +4442,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have a pair, a paired board doesent count
 \end_layout
 
 \end_inset
@@ -4339,7 +4462,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveQuads
 \end_layout
 
 \end_inset
@@ -4348,7 +4471,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have quads
 \end_layout
 
 \end_inset
@@ -4368,7 +4491,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveSet
 \end_layout
 
 \end_inset
@@ -4377,7 +4500,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have a set
 \end_layout
 
 \end_inset
@@ -4397,7 +4520,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveStraight
 \end_layout
 
 \end_inset
@@ -4406,7 +4529,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have a straight
 \end_layout
 
 \end_inset
@@ -4426,7 +4549,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveStraightDraw
 \end_layout
 
 \end_inset
@@ -4435,7 +4558,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have a straightdraw
 \end_layout
 
 \end_inset
@@ -4455,7 +4578,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveStraightFlush
 \end_layout
 
 \end_inset
@@ -4464,7 +4587,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have a straight flush
 \end_layout
 
 \end_inset
@@ -4484,7 +4607,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveTopNonBoardPairedPair
 \end_layout
 
 \end_inset
@@ -4493,7 +4616,8 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+One of our hole cards is the same value as the highest non-paired card on
+ board
 \end_layout
 
 \end_inset
@@ -4513,7 +4637,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveTopPair
 \end_layout
 
 \end_inset
@@ -4522,7 +4646,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+One of our hole cards is paired with the highest ranked card on the board
 \end_layout
 
 \end_inset
@@ -4542,7 +4666,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveTopSet
 \end_layout
 
 \end_inset
@@ -4551,7 +4675,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Have the highest set possible
 \end_layout
 
 \end_inset
@@ -4571,7 +4695,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveTopTwoPair
 \end_layout
 
 \end_inset
@@ -4580,7 +4704,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+The two highest cards on the board are paired with our hole cards
 \end_layout
 
 \end_inset
@@ -4600,7 +4724,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveTrips
 \end_layout
 
 \end_inset
@@ -4609,7 +4733,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have trips
 \end_layout
 
 \end_inset
@@ -4629,7 +4753,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveTwoPair
 \end_layout
 
 \end_inset
@@ -4638,7 +4762,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have two pair, pair on board does not count
 \end_layout
 
 \end_inset
@@ -4658,7 +4782,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveUnderPair
 \end_layout
 
 \end_inset
@@ -4667,7 +4791,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have a pocketpair lower than the lowest ranked card on board
 \end_layout
 
 \end_inset
@@ -4687,7 +4811,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+HaveUnderStraight
 \end_layout
 
 \end_inset
@@ -4696,7 +4820,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+We have the lower part of a straight
 \end_layout
 
 \end_inset
@@ -4716,7 +4840,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+KingPresentOnFlop
 \end_layout
 
 \end_inset
@@ -4725,7 +4849,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+A king is present on the flop
 \end_layout
 
 \end_inset
@@ -4745,7 +4869,7 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+NutFullHouseOrFourOfAKind
 \end_layout
 
 \end_inset
@@ -4754,45 +4878,27 @@ We have the second best overpair (KK with A on board) or a stronger hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+This symbol evaluates the strenght of quads and full houses.
+ Top quads get always rated as 1, bottom quads or best-full house as 2,
+ next best hands as 3 and so on.
+ This symbol does not take straight flushes into account.
+ So it could return 1 even if our hand can be beaten by a straight flush.
 \end_layout
 
 \end_inset
 </cell>
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Postflop only.
 \end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 
+\begin_layout Remark
+Standard PPL returns 0 if we don't have any quads / FH at all.
+ However we think this is counterintuitive and causes problems, as a smaller
+ number means a better hand.
+ OpenPPL returns 999 for that case.
 \end_layout
 
 \end_inset
