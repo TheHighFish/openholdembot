@@ -4598,7 +4598,7 @@ Other Symbols
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="6" columns="3">
+<lyxtabular version="3" rows="4" columns="3">
 <features islongtable="true">
 <column alignment="left" valignment="top" width="33text%">
 <column alignment="left" valignment="top" width="33text%">
@@ -4637,6 +4637,37 @@ Limitations
 \begin_inset Text
 
 \begin_layout Plain Layout
+IsFinalTable
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+We are at the final table of a tournament 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Works only with OpenHoldem 2.2.0.+ and at casinos where the final table and
+ normal tables can be visually distinguised.
+ See the tablemap-symbol s$isfinaltable.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 Others
 \end_layout
 
@@ -4646,6 +4677,14 @@ Others
 \begin_inset Text
 
 \begin_layout Plain Layout
+Always true - mainly used for 
+\begin_inset Quotes eld
+\end_inset
+
+When Others
+\begin_inset Quotes erd
+\end_inset
+
 
 \end_layout
 
@@ -4655,94 +4694,7 @@ Others
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -4753,7 +4705,7 @@ Others
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Random
 \end_layout
 
 \end_inset
@@ -4762,7 +4714,7 @@ Others
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Returns a random number 0-100
 \end_layout
 
 \end_inset
@@ -4771,7 +4723,26 @@ Others
 \begin_inset Text
 
 \begin_layout Plain Layout
+Gets evaluated new each time it gets used.
+ So be careful if you code sequences of random actions.
+ If you need a random function that stays constant for some time you could
+ use the OpenHoldem symbols
+\end_layout
 
+\begin_layout Itemize
+randomheartbeat
+\end_layout
+
+\begin_layout Itemize
+randomround
+\end_layout
+
+\begin_layout Itemize
+randomround1..randomround4
+\end_layout
+
+\begin_layout Itemize
+randomhand
 \end_layout
 
 \end_inset
