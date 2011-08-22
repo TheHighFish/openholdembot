@@ -33,9 +33,12 @@ public:
 	CScraper(void);
 	~CScraper(void);
 public:
-	void DoBasicScrapeButtons();
-	void DoBasicScrapeAllPlayerCards();
+	void ScrapeActionButtons();
+	void ScrapeHeroesCards();
+	void ScrapeOpponentsCards();
+	void ScrapeAllCards();
 	int  CompleteBasicScrapeToFullScrape();
+	
 public:
 	void ClearScrapeAreas(void);
 	void CreateBitmaps(void);
@@ -146,7 +149,10 @@ private:
 
 private:
 	// private functions and variables - not available via accessors or mutators
+	void ScreapeI3SliderHandle();
+	void ScrapeInterfaceButtons();
 	void ScrapeCommonCards();
+	void ScrapePlayerCards(bool scrape_heroes_cards, bool scrape_opponents_cards);
 	void ScrapePlayerCards(const int chair);
 	void ScrapeSeated(const int chair);
 	void ScrapeActive(const int chair);

@@ -11,10 +11,6 @@ const int k_AutoConnector_Connect_Never		= 0;
 const int k_AutoConnector_Connect_Once		= 1;
 const int k_AutoConnector_Connect_Permanent	= 2;
 
-const int k_lazy_scraping_always = 0;
-const int k_lazy_scraping_myturn = 1;
-const int k_lazy_scraping_cards  = 2;
-
 
 extern class CPreferences
 {
@@ -162,8 +158,10 @@ public:
 	const bool configurationcheck_keyboard_settings() { return _configurationcheck_keyboard_settings; }
 	const bool configurationcheck_theme_settings() { return _configurationcheck_theme_settings; }
 	const bool configurationcheck_font_settings() { return _configurationcheck_font_settings; }
-   	// Lazy scraping
-	const int lazy_scraping_when_to_scrape() { return _lazy_scraping_when_to_scrape; }
+   	// Lazy scraping 
+	const bool lazy_scraping_when_sitin_sitout_leave() { return _lazy_scraping_when_sitin_sitout_leave; }
+	const bool lazy_scraping_when_we_hold_cards() { return _lazy_scraping_when_we_hold_cards; }
+	const bool lazy_scraping_always_complete() { return _lazy_scraping_always_complete; }
 	// Handhistory generator
 	const bool handhistory_generator_enable() { return _handhistory_generator_enable; }
 
@@ -343,7 +341,9 @@ public:
 	void set_configurationcheck_font_settings(const bool b) { ENT _configurationcheck_font_settings = b; WriteReg("configurationcheck_font_settings", b); }
 
 	// Lazy scraping
-	void set_lazy_scraping_when_to_scrape(const int i) { ENT _lazy_scraping_when_to_scrape = i;WriteReg("lazy_scraping_when_to_scrape", i); }
+	void set_lazy_scraping_when_sitin_sitout_leave (const bool b) { ENT _lazy_scraping_when_sitin_sitout_leave = b; WriteReg("lazy_scraping_when_sitin_sitout_leave", b); }
+	void set_lazy_scraping_when_we_hold_cards (const bool b) { ENT _lazy_scraping_when_we_hold_cards = b; WriteReg("lazy_scraping_when_we_hold_cards", b); }
+	void set_lazy_scraping_always_complete (const bool b) { ENT _lazy_scraping_always_complete = b; WriteReg("lazy_scraping_always_complete", b); }
 
 	// Handhistory generator
 	void set_handhistory_generator_enable(const bool b) { ENT _handhistory_generator_enable = b; WriteReg("handhistory_generator_enable", b); }
@@ -528,8 +528,11 @@ private:
 	bool			_configurationcheck_theme_settings;
 	bool			_configurationcheck_font_settings;
 
-	// Lazy scraping
-	int				_lazy_scraping_when_to_scrape;
+	// Lazy scraping	
+	bool			_lazy_scraping_when_sitin_sitout_leave;
+	bool			_lazy_scraping_when_we_hold_cards;
+	bool			_lazy_scraping_always_complete;
+
 
 	// Handhistory generator
 	bool			_handhistory_generator_enable;

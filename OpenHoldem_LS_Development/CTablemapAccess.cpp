@@ -2,6 +2,7 @@
 #include "CTableMapAccess.h"
 
 #include "../CTablemap/CTablemap.h"
+#include "CScraper.h"
 
 CTablemapAccess *p_tablemap_access = NULL;
 
@@ -13,241 +14,141 @@ CTablemapAccess::~CTablemapAccess()
 {
 }
 
-CString CTablemapAccess::GetButtonName(int button_code)
+bool CTablemapAccess::GetTableMapRegionByName(CString name, RMapCI &wanted_region)
 {
-	return ""; //!!!
+	wanted_region = p_tablemap->r$()->find(name);
+	return (wanted_region != p_tablemap->r$()->end());
 }
 
-int CTablemapAccess::GetPlayerCards(int seat_number, int first_or_second_card)
+bool CTablemapAccess::DoesTableMapRegionExist(CString name)
 {
-	return 0;
+	RMapCI wanted_region;
+	return (GetTableMapRegionByName(name, wanted_region));
 }
 
-bool CTablemapAccess::IsValidCard(int Card)
-{
-	return true;
-}
-
+// Checks the existence of a button, where "button_code"
+// is a constant like "k_button_check", but not the buttons index in the TM.
 bool CTablemapAccess::DoesButtonExist(int button_code)
 {
-	return true;
+	printf("DoesButtonExist: %d\n", button_code); 
+	for (int i=0; i<k_max_number_of_buttons; i++)
+	{
+		if (DoesButtonLabelMatch(p_scraper->button_label(i), button_code))
+		{
+			printf("Button %d matches\n", i); 
+			return true;
+		}
+	}
+	// No button with appropriate label found.
+	return false;
 }
 
+// Checks, if a certain label ("allin" or "check")
+// does fit to the button_code in question (e.g. "k_button_check")
+bool CTablemapAccess::DoesButtonLabelMatch(CString Label, int button_code)
+{
+	switch (button_code)
+	{
+	case k_button_i3:
+		// i3-button and i86-button are a bit special,
+		// as they can only be accessed by name, not by label.
+		return false;
+	case k_button_fold:
+		return(p_scraper->IsStringFold(Label));
+	case k_button_allin:
+		return(p_scraper->IsStringAllin(Label));			
+	case k_button_raise:
+		return(p_scraper->IsStringRaise(Label));
+	case k_button_call:
+		return(p_scraper->IsStringCall(Label));
+	case k_button_check:
+		return(p_scraper->IsStringCheck(Label));
+	case k_button_sitin:
+		return(p_scraper->IsStringSitin(Label));
+	case k_button_sitout:
+		return(p_scraper->IsStringSitout(Label));
+	case k_button_leave:
+		return(p_scraper->IsStringLeave(Label));
+	case k_button_i86:
+		// i3-button and i86-button are a bit special,
+		// as they can only be accessed by name, not by label.
+		return false;
+	default:
+		// This should not happen
+		printf("Unexpected button_code in CTablemapAccess::DoesButtonLabelMatch(): %d\n", button_code);
+		assert(false);
+		break;
+	}
+	return false;
+}
 
+// Returns something like "i0button", 
+// when you want to get the name of "k_button_check".
+CString CTablemapAccess::GetButtonName(int button_code)
+{
+	CString button_name = "";
+	for (int i=0; i<k_max_number_of_buttons; i++)
+	{
+		if (DoesButtonLabelMatch(p_scraper->button_label(i), button_code))
+		{
+			button_name.Format("i%dbutton", button_code);
+			break;
+		}
+	}
+	printf("CTablemapAccess::GetButtonName (%d): %s\n", button_code, button_name);
+	return button_name;
+}
+
+// Returns the coordinates (rectangle) of a button, if it exists.
 bool CTablemapAccess::GetButtonRect(int button_code, RECT *_rect)
 {
 	CString button_name = GetButtonName(button_code);
-	RMapCI wanted_button = p_tablemap->r$()->find(button_name);
-	if (wanted_button != p_tablemap->r$()->end())
+	if (button_name != "")
 	{
-		_rect->left   = wanted_button->second.left;
-		_rect->top    = wanted_button->second.top;
-		_rect->right  = wanted_button->second.right;
-		_rect->bottom = wanted_button->second.bottom;
+		return GetTableMapRect(button_name, _rect);
+	}
+	return false;
+}
+
+bool CTablemapAccess::GetButtonState(int button_code)
+{
+	printf("GetButtonState: %d\n", button_code); 
+	for (int i=0; i<k_max_number_of_buttons; i++)
+	{
+		if (DoesButtonLabelMatch(p_scraper->button_label(i), button_code))
+		{
+			printf("Button %d matches\n", i); 
+			if (p_scraper->GetButtonState(i))
+			{
+				printf("Buttonstate true\n"); 
+				return true;
+			}
+			else
+			{
+				printf("Buttonstate false\n");
+				return false;
+			}
+		}
+	}
+	// No button with appropriate label found.
+	return false;
+}
+
+bool CTablemapAccess::GetTableMapRect(CString name, RECT *_rect)
+{
+	RMapCI wanted_region = p_tablemap->r$()->find(name);
+	if (wanted_region != p_tablemap->r$()->end())
+	{
+		_rect->left   = wanted_region->second.left;
+		_rect->top    = wanted_region->second.top;
+		_rect->right  = wanted_region->second.right;
+		_rect->bottom = wanted_region->second.bottom;
 		return true;
 	}
 	return false;
 }
 
-bool CTablemapAccess::GetTableMapRect(CString, RECT *_rect)
+bool CTablemapAccess::IsValidCard(int Card)
 {
-	return true;
+	return ((Card != CARD_BACK) && (Card != CARD_NOCARD) && (Card != WH_NOCARD));
 }
-
-/*
-int CAutoplayer::GetR$ButtonIndices(void)
-{
-	int				i = 0;
-	int				button_index = 0;
-	CString			s = "";
-	int				num_seen = 0;
-
-	//////////////////////////////////////////////////////////
-	// find ALLIN button region from scraper
-	button_index = -1;
-	for (i=0; i<=9 && button_index==-1; i++)
-	{
-		if (p_scraper->GetButtonState(i) && p_scraper->IsStringAllin(p_scraper->button_label(i)))
-		{
-			button_index = i;
-			num_seen++;
-		}
-	}
-
-	// find allin button region from table map
-	s.Format("i%dbutton", button_index);
-	//_alli_but = p_tablemap->r$()->find(s.GetString());
-
-	//////////////////////////////////////////////////////////
-	// find RAISE button region from scraper
-	button_index = -1;
-	for (i=0; i<=9 && button_index==-1; i++)
-	{
-		if (p_scraper->GetButtonState(i) && p_scraper->IsStringRaise(p_scraper->button_label(i)))
-		{
-			button_index = i;
-			num_seen++;
-		}
-	}
-
-	// find rais button region from table map
-	s.Format("i%dbutton", button_index);
-	_rais_but = p_tablemap->r$()->find(s.GetString());
-
-	//////////////////////////////////////////////////////////
-	// find CALL button region from scraper
-	button_index = -1;
-	for (i=0; i<=9 && button_index==-1; i++)
-	{
-		if (p_scraper->GetButtonState(i) && p_scraper->IsStringCall(p_scraper->button_label(i)))
-		{
-			button_index = i;
-			num_seen++;
-		}
-	}
-
-	// find call button region from table map
-	s.Format("i%dbutton", button_index);
-	_call_but = p_tablemap->r$()->find(s.GetString());
-
-	//////////////////////////////////////////////////////////
-	// find CHECK button region from scraper
-	button_index = -1;
-	for (i=0; i<=9 && button_index==-1; i++)
-	{
-		if (p_scraper->GetButtonState(i) && p_scraper->IsStringCheck(p_scraper->button_label(i)))
-		{
-			button_index = i;
-			num_seen++;
-		}
-	}
-
-	// find chec button region from table map
-	s.Format("i%dbutton", button_index);
-	_chec_but = p_tablemap->r$()->find(s.GetString());
-
-	//////////////////////////////////////////////////////////
-	// find FOLD button region from scraper
-	button_index = -1;
-	for (i=0; i<=9 && button_index==-1; i++)
-	{
-		if (p_scraper->GetButtonState(i) && p_scraper->IsStringFold(p_scraper->button_label(i)))
-		{
-			button_index = i;
-			num_seen++;
-		}
-	}
-
-	// find fold button region from table map
-	s.Format("i%dbutton", button_index);
-	_fold_but = p_tablemap->r$()->find(s.GetString());
-
-	//////////////////////////////////////////////////////////
-	// find AUTOPOST button region from scraper
-	//
-	button_index = -1;
-	_autopost_state = true;
-	for (i=0; i<=9 && button_index==-1; i++)
-	{
-		if (p_scraper->IsStringAutopost(p_scraper->button_label(i)))
-		{
-			_autopost_state = p_scraper->GetButtonState(i);
-			button_index = i;
-		}
-	}
-
-	// find autopost button region from table map
-	s.Format("i%dbutton", button_index);
-	_autopost_but = p_tablemap->r$()->find(s.GetString());
-
-	//////////////////////////////////////////////////////////
-	// find SITIN button region from scraper
-	button_index = -1;
-	_sitin_state = true;
-	for (i=0; i<=9 && button_index==-1; i++)
-	{
-		if (p_scraper->IsStringSitin(p_scraper->button_label(i)))
-		{
-			_sitin_state = p_scraper->GetButtonState(i);
-			button_index = i;
-		}
-	}
-
-	// find sitin button region from table map
-	s.Format("i%dbutton", button_index);
-	_sitin_but = p_tablemap->r$()->find(s.GetString());
-
-	//////////////////////////////////////////////////////////
-	// find SITOUT button region from scraper
-	button_index = -1;
-	_sitout_state = false;
-	for (i=0; i<=9 && button_index==-1; i++)
-	{
-		if (p_scraper->IsStringSitout(p_scraper->button_label(i)))
-		{
-			_sitout_state = p_scraper->GetButtonState(i);
-			button_index = i;
-		}
-	}
-
-	// find sitout button region from table map
-	s.Format("i%dbutton", button_index);
-	_sitout_but = p_tablemap->r$()->find(s.GetString());
-
-	//////////////////////////////////////////////////////////
-	// find LEAVE button region from scraper
-	button_index = -1;
-	for (i=0; i<=9 && button_index==-1; i++)
-	{
-		if (p_scraper->GetButtonState(i) && p_scraper->IsStringLeave(p_scraper->button_label(i)))
-		{
-			button_index = i;
-		}
-	}
-
-	// find leave button region from table map
-	s.Format("i%dbutton", button_index);
-	_leave_but = p_tablemap->r$()->find(s.GetString());
-
-	//////////////////////////////////////////////////////////
-	// find PREFOLD button region from scraper
-	button_index = -1;
-	for (i=0; i<=9 && button_index==-1; i++)
-	{
-		if (p_scraper->GetButtonState(i) && p_scraper->IsStringPrefold(p_scraper->button_label(i)))
-		{
-			button_index = i;
-		}
-	}
-
-	// find prefold button region from table map
-	s.Format("i%dbutton", button_index);
-	_pre_fold_but = p_tablemap->r$()->find(s.GetString());
-
-	//////////////////////////////////////////////////////////
-	// find i86 button region from scraper
-	_i86_state = false;
-	_i86_but = p_tablemap->r$()->end();
-	if (p_scraper->GetButtonState(86))
-	{
-		_i86_but = p_tablemap->r$()->find("i86button");
-		_i86_state = true;
-	}
-
-	//////////////////////////////////////////////////////////
-	// find i86X button region from scraper
-	for (i=0; i<=9; i++)
-	{
-		_i86X_state[i] = false;
-		_i86X_but[i] = p_tablemap->r$()->end();
-		if (p_scraper->GetButtonState(860+i))
-		{
-			s.Format("i86%dbutton", i);
-			_i86X_but[i] = p_tablemap->r$()->find(s.GetString());
-			_i86X_state[i] = true;
-		}
-	}
-
-	return num_seen;
-}
-*/

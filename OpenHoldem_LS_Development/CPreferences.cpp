@@ -196,7 +196,9 @@ void CPreferences::InitDefaults(void)
 	_configurationcheck_font_settings = true;
 
 	// Lazy scraping
-	_lazy_scraping_when_to_scrape = k_lazy_scraping_always;
+	_lazy_scraping_when_sitin_sitout_leave = true;
+	_lazy_scraping_when_we_hold_cards = true;
+	_lazy_scraping_always_complete = true;
 
 	// Handhistory generator
 	_handhistory_generator_enable = false;
@@ -393,7 +395,9 @@ void CPreferences::ReadPreferences()
 		ReadReg("configurationcheck_font_settings", &_configurationcheck_font_settings);
 
 		// Lazy scraping
-		ReadReg("lazy_scraping_when_to_scrape", &_lazy_scraping_when_to_scrape);
+		ReadReg("lazy_scraping_when_sitin_sitout_leave", &_lazy_scraping_when_sitin_sitout_leave);
+		ReadReg("lazy_scraping_when_we_hold_cards", &_lazy_scraping_when_we_hold_cards);
+		ReadReg("lazy_scraping_always_complete", &_lazy_scraping_always_complete);
 
 		// Handhistory_generator
 		ReadReg("handhistory_generator_enable", &_handhistory_generator_enable);

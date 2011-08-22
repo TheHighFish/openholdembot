@@ -15,6 +15,7 @@ public:
 	void ResetHand(void);
 	void ResetRound(void);
 	void DoRebuyIfNeccessary(void);
+	bool TimeToHandleSitinSitoutLeave();
 
 public:
 	// public accessors
@@ -55,7 +56,6 @@ private:
 	void DoSlider(void);
 	void DoPrefold(void);
 	void CheckBringKeyboard(void);
-	bool TimeToHandleSitinSitoutLeave();
 	void CAutoplayer::DoF$Sitin_Sitout_Leave(void);
 	void DoI86(void);
 	void DoChat(void);

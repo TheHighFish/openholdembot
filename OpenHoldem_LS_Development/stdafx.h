@@ -72,6 +72,7 @@
 
 
 #include "debug.h"
+#include "MagicNumbers.h"
 #include "..\StructsDefines\structs_defines.h"
 
 

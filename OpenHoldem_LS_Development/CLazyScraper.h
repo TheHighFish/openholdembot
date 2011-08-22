@@ -10,10 +10,11 @@ public:
 	void DoScrape();
 private:
 	bool IsMyTurn();
-	bool HaveCards();
+	bool HeroesCardsKnown();
 private:
-	bool CardScrapeNeeded();
-	bool CompleteScrapeNeeded();
+	void ScrapeHeroesCards();
+	void ScrapeOpponentsCards();
+	void ScrapeAllCards();
 } *p_lazyscraper;
 
 #endif // INC_CLAZYSCRAPER_H

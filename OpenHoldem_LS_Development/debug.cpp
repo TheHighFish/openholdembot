@@ -223,6 +223,20 @@ to_return:
     return bret;
 }
 
+// Debugging console will be create in debug-mode only.
+// No standard log-messages will be displayed,
+// just ad-hoc debug-messages created with printf().
+void OpenDebuggingConsole()
+{
+	AllocConsole();
+	SetConsoleTitle("OpenHoldem Debugging Console");
+	freopen("CONOUT$", "w", stdout);
+	freopen("CONOUT$", "w", stderr);
+	printf("OpenHoldem Debugging Console\n");
+	printf("============================\n");
+	printf("(for ad-hoc debugging output with printf)\n\n");
+}
+
 void start_log(void) 
 {
 	if (prefs.log_level()==0)
@@ -254,6 +268,10 @@ void start_log(void)
 			fclose(log_fp);
 		}
 	}
+
+#ifdef DEBUG
+	OpenDebuggingConsole();
+#endif
 
 	// Append (or create) log
 	if ((log_fp = _fsopen(fn.GetString(), "a", _SH_DENYWR)) != 0)
