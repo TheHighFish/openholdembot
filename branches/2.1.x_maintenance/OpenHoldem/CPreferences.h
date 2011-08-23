@@ -82,11 +82,14 @@ public:
 	// Log Symbol
 	const bool log_symbol_enabled() { return _log_symbol_enabled; }
 	const int log_symbol_max_log() { return _log_symbol_max_log; }
-	// Tracing
-	const bool trace_enabled() { return _trace_enabled; }
+	
 	// Logging and debugging
 	const bool disable_msgbox() { return _disable_msgbox; }
 	const int log_max_logsize() { return _log_max_logsize; }
+
+	const bool log_basic_info();
+	const bool log_errors_and_warnings();
+	const bool trace_enabled() { return _trace_enabled; }
 
 	// Debugging
 	const bool	debug_autoconnector() { return _debug_autoconnector; }

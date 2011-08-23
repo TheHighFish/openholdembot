@@ -71,7 +71,7 @@ void CPreferences::InitDefaults(void)
 	_swag_delay_1 = 400;
 	_swag_delay_2 = 400;
 	_swag_delay_3 = 700;
-	_ap_auto = false;
+	_ap_auto = true;
 	_focus_detect = false;
 	_swag_use_comma = false;
 	_calc_only_my_turn = false;
@@ -193,8 +193,8 @@ void CPreferences::InitDefaults(void)
 	_validator_shoot_replayframe_on_error = true;
 
 	// Auto-connector
-	_autoconnector_connection_method = k_AutoConnector_Connect_Manually;
-	_autoconnector_when_to_connect = k_AutoConnector_Connect_Never;
+	_autoconnector_connection_method = k_AutoConnector_Connect_Automatically;
+	_autoconnector_when_to_connect = k_AutoConnector_Connect_Permanent;
 	_autoconnector_close_when_table_disappears = false;
 
 	// GUI
