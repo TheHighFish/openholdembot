@@ -28,6 +28,8 @@ MAINTENANCE:
   produced way too much data. There is now an extra tab in preferences
   that enables the user to specify what exactly to log.
   [THF]
+- Autoplayer and autoconnector enabled now per default to avoid ugly PEBKACs.
+  [THF]
   
 
 v2.1.9.1 2011-06-08
