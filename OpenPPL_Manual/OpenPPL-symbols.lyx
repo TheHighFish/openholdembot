@@ -1491,7 +1491,7 @@ An ace is present on flop
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -1520,7 +1520,7 @@ The entire board are the same suit
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+River only
 \end_layout
 
 \end_inset
@@ -1549,7 +1549,7 @@ A flush is possible on the current board (3 or more of 1 suit)
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
@@ -2704,6 +2704,18 @@ Hand and HandStrength Symbols
 \end_layout
 
 \begin_layout Standard
+Quads do also count as trips, as sets (with a pocket pair) and as pair.
+ Full houses do also count as sets, trips (if they meet the criteria) and
+ pairs.
+ Sets and Trips do always also count as pairs.
+ Straight flushes (or draws to) are also always Straights and Flushes (or
+ draws to).
+ Made flushes do still count as flush-draws, etc.
+ Therefore it is a strongly recommended to code made hands first (and strong
+ made hands at the very beginning),...
+\end_layout
+
+\begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="87" columns="3">
 <features islongtable="true">
@@ -2753,7 +2765,7 @@ HadOverpairOnFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-Our pocketpair is of higher rank than the highest ranked common card
+Our pocketpair is/was of higher rank than the highest ranked flop card
 \end_layout
 
 \end_inset
