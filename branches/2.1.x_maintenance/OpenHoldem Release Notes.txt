@@ -2,8 +2,8 @@ v2.1.9.2 2011-xx-yy
 ===================
 BUG FIXES: 
 - Small fixes to the validator (handnumber no longer a symbol,
-  binary instead of logical negation, etc.). Thanks to Nik0
-  for finding the problems. 
+  binary instead of logical negation, etc.). 
+  Thanks to Nik0 and Humanista for finding the problems. 
   [THF]
 - foldbits previous round exclusion correction : 
   indexes are mapped to betround [1 to 4]
