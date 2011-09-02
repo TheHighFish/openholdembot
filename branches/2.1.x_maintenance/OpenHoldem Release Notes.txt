@@ -30,6 +30,10 @@ MAINTENANCE:
   [THF]
 - Autoplayer and autoconnector enabled now per default to avoid ugly PEBKACs.
   [THF]
+- Detecting opponents: We do no longer check for cardbacks,
+  but for cardbacks or cards. This way we can play all cards face-up at PokerAcademy.
+  Thanks to NoDBerrHyPn0 for suggesting this change.
+  [THF]
   
 
 v2.1.9.1 2011-06-08
