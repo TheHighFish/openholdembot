@@ -1309,11 +1309,19 @@ void CSymbols::CalcBetBalanceStack(void)
 	// currentbet sanity check
 	//
 	// Get count of opponents
-	oppcount=0;
+	oppcount = 0;
 	for (int i=0; i<_sym.nchairs; i++)
 	{
-		if (p_scraper->card_player(i, 0) == CARD_BACK && p_scraper->card_player(i, 1) == CARD_BACK && i != _sym.userchair)
-			oppcount+=1;
+		// We do no longer check for cardbacks,
+		// but for cardbacks or cards.
+		// This way we can play all cards face-up at PokerAcademy.
+		// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=13384
+		if (p_scraper->card_player(i, 0) != CARD_NOCARD 
+			&& p_scraper->card_player(i, 1) != CARD_NOCARD 
+			&& i != _sym.userchair)
+		{
+			oppcount++;
+		}
 	}
 
 	for (int i=0; i<_sym.nchairs; i++)
