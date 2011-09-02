@@ -31,8 +31,12 @@ const int k_max_number_of_players = 10;
 const int k_max_number_of_pots = 10;
 
 // Number of cards
-const int k_number_of_community_cards  = 5;
-const int k_number_of_cards_per_player = 2;
+const int k_number_of_community_cards  =  5;
+const int k_number_of_cards_per_player =  2;
+const int k_number_of_cards_per_deck   = 52;
+
+// Suits and ranks
+const int k_number_of_suits_per_deck = 4;
 
 // Number of buttons
 const int k_max_number_of_buttons = 10;
