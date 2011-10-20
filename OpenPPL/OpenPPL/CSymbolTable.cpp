@@ -35,9 +35,21 @@ void CSymbolTable::AddSymbolsFromFile(CString filename)
 	}
 	while (!input_file.eof())
 	{
-		const int max_length = 1000;
+		// According to JConner some insane Shanky-profiles
+		// use more than 5000 chare per line, so we set our limit a bit higher
+		// and also check for errors.
+		// http://www.maxinmontreal.com/forums/viewtopic.php?f=216&t=11767&start=155
+		const int max_length = 10000;
 		char buffer[max_length];
 		input_file.getline(buffer, max_length, '\n');
+		if (input_file.badbit ||input_file.failbit)
+		{
+			MessageBox(0, "Error: Can't read input file.\n"
+				"Probably line too long.\n"
+				"10.000 characters is the maximum.\n"
+				"Going to terminate.", "Error", 0);
+			exit(-1);
+		}
 		CString next_line(buffer);
 		if (next_line.Left(2) == "##")
 		{
@@ -103,12 +115,13 @@ bool CSymbolTable::IsOpenPPLSymbol(CString symbol)
 		//	MessageBox(0, standardized_symbol_lowercase, "not found", 0);
 		return false;
 	}
+
 	// Check for exact match
-	if (find_result->second == GetStandardizedSymbolName(symbol))
+	// if (find_result->second == GetStandardizedSymbolName(symbol))
 	{
 		return true;
 	}
-	else
+	//else
 	{
 		//if (!GenerationOfSymboltableInProgress())
 		//	MessageBox(0, find_result->second, GetStandardizedSymbolName(symbol), 0);

@@ -1,3 +1,5 @@
+#define BOOST_SPIRIT_DEBUG  ///$$$ DEFINE THIS BEFORE ANYTHING ELSE $$$///
+
 //#include <afxwin.h>
 #include <afx.h>
 #include <boost/spirit.hpp> 
@@ -145,11 +147,12 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 					| missing_keyword_custom);
 			custom_sections = !list_section[print_user_defined_functions()]
 				>> !symbol_section[print_main_code_sections()]
-				>> (code_sections | missing_code_section)
+				>> (code_sections /*| missing_code_section*/)
 				>> end_p
 					[print_prime_coded_board_ranks()]
 					[print_technical_functions()]
 					[print_OpenPPL_Library()];
+
 			missing_keyword_custom = (str_p("") >> custom_sections)[error_missing_keyword_custom()];
 			  
 			// Option settings - to be ignored
@@ -183,26 +186,31 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				>> symbol[print_function_header_for_betting_round()] 
 				>> when_section
 				>> keyword_end >> keyword_symbol[reset_variables()]
-					[print_default_return_value_for_user_defined_symbol()];
+					[print_default_return_value_for_user_defined_symbol()]
+					[reset_variables()];
 
 			// Preflop, flop, turn, river
 			code_sections = preflop_section
 				>> flop_section 
 				>> turn_section 
 				>> river_section;
-			preflop_section = (keyword_preflop[print_function_header_for_betting_round()]
+			preflop_section = (keyword_preflop/*[register_code_section()]*/
+					[print_function_header_for_betting_round()]
 				>> when_section)[check_for_correct_when_others_fold_force()]
 					[print_when_others_fold_force()][reset_variables()];
 			keyword_preflop = str_p("preflop") | "Preflop" | "PREFLOP";
-			flop_section = (keyword_flop[print_function_header_for_betting_round()]
+			flop_section = (keyword_flop/*[register_code_section()]*/
+					[print_function_header_for_betting_round()]
 				>> when_section)[check_for_correct_when_others_fold_force()]
 					[print_when_others_fold_force()][reset_variables()];
 			keyword_flop = str_p("flop") | "Flop" | "FLOP";
-			turn_section = (keyword_turn[print_function_header_for_betting_round()]
+			turn_section = (keyword_turn/*[register_code_section()]*/
+					[print_function_header_for_betting_round()]
 				>> when_section)[check_for_correct_when_others_fold_force()]
 					[print_when_others_fold_force()][reset_variables()];
 			keyword_turn = str_p("turn") | "Turn" | "TURN";
-			river_section = (keyword_river[print_function_header_for_betting_round()]
+			river_section = (keyword_river/*[register_code_section()]*/
+					[print_function_header_for_betting_round()]
 				>> when_section)[check_for_correct_when_others_fold_force()]
 					[print_when_others_fold_force()][reset_variables()];
 			keyword_river = str_p("river") | "River" | "RIVER";
@@ -238,31 +246,36 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			condition = str_p("")[extra_brackets_for_condition()] >> expression
 				[extra_closing_brackets_for_condition()];
 
+			// Operators
+			unary_operator = (keyword_not | "-")[print_operator()];
+			percentage_operator = str_p("%")[print_percentage_operator()];
+			multiplicative_operator = (str_p("*") | ("/"))[print_operator()] | multiplicative_operator = (str_p("*") | ("/"))[print_operator()] | percentage_operator; 
+			additive_operator = (str_p("+") | "-")[print_operator()];
+			equality_operator = str_p("=")[print_operator()];
+			relational_operator = longest_d[(equality_operator | str_p("<=") | ">=" | "<" | ">")][print_operator()];
+			keyword_and = (str_p("and") | "And" | "AND")[print_operator()];
+			keyword_xor = (str_p("xor") | "Xor" | "XOr" | "XOR")[print_operator()];
+			keyword_or = (str_p("or") | "Or" | "OR")[print_operator()];
+			keyword_not = (str_p("not") | "Not" | "NOT"); // No print_operator() here, as we want to add extra-brackets for clarification.
+
 			// Expressions
 			expression = or_expression;
-			bracket_expression = str_p("(")[print_bracket()] >> expression >> str_p(")")[print_bracket()];
+			bracket_expression = str_p("(")[print_opening_bracket()] >> expression >> str_p(")")[print_closing_bracket()];
 			missing_closing_bracket_expression = (str_p("(") >> expression) >> str_p("")[error_missing_closing_bracket()];
 			operand_expression = terminal_expression | bracket_expression 
 				| missing_closing_bracket_expression;
-			keyword_not = (str_p("not") | "Not" | "NOT");
-			unary_operator = (keyword_not | "-")[print_operator()];
-			unary_expression = !unary_operator >> operand_expression;
-			percentage_operator = str_p("%");
-			multiplicative_operator = (str_p("*") | ("/"))[print_operator()] | percentage_operator[print_percentage_operator()]; 
+			unary_expression = !unary_operator[print_opening_bracket()] >> operand_expression[print_opening_bracket()];
 			multiplicative_expression = unary_expression >> *(multiplicative_operator >> unary_expression);
-			additive_operator = (str_p("+") | "-")[print_operator()];
 			additive_expression = multiplicative_expression >> *(additive_operator >> multiplicative_expression);
-			relational_operator = (str_p("<=") | ">=" | "<" | ">")[print_operator()];
 			relational_expression = additive_expression >> *(relational_operator >> additive_expression);
 			
-			equality_expression = hand_expression_with_brackets | board_expression_with_brackets 
-                | hand_expression_without_brackets | board_expression_without_brackets
-				| (relational_expression >> *(str_p("=")[print_operator()] >> relational_expression));
-			keyword_and = (str_p("and") | "And" | "AND")[print_operator()];
+			equality_expression = hand_expression_with_brackets 
+				| board_expression_with_brackets 
+                | hand_expression_without_brackets 
+				| board_expression_without_brackets
+				| (relational_expression /*>> *(str_p("=")[print_operator()] >> relational_expression)*/);
 			and_expression = equality_expression >> *(keyword_and >> equality_expression);
-			keyword_xor = (str_p("xor") | "Xor" | "XOr" | "XOR")[print_operator()];
 			xor_expression = and_expression >> *(keyword_xor >> and_expression);
-			keyword_or = (str_p("or") | "Or" | "OR")[print_operator()];
 			or_expression = xor_expression >> *(keyword_or >> xor_expression);
 
 			// Hand and board expressions
@@ -353,12 +366,14 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			user_prefix = str_p("user") | "User" | "USER";
 			*/
 
-			// Return statement
+			// Return statement (without force, as this is part of "action")
 			keyword_return = str_p("return") | "Return" | "RETURN";
-			return_statement = keyword_return >> expression >> keyword_force;
+			return_statement = keyword_return >> expression;
 
 			// Terminal expressions
-			terminal_expression = number[print_number()] | boolean_constant | symbol;
+			terminal_expression = number[print_number()] 
+				| boolean_constant 
+				| symbol[print_symbol()];
 			number = real_p;
 			keyword_true = str_p("true") | "True" | "TRUE";
 			keyword_false = str_p("false") | "False" | "FALSE";
@@ -368,13 +383,19 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// otherwise things like "When x Bet force" would treat "x Bet force"
 			// as a single keyword and cause an error.
 			// http://www.boost.org/doc/libs/1_40_0/libs/spirit/classic/doc/quickref.html
-			symbol = (lexeme_d[alpha_p >> *alnum_p][print_symbol()]) | invalid_symbol;
+			symbol = (lexeme_d[alpha_p >> *alnum_p]) | invalid_symbol;
 			// "Symbols" cintaining invalid cahracters
 			invalid_character = str_p(";")  | "," | ":" | "|" | "@" | "€" | "!" | "\\"
 				| "\""  | "§" | "$" | "&" | "?" | "´" | "´" | "[" | "]"
 				| "^" | "°" | "{" | "}" | "#" | "³" | "²";
 			invalid_symbol = (*alnum_p >> invalid_character 
 				>> *(alnum_p | invalid_character))[error_invalid_character()];
+
+			BOOST_SPIRIT_DEBUG_NODE(equality_expression);
+			BOOST_SPIRIT_DEBUG_NODE(symbol);
+			BOOST_SPIRIT_DEBUG_NODE(number);
+			BOOST_SPIRIT_DEBUG_NODE(relational_operator);
+			BOOST_SPIRIT_DEBUG_NODE(relational_expression);
 		} 
 
 		const boost::spirit::rule<Scanner> &start() 
