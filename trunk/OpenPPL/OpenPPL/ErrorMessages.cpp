@@ -161,10 +161,19 @@ static const char *error_messages[k_number_of_error_codes] =
 	"\n"
 	"No detailed desription available.\n"
 	"Common mistakes are:\n"
-	"* misspelling of keywords\n"
-	"* illegal characters)\n"
-	"\n"
+	"  * misspelling of keywords\n"
+	"  * illegal characters\n"
 	"Maybe you even did something very special?\n"
+	"\n"
+	"Finding this error may be difficult.\n"
+	"It could be slightly before the location that got reported.\n"
+	"If all else fails, you could try to:\n"
+	"  * simplify the expressions\n"
+	"  * temporary comment out some code\n"
+	"  * add as much brackets as possible\n"
+	"\n"
+	"Good luck, dear friend.\n"
+
 };
 
 void TerminateProcessing()

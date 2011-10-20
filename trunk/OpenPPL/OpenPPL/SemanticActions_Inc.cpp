@@ -10,6 +10,13 @@
 // Larger code-snippets
 //
 
+/*bool preflop_section_found = false;
+bool flop_section_found = false;
+bool turn_section_found = false;
+bool river_section_found = false;
+*/
+
+
 struct print_license
 { 
 	void operator()(const char *begin, const char *end) const 
@@ -263,27 +270,28 @@ struct print_operator
 	} 
 };
 
-struct print_bracket 
+static const int k_number_of_different_brackets = 2;
+
+struct print_opening_bracket 
 { 
 	void operator()(const char *begin, const char *end) const 
 	{ 
-		std::string text = std::string(begin, end);
-		const int k_number_of_different_brackets = 2;
-		if (text == "(")
-		{
-			// OpenHoldem supports 3 kinds of brackets: (), [], {}
-			// We only use the first 2 pairs, because the 3rd one
-			// does IMO look too similar to the first one.
-			char open_brackets[k_number_of_different_brackets + 1] = "([";
-			current_output << open_brackets[bracket_counter % k_number_of_different_brackets];
-			bracket_counter++;
-		}
-		else
-		{
-			bracket_counter--;
-			char close_brackets[k_number_of_different_brackets + 1] = ")]";
-			current_output << close_brackets[bracket_counter % k_number_of_different_brackets];
-		}
+		// OpenHoldem supports 3 kinds of brackets: (), [], {}
+		// We only use the first 2 pairs, because the 3rd one
+		// does IMO look too similar to the first one.
+		char open_brackets[k_number_of_different_brackets + 1] = "([";
+		current_output << open_brackets[bracket_counter % k_number_of_different_brackets];
+		bracket_counter++;
+		
+};
+
+struct print_closing_bracket 
+{ 
+	void operator()(const char *begin, const char *end) const 
+	{ 
+		bracket_counter--;
+		char close_brackets[k_number_of_different_brackets + 1] = ")]";
+		current_output << close_brackets[bracket_counter % k_number_of_different_brackets];
 	} 
 };
 
@@ -303,35 +311,35 @@ struct print_predefined_action
 		std::transform(begin, end, text.begin(), std::tolower);
 		if ((text == "call") || (text == "play"))
 		{
-			current_output << "f$OpenPPL_Action_Call";
+			current_output << "f$OpenPPL_Call";
 		}
 		else if ((text == "raisemin") || (text == "betmin"))
 		{
-			current_output << "f$OpenPPL_Action_RaiseMin";
+			current_output << "f$OpenPPL_RaiseMin";
 		}
 		else if ((text == "raisehalfpot") || (text == "bethalfpot"))
 		{
-			current_output << "f$OpenPPL_Action_RaiseHalfPot";
+			current_output << "f$OpenPPL_RaiseHalfPot";
 		}
 		else if ((text == "raisepot") || (text == "betpot"))
 		{
-			current_output << "f$OpenPPL_Action_RaisePot";
+			current_output << "f$OpenPPL_RaisePot";
 		}
 		else if ((text == "raisemax") || (text == "betmax") || (text == "allin"))
 		{
-			current_output << "f$OpenPPL_Action_RaiseMax";
+			current_output << "f$OpenPPL_RaiseMax";
 		}		
 		else if ((text == "raise") || (text == "bet"))
 		{
-			current_output << "f$OpenPPL_Action_Raise";
+			current_output << "f$OpenPPL_Raise";
 		}
 		else if (text == "fold")
 		{
-			current_output <<  "f$OpenPPL_Action_Fold";
+			current_output <<  "f$OpenPPL_Fold";
 		}
 		else if (text == "sitout")
 		{
-			current_output << "f$OpenPPL_Action_SitOut";
+			current_output << "f$OpenPPL_SitOut";
 		}
 		// Beep not supported and handled otherwhere.
 	} 
@@ -411,7 +419,7 @@ struct print_when_others_fold_force
 		cout << "//" << endl;
 		cout << "// When Others Fold Force" << endl;
 		cout << "//" << endl;
-		cout << "f$OpenPPL_Action_Fold" << endl << endl << endl; 
+		cout << "f$OpenPPL_Fold" << endl << endl << endl; 
 	} 
 };
 
@@ -567,6 +575,51 @@ struct error_action_without_force
 		ErrorMessage(k_error_action_without_force, ErroneousCodeSnippet(begin));
 	}
 };
+/*
+struct register_code_section
+{
+	void operator()(const char *begin, const char *end) const 
+	{
+		CString text = std::string(begin, end).c_str();
+		CString text_lowercase = text.MakeLower();
+		if (text == "preflop")
+		{
+			preflop_section_found = true;
+		}
+		else if (text == "flop")
+		{
+			flop_section_found = true;
+		}
+		else if (text == "turn")
+		{
+			turn_section_found = true;
+		}
+		else if (text == "river")
+		{
+			river_section_found = true;
+		}
+		else
+		{
+			MessageBox(0, "Internal Error: invalid name of code section detected.", "Error", 0);
+		}
+	}
+};
+*/
+/*
+struct check_for_missing_code_section
+{
+	void operator()(const char *begin, const char *end) const 
+	{
+		if ((preflop_section_found == false)
+			|| (flop_section_found == false)
+			|| (turn_section_found == false)
+			|| (river_section_found == false))
+		{
+			ErrorMessage(k_error_missing_code_section, ErroneousCodeSnippet(begin));
+		}
+	}
+};
+*/
 
 struct error_missing_code_section
 {
