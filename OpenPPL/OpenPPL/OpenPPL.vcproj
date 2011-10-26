@@ -165,6 +165,18 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ListOfKeywords_Inc.cpp"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\ListOfOpenHoldemSymbolPrefixes.cpp"
 				>
 			</File>
