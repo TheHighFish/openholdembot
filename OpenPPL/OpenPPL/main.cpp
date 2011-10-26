@@ -153,41 +153,39 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 					[print_technical_functions()]
 					[print_OpenPPL_Library()];
 
+#include "ListOfKeywords_Inc.cpp"
+
 			missing_keyword_custom = (str_p("") >> custom_sections)[error_missing_keyword_custom()];
 			  
 			// Option settings - to be ignored
 			option_settings_to_be_ignored = *single_option;
 			single_option = option_name >> '=' >> option_value;
 			option_name = alpha_p >> *(alnum_p | "-");
-			keyword_on = str_p("on") | "On" | "ON";
-			keyword_off = str_p("off") | "Off" | "OFF";
+			
 			option_value = keyword_on | keyword_off | number;
 
 			// Start of custom code
-			keyword_custom = str_p("custom") | "Custom" | "CUSTOM";
 
+			/***
 			// user defined lists
 			list_section = keyword_lists >> *list_definition;
-			keyword_lists = str_p("lists") | "Lists" | "LISTS";
 			list_definition = keyword_new >> keyword_list
 				>> number[print_list_header()] >> list_content;
 			list_content = end_of_list || (next_line_of_list >> end_of_list);
 			next_line_of_list = (anychar_p - eol_p - end_p) >> (eol_p | end_p);
 			end_of_list = keyword_end >> keyword_list;
-			keyword_list = str_p("list") | "List" | "LIST";
+			***/
 
+			/***
 			// User defined symbols
 			symbol_section = keyword_symbols >> *symbol_definition;
-			keyword_new = str_p("new") | "New" | "NEW";
-			keyword_symbols = str_p("symbols") | "Symbols" | "SYMBOLS";
-			keyword_symbol = str_p("symbol") | "Symbol" | "SYMBOL";
-			keyword_end = str_p("end") | "End" | "END";
 			symbol_definition = keyword_new >> keyword_symbol[reset_variables()]
 				>> symbol[print_function_header_for_betting_round()] 
 				>> when_section
 				>> keyword_end >> keyword_symbol[reset_variables()]
 					[print_default_return_value_for_user_defined_symbol()]
 					[reset_variables()];
+			***/
 
 			// Preflop, flop, turn, river
 			code_sections = preflop_section
@@ -198,22 +196,18 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 					[print_function_header_for_betting_round()]
 				>> when_section)[check_for_correct_when_others_fold_force()]
 					[print_when_others_fold_force()][reset_variables()];
-			keyword_preflop = str_p("preflop") | "Preflop" | "PREFLOP";
 			flop_section = (keyword_flop/*[register_code_section()]*/
 					[print_function_header_for_betting_round()]
 				>> when_section)[check_for_correct_when_others_fold_force()]
 					[print_when_others_fold_force()][reset_variables()];
-			keyword_flop = str_p("flop") | "Flop" | "FLOP";
 			turn_section = (keyword_turn/*[register_code_section()]*/
 					[print_function_header_for_betting_round()]
 				>> when_section)[check_for_correct_when_others_fold_force()]
 					[print_when_others_fold_force()][reset_variables()];
-			keyword_turn = str_p("turn") | "Turn" | "TURN";
 			river_section = (keyword_river/*[register_code_section()]*/
 					[print_function_header_for_betting_round()]
 				>> when_section)[check_for_correct_when_others_fold_force()]
 					[print_when_others_fold_force()][reset_variables()];
-			keyword_river = str_p("river") | "River" | "RIVER";
 			when_section = when_condition_sequence;
 			
 			missing_code_section =
@@ -228,7 +222,6 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			
 
 			// When-condition sequences (with action)
-			keyword_when = str_p("when") | "When" | "WHEN";
 			when_condition = (keyword_when >> condition)[handle_when_condition()];
 			when_condition_sequence = *(when_others_when_others_fold_force
 				| when_others_fold_force
@@ -236,7 +229,6 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				| action);
 
 			// When Others Fold Force
-			keyword_others = str_p("others") | "Others" | "OTHERS";
 			when_others_fold_force = (keyword_when >> keyword_others >> keyword_fold 
 				>> keyword_force)[set_when_others_fold_force_detected()];
 			when_others_when_others_fold_force = (keyword_when >> keyword_others 
@@ -253,11 +245,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			additive_operator = (str_p("+") | "-")[print_operator()];
 			equality_operator = str_p("=")[print_operator()];
 			relational_operator = longest_d[(equality_operator | str_p("<=") | ">=" | "<" | ">")][print_operator()];
-			keyword_and = (str_p("and") | "And" | "AND")[print_operator()];
-			keyword_xor = (str_p("xor") | "Xor" | "XOr" | "XOR")[print_operator()];
-			keyword_or = (str_p("or") | "Or" | "OR")[print_operator()];
-			keyword_not = (str_p("not") | "Not" | "NOT"); // No print_operator() here, as we want to add extra-brackets for clarification.
-
+			
 			// Expressions
 			expression = or_expression;
 			bracket_expression = str_p("(")[print_opening_bracket()] >> expression >> str_p(")")[print_closing_bracket()];
@@ -281,9 +269,6 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// Hand and board expressions
 			card_constant = lexeme_d[ch_p("A") | "a" | "K" | "k" | "Q" | "q" | "J" | "j" |
 				"T" | "t" | "9" | "8" | "7" | "6" | "5" | "4" | "3" | "2"];
-			keyword_suited = str_p("suited") | "Suited" | "SUITED";
-			keyword_board = str_p("board") | "Board" | "BOARD";
-			keyword_hand = str_p("hand") | "Hand" | "HAND";
 			suit_constant = lexeme_d[ch_p("C") | "c" | "D"| "d" | "H" | "h" | "S" | "s"];
 			
 			// card_expression = longest_d[
@@ -330,25 +315,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				| predefined_action
 				| return_statement;
 			predefined_action = keyword_predefined_action[print_predefined_action()];
-			keyword_force = (str_p("force") | "Force" | "FORCE");
-			keyword_beep = (str_p("beep") | "Beep" | "BEEP")[error_beep_not_supported()];
-			keyword_call = str_p("call") | "Call" | "CALL";
-			keyword_play = str_p("play") | "Play" | "PLAY";
-			keyword_raise = str_p("raise") | "Raise" | "RAISE";
-			keyword_raisemin = str_p("raisemin") | "Raisemin" | "RaiseMin" | "RAISEMIN";
-			keyword_raisehalfpot = str_p("raisehalfpot") | "Raisehalfpot" | "RaiseHalfPot" | "RAISEHALFPOT";
-			keyword_raisepot = str_p("raisepot") | "Raisepot" | "RaisePot" | "RAISEPOT";
-			keyword_raisemax = str_p("raisemax") | "Raisemax" | "RaiseMax" | "RAISEMAX";
-			// "Allin" is no standard PPL-action,
-			// but it is a convenient extension for somewhat confused users.
-			keyword_allin = str_p("allin") | "Allin" | "ALLIN";
-			keyword_fold = str_p("fold") | "Fold" | "FOLD";
-			keyword_bet = str_p("bet") | "Bet" | "BET";
-			keyword_betmin = str_p("betmin") | "Betmin" | "BetMin" | "BETMIN";
-			keyword_bethalfpot = str_p("bethalfpot") | "Bethalfpot" | "BetHalfPot" | "BETHALFPOT";
-			keyword_betpot = str_p("betpot") | "Betpot" | "BetPot" | "BETPOT";
-			keyword_betmax = str_p("betmax") | "Betmax" | "BetMax" | "BETMAX";
-			keyword_sitout = str_p("sitout") | "Sitout" | "SitOut" | "SITOUT";
+			
 			keyword_predefined_action = longest_d[keyword_beep | keyword_call	| keyword_play 
 				| keyword_raisemin | keyword_raisehalfpot
 				| keyword_raisepot | keyword_raisemax |	keyword_raise | keyword_fold
@@ -357,7 +324,6 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			fixed_betsize_action = (keyword_bet | keyword_raise) >> number[print_comment_for_fixed_betsize()];
 			relative_betsize_action = (keyword_bet | keyword_raise) >> number[print_number()] 
 				>> percentage_operator[print_percentage_operator()][print_relative_potsize_action()] ;
-			keyword_others = str_p("others") | "Others" | "OTHERS";
 			erroneous_action_without_force = action_without_force[error_action_without_force()];
 
 			// UserDefined Variables
@@ -367,7 +333,6 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			*/
 
 			// Return statement (without force, as this is part of "action")
-			keyword_return = str_p("return") | "Return" | "RETURN";
 			return_statement = keyword_return >> expression;
 
 			// Terminal expressions
@@ -375,8 +340,6 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				| boolean_constant 
 				| symbol[print_symbol()];
 			number = real_p;
-			keyword_true = str_p("true") | "True" | "TRUE";
-			keyword_false = str_p("false") | "False" | "FALSE";
 			boolean_constant = (keyword_true | keyword_false)[print_symbol()];
 			// "Symbol" is a lexeme - we have to be very careful here.
 			// We have to use the lexeme_d directive to disable skipping of whitespace,
