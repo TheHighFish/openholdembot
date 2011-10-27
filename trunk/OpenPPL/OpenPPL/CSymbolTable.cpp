@@ -44,6 +44,7 @@ void CSymbolTable::AddSymbolsFromFile(CString filename)
 		input_file.getline(buffer, max_length, '\n');
 		if (input_file.badbit ||input_file.failbit)
 		{
+			perror(("error while reading file " + filename));
 			MessageBox(0, "Error: Can't read input file.\n"
 				"Probably line too long.\n"
 				"10.000 characters is the maximum.\n"
