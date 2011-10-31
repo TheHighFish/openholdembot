@@ -241,7 +241,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// Operators
 			unary_operator = (keyword_not | "-")[print_operator()];
 			percentage_operator = str_p("%")[print_percentage_operator()];
-			multiplicative_operator = (str_p("*") | ("/"))[print_operator()] | multiplicative_operator = (str_p("*") | ("/"))[print_operator()] | percentage_operator; 
+			multiplicative_operator = (str_p("*") | ("/"))[print_operator()] | percentage_operator; 
 			additive_operator = (str_p("+") | "-")[print_operator()];
 			equality_operator = str_p("=")[print_operator()];
 			relational_operator = longest_d[(equality_operator | str_p("<=") | ">=" | "<" | ">")][print_operator()];
@@ -365,7 +365,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 		{ 
 			return openPPL_code; 
 		} 
-	}; 
+	};
 }; 
 
 int main(int argc, char *argv[]) 

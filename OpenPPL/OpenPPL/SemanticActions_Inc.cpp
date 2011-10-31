@@ -282,7 +282,7 @@ struct print_opening_bracket
 		char open_brackets[k_number_of_different_brackets + 1] = "([";
 		current_output << open_brackets[bracket_counter % k_number_of_different_brackets];
 		bracket_counter++;
-		
+	}		
 };
 
 struct print_closing_bracket 
@@ -561,7 +561,7 @@ struct error_specific_suits_not_supported
 };
 
 struct error_invalid_card_expression
-	{
+{
 	void operator()(const char *begin, const char *end) const 
 	{
 		ErrorMessage(k_error_invalid_card_expression, ErroneousCodeSnippet(begin));
@@ -654,7 +654,7 @@ struct error_missing_brackets_for_card_expression
 };
 
 struct error_invalid_character
-	{
+{
 	void operator()(const char *begin, const char *end) const 
 	{
 		ErrorMessage(k_error_invalid_character, ErroneousCodeSnippet(begin));
