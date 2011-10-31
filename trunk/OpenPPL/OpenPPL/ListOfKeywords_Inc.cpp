@@ -45,7 +45,7 @@ keyword_hand = str_p("hand") | "Hand" | "HAND";
 
 // Actions
 keyword_force = (str_p("force") | "Force" | "FORCE");
-eyword_beep = (str_p("beep") | "Beep" | "BEEP")[error_beep_not_supported()];
+keyword_beep = (str_p("beep") | "Beep" | "BEEP")[error_beep_not_supported()];
 keyword_call = str_p("call") | "Call" | "CALL";
 keyword_play = str_p("play") | "Play" | "PLAY";
 keyword_raise = str_p("raise") | "Raise" | "RAISE";
