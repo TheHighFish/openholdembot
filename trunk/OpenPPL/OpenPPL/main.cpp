@@ -15,6 +15,7 @@
 #include "CSymbolTable.h"
 #include "ErrorMessages.h"
 #include "ListOfOpenHoldemSymbolPrefixes.h"
+#include "SwagFunctionForOpenHoldem_2_1_x.h"
 
 using namespace boost::spirit;
 using namespace std;
@@ -60,24 +61,6 @@ string original_source_of_current_open_ended_when_condition;
 int bracket_counter = 0;
 
 boost::spirit::parse_info<> pi;
-
-void AddSwagFunctionsForOH_2_1_x_IfExistent()
-{
-	const CString swag_file_name = "OpenPPL_SwagFunctions_For_OpenHoldem_2.1.x_Only_Please_Delete_This_File_Once_You_Use_OpenHoldem_2.2.0_And_Later.ohf";
-	fstream swag_file(swag_file_name);
-	// We wrote the swag-functions and know, that 1000 is way too much.
-	// This file will never be changed, so we should be on the safe side.
-	const int max_line_length = 1000;
-	char next_line[max_line_length];
-	if (swag_file.is_open())
-	{
-		while (!swag_file.eof())
-		{
-			swag_file.getline(next_line, max_line_length);
-			cout << next_line << endl;
-		}
-	}
-}
 
 CString ErroneousCodeSnippet(const char *begin_of_erroneous_code_snippet)
 {
@@ -239,12 +222,14 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				[extra_closing_brackets_for_condition()];
 
 			// Operators
-			unary_operator = (keyword_not | "-")[print_operator()];
-			percentage_operator = str_p("%")[print_percentage_operator()];
-			multiplicative_operator = (str_p("*") | ("/"))[print_operator()] | percentage_operator; 
-			additive_operator = (str_p("+") | "-")[print_operator()];
-			equality_operator = str_p("=")[print_operator()];
-			relational_operator = longest_d[(equality_operator | str_p("<=") | ">=" | "<" | ">")][print_operator()];
+			unary_operator = (keyword_not | "-");
+			percentage_operator = str_p("%");
+			multiplicative_operator = (str_p("*") | ("/")) | percentage_operator; 
+			additive_operator = (str_p("+") | "-");
+			equality_operator = str_p("=");
+			relational_operator = longest_d[(equality_operator | str_p("<=") | ">=" | "<" | ">")];
+			binary_operator = (multiplicative_operator | additive_operator 
+				| relational_operator)[print_operator()];
 			
 			// Expressions
 			expression = or_expression;

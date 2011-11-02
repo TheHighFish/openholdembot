@@ -345,6 +345,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\Swag_Function_For_OpenHoldem_2_1_x.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\UserDefinedVariables.cpp"
 				>
 			</File>
@@ -376,6 +380,10 @@
 			</File>
 			<File
 				RelativePath=".\main.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Swag_Function_For_OpenHoldem_2_1_x.h"
 				>
 			</File>
 		</Filter>
