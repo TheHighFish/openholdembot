@@ -1,4 +1,4 @@
-#include "Swag_Function_For_OpenHoldem_2_1_x.h"
+#include "SwagFunctionForOpenHoldem_2_1_x.h"
 #include <afx.h>
 #include <fstream> 
 #include <iostream> 
