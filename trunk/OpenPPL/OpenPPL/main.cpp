@@ -228,29 +228,19 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			additive_operator = (str_p("+") | "-");
 			equality_operator = str_p("=");
 			relational_operator = longest_d[(equality_operator | str_p("<=") | ">=" | "<" | ">")];
+			binary_boolean_operator = keyword_and | keyword_or | keyword_xor;
 			binary_operator = (multiplicative_operator | additive_operator 
-				| relational_operator)[print_operator()];
+				| relational_operator | binary_boolean_operator)[print_operator()];
 			
 			// Expressions
-			expression = or_expression;
+			expression = terminal_expression | bracket_expression 
+				| missing_closing_bracket_expression | binary_expression 
+				| unary_expression | hand_expression | board_expression;
+			unary_expression = !unary_operator[print_opening_bracket()] >> operand_expression[print_opening_bracket()];
+			binary_expression = unary_expression >> binary_operator >> unary_expression;
 			bracket_expression = str_p("(")[print_opening_bracket()] >> expression >> str_p(")")[print_closing_bracket()];
 			missing_closing_bracket_expression = (str_p("(") >> expression) >> str_p("")[error_missing_closing_bracket()];
-			operand_expression = terminal_expression | bracket_expression 
-				| missing_closing_bracket_expression;
-			unary_expression = !unary_operator[print_opening_bracket()] >> operand_expression[print_opening_bracket()];
-			multiplicative_expression = unary_expression >> *(multiplicative_operator >> unary_expression);
-			additive_expression = multiplicative_expression >> *(additive_operator >> multiplicative_expression);
-			relational_expression = additive_expression >> *(relational_operator >> additive_expression);
 			
-			equality_expression = hand_expression_with_brackets 
-				| board_expression_with_brackets 
-                | hand_expression_without_brackets 
-				| board_expression_without_brackets
-				| (relational_expression /*>> *(str_p("=")[print_operator()] >> relational_expression)*/);
-			and_expression = equality_expression >> *(keyword_and >> equality_expression);
-			xor_expression = and_expression >> *(keyword_xor >> and_expression);
-			or_expression = xor_expression >> *(keyword_or >> xor_expression);
-
 			// Hand and board expressions
 			card_constant = lexeme_d[ch_p("A") | "a" | "K" | "k" | "Q" | "q" | "J" | "j" |
 				"T" | "t" | "9" | "8" | "7" | "6" | "5" | "4" | "3" | "2"];
@@ -268,12 +258,14 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				[error_specific_suits_not_supported()];
 
 			// hand expression
+			hand_expression = hand_expression_with_brackets | hand_expression_without_brackets;
 			hand_expression_with_brackets = str_p("(") >> keyword_hand 
                     >> str_p("=") >> card_expression[print_hand_expression()] >> ")";            
             hand_expression_without_brackets = (keyword_hand 
                     >> str_p("=") >> card_expression)[error_missing_brackets_for_card_expression()];
 
 			// board expressions
+			board_expression = board_expression_with_brackets | board_expression_without_brackets;
 			board_expression_with_brackets = str_p("(") 
                     >> (suited_board_expression | non_suited_board_expression) >> ")";
 			board_expression_without_brackets = (keyword_board 

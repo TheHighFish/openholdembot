@@ -345,7 +345,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\Swag_Function_For_OpenHoldem_2_1_x.cpp"
+				RelativePath=".\SwagFunctionForOpenHoldem_2_1_x.cpp"
 				>
 			</File>
 			<File
@@ -383,7 +383,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Swag_Function_For_OpenHoldem_2_1_x.h"
+				RelativePath=".\SwagFunctionForOpenHoldem_2_1_x.h"
 				>
 			</File>
 		</Filter>
