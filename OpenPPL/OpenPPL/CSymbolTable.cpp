@@ -42,7 +42,7 @@ void CSymbolTable::AddSymbolsFromFile(CString filename)
 		const int max_length = 10000;
 		char buffer[max_length];
 		input_file.getline(buffer, max_length, '\n');
-		if (input_file.badbit ||input_file.failbit)
+		if ((input_file.badbit ||input_file.failbit) && !input_file.eofbit)
 		{
 			perror(("error while reading file " + filename));
 			MessageBox(0, "Error: Can't read input file.\n"

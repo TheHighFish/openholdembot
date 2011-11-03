@@ -359,7 +359,7 @@ int main(int argc, char *argv[])
 			"\n"
 			"OpenPPL INPUTFILE.txt > OUTPUTFILE.ohf";
 
-		//MessageBox(0, error_message, "Error", 0);
+		MessageBox(0, error_message, "Error", 0);
 		exit(-1);
 	}
 	else
