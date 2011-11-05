@@ -1,6 +1,5 @@
-#define BOOST_SPIRIT_DEBUG  ///$$$ DEFINE THIS BEFORE ANYTHING ELSE $$$///
+//#define BOOST_SPIRIT_DEBUG  ///$$$ DEFINE THIS BEFORE ANYTHING ELSE $$$///
 
-//#include <afxwin.h>
 #include <afx.h>
 #include <boost/spirit.hpp> 
 #include <boost/spirit/iterator/position_iterator.hpp>
@@ -206,16 +205,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 
 			// When-condition sequences (with action)
 			when_condition = (keyword_when >> condition)[handle_when_condition()];
-			when_condition_sequence = *(when_others_when_others_fold_force
-				| when_others_fold_force
-				| when_condition
-				| action);
-
-			// When Others Fold Force
-			when_others_fold_force = (keyword_when >> keyword_others >> keyword_fold 
-				>> keyword_force)[set_when_others_fold_force_detected()];
-			when_others_when_others_fold_force = (keyword_when >> keyword_others 
-				>> when_others_fold_force)[set_when_others_when_others_fold_force_detected()];
+			when_condition_sequence = *(when_condition | action);
 			
 			// Conditions
 			condition = str_p("")[extra_brackets_for_condition()] >> expression
@@ -330,12 +320,6 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				| "^" | "°" | "{" | "}" | "#" | "³" | "²";
 			invalid_symbol = (*alnum_p >> invalid_character 
 				>> *(alnum_p | invalid_character))[error_invalid_character()];
-
-			BOOST_SPIRIT_DEBUG_NODE(equality_expression);
-			BOOST_SPIRIT_DEBUG_NODE(symbol);
-			BOOST_SPIRIT_DEBUG_NODE(number);
-			BOOST_SPIRIT_DEBUG_NODE(relational_operator);
-			BOOST_SPIRIT_DEBUG_NODE(relational_expression);
 		} 
 
 		const boost::spirit::rule<Scanner> &start() 
