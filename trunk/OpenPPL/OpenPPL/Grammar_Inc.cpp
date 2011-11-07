@@ -31,30 +31,43 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 		definition(const json_grammar &self) 
 		{ 
 			using namespace boost::spirit; 
-
+			//
 			// Whole PPL-file
-			openPPL_code = option_settings_to_be_ignored
-				>> ((keyword_custom [print_license()]
-					[print_options()][print_comment_for_list_section()]
+			//
+			openPPL_code = 
+				option_settings_to_be_ignored
+				>> ((keyword_custom 
+					[print_license()]
+					[print_options()]
+					[print_comment_for_list_section()]
 				>> custom_sections)
-					| missing_keyword_custom);
-			custom_sections = !list_section[print_user_defined_functions()]
-				>> !symbol_section[print_main_code_sections()]
-				>> (code_sections /*| missing_code_section*/)
+					/*| missing_keyword_custom) !!!*/;
+			custom_sections = 
+				!list_section
+					[print_user_defined_functions()]
+				>> !symbol_section
+					[print_main_code_sections()]
+				>> (code_sections)
 				>> end_p
 					[print_prime_coded_board_ranks()]
 					[print_technical_functions()]
 					[print_OpenPPL_Library()];
 
+			//
+			// Keywords like "When", "RaiseMax", etc.
+			///
 #include "ListOfKeywords_Inc.cpp"
 
-			missing_keyword_custom = (str_p("") >> custom_sections)[error_missing_keyword_custom()];
-			  
-			// Option settings - to be ignored
-			option_settings_to_be_ignored = *single_option;
-			single_option = option_name >> '=' >> option_value;
-			option_name = alpha_p >> *(alnum_p | "-");
+			// !!!missing_keyword_custom = (str_p("") >> custom_sections)[error_missing_keyword_custom()];
 			
+			//
+			// Option settings - to be ignored
+			//
+			option_settings_to_be_ignored = *single_option;
+			single_option = option_name 
+				>> '=' 
+				>> option_value;
+			option_name = alpha_p >> *(alnum_p | "-");
 			option_value = keyword_on | keyword_off | number;
 
 			// Start of custom code
@@ -103,16 +116,13 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 					[print_when_others_fold_force()][reset_variables()];
 			when_section = when_condition_sequence;
 			
-			missing_code_section =
-				// missing river
-				((preflop_section >> flop_section >> turn_section >> str_p("")[error_missing_code_section()])
-				// missing turn
-				|((preflop_section >> flop_section) >> str_p("")[error_missing_code_section()]) 
-				// missing flop
-				|(preflop_section >> str_p("")[error_missing_code_section()]) 
-				// missing preflop
-				|(str_p("")[error_missing_code_section()]));
-			
+			// ToDo:
+			//
+			// Better way to check for missing code-sections.
+			// * Register, what we have seen and then throw an error-message
+			//   at the end of parsing.
+			// * Change the grammar, so that it accepts e.g. a sequence 
+			//   of preflop, turn and river 
 
 			// When-condition sequences (with action)
 			when_condition = (keyword_when >> condition)[handle_when_condition()];
