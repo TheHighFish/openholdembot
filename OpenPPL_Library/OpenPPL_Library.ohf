@@ -2757,7 +2757,7 @@ f$OpenPPL_SmallBlindChair == 8 ? pt_vpip8 :
 f$OpenPPL_SmallBlindChair == 9 ? pt_vpip9 :
 -1
 
-##f$PT_BigBlind_FBBTS##
+##f$OpenPPL_PT_BigBlind_FBBTS##
 f$OpenPPL_BigBlindChair == 0 ? pt_fbbts0 :
 f$OpenPPL_BigBlindChair == 1 ? pt_fbbts1 :
 f$OpenPPL_BigBlindChair == 2 ? pt_fbbts2 :
