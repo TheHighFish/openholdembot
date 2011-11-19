@@ -6,6 +6,8 @@
 // otherwise the parser would become way too large to keep it understandable
 // and AFAIK we can't distribute it over multiple modules.
 
+#undef DEBUG_WHEN_CONDITIONS
+
 //
 // Larger code-snippets
 //
@@ -438,7 +440,12 @@ struct print_default_return_value_for_user_defined_symbol
 //
 // (Open-ended) when-conditions
 //
-
+// Our simplified grammar allows arbitrary sequences 
+// of (open-ended) when-conditions and actions.
+// But we can more easily generate OH-script-code and check 
+// for illegal Open-PPL-code in "handle_when_condition()"
+// this way.
+//
 struct handle_when_condition
 {
 	void operator()(const char *begin, const char *end) const 
@@ -447,16 +454,22 @@ struct handle_when_condition
 		when_conditions_since_last_action++;
 		if (when_conditions_since_last_action == 1)
 		{
+			// 1st when-condition found
+			// When-condition with action
 			original_source_of_current_when_condition = string(begin, end);
 			current_when_condition.str("");
 			current_when_condition.clear();
 			current_when_condition << current_output.str();
-			//cout << "WHEN CONDITION: " << current_when_condition.str() << endl;
+#ifdef DEBUG_WHEN_CONDITIONS
+			cout << "WHEN CONDITION: " << current_when_condition.str() << endl;
+#endif
 			current_output.str("");
 			current_output.clear();
 		}
 		else if (when_conditions_since_last_action == 2)
 		{
+			// 2nd when-condition found
+			// Open-ended when condition
 			open_ended_when_condition_detected = true;
 			original_source_of_current_open_ended_when_condition =
 				original_source_of_current_when_condition;
@@ -466,8 +479,10 @@ struct handle_when_condition
 			current_when_condition.str("");
 			current_when_condition.clear();
 			current_when_condition << current_output.str();
-			//cout << "WHEN CONDITION (OPEN ENDED): " << current_open_ended_when_condition.str() << endl;
-			//cout << "WHEN CONDITION: " << current_when_condition.str() << endl;
+#ifdef DEBUG_WHEN_CONDITIONS
+			cout << "WHEN CONDITION (OPEN ENDED): " << current_open_ended_when_condition.str() << endl;
+			cout << "WHEN CONDITION: " << current_when_condition.str() << endl;
+#endif
 			cout << "//" << endl;
 			cout << "// Starting open-ended when-condition" << endl;
 			cout << "// " << original_source_of_current_open_ended_when_condition << endl;
@@ -477,6 +492,8 @@ struct handle_when_condition
 		}
 		else
 		{
+			// More than 2 when-conditions found: 
+			// illegal Open-PPL-code
 			ErrorMessage(k_error_too_many_open_ended_when_conditions,
 				ErroneousCodeSnippet(begin));
 		}
@@ -534,7 +551,6 @@ struct handle_action
 			cout << current_when_condition.str() << " ? "
 				 << current_output.str() << " :" << endl;
 		}
-		//cout << "ACTION: " << current_output.str() << endl;
 		current_output.str("");
 		current_output.clear();
 	}
