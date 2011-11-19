@@ -40,8 +40,8 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 					[print_license()]
 					[print_options()]
 					[print_comment_for_list_section()]
-				>> custom_sections)
-					/*| missing_keyword_custom) !!!*/;
+				>> custom_sections));
+					/*| missing_keyword_custom); !!!*/
 			custom_sections = 
 				!list_section
 					[print_user_defined_functions()]
@@ -87,7 +87,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			symbol_section = keyword_symbols >> *symbol_definition;
 			symbol_definition = keyword_new >> keyword_symbol[reset_variables()]
 				>> symbol[print_function_header_for_betting_round()] 
-				>> when_section
+				>> code_block
 				>> keyword_end >> keyword_symbol[reset_variables()]
 					[print_default_return_value_for_user_defined_symbol()]
 					[reset_variables()];
@@ -100,21 +100,20 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				>> river_section;
 			preflop_section = (keyword_preflop/*[register_code_section()]*/
 					[print_function_header_for_betting_round()]
-				>> when_section)[check_for_correct_when_others_fold_force()]
+				>> code_block)[check_for_correct_when_others_fold_force()]
 					[print_when_others_fold_force()][reset_variables()];
 			flop_section = (keyword_flop/*[register_code_section()]*/
 					[print_function_header_for_betting_round()]
-				>> when_section)[check_for_correct_when_others_fold_force()]
+				>> code_block)[check_for_correct_when_others_fold_force()]
 					[print_when_others_fold_force()][reset_variables()];
 			turn_section = (keyword_turn/*[register_code_section()]*/
 					[print_function_header_for_betting_round()]
-				>> when_section)[check_for_correct_when_others_fold_force()]
+				>> code_block)[check_for_correct_when_others_fold_force()]
 					[print_when_others_fold_force()][reset_variables()];
 			river_section = (keyword_river/*[register_code_section()]*/
 					[print_function_header_for_betting_round()]
-				>> when_section)[check_for_correct_when_others_fold_force()]
+				>> code_block)[check_for_correct_when_others_fold_force()]
 					[print_when_others_fold_force()][reset_variables()];
-			when_section = when_condition_sequence;
 			
 			// ToDo:
 			//
@@ -125,8 +124,14 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			//   of preflop, turn and river 
 
 			// When-condition sequences (with action)
+			//
+			// Our simplified grammar allows arbitrary sequences 
+			// of (open-ended) when-conditions and actions.
+			// But we can more easily generate OH-script-code and check 
+			// for illegal Open-PPL-code in "handle_when_condition()"
+			// this way.
+			code_block = *(when_condition | action);
 			when_condition = (keyword_when >> condition)[handle_when_condition()];
-			when_condition_sequence = *(when_condition | action);
 			
 			// Conditions
 			condition = str_p("")[extra_brackets_for_condition()] >> expression
@@ -239,7 +244,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			invalid_character = str_p(";")  | "," | ":" | "|" | "@" | "€" | "!" | "\\"
 				| "\""  | "§" | "$" | "&" | "?" | "´" | "´" | "[" | "]"
 				| "^" | "°" | "{" | "}" | "#" | "³" | "²";
-			invalid_symbol = (*alnum_p >> invalid_character 
+			invalid_symbol = (*alnum_p >> invalid_character
 				>> *(alnum_p | invalid_character))[error_invalid_character()];
 		} 
 
