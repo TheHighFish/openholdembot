@@ -79,7 +79,7 @@ int CAutoplayer::NumberOfVisibleButtons()
 	int number_of_visible_buttons = 0
 		+ (allin_button_defined ? 1 : 0)
 		+ (raise_button_defined ? 1 : 0)
-		+ (raise_button_defined ? 1 : 0)
+		+ (call_button_defined  ? 1 : 0)
 		+ (check_button_defined ? 1 : 0)
 		+ (fold_button_defined  ? 1 : 0);
 	return number_of_visible_buttons;
