@@ -562,9 +562,21 @@ bool CPokerTrackerThread::CheckName(int chr, bool &nameChanged)
 void CPokerTrackerThread::SetPlayerName(int chr, bool found, const char* pt_name, const char* scraped_name)
 {
 	_player_stats[chr].found = found;
-	memcpy(_player_stats[chr].pt_name, pt_name, k_max_length_of_playername);
-	memcpy(_player_stats[chr].scraped_name, scraped_name, k_max_length_of_playername);
-	write_log_pokertracker(2, "SetPlayerName: Done. ptname[%s] scrapedName[%s]\n", _player_stats[chr].pt_name, _player_stats[chr].scraped_name);
+	bool logResult = false;
+	if (0 != memcmp(_player_stats[chr].pt_name, pt_name, k_max_length_of_playername) )
+	{
+		memcpy(_player_stats[chr].pt_name, pt_name, k_max_length_of_playername);
+		logResult = true;
+	}
+	if (0 != memcmp(_player_stats[chr].scraped_name, scraped_name, k_max_length_of_playername) )
+	{
+		memcpy(_player_stats[chr].scraped_name, scraped_name, k_max_length_of_playername);
+		logResult = true;
+	}
+	if (logResult)
+	{
+		write_log_pokertracker(2, "SetPlayerName[%d]: Done. ptname[%s] scrapedName[%s]\n", chr, _player_stats[chr].pt_name, _player_stats[chr].scraped_name);
+	}
 }
 
 
