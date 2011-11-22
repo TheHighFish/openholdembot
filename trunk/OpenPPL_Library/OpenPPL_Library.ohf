@@ -2746,18 +2746,8 @@ f$OpenPPL_Middle
 ##f$OpenPPL_PT_LastRaiserPFR##
 (raischair != -1) ? pt_rpfr : -1
 
-##f$OpenPPL_PT_SmallBlind_VPIP##
-f$OpenPPL_SmallBlindChair == 0 ? pt_vpip0 :
-f$OpenPPL_SmallBlindChair == 1 ? pt_vpip1 :
-f$OpenPPL_SmallBlindChair == 2 ? pt_vpip2 :
-f$OpenPPL_SmallBlindChair == 3 ? pt_vpip3 :
-f$OpenPPL_SmallBlindChair == 4 ? pt_vpip4 :
-f$OpenPPL_SmallBlindChair == 5 ? pt_vpip5 :
-f$OpenPPL_SmallBlindChair == 6 ? pt_vpip6 :
-f$OpenPPL_SmallBlindChair == 7 ? pt_vpip7 :
-f$OpenPPL_SmallBlindChair == 8 ? pt_vpip8 :
-f$OpenPPL_SmallBlindChair == 9 ? pt_vpip9 :
--1
+##f$OpenPPL_PT_LastRaiserVPIP##
+(raischair != -1) ? pt_rvpip : -1
 
 ##f$OpenPPL_PT_BigBlind_FBBTS##
 f$OpenPPL_BigBlindChair == 0 ? pt_fbbts0 :
@@ -2770,6 +2760,19 @@ f$OpenPPL_BigBlindChair == 6 ? pt_fbbts6 :
 f$OpenPPL_BigBlindChair == 7 ? pt_fbbts7 :
 f$OpenPPL_BigBlindChair == 8 ? pt_fbbts8 :
 f$OpenPPL_BigBlindChair == 9 ? pt_fbbts9 :
+-1
+
+##f$OpenPPL_PT_SmallBlind_VPIP##
+f$OpenPPL_SmallBlindChair == 0 ? pt_vpip0 :
+f$OpenPPL_SmallBlindChair == 1 ? pt_vpip1 :
+f$OpenPPL_SmallBlindChair == 2 ? pt_vpip2 :
+f$OpenPPL_SmallBlindChair == 3 ? pt_vpip3 :
+f$OpenPPL_SmallBlindChair == 4 ? pt_vpip4 :
+f$OpenPPL_SmallBlindChair == 5 ? pt_vpip5 :
+f$OpenPPL_SmallBlindChair == 6 ? pt_vpip6 :
+f$OpenPPL_SmallBlindChair == 7 ? pt_vpip7 :
+f$OpenPPL_SmallBlindChair == 8 ? pt_vpip8 :
+f$OpenPPL_SmallBlindChair == 9 ? pt_vpip9 :
 -1
 
 //*****************************************************************************
