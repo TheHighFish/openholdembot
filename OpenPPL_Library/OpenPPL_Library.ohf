@@ -2749,6 +2749,9 @@ f$OpenPPL_Middle
 ##f$OpenPPL_PT_LastRaiserVPIP##
 (raischair != -1) ? pt_rvpip : -1
 
+##f$OpenPPL_PT_LastRaiser_AttemptToStealBlinds##
+(raischair != -1) ? pt_rpfats : -1
+
 ##f$OpenPPL_PT_BigBlind_FBBTS##
 f$OpenPPL_BigBlindChair == 0 ? pt_fbbts0 :
 f$OpenPPL_BigBlindChair == 1 ? pt_fbbts1 :
