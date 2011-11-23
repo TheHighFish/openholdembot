@@ -399,27 +399,13 @@ struct set_when_others_when_others_fold_force_detected
 	}
 };
 
-struct check_for_correct_when_others_fold_force
-{
-	void operator()(const char *begin, const char *end) const
-	{ 
-		if (open_ended_when_condition_detected && !when_others_when_others_fold_force_detected)
-		{
-			ErrorMessage(k_error_missing_when_others_fold_force, ErroneousCodeSnippet(begin));
-		}
-		else if (!open_ended_when_condition_detected && !when_others_fold_force_detected)
-		{
-			ErrorMessage(k_error_missing_when_others_fold_force, ErroneousCodeSnippet(begin));
-		}
-	}
-};
-
 struct print_when_others_fold_force
 { 
 	void operator()(const char *begin, const char *end) const 
 	{ 
 		cout << "//" << endl;
 		cout << "// When Others Fold Force" << endl;
+		cout << "// Automatically added, just to be safe.
 		cout << "//" << endl;
 		cout << "f$OpenPPL_Fold" << endl << endl << endl; 
 	} 

@@ -110,20 +110,6 @@ static const char *error_messages[k_number_of_error_codes] =
 	"is not possible with OpenPPL, as it would not be clear,\n"
 	"how the conditions are nested.\n",
 
-	// k_error_missing_when_others_fold_force
-	"Error: Missing \"When Others Fold Force\".\n"
-	"\n"
-	"OpenPPL does not provide any default bot logic in the background,\n"
-	"so all main code sections (preflop, flop, turn and river)\n"
-	"have to be explicitly terminated by\n"
-	"\n"
-	"When Others Fold Force\n"
-	"or\n"
-	"When Others\n"
-	"  When Others Fold Force.\n"
-	"\n"
-	"Please complete your formula so that all actions are specified.\n",
-
 	// k_error_unknown_symbol
 	"Unknown symbol\n"
 	"\n"

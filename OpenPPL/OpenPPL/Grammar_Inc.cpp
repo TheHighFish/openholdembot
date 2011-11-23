@@ -100,19 +100,19 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				>> river_section;
 			preflop_section = (keyword_preflop/*[register_code_section()]*/
 					[print_function_header_for_betting_round()]
-				>> code_block)[check_for_correct_when_others_fold_force()]
+				>> code_block)
 					[print_when_others_fold_force()][reset_variables()];
 			flop_section = (keyword_flop/*[register_code_section()]*/
 					[print_function_header_for_betting_round()]
-				>> code_block)[check_for_correct_when_others_fold_force()]
+				>> code_block)
 					[print_when_others_fold_force()][reset_variables()];
 			turn_section = (keyword_turn/*[register_code_section()]*/
 					[print_function_header_for_betting_round()]
-				>> code_block)[check_for_correct_when_others_fold_force()]
+				>> code_block)
 					[print_when_others_fold_force()][reset_variables()];
 			river_section = (keyword_river/*[register_code_section()]*/
 					[print_function_header_for_betting_round()]
-				>> code_block)[check_for_correct_when_others_fold_force()]
+				>> code_block)
 					[print_when_others_fold_force()][reset_variables()];
 			
 			// ToDo:
