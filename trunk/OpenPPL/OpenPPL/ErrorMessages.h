@@ -15,7 +15,10 @@ enum error_codes
 	k_error_missing_brackets_for_card_expression,
 	k_error_invalid_character,
 	k_error_too_many_open_ended_when_conditions,
-	k_error_missing_when_others_fold_force,
+	//k_error_missing_when_others_fold_force,
+	// We do no longer check for "when others fold force",
+	// there simply is an implicit one at the end of a code block
+	// and an implicit return 0 at the end of a function.
 	k_error_unknown_symbol,
 	k_error_unknown_symbol_ending_with_suited,
 	k_error_unknown_symbol_beginning_with_in,
