@@ -1,4 +1,6 @@
-#define BOOST_SPIRIT_DEBUG  ///$$$ DEFINE THIS BEFORE ANYTHING ELSE $$$///
+//#define BOOST_SPIRIT_DEBUG  ///$$$ DEFINE THIS BEFORE ANYTHING ELSE $$$///
+//
+// For details see http://www.boost.org/doc/libs/1_35_0/libs/spirit/doc/debugging.html
 
 #include <afx.h>
 #include <boost/spirit.hpp> 
