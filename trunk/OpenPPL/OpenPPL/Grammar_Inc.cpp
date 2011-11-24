@@ -149,13 +149,19 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				| relational_operator | binary_boolean_operator)[print_operator()];
 			
 			// Expressions
-			expression = terminal_expression | bracket_expression 
-				| missing_closing_bracket_expression | binary_expression 
-				| unary_expression | hand_expression | board_expression;
+			expression = longest_d[terminal_expression | bracket_expression 
+				/*| missing_closing_bracket_expression*/ | binary_expression 
+				| unary_expression | hand_expression | board_expression];
 			unary_expression = !unary_operator[print_opening_bracket()] >> operand_expression[print_opening_bracket()];
-			binary_expression = unary_expression >> binary_operator >> unary_expression;
+			//binary_expression = unary_expression >> binary_operator >> unary_expression;
 			bracket_expression = str_p("(")[print_opening_bracket()] >> expression >> str_p(")")[print_closing_bracket()];
 			missing_closing_bracket_expression = (str_p("(") >> expression) >> str_p("")[error_missing_closing_bracket()];
+			// Caution!
+			// Avoid left-side-recursion
+			// No expression at hte left side
+			binary_expression = operand >> binary_operator >> expression;
+
+			operand = terminal_expression | bracket_expression | unary_expression;
 			
 			// Hand and board expressions
 			card_constant = lexeme_d[ch_p("A") | "a" | "K" | "k" | "Q" | "q" | "J" | "j" |
@@ -246,6 +252,14 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				| "^" | "°" | "{" | "}" | "#" | "³" | "²";
 			invalid_symbol = (*alnum_p >> invalid_character
 				>> *(alnum_p | invalid_character))[error_invalid_character()];
+
+			/*
+			BOOST_SPIRIT_DEBUG_RULE(expression);
+			BOOST_SPIRIT_DEBUG_RULE(binary_expression);
+			BOOST_SPIRIT_DEBUG_RULE(operand);
+			BOOST_SPIRIT_DEBUG_RULE(terminal_expression);
+			BOOST_SPIRIT_DEBUG_RULE(bracket_expression);
+			*/
 		} 
 
 		const boost::spirit::rule<Scanner> &start() 

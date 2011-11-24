@@ -405,7 +405,7 @@ struct print_when_others_fold_force
 	{ 
 		cout << "//" << endl;
 		cout << "// When Others Fold Force" << endl;
-		cout << "// Automatically added, just to be safe.
+		cout << "// Automatically added, just to be safe" << endl;
 		cout << "//" << endl;
 		cout << "f$OpenPPL_Fold" << endl << endl << endl; 
 	} 
