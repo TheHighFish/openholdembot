@@ -106,6 +106,7 @@ struct print_symbol
 	void operator()(const char *begin, const char *end) const 
 	{ 
 		std::string symbol = std::string(begin, end);
+		MessageBox(0, CString(symbol.c_str()), "Debug", 0);
 		if (p_symbol_table->IsOpenPPLSymbol(symbol.c_str()))
 		{
 			// OpenPPL symbols and user-defined symbols 
