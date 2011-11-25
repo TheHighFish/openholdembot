@@ -149,9 +149,12 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				| relational_operator | binary_boolean_operator)[print_operator()];
 			
 			// Expressions
-			expression = longest_d[terminal_expression | bracket_expression 
-				/*| missing_closing_bracket_expression*/ | binary_expression 
-				| unary_expression | hand_expression | board_expression];
+			expression = sequence_of_binary_expressions;
+			sequence_of_binary_expressions = operand >> *(binary_operator >> operand);
+				/*longest_d[ bracket_expression 
+				| missing_closing_bracket_expression | binary_expression 
+				| unary_expression | terminal_expression | hand_expression 
+				| board_expression];*/
 			unary_expression = !unary_operator[print_opening_bracket()] >> operand_expression[print_opening_bracket()];
 			//binary_expression = unary_expression >> binary_operator >> unary_expression;
 			bracket_expression = str_p("(")[print_opening_bracket()] >> expression >> str_p(")")[print_closing_bracket()];
@@ -235,17 +238,21 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			return_statement = keyword_return >> expression;
 
 			// Terminal expressions
-			terminal_expression = number[print_number()] 
-				| boolean_constant 
-				| symbol[print_symbol()];
+			// Unfortunatelly we can't use "number = real_p[print_number()]";
+			// so we put all actions into "terminal_expression";
+			terminal_expression = 
+				number             [print_number()]
+				| boolean_constant [print_symbol()] 
+				| symbol           [print_symbol()];
 			number = real_p;
-			boolean_constant = (keyword_true | keyword_false)[print_symbol()];
+			boolean_constant = (keyword_true | keyword_false);
 			// "Symbol" is a lexeme - we have to be very careful here.
 			// We have to use the lexeme_d directive to disable skipping of whitespace,
 			// otherwise things like "When x Bet force" would treat "x Bet force"
 			// as a single keyword and cause an error.
 			// http://www.boost.org/doc/libs/1_40_0/libs/spirit/classic/doc/quickref.html
-			symbol = (lexeme_d[alpha_p >> *alnum_p]) | invalid_symbol;
+			symbol = (lexeme_d[alpha_p >> *alnum_p]);
+				/*| invalid_symbol;*/
 			// "Symbols" cintaining invalid cahracters
 			invalid_character = str_p(";")  | "," | ":" | "|" | "@" | "€" | "!" | "\\"
 				| "\""  | "§" | "$" | "&" | "?" | "´" | "´" | "[" | "]"
@@ -254,6 +261,10 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				>> *(alnum_p | invalid_character))[error_invalid_character()];
 
 			/*
+			// Debugging boost spirit
+			//
+			// For details see http://www.boost.org/doc/libs/1_35_0/libs/spirit/doc/debugging.html
+			//
 			BOOST_SPIRIT_DEBUG_RULE(expression);
 			BOOST_SPIRIT_DEBUG_RULE(binary_expression);
 			BOOST_SPIRIT_DEBUG_RULE(operand);
