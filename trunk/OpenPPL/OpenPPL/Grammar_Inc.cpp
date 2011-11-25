@@ -155,16 +155,14 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				| missing_closing_bracket_expression | binary_expression 
 				| unary_expression | terminal_expression | hand_expression 
 				| board_expression];*/
-			unary_expression = !unary_operator[print_opening_bracket()] >> operand_expression[print_opening_bracket()];
-			//binary_expression = unary_expression >> binary_operator >> unary_expression;
+			operand = terminal_expression | bracket_expression | unary_expression;
+			unary_expression = unary_operator[print_opening_bracket()] >> operand_expression[print_opening_bracket()];
 			bracket_expression = str_p("(")[print_opening_bracket()] >> expression >> str_p(")")[print_closing_bracket()];
-			missing_closing_bracket_expression = (str_p("(") >> expression) >> str_p("")[error_missing_closing_bracket()];
+			//missing_closing_bracket_expression = (str_p("(") >> expression) >> str_p("")[error_missing_closing_bracket()];
 			// Caution!
 			// Avoid left-side-recursion
 			// No expression at hte left side
-			binary_expression = operand >> binary_operator >> expression;
-
-			operand = terminal_expression | bracket_expression | unary_expression;
+			//binary_expression = operand >> binary_operator >> expression;
 			
 			// Hand and board expressions
 			card_constant = lexeme_d[ch_p("A") | "a" | "K" | "k" | "Q" | "q" | "J" | "j" |
