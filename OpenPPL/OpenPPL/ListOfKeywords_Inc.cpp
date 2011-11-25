@@ -33,9 +33,9 @@ keyword_when = str_p("when") | "When" | "WHEN";
 keyword_others = str_p("others") | "Others" | "OTHERS";
 
 // Boolean operators
-keyword_and = (str_p("and") | "And" | "AND")[print_operator()];
-keyword_xor = (str_p("xor") | "Xor" | "XOr" | "XOR")[print_operator()];
-keyword_or = (str_p("or") | "Or" | "OR")[print_operator()];			
+keyword_and = (str_p("and") | "And" | "AND");
+keyword_xor = (str_p("xor") | "Xor" | "XOr" | "XOR");
+keyword_or = (str_p("or") | "Or" | "OR");			
 keyword_not = (str_p("not") | "Not" | "NOT"); // No print_operator() here, as we want to add extra-brackets for clarification.
 
 // Hand- and board-expressions
