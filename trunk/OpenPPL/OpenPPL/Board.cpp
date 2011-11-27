@@ -100,8 +100,6 @@ void generate_code_for_hand_expression(CString hand_expression)
 	// Translates something like KQ to $KQ
 	// and A Suited to $AXs
 	int number_of_cards = 0;
-	//!!!
-	current_output << "[CE: " << hand_expression << "] ";
 
 	current_output << CString("$");
 	int length = hand_expression.GetLength();
