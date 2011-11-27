@@ -130,12 +130,21 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// But we can more easily generate OH-script-code and check 
 			// for illegal Open-PPL-code in "handle_when_condition()"
 			// this way.
+			//
+			// For technical reasons ("HALP ME!!!! IT DO NO WORKS!!!!!")
+			// evary condition needs to be enclosed in brackets.
+			// For details see http://www.maxinmontreal.com/forums/viewtopic.php?f=216&t=13934
+			// The simple "When Others" as an exception.
 			code_block = *(when_condition | action);
-			when_condition = keyword_when >> ((bracket_expression | keyword_others[print_symbol()])[handle_when_condition()]);
+			when_condition = 
+				keyword_when[extra_brackets_for_condition()] 
+				>> ((bracket_expression | condition_others)
+					[extra_closing_brackets_for_condition()]
+					[handle_when_condition()]
+					);
 			
-			// Conditions
-			condition = str_p("")[extra_brackets_for_condition()] >> expression
-				[extra_closing_brackets_for_condition()];
+			// "Others" - e.g. in "when others fold force"
+			condition_others = keyword_others[print_symbol()];
 
 			// Operators
 			unary_operator = (keyword_not | "-");
