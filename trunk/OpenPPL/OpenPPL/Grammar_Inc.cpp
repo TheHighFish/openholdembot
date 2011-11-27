@@ -131,7 +131,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// for illegal Open-PPL-code in "handle_when_condition()"
 			// this way.
 			code_block = *(when_condition | action);
-			when_condition = (keyword_when >> condition)[handle_when_condition()];
+			when_condition = keyword_when >> ((bracket_expression | keyword_others[print_symbol()])[handle_when_condition()]);
 			
 			// Conditions
 			condition = str_p("")[extra_brackets_for_condition()] >> expression
