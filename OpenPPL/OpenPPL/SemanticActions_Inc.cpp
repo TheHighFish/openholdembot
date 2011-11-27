@@ -230,7 +230,7 @@ struct print_operator
 		}
 		else if (text == "xor")
 		{
-			current_output << "^^";
+			current_output << " ^^ ";
 		}
 		else if (text == "not")
 		{
