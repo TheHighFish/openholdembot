@@ -159,7 +159,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// Expressions
 			expression = sequence_of_binary_expressions;
 			sequence_of_binary_expressions = operand >> *(binary_operator >> operand);
-			operand = hand_expression | terminal_expression | bracket_expression | unary_expression; //!!!
+			operand = hand_expression | board_expression | terminal_expression | bracket_expression | unary_expression; //!!!
 			unary_expression = unary_operator[print_opening_bracket()] >> operand_expression[print_opening_bracket()];
 			bracket_expression = str_p("(")[print_opening_bracket()] >> expression >> str_p(")")[print_closing_bracket()];
 			// !!! TODO: missing_closing_bracket_expression = (str_p("(") >> expression) >> str_p("")[error_missing_closing_bracket()];
@@ -186,11 +186,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 					>> card_expression[print_hand_expression()];
 
 			// board expressions
-			board_expression = board_expression_with_brackets | board_expression_without_brackets;
-			board_expression_with_brackets = str_p("(") 
-                    >> (suited_board_expression | non_suited_board_expression) >> ")";
-			board_expression_without_brackets = (keyword_board 
-                    >> str_p("=")[print_operator()] >> card_expression)[error_missing_brackets_for_card_expression()];
+			board_expression = suited_board_expression | non_suited_board_expression;
 			suited_board_expression = (keyword_board >> str_p("=") 
 					>> suited_card_expression)[print_suited_board_expression()];
 			non_suited_board_expression = (keyword_board >> str_p("=") 
