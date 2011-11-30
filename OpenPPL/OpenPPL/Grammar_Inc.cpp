@@ -5,7 +5,6 @@
 // and AFAIK we can't distribute it over multiple modules.
 
 
-
 struct json_grammar: public boost::spirit::grammar<json_grammar> 
 { 
 // SemanticActions_Inc.cpp
@@ -159,9 +158,11 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// Expressions
 			expression = sequence_of_binary_expressions;
 			sequence_of_binary_expressions = operand >> *(binary_operator >> operand);
-			operand = hand_expression | board_expression | terminal_expression | bracket_expression | unary_expression; //!!!
+			operand = terminal_expression | bracket_expression | unary_expression; //!!!
 			unary_expression = unary_operator[print_opening_bracket()] >> operand_expression[print_opening_bracket()];
-			bracket_expression = str_p("(")[print_opening_bracket()] >> expression >> str_p(")")[print_closing_bracket()];
+			bracket_expression = str_p("(")[print_opening_bracket()] 
+				>> (hand_expression | board_expression | expression)
+				>> str_p(")")[print_closing_bracket()];
 			// !!! TODO: missing_closing_bracket_expression = (str_p("(") >> expression) >> str_p("")[error_missing_closing_bracket()];
 			
 			// Hand and board expressions
@@ -212,7 +213,8 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			
 			keyword_predefined_action = longest_d[keyword_beep | keyword_call	| keyword_play 
 				| keyword_raisemin | keyword_raisehalfpot
-				| keyword_raisepot | keyword_raisemax |	keyword_raise | keyword_fold
+				| keyword_raisepot | keyword_raisemax |	keyword_allin
+				| keyword_raise | keyword_fold
 				| keyword_betmin | keyword_bethalfpot
 				| keyword_betpot | keyword_betmax | keyword_bet | keyword_sitout];
 			fixed_betsize_action = (keyword_bet | keyword_raise) >> number[print_comment_for_fixed_betsize()];
