@@ -19,6 +19,10 @@ BUG FIXES:
   * functions, e.g. me_st_CallFunction_f$call
   * memory symbols, e.g. me_st_OldValue_me_re_CurrentValue
   [THF]
+- Making PT-thread more stable, eliminating possible undefined pointers.
+  http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=13952
+  Thanks to Dimonstrik for reporting. [THF]
+  
 
 MAINTENANCE:
 - No longer warning about missing versus.bin at startup, but only 
