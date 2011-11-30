@@ -7,6 +7,7 @@
 #include "CPreferences.h"
 #include "CGameState.h"
 #include "CLevDistance.h"
+#include "MagicNumbers.h"
 #include "..\CTablemap\CTablemap.h"
 
 CPokerTrackerThread	*p_pokertracker_thread = NULL;
@@ -167,17 +168,15 @@ const int CPokerTrackerLookup::GetSiteId()
 
 CPokerTrackerThread::CPokerTrackerThread()
 {
-	int				i = 0, j = 0;
-
 	// Initialize variables
 	_pt_thread = NULL;
 
 	_conn_str.Format("host=%s port=%s user=%s password=%s dbname='%s'",  
 		prefs.pt_ip_addr(), prefs.pt_port(), prefs.pt_user(), prefs.pt_pass(), prefs.pt_dbname());
 
-	for (i=0; i<=9; i++)
+	for (int i=0; i<k_max_number_of_players; i++)
 	{
-		for (j=pt_min; j<=pt_max; j++)
+		for (int j=pt_min; j<=pt_max; j++)
 		{
 			_player_stats[i].stat[j] = -1.0 ;
 			_player_stats[i].t_elapsed[j] = -1 ;
@@ -190,6 +189,7 @@ CPokerTrackerThread::CPokerTrackerThread()
 	_connected = false;
 	_m_stop_thread = NULL;
 	_m_wait_thread = NULL;
+	_pgconn = NULL; 
 }
 
 CPokerTrackerThread::~CPokerTrackerThread()
@@ -355,20 +355,26 @@ void CPokerTrackerThread::Connect(void)
 		write_log_pokertracker(prefs.debug_pokertracker(), "ERROR opening PostgreSQL DB: %s\n\n", PQerrorMessage(_pgconn));
 		PQfinish(_pgconn);
 		_connected = false;
+		_pgconn = NULL;
 	}
 }
 
 void CPokerTrackerThread::Disconnect(void)
 {
+	if(_pgconn)
+    {
+      if (PQstatus(_pgconn) == CONNECTION_OK)
+        {
+          PQfinish(_pgconn);
+        }
+    }
+	_pgconn = NULL;
 	_connected = false;
-
-	if (PQstatus(_pgconn) == CONNECTION_OK)
-		PQfinish(_pgconn);
 }
+
 
 bool CPokerTrackerThread::CheckName (int m_chr)
 {
-	int			i = 0;
 	char		oh_scraped_name[30] = {0}, best_name[30] = {0}, likename[100] = {0};
 	bool		result = false, ok_scrape = false;
 
@@ -381,7 +387,7 @@ bool CPokerTrackerThread::CheckName (int m_chr)
 	strcpy_s(oh_scraped_name, 30, p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[m_chr].m_name);
 
 	// Check for bad name scrape
-	for (i=0; i<(int) strlen(oh_scraped_name); i++)
+	for (int i=0; i<(int) strlen(oh_scraped_name); i++)
 	{
 		if (oh_scraped_name[i]!='l' && oh_scraped_name[i]!='i' && oh_scraped_name[i]!='.' && oh_scraped_name[i]!=',')
 		{
@@ -400,7 +406,7 @@ bool CPokerTrackerThread::CheckName (int m_chr)
 	// chair and search again
 	if (_player_stats[m_chr].found && strcmp(_player_stats[m_chr].scraped_name, oh_scraped_name)!=0)
 	{
-		for (i=pt_min; i<=pt_max; i++)
+		for (int i=pt_min; i<=pt_max; i++)
 		{
 			_player_stats[m_chr].stat[i] = -1.0 ;
 			_player_stats[m_chr].t_elapsed[i] = -1 ;
@@ -419,13 +425,14 @@ bool CPokerTrackerThread::CheckName (int m_chr)
 	if (!result)
 	{
 		likename[0]='%';
-		for (i=0; i<(int) strlen(oh_scraped_name); i++)
+		int character_position = 0;
+		for (int character_position=0; character_position<(int) strlen(oh_scraped_name); character_position++)
 		{
-			likename[i*2+1]=oh_scraped_name[i];
-			likename[i*2+2]='%';
+			likename[character_position*2+1]=oh_scraped_name[character_position];
+			likename[character_position*2+2]='%';
 		}
 
-		likename[(i-1)*2+3]='\0';
+		likename[(character_position)*2 + 1]='\0';
 		result = QueryName(likename, oh_scraped_name, best_name);
 	}
 
