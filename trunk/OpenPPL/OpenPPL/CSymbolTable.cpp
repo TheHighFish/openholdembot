@@ -6,6 +6,9 @@
 
 CSymbolTable *p_symbol_table = 0; //NULL;
 
+#define DEBUG_SYMBOLTABLE_GENERAL
+#undef DEBUG_SYMBOLTABLE_CREATION
+#define DEBUG_SYMBOLTABLE_QUERY
 
 CSymbolTable::CSymbolTable()
 {
@@ -33,6 +36,11 @@ void CSymbolTable::AddSymbolsFromFile(CString filename)
 		MessageBox(0, error_message, "Error", 0);
 		exit(-1);
 	}
+
+#ifdef DEBUG_SYMBOLTABLE_GENERAL
+	MessageBox(0, "Adding symbols from file: " + filename, "Debug", 0);
+#endif
+
 	while (!input_file.eof())
 	{
 		// According to JConner some insane Shanky-profiles
@@ -98,6 +106,11 @@ void CSymbolTable::AddSymbol(CString new_symbol)
 		new_symbol_lowercase.MakeLower();
 		//MessageBox(0, new_symbol, "Inserting", 0);
 		known_symbols[new_symbol_lowercase] = new_symbol;
+
+#ifdef DEBUG_SYMBOLTABLE_CREATION
+		MessageBox(0, "Adding symbol: " + new_symbol, "Debug", 0);
+#endif
+
 	}
 }
 
@@ -130,11 +143,15 @@ bool CSymbolTable::IsOpenPPLSymbol(CString symbol)
 	}
 }
 
+
+
 CString CSymbolTable::GetStandardizedSymbolName(CString symbol)
 {
 	// Standardized OpenPPL-symbols should start with "OpenPPL_",
 	// be it a name from the library or a UDF ("New Symbol ...").
 	// Only OpenHoldem symbols don't have this prefix.
+	//
+	// This function should only be used for symbol lookup internally
 	if (symbol.Left(10) == "f$OpenPPL_")
 	{
 		return symbol;
@@ -142,9 +159,26 @@ CString CSymbolTable::GetStandardizedSymbolName(CString symbol)
 	else
 	{
 		CString standardized_symbol_name = "f$OpenPPL_" + symbol;
+
+#ifdef DEBUG_SYMBOLTABLE_QUERY
+		MessageBox(0, "Standardized name: " + standardized_symbol_name, "Debug", 0);
+#endif
+
 		return standardized_symbol_name;
 	}
 }
+
+
+CString CSymbolTable::GetSymbolNameWithcorrectCases(CString symbol)
+{
+	// This function should be used for generation of correct code
+	CString standardized_name = GetStandardizedSymbolName(symbol);
+	CString standardized_name_as_lookup_key = standardized_name.MakeLower();
+	CString symbol_name_with_correct_cases = known_symbols[standardized_name_as_lookup_key];
+	MessageBox(0, symbol_name_with_correct_cases, "Debug", 0);
+	return symbol_name_with_correct_cases;
+}
+
 
 bool CSymbolTable::GenerationOfSymboltableInProgress()
 {
