@@ -121,7 +121,7 @@ bool CSymbolTable::IsOpenPPLSymbol(CString symbol)
 	// All other symbols will be treated as standard OpenHoldem symbols.
 	//
 	// Docu on find(): http://www.cplusplus.com/reference/stl/map/find/
-	CString standardized_symbol_lowercase = GetStandardizedSymbolName(symbol).MakeLower();
+	CString standardized_symbol_lowercase = GetLookupKey(symbol);
 	CSMap::const_iterator find_result = known_symbols.find(standardized_symbol_lowercase);
 	if (find_result == known_symbols.end())
 	{
@@ -131,21 +131,20 @@ bool CSymbolTable::IsOpenPPLSymbol(CString symbol)
 	}
 
 	// Check for exact match
-	// if (find_result->second == GetStandardizedSymbolName(symbol))
+	// if (find_result->second == GetSymbolNameWithCorrectPrefix(symbol))
 	{
 		return true;
 	}
 	//else
 	{
 		//if (!GenerationOfSymboltableInProgress())
-		//	MessageBox(0, find_result->second, GetStandardizedSymbolName(symbol), 0);
+		//	MessageBox(0, find_result->second, GetSymbolNameWithCorrectPrefix(symbol), 0);
 		return (false);
 	}
 }
 
 
-
-CString CSymbolTable::GetStandardizedSymbolName(CString symbol)
+CString CSymbolTable::GetSymbolNameWithCorrectPrefix(CString symbol)
 {
 	// Standardized OpenPPL-symbols should start with "OpenPPL_",
 	// be it a name from the library or a UDF ("New Symbol ...").
@@ -169,13 +168,23 @@ CString CSymbolTable::GetStandardizedSymbolName(CString symbol)
 }
 
 
+CString CSymbolTable::GetLookupKey(CString symbol)
+{
+	CString symbol_with_prefix = GetSymbolNameWithCorrectPrefix(symbol);
+	CString lookup_key = symbol_with_prefix.MakeLower();
+	return lookup_key;
+}
+
 CString CSymbolTable::GetSymbolNameWithcorrectCases(CString symbol)
 {
 	// This function should be used for generation of correct code
-	CString standardized_name = GetStandardizedSymbolName(symbol);
-	CString standardized_name_as_lookup_key = standardized_name.MakeLower();
+	CString standardized_name_as_lookup_key = GetLookupKey(symbol);
 	CString symbol_name_with_correct_cases = known_symbols[standardized_name_as_lookup_key];
-	MessageBox(0, symbol_name_with_correct_cases, "Debug", 0);
+
+#ifdef DEBUG_SYMBOLTABLE_QUERY
+	MessageBox(0, "Correct cases: " + symbol_name_with_correct_cases, "Debug", 0);
+#endif
+
 	return symbol_name_with_correct_cases;
 }
 

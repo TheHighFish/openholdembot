@@ -17,7 +17,8 @@ public:
 private:
 	void ClearSymbolTable();
 	void AddSymbol(CString new_symbol);
-	CString GetStandardizedSymbolName(CString symbol);
+	CString GetSymbolNameWithCorrectPrefix(CString symbol);
+	CString GetLookupKey(CString symbol);
 private:
 	// http://www.cplusplus.com/reference/stl/map/
 	typedef map<CString, CString> CSMap;
