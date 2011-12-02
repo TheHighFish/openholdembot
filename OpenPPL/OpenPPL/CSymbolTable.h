@@ -12,11 +12,12 @@ public:
 public:
 	void AddSymbolsFromFile(CString filename);
 	bool IsOpenPPLSymbol(CString symbol);
-	CString GetStandardizedSymbolName(CString symbol);
+	CString GetSymbolNameWithcorrectCases(CString symbol);
 	bool GenerationOfSymboltableInProgress();
 private:
 	void ClearSymbolTable();
 	void AddSymbol(CString new_symbol);
+	CString GetStandardizedSymbolName(CString symbol);
 private:
 	// http://www.cplusplus.com/reference/stl/map/
 	typedef map<CString, CString> CSMap;

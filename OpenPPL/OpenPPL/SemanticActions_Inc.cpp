@@ -115,7 +115,7 @@ struct print_symbol
 			// OpenPPL symbols and user-defined symbols 
 			// get translated to f$...OH-script-symbols.
 			// So we prepend "f$"
-			current_output << p_symbol_table->GetStandardizedSymbolName(symbol.c_str());
+			current_output << p_symbol_table->GetSymbolNameWithcorrectCases(symbol.c_str());
 		}
 		else if (p_list_of_openholdem_symbol_prefixes->LooksLikeOpenHoldemSymbol(CString(symbol.c_str())))
 		{
