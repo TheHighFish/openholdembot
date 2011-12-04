@@ -7,16 +7,16 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- html --> 
 <meta name="src" content="Actions.tex"> 
-<meta name="date" content="2011-12-04 12:15:00"> 
+<meta name="date" content="2011-12-04 15:23:00"> 
 <link rel="stylesheet" type="text/css" href="Actions.css"> 
 </head><body 
 >
 
 
-   <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;1</span><br /><a 
- id="x1-10001"></a>Actions</h2>
-<!--l. 27--><p class="noindent" >The main code sections of Open-PPL consist of WHEN-conditions with actions. They
-look e.g. like this:
+   <h2 class="likechapterHead"><a 
+ id="x1-1000"></a>Actions</h2>
+<!--l. 27--><p class="noindent" >The main code sections of Open-PPL consist of when-conditions with actions. They look
+e.g. like this:
    <!--l. 31-->
    <div class="lstlisting" id="listing-1"><span class="label"><a 
  id="x1-1001r1"></a></span>CUSTOM&#x00A0;<br /><span class="label"><a 
@@ -24,7 +24,7 @@ look e.g. like this:
  id="x1-1003r3"></a></span>PREFLOP&#x00A0;<br /><span class="label"><a 
  id="x1-1004r4"></a></span>&#x00A0;<br /><span class="label"><a 
  id="x1-1005r5"></a></span>//&#x00A0;Openraising&#x00A0;on&#x00A0;the&#x00A0;button&#x00A0;<br /><span class="label"><a 
- id="x1-1006r6"></a></span>WHEN&#x00A0;Raises&#x00A0;=&#x00A0;0&#x00A0;and&#x00A0;Calls&#x00A0;=&#x00A0;0&#x00A0;and&#x00A0;StillToAct&#x00A0;=&#x00A0;2&#x00A0;<br /><span class="label"><a 
+ id="x1-1006r6"></a></span>WHEN&#x00A0;(Raises&#x00A0;=&#x00A0;0&#x00A0;and&#x00A0;Calls&#x00A0;=&#x00A0;0&#x00A0;and&#x00A0;StillToAct&#x00A0;=&#x00A0;2)&#x00A0;<br /><span class="label"><a 
  id="x1-1007r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;Normal&#x00A0;openraises&#x00A0;<br /><span class="label"><a 
  id="x1-1008r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;((Hand&#x00A0;=&#x00A0;AA)&#x00A0;or&#x00A0;(Hand&#x00A0;=&#x00A0;KK)...)&#x00A0;RAISE&#x00A0;3&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
  id="x1-1009r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;Pushing&#x00A0;according&#x00A0;to&#x00A0;Sklanky&#x00A0;<br /><span class="label"><a 
@@ -32,7 +32,7 @@ look e.g. like this:
    </div>
 <!--l. 45--><p class="indent" >   OpenPPL provides 3 kinds of actions:
    <h3 class="sectionHead"><a 
- id="x1-20001"></a>Actions with Fixed Betsize</h3>
+ id="x1-2000"></a>Actions with Fixed Betsize</h3>
 <!--l. 50--><p class="noindent" >Examples look like
    <!--l. 53-->
    <div class="lstlisting" id="listing-2"><span class="label"><a 
@@ -43,7 +43,7 @@ look e.g. like this:
 f$betsize function, so it works independent of the limit or blind-level. The translator
 cares about that difference automatically.
    <h3 class="sectionHead"><a 
- id="x1-30001"></a>Actions with Relative Betsize</h3>
+ id="x1-3000"></a>Actions with Relative Betsize</h3>
 <!--l. 64--><p class="noindent" >Examples look like
    <!--l. 67-->
    <div class="lstlisting" id="listing-3"><span class="label"><a 
@@ -53,7 +53,7 @@ cares about that difference automatically.
 <!--l. 71--><p class="indent" >   Here the betsize gets measured as a certain percentage of the pot (pot = common
 pot + all players bets + the amount to call).
    <h3 class="sectionHead"><a 
- id="x1-40001"></a>Fixed Actions</h3>
+ id="x1-4000"></a>Fixed Actions</h3>
 <!--l. 77--><p class="noindent" >Examples look like
    <!--l. 80-->
    <div class="lstlisting" id="listing-4"><span class="label"><a 
@@ -76,20 +76,20 @@ class="cmsy-10">-</span>raise&#x00A0;(fixed&#x00A0;limit)&#x00A0;<br /><span cla
 <!--l. 95--><p class="indent" >   Contrary to standard PPL OpenPPL does not distinguish bets and raises. The
 generated OH-script-code looks exactly the same and OpenHoldem makes no difference
 anyway.
+
    <h3 class="sectionHead"><a 
- id="x1-50001"></a>Being strict: using &#8220;FORCE&#8221;</h3>
+ id="x1-5000"></a>Being strict: using &#8220;FORCE&#8221;</h3>
 <!--l. 102--><p class="noindent" >Every action in OpenPPL has to be terminated by the keyword &#8220;FORCE&#8221;. For standard
 PPL this keyword was optional. If you left it out, it meant, that the bot continued to
 evaluate and finally fell back to the default logic. We deviated from that behaviour,
 as:
-
            <ul class="itemize1">
         <li class="itemize">in our opinion it does not make any sense to specify actions that have no
         effect.
            </li>
         <li class="itemize">OpenPPL does not provide a default bot.</li></ul>
    <h3 class="sectionHead"><a 
- id="x1-60001"></a>Backup actions</h3>
+ id="x1-6000"></a>Backup actions</h3>
 <!--l. 114--><p class="noindent" >It may happen, that a certain action is not available, e.g. you might want to raise by half
 the pot, but this is currently not possible, e.g. because your opponent made a large raise
 and half-pot would be less than the minimum. In such situations OpenPPL behaves in
@@ -117,6 +117,7 @@ the following ways:
         reasons:
             <ul class="itemize2">
             <li class="itemize">OpenHoldem evaluates its technical functions in the order above (for
+
             details please refer to the OpenHoldem Manual).
             </li>
             <li class="itemize">we believe, it is better to behave in a more conservative way if an

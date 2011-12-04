@@ -47,12 +47,12 @@ figs-within-sections
 
 \begin_body
 
-\begin_layout Chapter
+\begin_layout Chapter*
 Actions
 \end_layout
 
 \begin_layout Standard
-The main code sections of Open-PPL consist of WHEN-conditions with actions.
+The main code sections of Open-PPL consist of when-conditions with actions.
  They look e.g.
  like this:
 \end_layout
@@ -87,7 +87,7 @@ PREFLOP
 
 \begin_layout Plain Layout
 
-WHEN Raises = 0 and Calls = 0 and StillToAct = 2
+WHEN (Raises = 0 and Calls = 0 and StillToAct = 2)
 \end_layout
 
 \begin_layout Plain Layout
