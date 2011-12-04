@@ -179,7 +179,7 @@ None
 \begin_inset Text
 
 \begin_layout Plain Layout
-MaxOpponentStacksize
+MaxOpponentStackSize
 \end_layout
 
 \end_inset
@@ -209,7 +209,7 @@ None
 \begin_inset Text
 
 \begin_layout Plain Layout
-MaxStillToActStacksize
+MaxStillToActStackSize
 \end_layout
 
 \end_inset
@@ -239,7 +239,7 @@ First action preflop only
 \begin_inset Text
 
 \begin_layout Plain Layout
-MinStillToActStacksize
+MinStillToActStackSize
 \end_layout
 
 \end_inset
@@ -298,7 +298,7 @@ None
 \begin_inset Text
 
 \begin_layout Plain Layout
-Stacksize
+StackSize
 \end_layout
 
 \end_inset
@@ -327,7 +327,7 @@ None
 \begin_inset Text
 
 \begin_layout Plain Layout
-StartingStacksize
+StartingStackSize
 \end_layout
 
 \end_inset
