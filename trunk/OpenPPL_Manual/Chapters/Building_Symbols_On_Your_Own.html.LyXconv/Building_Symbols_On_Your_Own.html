@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- html --> 
 <meta name="src" content="Building_Symbols_On_Your_Own.tex"> 
-<meta name="date" content="2011-12-04 14:15:00"> 
+<meta name="date" content="2011-12-04 19:42:00"> 
 <link rel="stylesheet" type="text/css" href="Building_Symbols_On_Your_Own.css"> 
 </head><body 
 >
@@ -52,21 +52,24 @@ player to be dealt, so we search for a the chair, that got dealt as second playe
 class="cmsy-10">-</span>1&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
  id="x1-1014r14"></a></span>End&#x00A0;Symbol
    </div>
-<!--l. 69--><p class="indent" >   Having this information we can continue with the second step (the dull part). We
-RETURN the stacksize for the chair of the big blind.
-   <!--l. 73-->
+<!--l. 69--><p class="indent" >   Having this information we can continue with the second step (the dull
+part). We RETURN the stacksize for the chair of the big blind, making use of
+Openholdems stacksize symbols balance0..balance9. As you can see it is possible to use
+OpenHoldem Symbols in your OpenPPL code. Of course - we nearly forgot to mention
+it.
+   <!--l. 76-->
    <div class="lstlisting" id="listing-2"><span class="label"><a 
  id="x1-1015r1"></a></span>New&#x00A0;Symbol&#x00A0;BigBlindStacksize&#x00A0;<br /><span class="label"><a 
- id="x1-1016r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;0&#x00A0;RETURN&#x00A0;stack0&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1017r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;1&#x00A0;RETURN&#x00A0;stack1&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1018r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;2&#x00A0;RETURN&#x00A0;stack2&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1019r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;3&#x00A0;RETURN&#x00A0;stack3&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1020r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;4&#x00A0;RETURN&#x00A0;stack4&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1021r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;5&#x00A0;RETURN&#x00A0;stack5&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1022r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;6&#x00A0;RETURN&#x00A0;stack6&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1023r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;7&#x00A0;RETURN&#x00A0;stack7&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1024r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;8&#x00A0;RETURN&#x00A0;stack8&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1025r11"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;9&#x00A0;RETURN&#x00A0;stack9&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1016r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;0&#x00A0;RETURN&#x00A0;balance0&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1017r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;1&#x00A0;RETURN&#x00A0;balance&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1018r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;2&#x00A0;RETURN&#x00A0;balance&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1019r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;3&#x00A0;RETURN&#x00A0;balance&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1020r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;4&#x00A0;RETURN&#x00A0;balance&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1021r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;5&#x00A0;RETURN&#x00A0;balance&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1022r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;6&#x00A0;RETURN&#x00A0;balance&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1023r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;7&#x00A0;RETURN&#x00A0;balance&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1024r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;8&#x00A0;RETURN&#x00A0;balance&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1025r11"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;9&#x00A0;RETURN&#x00A0;balance&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
  id="x1-1026r12"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;Other&#x00A0;cases&#x00A0;should&#x00A0;not&#x00A0;happen.&#x00A0;<br /><span class="label"><a 
  id="x1-1027r13"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;But&#x00A0;if&#x00A0;you&#x00A0;forget&#x00A0;about&#x00A0;"WHEN&#x00A0;Others"&#x00A0;<br /><span class="label"><a 
  id="x1-1028r14"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;there&#x00A0;always&#x00A0;is&#x00A0;an&#x00A0;implicit&#x00A0;"RETURN&#x00A0;<span 
@@ -76,13 +79,13 @@ class="cmsy-10">-</span>1&#x00A0;FORCE".&#x00A0;<br /><span class="label"><a
 class="cmsy-10">-</span>1&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
  id="x1-1031r17"></a></span>End&#x00A0;Symbol
    </div>
-<!--l. 94--><p class="indent" >   You see: it is not that difficult to extend OpenPPL on your own. The possibilites are
+<!--l. 97--><p class="indent" >   You see: it is not that difficult to extend OpenPPL on your own. The possibilites are
 nearly endless. For the moment we skipped some details, but creating new symbols is
 self-explaining: each new symbol start with &#8220;NEW SYMBOL &#x003C;Name&#x003E;&#8221; and ends with
 &#8220;END SYMBOL&#8221;. Inbetween is an (optionally open-ended) when-condition-sequence with
 return-statements instead of actions. These symbol-definitions go to an extra-part of your
 code:
-   <!--l. 103-->
+   <!--l. 106-->
    <div class="lstlisting" id="listing-3"><span class="label"><a 
  id="x1-1032r1"></a></span>Custom&#x00A0;<br /><span class="label"><a 
  id="x1-1033r2"></a></span>&#x00A0;<br /><span class="label"><a 
@@ -94,7 +97,7 @@ code:
  id="x1-1039r8"></a></span>Preflop&#x00A0;<br /><span class="label"><a 
  id="x1-1040r9"></a></span>...
    </div>
-<!--l. 116--><p class="indent" >   That&#8217;s all. OpenPPL is easy.  
+<!--l. 119--><p class="indent" >   That&#8217;s all. OpenPPL is easy.  
 </body></html> 
 
 
