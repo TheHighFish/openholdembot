@@ -165,7 +165,7 @@ End Symbol
 
 \begin_layout Standard
 Having this information we can continue with the second step (the dull part).
- We RETURN the stacksize for the chair of the big blind, making use of Openholde
+ We return the stacksize for the chair of the big blind, making use of Openholde
 ms stacksize symbols balance0..balance9.
  As you can see it is possible to use OpenHoldem Symbols in your OpenPPL
  code.
