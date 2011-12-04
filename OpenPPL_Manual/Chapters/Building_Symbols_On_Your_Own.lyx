@@ -165,7 +165,11 @@ End Symbol
 
 \begin_layout Standard
 Having this information we can continue with the second step (the dull part).
- We RETURN the stacksize for the chair of the big blind.
+ We RETURN the stacksize for the chair of the big blind, making use of Openholde
+ms stacksize symbols balance0..balance9.
+ As you can see it is possible to use OpenHoldem Symbols in your OpenPPL
+ code.
+ Of course - we nearly forgot to mention it.
 \end_layout
 
 \begin_layout Standard
@@ -180,52 +184,52 @@ New Symbol BigBlindStacksize
 
 \begin_layout Plain Layout
 
-    WHEN BigBlindChair = 0 RETURN stack0 FORCE
+    WHEN BigBlindChair = 0 RETURN balance0 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN BigBlindChair = 1 RETURN stack1 FORCE
+    WHEN BigBlindChair = 1 RETURN balance FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN BigBlindChair = 2 RETURN stack2 FORCE
+    WHEN BigBlindChair = 2 RETURN balance FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN BigBlindChair = 3 RETURN stack3 FORCE
+    WHEN BigBlindChair = 3 RETURN balance FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN BigBlindChair = 4 RETURN stack4 FORCE
+    WHEN BigBlindChair = 4 RETURN balance FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN BigBlindChair = 5 RETURN stack5 FORCE
+    WHEN BigBlindChair = 5 RETURN balance FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN BigBlindChair = 6 RETURN stack6 FORCE
+    WHEN BigBlindChair = 6 RETURN balance FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN BigBlindChair = 7 RETURN stack7 FORCE
+    WHEN BigBlindChair = 7 RETURN balance FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN BigBlindChair = 8 RETURN stack8 FORCE
+    WHEN BigBlindChair = 8 RETURN balance FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN BigBlindChair = 9 RETURN stack9 FORCE
+    WHEN BigBlindChair = 9 RETURN balance FORCE
 \end_layout
 
 \begin_layout Plain Layout
