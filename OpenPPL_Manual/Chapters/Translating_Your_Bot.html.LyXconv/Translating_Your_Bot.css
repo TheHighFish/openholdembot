@@ -124,5 +124,6 @@ div.gather-star {text-align:center;}
 div.lstlisting{font-family: monospace; white-space: nowrap; margin-top:0.5em; margin-bottom:0.5em; }
 div.lstinputlisting{ font-family: monospace; white-space: nowrap; }
 .lstinputlisting .label{margin-right:0.5em;}
+.figure img.graphics {margin-left:10%;}
 /* end css.sty */
 
