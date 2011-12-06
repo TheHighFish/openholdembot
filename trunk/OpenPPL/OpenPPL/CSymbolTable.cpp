@@ -6,9 +6,9 @@
 
 CSymbolTable *p_symbol_table = 0; //NULL;
 
-#define DEBUG_SYMBOLTABLE_GENERAL
+#undef DEBUG_SYMBOLTABLE_GENERAL
 #undef DEBUG_SYMBOLTABLE_CREATION
-#define DEBUG_SYMBOLTABLE_QUERY
+#undef DEBUG_SYMBOLTABLE_QUERY
 
 CSymbolTable::CSymbolTable()
 {
