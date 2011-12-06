@@ -63,24 +63,24 @@
 // Final betsize if we raise by the minimum; amount in dollars.
 (currentbet + call + sraimin) * bet1
 
-##f$OpenPPL_BetsizeAdjustedToMinimumRaise##
-(f$OpenPPL_Betsize < f$OpenPPL_MinimumRaiseAllowed) ? f$OpenPPL_MinimumRaiseAllowed : f$OpenPPL_BetSize
+##f$OpenPPL_BetSizeAdjustedToMinimumRaise##
+(f$OpenPPL_BetSize < f$OpenPPL_MinimumRaiseAllowed) ? f$OpenPPL_MinimumRaiseAllowed : f$OpenPPL_BetSize
 
 ##f$OpenPPL_PotLimitPotSize##
 // The pot for potsize calculations is the current pot
 // plus the amount if we call
 (pot + call)
 
-##f$OpenPPL_BetsizeAdjustedToGameType##
+##f$OpenPPL_BetSizeAdjustedToGameType##
 // In PotLimit we can only raise by pot-size ;-)
-[ispl && (f$OpenPPL_BetsizeAdjustedToMinimumRaise > 2 * f$OpenPPL_PotLimitPotSize)] ?
-(2 * f$OpenPPL_PotLimitPotSize) : f$OpenPPL_BetsizeAdjustedToMinimumRaise
+[ispl && (f$OpenPPL_BetSizeAdjustedToMinimumRaise > 2 * f$OpenPPL_PotLimitPotSize)] ?
+(2 * f$OpenPPL_PotLimitPotSize) : f$OpenPPL_BetSizeAdjustedToMinimumRaise
 
-##f$OpenPPL_BetsizeAdjustedToUsersBalance##
-(f$OpenPPL_BetsizeAdjustedToGameType > (balance + currentbet)) ?
-(balance + currentbet) : f$OpenPPL_BetsizeAdjustedToGameType
+##f$OpenPPL_BetSizeAdjustedToUsersBalance##
+(f$OpenPPL_BetSizeAdjustedToGameType > (balance + currentbet)) ?
+(balance + currentbet) : f$OpenPPL_BetSizeAdjustedToGameType
 
-##f$OpenPPL_BetsizeAdjustedToCasinosInputRequirements##
+##f$OpenPPL_BetSizeAdjustedToCasinosInputRequirements##
 // There are 3 different ways, how casinos treat swagged input.
 //
 // Swag means, the final bet will be:
@@ -91,4 +91,4 @@
 // we have to do some small calculations in the other direction.
 
 ##f$swag##
-f$OpenPPL_BetsizeAdjustedToCasinosInputRequirements
+f$OpenPPL_BetSizeAdjustedToCasinosInputRequirements
