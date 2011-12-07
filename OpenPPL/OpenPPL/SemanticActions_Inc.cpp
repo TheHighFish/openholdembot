@@ -152,7 +152,9 @@ struct print_function_header_for_betting_round
 {
 	void operator()(const char *begin, const char *end) const 
 	{ 
-		std::string text = std::string(begin, end);
+		std::string text_as_std_string = std::string(begin, end);
+		CString text = text_as_std_string.c_str();
+		text = text.MakeLower();
 		if (text == "preflop")
 		{ 
 			cout << "##f$preflop##" << endl;
