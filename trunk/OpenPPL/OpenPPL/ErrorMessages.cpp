@@ -14,6 +14,7 @@ static const char *short_error_messages[k_number_of_error_codes] =
 	"ERROR: Missing closing bracket.",
 	"ERROR: Missing keyword \"CUSTOM\".",
 	"ERROR: Missing brackets around card expressions.",
+	"ERROR: Missing brackets after when-condition.",
 	"ERROR: Invalid character(s).",
 	"ERROR: Too many open-ended when-conditions.",
 	"ERROR: Unknown symbol",
@@ -82,6 +83,14 @@ static const char *detailed_error_messages[k_number_of_error_codes] =
 	"\n"
 	"Therefore it is strictly required to bracket all hand- and board-expressions.\n"
 	"E.g. \"WHEN ((Hand = TT) AND...) RAISE FORCE\".",
+
+	// k_error_missing_brackets_for_when_condition
+	"We are sorry, but for technical reasons\n"
+	"all conditions need to be enclosed in brackets.\n"
+	"\n"
+	"E.g. \"WHEN (StackSize < 20) RAISEMAX FORCE\"\n"
+	"\n"
+	"Sole exception: WHEN Others FOLD FORCE",
 
 	//k_error_invalid_character,
 	"At or near the critical code location is at least one invalid character.\n"
