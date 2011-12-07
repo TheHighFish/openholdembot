@@ -661,6 +661,14 @@ struct error_missing_brackets_for_card_expression
 	}
 };
 
+struct error_missing_brackets_for_when_condition
+{
+	void operator()(const char *begin, const char *end) const 
+	{
+		ErrorMessage(k_error_missing_brackets_for_when_condition, ErroneousCodeSnippet(begin));
+	}
+};
+
 struct error_invalid_character
 {
 	void operator()(const char *begin, const char *end) const 

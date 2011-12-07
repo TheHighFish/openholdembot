@@ -135,5 +135,6 @@ board_expression_with_brackets,
 board_expression_without_brackets,
 erroneous_action_without_force,
 invalid_character,
-invalid_symbol
+invalid_symbol,
+invalid_when_condition_without_brackets
 ;

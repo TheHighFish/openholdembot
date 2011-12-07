@@ -13,6 +13,7 @@ enum error_codes
 	k_error_missing_closing_bracket,
 	k_error_missing_keyword_custom,
 	k_error_missing_brackets_for_card_expression,
+	k_error_missing_brackets_for_when_condition,
 	k_error_invalid_character,
 	k_error_too_many_open_ended_when_conditions,
 	//k_error_missing_when_others_fold_force,

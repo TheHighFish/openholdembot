@@ -136,11 +136,12 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// The simple "When Others" as an exception.
 			code_block = *(when_condition | action);
 			when_condition = 
-				keyword_when[extra_brackets_for_condition()] 
+				(keyword_when[extra_brackets_for_condition()] 
 				>> ((bracket_expression | condition_others)
 					[extra_closing_brackets_for_condition()]
 					[handle_when_condition()]
-					);
+					))
+				| invalid_when_condition_without_brackets;
 			
 			// "Others" - e.g. in "when others fold force"
 			condition_others = keyword_others[print_symbol()];
@@ -248,11 +249,20 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			symbol = (lexeme_d[alpha_p >> *alnum_p]);
 				/*| invalid_symbol;*/
 			// "Symbols" cintaining invalid cahracters
+
+
+			/////////////////////////////////////////////////////////////////////
+			//
+			// Error-definitions below
+			//
+			/////////////////////////////////////////////////////////////////////
 			invalid_character = str_p(";")  | "," | ":" | "|" | "@" | "€" | "!" | "\\"
 				| "\""  | "§" | "$" | "&" | "?" | "´" | "´" | "[" | "]"
 				| "^" | "°" | "{" | "}" | "#" | "³" | "²";
 			invalid_symbol = (*alnum_p >> invalid_character
 				>> *(alnum_p | invalid_character))[error_invalid_character()];
+			invalid_when_condition_without_brackets = (keyword_when
+				>> symbol)[error_missing_brackets_for_when_condition()];
 
 			/*
 			// Debugging boost spirit
