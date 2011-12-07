@@ -146,7 +146,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			condition_others = keyword_others[print_symbol()];
 
 			// Operators
-			unary_operator          = (keyword_not | "-");
+			unary_operator          = (keyword_not | "-")[print_operator()];
 			percentage_operator     = str_p("%");
 			multiplicative_operator = (str_p("*") | ("/")) 									| percentage_operator; 
 			additive_operator       = (str_p("+") | "-");
@@ -158,8 +158,8 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// Expressions
 			expression = sequence_of_binary_expressions;
 			sequence_of_binary_expressions = operand >> *(binary_operator >> operand);
-			operand = terminal_expression | bracket_expression | unary_expression; //!!!
-			unary_expression = unary_operator[print_opening_bracket()] >> operand_expression[print_opening_bracket()];
+			operand = unary_expression | terminal_expression | bracket_expression; //!!!
+			unary_expression = (unary_operator[print_opening_bracket()] >> operand)[print_closing_bracket()];
 			bracket_expression = str_p("(")[print_opening_bracket()] 
 				>> (hand_expression | board_expression | expression)
 				>> str_p(")")[print_closing_bracket()];
