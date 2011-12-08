@@ -1,10 +1,11 @@
 // Missing brackets around card expression
 custom
 
-symbols
-
 preflop
-when hand = TT and StackSize > 20 fold force
+// ok
+when (StackSize > 20) fold force
+// error
+when StackSize > 10 fold force
 
 flop
 when others fold force
