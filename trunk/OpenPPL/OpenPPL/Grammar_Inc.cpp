@@ -35,12 +35,15 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			//
 			openPPL_code = 
 				option_settings_to_be_ignored
-				>> ((keyword_custom 
+				>> ((optional_keyword_custom
 					[print_license()]
 					[print_options()]
 					[print_comment_for_list_section()]
 				>> custom_sections));
 					/*| missing_keyword_custom); !!!*/
+			// Keyword "CUSTOM" is not really neceaary for parsing.
+			// We make it optional, this avoids unnecessary error-handling.
+			optional_keyword_custom = (!keyword_custom); 
 			custom_sections = 
 				!list_section
 					[print_user_defined_functions()]
