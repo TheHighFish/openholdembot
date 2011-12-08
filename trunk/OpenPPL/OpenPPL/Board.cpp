@@ -45,7 +45,7 @@ void generate_code_for_suited_board(CString board_expression)
 		}
 	}
 End_Of_Loop:
-	current_output << "(srankbits & " 
+	current_output << "(srankbitscommon & " 
 		 // hexadecimal output to current_output or a stream according to
 		 // http://www.math.uni-bayreuth.de/~rbaier/lectures/c++_intro/html/node51.html
 		 << hex << showbase << user_defined_rankbits
