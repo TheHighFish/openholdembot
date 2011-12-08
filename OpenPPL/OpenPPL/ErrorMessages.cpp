@@ -19,7 +19,6 @@ static const char *short_error_messages[k_number_of_error_codes] =
 	"ERROR: Too many open-ended when-conditions.",
 	"ERROR: Unknown symbol",
 	"ERROR: Unknown symbol, containing \"Suited\".",
-	"ERROR: Unknown symbol, starting with \"IN\".",
 	"ERROR: General syntax error."
 };
 
@@ -138,15 +137,6 @@ static const char *detailed_error_messages[k_number_of_error_codes] =
 	"As the symbol ends on \"SUITED\" we assume,\n"
 	"that you simply forgot a space, e.g.\n"
 	"\"ASUITED\" instead of \"A SUITED\".\n",
-
-	// k_error_unknown_symbol_beginning_with_in
-	"The translator detected an unknown symbol,\n"
-	"that seems to be neither an OpenPPL-symbol\n"
-	"nor an OpenHoldem symbol.\n"
-	"\n"
-	"As the symbol begins with \"in\" we assume,\n"
-	"that you simply forgot a space, e.g.\n"
-	"\"InBigBlind\" instead of \"In BigBlind\".\n",
 
 	// k_error_general
 	"No detailed desription available.\n"

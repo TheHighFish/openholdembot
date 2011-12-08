@@ -130,11 +130,6 @@ struct print_symbol
 				ErrorMessage(k_error_unknown_symbol_ending_with_suited, 
 					ErroneousCodeSnippet(begin));
 			}
-			else if (c_symbol.MakeLower().Left(2) == "in")
-			{
-				ErrorMessage(k_error_unknown_symbol_beginning_with_in, 
-					ErroneousCodeSnippet(begin));
-			}
 			else
 			{
 				ErrorMessage(k_error_unknown_symbol, ErroneousCodeSnippet(begin));
