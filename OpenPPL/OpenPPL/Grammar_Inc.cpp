@@ -40,7 +40,6 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 					[print_options()]
 					[print_comment_for_list_section()]
 				>> custom_sections));
-					/*| missing_keyword_custom); !!!*/
 			// Keyword "CUSTOM" is not really neceaary for parsing.
 			// We make it optional, this avoids unnecessary error-handling.
 			optional_keyword_custom = (!keyword_custom); 
@@ -249,8 +248,8 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// otherwise things like "When x Bet force" would treat "x Bet force"
 			// as a single keyword and cause an error.
 			// http://www.boost.org/doc/libs/1_40_0/libs/spirit/classic/doc/quickref.html
-			symbol = (lexeme_d[alpha_p >> *alnum_p]);
-				/*| invalid_symbol;*/
+			symbol = (lexeme_d[alpha_p >> *alnum_p])
+				| invalid_symbol;
 			// "Symbols" cintaining invalid cahracters
 
 
