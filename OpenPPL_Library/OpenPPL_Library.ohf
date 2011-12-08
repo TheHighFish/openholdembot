@@ -2460,17 +2460,29 @@ nopponentsplaying
 //
 //*****************************************************************************
 
+// Standard PPL accepts two spellings for the position symbols
+// "In BigBlind" and "InBigBlind", "In Button" and "InButton", ...
+// Our parser is able to ignore the fillerword "In ",
+// but to be more user-friendly and to simplify the converter (less error-handling)
+// we decided to provide both forms of naming in the library.
+
 ##f$OpenPPL_Button##
-// Usually used as "In Button", but "In" is a fillerword and superfluous.
 (dealposition == nplayersdealt)
 
 ##f$OpenPPL_SmallBlind##
-// Usually used as "In SmallBlind", but "In" is a fillerword and superfluous.
 (dealposition == 1)
 
 ##f$OpenPPL_BigBlind##
-// Usually used as "In BigBlind", but "In" is a fillerword and superfluous.
 (dealposition == 2)
+
+##f$OpenPPL_InSmallBlind##
+f$OpenPPL_SmallBlind
+
+##f$OpenPPL_InButton##
+f$OpenPPL_Button
+
+##f$OpenPPL_InBigBlind##
+f$OpenPPL_BigBlind
 
 ##f$OpenPPL_BigBlindChair##
 ac_dealpos0 == 2 ? 0 :
