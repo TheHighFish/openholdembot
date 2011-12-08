@@ -14,7 +14,7 @@ static const char *short_error_messages[k_number_of_error_codes] =
 	"ERROR: Missing closing bracket.",
 	"ERROR: Missing keyword \"CUSTOM\".",
 	"ERROR: Missing brackets around card expressions.",
-	"ERROR: Missing brackets after when-condition.",
+	"ERROR: Missing brackets for when-condition.",
 	"ERROR: Invalid character(s).",
 	"ERROR: Too many open-ended when-conditions.",
 	"ERROR: Unknown symbol",
@@ -35,8 +35,8 @@ static const char *detailed_error_messages[k_number_of_error_codes] =
 	"as they do not matter and are not supported by OH-script.\n"
 	"\n"
 	"Example:\n"
-	"WHEN hand = AcT CALL  FORCE\n"
-	"WHEN hand = AT  RAISE FORCE\n"
+	"WHEN (Hand = AcT) CALL  FORCE\n"
+	"WHEN (Hand = AT)  RAISE FORCE\n"
 	"\n"
 	"Coding this way was the old way to randomize actions\n"
 	"before randomization go introduced into PPL.\n"
@@ -103,7 +103,7 @@ static const char *detailed_error_messages[k_number_of_error_codes] =
 	"[+-*/%] operators\n"
 	"[()] brackets\n"
 	"[_] underscores\n"
-	"[<=>] comparisions\n"
+	"[<=>] comparisons\n"
 	"[.] the decimal point in numbers\n"
 	"\n"
 	"Please get rid of the superfluous characters.\n",
