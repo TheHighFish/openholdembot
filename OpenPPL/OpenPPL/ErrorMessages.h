@@ -22,6 +22,7 @@ enum error_codes
 	// and an implicit return 0 at the end of a function.
 	k_error_unknown_symbol,
 	k_error_unknown_symbol_ending_with_suited,
+	k_error_operator_instead_of_action,
 	k_error_general,
 	// Last one: this is no error code,
 	// but used for creating and indexing of arrays.

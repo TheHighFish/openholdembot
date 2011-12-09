@@ -29,6 +29,11 @@ bool open_ended_when_condition_detected = false;
 
 int when_conditions_since_last_action = 0;
 
+static bool preflop_section_found; 
+static bool flop_section_found;   
+static bool turn_section_found;   
+static bool river_section_found;  
+
 // Stringstreams for the generated output
 // We have to use two of them and can't output directly,
 // as we have to reuse the code for open-ended when-conditions.

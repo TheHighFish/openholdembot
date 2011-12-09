@@ -36,6 +36,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			openPPL_code = 
 				option_settings_to_be_ignored
 				>> ((optional_keyword_custom
+				    [init_variables()]
 					[print_license()]
 					[print_options()]
 					[print_comment_for_list_section()]
@@ -50,6 +51,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 					[print_main_code_sections()]
 				>> (code_sections)
 				>> end_p
+				    [check_for_missing_code_section()]
 					[print_prime_coded_board_ranks()]
 					[print_technical_functions()]
 					[print_OpenPPL_Library()];
@@ -58,8 +60,6 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// Keywords like "When", "RaiseMax", etc.
 			///
 #include "ListOfKeywords_Inc.cpp"
-
-			// !!!missing_keyword_custom = (str_p("") >> custom_sections)[error_missing_keyword_custom()];
 			
 			//
 			// Option settings - to be ignored
@@ -95,23 +95,26 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			***/
 
 			// Preflop, flop, turn, river
-			code_sections = preflop_section
-				>> flop_section 
-				>> turn_section 
-				>> river_section;
-			preflop_section = (keyword_preflop/*[register_code_section()]*/
+			// All code sections are "optional" to simplify parsing.
+			// We only register their existence and then check for correctness
+			// at the very end.
+			code_sections = !preflop_section
+				>> !flop_section 
+				>> !turn_section 
+				>> !river_section;
+			preflop_section = (keyword_preflop[register_code_section()]
 					[print_function_header_for_betting_round()]
 				>> code_block)
 					[print_when_others_fold_force()][reset_variables()];
-			flop_section = (keyword_flop/*[register_code_section()]*/
+			flop_section = (keyword_flop[register_code_section()]
 					[print_function_header_for_betting_round()]
 				>> code_block)
 					[print_when_others_fold_force()][reset_variables()];
-			turn_section = (keyword_turn/*[register_code_section()]*/
+			turn_section = (keyword_turn[register_code_section()]
 					[print_function_header_for_betting_round()]
 				>> code_block)
 					[print_when_others_fold_force()][reset_variables()];
-			river_section = (keyword_river/*[register_code_section()]*/
+			river_section = (keyword_river[register_code_section()]
 					[print_function_header_for_betting_round()]
 				>> code_block)
 					[print_when_others_fold_force()][reset_variables()];
@@ -163,10 +166,9 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			sequence_of_binary_expressions = operand >> *(binary_operator >> operand);
 			operand = unary_expression | terminal_expression | bracket_expression; //!!!
 			unary_expression = (unary_operator[print_opening_bracket()] >> operand)[print_closing_bracket()];
-			bracket_expression = str_p("(")[print_opening_bracket()] 
+			bracket_expression = (str_p("(")[print_opening_bracket()] 
 				>> (hand_expression | board_expression | expression)
-				>> str_p(")")[print_closing_bracket()];
-			// !!! TODO: missing_closing_bracket_expression = (str_p("(") >> expression) >> str_p("")[error_missing_closing_bracket()];
+				>> (str_p(")")[print_closing_bracket()] | missing_closing_bracket));
 			
 			// Hand and board expressions
 			card_constant = lexeme_d[ch_p("A") | "a" | "K" | "k" | "Q" | "q" | "J" | "j" |
@@ -200,7 +202,8 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// We handle both in the same way, as it simplifies things a lot.
 			action = (action_without_force >> keyword_force)
 					[handle_action()]
-				| erroneous_action_without_force;
+				| invalid_operator_instead_of_action
+				| invalid_action_without_force;
 			// No longest_d[] for action_without_force,
             // otherwise Boost Spirit tries to evaluate everything,
             // Causing superfluos output. Therefore we simply start
@@ -223,7 +226,6 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			fixed_betsize_action = (keyword_bet | keyword_raise) >> number[print_comment_for_fixed_betsize()];
 			relative_betsize_action = (keyword_bet | keyword_raise) >> number[print_number()] 
 				>> percentage_operator[print_percentage_operator()][print_relative_potsize_action()] ;
-			erroneous_action_without_force = action_without_force[error_action_without_force()];
 
 			// UserDefined Variables
 			/*
@@ -250,8 +252,6 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// http://www.boost.org/doc/libs/1_40_0/libs/spirit/classic/doc/quickref.html
 			symbol = (lexeme_d[alpha_p >> *alnum_p])
 				| invalid_symbol;
-			// "Symbols" cintaining invalid cahracters
-
 
 			/////////////////////////////////////////////////////////////////////
 			//
@@ -265,6 +265,9 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				>> *(alnum_p | invalid_character))[error_invalid_character()];
 			invalid_when_condition_without_brackets = (keyword_when
 				>> symbol)[error_missing_brackets_for_when_condition()];
+			invalid_action_without_force = action_without_force[error_action_without_force()];
+			missing_closing_bracket = (symbol | action)[error_missing_closing_bracket()];
+			invalid_operator_instead_of_action = binary_operator[error_operator_instead_of_action()];
 
 			/*
 			// Debugging boost spirit

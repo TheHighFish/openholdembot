@@ -19,6 +19,7 @@ static const char *short_error_messages[k_number_of_error_codes] =
 	"ERROR: Too many open-ended when-conditions.",
 	"ERROR: Unknown symbol",
 	"ERROR: Unknown symbol, containing \"Suited\".",
+	"ERROR: Found operator, expecting an action.",
 	"ERROR: General syntax error."
 };
 
@@ -58,7 +59,13 @@ static const char *detailed_error_messages[k_number_of_error_codes] =
 	// k_error_missing_code_section
 	"OpenPPL does not provide any default bot logic,\n"
 	"so the code sections for preflop, flop, turn and river\n"
-	"are all mandatory.\n",
+	"are all mandatory.\n"
+	"However: if you don't need all 4 sections\n"
+	"(e.g. preflop push/fold-code or imcomplete profile)\n"
+	"you should add some simple code:\n"
+	"\n"
+	"FLOP\n"
+	"WHEN Others FOLD FORCE\n",
 
 	// k_error_missing_closing_bracket
 	"We miss a closing bracket near that location,\n"
@@ -81,7 +88,7 @@ static const char *detailed_error_messages[k_number_of_error_codes] =
 	"in the second case it will take \"6 C\" as a 6 of clubs.\n"
 	"\n"
 	"Therefore it is strictly required to bracket all hand- and board-expressions.\n"
-	"E.g. \"WHEN ((Hand = TT) AND...) RAISE FORCE\".",
+	"E.g. \"WHEN ((Hand = TT) AND...) RAISE FORCE\".\n",
 
 	// k_error_missing_brackets_for_when_condition
 	"We are sorry, but for technical reasons\n"
@@ -89,7 +96,7 @@ static const char *detailed_error_messages[k_number_of_error_codes] =
 	"\n"
 	"E.g. \"WHEN (StackSize < 20) RAISEMAX FORCE\"\n"
 	"\n"
-	"Sole exception: WHEN Others FOLD FORCE",
+	"Sole exception: WHEN Others FOLD FORCE\n",
 
 	//k_error_invalid_character,
 	"At or near the critical code location is at least one invalid character.\n"
@@ -137,6 +144,12 @@ static const char *detailed_error_messages[k_number_of_error_codes] =
 	"As the symbol ends on \"SUITED\" we assume,\n"
 	"that you simply forgot a space, e.g.\n"
 	"\"ASUITED\" instead of \"A SUITED\".\n",
+
+	"We expect an action here, but found an operator,\n"
+	"but most likely you just forgot another pair of brackets here.\n"
+	"\n"
+	"For example: WHEN (Hand = AA) OR (Hand = KK) RAISEMAX FORCE\n"
+	"instead of WHEN ((Hand = AA) OR (Hand = KK)) RAISEMAX FORCE\n",
 
 	// k_error_general
 	"No detailed desription available.\n"
