@@ -45,9 +45,9 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// We make it optional, this avoids unnecessary error-handling.
 			optional_keyword_custom = (!keyword_custom); 
 			custom_sections = 
-				!list_section
+				(!list_section)
 					[print_user_defined_functions()]
-				>> !symbol_section
+				>> (!symbol_section)
 					[print_main_code_sections()]
 				>> (code_sections)
 				>> end_p
@@ -83,7 +83,6 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			end_of_list = keyword_end >> keyword_list;
 			***/
 
-			/***
 			// User defined symbols
 			symbol_section = keyword_symbols >> *symbol_definition;
 			symbol_definition = keyword_new >> keyword_symbol[reset_variables()]
@@ -92,7 +91,6 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				>> keyword_end >> keyword_symbol[reset_variables()]
 					[print_default_return_value_for_user_defined_symbol()]
 					[reset_variables()];
-			***/
 
 			// Preflop, flop, turn, river
 			// All code sections are "optional" to simplify parsing.

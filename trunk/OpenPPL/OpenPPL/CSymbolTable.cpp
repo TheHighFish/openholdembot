@@ -8,7 +8,7 @@ CSymbolTable *p_symbol_table = 0; //NULL;
 
 #undef DEBUG_SYMBOLTABLE_GENERAL
 #undef DEBUG_SYMBOLTABLE_CREATION
-#undef DEBUG_SYMBOLTABLE_QUERY
+#define DEBUG_SYMBOLTABLE_QUERY
 
 CSymbolTable::CSymbolTable()
 {
@@ -73,17 +73,31 @@ void CSymbolTable::AddSymbolsFromFile(CString filename)
 			// User defined function from the OpenPPL-library
 			CString new_symbol = next_line.Mid(2, next_line.GetLength()-4);
 			// Add symbol as is
-			//MessageBox(0, new_symbol, "Adding as is...", 0);
+
+#ifdef DEBUG_SYMBOLTABLE_CREATION
+			MessageBox(0, new_symbol, "Adding as is...", 0);
+#endif
+
 			AddSymbol(new_symbol);
 		}
 		else if (next_line.Left(11).MakeLower() == "new symbol ")
 		{
 			// User defined function from the OpenPPL-file
 			CString new_symbol = next_line.Mid(11, next_line.GetLength()-11);
-			// Add symbol with standardized name ("f$OpenPPL_")
-			//MessageBox(0, new_symbol, "Trying to add...", 0);
+			//Add symbol with standardized name ("f$OpenPPL_")
+
+#ifdef DEBUG_SYMBOLTABLE_CREATION
+			MessageBox(0, new_symbol, "Adding with prefix...", 0);
+#endif
+
 			AddSymbol(new_symbol);
 		}
+		else
+		{
+			// Nothing to do here.
+			// This code-line simply does not start a symbol definition.
+		}
+
 	}
 	input_file.close();
 	_generation_of_symboltable_in_progress = false;
