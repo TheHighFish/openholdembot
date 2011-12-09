@@ -33,6 +33,7 @@
 //   Nik0
 //   NPNG
 //   Poker_Dog
+//   Postenjak
 //   Satanikut
 //   Stangelnator
 //   SteveG1963
@@ -59,11 +60,8 @@
 //
 //*****************************************************************************
 
-##f$OpenPPL_Call##
+##f$OpenPPL_Fold##
 -1
-
-##f$OpenPPL_Play##
-f$OpenPPL_Call
 
 ##f$OpenPPL_Check##
 (f$OpenPPL_AmountToCall <= 0) ? f$OpenPPL_Call : f$OpenPPL_Fold
@@ -87,8 +85,11 @@ f$OpenPPL_PotSize
 ##f$OpenPPL_RaiseMax##
 -2
 
-##f$OpenPPL_Fold##
+##f$OpenPPL_Call##
 -3
+
+##f$OpenPPL_Play##
+f$OpenPPL_Call
 
 ##f$OpenPPL_Bet##
 f$OpenPPL_Raise
@@ -117,7 +118,10 @@ f$OpenPPL_RaiseMax
 // and to avoid undefined return values.
 // OpenHoldem would return 0, when a return-value was not specified,
 // but this might be meaningful in most contexts.
--1
+//
+// To always be on the save site we use...
+// f$OpenPPL_UndefinedReturnValue = f$OpenPPL_Fold = -1
+f$OpenPPL_Fold
 
 //*****************************************************************************
 //
@@ -222,7 +226,7 @@ didcallround3
 ##f$OpenPPL_AddNopponentscalling##
 f$OpenPPL_Calls + nopponentscalling
 
-##OpenPPL_InitCalls##
+##f$OpenPPL_InitCalls##
 (f$OpenPPL_BotsActionsOnThisRound == 0) ?
   me_st_MemCalls_f$OpenPPL_nopponentscalling :
   me_st_MemCalls_f$OpenPPL_AddNopponentscalling
@@ -769,6 +773,9 @@ chair == f$OpenPPL_EarlyPosition3Chair  ? f$OpenPPL_MaxStillToActStackSizeAfterE
 chair == f$OpenPPL_EarlyPosition2Chair  ? f$OpenPPL_MaxStillToActStackSizeAfterEarlyPosition2  :
 chair == f$OpenPPL_EarlyPosition1Chair  ? f$OpenPPL_MaxStillToActStackSizeAfterEarlyPosition1  : -1
 
+##f$OpenPPL_MinOpponentStackSize##
+me_re_MinOpponentStackSize
+
 ##f$OpenPPL_MinStillToActStackSize##
 chair == f$OpenPPL_BigBlindChair        ? -1:
 chair == f$OpenPPL_SmallBlindChair      ? f$OpenPPL_MinStillToActStackSizeAfterSmallBlind      :
@@ -1005,10 +1012,20 @@ $$cr1 >= $$cr0 && $$cr1 >= $$cr2 && $$cr0 <= $$cr2 ? $$cr2 :
 $$cr2 >= $$cr0 && $$cr2 >= $$cr1 && $$cr0 >= $$cr1 ? $$cr0 :
 $$cr2 >= $$cr0 && $$cr2 >= $$cr1 && $$cr0 <= $$cr1 ? $$cr1 : -1
 
-##f$OpenPPL_2ndTopFlopCardPairedOnRiver##
+// Shanky is a bit inconsistent with the naming
+// So we provide both 2ndTopFlopCardPairedOnRiver and SecondTopFlopCardPairedOnRiver,
+// same for turn. "SecondTopFlopCardPairedOnRiver" is the "standard" here.
+
+##f$OpenPPL_SecondTopFlopCardPairedOnRiver##
+f$OpenPPL_2ndTopFlopCardPairedOnRiver
+
+##f$OpenPPL_SecondTopFlopCardPairedOnTurn##
+f$OpenPPL_2ndTopFlopCardPairedOnTurn
+
+##f$OpenPPL_SecondTopFlopCardPairedOnRiver##
 f$OpenPPL_2ndTopFlopCard == $$cr4 ? 1 : 0
 
-##f$OpenPPL_2ndTopFlopCardPairedOnTurn##
+##f$OpenPPL_SecondTopFlopCardPairedOnTurn##
 f$OpenPPL_2ndTopFlopCard == $$cr3 ? 1 : 0
 
 ##f$OpenPPL_srankbitshero##
@@ -1116,6 +1133,9 @@ f$OpenPPL_TopFlopCard == $$cr3 ? 1 : 0
 
 ##f$OpenPPL_TurnCardPaired##
 ($$cr3 == $$cr4)
+
+##f$OpenPPL_TwoOfOneSuitPresentOnFlop##
+(($$cs0 == $$cs1) || ($$cs0 == $$cs2) || ($$cs1 == $$cs2))
 
 ##f$OpenPPL_TwoPairOnBoard##
 (pokervalcommon & istwopair) || (pokervalcommon & isfullhouse)
