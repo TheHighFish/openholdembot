@@ -43,7 +43,7 @@ primary_expression,
 
 terminal_expression,		
 bracket_expression,
-missing_closing_bracket_expression,
+missing_closing_bracket,
 operand_expression,
 unary_operator,
 unary_expression,
@@ -134,8 +134,9 @@ hand_expression_without_brackets,
 board_expression,
 board_expression_with_brackets,
 board_expression_without_brackets,
-erroneous_action_without_force,
+invalid_action_without_force,
 invalid_character,
 invalid_symbol,
-invalid_when_condition_without_brackets
+invalid_when_condition_without_brackets,
+invalid_operator_instead_of_action
 ;

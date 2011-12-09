@@ -13,12 +13,18 @@
 // Larger code-snippets
 //
 
-/*bool preflop_section_found = false;
-bool flop_section_found = false;
-bool turn_section_found = false;
-bool river_section_found = false;
-*/
-
+struct init_variables
+{
+	// Initialized at run-time, because...
+	// only static const integral data members can be initialized within a class
+	void operator()(const char *begin, const char *end) const 
+	{ 
+		bool preflop_section_found = false;
+		bool flop_section_found = false;
+		bool turn_section_found = false;
+		bool river_section_found = false;
+	} 
+};
 
 struct print_license
 { 
@@ -578,7 +584,7 @@ struct error_action_without_force
 		ErrorMessage(k_error_action_without_force, ErroneousCodeSnippet(begin));
 	}
 };
-/*
+
 struct register_code_section
 {
 	void operator()(const char *begin, const char *end) const 
@@ -607,8 +613,8 @@ struct register_code_section
 		}
 	}
 };
-*/
-/*
+
+
 struct check_for_missing_code_section
 {
 	void operator()(const char *begin, const char *end) const 
@@ -622,7 +628,7 @@ struct check_for_missing_code_section
 		}
 	}
 };
-*/
+
 
 struct error_missing_code_section
 {
@@ -669,5 +675,13 @@ struct error_invalid_character
 	void operator()(const char *begin, const char *end) const 
 	{
 		ErrorMessage(k_error_invalid_character, ErroneousCodeSnippet(begin));
+	}
+};
+
+struct error_operator_instead_of_action
+{
+	void operator()(const char *begin, const char *end) const 
+	{
+		ErrorMessage(k_error_operator_instead_of_action, ErroneousCodeSnippet(begin));
 	}
 };
