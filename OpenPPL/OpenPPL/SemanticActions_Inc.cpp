@@ -131,7 +131,12 @@ struct print_symbol
 		else if (!p_symbol_table->GenerationOfSymboltableInProgress())
 		{
 			CString c_symbol = symbol.c_str();
-			if (c_symbol.MakeLower().Right(6) == "suited")
+			if (c_symbol.MakeLower().Left(4) == "user")
+			{
+				// User-defined variable
+				current_output << "me_re_" << c_symbol.MakeLower();
+			}
+			else if (c_symbol.MakeLower().Right(6) == "suited")
 			{
 				ErrorMessage(k_error_unknown_symbol_ending_with_suited, 
 					ErroneousCodeSnippet(begin));
@@ -139,11 +144,11 @@ struct print_symbol
 			else
 			{
 				ErrorMessage(k_error_unknown_symbol, ErroneousCodeSnippet(begin));
-					// Output anyway, as 
-					//   * some symbols are missing, that will be removed soon
-					//   * some new symbols might be missing, but the translation
-					//     should work anyway.
-					current_output << symbol;
+				// Output anyway, as 
+				//   * some symbols are missing, that will be removed soon
+				//   * some new symbols might be missing, but the translation
+				//     should work anyway.
+				current_output << symbol;
 			}
 		}
 	} 
@@ -551,6 +556,67 @@ struct handle_action
 		current_output.clear();
 	}
 };
+
+struct print_setting_UDV
+{
+	void operator()(const char *begin, const char *end) const
+ 	{
+ 		std::string text = std::string(begin, end);
+ 		CString ctext = text.c_str();
+		if (ctext.Find("_") != -1)
+		{
+			ErrorMessage(k_error_underscores_not_allowed_in_user_defined_variables, 
+				ErroneousCodeSnippet(begin));
+		}
+ 		//Add to list of user variables if not yet known
+ 		CSMap::const_iterator find_result = user_vars.find(ctext.MakeLower());
+ 		if (find_result == user_vars.end())
+ 		{
+ 			user_vars[ctext.MakeLower()] = ctext.MakeLower();
+ 		}
+ 		when_conditions_since_last_action = 0;
+ 		if (open_ended_when_condition_detected)
+ 		{
+ 			cout << current_open_ended_when_condition.str() << "  &&  ["
+ 				 << current_when_condition.str() << " ? "
+ 				 << "me_st_" << ctext.MakeLower() << "_1 : 0] && 0 ? 0 :" << endl;
+ 		}
+ 		else
+ 		{
+ 			cout << "[ " << current_when_condition.str() << " ? "
+ 				 << "me_st_" << ctext.MakeLower() << "_1 : 0] && 0 ? 0 :" << endl;
+ 		}
+ 		current_output.str("");
+ 		current_output.clear();
+ 	}
+};
+
+struct print_recalling_UDV
+{
+	void operator()(const char *begin, const char *end) const
+ 	{
+		std::string text = std::string(begin, end);
+ 		CString ctext = text.c_str();
+		cout << "me_re_" << ctext.MakeLower();
+	}
+};
+
+struct print_user_reset_function
+ {
+ 	void operator()(const char *begin, const char *end) const
+ 	{
+		map<CString, CString>::iterator p;
+		cout << k_code_snippet_reset_user_variables;
+		cout << "##f$OpenPPL_Reset_User_Variables##" << endl;
+		cout << "0" << endl;
+   		for(p = user_vars.begin(); p != user_vars.end(); p++) 
+		{
+ 			cout << "+  me_st_" << p->first << "_0" << endl;
+ 		}
+		cout << endl << endl;
+ 	}
+};
+
 
 //
 // Error messages

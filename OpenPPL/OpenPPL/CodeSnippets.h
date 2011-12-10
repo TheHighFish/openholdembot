@@ -296,4 +296,15 @@ static const char *k_code_snippet_technical_functions =
 	"\n"
 	"\n";
 
+static const char *k_code_snippet_reset_user_variables =
+	"//************************************************************************\n"
+	"//\n"
+	"// Resetting all User-Defined Variables.\n"
+	"//\n"
+	"// To be called at the very beginning of a hand.\n"
+	"//\n"
+	"//************************************************************************\n"
+	"\n"
+	"\n";
+
 #endif INC_CODESNIPPETS_H

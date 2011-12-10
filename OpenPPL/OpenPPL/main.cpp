@@ -29,6 +29,9 @@ bool open_ended_when_condition_detected = false;
 
 int when_conditions_since_last_action = 0;
 
+typedef map<CString, CString> CSMap;
+CSMap user_vars;
+
 static bool preflop_section_found; 
 static bool flop_section_found;   
 static bool turn_section_found;   

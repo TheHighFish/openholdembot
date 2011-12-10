@@ -20,6 +20,7 @@ static const char *short_error_messages[k_number_of_error_codes] =
 	"ERROR: Unknown symbol",
 	"ERROR: Unknown symbol, containing \"Suited\".",
 	"ERROR: Found operator, expecting an action.",
+	"ERROR: Underscores not allowed in user-defined variables.",
 	"ERROR: General syntax error."
 };
 
@@ -150,6 +151,14 @@ static const char *detailed_error_messages[k_number_of_error_codes] =
 	"\n"
 	"For example: WHEN (Hand = AA) OR (Hand = KK) RAISEMAX FORCE\n"
 	"instead of WHEN ((Hand = AA) OR (Hand = KK)) RAISEMAX FORCE\n",
+
+	"We are sorry, but underscores are not allowed in\n"
+	"user-defined symbols for technical reasons.\n"
+	"\n"
+	"The converter generates code of the form\n"
+	"  \"me_st_MySecretVariable_1\"\n"	
+	"where the underscore separates the store-command (me_st_)\n"
+	"from the symbol and the symbol from the value to be assigned.\n",
 
 	// k_error_general
 	"No detailed desription available.\n"

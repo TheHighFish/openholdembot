@@ -138,5 +138,9 @@ invalid_action_without_force,
 invalid_character,
 invalid_symbol,
 invalid_when_condition_without_brackets,
-invalid_operator_instead_of_action
+invalid_operator_instead_of_action,
+user_prefix,
+user_defined_variable,
+set_user_defined_variable,
+recall_user_defined_variable
 ;
