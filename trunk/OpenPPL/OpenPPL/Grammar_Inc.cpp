@@ -54,6 +54,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				    [check_for_missing_code_section()]
 					[print_prime_coded_board_ranks()]
 					[print_technical_functions()]
+					[print_user_reset_function()]
 					[print_OpenPPL_Library()];
 
 			//
@@ -200,6 +201,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// We handle both in the same way, as it simplifies things a lot.
 			action = (action_without_force >> keyword_force)
 					[handle_action()]
+			    | set_user_defined_variable
 				| invalid_operator_instead_of_action
 				| invalid_action_without_force;
 			// No longest_d[] for action_without_force,
@@ -226,10 +228,15 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				>> percentage_operator[print_percentage_operator()][print_relative_potsize_action()] ;
 
 			// UserDefined Variables
-			/*
-			user_defined_variable = lexeme_d[user_prefix >> *alnum_p];
 			user_prefix = str_p("user") | "User" | "USER";
-			*/
+			// Underscores are not possible, because a user-defined variable
+			// translates to "me_st_Variable_Value", but we allow it here
+			// to be able to handle errors in a simple way later.
+			user_defined_variable = lexeme_d[user_prefix >> *(str_p("_") | alnum_p)];
+			set_user_defined_variable = user_defined_variable[print_setting_UDV()];
+			recall_user_defined_variable = user_defined_variable[print_recalling_UDV()];
+			//!!!to do: incorrect user variable
+
 
 			// Return statement (without force, as this is part of "action")
 			return_statement = keyword_return >> expression;
@@ -238,9 +245,10 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// Unfortunatelly we can't use "number = real_p[print_number()]";
 			// so we put all actions into "terminal_expression";
 			terminal_expression = 
-				number             [print_number()]
-				| boolean_constant [print_symbol()] 
-				| symbol           [print_symbol()];
+				number                        [print_number()]
+				| boolean_constant            [print_symbol()]
+				//| recall_user_defined_variable[print_recalling_UDV()]
+				| symbol                      [print_symbol()];
 			number = real_p;
 			boolean_constant = (keyword_true | keyword_false);
 			// "Symbol" is a lexeme - we have to be very careful here.
