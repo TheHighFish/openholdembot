@@ -8,7 +8,7 @@ CSymbolTable *p_symbol_table = 0; //NULL;
 
 #undef DEBUG_SYMBOLTABLE_GENERAL
 #undef DEBUG_SYMBOLTABLE_CREATION
-#define DEBUG_SYMBOLTABLE_QUERY
+#undef DEBUG_SYMBOLTABLE_QUERY
 
 CSymbolTable::CSymbolTable()
 {
@@ -36,11 +36,9 @@ void CSymbolTable::AddSymbolsFromFile(CString filename)
 		MessageBox(0, error_message, "Error", 0);
 		exit(-1);
 	}
-
 #ifdef DEBUG_SYMBOLTABLE_GENERAL
 	MessageBox(0, "Adding symbols from file: " + filename, "Debug", 0);
 #endif
-
 	while (!input_file.eof())
 	{
 		// According to JConner some insane Shanky-profiles
@@ -72,24 +70,20 @@ void CSymbolTable::AddSymbolsFromFile(CString filename)
 			}
 			// User defined function from the OpenPPL-library
 			CString new_symbol = next_line.Mid(2, next_line.GetLength()-4);
-			// Add symbol as is
-
 #ifdef DEBUG_SYMBOLTABLE_CREATION
 			MessageBox(0, new_symbol, "Adding as is...", 0);
 #endif
-
+			// Add symbol as is
 			AddSymbol(new_symbol);
 		}
 		else if (next_line.Left(11).MakeLower() == "new symbol ")
 		{
 			// User defined function from the OpenPPL-file
 			CString new_symbol = next_line.Mid(11, next_line.GetLength()-11);
-			//Add symbol with standardized name ("f$OpenPPL_")
-
 #ifdef DEBUG_SYMBOLTABLE_CREATION
 			MessageBox(0, new_symbol, "Adding with prefix...", 0);
 #endif
-
+			//Add symbol with standardized name ("f$OpenPPL_")
 			AddSymbol(new_symbol);
 		}
 		else
@@ -114,17 +108,18 @@ void CSymbolTable::AddSymbol(CString new_symbol)
 	}
 	else
 	{
+		CString new_symbol_with_correct_prefix = GetSymbolNameWithCorrectPrefix(new_symbol);
 		// Use the lowercase name as lookup-key 
 		// and store the correct name.
-		CString new_symbol_lowercase = new_symbol;
-		new_symbol_lowercase.MakeLower();
-		//MessageBox(0, new_symbol, "Inserting", 0);
-		known_symbols[new_symbol_lowercase] = new_symbol;
-
+		CString new_symbol_lowercase_with_correct_prefix 
+			= new_symbol_with_correct_prefix;
+		new_symbol_lowercase_with_correct_prefix.MakeLower();
 #ifdef DEBUG_SYMBOLTABLE_CREATION
-		MessageBox(0, "Adding symbol: " + new_symbol, "Debug", 0);
+		MessageBox(0, "Inserting " + new_symbol_with_correct_prefix 
+			+ " as " + new_symbol_lowercase_with_correct_prefix, "Debug", 0);
 #endif
-
+		known_symbols[new_symbol_lowercase_with_correct_prefix] 
+			= new_symbol_with_correct_prefix;
 	}
 }
 
@@ -139,8 +134,12 @@ bool CSymbolTable::IsOpenPPLSymbol(CString symbol)
 	CSMap::const_iterator find_result = known_symbols.find(standardized_symbol_lowercase);
 	if (find_result == known_symbols.end())
 	{
-		//if (!GenerationOfSymboltableInProgress())
-		//	MessageBox(0, standardized_symbol_lowercase, "not found", 0);
+#ifdef DEBUG_SYMBOLTABLE_CREATION
+		if (!GenerationOfSymboltableInProgress())
+		{
+			MessageBox(0, standardized_symbol_lowercase, "not found", 0);
+		}
+#endif
 		return false;
 	}
 
@@ -151,8 +150,12 @@ bool CSymbolTable::IsOpenPPLSymbol(CString symbol)
 	}
 	//else
 	{
-		//if (!GenerationOfSymboltableInProgress())
-		//	MessageBox(0, find_result->second, GetSymbolNameWithCorrectPrefix(symbol), 0);
+#ifdef DEBUG_SYMBOLTABLE_CREATION
+		if (!GenerationOfSymboltableInProgress())
+		{
+			MessageBox(0, find_result->second, GetSymbolNameWithCorrectPrefix(symbol), 0);
+		}
+#endif
 		return (false);
 	}
 }
@@ -172,11 +175,9 @@ CString CSymbolTable::GetSymbolNameWithCorrectPrefix(CString symbol)
 	else
 	{
 		CString standardized_symbol_name = "f$OpenPPL_" + symbol;
-
 #ifdef DEBUG_SYMBOLTABLE_QUERY
 		MessageBox(0, "Standardized name: " + standardized_symbol_name, "Debug", 0);
 #endif
-
 		return standardized_symbol_name;
 	}
 }
@@ -194,11 +195,9 @@ CString CSymbolTable::GetSymbolNameWithcorrectCases(CString symbol)
 	// This function should be used for generation of correct code
 	CString standardized_name_as_lookup_key = GetLookupKey(symbol);
 	CString symbol_name_with_correct_cases = known_symbols[standardized_name_as_lookup_key];
-
 #ifdef DEBUG_SYMBOLTABLE_QUERY
 	MessageBox(0, "Correct cases: " + symbol_name_with_correct_cases, "Debug", 0);
 #endif
-
 	return symbol_name_with_correct_cases;
 }
 
