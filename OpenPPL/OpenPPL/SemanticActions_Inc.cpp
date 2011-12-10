@@ -175,7 +175,10 @@ struct print_function_header_for_betting_round
 		else
 		{
 			// User defined function ("New Symbol ...")
-			cout << "##f$OpenPPL_" << text << "##" << endl;
+			// Must be already in the symbol table,
+			// as we did a first parse for symbol definitions.
+			cout << "##" << p_symbol_table->GetSymbolNameWithcorrectCases(text) 
+				<< "##" << endl;
 		}
 		current_output.str("");
 		current_output.clear();
