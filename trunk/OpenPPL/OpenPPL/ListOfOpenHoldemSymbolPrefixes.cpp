@@ -1,7 +1,7 @@
 #include "ListOfOpenHoldemSymbolPrefixes.h"
 
 
-#define DEBUG_PREFIX
+#undef DEBUG_PREFIX
 
 
 ListOfOpenHoldemSymbolPrefixes *p_list_of_openholdem_symbol_prefixes = NULL;

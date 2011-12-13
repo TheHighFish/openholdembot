@@ -7,7 +7,7 @@
 // and AFAIK we can't distribute it over multiple modules.
 
 #undef DEBUG_WHEN_CONDITIONS
-#define DEBUG_SYMBOLS
+#undef DEBUG_SYMBOLS
 
 //
 // Larger code-snippets
