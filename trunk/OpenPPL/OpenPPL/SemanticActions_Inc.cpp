@@ -645,6 +645,22 @@ struct print_memory_store_command
 	}
 };
 
+struct print_hand_in_list
+{
+	void operator()(const char *begin, const char *end) const 
+	{
+		std::string text = std::string(begin, end);
+		cout << text << " ";
+	}
+};
+
+struct print_newline
+{
+	void operator()(const char *begin, const char *end) const 
+	{
+		cout << endl;
+	};
+};
 
 //
 // Error messages
