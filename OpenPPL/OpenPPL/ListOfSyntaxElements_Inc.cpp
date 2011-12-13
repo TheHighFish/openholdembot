@@ -145,5 +145,6 @@ user_defined_variable,
 set_user_defined_variable,
 recall_user_defined_variable,
 memory_store_command,
-missing_list_number
+missing_list_number,
+invalid_list_content
 ;

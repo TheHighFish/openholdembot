@@ -806,3 +806,11 @@ struct error_missing_list_number
 		ErrorMessage(k_error_missing_list_number, ErroneousCodeSnippet(begin));	
 	}
 };
+
+struct error_invalid_list_content
+{
+	void operator()(const char *begin, const char *end) const 
+	{
+		ErrorMessage(k_error_invalid_list_content, ErroneousCodeSnippet(begin));	
+	}
+};
