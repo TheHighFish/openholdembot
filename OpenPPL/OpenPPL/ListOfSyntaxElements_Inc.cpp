@@ -142,5 +142,6 @@ invalid_operator_instead_of_action,
 user_prefix,
 user_defined_variable,
 set_user_defined_variable,
-recall_user_defined_variable
+recall_user_defined_variable,
+memory_store_command
 ;

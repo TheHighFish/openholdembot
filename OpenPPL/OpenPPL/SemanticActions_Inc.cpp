@@ -134,7 +134,7 @@ struct print_symbol
 			if (c_symbol.MakeLower().Left(4) == "user")
 			{
 				// User-defined variable
-				current_output << "me_re_" << c_symbol.MakeLower();
+				current_output << "me_re" << c_symbol.MakeLower();
 			}
 			else if (c_symbol.MakeLower().Right(6) == "suited")
 			{
@@ -615,6 +615,34 @@ struct print_user_reset_function
  		}
 		cout << endl << endl;
  	}
+};
+
+
+struct print_memory_store_command
+{
+	void operator()(const char *begin, const char *end) const 
+	{
+		std::string text = std::string(begin, end);
+ 		CString ctext = text.c_str();
+		// The memory_store_command may contain a space after "me_st_",
+		// despitee there was no in the source code. Heaven knows why.
+		// We remove it.
+		ctext.Remove(' ');
+ 		when_conditions_since_last_action = 0;
+ 		if (open_ended_when_condition_detected)
+ 		{
+ 			cout << current_open_ended_when_condition.str() << "  &&  ["
+ 				 << current_when_condition.str() << " ? "
+ 				 << ctext << " : 0] && 0 ? 0 :" << endl;
+ 		}
+ 		else
+ 		{
+ 			cout << "[ " << current_when_condition.str() << " ? "
+ 				 << ctext << " : 0] && 0 ? 0 :" << endl;
+ 		}
+ 		current_output.str("");
+ 		current_output.clear();
+	}
 };
 
 
