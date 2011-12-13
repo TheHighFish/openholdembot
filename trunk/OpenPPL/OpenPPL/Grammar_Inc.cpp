@@ -202,6 +202,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			action = (action_without_force >> keyword_force)
 					[handle_action()]
 			    | set_user_defined_variable
+				| memory_store_command
 				| invalid_operator_instead_of_action
 				| invalid_action_without_force;
 			// No longest_d[] for action_without_force,
@@ -235,8 +236,13 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			user_defined_variable = lexeme_d[user_prefix >> *(str_p("_") | alnum_p)];
 			set_user_defined_variable = user_defined_variable[print_setting_UDV()];
 			recall_user_defined_variable = user_defined_variable[print_recalling_UDV()];
-			//!!!to do: incorrect user variable
-
+			
+			// memory_store_command (me_st_...) instead of action
+			// This is like user-defined  variables, except:
+			// * we can set arbitrary values.
+			// * there is no implicit reset at the beginning of a hand.
+			memory_store_command = (str_p("me_st_") >> lexeme_d[*(alnum_p | "_" | "$")])
+				[print_memory_store_command()];
 
 			// Return statement (without force, as this is part of "action")
 			return_statement = keyword_return >> expression;

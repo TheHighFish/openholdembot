@@ -26,6 +26,7 @@ bool ListOfOpenHoldemSymbolPrefixes::LooksLikeOpenHoldemSymbol(CString symbol)
 		int length_of_prefix = next_prefix.GetLength();
 		// OpenHoldem is case sensitive, 
 		// so we don't normalize cases for this comparison.
+		MessageBox(0, "Comparing " + symbol + " to " + next_prefix, "Debug", 0);
 		if (symbol.Left(length_of_prefix) == next_prefix)
 		{
 			return true;
@@ -118,25 +119,25 @@ const char openholdem_symbol_prefixes[k_number_of_symbol_prefixes][k_max_length_
 	// Versus symbols
 	"vs$",
 	// History symbols
-	"hi_",
+	"hi",
 	// Action symbols
 	"lastraised",	"rais",			"call",			"fold",
 	"oppdealt",		"ac",
 	// MyHand symbols
-	"mh_",
+	"mh",
 	// Table stats symbols
 	"floppct",		"turnpct",		"riverpct",		"avgbetspf",
 	"tablepfr",		"maxbalance",	"handsplayed",	"balance_rank",
 	// Log symbols
 	"log$",
 	// Poker Tracker symbols
-	"pt_",			"ptt_",
+	"pt",			"ptt",
 	// ICM calculator symbols
 	"icm",
 	// Hand multiplexor symbols
 	"f$$",
 	// Memory symbols
-	"me_re_",		"me_st_",
+	"me_re",		"me_st",
 	"$A",			"$K",			"$Q",			"$J",
 	"$T",			"$9",			"$8",			"$7",
 	"$6",			"$5",			"$4",			"$3",
