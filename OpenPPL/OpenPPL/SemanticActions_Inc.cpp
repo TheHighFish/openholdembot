@@ -798,3 +798,11 @@ struct error_operator_instead_of_action
 		ErrorMessage(k_error_operator_instead_of_action, ErroneousCodeSnippet(begin));
 	}
 };
+
+struct error_missing_list_number
+{
+	void operator()(const char *begin, const char *end) const 
+	{
+		ErrorMessage(k_error_missing_list_number, ErroneousCodeSnippet(begin));	
+	}
+};

@@ -76,10 +76,12 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 
 			// user defined lists
 			list_section = keyword_lists >> *list_definition;
-			list_definition = keyword_new >> keyword_list
-				>> number[print_list_header()] >> list_content >> end_of_list;;
+			list_definition = (keyword_new >> keyword_list
+				>> number[print_list_header()] >> list_content >> end_of_list)
+				| missing_list_number;
 			list_content = *hand_in_list;
-			hand_in_list = (card_constant >> card_constant >> !(str_p("s") | "o"))[print_hand_in_list()];
+			hand_in_list = ((card_constant >> card_constant >> !(str_p("s") | "o"))[print_hand_in_list()])
+				/*| invalid_hand_in_list*/;
 			end_of_list = (keyword_end >> keyword_list)[print_newline()][print_newline()];
 
 			// User defined symbols
@@ -278,6 +280,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			invalid_action_without_force = action_without_force[error_action_without_force()];
 			missing_closing_bracket = (symbol | action)[error_missing_closing_bracket()];
 			invalid_operator_instead_of_action = binary_operator[error_operator_instead_of_action()];
+			missing_list_number = (keyword_new >> keyword_list >> list_content)[error_missing_list_number()];
 
 			/*
 			// Debugging boost spirit

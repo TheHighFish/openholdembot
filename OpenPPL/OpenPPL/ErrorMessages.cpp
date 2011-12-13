@@ -21,6 +21,7 @@ static const char *short_error_messages[k_number_of_error_codes] =
 	"ERROR: Unknown symbol, containing \"Suited\".",
 	"ERROR: Found operator, expecting an action.",
 	"ERROR: Underscores not allowed in user-defined variables.",
+	"ERROR: Missing list number.",
 	"ERROR: General syntax error."
 };
 
@@ -146,12 +147,14 @@ static const char *detailed_error_messages[k_number_of_error_codes] =
 	"that you simply forgot a space, e.g.\n"
 	"\"ASUITED\" instead of \"A SUITED\".\n",
 
+	// k_error_operator_instead_of_action
 	"We expect an action here, but found an operator,\n"
 	"but most likely you just forgot another pair of brackets here.\n"
 	"\n"
 	"For example: WHEN (Hand = AA) OR (Hand = KK) RAISEMAX FORCE\n"
 	"instead of WHEN ((Hand = AA) OR (Hand = KK)) RAISEMAX FORCE\n",
 
+	// k_error_underscores_not_allowed_in_user_defined_variables
 	"We are sorry, but underscores are not allowed in\n"
 	"user-defined symbols for technical reasons.\n"
 	"\n"
@@ -159,6 +162,17 @@ static const char *detailed_error_messages[k_number_of_error_codes] =
 	"  \"me_st_MySecretVariable_1\"\n"	
 	"where the underscore separates the store-command (me_st_)\n"
 	"from the symbol and the symbol from the value to be assigned.\n",
+
+	// k_error_missing_list_number
+	"Every list needs a unique list number in the range [0..999]\n"
+	"For example:\n"
+	"\n"
+	"NEW LIST 007\n"
+    "    // Allin-range against crazy maniacs\n"
+    "    AA KK QQ JJ TT 99\n"
+    "    AKs AQs AJs ATs KQs\n"
+    "    AKo AQo AJo\n" 
+	"END LIST\n",
 
 	// k_error_general
 	"No detailed desription available.\n"
