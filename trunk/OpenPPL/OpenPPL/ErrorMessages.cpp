@@ -22,6 +22,7 @@ static const char *short_error_messages[k_number_of_error_codes] =
 	"ERROR: Found operator, expecting an action.",
 	"ERROR: Underscores not allowed in user-defined variables.",
 	"ERROR: Missing list number.",
+	"ERROR: Invalid hand-list.\n",
 	"ERROR: General syntax error."
 };
 
@@ -173,6 +174,12 @@ static const char *detailed_error_messages[k_number_of_error_codes] =
     "    AKs AQs AJs ATs KQs\n"
     "    AKo AQo AJo\n" 
 	"END LIST\n",
+
+	// k_error_invalid_list_content
+	"Invalid hand-list detected.\n"
+	"There can be mainly two reasons:\n"
+	"  * misspelled hands\n" 
+	"  * missing \"END LIST\"\n",
 
 	// k_error_general
 	"No detailed desription available.\n"
