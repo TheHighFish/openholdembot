@@ -74,15 +74,13 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 
 			// Start of custom code
 
-			/***
 			// user defined lists
 			list_section = keyword_lists >> *list_definition;
 			list_definition = keyword_new >> keyword_list
-				>> number[print_list_header()] >> list_content;
-			list_content = end_of_list || (next_line_of_list >> end_of_list);
-			next_line_of_list = (anychar_p - eol_p - end_p) >> (eol_p | end_p);
-			end_of_list = keyword_end >> keyword_list;
-			***/
+				>> number[print_list_header()] >> list_content >> end_of_list;;
+			list_content = *hand_in_list;
+			hand_in_list = (card_constant >> card_constant >> !(str_p("s") | "o"))[print_hand_in_list()];
+			end_of_list = (keyword_end >> keyword_list)[print_newline()][print_newline()];
 
 			// User defined symbols
 			symbol_section = keyword_symbols >> *symbol_definition;

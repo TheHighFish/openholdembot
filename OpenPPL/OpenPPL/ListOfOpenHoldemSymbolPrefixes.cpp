@@ -26,7 +26,7 @@ bool ListOfOpenHoldemSymbolPrefixes::LooksLikeOpenHoldemSymbol(CString symbol)
 		int length_of_prefix = next_prefix.GetLength();
 		// OpenHoldem is case sensitive, 
 		// so we don't normalize cases for this comparison.
-		MessageBox(0, "Comparing " + symbol + " to " + next_prefix, "Debug", 0);
+		//MessageBox(0, "Comparing " + symbol + " to " + next_prefix, "Debug", 0);
 		if (symbol.Left(length_of_prefix) == next_prefix)
 		{
 			return true;
