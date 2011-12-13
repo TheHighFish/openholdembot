@@ -7,7 +7,7 @@
 // and AFAIK we can't distribute it over multiple modules.
 
 #undef DEBUG_WHEN_CONDITIONS
-#undef DEBUG_SYMBOLS
+#define DEBUG_SYMBOLS
 
 //
 // Larger code-snippets
@@ -114,7 +114,7 @@ struct print_symbol
 	{ 
 		std::string symbol = std::string(begin, end);
 #ifdef DEBUG_SYMBOLS
-		MessageBox(0, CString(symbol.c_str()), "Debug", 0);
+		MessageBox(0, CString(symbol.c_str()), "Debug; print_symbol", 0);
 #endif
 		if (p_symbol_table->IsOpenPPLSymbol(symbol.c_str()))
 		{

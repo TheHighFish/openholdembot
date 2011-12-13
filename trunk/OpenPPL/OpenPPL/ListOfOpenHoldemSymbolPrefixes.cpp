@@ -1,13 +1,15 @@
 #include "ListOfOpenHoldemSymbolPrefixes.h"
 
-								
+
+#define DEBUG_PREFIX
+
+
 ListOfOpenHoldemSymbolPrefixes *p_list_of_openholdem_symbol_prefixes = NULL;
 
 const int k_max_length_of_symbol_prefix = 17;
 const int k_number_of_symbol_prefixes = 167;
 
 extern const char openholdem_symbol_prefixes[k_number_of_symbol_prefixes][k_max_length_of_symbol_prefix];
-
 
 
 ListOfOpenHoldemSymbolPrefixes::ListOfOpenHoldemSymbolPrefixes()
@@ -20,6 +22,9 @@ ListOfOpenHoldemSymbolPrefixes::~ListOfOpenHoldemSymbolPrefixes()
 
 bool ListOfOpenHoldemSymbolPrefixes::LooksLikeOpenHoldemSymbol(CString symbol)
 {
+#ifdef DEBUG_PREFIX
+	MessageBox(0, "Checking symbol: " + symbol, "Debug: OH-symbol?", 0);
+#endif
 	for (int i=0; i<k_number_of_symbol_prefixes; i++)
 	{
 		CString next_prefix = openholdem_symbol_prefixes[i];
