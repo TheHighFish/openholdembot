@@ -23,7 +23,6 @@ enum error_codes
 	k_error_unknown_symbol,
 	k_error_unknown_symbol_ending_with_suited,
 	k_error_operator_instead_of_action,
-	k_error_underscores_not_allowed_in_user_defined_variables,
 	k_error_missing_list_number,
 	k_error_invalid_list_content,
 	k_error_general,

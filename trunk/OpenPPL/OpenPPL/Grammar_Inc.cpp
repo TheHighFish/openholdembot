@@ -231,9 +231,10 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 
 			// UserDefined Variables
 			user_prefix = str_p("user") | "User" | "USER";
-			// Underscores are not possible, because a user-defined variable
-			// translates to "me_st_Variable_Value", but we allow it here
-			// to be able to handle errors in a simple way later.
+			// Underscores are not possible in user-defined variable (OH-site),
+			// because they translates to "me_st_Variable_Value", 
+			// but we allow them here for compatibility with Shanky 
+			// and remove them later .
 			user_defined_variable = lexeme_d[user_prefix >> *(str_p("_") | alnum_p)];
 			set_user_defined_variable = user_defined_variable[print_setting_UDV()];
 			recall_user_defined_variable = user_defined_variable[print_recalling_UDV()];
