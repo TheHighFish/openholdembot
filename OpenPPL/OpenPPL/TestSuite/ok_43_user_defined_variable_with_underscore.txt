@@ -7,6 +7,7 @@ preflop
 WHEN (Hand = AA) RAISEMAX FORCE
 WHEN (Hand = KK) User_Does_Not_Know_What_To_Do
 WHEN (Hand = QQ) UserStartsToCry
+WHEN (User_Does_Not_Know_What_To_Do) CALL FORCE
 when others fold force
 
 flop
