@@ -53,7 +53,7 @@ Betsizes And Stacksizes
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="11" columns="3">
+<lyxtabular version="3" rows="12" columns="3">
 <features>
 <column alignment="left" valignment="top" width="30text%">
 <column alignment="left" valignment="top" width="40text%">
@@ -189,7 +189,7 @@ MaxOpponentStackSize
 
 \begin_layout Plain Layout
 The biggest stack of all opponents.
- measured in big blinds
+ measured in big blinds at the beginning of the hand
 \end_layout
 
 \end_inset
@@ -239,6 +239,36 @@ First action preflop only
 \begin_inset Text
 
 \begin_layout Plain Layout
+MinOpponentStackSize
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The smallest stack of all opponents.
+ measured in big blinds at the beginning of the hand
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+None
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 MinStillToActStackSize
 \end_layout
 
@@ -248,7 +278,7 @@ MinStillToActStackSize
 \begin_inset Text
 
 \begin_layout Plain Layout
-The biggest stack of the oppoents behind you (including SB and BB), measured
+The biggest stack of the opponents behind you (including SB and BB), measured
  in big blinds
 \end_layout
 
