@@ -134,7 +134,11 @@ struct print_symbol
 			if (c_symbol.MakeLower().Left(4) == "user")
 			{
 				// User-defined variable
-				current_output << "me_re" << c_symbol.MakeLower();
+				//
+				// Removing underscores, as they are used as separators
+				// and would mix things up. 
+				c_symbol.Remove('_');
+				current_output << "me_re_" << c_symbol.MakeLower();
 			}
 			else if (c_symbol.MakeLower().Right(6) == "suited")
 			{
@@ -563,11 +567,9 @@ struct print_setting_UDV
  	{
  		std::string text = std::string(begin, end);
  		CString ctext = text.c_str();
-		if (ctext.Find("_") != -1)
-		{
-			ErrorMessage(k_error_underscores_not_allowed_in_user_defined_variables, 
-				ErroneousCodeSnippet(begin));
-		}
+		// Removing underscores, as they are used as separators
+		// and would mix things up, e.g. me_st_Pi_3_141592653
+		ctext.Remove('_');
  		//Add to list of user variables if not yet known
  		CSMap::const_iterator find_result = user_vars.find(ctext.MakeLower());
  		if (find_result == user_vars.end())

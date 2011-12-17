@@ -78,16 +78,19 @@ CString ErroneousCodeSnippet(const char *begin_of_erroneous_code_snippet)
 	return erroneous_code_snippet;
 }
 
+			
 // skip grammar
 struct skip_grammar : public grammar<skip_grammar>
 {
+
 	template <typename ScannerT>
+
 	struct definition
 	{
 		definition(skip_grammar const& /*self*/)
 		{
 			skip
-				=   space_p
+				=   (space_p)
 				|   "//" >> *(anychar_p - eol_p - end_p) >> (eol_p | end_p)	 // C++ comment
 				|   "/*" >> *(anychar_p - "*/") >> "*/"	// C comment
 				|	as_lower_d["in "]					// Useless fill-word "In " like "In SmallBlind"
