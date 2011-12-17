@@ -1,10 +1,8 @@
 // Missing "Force"
 custom
 
-symbols
-
 preflop
-when (3 + 2) > 5 raise
+when ((3 + 2) > 5) raise
 when others fold force
 
 flop

@@ -4,7 +4,6 @@ preflop
 when others fold force
 
 flop
-When (Board = AA Suited) Call force
 When (Board = AK Suited) Call force
 When (Board = A  Suited) Call force
 When (Board = K  Suited) Call force

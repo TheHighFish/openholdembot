@@ -1,12 +1,10 @@
 // Too many when-conditions
 custom
 
-symbols
-
 preflop
-when A
-  when B
-    when C fold force
+when (1 = 2)
+  when (2 = 3)
+    when (3 = 4) fold force
 when others fold force
 
 flop

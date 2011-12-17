@@ -2,6 +2,8 @@
 custom
 
 preflop
+// This should read
+// WHEN ((Hand = AA) OR (Hand = KK)) RAISEMAX FORCE
 WHEN (Hand = AA) OR (Hand = KK) RAISEMAX FORCE
 when others fold force
 
