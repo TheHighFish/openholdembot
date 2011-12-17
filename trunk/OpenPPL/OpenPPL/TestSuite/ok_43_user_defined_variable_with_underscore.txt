@@ -1,5 +1,6 @@
 // user defined variable with underscore
-// Not possible, because it translates to "me_st_Variable_Value"
+// causes problems, because it translates to "me_st_Variable_Value"
+// but we do now allow underscores and remove them in the translated code.
 
 custom
 

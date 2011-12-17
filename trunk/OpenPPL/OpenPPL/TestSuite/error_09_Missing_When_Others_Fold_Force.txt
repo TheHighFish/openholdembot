@@ -2,7 +2,6 @@
 // We simply add "Fold Force"
 custom
 
-symbols
 
 preflop
 when (1 = 2) Call Force

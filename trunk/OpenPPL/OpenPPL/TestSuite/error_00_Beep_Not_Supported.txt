@@ -1,8 +1,6 @@
 // "Beep" not supported
 custom
 
-symbols
-
 preflop
 when others beep force
 
