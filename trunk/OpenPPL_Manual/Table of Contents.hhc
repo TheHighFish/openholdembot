@@ -15,6 +15,15 @@
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Contributors">
+			<param name="Local" value="Chapters\Contributors.html.LyXconv\Contributors.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="What Is OpenPPL?">
+			<param name="Local" value="Chapters\What_Is_OpenPPL.html.LyXconv\What_Is_OpenPPL.html">
+			<param name="URL" value="Chapters\What_Is_OpenPPL.html.LyXconv\What_Is_OpenPPL.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Translating Your Bot">
 			<param name="Local" value="Chapters\Translating_Your_Bot.html.LyXconv\Translating_Your_Bot.html">
 			</OBJECT>
@@ -34,6 +43,7 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Hand And Board Expressions">
 			<param name="Local" value="Chapters\Hand_And_Board_Expressions.html.LyXconv\Hand_And_Board_Expressions.html">
+			<param name="URL" value="Chapters\Hand_And_Board_Expressions.html.LyXconv\Hand_And_Board_Expressions.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Actions">
@@ -58,28 +68,36 @@
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Handstrength Symbols">
-			<param name="Local" value="Chapters\Handstrength_Symbols.html.LyXconv\Handstrength_Symbols.html">
+			<param name="Name" value="Betting-Action Symbols">
+			<param name="Local" value="Chapters\BettingAction_Symbols.html.LyXconv\BettingAction_Symbols.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Betsizes And Stacksizes">
+			<param name="Local" value="Chapters\Betsizes_and_Stacksizes.html.LyXconv\Betsizes_and_Stacksizes.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Board Symbols">
 			<param name="Local" value="Chapters\Board Symbols.html.LyXconv\Board_Symbols.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Betting-Action Symbols">
-			<param name="Local" value="Chapters\BettingAction_Symbols.html.LyXconv\BettingAction_Symbols.html">
+			<param name="Name" value="Handstrength Symbols">
+			<param name="Local" value="Chapters\Handstrength_Symbols.html.LyXconv\Handstrength_Symbols.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Other Symbols">
+			<param name="Local" value="Chapters\Other Symbols.html.LyXconv\Other_Symbols.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Player Symbols">
 			<param name="Local" value="Chapters\Player Symbols.html.LyXconv\Player_Symbols.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Position Symbols">
-			<param name="Local" value="Chapters\Position_Symbols.html.LyXconv\Position_Symbols.html">
+			<param name="Name" value="PokerTracker Symbols">
+			<param name="Local" value="Chapters\PokerTracker_Symbols.html.LyXconv\PokerTracker_Symbols.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Other Symbols">
-			<param name="Local" value="Chapters\Other Symbols.html.LyXconv\Other_Symbols.html">
+			<param name="Name" value="Position Symbols">
+			<param name="Local" value="Chapters\Position_Symbols.html.LyXconv\Position_Symbols.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Technical Symbols">

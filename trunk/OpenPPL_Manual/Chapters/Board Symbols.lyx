@@ -51,9 +51,22 @@ figs-within-sections
 Board Symbols
 \end_layout
 
+\begin_layout Remark*
+If a set is on board, 
+\begin_inset Quotes eld
+\end_inset
+
+PairOnBoard
+\begin_inset Quotes erd
+\end_inset
+
+ is also true; full houses do also count as sets and psirs, made flushes
+ as flushdraws, etc.
+\end_layout
+
 \begin_layout Section
 \begin_inset Tabular
-<lyxtabular version="3" rows="45" columns="2">
+<lyxtabular version="3" rows="49" columns="2">
 <features>
 <column alignment="left" valignment="top" width="40text%">
 <column alignment="left" valignment="top" width="60text%">
@@ -91,7 +104,7 @@ Meaning
 \begin_inset Text
 
 \begin_layout Plain Layout
-The second highest ranked card on the flop paired on the river
+Synonym for SecondTopFlopCardPairedOnRiver
 \end_layout
 
 \end_inset
@@ -111,7 +124,7 @@ The second highest ranked card on the flop paired on the river
 \begin_inset Text
 
 \begin_layout Plain Layout
-The second highest ranked card on the flop paired on the turn
+Synonym for SecondTopFlopCardPairedOnTurn
 \end_layout
 
 \end_inset
@@ -273,6 +286,26 @@ FullHouseOnBoard
 
 \begin_layout Plain Layout
 There is a full house on the board
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+KingPresentOnFlop
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+True, if at least one of the flop-cards is a king
 \end_layout
 
 \end_inset
@@ -606,6 +639,50 @@ The river card is the highest ranked common card
 \begin_inset Text
 
 \begin_layout Plain Layout
+SecondTopflopCardPairedOnRiver
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+True, if the 2nd highest flop card paired on the river.
+ If the flop is paired it will be the lowest card.
+ If all ranks are equal quads at the river will make this function true.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+SecondTopflopCardPairedOnTurn
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+True, if the 2nd highest flop card paired on the turn.
+ If the flop is paired it will be the lowest card.
+ If all ranks are equal quads at the turn will make this function true.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 StraightFlushPossible
 \end_layout
 
@@ -896,6 +973,26 @@ TurnCardPaired
 
 \begin_layout Plain Layout
 The card that was dealt on the turn paired on the river
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+TwoOfOneSuitPresentOnFlop
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+True, if the flop has / had at least 2 cards of the same suit.
 \end_layout
 
 \end_inset
