@@ -1,10 +1,11 @@
-// "Beep" not supported
+// No longer check by the latest version.
+// We simply add "Fold Force"
 custom
 
 symbols
 
 preflop
-when A Call Force
+when (1 = 2) Call Force
 
 flop
 when others fold force
