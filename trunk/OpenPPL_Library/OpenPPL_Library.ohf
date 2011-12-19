@@ -33,6 +33,7 @@
 //   Nik0
 //   NPNG
 //   Poker_Dog
+//   Rambam
 //   Postenjak
 //   Satanikut
 //   Stangelnator
@@ -1027,10 +1028,10 @@ f$OpenPPL_2ndTopFlopCardPairedOnRiver
 ##f$OpenPPL_SecondTopFlopCardPairedOnTurn##
 f$OpenPPL_2ndTopFlopCardPairedOnTurn
 
-##f$OpenPPL_SecondTopFlopCardPairedOnRiver##
+##f$OpenPPL_2ndTopFlopCardPairedOnRiver##
 f$OpenPPL_2ndTopFlopCard == $$cr4 ? 1 : 0
 
-##f$OpenPPL_SecondTopFlopCardPairedOnTurn##
+##f$OpenPPL_2ndTopFlopCardPairedOnTurn##
 f$OpenPPL_2ndTopFlopCard == $$cr3 ? 1 : 0
 
 ##f$OpenPPL_srankbitshero##
