@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="User_Defined_Variables.tex"> 
+<meta name="date" content="2011-12-19 22:51:00"> 
+<link rel="stylesheet" type="text/css" href="User_Defined_Variables.css"> 
+</head><body 
+>
+
+
+   <h2 class="likechapterHead"><a 
+ id="x1-1000"></a>Userdefined Variables</h2>
+   <!--l. 28-->
+   <div class="lstlisting" id="listing-1"><span class="label"><a 
+ id="x1-1001r1"></a></span>custom&#x00A0;<br /><span class="label"><a 
+ id="x1-1002r2"></a></span>&#x00A0;<br /><span class="label"><a 
+ id="x1-1003r3"></a></span>preflop&#x00A0;<br /><span class="label"><a 
+ id="x1-1004r4"></a></span>WHEN&#x00A0;(Hand&#x00A0;=&#x00A0;AA)&#x00A0;RAISEMAX&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1005r5"></a></span>WHEN&#x00A0;(Hand&#x00A0;=&#x00A0;KK)&#x00A0;UserDoesNotKnowWhatToDo&#x00A0;<br /><span class="label"><a 
+ id="x1-1006r6"></a></span>WHEN&#x00A0;(Hand&#x00A0;=&#x00A0;QQ)&#x00A0;UserStartsToCry&#x00A0;<br /><span class="label"><a 
+ id="x1-1007r7"></a></span>WHEN&#x00A0;(UserDoesNotKnowWhatToDo)&#x00A0;CALL&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1008r8"></a></span>WHEN&#x00A0;(UserStartsToCry)&#x00A0;SITOUT&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1009r9"></a></span>WHEN&#x00A0;Others&#x00A0;FOLD&#x00A0;FORCE
+   </div>
+   <h3 class="sectionHead"><a 
+ id="x1-2000"></a>Expert Tricks</h3>
+           <ul class="itemize1">
+        <li class="itemize">Do you need variables that can be set to any arbitrary value?
+           </li>
+        <li class="itemize">Do you need variables that can be reset back?
+           </li>
+        <li class="itemize">Do you need variables that don&#8217;t reset automatically, but keep their values
+        till the next hand or even for the complete session?</li></ul>
+<!--l. 49--><p class="noindent" >There is a solution for it (of course). Instead of PPL-like user-variables it is also possible to
+use OpenHoldems memory-store-command:
+   <!--l. 53-->
+   <div class="lstlisting" id="listing-2"><span class="label"><a 
+ id="x1-2001r1"></a></span>WHEN&#x00A0;(...)&#x00A0;me_st_MySecretVariable_3_141592653
+   </div>
+<!--l. 56--><p class="indent" >   and then use it later with OpenHoldems memory-recall-command: <!--l. 57-->
+   <div class="lstlisting" id="listing-3"><span class="label"><a 
+ id="x1-2002r1"></a></span>WHEN&#x00A0;(...&#x00A0;me_re_MySecretVariable&#x00A0;...)&#x00A0;...
+   </div>
+<!--l. 60--><p class="indent" >   No underscores allowed in the name of the variable. Underscores are used to separate
+name and value.
+<!--l. 63--><p class="indent" >   cases???
+<!--l. 65--><p class="indent" >   But be careful: advanced variables increase your power, but also your responsibility.
+ 
+</body></html> 
+
+
+

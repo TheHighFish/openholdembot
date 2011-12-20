@@ -51,8 +51,20 @@ figs-within-sections
 Differences of OpenPPL And Standard PPL
 \end_layout
 
+\begin_layout Section*
+Principal 
+\begin_inset Quotes eld
+\end_inset
+
+Limitations
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
 \begin_layout Itemize
-no built-in 
+No built-in 
 \begin_inset Quotes eld
 \end_inset
 
@@ -61,13 +73,13 @@ winning-bot
 \end_inset
 
 .
- Internet-poker would be no joy if we gave away the magical moneymaker to
- each of your opponents.
+ Internet-poker would be no joy if we gave away the magical million-dollar-maker
+ to each of your opponents.
  Wouldn't it?
 \end_layout
 
 \begin_layout Itemize
-no support for encrypted PPL-profiles.
+No support for encrypted PPL-profiles.
 \end_layout
 
 \begin_deeper
@@ -94,7 +106,9 @@ We deserve a better life than that.
 
 \end_deeper
 \begin_layout Itemize
-no built-in site support.
+No built-in site support.
+ OpenHoldem enables you to play at any site, provided you build a tablemap
+ for it.
 \end_layout
 
 \end_body

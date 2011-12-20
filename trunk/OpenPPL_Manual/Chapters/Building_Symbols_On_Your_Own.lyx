@@ -189,67 +189,67 @@ New Symbol BigBlindStacksize
 
 \begin_layout Plain Layout
 
-    WHEN BigBlindChair = 1 RETURN balance FORCE
+    WHEN BigBlindChair = 1 RETURN balance1 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN BigBlindChair = 2 RETURN balance FORCE
+    WHEN BigBlindChair = 2 RETURN balance2 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN BigBlindChair = 3 RETURN balance FORCE
+    WHEN BigBlindChair = 3 RETURN balance3 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN BigBlindChair = 4 RETURN balance FORCE
+    WHEN BigBlindChair = 4 RETURN balance4 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN BigBlindChair = 5 RETURN balance FORCE
+    WHEN BigBlindChair = 5 RETURN balance5 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN BigBlindChair = 6 RETURN balance FORCE
+    WHEN BigBlindChair = 6 RETURN balance6 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN BigBlindChair = 7 RETURN balance FORCE
+    WHEN BigBlindChair = 7 RETURN balance7 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN BigBlindChair = 8 RETURN balance FORCE
+    WHEN BigBlindChair = 8 RETURN balance8 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN BigBlindChair = 9 RETURN balance FORCE
+    WHEN BigBlindChair = 9 RETURN balance9 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-	// Other cases should not happen.
+    // Other cases should not happen.
 \end_layout
 
 \begin_layout Plain Layout
 
-	// But if you forget about "WHEN Others"
+    // But if you forget about "WHEN Others"
 \end_layout
 
 \begin_layout Plain Layout
 
-	// there always is an implicit "RETURN -1 FORCE".
+    // there always is an implicit "RETURN -1 FORCE".
 \end_layout
 
 \begin_layout Plain Layout
 
-	// OpenPPL adds it automatically.
+    // OpenPPL adds it automatically.
 \end_layout
 
 \begin_layout Plain Layout
