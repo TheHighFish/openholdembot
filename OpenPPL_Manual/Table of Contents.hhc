@@ -58,6 +58,10 @@
 			<param name="Local" value="Chapters\Mathematical_Expressions.html.LyXconv\Mathematical_Expressions.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="User-Defined Variables">
+			<param name="Local" value="Chapters\User_Defined_Variables.html.LyXconv\User_Defined_Variables.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Building Symbols On Your Own">
 			<param name="Local" value="Chapters\Building_Symbols_On_Your_Own.html.LyXconv\Building_Symbols_On_Your_Own.html">
 			</OBJECT>

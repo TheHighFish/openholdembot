@@ -60,11 +60,12 @@ PairOnBoard
 \begin_inset Quotes erd
 \end_inset
 
- is also true; full houses do also count as sets and psirs, made flushes
+ is also true; full houses do also count as sets and pairs, made flushes
  as flushdraws, etc.
+ One of many reasons why you should code strong hands first.
 \end_layout
 
-\begin_layout Section
+\begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="49" columns="2">
 <features>

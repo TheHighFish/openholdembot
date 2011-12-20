@@ -100,8 +100,13 @@ f$swag
 Prerequisites
 \end_layout
 
-\begin_layout Standard
+\begin_layout Itemize
 OpenPPL code, OpenPPL library and OpenPPL converter in the same directory.
+\end_layout
+
+\begin_layout Itemize
+Source-code needs to be a text file in plain ASCII-format.
+ No Word-document, 16 bit-encodings or other weird formats.
 \end_layout
 
 \begin_layout Section*
