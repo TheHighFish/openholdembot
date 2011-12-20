@@ -105,7 +105,8 @@ The position of the first caller
 \end_layout
 
 \begin_layout Plain Layout
-(big blind = 0, small blind = 1, then counter-clockwise till UTG = 9)
+(big blind = 0 (although this can not happen), small blind = 1, then counter-clo
+ckwise till UTG = 9)
 \end_layout
 
 \end_inset
