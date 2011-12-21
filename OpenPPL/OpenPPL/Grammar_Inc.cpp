@@ -264,7 +264,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// otherwise things like "When x Bet force" would treat "x Bet force"
 			// as a single keyword and cause an error.
 			// http://www.boost.org/doc/libs/1_40_0/libs/spirit/classic/doc/quickref.html
-			symbol = (lexeme_d[alpha_p >> *(alnum_p | str_p("_") | "$")])
+			symbol = (lexeme_d[+(alnum_p | str_p("_") | "$")])
 				| invalid_symbol;
 
 			/////////////////////////////////////////////////////////////////////
@@ -273,7 +273,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			//
 			/////////////////////////////////////////////////////////////////////
 			invalid_character = str_p(";")  | "," | ":" | "|" | "@" | "€" | "!" | "\\"
-				| "\""  | "§" | "$" | "&" | "?" | "´" | "´" | "[" | "]"
+				| "\""  | "§" | "&" | "?" | "´" | "´" | "[" | "]"
 				| "^" | "°" | "{" | "}" | "#" | "³" | "²";
 			invalid_symbol = (*alnum_p >> invalid_character
 				>> *(alnum_p | invalid_character))[error_invalid_character()];
