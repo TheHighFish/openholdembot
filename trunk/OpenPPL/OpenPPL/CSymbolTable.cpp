@@ -176,7 +176,9 @@ CString CSymbolTable::GetSymbolNameWithCorrectPrefix(CString symbol)
 	{
 		CString standardized_symbol_name = "f$OpenPPL_" + symbol;
 #ifdef DEBUG_SYMBOLTABLE_QUERY
-		MessageBox(0, "Standardized name: " + standardized_symbol_name, "Debug", 0);
+		MessageBox(0, "Symbol: [" + symbol + "]\n" 
+			+ "Standardized name: [" + standardized_symbol_name + "]", 
+			"Debug", 0);
 #endif
 		return standardized_symbol_name;
 	}
