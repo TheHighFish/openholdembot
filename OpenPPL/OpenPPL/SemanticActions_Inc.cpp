@@ -609,7 +609,7 @@ struct print_user_reset_function
  	{
 		map<CString, CString>::iterator p;
 		cout << k_code_snippet_reset_user_variables;
-		cout << "##f$OpenPPL_Reset_User_Variables##" << endl;
+		cout << "##f$OpenPPL_ResetUserVariables##" << endl;
 		cout << "0" << endl;
    		for(p = user_vars.begin(); p != user_vars.end(); p++) 
 		{
