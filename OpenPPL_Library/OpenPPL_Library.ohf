@@ -1223,8 +1223,8 @@ f$OpenPPL_HadPairOnFlop || f$OpenPPL_FlopCardPairedonTurn || $$pr0 == $$cr3 || $
 ##f$OpenPPL_HadTopPairOnFlop##
 [($$pr0 == f$OpenPPL_HighestRankOnFlop) || ($$pr1 == f$OpenPPL_HighestRankOnFlop)]
 
-##f$HighestRankOnTurn##
-(($$cr3 > f$HighestRankOnFlop) ? $$cr3 : f$HighestRankOnFlop)
+##f$OpenPPL_HighestRankOnTurn##
+(($$cr3 > f$OpenPPL_HighestRankOnFlop) ? $$cr3 : f$OpenPPL_HighestRankOnFlop)
 
 ##f$OpenPPL_HadTopPairOnTurn##
 [ $$pr0==f$HighestRankOnTurn || $$pr1==f$HighestRankOnTurn ]
