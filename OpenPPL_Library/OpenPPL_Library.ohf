@@ -1227,7 +1227,7 @@ f$OpenPPL_HadPairOnFlop || f$OpenPPL_FlopCardPairedonTurn || $$pr0 == $$cr3 || $
 (($$cr3 > f$OpenPPL_HighestRankOnFlop) ? $$cr3 : f$OpenPPL_HighestRankOnFlop)
 
 ##f$OpenPPL_HadTopPairOnTurn##
-[ $$pr0==f$HighestRankOnTurn || $$pr1==f$HighestRankOnTurn ]
+[ $$pr0==f$OpenPPL_HighestRankOnTurn || $$pr1==f$OpenPPL_HighestRankOnTurn ]
 
 ##f$OpenPPL_HadTwoPairOnFlop##
    ($$pr0 == $$cr0 || $$pr0 == $$cr1 || $$pr0 == $$cr2)
