@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- html --> 
 <meta name="src" content="Building_Symbols_On_Your_Own.tex"> 
-<meta name="date" content="2011-12-04 19:59:00"> 
+<meta name="date" content="2011-12-20 23:05:00"> 
 <link rel="stylesheet" type="text/css" href="Building_Symbols_On_Your_Own.css"> 
 </head><body 
 >
@@ -24,7 +24,7 @@ example above, they might need: SmallBlindStacksize, BigBlindStacksize, UTGStack
 ..., ButtonStacksize, OpenRaiserStacksize, LimpRaiserStacksize, ThreeBetterStacksize,
 FlopCheckRaiserStacksize, TurnDonkerStacksize, etc. No matter how busy the
 development team is, they will never be able to satisfy all needs. Therefore OpenHoldems
-(and OpenPPLs) philosophy is slightly different: provide technical symbols like
+(and partially OpenPPLs) philosophy is slightly different: provide technical symbols like
 balance0..balance9 (the stacksizes for chair0..chair9) and let the user figure out the rest.
 This way the end-user is far more flexible; however at the cost of a bit more
 work.
@@ -37,44 +37,44 @@ player to be dealt, so we search for a the chair, that got dealt as second playe
 <!--l. 51-->
    <div class="lstlisting" id="listing-1"><span class="label"><a 
  id="x1-1001r1"></a></span>NEW&#x00A0;SYMBOL&#x00A0;BigBlindChair&#x00A0;<br /><span class="label"><a 
- id="x1-1002r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;ac_dealpos0&#x00A0;=&#x00A0;2&#x00A0;RETURN&#x00A0;0&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1003r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;ac_dealpos1&#x00A0;=&#x00A0;2&#x00A0;RETURN&#x00A0;1&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1004r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;ac_dealpos2&#x00A0;=&#x00A0;2&#x00A0;RETURN&#x00A0;2&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1005r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;ac_dealpos3&#x00A0;=&#x00A0;2&#x00A0;RETURN&#x00A0;3&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1006r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;ac_dealpos4&#x00A0;=&#x00A0;2&#x00A0;RETURN&#x00A0;4&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1007r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;ac_dealpos5&#x00A0;=&#x00A0;2&#x00A0;RETURN&#x00A0;5&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1008r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;ac_dealpos6&#x00A0;=&#x00A0;2&#x00A0;RETURN&#x00A0;6&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1009r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;ac_dealpos7&#x00A0;=&#x00A0;2&#x00A0;RETURN&#x00A0;7&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1010r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;ac_dealpos8&#x00A0;=&#x00A0;2&#x00A0;RETURN&#x00A0;8&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1011r11"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;ac_dealpos9&#x00A0;=&#x00A0;2&#x00A0;RETURN&#x00A0;9&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1002r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(ac_dealpos0&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;0&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1003r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(ac_dealpos1&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;1&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1004r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(ac_dealpos2&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;2&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1005r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(ac_dealpos3&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;3&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1006r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(ac_dealpos4&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;4&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1007r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(ac_dealpos5&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;5&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1008r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(ac_dealpos6&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;6&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1009r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(ac_dealpos7&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;7&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1010r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(ac_dealpos8&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;8&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1011r11"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(ac_dealpos9&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;9&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
  id="x1-1012r12"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;Other&#x00A0;cases&#x00A0;should&#x00A0;not&#x00A0;happen&#x00A0;<br /><span class="label"><a 
  id="x1-1013r13"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;Others&#x00A0;RETURN&#x00A0;<span 
 class="cmsy-10">-</span>1&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
  id="x1-1014r14"></a></span>End&#x00A0;Symbol
    </div>
 <!--l. 69--><p class="indent" >   Having this information we can continue with the second step (the dull
-part). We RETURN the stacksize for the chair of the big blind, making use of
+part). We return the stacksize for the chair of the big blind, making use of
 Openholdems stacksize symbols balance0..balance9. As you can see it is possible to use
 OpenHoldem Symbols in your OpenPPL code. Of course - we nearly forgot to mention
 it.
    <!--l. 76-->
    <div class="lstlisting" id="listing-2"><span class="label"><a 
  id="x1-1015r1"></a></span>New&#x00A0;Symbol&#x00A0;BigBlindStacksize&#x00A0;<br /><span class="label"><a 
- id="x1-1016r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;0&#x00A0;RETURN&#x00A0;balance0&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1017r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;1&#x00A0;RETURN&#x00A0;balance&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1018r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;2&#x00A0;RETURN&#x00A0;balance&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1019r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;3&#x00A0;RETURN&#x00A0;balance&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1020r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;4&#x00A0;RETURN&#x00A0;balance&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1021r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;5&#x00A0;RETURN&#x00A0;balance&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1022r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;6&#x00A0;RETURN&#x00A0;balance&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1023r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;7&#x00A0;RETURN&#x00A0;balance&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1024r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;8&#x00A0;RETURN&#x00A0;balance&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1025r11"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;BigBlindChair&#x00A0;=&#x00A0;9&#x00A0;RETURN&#x00A0;balance&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1026r12"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;Other&#x00A0;cases&#x00A0;should&#x00A0;not&#x00A0;happen.&#x00A0;<br /><span class="label"><a 
- id="x1-1027r13"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;But&#x00A0;if&#x00A0;you&#x00A0;forget&#x00A0;about&#x00A0;"WHEN&#x00A0;Others"&#x00A0;<br /><span class="label"><a 
- id="x1-1028r14"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;there&#x00A0;always&#x00A0;is&#x00A0;an&#x00A0;implicit&#x00A0;"RETURN&#x00A0;<span 
+ id="x1-1016r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(BigBlindChair&#x00A0;=&#x00A0;0)&#x00A0;RETURN&#x00A0;balance0&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1017r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(BigBlindChair&#x00A0;=&#x00A0;1)&#x00A0;RETURN&#x00A0;balance1&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1018r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(BigBlindChair&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;balance2&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1019r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(BigBlindChair&#x00A0;=&#x00A0;3)&#x00A0;RETURN&#x00A0;balance3&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1020r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(BigBlindChair&#x00A0;=&#x00A0;4)&#x00A0;RETURN&#x00A0;balance4&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1021r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(BigBlindChair&#x00A0;=&#x00A0;5)&#x00A0;RETURN&#x00A0;balance5&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1022r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(BigBlindChair&#x00A0;=&#x00A0;6)&#x00A0;RETURN&#x00A0;balance6&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1023r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(BigBlindChair&#x00A0;=&#x00A0;7)&#x00A0;RETURN&#x00A0;balance7&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1024r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(BigBlindChair&#x00A0;=&#x00A0;8)&#x00A0;RETURN&#x00A0;balance8&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1025r11"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(BigBlindChair&#x00A0;=&#x00A0;9)&#x00A0;RETURN&#x00A0;balance9&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1026r12"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;Other&#x00A0;cases&#x00A0;should&#x00A0;not&#x00A0;happen.&#x00A0;<br /><span class="label"><a 
+ id="x1-1027r13"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;But&#x00A0;if&#x00A0;you&#x00A0;forget&#x00A0;about&#x00A0;"WHEN&#x00A0;Others"&#x00A0;<br /><span class="label"><a 
+ id="x1-1028r14"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;there&#x00A0;always&#x00A0;is&#x00A0;an&#x00A0;implicit&#x00A0;"RETURN&#x00A0;<span 
 class="cmsy-10">-</span>1&#x00A0;FORCE".&#x00A0;<br /><span class="label"><a 
- id="x1-1029r15"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;OpenPPL&#x00A0;adds&#x00A0;it&#x00A0;automatically.&#x00A0;<br /><span class="label"><a 
+ id="x1-1029r15"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;OpenPPL&#x00A0;adds&#x00A0;it&#x00A0;automatically.&#x00A0;<br /><span class="label"><a 
  id="x1-1030r16"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;Others&#x00A0;RETURN&#x00A0;<span 
 class="cmsy-10">-</span>1&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
  id="x1-1031r17"></a></span>End&#x00A0;Symbol
