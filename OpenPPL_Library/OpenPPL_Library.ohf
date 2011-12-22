@@ -395,11 +395,11 @@ me_re_MemChecks
 (betround > 3) ? me_re_MemRaisesOnTurn : 0
 
 ##f$OpenPPL_Calculate_Raises##
-me_re_MemRaises+f$OpenPPL_RaisesSinceLastPlay
+(me_re_MemRaises + f$OpenPPL_RaisesSinceLastPlay)
 
 ##f$OpenPPL_InitRaises##
 (f$OpenPPL_BotsActionsOnThisRound == 0) ? me_st_MemRaises_f$OpenPPL_RaisesSinceLastPlay :
-f$OpenPPL_Calculate_Raises
+me_st_MemRaises_f$f$OpenPPL_Calculate_Raises
 
 ##f$OpenPPL_Raises##
 me_re_MemRaises
@@ -1201,6 +1201,18 @@ f$OpenPPL_TopFlopCard == $$cr3 ? 1 : 0
 
 ##f$OpenPPL_ConstCardTwo##
 2
+
+//*****************************************************************************
+//
+// OpenPPL - Other Constants
+//
+//*****************************************************************************
+
+##f$OpenPPL_True##
+1
+
+##f$OpenPPL_False##
+0
 
 //*****************************************************************************
 //
