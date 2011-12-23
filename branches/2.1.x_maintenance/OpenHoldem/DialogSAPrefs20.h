@@ -42,6 +42,7 @@ protected:
 	CButton  	m_RadioButton_stableframescounter;
 	CButton  	m_RadioButton_symbolengine;
 	CButton  	m_RadioButton_blindlocking;
+	CButton		m_RadioButton_memorysymbols;
 	CButton  	m_RadioButton_alltherest;
 };
 

@@ -181,6 +181,7 @@ void CPreferences::InitDefaults(void)
 	_debug_stableframescounter = false;
 	_debug_symbolengine = false;
 	_debug_blindlocking = false;
+	_debug_memorysymbols = false;
 	_debug_alltherest = false;
 
 	// Validator
@@ -384,6 +385,7 @@ void CPreferences::ReadPreferences()
 		ReadReg("debug_stableframescounter", &_debug_stableframescounter);
 		ReadReg("debug_symbolengine", &_debug_symbolengine);
 		ReadReg("debug_blindlocking", &_debug_blindlocking);
+		ReadReg("debug_memorysymbols", &_debug_memorysymbols);
 		ReadReg("debug_alltherest", &_debug_alltherest);
 
 		// Validator

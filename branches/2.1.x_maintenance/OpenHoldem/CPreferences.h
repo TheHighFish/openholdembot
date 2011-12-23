@@ -106,6 +106,7 @@ public:
 	const bool	debug_stableframescounter() { return _debug_stableframescounter; }
 	const bool	debug_symbolengine() { return _debug_symbolengine; }
 	const bool	debug_blindlocking() { return _debug_blindlocking; }
+	const bool	debug_memorysymbols() { return _debug_memorysymbols; }
 	const bool	debug_alltherest() { return _debug_alltherest; }
 
 	// PPro
@@ -284,6 +285,7 @@ public:
 	void set_debug_stableframescounter(const int b) { ENT _debug_stableframescounter = b; WriteReg("debug_stableframescounter", b); }
 	void set_debug_symbolengine(const int b) { ENT _debug_symbolengine = b; WriteReg("debug_symbolengine", b); }
 	void set_debug_blindlocking(const int b) { ENT _debug_blindlocking = b; WriteReg("debug_blindlocking", b); }
+	void set_debug_memorysymbols(const int b) { ENT _debug_memorysymbols = b; WriteReg("debug_memorysymbols", b); }
 	void set_debug_alltherest(const int b) { ENT _debug_alltherest = b; WriteReg("debug_alltherest", b); }
 
 	// PPro
@@ -476,6 +478,7 @@ private:
 	bool			_debug_stableframescounter;
 	bool			_debug_symbolengine;
 	bool			_debug_blindlocking;
+	bool			_debug_memorysymbols;
 	bool			_debug_alltherest;
 
 	// PPro

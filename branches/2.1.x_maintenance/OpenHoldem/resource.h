@@ -446,6 +446,7 @@
 #define IDC_DEBUG_BLINDLOCKING          1356
 #define IDC_LOG_BASIC_INFO              1356
 #define IDC_DEBUG_ALLTHEREST            1357
+#define IDC_DEBUG_MEMORY_SYMBOLS        1358
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -580,7 +581,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        180
 #define _APS_NEXT_COMMAND_VALUE         32993
-#define _APS_NEXT_CONTROL_VALUE         1357
+#define _APS_NEXT_CONTROL_VALUE         1359
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
