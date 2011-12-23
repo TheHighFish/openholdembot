@@ -37,6 +37,7 @@ const int k_number_of_cards_per_deck   = 52;
 
 // Suits and ranks
 const int k_number_of_suits_per_deck = 4;
+const int k_number_of_ranks_per_deck = 13;
 
 // Number of buttons
 const int k_max_number_of_buttons = 10;

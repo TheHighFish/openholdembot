@@ -236,9 +236,9 @@ const int CGameState::LastRaised(const int round)
 
 	for (i=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+1; i<=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+10; i++)
 	{
-		if (_chair_actions[i%10][round-1][w_reraised])
+		if (_chair_actions[i%k_max_number_of_players][round-1][w_reraised])
 		{
-			last_raised=i%10;
+			last_raised=i%k_max_number_of_players;
 		}
 	}
 
@@ -246,9 +246,9 @@ const int CGameState::LastRaised(const int round)
 	{
 		for (i=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+1; i<=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+10; i++)
 		{
-			if (_chair_actions[i%10][round-1][w_raised])
+			if (_chair_actions[i%k_max_number_of_players][round-1][w_raised])
 			{
-				last_raised=i%10;
+				last_raised=i%k_max_number_of_players;
 			}
 		}
 	}
@@ -547,12 +547,12 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 		for (i=0; i<10; i++)
 		{
 			// if new card fronts have appeared, then players are showing down, and its the end of the hand
-			if ( _m_holdem_state[(_m_ndx-1)&0xff].m_player[i%10].m_cards[0] == 255 &&		// was card backs last scrape
-					_m_holdem_state[(_m_ndx-1)&0xff].m_player[i%10].m_cards[1] == 255 &&		// was card backs last scrape
-					_m_holdem_state[(_m_ndx)&0xff].m_player[i%10].m_cards[0] != 255 &&		// is not card backs this scrape
-					_m_holdem_state[(_m_ndx)&0xff].m_player[i%10].m_cards[1] != 255 &&		// is not card backs this scrape
-					_m_holdem_state[(_m_ndx)&0xff].m_player[i%10].m_cards[0] != 0 &&			// is not 'no cards' this scrape
-					_m_holdem_state[(_m_ndx)&0xff].m_player[i%10].m_cards[1] != 0 &&			// is not 'no cards' this scrape
+			if ( _m_holdem_state[(_m_ndx-1)&0xff].m_player[i%k_max_number_of_players].m_cards[0] == 255 &&		// was card backs last scrape
+					_m_holdem_state[(_m_ndx-1)&0xff].m_player[i%k_max_number_of_players].m_cards[1] == 255 &&		// was card backs last scrape
+					_m_holdem_state[(_m_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[0] != 255 &&		// is not card backs this scrape
+					_m_holdem_state[(_m_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[1] != 255 &&		// is not card backs this scrape
+					_m_holdem_state[(_m_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[0] != 0 &&			// is not 'no cards' this scrape
+					_m_holdem_state[(_m_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[1] != 0 &&			// is not 'no cards' this scrape
 					i != sym_userchair &&												// it's not me
 					_end_of_hand==false )
 			{
@@ -699,108 +699,108 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 			{
 				// if the currentbet for the chair is the sb and the last bet was zero and br==1
 				// and the player has cards, then we know the chair ***POSTED THE SMALL BLIND***
-				if (_m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet == sym_sblind &&
+				if (_m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_currentbet == sym_sblind &&
 						_bets_last==0 &&
-						_m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_cards[0]!=0 &&
-						_m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_cards[1]!=0 &&
+						_m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[0]!=0 &&
+						_m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[1]!=0 &&
 						sym_br == 1)
 				{
-					_chair_actions[i%10][sym_br-1][w_posted_sb] = true;
-					_bets_last = _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet;
-					write_log(1, ">>> Chair %d (%s) posted the sb: $%.2f\n", i%10,
-							  _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_name,
-							  _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet);
+					_chair_actions[i%k_max_number_of_players][sym_br-1][w_posted_sb] = true;
+					_bets_last = _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_currentbet;
+					write_log(1, ">>> Chair %d (%s) posted the sb: $%.2f\n", i%k_max_number_of_players,
+							  _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_name,
+							  _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_currentbet);
 				}
 
 				// if the currentbet for the chair is the bb and the last bet was the sb and br==1
 				// and the player has cards, then we know the chair ***POSTED THE BIG BLIND***
-				else if (_m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet == sym_bblind &&
+				else if (_m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_currentbet == sym_bblind &&
 						 _bets_last == sym_sblind &&
-						 _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_cards[0]!=0 &&
-						 _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_cards[1]!=0 &&
+						 _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[0]!=0 &&
+						 _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[1]!=0 &&
 						 sym_br == 1)
 				{
-					_chair_actions[i%10][(int) sym_br-1][w_posted_bb] = true;
-					_bets_last = _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet;
-					write_log(1, ">>> Chair %d (%s) posted the bb: $%.2f\n", i%10,
-							  _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_name,
-							  _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet);
+					_chair_actions[i%k_max_number_of_players][(int) sym_br-1][w_posted_bb] = true;
+					_bets_last = _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_currentbet;
+					write_log(1, ">>> Chair %d (%s) posted the bb: $%.2f\n", i%k_max_number_of_players,
+							  _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_name,
+							  _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_currentbet);
 				}
 
 				// if the currentbet for the chair is greater than the last bet and it's not the end of the hand,
 				// and the player has cards, then we know the chair ***RAISED or RE-RAISED***
-				else if (_m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet > _bets_last &&
-						 _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_cards[0]!=0 &&
-						 _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_cards[1]!=0 &&
+				else if (_m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_currentbet > _bets_last &&
+						 _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[0]!=0 &&
+						 _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[1]!=0 &&
 						 !_end_of_hand)
 				{
-					_bets_last = _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet;
+					_bets_last = _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_currentbet;
 					if (_pot_raised == false)
 					{
-						_chair_actions[i%10][sym_br-1][w_raised] = true;
+						_chair_actions[i%k_max_number_of_players][sym_br-1][w_raised] = true;
 						_pot_raised = true;
-						write_log(1, ">>> Chair %d (%s) raised to $%.2f\n", i%10,
-								  _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_name,
-								  _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet);
+						write_log(1, ">>> Chair %d (%s) raised to $%.2f\n", i%k_max_number_of_players,
+								  _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_name,
+								  _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_currentbet);
 					}
 					else
 					{
-						_chair_actions[i%10][sym_br-1][w_reraised] = true;
-						write_log(1, ">>> Chair %d (%s) re-raised to $%.2f\n", i%10,
-								  _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_name,
-								  _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet);
+						_chair_actions[i%k_max_number_of_players][sym_br-1][w_reraised] = true;
+						write_log(1, ">>> Chair %d (%s) re-raised to $%.2f\n", i%k_max_number_of_players,
+								  _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_name,
+								  _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_currentbet);
 					}
 				}
 
 				// if the currentbet for the chair is not zero and is <= the last bet and it's not the end of the hand,
 				// and the player has cards, then we know the chair ***CALLED***
-				else if (_m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet != 0 &&
-						 _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet <= _bets_last &&
-						 _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_cards[0]!=0 &&
-						 _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_cards[1]!=0 &&
+				else if (_m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_currentbet != 0 &&
+						 _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_currentbet <= _bets_last &&
+						 _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[0]!=0 &&
+						 _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[1]!=0 &&
 						 !_end_of_hand)
 				{
-					_chair_actions[i%10][sym_br-1][w_called] = true;
+					_chair_actions[i%k_max_number_of_players][sym_br-1][w_called] = true;
 					if (_pot_raised == false)
 					{
 						_pf_limpers_n += 1;
 					}
-					write_log(1, ">>> Chair %d (%s) called\n", i%10, _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_name);
+					write_log(1, ">>> Chair %d (%s) called\n", i%k_max_number_of_players, _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_name);
 				}
 
 				// if cards have disappeared, and they were card backs last scrape,
 				// then we know the chair has ***FOLDED***
 				// unless i=userchair, in which case they could be card fronts last scrape
 				// in any case, if the balance in front of the chair has increased, it is not a fold, but a holdover from showdown
-				else if ( ( _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_cards[0]==0 &&			// no cards this scrape
-							_m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_cards[1]==0 &&			// no cards this scrape
-							_m_game_state[(_m_game_ndx-1)&0xff].m_player[i%10].m_cards[0]==255 &&		// card backs last scrape
-							_m_game_state[(_m_game_ndx-1)&0xff].m_player[i%10].m_cards[1]==255 &&		// card backs last scrape
-							_m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_balance==
-							_m_game_state[(_m_game_ndx-1)&0xff].m_player[i%10].m_balance)
+				else if ( ( _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[0]==0 &&			// no cards this scrape
+							_m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[1]==0 &&			// no cards this scrape
+							_m_game_state[(_m_game_ndx-1)&0xff].m_player[i%k_max_number_of_players].m_cards[0]==255 &&		// card backs last scrape
+							_m_game_state[(_m_game_ndx-1)&0xff].m_player[i%k_max_number_of_players].m_cards[1]==255 &&		// card backs last scrape
+							_m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_balance==
+							_m_game_state[(_m_game_ndx-1)&0xff].m_player[i%k_max_number_of_players].m_balance)
 						  ||
-						  ( i%10 == sym_userchair &&												// this is my chair
-							_m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_cards[0]==0 &&			// no cards this scrape
-							_m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_cards[1]==0 &&			// no cards this scrape
-							_m_game_state[(_m_game_ndx-1)&0xff].m_player[i%10].m_cards[0]!=0 &&		// card fronts/backs last scrape
-							_m_game_state[(_m_game_ndx-1)&0xff].m_player[i%10].m_cards[1]!=0 &&		// card fronts/backs last scrape
-							_m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_balance==
-							_m_game_state[(_m_game_ndx-1)&0xff].m_player[i%10].m_balance) )
+						  ( i%k_max_number_of_players == sym_userchair &&												// this is my chair
+							_m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[0]==0 &&			// no cards this scrape
+							_m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[1]==0 &&			// no cards this scrape
+							_m_game_state[(_m_game_ndx-1)&0xff].m_player[i%k_max_number_of_players].m_cards[0]!=0 &&		// card fronts/backs last scrape
+							_m_game_state[(_m_game_ndx-1)&0xff].m_player[i%k_max_number_of_players].m_cards[1]!=0 &&		// card fronts/backs last scrape
+							_m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_balance==
+							_m_game_state[(_m_game_ndx-1)&0xff].m_player[i%k_max_number_of_players].m_balance) )
 				{
-					_chair_actions[i%10][sym_br-1][w_folded] = true;
-					write_log(1, ">>> Chair %d (%s) folded\n", i%10,
-							  _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_name);
+					_chair_actions[i%k_max_number_of_players][sym_br-1][w_folded] = true;
+					write_log(1, ">>> Chair %d (%s) folded\n", i%k_max_number_of_players,
+							  _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_name);
 				}
 
 				// if br!=1 and the player's current bet is zero, and that player has cards in front of them
 				// then we know the chair has ***CHECKED***
-				else if (sym_br!=1 && _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_currentbet == 0 &&
-						 _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_cards[0]!=0 &&
-						 _m_game_state[(_m_game_ndx)&0xff].m_player[i%10].m_cards[1]!=0)
+				else if (sym_br!=1 && _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_currentbet == 0 &&
+						 _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[0]!=0 &&
+						 _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[1]!=0)
 				{
-					_chair_actions[i%10][sym_br-1][w_checked] = true;
+					_chair_actions[i%k_max_number_of_players][sym_br-1][w_checked] = true;
 
-					write_log(1, ">>> Chair %d (%s) checked\n", i%10, _m_holdem_state[(_m_ndx)&0xff].m_player[i%10].m_name);
+					write_log(1, ">>> Chair %d (%s) checked\n", i%k_max_number_of_players, _m_holdem_state[(_m_ndx)&0xff].m_player[i%k_max_number_of_players].m_name);
 				}
 			}  // end of "for (i = from_chair; i <= to_chair; i++)"
 		} // end of "if (br != 0 &&..."
