@@ -27,7 +27,7 @@ bool COcclusionCheck::UserChairKnown()
 	}
 	else
 	{
-		write_log(prefs.debug_occlusionchecker(), "COcclusionCheck::UserChairKnown: false\n");
+		write_log(prefs.debug_occlusionchecker(), "[COcclusionCheck] UserChairKnown: false\n");
 		return false;
 	}
 }
@@ -41,7 +41,7 @@ bool COcclusionCheck::UserBalanceNonZero()
 	}
 	else
 	{
-		write_log(prefs.debug_occlusionchecker(), "COcclusionCheck::UserBalanceNonZero: false\n");
+		write_log(prefs.debug_occlusionchecker(), "[COcclusionCheck] UserBalanceNonZero: false\n");
 		return false;
 	}
 }
@@ -51,7 +51,7 @@ bool COcclusionCheck::UserNameKnown()
 	int Userchair = p_symbols->sym()->userchair;
 	if ((Userchair < 0) || (Userchair > 9))
 	{
-		write_log(prefs.debug_occlusionchecker(), "COcclusionCheck::UserNameKnown: false; chair out of range\n");
+		write_log(prefs.debug_occlusionchecker(), "[COcclusionCheck] UserNameKnown: false; chair out of range\n");
 		return false;
 	}
 	else if (UserChairKnown() && (p_scraper->player_name(Userchair) != ""))
@@ -60,7 +60,7 @@ bool COcclusionCheck::UserNameKnown()
 	}
 	else
 	{
-		write_log(prefs.debug_occlusionchecker(), "COcclusionCheck::UserNameKnown: false\n");
+		write_log(prefs.debug_occlusionchecker(), "[COcclusionCheck] UserNameKnown: false\n");
 		return false;
 	}
 }
@@ -75,7 +75,7 @@ bool COcclusionCheck::AnyOpponentNameKnown()
 			return true;
 		}
 	}
-	write_log(prefs.debug_occlusionchecker(), "COcclusionCheck::AnyOpponentNameKnown: false\n");
+	write_log(prefs.debug_occlusionchecker(), "[COcclusionCheck] AnyOpponentNameKnown: false\n");
 	return false;
 }
 
@@ -89,7 +89,7 @@ bool COcclusionCheck::AnyApponentBalanceNonZero()
 			return true;
 		}
 	}
-	write_log(prefs.debug_occlusionchecker(), "COcclusionCheck::AnyApponentBalanceNonZero: false\n");
+	write_log(prefs.debug_occlusionchecker(), "[COcclusionCheck] AnyApponentBalanceNonZero: false\n");
 	return false;
 }
 
@@ -132,14 +132,14 @@ bool COcclusionCheck::UserBalanceOccluded()
 	{
 		// No names known, at least one other balance known (non-zero).
 		// TM does probably not support names, no occlusion.
-		write_log(prefs.debug_occlusionchecker(),"COcclusionCheck: TM does probably not support names, other balances known. Assuming no occulsion\n.");
+		write_log(prefs.debug_occlusionchecker(), "[COcclusionCheck] TM does probably not support names, other balances known. Assuming no occulsion\n.");
 		return false;
 	}
 	else
 	{
 		// No names known, no other balances known or all zero.
 		// Probably full table occluded.
-		write_log(prefs.debug_occlusionchecker(),"COcclusionCheck: No names and balances known at all. Assuming occlusion.\n");
+		write_log(prefs.debug_occlusionchecker(), "[COcclusionCheck] No names and balances known at all. Assuming occlusion.\n");
 		return true;
 	}
 }
