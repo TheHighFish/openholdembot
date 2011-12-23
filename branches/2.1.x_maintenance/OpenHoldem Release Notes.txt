@@ -22,6 +22,8 @@ BUG FIXES:
 - Making PT-thread more stable, eliminating possible undefined pointers.
   http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=13952
   Thanks to Dimonstrik for reporting. [THF]
+- Added some missing symbols to the help-list of the editor.
+  Thanks to Rominus for reporting. [THF]
   
 
 MAINTENANCE:
