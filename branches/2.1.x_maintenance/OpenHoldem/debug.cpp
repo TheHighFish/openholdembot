@@ -312,7 +312,7 @@ void write_log_nostamp(bool debug_settings_for_this_message, char* fmt, ...)
     }
 }
 
-void write_logautoplay(bool debug_settings_for_this_message, const char * action) 
+void write_logautoplay(const char * action) 
 {
     char		nowtime[26];
     CString		pcards, comcards, temp, rank, pokerhand, bestaction, fcra_seen;
@@ -326,7 +326,7 @@ void write_logautoplay(bool debug_settings_for_this_message, const char * action
 	int			sym_br = (int) p_symbols->sym()->br;
 
 
-	if (debug_settings_for_this_message == false)
+	if (!prefs.trace_enabled())
 		return;
 
 	if (log_fp != NULL) 

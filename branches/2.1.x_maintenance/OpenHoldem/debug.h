@@ -16,7 +16,7 @@ BOOL CreateBMPFile(const char *szFile, HBITMAP hBMP);
 void start_log(void);
 void write_log(bool debug_settings_for_this_message, char* fmt, ...);
 void write_log_nostamp(bool debug_settings_for_this_message, char* fmt, ...);
-void write_logautoplay(bool debug_settings_for_this_message, const char * action);
+void write_logautoplay(const char * action);
 void stop_log(void);
 void write_log_pokertracker(bool debug_settings_for_this_message, char* fmt, ...);
 int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers);

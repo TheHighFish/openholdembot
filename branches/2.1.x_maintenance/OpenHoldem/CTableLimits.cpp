@@ -27,7 +27,7 @@ CTableLimits::~CTableLimits()
 
 void CTableLimits::ResetOnConnection()
 {
-	write_log(prefs.debug_blindlocking(), "CTableLimits::ResetOnConnection()\n");
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] ResetOnConnection()\n");
 	blinds_locked_for_complete_session = false;
 	number_of_saved_tablelimits = 0;
 	for (int i=0; i<k_number_of_hands_to_autolock_blinds_for_cashgames; i++)
@@ -43,7 +43,7 @@ void CTableLimits::ResetOnConnection()
 
 void CTableLimits::ResetOnHandreset()
 {
-	write_log(prefs.debug_blindlocking(), "CTableLimits::ResetOnHandreset()\n");
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] ResetOnHandreset()\n");
 	blinds_locked_for_current_hand = false;
 	tablelimit_locked_for_current_hand.sblind = 0;
 	tablelimit_locked_for_current_hand.bblind = 0;
@@ -60,7 +60,7 @@ void CTableLimits::ResetOnHandreset()
 
 void CTableLimits::ResetEachHeartBeatCycle()
 {
-	write_log(prefs.debug_blindlocking(), "CTableLimits::ResetEachHeartBeatCycle()\n");
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] ResetEachHeartBeatCycle()\n");
 	tablelimit_unreliable_input.sblind = 0;
 	tablelimit_unreliable_input.bblind = 0;
 	tablelimit_unreliable_input.bbet = 0;
@@ -76,7 +76,7 @@ void CTableLimits::ResetBets()
 
 void CTableLimits::UnLockBlindsManually()
 {
-	write_log(prefs.debug_blindlocking(), "CTableLimits::UnLockBlindsManually()\n");
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] UnLockBlindsManually()\n");
 	blinds_locked_manually = false;
 	tablelimit_locked_manually.sblind = 0;
 	tablelimit_locked_manually.bblind = 0;
@@ -93,7 +93,7 @@ void CTableLimits::LockBlindsManually(double small_blind, double big_blind, doub
 	assert(ante >= 0);
 	assert(gametype >= k_gametype_unknown);
 	assert(gametype <= k_gametype_FL);
-	write_log(prefs.debug_blindlocking(), "CTableLimits::LockBlindsManually()\n");
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] LockBlindsManually()\n");
 	blinds_locked_manually = true;
 	tablelimit_locked_manually.sblind = small_blind; 
 	tablelimit_locked_manually.bblind = big_blind;
@@ -111,13 +111,13 @@ void CTableLimits::LockBlindsManually(double small_blind, double big_blind, doub
 
 void CTableLimits::AutoLockBlindsForCashgamesAfterNHands()
 {
-	write_log(prefs.debug_blindlocking(), "CTableLimits::AutoLockBlindsForCashgamesAfterNHands()\n");
-	write_log(prefs.debug_blindlocking(), "CTableLimits: blinds_locked_for_complete_session: %d\n", blinds_locked_for_complete_session);
-	write_log(prefs.debug_blindlocking(), "CTableLimits: istournament: %d\n", IsTrue(p_symbols->sym()->istournament));
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] AutoLockBlindsForCashgamesAfterNHands()\n");
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] blinds_locked_for_complete_session: %d\n", blinds_locked_for_complete_session);
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] istournament: %d\n", IsTrue(p_symbols->sym()->istournament));
 	if (blinds_locked_for_complete_session || IsTrue(p_symbols->sym()->istournament))
 	{
-		write_log(prefs.debug_blindlocking(), "CTableLimits: blinds_locked_for_complete_session or istournament\n");
-		write_log(prefs.debug_blindlocking(), "CTableLimits: Leaving CTableLimits::AutoLockBlindsForCashgamesAfterNHands() early\n");
+		write_log(prefs.debug_blindlocking(), "[CTableLimits] blinds_locked_for_complete_session or istournament\n");
+		write_log(prefs.debug_blindlocking(), "[CTableLimits] Leaving CTableLimits::AutoLockBlindsForCashgamesAfterNHands() early\n");
 		return;
 	}
 	if (number_of_saved_tablelimits == k_number_of_hands_to_autolock_blinds_for_cashgames)
@@ -130,12 +130,12 @@ void CTableLimits::AutoLockBlindsForCashgamesAfterNHands()
 		tablelimit_locked_for_complete_session.bblind = median(tablelimits_first_N_hands_bblind, k_number_of_hands_to_autolock_blinds_for_cashgames);
 		tablelimit_locked_for_complete_session.bbet   = median(tablelimits_first_N_hands_bbet,   k_number_of_hands_to_autolock_blinds_for_cashgames);
 		blinds_locked_for_complete_session = true;
-		write_log(prefs.debug_blindlocking(), "Blinds locked at %f / %f / %f\n", tablelimit_locked_for_complete_session.sblind, 
+		write_log(prefs.debug_blindlocking(), "[CTableLimits] Blinds locked at %f / %f / %f\n", tablelimit_locked_for_complete_session.sblind, 
 			tablelimit_locked_for_complete_session.bblind, tablelimit_locked_for_complete_session.bbet);
 	}
 	else
 	{
-		write_log(prefs.debug_blindlocking(), "Not yet enough hands to lock blinds permanent.\n");
+		write_log(prefs.debug_blindlocking(), "[CTableLimits] Not yet enough hands to lock blinds permanent.\n");
 	}
 }
 
@@ -150,30 +150,30 @@ bool CTableLimits::ReasonableBlindsForCurrentHand()
 	// (ismyturn doesn't work either)
 	// Pros/cons: more reliability, but no auto-locking before it is our turn.
 	// Affects maybe DLL- and Perl-people negative at the beginning of the first hands.
-	write_log(prefs.debug_blindlocking(), "CTableLimits: ismyturn: %d\n", p_symbols->sym()->ismyturn);
-	write_log(prefs.debug_blindlocking(), "CTableLimits: sblind: %f\n", tablelimit_unreliable_input.sblind);
-	write_log(prefs.debug_blindlocking(), "CTableLimits: bblind: %f\n", tablelimit_unreliable_input.bblind);
-	write_log(prefs.debug_blindlocking(), "CTableLimits: bbet: %f\n", tablelimit_unreliable_input.bbet); 
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] ismyturn: %d\n", p_symbols->sym()->ismyturn);
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] sblind: %f\n", tablelimit_unreliable_input.sblind);
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] bblind: %f\n", tablelimit_unreliable_input.bblind);
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] bbet: %f\n", tablelimit_unreliable_input.bbet); 
 	if (/*p_symbols->sym()->ismyturn && */ (tablelimit_unreliable_input.sblind >= 0.01) 
 		&& (tablelimit_unreliable_input.bblind >= tablelimit_unreliable_input.sblind) 
 		&& (tablelimit_unreliable_input.bbet   >= tablelimit_unreliable_input.bblind))
 	{
-		write_log(prefs.debug_blindlocking(), "CTableLimits: ReasonableBlindsForCurrentHand(): true\n");
+		write_log(prefs.debug_blindlocking(), "[CTableLimits] ReasonableBlindsForCurrentHand(): true\n");
 		return true;
 	}
 	else
 	{
-		write_log(prefs.debug_blindlocking(), "CTableLimits: ReasonableBlindsForCurrentHand(): false\n");
+		write_log(prefs.debug_blindlocking(), "[CTableLimits] ReasonableBlindsForCurrentHand(): false\n");
 		return false;
 	}
 }
 
 void CTableLimits::RememberBlindsForCashgames()
 {
-	write_log(prefs.debug_blindlocking(), "CTableLimits::RememberBlindsForCashgames()\n");
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] RememberBlindsForCashgames()\n");
 	if (number_of_saved_tablelimits < k_number_of_hands_to_autolock_blinds_for_cashgames)
 	{
-		write_log(prefs.debug_blindlocking(), "CTableLimits: Saving blinds for hand %d\n", number_of_saved_tablelimits);
+		write_log(prefs.debug_blindlocking(), "[CTableLimits] Saving blinds for hand %d\n", number_of_saved_tablelimits);
 		tablelimits_first_N_hands_sblind[number_of_saved_tablelimits] = tablelimit_locked_for_current_hand.sblind;
 		tablelimits_first_N_hands_bblind[number_of_saved_tablelimits] = tablelimit_locked_for_current_hand.bblind;
 		tablelimits_first_N_hands_bbet[number_of_saved_tablelimits]   = tablelimit_locked_for_current_hand.bbet;
@@ -181,18 +181,18 @@ void CTableLimits::RememberBlindsForCashgames()
 	}
 	else
 	{
-		write_log(prefs.debug_blindlocking(), "CTableLimits: Already enough saved blinds.\n");
+		write_log(prefs.debug_blindlocking(), "[CTableLimits] Already enough saved blinds.\n");
 	}
 }
 
 void CTableLimits::AutoLockBlindsForCurrentHand()
 {
-	write_log(prefs.debug_blindlocking(), "CTableLimits::AutoLockBlindsForCurrentHand()\n");
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] AutoLockBlindsForCurrentHand()\n");
 	blinds_locked_for_current_hand = true;
 	tablelimit_locked_for_current_hand.sblind = tablelimit_last_known_good_value.sblind;
 	tablelimit_locked_for_current_hand.bblind = tablelimit_last_known_good_value.bblind;
 	tablelimit_locked_for_current_hand.bbet	  = tablelimit_last_known_good_value.bbet;
-	write_log(prefs.debug_blindlocking(), "CTableLimits: Locked blinds at %f / %f / %f\n", tablelimit_locked_for_current_hand.sblind,
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] Locked blinds at %f / %f / %f\n", tablelimit_locked_for_current_hand.sblind,
 		tablelimit_locked_for_current_hand.bblind, tablelimit_locked_for_current_hand.bbet);
 	RememberBlindsForCashgames();
 }
@@ -223,7 +223,7 @@ void CTableLimits::SetAnte(double ante)
 
 void CTableLimits::SetGametype(int gametype)
 {
-	write_log(prefs.debug_blindlocking(), "CTableLimits::SetGametype() new gametype: %d\n", gametype);
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] SetGametype() new gametype: %d\n", gametype);
 	assert(gametype >= k_gametype_unknown);
 	assert(gametype <= k_gametype_FL);
 	_gametype = gametype;
@@ -231,8 +231,8 @@ void CTableLimits::SetGametype(int gametype)
 
 void CTableLimits::SetBet(int betround, double bet)
 {
-	write_log(prefs.debug_blindlocking(), "CTableLimits::SetBet()\n");
-	write_log(prefs.debug_blindlocking(), "New bet for betround[%d]: %f\n", betround, bet);
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] SetBet()\n");
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] New bet for betround[%d]: %f\n", betround, bet);
 	assert(betround >= k_betround_preflop);
 	assert(betround <= k_betround_river);
 	assert(bet >= 0);
@@ -241,9 +241,9 @@ void CTableLimits::SetBet(int betround, double bet)
 
 void CTableLimits::AutoLockBlinds()
 {
-	write_log(prefs.debug_blindlocking(), "CTableLimits::AutoLockBlinds()\n");
-	write_log(prefs.debug_blindlocking(), "CTableLimits: blinds_locked_for_current_hand: %d\n", blinds_locked_for_current_hand);
-	write_log(prefs.debug_blindlocking(), "CTableLimits: ReasonableBlindsForCurrentHand(): %d\n", ReasonableBlindsForCurrentHand());
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] AutoLockBlinds()\n");
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] blinds_locked_for_current_hand: %d\n", blinds_locked_for_current_hand);
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] ReasonableBlindsForCurrentHand(): %d\n", ReasonableBlindsForCurrentHand());
 	if (!blinds_locked_for_current_hand && ReasonableBlindsForCurrentHand())
 	{
 		AutoLockBlindsForCurrentHand();
@@ -253,7 +253,7 @@ void CTableLimits::AutoLockBlinds()
 
 void CTableLimits::CalcTableLimits_NL_PL()
 {
-	write_log(prefs.debug_blindlocking(), "CTableLimits::CalcTableLimits_NL_PL()\n");
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] CalcTableLimits_NL_PL()\n");
 	if (tablelimit_unreliable_input.sblind==0)
 	{
 		if (p_scraper->s_limit_info()->found_sb_bb)
@@ -279,29 +279,29 @@ void CTableLimits::CalcTableLimits_NL_PL()
 
 bool CTableLimits::IsCalculationNeccessary()
 {
-	write_log(prefs.debug_blindlocking(), "CTableLimits::IsCalculationNeccessary()\n");
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] IsCalculationNeccessary()\n");
 	if (tablelimit_unreliable_input.sblind==0)
 	{
-		write_log(prefs.debug_blindlocking(), "CTableLimits: sblind=0, calculation neccessary.\n");
+		write_log(prefs.debug_blindlocking(), "[CTableLimits] sblind=0, calculation neccessary.\n");
 		return true;
 	}
 	if (tablelimit_unreliable_input.bblind==0)
 	{
-		write_log(prefs.debug_blindlocking(), "CTableLimits: bblind=0, calculation neccessary.\n");
+		write_log(prefs.debug_blindlocking(), "[CTableLimits] bblind=0, calculation neccessary.\n");
 		return true;
 	}
 	if (p_pokerpro->IsConnected() && p_pokerpro->ppdata()->m_tinf.m_tid != 0)
 	{
-		write_log(prefs.debug_blindlocking(), "CTableLimits: PPro requires calculation.\n");
+		write_log(prefs.debug_blindlocking(), "[CTableLimits] PPro requires calculation.\n");
 		return true;
 	}
-	write_log(prefs.debug_blindlocking(), "CTableLimits: no calculatoin neccessary.\n");
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] no calculatoin neccessary.\n");
 	return false;
 }
 
 void CTableLimits::CalcTableLimits_FL_AndUnknownGametype()
 {
-	write_log(prefs.debug_blindlocking(), "CTableLimits::CalcTableLimits_FL_AndUnknownGametype()\n");
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] CalcTableLimits_FL_AndUnknownGametype()\n");
 	if (tablelimit_unreliable_input.sblind==0)
 	{
 		if (p_scraper->s_limit_info()->found_sb_bb)
@@ -330,11 +330,11 @@ void CTableLimits::SwapBlindsIfSbGreaterThanBBAndNotZero()
 	// If SB is greater than BB that is usually a mistake and we should swap.
 	// But we don't swap, if BB is zero, as that does mean, 
 	// that we just got the amount wrong (BB got cards, i.e. dealt, but no bet).
-	write_log(prefs.debug_blindlocking(), "CTableLimits::SwapBlindsIfSbGreaterThanBBAndNotZero()\n");
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] SwapBlindsIfSbGreaterThanBBAndNotZero()\n");
 	if ((tablelimit_unreliable_input.sblind > tablelimit_unreliable_input.bblind)
 		&& (tablelimit_unreliable_input.bblind >= 0.01))
 	{
-		write_log(prefs.debug_blindlocking(), "CTableLimits::SwapBlindsIfSbGreaterThanBBAndNotZero swap neccessary\n");
+		write_log(prefs.debug_blindlocking(), "[CTableLimits] SwapBlindsIfSbGreaterThanBBAndNotZero swap neccessary\n");
 		double temp = tablelimit_unreliable_input.sblind;
 		tablelimit_unreliable_input.sblind = tablelimit_unreliable_input.bblind;
 		tablelimit_unreliable_input.bblind = temp;
@@ -345,7 +345,7 @@ void CTableLimits::SearchTableForSbAndBbValue()
 {
 	bool	found_inferred_sb = false, found_inferred_bb = false;
 
-	write_log(prefs.debug_blindlocking(), "CTableLimits::SearchTableForSbAndBbValue()\n");
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] SearchTableForSbAndBbValue()\n");
 	for (int i=1; i<=p_tablemap->nchairs(); i++)
 	{
 		int next_chair = (int(p_symbols->sym()->dealerchair + i)) % p_tablemap->nchairs();
@@ -360,7 +360,7 @@ void CTableLimits::SearchTableForSbAndBbValue()
 		// then we will try it as unknown (zero).
 		if (p_scraper->player_bet(next_chair) >= 0.01)
 		{
-			write_log(prefs.debug_blindlocking(), "CTableLimits::SearchTableForSbAndBbValue found bet for chair %d\n", next_chair);
+			write_log(prefs.debug_blindlocking(), "[CTableLimits] SearchTableForSbAndBbValue found bet for chair %d\n", next_chair);
 			// Bet found
 			if (!found_inferred_sb)
 			{
@@ -368,7 +368,7 @@ void CTableLimits::SearchTableForSbAndBbValue()
 				if (tablelimit_unreliable_input.sblind==0)
 				{
 					SetSmallBlind(p_scraper->player_bet(next_chair));
-					write_log(prefs.debug_blindlocking(), "CTableLimits: found inferred SB at chair %d: %f\n", next_chair, p_scraper->player_bet(next_chair));
+					write_log(prefs.debug_blindlocking(), "[CTableLimits] found inferred SB at chair %d: %f\n", next_chair, p_scraper->player_bet(next_chair));
 					found_inferred_sb = true;
 				}
 			}
@@ -381,15 +381,15 @@ void CTableLimits::SearchTableForSbAndBbValue()
 					if (next_chair != p_symbols->sym()->dealerchair)
 					{
 						SetBigBlind(p_scraper->player_bet(i%p_tablemap->nchairs()));
-						write_log(prefs.debug_blindlocking(), "CTableLimits: found inferred BB at chair %d: %f\n", next_chair, p_scraper->player_bet(i%p_tablemap->nchairs()));
+						write_log(prefs.debug_blindlocking(), "[CTableLimits] found inferred BB at chair %d: %f\n", next_chair, p_scraper->player_bet(i%p_tablemap->nchairs()));
 					}
 					// heads up - reversed blinds
 					else
 					{
 						SetBigBlind(tablelimit_unreliable_input.sblind);
 						SetSmallBlind(p_scraper->player_bet(next_chair));
-						write_log(prefs.debug_blindlocking(), "CTableLimits: found inferred BB headsup at chair %d: %f\n", next_chair, p_scraper->player_bet(i%p_tablemap->nchairs()));
-						write_log(prefs.debug_blindlocking(), "CTableLimits: Swapping blinds.\n");
+						write_log(prefs.debug_blindlocking(), "[CTableLimits] found inferred BB headsup at chair %d: %f\n", next_chair, p_scraper->player_bet(i%p_tablemap->nchairs()));
+						write_log(prefs.debug_blindlocking(), "[CTableLimits] Swapping blinds.\n");
 					}
 					found_inferred_bb = true;
 				}
@@ -399,15 +399,15 @@ void CTableLimits::SearchTableForSbAndBbValue()
 		else if ((p_scraper->card_player(next_chair, 0) != CARD_NOCARD)  
 			&& (p_scraper->card_player(next_chair, 0) != CARD_NOCARD))
 		{
-			write_log(prefs.debug_blindlocking(), "CTableLimits::SearchTableForSbAndBbValue found no bet for chair %d\n", next_chair);
-			write_log(prefs.debug_blindlocking(), "CTableLimits::SearchTableForSbAndBbValue but found cards for chair %d\n", next_chair);
+			write_log(prefs.debug_blindlocking(), "[CTableLimits] SearchTableForSbAndBbValue found no bet for chair %d\n", next_chair);
+			write_log(prefs.debug_blindlocking(), "[CTableLimits] SearchTableForSbAndBbValue but found cards for chair %d\n", next_chair);
 			// Awful. Found cards, but not the expected blind.
 			// Either a misread, or a blind is missing.
 			// Read it as zero and try to guess it later correctly.
 			if (!found_inferred_sb)
 			{
 				found_inferred_sb = true;
-				write_log(prefs.debug_blindlocking(), "CTableLimits: expected SB, but not found\n");
+				write_log(prefs.debug_blindlocking(), "[CTableLimits] expected SB, but not found\n");
 				// Don't set any value.
 				// Who knows, we might even have correct data 
 				// from a previous round!? 
@@ -415,7 +415,7 @@ void CTableLimits::SearchTableForSbAndBbValue()
 			else if (!found_inferred_bb)
 			{
 				found_inferred_bb = true;
-				write_log(prefs.debug_blindlocking(), "CTableLimits: expected BB, but not found\n");
+				write_log(prefs.debug_blindlocking(), "[CTableLimits] expected BB, but not found\n");
 				// Don't set any value.
 				// Who knows, we might even have correct data 
 				// from a previous round!? 
@@ -424,7 +424,7 @@ void CTableLimits::SearchTableForSbAndBbValue()
 		}
 		else
 		{
-			write_log(prefs.debug_blindlocking(), "CTableLimits::SearchTableForSbAndBbValue found neither bet nor cards for chair %d\n", next_chair);
+			write_log(prefs.debug_blindlocking(), "[CTableLimits] SearchTableForSbAndBbValue found neither bet nor cards for chair %d\n", next_chair);
 		}
 	}
 	SwapBlindsIfSbGreaterThanBBAndNotZero();
@@ -432,7 +432,7 @@ void CTableLimits::SearchTableForSbAndBbValue()
 
 double CTableLimits::GuessSmallBlindFromBigBlind()
 {
-	write_log(prefs.debug_blindlocking(), "CTableLimits::GuessSmallBlindFromBigBlind()\n");
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] GuessSmallBlindFromBigBlind()\n");
 	// Special case: 0.02/0.05/0.10
 	if (IsEqual(tablelimit_unreliable_input.bblind, 0.05))
 	{
@@ -455,7 +455,7 @@ double CTableLimits::GuessBigBlindFromSmallBlind()
 {	// Special cases: NL 0.10/0.25.
 	// Some casinos do also provide NL 0.10/0.20,
 	// but that is rare, we do assume 0.10/0.25 here.
-	write_log(prefs.debug_blindlocking(), "CTableLimits::GuessBigBlindFromSmallBlind()\n");
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] GuessBigBlindFromSmallBlind()\n");
 	if (gametype() == k_gametype_NL && IsEqual(tablelimit_unreliable_input.sblind, 0.10))
 	{
 		return 0.25;
@@ -465,33 +465,33 @@ double CTableLimits::GuessBigBlindFromSmallBlind()
 
 double CTableLimits::GuessBigBetFromBigBlind()
 {
-	write_log(prefs.debug_blindlocking(), "CTableLimits::GuessBigBetFromBigBlind()\n");
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] GuessBigBetFromBigBlind()\n");
 	if ((gametype() == k_gametype_NL) || (gametype() == k_gametype_PL))
 	{
-		write_log(prefs.debug_blindlocking(), "CTableLimits::GuessBigBetFromBigBlind() BB = bb\n");
+		write_log(prefs.debug_blindlocking(), "[CTableLimits] GuessBigBetFromBigBlind() BB = bb\n");
 		return (tablelimit_unreliable_input.bblind);
 	}
 	else
 	{
-		write_log(prefs.debug_blindlocking(), "CTableLimits::GuessBigBetFromBigBlind() BB = 2*bb\n");
+		write_log(prefs.debug_blindlocking(), "[CTableLimits] GuessBigBetFromBigBlind() BB = 2*bb\n");
 		return (tablelimit_unreliable_input.bblind*2);
 	}
 }
 
 void CTableLimits::AdjustForReasonableness()
 {
-	write_log(prefs.debug_blindlocking(), "CTableLimits::CheckForReasonableness()\n");
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] CheckForReasonableness()\n");
 	// SB unknown?
 	if (IsSmallerOrEqual(tablelimit_unreliable_input.sblind, 0))
 	{
 		SetSmallBlind(GuessSmallBlindFromBigBlind());
-			write_log(prefs.debug_blindlocking(), "CTableLimits: adjusting SB\n");
+			write_log(prefs.debug_blindlocking(), "[CTableLimits] adjusting SB\n");
 	}
 	// BB unknown?
 	if (IsSmallerOrEqual(tablelimit_unreliable_input.bblind, 0))
 	{
 		SetBigBlind(GuessBigBlindFromSmallBlind());
-			write_log(prefs.debug_blindlocking(), "CTableLimits: adjusting BB\n");
+			write_log(prefs.debug_blindlocking(), "[CTableLimits] adjusting BB\n");
 	}
 	// BB out of range?
 	if (IsGreater(tablelimit_unreliable_input.bblind, (tablelimit_unreliable_input.sblind*3)))
@@ -508,16 +508,16 @@ void CTableLimits::AdjustForReasonableness()
 		// but up to now we never saw an online-game with identical blinds.
 		// SB >= BB does usually mean, that SB did already act and complete.
 		SetSmallBlind(GuessSmallBlindFromBigBlind());
-		write_log(prefs.debug_blindlocking(), "CTableLimits: adjusting SB\n");
+		write_log(prefs.debug_blindlocking(), "[CTableLimits] adjusting SB\n");
 	}
 	// Always force big-bet = 2 * big-blind
 	SetBigBet(GuessBigBetFromBigBlind());
-	write_log(prefs.debug_blindlocking(), "CTableLimits: adjusting big bet\n");
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] adjusting big bet\n");
 }
 
 void CTableLimits::CalcBetsizesForEveryStreet()
 {
-	write_log(prefs.debug_blindlocking(), "CTableLimits::CalcBetsizesForEveryStreet()\n");
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] CalcBetsizesForEveryStreet()\n");
 	// Use the best  known values here, not tablelimit_unreliable_input
 	SetBet(k_betround_preflop, bblind());															
 	SetBet(k_betround_flop,    bblind());															
@@ -530,7 +530,7 @@ void CTableLimits::CalcTableLimits()
 	// This is basically the old function CSymbols::CalcStakes()
 	// with some extension at the end to auto-lock the blinds,
 	// if the values are reasonable.
-	write_log(prefs.debug_blindlocking(), "CTableLimits::CalcTableLimits()\n");
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] CalcTableLimits()\n");
 	if (!IsCalculationNeccessary())
 	{
 		return;
@@ -553,10 +553,10 @@ void CTableLimits::CalcTableLimits()
 	if (p_scraper->s_limit_info()->found_bbet)
 		SetBigBet(p_scraper->s_limit_info()->bbet);
 
-	write_log(prefs.debug_blindlocking(), "CTableLimits: input from scraper: small blind: %f\n", tablelimit_unreliable_input.sblind);
-	write_log(prefs.debug_blindlocking(), "CTableLimits: input from scraper: big blind:   %f\n", tablelimit_unreliable_input.bblind);
-	write_log(prefs.debug_blindlocking(), "CTableLimits: input from scraper: big bet:     %f\n", tablelimit_unreliable_input.bbet);
-	write_log(prefs.debug_blindlocking(), "CTableLimits: input from scraper: gametype:    %d\n", _gametype);             
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] input from scraper: small blind: %f\n", tablelimit_unreliable_input.sblind);
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] input from scraper: big blind:   %f\n", tablelimit_unreliable_input.bblind);
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] input from scraper: big bet:     %f\n", tablelimit_unreliable_input.bbet);
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] input from scraper: gametype:    %d\n", _gametype);             
 	// Figure out bb/sb based on game type
 	if (gametype() == k_gametype_NL || gametype() == k_gametype_PL)
 	{
@@ -576,13 +576,13 @@ void CTableLimits::CalcTableLimits()
 			SearchTableForSbAndBbValue();			
 		}
 	}
-	write_log(prefs.debug_blindlocking(), "CTableLimits: calculated result: small blind: %f\n", tablelimit_unreliable_input.sblind);
-	write_log(prefs.debug_blindlocking(), "CTableLimits: calculated result: big blind:   %f\n", tablelimit_unreliable_input.bblind);
-	write_log(prefs.debug_blindlocking(), "CTableLimits: calculated result: big bet:     %f\n", tablelimit_unreliable_input.bbet);
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] calculated result: small blind: %f\n", tablelimit_unreliable_input.sblind);
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] calculated result: big blind:   %f\n", tablelimit_unreliable_input.bblind);
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] calculated result: big bet:     %f\n", tablelimit_unreliable_input.bbet);
 	AdjustForReasonableness();
-	write_log(prefs.debug_blindlocking(), "CTableLimits: adjusted result: small blind: %f\n", tablelimit_unreliable_input.sblind);
-	write_log(prefs.debug_blindlocking(), "CTableLimits: adjusted result: big blind:   %f\n", tablelimit_unreliable_input.bblind);
-	write_log(prefs.debug_blindlocking(), "CTableLimits: adjusted result: big bet:     %f\n", tablelimit_unreliable_input.bbet);
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] adjusted result: small blind: %f\n", tablelimit_unreliable_input.sblind);
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] adjusted result: big blind:   %f\n", tablelimit_unreliable_input.bblind);
+	write_log(prefs.debug_blindlocking(), "[CTableLimits] adjusted result: big bet:     %f\n", tablelimit_unreliable_input.bbet);
 
 	AcceptNewValuesIfGood();
 	AutoLockBlinds();
