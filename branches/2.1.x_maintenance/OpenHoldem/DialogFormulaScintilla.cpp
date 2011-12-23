@@ -3592,6 +3592,21 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "callbitsx (x=1-4)", "which chairs called in round x");
 	AddSymbol(parent, "foldbitsx (x=1-4)", "which chairs folded in round x");
 	AddSymbol(parent, "oppdealt", "Trailing indicator for nopponentsdealt");
+	AddSymbol(parent, "ac_aggressor", "which chair was aggressor (might be from previous round)");
+	AddSymbol(parent, "ac_agchair_after", "does the aggressor chair act after me?");
+	AddSymbol(parent, "ac_preflop_pos", "preflop position of the userchair (SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6)");
+	AddSymbol(parent, "ac_prefloprais_pos", "preflop position of the raiser (SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6)");
+	AddSymbol(parent, "ac_postflop_pos", "postflop position of the userchair (first=1 early=2 middle=3 late=4 last=5)");
+	AddSymbol(parent, "ac_pf_bets", "preflop betting action\n" 
+		"1 for no callers or blinds only\n" 
+		"2 for Called Pot - 1 bet to call\n"
+		"3 for Raised Back - 1 more bet to call because someone behind you raised after you've already bet/called/raised\n" 
+		"4 for Raised Pot - 2 bets to call\n"
+		"5 for Reraised Pot - 3+ bets to call\n"
+		"Valif preflop only.");
+	AddSymbol(parent, "ac_first_into_pot", "returns true if you are first into the pot (first to act or checked to you)");
+	AddSymbol(parent, "ac_betposx (x=0-9)", "returns bet position of specified chair");
+	AddSymbol(parent, "ac_dealposx (x=0-9)", "returns deal position of specified chair");
 
 	mainParent = parent = AddSymbolTitle("MyHand symbols", NULL, hCatItem);
 	AddSymbol(parent, "mh_3straightxy", "(x=1 for wheel, 0 not, y=1 for broadway, 0 not) - returns true if the board has a wheel straight draw or broadway straight draw, given the wheel/broadway parameters");
