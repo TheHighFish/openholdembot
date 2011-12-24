@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="Favourite_Failures.tex"> 
+<meta name="date" content="2009-12-19 14:05:00"> 
+<link rel="stylesheet" type="text/css" href="Favourite_Failures.css"> 
+</head><body 
+>
+
+
+   <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;1</span><br /><a 
+ id="x1-10001"></a>Favourite Failures</h2>
+   <h3 class="sectionHead"><span class="titlemark">1.1. </span> <a 
+ id="x1-20001.1"></a>OH does not connect to the table (I)</h3>
+<!--l. 31--><p class="noindent" ><span 
+class="ecti-1000">Reason: Table not recognized because of incorrect system-settings.</span>
+<!--l. 33--><p class="indent" >   To recognize a table the following criteria have to match:
+           <ul class="itemize1">
+        <li class="itemize">size of the window
+           </li>
+        <li class="itemize">table-title
+           </li>
+        <li class="itemize">maybe some tablepoints to distinguish similar maps (e.g. FL, NL-SNG or
+        different skins from the same network).</li></ul>
+<!--l. 40--><p class="noindent" >Usually the problem is the window-size caused by incorrect system-settings; Windows XP
+and Vista posses a higher titlebar than Windows 2000 classic-theme.
+   <h3 class="sectionHead"><span class="titlemark">1.2. </span> <a 
+ id="x1-30001.2"></a>OH does not connect to the table (II)</h3>
+<!--l. 47--><p class="noindent" ><span 
+class="ecti-1000">Reason: No tablemap loaded.</span>
+<!--l. 49--><p class="indent" >   There are two ways to load a tablemap:
+           <ul class="itemize1">
+        <li class="itemize">explicitely via the menu: Menu -&#x003E; File -&#x003E; Load Table Map
+           </li>
+        <li class="itemize">implicitely  from  the  &#8220;scraper&#8221;-folder  in  the  installation-directory  of
+        OpenHoldem.</li></ul>
+   <h3 class="sectionHead"><span class="titlemark">1.3. </span> <a 
+ id="x1-40001.3"></a>OH does not play</h3>
+<!--l. 58--><p class="noindent" ><span 
+class="ecti-1000">Reason: You did not turn on the autoplayer.</span>
+<!--l. 60--><p class="indent" >   Click the diamond-button to the right of the green and red circles in the
+toolbar.
+<!--l. 63--><p class="indent" >   !!! preferences
+   <h3 class="sectionHead"><span class="titlemark">1.4. </span> <a 
+ id="x1-50001.4"></a>The autoplayer-button can&#8217;t be enabled</h3>
+<!--l. 68--><p class="noindent" ><span 
+class="ecti-1000">Reason: Userchair not recognized.</span>
+<!--l. 70--><p class="indent" >   The autoplayer can only be enabled, after OpenHoldem has recognized your chair.
+To do so OpenHoldem must see
+           <ul class="itemize1">
+        <li class="itemize">your cards
+           </li>
+        <li class="itemize">some buttons, so OpenHoldem really knows, it is your turn and not a
+        gamestate with cards shown for your opponents (i.e. a showdown).</li></ul>
+   <h3 class="sectionHead"><span class="titlemark">1.5. </span> <a 
+ id="x1-60001.5"></a>OH calls any hand</h3>
+<!--l. 81--><p class="noindent" ><span 
+class="ecti-1000">Reason: Tablemap does not detect bet amounts.</span>
+
+<!--l. 83--><p class="indent" >   If OpenHoldem calls every hand &#8212; except maybe the strong ones &#8212; this is probably
+neither a bug in OpenHoldem nor bad logic in the bot but a problem with
+the Tablemap or with your settings again: The TM does most probably not
+recognize your opponents bet, so OpenHoldem thinks, you have a free play and
+calls.
+<!--l. 89--><p class="indent" >   Whenever you experience strange actions, you should ask yourself the following
+questions (<a 
+href="http://forum.winholdem.net/wbb/viewtopic.php?f=38&t=12408" class="url" ><span 
+class="ectt-1000">http://forum.winholdem.net/wbb/viewtopic.php?f=38&amp;t=12408</span></a>):
+           <ul class="itemize1">
+        <li class="itemize">is the scraper reading the bet values correctly?
+           </li>
+        <li class="itemize">is the scraper reading my cardfaces correctly?
+           </li>
+        <li class="itemize">is the scraper reading opponent cardbacks correctly?
+           </li>
+        <li class="itemize">do the blind values look sane?
+           </li>
+        <li class="itemize">does the site provide handnumbers?
+           </li>
+        <li class="itemize">are my action buttons being seen when my turn arrives?</li></ul>
+<!--l. 99--><p class="noindent" >You can check the values for these symbols in the debug-tab of the formula-editor.
+   <!--l. 105-->
+   <div class="lstlisting" id="listing-1"><span class="label"><a 
+ id="x1-6001r1"></a></span>&#x00A0;=&#x00A0;br&#x00A0;<br /><span class="label"><a 
+ id="x1-6002r2"></a></span>&#x00A0;=&#x00A0;sblind&#x00A0;<br /><span class="label"><a 
+ id="x1-6003r3"></a></span>&#x00A0;=&#x00A0;bblind&#x00A0;<br /><span class="label"><a 
+ id="x1-6004r4"></a></span>&#x00A0;=&#x00A0;handnumber&#x00A0;<br /><span class="label"><a 
+ id="x1-6005r5"></a></span>&#x00A0;=&#x00A0;nplayersdealt&#x00A0;<br /><span class="label"><a 
+ id="x1-6006r6"></a></span>&#x00A0;=&#x00A0;myturnbits
+   </div>
+   <h3 class="sectionHead"><span class="titlemark">1.6. </span> <a 
+ id="x1-70001.6"></a>OH does not work at ManualMode</h3>
+<!--l. 118--><p class="noindent" ><span 
+class="ecti-1000">Reason: Not your turn or userchair not recognized.</span>
+<!--l. 120--><p class="indent" >   To work properly OpenHoldem must have recognized the userchair. See !!! Also some
+symbols are only valid, when it is your turn to act. So you should highlight some buttons
+in ManualMode.
+   <h3 class="sectionHead"><span class="titlemark">1.7. </span> <a 
+ id="x1-80001.7"></a>OH acts multiple times</h3>
+<!--l. 127--><p class="noindent" ><span 
+class="ecti-1000">Reason: Improper bring-delay and scraper-delay.</span>
+<!--l. 129--><p class="indent" >   The bring-delay should be equal or even smaller than the scraper-delay. Otherwise it
+can happen, that OH acts, but bring doesn&#8217;t display a new image in time. So when the
+next heart-beat-cycle starts, OH will scrape the exact same game-state another time and
+act another time.
+   <h3 class="sectionHead"><span class="titlemark">1.8. </span> <a 
+ id="x1-90001.8"></a>OH Does Permanently Click Sitout / Sitin</h3>
+<!--l. 138--><p class="noindent" >Todo!!!
+
+   <h3 class="sectionHead"><span class="titlemark">1.9. </span> <a 
+ id="x1-100001.9"></a>Perl (or the user-DLL) crashes immediatelly</h3>
+<!--l. 143--><p class="noindent" ><span 
+class="ecti-1000">Reason: Usage of functionality, that is not yet initialized.</span>
+<!--l. 145--><p class="indent" >   The probably most prominent example is the usage of the function &#8220;getsym&#8221; during
+the initialization-phase of Perl or a DLL.
+<!--l. 148--><p class="indent" >   <span 
+class="eccc-1000"><span 
+class="small-caps">D</span><span 
+class="small-caps">O</span><span 
+class="small-caps">U</span><span 
+class="small-caps">B</span><span 
+class="small-caps">L</span><span 
+class="small-caps">E</span> B<span 
+class="small-caps">I</span><span 
+class="small-caps">G</span>B<span 
+class="small-caps">L</span><span 
+class="small-caps">I</span><span 
+class="small-caps">N</span><span 
+class="small-caps">D</span> = <span 
+class="small-caps">G</span><span 
+class="small-caps">E</span><span 
+class="small-caps">T</span><span 
+class="small-caps">S</span><span 
+class="small-caps">Y</span><span 
+class="small-caps">M</span>(&#8220;<span 
+class="small-caps">B</span><span 
+class="small-caps">B</span><span 
+class="small-caps">L</span><span 
+class="small-caps">I</span><span 
+class="small-caps">N</span><span 
+class="small-caps">D</span>&#8221;);</span>
+<!--l. 150--><p class="indent" >   BigBlind is here a global variable, that gets initialized immediatelly, when the DLL
+gets loaded. But the function getsym uses a callback-pointer, that gets initialized later
+with one of the first messages from OpenHoldem to the DLL. So you dereference an
+undefined pointer and crash because of a memory-access-error.
+<!--l. 156--><p class="indent" >   Very similar are debug messages into a file, that has not yet been opened for writing
+or an inexpertly load-order of Perl-modules, that do similar stuff as descibed above
+during the phase of initialization.  
+</body></html> 
+
+
+
