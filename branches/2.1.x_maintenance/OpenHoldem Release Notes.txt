@@ -1,4 +1,4 @@
-v2.1.9.2 2011-xx-yy
+v2.1.9.2 2011-12-24
 ===================
 BUG FIXES: 
 - Small fixes to the validator (handnumber no longer a symbol,
