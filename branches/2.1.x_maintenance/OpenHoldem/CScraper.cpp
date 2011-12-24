@@ -161,7 +161,7 @@ const bool CScraper::IsCommonAnimation(void)
 // returns true if window has changed and we processed the changes, false otherwise
 int CScraper::DoScrape(void)
 {
-	write_log(prefs.debug_scraper(), "Starting Scraper cadence...\n");
+	write_log(prefs.debug_scraper(), "[CScraper] Starting Scraper cadence...\n");
 	
 	__HDC_HEADER
 
@@ -187,7 +187,7 @@ int CScraper::DoScrape(void)
 		DeleteDC(hdcScreen);
 		ReleaseDC(p_autoconnector->attached_hwnd(), hdc);
 
-		write_log(prefs.debug_scraper(), "...ending Scraper cadence early (no change).\n");
+		write_log(prefs.debug_scraper(), "[CScraper] ...ending Scraper cadence early (no change).\n");
 		return NOTHING_CHANGED;
 	}
 
@@ -221,31 +221,31 @@ int CScraper::DoScrape(void)
 	_scrape_something_changed = NOTHING_CHANGED;
 
 	// Common cards
-	write_log(prefs.debug_scraper(), "Calling ScrapeCommonCards.\n");
+	write_log(prefs.debug_scraper(), "[CScraper] Calling ScrapeCommonCards.\n");
 	ScrapeCommonCards();
 
 	// Player information
 	for (int i=0; i<=9; i++)
 	{
-		write_log(prefs.debug_scraper(), "Calling ScrapePlayerCards, chair %d.\n", i);
+		write_log(prefs.debug_scraper(), "[CScraper] Calling ScrapePlayerCards, chair %d.\n", i);
 		ScrapePlayerCards(i);
 	
-		write_log(prefs.debug_scraper(), "Calling ScrapeSeated, chair %d.\n", i);
+		write_log(prefs.debug_scraper(), "[CScraper] Calling ScrapeSeated, chair %d.\n", i);
 		ScrapeSeated(i);
 	
-		write_log(prefs.debug_scraper(), "Calling ScrapeActive, chair %d.\n", i);
+		write_log(prefs.debug_scraper(), "[CScraper] Calling ScrapeActive, chair %d.\n", i);
 		ScrapeActive(i);
 	
-		write_log(prefs.debug_scraper(), "Calling ScrapeDealer, chair %d.\n", i);
+		write_log(prefs.debug_scraper(), "[CScraper] Calling ScrapeDealer, chair %d.\n", i);
 		ScrapeDealer(i);
 	
-		write_log(prefs.debug_scraper(), "Calling ScrapeName, chair %d.\n", i);
+		write_log(prefs.debug_scraper(), "[CScraper] Calling ScrapeName, chair %d.\n", i);
 		ScrapeName(i);
 	
-		write_log(prefs.debug_scraper(), "Calling ScrapeBet, chair %d.\n", i);
+		write_log(prefs.debug_scraper(), "[CScraper] Calling ScrapeBet, chair %d.\n", i);
 		ScrapeBet(i);
 	
-		write_log(prefs.debug_scraper(), "Calling ScrapeBalance, chair %d.\n", i);
+		write_log(prefs.debug_scraper(), "[CScraper] Calling ScrapeBalance, chair %d.\n", i);
 		ScrapeBalance(i);  // Must come after ScrapeBet, as is dependent on ScrapeBet's results
 
 		if (!IsStringSeated(_seated[i]) && !IsStringActive(_active[i]))
@@ -257,16 +257,16 @@ int CScraper::DoScrape(void)
 		}
 	}
 
-	write_log(prefs.debug_scraper(), "Calling ScrapeButtons.\n");
+	write_log(prefs.debug_scraper(), "[CScraper] Calling ScrapeButtons.\n");
 	ScrapeButtons();		// Buttons
 
-	write_log(prefs.debug_scraper(), "Calling ScrapePots.\n");
+	write_log(prefs.debug_scraper(), "[CScraper] Calling ScrapePots.\n");
 	ScrapePots();		// Pots
 
-	write_log(prefs.debug_scraper(), "Calling ScrapeLimits.\n");
+	write_log(prefs.debug_scraper(), "[CScraper] Calling ScrapeLimits.\n");
 	ScrapeLimits();		// limits
 
-	write_log(prefs.debug_scraper(), "...ending Scraper cadence, changed: %d\n", _scrape_something_changed);
+	write_log(prefs.debug_scraper(), "[CScraper] ...ending Scraper cadence, changed: %d\n", _scrape_something_changed);
 
 	return _scrape_something_changed;
 }
@@ -347,7 +347,7 @@ void CScraper::ScrapeCommonCards()
 
 			set_card_common(i, card);
 
-			write_log(prefs.debug_scraper(), "c0cardface%d, result %s\n", i, cardstr.GetString());
+			write_log(prefs.debug_scraper(), "[CScraper] c0cardface%d, result %s\n", i, cardstr.GetString());
 		}
 
 		// try r$c0cardfaceXrank/r$c0cardfaceXsuit region next
@@ -399,7 +399,7 @@ void CScraper::ScrapeCommonCards()
 
 			set_card_common(i, card);
 
-			write_log(prefs.debug_scraper(), "c0cardface%drank/c0cardface%dsuit, result %s\n", i, i, cardstr.GetString());
+			write_log(prefs.debug_scraper(), "[CScraper] c0cardface%drank/c0cardface%dsuit, result %s\n", i, i, cardstr.GetString());
 		}
 	}
 
@@ -461,7 +461,7 @@ void CScraper::ScrapePlayerCards(int chair)
 					set_card_player_for_display(j, card);
 			}
 
-			write_log(prefs.debug_scraper(), "u%dcardface%d, result %s\n", chair, j, cardstr.GetString());
+			write_log(prefs.debug_scraper(), "[CScraper] u%dcardface%d, result %s\n", chair, j, cardstr.GetString());
 		}
 
 		// try r$pXcardfaceY region next
@@ -496,7 +496,7 @@ void CScraper::ScrapePlayerCards(int chair)
 					set_card_player_for_display(j,  card);
 			}
 
-			write_log(prefs.debug_scraper(), "p%dcardface%d, result %s\n", chair, j, cardstr.GetString());
+			write_log(prefs.debug_scraper(), "[CScraper] p%dcardface%d, result %s\n", chair, j, cardstr.GetString());
 		}
 
 		// try r$pXcardfaceYrank/r$pXcardfaceYsuit regions next
@@ -551,7 +551,7 @@ void CScraper::ScrapePlayerCards(int chair)
 					set_card_player_for_display(j, card);
 			}
 
-			write_log(prefs.debug_scraper(), "p%dcardface%drank/p%dcardface%dsuit, result %s%s", chair, j, chair, j, rankstr.GetString(), suitstr.GetString());
+			write_log(prefs.debug_scraper(), "[CScraper] p%dcardface%drank/p%dcardface%dsuit, result %s%s", chair, j, chair, j, rankstr.GetString(), suitstr.GetString());
 		}
 	}
 
@@ -576,14 +576,14 @@ void CScraper::ScrapePlayerCards(int chair)
 			set_card_player(chair, 0, CARD_BACK);
 			set_card_player(chair, 1, CARD_BACK);
 
-			write_log(prefs.debug_scraper(), "p%dcardback, result CARDBACK\n", chair);
+			write_log(prefs.debug_scraper(), "[CScraper] p%dcardback, result CARDBACK\n", chair);
 		}
 		else
 		{
 			set_card_player(chair, 0, CARD_NOCARD);
 			set_card_player(chair, 1, CARD_NOCARD);
 
-			write_log(prefs.debug_scraper(), "p%dcardback, result NOCARD\n", chair);
+			write_log(prefs.debug_scraper(), "[CScraper] p%dcardback, result NOCARD\n", chair);
 		}
 
 		if (_card_player_last[chair][0] != _card_player[chair][0] ||
@@ -631,7 +631,7 @@ void CScraper::ScrapeSeated(int chair)
 		if (result!="")
 			set_seated(chair, result);
 
-		write_log(prefs.debug_scraper(), "p%dseated, result %s\n", chair, result.GetString());
+		write_log(prefs.debug_scraper(), "[CScraper] p%dseated, result %s\n", chair, result.GetString());
 	}
 
 	// try u region next uXseated,
@@ -654,7 +654,7 @@ void CScraper::ScrapeSeated(int chair)
 		if (result!="")
 			set_seated(chair, result);
 
-		write_log(prefs.debug_scraper(), "u%dseated, result %s\n", chair, result.GetString());
+		write_log(prefs.debug_scraper(), "[CScraper] u%dseated, result %s\n", chair, result.GetString());
 	}
 
 	if (_seated_last[chair] != _seated[chair])
@@ -699,7 +699,7 @@ void CScraper::ScrapeActive(int chair)
 
 		set_active(chair, result);
 
-		write_log(prefs.debug_scraper(), "p%dactive, result %s\n", chair, result.GetString());
+		write_log(prefs.debug_scraper(), "[CScraper] p%dactive, result %s\n", chair, result.GetString());
 	}
 
 	// try u region next, but only if we didn't get a key result from the p region
@@ -721,7 +721,7 @@ void CScraper::ScrapeActive(int chair)
 		}
 
 		set_active(chair, result);
-		write_log(prefs.debug_scraper(), "u%dactive, result %s\n", chair, result.GetString());
+		write_log(prefs.debug_scraper(), "[CScraper] u%dactive, result %s\n", chair, result.GetString());
 	}
 
 	if (_active_last[chair] != _active[chair])
@@ -770,7 +770,7 @@ void CScraper::ScrapeDealer(int chair)
 		if (IsStringDealer(result))
 			found_dealer = true;
 
-		write_log(prefs.debug_scraper(), "p%ddealer, result %s\n", chair, result.GetString());
+		write_log(prefs.debug_scraper(), "[CScraper] p%ddealer, result %s\n", chair, result.GetString());
 	}
 
 	// Dealer button uXdealer
@@ -792,7 +792,7 @@ void CScraper::ScrapeDealer(int chair)
 		if (IsStringDealer(result))
 			found_dealer = true;
 
-		write_log(prefs.debug_scraper(), "u%ddealer, result %s\n", chair, result.GetString());
+		write_log(prefs.debug_scraper(), "[CScraper] u%ddealer, result %s\n", chair, result.GetString());
 	}
 
 	set_dealer(chair, found_dealer);
@@ -846,7 +846,7 @@ void CScraper::ScrapeName(int chair)
 		if (ret==ERR_GOOD_SCRAPE_GENERAL && text!="")
 			got_new_scrape = true;
 
-		write_log(prefs.debug_scraper(), "uname, result %s\n", text.GetString());
+		write_log(prefs.debug_scraper(), "[CScraper] uname, result %s\n", text.GetString());
 	}
 
 	// Player name uXname
@@ -868,7 +868,7 @@ void CScraper::ScrapeName(int chair)
 		if (ret==ERR_GOOD_SCRAPE_GENERAL && text!="")
 			got_new_scrape = true;
 
-		write_log(prefs.debug_scraper(), "u%dname, result %s\n", chair, text.GetString());
+		write_log(prefs.debug_scraper(), "[CScraper] u%dname, result %s\n", chair, text.GetString());
 	}
 
 	// Player name pXname
@@ -890,7 +890,7 @@ void CScraper::ScrapeName(int chair)
 		if (ret==ERR_GOOD_SCRAPE_GENERAL && text!="")
 			got_new_scrape = true;
 
-		write_log(prefs.debug_scraper(), "p%dname, result %s\n", chair, text.GetString());
+		write_log(prefs.debug_scraper(), "[CScraper] p%dname, result %s\n", chair, text.GetString());
 	}
 
 	if (got_new_scrape)
@@ -957,7 +957,7 @@ void CScraper::ScrapeBalance(int chair)
 				got_new_scrape = true;
 				text = "0";
 
-				write_log(prefs.debug_scraper(), "ubalance, result ALLIN\n");
+				write_log(prefs.debug_scraper(), "[CScraper] ubalance, result ALLIN\n");
 			}
 
 			else if (text.MakeLower().Find("out")!=-1)
@@ -965,7 +965,7 @@ void CScraper::ScrapeBalance(int chair)
 				set_sitting_out(chair, true);
 				set_active(chair, "false");
 
-				write_log(prefs.debug_scraper(), "ubalance, result OUT\n");
+				write_log(prefs.debug_scraper(), "[CScraper] ubalance, result OUT\n");
 			}
 
 			else
@@ -987,7 +987,7 @@ void CScraper::ScrapeBalance(int chair)
 				if (text!="" && IsNumeric(text))
 					got_new_scrape = true;
 
-				write_log(prefs.debug_scraper(), "ubalance, result %s\n", text.GetString());
+				write_log(prefs.debug_scraper(), "[CScraper] ubalance, result %s\n", text.GetString());
 			}
 		}
 	}
@@ -1015,7 +1015,7 @@ void CScraper::ScrapeBalance(int chair)
 				got_new_scrape = true;
 				text = "0";
 
-				write_log(prefs.debug_scraper(), "u%dbalance, result ALLIN", chair);
+				write_log(prefs.debug_scraper(), "[CScraper] u%dbalance, result ALLIN", chair);
 			}
 
 			else if (text.MakeLower().Find("out")!=-1)
@@ -1023,7 +1023,7 @@ void CScraper::ScrapeBalance(int chair)
   				set_sitting_out(chair, true);
 				set_active(chair, "false");
 
-				write_log(prefs.debug_scraper(), "u%dbalance, result OUT\n", chair);
+				write_log(prefs.debug_scraper(), "[CScraper] u%dbalance, result OUT\n", chair);
 			}
 
 			else
@@ -1045,7 +1045,7 @@ void CScraper::ScrapeBalance(int chair)
 				if (text!="" && IsNumeric(text))
 					got_new_scrape = true;
 
-				write_log(prefs.debug_scraper(), "u%dbalance, result %s\n", chair, text.GetString());
+				write_log(prefs.debug_scraper(), "[CScraper] u%dbalance, result %s\n", chair, text.GetString());
 			}
 		}
 	}
@@ -1073,7 +1073,7 @@ void CScraper::ScrapeBalance(int chair)
 				got_new_scrape = true;
 				text = "0";
 
-				write_log(prefs.debug_scraper(), "u%dbalance, result ALLIN\n", chair);
+				write_log(prefs.debug_scraper(), "[CScraper] u%dbalance, result ALLIN\n", chair);
 			}
 
 			else if (text.MakeLower().Find("out")!=-1)
@@ -1081,7 +1081,7 @@ void CScraper::ScrapeBalance(int chair)
   				set_sitting_out(chair, true);
 				set_active(chair, "false");
 
-				write_log(prefs.debug_scraper(), "u%dbalance, result OUT\n", chair);
+				write_log(prefs.debug_scraper(), "[CScraper] u%dbalance, result OUT\n", chair);
 			}
 
 			else
@@ -1103,7 +1103,7 @@ void CScraper::ScrapeBalance(int chair)
 				if (text!="" && IsNumeric(text))
 					got_new_scrape = true;
 
-				write_log(prefs.debug_scraper(), "u%dbalance, result %s\n", chair, text.GetString());
+				write_log(prefs.debug_scraper(), "[CScraper] u%dbalance, result %s\n", chair, text.GetString());
 			}
 		}
 	}
@@ -1166,7 +1166,7 @@ void CScraper::ScrapeBet(int chair)
 			set_player_bet(chair, trans.StringToMoney(text));
 		}
 
-		write_log(prefs.debug_scraper(), "p%dbet, result %s\n", chair, text.GetString());
+		write_log(prefs.debug_scraper(), "[CScraper] p%dbet, result %s\n", chair, text.GetString());
 	}
 
 	// uXbet
@@ -1193,7 +1193,7 @@ void CScraper::ScrapeBet(int chair)
 			set_player_bet(chair, trans.StringToMoney(text));
 		}
 
-		write_log(prefs.debug_scraper(), "u%dbet, result %s\n", chair, text.GetString());
+		write_log(prefs.debug_scraper(), "[CScraper] u%dbet, result %s\n", chair, text.GetString());
 	}		
 		
 	// pXchip00
@@ -1214,7 +1214,7 @@ void CScraper::ScrapeBet(int chair)
 
 		set_player_bet(chair, strtod(t.GetString(), 0));
 
-		write_log(prefs.debug_scraper(), "p%dchipXY, result %f\n", chair, _player_bet[chair]);
+		write_log(prefs.debug_scraper(), "[CScraper] p%dchipXY, result %f\n", chair, _player_bet[chair]);
 	}
 
 	if (_playerbet_last[chair] != _player_bet[chair])
@@ -1279,7 +1279,7 @@ void CScraper::ScrapeButtons()
 				_scrape_something_changed |= BUTTONSTATE_CHANGED;
 			}
 
-			write_log(prefs.debug_scraper(), "i%dstate, result %s\n", j, text.GetString());
+			write_log(prefs.debug_scraper(), "[CScraper] i%dstate, result %s\n", j, text.GetString());
 		}
 
 		// i86X button state i86Xstate
@@ -1307,7 +1307,7 @@ void CScraper::ScrapeButtons()
 				_scrape_something_changed |= BUTTONSTATE_CHANGED;
 			}
 
-			write_log(prefs.debug_scraper(), "i86%dstate, result %s\n", j, text.GetString());
+			write_log(prefs.debug_scraper(), "[CScraper] i86%dstate, result %s\n", j, text.GetString());
 		}
 
 		// Button label
@@ -1332,7 +1332,7 @@ void CScraper::ScrapeButtons()
 			if (text!="")
 				set_button_label(j, text);
 
-			write_log(prefs.debug_scraper(), "i%dlabel, result %s\n", j, text.GetString());
+			write_log(prefs.debug_scraper(), "[CScraper] i%dlabel, result %s\n", j, text.GetString());
 		}
 
 		// Second check iXlabelY
@@ -1356,7 +1356,7 @@ void CScraper::ScrapeButtons()
 				if (text!="")
 					set_button_label(j, text);
 
-				write_log(prefs.debug_scraper(), "i%dlabel%d, result %s\n", j, k, text.GetString());
+				write_log(prefs.debug_scraper(), "[CScraper] i%dlabel%d, result %s\n", j, k, text.GetString());
 			}
 		}
 
@@ -1400,7 +1400,7 @@ void CScraper::ScrapeButtons()
 			_scrape_something_changed |= BUTTONSTATE_CHANGED;
 		}
 
-		write_log(prefs.debug_scraper(), "i86state, result %s\n", text.GetString());
+		write_log(prefs.debug_scraper(), "[CScraper] i86state, result %s\n", text.GetString());
 	}
 
 	// find handle
@@ -1443,7 +1443,7 @@ void CScraper::ScrapeButtons()
 			set_handle_xy(handle_xy);
 		}
 
-		write_log(prefs.debug_scraper(), "i3handle, result %d,%d\n", handle_xy.x, handle_xy.y);
+		write_log(prefs.debug_scraper(), "[CScraper] i3handle, result %d,%d\n", handle_xy.x, handle_xy.y);
 	}
 
 	__HDC_FOOTER
@@ -1493,7 +1493,7 @@ void CScraper::ScrapePots()
 				}
 			}
 
-			write_log(prefs.debug_scraper(), "c0pot%d, result %s\n", j, text.GetString());
+			write_log(prefs.debug_scraper(), "[CScraper] c0pot%d, result %s\n", j, text.GetString());
 		}
 
 		// r$c0potXchip00_index
@@ -1525,7 +1525,7 @@ void CScraper::ScrapePots()
 				_scrape_something_changed |= POT_CHANGED;
 			}
 
-			write_log(prefs.debug_scraper(), "c0pot%dchipXY, result %f\n", j, _pot[j]);
+			write_log(prefs.debug_scraper(), "[CScraper] c0pot%dchipXY, result %f\n", j, _pot[j]);
 
 			// update the bitmap for second chip position in the first stack
 			s.Format("c0pot%dchip01", j);
@@ -1603,7 +1603,7 @@ void CScraper::ScrapeLimits()
 			_scrape_something_changed |= LIMITS_CHANGED;
 		}
 
-		write_log(prefs.debug_scraper(), "c0istournament, result %s\n", text.GetString());
+		write_log(prefs.debug_scraper(), "[CScraper] c0istournament, result %s\n", text.GetString());
 	}
 
 	// r$c0handnumber
@@ -1628,7 +1628,7 @@ void CScraper::ScrapeLimits()
 			got_new_scrape = true;
 		}
 
-		write_log(prefs.debug_scraper(), "c0handnumber, result %s\n", text.GetString());
+		write_log(prefs.debug_scraper(), "[CScraper] c0handnumber, result %s\n", text.GetString());
 	}
 
 	for (j=0; j<=9; j++)
@@ -1656,7 +1656,7 @@ void CScraper::ScrapeLimits()
 				got_new_scrape = true;
 			}
 
-			write_log(prefs.debug_scraper(), "c0handnumber%d, result %s\n", j, text.GetString());
+			write_log(prefs.debug_scraper(), "[CScraper] c0handnumber%d, result %s\n", j, text.GetString());
 		}
 	}
 	if (p_tablelimits->BlindsLockedManually()) 
@@ -1672,7 +1672,7 @@ void CScraper::ScrapeLimits()
 		set_limit(p_tablelimits->gametype());
 		set_found_limit(true);
 
-		write_log(prefs.debug_scraper(), "Locked blinds, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", 
+		write_log(prefs.debug_scraper(), "[CScraper] Locked blinds, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", 
 			p_tablelimits->sblind(), p_tablelimits->bblind(), p_tablelimits->bbet(), 
 			p_tablelimits->ante(), p_tablelimits->gametype());
 	}
@@ -1712,7 +1712,7 @@ void CScraper::ScrapeLimits()
 				&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
 				&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
 
-			write_log(prefs.debug_scraper(), "ttlimits, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", 
+			write_log(prefs.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", 
 				p_tablelimits->sblind(), p_tablelimits->bblind(), p_tablelimits->bbet(), 
 				p_tablelimits->ante(), p_tablelimits->gametype());
 		}
@@ -1739,7 +1739,7 @@ void CScraper::ScrapeLimits()
 					&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
 					&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
 
-				write_log(prefs.debug_scraper(), "ttlimits%d, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", j,
+				write_log(prefs.debug_scraper(), "[CScraper] ttlimits%d, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", j,
 					p_tablelimits->sblind(), p_tablelimits->bblind(), p_tablelimits->bbet(), 
 					p_tablelimits->ante(), p_tablelimits->gametype()); 
 			}
@@ -1770,7 +1770,7 @@ void CScraper::ScrapeLimits()
 					&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
 					&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
 
-				write_log(prefs.debug_scraper(), "c0limits, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", 
+				write_log(prefs.debug_scraper(), "[CScraper] c0limits, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", 
 					p_tablelimits->sblind(), p_tablelimits->bblind(), p_tablelimits->bbet(), 
 					p_tablelimits->ante(), p_tablelimits->gametype());
 			}
@@ -1804,7 +1804,7 @@ void CScraper::ScrapeLimits()
 						&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
 				}
 
-				write_log(prefs.debug_scraper(), "c0limits%d, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", j,
+				write_log(prefs.debug_scraper(), "[CScraper] c0limits%d, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", j,
 					p_tablelimits->sblind(), p_tablelimits->bblind(), p_tablelimits->bbet(), 
 					p_tablelimits->ante(), p_tablelimits->gametype());
 			}
@@ -1855,7 +1855,7 @@ void CScraper::ScrapeLimits()
 				set_found_sblind(true);
 			}
 
-			write_log(prefs.debug_scraper(), "c0smallblind, result %s\n", j, text.GetString());
+			write_log(prefs.debug_scraper(), "[CScraper] c0smallblind, result %s\n", j, text.GetString());
 		}
 
 		// r$c0bigblind
@@ -1883,7 +1883,7 @@ void CScraper::ScrapeLimits()
 				set_found_bblind(true);
 			}
 
-			write_log(prefs.debug_scraper(), "c0bigblind, result %s", j, text.GetString());
+			write_log(prefs.debug_scraper(), "[CScraper] c0bigblind, result %s", j, text.GetString());
 		}
 
 		// r$c0bigbet
@@ -1911,7 +1911,7 @@ void CScraper::ScrapeLimits()
 				set_found_bbet(true);
 			}
 
-			write_log(prefs.debug_scraper(), "c0bigbet, result %s\n", j, text.GetString());
+			write_log(prefs.debug_scraper(), "[CScraper] c0bigbet, result %s\n", j, text.GetString());
 		}
 
 		// r$c0ante
@@ -1939,7 +1939,7 @@ void CScraper::ScrapeLimits()
 				set_found_ante(true);
 			}
 
-			write_log(prefs.debug_scraper(), "c0ante, result %s\n", j, text.GetString());
+			write_log(prefs.debug_scraper(), "[CScraper] c0ante, result %s\n", j, text.GetString());
 		}
 	}
 
