@@ -15,6 +15,7 @@ z$clientsize       1024  600
 // strings
 //
 
+s$sitename                  PokerTH
 s$nchairs                   10
 s$swagdeletionmethod        Backspace
 s$swagselectionmethod       Click Drag
