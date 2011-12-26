@@ -48,35 +48,35 @@ while (<>)
 	# Then add a bracket after when-conditions.
 	# Be careful: we alwaxs need an extra-bracket, even if one exists,
 	# because we always add a closing bracket later.
-	s/when /WHEN (/i;
+	s/when /WHEN \(/i;
 	s/when\(/WHEN \(\(/i;
 	# But the funny thing is the right end of the expression
 	# As the end is hard to detect with stupid rehular expressions we...
 	# * add brackets to the left of any action
 	# * add brackets to the left of any user-defined variable to be set
 	# * add brackets to the end of a line, if there is no action
-	s/ betmax /) BETMAX /i;
-	s/ raisemax /) RAISEMAX /i;
-	s/ allin /) ALLIN /i;
-	s/ betpot /) BETPOT /i;
-	s/ raisepot /) RAISEPOT /i;
-	s/ bethalfpot /) BETHALFPOT /i;
-	s/ raisehalfpot /) RAISEHALFPOT /i;
-	s/ bet /) BET /i;
-	s/ raise /) RAISE /i;
-	s/ call /) CALL /i;
-	s/ check /) CHECK /i;
-	s/ fold /) FOLD /i;
-	s/ sitout /) SITOUT /i;
+	s/ betmax /\) BETMAX /i;
+	s/ raisemax /\) RAISEMAX /i;
+	s/ allin /\) ALLIN /i;
+	s/ betpot /\) BETPOT /i;
+	s/ raisepot /\) RAISEPOT /i;
+	s/ bethalfpot /\) BETHALFPOT /i;
+	s/ raisehalfpot /\) RAISEHALFPOT /i;
+	s/ bet /\) BET /i;
+	s/ raise /\) RAISE /i;
+	s/ call /\) CALL /i;
+	s/ check /\) CHECK /i;
+	s/ fold /\) FOLD /i;
+	s/ sitout /\) SITOUT /i;
 	# Second case: user defined variable to be set
 
 	# Third case case: there is no action at the end,
 	# i.e. a keyword "WHEN", but no "FORCE".
 	# Then we add a bracket to the right end of the line
 	# and hope, that it is no multi-line condition
-	if ((m/^WHEN / || m/ WHEN /) && !(m/ FORCE / || m/ FORCE$/)
+	if ((m/^WHEN / || m/ WHEN /) && !(m/ FORCE / || m/ FORCE$/))
 	{
-		s/$/)/i;	
+		s/$/\)/i;	
 	}
 	# Add opening brackets to hand-expressions
 	# There can be four cases, depending on spaces, brackets and equality operator
