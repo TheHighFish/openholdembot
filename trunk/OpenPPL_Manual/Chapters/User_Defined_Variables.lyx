@@ -51,6 +51,19 @@ figs-within-sections
 Userdefined Variables
 \end_layout
 
+\begin_layout Itemize
+OpenHoldem evaluates the when-condition
+\end_layout
+
+\begin_layout Itemize
+If there is a user-variable instead of an action and the condition is true,
+ OpenHoldem sets the user-variable to true (or 1).
+\end_layout
+
+\begin_layout Itemize
+Once the variable is set OpenHoldem continues evaluating with the next condition
+\end_layout
+
 \begin_layout Standard
 \begin_inset listings
 inline false
@@ -58,7 +71,7 @@ status open
 
 \begin_layout Plain Layout
 
-custom
+CUSTOM
 \end_layout
 
 \begin_layout Plain Layout
@@ -67,7 +80,11 @@ custom
 
 \begin_layout Plain Layout
 
-preflop 
+PREFLOP
+\end_layout
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \begin_layout Plain Layout
@@ -153,17 +170,19 @@ WHEN (...
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Itemize
+OpenHoldems user-defined variables are case sensitive.
+ me_st_x_1 is something different than me_st_X_1.
+\end_layout
+
+\begin_layout Itemize
 No underscores allowed in the name of the variable.
  Underscores are used to separate name and value.
-\end_layout
-
-\begin_layout Standard
-cases???
-\end_layout
-
-\begin_layout Standard
-But be careful: advanced variables increase your power, but also your responsibi
-lity.
+ (If you wonder, why underscores are allowed in simple user-variables: because
+ the translator removes them).
 \end_layout
 
 \end_body

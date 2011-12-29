@@ -51,6 +51,32 @@ figs-within-sections
 Betsizes And Stacksizes
 \end_layout
 
+\begin_layout Remark*
+Standard PPL is a bit restrictive: betsizes, stacksizes and potsizes may
+ appear only on the left or on the right side of comparison operators ---
+ please don't ask us about the exact rules, we forgot them.
+ In OpenPPL you can put them anywhere you like.
+\end_layout
+
+\begin_layout Remark*
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN (AmountToCall < Pi * R * R) DANCE FORCE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Remark*
+It's up to you, what and how you code.
+\end_layout
+
 \begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="12" columns="3">
