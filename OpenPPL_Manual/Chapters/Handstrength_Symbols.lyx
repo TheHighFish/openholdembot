@@ -60,11 +60,11 @@ PairOnBoard
 \begin_inset Quotes erd
 \end_inset
 
- is also true; full houses do also count as sets and psirs, made flushes
+ is also true; full houses do also count as sets and pairs, made flushes
  as flushdraws, etc.
  Therefore it is a strongly recommended to code made hands first (and strong
  made hands at the very beginning), then weaker holding with positive potential
- and weaker draws at the vera last.
+ and weaker draws at the very last.
 \end_layout
 
 \begin_layout Standard
