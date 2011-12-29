@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- html --> 
 <meta name="src" content="OpenPPL_In_Practice.tex"> 
-<meta name="date" content="2011-12-26 20:30:00"> 
+<meta name="date" content="2011-12-29 22:45:00"> 
 <link rel="stylesheet" type="text/css" href="OpenPPL_In_Practice.css"> 
 </head><body 
 >
@@ -15,7 +15,7 @@
 
    <h2 class="likechapterHead"><a 
  id="x1-1000"></a>OpenPPL In Practice</h2>
-<!--l. 27--><p class="noindent" >If you have read this manual up to this point you have some basic understanding about
+<!--l. 27--><p class="noindent" >If you have read this manual up to this point you have some basic understanding of
 OpenPPL: syntactical rules, symbols, etc. But the main thing &#8212; turning your
 poker-knowledge into bot-logic &#8212; may look like a different kind of beast, if you have no
 programming experience at all. So let us take some small examples and see how
@@ -36,14 +36,14 @@ OpenPPL is used in practice.
  id="x1-2010r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(NOT&#x00A0;In&#x00A0;BigBlind&#x00A0;AND&#x00A0;islist000)&#x00A0;FOLD&#x00A0;FORCE
    </div>
    <h3 class="sectionHead"><a 
- id="x1-3000"></a>Open-raising on the button</h3>
+ id="x1-3000"></a>Open-Raising On The Button</h3>
    <!--l. 56-->
    <div class="lstlisting" id="listing-2"><span class="label"><a 
  id="x1-3001r1"></a></span>WHEN&#x00A0;(StillToAct&#x00A0;=&#x00A0;2&#x00A0;AND&#x00A0;Calls&#x00A0;=&#x00A0;0&#x00A0;AND&#x00A0;Raises&#x00A0;=&#x00A0;0)&#x00A0;<br /><span class="label"><a 
  id="x1-3002r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;((Hand&#x00A0;=&#x00A0;AA)&#x00A0;OR&#x00A0;(Hand&#x00A0;=&#x00A0;KK)&#x00A0;OR&#x00A0;...)&#x00A0;RAISE&#x00A0;3&#x00A0;FORCE
    </div>
    <h3 class="sectionHead"><a 
- id="x1-4000"></a>Threebetting a steal-raiser</h3>
+ id="x1-4000"></a>Threebetting A Steal-Raiser</h3>
    <!--l. 66-->
    <div class="lstlisting" id="listing-3"><span class="label"><a 
  id="x1-4001r1"></a></span>//&#x00A0;LastRaiserPosition&#x00A0;&#x003C;=&#x00A0;3&#x00A0;means:&#x00A0;CO,&#x00A0;BU&#x00A0;or&#x00A0;SB&#x00A0;<br /><span class="label"><a 
@@ -71,7 +71,7 @@ OpenPPL is used in practice.
  id="x1-6005r5"></a></span>END&#x00A0;SYMBOL
    </div>
    <h3 class="sectionHead"><a 
- id="x1-7000"></a>Push-folding in a SNG</h3>
+ id="x1-7000"></a>Push/Folding In A SNG</h3>
    <!--l. 102-->
    <div class="lstlisting" id="listing-6"><span class="label"><a 
  id="x1-7001r1"></a></span>//&#x00A0;Going&#x00A0;into&#x00A0;push<span 
@@ -85,7 +85,7 @@ class="cmsy-10">-</span>zero.&#x00A0;<br /><span class="label"><a
  id="x1-7006r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(Calls&#x00A0;=&#x00A0;0&#x00A0;AND&#x00A0;Raises&#x00A0;=&#x00A0;0&#x00A0;AND&#x00A0;(Hand=&#x00A0;...))&#x00A0;RAISEMAX&#x00A0;FORCE
    </div>
    <h3 class="sectionHead"><a 
- id="x1-8000"></a>Detecting a limp-raise</h3>
+ id="x1-8000"></a>Detecting A Limp-Raise</h3>
    <!--l. 116-->
    <div class="lstlisting" id="listing-7"><span class="label"><a 
  id="x1-8001r1"></a></span>//&#x00A0;First&#x00A0;action&#x00A0;preflop&#x00A0;<br /><span class="label"><a 

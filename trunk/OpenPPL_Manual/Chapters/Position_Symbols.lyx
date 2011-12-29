@@ -51,6 +51,12 @@ figs-within-sections
 Position Symbols
 \end_layout
 
+\begin_layout Remark*
+Good news: contrary to Standard-PPL most position symbols are not restricted
+ to first orbit preflop only.
+ You can use them in later orbits too and also postflop.
+\end_layout
+
 \begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="6" columns="3">

@@ -53,7 +53,7 @@ OpenPPL In Practice
 
 \begin_layout Standard
 If you have read this manual up to this point you have some basic understanding
- about OpenPPL: syntactical rules, symbols, etc.
+ of OpenPPL: syntactical rules, symbols, etc.
  But the main thing --- turning your poker-knowledge into bot-logic ---
  may look like a different kind of beast, if you have no programming experience
  at all.
@@ -117,9 +117,7 @@ PREFLOP
 
 \begin_layout Plain Layout
 
-    
-\lang english
-WHEN (NOT In BigBlind AND islist000) FOLD FORCE
+    WHEN (NOT In BigBlind AND islist000) FOLD FORCE
 \end_layout
 
 \end_inset
@@ -128,7 +126,7 @@ WHEN (NOT In BigBlind AND islist000) FOLD FORCE
 \end_layout
 
 \begin_layout Section*
-Open-raising on the button
+Open-Raising On The Button
 \end_layout
 
 \begin_layout Standard
@@ -152,7 +150,7 @@ WHEN (StillToAct = 2 AND Calls = 0 AND Raises = 0)
 \end_layout
 
 \begin_layout Section*
-Threebetting a steal-raiser
+Threebetting A Steal-Raiser
 \end_layout
 
 \begin_layout Standard
@@ -255,7 +253,7 @@ END SYMBOL
 \end_layout
 
 \begin_layout Section*
-Push-folding in a SNG
+Push/Folding In A SNG
 \end_layout
 
 \begin_layout Standard
@@ -300,7 +298,7 @@ WHEN ((EffectiveStacksize > 0) AND (EffectiveStacksize <= 13)
 \end_layout
 
 \begin_layout Section*
-Detecting a limp-raise
+Detecting A Limp-Raise
 \end_layout
 
 \begin_layout Standard
