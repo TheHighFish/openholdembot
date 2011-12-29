@@ -78,7 +78,8 @@ r9) and let the user figure out the rest.
 \begin_layout Standard
 As an example we develop a symbol BigBlindStackSize.
  As a first step we need to know the chair of the big blind.
- Then as a second step we are able to return the stacksize for this chair.
+ Then as a second step we will be able to return the stacksize for this
+ chair.
  To solve the first problem we use the OpenHoldem symbol ac_dealposX which
  returns the deal-position of chair X.
  The big blind is (with the very rare exception of a missing small blind)
@@ -346,6 +347,8 @@ Preflop
 \end_layout
 
 \begin_layout Standard
+
+\emph on
 That's all.
  OpenPPL is easy.
 \end_layout
