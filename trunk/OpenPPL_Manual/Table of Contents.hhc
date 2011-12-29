@@ -109,6 +109,16 @@
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="OpenPPL In Practice">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="OpenPPL_In_Practice">
+			<param name="Local" value="Chapters\OpenPPL_In_Practice.html.LyXconv\OpenPPL_In_Practice.html">
+			<param name="URL" value="Chapters\OpenPPL_In_Practise.html.LyXconv\OpenPPL_In_Practise.html">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="If You Want To Buy...">
 		<param name="Local" value="Chapters\If_You_Want_To_Buy.html.LyXconv\If_You_Want_To_Buy.html">
 		</OBJECT>
