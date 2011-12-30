@@ -34,6 +34,7 @@
 #
 # Things to know (for programmers, not for end-users)
 #   * http://www.troubleshooters.com/codecorn/littperl/perlreg.htm
+#   * take a good editor with syntax high-lighting like NotePad++
 #
 ################################################################################
 
@@ -75,10 +76,10 @@ while (<>)
 	# Now for Bet/Raise X% FORCE or Bet/Raise X Force,
 	# where Bet/Raise will be followed by a number.
 	# For OpenPPL arbitrary expressions are possible here, but..
-	# * arbitrary expressions  would be too complicated for stupid regular expressions
+	# * arbitrary expressions would be too complicated for stupid regular expressions
 	# * this tool is meant for Standard-PPL to be translated, where only numbers are possible
-	# so we check for constant numbers only
-	# But first remove superfluous spaces (so that we don't miss anything)...
+	# so we check for constant numbers only.
+	# But first remove superfluous spaces (so that we don't miss anything later)...
 	s/ bet    / BET /i;
 	s/ bet   / BET /i;
 	s/ bet  / BET /i;
@@ -108,12 +109,19 @@ while (<>)
 	s/ raise 9/\) RAISE 9/i;
 	# Second case: user defined variable to be set,
 	# where the line ends with a user-variable.
-
+	# But first we remove superfluos spaces at the end to make things more robust...
+	s/     $//;
+	s/    $//;
+	s/   $//;
+	s/  $//;
+	s/ $//;
+	#... and then add a bracket before user-variables.
+	s/((user[A-Za-z_]*)$)/\) $1/i;
 	# Third case case: there is no action at the end,
-	# i.e. a keyword "WHEN", but no "FORCE".
+	# i.e. a keyword "WHEN", but no "FORCE" and no user-variable.
 	# Then we add a bracket to the right end of the line
 	# and hope, that it is no multi-line condition
-	if ((m/^WHEN /i || m/ WHEN /i) && !(m/ FORCE /i || m/ FORCE$/i))
+	if ((m/^WHEN /i || m/ WHEN /i) && !(m/ FORCE$/i) && !(m/(user[A-Za-z_]*)$/))
 	{
 		s/$/\)/i;	
 	}
@@ -155,6 +163,29 @@ while (<>)
 	# To do: other keywords like or, not, xor, ...
 	
 	s/ force/ FORCE/i;	
+	# Some beautifications...
+	# Remove superflous spaces before opening brackets (but keep one)...
+	s/     \(/ \(/;
+	s/    \(/ \(/;
+	s/   \(/ \(/;
+	s/  \(/ \(/;
+	# ... and after opening brackets...
+	s/\(     /\(/;
+	s/\(    /\(/;
+	s/\(   /\(/;
+	s/\(  /\(/;
+	s/\( /\(/;
+	# ... and before closing brackets....
+	s/     \)/\)/;
+	s/    \)/\)/;
+	s/   \)/\)/;
+	s/  \)/\)/;
+	s/ \)/\)/;
+	# ... and finally after closing brackets (but keep one).
+	s/\)     /\) /;
+	s/\)    /\) /;
+	s/\)   /\) /;
+	s/\)  /\) /;
 	# And finally write the processed line to standard output
 	print;
 }
