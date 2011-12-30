@@ -78,6 +78,14 @@ while (<>)
 	# * arbitrary expressions  would be too complicated for stupid regular expressions
 	# * this tool is meant for Standard-PPL to be translated, where only numbers are possible
 	# so we check for constant numbers only
+	# But first remove superfluous spaces (so that we don't miss anything)...
+	s/ bet    / BET /i;
+	s/ bet   / BET /i;
+	s/ bet  / BET /i;
+	s/ raise    / RAISE /i;
+	s/ raise   / RAISE /i;
+	s/ raise  / RAISE /i;
+	# ...and then add brackets
 	s/ bet 0/\) BET 0/i;	
 	s/ bet 1/\) BET 1/i;
 	s/ bet 2/\) BET 2/i;
