@@ -66,6 +66,8 @@ while (<>)
 	s/ raisepot force/\) RAISEPOT FORCE/i;
 	s/ bethalfpot force/\) BETHALFPOT FORCE/i;
 	s/ raisehalfpot force/\) RAISEHALFPOT FORCE/i;
+	s/ betmin force/\) BETMIN FORCE/i;
+	s/ raisemin force/\) RAISEMIN FORCE/i;
 	s/ bet force/\) BET FORCE/i;
 	s/ raise force/\) RAISE FORCE/i;
 	s/ call force/\) CALL FORCE/i;
@@ -133,36 +135,57 @@ while (<>)
 	s/\(hand /\(Hand /i;
 	s/\(hand=/\(Hand =/i;
 	# Add closing brackets to hand expressions
-	# This is probably a bit more difficult, 
+	# This requires a bit more complex regular expressions, 
 	# because hand expressions can be spelled in different ways:
 	#   * Hand = A K
 	#   * Hand = AK
 	#   * Hand = A K Suited
 	#   * Hand = AK Suietd
 	#   * Hand = Azuited
-	# Maybe the most easy way is:
-	#   * add brackets after the ranks (here "A K")
-	#   * add brackets after "SUITED"
-	#   * remove duplicate bracket before "SUITED"
-	
+	s/([ (]+hand = [2-9TJQKA ]+(suited)?)/\($1\)/i;
 	# Add opening brackets to board-expressions
-	
+	s/ board / \(Board /i;
+	s/ board=/\(Board =/i;
+	s/\(board /\(Board /i;
+	s/\(board=/\(Board =/i;
 	# Add closing brackets to board-expressions
-	
-	# Add opening brackets to not-expressions
-	
-	# Add closing brackets to not-expressions
-	
+	# Similar to hand expressions
+	s/([ (]+board = [2-9TJQKA ]+(suited)?)/\($1\)/i;
+	# Add opening and closing brackets to not-expressions with equality-operator
+	s/([ (]+not[ ][a-zA-Z0-9_]+[ ]*=[ ]*[a-zA-Z0-9_]+)/\ ($1\)/i;	
 	# Finally beautify some keywords
 	# Standalone words only. with spaces or brackets on both sides (except "FORCE").
+	# 1) AND
 	s/ and / AND /i;
 	s/\)and /\)AND /i;
 	s/ and\(/ AND\(/i;
 	s/\)and\(/\)AND\(/i;	
-	
-	# To do: other keywords like or, not, xor, ...
-	
+	# 2) OR
+	s/ or / OR /i;
+	s/\)or /\)OR /i;
+	s/ or\(/ OR\(/i;
+	s/\)or\(/\)OR\(/i;	
+	# 3) XOR
+	s/ xor / XOR /i;
+	s/\)xor /\)XOR /i;
+	s/ xor\(/ XOR\(/i;
+	s/\)xor\(/\)XOR\(/i;	
+	# 4) NOT, 
+	# Be careful, contrary to the other operators 
+	# there can be no closing bracket before NOT, but an opening one.
+	s/ not / NOT /i;
+	s/\(not /\(NOT /i;
+	s/ not\(/ NOT\(/i;
+	s/\(not\(/\(NOT\(/i;
+	# 5)  FORCE
 	s/ force/ FORCE/i;	
+	# 6) CUSTOM
+	s/^custom/CUSTOM/i;
+	# 7) Betting rounds
+	s/^preflop/PREFLOP/i;
+	s/^flop/FLOP/i;
+	s/^turn/TURN/i;
+	s/^river/RIVER/i;
 	# Some beautifications...
 	# Remove superflous spaces before opening brackets (but keep one)...
 	s/     \(/ \(/;
@@ -186,6 +209,19 @@ while (<>)
 	s/\)    /\) /;
 	s/\)   /\) /;
 	s/\)  /\) /;
+	# Proper indentation
+	if ((m/^WHEN /i || m/ WHEN /i) && !(m/ FORCE$/i) && !(m/(user[A-Za-z_]*)$/))
+	{
+		# Open-ended when-condition
+		# No indentation
+		s/^([ ]*when)/WHEN/i;		
+	}
+	else
+	{
+		# When-condition with action or with user-variable
+		# Indentation of 4 spaces
+		s/^([ ]*when)/    WHEN/i;	
+	}
 	# And finally write the processed line to standard output
 	print;
 }
