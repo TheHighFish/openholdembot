@@ -451,7 +451,7 @@ perl bracketify.pl < INPUTFILE.TXT > OUTPUTFILE.TXT
 
 After that you will have a nice profile, with all necessary brackets added
  and a very nice to read layout.
- Ready for translation and execution...
+ Ready for translation and for execution...
 \end_layout
 
 \end_body

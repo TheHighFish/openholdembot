@@ -115,6 +115,7 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Things To Know">
 			<param name="Local" value="Chapters\Things_To_Know.html.LyXconv\Things_To_Know.html">
+			<param name="URL" value="Chapters\Things_To_Know.html.LyXconv\Things_To_Know.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="OpenPPL_In_Practice">

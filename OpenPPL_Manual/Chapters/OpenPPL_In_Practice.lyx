@@ -366,7 +366,7 @@ WHEN (LastRaiserPosition = me_re_MemFirstCallerPosition) ...
 \end_layout
 
 \begin_layout Section*
-Counting outs 
+Counting Outs 
 \end_layout
 
 \begin_layout Standard
@@ -456,7 +456,7 @@ END SYMBOL
 \end_layout
 
 \begin_layout Section*
-Calling according to odds and outs
+Calling According To Odds And Outs
 \end_layout
 
 \begin_layout Standard
@@ -509,7 +509,7 @@ WHEN (AmountToCall / (AmountToCall + PotSize) > Outs / CardsLeft) CALL FORCE
 \end_layout
 
 \begin_layout Section*
-Playing fit-or-fold multiway
+Playing Fit-Or-Fold Multiway
 \end_layout
 
 \begin_layout Standard
@@ -606,7 +606,7 @@ WHEN (Opponents >= 3 AND NOT (HaveTopPairOrBetter OR HaveStrongDraw)
 \end_layout
 
 \begin_layout Section*
-Leaving tight tables
+Leaving Tight Tables
 \end_layout
 
 \begin_layout Standard
