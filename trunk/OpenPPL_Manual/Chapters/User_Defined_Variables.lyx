@@ -261,7 +261,7 @@ PREFLOP
 
 \begin_layout Plain Layout
 
-WHEN (BotsActionsOnThisRound)
+WHEN (BotsActionsOnThisRound = 0)
 \end_layout
 
 \begin_layout Plain Layout

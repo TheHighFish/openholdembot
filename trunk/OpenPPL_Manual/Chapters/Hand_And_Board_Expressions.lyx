@@ -56,6 +56,12 @@ Hand expressions
 \end_layout
 
 \begin_layout Standard
+One of the most important decisions of the game happens preflop: shall I
+ play this hand and how? This decision can be coded with the self-explaining
+ hand-expression, like in the example below:
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
@@ -67,7 +73,7 @@ WHEN (Hand = AA) RAISEMAX FORCE
 
 \begin_layout Plain Layout
 
-WHEN ((Hand = AQs) OR (Hand = AJs)) RAISE 3 FORCE
+WHEN ((Hand = AQ Suited) OR (Hand = AJ Suited)) RAISE 3 FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -81,12 +87,25 @@ WHEN ((Hand = 22) OR (Hand = 33) OR (Hand = 44)...) CALL FORCE
 \end_layout
 
 \begin_layout Remark*
-All hand-expressions and board-expressions need to be enclosed in brackets
- for technical reasons.
+AK does include both AKs and AKo.
+ So if you want to play suited hands differently you should code them first,
+ as OpenPPL gets evaluated top down.
+ It will stop at the first condition that matches.
+ So always remember: 
+\emph on
+strong hands first, exceptions first, bad hands later.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 1pt*
+\end_inset
+
+
 \end_layout
 
 \begin_layout Remark*
-AK = AKs + AKo!!! Top-down-eval!!! Comments
+All hand-expressions and board-expressions need to be enclosed in brackets
+ for technical reasons.
 \end_layout
 
 \begin_layout Section*
@@ -107,11 +126,11 @@ HaveStraightDraw
 \begin_inset Quotes eld
 \end_inset
 
-FlushPossibleOnTurn 
+FlushPossibleOnTurn
 \begin_inset Quotes eld
 \end_inset
 
-, but for some cases these might be not concrete enough.
+, but for some cases they might be not concrete enough.
  Therefore it is possible to specify board-states similar as above:
 \end_layout
 

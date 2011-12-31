@@ -334,7 +334,7 @@ PotSize
 \begin_inset Text
 
 \begin_layout Plain Layout
-The current pot, inclding all players bets, counted in big blinds
+The current pot, inclding all players bets, counted in big blinds.
 \end_layout
 
 \end_inset
@@ -342,8 +342,12 @@ The current pot, inclding all players bets, counted in big blinds
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout Plain Layout
-None
+\begin_layout Remark*
+Be careful.
+ The pot does include all bets and raises on the table.
+ This affects all potsize-calculations.
+ So if somebody bets 1/2-potsize the AmountToCall will be 1/3-potsize afterwards
+ for you.
 \end_layout
 
 \end_inset
