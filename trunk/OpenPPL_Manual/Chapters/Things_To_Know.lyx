@@ -56,12 +56,13 @@ If you are a botter who used Shanky-PPL in the past there are some differences
  you should know about:
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Section*
 
 \emph on
 No option settings.
- 
-\emph default
+\end_layout
+
+\begin_layout Standard
 Standard Shanky-PPL supports option settings to configure their build-in-default
  bot; at least that was the old way to do so, but nowadays most of these
  settings get overwritten by the profile and have no effect at all.
@@ -124,19 +125,22 @@ Preflop
 
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Section*
 
 \emph on
 Cases matter (partially).
 
 \emph default
- OpenHoldem is case-sensitive - contrary to standard PPL.
+ 
+\end_layout
+
+\begin_layout Standard
+OpenHoldem is case-sensitive - contrary to standard PPL.
  So upper- and lower-cases matter - at least for the translated code.
  The rules for your OpenPPL-code are more user-friendly and less rigid.
  There are basically 3 cases:
 \end_layout
 
-\begin_deeper
 \begin_layout Itemize
 Keywords like 
 \begin_inset Quotes eld
@@ -243,14 +247,16 @@ However: you will probably use these symbols very rarely in your code.
  BigBlindStackSize.
 \end_layout
 
-\end_deeper
-\begin_layout Itemize
-OpenPPL needs lots of brackets - for technical reasons.
- Without them the converter worked only 98% of the time.
- It managed to translate everything, except the most simple cases (of course).
+\begin_layout Section*
+OpenPPL needs lots of brackets
 \end_layout
 
-\begin_deeper
+\begin_layout Standard
+Without them the converter worked only 98% of the time.
+ It managed to translate everything, except the most simple cases (of course).
+ In detail:
+\end_layout
+
 \begin_layout Itemize
 
 \emph on
@@ -448,6 +454,5 @@ After that you will have a nice profile, with all necessary brackets added
  Ready for translation and execution...
 \end_layout
 
-\end_deeper
 \end_body
 \end_document
