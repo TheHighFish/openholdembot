@@ -32,14 +32,18 @@
 #
 ################################################################################
 #
+# Known problems:
+#   * does not translate multi-line-expressions, because we assume, 
+#     that lines without an action are open-ended when-conditions
+#     and add a terminating bracket at the "end".    
+#
+################################################################################
+#
 # Things to know (for programmers, not for end-users)
 #   * http://www.troubleshooters.com/codecorn/littperl/perlreg.htm
 #   * take a good editor with syntax high-lighting like NotePad++
 #
 ################################################################################
-
-my $already_warned_about_stacksize = false;
-my $already_warned_about_nutfullhouseorfourofakind = false;
 
 print "//\n";
 print "// Cleaned up and brackets added by \"bracketify.pl\"\n";
@@ -170,14 +174,24 @@ while (<>)
 	#   * Hand = A K Suited
 	#   * Hand = AK Suietd
 	#   * Hand = Azuited
-	s/([ (]+hand[ ]*=[ ]*[2-9TJQKA ]+(suited)?)/\($1\)/ig;	
+	# Note: suits like AhKs are not supported by OpenHoldem.
+	# This was the old way to randomize actions with Shanky-PPL,
+	# before "Random" got introduced.  
+	# But we translate it anyway to avoid errors here.
+	# OpenPPL will throw an error-message later.
+	# Optional "uited" only, because the "s" got already caught.	
+	s/([ (]+hand[ ]*=[ ]*[2-9TJQKAcdhs ]+(uited)?)/\($1\)/ig;	
 	# Add opening and closing brackets to board-expressions
 	# Similar to hand expressions
-	s/([ (]+board[ ]*=[ ]*[2-9TJQKA ]+(suited)?)/\($1\)/ig;
+	s/([ (]+board[ ]*=[ ]*[2-9TJQKAcdhs ]+(uited)?)/\($1\)/ig;
 	# One problem of the expressions above:
-	# They might catch the "A" of "AND" of a hand- or board-expression
+	# They might catch the "A" of "AND" of a hand- or board-expression.
+	# Also "CA" of "CALL", "C" of "CHECK" or "A" of "ALLIN".
 	# So we fix this.
-	s/a\)nd/\) AND/i;	
+	s/a\)nd/\) AND/ig;	
+	s/ca\)ll/\) CALL/ig;
+	s/c\)heck/\) CHECK/ig;
+	s/a\)llin/\) ALLIN/ig;
 	# Add opening and closing brackets to not-expressions with equality-operator
 	s/([ (]+not[ ]+[a-zA-Z0-9_]+[ ]*=[ ]*[a-zA-Z0-9_]+)/\ ($1\)/ig;	
 	# Finally beautify some keywords
@@ -463,15 +477,13 @@ while (<>)
 	# !!!
 	# !!! Check for unsafe code	and warn the user
 	# !!!
-	if (!$already_warned_about_stacksize && m/StackSize =/i)
+	if (m/StackSize =/i)
 	{
-		print "Unsafe Stacksize operation!\n\"StackSize = X\" will cause troubles,\nbecause OpenHoldem uses real numbers.\nUse <= or >= instead.";
-		$already_warned_about_stacksize = true;
+		print "\nUnsafe Stacksize operation!\n\"StackSize = X\" will cause troubles,\nbecause OpenHoldem uses real numbers.\nUse <= or >= instead.\n\n";
 	}
-	if (!$already_warned_about_nutfullhouseorfourofakind && m/NutFullHouseOrFourOfAKind = 0/i)
+	if (m/NutFullHouseOrFourOfAKind = 0/i)
 	{
-		print "\"NutFullHouseOrFourOfAKind = 0\" is unsafe!\nOpenPPL uses consistently higher numbers for worse hands\nand 999 if you don't have a full house at all.\nPlease revisit the manual and your code\n";
-		$already_warned_about_nutfullhouseorfourofakind = true;
+		print "\n\"NutFullHouseOrFourOfAKind = 0\" is unsafe!\nOpenPPL uses consistently higher numbers for worse hands\nand 999 if you don't have a full house at all.\nPlease revisit the manual and your code\n\n";
 	}
 	# And finally write the processed line to standard output
 	print;
