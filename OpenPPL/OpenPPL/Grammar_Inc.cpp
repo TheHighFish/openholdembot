@@ -157,7 +157,8 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			multiplicative_operator = (str_p("*") | ("/")) 									| percentage_operator; 
 			additive_operator       = (str_p("+") | "-");
 			equality_operator       = str_p("=");
-			relational_operator     = longest_d[(equality_operator | str_p("<=") | ">=" | "<" | ">")];
+			inequality_operator		= str_p("!=");
+			relational_operator     = longest_d[(equality_operator | inequality_operator| str_p("<=") | ">=" | "<" | ">")];
 			binary_boolean_operator = keyword_and | keyword_or | keyword_xor;
 			binary_operator         = (multiplicative_operator | additive_operator | relational_operator | binary_boolean_operator)[print_operator()];
 			
@@ -272,7 +273,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// Error-definitions below
 			//
 			/////////////////////////////////////////////////////////////////////
-			invalid_character = str_p(";")  | "," | ":" | "|" | "@" | "€" | "!" | "\\"
+			invalid_character = str_p(";")  | "," | ":" | "|" | "@" | "€" | "\\"
 				| "\""  | "§" | "&" | "?" | "´" | "´" | "[" | "]"
 				| "^" | "°" | "{" | "}" | "#" | "³" | "²";
 			invalid_symbol = (*alnum_p >> invalid_character
