@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <iomanip>
 #include <iostream>
+#include "ErrorMessages.h"
 #include "Main.h"
 
 using namespace std;
@@ -139,5 +140,9 @@ void generate_code_for_hand_expression(CString hand_expression)
 				break;
 			}
 		}
+	}
+	if (number_of_cards > 2)
+	{
+		ErrorMessage(k_error_too_many_cards_in_hand, hand_expression);
 	}
 }

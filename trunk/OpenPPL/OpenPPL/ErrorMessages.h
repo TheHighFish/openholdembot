@@ -25,6 +25,7 @@ enum error_codes
 	k_error_operator_instead_of_action,
 	k_error_missing_list_number,
 	k_error_invalid_list_content,
+	k_error_too_many_cards_in_hand,
 	k_error_general,
 	// Last one: this is no error code,
 	// but used for creating and indexing of arrays.

@@ -21,7 +21,8 @@ static const char *short_error_messages[k_number_of_error_codes] =
 	"ERROR: Unknown symbol, containing \"Suited\".",
 	"ERROR: Found operator, expecting an action.",
 	"ERROR: Missing list number.",
-	"ERROR: Invalid hand-list.\n",
+	"ERROR: Invalid hand-list.",
+	"ERROR: Too many cards in hand.",
 	"ERROR: General syntax error."
 };
 
@@ -171,6 +172,10 @@ static const char *detailed_error_messages[k_number_of_error_codes] =
 	"There can be mainly two reasons:\n"
 	"  * misspelled hands\n" 
 	"  * missing \"END LIST\"\n",
+
+	// k_error_too_many_cards_in_hand
+	"Your hand expression seems to contain more than 2 cards.\n"
+	"At most 2 of them are possible, at least one is required.\n",
 
 	// k_error_general
 	"No detailed desription available.\n"
