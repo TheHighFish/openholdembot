@@ -1,0 +1,394 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Chapter*
+When Conditions
+\end_layout
+
+\begin_layout Standard
+For those of you who are used to Shanky-PPL: plain text only.
+ There is no support for encrypted PPL-profiles
+\end_layout
+
+\begin_layout Standard
+OpenP shall I go allin? Shall I raise and if yes: how much? Shall I Call?
+ Contrary to that OpenPPL is action-centered: 
+\emph on
+what
+\emph default
+ shall I do?
+\end_layout
+
+\begin_layout Section
+Simple When Conditions
+\end_layout
+
+\begin_layout Standard
+These conditions get 
+\emph on
+always evaluated top-down
+\emph default
+.
+ Once the first condition is true, the appropriate action is taken.
+ Always - so the order of programming matters.
+ Lets assume, that you want to call your flushdraws, but raise nut-flushdraws
+ (expert-strategy 2012).
+ Then you will have to write your commands in the following order:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN (HaveNutFlushDraw) RAISE FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN (HaveFlushDraw) CALL FORCE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Do it the other way and your nut-flush-draw would trigger the rule for normal
+ flush-draws.
+ A call would be the result.
+ As a consequence of this top-down-approach there follow some recommendations:
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+strong hands first, special cases first
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+weak hands last, general cases last
+\end_layout
+
+\begin_layout Standard
+The bot simply does not know if one rule is 
+\begin_inset Quotes eld
+\end_inset
+
+more special
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+more important
+\begin_inset Quotes erd
+\end_inset
+
+ --- you have to tell him.
+\end_layout
+
+\begin_layout Section
+Open-Ended When Conditions
+\end_layout
+
+\begin_layout Standard
+Programming your bot with when-conditions alone will --- in principle ---
+ do the job, but there will be lots of situations that are very similar.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN (Hand = AT)
+\end_layout
+
+\begin_layout Plain Layout
+
+    WHEN (StillToAct = 2)
+\end_layout
+
+\begin_layout Plain Layout
+
+        WHEN (Raises = 1)
+\end_layout
+
+\begin_layout Plain Layout
+
+            WHEN (AmountToCall <= 4) RAISEPOT FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+            WHEN (AmountToCall > 4) FOLD FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+        WHEN (Raises = 2)
+\end_layout
+
+\begin_layout Plain Layout
+
+            WHEN...
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+is 
+\emph on
+not possible
+\emph default
+, simply because there is no way to tell, where one open-ended when-condition
+ ends and where the next one starts.
+ So the semantic would be completely undefined (it is in fact not, but it
+ is for sure not what you want).
+ Sure you could argue about indentation, but spaces have no meaning in most
+ programming languages (except good old Fortran 77) and everybody does it
+ differently.
+ So let's restate: There is exactly 
+\emph on
+one level of open-ended when-conditions
+\emph default
+ (without action); each open-ended-when-condition gets followed by a block
+ of 
+\begin_inset Quotes eld
+\end_inset
+
+normal
+\begin_inset Quotes erd
+\end_inset
+
+ when-conditions with actions.
+ You could rewrite the example above like that:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN ((Hand = AT) AND (StillToAct = 2))
+\end_layout
+
+\begin_layout Plain Layout
+
+    WHEN ((Raises = 1) AND (AmountToCall <= 4)) RAISEPOT FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+    WHEN ((Raises = 1) AND (AmountToCall > 4)) FOLD FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+    WHEN (Raises = 2) ...
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN ((Hand = A9) AND (StillToAct = 2))
+\end_layout
+
+\begin_layout Plain Layout
+
+    ...
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Structure Of A PPL-File
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+CUSTOM
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+PREFLOP
+\end_layout
+
+\begin_layout Plain Layout
+
+    // This is a comment
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Your code belongs here.
+\end_layout
+
+\begin_layout Plain Layout
+
+    WHEN (Hand = AA) RAISEMAX FORCE	
+\end_layout
+
+\begin_layout Plain Layout
+
+    WHEN (Hand = KK) ...
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
+\end_layout
+
+\begin_layout Plain Layout
+
+    WHEN Others FOLD FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+FLOP
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+TURN
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+RIVER
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As OpenPPL does not support a built-in default bot all profiles have to
+ be complete, i.e.
+ you have to provide code for all four betting-rounds.
+ If you don't do so OpenPPL adds 
+\begin_inset Quotes eld
+\end_inset
+
+WHEN Others FOLD FORCE
+\begin_inset Quotes erd
+\end_inset
+
+ to the end of each section, so that your profile becomes complete --- at
+ least from a computers point of view.
+\end_layout
+
+\begin_layout Standard
+Besides of these four code sections there are two others:
+\end_layout
+
+\begin_layout Itemize
+a list section for user-defined hand-lists
+\end_layout
+
+\begin_layout Itemize
+another code section for user-defined symbols
+\end_layout
+
+\begin_layout Standard
+Both of them are very useful, but a little bit 
+\begin_inset Quotes eld
+\end_inset
+
+advanced
+\begin_inset Quotes erd
+\end_inset
+
+ and no standard Shanly-PPL.
+ So we discuss them in later chapters of this manual.
+\end_layout
+
+\end_body
+\end_document

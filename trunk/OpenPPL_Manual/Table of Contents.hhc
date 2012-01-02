@@ -37,8 +37,8 @@
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="When Conditions">
-			<param name="Local" value="Chapters\When_Conditions.html.LyXconv\When_Conditions.html">
+			<param name="Name" value="Structure Of OpenPPL">
+			<param name="Local" value="Chapters\Structure_Of_A_PPL_File.html.LyXconv\Structure_Of_A_PPL_File.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Hand And Board Expressions">

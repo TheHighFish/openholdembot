@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="Structure_Of_A_PPL_File.tex"> 
+<meta name="date" content="2012-01-02 11:17:00"> 
+<link rel="stylesheet" type="text/css" href="Structure_Of_A_PPL_File.css"> 
+</head><body 
+>
+
+
+   <h2 class="likechapterHead"><a 
+ id="x1-1000"></a>When Conditions</h2>
+<!--l. 27--><p class="noindent" >For those of you who are used to Shanky-PPL: plain text only. There is no support for
+encrypted PPL-profiles
+<!--l. 30--><p class="indent" >   OpenP shall I go allin? Shall I raise and if yes: how much? Shall I Call? Contrary to
+that OpenPPL is action-centered: <span 
+class="ecti-1000">what </span>shall I do?
+   <h3 class="sectionHead"><a 
+ id="x1-2000"></a>Simple When Conditions</h3>
+<!--l. 37--><p class="noindent" >These conditions get <span 
+class="ecti-1000">always evaluated top-down</span>. Once the first condition is true, the
+appropriate action is taken. Always - so the order of programming matters.
+Lets assume, that you want to call your flushdraws, but raise nut-flushdraws
+(expert-strategy 2012). Then you will have to write your commands in the following
+order:
+   <!--l. 44-->
+   <div class="lstlisting" id="listing-1"><span class="label"><a 
+ id="x1-2001r1"></a></span>WHEN&#x00A0;(HaveNutFlushDraw)&#x00A0;RAISE&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-2002r2"></a></span>WHEN&#x00A0;(HaveFlushDraw)&#x00A0;CALL&#x00A0;FORCE
+   </div>
+<!--l. 50--><p class="indent" >   Do it the other way and your nut-flush-draw would trigger the rule for normal
+flush-draws. A call would be the result. As a consequence of this top-down-approach
+there follow some recommendations:
+           <ul class="itemize1">
+        <li class="itemize"><span 
+class="ecti-1000">strong hands first, special cases first</span>
+           </li>
+        <li class="itemize"><span 
+class="ecti-1000">weak hands last, general cases last</span></li></ul>
+<!--l. 57--><p class="noindent" >The bot simply does not know if one rule is &#8220;more special&#8221; or &#8220;more important&#8221; &#8212; you have
+to tell him.
+   <h3 class="sectionHead"><a 
+ id="x1-3000"></a>Open-Ended When Conditions</h3>
+<!--l. 63--><p class="noindent" >Programming your bot with when-conditions alone will &#8212; in principle &#8212; do the job, but
+there will be lots of situations that are very similar.
+   <!--l. 68-->
+   <div class="lstlisting" id="listing-2"><span class="label"><a 
+ id="x1-3001r1"></a></span>WHEN&#x00A0;(Hand&#x00A0;=&#x00A0;AT)&#x00A0;<br /><span class="label"><a 
+ id="x1-3002r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(StillToAct&#x00A0;=&#x00A0;2)&#x00A0;<br /><span class="label"><a 
+ id="x1-3003r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(Raises&#x00A0;=&#x00A0;1)&#x00A0;<br /><span class="label"><a 
+ id="x1-3004r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(AmountToCall&#x00A0;&#x003C;=&#x00A0;4)&#x00A0;RAISEPOT&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-3005r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(AmountToCall&#x00A0;&#x003E;&#x00A0;4)&#x00A0;FOLD&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-3006r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(Raises&#x00A0;=&#x00A0;2)&#x00A0;<br /><span class="label"><a 
+ id="x1-3007r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN...
+   </div>
+<!--l. 79--><p class="indent" >   is <span 
+class="ecti-1000">not possible</span>, simply because there is no way to tell, where one open-ended
+when-condition ends and where the next one starts. So the semantic would be
+completely undefined (it is in fact not, but it is for sure not what you want).
+Sure you could argue about indentation, but spaces have no meaning in most
+programming languages (except good old Fortran 77) and everybody does it
+differently. So let&#8217;s restate: There is exactly <span 
+class="ecti-1000">one level of open-ended when-conditions</span>
+(without action); each open-ended-when-condition gets followed by a block of
+
+&#8220;normal&#8221; when-conditions with actions. You could rewrite the example above like
+that:
+   <!--l. 91-->
+   <div class="lstlisting" id="listing-3"><span class="label"><a 
+ id="x1-3008r1"></a></span>WHEN&#x00A0;((Hand&#x00A0;=&#x00A0;AT)&#x00A0;AND&#x00A0;(StillToAct&#x00A0;=&#x00A0;2))&#x00A0;<br /><span class="label"><a 
+ id="x1-3009r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;((Raises&#x00A0;=&#x00A0;1)&#x00A0;AND&#x00A0;(AmountToCall&#x00A0;&#x003C;=&#x00A0;4))&#x00A0;RAISEPOT&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-3010r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;((Raises&#x00A0;=&#x00A0;1)&#x00A0;AND&#x00A0;(AmountToCall&#x00A0;&#x003E;&#x00A0;4))&#x00A0;FOLD&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-3011r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(Raises&#x00A0;=&#x00A0;2)&#x00A0;...&#x00A0;<br /><span class="label"><a 
+ id="x1-3012r5"></a></span>WHEN&#x00A0;((Hand&#x00A0;=&#x00A0;A9)&#x00A0;AND&#x00A0;(StillToAct&#x00A0;=&#x00A0;2))&#x00A0;<br /><span class="label"><a 
+ id="x1-3013r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;...
+   </div>
+   <h3 class="sectionHead"><a 
+ id="x1-4000"></a>Structure Of A PPL-File</h3>
+   <!--l. 105-->
+   <div class="lstlisting" id="listing-4"><span class="label"><a 
+ id="x1-4001r1"></a></span>CUSTOM&#x00A0;<br /><span class="label"><a 
+ id="x1-4002r2"></a></span>&#x00A0;<br /><span class="label"><a 
+ id="x1-4003r3"></a></span>PREFLOP&#x00A0;<br /><span class="label"><a 
+ id="x1-4004r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;This&#x00A0;is&#x00A0;a&#x00A0;comment&#x00A0;<br /><span class="label"><a 
+ id="x1-4005r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;Your&#x00A0;code&#x00A0;belongs&#x00A0;here.&#x00A0;<br /><span class="label"><a 
+ id="x1-4006r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(Hand&#x00A0;=&#x00A0;AA)&#x00A0;RAISEMAX&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-4007r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(Hand&#x00A0;=&#x00A0;KK)&#x00A0;...&#x00A0;<br /><span class="label"><a 
+ id="x1-4008r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;...&#x00A0;<br /><span class="label"><a 
+ id="x1-4009r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;Others&#x00A0;FOLD&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-4010r10"></a></span>&#x00A0;<br /><span class="label"><a 
+ id="x1-4011r11"></a></span>FLOP&#x00A0;<br /><span class="label"><a 
+ id="x1-4012r12"></a></span>&#x00A0;<br /><span class="label"><a 
+ id="x1-4013r13"></a></span>TURN&#x00A0;<br /><span class="label"><a 
+ id="x1-4014r14"></a></span>&#x00A0;<br /><span class="label"><a 
+ id="x1-4015r15"></a></span>RIVER
+   </div>
+<!--l. 124--><p class="indent" >   As OpenPPL does not support a built-in default bot all profiles have to be complete,
+i.e. you have to provide code for all four betting-rounds. If you don&#8217;t do so
+OpenPPL adds &#8220;WHEN Others FOLD FORCE&#8221; to the end of each section,
+so that your profile becomes complete &#8212; at least from a computers point of
+view.
+<!--l. 130--><p class="indent" >   Besides of these four code sections there are two others:
+           <ul class="itemize1">
+        <li class="itemize">a list section for user-defined hand-lists
+           </li>
+        <li class="itemize">another code section for user-defined symbols</li></ul>
+<!--l. 135--><p class="noindent" >Both of them are very useful, but a little bit &#8220;advanced&#8221; and no standard Shanly-PPL. So we
+discuss them in later chapters of this manual.  
+</body></html> 
+
+
+
