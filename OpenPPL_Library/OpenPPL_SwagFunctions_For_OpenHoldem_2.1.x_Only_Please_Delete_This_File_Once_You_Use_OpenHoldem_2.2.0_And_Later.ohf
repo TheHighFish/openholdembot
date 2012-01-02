@@ -91,9 +91,9 @@
 // 3) f$srai+call+currentbet
 // As our f$betsize function treats case X as normal and not case 1,
 // we have to do some small calculations in the other direction.
-swagtextmethod == 1) ? f$OpenPPL_BetSizeAdjustedToUsersBalance :
-swagtextmethod == 2) ? [f$OpenPPL_BetSizeAdjustedToUsersBalance - call] :
-swagtextmethod == 3) ? [f$OpenPPL_BetSizeAdjustedToUsersBalance - call - currentbet] :
+(swagtextmethod == 1) ? f$OpenPPL_BetSizeAdjustedToUsersBalance :
+(swagtextmethod == 2) ? [f$OpenPPL_BetSizeAdjustedToUsersBalance - call] :
+(swagtextmethod == 3) ? [f$OpenPPL_BetSizeAdjustedToUsersBalance - call - currentbet] :
 // This should not happen, but we default to 1)
 f$OpenPPL_BetSizeAdjustedToUsersBalance
 
