@@ -67,11 +67,11 @@
 ##f$OpenPPL_Check##
 (f$OpenPPL_AmountToCall <= 0) ? f$OpenPPL_Call : f$OpenPPL_Fold
 
-##f$OpenPPL_Raise##
+##f$OpenPPL_Undefined_BetSize_Probably_Due_To_Misscraped_Pot_Defaulting To_Minraise##
 // Note: When "Raise X% (PotSize)" is used, but the potsize got misscraped
 // (as zero), this will lead to a final action of "0".
 // To make this library more robust (against bad tablemaps of our users ;-)
-// we take "0" as a normal (min-) raise, so we won't fail completely.
+// we will react to "0" with a normal (min-) raise, so we won't fail completely.
 0
 
 ##f$OpenPPL_RaiseMin##
@@ -112,6 +112,9 @@ f$OpenPPL_RaiseMax
 
 ##f$OpenPPL_SitOut##
 -5
+
+##f$OpenPPL_Raise##
+-6
 
 ##f$OpenPPL_UndefinedReturnValue##
 // Every user-defined function ends with this return-value
