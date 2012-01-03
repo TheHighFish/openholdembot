@@ -340,7 +340,7 @@ while (<>)
 	s/OnlyOneStraightPossible/OnlyOneStraightPossible/ig;
 	s/OvercardsOnBoard/OvercardsOnBoard/ig;
 	s/PairOnBoard/PairOnBoard/ig;
-	s/PairOnFlop/PairOnFlopig/;
+	s/PairOnFlop/PairOnFlop/ig;
 	s/PairOnTurn/PairOnTurn/ig;
 	s/QuadsOnBoard/QuadsOnBoard/ig;
 	s/QueenPresentOnFlop/QueenPresentOnFlop/ig;
