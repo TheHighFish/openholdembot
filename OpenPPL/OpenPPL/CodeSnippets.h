@@ -278,12 +278,17 @@ static const char *k_code_snippet_technical_functions =
 	"\n"
 	"##f$betsize##\n"
 	"f$alli ? [balance + currentbet] :\n"
-	"[f$OpenPPL_Decision > 0] ? f$OpenPPL_Decision:\n"
+	"[f$OpenPPL_Decision >= 0] ? f$OpenPPL_Decision:\n"
 	"0\n"
 	"\n"
 	"##f$rais##\n"
 	"   [f$OpenPPL_Decision == f$OpenPPL_Raise]\n"
 	" || [f$betsize > 0]\n"
+	// Below is 2 times the same expression, 
+	// but we want to log the very verbose explanation 
+	// only in the case of a true error 
+	// and not for normal evaluations.
+	" || [Decision == 0 && f$betsize == f$OpenPPL_Undefined_BetSize_Probably_Due_To_Misscraped_Pot_Defaulting To_Minraise]\n"
 	"\n"
 	"##f$call##\n"
 	"   [f$OpenPPL_Decision == f$OpenPPL_Check]\n"
