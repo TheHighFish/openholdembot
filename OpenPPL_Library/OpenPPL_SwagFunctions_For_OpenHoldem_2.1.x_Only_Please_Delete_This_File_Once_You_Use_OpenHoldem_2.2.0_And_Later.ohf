@@ -61,24 +61,34 @@
 //
 //*****************************************************************************
 
+##f$OpenPPL_BetSize_In_Dollars##
+// f$OpenPPL_BetSize is measured in bets but we need it in dollars,
+// as swag-adjustment / OH need it in dollars.
+(f$OpenPPL_BetSize * bet)
+
 ##f$OpenPPL_MinimumRaiseAllowed##
-// Final betsize if we raise by the minimum; amount in dollars.
-(currentbet + call + sraimin) * bet1
+// Final betsize if we raise by the minimum.
+// Aamount in dollars.
+(currentbet + call + sraimin)
 
 ##f$OpenPPL_BetSizeAdjustedToMinimumRaise##
-(f$OpenPPL_BetSize < f$OpenPPL_MinimumRaiseAllowed) ? f$OpenPPL_MinimumRaiseAllowed : f$OpenPPL_BetSize
+// Aamount in dollars.
+(f$OpenPPL_BetSize_In_Dollars < f$OpenPPL_MinimumRaiseAllowed) ? f$OpenPPL_MinimumRaiseAllowed :
+f$OpenPPL_BetSize_In_Dollars
 
 ##f$OpenPPL_PotLimitPotSize##
-// The pot for potsize calculations is the current pot
-// plus the amount if we call
+// The pot for potsize calculations is the current pot plus the amount if we call
+// Amount in dollars
 (pot + call)
 
 ##f$OpenPPL_BetSizeAdjustedToGameType##
 // In PotLimit we can only raise by pot-size ;-)
+// Aamount in dollars.
 [ispl && (f$OpenPPL_BetSizeAdjustedToMinimumRaise > 2 * f$OpenPPL_PotLimitPotSize)] ?
 (2 * f$OpenPPL_PotLimitPotSize) : f$OpenPPL_BetSizeAdjustedToMinimumRaise
 
 ##f$OpenPPL_BetSizeAdjustedToUsersBalance##
+// Aamount in dollars.
 (f$OpenPPL_BetSizeAdjustedToGameType > (balance + currentbet)) ?
 (balance + currentbet) : f$OpenPPL_BetSizeAdjustedToGameType
 
