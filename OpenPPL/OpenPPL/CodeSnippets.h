@@ -284,10 +284,12 @@ static const char *k_code_snippet_technical_functions =
 	"##f$rais##\n"
 	"   [f$OpenPPL_Decision == f$OpenPPL_Raise]\n"
 	" || [f$betsize > 0]\n"
-	// Below is 2 times the same expression, 
-	// but we want to log the very verbose explanation 
-	// only in the case of a true error 
-	// and not for normal evaluations.
+	"//\n"
+	"// Below is 2 times the same expression,\n"
+	"// but we want to log the very verbose explanation\n"
+	"// only in the case of a true error\n" 
+	"// and not for normal evaluations.\n"
+	"//\n"
 	" || [Decision == 0 && f$betsize == f$OpenPPL_Undefined_BetSize_Probably_Due_To_Misscraped_Pot_Defaulting To_Minraise]\n"
 	"\n"
 	"##f$call##\n"
