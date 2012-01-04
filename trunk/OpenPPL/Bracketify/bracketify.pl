@@ -53,31 +53,58 @@ print "//\n";
 while (<>)
 {
 	# Ignore Option-settings
-	if (m/MaxSessionHands =/ || m/MaxSessionTime = / || m/MaxStackSize =/
-		|| m/BathroomBreakAfter =/ || m/BathroomBreakTime =/ || m/SitOutWhenOpponentsAreLessThan =/
-		|| m/MakePotSizedPreFlopRaisesWhen =/ || m/FoldToPre-FlopRaisesForAQAJsKQ =/
-		|| m/FoldPost-FlopBelowTopPairToAnyBetOrRaise =/ || m/FoldToPost-FlopRaisesWithUnpairedBoardsFor =/
-		|| m/FoldToPost-FlopRaisesWithPairedBoardsFor =/ || m/NeverBetTurnOrRiverWithHandBelow =/
-		|| m/NeverBetFlopWithHandBelowMiddlePairWhen =/ || m/NeverBetFlopWithHandBelowMiddlePairStackSize =/
-		|| m/NeverCallPairedBoardsWithHandBelow =/ || m/NeverCallFlushPossibleBoardsWithHandBelow =/
-		|| m/FoldToPre-FlopRaiseWith55Or66When =/ || m/FoldToPre-FlopRaiseWith77Or88When =/
-		|| m/FoldToPre-FlopRaiseWith99OrTTWhen =/ || m/FoldToPre-FlopRaiseWithJJOrQQWhen =/
-		|| m/FoldToPre-FlopRaiseWithAKWhen =/ || m/FoldToPre-FlopRaiseWithAQsWhen =/
-		|| m/FoldToPre-FlopRaiseWithAKsWhen =/ || m/FoldToPre-FlopRaiseWithKQsWhen =/
-		|| m/SuperTightPlay =/ || m/SemiSuperTightPlay =/
-		|| m/NoLimp =/ || m/AggressivePreFlop =/
-		|| m/AggressivePostFlop =/ || m/AggressivePreFlopStackSize =/
-		|| m/AggressivePostFlopStackSize =/ || m/MiningForSets =/
-		|| m/PostFlopinBlindsOverride =/ || m/PreFlopReRaiseOverride =/
-		|| m/MinBetOverride =/ || m/FoldOrGoAllInWhenOpponentsAfterFoldsLessThan =/
-		|| m/FoldOrGoAllInWhenOpponentsAfterFoldsLessThanStackSize =/ || m/ApplyFoldOrAllInAfter =/
-		|| m/FoldOrGoAllInWhenOpponentsAtTableLessThan =/ || m/FoldOrGoAllInWhenOpponentsAtTableLessThanStackSize =/
-		|| m/AlwaysCallWhenOpponentsRaiseIsLessThan =/ || m/AlwaysCallWhenStackSizeIsLessThanTotalInvested =/
-		|| m/Verbose =/ || m/AutoPlay =/
-		|| m/UserDefinedGameType =/ || m/UseOcrAtFullTilt =/
-		|| m/AutoRebuyAtUB =/ || m/AlwaysAskForTableName =/
-		|| m/EnableFoldInTurn =/ || m/DefaultBetSizeFlop =/
-		|| m/DefaultBetSizeTurn =/ || m/DefaultBetSizeRiver =/)
+	if (m/MaxSessionHands =/ 
+		|| m/MaxSessionTime = / 
+		|| m/MaxStackSize =/
+		|| m/BathroomBreakAfter =/ 
+		|| m/BathroomBreakTime =/ 
+		|| m/SitOutWhenOpponentsAreLessThan =/
+		|| m/MakePotSizedPreFlopRaisesWhen =/ 
+		|| m/FoldToPre-FlopRaisesForAQAJsKQ =/
+		|| m/FoldPost-FlopBelowTopPairToAnyBetOrRaise =/ 
+		|| m/FoldToPost-FlopRaisesWithUnpairedBoardsFor =/
+		|| m/FoldToPost-FlopRaisesWithPairedBoardsFor =/ 
+		|| m/NeverBetTurnOrRiverWithHandBelow =/
+		|| m/NeverBetFlopWithHandBelowMiddlePairWhen =/ 
+		|| m/NeverBetFlopWithHandBelowMiddlePairStackSize =/
+		|| m/NeverCallPairedBoardsWithHandBelow =/ 
+		|| m/NeverCallFlushPossibleBoardsWithHandBelow =/
+		|| m/FoldToPre-FlopRaiseWith55Or66When =/ 
+		|| m/FoldToPre-FlopRaiseWith77Or88When =/
+		|| m/FoldToPre-FlopRaiseWith99OrTTWhen =/ 
+		|| m/FoldToPre-FlopRaiseWithJJOrQQWhen =/
+		|| m/FoldToPre-FlopRaiseWithAKWhen =/ 
+		|| m/FoldToPre-FlopRaiseWithAQsWhen =/
+		|| m/FoldToPre-FlopRaiseWithAKsWhen =/ 
+		|| m/FoldToPre-FlopRaiseWithKQsWhen =/
+		|| m/SuperTightPlay =/ 
+		|| m/SemiSuperTightPlay =/
+		|| m/NoLimp =/ 
+		|| m/AggressivePreFlop =/
+		|| m/AggressivePostFlop =/ 
+		|| m/AggressivePreFlopStackSize =/
+		|| m/AggressivePostFlopStackSize =/ 
+		|| m/MiningForSets =/
+		|| m/PostFlopinBlindsOverride =/ 
+		|| m/PreFlopReRaiseOverride =/
+		|| m/MinBetOverride =/ 
+		|| m/FoldOrGoAllInWhenOpponentsAfterFoldsLessThan =/
+		|| m/FoldOrGoAllInWhenOpponentsAfterFoldsLessThanStackSize =/ 
+		|| m/ApplyFoldOrAllInAfter =/
+		|| m/FoldOrGoAllInWhenOpponentsAtTableLessThan =/ 
+		|| m/FoldOrGoAllInWhenOpponentsAtTableLessThanStackSize =/
+		|| m/AlwaysCallWhenOpponentsRaiseIsLessThan =/ 
+		|| m/AlwaysCallWhenStackSizeIsLessThanTotalInvested =/
+		|| m/Verbose =/ 
+		|| m/AutoPlay =/
+		|| m/UserDefinedGameType =/ 
+		|| m/UseOcrAtFullTilt =/
+		|| m/AutoRebuyAtUB =/ 
+		|| m/AlwaysAskForTableName =/
+		|| m/EnableFoldInTurn =/ 
+		|| m/DefaultBetSizeFlop =/
+		|| m/DefaultBetSizeTurn =/ 
+		|| m/DefaultBetSizeRiver =/)
 	{
 		# No processing, no printing, just skip it.
 		next;
@@ -162,7 +189,7 @@ while (<>)
 	# i.e. a keyword "WHEN", but no "FORCE" and no user-variable.
 	# Then we add a bracket to the right end of the line
 	# and hope, that it is no multi-line condition
-	if ((m/^WHEN /i || m/ WHEN /i) && !(m/ FORCE$/i) && !(m/(user[A-Za-z_]*)$/))
+	if ((m/^WHEN /i || m/ WHEN /i) && !(m/ FORCE$/i) && !(m/(user[A-Za-z_]*)$/i))
 	{
 		s/$/\)/i;	
 	}
@@ -257,7 +284,7 @@ while (<>)
 	s/[ ]+\>\=[ ]+/ \>\= /g;
 	s/[ ]+\<\=[ ]+/ \<\= /g;
 	# Proper indentation
-	if ((m/^WHEN /i || m/ WHEN /i) && !(m/ FORCE$/i) && !(m/(user[A-Za-z_]*)$/))
+	if ((m/^WHEN /i || m/ WHEN /i) && !(m/ FORCE$/i) && !(m/(user[A-Za-z_]*)$/i))
 	{
 		# Open-ended when-condition
 		# No indentation
