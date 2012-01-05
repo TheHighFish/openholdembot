@@ -96,4 +96,8 @@ const int k_storage_index_for_current_round = 0;
 // Functions names, both user-defined and standard, e.g. "f$alli"
 const int k_max_size_of_function_name = 256;
 
+// Prefix of PPL-symbols that got translated to OH-script.
+// Also prefix of symbols in the OpenPPL function library.
+const static char *k_open_ppl_symbol_prefix = "f$OpenPPL_";
+
 #endif // _INC_MAGICNUMBERS_H

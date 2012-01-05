@@ -178,7 +178,6 @@ double CMemory::RetrieveValue(const char * pquery, int *e)
 			return _var_value[i];
 		}
 	}
-	*e = ERR_INVALID_EXPR;
-	write_log(prefs.debug_memorysymbols(), "[CMemory] Value not found\n");
-	return 0.0;
+	write_log(prefs.debug_memorysymbols(), "[CMemory] Value not found. Returning 0.\n");
+	return 0;
 }

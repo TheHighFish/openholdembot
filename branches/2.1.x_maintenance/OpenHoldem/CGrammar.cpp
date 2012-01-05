@@ -468,10 +468,42 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 	// all other symbols
 	else
 	{
-		return p_symbols->GetSymbolVal(sym.c_str(), e);
-	}
+		// Don't return, but first check for success.
+		// If there was no success, it might be, 
+		// that we try to evaluate an OpenPPL-symbol
+		// without prefix (user-input from debug-tab).
+		// Then add this prefix and try to evaluate again.
+		double symbol_value = p_symbols->GetSymbolVal(sym.c_str(), e);
+		if (e == SUCCESS)
+		{
+			return symbol_value;
+		}
+		else
+		{
+			// Already OpenPPL-prefix added and still unknown?
+			/*if (sym.c_str().) 
+			{
 
-	return 0;
+			}
+			else*/
+			{
+				// Add OpenPPL-prefix and try to evaluate again recursively.
+				CString open_ppl_symbol_name = CString(k_open_ppl_symbol_prefix) + sym.c_str();
+				double symbol_value = EvaluateSymbol(f, open_ppl_symbol_name,
+					logCallingFunction, e);
+				if (e == SUCCESS)
+				{
+					return symbol_value;
+				}
+				else
+				{
+					// Symbol still unknown, even with OpenPPL_prefix -> error
+				}
+			}
+		}
+	}
+	*e = ERR_INVALID_SYM;
+	return 0.0;
 }
 
 double CGrammar::DoCalcF$symbol(CFormula * const f, char *symbol, CEvalInfoFunction **logCallingFunction, bool skipCache, int *e)
