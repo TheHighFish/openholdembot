@@ -2425,11 +2425,10 @@ ispair
 //*****************************************************************************
 
 ##f$OpenPPL_IsFinalTable##
-// Only supported by OpenHoldem 2.2.0
-// Currently deactivated
+// To be implemented by OpenHoldem 2.2.0
+// Currently returning always false (OH 2.1.9.3+)
 //
-// isfinaltable
-0
+isfinaltable
 
 ##f$OpenPPL_Others##
 // Always true
