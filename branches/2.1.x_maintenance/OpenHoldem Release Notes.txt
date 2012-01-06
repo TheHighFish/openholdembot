@@ -1,3 +1,27 @@
+v2.1.9.3 2012-01-xx
+===================
+BUG FIXES: 
+- Some checkboxes of the debug-preferences had no effect 
+  and didn't keep their values. This has now been fixes.
+  Thanks to for reporting. [THF] 
+
+MAINTENANCE:
+- Returning 0 instead of ERR_INVALID_EXPR for unknown memory symbols.
+  This way the evaluation doesn't terminate and we can continue
+  with a "reasonable" value. 
+  This is especially important for the first use of a symbol
+  or for debugging of complex formulas, where the initialization
+  can not be guaranteed. [THF]
+- Evaluator does now prepend a prefix "f$OpenPPL_" to unknown symbols
+  and tries to evaluate again. This feature is meant to avoid confusion 
+  and simplify the use of the debug-tab for new users. [THF]
+  
+ NEW STUFF:
+ - Partial implememtation of new symbol "isfinaltable",
+   which is required for OpenPPL. Full implementation
+   (OpenScrape + TM) in OH 2.2.0; ATM we always return false. [THF]
+
+
 v2.1.9.2 2011-12-24
 ===================
 BUG FIXES: 
