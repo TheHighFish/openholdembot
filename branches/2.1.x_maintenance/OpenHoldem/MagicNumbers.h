@@ -99,5 +99,6 @@ const int k_max_size_of_function_name = 256;
 // Prefix of PPL-symbols that got translated to OH-script.
 // Also prefix of symbols in the OpenPPL function library.
 const static char *k_open_ppl_symbol_prefix = "f$OpenPPL_";
+const int k_lenth_of_open_ppl_symbol_prefix = 10;
 
 #endif // _INC_MAGICNUMBERS_H

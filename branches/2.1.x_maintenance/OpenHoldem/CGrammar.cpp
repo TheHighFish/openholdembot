@@ -310,9 +310,39 @@ double CGrammar::DoEvaluateExpression(CFormula * const f, iter_t const& i, CEval
 	return 0;
 }
 
+double CGrammar::TryToEvaluateSymbolAsOpenPPLSymbol(CFormula * const f, string sym, CEvalInfoFunction **logCallingFunction, int *e)
+{
+	CString symbol_name = sym.c_str();
+	if (symbol_name.Left(k_lenth_of_open_ppl_symbol_prefix) == k_open_ppl_symbol_prefix) 
+	{
+		// OpenPPL-prefix already present.
+		// This shouldn't happen, as it should be caught 
+		// by the check for f$ symbols.
+		// We check it anyway and throw an error.
+		*e = ERR_INVALID_SYM;
+		return 0.0;
+	}
+	else
+	{
+		// Add OpenPPL-prefix and try to evaluate again recursively.
+		symbol_name = CString(k_open_ppl_symbol_prefix) + sym.c_str();
+		double symbol_value = EvaluateSymbol(f, std::string(symbol_name), logCallingFunction, e);
+		if (e == SUCCESS)
+		{
+			return symbol_value;
+		}
+		else
+		{
+			// Symbol still unknown, even with OpenPPL_prefix -> error
+			*e = ERR_INVALID_SYM;
+			return 0.0;
+		}
+	}
+}
+
 double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunction **logCallingFunction, int *e)
 {
-	double			result = 0.;
+	double			result = 0.0;
 	char			f$func[10] = {0};
 	const char		*ranks = "  23456789TJQKA";
 	int				rank_temp = 0;
@@ -474,36 +504,33 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 		// without prefix (user-input from debug-tab).
 		// Then add this prefix and try to evaluate again.
 		double symbol_value = p_symbols->GetSymbolVal(sym.c_str(), e);
-		if (e == SUCCESS)
+		if (*e == SUCCESS)
 		{
 			return symbol_value;
 		}
 		else
 		{
-			// Already OpenPPL-prefix added and still unknown?
-			/*if (sym.c_str().) 
+			symbol_value = TryToEvaluateSymbolAsOpenPPLSymbol(f, sym, logCallingFunction, e);
+			if (*e == SUCCESS)
 			{
-
+				return symbol_value;
 			}
-			else*/
+			else
 			{
-				// Add OpenPPL-prefix and try to evaluate again recursively.
-				CString open_ppl_symbol_name = CString(k_open_ppl_symbol_prefix) + sym.c_str();
-				double symbol_value = EvaluateSymbol(f, open_ppl_symbol_name,
-					logCallingFunction, e);
-				if (e == SUCCESS)
+				// Unknown symbol.
+				// Though we check the syntax, this can still happen
+				// by gws-calls from Perl or a DLL, etc.
+				if (!prefs.disable_msgbox())
 				{
-					return symbol_value;
+					CString Message = CString("Unknown symbol in CGrammar::EvaluateSymbol(): \"")
+						+ sym.c_str() + CString("\"\nThat is most probably a typo in the symbols name.\n")
+						+ CString("Please check your formula and your DLL or Perl-script.");
+					MessageBox(0, Message, "ERROR", MB_OK);
 				}
-				else
-				{
-					// Symbol still unknown, even with OpenPPL_prefix -> error
-				}
+				return 0.0;
 			}
 		}
 	}
-	*e = ERR_INVALID_SYM;
-	return 0.0;
 }
 
 double CGrammar::DoCalcF$symbol(CFormula * const f, char *symbol, CEvalInfoFunction **logCallingFunction, bool skipCache, int *e)

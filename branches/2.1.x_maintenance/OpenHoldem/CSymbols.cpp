@@ -4268,6 +4268,8 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "ismanual", 8)==0 && strlen(a)==8)					return _sym.ismanual;
 		if (memcmp(a, "isppro", 6)==0 && strlen(a)==6)						return _sym.isppro;
 		if (memcmp(a, "isbring", 7)==0 && strlen(a)==7)						return _sym.isbring;
+		// isfinaltable - to be implemented in OH 2.2.0
+		if (memcmp(a, "isfinaltable", 12)==0 && strlen(a)==12)				return false;
 
 		// LIMITS 1(3)
 		if (memcmp(a, "isnl", 4)==0 && strlen(a)==4)						return p_tablelimits->isnl();
@@ -4571,18 +4573,6 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "balance_rank", 12)==0 && strlen(a)==13)  			return p_game_state->SortedBalance(a[12]-'0');
 
 	*e = ERR_INVALID_SYM;
-
-	// Unknown symbol.
-	// Though we check the syntax, this can still happen
-	// by gws-calls from Perl or a DLL.
-	if (!prefs.disable_msgbox())
-	{
-		CString Message = CString("Unknown symbol in CSymbols::GetSymbolVal(): \"")
-			+ CString(a) + CString("\"\nThat is most probably a typo in the symbols name.\n")
-			+ CString("Please check your formula and your DLL or Perl-script.");
-		MessageBox(0, Message, "ERROR", MB_OK);
-	}
-
 	return 0.0;
 }
 

@@ -24,6 +24,10 @@ const char* ActionConstantNames(int action_constant)
 		return "JAM";
 	else if (action_constant == k_action_allin)
 		return "ALLI";
-	else 
+	else
+	{
 		assert(k_this_must_not_happen);
+		// Return a value to make the compiler happy.
+		return "----";
+	}
 }

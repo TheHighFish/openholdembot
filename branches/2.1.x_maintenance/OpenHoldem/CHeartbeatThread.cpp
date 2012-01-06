@@ -318,11 +318,11 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		}
 
-		if ( // If it's my turn, and we have enough stable frames
-			(prefs.replay_record() &&
-			p_symbols->sym()->ismyturn &&
-			p_stableframescounter->NumberOfStableFrames() >= prefs.frame_delay()) &&
-			!p_heartbeat_thread->replay_recorded_this_turn()
+		 // If it's my turn, and we have enough stable frames
+		if ((prefs.replay_record() 			
+			&& p_symbols->sym()->ismyturn 
+			&& p_stableframescounter->NumberOfStableFrames() >= prefs.frame_delay()) 
+			&& !p_heartbeat_thread->replay_recorded_this_turn()
 			 
 			 ||
 

@@ -38,6 +38,7 @@ private:
 	// private functions and variables - not available via accessors or mutators
 	double EvaluateExpression(CFormula * const f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e);
 	double DoEvaluateExpression(CFormula * const f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e);
+	double TryToEvaluateSymbolAsOpenPPLSymbol(CFormula * const f, string sym, CEvalInfoFunction **logCallingFunction, int *e);
 	double EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunction **logCallingFunction, int *e);
 	static void SetOffsets(iter_t &i, const char *start);
 
