@@ -82,7 +82,7 @@ f$OpenPPL_BetSize_In_Dollars
 (pot + call)
 
 ##f$OpenPPL_BetSizeAdjustedToGameType##
-// In PotLimit we can only raise by pot-size ;-)
+// In pot-limit we can only raise by pot-size ;-)
 // Aamount in dollars.
 [ispl && (f$OpenPPL_BetSizeAdjustedToMinimumRaise > 2 * f$OpenPPL_PotLimitPotSize)] ?
 (2 * f$OpenPPL_PotLimitPotSize) : f$OpenPPL_BetSizeAdjustedToMinimumRaise
@@ -108,4 +108,4 @@ f$OpenPPL_BetSize_In_Dollars
 f$OpenPPL_BetSizeAdjustedToUsersBalance
 
 ##f$swag##
-f$OpenPPL_BetSizeAdjustedToCasinosInputRequirements
+isfl ? 0 : f$OpenPPL_BetSizeAdjustedToCasinosInputRequirements
