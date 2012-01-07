@@ -839,27 +839,32 @@ f$OpenPPL_EarlyPosition2StartingStackSize < f$OpenPPL_MinStillToActStackSizeAfte
 (br == 1 ? me_st_MinOpponentStackSize_f$OpenPPL_MinOpponentStackSizeCalculation : 0)
 
 ##f$OpenPPL_MaxOpponentStackSizeCalculation##
-balance_rank0 == balance ? balance_rank1 : balance_rank0
+(bblind <= 0) ? f$OpenPPL_Error_Bigblind_Is_Zero :
+(balance_rank0 == balance) ? (balance_rank1 / bblind) : (balance_rank0 / bblind)
 
 ##f$OpenPPL_MinOpponentStackSizeCalculation##
-nplayersdealt == 10 ?
-  (balance_rank9 == balance ? balance_rank8 : balance_rank9) :
-nplayersdealt == 9 ?
-  (balance_rank8 == balance ? balance_rank7 : balance_rank8) :
-nplayersdealt == 8 ?
-  (balance_rank7 == balance ? balance_rank6 : balance_rank7) :
-nplayersdealt == 7 ?
-  (balance_rank6 == balance ? balance_rank5 : balance_rank6) :
-nplayersdealt == 6 ?
-  (balance_rank5 == balance ? balance_rank4 : balance_rank5) :
-nplayersdealt == 5 ?
-  (balance_rank4 == balance ? balance_rank3 : balance_rank4) :
-nplayersdealt == 4 ?
-  (balance_rank3 == balance ? balance_rank2 : balance_rank3) :
-nplayersdealt == 3 ?
-  (balance_rank2 == balance ? balance_rank1 : balance_rank2) :
-nplayersdealt == 2 ?
-  (balance_rank1 == balance ? balance_rank0 : balance_rank1) : -1
+(bblind <= 0) ? f$OpenPPL_Error_Bigblind_Is_Zero :
+[ 1 / bblind *
+[ nplayersdealt == 10 ?
+    (balance_rank9 == balance ? balance_rank8 : balance_rank9) :
+  nplayersdealt == 9 ?
+    (balance_rank8 == balance ? balance_rank7 : balance_rank8) :
+  nplayersdealt == 8 ?
+    (balance_rank7 == balance ? balance_rank6 : balance_rank7) :
+  nplayersdealt == 7 ?
+    (balance_rank6 == balance ? balance_rank5 : balance_rank6) :
+  nplayersdealt == 6 ?
+    (balance_rank5 == balance ? balance_rank4 : balance_rank5) :
+  nplayersdealt == 5 ?
+    (balance_rank4 == balance ? balance_rank3 : balance_rank4) :
+  nplayersdealt == 4 ?
+    (balance_rank3 == balance ? balance_rank2 : balance_rank3) :
+  nplayersdealt == 3 ?
+    (balance_rank2 == balance ? balance_rank1 : balance_rank2) :
+  nplayersdealt == 2 ?
+    (balance_rank1 == balance ? balance_rank0 : balance_rank1) :
+// Error: -bblind, because we divide to -1.
+- bblind]]
 
 ##f$OpenPPL_OpponentsWithHigherStack##
 // No need to tinker with memory symbols here,
@@ -917,7 +922,8 @@ chair == f$OpenPPL_MiddlePosition2Chair ? f$OpenPPL_MaxStillToActStackSizeAfterM
 chair == f$OpenPPL_MiddlePosition1Chair ? f$OpenPPL_MaxStillToActStackSizeAfterMiddlePosition1 :
 chair == f$OpenPPL_EarlyPosition3Chair  ? f$OpenPPL_MaxStillToActStackSizeAfterEarlyPosition3  :
 chair == f$OpenPPL_EarlyPosition2Chair  ? f$OpenPPL_MaxStillToActStackSizeAfterEarlyPosition2  :
-chair == f$OpenPPL_EarlyPosition1Chair  ? f$OpenPPL_MaxStillToActStackSizeAfterEarlyPosition1  : -1
+chair == f$OpenPPL_EarlyPosition1Chair  ? f$OpenPPL_MaxStillToActStackSizeAfterEarlyPosition1  :
+f$OpenPPL_HINT_Something_Is_Wrong__It_Seems_You_Are_Not_Even_Seated
 
 ##f$OpenPPL_MinOpponentStackSize##
 me_re_MinOpponentStackSize
@@ -932,7 +938,8 @@ chair == f$OpenPPL_MiddlePosition2Chair ? f$OpenPPL_MinStillToActStackSizeAfterM
 chair == f$OpenPPL_MiddlePosition1Chair ? f$OpenPPL_MinStillToActStackSizeAfterMiddlePosition1 :
 chair == f$OpenPPL_EarlyPosition3Chair  ? f$OpenPPL_MinStillToActStackSizeAfterEarlyPosition3  :
 chair == f$OpenPPL_EarlyPosition2Chair  ? f$OpenPPL_MinStillToActStackSizeAfterEarlyPosition2  :
-chair == f$OpenPPL_EarlyPosition1Chair  ? f$OpenPPL_MinStillToActStackSizeAfterEarlyPosition1  : -1
+chair == f$OpenPPL_EarlyPosition1Chair  ? f$OpenPPL_MinStillToActStackSizeAfterEarlyPosition1  :
+f$OpenPPL_HINT_Something_Is_Wrong__It_Seems_You_Are_Not_Even_Seated
 
 ##f$OpenPPL_PotSize##
 (bblind > 0) ? (pot / bblind) : 0
@@ -941,10 +948,10 @@ chair == f$OpenPPL_EarlyPosition1Chair  ? f$OpenPPL_MinStillToActStackSizeAfterE
 (bblind > 0) ? (balance / bblind) : 0
 
 ##f$OpenPPL_TotalInvested##
-(betround == 1 && nbetsround > 0)  ? (ncurrentbets * bblind) :
-(betround == 2 && nbetsround1 > 0) ? ((nbetsround1 + ncurrentbets) * bblind) :
-(betround == 3 && nbetsround1 > 0) ? ((nbetsround1 + nbetsround2 + ncurrentbets) * bblind) :
-(betround == 4 && nbetsround1 > 0) ? ((nbetsround1 + nbetsround2 + nbetsround3 + ncurrentbets) * bblind) :
+(betround == 1 && nbetsround > 0)  ? ncurrentbets :
+(betround == 2 && nbetsround1 > 0) ? (nbetsround1 + ncurrentbets) :
+(betround == 3 && nbetsround1 > 0) ? (nbetsround1 + nbetsround2 + ncurrentbets) :
+(betround == 4 && nbetsround1 > 0) ? (nbetsround1 + nbetsround2 + nbetsround3 + ncurrentbets) :
 0
 
 //*****************************************************************************
@@ -2999,6 +3006,9 @@ f$OpenPPL_SmallBlindChair == 9 ? pt_vpip9 :
 -1
 
 ##f$OpenPPL_HINT_There_Are_No_True_Raisers##
+-1
+
+##f$OpenPPL_HINT_Something_Is_Wrong__It_Seems_You_Are_Not_Even_Seated##
 -1
 
 ##f$OpenPPL_HINT_EarlyPosition1_Does_Not_Exist##
