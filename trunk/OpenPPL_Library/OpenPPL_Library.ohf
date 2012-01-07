@@ -733,31 +733,31 @@ f$OpenPPL_SmallBlindChair == 9 ? f$OpenPPL_Chair9StartingStackSize :
 ##f$OpenPPL_BigBlindCurrentBet##
 // Amount in bets (big blinds for preflop)
 (bet <= 0) ? f$OpenPPL_ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap :
-f$OpenPPL_BigBlindChair == 0 ? currentbet0 :
-f$OpenPPL_BigBlindChair == 1 ? currentbet1 :
-f$OpenPPL_BigBlindChair == 2 ? currentbet2 :
-f$OpenPPL_BigBlindChair == 3 ? currentbet3 :
-f$OpenPPL_BigBlindChair == 4 ? currentbet4 :
-f$OpenPPL_BigBlindChair == 5 ? currentbet5 :
-f$OpenPPL_BigBlindChair == 6 ? currentbet6 :
-f$OpenPPL_BigBlindChair == 7 ? currentbet7 :
-f$OpenPPL_BigBlindChair == 8 ? currentbet8 :
-f$OpenPPL_BigBlindChair == 9 ? currentbet9 :
+(f$OpenPPL_BigBlindChair == 0) ? (currentbet0 / bet) :
+(f$OpenPPL_BigBlindChair == 1) ? (currentbet1 / bet) :
+(f$OpenPPL_BigBlindChair == 2) ? (currentbet2 / bet) :
+(f$OpenPPL_BigBlindChair == 3) ? (currentbet3 / bet) :
+(f$OpenPPL_BigBlindChair == 4) ? (currentbet4 / bet) :
+(f$OpenPPL_BigBlindChair == 5) ? (currentbet5 / bet) :
+(f$OpenPPL_BigBlindChair == 6) ? (currentbet6 / bet) :
+(f$OpenPPL_BigBlindChair == 7) ? (currentbet7 / bet) :
+(f$OpenPPL_BigBlindChair == 8) ? (currentbet8 / bet) :
+(f$OpenPPL_BigBlindChair == 9) ? (currentbet9 / bet) :
 f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 
 ##f$OpenPPL_SmallBlindCurrentBet##
 // Amount in bets (big blinds for preflop)
 (bet <= 0) ? f$OpenPPL_ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap :
-f$OpenPPL_SmallBlindChair == 0 ? currentbet0 :
-f$OpenPPL_SmallBlindChair == 1 ? currentbet1 :
-f$OpenPPL_SmallBlindChair == 2 ? currentbet2 :
-f$OpenPPL_SmallBlindChair == 3 ? currentbet3 :
-f$OpenPPL_SmallBlindChair == 4 ? currentbet4 :
-f$OpenPPL_SmallBlindChair == 5 ? currentbet5 :
-f$OpenPPL_SmallBlindChair == 6 ? currentbet6 :
-f$OpenPPL_SmallBlindChair == 7 ? currentbet7 :
-f$OpenPPL_SmallBlindChair == 8 ? currentbet8 :
-f$OpenPPL_SmallBlindChair == 9 ? currentbet9 :
+(f$OpenPPL_SmallBlindChair == 0) ? (currentbet0 / bet) :
+(f$OpenPPL_SmallBlindChair == 1) ? (currentbet1 / bet) :
+(f$OpenPPL_SmallBlindChair == 2) ? (currentbet2 / bet) :
+(f$OpenPPL_SmallBlindChair == 3) ? (currentbet3 / bet) :
+(f$OpenPPL_SmallBlindChair == 4) ? (currentbet4 / bet) :
+(f$OpenPPL_SmallBlindChair == 5) ? (currentbet5 / bet) :
+(f$OpenPPL_SmallBlindChair == 6) ? (currentbet6 / bet) :
+(f$OpenPPL_SmallBlindChair == 7) ? (currentbet7 / bet) :
+(f$OpenPPL_SmallBlindChair == 8) ? (currentbet8 / bet) :
+(f$OpenPPL_SmallBlindChair == 9) ? (currentbet9 / bet) :
 f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 
 ##f$OpenPPL_MaxStillToActStackSizeAfterSmallBlind##
