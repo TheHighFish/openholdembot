@@ -65,7 +65,7 @@
 -1
 
 ##f$OpenPPL_Check##
-(f$OpenPPL_AmountToCall <= 0) ? f$OpenPPL_Call : f$OpenPPL_Fold
+-2
 
 ##f$OpenPPL_Undefined_BetSize_Probably_Due_To_Misscraped_Pot_Defaulting_To_Minraise##
 // Note: When "Raise X% (PotSize)" is used, but the potsize got misscraped
@@ -84,10 +84,10 @@ f$OpenPPL_Raise
 f$OpenPPL_PotSize
 
 ##f$OpenPPL_RaiseMax##
--2
+-3
 
 ##f$OpenPPL_Call##
--3
+-4
 
 ##f$OpenPPL_Play##
 f$OpenPPL_Call
@@ -108,13 +108,13 @@ f$OpenPPL_RaiseHalfPot
 f$OpenPPL_RaiseMax
 
 ##f$OpenPPL_None##
--4
-
-##f$OpenPPL_SitOut##
 -5
 
-##f$OpenPPL_Raise##
+##f$OpenPPL_SitOut##
 -6
+
+##f$OpenPPL_Raise##
+-7
 
 ##f$OpenPPL_UndefinedReturnValue##
 // Every user-defined function ends with this return-value
