@@ -63,7 +63,7 @@ While building the OpenPPL library the developers had to create lots of
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="6" columns="3">
+<lyxtabular version="3" rows="10" columns="3">
 <features>
 <column alignment="left" valignment="top" width="40line%">
 <column alignment="left" valignment="top" width="40line%">
@@ -113,7 +113,8 @@ Chair0StartingStackSize ...
 
 \begin_layout Plain Layout
 Starting stacksize of Chair N at the beginning of the hand (balance + currentbet
-)
+).
+ Measured in bets, not in dollars.
 \end_layout
 
 \end_inset
@@ -122,7 +123,46 @@ Starting stacksize of Chair N at the beginning of the hand (balance + currentbet
 \begin_inset Text
 
 \begin_layout Plain Layout
-Preflop only
+Mainly for only.
+ In other betting rounds it returns the starting stack at the beginning
+ of that round.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BigBlindCurrentBet, SmallBlindCurrentBet
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Current bets of the blind posters, measured in dollars
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Mainly used to detect, if the blinds are truely raising or if they are 
+\begin_inset Quotes eld
+\end_inset
+
+blind raisers
+\begin_inset Quotes erd
+\end_inset
+
+.
 \end_layout
 
 \end_inset
@@ -147,6 +187,44 @@ Named card constants to improve readability and maintenability.
  Useful if you want to access OpenHoldems card symbols $$pr0, $$pr1, $$cr0
  ...
  $$cr4.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+None
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ConstBetRoundPreflop, ConstBetRoundFlop, ConstBetRoundTurn, ConstBetRoundRiver
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Named constants for the four betting rounds.
+ To be used with OpenHoldems 
+\begin_inset Quotes eld
+\end_inset
+
+betround
+\begin_inset Quotes erd
+\end_inset
+
+ symbol
 \end_layout
 
 \end_inset
@@ -222,7 +300,7 @@ Valid only, if there are 3 or 4 cards of the same rank, undefined otherwise
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -232,7 +310,7 @@ EarlyPosition1Chair ...
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -243,11 +321,85 @@ Chair numbers of the specific players.
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 None
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+AggressorChair
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Same meaning as ac_aggressor, but more reliable.
+ ac_aggressor alone is somewhat unreliable, as it gets scraped (by bets).
+ But if we raise and there are super-fast calls behind us (e.g.
+ at PokerAcademy), then we don't have stable frames and soon we will switch
+ to the next betting round, so OpenHoldem might miss the aggressor.
+ This symbol also considers our last action and the amount to call to overcome
+ this problem.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+None
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+SmallBlindRaising ...
+ ButtonRaising
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+True, if the chair in question is betting or raising.
+ Contrary to OpenHoldems conventions 
+\begin_inset Quotes eld
+\end_inset
+
+blind raisers
+\begin_inset Quotes erd
+\end_inset
+
+ are not counted preflop; only if they truely raise.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Meant for preflop, also working postflop, though it counts betters to.
 \end_layout
 
 \end_inset
