@@ -33,8 +33,8 @@
 //   Nik0
 //   NPNG
 //   Poker_Dog
-//   Rambam
 //   Postenjak
+//   Rambam
 //   Satanikut
 //   Stangelnator
 //   SteveG1963
@@ -226,6 +226,14 @@ didcallround1
 
 ##f$OpenPPL_BotIsLastRaiser##
 (ac_aggressor==userchair)
+// But ac_aggressor gets scraped (by bets) and is somewhat unreliable.
+// if we raise and there are super-fast calls behind us (e.g. at PokerAcademy),
+// because we don't have stable frames and then we switch to the next betting round.
+// (There are however no problems, if somebody else raises,
+// because we always get stable frames at out turn.)
+// So we also check for our last action and the amount to call.
+// (-1 = fold 0 = check 1 = call 2 = raise e3 = swag 4 = allin)
+|| (((prevaction ==  2) || (prevaction == 3)) && (f$OpenPPL_AmountToCall == 0))
 
 ##f$OpenPPL_BotRaisedBeforeFlop##
 (didraisround1 || didswaground1)
