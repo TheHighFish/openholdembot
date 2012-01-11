@@ -276,6 +276,11 @@ struct print_operator
 		{
 			current_output << " == ";
 		}
+		else if (text == "%")
+		{
+			// Percentage-operator
+			current_output << "/100 * ";
+		}
 		else if (text == "mod")
 		{
 			// Modulo needs special treatment,

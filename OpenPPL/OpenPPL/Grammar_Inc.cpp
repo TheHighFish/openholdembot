@@ -154,7 +154,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// Operators
 			unary_operator          = (keyword_not | "-")[print_operator()];
 			percentage_operator     = str_p("%");
-			multiplicative_operator = (str_p("*") | ("/")) 									| percentage_operator; 
+			multiplicative_operator = (str_p("*") | ("/")) | percentage_operator; 
 			additive_operator       = (str_p("+") | "-");
 			equality_operator       = str_p("=");
 			inequality_operator		= str_p("!=");
