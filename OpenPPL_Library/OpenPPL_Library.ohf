@@ -209,14 +209,13 @@ f$OpenPPL_Fold
 //*****************************************************************************
 
 ##f$OpenPPL_InitBets##
-// Do nothing, if we already acted more than once (bet, raise, call),
-// as then everything is already initialized
-(f$OpenPPL_BotsActionsOnThisRound > 1) ? 0 :
-(nopponentsbetting == 0) ? me_st_MemBets_0 :
-// nopponentsbetting >= 1
-(f$OpenPPL_BotsLastAction == f$OpenPPL_Bet) ? me_st_MemBets_0 :
-(f$OpenPPL_AmountToCall > 0) ? me_st_MemBets_1 :
-me_st_MemBets_0
+// No bet in front of us to call
+((currentbet == 0) && (f$OpenPPL_AmountToCall == 0)) ? me_st_MemBets_0 :
+// A bet to call and we din't act before or we checked
+((currentbet == 0) && (f$OpenPPL_AmountToCall > 0)) ? me_st_MemBets_1 :
+// Otherwise: we did already bet ourself or call a bet.
+// So don't change anything
+0
 
 ##f$OpenPPL_Bets##
 me_re_MemBets
@@ -248,9 +247,11 @@ ac_aggressor
 (didraisround3 || didswaground3)
 
 ##f$OpenPPL_BotsActionsOnFlop##
+// Checks are not counted
 (didcallround2 + didraisround2 + didswaground2)
 
 ##f$OpenPPL_BotsActionsOnThisRound##
+// Checks are not counted
 (didcall + didrais + didswag)
 
 ##f$OpenPPL_BotsActionsOnThisRoundIncludingChecks##
@@ -259,8 +260,7 @@ ac_aggressor
 
 ##f$OpenPPL_BotsActionsPreflop##
 // Checks are not counted per definition
-// (After a check the game is usually over,
-// except when we post the first blind without being big blind.)
+// and we can't check preflop without posting a blind out of order (first hand only).
 (didcallround1 + didraisround1 + didswaground1)
 
 ##f$OpenPPL_InitBotsLastAction##
