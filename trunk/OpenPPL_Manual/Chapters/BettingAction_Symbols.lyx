@@ -53,7 +53,7 @@ BettingAction Symbols
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="32" columns="3">
+<lyxtabular version="3" rows="33" columns="3">
 <features islongtable="true">
 <column alignment="left" valignment="top" width="30text%">
 <column alignment="left" valignment="top" width="40text%">
@@ -665,6 +665,36 @@ NoBettingOnTurn
 \begin_layout Plain Layout
 No bets/raises were made on the turn, may also be used on the turn and will
  be true if there were no bets/raises
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+None
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+NumberOfOpponentsAllin
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Number of opponents who raised or called allin.
+ Range: 0..9.
 \end_layout
 
 \end_inset
