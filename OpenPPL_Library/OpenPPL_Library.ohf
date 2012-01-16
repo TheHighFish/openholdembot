@@ -416,22 +416,23 @@ f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRA
 nopponentschecking
 
 ##f$OpenPPL_ChecksInFrontOfHero##
-// Valid first orbit only
-  f$OpenPPL_Chair0CheckiongInFrontOfHero
-+ f$OpenPPL_Chair1CheckiongInFrontOfHero
-+ f$OpenPPL_Chair2CheckiongInFrontOfHero
-+ f$OpenPPL_Chair3CheckiongInFrontOfHero
-+ f$OpenPPL_Chair4CheckiongInFrontOfHero
-+ f$OpenPPL_Chair5CheckiongInFrontOfHero
-+ f$OpenPPL_Chair6CheckiongInFrontOfHero
-+ f$OpenPPL_Chair7CheckiongInFrontOfHero
-+ f$OpenPPL_Chair8CheckiongInFrontOfHero
-+ f$OpenPPL_Chair9CheckiongInFrontOfHero
+(f$OpenPPL_BotsActionsOnThisRoundIncludingChecks > 0) ? 0 :
+[  f$OpenPPL_Chair0CheckiongInFrontOfHero
+ + f$OpenPPL_Chair1CheckiongInFrontOfHero
+ + f$OpenPPL_Chair2CheckiongInFrontOfHero
+ + f$OpenPPL_Chair3CheckiongInFrontOfHero
+ + f$OpenPPL_Chair4CheckiongInFrontOfHero
+ + f$OpenPPL_Chair5CheckiongInFrontOfHero
+ + f$OpenPPL_Chair6CheckiongInFrontOfHero
+ + f$OpenPPL_Chair7CheckiongInFrontOfHero
+ + f$OpenPPL_Chair8CheckiongInFrontOfHero
+ + f$OpenPPL_Chair9CheckiongInFrontOfHero]
 
 ##f$OpenPPL_CalculateChecks##
 (f$OpenPPL_BotsActionsOnThisRound == 0) ? f$OpenPPL_ChecksInFrontOfHero :
 // Stored value of checks on previous orbit plus players behind
 (f$OpenPPL_BotsActionsOnThisRound == 1) ? (f$OpenPPL_Checks + f$OpenPPL_ChecksAfterHero) :
+// There can no longer be any checking players, so don't change anything
 0
 
 ##f$OpenPPL_InitChecks##
@@ -521,6 +522,7 @@ nopponentsraising
 (nopponentsraising - 2)
 
 ##f$OpenPPL_RaisesBeforeOurFirstAction##
+(f$OpenPPL_BotsActionsOnThisRoundIncludingChecks > 0) ? 0 :
 (betround > 1) ? f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPostflop :
 (dealposition == 1) ? f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopInSmallBlind :
 (dealposition == 2) ? f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopInBigBlind :
@@ -2562,11 +2564,11 @@ f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRA
 ##f$OpenPPL_OpponentsAtTable##
 nopponentsdealt
 
-##f$OpenPPL_NumberOfOpoonentsAllin##
+##f$OpenPPL_NumberOfOpponentsAllin##
 `f$OpenPPL_Opponents_AllinBits
 
 ##f$OpenPPL_OpponentIsAllin##
-f$OpenPPL_NumberOfOpoonentsAllin > 0
+f$OpenPPL_NumberOfOpponentsAllin > 0
 
 ##f$OpenPPL_Opponents_AllinBits##
 (betround == 1) ?
@@ -2991,6 +2993,7 @@ f$OpenPPL_SmallBlindChair == 9 ? pt_vpip9 :
 
 ##f$OpenPPL_InitMemorySymbols##
   f$OpenPPL_InitBets
++ f$OpenPPL_InitChecks
 + f$OpenPPL_InitBotsLastPreflopAction
 + f$OpenPPL_InitRaisesBeforeFlop
 + f$OpenPPL_InitRaisesOnFlop
