@@ -15,6 +15,7 @@ MAINTENANCE:
 - Evaluator does now prepend a prefix "f$OpenPPL_" to unknown symbols
   and tries to evaluate again. This feature is meant to avoid confusion 
   and simplify the use of the debug-tab for new users. [THF]
+ - Removing currentbetX cap for FL games. [Strikles] 
   
  NEW STUFF:
  - Partial implememtation of new symbol "isfinaltable",

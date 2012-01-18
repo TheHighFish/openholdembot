@@ -1332,25 +1332,10 @@ void CSymbols::CalcBetBalanceStack(void)
 		//if (pot[0]>0 || oppcount>0) {
 		if (oppcount>0)
 		{
-			// fixed limit
-			if (p_tablelimits->isfl())
-			{
-				if (temp/p_tablelimits->bet()<=4)
-				{
-					set_sym_currentbet(i, temp);									// currentbet0-9
-					//!!!
-					write_log(prefs.debug_symbolengine(), "setting currentbet for FL\n");
-				}
-			}
-
-			// no limit, pot limit
-			else
-			{
-				set_sym_currentbet(i, temp); 
-				// currentbet0-9
-				//!!!
-				write_log(prefs.debug_symbolengine(), "setting currentbet for NL/PL\n");
-			}
+			// currentbet0-9
+			set_sym_currentbet(i, temp); 
+			
+			write_log(prefs.debug_symbolengine(), "setting currentbet\n");
 		}
 	}
 
