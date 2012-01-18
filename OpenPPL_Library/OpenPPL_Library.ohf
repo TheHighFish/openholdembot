@@ -3002,6 +3002,8 @@ f$OpenPPL_SmallBlindChair == 9 ? pt_vpip9 :
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=14525&start=0
    [f$OpenPPL_InitBets * 0]
 || [f$OpenPPL_InitChecks * 0]
+|| [f$OpenPPL_InitCalls * 0]
+|| [f$OpenPPL_InitRaises * 0]
 || [f$OpenPPL_InitBotsLastPreflopAction * 0]
 || [f$OpenPPL_InitRaisesBeforeFlop * 0]
 || [f$OpenPPL_InitRaisesOnFlop * 0]
