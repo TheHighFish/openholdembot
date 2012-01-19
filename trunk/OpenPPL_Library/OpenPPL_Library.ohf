@@ -204,6 +204,104 @@ f$OpenPPL_Fold
 
 //*****************************************************************************
 //
+// OpenPPL - verbose errors and warning
+//
+// Instead of returning just -1 we define constants like
+// "f$OpenPPL_HINT_EarlyPosition1_Does_Not_Exist"
+// This way we get a verbose explanation in the log-file.
+//
+//*****************************************************************************
+
+##f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY##
+-1
+
+##f$OpenPPL_ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap##
+-1
+
+##f$OpenPPL_ERROR_Betround_Out_Of_Range##
+-1
+
+##f$OpenPPL_ERROR_BotsActionsOnThisRound_Out_Of_Range##
+-1
+
+##f$OpenPPL_ERROR_ButtonChair_Not_Recognized__Check_Your_TableMap##
+-1
+
+##f$OpenPPL_ERROR_CutOffChair_Not_Recognized__Check_Your_TableMap##
+-1
+
+##f$OpenPPL_ERROR_MiddlePosition3Chair_Not_Recognized__Check_Your_TableMap##
+-1
+
+##f$OpenPPL_ERROR_MiddlePosition1Chair_Not_Recognized__Check_Your_TableMap##
+-1
+
+##f$OpenPPL_ERROR_MiddlePosition1Chair_Not_Recognized__Check_Your_TableMap##
+-1
+
+##f$OpenPPL_ERROR_EarlyPosition3Chair_Not_Recognized__Check_Your_TableMap##
+-1
+
+##f$OpenPPL_ERROR_EarlyPosition2Chair_Not_Recognized__Check_Your_TableMap##
+-1
+
+##f$OpenPPL_ERROR_EarlyPosition1Chair_Not_Recognized__Check_Your_TableMap##
+-1
+
+##f$OpenPPL_ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap##
+-1
+
+##f$OpenPPL_ERROR_SmallBlindChair_Not_Recognized__Check_Your_TableMap##
+-1
+
+##f$OpenPPL_ERROR_We_Dont_Have_Any_Straight__No_Not_Call_This_Function##
+-1
+
+##f$OpenPPL_ERROR_Dealposition_Out_Of_Range__Check_Your_TableMap##
+-1
+
+##f$OpenPPL_ERROR_No_Opponents_Detected__Check_Your_TableMap##
+// Returning -bblind, because we divide by bblind to -1.
+(0 - bblind)
+
+##f$OpenPPL_HINT_There_Are_No_True_Raisers##
+-1
+
+##f$OpenPPL_HINT_Such_A_Straight_Does_Not_Exist##
+-1
+
+##f$OpenPPL_HINT_Something_Is_Wrong__It_Seems_You_Are_Not_Even_Seated##
+-1
+
+##f$OpenPPL_HINT_EarlyPosition1_Does_Not_Exist##
+-1
+
+##f$OpenPPL_HINT_EarlyPosition2_Does_Not_Exist##
+-1
+
+##f$OpenPPL_HINT_EarlyPosition3_Does_Not_Exist##
+-1
+
+##f$OpenPPL_HINT_MiddlePosition1_Does_Not_Exist##
+-1
+
+##f$OpenPPL_HINT_MiddlePosition2_Does_Not_Exist##
+-1
+
+##f$OpenPPL_HINT_MiddlePosition3_Does_Not_Exist##
+-1
+
+##f$OpenPPL_HINT_CutOff_Does_Not_Exist##
+-1
+
+##f$OpenPPL_HINT_There_Is_No_Raiser_Therefore_No_CurrentBet##
+0
+
+##f$OpenPPL_HINT_Nothing_To_Do_But_All_OK##
+0
+
+//*****************************************************************************
+//
 // OpenPPL - BettingAction Symbols
 //
 //*****************************************************************************
@@ -215,7 +313,7 @@ f$OpenPPL_Fold
 ((currentbet == 0) && (f$OpenPPL_AmountToCall > 0)) ? me_st_MemBets_1 :
 // Otherwise: we did already bet ourself or call a bet.
 // So don't change anything
-0
+f$OpenPPL_HINT_Nothing_To_Do_But_All_OK
 
 ##f$OpenPPL_Bets##
 me_re_MemBets
@@ -270,12 +368,12 @@ ac_aggressor
 // (inside f$OpenPPL_InitMemorySymbols)
 // because it will call the final f$Decision routine.
 //
-([(betround == 1) && (f$OpenPPL_BotsActionsOnThisRound == 0)] ? me_st_MemBotsLastAction_f$OpenPPL_None :
+([(betround == f$OpenPPL_ConstBetRoundPreflop) && (f$OpenPPL_BotsActionsOnThisRound == 0)] ? me_st_MemBotsLastAction_f$OpenPPL_None :
 //
 // "Initialize" first action on other rounds to last value of last round,
 // i.e. do nothing and keep the old value.
 //
-[[(betround == 1) && (f$OpenPPL_BotsActionsOnThisRound == 0)] ? 0 : 0])
+[[(betround == f$OpenPPL_ConstBetRoundPreflop) && (f$OpenPPL_BotsActionsOnThisRound == 0)] ? 0 : 0])
 //
 // Then we call f$OpenPPL_Decision and store BotsLastAction for the next time...
 //
@@ -308,7 +406,7 @@ me_st_MemBotsLastAction_f$OpenPPL_None
 me_re_MemBotsLastAction
 
 ##f$OpenPPL_InitBotsLastPreflopAction##
-(betround == 1) ? me_st_MemBotsLastPreflopAction_f$OpenPPL_BotsLastAction : 0
+(betround == f$OpenPPL_ConstBetRoundPreflop) ? me_st_MemBotsLastPreflopAction_f$OpenPPL_BotsLastAction : 0
 
 ##f$OpenPPL_BotsLastPreflopAction##
 me_re_MemBotsLastPreflopAction
@@ -359,11 +457,11 @@ f$OpenPPL_HINT_There_Is_No_Raiser_Therefore_No_CurrentBet
 (f$OpenPPL_PlayersRaisingOrColdCallingTheLastRaise - 1)
 
 ##f$OpenPPL_Folds##
-(betround == 1) ? (nplayersdealt  - nopponentsplaying - 1) :
-(betround == 2) ? (nplayersround2 - nopponentsplaying - 1) :
-(betround == 3) ? (nplayersround3 - nopponentsplaying - 1) :
-(betround == 4) ? (nplayersround4 - nopponentsplaying - 1) :
-f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+(betround == f$OpenPPL_ConstBetRoundPreflop) ? (nplayersdealt  - nopponentsplaying - 1) :
+(betround == f$OpenPPL_ConstBetRoundFlop)    ? (nplayersround2 - nopponentsplaying - 1) :
+(betround == f$OpenPPL_ConstBetRoundTurn)    ? (nplayersround3 - nopponentsplaying - 1) :
+(betround == f$OpenPPL_ConstBetRoundRiver)   ? (nplayersround4 - nopponentsplaying - 1) :
+f$OpenPPL_ERROR_Betround_Out_Of_Range
 
 ##f$OpenPPL_Chair0CheckiongInFrontOfHero##
    (currentbet0 == 0)
@@ -438,10 +536,11 @@ nopponentschecking
 // Stored value of checks on previous orbit plus players behind
 (f$OpenPPL_BotsActionsOnThisRound == 1) ? (f$OpenPPL_Checks + f$OpenPPL_ChecksAfterHero) :
 // There can no longer be any checking players, so don't change anything
-0
+f$OpenPPL_HINT_Nothing_To_Do_But_All_OK
 
 ##f$OpenPPL_InitChecks##
-(f$OpenPPL_BotsActionsOnThisRound <= 1) ? me_st_MemChecks_f$OpenPPL_CalculateChecks : 0
+(f$OpenPPL_BotsActionsOnThisRound <= 1) ? me_st_MemChecks_f$OpenPPL_CalculateChecks : 
+f$OpenPPL_HINT_Nothing_To_Do_But_All_OK
 
 ##f$OpenPPL_Checks##
 me_re_MemChecks
@@ -459,36 +558,40 @@ me_re_MemChecks
 ((raisbits3 & ~(1<<userchair)) == 0)
 
 ##f$OpenPPL_OpponentCalledOnFlop##
-   (betround > 2)
+   (betround > f$OpenPPL_ConstBetRoundFlop)
 && ((didraisround2 + didswaground2) == 1)
 && !didchecround2
 && !didcallround2
 && f$OpenPPL_NoVillainBetOrRaisedOnFlop
 
 ##f$OpenPPL_OpponentCalledOnTurn##
-   (betround > 3)
+   (betround > f$OpenPPL_ConstBetRoundTurn)
 && ((didraisround3 + didswaground3) == 1)
 && !didchecround3
 && !didcallround3
 && f$OpenPPL_NoVillainBetOrRaisedOnTurn
 
 ##f$OpenPPL_InitRaisesBeforeFlop##
-(betround == 1) ? me_st_MemRaisesBeforeFlop_f$OpenPPL_Raises : 0
+(betround == f$OpenPPL_ConstBetRoundPreflop) ? me_st_MemRaisesBeforeFlop_f$OpenPPL_Raises : 
+f$OpenPPL_HINT_Nothing_To_Do_But_All_OK
 
 ##f$OpenPPL_InitRaisesOnFlop##
-(betround == 2) ? me_st_MemRaisesOnFlop_f$OpenPPL_Raises : 0
+(betround == f$OpenPPL_ConstBetRoundFlop) ? me_st_MemRaisesOnFlop_f$OpenPPL_Raises : 
+f$OpenPPL_HINT_Nothing_To_Do_But_All_OK
 
 ##f$OpenPPL_InitRaisesOnTurn##
-(betround == 3) ? me_st_MemRaisesOnTurn_f$OpenPPL_Raises : 0
+(betround == f$OpenPPL_ConstBetRoundTurn) ? me_st_MemRaisesOnTurn_f$OpenPPL_Raises : 
+f$OpenPPL_HINT_Nothing_To_Do_But_All_OK
 
 ##f$OpenPPL_NumberOfRaisesBeforeFlop##
-(betround > 1) ? me_re_MemRaisesBeforeFlop : 0
+(betround > f$OpenPPL_ConstBetRoundPreflop) ? me_re_MemRaisesBeforeFlop : 0
 
 ##f$OpenPPL_NumberOfRaisesOnFlop##
-(betround > 2) ? me_re_MemRaisesOnFlop : 0
+(betround > f$OpenPPL_ConstBetRoundFlop) ? me_re_MemRaisesOnFlop : 
+f$OpenPPL_HINT_Nothing_To_Do_But_All_OK
 
 ##f$OpenPPL_NumberOfRaisesOnTurn##
-(betround > 3) ? me_re_MemRaisesOnTurn : 0
+(betround > f$OpenPPL_ConstBetRoundTurn) ? me_re_MemRaisesOnTurn : 0
 
 ##f$OpenPPL_Calculate_Raises##
 (me_re_MemRaises + f$OpenPPL_RaisesSinceLastPlay)
@@ -528,7 +631,7 @@ nopponentsraising
 
 ##f$OpenPPL_RaisesBeforeOurFirstAction##
 (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks > 0) ? 0 :
-(betround > 1) ? f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPostflop :
+(betround > f$OpenPPL_ConstBetRoundPreflop) ? f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPostflop :
 (dealposition == 1) ? f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopInSmallBlind :
 (dealposition == 2) ? f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopInBigBlind :
 f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopNotInTheBlinds
@@ -550,7 +653,7 @@ nopponentsraising
 (f$OpenPPL_BotsActionsOnThisRound == 0) ? f$OpenPPL_RaisesBeforeOurFirstAction :
 (f$OpenPPL_BotsActionsOnThisRound == 1) ? f$OpenPPL_RaisesSinceLastPlayOnOurSecondAction :
 (f$OpenPPL_BotsActionsOnThisRound >= 2) ? f$OpenPPL_RaisesSinceLastPlayAfterOurSecondAction :
-f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+f$OpenPPL_ERROR_BotsActionsOnThisRound_Out_Of_Range
 
 //*****************************************************************************
 //
@@ -620,7 +723,7 @@ f$OpenPPL_ButtonChair == 6 ? f$OpenPPL_Chair6StartingStackSize :
 f$OpenPPL_ButtonChair == 7 ? f$OpenPPL_Chair7StartingStackSize :
 f$OpenPPL_ButtonChair == 8 ? f$OpenPPL_Chair8StartingStackSize :
 f$OpenPPL_ButtonChair == 9 ? f$OpenPPL_Chair9StartingStackSize :
-f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+f$OpenPPL_ERROR_ButtonChair_Not_Recognized__Check_Your_TableMap
 
 ##f$OpenPPL_CutOffStartingStackSize##
 // Amount in bets (big blinds for preflop)
@@ -634,7 +737,7 @@ f$OpenPPL_CutOffChair == 6 ? f$OpenPPL_Chair6StartingStackSize :
 f$OpenPPL_CutOffChair == 7 ? f$OpenPPL_Chair7StartingStackSize :
 f$OpenPPL_CutOffChair == 8 ? f$OpenPPL_Chair8StartingStackSize :
 f$OpenPPL_CutOffChair == 9 ? f$OpenPPL_Chair9StartingStackSize :
-f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+f$OpenPPL_ERROR_CutOffChair_Not_Recognized__Check_Your_TableMap
 
 ##f$OpenPPL_MiddlePosition3StartingStackSize##
 // Amount in bets (big blinds for preflop)
@@ -648,7 +751,7 @@ f$OpenPPL_MiddlePosition3Chair == 6 ? f$OpenPPL_Chair6StartingStackSize :
 f$OpenPPL_MiddlePosition3Chair == 7 ? f$OpenPPL_Chair7StartingStackSize :
 f$OpenPPL_MiddlePosition3Chair == 8 ? f$OpenPPL_Chair8StartingStackSize :
 f$OpenPPL_MiddlePosition3Chair == 9 ? f$OpenPPL_Chair9StartingStackSize :
-f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+f$OpenPPL_ERROR_MiddlePosition3Chair_Not_Recognized__Check_Your_TableMap
 
 ##f$OpenPPL_MiddlePosition2StartingStackSize##
 // Amount in bets (big blinds for preflop)
@@ -662,7 +765,7 @@ f$OpenPPL_MiddlePosition2Chair == 6 ? f$OpenPPL_Chair6StartingStackSize :
 f$OpenPPL_MiddlePosition2Chair == 7 ? f$OpenPPL_Chair7StartingStackSize :
 f$OpenPPL_MiddlePosition2Chair == 8 ? f$OpenPPL_Chair8StartingStackSize :
 f$OpenPPL_MiddlePosition2Chair == 9 ? f$OpenPPL_Chair9StartingStackSize :
-f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+f$OpenPPL_ERROR_MiddlePosition2Chair_Not_Recognized__Check_Your_TableMap
 
 ##f$OpenPPL_MiddlePosition1StartingStackSize##
 // Amount in bets (big blinds for preflop)
@@ -676,7 +779,7 @@ f$OpenPPL_MiddlePosition1Chair == 6 ? f$OpenPPL_Chair6StartingStackSize :
 f$OpenPPL_MiddlePosition1Chair == 7 ? f$OpenPPL_Chair7StartingStackSize :
 f$OpenPPL_MiddlePosition1Chair == 8 ? f$OpenPPL_Chair8StartingStackSize :
 f$OpenPPL_MiddlePosition1Chair == 9 ? f$OpenPPL_Chair9StartingStackSize :
-f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+f$OpenPPL_ERROR_MiddlePosition1Chair_Not_Recognized__Check_Your_TableMap
 
 ##f$OpenPPL_EarlyPosition3StartingStackSize##
 // Amount in bets (big blinds for preflop)
@@ -690,7 +793,7 @@ f$OpenPPL_EarlyPosition3Chair == 6 ? f$OpenPPL_Chair6StartingStackSize :
 f$OpenPPL_EarlyPosition3Chair == 7 ? f$OpenPPL_Chair7StartingStackSize :
 f$OpenPPL_EarlyPosition3Chair == 8 ? f$OpenPPL_Chair8StartingStackSize :
 f$OpenPPL_EarlyPosition3Chair == 9 ? f$OpenPPL_Chair9StartingStackSize :
-f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+f$OpenPPL_ERROR_EarlyPosition3Chair_Not_Recognized__Check_Your_TableMap
 
 ##f$OpenPPL_EarlyPosition2StartingStackSize##
 // Amount in bets (big blinds for preflop)
@@ -704,7 +807,7 @@ f$OpenPPL_EarlyPosition2Chair == 6 ? f$OpenPPL_Chair6StartingStackSize :
 f$OpenPPL_EarlyPosition2Chair == 7 ? f$OpenPPL_Chair7StartingStackSize :
 f$OpenPPL_EarlyPosition2Chair == 8 ? f$OpenPPL_Chair8StartingStackSize :
 f$OpenPPL_EarlyPosition2Chair == 9 ? f$OpenPPL_Chair9StartingStackSize :
-f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+f$OpenPPL_ERROR_EarlyPosition2Chair_Not_Recognized__Check_Your_TableMap
 
 ##f$OpenPPL_EarlyPosition1StartingStackSize##
 // Amount in bets (big blinds for preflop)
@@ -718,7 +821,7 @@ f$OpenPPL_EarlyPosition1Chair == 6 ? f$OpenPPL_Chair6StartingStackSize :
 f$OpenPPL_EarlyPosition1Chair == 7 ? f$OpenPPL_Chair7StartingStackSize :
 f$OpenPPL_EarlyPosition1Chair == 8 ? f$OpenPPL_Chair8StartingStackSize :
 f$OpenPPL_EarlyPosition1Chair == 9 ? f$OpenPPL_Chair9StartingStackSize :
-f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+f$OpenPPL_ERROR_EarlyPosition1Chair_Not_Recognized__Check_Your_TableMap
 
 ##f$OpenPPL_BigBlindStartingStackSize##
 // Amount in bets (big blinds for preflop)
@@ -732,7 +835,7 @@ f$OpenPPL_BigBlindChair == 6 ? f$OpenPPL_Chair6StartingStackSize :
 f$OpenPPL_BigBlindChair == 7 ? f$OpenPPL_Chair7StartingStackSize :
 f$OpenPPL_BigBlindChair == 8 ? f$OpenPPL_Chair8StartingStackSize :
 f$OpenPPL_BigBlindChair == 9 ? f$OpenPPL_Chair9StartingStackSize :
-f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+f$OpenPPL_ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap
 
 ##f$OpenPPL_SmallBlindStartingStackSize##
 // Amount in bets (big blinds for preflop)
@@ -746,7 +849,7 @@ f$OpenPPL_SmallBlindChair == 6 ? f$OpenPPL_Chair6StartingStackSize :
 f$OpenPPL_SmallBlindChair == 7 ? f$OpenPPL_Chair7StartingStackSize :
 f$OpenPPL_SmallBlindChair == 8 ? f$OpenPPL_Chair8StartingStackSize :
 f$OpenPPL_SmallBlindChair == 9 ? f$OpenPPL_Chair9StartingStackSize :
-f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+f$OpenPPL_ERROR_SmallBlindChair_Not_Recognized__Check_Your_TableMap
 
 ##f$OpenPPL_BigBlindCurrentBet##
 // Amount in bets (big blinds for preflop)
@@ -761,7 +864,7 @@ f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRA
 (f$OpenPPL_BigBlindChair == 7) ? (currentbet7 / bet) :
 (f$OpenPPL_BigBlindChair == 8) ? (currentbet8 / bet) :
 (f$OpenPPL_BigBlindChair == 9) ? (currentbet9 / bet) :
-f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+f$OpenPPL_ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap
 
 ##f$OpenPPL_SmallBlindCurrentBet##
 // Amount in bets (big blinds for preflop)
@@ -776,7 +879,7 @@ f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRA
 (f$OpenPPL_SmallBlindChair == 7) ? (currentbet7 / bet) :
 (f$OpenPPL_SmallBlindChair == 8) ? (currentbet8 / bet) :
 (f$OpenPPL_SmallBlindChair == 9) ? (currentbet9 / bet) :
-f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+f$OpenPPL_ERROR_SmallBlindChair_Not_Recognized__Check_Your_TableMap
 
 ##f$OpenPPL_MaxStillToActStackSizeAfterSmallBlind##
 // Only one player behind SB, so it is easy
@@ -851,10 +954,12 @@ f$OpenPPL_EarlyPosition2StartingStackSize < f$OpenPPL_MinStillToActStackSizeAfte
   f$OpenPPL_EarlyPosition2StartingStackSize : f$OpenPPL_MinStillToActStackSizeAfterEarlyPosition2
 
 ##f$OpenPPL_InitMaxOpponentStackSize##
-(br == 1 ? me_st_MaxOpponentStackSize_f$OpenPPL_MaxOpponentStackSizeCalculation : 0)
+(betround == f$OpenPPL_ConstBetRoundPreflop) ? me_st_MaxOpponentStackSize_f$OpenPPL_MaxOpponentStackSizeCalculation : 
+f$OpenPPL_HINT_Nothing_To_Do_But_All_OK
 
 ##f$OpenPPL_InitMinOpponentStackSize##
-(br == 1 ? me_st_MinOpponentStackSize_f$OpenPPL_MinOpponentStackSizeCalculation : 0)
+(betround == f$OpenPPL_ConstBetRoundPreflop) ? me_st_MinOpponentStackSize_f$OpenPPL_MinOpponentStackSizeCalculation :
+f$OpenPPL_HINT_Nothing_To_Do_But_All_OK
 
 ##f$OpenPPL_MaxOpponentStackSizeCalculation##
 (bblind <= 0) ? f$OpenPPL_Error_Bigblind_Is_Zero :
@@ -881,8 +986,7 @@ f$OpenPPL_EarlyPosition2StartingStackSize < f$OpenPPL_MinStillToActStackSizeAfte
     (balance_rank2 == balance ? balance_rank1 : balance_rank2) :
   nplayersdealt == 2 ?
     (balance_rank1 == balance ? balance_rank0 : balance_rank1) :
-// Error: -bblind, because we divide to -1.
-- bblind]]
+f$OpenPPL_ERROR_No_Opponents_Detected__Check_Your_TableMap]]
 
 ##f$OpenPPL_OpponentsWithHigherStack##
 // No need to tinker with memory symbols here,
@@ -903,8 +1007,8 @@ f$OpenPPL_EarlyPosition2StartingStackSize < f$OpenPPL_MinStillToActStackSizeAfte
 (bblind > 0) ? ((currentbet + balance) / bblind) : f$OpenPPL_Error_Bigblind_Is_Zero
 
 ##f$OpenPPL_InitStartingStackSize##
-((handsplayed == 0 || f$OpenPPL_StartingStackSize == 0) && (betround == 1)) ?
-  me_st_MemStartingStackSize_f$OpenPPL_CalculateStartingStackSize : 0
+((handsplayed == 0 || f$OpenPPL_StartingStackSize == 0) && (betround == f$OpenPPL_ConstBetRoundPreflop)) ?
+  me_st_MemStartingStackSize_f$OpenPPL_CalculateStartingStackSize : f$OpenPPL_HINT_Nothing_To_Do_But_All_OK
 
 ##f$OpenPPL_StartingStackSize##
 me_re_MemStartingStackSize
@@ -966,11 +1070,11 @@ f$OpenPPL_HINT_Something_Is_Wrong__It_Seems_You_Are_Not_Even_Seated
 (bblind > 0) ? (balance / bblind) : f$OpenPPL_ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##f$OpenPPL_TotalInvested##
-(betround == 1 && nbetsround > 0)  ? ncurrentbets :
-(betround == 2 && nbetsround1 > 0) ? (nbetsround1 + ncurrentbets) :
-(betround == 3 && nbetsround1 > 0) ? (nbetsround1 + nbetsround2 + ncurrentbets) :
-(betround == 4 && nbetsround1 > 0) ? (nbetsround1 + nbetsround2 + nbetsround3 + ncurrentbets) :
-f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+(betround == f$OpenPPL_ConstBetRoundPreflop && nbetsround  > 0) ? ncurrentbets :
+(betround == f$OpenPPL_ConstBetRoundFlop    && nbetsround1 > 0) ? (nbetsround1 + ncurrentbets) :
+(betround == f$OpenPPL_ConstBetRoundTurn    && nbetsround1 > 0) ? (nbetsround1 + nbetsround2 + ncurrentbets) :
+(betround == f$OpenPPL_ConstBetRoundRiver   && nbetsround1 > 0) ? (nbetsround1 + nbetsround2 + nbetsround3 + ncurrentbets) :
+f$OpenPPL_ERROR_Betround_Out_Of_Range
 
 //*****************************************************************************
 //
@@ -1042,7 +1146,7 @@ rankhicommon
 || ($$cs1 == $$cs2 && $$cs1 == $$cs3) ]
 
 ##f$OpenPPL_FourCardsToWheelOnBoard##
-`(rankbitscommon&0b0000000000111110) >= 4
+`(rankbitscommon & 0b0000000000111110) >= 4
 
 ##f$OpenPPL_FourOf1SuiteOnTurn##
 (($$cs0 == $$cs1) && ($$cs2 == $$cs3) && ($$cs0 == $$cs3))
@@ -1054,7 +1158,7 @@ rankhicommon
 [($$cr0 >= $$cr1) && ($$cr0 >= $$cr2)] ? $$cr0 :
 [($$cr1 >= $$cr0) && ($$cr1 >= $$cr2)] ? $$cr1 :
 [($$cr2 >= $$cr0) && ($$cr2 >= $$cr1)] ? $$cr2 :
-0
+-1
 
 ##f$OpenPPL_KingPresentOnFlop##
    ($$cr0 == f$OpenPPL_ConstCardKing)
@@ -1068,7 +1172,7 @@ rankhicommon
 f$OpenPPL_StraightPossibleOnFlop && !f$OpenPPL_ExactlyOneStraightPossibleOnFlop
 
 ##f$OpenPPL_MoreThanOneStraightPossibleOnRiver##
-(betround <= 4 || f$OpenPPL_NumberOfStraightsPossibleOnRiver < 2) ? 0 : 1
+(betround == f$OpenPPL_ConstBetRoundRiver && (f$OpenPPL_NumberOfStraightsPossibleOnRiver == 1))
 
 ##f$OpenPPL_rankbitscommonriver##
 // As this can only be called at the river it is identical to rankbiscommon
@@ -1103,7 +1207,7 @@ f$OpenPPL_DoubleGutShotOnBoard || f$OpenPPL_OpenEndedStraightDrawOnBoard
 
 ##f$OpenPPL_MoreThanOneStraightPossibleOnTurn##
 !f$OpenPPL_PairOnBoard
-&& [(f$OpenPPL_BestBoardCard - f$OpenPPL_LowestBoardCard)<= 4 || (f$OpenPPL_2ndBestBoardCard <= 5)]
+&& [(f$OpenPPL_BestBoardCard - f$OpenPPL_LowestBoardCard) <= 4 || (f$OpenPPL_2ndBestBoardCard <= 5)]
 && f$OpenPPL_AcePresentOnTurn
 
 ##f$OpenPPL_OneCardFlushPossible##
@@ -1130,11 +1234,11 @@ f$OpenPPL_OneCardStraightPossible && !f$OpenPPL_MoreThanOneOneCardStraightPossib
 `[rankbitscommon >> (rankhiplayer + 1)]
 
 ##f$OpenPPL_OvercardsOnBoard##
-(($$cr0 > rankhiplayer) ? 1 : 0) +
-(($$cr1 > rankhiplayer) ? 1 : 0) +
-(($$cr2 > rankhiplayer) ? 1 : 0) +
-(($$cr3 > rankhiplayer) ? 1 : 0) +
-(($$cr4 > rankhiplayer) ? 1 : 0)
+  (($$cr0 > rankhiplayer) ? 1 : 0)
++ (($$cr1 > rankhiplayer) ? 1 : 0)
++ (($$cr2 > rankhiplayer) ? 1 : 0)
++ (($$cr3 > rankhiplayer) ? 1 : 0)
++ (($$cr4 > rankhiplayer) ? 1 : 0)
 
 ##f$OpenPPL_PairOnBoard##
 (nrankedcommon >= 2)
@@ -1148,7 +1252,7 @@ $$cr1 <= $$cr0 && $$cr1 <=  $$cr2 ? $$cr1 :
 $$cr2 <= $$cr0 && $$cr2 <=  $$cr1 ? $$cr2 : -1
 
 ##f$OpenPPL_LowestFlopCardPairedOnTurn##
-f$OpenPPL_LowestFlopCard == $$cr3 ? 1 : 0
+(f$OpenPPL_LowestFlopCard == $$cr3) 
 
 ##f$OpenPPL_OnlyOneStraightPossible##
 f$OpenPPL_StraightPossible
@@ -1201,10 +1305,10 @@ f$OpenPPL_2ndTopFlopCardPairedOnRiver
 f$OpenPPL_2ndTopFlopCardPairedOnTurn
 
 ##f$OpenPPL_2ndTopFlopCardPairedOnRiver##
-f$OpenPPL_2ndTopFlopCard == $$cr4 ? 1 : 0
+(f$OpenPPL_2ndTopFlopCard == $$cr4)
 
 ##f$OpenPPL_2ndTopFlopCardPairedOnTurn##
-f$OpenPPL_2ndTopFlopCard == $$cr3 ? 1 : 0
+(f$OpenPPL_2ndTopFlopCard == $$cr3)
 
 ##f$OpenPPL_srankbitshero##
  (($$ps0==tsuit ? ($$pr0!=f$OpenPPL_ConstCardAce ? 2**$$pr0 : 0b100000000000010) : 0)
@@ -1220,8 +1324,8 @@ f$OpenPPL_2ndTopFlopCard == $$cr3 ? 1 : 0
 
 ##f$OpenPPL_SuitsOnBoard##
 f$OpenPPL_SuitsOnFlop +
-((($$cs3 != $$cs0) && ($$cs3 != $$cs1) && ($$cs3 != $$cs2)) ? 1 : 0) +
-((($$cs4 != $$cs0) && ($$cs4 != $$cs1) && ($$cs4 != $$cs2) && ($$cs4 != $$cs3)) ? 1 : 0)
+  ((($$cs3 != $$cs0) && ($$cs3 != $$cs1) && ($$cs3 != $$cs2)) ? 1 : 0)
++ ((($$cs4 != $$cs0) && ($$cs4 != $$cs1) && ($$cs4 != $$cs2) && ($$cs4 != $$cs3)) ? 1 : 0)
 
 ##f$OpenPPL_SuitsOnFlop##
  ($$cs0 == $$cs1 && $$cs1 == $$cs2) ? 1 :
@@ -1291,19 +1395,19 @@ $$cr2 >= $$cr0 && $$cr2 >= $$cr1 ? $$cr2 :
 f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 
 ##f$OpenPPL_TopFlopCardPairedonRiver##
-f$OpenPPL_TopFlopCard == $$cr4 ? 1 : 0
+(f$OpenPPL_TopFlopCard == $$cr4)
 
 ##f$OpenPPL_TopFlopCardPairedonTurn##
-f$OpenPPL_TopFlopCard == $$cr3 ? 1 : 0
+(f$OpenPPL_TopFlopCard == $$cr3)
 
 ##f$OpenPPL_TripsOnBoard##
 (nrankedcommon >= 3)
 
 ##f$OpenPPL_TripsOnBoardOnTurn##
-($$cr0 == $$cr1 && $$cr1 == $$cr2) ? 1 :
-($$cr0 == $$cr1 && $$cr1 == $$cr3) ? 1 :
-($$cr0 == $$cr2 && $$cr2 == $$cr3) ? 1 :
-($$cr1 == $$cr2 && $$cr2 == $$cr3) ? 1 : 0
+   ($$cr0 == $$cr1 && $$cr1 == $$cr2)
+|| ($$cr0 == $$cr1 && $$cr1 == $$cr3)
+|| ($$cr0 == $$cr2 && $$cr2 == $$cr3)
+|| ($$cr1 == $$cr2 && $$cr2 == $$cr3)
 
 ##f$OpenPPL_TurnCardisOvercardToBoard##
 [  $$cr3 > $$cr0
@@ -1328,7 +1432,7 @@ f$OpenPPL_TopFlopCard == $$cr3 ? 1 : 0
 && !f$OpenPPL_OpenEndedStraightDrawPossibleOnFlop
 
 ##f$OpenPPL_WheelPossible##
-`((rankbitscommon & 0b111110) >= 3) ? 1 : 0
+`((rankbitscommon & 0b111110) >= 3)
 
 //*****************************************************************************
 //
@@ -1481,7 +1585,7 @@ f$OpenPPL_HINT_Such_A_Straight_Does_Not_Exist
 `(rankbits & 0b000000011111000) == 5 ? f$OpenPPL_ConstCardSeven :
 `(rankbits & 0b000000001111100) == 5 ? f$OpenPPL_ConstCardSix   :
 `(rankbits & 0b000000000111110) == 5 ? f$OpenPPL_ConstCardFive  :
-f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+f$OpenPPL_ERROR_We_Dont_Have_Any_Straight__Do_Not_Call_This_Function
 
 ##f$OpenPPL_Have2ndNutStraight##
 f$OpenPPL_HaveStraight
@@ -1654,7 +1758,7 @@ f$OpenPPL_Have3rdNutFlush || f$OpenPPL_Have3rdNutFlushDraw
 || (f$OpenPPL_HaveBackdoorFlushDraw && f$OpenPPL_NumberOfUnknownSuitedOvercards == 2)
 
 ##f$OpenPPL_HaveBackdoorFlushDraw##
-(br <= 3) && (nsuited >= 3)
+(betround <= f$OpenPPL_ConstBetRoundTurn) && (nsuited >= 3)
 
 ##f$OpenPPL_HaveBackdoorNutFlushDraw##
 f$OpenPPL_HaveNutFlush || f$OpenPPL_HaveNutFlushDraw
@@ -2138,14 +2242,15 @@ f$OpenPPL_HaveOverPair || f$OpenPPL_HaveBestOverPairOrBetter
 ##f$OpenPPL_HaveTrips##
 !ispair
 &&   [(pokerval & threeofakind) && !(pokervalcommon & threeofakind)
-  || ((pokerval & fullhouse)    && `(pcbits &0b11100) == 1)
+  || ((pokerval & fullhouse)    && `(pcbits & 0b11100) == 1)
   ||  (pokerval & fourofakind)  && !(pokervalcommon & fourofakind)]
 
 ##f$OpenPPL_HaveStraight##
-nstraightfill == 0
+(nstraightfill == 0)
 
 ##f$OpenPPL_HaveStraightDraw##
-f$OpenPPL_HaveOpenEndedStraightDraw || f$OpenPPL_HaveDoubleGutshotDraw
+   f$OpenPPL_HaveOpenEndedStraightDraw 
+|| f$OpenPPL_HaveDoubleGutshotDraw
 
 ##f$OpenPPL_HaveStraightFlush##
 (isstraightflush || isroyalflush)
@@ -2213,8 +2318,8 @@ rankbitscommon
 (f$OpenPPL_RankBitsCommonWithoutPairs >> f$OpenPPL_ConstCardTwo)   & 1 ? f$OpenPPL_ConstCardTwo   : 0
 
 ##f$OpenPPL_HaveTopNonBoardPairedPair##
-   [(betround > 1) && ($$pr0 == f$OpenPPL_HighestUnpairedBoardCard)]
-|| [(betround > 1) && ($$pr1 == f$OpenPPL_HighestUnpairedBoardCard)]
+   [(betround >= f$OpenPPL_ConstBetRoundFlop) && ($$pr0 == f$OpenPPL_HighestUnpairedBoardCard)]
+|| [(betround >= f$OpenPPL_ConstBetRoundFlop) && ($$pr1 == f$OpenPPL_HighestUnpairedBoardCard)]
 
 ##f$OpenPPL_HaveTopPair##
 [ $$pr0==rankhicommon || $$pr1==rankhicommon ]
@@ -2240,7 +2345,7 @@ f$OpenPPL_HaveStraight
 `((~srankbits & 0x7fff) >> srankhi)
 
 ##f$OpenPPL_BoardKicker_FourOfAKindOnBoard##
-(betround == 4) ? f$OpenPPL_HighestUnpairedBoardCard : 2
+(betround == f$OpenPPL_ConstBetRoundRiver) ? f$OpenPPL_HighestUnpairedBoardCard : 2
 
 ##f$OpenPPL_NFH4OAK_FullHouseOnBoard_WeHaveOverPairToPair##
 // 3 is the best strength possible, because two quads are always possible
@@ -2391,7 +2496,7 @@ f$OpenPPL_HaveStraight
 - ((trankcommon > rankhiplayer) ? 1 : 0)
 
 ##f$OpenPPL_NFH4OAK_PairOnBoard_WeHitQuads##
-// With a single pair on board and quads for us we have the dead nuts
+// With a single pair on board and quads for us we have the current nuts
 1
 
 ##f$OpenPPL_NutFullHouseOrFourOfAKind_FourOfAKindOnBoard##
@@ -2455,7 +2560,7 @@ ispair ?
 [
     // Everybody who has a higher pocket pair or hits a higher board-card
     // or hits the set will get a better hand
-    (f$OpenPPL_RankOfSetOnBoard > rankhiplayer) ? (f$OpenPPL_ConstCardAce - rankhiplayer) :
+    (f$OpenPPL_RankOfSetOnBoard > rankhiplayer) ? (f$OpenPPL_ConstCardAce - rankhiplayer + 1) :
     // Otherwise: set is lower, so there is 1 additional card, that loses for us
     (f$OpenPPL_ConstCardAce - rankhiplayer + 1)
 ] :
@@ -2547,8 +2652,21 @@ isfinaltable
 // Always true
 1
 
-##f$OpenPPL_Random##
+##f$OpenPPL_FloatingPointRandom_0_100##
+// OpenHoldem uses floating point numbers
+// and random is in the range [0..1]
+// But for OpenPPL we need a range of [0..100]
 [ random * 100 ]
+
+##f$OpenPPL_IntegerRandom_0_100##
+// Cutting of the fractional part of the random number is tricky.
+// We do a bitwise XOR with 0, which doesn't change anything,
+// but to evaluate the expression OpenHoldem internally truncates the number 
+// to integer (bit-vector).
+(f$OpenPPL_FloatingPointRandom_0_100 ^ 0)
+
+##f$OpenPPL_Random##
+f$OpenPPL_IntegerRandom_0_100
 
 //*****************************************************************************
 //
@@ -2557,11 +2675,11 @@ isfinaltable
 //*****************************************************************************
 
 ##f$OpenPPL_PlayersAtStartOfThisRound##
-(betround == 1) ? nplayersround1 :
-(betround == 2) ? nplayersround2 :
-(betround == 3) ? nplayersround3 :
-(betround == 4) ? nplayersround4 :
-f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+(betround == f$OpenPPL_ConstBetRoundPreflop) ? nplayersround1 :
+(betround == f$OpenPPL_ConstBetRoundFlop)    ? nplayersround2 :
+(betround == f$OpenPPL_ConstBetRoundTurn)    ? nplayersround3 :
+(betround == f$OpenPPL_ConstBetRoundRiver)   ? nplayersround4 :
+f$OpenPPL_ERROR_Betround_Out_Of_Range
 
 ##f$OpenPPL_Opponents##
 (f$OpenPPL_PlayersAtStartOfThisRound - 1)
@@ -2576,7 +2694,7 @@ nopponentsdealt
 f$OpenPPL_NumberOfOpponentsAllin > 0
 
 ##f$OpenPPL_Opponents_AllinBits##
-(betround == 1) ?
+(betround == f$OpenPPL_ConstBetRoundPreflop) ?
 [0
 |(((opponentsplayingbits & (1 << 0)) && (currentbet0 > 0) && (balance0 == 0)) ? 1 << 0 : 0)
 |(((opponentsplayingbits & (1 << 1)) && (currentbet1 > 0) && (balance1 == 0)) ? 1 << 1 : 0)
@@ -2667,7 +2785,7 @@ ac_dealpos6 == 2 ? 6 :
 ac_dealpos7 == 2 ? 7 :
 ac_dealpos8 == 2 ? 8 :
 ac_dealpos9 == 2 ? 9 :
-f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+f$OpenPPL_ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap
 
 ##f$OpenPPL_SmallBlindChair##
 ac_dealpos0 == 1 ? 0 :
@@ -2680,7 +2798,7 @@ ac_dealpos6 == 1 ? 6 :
 ac_dealpos7 == 1 ? 7 :
 ac_dealpos8 == 1 ? 8 :
 ac_dealpos9 == 1 ? 9 :
-f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+f$OpenPPL_ERROR_SmallBlindChair_Not_Recognized__Check_Your_TableMap
 
 ##f$OpenPPL_ButtonChair##
 // We ignore the case of headsup,
@@ -2697,7 +2815,7 @@ ac_dealpos6 == nplayersdealt ? 6 :
 ac_dealpos7 == nplayersdealt ? 7 :
 ac_dealpos8 == nplayersdealt ? 8 :
 ac_dealpos9 == nplayersdealt ? 9 :
-f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+f$OpenPPL_ERROR_ButtonChair_Not_Recognized__Check_Your_TableMap
 
 ##f$OpenPPL_CutOffChair##
 // We have to make sure, that the chair in question is not a blind,
@@ -2904,11 +3022,11 @@ f$OpenPPL_MiddlePosition3Raising ? 4 :
 f$OpenPPL_CutOffRaising          ? 3 :
 f$OpenPPL_ButtonRaising          ? 2 :
 f$OpenPPL_SmallBlindRaising      ? 1 :
-// Can't be button (0), as it is for the first orbit preflop only
+// Can't be big blind (0), as it is for the first orbit preflop only
 -1
 
 ##f$OpenPPL_LastCallerPosition##
-// Can't be button (0), as it is for the first orbit preflop only
+// Can't be big blind (0), as it is for the first orbit preflop only
 f$OpenPPL_SmallBlindCalling      ? 1 :
 f$OpenPPL_ButtonCalling          ? 2 :
 f$OpenPPL_CutOffCalling          ? 3 :
@@ -3021,55 +3139,6 @@ f$OpenPPL_SmallBlindChair == 9 ? pt_vpip9 :
 // because it will call the final f$Decision routine.
 //
 || [f$OpenPPL_InitBotsLastAction * 0]
-
-//*****************************************************************************
-//
-// OpenPPL - verbose errors and warning
-//
-// Instead of returning just -1 we define constants like
-// "f$OpenPPL_HINT_EarlyPosition1_Does_Not_Exist"
-// This way we get a verbose explanation in the log-file.
-//
-//*****************************************************************************
-
-##f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY##
--1
-
-##f$OpenPPL_ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap##
--1
-
-##f$OpenPPL_HINT_There_Are_No_True_Raisers##
--1
-
-##f$OpenPPL_HINT_Such_A_Straight_Does_Not_Exist##
--1
-
-##f$OpenPPL_HINT_Something_Is_Wrong__It_Seems_You_Are_Not_Even_Seated##
--1
-
-##f$OpenPPL_HINT_EarlyPosition1_Does_Not_Exist##
--1
-
-##f$OpenPPL_HINT_EarlyPosition2_Does_Not_Exist##
--1
-
-##f$OpenPPL_HINT_EarlyPosition3_Does_Not_Exist##
--1
-
-##f$OpenPPL_HINT_MiddlePosition1_Does_Not_Exist##
--1
-
-##f$OpenPPL_HINT_MiddlePosition2_Does_Not_Exist##
--1
-
-##f$OpenPPL_HINT_MiddlePosition3_Does_Not_Exist##
--1
-
-##f$OpenPPL_HINT_CutOff_Does_Not_Exist##
--1
-
--1
-##f$OpenPPL_HINT_There_Is_No_Raiser_Therefore_No_CurrentBet##
 
 //*****************************************************************************
 //
