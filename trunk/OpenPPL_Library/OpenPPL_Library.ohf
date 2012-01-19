@@ -1485,10 +1485,19 @@ f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRA
 && f$OpenPPL_RankOfFirstHoleCard > f$OpenPPL_ThirdFlopCard ]
 
 ##f$OpenPPL_HadPairOnFlop##
-(ispair || f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_FirstFlopCard || f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_SecondFlopCard || f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_ThirdFlopCard  || f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_FirstFlopCard || f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_SecondFlopCard  || f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_ThirdFlopCard)
+   ispair 
+|| f$OpenPPL_RankOfFirstHoleCard  == f$OpenPPL_FirstFlopCard 
+|| f$OpenPPL_RankOfFirstHoleCard  == f$OpenPPL_SecondFlopCard 
+|| f$OpenPPL_RankOfFirstHoleCard  == f$OpenPPL_ThirdFlopCard  
+|| f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_FirstFlopCard 
+|| f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_SecondFlopCard  
+|| f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_ThirdFlopCard
 
 ##f$OpenPPL_HadPairOnTurn##
-f$OpenPPL_HadPairOnFlop || f$OpenPPL_FlopCardPairedonTurn || f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_TurnCard || f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_TurnCard
+   f$OpenPPL_HadPairOnFlop 
+|| f$OpenPPL_FlopCardPairedonTurn 
+|| f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_TurnCard 
+|| f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_TurnCard
 
 ##f$OpenPPL_HadTopPairOnFlop##
 [(f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_HighestRankOnFlop) || (f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_HighestRankOnFlop)]
