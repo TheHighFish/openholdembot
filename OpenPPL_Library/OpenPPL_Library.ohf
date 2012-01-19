@@ -233,7 +233,7 @@ f$OpenPPL_Fold
 ##f$OpenPPL_ERROR_MiddlePosition3Chair_Not_Recognized__Check_Your_TableMap##
 -1
 
-##f$OpenPPL_ERROR_MiddlePosition1Chair_Not_Recognized__Check_Your_TableMap##
+##f$OpenPPL_ERROR_MiddlePosition2Chair_Not_Recognized__Check_Your_TableMap##
 -1
 
 ##f$OpenPPL_ERROR_MiddlePosition1Chair_Not_Recognized__Check_Your_TableMap##
@@ -258,6 +258,9 @@ f$OpenPPL_Fold
 -1
 
 ##f$OpenPPL_ERROR_Dealposition_Out_Of_Range__Check_Your_TableMap##
+-1
+
+##f$OpenPPL_ERROR_We_Dont_Have_Any_Straight__Do_Not_Call_This_Function##
 -1
 
 ##f$OpenPPL_ERROR_No_Opponents_Detected__Check_Your_TableMap##
@@ -2656,7 +2659,7 @@ f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRA
 [ispair && (rankhiplayer == trankcommon)] ? f$OpenPPL_NFH4OAK_PairOnBoard_WeHitQuads :
 [ispair && (pokerval & fullhouse)] ? f$OpenPPL_NFH4OAK_PairOnBoard_WeHitASetWithPocketPair :
 [pokerval & fullhouse] ? f$OpenPPL_NFH4OAK_PairOnBoard_WeHitThePairAndAnotherCard :
-
+f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 
 ##f$OpenPPL_NutFullHouseOrFourOfAKind##
 [pokerval & (fullhouse | fourofakind) == 0] ? f$OpenPPL_HINT_We_Dont_Have_A_FullHouse_At_All : 
