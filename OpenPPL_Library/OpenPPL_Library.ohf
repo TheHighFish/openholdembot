@@ -1003,11 +1003,11 @@ f$OpenPPL_HINT_Nothing_To_Do_But_All_OK
 f$OpenPPL_HINT_Nothing_To_Do_But_All_OK
 
 ##f$OpenPPL_MaxOpponentStackSizeCalculation##
-(bblind <= 0) ? f$OpenPPL_Error_Bigblind_Is_Zero :
+(bblind <= 0) ? f$OpenPPL_ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap :
 (balance_rank0 == balance) ? (balance_rank1 / bblind) : (balance_rank0 / bblind)
 
 ##f$OpenPPL_MinOpponentStackSizeCalculation##
-(bblind <= 0) ? f$OpenPPL_Error_Bigblind_Is_Zero :
+(bblind <= 0) ? f$OpenPPL_ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap :
 [ 1 / bblind *
 [ nplayersdealt == 10 ?
     (balance_rank9 == balance ? balance_rank8 : balance_rank9) :
@@ -1045,7 +1045,7 @@ f$OpenPPL_ERROR_No_Opponents_Detected__Check_Your_TableMap]]
 
 ##f$OpenPPL_CalculateStartingStackSize##
 // Precondition: first hand, preflop
-(bblind > 0) ? ((currentbet + balance) / bblind) : f$OpenPPL_Error_Bigblind_Is_Zero
+(bblind > 0) ? ((currentbet + balance) / bblind) : f$OpenPPL_ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##f$OpenPPL_InitStartingStackSize##
 ((handsplayed == 0 || f$OpenPPL_StartingStackSize == 0) && (betround == f$OpenPPL_ConstBetRoundPreflop)) ?
@@ -1064,7 +1064,7 @@ me_re_MemStartingStackSize
 (call <= balance) ? call : balance
 
 ##f$OpenPPL_AmountToCall##
-(bblind > 0) ? (f$OpenPPL_DollarsToCall / bblind) : f$OpenPPL_Error_Bigblind_Is_Zero
+(bblind > 0) ? (f$OpenPPL_DollarsToCall / bblind) : f$OpenPPL_ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##f$OpenPPL_BetSize##
 ncallbets
@@ -1807,12 +1807,28 @@ f$OpenPPL_Have2ndNutFlush || f$OpenPPL_Have2ndNutFlushDraw
 f$OpenPPL_Have3rdNutFlush || f$OpenPPL_Have3rdNutFlushDraw
 || (f$OpenPPL_HaveBackdoorFlushDraw && f$OpenPPL_NumberOfUnknownSuitedOvercards == 2)
 
-##f$OpenPPL_HaveBackdoorFlushDraw##
-(betround <= f$OpenPPL_ConstBetRoundTurn) && (nsuited >= 3)
+##f$OpenPPL_HaveBackdoorFlushDrawContributingTwoCards
+   (betround == f$OpenPPL_ConstBetRoundFlop)
+&& (nsuited >= 3)
+&& ($$ps0 == tsuited)
+&& ($$ps1 == tsuited)
 
-##f$OpenPPL_HaveBackdoorNutFlushDraw##
-f$OpenPPL_HaveNutFlush || f$OpenPPL_HaveNutFlushDraw
-|| (f$OpenPPL_HaveBackdoorFlushDraw && f$OpenPPL_NumberOfUnknownSuitedOvercards == 0)
+##f$OpenPPL_HaveBackdoorNutFlushDraw
+   (betround == f$OpenPPL_ConstBetRoundFlop)
+&& (nsuited >= 3)
+&& (nsuited > nsuitedcommon) 
+&& (f$OpenPPL_NumberOfUnknownSuitedOvercards == 0)
+
+##f$OpenPPL_HaveBackDoor2ndNutFlushDraw
+   (betround == f$OpenPPL_ConstBetRoundFlop)
+&& (nsuited >= 3)
+&& (nsuited > nsuitedcommon) 
+&& (f$OpenPPL_NumberOfUnknownSuitedOvercards == 1)
+
+##f$OpenPPL_HaveBackdoorFlushDraw##
+   f$OpenPPL_HaveBackdoorFlushDrawContributingTwoCards
+|| f$OpenPPL_HaveBackdoorNutFlushDraw
+|| f$OpenPPL_HaveBackDoor2ndNutFlushDraw
 
 ##f$OpenPPL_HaveBestKicker##
 (mh_kickerbetter == 0)
@@ -2803,23 +2819,72 @@ nopponentsplaying
 // but to be more user-friendly and to simplify the converter (less error-handling)
 // we decided to provide both forms of naming in the library.
 
-##f$OpenPPL_Button##
-(dealposition == nplayersdealt)
-
 ##f$OpenPPL_SmallBlind##
 (dealposition == 1)
 
 ##f$OpenPPL_BigBlind##
 (dealposition == 2)
 
+##f$OpenPPL_Button##
+// If the game in not 10-handed, some positions would be both "normal" and in the blinds.
+// E.g. for a 9-handed game big-blind would also be counted as EarlyPosition1.
+// Therefore we check for "Not InTheBlinds", except for button,
+// because "InButton" makes sense even if the game is headsup.
+(dealposition == nplayersdealt)
+
+##f$OpenPPL_CutOff##
+[(dealposition == nplayersdealt - 1) && !f$OpenPPL_InTheBlinds]
+
+##f$OpenPPL_MiddePosition3##
+[(dealposition == nplayersdealt - 2) && !f$OpenPPL_InTheBlinds]
+
+##f$OpenPPL_MiddePosition2##
+[(dealposition == nplayersdealt - 3) && !f$OpenPPL_InTheBlinds]
+
+##f$OpenPPL_MiddePosition1##
+[(dealposition == nplayersdealt - 4) && !f$OpenPPL_InTheBlinds]
+
+##f$OpenPPL_EarlyPosition3##
+[(dealposition == nplayersdealt - 5) && !f$OpenPPL_InTheBlinds]
+
+##f$OpenPPL_EarlyPosition2##
+[(dealposition == nplayersdealt - 6) && !f$OpenPPL_InTheBlinds]
+
+##f$OpenPPL_EarlyPosition1##
+[(dealposition == nplayersdealt - 7) && !f$OpenPPL_InTheBlinds]
+
 ##f$OpenPPL_InSmallBlind##
 f$OpenPPL_SmallBlind
+
+##f$OpenPPL_InBigBlind##
+f$OpenPPL_BigBlind
+
+##f$OpenPPL_InTheBlinds##
+(f$OpenPPL_InSmallBlind || f$OpenPPL_InBigBlind)
 
 ##f$OpenPPL_InButton##
 f$OpenPPL_Button
 
-##f$OpenPPL_InBigBlind##
-f$OpenPPL_BigBlind
+##f$OpenPPL_InCutOff##
+f$OpenPPL_CutOff
+
+##f$OpenPPL_InMiddePosition3##
+f$OpenPPL_MiddePosition3
+
+##f$OpenPPL_InMiddePosition2##
+f$OpenPPL_MiddePosition2
+
+##f$OpenPPL_InMiddePosition1##
+f$OpenPPL_MiddePosition1
+
+##f$OpenPPL_InEarlyPosition3##
+f$OpenPPL_EarlyPosition3
+
+##f$OpenPPL_InEarlyPosition2##
+f$OpenPPL_EarlyPosition2
+
+##f$OpenPPL_InEarlyPosition1##
+f$OpenPPL_EarlyPosition1
 
 ##f$OpenPPL_BigBlindChair##
 ac_dealpos0 == 2 ? 0 :
@@ -3200,7 +3265,6 @@ f$OpenPPL_SmallBlindChair == 9 ? pt_vpip9 :
 -1
 
 ##f$OpenPPL_HaveBackdoorStraightDraw##
-// No standard PPL. but suggested
 f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 
 ##f$OpenPPL_HighCardOfBestPossibleStraight##
@@ -3224,9 +3288,6 @@ f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 
 ##f$OpenPPL_NFH4OAK_TwoPairsOnBoard_WeHitBottomSet##
 f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
-
-##f$OpenPPL_Error_Bigblind_Is_Zero##
-0
 
 //*****************************************************************************
 //
