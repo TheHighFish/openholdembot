@@ -768,7 +768,20 @@ HaveBackdoorFlushDraw
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have a flush, flushdraw or a backdoor flushdraw
+We have a flush, flushdraw or a backdoor flushdraw.
+ Have Backdoorflushdraw is only true, if
+\end_layout
+
+\begin_layout Itemize
+we contribute at 2 cards
+\end_layout
+
+\begin_layout Itemize
+or we contribute 1 card to the nuts
+\end_layout
+
+\begin_layout Itemize
+or we contribute 1 card to the 2nd nuts 
 \end_layout
 
 \end_inset
