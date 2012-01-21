@@ -1826,7 +1826,7 @@ f$OpenPPL_Have3rdNutFlush || f$OpenPPL_Have3rdNutFlushDraw
 && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 1)
 
 ##f$OpenPPL_HaveBackdoorFlushDraw##
-   f$OpenPPL_HaveBackdoorFlushDrawContributingTwoCards
+|| f$OpenPPL_HaveBackdoorFlushDrawContributingTwoCards
 || f$OpenPPL_HaveBackdoorNutFlushDraw
 || f$OpenPPL_HaveBackDoor2ndNutFlushDraw
 
