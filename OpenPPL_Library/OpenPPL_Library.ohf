@@ -1799,34 +1799,32 @@ ispair && (f$OpenPPL_RankOfFirstHoleCard < f$OpenPPL_4thBestBoardCard) && (f$Ope
 // in f$OpenPPL_HaveInsideStraightDraw
 (nstraightfill <= 1)
 
-##f$OpenPPL_HaveBackdoor2ndNutFlushDraw##
-f$OpenPPL_Have2ndNutFlush || f$OpenPPL_Have2ndNutFlushDraw
-|| (f$OpenPPL_HaveBackdoorFlushDraw && f$OpenPPL_NumberOfUnknownSuitedOvercards == 1)
-
-##f$OpenPPL_HaveBackdoor3rdNutFlushDraw##
-f$OpenPPL_Have3rdNutFlush || f$OpenPPL_Have3rdNutFlushDraw
-|| (f$OpenPPL_HaveBackdoorFlushDraw && f$OpenPPL_NumberOfUnknownSuitedOvercards == 2)
-
-##f$OpenPPL_HaveBackdoorFlushDrawContributingTwoCards
+##f$OpenPPL_HaveBackdoorFlushDrawContributingTwoCards##
    (betround == f$OpenPPL_ConstBetRoundFlop)
 && (nsuited >= 3)
-&& ($$ps0 == tsuited)
-&& ($$ps1 == tsuited)
+&& ($$ps0 == tsuit)
+&& ($$ps1 == tsuit)
 
-##f$OpenPPL_HaveBackdoorNutFlushDraw
+##f$OpenPPL_HaveBackdoorNutFlushDraw##
    (betround == f$OpenPPL_ConstBetRoundFlop)
 && (nsuited >= 3)
 && (nsuited > nsuitedcommon) 
 && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 0)
 
-##f$OpenPPL_HaveBackDoor2ndNutFlushDraw
+##f$OpenPPL_HaveBackDoor2ndNutFlushDraw##
    (betround == f$OpenPPL_ConstBetRoundFlop)
 && (nsuited >= 3)
 && (nsuited > nsuitedcommon) 
 && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 1)
 
+##f$OpenPPL_HaveBackDoor3rdNutFlushDraw##
+   (betround == f$OpenPPL_ConstBetRoundFlop)
+&& (nsuited >= 3)
+&& (nsuited > nsuitedcommon) 
+&& (f$OpenPPL_NumberOfUnknownSuitedOvercards == 2)
+
 ##f$OpenPPL_HaveBackdoorFlushDraw##
-|| f$OpenPPL_HaveBackdoorFlushDrawContributingTwoCards
+   f$OpenPPL_HaveBackdoorFlushDrawContributingTwoCards
 || f$OpenPPL_HaveBackdoorNutFlushDraw
 || f$OpenPPL_HaveBackDoor2ndNutFlushDraw
 
@@ -2298,12 +2296,24 @@ f$OpenPPL_HaveOverPair || f$OpenPPL_HaveBestOverPairOrBetter
 
 ##f$OpenPPL_HavePair##
 [  f$OpenPPL_RankOfFirstHoleCard==f$OpenPPL_RankOfSecondHoleCard
-|| f$OpenPPL_RankOfFirstHoleCard==f$OpenPPL_FirstFlopCard || f$OpenPPL_RankOfFirstHoleCard==f$OpenPPL_SecondFlopCard || f$OpenPPL_RankOfFirstHoleCard==f$OpenPPL_ThirdFlopCard || f$OpenPPL_RankOfFirstHoleCard==f$OpenPPL_TurnCard || f$OpenPPL_RankOfFirstHoleCard==f$OpenPPL_RiverCard
-|| f$OpenPPL_RankOfSecondHoleCard==f$OpenPPL_FirstFlopCard || f$OpenPPL_RankOfSecondHoleCard==f$OpenPPL_SecondFlopCard || f$OpenPPL_RankOfSecondHoleCard==f$OpenPPL_ThirdFlopCard || f$OpenPPL_RankOfSecondHoleCard==f$OpenPPL_TurnCard || f$OpenPPL_RankOfSecondHoleCard==f$OpenPPL_RiverCard ]
+|| f$OpenPPL_RankOfFirstHoleCard==f$OpenPPL_FirstFlopCard 
+|| f$OpenPPL_RankOfFirstHoleCard==f$OpenPPL_SecondFlopCard 
+|| f$OpenPPL_RankOfFirstHoleCard==f$OpenPPL_ThirdFlopCard 
+|| f$OpenPPL_RankOfFirstHoleCard==f$OpenPPL_TurnCard 
+|| f$OpenPPL_RankOfFirstHoleCard==f$OpenPPL_RiverCard
+|| f$OpenPPL_RankOfSecondHoleCard==f$OpenPPL_FirstFlopCard 
+|| f$OpenPPL_RankOfSecondHoleCard==f$OpenPPL_SecondFlopCard 
+|| f$OpenPPL_RankOfSecondHoleCard==f$OpenPPL_ThirdFlopCard 
+|| f$OpenPPL_RankOfSecondHoleCard==f$OpenPPL_TurnCard 
+|| f$OpenPPL_RankOfSecondHoleCard==f$OpenPPL_RiverCard ]
 
 ##f$OpenPPL_HaveSet##
 [  ispair
-&& ((f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_FirstFlopCard) || (f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_SecondFlopCard) || (f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_ThirdFlopCard) || (f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_TurnCard) || (f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_RiverCard)) ]
+&& (  (f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_FirstFlopCard) 
+   || (f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_SecondFlopCard) 
+   || (f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_ThirdFlopCard) 
+   || (f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_TurnCard) 
+   || (f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_RiverCard)) ]
 
 ##f$OpenPPL_HaveTrips##
 !ispair
@@ -2598,7 +2608,7 @@ f$OpenPPL_HaveStraight
 [((rankhiplayer == f$OpenPPL_RankOfSetOnBoard) || (rankloplayer == f$OpenPPL_RankOfSetOnBoard)) && (f$OpenPPL_RankOfSetOnBoard < 2ndBestBoardCard)] ? f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairLowSetOnBoard :
 //
 // 4) we pair the pair on board, which is higher than the set, so we get a better FH, but there are still quads possible
-[((rankhiplayer == f$OpenPPL_RankOfPairOnBoardWithFullHouseOnBoard) || (rankloplayer == f$OpenPPL_RankOfPairOnBoardWithFullHouseOnBoard)) && (f$OpenPPL_RankOfPairOnBoardWithFullHouseOnBoard > f$OpenPPL_RankOfSetOnBoard)] ? f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairHighPairOnBoard :
+[(   (rankhiplayer == f$OpenPPL_RankOfPairOnBoardWithFullHouseOnBoard) || (rankloplayer == f$OpenPPL_RankOfPairOnBoardWithFullHouseOnBoard)) && (f$OpenPPL_RankOfPairOnBoardWithFullHouseOnBoard > f$OpenPPL_RankOfSetOnBoard)] ? f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairHighPairOnBoard :
 //
 // 5) we pair the pair on board, which is lower than the set, so we play the board, but one kind of quads is no longer possible
 [((rankhiplayer == f$OpenPPL_RankOfPairOnBoardWithFullHouseOnBoard) || (rankloplayer == f$OpenPPL_RankOfPairOnBoardWithFullHouseOnBoard)) && (f$OpenPPL_RankOfPairOnBoardWithFullHouseOnBoard < f$OpenPPL_RankOfSetOnBoard)] ? f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairLowPairOnBoard :
