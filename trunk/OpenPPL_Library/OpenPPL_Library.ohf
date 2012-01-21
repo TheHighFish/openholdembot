@@ -463,7 +463,7 @@ f$OpenPPL_Calls + nopponentscalling
 
 ##f$OpenPPL_InitCalls##
 (f$OpenPPL_BotsActionsOnThisRound == 0) ?
-  me_st_MemCalls_f$OpenPPL_nopponentscalling :
+  me_st_MemCalls_nopponentscalling :
   me_st_MemCalls_f$OpenPPL_AddNopponentscalling
 
 ##f$OpenPPL_Calls##
