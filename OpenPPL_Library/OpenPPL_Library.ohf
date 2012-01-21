@@ -504,73 +504,18 @@ f$OpenPPL_HINT_There_Is_No_Raiser_Therefore_No_CurrentBet
 (betround == f$OpenPPL_ConstBetRoundRiver)   ? (nplayersround4 - nopponentsplaying - 1) :
 f$OpenPPL_ERROR_Betround_Out_Of_Range
 
-##f$OpenPPL_Chair0CheckiongInFrontOfHero##
-   (currentbet0 == 0)
-&& (playersplayingbits & 0b0000000001)
-&& (ac_dealpos0 < originaldealposition)
-
-##f$OpenPPL_Chair1CheckiongInFrontOfHero##
-   (currentbet1 == 0)
-&& (playersplayingbits & 0b0000000010)
-&& (ac_dealpos1 < originaldealposition)
-
-##f$OpenPPL_Chair2CheckiongInFrontOfHero##
-   (currentbet2 == 0)
-&& (playersplayingbits & 0b0000000100)
-&& (ac_dealpos2 < originaldealposition)
-
-##f$OpenPPL_Chair3CheckiongInFrontOfHero##
-   (currentbet3 == 0)
-&& (playersplayingbits & 0b0000001000)
-&& (ac_dealpos3 < originaldealposition)
-
-##f$OpenPPL_Chair4CheckiongInFrontOfHero##
-   (currentbet4 == 0)
-&& (playersplayingbits & 0b0000010000)
-&& (ac_dealpos4 < originaldealposition)
-
-##f$OpenPPL_Chair5CheckiongInFrontOfHero##
-   (currentbet5 == 0)
-&& (playersplayingbits & 0b0000100000)
-&& (ac_dealpos5 < originaldealposition)
-
-##f$OpenPPL_Chair6CheckiongInFrontOfHero##
-   (currentbet6 == 0)
-&& (playersplayingbits & 0b0001000000)
-&& (ac_dealpos6 < originaldealposition)
-
-##f$OpenPPL_Chair7CheckiongInFrontOfHero##
-   (currentbet7 == 0)
-&& (playersplayingbits & 0b0010000000)
-&& (ac_dealpos7 < originaldealposition)
-
-##f$OpenPPL_Chair8CheckiongInFrontOfHero##
-   (currentbet8 == 0)
-&& (playersplayingbits & 0b0100000000)
-&& (ac_dealpos8 < originaldealposition)
-
-##f$OpenPPL_Chair9CheckiongInFrontOfHero##
-   (currentbet9 == 0)
-&& (playersplayingbits & 0b1000000000)
-&& (ac_dealpos9 < originaldealposition)
-
 ##f$OpenPPL_ChecksAfterHero##
 // Valid second orbit only
 // All active players with a zero bet
+(f$OpenPPL_BotsActionsOnThisRoundIncludingChecks == 0) ? 0 :
 nopponentschecking
 
 ##f$OpenPPL_ChecksInFrontOfHero##
-(f$OpenPPL_BotsActionsOnThisRoundIncludingChecks > 0) ? 0 :
-[  f$OpenPPL_Chair0CheckiongInFrontOfHero
- + f$OpenPPL_Chair1CheckiongInFrontOfHero
- + f$OpenPPL_Chair2CheckiongInFrontOfHero
- + f$OpenPPL_Chair3CheckiongInFrontOfHero
- + f$OpenPPL_Chair4CheckiongInFrontOfHero
- + f$OpenPPL_Chair5CheckiongInFrontOfHero
- + f$OpenPPL_Chair6CheckiongInFrontOfHero
- + f$OpenPPL_Chair7CheckiongInFrontOfHero
- + f$OpenPPL_Chair8CheckiongInFrontOfHero
- + f$OpenPPL_Chair9CheckiongInFrontOfHero]
+(betround == f$OpenPPL_ConstBetRoundPreflop) ? 0 :
+(currentbet > 0) ? 0 :
+(f$OpenPPL_AmountToCall > 0) ? 0 :
+// All players before us checked, not even open-folds can throw this logic off.
+[betposition - 1]
 
 ##f$OpenPPL_CalculateChecks##
 (f$OpenPPL_BotsActionsOnThisRound == 0) ? f$OpenPPL_ChecksInFrontOfHero :
@@ -3236,7 +3181,18 @@ f$OpenPPL_SmallBlindChair == 9 ? pt_vpip9 :
 //
 //*****************************************************************************
 
+##f$OpenPPL_TimeToInitMemorySymbols##
+// Some advanced symbols depend on memory symbols.
+// They are designed to update once per orbit on our turn.
+// However: depending on user-settings OpenHoldem might evaluate
+// the necessary function even when it is not our turn.
+// And incorrect delay-settings might also lead to multiple actions
+// on identical frames (OH acts faster as casino/bring can update)
+// So we check for isfinalanswer and a certain delay.
+[isfinalanswer && (elapsedauto > 2.0)]
+
 ##f$OpenPPL_InitMemorySymbols##
+(f$OpenPPL_TimeToInitMemorySymbols == f$OpenPPL_False) ? 0 :
 // We can't use addition here to call the functions in correct sequential order,
 // because OH doesn't add the operands in order:
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=14525&start=0
