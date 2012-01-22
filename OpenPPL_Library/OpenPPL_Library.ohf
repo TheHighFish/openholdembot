@@ -591,7 +591,7 @@ f$OpenPPL_HINT_Nothing_To_Do_But_All_OK
 
 ##f$OpenPPL_InitRaises##
 (f$OpenPPL_BotsActionsOnThisRound == 0) ? me_st_MemRaises_f$OpenPPL_RaisesSinceLastPlay :
-me_st_MemRaises_f$f$OpenPPL_Calculate_Raises
+me_st_MemRaises_f$OpenPPL_Calculate_Raises
 
 ##f$OpenPPL_Raises##
 me_re_MemRaises
@@ -608,19 +608,37 @@ me_re_MemRaises
 ##f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPostflop##
 (nopponentsraising > 0) ? (nopponentsraising - 1) : 0
 
+##f$OpenPPL_AntesPresent##
+// First orbit preflop only,
+// as this function tries to guess the antes from the bets.
+   [ante > 0]
+|| [(currentbet0 > 0) && (currentbet0 < sblind) && (balance0 > 0)]
+|| [(currentbet1 > 0) && (currentbet1 < sblind) && (balance1 > 0)]
+|| [(currentbet2 > 0) && (currentbet2 < sblind) && (balance2 > 0)]
+|| [(currentbet3 > 0) && (currentbet3 < sblind) && (balance3 > 0)]
+|| [(currentbet4 > 0) && (currentbet4 < sblind) && (balance4 > 0)]
+|| [(currentbet5 > 0) && (currentbet5 < sblind) && (balance5 > 0)]
+|| [(currentbet6 > 0) && (currentbet6 < sblind) && (balance6 > 0)]
+|| [(currentbet7 > 0) && (currentbet7 < sblind) && (balance7 > 0)]
+|| [(currentbet8 > 0) && (currentbet8 < sblind) && (balance8 > 0)]
+|| [(currentbet9 > 0) && (currentbet9 < sblind) && (balance9 > 0)]
+
 ##f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopInSmallBlind##
 // If we are in small-blind, there is 1 opponent "blind-raising",
-(nopponentsraising - 1)
+// And we also have to care about potential antes
+[(nopponentsraising - 1) - (f$OpenPPL_AntesPresent ? 1 : 0)]]
 
 ##f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopInBigBlind##
 // If we are in big-blind, there *was* 1 opponent "blind-raising",
 // but he does no longer get counted, as he either did fold,
-// did call or did truely raise
-nopponentsraising
+// did call or did truely raise.
+// So we only have to care about potential antes.
+[nopponentsraising - (f$OpenPPL_AntesPresent ? 1 : 0)]]
 
 ##f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopNotInTheBlinds##
 // There are (usually) 2 blindraisers which should not get countet
-(nopponentsraising - 2)
+// And we also have to care about potential antes
+[(nopponentsraising - 2) - (f$OpenPPL_AntesPresent ? 1 : 0)]
 
 ##f$OpenPPL_RaisesBeforeOurFirstAction##
 (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks > 0) ? 0 :
