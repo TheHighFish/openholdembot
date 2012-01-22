@@ -306,6 +306,9 @@ f$OpenPPL_Fold
 ##f$OpenPPL_HINT_There_Is_No_Raiser_Therefore_No_CurrentBet##
 0
 
+##f$OpenPPL_HINT_There_Is_No_Pair_On_The_Board##
+-1
+
 ##f$OpenPPL_HINT_Nothing_To_Do_But_All_OK##
 0
 
@@ -511,9 +514,13 @@ f$OpenPPL_ERROR_Betround_Out_Of_Range
 nopponentschecking
 
 ##f$OpenPPL_ChecksInFrontOfHero##
+// No checks preflop. Not even big blind can check (game over).
+// We ignore additional blind-posters however.
 (betround == f$OpenPPL_ConstBetRoundPreflop) ? 0 :
+// I did already act, so no longer any posters in front of me
 (currentbet > 0) ? 0 :
-(f$OpenPPL_AmountToCall > 0) ? 0 :
+// A bet to call, subtract all players with a non-zero bet in front of us
+(f$OpenPPL_AmountToCall > 0) ? (betposition - nopponentsbetting - 1):
 // All players before us checked, not even open-folds can throw this logic off.
 [betposition - 1]
 
@@ -1220,11 +1227,11 @@ f$OpenPPL_OneCardStraightPossible && !f$OpenPPL_MoreThanOneOneCardStraightPossib
 `[rankbitscommon >> (rankhiplayer + 1)]
 
 ##f$OpenPPL_OvercardsOnBoard##
-  ((f$OpenPPL_FirstFlopCard > rankhiplayer) ? 1 : 0)
+  ((f$OpenPPL_FirstFlopCard  > rankhiplayer) ? 1 : 0)
 + ((f$OpenPPL_SecondFlopCard > rankhiplayer) ? 1 : 0)
-+ ((f$OpenPPL_ThirdFlopCard > rankhiplayer) ? 1 : 0)
-+ ((f$OpenPPL_TurnCard > rankhiplayer) ? 1 : 0)
-+ ((f$OpenPPL_RiverCard > rankhiplayer) ? 1 : 0)
++ ((f$OpenPPL_ThirdFlopCard  > rankhiplayer) ? 1 : 0)
++ ((f$OpenPPL_TurnCard       > rankhiplayer) ? 1 : 0)
++ ((f$OpenPPL_RiverCard      > rankhiplayer) ? 1 : 0)
 
 ##f$OpenPPL_PairOnBoard##
 (nrankedcommon >= 2)
@@ -1233,9 +1240,10 @@ f$OpenPPL_OneCardStraightPossible && !f$OpenPPL_MoreThanOneOneCardStraightPossib
 (f$OpenPPL_FirstFlopCard == f$OpenPPL_SecondFlopCard || f$OpenPPL_SecondFlopCard == f$OpenPPL_ThirdFlopCard || f$OpenPPL_FirstFlopCard == f$OpenPPL_ThirdFlopCard)
 
 ##f$OpenPPL_LowestFlopCard##
-f$OpenPPL_FirstFlopCard <= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard <=  f$OpenPPL_ThirdFlopCard ? f$OpenPPL_FirstFlopCard :
-f$OpenPPL_SecondFlopCard <= f$OpenPPL_FirstFlopCard && f$OpenPPL_SecondFlopCard <=  f$OpenPPL_ThirdFlopCard ? f$OpenPPL_SecondFlopCard :
-f$OpenPPL_ThirdFlopCard <= f$OpenPPL_FirstFlopCard && f$OpenPPL_ThirdFlopCard <=  f$OpenPPL_SecondFlopCard ? f$OpenPPL_ThirdFlopCard : -1
+f$OpenPPL_FirstFlopCard  <= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  <=  f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_FirstFlopCard :
+f$OpenPPL_SecondFlopCard <= f$OpenPPL_FirstFlopCard  && f$OpenPPL_SecondFlopCard <=  f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_SecondFlopCard :
+f$OpenPPL_ThirdFlopCard  <= f$OpenPPL_FirstFlopCard  && f$OpenPPL_ThirdFlopCard  <=  f$OpenPPL_SecondFlopCard ? f$OpenPPL_ThirdFlopCard : 
+-1
 
 ##f$OpenPPL_LowestFlopCardPairedOnTurn##
 (f$OpenPPL_LowestFlopCard == f$OpenPPL_TurnCard) 
@@ -1271,12 +1279,12 @@ f$OpenPPL_StraightPossible
 && f$OpenPPL_RiverCard > f$OpenPPL_TurnCard ]
 
 ##f$OpenPPL_2ndTopFlopCard##
-f$OpenPPL_FirstFlopCard >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard >= f$OpenPPL_ThirdFlopCard && f$OpenPPL_SecondFlopCard >= f$OpenPPL_ThirdFlopCard ? f$OpenPPL_SecondFlopCard :
-f$OpenPPL_FirstFlopCard >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard >= f$OpenPPL_ThirdFlopCard && f$OpenPPL_SecondFlopCard <= f$OpenPPL_ThirdFlopCard ? f$OpenPPL_ThirdFlopCard :
-f$OpenPPL_SecondFlopCard >= f$OpenPPL_FirstFlopCard && f$OpenPPL_SecondFlopCard >= f$OpenPPL_ThirdFlopCard && f$OpenPPL_FirstFlopCard >= f$OpenPPL_ThirdFlopCard ? f$OpenPPL_FirstFlopCard :
-f$OpenPPL_SecondFlopCard >= f$OpenPPL_FirstFlopCard && f$OpenPPL_SecondFlopCard >= f$OpenPPL_ThirdFlopCard && f$OpenPPL_FirstFlopCard <= f$OpenPPL_ThirdFlopCard ? f$OpenPPL_ThirdFlopCard :
-f$OpenPPL_ThirdFlopCard >= f$OpenPPL_FirstFlopCard && f$OpenPPL_ThirdFlopCard >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard >= f$OpenPPL_SecondFlopCard ? f$OpenPPL_FirstFlopCard :
-f$OpenPPL_ThirdFlopCard >= f$OpenPPL_FirstFlopCard && f$OpenPPL_ThirdFlopCard >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard <= f$OpenPPL_SecondFlopCard ? f$OpenPPL_SecondFlopCard :
+f$OpenPPL_FirstFlopCard  >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_ThirdFlopCard  && f$OpenPPL_SecondFlopCard >= f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_SecondFlopCard :
+f$OpenPPL_FirstFlopCard  >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_ThirdFlopCard  && f$OpenPPL_SecondFlopCard <= f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_ThirdFlopCard  :
+f$OpenPPL_SecondFlopCard >= f$OpenPPL_FirstFlopCard  && f$OpenPPL_SecondFlopCard >= f$OpenPPL_ThirdFlopCard  && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_FirstFlopCard  :
+f$OpenPPL_SecondFlopCard >= f$OpenPPL_FirstFlopCard  && f$OpenPPL_SecondFlopCard >= f$OpenPPL_ThirdFlopCard  && f$OpenPPL_FirstFlopCard  <= f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_ThirdFlopCard  :
+f$OpenPPL_ThirdFlopCard  >= f$OpenPPL_FirstFlopCard  && f$OpenPPL_ThirdFlopCard  >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_SecondFlopCard ? f$OpenPPL_FirstFlopCard  :
+f$OpenPPL_ThirdFlopCard  >= f$OpenPPL_FirstFlopCard  && f$OpenPPL_ThirdFlopCard  >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  <= f$OpenPPL_SecondFlopCard ? f$OpenPPL_SecondFlopCard :
 // Otherwise: there is no 2ndTopFlopCard, because all ranks are even
 -1
 
@@ -1555,6 +1563,19 @@ f$OpenPPL_HINT_Such_A_Straight_Does_Not_Exist
 ##f$OpenPPL_HighCardOf2ndBestPossibleStraightIfBestStraightIsSixHigh##
 `(rankbitscommon & 0b000000000111110) >= 3 ? f$OpenPPL_ConstCardFive :
 f$OpenPPL_HINT_Such_A_Straight_Does_Not_Exist
+
+##f$OpenPPL_HighCardOfBestPossibleStraight##
+`(rankbitscommon & 0b111110000000000) >= 3 ? f$OpenPPL_ConstCardAce   :
+`(rankbitscommon & 0b011111000000000) >= 3 ? f$OpenPPL_ConstCardKing  :
+`(rankbitscommon & 0b001111100000000) >= 3 ? f$OpenPPL_ConstCardQueen :
+`(rankbitscommon & 0b000111110000000) >= 3 ? f$OpenPPL_ConstCardJack  :
+`(rankbitscommon & 0b000011111000000) >= 3 ? f$OpenPPL_ConstCardTen   :
+`(rankbitscommon & 0b000001111100000) >= 3 ? f$OpenPPL_ConstCardNine  :
+`(rankbitscommon & 0b000000111110000) >= 3 ? f$OpenPPL_ConstCardEight :
+`(rankbitscommon & 0b000000011111000) >= 3 ? f$OpenPPL_ConstCardSeven :
+`(rankbitscommon & 0b000000001111100) >= 3 ? f$OpenPPL_ConstCardSix   :
+`(rankbitscommon & 0b000000000111110) >= 3 ? f$OpenPPL_ConstCardFive  :
+-1
 
 ##f$OpenPPL_HighCardOf2ndBestPossibleStraight##
 (f$OpenPPL_HighCardOfBestPossibleStraight == f$OpenPPL_ConstCardAce)   ? f$OpenPPL_HighCardOf2ndBestPossibleStraightIfBestStraightIsAceHigh   :
@@ -2450,7 +2471,7 @@ f$OpenPPL_HaveStraight
 + (rankbitscommon & 0x000000000001000) && (f$OpenPPL_RankOfSetOfFullHouse < f$OpenPPL_ConstCardThree)
 + (rankbitscommon & 0x000000000000100) && (f$OpenPPL_RankOfSetOfFullHouse < f$OpenPPL_ConstCardTwo  )
 
-##f$OpenPPL_NFH4OAK_TwoPairsOnBoard_WeHitLowSet##
+##f$OpenPPL_NFH4OAK_TwoPairsOnBoard_WeHitBottomSet##
 // 3 is the lowest nut rank possible, becuase theres still a quad and a FH with the higher pair possible.
 // Theres always a higher pair on board, so if there are two higher ranked cards in common cards,
 // theres also a higher set possible with a pocket pair and the remaining single card on board.
@@ -2487,6 +2508,38 @@ f$OpenPPL_HaveStraight
 
 ##f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairHighPairOnBoard##
 2
+
+##f$OpenPPL_RankOfTopPairOnBoard##
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_A * f$PrimeCode_A) == 0)) ] ? f$OpenPPL_ConstCardAce :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_K * f$PrimeCode_K) == 0)) ] ? f$OpenPPL_ConstCardKing :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_Q * f$PrimeCode_Q) == 0)) ] ? f$OpenPPL_ConstCardQueen :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_J * f$PrimeCode_J) == 0)) ] ? f$OpenPPL_ConstCardJack :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_T * f$PrimeCode_T) == 0)) ] ? f$OpenPPL_ConstCardTen :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_9 * f$PrimeCode_9) == 0)) ] ? f$OpenPPL_ConstCardNine :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_8 * f$PrimeCode_8) == 0)) ] ? f$OpenPPL_ConstCardEight :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_7 * f$PrimeCode_7) == 0)) ] ? f$OpenPPL_ConstCardSeven :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_6 * f$PrimeCode_6) == 0)) ] ? f$OpenPPL_ConstCardSix :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_5 * f$PrimeCode_5) == 0)) ] ? f$OpenPPL_ConstCardFive :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_4 * f$PrimeCode_4) == 0)) ] ? f$OpenPPL_ConstCardFour :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_3 * f$PrimeCode_3) == 0)) ] ? f$OpenPPL_ConstCardThree :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_2 * f$PrimeCode_2) == 0)) ] ? f$OpenPPL_ConstCardTwo :
+f$OpenPPL_HINT_There_Is_No_Pair_On_The_Board
+
+##f$OpenPPL_RankOfBottomPairOnBoard##
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_2 * f$PrimeCode_2) == 0)) ] ? f$OpenPPL_ConstCardTwo :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_3 * f$PrimeCode_3) == 0)) ] ? f$OpenPPL_ConstCardThree :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_4 * f$PrimeCode_4) == 0)) ] ? f$OpenPPL_ConstCardFour :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_5 * f$PrimeCode_5) == 0)) ] ? f$OpenPPL_ConstCardFive :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_6 * f$PrimeCode_6) == 0)) ] ? f$OpenPPL_ConstCardSix :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_7 * f$PrimeCode_7) == 0)) ] ? f$OpenPPL_ConstCardSeven :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_8 * f$PrimeCode_8) == 0)) ] ? f$OpenPPL_ConstCardEight :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_9 * f$PrimeCode_9) == 0)) ] ? f$OpenPPL_ConstCardNine :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_T * f$PrimeCode_T) == 0)) ] ? f$OpenPPL_ConstCardTen :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_J * f$PrimeCode_J) == 0)) ] ? f$OpenPPL_ConstCardJack :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_Q * f$PrimeCode_Q) == 0)) ] ? f$OpenPPL_ConstCardQueen :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_K * f$PrimeCode_K) == 0)) ] ? f$OpenPPL_ConstCardKing :
+[ ((f$prime_coded_board_ranks % (1 * f$PrimeCode_A * f$PrimeCode_A) == 0)) ] ? f$OpenPPL_ConstCardAce :
+f$OpenPPL_HINT_There_Is_No_Pair_On_The_Board
 
 ##f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairLowPairOnBoard##
 // One quads possible, so the bestcase is second nuts
@@ -2808,6 +2861,13 @@ nopponentsplaying
 ##f$OpenPPL_EarlyPosition1##
 [(dealposition == nplayersdealt - 7) && !f$OpenPPL_InTheBlinds]
 
+##f$OpenPPL_UTG##
+// Under the gun - first to act preflop, 
+// independent of the players at the table (at least 3).
+// This symbols is especially useful to sitout 
+// after the last hand of a session (before the next blind).
+(dealposition == 3)
+
 ##f$OpenPPL_InSmallBlind##
 f$OpenPPL_SmallBlind
 
@@ -2840,6 +2900,9 @@ f$OpenPPL_EarlyPosition2
 
 ##f$OpenPPL_InEarlyPosition1##
 f$OpenPPL_EarlyPosition1
+
+##f$OpenPPL_InUTG##
+f$OpenPPL_UTG
 
 ##f$OpenPPL_BigBlindChair##
 ac_dealpos0 == 2 ? 0 :
@@ -3231,28 +3294,6 @@ f$OpenPPL_SmallBlindChair == 9 ? pt_vpip9 :
 -1
 
 ##f$OpenPPL_HaveBackdoorStraightDraw##
-f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
-
-##f$OpenPPL_HighCardOfBestPossibleStraight##
-`(rankbitscommon & 0b111110000000000) >= 3 ? f$OpenPPL_ConstCardAce   :
-`(rankbitscommon & 0b011111000000000) >= 3 ? f$OpenPPL_ConstCardKing  :
-`(rankbitscommon & 0b001111100000000) >= 3 ? f$OpenPPL_ConstCardQueen :
-`(rankbitscommon & 0b000111110000000) >= 3 ? f$OpenPPL_ConstCardJack  :
-`(rankbitscommon & 0b000011111000000) >= 3 ? f$OpenPPL_ConstCardTen   :
-`(rankbitscommon & 0b000001111100000) >= 3 ? f$OpenPPL_ConstCardNine  :
-`(rankbitscommon & 0b000000111110000) >= 3 ? f$OpenPPL_ConstCardEight :
-`(rankbitscommon & 0b000000011111000) >= 3 ? f$OpenPPL_ConstCardSeven :
-`(rankbitscommon & 0b000000001111100) >= 3 ? f$OpenPPL_ConstCardSix   :
-`(rankbitscommon & 0b000000000111110) >= 3 ? f$OpenPPL_ConstCardFive  :
--1
-
-##f$OpenPPL_RankOfTopPairOnBoard##
-f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
-
-##f$OpenPPL_RankOfBottomPairOnBoard##
-f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
-
-##f$OpenPPL_NFH4OAK_TwoPairsOnBoard_WeHitBottomSet##
 f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 
 //*****************************************************************************
