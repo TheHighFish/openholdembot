@@ -59,7 +59,7 @@ Good news: contrary to Standard-PPL most position symbols are not restricted
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="18" columns="3">
+<lyxtabular version="3" rows="19" columns="3">
 <features islongtable="true">
 <column alignment="left" valignment="top" width="30text%">
 <column alignment="left" valignment="top" width="40text%">
@@ -473,6 +473,38 @@ InTheBlinds
 
 \begin_layout Plain Layout
 True, if you are either small blind or big blind
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+None
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+InUTG
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+True, if you are UTG (left to the big blind), independent of the number
+ of players at the table.
+ This symbols is escpecially useful to sitout after the last hand of a session
+ (before the next blind).
 \end_layout
 
 \end_inset

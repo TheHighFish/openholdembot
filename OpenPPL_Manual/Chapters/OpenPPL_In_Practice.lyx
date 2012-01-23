@@ -76,23 +76,23 @@ NEW LIST 000
 
 \begin_layout Plain Layout
 
-   // Trashy hands.
+    // Trashy hands.
  
 \end_layout
 
 \begin_layout Plain Layout
 
-   // Never to be played, except we are in the blinds
+    // Never to be played, except we are in the blinds
 \end_layout
 
 \begin_layout Plain Layout
 
-   K8s K7s K6s K5s K4s K3s K2s Q7s...
+    K8s K7s K6s K5s K4s K3s K2s Q7s...
 \end_layout
 
 \begin_layout Plain Layout
 
-   K8o ...
+    K8o ...
  32o
 \end_layout
 
@@ -616,7 +616,7 @@ status open
 
 \begin_layout Plain Layout
 
-NEW SYMBOL IsUTG
+NEW SYMBOL InUTG
 \end_layout
 
 \begin_layout Plain Layout
@@ -665,7 +665,7 @@ PREFLOP
 
 \begin_layout Plain Layout
 
-   WHEN (handsplayed > 15 AND floppct < 0.20 AND HaveTrash AND IsUTG) SitOut
+   WHEN (handsplayed > 15 AND floppct < 0.20 AND HaveTrash AND InUTG) SitOut
  Force  
 \end_layout
 
