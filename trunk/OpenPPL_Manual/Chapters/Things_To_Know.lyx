@@ -57,6 +57,43 @@ If you are a botter who used Shanky-PPL in the past there are some differences
 \end_layout
 
 \begin_layout Section*
+No default bot
+\end_layout
+
+\begin_layout Standard
+OpenPPL does not provide a default 
+\begin_inset Quotes eld
+\end_inset
+
+winning-bot
+\begin_inset Quotes erd
+\end_inset
+
+, especially no built-in 
+\noun on
+doodle
+\noun default
+-profile like BonusBots.
+ 
+\noun on
+Doodle
+\noun default
+ simply is a copyrighted business-secret of Shanky
+\end_layout
+
+\begin_layout Section*
+Plain text only
+\end_layout
+
+\begin_layout Standard
+For the same reason there is no support for encrypted PPL-profiles.
+ Our aim is to build an open-source botting-tool and not a marketing-platform
+ for shady salesmen.
+ Therefore OpenPPL is plain text only --- for profiles you own legally,
+ or even better: for profiles you build on your own.
+\end_layout
+
+\begin_layout Section*
 
 \emph on
 No option settings.
@@ -444,6 +481,7 @@ inline false
 status open
 
 \begin_layout Plain Layout
+
 perl bracketify.pl < INPUTFILE.TXT > OUTPUTFILE.TXT
 \end_layout
 
