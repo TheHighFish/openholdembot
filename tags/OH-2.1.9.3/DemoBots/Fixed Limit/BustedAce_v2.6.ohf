@@ -1,0 +1,1678 @@
+##2011-01-25 02:31:39##
+
+##notes##
+
+
+##dll##
+
+
+##bankroll##
+0.000000
+
+##defcon##
+0.000000
+
+##rake##
+0.000000
+
+##nit##
+1000
+
+##f$alli##
+   0
+
+##f$swag##
+// No stated FL-bot.
+
+##f$srai##
+// No stated raises FL-bot.
+
+##f$rais##
+   0
+
+// if bots called or raised already
+   ||[(br==1)
+   && (didrais)
+   && (ncallbets>=110)]
+
+// if bots not called or raised yet
+   ||[(br==1)
+   && (ncallbets<=1)
+   && (nplayersplaying<=7)
+   && (islist222)]
+
+   ||[(br==1)
+   && (ncallbets<=2)
+   && (nplayersplaying<=7)
+   && (islist111)]
+
+//Flop
+// if bots called or raised already
+   ||[(br==2)
+   && (didrais)
+   && (ncallbets>=110)]
+
+// if bots not called or raised yet
+   ||[(br==2)
+   && (isroyalflush)
+   && (ncallbets<=0)
+   && (prwinnow>=65)]
+
+   ||[(br==2)
+   && (isfourofakind)
+   && (ncallbets<=0)
+   && (prwinnow>=65)]
+
+   ||[(br==2)
+   && (isstraightflush)
+   && (ncallbets<=0)
+   && (prwinnow>=65)]
+
+   ||[(br==2)
+   && (isfullhouse)
+   && (ncallbets<=0)
+   && (prwinnow>=65)]
+
+   ||[(br==2)
+   && (isflush)
+   && (ncallbets<=0)
+   && (prwinnow>=65)]
+
+   ||[(br==2)
+   && (isstraight)
+   && (f$possibleflush)
+   && (ncallbets<=0)
+   && (prwinnow>=65)]
+
+   ||[(br==2)
+   && (isstraight)
+   && (f$safeflop)
+   && (ncallbets<=0)
+   && (prwinnow>=65)]
+
+   ||[(br==2)
+   && (f$possibleflush)
+   && (isthreeofakind)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possiblestraight)
+   && (isthreeofakind)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possibleflushdraw)
+   && (isthreeofakind)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$safeflop)
+   && (isthreeofakind)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possibleflush)
+   && (istwopair && f$overpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possiblestraight)
+   && (istwopair && f$overpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possibleflushdraw)
+   && (istwopair && f$overpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$safeflop)
+   && (istwopair && f$overpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possibleflush)
+   && (istwopair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possiblestraight)
+   && (istwopair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possibleflushdraw)
+   && (istwopair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$safeflop)
+   && (istwopair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possibleflush)
+   && (isonepair && f$overpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possiblestraight)
+   && (isonepair && f$overpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possibleflushdraw)
+   && (isonepair && f$overpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$safeflop)
+   && (isonepair && f$overpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possibleflush)
+   && (isonepair && ishipair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possiblestraight)
+   && (isonepair && ishipair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possibleflushdraw)
+   && (isonepair && ishipair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$safeflop)
+   && (isonepair && ishipair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possibleflush)
+   && (isonepair && ismidpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possiblestraight)
+   && (isonepair && ismidpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possibleflushdraw)
+   && (isonepair && ismidpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$safeflop)
+   && (isonepair && ismidpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+//Turn
+// if bots called or raised already
+   ||[(br==3)
+   && (didrais)
+   && (ncallbets>=110)]
+
+// if bots not called or raised yet
+   ||[(br==3)
+   && (ncallbets<=1)
+   && (isroyalflush)
+   && (prwinnow>=65)]
+
+   ||[(br==3)
+   && (ncallbets<=1)
+   && (isfourofakind)
+   && (prwinnow>=65)]
+
+   ||[(br==3)
+   && (ncallbets<=1)
+   && (isstraightflush)
+   && (prwinnow>=65)]
+
+   ||[(br==3)
+   && (isfullhouse)
+   && (ncallbets<=1)
+   && (prwinnow>=65)]
+
+   ||[(br==3)
+   && (isflush)
+   && (ncallbets<=1)
+   && (prwinnow>=65)]
+
+   ||[(br==3)
+   && (isstraight)
+   && (f$possibleflush)
+   && (ncallbets<=0)
+   && (prwinnow>=65)]
+
+   ||[(br==3)
+   && (isstraight)
+   && (f$boardissafe)
+   && (ncallbets<=1)
+   && (prwinnow>=65)]
+
+   ||[(br==3)
+   && (f$possibleflush)
+   && (isthreeofakind)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$possiblestraight)
+   && (isthreeofakind)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$boardissafe)
+   && (isthreeofakind)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$possibleflush)
+   && (istwopair && f$overpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$possiblestraight)
+   && (istwopair && f$overpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$boardissafe)
+   && (istwopair && f$overpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$possibleflush)
+   && (istwopair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$possiblestraight)
+   && (istwopair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$boardissafe)
+   && (istwopair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$possibleflush)
+   && (isonepair && f$overpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$possiblestraight)
+   && (isonepair && f$overpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$boardissafe)
+   && (isonepair && f$overpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$possiblestraight)
+   && (isonepair && ishipair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$boardissafe)
+   && (isonepair && ishipair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$boardissafe)
+   && (isonepair && ismidpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+//River
+// if bots called or raised already
+   ||[(br==4)
+   && (didrais)
+   && (ncallbets>=110)]
+
+// if bots not called or raised yet
+   ||[(br==4)
+   && (ncallbets<=1)
+   && (isroyalflush)
+   && (prwinnow>=65)]
+
+   ||[(br==4)
+   && (ncallbets<=1)
+   && (isfourofakind)
+   && (prwinnow>=65)]
+
+   ||[(br==4)
+   && (ncallbets<=1)
+   && (isstraightflush)
+   && (prwinnow>=65)]
+
+   ||[(br==4)
+   && (isfullhouse)
+   && (ncallbets<=1)
+   && (prwinnow>=65)]
+
+   ||[(br==4)
+   && (isflush)
+   && (ncallbets<=1)
+   && (prwinnow>=65)]
+
+   ||[(br==4)
+   && (isstraight)
+   && (f$possibleflush)
+   && (ncallbets<=0)
+   && (prwinnow>=65)]
+
+   ||[(br==4)
+   && (isstraight)
+   && (f$boardissafe)
+   && (ncallbets<=1)
+   && (prwinnow>=65)]
+
+   ||[(br==4)
+   && (f$possibleflush)
+   && (isthreeofakind)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$possiblestraight)
+   && (isthreeofakind)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$boardissafe)
+   && (isthreeofakind)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$possibleflush)
+   && (istwopair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$possiblestraight)
+   && (istwopair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$boardissafe)
+   && (istwopair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$possiblestraight)
+   && (isonepair && f$overpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$boardissafe)
+   && (isonepair && f$overpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$boardissafe)
+   && (isonepair && ishipair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$boardissafe)
+   && (isonepair && ismidpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+##f$call##
+   0
+
+// always call if bots raised
+   ||[(br==1)
+   && (didrais)
+   && (ncallbets==2)
+   && (islist555)]
+
+// if bots called or raised already
+   ||[(br==1)
+   && (didcall || didrais)
+   && (ncallbets<=1)
+   && (islist333 && islist666)]
+
+   ||[(br==1)
+   && (didcall || didrais)
+   && (ncallbets<=2)
+   && (islist222)]
+
+   ||[(br==1)
+   && (didcall || didrais)
+   && (ncallbets<=3)
+   && (islist111)]
+
+// if bots not called or raised yet
+   ||[(br==1)
+   && (ncallbets<=1)
+   && (nplayersplaying>=6)
+   && (islist333 || islist666)]
+
+   ||[(br==1)
+   && (ncallbets<=2)
+   && (nplayersplaying>=6)
+   && (islist222)]
+
+   ||[(br==1)
+   && (ncallbets<=3)
+   && (nplayersplaying>=6)
+   && (islist111)]
+
+   ||[(br==1)
+   && (ncallbets<=1)
+   && (nplayersplaying<=5)
+   && (islist333 || islist444)]
+
+   ||[(br==1)
+   && (ncallbets<=2)
+   && (nplayersplaying<=5)
+   && (islist222 || islist666)]
+
+   ||[(br==1)
+   && (ncallbets<=3)
+   && (nplayersplaying<=5)
+   && (islist111)]
+
+//Flop
+// if bots called or raised already
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$possibleflush)
+   && (isthreeofakind)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$possiblestraight)
+   && (isthreeofakind)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$possibleflushdraw)
+   && (isthreeofakind)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$safeflop)
+   && (isthreeofakind)
+   && (ncallbets<=3)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$possibleflush)
+   && (istwopair && f$overpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possiblestraight)
+   && (istwopair && f$overpair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$possibleflushdraw)
+   && (istwopair && f$overpair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$safeflop)
+   && (istwopair && f$overpair)
+   && (ncallbets<=3)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$possibleflush)
+   && (istwopair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$possiblestraight)
+   && (istwopair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$possibleflushdraw)
+   && (istwopair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$safeflop)
+   && (istwopair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$possibleflush)
+   && (isonepair && f$overpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$possiblestraight)
+   && (isonepair && f$overpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$possibleflushdraw)
+   && (isonepair && f$overpair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$safeflop)
+   && (isonepair && f$overpair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$possibleflush)
+   && (isonepair && ishipair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$possiblestraight)
+   && (isonepair && ishipair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$possibleflushdraw)
+   && (isonepair && ishipair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$safeflop)
+   && (isonepair && ishipair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$possibleflush)
+   && (isonepair && ismidpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$possiblestraight)
+   && (isonepair && ismidpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$possibleflushdraw)
+   && (isonepair && ismidpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$safeflop)
+   && (isonepair && ismidpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+// if bots not called or raised yet
+   ||[(br==2)
+   && (isroyalflush)
+   && (prwinnow>=65)]
+
+   ||[(br==2)
+   && (isfourofakind)
+   && (prwinnow>=65)]
+
+   ||[(br==2)
+   && (isstraightflush)
+   && (prwinnow>=65)]
+
+   ||[(br==2)
+   && (isfullhouse)
+   && (prwinnow>=65)]
+
+   ||[(br==2)
+   && (isflush)
+   && (prwinnow>=65)]
+
+   ||[(br==2)
+   && (isstraight)
+   && (f$possibleflush)
+   && (ncallbets<=2)
+   && (prwinnow>=65)]
+
+   ||[(br==2)
+   && (isstraight)
+   && (f$safeflop)
+   && (ncallbets<=3)
+   && (prwinnow>=65)]
+
+   ||[(br==2)
+   && (f$possibleflush)
+   && (isthreeofakind)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possiblestraight)
+   && (isthreeofakind)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possibleflushdraw)
+   && (isthreeofakind)
+   && (ncallbets<=3)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$safeflop)
+   && (isthreeofakind)
+   && (ncallbets<=3)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possibleflush)
+   && (istwopair && f$overpair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possiblestraight)
+   && (istwopair && f$overpair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possibleflushdraw)
+   && (istwopair && f$overpair)
+   && (ncallbets<=3)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$safeflop)
+   && (istwopair && f$overpair)
+   && (ncallbets<=3)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possibleflush)
+   && (istwopair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possiblestraight)
+   && (istwopair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possibleflushdraw)
+   && (istwopair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$safeflop)
+   && (istwopair)
+   && (ncallbets<=3)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possibleflush)
+   && (isonepair && f$overpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possiblestraight)
+   && (isonepair && f$overpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possibleflushdraw)
+   && (isonepair && f$overpair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$safeflop)
+   && (isonepair && f$overpair)
+   && (ncallbets<=3)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possibleflush)
+   && (isonepair && ishipair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possiblestraight)
+   && (isonepair && ishipair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possibleflushdraw)
+   && (isonepair && ishipair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$safeflop)
+   && (isonepair && ishipair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possibleflush)
+   && (isonepair && ismidpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possiblestraight)
+   && (isonepair && ismidpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$possibleflushdraw)
+   && (isonepair && ismidpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==2)
+   && (f$safeflop)
+   && (isonepair && ismidpair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+//draws
+// if bots called or raised already
+   ||[(br==2)
+   && (didcall || didrais)
+   && (nsuited>=4)
+   && (ncallbets<=1)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (f$possibleflushdraw)
+   && (nstraightfill<=1)
+   && (ncallbets<=0)]
+
+   ||[(br==2)
+   && (didcall || didrais)
+   && (nstraightfill<=1)
+   && (ncallbets<=1)]
+// if bots not called or raised yet
+   ||[(br==2)
+   && (nsuited>=4)
+   && (ncallbets<=1)]
+
+   ||[(br==2)
+   && (nstraightfill<=1)
+   && (ncallbets<=1)]
+
+   ||[(br==2)
+   && (f$boardissafe)
+   && (ncallbets<=1)
+   && (islist555)
+   && (prwinnow>=20)]
+
+//Turn
+// if bots called or raised already
+   ||[(br==3)
+   && (didcall || didrais)
+   && (f$possibleflush)
+   && (isthreeofakind)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (didcall || didrais)
+   && (f$possiblestraight)
+   && (isthreeofakind)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (didcall || didrais)
+   && (f$boardissafe)
+   && (isthreeofakind)
+   && (ncallbets<=3)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (didcall || didrais)
+   && (f$possibleflush)
+   && (istwopair && f$overpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$possiblestraight)
+   && (istwopair && f$overpair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (didcall || didrais)
+   && (f$boardissafe)
+   && (istwopair && f$overpair)
+   && (ncallbets<=3)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (didcall || didrais)
+   && (f$possibleflush)
+   && (istwopair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (didcall || didrais)
+   && (f$possiblestraight)
+   && (istwopair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (didcall || didrais)
+   && (f$boardissafe)
+   && (istwopair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (didcall || didrais)
+   && (f$possibleflush)
+   && (isonepair && f$overpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (didcall || didrais)
+   && (f$possiblestraight)
+   && (isonepair && f$overpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (didcall || didrais)
+   && (f$boardissafe)
+   && (isonepair && f$overpair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (didcall || didrais)
+   && (f$possibleflush)
+   && (isonepair && ishipair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (didcall || didrais)
+   && (f$possiblestraight)
+   && (isonepair && ishipair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (didcall || didrais)
+   && (f$boardissafe)
+   && (isonepair && ishipair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (didcall || didrais)
+   && (f$possibleflush)
+   && (isonepair && ismidpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (didcall || didrais)
+   && (f$possiblestraight)
+   && (isonepair && ismidpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (didcall || didrais)
+   && (f$boardissafe)
+   && (isonepair && ismidpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+// if bots not called or raised yet
+   ||[(br==3)
+   && (isroyalflush)
+   && (prwinnow>=65)]
+
+   ||[(br==3)
+   && (isfourofakind)
+   && (prwinnow>=65)]
+
+   ||[(br==3)
+   && (isstraightflush)
+   && (prwinnow>=65)]
+
+   ||[(br==3)
+   && (isfullhouse)
+   && (prwinnow>=65)]
+
+   ||[(br==3)
+   && (isflush)
+   && (prwinnow>=65)]
+
+   ||[(br==3)
+   && (isstraight)
+   && (f$possibleflush)
+   && (ncallbets<=2)
+   && (prwinnow>=65)]
+
+   ||[(br==3)
+   && (isstraight)
+   && (f$boardissafe)
+   && (ncallbets<=3)
+   && (prwinnow>=65)]
+
+   ||[(br==3)
+   && (f$possibleflush)
+   && (isthreeofakind)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$possiblestraight)
+   && (isthreeofakind)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$boardissafe)
+   && (isthreeofakind)
+   && (ncallbets<=3)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$possibleflush)
+   && (istwopair && f$overpair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$possiblestraight)
+   && (istwopair && f$overpair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$boardissafe)
+   && (istwopair && f$overpair)
+   && (ncallbets<=3)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$possibleflush)
+   && (istwopair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$possiblestraight)
+   && (istwopair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$boardissafe)
+   && (istwopair)
+   && (ncallbets<=3)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$possibleflush)
+   && (isonepair && f$overpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$possiblestraight)
+   && (isonepair && f$overpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$boardissafe)
+   && (isonepair && f$overpair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$possibleflush)
+   && (isonepair && ishipair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$possiblestraight)
+   && (isonepair && ishipair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$boardissafe)
+   && (isonepair && ishipair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$possibleflush)
+   && (isonepair && ismidpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$possiblestraight)
+   && (isonepair && ismidpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==3)
+   && (f$boardissafe)
+   && (isonepair && ismidpair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+//draws
+// if bots called or raised already
+   ||[(br==3)
+   && (didcall || didrais)
+   && (nsuited>=4)
+   && (ncallbets<=1)]
+
+   ||[(br==3)
+   && (didcall || didrais)
+   && (f$possibleflushdraw)
+   && (nstraightfill<=1)
+   && (ncallbets<=0)]
+
+   ||[(br==3)
+   && (didcall || didrais)
+   && (nstraightfill<=1)
+   && (ncallbets<=1)]
+// if bots not called or raised yet
+   ||[(br==3)
+   && (nsuited>=4)
+   && (ncallbets<=1)]
+
+   ||[(br==3)
+   && (nstraightfill<=1)
+   && (ncallbets<=1)]
+
+   ||[(br==3)
+   && (f$boardissafe)
+   && (ncallbets<=1)
+   && (islist111)
+   && (prwinnow>=20)]
+
+//River
+// if bots called or raised already
+   ||[(br==4)
+   && (didcall || didrais)
+   && (f$possibleflush)
+   && (isthreeofakind)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (didcall || didrais)
+   && (f$possiblestraight)
+   && (isthreeofakind)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (didcall || didrais)
+   && (f$boardissafe)
+   && (isthreeofakind)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (didcall || didrais)
+   && (f$possibleflush)
+   && (istwopair && f$overpair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$possiblestraight)
+   && (istwopair && f$overpair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (didcall || didrais)
+   && (f$boardissafe)
+   && (istwopair && f$overpair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (didcall || didrais)
+   && (f$possibleflush)
+   && (istwopair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (didcall || didrais)
+   && (f$possiblestraight)
+   && (istwopair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (didcall || didrais)
+   && (f$boardissafe)
+   && (istwopair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (didcall || didrais)
+   && (f$possibleflush)
+   && (isonepair && f$overpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (didcall || didrais)
+   && (f$possiblestraight)
+   && (isonepair && f$overpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (didcall || didrais)
+   && (f$boardissafe)
+   && (isonepair && f$overpair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (didcall || didrais)
+   && (f$possibleflush)
+   && (isonepair && ishipair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (didcall || didrais)
+   && (f$possiblestraight)
+   && (isonepair && ishipair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (didcall || didrais)
+   && (f$boardissafe)
+   && (isonepair && ishipair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (didcall || didrais)
+   && (f$possibleflush)
+   && (isonepair && ismidpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (didcall || didrais)
+   && (f$possiblestraight)
+   && (isonepair && ismidpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (didcall || didrais)
+   && (f$boardissafe)
+   && (isonepair && ismidpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+// if bots not called or raised yet
+   ||[(br==4)
+   && (isroyalflush)
+   && (prwinnow>=65)]
+
+   ||[(br==4)
+   && (isfourofakind)
+   && (prwinnow>=65)]
+
+   ||[(br==4)
+   && (isstraightflush)
+   && (prwinnow>=65)]
+
+   ||[(br==4)
+   && (isfullhouse)
+   && (prwinnow>=65)]
+
+   ||[(br==4)
+   && (isflush)
+   && (prwinnow>=65)]
+
+   ||[(br==4)
+   && (isstraight)
+   && (f$possibleflush)
+   && (ncallbets<=2)
+   && (prwinnow>=65)]
+
+   ||[(br==4)
+   && (isstraight)
+   && (f$boardissafe)
+   && (ncallbets<=3)
+   && (prwinnow>=65)]
+
+   ||[(br==4)
+   && (f$possibleflush)
+   && (isthreeofakind)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$possiblestraight)
+   && (isthreeofakind)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$boardissafe)
+   && (isthreeofakind)
+   && (ncallbets<=3)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$possibleflush)
+   && (istwopair && f$overpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$possiblestraight)
+   && (istwopair && f$overpair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$boardissafe)
+   && (istwopair && f$overpair)
+   && (ncallbets<=3)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$possibleflush)
+   && (istwopair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$possiblestraight)
+   && (istwopair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$boardissafe)
+   && (istwopair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$possibleflush)
+   && (isonepair && f$overpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$possiblestraight)
+   && (isonepair && f$overpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$boardissafe)
+   && (isonepair && f$overpair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$possibleflush)
+   && (isonepair && ishipair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$possiblestraight)
+   && (isonepair && ishipair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$boardissafe)
+   && (isonepair && ishipair)
+   && (ncallbets<=2)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$possibleflush)
+   && (isonepair && ismidpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$possiblestraight)
+   && (isonepair && ismidpair)
+   && (ncallbets<=0)
+   && (prwinnow>=61)]
+
+   ||[(br==4)
+   && (f$boardissafe)
+   && (isonepair && ismidpair)
+   && (ncallbets<=1)
+   && (prwinnow>=61)]
+
+##f$prefold##
+// Don't prefold anything
+0
+
+##f$rebuy##
+0
+
+##f$delay##
+// No delay to act.
+0
+
+##f$chat##
+0
+
+##f$P##
+// Number of opponents for the prwin simulation.
+
+(nopponentsplaying==0) ? 0 :
+nopponentsplaying + defcon*nopponentsfolded
+
+##f$play##
+//------------------------------------------------------------------------
+//    DISABLED RULE(S)
+!1                       ? -1 :  // 0=disabled 1=enabled
+!f9                      ? -1 :  // enabled when f9 is pressed
+//(elapsed%4)              ? -1 :  // disabled 3 out of 4 seconds
+
+
+//------------------------------------------------------------------------
+//    LEAVE RULE
+0                                // 0=off 1=on
+&& issittingout                  // i am sitting out
+&& elapsedhand >= 600            // 10 minutes since end of last hand
+&& elapsedauto >= 600            // 10 minutes since autoplayer has acted
+
+                         ? -2 :  // leave the table
+
+//------------------------------------------------------------------------
+//    SITIN RULE
+
+0                                // 0=off 1=on
+&& issittingout                  // i am sitting out
+//&& (br==2 || br==3)              // it is the flop or turn
+&& (nopponentsdealt >= 2)             // 6 or more opponents
+//&& nchairsdealtright==2          // i am about to be big blind
+
+                         ?  1 :  // sitin
+
+//------------------------------------------------------------------------
+//    SITOUT RULE
+1                                // 0=off 1=on
+&& issittingin                   // i am sitting in
+&& (br==2 || br==3)              // it is the flop or turn
+&& (nopponentsdealt <= 1)             // 5 or less opponents
+
+                         ?  0 :  // sitout
+
+//------------------------------------------------------------------------
+-1 // disabled
+
+##f$test##
+
+
+##f$debug##
+                 = elapsed
+
+                 = sblind
+                 = bblind
+                 = bet
+
+                 = call
+                 = currentbet
+                 = balance
+
+                 = f$evcall
+                 = f$evrais
+
+                 = potplayer
+                 = potcommon
+                 = pot
+                 = rake
+
+                 = chair
+                 = handrank2652
+                 = pokerval
+                 = prwin
+                 = prlos
+                 = prtie
+                 = nopponents
+
+##list111##
+AA  KK  QQ  JJ
+AKs AQs
+KA
+
+##list222##
+AA  KK  QQ  JJ  TT  99
+AKs AQs AJs ATs KQs KJs
+KA  QA  QK  JA  TA
+
+##list333##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s QJs QTs Q9s Q8s JTs J9s
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9K  9Q  5A  4A  3A  2A
+
+##list444##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s QJs QTs Q9s Q8s JTs J9s J8s T9s T8s T7s 98s 97s 87s 86s 76s
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9K  9Q  9J  9T  5A  4A  3A  2A
+
+##list555##
+AA  KK  QQ  JJ
+AKs AQs AJs KQs
+KA  QA  JA
+
+##list666##
+A5s A4s A3s A2s J8s T9s T8s 98s 97s 87s 76s
+
+##f$evrais##
+0                                        // start with zero
+
+// DEBITS HERE
+
+- call                                   // calling cost
+- bet                                    // raising cost
+
+// CREDITS HERE
+
++  (
+
+      pot                                // current pot
+
+   + (call+bet*2)                        // my call my bet and a call (minimum)
+
+   + (raisshort-call-bet*2)              // additional callers
+      * 0.00                             //   0% (tight)
+//    * 0.50                             //  50% (guess)
+//    * 1.00                             // 100% (loose)
+
+   )
+
+   * (prwin+prtie/2)                     // adjust for winning chances
+   * (1+rake)                            // adjust for rake
+
+##f$evcall##
+0                                        // start with zero
+
+// DEBITS HERE
+
+- call                                   // calling cost
+
+
+// CREDITS HERE
+
++  (
+
+      pot                                // current pot
+
+   +  call                               // my call (minimum)
+
+   + (callshort-call)                    // additional callers
+      * 0.00                             //   0% (tight)
+//    * 0.50                             //  50% (guess)
+//    * 1.00                             // 100% (loose)
+
+   )
+
+   * (prwin+prtie/2)                     // adjust for winning chances
+   * (1+rake)                            // adjust for rake
+
+##f$boardpair##
+nrankedcommon==2
+
+##f$overpair##
+(ispair && rankloplayer>rankhicommon)
+
+##f$underpair##
+(ispair && rankhiplayer<ranklocommon)
+
+##f$possibleflush##
+nsuitedcommon >=3
+
+##f$possibleflushdraw##
+nsuitedcommon >=2
+
+##f$boardissafe##
+ [(br>=2)
+&&(nsuitedcommon<3)
+&&(nstraightcommon<3)
+&&(nrankedcommon<1)
+&&(nstraightfillcommon>1)]
+
+##f$possiblestraight##
+nstraightcommon>=3
+
+##f$safeflop##
+ [(br>=2)
+&&(nsuitedcommon<2)
+&&(nstraightcommon<2)
+&&(nrankedcommon<1)
+&&(nstraightfillcommon>1)]
+
