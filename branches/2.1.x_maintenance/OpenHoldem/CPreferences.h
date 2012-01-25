@@ -274,7 +274,7 @@ public:
 	void set_debug_autoconnector(const int b) { ENT _debug_autoconnector = b; WriteReg("debug_autoconnector", b); }
 	void set_debug_autoplayer(const int b) { ENT _debug_autoplayer = b; WriteReg("debug_autoplayer", b); }
 	void set_debug_heartbeat(const int b) { ENT _debug_heartbeat = b; WriteReg("debug_heartbeat", b); }
-	void set_debug_prwin(const int b) { ENT _debug_prwin = b; WriteReg("_debug_prwin", b); }
+	void set_debug_prwin(const int b) { ENT _debug_prwin = b; WriteReg("debug_prwin", b); }
 	void set_debug_icm(const int b) { ENT _debug_icm = b; WriteReg("debug_icm", b); }
 	void set_debug_occlusionchecker(const int b) { ENT _debug_occlusionchecker = b; WriteReg("debug_occlusionchecker", b); }
 	void set_debug_pokertracker(const int b) { ENT _debug_pokertracker = b; WriteReg("debug_pokertracker", b); }
