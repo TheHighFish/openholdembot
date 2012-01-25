@@ -63,10 +63,16 @@
 //
 //*****************************************************************************
 
+##f$OpenPPL_AbsoluteBetSize##
+// OpenPPL uses raise-by semantics
+// OpenHoldem and this function use raise-to.
+// A positive f$Decision means the Raise-size in Dollars.
+(f$OpenPPL_Decision > 0) ? [ncallbets + f$OpenPPL_Decision] : 0
+
 ##f$OpenPPL_BetSize_In_Dollars##
 // f$OpenPPL_BetSize is measured in bets but we need it in dollars,
 // as swag-adjustment / OH need it in dollars.
-(f$OpenPPL_BetSize * bet)
+(f$OpenPPL_AbsoluteBetSize * bet)
 
 ##f$OpenPPL_MinimumRaiseAllowed##
 // Final betsize if we raise by the minimum.
