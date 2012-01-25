@@ -12,7 +12,7 @@ MAINTENANCE:
   This is especially important for the first use of a symbol
   or for debugging of complex formulas, where the initialization
   can not be guaranteed. [THF]
- - Removing currentbetX cap for FL games. [Strikles] 
+- Removing currentbetX cap for FL games. [Strikles] 
   
  NEW STUFF:
  - Partial implememtation of new symbol "isfinaltable",
