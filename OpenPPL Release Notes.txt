@@ -1,4 +1,4 @@
-v2.1.0 2011-xx-yy
+v2.1.0 2012-01-25
 =================
 - First public release: OpenPPL converter and supporting library.
   The OpenPPL converter translates (Open)PPL to OH-script.
@@ -18,9 +18,10 @@ v2.1.0 2011-xx-yy
  Thank you very much to all contributors who helped to get this project done:
 
    Bob3456         CoolBotMe123    CrumbleSunday   Dr.Kaktuz
-   Efu             F1x3r           Fn101           Gecko
-   JConner         KaeKruse        Kyo             Morello
-   MrRuder         Nik0            NPNG            Poker_Dog
-   Satanikut       Stangelnator    SteveG1963      TheHighFish
-   Want2Learn      Zolp
+   Efu             Fn101           Gecko           JConner         
+   JokeDoke        KaeKruse        Kyo             MerzkiyTipon
+   Morello         MrRuder         Nik0            NPNG            
+   Poker_Dog       Postenjak       Rambam          Satanikut       
+   Stangelnator    SteveG1963      Strikles        TheHighFish
+   ThemAndMe       Want2Learn      Zolp
 
