@@ -1,9 +1,9 @@
-v2.1.9.3 2012-01-xx
+v2.1.9.3 2012-01-25
 ===================
 BUG FIXES: 
 - Some checkboxes of the debug-preferences had no effect 
   and didn't keep their values. This has now been fixes.
-  Thanks to for reporting. [THF] 
+  Thanks to [???] for reporting. [THF] 
 
 MAINTENANCE:
 - Returning 0 instead of ERR_INVALID_EXPR for unknown memory symbols.
@@ -12,9 +12,6 @@ MAINTENANCE:
   This is especially important for the first use of a symbol
   or for debugging of complex formulas, where the initialization
   can not be guaranteed. [THF]
-- Evaluator does now prepend a prefix "f$OpenPPL_" to unknown symbols
-  and tries to evaluate again. This feature is meant to avoid confusion 
-  and simplify the use of the debug-tab for new users. [THF]
  - Removing currentbetX cap for FL games. [Strikles] 
   
  NEW STUFF:
