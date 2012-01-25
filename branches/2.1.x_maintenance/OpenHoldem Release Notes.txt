@@ -12,7 +12,11 @@ MAINTENANCE:
   This is especially important for the first use of a symbol
   or for debugging of complex formulas, where the initialization
   can not be guaranteed. [THF]
-- Removing currentbetX cap for FL games. [Strikles] 
+- Removing currentbetX cap for FL games. [Strikles]
+- Whenever OpenHoldem finds an unknown symbols it tries noe
+  to prepend a prefix "f§OpenPPL_" and then evaluates again.
+  This way is more robust for OpenPPL-users, especially
+  for OpenPPL-symbols in memory-expressions. [THF] 
   
  NEW STUFF:
  - Partial implememtation of new symbol "isfinaltable",
