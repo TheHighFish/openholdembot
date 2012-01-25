@@ -227,6 +227,10 @@ The biggest stack of all opponents.
 None
 \end_layout
 
+\begin_layout Remark*
+Depends on game-history (game-state on your first action)
+\end_layout
+
 \end_inset
 </cell>
 </row>
@@ -285,6 +289,10 @@ The smallest stack of all opponents.
 
 \begin_layout Plain Layout
 None
+\end_layout
+
+\begin_layout Remark*
+Depends on game-history (game-state on your first action)
 \end_layout
 
 \end_inset
@@ -406,6 +414,10 @@ Our balance at the start of the hand, counted in big blinds
 
 \begin_layout Plain Layout
 None
+\end_layout
+
+\begin_layout Remark*
+Depends on game-history (game-state on your first action)
 \end_layout
 
 \end_inset

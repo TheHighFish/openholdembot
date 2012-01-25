@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- html --> 
 <meta name="src" content="Debugging_Your_Code.tex"> 
-<meta name="date" content="2012-01-23 23:59:00"> 
+<meta name="date" content="2012-01-25 15:43:00"> 
 <link rel="stylesheet" type="text/css" href="Debugging_Your_Code.css"> 
 </head><body 
 >
@@ -41,7 +41,7 @@ and &#8220;Auto&#8221; to turn the evaluator on. OpenHoldem will evaluate your e
 show you their values. Anything wrong with them?
 
 <!--l. 62--><p class="indent" >   <img 
-src="Debugging_Your_Code0x.png" alt="PIC" class="graphics" width="434.62375pt" height="477.78499pt" ><!--tex4ht:graphics  
+src="Debugging_Your_Code0x.png" alt="PIC" class="graphics" width="577.0755pt" height="635.03935pt" ><!--tex4ht:graphics  
 name="Debugging_Your_Code0x.png" src="0E__Dokumente_und_Einstellungen_Development_Des___nk_OpenPPL_Manual_Chapters_images_debug_tab.eps"  
 -->
 <!--l. 64--><p class="indent" >   Only one point might look strange on first sight: OpenHoldem reports a potsize of 65
@@ -52,14 +52,13 @@ everything is correct with this screenshot.
            <ul class="itemize1">
         <li class="itemize"><span 
 class="ecti-1000">incorrect input. </span>Have a look at OpenHoldems table display: everything
-
         ok?
            </li>
         <li class="itemize"><span 
-class="ecti-1000">a problem with your code (or with the symbol library):  </span>A  symbol  like
+class="ecti-1000">a problem with your code (or with the symbol library):  </span>a  symbol  like
         for example StillToAct depends on other symbols like dealposition and
         nchairsdealtleft. So if StillToAct was wrong you might put these symbols
-        into the debug-tab and evaluate further until you find the problem.</li></ul>
+        into the debug-tab tooand evaluate further until you find the problem.</li></ul>
    <h3 class="sectionHead"><a 
  id="x1-3000"></a>Simulating positions</h3>
 <!--l. 83--><p class="noindent" >The debug-tab is a wonderful tool &#8212; but: the problem happened at a live-table &#8212; what
@@ -69,17 +68,19 @@ possibility: you could shoot so-called replay-frames, i.e. screenshots of the ca
 that get saved to the replay-directory in your bot-folder. Once the session is over you can
 load these frames with OHReplay.exe and connect OpenHoldem to OHReplay like to a
 normal casino-table. And then you can work with the debug-tab like described above.
-Plese refer to OpenHoldems manual for a more detailed description of these
+Please refer to OpenHoldems manual for a more detailed description of these
 tools.
    <h3 class="sectionHead"><a 
  id="x1-4000"></a>Investigating log-files</h3>
 <!--l. 97--><p class="noindent" >Not satisfied with the play? You might also look at the autoplayer-log. It is stored in
-your bot-folder and named e.g. oh_0.log. OpenHoldem uses this file to not
-only store the action it took, but also the complete evaluation process. First
-watch out for your hand (you can identify it e.g. by the time, your cards, the
-hand-number, etc.). At first the log might look like a complete mess, but there&#8217;s
-a
-   <!--l. 105-->
+your bot-folder and named e.g. oh_0.log. OpenHoldem uses this file to not only store the
+action it took, but also the complete evaluation process. First watch out for your hand
+(you can identify it e.g. by the time, your cards, the hand-number, etc.). At first the log
+might look like a complete mess, but actually it is well structured: function-names on
+the very left are higher-level functions; symbols that are more indented got
+called by these higher-level functions. So what you see below is actually an
+evaluation-tree:
+   <!--l. 108-->
    <div class="lstlisting" id="listing-2"><span class="label"><a 
  id="x1-4001r1"></a></span>f$rais=0.00&#x00A0;[Line:&#x00A0;2,&#x00A0;Col:&#x00A0;18]&#x00A0;<br /><span class="label"><a 
  id="x1-4002r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$OpenPPL_Raise=<span 
@@ -100,18 +101,19 @@ class="cmsy-10">-</span>1.00&#x00A0;[Line:&#x00A0;10,&#x00A0;Col:&#x00A0;62]&#x0
  id="x1-4014r14"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$OpenPPL_Others=1.00&#x00A0;[Cached]&#x00A0;<br /><span class="label"><a 
  id="x1-4015r15"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$OpenPPL_Fold=<span 
 class="cmsy-10">-</span>1.00&#x00A0;[Line:&#x00A0;1,&#x00A0;Col:&#x00A0;2]
-   </div>
-<!--l. 124--><p class="indent" >   The main logic of your translated OpenPPL-code gets evaluated by the socalled
-&#8220;f$OpenPPL_Decision&#8221; function. It first looks up &#8220;betround&#8221; (which is 1.00) and
-therefore decides to evaluate &#8220;f$preflop&#8221;. The &#8220;f$preflop&#8221;-function looks at &#8220;Raises&#8221;
-and &#8220;Calls&#8221;. Both get their values from memory-symbols (as they depend on
-game-history). After that it evaluates StilltoAct (which further calculates its
-value depending on dealposition and nchairsdealtleft) and result to 8 (early
-position 2). As our hand is not in list008 (false = 0.00) OpenHoldem doesn&#8217;t
-continue here and finally reaches &#8220;When Others Fold Force&#8221;. Others is always true
-(coded as 1.00). So Fold (coded as -1.00) is the action to be taken. Once this
-point gets reached, OpenHoldem evaluates f$preflop to -1.00 (Fold) and then
 
+   </div>
+<!--l. 127--><p class="indent" >   The main logic of your translated OpenPPL-code gets evaluated by the socalled
+&#8220;f$OpenPPL_Decision&#8221; function. It first looks up &#8220;betround&#8221; (which is 1.00) and
+therefore decides to evaluate &#8220;f$preflop&#8221;. The &#8220;f$preflop&#8221;-function looks at &#8220;Raises&#8221; and
+&#8220;Calls&#8221;. Both get their values from pre-computed memory-symbols (as they depend on
+game-history). After that it evaluates StilltoAct (which further calculates its value
+depending on dealposition and nchairsdealtleft) and result to 8 (early position 2). As our
+hand is not in list008 (false = 0.00) OpenHoldem doesn&#8217;t continue here and finally
+reaches &#8220;When Others Fold Force&#8221;. Others is always true (coded as 1.00; and [Cached]
+simply means, that this symbol got evaluated in the past and its value got
+remembered). So Fold (coded as -1.00) is the action to be taken. Once this
+point gets reached, OpenHoldem evaluates f$preflop to -1.00 (Fold) and then
 f$Decision to -1.00. As Fold is something different than Raise (coded as -7.00)
 OpenHoldems autoplayer-function f$rais evaluates to false (0.00) and therefore
 OpenHoldem does not raise. It will then continue with f$call as described in
@@ -130,29 +132,34 @@ class="ecti-1000">Incorrect hand-reset: </span>Most symbols depend only on the s
         depending on your hand-reset-method defined in the tablemap. Depending on
         your settings it be might that an occlusion of the table will cause a hand-reset
         for OpenHoldem. So watch out for messages like below in your log-file.
-        <!--l. 155-->
+        <!--l. 160-->
            <div class="lstlisting" id="listing-3"><span class="label"><a 
  id="x1-5001r1"></a></span>2012<span 
 class="cmsy-10">-</span>01<span 
 class="cmsy-10">-</span>21&#x00A0;19:50:17&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;&#x00A0;<span 
-class="cmsy-10">*************************************************************</span>&#x00A0;HAND&#x00A0;RESET&#x00A0;(num:&#x00A0;&#x00A0;dealer:&#x00A0;0&#x00A0;cards:&#x00A0;KhKd):&#x00A0;PartyPoker&#x00A0;Table&#x00A0;######&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;NL&#x00A0;Hold&#8217;em&#x00A0;$1/$2&#x00A0;<span 
-class="cmsy-10">*************************************************************</span>&#x00A0;2012<span 
+class="cmsy-10">-</span>&#x00A0;<br /><span class="label"><a 
+ id="x1-5002r2"></a></span><span 
+class="cmsy-10">*************************************************************</span>&#x00A0;<br /><span class="label"><a 
+ id="x1-5003r3"></a></span>HAND&#x00A0;RESET&#x00A0;(num:&#x00A0;&#x00A0;dealer:&#x00A0;0&#x00A0;cards:&#x00A0;KhKd):&#x00A0;PartyPoker&#x00A0;Table&#x00A0;######&#x00A0;<span 
+class="cmsy-10">-</span>&#x00A0;NL&#x00A0;Hold&#8217;em&#x00A0;$1/$2&#x00A0;<br /><span class="label"><a 
+ id="x1-5004r4"></a></span><span 
+class="cmsy-10">*************************************************************</span>&#x00A0;<br /><span class="label"><a 
+ id="x1-5005r5"></a></span>2012<span 
 class="cmsy-10">-</span>01<span 
 class="cmsy-10">-</span>21&#x00A0;19:50:17&#x00A0;<span 
 class="cmsy-10">-</span>&#x00A0;ROUND&#x00A0;1
            </div>
-        <!--l. 158--><p class="indent" >     If they appear in the middle of a hand, then you should revisit your
+        <!--l. 167--><p class="indent" >     If they appear in the middle of a hand, then you should revisit your
         hand-reset-method.
            </li>
         <li class="itemize"><span 
 class="ecti-1000">Misread information: </span>Most problems (and most reported &#8220;bugs&#8221;) are of the
         from &#8220;garbage in - garbage out&#8221;. If OpenHoldem gets incorrect data from the
         scraper-engine (e.g. no seated players) then all further calculations by the
+
         symbol-engine and the evaluator will return bogus values. The reason is usually
         simple: a beginner with incorrect system settings or incorrect casino settings.
-        Let us ...: Win2000 classic theme and all animations turned off are
+        Let us emphasize: Win2000 classic theme and all animations turned off are
         recommended, but not necessary. In pronciple you can scrape whatever
         configuration you like. However: if you use somebody elses tablemap,
         then you <span 
@@ -162,12 +169,11 @@ class="ecti-1000">have to </span>use exactly the same settings as the profile cr
         you sit at a real-money-table observe your bot and OpenHoldems
         table-display for some time: does OpenHoldem recognize every game-state
         correctly? Don&#8217;t get frightened: <span 
-class="ecti-1000">screenscraping is a easy and very</span>
+class="ecti-1000">screenscraping is an easy and very</span>
         <span 
 class="ecti-1000">flexible approach, that works great. But it requires some care from your</span>
-
         <span 
-class="ecti-1000">site!</span></li></ul>
+class="ecti-1000">side!</span></li></ul>
     
 </body></html> 
 

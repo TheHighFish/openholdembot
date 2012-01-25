@@ -135,6 +135,8 @@ Auto
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/debug_tab.JPG
+	width 577pt
+	height 635pt
 
 \end_inset
 
@@ -167,10 +169,10 @@ Have a look at OpenHoldems table display: everything ok?
 \emph on
 a problem with your code (or with the symbol library):
 \emph default
- A symbol like for example StillToAct depends on other symbols like dealposition
+ a symbol like for example StillToAct depends on other symbols like dealposition
  and nchairsdealtleft.
  So if StillToAct was wrong you might put these symbols into the debug-tab
- and evaluate further until you find the problem.
+ tooand evaluate further until you find the problem.
 \end_layout
 
 \begin_layout Section*
@@ -188,7 +190,7 @@ The debug-tab is a wonderful tool --- but: the problem happened at a live-table
  Once the session is over you can load these frames with OHReplay.exe and
  connect OpenHoldem to OHReplay like to a normal casino-table.
  And then you can work with the debug-tab like described above.
- Plese refer to OpenHoldems manual for a more detailed description of these
+ Please refer to OpenHoldems manual for a more detailed description of these
  tools.
 \end_layout
 
@@ -204,7 +206,10 @@ Not satisfied with the play? You might also look at the autoplayer-log.
  the complete evaluation process.
  First watch out for your hand (you can identify it e.g.
  by the time, your cards, the hand-number, etc.).
- At first the log might look like a complete mess, but there's a 
+ At first the log might look like a complete mess, but actually it is well
+ structured: function-names on the very left are higher-level functions;
+ symbols that are more indented got called by these higher-level functions.
+ So what you see below is actually an evaluation-tree:
 \end_layout
 
 \begin_layout Standard
@@ -345,7 +350,8 @@ Calls
 \end_inset
 
 .
- Both get their values from memory-symbols (as they depend on game-history).
+ Both get their values from pre-computed memory-symbols (as they depend
+ on game-history).
  After that it evaluates StilltoAct (which further calculates its value
  depending on dealposition and nchairsdealtleft) and result to 8 (early
  position 2).
@@ -359,7 +365,8 @@ When Others Fold Force
 \end_inset
 
 .
- Others is always true (coded as 1.00).
+ Others is always true (coded as 1.00; and [Cached] simply means, that this
+ symbol got evaluated in the past and its value got remembered).
  So Fold (coded as -1.00) is the action to be taken.
  Once this point gets reached, OpenHoldem evaluates f$preflop to -1.00 (Fold)
  and then f$Decision to -1.00.
@@ -396,10 +403,28 @@ status open
 
 \begin_layout Plain Layout
 
-2012-01-21 19:50:17 -  *********************************************************
-**** HAND RESET (num:  dealer: 0 cards: KhKd): PartyPoker Table ###### -
- NL Hold'em $1/$2 *************************************************************
- 2012-01-21 19:50:17 - ROUND 1
+2012-01-21 19:50:17 -
+\end_layout
+
+\begin_layout Plain Layout
+
+************************************************************* 
+\end_layout
+
+\begin_layout Plain Layout
+
+HAND RESET (num:  dealer: 0 cards: KhKd): PartyPoker Table ###### - NL Hold'em
+ $1/$2 
+\end_layout
+
+\begin_layout Plain Layout
+
+*************************************************************
+\end_layout
+
+\begin_layout Plain Layout
+
+2012-01-21 19:50:17 - ROUND 1
 \end_layout
 
 \end_inset
@@ -435,8 +460,8 @@ garbage in - garbage out
  the evaluator will return bogus values.
  The reason is usually simple: a beginner with incorrect system settings
  or incorrect casino settings.
- Let us ...: Win2000 classic theme and all animations turned off are recommended,
- but not necessary.
+ Let us emphasize: Win2000 classic theme and all animations turned off are
+ recommended, but not necessary.
  In pronciple you can scrape whatever configuration you like.
  However: if you use somebody elses tablemap, then you 
 \emph on
@@ -449,8 +474,8 @@ have to
  OpenHoldem recognize every game-state correctly? Don't get frightened:
  
 \emph on
-screenscraping is a easy and very flexible approach, that works great.
- But it requires some care from your site!
+screenscraping is an easy and very flexible approach, that works great.
+ But it requires some care from your side!
 \end_layout
 
 \end_body
