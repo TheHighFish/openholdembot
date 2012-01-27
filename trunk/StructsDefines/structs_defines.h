@@ -2,7 +2,7 @@
 #define INC_STRUCTS_DEFINES_H
 
 #include <boost/spirit/tree/ast.hpp>
-//#include "..\pokereval\include\handval.h" //!!!
+#include "..\pokereval\include\poker_defs.h"
 #include "..\OpenHoldem\MagicNumbers.h"
 
 typedef boost::spirit::node_val_data_factory<const char *> int_factory_t;
