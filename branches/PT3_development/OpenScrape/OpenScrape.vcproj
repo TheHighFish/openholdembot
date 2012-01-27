@@ -135,7 +135,7 @@
 				FavorSizeOrSpeed="1"
 				EnableFiberSafeOptimizations="true"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="&quot;..\spirit-1.8.5-miniboost&quot;;..\hscroll-list-box"
+				AdditionalIncludeDirectories="&quot;..\spirit-1.8.5-miniboost&quot;;..\pokereval\include;..\pokereval\include\inlines;&quot;..\hscroll-list-box&quot;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				MinimalRebuild="false"
 				ExceptionHandling="1"
