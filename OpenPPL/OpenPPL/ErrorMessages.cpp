@@ -7,7 +7,6 @@
 static const char *short_error_messages[k_number_of_error_codes] =
 {
 	"ERROR: \"BEEP\" is no valid action for OpenPPL.",
-	"ERROR: Specific suits are not supported.",
 	"ERROR: Invalid card expression.",
 	"ERROR: Missing keyword \"FORCE\".",
 	"ERROR: Missing code section.",
@@ -33,19 +32,6 @@ static const char *detailed_error_messages[k_number_of_error_codes] =
 	"Human and bot competing for the mouse just calls for troubles.\n"
 	"\n"
 	"Please complete your formula so that all actions are specified.\n",
-
-	// k_error_specific_suits_not_supported
-	"Specific suits are not supported by OpenPPL\n"
-	"as they do not matter and are not supported by OH-script.\n"
-	"\n"
-	"Example:\n"
-	"WHEN (Hand = AcT) CALL  FORCE\n"
-	"WHEN (Hand = AT)  RAISE FORCE\n"
-	"\n"
-	"Coding this way was the old way to randomize actions\n"
-	"before randomization go introduced into PPL.\n"
-	"\n"
-	"We are sorry, but you should change this part of your formula.\n",
 
 	// k_error_invalid_card_expression
 	"A card expression looks e.g. like\n"
