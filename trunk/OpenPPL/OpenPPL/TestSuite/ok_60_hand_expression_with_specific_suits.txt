@@ -2,6 +2,9 @@
 custom
 
 preflop
+when (hand = AT suited) fold force
+when (hand = AT) fold force
+when (hand = AcTs) fold force
 when (hand = AsT) fold force
 
 flop
