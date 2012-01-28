@@ -628,12 +628,31 @@ me_re_MemRaises
 // And we also have to care about potential antes
 [(nopponentsraising - 1) - (f$OpenPPL_AntesPresent ? 1 : 0)]
 
+##f$OpenPPL_NumberOpponentsLimpingPreflop##
+// First orbit preflop only
+// Does not count the user
+// Does not count the big-blind, who can't limp
+  [(currentbet0 == bblind) && (userchair != 0) && (f$OpenPPL_BigBlindChair != 0)] ? 1 : 0
++ [(currentbet1 == bblind) && (userchair != 1) && (f$OpenPPL_BigBlindChair != 1)] ? 1 : 0
++ [(currentbet2 == bblind) && (userchair != 2) && (f$OpenPPL_BigBlindChair != 2)] ? 1 : 0
++ [(currentbet3 == bblind) && (userchair != 3) && (f$OpenPPL_BigBlindChair != 3)] ? 1 : 0
++ [(currentbet4 == bblind) && (userchair != 4) && (f$OpenPPL_BigBlindChair != 4)] ? 1 : 0
++ [(currentbet5 == bblind) && (userchair != 5) && (f$OpenPPL_BigBlindChair != 5)] ? 1 : 0
++ [(currentbet6 == bblind) && (userchair != 6) && (f$OpenPPL_BigBlindChair != 6)] ? 1 : 0
++ [(currentbet7 == bblind) && (userchair != 7) && (f$OpenPPL_BigBlindChair != 7)] ? 1 : 0
++ [(currentbet8 == bblind) && (userchair != 8) && (f$OpenPPL_BigBlindChair != 8)] ? 1 : 0
++ [(currentbet9 == bblind) && (userchair != 9) && (f$OpenPPL_BigBlindChair != 9)] ? 1 : 0
+
 ##f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopInBigBlind##
 // If we are in big-blind, there *was* 1 opponent "blind-raising",
 // but he does no longer get counted, as he either did fold,
 // did call or did truely raise.
-// So we only have to care about potential antes.
-[nopponentsraising - (f$OpenPPL_AntesPresent ? 1 : 0)]
+// In big blind nopponentsraising does somewhat unexpectedly
+// call an open-limper as blind-raiser, so we have to adapt for that case.
+// Besides of that have to care about potential antes.
+(f$OpenPPL_NumberOpponentsLimpingPreflop >= 1) ? 
+  [nopponentsraising - 1 - (f$OpenPPL_AntesPresent ? 1 : 0)] :
+  [nopponentsraising - (f$OpenPPL_AntesPresent ? 1 : 0)]
 
 ##f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopNotInTheBlinds##
 // There are (usually) 2 blindraisers which should not get countet
