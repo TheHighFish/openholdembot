@@ -1857,7 +1857,7 @@ ispair && (f$OpenPPL_RankOfFirstHoleCard < f$OpenPPL_4thBestBoardCard) && (f$Ope
 || f$OpenPPL_HaveStraightFlush)
 
 ##f$OpenPPL_LowestBitOfRankBitsCommon##
-(1>>ranklocommon)
+(1<<ranklocommon)
 
 ##f$OpenPPL_RankBitsCommonWithoutLowestBit##
 // we negate lowest-bit and then do an and-operation
@@ -1889,7 +1889,7 @@ ranklocommon
 ((nrankedcommon == 1) && ispair && isthreeofakind && (rankhiplayer == ranklocommon))
 
 ##f$OpenPPL_HaveBottomTwoPair##
-(f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_LowestBoardCard && f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_2ndLowestBoardCard)
+   (f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_LowestBoardCard && f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_2ndLowestBoardCard)
 || (f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_2ndLowestBoardCard && f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_LowestBoardCard)
 
 ##f$OpenPPL_HaveDoubleGutshotDraw##
@@ -1924,14 +1924,16 @@ isfullhouse || f$OpenPPL_HaveQuads
 // && !f$OpenPPL_HaveBackdoorStraightDraw
 
 ##f$OpenPPL_HaveNutFlush##
-[f$OpenPPL_HaveFlush && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 0)]
+    f$OpenPPL_HaveNutStraightFlush
+|| [f$OpenPPL_HaveFlush && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 0)]
 
 ##f$OpenPPL_HaveNutFlushCard##
 (f$OpenPPL_NumberOfUnknownSuitedOvercards == 0)
 
 ##f$OpenPPL_HaveNutFlushDraw##
-[f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 0)]
-|| f$OpenPPL_HaveNutStraightFlush
+    f$OpenPPL_HaveNutStraightFlush
+|| [f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 0)]
+
 
 ##f$OpenPPL_HaveNutStraight##
 ishistraight
@@ -2427,8 +2429,9 @@ f$OpenPPL_HaveStraight
 && (pcbits == 0b00011 || pcbits == 0b00001)
 
 ##f$OpenPPL_NumberOfUnknownSuitedOvercards##
-// Unknown suited cards are cards, which are not on board and not in heroes hand.
-`((~srankbits & 0x7fff) >> srankhi)
+// Suited unknown overcards to holecards,
+// e.g. on Board Ah Th, in Hand Jh 9h => 2 suited overcards: Kh Qh.
+`((~srankbits & 0x7fff) >> srankhiplayer)
 
 ##f$OpenPPL_BoardKicker_FourOfAKindOnBoard##
 (betround == f$OpenPPL_ConstBetRoundRiver) ? f$OpenPPL_HighestUnpairedBoardCard : 2
