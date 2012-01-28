@@ -129,7 +129,10 @@ f$OpenPPL_Fold
 
 //*****************************************************************************
 //
-// OpenPPL - Card Constants
+//  OpenPPL - Card Constants
+//  ===========================
+//  
+//  Both ranks and suits accordint to the OpenHoldem docu
 //
 //*****************************************************************************
 
@@ -171,6 +174,18 @@ f$OpenPPL_Fold
 
 ##f$OpenPPL_ConstCardTwo##
 2
+
+##f$OpenPPL_ConstSuitClubs##
+1
+
+##f$OpenPPL_ConstSuitDiamonds##
+2
+
+##f$OpenPPL_ConstSuitHearts##
+3
+
+##f$OpenPPL_ConstSuitSpades##
+4
 
 //*****************************************************************************
 //
