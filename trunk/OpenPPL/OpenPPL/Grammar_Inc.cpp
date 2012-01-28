@@ -176,21 +176,20 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				"T" | "t" | "9" | "8" | "7" | "6" | "5" | "4" | "3" | "2"];
 			suit_constant = lexeme_d[ch_p("C") | "c" | "D"| "d" | "H" | "h" | "S" | "s"];
 			
-			// card_expression = longest_d[
-			card_expression = suited_card_expression
-				| card_expression_with_specific_suits
-				| non_suited_card_expression
+			// card_expression 
+			card_expression = suited_card_expression[print_hand_expression()]
+				| card_expression_with_specific_suits[print_hand_expression_with_specific_suits()]
+				| non_suited_card_expression[print_hand_expression()]
 				| invalid_card_expression;
 			suited_card_expression = (non_suited_card_expression >> keyword_suited);
 			non_suited_card_expression = (lexeme_d[+card_constant]);
 			invalid_card_expression = lexeme_d[+alnum_p][error_invalid_card_expression()];
-			card_expression_with_specific_suits = card_constant >> suit_constant >> *(card_constant >> !suit_constant)
-				[error_specific_suits_not_supported()];
+			card_expression_with_specific_suits = (card_constant >> suit_constant >> *(card_constant >> !suit_constant));
 
 			// hand expression
 			hand_expression = keyword_hand 
 					>> str_p("=") 
-					>> card_expression[print_hand_expression()];
+					>> card_expression;
 
 			// board expressions
 			board_expression = suited_board_expression | non_suited_board_expression;

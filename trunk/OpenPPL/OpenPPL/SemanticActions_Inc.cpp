@@ -541,6 +541,15 @@ struct print_hand_expression
 	}
 };
 
+struct print_hand_expression_with_specific_suits
+{
+	void operator()(const char *begin, const char *end) const 
+	{
+		CString text = std::string(begin, end).c_str();
+		generate_code_for_hand_expression_with_specific_suits(text);
+	}
+};
+
 //
 // Actions
 //
@@ -678,14 +687,6 @@ struct error_beep_not_supported
 	void operator()(const char *begin, const char *end) const 
 	{
 		ErrorMessage(k_error_beep_not_supported, ErroneousCodeSnippet(begin));
-	}
-};
-
-struct error_specific_suits_not_supported
-{
-	void operator()(const char *begin, const char *end) const 
-	{
-		ErrorMessage(k_error_specific_suits_not_supported, ErroneousCodeSnippet(begin));
 	}
 };
 

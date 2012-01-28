@@ -1,5 +1,6 @@
 #include "Board.h"
 #include <assert.h>
+#include <cctype> 
 #include <iomanip>
 #include <iostream>
 #include "ErrorMessages.h"
@@ -145,4 +146,100 @@ void generate_code_for_hand_expression(CString hand_expression)
 	{
 		ErrorMessage(k_error_too_many_cards_in_hand, hand_expression);
 	}
+}
+
+CString GenerateCodeForSingleCardExpressionWithSpecificSuits(char first_or_second_card_0_or_1,
+															 char rank, char suit)
+{
+	assert((first_or_second_card_0_or_1 == '0') || (first_or_second_card_0_or_1 == '1'));
+	CString code_for_rank = "($$pr" + CString(first_or_second_card_0_or_1) + " == ";
+	switch (toupper(rank))
+	{
+		case 'A': code_for_rank += "f$OpenPPL_ConstCardAce)";
+			break;
+		case 'K': code_for_rank += "f$OpenPPL_ConstCardKing)";
+			break;
+		case 'Q': code_for_rank += "f$OpenPPL_ConstCardQueen)";
+			break;
+		case 'J': code_for_rank += "f$OpenPPL_ConstCardJsck)";
+			break;
+		case 'T': code_for_rank += "f$OpenPPL_ConstCardTen)";
+			break;
+		case '9': code_for_rank += "f$OpenPPL_ConstCardNine)";
+			break;
+		case '8': code_for_rank += "f$OpenPPL_ConstCardEight)";
+			break;
+		case '7': code_for_rank += "f$OpenPPL_ConstCardSeven)";
+			break;
+		case '6': code_for_rank += "f$OpenPPL_ConstCardSix)";
+			break;
+		case '5': code_for_rank += "f$OpenPPL_ConstCardFive)";
+			break;
+		case '4': code_for_rank += "f$OpenPPL_ConstCardFour)";
+			break;
+		case '3': code_for_rank += "f$OpenPPL_ConstCardThree)";
+			break;
+		case '2': code_for_rank += "f$OpenPPL_ConstCardTwo)";
+			break;
+		default: code_for_rank = "";
+	}
+	CString code_for_suit = "($$ps" + CString(first_or_second_card_0_or_1) + " == ";
+	switch (tolower(suit))
+	{
+		case 'c': code_for_suit += "f$OpenPPL_ConstSuitClubs)";
+			break;
+		case 'd': code_for_suit += "f$OpenPPL_ConstSuitDiamonds)";
+			break;
+		case 'h': code_for_suit += "f$OpenPPL_ConstSuitHearts)";
+			break;
+		case 's': code_for_suit += "f$OpenPPL_ConstSuitSpades)";
+			break;
+		default: code_for_suit = "";
+	}
+	if (code_for_rank == "")
+	{
+		return "f$OpenPPL_False";
+	}
+	else if (code_for_suit == "")
+	{
+		return code_for_rank;
+	}
+	else
+	{
+		// Code for rank and suit generated
+		CString result = code_for_rank + " && " + code_for_suit;
+		return result;
+	}
+}
+
+void generate_code_for_hand_expression_with_specific_suits(CString hand_expression)
+{
+	// Input: a expression like "AcJs" or "KdQ" or even only "Kc".
+
+	// Remove superfluos spaces...
+	hand_expression.Remove(' ');
+	CString complete_code = CString("\n        /* ") + hand_expression 
+		+ CString(" */ ");
+	// ... and add 4 spaces at the end to avoid out-of-range-errors
+	hand_expression += "    ";
+
+	char first_card_rank  = hand_expression[0];
+	char first_card_suit  = hand_expression[1];
+	char second_card_rank = hand_expression[2];
+	char second_card_suit = hand_expression[3];
+
+	CString code_for_card_0_at_pos_0 = GenerateCodeForSingleCardExpressionWithSpecificSuits(
+		'0', first_card_rank, first_card_suit);
+	CString code_for_card_1_at_pos_1 = GenerateCodeForSingleCardExpressionWithSpecificSuits(
+		'1', second_card_rank, second_card_suit);
+	CString code_for_card_0_at_pos_1 = GenerateCodeForSingleCardExpressionWithSpecificSuits(
+		'1', first_card_rank, first_card_suit);
+	CString code_for_card_1_at_pos_0 = GenerateCodeForSingleCardExpressionWithSpecificSuits(
+		'0', second_card_rank, second_card_suit);
+
+	complete_code += CString("[[ ") + code_for_card_0_at_pos_0 
+		+ CString(" && ") + code_for_card_1_at_pos_1 + CString(" ] || [ ")
+		+ code_for_card_0_at_pos_1 + CString(" && ") + code_for_card_1_at_pos_0
+		+ CString(" ]]");
+	current_output << complete_code;
 }
