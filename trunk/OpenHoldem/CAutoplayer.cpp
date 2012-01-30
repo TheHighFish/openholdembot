@@ -250,8 +250,8 @@ void CAutoplayer::DoAutoplayer(void)
 		DoChat();
 	}
 
-	int NumberOfStableFrames = p_stableframescounter->GetNumberOfStableFrames();
-	write_log(3, "Number of stable frames: % d\n", NumberOfStableFrames);
+	int NumberOfStableFrames = p_stableframescounter->UpdateNumberOfStableFrames();
+	//write_log(prefs.debug_autoplayer(), "[AutoPlayer] Number of stable frames: % d\n", NumberOfStableFrames);
 
 	bool isFinalAnswer = true;
 
@@ -277,11 +277,10 @@ void CAutoplayer::DoAutoplayer(void)
 	}
 
 	// Scale f$delay to a number of scrapes
-	// Avoid division by zero; we use milliseconds, so +1 doesn't change much.
-	int additional_frames_to_wait = p_symbols->f$delay() / (prefs.scrape_delay() + 1);	
+	int additional_frames_to_wait = (prefs.scrape_delay() > 0 ? (p_symbols->f$delay()/prefs.scrape_delay()) : 0);	
 
 	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return.
-	if (NumberOfStableFrames < (prefs.frame_delay() + additional_frames_to_wait))
+	if (NumberOfStableFrames < ((int)prefs.frame_delay() + additional_frames_to_wait))
 	{
 		write_log(3, "Not Final Answer because we don't have enough stable frames, or have not waited f$delay milliseconds\n");
 		isFinalAnswer = false;
