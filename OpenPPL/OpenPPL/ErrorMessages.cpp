@@ -1,5 +1,6 @@
 #include <afxwin.h>
 #include "ErrorMessages.h"
+#include "LineCounter.h"
 #include <assert.h>
 #include <iostream> 
 #include <windows.h>
@@ -227,7 +228,7 @@ void ErrorMessage(int error_code, CString invalid_code_snippet)
 
 	CString error_location;
 	//error_location.Format("Line: %d\nColumn: %d\n", error_line, error_column);
-	error_location.Format("Line: [not yet implemented]\nColumn: [not yet implemented]\n");
+	error_location.Format("Line: [ %i ]\n\n", GetLineCount());
 	CString separator_line = "\n============================================================\n\n";
 	CString error_message = short_error_explanation + separator_line
 		+ invalid_code_snippet + separator_line 

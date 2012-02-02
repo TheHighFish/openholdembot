@@ -52,8 +52,6 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				>> (code_sections)
 				>> end_p
 				    [check_for_missing_code_section()]
-					[print_prime_coded_board_ranks()]
-					[print_technical_functions()]
 					[print_user_reset_function()]
 					[print_OpenPPL_Library()];
 
