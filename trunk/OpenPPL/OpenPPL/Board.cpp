@@ -148,67 +148,15 @@ void generate_code_for_hand_expression(CString hand_expression)
 	}
 }
 
-CString GenerateCodeForSingleCardExpressionWithSpecificSuits(char first_or_second_card_0_or_1,
-															 char rank, char suit)
+bool IsSuit(char s)
 {
-	assert((first_or_second_card_0_or_1 == '0') || (first_or_second_card_0_or_1 == '1'));
-	CString code_for_rank = "($$pr" + CString(first_or_second_card_0_or_1) + " == ";
-	switch (toupper(rank))
+	switch (tolower(s))
 	{
-		case 'A': code_for_rank += "f$OpenPPL_ConstCardAce)";
-			break;
-		case 'K': code_for_rank += "f$OpenPPL_ConstCardKing)";
-			break;
-		case 'Q': code_for_rank += "f$OpenPPL_ConstCardQueen)";
-			break;
-		case 'J': code_for_rank += "f$OpenPPL_ConstCardJsck)";
-			break;
-		case 'T': code_for_rank += "f$OpenPPL_ConstCardTen)";
-			break;
-		case '9': code_for_rank += "f$OpenPPL_ConstCardNine)";
-			break;
-		case '8': code_for_rank += "f$OpenPPL_ConstCardEight)";
-			break;
-		case '7': code_for_rank += "f$OpenPPL_ConstCardSeven)";
-			break;
-		case '6': code_for_rank += "f$OpenPPL_ConstCardSix)";
-			break;
-		case '5': code_for_rank += "f$OpenPPL_ConstCardFive)";
-			break;
-		case '4': code_for_rank += "f$OpenPPL_ConstCardFour)";
-			break;
-		case '3': code_for_rank += "f$OpenPPL_ConstCardThree)";
-			break;
-		case '2': code_for_rank += "f$OpenPPL_ConstCardTwo)";
-			break;
-		default: code_for_rank = "";
-	}
-	CString code_for_suit = "($$ps" + CString(first_or_second_card_0_or_1) + " == ";
-	switch (tolower(suit))
-	{
-		case 'c': code_for_suit += "f$OpenPPL_ConstSuitClubs)";
-			break;
-		case 'd': code_for_suit += "f$OpenPPL_ConstSuitDiamonds)";
-			break;
-		case 'h': code_for_suit += "f$OpenPPL_ConstSuitHearts)";
-			break;
-		case 's': code_for_suit += "f$OpenPPL_ConstSuitSpades)";
-			break;
-		default: code_for_suit = "";
-	}
-	if (code_for_rank == "")
-	{
-		return "f$OpenPPL_False";
-	}
-	else if (code_for_suit == "")
-	{
-		return code_for_rank;
-	}
-	else
-	{
-		// Code for rank and suit generated
-		CString result = code_for_rank + " && " + code_for_suit;
-		return result;
+		case 'c': return true;
+		case 'd': return true;
+		case 'h': return true;
+		case 's': return true;
+		default: return false;
 	}
 }
 
@@ -218,28 +166,38 @@ void generate_code_for_hand_expression_with_specific_suits(CString hand_expressi
 
 	// Remove superfluos spaces...
 	hand_expression.Remove(' ');
-	CString complete_code = CString("\n        /* ") + hand_expression 
-		+ CString(" */ ");
+	current_output << "[ /* " << hand_expression << " */ ";
 	// ... and add 4 spaces at the end to avoid out-of-range-errors
 	hand_expression += "    ";
 
-	char first_card_rank  = hand_expression[0];
-	char first_card_suit  = hand_expression[1];
-	char second_card_rank = hand_expression[2];
-	char second_card_suit = hand_expression[3];
+	char first_card_rank  = toupper(hand_expression[0]);
+	char first_card_suit  = tolower(hand_expression[1]);
+	char second_card_rank = toupper(hand_expression[2]);
+	char second_card_suit = tolower(hand_expression[3]);
 
-	CString code_for_card_0_at_pos_0 = GenerateCodeForSingleCardExpressionWithSpecificSuits(
-		'0', first_card_rank, first_card_suit);
-	CString code_for_card_1_at_pos_1 = GenerateCodeForSingleCardExpressionWithSpecificSuits(
-		'1', second_card_rank, second_card_suit);
-	CString code_for_card_0_at_pos_1 = GenerateCodeForSingleCardExpressionWithSpecificSuits(
-		'1', first_card_rank, first_card_suit);
-	CString code_for_card_1_at_pos_0 = GenerateCodeForSingleCardExpressionWithSpecificSuits(
-		'0', second_card_rank, second_card_suit);
+	CString code_for_card_0 = "1";
+	CString code_for_card_1 = "1";
 
-	complete_code += CString("[[ ") + code_for_card_0_at_pos_0 
-		+ CString(" && ") + code_for_card_1_at_pos_1 + CString(" ] || [ ")
-		+ code_for_card_0_at_pos_1 + CString(" && ") + code_for_card_1_at_pos_0
-		+ CString(" ]]");
-	current_output << complete_code;
+	if (IsSuit(first_card_suit))
+	{
+		code_for_card_0 = CString("f$PrimeCode_") 
+			+ CString(first_card_rank) + CString(first_card_suit);
+	}
+	if (IsSuit(second_card_suit))
+	{
+		code_for_card_1 = CString("f$PrimeCode_") 
+			+ CString(second_card_rank) + CString(second_card_suit);
+	}
+
+	// For hands like AcT we first have to check AT, before we can check Ac.
+	// Otherwise we would miss cards without suits in our second check.
+	CString hand_expression_without_suits = CString(first_card_rank)
+		+ CString(second_card_rank);
+	generate_code_for_hand_expression(hand_expression_without_suits);
+	current_output << " && ";
+
+	// Now code for cards with specific suits
+	current_output << CString("[f$prime_coded_hole_cards % [1 * ") 
+		<< code_for_card_0 << CString(" * ") << code_for_card_1
+		<< CString("] != 0]]");
 }

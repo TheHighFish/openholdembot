@@ -1,3 +1,4 @@
+#include "LineCounter.h"
 #include "ListOfOpenHoldemSymbolPrefixes.h"
 
 // SemanticActions_Inc.cpp
@@ -63,22 +64,6 @@ struct print_main_code_sections
 	void operator()(const char *begin, const char *end) const 
 	{ 
 		std::cout << k_code_snippet_start_of_code_sections; 
-	} 
-};
-
-struct print_prime_coded_board_ranks
-{ 
-	void operator()(const char *begin, const char *end) const 
-	{ 
-		std::cout << k_code_snipped_prime_coded_board_ranks; 
-	} 
-};
-
-struct print_technical_functions
-{ 
-	void operator()(const char *begin, const char *end) const 
-	{ 
-		std::cout << k_code_snippet_technical_functions; 
 	} 
 };
 
@@ -676,6 +661,14 @@ struct print_newline
 	{
 		cout << endl;
 	};
+};
+
+struct increase_line_counter
+{
+	void operator()(const char *begin, const char *end) const 
+	{
+		IncLineCounter();
+	}
 };
 
 //
