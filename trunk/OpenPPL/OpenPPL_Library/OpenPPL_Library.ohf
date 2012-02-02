@@ -3720,7 +3720,7 @@ f$OpenPPL_MiddlePosition2Raising ? 5 :
 f$OpenPPL_MiddlePosition3Raising ? 4 :
 f$OpenPPL_CutOffRaising          ? 3 :
 f$OpenPPL_ButtonRaising          ? 2 :
-f$OpenPPL_SmallBlindRaising      ? 1 :
+f$OpenPPL_SmallBlindRaising ? 1 :
 // Can't be big blind (0), as it is for the first orbit preflop only
 -1
 
