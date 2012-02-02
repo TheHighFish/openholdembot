@@ -1,4 +1,52 @@
-v2.1.0 2012-01-25
+v1.0.1 2012-xx-yy
+=================
+BUG FIXES: 
+- Automatic betsize-adjustmeant could lead to minraises
+  even if we didn't want to raise. Thanks to Postenjak for reporting. 
+  [THF]
+- HaveTwoPair didn't work. Ace gets set twice in rankbits, 
+  as high (bit 14 = ace) and as low (bit 1). This got counted as two pairs.
+  Thanks to JokeDoke for reporting. 
+  [THF]
+- f$OpenPPL_LowestBitOfRankBitsCommon did a bit-shift in the wrong direction,
+  which affected the calculation of HaveBottomTwoPair.
+  Thanks to JokeDoke for reporting. 
+  [THF]
+- f$OpenPPL_NumberOfUnknownSuitedOvercards didn't search for overcards
+  to heros holecards, but to the high card of the flush(draw).
+  This affected the result of HaveNutFlushDraw, etc.
+  Thanks to JokeDoke for reporting. 
+  [THF]
+- RaisesbeforeOurFirstActionPreflopInbigBlind was wrong.
+  This affected the symbol Raises if we were in big blind.
+  Thanks to MarkShmiter for reporting.
+  [THF]
+- Bracketify.pl split InBigBlind etc. into two words,
+  even if it was part of a larger lexeme (like UserVillainBigBlind).
+  Thanks to Jaredlee for reporting.
+  [THF]
+  
+MAINTENANCE:
+- Some symbols like Raises depend on game-history.
+  They get calculated and updated whenver the autoplayer acts.
+  However: the autoplayer can possibly act more than once per turn
+  (because of incorrect delay settings or too many buttons in ManualMode)
+  which could throw the calculation off.
+  To prevent this we do now remember the gamestate
+  (by dealerchair, pot and currentbet) and do only update the symbols
+  if at least one of these symbols did change.
+  This way the calculation of more complex symbols
+  should become way more stable. 
+  [THF]
+  
+NEW STUFF:
+- Support for specific suits in hand-expressions, 
+  e.g. "WHEN Hand = AcTh" or "WHEN Hand = AdK".
+  [THF]
+
+ 
+
+v1.0.0 2012-01-25
 =================
 - First public release: OpenPPL converter and supporting library.
   The OpenPPL converter translates (Open)PPL to OH-script.
