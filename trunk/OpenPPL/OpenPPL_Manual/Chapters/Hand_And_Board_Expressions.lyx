@@ -109,6 +109,47 @@ All hand-expressions and board-expressions need to be enclosed in brackets
 \end_layout
 
 \begin_layout Section*
+Coding For Specific Suits
+\end_layout
+
+\begin_layout Standard
+If you want you can also code for specific suits, like an ace of diamonds
+ in your hand.
+ In the past (before real randomization go introduced to Standard PPL) this
+ has been used to randomize actions.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN ((Hand = AcQd) Or (Hand = JhTs)) ...
+\end_layout
+
+\begin_layout Plain Layout
+
+// Randomize your Action, the old way
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN (Hand = AdT)RAISE FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN (Hand = AT)CALL FORCE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
 Board Expressions
 \end_layout
 

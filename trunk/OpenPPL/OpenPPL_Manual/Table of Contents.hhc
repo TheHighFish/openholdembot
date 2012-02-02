@@ -11,7 +11,7 @@
 <UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Introduction">
-		<param name="Local" value="Chapters\Titlepage\TitlePage.htm">
+		<param name="Local" value="Titlepage\TitlePage.htm">
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
