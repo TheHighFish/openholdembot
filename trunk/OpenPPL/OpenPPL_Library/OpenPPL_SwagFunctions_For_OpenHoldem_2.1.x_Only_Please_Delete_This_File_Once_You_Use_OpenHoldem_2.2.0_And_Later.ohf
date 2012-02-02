@@ -115,5 +115,12 @@ f$OpenPPL_BetSize_In_Dollars
 // This should not happen, but we default to 1)
 f$OpenPPL_BetSizeAdjustedToUsersBalance
 
+##f$OpenPPL_HINT_No_NL_BetSizing_In_A_FL_Gamee##
+0
+
 ##f$swag##
-isfl ? 0 : f$OpenPPL_BetSizeAdjustedToCasinosInputRequirements
+// No swagging in a FL game
+isfl ? f$OpenPPL_HINT_No_NL_BetSizing_In_A_FL_Game : 
+// Only swag, if we really decided to swag
+// and not because the betsize-adaption resulted in a positive betsize.
+(f$Decision > 0) ? f$OpenPPL_BetSizeAdjustedToCasinosInputRequirements : 0
