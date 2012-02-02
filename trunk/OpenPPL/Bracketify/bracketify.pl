@@ -260,12 +260,18 @@ while (<>)
 	s/\(hand/\(Hand/ig;
 	s/\(board/\(Board/ig;
 	# 8) Position symbols like InButton -> In Button
-	s/inbutton/In Button/ig;
-	s/insmallblind/In SmallBlind/ig;
-	s/inbigblind/In BigBlind/ig;
 	s/button/Button/ig;
 	s/smallblind/SmallBlind/ig;
 	s/bigblind/BigBlind/ig;
+	s/cutoff/CutOff/ig;
+	s/EarlyPosition1/EarlyPosition1/ig; 
+	s/EarlyPosition2/EarlyPosition2/ig;
+	s/EarlyPosition3/EarlyPosition3/ig;
+	s/MiddlePosition1/MiddlePosition1/ig;
+	s/MiddlePosition2/MiddlePosition2/ig;
+	s/MiddlePosition3/MiddlePosition3/ig;
+	s/TheBlinds/TheBlinds/ig;
+	s/UTG/UTG/ig;
 	# Some beautifications...
 	# Remove superflous spaces before opening brackets (but keep one)...
 	s/[ ]+\(/ \(/g;
