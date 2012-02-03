@@ -809,9 +809,10 @@ f$OpenPPL_ERROR_Suit_Of_HoleCard_Not_Recognized_Correctly__Check_Your_TableMap
 //                                                           
 //***********************************************************
 
-
 ##f$OpenPPL_Decision##
 // f$preflop, f$flop, f$turn and f$river will be added by the translator.
+// Returns either a fixed action (coded as a negative number)
+// or a positive number (bet-size, counted in bets)
 [betround == 1] ? f$preflop :
 [betround == 2] ? f$flop :
 [betround == 3] ? f$turn :
@@ -837,24 +838,23 @@ f$OpenPPL_ERROR_Betround_Out_Of_Range
 
    [f$OpenPPL_InitMemorySymbols * 0]
 || [f$OpenPPL_RememberToSitoutIfNecessary * 0]
-|| [   (f$OpenPPL_Decision == f$OpenPPL_RaiseMax)
-    || (f$OpenPPL_Decision > balance)]
+|| [f$OpenPPL_Decision == f$OpenPPL_RaiseMax]
+|| [(f$OpenPPL_Decision > f$OpenPPL_StackSize) && (f$OpenPPL_StackSize > 0)]
 
 ##f$betsize##
 f$alli ? [balance + currentbet] :
-[f$OpenPPL_Decision >= 0] ? f$OpenPPL_Decision:
-0
+[f$OpenPPL_Decision >= 0] ? f$OpenPPL_Decision : 0
 
 ##f$rais##
    [f$OpenPPL_Decision == f$OpenPPL_Raise]
- || [f$betsize > 0]
+|| [f$OpenPPL_Decision > 0]
 //
 // Below is 2 times the same expression,
 // but we want to log the very verbose explanation
 // only in the case of a true error
 // and not for normal evaluations.
 //
- || [f$OpenPPL_Decision == 0 && f$betsize == f$OpenPPL_Undefined_BetSize_Probably_Due_To_Misscraped_Pot_Defaulting_To_Minraise]
+|| [f$OpenPPL_Decision == 0 && f$betsize == f$OpenPPL_Undefined_BetSize_Probably_Due_To_Misscraped_Pot_Defaulting_To_Minraise]
 
 ##f$call##
    [f$OpenPPL_Decision == f$OpenPPL_Check]
@@ -1726,41 +1726,51 @@ f$OpenPPL_StraightPossibleOnFlop && !f$OpenPPL_ExactlyOneStraightPossibleOnFlop
 ##f$OpenPPL_MoreThanOneStraightPossibleOnRiver##
 (betround == f$OpenPPL_ConstBetRoundRiver && (f$OpenPPL_NumberOfStraightsPossibleOnRiver == 1))
 
-##f$OpenPPL_rankbitscommonriver##
+##f$OpenPPL_RankBitsCommonRiver##
 // As this can only be called at the river it is identical to rankbiscommon
 rankbitscommon
 
 ##f$OpenPPL_NumberOfStraightsPossibleOnTurn##
-(`((f$OpenPPL_RankBitsCommonTurn >> 10) & 0x1f) >= 3 ? 1 : 0) +
-(`((f$OpenPPL_RankBitsCommonTurn >>  9) & 0x1f) >= 3 ? 1 : 0) +
-(`((f$OpenPPL_RankBitsCommonTurn >>  8) & 0x1f) >= 3 ? 1 : 0) +
-(`((f$OpenPPL_RankBitsCommonTurn >>  7) & 0x1f) >= 3 ? 1 : 0) +
-(`((f$OpenPPL_RankBitsCommonTurn >>  6) & 0x1f) >= 3 ? 1 : 0) +
-(`((f$OpenPPL_RankBitsCommonTurn >>  5) & 0x1f) >= 3 ? 1 : 0) +
-(`((f$OpenPPL_RankBitsCommonTurn >>  4) & 0x1f) >= 3 ? 1 : 0) +
-(`((f$OpenPPL_RankBitsCommonTurn >>  3) & 0x1f) >= 3 ? 1 : 0) +
-(`((f$OpenPPL_RankBitsCommonTurn >>  2) & 0x1f) >= 3 ? 1 : 0) +
-(`((f$OpenPPL_RankBitsCommonTurn >>  1) & 0x1f) >= 3 ? 1 : 0)
+  (`((f$OpenPPL_RankBitsCommonTurn >> 10) & 0x1f) >= 3 ? 1 : 0)
++ (`((f$OpenPPL_RankBitsCommonTurn >>  9) & 0x1f) >= 3 ? 1 : 0)
++ (`((f$OpenPPL_RankBitsCommonTurn >>  8) & 0x1f) >= 3 ? 1 : 0)
++ (`((f$OpenPPL_RankBitsCommonTurn >>  7) & 0x1f) >= 3 ? 1 : 0)
++ (`((f$OpenPPL_RankBitsCommonTurn >>  6) & 0x1f) >= 3 ? 1 : 0)
++ (`((f$OpenPPL_RankBitsCommonTurn >>  5) & 0x1f) >= 3 ? 1 : 0)
++ (`((f$OpenPPL_RankBitsCommonTurn >>  4) & 0x1f) >= 3 ? 1 : 0)
++ (`((f$OpenPPL_RankBitsCommonTurn >>  3) & 0x1f) >= 3 ? 1 : 0)
++ (`((f$OpenPPL_RankBitsCommonTurn >>  2) & 0x1f) >= 3 ? 1 : 0)
++ (`((f$OpenPPL_RankBitsCommonTurn >>  1) & 0x1f) >= 3 ? 1 : 0)
 
 ##f$OpenPPL_NumberOfStraightsPossibleOnRiver##
-(`((f$OpenPPL_rankbitscommonriver >> 10) & 0x1f) >= 3 ? 1 : 0) +
-(`((f$OpenPPL_rankbitscommonriver >>  9) & 0x1f) >= 3 ? 1 : 0) +
-(`((f$OpenPPL_rankbitscommonriver >>  8) & 0x1f) >= 3 ? 1 : 0) +
-(`((f$OpenPPL_rankbitscommonriver >>  7) & 0x1f) >= 3 ? 1 : 0) +
-(`((f$OpenPPL_rankbitscommonriver >>  6) & 0x1f) >= 3 ? 1 : 0) +
-(`((f$OpenPPL_rankbitscommonriver >>  5) & 0x1f) >= 3 ? 1 : 0) +
-(`((f$OpenPPL_rankbitscommonriver >>  4) & 0x1f) >= 3 ? 1 : 0) +
-(`((f$OpenPPL_rankbitscommonriver >>  3) & 0x1f) >= 3 ? 1 : 0) +
-(`((f$OpenPPL_rankbitscommonriver >>  2) & 0x1f) >= 3 ? 1 : 0) +
-(`((f$OpenPPL_rankbitscommonriver >>  1) & 0x1f) >= 3 ? 1 : 0)
+  (`((f$OpenPPL_RankBitsCommonRiver >> 10) & 0x1f) >= 3 ? 1 : 0)
++ (`((f$OpenPPL_RankBitsCommonRiver >>  9) & 0x1f) >= 3 ? 1 : 0)
++ (`((f$OpenPPL_RankBitsCommonRiver >>  8) & 0x1f) >= 3 ? 1 : 0)
++ (`((f$OpenPPL_RankBitsCommonRiver >>  7) & 0x1f) >= 3 ? 1 : 0)
++ (`((f$OpenPPL_RankBitsCommonRiver >>  6) & 0x1f) >= 3 ? 1 : 0)
++ (`((f$OpenPPL_RankBitsCommonRiver >>  5) & 0x1f) >= 3 ? 1 : 0)
++ (`((f$OpenPPL_RankBitsCommonRiver >>  4) & 0x1f) >= 3 ? 1 : 0)
++ (`((f$OpenPPL_RankBitsCommonRiver >>  3) & 0x1f) >= 3 ? 1 : 0)
++ (`((f$OpenPPL_RankBitsCommonRiver >>  2) & 0x1f) >= 3 ? 1 : 0)
++ (`((f$OpenPPL_RankBitsCommonRiver >>  1) & 0x1f) >= 3 ? 1 : 0)
 
 ##f$OpenPPL_MoreThanOneOneCardStraightPossible##
 f$OpenPPL_DoubleGutShotOnBoard || f$OpenPPL_OpenEndedStraightDrawOnBoard
 
 ##f$OpenPPL_MoreThanOneStraightPossibleOnTurn##
-!f$OpenPPL_PairOnBoard
-&& [(f$OpenPPL_BestBoardCard - f$OpenPPL_LowestBoardCard) <= 4 || (f$OpenPPL_2ndBestBoardCard <= 5)]
-&& f$OpenPPL_AcePresentOnTurn
+(f$OpenPPL_NumberOfStraightsPossibleOnTurn > 1)
+
+##f$OpenPPL_NumberOfOneCardStraightsPossibleOnTurn##
+  (f$OpenPPL_OneCardStraightPossibleOnTurn_AceHigh   ? 1 : 0)
++ (f$OpenPPL_OneCardStraightPossibleOnTurn_KingHigh  ? 1 : 0)
++ (f$OpenPPL_OneCardStraightPossibleOnTurn_QueenHigh ? 1 : 0)
++ (f$OpenPPL_OneCardStraightPossibleOnTurn_JackHigh  ? 1 : 0)
++ (f$OpenPPL_OneCardStraightPossibleOnTurn_TenHigh   ? 1 : 0)
++ (f$OpenPPL_OneCardStraightPossibleOnTurn_NineHigh  ? 1 : 0)
++ (f$OpenPPL_OneCardStraightPossibleOnTurn_EightHigh ? 1 : 0)
++ (f$OpenPPL_OneCardStraightPossibleOnTurn_SevenHigh ? 1 : 0)
++ (f$OpenPPL_OneCardStraightPossibleOnTurn_SixHigh   ? 1 : 0)
++ (f$OpenPPL_OneCardStraightPossibleOnTurn_FiveHigh  ? 1 : 0)
 
 ##f$OpenPPL_OneCardFlushPossible##
 (nsuitedcommon >= 4)
@@ -1770,6 +1780,39 @@ f$OpenPPL_DoubleGutShotOnBoard || f$OpenPPL_OpenEndedStraightDrawOnBoard
 
 ##f$OpenPPL_OneCardStraightPossible##
 (nstraightfillcommon <= 1)
+
+##f$OpenPPL_OneCardStraightPossibleOnTurn_AceHigh##
+(`(f$OpenPPL_RankBitsCommonTurn & 0b111110000000000) >= 4)   
+
+##f$OpenPPL_OneCardStraightPossibleOnTurn_KingHigh##
+(`(f$OpenPPL_RankBitsCommonTurn & 0b011111000000000) >= 4)  
+
+##f$OpenPPL_OneCardStraightPossibleOnTurn_QueenHigh##
+(`(f$OpenPPL_RankBitsCommonTurn & 0b001111100000000) >= 4)  
+
+##f$OpenPPL_OneCardStraightPossibleOnTurn_JackHigh##
+(`(f$OpenPPL_RankBitsCommonTurn & 0b000111110000000) >= 4)  
+
+##f$OpenPPL_OneCardStraightPossibleOnTurn_TenHigh##
+(`(f$OpenPPL_RankBitsCommonTurn & 0b000011111000000) >= 4)  
+
+##f$OpenPPL_OneCardStraightPossibleOnTurn_NineHigh##
+(`(f$OpenPPL_RankBitsCommonTurn & 0b000001111100000) >= 4)  
+
+##f$OpenPPL_OneCardStraightPossibleOnTurn_EightHigh##
+(`(f$OpenPPL_RankBitsCommonTurn & 0b000000111110000) >= 4)   
+
+##f$OpenPPL_OneCardStraightPossibleOnTurn_SevenHigh##
+(`(f$OpenPPL_RankBitsCommonTurn & 0b000000011111000) >= 4)   
+
+##f$OpenPPL_OneCardStraightPossibleOnTurn_SixHigh##
+(`(f$OpenPPL_RankBitsCommonTurn & 0b000000001111100) >= 4)   
+
+##f$OpenPPL_OneCardStraightPossibleOnTurn_FiveHigh##
+(`(f$OpenPPL_RankBitsCommonTurn & 0b000000000111110) >= 4)
+
+##f$OpenPPL_OneCardStraightPossibleOnTurn##
+(f$OpenPPL_NumberOfOneCardStraightsPossibleOnTurn >= 1)
 
 ##f$OpenPPL_Only1OneCardStraightPossible##
 f$OpenPPL_OneCardStraightPossible && !f$OpenPPL_MoreThanOneOneCardStraightPossible
