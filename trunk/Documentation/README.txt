@@ -12,7 +12,7 @@ To modify the docu:
   It will apply some changes like background.colour, etc.
 * Finally you need MicroSofts HTML Help Workshop
   (http://www.microsoft.com/downloads/details.aspx?FamilyID=00535334-c8a6-452f-9aa0-d597d16580cc)
-  This program makes it possible to create a tructured help-file
+  This program makes it possible to create a structured help-file
   from your html-files (first open the *.hhp file)
 
 Don't worry - it is quite easy, you will see.
