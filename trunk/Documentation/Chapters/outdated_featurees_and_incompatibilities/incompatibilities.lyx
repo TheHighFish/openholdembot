@@ -707,7 +707,7 @@ Default: 3
 The symbols nouts got removed from the code-base, as Ray E.
  Bornerts definition of an out was way too optimistic and completely unusable
  (a hand like 72o at a board of AKQ will give you 6 outs, as every 7 and
- every 2 bumps your handlavel to a pair, which beats high-card ace at the
+ every 2 bumps your handlevel to a pair, which beats high-card ace at the
  board).
  To calculate outs in a meaningful way, there is mh_nouts as a better symbol
  and there are also some good outs-counters available in the forum.
