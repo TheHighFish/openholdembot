@@ -128,6 +128,61 @@ r-values
 \end_layout
 
 \begin_layout Section
+Comments
+\end_layout
+
+\begin_layout Standard
+C-syntax means of cource C(++)-comments, too.
+ Comments will improve your code and will make it more easy to read and
+ understand, both for yourself and for other people.
+ Make use of them!
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// This is a C-style-comment
+\end_layout
+
+\begin_layout Plain Layout
+
+// till the end of the line.
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+/* 
+\end_layout
+
+\begin_layout Plain Layout
+
+   and this is a C++-style
+\end_layout
+
+\begin_layout Plain Layout
+
+   multi-line-comment.
+\end_layout
+
+\begin_layout Plain Layout
+
+*/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
 Data Types
 \end_layout
 
