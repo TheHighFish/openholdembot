@@ -1,4 +1,15 @@
-v1.0.1 2012-xx-yy
+v1.0.2 2012-02-03
+=================
+BUG FIXES: 
+- f$alli confused balance (counted in dollars) and f$OpenPPL_StackSize
+  (counted in bets). This could cause incorrect allins.
+  Thanks to Postenjak for reporting and providing the fix.
+  [THF]
+- OneCardStraightPosibleOnTurn had been missing in the library.
+  Thanks to Postenjak for reporting.
+  [THF]
+
+v1.0.1 2012-02-02
 =================
 BUG FIXES: 
 - Automatic betsize-adjustmeant could lead to minraises
@@ -28,7 +39,7 @@ BUG FIXES:
   
 MAINTENANCE:
 - Some symbols like Raises depend on game-history.
-  They get calculated and updated whenver the autoplayer acts.
+  They get calculated and updated whenever the autoplayer acts.
   However: the autoplayer can possibly act more than once per turn
   (because of incorrect delay settings or too many buttons in ManualMode)
   which could throw the calculation off.
