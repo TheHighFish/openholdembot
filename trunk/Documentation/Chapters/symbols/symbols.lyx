@@ -1301,7 +1301,7 @@ There are several variations of PrWin (standard, weighted and enhanced),
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="10" columns="2">
+<lyxtabular version="3" rows="11" columns="2">
 <features>
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -1451,7 +1451,7 @@ number between (0.000-1.000).
 \begin_inset Text
 
 \begin_layout Plain Layout
-randomhand
+randomheartbeat
 \end_layout
 
 \end_inset
@@ -1460,8 +1460,13 @@ randomhand
 \begin_inset Text
 
 \begin_layout Plain Layout
-random number between (0.000-1.000) for the hand.
- Value is calculated only once per hand.
+random number between (0.000-1.000) for the curren heartbeat.
+ Value is calculated only once in current heartbeat.
+ 
+\end_layout
+
+\begin_layout Remark
+Introduced for OpenHoldem 2.1.9
 \end_layout
 
 \end_inset
@@ -1490,7 +1495,7 @@ random number between (0.000-1.000) for the current round.
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1499,13 +1504,34 @@ randomround1 - randomround4
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 random number between (0.000-1.000) for round 1 - 4.
  Value is calculated only once in that round.
  
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+randomhand
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+random number between (0.000-1.000) for the hand.
+ Value is calculated only once per hand.
 \end_layout
 
 \end_inset
@@ -2292,7 +2318,37 @@ pcbits
 \begin_inset Text
 
 \begin_layout Plain Layout
-bit list of where your pocket cards are used in your 5 card hand
+bit list of where your pocket cards are used in your 5 card hand.
+\end_layout
+
+\begin_layout Remark
+If a certain hand can be made with either one of your cards or with one
+ of the board cards OpenHoldem will first take your card.
+ This can happen only for straights and for kickers for quads.
+ This behaviour may seem counter-intuitive to some people, but got inherited
+ from WinHoldem and kept for backward-compatibility.
+\end_layout
+
+\begin_layout Itemize
+Your hand: JTs
+\end_layout
+
+\begin_layout Itemize
+Board: 789T
+\end_layout
+
+\begin_layout Itemize
+Here you have a straight using 
+\begin_inset Quotes eld
+\end_inset
+
+both
+\begin_inset Quotes erd
+\end_inset
+
+ of your cards in the top two places.
+ So pcbits will be 0b11000 = 24 here.
+ 
 \end_layout
 
 \end_inset
@@ -2312,25 +2368,16 @@ npcbits
 \begin_inset Text
 
 \begin_layout Plain Layout
-number (0-2) of your pocket cards used in your 5 card hand 
+number (0-2) of your pocket cards used in your 5 card hand.
 \end_layout
 
 \begin_layout Remark
-If a certain hand can be made with either one of your cards or with one
- of the board cards OpenHoldem will first take your card.
- Example:
+As npcbits symbol depends on pcbits, the same word of caution applies to
+ this symbol, too.
 \end_layout
 
-\begin_layout Remark
-Your hand: JTs
-\end_layout
+\begin_layout Plain Layout
 
-\begin_layout Remark
-Board: 789T
-\end_layout
-
-\begin_layout Remark
-Here you have a straight using both of your cards (npcbits = 2)
 \end_layout
 
 \end_inset
