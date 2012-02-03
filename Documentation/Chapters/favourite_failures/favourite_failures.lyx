@@ -185,7 +185,7 @@ scraper
 \end_layout
 
 \begin_layout Section
-OH does not play
+OH does not play (I)
 \end_layout
 
 \begin_layout Standard
@@ -211,6 +211,102 @@ Click the diamond-button to the right of the green and red circles in the
  toolbar.
  Alternatively change the preferences to automatically engage the autoplayer
  upon chair-detection.
+\end_layout
+
+\begin_layout Section
+OH does not play (II)
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Reason:
+\emph default
+ no stable input (
+\begin_inset Quotes eld
+\end_inset
+
+balance-stability
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Standard
+One safety-measure to avoid incorrect plays is the option to wait for 
+\begin_inset Quotes eld
+\end_inset
+
+balance-stability
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Without reasonable input you can be sure to become a victim of the gigo-princip
+le (garbage in - garbage out).
+ The example below shows a FullTilt mini-table, where the regions for player-nam
+es and balances partially overlap.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/balance_stability.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Unreliable input at FullTilt mini-tables
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+There are several counter-meassures that will help you to deal with such
+ issues:
+\end_layout
+
+\begin_layout Itemize
+avoid mini-tables
+\end_layout
+
+\begin_layout Itemize
+make sure, that regions don't overlap
+\end_layout
+
+\begin_layout Itemize
+turn off all kind of animations
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+always use replay-frames
+\emph default
+ for building tablemaps and for investigation if you experience problems
+ at a real casino.
 \end_layout
 
 \begin_layout Section
@@ -715,6 +811,105 @@ This error may also occur when debug messages attempt to write to a file
 \end_layout
 
 \begin_layout Section
+OpenHoldem does not load my DLL (I).
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Reason:
+\emph default
+ Missing or incorrect lilbraries.
+\end_layout
+
+\begin_layout Standard
+Most DLLs use external functionalitzy and therefore depend on supporting
+ libraries.
+ Most often this is msvcrt (MicroSoft Visual Studio C++ RunTime Library).
+ Also the correct version is important.
+ OpenHoldem requires currently Visual Studio 2005 Professional (MSVCRT8.0).
+\end_layout
+
+\begin_layout Section
+OpenHoldem does not load my DLL (II).
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Reason:
+\emph default
+ Libraries not found.
+\end_layout
+
+\begin_layout Standard
+Even if you have installed, it might be, that your operating system does
+ not find your DLL or other required libraries.
+ Windows uses the following 
+\begin_inset Quotes eld
+\end_inset
+
+Dynamic-Link Library Search Order
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Enumerate
+The directory from which the application loaded.
+ 
+\end_layout
+
+\begin_layout Enumerate
+The current directory.
+ 
+\end_layout
+
+\begin_layout Enumerate
+The system directory.
+ Use the GetSystemDirectory function to get the path of this directory.
+ 
+\end_layout
+
+\begin_layout Enumerate
+The 16-bit system directory.
+ There is no function that obtains the path of this directory, but it is
+ searched.
+ 
+\end_layout
+
+\begin_layout Enumerate
+The Windows directory.
+ Use the GetWindowsDirectory function to get the path of this directory.
+ 
+\end_layout
+
+\begin_layout Enumerate
+The directories that are listed in the PATH environment variable.
+ Note that this does not include the per-application path specified by the
+ App Paths registry key.
+ The App Paths key is not used when computing the DLL search path.
+\end_layout
+
+\begin_layout Remark
+This is the default search order for Windows XP, SafeDllSearchMode disabled.
+ It might be different for your operating system or configuration.
+ For details please refer to (
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://msdn.microsoft.com/en-us/library/ms682586(VS.85).aspx
+\end_layout
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Section
 OpenHoldem connects to all tables but one
 \end_layout
 
@@ -879,6 +1074,83 @@ really
 \emph default
 should take a pause from coding and do some homework.
  There is no way around it.
+\end_layout
+
+\begin_layout Section
+PokerTracker does not work (I)
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Reason: Invalid Sitename in the TableMap
+\end_layout
+
+\begin_layout Standard
+OpenHoldem supports Poker Tracker functionality for a dozen different casinos.
+ To query the correct stats OpenHoldem must know, at what casino you currently
+ play.
+ This happens by the TableMap symbol 
+\emph on
+sitename
+\emph default
+ and 
+\emph on
+network
+\emph default
+.
+ Please refer to the PokerTracker and TableMap section of this manual for
+ a detailed explanantion what to do.
+\end_layout
+
+\begin_layout Section
+PokerTracker does not work (II)
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Reason: You are sitting out - PokerTracker got turned off
+\end_layout
+
+\begin_layout Standard
+The PT-thread gets turned off, if you are not seated at the table or if
+ you are sitting out.
+ Therefore an incorrect TM can affect PokerTracker functionality.
+ To verify, that the relevant TM-symbols are ok, please put
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+= userchair
+\end_layout
+
+\begin_layout Plain Layout
+
+= issittingin
+\end_layout
+
+\begin_layout Plain Layout
+
+= issittingout
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+into your debug-tab.
+ If they don't work like espected you have to revisit the TM-regions pXseated,
+ pXactive and activemethod.
+ Also make sure, that the buttons and cards are recognized, as this is a
+ prerequisite for recognizing the userchair.
 \end_layout
 
 \begin_layout Section
