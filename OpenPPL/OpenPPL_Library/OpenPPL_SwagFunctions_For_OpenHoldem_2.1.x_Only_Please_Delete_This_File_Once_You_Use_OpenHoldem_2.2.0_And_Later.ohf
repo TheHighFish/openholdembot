@@ -124,3 +124,21 @@ isfl ? f$OpenPPL_HINT_No_NL_BetSizing_In_A_FL_Game :
 // Only swag, if we really decided to swag
 // and not because the betsize-adaption resulted in a positive betsize.
 (f$OpenPPL_Decision > 0) ? f$OpenPPL_BetSizeAdjustedToCasinosInputRequirements : 0
+
+//*****************************************************************************
+//
+//  OpenPPL - f$play
+//  ================
+//
+//  f$play will be replaced by f$sitin, f$sitout and f$leave in OH 2.2.0.
+//  But for the moment we need it so make OpenPPLs sitout command work.
+//  http://forum.winholdem.net/wbb/viewtopic.php?t=8095
+//  -2 press the leave button this frame
+//  -1 do absolutely nothing this frame
+//  0 click the sitout action this frame
+//  +1 click the sitin action this frame
+//
+//*****************************************************************************
+
+##f$play##
+f$sitout ? 0 : -1
