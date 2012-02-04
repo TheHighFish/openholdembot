@@ -1,3 +1,11 @@
+v1.0.3 2012-xx-yy
+=================
+BUG FIXES: 
+- the sitout command was designed to work with OpenHoldem 2.2.0+,
+  which has not yet been released. Support for OH 2.1.9.x has been added.
+  Thanks to Postenjak for reporting.
+  [THF]
+
 v1.0.2 2012-02-03
 =================
 BUG FIXES: 
