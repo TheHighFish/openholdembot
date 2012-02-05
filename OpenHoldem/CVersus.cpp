@@ -28,9 +28,15 @@ CVersus::CVersus()
 		_sopen_s(&_versus_fh, prefs.versus_path(), _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
 	}
 
-	if (_versus_fh == -1 && !prefs.disable_msgbox())
+	if (_versus_fh == -1) 
 	{
-		OH_MessageBox("Could not open versus.bin.\nVersus functions will be disabled.\n", "Versus Error", MB_OK | MB_TOPMOST);
+		// We do no longer warn directly, 
+		// but only when versus symbols get used without the file.
+		versus_bin_not_loaded = true;
+	}
+	else
+	{
+		versus_bin_not_loaded = false;
 	}
 }
 
@@ -38,12 +44,25 @@ CVersus::~CVersus()
 {
 }
 
+void CVersus::CheckForLoadedVersusBin()
+{
+	if (versus_bin_not_loaded && !prefs.disable_msgbox())
+	{
+		MessageBox(NULL, "Impossible to use versus-symbols.\n"
+			"Versus.bin not loaded and probably not installed.\n"
+			"Please download this file from googlecode.", 
+			"Versus Error", MB_OK | MB_TOPMOST);
+	}
+}
+
 double CVersus::GetSymbol(const char *a, int *e) 
 {
 	int			n = 0;
 	char		*b = 0;
 
-	if (_versus_fh == -1)
+	CheckForLoadedVersusBin();
+
+	if (versus_bin_not_loaded)
 		return 0.0;
 
 	if (memcmp(a, "vs$nhands", 9)==0 && strlen(a)==9)			return _nhands;
