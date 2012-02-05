@@ -33,6 +33,7 @@ public:
 
 	// Autoplayer
 	const unsigned int frame_delay() { return _frame_delay; }
+	const unsigned int click_delay() { return _click_delay; }
 	const unsigned int swag_delay_1() { return _swag_delay_1; }
 	const unsigned int swag_delay_2() { return _swag_delay_2; }
 	const unsigned int swag_delay_3() { return _swag_delay_3; }
@@ -84,13 +85,33 @@ public:
 	// Log Symbol
 	const bool log_symbol_enabled() { return _log_symbol_enabled; }
 	const int log_symbol_max_log() { return _log_symbol_max_log; }
-	// Tracing
-	const bool trace_enabled() { return _trace_enabled; }
+	
 	// Logging and debugging
 	const bool disable_msgbox() { return _disable_msgbox; }
-	const int log_level() { return _log_level; }
-	const int log_level_pt() { return _log_level_pt; }
 	const int log_max_logsize() { return _log_max_logsize; }
+
+	const bool log_basic_info();
+	const bool log_errors_and_warnings();
+	const bool trace_enabled() { return _trace_enabled; }
+
+	// Debugging
+	const bool	debug_autoconnector() { return _debug_autoconnector; }
+	const bool	debug_autoplayer() { return _debug_autoplayer; }
+	const bool	debug_heartbeat() { return _debug_heartbeat; }
+	const bool	debug_prwin() { return _debug_prwin; }
+	const bool	debug_icm() { return _debug_icm; }
+	const bool	debug_occlusionchecker() { return _debug_occlusionchecker; }
+	const bool	debug_pokertracker() { return _debug_pokertracker; }
+	const bool	debug_rebuy() { return _debug_rebuy; }
+	const bool	debug_replayframes() { return _debug_replayframes; }
+	const bool	debug_scraper() { return _debug_scraper; }
+	const bool	debug_sessioncounter() { return _debug_sessioncounter; }
+	const bool	debug_stableframescounter() { return _debug_stableframescounter; }
+	const bool	debug_symbolengine() { return _debug_symbolengine; }
+	const bool	debug_blindlocking() { return _debug_blindlocking; }
+	const bool	debug_memorysymbols() { return _debug_memorysymbols; }
+	const bool	debug_alltherest() { return _debug_alltherest; }
+
 	// PPro
 	const CString ppro_hostname() { return _ppro_hostname; }
 	const CString ppro_port() { return _ppro_port; }
@@ -188,6 +209,7 @@ public:
 
 	// Autoplayer
 	void set_frame_delay(const unsigned int i) { ENT _frame_delay = i; WriteReg("frame_delay", (int) i); }
+	void set_click_delay(const unsigned int i) { ENT _click_delay = i; WriteReg("click_delay", (int) i); }
 	void set_swag_delay_1(const unsigned int i) { ENT _swag_delay_1 = i; WriteReg("swag_delay_1", (int) i); }
 	void set_swag_delay_2(const unsigned int i) { ENT _swag_delay_2 = i; WriteReg("swag_delay_2", (int) i); }
 	void set_swag_delay_3(const unsigned int i) { ENT _swag_delay_3 = i; WriteReg("swag_delay_3", (int) i); }
@@ -253,9 +275,25 @@ public:
 
 	// Logging and debugging
 	void set_disable_msgbox(const bool b) { ENT _disable_msgbox = b; WriteReg("disable_msgbox", b); }
-	void set_log_level(const int i) { ENT _log_level = i; WriteReg("log_level", i); }
-	void set_log_level_pt(const int i) { ENT _log_level_pt = i; WriteReg("log_level_pt", i); }
 	void set_log_max_logsize(const int b) { ENT _log_max_logsize = b; WriteReg("log_max_logsize", b); }
+
+	// Debugging
+	void set_debug_autoconnector(const int b) { ENT _debug_autoconnector = b; WriteReg("debug_autoconnector", b); }
+	void set_debug_autoplayer(const int b) { ENT _debug_autoplayer = b; WriteReg("debug_autoplayer", b); }
+	void set_debug_heartbeat(const int b) { ENT _debug_heartbeat = b; WriteReg("debug_heartbeat", b); }
+	void set_debug_prwin(const int b) { ENT _debug_prwin = b; WriteReg("debug_prwin", b); }
+	void set_debug_icm(const int b) { ENT _debug_icm = b; WriteReg("debug_icm", b); }
+	void set_debug_occlusionchecker(const int b) { ENT _debug_occlusionchecker = b; WriteReg("debug_occlusionchecker", b); }
+	void set_debug_pokertracker(const int b) { ENT _debug_pokertracker = b; WriteReg("debug_pokertracker", b); }
+	void set_debug_rebuy(const int b) { ENT _debug_rebuy = b; WriteReg("debug_rebuy", b); }
+	void set_debug_replayframes(const int b) { ENT _debug_replayframes = b; WriteReg("debug_replayframes", b); }
+	void set_debug_scraper(const int b) { ENT _debug_scraper = b; WriteReg("debug_scraper", b); }
+	void set_debug_sessioncounter(const int b) { ENT _debug_sessioncounter = b; WriteReg("debug_sessioncounter", b); }
+	void set_debug_stableframescounter(const int b) { ENT _debug_stableframescounter = b; WriteReg("debug_stableframescounter", b); }
+	void set_debug_symbolengine(const int b) { ENT _debug_symbolengine = b; WriteReg("debug_symbolengine", b); }
+	void set_debug_blindlocking(const int b) { ENT _debug_blindlocking = b; WriteReg("debug_blindlocking", b); }
+	void set_debug_memorysymbols(const int b) { ENT _debug_memorysymbols = b; WriteReg("debug_memorysymbols", b); }
+	void set_debug_alltherest(const int b) { ENT _debug_alltherest = b; WriteReg("debug_alltherest", b); }
 
 	// PPro
 	void set_ppro_hostname(const CString s) { ENT _ppro_hostname = s; WriteReg("ppro_hostname", s); }
@@ -369,6 +407,7 @@ private:
 
 	// Autoplayer
 	unsigned int		_frame_delay;
+	unsigned int		_click_delay;
 	unsigned int		_swag_delay_1;
 	unsigned int		_swag_delay_2;
 	unsigned int		_swag_delay_3;
@@ -434,9 +473,25 @@ private:
 
 	// Logging & MessageBox
 	bool			_disable_msgbox;
-	int				_log_level;
-	int				_log_level_pt;
 	int				_log_max_logsize;
+
+	// Debugging
+	bool			_debug_autoconnector;
+	bool			_debug_autoplayer;
+	bool			_debug_heartbeat;
+	bool			_debug_prwin;
+	bool			_debug_icm;
+	bool			_debug_occlusionchecker;
+	bool			_debug_pokertracker;
+	bool			_debug_rebuy;
+	bool			_debug_replayframes;
+	bool			_debug_scraper;
+	bool			_debug_sessioncounter;
+	bool			_debug_stableframescounter;
+	bool			_debug_symbolengine;
+	bool			_debug_blindlocking;
+	bool			_debug_memorysymbols;
+	bool			_debug_alltherest;
 
 	// PPro
 	CString			_ppro_hostname;

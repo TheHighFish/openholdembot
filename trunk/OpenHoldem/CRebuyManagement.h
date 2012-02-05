@@ -37,7 +37,7 @@ private:
 
 private:
 	time_t	RebuyLastTime, CurrentTime;
-	int		PreviousRebuyHandNumber;
+	CString	PreviousRebuyHandNumber;
 } *p_rebuymanagement;
 
 #endif	
