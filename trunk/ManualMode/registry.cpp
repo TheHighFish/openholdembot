@@ -22,7 +22,7 @@ void Registry::read_reg(void)
 	// Defaults
 	manual_x = manual_y = 0;
 	macro = "RPPPPPPPPPPbB";
-	unobstructivePopup = false;
+	unobstructivePopup = true;
 
 	// Manual Mode Settings
 	hkResult = RegOpenKeyEx(HKEY_CURRENT_USER, MM_SUBKEY, 0, KEY_READ, &hKey);
