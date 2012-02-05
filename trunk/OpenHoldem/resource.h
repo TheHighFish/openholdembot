@@ -57,6 +57,7 @@
 #define IDD_SAPREFS17                   183
 #define IDD_SAPREFS18                   184
 #define IDD_SAPREFS19                   185
+#define IDD_SAPREFS20                   186
 #define IDC_NEW                         1006
 #define IDC_DELETE                      1007
 #define IDC_RENAME                      1013
@@ -99,6 +100,9 @@
 #define IDC_SWAGDELAY1                  1040
 #define IDC_SCRAPEDELAY_SPIN            1041
 #define IDC_SWAGDELAY1_SPIN             1041
+#define IDC_CLICKDELAY                  1042
+#define IDC_FRAMEDELAY_SPIN2            1043
+#define IDC_CLICKDELAY_SPIN             1043
 #define IDC_COMBO2                      1052
 #define IDC_HANDRANKVALUE               1052
 #define IDC_DEBUGLEVEL_PT               1052
@@ -426,14 +430,32 @@
 #define IDC_CONFIGURATION_INPUT_SETTINGS 1340
 #define IDC_CONFIGURATION_THEME_SETTINGS 1341
 #define IDC_CONFIGURATION_FONT_SETTINGS 1342
-#define IDC_RADIO_SCRAPE_ON_CARDS_OR_SITOUT 1343
-#define IDC_RADIO_SCRAPE_ON_CARDS       1344
-#define IDC_RADIO_SCRAPE_ON_MYTURN      1345
-#define IDC_RADIO5                      1346
-#define IDC_RADIO_SCRAPE_ON_MYTURN_OR_SITOUT 1347
-#define IDC_HANDHISTORY_GENERATOR_ENABLE 1347
-#define IDC_RECORD_MY_TURN              1348
-#define IDC_INFOBOX_STATIC              1349
+#define IDC_RECORD_MY_TURN              1343
+#define IDC_DEBUG_PRWIN                 1343
+#define IDC_DEBUG_ICM                   1344
+#define IDC_DEBUG_OCCLUSSION            1345
+#define IDC_DEBUG_POKERTRACKER          1346
+#define IDC_DEBUG_REBUY                 1347
+#define IDC_DEBUG_REPLAYFRAMES          1348
+#define IDC_DEBUG_SCRAPER               1349
+#define IDC_DEBUG_SESSIONCOUNTER        1350
+#define IDC_DEBUG_STABLEFRAMESCOUNTER   1351
+#define IDC_DEBUG_AUTOCONNECTOR         1352
+#define IDC_DEBUG_AUTOPLAYER            1353
+#define IDC_DEBUG_HEARTBEAT             1354
+#define IDC_DEBUG_SYMBOLENGINE          1355
+#define IDC_ENABLE_ERROR_LOGGiNG        1355
+#define IDC_DEBUG_BLINDLOCKING          1356
+#define IDC_LOG_BASIC_INFO              1356
+#define IDC_DEBUG_ALLTHEREST            1357
+#define IDC_DEBUG_MEMORY_SYMBOLS        1358
+#define IDC_RADIO_SCRAPE_ON_MYTURN      1359
+#define IDC_RADIO5                      1360
+#define IDC_RADIO_SCRAPE_ON_MYTURN_OR_SITOUT 1361
+#define IDC_HANDHISTORY_GENERATOR_ENABLE 1362
+#define IDC_RECORD_MY_TURN              1363
+#define IDC_INFOBOX_STATIC              1364
+
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -569,8 +591,8 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        180
-#define _APS_NEXT_COMMAND_VALUE         32995
-#define _APS_NEXT_CONTROL_VALUE         1350
+#define _APS_NEXT_COMMAND_VALUE         32993
+#define _APS_NEXT_CONTROL_VALUE         1365
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
