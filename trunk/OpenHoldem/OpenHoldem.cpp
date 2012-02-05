@@ -14,6 +14,7 @@
 #include "CGameState.h"
 #include "CGrammar.h"
 #include "CHandHistory.h"
+#include "CHandresetDetector.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
 #include "CLazyScraper.h"
@@ -86,6 +87,7 @@ COpenHoldemApp theApp;
 
 void COpenHoldemApp::InstanciateAllSingletonsExceptSessionCounter()
 {
+	if (!p_handreset_detector)  p_handreset_detector =
 	if (!p_configurationcheck) p_configurationcheck = new CConfigurationCheck;
 	if (!p_sharedmem) p_sharedmem = new CSharedMem;
 	if (!p_stableframescounter) p_stableframescounter = new CStableFramesCounter;
@@ -97,6 +99,7 @@ void COpenHoldemApp::InstanciateAllSingletonsExceptSessionCounter()
 	if (!p_tablemap)  p_tablemap = new CTablemap;
 	if (!p_tablemap_access)  p_tablemap_access = new CTablemapAccess;
 	if (!p_formula)  p_formula = new CFormula;
+	//if (!p_mainframe)			p_mainframe = new CMainFrame;
 	if (!p_autoplayer)  p_autoplayer = new CAutoplayer(false, prefs.mutex_name());
 	if (!p_pokertracker_thread)  p_pokertracker_thread = new CPokerTrackerThread;
 	if (!p_dll_extension)  p_dll_extension = new CDllExtension;
@@ -144,6 +147,7 @@ void COpenHoldemApp::DeleteAllSingletons()
 	if (p_sharedmem) { delete p_sharedmem; p_sharedmem = NULL; }
 	if (p_sessioncounter) { delete p_sessioncounter; p_sessioncounter = NULL; }
 	if (p_configurationcheck) { delete p_configurationcheck; p_configurationcheck = NULL; }
+	if (p_handreset_detector)   { delete p_handreset_detector; p_handreset_detector = NULL; }
 }
 
 // COpenHoldemApp initialization
