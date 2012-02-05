@@ -1576,7 +1576,7 @@ void CDlgTableMap::OnBnClickedNew()
 		{
 			bool used_string = false;
 			for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++)
-				if (r_iter->second.name == r$strings[i] && r$strings[i] != "tablepoint")  
+				if (r_iter->second.name == r$strings[i])  
 					used_string=true;
 
 			if (!used_string)
@@ -3504,9 +3504,6 @@ CString CDlgTableMap::GetGroupName(CString regionName)
 					 regionName.Find("c0bigblind")!=-1 || regionName.Find("c0bigbet")!=-1 ||
 					 regionName.Find("c0ante")!=-1)
 				groupName = "c0misc";
-
-			else if (regionName.Find("tablepoint")!=-1)
-				groupName = "tablepoint";
 
 			else
 				groupName.Empty();
