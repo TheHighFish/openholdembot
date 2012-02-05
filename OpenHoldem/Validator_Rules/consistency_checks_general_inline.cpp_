@@ -3,8 +3,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (true)
     REASONING ("After 10 minutes there must have been played at least 4 hands at any table.")
     PRECONDITION (gws("elapsed") > 600)
-    POSTCONDITION (gws("handnumber") >= 4)
-    SYMBOLS_POSSIBLY_AFFECTED ("elapsed, handnumber")
+    POSTCONDITION (gws("handsplayed") >= 4)
+    SYMBOLS_POSSIBLY_AFFECTED ("elapsed, handsplayed")
 END_TESTCASE
 
 

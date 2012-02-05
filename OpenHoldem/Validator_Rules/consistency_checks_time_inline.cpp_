@@ -11,10 +11,10 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0801")
     HEURISTIC_RULE (true)
-    REASONING ("We have to act at least once per hand (which can last at most 120 seconds).")
-    PRECONDITION (true)
+    REASONING ("As long as we don't wait for the blinds, we have to act at least once per hand (which can last at most 120 seconds).")
+    PRECONDITION (gws("handsplayed") >= 1)
     POSTCONDITION (gws("elapsedauto") <= 120)
-    SYMBOLS_POSSIBLY_AFFECTED ("elapsedauto")
+    SYMBOLS_POSSIBLY_AFFECTED ("elapsedauto", "handsplayed")
 END_TESTCASE
 
 
@@ -47,7 +47,14 @@ BEGIN_TESTCASE
     SYMBOLS_POSSIBLY_AFFECTED ("elapsed, elapsedauto, handsplayed")
 END_TESTCASE
 
-
+BEGIN_TESTCASE
+    TESTCASE_ID ("0805")
+    HEURISTIC_RULE (true)
+    REASONING ("If we wait for the blinds, we have to act at after at most 10 hands, which should be at most 1200 seconds.")
+    PRECONDITION (gws("issittingout"))
+    POSTCONDITION (gws("elapsedauto") <= 1200)
+    SYMBOLS_POSSIBLY_AFFECTED ("elapsedauto", "issittingout")
+END_TESTCASE
 
 
 
