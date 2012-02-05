@@ -27,6 +27,8 @@ void CDlgSAPrefs2::DoDataExchange(CDataExchange* pDX)
 	CSAPrefsSubDlg::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_FRAMEDELAY, m_FrameDelay);
 	DDX_Control(pDX, IDC_FRAMEDELAY_SPIN, m_FrameDelay_Spin);
+	DDX_Control(pDX, IDC_CLICKDELAY, m_ClickDelay);
+	DDX_Control(pDX, IDC_CLICKDELAY_SPIN, m_ClickDelay_Spin);
 	DDX_Control(pDX, IDC_SWAGDELAY1, m_SwagDelay1);
 	DDX_Control(pDX, IDC_SWAGDELAY1_SPIN, m_SwagDelay1_Spin);
 	DDX_Control(pDX, IDC_SWAGDELAY2, m_SwagDelay2);
@@ -44,6 +46,7 @@ BEGIN_MESSAGE_MAP(CDlgSAPrefs2, CSAPrefsSubDlg)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SWAGDELAY1_SPIN, &CDlgSAPrefs2::OnDeltaposSwagdelay1Spin)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SWAGDELAY2_SPIN, &CDlgSAPrefs2::OnDeltaposSwagdelay2Spin)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SWAGDELAY3_SPIN, &CDlgSAPrefs2::OnDeltaposSwagdelay3Spin)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_CLICKDELAY_SPIN, &CDlgSAPrefs2::OnDeltaposClickdelaySpin)
 END_MESSAGE_MAP()
 
 // CDlgSAPrefs2 message handlers
@@ -57,6 +60,12 @@ BOOL CDlgSAPrefs2::OnInitDialog()
 	m_FrameDelay_Spin.SetRange(0, 9);
 	m_FrameDelay_Spin.SetPos(prefs.frame_delay());
 	m_FrameDelay_Spin.SetBuddy(&m_FrameDelay);
+
+	text.Format("%d", prefs.click_delay());
+	m_ClickDelay.SetWindowText(text);
+	m_ClickDelay_Spin.SetRange(0, 5000);
+	m_ClickDelay_Spin.SetPos(prefs.click_delay());
+	m_ClickDelay_Spin.SetBuddy(&m_ClickDelay);
 
 	text.Format("%d", prefs.swag_delay_1());
 	m_SwagDelay1.SetWindowText(text);
@@ -101,6 +110,14 @@ void CDlgSAPrefs2::OnOK()
 		return;
 	}
 	prefs.set_frame_delay(strtoul(text.GetString(), 0, 10));
+
+	m_ClickDelay.GetWindowText(text);
+	if (strtoul(text.GetString(), 0, 10)>MAX_CLICKDELAY)
+	{
+		MessageBox("Invalid Click Delay", "ERROR", MB_OK);
+		return;
+	}
+	prefs.set_click_delay(strtoul(text.GetString(), 0, 10));
 
 	m_SwagDelay1.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)>MAX_SWAGDELAY1)
@@ -153,5 +170,12 @@ void CDlgSAPrefs2::OnDeltaposSwagdelay3Spin(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	pNMUpDown->iDelta*=100;
+	*pResult = 0;
+}
+
+void CDlgSAPrefs2::OnDeltaposClickdelaySpin(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: Add your control notification handler code here
 	*pResult = 0;
 }
