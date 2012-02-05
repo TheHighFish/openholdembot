@@ -67,10 +67,11 @@ void CPreferences::InitDefaults(void)
 
 	// autoplayer
 	_frame_delay = 2;
+	_click_delay  = 250;
 	_swag_delay_1 = 400;
 	_swag_delay_2 = 400;
 	_swag_delay_3 = 700;
-	_ap_auto = false;
+	_ap_auto = true;
 	_focus_detect = false;
 	_swag_use_comma = false;
 	_calc_only_my_turn = false;
@@ -158,13 +159,29 @@ void CPreferences::InitDefaults(void)
 	_log_symbol_enabled = false;
 	_log_symbol_max_log = 5;
 
-	_trace_enabled = false;
+	_trace_enabled = true;
 
 	// Logging and debugging
 	_disable_msgbox = false;
-	_log_level = 1;
-	_log_level_pt = 1;
 	_log_max_logsize = 10; // MB
+
+	// Debugging
+	_debug_autoconnector = false;
+	_debug_autoplayer = false;
+	_debug_heartbeat = false;
+	_debug_prwin = false;
+	_debug_icm = false;
+	_debug_occlusionchecker = false;
+	_debug_pokertracker = false;
+	_debug_rebuy = false;
+	_debug_replayframes = false;
+	_debug_scraper = false;
+	_debug_sessioncounter = false;
+	_debug_stableframescounter = false;
+	_debug_symbolengine = false;
+	_debug_blindlocking = false;
+	_debug_memorysymbols = false;
+	_debug_alltherest = false;
 
 	// Validator
 	//   0 = disabled
@@ -176,8 +193,8 @@ void CPreferences::InitDefaults(void)
 	_validator_shoot_replayframe_on_error = true;
 
 	// Auto-connector
-	_autoconnector_connection_method = k_AutoConnector_Connect_Manually;
-	_autoconnector_when_to_connect = k_AutoConnector_Connect_Never;
+	_autoconnector_connection_method = k_AutoConnector_Connect_Automatically;
+	_autoconnector_when_to_connect = k_AutoConnector_Connect_Permanent;
 	_autoconnector_close_when_table_disappears = false;
 
 	// GUI
@@ -192,7 +209,7 @@ void CPreferences::InitDefaults(void)
 	_rebuy_script = "Rebuy.exe";
 
 	// Configuration check
-	_configurationcheck_keyboard_settings = true;
+	_configurationcheck_input_settings = true;
 	_configurationcheck_theme_settings = true;
 	_configurationcheck_font_settings = true;
 
@@ -262,6 +279,7 @@ void CPreferences::ReadPreferences()
 
 		// prefs - autoplayer
 		ReadReg("frame_delay", &_frame_delay);
+		ReadReg("click_delay", &_click_delay);
 		ReadReg("swag_delay_1", &_swag_delay_1);
 		ReadReg("swag_delay_2", &_swag_delay_2);
 		//  If a key "swag_delay" exists, use this as "swag_delay_3",
@@ -352,13 +370,27 @@ void CPreferences::ReadPreferences()
 
 		ReadReg("trace_enabled", &_trace_enabled);
 
-		CString regValue;
-
 		// Logging and debugging
 		ReadReg("disable_msgbox", &_disable_msgbox);
-		ReadReg("log_level", &_log_level);
-		ReadReg("log_level_pt", &_log_level_pt);
 		ReadReg("log_max_logsize", &_log_max_logsize);
+
+		// Debugging
+		ReadReg("debug_autoconnector", &_debug_autoconnector);
+		ReadReg("debug_autoplayer", &_debug_autoplayer);
+		ReadReg("debug_heartbeat", &_debug_heartbeat);
+		ReadReg("debug_prwin", &_debug_prwin);
+		ReadReg("debug_icm", &_debug_icm);
+		ReadReg("debug_occlusionchecker", &_debug_occlusionchecker);
+		ReadReg("debug_pokertracker", &_debug_pokertracker);
+		ReadReg("debug_rebuy", &_debug_rebuy);
+		ReadReg("debug_replayframes", &_debug_replayframes);
+		ReadReg("debug_scraper", &_debug_scraper);
+		ReadReg("debug_sessioncounter", &_debug_sessioncounter);
+		ReadReg("debug_stableframescounter", &_debug_stableframescounter);
+		ReadReg("debug_symbolengine", &_debug_symbolengine);
+		ReadReg("debug_blindlocking", &_debug_blindlocking);
+		ReadReg("debug_memorysymbols", &_debug_memorysymbols);
+		ReadReg("debug_alltherest", &_debug_alltherest);
 
 		// Validator
 		ReadReg("validator_enabled", &_validator_enabled);
