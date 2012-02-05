@@ -190,6 +190,24 @@ public:
 									  int n = strtoul(it->second.text.GetString(), NULL, 10); 
 									  return (n>=1 && n<=_0b0111) ? n : _0b0111; }
 
+	const int HandNumberMinExpectedDigits() 
+	{ 
+		SMapCI it = _s$.find("handnumber_min_expected_digits"); 
+		if (it!=_s$.end()) 
+			return strtoul(it->second.text.GetString(), NULL, 10); 
+		else 
+			return 0; 
+	} 
+
+	const int HandNumberMaxExpectedDigits() 
+	{ 
+		SMapCI it = _s$.find("handnumber_max_expected_digits"); 
+		if (it!=_s$.end()) 
+			return strtoul(it->second.text.GetString(), NULL, 10); 
+		else 
+			return 0; 
+	} 
+
 	const bool balancenumbersonly()	{ SMapCI it = _s$.find("balancenumbersonly"); 
 									  if (it==_s$.end()) return false;
 									  CString s=it->second.text;
