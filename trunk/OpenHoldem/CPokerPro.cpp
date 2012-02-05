@@ -1948,7 +1948,9 @@ void PokerPro::DoScrape(void)
 
 	// Limit info
 	SLimitInfo LI;
-	LI.handnumber = _ppdata.m_handnumber;
+	// We have to convert the handnumber here,
+	// as the PPro-server sents ints, but we use now a String for handnumbers
+	LI.handnumber.Format("%d", _ppdata.m_handnumber); 
 	LI.found_handnumber = true;
 
 	ConvertMoney(money, 50, _ppdata.m_ginf[_ppdata.m_tinf.m_tid].m_sblind);
