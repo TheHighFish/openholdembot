@@ -449,7 +449,7 @@ void CMainFrame::OnViewRefresh()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RECT				crect, newrect;
 
-	if (pDoc->attached_hwnd)
+	if (pDoc->attached_hwnd && IsWindow(pDoc->attached_hwnd))
 	{
 		// bring attached window to front
 		::SetFocus(pDoc->attached_hwnd);
@@ -495,7 +495,7 @@ void CMainFrame::OnViewPrev()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RECT				crect, newrect;
 
-	if (pDoc->attached_hwnd)
+	if (pDoc->attached_hwnd && IsWindow(pDoc->attached_hwnd))
 	{
 		// bring attached window to front
 		::SetFocus(pDoc->attached_hwnd);
@@ -581,7 +581,7 @@ void CMainFrame::OnViewNext()
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RECT				crect, newrect;
 
-	if (pDoc->attached_hwnd)
+	if (pDoc->attached_hwnd && IsWindow(pDoc->attached_hwnd))
 	{
 		// bring attached window to front
 		::SetFocus(pDoc->attached_hwnd);
