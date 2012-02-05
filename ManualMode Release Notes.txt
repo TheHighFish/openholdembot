@@ -1,3 +1,9 @@
+v2.1.9.2 2011-12-24
+===================
+BUG FIXES: 
+- allin-bug: sum of bets and balances should be no correct. 
+  Thanks to Pingvvino for reporting. [THF]
+
 v2.0.0 2009-05-22
 =================
 BUG FIXES:
