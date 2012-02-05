@@ -256,7 +256,7 @@ int CScraper::CompleteBasicScrapeToFullScrape()
 	}
 
 	write_log(prefs.debug_scraper(), "[CScraper] Calling ScrapeButtons.\n");
-	ScrapeButtons();		// Buttons
+	DoBasicScrapeButtons();		// Buttons
 
 	write_log(prefs.debug_scraper(), "[CScraper] Calling ScrapePots.\n");
 	ScrapePots();		// Pots
