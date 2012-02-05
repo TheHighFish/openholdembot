@@ -38,6 +38,6 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol raischair")
     PRECONDITION (true)
-    POSTCONDITION ((gws("raischair") >= 0) && (gws("raischair") <= 9))
+    POSTCONDITION ((gws("raischair") >= -1) && (gws("raischair") <= 9))
     SYMBOLS_POSSIBLY_AFFECTED ("raischair")
 END_TESTCASE
