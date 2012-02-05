@@ -22,7 +22,7 @@ private:
 	void ParseAllTableMapsToLoadConnectionData();
 	void ExtractConnectionDataFromCurrentTablemap(SWholeMap *map);
 	bool TablemapConnectionDataAlreadyStored(CString TablemapFilePath);
-	CString TablemapConnectionDataDuplicated();
+	void CheckForDuplicatedTablemaps();
 private:
 	int SelectTableMapAndWindow(int Choices);
 	int SelectTableMapAndWindowManually(int Choices);
