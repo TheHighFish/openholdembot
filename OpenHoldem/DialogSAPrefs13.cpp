@@ -1,4 +1,4 @@
-// DialogSAPrefs12.cpp : implementation file
+// DialogSAPrefs13.cpp : implementation file
 //
 
 #include "stdafx.h"

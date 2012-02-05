@@ -26,12 +26,14 @@ protected:
 	afx_msg void OnDeltaposSwagdelay1Spin(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposSwagdelay2Spin(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposSwagdelay3Spin(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposClickdelaySpin(NMHDR *pNMHDR, LRESULT *pResult);
 
-	CEdit			m_FrameDelay, m_SwagDelay1, m_SwagDelay2, m_SwagDelay3;
-	CSpinButtonCtrl m_FrameDelay_Spin, m_SwagDelay1_Spin, m_SwagDelay2_Spin, m_SwagDelay3_Spin;
+	CEdit			m_FrameDelay, m_ClickDelay, m_SwagDelay1, m_SwagDelay2, m_SwagDelay3;
+	CSpinButtonCtrl m_FrameDelay_Spin, m_ClickDelay_Spin, m_SwagDelay1_Spin, m_SwagDelay2_Spin, m_SwagDelay3_Spin;
 	CButton			m_AutoAP, m_FocusDetect, m_SwagUseComma, m_CalcOnMyTurn, m_NeedBalanceStability;
 
 	DECLARE_MESSAGE_MAP()
+
 };
 
 #endif //INC_DIALOGSAPREFS2_H

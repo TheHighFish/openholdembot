@@ -77,7 +77,7 @@ BOOL CDlgSAPrefs14::OnInitDialog()
 
 void CDlgSAPrefs14::OnOK()
 {
-	if (_autoconnector_connection_manually.GetCheck() == true)
+	if (bool(_autoconnector_connection_manually.GetCheck()) == true)
 	{
 		prefs.set_autoconnector_connection_method(k_AutoConnector_Connect_Manually);
 	}
@@ -86,11 +86,11 @@ void CDlgSAPrefs14::OnOK()
 		prefs.set_autoconnector_connection_method(k_AutoConnector_Connect_Automatically);
 	}
 
-	if (_autoconnector_connect_never.GetCheck() == true)
+	if (bool(_autoconnector_connect_never.GetCheck()) == true)
 	{
 		prefs.set_autoconnector_when_to_connect(k_AutoConnector_Connect_Never);
 	}
-	else if (_autoconnector_connect_once.GetCheck() == true)
+	else if (bool(_autoconnector_connect_once.GetCheck()) == true)
 	{
 		prefs.set_autoconnector_when_to_connect(k_AutoConnector_Connect_Once);
 	}

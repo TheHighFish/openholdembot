@@ -1,6 +1,8 @@
 #ifndef INC_OPENHOLDEMVIEW_H
 #define INC_OPENHOLDEMVIEW_H
 
+#include "OpenHoldemDoc.h"
+
 #define DISPLAY_UPDATE_TIMER	111
 
 // OpenHoldemView.h : interface of the COpenHoldemView class
@@ -34,7 +36,8 @@ private:
 	void DrawBalanceBox(const int chair); 
 	void DrawPlayerBet(const int chair);
 
-	double			_handnumber_last, _sblind_last, _bblind_last, _lim_last, _ante_last, _pot_last;
+	CString			_handnumber_last;
+	double			_sblind_last, _bblind_last, _lim_last, _ante_last, _pot_last;
 	unsigned int	_iterator_thread_progress_last, _card_common_last[5], _card_player_last[10][2];
 	CString			_seated_last[10], _active_last[10], _playername_last[10];
 	bool			_dealer_last[10], _istournament_last;
