@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "CGameState.h"
+#include "CHandresetDetector.h"
 #include "CSymbols.h"
 #include "CScraper.h"
 #include "CPreferences.h"
@@ -533,7 +534,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 	int				sym_userchair = (int) p_symbols->sym()->userchair;
 	bool			sym_ismyturn = (bool) p_symbols->sym()->ismyturn;
 	double			sym_balance = p_symbols->sym()->balance[10];
-	double			sym_handnumber = p_symbols->sym()->handnumber;
+	CString			sym_handnumber = p_handreset_detector->GetHandNumber();
 
 	_m_holdem_state[ (++_m_ndx)&0xff ] = *pstate;
 
@@ -599,7 +600,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 			// Track some stats
 			_hands_played++;
 
-			write_log(1, ">>> New hand %.0f\n", sym_handnumber);
+			write_log(1, ">>> New hand %.0s\n", sym_handnumber);
 		}
 
 		// first time to act in the hand//
@@ -706,6 +707,8 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 						_bets_last==0 &&
 						_m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_cards[0]!=0 &&
 						_m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_cards[1]!=0 &&
+						_m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[0]!=0 &&
+						_m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[1]!=0 &&
 						sym_br == 1)
 				{
 					_chair_actions[index_normalized][sym_br-1][w_posted_sb] = true;
@@ -870,25 +873,25 @@ void CGameState::DumpState(void)
 {
 	int			i = 0;
 
-	write_log(3, "_m_ndx: %d\n", _m_ndx);
-	write_log(3, "m_title: %s\n", _m_holdem_state[(_m_ndx)&0xff].m_title);
-	write_log(3, "m_pot: %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f\n", _m_holdem_state[(_m_ndx)&0xff].m_pot[0], _m_holdem_state[(_m_ndx)&0xff].m_pot[1],
+	write_log(prefs.debug_alltherest(), "_m_ndx: %d\n", _m_ndx);
+	write_log(prefs.debug_alltherest(), "m_title: %s\n", _m_holdem_state[(_m_ndx)&0xff].m_title);
+	write_log(prefs.debug_alltherest(), "m_pot: %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f\n", _m_holdem_state[(_m_ndx)&0xff].m_pot[0], _m_holdem_state[(_m_ndx)&0xff].m_pot[1],
 			  _m_holdem_state[(_m_ndx)&0xff].m_pot[2], _m_holdem_state[(_m_ndx)&0xff].m_pot[3], _m_holdem_state[(_m_ndx)&0xff].m_pot[4],
 			  _m_holdem_state[(_m_ndx)&0xff].m_pot[5], _m_holdem_state[(_m_ndx)&0xff].m_pot[6], _m_holdem_state[(_m_ndx)&0xff].m_pot[7],
 			  _m_holdem_state[(_m_ndx)&0xff].m_pot[8], _m_holdem_state[(_m_ndx)&0xff].m_pot[9]);
-	write_log(3, "m_cards: %d %d %d %d %d\n", _m_holdem_state[(_m_ndx)&0xff].m_cards[0], _m_holdem_state[(_m_ndx)&0xff].m_cards[1],
+	write_log(prefs.debug_alltherest(), "m_cards: %d %d %d %d %d\n", _m_holdem_state[(_m_ndx)&0xff].m_cards[0], _m_holdem_state[(_m_ndx)&0xff].m_cards[1],
 			  _m_holdem_state[(_m_ndx)&0xff].m_cards[2], _m_holdem_state[(_m_ndx)&0xff].m_cards[3], _m_holdem_state[(_m_ndx)&0xff].m_cards[4]);
-	write_log(3, "m_is_playing: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_is_playing);
-	write_log(3, "m_is_posting: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_is_posting);
-	write_log(3, "m_dealer_chair: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_dealer_chair);
+	write_log(prefs.debug_alltherest(), "m_is_playing: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_is_playing);
+	write_log(prefs.debug_alltherest(), "m_is_posting: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_is_posting);
+	write_log(prefs.debug_alltherest(), "m_dealer_chair: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_dealer_chair);
 	for (i=0; i<k_max_number_of_players; i++) {
-		write_log(3, "m_player[%d].m_name:%s  ", i, _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_name);
-		write_log(3, "m_balance:%.2f  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance);
-		write_log(3, "m_currentbet:%.2f  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_currentbet);
-		write_log(3, "m_cards:%d/%d  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[0],
+		write_log(prefs.debug_alltherest(), "m_player[%d].m_name:%s  ", i, _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_name);
+		write_log(prefs.debug_alltherest(), "m_balance:%.2f  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance);
+		write_log(prefs.debug_alltherest(), "m_currentbet:%.2f  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_currentbet);
+		write_log(prefs.debug_alltherest(), "m_cards:%d/%d  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[0],
 				  _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[1]);
-		write_log(3, "m_name_known:%d  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_name_known);
-		write_log(3, "m_balance_known:%d\n", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance_known);
+		write_log(prefs.debug_alltherest(), "m_name_known:%d  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_name_known);
+		write_log(prefs.debug_alltherest(), "m_balance_known:%d\n", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance_known);
 	}
 }
 
