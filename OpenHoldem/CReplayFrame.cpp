@@ -1,8 +1,8 @@
 #include "StdAfx.h"
+#include "CReplayFrame.h"
 
 #include "CHeartbeatThread.h"
 #include "CPreferences.h"
-#include "CReplayFrame.h"
 #include "CScraper.h"
 #include "CSessionCounter.h"
 #include "CSymbols.h"
@@ -54,6 +54,8 @@ CReplayFrame::CReplayFrame(void)
     _next_replay_frame = last_frame_num + 1;
     if (_next_replay_frame >= prefs.replay_max_frames())
         _next_replay_frame = 0;
+	write_log(prefs.debug_replayframes(), "[CReplayFrame] Next frame number: %d\n", 
+		_next_replay_frame);
 }
 
 CReplayFrame::~CReplayFrame(void)
@@ -81,6 +83,7 @@ void CReplayFrame::CreateReplayFrame(void)
 		&free_bytes_total_on_disk);
 	if (free_bytes_for_user_on_disk.QuadPart < FREE_SPACE_NEEDED_FOR_REPLAYFRAME) 
 	{
+		write_log(prefs.debug_replayframes(), "[CReplayFrame] Not enough disk-space\n");
 		if (!prefs.disable_msgbox())
 			OH_MessageBox("Not enough disk space to create replay-frame.", "ERROR", 0);
 
@@ -101,6 +104,7 @@ void CReplayFrame::CreateReplayFrame(void)
 	path.Format("%s\\replay\\session_%lu\\frame%06d.htm", _startup_path, p_sessioncounter->session_id(), _next_replay_frame);
 	if (fopen_s(&fp, path.GetString(), "w")==0)
 	{
+		write_log(prefs.debug_replayframes(), "[CReplayFrame] Creating HTML file: $s\n", path);
 		// First line has to be the "title" of the table.
 		// This is no longer valid HTML, but the way Ray.E.Bornert did it
 		// for WinHoldem and WinScrape.
@@ -374,6 +378,7 @@ void CReplayFrame::CreateBitMapFile()
 
 	// Create replay/session dir if it does not exist
 	path.Format("%s\\replay\\session_%lu\\", _startup_path, p_sessioncounter->session_id());
+	write_log(prefs.debug_replayframes(), "[CReplayFrame] Creating bitmap file %s\n", path);
 	if (GetFileAttributes(path.GetString()) == INVALID_FILE_ATTRIBUTES)
 		SHCreateDirectoryEx(NULL, path.GetString(), NULL);
 
