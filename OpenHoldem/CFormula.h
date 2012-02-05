@@ -95,8 +95,6 @@ public:
 private:
 	bool IsStandardFormula(CString formula_name);
 	void WriteStandardFunction(CArchive& ar, CString name);
-	bool DoesFormulaAlreadyExist(const CString new_name);
-	bool DoesHandlistAlreadyExist(const CString new_name);
 	void WarnAboutOutdatedConcepts();
 
 private:
