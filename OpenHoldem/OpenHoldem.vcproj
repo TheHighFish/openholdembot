@@ -317,6 +317,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CDllExtension.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CEvalInfo.cpp"
 				>
 			</File>
@@ -326,6 +330,10 @@
 			</File>
 			<File
 				RelativePath=".\CHandHistory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CHandresetDetector.cpp"
 				>
 			</File>
 			<File
@@ -381,7 +389,31 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CSymbols.cpp"
+				RelativePath=".\CStableFramesCounter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CSymbols.cpp"
+				>
+			</File>
+			<File>
 				RelativePath=".\debug.cpp"
+			</File>
+			<File
+				RelativePath=".\CTableLimits.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CValidator.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MainFrm.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Median.cpp"
 				>
 			</File>
 			<File
@@ -398,10 +430,6 @@
 			</File>
 			<File
 				RelativePath=".\MyCToolBar.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OH_MessageBox.cpp"
 				>
 			</File>
 			<File
@@ -854,6 +882,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\DialogSAPrefs20.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\DialogSAPrefs3.cpp"
 						>
 					</File>
@@ -990,6 +1022,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CDllExtension.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CEvalInfo.h"
 				>
 			</File>
@@ -999,6 +1035,10 @@
 			</File>
 			<File
 				RelativePath=".\CHandHistory.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CHandresetDetector.h"
 				>
 			</File>
 			<File
@@ -1058,11 +1098,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\debug.h"
+				RelativePath=".\CStableFramesCounter.h"
 				>
 			</File>
 			<File
-				RelativePath=".\DefaultBot.h"
+				RelativePath=".\CSymbols.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CTableLimits.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CValidator.h"
 				>
 			</File>
 			<File
@@ -1074,7 +1122,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MainFrm.h"
+				RelativePath=".\DefaultBot.h"
+				>
+			</File>
+			<File
+				RelativePath=".\FloatingPoint_Comparisions.h"
 				>
 			</File>
 			<File
@@ -1086,8 +1138,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OH_MessageBox.h"
+				RelativePath=".\Median.h"
 				>
+			</File>
+			<File
+				RelativePath=".\MyCToolBar.h"
+				>
+			</File>
+			<File>
+				RelativePath=".\OH_MessageBox.h"
 			</File>
 			<File
 				RelativePath=".\OpenHoldem.h"
@@ -1457,6 +1516,10 @@
 					</File>
 					<File
 						RelativePath=".\DialogSAPrefs2.h"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs20.h"
 						>
 					</File>
 					<File
