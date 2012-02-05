@@ -1,11 +1,13 @@
 #include "stdafx.h"
-#include <process.h>
-
 #include "CIteratorThread.h"
+
+#include <process.h>
+#include "CGrammar.h"
+#include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbols.h"
-#include "CGrammar.h"
 #include "inlines/eval.h"
+#include "MagicNumbers.h"
 
 CIteratorThread		*p_iterator_thread = NULL;
 
@@ -22,16 +24,15 @@ CIteratorVars::~CIteratorVars()
 
 void CIteratorVars::ResetVars()
 {
-	int i = 0;
-
+	write_log(prefs.debug_prwin(), "[PrWinThread] Reset variables\n");
 	_nit = 0;
 	_f$p = 0;
 	_br = 0;
 
-	for (i=0; i<=1; i++)
+	for (int i=0; i<k_number_of_cards_per_player; i++)
 		_pcard[i] = CARD_NOCARD;
 
-	for (i=0; i<=4; i++)
+	for (int i=0; i<k_number_of_community_cards; i++)
 		_ccard[i] = CARD_NOCARD;
 
 	_prwin = 0;
@@ -46,7 +47,7 @@ void CIteratorVars::ResetVars()
 
 CIteratorThread::CIteratorThread()
 {
-	write_log(3, "ITT: Iterator Thread starting.\n");
+	write_log(prefs.debug_prwin(), "[PrWinThread] Iterator Thread starting.\n");
 
 	// Create events
 	_m_stop_thread = CreateEvent(0, TRUE, FALSE, 0);
@@ -62,12 +63,12 @@ CIteratorThread::CIteratorThread()
 	iter_vars.set_iterator_thread_running(true);
 	AfxBeginThread(IteratorThreadFunction, this);
 
-	write_log(3, "ITT: Iterator Thread started.\n");
+	write_log(prefs.debug_prwin(), "[PrWinThread] Iterator Thread started.\n");
 }
 
 CIteratorThread::~CIteratorThread()
 {
-	write_log(3, "ITT: Iterator Thread ending.\n");
+	write_log(prefs.debug_prwin(), "[PrWinThread] Iterator Thread ending...\n");
 
 	// Trigger thread to die
 	::SetEvent(_m_stop_thread);
@@ -81,15 +82,18 @@ CIteratorThread::~CIteratorThread()
 
 	p_iterator_thread = NULL;
 
-	write_log(3, "ITT: Iterator Thread ended.\n");
+	write_log(prefs.debug_prwin(), "[PrWinThread] Iterator Thread ended.\n");
 }
 
 UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 {
 	CIteratorThread *pParent = static_cast<CIteratorThread*>(pParam);
 
-	int				i = 0, j = 0, k = 0, randfix = 0;
-	unsigned int	nit = 0;
+	// Loop-variables j, k get used inside and outside loops.
+	// It is a bit messy, nearly impossible to fix it.
+	// At least the outer loops ("nit" and "i") could be improved.
+	int				j = 0, k = 0;
+	int				randfix = 0;
 	CardMask		addlcomCards = {0}, evalCards = {0}, opp_evalCards = {0}, usedCards = {0}, temp_usedCards = {0};
 	unsigned int	ocard[MAX_OPPONENTS*2] = {0}, card = 0, pl_pokval = 0, opp_pokval = 0, opp_pokvalmax = 0;
 	HandVal			pl_hv = 0, opp_hv = 0;
@@ -105,6 +109,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 	int				sym_nopponents = (int) p_symbols->sym()->nopponents;
 
 	int				nopp = sym_nopponents <= MAX_OPPONENTS ? sym_nopponents : MAX_OPPONENTS;
+	bool			hand_lost;
 
 	// Seed the RNG
 	srand((unsigned)GetTickCount());
@@ -112,7 +117,11 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 	//
 	// Main iterator loop
 	//
-	write_log(3, "ITT: Start of main loop.\n");
+	write_log(prefs.debug_prwin(), "[PrWinThread] Start of main loop.\n");
+
+	// "nit" has to be declared outside of the loop,
+	// as we check afterwards, if the loop terminated successfully.
+	unsigned int nit;
 	for (nit=0; nit < iter_vars.nit(); nit++)
 	{
 		// Check event for thread stop signal
@@ -126,20 +135,26 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 		CardMask_OR(usedCards, pParent->_plCards, pParent->_comCards);
 		//Correct the protection aganst low f$willplay/f$wontplay - Matrix 2008-12-22
 		if (pParent->_willplay && (pParent->_willplay<nopp*2+1) )
+		{
+			write_log(prefs.debug_prwin(), "[PrWinThread] Adjusting willplay (too low)\n");
 			pParent->_willplay=nopp*2+1; //too low a value can give lockup
+		}
 		if (pParent->_wontplay<pParent->_willplay)
+		{
+			write_log(prefs.debug_prwin(), "[PrWinThread] Adjusting wontplay (too low)\n");
 			pParent->_wontplay=pParent->_willplay; //wontplay cannot safely be less than willplay
+		}
 
 
 		if (p_symbols->prw1326()->useme==1326 && (sym_br!=1 || p_symbols->prw1326()->preflop==1326))
 		{
-			write_log(3, "ITT: Using Matrix's enhanced prwin.\n");
+			write_log(prefs.debug_prwin(), "[PrWinThread] Using Matrix's enhanced prwin.\n");
 
 			//prw1326 active  Matrix 2008-05-08
 			k = nopp = 0; //k is used as an index into ocard[] 
 
 			// loop through active opponents
-			for(i=0; i<=9; i++) 
+			for(int i=0; i<k_max_number_of_players; i++) 
 			{
 				if (i==(int) p_symbols->sym()->userchair)
 					continue; //skip our own chair!
@@ -171,6 +186,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 					
 					CardMask_SET(usedCards, card);
 					ocard[k++] = card;
+
 					continue;
 				} // end of special non-weighted cases
 
@@ -221,9 +237,10 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 			// additional common cards
 			CardMask_RESET(addlcomCards);
-			for (i=0; i<(5 - pParent->_ncomCards); i++)
+			for (int i=0; i<(k_number_of_community_cards - pParent->_ncomCards); i++)
 			{
-				do {
+				do 
+				{
 					card = rand() & 63;
 				}
 				while (card>51 ||CardMask_CARD_IS_SET(usedCards, card));
@@ -235,14 +252,19 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 		else
 		{ 
 			// normal prwin opponent card selection
-			write_log(3, "ITT: Using standard prwin.\n");
+			write_log(prefs.debug_prwin(), "[PrWinThread] Using standard prwin.\n");
 
 			// if f$P<=13 then deal with random replacement algorithm, otherwise deal with swap algorithm
 			if (nopp <= 13)
 			{
+				write_log(prefs.debug_prwin(), "[PrWinThread] Using random algorithm, as f$P <= 13\n");
 				// random replacement algorithm
 				// opponent cards
-				for (i=0; i<nopp*2; i+=2)
+				if (nopp < 1)
+				{
+					write_log(prefs.debug_prwin(), "[PrWinThread] No opponents.\n");
+				}
+				for (int i=0; i<nopp*2; i+=2)
 				{
 					temp_usedCards=usedCards;
 					do
@@ -264,7 +286,10 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 						ocard[i+1] = card;
 
 						if (!pParent->_willplay)
+						{
+							write_log(prefs.debug_prwin(), "[PrWinThread] Weighting disabled. Willplay is 0.\n");
 							break; //0 disables weighting
+						}
 
 						//put break for i=0 and opponent unraised BB case (cannot assume anything about his cards)
 						//In round 1 we should really do an analysis of chairs to find out how many have still to
@@ -284,7 +309,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 				}
 				// additional common cards
 				CardMask_RESET(addlcomCards);
-				for (i=0; i<(5 - pParent->_ncomCards); i++)
+				for (int i=0; i<(k_number_of_community_cards - pParent->_ncomCards); i++)
 				{
 					do {
 						card = rand() & 63;
@@ -297,10 +322,11 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 			else
 			{
+				write_log(prefs.debug_prwin(), "[PrWinThread] Useing swap-algorithm, as f$P > 13\n");
 				// swap alogorithm
 				//weighted prwin not implemented for this case
 				numberOfCards=52;
-				for (i=0; i<numberOfCards; i++)
+				for (int i=0; i<numberOfCards; i++)
 					deck[i] = i;
 
 				while (numberOfCards>=1)
@@ -317,7 +343,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 				// opponent cards
 				x = 0;
-				for (i=0; i<nopp*2; i++)
+				for (int i=0; i<nopp*2; i++)
 				{
 					while (CardMask_CARD_IS_SET(usedCards, deck[x]) && x<=51) {
 						x++;
@@ -327,7 +353,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 				// additional common cards
 				CardMask_RESET(addlcomCards);
-				for (i=0; i<(5 - pParent->_ncomCards); i++)
+				for (int i=0; i<(k_number_of_community_cards - pParent->_ncomCards); i++)
 				{
 					while (CardMask_CARD_IS_SET(usedCards, deck[x]) && x<=51) {
 						x++;
@@ -347,7 +373,8 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 		// - if we find one better than ours, then we are done, increment los
 		// - for win/tie, we need to wait until we scan them all
 		opp_pokvalmax = 0;
-		for (i=0; i<nopp; i++)
+		hand_lost = false;
+		for (int i=0; i<nopp; i++)
 		{
 			CardMask_RESET(opp_evalCards);
 			CardMask_OR(opp_evalCards, pParent->_comCards, addlcomCards);
@@ -359,7 +386,8 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 			if (opp_pokval>pl_pokval)
 			{
 				pParent->_los++;
-				i = nopp+999;
+				hand_lost = true;
+				break;
 			}
 			else
 			{
@@ -367,7 +395,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 					opp_pokvalmax = opp_pokval;
 			}
 		}
-		if (i!=nopp+1000)
+		if (!hand_lost)
 		{
 			if (pl_pokval > opp_pokvalmax)
 				pParent->_win++;
@@ -377,7 +405,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 		if ((nit/1000 == (int) nit/1000) && nit>=1000)
 		{
-			write_log(3, "ITT: Progress: %d %.3f %.3f %.3f\n", nit, pParent->_win / (double) nit, pParent->_tie / (double) nit, pParent->_los / (double) nit);
+			write_log(prefs.debug_prwin(), "[PrWinThread] Progress: %d %.3f %.3f %.3f\n", nit, pParent->_win / (double) nit, pParent->_tie / (double) nit, pParent->_los / (double) nit);
 			iter_vars.set_iterator_thread_progress(nit);
 			iter_vars.set_prwin(pParent->_win / (double) nit);
 			iter_vars.set_prtie(pParent->_tie / (double) nit);
@@ -385,7 +413,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 		}
 	}
 
-	write_log(3, "ITT: End of main loop.\n");
+	write_log(prefs.debug_prwin(), "[PrWinThread] End of main loop.\n");
 
 	if (nit >= iter_vars.nit())
 	{
@@ -405,10 +433,10 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 		iter_vars.set_f$p(0);
 		iter_vars.set_br(0);
 
-		for (i=0; i<=1; i++)
+		for (int i=0; i<k_number_of_cards_per_player; i++)
 			iter_vars.set_pcard(i, CARD_NOCARD);
 
-		for (i=0; i<=4; i++)
+		for (int i=0; i<k_number_of_community_cards; i++)
 			iter_vars.set_ccard(i, CARD_NOCARD);
 
 		iter_vars.set_prwin(0);
@@ -425,9 +453,10 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 void CIteratorThread::InitIteratorLoop()
 {
-	int			i = 0, e = SUCCESS;
+	int			e = SUCCESS;
 	CGrammar	gram;
 
+	write_log(prefs.debug_prwin(), "[PrWinThread] Initializing iterator loop\n");
 	// Set starting status and parameters
 	iter_vars.set_iterator_thread_running(true);
 	iter_vars.set_iterator_thread_complete(false);
@@ -436,10 +465,10 @@ void CIteratorThread::InitIteratorLoop()
 	iter_vars.set_f$p((int) p_symbols->sym()->nopponents);
 	iter_vars.set_br((int) p_symbols->sym()->br);
 
-	for (i=0; i<=1; i++)
+	for (int i=0; i<k_number_of_cards_per_player; i++)
 		iter_vars.set_pcard(i, p_scraper->card_player((int) p_symbols->sym()->userchair, i));
 
-	for (i=0; i<=4; i++)
+	for (int i=0; i<k_number_of_community_cards; i++)
 		iter_vars.set_ccard(i, p_scraper->card_common(i));
 
 	iter_vars.set_prwin(0);
@@ -455,7 +484,7 @@ void CIteratorThread::InitIteratorLoop()
 	_win = _tie = _los = 0;
 
 	// setup masks
-	for (i=0; i<=1; i++)
+	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
 		if (iter_vars.pcard(i) != CARD_BACK && iter_vars.pcard(i) != CARD_NOCARD)
 		{
@@ -463,7 +492,7 @@ void CIteratorThread::InitIteratorLoop()
 			_nplCards++;
 		}
 	}
-	for (i=0; i<=4; i++)
+	for (int i=0; i<k_number_of_community_cards; i++)
 	{
 		if (iter_vars.ccard(i) != CARD_BACK && iter_vars.ccard(i) != CARD_NOCARD)
 		{
@@ -512,7 +541,7 @@ int CIteratorThread::InRange(const int card1, const int card2, const int willpla
 	(with the current statistics available in OH only willplay and wontplay should be used.
 	 mustplay and topclip are debatable constructs at the best of times 2008-01-29)
 	*/
-
+	
 	extern int pair2ranko[170], pair2ranks[170];
 	int i = card1%13;
 	int j = card2%13;
