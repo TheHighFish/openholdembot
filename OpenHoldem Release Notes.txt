@@ -37,6 +37,171 @@ MAINTENANCE:
   Thanks to JumpingFences for pointing this out. [THF]
 
 
+v2.1.9.3 2012-01-25
+===================
+BUG FIXES: 
+- Some checkboxes of the debug-preferences had no effect 
+  and didn't keep their values. This has now been fixes.
+  Thanks to [???] for reporting. [THF] 
+
+MAINTENANCE:
+- Returning 0 instead of ERR_INVALID_EXPR for unknown memory symbols.
+  This way the evaluation doesn't terminate and we can continue
+  with a "reasonable" value. 
+  This is especially important for the first use of a symbol
+  or for debugging of complex formulas, where the initialization
+  can not be guaranteed. [THF]
+- Removing currentbetX cap for FL games. [Strikles]
+- Whenever OpenHoldem finds an unknown symbols it tries noe
+  to prepend a prefix "f§OpenPPL_" and then evaluates again.
+  This way is more robust for OpenPPL-users, especially
+  for OpenPPL-symbols in memory-expressions. [THF] 
+  
+ NEW STUFF:
+ - Partial implememtation of new symbol "isfinaltable",
+   which is required for OpenPPL. Full implementation
+   (OpenScrape + TM) in OH 2.2.0; ATM we always return false. [THF]
+
+
+v2.1.9.2 2011-12-24
+===================
+BUG FIXES: 
+- Small fixes to the validator (handnumber no longer a symbol,
+  binary instead of logical negation, etc.). 
+  Thanks to Nik0 and Humanista for finding the problems. 
+  [THF]
+- foldbits previous round exclusion correction : 
+  indexes are mapped to betround [1 to 4]
+  [Strikles]
+- Minor corrections to CAutoplayer for f$delay honoring.
+  a) NumberOfStableFrames needed updating.
+  b) f$delay scaling division by 0 test discarded 1 interval.
+  c) Inequality between signed and unsigned int resulted in promotion.
+  [Strikles]
+- Improved memory symbols, which allow now nearly arbitrary values at the right hand side:
+  * numbers,   e.g. me_st_Pi_3_141
+  * symbols,   e.g. me_st_MyChair_userchair
+  * functions, e.g. me_st_CallFunction_f$call
+  * memory symbols, e.g. me_st_OldValue_me_re_CurrentValue
+  [THF]
+- Making PT-thread more stable, eliminating possible undefined pointers.
+  http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=13952
+  Thanks to Dimonstrik for reporting. [THF]
+- Added some missing symbols to the help-list of the editor.
+  Thanks to Rominus for reporting. [THF]
+  
+
+MAINTENANCE:
+- No longer warning about missing versus.bin at startup, but only 
+  if versus-symbols get used. 
+  [THF]
+- Improved debugging messages, as Level 2 was unused and level 3
+  produced way too much data. There is now an extra tab in preferences
+  that enables the user to specify what exactly to log.
+  [THF]
+- Autoplayer and autoconnector enabled now per default to avoid ugly PEBKACs.
+  [THF]
+- Detecting opponents: We do no longer check for cardbacks,
+  but for cardbacks or cards. This way we can play all cards face-up at PokerAcademy.
+  Thanks to NoDBerrHyPn0 for suggesting this change.
+  [THF]
+  
+
+v2.1.9.1 2011-06-08
+===================
+BUG FIXES: 
+- The check for duplicated TMs did not work if a sitename did not exist in the TM.
+  We added now a warning for missing sitenames.
+  Thanks to Folder for reporting the issue and to Strikles for finding the bug.
+  [THF]
+- CFormula: Reading formula file: mistakenly verified if formula exist 
+  when supposed to verify if handlist exists.
+  [TripleSeven]
+- Frame recording in "its my turn" mode did not record with autoplayer off. Fixed it
+  and made sure only one frame gets saved for each turn [JF].
+- Autoplayer action for allinmethod 1 and 2 was not setting frame recording flag. 
+  [JF]
+- Replayframes on my turn do get now taken on exactly the same heartbeat 
+  where the autoplayer acts. Thanky to VitaliKK2005 for providing the patch.
+  [THF]
+  
+NEW STUFF:
+- TM-symbol "handnumber" is now optionally ranged between s$handnumber_min_expected_digits 
+  and s$handnumber_max_expected_digits to reduce the risk of handresets by occlusion.
+  s$handnumber_min_expected_digits and s$handnumber_max_expected_digits can now 
+  be set in the tablemap.
+  [TripleSeven]
+- PT3-support for more sites:
+  * betfair
+  * cryptologic
+  * ultimate
+  * absolute
+  * wpex
+  * tribeca
+  * merge
+  * winamax
+  * everleaf
+  * yatahay
+  Thanks to SteveG1963 and Strikles for providing the code. 
+  [THF]
+  
+MAINTENANCE:
+- Removing formula symbol "handnumber" for various reasons from the formula level:
+    * there is no need for it at the formula level.
+    * it may contain characters and therefore doesn't fit into a double.
+    * its length may exceed the precision of double.
+  "Handnumber" gets now used only internally to trigger handresets. 
+  This work gets now done in a new class CHandResetDetector.
+  [THF]
+- Removing tablepoints completely, as they were never implemented completely
+  and there is no need for it.
+  http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=12444
+  [THF]
+- Enabling autoplayer-trace per default to reduce "problem" reports by newbies.
+  [THF]
+- Improving some rules of the validator.
+  Thanks to Nik0 for identifying some critical ones.
+  [THF]
+
+
+v2.1.9 2011-02-20
+=================
+BUG FIXES: 
+- Tablepoints got handled incorrectly by the auto-connector.
+  This took some time to get detected, as they get rarely used.
+  Thanks to Vasyatko for reporting the bug and for providing
+  replay-frames to reproduce the problem. 
+  [JumpingFences]
+- The Formula dialog did not highlight all PT-symbols.
+  Thanks to Qwerty for submitting the patch. 
+  [THF]
+- "Random" didn't get calculated each time new, but only once per heartbeat,
+  contrary to the docu. This has now been fixed. Additionally a symbol
+  "randomheartbeat" got introduced. Thanks to StangelNator for reporting. 
+  [THF]
+- There was no delay between multiple button-clicks (like "max" and "raise" to go allin),
+  which caused problems on some casinos. This has now been fixed. There also is a 
+  new auto-player-option "click-delay" to configure the timing.
+  Thanks to Querty who submitted the patch. 
+  [THF]
+- Epsilon-expressions caused crashes inside brackets.
+  We fixed it by completely disallowing empty expressions inside other expressions.
+  Only standard formulas, that don't get used are allowed to stay empty.
+  Thanks to BrassKnuckles for reporting the problem. 
+  [THF]
+- Scraper-DLL: Some variables got ignored when changed by the scraper-DLL
+  (e.g. "limit"), as limit_found didn't get affected. This has now been changed.
+  Thanks to Ljmj for submitting the patch. 
+  [THF]
+- There was a memory-overflow when too many memory-symbols got used and OH could crash.
+  We do now prevent this, throw an error and stop the autoplayer.
+  Thanks to Stangelnator for reporting the bug and providing useful info. 
+  [THF]
+- The autoplayer-trace did get logged only for the default allinmethod (0 = swag),
+  but not for 1 and 2. This got now fixed. Thanks to Gonhilda and CrumbleSunday for reporting. 
+  [THF]
+
+
 v2.1.8 2011-01-15
 =================
 BUG FIXES:
@@ -46,13 +211,6 @@ BUG FIXES:
   [JumpingFences]
 - The action constants for prevaction were no longer consistent to WinHoldem
   due to code improvements. Thanks to Qwerty for reporting. [THF]
-- Improving the auto-detection of blinds (guessing from the bets),
-  which caused incorrect results, in case of
-    * tournaments (no blind locking)
-    * super-fast-action, so that we don't get a frame before our turn
-    * SB raises or cold-calls
-    * we are BB, so that we get a stable frame only after SBs action.
-  This case gets now handled, too. [F1x3r]
 - srankbits, srankbitspoker, srankhipoker, etc. were returning incorrect
   results due to missing brackets in an arithmetic expression.
   This has now been fixed. [JumpingFences]
@@ -67,38 +225,9 @@ BUG FIXES:
 - Added a missing Sleep() to the autoplayer-code between two clicks for the new allin-method.
   Without it clicking max, then raise didn't work at some casinos.
   Thanks to Poker_Dog for reporting and to Qwerty for submittina a patch. [THF]
-
-
-v2.1.8 2011-01-15
-=================
-BUG FIXES:
-- OH tried to get the symbol "scraperprocessordll" from the tablemap
-  instead of "scraperdll". Thanks to Vasyatko and Want2Learn for reporting. [THF]
-- The formula editor was handling unsaved formulas in several different ways (inconsistently).
-  [JumpingFences]
-- The action constants for prevaction were no longer consistent to WinHoldem
-  due to code improvements. Thanks to Qwerty for reporting. [THF]
-- Improving the auto-detection of blinds (guessing from the bets),
-  which caused incorrect results, in case of
-    * tournaments (no blind locking)
-    * super-fast-action, so that we don't get a frame before our turn
-    * SB raises or cold-calls
-    * we are BB, so that we get a stable frame only after SBs action.
-  This case gets now handled, too. [F1x3r]
-- srankbits, srankbitspoker, srankhipoker, etc. were returning incorrect
-  results due to missing brackets in an arithmetic expression.
-  This has now been fixed. [JumpingFences]
-- OH tried to read the complete function into the fixed-sized space for the functions name
-  and then truncate it. This caused a buffer oberflow in case of large functions.
-  Thanks to KaeKruse for reprting the bug and providing a formula to reproduce it. [THF]
-- There were some typos in the symbol names used by the validator.
-  This caused false positives. Thanks to MasterNet for reporting. [THF]
-- Betround was undefined after disconnecting from a table,
-  but still used as part of an assertion. This caused a warning in debug-mode and got now fixed.
-  [JumpingFences]
-- Added a missing Sleep() to the autoplayer-code between two clicks for the new allin-method.
-  Without it clicking max, then raise didn't work at some casinos.
-  Thanks to Poker_Dog for reporting and to Qwerty for submittina a patch. [THF]
+- icm_fold could be wrong, because we assumed the pot is splitted
+  between non folded opponents. This is a bug, current bets should not be splitted, 
+  but only the common pot. The bets of folded players should be given back. [Spud]
 
 
 v2.1.7 2010-09-12
@@ -106,7 +235,7 @@ v2.1.7 2010-09-12
 BUG FIXES:
 - Fixed broken title of replay-frames, which has to be in the first line as plain text
   (which is not standard HTML, but good old WinHoldem design).
-  Thanks to qwerty for reporting the problem and to Poker_Dog
+  Thanks to qwerty for reporting the problem and to Poker_Dog 
   for pointing out the mistake. [THF]
 - Default for user-dll (preferences.dll_name) is no longer "user.dll", but "".
   Setting the string to "user.dll" whenever it was empty
@@ -121,15 +250,15 @@ BUG FIXES:
   very late at termination of the program, as a string object got accessed
   that had already been released. Thanks to JumpingFences for fixing the bug
   and to BillW for testing and confirming the fix. [THF]
-- The symbol "playersblindbits" was incorrectly assuming, that always the next two chairs
+- The symbol "playersblindbits" was incorrectly assuming, that always the next two chairs 
   after the dealer were the blinds. This has now been fixed.
-  Thanks to Mjoe2 for reporting the problem [F1x3r]
-- Some casinos (currently we are only aware of FullTilt) use a "dead button",
+  Thanks to Mjoe2 for reporting the problem [Strikles]
+- Some casinos (currently we are only aware of FullTilt) use a "dead button", 
   if one of the blinds did bust in the previous hand.
   This caused problems with the code to detect blinds and with the ICM symbols.
-  Thanks to CrumbleSunday for reporting the issue and for Poker_Dog
-  for contributing to the solution. [F1x3r]
-- Fixed a memory leak in the formula editor.
+  Thanks to CrumbleSunday for reporting the issue and for Poker_Dog 
+  for contributing to the solution. [Strikles]
+- Fixed a memory leak in the formula editor. 
   Thanks to JumpingFences for reporting the problem and fixing the bug. [THF]
 
 
@@ -137,44 +266,43 @@ v2.1.6 2010-08-29
 =================
 BUG FIXES:
 - The symbol "call" got broken by a previous bug-fix.
-  Thanks to kTrader for reporting. [F1x3r]
+  Thanks to kTrader for reporting. [Strikles]
 - Trying to adapt the history-symbols after an action did break
-  some other symbols like currentbetX.
-  Thanks to BadHabit for reporting. [F1x3r]
+  some other symbols like currentbetX. 
+  Thanks to BadHabit for reporting. [Strikles]
 - Detecting the blinds was a bit unreliable
   ("blinds" means blind-posters here, not bet.amounts),
   as OpenHoldem assumed, that always the two seats after the button are blinds,
   even if they were empty. This has now been corrected.
   Special care has been taken for situations that are headsup or become headsup.
-  Thanks to Mjoe2 for reporting this old problem again and providing a good screenshot
-  that motivated us to do the fix. [F1x3r]
+  Thanks to Mjoe2 for reporting this old problem again and providing a good screenshot 
+  that motivated us to do the fix. [Strikles]
 
 MAINTENANCE:
 - Now also logging f$delay (optionally). [THF]
-- Some minor improvements to the replay-frames (HTML-file). [THF] 
-
+- Some minor improvements to the replay-frames (HTML-file). [THF]  
 
 v2.1.5 2010-07-01
 =================
 BUG FIXES:
 - The symbol ishistraight did not work for all best straights,
   but only for ace-high-straights. This has now been fixed.
-  Thanks to Mad4IT for reporting. [F1x3r]
+  Thanks to Mad4IT for reporting. [Strikles]
 - betround was used for symbol lookups when loading the first formula,
-  but not yet initialized.
-  This was pretty harmless, but threw an assertion in debug-mode.
+  but not yet initialized. 
+  This was pretty harmless, but threw an assertion in debug-mode. 
   Thanks to Gecko for motivating me to fix it. [THF]
 - OpenHoldem was not able to use both absolute and relative filenames
   to load scraper(preprocessor)-DLLs. Thanks to Ljmj
-  for reporting the problem and for providing the fix. [THF]
+  for reporting the problem and for providing the fix. [THF] 
 - Applying a formula while the autoplayer is engaged is an extremely bad idea
   (PEBKAC) and could lose the whole formula. Trying to fix this issue
-  (stupid user) with improved warning messages. Nothing more we can do. [THF]
-- Fixed yet another problem with nopponentsraising. [F1x3r]
-- Historically all hi_symbols (and some others) keep the value they had
+  (stupid user) with improved warning messages. Nothing more we can do. [THF] 
+- Fixed yet another problem with nopponentsraising. [Strikles]
+- Historically all hi_symbols (and some others) keep the value they had 
   at heros last turn in betting round X, as heros turn is the only time
   when we get stable frames, so scraping or even guessing what happened behind hero
-  would be completely unreliable.
+  would be completely unreliable. 
   However some other symbols like nbetsroundX get now adapted for heros action,
   assuming that his action gets executed correctly.
   Thanks to Gecko for "motivating" me to fix this "bug". [THF]
@@ -182,10 +310,10 @@ BUG FIXES:
   changed a handlist. This has now been changed.
   Thanks to Trom for reporting. [THF]
 - The autoplayer trace did not work for f$allin. This has now been fixed.
-  Thanks to CrumbleSunday for reporting.
+  Thanks to CrumbleSunday for reporting. 
   Temporarily the autoplayer-trace for f$play, f$rebuy (but not the primary functions)
-  will be written every heartbeat, but that will easily be resolved
-  with some other changes in the upcoming OH 2.2.0 [THF]
+  will be written every heartbeat, but that will easily be resolved 
+  with some other changes in the upcoming OH 2.2.0 [THF] 
 
 
 v2.1.4 2010-04-23
@@ -212,7 +340,7 @@ NEW STUFF:
   * testing for correct installation of Perl
   * testing, if PATH-variable contains Perl-directory
   * better test for MSVCRT 8.0, which is necessary for Perl. 
-  [F1x3r]
+  [Strikles]
 
 
 v2.1.3 2010-03-03
