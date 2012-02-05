@@ -146,8 +146,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,1
- PRODUCTVERSION 1,0,0,1
+ FILEVERSION 2,1,9,2
+ PRODUCTVERSION 2,1,9,2
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -162,14 +162,9 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", ""
-            VALUE "FileDescription", ""
-            VALUE "FileVersion", "2.0.0.0"
-            VALUE "InternalName", ""
+            VALUE "FileVersion", "2.1.9.2"
             VALUE "LegalCopyright", "Licensed under GPLv3"
-            VALUE "OriginalFilename", ""
-            VALUE "ProductName", ""
-            VALUE "ProductVersion", "2.0.0.0"
+            VALUE "ProductVersion", "2.1.9.2"
         END
     END
     BLOCK "VarFileInfo"
