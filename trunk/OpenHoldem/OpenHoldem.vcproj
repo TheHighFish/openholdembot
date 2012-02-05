@@ -390,15 +390,19 @@
 			</File>
 			<File
 				RelativePath=".\CSymbols.cpp"
-				RelativePath=".\CStableFramesCounter.cpp"
 				>
+			</File>
+			<File
+				RelativePath=".\CStableFramesCounter.cpp"
+				>		
 			</File>
 			<File
 				RelativePath=".\CSymbols.cpp"
 				>
 			</File>
-			<File>
+			<File
 				RelativePath=".\debug.cpp"
+				>
 			</File>
 			<File
 				RelativePath=".\CTableLimits.cpp"
@@ -1145,8 +1149,9 @@
 				RelativePath=".\MyCToolBar.h"
 				>
 			</File>
-			<File>
+			<File
 				RelativePath=".\OH_MessageBox.h"
+				>
 			</File>
 			<File
 				RelativePath=".\OpenHoldem.h"
