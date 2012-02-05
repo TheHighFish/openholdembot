@@ -46,6 +46,7 @@
 #include "DialogSAPrefs17.h"
 #include "DialogSAPrefs18.h"
 #include "DialogSAPrefs19.h"
+#include "DialogSAPrefs20.h"
 #include "DialogScraperOutput.h"
 #include "inlines/eval.h"
 #include "MagicNumbers.h"
@@ -521,6 +522,7 @@ void CMainFrame::OnEditPreferences()
 	CDlgSAPrefs17 page17;
 	CDlgSAPrefs18 page18;
 	CDlgSAPrefs19 page19;
+	CDlgSAPrefs20 page20;
 
 	// add pages
 	dlg.AddPage(page1,  "Analyzer");
@@ -528,6 +530,7 @@ void CMainFrame::OnEditPreferences()
 	dlg.AddPage(page2,  "Autoplayer");
 	dlg.AddPage(page10, "Chat");
 	dlg.AddPage(page17, "Configuration Check");
+	dlg.AddPage(page20, "Debugging");
 	dlg.AddPage(page3,  "DLL Extension");
 	dlg.AddPage(page15, "GUI");
 	dlg.AddPage(page19, "Handhistory generator");
@@ -734,7 +737,7 @@ void CMainFrame::OnEditForceuserchair()
 		p_symbols->set_user_chair_confirmed(true); 
 		time_t tm;
 		time(&tm);
-		write_log(3, "Force set userchair to %d\n", dlg.chair);
+		write_log(prefs.debug_alltherest(), "Force set userchair to %d\n", dlg.chair);
 	}
 }
 
@@ -933,8 +936,9 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 
 		else if (p_symbols->user_chair_confirmed() && iter_vars.iterator_thread_complete())
 		{
-			if (p_symbols->f$alli())  _status_action = "Allin";
-			else if (p_symbols->f$betsize())  _status_action.Format("SWAG: %.2f", p_symbols->f$betsize());
+			if (prefs.calc_only_my_turn() && !p_symbols->sym()->isfinalanswer) _status_action = "N/A";
+			else if (p_symbols->f$alli())  _status_action = "Allin";
+			else if (p_symbols->f$swag())  _status_action.Format("Betsize: %.2f", p_symbols->f$swag());
 			else if (p_symbols->f$rais())  _status_action = "Bet/Raise";
 			else if (p_symbols->f$call())  _status_action = "Call/Check";
 			else  _status_action = "Fold/Check";
@@ -1296,6 +1300,7 @@ BOOL CMainFrame::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	return CFrameWnd::OnSetCursor(pWnd, nHitTest, message);
 }
 
+// ??? conflict and removed in maintenance. Needed?
 void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
 {
 	if (nID == SC_CLOSE)
