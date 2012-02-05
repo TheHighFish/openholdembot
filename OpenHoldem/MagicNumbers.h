@@ -43,9 +43,11 @@ const int k_gametype_NL      =  0;
 const int k_gametype_PL  	 =  1;
 const int k_gametype_FL      =  2;
 
-// buttons, pots and other scraper constants
+// buttons and other scraper constants
 const int k_max_number_of_buttons = 10;
 const int k_max_number_of_i86X_buttons = 10;
+
+// Number of (side)pots
 const int k_max_number_of_pots = 10;
 
 // DLL
@@ -53,10 +55,6 @@ const int k_number_of_holdem_states_for_DLL = 256;
 
 // Flags
 const int k_number_of_flags = 20;
-
-// Number of (side)pots
-const int k_max_number_of_pots = 10;
-
 
 // Suits and ranks
 const int k_number_of_suits_per_deck = 4;
@@ -74,9 +72,6 @@ const int F_OK = 0;
 // It is better to have a named constant then to write "assert(false);".
 const bool k_this_must_not_happen = false;
 
-// "This must not happen."
-// It is better to have a named constant then to write "assert(false);".
-const bool k_this_must_not_happen = false;
 
 // numeric constants
 #define M_E			2.7182818284590452354
@@ -268,6 +263,7 @@ const char* ActionConstantNames(int action_constant);
 
 // for rank to card translation
 const static char *k_card_chars = "23456789TJQKA";
+const int k_number_of_different_cardranks = 13;
 
 // Index for current betting round in arrays
 // we prefer to store values for preflop..river in 1..4
@@ -304,37 +300,9 @@ const int k_number_of_pocketcard_combinations_without_order = 1326;
 // For assertions of codes, that should never be executed
 const bool k_ThisMustNotHappen = false;
 
-// Action constants for the autoplayer
-// have to be backward compatible to WinHoldem
-// http://www.maxinmontreal.com/wiki/index.php5?title=OpenHoldem:EndUserDocumentation:Symbols#History
-// (-1=fold 0=chec 1=call 2=rais 3=swag 4=alli)
-enum ActionConstant
-{
-	k_action_undefined = -2,
-	k_action_fold = -1,
-	k_action_check = 0,		// new in OpenHoldem
-	k_action_call = 1,
-	k_action_raise = 2,		// min-raise
-	k_action_swag = 3,		// "stated wager", i.e. using f$betsize
-	k_action_allin = 4
-};
-
 // Function to access the name of the action constants.
 // As fold is negative we can no longer use the constants 
 // as indices for an array.
 const char* ActionConstantNames(int action_constant);
-
-// for rank to card translation
-const static char *k_card_chars = "23456789TJQKA";
-const int k_number_of_different_cardranks = 13;
-
-// Index for current betting round in arrays
-// we prefer to store values for preflop..river in 1..4
-// and use index 0 for the current round.
-// The old code did it differently (4 for the current round)
-const int k_storage_index_for_current_round = 0;
-
-// Functions names, both user-defined and standard, e.g. "f$alli"
-const int k_max_size_of_function_name = 256;
 
 #endif // _INC_MAGICNUMBERS_H
