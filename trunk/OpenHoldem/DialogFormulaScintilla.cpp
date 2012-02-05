@@ -33,11 +33,13 @@
 CDlgFormulaScintilla	*m_formulaScintillaDlg = NULL;
 
 char * keywords = // Standard functions
-				  "f$alli f$betsize f$rais f$call f$prefold f$rebuy f$delay f$chat f$P f$play f$test f$sitin f$sitout f$leave"
+				  "f$alli f$swag f$srai f$rais f$call f$prefold f$rebuy f$delay f$chat f$P f$play f$test f$sitin f$sitout f$leave"
 				  // General
 				  "ismanual isppro site nchairs isbring session handnumber version "
 				  // Tablemap
-				  "sitename$ network$ "
+				  "sitename$ network$ swagdelay allidelay swagtextmethod " 
+				  // Tablemap, undocumented
+				  "potmethod activemethod "
 				  // Formula File
 				  "rake nit bankroll "
 				  // Limits
@@ -49,7 +51,7 @@ char * keywords = // Standard functions
 				  // Rounds / Positions
 				  "betround br betposition dealposition callposition seatposition dealpositionrais betpositionrais "
 				  // Probabilities
-				  "prwin prtie prlos prwinnow prlosnow random randomhand randomheartbeat randomround randomround1 randomround2 randomround3 randomround4 "
+				  "prwin prtie prlos prwinnow prlosnow random randomhand randomround randomround1 randomround2 randomround3 randomround4 "
 				  // F$P Formula
 				  "defcon isdefmode isaggmode "
 				  // Chip Amounts
@@ -59,13 +61,15 @@ char * keywords = // Standard functions
 				  "call bet bet1 bet2 bet3 bet4 pot potcommon potplayer callshort raisshort "
 				  // Number of Bets	
 				  "nbetstocall nbetstorais ncurrentbets ncallbets nraisbets "
+				  // List Tests
+				  "islistcall islistrais islistalli isemptylistcall isemptylistrais isemptylistalli nlistmax nlistmin pokerval "
 				  // Poker Values
-				  "pokerval pokervalplayer pokervalcommon pcbits npcbits "
+				  "pokervalplayer pokervalcommon pcbits npcbits "
 				  // Poker Value Constants
 				  "hicard onepair twopair threeofakind straight flush fullhouse fourofakind straightflush royalflush fiveofakind "
 				  // Hand Tests
 				  "ishandup ishandupcommon ishicard isonepair istwopair isthreeofakind isstraight "
-				  "isflush isfullhouse isfourofakind isstraightflush isroyalflush"
+				  "isflush isfullhouse isfourofakind isstraightflush isroyalflush isfiveofakind "
 				  // Pocket Tests
 				  "ispair issuited isconnector "
 				  // Pocket / Common Tests
@@ -77,13 +81,14 @@ char * keywords = // Standard functions
 				  "nopponentschecking nopponentscalling nopponentsraising nopponentsbetting nopponentsfolded "
 				  "nplayerscallshort nchairsdealtright nchairsdealtleft playersseatedbits playersactivebits "
 				  "playersdealtbits playersplayingbits playersblindbits opponentsseatedbits opponentsactivebits "
-				  "opponentsdealtbits opponentsplayingbits opponentsblindbits "
+				  "opponentsdealtbits opponentsplayingbits opponentsblindbits friendsseatedbits friendsactivebits "
+				  "friendsdealtbits friendsplayingbits friendsblindbits "
 				  // Flags
 				  "fmax f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14 f15 f16 f17 f18 f19 "
 				  // Common Cards
 				  "ncommoncardspresent ncommoncardsknown nflopc "
 				  // (Un)known Cards
-				  "ncardsknown ncardsunknown ncardsbetter "
+				  "nouts ncardsknown ncardsunknown ncardsbetter "
 				  // nhands
 				  "nhands nhandshi nhandslo nhandsti " 
 				  // Flushes / Straights / Sets
@@ -135,7 +140,8 @@ char * keywords = // Standard functions
 				  "ac_dealpos0 ac_dealpos1 ac_dealpos2 ac_dealpos3 ac_dealpos4 ac_dealpos5 ac_dealpos6 ac_dealpos7 ac_dealpos8 ac_dealpos9 "
 				  // MyHand
 				  "mh_3straight00 mh_3straight01 mh_3straight10 mh_3straight11 "
-				  "mh_bottomsd mh_nsuitedbetter mh_kickerbetter mh_nouts mh_str_quads mh_str_fullhouse "
+				  "mh_bottomsd mh_nsuitedbetter mh_kickerbetter mh_nouts "
+				  "mh_str_strflush mh_str_quads mh_str_fullhouse "
 				  "mh_str_flush mh_str_straight mh_str_trips mh_str_twopair mh_str_onepair "
 				  // Logging
 				  "log$ "
@@ -168,10 +174,18 @@ char * keywords = // Standard functions
 				  "pt_icon pt_hands pt_pfr pt_aggp pt_aggf pt_aggt pt_aggr "
 				  "pt_aggtot pt_aggtotnopf pt_floppct pt_turnpct pt_riverpct pt_vpip pt_pf_rfi "
 				  "pt_pf_cr pt_pfats pt_wsdp pt_wssd pt_fbbts pt_fsbts "
+				  // Poker Tracker ring symbols for the "raischair"
+				  "pt_ricon pt_rhands pt_rpfr pt_raggp pt_raggf pt_raggt pt_raggr "
+				  "pt_raggtot pt_raggtotnopf pt_rfloppct pt_rturnpct pt_rriverpct pt_rvpip pt_rpf_rfi "
+				  "pt_rpf_cr pt_rpfats pt_rwsdp pt_rwssd pt_rfbbts pt_rfsbts "
 				  // Poker Tracker tournament symbols
 				  "ptt_icon ptt_hands ptt_pfr ptt_aggp ptt_aggf ptt_aggt ptt_aggr "
 				  "ptt_aggtot ptt_aggtotnopf ptt_floppct ptt_turnpct ptt_riverpct ptt_vpip ptt_pf_rfi "
-				  "ptt_pf_cr ptt_pfats ptt_wsdp ptt_wssd ptt_fbbts ptt_fsbts ";
+				  "ptt_pf_cr ptt_pfats ptt_wsdp ptt_wssd ptt_fbbts ptt_fsbts "
+					// Poker Tracker tournament symbols for the "raischair"
+				  "ptt_ricon ptt_rhands ptt_rpfr ptt_raggp ptt_raggf ptt_raggt ptt_raggr "
+				  "ptt_raggtot ptt_raggtotnopf ptt_rfloppct ptt_rturnpct ptt_rriverpct ptt_rvpip ptt_rpf_rfi "
+				  "ptt_rpf_cr ptt_rpfats ptt_rwsdp ptt_rwssd ptt_rfbbts ptt_rfsbts ";
 
 #define ID_SCIN_SIZERBAR 5555
 
@@ -2436,26 +2450,26 @@ void CDlgFormulaScintilla::CreateDebugTab(CString *cs)
 				switch (debug_ar[i].error) 
 				{
 					case ERR_INVALID_SYM:
-						newline.Append("ERR: sym  = ");
+						newline.Append("ERROR: invalid symbol     = ");
 						break;
 					case ERR_INVALID_FUNC_SYM:
-						newline.Append("ERR: f$   = ");
+						newline.Append("ERROR: invalid function   = ");
 						break;
 					case ERR_INVALID_DLL_SYM:
-						newline.Append("ERR: dll$ = ");
+						newline.Append("ERROR: invalid DLL-symbol = ");
 						break;
 					case ERR_INVALID_EXPR:
-						newline.Append("ERR: expr = ");
+						newline.Append("ERROR: invalid expression = ");
 						break;
 					case ERR_DIV_ZERO:
-						newline.Append("ERR: div0 = ");
+						newline.Append("ERROR: division by zero   = ");
 						break;
 					case ERR_BAD_PARSE:
-						newline.Append("ERR: pars = ");
+						newline.Append("ERROR: invalid syntax     = ");
 						break;
 					default:
-						newline.Append("ERR: unkn = ");
-						break;
+						newline.Append("ERROR: (no detailed info) = ");
+						break;				
 				}
 
 				//newline.Append("ERROR = ");
@@ -3370,7 +3384,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "nfriendssactive", "1 of you are active, 0 otherwise (0-1)");
 	AddSymbol(parent, "nfriendsplaying", "1 of you are playing, 0 otherwise (0-1)");
 	AddSymbol(parent, "nopponentsseated", "number of opponents seated (not including you) (0-9)");
-	AddSymbol(parent, "nopponentssactive", "number of opponents active (not including you) (0-9)");
+	AddSymbol(parent, "nopponentsactive", "number of opponents active (not including you) (0-9)");
 	AddSymbol(parent, "nopponentsdealt", "number of opponents dealt (not including you) (0-9)");
 	AddSymbol(parent, "nopponentsplaying", "number of opponents playing (not including you) (0-9)");
 	AddSymbol(parent, "nopponentsblind", "number of opponents blind (not including you) (0-9)");
@@ -3572,6 +3586,21 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "callbitsx (x=1-4)", "which chairs called in round x");
 	AddSymbol(parent, "foldbitsx (x=1-4)", "which chairs folded in round x");
 	AddSymbol(parent, "oppdealt", "Trailing indicator for nopponentsdealt");
+	AddSymbol(parent, "ac_aggressor", "which chair was aggressor (might be from previous round)");
+	AddSymbol(parent, "ac_agchair_after", "does the aggressor chair act after me?");
+	AddSymbol(parent, "ac_preflop_pos", "preflop position of the userchair (SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6)");
+	AddSymbol(parent, "ac_prefloprais_pos", "preflop position of the raiser (SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6)");
+	AddSymbol(parent, "ac_postflop_pos", "postflop position of the userchair (first=1 early=2 middle=3 late=4 last=5)");
+	AddSymbol(parent, "ac_pf_bets", "preflop betting action\n" 
+		"1 for no callers or blinds only\n" 
+		"2 for Called Pot - 1 bet to call\n"
+		"3 for Raised Back - 1 more bet to call because someone behind you raised after you've already bet/called/raised\n" 
+		"4 for Raised Pot - 2 bets to call\n"
+		"5 for Reraised Pot - 3+ bets to call\n"
+		"Valif preflop only.");
+	AddSymbol(parent, "ac_first_into_pot", "returns true if you are first into the pot (first to act or checked to you)");
+	AddSymbol(parent, "ac_betposx (x=0-9)", "returns bet position of specified chair");
+	AddSymbol(parent, "ac_dealposx (x=0-9)", "returns deal position of specified chair");
 
 	mainParent = parent = AddSymbolTitle("MyHand symbols", NULL, hCatItem);
 	AddSymbol(parent, "mh_3straightxy", "(x=1 for wheel, 0 not, y=1 for broadway, 0 not) - returns true if the board has a wheel straight draw or broadway straight draw, given the wheel/broadway parameters");
@@ -3631,7 +3660,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "pt_raggp", "Poker Tracker preflop aggression for raise chair");
 	AddSymbol(parent, "pt_raggf", "Poker Tracker flop aggression for raise chair");
 	AddSymbol(parent, "pt_raggt", "Poker Tracker turn aggression for raise chair");
-	AddSymbol(parent, "pt_raggrv", "Poker Tracker river aggression for raise chair");
+	AddSymbol(parent, "pt_raggr", "Poker Tracker river aggression for raise chair");
 	AddSymbol(parent, "pt_rfloppct", "Poker Tracker saw flop pct for raise chair");
 	AddSymbol(parent, "pt_rturnpct", "Poker Tracker saw turn pct for raise chair");
 	AddSymbol(parent, "pt_rriverpct", "Poker Tracker saw river pct for raise chair");
