@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "debug.h"
 
 #include "CIteratorThread.h"
 #include "CPreferences.h"
@@ -7,7 +8,6 @@
 #include "CSymbols.h"
 #include "..\CTablemap\CTablemap.h"
 #include "..\..\dbghelp\dbghelp.h"
-#include "debug.h"
 #include "inlines/eval.h"
 #include "OH_MessageBox.h"
 #include "OpenHoldem.h"
@@ -225,8 +225,17 @@ to_return:
 
 void start_log(void) 
 {
-	if (prefs.log_level()==0)
+	//!!!
+	//if (prefs.log_level()==0)
+	//	return;
+	
+	if (log_fp!=NULL)
 		return;
+
+    CString fn;
+	CSLock lock(log_critsec);
+
+    fn.Format("%s\\oh_%lu.log", _startup_path, p_sessioncounter->session_id());
 	
 	if (log_fp!=NULL)
 		return;
@@ -266,13 +275,13 @@ void start_log(void)
 
 }
 
-void write_log(int level, char* fmt, ...) 
+void write_log(bool debug_settings_for_this_message, char* fmt, ...) 
 {
     char		buff[10000] ;
     va_list		ap;
     char		nowtime[26];
 
-	if (level>prefs.log_level())
+	if (debug_settings_for_this_message == false)
 		return;
 
     if (log_fp != NULL) 
@@ -290,12 +299,12 @@ void write_log(int level, char* fmt, ...)
     }
 }
 
-void write_log_nostamp(int level, char* fmt, ...) 
+void write_log_nostamp(bool debug_settings_for_this_message, char* fmt, ...) 
 {
 	char		buff[10000] ;
     va_list		ap;
 
-	if (level>prefs.log_level())
+	if (debug_settings_for_this_message == false)
 		return;
 
     if (log_fp != NULL) 
@@ -312,7 +321,7 @@ void write_log_nostamp(int level, char* fmt, ...)
     }
 }
 
-void write_logautoplay(int level, const char * action) 
+void write_logautoplay(const char * action) 
 {
     char		nowtime[26];
     CString		pcards, comcards, temp, rank, pokerhand, bestaction, fcra_seen;
@@ -326,7 +335,7 @@ void write_logautoplay(int level, const char * action)
 	int			sym_br = (int) p_symbols->sym()->br;
 
 
-	if (level>prefs.log_level())
+	if (!prefs.trace_enabled())
 		return;
 
 	if (log_fp != NULL) 
@@ -559,14 +568,14 @@ void stop_log(void)
     }
 }
 
-void write_log_pokertracker(int level, char* fmt, ...) 
+void write_log_pokertracker(bool debug_settings_for_this_message, char* fmt, ...) 
 {
     char		buff[10000] ;
     va_list		ap;
     char		nowtime[26];
 	FILE		*fp=NULL;
 
-	if (level>prefs.log_level_pt())
+	if (debug_settings_for_this_message == false)
 		return;
 
     CString fn;
