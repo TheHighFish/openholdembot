@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "CPreferences.h"
 #include "CSessionCounter.h"
 #include "CSharedMem.h"
 
@@ -76,17 +77,17 @@ void CSharedMem::RememberTimeOfLastFailedAttemptToConnect()
 {
 	ENT;
 	time(&LastFailedAttemptToConnect);
-	write_log(3, "Set LastFailedAttemptToConnect %d\n", LastFailedAttemptToConnect);
+	write_log(prefs.debug_autoconnector(), "Set LastFailedAttemptToConnect %d\n", LastFailedAttemptToConnect);
 	SessionIdOfLastInstanceThatFailedToConnect = p_sessioncounter->session_id();
-	write_log(3, "Failed session ID: %d\n", SessionIdOfLastInstanceThatFailedToConnect);
+	write_log(prefs.debug_autoconnector(), "Failed session ID: %d\n", SessionIdOfLastInstanceThatFailedToConnect);
 }
 
 
 time_t CSharedMem::GetTimeOfLastFailedAttemptToConnect()
 {
 	ENT;
-	write_log(3, "Get LastFailedAttemptToConnect %d\n", LastFailedAttemptToConnect);
-	write_log(3, "Stored by failed session ID: %d\n", SessionIdOfLastInstanceThatFailedToConnect);
+	write_log(prefs.debug_autoconnector(), "Get LastFailedAttemptToConnect %d\n", LastFailedAttemptToConnect);
+	write_log(prefs.debug_autoconnector(), "Stored by failed session ID: %d\n", SessionIdOfLastInstanceThatFailedToConnect);
 	return LastFailedAttemptToConnect;
 }
 
