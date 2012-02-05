@@ -15,7 +15,6 @@ struct SSymbols
 	double nchairs;
 	double isbring;
 	double session;
-	double handnumber;
 	double version;
 
 	//FORMULA FILE
@@ -72,7 +71,7 @@ struct SSymbols
 	double prwin;
 	double prlos;
 	double prtie;
-	double random;
+	double randomheartbeat;
 	double randomhand;
 	double randomheartbeat;
 	double randomround[5];				// "randomround" is held in element 4, round specific in elements 0-3
@@ -444,7 +443,6 @@ public:
 	void	set_sym_nchairs(const double d) { ENT _sym.nchairs = d;}
 	void	set_sym_isbring(const double d) { ENT _sym.isbring = d;}
 	void	set_sym_session(const double d) { ENT _sym.session = d;};
-	void	set_sym_handnumber(const double d) { ENT _sym.handnumber = d;}
 	void	set_sym_version(const double d) { ENT _sym.version = d;}
 
 	// formula
@@ -487,7 +485,7 @@ public:
 	void	set_sym_prwin(const double d) { ENT _sym.prwin = d;}
 	void	set_sym_prlos(const double d) { ENT _sym.prlos = d;}
 	void	set_sym_prtie(const double d) { ENT _sym.prtie = d;}
-	void	set_sym_random(const double d) { ENT _sym.random = d;}
+	void	set_sym_randomheartbeat(const double d) { ENT _sym.randomheartbeat = d;}
 	void	set_sym_randomhand(const double d) { ENT _sym.randomhand = d;}
 	void	set_sym_randomheartbeat(const double d) { ENT _sym.randomheartbeat = d;}
 	void	set_sym_randomround(const int i, const double d) { ENT _sym.randomround[i] = d;}
@@ -616,9 +614,9 @@ public:
 	void	set_sym_nfriendsplaying(const double d) { ENT _sym.nfriendsplaying = d;}
 	
 	// callbits, raisbits, etc.
-	void	set_sym_raisbits(const int i, const int betround) { ENT assert(betround >= k_betround_preflop); assert(betround <= k_betround_river); _sym.raisbits[betround] = i; }
-	void	set_sym_callbits(const int i, const int betround) { ENT assert(betround >= k_betround_preflop); assert(betround <= k_betround_river); _sym.callbits[betround] = i; }
-	void	set_sym_foldbits(const int i, const int betround) { ENT assert(betround >= k_betround_preflop); assert(betround <= k_betround_river); _sym.foldbits[betround] = i; }
+	void	set_sym_raisbits(const int i, const int betround) { ENT assert(betround >= k_betround_current); assert(betround <= k_betround_river); _sym.raisbits[betround] = i; }
+	void	set_sym_callbits(const int i, const int betround) { ENT assert(betround >= k_betround_current); assert(betround <= k_betround_river); _sym.callbits[betround] = i; }
+	void	set_sym_foldbits(const int i, const int betround) { ENT assert(betround >= k_betround_current); assert(betround <= k_betround_river); _sym.foldbits[betround] = i; }
 
 	//flags
 	void	set_sym_fmax(const double d) { ENT _sym.fmax = d;}
@@ -784,6 +782,13 @@ public:
 	void	set_sym_vs$prtielonow(const double d) { ENT _sym.vs$prtielonow = d;}
 	void	set_sym_vs$prloslonow(const double d) { ENT _sym.vs$prloslonow = d;}
 	void	set_sym_playing(const bool b) { ENT _sym.playing = b;}
+private:
+	void	set_prevaction(const int i) { ENT _sym.prevaction = i; }
+	void	set_didchec(const int n, const int i) { ENT assert(n>=0); assert(n<=4); _sym.didchec[n] = i; }
+	void	set_didcall(const int n, const int i) { ENT assert(n>=0); assert(n<=4); _sym.didcall[n] = i; }
+	void	set_didrais(const int n, const int i) { ENT assert(n>=0); assert(n<=4); _sym.didrais[n] = i; }
+	void	set_didswag(const int n, const int i) { ENT assert(n>=0); assert(n<=4); _sym.didswag[n] = i; }
+#undef ENT
 
 private:
 	void	InitHandranktTableForPrwin();
@@ -853,10 +858,7 @@ private:
 	time_t		_elapsedhold;				// The time we "sat down"
 	time_t		_elapsedhandhold;			// The time since start of last hand
 
-	static double _dealerchair_last;
-	static double _handnumber_last;
 	static int _br_last;
-	static unsigned int _player_card_last[2];
 
 	CCritSec			m_critsec;
 
