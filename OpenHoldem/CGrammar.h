@@ -38,6 +38,7 @@ private:
 	// private functions and variables - not available via accessors or mutators
 	double EvaluateExpression(CFormula * const f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e);
 	double DoEvaluateExpression(CFormula * const f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e);
+	double TryToEvaluateSymbolAsOpenPPLSymbol(CFormula * const f, string sym, CEvalInfoFunction **logCallingFunction, int *e);
 	double EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunction **logCallingFunction, int *e);
 	static void SetOffsets(iter_t &i, const char *start);
 
@@ -93,7 +94,7 @@ struct exec_grammar : public grammar<exec_grammar>
 		INT_CONSTANT_DEC_ID, INT_CONSTANT_OCT_ID, INT_CONSTANT_QUA_ID, INT_CONSTANT_BIN_ID,	EXP_EXPR_ID, 
 		UNARY_EXPR_ID, MULT_EXPR_ID, ADD_EXPR_ID, SHIFT_EXPR_ID, RELATIONAL_EXPR_ID,
 		EQUALITY_EXPR_ID, BINARY_AND_EXPR_ID, BINARY_XOR_EXPR_ID, BINARY_OR_EXPR_ID, LOGICAL_AND_EXPR_ID, 
-		LOGICAL_XOR_EXPR_ID, LOGICAL_OR_EXPR_ID, COND_EXPR_ID, EXPRESSION_ID, 
+		LOGICAL_XOR_EXPR_ID, LOGICAL_OR_EXPR_ID, COND_EXPR_ID, NON_EMPTY_EXPRESSION_ID, EXPRESSION_ID, 
 		PRIMARY_EXPR_ID };
 
 	template <typename ScannerT>
@@ -201,9 +202,9 @@ struct exec_grammar : public grammar<exec_grammar>
 				| INT_CONSTANT_QUA
 				| INT_CONSTANT_BIN
 				| INT_CONSTANT_DEC
-				| inner_node_d[LPAREN >> expression >> RPAREN]
-				| inner_node_d[LBRACK >> expression >> RBRACK]
-				| inner_node_d[LBRACE >> expression >> RBRACE]
+				| inner_node_d[LPAREN >> non_empty_expression >> RPAREN]
+				| inner_node_d[LBRACK >> non_empty_expression >> RBRACK]
+				| inner_node_d[LBRACE >> non_empty_expression >> RBRACE]
 				| SYMBOL
 				;
 
@@ -260,7 +261,13 @@ struct exec_grammar : public grammar<exec_grammar>
 
 			cond_expr = logical_or_expr >> *(root_node_d[QUEST_OP] >> cond_expr >> COLON_OP >> cond_expr);
 
-			expression = cond_expr | epsilon_p;
+			// Epsilon-expressions are no longer allowed to avoid crashed,
+			// when the expsilon expression gets evaluated e.g. inside empty brackets.
+			// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=12232&start=0
+			// they should however be allowed as top-level expressions,
+			// e.g. for f$srai, etc if a formula is not used at all
+			non_empty_expression = cond_expr;
+			expression = non_empty_expression | epsilon_p;
 
 			//  End grammar definition
 		}
@@ -293,6 +300,7 @@ struct exec_grammar : public grammar<exec_grammar>
 
 		rule<ScannerT, parser_tag<PRIMARY_EXPR_ID> >			primary_expr;
 		rule<ScannerT, parser_tag<EXPRESSION_ID> >				expression;
+		rule<ScannerT, parser_tag<NON_EMPTY_EXPRESSION_ID> >	non_empty_expression;
 		rule<ScannerT, parser_tag<EXP_EXPR_ID> >				exp_expr;
 		rule<ScannerT, parser_tag<UNARY_EXPR_ID> >				unary_expr;
 		rule<ScannerT, parser_tag<MULT_EXPR_ID> >				mult_expr;
