@@ -71,9 +71,10 @@ struct SSymbols
 	double prwin;
 	double prlos;
 	double prtie;
+
+	// RANDOM
 	double randomheartbeat;
 	double randomhand;
-	double randomheartbeat;
 	double randomround[5];				// "randomround" is held in element 4, round specific in elements 0-3
 
 	//P FORMULA
@@ -485,9 +486,10 @@ public:
 	void	set_sym_prwin(const double d) { ENT _sym.prwin = d;}
 	void	set_sym_prlos(const double d) { ENT _sym.prlos = d;}
 	void	set_sym_prtie(const double d) { ENT _sym.prtie = d;}
+
+	// random
 	void	set_sym_randomheartbeat(const double d) { ENT _sym.randomheartbeat = d;}
 	void	set_sym_randomhand(const double d) { ENT _sym.randomhand = d;}
-	void	set_sym_randomheartbeat(const double d) { ENT _sym.randomheartbeat = d;}
 	void	set_sym_randomround(const int i, const double d) { ENT _sym.randomround[i] = d;}
 
 	// p formula
@@ -496,6 +498,9 @@ public:
 	void	set_sym_isaggmode(const double d) { ENT _sym.isaggmode = d;}
 
 	// chip amounts
+	void	reset_sym_maxbalance() { ENT _sym.maxbalance = 0; }
+	void	reset_sym_originalbalance() { ENT _sym.originalbalance = 0; }
+
 	void	set_sym_balance(const int i, const double d) 
 	{
 		ENT 
@@ -793,14 +798,14 @@ private:
 private:
 	void	InitHandranktTableForPrwin();
 	bool	IsHigherStraightPossible(HandVal	handval);
-	void	reset_sym_maxbalance() { ENT _sym.maxbalance = 0; }
+
 	void	set_sym_max_balance_conditionally(const double d) 
 	{ 
 		// No ENT necessary and allowed, as we do call set_sym_maxbalance_conditionally
 		// only inside set_sym_balance, which is already protected by the mutex!
 		if (d > _sym.maxbalance) _sym.maxbalance = d;
 	}
-	void	reset_sym_originalbalance() { ENT _sym.originalbalance = 0; }
+
 	void	set_sym_originalbalance_conditionally(const double d) 
 	{ 
 		// No ENT necessary and allowed, as we do call set_sym_originalbalance_conditionally
