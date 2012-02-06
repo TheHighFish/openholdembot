@@ -189,21 +189,6 @@ void CAutoConnector::CheckForDuplicatedTablemaps()
 	}
 }
 
-   for (int i=0; i<=NumberOfTableMapsLoaded; i++)
-   {
-      for (int j=i+1; j<=NumberOfTableMapsLoaded; j++)
-      {
-         if (TablemapConnectionData[i].SiteName == TablemapConnectionData[j].SiteName)
-         {
-            dup_site = TablemapConnectionData[j].SiteName;
-            write_log(3, "CAutoConnector::TablemapConnectionDataDuplicated [%s] [true]\n", dup_site);
-            return dup_site;
-         }
-      }
-   }
-
-   return "-1";
-}
 
 void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 {
