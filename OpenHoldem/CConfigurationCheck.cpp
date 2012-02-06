@@ -26,9 +26,9 @@ void CConfigurationCheck::CheckEverything()
 	CheckForSwapMouseBtns();
 
 	// OpenHoldem may or may not work, if these are not right.
-	if (prefs.configurationcheck_keyboard_settings())
+	if (prefs.configurationcheck_input_settings())
 	{
-		CheckKeyboardSettings();
+		CheckInputSettings();
 	}
 
 	if (prefs.configurationcheck_theme_settings())
@@ -145,7 +145,7 @@ void CConfigurationCheck::CheckColourDepth()
 				"Caution: Color Depth Too Low", MB_OK|MB_ICONWARNING);
 }
 
-void CConfigurationCheck::CheckKeyboardSettings()
+void CConfigurationCheck::CheckInputSettings()
 {
 	TCHAR KeyboardLayout[KL_NAMELENGTH];
 	bool Success = GetKeyboardLayoutName((LPSTR)&KeyboardLayout);

@@ -16,7 +16,7 @@ private:
 	bool OpenKey(CString mhive, CString registry_path);
 	CString GetValue(CString mhive, int type, CString registry_path, CString key_name);
 	void CheckColourDepth();
-	void CheckKeyboardSettings();
+	void CheckInputSettings();
 	void CheckForSwapMouseBtns();
 	void CheckForClassicalTheme();
 	void CheckForFontSmoothing();

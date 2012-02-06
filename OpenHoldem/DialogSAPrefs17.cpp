@@ -36,7 +36,7 @@ END_MESSAGE_MAP()
 BOOL CDlgSAPrefs17::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
-	m_ConfigurationInputSettings_Button.SetCheck(prefs.configurationcheck_keyboard_settings() != 0);
+	m_ConfigurationInputSettings_Button.SetCheck(prefs.configurationcheck_input_settings() != 0);
 	m_ConfigurationThemeSettings_Button.SetCheck(prefs.configurationcheck_theme_settings() != 0);
 	m_ConfigurationFontSettings_Button.SetCheck(prefs.configurationcheck_font_settings() != 0);
 
@@ -46,7 +46,7 @@ BOOL CDlgSAPrefs17::OnInitDialog()
 
 void CDlgSAPrefs17::OnOK()
 {
-	prefs.set_configurationcheck_keyboard_settings(m_ConfigurationInputSettings_Button.GetCheck());
+	prefs.set_configurationcheck_input_settings(m_ConfigurationInputSettings_Button.GetCheck());
 	prefs.set_configurationcheck_theme_settings(m_ConfigurationThemeSettings_Button.GetCheck());
 	prefs.set_configurationcheck_font_settings(m_ConfigurationFontSettings_Button.GetCheck());
 	CSAPrefsSubDlg::OnOK();
