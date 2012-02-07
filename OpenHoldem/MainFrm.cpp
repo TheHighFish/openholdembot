@@ -937,10 +937,10 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 		else if (p_symbols->user_chair_confirmed() && iter_vars.iterator_thread_complete())
 		{
 			if (prefs.calc_only_my_turn() && !p_symbols->sym()->isfinalanswer) _status_action = "N/A";
-			else if (p_symbols->f$alli())  _status_action = "Allin";
-			else if (p_symbols->f$swag())  _status_action.Format("Betsize: %.2f", p_symbols->f$swag());
-			else if (p_symbols->f$rais())  _status_action = "Bet/Raise";
-			else if (p_symbols->f$call())  _status_action = "Call/Check";
+			else if (p_symbols->f$alli())    _status_action = "Allin";
+			else if (p_symbols->f$betsize()) _status_action.Format("Betsize: %.2f", p_symbols->f$betsize());
+			else if (p_symbols->f$rais())    _status_action = "Bet/Raise";
+			else if (p_symbols->f$call())    _status_action = "Call/Check";
 			else  _status_action = "Fold/Check";
 		}
 
@@ -1300,6 +1300,7 @@ BOOL CMainFrame::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	return CFrameWnd::OnSetCursor(pWnd, nHitTest, message);
 }
 
+/*
 // ??? conflict and removed in maintenance. Needed?
 void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
 {
@@ -1319,7 +1320,7 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
 	}
 	CFrameWnd::OnSysCommand(nID, lParam);
 }
-
+*/
 void CMainFrame::OnPerlLoadFormula() 
 {
 	if (p_perl->IsAFormulaLoaded())

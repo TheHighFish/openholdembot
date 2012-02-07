@@ -36,8 +36,6 @@ CSymbols			*p_symbols = NULL;
 // reset them when we connect to a table.
 int CSymbols::_br_last = -1;
 
-unsigned int CSymbols::_player_card_last[2] = {CARD_NOCARD, CARD_NOCARD};
-
 char handrank169[10][169][4] =
 {
 	{"AAo", "KKo", "QQo", "JJo", "TTo", "99o", "88o", "AKs", "77o", "AQs", "AKo", "AJs", "AQo", "ATs", "66o", "AJo", "KQs", "ATo", "A9s", "KJs", "A8s", "KTs", "KQo", "55o", "A7s", "A9o", "KJo", "QJs", "K9s", "KTo", "A8o", "A6s", "QTs", "A5s", "A4s", "A7o", "QJo", "K8s", "A3s", "K9o", "44o", "Q9s", "JTs", "QTo", "A6o", "K7s", "A5o", "A2s", "K6s", "A4o", "K8o", "Q8s", "J9s", "A3o", "K5s", "Q9o", "JTo", "K7o", "A2o", "K4s", "33o", "Q7s", "K6o", "T9s", "J8s", "K3s", "Q8o", "Q6s", "J9o", "K5o", "K2s", "Q5s", "T8s", "J7s", "K4o", "Q7o", "T9o", "Q4s", "J8o", "K3o", "22o", "Q6o", "Q3s", "98s", "T7s", "J6s", "K2o", "Q2s", "Q5o", "J5s", "T8o", "J7o", "Q4o", "97s", "J4s", "T6s", "J3s", "Q3o", "98o", "T7o", "J6o", "87s", "J2s", "96s", "Q2o", "J5o", "T5s", "T4s", "97o", "J4o", "T6o", "86s", "95s", "T3s", "J3o", "76s", "87o", "T2s", "96o", "J2o", "85s", "T5o", "94s", "T4o", "75s", "93s", "86o", "65s", "95o", "T3o", "84s", "92s", "76o", "T2o", "74s", "85o", "54s", "64s", "83s", "94o", "75o", "82s", "93o", "73s", "65o", "53s", "63s", "84o", "92o", "43s", "74o", "72s", "54o", "64o", "52s", "62s", "83o", "82o", "42s", "73o", "53o", "63o", "32s", "43o", "72o", "52o", "62o", "42o", "32o"},
@@ -3783,8 +3781,8 @@ void CSymbols::CalcPrimaryFormulas(const bool final_answer)
 	write_log(prefs.debug_symbolengine(), "Primary formulas; f$alli: %f\n", p_symbols->f$alli());
 	
 	e = SUCCESS;
-	set_f$swag(gram.CalcF$symbol(p_formula, "f$swag", trace_needed, &e));
-	write_log(prefs.debug_symbolengine(), "Primary formulas; f$swag: %f\n", p_symbols->f$swag());
+	set_f$betsize(gram.CalcF$symbol(p_formula, "f$betsize", trace_needed, &e));
+	write_log(prefs.debug_symbolengine(), "Primary formulas; f$betsize: %f\n", p_symbols->f$betsize());
 
 	e = SUCCESS;
 	set_f$rais(gram.CalcF$symbol(p_formula, "f$rais", trace_needed, &e));
@@ -3803,8 +3801,16 @@ void CSymbols::CalcSecondaryFormulas(void)
 	CGrammar	gram;
 
 	e = SUCCESS;
-	set_f$play(gram.CalcF$symbol(p_formula, "f$play", prefs.trace_enabled(), &e));
-	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$play: %f\n", p_symbols->f$play());
+	set_f$sitin(gram.CalcF$symbol(p_formula, "f$sitin", prefs.trace_enabled(), &e));
+	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$sitin: %f\n", p_symbols->f$sitin());
+
+	e = SUCCESS;
+	set_f$sitout(gram.CalcF$symbol(p_formula, "f$sitout", prefs.trace_enabled(), &e));
+	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$sitout: %f\n", p_symbols->f$sitout());
+
+	e = SUCCESS;
+	set_f$leave(gram.CalcF$symbol(p_formula, "f$leave", prefs.trace_enabled(), &e));
+	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$leave: %f\n", p_symbols->f$leave());
 
 	e = SUCCESS;
 	set_f$prefold(gram.CalcF$symbol(p_formula, "f$prefold", prefs.trace_enabled(), &e));
@@ -4635,7 +4641,7 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 			new_pot = _sym.pot + new_bet - _sym.currentbet[10];
 			break;
 		case k_action_swag:
-			assert(f$swag() > 0);
+			assert(f$betsize() > 0);
 			write_log(prefs.debug_symbolengine(), "Adjusting symbols for users action: swag\n");
 			// Did-symbols
 			set_didswag(4, p_symbols->sym()->didswag[4] + 1);
@@ -4644,7 +4650,7 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 			// Disabled till OH 2.2 as it causes bad side-effects for the call symbol.
 			new_bet = _sym.currentbet[10]; // f$swag(); // !!! That's not correct, but will be for OH 2.2.0 because of swagadjustment
 			new_number_of_bets = new_bet / bet; 
-			new_pot = _sym.pot + f$swag() - _sym.currentbet[10];
+			new_pot = _sym.pot + f$betsize() - _sym.currentbet[10];
 			break;
 		case k_action_allin:
 			// No "didallin"
