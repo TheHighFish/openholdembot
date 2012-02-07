@@ -385,23 +385,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CValidator.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CSymbols.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CStableFramesCounter.cpp"
-				>		
-			</File>
-			<File
-				RelativePath=".\CSymbols.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\debug.cpp"
 				>
 			</File>
 			<File
@@ -413,11 +397,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MainFrm.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Median.cpp"
+				RelativePath=".\debug.cpp"
 				>
 			</File>
 			<File
@@ -1098,14 +1078,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CValidator.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CStableFramesCounter.h"
-				>
-			</File>
-			<File
 				RelativePath=".\CSymbols.h"
 				>
 			</File>
@@ -1118,14 +1090,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\FloatingPoint_Comparisions.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MagicNumbers.h"
-				>
-			</File>
-			<File
 				RelativePath=".\DefaultBot.h"
 				>
 			</File>
@@ -1134,13 +1098,10 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Median.h"
+				RelativePath=".\MagicNumbers.h"
 				>
 			</File>
-			<File
-				RelativePath=".\MyCToolBar.h"
-				>
-			</File>
+
 			<File
 				RelativePath=".\Median.h"
 				>
