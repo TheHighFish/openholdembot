@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CTableMapAccess.h"
 
+#include "CScraper.h"
 #include "../CTablemap/CTablemap.h"
 
 CTablemapAccess *p_tablemap_access = NULL;
@@ -13,24 +14,168 @@ CTablemapAccess::~CTablemapAccess()
 {
 }
 
-CString CTablemapAccess::GetButtonName(int button_code)
-{
-	return ""; //!!!
-}
 
 int CTablemapAccess::GetPlayerCards(int seat_number, int first_or_second_card)
 {
-	return 0;
+	return p_scraper->card_player(seat_number, first_or_second_card);
 }
+
 
 bool CTablemapAccess::IsValidCard(int Card)
 {
-	return true;
+	if (Card >= 0 && Card < k_number_of_cards_per_deck)
+		return true;
+
+	return false;
 }
+
+
+
+int CTablemapAccess::DefaultButtonNumber(int button_code)
+{
+	/* 	
+		Returns the default button number by definition
+		(ignoring label overrides) 
+
+		0 - fold button
+		1 - call button
+		2 - raise button 
+		3 - allin button.
+	*/
+
+	int button_number = k_button_undefined;
+
+	switch(button_code)
+	{
+		case k_button_fold:
+			button_number = 0;
+			break;
+		case k_button_call:
+			button_number = 1;
+			break;
+		case k_button_raise:
+			button_number = 2;
+			break;
+		case k_button_allin:
+			button_number = 3;
+			break;
+		default :
+			break;
+	}
+
+	return button_number;
+}
+
+
+int CTablemapAccess::SearchForButtonNumber(int button_code)
+{
+	/*
+		Searches tablemap labels for button definitions/overrides
+		returns the button number if a label is defined
+		or the default button number otherwise.
+	*/
+
+	int button_number = k_button_undefined;
+
+	// Define a function pointer for the string matching function corresponding to each button_code
+	const bool (CScraper::*StringMatch)(CString) = NULL;
+
+	switch (button_code)
+	{
+		// ALLIN
+		case k_button_allin:
+			StringMatch = &CScraper::IsStringAllin;
+			break;
+		// RAISE
+		case k_button_raise:
+			StringMatch = &CScraper::IsStringRaise;
+			break;
+		// CALL
+		case k_button_call:
+			StringMatch = &CScraper::IsStringCall;
+			break;
+		// FOLD
+		case k_button_fold:
+			StringMatch = &CScraper::IsStringFold;
+			break;
+		// CHECK
+		case k_button_check:
+			StringMatch = &CScraper::IsStringCheck;
+			break;
+		// SITIN
+		case k_button_sitin:
+			StringMatch = &CScraper::IsStringSitin;
+			break;
+		// SITOUT
+		case k_button_sitout:
+			StringMatch = &CScraper::IsStringSitout;
+			break;
+		// LEAVE
+		case k_button_leave:
+			StringMatch = &CScraper::IsStringLeave;
+			break;
+		// i86
+		case k_button_i86:
+			break; // ???
+		default:
+			break;
+	}
+
+	// If a string verification routine is available
+	if (StringMatch)
+	{
+		// Check if there is a match for any of the corresponding button indexes
+		// and save it as the button number
+		for (int j = 0; j < k_max_number_of_buttons; j++)
+		{
+			if ((p_scraper->*StringMatch)(p_scraper->button_label(j)))
+				button_number = j;
+
+			break;
+		}
+	}
+
+	// If the button number is still undefined
+	// return the default button number
+	if (button_number == k_button_undefined)
+		button_number = DefaultButtonNumber(button_code);
+
+	return button_number;
+}
+
+
+CString CTablemapAccess::GetButtonName(int button_code)
+{
+	/*
+		Searches for a button name
+		ATM it only handles the i%dbutton format 
+	*/
+
+	int button_number = SearchForButtonNumber(button_code);
+	
+	CString button_name = "";
+
+	if (button_number != k_button_undefined)
+		button_name.Format("i%dbutton", button_number);
+
+	return button_name;
+}
+
 
 bool CTablemapAccess::DoesButtonExist(int button_code)
 {
-	return true;
+	/* 
+		Checks if a button is visible
+		i.e. available for taking an action
+	*/
+
+	bool button_exists = false;
+	int button_number = SearchForButtonNumber(button_code);
+
+	if (button_number != k_button_undefined && p_scraper->GetButtonState(button_number))
+		button_exists = true;
+
+	return button_exists;
 }
 
 
