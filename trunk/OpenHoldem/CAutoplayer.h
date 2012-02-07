@@ -23,7 +23,7 @@ public:
 public:
 	// public mutators
 #define ENT CSLock lock(m_critsec);
-	void set_autoplayer_engaged(const bool to_be_enabled_or_not) { ENT _autoplayer_engaged = to_be_enabled_or_not; }
+	void set_autoplayer_engaged(const bool to_be_enabled_or_not);
 #undef ENT
 
 private:

@@ -454,6 +454,7 @@
 #define IDC_HANDHISTORY_GENERATOR_ENABLE 1362
 #define IDC_RECORD_MY_TURN              1363
 #define IDC_INFOBOX_STATIC              1364
+#define IDC_RADIO_SCRAPE_ON_CARDS       1365
 
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
@@ -591,7 +592,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        180
 #define _APS_NEXT_COMMAND_VALUE         32993
-#define _APS_NEXT_CONTROL_VALUE         1365
+#define _APS_NEXT_CONTROL_VALUE         1366
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -87,7 +87,7 @@ COpenHoldemApp theApp;
 
 void COpenHoldemApp::InstanciateAllSingletonsExceptSessionCounter()
 {
-	if (!p_handreset_detector)  p_handreset_detector =
+	if (!p_handreset_detector)  p_handreset_detector = new CHandresetDetector;
 	if (!p_configurationcheck) p_configurationcheck = new CConfigurationCheck;
 	if (!p_sharedmem) p_sharedmem = new CSharedMem;
 	if (!p_stableframescounter) p_stableframescounter = new CStableFramesCounter;

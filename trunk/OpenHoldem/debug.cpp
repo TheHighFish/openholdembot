@@ -239,11 +239,6 @@ void start_log(void)
 	
 	if (log_fp!=NULL)
 		return;
-
-    CString fn;
-	CSLock lock(log_critsec);
-
-    fn.Format("%s\\oh_%lu.log", _startup_path, p_sessioncounter->session_id());
 	
 	// Check, if file exists and size is too large
 	if ((log_fp = _fsopen(fn.GetString(), "r", _SH_DENYWR)) != 0)
