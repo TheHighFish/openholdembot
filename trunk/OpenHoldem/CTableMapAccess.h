@@ -3,6 +3,7 @@
 
 #include <windows.h>
 
+// button codes
 const int k_button_i3     = 3;
 const int k_button_fold   = 10;
 const int k_button_allin  = 11;
@@ -13,6 +14,7 @@ const int k_button_sitin  = 20;
 const int k_button_sitout = 21;
 const int k_button_leave  = 22;
 const int k_button_i86    = 30;
+const int k_button_undefined = -1;
 
 const int k_number_of_i86X_buttons = 10;
 
@@ -32,7 +34,10 @@ public:
 public:
 	bool IsValidCard(int Card);
 private:
+	int DefaultButtonNumber(int button_code);
+	int SearchForButtonNumber(int button_code);
 	CString GetButtonName(int button_code);
+
 } *p_tablemap_access;
 
 #endif // INC_CTABLEMAPACCESS_H
