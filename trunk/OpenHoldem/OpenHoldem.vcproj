@@ -417,6 +417,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OH_MessageBox.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenHoldem.cpp"
 				>
 			</File>
@@ -1101,7 +1105,6 @@
 				RelativePath=".\MagicNumbers.h"
 				>
 			</File>
-
 			<File
 				RelativePath=".\Median.h"
 				>
