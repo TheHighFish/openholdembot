@@ -152,7 +152,6 @@ CString CTablemapAccess::GetButtonName(int button_code)
 	*/
 
 	int button_number = SearchForButtonNumber(button_code);
-	
 	CString button_name = "";
 
 	if (button_number != k_button_undefined)
@@ -181,22 +180,47 @@ bool CTablemapAccess::DoesButtonExist(int button_code)
 
 bool CTablemapAccess::GetButtonRect(int button_code, RECT *_rect)
 {
+	/*
+		Finds standard button regions 
+		and inserts details into RECT parameter
+	*/
+
 	CString button_name = GetButtonName(button_code);
 	RMapCI wanted_button = p_tablemap->r$()->find(button_name);
+
 	if (wanted_button != p_tablemap->r$()->end())
 	{
 		_rect->left   = wanted_button->second.left;
 		_rect->top    = wanted_button->second.top;
 		_rect->right  = wanted_button->second.right;
 		_rect->bottom = wanted_button->second.bottom;
+
 		return true;
 	}
+
 	return false;
 }
 
-bool CTablemapAccess::GetTableMapRect(CString, RECT *_rect)
+bool CTablemapAccess::GetTableMapRect(CString region_name, RECT *_rect)
 {
-	return true;
+	/*
+		Finds special tablemap regions (i3_edit, i3_slider, i3_handle, i86X buttons)
+		and inserts details into RECT parameter
+	*/
+
+	RMapCI wanted_region = p_tablemap->r$()->find(region_name);
+
+	if (wanted_region != p_tablemap->r$()->end())
+	{
+		_rect->left   = wanted_region->second.left;
+		_rect->top    = wanted_region->second.top;
+		_rect->right  = wanted_region->second.right;
+		_rect->bottom = wanted_region->second.bottom;
+
+		return true;
+	}
+
+	return false;
 }
 
 /*

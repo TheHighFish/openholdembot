@@ -26,12 +26,10 @@ public:
 public:
 	bool DoesButtonExist(int button_code);
 	bool GetButtonRect(int button_code, RECT *_rect);
+	bool GetTableMapRect(CString region_name, RECT *_rect);
 public:
 	int	GetPlayerCards(int seat_number, int first_or_second_card);
 	int GetCommonCard(int index_zero_to_four);
-public:
-	bool GetTableMapRect(CString, RECT *_rect);
-public:
 	bool IsValidCard(int Card);
 private:
 	int DefaultButtonNumber(int button_code);
