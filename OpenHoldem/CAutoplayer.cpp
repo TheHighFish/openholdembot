@@ -271,9 +271,6 @@ void CAutoplayer::DoAutoplayer(void)
 		DoChat();
 	}
 
-	int NumberOfStableFrames = p_stableframescounter->UpdateNumberOfStableFrames();
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Number of stable frames: % d\n", NumberOfStableFrames);
-
 	bool isFinalAnswer = true;
 
 	// check factors that affect isFinalAnswer status
@@ -297,14 +294,19 @@ void CAutoplayer::DoAutoplayer(void)
 		isFinalAnswer = false;
 	}
 
-	// Scale f$delay to a number of scrapes
-	// Avoid division by zero; we use milliseconds, so +1 doesn't change much.
-	int additional_frames_to_wait = (prefs.scrape_delay() > 0 ? (p_symbols->f$delay()/prefs.scrape_delay()) : 0);	
+	//  Avoiding unnecessary calls to p_stableframescounter->UpdateNumberOfStableFrames(),
+	if (isFinalAnswer)
+		p_stableframescounter->UpdateNumberOfStableFrames();
+
+	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Number of stable frames: % d\n", p_stableframescounter->NumberOfStableFrames());	
+
+	// Scale f$delay to a number of scrapes and avoid division by 0 and negative values
+	unsigned int additional_frames_to_wait = (prefs.scrape_delay() > 0 && p_symbols->f$delay() > 0 ? (p_symbols->f$delay()/prefs.scrape_delay()) : 0);
 
 	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return.
-	if (NumberOfStableFrames < ((int)prefs.frame_delay() + additional_frames_to_wait))
+	if (p_stableframescounter->NumberOfStableFrames() < prefs.frame_delay() + additional_frames_to_wait)
 	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because we don't have enough stable frames, or have not waited f$delay milliseconds\n");
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because we don't have enough stable frames, or have not waited f$delay milliseconds (=%d)\n", (int)p_symbols->f$delay());
 		isFinalAnswer = false;
 	}
 
@@ -332,12 +334,13 @@ void CAutoplayer::DoAutoplayer(void)
 
 	// do swag first since it is the odd one
 	bool bDoSwag = false; // I'm just breaking this out to be a little clearer (spew)
+
 	if ((p_tablemap->allinmethod() == 0) && p_symbols->f$alli() && p_scraper->GetButtonState(3)) //!!! //!!!
 		bDoSwag = true;
 
 	if (p_symbols->f$betsize() && !p_symbols->f$alli() && p_scraper->GetButtonState(3)) //!!!
-
 		bDoSwag = true;
+
 	if (bDoSwag) 
 	{
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling DoSwag.\n");

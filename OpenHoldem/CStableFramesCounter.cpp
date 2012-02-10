@@ -13,6 +13,14 @@ CStableFramesCounter *p_stableframescounter = NULL;
 
 CStableFramesCounter::CStableFramesCounter()
 {
+	// Initialize private variables
+	memset(&_card_common_last[0],		0, sizeof(_card_common_last[0])*k_number_of_community_cards);
+	memset(&_card_player_last[0][0],	0, sizeof(_card_player_last[0][0])*k_number_of_cards_per_player*k_max_number_of_players);
+	memset(&_dealer_last[0],			0, sizeof(_dealer_last[0])*k_max_number_of_players);
+	memset(&_playerbalance_last[0],		0, sizeof(_playerbalance_last[0])*k_max_number_of_players);
+	memset(&_playerbet_last[0],			0, sizeof(_playerbet_last[0])*k_max_number_of_players);
+	_myturnbitslast = 0;
+
 	Reset();
 }
 
@@ -22,9 +30,8 @@ CStableFramesCounter::~CStableFramesCounter()
 void CStableFramesCounter::Reset()
 {
 	write_log(prefs.debug_stableframescounter(), "[CStableFramesCounter] Reset\n");
-	// Reset it to -1, so we get 0 identical frames, 
-	// when we increment it the next time.
-	_NumberOfStableFrames = -1;
+	_NumberOfStableFrames = 0;
+	_isReset = true;
 }
 
 void CStableFramesCounter::ResetOnAutoplayerAction()
@@ -33,23 +40,43 @@ void CStableFramesCounter::ResetOnAutoplayerAction()
 	Reset();
 }
 
-int CStableFramesCounter::UpdateNumberOfStableFrames()
+void CStableFramesCounter::SaveCurrentState()
 {
-	// Static variables to keep the last game-state.
-	static unsigned int	card_common_last[k_number_of_community_cards] = {0};
-	static unsigned int	card_player_last[k_max_number_of_players][k_number_of_cards_per_player] = {0};
-	static bool			dealer_last[k_max_number_of_players] = {0};
-	static double		playerbalance_last[k_max_number_of_players] = {0};
-	static double		playerbet_last[k_max_number_of_players] = {0};
-	static double		myturnbitslast = 0;
+	/* 
+		Saves the current state for future reference
+	*/
 
-	write_log(prefs.debug_stableframescounter(), "[CStableFramesCounter] Update number of stable frames\n");
-	if (_NumberOfStableFrames < 0)
+	_myturnbitslast = (unsigned int)p_symbols->sym()->myturnbits;
+
+	for (int i=0; i<k_number_of_community_cards; i++)
+		_card_common_last[i] = p_scraper->card_common(i);
+
+	for (int i=0; i<k_max_number_of_players; i++)
 	{
-		write_log(prefs.debug_stableframescounter(), "[CStableFramesCounter] Counter got reset: no stable frames yet\n");
+		_card_player_last[i][0]	= p_scraper->card_player(i, 0);
+		_card_player_last[i][1]	= p_scraper->card_player(i, 1);
+		_dealer_last[i]			= p_scraper->dealer(i);
+		_playerbalance_last[i]	= p_scraper->player_balance(i);
+		_playerbet_last[i]		= p_scraper->player_bet(i);
+	}
+}
+
+unsigned int CStableFramesCounter::UpdateNumberOfStableFrames()
+{
+	write_log(prefs.debug_stableframescounter(), "[CStableFramesCounter] Update number of stable frames\n");
+
+	if (_isReset)
+	{
 		// Counter got reset, e.g. after an autoplayer-action.
+		write_log(prefs.debug_stableframescounter(), "[CStableFramesCounter] Counter got reset: no stable frames yet\n");
+
+		// Remember current values as last known ones.
+		SaveCurrentState();
+		
 		// Nothing to compare - now we have 0 identical frames.
+		_isReset = false;
 		_NumberOfStableFrames = 0;
+
 		return _NumberOfStableFrames; 
 	}
 	
@@ -59,10 +86,18 @@ int CStableFramesCounter::UpdateNumberOfStableFrames()
 	// - playerbets
 	// - playerbalances
 	// - button states
+
 	bool same_scrape = true;
+
+	if (_myturnbitslast != (unsigned int)p_symbols->sym()->myturnbits)
+		same_scrape = false;
+
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
-		if (p_scraper->card_common(i) != card_common_last[i])  
+		if(!same_scrape)
+			break;
+
+		if (p_scraper->card_common(i) != _card_common_last[i])  
 		{
 			same_scrape = false;
 			write_log(prefs.debug_stableframescounter(), "[CStableFramesCounter] Community-cards don't match\n");
@@ -71,43 +106,37 @@ int CStableFramesCounter::UpdateNumberOfStableFrames()
 
 	for (int i=0; i<k_max_number_of_players; i++)
 	{
-		write_log(prefs.debug_stableframescounter(), "[CStableFramesCounter] Checking player: %d\n", i);
-		if (p_scraper->card_player(i, 0) != card_player_last[i][0])	
-		{
-			same_scrape = false;
-			write_log(prefs.debug_stableframescounter(), "[CStableFramesCounter] Player-cards don't match\n");
-		}
-		else if (p_scraper->card_player(i, 1) != card_player_last[i][1])	
-		{
-			same_scrape = false;
-			write_log(prefs.debug_stableframescounter(), "[CStableFramesCounter] Player-cards don't match\n");
-		}
-		else if (p_scraper->dealer(i)		 != dealer_last[i])			
-		{
-			same_scrape = false;
-			write_log(prefs.debug_stableframescounter(), "[CStableFramesCounter] Dealer-position does not match\n");
-		}
-		else if (p_scraper->player_balance(i) != playerbalance_last[i])	
-		{
-			same_scrape = false;
-			write_log(prefs.debug_stableframescounter(), "[CStableFramesCounter] Balance does not match\n");
-		}
-		else if (p_scraper->player_bet(i)	 != playerbet_last[i])		
-		{
-			same_scrape = false;
-			write_log(prefs.debug_stableframescounter(), "[CStableFramesCounter] bet does not match\n");
-		}
-		if (!same_scrape)
-		{
-			// Quick exit
+		if(!same_scrape)
 			break;
+
+		write_log(prefs.debug_stableframescounter(), "[CStableFramesCounter] Checking player: %d\n", i);
+
+		if (p_scraper->card_player(i, 0) != _card_player_last[i][0])	
+		{
+			same_scrape = false;
+			write_log(prefs.debug_stableframescounter(), "[CStableFramesCounter] Player%d-cards don't match\n", i);
+		}
+		else if (p_scraper->card_player(i, 1) != _card_player_last[i][1])	
+		{
+			same_scrape = false;
+			write_log(prefs.debug_stableframescounter(), "[CStableFramesCounter] Player%d-cards don't match\n", i);
+		}
+		else if (p_scraper->dealer(i)		 != _dealer_last[i])			
+		{
+			same_scrape = false;
+			write_log(prefs.debug_stableframescounter(), "[CStableFramesCounter] Dealer%d-position does not match\n", i);
+		}
+		else if (p_scraper->player_balance(i) != _playerbalance_last[i])	
+		{
+			same_scrape = false;
+			write_log(prefs.debug_stableframescounter(), "[CStableFramesCounter] Player%d-balance does not match\n", i);
+		}
+		else if (p_scraper->player_bet(i)	 != _playerbet_last[i])		
+		{
+			same_scrape = false;
+			write_log(prefs.debug_stableframescounter(), "[CStableFramesCounter] Player%d-bet does not match\n", i);
 		}
 	}
-
-	int e = SUCCESS;
-	int sym_myturnbits = (int) p_symbols->sym()->myturnbits;
-
-	if (sym_myturnbits != myturnbitslast)  same_scrape = false;
 
 	if (same_scrape)
 	{
@@ -117,23 +146,11 @@ int CStableFramesCounter::UpdateNumberOfStableFrames()
 	else
 	{
 		// Unstable frame
-		// Remember current values as last known ones.
 		write_log(prefs.debug_stableframescounter(), "[CStableFramesCounter] Gamestate unstable: resetting counter\n");
-		for (int i=0; i<k_number_of_community_cards; i++)
-		{
-			card_common_last[i] = p_scraper->card_common(i);
-		}
-		for (int i=0; i<k_max_number_of_players; i++)
-		{
-			card_player_last[i][0]	= p_scraper->card_player(i, 0);
-			card_player_last[i][1]	= p_scraper->card_player(i, 1);
-			dealer_last[i]			= p_scraper->dealer(i);
-			playerbalance_last[i]	= p_scraper->player_balance(i);
-			playerbet_last[i]		= p_scraper->player_bet(i);
-		}
-		myturnbitslast = sym_myturnbits;
-		_NumberOfStableFrames = 0;
+		Reset();
 	}
+
 	write_log(prefs.debug_stableframescounter(), "[CStableFramesCounter] Number of stable frames: %d\n", _NumberOfStableFrames);
+
 	return _NumberOfStableFrames;
 }
