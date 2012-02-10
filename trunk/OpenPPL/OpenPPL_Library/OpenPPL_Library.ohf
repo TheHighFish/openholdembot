@@ -847,6 +847,7 @@ f$alli ? [balance + currentbet] :
 
 ##f$rais##
    [f$OpenPPL_Decision == f$OpenPPL_Raise]
+|| [f$OpenPPL_Decision == f$OpenPPL_RaiseMax]   
 || [f$OpenPPL_Decision > 0]
 //
 // Below is 2 times the same expression,
