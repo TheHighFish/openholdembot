@@ -6,10 +6,11 @@
 #include <windows.h>
 
 #include "stdafx.h"
+#include "MainFrm.h"
+
 #include "OpenScrape.h"
 #include "OpenScrapeDoc.h"
 #include "OpenScrapeView.h"
-#include "MainFrm.h"
 #include "registry.h"
 #include "DialogSelectTable.h"
 #include "global.h"
@@ -58,8 +59,11 @@ static UINT indicators[] =
 //	ID_INDICATOR_SCRL,
 };
 
-
+/////////////////////////////////////////////////////
+//
 // CMainFrame construction/destruction
+//
+/////////////////////////////////////////////////////
 
 CMainFrame::CMainFrame()
 {
@@ -76,6 +80,26 @@ CMainFrame::~CMainFrame()
 }
 
 
+/////////////////////////////////////////////////////
+//
+// Creation of main freame
+//
+/////////////////////////////////////////////////////
+
+bool CMainFrame::CreateToolbar()
+{
+	return (m_wndToolBar.CreateEx(this, NULL, 
+		WS_CHILD | WS_VISIBLE | CBRS_TOP
+		| CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC) 
+		&& m_wndToolBar.LoadToolBar(IDR_MAINFRAME));
+}
+
+bool CMainFrame::CreateStatusBar()
+{
+	return (m_wndStatusBar.Create(this) 
+		&& m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT)));
+}
+
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	TBBUTTONINFO	tbi;
@@ -84,15 +108,10 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	tbi.fsStyle = TBSTYLE_CHECK;
 
 	if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
+	{
 		return -1;
-
-	// Create toolbar
-//	if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP
-//		| CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC) ||
-//		!m_wndToolBar.LoadToolBar(IDR_MAINFRAME))
-	if (!m_wndToolBar.CreateEx(this, NULL, WS_CHILD | WS_VISIBLE | CBRS_TOP
-		| CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC) ||
-		!m_wndToolBar.LoadToolBar(IDR_MAINFRAME))
+	}
+	if (!CreateToolbar())
 	{
 		TRACE0("Failed to create toolbar\n");
 		return -1;      // fail to create
@@ -102,10 +121,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_REDRECTANGLE, &tbi);
 	m_wndToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_REDRECTANGLE, show_regions);
 
-	// Create status bar
-	if (!m_wndStatusBar.Create(this) ||
-		!m_wndStatusBar.SetIndicators(indicators,
-		  sizeof(indicators)/sizeof(UINT)))
+	if (!CreateStatusBar())
 	{
 		TRACE0("Failed to create status bar\n");
 		return -1;      // fail to create
@@ -115,9 +131,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	//m_wndToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
 
 	// TODO: Delete these three lines if you don't want the toolbar to be dockable
+	/*!!!
 	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
 	EnableDocking(CBRS_ALIGN_ANY);
 	DockControlBar(&m_wndToolBar);
+	*/
 
 	// Start timer that blinks selected region
 	SetTimer(BLINKER_TIMER, 500, 0);
@@ -165,8 +183,11 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	return true;
 }
 
-
+/////////////////////////////////////////////////////
+//
 // CMainFrame diagnostics
+//
+/////////////////////////////////////////////////////
 
 #ifdef _DEBUG
 void CMainFrame::AssertValid() const
@@ -181,8 +202,12 @@ void CMainFrame::Dump(CDumpContext& dc) const
 
 #endif //_DEBUG
 
-
+/////////////////////////////////////////////////////
+//
 // CMainFrame message handlers
+//
+/////////////////////////////////////////////////////
+
 BOOL CMainFrame::DestroyWindow()
 {
 	Registry		reg;
@@ -204,10 +229,15 @@ BOOL CMainFrame::DestroyWindow()
 	return CFrameWnd::DestroyWindow();
 }
 
+void CMainFrame::ForceRedraw()
+{
+	Invalidate(true);
+	theApp.m_TableMapDlg->Invalidate(true);
+}
+
 void CMainFrame::OnViewConnecttowindow()
 {
 	LPARAM				lparam;
-	int					i, N;
 	CDlgSelectTable		cstd;
 	STableList			tablelisthold;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
@@ -221,14 +251,14 @@ void CMainFrame::OnViewConnecttowindow()
 	EnumWindows(EnumProcTopLevelWindowList, lparam);
 
 	// Put global candidate table list in table select dialog variables
-	N = (int) g_tlist.GetSize();
-	if (N==0) 
+	int number_of_tablemaps = (int) g_tlist.GetSize();
+	if (number_of_tablemaps==0) 
 	{
 		MessageBox("No valid windows found", "Cannot find window", MB_OK);
 	}
 	else 
 	{
-		for (i=0; i<N; i++) 
+		for (int i=0; i<number_of_tablemaps; i++) 
 		{
 			tablelisthold.hwnd = g_tlist[i].hwnd;
 			tablelisthold.title = g_tlist[i].title;
@@ -252,16 +282,15 @@ void CMainFrame::OnViewConnecttowindow()
 
 			SaveBmpPbits();
 
-			// Resize window
+			ResizeWindow(pDoc, newrect);	
+			/*!!!
 			::GetClientRect(pDoc->attached_hwnd, &newrect);
 			AdjustWindowRect(&newrect, GetWindowLong(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), GWL_STYLE), true);
 			SetWindowPos(NULL, 0, 0, newrect.right-newrect.left+4, newrect.bottom-newrect.top+47, SWP_NOMOVE);
+			*/
 		}
 	}
-
-	// Force re-draw
-	Invalidate(true);
-	theApp.m_TableMapDlg->Invalidate(true);
+	ForceRedraw();
 }
 
 
@@ -271,8 +300,7 @@ void CMainFrame::OnViewShowregionboxes()
 
 	m_wndToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_REDRECTANGLE, show_regions);
 
-	// Force re-draw
-	Invalidate(true);
+	ForceRedraw(); // !!!
 }
 
 void CMainFrame::OnEditUpdatehashes()
@@ -444,6 +472,21 @@ void CMainFrame::SetTablemapSizeIfUnknown(int size_x, int size_y)
 	}
 }
 
+void CMainFrame::BringOpenScrapeBackToFront()
+{
+	::SetFocus(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
+	::SetForegroundWindow(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
+	::SetActiveWindow(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
+}
+
+void CMainFrame::ResizeWindow(COpenScrapeDoc *pDoc, RECT newrect)
+{
+	::GetClientRect(pDoc->attached_hwnd, &newrect);
+	AdjustWindowRect(&newrect, GetWindowLong(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), GWL_STYLE), true);
+	//SetWindowPos(NULL, 0, 0, newrect.right-newrect.left+4, newrect.bottom-newrect.top+47, SWP_NOMOVE);
+	SetWindowPos(NULL, 0, 0, newrect.right-newrect.left+400, newrect.bottom-newrect.top+147, SWP_NOMOVE);
+}
+
 void CMainFrame::OnViewRefresh()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
@@ -465,23 +508,15 @@ void CMainFrame::OnViewRefresh()
 		pDoc->attached_rect.right = crect.right;
 		pDoc->attached_rect.bottom = crect.bottom;
 
-		// Resize window
-		::GetClientRect(pDoc->attached_hwnd, &newrect);
-		AdjustWindowRect(&newrect, GetWindowLong(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), GWL_STYLE), true);
-		SetWindowPos(NULL, 0, 0, newrect.right-newrect.left+4, newrect.bottom-newrect.top+47, SWP_NOMOVE);
+		// Resize window !!!
+		ResizeWindow(pDoc, newrect);			
 
 		// Instruct table-map dialog to update
 		theApp.m_TableMapDlg->update_display();
 
-		// Force re-draw
-		Invalidate(true);
-		theApp.m_TableMapDlg->Invalidate(true);
+		ForceRedraw();
 		
-		// bring open scrape back to front
-		::SetFocus(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
-		::SetForegroundWindow(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
-		::SetActiveWindow(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
-
+		BringOpenScrapeBackToFront();
 	}
 
 	else 
@@ -551,23 +586,19 @@ void CMainFrame::OnViewPrev()
 		pDoc->attached_rect.right = crect.right;
 		pDoc->attached_rect.bottom = crect.bottom;
 
-		// Resize window
+		ResizeWindow(pDoc, newrect);	
+		/*!!!
 		::GetClientRect(pDoc->attached_hwnd, &newrect);
 		AdjustWindowRect(&newrect, GetWindowLong(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), GWL_STYLE), true);
 		SetWindowPos(NULL, 0, 0, newrect.right-newrect.left+4, newrect.bottom-newrect.top+47, SWP_NOMOVE);
+		*/
 
 		// Instruct table-map dialog to update
 		theApp.m_TableMapDlg->update_display();
 
-		// Force re-draw
-		Invalidate(true);
-		theApp.m_TableMapDlg->Invalidate(true);
+		ForceRedraw();
 		
-		// bring open scrape back to front
-		::SetFocus(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
-		::SetForegroundWindow(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
-		::SetActiveWindow(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
-
+		BringOpenScrapeBackToFront();
 	}
 
 	else 
@@ -625,23 +656,19 @@ void CMainFrame::OnViewNext()
 		int size_y = crect.bottom - crect.top + 1;
 		SetTablemapSizeIfUnknown(size_x, size_y);
 
-		// Resize window
+		ResizeWindow(pDoc, newrect);	
+		/*!!!
 		::GetClientRect(pDoc->attached_hwnd, &newrect);
 		AdjustWindowRect(&newrect, GetWindowLong(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), GWL_STYLE), true);
 		SetWindowPos(NULL, 0, 0, newrect.right-newrect.left+4, newrect.bottom-newrect.top+47, SWP_NOMOVE);
+		*/
 
 		// Instruct table-map dialog to update
 		theApp.m_TableMapDlg->update_display();
 
-		// Force re-draw
-		Invalidate(true);
-		theApp.m_TableMapDlg->Invalidate(true);
+		ForceRedraw();
 		
-		// bring open scrape back to front
-		::SetFocus(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
-		::SetForegroundWindow(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
-		::SetActiveWindow(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
-
+		BringOpenScrapeBackToFront();
 	}
 
 	else 
