@@ -1,6 +1,7 @@
 // MainFrm.h : interface of the CMainFrame class
 //
 #pragma once
+#include "OpenScrapeDoc.h"
 
 #define		BLINKER_TIMER				1
 
@@ -43,6 +44,11 @@ public:
 	bool show_regions;
 
 private:
+	bool CreateToolbar();
+	bool CreateStatusBar();
+	void ForceRedraw();
+	void ResizeWindow(COpenScrapeDoc *pDoc, RECT newrect);
+	void BringOpenScrapeBackToFront();
 	void SetTablemapSizeIfUnknown(int size_x, int size_y);
 
 #ifdef _DEBUG

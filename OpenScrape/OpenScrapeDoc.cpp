@@ -79,7 +79,7 @@ BOOL COpenScrapeDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	// Create tree on TableMap dialog
 	if (theApp.m_TableMapDlg)  theApp.m_TableMapDlg->create_tree();
 
-	// Force re-draw
+	// Force re-draw // !!!
 	InvalidateRect(theApp.m_pMainWnd->GetSafeHwnd(), NULL, true);
 	if (theApp.m_TableMapDlg)  theApp.m_TableMapDlg->Invalidate(true);
 
