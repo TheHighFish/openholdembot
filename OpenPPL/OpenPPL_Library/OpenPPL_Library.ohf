@@ -2234,7 +2234,7 @@ ispair && f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_2ndBestBoardCard
 (1 << f$OpenPPL_5thBestBoardCard)
 
 ##f$OpenPPL_RankBitsCommonWithoutTopBit##
-rankbits & ~f$OpenPPL_TopBitOfRankBitsCommon
+rankbitscommon & ~f$OpenPPL_TopBitOfRankBitsCommon
 
 ##f$OpenPPL_RankBitsCommonWithoutTopTwoBits##
 f$OpenPPL_RankBitsCommonWithoutTopBit & ~f$OpenPPL_2ndTopBitOfRankBitsCommon
