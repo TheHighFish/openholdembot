@@ -470,8 +470,7 @@ void CMainFrame::ResizeWindow(COpenScrapeDoc *pDoc, RECT newrect)
 {
 	::GetClientRect(pDoc->attached_hwnd, &newrect);
 	AdjustWindowRect(&newrect, GetWindowLong(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), GWL_STYLE), true);
-	//SetWindowPos(NULL, 0, 0, newrect.right-newrect.left+4, newrect.bottom-newrect.top+47, SWP_NOMOVE);
-	SetWindowPos(NULL, 0, 0, newrect.right-newrect.left+400, newrect.bottom-newrect.top+147, SWP_NOMOVE);
+	SetWindowPos(NULL, 0, 0, newrect.right-newrect.left+4, newrect.bottom-newrect.top+47, SWP_NOMOVE);
 }
 
 void CMainFrame::OnViewRefresh()
