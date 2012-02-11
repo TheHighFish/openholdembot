@@ -130,13 +130,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// Set toolbar button status
 	//m_wndToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
 
-	// TODO: Delete these three lines if you don't want the toolbar to be dockable
-	/*!!!
-	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
-	EnableDocking(CBRS_ALIGN_ANY);
-	DockControlBar(&m_wndToolBar);
-	*/
-
 	// Start timer that blinks selected region
 	SetTimer(BLINKER_TIMER, 500, 0);
 
@@ -281,13 +274,7 @@ void CMainFrame::OnViewConnecttowindow()
 			pDoc->attached_rect.bottom = g_tlist[cstd.selected_item].crect.bottom;
 
 			SaveBmpPbits();
-
 			ResizeWindow(pDoc, newrect);	
-			/*!!!
-			::GetClientRect(pDoc->attached_hwnd, &newrect);
-			AdjustWindowRect(&newrect, GetWindowLong(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), GWL_STYLE), true);
-			SetWindowPos(NULL, 0, 0, newrect.right-newrect.left+4, newrect.bottom-newrect.top+47, SWP_NOMOVE);
-			*/
 		}
 	}
 	ForceRedraw();
@@ -508,14 +495,12 @@ void CMainFrame::OnViewRefresh()
 		pDoc->attached_rect.right = crect.right;
 		pDoc->attached_rect.bottom = crect.bottom;
 
-		// Resize window !!!
 		ResizeWindow(pDoc, newrect);			
 
 		// Instruct table-map dialog to update
 		theApp.m_TableMapDlg->update_display();
 
-		ForceRedraw();
-		
+		ForceRedraw();		
 		BringOpenScrapeBackToFront();
 	}
 
@@ -587,17 +572,10 @@ void CMainFrame::OnViewPrev()
 		pDoc->attached_rect.bottom = crect.bottom;
 
 		ResizeWindow(pDoc, newrect);	
-		/*!!!
-		::GetClientRect(pDoc->attached_hwnd, &newrect);
-		AdjustWindowRect(&newrect, GetWindowLong(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), GWL_STYLE), true);
-		SetWindowPos(NULL, 0, 0, newrect.right-newrect.left+4, newrect.bottom-newrect.top+47, SWP_NOMOVE);
-		*/
 
 		// Instruct table-map dialog to update
 		theApp.m_TableMapDlg->update_display();
-
 		ForceRedraw();
-		
 		BringOpenScrapeBackToFront();
 	}
 
@@ -657,17 +635,10 @@ void CMainFrame::OnViewNext()
 		SetTablemapSizeIfUnknown(size_x, size_y);
 
 		ResizeWindow(pDoc, newrect);	
-		/*!!!
-		::GetClientRect(pDoc->attached_hwnd, &newrect);
-		AdjustWindowRect(&newrect, GetWindowLong(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), GWL_STYLE), true);
-		SetWindowPos(NULL, 0, 0, newrect.right-newrect.left+4, newrect.bottom-newrect.top+47, SWP_NOMOVE);
-		*/
 
 		// Instruct table-map dialog to update
 		theApp.m_TableMapDlg->update_display();
-
 		ForceRedraw();
-		
 		BringOpenScrapeBackToFront();
 	}
 

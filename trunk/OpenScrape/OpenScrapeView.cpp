@@ -85,7 +85,7 @@ void COpenScrapeView::OnDraw(CDC* pDC)
 	{
 		old_bitmap1 = (HBITMAP) SelectObject(hdcCompatible, pDoc->attached_bitmap);
 		old_bitmap2 = (HBITMAP) SelectObject(hdc, hbmp);
-		BitBlt(hdc, 0, 0, 
+		BitBlt(hdc, 0, 0,
 			   pDoc->attached_rect.right - pDoc->attached_rect.left,
 			   pDoc->attached_rect.bottom - pDoc->attached_rect.top,
 			   hdcCompatible, 0, 0, SRCCOPY);
