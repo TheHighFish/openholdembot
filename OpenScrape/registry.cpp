@@ -18,13 +18,15 @@ void Registry::read_reg(void)
 	char		str[256];
 
 	// Defaults
-	main_x = main_y = 0;
-	main_dx = 800;
-	main_dy = 400;
-
-	tablemap_x = tablemap_y = 0;
+	tablemap_x  = 0;
+	tablemap_y  = 0;
 	tablemap_dx = 600;
 	tablemap_dy = 750;
+
+	main_x  = tablemap_dx;
+	main_y  = 0;
+	main_dx = 400;
+	main_dy = 300;
 
 	grhash_x = grhash_y = 0;
 	grhash_dx = 380;
@@ -34,41 +36,11 @@ void Registry::read_reg(void)
 
 	hkResult = RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\OpenHoldem\\OpenScrape", 0, KEY_READ, &hKey);
 	if (hkResult==ERROR_SUCCESS) {
-
-		// Main window location and size
-		cbData = sizeof(str);
-		if ( (hkResult = RegQueryValueEx(hKey, "main_x", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
-			main_x = atoi(str);
-
-		cbData = sizeof(str);
-		if ( (hkResult = RegQueryValueEx(hKey, "main_y", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
-			main_y = atoi(str);
-
-		cbData = sizeof(str);
-		if ( (hkResult = RegQueryValueEx(hKey, "main_dx", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
-			main_dx = atoi(str);
-
-		cbData = sizeof(str);
-		if ( (hkResult = RegQueryValueEx(hKey, "main_dy", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
-			main_dy = atoi(str);
-
-		// tablemap window location and size
-		cbData = sizeof(str);
-		if ( (hkResult = RegQueryValueEx(hKey, "tablemap_x", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
-			tablemap_x = atoi(str);
-
-		cbData = sizeof(str);
-		if ( (hkResult = RegQueryValueEx(hKey, "tablemap_y", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
-			tablemap_y = atoi(str);
-
-		cbData = sizeof(str);
-		if ( (hkResult = RegQueryValueEx(hKey, "tablemap_dx", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
-			tablemap_dx = atoi(str);
-
-		cbData = sizeof(str);
-		if ( (hkResult = RegQueryValueEx(hKey, "tablemap_dy", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
-			tablemap_dy = atoi(str);
-
+		// No longer any need to get...   
+		//   * Main window location and size
+		//   * tablemap window location and size
+		// The defaults are fine.
+		//
 		// graphical hash point window location and size
 		cbData = sizeof(str);
 		if ( (hkResult = RegQueryValueEx(hKey, "grhash_x", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS)
@@ -104,26 +76,6 @@ void Registry::write_reg(void)
 	//PokerTracker Settings
 	RegCreateKeyEx(HKEY_CURRENT_USER, "Software\\OpenHoldem\\OpenScrape", 0, NULL, 
 	REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, &dwDisp);
-
-	// Main window location and size
-	sprintf_s(str, 256, "%d", main_x);
-	RegSetValueEx(hKey, "main_x", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
-	sprintf_s(str, 256, "%d", main_y);
-	RegSetValueEx(hKey, "main_y", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
-	sprintf_s(str, 256, "%d", main_dx);
-	RegSetValueEx(hKey, "main_dx", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
-	sprintf_s(str, 256, "%d", main_dy);
-	RegSetValueEx(hKey, "main_dy", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
-
-	// tablemap window location and size
-	sprintf_s(str, 256, "%d", tablemap_x);
-	RegSetValueEx(hKey, "tablemap_x", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
-	sprintf_s(str, 256, "%d", tablemap_y);
-	RegSetValueEx(hKey, "tablemap_y", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
-	sprintf_s(str, 256, "%d", tablemap_dx);
-	RegSetValueEx(hKey, "tablemap_dx", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
-	sprintf_s(str, 256, "%d", tablemap_dy);
-	RegSetValueEx(hKey, "tablemap_dy", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
 
 	// graphical hash point window location and size
 	sprintf_s(str, 256, "%d", grhash_x);
