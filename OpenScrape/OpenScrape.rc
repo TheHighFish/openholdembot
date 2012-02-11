@@ -149,6 +149,10 @@ BEGIN
     BEGIN
         MENUITEM "&About OpenScrape...\tF1",    ID_APP_ABOUT
     END
+    POPUP "Tools"
+    BEGIN
+        MENUITEM "Clone Regions",               ID_TOOLS_CLONEREGIONS
+    END
 END
 
 
