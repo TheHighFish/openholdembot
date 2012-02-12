@@ -20,6 +20,10 @@ int CTablemapAccess::GetPlayerCards(int seat_number, int first_or_second_card)
 	return p_scraper->card_player(seat_number, first_or_second_card);
 }
 
+int CTablemapAccess::GetCommonCard(int index_zero_to_four)
+{
+	return p_scraper->card_common(index_zero_to_four);
+}
 
 bool CTablemapAccess::IsValidCard(int Card)
 {
@@ -30,10 +34,9 @@ bool CTablemapAccess::IsValidCard(int Card)
 }
 
 
-
 int CTablemapAccess::DefaultButtonNumber(int button_code)
 {
-	/* 	
+	/*
 		Returns the default button number by definition
 		(ignoring label overrides) 
 
@@ -129,9 +132,10 @@ int CTablemapAccess::SearchForButtonNumber(int button_code)
 		for (int j = 0; j < k_max_number_of_buttons; j++)
 		{
 			if ((p_scraper->*StringMatch)(p_scraper->button_label(j)))
+			{
 				button_number = j;
-
-			break;
+				break;
+			}
 		}
 	}
 
@@ -148,11 +152,11 @@ CString CTablemapAccess::GetButtonName(int button_code)
 {
 	/*
 		Searches for a button name
-		ATM it only handles the i%dbutton format 
+		ATM it only handles the i%dbutton format
 	*/
 
-	int button_number = SearchForButtonNumber(button_code);
 	CString button_name = "";
+	int button_number = SearchForButtonNumber(button_code);
 
 	if (button_number != k_button_undefined)
 		button_name.Format("i%dbutton", button_number);
@@ -163,7 +167,7 @@ CString CTablemapAccess::GetButtonName(int button_code)
 
 bool CTablemapAccess::DoesButtonExist(int button_code)
 {
-	/* 
+	/*
 		Checks if a button is visible
 		i.e. available for taking an action
 	*/
@@ -181,7 +185,7 @@ bool CTablemapAccess::DoesButtonExist(int button_code)
 bool CTablemapAccess::GetButtonRect(int button_code, RECT *_rect)
 {
 	/*
-		Finds standard button regions 
+		Finds standard button regions
 		and inserts details into RECT parameter
 	*/
 
