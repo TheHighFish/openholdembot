@@ -78,6 +78,9 @@ int CTablemapAccess::SearchForButtonNumber(int button_code)
 		or the default button number otherwise.
 	*/
 
+	if (button_code == k_button_i3)
+		return 3;
+
 	int button_number = k_button_undefined;
 
 	// Define a function pointer for the string matching function corresponding to each button_code
@@ -117,9 +120,6 @@ int CTablemapAccess::SearchForButtonNumber(int button_code)
 		case k_button_leave:
 			StringMatch = &CScraper::IsStringLeave;
 			break;
-		// i86
-		case k_button_i86:
-			break; // ???
 		default:
 			break;
 	}
@@ -164,7 +164,6 @@ CString CTablemapAccess::GetButtonName(int button_code)
 	return button_name;
 }
 
-
 bool CTablemapAccess::DoesButtonExist(int button_code)
 {
 	/*
@@ -173,7 +172,12 @@ bool CTablemapAccess::DoesButtonExist(int button_code)
 	*/
 
 	bool button_exists = false;
-	int button_number = SearchForButtonNumber(button_code);
+	int button_number = k_button_undefined;
+
+	if (button_code == 86 || button_code >= 860)
+		button_number = button_code;
+	else
+		button_number = SearchForButtonNumber(button_code);
 
 	if (button_number != k_button_undefined && p_scraper->GetButtonState(button_number))
 		button_exists = true;
