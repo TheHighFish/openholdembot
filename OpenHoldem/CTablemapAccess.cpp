@@ -139,11 +139,6 @@ int CTablemapAccess::SearchForButtonNumber(int button_code)
 		}
 	}
 
-	// If the button number is still undefined
-	// return the default button number
-	if (button_number == k_button_undefined)
-		button_number = DefaultButtonNumber(button_code);
-
 	return button_number;
 }
 
@@ -157,6 +152,11 @@ CString CTablemapAccess::GetButtonName(int button_code)
 
 	CString button_name = "";
 	int button_number = SearchForButtonNumber(button_code);
+
+	// If the button number is still undefined
+	// return the default button number
+	if (button_number == k_button_undefined)
+		button_number = DefaultButtonNumber(button_code);
 
 	if (button_number != k_button_undefined)
 		button_name.Format("i%dbutton", button_number);
