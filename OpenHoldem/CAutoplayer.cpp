@@ -342,10 +342,10 @@ void CAutoplayer::DoAutoplayer(void)
 	// do swag first since it is the odd one
 	bool bDoSwag = false; // I'm just breaking this out to be a little clearer (spew)
 
-	if ((p_tablemap->allinmethod() == 0) && p_symbols->f$alli() && p_scraper->GetButtonState(3)) //!!! //!!!
+	if ((p_tablemap->allinmethod() == 0) && p_symbols->f$alli() && p_scraper->GetButtonState(k_button_i3)) //!!! //!!!
 		bDoSwag = true;
 
-	if (p_symbols->f$betsize() && !p_symbols->f$alli() && p_scraper->GetButtonState(3)) //!!!
+	if (p_symbols->f$betsize() && !p_symbols->f$alli() && p_scraper->GetButtonState(k_button_i3)) //!!!
 		bDoSwag = true;
 
 	if (bDoSwag) 
@@ -355,7 +355,7 @@ void CAutoplayer::DoAutoplayer(void)
 	}
 	else 
 	{
-		if (p_symbols->f$alli() && p_scraper->GetButtonState(3)) //!!!
+		if (p_symbols->f$alli() && p_scraper->GetButtonState(k_button_i3)) //!!!
 		{
 			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling DoSlider.\n");
 			DoSlider();
@@ -516,10 +516,12 @@ void CAutoplayer::DoSwag(void)
 			if (i3_button_defined)
 			{
 				rect_button = i3_button;
+				write_log(prefs.debug_autoplayer(), "[AutoPlayer] Using i3button for confirmation\n");
 			}
 			else
 			{
 				rect_button = raise_button;
+				write_log(prefs.debug_autoplayer(), "[AutoPlayer] Using raise button for confirmation\n");
 			}
 
 			if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)

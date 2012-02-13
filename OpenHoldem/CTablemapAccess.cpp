@@ -80,6 +80,10 @@ int CTablemapAccess::SearchForButtonNumber(int button_code)
 		or the default button number otherwise.
 	*/
 
+	// i3button + i86 buttons are hardcoded
+	if (button_code == k_button_i3 || button_code >= 86)
+		return button_code;
+
 	int button_number = k_button_undefined;
 
 	// Define a function pointer for the string matching function corresponding to each button_code
@@ -171,16 +175,7 @@ bool CTablemapAccess::DoesButtonExist(int button_code)
 	*/
 
 	bool button_exists = false;
-	int button_number = k_button_undefined;
-
-	// i3button is hardcoded
-	if (button_code == k_button_i3)
-		button_number = button_code;
-	// i86 buttons are hardcoded
-	else if (button_code >= 86)
-		button_number = button_code;
-	else
-		button_number = SearchForButtonNumber(button_code);
+	int button_number = SearchForButtonNumber(button_code);
 
 	if (button_number != k_button_undefined && p_scraper->GetButtonState(button_number))
 		button_exists = true;
@@ -197,7 +192,6 @@ bool CTablemapAccess::GetButtonRect(int button_code, RECT *_rect)
 		if the button is visible
 	*/
 
-	// button region found but is not visible // ???
 	if (!DoesButtonExist(button_code))
 		return false;
 
@@ -214,7 +208,7 @@ bool CTablemapAccess::GetButtonRect(int button_code, RECT *_rect)
 		return true;
 	}
 
-	return true;
+	return false;
 }
 
 bool CTablemapAccess::GetTableMapRect(CString region_name, RECT *_rect)
