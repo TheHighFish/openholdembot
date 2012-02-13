@@ -1,10 +1,12 @@
 #include "stdafx.h"
 #include "CTableMapAccess.h"
 
+#include "CPreferences.h"
 #include "CScraper.h"
-#include "../CTablemap/CTablemap.h"
+
 
 CTablemapAccess *p_tablemap_access = NULL;
+
 
 CTablemapAccess::CTablemapAccess()
 {
@@ -77,9 +79,6 @@ int CTablemapAccess::SearchForButtonNumber(int button_code)
 		returns the button number if a label is defined
 		or the default button number otherwise.
 	*/
-
-	if (button_code == k_button_i3)
-		return 3;
 
 	int button_number = k_button_undefined;
 
@@ -174,7 +173,11 @@ bool CTablemapAccess::DoesButtonExist(int button_code)
 	bool button_exists = false;
 	int button_number = k_button_undefined;
 
-	if (button_code == 86 || button_code >= 860)
+	// i3button is hardcoded
+	if (button_code == k_button_i3)
+		button_number = button_code;
+	// i86 buttons are hardcoded
+	else if (button_code >= 86)
 		button_number = button_code;
 	else
 		button_number = SearchForButtonNumber(button_code);
@@ -193,6 +196,7 @@ bool CTablemapAccess::GetButtonRect(int button_code, RECT *_rect)
 		and inserts details into RECT parameter
 	*/
 
+	bool is_button_visible = false;
 	CString button_name = GetButtonName(button_code);
 	RMapCI wanted_button = p_tablemap->r$()->find(button_name);
 
@@ -203,10 +207,14 @@ bool CTablemapAccess::GetButtonRect(int button_code, RECT *_rect)
 		_rect->right  = wanted_button->second.right;
 		_rect->bottom = wanted_button->second.bottom;
 
-		return true;
+		is_button_visible = true;
 	}
 
-	return false;
+	// button region found but is not visible // ???
+	if (!DoesButtonExist(button_code))
+		is_button_visible = false;
+
+	return is_button_visible;
 }
 
 bool CTablemapAccess::GetTableMapRect(CString region_name, RECT *_rect)

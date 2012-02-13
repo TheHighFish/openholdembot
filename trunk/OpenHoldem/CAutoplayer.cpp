@@ -237,8 +237,15 @@ void CAutoplayer::DoAutoplayer(void)
 
 	// Access TM objects !! Better name, better comment
 	GetNeccessaryTablemapObjects();
+
 	num_buttons_visible = NumberOfVisibleButtons();
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d\n", num_buttons_visible);
+	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d (%c%c%c%c%c)\n", 
+		num_buttons_visible, 
+		allin_button_defined ? 'A' : '.',
+		raise_button_defined ? 'R' : '.',
+		call_button_defined  ? 'C' : '.',
+		check_button_defined ? 'K' : '.',
+		fold_button_defined  ? 'F' : '.');
 
 	// Calculate f$play, f$prefold, f$rebuy, f$delay and f$chat for use below
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling CalcSecondaryFormulas.\n");
