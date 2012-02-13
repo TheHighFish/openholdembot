@@ -174,13 +174,12 @@ bool CTablemapAccess::DoesButtonExist(int button_code)
 		i.e. available for taking an action
 	*/
 
-	bool button_exists = false;
 	int button_number = SearchForButtonNumber(button_code);
 
 	if (button_number != k_button_undefined && p_scraper->GetButtonState(button_number))
-		button_exists = true;
+		return true;
 
-	return button_exists;
+	return false;
 }
 
 
@@ -196,23 +195,18 @@ bool CTablemapAccess::GetButtonRect(int button_code, RECT *_rect)
 		return false;
 
 	CString button_name = GetButtonName(button_code);
-	RMapCI wanted_button = p_tablemap->r$()->find(button_name);
 
-	if (wanted_button != p_tablemap->r$()->end())
-	{
-		_rect->left   = wanted_button->second.left;
-		_rect->top    = wanted_button->second.top;
-		_rect->right  = wanted_button->second.right;
-		_rect->bottom = wanted_button->second.bottom;
-
-		return true;
-	}
-
-	return false;
+	return GetTableMapRect(button_name, _rect);
 }
 
 bool CTablemapAccess::GetI86ButtonRect(int button_code, RECT *_rect)
 {
+	/*
+		Finds i86 button regions
+		and inserts details into RECT parameter
+		if the button is visible
+	*/
+
 	int button_number = k_button_undefined;
 
 	if (button_code == k_button_i86)
@@ -225,19 +219,8 @@ bool CTablemapAccess::GetI86ButtonRect(int button_code, RECT *_rect)
 
 	CString button_name = "";
 	button_name.Format("i%dbutton", button_number);
-	RMapCI wanted_button = p_tablemap->r$()->find(button_name);
 
-	if (wanted_button != p_tablemap->r$()->end())
-	{
-		_rect->left   = wanted_button->second.left;
-		_rect->top    = wanted_button->second.top;
-		_rect->right  = wanted_button->second.right;
-		_rect->bottom = wanted_button->second.bottom;
-
-		return true;
-	}
-
-	return false;
+	return GetTableMapRect(button_name, _rect);
 }
 
 bool CTablemapAccess::GetTableMapRect(CString region_name, RECT *_rect)
