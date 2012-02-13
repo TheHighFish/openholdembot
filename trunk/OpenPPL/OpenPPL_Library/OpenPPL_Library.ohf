@@ -935,12 +935,12 @@ ac_aggressor
 // (inside f$OpenPPL_InitMemorySymbols)
 // because it will call the final f$Decision routine.
 //
-([(betround == f$OpenPPL_ConstBetRoundPreflop) && (f$OpenPPL_BotsActionsOnThisRound == 0)] ? me_st_MemBotsLastAction_f$OpenPPL_None :
+([(betround == f$OpenPPL_ConstBetRoundPreflop) && (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks == 0)] ? me_st_MemBotsLastAction_f$OpenPPL_None :
 //
 // "Initialize" first action on other rounds to last value of last round,
 // i.e. do nothing and keep the old value.
 //
-[[(betround == f$OpenPPL_ConstBetRoundPreflop) && (f$OpenPPL_BotsActionsOnThisRound == 0)] ? 0 : 0])
+[[(betround == f$OpenPPL_ConstBetRoundPreflop) && (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks == 0)] ? 0 : 0])
 //
 // Then we call f$OpenPPL_Decision and store BotsLastAction for the next time...
 //
@@ -988,7 +988,7 @@ didcallround3
 f$OpenPPL_Calls + nopponentscalling
 
 ##f$OpenPPL_InitCalls##
-(f$OpenPPL_BotsActionsOnThisRound == 0) ?
+(f$OpenPPL_BotsActionsOnThisRoundIncludingChecks == 0) ?
   me_st_MemCalls_nopponentscalling :
   me_st_MemCalls_f$OpenPPL_AddNopponentscalling
 
@@ -1048,9 +1048,9 @@ nopponentschecking
 [betposition - 1]
 
 ##f$OpenPPL_CalculateChecks##
-(f$OpenPPL_BotsActionsOnThisRound == 0) ? f$OpenPPL_ChecksInFrontOfHero :
+(f$OpenPPL_BotsActionsOnThisRoundIncludingChecks == 0) ? f$OpenPPL_ChecksInFrontOfHero :
 // Stored value of checks on previous orbit plus players behind
-(f$OpenPPL_BotsActionsOnThisRound == 1) ? (f$OpenPPL_Checks + f$OpenPPL_ChecksAfterHero) :
+(f$OpenPPL_BotsActionsOnThisRoundIncludingChecks == 1) ? (f$OpenPPL_Checks + f$OpenPPL_ChecksAfterHero) :
 // There can no longer be any checking players, so don't change anything
 f$OpenPPL_HINT_Nothing_To_Do_But_All_OK
 
@@ -1203,9 +1203,9 @@ nopponentsraising
 nopponentsraising
 
 ##f$OpenPPL_RaisesSinceLastPlay##
-(f$OpenPPL_BotsActionsOnThisRound == 0) ? f$OpenPPL_RaisesBeforeOurFirstAction :
-(f$OpenPPL_BotsActionsOnThisRound == 1) ? f$OpenPPL_RaisesSinceLastPlayOnOurSecondAction :
-(f$OpenPPL_BotsActionsOnThisRound >= 2) ? f$OpenPPL_RaisesSinceLastPlayAfterOurSecondAction :
+(f$OpenPPL_BotsActionsOnThisRoundIncludingChecks == 0) ? f$OpenPPL_RaisesBeforeOurFirstAction :
+(f$OpenPPL_BotsActionsOnThisRoundIncludingChecks == 1) ? f$OpenPPL_RaisesSinceLastPlayOnOurSecondAction :
+(f$OpenPPL_BotsActionsOnThisRoundIncludingChecks >= 2) ? f$OpenPPL_RaisesSinceLastPlayAfterOurSecondAction :
 f$OpenPPL_ERROR_BotsActionsOnThisRound_Out_Of_Range
 
 //*****************************************************************************
