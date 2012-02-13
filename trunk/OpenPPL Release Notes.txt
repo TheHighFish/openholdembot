@@ -5,6 +5,20 @@ BUG FIXES:
   which has not yet been released. Support for OH 2.1.9.x has been added.
   Thanks to Postenjak for reporting.
   [THF]
+- f$OpenPPL_RankBitsCommonWithoutTopBit used rankbits instead of
+  rankbitscommon. This affected the calculation of 2ndbestBoardCard,
+  Have2ndTopPair, Have2ndOverPair, etc.
+  Thanks to MarkShmiter for reporting and to KaeKruse and JokeDoke for the fix.
+  [THF]
+- Some backup-actions didn't work. 
+  OpenPPL didn't raise or call when we wanted to go allin,
+  but no allin-button was found. This has now been fixed.
+  Thanks to Postenjak for reporting.
+  [THF]  
+- TwoPairOnBoard confused istwopair (boolean) and twopair (a bit-value).
+  This did affect the calculation of NutFullHouseOrFourOfAKind.
+  Thanks to SteveG1963  for reporting.
+  [THF]  
 
 v1.0.2 2012-02-03
 =================
