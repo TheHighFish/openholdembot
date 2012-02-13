@@ -194,9 +194,13 @@ bool CTablemapAccess::GetButtonRect(int button_code, RECT *_rect)
 	/*
 		Finds standard button regions
 		and inserts details into RECT parameter
+		if the button is visible
 	*/
 
-	bool is_button_visible = false;
+	// button region found but is not visible // ???
+	if (!DoesButtonExist(button_code))
+		return false;
+
 	CString button_name = GetButtonName(button_code);
 	RMapCI wanted_button = p_tablemap->r$()->find(button_name);
 
@@ -207,14 +211,10 @@ bool CTablemapAccess::GetButtonRect(int button_code, RECT *_rect)
 		_rect->right  = wanted_button->second.right;
 		_rect->bottom = wanted_button->second.bottom;
 
-		is_button_visible = true;
+		return true;
 	}
 
-	// button region found but is not visible // ???
-	if (!DoesButtonExist(button_code))
-		is_button_visible = false;
-
-	return is_button_visible;
+	return true;
 }
 
 bool CTablemapAccess::GetTableMapRect(CString region_name, RECT *_rect)
