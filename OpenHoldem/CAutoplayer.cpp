@@ -40,7 +40,7 @@ CAutoplayer::~CAutoplayer(void)
 
 void CAutoplayer::GetNeccessaryTablemapObjects()
 {
-	CString button_name;
+	// iXbuttons
 	allin_button_defined  = p_tablemap_access->GetButtonRect(k_button_allin,  &allin_button);
 	raise_button_defined  = p_tablemap_access->GetButtonRect(k_button_raise,  &raise_button);
 	call_button_defined   = p_tablemap_access->GetButtonRect(k_button_call,   &call_button);
@@ -50,17 +50,26 @@ void CAutoplayer::GetNeccessaryTablemapObjects()
 	sitin_button_defined  = p_tablemap_access->GetButtonRect(k_button_sitin,  &sitin_button);
 	sitout_button_defined = p_tablemap_access->GetButtonRect(k_button_sitout, &sitout_button);
 	leave_button_defined  = p_tablemap_access->GetButtonRect(k_button_leave,  &leave_button);
-	i86_button_defined    = p_tablemap_access->GetButtonRect(k_button_i86,    &i86_button);
 
 	// swagging
 	i3_edit_defined   = p_tablemap_access->GetTableMapRect("i3edit", &i3_edit_region);
 	i3_slider_defined = p_tablemap_access->GetTableMapRect("i3slider", &i3_slider_region);
 	i3_handle_defined = p_tablemap_access->GetTableMapRect("i3button", &i3_handle_region);
+
+	// i86 button
+	i86_button_defined    = p_tablemap_access->GetButtonRect(k_button_i86,    &i86_button);
+	// i86X buttons
+	CString button_name = "";
 	for (int i=0; i<k_number_of_i86X_buttons; i++)
 	{
-		button_name.Format("i86%dbutton", i);
-		i86X_buttons_defined[i] = p_tablemap_access->GetTableMapRect(button_name, &i86X_buttons[i]);
+		i86X_buttons_defined[i] = p_tablemap_access->DoesButtonExist(860+i);
+		if(i86X_buttons_defined[i])
+		{
+			button_name.Format("i86%dbutton", i);
+			i86X_buttons_defined[i] = p_tablemap_access->GetTableMapRect(button_name, &i86X_buttons[i]);
+		}
 	}
+
 	CSLock lock(m_critsec); // Needed???
 	// Set correct button state
 	// We have to be careful, as during initialization the GUI does not yet exist.
