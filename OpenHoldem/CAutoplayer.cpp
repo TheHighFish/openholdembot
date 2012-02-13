@@ -59,15 +59,9 @@ void CAutoplayer::GetNeccessaryTablemapObjects()
 	// i86 button
 	i86_button_defined    = p_tablemap_access->GetButtonRect(k_button_i86,    &i86_button);
 	// i86X buttons
-	CString button_name = "";
 	for (int i=0; i<k_number_of_i86X_buttons; i++)
 	{
-		i86X_buttons_defined[i] = p_tablemap_access->DoesButtonExist(860+i);
-		if(i86X_buttons_defined[i])
-		{
-			button_name.Format("i86%dbutton", i);
-			i86X_buttons_defined[i] = p_tablemap_access->GetTableMapRect(button_name, &i86X_buttons[i]);
-		}
+		i86X_buttons_defined[i] = p_tablemap_access->GetI86XButtonRect(i, &i86X_buttons[i]);
 	}
 
 	CSLock lock(m_critsec); // Needed???

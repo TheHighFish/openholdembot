@@ -26,6 +26,7 @@ public:
 public:
 	bool DoesButtonExist(int button_code);
 	bool GetButtonRect(int button_code, RECT *_rect);
+	bool GetI86XButtonRect(int button_code, RECT *_rect);
 	bool GetTableMapRect(CString region_name, RECT *_rect);
 public:
 	int	GetPlayerCards(int seat_number, int first_or_second_card);
