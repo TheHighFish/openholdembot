@@ -211,6 +211,28 @@ bool CTablemapAccess::GetButtonRect(int button_code, RECT *_rect)
 	return false;
 }
 
+bool CTablemapAccess::GetI86XButtonRect(int button_code, RECT *_rect)
+{
+	if (!DoesButtonExist(860 + button_code))
+		return false;
+
+	CString button_name = "";
+	button_name.Format("i86%dbutton", button_code);
+	RMapCI wanted_button = p_tablemap->r$()->find(button_name);
+
+	if (wanted_button != p_tablemap->r$()->end())
+	{
+		_rect->left   = wanted_button->second.left;
+		_rect->top    = wanted_button->second.top;
+		_rect->right  = wanted_button->second.right;
+		_rect->bottom = wanted_button->second.bottom;
+
+		return true;
+	}
+
+	return false;
+}
+
 bool CTablemapAccess::GetTableMapRect(CString region_name, RECT *_rect)
 {
 	/*
