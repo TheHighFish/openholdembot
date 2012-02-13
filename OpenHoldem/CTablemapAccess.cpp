@@ -80,8 +80,8 @@ int CTablemapAccess::SearchForButtonNumber(int button_code)
 		or the default button number otherwise.
 	*/
 
-	// i3button + i86 buttons are hardcoded
-	if (button_code == k_button_i3 || button_code >= 86)
+	// i3button
+	if (button_code == k_button_i3)
 		return button_code;
 
 	int button_number = k_button_undefined;
@@ -211,13 +211,20 @@ bool CTablemapAccess::GetButtonRect(int button_code, RECT *_rect)
 	return false;
 }
 
-bool CTablemapAccess::GetI86XButtonRect(int button_code, RECT *_rect)
+bool CTablemapAccess::GetI86ButtonRect(int button_code, RECT *_rect)
 {
-	if (!DoesButtonExist(860 + button_code))
+	int button_number = k_button_undefined;
+
+	if (button_code == k_button_i86)
+		button_number = button_code;
+	else if (button_code >= 0 && button_code < k_max_number_of_i86X_buttons)
+		button_number = (k_button_i86 * k_max_number_of_i86X_buttons) + button_code;
+
+	if (button_number == k_button_undefined || !p_scraper->GetButtonState(button_number))
 		return false;
 
 	CString button_name = "";
-	button_name.Format("i86%dbutton", button_code);
+	button_name.Format("i%dbutton", button_number);
 	RMapCI wanted_button = p_tablemap->r$()->find(button_name);
 
 	if (wanted_button != p_tablemap->r$()->end())

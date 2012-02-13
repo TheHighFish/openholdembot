@@ -13,7 +13,7 @@ const int k_button_check  = 14;
 const int k_button_sitin  = 20;
 const int k_button_sitout = 21;
 const int k_button_leave  = 22;
-const int k_button_i86    = 30;
+const int k_button_i86    = 86;
 const int k_button_undefined = -1;
 
 const int k_number_of_i86X_buttons = 10;
@@ -26,7 +26,7 @@ public:
 public:
 	bool DoesButtonExist(int button_code);
 	bool GetButtonRect(int button_code, RECT *_rect);
-	bool GetI86XButtonRect(int button_code, RECT *_rect);
+	bool GetI86ButtonRect(int button_code, RECT *_rect);
 	bool GetTableMapRect(CString region_name, RECT *_rect);
 public:
 	int	GetPlayerCards(int seat_number, int first_or_second_card);
