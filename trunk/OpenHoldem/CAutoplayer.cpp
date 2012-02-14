@@ -11,6 +11,7 @@
 #include "CRebuyManagement.h"
 #include "CReplayFrame.h"
 #include "CScraper.h"
+#include "CScraperAccess.h"
 #include "CStableFramesCounter.h"
 #include "CSymbols.h"
 #include "CTableMapAccess.h"
@@ -40,31 +41,55 @@ CAutoplayer::~CAutoplayer(void)
 
 void CAutoplayer::GetNeccessaryTablemapObjects()
 {
-	// iXbuttons
-	allin_button_defined  = p_tablemap_access->GetButtonRect(k_button_allin,  &allin_button);
-	raise_button_defined  = p_tablemap_access->GetButtonRect(k_button_raise,  &raise_button);
-	call_button_defined   = p_tablemap_access->GetButtonRect(k_button_call,   &call_button);
-	check_button_defined  = p_tablemap_access->GetButtonRect(k_button_check,  &check_button);
-	fold_button_defined   = p_tablemap_access->GetButtonRect(k_button_fold,   &fold_button);
-	i3_button_defined     = p_tablemap_access->GetButtonRect(k_button_i3,     &i3_button);
-	sitin_button_defined  = p_tablemap_access->GetButtonRect(k_button_sitin,  &sitin_button);
-	sitout_button_defined = p_tablemap_access->GetButtonRect(k_button_sitout, &sitout_button);
-	leave_button_defined  = p_tablemap_access->GetButtonRect(k_button_leave,  &leave_button);
+	p_scraper_access->SetScraperAccessData();
 
-	// swagging
-	i3_edit_defined   = p_tablemap_access->GetTableMapRect("i3edit", &i3_edit_region);
-	i3_slider_defined = p_tablemap_access->GetTableMapRect("i3slider", &i3_slider_region);
-	i3_handle_defined = p_tablemap_access->GetTableMapRect("i3button", &i3_handle_region);
+	// Allin
+	if (allin_button_available = p_scraper_access->get_allin_button_visible())
+		p_tablemap_access->GetButtonRect(p_scraper_access->get_allin_button_name(), &allin_button);
+	// Raise
+	if (raise_button_available = p_scraper_access->get_raise_button_visible())
+		p_tablemap_access->GetButtonRect(p_scraper_access->get_raise_button_name(), &raise_button);
+	// Call
+	if (call_button_available = p_scraper_access->get_call_button_visible())
+		p_tablemap_access->GetButtonRect(p_scraper_access->get_call_button_name(), &call_button);
+	// Check
+	if (check_button_available = p_scraper_access->get_check_button_visible())
+		p_tablemap_access->GetButtonRect(p_scraper_access->get_check_button_name(), &check_button);
+	// Fold
+	if (fold_button_available = p_scraper_access->get_fold_button_visible())
+		p_tablemap_access->GetButtonRect(p_scraper_access->get_fold_button_name(), &fold_button);
+	// Sitin
+	if (sitin_button_available = p_scraper_access->get_sitin_button_visible())
+		p_tablemap_access->GetButtonRect(p_scraper_access->get_sitin_button_name(), &sitin_button);
+	// Sitout
+	if (sitout_button_available = p_scraper_access->get_sitout_button_visible())
+		p_tablemap_access->GetButtonRect(p_scraper_access->get_sitout_button_name(), &sitout_button);
+	// Leave
+	if (leave_button_available = p_scraper_access->get_leave_button_visible())
+		p_tablemap_access->GetButtonRect(p_scraper_access->get_leave_button_name(), &leave_button);
 
 	// i86 button
-	i86_button_defined    = p_tablemap_access->GetI86ButtonRect(k_button_i86,    &i86_button);
+	if (i86_button_available = p_scraper_access->get_i86_button_visible())
+		p_tablemap_access->GetButtonRect("i86button", &i86_button);
+
 	// i86X buttons
-	for (int i=0; i<k_number_of_i86X_buttons; i++)
+	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
 	{
-		i86X_buttons_defined[i] = p_tablemap_access->GetI86ButtonRect(i, &i86X_buttons[i]);
+		if (i86X_buttons_available[i] = p_scraper_access->get_i86X_button_visible(i))
+			p_tablemap_access->GetButtonRect(p_scraper_access->get_i86X_button_name(i), &i86X_buttons[i]);
 	}
 
-	CSLock lock(m_critsec); // Needed???
+	// i3button
+	if (i3_button_available = p_scraper_access->get_i3_button_visible())
+		p_tablemap_access->GetButtonRect(p_scraper_access->get_i3_button_name(), &i3_button);
+
+	// i3edit
+	i3_edit_defined = p_tablemap_access->GetTableMapRect("i3edit", &i3_edit_region);
+	// i3slider
+	i3_slider_defined = p_tablemap_access->GetTableMapRect("i3slider", &i3_slider_region);
+	// i3handle
+	i3_handle_defined = p_tablemap_access->GetTableMapRect("i3button", &i3_handle_region);
+
 	// Set correct button state
 	// We have to be careful, as during initialization the GUI does not yet exist.
 	bool to_be_enabled_or_not = _autoplayer_engaged; 
@@ -80,11 +105,11 @@ int CAutoplayer::NumberOfVisibleButtons()
 	// Buttons for playing actions, e.g. fold or allin.
 	// There have to be at least 2 to make it our turn.
 	int number_of_visible_buttons = 0
-		+ (allin_button_defined ? 1 : 0)
-		+ (raise_button_defined ? 1 : 0)
-		+ (call_button_defined  ? 1 : 0)
-		+ (check_button_defined ? 1 : 0)
-		+ (fold_button_defined  ? 1 : 0);
+		+ (allin_button_available ? 1 : 0)
+		+ (raise_button_available ? 1 : 0)
+		+ (call_button_available  ? 1 : 0)
+		+ (check_button_available ? 1 : 0)
+		+ (fold_button_available  ? 1 : 0);
 	return number_of_visible_buttons;
 }
 
@@ -181,7 +206,7 @@ void CAutoplayer::DoAllin(void)
 	if (p_tablemap->allinmethod() == 1)
 	{
 		// Clicking max (or allin) and then raise
-		if (allin_button_defined && raise_button_defined)
+		if (allin_button_available && raise_button_available)
 		{
 			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Text selection; calling mouse.dll to single click allin: %d,%d %d,%d\n", 
 				allin_button.left, allin_button.top, allin_button.right, allin_button.bottom);
@@ -206,7 +231,7 @@ void CAutoplayer::DoAllin(void)
 	else  if (p_tablemap->allinmethod() == 2)
 	{
 		// Clicking only max (or allin)
-		if (allin_button_defined)
+		if (allin_button_available)
 		{
 			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Text selection; calling mouse.dll to single click allin: %d,%d %d,%d\n", 
 				allin_button.left, allin_button.top, allin_button.right, allin_button.bottom);
@@ -244,11 +269,11 @@ void CAutoplayer::DoAutoplayer(void)
 	num_buttons_visible = NumberOfVisibleButtons();
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d (%c%c%c%c%c)\n", 
 		num_buttons_visible, 
-		allin_button_defined ? 'A' : '.',
-		raise_button_defined ? 'R' : '.',
-		call_button_defined  ? 'C' : '.',
-		check_button_defined ? 'K' : '.',
-		fold_button_defined  ? 'F' : '.');
+		allin_button_available ? 'A' : '.',
+		raise_button_available ? 'R' : '.',
+		call_button_available  ? 'C' : '.',
+		check_button_available ? 'K' : '.',
+		fold_button_available  ? 'F' : '.');
 
 	// Calculate f$play, f$prefold, f$rebuy, f$delay and f$chat for use below
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling CalcSecondaryFormulas.\n");
@@ -511,12 +536,12 @@ void CAutoplayer::DoSwag(void)
 			(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_RETURN, hwnd_focus, cur_pos);
 		}
 		else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET &&
-				 (raise_button_defined || i3_button_defined))
+				 (raise_button_available || i3_button_available))
 		{
 			RECT rect_button;
 
 			// use i3button region if it exists, otherwise use the bet/raise button region
-			if (i3_button_defined)
+			if (i3_button_available)
 			{
 				rect_button = i3_button;
 				write_log(prefs.debug_autoplayer(), "[AutoPlayer] Using i3button for confirmation\n");
@@ -584,7 +609,7 @@ void CAutoplayer::DoARCCF(void)
 	do_click = k_action_undefined;
 
 	// ALLIN
-	if (alli && sym_myturnbits&0x8 && allin_button_defined)
+	if (alli && sym_myturnbits&0x8 && allin_button_available)
 	{
 		r = allin_button;
 		do_click = k_action_allin;
@@ -592,7 +617,7 @@ void CAutoplayer::DoARCCF(void)
 	}
 
 	// RAISE
-	else if (rais && sym_myturnbits&0x4 && raise_button_defined)
+	else if (rais && sym_myturnbits&0x4 && raise_button_available)
 	{
 		r = raise_button;
 		do_click = k_action_raise;
@@ -600,7 +625,7 @@ void CAutoplayer::DoARCCF(void)
 	}
 
 	// CALL
-	else if (call && sym_myturnbits&0x1 && call_button_defined)
+	else if (call && sym_myturnbits&0x1 && call_button_available)
 	{
 		r = call_button;
 		do_click = k_action_call;
@@ -610,7 +635,7 @@ void CAutoplayer::DoARCCF(void)
 	// CHECK
 	// None of f$alli, f$betsize, f$rais, f$call are > 0 or no buttons related to
 	// these actions can be found. If there is a check button, then click it.
-	else if (check_button_defined)
+	else if (check_button_available)
 	{
 		r = check_button;
 		do_click = k_action_check;
@@ -620,7 +645,7 @@ void CAutoplayer::DoARCCF(void)
 	// FOLD
 	// None of f$alli, f$betsize, f$rais, f$call are > 0 or no buttons related to
 	// these actions can be found. If there is a fold button, then click it, otherwise we have a serious problem.
-	else if (fold_button_defined)
+	else if (fold_button_available)
 	{
 		r = fold_button;
 		do_click = k_action_fold;
@@ -728,17 +753,17 @@ void CAutoplayer::DoSlider(void)
 		}
 
 		else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET &&
-				 (raise_button_defined || i3_button_defined))
+				 (raise_button_available || i3_button_available))
 		{
 			RECT rect_button;
 
 			// use allin button if it exists, otherwise use i3button region if it exists, 
 			// otherwise use the bet/raise button region
-			if (allin_button_defined)
+			if (allin_button_available)
 			{
 				rect_button = allin_button;
 			}
-			else if (i3_button_defined) 
+			else if (i3_button_available) 
 			{
 				rect_button = i3_button;
 			}
@@ -800,7 +825,7 @@ void CAutoplayer::DoPrefold(void)
 	if (prefold == 0)  
 		return;
 
-	if (!prefold_button_defined)  
+	if (!prefold_button_available)  
 		return;
 
 	// If we get a lock, do the action
@@ -819,202 +844,6 @@ void CAutoplayer::DoPrefold(void)
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending DoPrefold.\n");
 }
 
-/* ??? No longer needed?
-int CAutoplayer::GetR$ButtonIndices(void)
-{
-	int				i = 0;
-	int				button_index = 0;
-	CString			s = "";
-	int				num_seen = 0;
-
-	//////////////////////////////////////////////////////////
-	// find ALLIN button region from scraper
-	button_index = -1;
-	for (i=0; i<=9 && button_index==-1; i++)
-	{
-		if (p_scraper->GetButtonState(i) && p_scraper->IsStringAllin(p_scraper->button_label(i)))
-		{
-			button_index = i;
-			num_seen++;
-		}
-	}
-
-	// find allin button region from table map
-	s.Format("i%dbutton", button_index);
-	_alli_but = p_tablemap->r$()->find(s.GetString());
-
-	//////////////////////////////////////////////////////////
-	// find RAISE button region from scraper
-	button_index = -1;
-	for (i=0; i<=9 && button_index==-1; i++)
-	{
-		if (p_scraper->GetButtonState(i) && p_scraper->IsStringRaise(p_scraper->button_label(i)))
-		{
-			button_index = i;
-			num_seen++;
-		}
-	}
-
-	// find rais button region from table map
-	s.Format("i%dbutton", button_index);
-	_rais_but = p_tablemap->r$()->find(s.GetString());
-
-	//////////////////////////////////////////////////////////
-	// find CALL button region from scraper
-	button_index = -1;
-	for (i=0; i<=9 && button_index==-1; i++)
-	{
-		if (p_scraper->GetButtonState(i) && p_scraper->IsStringCall(p_scraper->button_label(i)))
-		{
-			button_index = i;
-			num_seen++;
-		}
-	}
-
-	// find call button region from table map
-	s.Format("i%dbutton", button_index);
-	_call_but = p_tablemap->r$()->find(s.GetString());
-
-	//////////////////////////////////////////////////////////
-	// find CHECK button region from scraper
-	button_index = -1;
-	for (i=0; i<=9 && button_index==-1; i++)
-	{
-		if (p_scraper->GetButtonState(i) && p_scraper->IsStringCheck(p_scraper->button_label(i)))
-		{
-			button_index = i;
-			num_seen++;
-		}
-	}
-
-	// find chec button region from table map
-	s.Format("i%dbutton", button_index);
-	_chec_but = p_tablemap->r$()->find(s.GetString());
-
-	//////////////////////////////////////////////////////////
-	// find FOLD button region from scraper
-	button_index = -1;
-	for (i=0; i<=9 && button_index==-1; i++)
-	{
-		if (p_scraper->GetButtonState(i) && p_scraper->IsStringFold(p_scraper->button_label(i)))
-		{
-			button_index = i;
-			num_seen++;
-		}
-	}
-
-	// find fold button region from table map
-	s.Format("i%dbutton", button_index);
-	_fold_but = p_tablemap->r$()->find(s.GetString());
-
-	//////////////////////////////////////////////////////////
-	// find AUTOPOST button region from scraper
-	button_index = -1;
-	_autopost_state = true;
-	for (i=0; i<=9 && button_index==-1; i++)
-	{
-		if (p_scraper->IsStringAutopost(p_scraper->button_label(i)))
-		{
-			_autopost_state = p_scraper->GetButtonState(i);
-			button_index = i;
-		}
-	}
-
-	// find autopost button region from table map
-	s.Format("i%dbutton", button_index);
-	_autopost_but = p_tablemap->r$()->find(s.GetString());
-
-	//////////////////////////////////////////////////////////
-	// find SITIN button region from scraper
-	button_index = -1;
-	_sitin_state = true;
-	for (i=0; i<=9 && button_index==-1; i++)
-	{
-		if (p_scraper->IsStringSitin(p_scraper->button_label(i)))
-		{
-			_sitin_state = p_scraper->GetButtonState(i);
-			button_index = i;
-		}
-	}
-
-	// find sitin button region from table map
-	s.Format("i%dbutton", button_index);
-	_sitin_but = p_tablemap->r$()->find(s.GetString());
-
-	//////////////////////////////////////////////////////////
-	// find SITOUT button region from scraper
-	button_index = -1;
-	_sitout_state = false;
-	for (i=0; i<=9 && button_index==-1; i++)
-	{
-		if (p_scraper->IsStringSitout(p_scraper->button_label(i)))
-		{
-			_sitout_state = p_scraper->GetButtonState(i);
-			button_index = i;
-		}
-	}
-
-	// find sitout button region from table map
-	s.Format("i%dbutton", button_index);
-	_sitout_but = p_tablemap->r$()->find(s.GetString());
-
-	//////////////////////////////////////////////////////////
-	// find LEAVE button region from scraper
-	button_index = -1;
-	for (i=0; i<=9 && button_index==-1; i++)
-	{
-		if (p_scraper->GetButtonState(i) && p_scraper->IsStringLeave(p_scraper->button_label(i)))
-		{
-			button_index = i;
-		}
-	}
-
-	// find leave button region from table map
-	s.Format("i%dbutton", button_index);
-	_leave_but = p_tablemap->r$()->find(s.GetString());
-
-	//////////////////////////////////////////////////////////
-	// find PREFOLD button region from scraper
-	button_index = -1;
-	for (i=0; i<=9 && button_index==-1; i++)
-	{
-		if (p_scraper->GetButtonState(i) && p_scraper->IsStringPrefold(p_scraper->button_label(i)))
-		{
-			button_index = i;
-		}
-	}
-
-	// find prefold button region from table map
-	s.Format("i%dbutton", button_index);
-	_pre_fold_but = p_tablemap->r$()->find(s.GetString());
-
-	//////////////////////////////////////////////////////////
-	// find i86 button region from scraper
-	_i86_state = false;
-	_i86_but = p_tablemap->r$()->end();
-	if (p_scraper->GetButtonState(86))
-	{
-		_i86_but = p_tablemap->r$()->find("i86button");
-		_i86_state = true;
-	}
-
-	//////////////////////////////////////////////////////////
-	// find i86X button region from scraper
-	for (i=0; i<=9; i++)
-	{
-		_i86X_state[i] = false;
-		_i86X_but[i] = p_tablemap->r$()->end();
-		if (p_scraper->GetButtonState(860+i))
-		{
-			s.Format("i86%dbutton", i);
-			_i86X_but[i] = p_tablemap->r$()->find(s.GetString());
-			_i86X_state[i] = true;
-		}
-	}
-
-	return num_seen;
-}
-*/
 
 void CAutoplayer::CheckBringKeyboard(void) 
 {
@@ -1183,7 +1012,7 @@ void CAutoplayer::DoF$Sitin_Sitout_Leave(void)
 	bool do_click = false;
 
 	// leave table
-	if (f_leave==true && leave_button_defined)
+	if (f_leave==true && leave_button_available)
 	{
 		r = leave_button;
 		do_click = true;
@@ -1192,13 +1021,13 @@ void CAutoplayer::DoF$Sitin_Sitout_Leave(void)
 
 	// sit out
 	else if (f_sitout==true && 
-		((sitout_button_defined && _sitout_state==false) || (sitin_button_defined && _sitin_state==true)))
+		((sitout_button_available && _sitout_state==false) || (sitin_button_available && _sitin_state==true)))
 	{
-		if (sitout_button_defined && (_sitout_state==false))
+		if (sitout_button_available && (_sitout_state==false))
 		{
 			r = sitout_button;
 		}
-		else if (sitin_button_defined && (_sitin_state==true))
+		else if (sitin_button_available && (_sitin_state==true))
 		{
 			r = sitin_button;
 		}
@@ -1209,14 +1038,14 @@ void CAutoplayer::DoF$Sitin_Sitout_Leave(void)
 
 	// sit in
 	else if (f_sitin==true && 
-		((sitin_button_defined && (_sitin_state==false)) || (sitout_button_defined && (_sitout_state==true))))
+		((sitin_button_available && (_sitin_state==false)) || (sitout_button_available && (_sitout_state==true))))
 	{
-		if (sitin_button_defined && _sitin_state==false)
+		if (sitin_button_available && _sitin_state==false)
 		{
 			r = sitin_button;
 		}
 
-		else if (sitout_button_defined && _sitout_state==true)
+		else if (sitout_button_available && _sitout_state==true)
 		{
 			r = sitout_button;
 		}
@@ -1226,7 +1055,7 @@ void CAutoplayer::DoF$Sitin_Sitout_Leave(void)
 	}
 
 	// Autopost
-	if (f_sitin && (_autopost_state==false) && autopost_button_defined)
+	if (f_sitin && (_autopost_state==false) && autopost_button_available)
 	{
 		r.left = _autopost_but->second.left;
 		r.top = _autopost_but->second.top;
@@ -1270,7 +1099,7 @@ void CAutoplayer::DoI86(void)
 
 	do_click = false;
 
-	if (i86_button_defined && _i86_state)
+	if (i86_button_available && _i86_state)
 	{
 		r = i86_button;
 		do_click = true;
@@ -1279,9 +1108,9 @@ void CAutoplayer::DoI86(void)
 
 	else
 	{
-		for (int i=0; i<k_number_of_i86X_buttons; i++)
+		for (int i=0; i<k_max_number_of_i86X_buttons; i++)
 		{
-			if (i86X_buttons_defined[i] && _i86X_state[i])
+			if (i86X_buttons_available[i] && _i86X_state[i])
 			{
 				r = i86X_buttons[i];
 				do_click = true;

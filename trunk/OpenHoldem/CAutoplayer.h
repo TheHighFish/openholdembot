@@ -56,19 +56,19 @@ private:
 
 	CCritSec	m_critsec;
 private:
-	bool allin_button_defined;
-	bool raise_button_defined;
-	bool call_button_defined;
-	bool check_button_defined;
-	bool fold_button_defined;
-	bool prefold_button_defined;
-	bool i3_button_defined;
-	bool sitin_button_defined;
-	bool sitout_button_defined;
-	bool leave_button_defined;
-	bool autopost_button_defined;
-	bool i86_button_defined;
-	bool i86X_buttons_defined[k_number_of_i86X_buttons];
+	bool allin_button_available;
+	bool raise_button_available;
+	bool call_button_available;
+	bool check_button_available;
+	bool fold_button_available;
+	bool prefold_button_available;
+	bool i3_button_available;
+	bool sitin_button_available;
+	bool sitout_button_available;
+	bool leave_button_available;
+	bool autopost_button_available;
+	bool i86_button_available;
+	bool i86X_buttons_available[k_max_number_of_i86X_buttons];
 private:
 	RECT allin_button;
 	RECT raise_button;
@@ -82,7 +82,7 @@ private:
 	RECT leave_button;
 	RECT autopost_button;
 	RECT i86_button;
-	RECT i86X_buttons[k_number_of_i86X_buttons];
+	RECT i86X_buttons[k_max_number_of_i86X_buttons];
 private:
 	bool i3_edit_defined;
 	bool i3_slider_defined;

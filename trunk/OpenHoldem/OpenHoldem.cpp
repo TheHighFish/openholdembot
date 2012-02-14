@@ -26,6 +26,7 @@
 #include "CPreferences.h"
 #include "CRebuyManagement.h"
 #include "CScraper.h"
+#include "CScraperAccess.h"
 #include "CSessionCounter.h"
 #include "CSharedMem.h"
 #include "CStableFramesCounter.h"
@@ -94,6 +95,7 @@ void COpenHoldemApp::InstanciateAllSingletonsExceptSessionCounter()
 	if (!p_tablelimits) p_tablelimits = new CTableLimits;
 	if (!p_pokerpro) p_pokerpro = new PokerPro;
 	if (!p_scraper)  p_scraper = new CScraper;
+	if (!p_scraper_access)  p_scraper_access = new CScraperAccess;
 	if (!p_lazyscraper)	p_lazyscraper = new CLazyScraper;
 	if (!p_symbols)  p_symbols = new CSymbols;
 	if (!p_tablemap)  p_tablemap = new CTablemap;
@@ -140,6 +142,7 @@ void COpenHoldemApp::DeleteAllSingletons()
 	if (p_tablemap)  { delete p_tablemap; p_tablemap = NULL; }
 	if (p_symbols)  { delete p_symbols; p_symbols = NULL; }
 	if (p_lazyscraper)	{ delete p_lazyscraper; p_lazyscraper = NULL; }
+	if (p_scraper_access)  { delete p_scraper_access; p_scraper_access = NULL; }
 	if (p_scraper)  { delete p_scraper; p_scraper = NULL; }
 	if (p_pokerpro)  { delete p_pokerpro; p_pokerpro = NULL; }
 	if (p_tablelimits) { delete p_tablelimits; p_tablelimits = NULL; }
