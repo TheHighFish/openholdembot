@@ -12,6 +12,7 @@
 #include "CScraper.h"
 #include "CSessionCounter.h"
 #include "CStableFramesCounter.h"
+#include "CStringMatch.h"
 #include "CSymbols.h"
 #include "DialogPPro.h"
 #include "OH_MessageBox.h"
@@ -1931,7 +1932,7 @@ void PokerPro::DoScrape(void)
 		p_scraper->set_sitting_out(i, !(_ppdata.m_pinf[i].m_isPlaying&0x1));
 
 		// Clear some things if no one is at this chair
-		if (!p_scraper->IsStringSeated(p_scraper->seated(i)) & !p_scraper->IsStringActive(p_scraper->active(i))) 
+		if (!p_string_match->IsStringSeated(p_scraper->seated(i)) & !p_string_match->IsStringActive(p_scraper->active(i))) 
 		{
 			p_scraper->set_player_name(i, "");
 			p_scraper->set_name_good_scrape(i, false);

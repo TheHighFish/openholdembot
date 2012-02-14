@@ -46,20 +46,6 @@ public:
 	void SetLimitInfo(const SLimitInfo LI);
 	const bool GetButtonState(const int button_index);
 	const bool IsCommonAnimation(void);
-	const bool IsStringAllin(const CString s);
-	const bool IsStringRaise(const CString s);
-	const bool IsStringCall(const CString s);
-	const bool IsStringCheck(const CString s);
-	const bool IsStringFold(const CString s);
-	const bool IsStringAutopost(const CString s);
-	const bool IsStringSitin(const CString s);
-	const bool IsStringSitout(const CString s);
-	const bool IsStringLeave(const CString s);
-	const bool IsStringPrefold(const CString s);
-	const bool IsStringSeated(const CString s);
-	const bool IsStringActive(const CString s);
-	const bool IsStringCardback(const CString s);
-	const bool IsStringDealer(const CString s);
 
 public:
 	// public accessors
@@ -163,7 +149,6 @@ private:
 	bool ProcessRegion(RMapCI r_iter);
 	const bool BitmapsSame(const HBITMAP HBitmapLeft, const HBITMAP HBitmapRight);
 	const double DoChipScrape(RMapCI r_iter);
-	const bool IsNumeric(const CString t);
 
 	// for change detection
 	bool			_ucf_last;

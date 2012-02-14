@@ -8,6 +8,7 @@
 #include "CHeartbeatThread.h"
 #include "CPreferences.h"
 #include "CScraper.h"
+#include "CStringMatch.h"
 #include "CSymbols.h"
 #include "CTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
@@ -295,7 +296,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 		if (update_it || update_all) 
 		{
 			// Draw active circle
-			if (p_scraper->IsStringSeated(p_scraper->seated(i))) 
+			if (p_string_match->IsStringSeated(p_scraper->seated(i))) 
 				DrawSeatedActiveCircle(i);
 
 			// Draw player cards
@@ -476,52 +477,52 @@ void COpenHoldemView::DrawButtonIndicators(void)
 		// Draw "on" buttons
 		if (p_scraper->GetButtonState(i)) 
 		{
-			if (p_scraper->IsStringFold(p_scraper->button_label(i))) 
+			if (p_string_match->IsStringFold(p_scraper->button_label(i))) 
 			{
 				DrawSpecificButtonIndicator(i, 'F', cr.right-84, cr.bottom-16, cr.right-70, cr.bottom-2);
 				fold_drawn = true;
 			}
-			else if (p_scraper->IsStringCall(p_scraper->button_label(i))) 
+			else if (p_string_match->IsStringCall(p_scraper->button_label(i))) 
 			{
 				DrawSpecificButtonIndicator(i, 'C', cr.right-67, cr.bottom-16, cr.right-53, cr.bottom-2);
 				call_drawn = true;
 			}
-			else if (p_scraper->IsStringCheck(p_scraper->button_label(i))) 
+			else if (p_string_match->IsStringCheck(p_scraper->button_label(i))) 
 			{
 				DrawSpecificButtonIndicator(i, 'K', cr.right-50, cr.bottom-16, cr.right-36, cr.bottom-2);
 				check_drawn = true;
 			}
-			else if (p_scraper->IsStringRaise(p_scraper->button_label(i))) 
+			else if (p_string_match->IsStringRaise(p_scraper->button_label(i))) 
 			{
 				DrawSpecificButtonIndicator(i, 'R', cr.right-33, cr.bottom-16, cr.right-19, cr.bottom-2);
 				raise_drawn = true;
 			}
-			else if (p_scraper->IsStringAllin(p_scraper->button_label(i))) 
+			else if (p_string_match->IsStringAllin(p_scraper->button_label(i))) 
 			{
 				DrawSpecificButtonIndicator(i, 'A', cr.right-16, cr.bottom-16, cr.right-2, cr.bottom-2);
 				allin_drawn = true;
 			}
-			else if (p_scraper->IsStringAutopost(p_scraper->button_label(i))) 
+			else if (p_string_match->IsStringAutopost(p_scraper->button_label(i))) 
 			{
 				DrawSpecificButtonIndicator(i, 'T', cr.left+2,  cr.bottom-16, cr.left+16, cr.bottom-2);
 				autopost_drawn = true;
 			}
-			else if (p_scraper->IsStringSitin(p_scraper->button_label(i))) 
+			else if (p_string_match->IsStringSitin(p_scraper->button_label(i))) 
 			{
 				DrawSpecificButtonIndicator(i, 'I', cr.left+19, cr.bottom-16, cr.left+33, cr.bottom-2);
 				sitin_drawn = true;
 			}
-			else if (p_scraper->IsStringSitout(p_scraper->button_label(i))) 
+			else if (p_string_match->IsStringSitout(p_scraper->button_label(i))) 
 			{
 				DrawSpecificButtonIndicator(i, 'O', cr.left+36, cr.bottom-16, cr.left+50, cr.bottom-2);
 				sitout_drawn = true;
 			}
-			else if (p_scraper->IsStringLeave(p_scraper->button_label(i))) 
+			else if (p_string_match->IsStringLeave(p_scraper->button_label(i))) 
 			{
 				DrawSpecificButtonIndicator(i, 'L', cr.left+53, cr.bottom-16, cr.left+67, cr.bottom-2);
 				leave_drawn = true;
 			}
-			else if (p_scraper->IsStringPrefold(p_scraper->button_label(i))) 
+			else if (p_string_match->IsStringPrefold(p_scraper->button_label(i))) 
 			{
 				DrawSpecificButtonIndicator(i, 'P', cr.left+70, cr.bottom-16, cr.left+84, cr.bottom-2);
 				prefold_drawn = true;
@@ -706,7 +707,7 @@ void COpenHoldemView::DrawSeatedActiveCircle(const int chair)
 	pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
 	oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
 
-	if (p_scraper->IsStringActive(p_scraper->active(chair))) 
+	if (p_string_match->IsStringActive(p_scraper->active(chair))) 
 	{
 		pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
 	}
@@ -955,8 +956,8 @@ void COpenHoldemView::DrawNameBox(const int chair)
 	oldfont = pDC->SelectObject(&cFont);
 	pDC->SetTextColor(COLOR_BLACK);
 
-	if (p_scraper->IsStringSeated(p_scraper->seated(chair)) || 
-		p_scraper->IsStringActive(p_scraper->active(chair)) /*||
+	if (p_string_match->IsStringSeated(p_scraper->seated(chair)) || 
+		p_string_match->IsStringActive(p_scraper->active(chair)) /*||
 		(p_tablemap->r$pXseated_index[chair] == -1 && p_tablemap->r$uXseated_index[chair] == -1 &&
 		 p_tablemap->r$pXactive_index[chair] == -1 && p_tablemap->r$uXactive_index[chair] == -1)*/ ) 
 	{
@@ -1046,8 +1047,8 @@ void COpenHoldemView::DrawBalanceBox(const int chair)
 	oldfont = pDC->SelectObject(&cFont);
 	pDC->SetTextColor(COLOR_BLACK);
 
-	if (p_scraper->IsStringSeated(p_scraper->seated(chair)) || 
-		p_scraper->IsStringActive(p_scraper->active(chair)) /*||
+	if (p_string_match->IsStringSeated(p_scraper->seated(chair)) || 
+		p_string_match->IsStringActive(p_scraper->active(chair)) /*||
 		(p_tablemap->r$pXseated_index[chair] == -1 && p_tablemap->r$uXseated_index[chair] == -1 &&
 		 p_tablemap->r$pXactive_index[chair] == -1 && p_tablemap->r$uXactive_index[chair] == -1)*/ ) 
 	{
