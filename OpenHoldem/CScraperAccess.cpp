@@ -3,7 +3,8 @@
 
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CTablemapAccess.h"
+#include "CStringMatch.h"
+#include "..\CTablemap\CTableMapAccess.h"
 
 #include "MagicNumbers.h"
 
@@ -50,41 +51,41 @@ int CScraperAccess::SearchForButtonNumber(int button_code)
 	int button_number = k_button_undefined;
 
 	// Define a function pointer for the string matching function corresponding to each button_code
-	const bool (CScraper::*StringMatch)(CString) = NULL;
+	const bool (CStringMatch::*StringMatch)(CString) = NULL;
 
 	switch (button_code)
 	{
 		// ALLIN
 		case k_button_allin:
-			StringMatch = &CScraper::IsStringAllin;
+			StringMatch = &CStringMatch::IsStringAllin;
 			break;
 		// RAISE
 		case k_button_raise:
-			StringMatch = &CScraper::IsStringRaise;
+			StringMatch = &CStringMatch::IsStringRaise;
 			break;
 		// CALL
 		case k_button_call:
-			StringMatch = &CScraper::IsStringCall;
+			StringMatch = &CStringMatch::IsStringCall;
 			break;
 		// FOLD
 		case k_button_fold:
-			StringMatch = &CScraper::IsStringFold;
+			StringMatch = &CStringMatch::IsStringFold;
 			break;
 		// CHECK
 		case k_button_check:
-			StringMatch = &CScraper::IsStringCheck;
+			StringMatch = &CStringMatch::IsStringCheck;
 			break;
 		// SITIN
 		case k_button_sitin:
-			StringMatch = &CScraper::IsStringSitin;
+			StringMatch = &CStringMatch::IsStringSitin;
 			break;
 		// SITOUT
 		case k_button_sitout:
-			StringMatch = &CScraper::IsStringSitout;
+			StringMatch = &CStringMatch::IsStringSitout;
 			break;
 		// LEAVE
 		case k_button_leave:
-			StringMatch = &CScraper::IsStringLeave;
+			StringMatch = &CStringMatch::IsStringLeave;
 			break;
 		default:
 			break;
@@ -97,7 +98,7 @@ int CScraperAccess::SearchForButtonNumber(int button_code)
 		// and save it as the button number
 		for (int j = 0; j < k_max_number_of_buttons; j++)
 		{
-			if ((p_scraper->*StringMatch)(p_scraper->button_label(j)))
+			if ((p_string_match->*StringMatch)(p_scraper->button_label(j)))
 			{
 				button_number = j;
 				break;

@@ -389,6 +389,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CStringMatch.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CSymbols.cpp"
 				>
 			</File>
@@ -1087,6 +1091,10 @@
 			</File>
 			<File
 				RelativePath=".\CStableFramesCounter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CStringMatch.h"
 				>
 			</File>
 			<File

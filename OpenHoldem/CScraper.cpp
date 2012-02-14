@@ -7,6 +7,7 @@
 #include "CAutoconnector.h"
 #include "CPokerPro.h"
 #include "CPreferences.h"
+#include "CStringMatch.h"
 #include "CSymbols.h"
 #include "CTableLimits.h"
 #include "MainFrm.h"
@@ -246,7 +247,7 @@ int CScraper::CompleteBasicScrapeToFullScrape()
 		write_log(prefs.debug_scraper(), "[CScraper] Calling ScrapeBalance, chair %d.\n", i);
 		ScrapeBalance(i);  // Must come after ScrapeBet, as is dependent on ScrapeBet's results
 
-		if (!IsStringSeated(_seated[i]) && !IsStringActive(_active[i]))
+		if (!p_string_match->IsStringSeated(_seated[i]) && !p_string_match->IsStringActive(_active[i]))
 		{
 			set_player_name(i, "");
 			set_name_good_scrape(i, false);
@@ -569,7 +570,7 @@ void CScraper::ScrapePlayerCards(int chair)
 			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &cardstr);
 		}
 
-		if (IsStringCardback(cardstr))
+		if (p_string_match->IsStringCardback(cardstr))
 		{
 			set_card_player(chair, 0, CARD_BACK);
 			set_card_player(chair, 1, CARD_BACK);
@@ -636,7 +637,7 @@ void CScraper::ScrapeSeated(int chair)
 	// but only if we didn't get a positive result from the p region
 	s.Format("u%dseated", chair);
 	r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end() && !IsStringSeated(_seated[chair]))
+	if (r_iter != p_tablemap->r$()->end() && !p_string_match->IsStringSeated(_seated[chair]))
 	{
 		ProcessRegion(r_iter);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
@@ -704,8 +705,8 @@ void CScraper::ScrapeActive(int chair)
 	s.Format("u%dactive", chair);
 	r_iter = p_tablemap->r$()->find(s.GetString());
 	if (r_iter != p_tablemap->r$()->end() && 
-		((!IsStringActive(_active[chair]) && p_tablemap->activemethod() != 2) ||
-		 (IsStringActive(_active[chair]) && p_tablemap->activemethod() == 2) ) )
+		((!p_string_match->IsStringActive(_active[chair]) && p_tablemap->activemethod() != 2) ||
+		 (p_string_match->IsStringActive(_active[chair]) && p_tablemap->activemethod() == 2) ) )
 	{
 		ProcessRegion(r_iter);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
@@ -765,7 +766,7 @@ void CScraper::ScrapeDealer(int chair)
 			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &result);
 		}
 
-		if (IsStringDealer(result))
+		if (p_string_match->IsStringDealer(result))
 			found_dealer = true;
 
 		write_log(prefs.debug_scraper(), "[CScraper] p%ddealer, result %s\n", chair, result.GetString());
@@ -787,7 +788,7 @@ void CScraper::ScrapeDealer(int chair)
 			(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &result);
 		}
 
-		if (IsStringDealer(result))
+		if (p_string_match->IsStringDealer(result))
 			found_dealer = true;
 
 		write_log(prefs.debug_scraper(), "[CScraper] u%ddealer, result %s\n", chair, result.GetString());
@@ -810,7 +811,7 @@ void CScraper::ScrapeName(int chair)
 	bool				got_new_scrape = false;
 	CString				text = "";
 	int					ret = 0;
-	bool				is_seated = IsStringSeated(_seated[chair]);
+	bool				is_seated = p_string_match->IsStringSeated(_seated[chair]);
 	CTransform			trans;
 	CString				s = "";
 	RMapCI				r_iter = p_tablemap->r$()->end();
@@ -915,7 +916,7 @@ void CScraper::ScrapeBalance(int chair)
 	bool				got_new_scrape = false;
 	CString				text = "";
 	int					ret = 0;
-	bool				is_seated = IsStringSeated(_seated[chair]);
+	bool				is_seated = p_string_match->IsStringSeated(_seated[chair]);
 	CTransform			trans;
 	CString				s = "";
 	RMapCI				r_iter = p_tablemap->r$()->end();
@@ -950,7 +951,7 @@ void CScraper::ScrapeBalance(int chair)
 
 		if (ret == ERR_GOOD_SCRAPE_GENERAL)
 		{
-			if (IsStringAllin(text))
+			if (p_string_match->IsStringAllin(text))
 			{
 				got_new_scrape = true;
 				text = "0";
@@ -982,7 +983,7 @@ void CScraper::ScrapeBalance(int chair)
 					text.Remove(')');
 				}
 
-				if (text!="" && IsNumeric(text))
+				if (text!="" && p_string_match->IsNumeric(text))
 					got_new_scrape = true;
 
 				write_log(prefs.debug_scraper(), "[CScraper] ubalance, result %s\n", text.GetString());
@@ -1008,7 +1009,7 @@ void CScraper::ScrapeBalance(int chair)
 
 		if (ret == ERR_GOOD_SCRAPE_GENERAL)
 		{
-			if (IsStringAllin(text))
+			if (p_string_match->IsStringAllin(text))
 			{
 				got_new_scrape = true;
 				text = "0";
@@ -1040,7 +1041,7 @@ void CScraper::ScrapeBalance(int chair)
 					text.Remove(')');
 				}
 
-				if (text!="" && IsNumeric(text))
+				if (text!="" && p_string_match->IsNumeric(text))
 					got_new_scrape = true;
 
 				write_log(prefs.debug_scraper(), "[CScraper] u%dbalance, result %s\n", chair, text.GetString());
@@ -1066,7 +1067,7 @@ void CScraper::ScrapeBalance(int chair)
 
 		if (ret == ERR_GOOD_SCRAPE_GENERAL)
 		{
-			if (IsStringAllin(text))
+			if (p_string_match->IsStringAllin(text))
 			{
 				got_new_scrape = true;
 				text = "0";
@@ -1098,7 +1099,7 @@ void CScraper::ScrapeBalance(int chair)
 					text.Remove(')');
 				}
 
-				if (text!="" && IsNumeric(text))
+				if (text!="" && p_string_match->IsNumeric(text))
 					got_new_scrape = true;
 
 				write_log(prefs.debug_scraper(), "[CScraper] u%dbalance, result %s\n", chair, text.GetString());
@@ -2458,295 +2459,7 @@ const bool CScraper::GetButtonState(int button_index)
 	return false;
 }
 
-const bool CScraper::IsNumeric(CString t)
-{
-	int i = 0, num_dots = 0, nums_after_dot = 0;
 
-	// Check for bad parameters
-	if (!t || t == "")
-		return false;
-
-	for (i=0; i<t.GetLength(); i++)
-	{
-		if (t.Mid(i,1).FindOneOf("$0123456789,.Â¢ckm") == -1)
-			return false;
-
-		if (t.Mid(i,1)==".")
-			num_dots++;
-
-		if (num_dots>0 && t.Mid(i,1).FindOneOf("0123456789") != -1)
-			nums_after_dot++;
-	}
-
-	if (num_dots!=0 && num_dots!=1)
-		return false;
-
-	if (num_dots>0 && nums_after_dot!=2)
-		return false;
-
-	return true;
-}
-
-const bool CScraper::IsStringAllin(CString s)
-{
-	// Check for bad parameters
-	if (!s || s == "")
-		return false;
-
-	s.Remove(' ');
-	s.Remove('-');
-
-	if (s.MakeLower().Left(5) == "allin" ||
-		s.MakeLower().Left(5) == "a11in" ||
-		s.MakeLower().Left(5) == "allln" ||
-		s.MakeLower().Left(5) == "a111n" ||
-		s.MakeLower().Left(5) == "aiiin")
-	{
-		return true;
-	}
-
-	return false;
-}
-
-const bool CScraper::IsStringRaise(CString s)
-{
-	// Check for bad parameters
-	if (!s || s == "")
-		return false;
-
-	if (s.MakeLower().Left(5) == "raise" ||
-		s.MakeLower().Left(5) == "ra1se" ||
-		s.MakeLower().Left(5) == "ralse" ||
-		s.MakeLower().Left(3) == "bet")
-	{
-		return true;
-	}
-
-	return false;
-}
-
-const bool CScraper::IsStringCall(CString s)
-{
-	// Check for bad parameters
-	if (!s || s == "")
-		return false;
-
-	if (s.MakeLower().Left(4) == "call" ||
-		s.MakeLower().Left(4) == "caii" ||
-		s.MakeLower().Left(4) == "ca11")
-	{
-		return true;
-	}
-
-	return false;
-}
-
-const bool CScraper::IsStringCheck(CString s)
-{
-	// Check for bad parameters
-	if (!s || s == "")
-		return false;
-
-	if (s.MakeLower().Left(5) == "check" ||
-		s.MakeLower().Left(5) == "cheok")
-	{
-		return true;
-	}
-
-	return false;
-}
-
-const bool CScraper::IsStringFold(CString s)
-{
-	// Check for bad parameters
-	if (!s || s == "")
-		return false;
-
-	if (s.MakeLower().Left(4) == "fold" ||
-		s.MakeLower().Left(4) == "fo1d" ||
-		s.MakeLower().Left(4) == "foid")
-	{
-		return true;
-	}
-
-	return false;
-}
-
-const bool CScraper::IsStringAutopost(CString s)
-{
-	// Check for bad parameters
-	if (!s || s == "")
-		return false;
-
-	s.Remove(' ');
-	s.Remove('-');
-
-	if (s.MakeLower().Left(8) == "autopost" ||
-		s.MakeLower().Left(8) == "aut0p0st")
-	{
-		return true;
-	}
-
-	return false;
-}
-
-const bool CScraper::IsStringSitin(CString s)
-{
-	// Check for bad parameters
-	if (!s || s == "")
-		return false;
-
-	s.Remove(' ');
-	s.Remove('-');
-
-	if (s.MakeLower().Left(5) == "sitin" ||
-		s.MakeLower().Left(5) == "s1t1n")
-	{
-		return true;
-	}
-
-	return false;
-}
-
-const bool CScraper::IsStringSitout(CString s)
-{
-	// Check for bad parameters
-	if (!s || s == "")
-		return false;
-
-	s.Remove(' ');
-	s.Remove('-');
-
-	if (s.MakeLower().Left(6) == "sitout" ||
-		s.MakeLower().Left(6) == "s1tout" ||
-		s.MakeLower().Left(6) == "sit0ut" ||
-		s.MakeLower().Left(6) == "s1t0ut")
-	{
-		return true;
-	}
-
-	return false;
-}
-
-const bool CScraper::IsStringLeave(CString s)
-{
-	// Check for bad parameters
-	if (!s || s == "")
-		return false;
-
-	if (s.MakeLower().Left(5) == "leave")
-	{
-		return true;
-	}
-
-	return false;
-}
-
-const bool CScraper::IsStringPrefold(CString s)
-{
-	// Check for bad parameters
-	if (!s || s == "")
-		return false;
-
-	if (s.MakeLower().Left(7) == "prefold")
-	{
-		return true;
-	}
-
-	return false;
-}
-
-
-const bool CScraper::IsStringSeated(CString s)
-{
-	// Check for bad parameters
-	if (!s || s == "")
-		return false;
-
-	if (s.MakeLower().Left(5) == "false" ||
-		s.MakeLower().Left(8) == "unseated")
-	{
-		return false;
-	}
-
-	else if (s.MakeLower().Left(4) == "true" ||
-			 s.MakeLower().Left(6) == "seated")
-	{
-		return true;
-	}
-
-	return false;
-}
-
-const bool CScraper::IsStringActive(CString s)
-{
-	// Check for bad parameters
-	if (!s || s == "")
-		return p_tablemap->activemethod() == 2 ? true : false;
-
-	// new method: active unless pXactive returns false/inactive/out/away
-	if (p_tablemap->activemethod() == 2)
-	{
-		if (s.MakeLower().Left(5) == "false" ||
-			s.MakeLower().Left(8) == "inactive" ||
-			s.MakeLower().Left(3) == "out" ||
-			s.MakeLower().Left(4) == "away")
-		{
-			return false;
-		}
-
-		return true;
-	}
-	// old method: inactive unless pXactive returns true/active
-	else
-	{
-		if (s=="")
-			return false;
-
-		if (s.MakeLower().Left(8) == "inactive")
-		{
-			return false;
-		}
-
-		if (s.MakeLower().Left(4) == "true" ||
-			s.MakeLower().Left(6) == "active")
-		{
-			return true;
-		}
-
-		return false;
-	}
-}
-
-const bool CScraper::IsStringCardback(CString s)
-{
-	// Check for bad parameters
-	if (!s || s == "")
-		return false;
-
-	if (s.MakeLower().Left(4) == "true" ||
-		s.MakeLower().Left(8) == "cardback")
-	{
-		return true;
-	}
-
-	return false;
-}
-
-const bool CScraper::IsStringDealer(CString s)
-{
-	// Check for bad parameters
-	if (!s || s == "")
-		return false;
-
-	if (s.MakeLower().Left(4) == "true" ||
-		s.MakeLower().Left(6) == "dealer")
-	{
-		return true;
-	}
-
-	return false;
-}
 
 #undef __HDC_HEADER
 #undef __HDC_FOOTER

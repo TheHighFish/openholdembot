@@ -23,6 +23,7 @@
 #include "CRunRon.h"
 #include "CScraper.h"
 #include "CSessionCounter.h"
+#include "CStringMatch.h"
 #include "CTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTransform\CTransform.h"
@@ -1210,11 +1211,11 @@ bool CSymbols::CalcUserChair(void)
 		CString button_label = p_scraper->button_label(i);
 
 		if (p_scraper->GetButtonState(i) &&
-			(p_scraper->IsStringFold(button_label) ||
-			 p_scraper->IsStringCheck(button_label) ||
-			 p_scraper->IsStringCall(button_label) ||
-			 p_scraper->IsStringRaise(button_label) ||
-			 p_scraper->IsStringAllin(button_label) ||
+			(p_string_match->IsStringFold(button_label) ||
+			 p_string_match->IsStringCheck(button_label) ||
+			 p_string_match->IsStringCall(button_label) ||
+			 p_string_match->IsStringRaise(button_label) ||
+			 p_string_match->IsStringAllin(button_label) ||
 			 button_label.MakeLower() == "swag"))
 		{
 			num_buttons_enabled++;
@@ -1475,22 +1476,22 @@ void CSymbols::CalcAutoplayer(void)
 		{
 			CString button_label = p_scraper->button_label(i);
 
-			if (p_scraper->IsStringFold(button_label))
+			if (p_string_match->IsStringFold(button_label))
 				set_sym_myturnbits((int) _sym.myturnbits | (1<<0));
 
-			else if (p_scraper->IsStringCall(button_label))
+			else if (p_string_match->IsStringCall(button_label))
 				set_sym_myturnbits((int) _sym.myturnbits | (1<<1));
 
-			else if (p_scraper->IsStringRaise(button_label) || button_label.MakeLower() == "swag")
+			else if (p_string_match->IsStringRaise(button_label) || button_label.MakeLower() == "swag")
 				set_sym_myturnbits((int) _sym.myturnbits | (1<<2));
 
-			else if (p_scraper->IsStringCheck(button_label))
+			else if (p_string_match->IsStringCheck(button_label))
 				set_sym_myturnbits((int) _sym.myturnbits | (1<<4));
 
-			else if (p_scraper->IsStringAllin(button_label))
+			else if (p_string_match->IsStringAllin(button_label))
 				set_sym_myturnbits((int) _sym.myturnbits | (1<<3));
 
-			else if (p_scraper->IsStringAutopost(button_label))
+			else if (p_string_match->IsStringAutopost(button_label))
 				set_sym_isautopost(1);													// isautopost
 
 		}
@@ -1501,13 +1502,13 @@ void CSymbols::CalcAutoplayer(void)
 	sitin_but = sitout_but = sitin_state = sitout_state = false;
 	for (int i=0; i<k_max_number_of_buttons; i++)
 	{
-		if (p_scraper->IsStringSitin(p_scraper->button_label(i)))
+		if (p_string_match->IsStringSitin(p_scraper->button_label(i)))
 		{
 			sitin_but = true;
 			sitin_state = p_scraper->GetButtonState(i);
 		}
 
-		else if (p_scraper->IsStringSitout(p_scraper->button_label(i)))
+		else if (p_string_match->IsStringSitout(p_scraper->button_label(i)))
 		{
 			sitout_but = true;
 			sitout_state = p_scraper->GetButtonState(i);
@@ -1722,7 +1723,7 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 		if ((p_scraper->card_player(i, 0) != CARD_NOCARD 
 			|| p_scraper->card_player(i, 1) != CARD_NOCARD) 
 			|| (p_scraper->player_bet(i) != 0)					// betting or posting
-			|| p_scraper->IsStringActive(p_scraper->active(i)))	// active, i.e. sitting in; not strictly correct, as the player could be new at the table,
+			|| p_string_match->IsStringActive(p_scraper->active(i)))	// active, i.e. sitting in; not strictly correct, as the player could be new at the table,
 		{	
 			set_sym_playersdealtbits((int) _sym.playersdealtbits | (1<<i));				// playersdealtbits
 
@@ -1746,7 +1747,7 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 			}
 		}
 
-		if (p_scraper->IsStringSeated(p_scraper->seated(i)))
+		if (p_string_match->IsStringSeated(p_scraper->seated(i)))
 		{
 			set_sym_playersseatedbits((int) _sym.playersseatedbits | (1<<i));			// playersseatedbits
 
@@ -1760,7 +1761,7 @@ void CSymbols::CalcPlayersFriendsOpponents(void)
 			}
 		}
 
-		if (p_scraper->IsStringActive(p_scraper->active(i)))
+		if (p_string_match->IsStringActive(p_scraper->active(i)))
 		{
 			set_sym_playersactivebits((int) _sym.playersactivebits | (1<<i));			// playersactivebits
 			if (_user_chair_confirmed && i!=_sym.userchair)

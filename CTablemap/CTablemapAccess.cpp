@@ -2,7 +2,6 @@
 #include "CTableMapAccess.h"
 
 #include "..\CTablemap\CTablemap.h"
-#include "MagicNumbers.h"
 
 
 CTablemapAccess *p_tablemap_access = NULL;

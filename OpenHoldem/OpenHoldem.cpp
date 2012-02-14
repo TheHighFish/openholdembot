@@ -30,6 +30,7 @@
 #include "CSessionCounter.h"
 #include "CSharedMem.h"
 #include "CStableFramesCounter.h"
+#include "CStringMatch.h"
 #include "CSymbols.h"
 #include "CTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
@@ -88,6 +89,7 @@ COpenHoldemApp theApp;
 
 void COpenHoldemApp::InstanciateAllSingletonsExceptSessionCounter()
 {
+	if (!p_string_match)  p_string_match = new CStringMatch;
 	if (!p_handreset_detector)  p_handreset_detector = new CHandresetDetector;
 	if (!p_configurationcheck) p_configurationcheck = new CConfigurationCheck;
 	if (!p_sharedmem) p_sharedmem = new CSharedMem;
@@ -151,6 +153,7 @@ void COpenHoldemApp::DeleteAllSingletons()
 	if (p_sessioncounter) { delete p_sessioncounter; p_sessioncounter = NULL; }
 	if (p_configurationcheck) { delete p_configurationcheck; p_configurationcheck = NULL; }
 	if (p_handreset_detector)   { delete p_handreset_detector; p_handreset_detector = NULL; }
+	if (p_string_match) {delete p_string_match; p_string_match = NULL; }
 }
 
 // COpenHoldemApp initialization
