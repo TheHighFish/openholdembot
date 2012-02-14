@@ -4,7 +4,7 @@
 #include "../CCritSec/CCritSec.h"
 #include "MainFrm.h"
 #include "../CTablemap/CTablemap.h"
-#include "CTableMapAccess.h"
+#include "../CTablemap/CTableMapAccess.h"
 #include "OpenHoldem.h"
 
 extern class CAutoplayer 

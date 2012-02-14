@@ -14,7 +14,6 @@
 #include "CScraperAccess.h"
 #include "CStableFramesCounter.h"
 #include "CSymbols.h"
-#include "CTableMapAccess.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
 #include "PokerChat.hpp"
