@@ -555,7 +555,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath=".\CTablemapAccess.cpp"
+					RelativePath="..\CTablemap\CTablemapAccess.cpp"
 					>
 				</File>
 			</Filter>
@@ -1333,7 +1333,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\CTableMapAccess.h"
+					RelativePath="..\CTablemap\CTableMapAccess.h"
 					>
 				</File>
 			</Filter>
