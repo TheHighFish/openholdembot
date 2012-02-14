@@ -48,6 +48,21 @@ const int k_gametype_FL      =  2;
 const int k_max_number_of_buttons = 10;
 const int k_max_number_of_i86X_buttons = 10;
 
+// button codes
+const int k_button_i3     = 3;
+const int k_button_fold   = 10;
+const int k_button_allin  = 11;
+const int k_button_raise  = 12;
+const int k_button_call   = 13;
+const int k_button_check  = 14;
+const int k_button_sitin  = 20;
+const int k_button_sitout = 21;
+const int k_button_leave  = 22;
+const int k_button_i86    = 86;
+const int k_button_undefined = -1;
+
+int DefaultButtonNumber(int button_code);
+
 // Number of (side)pots
 const int k_max_number_of_pots = 10;
 
@@ -302,10 +317,5 @@ const int k_number_of_pocketcard_combinations_without_order = 1326;
 
 // For assertions of codes, that should never be executed
 const bool k_ThisMustNotHappen = false;
-
-// Function to access the name of the action constants.
-// As fold is negative we can no longer use the constants 
-// as indices for an array.
-const char* ActionConstantNames(int action_constant);
 
 #endif // _INC_MAGICNUMBERS_H

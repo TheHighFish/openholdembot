@@ -2,8 +2,8 @@
 #include "CLazyScraper.h"
 #include "CPreferences.h"
 #include "CScraper.h"
+#include "CScraperAccess.h"
 #include "CSymbols.h"
-#include "CTablemapAccess.h"
 #include "debug.h"
 
 CLazyScraper *p_lazyscraper = NULL;
@@ -38,7 +38,7 @@ void CLazyScraper::DoScrape()
 
 bool CLazyScraper::IsMyTurn()
 {
-	if (p_tablemap_access->DoesButtonExist(k_button_fold))
+	if (p_scraper_access->get_fold_button_visible())
 	{
 		write_log(3, "CLazyScraper::IsMyTurn(): true\n");
 		return true;
@@ -55,10 +55,10 @@ bool CLazyScraper::HaveCards()
 		return false;
 	}
 	int userchair = p_symbols->sym()->userchair;
-	int my_first_card  = p_tablemap_access->GetPlayerCards(userchair, 0);
-	int my_second_card = p_tablemap_access->GetPlayerCards(userchair, 1);
-	if (p_tablemap_access->IsValidCard(my_first_card)
-		&& p_tablemap_access->IsValidCard(my_second_card))
+	int my_first_card  = p_scraper_access->GetPlayerCards(userchair, 0);
+	int my_second_card = p_scraper_access->GetPlayerCards(userchair, 1);
+	if (p_scraper_access->IsValidCard(my_first_card)
+		&& p_scraper_access->IsValidCard(my_second_card))
 	{
 		write_log(3, "CLazyScraper::HaveCards(): false, no cards\n");
 		return false;
