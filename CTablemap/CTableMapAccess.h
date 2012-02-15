@@ -15,6 +15,8 @@ public:
 	bool GetButtonRect(CString button_name, RECT *_rect);
 	bool GetTableMapRect(CString region_name, RECT *_rect);
 	bool IsTableMapRectDefined(CString region_name);
+	static int GetClientSizeX();
+	static int GetClientSizeY();
 	
 } *p_tablemap_access;
 

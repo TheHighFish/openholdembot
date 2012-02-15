@@ -59,3 +59,32 @@ bool CTablemapAccess::IsTableMapRectDefined(CString region_name)
 
 	return false;
 }
+
+int CTablemapAccess::GetClientSizeX()
+{
+	ZMapCI z_iter = map->z$->end();
+	z_iter = map->z$->find("clientsize");
+	if (z_iter != map->z$->end())
+	{
+		return z_iter->second.width;
+	}
+	else
+	{
+		// 0 is the default formerly used by the auto-connector
+		return 0;
+	}
+}
+
+int CTablemapAccess::GetClientSizeY()
+{
+	ZMapCI z_iter = map->z$->end();
+	z_iter = map->z$->find("clientsize");
+	if (z_iter != map->z$->end())
+	{
+		return z_iter->second.height;
+	}
+	else
+	{
+		return 0;
+	}
+}
