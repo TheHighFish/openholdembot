@@ -13,6 +13,7 @@
 #include "CSharedMem.h"
 #include "CSymbols.h"
 #include "..\CTablemap\CTablemap.h"
+#include "..\CTablemap\CTablemapAccess.h"
 #include "..\CTransform\CTransform.h"
 #include "DialogScraperOutput.h"
 #include "DialogSelectTable.h"
@@ -217,19 +218,12 @@ void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 		MessageBox(0, error_message, "Warning", 0);
 	}
 	
-	// Extract client size information
+	// Get clientsize info through TM-access-class
+	TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeX = CTablemapAccess::GetClientSizeX();
+	TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeY = CTablemapAccess::GetClientSizeX();
+	
+	// Do it for min and max the old way
 	ZMapCI z_iter = map->z$->end();
-	z_iter = map->z$->find("clientsize");
-	if (z_iter != map->z$->end())
-	{
-		TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeX = z_iter->second.width;
-		TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeY = z_iter->second.height;
-	}
-	else
-	{
-		TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeX = 0;
-		TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeY = 0;
-	}
 	z_iter = map->z$->find("clientsizemin");
 	if (z_iter != map->z$->end())
 	{
