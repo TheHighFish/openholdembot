@@ -8,13 +8,14 @@
 #include "stdafx.h"
 #include "MainFrm.h"
 
+#include "CRegionCloner.h"
+#include "DialogCopyRegion.h"
+#include "DialogSelectTable.h"
+#include "global.h"
 #include "OpenScrape.h"
 #include "OpenScrapeDoc.h"
 #include "OpenScrapeView.h"
 #include "registry.h"
-#include "DialogSelectTable.h"
-#include "global.h"
-#include "DialogCopyRegion.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -36,6 +37,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_PREV, &CMainFrame::OnViewPrev)
 	ON_COMMAND(ID_VIEW_NEXT, &CMainFrame::OnViewNext)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_NEXT, &CMainFrame::OnViewNext)
+	ON_COMMAND(ID_TOOLS_CLONEREGIONS, &CMainFrame::OnToolsCloneRegions)
 
 	ON_COMMAND(ID_EDIT_UPDATEHASHES, &CMainFrame::OnEditUpdatehashes)
 	ON_WM_TIMER()
@@ -645,6 +647,13 @@ void CMainFrame::OnViewNext()
 	{
 		OnViewConnecttowindow();
 	}
+}
+
+void CMainFrame::OnToolsCloneRegions()
+{
+	CRegionCloner *p_region__cloner = new(CRegionCloner);
+	p_region__cloner->CloneRegions();
+	delete(p_region__cloner);
 }
 
 void CMainFrame::OnGroupregionsBytype()

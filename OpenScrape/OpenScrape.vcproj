@@ -203,6 +203,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\CRegionCloner.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CTablemap_TroubleChecking.cpp"
 				>
 				<FileConfiguration
@@ -353,6 +357,10 @@
 					RelativePath="..\CTablemap\CTablemap.cpp"
 					>
 				</File>
+				<File
+					RelativePath="..\CTablemap\CTablemapAccess.cpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -476,6 +484,10 @@
 				Name="hscroll-list-box"
 				>
 				<File
+					RelativePath=".\CRegionCloner.h"
+					>
+				</File>
+				<File
 					RelativePath="..\hscroll-list-box\HScrollListBox.h"
 					>
 				</File>
@@ -485,6 +497,10 @@
 				>
 				<File
 					RelativePath="..\CTablemap\CTablemap.h"
+					>
+				</File>
+				<File
+					RelativePath="..\CTablemap\CTableMapAccess.h"
 					>
 				</File>
 			</Filter>
