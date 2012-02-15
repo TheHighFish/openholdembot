@@ -104,7 +104,12 @@ while (<>)
 		|| m/EnableFoldInTurn =/ 
 		|| m/DefaultBetSizeFlop =/
 		|| m/DefaultBetSizeTurn =/ 
-		|| m/DefaultBetSizeRiver =/)
+		|| m/DefaultBetSizeRiver =/
+		|| m/MoveMouseBeforeClickingAtFT =/
+		|| m/WindowLeft =/
+		|| m/WindowRight =/
+		|| m/WindowBottom =/
+		|| m/WindowTop =/)
 	{
 		# No processing, no printing, just skip it.
 		next;
