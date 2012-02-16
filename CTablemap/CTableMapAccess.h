@@ -3,6 +3,13 @@
 
 #include <windows.h>
 
+typedef struct
+{
+	int clientsize_x;
+	int clientsize_y;
+
+} clientsize;
+
 extern class CTablemapAccess
 {
 
@@ -14,6 +21,7 @@ public:
 	// public
 	bool GetButtonRect(CString button_name, RECT *_rect);
 	bool GetTableMapRect(CString region_name, RECT *_rect);
+	bool GetClientSize(CString size_name, clientsize *z_size);
 	static int GetClientSizeX();
 	static int GetClientSizeY();
 	
