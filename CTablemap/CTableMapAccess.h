@@ -21,9 +21,11 @@ public:
 	// public
 	bool GetButtonRect(CString button_name, RECT *_rect);
 	bool GetTableMapRect(CString region_name, RECT *_rect);
+	// Usable for clientsize, clientsizemin and clientsizemax
 	bool GetClientSize(CString size_name, clientsize *z_size);
-	static int GetClientSizeX();
-	static int GetClientSizeY();
+	// functions below only for clientsize
+	int GetClientSizeX();
+	int GetClientSizeY();
 	
 } *p_tablemap_access;
 
