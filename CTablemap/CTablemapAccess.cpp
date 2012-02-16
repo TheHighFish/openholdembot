@@ -66,7 +66,7 @@ int CTablemapAccess::GetClientSizeX()
 	clientsize z_size;
 	if (GetClientSize("clientsize", &z_size))
 	{
-		return z_size.clientsize_x;
+		return z_size.width;
 	}
 	else
 	{
@@ -80,10 +80,11 @@ int CTablemapAccess::GetClientSizeY()
 	clientsize z_size;
 	if (GetClientSize("clientsize", &z_size))
 	{
-		return z_size.clientsize_y;
+		return z_size.height;
 	}
 	else
 	{
+		// 0 is the default formerly used by the auto-connector
 		return 0;
 	}
 }
