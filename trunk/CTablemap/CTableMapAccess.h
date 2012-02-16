@@ -5,8 +5,8 @@
 
 typedef struct
 {
-	int clientsize_x;
-	int clientsize_y;
+	int width;
+	int height;
 
 } clientsize;
 
