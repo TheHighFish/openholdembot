@@ -140,12 +140,8 @@ bool CScraperAccess::SearchForButtonVisible(int button_code)
 	bool button_visible = false;
 	int button_number = SearchForButtonNumber(button_code);
 
-	if (button_number != k_button_undefined && 
-		p_scraper->GetButtonState(button_number) && 
-		p_tablemap_access->IsTableMapRectDefined(GetButtonName(button_number)))
-	{
+	if (button_number != k_button_undefined && p_scraper->GetButtonState(button_number))
 		button_visible = true;
-	}
 
 	return button_visible;
 }
@@ -174,12 +170,8 @@ bool CScraperAccess::GetButtonVisible(int button_number)
 
 	bool button_visible = false;
 
-	if (button_number != k_button_undefined && 
-		p_scraper->GetButtonState(button_number) && 
-		p_tablemap_access->IsTableMapRectDefined(GetButtonName(button_number)))
-	{
+	if (button_number != k_button_undefined && p_scraper->GetButtonState(button_number))
 		button_visible = true;
-	}
 
 	return button_visible;
 }
@@ -187,59 +179,65 @@ bool CScraperAccess::GetButtonVisible(int button_number)
 void CScraperAccess::SetScraperAccessData()
 {
 	// find button numbers
-	int allin_button_number = SearchForButtonNumber(k_button_allin);
-	int raise_button_number = SearchForButtonNumber(k_button_raise);
-	int call_button_number = SearchForButtonNumber(k_button_call);
-	int check_button_number = SearchForButtonNumber(k_button_check);
-	int fold_button_number = SearchForButtonNumber(k_button_fold);
-	int sitin_button_number = SearchForButtonNumber(k_button_sitin);
-	int sitout_button_number = SearchForButtonNumber(k_button_sitout);
-	int leave_button_number = SearchForButtonNumber(k_button_leave);
-	// int prefold_button_number = SearchForButtonNumber(k_button_prefold);
-	// int autopost_button_number = SearchForButtonNumber(k_button_autopost);
+	_allin_button_number  = SearchForButtonNumber(k_button_allin);
+	_raise_button_number  = SearchForButtonNumber(k_button_raise);
+	_call_button_number   = SearchForButtonNumber(k_button_call);
+	_check_button_number  = SearchForButtonNumber(k_button_check);
+	_fold_button_number   = SearchForButtonNumber(k_button_fold);
+	_sitin_button_number  = SearchForButtonNumber(k_button_sitin);
+	_sitout_button_number = SearchForButtonNumber(k_button_sitout);
+	_leave_button_number  = SearchForButtonNumber(k_button_leave);
+	// _prefold_button_number = SearchForButtonNumber(k_button_prefold);
+	// _autopost_button_number = SearchForButtonNumber(k_button_autopost);
 
 
 	// set button names
-	set_allin_button_name(GetButtonName(allin_button_number));
-	set_raise_button_name(GetButtonName(raise_button_number));
-	set_call_button_name(GetButtonName(call_button_number));
-	set_check_button_name(GetButtonName(check_button_number));
-	set_fold_button_name(GetButtonName(fold_button_number));
-	set_sitin_button_name(GetButtonName(sitin_button_number));
-	set_sitout_button_name(GetButtonName(sitout_button_number));
-	set_leave_button_name(GetButtonName(leave_button_number));
-	//set_prefold_button_name(GetButtonName(prefold_button_number));
-	//set_autopost_button_name(GetButtonName(autopost_button_number));
-	// hardcoded i3button
-	set_i3_button_name();
-	// hardcoded i3slider
-	set_i3_slider_name();
-	// hardcoded i3handle
-	set_i3_handle_name();
-	// hardcoded i86button
-	set_i86_button_name();
-	// hardcoded i86Xbuttons
-	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
-		set_i86X_button_name(i, GetButtonName(k_button_i86*k_max_number_of_i86X_buttons + i));
+	_allin_button_name  = GetButtonName(_allin_button_number);
+	_raise_button_name  = GetButtonName(_raise_button_number);
+	_call_button_name   = GetButtonName(_call_button_number);
+	_check_button_name  = GetButtonName(_check_button_number);
+	_fold_button_name   = GetButtonName(_fold_button_number);
+	_sitin_button_name  = GetButtonName(_sitin_button_number);
+	_sitout_button_name = GetButtonName(_sitout_button_number);
+	_leave_button_name  = GetButtonName(_leave_button_number);
+	//_prefold_button_name = GetButtonName(prefold_button_number);
+	//_autopost_button_name = GetButtonName(autopost_button_number);
 
+	// hardcoded i3button
+	_i3_button_name = "i3button";
+	// hardcoded i3slider
+	_i3_slider_name = "i3slider";
+	// hardcoded i3handle
+	_i3_handle_name = "i3handle";
+
+	// hardcoded i86button
+	_i86_button_name = "i86button";
+	// hardcoded i86Xbuttons
+	CString button_name = "";
+	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
+	{
+		button_name.Format("i%dbutton", k_button_i86*k_max_number_of_i86X_buttons + i);
+		_i86X_button_name[i] = button_name;
+	}
 
 	// Set Button States
-	set_allin_button_visible(GetButtonVisible(allin_button_number));
-	set_raise_button_visible(GetButtonVisible(raise_button_number));
-	set_call_button_visible(GetButtonVisible(call_button_number));
-	set_check_button_visible(GetButtonVisible(check_button_number));
-	set_fold_button_visible(GetButtonVisible(fold_button_number));
-	set_sitin_button_visible(GetButtonVisible(sitin_button_number));
-	set_sitout_button_visible(GetButtonVisible(sitout_button_number));
-	set_leave_button_visible(GetButtonVisible(leave_button_number));
-	// Missing button_codes !!!
+	_allin_button_visible  = GetButtonVisible(_allin_button_number);
+	_raise_button_visible  = GetButtonVisible(_raise_button_number);
+	_call_button_visible   = GetButtonVisible(_call_button_number);
+	_check_button_visible  = GetButtonVisible(_check_button_number);
+	_fold_button_visible   = GetButtonVisible(_fold_button_number);
+	_sitin_button_visible  = GetButtonVisible(_sitin_button_number);
+	_sitout_button_visible = GetButtonVisible(_sitout_button_number);
+	_leave_button_visible  = GetButtonVisible(_leave_button_number);
 	//set_prefold_button_visible(IsButtonVisible(k_button_prefold));
 	//set_autopost_button_visible(IsButtonVisible(k_button_autopost));
+
 	// hardcoded i3button - special case since i3state can be true when there is no i3button
-	set_i3_button_visible(GetButtonVisible(k_button_i3));
+	_i3_button_visible = GetButtonVisible(k_button_i3);
 	// hardcoded i86button
-	set_i86_button_visible(GetButtonVisible(k_button_i86));
+
+	_i86_button_visible = GetButtonVisible(k_button_i86);
 	// hardcoded i86Xbuttons
 	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
-		set_i86X_button_visible(i, GetButtonVisible(k_button_i86*k_max_number_of_i86X_buttons + i));
+		_i86X_button_visible[i] = GetButtonVisible(k_button_i86*k_max_number_of_i86X_buttons + i);
 }
