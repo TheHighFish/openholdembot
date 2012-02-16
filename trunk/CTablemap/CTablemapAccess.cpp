@@ -24,14 +24,14 @@ bool CTablemapAccess::GetButtonRect(CString button_name, RECT *_rect)
 	return GetTableMapRect(button_name, _rect);
 }
 
-bool CTablemapAccess::GetTableMapRect(CString region_name, RECT *_rect)
+bool CTablemapAccess::GetTableMapRect(CString rect_name, RECT *_rect)
 {
 	/*
 		Finds tablemap regions (i3_edit, i3_slider, i3_handle, iXbutton, i86button, i86Xbutton)
 		and inserts details into RECT parameter
 	*/
 
-	RMapCI wanted_region = p_tablemap->r$()->find(region_name);
+	RMapCI wanted_region = p_tablemap->r$()->find(rect_name);
 
 	if (wanted_region != p_tablemap->r$()->end())
 	{
@@ -39,6 +39,36 @@ bool CTablemapAccess::GetTableMapRect(CString region_name, RECT *_rect)
 		_rect->top    = wanted_region->second.top;
 		_rect->right  = wanted_region->second.right;
 		_rect->bottom = wanted_region->second.bottom;
+
+		return true;
+	}
+
+	return false;
+}
+
+bool GetTableMapRegion(CString region_name, STablemapRegion *_region)
+{
+	/*
+		Finds tablemap regions (i3_edit, i3_slider, i3_handle, iXbutton, i86button, i86Xbutton)
+		and inserts details into region parameter
+	*/
+
+	RMapCI wanted_region = p_tablemap->r$()->find(region_name);
+
+	if (wanted_region != p_tablemap->r$()->end())
+	{
+		_region->left      = wanted_region->second.left;
+		_region->top       = wanted_region->second.top;
+		_region->right     = wanted_region->second.right;
+		_region->bottom    = wanted_region->second.bottom;
+		_region->color     = wanted_region->second.color;
+		_region->radius    = wanted_region->second.radius;
+		_region->transform = wanted_region->second.transform;
+		_region->name      = wanted_region->second.name;
+		_region->cur_bmp   = wanted_region->second.cur_bmp;
+		_region->last_bmp  = wanted_region->second.last_bmp;
+	
+
 
 		return true;
 	}
