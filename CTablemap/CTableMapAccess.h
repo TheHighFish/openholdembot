@@ -2,6 +2,7 @@
 #define INC_CTABLEMAPACCESS_H
 
 #include <windows.h>
+#include "CTablemap.h"
 
 typedef struct
 {
@@ -20,7 +21,8 @@ public:
 public:
 	// public
 	bool GetButtonRect(CString button_name, RECT *_rect);
-	bool GetTableMapRect(CString region_name, RECT *_rect);
+	bool GetTableMapRect(CString rect_name, RECT *_rect);
+	bool GetTableMapRegion(CString region_name, STablemapRegion *_region);
 	// Usable for clientsize, clientsizemin and clientsizemax
 	bool GetClientSize(CString size_name, clientsize *z_size);
 	// functions below only for clientsize
