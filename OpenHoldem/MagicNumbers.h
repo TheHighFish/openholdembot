@@ -76,6 +76,11 @@ const int k_number_of_flags = 20;
 const int k_number_of_suits_per_deck = 4;
 const int k_number_of_ranks_per_deck = 13;
 
+// Regions for the region cloner of OpenScrape
+// may be used for players, pots, community-cards, etc.
+// So we take the maximum.
+const int k_max_number_of_regions_to_clone = 10;
+
 // Memory symbols
 const int k_max_number_of_memory_symbols = 2048;
 const int k_max_length_of_memory_symbols = 64;
