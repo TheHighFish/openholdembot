@@ -219,8 +219,8 @@ void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 	}
 	
 	// Get clientsize info through TM-access-class
-	TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeX = CTablemapAccess::GetClientSizeX();
-	TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeY = CTablemapAccess::GetClientSizeX();
+	TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeX = p_tablemap_access->GetClientSizeX();
+	TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeY = p_tablemap_access->GetClientSizeX();
 	
 	// Do it for min and max the old way
 	ZMapCI z_iter = map->z$->end();
