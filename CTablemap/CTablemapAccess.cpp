@@ -62,9 +62,9 @@ bool CTablemapAccess::IsTableMapRectDefined(CString region_name)
 
 int CTablemapAccess::GetClientSizeX()
 {
-	ZMapCI z_iter = map->z$->end();
-	z_iter = map->z$->find("clientsize");
-	if (z_iter != map->z$->end())
+	ZMapCI z_iter = p_tablemap->z$()->find("clientsize");
+
+	if (z_iter != p_tablemap->z$()->end())
 	{
 		return z_iter->second.width;
 	}
@@ -77,9 +77,9 @@ int CTablemapAccess::GetClientSizeX()
 
 int CTablemapAccess::GetClientSizeY()
 {
-	ZMapCI z_iter = map->z$->end();
-	z_iter = map->z$->find("clientsize");
-	if (z_iter != map->z$->end())
+	ZMapCI z_iter = p_tablemap->z$()->find("clientsize");
+
+	if (z_iter != p_tablemap->z$()->end())
 	{
 		return z_iter->second.height;
 	}
