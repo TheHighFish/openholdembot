@@ -18,6 +18,19 @@ public:
 	bool IsValidCard(int Card);
 
 public:
+	// public accessors for button numbers
+	int get_allin_button_number() { return _allin_button_number; }
+	int get_raise_button_number() { return _raise_button_number; }
+	int get_call_button_number() { return _call_button_number; }
+	int get_check_button_number() { return _check_button_number; }
+	int get_fold_button_number() { return _fold_button_number; }
+	int get_sitin_button_number() { return _sitin_button_number; }
+	int get_sitout_button_number() { return _sitout_button_number; }
+	int get_leave_button_number() { return _leave_button_number; }
+	// int prefold_button_number() { return _prefold_button_number; }
+	// int autopost_button_number() { return _autopost_button_number; }
+
+public:
 	// public accessors for button names
 	CString get_allin_button_name() { return _allin_button_name; }
 	CString get_raise_button_name() { return _raise_button_name; }
@@ -32,7 +45,6 @@ public:
 	CString get_autopost_button_name() { return _autopost_button_name; }
 	CString get_i86_button_name() { return _i86_button_name; }
 	CString get_i86X_button_name(int i) { return _i86X_button_name[i]; }
-public:
 	// public accessors for region names
 	CString get_i3_edit_name() { return _i3_edit_name; }
 	CString get_i3_slider_name() { return _i3_slider_name; }
@@ -53,7 +65,6 @@ public:
 	bool get_autopost_button_visible() { return _autopost_button_visible; }
 	bool get_i86_button_visible() { return _i86_button_visible; }
 	bool get_i86X_button_visible(int i) { return _i86X_button_visible[i]; }
-public:
 	// public accessors for region visible
 	/*
 	bool get_i3_edit_visible() { return _i3_edit_visible; };
@@ -69,50 +80,18 @@ private:
 	CString GetButtonName(int button_number);
 	CString SearchForButtonName(int button_code);
 
-public:
-	// private mutators for button names
-	void set_allin_button_name(CString s) { _allin_button_name = s; }
-	void set_raise_button_name(CString s) { _raise_button_name = s; }
-	void set_call_button_name(CString s) { _call_button_name = s; }
-	void set_check_button_name(CString s) { _check_button_name = s; }
-	void set_fold_button_name(CString s) { _fold_button_name = s; }
-	void set_prefold_button_name(CString s) { _prefold_button_name = s; }
-
-	void set_sitin_button_name(CString s) { _sitin_button_name = s; }
-	void set_sitout_button_name(CString s) { _sitout_button_name = s; }
-	void set_leave_button_name(CString s) { _leave_button_name = s; }
-	void set_autopost_button_name(CString s) { _autopost_button_name = s; }
-	void set_i86X_button_name(int i, CString s) { _i86X_button_name[i] = s; }
-	// hardcoded
-	void set_i3_button_name() { _i3_button_name = "i3button"; }
-	void set_i86_button_name() { _i86_button_name = "i86button"; }
-public:
-	// private mutators for region names
-	void set_i3_edit_name() { _i3_edit_name = "i3edit"; }
-	void set_i3_slider_name() { _i3_slider_name = "i3slider"; }
-	void set_i3_handle_name() { _i3_handle_name = "i3handle"; }
-public:
-	// private mutators for button visible
-	void set_allin_button_visible(bool b) { _allin_button_visible = b; }
-	void set_raise_button_visible(bool b) { _raise_button_visible = b; }
-	void set_call_button_visible(bool b) { _call_button_visible = b; }
-	void set_check_button_visible(bool b) { _check_button_visible = b; }
-	void set_fold_button_visible(bool b) { _fold_button_visible = b; }
-	void set_prefold_button_visible(bool b) { _prefold_button_visible = b; }
-	void set_i3_button_visible(bool b) { _i3_button_visible = b; }
-	void set_sitin_button_visible(bool b) { _sitin_button_visible = b; }
-	void set_sitout_button_visible(bool b) { _sitout_button_visible = b; }
-	void set_leave_button_visible(bool b) { _leave_button_visible = b; }
-	void set_autopost_button_visible(bool b) { _autopost_button_visible = b; }
-	void set_i86_button_visible(bool b) { _i86_button_visible = b; }
-	void set_i86X_button_visible(int i, bool b) { _i86X_button_visible[i] = b; }
-public:
-	// private mutators for region visible
-	/*
-	void set_i3_edit_visible(bool b) { _i3_edit_visible = b; }
-	void set_i3_slider_visible(bool b) { _i3_slider_visible = b; }
-	void set_i3_handle_visible(bool b) { _i3_handle_visible = b; }
-	*/
+private:
+	// button numbers
+	int _allin_button_number;
+	int _raise_button_number;
+	int _call_button_number;
+	int _check_button_number;
+	int _fold_button_number;
+	int _sitin_button_number;
+	int _sitout_button_number;
+	int _leave_button_number;
+	// int _prefold_button_number;
+	// int _autopost_button_number;
 
 private:
 	// button names
@@ -129,11 +108,11 @@ private:
 	CString _autopost_button_name;
 	CString _i86_button_name;
 	CString _i86X_button_name[k_max_number_of_i86X_buttons];
-private:
 	// region names
 	CString _i3_edit_name;
 	CString _i3_slider_name;
 	CString _i3_handle_name;
+
 private:
 	// button is visible
 	bool _allin_button_visible;
@@ -149,7 +128,6 @@ private:
 	bool _autopost_button_visible;
 	bool _i86_button_visible;
 	bool _i86X_button_visible[k_max_number_of_i86X_buttons];
-private:
 	// region is visible
 	/*
 	bool _i3_edit_visible;

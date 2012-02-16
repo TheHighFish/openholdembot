@@ -46,20 +46,6 @@ bool CTablemapAccess::GetTableMapRect(CString region_name, RECT *_rect)
 	return false;
 }
 
-bool CTablemapAccess::IsTableMapRectDefined(CString region_name)
-{
-	/*
-		Checks if a Tablemap region is defined
-	*/
-
-	RMapCI wanted_region = p_tablemap->r$()->find(region_name);
-
-	if (wanted_region != p_tablemap->r$()->end())
-		return true;
-
-	return false;
-}
-
 int CTablemapAccess::GetClientSizeX()
 {
 	ZMapCI z_iter = p_tablemap->z$()->find("clientsize");
