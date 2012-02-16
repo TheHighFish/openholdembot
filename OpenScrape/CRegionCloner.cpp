@@ -24,6 +24,27 @@ bool CRegionCloner::TableSizeUndefined()
 		|| (p_tablemap_access->GetClientSizeY() <= 0));
 }
 
+void CRegionCloner::CalculateLinearRegions(RECT first_region, int number_of_regions)
+{
+	// Calculates the position for N regions,
+	// horizontally aligned and symmetrically to the middle of the table,
+	// with equal distance to each other.
+	int width_of_region = first_region.right - first_region.left;
+	int space_for_remaining_regions = p_tablemap_access->GetClientSizeX()
+		- first_region.left // distance to the left of first region
+		- first_region.left // distance to the right of last region
+		- width_of_region;
+	int delta_X_to_next_region = space_for_remaining_regions
+		/ (number_of_regions - 1);
+	for (int i=1; i<k_number_of_community_cards; i++)
+	{
+		linear_region_positions[i].left = first_region.left
+			+ i * delta_X_to_next_region;
+		linear_region_positions[i].right = first_region.right
+			+ i * delta_X_to_next_region;
+	}
+}
+
 void CRegionCloner::CloneCommonCards()
 {
 	RECT c0cardface0;
@@ -56,7 +77,7 @@ void CRegionCloner::CloneCommonCards()
 				new_region.radius = 0;
 				new_region.transform = "N";
 		p_tablemap->r$_insert(new_region);
-		new_region.name = "r$c0cardface3";
+		/*new_region.name = "r$c0cardface3";*/
 		p_tablemap->r$_insert(new_region);
 
 		//pDoc->SetModifiedFlag(true);

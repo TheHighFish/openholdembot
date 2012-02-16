@@ -369,6 +369,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\CRegionCloner.h"
+				>
+			</File>
+			<File
 				RelativePath=".\debug.h"
 				>
 			</File>
@@ -483,10 +487,6 @@
 			<Filter
 				Name="hscroll-list-box"
 				>
-				<File
-					RelativePath=".\CRegionCloner.h"
-					>
-				</File>
 				<File
 					RelativePath="..\hscroll-list-box\HScrollListBox.h"
 					>
