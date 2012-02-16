@@ -63,11 +63,10 @@ bool CTablemapAccess::GetClientSize(CString size_name, clientsize *z_size)
 
 int CTablemapAccess::GetClientSizeX()
 {
-	ZMapCI z_iter = p_tablemap->z$()->find("clientsize");
-
-	if (z_iter != p_tablemap->z$()->end())
+	clientsize z_size;
+	if (GetClientSize("clientsize", &z_size))
 	{
-		return z_iter->second.width;
+		return z_size.clientsize_x;
 	}
 	else
 	{
@@ -78,11 +77,10 @@ int CTablemapAccess::GetClientSizeX()
 
 int CTablemapAccess::GetClientSizeY()
 {
-	ZMapCI z_iter = p_tablemap->z$()->find("clientsize");
-
-	if (z_iter != p_tablemap->z$()->end())
+	clientsize z_size;
+	if (GetClientSize("clientsize", &z_size))
 	{
-		return z_iter->second.height;
+		return z_size.clientsize_y;
 	}
 	else
 	{
