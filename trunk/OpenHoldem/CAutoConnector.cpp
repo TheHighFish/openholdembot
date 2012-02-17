@@ -193,8 +193,6 @@ void CAutoConnector::CheckForDuplicatedTablemaps()
 
 void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 {
-	CString s;
-	
 	write_log(prefs.debug_autoconnector(), "[CAutoConnector] ExtractConnectionDataFromCurrentTablemap(): %s\n", map->filepath);
 	write_log(prefs.debug_autoconnector(), "[CAutoConnector] NumberOfTableMapsLoaded: %d\n", NumberOfTableMapsLoaded);
 
@@ -222,41 +220,23 @@ void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 	p_tablemap_access->SetSize("clientsize", TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeX, TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeY, map);
 	p_tablemap_access->SetSize("clientsizemin", TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMinX, TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMinY, map);
 	p_tablemap_access->SetSize("clientsizemax", TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMaxX, TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMaxY, map);
-
+	
 	// Extract title text information
-	SMapCI s_iter = map->s$->end();
-	s_iter = map->s$->find("titletext");
-	if (s_iter!=map->s$->end())
-		TablemapConnectionData[NumberOfTableMapsLoaded].TitleText =	s_iter->second.text;
-	else
-		TablemapConnectionData[NumberOfTableMapsLoaded].TitleText = "";
-			
+	p_tablemap_access->SetString("titletext", TablemapConnectionData[NumberOfTableMapsLoaded].TitleText, map);
+	// Extract negative title texs
+	p_tablemap_access->SetString("!titletext", TablemapConnectionData[NumberOfTableMapsLoaded].NegativeTitleText , map);
+		
+	CString s = "";
 	for (int i=0; i<=9; i++)
 	{
 		s.Format("titletext%d", i);
-		s_iter = map->s$->find(s.GetString());
-		if (s_iter!=map->s$->end())
-			TablemapConnectionData[NumberOfTableMapsLoaded].TitleText_0_9[i] =	s_iter->second.text;
-		else
-			TablemapConnectionData[NumberOfTableMapsLoaded].TitleText_0_9[i] = "";
-	}
+		p_tablemap_access->SetString(s, TablemapConnectionData[NumberOfTableMapsLoaded].TitleText_0_9[i], map);
 
-	// Extract negative title texs
-	s_iter = map->s$->find("!titletext");
-	if (s_iter!=map->s$->end())
-		TablemapConnectionData[NumberOfTableMapsLoaded].NegativeTitleText = s_iter->second.text;
-	else
-		TablemapConnectionData[NumberOfTableMapsLoaded].NegativeTitleText = "";
-
-	for (int i=0; i<=9; i++)
-	{
 		s.Format("!titletext%d", i);
-		s_iter = map->s$->find(s.GetString());
-		if (s_iter!=map->s$->end())
-			TablemapConnectionData[NumberOfTableMapsLoaded].NegativeTitleText_0_9[i] = s_iter->second.text;
-		else
-			TablemapConnectionData[NumberOfTableMapsLoaded].NegativeTitleText_0_9[i] = "";
+		p_tablemap_access->SetString(s, TablemapConnectionData[NumberOfTableMapsLoaded].NegativeTitleText_0_9[i] , map);
+		
 	}
+
 	NumberOfTableMapsLoaded++;
 }
 
