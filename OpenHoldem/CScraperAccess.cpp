@@ -179,29 +179,28 @@ bool CScraperAccess::GetButtonVisible(int button_number)
 void CScraperAccess::SetScraperAccessData()
 {
 	// find button numbers
-	_allin_button_number  = SearchForButtonNumber(k_button_allin);
-	_raise_button_number  = SearchForButtonNumber(k_button_raise);
-	_call_button_number   = SearchForButtonNumber(k_button_call);
-	_check_button_number  = SearchForButtonNumber(k_button_check);
-	_fold_button_number   = SearchForButtonNumber(k_button_fold);
-	_sitin_button_number  = SearchForButtonNumber(k_button_sitin);
-	_sitout_button_number = SearchForButtonNumber(k_button_sitout);
-	_leave_button_number  = SearchForButtonNumber(k_button_leave);
-	// _prefold_button_number = SearchForButtonNumber(k_button_prefold);
-	// _autopost_button_number = SearchForButtonNumber(k_button_autopost);
-
+	_allin_button_number	= SearchForButtonNumber(k_button_allin);
+	_raise_button_number	= SearchForButtonNumber(k_button_raise);
+	_call_button_number		= SearchForButtonNumber(k_button_call);
+	_check_button_number	= SearchForButtonNumber(k_button_check);
+	_fold_button_number		= SearchForButtonNumber(k_button_fold);
+	_sitin_button_number	= SearchForButtonNumber(k_button_sitin);
+	_sitout_button_number	= SearchForButtonNumber(k_button_sitout);
+	_leave_button_number	= SearchForButtonNumber(k_button_leave);
+	_prefold_button_number	= SearchForButtonNumber(k_button_prefold);
+	_autopost_button_number	= SearchForButtonNumber(k_button_autopost);
 
 	// set button names
-	_allin_button_name  = GetButtonName(_allin_button_number);
-	_raise_button_name  = GetButtonName(_raise_button_number);
-	_call_button_name   = GetButtonName(_call_button_number);
-	_check_button_name  = GetButtonName(_check_button_number);
-	_fold_button_name   = GetButtonName(_fold_button_number);
-	_sitin_button_name  = GetButtonName(_sitin_button_number);
-	_sitout_button_name = GetButtonName(_sitout_button_number);
-	_leave_button_name  = GetButtonName(_leave_button_number);
-	//_prefold_button_name = GetButtonName(prefold_button_number);
-	//_autopost_button_name = GetButtonName(autopost_button_number);
+	_allin_button_name		= GetButtonName(_allin_button_number);
+	_raise_button_name		= GetButtonName(_raise_button_number);
+	_call_button_name		= GetButtonName(_call_button_number);
+	_check_button_name		= GetButtonName(_check_button_number);
+	_fold_button_name		= GetButtonName(_fold_button_number);
+	_sitin_button_name		= GetButtonName(_sitin_button_number);
+	_sitout_button_name		= GetButtonName(_sitout_button_number);
+	_leave_button_name		= GetButtonName(_leave_button_number);
+	_prefold_button_name	= GetButtonName(_prefold_button_number);
+	_autopost_button_name	= GetButtonName(_autopost_button_number);
 
 	// hardcoded i3button
 	_i3_button_name = "i3button";
@@ -221,16 +220,16 @@ void CScraperAccess::SetScraperAccessData()
 	}
 
 	// Set Button States
-	_allin_button_visible  = GetButtonVisible(_allin_button_number);
-	_raise_button_visible  = GetButtonVisible(_raise_button_number);
-	_call_button_visible   = GetButtonVisible(_call_button_number);
-	_check_button_visible  = GetButtonVisible(_check_button_number);
-	_fold_button_visible   = GetButtonVisible(_fold_button_number);
-	_sitin_button_visible  = GetButtonVisible(_sitin_button_number);
-	_sitout_button_visible = GetButtonVisible(_sitout_button_number);
-	_leave_button_visible  = GetButtonVisible(_leave_button_number);
-	//set_prefold_button_visible(IsButtonVisible(k_button_prefold));
-	//set_autopost_button_visible(IsButtonVisible(k_button_autopost));
+	_allin_button_visible		= GetButtonVisible(_allin_button_number);
+	_raise_button_visible		= GetButtonVisible(_raise_button_number);
+	_call_button_visible		= GetButtonVisible(_call_button_number);
+	_check_button_visible		= GetButtonVisible(_check_button_number);
+	_fold_button_visible		= GetButtonVisible(_fold_button_number);
+	_sitin_button_visible		= GetButtonVisible(_sitin_button_number);
+	_sitout_button_visible		= GetButtonVisible(_sitout_button_number);
+	_leave_button_visible		= GetButtonVisible(_leave_button_number);
+	_prefold_button_visible		= GetButtonVisible(_prefold_button_number);
+	_autopost_button_visible	= GetButtonVisible(_autopost_button_number);
 
 	// hardcoded i3button - special case since i3state can be true when there is no i3button
 	_i3_button_visible = GetButtonVisible(k_button_i3);
