@@ -219,33 +219,15 @@ void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 	}
 	
 	// Get clientsize info through TM-access-class
-	TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeX = p_tablemap_access->GetClientSizeX();
-	TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeY = p_tablemap_access->GetClientSizeX();
-	
-	// Do it for min and max the old way
-	ZMapCI z_iter = map->z$->end();
-	z_iter = map->z$->find("clientsizemin");
-	if (z_iter != map->z$->end())
-	{
-		TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMinX = z_iter->second.width;
-		TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMinY = z_iter->second.height;
-	}
-	else
-	{
-		TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMinX = 0;
-		TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMinY = 0;
-	}
-	z_iter = map->z$->find("clientsizemax");
-	if (z_iter != map->z$->end())
-	{
-		TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMaxX = z_iter->second.width;
-		TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMaxY = z_iter->second.height;
-	}
-	else
-	{
-		TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMaxX = 0;
-		TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMaxY = 0;
-	}
+	TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeX = p_tablemap_access->GetSize("clientsize", width, map);
+	TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeY = p_tablemap_access->GetSize("clientsize", height, map);
+
+	TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMinX = p_tablemap_access->GetSize("clientsizemin", width, map);
+	TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMinY = p_tablemap_access->GetSize("clientsizemin", height, map);
+
+	TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMaxX = p_tablemap_access->GetSize("clientsizemax", height, map);
+	TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMaxY = p_tablemap_access->GetSize("clientsizemax", height, map);
+
 
 	// Extract title text information
 	SMapCI s_iter = map->s$->end();
@@ -328,7 +310,11 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 			&& (r.bottom >= (int) TablemapConnectionData[MapIndex].ClientSizeMinY)
 			&& (r.bottom <= (int) TablemapConnectionData[MapIndex].ClientSizeMaxY)))
 		{
-			write_log(prefs.debug_autoconnector(), "[CAutoConnector] No good size.\n");
+			write_log(prefs.debug_autoconnector(), "[CAutoConnector] No good size: Expected (%dpx, %dpx), Got (%dpx, %dpx)\n",
+				TablemapConnectionData[MapIndex].ClientSizeX,
+				TablemapConnectionData[MapIndex].ClientSizeY,
+				r.right,
+				r.bottom);
 			return false;
 		}
 	}
