@@ -19,58 +19,48 @@ public:
 
 public:
 	// public accessors for button numbers
-	int get_allin_button_number() { return _allin_button_number; }
-	int get_raise_button_number() { return _raise_button_number; }
-	int get_call_button_number() { return _call_button_number; }
-	int get_check_button_number() { return _check_button_number; }
-	int get_fold_button_number() { return _fold_button_number; }
-	int get_sitin_button_number() { return _sitin_button_number; }
-	int get_sitout_button_number() { return _sitout_button_number; }
-	int get_leave_button_number() { return _leave_button_number; }
-	// int prefold_button_number() { return _prefold_button_number; }
-	// int autopost_button_number() { return _autopost_button_number; }
+	int get_allin_button_number()	{ return _allin_button_number; }
+	int get_raise_button_number()	{ return _raise_button_number; }
+	int get_call_button_number()	{ return _call_button_number; }
+	int get_check_button_number()	{ return _check_button_number; }
+	int get_fold_button_number()	{ return _fold_button_number; }
+	int get_sitin_button_number()	{ return _sitin_button_number; }
+	int get_sitout_button_number()	{ return _sitout_button_number; }
+	int get_leave_button_number()	{ return _leave_button_number; }
+	int prefold_button_number()		{ return _prefold_button_number; }
+	int autopost_button_number()	{ return _autopost_button_number; }
 
 public:
 	// public accessors for button names
-	CString get_allin_button_name() { return _allin_button_name; }
-	CString get_raise_button_name() { return _raise_button_name; }
-	CString get_call_button_name() { return _call_button_name; }
-	CString get_check_button_name() { return _check_button_name; }
-	CString get_fold_button_name() { return _fold_button_name; }
-	CString get_prefold_button_name() { return _prefold_button_name; }
-	CString get_i3_button_name() { return _i3_button_name; }
-	CString get_sitin_button_name() { return _sitin_button_name; }
-	CString get_sitout_button_name() { return _sitout_button_name; }
-	CString get_leave_button_name() { return _leave_button_name; }
-	CString get_autopost_button_name() { return _autopost_button_name; }
-	CString get_i86_button_name() { return _i86_button_name; }
-	CString get_i86X_button_name(int i) { return _i86X_button_name[i]; }
-	// public accessors for region names
-	CString get_i3_edit_name() { return _i3_edit_name; }
-	CString get_i3_slider_name() { return _i3_slider_name; }
-	CString get_i3_handle_name() { return _i3_handle_name; }
+	CString get_allin_button_name()		{ return _allin_button_name; }
+	CString get_raise_button_name()		{ return _raise_button_name; }
+	CString get_call_button_name()		{ return _call_button_name; }
+	CString get_check_button_name()		{ return _check_button_name; }
+	CString get_fold_button_name()		{ return _fold_button_name; }
+	CString get_sitin_button_name()		{ return _sitin_button_name; }
+	CString get_sitout_button_name()	{ return _sitout_button_name; }
+	CString get_leave_button_name()		{ return _leave_button_name; }
+	CString get_prefold_button_name()	{ return _prefold_button_name; }
+	CString get_autopost_button_name()	{ return _autopost_button_name; }
+	CString get_i86_button_name()		{ return "i86button"; }
+	CString get_i86X_button_name(int i)	{ return _i86X_button_name[i]; }
+	CString get_i3_button_name()		{ return "i3button"; }
 
 public:
 	// public accessors for button visible
-	bool get_allin_button_visible() { return _allin_button_visible; }
-	bool get_raise_button_visible() { return _raise_button_visible; }
-	bool get_call_button_visible() { return _call_button_visible; }
-	bool get_check_button_visible() { return _check_button_visible; }
-	bool get_fold_button_visible() { return _fold_button_visible; }
-	bool get_prefold_button_visible() { return _prefold_button_visible; }
-	bool get_i3_button_visible() { return _i3_button_visible; }
-	bool get_sitin_button_visible() { return _sitin_button_visible; }
-	bool get_sitout_button_visible() { return _sitout_button_visible; }
-	bool get_leave_button_visible() { return _leave_button_visible; }
-	bool get_autopost_button_visible() { return _autopost_button_visible; }
-	bool get_i86_button_visible() { return _i86_button_visible; }
-	bool get_i86X_button_visible(int i) { return _i86X_button_visible[i]; }
-	// public accessors for region visible
-	/*
-	bool get_i3_edit_visible() { return _i3_edit_visible; };
-	bool get_i3_slider_visible() { return _i3_slider_visible; };
-	bool get_i3_handle_visible() { return _i3_slider_visible; };
-	*/
+	bool get_allin_button_visible()		{ return _allin_button_visible; }
+	bool get_raise_button_visible()		{ return _raise_button_visible; }
+	bool get_call_button_visible()		{ return _call_button_visible; }
+	bool get_check_button_visible()		{ return _check_button_visible; }
+	bool get_fold_button_visible()		{ return _fold_button_visible; }
+	bool get_sitin_button_visible()		{ return _sitin_button_visible; }
+	bool get_sitout_button_visible()	{ return _sitout_button_visible; }
+	bool get_leave_button_visible()		{ return _leave_button_visible; }
+	bool get_prefold_button_visible()	{ return _prefold_button_visible; }
+	bool get_autopost_button_visible()	{ return _autopost_button_visible; }
+	bool get_i86_button_visible()		{ return _i86_button_visible; }
+	bool get_i86X_button_visible(int i)	{ return _i86X_button_visible[i]; }
+	bool get_i3_button_visible()		{ return _i3_button_visible; }
 
 private:
 	// private functions
@@ -90,8 +80,8 @@ private:
 	int _sitin_button_number;
 	int _sitout_button_number;
 	int _leave_button_number;
-	// int _prefold_button_number;
-	// int _autopost_button_number;
+	int _prefold_button_number;
+	int _autopost_button_number;
 
 private:
 	// button names
@@ -100,14 +90,14 @@ private:
 	CString _call_button_name;
 	CString _check_button_name;
 	CString _fold_button_name;
-	CString _prefold_button_name;
-	CString _i3_button_name;
 	CString _sitin_button_name;
 	CString _sitout_button_name;
 	CString _leave_button_name;
+	CString _prefold_button_name;
 	CString _autopost_button_name;
 	CString _i86_button_name;
 	CString _i86X_button_name[k_max_number_of_i86X_buttons];
+	CString _i3_button_name;
 	// region names
 	CString _i3_edit_name;
 	CString _i3_slider_name;
@@ -120,20 +110,14 @@ private:
 	bool _call_button_visible;
 	bool _check_button_visible;
 	bool _fold_button_visible;
-	bool _prefold_button_visible;
-	bool _i3_button_visible;
 	bool _sitin_button_visible;
 	bool _sitout_button_visible;
 	bool _leave_button_visible;
+	bool _prefold_button_visible;
 	bool _autopost_button_visible;
 	bool _i86_button_visible;
 	bool _i86X_button_visible[k_max_number_of_i86X_buttons];
-	// region is visible
-	/*
-	bool _i3_edit_visible;
-	bool _i3_slider_visible;
-	bool _i3_handle_visible;
-	*/
+	bool _i3_button_visible;
 
 } *p_scraper_access;
 

@@ -67,8 +67,6 @@ bool GetTableMapRegion(CString region_name, STablemapRegion *_region)
 		_region->name      = wanted_region->second.name;
 		_region->cur_bmp   = wanted_region->second.cur_bmp;
 		_region->last_bmp  = wanted_region->second.last_bmp;
-	
-
 
 		return true;
 	}
@@ -103,8 +101,7 @@ bool CTablemapAccess::SetSize(CString size_name, unsigned int &width, unsigned i
 		required by Autoconnector
 	*/
 
-	width = 0;
-	height = 0;
+	width = 0; height = 0;
 	ZMapCI z_iter = smap->z$->find(size_name);
 
 	if (z_iter != smap->z$->end())
