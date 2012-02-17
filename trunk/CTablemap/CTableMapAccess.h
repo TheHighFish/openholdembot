@@ -11,6 +11,8 @@ typedef struct
 
 } clientsize;
 
+enum dim {width, height};
+
 extern class CTablemapAccess
 {
 
@@ -23,8 +25,11 @@ public:
 	bool GetButtonRect(CString button_name, RECT *_rect);
 	bool GetTableMapRect(CString rect_name, RECT *_rect);
 	bool GetTableMapRegion(CString region_name, STablemapRegion *_region);
+
 	// Usable for clientsize, clientsizemin and clientsizemax
+	int GetSize(CString size_name, dim dimension, SWholeMap *smap);
 	bool GetClientSize(CString size_name, clientsize *z_size);
+
 	// functions below only for clientsize
 	int GetClientSizeX();
 	int GetClientSizeY();
