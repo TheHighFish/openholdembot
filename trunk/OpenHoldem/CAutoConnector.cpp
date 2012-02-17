@@ -219,15 +219,9 @@ void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 	}
 	
 	// Get clientsize info through TM-access-class
-	TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeX = p_tablemap_access->GetSize("clientsize", width, map);
-	TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeY = p_tablemap_access->GetSize("clientsize", height, map);
-
-	TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMinX = p_tablemap_access->GetSize("clientsizemin", width, map);
-	TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMinY = p_tablemap_access->GetSize("clientsizemin", height, map);
-
-	TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMaxX = p_tablemap_access->GetSize("clientsizemax", height, map);
-	TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMaxY = p_tablemap_access->GetSize("clientsizemax", height, map);
-
+	p_tablemap_access->SetSize("clientsize", TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeX, TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeY, map);
+	p_tablemap_access->SetSize("clientsizemin", TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMinX, TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMinY, map);
+	p_tablemap_access->SetSize("clientsizemax", TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMaxX, TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMaxY, map);
 
 	// Extract title text information
 	SMapCI s_iter = map->s$->end();
