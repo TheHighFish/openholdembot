@@ -28,18 +28,16 @@ public:
 
 public:
 	// s$ public
-	bool SetTitleText(CString title_name, CString &destination, SWholeMap *smap);
+	bool SetTitleText(CString title_name, CString &destination);
 
 public:
 	// z$ public
 	// Usable for clientsize, clientsizemin and clientsizemax
-	unsigned int GetSize(CString size_name, dim dimension, SWholeMap *smap);
-	bool SetSize(CString size_name, unsigned int &width, unsigned int &height, SWholeMap *smap);
-	bool GetClientSize(CString size_name, clientsize *z_size);
-
+	bool SetClientSize(CString size_name, unsigned int &width, unsigned int &height);
 	// functions below only for clientsize
-	int GetClientSizeX();
-	int GetClientSizeY();
+	unsigned int GetClientSize(CString size_name, dim dimension);
+	unsigned int GetClientSizeX();
+	unsigned int GetClientSizeY();
 	
 } *p_tablemap_access;
 

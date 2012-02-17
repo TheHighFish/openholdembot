@@ -217,24 +217,23 @@ void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 	}
 	
 	// Get clientsize info through TM-access-class
-	p_tablemap_access->SetSize("clientsize", TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeX, TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeY, map);
-	p_tablemap_access->SetSize("clientsizemin", TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMinX, TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMinY, map);
-	p_tablemap_access->SetSize("clientsizemax", TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMaxX, TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMaxY, map);
-	
+	p_tablemap_access->SetClientSize("clientsize", TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeX, TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeY);
+	p_tablemap_access->SetClientSize("clientsizemin", TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMinX, TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMinY);
+	p_tablemap_access->SetClientSize("clientsizemax", TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMaxX, TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMaxY);
+
 	// Extract title text information
-	p_tablemap_access->SetTitleText("titletext", TablemapConnectionData[NumberOfTableMapsLoaded].TitleText, map);
+	p_tablemap_access->SetTitleText("titletext", TablemapConnectionData[NumberOfTableMapsLoaded].TitleText);
 	// Extract negative title texs
-	p_tablemap_access->SetTitleText("!titletext", TablemapConnectionData[NumberOfTableMapsLoaded].NegativeTitleText , map);
+	p_tablemap_access->SetTitleText("!titletext", TablemapConnectionData[NumberOfTableMapsLoaded].NegativeTitleText);
 		
 	CString s = "";
 	for (int i=0; i<=9; i++) // 9 !!! -> unnamed constant 
 	{
 		s.Format("titletext%d", i);
-		p_tablemap_access->SetTitleText(s, TablemapConnectionData[NumberOfTableMapsLoaded].TitleText_0_9[i], map);
+		p_tablemap_access->SetTitleText(s, TablemapConnectionData[NumberOfTableMapsLoaded].TitleText_0_9[i]);
 
 		s.Format("!titletext%d", i);
-		p_tablemap_access->SetTitleText(s, TablemapConnectionData[NumberOfTableMapsLoaded].NegativeTitleText_0_9[i] , map);
-		
+		p_tablemap_access->SetTitleText(s, TablemapConnectionData[NumberOfTableMapsLoaded].NegativeTitleText_0_9[i]);		
 	}
 
 	NumberOfTableMapsLoaded++;
