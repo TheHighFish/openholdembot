@@ -27,7 +27,8 @@ public:
 	bool GetTableMapRegion(CString region_name, STablemapRegion *_region);
 
 	// Usable for clientsize, clientsizemin and clientsizemax
-	int GetSize(CString size_name, dim dimension, SWholeMap *smap);
+	unsigned int GetSize(CString size_name, dim dimension, SWholeMap *smap);
+	bool SetSize(CString size_name, unsigned int &width, unsigned int &height, SWholeMap *smap);
 	bool GetClientSize(CString size_name, clientsize *z_size);
 
 	// functions below only for clientsize
