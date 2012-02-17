@@ -76,14 +76,15 @@ bool GetTableMapRegion(CString region_name, STablemapRegion *_region)
 	return false;
 }
 
-bool CTablemapAccess::SetString(CString search, CString &destination, SWholeMap *smap)
+bool CTablemapAccess::SetTitleText(CString title_name, CString &destination, SWholeMap *smap)
 {
 	/*
 		s$ : Extract client titletext
+		required by Autoconnector
 	*/
 
 	destination = "";
-	SMapCI s_iter = smap->s$->find(search);
+	SMapCI s_iter = smap->s$->find(title_name);
 
 	if (s_iter != smap->s$->end())
 	{
@@ -99,6 +100,7 @@ bool CTablemapAccess::SetSize(CString size_name, unsigned int &width, unsigned i
 {
 	/*
 		z$ : Extract client size
+		required by Autoconnector
 	*/
 
 	width = 0;

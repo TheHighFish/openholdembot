@@ -28,7 +28,7 @@ public:
 
 public:
 	// s$ public
-	bool SetString(CString search, CString &destination, SWholeMap *smap);
+	bool SetTitleText(CString title_name, CString &destination, SWholeMap *smap);
 
 public:
 	// z$ public
