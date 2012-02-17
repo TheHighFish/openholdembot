@@ -74,7 +74,7 @@ bool GetTableMapRegion(CString region_name, STablemapRegion *_region)
 	return false;
 }
 
-bool CTablemapAccess::SetTitleText(CString title_name, CString &destination, SWholeMap *smap)
+bool CTablemapAccess::SetTitleText(CString title_name, CString &destination)
 {
 	/*
 		s$ : Extract client titletext
@@ -82,9 +82,9 @@ bool CTablemapAccess::SetTitleText(CString title_name, CString &destination, SWh
 	*/
 
 	destination = "";
-	SMapCI s_iter = smap->s$->find(title_name);
+	SMapCI s_iter = p_tablemap->s$()->find(title_name);
 
-	if (s_iter != smap->s$->end())
+	if (s_iter != p_tablemap->s$()->end())
 	{
 		destination = s_iter->second.text;
 
@@ -94,7 +94,7 @@ bool CTablemapAccess::SetTitleText(CString title_name, CString &destination, SWh
 	return false;
 }
 
-bool CTablemapAccess::SetSize(CString size_name, unsigned int &width, unsigned int &height, SWholeMap *smap)
+bool CTablemapAccess::SetClientSize(CString size_name, unsigned int &width, unsigned int &height)
 {
 	/*
 		z$ : Extract client size
@@ -102,28 +102,28 @@ bool CTablemapAccess::SetSize(CString size_name, unsigned int &width, unsigned i
 	*/
 
 	width = 0; height = 0;
-	ZMapCI z_iter = smap->z$->find(size_name);
+	ZMapCI z_iter = p_tablemap->z$()->find(size_name);
 
-	if (z_iter != smap->z$->end())
+	if (z_iter != p_tablemap->z$()->end())
 	{
 		width = z_iter->second.width;
 		height = z_iter->second.height;
 
 		return true;
 	}
-	
+
 	return false;
 }
 
-unsigned int CTablemapAccess::GetSize(CString size_name, dim dimension, SWholeMap *smap)
+unsigned int CTablemapAccess::GetClientSize(CString size_name, dim dimension)
 {
 	/*
 		z$ : Extract client size
 	*/
 
-	ZMapCI z_iter = smap->z$->find(size_name);
+	ZMapCI z_iter = p_tablemap->z$()->find(size_name);
 
-	if (z_iter != smap->z$->end())
+	if (z_iter != p_tablemap->z$()->end())
 	{
 		if (dimension == width)
 			return z_iter->second.width;
@@ -135,45 +135,12 @@ unsigned int CTablemapAccess::GetSize(CString size_name, dim dimension, SWholeMa
 	return 0;
 }
 
-bool CTablemapAccess::GetClientSize(CString size_name, clientsize *z_size)
+unsigned int CTablemapAccess::GetClientSizeX()
 {
-	ZMapCI z_iter = p_tablemap->z$()->find(size_name);
-
-	if (z_iter != p_tablemap->z$()->end())
-	{
-		z_size->width = z_iter->second.width;
-		z_size->height = z_iter->second.height;
-
-		return true;
-	}
-
-	return false;
+	return GetClientSize("clientsize", width);
 }
 
-int CTablemapAccess::GetClientSizeX()
+unsigned int CTablemapAccess::GetClientSizeY()
 {
-	clientsize z_size;
-	if (GetClientSize("clientsize", &z_size))
-	{
-		return z_size.width;
-	}
-	else
-	{
-		// 0 is the default formerly used by the auto-connector
-		return 0;
-	}
-}
-
-int CTablemapAccess::GetClientSizeY()
-{
-	clientsize z_size;
-	if (GetClientSize("clientsize", &z_size))
-	{
-		return z_size.height;
-	}
-	else
-	{
-		// 0 is the default formerly used by the auto-connector
-		return 0;
-	}
+	return GetClientSize("clientsize", height);
 }
