@@ -19,6 +19,23 @@ BUG FIXES:
   This did affect the calculation of NutFullHouseOrFourOfAKind.
   Thanks to SteveG1963  for reporting.
   [THF]  
+- RaisesSinceLastPlay did use f$OpenPPL_BotsActionsOnThisRound 
+  instead of f$OpenPPL_BotsActionsOnThisRoundIncludingChecks.
+  This could lead to wrong initializations.
+  Thanks to MarkShmiter for reporting.
+  [THF]
+- InitBotsLastActionPreflop did incorrectly use an undefined BotsLastAction
+  for initialization on first orbit preflop and therefore didn't work. 
+  To make things worse it did affect BotsLastAction also, 
+  because the value of this symbol got cached and later reused. 
+  This has now been fixed.
+  Thanks to Postenjak for reporting.
+  [THF]
+
+MAINTENANCE:
+- Some new option settings for deletion in bracketify.pl.
+  Thanks to Postenjak for reporting.
+  [THF]
 
 v1.0.2 2012-02-03
 =================
