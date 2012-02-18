@@ -973,7 +973,15 @@ me_st_MemBotsLastAction_f$OpenPPL_None
 me_re_MemBotsLastAction
 
 ##f$OpenPPL_InitBotsLastPreflopAction##
-(betround == f$OpenPPL_ConstBetRoundPreflop) ? me_st_MemBotsLastPreflopAction_f$OpenPPL_BotsLastAction : 0
+// Don't use BotsLastAction on the first orbit,
+// because that variable has to be the last one to be initialized
+// and is therefore undefined.
+[(betround == f$OpenPPL_ConstBetRoundPreflop) && (f$OpenPPL_BotsActionsOnThisRound == 0)] ? 
+    me_st_MemBotsLastPreflopAction_f$OpenPPL_None :
+[(betround == f$OpenPPL_ConstBetRoundPreflop) && (f$OpenPPL_BotsActionsOnThisRound > 0)] ? 
+    me_st_MemBotsLastPreflopAction_f$OpenPPL_BotsLastAction : 
+[(betround == f$OpenPPL_ConstBetRoundFlop) && (f$OpenPPL_BotsActionsOnThisRound == 0)] ?
+    me_st_MemBotsLastPreflopAction_f$OpenPPL_BotsLastAction : 0  
 
 ##f$OpenPPL_BotsLastPreflopAction##
 me_re_MemBotsLastPreflopAction
