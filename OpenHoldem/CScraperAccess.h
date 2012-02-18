@@ -64,11 +64,12 @@ public:
 
 private:
 	// private functions
-	int SearchForButtonNumber(int button_code);
-	bool GetButtonVisible(int button_number);
-	bool SearchForButtonVisible(int button_code);
-	CString GetButtonName(int button_number);
-	CString SearchForButtonName(int button_code);
+	int		SearchForButtonNumber(int button_code);
+	bool	SearchForButtonVisible(int button_code);
+	CString	SearchForButtonName(int button_code);
+	bool	GetButtonVisible(int button_number);
+	CString	GetButtonName(int button_number);
+
 
 private:
 	// button numbers
