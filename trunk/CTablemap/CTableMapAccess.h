@@ -21,21 +21,22 @@ public:
 	~CTablemapAccess();
 	
 public:
-	// r$ public
+	// r$
 	bool GetButtonRect(CString button_name, RECT *_rect);
 	bool GetTableMapRect(CString rect_name, RECT *_rect);
 	bool GetTableMapRegion(CString region_name, STablemapRegion *_region);
 
 public:
-	// s$ public
+	// s$
 	bool SetTitleText(CString title_name, CString &destination);
 
 public:
-	// z$ public
+	// z$
 	// Usable for clientsize, clientsizemin and clientsizemax
 	bool SetClientSize(CString size_name, unsigned int &width, unsigned int &height);
-	// functions below only for clientsize
 	unsigned int GetClientSize(CString size_name, dim dimension);
+
+	// functions below only for clientsize	
 	unsigned int GetClientSizeX();
 	unsigned int GetClientSizeY();
 	

@@ -719,7 +719,9 @@ void CAutoplayer::DoSlider(void)
 
 	bool			sym_ismyturn = (bool) p_symbols->sym()->ismyturn;
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
+
 	double			alli = p_symbols->f$alli();
+
 	POINT			point_null = {-1, -1};
 	RECT			r_null = {-1, -1, -1, -1};
 
@@ -742,14 +744,13 @@ void CAutoplayer::DoSlider(void)
 	{
 		// Click and drag handle
 		//!!!
-		
+
 		RECT	r;
-		/*
-		r.left = p_scraper->handle_xy().x + ((handle->second.right - handle->second.left)/2);
-		r.top = p_scraper->handle_xy().y + ((handle->second.bottom - handle->second.top)/2);
-		r.right = p_scraper->handle_xy().x + (slider->second.right - slider->second.left);
+		r.left = p_scraper->handle_xy().x + ((i3_handle_region.right - i3_handle_region.left)/2);
+		r.top = p_scraper->handle_xy().y + ((i3_handle_region.bottom - i3_handle_region.top)/2);
+		r.right = p_scraper->handle_xy().x + (i3_slider_region.right - i3_handle_region.left);
 		r.bottom = r.top;		
-		*/
+
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling mouse.dll to jam from %d,%d to %d,%d\n", r.left, r.top, r.right, r.bottom);
 		(theApp._dll_mouse_click_drag) (p_autoconnector->attached_hwnd(), r, NULL, point_null);
 
