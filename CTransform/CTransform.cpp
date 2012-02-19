@@ -303,7 +303,7 @@ const int CTransform::HTypeTransform(RMapCI region, const HDC hdc, CString *text
 	}
 
 	// selected pixel hash
-	else if (hash_type>=1 && hash_type<=3) 
+	else if (hash_type>=1 && hash_type<k_max_number_of_hash_groups_in_tablemap) 
 	{
 		pixcount = 0;
 		for (PMapCI p_iter=p_tablemap->p$(hash_type)->begin(); p_iter!=p_tablemap->p$(hash_type)->end(); p_iter++) 

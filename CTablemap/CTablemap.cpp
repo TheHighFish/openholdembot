@@ -51,12 +51,14 @@ void CTablemap::ClearTablemap()
 	_s$.clear();
 	_r$.clear();
 
-	for (int i=0; i<=3; i++)
-	{
+	for (int i = 0; i < k_max_number_of_font_groups_in_tablemap; i++)
 		_t$[i].clear();
+
+	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 		_p$[i].clear();
+
+	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 		_h$[i].clear();
-	}
 
 	// Clear _i$-map and its contents
 	ClearIMap();
@@ -66,8 +68,12 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 							CString *loaded_version) 
 {
 	CString				strLine = "", strLineType = "", token = "", s = "", e = "", hexval = "", t = "";
+	CString				MaxFontGroup = "", MaxHashGroup = "";
 	int					pos = 0, x = 0, y = 0;
 	bool				supported_version = false;
+
+	MaxFontGroup.Format("%d", k_max_number_of_font_groups_in_tablemap);
+	MaxHashGroup.Format("%d", k_max_number_of_hash_groups_in_tablemap);
 
 	// temp
 	STablemapSize			hold_size;
@@ -363,7 +369,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 		else if (strLineType.Left(2) == "t$" ||
 				 (strLineType.Left(1) == 't' &&
 				  strLineType.Mid(1,1) >= "0" &&
-				  strLineType.Mid(1,1) <= "3" &&
+				  strLineType.Mid(1,1) < MaxFontGroup &&
 				  strLineType.Mid(2,1) == "$")) 
 		{
 
@@ -376,7 +382,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 				hold_font.ch = t.GetString()[0];
 				font_group = 0;
 			}
-			// New style t$ records (font groups 0-3) - "2007 Nov 1 08:32:55" WinScrape release and later & OpenScrape
+			// New style t$ records (font groups 0..k_max_number_of_font_groups_in_tablemap) - "2007 Nov 1 08:32:55" WinScrape release and later & OpenScrape
 			else 
 			{
 				t = strLineType.Mid(3,1);
@@ -384,9 +390,9 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 				font_group = strLineType.GetString()[1] - '0';
 			}
 
-			if (font_group<0 || font_group>3)
+			if (font_group < 0 || font_group >= k_max_number_of_font_groups_in_tablemap)
 			{
-				OH_MessageBox(strLine, "Invalid font group\nFont groups have to be in the range [0..3]", MB_OK | MB_TOPMOST);
+				OH_MessageBox(strLine, "Invalid font group\nFont groups have to be in the range [0..k_max_number_of_font_groups_in_tablemap]", MB_OK | MB_TOPMOST);
 				return ERR_SYNTAX;
 			}
 
@@ -419,15 +425,16 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 		// Handle p$ lines (hash points)
 		else if (strLineType.Left(1) == "p" &&
 				 strLineType.Mid(1,1) >= "0" &&
-				 strLineType.Mid(1,1) <= "3" &&
+				 strLineType.Mid(1,1) < MaxHashGroup &&
 				 strLineType.Mid(2,1) == "$") 
 		{
 			// number
 			token = strLineType.Mid(1,1);
 			int hashpoint_group = atol(token);
-			if (hashpoint_group<0 || hashpoint_group>3)
+			if (hashpoint_group < 0 || hashpoint_group >= k_max_number_of_hash_groups_in_tablemap)
 			{
-				OH_MessageBox(strLine, "Invalid hash point group\nHash point groups have to be in the range [0..3]", MB_OK | MB_TOPMOST);
+
+				OH_MessageBox(strLine, "Invalid hash point group\nHash point groups have to be in the range [0..k_max_number_of_hashpoint_groups_in_tablemap]", MB_OK | MB_TOPMOST);
 				return ERR_SYNTAX;
 			}
 
@@ -465,14 +472,14 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 		// Handle h$ lines (hash values)
 		else if (strLineType.Left(1) == "h" &&
 				 strLineType.Mid(1,1) >= "0" &&
-				 strLineType.Mid(1,1) <= "3" &&
+				 strLineType.Mid(1,1) < MaxHashGroup &&
 				 strLineType.Mid(2,1) == "$") 
 		{
 			// number
 			int hash_group = strLineType.GetString()[1] - '0';
-			if (hash_group<0 || hash_group>3)
+			if (hash_group < 0 || hash_group >= k_max_number_of_hash_groups_in_tablemap)
 			{
-				OH_MessageBox(strLine, "Invalid hash group\nHash groups have to be in the range [0..3]", MB_OK | MB_TOPMOST);
+				OH_MessageBox(strLine, "Invalid hash group\nHash groups have to be in the range [0..k_max_number_of_hash_groups_in_tablemap]", MB_OK | MB_TOPMOST);
 				return ERR_SYNTAX;
 			}
 
@@ -657,7 +664,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("//\r\n");
 	ar.WriteString("\r\n");
 
-	for (int i=0; i<=3; i++)
+	for (int i = 0; i < k_max_number_of_font_groups_in_tablemap; i++)
 	{
 		for (TMapCI t_iter =_t$[i].begin(); t_iter != _t$[i].end(); t_iter++)
 		{
@@ -679,7 +686,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("//\r\n");
 	ar.WriteString("\r\n");
 
-	for (int i=0; i<=3; i++)
+	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 	{
 		for (PMapCI p_iter=_p$[i].begin(); p_iter!=_p$[i].end(); p_iter++)
 		{
@@ -695,7 +702,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("//\r\n");
 	ar.WriteString("\r\n");
 
-	for (int i=0; i<=3; i++)
+	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 	{
 		for (HMapCI h_iter=_h$[i].begin(); h_iter!=_h$[i].end(); h_iter++)
 		{
@@ -749,8 +756,8 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 	uint32_t				hash_seed = 0;
 	STablemapHashValue		hold_hash_value;
 	STablemapHashValue		h$_record;
-	CArray <STablemapHashValue, STablemapHashValue> new_hashes[4];
-	CArray <STablemapHashValue, STablemapHashValue>	unmatched_h$_records[4];
+	CArray <STablemapHashValue, STablemapHashValue> new_hashes[k_max_number_of_hash_groups_in_tablemap];
+	CArray <STablemapHashValue, STablemapHashValue>	unmatched_h$_records[k_max_number_of_hash_groups_in_tablemap];
 
 	// Get number of records of each type in this table map
 	if (_i$.begin()==_i$.end()) 
@@ -773,10 +780,10 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 	// Loop through all the hash (h$) records, and check for a corresponding image (i$) record
 	// Log missing records, display message and error out if we can't find them all
 	all_i$_found = true;
-	for (i=0; i<=3; j++)
+	for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; j++)
 		unmatched_h$_records[j].RemoveAll();
 
-	for (i=0; i<=3; j++)
+	for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; j++)
 	{
 		for (HMapCI h_iter=_h$[i].begin(); h_iter!=_h$[i].end(); h_iter++)
 		{
@@ -808,7 +815,7 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 			fprintf(fp, "<%s>\nConverting from: %s\n", timebuf, _filepath);
 			fprintf(fp, "h$ records with no matching i$ record:\n");
 
-			for (i=0; i<=3; i++)
+			for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 				for (j=0; j<unmatched_h$_records[i].GetCount(); j++)
 					fprintf(fp, "\t%3d. h$%s\n", j+1, unmatched_h$_records[i].GetAt(j).name.GetString());
 
@@ -827,14 +834,14 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 	}
 
 	// Prepare CArray that holds temporary hash records
-	for (i=0; i<=3; i++)
+	for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 		new_hashes[i].RemoveAll();
 
 	// Loop through each of the image records and create hashes
 	for (IMapCI i_iter=_i$.begin(); i_iter!=_i$.end(); i_iter++) 
 	{
 		// Loop through the h$ records to find all the hashes that we have to create for this image record
-		for (i=0; i<=3; i++)
+		for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 		{
 			for (HMapCI h_iter=_h$[i].begin(); h_iter!=_h$[i].end(); h_iter++) 
 			{
@@ -890,10 +897,10 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 
 
 	// Copy the temporary new hash CArray to the internal std::map
-	for (i=0; i<=3; i++)
+	for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 		h$_clear(i);
 
-	for (i=0; i<=3; i++)
+	for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 	{
 		for (j=0; j<(int) new_hashes[i].GetSize(); j++)
 		{
@@ -920,8 +927,8 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 	CString					logpath = "";
 	STablemapHashValue		hold_hash_value;
 	STablemapHashValue		h$_record;
-	CArray <STablemapHashValue, STablemapHashValue>	new_hashes[4];
-	CArray <STablemapHashValue, STablemapHashValue>	unmatched_h$_records[4];
+	CArray <STablemapHashValue, STablemapHashValue>	new_hashes[k_max_number_of_hash_groups_in_tablemap];
+	CArray <STablemapHashValue, STablemapHashValue>	unmatched_h$_records[k_max_number_of_hash_groups_in_tablemap];
 
 	// Get number of records of each type in this table map
 	if (_i$.begin()==_i$.end()) 
@@ -933,10 +940,10 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 	// Loop through all the hash (h$) records, and check for a corresponding image (i$) record
 	// Log missing records and display message if we can't find them all
 	all_i$_found = true;
-	for (i=0; i<=3; i++)
+	for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 		unmatched_h$_records[i].RemoveAll();
 
-	for (i=0; i<=3; i++)
+	for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 	{
 		for (HMapCI h_iter=_h$[i].begin(); h_iter!=_h$[i].end(); h_iter++)
 		{
@@ -966,7 +973,7 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 			fprintf(fp, "<%s>\nCreating _hashes\n", timebuf);
 			fprintf(fp, "Hashes with no matching image:\n");
 
-			for (i=0; i<=3; i++)
+			for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 				for (j=0; j<unmatched_h$_records[i].GetCount(); j++) 
 					fprintf(fp, "\t%3d. h$%s\n", j+1, unmatched_h$_records[i].GetAt(j).name.GetString());
 
@@ -980,14 +987,14 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 	}
 
 	// Init new hash array
-	for (i=0; i<=3; i++)
+	for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 		new_hashes[i].RemoveAll();
 
 	// Loop through each of the image records and create hashes
 	for (IMapCI i_iter=_i$.begin(); i_iter!=_i$.end(); i_iter++) 
 	{
 		// Loop through the h$ records to find all the hashes that we have to create for this image record
-		for (i=0; i<=3; i++)
+		for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 		{
 			for (HMapCI h_iter=_h$[i].begin(); h_iter!=_h$[i].end(); h_iter++) 
 			{
@@ -1001,13 +1008,13 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 					{
 						// only create hash based on rgb values - ignore alpha
 						for (j=0; j < (int) (i_iter->second.width * i_iter->second.height); j++)
-							filtered_pix[j] = i_iter->second.pixel[j] & 0x00ffffff;
+							filtered_pix[j] = i_iter->second.pixel[j] & RGB_MASK;
 
 						hold_hash_value.hash = hashword(&filtered_pix[0], i_iter->second.width * i_iter->second.height, HASH_SEED_0);
 					}
 
 					// selected pixel hash
-					else if (i>=1 && i<=3) 
+					else if (i >= 1 && i < k_max_number_of_hash_groups_in_tablemap) 
 					{
 						pixcount = 0;
 						for (PMapCI p_iter=_p$[i].begin(); p_iter!=_p$[i].end(); p_iter++)
@@ -1017,7 +1024,7 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 							{
 								// only create hash based on rgb values - ignore alpha
 								pixels[pixcount++] = 
-									i_iter->second.pixel[(p_iter->second.y * i_iter->second.width) + p_iter->second.x] & 0x00ffffff;
+									i_iter->second.pixel[(p_iter->second.y * i_iter->second.width) + p_iter->second.x] & RGB_MASK;
 							}
 						}
 
@@ -1052,10 +1059,10 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 
 
 	// Copy the temporary new hash CArray to the internal std::map
-	for (i=0; i<=3; i++)
+	for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 		h$_clear(i);
 
-	for (i=0; i<=3; i++)
+	for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 	{
 		for (j=0; j<(int) new_hashes[i].GetSize(); j++)
 		{
@@ -1082,13 +1089,13 @@ uint32_t CTablemap::CalculateHashValue(IMapCI i_iter, const int type)
 	{
 		// only create hash based on rgb values - ignore alpha
 		for (int j=0; j < (int) (i_iter->second.width * i_iter->second.height); j++)
-			filtered_pix[j] = i_iter->second.pixel[j] & 0x00ffffff;
+			filtered_pix[j] = i_iter->second.pixel[j] & RGB_MASK;
 
 		return hashword(&filtered_pix[0], i_iter->second.width * i_iter->second.height, HASH_SEED_0);
 	}
 
 	// selected pixel hash
-	else if (type>=1 && type<=3) 
+	else if (type >= 1 && type < k_max_number_of_hash_groups_in_tablemap) 
 	{
 		int pixcount = 0;
 		for (PMapCI p_iter=_p$[type].begin(); p_iter!=_p$[type].end(); p_iter++)
@@ -1098,7 +1105,7 @@ uint32_t CTablemap::CalculateHashValue(IMapCI i_iter, const int type)
 			{
 				// only create hash based on rgb values - ignore alpha
 				pixels[pixcount++] = 
-					i_iter->second.pixel[(p_iter->second.y * i_iter->second.width) + p_iter->second.x] & 0x00ffffff;
+					i_iter->second.pixel[(p_iter->second.y * i_iter->second.width) + p_iter->second.x] & RGB_MASK;
 			}
 		}
 

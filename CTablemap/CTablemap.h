@@ -101,9 +101,9 @@ struct SWholeMap
 	const ZMap	*z$;
 	const SMap	*s$;
 	const RMap	*r$;
-	const TMap	*t$[4];
-	const PMap	*p$[4];
-	const HMap	*h$[4];
+	const TMap	*t$[k_max_number_of_font_groups_in_tablemap];
+	const PMap	*p$[k_max_number_of_hash_groups_in_tablemap];
+	const HMap	*h$[k_max_number_of_hash_groups_in_tablemap];
 	const IMap	*i$;
 	CString filepath;
 	CString sitename;
@@ -130,9 +130,9 @@ public:
 	// public accessors
 	const ZMap *z$() { return &_z$; }
 	const SMap *s$() { return &_s$; }
-	const TMap *t$(const int i) { if (i>=0 && i<=3) return &_t$[i]; else return NULL; }
-	const PMap *p$(const int i) { if (i>=0 && i<=3) return &_p$[i]; else return NULL; }
-	const HMap *h$(const int i) { if (i>=0 && i<=3) return &_h$[i]; else return NULL; }
+	const TMap *t$(const int i) { if (i>=0 && i<k_max_number_of_font_groups_in_tablemap) return &_t$[i]; else return NULL; }
+	const PMap *p$(const int i) { if (i>=0 && i<k_max_number_of_hash_groups_in_tablemap) return &_p$[i]; else return NULL; }
+	const HMap *h$(const int i) { if (i>=0 && i<k_max_number_of_hash_groups_in_tablemap) return &_h$[i]; else return NULL; }
 	const IMap *i$() { return &_i$; }
 	// Ongoing work: Making all the iterators private and providing
 	// accessor-functions in CTablemapAccess.
@@ -233,23 +233,23 @@ public:
 	// public mutators 
 
 	// These are used by OpenScrape
-	void		h$_clear(const int i) { ENT if (i>=0 && i<=3) _h$[i].clear(); }
-	void		p$_clear(const int i) { ENT if (i>=0 && i<=3) _p$[i].clear(); }
+	void		h$_clear(const int i) { ENT if (i>=0 && i<k_max_number_of_hash_groups_in_tablemap) _h$[i].clear(); }
+	void		p$_clear(const int i) { ENT if (i>=0 && i<k_max_number_of_hash_groups_in_tablemap) _p$[i].clear(); }
 
 	const bool	z$_insert(const STablemapSize s) { ENT std::pair<ZMapI, bool> r=_z$.insert(ZPair(s.name, s)); return r.second;  }
 	const bool	s$_insert(const STablemapSymbol s) { ENT std::pair<SMapI, bool> r=_s$.insert(SPair(s.name, s)); return r.second;  }
 	const bool	r$_insert(const STablemapRegion s) { ENT std::pair<RMapI, bool> r=_r$.insert(RPair(s.name, s)); return r.second;  }
-	const bool	t$_insert(const int i, const STablemapFont s) { ENT if (i>=0 && i<=3) { std::pair<TMapI, bool> r=_t$[i].insert(TPair(s.hexmash, s)); return r.second; } else return false; }
-	const bool	p$_insert(const int i, const STablemapHashPoint s) { ENT if (i>=0 && i<=3) { std::pair<PMapI, bool> r=_p$[i].insert(PPair(((s.x&0xffff)<<16) | (s.y&0xffff), s)); return r.second; } else return false; }
-	const bool	h$_insert(const int i, const STablemapHashValue s) { ENT if (i>=0 && i<=3) { std::pair<HMapI, bool> r=_h$[i].insert(HPair(s.hash, s)); return r.second; } else return false; }
+	const bool	t$_insert(const int i, const STablemapFont s) { ENT if (i>=0 && i<k_max_number_of_font_groups_in_tablemap) { std::pair<TMapI, bool> r=_t$[i].insert(TPair(s.hexmash, s)); return r.second; } else return false; }
+	const bool	p$_insert(const int i, const STablemapHashPoint s) { ENT if (i>=0 && i<k_max_number_of_hash_groups_in_tablemap) { std::pair<PMapI, bool> r=_p$[i].insert(PPair(((s.x&0xffff)<<16) | (s.y&0xffff), s)); return r.second; } else return false; }
+	const bool	h$_insert(const int i, const STablemapHashValue s) { ENT if (i>=0 && i<k_max_number_of_hash_groups_in_tablemap) { std::pair<HMapI, bool> r=_h$[i].insert(HPair(s.hash, s)); return r.second; } else return false; }
 	const bool	i$_insert(const STablemapImage s) { ENT std::pair<IMapI, bool> r=_i$.insert(IPair(CreateI$Index(s.name,s.width,s.height,s.pixel), s)); return r.second; }
 
 	const size_t	z$_erase(CString s) { ENT std::map<int, int>::size_type c = _z$.erase(s); return c; }
 	const size_t	s$_erase(CString s) { ENT std::map<int, int>::size_type c = _s$.erase(s); return c; }
 	const size_t	r$_erase(CString s) { ENT std::map<int, int>::size_type c = _r$.erase(s); return c; }
-	const size_t	t$_erase(const int i, CString s) { ENT if (i>=0 && i<=3) { std::map<int, int>::size_type c = _t$[i].erase(s); return c; } else return 0; }
-	const size_t	p$_erase(const int i, uint32_t u) { ENT if (i>=0 && i<=3) { std::map<int, int>::size_type c = _p$[i].erase(u); return c; } else return 0; }
-	const size_t	h$_erase(const int i, uint32_t u) { ENT if (i>=0 && i<=3) { std::map<int, int>::size_type c = _h$[i].erase(u); return c; } else return 0; }
+	const size_t	t$_erase(const int i, CString s) { ENT if (i>=0 && i<k_max_number_of_font_groups_in_tablemap) { std::map<int, int>::size_type c = _t$[i].erase(s); return c; } else return 0; }
+	const size_t	p$_erase(const int i, uint32_t u) { ENT if (i>=0 && i<k_max_number_of_hash_groups_in_tablemap) { std::map<int, int>::size_type c = _p$[i].erase(u); return c; } else return 0; }
+	const size_t	h$_erase(const int i, uint32_t u) { ENT if (i>=0 && i<k_max_number_of_hash_groups_in_tablemap) { std::map<int, int>::size_type c = _h$[i].erase(u); return c; } else return 0; }
 	const size_t	i$_erase(uint32_t u) { ENT std::map<int, int>::size_type c = _i$.erase(u); return c; }
 
 	RMap *set_r$() { return &_r$; }
@@ -269,9 +269,9 @@ private:
 	ZMap		_z$; // indexed on name (as a CString)
 	SMap		_s$; // indexed on name (as a CString)
 	RMap		_r$; // indexed on name (as a CString)
-	TMap		_t$[4]; // indexed on hexmash (as a CString)
-	PMap		_p$[4]; // indexed on "x<<16 | y" (as a uint32_t; x in high 16bits, y in low 16bits)
-	HMap		_h$[4]; // indexed on hash (as a uint32_t)
+	TMap		_t$[k_max_number_of_font_groups_in_tablemap]; // indexed on hexmash (as a CString)
+	PMap		_p$[k_max_number_of_hash_groups_in_tablemap]; // indexed on "x<<16 | y" (as a uint32_t; x in high 16bits, y in low 16bits)
+	HMap		_h$[k_max_number_of_hash_groups_in_tablemap]; // indexed on hash (as a uint32_t)
 	IMap		_i$; // indexed on a uint32_t hash of: name+all pixels in RBGA hex format
 
 private:
