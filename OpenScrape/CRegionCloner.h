@@ -13,6 +13,7 @@ public:
 private:
 	bool TableSizeUndefined();
 	void CloneCommonCards();
+	CString CreateName(CString prefix, int number, CString postfix);
 	void CalculateLinearRegions(STablemapRegion first_region, int number_of_regions);
 	void CalculateCircularRegions(STablemapRegion first_region, int unmber_of_regions);
 	void ApplyNextLinearRegionPosition(STablemapRegion *new_region, int index);
