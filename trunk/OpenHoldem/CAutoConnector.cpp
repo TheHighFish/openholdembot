@@ -50,12 +50,16 @@ void CTableMapToSWholeMap(CTablemap *cmap, SWholeMap *smap)
 	smap->z$ = p_tablemap->z$();
 	smap->s$ = p_tablemap->s$();
 	smap->r$ = p_tablemap->r$();
-	for (int i=0; i<=3; i++)
-	{
+
+	for (int i = 0; i < k_max_number_of_font_groups_in_tablemap; i++)
 		smap->t$[i] = p_tablemap->t$(i);
+
+	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 		smap->p$[i] = p_tablemap->p$(i);
+
+	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 		smap->h$[i] = p_tablemap->h$(i);
-	}
+
 	smap->i$ = p_tablemap->i$();
 	smap->filepath = p_tablemap->filepath();
 	smap->sitename = p_tablemap->sitename();
