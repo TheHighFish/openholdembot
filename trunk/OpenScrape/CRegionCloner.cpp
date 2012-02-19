@@ -26,11 +26,23 @@ bool CRegionCloner::TableSizeUndefined()
 		|| (p_tablemap_access->GetClientSizeY() <= 0));
 }
 
+CString CRegionCloner::CreateName(CString prefix, int number, CString postfix)
+{
+	const int k_max_length_of_name = 100;
+	char new_symbol_name[k_max_length_of_name];
+	assert(number >= 0);
+	assert(number <= 9);
+	assert(prefix.GetLength() + postfix.GetLength() < k_max_length_of_name); 
+	sprintf(new_symbol_name, "%s%d%s", prefix, number, postfix);
+	return CString(new_symbol_name);
+}
+
 void CRegionCloner::CalculateLinearRegions(STablemapRegion first_region, int number_of_regions)
 {
 	// Calculates the position for N regions,
 	// horizontally aligned and symmetrically to the middle of the table,
 	// with equal distance to each other.
+	assert(number_of_regions >= 1);
 	assert(number_of_regions <= k_max_number_of_regions_to_clone); 
 
 	int width_of_region = first_region.right - first_region.left;
@@ -53,6 +65,14 @@ void CRegionCloner::CalculateLinearRegions(STablemapRegion first_region, int num
 	}
 }
 
+void CalculateCircularRegions(STablemapRegion first_region, int number_of_regions)
+{
+	// Calculates the position for N regions,
+	// about circular aligned and around the center of the table.
+	assert(number_of_regions >= 1);
+	assert(number_of_regions <= k_max_number_of_regions_to_clone); 
+}
+
 void CRegionCloner::ApplyNextLinearRegionPosition(STablemapRegion *new_region, int index)
 {
 	assert(index >= 0);
@@ -73,19 +93,15 @@ void CRegionCloner::CloneCommonCards()
 	}
 	CalculateLinearRegions(c0cardface0, k_number_of_community_cards);
 	for (int i=0; i<k_number_of_community_cards; i++)
-	{
-		MessageBox(0, "next region", "Info", 0);
-		
+	{	
 		STablemapRegion new_region;
 		ApplyNextLinearRegionPosition(&new_region, i);
 
-		new_region.name = "c0cardface" ; //+ i;
+		new_region.name = CreateName("c0cardface", i, "");
 		new_region.color = c0cardface0.color;
 		new_region.radius = c0cardface0.radius;
 		new_region.transform = c0cardface0.transform;
 
-		p_tablemap->r$_insert(new_region);
-		/*new_region.name = "r$c0cardface3";*/
 		p_tablemap->r$_insert(new_region);
 
 		//pDoc->SetModifiedFlag(true);
