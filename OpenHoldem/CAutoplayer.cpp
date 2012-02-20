@@ -43,47 +43,47 @@ void CAutoplayer::GetNeccessaryTablemapObjects()
 	p_scraper_access->SetScraperAccessData();
 		
 	// iX
-	allin_button_defined	= p_tablemap_access->GetButtonRect(p_scraper_access->get_allin_button_name(), &allin_button);
-	allin_button_available	= allin_button_defined && p_scraper_access->get_allin_button_visible();
+	allin_button_defined    = p_tablemap_access->GetButtonRect(p_scraper_access->get_allin_button_name(), &allin_button);
+	allin_button_available  = allin_button_defined && p_scraper_access->get_allin_button_visible();
 
-	raise_button_defined	= p_tablemap_access->GetButtonRect(p_scraper_access->get_raise_button_name(), &raise_button);
-	raise_button_available	= raise_button_defined && p_scraper_access->get_raise_button_visible();
+	raise_button_defined    = p_tablemap_access->GetButtonRect(p_scraper_access->get_raise_button_name(), &raise_button);
+	raise_button_available  = raise_button_defined && p_scraper_access->get_raise_button_visible();
 
-	call_button_defined		= p_tablemap_access->GetButtonRect(p_scraper_access->get_call_button_name(), &call_button);
-	call_button_available	= call_button_defined && p_scraper_access->get_call_button_visible();
+	call_button_defined     = p_tablemap_access->GetButtonRect(p_scraper_access->get_call_button_name(), &call_button);
+	call_button_available   = call_button_defined && p_scraper_access->get_call_button_visible();
 
-	check_button_defined	= p_tablemap_access->GetButtonRect(p_scraper_access->get_check_button_name(), &check_button);
-	check_button_available	= check_button_defined && p_scraper_access->get_check_button_visible();
+	check_button_defined    = p_tablemap_access->GetButtonRect(p_scraper_access->get_check_button_name(), &check_button);
+	check_button_available  = check_button_defined && p_scraper_access->get_check_button_visible();
 
-	fold_button_defined		= p_tablemap_access->GetButtonRect(p_scraper_access->get_fold_button_name(), &fold_button);
-	fold_button_available	= fold_button_defined && p_scraper_access->get_fold_button_visible();
+	fold_button_defined     = p_tablemap_access->GetButtonRect(p_scraper_access->get_fold_button_name(), &fold_button);
+	fold_button_available   = fold_button_defined && p_scraper_access->get_fold_button_visible();
 
-	sitin_button_defined	= p_tablemap_access->GetButtonRect(p_scraper_access->get_sitin_button_name(), &sitin_button);
-	sitin_button_available	= sitin_button_defined && p_scraper_access->get_sitin_button_visible();
+	sitin_button_defined    = p_tablemap_access->GetButtonRect(p_scraper_access->get_sitin_button_name(), &sitin_button);
+	sitin_button_available  = sitin_button_defined && p_scraper_access->get_sitin_button_visible();
 
-	sitout_button_defined	= p_tablemap_access->GetButtonRect(p_scraper_access->get_sitout_button_name(), &sitout_button);
-	sitout_button_available	= sitout_button_defined && p_scraper_access->get_sitout_button_visible();
+	sitout_button_defined   = p_tablemap_access->GetButtonRect(p_scraper_access->get_sitout_button_name(), &sitout_button);
+	sitout_button_available = sitout_button_defined && p_scraper_access->get_sitout_button_visible();
 
-	leave_button_defined	= p_tablemap_access->GetButtonRect(p_scraper_access->get_leave_button_name(), &leave_button);
-	leave_button_available	= leave_button_defined && p_scraper_access->get_leave_button_visible();
+	leave_button_defined    = p_tablemap_access->GetButtonRect(p_scraper_access->get_leave_button_name(), &leave_button);
+	leave_button_available  = leave_button_defined && p_scraper_access->get_leave_button_visible();
 
 	// i86
-	i86_button_defined		= p_tablemap_access->GetButtonRect("i86button", &i86_button);
-	i86_button_available	= i86_button_defined && p_scraper_access->get_i86_button_visible();
+	i86_button_defined      = p_tablemap_access->GetButtonRect("i86button", &i86_button);
+	i86_button_available    = i86_button_defined && p_scraper_access->get_i86_button_visible();
 
 	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
 	{
-		i86X_buttons_defined[i]		= p_tablemap_access->GetButtonRect(p_scraper_access->get_i86X_button_name(i), &i86X_buttons[i]);
-		i86X_buttons_available[i]	= i86X_buttons_defined[i] && p_scraper_access->get_i86X_button_visible(i);
+		i86X_buttons_defined[i]     = p_tablemap_access->GetButtonRect(p_scraper_access->get_i86X_button_name(i), &i86X_buttons[i]);
+		i86X_buttons_available[i]   = i86X_buttons_defined[i] && p_scraper_access->get_i86X_button_visible(i);
 	}
 
 	// i3
-	i3_button_defined	= p_tablemap_access->GetButtonRect("i3button", &i3_button);
-	i3_button_available	= i3_button_defined && p_scraper_access->get_i3_button_visible();
+	i3_button_defined   = p_tablemap_access->GetButtonRect("i3button", &i3_button);
+	i3_button_available = i3_button_defined && p_scraper_access->get_i3_button_visible();
 
-	i3_edit_defined		= p_tablemap_access->GetTableMapRect("i3edit", &i3_edit_region);
-	i3_slider_defined	= p_tablemap_access->GetTableMapRect("i3slider", &i3_slider_region);
-	i3_handle_defined	= p_tablemap_access->GetTableMapRect("i3button", &i3_handle_region);
+	i3_edit_defined     = p_tablemap_access->GetTableMapRect("i3edit", &i3_edit_region);
+	i3_slider_defined   = p_tablemap_access->GetTableMapRect("i3slider", &i3_slider_region);
+	i3_handle_defined   = p_tablemap_access->GetTableMapRect("i3button", &i3_handle_region);
 
 	allin_option_available = false;
 	
@@ -214,6 +214,7 @@ void CAutoplayer::DoAllin(void)
 		0: swag the balance (default)
 		1: click max (or allin), then raise
 		2: click only max (or allin) [Spew and THF]
+		3: use the slider
 	*/
 
 	if (p_tablemap->allinmethod() == 1)
@@ -356,7 +357,7 @@ void CAutoplayer::DoAutoplayer(void)
 	if (isFinalAnswer)
 		p_stableframescounter->UpdateNumberOfStableFrames();
 
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Number of stable frames: % d\n", p_stableframescounter->NumberOfStableFrames());	
+	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Number of stable frames: % d\n", p_stableframescounter->NumberOfStableFrames());
 
 	// Scale f$delay to a number of scrapes and avoid division by 0 and negative values
 	unsigned int additional_frames_to_wait = (prefs.scrape_delay() > 0 && p_symbols->f$delay() > 0 ? (p_symbols->f$delay()/prefs.scrape_delay()) : 0);
@@ -364,7 +365,7 @@ void CAutoplayer::DoAutoplayer(void)
 	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return.
 	if (p_stableframescounter->NumberOfStableFrames() < prefs.frame_delay() + additional_frames_to_wait)
 	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because we don't have enough stable frames, or have not waited f$delay milliseconds (=%d)\n", (int)p_symbols->f$delay());
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because we don't have enough stable frames, or have not waited f$delay (=%d ms)\n", (int)p_symbols->f$delay());
 		isFinalAnswer = false;
 	}
 
