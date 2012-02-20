@@ -259,6 +259,18 @@ void CAutoplayer::DoAllin(void)
 			write_log(prefs.debug_autoplayer(), "[AutoPlayer] ....Ending DoAllin early (no allin-button).\n");
 		}
 	}
+	else if (p_tablemap->allinmethod() == 3)
+	{
+		if (p_scraper->GetButtonState(k_button_i3)) //!!!
+		{
+			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling DoSlider.\n");
+			DoSlider();
+		}
+		else
+		{
+			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Will not execute DoSlider (Please check your tablemap - i3state must evaluate to 'true')\n");
+		}
+	}
 	// Third case (default): swagging the balance
 	// (p_tablemap->allinmethod() == 0)
 	// This will be handled by the swag-code.
@@ -394,16 +406,8 @@ void CAutoplayer::DoAutoplayer(void)
 	}
 	else 
 	{
-		if (p_symbols->f$alli() && p_scraper->GetButtonState(k_button_i3)) //!!!
-		{
-			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling DoSlider.\n");
-			DoSlider();
-		}
-		else
-		{
-			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling DoARCCF.\n");
-			DoARCCF();
-		}
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling DoARCCF.\n");
+		DoARCCF();
 	}
 
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending Autoplayer cadence.\n");
@@ -733,11 +737,16 @@ void CAutoplayer::DoSlider(void)
 		return;
 
 	if (!(i3_slider_defined && i3_handle_defined))
+	{
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending DoSlider early (i3handle or i3slider are not defined in the tablemap)\n");
 		return;
+	}
 
 	if (!p_scraper->handle_found_at_xy())
+	{
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending DoSlider early (handle not found - i3handle must use a transform that resolves to either 'handle' or 'true')\n");
 		return;
-
+	}
 
 	// Get mutex lock and jam
 	if (_mutex.Lock(500))
@@ -745,13 +754,13 @@ void CAutoplayer::DoSlider(void)
 		// Click and drag handle
 		//!!!
 
-		RECT	r;
-		r.left = p_scraper->handle_xy().x + ((i3_handle_region.right - i3_handle_region.left)/2);
-		r.top = p_scraper->handle_xy().y + ((i3_handle_region.bottom - i3_handle_region.top)/2);
-		r.right = p_scraper->handle_xy().x + (i3_slider_region.right - i3_handle_region.left);
-		r.bottom = r.top;		
+		RECT r;
+		r.left      = p_scraper->handle_xy().x + ((i3_handle_region.right - i3_handle_region.left)/2);
+		r.top       = p_scraper->handle_xy().y + ((i3_handle_region.bottom - i3_handle_region.top)/2);
+		r.right     = p_scraper->handle_xy().x + (i3_slider_region.right - i3_slider_region.left);
+		r.bottom    = r.top;		
 
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling mouse.dll to jam from %d,%d to %d,%d\n", r.left, r.top, r.right, r.bottom);
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Slider : Calling mouse.dll to jam from %d,%d to %d,%d\n", r.left, r.top, r.right, r.bottom);
 		(theApp._dll_mouse_click_drag) (p_autoconnector->attached_hwnd(), r, NULL, point_null);
 
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Sleeping %d ms\n.", prefs.swag_delay_3());
@@ -760,7 +769,7 @@ void CAutoplayer::DoSlider(void)
 		// Click confirmation button
 		if (p_tablemap->swagconfirmationmethod() == BETCONF_ENTER)
 		{
-			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Confirmation; calling keyboard.dll to press 'Enter'\n");
+			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Slider Confirmation : calling keyboard.dll to press 'Enter'\n");
 			(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_RETURN, hwnd_focus, cur_pos);
 		}
 
@@ -777,23 +786,25 @@ void CAutoplayer::DoSlider(void)
 			}
 			else if (i3_button_available) 
 			{
+				write_log(prefs.debug_autoplayer(), "[AutoPlayer] Slider Confirmation : Using the i3button\n");
 				rect_button = i3_button;
 			}
 			else
 			{
+				write_log(prefs.debug_autoplayer(), "[AutoPlayer] Slider Confirmation : Using the raise button\n");
 				rect_button = raise_button;
 			}
 
 			if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
 			{
-				write_log(prefs.debug_autoplayer(), "[AutoPlayer] Confirmation; calling mouse.dll to double click bet button: %d,%d %d,%d\n", 
-						rect_button.left, rect_button.top, rect_button.right, rect_button.bottom);	
+				write_log(prefs.debug_autoplayer(), "[AutoPlayer] Slider Confirmation : calling mouse.dll to double click bet button: %d,%d %d,%d\n", 
+						rect_button.left, rect_button.top, rect_button.right, rect_button.bottom);
 				(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect_button, MouseLeft, 2, hwnd_focus, cur_pos);
 			}
 			else
 			{
-				write_log(prefs.debug_autoplayer(), "[AutoPlayer] Confirmation; calling mouse.dll to single click bet button: %d,%d %d,%d\n", 
-						rect_button.left, rect_button.top, rect_button.right, rect_button.bottom);	
+				write_log(prefs.debug_autoplayer(), "[AutoPlayer] Slider Confirmation : calling mouse.dll to single click bet button: %d,%d %d,%d\n", 
+						rect_button.left, rect_button.top, rect_button.right, rect_button.bottom);
 				(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect_button, MouseLeft, 1, hwnd_focus, cur_pos);
 			}
 		}

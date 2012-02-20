@@ -13,6 +13,8 @@ NEW STUFF:
 - new symbol: originalbalance, which remebers the balance at the start of a session. [THF]
 - display state of the buttons sitin, sitout, leave, autopost and prefold in the GUI. [THF]
 - allow copy operation on formulas tree nodes via context menu. [JumpingFences]
+- Support for extra font groups [0..7] [Strikles]
+- New all-in method for using the slider (allinmethod 3) [Strikles]
 
 MAINTENANCE:
 - Removed code-clones in CFormula.cpp [THF]
