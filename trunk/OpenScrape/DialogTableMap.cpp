@@ -298,7 +298,6 @@ BOOL CDlgTableMap::OnInitDialog()
 	m_NudgeDownLeft.SetFont(&nudge_font);
 	m_NudgeLeft.SetFont(&nudge_font);
 
-
 	text.Format("%c", 0xD9);
 	m_NudgeTaller.SetWindowText(text.GetString());
 	text.Format("%c", 0xDA);
@@ -378,6 +377,17 @@ void CDlgTableMap::OnCancel()
 {
 	// prevents esc key from closing dialog
 	//CDialog::OnCancel();
+}
+
+void CDlgTableMap::UpdateDisplayOfAllRegions()
+{
+	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+
+	update_r$_display(false);
+	Invalidate(false);
+	theApp.m_pMainWnd->Invalidate(false);
+
+	pDoc->SetModifiedFlag(true);
 }
 
 HTREEITEM CDlgTableMap::GetRecordTypeNode(HTREEITEM item)
@@ -2928,11 +2938,7 @@ void CDlgTableMap::OnBnClickedNudgeTaller()
 		sel_region->second.top = sel_region->second.top-1;
 		sel_region->second.bottom = sel_region->second.bottom+1;
 
-		update_r$_display(false);
-		Invalidate(false);
-		theApp.m_pMainWnd->Invalidate(false);
-
-		pDoc->SetModifiedFlag(true);
+		UpdateDisplayOfAllRegions();
 	}
 }
 
@@ -2953,11 +2959,7 @@ void CDlgTableMap::OnBnClickedNudgeShorter()
 		sel_region->second.top = sel_region->second.top+1;
 		sel_region->second.bottom = sel_region->second.bottom-1;
 
-		update_r$_display(false);
-		Invalidate(false);
-		theApp.m_pMainWnd->Invalidate(false);
-
-		pDoc->SetModifiedFlag(true);
+		UpdateDisplayOfAllRegions();
 	}
 }
 
@@ -2978,11 +2980,7 @@ void CDlgTableMap::OnBnClickedNudgeWider()
 		sel_region->second.left = sel_region->second.left-1;
 		sel_region->second.right = sel_region->second.right+1;
 
-		update_r$_display(false);
-		Invalidate(false);
-		theApp.m_pMainWnd->Invalidate(false);
-
-		pDoc->SetModifiedFlag(true);
+		UpdateDisplayOfAllRegions();
 	}
 }
 
@@ -3003,11 +3001,7 @@ void CDlgTableMap::OnBnClickedNudgeNarrower()
 		sel_region->second.left = sel_region->second.left+1;
 		sel_region->second.right = sel_region->second.right-1;
 
-		update_r$_display(false);
-		Invalidate(false);
-		theApp.m_pMainWnd->Invalidate(false);
-
-		pDoc->SetModifiedFlag(true);
+		UpdateDisplayOfAllRegions();
 	}
 }
 
@@ -3030,11 +3024,7 @@ void CDlgTableMap::OnBnClickedNudgeBigger()
 		sel_region->second.right = sel_region->second.right+1;
 		sel_region->second.bottom = sel_region->second.bottom+1;
 
-		update_r$_display(false);
-		Invalidate(false);
-		theApp.m_pMainWnd->Invalidate(false);
-
-		pDoc->SetModifiedFlag(true);
+		UpdateDisplayOfAllRegions();
 	}
 }
 
@@ -3064,11 +3054,7 @@ void CDlgTableMap::OnBnClickedNudgeSmaller()
 		if (sel_region->second.bottom-1>=sel_region->second.top)
 			sel_region->second.bottom = sel_region->second.bottom-1;
 
-		update_r$_display(false);
-		Invalidate(false);
-		theApp.m_pMainWnd->Invalidate(false);
-
-		pDoc->SetModifiedFlag(true);
+		UpdateDisplayOfAllRegions();
 	}
 }
 
@@ -3091,13 +3077,11 @@ void CDlgTableMap::OnBnClickedNudgeUpleft()
 		sel_region->second.right = sel_region->second.right-1;
 		sel_region->second.bottom = sel_region->second.bottom-1;
 
-		update_r$_display(false);
-		Invalidate(false);
-		theApp.m_pMainWnd->Invalidate(false);
-
-		pDoc->SetModifiedFlag(true);
+		UpdateDisplayOfAllRegions();
 	}
 }
+
+
 
 void CDlgTableMap::OnBnClickedNudgeUp()
 {
@@ -3116,11 +3100,7 @@ void CDlgTableMap::OnBnClickedNudgeUp()
 		sel_region->second.top = sel_region->second.top-1;
 		sel_region->second.bottom = sel_region->second.bottom-1;
 
-		update_r$_display(false);
-		Invalidate(false);
-		theApp.m_pMainWnd->Invalidate(false);
-
-		pDoc->SetModifiedFlag(true);
+		UpdateDisplayOfAllRegions();
 	}
 }
 
@@ -3143,11 +3123,7 @@ void CDlgTableMap::OnBnClickedNudgeUpright()
 		sel_region->second.right = sel_region->second.right+1;
 		sel_region->second.bottom = sel_region->second.bottom-1;
 
-		update_r$_display(false);
-		Invalidate(false);
-		theApp.m_pMainWnd->Invalidate(false);
-
-		pDoc->SetModifiedFlag(true);
+		UpdateDisplayOfAllRegions();
 	}
 }
 
@@ -3168,11 +3144,7 @@ void CDlgTableMap::OnBnClickedNudgeRight()
 		sel_region->second.left = sel_region->second.left+1;
 		sel_region->second.right = sel_region->second.right+1;
 
-		update_r$_display(false);
-		Invalidate(false);
-		theApp.m_pMainWnd->Invalidate(false);
-
-		pDoc->SetModifiedFlag(true);
+		UpdateDisplayOfAllRegions();
 	}
 }
 
@@ -3195,11 +3167,7 @@ void CDlgTableMap::OnBnClickedNudgeDownright()
 		sel_region->second.right = sel_region->second.right+1;
 		sel_region->second.bottom = sel_region->second.bottom+1;
 
-		update_r$_display(false);
-		Invalidate(false);
-		theApp.m_pMainWnd->Invalidate(false);
-
-		pDoc->SetModifiedFlag(true);
+		UpdateDisplayOfAllRegions();
 	}
 }
 
@@ -3220,11 +3188,7 @@ void CDlgTableMap::OnBnClickedNudgeDown()
 		sel_region->second.top = sel_region->second.top+1;
 		sel_region->second.bottom = sel_region->second.bottom+1;
 
-		update_r$_display(false);
-		Invalidate(false);
-		theApp.m_pMainWnd->Invalidate(false);
-
-		pDoc->SetModifiedFlag(true);
+		UpdateDisplayOfAllRegions();
 	}
 }
 
@@ -3247,11 +3211,7 @@ void CDlgTableMap::OnBnClickedNudgeDownleft()
 		sel_region->second.right = sel_region->second.right-1;
 		sel_region->second.bottom = sel_region->second.bottom+1;
 
-		update_r$_display(false);
-		Invalidate(false);
-		theApp.m_pMainWnd->Invalidate(false);
-
-		pDoc->SetModifiedFlag(true);
+		UpdateDisplayOfAllRegions();
 	}
 }
 
@@ -3272,11 +3232,7 @@ void CDlgTableMap::OnBnClickedNudgeLeft()
 		sel_region->second.left = sel_region->second.left-1;
 		sel_region->second.right = sel_region->second.right-1;
 
-		update_r$_display(false);
-		Invalidate(false);
-		theApp.m_pMainWnd->Invalidate(false);
-
-		pDoc->SetModifiedFlag(true);
+		UpdateDisplayOfAllRegions();
 	}
 }
 
