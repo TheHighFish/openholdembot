@@ -110,6 +110,7 @@ public:
 	HTREEITEM update_tree(CString node_text);
 	void GroupRegions(void);
 	void UngroupRegions(void);
+	void UpdateDisplayOfAllRegions();
 	HTREEITEM GetTypeNode(CString type);
 	HTREEITEM FindItem(CString s, HTREEITEM start);
 
