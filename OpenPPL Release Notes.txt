@@ -46,6 +46,8 @@ MAINTENANCE:
 NEW STUFF: 
 - Added symbol HavePocketPair.
   [THF]
+- New symbols SuitsOnTurn and SuitsOnRiver.
+  [THF]
   
   
   
