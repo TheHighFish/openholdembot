@@ -69,7 +69,7 @@ PairOnBoard
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="78" columns="2">
+<lyxtabular version="3" rows="79" columns="2">
 <features islongtable="true">
 <column alignment="left" valignment="top" width="40text%">
 <column alignment="left" valignment="top" width="55text%">
@@ -1288,6 +1288,26 @@ HavePair
 
 \begin_layout Plain Layout
 We have a pair, a paired board doesent count
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+HavePocketPair
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+We have a pocket-pair like AA or 55
 \end_layout
 
 \end_inset
