@@ -3507,14 +3507,14 @@ f$OpenPPL_Button
 ##f$OpenPPL_InCutOff##
 f$OpenPPL_CutOff
 
-##f$OpenPPL_InMiddePosition3##
-f$OpenPPL_MiddePosition3
+##f$OpenPPL_InMiddlePosition3##
+f$OpenPPL_MiddlePosition3
 
-##f$OpenPPL_InMiddePosition2##
-f$OpenPPL_MiddePosition2
+##f$OpenPPL_InMiddlePosition2##
+f$OpenPPL_MiddlePosition2
 
-##f$OpenPPL_InMiddePosition1##
-f$OpenPPL_MiddePosition1
+##f$OpenPPL_InMiddlePosition1##
+f$OpenPPL_MiddlePosition1
 
 ##f$OpenPPL_InEarlyPosition3##
 f$OpenPPL_EarlyPosition3
