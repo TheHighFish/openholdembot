@@ -1,7 +1,7 @@
-v1.0.3 2012-xx-yy
+v1.0.3 2012-02-21
 =================
 BUG FIXES: 
-- the sitout command was designed to work with OpenHoldem 2.2.0+,
+- The sitout command was designed to work with OpenHoldem 2.2.0+,
   which has not yet been released. Support for OH 2.1.9.x has been added.
   Thanks to Postenjak for reporting.
   [THF]
@@ -17,7 +17,7 @@ BUG FIXES:
   [THF]  
 - TwoPairOnBoard confused istwopair (boolean) and twopair (a bit-value).
   This did affect the calculation of NutFullHouseOrFourOfAKind.
-  Thanks to SteveG1963  for reporting.
+  Thanks to SteveG1963 for reporting.
   [THF]  
 - RaisesSinceLastPlay did use f$OpenPPL_BotsActionsOnThisRound 
   instead of f$OpenPPL_BotsActionsOnThisRoundIncludingChecks.
@@ -31,12 +31,24 @@ BUG FIXES:
   This has now been fixed.
   Thanks to Postenjak for reporting.
   [THF]
+- MiddlePosition3, MP2 and MP1 didn't work because of a typo.
+  Thanky to Kyo for reporting.
+  [THF]
+- SuitsOnBoard did also count "undefined" suits.
+  Thanks to Postenjak for reporting and providing good info.
+  [THF]
 
 MAINTENANCE:
 - Some new option settings for deletion in bracketify.pl.
   Thanks to Postenjak for reporting.
   [THF]
 
+NEW STUFF: 
+- Added symbol HavePocketPair.
+  [THF]
+  
+  
+  
 v1.0.2 2012-02-03
 =================
 BUG FIXES: 
@@ -48,6 +60,8 @@ BUG FIXES:
   Thanks to Postenjak for reporting.
   [THF]
 
+  
+  
 v1.0.1 2012-02-02
 =================
 BUG FIXES: 
@@ -94,7 +108,7 @@ NEW STUFF:
   e.g. "WHEN Hand = AcTh" or "WHEN Hand = AdK".
   [THF]
 
- 
+  
 
 v1.0.0 2012-01-25
 =================
