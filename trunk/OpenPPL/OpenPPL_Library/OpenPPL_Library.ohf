@@ -2886,6 +2886,9 @@ f$OpenPPL_HaveOverPair || f$OpenPPL_HaveBestOverPairOrBetter
 || f$OpenPPL_RankOfSecondHoleCard==f$OpenPPL_TurnCard 
 || f$OpenPPL_RankOfSecondHoleCard==f$OpenPPL_RiverCard ]
 
+##f$OpenPPL_HavePocketPair##
+ispair
+
 ##f$OpenPPL_HaveSet##
 [  ispair
 && (  (f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_FirstFlopCard) 
@@ -3464,13 +3467,13 @@ nopponentsplaying
 ##f$OpenPPL_CutOff##
 [(dealposition == nplayersdealt - 1) && !f$OpenPPL_InTheBlinds]
 
-##f$OpenPPL_MiddePosition3##
+##f$OpenPPL_MiddlePosition3##
 [(dealposition == nplayersdealt - 2) && !f$OpenPPL_InTheBlinds]
 
-##f$OpenPPL_MiddePosition2##
+##f$OpenPPL_MiddlePosition2##
 [(dealposition == nplayersdealt - 3) && !f$OpenPPL_InTheBlinds]
 
-##f$OpenPPL_MiddePosition1##
+##f$OpenPPL_MiddlePosition1##
 [(dealposition == nplayersdealt - 4) && !f$OpenPPL_InTheBlinds]
 
 ##f$OpenPPL_EarlyPosition3##
