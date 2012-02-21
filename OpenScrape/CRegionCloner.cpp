@@ -77,27 +77,15 @@ void CRegionCloner::CalculateCircularRegions(STablemapRegion first_region, int n
 	int center_x_of_region = 0.5 * (first_region.left + first_region.right);
 	int center_y_of_region = 0.5 * (first_region.top + first_region.bottom);
 
-	MessageBox(0, CreateName("", center_x_of_region, ""),
-			"center_x_of_region", 0);
-
 	int center_x_of_table  = 0.5 * p_tablemap_access->GetClientSizeX();
 	int center_y_of_table  = 0.5 * p_tablemap_access->GetClientSizeY();
-
-	MessageBox(0, CreateName("", center_x_of_table, ""),
-			"center_x_of_table", 0);
 
 	int delta_x_between_centers = center_x_of_table - center_x_of_region;
 	int delta_y_between_centers = center_y_of_table - center_y_of_region;
 
-	MessageBox(0, CreateName("", delta_x_between_centers, ""),
-			"delta_x_between_centers", 0);
-
 	int distance_to_center = sqrt(float(
 		  delta_x_between_centers * delta_x_between_centers
 		+ delta_y_between_centers * delta_y_between_centers));
-
-	MessageBox(0, CreateName("", distance_to_center, ""),
-			"Distance", 0);
 
 	float angle_between_regions = (2 * M_PI) / number_of_regions;
 
@@ -121,7 +109,7 @@ void CRegionCloner::CalculateCircularRegions(STablemapRegion first_region, int n
 	}
 	// Don't do any calculations for region 0.
 	// We keep it anyway and don't want to ruin it even by one pixel.
-	for (int i=1; i<number_of_regions; i++)
+	for (int i=0; i<number_of_regions; i++)
 	{
 		float angle_for_region_i = angle_for_region_0 + (i * angle_between_regions);
 		if (angle_for_region_i > 2 * M_PI)
@@ -131,9 +119,6 @@ void CRegionCloner::CalculateCircularRegions(STablemapRegion first_region, int n
 		}
 		assert(angle_for_region_i >= 0);
 		assert(angle_for_region_i <= 2 * M_PI);
-
-		MessageBox(0, CreateName("", angle_for_region_i, ""),
-			"Angle", 0);
 
 		// distance from center of table to center of region
 		// distance may be negative, so we can simply add it alter;
@@ -152,8 +137,6 @@ void CRegionCloner::CalculateCircularRegions(STablemapRegion first_region, int n
 		circular_region_positions[i].bottom = center_y_of_region_1 - (1/2 * height_of_region);
 		circular_region_positions[i].right  = circular_region_positions[i].left   + width_of_region;
 		circular_region_positions[i].top    = circular_region_positions[i].bottom + height_of_region;
-		MessageBox(0, CreateName("", circular_region_positions[i].left, ""),
-			"Left", 0);
 	}	
 }
 
@@ -164,40 +147,49 @@ void CRegionCloner::ApplyNextLinearRegionPosition(STablemapRegion *new_region, i
 
 	new_region->bottom = linear_region_positions[index].bottom;
 	new_region->top    = linear_region_positions[index].top;
+
+
 	new_region->left   = linear_region_positions[index].left;
 	new_region->right  = linear_region_positions[index].right;
 }
 
-void CRegionCloner::ApplyNextCircularRegionPosition(STablemapRegion *new_region, int index)
+void CRegionCloner::ApplyNextCircularRegionPosition(
+	STablemapRegion region_to_be_cloned, STablemapRegion *new_region, int index)
 {
 	// We didn't calculate position 0,
 	// because we want to keep it exactly as is.
 	assert(index > 0);
 	assert(index < k_max_number_of_regions_to_clone);
 
-	new_region->bottom = circular_region_positions[index].bottom;
-	new_region->top    = circular_region_positions[index].top;
-	new_region->left   = circular_region_positions[index].left;
-	new_region->right  = circular_region_positions[index].right;
+	new_region->bottom = circular_region_positions[index].bottom
+		//;- region_to_be_cloned.bottom + circular_region_positions[0].bottom;
+		;
+	new_region->left    = circular_region_positions[index].left
+		//+ region_to_be_cloned.left - circular_region_positions[0].left;
+		;
+	new_region->top   = circular_region_positions[index].bottom
+		+ region_to_be_cloned.top - region_to_be_cloned.bottom;
+	new_region->right  = circular_region_positions[index].left
+		+ region_to_be_cloned.right - region_to_be_cloned.left;
 }
 
 void CRegionCloner::CloneCommonCards()
 {
-	STablemapRegion c0cardface0;
-	if (!p_tablemap_access->GetTableMapRegion("c0cardface0", &c0cardface0))
+	STablemapRegion region_to_be_cloned;
+	if (!p_tablemap_access->GetTableMapRegion("region_to_be_cloned", &region_to_be_cloned))
 	{
 		return;
 	}
-	CalculateLinearRegions(c0cardface0, k_number_of_community_cards);
+	CalculateLinearRegions(region_to_be_cloned, k_number_of_community_cards);
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{	
 		STablemapRegion new_region;
 		ApplyNextLinearRegionPosition(&new_region, i);
 
 		new_region.name = CreateName("c0cardface", i, "");
-		new_region.color = c0cardface0.color;
-		new_region.radius = c0cardface0.radius;
-		new_region.transform = c0cardface0.transform;
+		new_region.color = region_to_be_cloned.color;
+		new_region.radius = region_to_be_cloned.radius;
+		new_region.transform = region_to_be_cloned.transform;
 
 		p_tablemap->r$_insert(new_region);
 
@@ -205,43 +197,89 @@ void CRegionCloner::CloneCommonCards()
 	}
 }
 
-const int k_number_of_circular_cloneable_regions = 9;
+const int k_number_of_circular_cloneable_regions = 29;
 
 // 1st string: name of 0-region
 // 2nd string: prefix before number
 // 3rd string: postfix after number
 const CString circular_cloneable_regions[k_number_of_circular_cloneable_regions][3] =
-{{"p0active",    "p", "active"},  
- {"p0balance",   "p", "balance"},
- {"p0bet",       "p", "bet"},
- {"p0cardback",  "p", "cardback"},
- {"p0cardface0", "p", "cardface0"},
- {"p0cardface1", "p", "cardface1"},
- {"p0dealer",    "p", "dealer",},
- {"p0name",      "p", "name"},
- {"p0seated",    "p", "seated"}};
+{{"p0active",        "p", "active"},  
+ {"p0balance",       "p", "balance"},
+ {"p0bet",           "p", "bet"},
+ {"p0cardback",      "p", "cardback"},
+ {"p0cardface0",     "p", "cardface0"},
+ {"p0cardface1",     "p", "cardface1"},
+ {"p0cardface0rank", "p", "cardface0rank"},
+ {"p0cardface0suit", "p", "cardface0suit"},
+ {"p0cardface1rank", "p", "cardface1rank"},
+ {"p0cardface1suit", "p", "cardface1suit"},
+ {"p0dealer",        "p", "dealer",},
+ {"p0name",          "p", "name"},
+ {"p0seated",        "p", "seated"},
+ // Alternative for blinking fonts, etc.
+ {"u0active",        "u", "active"},  
+ {"u0balance",       "u", "balance"},
+ {"u0bet",           "u", "bet"},
+ {"u0cardback",      "u", "cardback"},
+ {"u0cardface0",     "u", "cardface0"},
+ {"u0cardface1",     "u", "cardface1"},
+ {"u0cardface0rank", "u", "cardface0rank"},
+ {"u0cardface0suit", "u", "cardface0suit"},
+ {"u0cardface1rank", "u", "cardface1rank"},
+ {"u0cardface1suit", "u", "cardface1suit"},
+ {"u0dealer",        "u", "dealer"},
+ {"u0name",          "u", "name"},
+ {"u0seated",        "u", "seated"},
+ // Scraping chip-stacks
+ // We handle only chip-positions 00, 01 and 10,
+ // because these are mostly used.
+ {"p0chip00",        "p", "chip00"},
+ {"p0chip01",        "p", "chip01"},
+ {"p0chip10",        "p", "chip10"}
+};
 
-void CRegionCloner::CloneBalances()
+void CRegionCloner::CloneCircularCloneableRegions()
 {
-	STablemapRegion c0cardface0;
-	if (!p_tablemap_access->GetTableMapRegion("p0balance", &c0cardface0))
+	STablemapRegion region_to_be_cloned;
+	// Find first cloneable region for position calculations
+	for (int i = 0; i<k_number_of_circular_cloneable_regions; i++)
 	{
-		return;
+		if (p_tablemap_access->GetTableMapRegion(
+			circular_cloneable_regions[i][0], // name of region
+			&region_to_be_cloned))
+		{
+			CalculateCircularRegions(region_to_be_cloned, k_max_number_of_players);;
+			break;
+		}
 	}
-	CalculateCircularRegions(c0cardface0, k_max_number_of_players);
-	for (int i=0; i<k_max_number_of_players; i++)
-	{	
-		STablemapRegion new_region;
-		ApplyNextCircularRegionPosition(&new_region, i);
 
-		new_region.name = CreateName("p", i, "balance");
-		new_region.color = c0cardface0.color;
-		new_region.radius = c0cardface0.radius;
-		new_region.transform = c0cardface0.transform;
+	for (int i = 0; i<k_number_of_circular_cloneable_regions; i++)
+	{
+		// Clone a single region;
+		if (!p_tablemap_access->GetTableMapRegion(
+			circular_cloneable_regions[i][0], // name of region
+			&region_to_be_cloned))
+		{
+			continue;
+		}
+		// Start with player 1 and keep player 0 as is
+		for (int p=1; p<k_max_number_of_players; p++)
+		{	
+			STablemapRegion new_region;
+			ApplyNextCircularRegionPosition(region_to_be_cloned, &new_region, p);
 
-		p_tablemap->r$_insert(new_region);
+			new_region.name = CreateName( 
+				circular_cloneable_regions[i][1],   // prefix
+				p,									// player number
+				circular_cloneable_regions[i][2]);  // postfix
+			new_region.color = region_to_be_cloned.color;
+			new_region.radius = region_to_be_cloned.radius;
+			new_region.transform = region_to_be_cloned.transform;
 
-		theApp.m_TableMapDlg->UpdateDisplayOfAllRegions();
+			p_tablemap->r$_insert(new_region);
+
+			theApp.m_TableMapDlg->UpdateDisplayOfAllRegions();
+		}
 	}
 }
 
@@ -254,5 +292,5 @@ void CRegionCloner::CloneRegions()
 		return;
 	}
 	CloneCommonCards();
-	CloneBalances();
+	CloneCircularCloneableRegions();
 }
