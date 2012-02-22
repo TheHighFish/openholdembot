@@ -1942,7 +1942,7 @@ f$OpenPPL_HINT_SuitsOnBoard_Undefined_For_This_Betting_Round
  (($$cs0 == $$cs1 && $$cs1 != $$cs2) || ($$cs0 == $$cs2 && $$cs0 != $$cs1) || ($$cs0 != $$cs1 && $$cs1 == $$cs2)) ? 2 :
   ($$cs0 != $$cs1 && $$cs1 != $$cs2 && $$cs0 != $$cs2) ? 3 : f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY]
 
-##f$OpenPPL_SuitsOnRiver##  
+##f$OpenPPL_SuitsOnRiver##
 (betround < f$OpenPPL_ConstBetRoundRiver) ? f$OpenPPL_HINT_SuitsOnBoard_Undefined_For_This_Betting_Round : 
 [ f$OpenPPL_SuitsOnTurn
   + ((($$cs4 != $$cs0) && ($$cs4 != $$cs1) && ($$cs4 != $$cs2) && ($$cs4 != $$cs3)) ? 1 : 0)]
