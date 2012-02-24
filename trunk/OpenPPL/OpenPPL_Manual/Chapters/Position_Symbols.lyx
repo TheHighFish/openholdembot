@@ -57,6 +57,42 @@ Good news: contrary to Standard-PPL most position symbols are not restricted
  You can use them in later orbits too and also postflop.
 \end_layout
 
+\begin_layout Remark*
+Symbols like 
+\begin_inset Quotes eld
+\end_inset
+
+InButton
+\begin_inset Quotes erd
+\end_inset
+
+ can be spelled in three different ways: 
+\begin_inset Quotes eld
+\end_inset
+
+InButton
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+In Button
+\begin_inset Quotes erd
+\end_inset
+
+ or just 
+\begin_inset Quotes eld
+\end_inset
+
+Button
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="19" columns="3">
@@ -344,7 +380,7 @@ None
 \begin_inset Text
 
 \begin_layout Plain Layout
-InMiddePosition1
+InMiddlePosition1
 \end_layout
 
 \end_inset
@@ -374,7 +410,7 @@ None
 \begin_inset Text
 
 \begin_layout Plain Layout
-InMiddePosition2
+InMiddlePosition2
 \end_layout
 
 \end_inset
@@ -404,7 +440,7 @@ None
 \begin_inset Text
 
 \begin_layout Plain Layout
-InMiddePosition3
+InMiddlePosition3
 \end_layout
 
 \end_inset
