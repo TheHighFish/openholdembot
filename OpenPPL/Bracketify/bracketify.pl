@@ -189,12 +189,12 @@ while (<>)
 	# But first we remove superfluos spaces at the end to make things more robust...
 	s/[ ]*$//;
 	#... and then add a bracket before user-variables.
-	s/((user[A-Za-z_]*)$)/\) $1/i;
+	s/((user[A-Za-z0-9_]*)$)/\) $1/i;
 	# Third case case: there is no action at the end,
 	# i.e. a keyword "WHEN", but no "FORCE" and no user-variable.
 	# Then we add a bracket to the right end of the line
 	# and hope, that it is no multi-line condition
-	if ((m/^WHEN /i || m/ WHEN /i) && !(m/ FORCE$/i) && !(m/(user[A-Za-z_]*)$/i))
+	if ((m/^WHEN /i || m/ WHEN /i) && !(m/ FORCE$/i) && !(m/(user[A-Za-z0-9_]*)$/i))
 	{
 		s/$/\)/i;	
 	}
@@ -297,7 +297,7 @@ while (<>)
 	s/[ ]+\>\=[ ]+/ \>\= /g;
 	s/[ ]+\<\=[ ]+/ \<\= /g;
 	# Proper indentation
-	if ((m/^WHEN /i || m/ WHEN /i) && !(m/ FORCE$/i) && !(m/(user[A-Za-z_]*)$/i))
+	if ((m/^WHEN /i || m/ WHEN /i) && !(m/ FORCE$/i) && !(m/(user[A-Za-z0-9_]*)$/i))
 	{
 		# Open-ended when-condition
 		# No indentation
