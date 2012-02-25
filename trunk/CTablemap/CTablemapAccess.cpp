@@ -46,7 +46,7 @@ bool CTablemapAccess::GetTableMapRect(CString rect_name, RECT *_rect)
 	return false;
 }
 
-bool GetTableMapRegion(CString region_name, STablemapRegion *_region)
+bool CTablemapAccess::GetTableMapRegion(CString region_name, STablemapRegion *_region)
 {
 	/*
 		r$ : Finds tablemap regions (i3_edit, i3_slider, i3_handle, iXbutton, i86button, i86Xbutton)
