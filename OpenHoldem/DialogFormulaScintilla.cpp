@@ -33,7 +33,8 @@
 CDlgFormulaScintilla	*m_formulaScintillaDlg = NULL;
 
 char * keywords = // Standard functions
-				  "f$alli f$swag f$srai f$rais f$call f$prefold f$rebuy f$delay f$chat f$P f$play f$test f$sitin f$sitout f$leave"
+				  "f$alli f$swag f$srai f$rais f$call f$prefold f$rebuy f$delay f$chat "
+				  "f$P f$play f$test f$sitin f$sitout f$leave f$close "
 				  // General
 				  "ismanual isppro site nchairs isbring session handnumber version "
 				  // Tablemap
@@ -286,6 +287,7 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 	m_standard_functions[1].Add("f$sitin");
 	m_standard_functions[1].Add("f$sitout");
 	m_standard_functions[1].Add("f$leave");
+	m_standard_functions[1].Add("f$close");
 
 	m_standard_functions[2].Add("f$test");
 	m_standard_functions[2].Add("f$debug");

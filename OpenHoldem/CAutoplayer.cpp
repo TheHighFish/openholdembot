@@ -304,6 +304,7 @@ void CAutoplayer::DoAutoplayer(void)
 	p_symbols->CalcSecondaryFormulas();
 
 	// Handle f$sitin, f$sitout, f$leave (formerly f$play)
+	// Also handling f$cloase here
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling DoF$Sitin_Sitout_Leave.\n");
 	DoF$Sitin_Sitout_Leave();
 
@@ -1021,6 +1022,7 @@ void CAutoplayer::DoF$Sitin_Sitout_Leave(void)
 	double			f_sitin  = p_symbols->f$sitin();
 	double			f_sitout = p_symbols->f$sitout();
 	double			f_leave  = p_symbols->f$leave();
+	double			f_close  = p_symbols->f$close();
 	RECT			r = {0};
 
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting DoF$Sitin_Sitout_Leave...\n");
@@ -1044,8 +1046,8 @@ void CAutoplayer::DoF$Sitin_Sitout_Leave(void)
 	}
 
 	// sit out
-	else if (f_sitout==true && 
-		((sitout_button_available && _sitout_state==false) || (sitin_button_available && _sitin_state==true)))
+	else if (f_sitout == true && 
+		((sitout_button_available && _sitout_state == false) || (sitin_button_available && _sitin_state==true)))
 	{
 		if (sitout_button_available && (_sitout_state==false))
 		{
@@ -1061,15 +1063,15 @@ void CAutoplayer::DoF$Sitin_Sitout_Leave(void)
 	}
 
 	// sit in
-	else if (f_sitin==true && 
-		((sitin_button_available && (_sitin_state==false)) || (sitout_button_available && (_sitout_state==true))))
+	else if (f_sitin == true && 
+		((sitin_button_available && (_sitin_state == false)) || (sitout_button_available && (_sitout_state==true))))
 	{
-		if (sitin_button_available && _sitin_state==false)
+		if (sitin_button_available && _sitin_state == false)
 		{
 			r = sitin_button;
 		}
 
-		else if (sitout_button_available && _sitout_state==true)
+		else if (sitout_button_available && _sitout_state == true)
 		{
 			r = sitout_button;
 		}
@@ -1078,9 +1080,35 @@ void CAutoplayer::DoF$Sitin_Sitout_Leave(void)
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] f$sitin is true and sitin button exists.\n");
 	}
 
-	// Autopost
-	if (f_sitin && (_autopost_state==false) && autopost_button_available)
+	// f$close
+	else if (f_close == true)
 	{
+		// Hard-coded click to the "X" at the top-right
+		// of the title-bar
+		// ToDo (maybe): make it work for different settings.
+
+		RECT table_size;
+
+		// http://msdn.microsoft.com/en-us/library/ms633503.aspx
+		GetClientRect(p_autoconnector->attached_hwnd(), &table_size);
+
+		r.top    = -3;
+		r.bottom = -15;
+		r.left   = table_size.right - 18;
+		r.right  = table_size.right -  6;
+		
+
+		do_click = true;
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] f$close is true and sitin state is false.\n");
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] preparing to execute f$close.\n");
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Close-region is [%d, %d, %d, %d]\n",
+			r.left, r.bottom, r.right, r.top);
+	}
+
+	// Autopost
+	if (f_sitin && (_autopost_state == false) && autopost_button_available)
+	{
+		// ??? r = _autopost_but ???
 		r.left = _autopost_but->second.left;
 		r.top = _autopost_but->second.top;
 		r.right = _autopost_but->second.right;
@@ -1095,7 +1123,7 @@ void CAutoplayer::DoF$Sitin_Sitout_Leave(void)
 		if (_mutex.Lock(500)) 
 		{
 			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling mouse.dll to single click button: %d,%d %d,%d\n", r.left, r.top, r.right, r.bottom);	
-			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), autopost_button, MouseLeft, 1, hwnd_focus, cur_pos);
+			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), r, MouseLeft, 1, hwnd_focus, cur_pos);
 
 			_mutex.Unlock();
 

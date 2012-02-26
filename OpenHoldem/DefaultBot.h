@@ -26,7 +26,7 @@ EDITED 2010-02-02 by THF: \r\n\
   * new formulae f$sitin, f$sitout, f$leave \r\n\
     instead of the old f$play \r\n\
 	EDITED 2010-04-27 by THF: \r\n\
-  * replaced f$betsize, f$srai etc. by f$betsize";
+  * replaced fswag, f$srai etc. by f$betsize";
 
 
 static const char * defaultCSdll = "";
@@ -210,6 +210,9 @@ static const char * defaultCSleave = "\
 issittingout                  // i am sitting out \r\n\
 && elapsedhand >= 600         // 10 minutes since end of last hand \r\n\
 && elapsedauto >= 600         // 10 minutes since autoplayer has acted";
+
+static const char * defaultCSclose = "\
+0                             // never close the table to not confuse newbies.";
 
 static const char * defaultCStest = "";
 
