@@ -1,0 +1,123 @@
+// Contributed by DonkeyBot Sun Feb 26, 2012
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=260&t=14731
+
+CUSTOM
+
+LISTS
+
+// Chart 1.
+NEW LIST 010
+	AA KK
+END LIST
+
+NEW LIST 011
+	QQ AK
+END LIST
+
+NEW LIST 012
+	JJ TT
+END LIST
+
+NEW LIST 013
+	99 88 77 66 55 44 33 22
+END LIST
+
+NEW LIST 014 
+	AQ AJ KQ
+END LIST
+
+// Chart 2.
+NEW LIST 020 
+	AA KK QQ JJ TT 99 AK AQ
+END LIST
+
+NEW LIST 021 
+	88 77 66 AJ AT
+END LIST
+
+NEW LIST 022 
+	55 44 33 22 A9 A8 A7 A6 A5 A4 A3 A2
+END LIST
+
+NEW LIST 023
+	KQ KJ KT QJ QT JT
+END LIST
+
+NEW LIST 024
+	K9s Q9s J9s T9s 98s
+END LIST
+
+SYMBOLS
+
+NEW SYMBOL ShortStack
+	WHEN (StackSize <= 20) RETURN 1 FORCE
+	WHEN Others RETURN 0 FORCE
+END SYMBOL
+
+NEW SYMBOL OpponentIsRaising
+	WHEN (InSmallBlind AND (nopponentsraising > 1)) RETURN 1 FORCE
+	WHEN (InBigBlind AND (nopponentsraising > 0)) RETURN 1 FORCE
+	WHEN (nopponentsraising > 2) RETURN 1 FORCE
+	WHEN Others RETURN 0 FORCE
+END SYMBOL
+
+NEW SYMBOL OneOpponentIsRaising
+	WHEN (InSmallBlind AND (nopponentsraising = 2)) RETURN 1 FORCE
+	WHEN (InBigBlind AND (nopponentsraising = 1)) RETURN 1 FORCE
+	WHEN (nopponentsraising = 3) RETURN 1 FORCE
+	WHEN Others RETURN 0 FORCE
+END SYMBOL
+
+NEW SYMBOL MoreThanOneOpponentIsRaising
+	WHEN (InSmallBlind AND (nopponentsraising > 2)) RETURN 1 FORCE
+	WHEN (InBigBlind AND (nopponentsraising > 1)) RETURN 1 FORCE
+	WHEN (nopponentsraising > 3) RETURN 1 FORCE
+	WHEN Others RETURN 0 FORCE
+END SYMBOL
+
+PREFLOP
+	WHEN (NOT ShortStack)
+		WHEN (islist010 AND (NOT OpponentIsRaising OR OneOpponentIsRaising)) RAISEPOT FORCE
+		WHEN (islist010 AND OpponentIsRaising) RAISEMAX FORCE
+		
+		WHEN (islist011 AND (NOT OpponentIsRaising OR OneOpponentIsRaising)) RAISEPOT FORCE
+		WHEN (islist011) FOLD FORCE
+		
+		WHEN (islist012 AND NOT OpponentIsRaising AND (InEarlyPosition1 OR InEarlyPosition2 OR InEarlyPosition3)) CALL FORCE
+		WHEN (islist012 AND NOT OpponentIsRaising) BETPOT FORCE
+		WHEN (islist012) FOLD FORCE
+		
+		WHEN (islist013 AND NOT OpponentIsRaising) CALL FORCE
+		WHEN (islist013) FOLD FORCE
+		
+		WHEN (islist014 AND NOT OpponentIsRaising AND (InButton OR InCutOff OR InTheBlinds)) BETPOT FORCE	
+	WHEN (ShortStack)
+		WHEN (islist020) RAISEMAX FORCE
+		
+		WHEN (islist021 AND NOT OpponentIsRaising) RAISEMAX FORCE
+		WHEN (islist021 AND OneOpponentIsRaising AND (InButton OR InCutOff OR InTheBlinds)) RAISEMAX FORCE
+		WHEN (islist021) FOLD FORCE		
+		
+		WHEN (islist022 AND NOT OpponentIsRaising) RAISEMAX FORCE
+		WHEN (islist022) FOLD FORCE		
+		
+		WHEN (islist023 AND NOT OpponentIsRaising AND (NOT InEarlyPosition1 OR NOT InEarlyPosition2 OR NOT InEarlyPosition3)) RAISEMAX FORCE
+		WHEN (islist023) FOLD FORCE		
+		
+		WHEN (islist024 AND NOT OpponentIsRaising AND (InButton OR InCutOff OR InTheBlinds)) RAISEMAX FORCE				
+	WHEN Others FOLD FORCE	
+
+FLOP
+	WHEN (HaveTopPair OR HaveOverPair OR HaveTwoPair OR HaveTrips OR HaveStraight OR HaveFlush) RAISEPOT FORCE
+	WHEN (nopponentsraising = 0) CALL FORCE
+	WHEN Others FOLD FORCE
+
+TURN
+	WHEN (HaveTopPair OR HaveOverPair OR HaveTwoPair OR HaveTrips OR HaveStraight OR HaveFlush) RAISEPOT FORCE
+	WHEN (nopponentsraising = 0) CALL FORCE
+	WHEN Others FOLD FORCE
+
+RIVER
+	WHEN (HaveTopPair OR HaveOverPair OR HaveTwoPair OR HaveTrips OR HaveStraight OR HaveFlush) RAISEPOT FORCE
+	WHEN (nopponentsraising = 0) CALL FORCE
+	WHEN Others FOLD FORCE
