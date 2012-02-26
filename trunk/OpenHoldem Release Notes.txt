@@ -4,17 +4,26 @@ NEW STUFF:
 - f$play has been quite a messy concept for a long time.
   It finally got replaced by 3 individual functions: f$sitin, f$sitout and f$leave.
   There will be a warning on old formulae and the user will need to make
-  some small changes to his formula set. [THF]
+  some small changes to his formula set. 
+  [THF]
 - f$swag has been quite a messy concept for a long time.
   f$swag and its supporting functions 
   (f$srai, sraimin, sraimax, swagtextmethod and f$swag_adjust)
   got replaced by a single function f$betsize 
-  and OH does automatically care about the rest. [THF]
-- new symbol: originalbalance, which remebers the balance at the start of a session. [THF]
-- display state of the buttons sitin, sitout, leave, autopost and prefold in the GUI. [THF]
-- allow copy operation on formulas tree nodes via context menu. [JumpingFences]
-- Support for extra font groups [0..7] [Strikles]
-- New all-in method for using the slider (allinmethod 3) [Strikles]
+  and OH does automatically care about the rest. 
+  [THF]
+- new symbol: originalbalance, which remebers the balance at the start of a session. 
+  [THF]
+- display state of the buttons sitin, sitout, leave, autopost and prefold in the GUI. 
+  [THF]
+- allow copy operation on formulas tree nodes via context menu. 
+  [JumpingFences]
+- Support for extra font groups [0..7] 
+  [Strikles]
+- New all-in method for using the slider (allinmethod 3) 
+  [Strikles]
+- New f$close-function that clicks the [X] in the titlebar of the table.
+  [THF]
 
 MAINTENANCE:
 - Removed code-clones in CFormula.cpp [THF]

@@ -1,3 +1,15 @@
+v1.0.4 2012-xx-yy
+=================
+BUG FIXES: 
+- User-defined variables did reset every heartbeat
+  instead of once per hand.
+  Thanks to Postenjak for reporting.
+  [THF]
+- bracketify.pl did not recognize user-defined-variables
+  with numbers in the name.
+  Thanks to SuperBlak for reporting.
+  [THF]
+
 v1.0.3 2012-02-21
 =================
 BUG FIXES: 
