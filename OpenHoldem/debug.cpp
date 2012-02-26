@@ -1,13 +1,14 @@
 #include "stdafx.h"
 #include "debug.h"
 
+#include "..\CTablemap\CTablemap.h"
+#include "..\..\dbghelp\dbghelp.h"
+#include "CAutoplayerFunctions.h"
 #include "CIteratorThread.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSessionCounter.h"
 #include "CSymbols.h"
-#include "..\CTablemap\CTablemap.h"
-#include "..\..\dbghelp\dbghelp.h"
 #include "inlines/eval.h"
 #include "OH_MessageBox.h"
 #include "OpenHoldem.h"
@@ -15,7 +16,7 @@
 
 //#include <vld.h>			// visual leak detector
 
-
+// !!! ToDo: better debug-format (especially summary)
 
 FILE *log_fp = NULL;
 CCritSec log_critsec;  // Used to ensure only one thread at a time writes to log file
@@ -470,23 +471,23 @@ void write_logautoplay(const char * action)
         // best action
         if (strcmp(action, "SWAG")==0) 
 		{
-            bestaction.Format("$%.2f", p_symbols->f$betsize());
+            bestaction.Format("$%.2f", p_autoplayer_functions->f$betsize());
         }
         else 
 		{
-            if (p_symbols->f$alli())
+            if (p_autoplayer_functions->f$alli())
                 bestaction = "Allin";
 
-            else if (p_symbols->f$betsize())
+            else if (p_autoplayer_functions->f$betsize())
                 bestaction = "SWAG";
 
-            else if (p_symbols->f$rais())
+            else if (p_autoplayer_functions->f$rais())
                 bestaction = "Bet/Raise";
 
-            else if (p_symbols->f$call())
+            else if (p_autoplayer_functions->f$call())
                 bestaction = "Call/Check";
 
-            else if (p_symbols->f$prefold())
+            else if (p_autoplayer_functions->f$prefold())
                 bestaction = "Pre-fold";
 
             else
@@ -506,11 +507,11 @@ void write_logautoplay(const char * action)
                          sym_myturnbits&0x08 ? "A" : ".");
 
         // fcra formula status
-        fcra_formula_status.Format("%s%s%s%s",
-                                   !p_symbols->f$alli() && !p_symbols->f$rais() && !p_symbols->f$call() && !p_symbols->f$betsize() ? "F" : ".",
-                                   p_symbols->f$call() ? "C" : ".",
-                                   p_symbols->f$rais() ? "R" : ".",
-                                   p_symbols->f$alli() ? "A" : ".");
+		fcra_formula_status.Format("%s%s%s%s",
+			!p_autoplayer_functions->f$alli() && !p_autoplayer_functions->f$rais() && !p_autoplayer_functions->f$call() && !p_autoplayer_functions->f$betsize() ? "F" : ".",
+			p_autoplayer_functions->f$call() ? "C" : ".",
+			p_autoplayer_functions->f$rais() ? "R" : ".",
+			p_autoplayer_functions->f$alli() ? "A" : ".");
 
         fprintf(log_fp, "%s - %1d ", 
 			get_time(nowtime), 
@@ -537,7 +538,7 @@ void write_logautoplay(const char * action)
 			p_symbols->sym()->balance[10], 
 			fcra_seen.GetString(), 
 			fcra_formula_status.GetString(), 
-			p_symbols->f$betsize() );
+			p_autoplayer_functions->f$betsize() );
 
 		if (prefs.trace_enabled() && p_symbols->symboltrace_collection()->GetSize() > 0)
 		{

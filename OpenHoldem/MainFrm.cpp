@@ -9,6 +9,7 @@
 
 #include "CAutoConnector.h"
 #include "CAutoplayer.h"
+#include "CAutoplayerFunctions.h"
 #include "CDllExtension.h"
 #include "CFormula.h"
 #include "CHeartbeatThread.h"
@@ -929,7 +930,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 		if (!p_symbols->user_chair_confirmed() || !playing)
 			_status_action = "Notplaying";
 
-		else if (p_symbols->f$prefold())
+		else if (p_autoplayer_functions->f$prefold())
 		{
 			_status_action = "Pre-fold";
 		}
@@ -937,10 +938,10 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 		else if (p_symbols->user_chair_confirmed() && iter_vars.iterator_thread_complete())
 		{
 			if (prefs.calc_only_my_turn() && !p_symbols->sym()->isfinalanswer) _status_action = "N/A";
-			else if (p_symbols->f$alli())    _status_action = "Allin";
-			else if (p_symbols->f$betsize()) _status_action.Format("Betsize: %.2f", p_symbols->f$betsize());
-			else if (p_symbols->f$rais())    _status_action = "Bet/Raise";
-			else if (p_symbols->f$call())    _status_action = "Call/Check";
+			else if (p_autoplayer_functions->f$alli())    _status_action = "Allin";
+			else if (p_autoplayer_functions->f$betsize()) _status_action.Format("Betsize: %.2f", p_autoplayer_functions->f$betsize());
+			else if (p_autoplayer_functions->f$rais())    _status_action = "Bet/Raise";
+			else if (p_autoplayer_functions->f$call())    _status_action = "Call/Check";
 			else  _status_action = "Fold/Check";
 		}
 

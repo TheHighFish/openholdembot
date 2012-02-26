@@ -3,6 +3,7 @@
 
 #include <complex>
 #include "CAutoconnector.h"
+#include "CAutoplayerFunctions.h"
 #include "CGameState.h"
 #include "CGrammar.h"
 #include "CHeartbeatThread.h"
@@ -138,11 +139,10 @@ void CAutoplayer::set_autoplayer_engaged(const bool to_be_enabled_or_not)
 
 void CAutoplayer::DoChat(void)
 {
-	double			f_chat = p_symbols->f$chat();
 	HWND			hwnd_focus = GetFocus();
 	POINT			cur_pos = {0};
 
-	if ((f_chat == 0) && (_the_chat_message == NULL))
+	if ((p_autoplayer_functions->f$chat() == 0) && (_the_chat_message == NULL))
 		return;
 
 	if (!IsChatAllowed())
@@ -151,7 +151,7 @@ void CAutoplayer::DoChat(void)
 	// Converting the result of the $chat-function to a string.
 	// Will be ignored, if we already have an unhandled chat message.
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling RegisterChatMessage.\n");
-	RegisterChatMessage(f_chat);
+	RegisterChatMessage(p_autoplayer_functions->f$chat());
 
 	::GetCursorPos(&cur_pos);
 
@@ -178,7 +178,7 @@ void CAutoplayer::DoChat(void)
 
 void CAutoplayer::DoRebuyIfNeccessary(void)
 {
-	if (p_symbols->f$rebuy() > 0)
+	if (p_autoplayer_functions->f$rebuy() > 0)
 	{
 		if (_mutex.Lock(500))
 		{
@@ -325,7 +325,7 @@ void CAutoplayer::DoAutoplayer(void)
 	//
 	//  Avoiding unnecessary calls to DoChat(),
 	//	especially mouse movements to the chat box.
-	if (IsChatAllowed() && ((p_symbols->f$chat() != 0) || (_the_chat_message != NULL)))
+	if (IsChatAllowed() && ((p_autoplayer_functions->f$chat() != 0) || (_the_chat_message != NULL)))
 	{
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling DoChat.\n");
 		DoChat();
@@ -361,12 +361,12 @@ void CAutoplayer::DoAutoplayer(void)
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Number of stable frames: % d\n", p_stableframescounter->NumberOfStableFrames());
 
 	// Scale f$delay to a number of scrapes and avoid division by 0 and negative values
-	unsigned int additional_frames_to_wait = (prefs.scrape_delay() > 0 && p_symbols->f$delay() > 0 ? (p_symbols->f$delay()/prefs.scrape_delay()) : 0);
+	unsigned int additional_frames_to_wait = (prefs.scrape_delay() > 0 && p_autoplayer_functions->f$delay() > 0 ? (p_autoplayer_functions->f$delay()/prefs.scrape_delay()) : 0);
 
 	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return.
 	if (p_stableframescounter->NumberOfStableFrames() < prefs.frame_delay() + additional_frames_to_wait)
 	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because we don't have enough stable frames, or have not waited f$delay (=%d ms)\n", (int)p_symbols->f$delay());
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because we don't have enough stable frames, or have not waited f$delay (=%d ms)\n", (int)p_autoplayer_functions->f$delay());
 		isFinalAnswer = false;
 	}
 
@@ -387,7 +387,7 @@ void CAutoplayer::DoAutoplayer(void)
 		return;
 	}
 
-	if (p_symbols->f$alli())
+	if (p_autoplayer_functions->f$alli())
 	{
 		DoAllin();
 	}
@@ -395,10 +395,10 @@ void CAutoplayer::DoAutoplayer(void)
 	// do swag first since it is the odd one
 	bool bDoSwag = false; // I'm just breaking this out to be a little clearer (spew)
 
-	if ((p_tablemap->allinmethod() == 0) && p_symbols->f$alli() && p_scraper->GetButtonState(k_button_i3)) //!!! //!!!
+	if ((p_tablemap->allinmethod() == 0) && p_autoplayer_functions->f$alli() && p_scraper->GetButtonState(k_button_i3)) //!!! //!!!
 		bDoSwag = true;
 
-	if (p_symbols->f$betsize() && !p_symbols->f$alli() && p_scraper->GetButtonState(k_button_i3)) //!!!
+	if (p_autoplayer_functions->f$betsize() && !p_autoplayer_functions->f$alli() && p_scraper->GetButtonState(k_button_i3)) //!!!
 		bDoSwag = true;
 
 	if (bDoSwag) 
@@ -421,7 +421,6 @@ void CAutoplayer::DoSwag(void)
 	POINT			cur_pos = {0};
 	bool			lost_focus = false;
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-	double			f_swag = p_symbols->f$betsize();
 	POINT			point_null = {-1, -1};
 	RECT			r_null = {-1, -1, -1, -1};
 
@@ -521,18 +520,21 @@ void CAutoplayer::DoSwag(void)
 
 	// if we are swagging allin then set the swag value to be our balance (spew)
 	CString swag_amt;
-	if ((p_tablemap->allinmethod() == 0) && p_symbols->f$alli())
-		f_swag = p_symbols->sym()->balance[10];
+	if ((p_tablemap->allinmethod() == 0) && p_autoplayer_functions->f$alli())
+	{
+		p_autoplayer_functions->set_f$betsize(
+			p_symbols->sym()->balance[10] + p_symbols->sym()->currentbet[10]);
+	}
 
 
 	// SWAG AMOUNT ENTRY
-	double swag_adjusted = SwagAmountAdjusted(f_swag);
+	double swag_adjusted = SwagAmountAdjusted(p_autoplayer_functions->f$betsize());
 	if (swag_adjusted != (int) swag_adjusted)
 		swag_amt.Format("%.2f", swag_adjusted);
 	else
 		swag_amt.Format("%.0f", swag_adjusted);
 
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Swag amount (not adjusted): %.2f\n", f_swag);
+	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Swag amount (not adjusted): %.2f\n", p_autoplayer_functions->f$betsize());
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Swag amount; calling keyboard.dll to swag (adjusted): %s %d,%d %d,%d\n", 
 		swag_amt, i3_edit_region.left, i3_edit_region.top, i3_edit_region.right, i3_edit_region.bottom);
 	(theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), i3_edit_region, swag_amt, prefs.swag_use_comma(), NULL, point_null);
@@ -612,9 +614,6 @@ void CAutoplayer::DoARCCF(void)
 	POINT			cur_pos = {0};
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
-	double			alli = p_symbols->f$alli();
-	double			rais = p_symbols->f$rais();
-	double			call = p_symbols->f$call();
 	int				sym_myturnbits = (int) p_symbols->sym()->myturnbits;
 
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting DoARCCF...\n");
@@ -626,7 +625,7 @@ void CAutoplayer::DoARCCF(void)
 	do_click = k_action_undefined;
 
 	// ALLIN
-	if (alli && sym_myturnbits&0x8 && allin_button_available)
+	if (p_autoplayer_functions->f$alli() && sym_myturnbits&0x8 && allin_button_available)
 	{
 		r = allin_button;
 		do_click = k_action_allin;
@@ -634,7 +633,7 @@ void CAutoplayer::DoARCCF(void)
 	}
 
 	// RAISE
-	else if (rais && sym_myturnbits&0x4 && raise_button_available)
+	else if (p_autoplayer_functions->f$rais() && sym_myturnbits&0x4 && raise_button_available)
 	{
 		r = raise_button;
 		do_click = k_action_raise;
@@ -642,7 +641,7 @@ void CAutoplayer::DoARCCF(void)
 	}
 
 	// CALL
-	else if (call && sym_myturnbits&0x1 && call_button_available)
+	else if (p_autoplayer_functions->f$call() && sym_myturnbits&0x1 && call_button_available)
 	{
 		r = call_button;
 		do_click = k_action_call;
@@ -725,8 +724,6 @@ void CAutoplayer::DoSlider(void)
 
 	bool			sym_ismyturn = (bool) p_symbols->sym()->ismyturn;
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-
-	double			alli = p_symbols->f$alli();
 
 	POINT			point_null = {-1, -1};
 	RECT			r_null = {-1, -1, -1, -1};
@@ -841,13 +838,12 @@ void CAutoplayer::DoPrefold(void)
 	HWND			hwnd_focus = GetFocus();
 	POINT			cur_pos = {0};
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-	double			prefold = p_symbols->f$prefold();
 
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting DoPrefold...\n");
 
 	::GetCursorPos(&cur_pos);
 
-	if (prefold == 0)  
+	if (p_autoplayer_functions->f$prefold() == 0)  
 		return;
 
 	if (!prefold_button_available)  
@@ -1019,10 +1015,6 @@ void CAutoplayer::DoF$Sitin_Sitout_Leave(void)
 	HWND			hwnd_focus = GetFocus();
 	POINT			cur_pos = {0};
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-	double			f_sitin  = p_symbols->f$sitin();
-	double			f_sitout = p_symbols->f$sitout();
-	double			f_leave  = p_symbols->f$leave();
-	double			f_close  = p_symbols->f$close();
 	RECT			r = {0};
 
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting DoF$Sitin_Sitout_Leave...\n");
@@ -1038,7 +1030,7 @@ void CAutoplayer::DoF$Sitin_Sitout_Leave(void)
 	bool do_click = false;
 
 	// leave table
-	if (f_leave==true && leave_button_available)
+	if (p_autoplayer_functions->f$leave() && leave_button_available)
 	{
 		r = leave_button;
 		do_click = true;
@@ -1046,7 +1038,7 @@ void CAutoplayer::DoF$Sitin_Sitout_Leave(void)
 	}
 
 	// sit out
-	else if (f_sitout == true && 
+	else if (p_autoplayer_functions->f$sitout() && 
 		((sitout_button_available && _sitout_state == false) || (sitin_button_available && _sitin_state==true)))
 	{
 		if (sitout_button_available && (_sitout_state==false))
@@ -1063,7 +1055,7 @@ void CAutoplayer::DoF$Sitin_Sitout_Leave(void)
 	}
 
 	// sit in
-	else if (f_sitin == true && 
+	else if (p_autoplayer_functions->f$sitin() && 
 		((sitin_button_available && (_sitin_state == false)) || (sitout_button_available && (_sitout_state==true))))
 	{
 		if (sitin_button_available && _sitin_state == false)
@@ -1081,7 +1073,7 @@ void CAutoplayer::DoF$Sitin_Sitout_Leave(void)
 	}
 
 	// f$close
-	else if (f_close == true)
+	else if (p_autoplayer_functions->f$close())
 	{
 		// Hard-coded click to the "X" at the top-right
 		// of the title-bar
@@ -1106,7 +1098,7 @@ void CAutoplayer::DoF$Sitin_Sitout_Leave(void)
 	}
 
 	// Autopost
-	if (f_sitin && (_autopost_state == false) && autopost_button_available)
+	if (p_autoplayer_functions->f$sitin() && (_autopost_state == false) && autopost_button_available)
 	{
 		// ??? r = _autopost_but ???
 		r.left = _autopost_but->second.left;

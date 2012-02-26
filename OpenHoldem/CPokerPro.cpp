@@ -4,6 +4,7 @@
 #include <time.h>
 
 #include "CAutoplayer.h"
+#include "CAutoplayerFunctions.h"
 #include "CGrammar.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
@@ -2022,15 +2023,15 @@ void PokerPro::DoAutoplayer(void)
 
 	////////////////////////////////////////////////////////////////////////////////
 	// f$sitin, f$sitout, f$leave
-	if (p_symbols->f$leave()==true) 
+	if (p_autoplayer_functions->f$leave()==true) 
 	{
 		SendStand(_ppdata.m_userchair);	 
 	}
-	else if (p_symbols->f$sitout()==true && p_scraper->GetButtonState(6)) 
+	else if (p_autoplayer_functions->f$sitout()==true && p_scraper->GetButtonState(6)) 
 	{
 		SendSitout(_ppdata.m_userchair);	
 	}
-	else if (p_symbols->f$sitin()==true && p_scraper->GetButtonState(5)) 
+	else if (p_autoplayer_functions->f$sitin()==true && p_scraper->GetButtonState(5)) 
 	{
 		SendSitin(_ppdata.m_userchair);	
 	}
@@ -2044,7 +2045,7 @@ void PokerPro::DoAutoplayer(void)
 		return;
 
 	// scale f$delay to a number of scrapes
-	int additional_frames_to_wait = p_symbols->f$delay() / (prefs.scrape_delay() + 1);	
+	int additional_frames_to_wait = p_autoplayer_functions->f$delay() / (prefs.scrape_delay() + 1);	
 
 	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return.
 	if (p_stableframescounter->UpdateNumberOfStableFrames() < (prefs.frame_delay() + additional_frames_to_wait))
@@ -2055,7 +2056,7 @@ void PokerPro::DoAutoplayer(void)
 	p_symbols->CalcPrimaryFormulas(true);
 
 	// take action
-	if (p_symbols->f$alli() && p_scraper->GetButtonState(3) && _autoplayer_can_act) 
+	if (p_autoplayer_functions->f$alli() && p_scraper->GetButtonState(3) && _autoplayer_can_act) 
 	{
 		Sleep(500);
 		SendAction('ALLI', 0);
@@ -2064,16 +2065,16 @@ void PokerPro::DoAutoplayer(void)
 		Sleep(500);
 		p_symbols->RecordPrevAction(k_action_allin);
 	}
-	else if (p_symbols->f$betsize() && p_scraper->GetButtonState(2) && _autoplayer_can_act) 
+	else if (p_autoplayer_functions->f$betsize() && p_scraper->GetButtonState(2) && _autoplayer_can_act) 
 	{
 		Sleep(500);
-		SendAction('SBET', (int) (p_symbols->f$betsize()*100));
+		SendAction('SBET', (int) (p_autoplayer_functions->f$betsize()*100));
 		_autoplayer_can_act = false;
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		Sleep(500);
 		p_symbols->RecordPrevAction(k_action_swag);
 	}
-	else if (p_symbols->f$rais() && p_scraper->GetButtonState(2) && _autoplayer_can_act) 
+	else if (p_autoplayer_functions->f$rais() && p_scraper->GetButtonState(2) && _autoplayer_can_act) 
 	{
 		Sleep(500);
 		SendAction('RAIS', 0);
@@ -2082,7 +2083,7 @@ void PokerPro::DoAutoplayer(void)
 		Sleep(500);
 		p_symbols->RecordPrevAction(k_action_raise);
 	}
-	else if (p_symbols->f$call() && p_scraper->GetButtonState(1) && _autoplayer_can_act) 
+	else if (p_autoplayer_functions->f$call() && p_scraper->GetButtonState(1) && _autoplayer_can_act) 
 	{
 		Sleep(500);
 		SendAction('CALL', 0);
