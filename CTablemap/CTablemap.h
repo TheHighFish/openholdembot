@@ -5,6 +5,7 @@
 #include "../CTransform/hash/stdint.h"
 #include "../CTransform/pdiff/RGBAImage.h"
 #include "../CCritSec/CCritSec.h"
+#include "../OpenHoldem/MagicNumbers.h"
 
 #define _0b0111 0x07
 
