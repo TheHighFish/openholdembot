@@ -402,6 +402,7 @@ public:
 	const double		f$sitin()	{ return _f$sitin; }
 	const double		f$sitout()	{ return _f$sitout; }
 	const double		f$leave()	{ return _f$leave; }
+	const double		f$close()	{ return _f$close; }
 	const double		f$prefold()	{ return _f$prefold; }
 	const double		f$rebuy()	{ return _f$rebuy; }
 	const double		f$delay()	{ return _f$delay; }
@@ -423,6 +424,7 @@ public:
 	void	set_f$sitin(const double d)		{ ENT _f$sitin = d;}
 	void	set_f$sitout(const double d)	{ ENT _f$sitout = d;}
 	void	set_f$leave(const double d)		{ ENT _f$leave = d;}
+	void	set_f$close(const double d)		{ ENT _f$close = d;}
 	void	set_f$prefold(const double d)	{ ENT _f$prefold = d;}
 	void	set_f$rebuy(const double d)		{ ENT _f$rebuy = d;}
 	void	set_f$delay(const double d)		{ ENT _f$delay = d;}
@@ -819,7 +821,7 @@ private:
 	SSymbols	_sym;
 	bool		_user_chair_confirmed;
 	double		_f$alli, _f$betsize, _f$rais, _f$call; 
-	double		_f$sitin, _f$sitout, _f$leave; 
+	double		_f$sitin, _f$sitout, _f$leave, _f$close; 
 	double		_f$prefold, _f$rebuy, _f$chat, _f$delay;
 	
 	double		_stacks_at_hand_start[10];				// Used in ICM calculator - ICM needs stacks at beginning of hand

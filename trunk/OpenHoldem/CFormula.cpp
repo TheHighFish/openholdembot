@@ -54,6 +54,7 @@ void CFormula::SetDefaultBot()
 	func.func = "f$sitin";		func.func_text = defaultCSsitin;	_formula.mFunction.Add(func);
 	func.func = "f$sitout";		func.func_text = defaultCSsitout;	_formula.mFunction.Add(func);
 	func.func = "f$leave";		func.func_text = defaultCSleave;	_formula.mFunction.Add(func);
+	func.func = "f$close";		func.func_text = defaultCSclose;	_formula.mFunction.Add(func);
 	func.func = "f$test";		func.func_text = defaultCStest;		_formula.mFunction.Add(func);
 	func.func = "f$debug";		func.func_text = defaultCSdebug;	_formula.mFunction.Add(func);
 	_formula.dBankroll = defaultdBankroll;
@@ -268,7 +269,8 @@ bool CFormula::IsStandardFormula(CString formula_name)
 		|| (formula_name == "f$delay")	|| (formula_name == "f$chat")	
 		|| (formula_name == "f$P")		|| (formula_name == "f$sitin")	
 		|| (formula_name == "f$sitout")	|| (formula_name == "f$leave")	
-		|| (formula_name == "f$test")	|| (formula_name == "f$debug"));
+		|| (formula_name == "f$close")	|| (formula_name == "f$test")	
+		|| (formula_name == "f$debug"));
 }
 
 void CFormula::WriteStandardFunction(CArchive& ar, CString name)
@@ -312,6 +314,7 @@ void CFormula::WriteFormula(CArchive& ar)
 	WriteStandardFunction(ar, "f$sitin");
 	WriteStandardFunction(ar, "f$sitout");
 	WriteStandardFunction(ar, "f$leave");
+	WriteStandardFunction(ar, "f$close");
 	WriteStandardFunction(ar, "f$test");
 	WriteStandardFunction(ar, "f$debug");
 
@@ -411,6 +414,7 @@ void CFormula::CheckForDefaultFormulaEntries()
 	AddDefaultFunctionIfFunctionDoesNotExist("f$sitin");
 	AddDefaultFunctionIfFunctionDoesNotExist("f$sitout");
 	AddDefaultFunctionIfFunctionDoesNotExist("f$leave");
+	AddDefaultFunctionIfFunctionDoesNotExist("f$close");
 	AddDefaultFunctionIfFunctionDoesNotExist("f$test");
 	AddDefaultFunctionIfFunctionDoesNotExist("f$debug");
 }

@@ -586,6 +586,7 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_f$sitin(0);
 	set_f$sitout(0);
 	set_f$leave(0);
+	set_f$close(0);
 	set_f$prefold(0);
 	set_f$rebuy(0);
 	set_f$delay(0);
@@ -691,6 +692,7 @@ void CSymbols::ResetSymbolsNewHand(void)
 	set_f$sitin(0);
 	set_f$sitout(0);
 	set_f$leave(0);
+	set_f$close(0);
 	set_f$prefold(0);
 	set_f$rebuy(0);
 
@@ -3812,6 +3814,10 @@ void CSymbols::CalcSecondaryFormulas(void)
 	e = SUCCESS;
 	set_f$leave(gram.CalcF$symbol(p_formula, "f$leave", prefs.trace_enabled(), &e));
 	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$leave: %f\n", p_symbols->f$leave());
+
+	e = SUCCESS;
+	set_f$close(gram.CalcF$symbol(p_formula, "f$close", prefs.trace_enabled(), &e));
+	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$close: %f\n", p_symbols->f$close());
 
 	e = SUCCESS;
 	set_f$prefold(gram.CalcF$symbol(p_formula, "f$prefold", prefs.trace_enabled(), &e));
