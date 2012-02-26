@@ -9,6 +9,7 @@
 
 #include "CAutoconnector.h"
 #include "CAutoplayer.h"
+#include "CAutoplayerFunctions.h"
 #include "inlines/eval.h"
 #include "CGameState.h"
 #include "CGrammar.h"
@@ -579,17 +580,7 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_vs$prloslonow(0);
 
 	// action symbols
-	set_f$alli(0);
-	set_f$betsize(0);
-	set_f$rais(0);
-	set_f$call(0);
-	set_f$sitin(0);
-	set_f$sitout(0);
-	set_f$leave(0);
-	set_f$close(0);
-	set_f$prefold(0);
-	set_f$rebuy(0);
-	set_f$delay(0);
+	p_autoplayer_functions->Reset();
 
 	// icm
 	for (int i=0; i<k_max_number_of_players; i++)
@@ -685,16 +676,8 @@ void CSymbols::ResetSymbolsNewHand(void)
 	}
 
 	// action symbols
-	set_f$alli(0);
-	set_f$betsize(0);
-	set_f$rais(0);
-	set_f$call(0);
-	set_f$sitin(0);
-	set_f$sitout(0);
-	set_f$leave(0);
-	set_f$close(0);
-	set_f$prefold(0);
-	set_f$rebuy(0);
+	p_tablelimits->ResetOnConnection();
+	p_autoplayer_functions->Reset();
 
 	// icm
 	for (int i=0; i<k_max_number_of_players; i++)
@@ -3780,20 +3763,20 @@ void CSymbols::CalcPrimaryFormulas(const bool final_answer)
 	bool trace_needed = final_answer && prefs.trace_enabled();
 
 	e = SUCCESS;
-	set_f$alli(gram.CalcF$symbol(p_formula, "f$alli", trace_needed, &e));
-	write_log(prefs.debug_symbolengine(), "Primary formulas; f$alli: %f\n", p_symbols->f$alli());
+	p_autoplayer_functions->set_f$alli(gram.CalcF$symbol(p_formula, "f$alli", trace_needed, &e));
+	write_log(prefs.debug_symbolengine(), "Primary formulas; f$alli: %f\n", p_autoplayer_functions->f$alli());
 	
 	e = SUCCESS;
-	set_f$betsize(gram.CalcF$symbol(p_formula, "f$betsize", trace_needed, &e));
-	write_log(prefs.debug_symbolengine(), "Primary formulas; f$betsize: %f\n", p_symbols->f$betsize());
+	p_autoplayer_functions->set_f$betsize(gram.CalcF$symbol(p_formula, "f$betsize", trace_needed, &e));
+	write_log(prefs.debug_symbolengine(), "Primary formulas; f$betsize: %f\n", p_autoplayer_functions->f$betsize());
 
 	e = SUCCESS;
-	set_f$rais(gram.CalcF$symbol(p_formula, "f$rais", trace_needed, &e));
-	write_log(prefs.debug_symbolengine(), "Primary formulas; f$rais: %f\n", p_symbols->f$rais());
+	p_autoplayer_functions->set_f$rais(gram.CalcF$symbol(p_formula, "f$rais", trace_needed, &e));
+	write_log(prefs.debug_symbolengine(), "Primary formulas; f$rais: %f\n", p_autoplayer_functions->f$rais());
 
 	e = SUCCESS;
-	set_f$call(gram.CalcF$symbol(p_formula, "f$call", trace_needed, &e));
-	write_log(prefs.debug_symbolengine(), "Primary formulas; f$call: %f\n", p_symbols->f$call());
+	p_autoplayer_functions->set_f$call(gram.CalcF$symbol(p_formula, "f$call", trace_needed, &e));
+	write_log(prefs.debug_symbolengine(), "Primary formulas; f$call: %f\n", p_autoplayer_functions->f$call());
 
 	CalcAutoTrace();
 }
@@ -3804,47 +3787,36 @@ void CSymbols::CalcSecondaryFormulas(void)
 	CGrammar	gram;
 
 	e = SUCCESS;
-	set_f$sitin(gram.CalcF$symbol(p_formula, "f$sitin", prefs.trace_enabled(), &e));
-	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$sitin: %f\n", p_symbols->f$sitin());
+	p_autoplayer_functions->set_f$sitin(gram.CalcF$symbol(p_formula, "f$sitin", prefs.trace_enabled(), &e));
+	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$sitin: %f\n", p_autoplayer_functions->f$sitin());
 
 	e = SUCCESS;
-	set_f$sitout(gram.CalcF$symbol(p_formula, "f$sitout", prefs.trace_enabled(), &e));
-	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$sitout: %f\n", p_symbols->f$sitout());
+	p_autoplayer_functions->set_f$sitout(gram.CalcF$symbol(p_formula, "f$sitout", prefs.trace_enabled(), &e));
+	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$sitout: %f\n", p_autoplayer_functions->f$sitout());
 
 	e = SUCCESS;
-	set_f$leave(gram.CalcF$symbol(p_formula, "f$leave", prefs.trace_enabled(), &e));
-	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$leave: %f\n", p_symbols->f$leave());
+	p_autoplayer_functions->set_f$leave(gram.CalcF$symbol(p_formula, "f$leave", prefs.trace_enabled(), &e));
+	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$leave: %f\n", p_autoplayer_functions->f$leave());
 
 	e = SUCCESS;
-	set_f$close(gram.CalcF$symbol(p_formula, "f$close", prefs.trace_enabled(), &e));
-	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$close: %f\n", p_symbols->f$close());
+	p_autoplayer_functions->set_f$close(gram.CalcF$symbol(p_formula, "f$close", prefs.trace_enabled(), &e));
+	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$close: %f\n", p_autoplayer_functions->f$close());
 
 	e = SUCCESS;
-	set_f$prefold(gram.CalcF$symbol(p_formula, "f$prefold", prefs.trace_enabled(), &e));
-	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$prefold: %f\n", p_symbols->f$prefold());
+	p_autoplayer_functions->set_f$prefold(gram.CalcF$symbol(p_formula, "f$prefold", prefs.trace_enabled(), &e));
+	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$prefold: %f\n", p_autoplayer_functions->f$prefold());
 	
 	e = SUCCESS;
-	set_f$rebuy(gram.CalcF$symbol(p_formula, "f$rebuy", prefs.trace_enabled(), &e));
-	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$rebuy: %f\n", p_symbols->f$rebuy());
+	p_autoplayer_functions->set_f$rebuy(gram.CalcF$symbol(p_formula, "f$rebuy", prefs.trace_enabled(), &e));
+	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$rebuy: %f\n", p_autoplayer_functions->f$rebuy());
 	
 	e = SUCCESS;
-	set_f$delay(gram.CalcF$symbol(p_formula, "f$delay", prefs.trace_enabled(), &e));
-	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$delay: %f\n", p_symbols->f$delay());
+	p_autoplayer_functions->set_f$delay(gram.CalcF$symbol(p_formula, "f$delay", prefs.trace_enabled(), &e));
+	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$delay: %f\n", p_autoplayer_functions->f$delay());
 	
 	e = SUCCESS;
-	set_f$rebuy(gram.CalcF$symbol(p_formula, "f$rebuy", prefs.trace_enabled(), &e));
-	write_log(3, "Secondary formulas; f$rebuy: %f\n", p_symbols->f$rebuy());
-	
-	e = SUCCESS;
-	set_f$delay(gram.CalcF$symbol(p_formula, "f$delay", prefs.trace_enabled(), &e));
-	write_log(3, "Secondary formulas; f$delay: %f\n", p_symbols->f$delay());
-	
-	e = SUCCESS;
-	set_f$chat(gram.CalcF$symbol(p_formula, "f$chat", prefs.trace_enabled(), &e));
-	write_log(3, "Secondary formulas; f$chat: %f\n", p_symbols->f$chat());
-
-	CalcAutoTrace();
-	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$chat: %f\n", p_symbols->f$chat());
+	p_autoplayer_functions->set_f$chat(gram.CalcF$symbol(p_formula, "f$chat", prefs.trace_enabled(), &e));
+	write_log(3, "Secondary formulas; f$chat: %f\n", p_autoplayer_functions->f$chat());
 
 	CalcAutoTrace();
 }
@@ -4626,7 +4598,7 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 			new_pot = _sym.pot + new_bet - _sym.currentbet[10];
 			break;
 		case k_action_call:
-			assert(f$call() > 0);
+			assert(p_autoplayer_functions->f$call() > 0);
 			write_log(prefs.debug_symbolengine(), "Adjusting symbols for users action: call\n");
 			// Did-symbols
 			set_didcall(4, p_symbols->sym()->didcall[4] + 1);
@@ -4637,7 +4609,7 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 			new_pot = _sym.pot + new_bet - _sym.currentbet[10];
 			break;
 		case k_action_raise:
-			assert(f$rais() > 0);
+			assert(p_autoplayer_functions->f$rais() > 0);
 			write_log(prefs.debug_symbolengine(), "Adjusting symbols for users action: raise\n");
 			// Did-symbols
 			set_didrais(4, p_symbols->sym()->didrais[4] + 1);
@@ -4648,7 +4620,7 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 			new_pot = _sym.pot + new_bet - _sym.currentbet[10];
 			break;
 		case k_action_swag:
-			assert(f$betsize() > 0);
+			assert(p_autoplayer_functions->f$betsize() > 0);
 			write_log(prefs.debug_symbolengine(), "Adjusting symbols for users action: swag\n");
 			// Did-symbols
 			set_didswag(4, p_symbols->sym()->didswag[4] + 1);
@@ -4657,7 +4629,7 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 			// Disabled till OH 2.2 as it causes bad side-effects for the call symbol.
 			new_bet = _sym.currentbet[10]; // f$swag(); // !!! That's not correct, but will be for OH 2.2.0 because of swagadjustment
 			new_number_of_bets = new_bet / bet; 
-			new_pot = _sym.pot + f$betsize() - _sym.currentbet[10];
+			new_pot = _sym.pot + p_autoplayer_functions->f$betsize() - _sym.currentbet[10];
 			break;
 		case k_action_allin:
 			// No "didallin"

@@ -2,6 +2,7 @@
 #include <atlstr.h>
 #include <time.h>
 #include "CAutoconnector.h"
+#include "CAutoplayerFunctions.h"
 #include "CHandresetDetector.h"
 #include "COcclusionCheck.h"
 #include "CPreferences.h"
@@ -153,7 +154,7 @@ void CRebuyManagement::ExecuteRebuyScript()
 	double BigBet = p_tablelimits->bbet();
 	double UserChair = p_symbols->sym()->userchair;
 	double Balance = p_symbols->sym()->balance[10];
-	double TargetAmount = p_symbols->f$rebuy();
+	double TargetAmount = p_autoplayer_functions->f$rebuy();
 	CString RebuyScript = prefs.rebuy_script();
 	CString CommandLine;
 	CommandLine.Format(CString("%s %s %u %f %f %f %f %f %f"), 
