@@ -187,7 +187,7 @@ CMainFrame::CMainFrame()
 	_autoplay_pressed = false;
 	_wait_cursor = false;
 
-	for (int i=0; i<=19; i++)
+	for (int i=0; i<k_number_of_flags; i++)
 		_flags[i] = false;
 
 	_prev_att_rect.bottom = 0;
@@ -835,7 +835,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 		_status_plcards = "";
 		if (p_symbols->user_chair_confirmed() && playing) 
 		{
-			for (i=0; i<=1; i++) 
+			for (i=0; i<k_number_of_cards_per_player; i++) 
 			{
 				// player cards
 				if (p_scraper->card_player(sym_userchair, i) != CARD_BACK && 
@@ -851,7 +851,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 		}
 		else 
 		{
-			for (i=0; i<=1; i++) 
+			for (i=0; i<k_number_of_cards_per_player; i++) 
 			{
 				if (p_scraper->card_player_for_display(i) != CARD_BACK && 
 					p_scraper->card_player_for_display(i) != CARD_NOCARD) 
@@ -867,7 +867,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 
 		// Common cards
 		_status_comcards = "";
-		for (i=0; i<=4; i++) 
+		for (i=0; i<k_number_of_community_cards; i++) 
 		{
 			if (p_scraper->card_common(i) != CARD_BACK && 
 				p_scraper->card_common(i) != CARD_NOCARD) 
@@ -1526,7 +1526,7 @@ void CMainFrame::OnHelp()
 	}
 	else 
 	{
-		int RetValue = int(ShellExecute(NULL, "open", "OpenHoldem_Manual.chm", NULL, NULL, SW_SHOW));
+		long long int RetValue = long long int(ShellExecute(NULL, "open", "OpenHoldem_Manual.chm", NULL, NULL, SW_SHOW));
 		if (RetValue <= 32)
 		{
 			OH_MessageBox_Interactive("Error opening help-file", "Error", 0);

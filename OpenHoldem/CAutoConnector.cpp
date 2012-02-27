@@ -1,8 +1,10 @@
 #include "stdafx.h"
+#include "CAutoConnector.h"
 
 #include <afxwin.h>
-
-#include "CAutoConnector.h"
+#include "..\CTablemap\CTablemap.h"
+#include "..\CTablemap\CTablemapAccess.h"
+#include "..\CTransform\CTransform.h"
 #include "CAutoplayer.h"
 #include "CFormula.h"
 #include "CHeartbeatThread.h"
@@ -12,11 +14,9 @@
 #include "CScraper.h"
 #include "CSharedMem.h"
 #include "CSymbols.h"
-#include "..\CTablemap\CTablemap.h"
-#include "..\CTablemap\CTablemapAccess.h"
-#include "..\CTransform\CTransform.h"
 #include "DialogScraperOutput.h"
 #include "DialogSelectTable.h"
+#include "MagicNumbers.h"
 #include "MainFrm.h"
 #include "OH_MessageBox.h"
 #include "OpenHoldem.h"
@@ -52,14 +52,17 @@ void CTableMapToSWholeMap(CTablemap *cmap, SWholeMap *smap)
 	smap->r$ = p_tablemap->r$();
 
 	for (int i = 0; i < k_max_number_of_font_groups_in_tablemap; i++)
+	{
 		smap->t$[i] = p_tablemap->t$(i);
-
+	}
 	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
+	{
 		smap->p$[i] = p_tablemap->p$(i);
-
+	}
 	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
+	{
 		smap->h$[i] = p_tablemap->h$(i);
-
+	}
 	smap->i$ = p_tablemap->i$();
 	smap->filepath = p_tablemap->filepath();
 	smap->sitename = p_tablemap->sitename();
@@ -231,7 +234,7 @@ void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 	p_tablemap_access->SetTitleText("!titletext", TablemapConnectionData[NumberOfTableMapsLoaded].NegativeTitleText);
 		
 	CString s = "";
-	for (int i=0; i<=9; i++) // 9 !!! -> unnamed constant 
+	for (int i=0; i<k_max_number_of_titletexts; i++)
 	{
 		s.Format("titletext%d", i);
 		p_tablemap_access->SetTitleText(s, TablemapConnectionData[NumberOfTableMapsLoaded].TitleText_0_9[i]);
@@ -332,7 +335,7 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 	}
 	else
 	{
-		for (int i=0; i<=9; i++)
+		for (int i=0; i<k_max_number_of_titletexts; i++)
 		{
 			if ((TablemapConnectionData[MapIndex].NegativeTitleText_0_9[i] != "")
 				&&title.Find(TablemapConnectionData[MapIndex].NegativeTitleText_0_9[i])!=-1)
@@ -358,7 +361,7 @@ CString Wanted = "OpenHoldem Poker - Fixed Limit - blinds 5/10 - ante 0";
 BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) 
 {
 	CString				title = "", winclass = "";
-	char				text[512] = {0};
+	char				text[MAX_WINDOW_TITLE] = {0};
 	RECT				crect = {0};
 	STableList			tablelisthold;
 	int					TablemapIndex = (int)(lparam);
@@ -417,7 +420,7 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
 bool CAutoConnector::Connect(HWND targetHWnd)
 {
 	int					N = 0, line = 0, ret = 0;
-	char				title[512] = {0};
+	char				title[MAX_WINDOW_TITLE] = {0};
 	int					SelectedItem = -1;
 	SWholeMap			smap;
 	CString				current_path = "";
@@ -637,7 +640,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			start_log();
 			
 			// log OH title bar text and table reset
-			::GetWindowText(_attached_hwnd, title, 512);
+			::GetWindowText(_attached_hwnd, title, MAX_WINDOW_TITLE);
 
 			CString site = "";
 			SMapCI site_i = p_tablemap->s$()->find("sitename");

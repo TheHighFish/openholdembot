@@ -1,14 +1,9 @@
 #include "stdafx.h"
-#include <strstream>
-
 #include "CGrammar.h"
 
-#include "CSymbols.h"
-#include "CPreferences.h"
-
+#include <strstream>
 #include "..\CCritSec\CCritSec.h"
 #include "..\CTransform\CTransform.h"
-
 #include "CAutoplayer.h"
 #include "CDllExtension.h"
 #include "CLogSymbols.h"
@@ -19,6 +14,8 @@
 #include "CMyHand.h"
 #include "CPerl.hpp"
 #include "CPokerAction.h"
+#include "CPreferences.h"
+#include "CSymbols.h"
 #include "CVersus.h"
 #include "FloatingPoint_Comparisions.h"
 #include "OH_MessageBox.h"
@@ -537,8 +534,7 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 
 double CGrammar::DoCalcF$symbol(CFormula * const f, char *symbol, CEvalInfoFunction **logCallingFunction, bool skipCache, int *e)
 {
-	int		i = 0;
-	double	ret = 0.;
+	double	ret = 0.0;
 
 	// Check recursion depth of DoCalcF$symbol 
 	// to detect a recursive formula.
@@ -565,7 +561,7 @@ double CGrammar::DoCalcF$symbol(CFormula * const f, char *symbol, CEvalInfoFunct
 			strcmp(symbol, "notes") != 0 &&
 			strcmp(symbol, "dll") != 0)
 	{
-		for (i=0; i<(int) f->formula()->mFunction.GetSize(); i++)
+		for (int i=0; i<(int) f->formula()->mFunction.GetSize(); i++)
 		{
 			if (strcmp(f->formula()->mFunction[i].func, symbol)==0)
 			{
@@ -700,7 +696,7 @@ void CGrammar::SetOffsets(iter_t &i, const char *start)
 
 void CGrammar::ValidateSymbol(const char *begin, const char *end)
 {
-	int		i = 0, e = 0;
+	int		 e = 0;
 	string	sym(begin, end);
 	bool	match = false;
 
@@ -746,7 +742,7 @@ void CGrammar::ValidateSymbol(const char *begin, const char *end)
 	else if (memcmp(sym.c_str(), "f$", 2)==0)
 	{
 		match = false;
-		for (i=0; i<g_parse_symbol_formula->mFunction.GetSize() && match==false; i++)
+		for (int i=0; i<g_parse_symbol_formula->mFunction.GetSize() && match==false; i++)
 			if (strcmp(g_parse_symbol_formula->mFunction[i].func.GetString(), sym.c_str())==0)
 				match = true;
 

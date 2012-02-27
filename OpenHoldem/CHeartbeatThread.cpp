@@ -71,8 +71,8 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 	LARGE_INTEGER		cycle_start = {0}, cycle_end = {0}, lFrequency = {0};
 	unsigned int		new_scrape = NOTHING_CHANGED;
 	bool				iswait = false;
-	char				title[512] = {0};
-	int					N = 0, i = 0, j = 0;
+	char				title[MAX_WINDOW_TITLE] = {0};
+	int					N = 0;
 
 	// PokerPro variables only
 	const char			*pbytes = NULL;
@@ -136,12 +136,12 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 				// populate structure that gets passed to dll
 				strncpy_s(ss.title, MAX_WINDOW_TITLE, p_scraper->title(), MAX_WINDOW_TITLE);
 
-				for (i=0; i<=4; i++)
+				for (int i=0; i<k_number_of_community_cards; i++)
 				{
 					ss.card_common[i] = p_scraper->card_common(i);
 				}
 
-				for (i=0; i<=9; i++)
+				for (int i=0; i<k_max_number_of_players; i++)
 				{
 					ss.card_player[i][0] = p_scraper->card_player(i, 0);
 					ss.card_player[i][1] = p_scraper->card_player(i, 1);
@@ -159,12 +159,12 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 				ss.card_player_for_display[0] = p_scraper->card_player_for_display(0);
 				ss.card_player_for_display[1] = p_scraper->card_player_for_display(1);
 
-				for (i=0; i<=9; i++)
+				for (int i=0; i<k_max_number_of_pots; i++)
 				{
 					ss.pot[i] = p_scraper->pot(i);
 				}
 
-				for (i=0; i<=9; i++)
+				for (int i=0; i<k_max_number_of_buttons; i++)
 				{
 					ss.button_state[i] = p_scraper->button_state(i);
 					ss.i86X_button_state[i] = p_scraper->i86X_button_state(i);
@@ -194,12 +194,12 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 				// Replace values in p_scraper with those provided by scraper dll
 				p_scraper->set_title(ss.title);
 
-				for (i=0; i<=4; i++)
+				for (int i=0; i<k_number_of_community_cards; i++)
 				{
 					p_scraper->set_card_common(i, ss.card_common[i]);
 				}
 
-				for (i=0; i<=9; i++)
+				for (int i=0; i<k_max_number_of_players; i++)
 				{
 					p_scraper->set_card_player(i, 0, ss.card_player[i][0]);
 					p_scraper->set_card_player(i, 1, ss.card_player[i][1]);
@@ -217,12 +217,12 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 				p_scraper->set_card_player_for_display(0, ss.card_player_for_display[0]);
 				p_scraper->set_card_player_for_display(1, ss.card_player_for_display[1]);
 
-				for (i=0; i<=9; i++)
+				for (int i=0; i<k_max_number_of_pots; i++)
 				{
 					p_scraper->set_pot(i, ss.pot[i]);
 				}
 
-				for (i=0; i<=9; i++)
+				for (int i=0; i<k_max_number_of_buttons; i++)
 				{
 					p_scraper->set_button_state(i, ss.button_state[i]);
 					p_scraper->set_i86X_button_state(i, ss.i86X_button_state[i]);
@@ -276,7 +276,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		CString *messageTitle = new CString();
 		if (!p_pokerpro->IsConnected())
 		{
-			GetWindowText(p_autoconnector->attached_hwnd(), title, 512);
+			GetWindowText(p_autoconnector->attached_hwnd(), title, MAX_WINDOW_TITLE);
 			messageTitle->Format("%s - %s (%s)", p_formula->formula_name(), p_tablemap->sitename(), title);
 		}
 		else

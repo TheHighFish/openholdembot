@@ -43,9 +43,7 @@ CGameState::~CGameState()
 
 void CGameState::ProcessGameState(const SHoldemState *pstate)
 {
-	int			i = 0, j = 0;
 	bool		pstate_changed = false;
-
 	int			sym_br = (int) p_symbols->sym()->br;
 	int			sym_nopponentsdealt = (int) p_symbols->sym()->nopponentsdealt;
 	int			sym_nopponentsplaying = (int) p_symbols->sym()->nopponentsplaying;
@@ -65,7 +63,7 @@ void CGameState::ProcessGameState(const SHoldemState *pstate)
 	if (pstate->m_dealer_chair != _m_holdem_state[(_m_ndx)&0xff].m_dealer_chair)
 		pstate_changed = true;
 
-	for (i=0; i<k_max_number_of_players; i++)
+	for (int i=0; i<k_max_number_of_players; i++)
 	{
 		if (pstate->m_player[i].m_balance != _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance)
 			pstate_changed = true;
@@ -83,7 +81,7 @@ void CGameState::ProcessGameState(const SHoldemState *pstate)
 				pstate->m_player[i].m_cards[0] != 0 && pstate->m_player[i].m_cards[1] != 0)
 			pstate_changed = true;
 	}
-	for (i=0; i<k_number_of_community_cards; i++)
+	for (int i=0; i<k_number_of_community_cards; i++)
 	{
 		if (pstate->m_cards[i] != _m_holdem_state[(_m_ndx)&0xff].m_cards[i])
 			pstate_changed = true;
@@ -96,9 +94,9 @@ void CGameState::ProcessGameState(const SHoldemState *pstate)
 	// reset wh symbol GameState if button moves
 	if (_new_hand)
 	{
-		for (i=0; i<_hist_sym_count; i++)
+		for (int i=0; i<_hist_sym_count; i++)
 		{
-			for (j=0; j<k_number_of_betrounds; j++)
+			for (int j=0; j<k_number_of_betrounds; j++)
 			{
 				_hist_sym[i][j] = 0.0;
 			}
@@ -110,7 +108,7 @@ void CGameState::ProcessGameState(const SHoldemState *pstate)
 	// collect symbol if it ismyturn, or if ismanual
 	if (sym_ismyturn || sym_ismanual)
 	{
-		for (i=0; i<_hist_sym_count; i++)
+		for (int i=0; i<_hist_sym_count; i++)
 		{
 			int e = SUCCESS;
 			_hist_sym[i][sym_br-1] = p_symbols->GetSymbolVal(_hist_sym_strings[i], &e);
@@ -126,7 +124,6 @@ void CGameState::ProcessFtr(const SHoldemState *pstate)
 
 void CGameState::CaptureState(const char *title)
 {
-	int					i = 0, j = 0;
 	bool				playing = true;
 	unsigned char		card = CARD_NOCARD;
 
@@ -149,11 +146,11 @@ void CGameState::CaptureState(const char *title)
 	_state[_state_index&0xff].m_title[63] = '\0';
 
 	// Pot information
-	for (i=0; i<k_max_number_of_players; i++)
+	for (int i=0; i<k_max_number_of_players; i++)
 		_state[_state_index&0xff].m_pot[i] = p_scraper->pot(i);
 
 	// Common cards
-	for (i=0; i<k_number_of_community_cards; i++)
+	for (int i=0; i<k_number_of_community_cards; i++)
 	{
 		if (p_scraper->card_common(i) == CARD_BACK)
 		{
@@ -185,7 +182,7 @@ void CGameState::CaptureState(const char *title)
 	_state[_state_index&0xff].m_dealer_chair = sym_dealerchair;
 
 	// loop through all 10 player chairs
-	for (i=0; i<k_max_number_of_players; i++)
+	for (int i=0; i<k_max_number_of_players; i++)
 	{
 
 		// player name, balance, currentbet
@@ -194,7 +191,7 @@ void CGameState::CaptureState(const char *title)
 		_state[_state_index&0xff].m_player[i].m_currentbet = p_symbols->sym()->currentbet[i];
 
 		// player cards
-		for (j=0; j<k_number_of_cards_per_player; j++)
+		for (int j=0; j<k_number_of_cards_per_player; j++)
 		{
 			if (p_scraper->card_player(i, j) == CARD_BACK)
 			{
@@ -229,12 +226,11 @@ void CGameState::CaptureState(const char *title)
 const int CGameState::LastRaised(const int round)
 {
 	int last_raised = -1;
-	int i = 0;
 
 	if (round<1 || round>4)
 		return last_raised;
 
-	for (i=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+1; i<=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+k_max_number_of_players; i++)
+	for (int i=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+1; i<=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+k_max_number_of_players; i++)
 	{
 		int index_normalized = i%k_max_number_of_players;
 		if (_chair_actions[index_normalized][round-1][w_reraised])
@@ -245,7 +241,7 @@ const int CGameState::LastRaised(const int round)
 
 	if (last_raised==-1)
 	{
-		for (i=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+1; i<=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+k_max_number_of_players; i++)
+		for (int i=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+1; i<=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+k_max_number_of_players; i++)
 		{
 			int index_normalized = i%k_max_number_of_players;
 			if (_chair_actions[index_normalized][round-1][w_raised])
@@ -260,13 +256,12 @@ const int CGameState::LastRaised(const int round)
 
 const double CGameState::FlopPct(void)
 {
-	int		i = 0;
 	int		elapsed_start = 0, num_dealt = 0, hands = 0, num_saw_cards = 0;
 	double	percent = 0.;
 
 	if (_m_ftr_ndx>1)
 	{
-		for (i=_m_ftr_ndx-1; i>=1; i--)
+		for (int i=_m_ftr_ndx-1; i>=1; i--)
 		{
 			if (_m_ftr[i&0xff].elapsed_time!=0 && _m_ftr[i&0xff].n_pl_dealt>1)
 			{
@@ -298,13 +293,12 @@ const double CGameState::FlopPct(void)
 
 const double CGameState::TurnPct(void)
 {
-	int		i = 0;
 	int		elapsed_start = 0, num_dealt = 0, hands = 0, num_saw_cards = 0;
 	double	percent = 0.;
 
 	if (_m_ftr_ndx>1)
 	{
-		for (i=_m_ftr_ndx-1; i>=1; i--)
+		for (int i=_m_ftr_ndx-1; i>=1; i--)
 		{
 			if (_m_ftr[i&0xff].elapsed_time!=0 && _m_ftr[i&0xff].n_pl_dealt>1)
 			{
@@ -336,13 +330,12 @@ const double CGameState::TurnPct(void)
 
 const double CGameState::RiverPct(void)
 {
-	int		i = 0;
 	int		elapsed_start = 0, num_dealt = 0, hands = 0, num_saw_cards = 0;
 	double	percent = 0.;
 
 	if (_m_ftr_ndx>1)
 	{
-		for (i=_m_ftr_ndx-1; i>=1; i--)
+		for (int i=_m_ftr_ndx-1; i>=1; i--)
 		{
 			if (_m_ftr[i&0xff].elapsed_time!=0 && _m_ftr[i&0xff].n_pl_dealt>1)
 			{
@@ -374,13 +367,12 @@ const double CGameState::RiverPct(void)
 
 const double CGameState::AvgBetsPf(void)
 {
-	int		i = 0;
 	int		elapsed_start = 0, num_dealt = 0, hands = 0, num_saw_cards = 0;
 	double	percent = 0., bets_preflop = 0.;
 
 	if (_m_ftr_ndx>1)
 	{
-		for (i=_m_ftr_ndx-1; i>=1; i--)
+		for (int i=_m_ftr_ndx-1; i>=1; i--)
 		{
 			if (_m_ftr[i&0xff].elapsed_time!=0 && _m_ftr[i&0xff].n_pl_dealt>1)
 			{
@@ -412,14 +404,13 @@ const double CGameState::AvgBetsPf(void)
 
 const double CGameState::TablePfr(void)
 {
-	int		i = 0;
 	int		elapsed_start = 0, num_dealt = 0, hands = 0, num_saw_cards = 0, bets_preflop = 0;
 	double	percent = 0.;
 
 	if (_m_ftr_ndx>1) 
 	{
 
-		for (i=_m_ftr_ndx-1; i>=1; i--)
+		for (int i=_m_ftr_ndx-1; i>=1; i--)
 		{
 			if (_m_ftr[i&0xff].elapsed_time!=0 && _m_ftr[i&0xff].n_pl_dealt>1)
 			{
@@ -455,9 +446,7 @@ const double CGameState::TablePfr(void)
 
 const double CGameState::OHSymHist(const char * sym, const int round)
 {
-	int		i = 0;
-
-	for (i=0; i<_hist_sym_count; i++)
+	for (int i=0; i<_hist_sym_count; i++)
 	{
 		if (memcmp(sym, _hist_sym_strings[i], strlen(sym))==0 && strlen(sym)==strlen(_hist_sym_strings[i]))
 		{
@@ -470,7 +459,6 @@ const double CGameState::OHSymHist(const char * sym, const int round)
 
 const double CGameState::SortedBalance(const int rank)
 {
-	int		i = 0, n = 0;
 	double	stacks[k_max_number_of_players] = {0.};
 	double	temp = 0.;
 
@@ -478,9 +466,9 @@ const double CGameState::SortedBalance(const int rank)
 		stacks[i] = _m_holdem_state[_m_ndx].m_player[i].m_balance + _m_holdem_state[_m_ndx].m_player[i].m_currentbet;
 
 	// bubble sort stacks
-	for (i=0; i<(k_max_number_of_players-1); i++)
+	for (int i=0; i<(k_max_number_of_players-1); i++)
 	{
-		for (n=i+1; n<k_max_number_of_players; n++)
+		for (int n=i+1; n<k_max_number_of_players; n++)
 		{
 			if (stacks[i] < stacks[n])
 			{
@@ -500,13 +488,12 @@ const double CGameState::SortedBalance(const int rank)
 bool CGameState::ProcessThisFrame (void)
 {
 	bool			balance_stability = false;
-	int				i;
 	int				sym_br = (int) p_symbols->sym()->br;
 	bool			sym_ismanual = (bool) p_symbols->sym()->ismanual;
 
 	// check if all balances are known (indicates stability of info passed to DLL)
 	balance_stability = true;
-	for (i=0; i<k_max_number_of_players; i++)
+	for (int i=0; i<k_max_number_of_players; i++)
 	{
 		if (_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[0] != 0 && 
 			_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[1] != 0 &&
@@ -871,8 +858,6 @@ void CGameState::ProcessFtrEngine(const SHoldemState *pstate)
 
 void CGameState::DumpState(void)
 {
-	int			i = 0;
-
 	write_log(prefs.debug_alltherest(), "_m_ndx: %d\n", _m_ndx);
 	write_log(prefs.debug_alltherest(), "m_title: %s\n", _m_holdem_state[(_m_ndx)&0xff].m_title);
 	write_log(prefs.debug_alltherest(), "m_pot: %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f\n", _m_holdem_state[(_m_ndx)&0xff].m_pot[0], _m_holdem_state[(_m_ndx)&0xff].m_pot[1],
@@ -884,7 +869,7 @@ void CGameState::DumpState(void)
 	write_log(prefs.debug_alltherest(), "m_is_playing: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_is_playing);
 	write_log(prefs.debug_alltherest(), "m_is_posting: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_is_posting);
 	write_log(prefs.debug_alltherest(), "m_dealer_chair: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_dealer_chair);
-	for (i=0; i<k_max_number_of_players; i++) {
+	for (int i=0; i<k_max_number_of_players; i++) {
 		write_log(prefs.debug_alltherest(), "m_player[%d].m_name:%s  ", i, _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_name);
 		write_log(prefs.debug_alltherest(), "m_balance:%.2f  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance);
 		write_log(prefs.debug_alltherest(), "m_currentbet:%.2f  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_currentbet);
