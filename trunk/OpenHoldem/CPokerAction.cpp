@@ -298,7 +298,6 @@ const int CPokerAction::BetPosition (const int chairnum)
 
 const int CPokerAction::DealPosition (const int chairnum)
 {
-	int		i = 0;
 	int		dealposchair = 0 ;
 	int		e = SUCCESS;
 	int		sym_dealerchair = (int) p_symbols->sym()->dealerchair;
@@ -307,7 +306,7 @@ const int CPokerAction::DealPosition (const int chairnum)
 	if (chairnum<0 || chairnum>9)
 		return dealposchair;
 
-	for (i=sym_dealerchair+1; i<=sym_dealerchair+10; i++)
+	for (int i=sym_dealerchair+1; i<=sym_dealerchair+10; i++)
 	{
 		if ((sym_playersdealtbits>>(i%10))&1)
 			dealposchair++;

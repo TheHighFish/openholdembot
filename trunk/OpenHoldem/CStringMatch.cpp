@@ -15,13 +15,13 @@ CStringMatch::~CStringMatch(void)
 
 const bool CStringMatch::IsNumeric(CString t)
 {
-	int i = 0, num_dots = 0, nums_after_dot = 0;
+	int num_dots = 0, nums_after_dot = 0;
 
 	// Check for bad parameters
 	if (!t || t == "")
 		return false;
 
-	for (i=0; i<t.GetLength(); i++)
+	for (int i=0; i<t.GetLength(); i++)
 	{
 		if (t.Mid(i,1).FindOneOf("$0123456789,.¢ckm") == -1)
 			return false;

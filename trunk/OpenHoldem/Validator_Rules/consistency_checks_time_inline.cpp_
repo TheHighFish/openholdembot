@@ -14,7 +14,7 @@ BEGIN_TESTCASE
     REASONING ("As long as we don't wait for the blinds, we have to act at least once per hand (which can last at most 120 seconds).")
     PRECONDITION (gws("handsplayed") >= 1)
     POSTCONDITION (gws("elapsedauto") <= 120)
-    SYMBOLS_POSSIBLY_AFFECTED ("elapsedauto", "handsplayed")
+    SYMBOLS_POSSIBLY_AFFECTED ("elapsedauto, handsplayed")
 END_TESTCASE
 
 
@@ -53,7 +53,7 @@ BEGIN_TESTCASE
     REASONING ("If we wait for the blinds, we have to act at after at most 10 hands, which should be at most 1200 seconds.")
     PRECONDITION (gws("issittingout"))
     POSTCONDITION (gws("elapsedauto") <= 1200)
-    SYMBOLS_POSSIBLY_AFFECTED ("elapsedauto", "issittingout")
+    SYMBOLS_POSSIBLY_AFFECTED ("elapsedauto, issittingout")
 END_TESTCASE
 
 
