@@ -9,6 +9,9 @@ BUG FIXES:
   with numbers in the name.
   Thanks to SuperBlak for reporting.
   [THF]
+- NumberOfOpponentsLimpingPreflop didn't work due to misplaced brackets.
+  Thanks to KaeKruse for reporting and for providing the fix.
+  [THF]
 
 v1.0.3 2012-02-21
 =================
