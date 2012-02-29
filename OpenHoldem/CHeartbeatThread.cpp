@@ -4,6 +4,7 @@
 
 #include "CAutoconnector.h"
 #include "CAutoplayer.h"
+#include "CAutoplayerFunctions.h"
 #include "CFormula.h"
 #include "CGameState.h"
 #include "CHandhistory.h"
@@ -443,10 +444,11 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			// but set final_answer param to false, since we are not actually using this info to
 			// take action
 			write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling CalcPrimaryFormulas without isfinalanswer.\n");
-			p_symbols->CalcPrimaryFormulas(false);
+			p_symbols->set_sym_isfinalanswer(false);
+			p_autoplayer_functions->CalcPrimaryFormulas(false);
 			// Calculate secondary formulas, as we need f$rebuy
 			write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling CalcSecondaryFormulas.\n");
-			p_symbols->CalcSecondaryFormulas();
+			p_autoplayer_functions->CalcSecondaryFormulas();
 			p_autoplayer->DoRebuyIfNeccessary();
 		}
 

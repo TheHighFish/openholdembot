@@ -301,7 +301,7 @@ void CAutoplayer::DoAutoplayer(void)
 
 	// Calculate f$play, f$prefold, f$rebuy, f$delay and f$chat for use below
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling CalcSecondaryFormulas.\n");
-	p_symbols->CalcSecondaryFormulas();
+	p_autoplayer_functions->CalcSecondaryFormulas();
 
 	// Handle f$sitin, f$sitout, f$leave (formerly f$play)
 	// Also handling f$cloase here
@@ -380,7 +380,8 @@ void CAutoplayer::DoAutoplayer(void)
 	// Now that we got through all of the above, we are ready to evaluate the primary formulas
 	// and take the appropriate action
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling CalcPrimaryFormulas with final answer.\n");
-	p_symbols->CalcPrimaryFormulas(isFinalAnswer);
+	p_symbols->set_sym_isfinalanswer(isFinalAnswer);
+	p_autoplayer_functions->CalcPrimaryFormulas(isFinalAnswer);
 
 	if(!isFinalAnswer)
 	{
@@ -861,7 +862,7 @@ void CAutoplayer::DoPrefold(void)
 		p_symbols->RecordPrevAction(k_action_fold);
 		write_logautoplay(ActionConstantNames(k_action_fold));
 	}
-	p_symbols->CalcAutoTrace();
+	p_autoplayer_functions->CalcAutoTrace();
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending DoPrefold.\n");
 }
 

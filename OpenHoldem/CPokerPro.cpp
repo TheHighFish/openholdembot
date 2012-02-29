@@ -2019,7 +2019,7 @@ void PokerPro::DoAutoplayer(void)
 	int sym_br = (int) p_symbols->sym()->br;
 
 	// Calculate f$sitin, f$sitout, f$leave, f$prefold, f$rebuy, f$delay and f$chat for use below
-	p_symbols->CalcSecondaryFormulas();
+	p_autoplayer_functions->CalcSecondaryFormulas();
 
 	////////////////////////////////////////////////////////////////////////////////
 	// f$sitin, f$sitout, f$leave
@@ -2053,7 +2053,7 @@ void PokerPro::DoAutoplayer(void)
 
 	// Now that we got through all of the above, we are ready to evaluate the primary formulas
 	// and take the appropriate action
-	p_symbols->CalcPrimaryFormulas(true);
+	p_autoplayer_functions->CalcPrimaryFormulas(true);
 
 	// take action
 	if (p_autoplayer_functions->f$alli() && p_scraper->GetButtonState(3) && _autoplayer_can_act) 
