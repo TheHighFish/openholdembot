@@ -3749,7 +3749,7 @@ const double CSymbols::CalcPokerval(HandVal hv, int n, double *pcb, int card0, i
 
 void CSymbols::CalcPrimaryFormulas(const bool final_answer)
 {
-	if (!final_answer && prefs.calc_only_my_turn())
+	if (!final_answer && prefs.calc_only_my_turn()) // ??? !!! seems to be wrong
 		return;
 
 	int			e = SUCCESS;
@@ -3762,22 +3762,14 @@ void CSymbols::CalcPrimaryFormulas(const bool final_answer)
 
 	bool trace_needed = final_answer && prefs.trace_enabled();
 
-	e = SUCCESS;
-	p_autoplayer_functions->set_f$alli(gram.CalcF$symbol(p_formula, "f$alli", trace_needed, &e));
-	write_log(prefs.debug_symbolengine(), "Primary formulas; f$alli: %f\n", p_autoplayer_functions->f$alli());
-	
-	e = SUCCESS;
-	p_autoplayer_functions->set_f$betsize(gram.CalcF$symbol(p_formula, "f$betsize", trace_needed, &e));
-	write_log(prefs.debug_symbolengine(), "Primary formulas; f$betsize: %f\n", p_autoplayer_functions->f$betsize());
-
-	e = SUCCESS;
-	p_autoplayer_functions->set_f$rais(gram.CalcF$symbol(p_formula, "f$rais", trace_needed, &e));
-	write_log(prefs.debug_symbolengine(), "Primary formulas; f$rais: %f\n", p_autoplayer_functions->f$rais());
-
-	e = SUCCESS;
-	p_autoplayer_functions->set_f$call(gram.CalcF$symbol(p_formula, "f$call", trace_needed, &e));
-	write_log(prefs.debug_symbolengine(), "Primary formulas; f$call: %f\n", p_autoplayer_functions->f$call());
-
+	for (int i=first_primary_autoplayer_function; i<=last_primary_autoplayer_function ; i++)
+	{
+		e = SUCCESS;
+		p_autoplayer_functions->SetAautoplayerFunction(i, // function to be set
+			gram.CalcF$symbol(p_formula, k_autoplayer_functionname[i], trace_needed, &e));
+		write_log(prefs.debug_symbolengine(), "Primary formulas; %s: %f\n", 
+			k_autoplayer_functionname[i], p_autoplayer_functions->GetAautoplayerFunctionValue(i));
+	}
 	CalcAutoTrace();
 }
 
@@ -3786,37 +3778,16 @@ void CSymbols::CalcSecondaryFormulas(void)
 	int			e = SUCCESS;
 	CGrammar	gram;
 
-	e = SUCCESS;
-	p_autoplayer_functions->set_f$sitin(gram.CalcF$symbol(p_formula, "f$sitin", prefs.trace_enabled(), &e));
-	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$sitin: %f\n", p_autoplayer_functions->f$sitin());
+	bool trace_needed = prefs.trace_enabled();
 
-	e = SUCCESS;
-	p_autoplayer_functions->set_f$sitout(gram.CalcF$symbol(p_formula, "f$sitout", prefs.trace_enabled(), &e));
-	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$sitout: %f\n", p_autoplayer_functions->f$sitout());
-
-	e = SUCCESS;
-	p_autoplayer_functions->set_f$leave(gram.CalcF$symbol(p_formula, "f$leave", prefs.trace_enabled(), &e));
-	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$leave: %f\n", p_autoplayer_functions->f$leave());
-
-	e = SUCCESS;
-	p_autoplayer_functions->set_f$close(gram.CalcF$symbol(p_formula, "f$close", prefs.trace_enabled(), &e));
-	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$close: %f\n", p_autoplayer_functions->f$close());
-
-	e = SUCCESS;
-	p_autoplayer_functions->set_f$prefold(gram.CalcF$symbol(p_formula, "f$prefold", prefs.trace_enabled(), &e));
-	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$prefold: %f\n", p_autoplayer_functions->f$prefold());
-	
-	e = SUCCESS;
-	p_autoplayer_functions->set_f$rebuy(gram.CalcF$symbol(p_formula, "f$rebuy", prefs.trace_enabled(), &e));
-	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$rebuy: %f\n", p_autoplayer_functions->f$rebuy());
-	
-	e = SUCCESS;
-	p_autoplayer_functions->set_f$delay(gram.CalcF$symbol(p_formula, "f$delay", prefs.trace_enabled(), &e));
-	write_log(prefs.debug_symbolengine(), "Secondary formulas; f$delay: %f\n", p_autoplayer_functions->f$delay());
-	
-	e = SUCCESS;
-	p_autoplayer_functions->set_f$chat(gram.CalcF$symbol(p_formula, "f$chat", prefs.trace_enabled(), &e));
-	write_log(3, "Secondary formulas; f$chat: %f\n", p_autoplayer_functions->f$chat());
+	for (int i=first_secondary_autoplayer_function; i<=last_secondary_autoplayer_function ; i++)
+	{
+		e = SUCCESS;
+		p_autoplayer_functions->SetAautoplayerFunction(i, // function to be set
+			gram.CalcF$symbol(p_formula, k_autoplayer_functionname[i], trace_needed, &e));
+		write_log(prefs.debug_symbolengine(), "Primary formulas; %s: %f\n", 
+			k_autoplayer_functionname[i], p_autoplayer_functions->GetAautoplayerFunctionValue(i));
+	}
 
 	CalcAutoTrace();
 }
@@ -4420,7 +4391,7 @@ const double CSymbols::IsHand(const char *a, int *e)
 {
 	int				cardrank[2] = {0}, temp;
 	int				suited = 0;  //0=not specified, 1=suited, 2=offsuit
-	int				i, cardcnt = 0;
+	int				cardcnt = 0;
 	int				plcardrank[2] = {0}, plsuited = 0;
 
 	if (strlen(a)<=1)
@@ -4432,7 +4403,7 @@ const double CSymbols::IsHand(const char *a, int *e)
 	assert(a[0] == '$');
 
 	// passed in symbol query
-	for (i=1; i<(int) strlen(a); i++)
+	for (int i=1; i<(int) strlen(a); i++)
 	{
 		if (a[i]>='2' && a[i]<='9')
 			cardrank[cardcnt++] =  a[i] - '0';
@@ -4536,9 +4507,7 @@ const double CSymbols::IsHand(const char *a, int *e)
 
 const double CSymbols::Chair$(const char *a)
 {
-	int i = 0;
-
-	for (i=0; i<p_tablemap->nchairs(); i++)
+	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		if (p_scraper->player_name(i).Find(&a[6])!=-1)
 			return i;
