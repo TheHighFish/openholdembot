@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "CSymbols.h"
 
-#include "CSymbols.h"
-
 #include <assert.h>
 #include <process.h>
 #include <float.h>
@@ -3745,58 +3743,6 @@ const double CSymbols::CalcPokerval(HandVal hv, int n, double *pcb, int card0, i
 
 	*pcb = bits;
 	return pv;
-}
-
-void CSymbols::CalcPrimaryFormulas(const bool final_answer)
-{
-	if (!final_answer && prefs.calc_only_my_turn()) // ??? !!! seems to be wrong
-		return;
-
-	int			e = SUCCESS;
-	CGrammar	gram;
-
-	set_sym_isfinalanswer(final_answer);
-
-	write_log(prefs.debug_symbolengine(), "IsFinalAnswer: %i\n", final_answer);
-	write_log(prefs.debug_symbolengine(), "Trace enabled: %i\n", prefs.trace_enabled());
-
-	bool trace_needed = final_answer && prefs.trace_enabled();
-
-	for (int i=first_primary_autoplayer_function; i<=last_primary_autoplayer_function ; i++)
-	{
-		e = SUCCESS;
-		p_autoplayer_functions->SetAautoplayerFunction(i, // function to be set
-			gram.CalcF$symbol(p_formula, k_autoplayer_functionname[i], trace_needed, &e));
-		write_log(prefs.debug_symbolengine(), "Primary formulas; %s: %f\n", 
-			k_autoplayer_functionname[i], p_autoplayer_functions->GetAautoplayerFunctionValue(i));
-	}
-	CalcAutoTrace();
-}
-
-void CSymbols::CalcSecondaryFormulas(void)
-{
-	int			e = SUCCESS;
-	CGrammar	gram;
-
-	bool trace_needed = prefs.trace_enabled();
-
-	for (int i=first_secondary_autoplayer_function; i<=last_secondary_autoplayer_function ; i++)
-	{
-		e = SUCCESS;
-		p_autoplayer_functions->SetAautoplayerFunction(i, // function to be set
-			gram.CalcF$symbol(p_formula, k_autoplayer_functionname[i], trace_needed, &e));
-		write_log(prefs.debug_symbolengine(), "Primary formulas; %s: %f\n", 
-			k_autoplayer_functionname[i], p_autoplayer_functions->GetAautoplayerFunctionValue(i));
-	}
-
-	CalcAutoTrace();
-}
-
-void CSymbols::CalcAutoTrace()
-{
-	int			e = SUCCESS;
-	CGrammar	gram;
-	double		ignore = gram.CalcF$symbol(p_formula, "f$autotrace", true, &e);
 }
 
 const double CSymbols::GetSymbolVal(const char *a, int *e)

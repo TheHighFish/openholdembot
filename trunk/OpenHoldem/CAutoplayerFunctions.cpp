@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "CAutoplayerFunctions.h"
+
 #include <assert.h>
+#include "CGrammar.h"
+#include "CPreferences.h"
 
 CAutoplayerFunctions *p_autoplayer_functions = NULL;
 
@@ -32,3 +35,52 @@ double CAutoplayerFunctions::GetAautoplayerFunctionValue(const int function_to_b
 	return _autoplayer_functionvalues[function_to_bn_queried];
 }
 
+void CAutoplayerFunctions::CalcPrimaryFormulas(const bool final_answer)
+{
+	if (!final_answer)
+		return;
+
+	int			e = SUCCESS;
+	CGrammar	gram;
+
+	write_log(prefs.debug_symbolengine(), "IsFinalAnswer: %i\n", final_answer);
+	write_log(prefs.debug_symbolengine(), "Trace enabled: %i\n", prefs.trace_enabled());
+
+	bool trace_needed = final_answer && prefs.trace_enabled();
+
+	for (int i=first_primary_autoplayer_function; i<=last_primary_autoplayer_function ; i++)
+	{
+		e = SUCCESS;
+		p_autoplayer_functions->SetAautoplayerFunction(i, // function to be set
+			gram.CalcF$symbol(p_formula, k_autoplayer_functionname[i], trace_needed, &e));
+		write_log(prefs.debug_symbolengine(), "Primary formulas; %s: %f\n", 
+			k_autoplayer_functionname[i], p_autoplayer_functions->GetAautoplayerFunctionValue(i));
+	}
+	CalcAutoTrace();
+}
+
+void CAutoplayerFunctions::CalcSecondaryFormulas(void)
+{
+	int			e = SUCCESS;
+	CGrammar	gram;
+
+	bool trace_needed = prefs.trace_enabled();
+
+	for (int i=first_secondary_autoplayer_function; i<=last_secondary_autoplayer_function ; i++)
+	{
+		e = SUCCESS;
+		p_autoplayer_functions->SetAautoplayerFunction(i, // function to be set
+			gram.CalcF$symbol(p_formula, k_autoplayer_functionname[i], trace_needed, &e));
+		write_log(prefs.debug_symbolengine(), "Primary formulas; %s: %f\n", 
+			k_autoplayer_functionname[i], p_autoplayer_functions->GetAautoplayerFunctionValue(i));
+	}
+	CalcAutoTrace();
+}
+
+void CAutoplayerFunctions::CalcAutoTrace()
+{
+	int			e = SUCCESS;
+	CGrammar	gram;
+
+	gram.CalcF$symbol(p_formula, "f$autotrace", true, &e);
+}
