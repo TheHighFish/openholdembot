@@ -12,6 +12,14 @@ BUG FIXES:
 - NumberOfOpponentsLimpingPreflop didn't work due to misplaced brackets.
   Thanks to KaeKruse for reporting and for providing the fix.
   [THF]
+- antes are considered "blind-raisers", 
+  so "Raises" needs some adaption, if antes are present.
+  Unfortunatelly "ante" can be true without antes being visible (as bets)
+  on some casinos, which causes incorrect results.
+  f$OpenPPL_AntesPresent does now consider only visible antes
+  like nopponentsraising does to avoid this  problem.
+  Thanks to Postenjak for reporting.
+  [THF]
 
 v1.0.3 2012-02-21
 =================
