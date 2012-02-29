@@ -1145,8 +1145,7 @@ me_re_MemRaises
 ##f$OpenPPL_AntesPresent##
 // First orbit preflop only,
 // as this function tries to guess the antes from the bets.
-   [ante > 0]
-|| [(currentbet0 > 0) && (currentbet0 < sblind) && (balance0 > 0)]
+   [(currentbet0 > 0) && (currentbet0 < sblind) && (balance0 > 0)]
 || [(currentbet1 > 0) && (currentbet1 < sblind) && (balance1 > 0)]
 || [(currentbet2 > 0) && (currentbet2 < sblind) && (balance2 > 0)]
 || [(currentbet3 > 0) && (currentbet3 < sblind) && (balance3 > 0)]
