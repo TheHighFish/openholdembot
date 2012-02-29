@@ -24,9 +24,9 @@ public:
 	~CGrammar();
 	bool ParseString(const CString *s, const SFormula *f, tpi_type *i, int *stopchar); 
 	double EvaluateTree(CFormula * const f, tpi_type info, CEvalInfoFunction **logCallingFunction, int *e);
-	double CalcF$symbol(CFormula * const f, char *symbol, bool log, int *e);
-	double CalcF$symbol(CFormula * const f, char *symbol, int *e);
-	double DoCalcF$symbol(CFormula * const f, char *symbol, CEvalInfoFunction **logCallingFunction, bool skipCache, int *e);
+	double CalcF$symbol(CFormula * const f, const char *symbol, bool log, int *e);
+	double CalcF$symbol(CFormula * const f, const char *symbol, int *e);
+	double DoCalcF$symbol(CFormula * const f, const char *symbol, CEvalInfoFunction **logCallingFunction, bool skipCache, int *e);
 	static void SetPosition(parse_tree_match_t::node_t &node, const char *begin, const char *end) { node.value.value(begin); } 
 	static void ValidateSymbol(const char *begin, const char *end);
 

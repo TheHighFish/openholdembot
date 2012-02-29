@@ -103,6 +103,63 @@ const int F_OK = 0;
 // It is better to have a named constant then to write "assert(false);".
 const bool k_this_must_not_happen = false;
 
+// Autoplayer-functions
+enum autoplayer_functions
+{
+	// Primary autoplayer-functions
+	k_autoplayer_function_allin,     
+	k_autoplayer_function_betpot_1_1,
+	k_autoplayer_function_betpot_3_4,
+	k_autoplayer_function_betpot_2_3,
+	k_autoplayer_function_betpot_1_2,
+	k_autoplayer_function_betpot_1_3,
+	k_autoplayer_function_betpot_1_4,
+	k_autoplayer_function_betsize,
+	k_autoplayer_function_raise,  
+	k_autoplayer_function_call,   
+	// Secondary autoplayer-functions
+	k_autoplayer_function_prefold,
+	k_autoplayer_function_sitin,  
+	k_autoplayer_function_sitout,    
+	k_autoplayer_function_leave,   
+	k_autoplayer_function_close,
+	k_autoplayer_function_rebuy,
+	k_autoplayer_function_delay,
+	k_autoplayer_function_chat,   
+	// Attention Always keep this at last place.
+	k_number_of_autoplayer_functions
+};
+
+const int first_primary_autoplayer_function = k_autoplayer_function_allin;
+const int last_primary_autoplayer_function = k_autoplayer_function_call;
+const int first_secondary_autoplayer_function = k_autoplayer_function_prefold;
+const int last_secondary_autoplayer_function = k_autoplayer_function_chat;
+
+// Autoplayer-function names
+const int k_max_length_of_autoplayer_functionname = 13;  // +1 for NULL
+const char k_autoplayer_functionname[k_number_of_autoplayer_functions]
+	[k_max_length_of_autoplayer_functionname] =
+{
+	"f$alli",
+	"f$betpot_1_1",
+	"f$betpot_3_4",
+	"f$betpot_2_3",
+	"f$betpot_1_2",
+	"f$betpot_1_3",
+	"f$betpot_1_5",
+	"f$betsite",
+	"f$rais",
+	"f$call",
+	"f$prefold",
+	"f$sitin",
+	"f$sitout",
+	"f$leave",
+	"f$close",
+	"f$rebuy",
+	"f$delay",
+	"f$chat"
+};
+
 
 // numeric constants
 #define M_E			2.7182818284590452354

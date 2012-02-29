@@ -38,12 +38,12 @@ double CGrammar::EvaluateTree(CFormula * const f, tpi_type info, CEvalInfoFuncti
 	return EvaluateExpression(f, info.trees.begin(), logCallingFunction, e);
 }
 
-double CGrammar::CalcF$symbol(CFormula * const f, char *symbol, int *e)
+double CGrammar::CalcF$symbol(CFormula * const f, const char *symbol, int *e)
 { 
 	return CalcF$symbol(f, symbol, false, e); 
 }
 
-double CGrammar::CalcF$symbol(CFormula * const f, char *symbol, bool log, int *e)
+double CGrammar::CalcF$symbol(CFormula * const f, const char *symbol, bool log, int *e)
 {
 	CEvalInfoFunction *logCallingFunction = NULL;
 	double ret = DoCalcF$symbol(f, symbol, (log ? &logCallingFunction : NULL), log, e);
@@ -532,7 +532,7 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 	}
 }
 
-double CGrammar::DoCalcF$symbol(CFormula * const f, char *symbol, CEvalInfoFunction **logCallingFunction, bool skipCache, int *e)
+double CGrammar::DoCalcF$symbol(CFormula * const f, const char *symbol, CEvalInfoFunction **logCallingFunction, bool skipCache, int *e)
 {
 	double	ret = 0.0;
 

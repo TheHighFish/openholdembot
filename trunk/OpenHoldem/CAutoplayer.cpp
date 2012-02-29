@@ -522,7 +522,7 @@ void CAutoplayer::DoSwag(void)
 	CString swag_amt;
 	if ((p_tablemap->allinmethod() == 0) && p_autoplayer_functions->f$alli())
 	{
-		p_autoplayer_functions->set_f$betsize(
+		p_autoplayer_functions->SetAautoplayerFunction(k_autoplayer_function_betsize,
 			p_symbols->sym()->balance[10] + p_symbols->sym()->currentbet[10]);
 	}
 
