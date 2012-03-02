@@ -86,12 +86,6 @@ void CAutoplayer::GetNeccessaryTablemapObjects()
 			betpot_X_Y_name.Format("betpot_%d_%d_button", x+1, y+1);
 			betpot_X_Y_button_defined[x][y]     = p_tablemap_access->GetButtonRect(betpot_X_Y_name, &betpot_X_Y_button[x][y]);
 			betpot_X_Y_button_available[x][y]   = betpot_X_Y_button_defined[x][y] && p_scraper_access->get_betpot_button_visible(x, y);
-
-			if (betpot_X_Y_button_defined[x][y])
-				write_log(prefs.debug_autoplayer(), "[AutoPlayer] %s is defined :)\n", betpot_X_Y_name);
-
-			if (betpot_X_Y_button_available[x][y])
-				write_log(prefs.debug_autoplayer(), "[AutoPlayer] %s is available :)\n", betpot_X_Y_name);
 		}
 	}
 
