@@ -56,17 +56,6 @@ const CString k_tablemap_errors_and_parse_errors_explained[19] =
 #define ERR_NO_IMAGE_MATCH			-6
 #define	ERR_GOOD_SCRAPE_GENERAL		1
 
-// Profile version codes
-#define VER_WINSCRAPE			".wsdb1"
-#define VER_OPENHOLDEM_1		".ohdb1"  // no longer valid, due to changing of hash keys for types 1-3
-#define VER_OPENHOLDEM_2		".ohdb2"  // legacy version, still supported, although openscrape table maps are preferred
-#define VER_OPENSCRAPE_1		".osdb1"
-#define VER_OPENSCRAPE_2		".osdb2"
-#define VER_WINSCRAPE_DATE1		"2006 Aug 7 13:11:37"
-#define VER_WINSCRAPE_DATE2		"2007 Nov 1 08:32:55"
-#define VER_WINSCRAPE_DATE3		"2007 Nov 3 09:54:04"
-#define VER_WINSCRAPE_DATE4		"2007 Nov 6 11:52:24"
-
 // Cards
 #define CARD_BACK		0xff
 #define CARD_NOCARD		0xfe
