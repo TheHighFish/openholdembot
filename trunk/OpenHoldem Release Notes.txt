@@ -30,23 +30,35 @@ MAINTENANCE:
 - Removed friend-symbols, as OpenHoldem does not support any kind of collusion.
   Only nfriendsseated, nfriendsactive and  nfriendsplaying 
   do still exist for backward compatibility,
-  as some veterans use them for f$sitin, f$sitout and f$leave. [THF]
+  as some veterans use them for f$sitin, f$sitout and f$leave. 
+  [THF]
 - Removed the symbol nouts, as Ray E. Bornerts definition
   of "outs" is plain nonsense and completely useless.
   mh_nouts is a way better built-in outs-counter 
-  and there are also some good counters in the forum. [THF]
+  and there are also some good counters in the forum. 
+  [THF]
 - Removed some list-symbols, which look like mis-conceptions
   and which are to our best knowledge unused:
   islistcall, islistrais, islistalli, isemptylistcall, isemptylistrais,
-  isemptylistalli, nlistmax, nlistmin. [THF]
+  isemptylistalli, nlistmax, nlistmin. 
+  [THF]
 - Removed some TM symbols, which were accessible 
   at the formula-level without necessity:
   swagdelay, allidelay, swagtextmethod, potmethod, activemethod
   IMO the TM-symbols should only be used by OH internally,
-  but not by the user at the formula-level. [THF] 
+  but not by the user at the formula-level. 
+  [THF] 
 - Removed isfiveofakind, as it was completely superfluos.
-  Thanks to JumpingFences for pointing this out. [THF]
-
+  Thanks to JumpingFences for pointing this out. 
+  [THF]
+- Calculating primary autoplayer-functions now only 
+  when my turn and isfinalanswer is true.
+  [THF]  
+- Removed support for WinScrape tablemaps.
+  Who uses WinScrape nowadays?
+  [THF]
+- Removed support for WinHoldems formula format (*.whf and *.whx files).
+  [THF]
 
 v2.1.9.3 2012-01-25
 ===================
