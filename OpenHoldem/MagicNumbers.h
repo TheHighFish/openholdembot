@@ -47,6 +47,8 @@ const int k_gametype_FL      =  2;
 // buttons and other scraper constants
 const int k_max_number_of_buttons = 10;
 const int k_max_number_of_i86X_buttons = 10;
+const int k_max_number_of_betpot_X_y_buttons = 4;
+const int k_max_number_of_betpot_x_Y_buttons = 4;
 
 // button codes
 const int k_button_i3		= 3;

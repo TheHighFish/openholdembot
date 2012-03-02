@@ -186,6 +186,12 @@ public:
 									  else if (s.MakeLower() == "double") return BUTTON_DOUBLECLICK; 
 									  else return BUTTON_SINGLECLICK; }
 
+	const int betpotmethod()		{ SMapCI it = _s$.find("betpotmethod");
+									  if (it==_s$.end()) return BETPOT_DEFAULT;
+									  CString s=it->second.text;
+									  if (s.MakeLower() == "raise") return BETPOT_RAISE; 
+									  else return BETPOT_DEFAULT; }
+
 	const int handresetmethod()		{ SMapCI it = _s$.find("handresetmethod"); 
 									  if (it==_s$.end()) return _0b0111;
 									  int n = strtoul(it->second.text.GetString(), NULL, 10); 

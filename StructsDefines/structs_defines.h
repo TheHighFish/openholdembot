@@ -103,6 +103,10 @@ const CString k_tablemap_errors_and_parse_errors_explained[19] =
 #define BUTTON_SINGLECLICK	1
 #define BUTTON_DOUBLECLICK	2
 
+// Button click options
+#define BETPOT_DEFAULT	0
+#define BETPOT_RAISE	1
+
 // Hand reset detection options
 #define HANDRESET_DEALER	0x01	// 0b0001
 #define HANDRESET_HANDNUM	0x02	// 0b0010
