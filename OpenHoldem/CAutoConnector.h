@@ -18,7 +18,7 @@ public:
 	// public mutators
 	const HWND attached_hwnd() { return _attached_hwnd; }
 private:
-	void ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData(CString TableMapWildcard);
+	void ParseAllTableMapsToLoadConnectionData(CString TableMapWildcard);
 	void ParseAllTableMapsToLoadConnectionData();
 	void ExtractConnectionDataFromCurrentTablemap(SWholeMap *map);
 	bool TablemapConnectionDataAlreadyStored(CString TablemapFilePath);

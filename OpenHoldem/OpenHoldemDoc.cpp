@@ -120,29 +120,9 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 	if (ar.IsStoring()) 
 	{
 		// Store archive in the new OpenHoldem format
-		bool use_new_OHF_format = !IsWinHoldemFormat(ar.GetFile()->GetFileName());
 		p_formula->WriteFormula(ar);
 		// Do not close this archive here.
 		// It's expected to stay open at this point!
-		if (IsWinHoldemFormat(ar.GetFile()->GetFileName())) 
-		{	
-			// If the file was in the old WHF format,
-			// store it also in the new OHF format.
-			CString the_new_FileName = GetPathName();
-			the_new_FileName.Replace("whf", "ohf");		
-			// Notification
-			OH_MessageBox_Interactive("Converting file formats\n{whf, whx} -> {ohf}",
-				"File Conversion", MB_OK | MB_ICONINFORMATION);	
-			// Open new style formula (OHF)	
-			CFile OHF_File;
-			OHF_File.Open(the_new_FileName, CFile::modeCreate | CFile::modeWrite);
-			CArchive OHF_Archive(&OHF_File, CArchive::store);
-			// Write new style formula (OHF) in any case
-			p_formula->WriteFormula(OHF_Archive);
-			// Close archive and file
-			OHF_Archive.Close();
-			OHF_File.Close();		
-		}
 	}
 	// Reading a file
 	else 
@@ -186,38 +166,8 @@ void COpenHoldemDoc::ReadFormula(CArchive& ar)
 	CFile *cf_whf = ar.GetFile();  
 	CString CSpath = cf_whf->GetFilePath(); 
 
-	if (IsWinHoldemFormat(CSpath))
-		{
-			CFile *cf_whf = ar.GetFile();
-			CFile cf_whx; 
-			CString CSpath = cf_whf->GetFilePath();
-			CSpath.Replace(".whf", ".whx");
-
-			if (cf_whx.Open(CSpath, CFile::modeNoTruncate | CFile::modeRead| CFile::shareDenyWrite)) 
-			{ 
-				CArchive ar_whx(&cf_whx, CArchive::load);   
-				// Read whx file, too. //???	
-				p_formula->ReadFormulaFile(ar_whx, false);	
-			}
-	}
-
 	// Check and add missing...
 	p_formula->CheckForDefaultFormulaEntries();
-}
-
-BOOL COpenHoldemDoc::IsWinHoldemFormat(CString the_FileName)
-{	
-	unsigned int Length = the_FileName.GetLength();
-
-	// Path maybe undefined at startup...
-	if (Length < 3)
-		return false;
-
-	// Checking the first character of the file extension
-	// Assuming an extension of size 3: "ohf" or "whf".
-	char critical_Character = the_FileName.GetString()[Length - 3];
-
-	return (critical_Character == 'w');
 }
 
 COpenHoldemDoc * COpenHoldemDoc::GetDocument() 

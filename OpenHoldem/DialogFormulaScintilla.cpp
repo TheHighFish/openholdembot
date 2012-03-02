@@ -3229,7 +3229,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "isppro", "true if you're connected to a ppro server");
 	AddSymbol(parent, "site", "0=user/ppro 1=scraped");
 	AddSymbol(parent, "nchairs", "the integer value for the Table Map symbol _s$nchairs");
-	AddSymbol(parent, "isbring", "true if winholdem is attached to a bring client window");
+	AddSymbol(parent, "isbring", "true if OpenHoldem is attached to a bring client window");
 	AddSymbol(parent, "session", "the current logging instance (0-9)");
 	AddSymbol(parent, "handnumber", "the site hand number if available");
 	AddSymbol(parent, "version", "returns the version number of OpenHoldem that is currently running");

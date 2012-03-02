@@ -643,7 +643,7 @@ void CMainFrame::OnFileOpen()
 	CFileDialog			cfd(true);
 
 	cfd.m_ofn.lpstrInitialDir = prefs.path_ohf();
-	cfd.m_ofn.lpstrFilter = "OpenHoldem Files (.ohf)\0*.ohf\0WinHoldem Files (.whf)\0*.whf\0All files (*.*)\0*.*\0\0";
+	cfd.m_ofn.lpstrFilter = "OpenHoldem Files (.ohf)\0*.ohf\0All files (*.*)\0*.*\0\0";
 	cfd.m_ofn.lpstrTitle = "Select Formula file to OPEN";
 	if (cfd.DoModal() == IDOK)
 	{				
@@ -668,7 +668,7 @@ void CMainFrame::OnFileLoadTableMap()
 	if (cfd.DoModal() == IDOK)
 	{
 		CString loaded_version;
-		ret = p_tablemap->LoadTablemap(cfd.m_ofn.lpstrFile, VER_OPENSCRAPE_2, false, &line, prefs.disable_msgbox(), &loaded_version);
+		ret = p_tablemap->LoadTablemap(cfd.m_ofn.lpstrFile, VER_OPENSCRAPE_2, &line, prefs.disable_msgbox(), &loaded_version);
 		
 		if (loaded_version == VER_OPENHOLDEM_1 && ret == ERR_VERSION && !prefs.disable_msgbox())
 		{

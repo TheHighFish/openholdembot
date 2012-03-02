@@ -1393,7 +1393,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDR_MAINFRAME           "OpenHoldem\n\nformula\nOpenHoldem Files (*.ohf;*.whf)\n.ohf;.whf\nOpenHoldem.Document\nformula.Document"
+    IDR_MAINFRAME           "OpenHoldem\n\nformula\nOpenHoldem Files (*.ohf;)\n.ohf;.whf\nOpenHoldem.Document\nformula.Document"
     ID_INDICATOR_STATUS_COMCARDS "ComCards"
     ID_INDICATOR_STATUS_PRWIN "prwin"
     ID_INDICATOR_STATUS_NOPP "nopp"

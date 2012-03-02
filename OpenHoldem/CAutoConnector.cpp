@@ -115,13 +115,13 @@ bool CAutoConnector::IsConnected()
 }
 
 
-void CAutoConnector::ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData(CString TableMapWildcard)
+void CAutoConnector::ParseAllTableMapsToLoadConnectionData(CString TableMapWildcard)
 {
 	CFileFind	hFile;
 	SWholeMap	smap;
 	int			line = 0;
 
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData: %s\n", TableMapWildcard);
+	write_log(prefs.debug_autoconnector(), "[CAutoConnector] ParseAllTableMapsToLoadConnectionData: %s\n", TableMapWildcard);
 	CString	current_path = p_tablemap->filepath();
 	BOOL bFound = hFile.FindFile(TableMapWildcard.GetString());
 	while (bFound)
@@ -135,7 +135,7 @@ void CAutoConnector::ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData(
 		bFound = hFile.FindNextFile();
 		if (!hFile.IsDots() && !hFile.IsDirectory() && hFile.GetFilePath()!=current_path)
 		{
-			int ret = p_tablemap->LoadTablemap((char *) hFile.GetFilePath().GetString(), VER_OPENSCRAPE_2, false, &line, prefs.disable_msgbox());
+			int ret = p_tablemap->LoadTablemap((char *) hFile.GetFilePath().GetString(), VER_OPENSCRAPE_2, &line, prefs.disable_msgbox());
 			if (ret == SUCCESS)
 			{
 				CTableMapToSWholeMap(p_tablemap, &smap);
@@ -153,9 +153,7 @@ void CAutoConnector::ParseAllTableMapsToLoadConnectionData()
 	
 	write_log(prefs.debug_autoconnector(), "[CAutoConnector] ParseAllTableMapsToLoadConnectionData\n");
 	TableMapWildcard.Format("%s\\scraper\\*.tm", _startup_path);
-	ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData(TableMapWildcard);	
-	TableMapWildcard.Format("%s\\scraper\\*.ws", _startup_path);
-	ParseAllOpenScrapeOrWinScrapeTableMapsToLoadConnectionData(TableMapWildcard);
+	ParseAllTableMapsToLoadConnectionData(TableMapWildcard);	
 	TablemapsInScraperFolderAlreadyParsed = true;
 }
 
@@ -501,7 +499,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			// Load correct tablemap, and save hwnd/rect/numchairs of table that we are "attached" to
 			set_attached_hwnd(g_tlist[SelectedItem].hwnd);
 			CString loaded_version;
-			p_tablemap->LoadTablemap((char *) g_tlist[SelectedItem].path.GetString(), VER_OPENSCRAPE_2, false, &line, 
+			p_tablemap->LoadTablemap((char *) g_tlist[SelectedItem].path.GetString(), VER_OPENSCRAPE_2, &line, 
 									 prefs.disable_msgbox(), &loaded_version);
 
 			if ( (loaded_version == VER_OPENSCRAPE_1 || loaded_version == VER_OPENHOLDEM_2))

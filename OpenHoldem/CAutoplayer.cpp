@@ -393,6 +393,8 @@ void CAutoplayer::DoAutoplayer(void)
 		DoAllin();
 	}
 
+	DoBetPot(); // !!!
+
 	// do swag first since it is the odd one
 	bool bDoSwag = false; // I'm just breaking this out to be a little clearer (spew)
 
@@ -414,6 +416,21 @@ void CAutoplayer::DoAutoplayer(void)
 	}
 
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending Autoplayer cadence.\n");
+}
+
+
+void CAutoplayer::DoBetPot(void)
+{
+	// Start with BetPot, continue with lower betsizes, finally 1/4 pot
+	for (int i=k_autoplayer_function_betpot_1_1; i<=k_autoplayer_function_betpot_1_4; i++)
+	{
+		if (p_autoplayer_functions->GetAautoplayerFunctionValue(i))
+		{
+			write_log(prefs.debug_autoplayer(), "[AutoPlayer] %s true.\n", 
+				k_autoplayer_functionname[i]);
+			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Trying to click button.\n");
+		}
+	}
 }
 
 void CAutoplayer::DoSwag(void) 

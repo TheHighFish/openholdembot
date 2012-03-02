@@ -36,6 +36,7 @@ private:
 	void GetNeccessaryTablemapObjects();
 	int NumberOfVisibleButtons();
 	void DoAllin(void);
+	void DoBetPot(void);
 	void DoSwag(void);
 	void DoARCCF(void);
 	void DoSlider(void);

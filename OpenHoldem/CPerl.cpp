@@ -166,7 +166,7 @@ bool CPerl::IsPerlSymbol(const char *symbol)
 //
 //  It's assumed, the requested "symbol" is a function (to be evaluated)
 //	without parameters (e.g. "pl$call" or "pl$ev_raise").
-//	This isn't really a limitation, as WinHoldem's
+//	This isn't really a limitation, as OpenHoldem's
 //	scripting language doesn't support parameters for functions.
 //
 //  If we need a constant symbol (I think, we don't),
