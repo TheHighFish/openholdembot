@@ -19,8 +19,6 @@ public:
 
 private:
 	void ReadFormula(CArchive& ar);
-	BOOL IsWinHoldemFormat(CString the_FileName);
-
 };
 
 #endif /* INC_OPENHOLDEMDOC_H */

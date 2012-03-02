@@ -118,7 +118,7 @@ public:
 	CTablemap(void);
 	~CTablemap(void);
 	void ClearTablemap();
-	int LoadTablemap(const char *_filename, const char *version, const bool check_ws_date, int *linenum, const bool disable_msgbox,
+	int LoadTablemap(const char *_filename, const char *version, int *linenum, const bool disable_msgbox,
 					 CString *loaded_version=NULL);
 	int SaveTablemap(CArchive& ar, const char *version_text);
 	int ConvertTablemap(const HWND hwnd=NULL, const char *startup_path="");

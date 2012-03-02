@@ -570,6 +570,10 @@
 					RelativePath="..\CTablemap\CTablemapAccess.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\CTablemapVersionChecker.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Validator-Rules"
@@ -1362,6 +1366,10 @@
 				</File>
 				<File
 					RelativePath="..\CTablemap\CTableMapAccess.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CTablemapVersionChecker.h"
 					>
 				</File>
 			</Filter>

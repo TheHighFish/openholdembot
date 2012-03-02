@@ -64,7 +64,7 @@ void CTablemap::ClearTablemap()
 	ClearIMap();
 }
 
-int CTablemap::LoadTablemap(const char *_filename, const char *version, const bool check_ws_date, int *linenum, const bool disable_msgbox,
+int CTablemap::LoadTablemap(const char *_filename, const char *version, int *linenum, const bool disable_msgbox,
 							CString *loaded_version) 
 {
 	CString				strLine = "", strLineType = "", token = "", s = "", e = "", hexval = "", t = "";
@@ -117,7 +117,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 	
 	//
 	// Validate file version, if passed in
-	// check the ".wsdb1"/".ohdb1"/".ohdb2"/".osdb1"/".osdb2" line
+	// check the "/".ohdb1"/".ohdb2"/".osdb1"/".osdb2" line
 	if (strlen(version)) 
 	{
 		if (memcmp(version, VER_OPENSCRAPE_1, strlen(version)) == 0 ||
@@ -142,10 +142,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 	// Save the version of the file we are loading
 	if (loaded_version != NULL)
 	{
-		if (memcmp(strLine.GetString(), VER_WINSCRAPE, strlen(VER_WINSCRAPE)) == 0)
-			loaded_version->Format("%s", VER_WINSCRAPE);
-
-		else if (memcmp(strLine.GetString(), VER_OPENHOLDEM_1, strlen(VER_OPENHOLDEM_1)) == 0)
+		if (memcmp(strLine.GetString(), VER_OPENHOLDEM_1, strlen(VER_OPENHOLDEM_1)) == 0)
 			loaded_version->Format("%s", VER_OPENHOLDEM_1);
 
 		else if (memcmp(strLine.GetString(), VER_OPENHOLDEM_2, strlen(VER_OPENHOLDEM_2)) == 0)
@@ -156,27 +153,6 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, const bo
 
 		else if (memcmp(strLine.GetString(), VER_OPENSCRAPE_2, strlen(VER_OPENSCRAPE_2)) == 0)
 			loaded_version->Format("%s", VER_OPENSCRAPE_2);
-	}
-
-
-	// check the date line
-	if (check_ws_date) 
-	{
-		supported_version = false;
-		do 
-		{
-			if (strLine.Find(VER_WINSCRAPE_DATE1) != -1 ||
-				strLine.Find(VER_WINSCRAPE_DATE2) != -1 ||
-				strLine.Find(VER_WINSCRAPE_DATE3) != -1 ||
-				strLine.Find(VER_WINSCRAPE_DATE4) != -1) 
-			{
-				supported_version = true;
-			}
-		}
-		while (ar.ReadString(strLine) && !supported_version);
-
-		if (!supported_version) 
-			return ERR_VERSION;
 	}
 
 	// Repeat while there are lines in the file left to process
