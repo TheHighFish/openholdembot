@@ -102,46 +102,16 @@ void COpenScrapeDoc::Serialize(CArchive& ar)
 	else
 	{
 		loaded_version = "";
-		ret = p_tablemap->LoadTablemap((char *) ar.m_strFileName.GetString(), "", false, &linenum, false, &loaded_version);
+		ret = p_tablemap->LoadTablemap((char *) ar.m_strFileName.GetString(), "", &linenum, false, &loaded_version);
 
 		if (loaded_version == VER_WINSCRAPE && ret == SUCCESS)
 		{
-			if (MessageBox(pMyMainWnd->GetSafeHwnd(), "This is a WinScrape table 'profile'.  Would you like to convert to OpenScrape table map format?", 
-						   "Convert table 'profile'?", MB_YESNO) == IDYES)
-			{
-				ret = p_tablemap->ConvertTablemap(pMyMainWnd->GetSafeHwnd(), _startup_path);
-
-				if (ret != SUCCESS && ret != ERR_INCOMPLETEMASTER)
-				{
-					s.Format("Error %d converting table 'profile'.", ret);
-					MessageBox(pMyMainWnd->GetSafeHwnd(), s.GetString(), "Table 'profile' conversion error.", MB_OK);
-					is_dirty = false;
-					valid_open = false;
-				}
-				else
-				{
-					is_dirty = true;
-					valid_open = true;
-				}
-			}
-			else
-			{
-				is_dirty = false;
-				valid_open = false;
-			}
-		}
+			//!!!
+		}	
 
 		else if (loaded_version == VER_WINSCRAPE && ret != SUCCESS)
 		{
-			MessageBox(pMyMainWnd->GetSafeHwnd(), "This is a WinScrape 'profile', but cannot be converted,\n"\
-												  "as it does not have a version date of\n"\
-												  "\"2006 Aug 7 13:11:37\" or\n"\
-												  "\"2007 Oct 25 19:26:57\" or\n"\
-												  "\"2007 Nov 1 08:32:55\" or\n"\
-												  "\"2007 Nov 3 09:54:04\" or\n"\
-												  "\"2007 Nov 6 11:52:24\" or\n",  "Table map load error", MB_OK);
-			is_dirty = false;
-			valid_open = false;
+			//!!!
 		}
 
 		else if (loaded_version == VER_OPENSCRAPE_1)
