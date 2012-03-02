@@ -1370,7 +1370,7 @@ void CScraper::DoBasicScrapeButtons()
 
 	for (int x = 0; x < k_max_number_of_betpot_X_y_buttons; x++)
 	{
-		for (int y = 0 ; y < k_max_number_of_betpot_X_y_buttons; y++)
+		for (int y = 0 ; y < k_max_number_of_betpot_x_Y_buttons; y++)
 		{
 			// Reset
 			set_betpot_X_Y_button_state(x, y, "false");
