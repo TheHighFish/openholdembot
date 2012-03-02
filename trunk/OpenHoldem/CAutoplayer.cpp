@@ -74,8 +74,25 @@ void CAutoplayer::GetNeccessaryTablemapObjects()
 
 	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
 	{
-		i86X_buttons_defined[i]     = p_tablemap_access->GetButtonRect(p_scraper_access->get_i86X_button_name(i), &i86X_buttons[i]);
-		i86X_buttons_available[i]   = i86X_buttons_defined[i] && p_scraper_access->get_i86X_button_visible(i);
+		i86X_button_defined[i]     = p_tablemap_access->GetButtonRect(p_scraper_access->get_i86X_button_name(i), &i86X_button[i]);
+		i86X_button_available[i]   = i86X_button_defined[i] && p_scraper_access->get_i86X_button_visible(i);
+	}
+
+	CString betpot_X_Y_name;
+	for (int x = 0; x < k_max_number_of_betpot_X_y_buttons; x++)
+	{
+		for (int y = 0; y < k_max_number_of_betpot_x_Y_buttons; y++)
+		{
+			betpot_X_Y_name.Format("betpot_%d_%d_button", x+1, y+1);
+			betpot_X_Y_button_defined[x][y]     = p_tablemap_access->GetButtonRect(betpot_X_Y_name, &betpot_X_Y_button[x][y]);
+			betpot_X_Y_button_available[x][y]   = betpot_X_Y_button_defined[x][y] && p_scraper_access->get_betpot_button_visible(x, y);
+
+			if (betpot_X_Y_button_defined[x][y])
+				write_log(prefs.debug_autoplayer(), "[AutoPlayer] %s is defined :)\n", betpot_X_Y_name);
+
+			if (betpot_X_Y_button_available[x][y])
+				write_log(prefs.debug_autoplayer(), "[AutoPlayer] %s is available :)\n", betpot_X_Y_name);
+		}
 	}
 
 	// i3
@@ -1172,9 +1189,9 @@ void CAutoplayer::DoI86(void)
 	{
 		for (int i=0; i<k_max_number_of_i86X_buttons; i++)
 		{
-			if (i86X_buttons_available[i] && _i86X_state[i])
+			if (i86X_button_available[i] && _i86X_state[i])
 			{
-				r = i86X_buttons[i];
+				r = i86X_button[i];
 				do_click = true;
 				write_log(prefs.debug_autoplayer(), "[AutoPlayer] Found valid i86 (%d) button.\n", i);
 				break;

@@ -176,6 +176,27 @@ bool CScraperAccess::GetButtonVisible(int button_number)
 	return button_visible;
 }
 
+bool CScraperAccess::get_betpot_button_visible(int x, int y)
+{
+	CString betpot_button_state = "";
+
+	if (x >= 0 && x < k_max_number_of_betpot_X_y_buttons && y >= 0 && y < k_max_number_of_betpot_x_Y_buttons)
+	{
+		betpot_button_state = p_scraper->betpot_X_Y_button_state(x, y);
+
+		if (betpot_button_state.MakeLower().Left(4) == "true" ||
+			betpot_button_state.MakeLower().Left(2) == "on" ||
+			betpot_button_state.MakeLower().Left(3) == "yes" ||
+			betpot_button_state.MakeLower().Left(7) == "checked" ||
+			betpot_button_state.MakeLower().Left(3) == "lit" )
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void CScraperAccess::SetScraperAccessData()
 {
 	// find button numbers

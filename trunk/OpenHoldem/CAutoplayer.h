@@ -70,7 +70,8 @@ private:
 	RECT leave_button;
 	RECT autopost_button;
 	RECT i86_button;
-	RECT i86X_buttons[k_max_number_of_i86X_buttons];
+	RECT i86X_button[k_max_number_of_i86X_buttons];
+	RECT betpot_X_Y_button[k_max_number_of_betpot_X_y_buttons][k_max_number_of_betpot_x_Y_buttons];
 	RECT i3_button;     // Old WH-Standard; i3 is for swag
 	RECT i3_edit_region;
 	RECT i3_slider_region;
@@ -88,7 +89,8 @@ private:
 	bool leave_button_defined;
 	bool autopost_button_defined;
 	bool i86_button_defined;
-	bool i86X_buttons_defined[k_max_number_of_i86X_buttons];
+	bool i86X_button_defined[k_max_number_of_i86X_buttons];
+	bool betpot_X_Y_button_defined[k_max_number_of_betpot_X_y_buttons][k_max_number_of_betpot_x_Y_buttons];
 	bool i3_button_defined;
 	bool i3_edit_defined;
 	bool i3_slider_defined;
@@ -107,7 +109,8 @@ private:
 	bool leave_button_available;
 	bool autopost_button_available;
 	bool i86_button_available;
-	bool i86X_buttons_available[k_max_number_of_i86X_buttons];
+	bool i86X_button_available[k_max_number_of_i86X_buttons];
+	bool betpot_X_Y_button_available[k_max_number_of_betpot_X_y_buttons][k_max_number_of_betpot_x_Y_buttons];
 	bool i3_button_available;
 
 } *p_autoplayer;

@@ -66,6 +66,10 @@ public:
 	const CString		button_state(int n) { if (n>=0 && n<=9) return _button_state[n]; else return ""; }
 	const CString		i86X_button_state(int n) { if (n>=0 && n<=9) return _i86X_button_state[n]; else return ""; }
 	const CString		i86_button_state() { return _i86_button_state; }
+
+	const CString		betpot_X_Y_button_state(const int x, const int y)
+						{ if (x >= 0 && x < k_max_number_of_betpot_X_y_buttons && y >= 0 && y < k_max_number_of_betpot_x_Y_buttons) return _betpot_button_state[x][y]; else return "";}
+
 	const CString		button_label(int n) { if (n>=0 && n<=9) return _button_label[n]; else return ""; }
 	const bool			handle_found_at_xy() { return _handle_found_at_xy; }
 	const POINT			handle_xy() { return _handle_xy; }
@@ -94,6 +98,10 @@ public:
 	void	set_button_state(const int n, const CString s) { ENT if (n>=0 && n<=9) _button_state[n] = s;}
 	void	set_i86X_button_state(const int n, const CString s) { ENT if (n>=0 && n<=9) _i86X_button_state[n] = s;}
 	void	set_i86_button_state(const CString s) { ENT _i86_button_state = s;}
+
+	void	set_betpot_X_Y_button_state(const int x, const int y, const CString s) 
+			{ ENT if (x >= 0 && x < k_max_number_of_betpot_X_y_buttons && y >= 0 && y < k_max_number_of_betpot_x_Y_buttons) _betpot_button_state[x][y] = s;}
+
 	void	set_button_label(const int n, const CString s) { ENT if (n>=0 && n<=9) _button_label[n] = s;}
 	void	set_sblind(const double d) { ENT _s_limit_info.sblind = d;}
 	void	set_bblind(const double d) { ENT _s_limit_info.bblind = d;}
@@ -122,14 +130,41 @@ public:
 private:
 	// private variables - use public accessors and public mutators to address these
 	char				_title[MAX_WINDOW_TITLE];
-	unsigned int		_card_common[5], _card_player[10][2], _card_player_for_display[2];
-	bool				_dealer[10], _sitting_out[10], _name_good_scrape[10], _balance_good_scrape[10];
-	CString				_seated[10], _active[10], _player_name[10];
-	double				_player_balance[10], _player_bet[10], _pot[10];
-	CString				_button_state[10], _i86X_button_state[10], _i86_button_state, _button_label[10];
+
+	// common cards
+	unsigned int		_card_common[k_number_of_community_cards];
+	// player cards
+	unsigned int		_card_player[k_max_number_of_players][k_number_of_cards_per_player], _card_player_for_display[k_number_of_cards_per_player];
+	// dealer
+	bool				_dealer[k_max_number_of_players];
+
+	// players - sitting out
+	bool				_sitting_out[k_max_number_of_players];
+	// players - seated / active
+	CString				_seated[k_max_number_of_players], _active[k_max_number_of_players];
+	// players - names
+	bool				_name_good_scrape[k_max_number_of_players];
+	CString				_player_name[k_max_number_of_players];
+	// players - money
+	double				_player_balance[k_max_number_of_players], _player_bet[k_max_number_of_players];
+	bool				_balance_good_scrape[k_max_number_of_players];
+
+	// pot
+	double				_pot[k_max_number_of_pots];
+
+	// iXbuttons
+	CString				_button_state[k_max_number_of_buttons], _button_label[k_max_number_of_buttons];
+	// i86Xbuttons
+	CString				_i86X_button_state[k_max_number_of_i86X_buttons], _i86_button_state;
+	// betpotXYbuttons
+	CString				_betpot_button_state[k_max_number_of_betpot_X_y_buttons][k_max_number_of_betpot_x_Y_buttons];
+	// handle
 	bool				_handle_found_at_xy;
 	POINT				_handle_xy;
-	SLimitInfo			_s_limit_info; 
+
+	// limit
+	SLimitInfo			_s_limit_info;
+	// misc
 	LARGE_INTEGER		_clocks_hold;			// used for "clocks" symbol
 	HBITMAP				_entire_window_cur;
 
@@ -152,16 +187,38 @@ private:
 
 	// for change detection
 	bool			_ucf_last;
-	unsigned int	_card_common_last[5], _card_player_last[10][2];
-	CString			_seated_last[10], _active_last[10];
-	bool			_dealer_last[10];
-	CString			_name_last[10];
-	double			_balance_last[10], _playerbet_last[10];
-	CString			_button_state_last[10], _i86X_button_state_last[10], _button_label_last[10], _i86_button_state_last;
-	double			_pot_last[10];
+
+	// cards common
+	unsigned int	_card_common_last[k_number_of_community_cards];
+	// cards player
+	unsigned int	_card_player_last[k_max_number_of_players][k_number_of_cards_per_player];
+
+	// dealer
+	bool			_dealer_last[k_max_number_of_players];
+
+	// player - seated, active
+	CString			_seated_last[k_max_number_of_players], _active_last[k_max_number_of_players];
+	// player - name
+	CString			_name_last[k_max_number_of_players];
+	// player - money
+	double			_balance_last[k_max_number_of_players], _playerbet_last[k_max_number_of_players];
+
+	// iXbuttons
+	CString			_button_state_last[k_max_number_of_buttons], _button_label_last[k_max_number_of_buttons];
+	// i86Xbuttons
+	CString			_i86X_button_state_last[k_max_number_of_i86X_buttons], _i86_button_state_last;
+	// betpotXYbuttons
+	CString			_betpot_button_state_last[k_max_number_of_betpot_X_y_buttons][k_max_number_of_betpot_x_Y_buttons];
+
+	// pot
+	double			_pot_last[k_max_number_of_pots];
+	// tournament
 	bool			_istournament_last;
+	// limits
 	int				_limit_last;
 	double			_sblind_last, _bblind_last, _sb_bb_last, _bb_BB_last, _bbet_last, _ante_last;
+
+	// misc
 	CString			_handnumber_last;
 	char			_title_last[MAX_WINDOW_TITLE];
 	int				_scrape_something_changed;

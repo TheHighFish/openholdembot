@@ -1368,6 +1368,43 @@ void CScraper::DoBasicScrapeButtons()
 		}
 	}
 
+	for (int x = 0; x < k_max_number_of_betpot_X_y_buttons; x++)
+	{
+		for (int y = 0 ; y < k_max_number_of_betpot_X_y_buttons; y++)
+		{
+			// Reset
+			set_betpot_X_Y_button_state(x, y, "false");
+
+			// BetpotXYstate
+			s.Format("betpot_%d_%d_state", x+1, y+1);
+			r_iter = p_tablemap->r$()->find(s.GetString());
+			if (r_iter != p_tablemap->r$()->end())
+			{
+				ProcessRegion(r_iter);
+				old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+				trans.DoTransform(r_iter, hdcCompatible, &text);
+				SelectObject(hdcCompatible, old_bitmap);
+
+				// Give scraper-pre DLL a chance to modify transform output
+				if (theApp._dll_scraperpreprocessor_process_message)
+				{
+					(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
+				}
+
+				if (text!="")
+					set_betpot_X_Y_button_state(x, y, text);
+
+				if (_betpot_button_state_last[x][y] != _betpot_button_state[x][y])
+				{
+					_betpot_button_state_last[x][y] = _betpot_button_state[x][y];
+					_scrape_something_changed |= BUTTONSTATE_CHANGED;
+				}
+
+				write_log(prefs.debug_scraper(), "[CScraper] betpot_%d_%d_state, result %s\n", x+1, y+1, text.GetString());
+			}
+		}
+	}
+
 	// When using MM, grab i5state for PT network
 	if ((bool) p_symbols->sym()->ismanual)
 	{
@@ -2458,7 +2495,6 @@ const bool CScraper::GetButtonState(int button_index)
 
 	return false;
 }
-
 
 
 #undef __HDC_HEADER

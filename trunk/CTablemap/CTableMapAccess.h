@@ -4,13 +4,6 @@
 #include <windows.h>
 #include "CTablemap.h"
 
-typedef struct
-{
-	int width;
-	int height;
-
-} clientsize;
-
 enum dim {width, height};
 
 extern class CTablemapAccess

@@ -61,6 +61,7 @@ public:
 	bool get_i86_button_visible()		{ return _i86_button_visible; }
 	bool get_i86X_button_visible(int i)	{ return _i86X_button_visible[i]; }
 	bool get_i3_button_visible()		{ return _i3_button_visible; }
+	bool get_betpot_button_visible(int numerator, int denominator);
 
 private:
 	// private functions
