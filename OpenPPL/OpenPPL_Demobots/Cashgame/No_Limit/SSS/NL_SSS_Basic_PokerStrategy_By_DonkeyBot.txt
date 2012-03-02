@@ -1,7 +1,7 @@
 // Contributed by DonkeyBot Sun Feb 26, 2012
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=260&t=14731
 
-CUSTOM
+ CUSTOM
 
 LISTS
 
@@ -55,69 +55,64 @@ NEW SYMBOL ShortStack
 END SYMBOL
 
 NEW SYMBOL OpponentIsRaising
-	WHEN (InSmallBlind AND (nopponentsraising > 1)) RETURN 1 FORCE
-	WHEN (InBigBlind AND (nopponentsraising > 0)) RETURN 1 FORCE
-	WHEN (nopponentsraising > 2) RETURN 1 FORCE
+	// PREFLOP
+	WHEN ((betround = 1) AND (ac_pf_bets > 2)) RETURN 1 FORCE
+	// POSTFLOP
+	WHEN ((betround > 1) AND ((nopponentsraising > 0) OR (call > 0) OR (RaisesSinceLastPlay > 0))) RETURN 1 FORCE
 	WHEN Others RETURN 0 FORCE
 END SYMBOL
 
 NEW SYMBOL OneOpponentIsRaising
-	WHEN (InSmallBlind AND (nopponentsraising = 2)) RETURN 1 FORCE
-	WHEN (InBigBlind AND (nopponentsraising = 1)) RETURN 1 FORCE
-	WHEN (nopponentsraising = 3) RETURN 1 FORCE
-	WHEN Others RETURN 0 FORCE
-END SYMBOL
-
-NEW SYMBOL MoreThanOneOpponentIsRaising
-	WHEN (InSmallBlind AND (nopponentsraising > 2)) RETURN 1 FORCE
-	WHEN (InBigBlind AND (nopponentsraising > 1)) RETURN 1 FORCE
-	WHEN (nopponentsraising > 3) RETURN 1 FORCE
+	// PREFLOP
+	WHEN ((betround = 1) AND (ac_pf_bets > 2) AND ((nopponentsraising = 1) OR (RaisesSinceLastPlay = 1))) RETURN 1 FORCE
+	// POSTFLOP
+	WHEN ((betround > 1) AND ((nopponentsraising = 1) OR (RaisesSinceLastPlay = 1))) RETURN 1 FORCE
 	WHEN Others RETURN 0 FORCE
 END SYMBOL
 
 PREFLOP
-	WHEN (NOT ShortStack)
-		WHEN (islist010 AND (NOT OpponentIsRaising OR OneOpponentIsRaising)) RAISEPOT FORCE
-		WHEN (islist010 AND OpponentIsRaising) RAISEMAX FORCE
+	WHEN (NOT ShortStack AND islist010 AND (NOT OpponentIsRaising OR OneOpponentIsRaising)) RAISEPOT FORCE
+	WHEN (NOT ShortStack AND islist010 AND OpponentIsRaising) RAISEMAX FORCE
 		
-		WHEN (islist011 AND (NOT OpponentIsRaising OR OneOpponentIsRaising)) RAISEPOT FORCE
-		WHEN (islist011) FOLD FORCE
+	WHEN (NOT ShortStack AND islist011 AND (NOT OpponentIsRaising OR OneOpponentIsRaising)) RAISEPOT FORCE
+	WHEN (NOT ShortStack AND islist011) FOLD FORCE
 		
-		WHEN (islist012 AND NOT OpponentIsRaising AND (InEarlyPosition1 OR InEarlyPosition2 OR InEarlyPosition3)) CALL FORCE
-		WHEN (islist012 AND NOT OpponentIsRaising) BETPOT FORCE
-		WHEN (islist012) FOLD FORCE
+	WHEN (NOT ShortStack AND islist012 AND NOT OpponentIsRaising AND (InEarlyPosition1 OR InEarlyPosition2 OR InEarlyPosition3)) CALL FORCE
+	WHEN (NOT ShortStack AND islist012 AND NOT OpponentIsRaising) BETPOT FORCE
+	WHEN (NOT ShortStack AND islist012) FOLD FORCE
 		
-		WHEN (islist013 AND NOT OpponentIsRaising) CALL FORCE
-		WHEN (islist013) FOLD FORCE
+	WHEN (NOT ShortStack AND islist013 AND NOT OpponentIsRaising) CALL FORCE
+	WHEN (NOT ShortStack AND islist013) FOLD FORCE
 		
-		WHEN (islist014 AND NOT OpponentIsRaising AND (InButton OR InCutOff OR InTheBlinds)) BETPOT FORCE	
-	WHEN (ShortStack)
-		WHEN (islist020) RAISEMAX FORCE
+	WHEN (NOT ShortStack AND islist014 AND NOT OpponentIsRaising AND (InButton OR InCutOff OR InTheBlinds)) BETPOT FORCE	
+	
+	// ShortStack
+	WHEN (islist020) RAISEMAX FORCE
 		
-		WHEN (islist021 AND NOT OpponentIsRaising) RAISEMAX FORCE
-		WHEN (islist021 AND OneOpponentIsRaising AND (InButton OR InCutOff OR InTheBlinds)) RAISEMAX FORCE
-		WHEN (islist021) FOLD FORCE		
+	WHEN (ShortStack AND islist021 AND NOT OpponentIsRaising) RAISEMAX FORCE
+	WHEN (ShortStack AND islist021 AND OneOpponentIsRaising AND (InButton OR InCutOff OR InTheBlinds)) RAISEMAX FORCE
+	WHEN (ShortStack AND islist021) FOLD FORCE		
 		
-		WHEN (islist022 AND NOT OpponentIsRaising) RAISEMAX FORCE
-		WHEN (islist022) FOLD FORCE		
+	WHEN (ShortStack AND islist022 AND NOT OpponentIsRaising) RAISEMAX FORCE
+	WHEN (ShortStack AND islist022) FOLD FORCE		
 		
-		WHEN (islist023 AND NOT OpponentIsRaising AND (NOT InEarlyPosition1 OR NOT InEarlyPosition2 OR NOT InEarlyPosition3)) RAISEMAX FORCE
-		WHEN (islist023) FOLD FORCE		
+	WHEN (ShortStack AND islist023 AND NOT OpponentIsRaising AND (NOT InEarlyPosition1 AND NOT InEarlyPosition2 AND NOT InEarlyPosition3)) RAISEMAX FORCE
+	WHEN (ShortStack AND islist023) FOLD FORCE		
 		
-		WHEN (islist024 AND NOT OpponentIsRaising AND (InButton OR InCutOff OR InTheBlinds)) RAISEMAX FORCE				
+	WHEN (ShortStack AND islist024 AND NOT OpponentIsRaising AND (InButton OR InCutOff OR InTheBlinds)) RAISEMAX FORCE				
 	WHEN Others FOLD FORCE	
 
 FLOP
-	WHEN (HaveTopPair OR HaveOverPair OR HaveTwoPair OR HaveTrips OR HaveStraight OR HaveFlush) RAISEPOT FORCE
-	WHEN (nopponentsraising = 0) CALL FORCE
+	WHEN (HaveTopPair OR HaveOverPair OR HaveTwoPair OR HaveTrips OR HaveSet OR HaveStraight OR HaveFlush) RAISEPOT FORCE
+	WHEN (NOT OpponentIsRaising) CALL FORCE
 	WHEN Others FOLD FORCE
 
 TURN
-	WHEN (HaveTopPair OR HaveOverPair OR HaveTwoPair OR HaveTrips OR HaveStraight OR HaveFlush) RAISEPOT FORCE
-	WHEN (nopponentsraising = 0) CALL FORCE
+	WHEN (HaveTopPair OR HaveOverPair OR HaveTwoPair OR HaveTrips OR HaveSet OR HaveStraight OR HaveFlush) RAISEPOT FORCE
+	WHEN (NOT OpponentIsRaising) CALL FORCE
 	WHEN Others FOLD FORCE
 
 RIVER
-	WHEN (HaveTopPair OR HaveOverPair OR HaveTwoPair OR HaveTrips OR HaveStraight OR HaveFlush) RAISEPOT FORCE
-	WHEN (nopponentsraising = 0) CALL FORCE
+	WHEN (HaveTopPair OR HaveOverPair OR HaveTwoPair OR HaveTrips OR HaveSet OR HaveStraight OR HaveFlush) RAISEPOT FORCE
+	WHEN (NOT OpponentIsRaising) CALL FORCE
 	WHEN Others FOLD FORCE
