@@ -110,6 +110,7 @@ enum autoplayer_functions
 {
 	// Primary autoplayer-functions
 	k_autoplayer_function_allin,     
+	k_autoplayer_function_betpot_2_1,
 	k_autoplayer_function_betpot_1_1,
 	k_autoplayer_function_betpot_3_4,
 	k_autoplayer_function_betpot_2_3,
@@ -143,6 +144,7 @@ const char k_autoplayer_functionname[k_number_of_autoplayer_functions]
 	[k_max_length_of_autoplayer_functionname] =
 {
 	"f$alli",
+	"f$betpot_2_1",
 	"f$betpot_1_1",
 	"f$betpot_3_4",
 	"f$betpot_2_3",

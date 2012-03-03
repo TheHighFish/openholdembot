@@ -433,7 +433,7 @@ void CAutoplayer::DoAutoplayer(void)
 void CAutoplayer::DoBetPot(void)
 {
 	// Start with BetPot, continue with lower betsizes, finally 1/4 pot
-	for (int i=k_autoplayer_function_betpot_1_1; i<=k_autoplayer_function_betpot_1_4; i++)
+	for (int i=k_autoplayer_function_betpot_2_1; i<=k_autoplayer_function_betpot_1_4; i++)
 	{
 		if (p_autoplayer_functions->GetAautoplayerFunctionValue(i))
 		{
