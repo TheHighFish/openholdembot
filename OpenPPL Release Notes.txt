@@ -20,6 +20,13 @@ BUG FIXES:
   like nopponentsraising does to avoid this  problem.
   Thanks to Postenjak for reporting.
   [THF]
+- Additional spaces and comments in together with "New Symbol XYZ"
+  could throw OpenPPL off in the preprocessing state (building a list of symbols).
+  Thanks to Relhby for reporting the problem and to PhBot1 
+  for suggesting an inprovement.
+  Additional white-spaces get now deleted, but comments 
+  are still a problem at this place.
+  [THF]  
 
 v1.0.3 2012-02-21
 =================
