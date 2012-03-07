@@ -78,10 +78,13 @@
 f$OpenPPL_Raise
 
 ##f$OpenPPL_RaiseHalfPot##
-[1/2 * f$OpenPPL_PotSize]
+[(1.5 * f$OpenPPL_AmountToCall) + (1/2 * f$OpenPPL_PotSize)]
 
 ##f$OpenPPL_RaisePot##
-f$OpenPPL_PotSize
+// Potsize calculations:
+// http://www.pokerjunkie.com/calculating-the-pot-bet-in-poker
+// Using Shankys raise-by-semantics we get
+[(2 * f$OpenPPL_AmountToCall) + f$OpenPPL_PotSize]
 
 ##f$OpenPPL_RaiseMax##
 -3
