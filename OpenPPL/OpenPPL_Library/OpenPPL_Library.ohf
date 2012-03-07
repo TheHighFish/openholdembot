@@ -102,7 +102,7 @@ f$OpenPPL_Bet
 f$OpenPPL_RaiseHalfPot
 
 ##f$OpenPPL_BetPot##
-f$OpenPPL_RaiseHalfPot
+f$OpenPPL_RaisePot
 
 ##f$OpenPPL_BetMax##
 f$OpenPPL_RaiseMax
