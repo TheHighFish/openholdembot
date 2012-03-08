@@ -20,13 +20,19 @@ BUG FIXES:
   like nopponentsraising does to avoid this  problem.
   Thanks to Postenjak for reporting.
   [THF]
-- Additional spaces and comments in together with "New Symbol XYZ"
-  could throw OpenPPL off in the preprocessing state (building a list of symbols).
+- Additional spaces and comments together with "New Symbol XYZ"
+  could throw OpenPPL off in the preprocessing stage (building a list of symbols).
   Thanks to Relhby for reporting the problem and to PhBot1 
   for suggesting an inprovement.
   Additional white-spaces get now deleted, but comments 
   are still a problem at this place.
-  [THF]  
+  [THF]
+- BetPot incorrectly used RaiseHalfPot instead of RaisePot.
+  Thanks to Postenjak for reporting.
+  [THF}
+- Calculation of botsized bets was not correct.
+  Thanks to Postenjak for reporting the problem and for providing the info to fix it.
+  [/HF]
 
 v1.0.3 2012-02-21
 =================

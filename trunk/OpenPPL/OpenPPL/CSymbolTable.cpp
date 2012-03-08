@@ -80,6 +80,10 @@ void CSymbolTable::AddSymbolsFromFile(CString filename)
 		{
 			// User defined function from the OpenPPL-file
 			CString new_symbol = next_line.Mid(11, next_line.GetLength()-11);
+			// Cut off white spaces to avoid problems:
+			// http://www.maxinmontreal.com/forums/viewtopic.php?f=214&t=14773
+			new_symbol.TrimLeft(" \t");
+			new_symbol.TrimRight(" \t");
 #ifdef DEBUG_SYMBOLTABLE_CREATION
 			MessageBox(0, new_symbol, "Adding with prefix...", 0);
 #endif
