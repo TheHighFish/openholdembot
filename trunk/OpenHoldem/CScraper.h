@@ -67,8 +67,8 @@ public:
 	const CString		i86X_button_state(int n) { if (n>=0 && n<=9) return _i86X_button_state[n]; else return ""; }
 	const CString		i86_button_state() { return _i86_button_state; }
 
-	const CString		betpot_X_Y_button_state(const int x, const int y)
-						{ if (x >= 0 && x < k_max_number_of_betpot_X_y_buttons && y >= 0 && y < k_max_number_of_betpot_x_Y_buttons) return _betpot_button_state[x][y]; else return "";}
+//!!!	const CString		betpot_X_Y_button_state(const int x, const int y)
+//!!!						{ if (x >= 0 && x < k_max_number_of_betpot_X_y_buttons && y >= 0 && y < k_max_number_of_betpot_x_Y_buttons) return _betpot_button_state[x][y]; else return "";}
 
 	const CString		button_label(int n) { if (n>=0 && n<=9) return _button_label[n]; else return ""; }
 	const bool			handle_found_at_xy() { return _handle_found_at_xy; }
@@ -99,8 +99,8 @@ public:
 	void	set_i86X_button_state(const int n, const CString s) { ENT if (n>=0 && n<=9) _i86X_button_state[n] = s;}
 	void	set_i86_button_state(const CString s) { ENT _i86_button_state = s;}
 
-	void	set_betpot_X_Y_button_state(const int x, const int y, const CString s) 
-			{ ENT if (x >= 0 && x < k_max_number_of_betpot_X_y_buttons && y >= 0 && y < k_max_number_of_betpot_x_Y_buttons) _betpot_button_state[x][y] = s;}
+//!!!	void	set_betpot_X_Y_button_state(const int x, const int y, const CString s) 
+//!!!			{ ENT if (x >= 0 && x < k_max_number_of_betpot_X_y_buttons && y >= 0 && y < k_max_number_of_betpot_x_Y_buttons) _betpot_button_state[x][y] = s;}
 
 	void	set_button_label(const int n, const CString s) { ENT if (n>=0 && n<=9) _button_label[n] = s;}
 	void	set_sblind(const double d) { ENT _s_limit_info.sblind = d;}
@@ -157,7 +157,7 @@ private:
 	// i86Xbuttons
 	CString				_i86X_button_state[k_max_number_of_i86X_buttons], _i86_button_state;
 	// betpotXYbuttons
-	CString				_betpot_button_state[k_max_number_of_betpot_X_y_buttons][k_max_number_of_betpot_x_Y_buttons];
+//!!!	CString				_betpot_button_state[k_max_number_of_betpot_X_y_buttons][k_max_number_of_betpot_x_Y_buttons];
 	// handle
 	bool				_handle_found_at_xy;
 	POINT				_handle_xy;
@@ -208,7 +208,7 @@ private:
 	// i86Xbuttons
 	CString			_i86X_button_state_last[k_max_number_of_i86X_buttons], _i86_button_state_last;
 	// betpotXYbuttons
-	CString			_betpot_button_state_last[k_max_number_of_betpot_X_y_buttons][k_max_number_of_betpot_x_Y_buttons];
+//!!!	CString			_betpot_button_state_last[k_max_number_of_betpot_X_y_buttons][k_max_number_of_betpot_x_Y_buttons];
 
 	// pot
 	double			_pot_last[k_max_number_of_pots];

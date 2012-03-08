@@ -409,7 +409,13 @@ public:
 	void	symboltrace_collection_removeall()			{ ENT _symboltrace_collection.RemoveAll();}
 	void	set_stacks_at_hand_start(const int i, const int d)	{ ENT if (i>=0 && i<=9) _stacks_at_hand_start[i] = d; }
 
-	void	set_elapsedautohold(time_t t) { ENT _elapsedautohold = t;}
+	void	reset_elapsedautohold() 
+	{ 
+		ENT
+		time_t my_time_t;
+		time(&my_time_t);
+		_elapsedautohold = my_time_t;
+	}
 
 	// All symbol mutators below
 	// general

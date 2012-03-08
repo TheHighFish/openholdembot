@@ -487,12 +487,10 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_clocks(0);
 	set_sym_nclockspersecond(0);
 	set_sym_ncps(0);
-	time(&_elapsedhold);
+	time(&_elapsedhold); //???
 	time(&_elapsedhandhold);
 	
-	time_t my_time_t;
-	time(&my_time_t);
-	set_elapsedautohold(my_time_t);
+	reset_elapsedautohold(my_time_t);
 
 	// autoplayer
 	set_sym_myturnbits(0);
@@ -4553,9 +4551,5 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 			assert(k_this_must_not_happen);
 			break;
 	}
-
-	// reset elapsedauto symbol, as the autoplayer has acted.
-	time_t my_time_t;
-	time(&my_time_t);
-	p_symbols->set_elapsedautohold(my_time_t);
+	p_symbols->reset_elapsedautohold();
 }
