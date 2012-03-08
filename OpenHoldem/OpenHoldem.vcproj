@@ -317,6 +317,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CCasinoInterface.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CConfigurationCheck.cpp"
 				>
 			</File>
@@ -1031,6 +1035,10 @@
 			</File>
 			<File
 				RelativePath=".\CAutoplayerFunctions.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CCasinoInterface.h"
 				>
 			</File>
 			<File

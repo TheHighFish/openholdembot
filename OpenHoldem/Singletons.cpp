@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Singletons.h"
 
+#include "CCasinoInterface.h"
 #include "CAutoConnector.h"
 #include "CAutoConnectorThread.h"
 #include "CAutoplayer.h"
@@ -92,6 +93,8 @@ void InstantiateAllSingletons()
 		p_autoconnectorthread = new CAutoConnectorThread;
 	if (!p_handhistory)  
 		p_handhistory = new CHandHistory;
+	if !p_casino_interface)
+		p_casino_interface = new CCasinoInterface;
 }
 
 void DeleteAllSingletons()
@@ -101,6 +104,8 @@ void DeleteAllSingletons()
 	// but we have to be careful, as sometimes we do some work in the destructors,
 	// that depends on other classes, e.g. the destructor of the autoconnector
 	// needs its session_id (CSessionCounter).
+	if (p_casino_interface)
+		{ delete p_casino_interface; p_casino_interface = NULL; }
 	if (p_handhistory) 
 		{ delete p_handhistory; p_handhistory = NULL; }
 	if (p_autoconnectorthread) 

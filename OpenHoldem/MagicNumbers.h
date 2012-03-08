@@ -125,10 +125,11 @@ enum autoplayer_functions
 	k_autoplayer_function_sitin,  
 	k_autoplayer_function_sitout,    
 	k_autoplayer_function_leave,   
+	// ??? autopost
 	k_autoplayer_function_close,
 	k_autoplayer_function_rebuy,
+	k_autoplayer_function_chat, 
 	k_autoplayer_function_delay,
-	k_autoplayer_function_chat,   
 	// Attention Always keep this at last place.
 	k_number_of_autoplayer_functions
 };
