@@ -124,7 +124,7 @@ while (<>)
 	#
 	# Substitution is case-insensitive ("i" at the end), 
 	# but we care about beautyful, readable output and "fix" the cases.
-	s/\t/    /;
+	s/\t/    /g;
 	# Then add a bracket after when-conditions.
 	# Be careful: we alwaxs need an extra-bracket, even if one exists,
 	# because we always add a closing bracket later.
