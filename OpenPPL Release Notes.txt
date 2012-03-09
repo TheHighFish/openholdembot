@@ -33,6 +33,9 @@ BUG FIXES:
 - Calculation of botsized bets was not correct.
   Thanks to Postenjak for reporting the problem and for providing the info to fix it.
   [/HF]
+- bracketify.pl didn't replace all tabs by spaces.
+  Thanks to Volker 0866 for reporting.
+  [THF]
 
 v1.0.3 2012-02-21
 =================
