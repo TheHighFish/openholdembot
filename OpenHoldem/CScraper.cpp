@@ -1368,40 +1368,38 @@ void CScraper::DoBasicScrapeButtons()
 		}
 	}
 
-	for (int x = 0; x < k_max_number_of_betpot_X_y_buttons; x++)
+	for (int i = 0; i < k_max_betpot_buttons; i++)
 	{
-		for (int y = 0 ; y < k_max_number_of_betpot_x_Y_buttons; y++)
+		// Reset
+		_betpot_button_state[i] = "false";
+
+		// Betpot State
+		CString s = k_betpot_button_name[i];
+
+		r_iter = p_tablemap->r$()->find(s.GetString());
+		if (r_iter != p_tablemap->r$()->end())
 		{
-			// Reset
-			set_betpot_X_Y_button_state(x, y, "false");
+			ProcessRegion(r_iter);
+			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+			trans.DoTransform(r_iter, hdcCompatible, &text);
+			SelectObject(hdcCompatible, old_bitmap);
 
-			// BetpotXYstate
-			s.Format("betpot_%d_%d_state", x+1, y+1);
-			r_iter = p_tablemap->r$()->find(s.GetString());
-			if (r_iter != p_tablemap->r$()->end())
+			// Give scraper-pre DLL a chance to modify transform output
+			if (theApp._dll_scraperpreprocessor_process_message)
 			{
-				ProcessRegion(r_iter);
-				old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
-				trans.DoTransform(r_iter, hdcCompatible, &text);
-				SelectObject(hdcCompatible, old_bitmap);
-
-				// Give scraper-pre DLL a chance to modify transform output
-				if (theApp._dll_scraperpreprocessor_process_message)
-				{
-					(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
-				}
-
-				if (text!="")
-					set_betpot_X_Y_button_state(x, y, text);
-
-				if (_betpot_button_state_last[x][y] != _betpot_button_state[x][y])
-				{
-					_betpot_button_state_last[x][y] = _betpot_button_state[x][y];
-					_scrape_something_changed |= BUTTONSTATE_CHANGED;
-				}
-
-				write_log(prefs.debug_scraper(), "[CScraper] betpot_%d_%d_state, result %s\n", x+1, y+1, text.GetString());
+				(theApp._dll_scraperpreprocessor_process_message) (s.GetString(), &text);
 			}
+
+			if (text!="")
+				_betpot_button_state[i] = text;
+
+			if (_betpot_button_state_last[i] != _betpot_button_state[i])
+			{
+				_betpot_button_state_last[i] = _betpot_button_state[i];
+				_scrape_something_changed |= BUTTONSTATE_CHANGED;
+			}
+
+			write_log(prefs.debug_scraper(), "[CScraper] %s state, result %s\n", s, text.GetString());
 		}
 	}
 
