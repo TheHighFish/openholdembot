@@ -490,7 +490,7 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	time(&_elapsedhold); //???
 	time(&_elapsedhandhold);
 	
-	reset_elapsedautohold(my_time_t);
+	reset_elapsedautohold();
 
 	// autoplayer
 	set_sym_myturnbits(0);
@@ -4532,7 +4532,7 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 			new_bet = new_number_of_bets * bet;
 			new_pot = _sym.pot + new_bet - _sym.currentbet[10];
 			break;
-		case k_action_swag:
+		case k_action_betsize:
 			assert(p_autoplayer_functions->f$betsize() > 0);
 			write_log(prefs.debug_symbolengine(), "Adjusting symbols for users action: swag\n");
 			// Did-symbols

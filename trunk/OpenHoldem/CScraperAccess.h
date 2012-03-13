@@ -2,6 +2,7 @@
 #define INC_CSCRAPERACCESS_H
 
 #include <windows.h>
+#include <map>
 
 extern class CScraperAccess
 {
@@ -12,55 +13,14 @@ public:
 
 public:
 	// public functions
-	void SetScraperAccessData();
-	int GetPlayerCards(int seat_number, int first_or_second_card);
-	int GetCommonCard(int index_zero_to_four);
-	bool IsValidCard(int Card);
+	void	SetScraperAccessData();
+	int		GetPlayerCards(int seat_number, int first_or_second_card);
+	int		GetCommonCard(int index_zero_to_four);
+	bool	IsValidCard(int Card);
+	void	GetNeccessaryTablemapObjects();
+	int		NumberOfVisibleButtons();
 
 public:
-	// public accessors for button numbers
-	int get_allin_button_number()	{ return _allin_button_number; }
-	int get_raise_button_number()	{ return _raise_button_number; }
-	int get_call_button_number()	{ return _call_button_number; }
-	int get_check_button_number()	{ return _check_button_number; }
-	int get_fold_button_number()	{ return _fold_button_number; }
-	int get_sitin_button_number()	{ return _sitin_button_number; }
-	int get_sitout_button_number()	{ return _sitout_button_number; }
-	int get_leave_button_number()	{ return _leave_button_number; }
-	int prefold_button_number()		{ return _prefold_button_number; }
-	int autopost_button_number()	{ return _autopost_button_number; }
-
-public:
-	// public accessors for button names
-	CString get_allin_button_name()		{ return _allin_button_name; }
-	CString get_raise_button_name()		{ return _raise_button_name; }
-	CString get_call_button_name()		{ return _call_button_name; }
-	CString get_check_button_name()		{ return _check_button_name; }
-	CString get_fold_button_name()		{ return _fold_button_name; }
-	CString get_sitin_button_name()		{ return _sitin_button_name; }
-	CString get_sitout_button_name()	{ return _sitout_button_name; }
-	CString get_leave_button_name()		{ return _leave_button_name; }
-	CString get_prefold_button_name()	{ return _prefold_button_name; }
-	CString get_autopost_button_name()	{ return _autopost_button_name; }
-	CString get_i86_button_name()		{ return "i86button"; }
-	CString get_i86X_button_name(int i)	{ return _i86X_button_name[i]; }
-	CString get_i3_button_name()		{ return "i3button"; }
-
-public:
-	// public accessors for button visible
-	bool get_allin_button_visible()		{ return _allin_button_visible; }
-	bool get_raise_button_visible()		{ return _raise_button_visible; }
-	bool get_call_button_visible()		{ return _call_button_visible; }
-	bool get_check_button_visible()		{ return _check_button_visible; }
-	bool get_fold_button_visible()		{ return _fold_button_visible; }
-	bool get_sitin_button_visible()		{ return _sitin_button_visible; }
-	bool get_sitout_button_visible()	{ return _sitout_button_visible; }
-	bool get_leave_button_visible()		{ return _leave_button_visible; }
-	bool get_prefold_button_visible()	{ return _prefold_button_visible; }
-	bool get_autopost_button_visible()	{ return _autopost_button_visible; }
-	bool get_i86_button_visible()		{ return _i86_button_visible; }
-	bool get_i86X_button_visible(int i)	{ return _i86X_button_visible[i]; }
-	bool get_i3_button_visible()		{ return _i3_button_visible; }
 	bool get_betpot_button_visible(int numerator, int denominator);
 
 private:
@@ -69,6 +29,7 @@ private:
 	bool	SearchForButtonVisible(int button_code);
 	CString	SearchForButtonName(int button_code);
 	bool	GetButtonVisible(int button_number);
+	bool	GetBetpotButtonVisible(int button_number);
 	CString	GetButtonName(int button_number);
 
 
@@ -105,21 +66,85 @@ private:
 	CString _i3_slider_name;
 	CString _i3_handle_name;
 
-private:
+public:
 	// button is visible
-	bool _allin_button_visible;
-	bool _raise_button_visible;
-	bool _call_button_visible;
-	bool _check_button_visible;
-	bool _fold_button_visible;
-	bool _sitin_button_visible;
-	bool _sitout_button_visible;
-	bool _leave_button_visible;
-	bool _prefold_button_visible;
-	bool _autopost_button_visible;
-	bool _i86_button_visible;
-	bool _i86X_button_visible[k_max_number_of_i86X_buttons];
-	bool _i3_button_visible;
+	bool allin_button_visible;
+	bool raise_button_visible;
+	bool call_button_visible;
+	bool check_button_visible;
+	bool fold_button_visible;
+	bool sitin_button_visible;
+	bool sitout_button_visible;
+	bool leave_button_visible;
+	bool prefold_button_visible;
+	bool autopost_button_visible;
+	bool i86_button_visible;
+	bool i86X_button_visible[k_max_number_of_i86X_buttons];
+	bool i3_button_visible;
+	bool betpot_button_visible[k_max_betpot_buttons];
+
+// tablemap regions
+public:
+	RECT allin_button;
+	RECT raise_button;
+	RECT call_button;
+	RECT check_button;
+	RECT fold_button;
+	RECT prefold_button;
+	RECT sitin_button;
+	RECT sitout_button;
+	RECT leave_button;
+	RECT autopost_button;
+	RECT i86_button;
+	RECT i86X_button[k_max_number_of_i86X_buttons];
+	RECT i3_button;     // Old WH-Standard; i3 is for swag
+	RECT i3_edit_region;
+	RECT i3_slider_region;
+	RECT i3_handle_region;
+	RECT betpot_button[k_max_betpot_buttons];
+
+// regions defined
+public:
+	bool allin_button_defined;
+	bool raise_button_defined;
+	bool call_button_defined;
+	bool check_button_defined;
+	bool fold_button_defined;
+	bool prefold_button_defined;
+	bool sitin_button_defined;
+	bool sitout_button_defined;
+	bool leave_button_defined;
+	bool autopost_button_defined;
+	bool i86_button_defined;
+	bool i86X_button_defined[k_max_number_of_i86X_buttons];
+	bool i3_button_defined;
+	bool i3_edit_defined;
+	bool i3_slider_defined;
+	bool i3_handle_defined;
+	bool betpot_button_defined[k_max_betpot_buttons];
+
+// regions available
+public:
+	bool allin_option_available;
+	bool allin_button_available;
+	bool raise_button_available;
+	bool call_button_available;
+	bool check_button_available;
+	bool fold_button_available;
+	bool prefold_button_available;
+	bool sitin_button_available;
+	bool sitout_button_available;
+	bool leave_button_available;
+	bool autopost_button_available;
+	bool i86_button_available;
+	bool i86X_button_available[k_max_number_of_i86X_buttons];
+	bool i3_button_available;
+	bool betpot_button_available[k_max_betpot_buttons];
+
+	std::map<const int, bool> button_available;
+
+public:
+	bool _i86X_state[k_max_number_of_i86X_buttons];
 
 } *p_scraper_access;
 

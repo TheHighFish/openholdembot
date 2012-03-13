@@ -176,22 +176,17 @@ bool CScraperAccess::GetButtonVisible(int button_number)
 	return button_visible;
 }
 
-bool CScraperAccess::get_betpot_button_visible(int x, int y)
+bool CScraperAccess::GetBetpotButtonVisible(int i)
 {
-	CString betpot_button_state = "";
+	CString betpot_button_state = p_scraper->betpot_button_state(i);
 
-	if (x >= 0 && x < k_max_number_of_betpot_X_y_buttons && y >= 0 && y < k_max_number_of_betpot_x_Y_buttons)
+	if (betpot_button_state.MakeLower().Left(4) == "true" ||
+		betpot_button_state.MakeLower().Left(2) == "on" ||
+		betpot_button_state.MakeLower().Left(3) == "yes" ||
+		betpot_button_state.MakeLower().Left(7) == "checked" ||
+		betpot_button_state.MakeLower().Left(3) == "lit" )
 	{
-		betpot_button_state = p_scraper->betpot_X_Y_button_state(x, y);
-
-		if (betpot_button_state.MakeLower().Left(4) == "true" ||
-			betpot_button_state.MakeLower().Left(2) == "on" ||
-			betpot_button_state.MakeLower().Left(3) == "yes" ||
-			betpot_button_state.MakeLower().Left(7) == "checked" ||
-			betpot_button_state.MakeLower().Left(3) == "lit" )
-		{
-			return true;
-		}
+		return true;
 	}
 
 	return false;
@@ -232,6 +227,7 @@ void CScraperAccess::SetScraperAccessData()
 
 	// hardcoded i86button
 	_i86_button_name = "i86button";
+
 	// hardcoded i86Xbuttons
 	CString button_name = "";
 	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
@@ -241,23 +237,120 @@ void CScraperAccess::SetScraperAccessData()
 	}
 
 	// Set Button States
-	_allin_button_visible		= GetButtonVisible(_allin_button_number);
-	_raise_button_visible		= GetButtonVisible(_raise_button_number);
-	_call_button_visible		= GetButtonVisible(_call_button_number);
-	_check_button_visible		= GetButtonVisible(_check_button_number);
-	_fold_button_visible		= GetButtonVisible(_fold_button_number);
-	_sitin_button_visible		= GetButtonVisible(_sitin_button_number);
-	_sitout_button_visible		= GetButtonVisible(_sitout_button_number);
-	_leave_button_visible		= GetButtonVisible(_leave_button_number);
-	_prefold_button_visible		= GetButtonVisible(_prefold_button_number);
-	_autopost_button_visible	= GetButtonVisible(_autopost_button_number);
+	allin_button_visible	= GetButtonVisible(_allin_button_number);
+	raise_button_visible	= GetButtonVisible(_raise_button_number);
+	call_button_visible		= GetButtonVisible(_call_button_number);
+	check_button_visible	= GetButtonVisible(_check_button_number);
+	fold_button_visible		= GetButtonVisible(_fold_button_number);
+	sitin_button_visible	= GetButtonVisible(_sitin_button_number);
+	sitout_button_visible	= GetButtonVisible(_sitout_button_number);
+	leave_button_visible	= GetButtonVisible(_leave_button_number);
+	prefold_button_visible	= GetButtonVisible(_prefold_button_number);
+	autopost_button_visible	= GetButtonVisible(_autopost_button_number);
 
 	// hardcoded i3button - special case since i3state can be true when there is no i3button
-	_i3_button_visible = GetButtonVisible(k_button_i3);
+	i3_button_visible = GetButtonVisible(k_button_i3);
 	// hardcoded i86button
 
-	_i86_button_visible = GetButtonVisible(k_button_i86);
+	i86_button_visible = GetButtonVisible(k_button_i86);
 	// hardcoded i86Xbuttons
 	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
-		_i86X_button_visible[i] = GetButtonVisible(k_button_i86*k_max_number_of_i86X_buttons + i);
+		i86X_button_visible[i] = GetButtonVisible(k_button_i86*k_max_number_of_i86X_buttons + i);
+}
+
+void CScraperAccess::GetNeccessaryTablemapObjects()
+{
+	SetScraperAccessData();
+
+	// Defined
+	allin_button_defined	= p_tablemap_access->GetButtonRect(_allin_button_name, &allin_button);
+	raise_button_defined	= p_tablemap_access->GetButtonRect(_raise_button_name, &raise_button);
+	call_button_defined		= p_tablemap_access->GetButtonRect(_call_button_name, &call_button);
+	check_button_defined	= p_tablemap_access->GetButtonRect(_check_button_name, &check_button);
+	fold_button_defined		= p_tablemap_access->GetButtonRect(_fold_button_name, &fold_button);
+	sitin_button_defined	= p_tablemap_access->GetButtonRect(_sitin_button_name, &sitin_button);
+	sitout_button_defined	= p_tablemap_access->GetButtonRect(_sitout_button_name, &sitout_button);
+	leave_button_defined	= p_tablemap_access->GetButtonRect(_leave_button_name, &leave_button);
+
+	i3_button_defined		= p_tablemap_access->GetButtonRect("i3button", &i3_button);
+	i3_edit_defined			= p_tablemap_access->GetTableMapRect("i3edit", &i3_edit_region);
+	i3_slider_defined		= p_tablemap_access->GetTableMapRect("i3slider", &i3_slider_region);
+	i3_handle_defined		= p_tablemap_access->GetTableMapRect("i3button", &i3_handle_region);
+
+	i86_button_defined		= p_tablemap_access->GetButtonRect("i86button", &i86_button);
+	CString i86X_button_name = "";
+	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
+	{
+		i86X_button_name.Format("i86%dbutton", i);
+		i86X_button_defined[i]     = p_tablemap_access->GetButtonRect(i86X_button_name, &i86X_button[i]);
+	}
+	
+	// Available
+	button_available.clear();
+
+	allin_button_available	= allin_button_defined && allin_button_visible;
+	button_available[k_button_allin] = allin_button_available;
+
+	raise_button_available	= raise_button_defined && raise_button_visible;
+	button_available[k_button_raise] = raise_button_available;
+
+	call_button_available	= call_button_defined && call_button_visible;
+	button_available[k_button_call] = call_button_available;
+
+	check_button_available	= check_button_defined && check_button_visible;
+	button_available[k_button_check] = check_button_available;
+
+	fold_button_available	= fold_button_defined && fold_button_visible;
+	button_available[k_button_fold] = fold_button_available;
+
+	sitin_button_available	= sitin_button_defined && sitin_button_visible;
+	button_available[k_button_sitin] = sitin_button_available;
+
+	sitout_button_available	= sitout_button_defined && sitout_button_visible;
+	button_available[k_button_sitout] = sitout_button_available;
+
+	leave_button_available	= leave_button_defined && leave_button_visible;
+	button_available[k_button_leave] = leave_button_available;
+
+	i3_button_available		= i3_button_defined && i3_button_visible;
+	button_available[k_button_i3] = i3_button_available;
+
+	i86_button_available	= i86_button_defined && i86_button_visible;
+	button_available[k_button_i86] = i86_button_available;
+
+	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
+	{
+		i86X_button_available[i]   = i86X_button_defined[i] && i86X_button_visible[i];
+	}
+
+	for (int i = 0; i < k_max_betpot_buttons; i++)
+	{
+		betpot_button_defined[i]     = p_tablemap_access->GetButtonRect(k_betpot_button_name[i], &betpot_button[i]);
+		betpot_button_available[i]   = betpot_button_defined[i] && betpot_button_visible[i];
+	}
+
+	allin_option_available = false;
+
+	if (i3_button_available)
+		allin_option_available = true;
+	if (i3_button_visible && allin_button_available)
+		allin_option_available = true;
+	if (i3_button_visible && i3_edit_defined)
+		allin_option_available = true;
+	if (i3_button_visible && i3_slider_defined && i3_handle_defined)
+		allin_option_available = true;
+}
+
+int CScraperAccess::NumberOfVisibleButtons()
+{
+	// Buttons for playing actions, e.g. fold or allin.
+	// There have to be at least 2 to make it our turn.
+	int number_of_visible_buttons = 0
+		+ (allin_option_available ? 1 : 0)
+		+ (raise_button_available ? 1 : 0)
+		+ (call_button_available  ? 1 : 0)
+		+ (check_button_available ? 1 : 0)
+		+ (fold_button_available  ? 1 : 0);
+
+	return number_of_visible_buttons;
 }

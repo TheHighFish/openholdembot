@@ -47,8 +47,6 @@ const int k_gametype_FL      =  2;
 // buttons and other scraper constants
 const int k_max_number_of_buttons = 10;
 const int k_max_number_of_i86X_buttons = 10;
-const int k_max_number_of_betpot_X_y_buttons = 4;
-const int k_max_number_of_betpot_x_Y_buttons = 4;
 
 // button codes
 const int k_button_i3		= 3;
@@ -64,6 +62,8 @@ const int k_button_prefold	= 23;
 const int k_button_autopost	= 24;
 const int k_button_i86		= 86;
 const int k_button_undefined = -1;
+
+const int k_double_click_delay = 100; // ms
 
 int DefaultButtonNumber(int button_code);
 
@@ -105,11 +105,13 @@ const int F_OK = 0;
 // It is better to have a named constant then to write "assert(false);".
 const bool k_this_must_not_happen = false;
 
+const int k_mutex_lock_time = 500;
+
 // Autoplayer-functions
-enum autoplayer_functions
+enum AutoplayerConstant
 {
 	// Primary autoplayer-functions
-	k_autoplayer_function_allin,     
+	k_autoplayer_function_allin,
 	k_autoplayer_function_betpot_2_1,
 	k_autoplayer_function_betpot_1_1,
 	k_autoplayer_function_betpot_3_4,
@@ -118,21 +120,42 @@ enum autoplayer_functions
 	k_autoplayer_function_betpot_1_3,
 	k_autoplayer_function_betpot_1_4,
 	k_autoplayer_function_betsize,
-	k_autoplayer_function_raise,  
-	k_autoplayer_function_call,   
+	k_autoplayer_function_raise,
+	k_autoplayer_function_call,
+	k_autoplayer_function_check,
+	k_autoplayer_function_fold,
 	// Secondary autoplayer-functions
 	k_autoplayer_function_prefold,
-	k_autoplayer_function_sitin,  
-	k_autoplayer_function_sitout,    
-	k_autoplayer_function_leave,   
+	k_autoplayer_function_sitin,
+	k_autoplayer_function_sitout,
+	k_autoplayer_function_leave,
 	// ??? autopost
 	k_autoplayer_function_close,
 	k_autoplayer_function_rebuy,
-	k_autoplayer_function_chat, 
+	k_autoplayer_function_chat,
 	k_autoplayer_function_delay,
 	// Attention Always keep this at last place.
 	k_number_of_autoplayer_functions
 };
+
+const int k_betpot_min = k_autoplayer_function_betpot_2_1;
+const int k_betpot_max = k_autoplayer_function_betpot_1_4;
+const int k_max_length_betpot_button_name = 17;
+
+#define k_max_betpot_buttons (k_betpot_max - k_betpot_min + 1)
+#define k_betpot_index(i) (i - k_betpot_min)
+
+const char k_betpot_button_name[k_max_betpot_buttons][k_max_length_betpot_button_name] =
+{
+	"betpot_2_1_state",
+	"betpot_1_1_state",
+	"betpot_3_4_state",
+	"betpot_2_3_state",
+	"betpot_1_2_state",
+	"betpot_1_3_state",
+	"betpot_1_4_state"
+};
+
 
 const int first_primary_autoplayer_function = k_autoplayer_function_allin;
 const int last_primary_autoplayer_function = k_autoplayer_function_call;
@@ -141,8 +164,7 @@ const int last_secondary_autoplayer_function = k_autoplayer_function_chat;
 
 // Autoplayer-function names
 const int k_max_length_of_autoplayer_functionname = 13;  // +1 for NULL
-const char k_autoplayer_functionname[k_number_of_autoplayer_functions]
-	[k_max_length_of_autoplayer_functionname] =
+const char k_autoplayer_functionname[k_number_of_autoplayer_functions][k_max_length_of_autoplayer_functionname] =
 {
 	"f$alli",
 	"f$betpot_2_1",
@@ -340,7 +362,7 @@ enum ActionConstant
 	k_action_check = 0,		// new in OpenHoldem
 	k_action_call = 1,
 	k_action_raise = 2,		// min-raise
-	k_action_swag = 3,		// "stated wager", i.e. using f$betsize
+	k_action_betsize = 3,	// "stated wager", i.e. using f$betsize
 	k_action_allin = 4,
 	k_action_jam = 5        // not really an action, but required for correctly logging the slider.
 };

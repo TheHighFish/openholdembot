@@ -2072,7 +2072,7 @@ void PokerPro::DoAutoplayer(void)
 		_autoplayer_can_act = false;
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		Sleep(500);
-		p_symbols->RecordPrevAction(k_action_swag);
+		p_symbols->RecordPrevAction(k_action_betsize);
 	}
 	else if (p_autoplayer_functions->f$rais() && p_scraper->GetButtonState(2) && _autoplayer_can_act) 
 	{
