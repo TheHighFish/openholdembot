@@ -38,7 +38,7 @@ void CLazyScraper::DoScrape()
 
 bool CLazyScraper::IsMyTurn()
 {
-	if (p_scraper_access->get_fold_button_visible())
+	if (p_scraper_access->fold_button_visible)
 	{
 		write_log(3, "CLazyScraper::IsMyTurn(): true\n");
 		return true;
