@@ -129,7 +129,7 @@ enum AutoplayerConstant
 	k_autoplayer_function_sitin,
 	k_autoplayer_function_sitout,
 	k_autoplayer_function_leave,
-	// ??? autopost
+	k_autoplayer_function_autopost,
 	k_autoplayer_function_close,
 	k_autoplayer_function_rebuy,
 	k_autoplayer_function_chat,

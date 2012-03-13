@@ -11,9 +11,9 @@ public:
 	CCasinoInterface();
 	~CCasinoInterface();
 public:
-	bool ClickButton(int button_code);
-	bool ButtonAvailable(int button_code);
-	bool ClickButtonSequence(int first_button_code, int second_button_code, int delay_in_milli_seconds);
+	bool ClickButton(int autoplayer_code);
+	bool ButtonAvailable(int autoplayer_code);
+	bool ClickButtonSequence(int first_button, int second_button, int delay_in_milli_seconds);
 	bool EnterBetsize(double total_betsize_in_dollars);
 	bool UseSliderForAllin();
 	bool CloseWindow();
@@ -28,6 +28,16 @@ private:
 
 	POINT p_null;
 	// ToDo: Sliderbar, Chatbox, etc.
+
+public:
+	// regions - move to CCasinoInterface // !!!
+	RECT action_buttons[k_number_of_autoplayer_functions];
+	RECT i3_button;
+	RECT i3_edit_region;
+	RECT i3_slider_region;
+	RECT i3_handle_region;
+	RECT i86_button;
+	RECT i86X_button[k_max_number_of_i86X_buttons];
 
 } *p_casino_interface;
 

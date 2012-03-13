@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CScraperAccess.h"
 
+#include "CCasinoInterface.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CStringMatch.h"
@@ -178,6 +179,11 @@ bool CScraperAccess::GetButtonVisible(int button_number)
 
 bool CScraperAccess::GetBetpotButtonVisible(int i)
 {
+	/*
+		Checks if a betpot button is visible
+		i.e. available for taking an action
+	*/
+
 	CString betpot_button_state = p_scraper->betpot_button_state(i);
 
 	if (betpot_button_state.MakeLower().Left(4) == "true" ||
@@ -194,38 +200,38 @@ bool CScraperAccess::GetBetpotButtonVisible(int i)
 
 void CScraperAccess::GetNeccessaryTablemapObjects()
 {
-	// find button numbers
+	// NUMBERS (from labels)
 	_allin_button_number	= SearchForButtonNumber(k_button_allin);
 	_raise_button_number	= SearchForButtonNumber(k_button_raise);
 	_call_button_number		= SearchForButtonNumber(k_button_call);
 	_check_button_number	= SearchForButtonNumber(k_button_check);
 	_fold_button_number		= SearchForButtonNumber(k_button_fold);
+	_prefold_button_number	= SearchForButtonNumber(k_button_prefold);
 	_sitin_button_number	= SearchForButtonNumber(k_button_sitin);
 	_sitout_button_number	= SearchForButtonNumber(k_button_sitout);
 	_leave_button_number	= SearchForButtonNumber(k_button_leave);
-	_prefold_button_number	= SearchForButtonNumber(k_button_prefold);
 	_autopost_button_number	= SearchForButtonNumber(k_button_autopost);
 
-	// set button names
-	button_names[k_autoplayer_function_allin]	= GetButtonName(_allin_button_number);
-	button_names[k_autoplayer_function_raise]	= GetButtonName(_raise_button_number);
-	button_names[k_autoplayer_function_call]	= GetButtonName(_call_button_number);
-	button_names[k_autoplayer_function_check]	= GetButtonName(_check_button_number);
-	button_names[k_autoplayer_function_fold]	= GetButtonName(_fold_button_number);
-	button_names[k_autoplayer_function_prefold]	= GetButtonName(_prefold_button_number);
-	button_names[k_autoplayer_function_sitin]	= GetButtonName(_sitin_button_number);
-	button_names[k_autoplayer_function_sitout]	= GetButtonName(_sitout_button_number);
-	button_names[k_autoplayer_function_leave]	= GetButtonName(_leave_button_number);
 
+	// NAMES
+	button_names[k_autoplayer_function_allin]		= GetButtonName(_allin_button_number);
+	button_names[k_autoplayer_function_raise]		= GetButtonName(_raise_button_number);
+	button_names[k_autoplayer_function_call]		= GetButtonName(_call_button_number);
+	button_names[k_autoplayer_function_check]		= GetButtonName(_check_button_number);
+	button_names[k_autoplayer_function_fold]		= GetButtonName(_fold_button_number);
+	button_names[k_autoplayer_function_prefold]		= GetButtonName(_prefold_button_number);
+	button_names[k_autoplayer_function_sitin]		= GetButtonName(_sitin_button_number);
+	button_names[k_autoplayer_function_sitout]		= GetButtonName(_sitout_button_number);
+	button_names[k_autoplayer_function_leave]		= GetButtonName(_leave_button_number);
+	button_names[k_autoplayer_function_autopost]	= GetButtonName(_autopost_button_number);
+	// same for the betpot buttons - hardcoded so should only be done once at startup ?
 	for (int i = k_betpot_min; i <= k_betpot_max; i++)
 		button_names[i] = k_betpot_button_name[k_betpot_index(i)];
-
-	// hardcoded
+	// hardcoded so should only be done once at startup ?
 	_i3_button_name = "i3button";
 	_i3_slider_name = "i3slider";
 	_i3_handle_name = "i3handle";
 	_i86_button_name = "i86button";
-
 	CString button_name = "";
 	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
 	{
@@ -233,6 +239,8 @@ void CScraperAccess::GetNeccessaryTablemapObjects()
 		_i86X_button_name[i] = button_name;
 	}
 
+
+	// VISIBLE
 	visible_buttons[k_autoplayer_function_allin]	= GetButtonVisible(_allin_button_number);
 	visible_buttons[k_autoplayer_function_raise]	= GetButtonVisible(_raise_button_number);
 	visible_buttons[k_autoplayer_function_call]		= GetButtonVisible(_call_button_number);
@@ -242,42 +250,43 @@ void CScraperAccess::GetNeccessaryTablemapObjects()
 	visible_buttons[k_autoplayer_function_sitin]	= GetButtonVisible(_sitin_button_number);
 	visible_buttons[k_autoplayer_function_sitout]	= GetButtonVisible(_sitout_button_number);
 	visible_buttons[k_autoplayer_function_leave]	= GetButtonVisible(_leave_button_number);
+	visible_buttons[k_autoplayer_function_autopost]	= GetButtonVisible(_autopost_button_number);
+	// visible betpot buttons
 	for (int i = k_betpot_min; i <= k_betpot_max; i++)
 		visible_buttons[i] = GetBetpotButtonVisible(k_betpot_index(i));
-
 	// hardcoded 
 	i3_button_visible = GetButtonVisible(k_button_i3);
 	i86_button_visible = GetButtonVisible(k_button_i86);
-
 	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
 		i86X_button_visible[i] = GetButtonVisible(k_button_i86*k_max_number_of_i86X_buttons + i);
 
-	// Defined
+
+	// DEFINED + AVAILABLE
 	for (int i = k_autoplayer_function_allin; i < k_number_of_autoplayer_functions; i++)
 	{
-		defined_buttons[i] = p_tablemap_access->GetButtonRect(button_names[i], &action_buttons[i]);
+		defined_buttons[i] = p_tablemap_access->GetButtonRect(button_names[i], &p_casino_interface->action_buttons[i]);
 		available_buttons[i] = defined_buttons[i] && visible_buttons[i];
 	}
-
-	i3_button_defined		= p_tablemap_access->GetButtonRect("i3button", &i3_button);
-	i3_edit_defined			= p_tablemap_access->GetTableMapRect("i3edit", &i3_edit_region);
-	i3_slider_defined		= p_tablemap_access->GetTableMapRect("i3slider", &i3_slider_region);
-	i3_handle_defined		= p_tablemap_access->GetTableMapRect("i3button", &i3_handle_region);
-	i86_button_defined		= p_tablemap_access->GetButtonRect("i86button", &i86_button);
-
+	// Defined + Available special regions
+	i3_button_defined		= p_tablemap_access->GetButtonRect("i3button", &p_casino_interface->i3_button);
+	i3_edit_defined			= p_tablemap_access->GetTableMapRect("i3edit", &p_casino_interface->i3_edit_region);
+	i3_slider_defined		= p_tablemap_access->GetTableMapRect("i3slider", &p_casino_interface->i3_slider_region);
+	i3_handle_defined		= p_tablemap_access->GetTableMapRect("i3button", &p_casino_interface->i3_handle_region);
+	i86_button_defined		= p_tablemap_access->GetButtonRect("i86button", &p_casino_interface->i86_button);
 	i3_button_available		= i3_button_defined && i3_button_visible;
 	i86_button_available	= i86_button_defined && i86_button_visible;
-
+	// i86Xbutton
 	CString i86X_button_name = "";
 	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
 	{
 		i86X_button_name.Format("i86%dbutton", i);
-		i86X_button_defined[i]     = p_tablemap_access->GetButtonRect(i86X_button_name, &i86X_button[i]);
+		i86X_button_defined[i]     = p_tablemap_access->GetButtonRect(i86X_button_name, &p_casino_interface->i86X_button[i]);
 		i86X_button_available[i]   = i86X_button_defined[i] && i86X_button_visible[i];
 	}
 
-	allin_option_available = false;
 
+	// ALLIN POSSIBLE
+	allin_option_available = false;
 	if (i3_button_available)
 		allin_option_available = true;
 	if (i3_button_visible && available_buttons[k_autoplayer_function_allin])

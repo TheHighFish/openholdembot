@@ -2,7 +2,6 @@
 #define INC_CSCRAPERACCESS_H
 
 #include <windows.h>
-#include <map>
 
 extern class CScraperAccess
 {
@@ -80,16 +79,6 @@ public:
 public:
 	bool _i86X_state[k_max_number_of_i86X_buttons];
 	bool allin_option_available;
-
-public:
-	// regions - move to CCasinoInterface // !!!
-	RECT action_buttons[k_number_of_autoplayer_functions];
-	RECT i3_button;
-	RECT i3_edit_region;
-	RECT i3_slider_region;
-	RECT i3_handle_region;
-	RECT i86_button;
-	RECT i86X_button[k_max_number_of_i86X_buttons];
 
 } *p_scraper_access;
 
