@@ -207,28 +207,24 @@ void CScraperAccess::SetScraperAccessData()
 	_autopost_button_number	= SearchForButtonNumber(k_button_autopost);
 
 	// set button names
-	_allin_button_name		= GetButtonName(_allin_button_number);
-	_raise_button_name		= GetButtonName(_raise_button_number);
-	_call_button_name		= GetButtonName(_call_button_number);
-	_check_button_name		= GetButtonName(_check_button_number);
-	_fold_button_name		= GetButtonName(_fold_button_number);
-	_sitin_button_name		= GetButtonName(_sitin_button_number);
-	_sitout_button_name		= GetButtonName(_sitout_button_number);
-	_leave_button_name		= GetButtonName(_leave_button_number);
-	_prefold_button_name	= GetButtonName(_prefold_button_number);
-	_autopost_button_name	= GetButtonName(_autopost_button_number);
+	button_names[k_autoplayer_function_allin]	= GetButtonName(_allin_button_number);
+	button_names[k_autoplayer_function_raise]	= GetButtonName(_raise_button_number);
+	button_names[k_autoplayer_function_call]	= GetButtonName(_call_button_number);
+	button_names[k_autoplayer_function_check]	= GetButtonName(_check_button_number);
+	button_names[k_autoplayer_function_fold]	= GetButtonName(_fold_button_number);
+	button_names[k_autoplayer_function_prefold]	= GetButtonName(_prefold_button_number);
+	button_names[k_autoplayer_function_sitin]	= GetButtonName(_sitin_button_number);
+	button_names[k_autoplayer_function_sitout]	= GetButtonName(_sitout_button_number);
+	button_names[k_autoplayer_function_leave]	= GetButtonName(_leave_button_number);
+	for (int i = k_betpot_min; i <= k_betpot_max; i++)
+		button_names[i] = k_betpot_button_name[k_betpot_index(i)];
 
-	// hardcoded i3button
+	// hardcoded
 	_i3_button_name = "i3button";
-	// hardcoded i3slider
 	_i3_slider_name = "i3slider";
-	// hardcoded i3handle
 	_i3_handle_name = "i3handle";
-
-	// hardcoded i86button
 	_i86_button_name = "i86button";
 
-	// hardcoded i86Xbuttons
 	CString button_name = "";
 	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
 	{
@@ -236,24 +232,22 @@ void CScraperAccess::SetScraperAccessData()
 		_i86X_button_name[i] = button_name;
 	}
 
-	// Set Button States
-	allin_button_visible	= GetButtonVisible(_allin_button_number);
-	raise_button_visible	= GetButtonVisible(_raise_button_number);
-	call_button_visible		= GetButtonVisible(_call_button_number);
-	check_button_visible	= GetButtonVisible(_check_button_number);
-	fold_button_visible		= GetButtonVisible(_fold_button_number);
-	sitin_button_visible	= GetButtonVisible(_sitin_button_number);
-	sitout_button_visible	= GetButtonVisible(_sitout_button_number);
-	leave_button_visible	= GetButtonVisible(_leave_button_number);
-	prefold_button_visible	= GetButtonVisible(_prefold_button_number);
-	autopost_button_visible	= GetButtonVisible(_autopost_button_number);
+	visible_buttons[k_autoplayer_function_allin]	= GetButtonVisible(_allin_button_number);
+	visible_buttons[k_autoplayer_function_raise]	= GetButtonVisible(_raise_button_number);
+	visible_buttons[k_autoplayer_function_call]		= GetButtonVisible(_call_button_number);
+	visible_buttons[k_autoplayer_function_check]	= GetButtonVisible(_check_button_number);
+	visible_buttons[k_autoplayer_function_fold]		= GetButtonVisible(_fold_button_number);
+	visible_buttons[k_autoplayer_function_prefold]	= GetButtonVisible(_prefold_button_number);
+	visible_buttons[k_autoplayer_function_sitin]	= GetButtonVisible(_sitin_button_number);
+	visible_buttons[k_autoplayer_function_sitout]	= GetButtonVisible(_sitout_button_number);
+	visible_buttons[k_autoplayer_function_leave]	= GetButtonVisible(_leave_button_number);
+	for (int i = k_betpot_min; i <= k_betpot_max; i++)
+		visible_buttons[i] = GetBetpotButtonVisible(k_betpot_index(i));
 
-	// hardcoded i3button - special case since i3state can be true when there is no i3button
+	// hardcoded 
 	i3_button_visible = GetButtonVisible(k_button_i3);
-	// hardcoded i86button
-
 	i86_button_visible = GetButtonVisible(k_button_i86);
-	// hardcoded i86Xbuttons
+
 	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
 		i86X_button_visible[i] = GetButtonVisible(k_button_i86*k_max_number_of_i86X_buttons + i);
 }
@@ -263,21 +257,17 @@ void CScraperAccess::GetNeccessaryTablemapObjects()
 	SetScraperAccessData();
 
 	// Defined
-	allin_button_defined	= p_tablemap_access->GetButtonRect(_allin_button_name, &allin_button);
-	raise_button_defined	= p_tablemap_access->GetButtonRect(_raise_button_name, &raise_button);
-	call_button_defined		= p_tablemap_access->GetButtonRect(_call_button_name, &call_button);
-	check_button_defined	= p_tablemap_access->GetButtonRect(_check_button_name, &check_button);
-	fold_button_defined		= p_tablemap_access->GetButtonRect(_fold_button_name, &fold_button);
-	sitin_button_defined	= p_tablemap_access->GetButtonRect(_sitin_button_name, &sitin_button);
-	sitout_button_defined	= p_tablemap_access->GetButtonRect(_sitout_button_name, &sitout_button);
-	leave_button_defined	= p_tablemap_access->GetButtonRect(_leave_button_name, &leave_button);
+	for (int i = k_autoplayer_function_allin; i < k_number_of_autoplayer_functions; i++)
+	{
+		defined_buttons[i] = p_tablemap_access->GetButtonRect(button_names[i], &action_buttons[i]);
+	}
 
 	i3_button_defined		= p_tablemap_access->GetButtonRect("i3button", &i3_button);
 	i3_edit_defined			= p_tablemap_access->GetTableMapRect("i3edit", &i3_edit_region);
 	i3_slider_defined		= p_tablemap_access->GetTableMapRect("i3slider", &i3_slider_region);
 	i3_handle_defined		= p_tablemap_access->GetTableMapRect("i3button", &i3_handle_region);
-
 	i86_button_defined		= p_tablemap_access->GetButtonRect("i86button", &i86_button);
+
 	CString i86X_button_name = "";
 	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
 	{
@@ -286,54 +276,24 @@ void CScraperAccess::GetNeccessaryTablemapObjects()
 	}
 	
 	// Available
-	button_available.clear();
-
-	allin_button_available	= allin_button_defined && allin_button_visible;
-	button_available[k_button_allin] = allin_button_available;
-
-	raise_button_available	= raise_button_defined && raise_button_visible;
-	button_available[k_button_raise] = raise_button_available;
-
-	call_button_available	= call_button_defined && call_button_visible;
-	button_available[k_button_call] = call_button_available;
-
-	check_button_available	= check_button_defined && check_button_visible;
-	button_available[k_button_check] = check_button_available;
-
-	fold_button_available	= fold_button_defined && fold_button_visible;
-	button_available[k_button_fold] = fold_button_available;
-
-	sitin_button_available	= sitin_button_defined && sitin_button_visible;
-	button_available[k_button_sitin] = sitin_button_available;
-
-	sitout_button_available	= sitout_button_defined && sitout_button_visible;
-	button_available[k_button_sitout] = sitout_button_available;
-
-	leave_button_available	= leave_button_defined && leave_button_visible;
-	button_available[k_button_leave] = leave_button_available;
+	for (int i = k_autoplayer_function_allin; i < k_number_of_autoplayer_functions; i++)
+	{
+		available_buttons[i] = defined_buttons[i] && visible_buttons[i];
+	}
 
 	i3_button_available		= i3_button_defined && i3_button_visible;
-	button_available[k_button_i3] = i3_button_available;
-
 	i86_button_available	= i86_button_defined && i86_button_visible;
-	button_available[k_button_i86] = i86_button_available;
 
 	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
 	{
 		i86X_button_available[i]   = i86X_button_defined[i] && i86X_button_visible[i];
 	}
 
-	for (int i = 0; i < k_max_betpot_buttons; i++)
-	{
-		betpot_button_defined[i]     = p_tablemap_access->GetButtonRect(k_betpot_button_name[i], &betpot_button[i]);
-		betpot_button_available[i]   = betpot_button_defined[i] && betpot_button_visible[i];
-	}
-
 	allin_option_available = false;
 
 	if (i3_button_available)
 		allin_option_available = true;
-	if (i3_button_visible && allin_button_available)
+	if (i3_button_visible && available_buttons[k_autoplayer_function_allin])
 		allin_option_available = true;
 	if (i3_button_visible && i3_edit_defined)
 		allin_option_available = true;
@@ -346,11 +306,11 @@ int CScraperAccess::NumberOfVisibleButtons()
 	// Buttons for playing actions, e.g. fold or allin.
 	// There have to be at least 2 to make it our turn.
 	int number_of_visible_buttons = 0
-		+ (allin_option_available ? 1 : 0)
-		+ (raise_button_available ? 1 : 0)
-		+ (call_button_available  ? 1 : 0)
-		+ (check_button_available ? 1 : 0)
-		+ (fold_button_available  ? 1 : 0);
+		+ (available_buttons[k_autoplayer_function_allin] ? 1 : 0)
+		+ (available_buttons[k_autoplayer_function_raise] ? 1 : 0)
+		+ (available_buttons[k_autoplayer_function_call]  ? 1 : 0)
+		+ (available_buttons[k_autoplayer_function_check] ? 1 : 0)
+		+ (available_buttons[k_autoplayer_function_fold]  ? 1 : 0);
 
 	return number_of_visible_buttons;
 }
