@@ -13,7 +13,6 @@ public:
 
 public:
 	// public functions
-	void	SetScraperAccessData();
 	int		GetPlayerCards(int seat_number, int first_or_second_card);
 	int		GetCommonCard(int index_zero_to_four);
 	bool	IsValidCard(int Card);
@@ -59,11 +58,12 @@ private:
 	CString _i3_handle_name;
 
 public:
+	// visible
 	bool visible_buttons[k_number_of_autoplayer_functions];
 	bool i3_button_visible;
 	bool i86_button_visible;
 	bool i86X_button_visible[k_max_number_of_i86X_buttons];
-
+	// defined
 	bool defined_buttons[k_number_of_autoplayer_functions];
 	bool i3_button_defined;
 	bool i3_edit_defined;
@@ -71,7 +71,7 @@ public:
 	bool i3_handle_defined;
 	bool i86_button_defined;
 	bool i86X_button_defined[k_max_number_of_i86X_buttons];
-
+	// available
 	bool available_buttons[k_number_of_autoplayer_functions];
 	bool i3_button_available;	
 	bool i86_button_available;
@@ -79,10 +79,10 @@ public:
 
 public:
 	bool _i86X_state[k_max_number_of_i86X_buttons];
-
 	bool allin_option_available;
 
 public:
+	// regions - move to CCasinoInterface // !!!
 	RECT action_buttons[k_number_of_autoplayer_functions];
 	RECT i3_button;
 	RECT i3_edit_region;

@@ -192,7 +192,7 @@ bool CScraperAccess::GetBetpotButtonVisible(int i)
 	return false;
 }
 
-void CScraperAccess::SetScraperAccessData()
+void CScraperAccess::GetNeccessaryTablemapObjects()
 {
 	// find button numbers
 	_allin_button_number	= SearchForButtonNumber(k_button_allin);
@@ -216,6 +216,7 @@ void CScraperAccess::SetScraperAccessData()
 	button_names[k_autoplayer_function_sitin]	= GetButtonName(_sitin_button_number);
 	button_names[k_autoplayer_function_sitout]	= GetButtonName(_sitout_button_number);
 	button_names[k_autoplayer_function_leave]	= GetButtonName(_leave_button_number);
+
 	for (int i = k_betpot_min; i <= k_betpot_max; i++)
 		button_names[i] = k_betpot_button_name[k_betpot_index(i)];
 
@@ -250,16 +251,12 @@ void CScraperAccess::SetScraperAccessData()
 
 	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
 		i86X_button_visible[i] = GetButtonVisible(k_button_i86*k_max_number_of_i86X_buttons + i);
-}
-
-void CScraperAccess::GetNeccessaryTablemapObjects()
-{
-	SetScraperAccessData();
 
 	// Defined
 	for (int i = k_autoplayer_function_allin; i < k_number_of_autoplayer_functions; i++)
 	{
 		defined_buttons[i] = p_tablemap_access->GetButtonRect(button_names[i], &action_buttons[i]);
+		available_buttons[i] = defined_buttons[i] && visible_buttons[i];
 	}
 
 	i3_button_defined		= p_tablemap_access->GetButtonRect("i3button", &i3_button);
@@ -268,24 +265,14 @@ void CScraperAccess::GetNeccessaryTablemapObjects()
 	i3_handle_defined		= p_tablemap_access->GetTableMapRect("i3button", &i3_handle_region);
 	i86_button_defined		= p_tablemap_access->GetButtonRect("i86button", &i86_button);
 
+	i3_button_available		= i3_button_defined && i3_button_visible;
+	i86_button_available	= i86_button_defined && i86_button_visible;
+
 	CString i86X_button_name = "";
 	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
 	{
 		i86X_button_name.Format("i86%dbutton", i);
 		i86X_button_defined[i]     = p_tablemap_access->GetButtonRect(i86X_button_name, &i86X_button[i]);
-	}
-	
-	// Available
-	for (int i = k_autoplayer_function_allin; i < k_number_of_autoplayer_functions; i++)
-	{
-		available_buttons[i] = defined_buttons[i] && visible_buttons[i];
-	}
-
-	i3_button_available		= i3_button_defined && i3_button_visible;
-	i86_button_available	= i86_button_defined && i86_button_visible;
-
-	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
-	{
 		i86X_button_available[i]   = i86X_button_defined[i] && i86X_button_visible[i];
 	}
 
