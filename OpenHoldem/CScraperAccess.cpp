@@ -226,11 +226,14 @@ void CScraperAccess::GetNeccessaryTablemapObjects()
 	button_names[k_autoplayer_function_autopost]	= GetButtonName(_autopost_button_number);
 	// same for the betpot buttons - hardcoded so should only be done once at startup ?
 	for (int i = k_betpot_min; i <= k_betpot_max; i++)
-		button_names[i] = k_betpot_button_name[k_betpot_index(i)];
+	{
+		button_names[i].Format("%s_%s", k_betpot_button_name[k_betpot_index(i)], "button");
+	}
 	// hardcoded so should only be done once at startup ?
-	_i3_button_name = "i3button";
-	_i3_slider_name = "i3slider";
-	_i3_handle_name = "i3handle";
+	_i3_button_name  = "i3button";
+	_i3_edit_name    = "i3edit";
+	_i3_slider_name  = "i3slider";
+	_i3_handle_name  = "i3handle";
 	_i86_button_name = "i86button";
 	CString button_name = "";
 	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
@@ -253,12 +256,16 @@ void CScraperAccess::GetNeccessaryTablemapObjects()
 	visible_buttons[k_autoplayer_function_autopost]	= GetButtonVisible(_autopost_button_number);
 	// visible betpot buttons
 	for (int i = k_betpot_min; i <= k_betpot_max; i++)
+	{
 		visible_buttons[i] = GetBetpotButtonVisible(k_betpot_index(i));
+	}
 	// hardcoded 
 	i3_button_visible = GetButtonVisible(k_button_i3);
 	i86_button_visible = GetButtonVisible(k_button_i86);
 	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
+	{
 		i86X_button_visible[i] = GetButtonVisible(k_button_i86*k_max_number_of_i86X_buttons + i);
+	}
 
 
 	// DEFINED + AVAILABLE
@@ -302,7 +309,7 @@ int CScraperAccess::NumberOfVisibleButtons()
 	// Buttons for playing actions, e.g. fold or allin.
 	// There have to be at least 2 to make it our turn.
 	int number_of_visible_buttons = 0
-		+ (available_buttons[k_autoplayer_function_allin] ? 1 : 0)
+		+ (allin_option_available ? 1 : 0)
 		+ (available_buttons[k_autoplayer_function_raise] ? 1 : 0)
 		+ (available_buttons[k_autoplayer_function_call]  ? 1 : 0)
 		+ (available_buttons[k_autoplayer_function_check] ? 1 : 0)

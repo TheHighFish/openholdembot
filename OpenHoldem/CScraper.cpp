@@ -1374,7 +1374,8 @@ void CScraper::DoBasicScrapeButtons()
 		_betpot_button_state[i] = "false";
 
 		// Betpot State
-		CString s = k_betpot_button_name[i];
+		CString s;
+		s.Format("%s_%s", k_betpot_button_name[i], "state");
 
 		r_iter = p_tablemap->r$()->find(s.GetString());
 		if (r_iter != p_tablemap->r$()->end())
@@ -1399,7 +1400,7 @@ void CScraper::DoBasicScrapeButtons()
 				_scrape_something_changed |= BUTTONSTATE_CHANGED;
 			}
 
-			write_log(prefs.debug_scraper(), "[CScraper] %s state, result %s\n", s, text.GetString());
+			write_log(prefs.debug_scraper(), "[CScraper] %s, result %s\n", k_betpot_button_name[i], text.GetString());
 		}
 	}
 

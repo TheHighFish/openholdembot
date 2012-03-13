@@ -147,13 +147,13 @@ const int k_max_length_betpot_button_name = 17;
 
 const char k_betpot_button_name[k_max_betpot_buttons][k_max_length_betpot_button_name] =
 {
-	"betpot_2_1_state",
-	"betpot_1_1_state",
-	"betpot_3_4_state",
-	"betpot_2_3_state",
-	"betpot_1_2_state",
-	"betpot_1_3_state",
-	"betpot_1_4_state"
+	"betpot_2_1",
+	"betpot_1_1",
+	"betpot_3_4",
+	"betpot_2_3",
+	"betpot_1_2",
+	"betpot_1_3",
+	"betpot_1_4"
 };
 
 
