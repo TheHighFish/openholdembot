@@ -93,7 +93,7 @@ void InstantiateAllSingletons()
 		p_autoconnectorthread = new CAutoConnectorThread;
 	if (!p_handhistory)  
 		p_handhistory = new CHandHistory;
-	if !p_casino_interface)
+	if (!p_casino_interface)
 		p_casino_interface = new CCasinoInterface;
 }
 
