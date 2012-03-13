@@ -56,7 +56,7 @@ bool CCasinoInterface::ClickButton(int autoplayer_code)
 	//write_log(prefs.debug_autoplayer(), "[CasinoInterface]  
 	if (ButtonAvailable(autoplayer_code)) // buttonstate !!!
 	{
-		ClickRect(p_scraper_access->action_buttons[autoplayer_code]);
+		ClickRect(action_buttons[autoplayer_code]);
 		write_log(prefs.debug_autoplayer(), "[CasinoInterface] Clicked button %s\n", k_autoplayer_functionname[autoplayer_code]);
 		return true;
 	}
@@ -101,9 +101,9 @@ bool CCasinoInterface::UseSliderForAllin()
 
 	// Click and drag handle
 	RECT drag_region;
-	drag_region.left      = p_scraper->handle_xy().x + ((p_scraper_access->i3_handle_region.right - p_scraper_access->i3_handle_region.left)/2);
-	drag_region.top       = p_scraper->handle_xy().y + ((p_scraper_access->i3_handle_region.bottom - p_scraper_access->i3_handle_region.top)/2);
-	drag_region.right     = p_scraper->handle_xy().x + (p_scraper_access->i3_slider_region.right - p_scraper_access->i3_slider_region.left);
+	drag_region.left      = p_scraper->handle_xy().x + ((i3_handle_region.right - i3_handle_region.left)/2);
+	drag_region.top       = p_scraper->handle_xy().y + ((i3_handle_region.bottom - i3_handle_region.top)/2);
+	drag_region.right     = p_scraper->handle_xy().x + (i3_slider_region.right - i3_slider_region.left);
 	drag_region.bottom    = drag_region.top;		
 
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Slider : Calling mouse.dll to jam from %d,%d to %d,%d\n", drag_region.left, drag_region.top, drag_region.right, drag_region.bottom);
@@ -217,7 +217,7 @@ bool CCasinoInterface::ClickI86ButtonIfAvailable(int button_number)
 	if (p_scraper_access->i86X_button_available[button_number] && p_scraper_access->_i86X_state[button_number])
 	{
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Found valid i86 (%d) button and clicked it.\n", button_number);
-		ClickRect(p_scraper_access->i86X_button[button_number]);
+		ClickRect(i86X_button[button_number]);
 
 		return true;
 	}
@@ -230,22 +230,22 @@ void CCasinoInterface::SelectSwagText()
 	if (p_tablemap->swagselectionmethod() == TEXTSEL_DOUBLECLICK)
 	{
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Text selection; calling mouse.dll to double click: %d,%d %d,%d\n", 
-			p_scraper_access->i3_edit_region.left, p_scraper_access->i3_edit_region.top, p_scraper_access->i3_edit_region.right, p_scraper_access->i3_edit_region.bottom);
-		(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), p_scraper_access->i3_edit_region, MouseLeft, 2, NULL, p_null);
+			i3_edit_region.left, i3_edit_region.top, i3_edit_region.right, i3_edit_region.bottom);
+		(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), i3_edit_region, MouseLeft, 2, NULL, p_null);
 	}
 
 	else if (p_tablemap->swagselectionmethod() == TEXTSEL_SINGLECLICK)
 	{
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Text selection; calling mouse.dll to single click: %d,%d %d,%d\n", 
-			p_scraper_access->i3_edit_region.left, p_scraper_access->i3_edit_region.top, p_scraper_access->i3_edit_region.right, p_scraper_access->i3_edit_region.bottom);
-		(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), p_scraper_access->i3_edit_region, MouseLeft, 1, NULL, p_null);
+			i3_edit_region.left, i3_edit_region.top, i3_edit_region.right, i3_edit_region.bottom);
+		(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), i3_edit_region, MouseLeft, 1, NULL, p_null);
 	}
 
 	else if (p_tablemap->swagselectionmethod() == TEXTSEL_CLICKDRAG)
 	{
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Text selection; calling mouse.dll to click drag: %d,%d %d,%d\n", 
-			p_scraper_access->i3_edit_region.left, p_scraper_access->i3_edit_region.top, p_scraper_access->i3_edit_region.right, p_scraper_access->i3_edit_region.bottom);
-		(theApp._dll_mouse_click_drag) (p_autoconnector->attached_hwnd(), p_scraper_access->i3_edit_region, NULL, p_null);
+			i3_edit_region.left, i3_edit_region.top, i3_edit_region.right, i3_edit_region.bottom);
+		(theApp._dll_mouse_click_drag) (p_autoconnector->attached_hwnd(), i3_edit_region, NULL, p_null);
 	}
 
 	else if (p_tablemap->swagselectionmethod() == TEXTSEL_NOTHING)
@@ -326,8 +326,8 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Swag amount (not adjusted): %.2f\n", p_autoplayer_functions->f$betsize());
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Swag amount; calling keyboard.dll to swag (adjusted): %s %d,%d %d,%d\n", 
-		swag_amt, p_scraper_access->i3_edit_region.left, p_scraper_access->i3_edit_region.top, p_scraper_access->i3_edit_region.right, p_scraper_access->i3_edit_region.bottom);
-	(theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), p_scraper_access->i3_edit_region, swag_amt, prefs.swag_use_comma(), NULL, point_null);
+		swag_amt, i3_edit_region.left, i3_edit_region.top, i3_edit_region.right, i3_edit_region.bottom);
+	(theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), i3_edit_region, swag_amt, prefs.swag_use_comma(), NULL, point_null);
 
 	// Check for stolen focus, and thus misswag
 	if (GetForegroundWindow() != p_autoconnector->attached_hwnd())
