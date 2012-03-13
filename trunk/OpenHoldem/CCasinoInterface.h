@@ -25,8 +25,7 @@ private:
 	void ClickRect(RECT rect);
 	void SelectSwagText();
 	void DeleteSwagText();
-private:
-	RECT action_buttons[k_number_of_autoplayer_functions];
+
 	POINT p_null;
 	// ToDo: Sliderbar, Chatbox, etc.
 

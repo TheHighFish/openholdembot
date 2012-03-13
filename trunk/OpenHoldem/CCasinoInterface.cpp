@@ -38,45 +38,41 @@ bool CCasinoInterface::TableLostFocus()
 
 void CCasinoInterface::ClickRect(RECT rect)
 {
-	write_log(prefs.debug_autoplayer(), "[CasinoInterface] Calling mouse.dll to single click button: %d,%d %d,%d\n", rect.left, rect.top, rect.right, rect.bottom);
+	write_log(prefs.debug_autoplayer(), "[CasinoInterface] Calling mouse.dll to single click button: %d,%d %d,%d\n", 
+		rect.left, rect.top, rect.right, rect.bottom);
+
 	(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect, MouseLeft, 1, GetFocus(), p_null);
 
 	p_symbols->reset_elapsedautohold(); // ???
 }
 
-bool CCasinoInterface::ButtonAvailable(int button_code)
+bool CCasinoInterface::ButtonAvailable(int autoplayer_code)
 {
-	std::map<const int, bool>::const_iterator it;
-	it = p_scraper_access->button_available.find(button_code);
-
-	if (it != p_scraper_access->button_available.end())
-		return it->second;
-
-	return false;
+	return p_scraper_access->available_buttons[autoplayer_code];
 }
 
-bool CCasinoInterface::ClickButton(int button_code)
+bool CCasinoInterface::ClickButton(int autoplayer_code)
 {
 	//write_log(prefs.debug_autoplayer(), "[CasinoInterface]  
-	if (ButtonAvailable(button_code)) // buttonstate !!!
+	if (ButtonAvailable(autoplayer_code)) // buttonstate !!!
 	{
-		ClickRect(action_buttons[button_code]);
-		write_log(prefs.debug_autoplayer(), "[CasinoInterface] Clicked button %s\n", k_autoplayer_functionname[button_code]);
+		ClickRect(p_scraper_access->action_buttons[autoplayer_code]);
+		write_log(prefs.debug_autoplayer(), "[CasinoInterface] Clicked button %s\n", k_autoplayer_functionname[autoplayer_code]);
 		return true;
 	}
 	else
 	{
-		write_log(prefs.debug_autoplayer(), "[CasinoInterface] Could not click button %s\n", k_autoplayer_functionname[button_code]);
+		write_log(prefs.debug_autoplayer(), "[CasinoInterface] Could not click button %s\n", k_autoplayer_functionname[autoplayer_code]);
 		return false;
 	}
 }
 
-bool CCasinoInterface::ClickButtonSequence(int first_button_code, int second_button_code, int delay_in_milli_seconds)
+bool CCasinoInterface::ClickButtonSequence(int first_button, int second_button, int delay_in_milli_seconds)
 {
-	if (ClickButton(first_button_code))
+	if (ClickButton(first_button))
 	{
 		Sleep(delay_in_milli_seconds); // stolen focus ???
-		return ClickButton(second_button_code);
+		return ClickButton(second_button);
 	}
 
 	return false;
@@ -124,13 +120,13 @@ bool CCasinoInterface::UseSliderForAllin()
 	}
 
 	else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET &&
-			 (p_scraper_access->raise_button_available || p_scraper_access->i3_button_available))
+			 (p_scraper_access->available_buttons[k_autoplayer_function_raise] || p_scraper_access->i3_button_available))
 	{
 		int confirmation_button = k_button_undefined;
 
 		// use allin button if it exists, otherwise use i3button region if it exists, 
 		// otherwise use the bet/raise button region
-		if (p_scraper_access->allin_button_available)
+		if (p_scraper_access->available_buttons[k_autoplayer_function_allin])
 		{
 			confirmation_button = k_button_allin;
 		}
@@ -349,7 +345,7 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 			(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_RETURN, GetFocus(), cur_pos);
 		}
 		else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET &&
-				 (p_scraper_access->raise_button_available || p_scraper_access->i3_button_available))
+				 (p_scraper_access->available_buttons[k_autoplayer_function_raise] || p_scraper_access->i3_button_available))
 		{
 			int confirmation_button = k_button_undefined;
 
