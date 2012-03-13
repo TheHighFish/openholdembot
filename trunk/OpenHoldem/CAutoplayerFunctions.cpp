@@ -25,13 +25,15 @@ void CAutoplayerFunctions::SetAautoplayerFunction(const int function_to_bn_set, 
 {
 	assert(function_to_bn_set >= 0);
 	assert(function_to_bn_set < k_number_of_autoplayer_functions);
+
 	_autoplayer_functionvalues[function_to_bn_set] = new_value;
 };
 
-double CAutoplayerFunctions::GetAautoplayerFunctionValue(const int function_to_bn_queried)
+double CAutoplayerFunctions::GetAutoplayerFunctionValue(const int function_to_bn_queried)
 {
 	assert(function_to_bn_queried >= 0);
 	assert(function_to_bn_queried < k_number_of_autoplayer_functions);
+
 	return _autoplayer_functionvalues[function_to_bn_queried];
 }
 
@@ -53,8 +55,9 @@ void CAutoplayerFunctions::CalcPrimaryFormulas(const bool final_answer)
 		e = SUCCESS;
 		p_autoplayer_functions->SetAautoplayerFunction(i, // function to be set
 			gram.CalcF$symbol(p_formula, k_autoplayer_functionname[i], trace_needed, &e));
+
 		write_log(prefs.debug_symbolengine(), "Primary formulas; %s: %f\n", 
-			k_autoplayer_functionname[i], p_autoplayer_functions->GetAautoplayerFunctionValue(i));
+			k_autoplayer_functionname[i], p_autoplayer_functions->GetAutoplayerFunctionValue(i));
 	}
 	CalcAutoTrace();
 }
@@ -71,8 +74,9 @@ void CAutoplayerFunctions::CalcSecondaryFormulas(void)
 		e = SUCCESS;
 		p_autoplayer_functions->SetAautoplayerFunction(i, // function to be set
 			gram.CalcF$symbol(p_formula, k_autoplayer_functionname[i], trace_needed, &e));
+
 		write_log(prefs.debug_symbolengine(), "Primary formulas; %s: %f\n", 
-			k_autoplayer_functionname[i], p_autoplayer_functions->GetAautoplayerFunctionValue(i));
+			k_autoplayer_functionname[i], p_autoplayer_functions->GetAutoplayerFunctionValue(i));
 	}
 	CalcAutoTrace();
 }
