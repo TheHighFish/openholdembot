@@ -32,17 +32,14 @@
 #include "PokerChat.hpp"
 
 
-
 CAutoplayer	*p_autoplayer = NULL;
 
 CAutoplayer::CAutoplayer(BOOL bInitiallyOwn, LPCTSTR lpszName) : _mutex(bInitiallyOwn, lpszName)
 {
-	ASSERT(_mutex.m_hObject != NULL); //!!!
+	ASSERT(_mutex.m_hObject != NULL); 
 
 	set_autoplayer_engaged(false);
-
-	// ???
-		// Set correct button state
+	// Set correct button state
 	// We have to be careful, as during initialization the GUI does not yet exist.
 	bool to_be_enabled_or_not = _autoplayer_engaged; 
 	CMainFrame *pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
@@ -53,8 +50,21 @@ CAutoplayer::CAutoplayer(BOOL bInitiallyOwn, LPCTSTR lpszName) : _mutex(bInitial
 }
 
 CAutoplayer::~CAutoplayer(void) 
+{}
+
+bool CAutoplayer::GetMutex()
 {
+	return _mutex.Lock(500);
 }
+
+/*
+bool GetFocus()
+{
+
+}
+
+GetCursorPos(&cur_pos);
+*/
 
 bool CAutoplayer::TimeToHandleSecondaryFormulas()
 {
@@ -97,7 +107,7 @@ bool CAutoplayer::DoBetPot(void)
 	}
 }
 
-bool AnyPrimaryFormulaTrue()
+bool CAutoplayer::AnyPrimaryFormulaTrue()
 {
 	for (int i=k_autoplayer_function_allin; i<=k_autoplayer_function_call; i++)
 	{
@@ -109,9 +119,25 @@ bool AnyPrimaryFormulaTrue()
 	return false;
 }
 
+bool CAutoplayer::AnySecondaryFormulaTrue()
+{
+	for (int i=k_autoplayer_function_prefold; i<=k_autoplayer_function_chat; i++)
+	{
+		if (p_autoplayer_functions->GetAautoplayerFunctionValue(i))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 void CAutoplayer::ExecutePrimaryFormulas()
 {
-	if (AnyPrimaryFormulaTrue())
+	if (!AnyPrimaryFormulaTrue())
+	{
+		// Attention: fold !!!	
+	}
+	else
 	{
 		if (p_autoplayer_functions->f$alli())
 		{
@@ -124,6 +150,38 @@ void CAutoplayer::ExecutePrimaryFormulas()
 		}
 		//seag
 		
+	}
+}
+
+void CAutoplayer::ExecuteSecondaryFormulas()
+{
+	if (!AnySecondaryFormulaTrue())
+	{
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] All secondary formulas false.\n");
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Nothing to do.\n");
+		return;
+	}
+	for (int i=k_autoplayer_function_prefold; i<=k_autoplayer_function_leave; i++)
+	{
+		if (p_autoplayer_functions->GetAautoplayerFunctionValue(i))
+		{
+			return p_casino_interface->ClickButton(i);
+		}
+		// Close rebuy and chat work require different treatment,
+		// more than just clicking a simple region...
+		if p_autoplayer_functions->GetAautoplayerFunctionValue(k_autoplayer_function_close)
+		{
+			p_casino_interface->CloseWindow();
+		}
+		if p_autoplayer_functions->GetAautoplayerFunctionValue(k_autoplayer_function_rebuy)
+		{
+			// ??? mutex twice!
+			p_rebuymanagement->TryToRebuy();			
+		}
+		if p_autoplayer_functions->GetAautoplayerFunctionValue(k_autoplayer_function_chat)
+		{
+			DoChat();
+		}
 	}
 }
 
@@ -154,18 +212,8 @@ void CAutoplayer::DoChat(void)
 
 	// Converting the result of the $chat-function to a string.
 	// Will be ignored, if we already have an unhandled chat message.
-	RegisterChatMessage(p_autoplayer_functions->f$chat());
-	CString message;
-	message.Format("%s", _the_chat_message);
-	return p_casino_interface->EnterChatMessage(message);
-}
-
-void CAutoplayer::DoRebuyIfNeccessary(void)
-{
-	if (p_autoplayer_functions->f$rebuy() > 0)
-	{
-		p_rebuymanagement->TryToRebuy();
-	}
+	RegisterChatMessage(p_autoplayer_functions->f$chat()); 
+	return p_casino_interface->EnterChatMessage(_the_chat_message);
 }
 
 void CAutoplayer::DoAllin(void)
@@ -201,8 +249,6 @@ void CAutoplayer::DoAllin(void)
 	}
 	else  if (p_tablemap->allinmethod() == 2)
 	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Text selection; calling mouse.dll to single click allin: %d,%d %d,%d\n", 
-			allin_button.left, allin_button.top, allin_button.right, allin_button.bottom);
 		p_casino_interface->ClickButton(k_autoplayer_function_allin);
 
 		write_logautoplay(ActionConstantNames(k_action_allin));
@@ -231,6 +277,7 @@ void CAutoplayer::DoAutoplayer(void)
 	GetNeccessaryTablemapObjects();
 
 	int	num_buttons_visible = p_casino_interface->NumberOfVisibleButtons();
+	/* TODO: better log-file format !!!
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d (%c%c%c%c%c)\n", 
 		num_buttons_visible, 
 		allin_option_available ? 'A' : '.',
@@ -238,6 +285,7 @@ void CAutoplayer::DoAutoplayer(void)
 		call_button_available  ? 'C' : '.',
 		check_button_available ? 'K' : '.',
 		fold_button_available  ? 'F' : '.');
+	*/
 
 	// Calculate f$play, f$prefold, f$rebuy, f$delay and f$chat for use below
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling CalcSecondaryFormulas.\n");
@@ -252,25 +300,7 @@ void CAutoplayer::DoAutoplayer(void)
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling DoI86.\n");
 	DoI86();
 
-	// Handle f$prefold
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling DoPrefold.\n");
-	DoPrefold();
-
-	// Rebuy
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling DoRebuyIfNeccessary.\n");	
-	DoRebuyIfNeccessary();
-
-	//  Additional functionality: PokerChat
-	//	(Handle f$chat)
-	//
-	//  Avoiding unnecessary calls to DoChat(),
-	//	especially mouse movements to the chat box.
-	if (IsChatAllowed() && ((p_autoplayer_functions->f$chat() != 0) || (_the_chat_message != NULL)))
-	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling DoChat.\n");
-		DoChat();
-	}
-
+   
 	bool isFinalAnswer = true;
 
 	// check factors that affect isFinalAnswer status
@@ -386,7 +416,7 @@ void CAutoplayer::DoARCCF(void)
 	{
 		r = allin_button;
 		do_click = k_action_allin;
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Found valid f$alli formula/allin button combination.\n");
+		
 	}
 
 	// RAISE
@@ -394,7 +424,7 @@ void CAutoplayer::DoARCCF(void)
 	{
 		r = raise_button;
 		do_click = k_action_raise;
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Found valid f$rais formula/raise button combination.\n");
+	
 	}
 
 	// CALL
@@ -402,7 +432,7 @@ void CAutoplayer::DoARCCF(void)
 	{
 		r = call_button;
 		do_click = k_action_call;
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Found valid f$call formula/call button combination.\n");
+	
 	}
 
 	// CHECK
@@ -412,7 +442,7 @@ void CAutoplayer::DoARCCF(void)
 	{
 		r = check_button;
 		do_click = k_action_check;
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Found valid check button (all primary formulas = 0).\n");
+		
 	}
 
 	// FOLD
@@ -422,35 +452,29 @@ void CAutoplayer::DoARCCF(void)
 	{
 		r = fold_button;
 		do_click = k_action_fold;
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Found valid fold button (all primary formulas = 0).\n");
+		
 	}
 
 	if (do_click == k_action_undefined)
 	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending DoARCCF early (no relevant primary formula/available button combination).\n");
+		
 		return;
 	}
 
 	else
 	{
-		// If we get a lock, do the action
-		if (!_mutex.Lock(500))
-		{
-			write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending DoARCCF early (could not get mutex lock).\n");
-			return;
-		}
+
 
 		//Mutex locked -> Click_delay
 		Sleep(prefs.click_delay());
 		
 		if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
 		{
-			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling mouse.dll to double click: %d,%d %d,%d\n", r.left, r.top, r.right, r.bottom);
+			
 			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), r, MouseLeft, 2, hwnd_focus, cur_pos);
 		}
 		else
 		{
-			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling mouse.dll to single click: %d,%d %d,%d\n", r.left, r.top, r.right, r.bottom);
 			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), r, MouseLeft, 1, hwnd_focus, cur_pos);
 		}
 		
@@ -469,7 +493,7 @@ void CAutoplayer::DoARCCF(void)
 	}
 
 
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending DoARCCF, 'didrais'/'didcall'/'didchec' now: %d %d %d\n", 
+	
 	// !!! Remove hard-coded constants
 	p_symbols->sym()->didrais[4], p_symbols->sym()->didcall[4], p_symbols->sym()->didchec[4]);
 }
@@ -487,24 +511,15 @@ void CAutoplayer::DoPrefold(void)
 
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting DoPrefold...\n");
 
-	::GetCursorPos(&cur_pos);
+
 
 	if (p_autoplayer_functions->f$prefold() == 0)  
 		return;
 
-	if (!prefold_button_available)  
-		return;
-
-	// If we get a lock, do the action
-	if (_mutex.Lock(500))
-	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Confirmation; calling mouse.dll to single click prefold button: %d,%d %d,%d\n", 
-			prefold_button.left, prefold_button.top, prefold_button.right, prefold_button.bottom);	
-		(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), prefold_button, MouseLeft, 1, hwnd_focus, cur_pos);
+		p_casino_interface->ClickButton(k_autoplayer_function_prefold);
 
 		p_symbols->RecordPrevAction(k_action_fold);
 		write_logautoplay(ActionConstantNames(k_action_fold));
-	}
 	p_autoplayer_functions->CalcAutoTrace();
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending DoPrefold.\n");
 }
@@ -632,54 +647,12 @@ void CAutoplayer::CheckBringKeyboard(void)
 			SetFocus(hwnd_focus);
 
 			SetCursorPos(cur_pos.x, cur_pos.y);
-
-
 		}
 	}
 }
 
-
-
-void CAutoplayer::ExecuteSecondaryFormulas() 
+void CAutoplayer::HandleInterfacebuttonsI86(void) 
 {
-	HWND			hwnd_focus = GetFocus();
-	POINT			cur_pos = {0};
-	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-	RECT			r = {0};
-
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting DoF$Sitin_Sitout_Leave...\n");
-	if (!TimeToHandleSecondaryFormulas())
-	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] DoF$Sitin_Sitout_Leave disabled for the current heartbeat.\n");
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Leaving DoF$Sitin_Sitout_Leave early.\n");
-		return;
-	}
-
-	// Prefold, sitin, sitout, leave
-	for (int i=k_autoplayer_function_prefold; i<=k_autoplayer_function_leave; i++)
-	{
-		if (p_autoplayer_functions->GetAautoplayerFunctionValue(i))
-		{
-			return p_casino_interface->ClickButton(i);
-		}
-	}
-	// Close
-	if (p_autoplayer_functions->f$close())
-	{
-		p_casino_interface->CloseWindow();
-	}
-
-	// Autopost
-	if (p_autoplayer_functions->f$sitin() && (_autopost_state == false) && autopost_button_available)
-	{
-		p_casino_interface->ClickButton(_autopost_but);
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Found valid f$sitin / autopost button combination.\n");
-	}
-}
-
-void CAutoplayer::DoI86(void) 
-{
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting DoI86...\n");
 	for (int i=0; i<k_max_number_of_i86X_buttons; i++)
 	{
 		if (p_casino_interface->ClickI86ButtonIfAvailable(i))
@@ -687,5 +660,4 @@ void CAutoplayer::DoI86(void)
 			break;
 		}
 	}
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending DoI86.\n");
 }

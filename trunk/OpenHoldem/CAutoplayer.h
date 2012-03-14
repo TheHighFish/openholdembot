@@ -36,8 +36,11 @@ private:
 private:
 	// private functions and variables - not available via accessors or mutators
 	void GetNeccessaryTablemapObjects();
+	bool AnyPrimaryFormulaTrue();
+	bool AnySencondaryFormulaTrue()
 	void DoAllin(void);
 	bool DoBetPot(void);
+	bool GetMutex();
 	void DoSwag(void);
 	void DoARCCF(void);
 	void DoSlider(void);
