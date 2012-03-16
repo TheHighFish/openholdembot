@@ -841,15 +841,31 @@ f$OpenPPL_ERROR_Betround_Out_Of_Range
 // We can't use addition here to call the functions in correct sequential order,
 // because OH doesn't add the operands in order:
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=14525&start=0
-
    [f$OpenPPL_InitMemorySymbols * 0]
 || [f$OpenPPL_RememberToSitoutIfNecessary * 0]
 || [f$OpenPPL_Decision == f$OpenPPL_RaiseMax]
 || [(f$OpenPPL_Decision > f$OpenPPL_StackSize) && (f$OpenPPL_StackSize > 0)]
 
+##f$OpenPPL_BetSizeForBetPot##
+// Calculated in dollars and with raise-to-semantics
+// pot includes currentbet, call is the amount we need to call.
+[2 * (pot + call)]
+
+##f$OpenPPL_BetSizeForBetHalfPot##
+// Calculated in dollars and with raise-to-semantics
+// First we call, then we add half of the pot
+[1.5 * (pot + call)]
+
 ##f$betsize##
+// f$betsize gets counted in Dollars.
+// OpenHoldems semantics is "raise-to".
 f$alli ? [balance + currentbet] :
-[f$OpenPPL_Decision >= 0] ? f$OpenPPL_Decision : 0
+[f$OpenPPL_Decision == f$OpenPPL_BetPot] ? f$OpenPPL_BetSizeForBetPot : 
+[f$OpenPPL_Decision == f$OpenPPL_BetHalfPot] ? f$OpenPPL_BetSizeForBetHalfPot :
+// Finally caring about about absolute betsizes.
+// Shankys semantics is "raise-by" and in big blinds,
+// so we have to translate it.
+[f$OpenPPL_Decision >= 0] ? [(f$OpenPPL_Decision * bblind) + balance] : 0
 
 ##f$rais##
    [f$OpenPPL_Decision == f$OpenPPL_Raise]
