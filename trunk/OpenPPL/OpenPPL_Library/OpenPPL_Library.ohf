@@ -1194,15 +1194,16 @@ f$OpenPPL_ERROR_Betround_Out_Of_Range
 || [f$OpenPPL_Decision == f$OpenPPL_RaiseMax]
 || [(f$OpenPPL_Decision > f$OpenPPL_StackSize) && (f$OpenPPL_StackSize > 0)]
 
+##f$OpenPPL_BetSizeForBetHalfPot##
+// Calculated in dollars and with raise-to-semantics
+// First we call, then we add half of the pot (after we called)
+// pot already includes currentbet, so we must not consider this twice.
+[currentbet + call + 0.5 * (pot + call)]
+
 ##f$OpenPPL_BetSizeForBetPot##
 // Calculated in dollars and with raise-to-semantics
 // pot includes currentbet, call is the amount we need to call.
-[2 * (pot + call)]
-
-##f$OpenPPL_BetSizeForBetHalfPot##
-// Calculated in dollars and with raise-to-semantics
-// First we call, then we add half of the pot
-[1.5 * (pot + call)]
+[currentbet + call + (pot + call)]
 
 ##f$betsize##
 // f$betsize gets counted in Dollars.
