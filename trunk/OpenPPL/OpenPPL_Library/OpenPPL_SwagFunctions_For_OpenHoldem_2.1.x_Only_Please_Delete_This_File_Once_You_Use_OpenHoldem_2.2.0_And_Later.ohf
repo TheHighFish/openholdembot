@@ -70,7 +70,7 @@
 
 ##f$OpenPPL_BetSizeAdjustedToMinimumRaise##
 // Aamount in dollars.
-(fbetsize < f$OpenPPL_MinimumRaiseAllowed) ? f$OpenPPL_MinimumRaiseAllowed :
+(f$betsize < f$OpenPPL_MinimumRaiseAllowed) ? f$OpenPPL_MinimumRaiseAllowed :
 f$betsize
 
 ##f$OpenPPL_PotLimitPotSize##
