@@ -236,7 +236,11 @@ f$OpenPPL_Fold
 ##f$OpenPPL_ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap##
 -1
 
-##f$OpenPPL_ERROR_Suit_Of_HoleCard_Not_Recognized_Correctly__Check_Your_TableMap##
+##f$OpenPPL_ERROR_Suit_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap##
+// Treating this error as PLUS 1 to not mix the primecoding of board-cards up.
+ 1
+ 
+##f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap##
 // Treating this error as PLUS 1 to not mix the primecoding of board-cards up.
  1
 
@@ -402,7 +406,8 @@ $$cr4
    ($$cr0 ==  8) ? f$PrimeCode_8 : ($$cr0 ==  9) ? f$PrimeCode_9 : 
    ($$cr0 == 10) ? f$PrimeCode_T : ($$cr0 == 11) ? f$PrimeCode_J : 
    ($$cr0 == 12) ? f$PrimeCode_Q : ($$cr0 == 13) ? f$PrimeCode_K : 
-   ($$cr0 == 14) ? f$PrimeCode_A : 1] 
+   ($$cr0 == 14) ? f$PrimeCode_A : 
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] 
 *
 // Second board card 
   [($$cr1 ==  2) ? f$PrimeCode_2 : ($$cr1 ==  3) ? f$PrimeCode_3 : 
@@ -411,7 +416,8 @@ $$cr4
    ($$cr1 ==  8) ? f$PrimeCode_8 : ($$cr1 ==  9) ? f$PrimeCode_9 : 
    ($$cr1 == 10) ? f$PrimeCode_T : ($$cr1 == 11) ? f$PrimeCode_J : 
    ($$cr1 == 12) ? f$PrimeCode_Q : ($$cr1 == 13) ? f$PrimeCode_K : 
-   ($$cr1 == 14) ? f$PrimeCode_A : 1] 
+   ($$cr1 == 14) ? f$PrimeCode_A : 
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] 
 *
 // Third board card 
   [($$cr2 ==  2) ? f$PrimeCode_2 : ($$cr2 ==  3) ? f$PrimeCode_3 : 
@@ -420,7 +426,8 @@ $$cr4
    ($$cr2 ==  8) ? f$PrimeCode_8 : ($$cr2 ==  9) ? f$PrimeCode_9 : 
    ($$cr2 == 10) ? f$PrimeCode_T : ($$cr2 == 11) ? f$PrimeCode_J : 
    ($$cr2 == 12) ? f$PrimeCode_Q : ($$cr2 == 13) ? f$PrimeCode_K : 
-   ($$cr2 == 14) ? f$PrimeCode_A : 1] 
+   ($$cr2 == 14) ? f$PrimeCode_A : 
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] 
 *
 // Fourth board card 
   [($$cr3 ==  2) ? f$PrimeCode_2 : ($$cr3 ==  3) ? f$PrimeCode_3 : 
@@ -429,7 +436,8 @@ $$cr4
    ($$cr3 ==  8) ? f$PrimeCode_8 : ($$cr3 ==  9) ? f$PrimeCode_9 : 
    ($$cr3 == 10) ? f$PrimeCode_T : ($$cr3 == 11) ? f$PrimeCode_J : 
    ($$cr3 == 12) ? f$PrimeCode_Q : ($$cr3 == 13) ? f$PrimeCode_K : 
-   ($$cr3 == 14) ? f$PrimeCode_A : 1] 
+   ($$cr3 == 14) ? f$PrimeCode_A : 
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] 
 *
 // Fifth board card 
   [($$cr4 ==  2) ? f$PrimeCode_2 : ($$cr4 ==  3) ? f$PrimeCode_3 : 
@@ -438,7 +446,8 @@ $$cr4
    ($$cr4 ==  8) ? f$PrimeCode_8 : ($$cr4 ==  9) ? f$PrimeCode_9 : 
    ($$cr4 == 10) ? f$PrimeCode_T : ($$cr4 == 11) ? f$PrimeCode_J : 
    ($$cr4 == 12) ? f$PrimeCode_Q : ($$cr4 == 13) ? f$PrimeCode_K : 
-   ($$cr4 == 14) ? f$PrimeCode_A : 1] 
+   ($$cr4 == 14) ? f$PrimeCode_A : 
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] 
 
 
 ##f$PrimeCode_2##
@@ -521,7 +530,7 @@ $$cr4
    $$pr0 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qc :
    $$pr0 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Kc :
    $$pr0 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_Ac :
-   1] :
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] :
 ($$ps0 == f$OpenPPL_ConstSuitDiamonds) ?
   [$$pr0 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2d :
    $$pr0 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3d :
@@ -536,7 +545,7 @@ $$cr4
    $$pr0 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qd :
    $$pr0 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Kd :
    $$pr0 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_Ad :
-   1] : 
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] : 
 ($$ps0 == f$OpenPPL_ConstSuitHearts)  ?
   [$$pr0 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2h :
    $$pr0 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3h :
@@ -551,7 +560,7 @@ $$cr4
    $$pr0 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qh :
    $$pr0 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Kh :
    $$pr0 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_Ah :
-   1] : 
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] : 
 ($$ps0 == f$OpenPPL_ConstSuitSpades)  ?
   [$$pr0 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2s :
    $$pr0 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3s :
@@ -566,8 +575,8 @@ $$cr4
    $$pr0 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qs :
    $$pr0 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Ks :
    $$pr0 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_As :
-   1] :
-f$OpenPPL_ERROR_Suit_Of_HoleCard_Not_Recognized_Correctly__Check_Your_TableMap     
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] :
+f$OpenPPL_ERROR_Suit_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap     
 ] 
  
 ##f$prime_code_second_hole_card##
@@ -586,7 +595,7 @@ f$OpenPPL_ERROR_Suit_Of_HoleCard_Not_Recognized_Correctly__Check_Your_TableMap
    $$pr1 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qc :
    $$pr1 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Kc :
    $$pr1 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_Ac :
-   1] :
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] :
 ($$ps1 == f$OpenPPL_ConstSuitDiamonds) ?
   [$$pr1 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2d :
    $$pr1 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3d :
@@ -601,7 +610,7 @@ f$OpenPPL_ERROR_Suit_Of_HoleCard_Not_Recognized_Correctly__Check_Your_TableMap
    $$pr1 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qd :
    $$pr1 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Kd :
    $$pr1 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_Ad :
-   1] : 
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] : 
 ($$ps1 == f$OpenPPL_ConstSuitHearts)  ?
   [$$pr1 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2h :
    $$pr1 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3h :
@@ -616,7 +625,7 @@ f$OpenPPL_ERROR_Suit_Of_HoleCard_Not_Recognized_Correctly__Check_Your_TableMap
    $$pr1 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qh :
    $$pr1 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Kh :
    $$pr1 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_Ah :
-   1] : 
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] : 
 ($$ps1 == f$OpenPPL_ConstSuitSpades)  ?
   [$$pr1 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2s :
    $$pr1 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3s :
@@ -631,8 +640,8 @@ f$OpenPPL_ERROR_Suit_Of_HoleCard_Not_Recognized_Correctly__Check_Your_TableMap
    $$pr1 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qs :
    $$pr1 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Ks :
    $$pr1 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_As :
-   1] :
-f$OpenPPL_ERROR_Suit_Of_HoleCard_Not_Recognized_Correctly__Check_Your_TableMap   
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] :
+f$OpenPPL_ERROR_Suit_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap   
 ]
 
 //
@@ -803,6 +812,345 @@ f$OpenPPL_ERROR_Suit_Of_HoleCard_Not_Recognized_Correctly__Check_Your_TableMap
 ##f$PrimeCode_As##
   233
   
+//*****************************************************************************
+//                                                                 
+//  Prime-coded board ranks                                        
+//  =======================   
+//  For expressions like "board = AsTh".
+//
+//*****************************************************************************
+
+##f$prime_coded_board_cards##
+[ f$prime_code_first_board_card
+* f$prime_code_second_board_card
+* f$prime_code_third_board_card
+* f$prime_code_fourth_board_card
+* f$prime_code_fifth_board_card ]
+
+##f$prime_code_first_board_card##
+[
+($$cs0 == f$OpenPPL_ConstSuitClubs)   ?
+  [$$cr0 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2c :
+   $$cr0 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3c :
+   $$cr0 == f$OpenPPL_ConstCardFour   ? f$PrimeCode_4c :
+   $$cr0 == f$OpenPPL_ConstCardFive   ? f$PrimeCode_5c :
+   $$cr0 == f$OpenPPL_ConstCardSix    ? f$PrimeCode_6c :
+   $$cr0 == f$OpenPPL_ConstCardSeven  ? f$PrimeCode_7c :
+   $$cr0 == f$OpenPPL_ConstCardEight  ? f$PrimeCode_8c :
+   $$cr0 == f$OpenPPL_ConstCardNine   ? f$PrimeCode_9c :
+   $$cr0 == f$OpenPPL_ConstCardTen    ? f$PrimeCode_Tc :
+   $$cr0 == f$OpenPPL_ConstCardJack   ? f$PrimeCode_Jc :
+   $$cr0 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qc :
+   $$cr0 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Kc :
+   $$cr0 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_Ac :
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] :
+($$cs0 == f$OpenPPL_ConstSuitDiamonds) ?
+  [$$cr0 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2d :
+   $$cr0 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3d :
+   $$cr0 == f$OpenPPL_ConstCardFour   ? f$PrimeCode_4d :
+   $$cr0 == f$OpenPPL_ConstCardFive   ? f$PrimeCode_5d :
+   $$cr0 == f$OpenPPL_ConstCardSix    ? f$PrimeCode_6d :
+   $$cr0 == f$OpenPPL_ConstCardSeven  ? f$PrimeCode_7d :
+   $$cr0 == f$OpenPPL_ConstCardEight  ? f$PrimeCode_8d :
+   $$cr0 == f$OpenPPL_ConstCardNine   ? f$PrimeCode_9d :
+   $$cr0 == f$OpenPPL_ConstCardTen    ? f$PrimeCode_Td :
+   $$cr0 == f$OpenPPL_ConstCardJack   ? f$PrimeCode_Jd :
+   $$cr0 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qd :
+   $$cr0 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Kd :
+   $$cr0 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_Ad :
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] : 
+($$cs0 == f$OpenPPL_ConstSuitHearts)  ?
+  [$$cr0 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2h :
+   $$cr0 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3h :
+   $$cr0 == f$OpenPPL_ConstCardFour   ? f$PrimeCode_4h :
+   $$cr0 == f$OpenPPL_ConstCardFive   ? f$PrimeCode_5h :
+   $$cr0 == f$OpenPPL_ConstCardSix    ? f$PrimeCode_6h :
+   $$cr0 == f$OpenPPL_ConstCardSeven  ? f$PrimeCode_7h :
+   $$cr0 == f$OpenPPL_ConstCardEight  ? f$PrimeCode_8h :
+   $$cr0 == f$OpenPPL_ConstCardNine   ? f$PrimeCode_9h :
+   $$cr0 == f$OpenPPL_ConstCardTen    ? f$PrimeCode_Th :
+   $$cr0 == f$OpenPPL_ConstCardJack   ? f$PrimeCode_Jh :
+   $$cr0 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qh :
+   $$cr0 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Kh :
+   $$cr0 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_Ah :
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] : 
+($$cs0 == f$OpenPPL_ConstSuitSpades)  ?
+  [$$cr0 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2s :
+   $$cr0 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3s :
+   $$cr0 == f$OpenPPL_ConstCardFour   ? f$PrimeCode_4s :
+   $$cr0 == f$OpenPPL_ConstCardFive   ? f$PrimeCode_5s :
+   $$cr0 == f$OpenPPL_ConstCardSix    ? f$PrimeCode_6s :
+   $$cr0 == f$OpenPPL_ConstCardSeven  ? f$PrimeCode_7s :
+   $$cr0 == f$OpenPPL_ConstCardEight  ? f$PrimeCode_8s :
+   $$cr0 == f$OpenPPL_ConstCardNine   ? f$PrimeCode_9s :
+   $$cr0 == f$OpenPPL_ConstCardTen    ? f$PrimeCode_Ts :
+   $$cr0 == f$OpenPPL_ConstCardJack   ? f$PrimeCode_Js :
+   $$cr0 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qs :
+   $$cr0 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Ks :
+   $$cr0 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_As :
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] :
+f$OpenPPL_ERROR_Suit_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap     
+]
+
+##f$prime_code_second_board_card##
+[
+($$cs1 == f$OpenPPL_ConstSuitClubs)   ?
+  [$$cr1 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2c :
+   $$cr1 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3c :
+   $$cr1 == f$OpenPPL_ConstCardFour   ? f$PrimeCode_4c :
+   $$cr1 == f$OpenPPL_ConstCardFive   ? f$PrimeCode_5c :
+   $$cr1 == f$OpenPPL_ConstCardSix    ? f$PrimeCode_6c :
+   $$cr1 == f$OpenPPL_ConstCardSeven  ? f$PrimeCode_7c :
+   $$cr1 == f$OpenPPL_ConstCardEight  ? f$PrimeCode_8c :
+   $$cr1 == f$OpenPPL_ConstCardNine   ? f$PrimeCode_9c :
+   $$cr1 == f$OpenPPL_ConstCardTen    ? f$PrimeCode_Tc :
+   $$cr1 == f$OpenPPL_ConstCardJack   ? f$PrimeCode_Jc :
+   $$cr1 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qc :
+   $$cr1 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Kc :
+   $$cr1 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_Ac :
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] :
+($$cs1 == f$OpenPPL_ConstSuitDiamonds) ?
+  [$$cr1 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2d :
+   $$cr1 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3d :
+   $$cr1 == f$OpenPPL_ConstCardFour   ? f$PrimeCode_4d :
+   $$cr1 == f$OpenPPL_ConstCardFive   ? f$PrimeCode_5d :
+   $$cr1 == f$OpenPPL_ConstCardSix    ? f$PrimeCode_6d :
+   $$cr1 == f$OpenPPL_ConstCardSeven  ? f$PrimeCode_7d :
+   $$cr1 == f$OpenPPL_ConstCardEight  ? f$PrimeCode_8d :
+   $$cr1 == f$OpenPPL_ConstCardNine   ? f$PrimeCode_9d :
+   $$cr1 == f$OpenPPL_ConstCardTen    ? f$PrimeCode_Td :
+   $$cr1 == f$OpenPPL_ConstCardJack   ? f$PrimeCode_Jd :
+   $$cr1 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qd :
+   $$cr1 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Kd :
+   $$cr1 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_Ad :
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] : 
+($$cs1 == f$OpenPPL_ConstSuitHearts)  ?
+  [$$cr1 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2h :
+   $$cr1 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3h :
+   $$cr1 == f$OpenPPL_ConstCardFour   ? f$PrimeCode_4h :
+   $$cr1 == f$OpenPPL_ConstCardFive   ? f$PrimeCode_5h :
+   $$cr1 == f$OpenPPL_ConstCardSix    ? f$PrimeCode_6h :
+   $$cr1 == f$OpenPPL_ConstCardSeven  ? f$PrimeCode_7h :
+   $$cr1 == f$OpenPPL_ConstCardEight  ? f$PrimeCode_8h :
+   $$cr1 == f$OpenPPL_ConstCardNine   ? f$PrimeCode_9h :
+   $$cr1 == f$OpenPPL_ConstCardTen    ? f$PrimeCode_Th :
+   $$cr1 == f$OpenPPL_ConstCardJack   ? f$PrimeCode_Jh :
+   $$cr1 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qh :
+   $$cr1 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Kh :
+   $$cr1 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_Ah :
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] : 
+($$cs1 == f$OpenPPL_ConstSuitSpades)  ?
+  [$$cr1 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2s :
+   $$cr1 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3s :
+   $$cr1 == f$OpenPPL_ConstCardFour   ? f$PrimeCode_4s :
+   $$cr1 == f$OpenPPL_ConstCardFive   ? f$PrimeCode_5s :
+   $$cr1 == f$OpenPPL_ConstCardSix    ? f$PrimeCode_6s :
+   $$cr1 == f$OpenPPL_ConstCardSeven  ? f$PrimeCode_7s :
+   $$cr1 == f$OpenPPL_ConstCardEight  ? f$PrimeCode_8s :
+   $$cr1 == f$OpenPPL_ConstCardNine   ? f$PrimeCode_9s :
+   $$cr1 == f$OpenPPL_ConstCardTen    ? f$PrimeCode_Ts :
+   $$cr1 == f$OpenPPL_ConstCardJack   ? f$PrimeCode_Js :
+   $$cr1 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qs :
+   $$cr1 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Ks :
+   $$cr1 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_As :
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] :
+f$OpenPPL_ERROR_Suit_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap     
+]
+
+##f$prime_code_third_board_card##
+[
+($$cs2 == f$OpenPPL_ConstSuitClubs)   ?
+  [$$cr2 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2c :
+   $$cr2 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3c :
+   $$cr2 == f$OpenPPL_ConstCardFour   ? f$PrimeCode_4c :
+   $$cr2 == f$OpenPPL_ConstCardFive   ? f$PrimeCode_5c :
+   $$cr2 == f$OpenPPL_ConstCardSix    ? f$PrimeCode_6c :
+   $$cr2 == f$OpenPPL_ConstCardSeven  ? f$PrimeCode_7c :
+   $$cr2 == f$OpenPPL_ConstCardEight  ? f$PrimeCode_8c :
+   $$cr2 == f$OpenPPL_ConstCardNine   ? f$PrimeCode_9c :
+   $$cr2 == f$OpenPPL_ConstCardTen    ? f$PrimeCode_Tc :
+   $$cr2 == f$OpenPPL_ConstCardJack   ? f$PrimeCode_Jc :
+   $$cr2 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qc :
+   $$cr2 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Kc :
+   $$cr2 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_Ac :
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] :
+($$cs2 == f$OpenPPL_ConstSuitDiamonds) ?
+  [$$cr2 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2d :
+   $$cr2 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3d :
+   $$cr2 == f$OpenPPL_ConstCardFour   ? f$PrimeCode_4d :
+   $$cr2 == f$OpenPPL_ConstCardFive   ? f$PrimeCode_5d :
+   $$cr2 == f$OpenPPL_ConstCardSix    ? f$PrimeCode_6d :
+   $$cr2 == f$OpenPPL_ConstCardSeven  ? f$PrimeCode_7d :
+   $$cr2 == f$OpenPPL_ConstCardEight  ? f$PrimeCode_8d :
+   $$cr2 == f$OpenPPL_ConstCardNine   ? f$PrimeCode_9d :
+   $$cr2 == f$OpenPPL_ConstCardTen    ? f$PrimeCode_Td :
+   $$cr2 == f$OpenPPL_ConstCardJack   ? f$PrimeCode_Jd :
+   $$cr2 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qd :
+   $$cr2 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Kd :
+   $$cr2 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_Ad :
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] : 
+($$cs2 == f$OpenPPL_ConstSuitHearts)  ?
+  [$$cr2 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2h :
+   $$cr2 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3h :
+   $$cr2 == f$OpenPPL_ConstCardFour   ? f$PrimeCode_4h :
+   $$cr2 == f$OpenPPL_ConstCardFive   ? f$PrimeCode_5h :
+   $$cr2 == f$OpenPPL_ConstCardSix    ? f$PrimeCode_6h :
+   $$cr2 == f$OpenPPL_ConstCardSeven  ? f$PrimeCode_7h :
+   $$cr2 == f$OpenPPL_ConstCardEight  ? f$PrimeCode_8h :
+   $$cr2 == f$OpenPPL_ConstCardNine   ? f$PrimeCode_9h :
+   $$cr2 == f$OpenPPL_ConstCardTen    ? f$PrimeCode_Th :
+   $$cr2 == f$OpenPPL_ConstCardJack   ? f$PrimeCode_Jh :
+   $$cr2 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qh :
+   $$cr2 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Kh :
+   $$cr2 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_Ah :
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] : 
+($$cs2 == f$OpenPPL_ConstSuitSpades)  ?
+  [$$cr2 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2s :
+   $$cr2 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3s :
+   $$cr2 == f$OpenPPL_ConstCardFour   ? f$PrimeCode_4s :
+   $$cr2 == f$OpenPPL_ConstCardFive   ? f$PrimeCode_5s :
+   $$cr2 == f$OpenPPL_ConstCardSix    ? f$PrimeCode_6s :
+   $$cr2 == f$OpenPPL_ConstCardSeven  ? f$PrimeCode_7s :
+   $$cr2 == f$OpenPPL_ConstCardEight  ? f$PrimeCode_8s :
+   $$cr2 == f$OpenPPL_ConstCardNine   ? f$PrimeCode_9s :
+   $$cr2 == f$OpenPPL_ConstCardTen    ? f$PrimeCode_Ts :
+   $$cr2 == f$OpenPPL_ConstCardJack   ? f$PrimeCode_Js :
+   $$cr2 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qs :
+   $$cr2 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Ks :
+   $$cr2 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_As :
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] :
+f$OpenPPL_ERROR_Suit_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap     
+]  
+
+##f$prime_code_fourth_board_card##
+[
+($$cs3 == f$OpenPPL_ConstSuitClubs)   ?
+  [$$cr3 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2c :
+   $$cr3 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3c :
+   $$cr3 == f$OpenPPL_ConstCardFour   ? f$PrimeCode_4c :
+   $$cr3 == f$OpenPPL_ConstCardFive   ? f$PrimeCode_5c :
+   $$cr3 == f$OpenPPL_ConstCardSix    ? f$PrimeCode_6c :
+   $$cr3 == f$OpenPPL_ConstCardSeven  ? f$PrimeCode_7c :
+   $$cr3 == f$OpenPPL_ConstCardEight  ? f$PrimeCode_8c :
+   $$cr3 == f$OpenPPL_ConstCardNine   ? f$PrimeCode_9c :
+   $$cr3 == f$OpenPPL_ConstCardTen    ? f$PrimeCode_Tc :
+   $$cr3 == f$OpenPPL_ConstCardJack   ? f$PrimeCode_Jc :
+   $$cr3 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qc :
+   $$cr3 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Kc :
+   $$cr3 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_Ac :
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] :
+($$cs3 == f$OpenPPL_ConstSuitDiamonds) ?
+  [$$cr3 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2d :
+   $$cr3 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3d :
+   $$cr3 == f$OpenPPL_ConstCardFour   ? f$PrimeCode_4d :
+   $$cr3 == f$OpenPPL_ConstCardFive   ? f$PrimeCode_5d :
+   $$cr3 == f$OpenPPL_ConstCardSix    ? f$PrimeCode_6d :
+   $$cr3 == f$OpenPPL_ConstCardSeven  ? f$PrimeCode_7d :
+   $$cr3 == f$OpenPPL_ConstCardEight  ? f$PrimeCode_8d :
+   $$cr3 == f$OpenPPL_ConstCardNine   ? f$PrimeCode_9d :
+   $$cr3 == f$OpenPPL_ConstCardTen    ? f$PrimeCode_Td :
+   $$cr3 == f$OpenPPL_ConstCardJack   ? f$PrimeCode_Jd :
+   $$cr3 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qd :
+   $$cr3 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Kd :
+   $$cr3 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_Ad :
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] : 
+($$cs3 == f$OpenPPL_ConstSuitHearts)  ?
+  [$$cr3 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2h :
+   $$cr3 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3h :
+   $$cr3 == f$OpenPPL_ConstCardFour   ? f$PrimeCode_4h :
+   $$cr3 == f$OpenPPL_ConstCardFive   ? f$PrimeCode_5h :
+   $$cr3 == f$OpenPPL_ConstCardSix    ? f$PrimeCode_6h :
+   $$cr3 == f$OpenPPL_ConstCardSeven  ? f$PrimeCode_7h :
+   $$cr3 == f$OpenPPL_ConstCardEight  ? f$PrimeCode_8h :
+   $$cr3 == f$OpenPPL_ConstCardNine   ? f$PrimeCode_9h :
+   $$cr3 == f$OpenPPL_ConstCardTen    ? f$PrimeCode_Th :
+   $$cr3 == f$OpenPPL_ConstCardJack   ? f$PrimeCode_Jh :
+   $$cr3 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qh :
+   $$cr3 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Kh :
+   $$cr3 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_Ah :
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] : 
+($$cs3 == f$OpenPPL_ConstSuitSpades)  ?
+  [$$cr3 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2s :
+   $$cr3 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3s :
+   $$cr3 == f$OpenPPL_ConstCardFour   ? f$PrimeCode_4s :
+   $$cr3 == f$OpenPPL_ConstCardFive   ? f$PrimeCode_5s :
+   $$cr3 == f$OpenPPL_ConstCardSix    ? f$PrimeCode_6s :
+   $$cr3 == f$OpenPPL_ConstCardSeven  ? f$PrimeCode_7s :
+   $$cr3 == f$OpenPPL_ConstCardEight  ? f$PrimeCode_8s :
+   $$cr3 == f$OpenPPL_ConstCardNine   ? f$PrimeCode_9s :
+   $$cr3 == f$OpenPPL_ConstCardTen    ? f$PrimeCode_Ts :
+   $$cr3 == f$OpenPPL_ConstCardJack   ? f$PrimeCode_Js :
+   $$cr3 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qs :
+   $$cr3 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Ks :
+   $$cr3 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_As :
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] :
+f$OpenPPL_ERROR_Suit_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap     
+]
+
+##f$prime_code_fifth_board_card##
+[
+($$cs4 == f$OpenPPL_ConstSuitClubs)   ?
+  [$$cr4 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2c :
+   $$cr4 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3c :
+   $$cr4 == f$OpenPPL_ConstCardFour   ? f$PrimeCode_4c :
+   $$cr4 == f$OpenPPL_ConstCardFive   ? f$PrimeCode_5c :
+   $$cr4 == f$OpenPPL_ConstCardSix    ? f$PrimeCode_6c :
+   $$cr4 == f$OpenPPL_ConstCardSeven  ? f$PrimeCode_7c :
+   $$cr4 == f$OpenPPL_ConstCardEight  ? f$PrimeCode_8c :
+   $$cr4 == f$OpenPPL_ConstCardNine   ? f$PrimeCode_9c :
+   $$cr4 == f$OpenPPL_ConstCardTen    ? f$PrimeCode_Tc :
+   $$cr4 == f$OpenPPL_ConstCardJack   ? f$PrimeCode_Jc :
+   $$cr4 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qc :
+   $$cr4 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Kc :
+   $$cr4 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_Ac :
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] :
+($$cs4 == f$OpenPPL_ConstSuitDiamonds) ?
+  [$$cr4 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2d :
+   $$cr4 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3d :
+   $$cr4 == f$OpenPPL_ConstCardFour   ? f$PrimeCode_4d :
+   $$cr4 == f$OpenPPL_ConstCardFive   ? f$PrimeCode_5d :
+   $$cr4 == f$OpenPPL_ConstCardSix    ? f$PrimeCode_6d :
+   $$cr4 == f$OpenPPL_ConstCardSeven  ? f$PrimeCode_7d :
+   $$cr4 == f$OpenPPL_ConstCardEight  ? f$PrimeCode_8d :
+   $$cr4 == f$OpenPPL_ConstCardNine   ? f$PrimeCode_9d :
+   $$cr4 == f$OpenPPL_ConstCardTen    ? f$PrimeCode_Td :
+   $$cr4 == f$OpenPPL_ConstCardJack   ? f$PrimeCode_Jd :
+   $$cr4 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qd :
+   $$cr4 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Kd :
+   $$cr4 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_Ad :
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] : 
+($$cs4 == f$OpenPPL_ConstSuitHearts)  ?
+  [$$cr4 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2h :
+   $$cr4 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3h :
+   $$cr4 == f$OpenPPL_ConstCardFour   ? f$PrimeCode_4h :
+   $$cr4 == f$OpenPPL_ConstCardFive   ? f$PrimeCode_5h :
+   $$cr4 == f$OpenPPL_ConstCardSix    ? f$PrimeCode_6h :
+   $$cr4 == f$OpenPPL_ConstCardSeven  ? f$PrimeCode_7h :
+   $$cr4 == f$OpenPPL_ConstCardEight  ? f$PrimeCode_8h :
+   $$cr4 == f$OpenPPL_ConstCardNine   ? f$PrimeCode_9h :
+   $$cr4 == f$OpenPPL_ConstCardTen    ? f$PrimeCode_Th :
+   $$cr4 == f$OpenPPL_ConstCardJack   ? f$PrimeCode_Jh :
+   $$cr4 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qh :
+   $$cr4 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Kh :
+   $$cr4 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_Ah :
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] : 
+($$cs4 == f$OpenPPL_ConstSuitSpades)  ?
+  [$$cr4 == f$OpenPPL_ConstCardTwo    ? f$PrimeCode_2s :
+   $$cr4 == f$OpenPPL_ConstCardThree  ? f$PrimeCode_3s :
+   $$cr4 == f$OpenPPL_ConstCardFour   ? f$PrimeCode_4s :
+   $$cr4 == f$OpenPPL_ConstCardFive   ? f$PrimeCode_5s :
+   $$cr4 == f$OpenPPL_ConstCardSix    ? f$PrimeCode_6s :
+   $$cr4 == f$OpenPPL_ConstCardSeven  ? f$PrimeCode_7s :
+   $$cr4 == f$OpenPPL_ConstCardEight  ? f$PrimeCode_8s :
+   $$cr4 == f$OpenPPL_ConstCardNine   ? f$PrimeCode_9s :
+   $$cr4 == f$OpenPPL_ConstCardTen    ? f$PrimeCode_Ts :
+   $$cr4 == f$OpenPPL_ConstCardJack   ? f$PrimeCode_Js :
+   $$cr4 == f$OpenPPL_ConstCardQueen  ? f$PrimeCode_Qs :
+   $$cr4 == f$OpenPPL_ConstCardKing   ? f$PrimeCode_Ks :
+   $$cr4 == f$OpenPPL_ConstCardAce    ? f$PrimeCode_As :
+   f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] :
+f$OpenPPL_ERROR_Suit_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap     
+]
 
 //***********************************************************
 //                                                           
