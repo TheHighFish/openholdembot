@@ -78,19 +78,16 @@
 f$OpenPPL_Raise
 
 ##f$OpenPPL_RaiseHalfPot##
-[(1.5 * f$OpenPPL_AmountToCall) + (1/2 * f$OpenPPL_PotSize)]
-
-##f$OpenPPL_RaisePot##
-// Potsize calculations:
-// http://www.pokerjunkie.com/calculating-the-pot-bet-in-poker
-// Using Shankys raise-by-semantics we get
-[(2 * f$OpenPPL_AmountToCall) + f$OpenPPL_PotSize]
-
-##f$OpenPPL_RaiseMax##
 -3
 
-##f$OpenPPL_Call##
+##f$OpenPPL_RaisePot##
 -4
+
+##f$OpenPPL_RaiseMax##
+-5
+
+##f$OpenPPL_Call##
+-6
 
 ##f$OpenPPL_Play##
 f$OpenPPL_Call
@@ -111,13 +108,13 @@ f$OpenPPL_RaisePot
 f$OpenPPL_RaiseMax
 
 ##f$OpenPPL_None##
--5
+-7
 
 ##f$OpenPPL_SitOut##
--6
+-8
 
 ##f$OpenPPL_Raise##
--7
+-9
 
 ##f$OpenPPL_UndefinedReturnValue##
 // Every user-defined function ends with this return-value
@@ -280,6 +277,9 @@ f$OpenPPL_Fold
 ##f$OpenPPL_ERROR_SmallBlindChair_Not_Recognized__Check_Your_TableMap##
 -1
 
+##f$OpenPPL_ERROR_DealPosition1Chair_Not_Recognized__Check_Your_TableMap##
+-1
+
 ##f$OpenPPL_ERROR_We_Dont_Have_Any_Straight__No_Not_Call_This_Function##
 -1
 
@@ -328,6 +328,9 @@ f$OpenPPL_Fold
 
 ##f$OpenPPL_HINT_CutOff_Does_Not_Exist##
 -1
+
+##f$OpenPPL_HINT_There_Is_No_SmallNlind_In_This_Game##
+-1 
 
 ##f$OpenPPL_HINT_There_Is_No_Raiser_Therefore_No_CurrentBet##
 0
@@ -774,43 +777,43 @@ f$OpenPPL_ERROR_Suit_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap
 // Spades
 //  
 ##f$PrimeCode_2s##
-//  ---
-
-##f$PrimeCode_3s##
   173
 
-##f$PrimeCode_4s##
+##f$PrimeCode_3s##
   179
 
-##f$PrimeCode_5s##
+##f$PrimeCode_4s##
   181
 
-##f$PrimeCode_6s##
+##f$PrimeCode_5s##
   191
 
-##f$PrimeCode_7s##
+##f$PrimeCode_6s##
   193
 
-##f$PrimeCode_8s##
+##f$PrimeCode_7s##
   197
 
-##f$PrimeCode_9s##
+##f$PrimeCode_8s##
   199
 
-##f$PrimeCode_Ts##
+##f$PrimeCode_9s##
   211
 
-##f$PrimeCode_Js##
+##f$PrimeCode_Ts##
   223
 
-##f$PrimeCode_Qs##
+##f$PrimeCode_Js##
   227
 
-##f$PrimeCode_Ks##
+##f$PrimeCode_Qs##
   229
 
-##f$PrimeCode_As##
+##f$PrimeCode_Ks##
   233
+
+##f$PrimeCode_As##
+  239
   
 //*****************************************************************************
 //                                                                 
@@ -1523,6 +1526,9 @@ me_re_MemRaises
 || [(currentbet7 > 0) && (currentbet7 < sblind) && (balance7 > 0)]
 || [(currentbet8 > 0) && (currentbet8 < sblind) && (balance8 > 0)]
 || [(currentbet9 > 0) && (currentbet9 < sblind) && (balance9 > 0)]
+
+##f$OpenPPL_NumberOfBlindRaisersInThisGame##
+[f$OpenPPL_AntesPresent ? 1 : 0] + [f$OpenPPL_MissingSmallBlind ? 1 : 2]
 
 ##f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopInSmallBlind##
 // If we are in small-blind, there is 1 opponent "blind-raising",
@@ -3759,7 +3765,7 @@ f$OpenPPL_IntegerRandom_0_100
 f$OpenPPL_ERROR_Betround_Out_Of_Range
 
 ##f$OpenPPL_Opponents##
-(f$OpenPPL_PlayersAtStartOfThisRound - 1)
+f$OpenPPL_OpponentsLeft
 
 ##f$OpenPPL_OpponentsAtTable##
 nopponentsdealt
@@ -3799,6 +3805,8 @@ f$OpenPPL_NumberOfOpponentsAllin > 0
 ]
 
 ##f$OpenPPL_OpponentsLeft##
+// Does also consider players who are allin 
+// (contrary to Shankys, who consider players allin in this round, but not from previous rounds).
 nopponentsplaying
 
 ##f$OpenPPL_OpponentsOnFlop##
@@ -3910,20 +3918,24 @@ f$OpenPPL_EarlyPosition1
 ##f$OpenPPL_InUTG##
 f$OpenPPL_UTG
 
-##f$OpenPPL_BigBlindChair##
-ac_dealpos0 == 2 ? 0 :
-ac_dealpos1 == 2 ? 1 :
-ac_dealpos2 == 2 ? 2 :
-ac_dealpos3 == 2 ? 3 :
-ac_dealpos4 == 2 ? 4 :
-ac_dealpos5 == 2 ? 5 :
-ac_dealpos6 == 2 ? 6 :
-ac_dealpos7 == 2 ? 7 :
-ac_dealpos8 == 2 ? 8 :
-ac_dealpos9 == 2 ? 9 :
-f$OpenPPL_ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap
+##f$OpenPPL_TrueDealPositionOfBigBlind##
+f$OpenPPL_MissingSmallBlind ? 1 : 2
 
+##f$OpenPPL_BigBlindChair##
+ac_dealpos0 == f$OpenPPL_TrueDealPositionOfBigBlind ? 0 :
+ac_dealpos1 == f$OpenPPL_TrueDealPositionOfBigBlind ? 1 :
+ac_dealpos2 == f$OpenPPL_TrueDealPositionOfBigBlind ? 2 :
+ac_dealpos3 == f$OpenPPL_TrueDealPositionOfBigBlind ? 3 :
+ac_dealpos4 == f$OpenPPL_TrueDealPositionOfBigBlind ? 4 :
+ac_dealpos5 == f$OpenPPL_TrueDealPositionOfBigBlind ? 5 :
+ac_dealpos6 == f$OpenPPL_TrueDealPositionOfBigBlind ? 6 :
+ac_dealpos7 == f$OpenPPL_TrueDealPositionOfBigBlind ? 7 :
+ac_dealpos8 == f$OpenPPL_TrueDealPositionOfBigBlind ? 8 :
+ac_dealpos9 == f$OpenPPL_TrueDealPositionOfBigBlind ? 9 :
+f$OpenPPL_ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap
+  
 ##f$OpenPPL_SmallBlindChair##
+f$OpenPPL_MissingSmallBlind ? f$OpenPPL_HINT_There_Is_No_SmallNlind_In_This_Game :
 ac_dealpos0 == 1 ? 0 :
 ac_dealpos1 == 1 ? 1 :
 ac_dealpos2 == 1 ? 2 :
@@ -4290,7 +4302,8 @@ f$OpenPPL_HandResetHappened ? f$OpenPPL_ResetUserVariables : f$OpenPPL_HINT_Noth
 // We can't use addition here to call the functions in correct sequential order,
 // because OH doesn't add the operands in order:
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=14525&start=0
-   [f$OpenPPL_InitBets * 0]
+   [f$OpenPPL_InitMissingSmallBlind * 0]
+|| [f$OpenPPL_InitBets * 0]
 || [f$OpenPPL_InitChecks * 0]
 || [f$OpenPPL_InitCalls * 0]
 || [f$OpenPPL_InitRaises * 0]
@@ -4326,3 +4339,73 @@ f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 // OpenPPL - the glory end
 //
 //*****************************************************************************
+
+##f$OpenPPL_DealPosition1Chair##
+ac_dealpos0 == 1 ? 0 :
+ac_dealpos1 == 1 ? 1 :
+ac_dealpos2 == 1 ? 2 :
+ac_dealpos3 == 1 ? 3 :
+ac_dealpos4 == 1 ? 4 :
+ac_dealpos5 == 1 ? 5 :
+ac_dealpos6 == 1 ? 6 :
+ac_dealpos7 == 1 ? 7 :
+ac_dealpos8 == 1 ? 8 :
+ac_dealpos9 == 1 ? 9 :
+f$OpenPPL_ERROR_DealPosition1Chair_Not_Recognized__Check_Your_TableMap
+
+##f$OpenPPL_CurrentbetOfDealPosition1Chair##
+(f$OpenPPL_DealPosition1Chair == 0) ? currentbet0 :
+(f$OpenPPL_DealPosition1Chair == 1) ? currentbet1 :
+(f$OpenPPL_DealPosition1Chair == 2) ? currentbet2 :
+(f$OpenPPL_DealPosition1Chair == 3) ? currentbet3 :
+(f$OpenPPL_DealPosition1Chair == 4) ? currentbet4 :
+(f$OpenPPL_DealPosition1Chair == 5) ? currentbet5 :
+(f$OpenPPL_DealPosition1Chair == 6) ? currentbet6 :
+(f$OpenPPL_DealPosition1Chair == 7) ? currentbet7 :
+(f$OpenPPL_DealPosition1Chair == 8) ? currentbet8 :
+(f$OpenPPL_DealPosition1Chair == 9) ? currentbet9 :
+f$OpenPPL_ERROR_DealPosition1Chair_Not_Recognized__Check_Your_TableMap
+
+##f$OpenPPL_PlayersBehindDealPosition2ChairDidAct##
+// Needed for dectection of missing small blind.
+// First checking for folded players,
+// because lots ofnewbies won't scrape-players correctly and mix everything up.
+// This affects calculation of small blind, big blind,
+// all positions and finally lots of other things...
+(nopponentsfolded > 0) ? f$OpenPPL_True :
+// Then check for active players with a zero bet
+[(playersplayingbits & 0b0000000001) && (currentbet0 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b0000000010) && (currentbet1 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b0000000100) && (currentbet2 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b0000001000) && (currentbet3 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b0000010000) && (currentbet3 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b0000100000) && (currentbet4 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b0001000000) && (currentbet5 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b0010000000) && (currentbet6 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b0100000000) && (currentbet7 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b1000000000) && (currentbet8 == 0)] ? f$OpenPPL_False :
+f$OpenPPL_True
+
+##f$OpenPPL_CalculateMissingSmallBlind##
+// True, if SB is missing, false otherwise
+// Should be called at our first action preflop only.
+(f$OpenPPL_CurrentbetOfDealPosition1Chair == sblind) ? f$OpenPPL_False :
+// If we are NOT the 2nd player to be dealt and see a bet 
+// of 1 big blind left to the dealer, then it is the big blind (SB missing)
+[(dealposition != 2) && (f$OpenPPL_CurrentbetOfDealPosition1Chair == bblind)] ? f$OpenPPL_True :
+// Problematic is only the case when I am in "big blind" (2nd player to be dealt)
+// * if bet of DealPosition1Chair > 1 bblind then SB raised and is present
+// * if bet = 1 big blind and players "behind me" did act, then SB is present and limped
+// * if bet = 1 big blind and players behind me still to act, then SB is missing
+[(dealposition == 2) && (f$OpenPPL_CurrentbetOfDealPosition1Chair > bblind)] ? f$OpenPPL_False :
+// Case 2 and 3: precondition: bet = 1 big blind
+[(dealposition == 2) && f$OpenPPL_PlayersBehindDealPosition2ChairDidAct] ? f$OpenPPL_False :
+[(dealposition == 2) && !f$OpenPPL_PlayersBehindDealPosition2ChairDidAct] ? f$OpenPPL_True :
+f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+
+##f$OpenPPL_InitMissingSmallBlind##
+(f$OpenPPL_BotsActionsOnThisRound == 0) ? me_st_MemMissingSmallBlind_f$OpenPPL_CalculateMissingSmallBlind :
+f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+
+##f$OpenPPL_MissingSmallBlind##
+me_re_MemMissingSmallBlind
