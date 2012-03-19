@@ -1443,6 +1443,76 @@ f$OpenPPL_HINT_Nothing_To_Do_But_All_OK
 ##f$OpenPPL_Checks##
 me_re_MemChecks
 
+##f$OpenPPL_DealPosition1Chair##
+ac_dealpos0 == 1 ? 0 :
+ac_dealpos1 == 1 ? 1 :
+ac_dealpos2 == 1 ? 2 :
+ac_dealpos3 == 1 ? 3 :
+ac_dealpos4 == 1 ? 4 :
+ac_dealpos5 == 1 ? 5 :
+ac_dealpos6 == 1 ? 6 :
+ac_dealpos7 == 1 ? 7 :
+ac_dealpos8 == 1 ? 8 :
+ac_dealpos9 == 1 ? 9 :
+f$OpenPPL_ERROR_DealPosition1Chair_Not_Recognized__Check_Your_TableMap
+
+##f$OpenPPL_CurrentbetOfDealPosition1Chair##
+(f$OpenPPL_DealPosition1Chair == 0) ? currentbet0 :
+(f$OpenPPL_DealPosition1Chair == 1) ? currentbet1 :
+(f$OpenPPL_DealPosition1Chair == 2) ? currentbet2 :
+(f$OpenPPL_DealPosition1Chair == 3) ? currentbet3 :
+(f$OpenPPL_DealPosition1Chair == 4) ? currentbet4 :
+(f$OpenPPL_DealPosition1Chair == 5) ? currentbet5 :
+(f$OpenPPL_DealPosition1Chair == 6) ? currentbet6 :
+(f$OpenPPL_DealPosition1Chair == 7) ? currentbet7 :
+(f$OpenPPL_DealPosition1Chair == 8) ? currentbet8 :
+(f$OpenPPL_DealPosition1Chair == 9) ? currentbet9 :
+f$OpenPPL_ERROR_DealPosition1Chair_Not_Recognized__Check_Your_TableMap
+
+##f$OpenPPL_PlayersBehindDealPosition2ChairDidAct##
+// Needed for dectection of missing small blind.
+// First checking for folded players,
+// because lots ofnewbies won't scrape-players correctly and mix everything up.
+// This affects calculation of small blind, big blind,
+// all positions and finally lots of other things...
+(nopponentsfolded > 0) ? f$OpenPPL_True :
+// Then check for active players with a zero bet
+[(playersplayingbits & 0b0000000001) && (currentbet0 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b0000000010) && (currentbet1 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b0000000100) && (currentbet2 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b0000001000) && (currentbet3 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b0000010000) && (currentbet3 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b0000100000) && (currentbet4 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b0001000000) && (currentbet5 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b0010000000) && (currentbet6 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b0100000000) && (currentbet7 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b1000000000) && (currentbet8 == 0)] ? f$OpenPPL_False :
+f$OpenPPL_True
+
+##f$OpenPPL_CalculateMissingSmallBlind##
+// True, if SB is missing, false otherwise
+// Should be called at our first action preflop only.
+(f$OpenPPL_CurrentbetOfDealPosition1Chair == sblind) ? f$OpenPPL_False :
+// If we are NOT the 2nd player to be dealt and see a bet 
+// of 1 big blind left to the dealer, then it is the big blind (SB missing)
+[(dealposition != 2) && (f$OpenPPL_CurrentbetOfDealPosition1Chair == bblind)] ? f$OpenPPL_True :
+// Problematic is only the case when I am in "big blind" (2nd player to be dealt)
+// * if bet of DealPosition1Chair > 1 bblind then SB raised and is present
+// * if bet = 1 big blind and players "behind me" did act, then SB is present and limped
+// * if bet = 1 big blind and players behind me still to act, then SB is missing
+[(dealposition == 2) && (f$OpenPPL_CurrentbetOfDealPosition1Chair > bblind)] ? f$OpenPPL_False :
+// Case 2 and 3: precondition: bet = 1 big blind
+[(dealposition == 2) && f$OpenPPL_PlayersBehindDealPosition2ChairDidAct] ? f$OpenPPL_False :
+[(dealposition == 2) && !f$OpenPPL_PlayersBehindDealPosition2ChairDidAct] ? f$OpenPPL_True :
+f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+
+##f$OpenPPL_InitMissingSmallBlind##
+(f$OpenPPL_BotsActionsOnThisRound == 0) ? me_st_MemMissingSmallBlind_f$OpenPPL_CalculateMissingSmallBlind :
+f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+
+##f$OpenPPL_MissingSmallBlind##
+me_re_MemMissingSmallBlind
+
 ##f$OpenPPL_NoBettingOnFlop##
 (nbetsround2 == 0)
 
