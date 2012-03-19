@@ -1,4 +1,4 @@
-v1.0.4 2012-xx-yy
+v1.0.4 2012-03-19
 =================
 BUG FIXES: 
 - User-defined variables did reset every heartbeat
@@ -34,7 +34,21 @@ BUG FIXES:
   Thanks to Postenjak for reporting the problem and for providing the info to fix it.
   [/HF]
 - bracketify.pl didn't replace all tabs by spaces.
-  Thanks to Volker 0866 for reporting.
+  Thanks to Volker0866 for reporting.
+  [THF]
+- Opponents and OpponentsLeft was incorrect, 
+  trying to meet Shankys somewhat strange definition.
+  We do now consider all active players as live opponents,
+  including players who are allin.
+  Thanks to Rehlby for reporting and for suggesting the fix.
+  [THF]
+  
+MAINTENANCE:
+- Considering MissingSmallBlind when calculating positions of the players at the table.
+  [THF]
+  
+NEW STUFF: 
+- New symbols BigBlindSittingOut, SmallBlindSittingOut, MissingSmallBlind
   [THF]
 
 v1.0.3 2012-02-21
