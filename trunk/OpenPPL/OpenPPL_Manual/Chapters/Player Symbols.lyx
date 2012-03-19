@@ -101,7 +101,10 @@ Opponents
 \begin_inset Text
 
 \begin_layout Plain Layout
-The number of opponents that are currently in the hand
+The number of opponents that are currently in the hand.
+ Does also count players that are allin (contrary to Shanky who count players
+ that went allin in this betting round, but not players allin from previous
+ rounds).
 \end_layout
 
 \end_inset
@@ -159,7 +162,7 @@ OpponentsLeft
 \begin_inset Text
 
 \begin_layout Plain Layout
-The number of opponents that are still in the hand
+Same meaning as Opponents but better naming.
 \end_layout
 
 \end_inset
