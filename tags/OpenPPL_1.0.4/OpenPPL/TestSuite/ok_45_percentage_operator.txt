@@ -1,0 +1,14 @@
+custom
+
+preflop
+WHEN (AmountToCall <= 30% PotSize) CALL FORCE
+when others RAISE 300% FORCE
+
+flop
+when others fold force
+
+turn
+when others fold force
+
+river
+when others fold force
