@@ -217,7 +217,8 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				| return_statement;
 			predefined_action = keyword_predefined_action[print_predefined_action()];
 			
-			keyword_predefined_action = longest_d[keyword_beep | keyword_call	| keyword_play 
+			keyword_predefined_action = longest_d[keyword_beep 
+				| keyword_call | keyword_play | keyword_check 
 				| keyword_raisemin | keyword_raisehalfpot
 				| keyword_raisepot | keyword_raisemax |	keyword_allin
 				| keyword_raise | keyword_fold

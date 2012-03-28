@@ -50,6 +50,7 @@ keyword_hand = str_p("hand") | "Hand" | "HAND" | invalid_symbol;
 keyword_force = (str_p("force") | "Force" | "FORCE") | invalid_symbol;
 keyword_beep = ((str_p("beep") | "Beep" | "BEEP") | invalid_symbol)[error_beep_not_supported()];
 keyword_call = str_p("call") | "Call" | "CALL" | invalid_symbol;
+keyword_check = str_p("check") | "Check" | "CHECK" | invalid_symbol;
 keyword_play = str_p("play") | "Play" | "PLAY" | invalid_symbol;
 keyword_raise = str_p("raise") | "Raise" | "RAISE" | invalid_symbol;
 keyword_raisemin = str_p("raisemin") | "Raisemin" | "RaiseMin" | "RAISEMIN" | invalid_symbol;
