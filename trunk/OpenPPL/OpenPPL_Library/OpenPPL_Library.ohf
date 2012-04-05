@@ -340,6 +340,9 @@ f$OpenPPL_Fold
 ##f$OpenPPL_HINT_SuitsOnBoard_Undefined_For_This_Betting_Round##
 0
 
+##f$OpenPPL_HINT_StillToAct_Is_Only_Valid_First_Action_Preflop##
+0
+
 //*****************************************************************************
 //
 // OpenPPL - Verbosity
@@ -3935,9 +3938,11 @@ nopponentsplaying
 + (((balance9 + currentbet9) < (balance + currentbet)) && (playersseatedbits & 0x0200) ? 1:0)
 
 ##f$OpenPPL_StillToAct##
-(dealposition > 2) ? (nchairsdealtleft + 2) :
-(dealposition == 1) ? 1 :
-0
+(betround != f$OpenPPL_ConstBetRoundPreflop) ? f$OpenPPL_HINT_StillToAct_Is_Only_Valid_First_Action_Preflop :
+(f$OpenPPL_BotsActionsOnThisRoundIncludingChecks > 0) ? f$OpenPPL_HINT_StillToAct_Is_Only_Valid_First_Action_Preflop :
+f$OpenPPL_InBigBlind ? 0
+f$OpenPPL_InSmallBlind ? 1 :
+(nchairsdealtleft + 2)
 
 //*****************************************************************************
 //
