@@ -1,3 +1,14 @@
+v1.0.5 2012-xx-yy
+=================
+- CHECK FORCE was implemented in the library 
+  but didn't get translated by the converter.
+  Thanks to Subiendolo for reporting.
+  [THF]
+- NutFullhouseOr4OfAKind could return wrong values
+  due to missing brackets at one place.
+  Thanks to Lavezzi for reporting the problem and providing a log-file.
+  [THF]  
+
 v1.0.4 2012-03-19
 =================
 BUG FIXES: 
@@ -48,7 +59,7 @@ MAINTENANCE:
   [THF]
   
 NEW STUFF: 
-- New symbols BigBlindSittingOut, SmallBlindSittingOut, MissingSmallBlind
+- MissingSmallBlind
   [THF]
 
 v1.0.3 2012-02-21
