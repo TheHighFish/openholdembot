@@ -202,7 +202,7 @@ struct print_comment_for_fixed_betsize
 { 
 	void operator()(const char *begin, const char *end) const 
 	{ 
-		current_output << " /*** big blinds ***/";
+		current_output << " * f$RaiseByBigBlinds";
 	} 
 };
 
@@ -210,7 +210,7 @@ struct print_relative_potsize_action
 { 
 	void operator()(const char *begin, const char *end) const 
 	{ 
-		current_output << "f$OpenPPL_PotSize";
+		current_output << " * f$RaiseByPercentagedPotsize";
 	} 
 };
 

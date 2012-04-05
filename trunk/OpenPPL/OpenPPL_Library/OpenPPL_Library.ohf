@@ -27,6 +27,7 @@
 //   JokeDoke
 //   KaeKruse
 //   Kyo
+//   Lavezzi
 //   MerzkiyTipon
 //   Morello
 //   MrRuder
@@ -52,42 +53,37 @@
 //  Predefined action constants
 //  ===========================
 //
-//  Positive values mean: betsizes (in big-blinds)
-//
-//  Zero and negative values mean: predefined actions, that have to be translated later
-//  to standard OpenHoldem autoplayer actions.
+//  Positive values mean:  betsizes (in big-blinds)
+//  Small negative values: percentaged potsized bets
+//  Large negative values: action constants
 //
 //  Note: Beep is not supported.
 //
 //*****************************************************************************
 
 ##f$OpenPPL_Fold##
--1
+-1000000
 
 ##f$OpenPPL_Check##
--2
+-1000001
 
 ##f$OpenPPL_Undefined_BetSize_Probably_Due_To_Misscraped_Pot_Defaulting_To_Minraise##
-// Note: When "Raise X% (PotSize)" is used, but the potsize got misscraped
-// (as zero), this will lead to a final action of "0".
-// To make this library more robust (against bad tablemaps of our users ;-)
-// we will react to "0" with a normal (min-) raise, so we won't fail completely.
-0
+-1000002
 
 ##f$OpenPPL_RaiseMin##
 f$OpenPPL_Raise
 
 ##f$OpenPPL_RaiseHalfPot##
--3
+-1000003
 
 ##f$OpenPPL_RaisePot##
--4
+-1000004
 
 ##f$OpenPPL_RaiseMax##
--5
+-1000005
 
 ##f$OpenPPL_Call##
--6
+-1000006
 
 ##f$OpenPPL_Play##
 f$OpenPPL_Call
@@ -108,13 +104,13 @@ f$OpenPPL_RaisePot
 f$OpenPPL_RaiseMax
 
 ##f$OpenPPL_None##
--7
+-1000007
 
 ##f$OpenPPL_SitOut##
--8
+-1000008
 
 ##f$OpenPPL_Raise##
--9
+-1000009
 
 ##f$OpenPPL_UndefinedReturnValue##
 // Every user-defined function ends with this return-value
@@ -1163,18 +1159,49 @@ f$OpenPPL_ERROR_Suit_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap
 //  Functions needed for integration into OpenHoldem.        
 //  They translate the f$Decision-function to standard       
 //  autoplayer-functions like f$alli, f$rais and f$call.     
+//
+//  The OpenPPL-logic must be able to handle several
+//  different kinds of actions, that must be distinguishable.
+//  Therefore we use 3 different ranges for these actions: 
+//  * positive values: betsize in big-blinds,
+//    using Shankys RaiseBy-semantics.
+//    "RAISE 3 FORCE" will be translated to
+//    "3 * f$RaiseByBigBlinds"
+//    where f$RaiseByBigBlinds simply is 1.
+//  * small negative values: percentaged potsized bets
+//    "RAISE 70% FORCE" will be translated to 
+//    "70 * f$RaiseByPercentagedPotsize"
+//    where f$RaiseByPercentagedPotsize is -1.
+//    f$betsize will then translate this to the correct bet-amount.
+//  * large negative values (< 1.000.000): 
+//    fixed action constants for check, call, raise, etc. 
 //                                                           
 //***********************************************************
 
 ##f$OpenPPL_Decision##
 // f$preflop, f$flop, f$turn and f$river will be added by the translator.
-// Returns either a fixed action (coded as a negative number)
-// or a positive number (bet-size, counted in bets)
-[betround == 1] ? f$preflop :
 [betround == 2] ? f$flop :
 [betround == 3] ? f$turn :
 [betround == 4] ? f$river :
 f$OpenPPL_ERROR_Betround_Out_Of_Range
+
+##f$RaiseByBigBlinds##
+// Positive amounts are betsizes in big-blinds
+1
+
+##f$RaiseByPercentagedPotsize##
+// Small negative values are used for percentaged potsized bets
+-1
+
+##f$OpenPPL_DecisionIsPercentagedPotsizedBet##
+   (f$OpenPPL_Decision <= 0) 
+&& (f$OpenPPL_Decision >= -1000)
+
+##f$OpenPPL_DecisionIsFixedBetInBigBlinds##
+(f$OpenPPL_Decision > 0) 
+
+##f$OpenPPL_DecisionIsFixedAction##
+(f$OpenPPL_Decision < -1000000) 
 
 ##f$OpenPPL_RememberToSitoutIfNecessary##
 // OpenHoldem handles autoplayer actions when it is heros turn,
@@ -1208,16 +1235,30 @@ f$OpenPPL_ERROR_Betround_Out_Of_Range
 // pot includes currentbet, call is the amount we need to call.
 [currentbet + call + (pot + call)]
 
+##f$OpenPPL_BetSizeForPercentagedPotsizeBet##
+// f$Decision is negative, -70 means: 70% potsize
+[currentbet + call + (-0.01 * f$OpenPPL_Decision) * (pot + call)]
+
+##f$OpenPPL_BetSizeForixedBetInBigBlinds##
+// Calculated in dollars and with raise-to-semantics
+[(f$OpenPPL_Decision * bblind) + ncallbets]
+
+##f$OpenPPL_BetSizeForAllin##
+// Calculated in dollars and with raise-to-semantics
+[balance + currentbet]
+
 ##f$betsize##
 // f$betsize gets counted in Dollars.
 // OpenHoldems semantics is "raise-to".
-f$alli ? [balance + currentbet] :
+f$alli ? f$OpenPPL_BetSizeForAllin :
 [f$OpenPPL_Decision == f$OpenPPL_BetPot] ? f$OpenPPL_BetSizeForBetPot : 
 [f$OpenPPL_Decision == f$OpenPPL_BetHalfPot] ? f$OpenPPL_BetSizeForBetHalfPot :
 // Finally caring about about absolute betsizes.
 // Shankys semantics is "raise-by" and in big blinds,
 // so we have to translate it.
-[f$OpenPPL_Decision >= 0] ? [(f$OpenPPL_Decision * bblind) + balance] : 0
+f$OpenPPL_DecisionIsFixedBetInBigBlinds ?  : f$OpenPPL_BetSizeForixedBetInBigBlinds :
+f$OpenPPL_DecisionIsPercentagedPotsizedBet ? f$OpenPPL_BetSizeForPercentagedPotsizeBet :
+0
 
 ##f$rais##
    [f$OpenPPL_Decision == f$OpenPPL_Raise]
@@ -1240,7 +1281,6 @@ f$alli ? [balance + currentbet] :
 ##f$sitout##
 me_re_GoBuddyTakeABreakAndABeer
 
-  
 //*****************************************************************************
 //
 // OpenPPL - BettingAction Symbols
