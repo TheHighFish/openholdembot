@@ -4007,8 +4007,32 @@ f$OpenPPL_SmallBlind
 ##f$OpenPPL_InBigBlind##
 f$OpenPPL_BigBlind
 
+##f$OpenPPL_TheBlinds##
+// To be used: In TheBlinds
+f$OpenPPL_InTheBlinds
+
 ##f$OpenPPL_InTheBlinds##
 (f$OpenPPL_InSmallBlind || f$OpenPPL_InBigBlind)
+
+##f$OpenPPL_EarlyPosition##
+f$OpenPPL_InEarlyPosition
+
+##f$OpenPPL_InEarlyPosition##
+(f$OpenPPL_InEarlyPosition1 || f$OpenPPL_InEarlyPosition2 f$OpenPPL_InEarlyPosition3)
+
+##f$OpenPPL_MiddlePosition##
+f$OpenPPL_InMiddlePosition
+
+##f$OpenPPL_InMiddlePosition##
+(f$OpenPPL_InMiddlePosition1 || f$OpenPPL_InMiddlePosition2 || f$OpenPPL_InMiddlePosition3)
+
+##f$OpenPPL_LatePosition##
+InLatePosition
+
+##f$OpenPPL_InLatePosition##
+(f$OpenPPL_InCutOff || f$OpenPPL_InButton)
+
+
 
 ##f$OpenPPL_InButton##
 f$OpenPPL_Button
