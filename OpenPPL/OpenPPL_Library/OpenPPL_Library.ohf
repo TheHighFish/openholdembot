@@ -1183,6 +1183,7 @@ f$OpenPPL_ERROR_Suit_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##f$OpenPPL_Decision##
 // f$preflop, f$flop, f$turn and f$river will be added by the translator.
+[betround == 1] ? f$preflop :
 [betround == 2] ? f$flop :
 [betround == 3] ? f$turn :
 [betround == 4] ? f$river :
@@ -1242,7 +1243,7 @@ f$OpenPPL_ERROR_Betround_Out_Of_Range
 // f$Decision is negative, -70 means: 70% potsize
 [currentbet + call + (-0.01 * f$OpenPPL_Decision) * (pot + call)]
 
-##f$OpenPPL_BetSizeForixedBetInBigBlinds##
+##f$OpenPPL_BetSizeForFixedBetInBigBlinds##
 // Calculated in dollars and with raise-to-semantics
 [(f$OpenPPL_Decision * bblind) + ncallbets]
 
@@ -1259,7 +1260,7 @@ f$alli ? f$OpenPPL_BetSizeForAllin :
 // Finally caring about about absolute betsizes.
 // Shankys semantics is "raise-by" and in big blinds,
 // so we have to translate it.
-f$OpenPPL_DecisionIsFixedBetInBigBlinds ?  : f$OpenPPL_BetSizeForixedBetInBigBlinds :
+f$OpenPPL_DecisionIsFixedBetInBigBlinds ?  f$OpenPPL_BetSizeForFixedBetInBigBlinds :
 f$OpenPPL_DecisionIsPercentagedPotsizedBet ? f$OpenPPL_BetSizeForPercentagedPotsizeBet :
 0
 
@@ -3942,6 +3943,8 @@ nopponentsplaying
 (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks > 0) ? f$OpenPPL_HINT_StillToAct_Is_Only_Valid_First_Action_Preflop :
 f$OpenPPL_InBigBlind ? 0 :
 f$OpenPPL_InSmallBlind ? 1 :
+// Not in the blinds
+f$OpenPPL_MissingSmallBlind ? (nchairsdealtleft + 1) :
 (nchairsdealtleft + 2)
 
 //*****************************************************************************
