@@ -3998,6 +3998,7 @@ f$OpenPPL_MissingSmallBlind ? (nchairsdealtleft + 1) :
 // independent of the players at the table (at least 3).
 // This symbols is especially useful to sitout 
 // after the last hand of a session (before the next blind).
+f$OpenPPL_MissingSmallBlind ? (dealposition == 2) :
 (dealposition == 3)
 
 ##f$OpenPPL_InSmallBlind##
