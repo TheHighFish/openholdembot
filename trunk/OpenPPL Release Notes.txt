@@ -1,5 +1,6 @@
 v1.0.5 2012-xx-yy
 =================
+BUG FIXES: 
 - CHECK FORCE was implemented in the library 
   but didn't get translated by the converter.
   Thanks to Subiendolo for reporting.
@@ -7,7 +8,18 @@ v1.0.5 2012-xx-yy
 - NutFullhouseOr4OfAKind could return wrong values
   due to missing brackets at one place.
   Thanks to Lavezzi for reporting the problem and providing a log-file.
-  [THF]  
+  [THF]
+- f$Decision-function and calculation of potsized bets
+  got reworked. Potsized bet and automatic betsize-adaption 
+  should now work.
+  Thanks to Postenjak and Lavezzi who helped to fix the problem
+  and did the tests before release.
+  [THF]
+  
+NEW STUFF:
+- New symbols InEarlyPosition, InMiddlePosition, InLatePosition, InTheBlinds
+  to simplify the cases where you don't care about your exact positions.
+  [THF]
 
 v1.0.4 2012-03-19
 =================
