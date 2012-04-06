@@ -73,7 +73,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// Start of custom code
 
 			// user defined lists
-			list_section = keyword_lists >> *list_definition;
+			list_section = !keyword_lists >> *list_definition;
 			list_definition = (keyword_new >> keyword_list
 				>> number[print_list_header()] >> list_content >> end_of_list)
 				| missing_list_number;
@@ -84,7 +84,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				| invalid_list_content;
 
 			// User defined symbols
-			symbol_section = keyword_symbols >> *symbol_definition;
+			symbol_section = !keyword_symbols >> *symbol_definition;
 			symbol_definition = keyword_new >> keyword_symbol[reset_variables()]
 				>> symbol[print_function_header_for_betting_round()] 
 				>> code_block
