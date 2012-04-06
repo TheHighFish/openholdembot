@@ -3940,7 +3940,7 @@ nopponentsplaying
 ##f$OpenPPL_StillToAct##
 (betround != f$OpenPPL_ConstBetRoundPreflop) ? f$OpenPPL_HINT_StillToAct_Is_Only_Valid_First_Action_Preflop :
 (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks > 0) ? f$OpenPPL_HINT_StillToAct_Is_Only_Valid_First_Action_Preflop :
-f$OpenPPL_InBigBlind ? 0
+f$OpenPPL_InBigBlind ? 0 :
 f$OpenPPL_InSmallBlind ? 1 :
 (nchairsdealtleft + 2)
 
