@@ -210,7 +210,7 @@ struct print_relative_potsize_action
 { 
 	void operator()(const char *begin, const char *end) const 
 	{ 
-		current_output << " * f$RaiseByPercentagedPotsize";
+		current_output << "f$RaiseByPercentagedPotsize";
 	} 
 };
 
@@ -264,7 +264,9 @@ struct print_operator
 		else if (text == "%")
 		{
 			// Percentage-operator
-			current_output << "/100 * ";
+			// Don't use " / 100 *" because that can lead to an integer-division,
+			// and 70/100 will unexpectedly get evaluated as 0.
+			current_output << " * 0.01 * ";
 		}
 		else if (text == "mod")
 		{
