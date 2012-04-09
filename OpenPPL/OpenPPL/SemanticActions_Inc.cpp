@@ -312,7 +312,9 @@ struct print_percentage_operator
 { 
 	void operator()(const char *begin, const char *end) const 
 	{ 
-		current_output << "/100 * ";
+		// Don't use " / 100 *" because that can lead to an integer-division,
+		// and 70/100 will unexpectedly get evaluated as 0.
+		current_output << " * 0.01 * ";
 	} 
 };
 
