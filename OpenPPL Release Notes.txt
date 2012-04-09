@@ -1,4 +1,4 @@
-v1.0.5 2012-xx-yy
+v1.0.5 2012-04-09
 =================
 BUG FIXES: 
 - CHECK FORCE was implemented in the library 
@@ -12,8 +12,7 @@ BUG FIXES:
 - f$Decision-function and calculation of potsized bets
   got reworked. Potsized bet and automatic betsize-adaption 
   should now work.
-  Thanks to Postenjak and Lavezzi who helped to fix the problem
-  and did the tests before release.
+  Thanks to Postenjak and Lavezzi who helped to fix the problem.
   [THF]
   
 NEW STUFF:
