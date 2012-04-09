@@ -18,8 +18,8 @@ const char* ActionConstantNames(int action_constant)
 		return "CALL";
 	else if (action_constant == k_action_raise)
 		return "RAIS";
-	else if (action_constant == k_action_betsize)
-		return "SWAG";
+//!!!	else if (action_constant == k_action_betsize)
+//!!!		return "SWAG";
 	else if (action_constant == k_action_allin)
 		return "ALLI";
 	else

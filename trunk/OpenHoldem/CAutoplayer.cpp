@@ -57,14 +57,7 @@ bool CAutoplayer::GetMutex()
 	return _mutex.Lock(500);
 }
 
-/*
-bool GetFocus()
-{
 
-}
-
-GetCursorPos(&cur_pos);
-*/
 
 bool CAutoplayer::TimeToHandleSecondaryFormulas()
 {
@@ -135,7 +128,7 @@ void CAutoplayer::ExecutePrimaryFormulas()
 {
 	if (!AnyPrimaryFormulaTrue())
 	{
-		// Attention: fold !!!	
+		// Attention: check/fold !!!	
 	}
 	else
 	{
@@ -153,13 +146,13 @@ void CAutoplayer::ExecutePrimaryFormulas()
 	}
 }
 
-void CAutoplayer::ExecuteSecondaryFormulas()
+bool CAutoplayer::ExecuteSecondaryFormulas()
 {
 	if (!AnySecondaryFormulaTrue())
 	{
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] All secondary formulas false.\n");
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Nothing to do.\n");
-		return;
+		return false;
 	}
 	for (int i=k_autoplayer_function_prefold; i<=k_autoplayer_function_leave; i++)
 	{
@@ -169,16 +162,16 @@ void CAutoplayer::ExecuteSecondaryFormulas()
 		}
 		// Close rebuy and chat work require different treatment,
 		// more than just clicking a simple region...
-		if p_autoplayer_functions->GetAautoplayerFunctionValue(k_autoplayer_function_close)
+		if (p_autoplayer_functions->GetAautoplayerFunctionValue(k_autoplayer_function_close))
 		{
 			p_casino_interface->CloseWindow();
 		}
-		if p_autoplayer_functions->GetAautoplayerFunctionValue(k_autoplayer_function_rebuy)
+		if (p_autoplayer_functions->GetAautoplayerFunctionValue(k_autoplayer_function_rebuy))
 		{
 			// ??? mutex twice!
 			p_rebuymanagement->TryToRebuy();			
 		}
-		if p_autoplayer_functions->GetAautoplayerFunctionValue(k_autoplayer_function_chat)
+		if (p_autoplayer_functions->GetAautoplayerFunctionValue(k_autoplayer_function_chat))
 		{
 			DoChat();
 		}
@@ -203,12 +196,12 @@ void CAutoplayer::set_autoplayer_engaged(const bool to_be_enabled_or_not)
 #undef ENT
 
 
-void CAutoplayer::DoChat(void)
+bool CAutoplayer::DoChat(void)
 {
 	if ((p_autoplayer_functions->f$chat() == 0) || (_the_chat_message == NULL))
-		return;
+		return false;
 	if (!IsChatAllowed())
-		return;
+		return false;
 
 	// Converting the result of the $chat-function to a string.
 	// Will be ignored, if we already have an unhandled chat message.
@@ -412,25 +405,25 @@ void CAutoplayer::DoARCCF(void)
 	do_click = k_action_undefined;
 
 	// ALLIN
-	if (p_autoplayer_functions->f$alli() && sym_myturnbits&0x8 && allin_button_available)
+//!!!	if (p_autoplayer_functions->f$alli() && sym_myturnbits&0x8 && allin_button_available)
 	{
-		r = allin_button;
+//!!!		r = allin_button;
 		do_click = k_action_allin;
 		
 	}
 
 	// RAISE
-	else if (p_autoplayer_functions->f$rais() && sym_myturnbits&0x4 && raise_button_available)
+//!!!	else if (p_autoplayer_functions->f$rais() && sym_myturnbits&0x4 && raise_button_available)
 	{
-		r = raise_button;
+//!!!		r = raise_button;
 		do_click = k_action_raise;
 	
 	}
 
 	// CALL
-	else if (p_autoplayer_functions->f$call() && sym_myturnbits&0x1 && call_button_available)
+//!!!	else if (p_autoplayer_functions->f$call() && sym_myturnbits&0x1 && call_button_available)
 	{
-		r = call_button;
+//!!!		r = call_button;
 		do_click = k_action_call;
 	
 	}
@@ -438,9 +431,9 @@ void CAutoplayer::DoARCCF(void)
 	// CHECK
 	// None of f$alli, f$betsize, f$rais, f$call are > 0 or no buttons related to
 	// these actions can be found. If there is a check button, then click it.
-	else if (check_button_available)
+//!!!	else if (check_button_available)
 	{
-		r = check_button;
+//!!!		r = check_button;
 		do_click = k_action_check;
 		
 	}
@@ -448,9 +441,9 @@ void CAutoplayer::DoARCCF(void)
 	// FOLD
 	// None of f$alli, f$betsize, f$rais, f$call are > 0 or no buttons related to
 	// these actions can be found. If there is a fold button, then click it, otherwise we have a serious problem.
-	else if (fold_button_available)
+//!!!	else if (fold_button_available)
 	{
-		r = fold_button;
+//!!!		r = fold_button;
 		do_click = k_action_fold;
 		
 	}
@@ -495,7 +488,7 @@ void CAutoplayer::DoARCCF(void)
 
 	
 	// !!! Remove hard-coded constants
-	p_symbols->sym()->didrais[4], p_symbols->sym()->didcall[4], p_symbols->sym()->didchec[4]);
+	//!!!p_symbols->sym()->didrais[4], p_symbols->sym()->didcall[4], p_symbols->sym()->didchec[4]);
 }
 
 void CAutoplayer::DoSlider(void) 
@@ -651,13 +644,14 @@ void CAutoplayer::CheckBringKeyboard(void)
 	}
 }
 
-void CAutoplayer::HandleInterfacebuttonsI86(void) 
+bool CAutoplayer::HandleInterfacebuttonsI86(void) 
 {
 	for (int i=0; i<k_max_number_of_i86X_buttons; i++)
 	{
 		if (p_casino_interface->ClickI86ButtonIfAvailable(i))
 		{
-			break;
+			return true;
 		}
 	}
+	return false;
 }

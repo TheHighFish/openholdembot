@@ -525,7 +525,7 @@ const int CTransform::DoPlainFontScan(RMapCI region, const int width, const int 
 				continue_looping = false;
 			}
 
-			// No match:  reduce right hand size, or report '?' of we are out of space
+			// No match:  reduce right hand size, or report '?' or we are out of space
 			else 
 			{
 
