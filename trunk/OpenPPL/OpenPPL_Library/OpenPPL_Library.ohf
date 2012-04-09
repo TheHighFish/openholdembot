@@ -4018,7 +4018,7 @@ f$OpenPPL_InTheBlinds
 f$OpenPPL_InEarlyPosition
 
 ##f$OpenPPL_InEarlyPosition##
-(f$OpenPPL_InEarlyPosition1 || f$OpenPPL_InEarlyPosition2 f$OpenPPL_InEarlyPosition3)
+(f$OpenPPL_InEarlyPosition1 || f$OpenPPL_InEarlyPosition2 || f$OpenPPL_InEarlyPosition3)
 
 ##f$OpenPPL_MiddlePosition##
 f$OpenPPL_InMiddlePosition
@@ -4027,7 +4027,7 @@ f$OpenPPL_InMiddlePosition
 (f$OpenPPL_InMiddlePosition1 || f$OpenPPL_InMiddlePosition2 || f$OpenPPL_InMiddlePosition3)
 
 ##f$OpenPPL_LatePosition##
-InLatePosition
+f$OpenPPL_InLatePosition
 
 ##f$OpenPPL_InLatePosition##
 (f$OpenPPL_InCutOff || f$OpenPPL_InButton)
