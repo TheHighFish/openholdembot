@@ -1,0 +1,580 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Chapter*
+Structure Of A PPL-File
+\end_layout
+
+\begin_layout Standard
+If you have used OpenHoldem in the past you will know that you have to answer
+ several questions: Shall I go allin? Shall I raise? Shall I call? And if
+ you answer all questions with no then OpenHoldem will fold.
+ That is one approach and it clearly has some pros.
+ But most poker-playing people and non-programers will find a different
+ approach more easy:
+\emph on
+ What shall I do in this situation? 
+\emph default
+And that's exactly how OpenPPL works.
+\end_layout
+
+\begin_layout Section
+Simple When Conditions With Actions
+\end_layout
+
+\begin_layout Standard
+The most simple way to code a bot consists of a series of conditions followed
+ by actions to be chosen.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+WHEN 
+(
+\lang english
+(HaveFlushDraw)
+ AND (AmountToCall < 1/3 PotSize))
+\lang english
+ CALL FORCE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+These conditions get 
+\emph on
+always evaluated top-down
+\emph default
+.
+ Once the first condition is true, the appropriate action will be taken.
+ Always - so the order of programming matters.
+ Lets assume, that you want to call your flushdraws, but raise nut-flushdraws
+ (expert-strategy 2012).
+ Then you will have to write your commands in the following order:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN (HaveNutFlushDraw) RAISE FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN (HaveFlushDraw) CALL FORCE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Do it the other way and your nut-flush-draw would trigger the rule for normal
+ flush-draws.
+ A call would be the result.
+ As a consequence of this top-down-evaluation there follow some recommendations:
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+strong hands first, special cases first
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+weak hands last, general cases last
+\end_layout
+
+\begin_layout Standard
+The bot simply does not know if one rule is 
+\begin_inset Quotes eld
+\end_inset
+
+more special
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+more important
+\begin_inset Quotes erd
+\end_inset
+
+ --- you have to tell it by your coding order.
+\end_layout
+
+\begin_layout Remark*
+If you wonder about the keyword 
+\noun on
+force
+\noun default
+: it got inherited from Shanky-PPL and means, that it overwrites the default
+ bot (without 
+\noun on
+Force).
+ 
+\noun default
+Though we don't provide a default bot and don't think, that user-defined
+ actions should be ignored we kept this keyword to stay compatible and because
+ it is nice to read (syntactical suggar).
+\end_layout
+
+\begin_layout Section
+Open-Ended When Conditions
+\end_layout
+
+\begin_layout Standard
+Programming your bot with when-conditions alone will --- in principle ---
+ do the job, but there will be lots of situations that are very similar.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN ((Hand = AT) AND (StillToAct = 2) AND (Raises = 1) AND (AmountToCall
+ <= 4)) RAISEPOT FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN ((Hand = AT) AND (StillToAct = 2) AND (Raises = 1) AND (AmountToCall
+ > 4)) FOLD FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN ((Hand = AT) AND (StillToAct = 2) AND (Raises = 2) ...
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Here one part of the condition gets repeated:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN ((Hand = AT) AND (StillToAct = 2))
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For more sophisticated profiles this would be lots of code to write, lots
+ of code to evaluate and a true nightmare to change once you want to improve
+ it.
+ So OpenPPL provides two kinds of conditions: top-level conditions without
+ actions (called 
+\begin_inset Quotes eld
+\end_inset
+
+open-ended when-conditions
+\begin_inset Quotes erd
+\end_inset
+
+) and simple 
+\begin_inset Quotes eld
+\end_inset
+
+when conditions with actions
+\begin_inset Quotes erd
+\end_inset
+
+ like explained above.
+\end_layout
+
+\begin_layout Standard
+Once the first open-ended-when-condition gets found all following 
+\begin_inset Quotes eld
+\end_inset
+
+normal
+\begin_inset Quotes erd
+\end_inset
+
+ when-conditions are bound to that condition and only evaluated when the
+ open-ended when-condition is true.
+ So you could rewrite the example above like that:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN ((Hand = AT) AND (StillToAct = 2))
+\end_layout
+
+\begin_layout Plain Layout
+
+    WHEN ((Raises = 1) AND (AmountToCall <= 4)) RAISEPOT FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+    WHEN ((Raises = 1) AND (AmountToCall > 4)) FOLD FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+    WHEN (Raises = 2) ...
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN ((Hand = A9) AND (StillToAct = 2))
+\end_layout
+
+\begin_layout Plain Layout
+
+    ...
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Each open-ended when-condition is active until the next open-ended when-conditio
+n is found.
+ In the example above:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN ((Hand = A9) AND (StillToAct = 2))
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To terminate all your open-ended when-conditions just write:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+When Others
+\end_layout
+
+\begin_layout Plain Layout
+
+    ...
+\end_layout
+
+\begin_layout Plain Layout
+
+    When Others Fold Force
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Coding this way makes your code smaller, more easy to read and more easy
+ to change.
+ However: some people would like to take code-structuring to extremes and
+ use multiple nested open-ended when-conditions like below:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN (Hand = AT)
+\end_layout
+
+\begin_layout Plain Layout
+
+    WHEN (StillToAct = 2)
+\end_layout
+
+\begin_layout Plain Layout
+
+        WHEN (Raises = 1)
+\end_layout
+
+\begin_layout Plain Layout
+
+            WHEN (AmountToCall <= 4) RAISEPOT FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+            WHEN (AmountToCall > 4) FOLD FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+        WHEN (Raises = 2)
+\end_layout
+
+\begin_layout Plain Layout
+
+            WHEN...
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In principle this is a good idea, but it does not work.
+ Simply because there is no way to tell, where one open-ended when-condition
+ ends and where the next one starts.
+ So the semantic would be completely undefined (it is in fact not, but it
+ is for sure not what you want).
+ Sure you could argue about indentation, but spaces have no meaning in most
+ programming languages (except good old Fortran 77) and everybody does it
+ differently.
+ So let's restate: There is 
+\emph on
+at most one level of open-ended when-conditions
+\emph default
+ (without action), each one bound to a sequence of when-conditions with
+ actions.
+ If you want to structure your code even more (a very good idea!) then we
+ recommend to look at the chapter 
+\begin_inset Quotes eld
+\end_inset
+
+Building Symbols On Your Own
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section*
+Structure Of A PPL-File
+\end_layout
+
+\begin_layout Standard
+Once you understand how when-conditions work programming your first bot
+ becomes easy and straight-forward: you just have to provide a sequence
+ of when-conditions for preflop, flop, turn and river.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+CUSTOM
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+PREFLOP
+\end_layout
+
+\begin_layout Plain Layout
+
+    // This is a comment
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Your code belongs here.
+\end_layout
+
+\begin_layout Plain Layout
+
+    WHEN (Hand = AA) RAISEMAX FORCE	
+\end_layout
+
+\begin_layout Plain Layout
+
+    WHEN (Hand = KK) ...
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
+\end_layout
+
+\begin_layout Plain Layout
+
+    WHEN Others FOLD FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+FLOP
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+TURN
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+RIVER
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Please note: as OpenPPL does not support a built-in default bot all profiles
+ have to be complete, i.e.
+ you have to provide code for all four betting-rounds.
+ If you don't do so OpenPPL adds 
+\begin_inset Quotes eld
+\end_inset
+
+WHEN Others FOLD FORCE
+\begin_inset Quotes erd
+\end_inset
+
+ to the end of each section, so that your profile becomes complete --- at
+ least from a computers point of view.
+\end_layout
+
+\begin_layout Standard
+Besides of these four code sections there are two others:
+\end_layout
+
+\begin_layout Itemize
+a list section for user-defined hand-lists
+\end_layout
+
+\begin_layout Itemize
+another code section for user-defined symbols
+\end_layout
+
+\begin_layout Standard
+Both of them are very useful, but a little bit 
+\begin_inset Quotes eld
+\end_inset
+
+advanced
+\begin_inset Quotes erd
+\end_inset
+
+ and no standard Shanly-PPL.
+ So we discuss them in later chapters of this manual.
+\end_layout
+
+\end_body
+\end_document
