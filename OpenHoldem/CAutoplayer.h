@@ -37,9 +37,11 @@ private:
 	// private functions and variables - not available via accessors or mutators
 	void GetNeccessaryTablemapObjects();
 	bool AnyPrimaryFormulaTrue();
-	bool AnySencondaryFormulaTrue()
+	bool AnySecondaryFormulaTrue();
+	bool ExecuteSecondaryFormulas();
 	void DoAllin(void);
 	bool DoBetPot(void);
+	bool HandleInterfacebuttonsI86(void); 
 	bool GetMutex();
 	void DoSwag(void);
 	void DoARCCF(void);
@@ -49,7 +51,7 @@ private:
 	bool TimeToHandleSecondaryFormulas();
 	void CAutoplayer::DoF$Sitin_Sitout_Leave(void);
 	void DoI86(void);
-	void DoChat(void);
+	bool DoChat(void);
 
 	RMapCI	_alli_but, _rais_but, _call_but, _chec_but, _fold_but;
 	RMapCI	_autopost_but, _sitin_but, _sitout_but, _leave_but, _pre_fold_but;
