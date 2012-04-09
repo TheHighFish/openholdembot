@@ -51,13 +51,21 @@ figs-within-sections
 Position Symbols
 \end_layout
 
-\begin_layout Remark*
+\begin_layout Standard
 Good news: contrary to Standard-PPL most position symbols are not restricted
  to first orbit preflop only.
  You can use them in later orbits too and also postflop.
 \end_layout
 
-\begin_layout Remark*
+\begin_layout Standard
+Positions are always BU --- CO --- MP3 --- MP2 --- MP1 --- EP3 --- EP2 ---
+ EP1 --- BB --- SB.
+ If there are less than 10 players at the table, then some of the early
+ positions will be missing (EP1 --- EP2, etc.).
+ 
+\end_layout
+
+\begin_layout Standard
 Symbols like 
 \begin_inset Quotes eld
 \end_inset
@@ -210,7 +218,10 @@ InBigBlind
 \begin_inset Text
 
 \begin_layout Plain Layout
-True, if you are big blind
+True, if you are big blind.
+ OpenPPL is smart enpugh to detect a missing small blind (e.g.
+ he busted in a tournament).
+ In this case the player to the left of the dealer will be big blind.
 \end_layout
 
 \end_inset
