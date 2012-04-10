@@ -1,11 +1,3 @@
-BEGIN_TESTCASE
-    TESTCASE_ID ("1400")
-    HEURISTIC_RULE (false)
-    REASONING ("The sets of friends and opponents have to be disjoint.")
-    PRECONDITION (true)
-    POSTCONDITION ((int(gws("opponentsseatedbits")) & int(gws("friendsseatedbits"))) == 0)
-    SYMBOLS_POSSIBLY_AFFECTED ("opponentsseatedbits, friendsseatedbits")
-END_TESTCASE
 
 
 BEGIN_TESTCASE
