@@ -47,6 +47,7 @@ const int k_gametype_FL      =  2;
 // buttons and other scraper constants
 const int k_max_number_of_buttons = 10;
 const int k_max_number_of_i86X_buttons = 10;
+const int k_max_betpot_buttons = 7;  // 2/1, 1/1, 3/4, 2/3, 1/2, 1/3, 1/4
 
 // button codes
 const int k_button_i3		= 3;
@@ -133,6 +134,7 @@ enum AutoplayerConstant
 	k_autoplayer_function_close,
 	k_autoplayer_function_rebuy,
 	k_autoplayer_function_chat,
+	// other functions
 	k_autoplayer_function_delay,
 	// Attention Always keep this at last place.
 	k_number_of_autoplayer_functions
