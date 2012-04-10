@@ -490,7 +490,7 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	time(&_elapsedhold); //???
 	time(&_elapsedhandhold);
 	
-	reset_elapsedautohold();
+//!!!	reset_elapsedautohold(my_time_t);
 
 	// autoplayer
 	set_sym_myturnbits(0);

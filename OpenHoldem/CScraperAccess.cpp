@@ -192,7 +192,17 @@ bool CScraperAccess::GetBetpotButtonVisible(int i)
 		betpot_button_state.MakeLower().Left(7) == "checked" ||
 		betpot_button_state.MakeLower().Left(3) == "lit" )
 	{
-		return true;
+//!!!		betpot_button_state = p_scraper->betpot_X_Y_button_state(x, y);
+// !!! now duplicated!
+
+		if (betpot_button_state.MakeLower().Left(4) == "true" ||
+			betpot_button_state.MakeLower().Left(2) == "on" ||
+			betpot_button_state.MakeLower().Left(3) == "yes" ||
+			betpot_button_state.MakeLower().Left(7) == "checked" ||
+			betpot_button_state.MakeLower().Left(3) == "lit" )
+		{
+			return true;
+		}
 	}
 
 	return false;
