@@ -157,7 +157,7 @@ struct SSymbols
 	double ishistraight;
 	double ishiflush;
 
-	//PLAYERS FRIENDS OPPONENTS
+	//PLAYERS, OPPONENTS
 	double nopponents;
 	double nopponentsmax;
 	
@@ -166,10 +166,6 @@ struct SSymbols
 	double nplayersdealt;
 	double nplayersplaying;
 	double nplayersblind;
-
-	double nfriendsseated;
-	double nfriendsactive;
-	double nfriendsplaying;
 	
 	double nopponentsseated;
 	double nopponentsactive;
@@ -563,7 +559,7 @@ public:
 	void	set_sym_ishistraight(const double d) { ENT _sym.ishistraight = d;}
 	void	set_sym_ishiflush(const double d) { ENT _sym.ishiflush = d;}
 
-	// players friends opponents
+	// players, opponents
 	void	set_sym_nopponents(const double d) { ENT _sym.nopponents = d;}
 	void	set_sym_nopponentsmax(const double d) { ENT _sym.nopponentsmax = d;}
 	void	set_sym_nplayersseated(const double d) { ENT _sym.nplayersseated = d;}
@@ -595,9 +591,6 @@ public:
 	void	set_sym_opponentsplayingbits(const double d) { ENT _sym.opponentsplayingbits = d;}
 	void	set_sym_opponentsblindbits(const double d) { ENT _sym.opponentsblindbits = d;}
 	void	set_sym_bblindbits(const double d) { ENT _sym.bblindbits = d; };
-	void	set_sym_nfriendsseated(const double d) { ENT _sym.nfriendsseated = d;}
-	void	set_sym_nfriendsactive(const double d) { ENT _sym.nfriendsactive = d;}
-	void	set_sym_nfriendsplaying(const double d) { ENT _sym.nfriendsplaying = d;}
 	
 	// callbits, raisbits, etc.
 	void	set_sym_raisbits(const int i, const int betround) { ENT assert(betround >= k_betround_current); assert(betround <= k_betround_river); _sym.raisbits[betround] = i; }
@@ -815,7 +808,7 @@ private:
 	void ResetSymbolsEveryCalc(void);
 	bool CalcUserChair(void);
 	void CalcBetBalanceStack(void);
-	void CalcPlayersFriendsOpponents(void);
+	void CalcPlayersOpponents(void);
 	void CalcChipamtsLimits(void);
 	void CalcNumbets(void);
 	void CalcFlags(void);

@@ -75,15 +75,13 @@ char * keywords = // Standard functions
 				  "ispair issuited isconnector "
 				  // Pocket / Common Tests
 				  "ishipair islopair ismidpair ishistraight ishiflush "
-				  // Players, Friends, Opponents
+				  // Players, Opponents
 				  "nopponents nopponentsmax nplayersseated nplayersactive nplayersdealt nplayersplaying nplayersblind "
 				  "nopponentsseated nopponentsactive nopponentsdealt nopponentsplaying nopponentsblind "
-				  "nfriendsseated nfriendsactive nfriendsplaying "
 				  "nopponentschecking nopponentscalling nopponentsraising nopponentsbetting nopponentsfolded "
 				  "nplayerscallshort nchairsdealtright nchairsdealtleft playersseatedbits playersactivebits "
 				  "playersdealtbits playersplayingbits playersblindbits opponentsseatedbits opponentsactivebits "
-				  "opponentsdealtbits opponentsplayingbits opponentsblindbits friendsseatedbits friendsactivebits "
-				  "friendsdealtbits friendsplayingbits friendsblindbits "
+				  "opponentsdealtbits opponentsplayingbits opponentsblindbits "
 				  // Flags
 				  "fmax f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14 f15 f16 f17 f18 f19 "
 				  // Common Cards
@@ -3374,7 +3372,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "ishistraight", "true when you have the highest straight possible");
 	AddSymbol(parent, "ishiflush", "true when you have the highest flush possible");
 
-	mainParent = parent = AddSymbolTitle("Players, Friends, Opponents", "Note that the [friends] symbols are not interpreted the same way as they are in WinHoldem.  OpenHoldem does not include any automated collusion capabilities, and thus [friends] has been redefined in OpenHoldem to mean you only.  Thus if you are seated, nfriendsseated will resolve to 1. If you are not seated, nfriendsseated will resolve to zero.", hCatItem);
+	mainParent = parent = AddSymbolTitle("Players, Opponents", NULL, hCatItem);
 	AddSymbol(parent, "nopponents", "P formula value for the userchair iterator");
 	AddSymbol(parent, "nopponentsmax", "maximum allowable value for nopponents (1-22 default=9)");
 	AddSymbol(parent, "nplayersseated", "number of players seated (including you) (0-10)");
@@ -3382,9 +3380,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "nplayersdealt", "number of players dealt (including you) (0-10)");
 	AddSymbol(parent, "nplayersplaying", "number of players playing (including you) (0-10)");
 	AddSymbol(parent, "nplayersblind", "number of players blind (including you) (0-10)");
-	AddSymbol(parent, "nfriendsseated", "1 of you are seated, 0 otherwise (0-1)");
-	AddSymbol(parent, "nfriendssactive", "1 of you are active, 0 otherwise (0-1)");
-	AddSymbol(parent, "nfriendsplaying", "1 of you are playing, 0 otherwise (0-1)");
 	AddSymbol(parent, "nopponentsseated", "number of opponents seated (not including you) (0-9)");
 	AddSymbol(parent, "nopponentsactive", "number of opponents active (not including you) (0-9)");
 	AddSymbol(parent, "nopponentsdealt", "number of opponents dealt (not including you) (0-9)");

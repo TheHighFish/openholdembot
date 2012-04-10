@@ -1,5 +1,5 @@
 //
-// Players, Friends, Opponents
+// Players, Opponents
 //
 
 BEGIN_TESTCASE
@@ -64,36 +64,6 @@ BEGIN_TESTCASE
     SYMBOLS_POSSIBLY_AFFECTED ("nplayersblind")
 END_TESTCASE
 
-
-BEGIN_TESTCASE
-    TESTCASE_ID ("0094")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol nfriendsseated")
-    PRECONDITION (true)
-    POSTCONDITION ((gws("nfriendsseated") == 0) || (gws("nfriendsseated") == 1))
-    SYMBOLS_POSSIBLY_AFFECTED ("nfriendsseated")
-END_TESTCASE
-
-
-BEGIN_TESTCASE
-    TESTCASE_ID ("0095")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol nfriendsactive")
-    PRECONDITION (true)
-    POSTCONDITION ((gws("nfriendsactive") == 0) || (gws("nfriendsactive") == 1))
-    SYMBOLS_POSSIBLY_AFFECTED ("nfriendsactive")
-END_TESTCASE
-
-
-
-BEGIN_TESTCASE
-    TESTCASE_ID ("0097")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol nfriendsplaying")
-    PRECONDITION (true)
-    POSTCONDITION ((gws("nfriendsplaying") == 0) || (gws("nfriendsplaying") == 1))
-    SYMBOLS_POSSIBLY_AFFECTED ("nfriendsplaying")
-END_TESTCASE
 
 
 BEGIN_TESTCASE
