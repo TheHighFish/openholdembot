@@ -449,7 +449,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			// Calculate secondary formulas, as we need f$rebuy
 			write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling CalcSecondaryFormulas.\n");
 			p_autoplayer_functions->CalcSecondaryFormulas();
-			p_autoplayer->DoRebuyIfNeccessary();
+			//!!!p_autoplayer->DoRebuyIfNeccessary();
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////

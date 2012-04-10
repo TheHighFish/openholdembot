@@ -206,7 +206,7 @@ bool CAutoplayer::DoChat(void)
 	// Converting the result of the $chat-function to a string.
 	// Will be ignored, if we already have an unhandled chat message.
 	RegisterChatMessage(p_autoplayer_functions->f$chat()); 
-	return p_casino_interface->EnterChatMessage(_the_chat_message);
+	return true; //!!!p_casino_interface->EnterChatMessage(_the_chat_message);
 }
 
 void CAutoplayer::DoAllin(void)
@@ -267,9 +267,9 @@ void CAutoplayer::DoAutoplayer(void)
 	CheckBringKeyboard();
 
 	// Access TM objects !! Better name, better comment
-	GetNeccessaryTablemapObjects();
+	//!!!GetNeccessaryTablemapObjects();
 
-	int	num_buttons_visible = p_casino_interface->NumberOfVisibleButtons();
+	int	num_buttons_visible = 0; //!!!p_casino_interface->NumberOfVisibleButtons();
 	/* TODO: better log-file format !!!
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d (%c%c%c%c%c)\n", 
 		num_buttons_visible, 
@@ -287,11 +287,11 @@ void CAutoplayer::DoAutoplayer(void)
 	// Handle f$sitin, f$sitout, f$leave (formerly f$play)
 	// Also handling f$cloase here
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling DoF$Sitin_Sitout_Leave.\n");
-	DoF$Sitin_Sitout_Leave();
+	//!!!DoF$Sitin_Sitout_Leave();
 
 	// Handle i86buttons
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling DoI86.\n");
-	DoI86();
+	//!!!DoI86();
 
    
 	bool isFinalAnswer = true;
