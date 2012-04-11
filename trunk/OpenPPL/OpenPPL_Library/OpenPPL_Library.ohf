@@ -1551,7 +1551,8 @@ f$OpenPPL_True
 f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 
 ##f$OpenPPL_InitMissingSmallBlind##
-(f$OpenPPL_BotsActionsOnThisRound == 0) ? me_st_MemMissingSmallBlind_f$OpenPPL_CalculateMissingSmallBlind :
+[(betround == f$OpenPPL_ConstBetRoundPreflop) &&  (f$OpenPPL_BotsActionsOnThisRound == 0)] ? 
+me_st_MemMissingSmallBlind_f$OpenPPL_CalculateMissingSmallBlind :
 f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 
 ##f$OpenPPL_MissingSmallBlind##
