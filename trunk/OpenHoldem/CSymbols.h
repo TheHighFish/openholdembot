@@ -10,7 +10,6 @@ struct SSymbols
 {
 	//General
 	double ismanual;
-	double isppro;
 	double site;
 	double nchairs;
 	double isbring;
@@ -416,7 +415,6 @@ public:
 	// All symbol mutators below
 	// general
 	void	set_sym_ismanual(const double d) { ENT _sym.ismanual = d;}
-	void	set_sym_isppro(const double d) { ENT _sym.isppro = d;}
 	void	set_sym_site(const double d) { ENT _sym.site = d;}
 	void	set_sym_nchairs(const double d) { ENT _sym.nchairs = d;}
 	void	set_sym_isbring(const double d) { ENT _sym.isbring = d;}

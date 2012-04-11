@@ -31,10 +31,8 @@ NEW STUFF:
 
 MAINTENANCE:
 - Removed code-clones in CFormula.cpp [THF]
-- Removed friend-symbols, as OpenHoldem does not support any kind of collusion.
-  Only nfriendsseated, nfriendsactive and  nfriendsplaying 
-  do still exist for backward compatibility,
-  as some veterans use them for f$sitin, f$sitout and f$leave. 
+- Removed friend-symbols completely, as OpenHoldem does not support any kind of collusion.
+  We don't want that shit, not even for backward-compatibility wo WinHoldem.
   [THF]
 - Removed the symbol nouts, as Ray E. Bornerts definition
   of "outs" is plain nonsense and completely useless.
@@ -62,6 +60,13 @@ MAINTENANCE:
   Who uses WinScrape nowadays?
   [THF]
 - Removed support for WinHoldems formula format (*.whf and *.whx files).
+  [THF]
+- Removed PokerPro support. PokerPro didn't get used at all,
+  but did complicate the code (autoplayer, scraper, symbols).
+  Besides of that the server is closed source owned by Ray E. Bornert,
+  the protocol is undocumented, and PokerPro did no longer work
+  for SNGs due to changes in the protocol.
+  So we got rid of it.
   [THF]
 
 v2.1.9.3 2012-01-25

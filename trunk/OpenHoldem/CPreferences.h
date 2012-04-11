@@ -112,19 +112,6 @@ public:
 	const bool	debug_memorysymbols() { return _debug_memorysymbols; }
 	const bool	debug_alltherest() { return _debug_alltherest; }
 
-	// PPro
-	const CString ppro_hostname() { return _ppro_hostname; }
-	const CString ppro_port() { return _ppro_port; }
-	const CString ppro_username() { return _ppro_username; }
-	const CString ppro_password() { return _ppro_password; }
-	const int ppro_x() { return _ppro_x; }
-	const int ppro_y() { return _ppro_y; }
-	const int ppro_dx() { return _ppro_dx; }
-	const int ppro_dy() { return _ppro_dy; }
-	const bool ppro_handhistory() { return _ppro_handhistory; }
-	const bool ppro_ft_hhlog_format() { return _ppro_ft_hhlog_format; }
-	const unsigned int ppro_chips() { return _ppro_chips; }
-	const bool ppro_autoseat() { return _ppro_autoseat; }
 	// Main window locations
 	const int main_x() { return _main_x; }
 	const int main_y() { return _main_y; }
@@ -294,20 +281,6 @@ public:
 	void set_debug_blindlocking(const int b) { ENT _debug_blindlocking = b; WriteReg("debug_blindlocking", b); }
 	void set_debug_memorysymbols(const int b) { ENT _debug_memorysymbols = b; WriteReg("debug_memorysymbols", b); }
 	void set_debug_alltherest(const int b) { ENT _debug_alltherest = b; WriteReg("debug_alltherest", b); }
-
-	// PPro
-	void set_ppro_hostname(const CString s) { ENT _ppro_hostname = s; WriteReg("ppro_hostname", s); }
-	void set_ppro_port(const CString s) { ENT _ppro_port = s; WriteReg("ppro_port", s); }
-	void set_ppro_username(const CString s) { ENT _ppro_username = s; WriteReg("ppro_username", s); }
-	void set_ppro_password(const CString s) { ENT _ppro_password = s; WriteReg("ppro_password", s); }
-	void set_ppro_x(const int i) { ENT _ppro_x = i; WriteReg("ppro_x", i); }
-	void set_ppro_y(const int i) { ENT _ppro_y = i; WriteReg("ppro_y", i); }
-	void set_ppro_dx(const int i) { ENT _ppro_dx = i; WriteReg("ppro_dx", i); }
-	void set_ppro_dy(const int i) { ENT _ppro_dy = i; WriteReg("ppro_dy", i); }
-	void set_ppro_handhistory(const bool b) { ENT _ppro_handhistory = b; WriteReg("ppro_handhistory", b); }
-	void set_ppro_ft_hhlog_format(const bool b) { ENT _ppro_ft_hhlog_format = b; WriteReg("ppro_ft_hhlog_format", b); }
-	void set_ppro_chips(const unsigned int i) { ENT _ppro_chips = i; WriteReg("ppro_chips", (int) i); }
-	void set_ppro_autoseat(const bool b) { ENT _ppro_autoseat = b; WriteReg("ppro_autoseat", b); }
 
 	// Formula window location
 	void set_formula_x(const int i) { ENT _formula_x = i; WriteReg("formula_x", i); }
@@ -493,16 +466,6 @@ private:
 	bool			_debug_memorysymbols;
 	bool			_debug_alltherest;
 
-	// PPro
-	CString			_ppro_hostname;
-	bool			_ppro_autoseat;
-	CString			_ppro_port;
-	CString			_ppro_username;
-	CString			_ppro_password;
-	bool			_ppro_handhistory;
-	bool			_ppro_ft_hhlog_format;
-	int				_ppro_chips;
-
 	// Formula window location
 	int			_formula_x;	
 	int			_formula_y;
@@ -520,12 +483,6 @@ private:
 	int			_main_y;
 	int			_main_dx;
 	int			_main_dy;
-
-	// PPro window location
-	int			_ppro_x;
-	int			_ppro_y;
-	int			_ppro_dx;
-	int			_ppro_dy;
 
 	// Blind locking
 	double			_sblind;

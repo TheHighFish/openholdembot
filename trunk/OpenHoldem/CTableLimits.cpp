@@ -2,7 +2,6 @@
 #include "CTableLimits.h"
 
 #include <assert.h>
-#include "CPokerPro.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbols.h"
@@ -288,11 +287,6 @@ bool CTableLimits::IsCalculationNeccessary()
 	if (tablelimit_unreliable_input.bblind==0)
 	{
 		write_log(3, "CTableLimits: bblind=0, calculation neccessary.\n");
-		return true;
-	}
-	if (p_pokerpro->IsConnected() && p_pokerpro->ppdata()->m_tinf.m_tid != 0)
-	{
-		write_log(3, "CTableLimits: PPro requires calculation.\n");
 		return true;
 	}
 	write_log(3, "CTableLimits: no calculatoin neccessary.\n");

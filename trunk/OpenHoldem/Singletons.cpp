@@ -16,7 +16,6 @@
 #include "CMemory.h"
 #include "COcclusioncheck.h"
 #include "CPerl.hpp"
-#include "CPokerPro.h"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CRebuyManagement.h"
@@ -50,8 +49,6 @@ void InstantiateAllSingletons()
 		p_stableframescounter = new CStableFramesCounter;
 	if (!p_tablelimits) 
 		p_tablelimits = new CTableLimits;
-	if (!p_pokerpro) 
-		p_pokerpro = new PokerPro;
 	if (!p_scraper) 
 		p_scraper = new CScraper;
 	if (!p_scraper_access)  
@@ -146,8 +143,6 @@ void DeleteAllSingletons()
 		{ delete p_scraper_access; p_scraper_access = NULL; }
 	if (p_scraper)              
 		{ delete p_scraper; p_scraper = NULL; }
-	if (p_pokerpro)             
-		{ delete p_pokerpro; p_pokerpro = NULL; }
 	if (p_tablelimits)          
 		{ delete p_tablelimits; p_tablelimits = NULL; }
 	if (p_stableframescounter)  

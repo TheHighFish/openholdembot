@@ -4,7 +4,6 @@
 #include "stdafx.h"
 #include "OpenHoldem.h"
 #include "DialogSitDown.h"
-#include "CPokerPro.h"
 
 // CDlgSitDown dialog
 
@@ -40,7 +39,8 @@ BOOL CDlgSitDown::OnInitDialog()
 	nvacant = 0;
 	for (i=0; i<10; i++) 
 	{
-		if (p_pokerpro->ppdata()->m_pinf[i].m_isSeated&0x1)
+		// !!! Still needed without PPro?
+		//!!!	if (p_pokerpro->ppdata()->m_pinf[i].m_isSeated&0x1)
 			continue;
 
 		vacant[nvacant++] = i;

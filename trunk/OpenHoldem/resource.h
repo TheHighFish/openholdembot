@@ -25,8 +25,6 @@
 #define IDD_SELECTTABLE                 145
 #define IDR_FLAGS                       148
 #define IDR_FORMULA_EDIT_ACC            148
-#define IDD_POKERPRO                    152
-#define IDD_POKERPRO_DLG                152
 #define IDD_SITDOWN                     153
 #define IDD_FORMULA_SCINTILLA           155
 #define IDD_LOCK_BLINDS                 157
@@ -108,21 +106,13 @@
 #define IDC_DEBUGLEVEL_PT               1052
 #define IDC_LOAD_DLL_ON_STARTUP         1054
 #define IDC_DLLNAME                     1055
-#define IDC_PPRO_AUTOSEAT               1056
 #define IDC_LOAD_DLL_ON_STARTUP2        1056
 #define IDC_ALWAYS_SEND_STATE           1056
-#define IDC_PPRO_PORT                   1057
 #define IDC_AVTIME                      1057
-#define IDC_PPRO_HOSTNAME               1058
 #define IDC_TEXTSELECTION               1059
-#define IDC_PPRO_USERNAME               1059
 #define IDC_TEXTDELETION                1060
-#define IDC_PPRO_PASSWORD               1060
 #define IDC_HANDRANKVALUE4              1061
 #define IDC_BETCONFIRMATION             1061
-#define IDC_PPRO_CHIPS                  1061
-#define IDC_PPRO_AUTOSEAT2              1062
-#define IDC_PPRO_HANDHISTORY            1062
 #define IDC_BUTTONCLICKING              1062
 #define IDC_CONNECT_STATUS              1063
 #define IDC_LOGIN_STATUS                1064
@@ -133,7 +123,6 @@
 #define IDC_AVAILABLECHAIRS             1068
 #define IDC_CHIPSTOBUY                  1069
 #define IDC_DEPOSITAMOUNT               1070
-#define IDC_PPRO_MESSAGES               1071
 #define IDC_SCINTILLA_FORMULA_TREE      1075
 #define IDC_SCINTILLA_CALC_RESULT       1076
 #define IDC_LOCK_BLINDS_SMALL_BLIND     1077
@@ -392,7 +381,6 @@
 #define IDC_RADIO_VALIDATOR_2           1307
 #define IDC_RADIO_VALIDATOR_3           1308
 #define IDC_CHECK_VALIDATOR_STOP_ON_ERROR 1310
-#define IDC_PPRO_FULLTILTLOGFORMAT      1311
 #define IDC_SIMPLE_TITLE                1312
 #define IDC_CHECK_VALIDATOR_HEURISTIC_RULES 1313
 #define IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES 1313
@@ -498,7 +486,6 @@
 #define ID_MAIN_TOOLBAR_AUTOPLAYER      32872
 #define ID_MAIN_TOOLBAR_FORMULA         32876
 #define ID_DLL_LOAD                     32878
-#define ID_POKERPRO_CONNECT             32879
 #define ID_MAIN_TOOLBAR_ATTACH_TOP      32881
 #define ID_MAIN_TOOLBAR_MINMAX          32882
 #define ID_MAIN_TOOLBAR_ATTACH_BOTTOM   32883

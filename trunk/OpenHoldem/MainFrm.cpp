@@ -15,7 +15,6 @@
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
 #include "CPerl.hpp"
-#include "CPokerPro.h"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CReplayFrame.h"
@@ -27,7 +26,6 @@
 #include "DialogChairNum.h"
 #include "DialogFormulaScintilla.h"
 #include "DialogLockBlinds.h"
-#include "DialogPPro.h"
 #include "DialogSAPrefs1.h"
 #include "DialogSAPrefs2.h"
 #include "DialogSAPrefs3.h"
@@ -78,7 +76,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOOTREPLAYFRAME, &CMainFrame::OnUpdateViewShootreplayframe)
 	ON_UPDATE_COMMAND_UI(ID_DLL_LOAD, &CMainFrame::OnUpdateMenuDllLoad)
 	ON_UPDATE_COMMAND_UI(ID_DLL_LOADSPECIFICFILE, &CMainFrame::OnUpdateDllLoadspecificfile)
-	ON_UPDATE_COMMAND_UI(ID_POKERPRO_CONNECT, &CMainFrame::OnUpdatePokerproConnect)
 	ON_UPDATE_COMMAND_UI(ID_PERL_LOADFORMULA, &CMainFrame::OnUpdateMenuPerlLoad)
 	ON_UPDATE_COMMAND_UI(ID_PERL_LOADSPECIFICFORMULA, &CMainFrame::OnUpdateMenuPerlLoadSpecificFormula)
 	ON_UPDATE_COMMAND_UI(ID_PERL_RELOADFORMULA, &CMainFrame::OnUpdateMenuPerlReloadFormula)
@@ -155,7 +152,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_STATUS_NIT,OnUpdateStatus)
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_STATUS_ACTION,OnUpdateStatus)
 
-	ON_COMMAND(ID_POKERPRO_CONNECT, &CMainFrame::OnPokerproConnect)
 	ON_MESSAGE(WMA_SETWINDOWTEXT, OnSetWindowText)
 	ON_MESSAGE(WMA_DOCONNECT, &CMainFrame::OnConnectMessage)
 	ON_MESSAGE(WMA_DODISCONNECT, &CMainFrame::OnDisconnectMessage)
@@ -767,8 +763,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 	{
 
 		// Autoplayer
-		if ((p_symbols->user_chair_confirmed() && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)) ||
-				p_pokerpro->ppdata()->m_userchair!=-1)
+		if ((p_symbols->user_chair_confirmed() && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)))
 		{
 			m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
 		}
@@ -779,8 +774,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 
 		// Automatically start autoplayer, if set in preferences
 		if (prefs.ap_auto() && !m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER) &&
-				((p_symbols->user_chair_confirmed() && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)) ||
-				 p_pokerpro->ppdata()->m_userchair!=-1))
+				((p_symbols->user_chair_confirmed() && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE))))
 		{
 			if (!_autoplay_pressed)
 			{
@@ -1113,24 +1107,6 @@ LRESULT CMainFrame::OnSetWindowText(WPARAM, LPARAM title)
 	return 0l;
 }
 
-void CMainFrame::OnPokerproConnect() 
-{
-	if (m_pproDlg) 
-	{
-		BOOL	bWasShown	=	::IsWindow(m_pproDlg->m_hWnd) && m_pproDlg->IsWindowVisible();
-
-		m_pproDlg->DestroyWindow();
-		delete m_pproDlg;
-		m_pproDlg = NULL;
-
-		if (bWasShown)
-			return;
-	}
-	m_pproDlg = new CDlgPpro(this);
-	m_pproDlg->Create(CDlgPpro::IDD,this);
-	m_pproDlg->ShowWindow(SW_SHOW);
-}
-
 void CMainFrame::OnMinMax(void) 
 {
 	RECT		crect = {0}, wrect = {0}, rectBar1 = {0}, rectBar2 = {0}, statusBar = {0};
@@ -1409,17 +1385,8 @@ void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI)
 	else
 		pCmdUI->SetText("&Load\tF4");
 
-	// Not connected to ppro server
-	if (!p_pokerpro->IsConnected()) 
-	{
-		pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-						!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
-	}
-	// connected to ppro server
-	else 
-	{
-		pCmdUI->Enable(p_pokerpro->ppdata()->m_pinf[p_pokerpro->ppdata()->m_userchair].m_isActive&0x1 ? false : true);
-	}
+	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
+		!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
 }
 
 void CMainFrame::OnUpdateDllLoadspecificfile(CCmdUI *pCmdUI)
@@ -1427,12 +1394,6 @@ void CMainFrame::OnUpdateDllLoadspecificfile(CCmdUI *pCmdUI)
 	pCmdUI->Enable(p_dll_extension->IsDllLoaded() ? false : true);
 }
 
-void CMainFrame::OnUpdatePokerproConnect(CCmdUI *pCmdUI) 
-{
-	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) &&
-				   !p_pokerpro->IsConnected() ? false : true);
-}
 
 void CMainFrame::OnUpdateViewShootreplayframe(CCmdUI *pCmdUI)
 {

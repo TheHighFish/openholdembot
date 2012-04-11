@@ -35,7 +35,6 @@ const int CPokerAction::PreflopPos (void)
 {
 	int		sym_nplayersdealt = (int) p_symbols->sym()->nplayersdealt;
 	int		sym_dealposition = (int) p_symbols->sym()->dealposition;
-	bool	sym_isppro = (bool) p_symbols->sym()->isppro;
 	
 
 	//SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6
@@ -94,7 +93,8 @@ const int CPokerAction::PreflopPos (void)
 								 sym_dealposition==3 ? 6 : 0):
 		sym_nplayersdealt==2  ? (
 								// reversed blinds - dealer is BB
-								(pt_lookup.GetSiteId()==11 || sym_isppro) ?
+								// Even worse code. Looks like a code-clone
+								(pt_lookup.GetSiteId()==11) ?
 								(sym_dealposition==1 ? 1 :
 								sym_dealposition==2 ? 6 : 0 ) :
 								// Normal blinds - dealposition==1 is BB
@@ -107,7 +107,6 @@ const int CPokerAction::PreflopRaisPos (void)
 	int		e = SUCCESS;
 	int		sym_nplayersdealt = (int) p_symbols->sym()->nplayersdealt;
 	int		sym_dealpositionrais = (int) p_symbols->sym()->dealpositionrais;
-	bool	sym_isppro = (bool) p_symbols->sym()->isppro;
 	
 	//SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6
 	return
@@ -165,7 +164,8 @@ const int CPokerAction::PreflopRaisPos (void)
 								sym_dealpositionrais==3 ? 6 : 0):
 		sym_nplayersdealt==2  ? (
 								// reversed blinds - dealer is BB
-								(pt_lookup.GetSiteId()==11 || sym_isppro) ?
+								// !!! Bad code. We should get rid of hard-coded constants
+								(pt_lookup.GetSiteId()==11) ?
 								(sym_dealpositionrais==1 ? 1 :
 								sym_dealpositionrais==2 ? 6 : 0 ) :
 								// Normal blinds - dealposition==1 is BB

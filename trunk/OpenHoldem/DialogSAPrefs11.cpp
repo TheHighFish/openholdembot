@@ -104,5 +104,5 @@ void CDlgSAPrefs11::OnBnClickedDisableMsgbox()
 				   "this option only be used in a production environment that has been\n"
 				   "completely and thoroughly tested for proper behavior.\n\n"
 				   "Note that interactive messages are not disabled, such as when using the\n"
-				   "formula editor and the PokerPro dialog.", "WARNING", MB_OK);
+				   "formula editor.", "WARNING", MB_OK);
 }
