@@ -57,66 +57,58 @@ const int CPokerTrackerLookup::GetSiteId()
 {
 	CString network = p_tablemap->network();
 
-	if (p_symbols->sym()->isppro)
+	// If we are using manual mode, we expect an exact match on the lookup
+	if (p_symbols->sym()->ismanual)
 	{
-		// Treat PokerPro-Server as PartyPoker.
-		return 200;
-	}
-	else
-	{
-		// If we are using manual mode, we expect an exact match on the lookup
-		if (p_symbols->sym()->ismanual)
+		std::map<CString, int>::const_iterator lookup, end;
+
+		// Lookup site-id for version 3
 		{
-			std::map<CString, int>::const_iterator lookup, end;
-
-			// Lookup site-id for version 3
-			{
-				lookup = _pt3_siteid.find(network.GetString());
-				end    = _pt3_siteid.end();
-			}
-
-			if (lookup==end)
-				return -1;
-			else
-				return lookup->second;
+			lookup = _pt3_siteid.find(network.GetString());
+			end    = _pt3_siteid.end();
 		}
 
-		// If this is a regular scraped table, a match is valid for a substring match if sitename or network
+		if (lookup==end)
+			return -1;
 		else
+			return lookup->second;
+	}
+
+	// If this is a regular scraped table, a match is valid for a substring match if sitename or network
+	else
+	{
+		std::map<CString, int>::const_iterator lookup, end;
+
+		// Is s$sitename one of the supported PT sites?  Return the proper site_id for db queries.
+		// PT version 3 only
+		lookup = _pt3_siteid.begin();
+		end = _pt3_siteid.end();
+
+		while (lookup!=end)
 		{
-			std::map<CString, int>::const_iterator lookup, end;
+			CString	sym = "sitename$" + lookup->first;
+			int e = SUCCESS;
 
-			// Is s$sitename one of the supported PT sites?  Return the proper site_id for db queries.
-			// PT version 3 only
-			lookup = _pt3_siteid.begin();
-			end = _pt3_siteid.end();
+			if (p_symbols->GetSymbolVal(sym.MakeLower().GetString(), &e))
+				return lookup->second;
 
-			while (lookup!=end)
-			{
-				CString	sym = "sitename$" + lookup->first;
-				int e = SUCCESS;
+			lookup++;
+		}
 
-				if (p_symbols->GetSymbolVal(sym.MakeLower().GetString(), &e))
-					return lookup->second;
+		// Is s$network one of the supported PT sites?  Return the proper site_id for db queries.
+		// PT version 3 only
+		lookup = _pt3_siteid.begin();
+		end = _pt3_siteid.end();
 
-				lookup++;
-			}
+		while (lookup!=end)
+		{
+			CString	sym = "network$" + lookup->first;
+			int e = SUCCESS;
 
-			// Is s$network one of the supported PT sites?  Return the proper site_id for db queries.
-			// PT version 3 only
-			lookup = _pt3_siteid.begin();
-			end = _pt3_siteid.end();
+			if (p_symbols->GetSymbolVal(sym.MakeLower().GetString(), &e))
+				return lookup->second;
 
-			while (lookup!=end)
-			{
-				CString	sym = "network$" + lookup->first;
-				int e = SUCCESS;
-
-				if (p_symbols->GetSymbolVal(sym.MakeLower().GetString(), &e))
-					return lookup->second;
-
-				lookup++;
-			}
+			lookup++;
 		}
 	}
 	return -1 ;
@@ -679,7 +671,6 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
 
 	bool sym_issittingin = (bool) p_symbols->sym()->issittingin;
-	bool sym_isppro = (bool) p_symbols->sym()->isppro;
 	bool sym_ismanual = (bool) p_symbols->sym()->ismanual;
 
 	while (::WaitForSingleObject(pParent->_m_stop_thread, 0) != WAIT_OBJECT_0)
@@ -692,7 +683,7 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 		{
 			for (int i=0; i<=9; i++)
 			{
-				if (sym_issittingin || sym_isppro || sym_ismanual)
+				if (sym_issittingin || sym_ismanual)
 				{
 					if (pParent->CheckName(i))
 					{

@@ -16,7 +16,6 @@
 #include "MainFrm.h"
 #include "MagicNumbers.h"
 #include "OpenHoldem.h"
-#include "CPokerPro.h"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CRunRon.h"
@@ -227,7 +226,6 @@ void CSymbols::ResetSymbolsFirstTime(void)
 
 	// general
 	set_sym_ismanual(0);
-	set_sym_isppro(0);
 	set_sym_site(1);
 	set_sym_nchairs(0);
 	set_sym_isbring(0);
@@ -1111,7 +1109,6 @@ void CSymbols::CalcSymbols(void)
 	// Symbols derived from current table map/formula
 	set_sym_site(1);																		// site
 	set_sym_nchairs(p_tablemap->nchairs());													// nchairs
-	set_sym_isppro(p_pokerpro->IsConnected());												// isppro
 	set_sym_rake(p_formula->formula()->dRake);												// rake
 	set_sym_nit(p_formula->formula()->dNit);												// nit
 	set_sym_bankroll(p_formula->formula()->dBankroll);										// bankroll
@@ -4015,7 +4012,6 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	{
 		// GENERAL
 		if (memcmp(a, "ismanual", 8)==0 && strlen(a)==8)					return _sym.ismanual;
-		if (memcmp(a, "isppro", 6)==0 && strlen(a)==6)						return _sym.isppro;
 		if (memcmp(a, "isbring", 7)==0 && strlen(a)==7)						return _sym.isbring;
 		// isfinaltable - to be implemented in OH 2.2.0
 		if (memcmp(a, "isfinaltable", 12)==0 && strlen(a)==12)				return false;

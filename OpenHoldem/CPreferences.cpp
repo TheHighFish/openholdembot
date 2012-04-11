@@ -43,11 +43,6 @@ void CPreferences::InitDefaults(void)
 	_formula_dx = 640;
 	_formula_dy = 400;
 
-	// PPro window location
-	_ppro_x = _ppro_y = 0;
-	_ppro_dx = 555;
-	_ppro_dy = 577;
-
 	// Scraper window location
 	_scraper_x = _scraper_y = 0;
 	_scraper_dx = 340;
@@ -88,16 +83,6 @@ void CPreferences::InitDefaults(void)
 	// caused problems for the people who want it undefined:
 	// http://www.maxinmontreal.com/forums/viewtopic.php?f=112&t=11556
 	_dll_name = "";
-
-	// Ppro
-	_ppro_hostname = "127.0.0.1";
-	_ppro_port = "30000";
-	_ppro_username = "openholdem";
-	_ppro_password = "";
-	_ppro_handhistory = false;
-	_ppro_ft_hhlog_format = false;
-	_ppro_chips = 1000;
-	_ppro_autoseat = true;
 
 	// Blind locking
 	_sblind = 5;
@@ -251,12 +236,6 @@ void CPreferences::ReadPreferences()
 		ReadReg("formula_dx", &_formula_dx);
 		ReadReg("formula_dy", &_formula_dy);
 
-		// ppro window location and size
-		ReadReg("ppro_x", &_ppro_x);
-		ReadReg("ppro_y", &_ppro_y);
-		ReadReg("ppro_dx", &_ppro_dx);
-		ReadReg("ppro_dy", &_ppro_dy);
-
 		// scraper window location and size
 		ReadReg("scraper_x", &_scraper_x);
 		ReadReg("scraper_y", &_scraper_y);
@@ -328,16 +307,6 @@ void CPreferences::ReadPreferences()
 		ReadReg("replay_record_every_change", &_replay_record_every_change);
 		ReadReg("replay_max_frames", &_replay_max_frames);
 		ReadReg("replay_record_every_change_playing", &_replay_record_every_change_playing);
-
-		// poker Pro
-		ReadReg("ppro_hostname", &_ppro_hostname);
-		ReadReg("ppro_port", &_ppro_port);
-		ReadReg("ppro_username", &_ppro_username);
-		ReadReg("ppro_password", &_ppro_password);
-		ReadReg("ppro_handhistory", &_ppro_handhistory);
-		ReadReg("ppro_ft_hhlog_format", &_ppro_ft_hhlog_format);
-		ReadReg("ppro_chips", &_ppro_chips);
-		ReadReg("ppro_autoseat", &_ppro_autoseat);
 
 		// blind locking
 		ReadReg("sblind", &_sblind);

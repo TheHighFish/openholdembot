@@ -5,7 +5,6 @@
 #include "..\CTransform\hash\lookup3.h"
 #include "..\..\Reference Scraper-Preprocessor DLL\scraper_preprocessor_dll.h"
 #include "CAutoconnector.h"
-#include "CPokerPro.h"
 #include "CPreferences.h"
 #include "CStringMatch.h"
 #include "CSymbols.h"
@@ -173,8 +172,7 @@ int CScraper::CompleteBasicScrapeToFullScrape()
 
 	// get window title
 	_title[0] = '\0';
-	if (!p_pokerpro->IsConnected())
-		GetWindowText(p_autoconnector->attached_hwnd(), _title, MAX_WINDOW_TITLE-1);
+	GetWindowText(p_autoconnector->attached_hwnd(), _title, MAX_WINDOW_TITLE-1);
 
 	// If the bitmaps are the same, then return now
 	if (BitmapsSame(_entire_window_last, _entire_window_cur) &&

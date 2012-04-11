@@ -365,10 +365,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CPokerPro.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CPokerTrackerThread.cpp"
 				>
 			</File>
@@ -807,10 +803,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\DialogPpro.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\DialogRename.cpp"
 					>
 				</File>
@@ -1087,10 +1079,6 @@
 			</File>
 			<File
 				RelativePath=".\COpenPPLGrammar.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CPokerPro.h"
 				>
 			</File>
 			<File
@@ -1450,10 +1438,6 @@
 				</File>
 				<File
 					RelativePath=".\DialogNew.h"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogPpro.h"
 					>
 				</File>
 				<File

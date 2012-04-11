@@ -13,16 +13,6 @@ END_TESTCASE
 
 
 BEGIN_TESTCASE
-    TESTCASE_ID ("0002")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol isppro")
-    PRECONDITION (true)
-    POSTCONDITION ((gws("isppro") == true) || (gws("isppro") == false))
-    SYMBOLS_POSSIBLY_AFFECTED ("isppro")
-END_TESTCASE
-
-
-BEGIN_TESTCASE
     TESTCASE_ID ("0003")
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol site ")

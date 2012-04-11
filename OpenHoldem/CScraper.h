@@ -78,7 +78,7 @@ public:
 public:
 #define ENT CSLock lock(m_critsec);
 	// public mutators 
-	// Used mainly by PokerPro and the scraper override dll to push their updates into the CScraper structures
+	// Used mainly by the scraper override dll to push their updates into the CScraper structures
 	void	set_title(const char *s) { ENT strncpy_s(_title, MAX_WINDOW_TITLE, s, MAX_WINDOW_TITLE);}
 	void	set_card_common(const int n, const unsigned int c) { ENT if (n>=0 && n<=4) _card_common[n] = c;}
 	void	set_card_player(const int s, const int n, const unsigned int c) { ENT if (s>=0 && s<=9 && n>=0 && n<=1) _card_player[s][n] = c;}

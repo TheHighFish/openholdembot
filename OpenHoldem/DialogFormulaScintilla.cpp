@@ -36,7 +36,7 @@ char * keywords = // Standard functions
 				  "f$alli f$swag f$srai f$rais f$call f$prefold f$rebuy f$delay f$chat "
 				  "f$P f$play f$test f$sitin f$sitout f$leave f$close "
 				  // General
-				  "ismanual isppro site nchairs isbring session handnumber version "
+				  "ismanual site nchairs isbring session handnumber version "
 				  // Tablemap
 				  "sitename$ network$ swagdelay allidelay swagtextmethod " 
 				  // Tablemap, undocumented
@@ -3224,8 +3224,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	HTREEITEM mainParent, parent;
 	mainParent = parent = AddSymbolTitle("General symbols", NULL, hCatItem);
 	AddSymbol(parent, "ismanual", "true if you're in manual mode, false otherwise");
-	AddSymbol(parent, "isppro", "true if you're connected to a ppro server");
-	AddSymbol(parent, "site", "0=user/ppro 1=scraped");
+	AddSymbol(parent, "site", "0=user 1=scraped");
 	AddSymbol(parent, "nchairs", "the integer value for the Table Map symbol _s$nchairs");
 	AddSymbol(parent, "isbring", "true if OpenHoldem is attached to a bring client window");
 	AddSymbol(parent, "session", "the current logging instance (0-9)");
@@ -3250,7 +3249,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "ispl", "(lim==1)");
 	AddSymbol(parent, "isfl", "(lim==2)");
 	AddSymbol(parent, "sraiprev", "the difference between the two largest unique wagers");
-	AddSymbol(parent, "sraimin", "Scraped - (currentbet+call); PokerPro - the greater of bet and the current raise");
+	AddSymbol(parent, "sraimin", "Scraped - (currentbet+call)");
 	AddSymbol(parent, "sraimax", "balance-call");
 	AddSymbol(parent, "istournament", "true if a tournament table is detected");
 

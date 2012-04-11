@@ -12,7 +12,6 @@
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
 #include "CLazyScraper.h"
-#include "CPokerPro.h"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CReplayFrame.h"
@@ -75,11 +74,12 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 	char				title[MAX_WINDOW_TITLE] = {0};
 	int					N = 0;
 
-	// PokerPro variables only
+	// !!! PokerPro variables only
+	/*
 	const char			*pbytes = NULL;
 	int					nbytes = 0, result = 0;
 	fd_set				fd;
-	timeval				tv;
+	timeval				tv;*/
 
 	_heartbeat_counter++;
 
@@ -108,25 +108,14 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			////////////////////////////////////////////////////////////////////////////////////////////
 			// Scrape window
 
-			if (!p_pokerpro->IsConnected())
-			{
-				write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling DoScrape.\n");
-				new_scrape = true; //!!!
-				p_lazyscraper->DoScrape();
+			write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling DoScrape.\n");
+			new_scrape = true; //!!!
+			p_lazyscraper->DoScrape();
 
-				LARGE_INTEGER PerformanceCount;
-				QueryPerformanceCounter(&PerformanceCount);
-				p_scraper->set_clocks_hold(PerformanceCount);
-			}
-			else
-			{
-				if (p_pokerpro->ppdata()->m_tinf.m_tid != 0)
-				{
-					write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling PokerPro for scraper data.\n");
-					p_pokerpro->DoScrape();
-				}
-			}
-
+			LARGE_INTEGER PerformanceCount;
+			QueryPerformanceCounter(&PerformanceCount);
+			p_scraper->set_clocks_hold(PerformanceCount);
+			
 			////////////////////////////////////////////////////////////////////////////////////////////
 			// Give scraper.dll a chance to override scraper results
 
@@ -257,7 +246,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			// mark symbol result cache as stale
 			p_formula->MarkCacheStale();
 
-			if (new_scrape!=NOTHING_CHANGED || (p_pokerpro->IsConnected() && p_pokerpro->ppdata()->m_tinf.m_tid != 0))
+			if (new_scrape!=NOTHING_CHANGED)
 			{
 				write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling CalcSymbols.\n");
 				p_symbols->CalcSymbols();
@@ -275,23 +264,8 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Set Title of window
 		CString *messageTitle = new CString();
-		if (!p_pokerpro->IsConnected())
-		{
-			GetWindowText(p_autoconnector->attached_hwnd(), title, MAX_WINDOW_TITLE);
-			messageTitle->Format("%s - %s (%s)", p_formula->formula_name(), p_tablemap->sitename(), title);
-		}
-		else
-		{
-			if (p_pokerpro->ppdata()->m_tinf.m_tid == 0)
-				_snprintf_s(title, _countof(title), _TRUNCATE, "%s", p_pokerpro->ppdata()->m_site_name);
-
-			else if (p_pokerpro->ppdata()->m_userchair!=-1)
-				_snprintf_s(title, _countof(title), _TRUNCATE, "%s - %s - %s", p_pokerpro->ppdata()->m_site_name, p_pokerpro->ppdata()->m_tinf.m_name, p_pokerpro->ppdata()->m_pinf[p_pokerpro->ppdata()->m_userchair].m_name);
-
-			else
-				_snprintf_s(title, _countof(title), _TRUNCATE, "%s - %s", p_pokerpro->ppdata()->m_site_name, p_pokerpro->ppdata()->m_tinf.m_name);
-			messageTitle->Format("%s - %s (%s)", p_formula->formula_name(), p_tablemap->sitename(), title);
-		}
+		GetWindowText(p_autoconnector->attached_hwnd(), title, MAX_WINDOW_TITLE);
+		messageTitle->Format("%s - %s (%s)", p_formula->formula_name(), p_tablemap->sitename(), title);
 		theApp.m_pMainWnd->PostMessage(WMA_SETWINDOWTEXT, 0, (LPARAM)messageTitle);
 
 
@@ -426,17 +400,8 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		// If autoplayer is engaged, we know our chair, and the DLL hasn't told us to wait, then go do it!
 		if (p_autoplayer->autoplayer_engaged() && p_symbols->user_chair_confirmed() && !iswait)
 		{
-			if (!p_pokerpro->IsConnected())
-			{
 				write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling DoAutoplayer.\n");
 				p_autoplayer->DoAutoplayer();
-			}
-
-			else if (p_pokerpro->ppdata()->m_tinf.m_tid != 0)
-			{
-				write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling PokerPro DoAutoplayer.\n");
-				p_pokerpro->DoAutoplayer();
-			}
 		}
 		else
 		{
@@ -452,34 +417,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			//!!!p_autoplayer->DoRebuyIfNeccessary();
 		}
 
-		////////////////////////////////////////////////////////////////////////////////////////////
-		// scrape_delay, or wait for next ppro message
-		if (p_pokerpro->IsConnected())
-		{
-			// If there is anything on the socket, process it
-			FD_ZERO(&fd);
-			FD_SET(p_pokerpro->socket(), &fd);
-
-			tv.tv_usec = 50;
-			tv.tv_sec = 0;
-
-			result = 1;
-			while (select(0, &fd, NULL, NULL, &tv)>0 && ::WaitForSingleObject(pParent->_m_stop_thread, 0)!=WAIT_OBJECT_0)
-			{
-				pbytes = NULL;
-				nbytes = 0;
-				result = p_pokerpro->ReceivePPMessage( &pbytes, &nbytes );
-				if (result == 0)
-				{
-					// Trigger thread to stop
-					::SetEvent(pParent->_m_stop_thread);
-				}
-				else
-				{
-					p_pokerpro->HandlePPMessage(pbytes, nbytes);
-				}
-			}
-		}
+		
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Hand history generator
 
