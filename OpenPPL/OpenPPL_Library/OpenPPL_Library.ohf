@@ -1525,12 +1525,12 @@ f$OpenPPL_ERROR_DealPosition1Chair_Not_Recognized__Check_Your_TableMap
 [(playersplayingbits & 0b0000000010) && (currentbet1 == 0)] ? f$OpenPPL_False :
 [(playersplayingbits & 0b0000000100) && (currentbet2 == 0)] ? f$OpenPPL_False :
 [(playersplayingbits & 0b0000001000) && (currentbet3 == 0)] ? f$OpenPPL_False :
-[(playersplayingbits & 0b0000010000) && (currentbet3 == 0)] ? f$OpenPPL_False :
-[(playersplayingbits & 0b0000100000) && (currentbet4 == 0)] ? f$OpenPPL_False :
-[(playersplayingbits & 0b0001000000) && (currentbet5 == 0)] ? f$OpenPPL_False :
-[(playersplayingbits & 0b0010000000) && (currentbet6 == 0)] ? f$OpenPPL_False :
-[(playersplayingbits & 0b0100000000) && (currentbet7 == 0)] ? f$OpenPPL_False :
-[(playersplayingbits & 0b1000000000) && (currentbet8 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b0000010000) && (currentbet4 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b0000100000) && (currentbet5 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b0001000000) && (currentbet6 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b0010000000) && (currentbet7 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b0100000000) && (currentbet8 == 0)] ? f$OpenPPL_False :
+[(playersplayingbits & 0b1000000000) && (currentbet9 == 0)] ? f$OpenPPL_False :
 f$OpenPPL_True
 
 ##f$OpenPPL_CalculateMissingSmallBlind##
