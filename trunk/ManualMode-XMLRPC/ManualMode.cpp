@@ -5,6 +5,8 @@
 #include "ManualMode.h"
 #include "ManualModeDlg.h"
 
+#include "xmlrpc.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -70,6 +72,9 @@ BOOL CManualModeApp::InitInstance()
 
 	CManualModeDlg dlg;
 	m_pMainWnd = &dlg;
+
+	uintptr_t th = _beginthread(xServerThread, 0, &dlg);
+
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)
 	{

@@ -8,6 +8,8 @@
 #include "GameInfoDlg.h"
 #include "OptionsDlg.h"
 
+#include "xmlrpc.h"
+
 // Cards
 #define CARD_BACK		0xff
 #define CARD_NOCARD		0xfe
@@ -45,7 +47,41 @@ public:
 	enum { IDD = IDD_MANUALMODE_DIALOG };
 	virtual BOOL DestroyWindow();
 
+	void SetSeated(int chair, bool s);
+	void SetActive(int chair, bool a);
+	void SetDealer(int chair);
+	void SetBalance(int chair, double b);
+	void SetBet(int chair, double b);
+	void SetSBlind(double b);
+	void SetBBlind(double b);
+	void SetBBet(double b);
+	void SetAnte(double a);
+	void SetGType(std::string t);
+	void SetHandNumber(int n);
+	void SetNetwork(std::string n);
+	void SetTournament(bool t);
+	void PostSB(int chair);
+	void PostBB(int chair);
+	void SetButton(char b, bool a);
+	void SetCards(int chair, std::string c1, std::string c2);
+	void SetFlopCards(std::string c1, std::string c2, std::string c3);
+	void SetTurnCard(std::string c1);
+	void SetRiverCard(std::string c1);
+	void SetName(int chair, std::string name);
+	void DoFold(int chair);
+	void DoCall(int chair);
+	void DoRaise(int chair, double raise = 0);
+	void DoAllin(int chair);
+
+	void ProvideEventsHandling();
+
+	void Refresh();
+
 protected:
+	xmlrpc_c::clientSimple* xClient;
+	std::string serverUrl;
+
+
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	HICON		m_hIcon;
 	CPen		black_pen, green_pen, red_pen, blue_pen, white_dot_pen, white_pen, null_pen;
@@ -105,7 +141,10 @@ protected:
 	void clear_scrape_areas(void);
 	void get_click_loc(CPoint p);
 	void set_card(unsigned int c);
+	void set_card(int chair, unsigned int c);
 	int get_rank(char r);
+	int get_suit(char s);
+	void do_fold(void);
 	void do_call(void);
 	void do_raise(void);
 	void do_allin(void);
