@@ -233,16 +233,7 @@ BEGIN
         MENUITEM "&Font",                       ID_FORMULA_EDIT_FONT
         MENUITEM "&Hand List",                  ID_FORMULA_EDIT_HANDLIST
     END
-    POPUP "&View"
-    BEGIN
-        MENUITEM "&Toolbar",                    ID_FORMULA_VIEW_TOOLBAR
-        MENUITEM "Show &Line Numbers",          ID_FORMULA_VIEW_LINENUMBERS
-        MENUITEM "Show &Selection Margin",      ID_FORMULA_VIEW_SHOWSELECTIONMARGIN
-        MENUITEM "Show &Folding Margin",        ID_FORMULA_VIEW_SHOWFOLDINGMARGIN
-        MENUITEM "Synta&x Coloring",            ID_FORMULA_VIEW_SYNTAXCOLORING
-        MENUITEM "So&rt UDFs",                  ID_FORMULA_VIEW_SORTUDF
-        MENUITEM "&Group UDFs",                 ID_FORMULA_VIEW_GROUPUDFS
-    END
+
     POPUP "&Debug"
     BEGIN
         MENUITEM "&Log f$debug",                ID_FORMULA_DEBUG_LOGFDEBUG
@@ -511,9 +502,8 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     EDITTEXT        IDC_AVTIME,143,4,57,12,ES_AUTOHSCROLL
     LTEXT           "Time period to average table stats (mins)",IDC_STATIC,4,8,133,8
-    CONTROL         "Disable all symbol caching",IDC_DISABLE_CACHING,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,24,97,8
-    COMBOBOX        IDC_HANDRANKVALUE,143,36,69,81,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Value of ""handrank""",IDC_STATIC,4,40,64,8
+    COMBOBOX        IDC_HANDRANKVALUE,143,20,69,81,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Value of ""handrank""",IDC_STATIC,4,24,64,8
 END
 
 IDD_SAPREFS6 DIALOGEX 0, 0, 219, 155
@@ -1401,11 +1391,6 @@ BEGIN
     ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
     ID_EDIT_UNDO            "Undo the last action\nUndo"
     ID_EDIT_REDO            "Redo the previously undone action\nRedo"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
 END
 
 STRINGTABLE 

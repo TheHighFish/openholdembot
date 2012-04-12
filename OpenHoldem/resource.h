@@ -353,7 +353,6 @@
 #define IDC_MAXFRAMES_SPIN2             1289
 #define IDC_RANDOM_DELAY_SPIN           1289
 #define IDC_FUNCTIONS_TAB               1289
-#define IDC_DISABLE_CACHING             1290
 #define IDC_LOAD_PERL_INTERPRETER       1291
 #define IDC_PERL_EDITOR                 1292
 #define IDC_ENABLE_CHAT                 1293
@@ -503,8 +502,6 @@
 #define ID_FORMULA_VIEW_SHOWBOOKMARKMARGIN 32907
 #define ID_FORMULA_VIEW_SHOWFOLDINGMARGIN 32908
 #define ID_FORMULA_VIEW_SHOWSELECTIONMARGIN 32909
-#define ID_VIEW_SYNTAXCOLORING          32910
-#define ID_FORMULA_VIEW_SYNTAXCOLORING  32911
 #define ID_MAIN_TOOLBAR_LOCK_BLINDS     32912
 #define ID_DEBUG_LOGF                   32916
 #define ID_FORMULA_DEBUG_LOGFDEBUG      32917
@@ -522,8 +519,6 @@
 #define ID_FORMULA_EDIT_FIND            32931
 #define ID_FORMULA_DIALOG_ACC           32933
 #define ID_FILE_CONNECT                 32934
-#define ID_VIEW_SORTUDF                 32935
-#define ID_FORMULA_VIEW_SORTUDF         32936
 #define ID_MAIN_TOOLBAR_SHOOTFRAME      32937
 #define ID_VIEW_SHOOTREPLAYFRAME        32938
 #define ID_FORMULA_EDIT_FIND_NEXT       32939
@@ -539,8 +534,6 @@
 #define ID_PERL_COMPILEFORMULA          32951
 #define ID_Menu                         32952
 #define ID_PERL_CHECKSYNTAX             32953
-#define ID_VIEW_GROUPUDFS               32968
-#define ID_FORMULA_VIEW_GROUPUDFS       32969
 #define ID_HELP_FORCECRASH              32970
 #define ID_NUMBER11                     32972
 #define ID_NUMBER12                     32973

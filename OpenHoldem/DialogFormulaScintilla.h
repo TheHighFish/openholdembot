@@ -33,14 +33,6 @@
 #define	EDIT_SETTINGS			19
 #define	EDIT_HANDLIST			20
 
-#define VIEW_TOOLBAR			0
-#define VIEW_LINENUMBERS		1
-#define VIEW_SELECTIONMARGIN	2
-#define VIEW_FOLDINGMARGIN		3
-#define VIEW_SYNTAXCOLORING		4
-#define VIEW_SORTUDF			5
-#define VIEW_GROUPUDF			6
-
 #define DEBUG_FDEBUG_LOGGING	0
 #define DEBUG_FDEBUG_MYTURN		1
 
@@ -125,11 +117,6 @@ protected:
 	afx_msg void OnTreeContextMenu(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedCancel();
 	afx_msg void OnSearchUpdate();
-	afx_msg void ToggleToolbar();
-	afx_msg void ToggleLineNumbers();
-	afx_msg void ToggleSelectionMargin();
-	afx_msg void ToggleFoldingMargin();
-	afx_msg void ToggleSyntaxColoring();
 	afx_msg void OnBnClickedLessPrecision();
 	afx_msg void OnBnClickedMorePrecision();
 	afx_msg void OnBnClickedEqualLeft();
@@ -153,8 +140,6 @@ protected:
 	afx_msg void OnEditSelectAll();
 	afx_msg void OnFormulaDebugLogfdebug();
 	afx_msg void OnFormulaDebugMyturn();
-	afx_msg void OnFormulaViewSortudf();
-	afx_msg void OnFormulaViewGroupudf();
 	afx_msg void OnHelp();
 	afx_msg void OnHelpWiki();
 	afx_msg void OnHelpForums();
@@ -229,9 +214,6 @@ protected:
 
 	int				m_precision, m_equal;	// precision for debug tab
 	bool			m_fdebuglog, m_fdebuglog_myturn;
-	bool			m_udf_group;			// UDF group preference
-	bool			m_is_toolbar_visible, m_are_linenumbers_visible, m_is_selection_margin_visible, m_is_folding_margin_visible;
-	bool			m_is_syntax_colored;
 
 	CString			m_current_edit;			// Name of formula currently in edit window
 	CArray <SDebugTabInfo, SDebugTabInfo> debug_ar;		// holds debug tab information

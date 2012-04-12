@@ -26,7 +26,6 @@ void CDlgSAPrefs5::DoDataExchange(CDataExchange* pDX)
 	CSAPrefsSubDlg::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_HANDRANKVALUE, m_HandrankValue);
 	DDX_Control(pDX, IDC_AVTIME, m_AvTime);
-	DDX_Control(pDX, IDC_DISABLE_CACHING, m_DisableCaching);
 }
 
 BEGIN_MESSAGE_MAP(CDlgSAPrefs5, CSAPrefsSubDlg)
@@ -49,9 +48,6 @@ BOOL CDlgSAPrefs5::OnInitDialog()
 	text.Format("%.2f", prefs.sym_av_time());
 	m_AvTime.SetWindowText(text);
 
-	m_DisableCaching.SetCheck(prefs.sym_disable_caching() ? BST_CHECKED : BST_UNCHECKED);
-
-
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -65,8 +61,6 @@ void CDlgSAPrefs5::OnOK()
 
 	m_AvTime.GetWindowText(text);
 	prefs.set_sym_av_time(atof(text.GetString()));
-
-	prefs.set_sym_disable_caching(m_DisableCaching.GetCheck()==BST_CHECKED ? true : false);
 
 	CSAPrefsSubDlg::OnOK();
 }

@@ -1396,21 +1396,6 @@ void CMainFrame::OnUpdateViewShootreplayframe(CCmdUI *pCmdUI)
 	pCmdUI->Enable(p_autoconnector->attached_hwnd() != NULL);
 }
 
-void CMainFrame::OnUpdateViewMainToolbar(CCmdUI *pCmdUI) 
-{
-	pCmdUI->SetCheck(m_MainToolBar.IsVisible() ? 1 : 0);
-}
-
-void CMainFrame::OnUpdateViewFlagsToolbar(CCmdUI *pCmdUI) 
-{
-	pCmdUI->SetCheck(_tool_bar.IsVisible() ? 1 : 0);
-}
-
-void CMainFrame::OnUpdateViewStatusbar(CCmdUI *pCmdUI) 
-{
-	pCmdUI->SetCheck(_status_bar.IsVisible() ? 1 : 0);
-}
-
 void CMainFrame::OnUpdateMenuPerlLoad(CCmdUI* pCmdUI)
 {
 	if (p_perl->IsAFormulaLoaded()) 
