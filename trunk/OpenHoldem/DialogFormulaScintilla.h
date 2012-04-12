@@ -113,7 +113,6 @@ protected:
 	afx_msg void OnRename();
 	afx_msg void OnDelete();
 	afx_msg void OnFont();
-	afx_msg void OnSettings();
 	afx_msg void OnHandList();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg LRESULT OnWinMgr(WPARAM wp, LPARAM lp);

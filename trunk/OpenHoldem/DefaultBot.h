@@ -191,9 +191,9 @@ static const char * defaultCSchat = "\
 // No chat. \r\n\
 0";
 
-static const char * defaultCSP = "// Number of opponents for the prwin simulation.\r\n\r\n\
+static const char * defaultCSP = "// Number of opponents for the prwin simulation,\r\n\r\n\
 (nopponentsplaying==0) ? 0 : \r\n\
-nopponentsplaying + defcon*nopponentsfolded";
+nopponentsplaying + 0.5 *nopponentsfolded";
 
 static const char * defaultCSsitin = "\
 issittingout                  // i am sitting out \r\n\
@@ -303,12 +303,6 @@ static const char * defaultCSevcall = "\
    * (1-((nopponentsraising/nopponentsplaying)/4)) //adjust constant for aggressors \r\n\
    * (1+((nopponentschecking/nopponentsplaying)/10)) //adjust constant for lurkers \r\n\
    * (1-((nopponentscalling/nopponentsplaying)/20)) //adjust constant for waiters ";
-
-static const double defaultdBankroll = 0.0;
-
-static const double defaultdDefcon = 0.0;
-
-static const double defaultdRake = 0.0;
 
 static const double defaultdNit = 1000.0;
 

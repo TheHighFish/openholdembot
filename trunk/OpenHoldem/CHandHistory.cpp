@@ -127,7 +127,7 @@ void CHandHistory::roundStart()
 }
 void CHandHistory::checkBetround()
 {
-	double			rake = p_symbols->sym()->rake;
+	double			rake = 0.05; //!!!
 	int				userchair = (int) p_symbols->sym()->userchair;
 	int				nchairs = (int) p_symbols->sym()->nchairs;
 	int				dealerchair = (int) p_symbols->sym()->dealerchair;
@@ -673,7 +673,7 @@ void CHandHistory::ReconstructHand(bool contested)
 {
 	bool			potbetinto = true;
 	bool			hasFolded[10];
-	double			rake = p_symbols->sym()->rake;
+	double			rake = 0.05; //!!!
 	double			bblind = p_tablelimits->bblind();
 	double			calculatedPot = 0;
 	int				userchair = (int) p_symbols->sym()->userchair;
