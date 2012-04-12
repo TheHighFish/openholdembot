@@ -230,7 +230,6 @@ protected:
 
 	int				m_precision, m_equal;	// precision for debug tab
 	bool			m_fdebuglog, m_fdebuglog_myturn;
-	bool			m_udf_sort;				// UDF sort preference
 	bool			m_udf_group;			// UDF group preference
 	bool			m_is_toolbar_visible, m_are_linenumbers_visible, m_is_selection_margin_visible, m_is_folding_margin_visible;
 	bool			m_is_syntax_colored;

@@ -159,10 +159,6 @@ BEGIN
         MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE
         MENUITEM "Save &As...\tCtrl+A",         ID_FILE_SAVE_AS
         MENUITEM SEPARATOR
-        MENUITEM "&Load OpenPPL\tCtrl+L",       ID_FILE_LOAD_OPENPPL
-        MENUITEM SEPARATOR
-        MENUITEM "Load Table &Map\tCtrl+M",     ID_FILE_LOADTABLEMAP
-        MENUITEM SEPARATOR
         MENUITEM "&Connect\tCtrl+T",            ID_FILE_CONNECT
         MENUITEM "&Disconnect\tCtrl-D",         ID_FILE_DISCONNECT
         MENUITEM SEPARATOR
@@ -174,14 +170,11 @@ BEGIN
     BEGIN
         MENUITEM "&Formula\tCtrl+F",            ID_EDIT_FORMULA
         MENUITEM "P&references\tCtrl+P",        ID_EDIT_PREFERENCES
+        MENUITEM SEPARATOR
         MENUITEM "Force &User Chair\tCtrl+U",   ID_EDIT_FORCEUSERCHAIR
-    END
-    POPUP "&View"
-    BEGIN
-        MENUITEM "&Main Toolbar",               ID_VIEW_MAIN_TOOLBAR
-        MENUITEM "&Flags Toolbar",              ID_VIEW_FLAGS_TOOLBAR
-        MENUITEM "&Statusbar",                  ID_VIEW_STATUSBAR
-        MENUITEM "S&craper Output",             ID_VIEW_SCRAPEROUTPUT
+        MENUITEM "Force &Crash",                ID_HELP_FORCECRASH
+        MENUITEM SEPARATOR
+        MENUITEM "View S&craper Output",        ID_VIEW_SCRAPEROUTPUT
         MENUITEM "S&hoot Replay Frame\tF12",    ID_VIEW_SHOOTREPLAYFRAME
     END
     POPUP "&DLL"
@@ -203,8 +196,6 @@ BEGIN
         MENUITEM "&Help\tF1",                   ID_HELP_HELP
         MENUITEM "&Wiki",                       ID_HELP_DOCUMENTATIONWIKI
         MENUITEM "&Forums",                     ID_HELP_FORUMS
-        MENUITEM SEPARATOR
-        MENUITEM "Force &Crash",                ID_HELP_FORCECRASH
         MENUITEM SEPARATOR
         MENUITEM "&About this program...",      ID_APP_ABOUT
     END
@@ -963,7 +954,6 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,116,8
 END
 
-
 IDD_SAPREFS20 DIALOGEX 0, 0, 219, 214
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
@@ -1208,21 +1198,21 @@ BEGIN
         VERTGUIDE, 163
         VERTGUIDE, 194
         VERTGUIDE, 205
+        HORZGUIDE, 16
         HORZGUIDE, 25
+        HORZGUIDE, 32
         HORZGUIDE, 43
+        HORZGUIDE, 48
         HORZGUIDE, 59
+        HORZGUIDE, 64
+        HORZGUIDE, 80
         HORZGUIDE, 90
+        HORZGUIDE, 96
         HORZGUIDE, 100
+        HORZGUIDE, 112
         HORZGUIDE, 120
         HORZGUIDE, 145
         HORZGUIDE, 166
-        HORZGUIDE, 16
-        HORZGUIDE, 32
-        HORZGUIDE, 48
-        HORZGUIDE, 64
-        HORZGUIDE, 80
-        HORZGUIDE, 96
-        HORZGUIDE, 112
     END
 
     IDD_SAPREFS12, DIALOG
@@ -1310,6 +1300,15 @@ BEGIN
         HORZGUIDE, 149
     END
 
+    IDD_SAPREFS19, DIALOG
+    BEGIN
+        VERTGUIDE, 4
+        HORZGUIDE, 16
+        HORZGUIDE, 32
+        HORZGUIDE, 71
+        HORZGUIDE, 89
+    END
+
     IDD_SAPREFS20, DIALOG
     BEGIN
         VERTGUIDE, 4
@@ -1322,15 +1321,6 @@ BEGIN
         HORZGUIDE, 52
         HORZGUIDE, 68
         HORZGUIDE, 149
-    END
-
-    IDD_SAPREFS19, DIALOG
-    BEGIN
-        VERTGUIDE, 4
-        HORZGUIDE, 16
-        HORZGUIDE, 32
-        HORZGUIDE, 71
-        HORZGUIDE, 89
     END
 END
 #endif    // APSTUDIO_INVOKED
