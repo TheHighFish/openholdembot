@@ -139,7 +139,6 @@ public:
 	const bool expand_list() { return _expand_list; }
 	const bool expand_std() { return _expand_std; }
 	const bool expand_udf() { return _expand_udf; }
-	const bool udf_sort() { return _udf_sort; }
 	const bool udf_group() { return _udf_group; }
 	const int equal() { return _equal; }
 	const int precision() { return _precision; }
@@ -312,7 +311,6 @@ public:
 	void set_expand_list(const bool  b) { ENT _expand_list = b; WriteReg("expand_list", b); }
 	void set_expand_std(const bool b) { ENT _expand_std = b; WriteReg("expand_std", b); }
 	void set_expand_udf(const bool b) { ENT _expand_udf = b; WriteReg("expand_udf", b); }
-	void set_udf_sort(const bool b) { ENT _udf_sort = b; WriteReg("udf_sort", b); }
 	void set_udf_group(const bool b) { ENT _udf_group = b; WriteReg("udf_group", b); }
 	void set_equal(const int i) { ENT _equal = i; WriteReg("equal", i); }
 	void set_precision(const int i) { ENT _precision = i; WriteReg("precision", i); }
@@ -497,7 +495,6 @@ private:
 	bool			_expand_list;
 	bool			_expand_std;
 	bool			_expand_udf;
-	bool			_udf_sort;
 	bool			_udf_group;
 	int				_equal;
 	int				_precision;

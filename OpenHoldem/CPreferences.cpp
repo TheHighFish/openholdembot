@@ -51,7 +51,7 @@ void CPreferences::InitDefaults(void)
 	// Formula editor
 	_precision = 4;
 	_equal = 12;
-	_udf_sort = _udf_group = _expand_auto = _expand_debug = _expand_std = _expand_list = _expand_udf = false;
+	_udf_group = _expand_auto = _expand_debug = _expand_std = _expand_list = _expand_udf = false;
 
 	// analyzer
 	_max_opponents = 9;
@@ -245,7 +245,6 @@ void CPreferences::ReadPreferences()
 		// formula editor
 		ReadReg("precision", &_precision);
 		ReadReg("equal", &_equal);
-		ReadReg("udf_sort", &_udf_sort);
 		ReadReg("udf_group", &_udf_group);		
 		ReadReg("expand_auto", &_expand_auto);
 		ReadReg("expand_debug", &_expand_debug);

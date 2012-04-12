@@ -304,7 +304,6 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 
 	m_precision = 4;
 	m_equal = 12;
-	m_udf_sort = false;
 	m_udf_group = false;
 
 	ok_to_update_debug = false;
@@ -649,10 +648,8 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
 	m_fdebuglog_myturn = prefs.fdebuglog_myturn();
 	m_wrote_fdebug_header = false;
 
-	// Sort UDF?
-	m_udf_sort = prefs.udf_sort();
-	if (m_udf_sort)
-		SortUdfTree();
+	// Always sort UDFs
+	SortUdfTree();
 
 	HandleEnables(true);
 
@@ -1343,8 +1340,7 @@ void CDlgFormulaScintilla::OnNew()
 				}
 			}
 			newhtitem = m_FormulaTree.InsertItem(newdlg.CSnewname, hNewParent);
-			if (m_udf_sort)
-				SortUdfTree();
+			SortUdfTree();
 		}
 
 		UpdateAllScintillaKeywords();
@@ -1498,7 +1494,7 @@ void CDlgFormulaScintilla::OnRename()
 					}
 				} else
 					m_FormulaTree.SetItemText(hSelectedItem, rendlg.CSnewname);
-				if (m_udf_sort && memcmp(str, "f$", 2) == 0)
+				if (memcmp(str, "f$", 2) == 0)
 					SortUdfTree();
 			}
 			SetWindowText("Formula - " + rendlg.CSnewname);
@@ -2961,23 +2957,15 @@ BOOL CDlgFormulaScintilla::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 
 void CDlgFormulaScintilla::OnFormulaViewGroupudf()
 {
-	m_udf_group = !m_udf_group;
-	if (m_udf_group)
-		GroupUDFs();
-	else
-		UngroupUDFs();
-	if (m_udf_sort)
-		SortUdfTree();
-
+	GroupUDFs();
+	// !!!UngroupUDFs(); Candidate for removal?
+	SortUdfTree();
 	HandleEnables(true);
 }
 
 void CDlgFormulaScintilla::OnFormulaViewSortudf()
 {
-	m_udf_sort = !m_udf_sort;
-	if (m_udf_sort)
-		SortUdfTree();
-
+	SortUdfTree();
 	HandleEnables(true);
 }
 
@@ -3012,7 +3000,6 @@ void CDlgFormulaScintilla::SaveSettingsToRegistry()
 	prefs.set_equal(m_equal);
 	prefs.set_fdebuglog(m_fdebuglog);
 	prefs.set_fdebuglog_myturn(m_fdebuglog_myturn);
-	prefs.set_udf_sort(m_udf_sort);
 	prefs.set_udf_group(m_udf_group);
 
 	// Tree expansion settings
@@ -3159,7 +3146,6 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
 	view_menu->CheckMenuItem(VIEW_SELECTIONMARGIN,	MenuCheckUncheck[m_is_selection_margin_visible]);
 	view_menu->CheckMenuItem(VIEW_FOLDINGMARGIN,	MenuCheckUncheck[m_is_folding_margin_visible]);
 	view_menu->CheckMenuItem(VIEW_SYNTAXCOLORING,	MenuCheckUncheck[m_is_syntax_colored]);
-	view_menu->CheckMenuItem(VIEW_SORTUDF,			MenuCheckUncheck[m_udf_sort]);
 	view_menu->CheckMenuItem(VIEW_GROUPUDF,			MenuCheckUncheck[m_udf_group]);
 
 	// Debug Menu
