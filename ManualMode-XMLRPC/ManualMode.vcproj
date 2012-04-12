@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\pokereval\include"
+				AdditionalIncludeDirectories="..\pokereval\include;xmlrpc-c\include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -68,9 +68,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\pokereval\Debug\poker-eval.lib ..\dbghelp\dbghelp.lib"
+				AdditionalDependencies="..\pokereval\Debug\poker-eval.lib ..\dbghelp\dbghelp.lib odbc32.lib odbccp32.lib Wininet.lib abyssD.lib xmlhttpsysD.lib xmlparseD.lib xmlrpccppD.lib xmlrpcD.lib xmlrpc_miscD.lib xmltokD.lib Ws2_32.lib"
 				OutputFile="$(OutDir)\ManualMode.exe"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="xmlrpc-c\lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -248,6 +249,10 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\xmlrpc.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -288,6 +293,10 @@
 			</File>
 			<File
 				RelativePath=".\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\xmlrpc.h"
 				>
 			</File>
 			<Filter

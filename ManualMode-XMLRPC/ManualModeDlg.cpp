@@ -114,8 +114,299 @@ END_MESSAGE_MAP()
 
 // CManualModeDlg dialog
 
+void CManualModeDlg::SetSeated(int chair, bool s)
+{
+	seated[chair] = s;
+	if(!seated[chair])
+		active[chair] = false;
+}
+
+void CManualModeDlg::SetActive(int chair, bool a)
+{
+	active[chair] = a;
+}
+
+void CManualModeDlg::SetDealer(int chair)
+{
+	int i;
+	for (i=0; i<=9; i++)
+	{
+		dealer[i] = false;
+	}
+	dealer[chair] = true;
+}
+
+void CManualModeDlg::SetBalance(int chair, double b)
+{
+	CString balance;
+	if(b != int(b))
+		balance.Format("%.2f", b);
+	else
+		balance.Format("%.0f", b);
+	playerbalance[chair] = balance;
+}
+
+void CManualModeDlg::SetBet(int chair, double b)
+{
+	CString bet;
+	if(b != int(b))
+		bet.Format("%.2f", b);
+	else
+		bet.Format("%.0f", b);
+	playerbet[chair] = bet;
+}
+
+void CManualModeDlg::SetSBlind(double b)
+{
+	CString sb;
+	if(b != int(b))
+		sb.Format("%.2f", b);
+	else
+		sb.Format("%.0f", b);
+	sblind = sb;
+}
+
+void CManualModeDlg::SetBBlind(double b)
+{
+	CString bb;
+	if(b != int(b))
+		bb.Format("%.2f", b);
+	else
+		bb.Format("%.0f", b);
+	bblind = bb;
+}
+
+void CManualModeDlg::SetBBet(double b)
+{
+	CString bb;
+	if(b != int(b))
+		bb.Format("%.2f", b);
+	else
+		bb.Format("%.0f", b);
+	bbet = bb;
+}
+
+void CManualModeDlg::SetAnte(double a)
+{
+	CString an;
+	if(a != int(a))
+		an.Format("%.2f", a);
+	else
+		an.Format("%.0f", a);
+	ante = an;
+}
+
+void CManualModeDlg::SetGType(std::string t)
+{
+	std::transform(t.begin(), t.end(), t.begin(), ::tolower);
+
+	switch(t[0])
+	{
+	case 'n':
+		limit = LIMIT_NL;
+		break;
+
+	case 'p':
+		limit = LIMIT_PL;
+		break;
+
+	default: // f
+		limit = LIMIT_FL;
+		break;
+	}
+}
+
+void CManualModeDlg::SetHandNumber(int n)
+{
+	handnumber.Format("%i", n);
+}
+
+void CManualModeDlg::SetNetwork(std::string n)
+{
+	network = CString(n.c_str());
+}
+
+void CManualModeDlg::SetTournament(bool t)
+{
+	istournament = t;
+}
+
+void CManualModeDlg::PostSB(int chair)
+{
+	playerbet[chair] = sblind;
+	SetBalance(chair, atof(playerbalance[chair]) - atof(sblind));
+}
+
+void CManualModeDlg::PostBB(int chair)
+{
+	playerbet[chair] = bblind;
+	SetBalance(chair, atof(playerbalance[chair]) - atof(bblind));
+}
+
+void CManualModeDlg::SetButton(char b, bool a)
+{
+	switch(b)
+	{
+	case 'F':
+		buttonstate[0] = a;
+		break;
+	case 'C':
+		buttonstate[1] = a;
+		break;
+	case 'K':
+		buttonstate[2] = a;
+		break;
+	case 'R':
+		buttonstate[3] = a;
+		break;
+	case 'A':
+		buttonstate[4] = a;
+		break;
+	}
+}
+
+void CManualModeDlg::SetCards(int chair, std::string c1, std::string c2)
+{
+	std::transform(c1.begin(), c1.end(), c1.begin(), ::tolower);
+	std::transform(c2.begin(), c2.end(), c2.begin(), ::tolower);
+
+	int card_pos = chair * 2;
+
+	char r1 = c1[0];
+	char s1 = c1[1];
+	
+	unsigned int card1;
+
+	switch(r1)
+	{
+	case 'n':
+		card1 = CARD_NOCARD;
+		break;
+	case 'b':
+		card1 = CARD_BACK;
+		break;
+	default:
+		card1 = StdDeck_MAKE_CARD(get_rank(r1), get_suit(s1));
+	}
+
+	set_card(card_pos, card1);
+
+	char r2 = c2[0];
+	char s2 = c2[1];
+	
+	unsigned int card2;
+
+	switch(r2)
+	{
+	case 'n':
+		card2 = CARD_NOCARD;
+		break;
+	case 'b':
+		card2 = CARD_BACK;
+		break;
+	default:
+		card2 = StdDeck_MAKE_CARD(get_rank(r2), get_suit(s2));
+	}
+	set_card(card_pos + 1, card2);
+
+}
+
+void CManualModeDlg::SetFlopCards(std::string c1, std::string c2, std::string c3)
+{
+	std::transform(c1.begin(), c1.end(), c1.begin(), ::tolower);
+	std::transform(c2.begin(), c2.end(), c2.begin(), ::tolower);
+	std::transform(c3.begin(), c3.end(), c3.begin(), ::tolower);
+
+	char r1 = c1[0];
+	char s1 = c1[1];
+	unsigned int card1;
+
+	char r2 = c2[0];
+	char s2 = c2[1];
+	unsigned int card2;
+
+	char r3 = c3[0];
+	char s3 = c3[1];
+	unsigned int card3;
+
+	int card_pos = 20;
+
+	if('n' == r1)
+		card1 = CARD_NOCARD;
+	else
+		card1 = StdDeck_MAKE_CARD(get_rank(r1), get_suit(s1));
+
+	if('n' == r2)
+		card2 = CARD_NOCARD;
+	else
+		card2 = StdDeck_MAKE_CARD(get_rank(r2), get_suit(s2));
+
+	if('n' == r3)
+		card3 = CARD_NOCARD;
+	else
+		card3 = StdDeck_MAKE_CARD(get_rank(r3), get_suit(s3));
+
+	set_card(card_pos++, card1);
+	set_card(card_pos++, card2);
+	set_card(card_pos, card3);
+}
+
+void CManualModeDlg::SetTurnCard(std::string c1)
+{
+	std::transform(c1.begin(), c1.end(), c1.begin(), ::tolower);
+
+	char r1 = c1[0];
+	char s1 = c1[1];
+	unsigned int card1;
+	
+	int card_pos = 20 + 3;
+
+	if('n' == r1)
+		card1 = CARD_NOCARD;
+	else
+		card1 = StdDeck_MAKE_CARD(get_rank(r1), get_suit(s1));
+
+	set_card(card_pos, card1);
+}
+
+void CManualModeDlg::SetRiverCard(std::string c1)
+{
+	std::transform(c1.begin(), c1.end(), c1.begin(), ::tolower);
+
+	char r1 = c1[0];
+	char s1 = c1[1];
+	unsigned int card1;
+	
+	int card_pos = 20 + 4;	
+
+	if('n' == r1)
+		card1 = CARD_NOCARD;
+	else
+		card1 = StdDeck_MAKE_CARD(get_rank(r1), get_suit(s1));
+
+	set_card(card_pos, card1);
+}
+
+void CManualModeDlg::SetName(int chair, std::string name)
+{
+	playername[chair] = CString(name.c_str());
+}
+
+void CManualModeDlg::ProvideEventsHandling()
+{
+	xClient = new xmlrpc_c::clientSimple;
+}
+
+void CManualModeDlg::Refresh()
+{
+	InvalidateRect(NULL, true);
+}
+
 CManualModeDlg::CManualModeDlg(CWnd* pParent /*=NULL*/) : CDialog(CManualModeDlg::IDD, pParent) 
 {
+	serverUrl = std::string("http://localhost:9093/RPC2");
+	xClient = NULL;
+
 	// Set exception handler
 	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
 
@@ -1262,6 +1553,39 @@ void CManualModeDlg::draw_player_bet(int chair)
 	ReleaseDC(pDC);
 }
 
+struct ClientData {
+	xmlrpc_c::clientSimple* xClient;
+	int click_loc;
+	std::string serverUrl;
+};
+
+void SendEvent(void* cd)
+{
+	xmlrpc_c::value result;
+	try{
+		switch(((ClientData*)cd)->click_loc)
+		{
+		case FB:
+			((ClientData*)cd)->xClient->call(((ClientData*)cd)->serverUrl, "event", "s", &result, "F");
+			break;
+		case CB:
+			((ClientData*)cd)->xClient->call(((ClientData*)cd)->serverUrl, "event", "s", &result, "C");
+			break;
+		case KB:
+			((ClientData*)cd)->xClient->call(((ClientData*)cd)->serverUrl, "event", "s", &result, "K");
+			break;
+		case RB:
+			((ClientData*)cd)->xClient->call(((ClientData*)cd)->serverUrl, "event", "s", &result, "R");
+			break;
+		case AB:
+			((ClientData*)cd)->xClient->call(((ClientData*)cd)->serverUrl, "event", "s", &result, "A");
+			break;
+		}
+		delete (ClientData*)cd;
+		(void)xmlrpc_c::value_int(result); // ;)
+	} catch(...){}
+}
+
 void CManualModeDlg::OnLButtonUp(UINT nFlags, CPoint point) 
 {
 	// Find out where we clicked
@@ -1270,8 +1594,18 @@ void CManualModeDlg::OnLButtonUp(UINT nFlags, CPoint point)
 	// Clicked on a button indicator
 	if  ( click_loc>=FB && click_loc<=APB ) 
 	{
-		buttonstate[click_loc-FB] = !buttonstate[click_loc-FB];
-		InvalidateRect(NULL, true);
+		if(xClient)
+		{
+			ClientData*  cd = new ClientData;
+			cd->xClient = xClient;
+			cd->serverUrl = serverUrl;
+			cd->click_loc = click_loc;
+
+			uintptr_t th = _beginthread(SendEvent, 0, cd);
+		} else {
+			buttonstate[click_loc-FB] = !buttonstate[click_loc-FB];
+			InvalidateRect(NULL, true);
+		}
 	}
 
 	// Clicked on the center info box
@@ -1970,19 +2304,23 @@ void CManualModeDlg::OnNoCard()
 
 void CManualModeDlg::set_card(unsigned int c) 
 {
-	if (card[click_loc]!=CARD_NOCARD && card[click_loc]!=CARD_BACK) 
+	set_card(click_loc, c);
+	InvalidateRect(NULL, true);
+}
+
+void CManualModeDlg::set_card(int card_pos, unsigned int c) 
+{
+	if (card[card_pos]!=CARD_NOCARD && card[card_pos]!=CARD_BACK) 
 	{
-		CardMask_UNSET(used_cards, card[click_loc]);
+		CardMask_UNSET(used_cards, card[card_pos]);
 	}
-	card[click_loc] = c; 
+	card[card_pos] = c; 
 	CardMask_SET(used_cards, c);
 
-	if (click_loc>=CC0 && click_loc<=CC4) 
+	if (card_pos>=CC0 && card_pos<=CC4) 
 	{
 		do_scrape_bets_into_pot();
 	}
-
-	InvalidateRect(NULL, true);
 }
 
 void CManualModeDlg::OnSeatPlayer() 
@@ -2010,16 +2348,7 @@ void CManualModeDlg::OnDealerHere()
 
 void CManualModeDlg::OnFold() 
 { 
-	if (card[P0C0+click_chair*2]!=CARD_NOCARD && card[P0C0+click_chair*2]!=CARD_BACK) 
-	{
-		CardMask_UNSET(used_cards, card[P0C0+click_chair*2]);
-	}
-	if (card[P0C1+click_chair*2]!=CARD_NOCARD && card[P0C1+click_chair*2]!=CARD_BACK) 
-	{
-		CardMask_UNSET(used_cards, card[P0C1+click_chair*2]);
-	}
-	card[P0C0+click_chair*2] = CARD_NOCARD; 
-	card[P0C1+click_chair*2] = CARD_NOCARD; 
+	do_fold(); 
 	InvalidateRect(NULL, true);
 }
 
@@ -2302,6 +2631,21 @@ int CManualModeDlg::get_rank(char c)
 	return Rank_2;
 }
 
+int CManualModeDlg::get_suit(char c)
+{
+	switch(c)
+	{
+	case 'h':
+		return StdDeck_Suit_HEARTS;
+	case 'd':
+		return StdDeck_Suit_DIAMONDS;
+	case 'c':
+		return StdDeck_Suit_CLUBS;
+	default:
+		return StdDeck_Suit_SPADES;
+	}
+}
+
 void CManualModeDlg::OnBnClickedDminus() 
 {
 	for (int i=0; i<k_max_number_of_players; i++) 
@@ -2340,50 +2684,84 @@ void CManualModeDlg::OnBnClickedDplus()
 		}
 	}
 }
+void CManualModeDlg::do_fold(void)
+{
+	DoFold(click_chair);
+}
+
+void CManualModeDlg::DoFold(int chair)
+{
+	if (card[P0C0+chair*2]!=CARD_NOCARD && card[P0C0+chair*2]!=CARD_BACK) 
+	{
+		CardMask_UNSET(used_cards, card[P0C0+chair*2]);
+	}
+	if (card[P0C1+chair*2]!=CARD_NOCARD && card[P0C1+chair*2]!=CARD_BACK) 
+	{
+		CardMask_UNSET(used_cards, card[P0C1+chair*2]);
+	}
+	card[P0C0+chair*2] = CARD_NOCARD; 
+	card[P0C1+chair*2] = CARD_NOCARD;
+}
 
 void CManualModeDlg::do_call(void) 
 {
+	DoCall(click_chair);
+}
+
+void CManualModeDlg::DoCall(int chair)
+{
 	double		diff;
 
-	diff = get_current_bet() - atof(playerbet[click_chair]);
-	if (diff > atof(playerbalance[click_chair])) 
+	diff = get_current_bet() - atof(playerbet[chair]);
+	if (diff > atof(playerbalance[chair])) 
 	{
-		diff = atof(playerbalance[click_chair]);
+		diff = atof(playerbalance[chair]);
 	}
 
-	playerbet[click_chair] = NumberToFormattedString(diff+atof(playerbet[click_chair]));
+	playerbet[chair] = NumberToFormattedString(diff+atof(playerbet[chair]));
 
-	double new_balance = atof(playerbalance[click_chair].GetString()) - diff;
-	playerbalance[click_chair] = NumberToFormattedString(new_balance);
+	double new_balance = atof(playerbalance[chair].GetString()) - diff;
+	playerbalance[chair] = NumberToFormattedString(new_balance);
 }
 
 void CManualModeDlg::do_raise(void) 
+{
+	DoRaise(click_chair);
+}
+
+void CManualModeDlg::DoRaise(int chair, double raise) 
 {
 	double diff, raise_amt;
 
 	raise_amt = get_br()>=3 && limit==LIMIT_FL ? atof(bblind)*2 :atof(bblind);
 
-	diff = get_current_bet() + raise_amt - atof(playerbet[click_chair]);
-	if (diff > atof(playerbalance[click_chair])) 
+	diff = get_current_bet() + raise_amt - atof(playerbet[chair]);
+	if (diff > atof(playerbalance[chair])) 
 	{
-		diff = atof(playerbalance[click_chair]);
+		diff = atof(playerbalance[chair]);
 	}
 
-	playerbet[click_chair] = NumberToFormattedString(diff + atof(playerbet[click_chair]));
+	playerbet[chair] = NumberToFormattedString(diff + atof(playerbet[chair]));
 
-	double new_balance = atof(playerbalance[click_chair].GetString()) - diff;
-	playerbalance[click_chair] = NumberToFormattedString(new_balance);
+	double new_balance = atof(playerbalance[chair].GetString()) - diff;
+	playerbalance[chair] = NumberToFormattedString(new_balance);
 }
 
 void CManualModeDlg::do_allin(void) 
 {
+	DoAllin(click_chair);
+}
+
+void CManualModeDlg::DoAllin(int chair) 
+{
 	// Caution: if we go allin, we have to add the balance to the bet, not replace it!
 	// Only problem: all numbers are defined as strings
-	double playerbet_as_number = atof(playerbet[click_chair]);
-	double playerbalance_as_number = atof(playerbalance[click_chair]);
+	
+	double playerbet_as_number = atof(playerbet[chair]);
+	double playerbalance_as_number = atof(playerbalance[chair]);
 	double new_playerbet = playerbet_as_number + playerbalance_as_number;
-	playerbet[click_chair] = NumberToFormattedString(new_playerbet);
-	playerbalance[click_chair] = "0";
+	playerbet[chair] = NumberToFormattedString(new_playerbet);
+	playerbalance[chair] = "0";
 }
 
 void CManualModeDlg::do_scrape_bets_into_pot(void) 
