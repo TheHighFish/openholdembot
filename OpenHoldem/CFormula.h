@@ -26,7 +26,7 @@ struct SFormula
 {
 	CArray <SFunction, SFunction> mFunction;
 
-	double dBankroll, dDefcon, dRake, dNit;
+	double dNit;
 
 	CArray <SHandList, SHandList> mHandList;
 
@@ -85,9 +85,6 @@ public:
 	void set_list_add(const SHandList h) { ENT _formula.mHandList.Add(h); }
 	void set_list_remove(const int i) { ENT if (i>=0 && i<_formula.mHandList.GetSize()) _formula.mHandList.RemoveAt(i,1); }
 	//void set_list_removeall() { ENT _formula.mHandList.RemoveAll(); }
-	void set_bankroll(const double d) { ENT _formula.dBankroll = d; }
-	void set_defcon(const double d) { ENT _formula.dDefcon = d; }
-	void set_rake(const double d) { ENT _formula.dRake = d; }
 	void set_nit(const double d) { ENT _formula.dNit = d; }
 	tpi_type * set_tpi(const int i) { if (i>=0 && i<_formula.mFunction.GetSize()) return &_formula.mFunction[i].tpi; else return NULL; }
 #undef ENT

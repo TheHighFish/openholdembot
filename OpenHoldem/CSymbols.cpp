@@ -233,8 +233,6 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_version(VERSION_NUMBER);
 
 	// formula
-	set_sym_rake(0);
-	set_sym_bankroll(0);
 	set_sym_nit(0);
 
 	// limits
@@ -282,11 +280,6 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_prwin(0);
 	set_sym_prlos(0);
 	set_sym_prtie(0);
-
-	// p formula
-	set_sym_defcon(0);
-	set_sym_isdefmode(0);
-	set_sym_isaggmode(0);
 
 	// chip amounts
 	// Index k_max_number_of_players+1 is for hero
@@ -1109,12 +1102,8 @@ void CSymbols::CalcSymbols(void)
 	// Symbols derived from current table map/formula
 	set_sym_site(1);																		// site
 	set_sym_nchairs(p_tablemap->nchairs());													// nchairs
-	set_sym_rake(p_formula->formula()->dRake);												// rake
 	set_sym_nit(p_formula->formula()->dNit);												// nit
-	set_sym_bankroll(p_formula->formula()->dBankroll);										// bankroll
-	set_sym_defcon(p_formula->formula()->dDefcon);											// defcon
-	set_sym_isdefmode(p_formula->formula()->dDefcon == 0.0);								// isdefmode
-	set_sym_isaggmode(p_formula->formula()->dDefcon == 1.0);								// isaggmode
+								
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Table limits 
@@ -4023,9 +4012,8 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "istournament", 12)==0 && strlen(a)==12)				return _sym.istournament;
 
 		// P FORMULA
-		if (memcmp(a, "isdefmode", 9)==0 && strlen(a)==9)					return _sym.isdefmode;
-		if (memcmp(a, "isaggmode", 9)==0 && strlen(a)==9)					return _sym.isaggmode;
-		if (memcmp(a, "ishandup", 8)==0 && strlen(a)==8)					return _sym.ishandup;
+		// !!! Wrong category
+		if (memcmp(a, "ishandup", 8)==0 && strlen(a)==8)					return _sym.ishandup; 
 
 		// HAND TESTS 2(2)
 		if (memcmp(a, "ishandupcommon", 14)==0 && strlen(a)==14)			return _sym.ishandupcommon;
@@ -4268,9 +4256,6 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "session", 7)==0 && strlen(a)==7)						return _sym.session;
 	if (memcmp(a, "version", 7)==0 && strlen(a)==7)						return _sym.version;
 
-	//P FORMULA
-	if (memcmp(a, "defcon", 6)==0 && strlen(a)==6)						return _sym.defcon;
-
 	// LIMITS 3(3)
 	if (memcmp(a, "bblind", 6)==0 && strlen(a)==6)						return p_tablelimits->bblind();
 	if (memcmp(a, "sblind", 6)==0 && strlen(a)==6)						return p_tablelimits->sblind();
@@ -4282,9 +4267,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "network$", 8)==0)									return p_tablemap->network().Find(&a[8])!=-1;
 
 	//FORMULA FILE
-	if (memcmp(a, "rake", 4)==0 && strlen(a)==4)						return _sym.rake;
 	if (memcmp(a, "nit", 3)==0 && strlen(a)==3)							return _sym.nit;
-	if (memcmp(a, "bankroll", 8)==0 && strlen(a)==8)					return _sym.bankroll;
 
 	// AUTOPLAYER 1(2)
 	if (memcmp(a, "myturnbits", 10)==0 && strlen(a)==10)				return _sym.myturnbits;

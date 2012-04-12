@@ -26,7 +26,7 @@ void CFormula::ClearFormula()
 {
 	CSLock lock(m_critsec);
 
-	_formula.dBankroll = _formula.dDefcon = _formula.dRake = _formula.dNit = 0.0;
+	 _formula.dNit = 0.0;
 	_formula.mHandList.RemoveAll();
 	_formula.mFunction.RemoveAll();
 	_formula_name = "";
@@ -57,9 +57,6 @@ void CFormula::SetDefaultBot()
 	func.func = "f$close";		func.func_text = defaultCSclose;	_formula.mFunction.Add(func);
 	func.func = "f$test";		func.func_text = defaultCStest;		_formula.mFunction.Add(func);
 	func.func = "f$debug";		func.func_text = defaultCSdebug;	_formula.mFunction.Add(func);
-	_formula.dBankroll = defaultdBankroll;
-	_formula.dDefcon = defaultdDefcon;
-	_formula.dRake = defaultdRake;
 	_formula.dNit = defaultdNit;
 
 	// Create UDFs
@@ -176,13 +173,7 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 				funcname[end-2] = '\0';							 // Remove trailing "##"	
 			}
 
-			if (strcmp(funcname, "bankroll") == 0) { _formula.dBankroll = 0.0; content = FTbankroll; }
-			
-			else if (strcmp(funcname, "defcon") == 0) { _formula.dDefcon = 0.0; content = FTdefcon; }
-			
-			else if (strcmp(funcname, "rake") == 0) { _formula.dRake = 0.0; content = FTrake; }
-			
-			else if (strcmp(funcname, "nit") == 0) { _formula.dNit = 0.0; content = FTnit; }
+			if (strcmp(funcname, "nit") == 0) { _formula.dNit = 0.0; content = FTnit; }
 			
 			else if (memcmp(funcname, "list", 4) == 0) 
 			{ 
@@ -205,18 +196,6 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 		{
 			switch (content) 
 			{
-				 case FTbankroll:
-					 if (strOneLine.GetLength())
-						 _formula.dBankroll = atof(strOneLine.GetString());
-					 break;
-				 case FTdefcon:
-					 if (strOneLine.GetLength())
-						 _formula.dDefcon = atof(strOneLine.GetString());
-					 break;
-				 case FTrake:
-					 if (strOneLine.GetLength())
-						 _formula.dRake = atof(strOneLine.GetString());
-					 break;
 				 case FTnit:
 					 if (strOneLine.GetLength())
 						 _formula.dNit = atof(strOneLine.GetString());
@@ -298,9 +277,6 @@ void CFormula::WriteFormula(CArchive& ar)
 	WriteStandardFunction(ar, "notes");
 	WriteStandardFunction(ar, "dll");
 	// ToDo: Check, if that can be done the normal way too?
-	s.Format("##bankroll##\r\n%f\r\n\r\n", _formula.dBankroll); ar.WriteString(s);
-	s.Format("##defcon##\r\n%f\r\n\r\n", _formula.dDefcon); ar.WriteString(s);
-	s.Format("##rake##\r\n%f\r\n\r\n", _formula.dRake); ar.WriteString(s);
 	s.Format("##nit##\r\n%d\r\n\r\n", (int) _formula.dNit); ar.WriteString(s);
 	WriteStandardFunction(ar, "f$alli");
 	WriteStandardFunction(ar, "f$betsize");
@@ -564,9 +540,6 @@ void CFormula::CopyFormulaFrom(CFormula *f)
 	}
 
 	// Copy numbers
-	_formula.dBankroll = f->formula()->dBankroll;
-	_formula.dDefcon = f->formula()->dDefcon;
-	_formula.dRake = f->formula()->dRake;
 	_formula.dNit = f->formula()->dNit;
 
 	// Copy hand lists

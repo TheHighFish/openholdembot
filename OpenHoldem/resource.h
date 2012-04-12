@@ -64,10 +64,7 @@
 #define IDC_NEWNAME_EDIT                1016
 #define IDC_DESC                        1018
 #define IDC_SETTINGS                    1022
-#define IDC_EDIT_BANKROLL               1023
 #define IDC_EDIT_NIT                    1024
-#define IDC_EDIT_DEFCON                 1025
-#define IDC_EDIT_RAKE                   1026
 #define IDC_BUTTON1                     1029
 #define IDC_CONNECT_BUTTON              1029
 #define IDC_SCINTILLA_CALC              1029

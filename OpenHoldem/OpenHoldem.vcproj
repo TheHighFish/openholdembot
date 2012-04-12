@@ -711,10 +711,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Validator_Rules\range_checks_P_formula_inline.cpp_"
-					>
-				</File>
-				<File
 					RelativePath=".\Validator_Rules\range_checks_players_friends_opponents_inline.cpp_"
 					>
 				</File>
@@ -812,10 +808,6 @@
 				</File>
 				<File
 					RelativePath=".\DialogSelectTable.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSettings.cpp"
 					>
 				</File>
 				<File
@@ -1450,10 +1442,6 @@
 				</File>
 				<File
 					RelativePath=".\DialogSelectTable.h"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSettings.h"
 					>
 				</File>
 				<File

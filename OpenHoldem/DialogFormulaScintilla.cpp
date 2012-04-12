@@ -18,7 +18,6 @@
 #include "DialogHandList.h"
 #include "DialogNew.h"
 #include "DialogRename.h"
-#include "DialogSettings.h"
 #include "MainFrm.h"
 #include "MagicNumbers.h"
 #include "OH_MessageBox.h"
@@ -42,7 +41,7 @@ char * keywords = // Standard functions
 				  // Tablemap, undocumented
 				  "potmethod activemethod "
 				  // Formula File
-				  "rake nit bankroll "
+				  "nit"
 				  // Limits
 				  "bblind sblind ante lim isnl ispl isfl sraiprev sraimin sraimax istournament "
 				  // Hand Rank
@@ -53,8 +52,6 @@ char * keywords = // Standard functions
 				  "betround br betposition dealposition callposition seatposition dealpositionrais betpositionrais "
 				  // Probabilities
 				  "prwin prtie prlos prwinnow prlosnow random randomhand randomround randomround1 randomround2 randomround3 randomround4 "
-				  // F$P Formula
-				  "defcon isdefmode isaggmode "
 				  // Chip Amounts
 				  "balance balance0 balance1 balance2 balance3 balance4 balance5 balance6 balance7 balance8 balance9 "
 				  "stack0 stack1 stack2 stack3 stack4 stack5 stack6 stack7 stack8 stack9 "
@@ -358,7 +355,6 @@ BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
 	ON_COMMAND(ID_FORMULA_EDIT_REDO, &CDlgFormulaScintilla::OnEditRedo)
 	ON_COMMAND(ID_FORMULA_EDIT_SELECTALL, &CDlgFormulaScintilla::OnEditSelectAll)
 	ON_COMMAND(ID_FORMULA_EDIT_FONT, &CDlgFormulaScintilla::OnFont)
-	ON_COMMAND(ID_FORMULA_EDIT_SETTINGS, &CDlgFormulaScintilla::OnSettings)
 	ON_COMMAND(ID_FORMULA_EDIT_HANDLIST, &CDlgFormulaScintilla::OnHandList)
 	ON_COMMAND(ID_FORMULA_EDIT_FIND, &CDlgFormulaScintilla::OnFindReplaceDlg)
 	ON_COMMAND(ID_FORMULA_EDIT_FIND_NEXT, &CDlgFormulaScintilla::OnFindNext)
@@ -385,7 +381,6 @@ BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_RENAME, &CDlgFormulaScintilla::OnRename)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_DELETE, &CDlgFormulaScintilla::OnDelete)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_FONT, &CDlgFormulaScintilla::OnFont)
-	ON_COMMAND(ID_FORMULA_TOOLBAR_SETTINGS, &CDlgFormulaScintilla::OnSettings)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_HANDLIST, &CDlgFormulaScintilla::OnHandList)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_LESS_PRECISION, &CDlgFormulaScintilla::OnBnClickedLessPrecision)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_MORE_PRECISION, &CDlgFormulaScintilla::OnBnClickedMorePrecision)
@@ -1726,29 +1721,6 @@ void CDlgFormulaScintilla::OnFont()
 	}
 }
 
-void CDlgFormulaScintilla::OnSettings() 
-{
-	CDlgSettings		myDialog;
-	CMenu				*file_menu = this->GetMenu()->GetSubMenu(0);
-	COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
-
-	myDialog.bankroll = m_wrk_formula.formula()->dBankroll;
-	myDialog.defcon = m_wrk_formula.formula()->dDefcon;
-	myDialog.rake = m_wrk_formula.formula()->dRake;
-	myDialog.nit = m_wrk_formula.formula()->dNit;
-
-	if (myDialog.DoModal() == IDOK) 
-	{
-		m_wrk_formula.set_bankroll(myDialog.bankroll);
-		m_wrk_formula.set_defcon(myDialog.defcon);
-		m_wrk_formula.set_rake(myDialog.rake);
-		m_wrk_formula.set_nit(myDialog.nit);
-
-		m_dirty = true;
-		pDoc->SetModifiedFlag(true);
-		HandleEnables(true);
-	}
-}
 
 CString CDlgFormulaScintilla::ExtractCommentFromHandList(CString HandListAsString)
 {
@@ -3222,9 +3194,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "network$def", "true if user defined string def appears within the Table Map symbol _s$_network");
 
 	mainParent = parent = AddSymbolTitle("Formula file", NULL, hCatItem);
-	AddSymbol(parent, "rake", "percentage amount added/subtracted to/from the pot");
 	AddSymbol(parent, "nit", "number of iterations tested by the analyzer(s)");
-	AddSymbol(parent, "bankroll", "the user defined real world bankroll");
 
 	mainParent = parent = AddSymbolTitle("Limits", NULL, hCatItem);
 	AddSymbol(parent, "bblind", "the big blind amount");
@@ -3279,11 +3249,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 
 	mainParent = parent = AddSymbolTitle("Formulas", NULL, hCatItem);
 	AddSymbol(parent, "f$name", "reference the specified formula");
-
-	mainParent = parent = AddSymbolTitle("P Formula", NULL, hCatItem);
-	AddSymbol(parent, "defcon", "defense level used in P formula.  Determines the number of analyzer opponents (0.000=maxoffense 1.000=maxdefense) (the defense level dialog uses values 0-10)");
-	AddSymbol(parent, "isdefmode", "true when defcon is at max");
-	AddSymbol(parent, "isaggmode", "true when defcon is at min");
 
 	mainParent = parent = AddSymbolTitle("Chip Amounts", NULL, hCatItem);
 	AddSymbol(parent, "balance", "your balance");

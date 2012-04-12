@@ -17,9 +17,7 @@ struct SSymbols
 	double version;
 
 	//FORMULA FILE
-	double rake;
 	double nit;
-	double bankroll;
 
 	// TABLE-LIMITS 
 	// Accessors could become part of CSymbols again,
@@ -75,11 +73,6 @@ struct SSymbols
 	double randomheartbeat;
 	double randomhand;
 	double randomround[5];				// "randomround" is held in element 4, round specific in elements 0-3
-
-	//P FORMULA
-	double defcon;
-	double isdefmode;
-	double isaggmode;
 
 	//CHIP AMOUNTS
 	double balance[11];				// "balance" is held in element 10, chair specific in elements 0-9
@@ -422,8 +415,6 @@ public:
 	void	set_sym_version(const double d) { ENT _sym.version = d;}
 
 	// formula
-	void	set_sym_rake(const double d) { ENT _sym.rake = d;}
-	void	set_sym_bankroll(const double d) { ENT _sym.bankroll = d;}
 	void	set_sym_nit(const double d) { ENT _sym.nit = d;}
 
 	// limits
@@ -466,11 +457,6 @@ public:
 	void	set_sym_randomheartbeat(const double d) { ENT _sym.randomheartbeat = d;}
 	void	set_sym_randomhand(const double d) { ENT _sym.randomhand = d;}
 	void	set_sym_randomround(const int i, const double d) { ENT _sym.randomround[i] = d;}
-
-	// p formula
-	void	set_sym_defcon(const double d) { ENT _sym.defcon = d;}
-	void	set_sym_isdefmode(const double d) { ENT _sym.isdefmode = d;}
-	void	set_sym_isaggmode(const double d) { ENT _sym.isaggmode = d;}
 
 	// chip amounts
 	void	reset_sym_maxbalance() { ENT _sym.maxbalance = 0; }

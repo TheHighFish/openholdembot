@@ -224,7 +224,6 @@ void CValidator::ValidateGameState()
 #include "Validator_Rules\range_checks_chairs_inline.cpp_"
 #include "Validator_Rules\range_checks_rounds_positions_inline.cpp_"
 #include "Validator_Rules\range_checks_probabilities_inline.cpp_"
-#include "Validator_Rules\range_checks_P_formula_inline.cpp_"
 #include "Validator_Rules\range_checks_chip_amounts_inline.cpp_"
 #include "Validator_Rules\range_checks_number_of_bets_inline.cpp_"
 #include "Validator_Rules\range_checks_list_tests_inline.cpp_"
