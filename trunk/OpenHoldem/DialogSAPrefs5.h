@@ -23,7 +23,6 @@ protected:
 	CComboBox m_HandrankValue;
 	CEdit m_AvTime;
 	virtual BOOL OnInitDialog();
-	CButton m_DisableCaching;
 
 	DECLARE_MESSAGE_MAP()
 };

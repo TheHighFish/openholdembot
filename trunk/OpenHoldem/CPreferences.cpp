@@ -51,14 +51,13 @@ void CPreferences::InitDefaults(void)
 	// Formula editor
 	_precision = 4;
 	_equal = 12;
-	_udf_group = _expand_auto = _expand_debug = _expand_std = _expand_list = _expand_udf = false;
+	_expand_auto = _expand_debug = _expand_std = _expand_list = _expand_udf = false;
 
 	// analyzer
 	_max_opponents = 9;
 
 	// symbols
 	_sym_handrank_value = "169";
-	_sym_disable_caching = false;
 
 	// autoplayer
 	_frame_delay = 2;
@@ -244,8 +243,7 @@ void CPreferences::ReadPreferences()
 
 		// formula editor
 		ReadReg("precision", &_precision);
-		ReadReg("equal", &_equal);
-		ReadReg("udf_group", &_udf_group);		
+		ReadReg("equal", &_equal);	
 		ReadReg("expand_auto", &_expand_auto);
 		ReadReg("expand_debug", &_expand_debug);
 		ReadReg("expand_list", &_expand_list);
@@ -282,7 +280,6 @@ void CPreferences::ReadPreferences()
 		// prefs - symbols
 		ReadReg("avtime", &_sym_av_time);
 		ReadReg("handrank_value", &_sym_handrank_value);
-		ReadReg("disable_caching", &_sym_disable_caching);
 
 		// Prefs - poker tracker
 		ReadReg("pt_disable", &_pt_disable);;

@@ -52,7 +52,6 @@ public:
 	// Symbols
 	const double sym_av_time() { return _sym_av_time; }
 	const CString sym_handrank_value() { return _sym_handrank_value; }
-	const bool sym_disable_caching() { return _sym_disable_caching; }
 	// ICM
 	const double icm_prize1() { return _icm_prize1; }
 	const double icm_prize2() { return _icm_prize2; }
@@ -139,7 +138,6 @@ public:
 	const bool expand_list() { return _expand_list; }
 	const bool expand_std() { return _expand_std; }
 	const bool expand_udf() { return _expand_udf; }
-	const bool udf_group() { return _udf_group; }
 	const int equal() { return _equal; }
 	const int precision() { return _precision; }
 	// Debug logging
@@ -216,7 +214,6 @@ public:
 	// Symbols
 	void set_sym_av_time(const double d) { ENT _sym_av_time = d; WriteReg("avtime", d); }
 	void set_sym_handrank_value(const CString s) { ENT _sym_handrank_value = s; WriteReg("handrank_value", s); }
-	void set_sym_disable_caching(const bool b) { ENT _sym_disable_caching = b; WriteReg("disable_caching", b); }
 
 	// ICM
 	void set_icm_prize1(const double d) { ENT _icm_prize1 = d; WriteReg("icm_prize1", d); }
@@ -311,7 +308,6 @@ public:
 	void set_expand_list(const bool  b) { ENT _expand_list = b; WriteReg("expand_list", b); }
 	void set_expand_std(const bool b) { ENT _expand_std = b; WriteReg("expand_std", b); }
 	void set_expand_udf(const bool b) { ENT _expand_udf = b; WriteReg("expand_udf", b); }
-	void set_udf_group(const bool b) { ENT _udf_group = b; WriteReg("udf_group", b); }
 	void set_equal(const int i) { ENT _equal = i; WriteReg("equal", i); }
 	void set_precision(const int i) { ENT _precision = i; WriteReg("precision", i); }
 
@@ -399,7 +395,6 @@ private:
 	// Symbols
 	double				_sym_av_time;
 	CString				_sym_handrank_value;
-	bool				_sym_disable_caching;
 
 	// ICM
 	double			_icm_prize1;
@@ -495,7 +490,6 @@ private:
 	bool			_expand_list;
 	bool			_expand_std;
 	bool			_expand_udf;
-	bool			_udf_group;
 	int				_equal;
 	int				_precision;
 

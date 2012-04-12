@@ -293,15 +293,9 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 
 	m_current_edit = "";
 	m_dirty = false;
-	m_is_toolbar_visible = true;
-	m_are_linenumbers_visible = false;
-	m_is_selection_margin_visible = false;
-	m_is_folding_margin_visible = false;
-	m_is_syntax_colored = true;
 
 	m_precision = 4;
 	m_equal = 12;
-	m_udf_group = false;
 
 	ok_to_update_debug = false;
 
@@ -360,11 +354,6 @@ BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
 	ON_COMMAND(ID_FORMULA_EDIT_FIND_NEXT, &CDlgFormulaScintilla::OnFindNext)
 	ON_COMMAND(ID_FORMULA_EDIT_FIND_PREV, &CDlgFormulaScintilla::OnFindPrev)
 
-	ON_COMMAND(ID_FORMULA_VIEW_TOOLBAR, &CDlgFormulaScintilla::ToggleToolbar)
-	ON_COMMAND(ID_FORMULA_VIEW_LINENUMBERS, &CDlgFormulaScintilla::ToggleLineNumbers)
-	ON_COMMAND(ID_FORMULA_VIEW_SHOWSELECTIONMARGIN, &CDlgFormulaScintilla::ToggleSelectionMargin)
-	ON_COMMAND(ID_FORMULA_VIEW_SHOWFOLDINGMARGIN, &CDlgFormulaScintilla::ToggleFoldingMargin)
-	ON_COMMAND(ID_FORMULA_VIEW_SYNTAXCOLORING, &CDlgFormulaScintilla::ToggleSyntaxColoring)
 	ON_COMMAND(ID_FORMULA_DEBUG_LOGFDEBUG, &CDlgFormulaScintilla::OnFormulaDebugLogfdebug)
 
 	ON_COMMAND(ID_HELP, &CDlgFormulaScintilla::OnHelp)
@@ -425,8 +414,6 @@ BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
 
 	ON_COMMAND(ID_FORMULA_DEBUG_MYTURN, &CDlgFormulaScintilla::OnFormulaDebugMyturn)
 	ON_WM_SETCURSOR()
-	ON_COMMAND(ID_FORMULA_VIEW_SORTUDF, &CDlgFormulaScintilla::OnFormulaViewSortudf)
-	ON_COMMAND(ID_FORMULA_VIEW_GROUPUDFS, &CDlgFormulaScintilla::OnFormulaViewGroupudf)
 END_MESSAGE_MAP()
 
 CScintillaWnd *CDlgFormulaScintilla::SetupScintilla(CScintillaWnd *pWnd, const char *title) 
@@ -447,15 +434,12 @@ CScintillaWnd *CDlgFormulaScintilla::SetupScintilla(CScintillaWnd *pWnd, const c
 		pWnd->Create("", WS_CHILD|WS_VISIBLE|WS_TABSTOP, rect, this, IDC_SCINCTRL+m_ScinArray.GetSize());
 	}
 	pWnd->Init();
-	pWnd->SetDisplayLinenumbers(m_are_linenumbers_visible);
-	pWnd->SetDisplaySelection(m_is_selection_margin_visible);
-	pWnd->SetDisplayFolding(m_is_folding_margin_visible);
 	pWnd->SendMessage(SCI_SETINDENTATIONGUIDES, false, 0);
 	pWnd->SendMessage(SCI_SETMODEVENTMASK, (SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT), 0);
 	pWnd->SetLexer(SCLEX_CPP);
 	UpdateScintillaKeywords(pWnd);
 	pWnd->EnableWindow(false);
-	SetStyleColors(pWnd, m_is_syntax_colored);
+	SetStyleColors(pWnd, true); // always use syntax-coloring
 
 	LOGFONT logfont;
 	editfont.GetLogFont(&logfont);
@@ -810,7 +794,6 @@ void CDlgFormulaScintilla::PopulateFormulaTree()
 
 	hUDFItem = parent = m_FormulaTree.InsertItem("User Defined Functions");
 	m_FormulaTree.SetItemState(parent, TVIS_BOLD | (prefs.expand_udf() ? TVIS_EXPANDED : 0), TVIS_BOLD | (prefs.expand_udf() ? TVIS_EXPANDED : 0) );
-	m_udf_group = prefs.udf_group();
 
 	for (int i=0; i<m_wrk_formula.formula()->mFunction.GetSize(); i++) 
 	{
@@ -829,8 +812,7 @@ void CDlgFormulaScintilla::PopulateFormulaTree()
 			ConditionallyAddFunction(m_wrk_formula.formula()->mFunction[i].func, m_wrk_formula.formula()->mFunction[i].func_text, filter, hUDFItem);
 	}
 
-	if (m_udf_group)
-		GroupUDFs();
+	GroupUDFs();
 }
 
 BOOL CDlgFormulaScintilla::PreTranslateMessage(MSG* pMsg)
@@ -1311,26 +1293,24 @@ void CDlgFormulaScintilla::OnNew()
 
 			// Add to tree
 			HTREEITEM hNewParent = hUDFItem;
-			if (m_udf_group) 
+
+			CString tempString;
+			CString groupName;
+			GetGroupName(newdlg.CSnewname, groupName);
+			if (!groupName.IsEmpty()) 
 			{
-				CString tempString;
-				CString groupName;
-				GetGroupName(newdlg.CSnewname, groupName);
-				if (!groupName.IsEmpty()) 
+				// Does a group already exist?
+				HTREEITEM hExistingGroup = FindUDFGroupItem(groupName);
+				if (hExistingGroup) 
+					hNewParent = hExistingGroup;
+				else 
 				{
-					// Does a group already exist?
-					HTREEITEM hExistingGroup = FindUDFGroupItem(groupName);
-					if (hExistingGroup) 
-						hNewParent = hExistingGroup;
-					else 
+					// If a group does not exist, is there another UDF to group together?
+					HTREEITEM matchingItem = FindUDFStartingItem(groupName);
+					if (matchingItem) 
 					{
-						// If a group does not exist, is there another UDF to group together?
-						HTREEITEM matchingItem = FindUDFStartingItem(groupName);
-						if (matchingItem) 
-						{
-							hNewParent = m_FormulaTree.InsertItem(groupName, hUDFItem);
-							MoveTreeItem(matchingItem, hNewParent, NULL, false);
-						}
+						hNewParent = m_FormulaTree.InsertItem(groupName, hUDFItem);
+						MoveTreeItem(matchingItem, hNewParent, NULL, false);
 					}
 				}
 			}
@@ -1442,7 +1422,7 @@ void CDlgFormulaScintilla::OnRename()
 		{
 			UpdateAllScintillaKeywords();
 			HTREEITEM hSelectedItem = m_FormulaTree.GetSelectedItem();
-			if (!bRenameUDF || !m_udf_group)
+			if (!bRenameUDF)
 				m_FormulaTree.SetItemText(hSelectedItem, rendlg.CSnewname);
 			else 
 			{
@@ -1526,15 +1506,12 @@ void CDlgFormulaScintilla::OnDelete()
 				m_wrk_formula.set_func_remove(i);
 
 				HTREEITEM oldParentItem = m_FormulaTree.GetParentItem(hItem);
-				m_FormulaTree.DeleteItem(hItem);
-				if (m_udf_group) 
+
+				HTREEITEM hOldSiblingItem = m_FormulaTree.GetChildItem(oldParentItem);
+				if (hOldSiblingItem && m_FormulaTree.GetNextSiblingItem(hOldSiblingItem) == NULL) 
 				{
-					HTREEITEM hOldSiblingItem = m_FormulaTree.GetChildItem(oldParentItem);
-					if (hOldSiblingItem && m_FormulaTree.GetNextSiblingItem(hOldSiblingItem) == NULL) 
-					{
-						MoveTreeItem(hOldSiblingItem, hUDFItem, NULL, true);
-						m_FormulaTree.DeleteItem(oldParentItem);
-					}
+					MoveTreeItem(hOldSiblingItem, hUDFItem, NULL, true);
+					m_FormulaTree.DeleteItem(oldParentItem);
 				}
 				break;
 			}
@@ -1587,8 +1564,6 @@ void CDlgFormulaScintilla::OnToggleBookmark()
 	else 
 	{
 		m_pActiveScinCtrl->AddBookmark(iLine);
-		if (!m_is_selection_margin_visible)
-			ToggleSelectionMargin();
 	}
 }
 
@@ -1992,66 +1967,6 @@ BOOL CDlgFormulaScintilla::OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult)
 	return true;
 }
 
-void CDlgFormulaScintilla::ToggleToolbar() 
-{
-	CMenu *view_menu = this->GetMenu()->GetSubMenu(2);
-
-	if (m_toolBar.IsWindowVisible()) 
-	{
-		m_toolBar.ShowWindow(SW_HIDE);
-		view_menu->CheckMenuItem(VIEW_TOOLBAR, MF_BYPOSITION | MF_UNCHECKED);
-		m_is_toolbar_visible = false;
-	}
-	else 
-	{
-		m_toolBar.ShowWindow(SW_SHOWNA);
-		view_menu->CheckMenuItem(VIEW_TOOLBAR, MF_BYPOSITION | MF_CHECKED);
-		m_is_toolbar_visible = true;
-	}
-
-	int xadj = 0;
-	int yadj = m_is_toolbar_visible ? 26 : 0;  // allow buffer for toolbar on top
-	int botadj = 16;  // allow for status bar on bottom
-	RECT rect;
-	GetClientRect(&rect);
-	m_winMgr.CalcLayout(xadj, yadj, rect.right-rect.left, rect.bottom-rect.top-botadj, this);
-	m_winMgr.SetWindowPositions(this);
-	m_winMgr.CalcLayout(xadj, yadj, rect.right-rect.left, rect.bottom-rect.top-botadj, this);
-	m_winMgr.SetWindowPositions(this);
-}
-
-void CDlgFormulaScintilla::ToggleLineNumbers() 
-{
-	m_are_linenumbers_visible = !m_are_linenumbers_visible;
-	m_pActiveScinCtrl->SetDisplayLinenumbers(m_are_linenumbers_visible);
-
-	HandleEnables(true);
-}
-
-void CDlgFormulaScintilla::ToggleSelectionMargin() 
-{
-	m_is_selection_margin_visible = !m_is_selection_margin_visible;
-	m_pActiveScinCtrl->SetDisplaySelection(m_is_selection_margin_visible);
-
-	HandleEnables(true);
-}
-
-void CDlgFormulaScintilla::ToggleFoldingMargin() 
-{
-	m_is_folding_margin_visible = !m_is_folding_margin_visible;
-	m_pActiveScinCtrl->SetDisplayFolding(m_is_folding_margin_visible);
-
-	HandleEnables(true);
-}
-
-void CDlgFormulaScintilla::ToggleSyntaxColoring() 
-{
-	m_is_syntax_colored = !m_is_syntax_colored;
-	SetStyleColors(m_pActiveScinCtrl, m_is_syntax_colored);
-
-	HandleEnables(true);
-}
-
 LRESULT CDlgFormulaScintilla::OnWinMgr(WPARAM wp, LPARAM lp) 
 {
 	ASSERT(lp);
@@ -2161,7 +2076,7 @@ void CDlgFormulaScintilla::OnSize(UINT nType, int cx, int cy)
 {
 	CDialog::OnSize(nType, cx, cy);
 	int xadj = 0;
-	int yadj = m_is_toolbar_visible ? 26 : 0;  // allow buffer for toolbar on top
+	int yadj = 26;  // allow buffer for toolbar on top
 	int botadj = 16;  // allow for status bar on bottom
 
 	m_winMgr.CalcLayout(xadj, yadj, cx, cy-botadj, this);
@@ -2927,19 +2842,6 @@ BOOL CDlgFormulaScintilla::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	return CDialog::OnSetCursor(pWnd, nHitTest, message);
 }
 
-void CDlgFormulaScintilla::OnFormulaViewGroupudf()
-{
-	GroupUDFs();
-	// !!!UngroupUDFs(); Candidate for removal?
-	SortUdfTree();
-	HandleEnables(true);
-}
-
-void CDlgFormulaScintilla::OnFormulaViewSortudf()
-{
-	SortUdfTree();
-	HandleEnables(true);
-}
 
 void CDlgFormulaScintilla::SortUdfTree()
 {
@@ -2972,7 +2874,6 @@ void CDlgFormulaScintilla::SaveSettingsToRegistry()
 	prefs.set_equal(m_equal);
 	prefs.set_fdebuglog(m_fdebuglog);
 	prefs.set_fdebuglog_myturn(m_fdebuglog_myturn);
-	prefs.set_udf_group(m_udf_group);
 
 	// Tree expansion settings
 	hItem = m_FormulaTree.GetChildItem(NULL);
@@ -3113,12 +3014,6 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
 
 	// View Menu
 	CMenu *view_menu = this->GetMenu()->GetSubMenu(2);
-	view_menu->CheckMenuItem(VIEW_TOOLBAR,			MenuCheckUncheck[true]);
-	view_menu->CheckMenuItem(VIEW_LINENUMBERS,		MenuCheckUncheck[m_are_linenumbers_visible]);
-	view_menu->CheckMenuItem(VIEW_SELECTIONMARGIN,	MenuCheckUncheck[m_is_selection_margin_visible]);
-	view_menu->CheckMenuItem(VIEW_FOLDINGMARGIN,	MenuCheckUncheck[m_is_folding_margin_visible]);
-	view_menu->CheckMenuItem(VIEW_SYNTAXCOLORING,	MenuCheckUncheck[m_is_syntax_colored]);
-	view_menu->CheckMenuItem(VIEW_GROUPUDF,			MenuCheckUncheck[m_udf_group]);
 
 	// Debug Menu
 	CMenu *debug_menu = this->GetMenu()->GetSubMenu(3);

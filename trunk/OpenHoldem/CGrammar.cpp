@@ -565,7 +565,7 @@ double CGrammar::DoCalcF$symbol(CFormula * const f, const char *symbol, CEvalInf
 		{
 			if (strcmp(f->formula()->mFunction[i].func, symbol)==0)
 			{
-				if (f->formula()->mFunction[i].fresh == true && !prefs.sym_disable_caching() && !skipCache)
+				if (f->formula()->mFunction[i].fresh == true && !skipCache) // !!! skipcache?
 				{
 					ret = f->formula()->mFunction[i].cache;
 
