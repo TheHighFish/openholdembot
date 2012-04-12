@@ -304,6 +304,7 @@ static const char * defaultCSevcall = "\
    * (1+((nopponentschecking/nopponentsplaying)/10)) //adjust constant for lurkers \r\n\
    * (1-((nopponentscalling/nopponentsplaying)/20)) //adjust constant for waiters ";
 
-static const double defaultdNit = 1000.0;
+
+static const char * defaultCSnit = "1000";
 
 #endif

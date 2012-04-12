@@ -26,8 +26,6 @@ struct SFormula
 {
 	CArray <SFunction, SFunction> mFunction;
 
-	double dNit;
-
 	CArray <SHandList, SHandList> mHandList;
 
 	bool	inlist[1000][13][13];  // list number, rank0/rank1 - rank0>=rank1 == suited, rank0<rank1 == unsuited
@@ -85,7 +83,6 @@ public:
 	void set_list_add(const SHandList h) { ENT _formula.mHandList.Add(h); }
 	void set_list_remove(const int i) { ENT if (i>=0 && i<_formula.mHandList.GetSize()) _formula.mHandList.RemoveAt(i,1); }
 	//void set_list_removeall() { ENT _formula.mHandList.RemoveAll(); }
-	void set_nit(const double d) { ENT _formula.dNit = d; }
 	tpi_type * set_tpi(const int i) { if (i>=0 && i<_formula.mFunction.GetSize()) return &_formula.mFunction[i].tpi; else return NULL; }
 #undef ENT
 

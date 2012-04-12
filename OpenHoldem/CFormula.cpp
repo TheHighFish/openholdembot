@@ -26,7 +26,6 @@ void CFormula::ClearFormula()
 {
 	CSLock lock(m_critsec);
 
-	 _formula.dNit = 0.0;
 	_formula.mHandList.RemoveAll();
 	_formula.mFunction.RemoveAll();
 	_formula_name = "";
@@ -57,7 +56,7 @@ void CFormula::SetDefaultBot()
 	func.func = "f$close";		func.func_text = defaultCSclose;	_formula.mFunction.Add(func);
 	func.func = "f$test";		func.func_text = defaultCStest;		_formula.mFunction.Add(func);
 	func.func = "f$debug";		func.func_text = defaultCSdebug;	_formula.mFunction.Add(func);
-	_formula.dNit = defaultdNit;
+	func.func = "f$number_of_iterations";	func.func_text = defaultCSnit; _formula.mFunction.Add(func);
 
 	// Create UDFs
 	func.func = "f$evrais"; func.func_text = defaultCSevrais; _formula.mFunction.Add(func);
@@ -173,9 +172,7 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 				funcname[end-2] = '\0';							 // Remove trailing "##"	
 			}
 
-			if (strcmp(funcname, "nit") == 0) { _formula.dNit = 0.0; content = FTnit; }
-			
-			else if (memcmp(funcname, "list", 4) == 0) 
+			if (memcmp(funcname, "list", 4) == 0) 
 			{ 
 				content = FTlist;
 				list.list = funcname;
@@ -196,10 +193,6 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 		{
 			switch (content) 
 			{
-				 case FTnit:
-					 if (strOneLine.GetLength())
-						 _formula.dNit = atof(strOneLine.GetString());
-					 break;
 				 case FTlist:
 					 list.list_text.Append(strOneLine); list.list_text.Append("\r\n");
 					 break;
@@ -277,7 +270,7 @@ void CFormula::WriteFormula(CArchive& ar)
 	WriteStandardFunction(ar, "notes");
 	WriteStandardFunction(ar, "dll");
 	// ToDo: Check, if that can be done the normal way too?
-	s.Format("##nit##\r\n%d\r\n\r\n", (int) _formula.dNit); ar.WriteString(s);
+	WriteStandardFunction(ar, "f$number_of_iterations");
 	WriteStandardFunction(ar, "f$alli");
 	WriteStandardFunction(ar, "f$betsize");
 	WriteStandardFunction(ar, "f$rais");
@@ -538,9 +531,6 @@ void CFormula::CopyFormulaFrom(CFormula *f)
 			_formula.mFunction.Add(func);
 		}
 	}
-
-	// Copy numbers
-	_formula.dNit = f->formula()->dNit;
 
 	// Copy hand lists
 	_formula.mHandList.RemoveAll();

@@ -91,7 +91,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 	// Loop-variables j, k get used inside and outside loops.
 	// It is a bit messy, nearly impossible to fix it.
-	// At least the outer loops ("nit" and "i") could be improved.
+	// At least the outer loops ("f$number_of_iterations" and "i") could be improved.
 	int				j = 0, k = 0;
 	int				randfix = 0;
 	CardMask		addlcomCards = {0}, evalCards = {0}, opp_evalCards = {0}, usedCards = {0}, temp_usedCards = {0};
@@ -119,7 +119,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 	//
 	write_log(prefs.debug_prwin(), "[PrWinThread] Start of main loop.\n");
 
-	// "nit" has to be declared outside of the loop,
+	// "f$number_of_iterations" has to be declared outside of the loop,
 	// as we check afterwards, if the loop terminated successfully.
 	unsigned int nit;
 	for (nit=0; nit < iter_vars.nit(); nit++)

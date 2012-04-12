@@ -143,7 +143,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_STATUS_COMCARDS,OnUpdateStatus)
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_STATUS_PRWIN,OnUpdateStatus)
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_STATUS_NOPP,OnUpdateStatus)
-	ON_UPDATE_COMMAND_UI(ID_INDICATOR_STATUS_NIT,OnUpdateStatus)
+	ON_UPDATE_COMMAND_UI(ID_INDICATOR_STATUS_nit,OnUpdateStatus)
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_STATUS_ACTION,OnUpdateStatus)
 
 	ON_MESSAGE(WMA_SETWINDOWTEXT, OnSetWindowText)
@@ -167,7 +167,7 @@ static UINT indicators[] =
 	ID_INDICATOR_STATUS_HANDRANK,
 	ID_INDICATOR_STATUS_PRWIN,
 	ID_INDICATOR_STATUS_NOPP,
-	ID_INDICATOR_STATUS_NIT,
+	ID_INDICATOR_STATUS_nit,
 	ID_INDICATOR_STATUS_ACTION,
 };
 
@@ -388,7 +388,7 @@ int CMainFrame::CreateStatusBar(void)
 	_status_bar.SetPaneInfo(4, ID_INDICATOR_STATUS_HANDRANK, NULL, 55);
 	_status_bar.SetPaneInfo(5, ID_INDICATOR_STATUS_PRWIN, NULL, 62);
 	_status_bar.SetPaneInfo(6, ID_INDICATOR_STATUS_NOPP, NULL, 15);
-	_status_bar.SetPaneInfo(7, ID_INDICATOR_STATUS_NIT, NULL, 90);
+	_status_bar.SetPaneInfo(7, ID_INDICATOR_STATUS_nit, NULL, 90);
 	_status_bar.SetPaneInfo(8, ID_INDICATOR_STATUS_ACTION, NULL, 70);
 
 	return 0;
@@ -904,14 +904,16 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 				(int) (iter_vars.prwin()*1000), 
 				(int) (iter_vars.prtie()*1000),
 				(int) (iter_vars.prlos()*1000));
-			_status_nit.Format("%d/%d", 
+			/*_status_nit.Format("%d/%d", 
 				iter_vars.iterator_thread_progress(),
-				(int) p_formula->formula()->dNit);
+				(int) p_formula->formula()->dnit);
+				*/ // !!! f$number_of_iterations
 		}
 		else
 		{
 			_status_prwin = "0/0/0";
-			_status_nit.Format("0/%d", (int) p_formula->formula()->dNit);
+			//_status_nit.Format("0/%d", (int) p_formula->formula()->dnit);
+			//!!! f$number_of_iterations
 		}
 
 		// action
@@ -1041,7 +1043,7 @@ void CMainFrame::OnUpdateStatus(CCmdUI *pCmdUI)
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_HANDRANK), _status_handrank);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PRWIN), _status_prwin);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_NOPP), _status_nopp);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_NIT), _status_nit);
+	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_nit), _status_nit);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_ACTION), _status_action);
 	// if action==bet ... _status_bar.GetStatusBarCtrl().SetBkColor(RGB(180,180,180));
 }

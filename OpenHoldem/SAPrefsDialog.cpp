@@ -47,8 +47,8 @@ static char THIS_FILE[] = __FILE__;
 CSAPrefsDialog::CSAPrefsDialog(CWnd* pParent /*=NULL*/)
 		: CDialog(CSAPrefsDialog::IDD, pParent)
 {
-	//{{AFX_DATA_INIT(CSAPrefsDialog)
-	//}}AFX_DATA_INIT
+	//{{AFX_DATA_Init(CSAPrefsDialog)
+	//}}AFX_DATA_Init
 
 	m_iCurPage = -1;
 	m_pages.RemoveAll();
