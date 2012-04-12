@@ -231,7 +231,6 @@ BEGIN
         MENUITEM "Select All\tCtrl+A",          ID_FORMULA_EDIT_SELECTALL
         MENUITEM SEPARATOR
         MENUITEM "&Font",                       ID_FORMULA_EDIT_FONT
-        MENUITEM "&Settings",                   ID_FORMULA_EDIT_SETTINGS
         MENUITEM "&Hand List",                  ID_FORMULA_EDIT_HANDLIST
     END
     POPUP "&View"
@@ -540,7 +539,6 @@ BEGIN
     CONTROL         "",IDC_CACHEREFRESH_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,101,117,11,14
     LTEXT           "Cache refresh (secs)",IDC_STATIC,3,131,68,8
 END
-
 
 IDD_SAPREFS7 DIALOGEX 0, 0, 219, 155
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
@@ -1322,7 +1320,7 @@ BEGIN
     ID_INDICATOR_STATUS_PRWIN "prwin"
     ID_INDICATOR_STATUS_NOPP "nopp"
     ID_INDICATOR_STATUS_ACTION "action"
-    ID_INDICATOR_STATUS_NIT "nit"
+    ID_INDICATOR_STATUS_nit "f$number_of_iterations"
     ID_INDICATOR_STATUS_POKERHAND "poker hand"
     ID_INDICATOR_STATUS_HANDRANK "status handrank"
     ID_INDICATOR_FORMULA_CURPOS "current row"

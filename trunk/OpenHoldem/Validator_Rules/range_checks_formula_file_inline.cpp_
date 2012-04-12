@@ -10,8 +10,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nit")
     PRECONDITION (true)
-    POSTCONDITION (gws("nit") >= 0)
-    SYMBOLS_POSSIBLY_AFFECTED ("nit")
+    POSTCONDITION (gws("f$number_of_iterations") >= 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("f$number_of_iterations")
 END_TESTCASE
 
 

@@ -1102,7 +1102,6 @@ void CSymbols::CalcSymbols(void)
 	// Symbols derived from current table map/formula
 	set_sym_site(1);																		// site
 	set_sym_nchairs(p_tablemap->nchairs());													// nchairs
-	set_sym_nit(p_formula->formula()->dNit);												// nit
 								
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -4267,7 +4266,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "network$", 8)==0)									return p_tablemap->network().Find(&a[8])!=-1;
 
 	//FORMULA FILE
-	if (memcmp(a, "nit", 3)==0 && strlen(a)==3)							return _sym.nit;
+	if (memcmp(a, "f$number_of_iterations", 3)==0 && strlen(a)==3)							return _sym.nit;
 
 	// AUTOPLAYER 1(2)
 	if (memcmp(a, "myturnbits", 10)==0 && strlen(a)==10)				return _sym.myturnbits;

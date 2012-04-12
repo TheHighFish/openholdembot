@@ -9,7 +9,7 @@
 #define ID_INDICATOR_STATUS_PRWIN       130
 #define ID_INDICATOR_STATUS_NOPP        131
 #define ID_INDICATOR_STATUS_ACTION      132
-#define ID_INDICATOR_STATUS_NIT         133
+#define ID_INDICATOR_STATUS_nit         133
 #define ID_INDICATOR_STATUS_POKERHAND   134
 #define ID_INDICATOR_STATUS_HANDRANK    135
 #define IDD_DIALOG1                     136
@@ -64,7 +64,7 @@
 #define IDC_NEWNAME_EDIT                1016
 #define IDC_DESC                        1018
 #define IDC_SETTINGS                    1022
-#define IDC_EDIT_NIT                    1024
+#define IDC_EDIT_nit                    1024
 #define IDC_BUTTON1                     1029
 #define IDC_CONNECT_BUTTON              1029
 #define IDC_SCINTILLA_CALC              1029
@@ -508,7 +508,7 @@
 #define ID_MAIN_TOOLBAR_LOCK_BLINDS     32912
 #define ID_DEBUG_LOGF                   32916
 #define ID_FORMULA_DEBUG_LOGFDEBUG      32917
-#define ID_DEBUG_ONLYWHENIT             32918
+#define ID_DEBUG_ONLYWHEnit             32918
 #define ID_FORMULA_DEBUG_MYTURN         32919
 #define ID_MAIN_TOOLBAR_SCRAPER_OUTPUT  32920
 #define ID_VIEW_SCRAPEROUTPUT           32921
