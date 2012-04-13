@@ -141,60 +141,42 @@ void CManualModeDlg::SetDealer(int chair)
 void CManualModeDlg::SetBalance(int chair, double b)
 {
 	CString balance;
-	if(b != int(b))
-		balance.Format("%.2f", b);
-	else
-		balance.Format("%.0f", b);
+	balance.Format("%s", NumberToFormattedString(b));
 	playerbalance[chair] = balance;
 }
 
 void CManualModeDlg::SetBet(int chair, double b)
 {
 	CString bet;
-	if(b != int(b))
-		bet.Format("%.2f", b);
-	else
-		bet.Format("%.0f", b);
+	bet.Format("%s", NumberToFormattedString(b));
 	playerbet[chair] = bet;
 }
 
 void CManualModeDlg::SetSBlind(double b)
 {
 	CString sb;
-	if(b != int(b))
-		sb.Format("%.2f", b);
-	else
-		sb.Format("%.0f", b);
+	sb.Format("%s", NumberToFormattedString(b));
 	sblind = sb;
 }
 
 void CManualModeDlg::SetBBlind(double b)
 {
 	CString bb;
-	if(b != int(b))
-		bb.Format("%.2f", b);
-	else
-		bb.Format("%.0f", b);
+	bb.Format("%s", NumberToFormattedString(b));
 	bblind = bb;
 }
 
 void CManualModeDlg::SetBBet(double b)
 {
 	CString bb;
-	if(b != int(b))
-		bb.Format("%.2f", b);
-	else
-		bb.Format("%.0f", b);
+	bb.Format("%s", NumberToFormattedString(b));
 	bbet = bb;
 }
 
 void CManualModeDlg::SetAnte(double a)
 {
 	CString an;
-	if(a != int(a))
-		an.Format("%.2f", a);
-	else
-		an.Format("%.0f", a);
+	an.Format("%s", NumberToFormattedString(a));
 	ante = an;
 }
 
