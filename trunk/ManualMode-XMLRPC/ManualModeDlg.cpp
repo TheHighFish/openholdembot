@@ -2,6 +2,8 @@
 //
 
 #include "stdafx.h"
+#include <cmath>
+
 #include "ManualModeDlg.h"
 
 #include "..\OpenHoldem\MagicNumbers.h"
@@ -67,7 +69,7 @@ int dbutn[k_max_number_of_players][2] =
 CString NumberToFormattedString(double number)
 {
 	CString result = "";
-	if (abs(number - int(number)) >= 0.01)
+	if (fabs(number - int(number)) >= 0.01)
 	{
 		// Floating point with 2 digits
 		result.Format("%.2f", number);
