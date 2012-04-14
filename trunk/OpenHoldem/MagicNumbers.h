@@ -413,4 +413,38 @@ const int k_number_of_pocketcard_combinations_without_order = 1326;
 // For assertions of codes, that should never be executed
 const bool k_ThisMustNotHappen = false;
 
+
+
+enum PokerTrackerGameTypes
+{
+	k_pokertracker_cashgame,
+	k_pokertracker_sng_mtt
+};
+
+enum PokerTrackerBasicStatIDs
+{
+	// voluntary put in preflop	
+	k_pt_VPIP = 0,
+	//...
+};
+
+enum PokerTrackerPositionalPreflopStatIDs
+{
+	// voluntary put in preflop from BU
+	k_pt_VPIP_BU,
+	//...
+};
+
+enum PokerTrackerPositionalAdvancedStatIDs
+{
+
+}
+
+
+
+
+
+
 #endif // _INC_MAGICNUMBERS_H
+
+
