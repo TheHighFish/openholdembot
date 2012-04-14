@@ -425,7 +425,8 @@ enum PokerTrackerBasicStatIDs
 {
 	// voluntary put in preflop	
 	k_pt_VPIP = 0,
-	//...
+	//...,
+	k_number_of_basic_queries
 };
 
 enum PokerTrackerPositionalPreflopStatIDs
