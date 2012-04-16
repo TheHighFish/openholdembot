@@ -405,6 +405,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CTablePositioner.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CValidator.cpp"
 				>
 			</File>
@@ -1114,6 +1118,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CTablePositioner.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CValidator.h"
 				>
 			</File>
@@ -1598,6 +1606,22 @@
 				</File>
 				<File
 					RelativePath=".\PerlEz.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="PokerTracker"
+				>
+				<File
+					RelativePath=".\PokerTracker_Queries\AdvancedStats.h"
+					>
+				</File>
+				<File
+					RelativePath=".\PokerTracker_Queries\BaiscStats.h"
+					>
+				</File>
+				<File
+					RelativePath=".\PokerTracker_Queries\PositionalPreflopStats.h.h"
 					>
 				</File>
 			</Filter>

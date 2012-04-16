@@ -14,6 +14,7 @@
 #include "CScraper.h"
 #include "CSharedMem.h"
 #include "CSymbols.h"
+#include "CTablePositioner.h"
 #include "DialogScraperOutput.h"
 #include "DialogSelectTable.h"
 #include "MagicNumbers.h"
@@ -660,6 +661,8 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			}
 		}
 	}
+	p_table_positioner->PositionMyWindow();
+
 	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Unlocking autoconnector-mutex\n");
 	_autoconnector_mutex->Unlock();
 	return (SelectedItem != -1);

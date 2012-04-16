@@ -25,6 +25,8 @@ public:
 	void MarkPokerWindowAsUnAttached();
 	void RememberTimeOfLastFailedAttemptToConnect();
 	time_t GetTimeOfLastFailedAttemptToConnect();
+	// Used for the table positioner
+	HWND *GetListOfConnectedPokerWindows();
 private:
 	#define ENT CSLock lock(m_critsec);
 private:

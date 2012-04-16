@@ -91,4 +91,7 @@ time_t CSharedMem::GetTimeOfLastFailedAttemptToConnect()
 	return LastFailedAttemptToConnect;
 }
 
-
+HWND *CSharedMem::GetListOfConnectedPokerWindows()
+{
+	return AttachedPokerWindows;
+}
