@@ -113,8 +113,9 @@ f$OpenPPL_BetSizeAdjustedToUsersBalance
 isfl ? f$OpenPPL_HINT_No_NL_BetSizing_In_A_FL_Game : 
 // Only swag, if we really decided to swag
 // and not because the betsize-adaption resulted in a positive betsize.
-f$OpenPPL_DecisionIsFixedBetInBigBlinds    ? f$OpenPPL_BetSizeAdjustedToCasinosInputRequirements : 
-f$OpenPPL_DecisionIsPercentagedPotsizedBet ? f$OpenPPL_BetSizeAdjustedToCasinosInputRequirements : 
+f$OpenPPL_DecisionIsFixedBetInBigBlinds        ? f$OpenPPL_BetSizeAdjustedToCasinosInputRequirements : 
+f$OpenPPL_DecisionIsPercentagedPotsizedBet     ? f$OpenPPL_BetSizeAdjustedToCasinosInputRequirements : 
+f$OpenPPL_DecisionIsBetPotOrBetHalfPotOrBetMax ? f$OpenPPL_BetSizeAdjustedToCasinosInputRequirements : 
 0
 
 //*****************************************************************************

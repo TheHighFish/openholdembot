@@ -103,6 +103,9 @@ f$OpenPPL_RaisePot
 ##f$OpenPPL_BetMax##
 f$OpenPPL_RaiseMax
 
+##f$OpenPPL_Allin##
+f$OpenPPL_RaiseMax
+
 ##f$OpenPPL_None##
 -1000007
 
@@ -1203,6 +1206,12 @@ f$OpenPPL_ERROR_Betround_Out_Of_Range
 
 ##f$OpenPPL_DecisionIsFixedBetInBigBlinds##
 (f$OpenPPL_Decision > 0) 
+
+##f$OpenPPL_DecisionIsBetPotOrBetHalfPotOrBetMax##
+// Used for sanity checks in f$swag
+   (f$OpenPPL_Decision == f$OpenPPL_BetHalfPot)
+|| (f$OpenPPL_Decision == f$OpenPPL_BetPot)
+|| (f$OpenPPL_Decision == f$OpenPPL_BetMax)
 
 ##f$OpenPPL_DecisionIsFixedAction##
 (f$OpenPPL_Decision < -1000000) 
