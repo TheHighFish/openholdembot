@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "CTablePositioner.h"
 
+#include "CPreferences.h"
 #include "CSharedMem.h"
 #include "MagicNumbers.h"
 #include "Winuser.h"
@@ -24,12 +25,28 @@ void CTablePositioner::PositionMyWindow()
 	int number_of_child_windows = MAX_SESSION_IDS;
 	HWND *HWNDs_of_child_windows = p_sharedmem->GetListOfConnectedPokerWindows();
 
-	// Tiling windows: http://msdn.microsoft.com/en-us/library/windows/desktop/ms633554(v=vs.85).aspx
-	// Cascading windows: http://msdn.microsoft.com/en-us/library/windows/desktop/ms632674(v=vs.85).aspx
-	TileWindows(
-		NULL,				// Parent; NULL = whole desktop
-		MDITILE_HORIZONTAL,	// How; either MDITILE_HORIZONTA or MDITILE_VERTICAL
-		NULL,				// Target area; NULL = parent window, here desktop
-		number_of_child_windows,
-		HWNDs_of_child_windows);
+	if (prefs.table_positioner_options() == k_position_tables_tiled)
+	{
+		// Tiling windows: http://msdn.microsoft.com/en-us/library/windows/desktop/ms633554(v=vs.85).aspx
+		TileWindows(
+			NULL,				// Parent; NULL = whole desktop
+			MDITILE_HORIZONTAL,	// How; either MDITILE_HORIZONTA or MDITILE_VERTICAL
+			NULL,				// Target area; NULL = parent window, here desktop
+			number_of_child_windows,
+			HWNDs_of_child_windows);
+	}
+	else if (prefs.table_positioner_options() == k_position_tables_cascaded)
+	{
+		// Cascading windows: http://msdn.microsoft.com/en-us/library/windows/desktop/ms632674(v=vs.85).aspx
+		CascadeWindows(
+			NULL,				// Parent; NULL = whole desktop
+			NULL,				// How; NULL means: order specified in the lpKids array
+			NULL,				// Target area; NULL = parent window, here desktop
+			number_of_child_windows,
+			HWNDs_of_child_windows);
+	}
+	else
+	{
+		// prefs.table_positioner_options() == k_position_tables_never
+	}
 }
