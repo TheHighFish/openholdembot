@@ -46,6 +46,7 @@
 #include "DialogSAPrefs18.h"
 #include "DialogSAPrefs19.h"
 #include "DialogSAPrefs20.h"
+#include "DialogSAPrefs21.h"
 #include "DialogScraperOutput.h"
 #include "inlines/eval.h"
 #include "MagicNumbers.h"
@@ -514,6 +515,7 @@ void CMainFrame::OnEditPreferences()
 	CDlgSAPrefs18 page18;
 	CDlgSAPrefs19 page19;
 	CDlgSAPrefs20 page20;
+	CDlgSAPrefs21 page21;
 
 	// add pages
 	dlg.AddPage(page1,  "Analyzer");
@@ -535,6 +537,7 @@ void CMainFrame::OnEditPreferences()
 	dlg.AddPage(page8,  "Replay Frames");
 	dlg.AddPage(page4,  "Scraper");
 	dlg.AddPage(page5,  "Symbols");
+	dlg.AddPage(page21, "Table Positioner");
 	dlg.AddPage(page12, "Validator");	
 
 	// this one will be a child node on the tree

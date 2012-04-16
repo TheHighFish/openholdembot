@@ -169,6 +169,8 @@ public:
 	const int lazy_scraping_when_to_scrape() { return _lazy_scraping_when_to_scrape; }
 	// Handhistory generator
 	const bool handhistory_generator_enable() { return _handhistory_generator_enable; }
+	// Table Positioner
+	const int table_positioner_options() { return _table_positioner_options; }	
 
 	// Misc
 	const int scraper_zoom() { return _scraper_zoom; }
@@ -347,6 +349,9 @@ public:
 
 	// Handhistory generator
 	void set_handhistory_generator_enable(const bool b) { ENT _handhistory_generator_enable = b; WriteReg("handhistory_generator_enable", b); }
+
+	// Table Positioner
+	void set_table_positioner_options(const int i) { ENT _table_positioner_options = i; WriteReg("table_positioner_options", i); }
 
 	// Misc
 	// (No method for versus_path,
@@ -529,6 +534,9 @@ private:
 
 	// Handhistory generator
 	bool			_handhistory_generator_enable;
+
+	// Table Positioner
+	int				_table_positioner_options;
 
 	// Misc
 	int				_scraper_zoom;
