@@ -27,6 +27,9 @@ NEW STUFF:
 - Support for betpotmethod and betpot_X_Y_button (e.g. X=1, Y=2 represents 1/2 pot)
   (1<=x<=k_max_number_of_betpot_X_y_buttons && 1<=y<=k_max_number_of_betpot_x_Y_buttons)
   [Strikles + THF]
+- Implementing a table-positioner that optionally moves the poker-tables 
+  to reasonable positions.
+  [THF]
   
 
 MAINTENANCE:
@@ -68,6 +71,25 @@ MAINTENANCE:
   for SNGs due to changes in the protocol.
   So we got rid of it.
   [THF]
+- Simplified the GUI and removed lots of superfluous options
+  * show/hide main toolbar / flags toolbar / status bar.
+  [THF]
+- Removed the old symbols bankroll, rake, defcon (and also isaggmode, isdefmode)
+  which have been very rarely (if ever) used.
+  People who need them can create a UDF for them,
+  but they clearly are not necessary for the majority of users
+  and don't deserve an extra settings dialog.
+  [THF]
+- Replaced nit by f$number_of_iterations for consistency.
+  [THF]
+- Remving View-menu in formula-editor.
+  That was simply over-configuration,
+  Sort UDFs / Groups UDFs / Show Line Numbers / Syntax-highlighting, etc.
+  are very useful features. There is no need to disable them.
+  [THF]
+  
+BUG FIXES: 
+  
 
 v2.1.9.3 2012-01-25
 ===================
