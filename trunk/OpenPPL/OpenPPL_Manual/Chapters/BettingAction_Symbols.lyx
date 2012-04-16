@@ -115,7 +115,11 @@ None
 \end_layout
 
 \begin_layout Remark*
-Calculation depends on game-history (multiple frames) 
+Calculation depends on game-history (multiple frames) .
+\end_layout
+
+\begin_layout Remark*
+Contrary to Standard PPL Bets is always 1 preflop.
 \end_layout
 
 \end_inset
