@@ -27,6 +27,7 @@
 #include "CStringMatch.h"
 #include "CSymbols.h"
 #include "CTableLimits.h"
+#include "CTablePositioner.h"
 #include "CValidator.h"
 #include "CVersus.h"
 
@@ -80,6 +81,8 @@ void InstantiateAllSingletons()
 		p_versus = new CVersus;	
 	if (!p_validator) 
 		p_validator = new CValidator;
+	if (!p_table_positioner)
+		p_table_positioner = new CTablePositioner;
 	if (!p_autoconnector) 
 		p_autoconnector = new CAutoConnector;
 	if (!p_rebuymanagement) 
@@ -113,6 +116,8 @@ void DeleteAllSingletons()
 		{ delete p_rebuymanagement; p_rebuymanagement = NULL; }
 	if (p_autoconnector) 
 		{ delete p_autoconnector; p_autoconnector = NULL; }
+	if (p_table_positioner)
+		{ delete p_table_positioner; p_table_positioner = NULL; }
 	if (p_validator) 
 		{ delete p_validator; p_validator = NULL; }
 	if (p_versus)  

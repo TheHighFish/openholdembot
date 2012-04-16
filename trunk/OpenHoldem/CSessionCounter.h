@@ -1,7 +1,7 @@
 #ifndef INC_CSESSIONCOUNTER_H
 #define INC_CSESSIONCOUNTER_H
 
-static const int MAX_SESSION_IDS = 25;
+#include "MagicNumbers.h"
 
 extern class CSessionCounter
 {

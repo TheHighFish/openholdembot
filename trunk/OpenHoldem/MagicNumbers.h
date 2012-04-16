@@ -44,6 +44,9 @@ const int k_gametype_NL      =  0;
 const int k_gametype_PL  	 =  1;
 const int k_gametype_FL      =  2;
 
+// Session IDS (max number of tables)
+static const int MAX_SESSION_IDS = 25;
+
 // buttons and other scraper constants
 const int k_max_number_of_buttons = 10;
 const int k_max_number_of_i86X_buttons = 10;
@@ -439,7 +442,7 @@ enum PokerTrackerPositionalPreflopStatIDs
 enum PokerTrackerPositionalAdvancedStatIDs
 {
 
-}
+};
 
 
 
