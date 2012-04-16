@@ -1,3 +1,21 @@
+v1.0.6 2012-xx-yy
+=================
+BUG FIXES: 
+- f$OpenPPL_PlayersBehindDealPosition2ChairDidAct didn't work correctly because of a typo.
+  Thanks to Postenjak for reporting.
+  [THF]
+- Improved betsize for percentaged potsized bets had one division by 100 too much.
+  Thanks to Subiendolo and Kalamees for reporting and to Lavezzi for a log-file.
+  [THF]	
+- some memory symbols got reset only once per hand, 
+  despite they should reset once per turn.
+  Thanks to Postenjak for reporting.
+  [THF]
+- Incomplete sanity checks prevented a raise if we used BetPot or BetHalfPot,
+  because only fixed bets and percentaged potsized bets got considered in f$swag.
+  Thanks to PokerValy and Lavezzi for reporting.
+  [THF]
+
 v1.0.5 2012-04-09
 =================
 BUG FIXES: 
