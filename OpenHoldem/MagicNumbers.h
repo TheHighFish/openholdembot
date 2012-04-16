@@ -161,7 +161,6 @@ const char k_betpot_button_name[k_max_betpot_buttons][k_max_length_betpot_button
 	"betpot_1_4"
 };
 
-
 const int first_primary_autoplayer_function = k_autoplayer_function_allin;
 const int last_primary_autoplayer_function = k_autoplayer_function_call;
 const int first_secondary_autoplayer_function = k_autoplayer_function_prefold;
@@ -192,6 +191,12 @@ const char k_autoplayer_functionname[k_number_of_autoplayer_functions][k_max_len
 	"f$chat"
 };
 
+enum table_positioner_options
+{
+	k_position_tables_never,
+	k_position_tables_tiled,
+	k_position_tables_cascaded
+};
 
 // numeric constants
 #define M_E			2.7182818284590452354

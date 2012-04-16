@@ -203,6 +203,9 @@ void CPreferences::InitDefaults(void)
 	// Handhistory generator
 	_handhistory_generator_enable = false;
 
+	// Table positioner
+	_table_positioner_options = k_position_tables_tiled;
+
 	// Obscure
 	_window_class_name = "OpenHoldem";
 	_mutex_name= "OHAntiColl";
@@ -389,6 +392,9 @@ void CPreferences::ReadPreferences()
 
 		// Handhistory_generator
 		ReadReg("handhistory_generator_enable", &_handhistory_generator_enable);
+
+		// Table positioner
+		ReadReg("table_positioner_options", &_table_positioner_options);
 
 		// obscure
 		ReadReg("window_class_name", &_window_class_name);

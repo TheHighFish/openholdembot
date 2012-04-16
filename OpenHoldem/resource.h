@@ -56,6 +56,7 @@
 #define IDD_SAPREFS18                   184
 #define IDD_SAPREFS19                   185
 #define IDD_SAPREFS20                   186
+#define IDD_SAPREFS21					187
 #define IDC_NEW                         1006
 #define IDC_DELETE                      1007
 #define IDC_RENAME                      1013
@@ -439,6 +440,9 @@
 #define IDC_RECORD_MY_TURN              1363
 #define IDC_INFOBOX_STATIC              1364
 #define IDC_RADIO_SCRAPE_ON_CARDS       1365
+#define IDC_RADIO_POSITION_NEVER		1366
+#define IDC_RADIO_POSITION_TILED		1367
+#define IDC_RADIO_POSITION_CASCADED		1368
 
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
@@ -566,7 +570,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        180
 #define _APS_NEXT_COMMAND_VALUE         32993
-#define _APS_NEXT_CONTROL_VALUE         1366
+#define _APS_NEXT_CONTROL_VALUE         1369
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
