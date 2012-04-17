@@ -7,21 +7,22 @@
 // as indices for an array.
 const char* ActionConstantNames(int action_constant)
 {
-	// 4 digit names of action-constants for use in the autoplayer-log.
+	// names of action-constants for use in the autoplayer-log.
+	// Formerly 4 digits (WinHoldem-style), now more sane.
 	if (action_constant == k_action_undefined)
-		return "UNDF";
+		return "UNDEFINED";
 	else if (action_constant == k_action_fold)
 		return "FOLD";
 	else if (action_constant == k_action_check)
-		return "CHEC";
+		return "CHECK";
 	else if (action_constant == k_action_call)
 		return "CALL";
 	else if (action_constant == k_action_raise)
-		return "RAIS";
-//!!!	else if (action_constant == k_action_betsize)
-//!!!		return "SWAG";
+		return "RAISE";
+	else if (action_constant == k_action_betsize)
+		return "NL-BETSIZING";
 	else if (action_constant == k_action_allin)
-		return "ALLI";
+		return "ALLIn";
 	else
 	{
 		assert(k_this_must_not_happen);

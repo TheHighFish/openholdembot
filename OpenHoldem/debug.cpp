@@ -226,10 +226,6 @@ to_return:
 
 void start_log(void) 
 {
-	//!!!
-	//if (prefs.log_level()==0)
-	//	return;
-	
 	if (log_fp!=NULL)
 		return;
 
