@@ -125,10 +125,6 @@ void CPreferences::InitDefaults(void)
 
 	//  Perl
 	_perl_default_formula = "";
-	//  Unfortunately "%SystemRoot%\\notepad.exe" does not work;
-	//	It seems, this kind of filename substitution is only
-	//	supported by the DOS shell, not by the Windows API.
-	//	Therefore we use a hardcoded filename.
 	_perl_editor = "C:\\Windows\\notepad.exe";
 	_perl_load_default_formula = false;
 	_perl_load_interpreter = false;
@@ -138,6 +134,16 @@ void CPreferences::InitDefaults(void)
 	//  Just a security measure against crazy bot formulas...
 	_chat_min_delay = 600;	  //  seconds
 	_chat_random_delay = 3000;  //  seconds;
+	TCHAR windows_path[MAX_PATH];
+	if (S_OK == SHGetFolderPath(NULL, CSIDL_WINDOWS, NULL, 0, windows_path)) 
+	{
+		_perl_editor = windows_path;
+		_perl_editor += _T("\\notepad.exe");
+	}
+	else
+	{
+		_perl_editor = _T("C:\\Windows\\notepad.exe");
+	}
 
 	// log$ loggin
 	_log_symbol_enabled = false;
