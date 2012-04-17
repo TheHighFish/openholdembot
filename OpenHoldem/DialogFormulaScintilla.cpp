@@ -375,7 +375,6 @@ BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_MORE_PRECISION, &CDlgFormulaScintilla::OnBnClickedMorePrecision)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_EQUAL_LEFT, &CDlgFormulaScintilla::OnBnClickedEqualLeft)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_EQUAL_RIGHT, &CDlgFormulaScintilla::OnBnClickedEqualRight)
-	//ON_COMMAND(ID_FORMULA_TOOLBAR_HELP, &CMainFrame::OnHelp()) !!!
 
 	// Buttons
 	ON_BN_CLICKED(IDOK, &CDlgFormulaScintilla::OnBnClickedOk)

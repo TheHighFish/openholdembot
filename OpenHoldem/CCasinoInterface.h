@@ -30,7 +30,7 @@ private:
 	// ToDo: Sliderbar, Chatbox, etc.
 
 public:
-	// regions - move to CCasinoInterface // !!!
+	// regions 
 	RECT action_buttons[k_number_of_autoplayer_functions];
 	RECT i3_button;
 	RECT i3_edit_region;

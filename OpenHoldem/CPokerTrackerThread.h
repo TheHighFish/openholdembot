@@ -45,9 +45,6 @@ private:
 	bool			_connected;
 	PGconn *		_pgconn;
 
-// !!!
-#define k_max_length_of_playername 30
-
 	struct SPlayerStats 
 	{
 		char		scraped_name[k_max_length_of_playername];

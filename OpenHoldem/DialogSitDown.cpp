@@ -37,12 +37,8 @@ BOOL CDlgSitDown::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	nvacant = 0;
-	for (i=0; i<10; i++) 
+	for (i=0; i<k_max_number_of_players; i++) 
 	{
-		// !!! Still needed without PPro?
-		//!!!	if (p_pokerpro->ppdata()->m_pinf[i].m_isSeated&0x1)
-			continue;
-
 		vacant[nvacant++] = i;
 		s.Format("Chair %d", i);
 		m_AvailableChairs.AddString(s.GetString());
