@@ -74,13 +74,6 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 	char				title[MAX_WINDOW_TITLE] = {0};
 	int					N = 0;
 
-	// !!! PokerPro variables only
-	/*
-	const char			*pbytes = NULL;
-	int					nbytes = 0, result = 0;
-	fd_set				fd;
-	timeval				tv;*/
-
 	_heartbeat_counter++;
 
 	// Seed the RNG

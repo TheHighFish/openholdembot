@@ -907,16 +907,14 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 				(int) (iter_vars.prwin()*1000), 
 				(int) (iter_vars.prtie()*1000),
 				(int) (iter_vars.prlos()*1000));
-			/*_status_nit.Format("%d/%d", 
+			_status_nit.Format("%d/%d", 
 				iter_vars.iterator_thread_progress(),
-				(int) p_formula->formula()->dnit);
-				*/ // !!! f$number_of_iterations
+				(int) p_symbols->GetSymbolVal("f$number_of_iterations", NULL));
 		}
 		else
 		{
 			_status_prwin = "0/0/0";
-			//_status_nit.Format("0/%d", (int) p_formula->formula()->dnit);
-			//!!! f$number_of_iterations
+			_status_nit.Format("0/%d", (int) p_symbols->GetSymbolVal("f$number_of_iterations", NULL));
 		}
 
 		// action

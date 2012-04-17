@@ -287,8 +287,6 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	for (int i=0; i<(k_max_number_of_players+1); i++)
 	{
 		set_sym_balance(i, 0);
-		//!!!
-		write_log(3, "Resetting currentbet\n");
 		set_sym_currentbet(i, 0);
 	}
 	reset_sym_maxbalance();
@@ -1166,10 +1164,9 @@ void CSymbols::CalcSymbols(void)
 
 bool CSymbols::CalcUserChair(void)
 {
-	int				i = 0;
 	int				num_buttons_enabled = 0;
 
-	for (i=0; i<10; i++) //!!!
+	for (int i=0; i<k_max_number_of_players; i++)
 	{
 		CString button_label = p_scraper->button_label(i);
 
@@ -1187,7 +1184,7 @@ bool CSymbols::CalcUserChair(void)
 
 	if (num_buttons_enabled>=2)
 	{
-		for (i=0; i<p_tablemap->nchairs(); i++)
+		for (int i=0; i<p_tablemap->nchairs(); i++)
 		{
 			if (p_scraper->card_player(i, 0) != CARD_NOCARD && p_scraper->card_player(i, 0) != CARD_BACK &&
 				p_scraper->card_player(i, 1) != CARD_NOCARD && p_scraper->card_player(i, 1) != CARD_BACK)
@@ -1205,7 +1202,7 @@ bool CSymbols::CalcUserChair(void)
 void CSymbols::CalcBetBalanceStack(void)
 {
 	int				oppcount = 0;
-	double			stack[10] = {0}, temp = 0.;
+	double			stack[k_max_number_of_players] = {0}, temp = 0.;
 
 	for (int i=0; i<_sym.nchairs; i++)
 		set_sym_balance(i, _sym.nchairs>i ? p_scraper->player_balance(i) : 0);						// balance0-9
@@ -1282,8 +1279,7 @@ void CSymbols::CalcBetBalanceStack(void)
 		}
 	}
 
-	set_sym_currentbet(10, _user_chair_confirmed ? p_scraper->player_bet(_sym.userchair) : 0);			// currentbet
-	//!!!
+	set_sym_currentbet(k_max_number_of_players, _user_chair_confirmed ? p_scraper->player_bet(_sym.userchair) : 0);			// currentbet
 	write_log(prefs.debug_symbolengine(), "setting currentbet conditionally\n");
 	write_log(prefs.debug_symbolengine(), "currentbet: user_chair_confirmed: %d\n", _user_chair_confirmed);
 	write_log(prefs.debug_symbolengine(), "currentbet: userchair: %f\n", _sym.userchair);
@@ -4010,11 +4006,8 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "isfl", 4)==0 && strlen(a)==4)						return p_tablelimits->isfl();
 		if (memcmp(a, "istournament", 12)==0 && strlen(a)==12)				return _sym.istournament;
 
-		// P FORMULA
-		// !!! Wrong category
-		if (memcmp(a, "ishandup", 8)==0 && strlen(a)==8)					return _sym.ishandup; 
-
 		// HAND TESTS 2(2)
+		if (memcmp(a, "ishandup", 8)==0 && strlen(a)==8)					return _sym.ishandup; 
 		if (memcmp(a, "ishandupcommon", 14)==0 && strlen(a)==14)			return _sym.ishandupcommon;
 		if (memcmp(a, "ishicard", 8)==0 && strlen(a)==8)					return _sym.ishicard;
 		if (memcmp(a, "isonepair", 9)==0 && strlen(a)==9)					return _sym.isonepair;
@@ -4495,7 +4488,7 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 			set_didswag(betround-1, p_symbols->sym()->didswag[betround-1] + 1);
 			// Bets and pot
 			// Disabled till OH 2.2 as it causes bad side-effects for the call symbol.
-			new_bet = _sym.currentbet[10]; // f$swag(); // !!! That's not correct, but will be for OH 2.2.0 because of swagadjustment
+			new_bet = _sym.currentbet[k_max_number_of_players]; // f$swag(); // !!! That's not correct, but will be for OH 2.2.0 because of swagadjustment
 			new_number_of_bets = new_bet / bet; 
 			new_pot = _sym.pot + p_autoplayer_functions->f$betsize() - _sym.currentbet[10];
 			break;

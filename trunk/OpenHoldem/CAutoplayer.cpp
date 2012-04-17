@@ -236,7 +236,6 @@ void CAutoplayer::DoAllin(void)
 		p_casino_interface->ClickButtonSequence(k_autoplayer_function_allin,
 			k_autoplayer_function_raise, prefs.swag_delay_3());
 
-		//!!!
 		write_logautoplay(ActionConstantNames(k_action_allin));
 	    p_heartbeat_thread->set_replay_recorded_this_turn(false);
 	}
