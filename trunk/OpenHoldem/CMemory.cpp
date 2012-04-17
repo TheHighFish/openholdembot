@@ -71,20 +71,18 @@ bool CMemory::RightValueIsFunction(const char *value)
 
 void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunction, int *e)
 {
-	// !!! Bad code
-	// !!! Not sure, if var and value can be so long
-	// !!! or if it should be restricted to k_max_length_of_memory_symbols
-	char		var[512] = {0}, value[512] = {0};
+	char		var[k_max_length_of_memory_symbols] = {0};
+	char		value[k_max_length_of_memory_symbols] = {0};
 	double		result = 0.0;
 	CGrammar	gram;
 
 	// Copy without "me_st_"
-	strcpy_s(var, 512, &pquery[6]);
+	strcpy_s(var, k_max_length_of_memory_symbols, &pquery[6]);
 
 	// Get the name of the symbol, up to the next underscore
 	if (strstr(var, "_") != NULL)
 		var[strstr(var, "_")-var] = '\0';
-	strcpy_s(value, 512, &pquery[6 + strlen(var) + 1]);
+	strcpy_s(value, k_max_length_of_memory_symbols, &pquery[6 + strlen(var) + 1]);
 
 	// see if we already have this variable name
 	int next_free_slot = _var_count + 1;
@@ -166,9 +164,9 @@ void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunct
 
 double CMemory::RetrieveValue(const char * pquery, int *e)
 {
-	char		var[512] = {0};
+	char		var[k_max_length_of_memory_symbols] = {0};
 
-	strcpy_s(var, 512, &pquery[6]);
+	strcpy_s(var, k_max_length_of_memory_symbols, &pquery[6]);
 
 	for (int i=0; i<=_var_count; i++)
 	{
