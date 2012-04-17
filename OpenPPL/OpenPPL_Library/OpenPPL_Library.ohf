@@ -1254,7 +1254,7 @@ f$OpenPPL_ERROR_Betround_Out_Of_Range
 
 ##f$OpenPPL_BetSizeForFixedBetInBigBlinds##
 // Calculated in dollars and with raise-to-semantics
-[(f$OpenPPL_Decision * bblind) + ncallbets]
+[(f$OpenPPL_Decision + ncallbets) * bblind]
 
 ##f$OpenPPL_BetSizeForAllin##
 // Calculated in dollars and with raise-to-semantics
