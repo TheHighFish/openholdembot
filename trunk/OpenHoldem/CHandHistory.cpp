@@ -8,6 +8,7 @@
 #include "CScraper.h"
 #include "CGameState.h"
 #include "CSessionCounter.h"
+#include "MagicNumbers.h"
 #include "OpenHoldem.h"
 #include "poker_defs.h"
 #include "enumerate.h"
@@ -127,7 +128,6 @@ void CHandHistory::roundStart()
 }
 void CHandHistory::checkBetround()
 {
-	double			rake = 0.05; //!!!
 	int				userchair = (int) p_symbols->sym()->userchair;
 	int				nchairs = (int) p_symbols->sym()->nchairs;
 	int				dealerchair = (int) p_symbols->sym()->dealerchair;
@@ -673,7 +673,6 @@ void CHandHistory::ReconstructHand(bool contested)
 {
 	bool			potbetinto = true;
 	bool			hasFolded[10];
-	double			rake = 0.05; //!!!
 	double			bblind = p_tablelimits->bblind();
 	double			calculatedPot = 0;
 	int				userchair = (int) p_symbols->sym()->userchair;
@@ -794,7 +793,7 @@ void CHandHistory::ReconstructHand(bool contested)
 	}
 	//------------------SHOWDOWN--------------------//
 	outfile<<"*** SUMMARY ***"<<endl;
-		outfile<<"Total pot $"<<calculatedPot<<" Rake $"<<(rake*calculatedPot)<<endl;
+		outfile<<"Total pot $"<<calculatedPot<<" Rake $"<<(k_hand_history_rake = 0.05 * calculatedPot)<<endl;
 	if(contested)
 	{
 		for(int i=0;i<nchairs;i++)

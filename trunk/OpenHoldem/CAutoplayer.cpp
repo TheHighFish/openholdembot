@@ -124,27 +124,48 @@ bool CAutoplayer::AnySecondaryFormulaTrue()
 	return false;
 }
 
-void CAutoplayer::ExecutePrimaryFormulas()
+bool CAutoplayer::ExecutePrimaryFormulas()
 {
-	if (!AnyPrimaryFormulaTrue())
+	// Precondition: my turn and isfinalanswer
+	// So we have to take an action and are able to do so.
+	if (p_autoplayer_functions->f$alli())
 	{
-		// Attention: check/fold !!!	
+		//DoAllin; !!!
+		return true;
+	}
+	if (DoBetPot())
+	{
+		return true;
+	}
+	return ExecuteRaiseCallCheckFold();
+}
+
+bool CAutoplayer::ExecuteRaiseCallCheckFold()
+{
+	if (p_autoplayer_functions->f$rais())
+	{
+		return p_casino_interface->ClickButton(k_button_raise);
+	}
+	else if (p_autoplayer_functions->f$call())
+	{
+		return p_casino_interface->ClickButton(k_button_call);
 	}
 	else
 	{
-		if (p_autoplayer_functions->f$alli())
+		// Try to check
+		if (p_casino_interface->ClickButton(k_button_check))
 		{
-			//DoAllin; !!!
-			return;
+			return true;
 		}
-		if (DoBetPot())
+		else
 		{
-			return;
+			// Otherwise: fold
+			return p_casino_interface->ClickButton(k_button_fold);
 		}
-		//seag
-		
 	}
 }
+
+
 
 bool CAutoplayer::ExecuteSecondaryFormulas()
 {
@@ -209,13 +230,12 @@ bool CAutoplayer::DoChat(void)
 	return true; //!!!p_casino_interface->EnterChatMessage(_the_chat_message);
 }
 
-void CAutoplayer::DoAllin(void)
+bool CAutoplayer::DoAllin(void)
 {
-
-	int number_of_clicks = 1; // Default is: single click with the mouse
-
+	bool success = false;
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting DoAllin...\n");
 
+	int number_of_clicks = 1; // Default is: single click with the mouse
 	if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
 	{
 		number_of_clicks = 2;
@@ -232,28 +252,30 @@ void CAutoplayer::DoAllin(void)
 	if (p_tablemap->allinmethod() == 1)
 	{
 		// Clicking max (or allin) and then raise
-		//!!! return values
-		p_casino_interface->ClickButtonSequence(k_autoplayer_function_allin,
+		success = p_casino_interface->ClickButtonSequence(k_autoplayer_function_allin,
 			k_autoplayer_function_raise, prefs.swag_delay_3());
 
 		write_logautoplay(ActionConstantNames(k_action_allin));
 	    p_heartbeat_thread->set_replay_recorded_this_turn(false);
+		return success;
 	}
 	else  if (p_tablemap->allinmethod() == 2)
 	{
-		p_casino_interface->ClickButton(k_autoplayer_function_allin);
+		success = p_casino_interface->ClickButton(k_autoplayer_function_allin);
 
 		write_logautoplay(ActionConstantNames(k_action_allin));
 	    p_heartbeat_thread->set_replay_recorded_this_turn(false);
-
+		return success;
 	}
 	else if (p_tablemap->allinmethod() == 3)
 	{
-		p_casino_interface->UseSliderForAllin();
+		success = p_casino_interface->UseSliderForAllin();
+		write_logautoplay(ActionConstantNames(k_action_allin));
+	    p_heartbeat_thread->set_replay_recorded_this_turn(false);
+		return success;
 	}
-	// Third case (default): swagging the balance
-	// (p_tablemap->allinmethod() == 0)
-	// This will be handled by the swag-code.
+	// Fourth case (default = 0): swagging the balance
+	// SwagAllin!!!	
 	p_stableframescounter->ResetOnAutoplayerAction();
 }
 
@@ -288,11 +310,7 @@ void CAutoplayer::DoAutoplayer(void)
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling DoF$Sitin_Sitout_Leave.\n");
 	//!!!DoF$Sitin_Sitout_Leave();
 
-	// Handle i86buttons
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling DoI86.\n");
-	//!!!DoI86();
-
-   
+  
 	bool isFinalAnswer = true;
 
 	// check factors that affect isFinalAnswer status
@@ -403,58 +421,7 @@ void CAutoplayer::DoARCCF(void)
 
 	do_click = k_action_undefined;
 
-	// ALLIN
-//!!!	if (p_autoplayer_functions->f$alli() && sym_myturnbits&0x8 && allin_button_available)
-	{
-//!!!		r = allin_button;
-		do_click = k_action_allin;
-		
-	}
 
-	// RAISE
-//!!!	else if (p_autoplayer_functions->f$rais() && sym_myturnbits&0x4 && raise_button_available)
-	{
-//!!!		r = raise_button;
-		do_click = k_action_raise;
-	
-	}
-
-	// CALL
-//!!!	else if (p_autoplayer_functions->f$call() && sym_myturnbits&0x1 && call_button_available)
-	{
-//!!!		r = call_button;
-		do_click = k_action_call;
-	
-	}
-
-	// CHECK
-	// None of f$alli, f$betsize, f$rais, f$call are > 0 or no buttons related to
-	// these actions can be found. If there is a check button, then click it.
-//!!!	else if (check_button_available)
-	{
-//!!!		r = check_button;
-		do_click = k_action_check;
-		
-	}
-
-	// FOLD
-	// None of f$alli, f$betsize, f$rais, f$call are > 0 or no buttons related to
-	// these actions can be found. If there is a fold button, then click it, otherwise we have a serious problem.
-//!!!	else if (fold_button_available)
-	{
-//!!!		r = fold_button;
-		do_click = k_action_fold;
-		
-	}
-
-	if (do_click == k_action_undefined)
-	{
-		
-		return;
-	}
-
-	else
-	{
 
 
 		//Mutex locked -> Click_delay
@@ -482,8 +449,6 @@ void CAutoplayer::DoARCCF(void)
 		
 		//???Missing in rev. 1944
 		//p_heartbeat_thread->set_replay_recorded_this_turn(false);
-	}
-
 
 	
 	// !!! Remove hard-coded constants
