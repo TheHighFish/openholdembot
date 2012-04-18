@@ -130,8 +130,7 @@ bool CAutoplayer::ExecutePrimaryFormulas()
 	// So we have to take an action and are able to do so.
 	if (p_autoplayer_functions->f$alli())
 	{
-		//DoAllin; !!!
-		return true;
+		return DoAllin();
 	}
 	if (DoBetPot())
 	{

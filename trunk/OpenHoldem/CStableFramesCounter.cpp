@@ -6,9 +6,6 @@
 #include "CSymbols.h"
 #include "MagicNumbers.h"
 
-// !!! may become part of autoplayer, as PPro no longer exists.
-// We create s single global instance,
-// as the counter is needed for both autoplayer and PPro.
 CStableFramesCounter *p_stableframescounter = NULL;
 
 
