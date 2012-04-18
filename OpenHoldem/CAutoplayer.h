@@ -16,7 +16,8 @@ public:
 	void DoAutoplayer(void);
 	void DoRebuyIfNeccessary(void);
 
-	void CAutoplayer::ExecutePrimaryFormulas();
+	bool ExecutePrimaryFormulas();
+	bool ExecuteRaiseCallCheckFold();
 
 public:
 	// public accessors
@@ -39,7 +40,7 @@ private:
 	bool AnyPrimaryFormulaTrue();
 	bool AnySecondaryFormulaTrue();
 	bool ExecuteSecondaryFormulas();
-	void DoAllin(void);
+	bool DoAllin(void);
 	bool DoBetPot(void);
 	bool HandleInterfacebuttonsI86(void); 
 	bool GetMutex();
