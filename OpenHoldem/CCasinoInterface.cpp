@@ -17,6 +17,8 @@
 
 CCasinoInterface *p_casino_interface = NULL;
 
+RECT r_null = {-1, -1, -1, -1}; //!!! p_null
+
 
 CCasinoInterface::CCasinoInterface()
 {
@@ -84,7 +86,6 @@ bool CCasinoInterface::UseSliderForAllin()
 	POINT			cur_pos = {0};
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 	POINT			point_null = {-1, -1};
-	RECT			r_null = {-1, -1, -1, -1};
 
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting DoSlider...\n");
 
@@ -263,16 +264,15 @@ void CCasinoInterface::DeleteSwagText()
 	if (p_tablemap->swagdeletionmethod() == TEXTDEL_DELETE)
 	{
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Text deletion; calling keyboard.dll to press 'delete'\n");
-		//!!!(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_DELETE, NULL, p_null);
+		(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_DELETE, NULL, p_null);
 	}
 	else if (p_tablemap->swagdeletionmethod() == TEXTDEL_BACKSPACE)
 	{
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Text deletion; calling keyboard.dll to press 'backspace'\n");
-		//!!!(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_BACK, NULL, p_null);
+		(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_BACK, NULL, p_null);
 	}
 	else if (p_tablemap->swagdeletionmethod() == TEXTDEL_NOTHING)
-	{
-	}
+	{}
 }
 
 
@@ -282,7 +282,6 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 	bool			lost_focus = false;
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 	POINT			point_null = {-1, -1};
-	RECT			r_null = {-1, -1, -1, -1};
 	CString			swag_amt;
 
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting DoSwag...\n");

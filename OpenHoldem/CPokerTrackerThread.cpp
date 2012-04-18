@@ -321,10 +321,6 @@ void CPokerTrackerThread::Disconnect(void)
 	_connected = false;
 }
 
-//!!!
-#define k_min_chair_number 0
-#define k_max_chair_number 9
-
 bool CPokerTrackerThread::CheckName (int m_chr)
 {
 	char		oh_scraped_name[k_max_length_of_playername] = {0}; 

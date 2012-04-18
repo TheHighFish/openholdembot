@@ -407,15 +407,16 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			// Calculate secondary formulas, as we need f$rebuy
 			write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling CalcSecondaryFormulas.\n");
 			p_autoplayer_functions->CalcSecondaryFormulas();
-			//!!!p_autoplayer->DoRebuyIfNeccessary();
 		}
 
 		
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Hand history generator
 
-		// !!! To do: options to turn it on / off (before release)
-		p_handhistory->makeHistory();
+		if (prefs.handhistory_generator_enable())
+		{
+			p_handhistory->makeHistory();
+		}
 		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Sleeping %d ms.\n", prefs.scrape_delay());
 		Sleep(prefs.scrape_delay());
 
