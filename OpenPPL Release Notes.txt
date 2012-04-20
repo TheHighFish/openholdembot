@@ -15,6 +15,16 @@ BUG FIXES:
   because only fixed bets and percentaged potsized bets got considered in f$swag.
   Thanks to PokerValy and Lavezzi for reporting.
   [THF]
+- f$OpenPPL_BetSizeForFixedBetInBigBlinds incorrectly assumed, 
+  that ncallbets returns a dollar-value, whereas is returns 
+  the number of bets after we call.
+  Thanks to DonQuay for providing a log-file 
+  and to Postenjak for finding the problem.
+  [THF]
+- New f$Decision function broke some backup-actions.
+  In case of an impossible potsize-bet OH did no longer raise-min.
+  Thanks to Postenjak for reporting and for suggesting a fix.
+  [THF]
 
 v1.0.5 2012-04-09
 =================
