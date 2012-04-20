@@ -1276,7 +1276,9 @@ f$OpenPPL_DecisionIsPercentagedPotsizedBet ? f$OpenPPL_BetSizeForPercentagedPots
 ##f$rais##
    [f$OpenPPL_Decision == f$OpenPPL_Raise]
 || [f$OpenPPL_Decision == f$OpenPPL_RaiseMax]   
-|| [f$OpenPPL_Decision > 0]
+|| f$OpenPPL_DecisionIsBetPotOrBetHalfPotOrBetMax
+|| f$OpenPPL_DecisionIsPercentagedPotsizedBet
+|| f$OpenPPL_DecisionIsFixedBetInBigBlinds
 //
 // Below is 2 times the same expression,
 // but we want to log the very verbose explanation
