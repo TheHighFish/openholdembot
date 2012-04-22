@@ -100,7 +100,7 @@ const int k_max_number_of_memory_symbols = 2048;
 const int k_max_length_of_memory_symbols = 64;
 
 // Hand history generator
-k_hand_history_rake = 0.05;
+const double k_hand_history_rake = 0.05;
 
 //  File accessable?
 //  (<unistd.h> is not contained in MSCVPP)

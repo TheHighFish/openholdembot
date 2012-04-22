@@ -37,9 +37,7 @@ char * keywords = // Standard functions
 				  // General
 				  "ismanual site nchairs isbring session handnumber version "
 				  // Tablemap
-				  "sitename$ network$ swagdelay allidelay swagtextmethod " 
-				  // Tablemap, undocumented
-				  "potmethod activemethod "
+				  "sitename$ network$ " 
 				  // Formula File
 				  "f$number_of_iterations"
 				  // Limits

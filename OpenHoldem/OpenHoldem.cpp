@@ -1,14 +1,13 @@
 // OpenHoldem.cpp : Defines the class behaviors for the application.
 //
 #include "stdafx.h"
+#include "OpenHoldem.h"
+
 #include <psapi.h>
 #include <windows.h>
 
-#include "OpenHoldem.h"
-
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTablemap\CTableMapAccess.h"
-
 #include "CAutoConnector.h"
 #include "CAutoConnectorThread.h"
 #include "CGrammar.h"
@@ -348,7 +347,6 @@ void COpenHoldemApp::OnAppAbout()
 	CDlgAbout aboutDlg;
 	aboutDlg.DoModal();
 }
-
 
 void COpenHoldemApp::OnForceCrash() 
 {

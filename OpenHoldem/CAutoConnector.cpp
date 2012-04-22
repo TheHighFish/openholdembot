@@ -80,7 +80,7 @@ CAutoConnector::CAutoConnector()
 	p_sharedmem->MarkPokerWindowAsUnAttached();
 	set_attached_hwnd(NULL);
 	TablemapsInScraperFolderAlreadyParsed = false;
-	NumberOfTableMapsLoaded = 0;
+	_number_of_tablemaps_loaded = 0;
 
 	// Parse all tablemaps once on startup.
 	// We want to avoid heavy workload in the connect()-function.
@@ -127,7 +127,7 @@ void CAutoConnector::ParseAllTableMapsToLoadConnectionData(CString TableMapWildc
 	BOOL bFound = hFile.FindFile(TableMapWildcard.GetString());
 	while (bFound)
 	{
-		if (NumberOfTableMapsLoaded >= k_MaxNumberOfTableMaps)
+		if (_number_of_tablemaps_loaded >= k_MaxNumberOfTableMaps)
 		{
 			write_log(prefs.debug_autoconnector(), "[CAutoConnector] CAutoConnector: Error: Too many tablemaps. The autoconnector can only handle 25 TMs.", "Error", 0);
 			MessageBox(0, "To many tablemaps. The auto-connector can handle 25 at most.", "ERROR", 0);
@@ -141,7 +141,7 @@ void CAutoConnector::ParseAllTableMapsToLoadConnectionData(CString TableMapWildc
 			{
 				CTableMapToSWholeMap(p_tablemap, &smap);
 				ExtractConnectionDataFromCurrentTablemap(&smap);
-				write_log(prefs.debug_autoconnector(), "[CAutoConnector] Number of TMs loaded: %d\n", NumberOfTableMapsLoaded);
+				write_log(prefs.debug_autoconnector(), "[CAutoConnector] Number of TMs loaded: %d\n", _number_of_tablemaps_loaded);
 			}
 		}
 	}
@@ -161,7 +161,7 @@ void CAutoConnector::ParseAllTableMapsToLoadConnectionData()
 
 bool CAutoConnector::TablemapConnectionDataAlreadyStored(CString TablemapFilePath)
 {
-	for (int i=0; i<=NumberOfTableMapsLoaded; i++)
+	for (int i=0; i<=_number_of_tablemaps_loaded; i++)
 	{
 		if (TablemapConnectionData[i].FilePath == TablemapFilePath)
 		{
@@ -176,9 +176,9 @@ bool CAutoConnector::TablemapConnectionDataAlreadyStored(CString TablemapFilePat
 void CAutoConnector::CheckForDuplicatedTablemaps()
 {
 	CString error_message = "";
-	for (int i=0; i<NumberOfTableMapsLoaded; i++)
+	for (int i=0; i<_number_of_tablemaps_loaded; i++)
 	{
-		for (int j=i+1; j<NumberOfTableMapsLoaded; j++)
+		for (int j=i+1; j<_number_of_tablemaps_loaded; j++)
 		{
 			if (TablemapConnectionData[i].SiteName == TablemapConnectionData[j].SiteName)
 			{
@@ -200,7 +200,7 @@ void CAutoConnector::CheckForDuplicatedTablemaps()
 void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 {
 	write_log(prefs.debug_autoconnector(), "[CAutoConnector] ExtractConnectionDataFromCurrentTablemap(): %s\n", map->filepath);
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] NumberOfTableMapsLoaded: %d\n", NumberOfTableMapsLoaded);
+	write_log(prefs.debug_autoconnector(), "[CAutoConnector] number_of_tablemaps_loaded: %d\n", _number_of_tablemaps_loaded);
 
 	// Avoiding to store the data twice, e.g. when we load a known TM manually
 	if (TablemapConnectionDataAlreadyStored(map->filepath))
@@ -209,8 +209,8 @@ void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 		return;
 	}
 
-	TablemapConnectionData[NumberOfTableMapsLoaded].FilePath = map->filepath;
-	TablemapConnectionData[NumberOfTableMapsLoaded].SiteName = map->sitename;
+	TablemapConnectionData[_number_of_tablemaps_loaded].FilePath = map->filepath;
+	TablemapConnectionData[_number_of_tablemaps_loaded].SiteName = map->sitename;
 
 	if (map->sitename == "")
 	{
@@ -223,26 +223,26 @@ void CAutoConnector::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 	}
 	
 	// Get clientsize info through TM-access-class
-	p_tablemap_access->SetClientSize("clientsize", TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeX, TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeY);
-	p_tablemap_access->SetClientSize("clientsizemin", TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMinX, TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMinY);
-	p_tablemap_access->SetClientSize("clientsizemax", TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMaxX, TablemapConnectionData[NumberOfTableMapsLoaded].ClientSizeMaxY);
+	p_tablemap_access->SetClientSize("clientsize", TablemapConnectionData[_number_of_tablemaps_loaded].ClientSizeX, TablemapConnectionData[_number_of_tablemaps_loaded].ClientSizeY);
+	p_tablemap_access->SetClientSize("clientsizemin", TablemapConnectionData[_number_of_tablemaps_loaded].ClientSizeMinX, TablemapConnectionData[_number_of_tablemaps_loaded].ClientSizeMinY);
+	p_tablemap_access->SetClientSize("clientsizemax", TablemapConnectionData[_number_of_tablemaps_loaded].ClientSizeMaxX, TablemapConnectionData[_number_of_tablemaps_loaded].ClientSizeMaxY);
 
 	// Extract title text information
-	p_tablemap_access->SetTitleText("titletext", TablemapConnectionData[NumberOfTableMapsLoaded].TitleText);
+	p_tablemap_access->SetTitleText("titletext", TablemapConnectionData[_number_of_tablemaps_loaded].TitleText);
 	// Extract negative title texs
-	p_tablemap_access->SetTitleText("!titletext", TablemapConnectionData[NumberOfTableMapsLoaded].NegativeTitleText);
+	p_tablemap_access->SetTitleText("!titletext", TablemapConnectionData[_number_of_tablemaps_loaded].NegativeTitleText);
 		
 	CString s = "";
 	for (int i=0; i<k_max_number_of_titletexts; i++)
 	{
 		s.Format("titletext%d", i);
-		p_tablemap_access->SetTitleText(s, TablemapConnectionData[NumberOfTableMapsLoaded].TitleText_0_9[i]);
+		p_tablemap_access->SetTitleText(s, TablemapConnectionData[_number_of_tablemaps_loaded].TitleText_0_9[i]);
 
 		s.Format("!titletext%d", i);
-		p_tablemap_access->SetTitleText(s, TablemapConnectionData[NumberOfTableMapsLoaded].NegativeTitleText_0_9[i]);		
+		p_tablemap_access->SetTitleText(s, TablemapConnectionData[_number_of_tablemaps_loaded].NegativeTitleText_0_9[i]);		
 	}
 
-	NumberOfTableMapsLoaded++;
+	_number_of_tablemaps_loaded++;
 }
 
 
@@ -455,9 +455,9 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 	// Clear global list for holding table candidates
 	g_tlist.RemoveAll();
 	
-	for (int TablemapIndex=0; TablemapIndex<NumberOfTableMapsLoaded; TablemapIndex++)
+	for (int TablemapIndex=0; TablemapIndex<_number_of_tablemaps_loaded; TablemapIndex++)
 	{
-		write_log(prefs.debug_autoconnector(), "[CAutoConnector] Going to check TM nr. %d out of %d\n", TablemapIndex, NumberOfTableMapsLoaded);
+		write_log(prefs.debug_autoconnector(), "[CAutoConnector] Going to check TM nr. %d out of %d\n", TablemapIndex, _number_of_tablemaps_loaded);
 		Check_TM_Against_All_Windows_Or_TargetHWND(TablemapIndex, targetHWnd);
 	}
 	

@@ -76,6 +76,7 @@ protected: // create from serialization only
 	afx_msg void OnHelp();
 	afx_msg void OnHelpWiki();
 	afx_msg void OnHelpForums();
+	afx_msg void CMainFrame::OnHelpProblemSolver();
 
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);

@@ -793,7 +793,7 @@ void CHandHistory::ReconstructHand(bool contested)
 	}
 	//------------------SHOWDOWN--------------------//
 	outfile<<"*** SUMMARY ***"<<endl;
-		outfile<<"Total pot $"<<calculatedPot<<" Rake $"<<(k_hand_history_rake = 0.05 * calculatedPot)<<endl;
+		outfile<<"Total pot $"<<calculatedPot<<" Rake $"<<(k_hand_history_rake * calculatedPot)<<endl;
 	if(contested)
 	{
 		for(int i=0;i<nchairs;i++)
