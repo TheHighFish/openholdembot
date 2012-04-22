@@ -17,14 +17,18 @@
 
 CCasinoInterface *p_casino_interface = NULL;
 
-RECT r_null = {-1, -1, -1, -1}; //!!! p_null
-
 
 CCasinoInterface::CCasinoInterface()
 {
 	// dummy point for mouse and keyboard DLL
 	p_null.x = 0;
 	p_null.y = 0;
+	// dummy rectangle
+	r_null.bottom = -1;
+	r_null.left   = -1;
+	r_null.right  = -1;
+	r_null.top    = -1;
+
 }
 
 CCasinoInterface::~CCasinoInterface()

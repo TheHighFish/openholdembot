@@ -27,6 +27,7 @@ private:
 	void DeleteSwagText();
 
 	POINT p_null;
+	RECT r_null; 
 	// ToDo: Sliderbar, Chatbox, etc.
 
 public:

@@ -10,7 +10,7 @@ extern class CHandHistory
 public:
 	CHandHistory();
 	//~CHandHistory(); 
-	void makeHistory();
+	void MakeHistory();
 	const phistory		*history() { return &_history; }
 
 private:
@@ -23,8 +23,8 @@ private:
 	const bool cardsDealt(void);
 	const bool isPlaying(const int i);
 	const bool hasMucked(const int i);
-	void updateSymbols(void);
-	void setPreviousActions(void);
+	void UpdateSymbols(void);
+	void SetPreviousActions(void);
 	void roundStart(void);
 	void checkBetround(void);
 	void scanPlayerChanges(void);
@@ -32,7 +32,7 @@ private:
 	void GetPCstring(char *c, unsigned int c0, unsigned int c1);
 	void GetBCstring(char *c, unsigned int c0);
 	void checkSeats(const int i, int j);
-	void writeHistory(void);
+	void WriteHistory(void);
 	void checkAllin(const int i);
 	void resetVars(void);
 	void SetAction(int pnum, int action, double amount, int br);
