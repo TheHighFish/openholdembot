@@ -373,6 +373,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CProblemSolver.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CRebuyManagement.cpp"
 				>
 			</File>
@@ -1087,6 +1091,10 @@
 			</File>
 			<File
 				RelativePath=".\CPreferences.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CProblemSolver.h"
 				>
 			</File>
 			<File

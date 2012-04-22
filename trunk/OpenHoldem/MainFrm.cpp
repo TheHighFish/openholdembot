@@ -17,6 +17,7 @@
 #include "CPerl.hpp"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
+#include "CProblemSolver.h"
 #include "CReplayFrame.h"
 #include "CScraper.h"
 #include "CSymbols.h"
@@ -101,6 +102,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND(ID_HELP_HELP, &CMainFrame::OnHelp)
 	ON_COMMAND(ID_HELP_DOCUMENTATIONWIKI, &CMainFrame::OnHelpWiki)
 	ON_COMMAND(ID_HELP_FORUMS, &CMainFrame::OnHelpForums)
+	ON_COMMAND(ID_HELP_PROBLEMSOLVER, &CMainFrame::OnHelpProblemSolver)
 
 	// Main toolbar
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_GREENCIRCLE, &CMainFrame::OnBnClickedGreenCircle)
@@ -409,13 +411,13 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	if (!(::GetClassInfo(hInst, prefs.window_class_name(), &wnd)))
 	{
 		wnd.style			= CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW;
-		wnd.lpfnWndProc	  = ::DefWindowProc;
-		wnd.cbClsExtra	   = wnd.cbWndExtra = 0;
+		wnd.lpfnWndProc		= ::DefWindowProc;
+		wnd.cbClsExtra		= wnd.cbWndExtra = 0;
 		wnd.hInstance		= hInst;
 		wnd.hIcon			= AfxGetApp()->LoadIcon(IDI_ICON1);
-		wnd.hCursor		  = AfxGetApp()->LoadStandardCursor(IDC_ARROW);
+		wnd.hCursor			= AfxGetApp()->LoadStandardCursor(IDC_ARROW);
 		wnd.hbrBackground	= (HBRUSH) (COLOR_3DFACE + 1);
-		wnd.lpszMenuName	 = NULL;
+		wnd.lpszMenuName	= NULL;
 		wnd.lpszClassName	= prefs.window_class_name();
 
 		AfxRegisterClass( &wnd );
@@ -907,14 +909,16 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 				(int) (iter_vars.prwin()*1000), 
 				(int) (iter_vars.prtie()*1000),
 				(int) (iter_vars.prlos()*1000));
+			int	e = SUCCESS;
 			_status_nit.Format("%d/%d", 
 				iter_vars.iterator_thread_progress(),
-				(int) p_symbols->GetSymbolVal("f$number_of_iterations", NULL));
+				(int) p_symbols->GetSymbolVal("f$number_of_iterations", &e));
 		}
 		else
 		{
 			_status_prwin = "0/0/0";
-			_status_nit.Format("0/%d", (int) p_symbols->GetSymbolVal("f$number_of_iterations", NULL));
+			int	e = SUCCESS;
+			_status_nit.Format("0/%d", (int) p_symbols->GetSymbolVal("f$number_of_iterations", &e));
 		}
 
 		// action
@@ -1486,4 +1490,11 @@ void CMainFrame::OnHelpWiki()
 void CMainFrame::OnHelpForums()
 {
 	ShellExecute(NULL, "open", "http://www.maxinmontreal.com/forums/index.php", "", "", SW_SHOWDEFAULT);
+}
+
+
+void CMainFrame::OnHelpProblemSolver() 
+{
+	CProblemSolver my_problem_solver;
+	my_problem_solver.TryToDetectBeginnersProblems();
 }

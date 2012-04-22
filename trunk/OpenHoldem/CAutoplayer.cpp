@@ -88,13 +88,14 @@ bool CAutoplayer::DoBetPot(void)
 			write_log(prefs.debug_autoplayer(), "[AutoPlayer] %s true.\n", 
 				k_autoplayer_functionname[i]);
 			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Trying to click button.\n");
-			if (/*BetPotMethod()*/1 == 1) //!!!
+			if (p_tablemap->betpotmethod() == BETPOT_RAISE)
 			{
-				return p_casino_interface->ClickButton(i);
+				return p_casino_interface->ClickButtonSequence(i, k_autoplayer_function_raise, /*betpot_delay* !!! */ 1);
 			}
 			else 
 			{
-				return p_casino_interface->ClickButtonSequence(i, k_autoplayer_function_raise, /*betpot_delay* !!! */ 1);
+				// Default: click only betpot
+				return p_casino_interface->ClickButton(i);				
 			}
 		}
 	}
@@ -226,7 +227,7 @@ bool CAutoplayer::DoChat(void)
 	// Converting the result of the $chat-function to a string.
 	// Will be ignored, if we already have an unhandled chat message.
 	RegisterChatMessage(p_autoplayer_functions->f$chat()); 
-	return true; //!!!p_casino_interface->EnterChatMessage(_the_chat_message);
+	return p_casino_interface->EnterChatMessage(CString(_the_chat_message));
 }
 
 bool CAutoplayer::DoAllin(void)
@@ -273,9 +274,14 @@ bool CAutoplayer::DoAllin(void)
 	    p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		return success;
 	}
-	// Fourth case (default = 0): swagging the balance
-	// SwagAllin!!!	
-	p_stableframescounter->ResetOnAutoplayerAction();
+	else
+	{
+		// Fourth case (default = 0): swagging the balance
+		double betsize_for_allin = p_symbols->sym()->currentbet[10 /*!!!*/]
+			+ p_symbols->sym()->balance[10]; //!!!
+		p_casino_interface->EnterBetsize(betsize_for_allin);
+	}
+	p_stableframescounter->ResetOnAutoplayerAction(); //!!!
 }
 
 void CAutoplayer::DoAutoplayer(void) 

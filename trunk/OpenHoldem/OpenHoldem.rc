@@ -197,6 +197,8 @@ BEGIN
         MENUITEM "&Wiki",                       ID_HELP_DOCUMENTATIONWIKI
         MENUITEM "&Forums",                     ID_HELP_FORUMS
         MENUITEM SEPARATOR
+        MENUITEM "&Problem Solver",             ID_HELP_PROBLEMSOLVER
+        MENUITEM SEPARATOR
         MENUITEM "&About this program...",      ID_APP_ABOUT
     END
 END
@@ -233,7 +235,6 @@ BEGIN
         MENUITEM "&Font",                       ID_FORMULA_EDIT_FONT
         MENUITEM "&Hand List",                  ID_FORMULA_EDIT_HANDLIST
     END
-
     POPUP "&Debug"
     BEGIN
         MENUITEM "&Log f$debug",                ID_FORMULA_DEBUG_LOGFDEBUG
@@ -923,7 +924,7 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "Enable handhistory generator",IDC_HANDHISTORY_GENERATOR_ENABLE,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,116,8
+                    "Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,4,8,116,8
 END
 
 IDD_SAPREFS20 DIALOGEX 0, 0, 219, 214
@@ -1305,7 +1306,7 @@ BEGIN
         HORZGUIDE, 149
     END
 
-	IDD_SAPREFS21, DIALOG
+    IDD_SAPREFS21, DIALOG
     BEGIN
         BOTTOMMARGIN, 182
     END
@@ -1360,6 +1361,11 @@ STRINGTABLE
 BEGIN
     ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
     ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_MAIN_TOOLBAR_HELP    "Help\nHelp"
 END
 
 STRINGTABLE 
@@ -1489,11 +1495,6 @@ END
 STRINGTABLE 
 BEGIN
     ID_MAIN_TOOLBAR_SHOOTFRAME "Shoot frame\nShoot frame"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_MAIN_TOOLBAR_HELP    "Help\nHelp"
 END
 
 STRINGTABLE 
