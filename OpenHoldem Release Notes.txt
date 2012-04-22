@@ -30,6 +30,10 @@ NEW STUFF:
 - Implementing a table-positioner that optionally moves the poker-tables 
   to reasonable positions.
   [THF]
+- Implemented a "Problem Solver", a tool to help newbies.
+  It detect common PEBKACs, like not being connected, an unknown user-chair or unknown cards.
+  This tool is available at Menu -> Help -> Problem solver.
+  [THF]
   
 
 MAINTENANCE:
@@ -86,6 +90,11 @@ MAINTENANCE:
   That was simply over-configuration,
   Sort UDFs / Groups UDFs / Show Line Numbers / Syntax-highlighting, etc.
   are very useful features. There is no need to disable them.
+  [THF]
+- The sirectory of Notepad.exe was hardcoded as "C:\Windows\Notepad.exe",
+  but the program might be in a different folder depending on system settings.
+  We do now lookup the Windows directory for that.
+  Thanks to Ukawtf for providing the patch.
   [THF]
   
 BUG FIXES: 
