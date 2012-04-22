@@ -415,7 +415,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 		if (prefs.handhistory_generator_enable())
 		{
-			p_handhistory->makeHistory();
+			p_handhistory->MakeHistory();
 		}
 		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Sleeping %d ms.\n", prefs.scrape_delay());
 		Sleep(prefs.scrape_delay());

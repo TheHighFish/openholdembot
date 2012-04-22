@@ -17,30 +17,36 @@
 
 using namespace std;
 
+
 CHandHistory *p_handhistory = NULL;
+
 
 CHandHistory::CHandHistory()
 {
-	//Attempt to create a random starting game number
+	// Attempt to create a random starting game number
 	unsigned long seconds = time(NULL);
-	gameNumber = (100000000*p_sessioncounter->session_id()) + seconds/8; 
+	gameNumber = (100000000 * p_sessioncounter->session_id()) + seconds/8; 
 
 	newRoundFlag=false;
-	for(int i=0;i<10;i++)_history.chair[i].currentBalance=0;
+	for (int i=0; i<k_max_number_of_players; i++)
+	{
+		_history.chair[i].currentBalance = 0;
+	}
 }
-void CHandHistory::makeHistory()
+void CHandHistory::MakeHistory()
 {
-	updateSymbols();
-	writeHistory();
-	setPreviousActions();
+	UpdateSymbols();
+	WriteHistory();
+	SetPreviousActions();
 }
-void CHandHistory::writeHistory()
-{
-	int				betround = (int) p_symbols->sym()->betround;
-	int				dealerchair = (int) p_symbols->sym()->dealerchair;
 
-	//Precondition: New round
-	if(prevdealerchair!=dealerchair&&betround==1)
+void CHandHistory::WriteHistory()
+{
+	int	betround = (int) p_symbols->sym()->betround;
+	int	dealerchair = (int) p_symbols->sym()->dealerchair;
+
+	// Precondition: New round
+	if(prevdealerchair != dealerchair && betround==1)
 		newRoundFlag=true;
 
 	//Precondition: New round flag has been set and cards dealt
@@ -48,7 +54,6 @@ void CHandHistory::writeHistory()
 		roundStart();
 
 	checkBetround();
-
 	//Precondition: Cards have been dealt and the round summary has not
 	//been printed
 	if(showdownSeen==false&&roundStarted==true)
@@ -56,7 +61,7 @@ void CHandHistory::writeHistory()
 
 	if(isShowdown())processShowdown();
 }
-void CHandHistory::updateSymbols()
+void CHandHistory::UpdateSymbols()
 {
 	int				nchairs = (int)p_symbols->sym()->nchairs;
 	int				betround = (int) p_symbols->sym()->betround;
@@ -353,7 +358,7 @@ void CHandHistory::scanPlayerChanges()
 		}
 	}
 }
-void CHandHistory::setPreviousActions()
+void CHandHistory::SetPreviousActions()
 {
 	int				betround = (int) p_symbols->sym()->betround;
 	int				nchairs = (int) p_symbols->sym()->nchairs;
@@ -602,10 +607,10 @@ void CHandHistory::resetVars()
 	passChecks=false;
 	_history.lpta = -5;
 
-	for(int i=0;i<4;i++)
+	for(int i=0;i<k_number_of_betrounds;i++)
 	{
 		allChecks[i]=true;
-		bet[i] = p_tablelimits->bet(i); //!!!
+		bet[i] = p_tablelimits->bet(i); 
 	}
 	for(int i=0;i<nchairs;i++)
 	{

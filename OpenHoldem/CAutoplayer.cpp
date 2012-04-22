@@ -6,13 +6,15 @@
 * restore mouse
 * prevaction
 * p_stableframescounter->ResetOnAutoplayerAction();
-* p_symbols->reset_elapsedautohold();	
+* p_symbols->reset_elapsedautohold();
+* delay
 */
 
 #include "StdAfx.h"
 #include "CAutoplayer.h"
 
 #include <complex>
+#include "BringKeyboard.h"
 #include "CAutoconnector.h"
 #include "CAutoplayerFunctions.h"
 #include "CCasinoInterface.h"
@@ -56,7 +58,6 @@ bool CAutoplayer::GetMutex()
 {
 	return _mutex.Lock(500);
 }
-
 
 
 bool CAutoplayer::TimeToHandleSecondaryFormulas()
@@ -281,7 +282,6 @@ bool CAutoplayer::DoAllin(void)
 			+ p_symbols->sym()->balance[10]; //!!!
 		p_casino_interface->EnterBetsize(betsize_for_allin);
 	}
-	p_stableframescounter->ResetOnAutoplayerAction(); //!!!
 }
 
 void CAutoplayer::DoAutoplayer(void) 
@@ -290,6 +290,7 @@ void CAutoplayer::DoAutoplayer(void)
 
 	// Check status of "Keyboard" menu item, and engage if necessary
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling CheckBringKeyboard.\n");
+	// !!! Needs mutex locking here!
 	CheckBringKeyboard();
 
 	// Access TM objects !! Better name, better comment
@@ -394,11 +395,6 @@ void CAutoplayer::DoAutoplayer(void)
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling DoSwag.\n");
 		DoSwag();
 	}
-	else 
-	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling DoARCCF.\n");
-		DoARCCF();
-	}
 
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending Autoplayer cadence.\n");
 }
@@ -411,54 +407,7 @@ void CAutoplayer::DoSwag(void)
 	}
 }
 
-void CAutoplayer::DoARCCF(void) 
-{
-	ActionConstant	do_click = k_action_undefined;
-	HWND			hwnd_focus = GetFocus();
-	POINT			cur_pos = {0};
-	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
-	int				sym_myturnbits = (int) p_symbols->sym()->myturnbits;
-
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting DoARCCF...\n");
-
-	RECT			r;
-
-	do_click = k_action_undefined;
-
-
-
-
-		//Mutex locked -> Click_delay
-		Sleep(prefs.click_delay());
-		
-		if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
-		{
-			
-			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), r, MouseLeft, 2, hwnd_focus, cur_pos);
-		}
-		else
-		{
-			(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), r, MouseLeft, 1, hwnd_focus, cur_pos);
-		}
-		
-
-		p_stableframescounter->ResetOnAutoplayerAction();
-
-		// record did*/prevaction
-		int sym_br = (int) p_symbols->sym()->br;
-
-		// Writing 4-digit-name of action, e.g "ALLI" or "RAIS" to the log.
-		write_logautoplay(ActionConstantNames(do_click));
-		p_symbols->RecordPrevAction(do_click);
-		
-		//???Missing in rev. 1944
-		//p_heartbeat_thread->set_replay_recorded_this_turn(false);
-
-	
-	// !!! Remove hard-coded constants
-	//!!!p_symbols->sym()->didrais[4], p_symbols->sym()->didcall[4], p_symbols->sym()->didchec[4]);
-}
 
 void CAutoplayer::DoSlider(void) 
 {
@@ -487,131 +436,7 @@ void CAutoplayer::DoPrefold(void)
 }
 
 
-void CAutoplayer::CheckBringKeyboard(void) 
-{
-	HMENU			bringsysmenu = NULL;
-	MENUITEMINFO	mii;
-	int				input_count = 0, i = 0;
-	INPUT			input[100] = {0};
-	HWND			hwnd_focus = GetFocus();
-	POINT			cur_pos = {0};
-	char			temp[256] = {0};
-	CString			c_text = "";
-	int				keybd_item_pos = 0;
-	int				e = SUCCESS;
-	bool			sym_isbring = (bool) p_symbols->sym()->isbring;
-	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
-	// Init locals
-	memset(&mii, 0, sizeof(MENUITEMINFO));
-
-	GetCursorPos(&cur_pos);
-
-	// Find position of "Keyboard" item on system menu
-	bringsysmenu = GetSystemMenu(p_autoconnector->attached_hwnd(), false);
-
-	mii.cbSize = sizeof(MENUITEMINFO);
-	mii.fMask = MIIM_STRING;
-	mii.fType = MFT_STRING;
-	mii.dwTypeData = temp;
-	keybd_item_pos = -1;
-	for (i=GetMenuItemCount(bringsysmenu)-1; i>=0; i--) 
-	{
-		mii.cch = 256;
-	
-		// Get the text of this menu item
-		GetMenuItemInfo(bringsysmenu, i, true, &mii);
-		c_text = temp;
-
-		// See if this is the "keyboard" menu item
-		if (c_text.MakeLower().Find("keyboard") != -1) 
-		{
-			keybd_item_pos = i;
-			continue;
-		}
-	}
-
-	// Get state of keyboard menu item
-	if (keybd_item_pos == -1) 
-	{
-		return;
-	}
-	else 
-	{
-		mii.cbSize = sizeof(MENUITEMINFO);
-		mii.fMask = MIIM_STATE;
-		GetMenuItemInfo(bringsysmenu, keybd_item_pos, true, &mii);
-	}
-
-	if (!(mii.fState&MFS_CHECKED) && sym_isbring) 
-	{
-
-		input_count = 0;
-		// Alt key down
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_KEYBOARD;
-		input[input_count].ki.wVk = VK_MENU;
-		input_count++;
-
-		// Space bar down
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_KEYBOARD;
-		input[input_count].ki.wVk = VK_SPACE;
-		input_count++;
-
-		// Space bar up
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_KEYBOARD;
-		input[input_count].ki.wVk = VK_SPACE;
-		input[input_count].ki.dwFlags = KEYEVENTF_KEYUP;
-		input_count++;
-
-		// Alt key up
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_KEYBOARD;
-		input[input_count].ki.wVk = VK_MENU;
-		input[input_count].ki.dwFlags = KEYEVENTF_KEYUP;
-		input_count++;
-
-		if (_mutex.Lock(500)) 
-		{
-			SetFocus(p_autoconnector->attached_hwnd());
-			SetForegroundWindow(p_autoconnector->attached_hwnd());
-			SetActiveWindow(p_autoconnector->attached_hwnd());
-			SendInput(input_count, input, sizeof(INPUT));
-		}
-		Sleep(200);
-
-		input_count = 0;
-		// K down
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_KEYBOARD;
-		input[input_count].ki.wVk = 'K';
-		input_count++;
-
-		// K up
-		ZeroMemory(&input[input_count],sizeof(INPUT));
-		input[input_count].type = INPUT_KEYBOARD;
-		input[input_count].ki.wVk = 'K';
-		input[input_count].ki.dwFlags = KEYEVENTF_KEYUP;
-		input_count++;
-
-		if (_mutex.Lock(500)) 
-		{
-			SetFocus(p_autoconnector->attached_hwnd());
-			SetForegroundWindow(p_autoconnector->attached_hwnd());
-			SetActiveWindow(p_autoconnector->attached_hwnd());
-
-			SendInput(input_count, input, sizeof(INPUT));
-
-			SetActiveWindow(hwnd_focus);
-			SetForegroundWindow(hwnd_focus);
-			SetFocus(hwnd_focus);
-
-			SetCursorPos(cur_pos.x, cur_pos.y);
-		}
-	}
-}
 
 bool CAutoplayer::HandleInterfacebuttonsI86(void) 
 {

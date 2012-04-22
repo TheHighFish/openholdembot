@@ -13,11 +13,8 @@ public:
 	// public functions
 	CAutoplayer(BOOL bInitiallyOwn, LPCTSTR lpszName);
 	~CAutoplayer(void);
+public:
 	void DoAutoplayer(void);
-	void DoRebuyIfNeccessary(void);
-
-	bool ExecutePrimaryFormulas();
-	bool ExecuteRaiseCallCheckFold();
 
 public:
 	// public accessors
@@ -28,6 +25,11 @@ public:
 #define ENT CSLock lock(m_critsec);
 	void set_autoplayer_engaged(const bool to_be_enabled_or_not);
 #undef ENT
+
+private:
+	void DoRebuyIfNeccessary(void);
+	bool ExecutePrimaryFormulas();
+	bool ExecuteRaiseCallCheckFold();
 
 private:
 	// private variables - use public accessors and public mutators to address these
@@ -45,10 +47,8 @@ private:
 	bool HandleInterfacebuttonsI86(void); 
 	bool GetMutex();
 	void DoSwag(void);
-	void DoARCCF(void);
 	void DoSlider(void);
 	void DoPrefold(void);
-	void CheckBringKeyboard(void);
 	bool TimeToHandleSecondaryFormulas();
 	void CAutoplayer::DoF$Sitin_Sitout_Leave(void);
 	void DoI86(void);
