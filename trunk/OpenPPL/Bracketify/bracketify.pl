@@ -153,6 +153,7 @@ while (<>)
 	s/[ ]+check[ ]+force/\) CHECK FORCE/i;
 	s/[ ]+fold[ ]+force/\) FOLD FORCE/i;
 	s/[ ]+sitout[ ]+force/\) SITOUT FORCE/i;
+	s/[ ]+return[ ]/\) RETURN /i;
 	# Still first case: brackets before an action
 	# Now for Bet/Raise X% FORCE or Bet/Raise X Force,
 	# where Bet/Raise will be followed by a number.
