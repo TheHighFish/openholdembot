@@ -1,4 +1,4 @@
-v1.0.6 2012-xx-yy
+v1.0.6 2012-04-23
 =================
 BUG FIXES: 
 - f$OpenPPL_PlayersBehindDealPosition2ChairDidAct didn't work correctly because of a typo.
@@ -11,10 +11,6 @@ BUG FIXES:
   despite they should reset once per turn.
   Thanks to Postenjak for reporting.
   [THF]
-- Incomplete sanity checks prevented a raise if we used BetPot or BetHalfPot,
-  because only fixed bets and percentaged potsized bets got considered in f$swag.
-  Thanks to PokerValy and Lavezzi for reporting.
-  [THF]
 - f$OpenPPL_BetSizeForFixedBetInBigBlinds incorrectly assumed, 
   that ncallbets returns a dollar-value, whereas is returns 
   the number of bets after we call.
@@ -23,7 +19,22 @@ BUG FIXES:
   [THF]
 - New f$Decision function broke some backup-actions.
   In case of an impossible potsize-bet OH did no longer raise-min.
-  Thanks to Postenjak for reporting and for suggesting a fix.
+  Thanks to PokerValy and Lavezzi for reporting 
+  and to Postenjak for suggesting a fix.
+  [THF]
+- bracketify.pl forgot the closing paranthesis before a return statement.
+  Thanks to Lavezzi for reporting.
+  [THF]
+  
+MAINTENANCE:
+- Now displaying a more lenghty ocde-snippet,
+  hoping that we also show a comment with a line-number.
+  [THF]
+  
+NEW STUFF:
+- Bracketify.pl does now add comments with line-numbers 
+  for every single line of code, as we didn't get boosts position-operator to work.
+  This work-around should be good enough to identify the location of an error.
   [THF]
 
 v1.0.5 2012-04-09
