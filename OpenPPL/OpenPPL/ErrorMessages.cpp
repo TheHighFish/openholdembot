@@ -226,14 +226,14 @@ void ErrorMessage(int error_code, CString invalid_code_snippet)
 	CString short_error_explanation = short_error_messages[error_code];
 	CString detailed_error_explanation = detailed_error_messages[error_code];
 
-	CString error_location;
+	//CString error_location;
 	//error_location.Format("Line: %d\nColumn: %d\n", error_line, error_column);
-	error_location.Format("Line: [ %i ]\n\n", GetLineCount());
+	//error_location.Format("Line: [ %i ]\n\n", GetLineCount());
 	CString separator_line = "\n============================================================\n\n";
 	CString error_message = short_error_explanation + separator_line
 		+ invalid_code_snippet + separator_line 
-		+ detailed_error_explanation + separator_line
-		+ error_location;
+		+ detailed_error_explanation + separator_line;
+		//+ error_location;
 	MessageBox(0, error_message, "OpenPPL: Syntax Error", 0);
 	TerminateProcessing();
 }
