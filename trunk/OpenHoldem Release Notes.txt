@@ -31,13 +31,14 @@ NEW STUFF:
   to reasonable positions.
   [THF]
 - Implemented a "Problem Solver", a tool to help newbies.
-  It detect common PEBKACs, like not being connected, an unknown user-chair or unknown cards.
+  It detects common PEBKACs, like not being connected, an unknown user-chair or no opponents.
   This tool is available at Menu -> Help -> Problem solver.
   [THF]
   
 
 MAINTENANCE:
-- Removed code-clones in CFormula.cpp [THF]
+- Removed code-clones in CFormula.cpp 
+  [THF]
 - Removed friend-symbols completely, as OpenHoldem does not support any kind of collusion.
   We don't want that shit, not even for backward-compatibility wo WinHoldem.
   [THF]
