@@ -45,6 +45,8 @@
 #
 ################################################################################
 
+my $current_line_of_code = 0;
+
 print "//\n";
 print "// Cleaned up and brackets added by \"bracketify.pl\"\n";
 print "//\n";
@@ -526,6 +528,11 @@ while (<>)
 	{
 		print "\n\"NutFullHouseOrFourOfAKind = 0\" is unsafe!\nOpenPPL uses consistently higher numbers for worse hands\nand 999 if you don't have a full house at all.\nPlease revisit the manual and your code\n\n";
 	}
+	# Generate a comment with the current line of code,
+	# as we didn't get boosts position-operator to work.
+	# This work-around should be good enough to identify the location of an error.
+	$current_line_of_code++;
+	print "/*** Line $current_line_of_code ***/\n";
 	# And finally write the processed line to standard output
 	print;
 }
