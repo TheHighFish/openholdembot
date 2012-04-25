@@ -53,7 +53,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("If it's preflop, all players playing (or sitting in) must have a positive balance or (if they are allin) a bet in front of them. Partial rule for player 0.")
     PRECONDITION ((gws("betround") == 1) && ((int(gws("playersplayingbits")) & 0x01) == 0x01))
-    POSTCONDITION ((gws("currentbet0") > 0) || (gws("balance1") > 0))
+    POSTCONDITION ((gws("currentbet0") > 0) || (gws("balance0") > 0))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, playersplayingbits, currentbet0, balance0")
 END_TESTCASE
 
