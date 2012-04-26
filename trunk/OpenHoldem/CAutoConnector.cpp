@@ -57,9 +57,6 @@ CAutoConnector::~CAutoConnector()
 	write_log(prefs.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector()\n");
 	p_sharedmem->MarkPokerWindowAsUnAttached();
 	set_attached_hwnd(NULL);
-	// Load all TMs once here in the constructor to reduce workload 
-	// in the Connection-method, which is synchronized by a mutex.
-	ParseAllTableMapsToLoadConnectionData();
 }
 
 

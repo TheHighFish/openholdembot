@@ -7,6 +7,8 @@
 #include "MagicNumbers.h"
 #include "OpenHoldem.h"
 
+CTableMapLoader *p_tablemap_loader = NULL;
+
 typedef struct
 {
 	CString			FilePath;
@@ -33,7 +35,6 @@ CTableMapLoader::CTableMapLoader()
 	// Parse all tablemaps once on startup.
 	// We want to avoid heavy workload in the connect()-function.
 	ParseAllTableMapsToLoadConnectionData();
-
 	CheckForDuplicatedTablemaps(); 
 }
 

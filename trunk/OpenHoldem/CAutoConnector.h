@@ -18,12 +18,6 @@ public:
 	// public accessors
 	const HWND attached_hwnd()    { return _attached_hwnd; }
 private:
-	void ParseAllTableMapsToLoadConnectionData(CString TableMapWildcard);
-	void ParseAllTableMapsToLoadConnectionData();
-	void ExtractConnectionDataFromCurrentTablemap(SWholeMap *map);
-	bool TablemapConnectionDataAlreadyStored(CString TablemapFilePath);
-	void CheckForDuplicatedTablemaps();
-private:
 	int SelectTableMapAndWindow(int Choices);
 	int SelectTableMapAndWindowManually(int Choices);
 	int SelectTableMapAndWindowAutomatically(int Choices);
