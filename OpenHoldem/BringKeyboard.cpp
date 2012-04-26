@@ -2,6 +2,7 @@
 #include "BringKeyBoard.h"
 
 #include "CAutoConnector.h"
+#include "CPreferences.h"
 #include "CSymbols.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
@@ -20,6 +21,8 @@ void CheckBringKeyboard(void)
 	int				e = SUCCESS;
 	bool			sym_isbring = (bool) p_symbols->sym()->isbring;
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
+
+	write_log(prefs.debug_autoplayer(), "[BringKeyBoard] Enabling bring-keyboard if necessary.\n");
 
 	// Init locals
 	memset(&mii, 0, sizeof(MENUITEMINFO));

@@ -413,6 +413,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CTableMapLoader.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CTablePositioner.cpp"
 				>
 			</File>
@@ -1131,6 +1135,10 @@
 			</File>
 			<File
 				RelativePath=".\CTableLimits.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CTableMapLoader.h"
 				>
 			</File>
 			<File

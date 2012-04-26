@@ -77,6 +77,9 @@ const int k_max_number_of_font_groups_in_tablemap = 8;
 const int k_max_number_of_hash_groups_in_tablemap = 4;
 const int k_max_number_of_titletexts = 10;
 
+// Auto-connector
+const int k_max_nmber_of_tablemaps = 25;
+
 // Number of (side)pots
 const int k_max_number_of_pots = 10;
 

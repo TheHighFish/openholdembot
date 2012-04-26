@@ -3,6 +3,7 @@
 
 #include "CAutoConnector.h"
 #include "CSymbols.h"
+#include "CTableMapLoader.h"
 #include "OH_MessageBox.h"
 
 CProblemSolver::CProblemSolver()
@@ -15,7 +16,7 @@ const char *k_title_string = "Problem Solver";
 
 bool CProblemSolver::NoTableMapsInScraperFolder()
 {
-	return (p_autoconnector->NumberOfTableMapsLoaded() == 0);
+	return (p_tablemap_loader->NumberOfTableMapsLoaded() == 0);
 }
 
 bool CProblemSolver::NotConnected()

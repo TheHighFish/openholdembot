@@ -17,7 +17,6 @@ public:
 public:
 	// public accessors
 	const HWND attached_hwnd()    { return _attached_hwnd; }
-	int NumberOfTableMapsLoaded() { return _number_of_tablemaps_loaded; }
 private:
 	void ParseAllTableMapsToLoadConnectionData(CString TableMapWildcard);
 	void ParseAllTableMapsToLoadConnectionData();
@@ -36,8 +35,6 @@ private:
 private:
 	// private variables - use public accessors and public mutators to address these
 	HWND		_attached_hwnd;	 // Table that we are attached to
-	bool		TablemapsInScraperFolderAlreadyParsed;
-	int			_number_of_tablemaps_loaded;
 	CCritSec	m_critsec;
 private:
 	// Mutex used for cross-instance autoconnector coordination
