@@ -36,6 +36,7 @@
 
 CAutoplayer	*p_autoplayer = NULL;
 
+
 CAutoplayer::CAutoplayer(BOOL bInitiallyOwn, LPCTSTR lpszName) : _mutex(bInitiallyOwn, lpszName)
 {
 	ASSERT(_mutex.m_hObject != NULL); 
@@ -51,8 +52,10 @@ CAutoplayer::CAutoplayer(BOOL bInitiallyOwn, LPCTSTR lpszName) : _mutex(bInitial
 	}
 }
 
+
 CAutoplayer::~CAutoplayer(void) 
 {}
+
 
 bool CAutoplayer::GetMutex()
 {
@@ -288,9 +291,6 @@ void CAutoplayer::DoAutoplayer(void)
 {
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting Autoplayer cadence...\n");
 
-	// Check status of "Keyboard" menu item, and engage if necessary
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling CheckBringKeyboard.\n");
-	// !!! Needs mutex locking here!
 	CheckBringKeyboard();
 
 	// Access TM objects !! Better name, better comment
