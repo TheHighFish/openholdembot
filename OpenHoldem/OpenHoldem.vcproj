@@ -301,38 +301,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\BringKeyboard.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CAutoConnector.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CAutoConnectorThread.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CAutoplayer.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CAutoplayerFunctions.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CCasinoInterface.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CConfigurationCheck.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CDllExtension.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CEvalInfo.cpp"
 				>
 			</File>
@@ -377,14 +345,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CProblemSolver.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CRebuyManagement.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CReplayFrame.cpp"
 				>
 			</File>
@@ -394,10 +354,6 @@
 			</File>
 			<File
 				RelativePath=".\CScraperAccess.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CStableFramesCounter.cpp"
 				>
 			</File>
 			<File
@@ -413,19 +369,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CTableMapLoader.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CTablePositioner.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CValidator.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\debug.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\FileSystemMonitor.cpp"
 				>
 			</File>
 			<File
@@ -454,10 +406,6 @@
 			</File>
 			<File
 				RelativePath=".\OpenHoldemDoc.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\PokerChat.cpp"
 				>
 			</File>
 			<File
@@ -1000,6 +948,70 @@
 				</File>
 			</Filter>
 			<Filter
+				Name="Usability"
+				>
+				<File
+					RelativePath=".\CConfigurationCheck.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CProblemSolver.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="AutoPlayer"
+				>
+				<File
+					RelativePath=".\BringKeyboard.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CAutoplayer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CAutoplayerFunctions.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CCasinoInterface.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CRebuyManagement.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CStableFramesCounter.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\PokerChat.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="AutoConnector"
+				>
+				<File
+					RelativePath=".\CAutoConnector.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CAutoConnectorThread.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CTableMapLoader.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CTablePositioner.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
 				Name="Programming the Bot"
 				>
 				<File
@@ -1021,38 +1033,6 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath=".\BringKeyboard.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CAutoConnector.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CAutoConnectorThread.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CAutoplayer.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CAutoplayerFunctions.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CCasinoInterface.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CConfigurationCheck.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CDllExtension.h"
-				>
-			</File>
 			<File
 				RelativePath=".\CEvalInfo.h"
 				>
@@ -1102,14 +1082,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CProblemSolver.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CRebuyManagement.h"
-				>
-			</File>
-			<File
 				RelativePath=".\CReplayFrame.h"
 				>
 			</File>
@@ -1119,10 +1091,6 @@
 			</File>
 			<File
 				RelativePath=".\CScraperAccess.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CStableFramesCounter.h"
 				>
 			</File>
 			<File
@@ -1138,19 +1106,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CTableMapLoader.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CTablePositioner.h"
-				>
-			</File>
-			<File
 				RelativePath=".\CValidator.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DefaultBot.h"
 				>
 			</File>
 			<File
@@ -1179,10 +1135,6 @@
 			</File>
 			<File
 				RelativePath=".\OpenHoldemDoc.h"
-				>
-			</File>
-			<File
-				RelativePath=".\PokerChat.hpp"
 				>
 			</File>
 			<File
@@ -1650,6 +1602,70 @@
 				</File>
 				<File
 					RelativePath=".\PokerTracker_Queries\PositionalPreflopStats.h.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="AutoPlayer"
+				>
+				<File
+					RelativePath=".\BringKeyboard.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CAutoplayer.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CAutoplayerFunctions.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CCasinoInterface.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CRebuyManagement.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CStableFramesCounter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\PokerChat.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="AutoConnector"
+				>
+				<File
+					RelativePath=".\CAutoConnector.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CAutoConnectorThread.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CTableMapLoader.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CTablePositioner.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Usability"
+				>
+				<File
+					RelativePath=".\CConfigurationCheck.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CProblemSolver.h"
 					>
 				</File>
 			</Filter>
