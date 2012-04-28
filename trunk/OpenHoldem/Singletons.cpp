@@ -8,6 +8,7 @@
 #include "CAutoplayerFunctions.h"
 #include "CConfigurationCheck.h"
 #include "CDllExtension.h"
+#include "CFileSystemMonitor.h"
 #include "CFormula.h"
 #include "CGameState.h"
 #include "CHandHistory.h"
@@ -84,6 +85,8 @@ void InstantiateAllSingletons()
 		p_validator = new CValidator;
 	if (!p_table_positioner)
 		p_table_positioner = new CTablePositioner;
+	if (!p_file_system_monitor)
+		p_file_system_monitor = new CFileSystemMonitor;
 	if (!p_tablemap_loader)
 		p_tablemap_loader = new CTableMapLoader;
 	if (!p_autoconnector) 
@@ -121,6 +124,8 @@ void DeleteAllSingletons()
 		{ delete p_autoconnector; p_autoconnector = NULL; }
 	if (p_tablemap_loader)
 		{ delete p_tablemap_loader; p_tablemap_loader = NULL; }
+	if (p_file_system_monitor)
+		{ delete p_file_system_monitor; p_file_system_monitor = NULL; }
 	if (p_table_positioner)
 		{ delete p_table_positioner; p_table_positioner = NULL; }
 	if (p_validator) 
