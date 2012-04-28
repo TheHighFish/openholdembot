@@ -305,6 +305,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CFileSystemMonitor.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CGrammar.cpp"
 				>
 			</File>
@@ -374,10 +378,6 @@
 			</File>
 			<File
 				RelativePath=".\debug.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\FileSystemMonitor.cpp"
 				>
 			</File>
 			<File
@@ -1035,6 +1035,10 @@
 			>
 			<File
 				RelativePath=".\CEvalInfo.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CFileSystemMonitor.h"
 				>
 			</File>
 			<File
