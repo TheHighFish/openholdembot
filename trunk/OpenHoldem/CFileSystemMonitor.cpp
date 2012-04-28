@@ -17,7 +17,7 @@
 // http://msdn.microsoft.com/en-us/library/aa364417%28VS.85%29.aspx
 // http://msdn.microsoft.com/en-us/library/aa365261(v=vs.85).aspx
 
-CFileSystemMonitor *p_file_system_monitor = NULL;
+CFileSystemMonitor *p_filesystem_monitor = NULL;
 
 
 CFileSystemMonitor::CFileSystemMonitor()
@@ -29,7 +29,7 @@ CFileSystemMonitor::CFileSystemMonitor()
 
 CFileSystemMonitor::~CFileSystemMonitor()
 {
-	// !!! Close monitor?
+	CloseHandle(dwChangeHandle);
 }
 
 void CFileSystemMonitor::InitMonitor()
@@ -50,10 +50,11 @@ void CFileSystemMonitor::InitMonitor()
 
 bool CFileSystemMonitor::AnyChanges()
 {
+	// http://msdn.microsoft.com/en-us/library/windows/desktop/ms687025(v=vs.85).aspx
 	dwWaitStatus = WaitForMultipleObjects(
 		1,					// number of handles
 		&dwChangeHandle,	// handle
-		FALSE,				// ???
+		FALSE,				// bWaitAll - does not make a difference here
 		0);					// time to wait
 	if (dwWaitStatus == WAIT_OBJECT_0)
 	{

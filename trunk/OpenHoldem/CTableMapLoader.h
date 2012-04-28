@@ -15,6 +15,7 @@ public:
 	~CTableMapLoader();
 public:
 	int NumberOfTableMapsLoaded() { return _number_of_tablemaps_loaded; }
+	void ReloadAllTablemapsIfChanged();
 private:
 	void CTableMapToSWholeMap(CTablemap *cmap, SWholeMap *smap);
 	void ParseAllTableMapsToLoadConnectionData(CString TableMapWildcard);
