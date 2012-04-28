@@ -3,6 +3,7 @@
 
 #include "..\CTablemap\CTablemapAccess.h"
 #include "..\CTransform\CTransform.h"
+#include "CFileSystemMonitor.h"
 #include "CPreferences.h"
 #include "MagicNumbers.h"
 #include "OpenHoldem.h"
@@ -295,27 +296,16 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 	return true;
 }
 
-
-bool TimeToReloadTableMaps()
+void CTableMapLoader::ReloadAllTablemapsIfChanged()
 {
-	return (0 == 0);
-}
-
-bool NecessityToReloadTableMaps()
-{
-	return (0 == 0);
-}
-
-void ReloadAllTableMapsIfChanged()
-{
+	/* !!! 
 	if (!TimeToReloadTableMaps())
 	{
 		return;
-	}
-	if (!NecessityToReloadTableMaps())
+	}*/
+	if (p_filesystem_monitor->AnyChanges())
 	{
-		return;
+		ParseAllTableMapsToLoadConnectionData();
 	}
-	// !!!
 }
 

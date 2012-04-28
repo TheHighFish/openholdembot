@@ -14,6 +14,6 @@ private:
 	CString absolute_path_to_scraper_directory;
 	DWORD dwWaitStatus; 
 	HANDLE dwChangeHandle;
-} * p_file_system_monitor;
+} * p_filesystem_monitor;
 
 #endif // INC_CFILESYSTEM_MONITOR_H
