@@ -2119,7 +2119,7 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
 	m_wrk_formula.CreateHandListMatrices();
 
 	// Validate parse trees
-	if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd(), false))
+	if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd()))
 	{
 		s.Format("There are syntax errors in one or more formulas that are\n");
 		s.Append("preventing calculation.\n");
@@ -2212,7 +2212,7 @@ void CDlgFormulaScintilla::OnBnClickedAuto()
 		m_wrk_formula.CreateHandListMatrices();
 
 		// Validate parse trees
-		if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd(), false))
+		if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd()))
 		{
 			s.Format("There are syntax errors in one or more formulas that are\n");
 			s.Append("preventing calculation of this formula.\n");
@@ -2493,7 +2493,7 @@ void CDlgFormulaScintilla::OnBnClickedApplySave()
 
 void CDlgFormulaScintilla::WarnAboutAutoplayerWhenApplyingFormulaAndTurnAutoplayerOff()
 {
-	MessageBox("Editing the formula while the autoplayer is enabled\n"
+	OH_MessageBox_Interactive("Editing the formula while the autoplayer is enabled\n"
 		"is an extremely insane idea\n"
 		"(like changing wheels while driving on the highway).\n\n"
 		"We will have to turn the autoplayer off,\n"
@@ -2527,7 +2527,7 @@ void CDlgFormulaScintilla::OnBnClickedApply()
 	// Parse working set
 	LastChangeToFormula(&m_wrk_formula);
 
-	if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd(), false))
+	if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd()))
 	{
 		if (OH_MessageBox_Interactive("There are errors in the working formula set.\n\n"
 					   "Would you still like to apply changes in the working set to the main set?\n\n"
@@ -2551,7 +2551,7 @@ void CDlgFormulaScintilla::OnBnClickedApply()
 	p_formula->CreateHandListMatrices();
 
 	// Re-parse global set
-	p_formula->ParseAllFormula(this->GetSafeHwnd(), false);
+	p_formula->ParseAllFormula(this->GetSafeHwnd());
 
 	// Re-calc symbols
 	p_symbols->CalcSymbols();
@@ -2581,7 +2581,7 @@ void CDlgFormulaScintilla::OnBnClickedOk()
 	// Parse working set
 	LastChangeToFormula(&m_wrk_formula);
 
-	if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd(), false))
+	if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd()))
 	{
 		if (OH_MessageBox_Interactive("There are errors in the working formula set.\n\n"
 					   "Would you still like to apply changes in the working set to the main set "
@@ -2607,7 +2607,7 @@ void CDlgFormulaScintilla::OnBnClickedOk()
 	p_formula->CreateHandListMatrices();
 
 	// Re-parse global set
-	p_formula->ParseAllFormula(this->GetSafeHwnd(), false);
+	p_formula->ParseAllFormula(this->GetSafeHwnd());
 
 	// Re-calc symbols
 	p_symbols->CalcSymbols();
@@ -2631,7 +2631,7 @@ bool CDlgFormulaScintilla::PromptToSave()
 		// Parse working set
 		LastChangeToFormula(&m_wrk_formula);
 
-		if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd(), false))
+		if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd()))
 		{
 			if (OH_MessageBox_Interactive("There are errors in the working formula set.\n\n"
 						   "Would you still like to apply changes in the working set to the main set "
@@ -2656,7 +2656,7 @@ bool CDlgFormulaScintilla::PromptToSave()
 		p_formula->CreateHandListMatrices();
 
 		// Re-parse global set
-		p_formula->ParseAllFormula(this->GetSafeHwnd(), false);
+		p_formula->ParseAllFormula(this->GetSafeHwnd());
 
 		m_dirty = false;
 

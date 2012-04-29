@@ -160,9 +160,6 @@ void CRebuyManagement::ExecuteRebuyScript()
 	CommandLine.Format(CString("%s %s %u %f %f %f %f %f %f"), 
 		RebuyScript, Casino, WindowHandleOfThePokerTable, 
 		UserChair, Balance, SmallBlind, BigBlind, BigBet, TargetAmount);
-	/*
-	MessageBox(0, CommandLine, CString("CommandLine"), 0);
-	*/
 	// For some docu on "CreateProcess" see:
 	// http://pheatt.emporia.edu/courses/2005/cs260s05/hand39/hand39.htm
 	// http://msdn.microsoft.com/en-us/library/aa908775.aspx

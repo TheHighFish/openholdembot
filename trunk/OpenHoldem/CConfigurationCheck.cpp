@@ -2,6 +2,7 @@
 
 #include "CConfigurationCheck.h"
 #include "CPreferences.h"
+#include "OH_MessageBox.h"
 
 
 CConfigurationCheck *p_configurationcheck = 0;
@@ -138,8 +139,8 @@ void CConfigurationCheck::CheckColourDepth()
 {
 	CWindowDC dc(NULL);
 	int nBitsPerPixel = dc.GetDeviceCaps(PLANES) * dc.GetDeviceCaps(BITSPIXEL);
-	if (nBitsPerPixel < 24 && !prefs.disable_msgbox())
-		MessageBox(0, "It appears that your Display settings are not configured according to OpenHoldem specifications.\n"
+	if (nBitsPerPixel < 24)
+		OH_MessageBox("It appears that your Display settings are not configured according to OpenHoldem specifications.\n"
 				"24 bit color or higher is needed to reliably extract information from the poker client.\n\n"
 				"For more info, look at the manual and the user forums",
 				"Caution: Color Depth Too Low", MB_OK|MB_ICONWARNING);
@@ -152,7 +153,7 @@ void CConfigurationCheck::CheckInputSettings()
 
 	if (Success && (_tcscmp(KeyboardLayout, k_KeyboardLayout_UK_US_English) != 0))
 	{
-		MessageBox(0, "You seem to have non-english keyboard settings.\n"
+		OH_MessageBox("You seem to have non-english keyboard settings.\n"
 				"Keyboard settings affect especially the decimal point in numbers\n"
 				"and therefore the scraper-engine and the auto-player.\n"
 				"If you continue, OpenHoldem may or may not work as expected.\n"
@@ -178,7 +179,7 @@ void CConfigurationCheck::CheckForSwapMouseBtns()
 
 	if (SwapBtns == true)
 	{
-		MessageBox(0, "It appears that your Mouse settings are not configured according to OpenHoldem specifications.\n\n"
+		OH_MessageBox("It appears that your Mouse settings are not configured according to OpenHoldem specifications.\n\n"
 			
 			"The autoplayer has to generate mouse-events via a very low-level system-interface,\n"
 			"and windows might/will swap these hardware-events for their inverse logical responses.\n\n"
@@ -217,7 +218,7 @@ void CConfigurationCheck::CheckForClassicalTheme()
 
 	if (classic_theme == false)
 	{
-		MessageBox(0, "Classical Theme Not Found\n"
+		OH_MessageBox("Classical Theme Not Found\n"
 			"Settings deviate from recommended defaults.\n"
 			"\n"
 			"Please enable windows classical theme.\n"
@@ -251,7 +252,7 @@ void CConfigurationCheck::CheckForFontSmoothing()
 
 			if (FontSmoothType == 2)
 			{
-				MessageBox(0, "It appears that Cleartype font smoothing is enabled.\n"
+				OH_MessageBox("It appears that Cleartype font smoothing is enabled.\n"
 							"\n"
 							"In order for OpenHoldem to reliably\n"
 							"extract information from the poker client\n"
@@ -261,7 +262,7 @@ void CConfigurationCheck::CheckForFontSmoothing()
 
 			else if (FontSmoothType == 1)
 			{
-				MessageBox(0, "It appears that Standard font smoothing is enabled.\n"
+				OH_MessageBox("It appears that Standard font smoothing is enabled.\n"
 							"\n"
 							"In order for OpenHoldem to reliably\n"
 							"extract information from the poker client\n"
@@ -286,7 +287,7 @@ void CConfigurationCheck::CheckForMissingMSVCRT()
 
 	if (installed == false)
 	{
-		MessageBox(0, "Unable to detect\n"
+		OH_MessageBox("Unable to detect\n"
 			"Microsoft Visual C++ 2005 redistributable runtime library.\n"
 			"\n"
 			"This library is necessary for Perl users.\n"
@@ -302,7 +303,7 @@ void CConfigurationCheck::CheckForMissingActivePerl()
 
 	if (!OpenKey("HKLM", p_szKeyAP))
 	{
-		MessageBox(0, "Unable to detect\n"
+		OH_MessageBox("Unable to detect\n"
 			"ActiveState ActivePerl.\n"
 			"\n"
 			"This version is required for Perl users.\n"
@@ -321,7 +322,7 @@ void CConfigurationCheck::CheckForPerlPath()
 
 	if (path.Find("Perl") == -1)
 	{
-		MessageBox(0, "Path\n"
+		OH_MessageBox("Path\n"
 			"Perl was not correctly detected in your Path.\n"
 			"\n"
 			"If you don't use Perl you may turn this warning off\n"

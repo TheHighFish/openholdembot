@@ -182,9 +182,7 @@ BOOL COpenHoldemApp::InitInstance()
 		}
 	}
 
-	MyLoadStdProfileSettings(4);  // Load standard INI file options (including MRU)
-	if (m_pRecentFileList == NULL)
-		AfxMessageBox("Still NULL");
+	MyLoadStdProfileSettings(k_number_of_last_recently_used_files_in_file_menu);
 	// Register the application's document templates.  Document templates
 	//  serve as the connection between documents, frame windows and views
 	CSingleDocTemplate* pDocTemplate;

@@ -58,10 +58,10 @@ bool CFileSystemMonitor::AnyChanges()
 		0);					// time to wait
 	if (dwWaitStatus == WAIT_OBJECT_0)
 	{
-		MessageBox(0, "directory changed", "FileMon", 0);
+		MessageBox(0, "directory changed", "FileMon", 0); // !!!
 		return true;
 	}
-	MessageBox(0, "No changes", "FileMon", 0);
+	MessageBox(0, "No changes", "FileMon", 0); // !!!
 	return false;
 }
 

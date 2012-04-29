@@ -84,8 +84,7 @@ void CReplayFrame::CreateReplayFrame(void)
 	if (free_bytes_for_user_on_disk.QuadPart < FREE_SPACE_NEEDED_FOR_REPLAYFRAME) 
 	{
 		write_log(prefs.debug_replayframes(), "[CReplayFrame] Not enough disk-space\n");
-		if (!prefs.disable_msgbox())
-			OH_MessageBox("Not enough disk space to create replay-frame.", "ERROR", 0);
+		OH_MessageBox("Not enough disk space to create replay-frame.", "ERROR", 0);
 
 		return;
 	}

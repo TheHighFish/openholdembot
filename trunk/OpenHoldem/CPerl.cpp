@@ -235,7 +235,7 @@ void CPerl::EditMainFormulaFile()
 							 my_favourite_Editor,			//  arg0: name of the program
 							 the_File_to_edit.c_str(),	   //  arg1: path to source file
 							 NULL);						  //  end of parameter list
-	if (errno == -1 && !prefs.disable_msgbox())
+	if (errno == -1)
 	{
 		OH_MessageBox("Editor terminated with runtime error.",
 					"Perl Error", MB_OK | MB_TOPMOST);

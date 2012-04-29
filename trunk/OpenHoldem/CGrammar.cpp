@@ -519,13 +519,11 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 				// Unknown symbol.
 				// Though we check the syntax, this can still happen
 				// by gws-calls from Perl or a DLL, etc.
-				if (!prefs.disable_msgbox())
-				{
-					CString Message = CString("Unknown symbol in CGrammar::EvaluateSymbol(): \"")
-						+ sym.c_str() + CString("\"\nThat is most probably a typo in the symbols name.\n")
-						+ CString("Please check your formula and your DLL or Perl-script.");
-					MessageBox(0, Message, "ERROR", MB_OK);
-				}
+				CString error_message = CString("Unknown symbol in CGrammar::EvaluateSymbol(): \"")
+					+ sym.c_str() + CString("\"\nThat is most probably a typo in the symbols name.\n")
+					+ CString("Please check your formula and your DLL or Perl-script.");
+				OH_MessageBox(error_message, "ERROR", MB_OK);
+	
 				return 0.0;
 			}
 		}
@@ -542,16 +540,13 @@ double CGrammar::DoCalcF$symbol(CFormula * const f, const char *symbol, CEvalInf
 	_RecursionDepth++;
 	if (_RecursionDepth > _MAX_RECURSION_DEPTH)
 	{
-		if (!prefs.disable_msgbox())
-		{
-			CString error_message = CString(
-				"Recursion to deep.\n"
-				"Probably endless.\n"
-				"Stopping autoplayer.\n"
-				"\n"
-				"Last function: ") + symbol;
-			MessageBox(0, error_message, "ERROR", 0);
-		}
+		CString error_message = CString(
+			"Recursion to deep.\n"
+			"Probably endless.\n"
+			"Stopping autoplayer.\n"
+			"\n"
+			"Last function: ") + symbol;
+		OH_MessageBox(error_message, "ERROR", 0);
 		p_autoplayer->set_autoplayer_engaged(false);
 		_RecursionDepth--;
 		return 0.0;
