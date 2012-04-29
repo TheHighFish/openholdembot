@@ -6,6 +6,7 @@
 #include "CFileSystemMonitor.h"
 #include "CPreferences.h"
 #include "MagicNumbers.h"
+#include "OH_MessageBox.h"
 #include "OpenHoldem.h"
 
 CTableMapLoader *p_tablemap_loader = NULL;
@@ -82,13 +83,15 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData(CString TableMapWild
 		if (_number_of_tablemaps_loaded >= k_max_nmber_of_tablemaps)
 		{
 			write_log(prefs.debug_autoconnector(), "[CAutoConnector] CAutoConnector: Error: Too many tablemaps. The autoconnector can only handle 25 TMs.", "Error", 0);
-			MessageBox(0, "To many tablemaps. The auto-connector can handle 25 at most.", "ERROR", 0);
+			OH_MessageBox("To many tablemaps.\n"
+				"The auto-connector can handle 25 at most.", "ERROR", 0);
 			return;
 		}
 		bFound = hFile.FindNextFile();
 		if (!hFile.IsDots() && !hFile.IsDirectory() && hFile.GetFilePath()!=current_path)
 		{
-			int ret = p_tablemap->LoadTablemap((char *) hFile.GetFilePath().GetString(), VER_OPENSCRAPE_2, &line, prefs.disable_msgbox());
+			int ret = p_tablemap->LoadTablemap((char *) hFile.GetFilePath().GetString(), 
+				VER_OPENSCRAPE_2, &line);
 			if (ret == SUCCESS)
 			{
 				CTableMapToSWholeMap(p_tablemap, &smap);
@@ -142,7 +145,7 @@ void CTableMapLoader::CheckForDuplicatedTablemaps()
 					"This will cause problems as the autoconnector won't be able to decide which one to use.\n"\
 					"Please remove the superfluous maps from the scraper folder.\n", 
 					TablemapConnectionData[i].SiteName);
-				MessageBox(0, (LPCTSTR) error_message, 
+				OH_MessageBox((LPCTSTR) error_message, 
 					"Warning! Duplicate SiteName", MB_OK|MB_ICONWARNING);
 			}
 		}
@@ -172,7 +175,7 @@ void CTableMapLoader::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 			"Sitenames are necessary to recognize duplicate TMs\n"
 			"(and for other features like PokerTracker).\n\n",
 			"%s", map->filepath);
-		MessageBox(0, error_message, "Warning", 0);
+		OH_MessageBox(error_message, "Warning", 0);
 	}
 	
 	// Get clientsize info through TM-access-class

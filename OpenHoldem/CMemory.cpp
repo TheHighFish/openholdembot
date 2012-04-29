@@ -6,6 +6,7 @@
 #include "CGrammar.h"
 #include "CPreferences.h"
 #include "CSymbols.h"
+#include "OH_MessageBox.h"
 
 CMemory		*p_memory = NULL;
 
@@ -102,7 +103,7 @@ void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunct
 		// Check for memory overflow
 		if (next_free_slot >= k_max_number_of_memory_symbols)
 		{
-			MessageBox(0, "Too many memory symbols.\n"
+			OH_MessageBox("Too many memory symbols.\n"
 						  "Stopping autoplayer.", 
 						  "Error", 0);
 			p_autoplayer->set_autoplayer_engaged(false);

@@ -34,8 +34,10 @@ BOOL COpenHoldemDoc::SaveModified()
 	{
 		if (m_formulaScintillaDlg->m_dirty)
 		{
-			if (MessageBox(NULL, "The Formula Editor has un-applied changes.\n"
-						   "Really exit?", "Formula Editor", MB_ICONWARNING|MB_YESNO) == IDNO)
+			if (OH_MessageBox_Interactive(
+				"The Formula Editor has un-applied changes.\n"
+				"Really exit?", 
+				"Formula Editor", MB_ICONWARNING|MB_YESNO) == IDNO)
 			{
 				return false;
 			}
@@ -66,7 +68,7 @@ BOOL COpenHoldemDoc::OnNewDocument()
 	p_formula->CreateHandListMatrices();
 
 	// Create parse trees for default formula
-	p_formula->ParseAllFormula(pMyMainWnd->GetSafeHwnd(), prefs.disable_msgbox());
+	p_formula->ParseAllFormula(pMyMainWnd->GetSafeHwnd());
 
 	SetTitle("Default");
 	//SetModifiedFlag(true);
@@ -108,10 +110,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 	//
 	if (p_autoplayer->autoplayer_engaged())
 	{
-		// This error can happen only in interactive mode,
-		// so there's no need to turn that Messagebox off
-		// depending on prefs.disable_msgbox()
-		OH_MessageBox("Can't load a formula while autoplayer engaged.", "ERROR", 0);
+		OH_MessageBox_Interactive("Can't load a formula while autoplayer engaged.", "ERROR", 0);
 		return;
 	}
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
@@ -142,7 +141,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 		p_formula->CreateHandListMatrices();
 
 		// Create parse trees for newly loaded formula
-		p_formula->ParseAllFormula(pMyMainWnd->GetSafeHwnd(), prefs.disable_msgbox());
+		p_formula->ParseAllFormula(pMyMainWnd->GetSafeHwnd());
 
 		// Load dll, if set in preferences
 		if (prefs.dll_load_on_startup())

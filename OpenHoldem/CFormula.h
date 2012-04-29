@@ -51,7 +51,7 @@ public:
 	void ReadFormulaFile(CArchive& ar, bool ignoreFirstLine);
 	void WriteFormula(CArchive& ar);
 	void CreateHandListMatrices();
-	bool ParseAllFormula(HWND hwnd, bool disable_msgbox);
+	bool ParseAllFormula(HWND hwnd);
 	void AddDefaultFunctionIfFunctionDoesNotExist(const CString &FunctionName);
 	void CheckForDefaultFormulaEntries();
 	void MarkCacheStale();

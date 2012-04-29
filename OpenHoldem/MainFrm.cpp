@@ -443,8 +443,10 @@ void CMainFrame::OnEditFormula()
 	{
 		if (m_formulaScintillaDlg->m_dirty)
 		{
-			if (MessageBox("The Formula Editor has un-applied changes.\n"
-						   "Really exit?", "Formula Editor", MB_ICONWARNING|MB_YESNO) == IDNO)
+			if (OH_MessageBox_Interactive(
+				"The Formula Editor has un-applied changes.\n"
+				"Really exit?", 
+				"Formula Editor", MB_ICONWARNING|MB_YESNO) == IDNO)
 			{
 				m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, true);
 				return;
@@ -663,7 +665,7 @@ void CMainFrame::OnFileLoadTableMap()
 	if (cfd.DoModal() == IDOK)
 	{
 		CString loaded_version;
-		ret = p_tablemap->LoadTablemap(cfd.m_ofn.lpstrFile, VER_OPENSCRAPE_2, &line, prefs.disable_msgbox(), &loaded_version);
+		ret = p_tablemap->LoadTablemap(cfd.m_ofn.lpstrFile, VER_OPENSCRAPE_2, &line, &loaded_version);
 		
 		if (loaded_version == VER_OPENHOLDEM_1 && ret == ERR_VERSION && !prefs.disable_msgbox())
 		{
@@ -673,8 +675,7 @@ void CMainFrame::OnFileLoadTableMap()
 			OH_MessageBox(e, "Table map load error", MB_OK);
 		}
 
-		else if ( (loaded_version == VER_OPENSCRAPE_1 || loaded_version == VER_OPENHOLDEM_2) 
-				  && !prefs.disable_msgbox())
+		else if ( (loaded_version == VER_OPENSCRAPE_1 || loaded_version == VER_OPENHOLDEM_2) )
 		{
 			OH_MessageBox("This is a version 1 table map.\n\n"\
 					   "Version 2.0.0 and higher of OpenHoldem use a new format (version 2).  This\n"\
@@ -686,7 +687,7 @@ void CMainFrame::OnFileLoadTableMap()
 					   "Table map load warning", MB_OK | MB_ICONEXCLAMATION);		
 		}
 
-		else if (ret != SUCCESS && !prefs.disable_msgbox())
+		else if (ret != SUCCESS)
 		{
 			e.Format("Error code: %d  line: %d", ret, line);
 			OH_MessageBox(e, "Table map load error", MB_OK);
@@ -1010,7 +1011,7 @@ void CMainFrame::OnAutoplayer()
 		p_formula->CreateHandListMatrices();
 
 		// one last parse - do not engage if parse fails
-		if (p_formula->ParseAllFormula(pMyMainWnd->GetSafeHwnd(), prefs.disable_msgbox()))
+		if (p_formula->ParseAllFormula(pMyMainWnd->GetSafeHwnd()))
 		{
 			p_autoplayer->set_autoplayer_engaged(true);
 		}

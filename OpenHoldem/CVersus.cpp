@@ -46,9 +46,9 @@ CVersus::~CVersus()
 
 void CVersus::CheckForLoadedVersusBin()
 {
-	if (versus_bin_not_loaded && !prefs.disable_msgbox())
+	if (versus_bin_not_loaded)
 	{
-		MessageBox(NULL, "Impossible to use versus-symbols.\n"
+		OH_MessageBox("Impossible to use versus-symbols.\n"
 			"Versus.bin not loaded and probably not installed.\n"
 			"Please download this file from googlecode.", 
 			"Versus Error", MB_OK | MB_TOPMOST);

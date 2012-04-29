@@ -179,13 +179,25 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 		if (prefs.autoconnector_when_to_connect() != k_AutoConnector_Connect_Permanent)
 		{
 			if (cySize != 18 && cyMenuSize != 19)
-				OH_MessageBox("Cannot find table\n\n"
-						   "It appears that your settings are not configured according to OpenHoldem specifications.\n"
-						   "You must ensure that XP themes are not used (Use Windows Classic style) and\n"
-						   "font size is set to normal.\n\n"
-						   "For more info, read the manual and visit the user forums", "Cannot find table", MB_OK);
+			{
+				OH_MessageBox(
+					"Cannot find table.\n\n"
+					"It appears that your settings are not configured according to OpenHoldem specifications.\n"
+					"You must ensure that XP themes are not used (Use Windows Classic style) and\n"
+					"font size is set to normal.\n\n"
+					"For more info, read the manual and visit the user forums.", 
+					"Cannot find table", MB_OK);
+			}
 			else
-				OH_MessageBox("No valid tables found", "Cannot find table", MB_OK);
+			{
+				OH_MessageBox(
+					"No valid tables found\n\n"
+					"There seems to be no unserved table open\n"
+					"or your table does not match the size and titlestring\n"
+					"defined in your tablemaps.\n"
+					"For more info, read the manual and visit the user forums.",
+					"Cannot find table", MB_OK);
+			}
 		}
 	}
 	else 
@@ -206,8 +218,8 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			// Load correct tablemap, and save hwnd/rect/numchairs of table that we are "attached" to
 			set_attached_hwnd(g_tlist[SelectedItem].hwnd);
 			CString loaded_version;
-			p_tablemap->LoadTablemap((char *) g_tlist[SelectedItem].path.GetString(), VER_OPENSCRAPE_2, &line, 
-									 prefs.disable_msgbox(), &loaded_version);
+			p_tablemap->LoadTablemap((char *) g_tlist[SelectedItem].path.GetString(), 
+				VER_OPENSCRAPE_2, &line, &loaded_version);
 
 			if ( (loaded_version == VER_OPENSCRAPE_1 || loaded_version == VER_OPENHOLDEM_2))
 			{
@@ -247,12 +259,10 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 
 			if (theApp._scraper_dll==NULL)
 			{
-				if (!filename.IsEmpty() && !prefs.disable_msgbox())		
-				{
-					CString		t = "";
-					t.Format("Unable to load %s\n\nError: %d", filename, GetLastError());
-					MessageBox(0, t, "Error", 0);
-				}
+				CString	error_message = "";
+				error_message.Format("Unable to load scraper-dll: \"%s\"\n\n"
+					"Error-code: %d", filename, GetLastError());
+				OH_MessageBox(error_message, "Error", 0);
 			}
 			else
 			{
@@ -261,11 +271,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 
 				if (theApp._dll_scraper_process_message==NULL || theApp._dll_scraper_override==NULL)
 				{
-					if (!prefs.disable_msgbox())		
-					{
-						MessageBox(0, "Unable to find all symbols in scraper.dll", "Error", 0);
-					}
-
+					OH_MessageBox("Unable to find all symbols in scraper.dll", "Error", 0);
 					theApp.UnloadScraperDLL();
 				}
 				else
@@ -284,11 +290,10 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 
 			if (theApp._scraperpreprocessor_dll==NULL)
 			{
-				if (!filename.IsEmpty())		
-				{
-					CString		t = "";
-					t.Format("Unable to load %s\n\nError: %d", filename, GetLastError());
-					OH_MessageBox(t, "OpenHoldem scraperpre.dll WARNING", MB_OK | MB_TOPMOST);
+					CString error_message = "";
+					error_message.Format("Unable to load scraper-preprocessor-dll: \"%s\"\n\n"
+						"Error-code: %d", filename, GetLastError());
+					OH_MessageBox(error_message, "OpenHoldem scraperpre.dll WARNING", MB_OK | MB_TOPMOST);
 				}
 			}
 			else
@@ -297,9 +302,9 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 
 				if (theApp._dll_scraperpreprocessor_process_message==NULL)
 				{
-					CString		t = "";
-					t.Format("Unable to find symbols in scraperpre.dll");
-					OH_MessageBox(t, "OpenHoldem scraperpre.dll ERROR", MB_OK | MB_TOPMOST);
+					CString	error_message = "";
+					error_message.Format("Unable to find symbols in scraperpre.dll");
+					OH_MessageBox(error_message, "OpenHoldem scraperpre.dll ERROR", MB_OK | MB_TOPMOST);
 					theApp.Unload_ScraperPreprocessor_DLL();
 				}
 				else
@@ -359,15 +364,16 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 					  formula.GetString(), site.GetString(), title);
 
 			CString sForceChair = p_tablemap->forcechair();
-			if (!sForceChair.IsEmpty()) {
+			if (!sForceChair.IsEmpty()) 
+			{
 				int iForceChair = atoi(sForceChair);
 				p_symbols->set_sym_chair(iForceChair);
 				p_symbols->set_sym_userchair(iForceChair);
 				p_symbols->set_user_chair_confirmed(true); 
 			}
 		}
-	}
-	p_table_positioner->PositionMyWindow();
+	// } !!!
+	p_table_positioner; //->PositionMyWindow();
 
 	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Unlocking autoconnector-mutex\n");
 	_autoconnector_mutex->Unlock();
