@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "CFileSystemMonitor.h"
 
+#include "CPreferences.h"
 #include "OpenHoldem.h"
 
 
@@ -22,8 +23,11 @@ CFileSystemMonitor *p_filesystem_monitor = NULL;
 
 CFileSystemMonitor::CFileSystemMonitor()
 {
+	write_log(prefs.debug_filesystem_monitor(), "[CFileSystemMonitor] executing constructor.)\n");
 	absolute_path_to_scraper_directory =
 		CString(_startup_path) + "\\scraper\\";
+	write_log(prefs.debug_filesystem_monitor(), "[CFileSystemMonitor] Scraper folder: %s\n", 
+		absolute_path_to_scraper_directory);
 	InitMonitor();
 }
 
@@ -43,7 +47,8 @@ void CFileSystemMonitor::InitMonitor()
 		changes_to_monitor);
 	if ((dwChangeHandle == INVALID_HANDLE_VALUE) || (dwChangeHandle == NULL))
 	{
-		// !!! printf("\n ERROR: FindFirstChangeNotification function failed.\n");
+		write_log(prefs.debug_filesystem_monitor(), "[CFileSystemMonitor] InitMonitor() failed.\n");
+		write_log(prefs.debug_filesystem_monitor(), "[CFileSystemMonitor] Going to terminate...\n");
 		ExitProcess(GetLastError()); 
 	}
 }
@@ -58,10 +63,12 @@ bool CFileSystemMonitor::AnyChanges()
 		0);					// time to wait
 	if (dwWaitStatus == WAIT_OBJECT_0)
 	{
-		MessageBox(0, "directory changed", "FileMon", 0); // !!!
+		write_log(prefs.debug_filesystem_monitor(), "[CFileSystemMonitor] Scraper directoy changed.\n");
 		return true;
 	}
-	MessageBox(0, "No changes", "FileMon", 0); // !!!
+	write_log(prefs.debug_filesystem_monitor(), "[CFileSystemMonitor] No changes in scraper directoy.\n");
+	// Resetting change handle for next query
+	dwChangeHandle = 0;
 	return false;
 }
 

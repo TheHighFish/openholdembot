@@ -171,6 +171,8 @@ void CPreferences::InitDefaults(void)
 	_debug_symbolengine = false;
 	_debug_blindlocking = false;
 	_debug_memorysymbols = false;
+	_debug_tablemap_loader = false;
+	_debug_filesystem_monitor = false;
 	_debug_alltherest = false;
 
 	// Validator
@@ -364,6 +366,8 @@ void CPreferences::ReadPreferences()
 		ReadReg("debug_symbolengine", &_debug_symbolengine);
 		ReadReg("debug_blindlocking", &_debug_blindlocking);
 		ReadReg("debug_memorysymbols", &_debug_memorysymbols);
+		ReadReg("debug_tablemap_loader", &_debug_tablemap_loader);
+		ReadReg("debug_filesystem_monitor", &_debug_filesystem_monitor);
 		ReadReg("debug_alltherest", &_debug_alltherest);
 
 		// Validator

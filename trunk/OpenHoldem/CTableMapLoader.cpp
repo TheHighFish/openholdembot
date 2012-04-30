@@ -46,7 +46,7 @@ CTableMapLoader::~CTableMapLoader()
 
 void CTableMapLoader::CTableMapToSWholeMap(CTablemap *cmap, SWholeMap *smap)
 {
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] CTableMapToSWholeMap: %s\n", p_tablemap->filepath());
+	write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] CTableMapToSWholeMap: %s\n", p_tablemap->filepath());
 	smap->z$ = p_tablemap->z$();
 	smap->s$ = p_tablemap->s$();
 	smap->r$ = p_tablemap->r$();
@@ -75,14 +75,14 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData(CString TableMapWild
 	SWholeMap	smap;
 	int			line = 0;
 
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] ParseAllTableMapsToLoadConnectionData: %s\n", TableMapWildcard);
+	write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] ParseAllTableMapsToLoadConnectionData: %s\n", TableMapWildcard);
 	CString	current_path = p_tablemap->filepath();
 	BOOL bFound = hFile.FindFile(TableMapWildcard.GetString());
 	while (bFound)
 	{
 		if (_number_of_tablemaps_loaded >= k_max_nmber_of_tablemaps)
 		{
-			write_log(prefs.debug_autoconnector(), "[CAutoConnector] CAutoConnector: Error: Too many tablemaps. The autoconnector can only handle 25 TMs.", "Error", 0);
+			write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] CAutoConnector: Error: Too many tablemaps. The autoconnector can only handle 25 TMs.", "Error", 0);
 			OH_MessageBox("To many tablemaps.\n"
 				"The auto-connector can handle 25 at most.", "ERROR", 0);
 			return;
@@ -96,7 +96,7 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData(CString TableMapWild
 			{
 				CTableMapToSWholeMap(p_tablemap, &smap);
 				ExtractConnectionDataFromCurrentTablemap(&smap);
-				write_log(prefs.debug_autoconnector(), "[CAutoConnector] Number of TMs loaded: %d\n", _number_of_tablemaps_loaded);
+				write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] Number of TMs loaded: %d\n", _number_of_tablemaps_loaded);
 			}
 		}
 	}
@@ -107,7 +107,7 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData()
 {
 	CString TableMapWildcard;
 	
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] ParseAllTableMapsToLoadConnectionData\n");
+	write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] ParseAllTableMapsToLoadConnectionData\n");
 	TableMapWildcard.Format("%s\\scraper\\*.tm", _startup_path);
 	ParseAllTableMapsToLoadConnectionData(TableMapWildcard);	
 	tablemaps_in_scraper_folder_already_parsed = true;
@@ -120,11 +120,11 @@ bool CTableMapLoader::TablemapConnectionDataAlreadyStored(CString TablemapFilePa
 	{
 		if (TablemapConnectionData[i].FilePath == TablemapFilePath)
 		{
-			write_log(prefs.debug_autoconnector(), "[CAutoConnector] TablemapConnectionDataAlreadyStored [%s] [true]\n", TablemapFilePath);
+			write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] TablemapConnectionDataAlreadyStored [%s] [true]\n", TablemapFilePath);
 			return true;
 		}
 	}
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] TablemapConnectionDataAlreadyStored [%s] [false]\n", TablemapFilePath);
+	write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] TablemapConnectionDataAlreadyStored [%s] [false]\n", TablemapFilePath);
 	return false;
 }
 
@@ -138,7 +138,7 @@ void CTableMapLoader::CheckForDuplicatedTablemaps()
 		{
 			if (TablemapConnectionData[i].SiteName == TablemapConnectionData[j].SiteName)
 			{
-				write_log(prefs.debug_autoconnector(), "[CAutoConnector] TablemapConnectionDataDuplicated [%s] [true]\n", 
+				write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] TablemapConnectionDataDuplicated [%s] [true]\n", 
 					TablemapConnectionData[i].SiteName);
 				error_message.Format("It seems you have multiple versions of the same map in your scraper folder.\n\n"\
 					"SITENAME = %s\n\n"\
@@ -155,13 +155,13 @@ void CTableMapLoader::CheckForDuplicatedTablemaps()
 
 void CTableMapLoader::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 {
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] ExtractConnectionDataFromCurrentTablemap(): %s\n", map->filepath);
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] number_of_tablemaps_loaded: %d\n", _number_of_tablemaps_loaded);
+	write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] ExtractConnectionDataFromCurrentTablemap(): %s\n", map->filepath);
+	write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] number_of_tablemaps_loaded: %d\n", _number_of_tablemaps_loaded);
 
 	// Avoiding to store the data twice, e.g. when we load a known TM manually
 	if (TablemapConnectionDataAlreadyStored(map->filepath))
 	{
-		write_log(prefs.debug_autoconnector(), "[CAutoConnector] ExtractConnectionDataFromCurrentTablemap(): already stored; early exit\n");
+		write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] ExtractConnectionDataFromCurrentTablemap(): already stored; early exit\n");
 		return;
 	}
 
@@ -215,9 +215,9 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 	CTransform		trans;
 	CString			s;
 
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Check_TM_Against_Single_Window(..)\n");
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Checking map nr. %d\n", MapIndex);
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Window title: %s\n", title);
+	write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] Check_TM_Against_Single_Window(..)\n");
+	write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] Checking map nr. %d\n", MapIndex);
+	write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] Window title: %s\n", title);
 	
 	// Check for exact match on client size
 	if (!((r.right == TablemapConnectionData[MapIndex].ClientSizeX)
@@ -234,7 +234,7 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 			&& (r.bottom >= (int) TablemapConnectionData[MapIndex].ClientSizeMinY)
 			&& (r.bottom <= (int) TablemapConnectionData[MapIndex].ClientSizeMaxY)))
 		{
-			write_log(prefs.debug_autoconnector(), "[CAutoConnector] No good size: Expected (%dpx, %dpx), Got (%dpx, %dpx)\n",
+			write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] No good size: Expected (%dpx, %dpx), Got (%dpx, %dpx)\n",
 				TablemapConnectionData[MapIndex].ClientSizeX,
 				TablemapConnectionData[MapIndex].ClientSizeY,
 				r.right,
@@ -266,7 +266,7 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 	}
 	if (!good_pos_title)
 	{
-		write_log(prefs.debug_autoconnector(), "[CAutoConnector] No good title.\n");
+		write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] No good title.\n");
 		return false;
 	}
 
@@ -291,11 +291,11 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 	}
 	if (good_neg_title)
 	{
-		write_log(prefs.debug_autoconnector(), "[CAutoConnector] Negative title.\n"); 
+		write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] Negative title.\n"); 
 		return false;
 	}
 
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Window ia a match\n");
+	write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] Window ia a match\n");
 	return true;
 }
 

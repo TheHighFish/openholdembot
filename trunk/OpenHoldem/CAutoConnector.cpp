@@ -283,18 +283,18 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			// scraperpreprocessor.dll - failure in load is NOT fatal
 			theApp.Unload_ScraperPreprocessor_DLL();
 			filename = p_tablemap->scraperpreprocessor_dll();
-			if (!filename.IsEmpty()) {
+			if (!filename.IsEmpty()) 
+			{
 				SetCurrentDirectory(_startup_path);
 				theApp._scraperpreprocessor_dll = LoadLibrary(filename);
 			}
 
 			if (theApp._scraperpreprocessor_dll==NULL)
 			{
-					CString error_message = "";
-					error_message.Format("Unable to load scraper-preprocessor-dll: \"%s\"\n\n"
-						"Error-code: %d", filename, GetLastError());
-					OH_MessageBox(error_message, "OpenHoldem scraperpre.dll WARNING", MB_OK | MB_TOPMOST);
-				}
+				CString error_message = "";
+				error_message.Format("Unable to load scraper-preprocessor-dll: \"%s\"\n\n"
+					"Error-code: %d", filename, GetLastError());
+				OH_MessageBox(error_message, "OpenHoldem scraperpre.dll WARNING", MB_OK | MB_TOPMOST);
 			}
 			else
 			{
@@ -358,10 +358,11 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 				site = site_i->second.text;
 
 			CString formula = p_formula->formula_name();
-			write_log(1, "\n*************************************************************\n"
-					  "TABLE RESET %s - %s(%s)\n"
-					  "*************************************************************\n",
-					  formula.GetString(), site.GetString(), title);
+			write_log(k_always_log_basic_information, 
+				"\n*************************************************************\n"
+				"TABLE RESET %s - %s(%s)\n"
+				"*************************************************************\n",
+				formula.GetString(), site.GetString(), title);
 
 			CString sForceChair = p_tablemap->forcechair();
 			if (!sForceChair.IsEmpty()) 
@@ -372,8 +373,8 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 				p_symbols->set_user_chair_confirmed(true); 
 			}
 		}
-	// } !!!
-	p_table_positioner; //->PositionMyWindow();
+	}
+	p_table_positioner->PositionMyWindow();
 
 	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Unlocking autoconnector-mutex\n");
 	_autoconnector_mutex->Unlock();
@@ -460,9 +461,10 @@ void CAutoConnector::Disconnect()
 
 	// log OH title bar text and table reset
 	CString sitename = (p_tablemap->s$()->find("sitename") != p_tablemap->s$()->end() ? p_tablemap->s$()->find("sitename")->second.text.GetString() : "");
-	write_log(1, "%s - %s(NOT ATTACHED)\n", p_formula->formula_name().GetString(), sitename);
-
-	write_log(1, "TABLE RESET\n*************************************************************\n");
+	write_log(k_always_log_basic_information, 
+		"%s - %s(NOT ATTACHED)\n", p_formula->formula_name().GetString(), sitename);
+	write_log(k_always_log_basic_information, 
+		"TABLE RESET\n*************************************************************\n");
 
 	// Stop logging
 	stop_log();

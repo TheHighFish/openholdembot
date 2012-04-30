@@ -52,6 +52,8 @@ BOOL CDlgSAPrefs20::OnInitDialog()
 	CheckDlgButton(IDC_DEBUG_SYMBOLENGINE, prefs.debug_symbolengine() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_BLINDLOCKING, prefs.debug_blindlocking() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_MEMORY_SYMBOLS, prefs.debug_memorysymbols() ? MF_CHECKED : MF_UNCHECKED);
+	CheckDlgButton(IDC_DEBUG_TABLEMAP_LOADER, prefs.debug_tablemap_loader() ? MF_CHECKED : MF_UNCHECKED);
+	CheckDlgButton(IDC_DEBUG_FILESYSTEM_MONITOR, prefs.debug_filesystem_monitor() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_ALLTHEREST, prefs.debug_alltherest() ? MF_CHECKED : MF_UNCHECKED);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -74,6 +76,8 @@ void CDlgSAPrefs20::OnOK()
 	prefs.set_debug_symbolengine(IsDlgButtonChecked(IDC_DEBUG_SYMBOLENGINE));
 	prefs.set_debug_blindlocking(IsDlgButtonChecked(IDC_DEBUG_BLINDLOCKING));
 	prefs.set_debug_memorysymbols(IsDlgButtonChecked(IDC_DEBUG_MEMORY_SYMBOLS));
+	prefs.set_debug_tablemap_loader(IsDlgButtonChecked(IDC_DEBUG_TABLEMAP_LOADER));
+	prefs.set_debug_filesystem_monitor(IsDlgButtonChecked(IDC_DEBUG_FILESYSTEM_MONITOR));
 	prefs.set_debug_alltherest(IsDlgButtonChecked(IDC_DEBUG_ALLTHEREST));
 	CSAPrefsSubDlg::OnOK();
 }
