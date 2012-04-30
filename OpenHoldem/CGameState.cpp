@@ -547,7 +547,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 					_end_of_hand==false )
 			{
 				_end_of_hand = true;
-				write_log(1, ">>> SHOWDOWN\n");
+				write_log(k_always_log_basic_information, ">>> SHOWDOWN\n");
 			}
 		}
 
@@ -587,7 +587,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 			// Track some stats
 			_hands_played++;
 
-			write_log(1, ">>> New hand %.0s\n", sym_handnumber);
+			write_log(k_always_log_basic_information, ">>> New hand %.0s\n", sym_handnumber);
 		}
 
 		// first time to act in the hand//
@@ -614,7 +614,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 				_m_holdem_state[(_m_ndx)&0xff].m_player[sym_userchair].m_cards[1] != 0)
 			{
 				_process_game_state = true;
-				write_log(1, ">>> My turn, br=%d\n", sym_br);
+				write_log(k_always_log_basic_information, ">>> My turn, br=%d\n", sym_br);
 			}
 			else
 			{
@@ -700,7 +700,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 				{
 					_chair_actions[index_normalized][sym_br-1][w_posted_sb] = true;
 					_bets_last = _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet;
-					write_log(1, ">>> Chair %d (%s) posted the sb: $%.2f\n", index_normalized,
+					write_log(k_always_log_basic_information, ">>> Chair %d (%s) posted the sb: $%.2f\n", index_normalized,
 							  _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_name,
 							  _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet);
 				}
@@ -715,7 +715,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 				{
 					_chair_actions[index_normalized][(int) sym_br-1][w_posted_bb] = true;
 					_bets_last = _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet;
-					write_log(1, ">>> Chair %d (%s) posted the bb: $%.2f\n", index_normalized,
+					write_log(k_always_log_basic_information, ">>> Chair %d (%s) posted the bb: $%.2f\n", index_normalized,
 							  _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_name,
 							  _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet);
 				}
@@ -732,14 +732,14 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 					{
 						_chair_actions[index_normalized][sym_br-1][w_raised] = true;
 						_pot_raised = true;
-						write_log(1, ">>> Chair %d (%s) raised to $%.2f\n", index_normalized,
+						write_log(k_always_log_basic_information, ">>> Chair %d (%s) raised to $%.2f\n", index_normalized,
 								  _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_name,
 								  _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet);
 					}
 					else
 					{
 						_chair_actions[index_normalized][sym_br-1][w_reraised] = true;
-						write_log(1, ">>> Chair %d (%s) re-raised to $%.2f\n", index_normalized,
+						write_log(k_always_log_basic_information, ">>> Chair %d (%s) re-raised to $%.2f\n", index_normalized,
 								  _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_name,
 								  _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet);
 					}
@@ -758,7 +758,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 					{
 						_pf_limpers_n += 1;
 					}
-					write_log(1, ">>> Chair %d (%s) called\n", index_normalized, _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_name);
+					write_log(k_always_log_basic_information, ">>> Chair %d (%s) called\n", index_normalized, _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_name);
 				}
 
 				// if cards have disappeared, and they were card backs last scrape,
@@ -781,7 +781,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 							_m_game_state[(_m_game_ndx-1)&0xff].m_player[index_normalized].m_balance) )
 				{
 					_chair_actions[index_normalized][sym_br-1][w_folded] = true;
-					write_log(1, ">>> Chair %d (%s) folded\n", index_normalized,
+					write_log(k_always_log_basic_information, ">>> Chair %d (%s) folded\n", index_normalized,
 							  _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_name);
 				}
 
@@ -793,7 +793,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 				{
 					_chair_actions[index_normalized][sym_br-1][w_checked] = true;
 
-					write_log(1, ">>> Chair %d (%s) checked\n", index_normalized, _m_holdem_state[(_m_ndx)&0xff].m_player[index_normalized].m_name);
+					write_log(k_always_log_basic_information, ">>> Chair %d (%s) checked\n", index_normalized, _m_holdem_state[(_m_ndx)&0xff].m_player[index_normalized].m_name);
 				}
 			}  // end of "for (i = from_chair; i <= to_chair; i++)"
 		} // end of "if (br != 0 &&..."

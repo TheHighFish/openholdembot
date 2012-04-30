@@ -259,7 +259,7 @@ void start_log(void)
 	// Append (or create) log
 	if ((log_fp = _fsopen(fn.GetString(), "a", _SH_DENYWR)) != 0)
 	{
-		write_log(1, "! log file open\n");
+		write_log(k_always_log_basic_information, "! log file open\n");
 		fprintf(log_fp, "yyyy.mm.dd hh:mm:ss -  # hand commoncard rank poker  win  los  tie  P      nit bestaction - play*      call       bet       pot   balance - FCKRA FCKRA swag\n");
 		fprintf(log_fp, "----------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 		fflush(log_fp);
@@ -346,11 +346,11 @@ void write_logautoplay(const char * action)
 					max_log = prefs.log_symbol_max_log();
 				}
 
-				write_log(1, "*** log$ (Total: %d | Showing: %d)\n", p_symbols->logsymbols_collection()->GetCount(), max_log);
+				write_log(k_always_log_basic_information, "*** log$ (Total: %d | Showing: %d)\n", p_symbols->logsymbols_collection()->GetCount(), max_log);
 
 				for (int i=0; i<max_log; i++)
 				{
-					write_log(1, "***     %s\n", p_symbols->logsymbols_collection()->GetAt(i));
+					write_log(k_always_log_basic_information, "***     %s\n", p_symbols->logsymbols_collection()->GetAt(i));
 				}
 			}
 		}
@@ -554,7 +554,7 @@ void stop_log(void)
 {
     if (log_fp != NULL) 
 	{
-        write_log(1, "! log file closed\n");
+        write_log(k_always_log_basic_information, "! log file closed\n");
         fclose(log_fp);
         log_fp = NULL;
     }

@@ -430,6 +430,10 @@ const int k_number_of_pocketcard_combinations_without_order = 1326;
 // For assertions of codes, that should never be executed
 const bool k_ThisMustNotHappen = false;
 
+// For loggong
+const bool k_always_log_errors = true;
+const bool k_always_log_basic_information = true;
+
 enum PokerTrackerGameTypes
 {
 	k_pokertracker_cashgame,

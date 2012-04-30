@@ -2049,7 +2049,7 @@ void CScraper::ScrapeLimits()
 	// log the stakes change
 	if (log_blind_change)
 	{
-		write_log(1, "\n*************************************************************\n"
+		write_log(k_always_log_basic_information, "\n*************************************************************\n"
 				  "NEW STAKES sb(%.2f) bb(%.2f) BB(%.2f) ante(%.2f)\n"
 				  "*************************************************************\n",
 				  _s_limit_info.sblind, _s_limit_info.bblind, 

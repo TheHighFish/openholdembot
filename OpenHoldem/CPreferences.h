@@ -109,6 +109,8 @@ public:
 	const bool	debug_symbolengine() { return _debug_symbolengine; }
 	const bool	debug_blindlocking() { return _debug_blindlocking; }
 	const bool	debug_memorysymbols() { return _debug_memorysymbols; }
+	const bool	debug_tablemap_loader() { return _debug_tablemap_loader; }
+	const bool	debug_filesystem_monitor() { return _debug_filesystem_monitor; }
 	const bool	debug_alltherest() { return _debug_alltherest; }
 
 	// Main window locations
@@ -263,21 +265,23 @@ public:
 	void set_log_max_logsize(const int b) { ENT _log_max_logsize = b; WriteReg("log_max_logsize", b); }
 
 	// Debugging
-	void set_debug_autoconnector(const int b) { ENT _debug_autoconnector = b; WriteReg("debug_autoconnector", b); }
-	void set_debug_autoplayer(const int b) { ENT _debug_autoplayer = b; WriteReg("debug_autoplayer", b); }
-	void set_debug_heartbeat(const int b) { ENT _debug_heartbeat = b; WriteReg("debug_heartbeat", b); }
-	void set_debug_prwin(const int b) { ENT _debug_prwin = b; WriteReg("debug_prwin", b); }
-	void set_debug_icm(const int b) { ENT _debug_icm = b; WriteReg("debug_icm", b); }
-	void set_debug_occlusionchecker(const int b) { ENT _debug_occlusionchecker = b; WriteReg("debug_occlusionchecker", b); }
-	void set_debug_pokertracker(const int b) { ENT _debug_pokertracker = b; WriteReg("debug_pokertracker", b); }
-	void set_debug_rebuy(const int b) { ENT _debug_rebuy = b; WriteReg("debug_rebuy", b); }
-	void set_debug_replayframes(const int b) { ENT _debug_replayframes = b; WriteReg("debug_replayframes", b); }
-	void set_debug_scraper(const int b) { ENT _debug_scraper = b; WriteReg("debug_scraper", b); }
-	void set_debug_sessioncounter(const int b) { ENT _debug_sessioncounter = b; WriteReg("debug_sessioncounter", b); }
-	void set_debug_stableframescounter(const int b) { ENT _debug_stableframescounter = b; WriteReg("debug_stableframescounter", b); }
-	void set_debug_symbolengine(const int b) { ENT _debug_symbolengine = b; WriteReg("debug_symbolengine", b); }
-	void set_debug_blindlocking(const int b) { ENT _debug_blindlocking = b; WriteReg("debug_blindlocking", b); }
-	void set_debug_memorysymbols(const int b) { ENT _debug_memorysymbols = b; WriteReg("debug_memorysymbols", b); }
+	void set_debug_autoconnector(const bool b) { ENT _debug_autoconnector = b; WriteReg("debug_autoconnector", b); }
+	void set_debug_autoplayer(const bool b) { ENT _debug_autoplayer = b; WriteReg("debug_autoplayer", b); }
+	void set_debug_heartbeat(const bool b) { ENT _debug_heartbeat = b; WriteReg("debug_heartbeat", b); }
+	void set_debug_prwin(const bool b) { ENT _debug_prwin = b; WriteReg("debug_prwin", b); }
+	void set_debug_icm(const bool b) { ENT _debug_icm = b; WriteReg("debug_icm", b); }
+	void set_debug_occlusionchecker(const bool b) { ENT _debug_occlusionchecker = b; WriteReg("debug_occlusionchecker", b); }
+	void set_debug_pokertracker(const bool b) { ENT _debug_pokertracker = b; WriteReg("debug_pokertracker", b); }
+	void set_debug_rebuy(const bool b) { ENT _debug_rebuy = b; WriteReg("debug_rebuy", b); }
+	void set_debug_replayframes(const bool b) { ENT _debug_replayframes = b; WriteReg("debug_replayframes", b); }
+	void set_debug_scraper(const bool b) { ENT _debug_scraper = b; WriteReg("debug_scraper", b); }
+	void set_debug_sessioncounter(const bool b) { ENT _debug_sessioncounter = b; WriteReg("debug_sessioncounter", b); }
+	void set_debug_stableframescounter(const bool b) { ENT _debug_stableframescounter = b; WriteReg("debug_stableframescounter", b); }
+	void set_debug_symbolengine(const bool b) { ENT _debug_symbolengine = b; WriteReg("debug_symbolengine", b); }
+	void set_debug_blindlocking(const bool b) { ENT _debug_blindlocking = b; WriteReg("debug_blindlocking", b); }
+	void set_debug_memorysymbols(const bool b) { ENT _debug_memorysymbols = b; WriteReg("debug_memorysymbols", b); }
+	void set_debug_tablemap_loader(const bool b) { ENT _debug_tablemap_loader = b; WriteReg("debug_tablemap_loader", b); }
+	void set_debug_filesystem_monitor(const bool b) { ENT _debug_filesystem_monitor = b; WriteReg("debug_filesystem_monitor", b); }
 	void set_debug_alltherest(const int b) { ENT _debug_alltherest = b; WriteReg("debug_alltherest", b); }
 
 	// Formula window location
@@ -462,6 +466,8 @@ private:
 	bool			_debug_symbolengine;
 	bool			_debug_blindlocking;
 	bool			_debug_memorysymbols;
+	bool			_debug_tablemap_loader;
+	bool			_debug_filesystem_monitor;
 	bool			_debug_alltherest;
 
 	// Formula window location
