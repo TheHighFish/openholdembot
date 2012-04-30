@@ -1381,7 +1381,7 @@ ac_aggressor
 // Check
 (f$OpenPPL_Decision == f$OpenPPL_Check) ? me_st_MemBotsLastAction_f$OpenPPL_Check :
 // Bet, Raise, BetHalfPot, BetPot, etc.
-// Also handling positive values for f$OpenPPL_Decision, which mean betsizes.
+// Also handling fixed betsizes and peercentaged potsized bets.
 [  (f$OpenPPL_Decision == f$OpenPPL_Raise)
 || (f$OpenPPL_Decision == f$OpenPPL_RaiseMin)
 || (f$OpenPPL_Decision == f$OpenPPL_RaiseHalfPot)
@@ -1390,12 +1390,11 @@ ac_aggressor
 || (f$OpenPPL_Decision == f$OpenPPL_BetMin)
 || (f$OpenPPL_Decision == f$OpenPPL_BetHalfPot)
 || (f$OpenPPL_Decision == f$OpenPPL_BetMax)
-|| (f$OpenPPL_Decision > 0)] ?
+|| (f$OpenPPL_DecisionIsPercentagedPotsizedBet || f$OpenPPL_DecisionIsFixedBetInBigBlinds)] ?
 [(ncallbets == 0) ? me_st_MemBotsLastAction_f$OpenPPL_Bet : me_st_MemBotsLastAction_f$OpenPPL_Raise] :
 // Other cases: this should not happen
 // Handling them as "None"
 me_st_MemBotsLastAction_f$OpenPPL_None
-]
 
 ##f$OpenPPL_BotsLastAction##
 me_re_MemBotsLastAction
