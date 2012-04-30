@@ -34,6 +34,9 @@ NEW STUFF:
   It detects common PEBKACs, like not being connected, an unknown user-chair or no opponents.
   This tool is available at Menu -> Help -> Problem solver.
   [THF]
+- Proving a tablemap-reloader, that automatically looks for changes
+  in the scraper-directory when OpenHoldem is not connected
+  and reloads the tablemaps on changes.
   
 
 MAINTENANCE:
@@ -99,6 +102,9 @@ MAINTENANCE:
   [THF]
   
 BUG FIXES: 
+- Fine-tuning some validator-rules (1201, 1205). 
+  Thanks to CakeWalk and Postenjak for reporting the inaccuracies.
+  [THF]
   
 
 v2.1.9.3 2012-01-25
