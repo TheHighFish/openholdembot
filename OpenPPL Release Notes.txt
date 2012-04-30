@@ -1,3 +1,12 @@
+v1.0.7 2012-xx-yy
+=================
+BUG FIXES: 
+- Redesigned decision-function affected BotsLastAction.
+  This has now been fixed. 
+  Thanks to Lavezzi for reporting and for the help.
+  [THF]
+NEW STUFF:
+
 v1.0.6 2012-04-23
 =================
 BUG FIXES: 
@@ -27,7 +36,7 @@ BUG FIXES:
   [THF]
   
 MAINTENANCE:
-- Now displaying a more lenghty ocde-snippet,
+- Now displaying a more lenghty ocde-snippet in case of an error,
   hoping that we also show a comment with a line-number.
   [THF]
   
