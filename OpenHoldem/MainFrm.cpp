@@ -880,21 +880,8 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 		_status_pokerhand = hvstring;
 		_status_pokerhand = _status_pokerhand.Mid(0, _status_pokerhand.Find(" "));
 
-		// handrank
-		if (prefs.sym_handrank_value() == "169")
-			_status_handrank.Format("%.0f/169", p_symbols->sym()->handrank169);
-
-		else if (prefs.sym_handrank_value() == "1000")
-			_status_handrank.Format("%.0f/1000", p_symbols->sym()->handrank1000);
-
-		else if (prefs.sym_handrank_value() == "1326")
-			_status_handrank.Format("%.0f/1326", p_symbols->sym()->handrank1326);
-
-		else if (prefs.sym_handrank_value() == "2652")
-			_status_handrank.Format("%.0f/2652", p_symbols->sym()->handrank2652);
-
-		else if (prefs.sym_handrank_value() == "p")
-			_status_handrank.Format("%.2f/2652", p_symbols->sym()->handrankp);
+		// Always use handrank169 here
+		_status_handrank.Format("%.0f/169", p_symbols->sym()->handrank169);
 
 		// nopponents
 		if (playing)

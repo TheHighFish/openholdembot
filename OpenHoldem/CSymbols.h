@@ -38,7 +38,6 @@ struct SSymbols
 	double istournament;
 
 	//HAND RANK
-	double handrank;
 	double handrank169;
 	double handrank2652;
 	double handrank1326;
@@ -424,7 +423,6 @@ public:
 	void	set_sym_istournament(const double d) { ENT _sym.istournament = d;}
 
 	// handrank
-	void	set_sym_handrank(const double d) { ENT _sym.handrank = d;}
 	void	set_sym_handrank169(const double d) { ENT _sym.handrank169 = d;}
 	void	set_sym_handrank2652(const double d) { ENT _sym.handrank2652 = d;}
 	void	set_sym_handrank1326(const double d) { ENT _sym.handrank1326 = d;}

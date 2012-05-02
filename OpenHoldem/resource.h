@@ -100,7 +100,6 @@
 #define IDC_FRAMEDELAY_SPIN2            1043
 #define IDC_CLICKDELAY_SPIN             1043
 #define IDC_COMBO2                      1052
-#define IDC_HANDRANKVALUE               1052
 #define IDC_DEBUGLEVEL_PT               1052
 #define IDC_LOAD_DLL_ON_STARTUP         1054
 #define IDC_DLLNAME                     1055
@@ -109,7 +108,6 @@
 #define IDC_AVTIME                      1057
 #define IDC_TEXTSELECTION               1059
 #define IDC_TEXTDELETION                1060
-#define IDC_HANDRANKVALUE4              1061
 #define IDC_BETCONFIRMATION             1061
 #define IDC_BUTTONCLICKING              1062
 #define IDC_CONNECT_STATUS              1063

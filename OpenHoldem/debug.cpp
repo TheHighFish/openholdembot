@@ -414,22 +414,8 @@ void write_logautoplay(const char * action)
         comcards.Append("..........");
         comcards = comcards.Left(10);
 
-        // handrank
-        if (prefs.sym_handrank_value() == "169")
-			rank.Format("%.0f", p_symbols->sym()->handrank169);
-
-        else if (prefs.sym_handrank_value() == "1000")
-            rank.Format("%.0f", p_symbols->sym()->handrank1000);
-
-        else if (prefs.sym_handrank_value() == "1326")
-            rank.Format("%.0f", p_symbols->sym()->handrank1326);
-
-        else if (prefs.sym_handrank_value() == "2652")
-            rank.Format("%.0f", p_symbols->sym()->handrank2652);
-
-        else if (prefs.sym_handrank_value() == "p")
-            rank.Format("%.2f", p_symbols->sym()->handrankp);
-
+        // Always use handrank169 here
+		rank.Format("%.0f", p_symbols->sym()->handrank169);
 
         // poker hand
         hv = Hand_EVAL_N(Cards, nCards);

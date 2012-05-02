@@ -57,7 +57,7 @@ void CPreferences::InitDefaults(void)
 	_max_opponents = 9;
 
 	// symbols
-	_sym_handrank_value = "169";
+	// !!! _sym_av_time
 
 	// autoplayer
 	_frame_delay = 2;
@@ -291,7 +291,6 @@ void CPreferences::ReadPreferences()
 
 		// prefs - symbols
 		ReadReg("avtime", &_sym_av_time);
-		ReadReg("handrank_value", &_sym_handrank_value);
 
 		// Prefs - poker tracker
 		ReadReg("pt_disable", &_pt_disable);;
