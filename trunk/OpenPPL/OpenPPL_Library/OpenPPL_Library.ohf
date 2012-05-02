@@ -1235,7 +1235,8 @@ f$OpenPPL_ERROR_Betround_Out_Of_Range
    [f$OpenPPL_InitMemorySymbols * 0]
 || [f$OpenPPL_RememberToSitoutIfNecessary * 0]
 || [f$OpenPPL_Decision == f$OpenPPL_RaiseMax]
-|| [(f$betsize > (f$OpenPPL_StackSize* bblind)) && (f$OpenPPL_StackSize > 0) && (bblind > 0)]
+|| [(f$OpenPPL_Decision > f$OpenPPL_StackSize) && (f$OpenPPL_StackSize > 0)]
+|| [f$OpenPPL_DecisionIsPercentagedPotsizedBet && f$OpenPPL_BetSizeForPercentagedPotsizeBet > f$OpenPPL_StackSize ]
 
 ##f$OpenPPL_BetSizeForBetHalfPot##
 // Calculated in dollars and with raise-to-semantics
