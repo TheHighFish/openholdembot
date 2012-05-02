@@ -112,6 +112,7 @@ public:
 	const bool	debug_tablemap_loader() { return _debug_tablemap_loader; }
 	const bool	debug_filesystem_monitor() { return _debug_filesystem_monitor; }
 	const bool	debug_alltherest() { return _debug_alltherest; }
+	const bool  debug_table_positioner() { return _debug_table_positioner; }
 
 	// Main window locations
 	const int main_x() { return _main_x; }
@@ -282,7 +283,9 @@ public:
 	void set_debug_memorysymbols(const bool b) { ENT _debug_memorysymbols = b; WriteReg("debug_memorysymbols", b); }
 	void set_debug_tablemap_loader(const bool b) { ENT _debug_tablemap_loader = b; WriteReg("debug_tablemap_loader", b); }
 	void set_debug_filesystem_monitor(const bool b) { ENT _debug_filesystem_monitor = b; WriteReg("debug_filesystem_monitor", b); }
-	void set_debug_alltherest(const int b) { ENT _debug_alltherest = b; WriteReg("debug_alltherest", b); }
+	void set_debug_alltherest(const bool b) { ENT _debug_alltherest = b; WriteReg("debug_alltherest", b); }
+	void set_debug_table_positioner(const bool b) { ENT _debug_table_positioner = b; WriteReg("debug_table_positioner", b); }
+
 
 	// Formula window location
 	void set_formula_x(const int i) { ENT _formula_x = i; WriteReg("formula_x", i); }
@@ -469,6 +472,7 @@ private:
 	bool			_debug_tablemap_loader;
 	bool			_debug_filesystem_monitor;
 	bool			_debug_alltherest;
+	bool			_debug_table_positioner;
 
 	// Formula window location
 	int			_formula_x;	

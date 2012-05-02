@@ -724,7 +724,8 @@ void CFormula::WarnAboutOutdatedConcepts()
 			"where the user had to care about everything.\n\n"
 			"f$swag and its supporting functions and symbols\n"
 			"got finally replaced by a single function f$betsize\n"
-			"and OpenHoldem cares about all the rest automatically.\n\n"
+			"and OpenHoldem cares about all the rest automatically\n"
+			"(as long as you define the s$betsizemethod correctly).\n\n"
 			"Please refer to the manual about how to adapt\n"
 			"your formula set.",
 			"Error", 0);

@@ -203,18 +203,16 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 	else 
 	{
 		SelectedItem = SelectTableMapAndWindow(N);
-		if (SelectedItem != -1)
-		{
-			write_log(prefs.debug_autoconnector(), "[CAutoConnector] Window [%d] selected\n", g_tlist[SelectedItem].hwnd);
-			p_sharedmem->MarkPokerWindowAsAttached(g_tlist[SelectedItem].hwnd);
-		}
-		else
+
+		if (SelectedItem == -1)
 		{
 			write_log(prefs.debug_autoconnector(), "[CAutoConnector] Attempt to connect did fail\n");
 			p_sharedmem->RememberTimeOfLastFailedAttemptToConnect();
 		}
-		if (SelectedItem != -1)
+		else		
 		{
+			write_log(prefs.debug_autoconnector(), "[CAutoConnector] Window [%d] selected\n", g_tlist[SelectedItem].hwnd);
+			p_sharedmem->MarkPokerWindowAsAttached(g_tlist[SelectedItem].hwnd);
 			// Load correct tablemap, and save hwnd/rect/numchairs of table that we are "attached" to
 			set_attached_hwnd(g_tlist[SelectedItem].hwnd);
 			CString loaded_version;

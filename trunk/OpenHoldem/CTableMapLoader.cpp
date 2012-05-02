@@ -31,7 +31,7 @@ CArray <STableList, STableList>		g_tlist;
 
 CTableMapLoader::CTableMapLoader()
 {
-	_number_of_tablemaps_loaded = 0;
+	write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] CTableMapLoader()\n");
 	tablemaps_in_scraper_folder_already_parsed = false;
 
 	// Parse all tablemaps once on startup.
@@ -76,6 +76,7 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData(CString TableMapWild
 	int			line = 0;
 
 	write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] ParseAllTableMapsToLoadConnectionData: %s\n", TableMapWildcard);
+	_number_of_tablemaps_loaded = 0;
 	CString	current_path = p_tablemap->filepath();
 	BOOL bFound = hFile.FindFile(TableMapWildcard.GetString());
 	while (bFound)
@@ -108,6 +109,7 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData()
 	CString TableMapWildcard;
 	
 	write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] ParseAllTableMapsToLoadConnectionData\n");
+	_number_of_tablemaps_loaded = 0;
 	TableMapWildcard.Format("%s\\scraper\\*.tm", _startup_path);
 	ParseAllTableMapsToLoadConnectionData(TableMapWildcard);	
 	tablemaps_in_scraper_folder_already_parsed = true;
@@ -242,7 +244,7 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 			return false;
 		}
 	}
-
+	write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] Size matches; checking the rest...\n");
 	// Check for match positive title text matches
 	good_pos_title = false;
 	if ((TablemapConnectionData[MapIndex].TitleText != "")
@@ -254,7 +256,7 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 	{
 		// titletext din't match
 		// Check for titletext0..titletext9
-		for (int i=0; i<=9; i++)
+		for (int i=0; i<k_max_number_of_titletexts; i++)
 		{
 			if ((TablemapConnectionData[MapIndex].TitleText_0_9[i] != "")
 				&& (title.Find(TablemapConnectionData[MapIndex].TitleText_0_9[i])!=-1))
@@ -291,7 +293,7 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 	}
 	if (good_neg_title)
 	{
-		write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] Negative title.\n"); 
+		write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] Negative title found -> window is no match.\n"); 
 		return false;
 	}
 
@@ -301,11 +303,6 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 
 void CTableMapLoader::ReloadAllTablemapsIfChanged()
 {
-	/* !!! 
-	if (!TimeToReloadTableMaps())
-	{
-		return;
-	}*/
 	if (p_filesystem_monitor->AnyChanges())
 	{
 		ParseAllTableMapsToLoadConnectionData();
