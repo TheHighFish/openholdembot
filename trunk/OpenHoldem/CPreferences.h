@@ -51,7 +51,6 @@ public:
 	const unsigned int scrape_delay() { return _scrape_delay; }
 	// Symbols
 	const double sym_av_time() { return _sym_av_time; }
-	const CString sym_handrank_value() { return _sym_handrank_value; }
 	// ICM
 	const double icm_prize1() { return _icm_prize1; }
 	const double icm_prize2() { return _icm_prize2; }
@@ -218,8 +217,7 @@ public:
 
 	// Symbols
 	void set_sym_av_time(const double d) { ENT _sym_av_time = d; WriteReg("avtime", d); }
-	void set_sym_handrank_value(const CString s) { ENT _sym_handrank_value = s; WriteReg("handrank_value", s); }
-
+	
 	// ICM
 	void set_icm_prize1(const double d) { ENT _icm_prize1 = d; WriteReg("icm_prize1", d); }
 	void set_icm_prize2(const double d) { ENT _icm_prize2 = d; WriteReg("icm_prize2", d); }
@@ -406,7 +404,6 @@ private:
 
 	// Symbols
 	double				_sym_av_time;
-	CString				_sym_handrank_value;
 
 	// ICM
 	double			_icm_prize1;

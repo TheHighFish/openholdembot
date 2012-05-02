@@ -4,16 +4,6 @@
 
 
 BEGIN_TESTCASE
-    TESTCASE_ID ("0026")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol handrank")
-    PRECONDITION (true)
-    POSTCONDITION ((gws("handrank") >= 1) && (gws("handrank") <= 2652) || (gws("handrank") == UNDEFINED_ZERO))
-    SYMBOLS_POSSIBLY_AFFECTED ("handrank")
-END_TESTCASE
-
-
-BEGIN_TESTCASE
     TESTCASE_ID ("0027")
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol handrank169")

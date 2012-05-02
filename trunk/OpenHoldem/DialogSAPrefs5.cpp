@@ -24,7 +24,6 @@ CDlgSAPrefs5::~CDlgSAPrefs5()
 void CDlgSAPrefs5::DoDataExchange(CDataExchange* pDX)
 {
 	CSAPrefsSubDlg::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_HANDRANKVALUE, m_HandrankValue);
 	DDX_Control(pDX, IDC_AVTIME, m_AvTime);
 }
 
@@ -38,13 +37,6 @@ BOOL CDlgSAPrefs5::OnInitDialog()
 
 	CSAPrefsSubDlg::OnInitDialog();
 
-	m_HandrankValue.AddString("169");
-	m_HandrankValue.AddString("1000");
-	m_HandrankValue.AddString("1326");
-	m_HandrankValue.AddString("2652");
-	m_HandrankValue.AddString("p");
-	m_HandrankValue.SelectString(0, prefs.sym_handrank_value());
-
 	text.Format("%.2f", prefs.sym_av_time());
 	m_AvTime.SetWindowText(text);
 
@@ -55,9 +47,6 @@ BOOL CDlgSAPrefs5::OnInitDialog()
 void CDlgSAPrefs5::OnOK()
 {
 	CString			text = "";
-
-	m_HandrankValue.GetWindowText(text);
-	prefs.set_sym_handrank_value(text);
 
 	m_AvTime.GetWindowText(text);
 	prefs.set_sym_av_time(atof(text.GetString()));

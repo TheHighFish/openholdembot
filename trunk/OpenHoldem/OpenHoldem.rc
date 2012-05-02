@@ -503,8 +503,6 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     EDITTEXT        IDC_AVTIME,143,4,57,12,ES_AUTOHSCROLL
     LTEXT           "Time period to average table stats (mins)",IDC_STATIC,4,8,133,8
-    COMBOBOX        IDC_HANDRANKVALUE,143,20,69,81,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Value of ""handrank""",IDC_STATIC,4,24,64,8
 END
 
 IDD_SAPREFS6 DIALOGEX 0, 0, 219, 155

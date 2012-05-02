@@ -43,7 +43,7 @@ char * keywords = // Standard functions
 				  // Limits
 				  "bblind sblind ante lim isnl ispl isfl sraiprev sraimin sraimax istournament "
 				  // Hand Rank
-				  "handrank handrank169 handrank2652 handrank1326 handrank1000 handrankp "
+				  "handrank169 handrank2652 handrank1326 handrank1000 handrankp "
 				  // Chairs
 				  "chair userchair dealerchair raischair chair$ chairbit$ "
 				  // Rounds / Positions
@@ -3102,7 +3102,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "istournament", "true if a tournament table is detected");
 
 	mainParent = parent = AddSymbolTitle("Hand Rank", NULL, hCatItem);
-	AddSymbol(parent, "handrank", "one of the following based on your selected option");
 	AddSymbol(parent, "handrank169", "your pocket holdem hand rank 1-169 (see table)");
 	AddSymbol(parent, "handrank2652", "your pocket holdem hand rank 12-2652 (see table)");
 	AddSymbol(parent, "handrank1326", "your pocket holdem hand rank 6-1326 (handrank2652/2)");

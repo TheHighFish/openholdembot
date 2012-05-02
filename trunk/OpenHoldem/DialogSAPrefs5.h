@@ -20,7 +20,6 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	virtual void OnOK();
 
-	CComboBox m_HandrankValue;
 	CEdit m_AvTime;
 	virtual BOOL OnInitDialog();
 

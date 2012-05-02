@@ -247,7 +247,6 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_handrank1326(0);
 	set_sym_handrank1000(0);
 	set_sym_handrankp(0);
-	set_sym_handrank(0);
 
 	// chairs
 	set_sym_chair(0);
@@ -598,7 +597,7 @@ void CSymbols::ResetSymbolsNewHand(void)
 	set_sym_handrank2652(0);
 	set_sym_handrank1326(0);
 	set_sym_handrank1000(0);
-	set_sym_handrank(0);
+	set_sym_handrankp(0);
 
 	// list tests
 	for (int i=0; i<MAX_HAND_LISTS; i++)
@@ -702,7 +701,7 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 	set_sym_sraimin(0);
 	set_sym_sraimax(0);
 
-	// handrank
+	// handrank // Why here?
 	set_sym_handrankp(0);
 
 	// chairs
@@ -1152,7 +1151,7 @@ void CSymbols::CalcSymbols(void)
 		p_scraper->card_player(_sym.chair, 0)!=CARD_NOCARD && p_scraper->card_player(_sym.chair, 1)!=CARD_NOCARD &&
 		p_scraper->card_player(_sym.chair, 0)!=CARD_BACK && p_scraper->card_player(_sym.chair, 1)!=CARD_BACK)
 	{
-		CalcHandrank();			// handrank
+		CalcHandrank();			
 		if (!prefs.calc_only_my_turn() || _sym.ismyturn) {
 			CalcNhands();				// nhands
 			CalcProbabilities();		// prwin, random
@@ -2472,21 +2471,6 @@ void CSymbols::CalcHandrank(void)
 	set_sym_handrank1326(_sym.handrank2652/2);											// handrank1326
 	set_sym_handrank1000(1000*_sym.handrank2652/2652);									// handrank1000
 	set_sym_handrankp(2652.0 / (1.0+(double)count));									// handrankp
-
-		if (prefs.sym_handrank_value() == "169")
-		set_sym_handrank(_sym.handrank169);
-
-		else if (prefs.sym_handrank_value() == "2652")
-		set_sym_handrank(_sym.handrank2652);
-
-		else if (prefs.sym_handrank_value() == "1326")
-		set_sym_handrank(_sym.handrank1326);
-
-		else if (prefs.sym_handrank_value() == "1000")
-		set_sym_handrank(_sym.handrank1000);
-
-		else if (prefs.sym_handrank_value() == "p")
-		set_sym_handrank(_sym.handrankp);												// handrank
 }
 
 void CSymbols::CalcFlushesStraightsSets(void)
@@ -3792,7 +3776,6 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	// HAND RANK
 	if (memcmp(a, "handrank", 8) == 0)
 	{
-		if (memcmp(a, "handrank", 8)==0 && strlen(a)==8)					return _sym.handrank;
 		if (memcmp(a, "handrank169", 11)==0 && strlen(a)==11)				return _sym.handrank169;
 		if (memcmp(a, "handrank2652", 12)==0 && strlen(a)==12)				return _sym.handrank2652;
 		if (memcmp(a, "handrank1326", 12)==0 && strlen(a)==12)				return _sym.handrank1326;
