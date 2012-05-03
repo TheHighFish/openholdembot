@@ -340,7 +340,7 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 	Sleep(prefs.swag_delay_3());
 
 	// BET CONFIRMATION ACTION
-	if (!lost_focus || !prefs.focus_detect())
+	if (!lost_focus)
 	{
 		if (p_tablemap->swagconfirmationmethod() == BETCONF_ENTER)
 		{

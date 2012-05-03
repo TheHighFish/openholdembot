@@ -66,7 +66,6 @@ void CPreferences::InitDefaults(void)
 	_swag_delay_2 = 400;
 	_swag_delay_3 = 700;
 	_ap_auto = true;
-	_focus_detect = false;
 	_swag_use_comma = false;
 	_calc_only_my_turn = false;
 
@@ -275,7 +274,6 @@ void CPreferences::ReadPreferences()
 		ReadReg("swag_delay", &_swag_delay_3);
 		ReadReg("swag_delay_3", &_swag_delay_3);
 		ReadReg("auto", &_ap_auto);
-		ReadReg("focus_detect", &_focus_detect);
 		ReadReg("swag_use_comma", &_swag_use_comma);
 		ReadReg("calc_only_my_turn", &_calc_only_my_turn);
 
