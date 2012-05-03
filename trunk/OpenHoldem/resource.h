@@ -35,7 +35,6 @@
 #define IDD_SAPREFS2                    164
 #define IDD_SAPREFS3                    165
 #define IDD_SAPREFS4                    166
-#define IDD_SAPREFS5                    167
 #define IDD_SAPREFS6                    168
 #define IDD_SAPREFS7                    169
 #define IDD_DIALOG2                     170
@@ -105,7 +104,6 @@
 #define IDC_DLLNAME                     1055
 #define IDC_LOAD_DLL_ON_STARTUP2        1056
 #define IDC_ALWAYS_SEND_STATE           1056
-#define IDC_AVTIME                      1057
 #define IDC_TEXTSELECTION               1059
 #define IDC_TEXTDELETION                1060
 #define IDC_BETCONFIRMATION             1061

@@ -31,7 +31,6 @@
 #include "DialogSAPrefs2.h"
 #include "DialogSAPrefs3.h"
 #include "DialogSAPrefs4.h"
-#include "DialogSAPrefs5.h"
 #include "DialogSAPrefs6.h"
 #include "DialogSAPrefs7.h"
 #include "DialogSAPrefs8.h"
@@ -503,7 +502,6 @@ void CMainFrame::OnEditPreferences()
 	CDlgSAPrefs2 page2;
 	CDlgSAPrefs3 page3;
 	CDlgSAPrefs4 page4;
-	CDlgSAPrefs5 page5;
 	CDlgSAPrefs6 page6;
 	CDlgSAPrefs7 page7;
 	CDlgSAPrefs8 page8;
@@ -540,7 +538,6 @@ void CMainFrame::OnEditPreferences()
 	dlg.AddPage(page16, "Rebuy");
 	dlg.AddPage(page8,  "Replay Frames");
 	dlg.AddPage(page4,  "Scraper");
-	dlg.AddPage(page5,  "Symbols");
 	dlg.AddPage(page21, "Table Positioner");
 	dlg.AddPage(page12, "Validator");	
 

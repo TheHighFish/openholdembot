@@ -105,6 +105,9 @@ const int k_max_number_of_regions_to_clone = 10;
 const int k_max_number_of_memory_symbols = 2048;
 const int k_max_length_of_memory_symbols = 64;
 
+// Table stats
+const int k_time_frame_for_table_stats_in_seconds = 15 * 60;
+
 // Hand history generator
 const double k_hand_history_rake = 0.05;
 
