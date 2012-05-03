@@ -914,7 +914,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 
 		else if (p_symbols->user_chair_confirmed() && iter_vars.iterator_thread_complete())
 		{
-			if (prefs.calc_only_my_turn() && !p_symbols->sym()->isfinalanswer) _status_action = "N/A";
+			if (!p_symbols->sym()->isfinalanswer) _status_action = "N/A";
 			else if (p_autoplayer_functions->f$alli())    _status_action = "Allin";
 			else if (p_autoplayer_functions->f$betsize()) _status_action.Format("Betsize: %.2f", p_autoplayer_functions->f$betsize());
 			else if (p_autoplayer_functions->f$rais())    _status_action = "Bet/Raise";
