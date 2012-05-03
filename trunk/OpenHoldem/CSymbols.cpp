@@ -1152,7 +1152,7 @@ void CSymbols::CalcSymbols(void)
 		p_scraper->card_player(_sym.chair, 0)!=CARD_BACK && p_scraper->card_player(_sym.chair, 1)!=CARD_BACK)
 	{
 		CalcHandrank();			
-		if (!prefs.calc_only_my_turn() || _sym.ismyturn) {
+		if (_sym.ismyturn) {
 			CalcNhands();				// nhands
 			CalcProbabilities();		// prwin, random
 			CalcRunRon();				// run$, ron$

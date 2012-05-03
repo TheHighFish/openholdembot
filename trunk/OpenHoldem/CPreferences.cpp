@@ -61,7 +61,6 @@ void CPreferences::InitDefaults(void)
 	_swag_delay_3 = 700;
 	_ap_auto = true;
 	_swag_use_comma = false;
-	_calc_only_my_turn = false;
 
 	// scraper
 	_scrape_delay = 750;
@@ -263,7 +262,6 @@ void CPreferences::ReadPreferences()
 		ReadReg("swag_delay_3", &_swag_delay_3);
 		ReadReg("auto", &_ap_auto);
 		ReadReg("swag_use_comma", &_swag_use_comma);
-		ReadReg("calc_only_my_turn", &_calc_only_my_turn);
 
 		// prefs - dll extension
 		ReadReg("dll_always_send_state", &_dll_always_send_state);
