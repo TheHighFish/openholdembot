@@ -487,18 +487,16 @@ const double CGameState::SortedBalance(const int rank)
 // processed the current frame.
 bool CGameState::ProcessThisFrame (void)
 {
-	bool			balance_stability = false;
 	int				sym_br = (int) p_symbols->sym()->br;
 	bool			sym_ismanual = (bool) p_symbols->sym()->ismanual;
 
 	// check if all balances are known (indicates stability of info passed to DLL)
-	balance_stability = true;
+	int balance_stability = true;
 	for (int i=0; i<k_max_number_of_players; i++)
 	{
 		if (_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[0] != 0 && 
 			_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[1] != 0 &&
-			_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance_known != 1 &&
-			prefs.need_balance_stability()==true)
+			_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance_known != 1)
 		{
 			balance_stability = false;
 			break;

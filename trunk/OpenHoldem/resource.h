@@ -174,7 +174,6 @@
 #define IDC_ONLY_CALC_ON_TURN           1117
 #define IDC_CHECK5                      1118
 #define IDC_ONLY_CALC_ON_TURN2          1118
-#define IDC_NEED_BALANCE_STABILITY      1118
 #define IDC_CHECK6                      1119
 #define IDC_CHECK7                      1120
 #define IDC_CHECK8                      1121
