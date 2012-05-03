@@ -180,6 +180,11 @@ void CManualModeDlg::SetAnte(double a)
 	ante = an;
 }
 
+void CManualModeDlg::SetPot(double p)
+{
+	pot[0] = p;
+}
+
 void CManualModeDlg::SetGType(std::string t)
 {
 	std::transform(t.begin(), t.end(), t.begin(), ::tolower);

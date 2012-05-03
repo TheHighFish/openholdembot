@@ -142,6 +142,19 @@ class SetAnte: public MMDlgMethod
 		}
 };
 
+class SetPot: public MMDlgMethod
+{
+	public:
+		SetPot(CManualModeDlg* pdlg): MMDlgMethod(pdlg){}
+
+		void execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
+		{
+			double const pot(paramList.getDouble(0));
+			dlg->SetPot(pot);
+			*retvalP = xmlrpc_c::value_boolean(true);
+		}
+};
+
 class SetGType: public MMDlgMethod
 {
 	public:
@@ -421,6 +434,9 @@ void xServerThread(void* dlg)
 
 	xmlrpc_c::methodPtr const SetAnteP(new SetAnte((CManualModeDlg*) dlg));
 	myRegistry->addMethod("SetAnte", SetAnteP);
+
+	xmlrpc_c::methodPtr const SetPotP(new SetPot((CManualModeDlg*) dlg));
+	myRegistry->addMethod("SetPot", SetPotP);
 
 	xmlrpc_c::methodPtr const SetGTypeP(new SetGType((CManualModeDlg*) dlg));
 	myRegistry->addMethod("SetGType", SetGTypeP);
