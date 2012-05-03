@@ -56,6 +56,7 @@ public:
 	void SetBBlind(double b);
 	void SetBBet(double b);
 	void SetAnte(double a);
+	void SetPot(double p);
 	void SetGType(std::string t);
 	void SetHandNumber(int n);
 	void SetNetwork(std::string n);
