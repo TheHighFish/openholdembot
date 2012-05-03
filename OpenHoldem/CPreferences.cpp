@@ -56,9 +56,6 @@ void CPreferences::InitDefaults(void)
 	// analyzer
 	_max_opponents = 9;
 
-	// symbols
-	// !!! _sym_av_time
-
 	// autoplayer
 	_frame_delay = 2;
 	_click_delay  = 250;
@@ -91,9 +88,6 @@ void CPreferences::InitDefaults(void)
 	// f$debug logging
 	_fdebuglog = false;
 	_fdebuglog_myturn = true;
-
-	// game state engine
-	_sym_av_time = 15; 
 
 	// scraper zoom level
 	_scraper_zoom = 2;  // 4x
@@ -284,9 +278,6 @@ void CPreferences::ReadPreferences()
 
 		// prefs - scraper
 		ReadReg("scrape_delay", &_scrape_delay);
-
-		// prefs - symbols
-		ReadReg("avtime", &_sym_av_time);
 
 		// Prefs - poker tracker
 		ReadReg("pt_disable", &_pt_disable);;

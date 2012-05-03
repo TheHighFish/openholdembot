@@ -48,8 +48,6 @@ public:
 	const CString dll_name() { return _dll_name; }
 	// Scraper
 	const unsigned int scrape_delay() { return _scrape_delay; }
-	// Symbols
-	const double sym_av_time() { return _sym_av_time; }
 	// ICM
 	const double icm_prize1() { return _icm_prize1; }
 	const double icm_prize2() { return _icm_prize2; }
@@ -212,9 +210,6 @@ public:
 	// Scraper
 	void set_scrape_delay(const unsigned int i) { ENT _scrape_delay = i; WriteReg("scrape_delay", (int) i); }
 
-	// Symbols
-	void set_sym_av_time(const double d) { ENT _sym_av_time = d; WriteReg("avtime", d); }
-	
 	// ICM
 	void set_icm_prize1(const double d) { ENT _icm_prize1 = d; WriteReg("icm_prize1", d); }
 	void set_icm_prize2(const double d) { ENT _icm_prize2 = d; WriteReg("icm_prize2", d); }
@@ -396,9 +391,6 @@ private:
 
 	// Scraper
 	unsigned int		_scrape_delay;
-
-	// Symbols
-	double				_sym_av_time;
 
 	// ICM
 	double			_icm_prize1;
