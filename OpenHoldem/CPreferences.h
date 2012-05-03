@@ -41,7 +41,7 @@ public:
 	const bool focus_detect() { return _focus_detect; }
 	const bool swag_use_comma() { return _swag_use_comma; }
 	const bool calc_only_my_turn() { return _calc_only_my_turn; }
-	const bool need_balance_stability() { return _need_balance_stability; }
+
 
 	// Dll extension
 	const bool dll_always_send_state() { return _dll_always_send_state; }
@@ -205,7 +205,6 @@ public:
 	void set_focus_detect(const bool b) { ENT _focus_detect = b; WriteReg("focus_detect", (int) b!=false); }
 	void set_swag_use_comma(const bool b) { ENT _swag_use_comma = b; WriteReg("swag_use_comma", (int) b!=false); }
 	void set_calc_only_my_turn(const bool b) { ENT _calc_only_my_turn = b; WriteReg("calc_only_my_turn", (int) b!=false); }
-	void set_need_balance_stability(const bool b) { ENT _need_balance_stability = b; WriteReg("need_balance_stability", (int) b!=false); }
 
 	// Dll extension
 	void set_dll_always_send_state(const bool b) { ENT _dll_always_send_state = b; WriteReg("dll_always_send_state", b); }
@@ -392,7 +391,6 @@ private:
 	bool				_focus_detect;
 	bool				_swag_use_comma;
 	bool				_calc_only_my_turn;
-	bool				_need_balance_stability;
 
 	// Dll extension
 	bool				_dll_always_send_state;
