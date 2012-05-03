@@ -28,6 +28,8 @@ CFileSystemMonitor::CFileSystemMonitor()
 		CString(_startup_path) + "\\scraper\\";
 	write_log(prefs.debug_filesystem_monitor(), "[CFileSystemMonitor] Scraper folder: %s\n", 
 		absolute_path_to_scraper_directory);
+	// Create directory in case it does not exist (mainly debug sessions).
+	CreateDirectory(absolute_path_to_scraper_directory, NULL);
 	InitMonitor();
 }
 
