@@ -794,10 +794,6 @@
 					Name="prefs_dlg"
 					>
 					<File
-						RelativePath=".\DialogSAPrefs1.cpp"
-						>
-					</File>
-					<File
 						RelativePath=".\DialogSAPrefs10.cpp"
 						>
 					</File>
@@ -1447,10 +1443,6 @@
 				<Filter
 					Name="prefs_dlg"
 					>
-					<File
-						RelativePath=".\DialogSAPrefs1.h"
-						>
-					</File>
 					<File
 						RelativePath=".\DialogSAPrefs10.h"
 						>

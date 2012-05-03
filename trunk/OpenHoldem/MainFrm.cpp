@@ -27,7 +27,6 @@
 #include "DialogChairNum.h"
 #include "DialogFormulaScintilla.h"
 #include "DialogLockBlinds.h"
-#include "DialogSAPrefs1.h"
 #include "DialogSAPrefs2.h"
 #include "DialogSAPrefs3.h"
 #include "DialogSAPrefs4.h"
@@ -498,7 +497,6 @@ void CMainFrame::OnEditPreferences()
 	CSAPrefsDialog dlg;
 
 	// the "pages" (all derived from CSAPrefsSubDlg)
-	CDlgSAPrefs1 page1;
 	CDlgSAPrefs2 page2;
 	CDlgSAPrefs3 page3;
 	CDlgSAPrefs4 page4;
@@ -520,7 +518,6 @@ void CMainFrame::OnEditPreferences()
 	CDlgSAPrefs21 page21;
 
 	// add pages
-	dlg.AddPage(page1,  "Analyzer");
 	dlg.AddPage(page14, "Auto-Connector");
 	dlg.AddPage(page2,  "Autoplayer");
 	dlg.AddPage(page10, "Chat");

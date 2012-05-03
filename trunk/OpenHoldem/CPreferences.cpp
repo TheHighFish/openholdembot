@@ -53,9 +53,6 @@ void CPreferences::InitDefaults(void)
 	_equal = 12;
 	_expand_auto = _expand_debug = _expand_std = _expand_list = _expand_udf = false;
 
-	// analyzer
-	_max_opponents = 9;
-
 	// autoplayer
 	_frame_delay = 2;
 	_click_delay  = 250;
@@ -253,9 +250,6 @@ void CPreferences::ReadPreferences()
 		ReadReg("expand_list", &_expand_list);
 		ReadReg("expand_std", &_expand_std);
 		ReadReg("expand_udf", &_expand_udf);
-
-		// prefs - analyzer
-		ReadReg("max_opponents", &_max_opponents);
 
 		// prefs - autoplayer
 		ReadReg("frame_delay", &_frame_delay);
