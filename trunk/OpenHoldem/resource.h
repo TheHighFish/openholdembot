@@ -165,9 +165,7 @@
 #define IDC_ICM_5                       1114
 #define IDC_CHECK2                      1115
 #define IDC_AUTO_AP2                    1115
-#define IDC_FOCUSDETECT                 1115
 #define IDC_CHECK3                      1116
-#define IDC_FOCUSDETECT2                1116
 #define IDC_SWAGUSECOMMA                1116
 #define IDC_CHECK4                      1117
 #define IDC_SWAGUSECOMMA2               1117

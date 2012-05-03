@@ -467,8 +467,6 @@ BEGIN
     CONTROL         "",IDC_SWAGDELAY3_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,167,83,11,14
     CONTROL         "Engage autoplayer automatically upon chair identification",IDC_AUTO_AP,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,114,199,10
-    CONTROL         "Detect loss of focus on SWAG and skip confirm",IDC_FOCUSDETECT,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,129,165,10
     CONTROL         "Use 'comma' instead of 'dot' for fractional SWAGs",IDC_SWAGUSECOMMA,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,143,173,10
     CONTROL         "Only calculate standard function when on my turn",IDC_ONLY_CALC_ON_TURN,

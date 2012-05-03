@@ -38,7 +38,6 @@ public:
 	const unsigned int swag_delay_2() { return _swag_delay_2; }
 	const unsigned int swag_delay_3() { return _swag_delay_3; }
 	const bool ap_auto() { return _ap_auto; }
-	const bool focus_detect() { return _focus_detect; }
 	const bool swag_use_comma() { return _swag_use_comma; }
 	const bool calc_only_my_turn() { return _calc_only_my_turn; }
 
@@ -202,7 +201,6 @@ public:
 	void set_swag_delay_2(const unsigned int i) { ENT _swag_delay_2 = i; WriteReg("swag_delay_2", (int) i); }
 	void set_swag_delay_3(const unsigned int i) { ENT _swag_delay_3 = i; WriteReg("swag_delay_3", (int) i); }
 	void set_ap_auto(const bool b) { ENT _ap_auto = b; WriteReg("auto", (int) b!=false); }
-	void set_focus_detect(const bool b) { ENT _focus_detect = b; WriteReg("focus_detect", (int) b!=false); }
 	void set_swag_use_comma(const bool b) { ENT _swag_use_comma = b; WriteReg("swag_use_comma", (int) b!=false); }
 	void set_calc_only_my_turn(const bool b) { ENT _calc_only_my_turn = b; WriteReg("calc_only_my_turn", (int) b!=false); }
 
@@ -388,7 +386,6 @@ private:
 	unsigned int		_swag_delay_2;
 	unsigned int		_swag_delay_3;
 	bool				_ap_auto;
-	bool				_focus_detect;
 	bool				_swag_use_comma;
 	bool				_calc_only_my_turn;
 
