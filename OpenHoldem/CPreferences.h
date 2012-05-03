@@ -28,9 +28,6 @@ public:
 public:
 	// public accessors
 
-	// Analyzer
-	const unsigned int max_opponents() { return _max_opponents; }
-
 	// Autoplayer
 	const unsigned int frame_delay() { return _frame_delay; }
 	const unsigned int click_delay() { return _click_delay; }
@@ -188,9 +185,6 @@ public:
 public:
 	// public mutators
 #define ENT CSLock lock(m_critsec);
-
-	// Analyzer
-	void set_max_opponents(const unsigned int i) { ENT _max_opponents = i; WriteReg("max_opponents", (int) i); }
 
 	// Autoplayer
 	void set_frame_delay(const unsigned int i) { ENT _frame_delay = i; WriteReg("frame_delay", (int) i); }
@@ -370,9 +364,6 @@ public:
 
 private:
 	// private variables - use public accessors and public mutators to address these
-
-	// Analyzer
-	unsigned int		_max_opponents;
 
 	// Autoplayer
 	unsigned int		_frame_delay;

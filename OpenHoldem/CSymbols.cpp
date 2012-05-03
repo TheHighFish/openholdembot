@@ -953,7 +953,6 @@ void CSymbols::CalcSymbols(void)
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Global environment symbols
 	set_sym_session(p_sessioncounter->session_id());												// session
-	set_sym_nopponentsmax(prefs.max_opponents());										// nopponentsmax										
 	set_sym_version(VERSION_NUMBER);													// version
 	GetClassName(p_autoconnector->attached_hwnd(), classname, 50);
 	if (strcmp(classname, "BRING")==0)
@@ -1140,9 +1139,10 @@ void CSymbols::CalcSymbols(void)
 	int e = SUCCESS;
 	set_sym_nopponents(gram.CalcF$symbol(p_formula, "f$P", &e));
 
-	if (_sym.nopponents > prefs.max_opponents())
+	// !!! Not here. Better in the setter
+	if (_sym.nopponents > MAX_OPPONENTS)
 	{
-		set_sym_nopponents(prefs.max_opponents());					// nopponents
+		set_sym_nopponents(MAX_OPPONENTS);				
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
