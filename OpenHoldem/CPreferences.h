@@ -36,8 +36,6 @@ public:
 	const unsigned int swag_delay_3() { return _swag_delay_3; }
 	const bool ap_auto() { return _ap_auto; }
 	const bool swag_use_comma() { return _swag_use_comma; }
-	const bool calc_only_my_turn() { return _calc_only_my_turn; }
-
 
 	// Dll extension
 	const bool dll_always_send_state() { return _dll_always_send_state; }
@@ -194,7 +192,6 @@ public:
 	void set_swag_delay_3(const unsigned int i) { ENT _swag_delay_3 = i; WriteReg("swag_delay_3", (int) i); }
 	void set_ap_auto(const bool b) { ENT _ap_auto = b; WriteReg("auto", (int) b!=false); }
 	void set_swag_use_comma(const bool b) { ENT _swag_use_comma = b; WriteReg("swag_use_comma", (int) b!=false); }
-	void set_calc_only_my_turn(const bool b) { ENT _calc_only_my_turn = b; WriteReg("calc_only_my_turn", (int) b!=false); }
 
 	// Dll extension
 	void set_dll_always_send_state(const bool b) { ENT _dll_always_send_state = b; WriteReg("dll_always_send_state", b); }
@@ -373,7 +370,6 @@ private:
 	unsigned int		_swag_delay_3;
 	bool				_ap_auto;
 	bool				_swag_use_comma;
-	bool				_calc_only_my_turn;
 
 	// Dll extension
 	bool				_dll_always_send_state;

@@ -460,8 +460,6 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,114,199,10
     CONTROL         "Use 'comma' instead of 'dot' for fractional SWAGs",IDC_SWAGUSECOMMA,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,143,173,10
-    CONTROL         "Only calculate standard function when on my turn",IDC_ONLY_CALC_ON_TURN,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,158,200,10
 END
 
 IDD_SAPREFS3 DIALOGEX 0, 0, 219, 155
