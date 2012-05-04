@@ -39,7 +39,6 @@ public:
 
 	// Dll extension
 	const bool dll_always_send_state() { return _dll_always_send_state; }
-	const bool dll_load_on_startup() { return _dll_load_on_startup; }
 	const CString dll_name() { return _dll_name; }
 	// Scraper
 	const unsigned int scrape_delay() { return _scrape_delay; }
@@ -195,7 +194,6 @@ public:
 
 	// Dll extension
 	void set_dll_always_send_state(const bool b) { ENT _dll_always_send_state = b; WriteReg("dll_always_send_state", b); }
-	void set_dll_load_on_startup(const bool b) { ENT _dll_load_on_startup = b; WriteReg("load_dll_on_startup", b); }
 	void set_dll_name(const CString s) { ENT _dll_name = s; WriteReg("dll_name", s); }
 
 	// Scraper
@@ -373,7 +371,6 @@ private:
 
 	// Dll extension
 	bool				_dll_always_send_state;
-	bool				_dll_load_on_startup;
 	CString				_dll_name;
 
 	// Scraper

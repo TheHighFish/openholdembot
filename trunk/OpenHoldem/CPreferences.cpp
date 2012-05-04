@@ -67,7 +67,6 @@ void CPreferences::InitDefaults(void)
 
 	// dll
 	_dll_always_send_state = true;
-	_dll_load_on_startup = false;
 	// Default is: empty string
 	// Setting the string to "user.dll" whenever it is empty
 	// caused problems for the people who want it undefined:
@@ -265,7 +264,6 @@ void CPreferences::ReadPreferences()
 
 		// prefs - dll extension
 		ReadReg("dll_always_send_state", &_dll_always_send_state);
-		ReadReg("load_dll_on_startup", &_dll_load_on_startup);
 		ReadReg("dll_name", &_dll_name);
 
 		// prefs - scraper

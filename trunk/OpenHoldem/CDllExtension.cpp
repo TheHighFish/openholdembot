@@ -44,7 +44,7 @@ void CDllExtension::LoadDll(const char * path)
 		return;
 
 	// try to load specific patch if passed in as a parameter
-	if (strlen(path))
+	if (strlen(path) > 0)
 	{
 		SetCurrentDirectory(_startup_path);
 		_hmod_dll = LoadLibrary(path);
