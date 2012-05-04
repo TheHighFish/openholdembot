@@ -466,8 +466,6 @@ IDD_SAPREFS3 DIALOGEX 0, 0, 219, 155
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Always send state messages, even when not playing?",IDC_ALWAYS_SEND_STATE,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,22,186,10
     EDITTEXT        IDC_DLLNAME,120,36,80,12,ES_AUTOHSCROLL
     LTEXT           "Name of DLL to load on startup",IDC_STATIC,4,40,116,8
 END

@@ -24,7 +24,6 @@ void CDlgSAPrefs3::DoDataExchange(CDataExchange* pDX)
 {
 	CSAPrefsSubDlg::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_DLLNAME, m_DllName);
-	DDX_Control(pDX, IDC_ALWAYS_SEND_STATE, m_AlwaysSendState);
 }
 
 BEGIN_MESSAGE_MAP(CDlgSAPrefs3, CSAPrefsSubDlg)
@@ -34,9 +33,6 @@ END_MESSAGE_MAP()
 BOOL CDlgSAPrefs3::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
-	CString		text = "";
-
-	m_AlwaysSendState.SetCheck(prefs.dll_always_send_state() ? BST_CHECKED : BST_UNCHECKED);
 	m_DllName.SetWindowText(prefs.dll_name());
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -46,8 +42,6 @@ BOOL CDlgSAPrefs3::OnInitDialog()
 void CDlgSAPrefs3::OnOK()
 {
 	CString			text = "";
-
-	prefs.set_dll_always_send_state(m_AlwaysSendState.GetCheck()==BST_CHECKED ? true : false);
 
 	m_DllName.GetWindowText(text);
 	prefs.set_dll_name(text);

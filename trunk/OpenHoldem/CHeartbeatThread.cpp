@@ -366,15 +366,9 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		p_validator->ValidateGameState();
 
 		////////////////////////////////////////////////////////////////////////////////////////////
-		// DLL - send state
-		if ((p_scraper->card_player(p_symbols->sym()->userchair, 0) != CARD_NOCARD && 
-			 p_scraper->card_player(p_symbols->sym()->userchair, 1) != CARD_NOCARD && 
-			 p_symbols->user_chair_confirmed()) ||
-			prefs.dll_always_send_state())
-		{
-			write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling PassStateToDll.\n");
-			p_dll_extension->PassStateToDll(p_game_state->state((p_game_state->state_index()-1)&0xff));
-		}
+		// DLL - always send state
+		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling PassStateToDll.\n");
+		p_dll_extension->PassStateToDll(p_game_state->state((p_game_state->state_index()-1)&0xff));
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Autoplayer
