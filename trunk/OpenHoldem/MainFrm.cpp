@@ -529,12 +529,12 @@ void CMainFrame::OnEditPreferences()
 	dlg.AddPage(page7,  "ICM");
 	dlg.AddPage(page18, "Lazy Scraping");
 	dlg.AddPage(page11, "Logging");
-	dlg.AddPage(page13, "Obscure");
 	dlg.AddPage(page9,  "Perl");
 	dlg.AddPage(page6,  "Poker Tracker");
 	dlg.AddPage(page16, "Rebuy");
 	dlg.AddPage(page8,  "Replay Frames");
 	dlg.AddPage(page4,  "Scraper");
+	dlg.AddPage(page13, "Stealth");
 	dlg.AddPage(page21, "Table Positioner");
 	dlg.AddPage(page12, "Validator");	
 
