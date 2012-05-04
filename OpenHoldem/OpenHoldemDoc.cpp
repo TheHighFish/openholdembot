@@ -73,9 +73,7 @@ BOOL COpenHoldemDoc::OnNewDocument()
 	SetTitle("Default");
 	//SetModifiedFlag(true);
 
-	// Load dll, if set in preferences
-	if (prefs.dll_load_on_startup())
-		p_dll_extension->LoadDll("");
+	p_dll_extension->LoadDll("");
 
 	if (prefs.simple_window_title() && theApp.m_pMainWnd)
 		theApp.m_pMainWnd->PostMessage(WMA_SETWINDOWTEXT, 0, (LPARAM)NULL);
@@ -143,9 +141,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 		// Create parse trees for newly loaded formula
 		p_formula->ParseAllFormula(pMyMainWnd->GetSafeHwnd());
 
-		// Load dll, if set in preferences
-		if (prefs.dll_load_on_startup())
-			p_dll_extension->LoadDll("");
+		p_dll_extension->LoadDll("");
 		if (prefs.simple_window_title() && theApp.m_pMainWnd)
 			theApp.m_pMainWnd->PostMessage(WMA_SETWINDOWTEXT, 0, (LPARAM)NULL);
 	}

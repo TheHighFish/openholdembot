@@ -23,7 +23,6 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	CButton m_LoadDllOnStartup;
 	CEdit m_DllName;
 	virtual BOOL OnInitDialog();
 

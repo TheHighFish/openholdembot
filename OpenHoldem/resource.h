@@ -100,9 +100,7 @@
 #define IDC_CLICKDELAY_SPIN             1043
 #define IDC_COMBO2                      1052
 #define IDC_DEBUGLEVEL_PT               1052
-#define IDC_LOAD_DLL_ON_STARTUP         1054
 #define IDC_DLLNAME                     1055
-#define IDC_LOAD_DLL_ON_STARTUP2        1056
 #define IDC_ALWAYS_SEND_STATE           1056
 #define IDC_TEXTSELECTION               1059
 #define IDC_TEXTDELETION                1060
