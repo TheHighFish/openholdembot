@@ -748,10 +748,6 @@ IDD_SAPREFS9 DIALOGEX 0, 0, 237, 158
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "    Load Perl interpreter",IDC_LOAD_PERL_INTERPRETER,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,90,8
-    CONTROL         "    Load default Perl formula",IDC_LOAD_DEFAULT_PERL_FORMULA,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,24,106,8
     LTEXT           "Default formula",IDC_STATIC,4,40,61,8
     EDITTEXT        IDC_DEFAULT_PERL_FORMULA,110,36,90,12,ES_AUTOHSCROLL,WS_EX_ACCEPTFILES
     LTEXT           "Perl editor",IDC_STATIC,4,56,44,8

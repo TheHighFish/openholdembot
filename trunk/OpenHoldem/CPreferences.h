@@ -64,8 +64,7 @@ public:
 	// Perl
 	const CString perl_default_formula() { return _perl_default_formula; }
 	const CString perl_editor() { return _perl_editor; }
-	const bool perl_load_default_formula() { return _perl_load_default_formula; }
-	const bool perl_load_interpreter() { return _perl_load_interpreter; }
+
 	//  PokerChat
 	const bool chat_enabled() { return _chat_enabled; }
 	const int chat_min_delay() { return _chat_min_delay; }
@@ -223,8 +222,6 @@ public:
 	// Perl
 	void set_perl_default_formula(const CString s) { ENT _perl_default_formula = s; WriteReg("perl_default_formula", s); }
 	void set_perl_editor(const CString s) { ENT _perl_editor = s; WriteReg("perl_editor", s); }
-	void set_perl_load_default_formula(const bool b) { ENT _perl_load_default_formula = b; WriteReg("perl_load_default_formula", b); }
-	void set_perl_load_interpreter(const bool b) { ENT _perl_load_interpreter = b; WriteReg("perl_load_interpreter", b); }
 
 	//  PokerChat
 	void set_chat_enabled(const bool b) { ENT _chat_enabled = b; WriteReg("chat_enabled", b); }
@@ -399,8 +396,6 @@ private:
 	// Perl
 	CString			_perl_default_formula;
 	CString			_perl_editor;
-	bool			_perl_load_default_formula;
-	bool			_perl_load_interpreter;
 
 	//  PokerChat
 	bool			_chat_enabled;

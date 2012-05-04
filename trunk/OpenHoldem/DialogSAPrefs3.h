@@ -28,9 +28,6 @@ public:
 
 protected:
 	virtual void OnOK();
-
-public:
-	CButton m_AlwaysSendState;
 };
 
 

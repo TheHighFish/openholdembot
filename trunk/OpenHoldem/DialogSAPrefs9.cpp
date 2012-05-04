@@ -2,13 +2,11 @@
 //
 
 #include "stdafx.h"
-
-#include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs9.h"
 
 #include "CPerl.hpp"
 #include "CPreferences.h"
-
+#include "SAPrefsSubDlg.h"
 
 // DialogSAPrefs9 dialog
 
@@ -26,8 +24,6 @@ CDlgSAPrefs9::~CDlgSAPrefs9()
 void CDlgSAPrefs9::DoDataExchange(CDataExchange* pDX)
 {
 	CSAPrefsSubDlg::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_LOAD_PERL_INTERPRETER, m_LoadPerlInterpreter);
-	DDX_Control(pDX, IDC_LOAD_DEFAULT_PERL_FORMULA, m_LoadDefaultPerlFormula);
 	DDX_Control(pDX, IDC_DEFAULT_PERL_FORMULA, m_DefaultPerlFormula);
 	DDX_Control(pDX, IDC_PERL_EDITOR, m_PerlEditor);
 }
@@ -36,8 +32,6 @@ BOOL CDlgSAPrefs9::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
 
-	m_LoadPerlInterpreter.SetCheck(prefs.perl_load_interpreter() ? BST_CHECKED : BST_UNCHECKED);
-	m_LoadDefaultPerlFormula.SetCheck(prefs.perl_load_default_formula() ? BST_CHECKED : BST_UNCHECKED);
 	m_DefaultPerlFormula.SetWindowText(prefs.perl_default_formula());
 	m_PerlEditor.SetWindowText(prefs.perl_editor());
 
@@ -49,10 +43,6 @@ void CDlgSAPrefs9::OnOK()
 {
 	CString text = "";
 
-	prefs.set_perl_load_interpreter(m_LoadPerlInterpreter.GetCheck()==BST_CHECKED ? true : false);
-	prefs.set_perl_load_default_formula(m_LoadDefaultPerlFormula.GetCheck()==BST_CHECKED ? true : false);
-
-
 	m_DefaultPerlFormula.GetWindowText(text);
 	prefs.set_perl_default_formula(text);
 
@@ -60,13 +50,11 @@ void CDlgSAPrefs9::OnOK()
 	prefs.set_perl_editor(text);
 
    	// Load Perl interpreter without a restart
-	if (prefs.perl_load_interpreter())
+	if (p_perl)
 	{
-		if (p_perl)
-			delete p_perl;
-
-		p_perl = new CPerl;
+		delete p_perl;
 	}
+	p_perl = new CPerl;
 
 	CSAPrefsSubDlg::OnOK();
 }
