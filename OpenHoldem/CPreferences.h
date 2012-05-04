@@ -38,7 +38,6 @@ public:
 	const bool swag_use_comma() { return _swag_use_comma; }
 
 	// Dll extension
-	const bool dll_always_send_state() { return _dll_always_send_state; }
 	const CString dll_name() { return _dll_name; }
 	// Scraper
 	const unsigned int scrape_delay() { return _scrape_delay; }
@@ -193,7 +192,6 @@ public:
 	void set_swag_use_comma(const bool b) { ENT _swag_use_comma = b; WriteReg("swag_use_comma", (int) b!=false); }
 
 	// Dll extension
-	void set_dll_always_send_state(const bool b) { ENT _dll_always_send_state = b; WriteReg("dll_always_send_state", b); }
 	void set_dll_name(const CString s) { ENT _dll_name = s; WriteReg("dll_name", s); }
 
 	// Scraper
@@ -370,7 +368,6 @@ private:
 	bool				_swag_use_comma;
 
 	// Dll extension
-	bool				_dll_always_send_state;
 	CString				_dll_name;
 
 	// Scraper

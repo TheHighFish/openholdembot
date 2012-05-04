@@ -66,7 +66,6 @@ void CPreferences::InitDefaults(void)
 	_scrape_delay = 750;
 
 	// dll
-	_dll_always_send_state = true;
 	// Default is: empty string
 	// Setting the string to "user.dll" whenever it is empty
 	// caused problems for the people who want it undefined:
@@ -263,7 +262,6 @@ void CPreferences::ReadPreferences()
 		ReadReg("swag_use_comma", &_swag_use_comma);
 
 		// prefs - dll extension
-		ReadReg("dll_always_send_state", &_dll_always_send_state);
 		ReadReg("dll_name", &_dll_name);
 
 		// prefs - scraper
