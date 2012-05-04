@@ -55,7 +55,7 @@ bool CConfigurationCheck::CheckOfPerlInstallationNecessary()
 	// We better make that check dependend of the perl-preferences,
 	// instead of a separate option that might be turned off
 	// or might confuse other users.
-	return (prefs.perl_load_default_formula() || prefs.perl_load_interpreter());
+	return (prefs.perl_default_formula() != "");
 }
 
 HKEY CConfigurationCheck::GetHive(CString mhive)

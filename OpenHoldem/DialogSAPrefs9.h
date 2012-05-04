@@ -22,8 +22,6 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
 public:
-	CButton m_LoadPerlInterpreter;
-	CButton m_LoadDefaultPerlFormula;
 	CEdit m_DefaultPerlFormula;
 	CEdit m_PerlEditor;
 	virtual BOOL OnInitDialog();

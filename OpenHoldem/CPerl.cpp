@@ -101,32 +101,22 @@ CPerl::CPerl()
 	_formula_loaded = false;
 	_interpreter_not_loaded = true;
 
-	if (!prefs.perl_load_interpreter())
-	{
-		//  For the people who don't need Perl...
-		return;
-	}
-
 	if (!LoadDLL())
 	{
 		//  DLL not found or invalid
 		return;
 	}
 
-	if (prefs.perl_load_default_formula())
+	if (prefs.perl_default_formula() == "")
+	{
+		// For people who don't need perl.
+		return;
+	}
+	else
 	{
 		//  Load file and create new instance of the interpreter.
 		LoadFormulaFile(string(prefs.perl_default_formula()));
 		//  _interpreter_not_loaded and _formula_loaded set automatically.
-	}
-	else
-	{
-		//  No script to load
-		_interpreter = (*P_PerlEzCreate)
-						  (EMPTY_STRING,				  //  No script to load
-						   EMPTY_STRING);				 //  Command line options
-		_formula_loaded = false;
-		_interpreter_not_loaded = false;
 	}
 
 	if ((_interpreter == NULL) || _interpreter_not_loaded)

@@ -112,8 +112,6 @@ void CPreferences::InitDefaults(void)
 	//  Perl
 	_perl_default_formula = "";
 	_perl_editor = "C:\\Windows\\notepad.exe";
-	_perl_load_default_formula = false;
-	_perl_load_interpreter = false;
 
 	//  PokerChat
 	_chat_enabled = false;
@@ -306,8 +304,6 @@ void CPreferences::ReadPreferences()
 
 		// Perl
 		ReadReg("perl_editor", &_perl_editor);
-		ReadReg("perl_load_default_formula", &_perl_load_default_formula);
-		ReadReg("perl_load_interpreter", &_perl_load_interpreter);
 		ReadReg("perl_default_formula", &_perl_default_formula);
 
 		// PokerChat
