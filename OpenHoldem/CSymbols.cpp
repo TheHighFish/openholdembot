@@ -3977,9 +3977,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "is", 2)==0)
 	{
 		// GENERAL
-		if (memcmp(a, "ismanual", 8)==0 && strlen(a)==8)					return _sym.ismanual;
-		if (memcmp(a, "isbring", 7)==0 && strlen(a)==7)						return _sym.isbring;
-		// isfinaltable - to be implemented in OH 2.2.0
+		// !!! isfinaltable - to be implemented in OH 2.2.0
 		if (memcmp(a, "isfinaltable", 12)==0 && strlen(a)==12)				return false;
 
 		// LIMITS 1(3)

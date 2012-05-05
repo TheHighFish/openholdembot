@@ -2,15 +2,6 @@
 // General symbols
 //
 
-BEGIN_TESTCASE
-    TESTCASE_ID ("0001")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol ismanual")
-    PRECONDITION (true)
-    POSTCONDITION ((gws("ismanual") == true) || (gws("ismanual") == false))
-    SYMBOLS_POSSIBLY_AFFECTED ("ismanual")
-END_TESTCASE
-
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0003")
@@ -29,16 +20,6 @@ BEGIN_TESTCASE
     PRECONDITION (true)
     POSTCONDITION ((gws("nchairs") >= 2) && (gws("nchairs") <= 10))
     SYMBOLS_POSSIBLY_AFFECTED ("nchairs")
-END_TESTCASE
-
-
-BEGIN_TESTCASE
-    TESTCASE_ID ("0005")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol isbring")
-    PRECONDITION (true)
-    POSTCONDITION ((gws("isbring") == true) || (gws("isbring") == false))
-    SYMBOLS_POSSIBLY_AFFECTED ("isbring")
 END_TESTCASE
 
 
