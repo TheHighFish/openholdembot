@@ -558,7 +558,6 @@ void CManualModeDlg::clear_scrape_areas(void)
 		playerbet[i] = "0";
 		playerbalance[i] = "1000";
 		buttonstate[i] = false;
-		pot = 0;
 	}
 	pot = 0;
 	dealer[0] = true;
