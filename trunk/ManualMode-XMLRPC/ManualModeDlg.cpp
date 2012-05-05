@@ -182,7 +182,7 @@ void CManualModeDlg::SetAnte(double a)
 
 void CManualModeDlg::SetPot(double p)
 {
-	pot[0] = p;
+	pot = p;
 }
 
 void CManualModeDlg::SetGType(std::string t)
@@ -558,8 +558,9 @@ void CManualModeDlg::clear_scrape_areas(void)
 		playerbet[i] = "0";
 		playerbalance[i] = "1000";
 		buttonstate[i] = false;
-		pot[i] = 0;
+		pot = 0;
 	}
+	pot = 0;
 	dealer[0] = true;
 
 	playername[0] = "Player0";
@@ -1168,7 +1169,7 @@ void CManualModeDlg::draw_center_info_box(void)
 	t.Append(s);
 
 	// Pot
-	s.Format(" Pot: %s\n", NumberToFormattedString(pot[0]));
+	s.Format(" Pot: %s\n", NumberToFormattedString(pot));
 	t.Append(s);
 
 	s.Format(" Net: %s\n", network);
@@ -2769,7 +2770,7 @@ void CManualModeDlg::do_scrape_bets_into_pot(void)
 	{
 		for (int i=0; i<k_max_number_of_players; i++) 
 		{
-			pot[0] += atof(playerbet[i]);
+			pot += atof(playerbet[i]);
 			playerbet[i] = "0";
 		}
 	}
@@ -2777,7 +2778,7 @@ void CManualModeDlg::do_scrape_bets_into_pot(void)
 	{
 		for (int i=0; i<k_max_number_of_players; i++) 
 		{
-			pot[0] += atof(playerbet[i]);
+			pot += atof(playerbet[i]);
 			playerbet[i] = "0";
 		}
 	}
@@ -2785,7 +2786,7 @@ void CManualModeDlg::do_scrape_bets_into_pot(void)
 	{
 		for (int i=0; i<k_max_number_of_players; i++) 
 		{
-			pot[0] += atof(playerbet[i]);
+			pot += atof(playerbet[i]);
 			playerbet[i] = "0";
 		}
 	}
