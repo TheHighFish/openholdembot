@@ -22,10 +22,10 @@ typedef struct
 	CString			TitleText_0_9[10];
 	CString			NegativeTitleText;
 	CString			NegativeTitleText_0_9[10];
-} t_TablemapConnectionData;
+} t_tablemap_connection_data;
 
 
-t_TablemapConnectionData			TablemapConnectionData[k_max_nmber_of_tablemaps];
+t_tablemap_connection_data			tablemap_connection_data[k_max_nmber_of_tablemaps];
 CArray <STableList, STableList>		g_tlist; 
 
 
@@ -116,17 +116,17 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData()
 }
 
 
-bool CTableMapLoader::TablemapConnectionDataAlreadyStored(CString TablemapFilePath)
+bool CTableMapLoader::tablemap_connection_dataAlreadyStored(CString TablemapFilePath)
 {
 	for (int i=0; i<=_number_of_tablemaps_loaded; i++)
 	{
-		if (TablemapConnectionData[i].FilePath == TablemapFilePath)
+		if (tablemap_connection_data[i].FilePath == TablemapFilePath)
 		{
-			write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] TablemapConnectionDataAlreadyStored [%s] [true]\n", TablemapFilePath);
+			write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] tablemap_connection_dataAlreadyStored [%s] [true]\n", TablemapFilePath);
 			return true;
 		}
 	}
-	write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] TablemapConnectionDataAlreadyStored [%s] [false]\n", TablemapFilePath);
+	write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] tablemap_connection_dataAlreadyStored [%s] [false]\n", TablemapFilePath);
 	return false;
 }
 
@@ -138,15 +138,15 @@ void CTableMapLoader::CheckForDuplicatedTablemaps()
 	{
 		for (int j=i+1; j<_number_of_tablemaps_loaded; j++)
 		{
-			if (TablemapConnectionData[i].SiteName == TablemapConnectionData[j].SiteName)
+			if (tablemap_connection_data[i].SiteName == tablemap_connection_data[j].SiteName)
 			{
-				write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] TablemapConnectionDataDuplicated [%s] [true]\n", 
-					TablemapConnectionData[i].SiteName);
+				write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] tablemap_connection_dataDuplicated [%s] [true]\n", 
+					tablemap_connection_data[i].SiteName);
 				error_message.Format("It seems you have multiple versions of the same map in your scraper folder.\n\n"\
 					"SITENAME = %s\n\n"\
 					"This will cause problems as the autoconnector won't be able to decide which one to use.\n"\
 					"Please remove the superfluous maps from the scraper folder.\n", 
-					TablemapConnectionData[i].SiteName);
+					tablemap_connection_data[i].SiteName);
 				OH_MessageBox((LPCTSTR) error_message, 
 					"Warning! Duplicate SiteName", MB_OK|MB_ICONWARNING);
 			}
@@ -161,14 +161,14 @@ void CTableMapLoader::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 	write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] number_of_tablemaps_loaded: %d\n", _number_of_tablemaps_loaded);
 
 	// Avoiding to store the data twice, e.g. when we load a known TM manually
-	if (TablemapConnectionDataAlreadyStored(map->filepath))
+	if (tablemap_connection_dataAlreadyStored(map->filepath))
 	{
 		write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] ExtractConnectionDataFromCurrentTablemap(): already stored; early exit\n");
 		return;
 	}
 
-	TablemapConnectionData[_number_of_tablemaps_loaded].FilePath = map->filepath;
-	TablemapConnectionData[_number_of_tablemaps_loaded].SiteName = map->sitename;
+	tablemap_connection_data[_number_of_tablemaps_loaded].FilePath = map->filepath;
+	tablemap_connection_data[_number_of_tablemaps_loaded].SiteName = map->sitename;
 
 	if (map->sitename == "")
 	{
@@ -181,23 +181,23 @@ void CTableMapLoader::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 	}
 	
 	// Get clientsize info through TM-access-class
-	p_tablemap_access->SetClientSize("clientsize", TablemapConnectionData[_number_of_tablemaps_loaded].ClientSizeX, TablemapConnectionData[_number_of_tablemaps_loaded].ClientSizeY);
-	p_tablemap_access->SetClientSize("clientsizemin", TablemapConnectionData[_number_of_tablemaps_loaded].ClientSizeMinX, TablemapConnectionData[_number_of_tablemaps_loaded].ClientSizeMinY);
-	p_tablemap_access->SetClientSize("clientsizemax", TablemapConnectionData[_number_of_tablemaps_loaded].ClientSizeMaxX, TablemapConnectionData[_number_of_tablemaps_loaded].ClientSizeMaxY);
+	p_tablemap_access->SetClientSize("clientsize", tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeX, tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeY);
+	p_tablemap_access->SetClientSize("clientsizemin", tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMinX, tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMinY);
+	p_tablemap_access->SetClientSize("clientsizemax", tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMaxX, tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMaxY);
 
 	// Extract title text information
-	p_tablemap_access->SetTitleText("titletext", TablemapConnectionData[_number_of_tablemaps_loaded].TitleText);
+	p_tablemap_access->SetTitleText("titletext", tablemap_connection_data[_number_of_tablemaps_loaded].TitleText);
 	// Extract negative title texs
-	p_tablemap_access->SetTitleText("!titletext", TablemapConnectionData[_number_of_tablemaps_loaded].NegativeTitleText);
+	p_tablemap_access->SetTitleText("!titletext", tablemap_connection_data[_number_of_tablemaps_loaded].NegativeTitleText);
 		
 	CString s = "";
 	for (int i=0; i<k_max_number_of_titletexts; i++)
 	{
 		s.Format("titletext%d", i);
-		p_tablemap_access->SetTitleText(s, TablemapConnectionData[_number_of_tablemaps_loaded].TitleText_0_9[i]);
+		p_tablemap_access->SetTitleText(s, tablemap_connection_data[_number_of_tablemaps_loaded].TitleText_0_9[i]);
 
 		s.Format("!titletext%d", i);
-		p_tablemap_access->SetTitleText(s, TablemapConnectionData[_number_of_tablemaps_loaded].NegativeTitleText_0_9[i]);		
+		p_tablemap_access->SetTitleText(s, tablemap_connection_data[_number_of_tablemaps_loaded].NegativeTitleText_0_9[i]);		
 	}
 
 	_number_of_tablemaps_loaded++;
@@ -222,23 +222,23 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 	write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] Window title: %s\n", title);
 	
 	// Check for exact match on client size
-	if (!((r.right == TablemapConnectionData[MapIndex].ClientSizeX)
-		&& (r.bottom == TablemapConnectionData[MapIndex].ClientSizeY)))
+	if (!((r.right == tablemap_connection_data[MapIndex].ClientSizeX)
+		&& (r.bottom == tablemap_connection_data[MapIndex].ClientSizeY)))
 	{
 		// Exact size didn't match.
 		// So check for client size that falls within min/max
-		if (!((TablemapConnectionData[MapIndex].ClientSizeMinX != 0) 
-			&& (TablemapConnectionData[MapIndex].ClientSizeMinY != 0) 
-			&& (TablemapConnectionData[MapIndex].ClientSizeMaxX != 0) 
-			&& (TablemapConnectionData[MapIndex].ClientSizeMaxY != 0) 
-			&& (r.right  >= (int) TablemapConnectionData[MapIndex].ClientSizeMinX)
-			&& (r.right  <= (int) TablemapConnectionData[MapIndex].ClientSizeMaxX)
-			&& (r.bottom >= (int) TablemapConnectionData[MapIndex].ClientSizeMinY)
-			&& (r.bottom <= (int) TablemapConnectionData[MapIndex].ClientSizeMaxY)))
+		if (!((tablemap_connection_data[MapIndex].ClientSizeMinX != 0) 
+			&& (tablemap_connection_data[MapIndex].ClientSizeMinY != 0) 
+			&& (tablemap_connection_data[MapIndex].ClientSizeMaxX != 0) 
+			&& (tablemap_connection_data[MapIndex].ClientSizeMaxY != 0) 
+			&& (r.right  >= (int) tablemap_connection_data[MapIndex].ClientSizeMinX)
+			&& (r.right  <= (int) tablemap_connection_data[MapIndex].ClientSizeMaxX)
+			&& (r.bottom >= (int) tablemap_connection_data[MapIndex].ClientSizeMinY)
+			&& (r.bottom <= (int) tablemap_connection_data[MapIndex].ClientSizeMaxY)))
 		{
 			write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] No good size: Expected (%dpx, %dpx), Got (%dpx, %dpx)\n",
-				TablemapConnectionData[MapIndex].ClientSizeX,
-				TablemapConnectionData[MapIndex].ClientSizeY,
+				tablemap_connection_data[MapIndex].ClientSizeX,
+				tablemap_connection_data[MapIndex].ClientSizeY,
 				r.right,
 				r.bottom);
 			return false;
@@ -247,8 +247,8 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 	write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] Size matches; checking the rest...\n");
 	// Check for match positive title text matches
 	good_pos_title = false;
-	if ((TablemapConnectionData[MapIndex].TitleText != "")
-		&& title.Find(TablemapConnectionData[MapIndex].TitleText)!=-1)
+	if ((tablemap_connection_data[MapIndex].TitleText != "")
+		&& title.Find(tablemap_connection_data[MapIndex].TitleText)!=-1)
 	{
 		good_pos_title = true;
 	}
@@ -258,8 +258,8 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 		// Check for titletext0..titletext9
 		for (int i=0; i<k_max_number_of_titletexts; i++)
 		{
-			if ((TablemapConnectionData[MapIndex].TitleText_0_9[i] != "")
-				&& (title.Find(TablemapConnectionData[MapIndex].TitleText_0_9[i])!=-1))
+			if ((tablemap_connection_data[MapIndex].TitleText_0_9[i] != "")
+				&& (title.Find(tablemap_connection_data[MapIndex].TitleText_0_9[i])!=-1))
 			{
 				good_pos_title = true;
 				break;
@@ -274,8 +274,8 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 
 	// Check for no negative title text matches
 	good_neg_title = false;
-	if ((TablemapConnectionData[MapIndex].NegativeTitleText != "")
-		&& (title.Find(TablemapConnectionData[MapIndex].NegativeTitleText)!=-1))
+	if ((tablemap_connection_data[MapIndex].NegativeTitleText != "")
+		&& (title.Find(tablemap_connection_data[MapIndex].NegativeTitleText)!=-1))
 	{
 		good_neg_title = true;
 	}
@@ -283,8 +283,8 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 	{
 		for (int i=0; i<k_max_number_of_titletexts; i++)
 		{
-			if ((TablemapConnectionData[MapIndex].NegativeTitleText_0_9[i] != "")
-				&&title.Find(TablemapConnectionData[MapIndex].NegativeTitleText_0_9[i])!=-1)
+			if ((tablemap_connection_data[MapIndex].NegativeTitleText_0_9[i] != "")
+				&&title.Find(tablemap_connection_data[MapIndex].NegativeTitleText_0_9[i])!=-1)
 			{
 				good_neg_title = true;
 				break;
@@ -307,5 +307,12 @@ void CTableMapLoader::ReloadAllTablemapsIfChanged()
 	{
 		ParseAllTableMapsToLoadConnectionData();
 	}
+}
+
+CString CTableMapLoader::GetTablemapPathToLoad(int tablemap_index)
+{
+	assert(tablemap_index >= 0);
+	assert(tablemap_index < _number_of_tablemaps_loaded);
+	return tablemap_connection_data[tablemap_index].FilePath;
 }
 
