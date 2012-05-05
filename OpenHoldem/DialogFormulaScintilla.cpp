@@ -58,7 +58,7 @@ char * keywords = // Standard functions
 				  // Number of Bets	
 				  "nbetstocall nbetstorais ncurrentbets ncallbets nraisbets "
 				  // List Tests
-				  "islistcall islistrais islistalli isemptylistcall isemptylistrais isemptylistalli nlistmax nlistmin pokerval "
+				  "pokerval "
 				  // Poker Values
 				  "pokervalplayer pokervalcommon pcbits npcbits "
 				  // Poker Value Constants
