@@ -60,7 +60,7 @@ protected:
 	CString				playername[10];
 	CString				playerbalance[10];
 	CString				playerbet[10];
-	double				pot[10];
+	double				pot;
 	bool				buttonstate[10]; // fold, call, check, raise, allin, prefold
 	CString				handnumber;
 	CString				sblind;
