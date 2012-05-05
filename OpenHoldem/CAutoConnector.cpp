@@ -66,14 +66,14 @@ bool CAutoConnector::IsConnected()
 }
 
 
-void CAutoConnector::Check_TM_Against_All_Windows_Or_TargetHWND(int TablemapIndex, HWND targetHWnd)
+void CAutoConnector::Check_TM_Against_All_Windows_Or_TargetHWND(int tablemap_index, HWND targetHWnd)
 {
 	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Check_TM_Against_All_Windows(..)\n");
 
 	if (targetHWnd == NULL)
-		EnumWindows(EnumProcTopLevelWindowList, (LPARAM) TablemapIndex);
+		EnumWindows(EnumProcTopLevelWindowList, (LPARAM) tablemap_index);
 	else
-		EnumProcTopLevelWindowList(targetHWnd, (LPARAM) TablemapIndex);
+		EnumProcTopLevelWindowList(targetHWnd, (LPARAM) tablemap_index);
 }
 
 
@@ -83,10 +83,10 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
 	char				text[MAX_WINDOW_TITLE] = {0};
 	RECT				crect = {0};
 	STableList			tablelisthold;
-	int					TablemapIndex = (int)(lparam);
+	int					tablemap_index = (int)(lparam);
 
 	write_log(prefs.debug_autoconnector(), "[CAutoConnector] EnumProcTopLevelWindowList(..)\n");
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Tablemap nr. %d\n", TablemapIndex);
+	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Tablemap nr. %d\n", tablemap_index);
 	// If this is not a top level window, then return
 	if (GetParent(hwnd) != NULL)
 		return true;
@@ -107,7 +107,7 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
 	GetClientRect(hwnd, &crect);
 
 	// See if it matches the currently loaded table map
-	if (Check_TM_Against_Single_Window(TablemapIndex, hwnd, crect, title))
+	if (Check_TM_Against_Single_Window(tablemap_index, hwnd, crect, title))
 	{
 		// Filter out served tables already here,
 		// otherwise the other list used in the dialog
@@ -123,7 +123,7 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
 			write_log(prefs.debug_autoconnector(), "[CAutoConnector] Adding window candidate to the list: [%d]\n", hwnd);
 			tablelisthold.hwnd = hwnd;
 			tablelisthold.title = title;
-			//tablelisthold.path = TablemapConnectionData[TablemapIndex].FilePath; !!!
+			tablelisthold.path = p_tablemap_loader->GetTablemapPathToLoad(tablemap_index);
 			tablelisthold.crect.left = crect.left;
 			tablelisthold.crect.top = crect.top;
 			tablelisthold.crect.right = crect.right;
@@ -160,11 +160,11 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 	// Clear global list for holding table candidates
 	g_tlist.RemoveAll();
 	
-	for (int TablemapIndex=0; TablemapIndex<p_tablemap_loader->NumberOfTableMapsLoaded(); TablemapIndex++)
+	for (int tablemap_index=0; tablemap_index<p_tablemap_loader->NumberOfTableMapsLoaded(); tablemap_index++)
 	{
 		write_log(prefs.debug_autoconnector(), "[CAutoConnector] Going to check TM nr. %d out of %d\n", 
-			TablemapIndex, p_tablemap_loader->NumberOfTableMapsLoaded());
-		Check_TM_Against_All_Windows_Or_TargetHWND(TablemapIndex, targetHWnd);
+			tablemap_index, p_tablemap_loader->NumberOfTableMapsLoaded());
+		Check_TM_Against_All_Windows_Or_TargetHWND(tablemap_index, targetHWnd);
 	}
 	
 	// Put global candidate table list in table select dialog variables
