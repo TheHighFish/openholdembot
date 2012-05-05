@@ -1373,10 +1373,10 @@ ac_aggressor
 //
 // Then we call f$OpenPPL_Decision and store BotsLastAction for the next time...
 //
-|| [
+|| 
 // Call = Play
-   (f$OpenPPL_Decision == f$OpenPPL_Call)
-|| (f$OpenPPL_Decision == f$OpenPPL_Play) ? me_st_MemBotsLastAction_f$OpenPPL_Call :
+[  (f$OpenPPL_Decision == f$OpenPPL_Call)
+|| (f$OpenPPL_Decision == f$OpenPPL_Play)] ? me_st_MemBotsLastAction_f$OpenPPL_Call :
 // Fold
 (f$OpenPPL_Decision == f$OpenPPL_Fold) ? me_st_MemBotsLastAction_f$OpenPPL_Fold :
 // Check
