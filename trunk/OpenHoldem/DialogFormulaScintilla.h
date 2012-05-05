@@ -117,8 +117,6 @@ protected:
 	afx_msg void OnTreeContextMenu(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedCancel();
 	afx_msg void OnSearchUpdate();
-	afx_msg void OnBnClickedEqualLeft();
-	afx_msg void OnBnClickedEqualRight();
 	afx_msg void OnBnClickedAuto();
 	afx_msg void OnToggleBookmark();
 	afx_msg void OnNextBookmark();
