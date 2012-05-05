@@ -117,8 +117,6 @@ protected:
 	afx_msg void OnTreeContextMenu(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedCancel();
 	afx_msg void OnSearchUpdate();
-	afx_msg void OnBnClickedLessPrecision();
-	afx_msg void OnBnClickedMorePrecision();
 	afx_msg void OnBnClickedEqualLeft();
 	afx_msg void OnBnClickedEqualRight();
 	afx_msg void OnBnClickedAuto();
@@ -212,7 +210,6 @@ protected:
 	HACCEL			m_hEditAccelTable;
 	HACCEL			m_hDialogAccelTable;
 
-	int				m_precision, m_equal;	// precision for debug tab
 	bool			m_fdebuglog, m_fdebuglog_myturn;
 
 	CString			m_current_edit;			// Name of formula currently in edit window

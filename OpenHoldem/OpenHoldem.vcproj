@@ -775,10 +775,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\DialogSitDown.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\OpenHoldemView.cpp"
 					>
 				</File>
@@ -1422,10 +1418,6 @@
 				</File>
 				<File
 					RelativePath=".\DialogSelectTable.h"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogSitDown.h"
 					>
 				</File>
 				<File

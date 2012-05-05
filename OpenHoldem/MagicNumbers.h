@@ -108,6 +108,10 @@ const int k_max_length_of_memory_symbols = 64;
 // Table stats
 const int k_time_frame_for_table_stats_in_seconds = 15 * 60;
 
+// debug tab
+const int k_precision_for_debug_tab      = 6;
+const int k_integer_places_for_debug_tab = 6;
+
 // Hand history generator
 const double k_hand_history_rake = 0.05;
 

@@ -25,7 +25,6 @@
 #define IDD_SELECTTABLE                 145
 #define IDR_FLAGS                       148
 #define IDR_FORMULA_EDIT_ACC            148
-#define IDD_SITDOWN                     153
 #define IDD_FORMULA_SCINTILLA           155
 #define IDD_LOCK_BLINDS                 157
 #define IDD_SCRAPER_OUTPUT              158
@@ -478,8 +477,6 @@
 #define ID_MAIN_TOOLBAR_ATTACH_TOP      32881
 #define ID_MAIN_TOOLBAR_MINMAX          32882
 #define ID_MAIN_TOOLBAR_ATTACH_BOTTOM   32883
-#define ID_FORMULA_TOOLBAR_LESS_PRECISION 32884
-#define ID_FORMULA_TOOLBAR_MORE_PRECISION 32885
 #define ID_FORMULA_TOOLBAR_EQUAL_LEFT   32886
 #define ID_FORMULA_TOOLBAR_EQUAL_RIGHT  32887
 #define ID_EDIT_REDO32888               32888
