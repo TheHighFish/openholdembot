@@ -20,13 +20,3 @@ BEGIN_TESTCASE
     POSTCONDITION ((gws("ncommoncardsknown") >= 0) && (gws("ncommoncardsknown") <= gws("ncommoncardspresent")))
     SYMBOLS_POSSIBLY_AFFECTED ("ncommoncardsknown, ncommoncardspresent")
 END_TESTCASE
-
-
-BEGIN_TESTCASE
-    TESTCASE_ID ("0131")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol nflopc")
-    PRECONDITION (true)
-    POSTCONDITION (gws("nflopc") == gws("ncommoncardsknown"))
-    SYMBOLS_POSSIBLY_AFFECTED ("nflopc, ncommoncardsknown")
-END_TESTCASE

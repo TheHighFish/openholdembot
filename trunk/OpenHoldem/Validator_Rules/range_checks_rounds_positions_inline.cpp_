@@ -14,16 +14,6 @@ END_TESTCASE
 
 
 BEGIN_TESTCASE
-    TESTCASE_ID ("0037")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol br")
-    PRECONDITION (true)
-    POSTCONDITION (gws("br") == gws("betround"))
-    SYMBOLS_POSSIBLY_AFFECTED ("br, betround")
-END_TESTCASE
-
-
-BEGIN_TESTCASE
     TESTCASE_ID ("0038")
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol betposition")

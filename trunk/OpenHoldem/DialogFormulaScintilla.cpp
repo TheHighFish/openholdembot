@@ -3057,7 +3057,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 
 	mainParent = parent = AddSymbolTitle("Rounds / Positions", NULL, hCatItem);
 	AddSymbol(parent, "betround", "betting round (1-4) 1=preflop, 2=flop, 3=turn, 4=river");
-	AddSymbol(parent, "br", "abbreviation for betround");
 	AddSymbol(parent, "betposition", "your bet position (1=sblind,2=bblind,...,nplayersdealt=dealer).  Betposition will change as players fold in front of you.");
 	AddSymbol(parent, "dealposition", "your deal position (1=sblind,2=bblind ... nplayersdealt=dealer).  Dealposition will not change as players fold.");
 	AddSymbol(parent, "callposition", "your numbered offset from the raising player (who is 0)");
@@ -3191,7 +3190,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	mainParent = parent = AddSymbolTitle("Common Cards", NULL, hCatItem);
 	AddSymbol(parent, "ncommoncardspresent", "number of common cards present (normal or highlighted)");
 	AddSymbol(parent, "ncommoncardsknown", "number of common cards known (normal not highlighted)");
-	AddSymbol(parent, "nflopc", "short for ncommoncardsknown");
 
 	mainParent = parent = AddSymbolTitle("(Un)known Cards", NULL, hCatItem);
 	AddSymbol(parent, "ncardsknown", "total number of cards you can see (yours and commons)");
@@ -3260,7 +3258,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "elapsed1970", "time in seconds since 1970-01-01 00:00:00 GMT (THURSDAY)");
 	AddSymbol(parent, "clocks", "number of cpu clocks since the last scrape");
 	AddSymbol(parent, "nclockspersecond", "number of cpu clocks per second");
-	AddSymbol(parent, "ncps", "number of cpu clocks per second");
 
 	mainParent = parent = AddSymbolTitle("Autoplayer", NULL, hCatItem);
 	AddSymbol(parent, "myturnbits", "bits 3210 correspond to buttons ARCF (alli rais call fold)");
