@@ -4145,8 +4145,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "raischair", 9)==0 && strlen(a)==9)					return _sym.raischair;
 
 	//ROUND&POSITIONS
-	if (memcmp(a, "betround", 8)==0 && strlen(a)==8)					return _sym.betround;
-	if (memcmp(a, "br", 2)==0 && strlen(a)==2)							return _sym.br;
+	if (memcmp(a, "betround", 8)==0 && strlen(a)==8)					return _sym.betround;							return _sym.br;
 	if (memcmp(a, "betposition", 11)==0 && strlen(a)==11)				return _sym.betposition;
 	if (memcmp(a, "dealposition", 12)==0 && strlen(a)==12)				return _sym.dealposition;
 	if (memcmp(a, "callposition", 12)==0 && strlen(a)==12)				return _sym.callposition;
@@ -4209,12 +4208,10 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	//COMMON CARDS
 	if (memcmp(a, "ncommoncardspresent", 19)==0 && strlen(a)==19)		return _sym.ncommoncardspresent;
 	if (memcmp(a, "ncommoncardsknown", 17)==0 && strlen(a)==17)			return _sym.ncommoncardsknown;
-	if (memcmp(a, "nflopc", 6)==0 && strlen(a)==6)						return _sym.nflopc;
 	
 	// TIME 2(2)	
 	if (memcmp(a, "clocks", 6)==0 && strlen(a)==6)						return _sym.clocks;
 	if (memcmp(a, "nclockspersecond", 16)==0 && strlen(a)==16)			return _sym.nclockspersecond;
-	if (memcmp(a, "ncps", 4)==0 && strlen(a)==4)						return _sym.ncps;
 
 	// HISTORY S
 	// Part 3(3)
