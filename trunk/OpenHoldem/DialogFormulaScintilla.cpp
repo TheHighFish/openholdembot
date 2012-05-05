@@ -35,7 +35,7 @@ char * keywords = // Standard functions
 				  "f$alli f$swag f$srai f$rais f$call f$prefold f$rebuy f$delay f$chat "
 				  "f$P f$play f$test f$sitin f$sitout f$leave f$close "
 				  // General
-				  "ismanual site nchairs isbring session handnumber version "
+				  "site nchairs session version "
 				  // Tablemap
 				  "sitename$ network$ " 
 				  // Formula File
@@ -3073,12 +3073,9 @@ void CDlgFormulaScintilla::PopulateSymbols()
 
 	HTREEITEM mainParent, parent;
 	mainParent = parent = AddSymbolTitle("General symbols", NULL, hCatItem);
-	AddSymbol(parent, "ismanual", "true if you're in manual mode, false otherwise");
 	AddSymbol(parent, "site", "0=user 1=scraped");
 	AddSymbol(parent, "nchairs", "the integer value for the Table Map symbol _s$nchairs");
-	AddSymbol(parent, "isbring", "true if OpenHoldem is attached to a bring client window");
 	AddSymbol(parent, "session", "the current logging instance (0-9)");
-	AddSymbol(parent, "handnumber", "the site hand number if available");
 	AddSymbol(parent, "version", "returns the version number of OpenHoldem that is currently running");
 
 	mainParent = parent = AddSymbolTitle("Table Map symbols", NULL, hCatItem);
