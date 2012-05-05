@@ -195,8 +195,6 @@ static UINT m_lpaIDToolBar[] =
 	ID_FORMULA_TOOLBAR_SETTINGS,
 	ID_FORMULA_TOOLBAR_HANDLIST,
 	ID_SEPARATOR,
-	ID_FORMULA_TOOLBAR_LESS_PRECISION,
-	ID_FORMULA_TOOLBAR_MORE_PRECISION,
 	ID_FORMULA_TOOLBAR_EQUAL_LEFT,
 	ID_FORMULA_TOOLBAR_EQUAL_RIGHT
 };
@@ -292,9 +290,6 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 	m_current_edit = "";
 	m_dirty = false;
 
-	m_precision = 4;
-	m_equal = 12;
-
 	ok_to_update_debug = false;
 
 	m_pActiveScinCtrl = NULL;
@@ -369,8 +364,6 @@ BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_DELETE, &CDlgFormulaScintilla::OnDelete)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_FONT, &CDlgFormulaScintilla::OnFont)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_HANDLIST, &CDlgFormulaScintilla::OnHandList)
-	ON_COMMAND(ID_FORMULA_TOOLBAR_LESS_PRECISION, &CDlgFormulaScintilla::OnBnClickedLessPrecision)
-	ON_COMMAND(ID_FORMULA_TOOLBAR_MORE_PRECISION, &CDlgFormulaScintilla::OnBnClickedMorePrecision)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_EQUAL_LEFT, &CDlgFormulaScintilla::OnBnClickedEqualLeft)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_EQUAL_RIGHT, &CDlgFormulaScintilla::OnBnClickedEqualRight)
 
@@ -616,8 +609,6 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
 	max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
 	::SetWindowPos(m_hWnd, HWND_TOP, min(prefs.formula_x(), max_x), min(prefs.formula_y(), max_y),
 				   prefs.formula_dx(), prefs.formula_dy(), SWP_NOCOPYBITS);
-	m_precision = prefs.precision();
-	m_equal = prefs.equal();
 
 	// Debug logging preferences
 	m_fdebuglog = prefs.fdebuglog();
@@ -2001,55 +1992,8 @@ LRESULT CDlgFormulaScintilla::OnWinMgr(WPARAM wp, LPARAM lp)
 	return false; // not handled
 }
 
-void CDlgFormulaScintilla::OnBnClickedLessPrecision() 
-{
-	CString s = "";
 
-	if (m_precision > 0) 
-	{
-		m_precision--;
-		CreateDebugTab(&s);
-		m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
-		m_pActiveScinCtrl->SetText(s.GetString());
-		m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
-	}
-}
 
-void CDlgFormulaScintilla::OnBnClickedMorePrecision() 
-{
-	CString s = "";
-
-	m_precision++;
-	CreateDebugTab(&s);
-	m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
-	m_pActiveScinCtrl->SetText(s.GetString());
-	m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
-}
-
-void CDlgFormulaScintilla::OnBnClickedEqualLeft() 
-{
-	CString s = "";
-
-	if (m_equal > 0) 
-	{
-		m_equal--;
-		CreateDebugTab(&s);
-		m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
-		m_pActiveScinCtrl->SetText(s.GetString());
-		m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
-	}
-}
-
-void CDlgFormulaScintilla::OnBnClickedEqualRight() 
-{
-	CString s = "";
-
-	m_equal++;
-	CreateDebugTab(&s);
-	m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
-	m_pActiveScinCtrl->SetText(s.GetString());
-	m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
-}
 
 void CDlgFormulaScintilla::ResizeScintillaWindows()
 {
@@ -2156,7 +2100,7 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
 		if (error == SUCCESS) 
 		{
 			// display result
-			sprintf_s(format, 50, "%%.%df", m_precision);
+			sprintf_s(format, 50, "%%.%df", k_precision_for_debug_tab);
 			Cstr.Format(format, ret);
 			m_CalcResult.SetWindowText(Cstr);
 
@@ -2305,7 +2249,7 @@ void CDlgFormulaScintilla::CreateDebugTab(CString *cs)
 	CString newline = "";
 	char format[50] = {0};
 
-	sprintf_s(format, 50, "%%%d.%df = %%s", m_precision+m_equal, m_precision);
+	sprintf_s(format, 50, "%%%d.%df = %%s", (k_precision_for_debug_tab + k_integer_places_for_debug_tab), k_precision_for_debug_tab);
 
 	*cs = "";
 
@@ -2323,9 +2267,10 @@ void CDlgFormulaScintilla::CreateDebugTab(CString *cs)
 			else 
 			{
 				newline="";
-				for (j=0; j<m_precision+m_equal-9; j++)
+				for (j=0; j<(k_precision_for_debug_tab + k_integer_places_for_debug_tab - 9); j++) // WTF is 9???
+				{
 					newline.Append(" ");
-
+				}
 
 				switch (debug_ar[i].error) 
 				{
@@ -2376,7 +2321,7 @@ void CDlgFormulaScintilla::WriteFDebugLog(bool write_header)
 	CString		temp = "", line = "", header = "";
 	char		format[50] = {0}, nowtime[26] = {0};
 
-	sprintf_s(format, 50, "%%0.%df", m_precision);
+	sprintf_s(format, 50, "%%0.%df", k_precision_for_debug_tab);
 	line.Format("%s,", get_time(nowtime));
 	header.Format("date/time,");
 
@@ -2867,8 +2812,6 @@ void CDlgFormulaScintilla::SaveSettingsToRegistry()
 	prefs.set_formula_y(wp.rcNormalPosition.top);
 	prefs.set_formula_dx(wp.rcNormalPosition.right - wp.rcNormalPosition.left);
 	prefs.set_formula_dy(wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
-	prefs.set_precision(m_precision);
-	prefs.set_equal(m_equal);
 	prefs.set_fdebuglog(m_fdebuglog);
 	prefs.set_fdebuglog_myturn(m_fdebuglog_myturn);
 
@@ -3018,8 +2961,6 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
 	debug_menu->CheckMenuItem(DEBUG_FDEBUG_MYTURN,			MenuCheckUncheck[m_fdebuglog_myturn]);
 
 	// Debug Toolbar Items
-	m_toolBar.GetToolBarCtrl().EnableButton(ID_FORMULA_TOOLBAR_LESS_PRECISION, bDebugActive);
-	m_toolBar.GetToolBarCtrl().EnableButton(ID_FORMULA_TOOLBAR_MORE_PRECISION, bDebugActive);
 	m_toolBar.GetToolBarCtrl().EnableButton(ID_FORMULA_TOOLBAR_EQUAL_LEFT, bDebugActive);
 	m_toolBar.GetToolBarCtrl().EnableButton(ID_FORMULA_TOOLBAR_EQUAL_RIGHT, bDebugActive);
 

@@ -129,8 +129,6 @@ public:
 	const bool expand_list() { return _expand_list; }
 	const bool expand_std() { return _expand_std; }
 	const bool expand_udf() { return _expand_udf; }
-	const int equal() { return _equal; }
-	const int precision() { return _precision; }
 	// Debug logging
 	const bool fdebuglog() { return _fdebuglog; }
 	const bool fdebuglog_myturn() { return _fdebuglog_myturn; }
@@ -291,8 +289,6 @@ public:
 	void set_expand_list(const bool  b) { ENT _expand_list = b; WriteReg("expand_list", b); }
 	void set_expand_std(const bool b) { ENT _expand_std = b; WriteReg("expand_std", b); }
 	void set_expand_udf(const bool b) { ENT _expand_udf = b; WriteReg("expand_udf", b); }
-	void set_equal(const int i) { ENT _equal = i; WriteReg("equal", i); }
-	void set_precision(const int i) { ENT _precision = i; WriteReg("precision", i); }
 
 	// Debug logging
 	void set_fdebuglog(const bool b) { ENT _fdebuglog = b; WriteReg("fdebuglog", b); }
@@ -465,8 +461,6 @@ private:
 	bool			_expand_list;
 	bool			_expand_std;
 	bool			_expand_udf;
-	int				_equal;
-	int				_precision;
 
 	// Debug logging
 	bool			_fdebuglog;

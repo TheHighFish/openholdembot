@@ -49,8 +49,6 @@ void CPreferences::InitDefaults(void)
 	_scraper_dy = 250;
 
 	// Formula editor
-	_precision = 4;
-	_equal = 12;
 	_expand_auto = _expand_debug = _expand_std = _expand_list = _expand_udf = false;
 
 	// autoplayer
@@ -238,8 +236,6 @@ void CPreferences::ReadPreferences()
 		ReadReg("scraper_dy", &_scraper_dy);
 
 		// formula editor
-		ReadReg("precision", &_precision);
-		ReadReg("equal", &_equal);	
 		ReadReg("expand_auto", &_expand_auto);
 		ReadReg("expand_debug", &_expand_debug);
 		ReadReg("expand_list", &_expand_list);
