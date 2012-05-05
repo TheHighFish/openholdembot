@@ -364,9 +364,7 @@ BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_DELETE, &CDlgFormulaScintilla::OnDelete)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_FONT, &CDlgFormulaScintilla::OnFont)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_HANDLIST, &CDlgFormulaScintilla::OnHandList)
-	ON_COMMAND(ID_FORMULA_TOOLBAR_EQUAL_LEFT, &CDlgFormulaScintilla::OnBnClickedEqualLeft)
-	ON_COMMAND(ID_FORMULA_TOOLBAR_EQUAL_RIGHT, &CDlgFormulaScintilla::OnBnClickedEqualRight)
-
+	
 	// Buttons
 	ON_BN_CLICKED(IDOK, &CDlgFormulaScintilla::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_SCINTILLA_APPLY, &CDlgFormulaScintilla::OnBnClickedApply)
