@@ -105,10 +105,6 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			new_scrape = true; //!!!
 			p_lazyscraper->DoScrape();
 
-			LARGE_INTEGER PerformanceCount;
-			QueryPerformanceCounter(&PerformanceCount);
-			p_scraper->set_clocks_hold(PerformanceCount);
-			
 			////////////////////////////////////////////////////////////////////////////////////////////
 			// Give scraper.dll a chance to override scraper results
 

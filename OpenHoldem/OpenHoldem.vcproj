@@ -1149,6 +1149,10 @@
 				RelativePath=".\SwagAdjustment.h"
 				>
 			</File>
+			<File
+				RelativePath=".\UnknownSymbols.h"
+				>
+			</File>
 			<Filter
 				Name="winmgr"
 				>
