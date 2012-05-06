@@ -399,7 +399,7 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	// common cards
 	set_sym_ncommoncardspresent(0);
 	set_sym_ncommoncardsknown(0);
-	set_sym_nflopc(0);
+	set_sym_ncommoncardsknown(0);
 
 	// (un)known cards
 	set_sym_ncardsknown(0);
@@ -1041,7 +1041,7 @@ void CSymbols::CalcSymbols(void)
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// common cards
-	set_sym_nflopc(0);
+	set_sym_ncommoncardsknown(0);
 
 	for (i=0; i<k_number_of_community_cards; i++)
 	{
