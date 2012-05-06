@@ -201,7 +201,6 @@ struct SSymbols
 	//COMMON CARDS
 	double ncommoncardspresent;
 	double ncommoncardsknown;
-	double nflopc;
 
 	//(UN)KNOWN CARDS
 	double ncardsknown;
@@ -585,7 +584,6 @@ public:
 	// common cards
 	void	set_sym_ncommoncardspresent(const double d) { ENT _sym.ncommoncardspresent = d;}
 	void	set_sym_ncommoncardsknown(const double d) { ENT _sym.ncommoncardsknown = d;}
-	void	set_sym_nflopc(const double d) { ENT _sym.nflopc = d;}
 
 	// (un)known cards
 	void	set_sym_ncardsknown(const double d) { ENT _sym.ncardsknown = d;}
