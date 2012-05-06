@@ -33,7 +33,7 @@ CDlgFormulaScintilla	*m_formulaScintillaDlg = NULL;
 
 char * keywords = // Standard functions
 				  "f$alli f$swag f$srai f$rais f$call f$prefold f$rebuy f$delay f$chat "
-				  "f$P f$play f$test f$sitin f$sitout f$leave f$close "
+				  "f$P f$test f$sitin f$sitout f$leave f$close "
 				  // General
 				  "site nchairs session version "
 				  // Tablemap
@@ -80,7 +80,7 @@ char * keywords = // Standard functions
 				  // Flags
 				  "fmax f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14 f15 f16 f17 f18 f19 "
 				  // Common Cards
-				  "ncommoncardspresent ncommoncardsknown nflopc "
+				  "ncommoncardspresent ncommoncardsknown "
 				  // (Un)known Cards
 				  "nouts ncardsknown ncardsunknown ncardsbetter "
 				  // nhands

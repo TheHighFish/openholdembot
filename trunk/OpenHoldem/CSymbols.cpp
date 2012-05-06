@@ -1046,11 +1046,9 @@ void CSymbols::CalcSymbols(void)
 	for (i=0; i<k_number_of_community_cards; i++)
 	{
 		if (p_scraper->card_common(i) != CARD_NOCARD)
-			set_sym_nflopc(_sym.nflopc+1);													// nflopc
+			set_sym_set_sym_ncommoncardsknown(_sym.set_sym_ncommoncardsknown + 1);							
 	}
-
-	set_sym_ncommoncardspresent(_sym.nflopc);												// ncommoncardspresent
-	set_sym_ncommoncardsknown(_sym.nflopc);													// ncommoncardsknown
+	set_sym_ncommoncardspresent(_sym.ncommoncardsknown);											
 
 	// If no common card animation is going on
 	if (!p_scraper->IsCommonAnimation())
@@ -2713,7 +2711,7 @@ void CSymbols::CalcFlushesStraightsSets(void)
 			}
 
 			// nstraightcommon, nstraightfillcommon
-			if (_sym.nflopc<1)
+			if (_sym.ncommoncardsknown < 1)
 			{
 				set_sym_nstraightfillcommon(5);
 			}
@@ -2830,7 +2828,7 @@ void CSymbols::CalcFlushesStraightsSets(void)
 		}
 
 		// nstraightflushcommon, nstraightflushfillcommon
-		if (_sym.nflopc<1)
+		if (_sym.ncommoncardsknown < 1)
 		{
 			set_sym_nstraightflushfillcommon(5);
 		}

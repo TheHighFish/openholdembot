@@ -804,7 +804,7 @@ void CGameState::ProcessFtrEngine(const SHoldemState *pstate)
 	double			sym_nbetsround1 = p_symbols->sym()->nbetsround[0];
 	int				sym_nplayersdealt = (int) p_symbols->sym()->nplayersdealt;
 	int				betround = (int) p_symbols->sym()->betround;
-	int				sym_nflopc = (int) p_symbols->sym()->nflopc;
+	int				nflopc = (int) p_symbols->sym()->nflopc;
 	int				sym_nplayersplaying = (int) p_symbols->sym()->nplayersplaying;
 
 	// if a new hand has started setup the next element in the ftr tracker array
@@ -832,25 +832,25 @@ void CGameState::ProcessFtrEngine(const SHoldemState *pstate)
 	}
 
 	// if the betting round has changed update the ftr tracker stats
-	if (sym_nflopc > _ftr_nflopc_last)
+	if (ncommoncardsknown > _ftr_nflopc_last)
 	{
-		if (sym_nflopc==3 && _m_ftr[_m_ftr_ndx&0xff].n_pl_saw_flop==0)
+		if (ncommoncardsknown==3 && _m_ftr[_m_ftr_ndx&0xff].n_pl_saw_flop==0)
 		{
 			_m_ftr[_m_ftr_ndx&0xff].n_pl_saw_flop = sym_nplayersplaying;
 			_m_ftr[_m_ftr_ndx&0xff].n_bets_preflop = sym_nbetsround1;
 		}
 
-		if (sym_nflopc==4 && _m_ftr[_m_ftr_ndx&0xff].n_pl_saw_turn==0)
+		if (ncommoncardsknown==4 && _m_ftr[_m_ftr_ndx&0xff].n_pl_saw_turn==0)
 		{
 			_m_ftr[_m_ftr_ndx&0xff].n_pl_saw_turn = sym_nplayersplaying;
 		}
 
-		if (sym_nflopc==5 && _m_ftr[_m_ftr_ndx&0xff].n_pl_saw_river==0)
+		if (ncommoncardsknown==5 && _m_ftr[_m_ftr_ndx&0xff].n_pl_saw_river==0)
 		{
 			_m_ftr[_m_ftr_ndx&0xff].n_pl_saw_river = sym_nplayersplaying;
 		}
 
-		_ftr_nflopc_last = sym_nflopc;
+		_ftr_nflopc_last = ncommoncardsknown;
 	}
 }
 
