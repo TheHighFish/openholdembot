@@ -143,16 +143,6 @@ END_TESTCASE
 
 
 BEGIN_TESTCASE
-    TESTCASE_ID ("0221")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol ron$clocks")
-    PRECONDITION (true)
-    POSTCONDITION (gws("ron$clocks") >= 0)
-    SYMBOLS_POSSIBLY_AFFECTED ("ron$clocks")
-END_TESTCASE
-
-
-BEGIN_TESTCASE
     TESTCASE_ID ("0222")
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol run$royfl")
@@ -292,11 +282,3 @@ BEGIN_TESTCASE
 END_TESTCASE
 
 
-BEGIN_TESTCASE
-    TESTCASE_ID ("0236")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol run$clocks")
-    PRECONDITION (true)
-    POSTCONDITION (gws("run$clocks") >= 0)
-    SYMBOLS_POSSIBLY_AFFECTED ("run$clocks")
-END_TESTCASE

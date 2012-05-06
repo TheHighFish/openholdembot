@@ -509,7 +509,6 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_ron$pokervalmax(0);
 	set_sym_ron$prnuts(0);
 	set_sym_ron$prbest(0);
-	set_sym_ron$clocks(0);
 	set_sym_run$royfl(0);
 	set_sym_run$strfl(0);
 	set_sym_run$4kind(0);
@@ -524,7 +523,6 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_run$pokervalmax(0);
 	set_sym_run$prnuts(0);
 	set_sym_run$prbest(0);
-	set_sym_run$clocks(0);
 
 	// vs$
 	set_sym_vs$nhands(0);
@@ -880,7 +878,6 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 	set_sym_ron$pokervalmax(0);
 	set_sym_ron$prnuts(0);
 	set_sym_ron$prbest(0);
-	set_sym_ron$clocks(0);
 	set_sym_run$royfl(0);
 	set_sym_run$strfl(0);
 	set_sym_run$4kind(0);
@@ -895,7 +892,6 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 	set_sym_run$pokervalmax(0);
 	set_sym_run$prnuts(0);
 	set_sym_run$prbest(0);
-	set_sym_run$clocks(0);
 
 	// vs$
 	set_sym_vs$nhands(0);
@@ -3137,7 +3133,6 @@ void CSymbols::CalcRunRon(void)
 					  rr.srun()->strai+rr.srun()->threekind+rr.srun()->twopair+rr.srun()->onepair+rr.srun()->hcard);
 	set_sym_run$prbest(rr.srun()->pokervalmaxcount/_sym.run$total);
 	set_sym_run$pokervalmax(rr.srun()->pokervalmax);
-	set_sym_run$clocks(rr.srun()->clocks);
 	set_sym_run$prnuts(rr.srun()->prnuts);
 
 	set_sym_ron$royfl(rr.sron()->royfl);
@@ -3154,7 +3149,6 @@ void CSymbols::CalcRunRon(void)
 					  rr.sron()->strai+rr.sron()->threekind+rr.sron()->twopair+rr.sron()->onepair+rr.sron()->hcard);
 	set_sym_ron$prbest(rr.sron()->pokervalmaxcount/_sym.ron$total);
 	set_sym_ron$pokervalmax(rr.sron()->pokervalmax);
-	set_sym_ron$clocks(rr.sron()->clocks);
 	set_sym_ron$prnuts(rr.sron()->prnuts);
 
 }
@@ -3894,7 +3888,6 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "ron$pokervalmax", 15)==0 && strlen(a)==15)			return _sym.ron$pokervalmax;
 		if (memcmp(a, "ron$prnuts", 10)==0 && strlen(a)==10)				return _sym.ron$prnuts;
 		if (memcmp(a, "ron$prbest", 10)==0 && strlen(a)==10)				return _sym.ron$prbest;
-		if (memcmp(a, "ron$clocks", 10)==0 && strlen(a)==10)				return _sym.ron$clocks;
 	}
 
 	// run$ ron$ 
@@ -3915,7 +3908,6 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "run$pokervalmax", 15)==0 && strlen(a)==15)			return _sym.run$pokervalmax;
 		if (memcmp(a, "run$prnuts", 10)==0 && strlen(a)==10)				return _sym.run$prnuts;
 		if (memcmp(a, "run$prbest", 10)==0 && strlen(a)==10)				return _sym.run$prbest;
-		if (memcmp(a, "run$clocks", 10)==0 && strlen(a)==10)				return _sym.run$clocks;
 	}
 
 		// History symbols

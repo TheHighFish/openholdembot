@@ -97,7 +97,7 @@ char * keywords = // Standard functions
 				  "ranklo ranklocommon rankloplayer ranklopoker sranklo sranklocommon srankloplayer sranklopoker "
 				  // Time
 				  "elapsed elapsedhand elapsedauto elapsedtoday "
-				  "elapsed1970 clocks "
+				  "elapsed1970 "
 				  // Autoplayer
 				  "myturnbits ismyturn issittingin issittingout "
 				  "isautopost isfinalanswer "
@@ -109,9 +109,9 @@ char * keywords = // Standard functions
 				  "didraisround3 didraisround4 didswaground1 didswaground2 didswaground3 didswaground4 "
 				  // RON / RUN	
 				  "ron$royfl ron$strfl ron$4kind ron$fullh ron$flush ron$strai ron$3kind ron$2pair ron$1pair "
-				  "ron$hcard ron$total ron$pokervalmax ron$prnuts ron$prbest ron$clocks run$royfl run$strfl "
+				  "ron$hcard ron$total ron$pokervalmax ron$prnuts ron$prbest run$royfl run$strfl "
 				  "run$4kind run$fullh run$flush run$strai run$3kind run$2pair run$1pair run$hcard run$total "
-				  "run$pokervalmax run$prnuts run$prbest run$clocks "
+				  "run$pokervalmax run$prnuts run$prbest "
 				  // Versus
 				  "vs$nhands vs$nhandshi vs$nhandsti vs$nhandslo "
 				  "vs$prwin vs$prtie vs$prlos vs$prwinhi vs$prtiehi vs$prloshi vs$prwinti vs$prtieti vs$prlosti "
@@ -3254,7 +3254,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "elapsedauto", "time in seconds since autoplayer took action");
 	AddSymbol(parent, "elapsedtoday", "time in seconds since midnight GMT");
 	AddSymbol(parent, "elapsed1970", "time in seconds since 1970-01-01 00:00:00 GMT (THURSDAY)");
-	AddSymbol(parent, "clocks", "number of cpu clocks since the last scrape");
 
 	mainParent = parent = AddSymbolTitle("Autoplayer", NULL, hCatItem);
 	AddSymbol(parent, "myturnbits", "bits 3210 correspond to buttons ARCF (alli rais call fold)");
@@ -3294,7 +3293,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "ron$pokervalmax", "the maximum possible pokerval for the opponent");
 	AddSymbol(parent, "ron$prnuts", "opponent chances of hitting the nuts on or before the river");
 	AddSymbol(parent, "ron$prbest", "opponent chances of hitting pokervalmax on or before the river");
-	AddSymbol(parent, "ron$clocks", "total number of cpu clocks used to calculate the ron$ symbols");
 	AddSymbol(parent, "run$royfl", "river user number : possible royal flush");
 	AddSymbol(parent, "run$strfl", "river user number : possible straight flush");
 	AddSymbol(parent, "run$4kind", "river user number : possible four of a kind");
@@ -3309,7 +3307,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "run$pokervalmax", "the maximum possible pokerval for the user");
 	AddSymbol(parent, "run$prnuts", "user chances of hitting the nuts on or before the river");
 	AddSymbol(parent, "run$prbest", "user chances of hitting pokervalmax on or before the river");
-	AddSymbol(parent, "run$clocks", "total number of cpu clocks used to calculate the run$ symbols");
 
 	mainParent = parent = AddSymbolTitle("Versus symbols", NULL, hCatItem);
 	AddSymbol(parent, "vs$nhands", "Total possible number of opponent hands");

@@ -159,7 +159,6 @@ private:
 	// limit
 	SLimitInfo			_s_limit_info;
 	// misc
-	LARGE_INTEGER		_clocks_hold;			// used for "clocks" symbol
 	HBITMAP				_entire_window_cur;
 
 private:
