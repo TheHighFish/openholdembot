@@ -468,7 +468,6 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_elapsedauto(0);
 	set_sym_elapsedtoday(0);
 	set_sym_elapsed1970(0);
-	set_sym_clocks(0);
 	time(&_elapsedhold); //???
 	time(&_elapsedhandhold);
 	
@@ -576,11 +575,6 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	// log$ symbols
 	logsymbols_collection_removeall();
 	symboltrace_collection_removeall();
-
-	// time
-	LARGE_INTEGER PerformanceCount;
-	QueryPerformanceCounter(&PerformanceCount);
-	p_scraper->set_clocks_hold(PerformanceCount);
 }
 
 void CSymbols::ResetSymbolsNewHand(void)
@@ -1041,7 +1035,7 @@ void CSymbols::CalcSymbols(void)
 	for (i=0; i<k_number_of_community_cards; i++)
 	{
 		if (p_scraper->card_common(i) != CARD_NOCARD)
-			set_sym_set_sym_ncommoncardsknown(_sym.set_sym_ncommoncardsknown + 1);							
+			set_sym_ncommoncardsknown(_sym.ncommoncardsknown + 1);							
 	}
 	set_sym_ncommoncardspresent(_sym.ncommoncardsknown);											
 

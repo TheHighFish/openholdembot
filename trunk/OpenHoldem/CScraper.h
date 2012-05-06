@@ -73,7 +73,6 @@ public:
 	const POINT			handle_xy() { return _handle_xy; }
 	const SLimitInfo*	s_limit_info() { return &_s_limit_info; }
 	const HBITMAP		entire_window_cur() { return _entire_window_cur; }
-	const LARGE_INTEGER	clocks_hold() { return _clocks_hold; }
 
 public:
 #define ENT CSLock lock(m_critsec);
@@ -114,7 +113,6 @@ public:
 	void	set_found_handnumber(const bool b) { ENT _s_limit_info.found_handnumber = b;}
 	void	set_found_sb_bb(const bool b) { ENT _s_limit_info.found_sb_bb = b;}
 	void	set_found_bb_BB(const bool b) { ENT _s_limit_info.found_bb_BB = b;}
-	void	set_clocks_hold(const LARGE_INTEGER li) { ENT _clocks_hold = li;}
 	void	set_handle_found_at_xy(const bool b) { ENT _handle_found_at_xy = b;}
 	void	set_handle_xy(const POINT p) { ENT _handle_xy.x = p.x; _handle_xy.y = p.y;}
 	void	set_entire_window_cur(const HBITMAP h) { ENT _entire_window_cur = h;}
