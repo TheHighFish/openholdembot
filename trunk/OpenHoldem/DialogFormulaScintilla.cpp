@@ -191,12 +191,7 @@ static UINT m_lpaIDToolBar[] =
 	ID_FORMULA_TOOLBAR_RENAME,
 	ID_FORMULA_TOOLBAR_DELETE,
 	ID_SEPARATOR,
-	ID_FORMULA_TOOLBAR_FONT,
-	ID_FORMULA_TOOLBAR_SETTINGS,
-	ID_FORMULA_TOOLBAR_HANDLIST,
-	ID_SEPARATOR,
-	ID_FORMULA_TOOLBAR_EQUAL_LEFT,
-	ID_FORMULA_TOOLBAR_EQUAL_RIGHT
+	ID_FORMULA_TOOLBAR_HANDLIST
 };
 
 static UINT indicators[] = 
@@ -341,7 +336,6 @@ BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
 	ON_COMMAND(ID_FORMULA_EDIT_UNDO, &CDlgFormulaScintilla::OnEditUndo)
 	ON_COMMAND(ID_FORMULA_EDIT_REDO, &CDlgFormulaScintilla::OnEditRedo)
 	ON_COMMAND(ID_FORMULA_EDIT_SELECTALL, &CDlgFormulaScintilla::OnEditSelectAll)
-	ON_COMMAND(ID_FORMULA_EDIT_FONT, &CDlgFormulaScintilla::OnFont)
 	ON_COMMAND(ID_FORMULA_EDIT_HANDLIST, &CDlgFormulaScintilla::OnHandList)
 	ON_COMMAND(ID_FORMULA_EDIT_FIND, &CDlgFormulaScintilla::OnFindReplaceDlg)
 	ON_COMMAND(ID_FORMULA_EDIT_FIND_NEXT, &CDlgFormulaScintilla::OnFindNext)
@@ -360,7 +354,6 @@ BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_NEW, &CDlgFormulaScintilla::OnNew)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_RENAME, &CDlgFormulaScintilla::OnRename)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_DELETE, &CDlgFormulaScintilla::OnDelete)
-	ON_COMMAND(ID_FORMULA_TOOLBAR_FONT, &CDlgFormulaScintilla::OnFont)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_HANDLIST, &CDlgFormulaScintilla::OnHandList)
 	
 	// Buttons
@@ -425,15 +418,6 @@ CScintillaWnd *CDlgFormulaScintilla::SetupScintilla(CScintillaWnd *pWnd, const c
 	UpdateScintillaKeywords(pWnd);
 	pWnd->EnableWindow(false);
 	SetStyleColors(pWnd, true); // always use syntax-coloring
-
-	LOGFONT logfont;
-	editfont.GetLogFont(&logfont);
-	for (int i=0; i<=MAX_STYLE_NUM; i++) {
-		pWnd->SetFontname(i, logfont.lfFaceName);
-		pWnd->SetFontheight(i, -logfont.lfHeight);
-		pWnd->SetBold(i, (logfont.lfWeight==FW_BOLD ? true : false));
-		pWnd->SetItalic(i, logfont.lfItalic);
-	}
 
 	return pWnd;
 }
@@ -538,14 +522,6 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
 
 	CDialog::OnInitDialog();
 
-	// Restore font of Scintilla control
-
-	if (!GetProfileFont("Font", "Formula", editfont)) 
-	{
-		// Use 8pt Courier (monospace) default
-		editfont.CreatePointFont(100,"Courier");
-	}
-
 	// Save tofit windows as current size
 	m_winMgr.InitToFitSizeFromCurrent(this);		// make tofit = current size
 	m_winMgr.CalcLayout(this);						  // recalc
@@ -617,10 +593,11 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
 	m_ButtonAuto.SetWindowText("Auto");
 
 	// Timer to keep menu state updated
-	SetTimer(MENU_UPDATE_TIMER, 100, 0);
+	SetTimer(MENU_UPDATE_TIMER, 200, 0);
 
 	// Timer to keep f$debug tab updated
-	SetTimer(DEBUG_UPDATE_TIMER, 100, 0);
+	// Once per second is enough
+	SetTimer(DEBUG_UPDATE_TIMER, 1000, 0);
 
 	in_startup = false;
 
@@ -1636,48 +1613,6 @@ void CDlgFormulaScintilla::OnFindReplaceDlg()
 	}
 }
 
-void CDlgFormulaScintilla::OnFont() 
-{
-	CFontDialog fontdlg;
-	LOGFONT curlf, newlf;
-	COLORREF g_rgbText = RGB(0, 0, 0);
-	int	i = 0;
-
-	editfont.GetLogFont(&curlf);
-	fontdlg.m_cf.lStructSize = sizeof(CHOOSEFONT);
-	fontdlg.m_cf.Flags |= CF_EFFECTS | CF_INITTOLOGFONTSTRUCT | CF_SCREENFONTS;
-	fontdlg.m_cf.hwndOwner = NULL;
-	fontdlg.m_cf.lpLogFont = &curlf;
-	fontdlg.m_cf.rgbColors = g_rgbText;
-	fontdlg.m_cf.Flags ^= CF_EFFECTS;
-	fontdlg.m_cf.Flags |= CF_NOSCRIPTSEL;
-
-	if (fontdlg.DoModal() == IDOK) 
-	{
-		// Create the font using the selected font from CFontDialog.
-		memcpy(&newlf, fontdlg.m_cf.lpLogFont, sizeof(LOGFONT));
-		editfont.DeleteObject();
-		editfont.CreateFontIndirect(&newlf);
-
-		// Save the new font
-		WriteProfileFont("Font", "Formula", editfont);
-
-		// Set the new font to all Scintilla windows
-		for (int iScint=0; iScint<m_ScinArray.GetSize(); iScint++)
-		{
-			CScintillaWnd *pCurScint = m_ScinArray[iScint]._pWnd;
-			for (i=0; i<=MAX_STYLE_NUM; i++) 
-			{
-				pCurScint->SetFontname(i, fontdlg.m_cf.lpLogFont->lfFaceName);
-				pCurScint->SetFontheight(i, -fontdlg.m_cf.lpLogFont->lfHeight);
-				pCurScint->SetBold(i, (fontdlg.m_cf.lpLogFont->lfWeight==FW_BOLD ? true : false));
-				pCurScint->SetItalic(i, fontdlg.m_cf.lpLogFont->lfItalic);
-			}
-		}
-	}
-}
-
-
 CString CDlgFormulaScintilla::ExtractCommentFromHandList(CString HandListAsString)
 {
 	int		length = HandListAsString.GetLength();
@@ -1818,7 +1753,6 @@ BOOL CDlgFormulaScintilla::DestroyWindow()
 	SaveSettingsToRegistry();
 	CloseFindReplaceDialog();
 	m_wrk_formula.ClearFormula();
-	editfont.DeleteObject();
 
 	// Uncheck formula button on main toolbar
 	pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
@@ -2213,8 +2147,8 @@ void CDlgFormulaScintilla::UpdateDebugAuto(void)
 	// Format the text
 	CreateDebugTab(&Cstr);
 
-	// Always write the tab's contents to a log file, if it is my turn
-	if (sym_ismyturn)) 
+	// Always write the tab's contents to a log file, if it is my turn (stable frames!)
+	if (sym_ismyturn)
 	{
 		if (!m_wrote_fdebug_header) 
 		{
@@ -2921,7 +2855,6 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
 	edit_menu->EnableMenuItem(EDIT_DELETE_TEXT,	MenuEnableDisable[bEditorWindowActive]);
 	edit_menu->EnableMenuItem(EDIT_SELECTALL,	MenuEnableDisable[bEditorWindowActive]);
 
-	edit_menu->EnableMenuItem(EDIT_FONT,		MenuEnableDisable[true]);
 	edit_menu->EnableMenuItem(EDIT_SETTINGS,	MenuEnableDisable[true]);
 	edit_menu->EnableMenuItem(EDIT_HANDLIST,	MenuEnableDisable[bTreeValidLeafSelected && iWhichTypeSelected==1]);
 
@@ -2939,7 +2872,6 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
 	m_toolBar.GetToolBarCtrl().EnableButton(ID_FORMULA_TOOLBAR_NEW,	bFormulaVisible&&iWhichTypeSelected>0);
 	m_toolBar.GetToolBarCtrl().EnableButton(ID_FORMULA_TOOLBAR_RENAME,	bFormulaVisible&&ModifiableSelected);
 	m_toolBar.GetToolBarCtrl().EnableButton(ID_FORMULA_TOOLBAR_DELETE,	bFormulaVisible&&ModifiableSelected);
-	m_toolBar.GetToolBarCtrl().EnableButton(ID_FORMULA_TOOLBAR_FONT,	true);
 	m_toolBar.GetToolBarCtrl().EnableButton(ID_FORMULA_TOOLBAR_SETTINGS, true);
 	m_toolBar.GetToolBarCtrl().EnableButton(ID_FORMULA_TOOLBAR_HANDLIST, bTreeValidLeafSelected && iWhichTypeSelected==1);
 }
@@ -3490,47 +3422,8 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	m_SymbolTree.SortChildren(hRawItem);
 }
 
-bool CDlgFormulaScintilla::GetProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, CDC* pDC)
-{
-	CWinApp *pApp = AfxGetApp();
-	ASSERT_VALID(pApp);
-	CString s = pApp->GetProfileString(lpszKey, lpszVal);
-	if (s.IsEmpty())
-		return FALSE;
-
-	LOGFONT lf;
-	memset(&lf, 0, sizeof(LOGFONT));
-	lf.lfCharSet = DEFAULT_CHARSET;
-	int bItalic;
-	int iPtSize;
-
-	if (sscanf_s(s.GetString(), "%[a-zA-Z ],%d,%d,%d",
-			   lf.lfFaceName, 32, &iPtSize, &lf.lfWeight, &bItalic) != 4)
-		return FALSE;
-
-	lf.lfHeight = MulDiv(-iPtSize, 	// convert ptsize to logical units
-						 ::GetDeviceCaps(pDC ? pDC->m_hDC : ::GetDC(NULL), LOGPIXELSY), 72);
-	lf.lfItalic = bItalic;	// because lf.lfItalic is a BYTE
-	font.DeleteObject();		// bye
-
-	return font.CreateFontIndirect(&lf)!=0;
-}
 
 
-bool CDlgFormulaScintilla::WriteProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, CDC* pDC)
-{
-	CWinApp *pApp = AfxGetApp();
-	ASSERT_VALID(pApp);
-	LOGFONT lf;
 
-	font.GetLogFont(&lf);
 
-	int iPtSize = MulDiv(-lf.lfHeight, 72,
-						 ::GetDeviceCaps(pDC ? pDC->m_hDC : ::GetDC(NULL), LOGPIXELSY));
-	CString s;
-
-	s.Format("%s,%d,%d,%d", lf.lfFaceName, iPtSize, lf.lfWeight, lf.lfItalic);
-
-	return pApp->WriteProfileString(lpszKey, lpszVal, s)!=0;
-}
 

@@ -58,7 +58,6 @@
 #define IDC_NEW                         1006
 #define IDC_DELETE                      1007
 #define IDC_RENAME                      1013
-#define IDC_FONT                        1014
 #define IDC_OLDNAME_EDIT                1015
 #define IDC_NEWNAME_EDIT                1016
 #define IDC_DESC                        1018
@@ -457,7 +456,6 @@
 #define ID_FORMULA_EDIT_COPY            32842
 #define ID_FORMULA_EDIT_PASTE           32843
 #define ID_FORMULA_EDIT_UNDO            32844
-#define ID_FORMULA_EDIT_FONT            32845
 #define ID_FORMULA_EDIT_SETTINGS        32846
 #define ID_FORMULA_EDIT_DELETE          32847
 #define ID_FORMULA_EDIT_RENAME          32848
@@ -469,7 +467,6 @@
 #define ID_FORMULA_TOOLBAR_NEW          32859
 #define ID_FORMULA_TOOLBAR_RENAME       32860
 #define ID_FORMULA_TOOLBAR_DELETE       32861
-#define ID_FORMULA_TOOLBAR_FONT         32862
 #define ID_FORMULA_TOOLBAR_SETTINGS     32863
 #define ID_MAIN_TOOLBAR_AUTOPLAYER      32872
 #define ID_MAIN_TOOLBAR_FORMULA         32876
