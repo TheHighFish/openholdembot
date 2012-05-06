@@ -97,7 +97,7 @@ char * keywords = // Standard functions
 				  "ranklo ranklocommon rankloplayer ranklopoker sranklo sranklocommon srankloplayer sranklopoker "
 				  // Time
 				  "elapsed elapsedhand elapsedauto elapsedtoday "
-				  "elapsed1970 clocks nclockspersecond ncps "
+				  "elapsed1970 clocks nclockspersecond "
 				  // Autoplayer
 				  "myturnbits ismyturn issittingin issittingout "
 				  "isautopost isfinalanswer "

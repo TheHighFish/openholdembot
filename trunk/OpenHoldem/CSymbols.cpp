@@ -471,7 +471,6 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_elapsed1970(0);
 	set_sym_clocks(0);
 	set_sym_nclockspersecond(0);
-	set_sym_ncps(0);
 	time(&_elapsedhold); //???
 	time(&_elapsedhandhold);
 	
@@ -1414,11 +1413,9 @@ void CSymbols::CalcTime(void)
 	set_sym_elapsedhand(t_now_time - _elapsedhandhold);									// elapsedhand
 	set_sym_elapsedauto(t_now_time - _elapsedautohold);									// elapsedauto
 
-		QueryPerformanceFrequency(&lFrequency);
+	QueryPerformanceFrequency(&lFrequency);
 	set_sym_nclockspersecond(lFrequency.LowPart);										// nclockspersecond
-	set_sym_ncps(_sym.nclockspersecond);												// ncps
-
-		QueryPerformanceCounter(&clocksnow);
+	QueryPerformanceCounter(&clocksnow);
 
 	set_sym_clocks(clocksnow.LowPart - p_scraper->clocks_hold().LowPart);				// clocks
 }
