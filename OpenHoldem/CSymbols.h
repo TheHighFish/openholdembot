@@ -269,7 +269,6 @@ struct SSymbols
 	double elapsedauto;
 	double elapsedtoday;
 	double elapsed1970;
-	double clocks;
 
 	//AUTOPLAYER
 	double myturnbits;
@@ -304,7 +303,6 @@ struct SSymbols
 	double ron$pokervalmax;
 	double ron$prnuts;
 	double ron$prbest;
-	double ron$clocks;
 	double run$royfl;
 	double run$strfl;
 	double run$4kind;
@@ -319,7 +317,6 @@ struct SSymbols
 	double run$pokervalmax;
 	double run$prnuts;
 	double run$prbest;
-	double run$clocks;
 
 	// Versus
 	double vs$nhands;
@@ -651,7 +648,6 @@ public:
 	void	set_sym_elapsedauto(const double d) { ENT _sym.elapsedauto = d;}
 	void	set_sym_elapsedtoday(const double d) { ENT _sym.elapsedtoday = d;}
 	void	set_sym_elapsed1970(const double d) { ENT _sym.elapsed1970 = d;}
-	void	set_sym_clocks(const double d) { ENT _sym.clocks = d;}
 
 	// autoplayer
 	void	set_sym_myturnbits(const double d) { ENT _sym.myturnbits = d;}
@@ -688,7 +684,6 @@ public:
 	void	set_sym_ron$pokervalmax(const double d) { ENT _sym.ron$pokervalmax = d;}
 	void	set_sym_ron$prnuts(const double d) { ENT _sym.ron$prnuts = d;}
 	void	set_sym_ron$prbest(const double d) { ENT _sym.ron$prbest = d;}
-	void	set_sym_ron$clocks(const double d) { ENT _sym.ron$clocks = d;}
 	void	set_sym_run$royfl(const double d) { ENT _sym.run$royfl = d;}
 	void	set_sym_run$strfl(const double d) { ENT _sym.run$strfl = d;}
 	void	set_sym_run$4kind(const double d) { ENT _sym.run$4kind = d;}
@@ -703,7 +698,6 @@ public:
 	void	set_sym_run$pokervalmax(const double d) { ENT _sym.run$pokervalmax = d;}
 	void	set_sym_run$prnuts(const double d) { ENT _sym.run$prnuts = d;}
 	void	set_sym_run$prbest(const double d) { ENT _sym.run$prbest = d;}
-	void	set_sym_run$clocks(const double d) { ENT _sym.run$clocks = d;}
 
 	// vs$
 	void	set_sym_vs$nhands(const double d) { ENT _sym.vs$nhands = d;}

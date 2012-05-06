@@ -6,7 +6,7 @@
 struct SCounts
 {
 	double royfl, strfl, fourkind, fullh, flush, strai, threekind, twopair;
-	double onepair, hcard, total, pokervalmax, prnuts, prbest, clocks, pokervalmaxcount;
+	double onepair, hcard, total, pokervalmax, prnuts, prbest, pokervalmaxcount;
 };
 
 class CRunRon 

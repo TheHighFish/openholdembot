@@ -4130,7 +4130,7 @@ void CRunRon::GetCounts(void)
 		QueryPerformanceCounter(&bcount);
 
 		_srun.royfl = _srun.strfl = _srun.fourkind = _srun.fullh = _srun.flush = _srun.strai = _srun.threekind = 0.0;
-		_srun.twopair = _srun.onepair = _srun.hcard = _srun.total = _srun.pokervalmax = _srun.prnuts = _srun.prbest = _srun.clocks = 0.0;
+		_srun.twopair = _srun.onepair = _srun.hcard = _srun.total = _srun.pokervalmax = _srun.prnuts = _srun.prbest = 0.0;
 
 		// suited, store in hi/lo
 		if (StdDeck_SUIT(pcard[0]) == StdDeck_SUIT(pcard[1]))
@@ -4179,8 +4179,6 @@ void CRunRon::GetCounts(void)
 		_srun.prbest = _run_max_pokval_n[index1][index2]/_srun.total;
 		_srun.pokervalmax = _run_max_pokval[index1][index2];
 		_srun.pokervalmaxcount = _run_max_pokval_n[index1][index2];
-		_srun.clocks = ecount.LowPart - bcount.LowPart;
-
 
 		//////////////////////////////////////////////////////////////
 		// ron symbols
@@ -4188,7 +4186,7 @@ void CRunRon::GetCounts(void)
 		QueryPerformanceCounter(&bcount);
 
 		_sron.royfl = _sron.strfl = _sron.fourkind = _sron.fullh = _sron.flush = _sron.strai = _sron.threekind = 0.0;
-		_sron.twopair = _sron.onepair = _sron.hcard = _sron.total = _sron.pokervalmax = _sron.prnuts = _sron.prbest = _sron.clocks = 0.0;
+		_sron.twopair = _sron.onepair = _sron.hcard = _sron.total = _sron.pokervalmax = _sron.prnuts = _sron.prbest = 0.0;
 
 		// suited, store in hi/lo
 		if (StdDeck_SUIT(pcard[0]) == StdDeck_SUIT(pcard[1]))
@@ -4239,9 +4237,6 @@ void CRunRon::GetCounts(void)
 		_sron.prbest = _ron_max_pokval_n[index1][index2]/_sron.total;
 		_sron.pokervalmax = _ron_max_pokval[index1][index2];
 		_sron.pokervalmaxcount = _ron_max_pokval_n[index1][index2];
-
-		_sron.clocks = ecount.LowPart - bcount.LowPart;
-
 	}
 
 
@@ -4331,7 +4326,6 @@ void CRunRon::GetCounts(void)
 		_srun.prbest = max_pokval_count/_srun.total;
 		_srun.pokervalmax = max_pokval;
 		_srun.pokervalmaxcount = max_pokval_count;
-		_srun.clocks = ecount.LowPart - bcount.LowPart;
 
 		//////////////////////////////////////////////////////////////
 		// ron symbols
@@ -4430,8 +4424,6 @@ void CRunRon::GetCounts(void)
 		_sron.prbest = max_pokval_count/_sron.total;
 		_sron.pokervalmax = max_pokval;
 		_sron.pokervalmaxcount = max_pokval_count;
-		_sron.clocks = ecount.LowPart - bcount.LowPart;
-
 	}
 
 	// NUTS probabilities
