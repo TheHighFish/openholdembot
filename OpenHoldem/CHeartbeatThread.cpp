@@ -1,7 +1,7 @@
 #include "stdafx.h"
+#include "CHeartbeatThread.h"
 
 #include <process.h>
-
 #include "CAutoconnector.h"
 #include "CAutoplayer.h"
 #include "CAutoplayerFunctions.h"
@@ -9,7 +9,6 @@
 #include "CGameState.h"
 #include "CHandhistory.h"
 #include "CHandresetDetector.h"
-#include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
 #include "CLazyScraper.h"
 #include "CPokerTrackerThread.h"

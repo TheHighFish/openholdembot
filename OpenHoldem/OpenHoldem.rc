@@ -1254,7 +1254,7 @@ BEGIN
     ID_INDICATOR_STATUS_PRWIN "prwin"
     ID_INDICATOR_STATUS_NOPP "nopp"
     ID_INDICATOR_STATUS_ACTION "action"
-    ID_INDICATOR_STATUS_nit "f$number_of_iterations"
+    ID_INDICATOR_STATUS_nit "f$prwin_number_of_iterations"
     ID_INDICATOR_STATUS_POKERHAND "poker hand"
     ID_INDICATOR_STATUS_HANDRANK "status handrank"
     ID_INDICATOR_FORMULA_CURPOS "current row"
