@@ -77,10 +77,6 @@ void CPreferences::InitDefaults(void)
 	_ante = 0;
 	_gametype = k_gametype_NL;
 
-	// f$debug logging
-	_fdebuglog = false;
-	_fdebuglog_myturn = true;
-
 	// scraper zoom level
 	_scraper_zoom = 2;  // 4x
 
@@ -290,10 +286,6 @@ void CPreferences::ReadPreferences()
 		ReadReg("bbet", &_bbet);
 		ReadReg("ante", &_ante);
 		ReadReg("gametype", &_gametype);
-
-		// f$debug logging
-		ReadReg("fdebuglog", &_fdebuglog);
-		ReadReg("fdebuglog_myturn", &_fdebuglog_myturn);
 
 		// scraper zoom level
 		ReadReg("scraper_zoom", &_scraper_zoom);

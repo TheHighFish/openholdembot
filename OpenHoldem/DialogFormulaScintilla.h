@@ -134,8 +134,6 @@ protected:
 	afx_msg void OnEditPaste();
 	afx_msg void OnEditDeleteText();
 	afx_msg void OnEditSelectAll();
-	afx_msg void OnFormulaDebugLogfdebug();
-	afx_msg void OnFormulaDebugMyturn();
 	afx_msg void OnHelp();
 	afx_msg void OnHelpWiki();
 	afx_msg void OnHelpForums();
@@ -207,8 +205,6 @@ protected:
 
 	HACCEL			m_hEditAccelTable;
 	HACCEL			m_hDialogAccelTable;
-
-	bool			m_fdebuglog, m_fdebuglog_myturn;
 
 	CString			m_current_edit;			// Name of formula currently in edit window
 	CArray <SDebugTabInfo, SDebugTabInfo> debug_ar;		// holds debug tab information
