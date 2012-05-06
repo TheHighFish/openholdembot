@@ -272,7 +272,6 @@ struct SSymbols
 	double elapsed1970;
 	double clocks;
 	double nclockspersecond;
-	double ncps;
 
 	//AUTOPLAYER
 	double myturnbits;
@@ -658,7 +657,6 @@ public:
 	void	set_sym_elapsed1970(const double d) { ENT _sym.elapsed1970 = d;}
 	void	set_sym_clocks(const double d) { ENT _sym.clocks = d;}
 	void	set_sym_nclockspersecond(const double d) { ENT _sym.nclockspersecond = d;}
-	void	set_sym_ncps(const double d) { ENT _sym.ncps = d;}
 
 	// autoplayer
 	void	set_sym_myturnbits(const double d) { ENT _sym.myturnbits = d;}
