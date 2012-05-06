@@ -347,8 +347,6 @@ BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
 	ON_COMMAND(ID_FORMULA_EDIT_FIND_NEXT, &CDlgFormulaScintilla::OnFindNext)
 	ON_COMMAND(ID_FORMULA_EDIT_FIND_PREV, &CDlgFormulaScintilla::OnFindPrev)
 
-	ON_COMMAND(ID_FORMULA_DEBUG_LOGFDEBUG, &CDlgFormulaScintilla::OnFormulaDebugLogfdebug)
-
 	ON_COMMAND(ID_HELP, &CDlgFormulaScintilla::OnHelp)
 	ON_COMMAND(ID_HELP_DOCUMENTATIONWIKI, &CDlgFormulaScintilla::OnHelpWiki)
 	ON_COMMAND(ID_HELP_FORUMS, &CDlgFormulaScintilla::OnHelpForums)
@@ -400,7 +398,6 @@ BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
 	// Timer
 	ON_WM_TIMER()
 
-	ON_COMMAND(ID_FORMULA_DEBUG_MYTURN, &CDlgFormulaScintilla::OnFormulaDebugMyturn)
 	ON_WM_SETCURSOR()
 END_MESSAGE_MAP()
 
@@ -609,8 +606,6 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
 				   prefs.formula_dx(), prefs.formula_dy(), SWP_NOCOPYBITS);
 
 	// Debug logging preferences
-	m_fdebuglog = prefs.fdebuglog();
-	m_fdebuglog_myturn = prefs.fdebuglog_myturn();
 	m_wrote_fdebug_header = false;
 
 	// Always sort UDFs
@@ -2218,14 +2213,13 @@ void CDlgFormulaScintilla::UpdateDebugAuto(void)
 	// Format the text
 	CreateDebugTab(&Cstr);
 
-	// Write the tab's contents to a log file, if selected
-	if (m_fdebuglog && ((m_fdebuglog_myturn && sym_ismyturn) || !m_fdebuglog_myturn)) 
+	// Always write the tab's contents to a log file, if it is my turn
+	if (sym_ismyturn)) 
 	{
 		if (!m_wrote_fdebug_header) 
 		{
 			WriteFDebugLog(true);
 			m_wrote_fdebug_header = true;
-
 		}
 		else 
 		{
@@ -2729,13 +2723,6 @@ void CDlgFormulaScintilla::SetStyleColors(CScintillaWnd *pWnd, bool enabled)
 	}
 }
 
-void CDlgFormulaScintilla::OnFormulaDebugLogfdebug() 
-{
-	m_fdebuglog = !m_fdebuglog;
-
-	HandleEnables(true);
-}
-
 void CDlgFormulaScintilla::OnHelp()
 {
 	if (_access("OpenHoldem_Manual.chm", F_OK) != 0)
@@ -2760,13 +2747,6 @@ void CDlgFormulaScintilla::OnHelpWiki()
 void CDlgFormulaScintilla::OnHelpForums()
 {
 	ShellExecute(NULL, "open", "http://www.maxinmontreal.com/forums/index.php", "", "", SW_SHOWDEFAULT);
-}
-
-void CDlgFormulaScintilla::OnFormulaDebugMyturn() 
-{
-	m_fdebuglog_myturn = !m_fdebuglog_myturn;
-
-	HandleEnables(true);
 }
 
 BOOL CDlgFormulaScintilla::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
@@ -2810,8 +2790,6 @@ void CDlgFormulaScintilla::SaveSettingsToRegistry()
 	prefs.set_formula_y(wp.rcNormalPosition.top);
 	prefs.set_formula_dx(wp.rcNormalPosition.right - wp.rcNormalPosition.left);
 	prefs.set_formula_dy(wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
-	prefs.set_fdebuglog(m_fdebuglog);
-	prefs.set_fdebuglog_myturn(m_fdebuglog_myturn);
 
 	// Tree expansion settings
 	hItem = m_FormulaTree.GetChildItem(NULL);
@@ -2953,12 +2931,7 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
 	// View Menu
 	CMenu *view_menu = this->GetMenu()->GetSubMenu(2);
 
-	// Debug Menu
-	CMenu *debug_menu = this->GetMenu()->GetSubMenu(3);
-	debug_menu->CheckMenuItem(DEBUG_FDEBUG_LOGGING,			MenuCheckUncheck[m_fdebuglog]);
-	debug_menu->CheckMenuItem(DEBUG_FDEBUG_MYTURN,			MenuCheckUncheck[m_fdebuglog_myturn]);
-
-	// Debug Toolbar Items
+		// Debug Toolbar Items
 	m_toolBar.GetToolBarCtrl().EnableButton(ID_FORMULA_TOOLBAR_EQUAL_LEFT, bDebugActive);
 	m_toolBar.GetToolBarCtrl().EnableButton(ID_FORMULA_TOOLBAR_EQUAL_RIGHT, bDebugActive);
 

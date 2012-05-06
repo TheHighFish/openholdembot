@@ -233,11 +233,6 @@ BEGIN
         MENUITEM "&Font",                       ID_FORMULA_EDIT_FONT
         MENUITEM "&Hand List",                  ID_FORMULA_EDIT_HANDLIST
     END
-    POPUP "&Debug"
-    BEGIN
-        MENUITEM "&Log f$debug",                ID_FORMULA_DEBUG_LOGFDEBUG
-        MENUITEM "&Only when it's my turn",     ID_FORMULA_DEBUG_MYTURN
-    END
     POPUP "&Help"
     BEGIN
         MENUITEM "Wiki",                        ID_HELP_DOCUMENTATIONWIKI
