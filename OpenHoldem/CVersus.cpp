@@ -142,7 +142,7 @@ bool CVersus::GetCounts(void)
 								1528800, 1543500, 1556975, 1569225, 1580250, 1590050, 1598625, 1605975, 1612100,
 								1617000, 1620675, 1623125, 1624350
 							  };
-	int sym_br = (int) p_symbols->sym()->br;
+	int betround = (int) p_symbols->sym()->betround;
 	int sym_userchair = (int) p_symbols->sym()->userchair;
 
 	unsigned int	pcard[2] = {0};
@@ -185,7 +185,7 @@ bool CVersus::GetCounts(void)
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// PREFLOP
-	if (sym_br == 1)
+	if (betround == k_betround_preflop)
 	{
 		// order cards properly
 		if (card_player[0] < card_player[1])
@@ -280,18 +280,18 @@ bool CVersus::GetCounts(void)
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// FLOP, TURN, RIVER
-	else if (sym_br >= 2) 
+	else if (betround >= k_betround_flop) 
 	{
       CardMask		playerEvalCardsNow, oppEvalCardsNow;
 	   HandVal		player_hv_now = 0, opp_hv_now = 0; 
          
 		// Common cards
 		CardMask_RESET(comCardsScrape);
-		if (sym_br >= 2) CardMask_SET(comCardsScrape, card_common[0]);
-		if (sym_br >= 2) CardMask_SET(comCardsScrape, card_common[1]);
-		if (sym_br >= 2) CardMask_SET(comCardsScrape, card_common[2]);
-		if (sym_br >= 3) CardMask_SET(comCardsScrape, card_common[3]);
-		if (sym_br >= 4) CardMask_SET(comCardsScrape, card_common[4]);
+		if (betround >= k_betround_flop)  CardMask_SET(comCardsScrape, card_common[0]);
+		if (betround >= k_betround_flop)  CardMask_SET(comCardsScrape, card_common[1]);
+		if (betround >= k_betround_flop)  CardMask_SET(comCardsScrape, card_common[2]);
+		if (betround >= k_betround_turn)  CardMask_SET(comCardsScrape, card_common[3]);
+		if (betround >= k_betround_river) CardMask_SET(comCardsScrape, card_common[4]);
 
 		// player cards
 		CardMask_RESET(plCards);
@@ -301,9 +301,9 @@ bool CVersus::GetCounts(void)
 		// all used cards
 		CardMask_OR(usedCards, comCardsScrape, plCards);
 
-      // eval player hand now
-      CardMask_OR(playerEvalCardsNow, plCards, comCardsScrape);
-	   player_hv_now = Hand_EVAL_N(playerEvalCardsNow, sym_br+3);
+		// eval player hand now
+		CardMask_OR(playerEvalCardsNow, plCards, comCardsScrape);
+		player_hv_now = Hand_EVAL_N(playerEvalCardsNow, betround+3);
 	   
 		// Enumerate through all possible opponent hands (excludes already used cards)
 		for (i=0; i<=50; i++)
@@ -312,7 +312,6 @@ bool CVersus::GetCounts(void)
 			{
 				if (!CardMask_CARD_IS_SET(usedCards, i) && !CardMask_CARD_IS_SET(usedCards, j))
 				{
-
 					CardMask_RESET(oppCards);
 					CardMask_SET(oppCards, i);
 					CardMask_SET(oppCards, j);
@@ -321,9 +320,10 @@ bool CVersus::GetCounts(void)
 					CardMask_OR(deadCards, usedCards, oppCards);
 					wintemp = tietemp = lostemp = 0;
 
-					if (sym_br==2 || sym_br==3)
+					if (betround==k_betround_flop || betround==k_betround_turn)
 					{
-						ENUMERATE_N_CARDS_D(comCardsEnum, sym_br==2 ? 2 : sym_br==3 ? 1 : 0, deadCards,
+						ENUMERATE_N_CARDS_D(comCardsEnum, betround==k_betround_flop ? 2 : 
+							betround==k_betround_turn ? 1 : 0, deadCards,
 						{
 							CardMask_OR(comCardsAll, comCardsScrape, comCardsEnum);
 							DoCalc(plCards, oppCards, comCardsAll, &wintemp, &tietemp, &lostemp);
@@ -363,7 +363,7 @@ bool CVersus::GetCounts(void)
                
                //eval opponent cards now
                CardMask_OR(oppEvalCardsNow, oppCards, comCardsScrape);
-	            opp_hv_now  = Hand_EVAL_N(oppEvalCardsNow, sym_br+3);
+	           opp_hv_now  = Hand_EVAL_N(oppEvalCardsNow, betround+3);
 
 	            if (player_hv_now < opp_hv_now)
                {
@@ -435,7 +435,7 @@ bool CVersus::GetCounts(void)
 	   _vsprtielo = (double) nlotie / ((double)  nlowin + (double) nlotie + (double) nlolos);
 	   _vsprloslo = (double) nlolos / ((double)  nlowin + (double) nlotie + (double) nlolos);
    }
-	if (sym_br >= 2) 
+	if (betround >= k_betround_flop) 
 	{
       if(_nhandshinow>0)
       {

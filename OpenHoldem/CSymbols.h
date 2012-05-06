@@ -436,7 +436,6 @@ public:
 
 	// rounds positions
 	void	set_sym_betround(const double d) { ENT _sym.betround = d;}
-	void	set_sym_br(const double d) { ENT _sym.br = d;}
 	void	set_sym_betposition(const double d) { ENT _sym.betposition = d;}
 	void	set_sym_dealposition(const double d) { ENT _sym.dealposition = d;}
 	void	set_sym_callposition(const double d) { ENT _sym.callposition = d;}

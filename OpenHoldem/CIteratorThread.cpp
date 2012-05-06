@@ -101,7 +101,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 	unsigned int	deck[52] = {0}, x = 0, swap = 0;
 	int				numberOfCards = 0;
 
-	int				sym_br = (int) p_symbols->sym()->br;
+	int				betround = (int) p_symbols->sym()->betround;
 	int				sym_playersplayingbits = (int) p_symbols->sym()->playersplayingbits;
 	double			sym_nbetsround = p_symbols->sym()->nbetsround[0];
 	int				sym_bblindbits = (int) p_symbols->sym()->bblindbits;
@@ -146,7 +146,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 		}
 
 
-		if (p_symbols->prw1326()->useme==1326 && (sym_br!=1 || p_symbols->prw1326()->preflop==1326))
+		if (p_symbols->prw1326()->useme==1326 && (betround>=k_betround_flop || p_symbols->prw1326()->preflop==1326))
 		{
 			write_log(prefs.debug_prwin(), "[PrWinThread] Using Matrix's enhanced prwin.\n");
 
@@ -463,7 +463,7 @@ void CIteratorThread::InitIteratorLoop()
 	iter_vars.set_iterator_thread_progress(0);
 	iter_vars.set_nit((int) p_symbols->sym()->nit);
 	iter_vars.set_f$p((int) p_symbols->sym()->nopponents);
-	iter_vars.set_br((int) p_symbols->sym()->br);
+	iter_vars.set_br((int) p_symbols->sym()->betround);
 
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 		iter_vars.set_pcard(i, p_scraper->card_player((int) p_symbols->sym()->userchair, i));
@@ -514,7 +514,7 @@ void CIteratorThread::InitIteratorLoop()
 	// Call prw1326 callback if needed
 	if (p_symbols->prw1326()->useme==1326 && 
 		p_symbols->prw1326()->usecallback==1326 && 
-		(p_symbols->sym()->br!=1 || p_symbols->prw1326()->preflop==1326) )
+		(p_symbols->sym()->betround!=1 || p_symbols->prw1326()->preflop==1326) )
 	{
 		p_symbols->prw1326()->prw_callback(); //Matrix 2008-05-09
 	}

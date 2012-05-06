@@ -570,7 +570,7 @@ void CTableLimits::CalcTableLimits()
 	if (!blinds_locked_manually) 
 	{
 		// if we still do not have blinds, then infer them from the posted bets
-		if (p_symbols->sym()->br == k_betround_preflop && (tablelimit_unreliable_input.sblind==0 || tablelimit_unreliable_input.bblind==0))
+		if (p_symbols->sym()->betround == k_betround_preflop && (tablelimit_unreliable_input.sblind==0 || tablelimit_unreliable_input.bblind==0))
 		{
 			SearchTableForSbAndBbValue();			
 		}

@@ -324,7 +324,7 @@ void write_logautoplay(const char * action)
     CString		fcra_formula_status;
 
 	int			sym_userchair = (int) p_symbols->sym()->userchair;
-	int			sym_br = (int) p_symbols->sym()->br;
+	int			betround = (int) p_symbols->sym()->betround;
 
 
 	if (!prefs.trace_enabled())
@@ -377,7 +377,7 @@ void write_logautoplay(const char * action)
 
 		// common cards
 		comcards = "";
-		if (sym_br >= 2) 
+		if (betround >= k_betround_flop) 
 		{
 			for (i=0; i<=2; i++) 
 			{
@@ -393,7 +393,7 @@ void write_logautoplay(const char * action)
 			}
 		}
 
-		if (sym_br >= 3) 
+		if (betround >= k_betround_turn) 
 		{
 			card = StdDeck_cardString(p_scraper->card_common(3));
 			temp.Format("%s", card);
@@ -402,7 +402,7 @@ void write_logautoplay(const char * action)
 			nCards++;
 		}
 
-		if (sym_br >= 4) 
+		if (betround >= k_betround_river) 
 		{
 			card = StdDeck_cardString(p_scraper->card_common(4));
 			temp.Format("%s", card);
