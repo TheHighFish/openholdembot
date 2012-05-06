@@ -361,15 +361,6 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 				"TABLE RESET %s - %s(%s)\n"
 				"*************************************************************\n",
 				formula.GetString(), site.GetString(), title);
-
-			CString sForceChair = p_tablemap->forcechair();
-			if (!sForceChair.IsEmpty()) 
-			{
-				int iForceChair = atoi(sForceChair);
-				p_symbols->set_sym_chair(iForceChair);
-				p_symbols->set_sym_userchair(iForceChair);
-				p_symbols->set_user_chair_confirmed(true); 
-			}
 		}
 	}
 	p_table_positioner->PositionMyWindow();
