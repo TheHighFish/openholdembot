@@ -29,7 +29,6 @@
 //separator						15
 #define	EDIT_SELECTALL			16
 //separator						17
-#define	EDIT_FONT				18
 #define	EDIT_SETTINGS			19
 #define	EDIT_HANDLIST			20
 
@@ -208,7 +207,6 @@ protected:
 
 	CString			m_current_edit;			// Name of formula currently in edit window
 	CArray <SDebugTabInfo, SDebugTabInfo> debug_ar;		// holds debug tab information
-	CFont			editfont;
 	bool			in_startup;
 	bool			ok_to_update_debug;
 
@@ -225,8 +223,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	bool WriteProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, CDC* pDC=NULL);
-	bool GetProfileFont(LPCTSTR lpszKey, LPCTSTR lpszVal, CFont& font, CDC* pDC=NULL);
 	CString ExtractCommentFromHandList(CString HandListAsString);
 	void WarnAboutAutoplayerWhenApplyingFormulaAndTurnAutoplayerOff();
 };

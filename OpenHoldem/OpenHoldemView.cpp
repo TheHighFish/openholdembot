@@ -699,10 +699,10 @@ void COpenHoldemView::DrawSeatedActiveCircle(const int chair)
 	pDC->SetBkColor(COLOR_GRAY);
 
 	// Figure placement of circle
-	left = cr.right * pc[p_tablemap->nchairs()][chair][0] - CARDSIZEX - 4;
-	top = cr.bottom * pc[p_tablemap->nchairs()][chair][1] - CARDSIZEX - 3;
-	right = cr.right * pc[p_tablemap->nchairs()][chair][0] + CARDSIZEX + 3;
-	bottom = cr.bottom * pc[p_tablemap->nchairs()][chair][1] + CARDSIZEX + 3;
+	left = cr.right * pc[p_tablemap->nchairs()][chair][0] - CARDSIZEX - 6;
+	top = cr.bottom * pc[p_tablemap->nchairs()][chair][1] - CARDSIZEX - 5;
+	right = cr.right * pc[p_tablemap->nchairs()][chair][0] + CARDSIZEX + 5;
+	bottom = cr.bottom * pc[p_tablemap->nchairs()][chair][1] + CARDSIZEX + 5;
 
 	pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
 	oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
