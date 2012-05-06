@@ -52,21 +52,7 @@ BEGIN_TESTCASE
 END_TESTCASE
 
 
-BEGIN_TESTCASE
-    TESTCASE_ID ("0185")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol clocks")
-    PRECONDITION (true)
-    POSTCONDITION (gws("clocks") >= 0)
-    SYMBOLS_POSSIBLY_AFFECTED ("clocks")
-END_TESTCASE
 
 
-BEGIN_TESTCASE
-    TESTCASE_ID ("0186")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol nclockspersecond")
-    PRECONDITION (true)
-    POSTCONDITION (gws("nclockspersecond") >= 1)
-    SYMBOLS_POSSIBLY_AFFECTED ("nclockspersecond")
-END_TESTCASE
+
+

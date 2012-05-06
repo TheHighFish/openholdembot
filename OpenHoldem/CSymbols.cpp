@@ -469,7 +469,6 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_elapsedtoday(0);
 	set_sym_elapsed1970(0);
 	set_sym_clocks(0);
-	set_sym_nclockspersecond(0);
 	time(&_elapsedhold); //???
 	time(&_elapsedhandhold);
 	
@@ -1389,7 +1388,6 @@ void CSymbols::CalcFlags(void)
 
 void CSymbols::CalcTime(void)
 {
-	LARGE_INTEGER	lFrequency = {0}, clocksnow = {0};
 	time_t			t_now_time = 0, t_midnight_time = 0;
 	tm				s_midnight_time = {0};
 
@@ -1397,22 +1395,16 @@ void CSymbols::CalcTime(void)
 
 	set_sym_elapsed1970(t_now_time);													// elapsed1970
 
-		localtime_s(&s_midnight_time, &t_now_time);
-		s_midnight_time.tm_hour = 0;
-		s_midnight_time.tm_min = 0;
-		s_midnight_time.tm_sec = 0;
-		t_midnight_time = mktime(&s_midnight_time);
+	localtime_s(&s_midnight_time, &t_now_time);
+	s_midnight_time.tm_hour = 0;
+	s_midnight_time.tm_min = 0;
+	s_midnight_time.tm_sec = 0;
+	t_midnight_time = mktime(&s_midnight_time);
 	set_sym_elapsedtoday(t_now_time - t_midnight_time);									// elapsedtoday
 
 	set_sym_elapsed(t_now_time - _elapsedhold);											// elapsed
 	set_sym_elapsedhand(t_now_time - _elapsedhandhold);									// elapsedhand
 	set_sym_elapsedauto(t_now_time - _elapsedautohold);									// elapsedauto
-
-	QueryPerformanceFrequency(&lFrequency);
-	set_sym_nclockspersecond(lFrequency.LowPart);										// nclockspersecond
-	QueryPerformanceCounter(&clocksnow);
-
-	set_sym_clocks(clocksnow.LowPart - p_scraper->clocks_hold().LowPart);				// clocks
 }
 
 void CSymbols::CalcAutoplayer(void)
@@ -4200,10 +4192,6 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	//COMMON CARDS
 	if (memcmp(a, "ncommoncardspresent", 19)==0 && strlen(a)==19)		return _sym.ncommoncardspresent;
 	if (memcmp(a, "ncommoncardsknown", 17)==0 && strlen(a)==17)			return _sym.ncommoncardsknown;
-	
-	// TIME 2(2)	
-	if (memcmp(a, "clocks", 6)==0 && strlen(a)==6)						return _sym.clocks;
-	if (memcmp(a, "nclockspersecond", 16)==0 && strlen(a)==16)			return _sym.nclockspersecond;
 
 	// HISTORY S
 	// Part 3(3)

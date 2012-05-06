@@ -97,7 +97,7 @@ char * keywords = // Standard functions
 				  "ranklo ranklocommon rankloplayer ranklopoker sranklo sranklocommon srankloplayer sranklopoker "
 				  // Time
 				  "elapsed elapsedhand elapsedauto elapsedtoday "
-				  "elapsed1970 clocks nclockspersecond "
+				  "elapsed1970 clocks "
 				  // Autoplayer
 				  "myturnbits ismyturn issittingin issittingout "
 				  "isautopost isfinalanswer "
@@ -3255,7 +3255,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "elapsedtoday", "time in seconds since midnight GMT");
 	AddSymbol(parent, "elapsed1970", "time in seconds since 1970-01-01 00:00:00 GMT (THURSDAY)");
 	AddSymbol(parent, "clocks", "number of cpu clocks since the last scrape");
-	AddSymbol(parent, "nclockspersecond", "number of cpu clocks per second");
 
 	mainParent = parent = AddSymbolTitle("Autoplayer", NULL, hCatItem);
 	AddSymbol(parent, "myturnbits", "bits 3210 correspond to buttons ARCF (alli rais call fold)");
