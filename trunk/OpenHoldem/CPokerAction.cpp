@@ -243,7 +243,7 @@ const int CPokerAction::PreflopBets (void)
 	int		result = 0;
 	int		e = SUCCESS;
 
-	if (p_symbols->sym()->br!=1)
+	if (p_symbols->sym()->betround!=1)
 		result = 0;
 
 	else result = 
@@ -263,7 +263,7 @@ const bool CPokerAction::FirstIntoPot (void)
 	bool	result = false;
 	int		e = SUCCESS;
 
-	result = p_symbols->sym()->br==1 ? 
+	result = p_symbols->sym()->betround==1 ? 
 		p_symbols->sym()->potplayer <= p_tablelimits->sblind() + p_tablelimits->bblind() : 
 		p_symbols->sym()->potplayer <= 0.1 ;
 
@@ -320,39 +320,39 @@ const int CPokerAction::DealPosition (const int chairnum)
 
 const int CPokerAction::AggressorChair (void)
 {
-	int		sym_br = (int) p_symbols->sym()->br;
+	int		betround = (int) p_symbols->sym()->betround;
 	int		sym_raischair = (int) p_symbols->sym()->raischair;
 
 	// br1, no raises
-	if (sym_br==1 && p_symbols->sym()->nbetsround[0]==1)
+	if (betround==1 && p_symbols->sym()->nbetsround[0]==k_betround_preflop)
 		return sym_raischair;
 
 	// br1, someone raised
-	if (sym_br==1 && p_symbols->sym()->nbetsround[0]>1)
+	if (betround==k_betround_preflop && p_symbols->sym()->nbetsround[0]>1)
 		return p_game_state->LastRaised(1)!=-1 ? p_game_state->LastRaised(1) : sym_raischair;
 
 	// br2, no raises
-	if (sym_br==2 && p_symbols->sym()->nbetsround[1]==0)
+	if (betround==k_betround_flop && p_symbols->sym()->nbetsround[1]==0)
 		return p_game_state->LastRaised(1)!=-1 ? p_game_state->LastRaised(1) : sym_raischair;
 
 	// br2, someone raised
-	if (sym_br==2 && p_symbols->sym()->nbetsround[1]>0)
+	if (betround==k_betround_flop && p_symbols->sym()->nbetsround[1]>0)
 		return p_game_state->LastRaised(2)!=-1 ? p_game_state->LastRaised(2) : sym_raischair;
 
 	// br3, no raises
-	if (sym_br==3 && p_symbols->sym()->nbetsround[2]==0)
+	if (betround==k_betround_turn && p_symbols->sym()->nbetsround[2]==0)
 		return p_game_state->LastRaised(2)!=-1 ? p_game_state->LastRaised(2) : sym_raischair;
 
 	// br3, someone raised
-	if (sym_br==3 && p_symbols->sym()->nbetsround[2]>0)
+	if (betround==k_betround_turn && p_symbols->sym()->nbetsround[2]>0)
 		return p_game_state->LastRaised(3)!=-1 ? p_game_state->LastRaised(3) : sym_raischair;
 
 	// br4, no raises
-	if (sym_br==4 && p_symbols->sym()->nbetsround[3]==0)
+	if (betround==k_betround_river && p_symbols->sym()->nbetsround[3]==0)
 		return p_game_state->LastRaised(3)!=-1 ? p_game_state->LastRaised(3) : sym_raischair;
 
 	// br4, someone raised
-	if (sym_br==4 && p_symbols->sym()->nbetsround[3]>0)
+	if (betround==k_betround_river && p_symbols->sym()->nbetsround[3]>0)
 		return p_game_state->LastRaised(4)!=-1 ? p_game_state->LastRaised(4) : sym_raischair;
 
 	return sym_raischair;

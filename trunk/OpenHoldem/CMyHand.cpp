@@ -357,7 +357,7 @@ const double CMyHand::NOuts(void)
 
 	int		onepair = (int) p_symbols->sym()->onepair;
 	int		twopair = (int) p_symbols->sym()->twopair;
-	int		br = (int) p_symbols->sym()->br;
+	int		br = (int) p_symbols->sym()->betround;
 	int		pokerval = (int) p_symbols->sym()->pokerval;
 	int		pokervalcommon = (int) p_symbols->sym()->pokervalcommon;
 	bool	ispair = (bool) p_symbols->sym()->ispair;

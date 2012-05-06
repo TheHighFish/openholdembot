@@ -44,14 +44,14 @@ CGameState::~CGameState()
 void CGameState::ProcessGameState(const SHoldemState *pstate)
 {
 	bool		pstate_changed = false;
-	int			sym_br = (int) p_symbols->sym()->br;
+	int			betround = (int) p_symbols->sym()->betround;
 	int			sym_nopponentsdealt = (int) p_symbols->sym()->nopponentsdealt;
 	int			sym_nopponentsplaying = (int) p_symbols->sym()->nopponentsplaying;
 	bool		sym_ismyturn = (bool) p_symbols->sym()->ismyturn;
 	bool		sym_ismanual = (bool) p_symbols->sym()->ismanual;
 
 	// tracking of nopponentsdealt
-	if (sym_br==2 || sym_nopponentsdealt>_oppdealt)
+	if (betround==k_betround_flop || sym_nopponentsdealt>_oppdealt)
 		_oppdealt = sym_nopponentsdealt;
 
 	// Has the number of opponents changed?
@@ -111,7 +111,7 @@ void CGameState::ProcessGameState(const SHoldemState *pstate)
 		for (int i=0; i<_hist_sym_count; i++)
 		{
 			int e = SUCCESS;
-			_hist_sym[i][sym_br-1] = p_symbols->GetSymbolVal(_hist_sym_strings[i], &e);
+			_hist_sym[i][betround-k_betround_preflop] = p_symbols->GetSymbolVal(_hist_sym_strings[i], &e);
 		}
 	}
 }
@@ -487,7 +487,7 @@ const double CGameState::SortedBalance(const int rank)
 // processed the current frame.
 bool CGameState::ProcessThisFrame (void)
 {
-	int				sym_br = (int) p_symbols->sym()->br;
+	int				betround = (int) p_symbols->sym()->betround;
 	bool			sym_ismanual = (bool) p_symbols->sym()->ismanual;
 
 	// check if all balances are known (indicates stability of info passed to DLL)
@@ -505,7 +505,7 @@ bool CGameState::ProcessThisFrame (void)
 
 	// only process further if _safe_to_process_state==true, userchair is identified (br!=0),
 	// and m_balance_known is true for all players with cards, and I am actually in the hand
-	return ((sym_br != 0 && _safe_to_process_state && (balance_stability || sym_ismanual))
+	return ((betround >= k_betround_preflop && _safe_to_process_state && (balance_stability || sym_ismanual))
 			|| _m_holdem_state[(_m_ndx)&0xff].m_dealer_chair != _m_holdem_state[(_m_ndx-1)&0xff].m_dealer_chair);
 }
 
@@ -515,7 +515,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 	double			sym_bblind = p_tablelimits->bblind();
 	int				from_chair = 0, to_chair = 0;
 	int				i = 0, j = 0, k = 0;
-	int				sym_br = (int) p_symbols->sym()->br;
+	int				betround = (int) p_symbols->sym()->betround;
 	int				sym_userchair = (int) p_symbols->sym()->userchair;
 	bool			sym_ismyturn = (bool) p_symbols->sym()->ismyturn;
 	double			sym_balance = p_symbols->sym()->balance[10];
@@ -595,15 +595,13 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 		}
 
 		// 2. it's my turn
-		if ((sym_ismyturn && pstate_changed) ||
-				(sym_ismyturn && _my_first_action_this_round == true) ||
-				(((sym_br == 1 &&
-				   _m_holdem_state[(_m_ndx)&0xff].m_player[sym_userchair].m_currentbet == sym_sblind) ||
-				  (sym_br == 1 &&
-				   _m_holdem_state[(_m_ndx)&0xff].m_player[sym_userchair].m_currentbet == sym_bblind)) &&
-				 _my_first_action_this_round == true) )
+		if ((sym_ismyturn && pstate_changed) 
+			|| (sym_ismyturn && _my_first_action_this_round == true) 
+			|| (((betround == k_betround_preflop && _m_holdem_state[(_m_ndx)&0xff].m_player[sym_userchair].m_currentbet == sym_sblind) 
+			|| (betround == k_betround_preflop 
+				&& _m_holdem_state[(_m_ndx)&0xff].m_player[sym_userchair].m_currentbet == sym_bblind)) 
+				&& _my_first_action_this_round == true))
 		{
-
 			// save the game state
 			_m_game_state[ (++_m_game_ndx)&0xff ] = *pstate;
 
@@ -612,7 +610,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 				_m_holdem_state[(_m_ndx)&0xff].m_player[sym_userchair].m_cards[1] != 0)
 			{
 				_process_game_state = true;
-				write_log(k_always_log_basic_information, ">>> My turn, br=%d\n", sym_br);
+				write_log(k_always_log_basic_information, ">>> My turn, br=%d\n", betround);
 			}
 			else
 			{
@@ -621,18 +619,18 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 		}
 
 		// 3. the betting round has changed
-		if (sym_br > _oh_br_last)
+		if (betround > _oh_br_last)
 		{
 			// save the game state
 			_m_game_state[ (++_m_game_ndx)&0xff ] = *pstate;
 
 			//reset some vars
-			_oh_br_last = sym_br;
+			_oh_br_last = betround;
 			_pot_raised = false;
 			_my_first_action_this_round = true;
 			_bets_last = 0.0;
 
-			//write_log(">>> Betting round: %d\n", (int) sym_br);
+			//write_log(">>> Betting round: %d\n", (int) betround);
 		}
 
 		// it's my turn, so I need to figure out what everyone did before me
@@ -647,14 +645,15 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 				_my_first_action_this_round=false;
 
 				// if i am the sb, then iterate just mychair
-				if (sym_br == 1 && _m_game_state[(_m_game_ndx)&0xff].m_player[sym_userchair].m_currentbet == sym_sblind)
+				if (betround == k_betround_preflop 
+					&& _m_game_state[(_m_game_ndx)&0xff].m_player[sym_userchair].m_currentbet == sym_sblind)
 				{
 					from_chair = sym_userchair;
 					to_chair = sym_userchair-1+k_max_number_of_players;
 				}
 
 				// if i am the bb, then iterate from dlr+1 to mychair
-				else if (sym_br == 1 && _m_game_state[(_m_game_ndx)&0xff].m_player[sym_userchair].m_currentbet == sym_bblind)
+				else if (betround == k_betround_preflop && _m_game_state[(_m_game_ndx)&0xff].m_player[sym_userchair].m_currentbet == sym_bblind)
 				{
 					from_chair = _m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+1;
 					to_chair = sym_userchair-1+k_max_number_of_players;
@@ -688,15 +687,15 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 				int index_normalized = i%k_max_number_of_players;
 				// if the currentbet for the chair is the sb and the last bet was zero and br==1
 				// and the player has cards, then we know the chair ***POSTED THE SMALL BLIND***
-				if (_m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet == sym_sblind &&
-						_bets_last==0 &&
-						_m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_cards[0]!=0 &&
-						_m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_cards[1]!=0 &&
-						_m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[0]!=0 &&
-						_m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[1]!=0 &&
-						sym_br == 1)
+				if (_m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet == sym_sblind 
+					&& _bets_last==0 
+					&& _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_cards[0]!=0 
+					&& _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_cards[1]!=0 
+					&& _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[0]!=0 
+					&& _m_game_state[(_m_game_ndx)&0xff].m_player[i%k_max_number_of_players].m_cards[1]!=0 
+					&& betround == k_betround_preflop)
 				{
-					_chair_actions[index_normalized][sym_br-1][w_posted_sb] = true;
+					_chair_actions[index_normalized][betround-1][w_posted_sb] = true;
 					_bets_last = _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet;
 					write_log(k_always_log_basic_information, ">>> Chair %d (%s) posted the sb: $%.2f\n", index_normalized,
 							  _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_name,
@@ -705,13 +704,13 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 
 				// if the currentbet for the chair is the bb and the last bet was the sb and br==1
 				// and the player has cards, then we know the chair ***POSTED THE BIG BLIND***
-				else if (_m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet == sym_bblind &&
-						 _bets_last == sym_sblind &&
-						 _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_cards[0]!=0 &&
-						 _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_cards[1]!=0 &&
-						 sym_br == 1)
+				else if (_m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet == sym_bblind 
+					&& _bets_last == sym_sblind 
+					&& _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_cards[0]!=0 
+					&& _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_cards[1]!=0 
+					&& betround == k_betround_preflop)
 				{
-					_chair_actions[index_normalized][(int) sym_br-1][w_posted_bb] = true;
+					_chair_actions[index_normalized][(int) betround-1][w_posted_bb] = true;
 					_bets_last = _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet;
 					write_log(k_always_log_basic_information, ">>> Chair %d (%s) posted the bb: $%.2f\n", index_normalized,
 							  _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_name,
@@ -728,7 +727,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 					_bets_last = _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet;
 					if (_pot_raised == false)
 					{
-						_chair_actions[index_normalized][sym_br-1][w_raised] = true;
+						_chair_actions[index_normalized][betround-1][w_raised] = true;
 						_pot_raised = true;
 						write_log(k_always_log_basic_information, ">>> Chair %d (%s) raised to $%.2f\n", index_normalized,
 								  _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_name,
@@ -736,7 +735,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 					}
 					else
 					{
-						_chair_actions[index_normalized][sym_br-1][w_reraised] = true;
+						_chair_actions[index_normalized][betround-1][w_reraised] = true;
 						write_log(k_always_log_basic_information, ">>> Chair %d (%s) re-raised to $%.2f\n", index_normalized,
 								  _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_name,
 								  _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet);
@@ -751,7 +750,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 						 _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_cards[1]!=0 &&
 						 !_end_of_hand)
 				{
-					_chair_actions[index_normalized][sym_br-1][w_called] = true;
+					_chair_actions[index_normalized][betround-1][w_called] = true;
 					if (_pot_raised == false)
 					{
 						_pf_limpers_n += 1;
@@ -778,18 +777,19 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 							_m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_balance==
 							_m_game_state[(_m_game_ndx-1)&0xff].m_player[index_normalized].m_balance) )
 				{
-					_chair_actions[index_normalized][sym_br-1][w_folded] = true;
+					_chair_actions[index_normalized][betround-1][w_folded] = true;
 					write_log(k_always_log_basic_information, ">>> Chair %d (%s) folded\n", index_normalized,
 							  _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_name);
 				}
 
 				// if br!=1 and the player's current bet is zero, and that player has cards in front of them
 				// then we know the chair has ***CHECKED***
-				else if (sym_br!=1 && _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet == 0 &&
-						 _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_cards[0]!=0 &&
-						 _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_cards[1]!=0)
+				else if (betround!=k_betround_preflop 
+					&& _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet == 0 
+					&& _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_cards[0]!=0 
+					&& _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_cards[1]!=0)
 				{
-					_chair_actions[index_normalized][sym_br-1][w_checked] = true;
+					_chair_actions[index_normalized][betround-1][w_checked] = true;
 
 					write_log(k_always_log_basic_information, ">>> Chair %d (%s) checked\n", index_normalized, _m_holdem_state[(_m_ndx)&0xff].m_player[index_normalized].m_name);
 				}
@@ -803,7 +803,7 @@ void CGameState::ProcessFtrEngine(const SHoldemState *pstate)
 	double			sym_elapsed = p_symbols->sym()->elapsed;
 	double			sym_nbetsround1 = p_symbols->sym()->nbetsround[0];
 	int				sym_nplayersdealt = (int) p_symbols->sym()->nplayersdealt;
-	int				sym_br = (int) p_symbols->sym()->br;
+	int				betround = (int) p_symbols->sym()->betround;
 	int				sym_nflopc = (int) p_symbols->sym()->nflopc;
 	int				sym_nplayersplaying = (int) p_symbols->sym()->nplayersplaying;
 
@@ -823,9 +823,9 @@ void CGameState::ProcessFtrEngine(const SHoldemState *pstate)
 	}
 
 	// if nplayersdealt has incremented and it is br1, update the ftr tracker stats
-	if (sym_nplayersdealt != _ftr_nplayersdealt_last &&
-		sym_nplayersdealt > _ftr_nplayersdealt_last &&
-		sym_br==1)
+	if (sym_nplayersdealt != _ftr_nplayersdealt_last 
+		&& sym_nplayersdealt > _ftr_nplayersdealt_last 
+		&& betround==k_betround_preflop)
 	{
 		_m_ftr[_m_ftr_ndx&0xff].n_pl_dealt = sym_nplayersdealt;
 		_ftr_nplayersdealt_last = sym_nplayersdealt;

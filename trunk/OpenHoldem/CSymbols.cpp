@@ -260,7 +260,6 @@ void CSymbols::ResetSymbolsFirstTime(void)
 
 	// rounds positions
 	set_sym_betround(0);
-	set_sym_br(0);
 	set_sym_betposition(0);
 	set_sym_dealposition(0);
 	set_sym_callposition(0);
@@ -1072,9 +1071,7 @@ void CSymbols::CalcSymbols(void)
 		{
 			set_sym_betround(1);
 		}
-	}
-
-	set_sym_br(_sym.betround);																// br
+	}														// br
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Things to do when we have a new round

@@ -4102,7 +4102,7 @@ void CRunRon::GetCounts(void)
 	unsigned int	pokval = 0;
 	LARGE_INTEGER	bcount = {0}, ecount = {0};
 
-	int sym_br = (int) p_symbols->sym()->br;
+	int betround = (int) p_symbols->sym()->betround;
 	int sym_userchair = (int) p_symbols->sym()->userchair;
 
 	unsigned int	pcard[2], ccard[5];
@@ -4117,7 +4117,7 @@ void CRunRon::GetCounts(void)
 
 	// Preflop is pre-calculated
 	// Also use the pre-flop code if there is a common card animation going on, to prevent freezeups
-	if (sym_br==1 || p_scraper->IsCommonAnimation())
+	if (betround==k_betround_preflop || p_scraper->IsCommonAnimation())
 	{
 
 		if (!p_symbols->user_chair_confirmed())
@@ -4252,7 +4252,7 @@ void CRunRon::GetCounts(void)
 
 
 	// Post flop is calculated on the fly
-	else if (sym_br>=2)
+	else if (betround>=k_betround_flop)
 	{
 		//////////////////////////////////////////////////////////////
 		// run symbols
