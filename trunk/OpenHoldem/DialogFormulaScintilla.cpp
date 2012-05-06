@@ -39,7 +39,7 @@ char * keywords = // Standard functions
 				  // Tablemap
 				  "sitename$ network$ " 
 				  // Formula File
-				  "f$number_of_iterations"
+				  "f$prwin_number_of_iterations"
 				  // Limits
 				  "bblind sblind ante lim isnl ispl isfl sraiprev sraimin sraimax istournament "
 				  // Hand Rank
@@ -3022,7 +3022,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "network$def", "true if user defined string def appears within the Table Map symbol _s$_network");
 
 	mainParent = parent = AddSymbolTitle("Formula file", NULL, hCatItem);
-	AddSymbol(parent, "f$number_of_iterations", "number of iterations tested by the analyzer(s)");
+	AddSymbol(parent, "f$prwin_number_of_iterations", "number of iterations tested by the analyzer(s)");
 
 	mainParent = parent = AddSymbolTitle("Limits", NULL, hCatItem);
 	AddSymbol(parent, "bblind", "the big blind amount");

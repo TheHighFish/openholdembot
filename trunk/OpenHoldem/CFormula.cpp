@@ -56,7 +56,7 @@ void CFormula::SetDefaultBot()
 	func.func = "f$close";		func.func_text = defaultCSclose;	_formula.mFunction.Add(func);
 	func.func = "f$test";		func.func_text = defaultCStest;		_formula.mFunction.Add(func);
 	func.func = "f$debug";		func.func_text = defaultCSdebug;	_formula.mFunction.Add(func);
-	func.func = "f$number_of_iterations";	func.func_text = defaultCSnit; _formula.mFunction.Add(func);
+	func.func = "f$prwin_number_of_iterations";	func.func_text = defaultCSnit; _formula.mFunction.Add(func);
 
 	// Create UDFs
 	func.func = "f$evrais"; func.func_text = defaultCSevrais; _formula.mFunction.Add(func);
@@ -270,7 +270,7 @@ void CFormula::WriteFormula(CArchive& ar)
 	WriteStandardFunction(ar, "notes");
 	WriteStandardFunction(ar, "dll");
 	// ToDo: Check, if that can be done the normal way too?
-	WriteStandardFunction(ar, "f$number_of_iterations");
+	WriteStandardFunction(ar, "f$prwin_number_of_iterations");
 	WriteStandardFunction(ar, "f$alli");
 	WriteStandardFunction(ar, "f$betsize");
 	WriteStandardFunction(ar, "f$rais");

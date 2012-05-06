@@ -19,6 +19,7 @@
 #include "CVersus.h"
 #include "FloatingPoint_Comparisions.h"
 #include "OH_MessageBox.h"
+#include "UnknownSymbols.h"
 
 CGrammar::CGrammar(void)
 {
@@ -519,11 +520,7 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 				// Unknown symbol.
 				// Though we check the syntax, this can still happen
 				// by gws-calls from Perl or a DLL, etc.
-				CString error_message = CString("Unknown symbol in CGrammar::EvaluateSymbol(): \"")
-					+ sym.c_str() + CString("\"\nThat is most probably a typo in the symbols name.\n")
-					+ CString("Please check your formula and your DLL or Perl-script.");
-				OH_MessageBox(error_message, "ERROR", MB_OK);
-	
+				WarnAboutUnknownOrOutdatedSymbol(sym.c_str());
 				return 0.0;
 			}
 		}

@@ -894,13 +894,13 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 			int	e = SUCCESS;
 			_status_nit.Format("%d/%d", 
 				iter_vars.iterator_thread_progress(),
-				(int) p_symbols->GetSymbolVal("f$number_of_iterations", &e));
+				(int) p_symbols->GetSymbolVal("f$prwin_number_of_iterations", &e));
 		}
 		else
 		{
 			_status_prwin = "0/0/0";
 			int	e = SUCCESS;
-			_status_nit.Format("0/%d", (int) p_symbols->GetSymbolVal("f$number_of_iterations", &e));
+			_status_nit.Format("0/%d", (int) p_symbols->GetSymbolVal("f$prwin_number_of_iterations", &e));
 		}
 
 		// action

@@ -444,6 +444,10 @@
 				RelativePath=".\SwagAdjustment.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\UnknownSymbols.cpp"
+				>
+			</File>
 			<Filter
 				Name="winmgr"
 				>

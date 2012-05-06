@@ -4202,7 +4202,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "network$", 8)==0)									return p_tablemap->network().Find(&a[8])!=-1;
 
 	//FORMULA FILE
-	if (memcmp(a, "f$number_of_iterations", 3)==0 && strlen(a)==3)							return _sym.nit;
+	if (memcmp(a, "f$prwin_number_of_iterations", 3)==0 && strlen(a)==3)							return _sym.nit;
 
 	// AUTOPLAYER 1(2)
 	if (memcmp(a, "myturnbits", 10)==0 && strlen(a)==10)				return _sym.myturnbits;
