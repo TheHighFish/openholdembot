@@ -46,7 +46,6 @@
 #define IDD_SAPREFS11                   176
 #define IDD_SAPREFS12                   177
 #define IDD_SAPREFS13                   178
-#define IDD_CHARINUM                    179
 #define IDD_SAPREFS14                   180
 #define IDD_SAPREFS15                   181
 #define IDD_SAPREFS16                   182
@@ -365,7 +364,6 @@
 #define IDC_SIMPLE_TITLE                1312
 #define IDC_CHECK_VALIDATOR_HEURISTIC_RULES 1313
 #define IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES 1313
-#define IDC_CHAIRNUM                    1315
 #define IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR 1317
 #define IDC_RADIO_AUTOCONNECTOR_1       1318
 #define IDC_SEARCH_ED                   1318
@@ -430,7 +428,7 @@
 #define IDC_RADIO_POSITION_CASCADED     1368
 #define IDC_RADIO5                      1369
 #define IDC_DEBUG_FILESYSTEM_MONITOR    1370
-#define IDC_DEBUG_TABLE_POSITIONER		1371
+#define IDC_DEBUG_TABLE_POSITIONER      1371
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -535,7 +533,6 @@
 #define ID_FILE_DISCONNECT              32982
 #define ID_MAIN_TOOLBAR_VALIDATOR       32983
 #define ID_HELP_PROBLEMSOLVER           32984
-#define ID_EDIT_FORCEUSERCHAIR          32985
 #define ID_FILE_APPLYANDSAVE            32986
 #define ID_FORMULA_FILE_APPLYANDSAVE    32987
 #define ID_HELP_HELP                    32988

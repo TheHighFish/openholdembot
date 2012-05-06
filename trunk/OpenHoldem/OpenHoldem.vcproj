@@ -747,10 +747,6 @@
 				Name="GUI"
 				>
 				<File
-					RelativePath=".\DialogChairNum.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\DialogFormulaScintilla.cpp"
 					>
 				</File>
@@ -1396,10 +1392,6 @@
 			<Filter
 				Name="GUI"
 				>
-				<File
-					RelativePath=".\DialogChairNum.h"
-					>
-				</File>
 				<File
 					RelativePath=".\DialogFormulaScintilla.h"
 					>

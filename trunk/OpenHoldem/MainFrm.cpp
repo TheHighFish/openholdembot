@@ -24,7 +24,6 @@
 #include "CTableLimits.h"
 #include "..\CTransform\CTransform.h"
 #include "CValidator.h"
-#include "DialogChairNum.h"
 #include "DialogFormulaScintilla.h"
 #include "DialogLockBlinds.h"
 #include "DialogSAPrefs2.h"
@@ -69,7 +68,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_FILE_LOADTABLEMAP, &CMainFrame::OnUpdateMenuFileLoadProfile)
 	ON_UPDATE_COMMAND_UI(ID_FILE_CONNECT, &CMainFrame::OnUpdateFileConnect)
 	ON_UPDATE_COMMAND_UI(ID_FILE_DISCONNECT, &CMainFrame::OnUpdateFileDisconnect)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_FORCEUSERCHAIR, &CMainFrame::OnUpdateEditForceuserchair)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOOTREPLAYFRAME, &CMainFrame::OnUpdateViewShootreplayframe)
 	ON_UPDATE_COMMAND_UI(ID_DLL_LOAD, &CMainFrame::OnUpdateMenuDllLoad)
 	ON_UPDATE_COMMAND_UI(ID_DLL_LOADSPECIFICFILE, &CMainFrame::OnUpdateDllLoadspecificfile)
@@ -87,7 +85,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND(ID_FILE_DISCONNECT, &CMainFrame::OnBnClickedRedCircle)
 	ON_COMMAND(ID_EDIT_FORMULA, &CMainFrame::OnEditFormula)
 	ON_COMMAND(ID_EDIT_PREFERENCES, &CMainFrame::OnEditPreferences)
-	ON_COMMAND(ID_EDIT_FORCEUSERCHAIR, &CMainFrame::OnEditForceuserchair)
 	ON_COMMAND(ID_VIEW_SCRAPEROUTPUT, &CMainFrame::OnScraperOutput)
 	ON_COMMAND(ID_VIEW_SHOOTREPLAYFRAME, &CMainFrame::OnViewShootreplayframe)
 	ON_COMMAND(ID_DLL_LOAD, &CMainFrame::OnDllLoad)
@@ -715,21 +712,6 @@ void CMainFrame::OnBnClickedRedCircle()
 {
 	p_autoconnector->Disconnect();
 	_autoplay_pressed = false;
-}
-
-void CMainFrame::OnEditForceuserchair()
-{
-	CDlgChairNum	dlg;
-
-	if (dlg.DoModal()==IDOK)
-	{
-		p_symbols->set_sym_chair(dlg.chair);
-		p_symbols->set_sym_userchair(dlg.chair);
-		p_symbols->set_user_chair_confirmed(true); 
-		time_t tm;
-		time(&tm);
-		write_log(prefs.debug_alltherest(), "Force set userchair to %d\n", dlg.chair);
-	}
 }
 
 void CMainFrame::OnTimer(UINT nIDEvent) 
@@ -1418,10 +1400,6 @@ void CMainFrame::OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI)
 	pCmdUI->Enable(p_perl->IsAFormulaLoaded());
 }
 
-void CMainFrame::OnUpdateEditForceuserchair(CCmdUI *pCmdUI)
-{
-	pCmdUI->Enable(!p_symbols->user_chair_confirmed() && p_autoconnector->attached_hwnd()!=NULL ? true : false);
-}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // Other functions
