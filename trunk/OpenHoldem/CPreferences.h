@@ -66,7 +66,6 @@ public:
 	const CString perl_editor() { return _perl_editor; }
 
 	//  PokerChat
-	const bool chat_enabled() { return _chat_enabled; }
 	const int chat_min_delay() { return _chat_min_delay; }
 	const int chat_random_delay() { return _chat_random_delay; }
 	// Log Symbol
@@ -219,7 +218,6 @@ public:
 	void set_perl_editor(const CString s) { ENT _perl_editor = s; WriteReg("perl_editor", s); }
 
 	//  PokerChat
-	void set_chat_enabled(const bool b) { ENT _chat_enabled = b; WriteReg("chat_enabled", b); }
 	void set_chat_min_delay(const int i) { ENT _chat_min_delay = i; WriteReg("chat_min_delay", i); }
 	void set_chat_random_delay(const int i) { ENT _chat_random_delay = i; WriteReg("chat_random_delay", i); }
 
@@ -387,7 +385,6 @@ private:
 	CString			_perl_editor;
 
 	//  PokerChat
-	bool			_chat_enabled;
 	int				_chat_min_delay;
 	int				_chat_random_delay;
 

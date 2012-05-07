@@ -339,7 +339,6 @@
 #define IDC_RANDOM_DELAY_SPIN           1289
 #define IDC_FUNCTIONS_TAB               1289
 #define IDC_PERL_EDITOR                 1292
-#define IDC_ENABLE_CHAT                 1293
 #define IDC_MINIMUM_DELAY               1294
 #define IDC_MINIMUM_DELAY_SPIN          1295
 #define IDC_ENABLE_LOG                  1296

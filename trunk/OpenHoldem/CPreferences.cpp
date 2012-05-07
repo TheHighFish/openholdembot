@@ -103,15 +103,14 @@ void CPreferences::InitDefaults(void)
 	_replay_max_frames = 100;
 	_replay_record_every_change_playing = false;
 
-	//  Perl
-	_perl_default_formula = "";
-	_perl_editor = "C:\\Windows\\notepad.exe";
-
 	//  PokerChat
-	_chat_enabled = false;
 	//  Just a security measure against crazy bot formulas...
 	_chat_min_delay = 600;	  //  seconds
 	_chat_random_delay = 3000;  //  seconds;
+
+	//  Perl
+	_perl_default_formula = "";
+	_perl_editor = "C:\\Windows\\notepad.exe";
 	TCHAR windows_path[MAX_PATH];
 	if (S_OK == SHGetFolderPath(NULL, CSIDL_WINDOWS, NULL, 0, windows_path)) 
 	{
@@ -295,7 +294,6 @@ void CPreferences::ReadPreferences()
 		ReadReg("perl_default_formula", &_perl_default_formula);
 
 		// PokerChat
-		ReadReg("chat_enabled", &_chat_enabled);
 		ReadReg("chat_min_delay", &_chat_min_delay);
 		ReadReg("chat_random_delay", &_chat_random_delay);
 

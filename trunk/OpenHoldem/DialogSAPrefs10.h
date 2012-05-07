@@ -21,8 +21,7 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
-public:
-	CButton m_EnableChat;	
+private:
 	CEdit m_MinimumDelay;
 	CSpinButtonCtrl m_MinimumDelay_Spin;
 	CEdit m_RandomDelay;
@@ -31,11 +30,6 @@ public:
 
 protected:
 	virtual void OnOK();
-
-	DECLARE_MESSAGE_MAP()
-
-public:
-	afx_msg void OnBnClickedEnableChat();
 };
 
 

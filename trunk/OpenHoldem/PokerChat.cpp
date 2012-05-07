@@ -93,9 +93,6 @@ void SendChatMessage(char* new_message)
 //	and safety delay expired?
 bool IsChatAllowed(void)
 {
-	if (!prefs.chat_enabled())
-		return false;
-
 	//  Safety delay?
 	time_t the_actual_time;
 	time(&the_actual_time);
