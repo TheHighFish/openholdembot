@@ -57,7 +57,7 @@ void CPreferences::InitDefaults(void)
 	_swag_delay_1 = 400;
 	_swag_delay_2 = 400;
 	_swag_delay_3 = 700;
-	_ap_auto = true;
+	_engage_autoplayer = true;
 	_swag_use_comma = false;
 
 	// scraper
@@ -154,10 +154,10 @@ void CPreferences::InitDefaults(void)
 	//   0 = disabled
 	//   1 = when it's my turn
 	//   2 = always
-	_validator_enabled = 0;
-	_validator_use_heuristic_rules = true;
-	_validator_stop_on_error = true;
-	_validator_shoot_replayframe_on_error = true;
+	_validator_enabled = 1;
+	_validator_use_heuristic_rules = false;
+	_validator_stop_on_error = false;
+	_validator_shoot_replayframe_on_error = false;
 
 	// Auto-connector
 	_autoconnector_connection_method = k_AutoConnector_Connect_Automatically;
@@ -244,7 +244,7 @@ void CPreferences::ReadPreferences()
 		//	(WH backward compatibility.)
 		ReadReg("swag_delay", &_swag_delay_3);
 		ReadReg("swag_delay_3", &_swag_delay_3);
-		ReadReg("auto", &_ap_auto);
+		ReadReg("auto", &_engage_autoplayer);
 		ReadReg("swag_use_comma", &_swag_use_comma);
 
 		// prefs - dll extension

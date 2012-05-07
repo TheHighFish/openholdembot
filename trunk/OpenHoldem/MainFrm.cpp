@@ -749,7 +749,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 		}
 
 		// Automatically start autoplayer, if set in preferences
-		if (prefs.ap_auto() && !m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER) &&
+		if (prefs.engage_autoplayer() && !m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER) &&
 				((p_symbols->user_chair_confirmed() && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE))))
 		{
 			if (!_autoplay_pressed)
