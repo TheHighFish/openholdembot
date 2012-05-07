@@ -86,7 +86,6 @@ void CPreferences::InitDefaults(void)
 	_pt_user = "pokertracker";
 	_pt_pass = "";
 	_pt_dbname = "";
-	_pt_update_delay = 30;
 	_pt_cache_refresh = 120;
 
 	// ICM
@@ -261,7 +260,6 @@ void CPreferences::ReadPreferences()
 		ReadReg("pt_user", &_pt_user);
 		ReadReg("pt_pass", &_pt_pass);
 		ReadReg("pt_dbname", &_pt_dbname);
-		ReadReg("pt_updatedelay", &_pt_update_delay);
 		ReadReg("pt_cacherefresh", &_pt_cache_refresh);
 
 		// prefs - ICM
