@@ -693,8 +693,8 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 			}
 		}
 
-		for (int i=0; i < prefs.pt_update_delay() && 
-				  ::WaitForSingleObject(pParent->_m_stop_thread, 0)!=WAIT_OBJECT_0; i++)
+		for (int i=0; i < /* !!! prefs.pt_update_delay() */ 30 
+				&& ::WaitForSingleObject(pParent->_m_stop_thread, 0)!=WAIT_OBJECT_0; i++)
 			Sleep(1000);
 	}
 
