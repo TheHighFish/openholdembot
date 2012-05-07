@@ -444,9 +444,9 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 
 	// If we already have stats cached for the player, the timeout has not expired,
 	// return the value from the cache...
-	if (sym_elapsed - _player_stats[m_chr].t_elapsed[stat] < prefs.pt_cache_refresh() &&
-		_player_stats[m_chr].t_elapsed[stat] != -1 &&
-		_player_stats[m_chr].stat[stat] != -1)
+	if (sym_elapsed - _player_stats[m_chr].t_elapsed[stat] < 120 /* prefs.pt_cache_refresh() */
+		&& _player_stats[m_chr].t_elapsed[stat] != -1 
+		&& _player_stats[m_chr].stat[stat] != -1)
 	{
 		result = _player_stats[m_chr].stat[stat];
 	}
