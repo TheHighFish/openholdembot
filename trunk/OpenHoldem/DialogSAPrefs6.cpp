@@ -33,11 +33,8 @@ void CDlgSAPrefs6::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PT_USER, m_pt_user);
 	DDX_Control(pDX, IDC_PT_PASS, m_pt_pass);
 	DDX_Control(pDX, IDC_PT_DBNAME, m_pt_dbname);
-	DDX_Control(pDX, IDC_UPDATEDELAY, m_UpdateDelay);
-	DDX_Control(pDX, IDC_UPDATEDELAY_SPIN, m_UpdateDelay_Spin);
 	DDX_Control(pDX, IDC_CACHEREFRESH, m_CacheRefresh);
 	DDX_Control(pDX, IDC_CACHEREFRESH_SPIN, m_CacheRefresh_Spin);
-	DDX_Control(pDX, IDC_PT_DISABLE, m_pt_disable);
 }
 
 BEGIN_MESSAGE_MAP(CDlgSAPrefs6, CSAPrefsSubDlg)
@@ -51,19 +48,11 @@ BOOL CDlgSAPrefs6::OnInitDialog()
 
 	CSAPrefsSubDlg::OnInitDialog();
 
-	m_pt_disable.SetCheck(!prefs.pt_disable() ? BST_UNCHECKED : BST_CHECKED);
-
 	m_pt_ip.SetWindowText(prefs.pt_ip_addr().GetString());
 	m_pt_port.SetWindowText(prefs.pt_port().GetString());
 	m_pt_user.SetWindowText(prefs.pt_user().GetString());
 	m_pt_pass.SetWindowText(prefs.pt_pass().GetString());
 	m_pt_dbname.SetWindowText(prefs.pt_dbname().GetString());
-
-	text.Format("%d", prefs.pt_update_delay());
-	m_UpdateDelay.SetWindowText(text);
-	m_UpdateDelay_Spin.SetRange(1, 120);
-	m_UpdateDelay_Spin.SetPos(prefs.pt_update_delay());
-	m_UpdateDelay_Spin.SetBuddy(&m_UpdateDelay);
 
 	text.Format("%d", prefs.pt_cache_refresh());
 	m_CacheRefresh.SetWindowText(text);
@@ -79,8 +68,6 @@ void CDlgSAPrefs6::OnOK()
 {
 	CString			text = "";
 
-	prefs.set_pt_disable(m_pt_disable.GetCheck() == BST_CHECKED ? true : false);
-
 	m_pt_ip.GetWindowText(text);
 	prefs.set_pt_ip_addr(text);
 
@@ -95,9 +82,6 @@ void CDlgSAPrefs6::OnOK()
 
 	m_pt_dbname.GetWindowText(text);
 	prefs.set_pt_dbname(text);
-
-	m_UpdateDelay.GetWindowText(text);
-	prefs.set_pt_update_delay(atoi(text.GetString()));
 
 	m_CacheRefresh.GetWindowText(text);
 	prefs.set_pt_cache_refresh(atoi(text.GetString()));
