@@ -25,7 +25,6 @@ protected:
 	enum { IDD = IDD_SAPREFS6 };
 	CComboBox m_pt_version;
 	CEdit m_pt_ip, m_pt_port, m_pt_user, m_pt_pass, m_pt_dbname;
-	CSpinButtonCtrl m_UpdateDelay_Spin, m_CacheRefresh_Spin;
 
 	DECLARE_MESSAGE_MAP()
 };

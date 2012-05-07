@@ -33,8 +33,6 @@ void CDlgSAPrefs6::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PT_USER, m_pt_user);
 	DDX_Control(pDX, IDC_PT_PASS, m_pt_pass);
 	DDX_Control(pDX, IDC_PT_DBNAME, m_pt_dbname);
-	DDX_Control(pDX, IDC_CACHEREFRESH, m_CacheRefresh);
-	DDX_Control(pDX, IDC_CACHEREFRESH_SPIN, m_CacheRefresh_Spin);
 }
 
 BEGIN_MESSAGE_MAP(CDlgSAPrefs6, CSAPrefsSubDlg)
@@ -53,12 +51,6 @@ BOOL CDlgSAPrefs6::OnInitDialog()
 	m_pt_user.SetWindowText(prefs.pt_user().GetString());
 	m_pt_pass.SetWindowText(prefs.pt_pass().GetString());
 	m_pt_dbname.SetWindowText(prefs.pt_dbname().GetString());
-
-	text.Format("%d", prefs.pt_cache_refresh());
-	m_CacheRefresh.SetWindowText(text);
-	m_CacheRefresh_Spin.SetRange(15, 240);
-	m_CacheRefresh_Spin.SetPos(prefs.pt_cache_refresh());
-	m_CacheRefresh_Spin.SetBuddy(&m_CacheRefresh);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -82,9 +74,6 @@ void CDlgSAPrefs6::OnOK()
 
 	m_pt_dbname.GetWindowText(text);
 	prefs.set_pt_dbname(text);
-
-	m_CacheRefresh.GetWindowText(text);
-	prefs.set_pt_cache_refresh(atoi(text.GetString()));
 
 	CSAPrefsSubDlg::OnOK();
 }
