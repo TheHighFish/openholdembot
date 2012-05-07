@@ -143,8 +143,6 @@
 #define IDC_PT_DBNAME                   1104
 #define IDC_PT_DBNAME2                  1105
 #define IDC_DEFAULT_PERL_FORMULA        1105
-#define IDC_CACHEREFRESH_SPIN           1107
-#define IDC_CACHEREFRESH                1108
 #define IDC_ICM_1                       1110
 #define IDC_ICM_2                       1111
 #define IDC_ICM_3                       1112

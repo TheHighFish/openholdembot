@@ -86,7 +86,6 @@ void CPreferences::InitDefaults(void)
 	_pt_user = "pokertracker";
 	_pt_pass = "";
 	_pt_dbname = "";
-	_pt_cache_refresh = 120;
 
 	// ICM
 	_icm_prize1 = 0.5;
@@ -260,7 +259,6 @@ void CPreferences::ReadPreferences()
 		ReadReg("pt_user", &_pt_user);
 		ReadReg("pt_pass", &_pt_pass);
 		ReadReg("pt_dbname", &_pt_dbname);
-		ReadReg("pt_cacherefresh", &_pt_cache_refresh);
 
 		// prefs - ICM
 		ReadReg("icm_prize1", &_icm_prize1);

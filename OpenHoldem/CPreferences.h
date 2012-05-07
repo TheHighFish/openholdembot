@@ -58,7 +58,6 @@ public:
 	const CString pt_dbname() { return _pt_dbname; }
 	const CString pt_user() { return _pt_user; }
 	const CString pt_pass() { return _pt_pass; }
-	const int pt_cache_refresh() { return _pt_cache_refresh; }
 	// Perl
 	const CString perl_default_formula() { return _perl_default_formula; }
 	const CString perl_editor() { return _perl_editor; }
@@ -207,7 +206,6 @@ public:
 	void set_pt_dbname(const CString s) { ENT _pt_dbname = s; WriteReg("pt_dbname", s); }
 	void set_pt_user(const CString s) { ENT _pt_user = s; WriteReg("pt_user", s); }
 	void set_pt_pass(const CString s) { ENT _pt_pass = s; WriteReg("pt_pass", s); }
-	void set_pt_cache_refresh(const int i) { ENT _pt_cache_refresh = i; WriteReg("pt_cacherefresh", i); }
 
 	// Perl
 	void set_perl_default_formula(const CString s) { ENT _perl_default_formula = s; WriteReg("perl_default_formula", s); }
@@ -372,7 +370,6 @@ private:
 	CString			_pt_dbname;
 	CString			_pt_user;
 	CString			_pt_pass;
-	int				_pt_cache_refresh;
 
 	// Perl
 	CString			_perl_default_formula;
