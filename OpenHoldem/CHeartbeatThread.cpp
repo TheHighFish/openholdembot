@@ -321,7 +321,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 		// Start Poker Tracker Thread if needed and not already running
 
-		if (p_symbols->sym()->issittingin && !prefs.pt_disable() && p_pokertracker_thread)
+		if (p_pokertracker_thread)
 		{
 			write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Starting PokerTracker thread.\n");
 			p_pokertracker_thread->StartThread();
