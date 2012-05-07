@@ -82,7 +82,7 @@ BOOL CDlgSAPrefs2::OnInitDialog()
 	m_SwagDelay3_Spin.SetPos(prefs.swag_delay_3());
 	m_SwagDelay3_Spin.SetBuddy(&m_SwagDelay3);
 
-	m_AutoAP.SetCheck(prefs.ap_auto() ? BST_CHECKED : BST_UNCHECKED);
+	m_AutoAP.SetCheck(prefs.engage_autoplayer() ? BST_CHECKED : BST_UNCHECKED);
 
 	m_SwagUseComma.SetCheck(prefs.swag_use_comma() ? BST_CHECKED : BST_UNCHECKED);
 
@@ -134,7 +134,7 @@ void CDlgSAPrefs2::OnOK()
 	}
 	prefs.set_swag_delay_3(strtoul(text.GetString(), 0, 10));
 
-	prefs.set_ap_auto(m_AutoAP.GetCheck()==BST_CHECKED ? true : false);
+	prefs.set_engage_autoplayer(m_AutoAP.GetCheck()==BST_CHECKED ? true : false);
 	prefs.set_swag_use_comma(m_SwagUseComma.GetCheck()==BST_CHECKED ? true : false);
 	
 	CSAPrefsSubDlg::OnOK();
