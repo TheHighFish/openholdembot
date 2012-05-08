@@ -818,15 +818,33 @@ void CHandHistory::ReconstructHand(bool contested)
 		int currentType = Hand_EVAL_TYPE(_history.chair[highest].hand,7);	//Find hand type
 		switch(currentType)
 		{
-		case StdRules_HandType_NOPAIR: outfile<<"no Pair."<<endl; break;
-		case StdRules_HandType_ONEPAIR: outfile<<"One Pair."<<endl; break;
-		case StdRules_HandType_TWOPAIR: outfile<<"Two Pair."<<endl; break;
-		case StdRules_HandType_TRIPS: outfile<<"Trips."<<endl; break;
-		case StdRules_HandType_STRAIGHT: outfile<<"a Straight."<<endl; break;
-		case StdRules_HandType_FLUSH: outfile<<"a Flush."<<endl; break;
-		case StdRules_HandType_FULLHOUSE: outfile<<"a Fullhouse."<<endl; break;
-		case StdRules_HandType_QUADS: outfile<<"Quads."<<endl; break;
-		case StdRules_HandType_STFLUSH: outfile<<"a Straight Flush."<<endl; break;
+			case StdRules_HandType_STFLUSH: 
+				outfile<<"a Straight Flush."<<endl; 
+				break;
+			case StdRules_HandType_QUADS: 
+				outfile<<"Quads."<<endl; 
+				break;
+			case StdRules_HandType_FULLHOUSE: 
+				outfile<<"a Fullhouse."<<endl; 
+				break;
+			case StdRules_HandType_FLUSH: 
+				outfile<<"a Flush."<<endl; 
+				break;
+			case StdRules_HandType_STRAIGHT: 
+				outfile<<"a Straight."<<endl; 
+				break;
+			case StdRules_HandType_TRIPS: 
+				outfile<<"Trips."<<endl; 
+				break;
+			case StdRules_HandType_TWOPAIR: 
+				outfile<<"Two Pair."<<endl; 
+				break;
+			case StdRules_HandType_ONEPAIR: 
+				outfile<<"One Pair."<<endl; 
+				break;
+			case StdRules_HandType_NOPAIR: 
+				outfile<<"no Pair."<<endl; 
+				break;
 		}
 	}
 	else if(!contested)
