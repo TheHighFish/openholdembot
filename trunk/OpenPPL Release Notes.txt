@@ -1,10 +1,15 @@
 v1.0.7 2012-xx-yy
 =================
 BUG FIXES: 
-- Redesigned decision-function affected BotsLastAction.
+- Redesigned decision-function affected BotsLastAction
+  and f$alli (in case a potsized bet was larger than our stack).
   This has now been fixed. 
-  Thanks to Lavezzi for reporting and for the help.
+  Thanks to Lavezzi and Postenjak for reporting and for the help.
   [THF]
+- HaveNutStraight didn't consider NutStraightFluahes.
+  Thanks to Lavezzi for reporting.
+  [THF]
+  
 NEW STUFF:
 
 v1.0.6 2012-04-23
