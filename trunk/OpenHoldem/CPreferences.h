@@ -34,7 +34,7 @@ public:
 	const unsigned int swag_delay_1() { return _swag_delay_1; }
 	const unsigned int swag_delay_2() { return _swag_delay_2; }
 	const unsigned int swag_delay_3() { return _swag_delay_3; }
-	const bool ap_auto() { return _ap_auto; }
+	const bool engage_autoplayer() { return _engage_autoplayer; }
 	const bool swag_use_comma() { return _swag_use_comma; }
 
 	// Dll extension
@@ -178,7 +178,7 @@ public:
 	void set_swag_delay_1(const unsigned int i) { ENT _swag_delay_1 = i; WriteReg("swag_delay_1", (int) i); }
 	void set_swag_delay_2(const unsigned int i) { ENT _swag_delay_2 = i; WriteReg("swag_delay_2", (int) i); }
 	void set_swag_delay_3(const unsigned int i) { ENT _swag_delay_3 = i; WriteReg("swag_delay_3", (int) i); }
-	void set_ap_auto(const bool b) { ENT _ap_auto = b; WriteReg("auto", (int) b!=false); }
+	void set_engage_autoplayer(const bool b) { ENT _engage_autoplayer = b; WriteReg("auto", (int) b!=false); }
 	void set_swag_use_comma(const bool b) { ENT _swag_use_comma = b; WriteReg("swag_use_comma", (int) b!=false); }
 
 	// Dll extension
@@ -342,7 +342,7 @@ private:
 	unsigned int		_swag_delay_1;
 	unsigned int		_swag_delay_2;
 	unsigned int		_swag_delay_3;
-	bool				_ap_auto;
+	bool				_engage_autoplayer;
 	bool				_swag_use_comma;
 
 	// Dll extension

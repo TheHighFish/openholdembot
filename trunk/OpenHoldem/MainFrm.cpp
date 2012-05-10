@@ -14,6 +14,7 @@
 #include "CFormula.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
+#include "COpenHoldemStatusbar.h"
 #include "CPerl.hpp"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
@@ -153,22 +154,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_SYSCOMMAND()
 END_MESSAGE_MAP()
 
-static UINT indicators[] = 
-{
-	ID_SEPARATOR,		   // status line indicator
-//	ID_INDICATOR_CAPS,
-//	ID_INDICATOR_NUM,
-//	ID_INDICATOR_SCRL,
-	ID_INDICATOR_STATUS_PLCARDS,
-	ID_INDICATOR_STATUS_COMCARDS,
-	ID_INDICATOR_STATUS_POKERHAND,
-	ID_INDICATOR_STATUS_HANDRANK,
-	ID_INDICATOR_STATUS_PRWIN,
-	ID_INDICATOR_STATUS_NOPP,
-	ID_INDICATOR_STATUS_nit,
-	ID_INDICATOR_STATUS_ACTION,
-};
-
 // CMainFrame construction/destruction
 CMainFrame::CMainFrame() 
 {
@@ -237,7 +222,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	AlignToolbars();
 
 	// Status bar
-	CreateStatusBar();
+	p_openholdem_statusbar = new COpenHoldemStatusbar(this);
 
 	// Set toolbar button status
 	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
@@ -370,26 +355,6 @@ void CMainFrame::AlignToolbars(void)
 	DockControlBar(&_tool_bar, AFX_IDW_DOCKBAR_TOP, rectBar2); //will be second
 
 	RecalcLayout();
-}
-
-int CMainFrame::CreateStatusBar(void) 
-{
-	if (!_status_bar.Create(this) || !_status_bar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT)))	
-	{
-		TRACE0("Failed to create status bar\n");
-		return -1;	  // fail to create
-	}
-	_status_bar.SetPaneInfo(0, ID_SEPARATOR, SBPS_STRETCH | SBPS_NOBORDERS, 0);
-	_status_bar.SetPaneInfo(1, ID_INDICATOR_STATUS_PLCARDS, NULL, 30);
-	_status_bar.SetPaneInfo(2, ID_INDICATOR_STATUS_COMCARDS, NULL, 75);
-	_status_bar.SetPaneInfo(3, ID_INDICATOR_STATUS_POKERHAND, NULL, 65);
-	_status_bar.SetPaneInfo(4, ID_INDICATOR_STATUS_HANDRANK, NULL, 55);
-	_status_bar.SetPaneInfo(5, ID_INDICATOR_STATUS_PRWIN, NULL, 62);
-	_status_bar.SetPaneInfo(6, ID_INDICATOR_STATUS_NOPP, NULL, 15);
-	_status_bar.SetPaneInfo(7, ID_INDICATOR_STATUS_nit, NULL, 90);
-	_status_bar.SetPaneInfo(8, ID_INDICATOR_STATUS_ACTION, NULL, 70);
-
-	return 0;
 }
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) 
@@ -716,7 +681,7 @@ void CMainFrame::OnBnClickedRedCircle()
 
 void CMainFrame::OnTimer(UINT nIDEvent) 
 {
-	CardMask		Cards;
+	
 	int				nCards = 0;
 	HandVal			hv = 0;
 	char			hvstring[100] = {0};
@@ -779,138 +744,10 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 			m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, false);
 
 	}
-
 	else if (nIDEvent == UPDATE_STATUS_BAR_TIMER) 
 	{
-		// Figure out if I am "notplaying"
-		int sym_userchair = (int) p_symbols->sym()->userchair;
-
-		if (p_scraper->card_player(sym_userchair, 0) == CARD_BACK || 
-			p_scraper->card_player(sym_userchair, 0) == CARD_NOCARD || 
-			p_scraper->card_player(sym_userchair, 1) == CARD_BACK || 
-			p_scraper->card_player(sym_userchair, 1) == CARD_NOCARD)
-		{
-			p_symbols->set_sym_playing(false); 
-			playing = false; 
-		}
-		else
-		{
-			p_symbols->set_sym_playing(true); 
-			playing = true;
-		}
-
-		// Player cards
-		CardMask_RESET(Cards);
-		nCards=0;
-		_status_plcards = "";
-		if (p_symbols->user_chair_confirmed() && playing) 
-		{
-			for (i=0; i<k_number_of_cards_per_player; i++) 
-			{
-				// player cards
-				if (p_scraper->card_player(sym_userchair, i) != CARD_BACK && 
-					p_scraper->card_player(sym_userchair, i) != CARD_NOCARD) 
-				{
-					card = StdDeck_cardString(p_scraper->card_player(sym_userchair, i));
-					temp.Format("%s ", card);
-					_status_plcards.Append(temp);
-					CardMask_SET(Cards, p_scraper->card_player(sym_userchair, i));
-					nCards++;
-				}
-			}
-		}
-		else 
-		{
-			for (i=0; i<k_number_of_cards_per_player; i++) 
-			{
-				if (p_scraper->card_player_for_display(i) != CARD_BACK && 
-					p_scraper->card_player_for_display(i) != CARD_NOCARD) 
-				{
-					card = StdDeck_cardString(p_scraper->card_player_for_display(i));
-					temp.Format("%s ", card);
-					_status_plcards.Append(temp);
-					CardMask_SET(Cards, p_scraper->card_player_for_display(i));
-					nCards++;
-				}
-			}
-		}
-
-		// Common cards
-		_status_comcards = "";
-		for (i=0; i<k_number_of_community_cards; i++) 
-		{
-			if (p_scraper->card_common(i) != CARD_BACK && 
-				p_scraper->card_common(i) != CARD_NOCARD) 
-			{
-				card = StdDeck_cardString(p_scraper->card_common(i));
-				temp.Format("%s ", card);
-				_status_comcards.Append(temp);
-				CardMask_SET(Cards, p_scraper->card_common(i));
-				nCards++;
-			}
-		}
-
-		// poker hand
-		hv = Hand_EVAL_N(Cards, nCards);
-		HandVal_toString(hv, hvstring);
-		_status_pokerhand = hvstring;
-		_status_pokerhand = _status_pokerhand.Mid(0, _status_pokerhand.Find(" "));
-
-		// Always use handrank169 here
-		_status_handrank.Format("%.0f/169", p_symbols->sym()->handrank169);
-
-		// nopponents
-		if (playing)
-			_status_nopp.Format("%d", (int) p_symbols->sym()->nopponents);
-
-		else
-			_status_nopp = "";
-
-		// Always update prwin/nit
-		if (p_symbols->user_chair_confirmed() && playing)
-		{
-			_status_prwin.Format("%d/%d/%d", 
-				(int) (iter_vars.prwin()*1000), 
-				(int) (iter_vars.prtie()*1000),
-				(int) (iter_vars.prlos()*1000));
-			int	e = SUCCESS;
-			_status_nit.Format("%d/%d", 
-				iter_vars.iterator_thread_progress(),
-				(int) p_symbols->GetSymbolVal("f$prwin_number_of_iterations", &e));
-		}
-		else
-		{
-			_status_prwin = "0/0/0";
-			int	e = SUCCESS;
-			_status_nit.Format("0/%d", (int) p_symbols->GetSymbolVal("f$prwin_number_of_iterations", &e));
-		}
-
-		// action
-		if (!p_symbols->user_chair_confirmed() || !playing)
-			_status_action = "Notplaying";
-
-		else if (p_autoplayer_functions->f$prefold())
-		{
-			_status_action = "Pre-fold";
-		}
-
-		else if (p_symbols->user_chair_confirmed() && iter_vars.iterator_thread_complete())
-		{
-			if (!p_symbols->sym()->isfinalanswer) _status_action = "N/A";
-			else if (p_autoplayer_functions->f$alli())    _status_action = "Allin";
-			else if (p_autoplayer_functions->f$betsize()) _status_action.Format("Betsize: %.2f", p_autoplayer_functions->f$betsize());
-			else if (p_autoplayer_functions->f$rais())    _status_action = "Bet/Raise";
-			else if (p_autoplayer_functions->f$call())    _status_action = "Call/Check";
-			else  _status_action = "Fold/Check";
-		}
-
-		else if (p_symbols->sym()->nopponents==0)
-			_status_action = "Idle (f$P==0)";
-
-		else
-			_status_action = "Thinking";
+		//!!!p_openholdem_statusbar->Update();
 	}
-
 	else if (nIDEvent == ATTACH_WINDOW_TIMER)
 	{
 		::GetWindowRect(p_autoconnector->attached_hwnd(), &att_rect);
@@ -1006,15 +843,7 @@ void CMainFrame::OnValidator()
 
 void CMainFrame::OnUpdateStatus(CCmdUI *pCmdUI) 
 {
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PLCARDS), _status_plcards);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_COMCARDS), _status_comcards);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_POKERHAND), _status_pokerhand);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_HANDRANK), _status_handrank);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PRWIN), _status_prwin);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_NOPP), _status_nopp);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_nit), _status_nit);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_ACTION), _status_action);
-	// if action==bet ... _status_bar.GetStatusBarCtrl().SetBkColor(RGB(180,180,180));
+
 }
 
 void CMainFrame::OnDllLoad() 
@@ -1081,13 +910,12 @@ void CMainFrame::OnMinMax(void)
 	GetClientRect(&crect);
 	GetWindowRect(&wrect);
 
-
 	if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_MINMAX)) 
 	{
 		GetWindowRect(&_table_view_size);
 		m_MainToolBar.GetWindowRect(&rectBar1);
 		_tool_bar.GetWindowRect(&rectBar2);
-		_status_bar.GetWindowRect(&statusBar);
+		p_openholdem_statusbar->GetWindowRect(&statusBar);
 
 		// figure out size of toolbars
 		if (m_MainToolBar.IsFloating() && _tool_bar.IsFloating()) {
@@ -1220,16 +1048,6 @@ void CMainFrame::OnFormulaViewFlagsToolbar()
 	RecalcLayout();
 }
 
-void CMainFrame::OnFormulaViewStatusbar() 
-{
-	if (!_status_bar.IsVisible())
-		ShowControlBar(&_status_bar, TRUE, FALSE);
-
-	else
-		ShowControlBar(&_status_bar, FALSE, FALSE);
-
-	RecalcLayout();
-}
 
 BOOL CMainFrame::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
