@@ -1,6 +1,7 @@
 #ifndef _INC_MAGICNUMBERS_H 
-
 #define _INC_MAGICNUMBERS_H
+
+#include "resource.h"
 
 // ATTENTION!
 //   Do only use elementary data-types here.
@@ -440,6 +441,23 @@ const bool k_ThisMustNotHappen = false;
 // For loggong
 const bool k_always_log_errors = true;
 const bool k_always_log_basic_information = true;
+
+// Statusbar
+static UINT indicators[] = 
+{
+	ID_SEPARATOR,		   // status line indicator
+//	ID_INDICATOR_CAPS,
+//	ID_INDICATOR_NUM,
+//	ID_INDICATOR_SCRL,
+	ID_INDICATOR_STATUS_PLCARDS,
+	ID_INDICATOR_STATUS_COMCARDS,
+	ID_INDICATOR_STATUS_POKERHAND,
+	ID_INDICATOR_STATUS_HANDRANK,
+	ID_INDICATOR_STATUS_PRWIN,
+	ID_INDICATOR_STATUS_NOPP,
+	ID_INDICATOR_STATUS_nit,
+	ID_INDICATOR_STATUS_ACTION,
+};
 
 enum PokerTrackerGameTypes
 {

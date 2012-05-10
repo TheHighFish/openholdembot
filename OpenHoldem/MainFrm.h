@@ -121,10 +121,7 @@ private:
 	void AlignToolbars(void);
 	int CreateStatusBar(void);
 
-	CStatusBar		_status_bar;
 	CMyToolBar		_tool_bar;
-	CString			_status_plcards, _status_comcards, _status_pokerhand, _status_prwin, _status_nopp;
-	CString			_status_nit, _status_action, _status_handrank;
 	RECT			_table_view_size;
 	bool			_autoplay_pressed;
 	RECT			_prev_att_rect, _prev_wrect;

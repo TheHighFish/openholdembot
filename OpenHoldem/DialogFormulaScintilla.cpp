@@ -194,7 +194,7 @@ static UINT m_lpaIDToolBar[] =
 	ID_FORMULA_TOOLBAR_HANDLIST
 };
 
-static UINT indicators[] = 
+static UINT formula_indicators[] = 
 {
 	ID_SEPARATOR,		   // status line indicator
 	ID_INDICATOR_FORMULA_CURPOS,
@@ -543,7 +543,7 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
 
 	// Status bar
 	m_wndStatusBar.Create(this);
-	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
+	m_wndStatusBar.SetIndicators(formula_indicators, sizeof(formula_indicators)/sizeof(UINT));
 	m_wndStatusBar.SetPaneInfo(0, ID_SEPARATOR, SBPS_STRETCH | SBPS_NOBORDERS, 0);
 	m_wndStatusBar.SetPaneInfo(1, ID_INDICATOR_FORMULA_CURPOS, NULL, 100);
 	m_wndStatusBar.SetPaneText(1, "Line: 1, Col: 1");
