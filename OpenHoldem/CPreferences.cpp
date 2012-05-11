@@ -70,13 +70,6 @@ void CPreferences::InitDefaults(void)
 	// http://www.maxinmontreal.com/forums/viewtopic.php?f=112&t=11556
 	_dll_name = "";
 
-	// Blind locking
-	_sblind = 5;
-	_bblind = 10;
-	_bbet = 20;
-	_ante = 0;
-	_gametype = k_gametype_NL;
-
 	// scraper zoom level
 	_scraper_zoom = 2;  // 4x
 
@@ -272,13 +265,6 @@ void CPreferences::ReadPreferences()
 		ReadReg("replay_record_every_change", &_replay_record_every_change);
 		ReadReg("replay_max_frames", &_replay_max_frames);
 		ReadReg("replay_record_every_change_playing", &_replay_record_every_change_playing);
-
-		// blind locking
-		ReadReg("sblind", &_sblind);
-		ReadReg("bblind", &_bblind);
-		ReadReg("bbet", &_bbet);
-		ReadReg("ante", &_ante);
-		ReadReg("gametype", &_gametype);
 
 		// scraper zoom level
 		ReadReg("scraper_zoom", &_scraper_zoom);

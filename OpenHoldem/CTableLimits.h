@@ -34,8 +34,6 @@ public:
 	double bet(int betround);
 	double bet(); // for current betting round
 public:
-	bool BlindsLockedManually() { return blinds_locked_manually; }
-public:
 	int gametype()		{ return _gametype; }	// former p_symbols->sym()->lim
 	double isnl()		{ return (gametype() == k_gametype_NL); }
 	double ispl()		{ return (gametype() == k_gametype_PL); }
@@ -72,13 +70,11 @@ private:
 private:
 	bool blinds_locked_for_current_hand; 
 	bool blinds_locked_for_complete_session;
-	bool blinds_locked_manually;
 private:
 	STableLimit tablelimit_unreliable_input;
 	STableLimit tablelimit_last_known_good_value;
 	STableLimit tablelimit_locked_for_current_hand;
 	STableLimit tablelimit_locked_for_complete_session;
-	STableLimit tablelimit_locked_manually;
 private:
 	static const int k_number_of_hands_to_autolock_blinds_for_cashgames = 5;
 	int number_of_saved_tablelimits;

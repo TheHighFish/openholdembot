@@ -26,7 +26,6 @@
 #include "..\CTransform\CTransform.h"
 #include "CValidator.h"
 #include "DialogFormulaScintilla.h"
-#include "DialogLockBlinds.h"
 #include "DialogSAPrefs2.h"
 #include "DialogSAPrefs3.h"
 #include "DialogSAPrefs4.h"
@@ -109,7 +108,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_MINMAX, &CMainFrame::OnMinMax)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_ATTACH_TOP, &CMainFrame::OnAttachTop)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, &CMainFrame::OnAttachBottom)
-	ON_BN_CLICKED(ID_MAIN_TOOLBAR_LOCK_BLINDS, &CMainFrame::OnLockBlinds)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, &CMainFrame::OnScraperOutput)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_SHOOTFRAME, &CMainFrame::OnViewShootreplayframe)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_HELP, &CMainFrame::OnHelp)
@@ -1000,31 +998,6 @@ void CMainFrame::OnAttachBottom(void)
 	}
 }
 
-void CMainFrame::OnLockBlinds(void)
-{
-	CDlgLockBlinds	lockblinds_dlg;
-
-	if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_LOCK_BLINDS)) 
-	{
-		
-		lockblinds_dlg.sblind = prefs.sblind();
-		lockblinds_dlg.bblind = prefs.bblind();
-		lockblinds_dlg.bbet = prefs.bbet();
-		lockblinds_dlg.ante = prefs.ante();
-		lockblinds_dlg.gametype = prefs.gametype();
-
-		if (lockblinds_dlg.DoModal() == IDOK) 
-		{
-			p_tablelimits->LockBlindsManually(lockblinds_dlg.sblind, lockblinds_dlg.bblind,
-				lockblinds_dlg.bbet, lockblinds_dlg.ante, lockblinds_dlg.gametype);
-		}
-		else 
-		{
-			p_tablelimits->UnLockBlindsManually();
-			m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_LOCK_BLINDS, false);
-		}
-	}
-}
 
 void CMainFrame::OnFormulaViewMainToolbar() 
 {
