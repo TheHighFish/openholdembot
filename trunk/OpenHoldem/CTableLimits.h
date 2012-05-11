@@ -24,7 +24,6 @@ public:
 	void ResetEachHeartBeatCycle();
 	void CalcTableLimits();
 	void LockBlindsManually(double small_blind, double big_blind, double big_bet, double ante, int gametype);
-	void UnLockBlindsManually();
 public:
 	// public accessors, formerly part of the symbol-structure.
 	double sblind();
