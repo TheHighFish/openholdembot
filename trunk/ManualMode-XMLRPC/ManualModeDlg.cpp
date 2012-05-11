@@ -2722,7 +2722,10 @@ void CManualModeDlg::DoRaise(int chair, double raise)
 {
 	double diff, raise_amt;
 
-	raise_amt = get_br()>=3 && limit==LIMIT_FL ? atof(bblind)*2 :atof(bblind);
+	if(raise)
+		raise_amt = raise;
+	else
+		raise_amt = get_br()>=3 && limit==LIMIT_FL ? atof(bblind)*2 :atof(bblind);
 
 	diff = get_current_bet() + raise_amt - atof(playerbet[chair]);
 	if (diff > atof(playerbalance[chair])) 
