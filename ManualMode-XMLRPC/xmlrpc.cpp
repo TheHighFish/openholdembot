@@ -494,9 +494,9 @@ void xServerThread(void* dlg)
 
 	xServer = new xmlrpc_c::serverAbyss(
 			*myRegistry,
-			9092,              // TCP port on which to listen
-			"H:/xmlrpc.log"  // Log file
+			9092              // TCP port on which to listen
 			);
+
 	xServer->run();
 }
 
