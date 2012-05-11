@@ -26,7 +26,6 @@
 #define IDR_FLAGS                       148
 #define IDR_FORMULA_EDIT_ACC            148
 #define IDD_FORMULA_SCINTILLA           155
-#define IDD_LOCK_BLINDS                 157
 #define IDD_SCRAPER_OUTPUT              158
 #define IDD_PROGRESS_DIALOG             160
 #define IDD_SAPREFS                     162
@@ -113,12 +112,7 @@
 #define IDC_DEPOSITAMOUNT               1070
 #define IDC_SCINTILLA_FORMULA_TREE      1075
 #define IDC_SCINTILLA_CALC_RESULT       1076
-#define IDC_LOCK_BLINDS_SMALL_BLIND     1077
-#define IDC_LOCK_BLINDS_BIG_BLIND2      1078
-#define IDC_LOCK_BLINDS_BIG_BET         1079
-#define IDC_LOCK_BLINDS_ANTE            1080
 #define IDC_COMBO1                      1081
-#define IDC_LOCK_BLINDS_GAME_TYPE       1081
 #define IDC_DEBUGLEVEL                  1081
 #define IDC_REGIONLIST                  1083
 #define IDC_SCRAPERRESULT               1084
@@ -481,7 +475,6 @@
 #define ID_FORMULA_VIEW_SHOWBOOKMARKMARGIN 32907
 #define ID_FORMULA_VIEW_SHOWFOLDINGMARGIN 32908
 #define ID_FORMULA_VIEW_SHOWSELECTIONMARGIN 32909
-#define ID_MAIN_TOOLBAR_LOCK_BLINDS     32912
 #define ID_DEBUG_LOGF                   32916
 #define ID_FORMULA_DEBUG_LOGFDEBUG      32917
 #define ID_DEBUG_ONLYWHEnit             32918
@@ -532,7 +525,6 @@
 #define ID_HELP_HELP                    32988
 #define ID_HELP_DOCUMENTATIONWIKI       32989
 #define ID_HELP_FORUMS                  32990
-#define ID_FORMULA_TOOLBAR_LOCK_BLINDS  32991
 #define ID_MAIN_TOOLBAR_HELP            32992
 #define ID_Menu32993                    32993
 #define ID_FILE_LOAD_OPENPPL            32994

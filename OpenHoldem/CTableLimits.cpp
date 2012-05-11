@@ -17,7 +17,6 @@ CTableLimits	*p_tablelimits = NULL;
 CTableLimits::CTableLimits()
 {
 	ResetOnConnection();
-	UnLockBlindsManually();
 }
 
 CTableLimits::~CTableLimits()
