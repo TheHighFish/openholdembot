@@ -5,6 +5,9 @@
 
 xmlrpc_c::serverAbyss* xServer = NULL;
 
+bool waiting_for_action = false;
+HANDLE button_events[6]; // FCKRA, Canceled
+
 class MMDlgMethod: public xmlrpc_c::method
 {
 	protected:
@@ -403,8 +406,67 @@ class ProvideEventsHandling: public MMDlgMethod
 		}
 };
 
+class GetAction: public MMDlgMethod
+{
+	public:
+		GetAction(CManualModeDlg* pdlg): MMDlgMethod(pdlg){}
+
+		void execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
+		{
+			DWORD result;
+
+			if(waiting_for_action)
+				throw(xmlrpc_c::fault("Other client is waiting for action right now.", xmlrpc_c::fault::CODE_REQUEST_REFUSED));
+
+			waiting_for_action = true;
+			dlg->Refresh();
+			result = WaitForMultipleObjects(6, button_events, false, INFINITE);
+
+			if(result == WAIT_OBJECT_0)
+				*retvalP = xmlrpc_c::value_string("F");
+			else if(result == WAIT_OBJECT_0 + 1)
+				*retvalP = xmlrpc_c::value_string("C");
+			else if(result == WAIT_OBJECT_0 + 2)
+				*retvalP = xmlrpc_c::value_string("K");
+			else if(result == WAIT_OBJECT_0 + 3)
+				*retvalP = xmlrpc_c::value_string("R");
+			else if(result == WAIT_OBJECT_0 + 4)
+				*retvalP = xmlrpc_c::value_string("A");
+			else if(result == WAIT_OBJECT_0 + 5)
+			{
+				waiting_for_action = false;
+				throw(xmlrpc_c::fault("Canceled", xmlrpc_c::fault::CODE_INTERNAL));
+			}
+			waiting_for_action = false;
+		}
+};
+
+class CancelGetAction: public MMDlgMethod
+{
+	public:
+		CancelGetAction(CManualModeDlg* pdlg): MMDlgMethod(pdlg){}
+
+		void execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
+		{
+			if(waiting_for_action)
+			{
+				SetEvent(button_events[5]);
+				*retvalP = xmlrpc_c::value_boolean(true);
+			} else {
+				*retvalP = xmlrpc_c::value_boolean(false);
+			}
+		}
+};
+
 void xServerThread(void* dlg)
 {
+	button_events[0] = CreateEvent(NULL, FALSE, FALSE, NULL); // F
+	button_events[1] = CreateEvent(NULL, FALSE, FALSE, NULL); // C
+	button_events[2] = CreateEvent(NULL, FALSE, FALSE, NULL); // K
+	button_events[3] = CreateEvent(NULL, FALSE, FALSE, NULL); // R
+	button_events[4] = CreateEvent(NULL, FALSE, FALSE, NULL); // A
+	button_events[5] = CreateEvent(NULL, FALSE, FALSE, NULL); // Canceled
+
 	xmlrpc_c::registry* myRegistry = NULL;
 	myRegistry = new xmlrpc_c::registry;
 
@@ -491,6 +553,12 @@ void xServerThread(void* dlg)
 
 	xmlrpc_c::methodPtr const ProvideEventsHandlingP(new ProvideEventsHandling((CManualModeDlg*) dlg));
 	myRegistry->addMethod("ProvideEventsHandling", ProvideEventsHandlingP);
+
+	xmlrpc_c::methodPtr const GetActionP(new GetAction((CManualModeDlg*) dlg));
+	myRegistry->addMethod("GetAction", GetActionP);
+
+	xmlrpc_c::methodPtr const CancelGetActionP(new CancelGetAction((CManualModeDlg*) dlg));
+	myRegistry->addMethod("CancelGetAction", CancelGetActionP);
 
 	xServer = new xmlrpc_c::serverAbyss(
 			*myRegistry,

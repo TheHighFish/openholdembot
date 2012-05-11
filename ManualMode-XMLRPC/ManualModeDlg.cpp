@@ -1583,6 +1583,28 @@ void CManualModeDlg::OnLButtonUp(UINT nFlags, CPoint point)
 	// Clicked on a button indicator
 	if  ( click_loc>=FB && click_loc<=APB ) 
 	{
+		if(waiting_for_action)
+		{
+			switch(click_loc)
+			{
+			case FB:
+				SetEvent(button_events[0]);
+				break;
+			case CB:
+				SetEvent(button_events[1]);
+				break;
+			case KB:
+				SetEvent(button_events[2]);
+				break;
+			case RB:
+				SetEvent(button_events[3]);
+				break;
+			case AB:
+				SetEvent(button_events[4]);
+				break;
+			}
+		}
+
 		if(xClient)
 		{
 			ClientData*  cd = new ClientData;

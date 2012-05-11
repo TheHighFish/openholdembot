@@ -9,6 +9,7 @@
 #include "OptionsDlg.h"
 
 #include "xmlrpc.h"
+#include <windows.h>
 
 // Cards
 #define CARD_BACK		0xff
@@ -26,6 +27,8 @@
 // Startup path
 extern char	startup_path[MAX_PATH];
 
+extern bool waiting_for_action;
+extern HANDLE button_events[6]; // FCKRA
 
 enum {
 	P0C0, P0C1, P1C0, P1C1, P2C0, P2C1, P3C0, P3C1, P4C0, P4C1, 
