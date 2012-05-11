@@ -759,10 +759,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\DialogLockBlinds.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\DialogNew.cpp"
 					>
 				</File>
@@ -1406,10 +1402,6 @@
 				</File>
 				<File
 					RelativePath=".\DialogHandList.h"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogLockBlinds.h"
 					>
 				</File>
 				<File

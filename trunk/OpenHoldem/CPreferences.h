@@ -113,12 +113,6 @@ public:
 	const int formula_y() { return _formula_y; }
 	const int formula_dx() { return _formula_dx; }
 	const int formula_dy() { return _formula_dy; }	
-	// Blind locking
-	const double sblind() { return _sblind; }
-	const double bblind() { return _bblind; }
-	const double bbet() { return _bbet; }
-	const double ante() { return _ante; }
-	const int gametype() { return _gametype; }
 	// Formula editor
 	const bool expand_auto() { return _expand_auto; }
 	const bool expand_debug() { return _expand_debug; }
@@ -265,12 +259,6 @@ public:
 	void set_main_y(const int i) { ENT _main_y = i; WriteReg("main_y", i); }
 	void set_main_dx(const int i) { ENT _main_dx = i; WriteReg("main_dx", i); }
 	void set_main_dy(const int i) { ENT _main_dy = i; WriteReg("main_dy", i); }
-	// Blind locking
-	void set_sblind(const double d) { ENT _sblind = d; WriteReg("sblind", d); }
-	void set_bblind(const double d) { ENT _bblind = d; WriteReg("bblind", d); }
-	void set_bbet(const double d) { ENT _bbet = d; WriteReg("bbet", d); }
-	void set_ante(const double d) { ENT _ante = d; WriteReg("ante", d); }
-	void set_gametype(const int i) { ENT _gametype = i; WriteReg("gametype", i); }
 
 	// Formula editor
 	void set_expand_auto(const bool  b) { ENT _expand_auto = b; WriteReg("expand_auto", b); }
@@ -428,13 +416,6 @@ private:
 	int			_main_y;
 	int			_main_dx;
 	int			_main_dy;
-
-	// Blind locking
-	double			_sblind;
-	double			_bblind;
-	double			_bbet;
-	double			_ante;
-	int				_gametype;
 
 	// Formula editor
 	bool			_expand_auto;

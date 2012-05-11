@@ -1704,63 +1704,42 @@ void CScraper::ScrapeLimits()
 			write_log(prefs.debug_scraper(), "[CScraper] c0handnumber%d, result %s\n", j, text.GetString());
 		}
 	}
-	if (p_tablelimits->BlindsLockedManually()) 
-	{
-		set_sblind(p_tablelimits->sblind());
-		set_found_sblind(true);
-		set_bblind(p_tablelimits->bblind());
-		set_found_bblind(true);
-		set_bbet(p_tablelimits->bbet());
-		set_found_bbet(true);
-		set_ante(p_tablelimits->ante());
-		set_found_ante(true);
-		set_limit(p_tablelimits->gametype());
-		set_found_limit(true);
+	double l_sblind=0., l_bblind=0., l_bbet=0., l_ante=0., l_sb_bb=0., l_bb_BB=0.;
+	int l_limit=0;
+	bool l_found_handnumber=false, l_found_sblind=false, l_found_bblind=false;
+	bool l_found_bbet=false, l_found_ante=false, l_found_limit=false, l_found_sb_bb=false;
+	bool l_found_bb_BB=false;
 
-		write_log(prefs.debug_scraper(), "[CScraper] Locked blinds, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", 
+	// These are scraped from specific regions earlier in this
+	// function.  Use the values we scraped (if any) to seed
+	// the l_ locals so that we don't blindly overwrite the
+	// information we scraped from those specific regions with
+	// default values if we can't find them in the titlebar.
+	CString l_handnumber = handnumber;
+	bool l_istournament = istournament;
+
+	// s$ttlimits - Scrape blinds/stakes/limit info from title text
+	s_iter = p_tablemap->s$()->find("ttlimits");
+	if (s_iter != p_tablemap->s$()->end())
+	{
+		GetWindowText(p_autoconnector->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
+		titletext = c_titletext;
+	 	
+		// Give scraper-pre DLL a chance to modify title text
+		if (theApp._dll_scraperpreprocessor_process_message)
+		{
+			(theApp._dll_scraperpreprocessor_process_message) ("ttlimits", &titletext);
+		}
+
+		trans.ParseStringBSL(
+			titletext, s_iter->second.text, NULL,
+			&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_istournament, 
+			&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
+			&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
+
+		write_log(prefs.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", 
 			p_tablelimits->sblind(), p_tablelimits->bblind(), p_tablelimits->bbet(), 
 			p_tablelimits->ante(), p_tablelimits->gametype());
-	}
-
-	else
-	{
-		double l_sblind=0., l_bblind=0., l_bbet=0., l_ante=0., l_sb_bb=0., l_bb_BB=0.;
-		int l_limit=0;
-		bool l_found_handnumber=false, l_found_sblind=false, l_found_bblind=false;
-		bool l_found_bbet=false, l_found_ante=false, l_found_limit=false, l_found_sb_bb=false;
-		bool l_found_bb_BB=false;
-
-		// These are scraped from specific regions earlier in this
-		// function.  Use the values we scraped (if any) to seed
-		// the l_ locals so that we don't blindly overwrite the
-		// information we scraped from those specific regions with
-		// default values if we can't find them in the titlebar.
-		CString l_handnumber = handnumber;
-		bool l_istournament = istournament;
-
-		// s$ttlimits - Scrape blinds/stakes/limit info from title text
-		s_iter = p_tablemap->s$()->find("ttlimits");
-		if (s_iter != p_tablemap->s$()->end())
-		{
-			GetWindowText(p_autoconnector->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
-			titletext = c_titletext;
-		 	
-			// Give scraper-pre DLL a chance to modify title text
-			if (theApp._dll_scraperpreprocessor_process_message)
-			{
-				(theApp._dll_scraperpreprocessor_process_message) ("ttlimits", &titletext);
-			}
-
-			trans.ParseStringBSL(
-				titletext, s_iter->second.text, NULL,
-				&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_istournament, 
-				&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
-				&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
-
-			write_log(prefs.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", 
-				p_tablelimits->sblind(), p_tablelimits->bblind(), p_tablelimits->bbet(), 
-				p_tablelimits->ante(), p_tablelimits->gametype());
-		}
 
 		// s$ttlimitsX - Scrape blinds/stakes/limit info from title text
 		for (j=0; j<=9; j++)

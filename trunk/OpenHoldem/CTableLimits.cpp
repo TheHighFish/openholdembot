@@ -73,40 +73,6 @@ void CTableLimits::ResetBets()
 	}
 }
 
-void CTableLimits::UnLockBlindsManually()
-{
-	write_log(3, "CTableLimits::UnLockBlindsManually()\n");
-	blinds_locked_manually = false;
-	tablelimit_locked_manually.sblind = 0;
-	tablelimit_locked_manually.bblind = 0;
-	tablelimit_locked_manually.bbet   = 0;
-	// Forget everything we have remembered - treat it as a new connection.
-	ResetOnConnection();
-}
-
-void CTableLimits::LockBlindsManually(double small_blind, double big_blind, double big_bet, double ante, int gametype)
-{
-	assert(small_blind >= 0);
-	assert(big_blind >= 0);
-	assert(big_bet >= 0);
-	assert(ante >= 0);
-	assert(gametype >= k_gametype_unknown);
-	assert(gametype <= k_gametype_FL);
-	write_log(3, "CTableLimits::LockBlindsManually()\n");
-	blinds_locked_manually = true;
-	tablelimit_locked_manually.sblind = small_blind; 
-	tablelimit_locked_manually.bblind = big_blind;
-	tablelimit_locked_manually.bbet   = big_bet;
-	// Nothing to be locked here; Maybe in the future. !!
-	_gametype= gametype;
-	_ante = ante;
-	// Save locked blinds info for future use 
-	prefs.set_sblind(small_blind);
-	prefs.set_bblind(big_blind);
-	prefs.set_bbet(big_bet);
-	prefs.set_ante(ante);
-	prefs.set_gametype(gametype);
-}
 
 void CTableLimits::AutoLockBlindsForCashgamesAfterNHands()
 {
@@ -566,15 +532,12 @@ void CTableLimits::CalcTableLimits()
 		CalcTableLimits_FL_AndUnknownGametype();
 	}
 
-	// If we have NOT locked the blinds then do this stuff
-	if (!blinds_locked_manually) 
+	// if we still do not have blinds, then infer them from the posted bets
+	if (p_symbols->sym()->betround == k_betround_preflop && (tablelimit_unreliable_input.sblind==0 || tablelimit_unreliable_input.bblind==0))
 	{
-		// if we still do not have blinds, then infer them from the posted bets
-		if (p_symbols->sym()->betround == k_betround_preflop && (tablelimit_unreliable_input.sblind==0 || tablelimit_unreliable_input.bblind==0))
-		{
-			SearchTableForSbAndBbValue();			
-		}
+		SearchTableForSbAndBbValue();			
 	}
+
 	write_log(3, "CTableLimits: calculated result: small blind: %f\n", tablelimit_unreliable_input.sblind);
 	write_log(3, "CTableLimits: calculated result: big blind:   %f\n", tablelimit_unreliable_input.bblind);
 	write_log(3, "CTableLimits: calculated result: big bet:     %f\n", tablelimit_unreliable_input.bbet);
@@ -603,11 +566,7 @@ void CTableLimits::AcceptNewValuesIfGood()
 
 double CTableLimits::sblind()
 {
-	if (blinds_locked_manually)
-	{
-		return tablelimit_locked_manually.sblind;
-	}
-	else if (blinds_locked_for_complete_session)
+	if (blinds_locked_for_complete_session)
 	{
 		return tablelimit_locked_for_complete_session.sblind;
 	}
@@ -623,11 +582,7 @@ double CTableLimits::sblind()
 
 double CTableLimits::bblind()
 {
-	if (blinds_locked_manually)
-	{
-		return tablelimit_locked_manually.bblind;
-	}
-	else if (blinds_locked_for_complete_session)
+	if (blinds_locked_for_complete_session)
 	{
 		return tablelimit_locked_for_complete_session.bblind;
 	}
@@ -643,11 +598,7 @@ double CTableLimits::bblind()
 
 double CTableLimits::bbet()
 {
-	if (blinds_locked_manually)
-	{
-		return tablelimit_locked_manually.bbet;
-	}
-	else if (blinds_locked_for_complete_session)
+	if (blinds_locked_for_complete_session)
 	{
 		return tablelimit_locked_for_complete_session.bbet;
 	}
