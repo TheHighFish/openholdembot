@@ -31,6 +31,7 @@
 #define IDC_NETWORK                     1006
 #define IDC_DPLUS                       1007
 #define IDC_CHECK1                      1007
+#define IDC_SWAG                        1008
 #define IDC_SMALL_BLIND                 1077
 #define IDC_BIG_BLIND                   1078
 #define IDC_BIG_BET                     1079
@@ -132,7 +133,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        137
 #define _APS_NEXT_COMMAND_VALUE         32860
-#define _APS_NEXT_CONTROL_VALUE         1008
+#define _APS_NEXT_CONTROL_VALUE         1009
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif

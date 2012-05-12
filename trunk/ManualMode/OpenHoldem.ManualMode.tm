@@ -2,7 +2,7 @@
 
 // OpenScrape 2.0.0
 
-// 2009-03-05 11:55:20
+// 2012-05-12 17:57:25
 // 32 bits per pixel
 
 //
@@ -17,6 +17,9 @@ z$clientsize       574  335
 
 s$nchairs                   10
 s$sitename                  openholdem
+s$swagconfirmationmethod    Click Bet
+s$swagdeletionmethod        Backspace
+s$swagselectionmethod       Dbl Click
 s$swagtextmethod            2
 s$titletext                 Poker
 s$ttlimits                  ^*- ^L - blinds ^s/^b - ante ^a
@@ -44,6 +47,7 @@ r$i2button           542 320 553 331   ff0000    0 N
 r$i2label            544 322 551 330   ffffff    0 H0
 r$i2state            542 331 542 331   ffffff    0 C
 r$i3button           559 320 570 331   ff0000    0 N
+r$i3edit             513 293 563 304        0    0 N
 r$i3label            560 322 567 330   ffffff    0 H0
 r$i3state            559 331 559 331   ffffff    0 C
 r$i4button           525 320 536 331        0    0 N
