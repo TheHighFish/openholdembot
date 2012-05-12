@@ -167,6 +167,7 @@ CManualModeDlg::CManualModeDlg(CWnd* pParent /*=NULL*/) : CDialog(CManualModeDlg
 void CManualModeDlg::DoDataExchange(CDataExchange* pDX) 
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_SWAG, swag);
 }
 
 BOOL CManualModeDlg::DestroyWindow() 
@@ -264,6 +265,7 @@ BEGIN_MESSAGE_MAP(CManualModeDlg, CDialog)
 	ON_BN_CLICKED(IDC_MACRO, &CManualModeDlg::OnBnClickedMacro)
 	ON_BN_CLICKED(IDC_DMINUS, &CManualModeDlg::OnBnClickedDminus)
 	ON_BN_CLICKED(IDC_DPLUS, &CManualModeDlg::OnBnClickedDplus)
+	ON_EN_CHANGE(IDC_SWAG, &CManualModeDlg::OnEnChangeSwag)
 END_MESSAGE_MAP()
 
 // CManualModeDlg message handlers
@@ -438,6 +440,12 @@ void CManualModeDlg::OnPaint()
 
 		// Draw center info box
 		draw_center_info_box();
+
+		// Set visibility of swag text edit
+		if (limit == LIMIT_FL)
+			swag.ShowWindow(false);
+		else
+			swag.ShowWindow(true);
 
 		int shift = 0;
 		if (card[CC0+0] == CARD_NOCARD || card[CC0+1] == CARD_NOCARD || card[CC0+2] == CARD_NOCARD)
@@ -1272,6 +1280,25 @@ void CManualModeDlg::OnLButtonUp(UINT nFlags, CPoint point)
 	// Clicked on a button indicator
 	if  ( click_loc>=FB && click_loc<=APB ) 
 	{
+		if ( click_loc == RB )
+		{
+			int hero_chair = -1;
+			for (int i=0; i<k_max_number_of_players; i++)
+			{
+				int card_pos = i * 2;
+				if ( card[card_pos]!=CARD_NOCARD && card[card_pos]!=CARD_BACK )
+				{
+					hero_chair = i;
+					break;
+				}
+			}
+
+			if ( raise_amount!=0 && hero_chair!=-1 && buttonstate[3] )
+			{
+				DoRaise(hero_chair, raise_amount);
+				swag.SetWindowText("");
+			}
+		}
 		buttonstate[click_loc-FB] = !buttonstate[click_loc-FB];
 		InvalidateRect(NULL, true);
 	}
@@ -2361,20 +2388,28 @@ void CManualModeDlg::do_call(void)
 
 void CManualModeDlg::do_raise(void) 
 {
+	DoRaise(click_chair);
+}
+
+void CManualModeDlg::DoRaise(int chair, double raise) 
+{
 	double diff, raise_amt;
 
-	raise_amt = get_br()>=3 && limit==LIMIT_FL ? atof(bblind)*2 :atof(bblind);
+	if(raise)
+		raise_amt = raise + atof(playerbet[chair]) - get_current_bet();
+	else
+		raise_amt = get_br()>=3 && limit==LIMIT_FL ? atof(bblind)*2 :atof(bblind);
 
-	diff = get_current_bet() + raise_amt - atof(playerbet[click_chair]);
-	if (diff > atof(playerbalance[click_chair])) 
+	diff = get_current_bet() + raise_amt - atof(playerbet[chair]);
+	if (diff > atof(playerbalance[chair])) 
 	{
-		diff = atof(playerbalance[click_chair]);
+		diff = atof(playerbalance[chair]);
 	}
 
-	playerbet[click_chair] = NumberToFormattedString(diff + atof(playerbet[click_chair]));
+	playerbet[chair] = NumberToFormattedString(diff + atof(playerbet[chair]));
 
-	double new_balance = atof(playerbalance[click_chair].GetString()) - diff;
-	playerbalance[click_chair] = NumberToFormattedString(new_balance);
+	double new_balance = atof(playerbalance[chair].GetString()) - diff;
+	playerbalance[chair] = NumberToFormattedString(new_balance);
 }
 
 void CManualModeDlg::do_allin(void) 
@@ -2470,5 +2505,9 @@ int CManualModeDlg::get_br(void)
 
 	return br;
 }
-
-
+void CManualModeDlg::OnEnChangeSwag()
+{
+	CString tmp;
+	swag.GetWindowText(tmp);
+	raise_amount = atof(tmp);
+}

@@ -44,7 +44,7 @@ public:
 	CManualModeDlg(CWnd* pParent = NULL);	// standard constructor
 	enum { IDD = IDD_MANUALMODE_DIALOG };
 	virtual BOOL DestroyWindow();
-
+	void DoRaise(int chair, double raise = 0);
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	HICON		m_hIcon;
@@ -71,6 +71,8 @@ protected:
 	CString				network;
 	bool				istournament;
 
+	double				raise_amount;
+
 	// For tracking right click locations
 	int					click_loc;
 	int					click_chair;
@@ -84,6 +86,7 @@ protected:
 	CEditDlg			edit;
 	CGameInfoDlg		gameinfo;
 	OptionsDlg			dlgOptions;
+	CEdit				swag;
 
 	// Generated message map functions
 	virtual BOOL OnInitDialog();
@@ -184,5 +187,6 @@ protected:
 	afx_msg void OnCall();
 	afx_msg void OnRaise();
 	afx_msg void OnAllin();
-     
+public:
+	afx_msg void OnEnChangeSwag();
 };
