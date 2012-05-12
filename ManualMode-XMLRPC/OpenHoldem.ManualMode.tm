@@ -2,7 +2,7 @@
 
 // OpenScrape 2.0.0
 
-// 2012-05-12 17:57:25
+// 2012-05-13 00:05:56
 // 32 bits per pixel
 
 //
@@ -15,6 +15,7 @@ z$clientsize       574  335
 // strings
 //
 
+s$allinmethod               2
 s$nchairs                   10
 s$sitename                  openholdem
 s$swagconfirmationmethod    Click Bet
