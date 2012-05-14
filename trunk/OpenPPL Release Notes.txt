@@ -6,7 +6,7 @@ BUG FIXES:
   This has now been fixed. 
   Thanks to Lavezzi and Postenjak for reporting and for the help.
   [THF]
-- HaveNutStraight didn't consider NutStraightFluahes.
+- HaveNutStraight didn't consider NutStraightFlushes.
   Thanks to Lavezzi for reporting.
   [THF]
   
