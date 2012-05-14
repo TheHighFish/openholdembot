@@ -34,10 +34,10 @@ NEW STUFF:
   It detects common PEBKACs, like not being connected, an unknown user-chair or no opponents.
   This tool is available at Menu -> Help -> Problem solver.
   [THF]
-- Proving a tablemap-reloader, that automatically looks for changes
+- Providing a tablemap-reloader, that automatically looks for changes
   in the scraper-directory when OpenHoldem is not connected
   and reloads the tablemaps on changes.
-  
+  [THF]
 
 MAINTENANCE:
 - Removed code-clones in CFormula.cpp 
@@ -79,27 +79,91 @@ MAINTENANCE:
   for SNGs due to changes in the protocol.
   So we got rid of it.
   [THF]
-- Simplified the GUI and removed lots of superfluous options
-  * show/hide main toolbar / flags toolbar / status bar.
-  [THF]
 - Removed the old symbols bankroll, rake, defcon (and also isaggmode, isdefmode)
   which have been very rarely (if ever) used.
   People who need them can create a UDF for them,
   but they clearly are not necessary for the majority of users
   and don't deserve an extra settings dialog.
   [THF]
-- Replaced nit by f$number_of_iterations for consistency.
+- Replaced nit by f$prwin_number_of_iterations for consistency.
+  [THF]
+- Simplified the GUI and removed lots of superfluous options:
+  show/hide main toolbar / flags toolbar / status bar.
   [THF]
 - Remving View-menu in formula-editor.
   That was simply over-configuration,
-  Sort UDFs / Groups UDFs / Show Line Numbers / Syntax-highlighting, etc.
+  Sort UDFs / Groups UDF / Show Line Numbers / Syntax-highlighting, etc.
   are very useful features. There is no need to disable them.
   [THF]
-- The sirectory of Notepad.exe was hardcoded as "C:\Windows\Notepad.exe",
+- The directory of Notepad.exe was hardcoded as "C:\Windows\Notepad.exe",
   but the program might be in a different folder depending on system settings.
   We do now lookup the Windows directory for that.
   Thanks to Ukawtf for providing the patch.
   [THF]
+- Removing the dialog for manual blind-locking.
+  It is unusable for SNGs and for cash-games OH already provides the ability
+  to auto-lock-blinds (for the current hand, and after N hands for the entire session).
+  A good bot should do this automatically, there is no need for an option like that.
+  [THF]
+- Removing options "PT-cache" refersh and "PT update delay",
+  as OH will do this automatically:
+  * update basic stats once every N minutes
+  * get advanced stats (that need lots of hands) once every session.
+  [THF]
+- Removing checkbox to disable PT.
+  If all necessary options are specified the DB will be loaded automatically.
+  [THF]
+- Removing option to enable chat.
+  If f$chat is non-zero chat will be used, otherwise turned off.
+  [THF]
+- Removing force-chair-dialog and s$forcechair-symbol of the tablemap.
+  This did only work on some casinos where you can select your chair and is superfluous, 
+  as OH knows the chair as soon as cards and buttons are seen. 
+  The only reason for this functionality: without user-chair OH didn't click the auto-post-button. 
+  But as we change the autoplayer anyway it is IMO better to improve the autoplayer and get rid of "Force Chair".
+  [THF]
+- Removing font-selection-dialog of the formula-editor.
+  There simply is no need for that.
+  [THF]
+- Always logging debug-tab when it is my turn.
+  The options to control it simply are superfluos.
+  [THF]
+- Removing symbols clocks, ron$clocks, run$clocks, clockspersecond, ncps,
+  because nobody used them and we can't even imagina a reasonable use of them.
+  [THF]
+- Removing abbreviated symbol names nflopc, br, ncps.
+  [THF]
+- Removing precision settings from formula editor (debug-tab),
+  because it is better to choose reasonable defaults and make the GUI simpler.
+  [THF]
+- Getting rid of the formula symbols "isbring" and "ismanual",
+  because there is no need for them. But we keep them for internal use only.
+  [THF]
+- Simplying Perl settings.
+  Always loading formula and interpreter, if a formula is specified.
+  Removed the superfluous extra check-boxes.
+  [THF]
+- Always sending game-state to DLL - it is just a pointer to data we have anyway.
+  [THF]
+- Get rid of option to load DLL. Always load it, if name is specified.
+  [THF]
+- The analyzer-setting "Max opponents" was superfluous. 
+  The user controls the value with f$P,
+  so we removed that option and added a hard-coded check for the maximun of 22.
+  [THF]
+- Table stats now always use a time-frame of 15 minutes.
+  This is a reasonable default, so the option is not needed.
+  [THF]
+- Now always checking for loss of focus and balance-stability when acting.
+  These features make OH more reliable, so there is no need to turn them off.
+  [THF]
+- Getting rid of the option symbols->Value of Handrank. 
+  We have handrank169, handrank1000, handrank1326, handrank2625 and handrankp at the formula level. 
+  So the user can clearly specify what he wants. 
+  But these symbols can hardly get used interchangeably,
+  so this option was only confusing and superfluos.
+  [THF]
+
   
 BUG FIXES: 
 - Fine-tuning some validator-rules (1201, 1205). 
