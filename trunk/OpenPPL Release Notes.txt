@@ -9,6 +9,8 @@ BUG FIXES:
 - HaveNutStraight didn't consider NutStraightFlushes.
   Thanks to Lavezzi for reporting.
   [THF]
+- f$alli incorrectly was comparing different bet types (dollars vs. bblinds with "f$OpenPPL_BetSizeForPercentagedPotsizeBet > f$OpenPPL_StackSize"). 
+ [Lavezzi]
   
 NEW STUFF:
 
