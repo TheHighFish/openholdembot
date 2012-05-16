@@ -1,4 +1,4 @@
-v 2.2.0 2010-xx-yy 
+v 2.2.0 2012-xx-yy 
 ==================
 NEW STUFF:
 - f$play has been quite a messy concept for a long time.
@@ -38,6 +38,7 @@ NEW STUFF:
   in the scraper-directory when OpenHoldem is not connected
   and reloads the tablemaps on changes.
   [THF]
+
 
 MAINTENANCE:
 - Removed code-clones in CFormula.cpp 
@@ -163,13 +164,13 @@ MAINTENANCE:
   But these symbols can hardly get used interchangeably,
   so this option was only confusing and superfluos.
   [THF]
-
   
 BUG FIXES: 
 - Fine-tuning some validator-rules (1201, 1205). 
   Thanks to CakeWalk and Postenjak for reporting the inaccuracies.
   [THF]
-  
+- mh_str_quads symbol was not returning value 5 when  nut quads on board (AAAAK/KKKKA/xxxxA) 
+  [Lavezzi] 
 
 v2.1.9.3 2012-01-25
 ===================
