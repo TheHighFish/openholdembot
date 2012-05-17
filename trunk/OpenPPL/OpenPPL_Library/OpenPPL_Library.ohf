@@ -346,6 +346,11 @@ f$OpenPPL_Fold
 ##f$OpenPPL_HINT_StillToAct_Is_Only_Valid_First_Action_Preflop##
 0
 
+##f$OpenPPL_HINT_There_Are_No_Common_Cards_Preflop##
+// To use this function together with prime-coded board ranks
+// a division has to be possible. 1 doesn't interfer with any cards (primes).
+1
+
 //*****************************************************************************
 //
 // OpenPPL - Verbosity
@@ -402,9 +407,7 @@ $$cr4
 //                                                                 
 //*****************************************************************
 
-
-##f$prime_coded_board_ranks##
-// First board card 
+##f$prime_coded_board_ranks_first_flop_card##
   [($$cr0 ==  2) ? f$PrimeCode_2 : ($$cr0 ==  3) ? f$PrimeCode_3 : 
    ($$cr0 ==  4) ? f$PrimeCode_4 : ($$cr0 ==  5) ? f$PrimeCode_5 : 
    ($$cr0 ==  6) ? f$PrimeCode_6 : ($$cr0 ==  7) ? f$PrimeCode_7 : 
@@ -413,8 +416,8 @@ $$cr4
    ($$cr0 == 12) ? f$PrimeCode_Q : ($$cr0 == 13) ? f$PrimeCode_K : 
    ($$cr0 == 14) ? f$PrimeCode_A : 
    f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] 
-*
-// Second board card 
+   
+##f$prime_coded_board_ranks_second_flop_card##
   [($$cr1 ==  2) ? f$PrimeCode_2 : ($$cr1 ==  3) ? f$PrimeCode_3 : 
    ($$cr1 ==  4) ? f$PrimeCode_4 : ($$cr1 ==  5) ? f$PrimeCode_5 : 
    ($$cr1 ==  6) ? f$PrimeCode_6 : ($$cr1 ==  7) ? f$PrimeCode_7 : 
@@ -423,8 +426,8 @@ $$cr4
    ($$cr1 == 12) ? f$PrimeCode_Q : ($$cr1 == 13) ? f$PrimeCode_K : 
    ($$cr1 == 14) ? f$PrimeCode_A : 
    f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] 
-*
-// Third board card 
+   
+##f$prime_coded_board_ranks_third_flop_card##
   [($$cr2 ==  2) ? f$PrimeCode_2 : ($$cr2 ==  3) ? f$PrimeCode_3 : 
    ($$cr2 ==  4) ? f$PrimeCode_4 : ($$cr2 ==  5) ? f$PrimeCode_5 : 
    ($$cr2 ==  6) ? f$PrimeCode_6 : ($$cr2 ==  7) ? f$PrimeCode_7 : 
@@ -433,8 +436,8 @@ $$cr4
    ($$cr2 == 12) ? f$PrimeCode_Q : ($$cr2 == 13) ? f$PrimeCode_K : 
    ($$cr2 == 14) ? f$PrimeCode_A : 
    f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] 
-*
-// Fourth board card 
+   
+##f$prime_coded_board_ranks_turn_card##
   [($$cr3 ==  2) ? f$PrimeCode_2 : ($$cr3 ==  3) ? f$PrimeCode_3 : 
    ($$cr3 ==  4) ? f$PrimeCode_4 : ($$cr3 ==  5) ? f$PrimeCode_5 : 
    ($$cr3 ==  6) ? f$PrimeCode_6 : ($$cr3 ==  7) ? f$PrimeCode_7 : 
@@ -443,8 +446,8 @@ $$cr4
    ($$cr3 == 12) ? f$PrimeCode_Q : ($$cr3 == 13) ? f$PrimeCode_K : 
    ($$cr3 == 14) ? f$PrimeCode_A : 
    f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] 
-*
-// Fifth board card 
+   
+##f$prime_coded_board_ranks_river_card##
   [($$cr4 ==  2) ? f$PrimeCode_2 : ($$cr4 ==  3) ? f$PrimeCode_3 : 
    ($$cr4 ==  4) ? f$PrimeCode_4 : ($$cr4 ==  5) ? f$PrimeCode_5 : 
    ($$cr4 ==  6) ? f$PrimeCode_6 : ($$cr4 ==  7) ? f$PrimeCode_7 : 
@@ -454,7 +457,25 @@ $$cr4
    ($$cr4 == 14) ? f$PrimeCode_A : 
    f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] 
 
-
+##f$prime_coded_board_ranks##
+[betround == f$OpenPPL_ConstBetRoundPreflop] ? $OpenPPL_HINT_There_Are_No_Common_Cards_Preflop :
+[betround == f$OpenPPL_ConstBetRoundFlop] ?
+  (f$prime_coded_board_ranks_first_flop_card 
+    * f$prime_coded_board_ranks_second_flop_card
+    * f$prime_coded_board_ranks_third_flop_card) :
+[betround == f$OpenPPL_ConstBetRoundTurn] ?
+  (f$prime_coded_board_ranks_first_flop_card 
+    * f$prime_coded_board_ranks_second_flop_card
+    * f$prime_coded_board_ranks_third_flop_card 
+	* f$prime_coded_board_ranks_turn_card) :
+[betround == f$OpenPPL_ConstBetRoundRiver] ?
+  (f$prime_coded_board_ranks_first_flop_card 
+    * f$prime_coded_board_ranks_second_flop_card
+    * f$prime_coded_board_ranks_third_flop_card 
+	* f$prime_coded_board_ranks_turn_card
+	* f$prime_coded_board_ranks_river_card) :
+f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+	
 ##f$PrimeCode_2##
   2
 
