@@ -793,7 +793,11 @@ const int CMyHand::StrengthQuads(void)
 	bool	isfourofakind = (bool) p_symbols->sym()->isfourofakind;
 	int		fourofakind = (int) p_symbols->sym()->fourofakind;
 	int		nhandshi = (int) p_symbols->sym()->nhandshi;
-
+	int		$$cr0 = (int) p_symbols->sym()->$$cr[0];
+	int		$$cr1 = (int) p_symbols->sym()->$$cr[1];
+	int		$$cr2 = (int) p_symbols->sym()->$$cr[2];
+	int		$$cr3 = (int) p_symbols->sym()->$$cr[3];
+	int		$$cr4 = (int) p_symbols->sym()->$$cr[4];
 	if (!isfourofakind)
 	{
 		strength=0;
@@ -804,8 +808,23 @@ const int CMyHand::StrengthQuads(void)
 	(
 		// nuts
 		(isfourofakind && nhandshi==0 && !(pokervalcommon&fourofakind)) ||
+		//Board with quads and nut kicker Ace (KKKKA)	
+		(pokervalcommon&fourofakind && $$cr0==13 && $$cr0==$$cr1 && ($$cr2==14||$$cr3==14||$$cr4==14)) ||
+		(pokervalcommon&fourofakind && $$cr0==13 && $$cr0==$$cr2 && ($$cr1==14||$$cr3==14||$$cr4==14)) ||
+		(pokervalcommon&fourofakind && $$cr1==13 && $$cr1==$$cr2 && ($$cr0==14||$$cr3==14||$$cr4==14)) ||
+		//Board quads and nut kicker King (AAAAK) 		
+		(pokervalcommon&fourofakind && $$cr0==14 && $$cr0==$$cr1 && ($$cr2==13||$$cr3==13||$$cr4==13)) ||
+		(pokervalcommon&fourofakind && $$cr0==14 && $$cr0==$$cr2 && ($$cr1==13||$$cr3==13||$$cr4==13)) ||
+		(pokervalcommon&fourofakind && $$cr1==14 && $$cr1==$$cr2 && ($$cr0==13||$$cr3==13||$$cr4==13)) ||
+		//Board any quads with nut kicker Ace (xxxxA)		
+		(pokervalcommon&fourofakind && $$cr0!=14 && $$cr0==$$cr1 && ($$cr2==14||$$cr3==14||$$cr4==14)) ||
+		(pokervalcommon&fourofakind && $$cr0!=14 && $$cr0==$$cr2 && ($$cr1==14||$$cr3==14||$$cr4==14)) ||
+		(pokervalcommon&fourofakind && $$cr0!=14 && $$cr1==$$cr2 && ($$cr0==14||$$cr3==14||$$cr4==14)) ||
 		// Board quads, I have an Ace
-		(isfourofakind && (pokervalcommon&fourofakind) && p_symbols->IsHand("$Ax") )
+		(isfourofakind && (pokervalcommon&fourofakind) && p_symbols->IsHand("$Ax") )||
+		// Board quads of Aces, I have a King
+		(isfourofakind && (pokervalcommon&fourofakind) &&(($$cr0==$$cr1 && $$cr0==14)||($$cr0==$$cr2 && $$cr0==14)||($$cr1==$$cr2 && $$cr1==14)) && p_symbols->IsHand("$Kx") )
+
 	)
 	{
 		strength=5;
