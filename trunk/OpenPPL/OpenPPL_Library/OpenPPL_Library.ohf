@@ -458,7 +458,7 @@ $$cr4
    f$OpenPPL_ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap] 
 
 ##f$prime_coded_board_ranks##
-[betround == f$OpenPPL_ConstBetRoundPreflop] ? $OpenPPL_HINT_There_Are_No_Common_Cards_Preflop :
+[betround == f$OpenPPL_ConstBetRoundPreflop] ? f$OpenPPL_HINT_There_Are_No_Common_Cards_Preflop :
 [betround == f$OpenPPL_ConstBetRoundFlop] ?
   (f$prime_coded_board_ranks_first_flop_card 
     * f$prime_coded_board_ranks_second_flop_card
