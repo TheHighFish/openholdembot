@@ -27,6 +27,8 @@ have to care about the details, everything works automagically here.
    <h3 class="sectionHead"><a 
  id="x1-2000"></a>Prerequisites</h3>
 <!--l. 41--><p class="noindent" >OpenPPL code, OpenPPL library and OpenPPL converter in the same directory.
+ <br>Bracketity.pl is a Perl script that fixes missing parenthesis needed in oPPL files for conversion. To run it you need to add Perl support to your operative system if not already preset.<br>
+OpenPPL_SwagFunctions_For_OpenHoldem_2.1.x_Only_Please_Delete_This_File_Once_You_Use_OpenHoldem_2.2.0_And_Later.ohf is needed only for OH version below 2.2.0.
    <h3 class="sectionHead"><a 
  id="x1-3000"></a>Translation Steps</h3>
 <!--l. 45--><p class="noindent" >
@@ -39,10 +41,17 @@ have to care about the details, everything works automagically here.
 class="ecti-1000">cd </span>command
         for that.
            </li>
+   <li 
+  class="enumerate" id="x1-3006x3">Type at the command line <!--l. 50-->
+           <div class="lstlisting" id="listing-1"><span class="label"><a 
+ id="x1-3007r1"></a></span>bracketify.pl my_source_code.txt >  my_source_code_with_brackets.txt 
+           </div>
+
         <li 
   class="enumerate" id="x1-3006x3">Type at the command line <!--l. 50-->
            <div class="lstlisting" id="listing-1"><span class="label"><a 
- id="x1-3007r1"></a></span>OpenPPL.exe&#x00A0;my_source_code.txt&#x00A0;&#x003E;&#x00A0;my_translated_bot.ohf
+ id="x1-3007r1"></a></span>OpenPPL.exe&#x00A0; my_source_code_with_brackets.txt 
+&#x00A0;&#x003E;&#x00A0;my_translated_bot.ohf
            </div>
         <!--l. 53--><p class="indent" >     In case you are not experienced dealing with the console we explain this
         step in detail:
