@@ -1591,26 +1591,6 @@ void CManualModeDlg::OnLButtonUp(UINT nFlags, CPoint point)
 	// Clicked on a button indicator
 	if  ( click_loc>=FB && click_loc<=APB ) 
 	{
-		if ( click_loc == RB )
-		{
-			int hero_chair = -1;
-			for (int i=0; i<k_max_number_of_players; i++)
-			{
-				int card_pos = i * 2;
-				if ( card[card_pos]!=CARD_NOCARD && card[card_pos]!=CARD_BACK )
-				{
-					hero_chair = i;
-					break;
-				}
-			}
-
-			if ( raise_amount!=0 && hero_chair!=-1 && buttonstate[3] )
-			{
-				DoRaise(hero_chair, raise_amount);
-				swag.SetWindowText("");
-			}
-		}
-
 		if(waiting_for_action)
 		{
 			switch(click_loc)
@@ -2888,6 +2868,7 @@ int CManualModeDlg::get_br(void)
 
 	return br;
 }
+
 void CManualModeDlg::OnEnChangeSwag()
 {
 	CString tmp;
