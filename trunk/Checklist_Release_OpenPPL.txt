@@ -1,5 +1,6 @@
 * Change the version in "CodeSnippets.h"
 * Rebuild the project
+* Build the docu if necessary
 * Commit everything once it works
 * Update the release-notes.
 * Commit the release-notes
