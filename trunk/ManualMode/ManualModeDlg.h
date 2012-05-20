@@ -44,7 +44,7 @@ public:
 	CManualModeDlg(CWnd* pParent = NULL);	// standard constructor
 	enum { IDD = IDD_MANUALMODE_DIALOG };
 	virtual BOOL DestroyWindow();
-	void DoRaise(int chair, double raise = 0);
+
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	HICON		m_hIcon;
