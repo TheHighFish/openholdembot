@@ -443,9 +443,14 @@ const bool k_always_log_errors = true;
 const bool k_always_log_basic_information = true;
 
 // Statusbar
+static UINT basic_statusba_indicators[] =
+{
+	ID_INDICATOR_GENERAL_HINT // Do you need "Help -> Problem solver?"
+};
+
 static UINT indicators[] = 
 {
-	ID_SEPARATOR,		   // status line indicator
+	ID_SEPARATOR,		   // status line indicator !!! Bad name
 //	ID_INDICATOR_CAPS,
 //	ID_INDICATOR_NUM,
 //	ID_INDICATOR_SCRL,

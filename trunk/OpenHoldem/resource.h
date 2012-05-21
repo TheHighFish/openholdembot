@@ -53,6 +53,7 @@
 #define IDD_SAPREFS19                   185
 #define IDD_SAPREFS20                   186
 #define IDD_SAPREFS21                   187
+#define ID_INDICATOR_GENERAL_HINT		188
 #define IDC_NEW                         1006
 #define IDC_DELETE                      1007
 #define IDC_RENAME                      1013
@@ -534,7 +535,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        180
+#define _APS_NEXT_RESOURCE_VALUE        189
 #define _APS_NEXT_COMMAND_VALUE         32997
 #define _APS_NEXT_CONTROL_VALUE         1372
 #define _APS_NEXT_SYMED_VALUE           101

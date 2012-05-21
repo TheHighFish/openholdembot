@@ -392,3 +392,14 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending DoSwag, 'didswag' now: %d\n", p_symbols->sym()->didswag[4]);
 }
+
+int CCasinoInterface::NumberOfVisibleAutoplayerButtons()
+{
+	int number_of_available_buttons =
+		(p_scraper_access->available_buttons[k_autoplayer_function_allin] ? 1 : 0)
+	  + (p_scraper_access->available_buttons[k_autoplayer_function_raise] ? 1 : 0)
+	  + (p_scraper_access->available_buttons[k_autoplayer_function_call]  ? 1 : 0)
+	  + (p_scraper_access->available_buttons[k_autoplayer_function_check] ? 1 : 0)
+	  + (p_scraper_access->available_buttons[k_autoplayer_function_fold]  ? 1 : 0);
+	return number_of_available_buttons;
+}

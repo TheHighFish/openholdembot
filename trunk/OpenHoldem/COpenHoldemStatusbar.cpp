@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CopenHoldemStatusbar.h"
 
+#include "CSymbols.h"
 #include "MagicNumbers.h"
 
 
@@ -8,30 +9,29 @@ COpenHoldemStatusbar *p_openholdem_statusbar = NULL;
 
 COpenHoldemStatusbar::COpenHoldemStatusbar(CWnd *main_window)
 {
-	InitBasicStatusbar(main_window);
+	_main_window = main_window;
+	InitBasicStatusbar();
 }
 
 COpenHoldemStatusbar::~COpenHoldemStatusbar()
 {}
 
-void COpenHoldemStatusbar::InitBasicStatusbar(CWnd *main_window)
+void COpenHoldemStatusbar::InitBasicStatusbar()
 {
-	if (!_status_bar.Create(main_window) || !_status_bar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT)))	
-	{
-		TRACE0("Failed to create status bar\n");
-		// return -1;	  // fail to create
-	}
-	_status_bar.SetPaneInfo(0, ID_INDICATOR_STATUS_POKERHAND, NULL, 200); //!!!
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_POKERHAND), "Do you need Help -> Problem Solver?");
+	_status_bar.Create(_main_window);
+	_status_bar.SetIndicators(basic_statusba_indicators, sizeof(basic_statusba_indicators)/sizeof(UINT));
+
+	_status_bar.SetPaneInfo(0, ID_INDICATOR_GENERAL_HINT, NULL, 200);
+	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_GENERAL_HINT), "Do you need Help -> Problem Solver?");
 }
 
-int COpenHoldemStatusbar::InitStatusbar(CWnd *main_window)
+void COpenHoldemStatusbar::InitAdvancedStatusbar()
 {
-	if (!_status_bar.Create(main_window) || !_status_bar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT)))	
-	{
-		TRACE0("Failed to create status bar\n");
-		return -1;	  // fail to create
-	}
+	MessageBox(0, "InitAdvancedStatusbar()", "Debug", 0);
+	_status_bar.DestroyWindow();
+	_status_bar.Create(_main_window); 
+	_status_bar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
+	
 	_status_bar.SetPaneInfo(0, ID_SEPARATOR, SBPS_STRETCH | SBPS_NOBORDERS, 0);
 	_status_bar.SetPaneInfo(1, ID_INDICATOR_STATUS_PLCARDS, NULL, 30);
 	_status_bar.SetPaneInfo(2, ID_INDICATOR_STATUS_COMCARDS, NULL, 75);
@@ -48,9 +48,35 @@ void COpenHoldemStatusbar::GetWindowRect(RECT *statusbar_position)
 	_status_bar.GetWindowRect(statusbar_position);
 }
 
+bool COpenHoldemStatusbar::TimeToSwitchToAdvancedStatusbar()
+{
+	MessageBox(0, "TimeToSwitchToAdvancedStatusbar()", "Debug", 0);
+	// Be careful
+	// Symbol engine won't be available on startup.
+	if (p_symbols == NULL)
+	{
+		MessageBox(0, "p_symbols null", "Debug", 0);
+		return false;
+	}
+	else if (p_symbols->sym() == NULL)
+	{
+		MessageBox(0, "sym null", "Debug", 0);
+		return false;
+	}
+	else
+	{
+		// 1 minute after startup?
+		MessageBox(0, "checking elapsed", "Debug", 0);
+		return (p_symbols->sym()->elapsed >= 60);
+	}
+}
 
 void COpenHoldemStatusbar::OnUpdateStatusbar()
 {
+	if (TimeToSwitchToAdvancedStatusbar())
+	{
+		InitAdvancedStatusbar();
+	}
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PLCARDS), _status_plcards);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_COMCARDS), _status_comcards);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_POKERHAND), _status_pokerhand);
