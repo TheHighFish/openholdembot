@@ -3,6 +3,7 @@
 * Build the docu if necessary
 * Commit everything once it works
 * Update the release-notes.
+* Update the release-date in the release-notes.
 * Commit the release-notes
 * Tag the release (OpenPPL only) on googlecode: Turtoise-SVN -> Branch / Tag
   (Message: "Tagging OpenPPL 1.x.y for release")
