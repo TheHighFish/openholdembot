@@ -2,7 +2,7 @@
 
 // OpenScrape 2.0.0
 
-// 2009-12-29 18:25:38
+// 2012-05-21 17:30:00
 // 32 bits per pixel
 
 //
@@ -18,6 +18,9 @@ z$clientsize       574  335
 s$allinmethod               2
 s$nchairs                   10
 s$sitename                  openholdem
+s$swagconfirmationmethod    Click Bet
+s$swagdeletionmethod        Backspace
+s$swagselectionmethod       Dbl Click
 s$swagtextmethod            2
 s$titletext                 Poker
 s$ttlimits                  ^*- ^L - blinds ^s/^b - ante ^a
