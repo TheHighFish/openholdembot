@@ -37,6 +37,9 @@ NEW STUFF:
 - Providing a tablemap-reloader, that automatically looks for changes
   in the scraper-directory when OpenHoldem is not connected
   and reloads the tablemaps on changes.
+  Furthermore we removed the option to load tablemaps manually,
+  because there no longer is any need to do so.
+  Just put them into the scraper-folder and OH will load them automagically.
   [THF]
 
 
@@ -68,6 +71,12 @@ MAINTENANCE:
 - Calculating primary autoplayer-functions now only 
   when my turn and isfinalanswer is true.
   [THF]  
+- Always using symbol-caching. There is no need to disable it,
+  as all functions are paramater-less, so the result will always be the same
+  (as long as no randomization is used).
+  Disabled symbol-caching just caused slow evaluations and confusingly large log-files
+  (we have seen 5 MB for a single action).
+  [THF]
 - Removed support for WinScrape tablemaps.
   Who uses WinScrape nowadays?
   [THF]
