@@ -1,3 +1,5 @@
+* TurtoiseSVN -> Update
+* Resolve conflicts if necessary
 * Change the version in "CodeSnippets.h"
 * Rebuild the project
 * Build the docu if necessary
