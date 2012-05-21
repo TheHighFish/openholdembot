@@ -224,7 +224,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				| keyword_raise | keyword_fold
 				| keyword_betmin | keyword_bethalfpot
 				| keyword_betpot | keyword_betmax | keyword_bet | keyword_sitout];
-			fixed_betsize_action = (keyword_bet | keyword_raise) >> number[print_comment_for_fixed_betsize()];
+			fixed_betsize_action = (keyword_bet | keyword_raise) >> (number | expression)[print_comment_for_fixed_betsize()];
 			relative_betsize_action = (keyword_bet | keyword_raise) >> number[print_number()] 
 				>> percentage_operator[print_percentage_operator()][print_relative_potsize_action()] ;
 
