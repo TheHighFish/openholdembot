@@ -1,4 +1,4 @@
-v1.0.7 2012-xx-yy
+v1.0.7 2012-05-21
 =================
 BUG FIXES: 
 - Redesigned decision-function affected BotsLastAction
@@ -9,10 +9,16 @@ BUG FIXES:
 - HaveNutStraight didn't consider NutStraightFlushes.
   Thanks to Lavezzi for reporting.
   [THF]
-- f$alli incorrectly was comparing different bet types (dollars vs. bblinds with "f$OpenPPL_BetSizeForPercentagedPotsizeBet > f$OpenPPL_StackSize"). 
- [Lavezzi]
+- OpenPPL didn't automatically execute allin 
+  if a potsized-bet was larger than our balance.
+  This has now been fixed.
+  [Lavezzi]  
   
 NEW STUFF:
+- Now supporting expressions after "RAISE" keyword, e.g.
+    * RAISE (3 + Calls) FORCE
+	* RAISE MyFavouriteBetsizeForDryBoards FORCE
+  [THF]
 
 v1.0.6 2012-04-23
 =================
