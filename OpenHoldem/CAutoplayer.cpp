@@ -289,6 +289,7 @@ bool CAutoplayer::DoAllin(void)
 
 void CAutoplayer::DoAutoplayer(void) 
 {
+	MessageBox(0, "Starting autoplayer", "Debug", 0);
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting Autoplayer cadence...\n");
 
 	CheckBringKeyboard();
@@ -296,7 +297,7 @@ void CAutoplayer::DoAutoplayer(void)
 	// Access TM objects !! Better name, better comment
 	//!!!GetNeccessaryTablemapObjects();
 
-	int	num_buttons_visible = 0; //!!!p_casino_interface->NumberOfVisibleButtons();
+	int	num_buttons_visible = p_casino_interface->NumberOfVisibleAutoplayerButtons();
 	/* TODO: better log-file format !!!
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d (%c%c%c%c%c)\n", 
 		num_buttons_visible, 
@@ -329,6 +330,7 @@ void CAutoplayer::DoAutoplayer(void)
 	// Change from only requiring one visible button (OpenHoldem 2008-04-03)
 	if (num_buttons_visible < 2)
 	{
+		MessageBox(0, "Not enough buttons", "Debug", 0);
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because num_buttons_visible < 2\n");
 		isFinalAnswer = false;
 	}

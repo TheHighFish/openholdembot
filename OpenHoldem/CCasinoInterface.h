@@ -19,6 +19,7 @@ public:
 	bool CloseWindow();
 	bool EnterChatMessage(CString &message);
 	bool ClickI86ButtonIfAvailable(int button_number);
+	int  NumberOfVisibleAutoplayerButtons();
 
 private:
 	bool TableLostFocus();

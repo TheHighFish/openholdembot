@@ -838,7 +838,7 @@ void CMainFrame::OnValidator()
 
 void CMainFrame::OnUpdateStatus(CCmdUI *pCmdUI) 
 {
-
+	p_openholdem_statusbar->OnUpdateStatusbar();
 }
 
 void CMainFrame::OnDllLoad() 
