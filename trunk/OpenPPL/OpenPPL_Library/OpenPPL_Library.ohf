@@ -343,7 +343,7 @@ f$OpenPPL_Fold
 ##f$OpenPPL_HINT_SuitsOnBoard_Undefined_For_This_Betting_Round##
 0
 
-##f$OpenPPL_HINT_StillToAct_Is_Only_Valid_First_Action_Preflop##
+##f$OpenPPL_HINT_StillToAct_Is_Only_Valid_On_First_Orbit##
 0
 
 ##f$OpenPPL_HINT_There_Are_No_Common_Cards_Preflop##
@@ -3974,14 +3974,23 @@ nopponentsplaying
 + (((balance8 + currentbet8) < (balance + currentbet)) && (playersseatedbits & 0x0100) ? 1:0)
 + (((balance9 + currentbet9) < (balance + currentbet)) && (playersseatedbits & 0x0200) ? 1:0)
 
-##f$OpenPPL_StillToAct##
-(betround != f$OpenPPL_ConstBetRoundPreflop) ? f$OpenPPL_HINT_StillToAct_Is_Only_Valid_First_Action_Preflop :
-(f$OpenPPL_BotsActionsOnThisRoundIncludingChecks > 0) ? f$OpenPPL_HINT_StillToAct_Is_Only_Valid_First_Action_Preflop :
+##f$OpenPPL_StillToActPreflop##
+// Precondition: first action, but this gets checked in StillToAct
 f$OpenPPL_InBigBlind ? 0 :
 f$OpenPPL_InSmallBlind ? 1 :
 // Not in the blinds
-f$OpenPPL_MissingSmallBlind ? (nchairsdealtleft + 1) :
+(f$OpenPPL_MissingSmallBlind > 0) ? (nchairsdealtleft + 1) :
 (nchairsdealtleft + 2)
+
+##f$OpenPPL_StillToActPostflop##
+// Precondition: first action, but this gets checked in StillToAct
+(f$OpenPPL_OpponentsLeft - betposition)
+
+##f$OpenPPL_StillToAct##
+(f$OpenPPL_BotsActionsOnThisRoundIncludingChecks > 0) ? f$OpenPPL_HINT_StillToAct_Is_Only_Valid_First_Orbit :
+((betround == f$OpenPPL_ConstBetRoundPreflop) && (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks == 0)) ? f$OpenPPL_StillToActPreflop:
+((betround != f$OpenPPL_ConstBetRoundPreflop) && (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks == 0)) ? f$OpenPPL_StillToActPostflop:
+0
 
 //*****************************************************************************
 //
