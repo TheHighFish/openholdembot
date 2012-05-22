@@ -12,7 +12,10 @@ BUG FIXES:
 - OpenPPL didn't automatically execute allin 
   if a potsized-bet was larger than our balance.
   This has now been fixed.
-  [Lavezzi]  
+  [Lavezzi]
+- StillToAct did work only preflop.
+  Thanks to Lavezzi for reporting and to Postenjak for the postflop-code.
+  [THF]  
   
 NEW STUFF:
 - Now supporting expressions after "RAISE" keyword, e.g.
