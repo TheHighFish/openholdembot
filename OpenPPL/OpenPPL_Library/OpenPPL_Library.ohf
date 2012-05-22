@@ -3984,10 +3984,10 @@ f$OpenPPL_InSmallBlind ? 1 :
 
 ##f$OpenPPL_StillToActPostflop##
 // Precondition: first action, but this gets checked in StillToAct
-(f$OpenPPL_OpponentsLeft - betposition)
+((f$OpenPPL_OpponentsLeft + 1) - betposition)
 
 ##f$OpenPPL_StillToAct##
-(f$OpenPPL_BotsActionsOnThisRoundIncludingChecks > 0) ? f$OpenPPL_HINT_StillToAct_Is_Only_Valid_First_Orbit :
+(f$OpenPPL_BotsActionsOnThisRoundIncludingChecks > 0) ? f$OpenPPL_HINT_StillToAct_Is_Only_Valid_On_First_Orbit :
 ((betround == f$OpenPPL_ConstBetRoundPreflop) && (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks == 0)) ? f$OpenPPL_StillToActPreflop:
 ((betround != f$OpenPPL_ConstBetRoundPreflop) && (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks == 0)) ? f$OpenPPL_StillToActPostflop:
 0
