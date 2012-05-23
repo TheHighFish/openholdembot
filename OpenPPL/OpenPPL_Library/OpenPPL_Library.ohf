@@ -1645,7 +1645,7 @@ f$OpenPPL_HINT_Nothing_To_Do_But_All_OK
 (me_re_MemRaises + f$OpenPPL_RaisesSinceLastPlay)
 
 ##f$OpenPPL_InitRaises##
-(f$OpenPPL_BotsActionsOnThisRound == 0) ? me_st_MemRaises_f$OpenPPL_RaisesSinceLastPlay :
+(f$OpenPPL_BotsActionsOnThisRoundIncludingChecks == 0) ? me_st_MemRaises_f$OpenPPL_RaisesSinceLastPlay :
 me_st_MemRaises_f$OpenPPL_Calculate_Raises
 
 ##f$OpenPPL_Raises##
