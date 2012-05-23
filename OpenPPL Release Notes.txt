@@ -1,4 +1,4 @@
-v1.0.7 2012-05-21
+v1.0.7 2012-05-24
 =================
 BUG FIXES: 
 - Redesigned decision-function affected BotsLastAction
@@ -10,8 +10,7 @@ BUG FIXES:
   Thanks to Lavezzi for reporting.
   [THF]
 - OpenPPL didn't automatically execute allin 
-  if a potsized-bet was larger than our balance.
-  This has now been fixed.
+  if a potsized-bet was larger than our balance.  
   [Lavezzi]
 - StillToAct did work only preflop.
   Thanks to Lavezzi for reporting and to Postenjak for the postflop-code.
