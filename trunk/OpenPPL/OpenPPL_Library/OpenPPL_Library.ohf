@@ -1429,11 +1429,11 @@ me_re_MemBotsLastAction
 // Don't use BotsLastAction on the first orbit,
 // because that variable has to be the last one to be initialized
 // and is therefore undefined.
-[(betround == f$OpenPPL_ConstBetRoundPreflop) && (f$OpenPPL_BotsActionsOnThisRound == 0)] ? 
+[(betround == f$OpenPPL_ConstBetRoundPreflop) && (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks == 0)] ? 
     me_st_MemBotsLastPreflopAction_f$OpenPPL_None :
-[(betround == f$OpenPPL_ConstBetRoundPreflop) && (f$OpenPPL_BotsActionsOnThisRound > 0)] ? 
+[(betround == f$OpenPPL_ConstBetRoundPreflop) && (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks > 0)] ? 
     me_st_MemBotsLastPreflopAction_f$OpenPPL_BotsLastAction : 
-[(betround == f$OpenPPL_ConstBetRoundFlop) && (f$OpenPPL_BotsActionsOnThisRound == 0)] ?
+[(betround == f$OpenPPL_ConstBetRoundFlop) && (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks == 0)] ?
     me_st_MemBotsLastPreflopAction_f$OpenPPL_BotsLastAction : 0  
 
 ##f$OpenPPL_BotsLastPreflopAction##
@@ -1586,7 +1586,7 @@ f$OpenPPL_True
 f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 
 ##f$OpenPPL_InitMissingSmallBlind##
-[(betround == f$OpenPPL_ConstBetRoundPreflop) &&  (f$OpenPPL_BotsActionsOnThisRound == 0)] ? 
+[(betround == f$OpenPPL_ConstBetRoundPreflop) &&  (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks == 0)] ? 
 me_st_MemMissingSmallBlind_f$OpenPPL_CalculateMissingSmallBlind :
 f$OpenPPL_HINT_Nothing_To_Do_But_All_OK
 
