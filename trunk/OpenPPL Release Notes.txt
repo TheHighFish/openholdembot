@@ -15,7 +15,14 @@ BUG FIXES:
   [Lavezzi]
 - StillToAct did work only preflop.
   Thanks to Lavezzi for reporting and to Postenjak for the postflop-code.
-  [THF]  
+  [THF]
+- BotsLastPreflopAction could be initialized twice (read: incorrectly) on the flop.
+  Thanks to Postenjak for reporting and for suggesting a fix.
+  [THF]
+- InitMissingSmallBlind could be potentially called twice if we check preflop
+  and the action comes back to us (if we post a blind out of order).
+  Thanks to Postenjak for reporting and for suggesting a fix.
+  [THF]
   
 NEW STUFF:
 - Now supporting expressions after "RAISE" keyword, e.g.
