@@ -37,11 +37,6 @@
 				Name="VCMIDLTool"
 			/>
 			<Tool
-				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;E:\Dokumente und Einstellungen\Development\Desktop\boost_1_44_0&quot;;&quot;E:\Dokumente und Einstellungen\Development\Desktop\boost_1_44_0\boost\config&quot;;&quot;E:\Dokumente und Einstellungen\Development\Desktop\boost_1_44_0\boost\spirit\include&quot;"
-				RuntimeLibrary="3"
-			/>
-			<Tool
 				Name="VCManagedResourceCompilerTool"
 			/>
 			<Tool
@@ -104,7 +99,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;E:\Dokumente und Einstellungen\Development\Desktop\OH_SVN\trunk\boost_1_44_0\boost&quot;;&quot;E:\Dokumente und Einstellungen\Development\Desktop\OH_SVN\trunk\boost_1_44_0&quot;;&quot;E:\Dokumente und Einstellungen\Development\Desktop\OH_SVN\trunk\spirit-1.8.5-miniboost\boost\spirit&quot;;&quot;E:\Dokumente und Einstellungen\Development\Desktop\OH_SVN\trunk\spirit-1.8.5-miniboost\boost\spirit\iterator&quot;;&quot;E:\Dokumente und Einstellungen\Development\Desktop\OH_SVN\trunk\spirit-1.8.5-miniboost\boost\preprocessor&quot;;&quot;E:\Dokumente und Einstellungen\Development\Desktop\OH_SVN\trunk\spirit-1.8.5-miniboost\boost&quot;;&quot;E:\Dokumente und Einstellungen\Development\Desktop\OH_SVN\trunk\spirit-1.8.5-miniboost&quot;"
+				AdditionalIncludeDirectories="&quot;..\..\boost_1_44_0\boost&quot;;&quot;..\..\boost_1_44_0&quot;;&quot;..\..\spirit-1.8.5-miniboost\boost\spirit&quot;;&quot;..\..\spirit-1.8.5-miniboost\boost\spirit\iterator&quot;;&quot;..\..\spirit-1.8.5-miniboost\boost\preprocessor&quot;;&quot;..\..\spirit-1.8.5-miniboost\boost&quot;;&quot;..\..\spirit-1.8.5-miniboost&quot;"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
