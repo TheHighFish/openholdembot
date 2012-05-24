@@ -211,9 +211,9 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
             // 1. Raise X % 
             // 2. Raise X
 			// 3. Raise	 
-			action_without_force = relative_betsize_action
+			action_without_force = predefined_action
+				| relative_betsize_action
 				| fixed_betsize_action 
-				| predefined_action
 				| return_statement;
 			predefined_action = keyword_predefined_action[print_predefined_action()];
 			
