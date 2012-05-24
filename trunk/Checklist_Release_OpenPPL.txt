@@ -2,6 +2,8 @@
 * Resolve conflicts if necessary
 * Change the version in "CodeSnippets.h"
 * Rebuild the project
+* Run the test-suite, using "Run_Testsuite.bat" in trunk/OpenPPL.
+  It will run only the ok*.txt-files, so you shouldn't get any error-messages.
 * Build the docu if necessary
 * Commit everything once it works
 * Update the release-notes.
