@@ -7,7 +7,6 @@
 // We also add "invalid_symbol" everywhere to detect invalid characters
 // not only in symbols but also where keywords are expected.
 
-
 // Options
 keyword_on = str_p("on") | "On" | "ON" | invalid_symbol;
 keyword_off = str_p("off") | "Off" | "OFF" | invalid_symbol;

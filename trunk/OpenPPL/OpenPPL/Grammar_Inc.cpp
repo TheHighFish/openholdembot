@@ -163,7 +163,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// Expressions
 			expression = sequence_of_binary_expressions;
 			sequence_of_binary_expressions = operand >> *(binary_operator >> operand);
-			operand = unary_expression | terminal_expression | bracket_expression; //!!!
+			operand = unary_expression | terminal_expression | bracket_expression; 
 			unary_expression = (unary_operator[print_opening_bracket()] >> operand)[print_closing_bracket()];
 			bracket_expression = (str_p("(")[print_opening_bracket()] 
 				>> (hand_expression | board_expression | expression)
@@ -211,9 +211,9 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
             // 1. Raise X % 
             // 2. Raise X
 			// 3. Raise	 
-			action_without_force = predefined_action
-				| relative_betsize_action
-				| fixed_betsize_action 
+			action_without_force = relative_betsize_action
+				| fixed_betsize_action
+				| predefined_action
 				| return_statement;
 			predefined_action = keyword_predefined_action[print_predefined_action()];
 			
@@ -224,8 +224,10 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				| keyword_raise | keyword_fold
 				| keyword_betmin | keyword_bethalfpot
 				| keyword_betpot | keyword_betmax | keyword_bet | keyword_sitout];
-			fixed_betsize_action = (keyword_bet | keyword_raise) >> (number | expression)[print_comment_for_fixed_betsize()];
-			relative_betsize_action = (keyword_bet | keyword_raise) >> number[print_number()] 
+			fixed_betsize_action = (keyword_bet | keyword_raise) 
+				>> (number[print_number()] | bracket_expression)[print_comment_for_fixed_betsize()];
+			relative_betsize_action = (keyword_bet | keyword_raise) 
+				>> (number[print_number()] | bracket_expression)
 				>> percentage_operator[print_percentage_operator()][print_relative_potsize_action()] ;
 
 			// UserDefined Variables
