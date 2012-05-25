@@ -25,9 +25,10 @@ BUG FIXES:
 NEW STUFF:
 - Now supporting expressions after "RAISE" keyword, e.g.
     * RAISE (3 + Calls) FORCE
-	* RAISE MyFavouriteBetsizeForDryBoards FORCE
+	* RAISE (MyFavouriteBetsizeForDryBoards) FORCE
+  Please not that in both cases brackets are mandatory.	
   [THF]
-- New symbol HaveBottomTrips
+- New symbol HaveBottomTrips.
   [Lavezzi]
 
 v1.0.6 2012-04-23
