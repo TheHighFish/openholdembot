@@ -3441,6 +3441,19 @@ ispair
   || ((pokerval & fullhouse)    && `(pcbits & 0b11100) == 1)
   ||  (pokerval & fourofakind)  && !(pokervalcommon & fourofakind)]
 
+##f$OpenPPL_HaveBottomTrips##
+($$cr0==$$cr1 && $$cr0==ranklocommon && ($$cr0==$$pr0||$$cr0==$$pr1))||
+($$cr0==$$cr2 && $$cr0==ranklocommon && ($$cr0==$$pr0||$$cr0==$$pr1))||
+($$cr0==$$cr3 && $$cr0==ranklocommon && ($$cr0==$$pr0||$$cr0==$$pr1))||
+($$cr0==$$cr4 && $$cr0==ranklocommon && ($$cr0==$$pr0||$$cr0==$$pr1))||
+($$cr1==$$cr2 && $$cr1==ranklocommon && ($$cr1==$$pr0||$$cr0==$$pr1))||
+($$cr1==$$cr3 && $$cr1==ranklocommon && ($$cr1==$$pr0||$$cr0==$$pr1))||
+($$cr1==$$cr4 && $$cr1==ranklocommon && ($$cr1==$$pr0||$$cr0==$$pr1))||
+($$cr2==$$cr3 && $$cr2==ranklocommon && ($$cr2==$$pr0||$$cr0==$$pr1))||
+($$cr2==$$cr4 && $$cr2==ranklocommon && ($$cr2==$$pr0||$$cr0==$$pr1))||
+($$cr3==$$cr4 && $$cr3==ranklocommon && ($$cr3==$$pr0||$$cr0==$$pr1)) ? 1:
+0
+
 ##f$OpenPPL_HaveStraight##
 (nstraightfill == 0)
 
