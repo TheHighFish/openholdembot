@@ -1,0 +1,24 @@
+custom
+
+preflop
+when others RaiseMax Force
+when others RaisePot Force
+when others RaiseHalfPot Force
+when others Raise 3 Force
+when others Raise 80% Force
+when others Bet 3 Force
+when others Call Force
+when others fold Force
+when others Allin Force
+
+
+flop
+when others fold force
+
+
+turn
+when others fold force
+
+
+river
+when others fold force
