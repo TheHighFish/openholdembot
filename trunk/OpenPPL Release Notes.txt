@@ -9,8 +9,7 @@ BUG FIXES:
 - HaveNutStraight didn't consider NutStraightFlushes.
   Thanks to Lavezzi for reporting.
   [THF]
-- OpenPPL didn't automatically execute allin 
-  if a potsized-bet was larger than our balance.  
+- OpenPPL didn't automatically execute allin if a potsized bet was larger than our balance.  
   [Lavezzi]
 - StillToAct did work only preflop.
   Thanks to Lavezzi for reporting and to Postenjak for the postflop-code.
@@ -28,6 +27,8 @@ NEW STUFF:
     * RAISE (3 + Calls) FORCE
 	* RAISE MyFavouriteBetsizeForDryBoards FORCE
   [THF]
+- New symbol HaveBottomTrips
+  [Lavezzi]
 
 v1.0.6 2012-04-23
 =================
