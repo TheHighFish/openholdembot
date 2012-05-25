@@ -3000,6 +3000,9 @@ ranklocommon
 ##f$OpenPPL_HaveBottomSet##
 ((nrankedcommon == 1) && ispair && isthreeofakind && (rankhiplayer == ranklocommon))
 
+##f$OpenPPL_HaveBottomTrips##
+($$pr0 == f$OpenPPL_RankOfBottomPairOnBoard || $$pr1 == f$OpenPPL_RankOfBottomPairOnBoard)
+
 ##f$OpenPPL_HaveBottomTwoPair##
    (f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_LowestBoardCard && f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_2ndLowestBoardCard)
 || (f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_2ndLowestBoardCard && f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_LowestBoardCard)
