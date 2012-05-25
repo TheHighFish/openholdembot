@@ -5,6 +5,8 @@
 * Run the test-suite, using "Run_Testsuite.bat" in trunk/OpenPPL.
   It will run only the ok*.txt-files, so you shouldn't get any error-messages.
 * Build the docu if necessary
+  - Export -> HTML for all changed LyX-files
+  - use MS HTML-workshop to create a "compiled HTML" help-file (*.CHM)
 * Commit everything once it works
 * Update the release-notes.
 * Update the release-date in the release-notes.
