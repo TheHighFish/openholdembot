@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- html --> 
 <meta name="src" content="Actions.tex"> 
-<meta name="date" content="2011-12-04 15:23:00"> 
+<meta name="date" content="2012-05-26 00:33:00"> 
 <link rel="stylesheet" type="text/css" href="Actions.css"> 
 </head><body 
 >
@@ -78,8 +78,28 @@ generated OH-script-code looks exactly the same and OpenHoldem makes no differen
 anyway.
 
    <h3 class="sectionHead"><a 
- id="x1-5000"></a>Being strict: using &#8220;FORCE&#8221;</h3>
-<!--l. 102--><p class="noindent" >Every action in OpenPPL has to be terminated by the keyword &#8220;FORCE&#8221;. For standard
+ id="x1-5000"></a>Using expressions for the bet-amount</h3>
+<!--l. 102--><p class="noindent" >Lets assume you want to raise to 3 bb in an unraised pot, plus 1 bb for each caller. With
+standard PPL this would result in clumsy code. But with OpenPPL you can simply
+write:
+   <!--l. 107-->
+   <div class="lstlisting" id="listing-5"><span class="label"><a 
+ id="x1-5001r1"></a></span>WHEN&#x00A0;(Raises&#x00A0;=&#x00A0;0)&#x00A0;RAISE&#x00A0;(3&#x00A0;+&#x00A0;Calls)&#x00A0;FORCE
+   </div>
+<!--l. 112--><p class="indent" >   If you want you could take this to extremes and write good code like the
+following:
+   <!--l. 116-->
+   <div class="lstlisting" id="listing-6"><span class="label"><a 
+ id="x1-5002r1"></a></span>NEW&#x00A0;SYMBOL&#x00A0;MyFavouriteBetsizeForDryBoards&#x00A0;<br /><span class="label"><a 
+ id="x1-5003r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;...&#x00A0;<br /><span class="label"><a 
+ id="x1-5004r3"></a></span>END&#x00A0;SYMBOL&#x00A0;<br /><span class="label"><a 
+ id="x1-5005r4"></a></span>&#x00A0;<br /><span class="label"><a 
+ id="x1-5006r5"></a></span>WHEN&#x00A0;(...)&#x00A0;RAISE&#x00A0;(MyFavouriteBetsizeForDryBoards)&#x00A0;FORCE
+   </div>
+<!--l. 125--><p class="indent" >   Please note that in both cases extra brackets are mandatory.
+   <h3 class="sectionHead"><a 
+ id="x1-6000"></a>Being strict: using &#8220;FORCE&#8221;</h3>
+<!--l. 130--><p class="noindent" >Every action in OpenPPL has to be terminated by the keyword &#8220;FORCE&#8221;. For standard
 PPL this keyword was optional. If you left it out, it meant, that the bot continued to
 evaluate and finally fell back to the default logic. We deviated from that behaviour,
 as:
@@ -89,8 +109,8 @@ as:
            </li>
         <li class="itemize">OpenPPL does not provide a default bot.</li></ul>
    <h3 class="sectionHead"><a 
- id="x1-6000"></a>Backup actions</h3>
-<!--l. 114--><p class="noindent" >It may happen, that a certain action is not available, e.g. you might want to raise by half
+ id="x1-7000"></a>Backup actions</h3>
+<!--l. 142--><p class="noindent" >It may happen, that a certain action is not available, e.g. you might want to raise by half
 the pot, but this is currently not possible, e.g. because your opponent made a large raise
 and half-pot would be less than the minimum. In such situations OpenPPL behaves in
 the following ways:
@@ -99,6 +119,7 @@ the following ways:
         betsize  gets  automatically  adapted.  This  happens  also  to  actions  like
         RaisePot and RaiseHalfPot, that get executed with the f$betsize-function
         (formerly known as &#8220;f$swag&#8221;).
+
            </li>
         <li class="itemize">action can&#8217;t be executed, because it is not possible, e.g. there might be
         no raise-button, because you can only call (allin) or fold. Here OpenPPL
@@ -113,11 +134,10 @@ the following ways:
             <li class="itemize">Check if no Call is possible
             </li>
             <li class="itemize">Fold if no Check is possible (default behaviour of OpenHoldem).</li></ul>
-    <!--l. 135--><p class="noindent" >This deviates from standard PPL again. However we have the following
+    <!--l. 163--><p class="noindent" >This deviates from standard PPL again. However we have the following
         reasons:
             <ul class="itemize2">
             <li class="itemize">OpenHoldem evaluates its technical functions in the order above (for
-
             details please refer to the OpenHoldem Manual).
             </li>
             <li class="itemize">we believe, it is better to behave in a more conservative way if an

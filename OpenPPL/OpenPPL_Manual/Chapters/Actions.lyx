@@ -265,6 +265,75 @@ Contrary to standard PPL OpenPPL does not distinguish bets and raises.
  no difference anyway.
 \end_layout
 
+\begin_layout Section*
+Using expressions for the bet-amount
+\end_layout
+
+\begin_layout Standard
+Lets assume you want to raise to 3 bb in an unraised pot, plus 1 bb for
+ each caller.
+ With standard PPL this would result in clumsy code.
+ But with OpenPPL you can simply write:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN (Raises = 0) RAISE (3 + Calls) FORCE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If you want you could take this to extremes and write good code like the
+ following:
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+NEW SYMBOL MyFavouriteBetsizeForDryBoards
+\end_layout
+
+\begin_layout Plain Layout
+
+    ...
+\end_layout
+
+\begin_layout Plain Layout
+
+END SYMBOL
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN (...) RAISE (MyFavouriteBetsizeForDryBoards) FORCE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Please note that in both cases extra brackets are mandatory.
+\end_layout
+
 \begin_layout Section
 Being strict: using 
 \begin_inset Quotes eld
