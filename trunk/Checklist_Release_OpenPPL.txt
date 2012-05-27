@@ -20,6 +20,7 @@
 * Add "OpenPPL Release Notes.txt"
 * Add "OpenPPL_Library.ohf"
 * Add "OpenPPL_SwagFunctions_For_OpenHoldem_2.1.x_Only_Please_Delete_This_File_Once_You_Use_OpenHoldem_2.2.0_And_Later.ohf"
+* Add "mh_str_Handstrength_Library.ohf" (for OH 2.2.0+)
 * Add "OpenPPL_Manual.chm"
 * Create a rar-file with unique name ("OpenPPL_1.x.y.rar")
 * Double-check the rar-file.
