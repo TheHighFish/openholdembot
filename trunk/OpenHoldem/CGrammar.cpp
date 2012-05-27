@@ -11,7 +11,6 @@
 #include "CFormula.h"
 #include "CICMCalculator.h"
 #include "CMemory.h"
-#include "CMyHand.h"
 #include "CPerl.hpp"
 #include "CPokerAction.h"
 #include "CPreferences.h"
@@ -482,13 +481,6 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 		return action.ProcessQuery(sym.c_str(), e);
 	}
 
-	// MyHand symbols
-	else if (memcmp(sym.c_str(), "mh_", 3)==0)
-	{
-		CMyHand myhand;
-		return myhand.ProcessQuery(sym.c_str(), e);
-	}
-
 	// Memory symbols
 	else if (memcmp(sym.c_str(), "me_", 3)==0)
 	{
@@ -804,19 +796,6 @@ void CGrammar::ValidateSymbol(const char *begin, const char *end)
 		CPokerAction	action;
 		e = SUCCESS;
 		action.ProcessQuery(sym.c_str(), &e);
-
-		if (e != SUCCESS)
-			g_parse_symbol_stop_strs.Add(sym);
-
-		return;
-	}
-
-	// MyHand symbols
-	else if (memcmp(sym.c_str(), "mh_", 3)==0)
-	{
-		CMyHand	myhand;
-		e = SUCCESS;
-		myhand.ProcessQuery(sym.c_str(), &e);
 
 		if (e != SUCCESS)
 			g_parse_symbol_stop_strs.Add(sym);

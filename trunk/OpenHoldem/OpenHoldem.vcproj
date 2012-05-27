@@ -911,10 +911,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\CMyHand.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\CPokerAction.cpp"
 					>
 				</File>
@@ -1362,10 +1358,6 @@
 				</File>
 				<File
 					RelativePath=".\CMemory.h"
-					>
-				</File>
-				<File
-					RelativePath=".\CMyHand.h"
 					>
 				</File>
 				<File
