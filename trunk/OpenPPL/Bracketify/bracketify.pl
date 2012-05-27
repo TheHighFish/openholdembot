@@ -167,26 +167,30 @@ while (<>)
 	s/[ ]+bet[ ]+/ BET /i;
 	s/[ ]+raise[ ]+/ RAISE /i;
 	# ...and then add brackets
-	s/[ ]+bet[ ]+0/\) BET 0/i;	
-	s/[ ]+bet[ ]+1/\) BET 1/i;
-	s/[ ]+bet[ ]+2/\) BET 2/i;
-	s/[ ]+bet[ ]+3/\) BET 3/i;
-	s/[ ]+bet[ ]+4/\) BET 4/i;
-	s/[ ]+bet[ ]+5/\) BET 5/i;
-	s/[ ]+bet[ ]+6/\) BET 6/i;
-	s/[ ]+bet[ ]+7/\) BET 7/i;
-	s/[ ]+bet[ ]+8/\) BET 8/i;
-	s/[ ]+bet[ ]+9/\) BET 9/i;
-	s/[ ]+raise[ ]+0/\) RAISE 0/i;
-	s/[ ]+raise[ ]+1/\) RAISE 1/i;
-	s/[ ]+raise[ ]+2/\) RAISE 2/i;
-	s/[ ]+raise[ ]+3/\) RAISE 3/i;
-	s/[ ]+raise[ ]+4/\) RAISE 4/i;
-	s/[ ]+raise[ ]+5/\) RAISE 5/i;
-	s/[ ]+raise[ ]+6/\) RAISE 6/i;
-	s/[ ]+raise[ ]+7/\) RAISE 7/i;
-	s/[ ]+raise[ ]+8/\) RAISE 8/i;
-	s/[ ]+raise[ ]+9/\) RAISE 9/i;
+	s/[ ]+bet[ ]0/\) BET 0/i;	
+	s/[ ]+bet[ ]1/\) BET 1/i;
+	s/[ ]+bet[ ]2/\) BET 2/i;
+	s/[ ]+bet[ ]3/\) BET 3/i;
+	s/[ ]+bet[ ]4/\) BET 4/i;
+	s/[ ]+bet[ ]5/\) BET 5/i;
+	s/[ ]+bet[ ]6/\) BET 6/i;
+	s/[ ]+bet[ ]7/\) BET 7/i;
+	s/[ ]+bet[ ]8/\) BET 8/i;
+	s/[ ]+bet[ ]9/\) BET 9/i;
+	s/[ ]+raise[ ]0/\) RAISE 0/i;
+	s/[ ]+raise[ ]1/\) RAISE 1/i;
+	s/[ ]+raise[ ]2/\) RAISE 2/i;
+	s/[ ]+raise[ ]3/\) RAISE 3/i;
+	s/[ ]+raise[ ]4/\) RAISE 4/i;
+	s/[ ]+raise[ ]5/\) RAISE 5/i;
+	s/[ ]+raise[ ]6/\) RAISE 6/i;
+	s/[ ]+raise[ ]7/\) RAISE 7/i;
+	s/[ ]+raise[ ]8/\) RAISE 8/i;
+	s/[ ]+raise[ ]9/\) RAISE 9/i;
+	# Now caring about expressions,
+	# which need to be enclodes in brackets
+	s/[ ]+bet[ ]\(/\) BET \(/i;	
+	s/[ ]+raise[ ]\(/\) RAISE \(/i;
 	# Second case: user defined variable to be set,
 	# where the line ends with a user-variable.
 	# But first we remove superfluos spaces at the end to make things more robust...
