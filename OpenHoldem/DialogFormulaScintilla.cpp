@@ -132,11 +132,6 @@ char * keywords = // Standard functions
 				  "ac_postflop_pos ac_pf_bets ac_first_into_pot "
 				  "ac_betpos0 ac_betpos1 ac_betpos2 ac_betpos3 ac_betpos4 ac_betpos5 ac_betpos6 ac_betpos7 ac_betpos8 ac_betpos9 "
 				  "ac_dealpos0 ac_dealpos1 ac_dealpos2 ac_dealpos3 ac_dealpos4 ac_dealpos5 ac_dealpos6 ac_dealpos7 ac_dealpos8 ac_dealpos9 "
-				  // MyHand
-				  "mh_3straight00 mh_3straight01 mh_3straight10 mh_3straight11 "
-				  "mh_bottomsd mh_nsuitedbetter mh_kickerbetter mh_nouts "
-				  "mh_str_strflush mh_str_quads mh_str_fullhouse "
-				  "mh_str_flush mh_str_straight mh_str_trips mh_str_twopair mh_str_onepair "
 				  // Logging
 				  "log$ "
 				  // ICM calculator
@@ -3273,22 +3268,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "ac_first_into_pot", "returns true if you are first into the pot (first to act or checked to you)");
 	AddSymbol(parent, "ac_betposx (x=0-9)", "returns bet position of specified chair");
 	AddSymbol(parent, "ac_dealposx (x=0-9)", "returns deal position of specified chair");
-
-	mainParent = parent = AddSymbolTitle("MyHand symbols", NULL, hCatItem);
-	AddSymbol(parent, "mh_3straightxy", "(x=1 for wheel, 0 not, y=1 for broadway, 0 not) - returns true if the board has a wheel straight draw or broadway straight draw, given the wheel/broadway parameters");
-	AddSymbol(parent, "mh_bottomsd", "true if I have a bottom straight draw");
-	AddSymbol(parent, "mh_nsuitedbetter", "number of missing suited cards that are higher than my best suited card");
-	AddSymbol(parent, "mh_kickerbetter", "number of cards that can beat your kicker");
-	AddSymbol(parent, "mh_kickerrank", "rank of your kicker (returns 0 if kicker is shared [board] and thus useless)");
-	AddSymbol(parent, "mh_nouts", "number of outs (HTC's formula)");
-	AddSymbol(parent, "mh_str_strflush", "0-5 (5 best) of the relative strength of your straight flush");
-	AddSymbol(parent, "mh_str_quads", "0-5 (5 best) of the relative strength of your four of a kind");
-	AddSymbol(parent, "mh_str_fullhouse", "0-5 (5 best) of the relative strength of your full house");
-	AddSymbol(parent, "mh_str_flush", "0-5 (5 best) of the relative strength of your flush");
-	AddSymbol(parent, "mh_str_straight", "0-5 (5 best) of the relative strength of your straight");
-	AddSymbol(parent, "mh_str_trips", "0-5 (5 best) of the relative strength of your three of a kind");
-	AddSymbol(parent, "mh_str_twopair", "0-5 (5 best) of the relative strength of your two pair"); 
-	AddSymbol(parent, "mh_str_onepair", "0-5 (5 best) of the relative strength of your one pair");
 
 	mainParent = parent = AddSymbolTitle("Table stats symbols", "Note: the setting for [y minutes] can be found in Edit/Preferences, and defaults to 15 minutes.", hCatItem);
 	AddSymbol(parent, "floppct", "percentage of players seeing the flop for the last y minutes");
