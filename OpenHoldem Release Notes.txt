@@ -173,6 +173,12 @@ MAINTENANCE:
   But these symbols can hardly get used interchangeably,
   so this option was only confusing and superfluos.
   [THF]
+- Removing Winngys "mh_str" handstrength-functions, 
+  as sicu functionality belongs to external libraries and not directly to OH.
+  (technical symbols in OH, poker-logicals in libraries).
+  As these functions get used by several people and by OpenPPL
+  a library "mh_str__Handstrength_Library.ohf" has been created in the repository.
+  [THF]
   
 BUG FIXES: 
 - Fine-tuning some validator-rules (1201, 1205). 
