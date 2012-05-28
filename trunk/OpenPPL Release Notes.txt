@@ -1,4 +1,4 @@
-v1.0.7 2012-05-24
+v1.0.7 2012-05-28
 =================
 BUG FIXES: 
 - Redesigned decision-function affected BotsLastAction
