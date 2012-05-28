@@ -38,229 +38,6 @@
 //
 /////////////////////////////////////////////////////////////////////////////////
 
-
-
-/////////////////////////////////////////////////////////////////////////////////
-//
-// Original bot by Winngy (for reference) - WHF-part
-//
-/////////////////////////////////////////////////////////////////////////////////
-
-
-##2008-02-10 16:03:43##
-
-##notes##
-
-
-##dll##
-mh_nouts.dll
-
-##bankroll##
-0.000000
-
-##defcon##
-0.500000
-
-##rake##
-0.000000
-
-##nit##
-6000
-
-##f$alli##
-0
-
-##f$swag##
-0
-
-##f$srai##
-0
-
-##f$rais##
-   f$Fold==1 ? 0 :                              // "Fold"        rules
-   f$NoRaise ? 0 :                              // "Don't Raise" rules
-   (br==4 && (f$value_to_raise>f$cost_to_fold) && 
-   (f$value_to_raise>f$value_to_call) && 
-   pokerval-pokervalcommon>=16400000) ? 1 :     // raise river with %
-(
-// ROUND ONE - Pre Flop
-// We will play the recommended openers from "Small Stakes Hold 'em by Miller Sklansky and Malmuth.
-// If we know we have a multiway pot play a few more hands using their recommended loose table openers.
-// Othertherwise we will adhere to recomendations for tight small stakes tables.
-   [br==1 && (
-        f$tight_openers>=2                      // SSH tight openers to raise normally
-     || {f$loose_openers>=2 && (                // SSH loose openers to raise when         
-             nopponentsplaying>2 && (           // + minimum three opponents are still in the hand
-                  nopponentsbetting>3           // + minimum two opponents plus blinds have put chips in pot
-               || (dealposition<3 &&            //   or if blind, minimum two opponents plus other blind 
-                  nopponentsbetting>2)          //   put chips in pot 
-                                    )
-          || floppct>=0.50                  // 50%+ average saw flop at this table over last 30 minutes
-                             )     
-        }
-             )
-   ]
-
-// Blind Aggression
-|| f$defendblinds>1 
-|| f$stealblinds>1
-
-//Post flop
-|| [br>=2 && (
-        (f$rais_FTR_BigPot )                     //Made hands
-     || (f$rais_FTR_Aggro)                       //Bluffs , c-bets
-     || (f$follow_thru>1) && f$Stop_Raise==0     //C-bets but only when against players who co-operate  
-     || (br==4 && nraisbets<2 && f$raise_the_chaser)  
-              ) ] 
-)
-
-##f$call##
-(call<=0) ?                                                                        1 : // call if it is free (check)
-(br==4 && (f$value_to_call>f$cost_to_fold) && pokerval-pokervalcommon>=16400000) ? 1 : // call river with %
-(f$Fold==1) ?                                                                      0 : // "Fold" rules
-
-(                           
-// ROUND ONE - Pre Flop
-// We will play the recommended openers from "Small Stakes Hold 'em by Miller Sklansky and Malmuth.
-// If we know we have a multiway pot play a few more hands using their recommended loose table openers.
-// Othertherwise we will adhere to recomendations for tight small stakes tables.
-   [br==1 && (
-         f$tight_openers>=1                      // SSH tight openers to call normally
-      || f$loose_openers>=1 && (                 // SSH loose openers to call when                  
-              {nopponentsplaying>=3 && (         // + minimum three opponents are still in the hand
-                   nopponentsbetting>=4          // + minimum two opponents plus blinds have put chips in pot
-                || ((dealposition==1||dealposition==2) &&                     //   or if blind, minimum two opponents plus other blind 
-                   nopponentsbetting>=3)         //   put chips in pot 
-                ) &&                             // 
-              nbetsround<=2 && (                 // + pot has not been raised and reraised (3 bet)
-                   callposition>=2               // + not cold calling uncalled raise unless
-                || ($AQs||$AJs||$KQs)            //   $AQs $AJs or $KQs. 
-                )
-              }                                  // or
-           || floppct>=0.50                  // 50%+ average saw flop at this table over last 30 minutes
-           )
-      || didrais && nbetstocall<3                // previously raised and call less than 3 bets
-      || didcall && nbetstocall<2                // previously called and call less than 2 bets  << cout v0009a
-      )
-   ]
-//Pre & Post flop blind plays
-     || f$defendblinds 
-     || f$stealblinds
-     
-//Post Flop
-|| [br>=2 && (
-        (f$call_FTR_BigPot )                               //Made Hands
-     || (f$DRAWS)                                          //Drawing Hands    
-     || (f$GENERAL_HAND_CALLS)                             //Catch Alls
-     || ((didcall||didrais) && !br==4 && nbetstocall<=1)   //c-call
-     || (f$follow_thru>0)                                  //C-bets but only when against players who co-operate  
-             )
-   ]
-)
-
-##f$prefold##
-
-
-##f$evrais##
-0
-
-##f$evcall##
-0
-
-##f$P##
-(nopponentsplaying<=1) ? 1 :
-br==1 ? nopponentsdealt :
-br==2 ? ((nplayersround2-1)+((ncallbets*2)-(didraisround2*2))+((nbetsround1-didraisround1)*.8)) :
-br==3 ? ((nplayersround3-1)+((ncallbets*2)-(didraisround3*2))+(nbetsround2-didraisround2)+((nbetsround1-didraisround1)*.8)) :
-br==4 ? ((nplayersround4-1)+((ncallbets*2)-(didraisround4*2))+(nbetsround3-didraisround3)+(nbetsround2-didraisround2)+((nbetsround1-didraisround1)*.8)) : 1
-
-##f$play##
-1 ? -1 :
-(elapsed%4)              ? -1 :     // disabled 3 out of 4 seconds 
-// (br==2 && balance > 150) ? 0 :
-//------------------------------------------------------------------------ 
-//************************************************************************** 
-                         // leave the table 
-//------------------------------------------------------------------------ 
-// LEAVE RULE - Game broken up 
-1                                   // 0=off 1=on 
-&& issittingout                     // sitting out 
-&& nopponentsdealt<=2               // super short handed
-&& (br==2 || br==3)                 // flop or turn  
-? -2 :                              // leave the table 
-//------------------------------------------------------------------------ 
-
-// LEAVE RULE - Wait around, but get out before you get booted 
-1                                   // 0=off 1=on 
-&& issittingout                     // sitting out 
-&& elapsedauto>=100                 // dynamic rule  
-     *nopponentsdealt               // 100 seconds times opponents dealt
-&& (br==2 || br==3)                 // flop or turn  
-? -2 :                              // leave the table 
-//------------------------------------------------------------------------ 
-// SITIN RULE - Based on players 
-1                                   // 0=off 1=on 
-&& issittingout                     // sitting out
-&& (br==2 || br==3)                 // flop or turn 
-&& nchairsdealtright==2             // about to be big blind 
-&& nopponentsdealt>=5               // 5 or more opponents
- 
-?  1 :                              // sitin 
-//------------------------------------------------------------------------ 
-
-// SITOUT RULE - Based on players 
-1                                   // 0=off 1=on 
-&& issittingin                      // sitting in
-&& br==2 && nopponentsdealt<=5      // Getting short          
-?  0 :                              // sitout 
-//------------------------------------------------------------------------ 
-// SITOUT RULE - based on Time 
-0                                   // 0=off 1=on 
-&& issittingin                      // sitting in 
-&& (br==2 || br==3)                 // flop or turn 
-&&  elapsed>21600                   // playing 6 hours
-?  0 :                              // sitout 
-//************************************************************************** 
--1                                  // disabled
-
-##f$test##
-
-
-##f$debug##
-
-
-##list0##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S QJS QTS Q9S Q8S JTS J9S J8S T9S T8S T7S 98S 97S 96S 87S 86S 85S 76S 75S 74S 65S 64S 63S 54S 53S 52S 43S 42S 32S 
-KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  
-
-##list1##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S KQS KJS KTS K9S K8S QJS QTS Q9S Q8S JTS J9S J8S T9S T8S T7S 98S 97S 96S 87S 86S 85S 76S 75S 74S 65S 64S 63S 54S 53S 43S 
-
-
-/////////////////////////////////////////////////////////////////////////////////
-//
-// Original bot by Winngy (for reference) - WHX-part
-//
-/////////////////////////////////////////////////////////////////////////////////
-
-##f$NESTR##
-//NO EASY STRAIGHT DRAW
-(nstraightcommon<=2 && nstraightfillcommon>=3) 
-|| (nbetsround1>=2 
-    && (     (nstraightfillcommon==1 && nstraightcommon==4 && (`(rankbitscommon&0x007f))==4)   // 6543 
-          || (nstraightfillcommon==1 && nstraightcommon==3 && (`(rankbitscommon&0x007c))==4)   // 6542, 6432
-       ) 
-   )
-
-##f$SAFEBOARD##
-[nrankedcommon<2 && 
- nsuitedcommon<3 && 
- nstraightcommon<3 && 
- nstraightfillcommon>1 ]
-&& !(br>2 && rankhicommon==14 && rankhicommon>rankhiplayer)
-
 ##f$strength_straightflush##
 isstraightflush || isroyalflush ?
 
@@ -274,6 +51,7 @@ isroyalflush && (pokervalcommon&royalflush)                          ? 1 : // Ch
 0
 
 : 0
+
 
 ##f$strength_quads##
 isfourofakind ?
@@ -660,6 +438,41 @@ isonepair ?
 
 ##f$strength_hicard##
 ishicard ? 0 : 0
+
+/////////////////////////////////////////////////////////////////////////////////
+//
+// Original bot by Winngy (for reference) - WHF-part
+//
+/////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////
+//
+// Original bot by Winngy (for reference) - WHX-part
+//
+/////////////////////////////////////////////////////////////////////////////////
+
+##f$NESTR##
+//NO EASY STRAIGHT DRAW
+(nstraightcommon<=2 && nstraightfillcommon>=3) 
+|| (nbetsround1>=2 
+    && (     (nstraightfillcommon==1 && nstraightcommon==4 && (`(rankbitscommon&0x007f))==4)   // 6543 
+          || (nstraightfillcommon==1 && nstraightcommon==3 && (`(rankbitscommon&0x007c))==4)   // 6542, 6432
+       ) 
+   )
+
+##f$SAFEBOARD##
+[nrankedcommon<2 && 
+ nsuitedcommon<3 && 
+ nstraightcommon<3 && 
+ nstraightfillcommon>1 ]
+&& !(br>2 && rankhicommon==14 && rankhicommon>rankhiplayer)
+
+
+
+
 
 ##f$spe##
 //LabOneLimit_v0009 8/25/2006
