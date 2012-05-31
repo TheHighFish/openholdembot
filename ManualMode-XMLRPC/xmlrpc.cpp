@@ -3,6 +3,8 @@
 #include "xmlrpc.h"
 #include "ManualModeDlg.h"
 
+#include <string>
+
 xmlrpc_c::serverAbyss* xServer = NULL;
 
 bool waiting_for_action = false;
@@ -422,22 +424,41 @@ class GetAction: public MMDlgMethod
 			dlg->Refresh();
 			result = WaitForMultipleObjects(6, button_events, false, INFINITE);
 
+			std::map<std::string, xmlrpc_c::value> structData;
+
+			std::pair<std::string, xmlrpc_c::value> rbutton;
 			if(result == WAIT_OBJECT_0)
-				*retvalP = xmlrpc_c::value_string("F");
+			{
+				rbutton = std::pair<std::string, xmlrpc_c::value>("button", xmlrpc_c::value_string("F"));
+			}
 			else if(result == WAIT_OBJECT_0 + 1)
-				*retvalP = xmlrpc_c::value_string("C");
+			{
+				rbutton = std::pair<std::string, xmlrpc_c::value>("button", xmlrpc_c::value_string("C"));
+			}
 			else if(result == WAIT_OBJECT_0 + 2)
-				*retvalP = xmlrpc_c::value_string("K");
+			{
+				rbutton = std::pair<std::string, xmlrpc_c::value>("button", xmlrpc_c::value_string("K"));
+			}
 			else if(result == WAIT_OBJECT_0 + 3)
-				*retvalP = xmlrpc_c::value_string("R");
+			{
+				rbutton = std::pair<std::string, xmlrpc_c::value>("button", xmlrpc_c::value_string("R"));
+			}
 			else if(result == WAIT_OBJECT_0 + 4)
-				*retvalP = xmlrpc_c::value_string("A");
+			{
+				rbutton = std::pair<std::string, xmlrpc_c::value>("button", xmlrpc_c::value_string("A"));
+			}
 			else if(result == WAIT_OBJECT_0 + 5)
 			{
 				waiting_for_action = false;
 				throw(xmlrpc_c::fault("Canceled", xmlrpc_c::fault::CODE_INTERNAL));
 			}
+
+			std::pair<std::string, xmlrpc_c::value> rswag("betsize", xmlrpc_c::value_string(std::string((LPCTSTR)dlg->raise_amount)));
+			structData.insert(rbutton);
+			structData.insert(rswag);
+
 			waiting_for_action = false;
+			*retvalP = xmlrpc_c::value_struct(structData);
 		}
 };
 

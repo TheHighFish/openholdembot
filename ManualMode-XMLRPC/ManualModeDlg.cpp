@@ -2871,7 +2871,5 @@ int CManualModeDlg::get_br(void)
 
 void CManualModeDlg::OnEnChangeSwag()
 {
-	CString tmp;
-	swag.GetWindowText(tmp);
-	raise_amount = atof(tmp);
+	swag.GetWindowText(raise_amount);
 }
