@@ -81,6 +81,7 @@ public:
 
 	void Refresh();
 
+	CString raise_amount;
 protected:
 	xmlrpc_c::clientSimple* xClient;
 	std::string serverUrl;
@@ -110,8 +111,6 @@ protected:
 	int					limit;
 	CString				network;
 	bool				istournament;
-
-	double				raise_amount;
 
 	// For tracking right click locations
 	int					click_loc;
