@@ -23,10 +23,7 @@ using namespace std;
 
 const bool k_assert_this_must_not_happen = false;
 
-bool when_others_fold_force_detected = false;
-bool when_others_when_others_fold_force_detected = false;
 bool open_ended_when_condition_detected = false;
-
 int when_conditions_since_last_action = 0;
 
 typedef map<CString, CString> CSMap;

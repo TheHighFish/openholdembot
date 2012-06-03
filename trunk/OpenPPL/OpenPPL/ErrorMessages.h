@@ -10,7 +10,6 @@ enum error_codes
 	k_error_action_without_force,
 	k_error_missing_code_section,
 	k_error_missing_closing_bracket,
-	k_error_missing_keyword_custom,
 	k_error_missing_brackets_for_card_expression,
 	k_error_missing_brackets_for_when_condition,
 	k_error_invalid_character,

@@ -12,7 +12,6 @@ static const char *short_error_messages[k_number_of_error_codes] =
 	"ERROR: Missing keyword \"FORCE\".",
 	"ERROR: Missing code section.",
 	"ERROR: Missing closing bracket.",
-	"ERROR: Missing keyword \"CUSTOM\".",
 	"ERROR: Missing brackets around card expressions.",
 	"ERROR: Missing brackets for when-condition.",
 	"ERROR: Invalid character(s).",
@@ -61,11 +60,6 @@ static const char *detailed_error_messages[k_number_of_error_codes] =
 	"We miss a closing bracket near that location,\n"
 	"but it might also be any other kind of syntax error,\n"
 	"e.g. a misspelled keyword or a missing operator.\n",
-
-	// k_error_missing_keyword_custom
-	"It seems. the option settings are over.\n"
-	"Now we expect \"CUSTOM\" followed by symbol definitions and user defined code.\n"
-	"But there also may be an error in the option settings.\n",
 
 	// k_error_missing_brackets_for_card_expression
 	"Our parser is a bit greeddy.\n"
