@@ -198,7 +198,7 @@ struct print_number
 	} 
 };
 
-struct print_comment_for_fixed_betsize
+struct print_fixed_betsize_action
 { 
 	void operator()(const char *begin, const char *end) const 
 	{ 
@@ -210,7 +210,9 @@ struct print_relative_potsize_action
 { 
 	void operator()(const char *begin, const char *end) const 
 	{ 
-		current_output << "f$RaiseByPercentagedPotsize";
+		// f$RaiseByPercentagedPotsize evaluates to -0.01
+		// A negative value means potsize.
+		current_output << " * f$RaiseByPercentagedPotsize";
 	} 
 };
 
@@ -388,27 +390,7 @@ struct reset_variables
 {
 	void operator()(const char *begin, const char *end) const
 	{
-		when_others_fold_force_detected = false;
-		when_others_when_others_fold_force_detected = false;
 		open_ended_when_condition_detected = false;
-	}
-};
-
-struct set_when_others_fold_force_detected
-{
-	void operator()(const char *begin, const char *end) const
-	{
-		//MessageBox(0, "set_when_others_fold_force_detected", "Debug", 0);
-		when_others_fold_force_detected = true;
-	}
-};
-
-struct set_when_others_when_others_fold_force_detected
-{
-	void operator()(const char *begin, const char *end) const
-	{
-		//MessageBox(0, "set_when_others_when_others_fold_force_detected", "Debug", 0);
-		when_others_when_others_fold_force_detected = true;
 	}
 };
 
@@ -761,14 +743,6 @@ struct error_missing_closing_bracket
 	void operator()(const char *begin, const char *end) const 
 	{
 		ErrorMessage(k_error_missing_closing_bracket, ErroneousCodeSnippet(begin));
-	}
-};
-
-struct error_missing_keyword_custom
-{
-	void operator()(const char *begin, const char *end) const 
-	{
-		ErrorMessage(k_error_missing_keyword_custom, ErroneousCodeSnippet(begin));
 	}
 };
 

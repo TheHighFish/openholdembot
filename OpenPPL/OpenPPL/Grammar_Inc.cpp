@@ -211,8 +211,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
             // 1. Raise X % 
             // 2. Raise X
 			// 3. Raise	 
-			action_without_force = relative_betsize_action
-				| fixed_betsize_action
+			action_without_force = betsize_action
 				| predefined_action
 				| return_statement;
 			predefined_action = keyword_predefined_action[print_predefined_action()];
@@ -224,11 +223,10 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				| keyword_raise | keyword_fold
 				| keyword_betmin | keyword_bethalfpot
 				| keyword_betpot | keyword_betmax | keyword_bet | keyword_sitout];
-			fixed_betsize_action = (keyword_bet | keyword_raise) 
-				>> (number[print_number()] | bracket_expression)[print_comment_for_fixed_betsize()];
-			relative_betsize_action = (keyword_bet | keyword_raise) 
+			betsize_action = (keyword_bet | keyword_raise) 
 				>> (number[print_number()] | bracket_expression)
-				>> percentage_operator[print_percentage_operator()][print_relative_potsize_action()] ;
+				>> ((percentage_operator[print_relative_potsize_action()]) 
+					| (str_p("")[print_fixed_betsize_action()]));
 
 			// UserDefined Variables
 			user_prefix = str_p("user") | "User" | "USER";
