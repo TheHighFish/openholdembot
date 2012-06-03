@@ -1218,8 +1218,11 @@ f$OpenPPL_ERROR_Betround_Out_Of_Range
 1
 
 ##f$RaiseByPercentagedPotsize##
-// Small negative values are used for percentaged potsized bets
--1
+// Small negative values are used for percentaged potsized bets.
+// We also do the multiplication with 0.01 here.
+// Don't use " / 100 *" because that can lead to an integer-division,
+// and 70/100 will unexpectedly get evaluated as 0.
+-0.01
 
 ##f$OpenPPL_DecisionIsPercentagedPotsizedBet##
    (f$OpenPPL_Decision <= 0) 
