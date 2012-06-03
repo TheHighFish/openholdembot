@@ -1,3 +1,11 @@
+v1.1.0 2012-06-04
+=================
+BUG FIXES: 
+- The converter did generate code for partial matches,
+  so "RAISE (expression) FORCE did get translated incorrectly.
+  This has now been fixed.
+[THF]
+
 v1.0.7 2012-05-28
 =================
 BUG FIXES: 
