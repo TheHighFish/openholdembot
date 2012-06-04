@@ -247,71 +247,9 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 				m_ScraperOutputDlg->UpdateDisplay();
 			}
 
-			// scraper.dll - failure in load is NOT fatal
-			theApp.UnloadScraperDLL();
-			CString filename = p_tablemap->scraperdll();
-			if (!filename.IsEmpty()) {
-				SetCurrentDirectory(_startup_path);
-				theApp._scraper_dll = LoadLibrary(filename);
-			}
-
-			if (theApp._scraper_dll==NULL)
-			{
-				CString	error_message = "";
-				error_message.Format("Unable to load scraper-dll: \"%s\"\n\n"
-					"Error-code: %d", filename, GetLastError());
-				OH_MessageBox(error_message, "Error", 0);
-			}
-			else
-			{
-				theApp._dll_scraper_process_message = (scraper_process_message_t) GetProcAddress(theApp._scraper_dll, "ProcessMessage");
-				theApp._dll_scraper_override = (scraper_override_t) GetProcAddress(theApp._scraper_dll, "OverrideScraper");
-
-				if (theApp._dll_scraper_process_message==NULL || theApp._dll_scraper_override==NULL)
-				{
-					OH_MessageBox("Unable to find all symbols in scraper.dll", "Error", 0);
-					theApp.UnloadScraperDLL();
-				}
-				else
-				{
-					write_log(prefs.debug_autoconnector(), "[CAutoConnector] scraper.dll (%s) loaded, ProcessMessage and OverrideScraper found.\n", filename);
-				}
-			}
-
-			// scraperpreprocessor.dll - failure in load is NOT fatal
-			theApp.Unload_ScraperPreprocessor_DLL();
-			filename = p_tablemap->scraperpreprocessor_dll();
-			if (!filename.IsEmpty()) 
-			{
-				SetCurrentDirectory(_startup_path);
-				theApp._scraperpreprocessor_dll = LoadLibrary(filename);
-			}
-
-			if (theApp._scraperpreprocessor_dll==NULL)
-			{
-				CString error_message = "";
-				error_message.Format("Unable to load scraper-preprocessor-dll: \"%s\"\n\n"
-					"Error-code: %d", filename, GetLastError());
-				OH_MessageBox(error_message, "OpenHoldem scraperpre.dll WARNING", MB_OK | MB_TOPMOST);
-			}
-			else
-			{
-				theApp._dll_scraperpreprocessor_process_message = (scraperpreprocessor_process_message_t) GetProcAddress(theApp._scraperpreprocessor_dll, "ProcessMessage");
-
-				if (theApp._dll_scraperpreprocessor_process_message==NULL)
-				{
-					CString	error_message = "";
-					error_message.Format("Unable to find symbols in scraperpre.dll");
-					OH_MessageBox(error_message, "OpenHoldem scraperpre.dll ERROR", MB_OK | MB_TOPMOST);
-					theApp.Unload_ScraperPreprocessor_DLL();
-				}
-				else
-				{
-					write_log(prefs.debug_autoconnector(), "[CAutoConnector] scraperpreprocessor.dll loaded, ProcessMessage found.\n");
-				}
-			}
-
-
+			LoadScraperDLL();
+			LoadScraperPreprocessorDLL();
+			
 			CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 			pMyMainWnd->DisableButtonsOnConnect();
 
@@ -368,6 +306,79 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Unlocking autoconnector-mutex\n");
 	_autoconnector_mutex->Unlock();
 	return (SelectedItem != -1);
+}
+
+
+void CAutoConnector::LoadScraperDLL()
+{
+	// scraper.dll - failure in load is NOT fatal
+	theApp.UnloadScraperDLL();
+	CString filename = p_tablemap->scraperdll();
+	if (filename.IsEmpty()) 
+	{
+		return;
+	}
+	// Otherwise: try to load DLL
+	SetCurrentDirectory(_startup_path);
+	theApp._scraper_dll = LoadLibrary(filename);
+
+	if (theApp._scraper_dll == NULL)
+	{
+		CString	error_message = "";
+		error_message.Format("Unable to load scraper-dll: \"%s\"\n\n"
+			"Error-code: %d", filename, GetLastError());
+		OH_MessageBox(error_message, "Error", 0);
+		return;
+	}
+
+	theApp._dll_scraper_process_message = (scraper_process_message_t) GetProcAddress(theApp._scraper_dll, "ProcessMessage");
+	theApp._dll_scraper_override = (scraper_override_t) GetProcAddress(theApp._scraper_dll, "OverrideScraper");
+
+	if (theApp._dll_scraper_process_message==NULL || theApp._dll_scraper_override==NULL)
+	{
+		OH_MessageBox("Unable to find all symbols in scraper.dll", "Error", 0);
+		theApp.UnloadScraperDLL();
+	}
+	else
+	{
+			write_log(prefs.debug_autoconnector(), "[CAutoConnector] scraper.dll (%s) loaded, ProcessMessage and OverrideScraper found.\n", filename);
+	}
+}
+
+
+void CAutoConnector::LoadScraperPreprocessorDLL()
+{
+	// scraperpreprocessor.dll - failure in load is NOT fatal
+	theApp.Unload_ScraperPreprocessor_DLL();
+	CString filename = p_tablemap->scraperpreprocessor_dll();
+	if (filename.IsEmpty()) 
+	{
+		return;
+	}
+	// Otherwise: try to load DLL
+	SetCurrentDirectory(_startup_path);
+	theApp._scraperpreprocessor_dll = LoadLibrary(filename);
+
+	if (theApp._scraperpreprocessor_dll==NULL)
+	{
+		CString error_message = "";
+		error_message.Format("Unable to load scraper-preprocessor-dll: \"%s\"\n\n"
+			"Error-code: %d", filename, GetLastError());
+		OH_MessageBox(error_message, "OpenHoldem scraperpre.dll WARNING", MB_OK | MB_TOPMOST);
+		return;
+	}
+	theApp._dll_scraperpreprocessor_process_message = (scraperpreprocessor_process_message_t) GetProcAddress(theApp._scraperpreprocessor_dll, "ProcessMessage");
+	if (theApp._dll_scraperpreprocessor_process_message==NULL)
+	{
+		CString	error_message = "";
+		error_message.Format("Unable to find symbols in scraperpre.dll");
+		OH_MessageBox(error_message, "OpenHoldem scraperpre.dll ERROR", MB_OK | MB_TOPMOST);
+		theApp.Unload_ScraperPreprocessor_DLL();
+	}
+	else
+	{
+		write_log(prefs.debug_autoconnector(), "[CAutoConnector] scraperpreprocessor.dll loaded, ProcessMessage found.\n");
+	}
 }
 
 

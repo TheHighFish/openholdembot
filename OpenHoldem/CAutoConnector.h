@@ -21,6 +21,8 @@ private:
 	int SelectTableMapAndWindow(int Choices);
 	int SelectTableMapAndWindowManually(int Choices);
 	int SelectTableMapAndWindowAutomatically(int Choices);
+	void LoadScraperDLL();
+	void LoadScraperPreprocessorDLL();
 private:
 	void Check_TM_Against_All_Windows_Or_TargetHWND(int tablemap_index, HWND targetHWnd);
 	#define ENT CSLock lock(m_critsec);
