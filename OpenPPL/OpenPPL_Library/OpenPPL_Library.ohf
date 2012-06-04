@@ -1278,7 +1278,7 @@ f$OpenPPL_ERROR_Betround_Out_Of_Range
 [currentbet + call + (pot + call)]
 
 ##f$OpenPPL_BetSizeForPercentagedPotsizeBet##
-// f$Decision is negative, -70 means: 70% potsize
+// f$Decision is negative, -0.70 means: 70% potsize
 [currentbet + call + (-1 * f$OpenPPL_Decision) * (pot + call)]
 
 ##f$OpenPPL_BetSizeForFixedBetInBigBlinds##
