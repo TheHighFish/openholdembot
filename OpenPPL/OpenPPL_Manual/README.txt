@@ -8,8 +8,6 @@ To modify the docu:
 * The style of all parts is AMS-book (AMS = American Math society)
 * Numbering is turned off (menu -> document -> properties)
 * Once you have edited the LyX-files, you should export them to HTML
-* Now you should run the script"postprocess_generated_HTML_files.pl"
-  It will apply some changes like background.colour, etc.
 * Finally you need MicroSofts HTML Help Workshop
   (http://www.microsoft.com/downloads/details.aspx?FamilyID=00535334-c8a6-452f-9aa0-d597d16580cc)
   This program makes it possible to create a structured help-file
