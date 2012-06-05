@@ -81,8 +81,6 @@ isonepair ?
 /////////////////////////////////////////////////////////////////////////////////
 
 
-
-
 ##f$strength_straightflush##
 // Hand strength evaluator - returns a value from 1-5, 5 representing the strongest hand
 isroyalflush && !(pokervalcommon&royalflush)                         ? 5 : // Nuts
@@ -330,7 +328,7 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 0
 +(nsuitedcommon>=3)*2
 +(nsuitedcommon>=4)
-+(!f$NESTR)*2
++(!f$mh_no_easy_straight_draw)*2
 +(nstraightfillcommon<=1 || nstraightcommon>=4)
 )
 
@@ -347,7 +345,7 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 //Board has No Pair and you have Middle two pairs
 || [ nrankedcommon==1 && istwopair && (pokerval&15)>((pokerval>>8)&15) && (pokerval&15)>((pokerval>>4)&15) && !(rankloplayer==ranklocommon) ]
 //Rainbow board
-|| [ istwopair && f$SAFEBOARD ]
+|| [ istwopair && f$mh_safe_board ]
 } ? 4 :
 
 {0
@@ -380,7 +378,7 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 0
 +(nsuitedcommon>=3)*2
 +(nsuitedcommon>=4)
-+(!f$NESTR)*2
++(!f$mh_no_easy_straight_draw)*2
 +(nstraightfillcommon<=1 || nstraightcommon>=4)
 )
 
@@ -449,12 +447,11 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 0
 +(nsuitedcommon>=3)*2
 +(nsuitedcommon>=4)
-+(!f$NESTR)*2
++(!f$mh_no_easy_straight_draw)*2
 +(nstraightfillcommon<=1 || nstraightcommon>=4)
 +(nopponentsplaying>2)
 +didswag
 )
-
 
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -463,16 +460,7 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 //
 /////////////////////////////////////////////////////////////////////////////////
 
-
-
-
-/////////////////////////////////////////////////////////////////////////////////
-//
-// Original bot by Winngy (for reference) - WHF-part
-//
-/////////////////////////////////////////////////////////////////////////////////
-
-##f$NESTR##
+##f$mh_no_easy_straight_draw##
 //NO EASY STRAIGHT DRAW
 (nstraightcommon<=2 && nstraightfillcommon>=3) 
 || (nbetsround1>=2 
@@ -482,21 +470,15 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
    )
 
 
-##f$SAFEBOARD##
-[nrankedcommon<2 && 
- nsuitedcommon<3 && 
- nstraightcommon<3 && 
- nstraightfillcommon>1 ]
+##f$mh_safe_board##
+  [nrankedcommon<2 
+&& nsuitedcommon<3 
+&& nstraightcommon<3 
+&& nstraightfillcommon>1 ]
 && !(br>2 && rankhicommon==14 && rankhicommon>rankhiplayer)   
-   
-/////////////////////////////////////////////////////////////////////////////////
-//
-// Original bot by Winngy (for reference) - WHX-part
-//
-/////////////////////////////////////////////////////////////////////////////////
 
 
-##f$kicker_rank##
+##f$mh_kicker_rank##
 (nranked==2 && nrankedcommon==1) ? 
   (trank==rankhiplayer? 
    `((~rankbits&0x7ffe)>>rankloplayer)+1: 
@@ -505,5 +487,9 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
   (trank==rankhiplayer? 
    `((~rankbits&0x7ffe)>>rankloplayer)+1: 
    `((~rankbits&0x7ffe)>>rankhiplayer)+1 ) : 0
-
-
+   
+/////////////////////////////////////////////////////////////////////////////////
+//
+// End of mh_str_Handstrength_Library.ohf
+//
+/////////////////////////////////////////////////////////////////////////////////
