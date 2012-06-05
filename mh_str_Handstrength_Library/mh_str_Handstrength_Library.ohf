@@ -521,25 +521,7 @@ ishicard ? 0 : 0
 // board includes a pair; impossible to have one to a  straightflush; 4 of kind is nuts 
 [ nrankedcommon==2 && nstraightflushfillcommon>=2 && pokervalcommon<twopair ]
 
-##f$2pairboard##
-//board has two pair
-[ pokervalcommon>=twopair && pokervalcommon<threeofakind ]
 
-##f$tripsboard##
-// impossible to have a straightflush; 3 common on board; 4-kind is nuts 
-[ nrankedcommon==3 && nstraightflushfillcommon>=3 ]
-
-##f$4cardstraightboard##
-// impossible to have a boat or flush; 4 card straight on board; straight is nuts 
-[ nrankedcommon==1 && nsuitedcommon<=2 && nstraightfillcommon<=1 ]
-
-##f$4cardflushboard##
-// impossible to have a straightflush or boat; 4-card flush on board; flush is nuts 
-[ nrankedcommon==1 && nsuitedcommon>=4 && nstraightflushfillcommon>=2 ]
-
-##f$4sfboard##
-// 4 towards a straightflush on board; 
-[ nstraightflushfillcommon==1 ]
 
 ##f$tpairtk##
 // you hold the top pair with top kicker 
@@ -549,31 +531,9 @@ ishicard ? 0 : 0
 || trank == 14 && {(trank == $$pr0 && $$pr1 == 13) 
 || (trank == $$pr1 && $$pr0 == 13)} ) ]
 
-##f$overpair##
-// you hold pocket pair 9 or higher and all cards on board are lower then your pair 
-[ rankhiplayer > rankhicommon && ( $AA ||$KK || $QQ || $JJ || $TT || $99 ) ]
 
-##f$top2pair##
-// you hold the two highest pairs on board 
-[ istwopair && (pokerval&15)<((pokerval>>4) & 15) ]
 
-##f$topset##
-ispair && trank==rankhicommon
 
-##f$set##
-isthreeofakind && ispair
 
-##f$topboat##
-[  isfullhouse && pokervalcommon&twopair && pcbits&28 
-|| isfullhouse && ispair && pokervalcommon&onepair && trank>trankcommon 
-|| isfullhouse && pokervalplayer<onepair && nranked==3 && nrankedcommon==2 
-&& trank>=trankcommon && trankcommon>=$$pr0 && trankcommon>=$$pr1 ]
-
-##f$tripstk##
-// Player cards are not paired, but player has the highest three of a kind, and the highest possible kicker 
-// with no pair in hand, ( 3 of a kind and not fullhouse with A kicker or AAA with K kicker ) 
-[ nrankedcommon==2 && isthreeofakind && pokerval<fullhouse 
- && ((trank>=2 && trank<=13) && {(trank==$$pr0 && $$pr1==14)||(trank==$$pr1 && $$pr0==14)} 
-   ||trank==14 && {(trank==$$pr0 && $$pr1==13)||(trank==$$pr1 && $$pr0==13)} ) ]
 
 
