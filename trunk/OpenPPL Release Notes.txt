@@ -4,7 +4,12 @@ BUG FIXES:
 - The converter did generate code for partial matches,
   so "RAISE (expression) FORCE did get translated incorrectly.
   This has now been fixed.
-[THF]
+- f$OpenPPL_SmallBlind: A dead player between us and the dealer return dealposition as 2, so we are seen as in BigBlind.
+  This has now been fixed. 
+  
+NEW STUFF:
+- New symbol StraighFlushOnBoard
+[Lavezzi]
 
 v1.0.7 2012-05-28
 =================
