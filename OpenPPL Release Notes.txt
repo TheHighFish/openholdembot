@@ -4,7 +4,8 @@ BUG FIXES:
 - The converter did generate code for partial matches,
   so "RAISE (expression) FORCE did get translated incorrectly.
   This has now been fixed.
-- f$OpenPPL_SmallBlind: A dead player between us and the dealer return dealposition as 2, so we are seen as in BigBlind.
+  [THF]
+- f$OpenPPL_SmallBlind: A dead player between us and the dealer returns dealposition as 2, so we are seen as being BigBlind.
   This has now been fixed. 
   
 NEW STUFF:
