@@ -439,18 +439,19 @@ isonepair ?
 ##f$strength_hicard##
 ishicard ? 0 : 0
 
+
+/////////////////////////////////////////////////////////////////////////////////
+//
+// Supporting functions
+//
+/////////////////////////////////////////////////////////////////////////////////
+
+
+
+
 /////////////////////////////////////////////////////////////////////////////////
 //
 // Original bot by Winngy (for reference) - WHF-part
-//
-/////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-/////////////////////////////////////////////////////////////////////////////////
-//
-// Original bot by Winngy (for reference) - WHX-part
 //
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -463,54 +464,19 @@ ishicard ? 0 : 0
        ) 
    )
 
+
 ##f$SAFEBOARD##
 [nrankedcommon<2 && 
  nsuitedcommon<3 && 
  nstraightcommon<3 && 
  nstraightfillcommon>1 ]
-&& !(br>2 && rankhicommon==14 && rankhicommon>rankhiplayer)
-
-
-
-
-
-##f$spe##
-//LabOneLimit_v0009 8/25/2006
-// static position early
-[ dealposition >2 && dealposition >=nplayersdealt-8 && dealposition <=nplayersdealt-5 ]
-
-##f$spm##
- // static position middle
-[ dealposition>nplayersdealt-5 && dealposition<nplayersdealt-1 ]
-
-##f$spl##
- // static position late
-[ dealposition>=nplayersdealt-1 ]
-
-##f$spd##
- // static position dealer
-[ dealposition==nplayersdealt ]
-
-##f$dpe##
- // dynamic position early
-[ betposition==1 || betposition/nplayersplaying <=(1/2) ]
-
-##f$dpm##
-// dynamic middle position
-[ betposition/nplayersplaying > (1/2) &&
-  betposition/nplayersplaying <=(3/4) &&
-  betposition!=nplayersplaying             
-]
-
-##f$dpl##
- // dynamic late position
-[ betposition/nplayersplaying >(3/4) ]
-
-##f$dpd##
- // dynamic dealer position
-[ betposition==nplayersplaying ]
-
-
+&& !(br>2 && rankhicommon==14 && rankhicommon>rankhiplayer)   
+   
+/////////////////////////////////////////////////////////////////////////////////
+//
+// Original bot by Winngy (for reference) - WHX-part
+//
+/////////////////////////////////////////////////////////////////////////////////
 
 
 ##f$kicker_rank##
@@ -522,6 +488,18 @@ ishicard ? 0 : 0
   (trank==rankhiplayer? 
    `((~rankbits&0x7ffe)>>rankloplayer)+1: 
    `((~rankbits&0x7ffe)>>rankhiplayer)+1 ) : 0
+
+
+
+
+
+
+
+
+
+
+
+
 
 ##f$rainbowboard##
 // The safest board, no pair, no draws to a straight or flush 
