@@ -25,12 +25,54 @@
 
 /////////////////////////////////////////////////////////////////////////////////
 //
-// Interface and range-checks
+// Interface and range-checks, 
+//   as some values can be out of range due to discounts
 //
 /////////////////////////////////////////////////////////////////////////////////
 
+##f$mh_straightflush##
+(isstraightflush || isroyalflush) ? 
+(f$strength_straightflush < 1 ? 1 : f$strength_straightflush) : 
+0
 
+##f$mh_quads##
+isfourofakind ? 
+(f$strength_quads < 1 ? 1 : f$strength_quads) : 
+0
 
+##f$mh_fullhouse##
+isfullhouse ? 
+(f$strength_fullhouse < 1 ? 1 : f$strength_fullhouse) : 
+0
+
+##f$mh_flush##
+isflush ? 
+(f$strength_flush < 1 ? 1 : f$strength_flush) : 
+0
+
+##f$mh_straight##
+isstraight ? 
+(f$strength_straight < 1 ? 1 : f$strength_straight) : 
+0
+
+##f$mh_trips##
+isthreeofakind ? 
+(f$strength_trips < 1 ? 1 : f$strength_trips ) : 
+0
+
+##f$mh_twopair##
+istwopair ? 
+(f$strength_twopair < 1 ? 1 : f$strength_twopair) : 
+0
+
+##f$mh_onepair##
+isonepair ? 
+(f$strength_onepair < 1 ? 1 : f$strength_onepair) : 
+0
+
+##f$mh_hicard##
+// Very low value. Always 0
+0
 
 /////////////////////////////////////////////////////////////////////////////////
 //
@@ -38,11 +80,11 @@
 //
 /////////////////////////////////////////////////////////////////////////////////
 
+
+
+
 ##f$strength_straightflush##
-isstraightflush || isroyalflush ?
-
 // Hand strength evaluator - returns a value from 1-5, 5 representing the strongest hand
-
 isroyalflush && !(pokervalcommon&royalflush)                         ? 5 : // Nuts
 isstraightflush && nhandshi==0 && !(pokervalcommon&straightflush)    ? 5 : // Nuts 
 isstraightflush && !(pokervalcommon&straightflush)                   ? 3 : // I may not have the highest, board does not have a str8flush
@@ -50,23 +92,16 @@ isstraightflush && (pokervalcommon&straightflush)                    ? 2 : // I 
 isroyalflush && (pokervalcommon&royalflush)                          ? 1 : // Chop pot
 0
 
-: 0
-
 
 ##f$strength_quads##
-isfourofakind ?
-
 isfourofakind && nhandshi==0 && !(pokervalcommon&fourofakind)        ? 5 : // Nuts
 isfourofakind && nhandshi==0 && (pokervalcommon&fourofakind)         ? 5 : // Nuts
 isfourofakind && !(pokervalcommon&fourofakind)                       ? 3 : // I may not have the highest, board does not have quads
 isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Board has quads, I don't have best kicker
 0
 
-: 0
 
 ##f$strength_fullhouse##
-isfullhouse ? 
-
 ((0
 // Board paired, I have pocket pair and top side full house, pocket pair is higher than non-participating board cards  
 // e.g. QQ/QTT53
@@ -132,11 +167,8 @@ isfullhouse ?
 || [ isfullhouse && (pokervalcommon&fullhouse) ]
 ) ? 1 : 0 )
 
-: 0
 
 ##f$strength_flush##
-isflush ?
-
 // Big raise
 ((
 0
@@ -180,11 +212,8 @@ isflush ?
 + (pokervalcommon&twopair?2:0)
 )
 
-: 0
 
 ##f$strength_straight##
-isstraight ?
-
 ({0
 //Board 3 to a straight, cards in rank 1 and rank 2 (high end)
 || [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>16)&0xf))&&($$pr1==((pokerval>>12)&0xf))) || (($$pr1==((pokerval>>16)&0xf))&&($$pr0==((pokerval>>12)&0xf))))]
@@ -256,11 +285,8 @@ isstraight ?
 - ( nsuitedcommon==3 && nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)<=2 )
 )
 
-: 0
 
 ##f$strength_trips##
-isthreeofakind ? 
-
 ({0
 //Board has No Pair and you have top set
 || [ nrankedcommon==1 && ispair && isthreeofakind && rankhiplayer==rankhicommon]
@@ -308,11 +334,8 @@ isthreeofakind ?
 +(nstraightfillcommon<=1 || nstraightcommon>=4)
 )
 
-: 0
 
 ##f$strength_twopair##
-istwopair ?
-
 ({0
  //Board has No Pair and you have Top two pairs
 || [ nrankedcommon==1 && istwopair && (pokerval&15)<((pokerval>>4)&15) ] 
@@ -361,10 +384,8 @@ istwopair ?
 +(nstraightfillcommon<=1 || nstraightcommon>=4)
 )
 
-: 0
 
 ##f$strength_onepair##
-isonepair ? 
 
 ((0
 //Board has No Pair and you have Overpair 10's or better
@@ -434,10 +455,6 @@ isonepair ?
 +didswag
 )
 
-: 0
-
-##f$strength_hicard##
-ishicard ? 0 : 0
 
 
 /////////////////////////////////////////////////////////////////////////////////
