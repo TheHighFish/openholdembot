@@ -2313,6 +2313,9 @@ f$OpenPPL_DoubleGutShotOnBoard || f$OpenPPL_OpenEndedStraightDrawOnBoard
 ##f$OpenPPL_OneCardStraightFlushPossible##
 (nstraightflushfillcommon <= 1)
 
+##f$OpenPPL_StraightFlushOnBoard##
+(nstraightfillcommon==0 && nsuited==5)
+
 ##f$OpenPPL_OneCardStraightPossible##
 (nstraightfillcommon <= 1)
 
@@ -4018,7 +4021,7 @@ f$OpenPPL_InSmallBlind ? 1 :
 // we decided to provide both forms of naming in the library.
 
 ##f$OpenPPL_SmallBlind##
-(dealposition == 1)
+(dealposition == 1 ||(f$OpenPPL_BotsActionsOnThisRoundIncludingChecks==0 && sblind>0 && currentbet==sblind))
 
 ##f$OpenPPL_BigBlind##
 (dealposition == 2)
