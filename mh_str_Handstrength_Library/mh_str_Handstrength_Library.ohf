@@ -74,6 +74,39 @@ isonepair ?
 // Very low value. Always 0
 0
 
+##f$mh_kicker_rank##
+(nranked==2 && nrankedcommon==1) ? 
+  (trank==rankhiplayer? 
+   `((~rankbits&0x7ffe)>>rankloplayer)+1: 
+   `((~rankbits&0x7ffe)>>rankhiplayer)+1 ) : 
+(nranked==3 && nrankedcommon==2) ? 
+  (trank==rankhiplayer? 
+   `((~rankbits&0x7ffe)>>rankloplayer)+1: 
+   `((~rankbits&0x7ffe)>>rankhiplayer)+1 ) : 0
+
+/////////////////////////////////////////////////////////////////////////////////
+//
+// Original implementation currently missing
+// Your help is welcome
+//
+/////////////////////////////////////////////////////////////////////////////////
+
+##f$mh_3straight00##
+
+##f$mh_3straight01##
+
+##f$mh_3straight10##
+
+##f$mh_3straight11##
+
+##f$mh_bottomsd##
+
+##f$mh_nsuitedbetter##
+
+##f$mh_kickerbetter##
+
+##f$mh_nouts##
+
 /////////////////////////////////////////////////////////////////////////////////
 //
 // Main implementation
@@ -476,17 +509,6 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 && nstraightcommon<3 
 && nstraightfillcommon>1 ]
 && !(br>2 && rankhicommon==14 && rankhicommon>rankhiplayer)   
-
-
-##f$mh_kicker_rank##
-(nranked==2 && nrankedcommon==1) ? 
-  (trank==rankhiplayer? 
-   `((~rankbits&0x7ffe)>>rankloplayer)+1: 
-   `((~rankbits&0x7ffe)>>rankhiplayer)+1 ) : 
-(nranked==3 && nrankedcommon==2) ? 
-  (trank==rankhiplayer? 
-   `((~rankbits&0x7ffe)>>rankloplayer)+1: 
-   `((~rankbits&0x7ffe)>>rankhiplayer)+1 ) : 0
    
 /////////////////////////////////////////////////////////////////////////////////
 //
