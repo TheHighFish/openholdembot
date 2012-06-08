@@ -393,7 +393,7 @@ while (<>)
 	s/StraightFlushOnBoard/StraightFlushOnBoard/ig;
 	s/StraightFlushPossible/StraightFlushPossible/ig;
 	s/StraightFlushPossibleByOthers/StraightFlushPossibleByOthers/ig;
-	s/straightOnBoard/StraightOnBoard/ig;
+	s/StraightOnBoard/StraightOnBoard/ig;
 	s/StraightPossible/StraightPossible/ig;
 	s/StraightPossibleOnFlop/StraightPossibleOnFlop/ig;
 	s/StraightPossibleOnTurn/StraightPossibleOnTurn/ig;
