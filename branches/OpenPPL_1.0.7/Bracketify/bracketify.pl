@@ -133,7 +133,7 @@ while (<>)
 	s/when[ ]+/WHEN \(/i;
 	s/when\(/WHEN \(\(/i;
 	# But the funny thing is the right end of the expression
-	# As the end is hard to detect with stupid rehular expressions we...
+	# As the end is hard to detect with stupid regular expressions we...
 	# * add brackets to the left of any action
 	# * add brackets to the left of any user-defined variable to be set
 	# * add brackets to the end of a line, if there is no action
@@ -156,6 +156,8 @@ while (<>)
 	s/[ ]+fold[ ]+force/\) FOLD FORCE/i;
 	s/[ ]+sitout[ ]+force/\) SITOUT FORCE/i;
 	s/[ ]+return[ ]/\) RETURN /i;
+	# For User Expression Raises we do:
+	s/[ ]+RAISE[ ]+\(/\) RAISE \(/i;	
 	# Still first case: brackets before an action
 	# Now for Bet/Raise X% FORCE or Bet/Raise X Force,
 	# where Bet/Raise will be followed by a number.
