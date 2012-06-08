@@ -5,12 +5,23 @@ BUG FIXES:
   so "RAISE (expression) FORCE did get translated incorrectly.
   This has now been fixed.
   [THF]
-- f$OpenPPL_SmallBlind: A dead player between us and the dealer returns dealposition as 2, so we are seen as being BigBlind.
+- f$OpenPPL_SmallBlind: A dead player between us and the dealer who sits in again
+  changes our dealposition to 2, so we are seen as being BigBlind.
   This has now been fixed. 
+  [Lavezzi]
+- "WheelPossible" didn't work due to misplaced brackets.
+  Thanks to Lavezzi for reporting.
+  [THF]
+- Raises could be -1 if there were additional blind-posters
+  (incorrect value of nopponentsraising). Thie bsa to be handled
+  on OH-side, but we added some sanity-checks.
+  Thanks to Lavezzi for reporting.
+  [THF]
   
 NEW STUFF:
 - New symbol StraighFlushOnBoard
-[Lavezzi]
+  [Lavezzi]
+
 
 v1.0.7 2012-05-28
 =================
