@@ -1657,7 +1657,7 @@ me_st_MemRaises_f$OpenPPL_Calculate_Raises
 // But this has to be handled in OH 2.2.0.
 // For the moment we add some sanity-checks.
 [(me_re_MemRaises < 0) && (betround == f$OpenPPL_ConstBetRoundPreflop) && (ncallbets == 1)] ? 0 :
-[(me_re_MemRaises < 0) && (betround == f$OpenPPL_ConstBetRoundPreflop) && (ncallbets == 1)] ? 1 :
+[(me_re_MemRaises < 0) && (betround == f$OpenPPL_ConstBetRoundPreflop) && (ncallbets > 1)] ? 1 :
 // Should not happen postflop, but a sanity-check can't harm.
 [(me_re_MemRaises < 0) && (betround >= f$OpenPPL_ConstBetRoundFlop)] ? 0 :
 // Otherwise: probably everything ok
