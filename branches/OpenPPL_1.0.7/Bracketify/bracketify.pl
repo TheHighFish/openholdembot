@@ -390,9 +390,10 @@ while (<>)
 	s/RiverCardisOvercardToBoard/RiverCardisOvercardToBoard/ig;
 	s/SecondTopflopCardPairedOnRiver/SecondTopflopCardPairedOnRiver/ig;
 	s/SecondTopflopCardPairedOnTurn/SecondTopflopCardPairedOnTurn/ig;
+	s/StraightFlushOnBoard/StraightFlushOnBoard/ig;
 	s/StraightFlushPossible/StraightFlushPossible/ig;
 	s/StraightFlushPossibleByOthers/StraightFlushPossibleByOthers/ig;
-	s/StraightOnBoard/StraightOnBoard/ig;
+	s/straightOnBoard/StraightOnBoard/ig;
 	s/StraightPossible/StraightPossible/ig;
 	s/StraightPossibleOnFlop/StraightPossibleOnFlop/ig;
 	s/StraightPossibleOnTurn/StraightPossibleOnTurn/ig;
@@ -449,6 +450,7 @@ while (<>)
 	s/HaveBestKicker/HaveBestKicker/ig;
 	s/HaveBestKickerOrBetter/HaveBestKickerOrBetter/ig;
 	s/HaveBestOverpairOrBetter/HaveBestOverpairOrBetter/ig;
+	s/HaveBottomTrips/HaveBottomTrips/ig;
 	s/HaveBottomPair/HaveBottomPair/ig;
 	s/HaveBottomSet/HaveBottomSet/ig;
 	s/HaveBottomTwoPair/HaveBottomTwoPair/ig;
