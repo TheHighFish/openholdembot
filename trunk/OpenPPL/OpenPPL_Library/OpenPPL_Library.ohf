@@ -232,6 +232,9 @@ f$OpenPPL_Fold
 ##f$OpenPPL_ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap##
 -1
 
+##f$OpenPPL_ERROR_Raises_Is_Negative__Trying_To_Adapt_In_A_Reasonable_Way##
+0
+
 ##f$OpenPPL_ERROR_Suit_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap##
 // Treating this error as PLUS 1 to not mix the primecoding of board-cards up.
  1
@@ -1656,10 +1659,13 @@ me_st_MemRaises_f$OpenPPL_Calculate_Raises
 // because nopponentsraising is wrong in that case.
 // But this has to be handled in OH 2.2.0.
 // For the moment we add some sanity-checks.
-[(me_re_MemRaises < 0) && (betround == f$OpenPPL_ConstBetRoundPreflop) && (ncallbets == 1)] ? 0 :
-[(me_re_MemRaises < 0) && (betround == f$OpenPPL_ConstBetRoundPreflop) && (ncallbets > 1)] ? 1 :
+[(me_re_MemRaises < 0) && (betround == f$OpenPPL_ConstBetRoundPreflop) && (ncallbets == 1)] ? 
+  (f$OpenPPL_ERROR_Raises_Is_Negative__Trying_To_Adapt_In_A_Reasonable_Way + 0) :
+[(me_re_MemRaises < 0) && (betround == f$OpenPPL_ConstBetRoundPreflop) && (ncallbets > 1)]  ? 
+  (f$OpenPPL_ERROR_Raises_Is_Negative__Trying_To_Adapt_In_A_Reasonable_Way + 1) :
 // Should not happen postflop, but a sanity-check can't harm.
-[(me_re_MemRaises < 0) && (betround >= f$OpenPPL_ConstBetRoundFlop)] ? 0 :
+[(me_re_MemRaises < 0) && (betround >= f$OpenPPL_ConstBetRoundFlop)] ? 
+  (f$OpenPPL_ERROR_Raises_Is_Negative__Trying_To_Adapt_In_A_Reasonable_Way + 0) :
 // Otherwise: probably everything ok
 me_re_MemRaises
 
