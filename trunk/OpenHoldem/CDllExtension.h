@@ -42,6 +42,7 @@ public:
 	CDllExtension();
 	~CDllExtension();
 	void PassStateToDll(const SHoldemState *pstate);
+	CString GetDLLSpecifiedInFormula();
 	void LoadDll(const char * path);
 	void UnloadDll(void);
 	const bool IsDllLoaded();
