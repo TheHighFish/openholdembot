@@ -12,6 +12,7 @@
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CScraper.h"
+#include "CScraperAccess.h"
 #include "CSharedMem.h"
 #include "CSymbols.h"
 #include "CTableMapLoader.h"
@@ -275,6 +276,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 				delete p_heartbeat_thread;
 
 			p_heartbeat_thread = new CHeartbeatThread;
+			p_scraper_access->InitOnConnect();
 
 			// Start timer that checks for continued existence of attached HWND
 			pMyMainWnd->StartTimer();
@@ -371,8 +373,8 @@ void CAutoConnector::LoadScraperPreprocessorDLL()
 	if (theApp._dll_scraperpreprocessor_process_message==NULL)
 	{
 		CString	error_message = "";
-		error_message.Format("Unable to find symbols in scraperpre.dll");
-		OH_MessageBox(error_message, "OpenHoldem scraperpre.dll ERROR", MB_OK | MB_TOPMOST);
+		error_message.Format("Unable to find symbols in scraper_preprocessor.dll");
+		OH_MessageBox(error_message, "OpenHoldem scraperpreprocessor.dll ERROR", MB_OK | MB_TOPMOST);
 		theApp.Unload_ScraperPreprocessor_DLL();
 	}
 	else

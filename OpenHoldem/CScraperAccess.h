@@ -12,10 +12,10 @@ public:
 
 public:
 	// public functions
+	void	InitOnConnect();
 	int		GetPlayerCards(int seat_number, int first_or_second_card);
 	int		GetCommonCard(int index_zero_to_four);
 	bool	IsValidCard(int Card);
-	void	GetNeccessaryTablemapObjects();
 	int		NumberOfVisibleButtons();
 
 public:
@@ -23,6 +23,7 @@ public:
 
 private:
 	// private functions
+	void	GetNeccessaryTablemapObjects();
 	int		SearchForButtonNumber(int button_code);
 	bool	SearchForButtonVisible(int button_code);
 	CString	SearchForButtonName(int button_code);

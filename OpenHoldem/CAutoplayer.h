@@ -38,7 +38,6 @@ private:
 
 private:
 	// private functions and variables - not available via accessors or mutators
-	void GetNeccessaryTablemapObjects();
 	bool AnyPrimaryFormulaTrue();
 	bool AnySecondaryFormulaTrue();
 	bool ExecuteSecondaryFormulas();
