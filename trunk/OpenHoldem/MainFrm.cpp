@@ -860,9 +860,7 @@ void CMainFrame::OnDllLoadspecificfile()
 	if (cfd.DoModal() == IDOK) 
 	{
 		p_dll_extension->UnloadDll();
-
 		p_dll_extension->LoadDll(cfd.m_ofn.lpstrFile);
-
 		prefs.set_path_dll(cfd.GetPathName());
 	}
 }

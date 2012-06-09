@@ -8,6 +8,8 @@
 * p_stableframescounter->ResetOnAutoplayerAction();
 * p_symbols->reset_elapsedautohold();
 * delay
+* check for loss of swag-focus: first sleep, then check, then act,
+  NOT the other way: http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=14791
 */
 
 #include "StdAfx.h"
@@ -103,6 +105,8 @@ bool CAutoplayer::DoBetPot(void)
 			}
 		}
 	}
+	// We didn't click any betpot-button
+	return false;
 }
 
 bool CAutoplayer::AnyPrimaryFormulaTrue()
@@ -129,8 +133,9 @@ bool CAutoplayer::AnySecondaryFormulaTrue()
 	return false;
 }
 
-bool CAutoplayer::ExecutePrimaryFormulas()
+bool CAutoplayer::ExecutePrimaryFormulas() 
 {
+	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ExecutePrimaryFormulas()\n");
 	// Precondition: my turn and isfinalanswer
 	// So we have to take an action and are able to do so.
 	if (p_autoplayer_functions->f$alli())
@@ -146,6 +151,7 @@ bool CAutoplayer::ExecutePrimaryFormulas()
 
 bool CAutoplayer::ExecuteRaiseCallCheckFold()
 {
+	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ExecuteRaiseCallCheckFold()\n");
 	if (p_autoplayer_functions->f$rais())
 	{
 		return p_casino_interface->ClickButton(k_button_raise);
@@ -289,24 +295,19 @@ bool CAutoplayer::DoAllin(void)
 
 void CAutoplayer::DoAutoplayer(void) 
 {
-	MessageBox(0, "Starting autoplayer", "Debug", 0);
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting Autoplayer cadence...\n");
 
 	CheckBringKeyboard();
 
-	// Access TM objects !! Better name, better comment
-	//!!!GetNeccessaryTablemapObjects();
-
 	int	num_buttons_visible = p_casino_interface->NumberOfVisibleAutoplayerButtons();
-	/* TODO: better log-file format !!!
+	/* TODO: better log-file format !!! 	
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d (%c%c%c%c%c)\n", 
 		num_buttons_visible, 
 		allin_option_available ? 'A' : '.',
 		raise_button_available ? 'R' : '.',
 		call_button_available  ? 'C' : '.',
 		check_button_available ? 'K' : '.',
-		fold_button_available  ? 'F' : '.');
-	*/
+		fold_button_available  ? 'F' : '.');*/
 
 	// Calculate f$play, f$prefold, f$rebuy, f$delay and f$chat for use below
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling CalcSecondaryFormulas.\n");
@@ -375,14 +376,10 @@ void CAutoplayer::DoAutoplayer(void)
 	{
 		return;
 	}
+	ExecutePrimaryFormulas();
 
-	if (p_autoplayer_functions->f$alli())
-	{
-		DoAllin();
-	}
 
-	DoBetPot(); // !!!
-
+/* !!!!
 	// do swag first since it is the odd one
 	bool bDoSwag = false; // I'm just breaking this out to be a little clearer (spew)
 
@@ -397,6 +394,7 @@ void CAutoplayer::DoAutoplayer(void)
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling DoSwag.\n");
 		DoSwag();
 	}
+*/
 
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending Autoplayer cadence.\n");
 }

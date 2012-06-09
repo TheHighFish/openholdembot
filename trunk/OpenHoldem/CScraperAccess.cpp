@@ -196,6 +196,11 @@ bool CScraperAccess::GetBetpotButtonVisible(int button_code)
 	return false;
 }
 
+void CScraperAccess::InitOnConnect()
+{
+	GetNeccessaryTablemapObjects();
+}
+
 void CScraperAccess::GetNeccessaryTablemapObjects()
 {
 	// NUMBERS (from labels)
