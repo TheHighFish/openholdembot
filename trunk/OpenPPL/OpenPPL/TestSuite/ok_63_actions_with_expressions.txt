@@ -1,17 +1,11 @@
 custom
 
 preflop
-when others Raise (3 + OpponentsLeft) Force
 when others Raise 3 Force
-when others RaiseMax Force
-when others RaisePot Force
-when others RaiseHalfPot Force
-when others Raise 3 Force
-when others Raise 80% Force
-when others Bet 3 Force
-when others Call Force
-when others fold Force
-when others Allin Force
+when others Raise (3 + Calls) Force
+when others Raise (OpponentsLeft) Force
+when others Bet (OpponentsLeft) Force
+when others Bet (100 + 5)% Force
 
 flop
 when others fold force
