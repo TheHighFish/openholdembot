@@ -1,6 +1,9 @@
-v1.1.0 2012-06-04
+v1.1.0 2012-06-xx
 =================
 BUG FIXES: 
+- HaveTopSet was not correct due to istreeofakind logic/bug when twopair on board.
+  This has now been fixed.
+  [Lavezzi]
 - The converter did generate code for partial matches,
   so "RAISE (expression) FORCE did get translated incorrectly.
   This has now been fixed.
@@ -19,9 +22,12 @@ BUG FIXES:
   [THF]
   
 NEW STUFF:
+- RankOfPairOnBoard has been implemented
+  [Lavezzi]
+- New symbol RankOfSpareCardWhenTwoPairOnBoard
+  [Lavezzi]
 - New symbol StraighFlushOnBoard
   [Lavezzi]
-
 
 v1.0.7 2012-05-28
 =================
