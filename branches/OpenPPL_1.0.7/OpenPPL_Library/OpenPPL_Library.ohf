@@ -2313,9 +2313,6 @@ f$OpenPPL_DoubleGutShotOnBoard || f$OpenPPL_OpenEndedStraightDrawOnBoard
 ##f$OpenPPL_OneCardStraightFlushPossible##
 (nstraightflushfillcommon <= 1)
 
-##f$OpenPPL_StraightFlushOnBoard##
-(nstraightflushfillcommon ==0)
-
 ##f$OpenPPL_OneCardStraightPossible##
 (nstraightfillcommon <= 1)
 
@@ -3444,19 +3441,6 @@ ispair
   || ((pokerval & fullhouse)    && `(pcbits & 0b11100) == 1)
   ||  (pokerval & fourofakind)  && !(pokervalcommon & fourofakind)]
 
-##f$OpenPPL_HaveBottomTrips##
-($$cr0==$$cr1 && $$cr0==ranklocommon && ($$cr0==$$pr0||$$cr0==$$pr1))||
-($$cr0==$$cr2 && $$cr0==ranklocommon && ($$cr0==$$pr0||$$cr0==$$pr1))||
-($$cr0==$$cr3 && $$cr0==ranklocommon && ($$cr0==$$pr0||$$cr0==$$pr1))||
-($$cr0==$$cr4 && $$cr0==ranklocommon && ($$cr0==$$pr0||$$cr0==$$pr1))||
-($$cr1==$$cr2 && $$cr1==ranklocommon && ($$cr1==$$pr0||$$cr0==$$pr1))||
-($$cr1==$$cr3 && $$cr1==ranklocommon && ($$cr1==$$pr0||$$cr0==$$pr1))||
-($$cr1==$$cr4 && $$cr1==ranklocommon && ($$cr1==$$pr0||$$cr0==$$pr1))||
-($$cr2==$$cr3 && $$cr2==ranklocommon && ($$cr2==$$pr0||$$cr0==$$pr1))||
-($$cr2==$$cr4 && $$cr2==ranklocommon && ($$cr2==$$pr0||$$cr0==$$pr1))||
-($$cr3==$$cr4 && $$cr3==ranklocommon && ($$cr3==$$pr0||$$cr0==$$pr1)) ? 1:
-0
-
 ##f$OpenPPL_HaveStraight##
 (nstraightfill == 0)
 
@@ -3537,7 +3521,7 @@ rankbitscommon
 [ f$OpenPPL_RankOfFirstHoleCard==rankhicommon || f$OpenPPL_RankOfSecondHoleCard==rankhicommon ]
 
 ##f$OpenPPL_HaveTopSet##
-(ispair && (rankhiplayer == rankhicommon))
+((nrankedcommon == 1) && ispair && isthreeofakind && (rankhiplayer == rankhicommon))
 
 ##f$OpenPPL_HaveTopTwoPair##
 (f$OpenPPL_HaveTopPair && f$OpenPPL_Have2ndTopPair)
@@ -3801,55 +3785,7 @@ f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePlayTheBoard
 trankcommon
 
 ##f$OpenPPL_RankOfPairOnBoard##
-// One Pair or Set on Board
-(f$OpenPPL_TripsOnBoard|(f$OpenPPL_PairOnBoard && !f$OpenPPL_TwoPairOnBoard)) && !f$OpenPPL_FullHouseOnBoard ?
-[
-    ($$cr0==$$cr1 ? $$cr0:0)
-   |($$cr0==$$cr2 ? $$cr0:0)
-   |($$cr0==$$cr3 ? $$cr0:0)
-   |($$cr0==$$cr4 ? $$cr0:0)
-   |($$cr1==$$cr2 ? $$cr1:0)
-   |($$cr1==$$cr3 ? $$cr1:0)
-   |($$cr2==$$cr3 ? $$cr2:0)
-   |($$cr3==$$cr4 ? $$cr3:0)
-]:
-//TwoPair On Board: Spare Card is higher than the highest Pair On Board
-f$OpenPPL_TwoPairOnBoard|f$OpenPPL_FullHouseOnBoard?
-[
-    ($$cr0==$$cr1 && $$cr0!=f$OpenPPL_RankOfBottomPairOnBoard? $$cr0:0)
-   |($$cr0==$$cr2 && $$cr0!=f$OpenPPL_RankOfBottomPairOnBoard? $$cr0:0)
-   |($$cr0==$$cr3 && $$cr0!=f$OpenPPL_RankOfBottomPairOnBoard? $$cr0:0)
-   |($$cr0==$$cr4 && $$cr0!=f$OpenPPL_RankOfBottomPairOnBoard? $$cr0:0)
-   |($$cr1==$$cr2 && $$cr1!=f$OpenPPL_RankOfBottomPairOnBoard? $$cr1:0)
-   |($$cr1==$$cr3 && $$cr1!=f$OpenPPL_RankOfBottomPairOnBoard? $$cr1:0)
-   |($$cr2==$$cr3 && $$cr2!=f$OpenPPL_RankOfBottomPairOnBoard? $$cr2:0)
-   |($$cr3==$$cr4 && $$cr3!=f$OpenPPL_RankOfBottomPairOnBoard? $$cr3:0)
-]:
-//TwoPair On Board: Spare Card is smaller than the highest Pair On Board
-f$OpenPPL_TwoPairOnBoard|f$OpenPPL_FullHouseOnBoard?
-[
-    ($$cr0==$$cr1 && rankhicommon==$$cr0? $$cr0:0)
-   |($$cr0==$$cr2 && rankhicommon==$$cr0? $$cr0:0)
-   |($$cr0==$$cr3 && rankhicommon==$$cr0? $$cr0:0)
-   |($$cr0==$$cr4 && rankhicommon==$$cr0? $$cr0:0)
-   |($$cr1==$$cr2 && rankhicommon==$$cr1? $$cr1:0)
-   |($$cr1==$$cr3 && rankhicommon==$$cr1? $$cr1:0)
-   |($$cr2==$$cr3 && rankhicommon==$$cr2? $$cr2:0)
-   |($$cr3==$$cr4 && rankhicommon==$$cr3? $$cr3:0)
-]:
-
-0
-
-##f$OpenPPL_RankOfSpareCardWhenTwoPairOnBoard##
-f$OpenPPL_TwoPairOnBoard &&!f$OpenPPL_FullHouseOnBoard ?
-[
-    ($$cr0!=$$cr1 && $$cr0!=$$cr2 && $$cr0!=$$cr3 && $$cr0!=$$cr4? $$cr0:0)
-   |($$cr1!=$$cr2 && $$cr1!=$$cr3 && $$cr1!=$$cr4 ? $$cr1:0)
-   |($$cr2!=$$cr3 && $$cr2!=$$cr4 ? $$cr2:0)
-   |($$cr3!=$$cr4? $$cr4:0)
-]:
-0
-
+f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 
 ##f$OpenPPL_NutFullHouseOrFourOfAKind_ThreeOfAKindOnBoard##
 // Case 1: we have the quads: the nuts
@@ -4069,7 +4005,7 @@ f$OpenPPL_InSmallBlind ? 1 :
 // we decided to provide both forms of naming in the library.
 
 ##f$OpenPPL_SmallBlind##
-(dealposition == 1 ||(f$OpenPPL_BotsActionsOnThisRoundIncludingChecks==0 && sblind>0 && currentbet==sblind))
+(dealposition == 1)
 
 ##f$OpenPPL_BigBlind##
 (dealposition == 2)
