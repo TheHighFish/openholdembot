@@ -2331,6 +2331,9 @@ f$OpenPPL_DoubleGutShotOnBoard || f$OpenPPL_OpenEndedStraightDrawOnBoard
 ##f$OpenPPL_OneCardStraightFlushPossible##
 (nstraightflushfillcommon <= 1)
 
+##f$OpenPPL_StraightFlushOnBoard##		
+(nstraightflushfillcommon ==0)
+
 ##f$OpenPPL_OneCardStraightPossible##
 (nstraightfillcommon <= 1)
 
