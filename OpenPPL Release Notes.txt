@@ -1,6 +1,8 @@
-v1.1.0 2012-06-xx
+v1.1.0 2012-06-10
 =================
 BUG FIXES: 
+- bracketify.pl forgot the closing paranthesis before a Raise (expression) statement.
+  [Lavezzi]
 - HaveTopSet was not correct due to istreeofakind logic/bug when twopair on board.
   This has now been fixed.
   [Lavezzi]
@@ -86,7 +88,7 @@ BUG FIXES:
   Thanks to PokerValy and Lavezzi for reporting 
   and to Postenjak for suggesting a fix.
   [THF]
-- bracketify.pl forgot the closing paranthesis before a return statement.
+- bracketify.pl forgot the closing parenthesis before a return statement.
   Thanks to Lavezzi for reporting.
   [THF]
   
