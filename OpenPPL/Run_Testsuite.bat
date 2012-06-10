@@ -8,7 +8,7 @@
 @Pause
 
 @IF NOT EXIST Release\OpenPPL.Exe @ECHO ERROR: Release\OpenPPL.Exe does not exist
-@IF NOT EXIST Release\OpenPPL.Exe @EXIT 
+@IF NOT EXIST Release\OpenPPL.Exe Pause 
 
 @COPY OpenPPL_Library\OpenPPL_Library.ohf .
 
