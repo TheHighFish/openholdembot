@@ -3581,11 +3581,11 @@ f$OpenPPL_HaveStraight
 // 1 OverPair for each overcard = 1 higher full house
 + (f$OpenPPL_ConstCardAce - rankhiplayer)
 // Higher set possible with pair onboard?
-+ [(f$OpenPPL_RankOfPairOnBoard > rankhiplayer) ? 1 : 0 ]
++ [(f$OpenPPL_RankOfTopPairOnBoard > rankhiplayer) ? 1 : 0 ]
 // If the cards on board are higher than our pair,
 // we have to subtract them again, as otherwise we count them twice,
 // as set/quads and OverPair.
-+ [(f$OpenPPL_RankOfPairOnBoard > rankhiplayer) ? -1 : 0 ]
++ [(f$OpenPPL_RankOfTopPairOnBoard > rankhiplayer) ? -1 : 0 ]
 + [(f$OpenPPL_RankOfSetOnBoard  > rankhiplayer) ? -1 : 0 ]
 
 ##f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePlayTheBoard##
@@ -3610,7 +3610,7 @@ f$OpenPPL_HaveStraight
 ((pokerval >> 12) & 0b1111)
 
 ##f$OpenPPL_NFH4OAK_PairOnBoard_WeHitThePairAndAnotherCard##
-// 1 for each overcard on baord to RankOfPairOnBoard, which make better 3oaks possible = better FH
+// 1 for each overcard on baord to RankOfTopPairOnBoard, which make better 3oaks possible = better FH
   [[(rankbitscommon & 0x100000000000000) && (f$OpenPPL_RankOfSetOfFullHouse < f$OpenPPL_ConstCardAce  )] ? 1 : 0]
 + [[(rankbitscommon & 0x010000000000000) && (f$OpenPPL_RankOfSetOfFullHouse < f$OpenPPL_ConstCardKing )] ? 1 : 0]
 + [[(rankbitscommon & 0x001000000000000) && (f$OpenPPL_RankOfSetOfFullHouse < f$OpenPPL_ConstCardQueen)] ? 1 : 0]
@@ -3808,45 +3808,6 @@ f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePlayTheBoard
 // Precondition: set on board
 trankcommon
 
-##f$OpenPPL_RankOfPairOnBoard##
-// One Pair or Set on Board
-(f$OpenPPL_TripsOnBoard|(f$OpenPPL_PairOnBoard && !f$OpenPPL_TwoPairOnBoard)) && !f$OpenPPL_FullHouseOnBoard ?
-[
-    ($$cr0==$$cr1 ? $$cr0:0)
-   |($$cr0==$$cr2 ? $$cr0:0)
-   |($$cr0==$$cr3 ? $$cr0:0)
-   |($$cr0==$$cr4 ? $$cr0:0)
-   |($$cr1==$$cr2 ? $$cr1:0)
-   |($$cr1==$$cr3 ? $$cr1:0)
-   |($$cr2==$$cr3 ? $$cr2:0)
-   |($$cr3==$$cr4 ? $$cr3:0)
-]:
-//TwoPair On Board: Spare Card is higher than the highest Pair On Board
-f$OpenPPL_TwoPairOnBoard|f$OpenPPL_FullHouseOnBoard?
-[
-    ($$cr0==$$cr1 && $$cr0!=f$OpenPPL_RankOfBottomPairOnBoard? $$cr0:0)
-   |($$cr0==$$cr2 && $$cr0!=f$OpenPPL_RankOfBottomPairOnBoard? $$cr0:0)
-   |($$cr0==$$cr3 && $$cr0!=f$OpenPPL_RankOfBottomPairOnBoard? $$cr0:0)
-   |($$cr0==$$cr4 && $$cr0!=f$OpenPPL_RankOfBottomPairOnBoard? $$cr0:0)
-   |($$cr1==$$cr2 && $$cr1!=f$OpenPPL_RankOfBottomPairOnBoard? $$cr1:0)
-   |($$cr1==$$cr3 && $$cr1!=f$OpenPPL_RankOfBottomPairOnBoard? $$cr1:0)
-   |($$cr2==$$cr3 && $$cr2!=f$OpenPPL_RankOfBottomPairOnBoard? $$cr2:0)
-   |($$cr3==$$cr4 && $$cr3!=f$OpenPPL_RankOfBottomPairOnBoard? $$cr3:0)
-]:
-//TwoPair On Board: Spare Card is smaller than the highest Pair On Board
-f$OpenPPL_TwoPairOnBoard|f$OpenPPL_FullHouseOnBoard?
-[
-    ($$cr0==$$cr1 && rankhicommon==$$cr0? $$cr0:0)
-   |($$cr0==$$cr2 && rankhicommon==$$cr0? $$cr0:0)
-   |($$cr0==$$cr3 && rankhicommon==$$cr0? $$cr0:0)
-   |($$cr0==$$cr4 && rankhicommon==$$cr0? $$cr0:0)
-   |($$cr1==$$cr2 && rankhicommon==$$cr1? $$cr1:0)
-   |($$cr1==$$cr3 && rankhicommon==$$cr1? $$cr1:0)
-   |($$cr2==$$cr3 && rankhicommon==$$cr2? $$cr2:0)
-   |($$cr3==$$cr4 && rankhicommon==$$cr3? $$cr3:0)
-]:
-
-0
 
 ##f$OpenPPL_RankOfSpareCardWhenTwoPairOnBoard##
 f$OpenPPL_TwoPairOnBoard &&!f$OpenPPL_FullHouseOnBoard ?
