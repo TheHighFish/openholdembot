@@ -1,3 +1,9 @@
+v1.1.1 2012-xx-yy
+=================
+MAINTENANCE:
+- Removing RankOfPairOnBoard again, as it was a duplicate to RankOfTopPairOnBoard.
+  [THF]
+
 v1.1.0 2012-06-10
 =================
 BUG FIXES: 
