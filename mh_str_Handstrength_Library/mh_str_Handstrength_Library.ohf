@@ -134,6 +134,9 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 
 ##f$strength_fullhouse##
 ((0
+// TwoPair on Board, I have Top Set with the spare card    
+// e.g. 66/22336
+// NOT_YET_IMPLEMENTED 
 // Board paired, I have pocket pair and top side full house, pocket pair is higher than non-participating board cards  
 // e.g. QQ/QTT53
 || [ isfullhouse && ispair && nrankedcommon==2 && !(pokervalcommon&twopair)
