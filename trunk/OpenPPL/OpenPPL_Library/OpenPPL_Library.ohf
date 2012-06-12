@@ -3810,12 +3810,13 @@ trankcommon
 
 
 ##f$OpenPPL_RankOfSpareCardWhenTwoPairOnBoard##
-f$OpenPPL_TwoPairOnBoard &&!f$OpenPPL_FullHouseOnBoard ?
-[
-    ($$cr0!=$$cr1 && $$cr0!=$$cr2 && $$cr0!=$$cr3 && $$cr0!=$$cr4? $$cr0:0)
-   |($$cr1!=$$cr2 && $$cr1!=$$cr3 && $$cr1!=$$cr4 ? $$cr1:0)
-   |($$cr2!=$$cr3 && $$cr2!=$$cr4 ? $$cr2:0)
-   |($$cr3!=$$cr4? $$cr4:0)
+f$OpenPPL_TwoPairOnBoard && !f$OpenPPL_FullHouseOnBoard ?
+[    
+			 ($$cr0!=f$OpenPPL_RankOfTopPairOnBoard && $$cr0!=f$OpenPPL_RankOfBottomPairOnBoard ? $$cr0:0)
+			|($$cr1!=f$OpenPPL_RankOfTopPairOnBoard && $$cr1!=f$OpenPPL_RankOfBottomPairOnBoard ? $$cr1:0)
+			|($$cr2!=f$OpenPPL_RankOfTopPairOnBoard && $$cr2!=f$OpenPPL_RankOfBottomPairOnBoard ? $$cr2:0)
+			|($$cr3!=f$OpenPPL_RankOfTopPairOnBoard && $$cr3!=f$OpenPPL_RankOfBottomPairOnBoard ? $$cr3:0)
+			|($$cr4!=f$OpenPPL_RankOfTopPairOnBoard && $$cr4!=f$OpenPPL_RankOfBottomPairOnBoard ? $$cr4:0)
 ]:
 0
 
