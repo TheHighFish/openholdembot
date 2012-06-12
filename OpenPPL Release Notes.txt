@@ -1,14 +1,18 @@
 v1.1.1 2012-xx-yy
 =================
-
 BUG FIXES: 
 - RankOfSpareCardWhenTwoPairOnBoard was not returning correct value when the spare card was at river.
+  This has now been fixed.
   [Lavezzi]
   
 MAINTENANCE:
 - Removing RankOfPairOnBoard again, as it was a duplicate to RankOfTopPairOnBoard.
   [THF]
 
+NEW STUFF:
+- HaveTopTrips has been implemented
+  [Lavezzi]
+  
 v1.1.0 2012-06-10
 =================
 BUG FIXES: 
