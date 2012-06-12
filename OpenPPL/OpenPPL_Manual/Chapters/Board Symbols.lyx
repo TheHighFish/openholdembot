@@ -638,27 +638,6 @@ A queen is present on the flop
 \begin_inset Text
 
 \begin_layout Plain Layout
-RankOfPairOnBoard
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-returns rank of the highest pair on board (true also if set or twopair or
- fullhouse on board)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 RankOfSpareCardWhenTwoPairOnBoard
 \end_layout
 
@@ -669,6 +648,27 @@ RankOfSpareCardWhenTwoPairOnBoard
 
 \begin_layout Plain Layout
 returns rank of the spare card when two pair on board on the river
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+RankOfTopPairOnBoard
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+returns rank of the highest pair on board (true also if set or twopair or
+ fullhouse on board)
 \end_layout
 
 \end_inset

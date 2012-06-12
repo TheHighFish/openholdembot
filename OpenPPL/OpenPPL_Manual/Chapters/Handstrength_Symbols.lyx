@@ -87,7 +87,7 @@ PairOnBoard
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="80" columns="2">
+<lyxtabular version="3" rows="81" columns="2">
 <features islongtable="true" longtabularalignment="center">
 <column alignment="left" valignment="top" width="40text%">
 <column alignment="left" valignment="top" width="55text%">
@@ -1527,6 +1527,26 @@ HaveTopTwoPair
 
 \begin_layout Plain Layout
 The two highest cards on the board are paired with our hole cards
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+HaveTopTrips
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ture if we have the best possible trips 
 \end_layout
 
 \end_inset
