@@ -3459,6 +3459,9 @@ ispair
    || (f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_TurnCard) 
    || (f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_RiverCard)) ]
 
+##f$OpenPPL_HaveTopTrips##
+(!ispair && ($$pr0 == f$OpenPPL_RankOfTopPairOnBoard || $$pr1 == f$OpenPPL_RankOfTopPairOnBoard))
+
 ##f$OpenPPL_HaveTrips##
 !ispair
 &&   [(pokerval & threeofakind) && !(pokervalcommon & threeofakind)
