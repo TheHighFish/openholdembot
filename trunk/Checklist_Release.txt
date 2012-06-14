@@ -15,3 +15,4 @@
 * Remove the *.lib, *.exp and *.pdb files.
 * Remove replay-direcoty (if existent), logs and other private data
 * Zip or rar and upload
+* Anounce the release in the forum
