@@ -1,3 +1,22 @@
+v2.1.9.4 2012-06-14
+===================
+BUG FIXES: 
+- Fixing a race-condition: 
+  When the table got closed it could happen,
+  that the auto-connector thread already tried to connect again,
+  while the Disconnect() function was not yet finished.
+  This led to a dead-lock.
+  Thanks to TT_03 for reporting the problem and for suggesting a fix.
+  [THF]
+- The autoplayer "swag"-routine did first check 
+  if the table had the input-focus, then sleep and then enter the desired betsize.
+  But during the sleeping-time it is possible that another table pops up
+  and the foxus gets lost. We reversed now the execution and do first sleep,
+  then check the focus and then immediatelly enter the betsize.
+  Thanks to Postenjak for reporting.
+  [THF]
+  
+
 v2.1.9.3 2012-01-25
 ===================
 BUG FIXES: 
