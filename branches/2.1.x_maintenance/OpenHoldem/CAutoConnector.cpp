@@ -102,7 +102,13 @@ CAutoConnector::~CAutoConnector()
 
 bool CAutoConnector::IsConnected()
 {
-	return ((_attached_hwnd != NULL) && IsWindow(_attached_hwnd));
+	// We do no longer check for IsWindow(_attached_hwnd) here,
+	// as it might happen that the window disappears (gets closed),
+	// OH disconnects and in the meantime the auto-connector-thread
+	// tries to connect already again.
+	// This leads to a dead-lock.
+	// http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=15158
+	return (_attached_hwnd != NULL);
 }
 
 
@@ -747,9 +753,6 @@ void CAutoConnector::Disconnect()
 
 	theApp.Unload_ScraperPreprocessor_DLL();
 
-	// Clear "attached" info
-	set_attached_hwnd(NULL);
-
 	// Stop timer that checks for valid hwnd, then unattach OH.
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 	pMyMainWnd->KillTimer();
@@ -762,7 +765,14 @@ void CAutoConnector::Disconnect()
 
 	// Release mutex as soon as possible, after critical work is done
 	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Unlocking autoconnector-mutex\n");
-	_autoconnector_mutex->Unlock();	
+	_autoconnector_mutex->Unlock();
+
+	// Clear "attached" info
+	// Do this AFTER unlocking the mutex, 
+	// otherwise the auto-connector-thread might try to connect again,
+	// leading to a dead-lock
+	// http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=15158
+	set_attached_hwnd(NULL);
 
 	// Delete bitmaps
 	p_scraper->DeleteBitmaps();
@@ -795,8 +805,11 @@ void CAutoConnector::Disconnect()
 
 	// Stop logging
 	stop_log();
+
+	// Finally: reset 
+	_attached_hwnd = NULL;
 	
-		// Close OH, when table disappears and leaving enabled in preferences.
+	// Close OH, when table disappears and leaving enabled in preferences.
 	if (prefs.autoconnector_close_when_table_disappears())
 	{
 		PostQuitMessage(0);
