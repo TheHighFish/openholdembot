@@ -174,10 +174,10 @@ MAINTENANCE:
   so this option was only confusing and superfluos.
   [THF]
 - Removing Winngys "mh_str" handstrength-functions, 
-  as sicu functionality belongs to external libraries and not directly to OH.
+  as such functionality belongs to external libraries and not directly to OH.
   (technical symbols in OH, poker-logicals in libraries).
   As these functions get used by several people and by OpenPPL
-  a library "mh_str__Handstrength_Library.ohf" has been created in the repository.
+  a library "mh_str_Handstrength_Library.ohf" has been created in the repository.
   [THF]
   
 BUG FIXES: 
@@ -186,6 +186,26 @@ BUG FIXES:
   [THF]
 - mh_str_quads symbol was not returning value 5 when nut quads on board or when holding best kicker
   [Lavezzi] 
+  
+  
+v2.1.9.4 2012-06-14
+===================
+BUG FIXES: 
+- Fixing a race-condition: 
+  When the table got closed it could happen,
+  that the auto-connector thread already tried to connect again,
+  while the Disconnect() function was not yet finished.
+  This led to a dead-lock.
+  Thanks to TT_03 for reporting the problem and for suggesting a fix.
+  [THF]
+- The autoplayer "swag"-routine did first check 
+  if the table had the input-focus, then sleep and then enter the desired betsize.
+  But during the sleeping-time it is possible that another table pops up
+  and the foxus gets lost. We reversed now the execution and do first sleep,
+  then check the focus and then immediatelly enter the betsize.
+  Thanks to Postenjak for reporting.
+  [THF]
+  
 
 v2.1.9.3 2012-01-25
 ===================
