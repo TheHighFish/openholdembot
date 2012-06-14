@@ -403,14 +403,12 @@ void CAutoplayer::DoSwag(void)
 		return;
 	}
 
-	// Check for stolen focus, and thus misswag
-	if (GetForegroundWindow() != p_autoconnector->attached_hwnd())
-		lost_focus = true;
-
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Sleeping %dms.\n", prefs.swag_delay_1());
 	Sleep(prefs.swag_delay_1());
 
-
+	// Check for stolen focus, and thus misswag
+	if (GetForegroundWindow() != p_autoconnector->attached_hwnd())
+		lost_focus = true;
 
 	// TEXT DELETION
 	if (p_tablemap->swagdeletionmethod() == TEXTDEL_DELETE)
@@ -436,13 +434,12 @@ void CAutoplayer::DoSwag(void)
 		return;
 	}
 
-	// Check for stolen focus, and thus misswag
-	if (GetForegroundWindow() != p_autoconnector->attached_hwnd())
-		lost_focus = true;
-
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Sleeping %dms.\n", prefs.swag_delay_2());
 	Sleep(prefs.swag_delay_2());
 
+	// Check for stolen focus, and thus misswag
+	if (GetForegroundWindow() != p_autoconnector->attached_hwnd())
+		lost_focus = true;
 
 	// if we are swagging allin then set the swag value to be our balance (spew)
 	CString swag_amt;
@@ -459,12 +456,12 @@ void CAutoplayer::DoSwag(void)
 			rect_edit.right, rect_edit.bottom);
 	(theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), rect_edit, swag_amt, prefs.swag_use_comma(), NULL, point_null);
 
+	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Sleeping %dms.\n", prefs.swag_delay_3());
+	Sleep(prefs.swag_delay_3());
+
 	// Check for stolen focus, and thus misswag
 	if (GetForegroundWindow() != p_autoconnector->attached_hwnd())
 		lost_focus = true;
-
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Sleeping %dms.\n", prefs.swag_delay_3());
-	Sleep(prefs.swag_delay_3());
 
 	// BET CONFIRMATION ACTION
 	if (!lost_focus || !prefs.focus_detect())
