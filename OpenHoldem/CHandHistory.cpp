@@ -4,6 +4,7 @@
 #include <tchar.h> 
 #include <Windows.h>
 #include <sstream>
+#include <iomanip>
 #include "CSymbols.h"
 #include "CScraper.h"
 #include "CGameState.h"
@@ -388,7 +389,9 @@ const string CHandHistory::setDate()
 	GetLocalTime(&st);
 	stringstream ss;
 	string s;
-	ss<<st.wYear<<"-"<<st.wMonth<<"-"<<st.wDay<<" "<<st.wHour<<":"<<st.wMinute<<":"<<st.wSecond;
+	ss<<st.wYear<<"-"<< setfill ('0') << setw (2)<<st.wMonth<<"-"<< setfill ('0') << setw (2)<<st.wDay<<" "
+		<< setfill ('0') << setw (2)<<st.wHour<<":"<< setfill ('0') << setw (2)<<st.wMinute<<":"
+		<< setfill ('0') << setw (2)<<st.wSecond;
 	s = ss.str()+" ";
 
 	return s;
