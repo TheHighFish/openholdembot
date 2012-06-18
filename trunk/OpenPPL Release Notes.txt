@@ -10,7 +10,17 @@ MAINTENANCE:
   [THF]
 
 NEW STUFF:
-- HaveTopTrips has been implemented
+- New symbol TotalInvestedThisRound
+  [Lavezzi]
+- New symbol PT_LastRaiser_Hands
+  [Lavezzi]
+- New symbol HaveRunnerRunnerFlushAtRiver
+  [Lavezzi]
+- New symbol RunnerRunnerFlushPossibleAtRiver
+  [Lavezzi]
+- New symbol PT_SmallBlind_FoldSBToSteal
+  [Lavezzi]
+- New symbol HaveTopTrips
   [Lavezzi]
   
 v1.1.0 2012-06-10
