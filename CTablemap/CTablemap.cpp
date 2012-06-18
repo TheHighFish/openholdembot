@@ -64,7 +64,7 @@ void CTablemap::ClearTablemap()
 	ClearIMap();
 }
 
-int CTablemap::LoadTablemap(const char *_filename, const char *version, int *linenum, const bool disable_msgbox,
+int CTablemap::LoadTablemap(const char *_filename, const char *version, int *linenum, 
 							CString *loaded_version) 
 {
 	CString				strLine = "", strLineType = "", token = "", s = "", e = "", hexval = "", t = "";
@@ -204,19 +204,16 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, int *lin
 
 			if (!z$_insert(hold_size))
 			{
-				if (!disable_msgbox)
-				{
-					ZMapCI z_iter = _z$.find(hold_size.name);
+				ZMapCI z_iter = _z$.find(hold_size.name);
 
-					if (z_iter != _z$.end())
-					{
-						t.Format("'%s' skipped, as this size record already exists.\nYou have to fix that tablemap.", strLine);
-						OH_MessageBox(t.GetString(), "ERROR adding size record", MB_OK | MB_TOPMOST);			
-					}
-					else
-					{
-						OH_MessageBox(strLine, "ERROR adding size record", MB_OK | MB_TOPMOST);			
-					}
+				if (z_iter != _z$.end())
+				{
+					t.Format("'%s' skipped, as this size record already exists.\nYou have to fix that tablemap.", strLine);
+					OH_MessageBox(t.GetString(), "ERROR adding size record", MB_OK | MB_TOPMOST);			
+				}
+				else
+				{
+					OH_MessageBox(strLine, "ERROR adding size record", MB_OK | MB_TOPMOST);			
 				}
 			}
 		}
@@ -248,18 +245,15 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, int *lin
 
 				if (!s$_insert(hold_symbol))
 				{
-					if (!disable_msgbox)
+					SMapCI s_iter = _s$.find(hold_symbol.name);
+					if (s_iter != _s$.end())
 					{
-						SMapCI s_iter = _s$.find(hold_symbol.name);
-						if (s_iter != _s$.end())
-						{
-							t.Format("'%s' skipped, as this string/symbol record already exists.\nYou have to fix that tablemap.", strLine);
-							OH_MessageBox(t.GetString(), "ERROR adding string/symbol record", MB_OK | MB_TOPMOST);			
-						}
-						else
-						{
-							OH_MessageBox(strLine, "ERROR adding string/symbol record", MB_OK | MB_TOPMOST);			
-						}
+						t.Format("'%s' skipped, as this string/symbol record already exists.\nYou have to fix that tablemap.", strLine);
+						OH_MessageBox(t.GetString(), "ERROR adding string/symbol record", MB_OK | MB_TOPMOST);			
+					}
+					else
+					{
+						OH_MessageBox(strLine, "ERROR adding string/symbol record", MB_OK | MB_TOPMOST);			
 					}
 				}
 			}
@@ -325,18 +319,15 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, int *lin
 
 			if (!r$_insert(hold_region))
 			{
-				if (!disable_msgbox)
+				RMapCI r_iter = _r$.find(hold_region.name);
+				if (r_iter != _r$.end())
 				{
-					RMapCI r_iter = _r$.find(hold_region.name);
-					if (r_iter != _r$.end())
-					{
-						t.Format("'%s' skipped, as this region record already exists.\nYou have to fix that tablemap.", strLine);
-						OH_MessageBox(t.GetString(), "ERROR adding region record", MB_OK | MB_TOPMOST);			
-					}
-					else
-					{
-						OH_MessageBox(strLine, "ERROR adding region record", MB_OK | MB_TOPMOST);			
-					}
+					t.Format("'%s' skipped, as this region record already exists.\nYou have to fix that tablemap.", strLine);
+					OH_MessageBox(t.GetString(), "ERROR adding region record", MB_OK | MB_TOPMOST);			
+				}
+				else
+				{
+					OH_MessageBox(strLine, "ERROR adding region record", MB_OK | MB_TOPMOST);			
 				}
 			}
 		}
@@ -351,20 +342,10 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, int *lin
 
 			int font_group = 0;
 
-			// Old style t$ records (no font groups) - pre "2007 Nov 1 08:32:55" WinScrape release
-			if (strLineType.Left(2) == "t$") 
-			{
-				t = strLineType.Mid(2,1);
-				hold_font.ch = t.GetString()[0];
-				font_group = 0;
-			}
-			// New style t$ records (font groups 0..k_max_number_of_font_groups_in_tablemap) - "2007 Nov 1 08:32:55" WinScrape release and later & OpenScrape
-			else 
-			{
-				t = strLineType.Mid(3,1);
-				hold_font.ch = t.GetString()[0];
-				font_group = strLineType.GetString()[1] - '0';
-			}
+			// New style t$ records (font groups 0..k_max_number_of_font_groups_in_tablemap)
+			t = strLineType.Mid(3,1);
+			hold_font.ch = t.GetString()[0];
+			font_group = strLineType.GetString()[1] - '0';
 
 			if (font_group < 0 || font_group >= k_max_number_of_font_groups_in_tablemap)
 			{
