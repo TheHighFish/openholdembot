@@ -741,7 +741,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 	}
 	else if (nIDEvent == UPDATE_STATUS_BAR_TIMER) 
 	{
-		//!!!p_openholdem_statusbar->Update();
+		p_openholdem_statusbar->OnUpdateStatusbar();
 	}
 	else if (nIDEvent == ATTACH_WINDOW_TIMER)
 	{
