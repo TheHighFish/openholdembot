@@ -118,7 +118,7 @@ public:
 	CTablemap(void);
 	~CTablemap(void);
 	void ClearTablemap();
-	int LoadTablemap(const char *_filename, const char *version, int *linenum, const bool disable_msgbox,
+	int LoadTablemap(const char *_filename, const char *version, int *linenum, 
 					 CString *loaded_version=NULL);
 	int SaveTablemap(CArchive& ar, const char *version_text);
 	int ConvertTablemap(const HWND hwnd=NULL, const char *startup_path="");
@@ -150,7 +150,6 @@ public:
 	const int activemethod()		{ SMapCI it = _s$.find("activemethod"); if (it!=_s$.end()) return strtoul(it->second.text.GetString(), NULL, 10); else return 0; }
 	const CString sitename()		{ SMapCI it = _s$.find("sitename"); if (it!=_s$.end()) return it->second.text; else return ""; }
 	const CString network()			{ SMapCI it = _s$.find("network"); if (it!=_s$.end()) return it->second.text; else return ""; }
-	const CString forcechair()		{ SMapCI it = _s$.find("forcechair"); if (it!=_s$.end()) return it->second.text; else return ""; }
 
 	const int allinmethod()			{ SMapCI it = _s$.find("allinmethod"); if (it!=_s$.end()) return strtoul(it->second.text.GetString(), NULL, 10); else return 0; } 
 
