@@ -85,7 +85,7 @@ PairOnBoard
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="54" columns="2">
+<lyxtabular version="3" rows="55" columns="2">
 <features tabularvalignment="middle">
 <column alignment="left" valignment="top" width="40text%">
 <column alignment="left" valignment="top" width="60text%">
@@ -689,6 +689,26 @@ RiverCardisOvercardToBoard
 
 \begin_layout Plain Layout
 The river card is the highest ranked common card
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+RunnerRunnerFlushPossibleAtRiver
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+True if a Runner Runner Flush is possible at River
 \end_layout
 
 \end_inset
