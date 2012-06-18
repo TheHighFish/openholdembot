@@ -511,7 +511,7 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 && nsuitedcommon<3 
 && nstraightcommon<3 
 && nstraightfillcommon>1 ]
-&& !(br>2 && rankhicommon==14 && rankhicommon>rankhiplayer)   
+&& !(betround>2 && rankhicommon==14 && rankhicommon>rankhiplayer)   
    
 /////////////////////////////////////////////////////////////////////////////////
 //
