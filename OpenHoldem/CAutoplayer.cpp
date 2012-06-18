@@ -152,26 +152,25 @@ bool CAutoplayer::ExecutePrimaryFormulas()
 bool CAutoplayer::ExecuteRaiseCallCheckFold()
 {
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ExecuteRaiseCallCheckFold()\n");
-	if (p_autoplayer_functions->f$rais())
+	if (p_autoplayer_functions->f$rais()
+		&& p_casino_interface->ClickButton(k_button_raise))
 	{
-		return p_casino_interface->ClickButton(k_button_raise);
+		return true;
 	}
-	else if (p_autoplayer_functions->f$call())
+	else if (p_autoplayer_functions->f$call()
+		&& p_casino_interface->ClickButton(k_autoplayer_function_call))
 	{
-		return p_casino_interface->ClickButton(k_button_call);
+		return true;
+	}
+	// Try to check
+	else if (p_casino_interface->ClickButton(k_autoplayer_function_check))
+	{
+		return true;
 	}
 	else
 	{
-		// Try to check
-		if (p_casino_interface->ClickButton(k_button_check))
-		{
-			return true;
-		}
-		else
-		{
-			// Otherwise: fold
-			return p_casino_interface->ClickButton(k_button_fold);
-		}
+		// Otherwise: fold
+		return p_casino_interface->ClickButton(k_autoplayer_function_fold);
 	}
 }
 
@@ -299,6 +298,7 @@ void CAutoplayer::DoAutoplayer(void)
 
 	CheckBringKeyboard();
 
+	p_scraper_access->GetNeccessaryTablemapObjects();
 	int	num_buttons_visible = p_casino_interface->NumberOfVisibleAutoplayerButtons();
 	/* TODO: better log-file format !!! 	
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d (%c%c%c%c%c)\n", 
@@ -331,7 +331,6 @@ void CAutoplayer::DoAutoplayer(void)
 	// Change from only requiring one visible button (OpenHoldem 2008-04-03)
 	if (num_buttons_visible < 2)
 	{
-		MessageBox(0, "Not enough buttons", "Debug", 0);
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because num_buttons_visible < 2\n");
 		isFinalAnswer = false;
 	}

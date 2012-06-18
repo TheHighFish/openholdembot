@@ -20,6 +20,7 @@ void COpenHoldemStatusbar::InitBasicStatusbar()
 {
 	_status_bar.Create(_main_window);
 	_status_bar.SetIndicators(basic_statusba_indicators, sizeof(basic_statusba_indicators)/sizeof(UINT));
+	is_basic_statusbar = true;
 
 	_status_bar.SetPaneInfo(0, ID_INDICATOR_GENERAL_HINT, NULL, 200);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_GENERAL_HINT), "Do you need Help -> Problem Solver?");
@@ -27,7 +28,6 @@ void COpenHoldemStatusbar::InitBasicStatusbar()
 
 void COpenHoldemStatusbar::InitAdvancedStatusbar()
 {
-	MessageBox(0, "InitAdvancedStatusbar()", "Debug", 0);
 	_status_bar.DestroyWindow();
 	_status_bar.Create(_main_window); 
 	_status_bar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
@@ -41,6 +41,7 @@ void COpenHoldemStatusbar::InitAdvancedStatusbar()
 	_status_bar.SetPaneInfo(6, ID_INDICATOR_STATUS_NOPP, NULL, 15);
 	_status_bar.SetPaneInfo(7, ID_INDICATOR_STATUS_nit, NULL, 90);
 	_status_bar.SetPaneInfo(8, ID_INDICATOR_STATUS_ACTION, NULL, 70);
+	is_basic_statusbar = false;
 }
 
 void COpenHoldemStatusbar::GetWindowRect(RECT *statusbar_position)
@@ -50,41 +51,41 @@ void COpenHoldemStatusbar::GetWindowRect(RECT *statusbar_position)
 
 bool COpenHoldemStatusbar::TimeToSwitchToAdvancedStatusbar()
 {
-	MessageBox(0, "TimeToSwitchToAdvancedStatusbar()", "Debug", 0);
 	// Be careful
 	// Symbol engine won't be available on startup.
 	if (p_symbols == NULL)
 	{
-		MessageBox(0, "p_symbols null", "Debug", 0);
 		return false;
 	}
 	else if (p_symbols->sym() == NULL)
 	{
-		MessageBox(0, "sym null", "Debug", 0);
 		return false;
 	}
 	else
 	{
 		// 1 minute after startup?
-		MessageBox(0, "checking elapsed", "Debug", 0);
-		return (p_symbols->sym()->elapsed >= 60);
+		return (p_symbols->sym()->elapsed != 60); //!!!
 	}
 }
 
 void COpenHoldemStatusbar::OnUpdateStatusbar()
 {
-	if (TimeToSwitchToAdvancedStatusbar())
+	if (is_basic_statusbar && TimeToSwitchToAdvancedStatusbar())
 	{
 		InitAdvancedStatusbar();
 	}
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PLCARDS), _status_plcards);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_COMCARDS), _status_comcards);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_POKERHAND), _status_pokerhand);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_HANDRANK), _status_handrank);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PRWIN), _status_prwin);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_NOPP), _status_nopp);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_nit), _status_nit);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_ACTION), _status_action);
+	if (!is_basic_statusbar)
+	{
+		// Update this info only for advanced statusbar
+		_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PLCARDS), _status_plcards);
+		_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_COMCARDS), _status_comcards);
+		_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_POKERHAND), _status_pokerhand);
+		_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_HANDRANK), _status_handrank);
+		_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PRWIN), _status_prwin);
+		_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_NOPP), _status_nopp);
+		_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_nit), _status_nit);
+		_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_ACTION), _status_action);
+	}
 }
 
 

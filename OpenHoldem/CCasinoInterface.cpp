@@ -57,10 +57,16 @@ bool CCasinoInterface::ButtonAvailable(int autoplayer_code)
 	return p_scraper_access->available_buttons[autoplayer_code];
 }
 
+bool CCasinoInterface::ButtonClickable(int autoplayer_code)
+{
+	return (ButtonAvailable(autoplayer_code)
+		&& p_scraper_access->visible_buttons[autoplayer_code]);
+}
+
 bool CCasinoInterface::ClickButton(int autoplayer_code)
 {
 	//write_log(prefs.debug_autoplayer(), "[CasinoInterface]  
-	if (ButtonAvailable(autoplayer_code)) // buttonstate !!!
+	if (ButtonClickable(autoplayer_code)) 
 	{
 		ClickRect(action_buttons[autoplayer_code]);
 		write_log(prefs.debug_autoplayer(), "[CasinoInterface] Clicked button %s\n", k_autoplayer_functionname[autoplayer_code]);
