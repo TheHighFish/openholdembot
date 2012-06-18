@@ -2181,6 +2181,9 @@ f$OpenPPL_HINT_Something_Is_Wrong__It_Seems_You_Are_Not_Even_Seated
 (betround == f$OpenPPL_ConstBetRoundRiver   && nbetsround1 > 0) ? (nbetsround1 + nbetsround2 + nbetsround3 + ncurrentbets) :
 f$OpenPPL_ERROR_Betround_Out_Of_Range
 
+##f$OpenPPL_TotalInvestedThisRound##
+(nbetsround  > 0) ? ncurrentbets :0
+
 //*****************************************************************************
 //
 // OpenPPL - Board Symbols
@@ -3451,6 +3454,9 @@ f$OpenPPL_HaveOverPair || f$OpenPPL_HaveBestOverPairOrBetter
 ##f$OpenPPL_HavePocketPair##
 ispair
 
+##f$OpenPPL_HaveRunnerRunnerFlushAtRiver##
+(betround == f$OpenPPL_ConstBetRoundRiver && f$OpenPPL_HaveFlush && nsuitedcommon==3 && $$cs0!=$$cs1 &&  $$cs0!=$$cs2 && $$cs1!=$$cs2 && $$cs3==$$cs4) ? 1:0
+
 ##f$OpenPPL_HaveSet##
 [  ispair
 && (  (f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_FirstFlopCard) 
@@ -3899,6 +3905,9 @@ f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRA
 
 ##f$OpenPPL_PairInHand##
 ispair
+
+##f$OpenPPL_RunnerRunnerFlushPossibleAtRiver##
+(betround == f$OpenPPL_ConstBetRoundRiver && nsuitedcommon==3 && $$cs0!=$$cs1 &&  $$cs0!=$$cs2 && $$cs1!=$$cs2 && $$cs3==$$cs4) ? 1:0
 
 ##f$OpenPPL_SuitsInHand##
 ($$ps0 == $$ps1) ? 1 :
@@ -4441,6 +4450,9 @@ f$OpenPPL_Middle
 //
 //*****************************************************************************
 
+##f$OpenPPL_PT_LastRaiser_Hands##
+(raischair != -1) ? pt_rhands : -1
+
 ##f$OpenPPL_PT_LastRaiser_PFR##
 (raischair != -1) ? pt_rpfr : -1
 
@@ -4461,6 +4473,19 @@ f$OpenPPL_BigBlindChair == 6 ? pt_fbbts6 :
 f$OpenPPL_BigBlindChair == 7 ? pt_fbbts7 :
 f$OpenPPL_BigBlindChair == 8 ? pt_fbbts8 :
 f$OpenPPL_BigBlindChair == 9 ? pt_fbbts9 :
+-1
+
+##f$OpenPPL_PT_SmallBlind_FoldSBToSteal##
+f$OpenPPL_SmallBlindChair == 0 ? pt_fsbts0 :
+f$OpenPPL_SmallBlindChair == 1 ? pt_fsbts1 :
+f$OpenPPL_SmallBlindChair == 2 ? pt_fsbts2 :
+f$OpenPPL_SmallBlindChair == 3 ? pt_fsbts3 :
+f$OpenPPL_SmallBlindChair == 4 ? pt_fsbts4 :
+f$OpenPPL_SmallBlindChair == 5 ? pt_fsbts5 :
+f$OpenPPL_SmallBlindChair == 6 ? pt_fsbts6 :
+f$OpenPPL_SmallBlindChair == 7 ? pt_fsbts7 :
+f$OpenPPL_SmallBlindChair == 8 ? pt_fsbts8 :
+f$OpenPPL_SmallBlindChair == 9 ? pt_fsbts9 :
 -1
 
 ##f$OpenPPL_PT_SmallBlind_VPIP##
