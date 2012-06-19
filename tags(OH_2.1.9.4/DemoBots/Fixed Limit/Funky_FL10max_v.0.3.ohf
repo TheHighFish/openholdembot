@@ -1,0 +1,3954 @@
+##2011-08-04 01:52:57##
+
+##notes##
+
+
+##dll##
+
+
+##bankroll##
+0.000000
+
+##defcon##
+0.000000
+
+##rake##
+0.000000
+
+##nit##
+0
+
+##f$alli##
+
+
+##f$swag##
+
+
+##f$srai##
+
+
+##f$rais##
+
+
+##f$call##
+
+
+##f$prefold##
+
+
+##f$rebuy##
+
+
+##f$delay##
+
+
+##f$chat##
+
+
+##f$P##
+
+
+##f$play##
+
+
+##f$test##
+
+
+##f$debug##
+//f$debug for OppModellig
+ =f$OppModelling_Rock
+ =f$OppModelling_NIT
+ =f$OppModelling_WeakTight
+ =f$OppModelling_TAG
+ =f$OppModelling_LAG
+ =f$OppModelling_Maniac
+ =f$OppModelling_CallStation
+ =f$OppModelling_Donk
+ =f$OppModelling_Unknown
+ 
+// f$debug for $PT
+// debugging is in progress
+// corently need only 4 statictics and 1 icon
+ =f$PT_preflop_VPIP
+ =f$PT_preflop_PFR
+ =f$PT_total_aggro
+ =f$PT_extra_icon_3Bet
+ =f$PT_preflop_attempt_to_steal
+ =f$PT_postflop_WTSD
+
+##list001##
+AAo	KKo
+
+##list002##
+AAo	KKo	QQo	JJo
+
+##list003##
+AAo	KKo	QQo	JJo	TTo	99o
+
+##list004##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs
+
+##list005##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs
+
+##list006##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs
+
+##list007##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs
+
+##list008##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo
+
+##list009##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo
+
+##list010##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs
+
+##list011##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs
+
+##list012##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o
+
+##list013##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+
+##list014##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs
+
+##list015##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo
+
+##list016##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s
+
+##list017##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s
+
+##list018##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o
+
+##list019##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s
+
+##list020##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o
+
+##list021##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s
+
+##list022##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo
+
+##list023##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s
+
+##list024##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s
+
+##list025##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o
+
+##list026##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o
+
+##list027##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s
+
+##list028##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s
+
+##list029##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o
+
+##list030##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo
+
+##list031##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o
+
+##list032##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s
+
+##list033##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s
+
+##list034##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s
+
+##list035##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s
+
+##list036##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o
+
+##list037##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o
+
+##list038##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o
+
+##list039##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s
+
+##list040##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s
+
+##list041##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o
+
+##list042##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	
+
+##list043##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+
+##list044##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o
+
+##list045##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	
+
+##list046##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	
+
+##list047##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	
+
+##list048##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	
+
+##list049##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	
+
+##list050##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+
+##list051##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o
+
+##list052##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s
+
+##list053##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s
+
+##list054##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o
+
+##list055##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o
+
+##list056##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o
+
+##list057##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s
+
+##list058##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+
+##list059##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o
+
+##list060##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	
+
+##list061##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	
+
+##list062##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o
+
+##list063##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	
+
+##list064##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	
+
+##list065##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s
+
+##list066##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s
+
+##list067##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+
+##list068##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	
+
+##list069##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	
+
+##list070##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	
+
+##list071##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	
+
+##list072##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	
+
+##list073##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	
+
+##list074##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	
+
+##list075##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	
+
+##list076##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	
+
+##list077##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	92s	76o	
+
+##list078##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	92s	76o	T2o	74s	
+
+##list079##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	92s	76o	T2o	74s	85o
+
+##list080##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	92s	76o	T2o	74s	85o	54s	64s	
+
+##list081##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	92s	76o	T2o	74s	85o	54s	64s	83s	94o
+
+##list082##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	92s	76o	T2o	74s	85o	54s	64s	83s	94o	75o	
+
+##list083##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	92s	76o	T2o	74s	85o	54s	64s	83s	94o	75o	82s	93o
+
+##list084##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	92s	76o	T2o	74s	85o	54s	64s	83s	94o	75o	82s	93o
+73s	65o	
+
+##list085##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	92s	76o	T2o	74s	85o	54s	64s	83s	94o	75o	82s	93o
+73s	65o	53s	63s
+
+##list086##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	92s	76o	T2o	74s	85o	54s	64s	83s	94o	75o	82s	93o
+73s	65o	53s	63s	84o	
+
+##list087##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	92s	76o	T2o	74s	85o	54s	64s	83s	94o	75o	82s	93o
+73s	65o	53s	63s	84o	92o	
+
+##list088##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	92s	76o	T2o	74s	85o	54s	64s	83s	94o	75o	82s	93o
+73s	65o	53s	63s	84o	92o	43s	74o		
+
+##list089##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	92s	76o	T2o	74s	85o	54s	64s	83s	94o	75o	82s	93o
+73s	65o	53s	63s	84o	92o	43s	74o	72s	54o		
+
+##list090##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	92s	76o	T2o	74s	85o	54s	64s	83s	94o	75o	82s	93o
+73s	65o	53s	63s	84o	92o	43s	74o	72s	54o	64o	52s	
+
+##list091##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	92s	76o	T2o	74s	85o	54s	64s	83s	94o	75o	82s	93o
+73s	65o	53s	63s	84o	92o	43s	74o	72s	54o	64o	52s	62s
+83o	
+
+##list092##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	92s	76o	T2o	74s	85o	54s	64s	83s	94o	75o	82s	93o
+73s	65o	53s	63s	84o	92o	43s	74o	72s	54o	64o	52s	62s
+83o	82o	
+
+##list093##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	92s	76o	T2o	74s	85o	54s	64s	83s	94o	75o	82s	93o
+73s	65o	53s	63s	84o	92o	43s	74o	72s	54o	64o	52s	62s
+83o	82o	42s	73o	
+
+##list094##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	92s	76o	T2o	74s	85o	54s	64s	83s	94o	75o	82s	93o
+73s	65o	53s	63s	84o	92o	43s	74o	72s	54o	64o	52s	62s
+83o	82o	42s	73o	53o	63o	
+
+##list095##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	92s	76o	T2o	74s	85o	54s	64s	83s	94o	75o	82s	93o
+73s	65o	53s	63s	84o	92o	43s	74o	72s	54o	64o	52s	62s
+83o	82o	42s	73o	53o	63o	32s	43o	
+
+##list096##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	92s	76o	T2o	74s	85o	54s	64s	83s	94o	75o	82s	93o
+73s	65o	53s	63s	84o	92o	43s	74o	72s	54o	64o	52s	62s
+83o	82o	42s	73o	53o	63o	32s	43o	72o	
+
+##list097##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	92s	76o	T2o	74s	85o	54s	64s	83s	94o	75o	82s	93o
+73s	65o	53s	63s	84o	92o	43s	74o	72s	54o	64o	52s	62s
+83o	82o	42s	73o	53o	63o	32s	43o	72o	52o	
+
+##list098##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	92s	76o	T2o	74s	85o	54s	64s	83s	94o	75o	82s	93o
+73s	65o	53s	63s	84o	92o	43s	74o	72s	54o	64o	52s	62s
+83o	82o	42s	73o	53o	63o	32s	43o	72o	52o	62o	
+
+##list099##
+AAo	KKo	QQo	JJo	TTo	99o	88o	AKs	77o	AQs	AKo	AJs	AQo
+ATs	66o	AJo	KQs	ATo	A9s	KJs	A8s	KTs	KQo	55o	A7s	A9o
+KJo	QJs	K9s	KTo	A8o	A6s	QTs	A5s	A4s	A7o	QJo	K8s	A3s
+K9o	44o	Q9s	JTs	QTo	A6o	K7s	A5o	A2s	K6s	A4o	K8o	Q8s
+J9s	A3o	K5s	Q9o	JTo	K7o	A2o	K4s	33o	Q7s	K6o	T9s	J8s
+K3s	Q8o	Q6s	J9o	K5o	K2s	Q5s	T8s	J7s	K4o	Q7o	T9o	Q4s
+J8o	K3o	22o	Q6o	Q3s	98s	T7s	J6s	K2o	Q2s	Q5o	J5s	T8o
+J7o	Q4o	97s	J4s	T6s	J3s	Q3o	98o	T7o	J6o	87s	J2s	96s
+Q2o	J5o	T5s	T4s	97o	J4o	T6o	86s	95s	T3s	J3o	76s	87o
+T2s	96o	J2o	85s	T5o	94s	T4o	75s	93s	86o	65s	95o	T3o
+84s	92s	76o	T2o	74s	85o	54s	64s	83s	94o	75o	82s	93o
+73s	65o	53s	63s	84o	92o	43s	74o	72s	54o	64o	52s	62s
+83o	82o	42s	73o	53o	63o	32s	43o	72o	52o	62o	42o
+
+##list101##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s JTs J9s J8s J7s J6s J5s T9s T8s T7s T6s 98s 97s 96s 87s 86s 76s 
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9A  9K  9Q  9J  9T  8A  8K  8Q  8J  8T  89  7A  7K  6A  6K  5A  4A  3A  2A  
+
+##list111##
+//Empty list couse BB first in cant be true
+
+##list121##
+AA  KK  QQ  JJ  TT  99  
+AKs AQs AJs KQs 
+KA  QA  
+
+##list131##
+AA  KK  QQ  JJ  TT  99  
+AKs AQs AJs ATs KQs 
+KA  QA  
+
+##list141##
+AA  KK  QQ  JJ  TT  99  88  
+AKs AQs AJs ATs KQs KJs 
+KA  QA  QK  JA  
+
+##list151##
+AA  KK  QQ  JJ  TT  99  88  77  
+AKs AQs AJs ATs A9s KQs KJs QJs 
+KA  QA  QK  JA  
+
+##list161##
+AA  KK  QQ  JJ  TT  99  88  77  66  
+AKs AQs AJs ATs A9s A8s KQs KJs KTs QJs QTs JTs 
+KA  QA  QK  JA  JK  TA  
+
+##list171##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s KQs KJs KTs K9s QJs QTs Q9s JTs J9s T9s 
+KA  QA  QK  JA  JK  JQ  TA  9A  
+
+##list181##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s QJs QTs Q9s JTs J9s T9s 98s 
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9A  8A  7A  
+
+##list191##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s K7s K6s K5s QJs QTs Q9s Q8s Q7s JTs J9s J8s T9s T8s 98s 87s 
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9A  9K  8A  7A  6A  5A  4A  3A  2A  
+
+##list102##
+// FAULS, No rais of Valin from SB, see blind protection
+##list112##
+// FAULS, No rais of Valin from BB, see blind protection
+##list122##
+JJ QQ KK AA
+AKs
+AKo
+
+##list132##
+JJ QQ KK AA
+AKs
+AKo
+
+##list142##
+TT JJ QQ KK AA
+AQs AKs
+AKo
+
+##list152##
+99 TT JJ QQ KK AA
+AQs AKs
+AQo AKo
+
+##list162##
+88 99 TT JJ QQ KK AA
+AJs AQs AKs KQs
+AQo AKo
+
+##list172##
+77 88 99 TT JJ QQ KK AA
+ATs AJs AQs AKs KQs
+AJo AQo AKo
+
+##list182##
+66 77 88 99 TT JJ QQ KK AA
+A5s A6s A7s A8s A9s ATs AJs AQs AKs 
+KJs KQs
+A9o ATo AJo AQo AKo
+KQo
+
+##list192##
+55 66 77 88 99 TT JJ QQ KK AA
+A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs 
+K9s KTs KJs KQs
+QJs
+A7o A8o A9o ATo AJo AQo AKo
+KJo KQo
+##list103##
+44 55 66 77 88 99 TT JJ QQ KK AA
+A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs
+K8s K9s KTs KJs KQs
+QJs
+A5o A6o A7o A8o A9o ATo AJo AQo AKo
+KTo KJo KQo
+
+##list113##
+// FALSE
+##list123##
+JJ QQ KK AA
+AKs AKo
+##list133##
+JJ QQ KK AA
+AKs AKo
+##list143##
+JJ QQ KK AA
+AQs AKs
+AKo
+
+##list153##
+TT JJ QQ KK AA
+AQs AKs
+AQo AKo
+
+##list163##
+TT JJ QQ KK AA
+AJs AQs AKs
+AQo AKo
+
+##list173##
+99 TT JJ QQ KK AA
+ATs AJs AQs AKs
+AJo AQo AKo
+
+##list183##
+77 88 99 TT JJ QQ KK AA
+A9s ATs AJs AQs AKs
+ATo AJo AQo AKo
+
+##list193##
+55 66 77 88 99 TT JJ QQ KK AA
+A7s A8s A9s ATs AJs AQs AKs
+KJs KQs
+A9o ATo AJo AQo AKo
+KQo
+
+
+
+
+##list104##
+22 33 44 55 66 77 88 99 TT JJ QQ KK AA
+A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs
+K2s K3s K4s K5s K6s K7s K8s K9s KTs KJs KQs
+Q4s Q5s Q6s Q7s Q8s Q9s QTs QJs
+J5s J6s J7s J8s J9s JTs
+T5s T6s T7s T8s T9s
+95s 96s 97s 98s
+86s 87s
+75s 76s
+64s 65s
+54s
+A2o A3o A4o A5o A6o A7o A8o A9o ATo AJo AQo AKo
+K4o K5o K6o K7o K8o K9o KTo KJo KQo
+Q6o Q7o Q8o Q9o QTo QJo
+J7o J8o J9o JTo
+T8o T9o
+97o 98o
+86o 87o
+76o
+65o
+
+##list114##
+// FALSE
+##list124##
+66 77 88 99 TT JJ QQ KK AA
+ATs AJs AQs AKs
+KJs KQs
+QJs
+JTs
+T9s
+AJo AQo AKo
+
+##list134##
+66 77 88 99 TT JJ QQ KK AA
+ATs AJs AQs AKs
+KJs KQs
+QJs
+JTs
+T9s
+AJo AQo AKo
+
+##list144##
+22 33 44 55 66 77 88 99 TT JJ QQ KK AA
+A8s A9s ATs AJs AQs AKs
+KTs KJs KQs
+QTs QJs
+J9s JTs
+T9s
+98s
+ATo AJo AQo AKo
+KQo
+
+##list154##
+22 33 44 55 66 77 88 99 TT JJ QQ KK AA
+A5s A6s A7s A8s A9s ATs AJs AQs AKs
+KTs KJs KQs
+QTs QJs
+J9s JTs
+T9s
+98s
+87s
+ATo AJo AQo AKo
+KQo
+
+##list164##
+22 33 44 55 66 77 88 99 TT JJ QQ KK AA
+A5s A6s A7s A8s A9s ATs AJs AQs AKs
+KTs KJs KQs
+QTs QJs
+J9s JTs
+T8s T9s
+97s 98s
+87s
+76s
+A9o ATo AJo AQo AKo
+KQo
+
+##list174##
+22 33 44 55 66 77 88 99 TT JJ QQ KK AA
+A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs
+K7s K8s K9s KTs KJs KQs
+Q9s QTs QJs
+J9s JTs
+T8s T9s
+97s 98s
+86s 87s
+76s
+65s
+A7o A8o A9o ATo AJo AQo AKo
+KTo KJo KQo
+QTo QJo
+JTo
+
+##list184##
+22 33 44 55 66 77 88 99 TT JJ QQ KK AA
+A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs
+K5s K6s K7s K8s K9s KTs KJs KQs
+Q6s Q7s Q8s Q9s QTs QJs
+J7s J8s J9s JTs
+T8s T9s
+97s 98s
+86s 87s
+75s 76s
+65s
+A5o A6o A7o A8o A9o ATo AJo AQo AKo
+K9o KTo KJo KQo
+QTo QJo
+JTo
+T9o
+
+##list194##
+22 33 44 55 66 77 88 99 TT JJ QQ KK AA
+A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs
+K4s K5s K6s K7s K8s K9s KTs KJs KQs
+Q5s Q6s Q7s Q8s Q9s QTs QJs
+J6s J7s J8s J9s JTs
+T7s T8s T9s
+96s 97s 98s
+86s 87s
+75s 76s
+65s
+54s
+A2o A3o A4o A5o A6o A7o A8o A9o ATo AJo AQo AKo
+K7o K8o K9o KTo KJo KQo
+Q9o QTo QJo
+J9o JTo
+T8o T9o
+98o
+
+##list211##
+55 66 77 88 99 TT JJ QQ KK AA
+T9s JTs
+QJs
+KQs
+##list212##
+22 33 44 55 66 77 88 99 TT JJ QQ KK AA
+87s 98s T9s JTs
+ATs AJs AQs AKs
+KTs KJs KQs
+QTs QJs
+J9S
+##list213##
+22 33 44 55 66 77 88 99 TT JJ QQ KK AA
+65s 76s 87s 98s T9s JTs
+ATs AJs AQs AKs
+KTs KJs KQs
+QTs QJs
+J8s J9S
+
+##list221##
+TT JJ QQ KK AA
+AJs AQs AKs
+AQo AKo
+##list222##
+JJ QQ KK AA
+AQs AKs
+AQo AKo
+##list223##
+QQ KK AA
+AQs AKs
+AQo AKo
+##list231##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s K7s K6s QJs QTs Q9s Q8s Q7s JTs J9s J8s T9s T8s 98s 87s 76s 65s 54s 
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9A  9K  9Q  9J  9T  8A  8K  8J  7A  6A  
+##list232##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s JTs J9s J8s J7s J6s J5s J4s J3s J2s T9s T8s T7s T6s T5s T4s T3s T2s 98s 97s 96s 95s 94s 93s 92s 87s 86s 85s 84s 83s 82s 76s 75s 74s 73s 72s 65s 64s 63s 62s 54s 53s 52s 43s 42s 32s 
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9A  9K  9Q  9J  9T  8A  8K  8Q  8J  8T  89  7A  7K  7Q  7J  78  6A  6K  67  5A  56  4A  3A  2A  
+
+##list233##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s JTs J9s J8s J7s J6s J5s J4s J3s J2s T9s T8s T7s T6s T5s T4s T3s T2s 98s 97s 96s 95s 94s 93s 92s 87s 86s 85s 84s 83s 82s 76s 75s 74s 73s 72s 65s 64s 63s 62s 54s 53s 52s 43s 42s 32s 
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9A  9K  9Q  9J  9T  8A  8K  8Q  8J  8T  89  7A  7K  7Q  7J  7T  78  6A  6K  6Q  6J  67  5A  5K  5Q  5J  56  4A  4K  4Q  4J  45  3A  3K  3Q  3J  34  2A  2K  2Q  2J  23  
+
+##list234##
+66 77 88 99 TT JJ QQ KK AA
+A5s A6s A7s A8s A9s ATs AJs AQs AKs
+KTs KJs KQs
+QJs
+A8o A9o ATo AJo AQo AKo
+KJo KQo
+
+##list235##
+99 TT JJ QQ KK AA
+ATs AJs AQs AKs
+KJs KQs
+ATo AJo AQo AKo
+KQo
+
+##list236##
+JJ QQ KK AA
+ATs AJs AQs AKs
+KQs
+ATo AJo AQo AKo
+KQo
+
+##list237##
+QJs QTs JTs 
+
+##list238##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  
+AKs AQs AJs ATs A9s A8s A7s A5s KQs KJs KTs QJs QTs JTs T9s 98s 
+QK  JK  JQ  TK  TQ  TJ  
+
+##list239##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s QJs QTs Q9s Q8s JTs T9s 98s 87s 76s 65s 54s 43s 32s 
+QK  JK  JQ  TK  TQ  TJ  9T  
+
+
+##f$BettingAction_aa_info##
+/////////////////////////////////////////////////
+// $BETACTION GROUP
+// illustrates the action before and after us.
+// whole group returns true of false so
+// DOTO: the group can be converted to 2 single 
+// function or such a function can be added to 
+// save "logical space"
+// FROM: Gecko NL 6max
+// Cases:
+// 1. Freeplay
+// 2. First_IN and Unraised Pot
+// 3. One limper
+// 4. Two limpers
+// 5. Three or more limpers
+// 6. One raiser
+// 7. One raiser and callers
+// 8. Raiser after us
+// 9. Reraised pot
+//
+// f$debug for $BETACTION GROUP
+// debuging is DONE
+// =f$BettingAction_Number_Of_Opponents_Truely_Playing
+// =f$BettingAction_Unraised_Pot
+// =f$BettingAction_Number_Of_Raisers_Preflop
+// =f$BettingAction_Freeplay
+// =f$BettingAction_First_In
+// =f$BettingAction_Hero_Did_Already_Act
+// =f$BettingAction_Single_Raiser_Before_Us
+// =f$BettingAction_One_Raiser_And_Callers_In_Front_Of_Us
+// =f$BettingAction_One_Limper
+// =f$BettingAction_Two_Limpers
+// =f$BettingAction_Three_Limpers
+// =f$BettingAction_Four_Limpers_Or_More
+// =f$BettingAction_Raisers_Behind_Us
+/////////////////////////////////////////////////
+
+##f$BettingAction_Number_Of_Opponents_Truely_Playing##
+// opponents who have made their turn !fold
+// or opponents to make turn
+// Excludes Hero
+// TODO: N/A
+// f$debug: +
+(`f$Bits_Opponents_Truely_Playing)
+
+##f$BettingAction_Unraised_Pot##
+// pot was not raised
+// for f$BettingAction_Raised_Pot use just !f$BettingAction_Unraised_Pot
+// TODO: check f$
+(ncallbets<=1)
+
+##f$BettingAction_Number_Of_Raisers_Preflop##
+// actual No. of raisers
+// TODO: check f$
+(`f$Bits_Players_Truely_Raising_Preflop)
+
+##f$BettingAction_Freeplay##
+// Hero gets free play on SB or BB
+// TODO: Check f$, rewrite it to make sence
+// to call in SB with connectors and low pairs
+(nbetstocall == 0 || f$Position_preflop_dealposition==1 && call==sblind) // && islist40 )
+
+##f$BettingAction_First_In##
+// Hero is first to act every 1 folded
+// or first in
+// TODO: Check f$
+(f$BettingAction_Unraised_Pot && nopponentscalling<=0)
+
+##f$BettingAction_Hero_Did_Already_Act##
+// Hero did rais || call || chec || swag
+// TODO: function dont make much sence,
+// check it's usage
+(didrais || didcall || didchec || didswag)
+
+##f$BettingAction_Single_Raiser_Before_Us##
+// The pot was raised ones
+// TODO: Check f$
+(f$BettingAction_Number_Of_Raisers_Preflop==1 && nopponentsraising<=3)
+
+##f$BettingAction_One_Raiser_And_Callers_In_Front_Of_Us##
+// There was an raise and caller/callers before Here
+// TODO: Check f$
+((f$BettingAction_Number_Of_Raisers_Preflop == 1) && (nopponentscalling >= 1))
+
+##f$BettingAction_One_Limper##
+// One limper
+// TODO: Check f$
+(nopponentscalling == 1 && ncallbets<=1)
+
+##f$BettingAction_Two_Limpers##
+// Two limpers
+// TODO: Check f$
+(nopponentscalling == 2 && ncallbets<=1)
+
+##f$BettingAction_Three_Limpers##
+// Three or more
+// TODO: Check f$
+(nopponentscalling == 3 && ncallbets<=1)
+
+##f$BettingAction_Four_Limpers_Or_More##
+// Four or more
+// TODO: Check f$
+(nopponentscalling >= 4 && ncallbets<=1)
+
+##f$BettingAction_Raisers_Behind_Us##
+// There is raiser afrter Hero
+// TODO: Check f$
+(f$BettingAction_Hero_Did_Already_Act && (nbetstocall > 0))
+
+##f$Bits_aa_info##
+/////////////////////////////////////////////////
+// $BITS GROUP
+// Returns some bits of statments to use futher
+// USED: f$BettingAction
+// FROM: Gecko NL 6max
+//
+// f$debug for $BITS group
+// debuging is DONE
+// =f$Bits_Opponents_Truely_Playing
+// =f$Bits_Players_Allin
+// =f$Bits_Players_Truely_Raising_Preflop
+// =f$Bits_Players_With_More_Than_One_Bet
+/////////////////////////////////////////////////
+
+##f$Bits_Opponents_Truely_Playing##
+// bit No. for playing opponents
+// DOTO: the function dont work if poker client
+//       dont display 0 for all-in players
+// f$debug: +
+(opponentsplayingbits & [~f$Bits_Players_Allin])
+
+##f$Bits_Players_Allin##
+// bit No. of players who went allin in this round
+// TODO: Check f$
+// f$debug: Haven't checked
+0 
+| ((balance0 == 0) ? 0x0001 : 0)
+| ((balance1 == 0) ? 0x0002 : 0)
+| ((balance2 == 0) ? 0x0004 : 0)
+| ((balance3 == 0) ? 0x0008 : 0)
+| ((balance4 == 0) ? 0x0010 : 0)
+| ((balance5 == 0) ? 0x0020 : 0)
+| ((balance6 == 0) ? 0x0040 : 0)
+| ((balance7 == 0) ? 0x0080 : 0)
+| ((balance8 == 0) ? 0x0100 : 0)
+| ((balance9 == 0) ? 0x0200 : 0)
+
+##f$Bits_Players_Truely_Raising_Preflop##
+// show bit No. for raising players excluding BB preflop
+// TODO:
+// f$debug: +
+(raisbits1 & f$Bits_Players_With_More_Than_One_Bet)
+
+##f$Bits_Players_With_More_Than_One_Bet##
+// shows which playes reraised their bet
+// TODO:
+// f$debug: +
+0 
+| ((currentbet0 > bet) ? 0x0001 : 0)
+| ((currentbet1 > bet) ? 0x0002 : 0)
+| ((currentbet2 > bet) ? 0x0004 : 0)
+| ((currentbet3 > bet) ? 0x0008 : 0)
+| ((currentbet4 > bet) ? 0x0010 : 0)
+| ((currentbet5 > bet) ? 0x0020 : 0)
+| ((currentbet6 > bet) ? 0x0040 : 0)
+| ((currentbet7 > bet) ? 0x0080 : 0)
+| ((currentbet8 > bet) ? 0x0100 : 0)
+| ((currentbet9 > bet) ? 0x0200 : 0)
+
+##f$Position_aa_info##
+/////////////////////////////////////////////////
+// $POSITION GROUP
+// defines HERO and Vallin position pre- and post-
+// flop
+// USED: f$BettingAction, Odds and Outs
+// FROM: FooFighter 5.5, Gecko, Forum
+//
+// f$debug for $POSITION
+// debuging is DONE
+// =f$Position_preflop_dealposition
+// =f$Position_preflop_dealpositionrais
+// =f$Position_postflop_betposition
+/////////////////////////////////////////////////
+
+##f$Position_preflop_dealposition##
+// From FooFighter 5.5
+// Standard well known formula
+// SB==1 BB==2                     //Blinds
+// BUT==10 CO==9                   //Late
+// UTG==3 UTG1==4 UTG2==5          //Early
+// MP1==6 MP2==7 MP3==8            //Middle
+// CHECKED BUG FREE
+
+dealposition==1 ? 1: 
+dealposition==2 ? 2: 
+
+nplayersdealt==10 ? (dealposition==3 ? 3 : 
+                     dealposition==4 ? 4 : 
+                     dealposition==5 ? 5 : 
+                     dealposition==6 ? 6 : 
+                     dealposition==7 ? 7 : 
+                     dealposition==8 ? 8 : 
+                     dealposition==9 ? 9 : 
+                     dealposition==10? 10 : 0):  
+
+nplayersdealt==9 ?  (dealposition==3 ? 4 : 
+                     dealposition==4 ? 5 : 
+                     dealposition==5 ? 6 : 
+                     dealposition==6 ? 7 : 
+                     dealposition==7 ? 8 : 
+                     dealposition==8 ? 9 : 
+                     dealposition==9 ? 10 : 0): 
+
+nplayersdealt==8 ?  (dealposition==3 ? 5 : 
+                     dealposition==4 ? 6 : 
+                     dealposition==5 ? 7 : 
+                     dealposition==6 ? 8 : 
+                     dealposition==7 ? 9 : 
+                     dealposition==8 ? 10 : 0): 
+
+nplayersdealt==7 ?  (dealposition==3 ? 6 : 
+                     dealposition==4 ? 7 : 
+                     dealposition==5 ? 8 : 
+                     dealposition==6 ? 9 : 
+                     dealposition==7 ? 10 : 0): 
+  
+nplayersdealt==6 ?  (dealposition==3 ? 7 : 
+                     dealposition==4 ? 8 : 
+                     dealposition==5 ? 9 : 
+                     dealposition==6 ? 10 : 0): 
+                      
+nplayersdealt==5 ?  (dealposition==3 ? 8 : 
+                     dealposition==4 ? 9 : 
+                     dealposition==5 ? 10 : 0): 
+                      
+nplayersdealt==4 ?  (dealposition==3 ? 9 : 
+                     dealposition==4 ? 10 : 0): 
+                    
+nplayersdealt==3 ?  (dealposition==3 ? 10 : 0):0
+
+##f$Position_preflop_dealpositionrais##
+// returns ONLY 1 CHAIR of raiser
+// This can be done by 2 means
+// 1. is to make 2 formulas - from forum
+// 2. dealpositionrais - from Gecko
+// TODO: check which 0ne is better
+// SB==1 BB==2
+// BUT==10 CO==9
+// UTG==3 UTG1==4 UTG2==5
+// MP1==6 MP2==7 MP3==8 
+
+f$Position_preflop_dealpositionrais_DEF==0 ? ac_dealpos0 :
+f$Position_preflop_dealpositionrais_DEF==1 ? ac_dealpos1 :
+f$Position_preflop_dealpositionrais_DEF==2 ? ac_dealpos2 :
+f$Position_preflop_dealpositionrais_DEF==3 ? ac_dealpos3 :
+f$Position_preflop_dealpositionrais_DEF==4 ? ac_dealpos4 :
+f$Position_preflop_dealpositionrais_DEF==5 ? ac_dealpos5 :
+f$Position_preflop_dealpositionrais_DEF==6 ? ac_dealpos6 :
+f$Position_preflop_dealpositionrais_DEF==7 ? ac_dealpos7 :
+f$Position_preflop_dealpositionrais_DEF==8 ? ac_dealpos8 :
+f$Position_preflop_dealpositionrais_DEF==9 ? ac_dealpos9 :
+0
+
+//OR from Gecko
+//[
+//dealpositionrais==1 ? 1:
+//dealpositionrais==2 ? 2:
+//
+//nopponentsseated==6 ? (dealpositionrais==3 ? 3 :
+//                       dealpositionrais==4 ? 4 :
+//                       dealpositionrais==5 ? 5 :
+//                       dealpositionrais==6 ? 5 :
+//                       dealpositionrais==7 ? 6 : 0):
+//
+//nopponentsseated==5 ? (dealpositionrais==3 ? 3 :
+//                       dealpositionrais==4 ? 4 :
+//                       dealpositionrais==5 ? 5 :
+//                       dealpositionrais==6 ? 6 : 0):
+//
+//nopponentsseated==4 ? (dealpositionrais==3 ? 4 :
+//                       dealpositionrais==4 ? 5 :
+//                       dealpositionrais==5 ? 6 : 0):
+//
+//nopponentsseated==3 ? (dealpositionrais==3 ? 5 :
+//                       dealpositionrais==4 ? 6 : 0):
+//
+//nopponentsseated==2 ? (dealpositionrais==3 ? 6 : 0):
+//0]
+
+##f$Position_preflop_dealpositionrais_DEF##
+// to use only in f$Position_preflop_dealpositionrais
+// see this f$ for explonations
+br==1 ? (currentbet0>bblind && userchair!=0 && !(opponentsblindbits>>0&1) ? 0 :
+currentbet1>bblind && userchair!=1 && !(opponentsblindbits>>1&1) ? 1 :
+currentbet2>bblind && userchair!=2 && !(opponentsblindbits>>2&1) ? 2 :
+currentbet3>bblind && userchair!=3 && !(opponentsblindbits>>3&1) ? 3 :
+currentbet4>bblind && userchair!=4 && !(opponentsblindbits>>4&1) ? 4 :
+currentbet5>bblind && userchair!=5 && !(opponentsblindbits>>5&1) ? 5 :
+currentbet6>bblind && userchair!=6 && !(opponentsblindbits>>6&1) ? 6 :
+currentbet7>bblind && userchair!=7 && !(opponentsblindbits>>7&1) ? 7 :
+currentbet8>bblind && userchair!=8 && !(opponentsblindbits>>8&1) ? 8 :
+currentbet9>bblind && userchair!=9 && !(opponentsblindbits>>9&1) ? 9 :
+10) :
+br>1 ?(currentbet0==bblind && userchair!=0 && !(opponentsblindbits>>0&1) ? 0 :
+currentbet1>=bblind && userchair!=1 && !(opponentsblindbits>>1&1) ? 1 :
+currentbet2>=bblind && userchair!=2 && !(opponentsblindbits>>2&1) ? 2 :
+currentbet3>=bblind && userchair!=3 && !(opponentsblindbits>>3&1) ? 3 :
+currentbet4>=bblind && userchair!=4 && !(opponentsblindbits>>4&1) ? 4 :
+currentbet5>=bblind && userchair!=5 && !(opponentsblindbits>>5&1) ? 5 :
+currentbet6>=bblind && userchair!=6 && !(opponentsblindbits>>6&1) ? 6 :
+currentbet7>=bblind && userchair!=7 && !(opponentsblindbits>>7&1) ? 7 :
+currentbet8>=bblind && userchair!=8 && !(opponentsblindbits>>8&1) ? 8 :
+currentbet9>=bblind && userchair!=9 && !(opponentsblindbits>>9&1) ? 9 :
+10) : 10
+
+##f$Position_postflop_betposition##
+// Returns whether Here is first to act fost flop
+// ealy, middle or last
+// TODO: Check f$
+// Post Flop Betposition
+// First to act=1 Early=2 Middle=3 Last=4
+
+nopponentsplaying==9 ?  (betposition==1 ? 1 :
+                         betposition==2 ? 1 :
+                         betposition==3 ? 1 :
+                         betposition==4 ? 1 :
+                         betposition==5 ? 2 :
+                         betposition==6 ? 2 :
+                         betposition==7 ? 2 :
+                         betposition==8 ? 3 :
+                         betposition==9 ? 3 :
+                         betposition==10 ? 4 :
+                         0 ) :
+nopponentsplaying==8 ?  (betposition==1 ? 1 :
+                         betposition==2 ? 1 :
+                         betposition==3 ? 1 :
+                         betposition==4 ? 2 :
+                         betposition==5 ? 2 :
+                         betposition==6 ? 2 :
+                         betposition==7 ? 3 :
+                         betposition==8 ? 3 :
+                         betposition==9 ? 4 :
+                         0 ) :
+nopponentsplaying==7 ?  (betposition==1 ? 1 :
+                         betposition==2 ? 1 :
+                         betposition==3 ? 1 :
+                         betposition==4 ? 2 :
+                         betposition==5 ? 2 :
+                         betposition==6 ? 2 :
+                         betposition==7 ? 3 :
+                         betposition==8 ? 4 :
+                         0 ) :
+nopponentsplaying==6 ?  (betposition==1 ? 1 :
+                         betposition==2 ? 1 :
+                         betposition==3 ? 1 :
+                         betposition==4 ? 2 :
+                         betposition==5 ? 2 :
+                         betposition==6 ? 3 :
+                         betposition==7 ? 3 :
+                         0 ) :
+nopponentsplaying==5 ?  (betposition==1 ? 1 :
+                         betposition==2 ? 1 :
+                         betposition==3 ? 2 :
+                         betposition==4 ? 2 :
+                         betposition==5 ? 3 :
+                         betposition==6 ? 4 :
+                         0 ) :
+nopponentsplaying==4 ?  (betposition==1 ? 1 :
+                         betposition==2 ? 1 :
+                         betposition==3 ? 2 :
+                         betposition==4 ? 3 :
+                         betposition==5 ? 4 :
+                         0 ) :
+nopponentsplaying==3 ?  (betposition==1 ? 1 :
+                         betposition==2 ? 2 :
+                         betposition==3 ? 3 :
+                         betposition>3 ? 4 :
+                         0 ) :
+nopponentsplaying==2 ?  (betposition==1 ? 1 :
+                         betposition==2 ? 3 :
+                         betposition>2 ? 4 :
+                         0 ) :
+nopponentsplaying==1 ?  (betposition==1 ? 1 :
+                         betposition>1 ? 4 :
+                         0 ) :
+0 
+
+##f$Odds_and_Outs_aa_info##
+/////////////////////////////////////////////////
+// $Odds and Outs Group include every function
+// which hepls to count odds or outs
+// USED: N/A
+// FROM: forum, FooFighter, Gecko NL 6max
+//
+// f$debug for $Odds and Outs
+// debuging is in progress
+// =f$Odds_and_Outs_implied_odds
+// =f$Odds_and_Outs_potodds
+//
+// =nouts
+// =mh_nouts
+// =f$Odds_and_Outs_Outs_Counter_v1.6
+// =f$Odds_and_Outs_Outs_Counter_v1.9
+// =f$Odds_and_Outs_nOuts_by_Gecko
+//
+// P.S aslo you can check for Perl implemintation see
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=6578&hilit=Outs+Counter&start=60
+/////////////////////////////////////////////////
+
+##f$Odds_and_Outs_implied_odds##
+// Determines Hero implied odds
+// DOTO: f$ returns Hero balance if no rais and balance > Vallin balance
+// 		DOTO is done need to be debuged
+call ? ( 
+       raischair==0 && balance>balance0 ? (balance0+pot)/call :
+       raischair==1 && balance>balance1 ? (balance1+pot)/call :
+       raischair==2 && balance>balance2 ? (balance2+pot)/call :
+       raischair==3 && balance>balance3 ? (balance3+pot)/call :
+       raischair==4 && balance>balance4 ? (balance4+pot)/call :
+       raischair==5 && balance>balance5 ? (balance5+pot)/call :
+       raischair==6 && balance>balance6 ? (balance6+pot)/call :
+       raischair==7 && balance>balance7 ? (balance7+pot)/call :
+       raischair==8 && balance>balance8 ? (balance8+pot)/call :
+       raischair==9 && balance>balance9 ? (balance9+pot)/call : (balance-call+pot)/call ) :
+// if noone raised
+	   (f$Bits_Opponents_Truely_Playing>>0&1 && balance>balance0 ? (balance0+pot)/call:
+	    f$Bits_Opponents_Truely_Playing>>1&1 && balance>balance1 ? (balance1+pot)/call:
+	    f$Bits_Opponents_Truely_Playing>>2&1 && balance>balance2 ? (balance2+pot)/call:
+	    f$Bits_Opponents_Truely_Playing>>3&1 && balance>balance3 ? (balance3+pot)/call:
+	    f$Bits_Opponents_Truely_Playing>>4&1 && balance>balance4 ? (balance4+pot)/call:
+	    f$Bits_Opponents_Truely_Playing>>5&1 && balance>balance5 ? (balance5+pot)/call:
+	    f$Bits_Opponents_Truely_Playing>>6&1 && balance>balance6 ? (balance6+pot)/call:
+	    f$Bits_Opponents_Truely_Playing>>7&1 && balance>balance7 ? (balance7+pot)/call:
+	    f$Bits_Opponents_Truely_Playing>>8&1 && balance>balance8 ? (balance8+pot)/call:
+	    f$Bits_Opponents_Truely_Playing>>9&1 && balance>balance9 ? (balance9+pot)/call: balance)
+
+##f$Odds_and_Outs_potodds##
+// Calculates our potodds
+// effectively we calculate the COST OF FOLDING (ie the amount in the ajusted pot)
+// devided by the PRICE OF CALLING
+// DOTO: it seems f$ returns pot if first in - it should be changed
+(balance>call ? call: balance<call ? balance: call)>0 ?
+(pot-((call-(balance>call ? call: balance<call ? balance: call))*(f$BettingAction_Number_Of_Opponents_Truely_Playing)))/
+(balance>call ? call: balance<call ? balance: call) :
+(pot-((call-(balance>call ? call: balance<call ? balance: call))*(f$BettingAction_Number_Of_Opponents_Truely_Playing)))/1 
+
+// Got f$BettingAction_Number_Of_Opponents_Truely_Playing insted of f$DEF_nopponentscalling+1
+
+##f$Odds_and_Outs_Outs_Counter_v1.6##
+//Got from FooFigter
+// Out Counter V.6
+
+br==1 ? nouts :
+br==4 ? 0 :
+
+nouts + // Nouts +/- Discounts and Additions
+
+//Overcards
+
+//****************************************************************************************************
+//First Card
+
+//My 1st pocket card is lower than the highest board card ? -3 outs
+(($$pr0<rankhicommon && ishicard) ||
+
+//My 1st pocket card is higher than the highest board card and board is three suited ? -3 outs
+($$pr0>rankhicommon && nsuitedcommon==3 && ishicard) ||
+
+//My 1st pocket card is higher than the highest board card and board has a possible straight ? -3 outs
+($$pr0>rankhicommon && nstraightfillcommon<=2 && ishicard && nsuitedcommon<3) ||
+
+//My 1st pocket card is higher than the highest board card, and my kicker is less than a J ? -3 outs
+($$pr0>rankhicommon && ($$pr1<11||$$pr0<11) && ishicard)  ? -3 : 0) +
+
+//My 1st pocket card is higher than the highest board card and board is two suited ? -1 out
+($$pr0>rankhicommon && ($$pr1>=11&&$$pr0>=11) && nsuitedcommon==2 && nsuited<4 && ishicard  ? -1 : 0) +
+($$pr0>rankhicommon && ($$pr1>=11&&$$pr0>=11) && nsuitedcommon==2 && nsuited==3 &&
+($$ps0==$$cs0||$$ps0==$$cs1||$$ps0==$$cs2||$$ps0==$$cs3) && ishicard ? 1 : 0)+
+
+//My 1st pocket card is higher than the highest board card and board has two flush draws ? -1 out
+($$pr0>rankhicommon && nsuitedcommon==2 && nstraightfillcommon>2 && (
+$$cs0==$$cs1 && $$cs2==$$cs3 ||
+$$cs0==$$cs2 && $$cs1==$$cs3 ||
+$$cs0==$$cs3 && $$cs1==$$cs2 ) && ishicard  ? -1 : 0)+
+
+//****************************************************************************************************
+//Second Card
+
+//My 2nd pocket card is lower than the highest board card ? -3 outs
+(($$pr1<rankhicommon && ishicard) ||
+
+//My 2nd pocket card is higher than the highest board card and board is three suited ? -3 outs
+($$pr1>rankhicommon && nsuitedcommon==3 && ishicard) ||
+
+//My 2nd pocket card is higher than the highest board card and board has a possible straight ? -3 outs
+($$pr1>rankhicommon && nstraightfillcommon<=2 && ishicard && nsuitedcommon<3 ) ||
+
+//My 2nd pocket card is higher than the highest board card, and my kicker is less than a J ? -3 outs
+($$pr1>rankhicommon && ($$pr1<11||$$pr0<11) && ishicard)  ? -3 : 0) +
+
+//My 2nd pocket card is higher than the highest board card and board is two suited ? -1 out
+($$pr1>rankhicommon && ($$pr1>=11&&$$pr0>=11) && nsuitedcommon==2 && nsuited<4 && ishicard  ? -1 : 0) +
+($$pr1>rankhicommon && ($$pr1>=11&&$$pr0>=11) && nsuitedcommon==2 && nsuited==3 &&
+($$ps1==$$cs0||$$ps1==$$cs1||$$ps1==$$cs2||$$ps1==$$cs3) && ishicard ? 1 : 0)+
+
+//My 2nd pocket card is higher than the highest board card and board has two flush draws ? -1 out
+($$pr1>rankhicommon && nsuitedcommon==2 && nstraightfillcommon>2 && (
+$$cs0==$$cs1 && $$cs2==$$cs3 ||
+$$cs0==$$cs2 && $$cs1==$$cs3 ||
+$$cs0==$$cs3 && $$cs1==$$cs2 ) && ishicard  ? -1 : 0)+
+
+//Straight
+(nstraightfill==1 && nsuited<4 && nsuitedcommon==2 ? -1 : 0)+
+(nstraightfill==1 && nsuited<4 && nsuitedcommon>2 ? -4 : 0) +
+(nstraightfill==1 && nsuited<4  && nsuitedcommon==2 &&
+     (((rankbits & 0b0000000010111010)==0b0000000010111010)   
+||    ((rankbits & 0b0000000101110100)==0b0000000101110100)
+||    ((rankbits & 0b0000001011101000)==0b0000001011101000)
+||    ((rankbits & 0b0000010111010000)==0b0000010111010000)
+||    ((rankbits & 0b0000101110100000)==0b0000101110100000)
+||    ((rankbits & 0b0001011101000000)==0b0001011101000000)
+||    ((rankbits & 0b0010111010000000)==0b0010111010000000)
+||    ((rankbits & 0b0101110100000000)==0b0101110100000000)
+||    ((rankbits>>ranklo)==0b10111101) 
+||    (nstraight==4 && !(rankbits&16386 && rankbits&8196) )) ? -1 : 0)+
+(nstraightfill==1 && nsuited<4 && nstraight==4 && !(rankbits&16386 && rankbits&8196) && nsuitedcommon>2 ? -4 : 0)+
+(nstraightfill==1 && nsuitedcommon>=3 && nstraightflushfill>1 ? -6 : 0)+ 
+(nstraightfill==1 && nsuited<4 && nrankedcommon>1 ? -4 : 0)+
+(nstraightfill==1 && nsuited<4 && nstraight==4 && nrankedcommon>1 && !(rankbits&16386 && rankbits&8196) ? -4 : 0)+
+(nstraightfill==1 && nsuitedcommon==2 && nsuited<4 && 
+($$cs0==$$cs1 && $$cs2==$$cs3 ||
+$$cs0==$$cs2 && $$cs1==$$cs3  ||
+$$cs0==$$cs3 && $$cs1==$$cs2  ) ? -1 : 0)+
+(nstraightfill==1 && (mh_bottomsd || rankhiplayer<ranklocommon && !(rankbits&16386 && rankbits&8196))  ? -4 :0)+
+
+//Flush
+(nsuited==4 && nsuitedcommon==3 && `((~srankbits&0x7ffe)>>srankhiplayer) >1 ? -2 : 0)+
+(nsuited==4 && nsuitedcommon==3 && `((~srankbits&0x7ffe)>>srankhiplayer) >2 ? -2 : 0)+
+(nsuited==4 && nsuitedcommon==3 && `((~srankbits&0x7ffe)>>srankhiplayer) >3 ? -2 : 0)+
+(nsuited==4 && nsuitedcommon==3 && `((~srankbits&0x7ffe)>>srankhiplayer) >4 ? -2 : 0)+
+(nsuited==4 && nsuitedcommon==3 && `((~srankbits&0x7ffe)>>srankhiplayer) >5 ? -1 : 0)+
+(nsuited==4 && nrankedcommon==2 ? -4.5 : 0)+
+(nsuited==4 && (nrankedcommon>=3||pokervalcommon&twopair) ? -9 : 0)+
+
+//Onepair
+(br==2  && !ispair && isonepair ? -6 : 0) +
+(br==3  && !ispair && isonepair ? -9 : 0) +
+(isonepair && !ispair && pokervalcommon<onepair && nsuitedcommon==2 && nsuited==2 ? -1 : 0)+
+(isonepair && nsuitedcommon==2 &&(($$pr0==$$cr0 ||$$pr0==$$cr1 ||$$pr0==$$cr2 ||$$pr0==$$cr3
+)&& $$ps0==tsuitcommon)||(($$pr1==$$cr0 ||$$pr1==$$cr1 ||$$pr1==$$cr2 ||$$pr1==$$cr3)
+&& $$ps1==tsuitcommon)? -1 : 0)+
+
+(isonepair && !ispair && pokervalcommon<onepair && nsuitedcommon>=3 && nsuited==nsuitedcommon ? -5 : 0)+
+(isonepair && !ispair && pokervalcommon<onepair && nstraightfillcommon<=2 ? -4 : 0)+
+(isonepair && !ispair && pokervalcommon<onepair&& nsuitedcommon>=2 && nrankedcommon==2 ? -6 : 0)+
+( isonepair && nsuited<4 && nsuitedcommon==2 && nstraightfill>1 &&
+($$cs0==$$cs1 && $$cs2==$$cs3 ||
+$$cs0==$$cs2 && $$cs1==$$cs3 ||
+$$cs0==$$cs3 && $$cs1==$$cs2 ||
+$$cs1==$$cs2 && $$cs2==$$cs3 ||
+$$cs1==$$cs3 && $$cs2==$$cs0    )  ? -1 : 0)+
+(br==2 && ispair && isonepair ? -9: 0)+
+(br==3 && ispair && isonepair ? -12 : 0)+
+(ispair && isonepair && nstraightfillcommon<=2 && nstraightfill>1 ? -2 : 0)+
+(ispair && isonepair && nsuitedcommon==2  && nsuited==2 ? -1 : 0)+
+(ispair && isonepair && nsuitedcommon==3 ? -2 : 0)+
+
+//Twopair
+(istwopair && nrankedcommon==2 ? -2:0)+
+(istwopair && nrankedcommon==2 &&
+(($$pr0==$$cr0||$$pr0==$$cr1||$$pr0==$$cr2||$$pr0==$$cr3)&&
+($$pr1==$$cr0||$$pr1==$$cr1||$$pr1==$$cr2||$$pr1==$$cr3)) ? -1 : 0)+
+
+//Str Flush
+(pokervalcommon>=onepair && nstraightflush==4 && nstraightflushcommon<4 && nstraightflushfill==1 && ((rankbits&16398) != 16398 && (rankbits&28674) != 28674)  ? 2  : 0)+
+(isflush && nstraightflush==4 && nstraightflushcommon<4 && nstraightflushfill==1 && ((rankbits&16398) != 16398 && (rankbits&28674) != 28674  ? 4 :0)+
+isflush && nstraightflushfill==1 && nstraightflushfillcommon>1 ? 3 : 0)+
+
+//BACKDOOR OUTS 
+(br==2 && `((~srankbits&0x7ffe)>>srankhiplayer)==0 && nsuited==3 && nsuitedcommon<3 && nrankedcommon==1 ? 2: 
+br==2 && `((~srankbits&0x7ffe)>>srankhiplayer)<=2 && nsuited==3 && nsuitedcommon<3 && nrankedcommon==1 ? 1.5 : 0)+ 
+(br==2 && nstraightfill==2 && nstraightfillcommon>2 && (nsuitedcommon==1||(nsuitedcommon==2 && nsuited==4)) && (nrankedcommon==1||(nrankedcommon==2 && isthreeofakind))  ? 1.5: 0)+ 
+0
+
+
+##f$Odds_and_Outs_Outs_Counter_v1.9##
+//Outs Counter V.9b
+// 21 Feb 2009 posted by want2learn in form
+
+br==1 ? nouts :
+br==4 ? 0 :
+
+// This Formula will take the existing symbold "nouts" and fix it show "the total number of unseen single cards that
+// if dealt to the board might put your hand in the lead. to be counted as an out,
+// the card must be able to bump your level and your new level must be higher than the resulting common level"
+
+nouts +
+
+//****************************************************************************************************
+//Overcards
+//****************************************************************************************************
+
+// Here we discount the outs that makes a pair but does not put our hand in the lead
+
+       //**Hi card**//
+
+//My high card is lower than the highest board card ? -3 outs
+((rankhiplayer<rankhicommon && (ishicard || (isonepair && nrankedcommon==2)) ) ||
+
+//My high card is higher than the highest board card and is an ace ? -3 outs
+(rankhiplayer==14 && (ishicard || (isonepair && nrankedcommon==2))) ||
+// i have included this we dont want to hit top pair of aces and lose to 2 pair
+
+//My high card is higher than the highest board card and board is three suited ? -3 outs
+(rankhiplayer>rankhicommon && nsuitedcommon==3 && (ishicard || (isonepair && nrankedcommon==2))) ||
+
+//My high card is higher than the highest board card and board has a possible straight ? -3 outs
+(rankhiplayer>rankhicommon && nstraightfillcommon<=2 && nstraight<4 && (ishicard || (isonepair && nrankedcommon==2))) ||
+// i deleted && nsuitedcommon<3 because it has already been covered and is therefore not neccessary
+
+//My high card is higher than the highest board card, and my kicker is less than a J ? -3 outs
+(rankhiplayer>rankhicommon && rankloplayer<9 && (ishicard || (isonepair && nrankedcommon==2)))  ? -3 : 0) +
+// i have changed ($$pr1<11||$$pr0<11)because it reads more easy
+
+//My high card is higher than the highest board card and board is two suited ? -1 out
+// Discounting 1 out on a flushdraw board unless the first card is of the same suite
+(rankhiplayer>rankhicommon && rankloplayer>10 && nsuitedcommon==2 && nsuited<4 && (ishicard || (isonepair && nrankedcommon==2))  ? -1 : 0) +
+(rankhiplayer>rankhicommon && rankloplayer>10 && nsuitedcommon==2 && nsuited==3 &&
+$$ps0==tsuitcommon && (ishicard || (isonepair && nrankedcommon==2)) ? 1 : 0)+
+// i have changed ($$pr1>=11&&$$pr0>=11) and ($$ps0==$$cs0||$$ps0==$$cs1||$$ps0==$$cs2||$$ps0==$$cs3) for easy reading
+
+//My high card is higher than the highest board card and board has two flush draws ? -1 out
+// Discounting 1 out on the turn when the board is double suited
+(rankhiplayer>rankhicommon && nsuitedcommon==2 && nstraightfillcommon>2 && (
+$$cs0==$$cs1 && $$cs2==$$cs3 ||
+$$cs0==$$cs2 && $$cs1==$$cs3 ||
+$$cs0==$$cs3 && $$cs1==$$cs2 ) && (ishicard || (isonepair && nrankedcommon==2))  ? -1 : 0)+
+
+   //**Low Card**//
+
+//My low card is lower than the highest board card ? -3 outs
+((rankloplayer<rankhicommon && (ishicard || (isonepair && nrankedcommon==2))) ||
+
+//My low card is higher than the highest board card and board is three suited ? -3 outs
+(rankloplayer>rankhicommon && nsuitedcommon==3 && (ishicard || (isonepair && nrankedcommon==2))) ||
+
+//My low card is higher than the highest board card and board has a possible straight ? -3 outs
+(rankloplayer>rankhicommon && nstraightfillcommon<=2 && nstraight<4 && (ishicard || (isonepair && nrankedcommon==2)) ) ? -3 : 0) +
+//i took out && nsuitedcommon<3 it is not neccessary
+
+//My low card is higher than the highest board card, and my kicker is less than a J ? -3 outs
+//($$pr1>rankhicommon && ($$pr1<11||$$pr0<11) && ishicard) 
+// this line becomes unneccessary because we look at high / lowcard
+
+//My low card is higher than the highest board card and board is two suited ? -1 out
+//discounting on a suited board unless we have that suited card
+(rankloplayer>rankhicommon && rankloplayer>10 && nsuitedcommon==2 && nsuited<4 && (ishicard || (isonepair && nrankedcommon==2))  ? -1 : 0) +
+(rankloplayer>rankhicommon && rankloplayer>10 && nsuitedcommon==2 && nsuited==3 &&
+$$ps1==tsuitcommon && (ishicard || (isonepair && nrankedcommon==2)) ? 1 : 0)+
+// changed ($$pr1>=11&&$$pr0>=11) and ($$ps1==$$cs0||$$ps1==$$cs1||$$ps1==$$cs2||$$ps1==$$cs3)
+
+//My low card is higher than the highest board card and board has two flush draws ? -1 out
+(rankloplayer>rankhicommon && nsuitedcommon==2 && nstraightfillcommon>2 && (
+$$cs0==$$cs1 && $$cs2==$$cs3 ||
+$$cs0==$$cs2 && $$cs1==$$cs3 ||
+$$cs0==$$cs3 && $$cs1==$$cs2 ) && (ishicard || (isonepair && nrankedcommon==2))  ? -1 : 0)+
+
+
+//**************************************************************************************************
+//Straight draw
+//**************************************************************************************************
+
+(br==2 && nstraightfill==1 ? (
+                              nstraightfillcommon>2 && (rankhiplayer-rankloplayer)==1 && pcbits<4 ? -8 :
+                              nstraightfillcommon>2 && (rankhiplayer-rankloplayer)== 2 && pcbits<10 ? -6 :
+                              nstraightfillcommon>2 && (rankhiplayer-rankloplayer)== 3 && pcbits<=5 ? -6 :
+                              nsuited<4 && nsuitedcommon==3 && nstraightflushfill>1 ? -6 :
+                              nsuited<4 && nrankedcommon>1 && nsuitedcommon>1 ? -5 :
+                              nsuited<4 && nrankedcommon>1 ? -4 :
+                              (mh_bottomsd || rankhiplayer<ranklocommon && !(rankbits&16386 && rankbits&8196))  ? -4 :
+                              nsuited<4 && nsuitedcommon==2 ? (((rankbits & 0b0000000010111010)==0b0000000010111010)   
+                                                              ||    ((rankbits & 0b0000000101110100)==0b0000000101110100)
+                                                              ||    ((rankbits & 0b0000001011101000)==0b0000001011101000)
+                                                              ||    ((rankbits & 0b0000010111010000)==0b0000010111010000)
+                                                              ||    ((rankbits & 0b0000101110100000)==0b0000101110100000)
+                                                              ||    ((rankbits & 0b0001011101000000)==0b0001011101000000)
+                                                              ||    ((rankbits & 0b0010111010000000)==0b0010111010000000)
+                                                              ||    ((rankbits & 0b0101110100000000)==0b0101110100000000)
+                                                              ||    ((rankbits>>ranklo)==0b10111101) ? -2 :
+                                                              ($$cs0==$$cs1 && $$cs2==$$cs3 || $$cs0==$$cs2 && $$cs1==$$cs3  || $$cs0==$$cs3 && $$cs1==$$cs2  ) ? -2 :
+                                                              -1) : 
+                              0 ): 0)+
+
+//******************************************************************************************************************
+//Flush draw
+//******************************************************************************************************************
+
+// Here we discount outs for making a flush which does not put our hand in the lead
+
+
+//I have discounted when we have a low flush draw inaccordance with the orignal code:
+(nsuited==4 && nsuitedcommon==2 && mh_nsuitedbetter>4 ? -1 : 0)+
+(nsuited==4 && nsuitedcommon==2 && mh_nsuitedbetter>5 ? -1 : 0)+
+(nsuited==4 && nsuitedcommon==2 && mh_nsuitedbetter>6 ? -1 : 0)+
+
+//we will discount 2 outs for every suited card better than ours when we drawing to a flush using 1 hole card
+// i have changed `((~srankbits&0x7ffe)>>srankhiplayer) for easy reading
+(nsuited==4 && nsuitedcommon==3 && mh_nsuitedbetter>1 ? -2 : 0)+
+(nsuited==4 && nsuitedcommon==3 && mh_nsuitedbetter>2 ? -2 : 0)+
+(nsuited==4 && nsuitedcommon==3 && mh_nsuitedbetter>3 ? -2 : 0)+
+(nsuited==4 && nsuitedcommon==3 && mh_nsuitedbetter>4 ? -2 : 0)+
+(nsuited==4 && nsuitedcommon==3 && mh_nsuitedbetter>5 ? -1 : 0)+
+
+// we discount outs when drawing to a flush on a paired board
+// question: why are we using -4.5? dont we think maybe this is to conservative
+// surely there are max 3 outs that make ur flush and villans full
+(nsuited==4 && nrankedcommon==2 ? -3 : 0)+
+
+// we will discount 9 outs on a board which is double paired or presenting trips
+(nsuited==4 && (nrankedcommon>=3||pokervalcommon&twopair) ? -9 : 0)+
+
+// This addision is only good if used with the above discount for low flush draws
+// nett result would be that low flush draw gets discounted unless used with a straight draw
+(nsuited==4 && nstraight==4 ? 1 : 0)+
+
+
+//******************************************************************************************************************
+//Onepair
+//*******************************************************************************************************************
+
+// Here we will discount outs for hitting 2 pair or trips which does not put our hand in the lead
+
+  //**One Pair**//
+
+//Discounting the outs that pair the board but does not pair our hole card
+(br==2  && !ispair && isonepair && nrankedcommon==1 ? -6 : 0) +
+(br==3  && !ispair && isonepair && nrankedcommon==1 ? -9 : 0) +
+// i added nrankedcommon==1 and i have added the nrankedcommon==2 with the overcards code
+
+//Discounting on suited board where we dont have the suit
+(isonepair && !ispair && nrankedcommon==1 && nsuitedcommon==2 && nsuited==2 ? -1 : 0)+
+
+//Discounting outs to two pair or trips on suited or straighting board
+(isonepair && !ispair && nrankedcommon==1 && nsuitedcommon>=3 && nsuited==nsuitedcommon ? -5 : 0)+
+(isonepair && !ispair && nrankedcommon==1 && nstraightfillcommon<=2 ? -4 : 0)+
+// changed pokervalcommon<onepair for easy reading
+
+
+
+// how can we have 1 pair on a paired board AND one of our hole cards have paired the board????
+//(isonepair && nsuitedcommon==2 &&(($$pr0==$$cr0 ||$$pr0==$$cr1 ||$$pr0==$$cr2 ||$$pr0==$$cr3
+//)&& $$ps0==tsuitcommon)||(($$pr1==$$cr0 ||$$pr1==$$cr1 ||$$pr1==$$cr2 ||$$pr1==$$cr3)
+//&& $$ps1==tsuitcommon)? -1 : 0)+
+
+// Adding one out for straight draw i truelly cant see why
+//(isonepair && !ispair && nstraight==4 && nstraight>nstraightcommon && nsuitedcommon<=2 ? 1 : 0)+
+
+//Question when/ how is pokervalcommon<onepair && nrankedcommon==2 possible?
+//What are we trying 2 code here??
+//(isonepair && !ispair && pokervalcommon<onepair && nsuitedcommon>=2 && nrankedcommon==2 ? -6 : 0)+
+
+
+//Discounting outs to 2 pair or trips on a double suited board
+// Question why is this -1 ? (we have 5 outs to 2 pair or trips but: of the 2 pair that makes our trips 1 card
+// completes a flush and of the 3 cards that makes our 2 pair 2 cards completes a flush)
+(isonepair && nsuited<4 && nsuitedcommon==2 && nstraightfill>1 &&
+($$cs0==$$cs1 && $$cs2==$$cs3 ||
+$$cs0==$$cs2 && $$cs1==$$cs3 ||
+$$cs0==$$cs3 && $$cs1==$$cs2 ||
+$$cs1==$$cs2 && $$cs2==$$cs3 ||
+$$cs1==$$cs3 && $$cs2==$$cs0    )  ? -3 : 0)+
+// I changed this from -1
+
+//**Pocket pair**//
+
+//Discounting our outs to two pair  with a pocket pair
+(br==2 && ispair && isonepair ? -9: 0)+
+(br==3 && ispair && isonepair ? -12 : 0)+
+
+//Discounting our outs to trips (pocket pair) on paired or straighting board.
+(ispair && isonepair && nstraightfillcommon<=2 && nstraightfill>1 ? -2 : 0)+
+(ispair && isonepair && nsuitedcommon==2  && nsuited==2 ? -1 : 0)+
+(ispair && isonepair && nsuitedcommon==3 ? -2 : 0)+
+
+
+//****************************************************************************************************************
+//Twopair
+//****************************************************************************************************************
+// Here we will deal with our outs to make a fullhouse and discount the outs that will make the small boat
+
+//the board is paired and we have two pair
+// we discount the 2 outs that makes the board trips only if we have paired the card below the common pair
+(istwopair && nrankedcommon==2 && trankcommon>rankhiplayer ? -2:0)+
+
+// This code is only relavent to the turn when we have a board that is paired and
+// our holecards have paired the remaining 2 unpaired cards (effectively giving us 3 pairs)
+// we discount 2 outs which will give us a fullhouse but will give villan bigger fullhouse
+(istwopair && nrankedcommon==2 && trankcommon>rankhiplayer &&
+(($$pr0==$$cr0||$$pr0==$$cr1||$$pr0==$$cr2||$$pr0==$$cr3) &&
+($$pr1==$$cr0||$$pr1==$$cr1||$$pr1==$$cr2||$$pr1==$$cr3)) ? -2 : 0)+
+// i have included trankcommon>rankhiplayer because we make the bigger full if boards make trips lower than our pair
+// i have change the discount to 2
+
+//**************************************************************************************************************************
+//Str Flush
+//**************************************************************************************************************************
+// Here we want to re apply the outs we have discounted above for our flush or straight draw because we have a straightflush draw
+(pokervalcommon>=onepair && nstraightflush==4 && nstraightflushcommon<4 && nstraightflushfill==1 && ((rankbits&16398) != 16398 && (rankbits&28674) != 28674)  ? 2  : 0)+
+(pokervalcommon>=onepair && nstraightflush==4 && nstraightflushcommon<4 && nstraightflushfill==1 && mh_nsuitedbetter>5 && ((rankbits&16398) != 16398 && (rankbits&28674) != 28674)  ? 1  : 0)+
+(pokervalcommon>=onepair && nstraightflush==4 && nstraightflushcommon<4 && nstraightflushfill==1 && mh_nsuitedbetter>6 && ((rankbits&16398) != 16398 && (rankbits&28674) != 28674)  ? 1  : 0)+
+(isflush && nstraightflush==4 && nstraightflushcommon<4 && nstraightflushfill==1 && ((rankbits&16398) != 16398 && (rankbits&28674) != 28674  ? 4 :0)+
+isflush && nstraightflushfill==1 && nstraightflushfillcommon>1 ? 3 : 0)+
+// i adusted this to re apply for the weaker flush
+
+//******************************************************************************************************************************
+//BACKDOOR OUTS
+//******************************************************************************************************************************
+
+// Here we will add our chance of makking runner runner straight or runner runner flush
+(br==2 && `((~srankbits&0x7ffe)>>srankhiplayer)==0 && nsuited==3 && nsuitedcommon<3 && nrankedcommon==1 ? 1.5:
+br==2 && `((~srankbits&0x7ffe)>>srankhiplayer)<=2 && nsuited==3 && nsuitedcommon<3 && nrankedcommon==1 ? 1 : 0)+
+(br==2 && nstraightfill==2 && nstraightfillcommon>2 && (nsuitedcommon==1||(nsuitedcommon==2 && nsuited==4)) && (nrankedcommon==1||(nrankedcommon==2 && isthreeofakind))  ? 1.5: 0)+
+// i have gone more conservative with the back door flush draw based on the stats shown .
+0
+
+##f$Odds_and_Outs_nOuts_by_Gecko##
+//This is indeed a very nicely structured outscounter by Gecko.
+//May I give some hints for improvement:
+//    it seems to me, that outs can be counted by multiple times, if you have multiple draws (maybe doesn't matter that much, as you will play it anyway)
+//    I didin't find any code for doublegutshots.
+//    maybe some outs (like for straights) should be discounted depending on what cards you make and what hand you make.
+//But old, wise Gecko left that as an exercise to the newbie.
+//
+// Main function
+[ f$Odds_and_Outs_outs_boardpairlo    +
+  f$Odds_and_Outs_outs_boardpairhi    +
+  f$Odds_and_Outs_outs_flush          +
+  f$Odds_and_Outs_outs_hicard         +
+  f$Odds_and_Outs_outs_locard         +
+  f$Odds_and_Outs_outs_pair           +
+  f$Odds_and_Outs_outs_straight       +
+  f$Odds_and_Outs_outs_trips          +
+  f$Odds_and_Outs_outs_twopair         ]
+
+##f$Odds_and_Outs_cardshigher_lowcard##
+ranklocommon>rankhiplayer ? ncommoncardspresent :
+
+(br==2) ? ($$cr0>rankloplayer)+
+          ($$cr1>rankloplayer)+
+          ($$cr2>rankloplayer) :
+
+(br==3) ? ($$cr0>rankloplayer)+
+          ($$cr1>rankloplayer)+
+          ($$cr2>rankloplayer)+
+          ($$cr3>rankloplayer) :
+
+(br==4) ? ($$cr0>rankloplayer)+
+          ($$cr1>rankloplayer)+
+          ($$cr2>rankloplayer)+
+          ($$cr3>rankloplayer)+
+          ($$cr4>rankloplayer) : 0
+
+##f$Odds_and_Outs_cardshigher_highcard##
+ranklocommon>rankhiplayer ? ncommoncardspresent :
+
+(br==2) ? ($$cr0>rankhiplayer)+
+          ($$cr1>rankhiplayer)+
+          ($$cr2>rankhiplayer) :
+
+(br==3) ? ($$cr0>rankhiplayer)+
+          ($$cr1>rankhiplayer)+
+          ($$cr2>rankhiplayer)+
+          ($$cr3>rankhiplayer) :
+
+(br==4) ? ($$cr0>rankhiplayer)+
+          ($$cr1>rankhiplayer)+
+          ($$cr2>rankhiplayer)+
+          ($$cr3>rankhiplayer)+
+          ($$cr4>rankhiplayer) : 0
+
+##f$Odds_and_Outs_cardshigher_thenpair##
+ranklocommon>rankhiplayer ? ncommoncardspresent :
+
+(br==2) ? ($$cr0>trank)+
+          ($$cr1>trank)+
+          ($$cr2>trank) :
+
+(br==3) ? ($$cr0>trank)+
+          ($$cr1>trank)+
+          ($$cr2>trank)+
+          ($$cr3>trank) :
+
+(br==4) ? ($$cr0>trank)+
+          ($$cr1>trank)+
+          ($$cr2>trank)+
+          ($$cr3>trank)+
+          ($$cr4>trank) : 0
+
+##f$Odds_and_Outs_outs_flush##
+nsuitedcommon==2 && nsuited==4 && nrankedcommon<3                                                       ? 9 :
+nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==3 && nrankedcommon<3           ? 9 :
+nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)<=1 && nsuitedcommon==3 && nrankedcommon<3           ? 7 :
+nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)<=2 && nsuitedcommon==3 && nrankedcommon<3           ? 6 :
+nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)<=5 && nsuitedcommon==3 && nrankedcommon<3           ? 5 :
+br==2 && nsuited==3 && nsuitedcommon==2 && nrankedcommon==1 && `((~srankbits&0x7fff)>>srankhiplayer)<=2 ? 1 :
+br==2 && nsuited==3 && nsuitedcommon==1 && nrankedcommon==1                                             ? 1 : 0
+
+##f$Odds_and_Outs_outs_hicard##
+ncallbets<=1 && rankhiplayer>4 ? {
+
+    nrankedcommon==1 && f$Odds_and_Outs_cardshigher_highcard==0 && f$Odds_and_Outs_board_dry        && !istwopair && !isonepair                                   ? 3.0 :
+    nrankedcommon==1 && f$Odds_and_Outs_cardshigher_highcard==0 && !f$Odds_and_Outs_board_dry       && !istwopair && !isonepair                                   ? 2.5 :
+    nrankedcommon==1 && f$Odds_and_Outs_cardshigher_highcard==1 && f$Odds_and_Outs_board_dry        && !istwopair && !isonepair && nbetsround1<3 && nbetsround2<3 ? 2.5 :
+    nrankedcommon==1 && f$Odds_and_Outs_cardshigher_highcard==1 && !f$Odds_and_Outs_board_dry       && !istwopair && !isonepair && nbetsround1<3 && nbetsround2<3 ? 1.5 : 0 } :
+
+ncallbets>1 && rankhiplayer>6 && nrankedcommon==1 && rankhiplayer>rankhicommon && f$Odds_and_Outs_board_dry && !istwopair && !isonepair ? 3 :
+
+0
+
+##f$Odds_and_Outs_outs_locard##
+ncallbets<=1 && rankloplayer>4 ? {
+
+    nrankedcommon==1 && f$Odds_and_Outs_cardshigher_lowcard==0 && f$Odds_and_Outs_board_dry  && !istwopair && !isonepair                                   ? 3.0 :
+    nrankedcommon==1 && f$Odds_and_Outs_cardshigher_lowcard==0 && !f$Odds_and_Outs_board_dry && !istwopair && !isonepair                                   ? 2.5 :
+    nrankedcommon==1 && f$Odds_and_Outs_cardshigher_lowcard==1 && f$Odds_and_Outs_board_dry  && !istwopair && !isonepair && nbetsround1<3 && nbetsround2<3 ? 2.5 :
+    nrankedcommon==1 && f$Odds_and_Outs_cardshigher_lowcard==1 && !f$Odds_and_Outs_board_dry && !istwopair && !isonepair && nbetsround1<3 && nbetsround2<3 ? 1.5 : 0 } :
+
+ncallbets>1 && rankloplayer>6 && nrankedcommon==1 && rankloplayer>rankhicommon && f$Odds_and_Outs_board_dry && !istwopair && !isonepair ? 3 :
+
+0
+
+##f$Odds_and_Outs_outs_pair##
+isonepair && nrankedcommon==1 && f$Odds_and_Outs_board_nottoscary &&  ispair                 ? 2 :
+ncallbets<=1 && isonepair && nrankedcommon==1 && f$Odds_and_Outs_board_nottoscary && !ispair ? 5 :
+ncallbets>1 && isonepair && nrankedcommon==1 && f$Odds_and_Outs_board_dry && !ispair         ? 5 : 0
+
+##f$Odds_and_Outs_outs_straight##
+// Adjusted by TheHighFish
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=10515&hilit=Outs+Counter
+nstraightcommon<4 && nstraight==4 && nsuitedcommon<3 && nrankedcommon<3 && !f$Odds_and_Outs_wheeldraw    ? 8.0 :
+nstraightcommon<4 && nstraight==4 && nsuitedcommon==3 && nrankedcommon<3 && !f$Odds_and_Outs_wheeldraw   ? 6.0 :
+(rankbits>>ranklo)==0b1011101 && `rankbits==5 && !f$Odds_and_Outs_wheeldraw && nsuitedcommon<3           ? 8.0 :
+(rankbits>>ranklo)==0b1011101 && `rankbits==5 && !f$Odds_and_Outs_wheeldraw && nsuitedcommon==3          ? 6.0 :
+nstraightfill==1 && nstraightcommon<4 && nsuitedcommon<3 && nrankedcommon<3                ? 4.0 :
+nstraightfill==2 && nsuitedcommon<3 && nrankedcommon<3 && nstraightcommon<3 && br==2       ? 1.0 : 0
+
+##f$Odds_and_Outs_outs_trips##
+br==2 && isthreeofakind && nrankedcommon<3 ? 7  :
+br==3 && isthreeofakind && nrankedcommon<3 ? 10 : 0
+
+##f$Odds_and_Outs_outs_twopair##
+istwopair && nrankedcommon==1 && !f$Odds_and_Outs_twopair && f$Odds_and_Outs_board_nottoscary && !f$Odds_and_Outs_outs_hicard && !f$Odds_and_Outs_outs_locard                     ? 4 :
+ispair && istwopair && nrankedcommon==2 && !f$Odds_and_Outs_twopair && !f$Odds_and_Outs_outs_boardpairhi && !f$Odds_and_Outs_outs_boardpairlo && f$Odds_and_Outs_board_nottoscary ? 5 : 0
+
+##f$Odds_and_Outs_outs_boardpairlo##
+[ nrankedcommon==2 && rankloplayer>5 && !f$Odds_and_Outs_twopair && !istwopair && !f$Odds_and_Outs_outs_trips ] ? {
+
+    [ br==2 ] ? {
+
+        [ rankloplayer>rankhicommon && ncallbets> 1 ] ? 3 :
+        [ rankloplayer>ranklocommon && ncallbets<=1 ] ? 2 : 0 } :
+
+    [ br==3 && f$Odds_and_Outs_board_dry ] ? {
+
+        [ rankloplayer>rankhicommon && f$Odds_and_Outs_board_dry  ] ? 2 :
+        [ rankloplayer>ranklocommon && ncallbets<=1 ] ? 2 : 0 } : 0 } :
+
+0
+
+##f$Odds_and_Outs_outs_boardpairhi##
+[ nrankedcommon==2 && rankhiplayer>5 && !f$Odds_and_Outs_twopair && !istwopair && !f$Odds_and_Outs_outs_trips ] ? {
+
+    [ br==2 ] ? {
+
+        [ rankhiplayer>rankhicommon && ncallbets> 1 ] ? 3 :
+        [ rankhiplayer>ranklocommon && ncallbets<=1 ] ? 2 : 0 } :
+
+    [ br==3 && f$Odds_and_Outs_board_dry ] ? {
+
+        [ rankhiplayer>rankhicommon && f$Odds_and_Outs_board_dry  ] ? 2 :
+        [ rankhiplayer>ranklocommon && ncallbets<=1 ] ? 2 : 0 } : 0 } :
+
+0
+
+##f$Odds_and_Outs_board_dry##
+nsuitedcommon<3 && nstraightcommon<3 && nstraightfillcommon>1
+
+##f$Odds_and_Outs_board_nottoscary##
+nsuitedcommon<4 && nstraightcommon<4 && nstraightfillcommon>1
+
+##f$Odds_and_Outs_wheeldraw##
+(rankbits>>9==0b111100)                                 //check AKQJ
+|| (rankbits & 0b0000000000011110)==0b0000000000011110        //check 432A
+
+##f$Odds_and_Outs_twopair##
+(pokervalcommon & twopair)
+
+
+
+
+
+
+
+##f$MH_STR_aa_info##
+/////////////////////////////////////////////////
+// $MH_STR GROUP
+// Used to dedermine Hero hand strengh
+// USED: N/A
+// From: Winngy
+// TODO: 	1. add MH_STR_flush_draw function
+//			2. rewrite MH_STR_draw f$
+//
+// f$debug for $MH_STR
+// debugging is in progress
+// =f$MH_STR_straightflush
+// =f$MH_STR_quads
+// =f$MH_STR_fullhouse
+// =f$MH_STR_flush
+// =f$MH_STR_straight
+// =f$MH_STR_trips
+// =f$MH_STR_twopair
+// =f$MH_STR_onepair
+// =f$MH_STR_hicard
+// =f$MH_STR_draw
+/////////////////////////////////////////////////
+##f$MH_STR_straightflush##
+isstraightflush || isroyalflush ?
+
+// Hand strength evaluator - returns a value from 1-5, 5 representing the strongest hand
+
+isroyalflush && !(pokervalcommon&royalflush)                         ? 5 : // Nuts
+isstraightflush && nhandshi==0 && !(pokervalcommon&straightflush)    ? 5 : // Nuts 
+isstraightflush && !(pokervalcommon&straightflush)                   ? 3 : // I may not have the highest, board does not have a str8flush
+isstraightflush && (pokervalcommon&straightflush)                    ? 2 : // I may not have the highest, board does have a str8flush
+isroyalflush && (pokervalcommon&royalflush)                          ? 1 : // Chop pot
+0
+
+: 0
+
+##f$MH_STR_quads##
+isfourofakind ?
+
+isfourofakind && nhandshi==0 && !(pokervalcommon&fourofakind)        ? 5 : // Nuts
+isfourofakind && nhandshi==0 && (pokervalcommon&fourofakind)         ? 5 : // Nuts
+isfourofakind && !(pokervalcommon&fourofakind)                       ? 3 : // I may not have the highest, board does not have quads
+isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Board has quads, I don't have best kicker
+0
+
+: 0
+
+##f$MH_STR_fullhouse##
+isfullhouse ? 
+
+((0
+// Board paired, I have pocket pair and top side full house, pocket pair is higher than non-participating board cards  
+// e.g. QQ/QTT53
+|| [ isfullhouse && ispair && nrankedcommon==2 && !(pokervalcommon&twopair)
+  && ((pokerval>>8)&15)>(pokerval&15) && (pcbits&0b11100) && trank==((pokervalcommon>>8)&0xf) ]
+// Board paired, I have pocket pair and top side full house, pocket pair is lower than non-participating board cards  
+// e.g. QQ/QTTA3
+|| [ isfullhouse && ispair && nrankedcommon==2 && !(pokervalcommon&twopair)
+  && ((pokerval>>8)&15)>(pokerval&15) && (pcbits&0b11100) && trank<((pokervalcommon>>8)&0xf) ]
+// Board paired, I have pocket pair and bottom side full house, pocket pair is higher than non-participating board cards
+// e.g. QQ/QKKT6
+|| [ isfullhouse && ispair && nrankedcommon==2 && !(pokervalcommon&twopair)
+  && ((pokerval>>8)&15)<(pokerval&15) && (pcbits&0b11100) && trank==((pokervalcommon>>8)&0xf) ]
+// Board paired, I have pocket pair and bottom side full house, pocket pair is lower than non-participating board cards
+// e.g. QQ/QKKA6
+|| [ isfullhouse && ispair && nrankedcommon==2 && !(pokervalcommon&twopair)
+  && ((pokerval>>8)&15)<(pokerval&15) && (pcbits&0b11100) && trank<((pokervalcommon>>8)&0xf) ]
+) ? 5 :
+
+(0
+// Board paired, I don't have pocket pair, I have top side full house, pair is higher than non-participating board cards
+// e.g. QJ/QQJ53
+|| [ isfullhouse && !ispair && nrankedcommon==2 && !(pokervalcommon&twopair)
+  && ((pokerval>>8)&15)>(pokerval&15) && (pokerval&0xf)==((pokervalcommon>>8)&0xf) ]
+// Board paired, I don't have pocket pair, I have top side full house, pair is lower than non-participating board cards  
+// e.g. QJ/QQJA3
+|| [ isfullhouse && !ispair && nrankedcommon==2 && !(pokervalcommon&twopair)
+  && ((pokerval>>8)&15)>(pokerval&15) && (pokerval&0xf)<((pokervalcommon>>8)&0xf) ]
+// Board paired, I don't have pocket pair, I have bottom side full house, pair is higher than non-participating board cards
+// e.g. QJ/QJJ53
+|| [ isfullhouse && !ispair && nrankedcommon==2 && !(pokervalcommon&twopair)
+  && ((pokerval>>8)&15)<(pokerval&15) && (pokerval&0xf)==((pokervalcommon>>8)&0xf) ]
+// Board paired, I don't have pocket pair, I have bottom side full house, pair is lower than non-participating board cards
+// e.g. QJ/QJJ53
+|| [ isfullhouse && !ispair && nrankedcommon==2 && !(pokervalcommon&twopair)
+  && ((pokerval>>8)&15)<(pokerval&15) && (pokerval&0xf)<((pokervalcommon>>8)&0xf) ] 
+// Board has two pair, I have top trips 
+// e.g. QT/QQJJ8 
+|| [ isfullhouse && (pokervalcommon&twopair) && 
+  ( ((pokervalcommon>>16)&0x0f)==$$pr0 || ((pokervalcommon>>16)&0x0f)==$$pr1 ) ]
+) ? 4 :
+
+(0
+) ? 3 :
+
+(0
+// Board trips, I have pocket pair higher than non-participating board cards
+// e.g. QQ/JJJ92
+|| [ isfullhouse && ispair && nrankedcommon==3 && (pcbits&0b00011) && $$pr0>((pokervalcommon>>4)&0xf) ]
+// Board trips, only one of my hole cards participates, the pair rank is higher than non-participating board cards
+// e.g. QT/999T8
+|| [ isfullhouse && nrankedcommon==3 && (`(pcbits&0b00011))==1 && (pokerval&0xf)==((pokervalcommon>>4)&0xf) ]
+) ? 2 :
+
+(0
+// Board trips, I have pocket pair lower than non-participating board cards
+// e.g. QQ/JJJK2
+|| [ isfullhouse && ispair && nrankedcommon==3 && (pcbits&0b00011) && $$pr0<((pokervalcommon>>4)&0xf) ]
+// Board trips, only one of my hole cards participates, the pair rank is lower than non-participating board cards
+// e.g. QT/999TK
+|| [ isfullhouse && nrankedcommon==3 && (`(pcbits&0b00011))==1 && (pokerval&0xf)<((pokervalcommon>>4)&0xf) ]
+// Board has full house
+|| [ isfullhouse && (pokervalcommon&fullhouse) ]
+) ? 1 : 0 )
+
+: 0
+
+##f$MH_STR_flush##
+isflush ?
+
+// Big raise
+((
+0
+|| [ ishiflush && (!(pokervalcommon&flush) || pokerval>pokervalcommon) && nrankedcommon==1 
+     && nstraightflushfillcommon>=3 ]  // nuts
+) ? 5 :
+
+// Medium raise
+(
+0
+|| [ isflush && `((~srankbits&0x7fff)>>srankhiplayer)<=1 && nrankedcommon==1 && nsuitedcommon<=4 ] // one card can beat my flush
+|| [ ishiflush && (!(pokervalcommon&flush) || pokerval>pokervalcommon) && nrankedcommon<=2 
+     && nstraightflushfillcommon>=2 ]
+) ? 4 :
+
+// Small raise
+(
+0
+|| [ isflush && `((~srankbits&0x7fff)>>srankhiplayer)<=2 && nrankedcommon==1 && nsuitedcommon<=4 ] // two cards can beat my flush
+) ? 3 :
+
+// Call
+(
+0
+|| [ isflush && `((~srankbits&0x7fff)>>srankhiplayer)>=3 && nrankedcommon==1 && nsuitedcommon<=4 ] // three or more cards can beat my flush
+|| [ isflush && `((~srankbits&0x7fff)>>srankhiplayer)<=2 && nrankedcommon==2 && nsuitedcommon<=4 ] // two or less cards can beat my flush, board paired
+) ? 2 :
+
+// Don't call these
+(
+0
+|| [ isflush && `((~srankbits&0x7fff)>>srankhiplayer)>=4 && nsuitedcommon<=4 ] // four or more cards can beat my flush
+|| [ isflush && nrankedcommon>=3 ] // board has trips or more
+|| [ isflush && pokerval<pokervalcommon && (pokervalcommon&flush) ] // board has flush, my cards don't help
+) ? 1 :
+0)
+
+// FlushDiscount
+- ( 
+0
++ (pokervalcommon&twopair?2:0)
+)
+
+: 0
+
+##f$MH_STR_straight##
+isstraight ?
+
+({0
+//Board 3 to a straight, cards in rank 1 and rank 2 (high end)
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>16)&0xf))&&($$pr1==((pokerval>>12)&0xf))) || (($$pr1==((pokerval>>16)&0xf))&&($$pr0==((pokerval>>12)&0xf))))]
+//Board 3 to a straight, cards in rank 1 and rank 3
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>16)&0xf))&&($$pr1==((pokerval>>8)&0xf))) || (($$pr1==((pokerval>>16)&0xf))&&($$pr0==((pokerval>>8)&0xf))))]
+//Board 3 to a straight, cards in rank 1 and rank 4
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>16)&0xf))&&($$pr1==((pokerval>>4)&0xf))) || (($$pr1==((pokerval>>16)&0xf))&&($$pr0==((pokerval>>4)&0xf))))]
+//Board 4 to a straight, card used in rank 1, nut straight with an ace
+|| [ isstraight && nstraightfillcommon==1 && ((($$pr0==((pokerval>>16)&0xf))&&($$pr0==14)) || (($$pr1==((pokerval>>16)&0xf))&&($$pr1==14))) ]
+//Board 4 to a straight, card used in rank 2, nut straight with a king
+|| [ isstraight && nstraightfillcommon==1 && ((($$pr0==((pokerval>>12)&0xf))&&($$pr0==13)) || (($$pr1==((pokerval>>12)&0xf))&&($$pr1==13))) ]
+//Board 4 to a straight, card used in rank 3, nut straight with a queen
+|| [ isstraight && nstraightfillcommon==1 && ((($$pr0==((pokerval>>8)&0xf))&&($$pr0==12)) || (($$pr1==((pokerval>>8)&0xf))&&($$pr1==12))) ]
+//Board 4 to a straight, card used in rank 4, nut straight with a jack
+|| [ isstraight && nstraightfillcommon==1 && ((($$pr0==((pokerval>>4)&0xf))&&($$pr0==11)) || (($$pr1==((pokerval>>4)&0xf))&&($$pr1==11))) ]
+//Board 4 to a straight, card used in rank 5, nut straight with a ten
+|| [ isstraight && nstraightfillcommon==1 && ((($$pr0==((pokerval>>0)&0xf))&&($$pr0==10)) || (($$pr1==((pokerval>>0)&0xf))&&($$pr1==10))) ]
+//Board 3 to a straight, nut straights
+|| [ isstraight && nstraightfillcommon==2 && rankloplayer>=10 ]
+} ? 5 :
+
+{0
+//Board 3 to a straight, cards in rank 1 and rank 5
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>16)&0xf))&&($$pr1==((pokerval>>0)&0xf))) || (($$pr1==((pokerval>>16)&0xf))&&($$pr0==((pokerval>>0)&0xf))))]
+//Board 3 to a straight, cards in rank 2 and rank 3
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>12)&0xf))&&($$pr1==((pokerval>>8)&0xf))) || (($$pr1==((pokerval>>12)&0xf))&&($$pr0==((pokerval>>4)&0xf))))]
+//Board 3 to a straight, cards in rank 2 and rank 4
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>12)&0xf))&&($$pr1==((pokerval>>4)&0xf))) || (($$pr1==((pokerval>>12)&0xf))&&($$pr0==((pokerval>>4)&0xf))))]
+} ? 4 :
+
+{0
+//Board 3 to a straight, cards in rank 2 and rank 5
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>12)&0xf))&&($$pr1==((pokerval>>0)&0xf))) || (($$pr1==((pokerval>>12)&0xf))&&($$pr0==((pokerval>>0)&0xf))))]
+//Board 3 to a straight, cards in rank 3 and rank 4
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>8)&0xf))&&($$pr1==((pokerval>>4)&0xf))) || (($$pr1==((pokerval>>8)&0xf))&&($$pr0==((pokerval>>4)&0xf))))]
+//Board 3 to a straight, cards in rank 3 and rank 5
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>8)&0xf))&&($$pr1==((pokerval>>0)&0xf))) || (($$pr1==((pokerval>>8)&0xf))&&($$pr0==((pokerval>>0)&0xf))))]
+//Board 3 to a straight, cards in rank 4 and rank 5 (idiot end)
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>4)&0xf))&&($$pr1==((pokerval>>0)&0xf))) || (($$pr1==((pokerval>>4)&0xf))&&($$pr0==((pokerval>>0)&0xf))))]
+//Board 4 to a straight, card used in rank 1
+|| [ isstraight && nstraightfillcommon==1 && (($$pr0==((pokerval>>16)&0xf)) || ($$pr1==((pokerval>>16)&0xf))) ]
+//Board 4 to a straight, card used in rank 2
+|| [ isstraight && nstraightfillcommon==1 && (($$pr0==((pokerval>>12)&0xf)) || ($$pr1==((pokerval>>12)&0xf))) ]
+} ? 3 :
+
+{0
+//Board 4 to a straight, card used in rank 3
+|| [ isstraight && nstraightfillcommon==1 && (($$pr0==((pokerval>>8)&0xf)) || ($$pr1==((pokerval>>8)&0xf))) ]
+//Board 4 to a straight, card used in rank 4
+|| [ isstraight && nstraightfillcommon==1 && (($$pr0==((pokerval>>4)&0xf)) || ($$pr1==((pokerval>>4)&0xf))) ]
+} ? 2 :
+
+{0
+//Board 4 to a straight, card used in rank 5
+|| [ isstraight && nstraightfillcommon==1 && (($$pr0==((pokerval>>0)&0xf)) || ($$pr1==((pokerval>>0)&0xf))) ]
+//Board has straight
+|| [ isstraight && nstraightfillcommon==0 ]
+} ? 1 : 0)
+
+// StraightDiscount
+- ( 
+0
++(nsuitedcommon>=3)*2 
++(nsuitedcommon>=4) 
++(nrankedcommon>=2) 
++(nrankedcommon>=3) 
++(pokervalcommon&twopair?2:0)
+// Negate flush discount if we have a good flush draw 
+- ( nsuitedcommon==3 && nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)<=2 )
+)
+
+: 0
+
+##f$MH_STR_trips##
+isthreeofakind ? 
+
+({0
+//Board has No Pair and you have top set
+|| [ nrankedcommon==1 && ispair && isthreeofakind && rankhiplayer==rankhicommon]
+
+} ? 5 :
+
+{0
+//Board has No Pair and you have middle set
+|| [ nrankedcommon==1 && ispair && isthreeofakind && rankhiplayer<rankhicommon && rankhiplayer>ranklocommon ] 
+ 
+//Board has Pair and you have Trips w/ good kicker (used as 4th ranked card)
+|| [ nrankedcommon==2 && isthreeofakind && ((trank==$$pr0 && $$pr1==((pokerval>>4)&0xf))||(trank==$$pr1 && $$pr0==((pokerval>>4)&0xf))) ] 
+} ? 4 :
+
+{0
+//Board has Pair and you have Trips w/ moderate kicker (used as 5th ranked card)
+|| [ nrankedcommon==2 && isthreeofakind && ((trank==$$pr0 && $$pr1==((pokerval>>0)&0xf))||(trank==$$pr1 && $$pr0==((pokerval>>0)&0xf))) ] 
+
+//Board has No Pair and you have bottom set
+|| [ nrankedcommon==1 && ispair && isthreeofakind && rankhiplayer==ranklocommon ] 
+//Board not paired catch all
+|| [ isthreeofakind && nrankedcommon==1 ]
+} ? 3 :
+
+{0
+//Board has Pair and you have Trips w/ poor kicker (not used)
+|| [ nrankedcommon==2 && isthreeofakind && ((trank==$$pr0 && $$pr1<((pokerval>>0)&0xf))||(trank==$$pr1 && $$pr0<((pokerval>>0)&0xf))) ] 
+//Board has 3OAK good kickers
+|| [ isthreeofakind && nrankedcommon==3 && rankhiplayer>=13 && rankloplayer>=10 ]
+//Board has pair catch all
+|| [ isthreeofakind && nrankedcommon==2 ]
+} ? 2 :
+
+{0
+//Board has 3OAK catch all
+|| [ isthreeofakind && nrankedcommon==3 ]
+} ? 1 : 0)
+
+// TripsDiscount
+- (
+0
++(nsuitedcommon>=3)*2
++(nsuitedcommon>=4)
++(!//NO EASY STRAIGHT DRAW
+(nstraightcommon<=2 && nstraightfillcommon>=3) 
+|| (nbetsround1>=2 
+    && (     (nstraightfillcommon==1 && nstraightcommon==4 && (`(rankbitscommon&0x007f))==4)   // 6543 
+          || (nstraightfillcommon==1 && nstraightcommon==3 && (`(rankbitscommon&0x007c))==4)   // 6542, 6432
+       ) 
+   ))*2
++(nstraightfillcommon<=1 || nstraightcommon>=4)
+)
+
+: 0
+
+##f$MH_STR_twopair##
+istwopair ?
+
+({0
+ //Board has No Pair and you have Top two pairs
+|| [ nrankedcommon==1 && istwopair && (pokerval&15)<((pokerval>>4)&15) ] 
+} ? 5 :
+
+{0
+//Board has No Pair and you have Top and bottom pair
+|| [ nrankedcommon==1 && istwopair && (pokerval&15)<((pokerval>>16)&15) && (pokerval&15)>((pokerval>>4)&15) ] 
+//Board has No Pair and you have Middle two pairs
+|| [ nrankedcommon==1 && istwopair && (pokerval&15)>((pokerval>>8)&15) && (pokerval&15)>((pokerval>>4)&15) && !(rankloplayer==ranklocommon) ]
+//Rainbow board
+|| [ istwopair && [nrankedcommon<2 && 
+ nsuitedcommon<3 && 
+ nstraightcommon<3 && 
+ nstraightfillcommon>1 ]
+&& !(br>2 && rankhicommon==14 && rankhicommon>rankhiplayer) ]
+} ? 4 :
+
+{0
+//Board has Pair and you have Overpair
+|| [ nrankedcommon==2 && istwopair && ($$pr0==((pokerval>>16)&0xf) || $$pr1==((pokerval>>16)&0xf)) ] 
+
+|| [ nrankedcommon==2 && istwopair && ispair && $$pr0>trankcommon ] 
+//Board has No Pair and you have Bottom two pairs
+|| [ nrankedcommon==1 && istwopair && (pokerval&15)>((pokerval>>16)&15) ] 
+} ? 3 :
+
+{0
+//Board has Pair and you have Underpair
+|| [ nrankedcommon==2 && istwopair && ispair && (pokervalcommon < twopair) && $$pr0<trankcommon ] 
+//Board has Pair and you have Two pairs w/ good kicker (A-T)
+|| [ nrankedcommon==2 && (pokervalcommon < twopair) && istwopair && !ispair && (pokerval&15)>=10 ] 
+} ? 2 :
+
+{0
+//Board has two pair and you have only two pair
+|| [ nrankedcommon==2 && istwopair && (pokervalcommon & twopair) ]
+//Board has Pair and you have Two pairs w/ poor kicker (9-2)
+|| [ nrankedcommon==2 && (pokervalcommon < twopair) && istwopair && !ispair && (pokerval&15)<=9 ] 
+//Catch all
+|| [ istwopair ]
+} ? 1 : 0) 
+
+// TwoPairDiscount
+- (
+0
++(nsuitedcommon>=3)*2
++(nsuitedcommon>=4)
++(!//NO EASY STRAIGHT DRAW
+(nstraightcommon<=2 && nstraightfillcommon>=3) 
+|| (nbetsround1>=2 
+    && (     (nstraightfillcommon==1 && nstraightcommon==4 && (`(rankbitscommon&0x007f))==4)   // 6543 
+          || (nstraightfillcommon==1 && nstraightcommon==3 && (`(rankbitscommon&0x007c))==4)   // 6542, 6432
+       ) 
+   ))*2
++(nstraightfillcommon<=1 || nstraightcommon>=4)
+)
+
+: 0
+
+##f$MH_STR_onepair##
+isonepair ? 
+
+((0
+//Board has No Pair and you have Overpair 10's or better
+|| [ nrankedcommon==1 && ispair && pokerval<twopair && trank>trankcommon && rankloplayer>9] 
+//Board has No Pair and you have Top pair Ace w/ good kicker (K-T) 
+|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank==14 && {(trank==$$pr0 && $$pr1>=10)||(trank==$$pr1 && $$pr0>=10)} ] 
+//Board has No Pair and you have Top pair King w/ good kicker (A-T) 
+|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank==13 && {(trank==$$pr0 && $$pr1>=10)||(trank==$$pr1 && $$pr0>=10)} ] 
+) ? 5 :
+
+(0
+//Board has No Pair and you have Overpair 
+|| [ nrankedcommon==1 && ispair && pokerval<twopair && trank>trankcommon ] 
+//Board has No Pair and you have Top pair Queen or lower w/ good kicker (A-T) 
+|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank<=12 && {(trank==$$pr0 && $$pr1>=10)||(trank==$$pr1 && $$pr0>=10)} ] 
+//Board has No Pair and you have Top pair Ace w/ poor kicker (9-2) 
+|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank==14 && {(trank==$$pr0 && $$pr1<=9)||(trank==$$pr1 && $$pr0<=9)} ] 
+) ? 4 :
+
+(0
+//Board has No Pair and you have Midpair 1 overcard 
+|| [ nrankedcommon==1 && ispair && pokerval<twopair && ((pokerval>>8)&15)>trank && ((pokerval>>4)&15)<trank ] 
+//Board has No Pair and you have Top pair King w/ poor kicker (9-2) 
+|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank==13 && {(trank==$$pr0 && $$pr1<=9)||(trank==$$pr1 && $$pr0<=9)} ] 
+//Board has No Pair and you have Middle pair w/ overcard kicker 
+|| [ nrankedcommon==1 && ismidpair && pokerval<twopair && !ispair && {(trank==$$pr0 && $$pr1>trankcommon)||(trank==$$pr1 && $$pr0>trankcommon)} ] 
+) ? 3 :
+
+(0
+//Board has No Pair and you have Top pair Queen or lower w/ poor kicker (9-2) 
+|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank<=12 && {(trank==$$pr0 && $$pr1<=9)||(trank==$$pr1 && $$pr0<=9)} ] 
+//Board has No Pair and you have Midpair 2 overcard 
+|| [ nrankedcommon==1 && ispair && pokerval<twopair && ((pokerval>>8)&15)>trank && ((pokerval>>4)&15)>trank ] 
+//Board has No Pair and you have Bottom pair w/ overcard kicker 
+|| [ nrankedcommon==1 && islopair && pokerval<twopair && !ispair && {(trank==$$pr0 && $$pr1>trankcommon)||(trank==$$pr1 && $$pr0>trankcommon)} ] 
+//Board has Pair and you have "Two overcards w/Ace" 
+|| [ nrankedcommon==2 && rankloplayer>rankhicommon  && rankhiplayer==14 && rankloplayer>=10 && !ispair ] 
+//Board has Pair and you have "Two overcards w/ King" 
+|| [ nrankedcommon==2 && rankloplayer>rankhicommon  && rankhiplayer==13 && rankloplayer>=10 && !ispair ] 
+) ? 2 :
+
+(0
+//Board has No Pair and you have Underpair 
+|| [ nrankedcommon==1 && ispair && pokerval<twopair && trank<(pokerval&15) ] 
+//Board has No Pair and you have Middle pair w/ poor kicker 
+|| [ nrankedcommon==1 && ismidpair && pokerval<twopair && !ispair && {(trank==$$pr0 && $$pr1<trankcommon)||(trank==$$pr1 && $$pr0<trankcommon)} ] 
+//Board has No Pair and you have Bottom pair w/ poor kicker 
+|| [ nrankedcommon==1 && islopair && pokerval<twopair && !ispair && {(trank==$$pr0 && $$pr1<trankcommon)||(trank==$$pr1 && $$pr0<trankcommon)} ] 
+//Board has Pair and you have Two overcards
+|| [ nrankedcommon==2 && rankloplayer>rankhicommon ] 
+//Board has Pair and you have "One overcard w/Ace (A9-A2)" 
+|| [ nrankedcommon==2 && rankhiplayer==14 && pokerval<twopair && rankloplayer<=9 && rankloplayer<rankhicommon ] 
+//Board has Pair and you have "One overcard w/ King (K9-K2)" 
+|| [ nrankedcommon==2 && rankhiplayer==13 && pokerval<twopair && rankloplayer<=9 && rankloplayer<rankhicommon ] 
+//Board has Pair and you have Two small cards 
+|| [ nrankedcommon==2 && !ispair && pokerval<twopair && rankhiplayer<=9 ] 
+) ? 1 : 0)
+
+// OnePairDiscount
+- (
+0
++(nsuitedcommon>=3)*2
++(nsuitedcommon>=4)
++(!//NO EASY STRAIGHT DRAW
+(nstraightcommon<=2 && nstraightfillcommon>=3) 
+|| (nbetsround1>=2 
+    && (     (nstraightfillcommon==1 && nstraightcommon==4 && (`(rankbitscommon&0x007f))==4)   // 6543 
+          || (nstraightfillcommon==1 && nstraightcommon==3 && (`(rankbitscommon&0x007c))==4)   // 6542, 6432
+       ) 
+   ))*2
++(nstraightfillcommon<=1 || nstraightcommon>=4)
++(nopponentsplaying>2)
++didswag
+)
+
+: 0
+
+##f$MH_STR_hicard##
+ishicard ? 0 : 0
+
+##f$MH_STR_draw##
+// last change 8/21/2006 Winngy v0007
+// Drawing Hands 
+// DOTO: there is no need in this f$ becouse of
+// nicely working Outs counter though it can be
+// usefuul in future to determine the strengh of 
+// the draw
+// 1. OESD + Flush draw
+// 2. Gutshot + Flush draw
+// 3. Flush draw
+// 4. OESD
+// 5. Gutshot
+// something like this
+
+0
+|| [(br==2||br==3) && (mh_nouts/ncardsunknown) >= (call/(pot+f$Odds_and_Outs_implied_odds)) ]
+
+
+//Nut Flush Draw
+|| [(br==2||br==3) && nsuited==4 
+    && `((~srankbits&0x7fff)>>srankhiplayer)==0 
+    && nsuitedcommon==2
+    && nraisbets<=2]
+
+//Pair and Flush Draw
+|| [(br==2||br==3) && prwinnow >.40 
+   && nsuited==4 && nsuited>nsuitedcommon 
+   && isonepair && (pokervalcommon < onepair)
+   && nraisbets<=2]
+
+//Second Nut Flush Draw
+|| [(br==2||br==3) && nsuited==4 
+   && `((~srankbits&0x7fff)>>srankhiplayer)==1 
+   && (((1.2/prwin)-1) < ((pot + (callshort *.3))/call))]
+
+//Third Nut Flush Draw
+|| [(br==2||br==3) && nsuited==4 
+   && `((~srankbits&0x7fff)>>srankhiplayer)==2 
+   && (((1.2/prwin)-1) < ((pot + (callshort *.3))/call))]
+
+//Good Flush Draw
+|| [(br==2||br==3) && nsuited==4 
+   && nsuitedcommon==2 
+   && (((1.2/prwin)-1) < ((pot + (callshort *.3))/call))]//call good flush draws
+
+//Good Straight Draw
+|| [(br==2||br==3) && nstraight==4 && nstraightcommon <= 2
+   && ((1.2/(prwin + prtie/2)-1) < ((pot + (callshort *.3))/call))]
+
+//Call draw that was raised
+|| [(br==2||br==3) && (didrais||didcall) 
+   && ((nsuited==4 && nsuitedcommon==2)||(nstraight==4 && nstraightcommon==2)) 
+   && (((1.2/prwin)-1) < ((pot + (callshort *.3))/call))]
+
+//COMBOS DRAWS...pair and draw
+
+//Pair and Flush Draw
+|| [(br==2||br==3) && prwinnow >.40 
+   && nsuited==4 && nsuited>nsuitedcommon 
+   && isonepair && (pokervalcommon < onepair)
+   && (((1.5/prwin)-1) < ((pot + (callshort *.3))/call))]
+
+//Pair and Straight Draw
+|| [(br==2||br==3) && prwinnow >.40 
+   && nstraight==4 && nstraight>nstraightcommon 
+   && isonepair && (pokervalcommon < onepair)
+   && (((1.5/prwin)-1) < ((pot + (callshort *.3))/call))]
+
+//Straight and Flush Draw
+|| [(br==2||br==3) && nsuited==4 
+   && nsuited>nsuitedcommon && nstraight==4 
+   && nstraight>nstraightcommon 
+   && (((1.2/prwin)-1) < ((pot + (callshort *.3))/call))]
+
+##f$MH_STR_flop_donk##
+// returns 1 or 0 if Hero hit DRAW or better for Donk bet
+0
+||f$MH_STR_straightflush
+||f$MH_STR_quads>=2
+||f$MH_STR_fullhouse>=2
+||f$MH_STR_flush>=2
+||f$MH_STR_straight>=2
+||f$MH_STR_trips>=2
+||f$MH_STR_twopair>=3
+||f$MH_STR_onepair>=3
+// =f$MH_STR_hicard
+// =f$MH_STR_draw
+
+
+
+
+
+
+
+##f$Board_aa_info##
+/////////////////////////////////////////////////
+// $BOARD GROUP
+// evaluates common cards
+// USED: N/A
+// FROM: Winngy
+// DOTO: add high cards check for rainbow and open board
+//
+// f$debug for $Board
+// debugging is in progress
+// =f$Board_rainbow
+// =f$Board_open
+// =f$Board_straigh
+// =f$Board_flush
+// =f$Board_pairboat
+// =f$Board_2pair
+// =f$Board_trips
+// =f$Board_4cardstraight
+// =f$Board_4cardflush
+// =f$Board_4straightflushboard
+/////////////////////////////////////////////////
+##f$Board_rainbow##
+// The safest board, no pair, no draws to a straight or flush 
+[ nsuitedcommon==1 && nstraightfillcommon>=3 && nrankedcommon==1 ]
+
+##f$Board_open##
+// impossible to have a boat ,flush, or straight; top set is nuts 
+[ nrankedcommon==1 && nsuitedcommon<=2 && nstraightfillcommon>=3 && !f$Board_rainbow]
+
+##f$Board_straigh##
+// impossible to have a boat or flush; straight is nuts 
+[ nrankedcommon==1 && nsuitedcommon<=2 && nstraightfillcommon==2 ]
+
+##f$Board_flush##
+// impossible to have 1 to a straightflush,  no boat 
+[ nrankedcommon==1 && nsuitedcommon==3 && nstraightflushfillcommon>=2 ]
+
+##f$Board_pairboat##
+// board includes a pair; impossible to have one to a  straightflush; 4 of kind is nuts 
+[ nrankedcommon==2 && nstraightflushfillcommon>=2 && pokervalcommon<twopair ]
+
+##f$Board_2pair##
+//board has two pair
+[ pokervalcommon>=twopair && pokervalcommon<threeofakind ]
+
+##f$Board_trips##
+// impossible to have a straightflush; 3 common on board; 4-kind is nuts 
+[ nrankedcommon==3 && nstraightflushfillcommon>=3 ]
+
+##f$Board_4cardstraight##
+// impossible to have a boat or flush; 4 card straight on board; straight is nuts 
+[ nrankedcommon==1 && nsuitedcommon<=2 && nstraightfillcommon<=1 ]
+
+##f$Board_4cardflush##
+// impossible to have a straightflush or boat; 4-card flush on board; flush is nuts 
+[ nrankedcommon==1 && nsuitedcommon>=4 && nstraightflushfillcommon>=2 ]
+
+##f$Board_4straightflushboard##
+// 4 towards a straightflush on board; 
+[ nstraightflushfillcommon==1 ]
+
+
+
+
+##f$Preflop_aa_info##
+/////////////////////////////////////////////////
+// $Preflop GROUP
+// deals with deasisions preflop
+// USED: $desisions
+// From: Funky
+//
+// f$debug for $Preflop GROUP
+// debugging is in progress
+// =f$Preflop_First_In
+// =f$Preflop_Single_Raiser_Before_Us
+// =f$Preflop_One_Raiser_And_Callers_In_Front_Of_Us
+// =f$Preflop_Reraised
+// =f$Preflop_BBlind_protection
+// =f$Preflop_SB_complit
+// =f$Preflop_limpers
+// =f$Preflop_Raisers_Behind_Us
+/////////////////////////////////////////////////
+##f$Preflop_First_In##
+// in which situations Hero should rais
+// 1. First In
+// N.B. 0 - FOLD, 1 - CALL, 2 - RAIS
+// TODO: include OppModellng
+br==1&&f$BettingAction_First_In ?
+	(f$Position_preflop_dealposition==1&& islist101? 2 : 	// 46.3%
+	 f$Position_preflop_dealposition==2&& islist111? 2 : 	// FAULS
+	 f$Position_preflop_dealposition==3&& islist121? 2 :	//  5.73%
+	 f$Position_preflop_dealposition==4&& islist131? 2 :	//  6.03%
+	 f$Position_preflop_dealposition==5&& islist141? 2 : 	//  8.60%
+	 f$Position_preflop_dealposition==6&& islist151? 2 :	//  9.65%
+	 f$Position_preflop_dealposition==7&& islist161? 2 :  // 13.2%
+	 f$Position_preflop_dealposition==8&& islist171? 2 :	// 17.5%
+	 f$Position_preflop_dealposition==9&& islist181? 2 :	// 24%
+	 f$Position_preflop_dealposition==10&&islist191? 2 : 	// 32.28%
+	 0) : 0
+
+##f$Preflop_Single_Raiser_Before_Us##
+// in which situations Hero should rais
+// 2. if pot was raised already but no callers (3Bet)
+// N.B. 0 - FOLD, 1 - CALL, 2 - RAIS
+// TODO: include OppModellng
+br==1&&f$BettingAction_Single_Raiser_Before_Us ?
+	(f$Preflop_dealpositionrais_DEF==2 ? 2 : 	0) : 0
+	 
+##f$Preflop_One_Raiser_And_Callers_In_Front_Of_Us##
+// in which situations Hero should rais
+// 3. if pot was raised already and their was callers (3Bet)
+// N.B. 0 - FOLD, 1 - CALL, 2 - RAIS
+// TODO: include OppModellng
+br==1&&f$BettingAction_One_Raiser_And_Callers_In_Front_Of_Us ?
+// Case 1: 1 caller after raiser
+	(nopponentscalling==1 ? 
+		(f$Preflop_dealpositionrais_DEF!=2&&islist211 ? 1 :
+		 f$Preflop_dealpositionrais_DEF==2&&islist221 ? 2 :
+		0) :
+// Case 2: 2 callers after raiser
+	nopponentscalling==2 ? 
+		(f$Preflop_dealpositionrais_DEF!=2&&islist212 ? 1 :
+		 f$Preflop_dealpositionrais_DEF==2&&islist222 ? 2 :
+		0) :
+// Case 3: 3+ callers after raiser
+	nopponentscalling>=3 ? 
+		(f$Preflop_dealpositionrais_DEF!=2&&islist213 ? 1 :
+		 f$Preflop_dealpositionrais_DEF==2&&islist223 ? 2 :
+		0) :
+	0 ) : 0
+	
+##f$Preflop_Reraised##
+// 4bet and 5bet range
+// 4. if pot was re raised
+// N.B. 0 - FOLD, 1 - CALL, 2 - RAIS
+// TODO: include OppModellng
+br==1&&f$BettingAction_Number_Of_Raisers_Preflop>=2&&
+ ($AA || $KK || $QQ || $AK) ? 2 : 0
+ 
+##f$Preflop_BBlind_protection##
+// BBlind protection
+// 5. if Hero is in BB and 1 raiser
+// N.B. 0 - FOLD, 1 - CALL, 2 - RAIS
+// TODO: include OppModellng
+	 // raising range
+br==1&&f$BettingAction_Single_Raiser_Before_Us&&f$Position_preflop_dealposition==2 ?
+	(f$Position_preflop_dealpositionrais==1&& islist103 ? 2 :
+	 f$Position_preflop_dealpositionrais==2&& islist113 ? 2 : //FALSE
+	 f$Position_preflop_dealpositionrais==3&& islist123 ? 2 :
+	 f$Position_preflop_dealpositionrais==4&& islist133 ? 2 :
+	 f$Position_preflop_dealpositionrais==5&& islist143 ? 2 :
+	 f$Position_preflop_dealpositionrais==6&& islist153 ? 2 :
+	 f$Position_preflop_dealpositionrais==7&& islist163 ? 2 :
+	 f$Position_preflop_dealpositionrais==8&& islist173 ? 2 :
+	 f$Position_preflop_dealpositionrais==9&& islist183 ? 2 :
+	 f$Position_preflop_dealpositionrais==10&& islist193 ? 2 :
+	 // calling range
+	 f$Position_preflop_dealpositionrais==1&& islist104 ? 1 :
+	 f$Position_preflop_dealpositionrais==2&& islist114 ? 1 : //FALSE
+	 f$Position_preflop_dealpositionrais==3&& islist124 ? 1 :
+	 f$Position_preflop_dealpositionrais==4&& islist134 ? 1 :
+	 f$Position_preflop_dealpositionrais==5&& islist144 ? 1 :
+	 f$Position_preflop_dealpositionrais==6&& islist154 ? 1 :
+	 f$Position_preflop_dealpositionrais==7&& islist164 ? 1 :
+	 f$Position_preflop_dealpositionrais==8&& islist174 ? 1 :
+	 f$Position_preflop_dealpositionrais==9&& islist184 ? 1 :
+	 f$Position_preflop_dealpositionrais==10&& islist194 ? 1 :
+	 0 ) : 0
+	 
+##f$Preflop_SB_complit##
+// SB complit
+// 6. if Hero is in SB and only limpers preflop
+// N.B. 0 - FOLD, 1 - CALL, 2 - RAIS
+// TODO: include OppModellng
+br==1&&f$Position_preflop_dealposition==1 ?
+	// 1 limper
+	(f$BettingAction_One_Limper&&islist231 ? 1:
+	// 2 limpers
+	 f$BettingAction_Two_Limpers&& islist232? 1:
+	// 3 limpers
+	 f$BettingAction_Three_Limpers&&islist233? 1:
+	// 4+ limpers 
+	 f$BettingAction_Four_Limpers_Or_More? 1: 
+	 0 ) : 0
+	 
+##f$Preflop_limpers##
+// Dealing with limpers
+// 7. there was no raisers but limpers only in frot of Hero
+// N.B. 0 - FOLD, 1 - CALL, 2 - RAIS
+// TODO: include OppModellng
+	 // raising range
+br==1 ?
+	 // 1 limper
+	(f$BettingAction_One_Limper&&f$Preflop_First_In==2&&islist234 ? 2 :
+	 // 2 limpers 
+	 f$BettingAction_Two_Limpers&&f$Preflop_First_In==2&&islist235 ? 2 :
+	 // 3+ limpers
+	 (f$BettingAction_Three_Limpers||f$BettingAction_Four_Limpers_Or_More)
+	 &&f$Preflop_First_In==2&&islist236 ? 2 :
+	 // calling range
+	 // 1 limper
+	f$BettingAction_One_Limper&&islist237 ? 1 :
+	 // 2 limpers 
+	 f$BettingAction_Two_Limpers&&islist238 ? 1 :
+	 // 3+ limpers
+	 (f$BettingAction_Three_Limpers||f$BettingAction_Four_Limpers_Or_More)
+	 &&islist239 ? 1 :
+	 0 ) : 0
+
+##f$Preflop_Raisers_Behind_Us##
+// our call or rais was reraised
+// 8. if Hero did act and Valin raised
+// N.B. 0 - FOLD, 1 - CALL, 2 - RAIS
+// TODO: include OppModellng
+
+br==1&&f$BettingAction_Raisers_Behind_Us ?
+	// Check http://ru.pokerstrategy.com/forum/thread.php?threadid=494380 for more info
+	// Case 1: the pot was reraised 2 or more times
+	//raising range
+	(f$BettingAction_Number_Of_Raisers_Preflop>=2&&($AA || $KK || $QQ || $AK) ? 2 :
+	//Complitting range
+	 f$BettingAction_Number_Of_Raisers_Preflop>=2&&($JJ || $TT || $99 || $AQ || $AJs) ? 1 :
+	// Case 2: the pot was reraised 1 time
+	//raising range
+ 	 f$BettingAction_Number_Of_Raisers_Preflop==1&&($AA || $KK || $QQ || $AK) ? 2 :
+	//Complitting with every hand we started to play
+	// N.B. WERY LEAKY
+	 f$BettingAction_Number_Of_Raisers_Preflop==1&&(didraisround1||didcallround1)? 1 : 
+	 0 ) : 0
+	
+##f$Preflop_dealpositionrais_DEF##
+// in which situations Hero should rais
+// 2. if pot was raised already but no callers (3Bet)
+// N.B. 0 - FOLD, 1 - CALL, 2 - RAIS
+// TODO: include OppModellng
+br==1 ?
+	(f$Position_preflop_dealpositionrais==1&& islist102? 2 : 	// FAULS (see blinds protection)
+	 f$Position_preflop_dealpositionrais==2&& islist112? 2 : 	// FAULS
+	 f$Position_preflop_dealpositionrais==3&& islist122? 2 :		//  !5.73%
+	 f$Position_preflop_dealpositionrais==4&& islist132? 2 :		//  !6.03%
+	 f$Position_preflop_dealpositionrais==5&& islist142? 2 : 	//  !8.60%
+	 f$Position_preflop_dealpositionrais==6&& islist152? 2 :		//  !9.65%
+	 f$Position_preflop_dealpositionrais==7&& islist162? 2 :  	// !13.2%
+	 f$Position_preflop_dealpositionrais==8&& islist172? 2 :		// !17.5%
+	 f$Position_preflop_dealpositionrais==9&& islist182? 2 :		// !24%
+	 f$Position_preflop_dealpositionrais==10&&islist192? 2 : 	// !32.28%
+	 0) : 0
+
+
+
+	 
+##f$Flop_aa_info##
+/////////////////////////////////////////////////
+// $Flop GROUP
+// Deals with flop decisions
+// USED: $decision
+// From: Funky
+/////////////////////////////////////////////////
+
+##f$Flop_No_Rais##
+// Hero's donk bet
+// 1. if hero is 1st to act and Hero did not bet preflop
+//    and Vallin didnt bet preflop, Heads-Up
+// Always bet Donk bet
+// N.B VERY LEAKY but should occuare reraly
+
+// First to act
+// NO RAIS PREFLOP
+// 1 opponent
+
+(didcheckround1)&&`raisbits1==0&&
+f$Position_postflop_betposition==1 ? (
+	f$BettingAction_Number_Of_Opponents_Truely_Playing==1 ?
+	// bet any card if opponent is
+	// Rock, NIT, Weak-Tight
+	// TAG, LAG or Unknown
+	((f$f$OppModelling_Rock||f$OppModelling_NIT||f$OppModelling_WeakTight
+	||f$OppModelling_TAG||f$OppModelling_LAG||f$OppModelling_Unknown)&& 
+		//Safe board bet
+		(f$Board_rainbow||f$Board_open||f$Board_straigh||f$Board_flush) ? 2 :
+		//Dont bet over wise
+	// Bet only made hand or Draw if opponents is
+	// Maniac, CallStation, Donk
+	(f$f$OppModelling_Maniac||f$OppModelling_CallStation||f$OppModelling_Donk)&&
+	f$MH_STR_flop_donk||(f$MH_STR_draw||f$Odds_and_Outs_nOuts_by_Gecko>7) ? 2 : 0 ) :
+	
+// 2+ opponents
+	f$BettingAction_Number_Of_Opponents_Truely_Playing>=2 ?
+	// bet if Hero have made hand and flop is not safe
+	// Rock, NIT, Weak-Tight
+	// TAG, LAG or Unknown
+	((f$f$OppModelling_Rock||f$OppModelling_NIT||f$OppModelling_WeakTight
+	||f$OppModelling_TAG||f$OppModelling_LAG||f$OppModelling_Unknown)&& 
+		//Board is not safe and we made a hand
+		(!f$Board_rainbow||!f$Board_open)&&f$MH_STR_flop_donk ? 2 :
+		//Dont bet over wise
+	// Dont bet
+	// Maniac, CallStation, Donk
+	(f$f$OppModelling_Maniac||f$OppModelling_CallStation||f$OppModelling_Donk) ? 0 : 
+	0 ) : 0 ) :
+	
+// Last to act
+// NO RAIS PREFLOP
+// 1 opponent
+(didcheckround1)&&`raisbits1==0&&
+f$Position_postflop_betposition==4&&
+f$BettingAction_Number_Of_Opponents_Truely_Playing==1 ? 
+	// Checked to Hero - Bet any
+	(call==0 ? 2 :
+	// Opponent Betted
+	call>0&&
+	[0
+	||f$MH_STR_straightflush
+	||f$MH_STR_quads>=2
+	||f$MH_STR_fullhouse>=2
+	||f$MH_STR_flush>=2
+	||f$MH_STR_straight>=2
+	||f$MH_STR_trips>=2
+	||f$MH_STR_twopair>=3
+	||f$MH_STR_onepair>=3
+	||(f$MH_STR_draw||f$Odds_and_Outs_nOuts_by_Gecko>7)] ? 1 : 0 ) : 0
+	
+	// 2+ opponent
+(didcheckround1)&&`raisbits1==0&&
+f$Position_postflop_betposition>=2&&
+f$BettingAction_Number_Of_Opponents_Truely_Playing>=2 ? 
+	// Checked to Hero - Bet any
+	(call==0 ? 2 :
+	// Opponent Betted
+	call>0&&
+	[0
+	||f$MH_STR_straightflush
+	||f$MH_STR_quads>=2
+	||f$MH_STR_fullhouse>=2
+	||f$MH_STR_flush>=2
+	||f$MH_STR_straight>=2
+	||f$MH_STR_trips>=2
+	||f$MH_STR_twopair>=3
+	||f$MH_STR_onepair>=3
+	||(f$MH_STR_draw||f$Odds_and_Outs_nOuts_by_Gecko>7)] ? 1 : 0 ) : 0
+	
+
+##f$Flop_Vallin_Rais##
+// Hero called preflop rais
+// Fist to act
+(didcallround1)&&`raisbits>=1&&
+f$Position_postflop_betposition==1&&
+//1 opponent
+f$BettingAction_Number_Of_Opponents_Truely_Playing==1 ?
+
+
+	
+##f$Flop_No_Rais_Rerais##
+// if opponent reraises bet and Hero is First to act
+
+// 1 opponent
+f$BettingAction_Number_Of_Opponents_Truely_Playing==1&&
+(didcheckround1)&&`raisbits1==0&&
+f$Position_postflop_betposition==1&&
+f$BettingAction_Raisers_Behind_Us ?
+[0
+||f$MH_STR_straightflush
+||f$MH_STR_quads>=2
+||f$MH_STR_fullhouse>=2
+||f$MH_STR_flush>=2
+||f$MH_STR_straight>=2
+||f$MH_STR_trips>=2
+||f$MH_STR_twopair>=3
+||f$MH_STR_onepair>=3
+||(f$MH_STR_draw||f$Odds_and_Outs_nOuts_by_Gecko>7)] ? 2 :
+
+// 2+ opponents
+f$BettingAction_Number_Of_Opponents_Truely_Playing>=1&&
+(didcheckround1)&&`raisbits1==0&&
+f$Position_postflop_betposition==1&&
+f$BettingAction_Raisers_Behind_Us ?
+[0
+||f$MH_STR_straightflush
+||f$MH_STR_quads>=2
+||f$MH_STR_fullhouse>=2
+||f$MH_STR_flush>=2
+||f$MH_STR_straight>=2
+||f$MH_STR_trips>=2
+||f$MH_STR_twopair>=3
+||f$MH_STR_onepair>=3
+||(f$MH_STR_draw||f$Odds_and_Outs_nOuts_by_Gecko>7)] ? 2 : 0
+
+
+
+
+##f$Turn_aa_info##
+/////////////////////////////////////////////////
+// $Turn GROUP
+// Deals with turn decisions
+// USED: $decision
+// From: Funky
+/////////////////////////////////////////////////
+
+##f$Turn_Donk_bet##
+// FALSE
+
+##f$Turn_CBet##
+// 2nd barrel
+// First In and opponents called rais flop
+
+// 1 opponent
+f$BettingAction_Number_Of_Opponents_Truely_Playing==1&&
+(didcheckround1)&&`raisbits1==0&&
+f$Position_postflop_betposition==1&&
+&&`raisbits2==1&&
+(didraisround2==1) && f$Position_postflop_betposition==1 &&
+[0
+||f$MH_STR_straightflush
+||f$MH_STR_quads>=2
+||f$MH_STR_fullhouse>=2
+||f$MH_STR_flush>=2
+||f$MH_STR_straight>=2
+||f$MH_STR_trips>=2
+||f$MH_STR_twopair>=3
+||f$MH_STR_onepair>=3
+||(f$MH_STR_draw||f$Odds_and_Outs_nOuts_by_Gecko>7)] ? 2 :
+
+// 2+ opponents
+f$BettingAction_Number_Of_Opponents_Truely_Playing>=2&&
+(didcallround1||didcheckround1)&&`raisbits1==0&&
+f$Position_postflop_betposition==1&&
+&&`raisbits2==1&&
+(didraisround2==1) && f$Position_postflop_betposition==1 &&
+[0
+||f$MH_STR_straightflush
+||f$MH_STR_quads>=2
+||f$MH_STR_fullhouse>=2
+||f$MH_STR_flush>=2
+||f$MH_STR_straight>=2
+||f$MH_STR_trips>=2
+||f$MH_STR_twopair>=3
+||f$MH_STR_onepair>=3
+||(f$MH_STR_draw||f$Odds_and_Outs_nOuts_by_Gecko>7)] ? 2 : 0
+
+
+
+	
+	 
+	 
+##f$ICM_aa_info##
+/////////////////////////////////////////////////
+// $ICM GROUP
+// used for ICM predictions for end game of
+// tournaments
+// USED: N/A
+// From: Funky
+/////////////////////////////////////////////////
+##f$ICM_count##
+
+
+
+
+##f$OppModelling_aa_info##
+/////////////////////////////////////////////////
+// $OppModeling GROUP
+// Responsible for opponent's models
+// USED: ICM
+// From: Funky
+//
+// For playes model see
+// http://www.dragthebar.com/poker-forums/showthread.php/
+// 2404-Building-Player-Profiles-with-HEM-Autorate-Icons-Notes-and-Table-Scanner
+// 
+// Basic NL 10MAX Opponent Model
+// F				VPIP	PFR		AF		3-bet	Steal	WTSD
+// R	Rock		0-12	0-10							0-20
+// O	NIT			0-12	0-10							20-100
+// M	WeakTight	0-12	0-10	<1						20-100
+//		TAG			12-20	10-17	1+		5-12	25-40	20-30
+// T	LAG			20-25	17-24	1+		5-12	25-40	20-30
+//		Maniak		25-40	10-40	1.5+	5-20	25-100	
+// T	CallStation 12-100	0-10							30-100
+// O	Donk(Fish)	40-100
+//
+// L	Unknown		N/A		N/A		N/A		N/A		N/A		N/A
+//
+// f$debug for $OppModelling
+// debugging is in progress
+// =f$OppModelling_Rock
+// =f$OppModelling_NIT
+// =f$OppModelling_WeakTight
+// =f$OppModelling_TAG
+// =f$OppModelling_LAG
+// =f$OppModelling_Maniac
+// =f$OppModelling_CallStation
+// =f$OppModelling_Donk
+// =f$OppModelling_Unknown
+/////////////////////////////////////////////////
+
+##f$OppModelling_Rock##
+// Extrimly solid player, bets only with nuts
+// Stats for 10max NL:
+// Preflop:
+//   VPIP<10, PFR<8, PFR/VPIP, AF, FoldSB, FoldBB, ATS
+// Stats for 6 max NL:
+// Stats for SnG tornoments:
+// Stats for MTT tornoments:
+// Stratagy:
+//   1. Ignor it
+//   2. Steal Rock blinds
+//   3. CBet flop after his call often
+//   4. Look out of his aggresion
+(0<=f$PT_preflop_VPIP&&f$PT_preflop_VPIP<=0.12) &&
+(0<=f$PT_preflop_PFR&&f$PT_preflop_PFR<= 0.10) &&
+//0<=f$PT_total_aggro  &&
+//f$PT_extra_icon_3Bet 1 or 2
+//0<=f$PT_preflop_attempt_to_steal<=1&&
+(0<=f$PT_postflop_WTSD&&f$PT_postflop_WTSD<=0.20)
+
+##f$OppModelling_NIT##
+(0<f$PT_preflop_VPIP&&f$PT_preflop_VPIP<=0.12) &&
+(0<f$PT_preflop_PFR&&f$PT_preflop_PFR<=0.10) &&
+//0<	f$PT_total_aggro  &&
+//f$PT_extra_icon_3Bet 1 or 2
+//0<=f$PT_preflop_attempt_to_steal<=1.00&&
+(0.20<f$PT_postflop_WTSD&&f$PT_postflop_WTSD<=1.00)
+
+##f$OppModelling_WeakTight##
+(0<f$PT_preflop_VPIP&&f$PT_preflop_VPIP<= 0.12) &&
+(0<f$PT_preflop_PFR&&f$PT_preflop_PFR<=0.10) &&
+(0<=f$PT_total_aggro&&f$PT_total_aggro<= 1) &&
+//f$PT_extra_icon_3Bet 1 or 2
+//0<=f$PT_preflop_attempt_to_steal<=1.00&&
+(0<=f$PT_postflop_WTSD&&f$PT_postflop_WTSD<=0.20)
+
+##f$OppModelling_TAG##
+(0.12<f$PT_preflop_VPIP&&f$PT_preflop_VPIP<=0.20) &&
+(0.10<f$PT_preflop_PFR&&f$PT_preflop_PFR<=0.17) &&
+(1<=f$PT_total_aggro)  &&
+f$PT_extra_icon_3Bet == 1 &&
+(0.25<=f$PT_preflop_attempt_to_steal&&f$PT_preflop_attempt_to_steal<=0.40)&&
+(0.20<f$PT_postflop_WTSD&&f$PT_postflop_WTSD<=0.30)
+
+##f$OppModelling_LAG##
+(0.20<f$PT_preflop_VPIP&&f$PT_preflop_VPIP<= 0.25) &&
+(0.17<f$PT_preflop_PFR&&f$PT_preflop_PFR<=0.24) &&
+(1<=f$PT_total_aggro)  &&
+f$PT_extra_icon_3Bet == 1 &&
+(0.25<=f$PT_preflop_attempt_to_steal&&f$PT_preflop_attempt_to_steal<=0.40)&&
+(0.20<f$PT_postflop_WTSD&&f$PT_postflop_WTSD<=0.30)
+
+##f$OppModelling_Maniac##
+(0.25<f$PT_preflop_VPIP&&f$PT_preflop_VPIP<= 0.40) &&
+(0.10<f$PT_preflop_PFR&&f$PT_preflop_PFR<=0.40) &&
+(1.5<=f$PT_total_aggro) &&
+f$PT_extra_icon_3Bet == 1 &&
+(0.25<=f$PT_preflop_attempt_to_steal&&f$PT_preflop_attempt_to_steal<=1.00)&&
+(0<f$PT_postflop_WTSD&&f$PT_postflop_WTSD<=1.00)
+
+##f$OppModelling_CallStation##
+(0.12<f$PT_preflop_VPIP&&f$PT_preflop_VPIP<= 1.00) &&
+(0<f$PT_preflop_PFR&&f$PT_preflop_PFR<=0.10) &&
+//0<=	f$PT_total_aggro 	<= 100 &&
+//f$PT_extra_icon_3Bet == 1 &&
+//0.25<=f$PT_preflop_attempt_to_steal<=0.40&&
+(0.30<f$PT_postflop_WTSD&&f$PT_postflop_WTSD<=1.00)
+
+##f$OppModelling_Donk##
+(0.40<f$PT_preflop_VPIP&&f$PT_preflop_VPIP<= 1.00) //&&
+//(0.10<f$PT_preflop_PFR&&f$PT_preflop_PFR<=0.40) &&
+//0<=	f$PT_total_aggro  &&
+//f$PT_extra_icon_3Bet == 1 &&
+//0.25<=f$PT_preflop_attempt_to_steal<=0.40&&
+//0<f$PT_postflop_WTSD <=1.00
+
+##f$OppModelling_Unknown##
+f$PT_preflop_VPIP 	== (floppct*10)/nplayersdealt&& 		// Deafult rule == (floppct*10)/nplayersdealt)
+f$PT_preflop_PFR 	== (tablepfr)/nplayersdealt&&		// Deafult rule == (tablepfr*10)/nplayersdealt)
+f$PT_total_aggro 	== 1.25 && 								// Deafult rule == 1.25
+f$PT_extra_icon_3Bet == 0 &&								// Deafult rule == no icon 0
+f$PT_preflop_attempt_to_steal==tablepfr/nplayersdealt&&	// Deafult rule == tablepfr/nplayersdealt
+f$PT_postflop_WTSD == 0.29 									// Deafult rule == 0.29
+
+##f$PT_aa_info##
+/////////////////////////////////////////////////
+// $PT GROUP
+// Gets information from PT
+// USED: N/A
+// FROM: Forum
+// All functions MUST be checked with real PT
+// N.B. F1 flag is used to switch money and 
+//      tournaments table
+//
+// f$debug for $PT
+// debugging is in progress
+// corently need only 4 statictics and 1 icon
+// =f$PT_preflop_VPIP
+// =f$PT_preflop_PFR
+// =f$PT_total_aggro
+// =f$PT_extra_icon_3Bet
+// =f$PT_preflop_attempt_to_steal
+// =f$PT_postflop_WTSD
+/////////////////////////////////////////////////
+
+##f$PT_preflop_VPIP##
+// After sanity check of 30 hands played by Vallin
+// returns VPIP of Vallin. Overwise return
+// (floppct*10)/nplaersdealt. For minutes for
+// floppct see Edit/Preferences
+// DOTO: Check f$
+f1 && `opponentsplayingbits==1 ? (
+                                  pt_hands0>30 && (opponentsplayingbits>>0&1) ? pt_vpip0 :
+                                  pt_hands1>30 && (opponentsplayingbits>>1&1) ? pt_vpip1 :
+                                  pt_hands2>30 && (opponentsplayingbits>>2&1) ? pt_vpip2 :
+                                  pt_hands3>30 && (opponentsplayingbits>>3&1) ? pt_vpip3 :
+                                  pt_hands4>30 && (opponentsplayingbits>>4&1) ? pt_vpip4 :
+                                  pt_hands5>30 && (opponentsplayingbits>>5&1) ? pt_vpip5 :
+                                  pt_hands6>30 && (opponentsplayingbits>>6&1) ? pt_vpip6 :
+                                  pt_hands7>30 && (opponentsplayingbits>>7&1) ? pt_vpip7 :
+                                  pt_hands8>30 && (opponentsplayingbits>>8&1) ? pt_vpip8 :
+                                  pt_hands9>30 && (opponentsplayingbits>>9&1) ? pt_vpip9 :
+                                  (floppct*10)/nplayersdealt):
+!f1 && `opponentsplayingbits==1 ? (
+                                   ptt_hands0>30 && (opponentsplayingbits>>0&1) ? ptt_vpip0 :
+                                   ptt_hands1>30 && (opponentsplayingbits>>1&1) ? ptt_vpip1 :
+                                   ptt_hands2>30 && (opponentsplayingbits>>2&1) ? ptt_vpip2 :
+                                   ptt_hands3>30 && (opponentsplayingbits>>3&1) ? ptt_vpip3 :
+                                   ptt_hands4>30 && (opponentsplayingbits>>4&1) ? ptt_vpip4 :
+                                   ptt_hands5>30 && (opponentsplayingbits>>5&1) ? ptt_vpip5 :
+                                   ptt_hands6>30 && (opponentsplayingbits>>6&1) ? ptt_vpip6 :
+                                   ptt_hands7>30 && (opponentsplayingbits>>7&1) ? ptt_vpip7 :
+                                   ptt_hands8>30 && (opponentsplayingbits>>8&1) ? ptt_vpip8 :
+                                   ptt_hands9>30 && (opponentsplayingbits>>9&1) ? ptt_vpip9 :
+                                   (floppct*10)/nplayersdealt):
+(floppct*10)/nplayersdealt
+
+##f$PT_preflop_PFR##
+// Sanity check = 30 hands
+// Returns 1st player PFR
+// see ##f$PT_preflop_VPIP## for more info
+f1 && f$BettingAction_Single_Raiser_Before_Us==1 ? (
+                                  pt_hands0>30 && (f$Bits_Players_Truely_Raising_Preflop>>0&1) ? pt_pfr0 :
+                                  pt_hands1>30 && (f$Bits_Players_Truely_Raising_Preflop>>1&1) ? pt_pfr1 :
+                                  pt_hands2>30 && (f$Bits_Players_Truely_Raising_Preflop>>2&1) ? pt_pfr2 :
+                                  pt_hands3>30 && (f$Bits_Players_Truely_Raising_Preflop>>3&1) ? pt_pfr3 :
+                                  pt_hands4>30 && (f$Bits_Players_Truely_Raising_Preflop>>4&1) ? pt_pfr4 :
+                                  pt_hands5>30 && (f$Bits_Players_Truely_Raising_Preflop>>5&1) ? pt_pfr5 :
+                                  pt_hands6>30 && (f$Bits_Players_Truely_Raising_Preflop>>6&1) ? pt_pfr6 :
+                                  pt_hands7>30 && (f$Bits_Players_Truely_Raising_Preflop>>7&1) ? pt_pfr7 :
+                                  pt_hands8>30 && (f$Bits_Players_Truely_Raising_Preflop>>8&1) ? pt_pfr8 :
+                                  pt_hands9>30 && (f$Bits_Players_Truely_Raising_Preflop>>9&1) ? pt_pfr9 :
+                                  (tablepfr)/nplayersdealt):
+!f1 && f$BettingAction_Single_Raiser_Before_Us==1 ? (
+                                   ptt_hands0>30 && (f$Bits_Players_Truely_Raising_Preflop>>0&1) ? ptt_pfr0 :
+                                   ptt_hands1>30 && (f$Bits_Players_Truely_Raising_Preflop>>1&1) ? ptt_pfr1 :
+                                   ptt_hands2>30 && (f$Bits_Players_Truely_Raising_Preflop>>2&1) ? ptt_pfr2 :
+                                   ptt_hands3>30 && (f$Bits_Players_Truely_Raising_Preflop>>3&1) ? ptt_pfr3 :
+                                   ptt_hands4>30 && (f$Bits_Players_Truely_Raising_Preflop>>4&1) ? ptt_pfr4 :
+                                   ptt_hands5>30 && (f$Bits_Players_Truely_Raising_Preflop>>5&1) ? ptt_pfr5 :
+                                   ptt_hands6>30 && (f$Bits_Players_Truely_Raising_Preflop>>6&1) ? ptt_pfr6 :
+                                   ptt_hands7>30 && (f$Bits_Players_Truely_Raising_Preflop>>7&1) ? ptt_pfr7 :
+                                   ptt_hands8>30 && (f$Bits_Players_Truely_Raising_Preflop>>8&1) ? ptt_pfr8 :
+                                   ptt_hands9>30 && (f$Bits_Players_Truely_Raising_Preflop>>9&1) ? ptt_pfr9 :
+                                   (tablepfr)/nplayersdealt):
+(tablepfr)/nplayersdealt
+
+##f$PT_preflop_PFR/VPIP##
+// simply PFR/VPIP of Vallin
+f$PT_preflop_PFR/f$PT_preflop_VPIP
+
+##f$PT_preflop_attempt_to_steal##
+// Sanity check = 50
+// returns attemt to steal BB+SB
+// if Vallin is the first in and is on CO, BU, SB
+// usefull for blind protection
+f1 ? (
+      pt_hands0>50 && raischair==0 && (ac_dealpos0==1||ac_dealpos0==9||ac_dealpos0==10)? pt_pfats0 :
+      pt_hands1>50 && raischair==1 && (ac_dealpos1==1||ac_dealpos1==9||ac_dealpos1==10)? pt_pfats1 :
+      pt_hands2>50 && raischair==2 && (ac_dealpos2==1||ac_dealpos2==9||ac_dealpos2==10)? pt_pfats2 :
+      pt_hands3>50 && raischair==3 && (ac_dealpos3==1||ac_dealpos3==9||ac_dealpos3==10)? pt_pfats3 :
+      pt_hands4>50 && raischair==4 && (ac_dealpos4==1||ac_dealpos4==9||ac_dealpos4==10)? pt_pfats4 :
+      pt_hands5>50 && raischair==5 && (ac_dealpos5==1||ac_dealpos5==9||ac_dealpos5==10)? pt_pfats5 :
+      pt_hands6>50 && raischair==6 && (ac_dealpos6==1||ac_dealpos6==9||ac_dealpos6==10)? pt_pfats6 :
+      pt_hands7>50 && raischair==7 && (ac_dealpos7==1||ac_dealpos7==9||ac_dealpos7==10)? pt_pfats7 :
+      pt_hands8>50 && raischair==8 && (ac_dealpos8==1||ac_dealpos8==9||ac_dealpos8==10)? pt_pfats8 :
+      pt_hands9>50 && raischair==9 && (ac_dealpos9==1||ac_dealpos9==9||ac_dealpos9==10)? pt_pfats9 :
+      (tablepfr/nplayersdealt)):
+
+!f1 ? (
+      ptt_hands0>50 && raischair==0 && (ac_dealpos0==1||ac_dealpos0==9||ac_dealpos0==10)? ptt_pfats0 :
+      ptt_hands1>50 && raischair==1 && (ac_dealpos1==1||ac_dealpos1==9||ac_dealpos1==10)? ptt_pfats1 :
+      ptt_hands2>50 && raischair==2 && (ac_dealpos2==1||ac_dealpos2==9||ac_dealpos2==10)? ptt_pfats2 :
+      ptt_hands3>50 && raischair==3 && (ac_dealpos3==1||ac_dealpos3==9||ac_dealpos3==10)? ptt_pfats3 :
+      ptt_hands4>50 && raischair==4 && (ac_dealpos4==1||ac_dealpos4==9||ac_dealpos4==10)? ptt_pfats4 :
+      ptt_hands5>50 && raischair==5 && (ac_dealpos5==1||ac_dealpos5==9||ac_dealpos5==10)? ptt_pfats5 :
+      ptt_hands6>50 && raischair==6 && (ac_dealpos6==1||ac_dealpos6==9||ac_dealpos6==10)? ptt_pfats6 :
+      ptt_hands7>50 && raischair==7 && (ac_dealpos7==1||ac_dealpos7==9||ac_dealpos7==10)? ptt_pfats7 :
+      ptt_hands8>50 && raischair==8 && (ac_dealpos8==1||ac_dealpos8==9||ac_dealpos8==10)? ptt_pfats8 :
+      ptt_hands9>50 && raischair==9 && (ac_dealpos9==1||ac_dealpos9==9||ac_dealpos9==10)? ptt_pfats9 :
+      (tablepfr/nplayersdealt)):
+(tablepfr/nplayersdealt)
+
+##f$PT_preflop_foldSB##
+// Sanity check = 50
+// returns fold to steal of current SB
+f1 && `opponentsblindbits<3  ? (
+                                pt_hands0>50 && currentbet0==sblind ? pt_fsbts0 :
+                                pt_hands1>50 && currentbet1==sblind ? pt_fsbts1 :
+                                pt_hands2>50 && currentbet2==sblind ? pt_fsbts2 :
+                                pt_hands3>50 && currentbet3==sblind ? pt_fsbts3 :
+                                pt_hands4>50 && currentbet4==sblind ? pt_fsbts4 :
+                                pt_hands5>50 && currentbet5==sblind ? pt_fsbts5 :
+                                pt_hands6>50 && currentbet6==sblind ? pt_fsbts6 :
+                                pt_hands7>50 && currentbet7==sblind ? pt_fsbts7 :
+                                pt_hands8>50 && currentbet8==sblind ? pt_fsbts8 :
+                                pt_hands9>50 && currentbet9==sblind ? pt_fsbts9 :
+                                0.85 ):
+!f1 && `opponentsblindbits<3  ? (
+                                ptt_hands0>50 && currentbet0==sblind ? ptt_fsbts0 :
+                                ptt_hands1>50 && currentbet1==sblind ? ptt_fsbts1 :
+                                ptt_hands2>50 && currentbet2==sblind ? ptt_fsbts2 :
+                                ptt_hands3>50 && currentbet3==sblind ? ptt_fsbts3 :
+                                ptt_hands4>50 && currentbet4==sblind ? ptt_fsbts4 :
+                                ptt_hands5>50 && currentbet5==sblind ? ptt_fsbts5 :
+                                ptt_hands6>50 && currentbet6==sblind ? ptt_fsbts6 :
+                                ptt_hands7>50 && currentbet7==sblind ? ptt_fsbts7 :
+                                ptt_hands8>50 && currentbet8==sblind ? ptt_fsbts8 :
+                                ptt_hands9>50 && currentbet9==sblind ? ptt_fsbts9 :
+                                0.85 ):
+0.85
+
+##f$PT_preflop_foldBB##
+// Sanity check = 50
+// returns fold to steal of current BB
+f1 && `opponentsblindbits<3  ? (
+                                pt_hands0>50 && userchair!=0 && currentbet0==bblind ? pt_fbbts0 :
+                                pt_hands1>50 && userchair!=1 && currentbet1==bblind ? pt_fbbts1 :
+                                pt_hands2>50 && userchair!=2 && currentbet2==bblind ? pt_fbbts2 :
+                                pt_hands3>50 && userchair!=3 && currentbet3==bblind ? pt_fbbts3 :
+                                pt_hands4>50 && userchair!=4 && currentbet4==bblind ? pt_fbbts4 :
+                                pt_hands5>50 && userchair!=5 && currentbet5==bblind ? pt_fbbts5 :
+                                pt_hands6>50 && userchair!=6 && currentbet6==bblind ? pt_fbbts6 :
+                                pt_hands7>50 && userchair!=7 && currentbet7==bblind ? pt_fbbts7 :
+                                pt_hands8>50 && userchair!=8 && currentbet8==bblind ? pt_fbbts8 :
+                                pt_hands9>50 && userchair!=9 && currentbet9==bblind ? pt_fbbts9 :
+                                0.82 ):
+!f1 && `opponentsblindbits<3  ? (
+                                ptt_hands0>50 && userchair!=0 && currentbet0==bblind ? ptt_fbbts0 :
+                                ptt_hands1>50 && userchair!=1 && currentbet1==bblind ? ptt_fbbts1 :
+                                ptt_hands2>50 && userchair!=2 && currentbet2==bblind ? ptt_fbbts2 :
+                                ptt_hands3>50 && userchair!=3 && currentbet3==bblind ? ptt_fbbts3 :
+                                ptt_hands4>50 && userchair!=4 && currentbet4==bblind ? ptt_fbbts4 :
+                                ptt_hands5>50 && userchair!=5 && currentbet5==bblind ? ptt_fbbts5 :
+                                ptt_hands6>50 && userchair!=6 && currentbet6==bblind ? ptt_fbbts6 :
+                                ptt_hands7>50 && userchair!=7 && currentbet7==bblind ? ptt_fbbts7 :
+                                ptt_hands8>50 && userchair!=8 && currentbet8==bblind ? ptt_fbbts8 :
+                                ptt_hands9>50 && userchair!=9 && currentbet9==bblind ? ptt_fbbts9 :
+                                0.82 ):
+0.82
+
+##f$PT_postflop_aggro_flop##
+// Sanity check = 50
+// returns aggresion on flop
+f1 && `opponentsplayingbits==1 ? (
+                                  pt_hands0>50 && (opponentsplayingbits>>0&1) ? pt_aggf0 :
+                                  pt_hands1>50 && (opponentsplayingbits>>1&1) ? pt_aggf1 :
+                                  pt_hands2>50 && (opponentsplayingbits>>2&1) ? pt_aggf2 :
+                                  pt_hands3>50 && (opponentsplayingbits>>3&1) ? pt_aggf3 :
+                                  pt_hands4>50 && (opponentsplayingbits>>4&1) ? pt_aggf4 :
+                                  pt_hands5>50 && (opponentsplayingbits>>5&1) ? pt_aggf5 :
+                                  pt_hands6>50 && (opponentsplayingbits>>6&1) ? pt_aggf6 :
+                                  pt_hands7>50 && (opponentsplayingbits>>7&1) ? pt_aggf7 :
+                                  pt_hands8>50 && (opponentsplayingbits>>8&1) ? pt_aggf8 :
+                                  pt_hands9>50 && (opponentsplayingbits>>9&1) ? pt_aggf9 :
+                                  1.25):
+!f1 && `opponentsplayingbits==1 ? ( 
+                                   ptt_hands0>50 && (opponentsplayingbits>>0&1) ? ptt_aggf0 :
+                                   ptt_hands1>50 && (opponentsplayingbits>>1&1) ? ptt_aggf1 :
+                                   ptt_hands2>50 && (opponentsplayingbits>>2&1) ? ptt_aggf2 :
+                                   ptt_hands3>50 && (opponentsplayingbits>>3&1) ? ptt_aggf3 :
+                                   ptt_hands4>50 && (opponentsplayingbits>>4&1) ? ptt_aggf4 :
+                                   ptt_hands5>50 && (opponentsplayingbits>>5&1) ? ptt_aggf5 :
+                                   ptt_hands6>50 && (opponentsplayingbits>>6&1) ? ptt_aggf6 :
+                                   ptt_hands7>50 && (opponentsplayingbits>>7&1) ? ptt_aggf7 :
+                                   ptt_hands8>50 && (opponentsplayingbits>>8&1) ? ptt_aggf8 :
+                                   ptt_hands9>50 && (opponentsplayingbits>>9&1) ? ptt_aggf9 :
+                                   1.25):
+1.25
+
+##f$PT_postflop_aggro_turn##
+// Sanity check = 70
+// returns aggresition turn
+f1 &&`opponentsplayingbits==1 ? (
+                                 pt_hands0>70 && (opponentsplayingbits>>0&1) ? pt_aggt0 :
+                                 pt_hands1>70 && (opponentsplayingbits>>1&1) ? pt_aggt1 :
+                                 pt_hands2>70 && (opponentsplayingbits>>2&1) ? pt_aggt2 :
+                                 pt_hands3>70 && (opponentsplayingbits>>3&1) ? pt_aggt3 :
+                                 pt_hands4>70 && (opponentsplayingbits>>4&1) ? pt_aggt4 :
+                                 pt_hands5>70 && (opponentsplayingbits>>5&1) ? pt_aggt5 :
+                                 pt_hands6>70 && (opponentsplayingbits>>6&1) ? pt_aggt6 :
+                                 pt_hands7>70 && (opponentsplayingbits>>7&1) ? pt_aggt7 :
+                                 pt_hands8>70 && (opponentsplayingbits>>8&1) ? pt_aggt8 :
+                                 pt_hands9>70 && (opponentsplayingbits>>9&1) ? pt_aggt9 :
+                                 1.25):
+!f1 &&`opponentsplayingbits==1 ? (
+                                 ptt_hands0>70 && (opponentsplayingbits>>0&1) ? ptt_aggt0 :
+                                 ptt_hands1>70 && (opponentsplayingbits>>1&1) ? ptt_aggt1 :
+                                 ptt_hands2>70 && (opponentsplayingbits>>2&1) ? ptt_aggt2 :
+                                 ptt_hands3>70 && (opponentsplayingbits>>3&1) ? ptt_aggt3 :
+                                 ptt_hands4>70 && (opponentsplayingbits>>4&1) ? ptt_aggt4 :
+                                 ptt_hands5>70 && (opponentsplayingbits>>5&1) ? ptt_aggt5 :
+                                 ptt_hands6>70 && (opponentsplayingbits>>6&1) ? ptt_aggt6 :
+                                 ptt_hands7>70 && (opponentsplayingbits>>7&1) ? ptt_aggt7 :
+                                 ptt_hands8>70 && (opponentsplayingbits>>8&1) ? ptt_aggt8 :
+                                 ptt_hands9>70 && (opponentsplayingbits>>9&1) ? ptt_aggt9 :
+                                 1.25):
+1.25
+
+##f$PT_postflop_aggro_river##
+// Sanity check = 100
+// returns aggresion river
+f1 &&`opponentsplayingbits==1 ? (
+                                 pt_hands0>100 && (opponentsplayingbits>>0&1) ? pt_aggr0 :
+                                 pt_hands1>100 && (opponentsplayingbits>>1&1) ? pt_aggr1 :
+                                 pt_hands2>100 && (opponentsplayingbits>>2&1) ? pt_aggr2 :
+                                 pt_hands3>100 && (opponentsplayingbits>>3&1) ? pt_aggr3 :
+                                 pt_hands4>100 && (opponentsplayingbits>>4&1) ? pt_aggr4 :
+                                 pt_hands5>100 && (opponentsplayingbits>>5&1) ? pt_aggr5 :
+                                 pt_hands6>100 && (opponentsplayingbits>>6&1) ? pt_aggr6 :
+                                 pt_hands7>100 && (opponentsplayingbits>>7&1) ? pt_aggr7 :
+                                 pt_hands8>100 && (opponentsplayingbits>>8&1) ? pt_aggr8 :
+                                 pt_hands9>100 && (opponentsplayingbits>>9&1) ? pt_aggr9 :
+                                 1.25):
+!f1 &&`opponentsplayingbits==1 ? (
+                                 ptt_hands0>100 && (opponentsplayingbits>>0&1) ? ptt_aggr0 :
+                                 ptt_hands1>100 && (opponentsplayingbits>>1&1) ? ptt_aggr1 :
+                                 ptt_hands2>100 && (opponentsplayingbits>>2&1) ? ptt_aggr2 :
+                                 ptt_hands3>100 && (opponentsplayingbits>>3&1) ? ptt_aggr3 :
+                                 ptt_hands4>100 && (opponentsplayingbits>>4&1) ? ptt_aggr4 :
+                                 ptt_hands5>100 && (opponentsplayingbits>>5&1) ? ptt_aggr5 :
+                                 ptt_hands6>100 && (opponentsplayingbits>>6&1) ? ptt_aggr6 :
+                                 ptt_hands7>100 && (opponentsplayingbits>>7&1) ? ptt_aggr7 :
+                                 ptt_hands8>100 && (opponentsplayingbits>>8&1) ? ptt_aggr8 :
+                                 ptt_hands9>100 && (opponentsplayingbits>>9&1) ? ptt_aggr9 :
+                                 1.25):
+1.25
+
+##f$PT_postflop_fold_flop##
+// Sanity check = 50
+// returns fold to bet on flop
+f1 &&`opponentsplayingbits==1 ? (
+                                 pt_hands0>50 && (opponentsplayingbits>>0&1) ? (pt_floppct0-pt_turnpct0)/pt_floppct0 :
+                                 pt_hands1>50 && (opponentsplayingbits>>1&1) ? (pt_floppct1-pt_turnpct1)/pt_floppct1 :
+                                 pt_hands2>50 && (opponentsplayingbits>>2&1) ? (pt_floppct2-pt_turnpct2)/pt_floppct2 :
+                                 pt_hands3>50 && (opponentsplayingbits>>3&1) ? (pt_floppct3-pt_turnpct3)/pt_floppct3 :
+                                 pt_hands4>50 && (opponentsplayingbits>>4&1) ? (pt_floppct4-pt_turnpct4)/pt_floppct4 :
+                                 pt_hands5>50 && (opponentsplayingbits>>5&1) ? (pt_floppct5-pt_turnpct5)/pt_floppct5 :
+                                 pt_hands6>50 && (opponentsplayingbits>>6&1) ? (pt_floppct6-pt_turnpct6)/pt_floppct6 :
+                                 pt_hands7>50 && (opponentsplayingbits>>7&1) ? (pt_floppct7-pt_turnpct7)/pt_floppct7 :
+                                 pt_hands8>50 && (opponentsplayingbits>>8&1) ? (pt_floppct8-pt_turnpct8)/pt_floppct8 :
+                                 pt_hands9>50 && (opponentsplayingbits>>9&1) ? (pt_floppct9-pt_turnpct9)/pt_floppct9 :
+                                 (floppct-turnpct)/floppct):
+!f1 &&`opponentsplayingbits==1 ? (
+                                 ptt_hands0>50 && (opponentsplayingbits>>0&1) ? (ptt_floppct0-ptt_turnpct0)/ptt_floppct0 :
+                                 ptt_hands1>50 && (opponentsplayingbits>>1&1) ? (ptt_floppct1-ptt_turnpct1)/ptt_floppct1 :
+                                 ptt_hands2>50 && (opponentsplayingbits>>2&1) ? (ptt_floppct2-ptt_turnpct2)/ptt_floppct2 :
+                                 ptt_hands3>50 && (opponentsplayingbits>>3&1) ? (ptt_floppct3-ptt_turnpct3)/ptt_floppct3 :
+                                 ptt_hands4>50 && (opponentsplayingbits>>4&1) ? (ptt_floppct4-ptt_turnpct4)/ptt_floppct4 :
+                                 ptt_hands5>50 && (opponentsplayingbits>>5&1) ? (ptt_floppct5-ptt_turnpct5)/ptt_floppct5 :
+                                 ptt_hands6>50 && (opponentsplayingbits>>6&1) ? (ptt_floppct6-ptt_turnpct6)/ptt_floppct6 :
+                                 ptt_hands7>50 && (opponentsplayingbits>>7&1) ? (ptt_floppct7-ptt_turnpct7)/ptt_floppct7 :
+                                 ptt_hands8>50 && (opponentsplayingbits>>8&1) ? (ptt_floppct8-ptt_turnpct8)/ptt_floppct8 :
+                                 ptt_hands9>50 && (opponentsplayingbits>>9&1) ? (ptt_floppct9-ptt_turnpct9)/ptt_floppct9 :
+                                 (floppct-turnpct)/floppct):
+(floppct-turnpct)/floppct
+
+##f$PT_postflop_fold_turn##
+// Sanity check = 70
+// rerurns fold to bet on turn
+f1 && `opponentsplayingbits==1 ? (
+                                 pt_hands0>70 && (opponentsplayingbits>>0&1) ? (pt_turnpct0-pt_riverpct0)/pt_turnpct0 :
+                                 pt_hands1>70 && (opponentsplayingbits>>1&1) ? (pt_turnpct1-pt_riverpct1)/pt_turnpct1 :
+                                 pt_hands2>70 && (opponentsplayingbits>>2&1) ? (pt_turnpct2-pt_riverpct2)/pt_turnpct2 :
+                                 pt_hands3>70 && (opponentsplayingbits>>3&1) ? (pt_turnpct3-pt_riverpct3)/pt_turnpct3 :
+                                 pt_hands4>70 && (opponentsplayingbits>>4&1) ? (pt_turnpct4-pt_riverpct4)/pt_turnpct4 :
+                                 pt_hands5>70 && (opponentsplayingbits>>5&1) ? (pt_turnpct5-pt_riverpct5)/pt_turnpct5 :
+                                 pt_hands6>70 && (opponentsplayingbits>>6&1) ? (pt_turnpct6-pt_riverpct6)/pt_turnpct6 :
+                                 pt_hands7>70 && (opponentsplayingbits>>7&1) ? (pt_turnpct7-pt_riverpct7)/pt_turnpct7 :
+                                 pt_hands8>70 && (opponentsplayingbits>>8&1) ? (pt_turnpct8-pt_riverpct8)/pt_turnpct8 :
+                                 pt_hands9>70 && (opponentsplayingbits>>9&1) ? (pt_turnpct9-pt_riverpct9)/pt_turnpct9 :
+                                 (turnpct-riverpct)/turnpct):
+!f1 && `opponentsplayingbits==1 ? (
+                                   ptt_hands0>70 && (opponentsplayingbits>>0&1) ? (ptt_turnpct0-ptt_riverpct0)/ptt_turnpct0 :
+                                   ptt_hands1>70 && (opponentsplayingbits>>1&1) ? (ptt_turnpct1-ptt_riverpct1)/ptt_turnpct1 :
+                                   ptt_hands2>70 && (opponentsplayingbits>>2&1) ? (ptt_turnpct2-ptt_riverpct2)/ptt_turnpct2 :
+                                   ptt_hands3>70 && (opponentsplayingbits>>3&1) ? (ptt_turnpct3-ptt_riverpct3)/ptt_turnpct3 :
+                                   ptt_hands4>70 && (opponentsplayingbits>>4&1) ? (ptt_turnpct4-ptt_riverpct4)/ptt_turnpct4 :
+                                   ptt_hands5>70 && (opponentsplayingbits>>5&1) ? (ptt_turnpct5-ptt_riverpct5)/ptt_turnpct5 :
+                                   ptt_hands6>70 && (opponentsplayingbits>>6&1) ? (ptt_turnpct6-ptt_riverpct6)/ptt_turnpct6 :
+                                   ptt_hands7>70 && (opponentsplayingbits>>7&1) ? (ptt_turnpct7-ptt_riverpct7)/ptt_turnpct7 :
+                                   ptt_hands8>70 && (opponentsplayingbits>>8&1) ? (ptt_turnpct8-ptt_riverpct8)/ptt_turnpct8 :
+                                   ptt_hands9>70 && (opponentsplayingbits>>9&1) ? (ptt_turnpct9-ptt_riverpct9)/ptt_turnpct9 :
+                                   (turnpct-riverpct)/turnpct):
+
+(turnpct-riverpct)/turnpct
+
+##f$PT_postflop_fold_river##
+// Sanity check = 100
+// returns fold to bet on river
+f1 && `opponentsplayingbits==1 ? (
+                                  pt_hands0>100 && (opponentsplayingbits>>0&1) ? (pt_riverpct0-(pt_wsdp0*pt_vpip0))/pt_riverpct0 :
+                                  pt_hands1>100 && (opponentsplayingbits>>1&1) ? (pt_riverpct1-(pt_wsdp1*pt_vpip1))/pt_riverpct1 :
+                                  pt_hands2>100 && (opponentsplayingbits>>2&1) ? (pt_riverpct2-(pt_wsdp2*pt_vpip2))/pt_riverpct2 :
+                                  pt_hands3>100 && (opponentsplayingbits>>3&1) ? (pt_riverpct3-(pt_wsdp3*pt_vpip3))/pt_riverpct4 :
+                                  pt_hands4>100 && (opponentsplayingbits>>4&1) ? (pt_riverpct4-(pt_wsdp4*pt_vpip4))/pt_riverpct4 :
+                                  pt_hands5>100 && (opponentsplayingbits>>5&1) ? (pt_riverpct5-(pt_wsdp5*pt_vpip5))/pt_riverpct5 :
+                                  pt_hands6>100 && (opponentsplayingbits>>6&1) ? (pt_riverpct6-(pt_wsdp6*pt_vpip6))/pt_riverpct6 :
+                                  pt_hands7>100 && (opponentsplayingbits>>7&1) ? (pt_riverpct7-(pt_wsdp7*pt_vpip7))/pt_riverpct7 :
+                                  pt_hands8>100 && (opponentsplayingbits>>8&1) ? (pt_riverpct8-(pt_wsdp8*pt_vpip8))/pt_riverpct8 :
+                                  pt_hands9>100 && (opponentsplayingbits>>9&1) ? (pt_riverpct9-(pt_wsdp9*pt_vpip9))/pt_riverpct9 :
+                                  0.22):
+!f1 && `opponentsplayingbits==1 ? (
+                                  ptt_hands0>100 && (opponentsplayingbits>>0&1) ? (ptt_riverpct0-(ptt_wsdp0*ptt_vpip0))/ptt_riverpct0 :
+                                  ptt_hands1>100 && (opponentsplayingbits>>1&1) ? (ptt_riverpct1-(ptt_wsdp1*ptt_vpip1))/ptt_riverpct1 :
+                                  ptt_hands2>100 && (opponentsplayingbits>>2&1) ? (ptt_riverpct2-(ptt_wsdp2*ptt_vpip2))/ptt_riverpct2 :
+                                  ptt_hands3>100 && (opponentsplayingbits>>3&1) ? (ptt_riverpct3-(ptt_wsdp3*ptt_vpip3))/ptt_riverpct3 :
+                                  ptt_hands4>100 && (opponentsplayingbits>>4&1) ? (ptt_riverpct4-(ptt_wsdp4*ptt_vpip4))/ptt_riverpct4 :
+                                  ptt_hands5>100 && (opponentsplayingbits>>5&1) ? (ptt_riverpct5-(ptt_wsdp5*ptt_vpip5))/ptt_riverpct5 :
+                                  ptt_hands6>100 && (opponentsplayingbits>>6&1) ? (ptt_riverpct6-(ptt_wsdp6*ptt_vpip6))/ptt_riverpct6 :
+                                  ptt_hands7>100 && (opponentsplayingbits>>7&1) ? (ptt_riverpct7-(ptt_wsdp7*ptt_vpip7))/ptt_riverpct7 :
+                                  ptt_hands8>100 && (opponentsplayingbits>>8&1) ? (ptt_riverpct8-(ptt_wsdp8*ptt_vpip8))/ptt_riverpct8 :
+                                  ptt_hands9>100 && (opponentsplayingbits>>9&1) ? (ptt_riverpct9-(ptt_wsdp9*ptt_vpip9))/ptt_riverpct9 :
+                                  0.22):
+
+0.22
+
+##f$PT_postflop_WTSD##
+// Sanity check = 100
+// returns went to showdown
+f1 && `opponentsplayingbits==1 ? (
+                                  pt_hands0>100 && (opponentsplayingbits>>0&1) ? pt_wsdp0 :
+                                  pt_hands1>100 && (opponentsplayingbits>>1&1) ? pt_wsdp1 :
+                                  pt_hands2>100 && (opponentsplayingbits>>2&1) ? pt_wsdp2 :
+                                  pt_hands3>100 && (opponentsplayingbits>>3&1) ? pt_wsdp4 :
+                                  pt_hands4>100 && (opponentsplayingbits>>4&1) ? pt_wsdp4 :
+                                  pt_hands5>100 && (opponentsplayingbits>>5&1) ? pt_wsdp5 :
+                                  pt_hands6>100 && (opponentsplayingbits>>6&1) ? pt_wsdp6 :
+                                  pt_hands7>100 && (opponentsplayingbits>>7&1) ? pt_wsdp7 :
+                                  pt_hands8>100 && (opponentsplayingbits>>8&1) ? pt_wsdp8 :
+                                  pt_hands9>100 && (opponentsplayingbits>>9&1) ? pt_wsdp9 :
+                                  0.29):
+!f1 && `opponentsplayingbits==1 ? (
+                                  ptt_hands0>100 && (opponentsplayingbits>>0&1) ? pt_wsdp0 :
+                                  ptt_hands1>100 && (opponentsplayingbits>>1&1) ? pt_wsdp1 :
+                                  ptt_hands2>100 && (opponentsplayingbits>>2&1) ? pt_wsdp2 :
+                                  ptt_hands3>100 && (opponentsplayingbits>>3&1) ? pt_wsdp3 :
+                                  ptt_hands4>100 && (opponentsplayingbits>>4&1) ? pt_wsdp4 :
+                                  ptt_hands5>100 && (opponentsplayingbits>>5&1) ? pt_wsdp5 :
+                                  ptt_hands6>100 && (opponentsplayingbits>>6&1) ? pt_wsdp6 :
+                                  ptt_hands7>100 && (opponentsplayingbits>>7&1) ? pt_wsdp7 :
+                                  ptt_hands8>100 && (opponentsplayingbits>>8&1) ? pt_wsdp8 :
+                                  ptt_hands9>100 && (opponentsplayingbits>>9&1) ? pt_wsdp9 :
+                                  0.29):
+
+0.29
+
+##f$PT_postflop_W$SD##
+// Sanity check == 200
+// return win at showdown
+f1 && `opponentsplayingbits==1 ? (
+                                  pt_hands0>100 && (opponentsplayingbits>>0&1) ? pt_wssd0 :
+                                  pt_hands1>100 && (opponentsplayingbits>>1&1) ? pt_wssd1 :
+                                  pt_hands2>100 && (opponentsplayingbits>>2&1) ? pt_wssd2 :
+                                  pt_hands3>100 && (opponentsplayingbits>>3&1) ? pt_wssd4 :
+                                  pt_hands4>100 && (opponentsplayingbits>>4&1) ? pt_wssd4 :
+                                  pt_hands5>100 && (opponentsplayingbits>>5&1) ? pt_wssd5 :
+                                  pt_hands6>100 && (opponentsplayingbits>>6&1) ? pt_wssd6 :
+                                  pt_hands7>100 && (opponentsplayingbits>>7&1) ? pt_wssd7 :
+                                  pt_hands8>100 && (opponentsplayingbits>>8&1) ? pt_wssd8 :
+                                  pt_hands9>100 && (opponentsplayingbits>>9&1) ? pt_wssd9 :
+                                  0.50):
+!f1 && `opponentsplayingbits==1 ? (
+                                  ptt_hands0>100 && (opponentsplayingbits>>0&1) ? pt_wssd0 :
+                                  ptt_hands1>100 && (opponentsplayingbits>>1&1) ? pt_wssd1 :
+                                  ptt_hands2>100 && (opponentsplayingbits>>2&1) ? pt_wssd2 :
+                                  ptt_hands3>100 && (opponentsplayingbits>>3&1) ? pt_wssd3 :
+                                  ptt_hands4>100 && (opponentsplayingbits>>4&1) ? pt_wssd4 :
+                                  ptt_hands5>100 && (opponentsplayingbits>>5&1) ? pt_wssd5 :
+                                  ptt_hands6>100 && (opponentsplayingbits>>6&1) ? pt_wssd6 :
+                                  ptt_hands7>100 && (opponentsplayingbits>>7&1) ? pt_wssd7 :
+                                  ptt_hands8>100 && (opponentsplayingbits>>8&1) ? pt_wssd8 :
+                                  ptt_hands9>100 && (opponentsplayingbits>>9&1) ? pt_wssd9 :
+                                  0.50):
+
+0.50
+
+##f$PT_total_aggro##
+// Sanity check = 30
+// returns total aggresion
+f1 && `opponentsplayingbits==1 ? (
+                                  pt_hands0>30 && (opponentsplayingbits>>0&1) ? pt_aggtot0 :
+                                  pt_hands1>30 && (opponentsplayingbits>>1&1) ? pt_aggtot1 :
+                                  pt_hands2>30 && (opponentsplayingbits>>2&1) ? pt_aggtot2 :
+                                  pt_hands3>30 && (opponentsplayingbits>>3&1) ? pt_aggtot3 :
+                                  pt_hands4>30 && (opponentsplayingbits>>4&1) ? pt_aggtot4 :
+                                  pt_hands5>30 && (opponentsplayingbits>>5&1) ? pt_aggtot5 :
+                                  pt_hands6>30 && (opponentsplayingbits>>6&1) ? pt_aggtot6 :
+                                  pt_hands7>30 && (opponentsplayingbits>>7&1) ? pt_aggtot7 :
+                                  pt_hands8>30 && (opponentsplayingbits>>8&1) ? pt_aggtot8 :
+                                  pt_hands9>30 && (opponentsplayingbits>>9&1) ? pt_aggtot9 :
+                                  1.25):
+!f1 && `opponentsplayingbits==1 ? ( 
+                                   ptt_hands0>30 && (opponentsplayingbits>>0&1) ? ptt_aggtot0 :
+                                   ptt_hands1>30 && (opponentsplayingbits>>1&1) ? ptt_aggtot1 :
+                                   ptt_hands2>30 && (opponentsplayingbits>>2&1) ? ptt_aggtot2 :
+                                   ptt_hands3>30 && (opponentsplayingbits>>3&1) ? ptt_aggtot3 :
+                                   ptt_hands4>30 && (opponentsplayingbits>>4&1) ? ptt_aggtot4 :
+                                   ptt_hands5>30 && (opponentsplayingbits>>5&1) ? ptt_aggtot5 :
+                                   ptt_hands6>30 && (opponentsplayingbits>>6&1) ? ptt_aggtot6 :
+                                   ptt_hands7>30 && (opponentsplayingbits>>7&1) ? ptt_aggtot7 :
+                                   ptt_hands8>30 && (opponentsplayingbits>>8&1) ? ptt_aggtot8 :
+                                   ptt_hands9>30 && (opponentsplayingbits>>9&1) ? ptt_aggtot9 :
+                                   1.25):
+1.25
+
+##f$PT_extra_aa_info##
+// this should display any extra information
+// which can be obtained though PT's icon
+// N.B. CASH OLNY
+// TODO: WRITE WORKIN FUNCTION
+
+##f$PT_extra_icon_3Bet##
+// return 
+// 1. 3bet < 5
+// 2. 5<= 3bet <=12
+f1 && f$BettingAction_Single_Raiser_Before_Us==1 ? (
+                                  pt_hands0>30 && (f$Bits_Players_Truely_Raising_Preflop>>0&1) ? pt_icon0 :
+                                  pt_hands1>30 && (f$Bits_Players_Truely_Raising_Preflop>>1&1) ? pt_icon1 :
+                                  pt_hands2>30 && (f$Bits_Players_Truely_Raising_Preflop>>2&1) ? pt_icon2 :
+                                  pt_hands3>30 && (f$Bits_Players_Truely_Raising_Preflop>>3&1) ? pt_icon3 :
+                                  pt_hands4>30 && (f$Bits_Players_Truely_Raising_Preflop>>4&1) ? pt_icon4 :
+                                  pt_hands5>30 && (f$Bits_Players_Truely_Raising_Preflop>>5&1) ? pt_icon5 :
+                                  pt_hands6>30 && (f$Bits_Players_Truely_Raising_Preflop>>6&1) ? pt_icon6 :
+                                  pt_hands7>30 && (f$Bits_Players_Truely_Raising_Preflop>>7&1) ? pt_icon7 :
+                                  pt_hands8>30 && (f$Bits_Players_Truely_Raising_Preflop>>8&1) ? pt_icon8 :
+                                  pt_hands9>30 && (f$Bits_Players_Truely_Raising_Preflop>>9&1) ? pt_icon9 :
+                                  0 ):
+!f1 && f$BettingAction_Single_Raiser_Before_Us==1 ? (
+                                   ptt_hands0>30 && (f$Bits_Players_Truely_Raising_Preflop>>0&1) ? ptt_icon0 :
+                                   ptt_hands1>30 && (f$Bits_Players_Truely_Raising_Preflop>>1&1) ? ptt_icon1 :
+                                   ptt_hands2>30 && (f$Bits_Players_Truely_Raising_Preflop>>2&1) ? ptt_icon2 :
+                                   ptt_hands3>30 && (f$Bits_Players_Truely_Raising_Preflop>>3&1) ? ptt_icon3 :
+                                   ptt_hands4>30 && (f$Bits_Players_Truely_Raising_Preflop>>4&1) ? ptt_icon4 :
+                                   ptt_hands5>30 && (f$Bits_Players_Truely_Raising_Preflop>>5&1) ? ptt_icon5 :
+                                   ptt_hands6>30 && (f$Bits_Players_Truely_Raising_Preflop>>6&1) ? ptt_icon6 :
+                                   ptt_hands7>30 && (f$Bits_Players_Truely_Raising_Preflop>>7&1) ? ptt_icon7 :
+                                   ptt_hands8>30 && (f$Bits_Players_Truely_Raising_Preflop>>8&1) ? ptt_icon8 :
+                                   ptt_hands9>30 && (f$Bits_Players_Truely_Raising_Preflop>>9&1) ? ptt_icon9 :
+                                  0 ):
+0
