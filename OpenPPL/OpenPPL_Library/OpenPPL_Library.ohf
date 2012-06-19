@@ -1267,7 +1267,7 @@ f$OpenPPL_ERROR_Betround_Out_Of_Range
     && f$OpenPPL_BetSizeForPercentagedPotsizeBet >= f$OpenPPL_MaximumBetsizeInDollars]
 	
 ##f$OpenPPL_MaximumBetsizeInDollars##
-(balance + currentbet)
+f$OpenPPL_MaximumPossibleBetsizeIndollars
 
 ##f$OpenPPL_BetSizeForBetHalfPot##
 // Calculated in dollars and with raise-to-semantics
@@ -1986,6 +1986,31 @@ f$OpenPPL_ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap
 (f$OpenPPL_SmallBlindChair == 9) ? (currentbet9 / bet) :
 f$OpenPPL_ERROR_SmallBlindChair_Not_Recognized__Check_Your_TableMap
 
+##f$OpenPPL_MaximumPossibleBetsizeIndollars##
+(balance + currentbet)
+
+##f$OpenPPL_SidePotInDollars##
+// Money in the side-pot, i.e. the money we don't compete for.
+  [(currentbet0 > f$OpenPPL_MaximumPossibleBetsizeIndollars) ? currentbet0 - f$OpenPPL_MaximumPossibleBetsizeIndollars : 0]
++ [(currentbet1 > f$OpenPPL_MaximumPossibleBetsizeIndollars) ? currentbet1 - f$OpenPPL_MaximumPossibleBetsizeIndollars : 0]
++ [(currentbet2 > f$OpenPPL_MaximumPossibleBetsizeIndollars) ? currentbet2 - f$OpenPPL_MaximumPossibleBetsizeIndollars : 0]
++ [(currentbet3 > f$OpenPPL_MaximumPossibleBetsizeIndollars) ? currentbet3 - f$OpenPPL_MaximumPossibleBetsizeIndollars : 0]
++ [(currentbet4 > f$OpenPPL_MaximumPossibleBetsizeIndollars) ? currentbet4 - f$OpenPPL_MaximumPossibleBetsizeIndollars : 0]
++ [(currentbet5 > f$OpenPPL_MaximumPossibleBetsizeIndollars) ? currentbet5 - f$OpenPPL_MaximumPossibleBetsizeIndollars : 0]
++ [(currentbet6 > f$OpenPPL_MaximumPossibleBetsizeIndollars) ? currentbet6 - f$OpenPPL_MaximumPossibleBetsizeIndollars : 0]
++ [(currentbet7 > f$OpenPPL_MaximumPossibleBetsizeIndollars) ? currentbet7 - f$OpenPPL_MaximumPossibleBetsizeIndollars : 0]
++ [(currentbet8 > f$OpenPPL_MaximumPossibleBetsizeIndollars) ? currentbet8 - f$OpenPPL_MaximumPossibleBetsizeIndollars : 0]
++ [(currentbet9 > f$OpenPPL_MaximumPossibleBetsizeIndollars) ? currentbet9 - f$OpenPPL_MaximumPossibleBetsizeIndollars : 0]
+
+##f$OpenPPL_SidePot##
+// Money in the side-pot, i.e. the money we don't compete for (measured in big blinds)
+(bblind > 0) ? (f$OpenPPL_SidePotInDollars / bblind) : 0
+
+##f$OpenPPL_EffectivePotsize##
+// Money in the pot without money in the side-pot if an opponent puts us allin,
+// ie. the money we compete for (measured in big blinds).
+(f$OpenPPL_Potsize - f$OpenPPL_SidePot)
+
 ##f$OpenPPL_MaxStillToActStackSizeAfterSmallBlind##
 // Only one player behind SB, so it is easy
 f$OpenPPL_BigBlindStartingStackSize
@@ -2096,16 +2121,16 @@ f$OpenPPL_ERROR_No_Opponents_Detected__Check_Your_TableMap]]
 ##f$OpenPPL_OpponentsWithHigherStack##
 // No need to tinker with memory symbols here,
 // this logic is valid for all betting rounds.
-  (((balance0 + currentbet0) > (balance + currentbet)) ? 1: 0)
-+ (((balance1 + currentbet1) > (balance + currentbet)) ? 1: 0)
-+ (((balance2 + currentbet2) > (balance + currentbet)) ? 1: 0)
-+ (((balance3 + currentbet3) > (balance + currentbet)) ? 1: 0)
-+ (((balance4 + currentbet4) > (balance + currentbet)) ? 1: 0)
-+ (((balance5 + currentbet5) > (balance + currentbet)) ? 1: 0)
-+ (((balance6 + currentbet6) > (balance + currentbet)) ? 1: 0)
-+ (((balance7 + currentbet7) > (balance + currentbet)) ? 1: 0)
-+ (((balance8 + currentbet8) > (balance + currentbet)) ? 1: 0)
-+ (((balance9 + currentbet9) > (balance + currentbet)) ? 1: 0)
+  (((balance0 + currentbet0) > f$OpenPPL_MaximumPossibleBetsizeIndollars) ? 1: 0)
++ (((balance1 + currentbet1) > f$OpenPPL_MaximumPossibleBetsizeIndollars) ? 1: 0)
++ (((balance2 + currentbet2) > f$OpenPPL_MaximumPossibleBetsizeIndollars) ? 1: 0)
++ (((balance3 + currentbet3) > f$OpenPPL_MaximumPossibleBetsizeIndollars) ? 1: 0)
++ (((balance4 + currentbet4) > f$OpenPPL_MaximumPossibleBetsizeIndollars) ? 1: 0)
++ (((balance5 + currentbet5) > f$OpenPPL_MaximumPossibleBetsizeIndollars) ? 1: 0)
++ (((balance6 + currentbet6) > f$OpenPPL_MaximumPossibleBetsizeIndollars) ? 1: 0)
++ (((balance7 + currentbet7) > f$OpenPPL_MaximumPossibleBetsizeIndollars) ? 1: 0)
++ (((balance8 + currentbet8) > f$OpenPPL_MaximumPossibleBetsizeIndollars) ? 1: 0)
++ (((balance9 + currentbet9) > f$OpenPPL_MaximumPossibleBetsizeIndollars) ? 1: 0)
 
 ##f$OpenPPL_CalculateStartingStackSize##
 // Precondition: first hand, preflop
@@ -4008,16 +4033,16 @@ nopponentsplaying
 (nplayersround2 - 1)
 
 ##f$OpenPPL_OpponentsWithLowerStack##
-  (((balance0 + currentbet0) < (balance + currentbet)) && (playersseatedbits & 0x0001) ? 1:0)
-+ (((balance1 + currentbet1) < (balance + currentbet)) && (playersseatedbits & 0x0002) ? 1:0)
-+ (((balance2 + currentbet2) < (balance + currentbet)) && (playersseatedbits & 0x0004) ? 1:0)
-+ (((balance3 + currentbet3) < (balance + currentbet)) && (playersseatedbits & 0x0008) ? 1:0)
-+ (((balance4 + currentbet4) < (balance + currentbet)) && (playersseatedbits & 0x0010) ? 1:0)
-+ (((balance5 + currentbet5) < (balance + currentbet)) && (playersseatedbits & 0x0020) ? 1:0)
-+ (((balance6 + currentbet6) < (balance + currentbet)) && (playersseatedbits & 0x0040) ? 1:0)
-+ (((balance7 + currentbet7) < (balance + currentbet)) && (playersseatedbits & 0x0080) ? 1:0)
-+ (((balance8 + currentbet8) < (balance + currentbet)) && (playersseatedbits & 0x0100) ? 1:0)
-+ (((balance9 + currentbet9) < (balance + currentbet)) && (playersseatedbits & 0x0200) ? 1:0)
+  (((balance0 + currentbet0) < f$OpenPPL_MaximumPossibleBetsizeIndollars) && (playersseatedbits & 0x0001) ? 1:0)
++ (((balance1 + currentbet1) < f$OpenPPL_MaximumPossibleBetsizeIndollars) && (playersseatedbits & 0x0002) ? 1:0)
++ (((balance2 + currentbet2) < f$OpenPPL_MaximumPossibleBetsizeIndollars) && (playersseatedbits & 0x0004) ? 1:0)
++ (((balance3 + currentbet3) < f$OpenPPL_MaximumPossibleBetsizeIndollars) && (playersseatedbits & 0x0008) ? 1:0)
++ (((balance4 + currentbet4) < f$OpenPPL_MaximumPossibleBetsizeIndollars) && (playersseatedbits & 0x0010) ? 1:0)
++ (((balance5 + currentbet5) < f$OpenPPL_MaximumPossibleBetsizeIndollars) && (playersseatedbits & 0x0020) ? 1:0)
++ (((balance6 + currentbet6) < f$OpenPPL_MaximumPossibleBetsizeIndollars) && (playersseatedbits & 0x0040) ? 1:0)
++ (((balance7 + currentbet7) < f$OpenPPL_MaximumPossibleBetsizeIndollars) && (playersseatedbits & 0x0080) ? 1:0)
++ (((balance8 + currentbet8) < f$OpenPPL_MaximumPossibleBetsizeIndollars) && (playersseatedbits & 0x0100) ? 1:0)
++ (((balance9 + currentbet9) < f$OpenPPL_MaximumPossibleBetsizeIndollars) && (playersseatedbits & 0x0200) ? 1:0)
 
 ##f$OpenPPL_StillToActPreflop##
 // Precondition: first action, but this gets checked in StillToAct
