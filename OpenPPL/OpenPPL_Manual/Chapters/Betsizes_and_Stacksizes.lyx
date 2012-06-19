@@ -97,7 +97,7 @@ It's up to you, what and how you code.
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="13" columns="3">
+<lyxtabular version="3" rows="14" columns="3">
 <features tabularvalignment="middle">
 <column alignment="left" valignment="top" width="30text%">
 <column alignment="left" valignment="top" width="40text%">
@@ -204,6 +204,38 @@ BigBlindSize
 
 \begin_layout Plain Layout
 The size of the bigblind, usually in dollars
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+None
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+EffectivePotsize
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The effective potsize, but only including the money you really compete for.
+ I.e.
+ large bets by opponents get truncated to the betsize you can call if you
+ go allin.
 \end_layout
 
 \end_inset
@@ -374,6 +406,13 @@ Be careful.
  This affects all potsize-calculations.
  So if somebody bets 1/2-potsize the AmountToCall will be 1/3-potsize afterwards
  for you.
+\end_layout
+
+\begin_layout Remark*
+The pot does also include bets that are larger than your largest possible
+ bet, i.e.
+ money you don't compete for.
+ Consider using EffectivePotsize instead.
 \end_layout
 
 \end_inset
