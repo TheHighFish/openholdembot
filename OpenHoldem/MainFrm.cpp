@@ -230,7 +230,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	SetTimer(ENABLE_BUTTONS_TIMER, 50, 0);
 
 	// Start timer that updates status bar
-	SetTimer(UPDATE_STATUS_BAR_TIMER, 50, 0);
+	SetTimer(UPDATE_STATUS_BAR_TIMER, 500, 0);
 
 	// Start timer that attaches the OH window when the poker window moves
 	SetTimer(ATTACH_WINDOW_TIMER, 20, 0);

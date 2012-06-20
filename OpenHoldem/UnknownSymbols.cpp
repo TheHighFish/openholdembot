@@ -70,6 +70,28 @@ char *outdated_symbols_ptt =
 	"and fetches cash-game or tournament-stats automatically,\n"
 	"provided your c0istournament-symbol returns the correct value.";
 
+char *outdated_symbols_lists =
+	"The \"list\" symbols got removed from the code-base, e.g.\n"
+	"  * islistalli, ...\n"
+	"  * isemptylistcall, ...\n"
+	"  * nlistmin, nlistmax, ...\n"
+	"Please refer to the release-notes for more info.";
+
+char *outdated_symbols_tablemap =
+	"The following tablemap-symbols got removed from the code-base:\n"
+	"  * swagdelay\n"
+	"  * allidelay\n"
+	"  * swagtextmethod\n"
+	"  * potmethod\n"
+	"  * activemethod\n"
+	"because there is no need to use them at the formula-level.";
+
+char*outdated_symbols_handstrength =
+   "The handstrength-symbols (\"mh_...\") got removed from the code-base\n"
+   "and moved to an external library (\"mh_str_Handstrength_Library.ohf\")\n"
+   "because technical symbols should be provided by OpenHoldem\n"
+   "and poker-logical symbols should be provided by external libraries.\n";
+	
 void WarnAboutUnknownOrOutdatedSymbol(CString symbol)
 {
 	if ((symbol == "br") || (symbol == "ncps") || (symbol == "nflopc"))
@@ -84,7 +106,7 @@ void WarnAboutUnknownOrOutdatedSymbol(CString symbol)
 	{
 		OH_MessageBox(outdated_symbols_bankroll_rake_defcon, title_outdated_symbol, 0);
 	}
-	else if ((symbol.Left(7) == "friends") >> (symbol.Left(8) == "nfriends"))
+	else if ((symbol.Left(7) == "friends") || (symbol.Left(8) == "nfriends"))
 	{
 		OH_MessageBox(outdated_symbol_friends, title_outdated_symbol, 0);
 	}
@@ -104,6 +126,21 @@ void WarnAboutUnknownOrOutdatedSymbol(CString symbol)
 	else if (symbol.Left(4) == "ptt_")
 	{
 		OH_MessageBox(outdated_symbols_ptt, title_outdated_symbol, 0);
+	}
+	else if ((symbol.Left(6) == "islist") || (symbol.Left(6) == "isemptylist")
+		|| (symbol.Left(5) == "nlist"))
+	{
+		OH_MessageBox(outdated_symbols_lists, title_outdated_symbol, 0);
+	}
+	else if ((symbol.Left(9) == "swagdelay") || (symbol.Left(9) == "allidelay")
+		|| (symbol.Left(8) == "potdelay") || (symbol.Left(14) == "swagtextmethod")
+		|| (symbol.Left(12) == "activemethod"))
+	{
+		OH_MessageBox(outdated_symbols_tablemap, title_outdated_symbol, 0);
+	}
+	else if (symbol.Left(3) == "mh_")
+	{
+		OH_MessageBox(outdated_symbols_handstrength, title_outdated_symbol, 0);
 	}
 	else
 	{
