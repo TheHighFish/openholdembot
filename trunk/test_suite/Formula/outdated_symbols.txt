@@ -5,7 +5,7 @@
 + friendsdealtbits
 + handnumber
 + islistcall
-+ semptylistrais
++ isemptylistrais
 + nlistmax 
 + nlistmin
 + swagdelay
