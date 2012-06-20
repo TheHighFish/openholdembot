@@ -10,6 +10,13 @@ MAINTENANCE:
   [THF]
 
 NEW STUFF:
+- New symbols to set default minimum hands needed to validate Poker Tracker Symbols 
+    * ConstMinHandsFor_PT_VPIP_AND_PFR
+    * ConstMinHandsFor_PT_AttemptToStealBlinds
+    * ConstMinHandsFor_PT_BigBlind_FoldBBToSteal
+    * ConstMinHandsFor_PT_SmallBlind_FoldSBToSteal
+	Thanks to THF
+  [Lavezzi]
 - New symbol TotalInvestedThisRound
   [Lavezzi]
 - New symbol PT_LastRaiser_Hands
