@@ -2207,7 +2207,7 @@ f$OpenPPL_HINT_Something_Is_Wrong__It_Seems_You_Are_Not_Even_Seated
 f$OpenPPL_ERROR_Betround_Out_Of_Range
 
 ##f$OpenPPL_TotalInvestedThisRound##
-(nbetsround  > 0) ? ncurrentbets :0
+ncurrentbets
 
 //*****************************************************************************
 //
