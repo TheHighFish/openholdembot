@@ -11,6 +11,7 @@
 #include "CHandresetDetector.h"
 #include "CIteratorThread.h"
 #include "CLazyScraper.h"
+#include "CopenHoldemStatusbar.h"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CReplayFrame.h"
@@ -406,6 +407,14 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		{
 			p_handhistory->MakeHistory();
 		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// Switching from basic to advanced statusbar
+		// with detailed info instead of hint for beginners
+		p_openholdem_statusbar->SwitchToAdvancedStatusbarAfterFirstHand();
+
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// Finally sleeping
 		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Sleeping %d ms.\n", prefs.scrape_delay());
 		Sleep(prefs.scrape_delay());
 

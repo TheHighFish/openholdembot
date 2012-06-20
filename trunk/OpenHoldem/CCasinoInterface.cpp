@@ -320,7 +320,7 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 		lost_focus = true;
 
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Sleeping %dms.\n", prefs.swag_delay_2());
-	Sleep(prefs.swag_delay_2());
+	
 
 	// if we are swagging allin then set the swag value to be our balance (spew)
 	// !!! To be handled in allin
@@ -338,6 +338,7 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 		swag_amt, i3_edit_region.left, i3_edit_region.top, i3_edit_region.right, i3_edit_region.bottom);
 	(theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), i3_edit_region, swag_amt, prefs.swag_use_comma(), NULL, point_null);
 
+	Sleep(prefs.swag_delay_2());
 	// Check for stolen focus, and thus misswag
 	if (GetForegroundWindow() != p_autoconnector->attached_hwnd())
 		lost_focus = true;

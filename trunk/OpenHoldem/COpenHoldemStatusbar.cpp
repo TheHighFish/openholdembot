@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CopenHoldemStatusbar.h"
 
-#include "CSymbols.h"
+#include "CGameState.h"
 #include "MagicNumbers.h"
 
 
@@ -44,48 +44,38 @@ void COpenHoldemStatusbar::InitAdvancedStatusbar()
 	is_basic_statusbar = false;
 }
 
+void COpenHoldemStatusbar::SwitchToAdvancedStatusbarAfterFirstHand()
+{
+	if (is_basic_statusbar)
+	{
+		return;
+	}
+	if (p_game_state->hands_played() >= 1)
+	{
+		InitAdvancedStatusbar();
+	}
+}
+
 void COpenHoldemStatusbar::GetWindowRect(RECT *statusbar_position)
 {
 	_status_bar.GetWindowRect(statusbar_position);
 }
 
-bool COpenHoldemStatusbar::TimeToSwitchToAdvancedStatusbar()
-{
-	// Be careful
-	// Symbol engine won't be available on startup.
-	if (p_symbols == NULL)
-	{
-		return false;
-	}
-	else if (p_symbols->sym() == NULL)
-	{
-		return false;
-	}
-	else
-	{
-		// 1 minute after startup?
-		return (p_symbols->sym()->elapsed != 60); //!!!
-	}
-}
-
 void COpenHoldemStatusbar::OnUpdateStatusbar()
 {
-	if (is_basic_statusbar && TimeToSwitchToAdvancedStatusbar())
+	if (is_basic_statusbar)
 	{
-		InitAdvancedStatusbar();
+		return;
 	}
-	if (!is_basic_statusbar)
-	{
-		// Update this info only for advanced statusbar
-		_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PLCARDS), _status_plcards);
-		_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_COMCARDS), _status_comcards);
-		_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_POKERHAND), _status_pokerhand);
-		_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_HANDRANK), _status_handrank);
-		_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PRWIN), _status_prwin);
-		_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_NOPP), _status_nopp);
-		_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_nit), _status_nit);
-		_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_ACTION), _status_action);
-	}
+	// Update this info only for advanced statusbar
+	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PLCARDS), _status_plcards);
+	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_COMCARDS), _status_comcards);
+	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_POKERHAND), _status_pokerhand);
+	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_HANDRANK), _status_handrank);
+	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PRWIN), _status_prwin);
+	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_NOPP), _status_nopp);
+	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_nit), _status_nit);
+	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_ACTION), _status_action);
 }
 
 

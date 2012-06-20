@@ -10,10 +10,10 @@ public:
 	//void Update();
 	void OnUpdateStatusbar();
 	void GetWindowRect(RECT *statusbar_position);
+	void SwitchToAdvancedStatusbarAfterFirstHand();
 private:
 	void InitBasicStatusbar();
 	void InitAdvancedStatusbar();
-	bool TimeToSwitchToAdvancedStatusbar();
 private:
 	CStatusBar	_status_bar;
 	CWnd		*_main_window;
