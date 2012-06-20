@@ -135,8 +135,8 @@ while (<>)
 	# But the funny thing is the right end of the expression
 	# As the end is hard to detect with stupid regular expressions we...
 	# * add brackets to the left of any action
-	# * add brackets to the left of any user-defined variable to be set
 	# * add brackets to the end of a line, if there is no action
+	# * add brackets to user-defined variable to be set
 	# Fist case: brackets before an action
 	# We have to use more than the action keyword here,
 	# otherwise code like "BotsLastAction = Raise" would be bracketed, too.	
@@ -191,19 +191,40 @@ while (<>)
 	# which need to be enclodes in brackets
 	s/[ ]+bet[ ]\(/\) BET \(/i;	
 	s/[ ]+raise[ ]\(/\) RAISE \(/i;
-	# Second case: user defined variable to be set,
-	# where the line ends with a user-variable.
-	# But first we remove superfluos spaces at the end to make things more robust...
-	s/[ ]*$//;
-	#... and then add a bracket before user-variables.
-	s/((user[A-Za-z0-9_]*)$)/\) $1/i;
-	# Third case case: there is no action at the end,
+	# Second case case: there is no action at the end,
 	# i.e. a keyword "WHEN", but no "FORCE" and no user-variable.
 	# Then we add a bracket to the right end of the line
 	# and hope, that it is no multi-line condition
 	if ((m/^WHEN /i || m/ WHEN /i) && !(m/ FORCE$/i) && !(m/(user[A-Za-z0-9_]*)$/i))
 	{
 		s/$/\)/i;	
+	}
+	# Third case: user defined variable to be set,
+	# where the line ends with a user-variable.
+	# But first we remove superfluos spaces at the end to make things more robust...
+	s/[ ]*$//;
+	#... and then take care about user-variables.
+	# There  are 3 sub-cases...
+	if ((m/and[ ]+user[A-Za-z0-9_]*$/i) || (m/or[ ]+user[A-Za-z0-9_]*$/i)
+		|| (m/not[ ]+user[A-Za-z0-9_]*$/i))
+	{
+		# Sub-case 1) user-variables after an operator like AND / OR / NOT.
+		# In this case the variable is part of an open-ended-when-condition
+		# and we have to add a bracket after it.
+		s/((user[A-Za-z0-9_]*)$)/$1\)/i;
+	}
+	elsif (m/when[ ]*\([ ]*user[A-Za-z0-9_]*$/i)
+	{	
+		# Sub-case 2)Open-ended when-condition, with a single user-variable
+		# Be careful, there already is an opening bracket after when.
+		# In this case we also have to set the closing bracket.
+		s/((user[A-Za-z0-9_]*)$)/$1\)/i;
+	}
+	else
+	{
+		# Sub-case 3) user-variable to be set (without operator)
+		# In this case we have to sdd a closing bracket before the variable
+		s/((user[A-Za-z0-9_]*)$)/\) $1/i;
 	}
 	# Add opening and closing brackets to hand expressions
 	# This requires a bit more complex regular expressions, 
