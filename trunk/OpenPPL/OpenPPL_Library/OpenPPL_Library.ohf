@@ -4469,6 +4469,28 @@ f$OpenPPL_SmallBlindRaising ? 1 :
 (betposition == nplayersplaying) ? f$OpenPPL_Last :
 f$OpenPPL_Middle
 
+
+//*******************************************
+//  OpenPPL - Poker Tracker Symbols COSTANTS
+//*******************************************
+##f$OpenPPL_ConstMinHandsFor_PT_VPIP_AND_PFR##
+80
+
+##f$OpenPPL_ConstMinHandsFor_PT_AttemptToStealBlinds##
+80
+
+##f$OpenPPL_ConstMinHandsFor_PT_BigBlind_FoldBBToSteal##
+80
+
+##f$OpenPPL_ConstMinHandsFor_PT_SmallBlind_FoldSBToSteal##
+80
+
+//*******************************************
+// OpenPPL - Poker Tracker Technical Symbols
+//*******************************************
+##f$OpenPPL_RaiserExists##
+(raischair != -1)
+
 //*****************************************************************************
 //
 // OpenPPL - Poker Tracker Symbols
@@ -4479,13 +4501,13 @@ f$OpenPPL_Middle
 (raischair != -1) ? pt_rhands : -1
 
 ##f$OpenPPL_PT_LastRaiser_PFR##
-(raischair != -1) ? pt_rpfr : -1
+f$OpenPPL_RaiserExists && (f$OpenPPL_PT_LastRaiser_Hands >= f$OpenPPL_ConstMinHandsFor_PT_VPIP_AND_PFR) ? pt_rpfr : -1
 
 ##f$OpenPPL_PT_LastRaiser_VPIP##
-(raischair != -1) ? pt_rvpip : -1
+f$OpenPPL_RaiserExists && (f$OpenPPL_PT_LastRaiser_Hands >= f$OpenPPL_ConstMinHandsFor_PT_VPIP_AND_PFR) ? pt_rvpip : -1
 
 ##f$OpenPPL_PT_LastRaiser_AttemptToStealBlinds##
-(raischair != -1) ? pt_rpfats : -1
+f$OpenPPL_RaiserExists && (f$OpenPPL_PT_LastRaiser_Hands >= f$OpenPPL_ConstMinHandsFor_PT_AttemptToStealBlinds) ? pt_rpfats : -1
 
 ##f$OpenPPL_PT_BigBlind_FoldBBToSteal##
 f$OpenPPL_BigBlindChair == 0 ? pt_fbbts0 :
