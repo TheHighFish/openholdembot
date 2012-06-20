@@ -16,6 +16,7 @@
 + isfiveofakind
 + isppro
 + bankroll
++ NIT
 + rake
 + defcon
 + clocks 
@@ -31,3 +32,5 @@
 + handrank
 + mh_bottomsd
 + mh_str_flush
++ ptt_icon
++ ptt_rpfr
