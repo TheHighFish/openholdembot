@@ -151,7 +151,7 @@ an auto-connector, that handles up to 25 tables at once with less than 1%
 \end_layout
 
 \begin_layout Itemize
-ability to use Poker Tracker stats directly in your oPPL code.
+ability to use Poker Tracker stats directly in your OpenPPL-code.
 \end_layout
 
 \begin_layout Standard
@@ -163,8 +163,8 @@ building symbols on your own.
 \end_layout
 
 \begin_layout Itemize
-accessing Openholdems native symbols, including PokerTracker symbols and
- hand-range calculations on the fly.
+accessing Openholdems native symbols and doing hand-range calculations on
+ the fly.
 \end_layout
 
 \begin_layout Standard
