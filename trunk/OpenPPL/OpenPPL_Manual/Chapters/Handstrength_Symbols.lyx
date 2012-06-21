@@ -1405,7 +1405,8 @@ HaveSet
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have a set
+We have a set, i.e.
+ three of a kind with a pair in the hand
 \end_layout
 
 \end_inset
@@ -1586,7 +1587,8 @@ HaveTrips
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have trips
+We have trips, i.e.
+ three of a kind with a pair on the board
 \end_layout
 
 \end_inset
