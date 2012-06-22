@@ -10,12 +10,18 @@ MAINTENANCE:
   [THF]
 
 NEW STUFF:
+- New symbol MaximumPossibleBetsizeIndollars
+  [THF]
+- New symbol SidePotInDollars
+  [THF]
+- New symbol SidePot
+  [THF]
 - New symbols to set default minimum hands needed to validate Poker Tracker Symbols 
     * ConstMinHandsFor_PT_VPIP_AND_PFR
     * ConstMinHandsFor_PT_AttemptToStealBlinds
     * ConstMinHandsFor_PT_BigBlind_FoldBBToSteal
     * ConstMinHandsFor_PT_SmallBlind_FoldSBToSteal
-	Thanks to THF
+  Thanks to THF
   [Lavezzi]
 - New symbol TotalInvestedThisRound
   [Lavezzi]
