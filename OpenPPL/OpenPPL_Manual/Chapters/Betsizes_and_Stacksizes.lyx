@@ -432,7 +432,7 @@ SidePot
 \begin_inset Text
 
 \begin_layout Plain Layout
-Pot size (in number of blinds) we are not partecipating in due to opponents
+Pot size (in number of blinds) we are not participating in due to opponents
  bet being bigger than the sum of our balance plus currentbet
 \end_layout
 
@@ -442,7 +442,7 @@ Pot size (in number of blinds) we are not partecipating in due to opponents
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+None
 \end_layout
 
 \end_inset
