@@ -1,8 +1,8 @@
 v1.1.1 2012-xx-yy
 =================
 BUG FIXES: 
-- PotSize could be wrong in the event an opponent/s currentbet was bigger than our currentbet and balance. 
-  This was causing false pot odds when comparing AmountToCall to PotSize.
+- PotSize was wrong if an opponent bet more than the sum of our currentbet and balance (giving false pot odds when comparing AmountToCall to PotSize).
+  This has now been fixed. 
   Thanks to THF for the code
   [Lavezzi]
 - RankOfSpareCardWhenTwoPairOnBoard was not returning correct value when the spare card was at river.
