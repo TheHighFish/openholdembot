@@ -4032,6 +4032,12 @@ nopponentsplaying
 ##f$OpenPPL_OpponentsOnFlop##
 (nplayersround2 - 1)
 
+##f$OpenPPL_OpponentsOnTurn##
+(nplayersround3 - 1)
+
+##f$OpenPPL_OpponentsOnRiver##
+(nplayersround4 - 1)
+
 ##f$OpenPPL_OpponentsWithLowerStack##
   (((balance0 + currentbet0) < f$OpenPPL_MaximumPossibleBetsizeIndollars) && (playersseatedbits & 0x0001) ? 1:0)
 + (((balance1 + currentbet1) < f$OpenPPL_MaximumPossibleBetsizeIndollars) && (playersseatedbits & 0x0002) ? 1:0)
