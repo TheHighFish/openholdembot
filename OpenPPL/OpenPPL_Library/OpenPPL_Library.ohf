@@ -2194,7 +2194,7 @@ userchair == f$OpenPPL_EarlyPosition1Chair  ? f$OpenPPL_MinStillToActStackSizeAf
 f$OpenPPL_HINT_Something_Is_Wrong__It_Seems_You_Are_Not_Even_Seated
 
 ##f$OpenPPL_PotSize##
-(bblind > 0) ? (pot / bblind) : f$OpenPPL_ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+(bblind > 0) ? (pot / bblind) - f$OpenPPL_SidePot: f$OpenPPL_ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##f$OpenPPL_StackSize##
 (bblind > 0) ? (balance / bblind) : f$OpenPPL_ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
