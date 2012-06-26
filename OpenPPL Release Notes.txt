@@ -10,6 +10,10 @@ MAINTENANCE:
   [THF]
 
 NEW STUFF:
+- New symbol OpponentsOnTurn 
+  [Lavezzi]
+- New symbol OpponentsOnRiver
+  [Lavezzi]
 - New symbol MaximumPossibleBetsizeIndollars
   [THF]
 - New symbol SidePotInDollars
