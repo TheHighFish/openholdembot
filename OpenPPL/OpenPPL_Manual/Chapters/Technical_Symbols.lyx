@@ -81,7 +81,7 @@ While building the OpenPPL library the developers had to create lots of
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="14" columns="3">
+<lyxtabular version="3" rows="15" columns="3">
 <features tabularvalignment="middle">
 <column alignment="left" valignment="top" width="40line%">
 <column alignment="left" valignment="top" width="40line%">
@@ -424,6 +424,38 @@ returns rank of the highest pair on board (true also if set or twopair or
 
 \begin_layout Plain Layout
 Postflop only
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+SidePot
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pot size (in number of blinds) we are not participating in due to opponents
+ bet being bigger than the sum of our balance plus currentbet.
+ PotSize returns effective pot size because SidePot amount is subtracted
+ from it.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+None
 \end_layout
 
 \end_inset
