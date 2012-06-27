@@ -10,6 +10,8 @@ BUG FIXES:
   [Lavezzi]
    
 MAINTENANCE:
+- EffectivePotsize symbol has been removed cause now PotSize returns effective pot size.
+  [Lavezzi]
 - Removing RankOfPairOnBoard again, as it was a duplicate to RankOfTopPairOnBoard.
   [THF]
 
