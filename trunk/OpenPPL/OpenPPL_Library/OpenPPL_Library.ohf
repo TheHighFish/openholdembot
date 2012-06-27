@@ -2006,11 +2006,6 @@ f$OpenPPL_ERROR_SmallBlindChair_Not_Recognized__Check_Your_TableMap
 // Money in the side-pot, i.e. the money we don't compete for (measured in big blinds)
 (bblind > 0) ? (f$OpenPPL_SidePotInDollars / bblind) : 0
 
-##f$OpenPPL_EffectivePotsize##
-// Money in the pot without money in the side-pot if an opponent puts us allin,
-// ie. the money we compete for (measured in big blinds).
-(f$OpenPPL_Potsize - f$OpenPPL_SidePot)
-
 ##f$OpenPPL_MaxStillToActStackSizeAfterSmallBlind##
 // Only one player behind SB, so it is easy
 f$OpenPPL_BigBlindStartingStackSize
