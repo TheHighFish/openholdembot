@@ -2,11 +2,13 @@ v1.1.1 2012-xx-yy
 =================
 BUG FIXES: 
 - bracketify.pl incorrectly managed user-variables at the end of open-ended expressions
+  Thanks to superblak for reporting.
   This has now been fixed.
   [THF]
-- PotSize was wrong if an opponent bet more than the sum of our currentbet and balance (giving false pot odds when comparing AmountToCall to PotSize).
-  This has now been fixed. 
-  Thanks to THF for the code
+- PotSize amount was incorrect if an opponent currentbet was bigger than the sum of our currentbet and balance (giving false pot odds when comparing AmountToCall to PotSize).
+  EffectivePotsize symbol solved the problem but we needed to propagate the solution directly into PotSize symbol. 
+  Thanks to THF for the code.
+  This has now been fixed.   
   [Lavezzi]
 - RankOfSpareCardWhenTwoPairOnBoard was not returning correct value when the spare card was at river.
   This has now been fixed.
