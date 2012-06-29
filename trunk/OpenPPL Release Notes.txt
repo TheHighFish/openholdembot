@@ -1,6 +1,9 @@
 v1.1.1 2012-xx-yy
 =================
 BUG FIXES: 
+- bracketify.pl incorrectly managed user-variables at the end of open-ended expressions
+  This has now been fixed.
+  [THF]
 - PotSize was wrong if an opponent bet more than the sum of our currentbet and balance (giving false pot odds when comparing AmountToCall to PotSize).
   This has now been fixed. 
   Thanks to THF for the code
