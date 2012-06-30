@@ -3078,9 +3078,9 @@ ranklocommon
 isfullhouse || f$OpenPPL_HaveQuads
 
 ##f$OpenPPL_HaveNothing##
-!f$OpenPPL_HavePair && !(f$OpenPPL_Overcards == 2) && !f$OpenPPL_HaveBestOverPairOrBetter
-&& !f$OpenPPL_HaveBackdoorFlushDraw
+!f$OpenPPL_HavePair && !(f$OpenPPL_Overcards == 2) && !f$OpenPPL_HaveBestOverPairOrBetter && !f$OpenPPL_HaveBackdoorFlushDraw && !f$OpenPPL_HaveStraightDraw && !f$OpenPPL_HaveInsideStraightDraw && !f$OpenPPL_HaveFlushDraw
 // && !f$OpenPPL_HaveBackdoorStraightDraw
+
 
 ##f$OpenPPL_HaveNutFlush##
     f$OpenPPL_HaveNutStraightFlush
