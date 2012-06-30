@@ -2,6 +2,7 @@
 * Resolve conflicts if necessary
 * Change the version in "CodeSnippets.h"
 * Rebuild the project
+* Join the library using "create_OpenPPL_library.Bat" in trunk\OpenPPL\OpenPPL_Library.
 * Run the test-suite, using "Run_Testsuite.bat" in trunk/OpenPPL.
   It will run only the ok*.txt-files, so you shouldn't get any error-messages.
 * Build the docu if necessary
