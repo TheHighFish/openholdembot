@@ -8,13 +8,9 @@ NEW STUFF:
   [THF]
 
 BUG FIXES: 
-- HaveNothing was true also if we had straight or flush draws.
+- HaveNothing was true also if we had straight or flush draw.
   This has now been fixed.
   [Lavezzi]
-- bracketify.pl incorrectly managed user-variables at the end of open-ended expressions
-  Thanks to superblak for reporting.
-  This has now been fixed.
-  [THF]
 - PotSize amount was incorrect if an opponent currentbet was bigger than the sum of our currentbet and balance (giving false pot odds when comparing AmountToCall to PotSize).
   EffectivePotsize symbol solved the problem but we needed to propagate the solution directly into PotSize symbol. 
   Thanks to THF for the code.
