@@ -1,6 +1,9 @@
 v1.1.1 2012-xx-yy
 =================
 BUG FIXES: 
+- HaveNothing was true also if we had straight or flush draws.
+  This has now been fixed.
+  [Lavezzi]
 - bracketify.pl incorrectly managed user-variables at the end of open-ended expressions
   Thanks to superblak for reporting.
   This has now been fixed.
