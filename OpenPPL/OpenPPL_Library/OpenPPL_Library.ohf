@@ -2549,28 +2549,28 @@ f$OpenPPL_HINT_SuitsOnBoard_Undefined_For_This_Betting_Round
 | (f$OpenPPL_TurnCard != f$OpenPPL_ConstCardAce ? 2**f$OpenPPL_TurnCard : 0b100000000000010)
 
 ##f$OpenPPL_StraightPossibleOnFlop##
-`(((f$OpenPPL_RankBitsCommOnFlop >> 10) & 0x1f) >= 3) ? 1 :
-`(((f$OpenPPL_RankBitsCommOnFlop >>  9) & 0x1f) >= 3) ? 1 :
-`(((f$OpenPPL_RankBitsCommOnFlop >>  8) & 0x1f) >= 3) ? 1 :
-`(((f$OpenPPL_RankBitsCommOnFlop >>  7) & 0x1f) >= 3) ? 1 :
-`(((f$OpenPPL_RankBitsCommOnFlop >>  6) & 0x1f) >= 3) ? 1 :
-`(((f$OpenPPL_RankBitsCommOnFlop >>  5) & 0x1f) >= 3) ? 1 :
-`(((f$OpenPPL_RankBitsCommOnFlop >>  4) & 0x1f) >= 3) ? 1 :
-`(((f$OpenPPL_RankBitsCommOnFlop >>  3) & 0x1f) >= 3) ? 1 :
-`(((f$OpenPPL_RankBitsCommOnFlop >>  2) & 0x1f) >= 3) ? 1 :
-`(((f$OpenPPL_RankBitsCommOnFlop >>  1) & 0x1f) >= 3) ? 1 : 0
+(`((f$OpenPPL_RankBitsCommOnFlop >> 10) & 0x1f) >= 3) ? 1 :
+(`((f$OpenPPL_RankBitsCommOnFlop >>  9) & 0x1f) >= 3) ? 1 :
+(`((f$OpenPPL_RankBitsCommOnFlop >>  8) & 0x1f) >= 3) ? 1 :
+(`((f$OpenPPL_RankBitsCommOnFlop >>  7) & 0x1f) >= 3) ? 1 :
+(`((f$OpenPPL_RankBitsCommOnFlop >>  6) & 0x1f) >= 3) ? 1 :
+(`((f$OpenPPL_RankBitsCommOnFlop >>  5) & 0x1f) >= 3) ? 1 :
+(`((f$OpenPPL_RankBitsCommOnFlop >>  4) & 0x1f) >= 3) ? 1 :
+(`((f$OpenPPL_RankBitsCommOnFlop >>  3) & 0x1f) >= 3) ? 1 :
+(`((f$OpenPPL_RankBitsCommOnFlop >>  2) & 0x1f) >= 3) ? 1 :
+(`((f$OpenPPL_RankBitsCommOnFlop >>  1) & 0x1f) >= 3) ? 1 : 0
 
 ##f$OpenPPL_StraightPossibleOnTurn##
-`(((f$OpenPPL_RankBitsCommonTurn >> 10) & 0x1f) >= 3) ? 1 :
-`(((f$OpenPPL_RankBitsCommonTurn >>  9) & 0x1f) >= 3) ? 1 :
-`(((f$OpenPPL_RankBitsCommonTurn >>  8) & 0x1f) >= 3) ? 1 :
-`(((f$OpenPPL_RankBitsCommonTurn >>  7) & 0x1f) >= 3) ? 1 :
-`(((f$OpenPPL_RankBitsCommonTurn >>  6) & 0x1f) >= 3) ? 1 :
-`(((f$OpenPPL_RankBitsCommonTurn >>  5) & 0x1f) >= 3) ? 1 :
-`(((f$OpenPPL_RankBitsCommonTurn >>  4) & 0x1f) >= 3) ? 1 :
-`(((f$OpenPPL_RankBitsCommonTurn >>  3) & 0x1f) >= 3) ? 1 :
-`(((f$OpenPPL_RankBitsCommonTurn >>  2) & 0x1f) >= 3) ? 1 :
-`(((f$OpenPPL_RankBitsCommonTurn >>  1) & 0x1f) >= 3) ? 1 : 0
+(`((f$OpenPPL_RankBitsCommonTurn >> 10) & 0x1f) >= 3) ? 1 :
+(`((f$OpenPPL_RankBitsCommonTurn >>  9) & 0x1f) >= 3) ? 1 :
+(`((f$OpenPPL_RankBitsCommonTurn >>  8) & 0x1f) >= 3) ? 1 :
+(`((f$OpenPPL_RankBitsCommonTurn >>  7) & 0x1f) >= 3) ? 1 :
+(`((f$OpenPPL_RankBitsCommonTurn >>  6) & 0x1f) >= 3) ? 1 :
+(`((f$OpenPPL_RankBitsCommonTurn >>  5) & 0x1f) >= 3) ? 1 :
+(`((f$OpenPPL_RankBitsCommonTurn >>  4) & 0x1f) >= 3) ? 1 :
+(`((f$OpenPPL_RankBitsCommonTurn >>  3) & 0x1f) >= 3) ? 1 :
+(`((f$OpenPPL_RankBitsCommonTurn >>  2) & 0x1f) >= 3) ? 1 :
+(`((f$OpenPPL_RankBitsCommonTurn >>  1) & 0x1f) >= 3) ? 1 : 0
 
 ##f$OpenPPL_ThreeCardStraightOnBoard##
 nstraightcommon >= 3
