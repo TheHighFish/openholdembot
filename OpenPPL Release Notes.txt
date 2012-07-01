@@ -1,4 +1,4 @@
-v1.1.1 2012-xx-yy
+v1.1.1 2012-07-01
 =================
 NEW STUFF:
 - Bracketify was formerly not smart enough to distinguish
