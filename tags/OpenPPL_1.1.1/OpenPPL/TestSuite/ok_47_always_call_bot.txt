@@ -1,0 +1,13 @@
+custom
+
+preflop
+when others call force
+
+flop
+when others call force
+
+turn
+when others call force
+
+river
+when others call force
