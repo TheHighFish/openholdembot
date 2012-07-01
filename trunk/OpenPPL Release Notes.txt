@@ -6,6 +6,26 @@ NEW STUFF:
   and normal conditions with a user-variable to be set instead of an action.
   This does now work.
   [THF]
+- New symbol OpponentsOnTurn 
+  [Lavezzi]
+- New symbol OpponentsOnRiver
+  [Lavezzi]
+- Some PokerTracker-symbols do now require a minimum sample-size.
+  If there are too few hands the symbol will be considered unusable and -1 will be returned.
+  Similar changes are planned for the other PT-symbols.
+  [Lavezzi, THF]
+- New symbol TotalInvestedThisRound
+  [Lavezzi]
+- New symbol PT_LastRaiser_Hands
+  [Lavezzi]
+- New symbol HaveRunnerRunnerFlushAtRiver
+  [Lavezzi]
+- New symbol RunnerRunnerFlushPossibleAtRiver
+  [Lavezzi]
+- New symbol PT_SmallBlind_FoldSBToSteal
+  [Lavezzi]
+- New symbol HaveTopTrips
+  [Lavezzi]
 
 BUG FIXES: 
 - HaveNothing was true also if we had straight or flush draw.
@@ -28,37 +48,6 @@ MAINTENANCE:
   [Lavezzi]
 - Removing RankOfPairOnBoard again, as it was a duplicate to RankOfTopPairOnBoard.
   [THF]
-
-NEW STUFF:
-- New symbol OpponentsOnTurn 
-  [Lavezzi]
-- New symbol OpponentsOnRiver
-  [Lavezzi]
-- New symbol MaximumPossibleBetsizeIndollars
-  [THF]
-- New symbol SidePotInDollars
-  [THF]
-- New symbol SidePot
-  [THF]
-- New symbols to set default minimum hands needed to validate Poker Tracker Symbols 
-    * ConstMinHandsFor_PT_VPIP_AND_PFR
-    * ConstMinHandsFor_PT_AttemptToStealBlinds
-    * ConstMinHandsFor_PT_BigBlind_FoldBBToSteal
-    * ConstMinHandsFor_PT_SmallBlind_FoldSBToSteal
-  Thanks to THF
-  [Lavezzi]
-- New symbol TotalInvestedThisRound
-  [Lavezzi]
-- New symbol PT_LastRaiser_Hands
-  [Lavezzi]
-- New symbol HaveRunnerRunnerFlushAtRiver
-  [Lavezzi]
-- New symbol RunnerRunnerFlushPossibleAtRiver
-  [Lavezzi]
-- New symbol PT_SmallBlind_FoldSBToSteal
-  [Lavezzi]
-- New symbol HaveTopTrips
-  [Lavezzi]
   
 v1.1.0 2012-06-10
 =================
