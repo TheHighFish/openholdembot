@@ -6,6 +6,8 @@ When (Hand = AK) Call force
 When (Hand = A)  Call force
 When (Hand = K)  Call force
 When (Hand = 72) Call force
+// Now with additional spaces
+When (Hand = A A) Call force
 when others fold force
 
 flop
