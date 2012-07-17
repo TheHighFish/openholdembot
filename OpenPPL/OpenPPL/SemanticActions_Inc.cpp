@@ -330,6 +330,10 @@ struct print_predefined_action
 		{
 			current_output << "f$OpenPPL_Call";
 		}
+		else if (text == "check")
+		{
+			current_output << "f$OpenPPL_Check";
+		}
 		else if ((text == "raisemin") || (text == "betmin"))
 		{
 			current_output << "f$OpenPPL_RaiseMin";
