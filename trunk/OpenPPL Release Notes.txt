@@ -3,6 +3,10 @@ v1.1.2 2012-xx-yy
 BUG FIXES: 
 - "Check Force" didn't work - this has now been fixed.
   Thanks to Studyx for reporting.
+- Resetting variables did sometimes not work in the first hand
+  when the same instance of OpenHoldem connected to a new table
+  to play a second session.
+  Thanks to Postenjak for reporting and for suggesting a fix.
   [THF]  
   
 
