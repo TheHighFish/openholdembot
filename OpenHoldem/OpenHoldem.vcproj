@@ -1553,10 +1553,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\DefaultBot.h"
-					>
-				</File>
-				<File
 					RelativePath=".\PerlEz.h"
 					>
 				</File>
