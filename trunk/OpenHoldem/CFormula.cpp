@@ -6,7 +6,6 @@
 #include "CGrammar.h"
 #include "CPreferences.h"
 #include "CSymbols.h"
-#include "DefaultBot.h"
 #include "OH_MessageBox.h"
 #include "OpenHoldemDoc.h"
 #include "UPDialog.h"
@@ -31,7 +30,7 @@ void CFormula::ClearFormula()
 	_formula_name = "";
 }
 
-void CFormula::SetDefaultBot()
+void CFormula::SetEmptyDefaultBot()
 {
 	SFunction		func;
 
@@ -39,30 +38,7 @@ void CFormula::SetDefaultBot()
 
 	CSLock lock(m_critsec);
 	func.dirty = true;
-	func.func = "notes";		func.func_text = defaultCSnotes;	_formula.mFunction.Add(func);
-	func.func = "dll";			func.func_text = defaultCSdll;		_formula.mFunction.Add(func);
-	func.func = "f$alli";		func.func_text = defaultCSalli;		_formula.mFunction.Add(func);
-	func.func = "f$betsize";	func.func_text = defaultCSbetsize;	_formula.mFunction.Add(func);
-	func.func = "f$rais";		func.func_text = defaultCSrais;		_formula.mFunction.Add(func);
-	func.func = "f$call";		func.func_text = defaultCScall;		_formula.mFunction.Add(func);
-	func.func = "f$prefold";	func.func_text = defaultCSprefold;	_formula.mFunction.Add(func);
-	func.func = "f$rebuy";		func.func_text = defaultCSrebuy;	_formula.mFunction.Add(func);
-	func.func = "f$delay";		func.func_text = defaultCSdelay;	_formula.mFunction.Add(func);
-	func.func = "f$chat";		func.func_text = defaultCSchat;		_formula.mFunction.Add(func);
-	func.func = "f$P";			func.func_text = defaultCSP;		_formula.mFunction.Add(func);
-	func.func = "f$sitin";		func.func_text = defaultCSsitin;	_formula.mFunction.Add(func);
-	func.func = "f$sitout";		func.func_text = defaultCSsitout;	_formula.mFunction.Add(func);
-	func.func = "f$leave";		func.func_text = defaultCSleave;	_formula.mFunction.Add(func);
-	func.func = "f$close";		func.func_text = defaultCSclose;	_formula.mFunction.Add(func);
-	func.func = "f$test";		func.func_text = defaultCStest;		_formula.mFunction.Add(func);
-	func.func = "f$debug";		func.func_text = defaultCSdebug;	_formula.mFunction.Add(func);
-	func.func = "f$prwin_number_of_iterations";	func.func_text = defaultCSnit; _formula.mFunction.Add(func);
-
-	// Create UDFs
-	func.func = "f$evrais"; func.func_text = defaultCSevrais; _formula.mFunction.Add(func);
-	func.func = "f$evcall"; func.func_text = defaultCSevcall; _formula.mFunction.Add(func);	
-
-	_formula_name = "Default";
+	_formula_name = "NoName";
 }
 
 const char *CFormula::GetFunctionText(const char *name)
@@ -345,7 +321,7 @@ bool CFormula::ParseAllFormula(HWND hwnd)
 	return data.all_parsed;
 }
 
-void CFormula::AddDefaultFunctionIfFunctionDoesNotExist(const CString &FunctionName)
+void CFormula::AddEmptyFunctionIfFunctionDoesNotExist(const CString &FunctionName)
 {
 	int size_of_formula_set = _formula.mFunction.GetSize();
 	for (int i=0; i<size_of_formula_set; i++)  
@@ -369,23 +345,24 @@ void CFormula::CheckForDefaultFormulaEntries()
 {
 	CSLock lock(m_critsec);
 
-	AddDefaultFunctionIfFunctionDoesNotExist("notes");
-	AddDefaultFunctionIfFunctionDoesNotExist("dll");
-	AddDefaultFunctionIfFunctionDoesNotExist("f$alli");
-	AddDefaultFunctionIfFunctionDoesNotExist("f$betsize");
-	AddDefaultFunctionIfFunctionDoesNotExist("f$rais");
-	AddDefaultFunctionIfFunctionDoesNotExist("f$call");
-	AddDefaultFunctionIfFunctionDoesNotExist("f$prefold");
-	AddDefaultFunctionIfFunctionDoesNotExist("f$rebuy");
-	AddDefaultFunctionIfFunctionDoesNotExist("f$delay");
-	AddDefaultFunctionIfFunctionDoesNotExist("f$chat");
-	AddDefaultFunctionIfFunctionDoesNotExist("f$P");
-	AddDefaultFunctionIfFunctionDoesNotExist("f$sitin");
-	AddDefaultFunctionIfFunctionDoesNotExist("f$sitout");
-	AddDefaultFunctionIfFunctionDoesNotExist("f$leave");
-	AddDefaultFunctionIfFunctionDoesNotExist("f$close");
-	AddDefaultFunctionIfFunctionDoesNotExist("f$test");
-	AddDefaultFunctionIfFunctionDoesNotExist("f$debug");
+	AddEmptyFunctionIfFunctionDoesNotExist("notes");
+	AddEmptyFunctionIfFunctionDoesNotExist("dll");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$alli");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$betsize");
+	// !!! Betpot 
+	AddEmptyFunctionIfFunctionDoesNotExist("f$rais");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$call");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$prefold");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$rebuy");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$delay");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$chat");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$P"); /// !!! Rename
+	AddEmptyFunctionIfFunctionDoesNotExist("f$sitin");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$sitout");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$leave");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$close");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$test");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$debug");
 }
 
 void CFormula::MarkCacheStale()

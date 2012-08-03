@@ -59,7 +59,7 @@ BOOL COpenHoldemDoc::OnNewDocument()
 		return FALSE;
 
 	// Default bot
-	p_formula->SetDefaultBot();
+	p_formula->SetEmptyDefaultBot();
 
 	// Try to unload dll
 	p_dll_extension->UnloadDll();

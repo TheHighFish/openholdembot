@@ -47,12 +47,12 @@ public:
 	CFormula();
 	~CFormula();
 	void ClearFormula();
-	void SetDefaultBot();
+	void SetEmptyDefaultBot();
 	void ReadFormulaFile(CArchive& ar, bool ignoreFirstLine);
 	void WriteFormula(CArchive& ar);
 	void CreateHandListMatrices();
 	bool ParseAllFormula(HWND hwnd);
-	void AddDefaultFunctionIfFunctionDoesNotExist(const CString &FunctionName);
+	void AddEmptyFunctionIfFunctionDoesNotExist(const CString &FunctionName);
 	void CheckForDefaultFormulaEntries();
 	void MarkCacheStale();
 	void ParseHandList(const CString &list_text, bool inlist[13][13]);
