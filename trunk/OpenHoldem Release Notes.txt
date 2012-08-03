@@ -44,6 +44,10 @@ NEW STUFF:
 
 
 MAINTENANCE:
+- Removed the default-bot from the code-base, because it is more easy 
+  to keep it as an extra file in the bot folder. 
+  Menu->File->New will now create an empty bot with the main autoplayer functions.
+  [THF]
 - Removed code-clones in CFormula.cpp 
   [THF]
 - Removed friend-symbols completely, as OpenHoldem does not support any kind of collusion.
