@@ -12,6 +12,7 @@
 * Add the Documentation
 * Add ReleaseNotes (make sure, they are complete and release date is set)
 * Add "sources of code.txt"
+* Add Matrix' PlayBot as default bot.
 * Remove the *.lib, *.exp and *.pdb files.
 * Remove replay-direcoty (if existent), logs and other private data
 * Zip or rar and upload
