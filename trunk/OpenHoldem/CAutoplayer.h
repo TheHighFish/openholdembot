@@ -44,7 +44,9 @@ private:
 	bool DoAllin(void);
 	bool DoBetPot(void);
 	bool HandleInterfacebuttonsI86(void); 
-	bool GetMutex();
+	bool PrepareActionSequence();
+	void FinishActionSequence();
+
 	void DoSwag(void);
 	void DoSlider(void);
 	void DoPrefold(void);
@@ -53,9 +55,12 @@ private:
 	void DoI86(void);
 	bool DoChat(void);
 
+private:
 	RMapCI	_alli_but, _rais_but, _call_but, _chec_but, _fold_but;
 	RMapCI	_autopost_but, _sitin_but, _sitout_but, _leave_but, _pre_fold_but;
 	bool	_autopost_state, _sitin_state, _sitout_state;
+	POINT	cursor_position;
+	HWND	window_with_focus;
 
 	// Mutex used for cross-instance autoplayer coordination
 	CMutex		_mutex;

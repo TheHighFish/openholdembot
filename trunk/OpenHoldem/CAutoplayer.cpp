@@ -59,9 +59,33 @@ CAutoplayer::~CAutoplayer(void)
 {}
 
 
-bool CAutoplayer::GetMutex()
+bool CAutoplayer::PrepareActionSequence()
 {
-	return _mutex.Lock(500);
+	// * Waits for the mutex
+	// * Stores the mouse position
+	// * Window focus !!!???
+	// At the end of an action sequence FinishAction() has to be called
+	// to restore the mouse-position and release the mutex again.
+	if (!_mutex.Lock(500))
+	{
+		return false;
+	}
+	// Getting the cursor position has to be done AFTER  we got the mutex,
+	// otherwise it could happen that other applications move the mouse
+	// while we wait, leading to funny jumps when we "clean up".
+	// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=15324
+	GetCursorPos(&cursor_position);
+	window_with_focus = GetFocus();
+	return true;
+}
+
+
+void CAutoplayer::FinishActionSequence()
+{
+	// Restoring the original state has to be done in reversed order
+	SetFocus(window_with_focus);
+	SetCursorPos(cursor_position.x, cursor_position.y);
+	_mutex.Unlock();
 }
 
 
@@ -416,7 +440,6 @@ void CAutoplayer::DoSlider(void)
 void CAutoplayer::DoPrefold(void) 
 {
 	HWND			hwnd_focus = GetFocus();
-	POINT			cur_pos = {0};
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting DoPrefold...\n");
