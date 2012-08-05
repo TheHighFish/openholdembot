@@ -56,7 +56,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ac_aggressor")
     PRECONDITION (true)
-    POSTCONDITION ((gws("ac_aggressor") >= 0) && (gws("ac_aggressor") <= 9))
+    POSTCONDITION ((gws("ac_aggressor") >= -1) && (gws("ac_aggressor") <= 9))
     SYMBOLS_POSSIBLY_AFFECTED ("ac_aggressor")
 END_TESTCASE
 
