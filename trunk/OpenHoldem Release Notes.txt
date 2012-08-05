@@ -1,8 +1,8 @@
 v 2.2.0 2012-xx-yy 
 ==================
 BUG FIXES: 
-- Fine-tuning some validator-rules (1201, 1205). 
-  Thanks to CakeWalk and Postenjak for reporting the inaccuracies.
+- Fine-tuning some validator-rules (1201, 1205, 0261). 
+  Thanks to CakeWalk, BotForSale and Postenjak for reporting the inaccuracies.
   [THF]
 - mh_str_quads symbol was not returning value 5 when nut quads on board or when holding best kicker
   [Lavezzi] 
