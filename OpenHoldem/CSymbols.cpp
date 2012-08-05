@@ -1597,8 +1597,26 @@ void CSymbols::CalcPlayersOpponents(void)
 
     // nopponentsraising
     int userchair = _sym.userchair;
-    int first_possible_raiser = userchair + 1;
-    int last_possible_raiser = userchair + p_tablemap->nchairs() - 1;
+    int first_possible_raiser;
+	int last_possible_raiser;
+	if (DidAct())
+	{
+		// Counting raises behind me
+		first_possible_raiser = userchair + 1;
+		last_possible_raiser  = userchair - 1;
+	}
+	else
+	{
+		if (p_symbols->sym()->currentbet[10] )
+		{
+		first_possible_raiser = p_symbols->sym()->dealerchair + 1;
+		last_possible_raiser  = 0; //!!! ???
+		}
+		else
+		{
+		}
+	}
+//     = userchair + p_tablemap->nchairs() - 1;
     int opponents_raising = 0;
 
     double current_maximum_bet = 0;
@@ -3092,7 +3110,13 @@ void CSymbols::CalcHistory(void)
 	maxbet = 0;
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
-		if (_sym.currentbet[i] > maxbet)
+		// Be careful: in some cases it might be that a user folds,
+		// but "Fold" gets displayed where formerly his bet got displayed.
+		// This may lead to ugly mis-scrapes, that's why he have to check
+		// if the user is still playing.
+		// (http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=10929&start=30)
+		if ((_sym.currentbet[i] > maxbet)
+			&& (((int(_sym.playersplayingbits) >> i) & 1) == 1))
 		{
 			maxbet = _sym.currentbet[i];
 		}
