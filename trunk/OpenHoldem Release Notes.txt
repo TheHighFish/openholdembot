@@ -13,7 +13,14 @@ BUG FIXES:
   before updating nbetsround and nbetsroundX.
   Thanks to Relhby for reporting.
   [THF]
+- The autoplayer-code did first store the mouse-poition,
+  then wait for the mutex and finally act and then restore the position again.
+  This could lead to funny mouse-jumps if another application
+  moved the mouse inbetween.
+  Thanks to Pingvvino for finding the problem and providing a fix.
+  [THF]
 
+  
 NEW STUFF:
 - f$play has been quite a messy concept for a long time.
   It finally got replaced by 3 individual functions: f$sitin, f$sitout and f$leave.
