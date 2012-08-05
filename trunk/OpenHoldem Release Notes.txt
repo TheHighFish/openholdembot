@@ -15,8 +15,7 @@ BUG FIXES:
   [THF]
 - The autoplayer-code did first store the mouse-poition,
   then wait for the mutex and finally act and then restore the position again.
-  This could lead to funny mouse-jumps if another application
-  moved the mouse inbetween.
+  This could lead to funny mouse-jumps if another application moved the mouse inbetween.
   Thanks to Pingvvino for finding the problem and providing a fix.
   [THF]
 
@@ -46,7 +45,9 @@ NEW STUFF:
 - New f$close-function that clicks the [X] in the titlebar of the table.
   [THF]
 - Support for betpotmethod and betpot_X_Y_button (e.g. X=1, Y=2 represents 1/2 pot)
-  (1<=x<=k_max_number_of_betpot_X_y_buttons && 1<=y<=k_max_number_of_betpot_x_Y_buttons)
+  Available are:
+  f$betpot_2_1, f$betpot_1_1, f$betpot_3_4, f$betpot_2_3,
+  f$betpot_1_2, f$betpot_1_3, f$betpot_1_4.
   [Strikles + THF]
 - Implementing a table-positioner that optionally moves the poker-tables 
   to reasonable positions.
@@ -69,10 +70,8 @@ MAINTENANCE:
   to keep it as an extra file in the bot folder. 
   Menu->File->New will now create an empty bot with the main autoplayer functions.
   [THF]
-- Removed code-clones in CFormula.cpp 
-  [THF]
 - Removed friend-symbols completely, as OpenHoldem does not support any kind of collusion.
-  We don't want that shit, not even for backward-compatibility wo WinHoldem.
+  We don't want that shit, not even for backward-compatibility to WinHoldem.
   [THF]
 - Removed the symbol nouts, as Ray E. Bornerts definition
   of "outs" is plain nonsense and completely useless.
@@ -164,7 +163,7 @@ MAINTENANCE:
   The options to control it simply are superfluos.
   [THF]
 - Removing symbols clocks, ron$clocks, run$clocks, clockspersecond, ncps,
-  because nobody used them and we can't even imagina a reasonable use of them.
+  because nobody used them and we can't even imagine a reasonable use of them.
   [THF]
 - Removing abbreviated symbol names nflopc, br, ncps.
   [THF]
