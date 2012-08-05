@@ -383,22 +383,9 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		// If autoplayer is engaged, we know our chair, and the DLL hasn't told us to wait, then go do it!
 		if (p_autoplayer->autoplayer_engaged() && p_symbols->user_chair_confirmed() && !iswait)
 		{
-				write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling DoAutoplayer.\n");
-				p_autoplayer->DoAutoplayer();
+			write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling DoAutoplayer.\n");
+			p_autoplayer->DoAutoplayer();
 		}
-		else
-		{
-			// Calc primary formulas anyway, so main window can display its information correctly
-			// but set final_answer param to false, since we are not actually using this info to
-			// take action
-			write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling CalcPrimaryFormulas without isfinalanswer.\n");
-			p_symbols->set_sym_isfinalanswer(false);
-			p_autoplayer_functions->CalcPrimaryFormulas(false);
-			// Calculate secondary formulas, as we need f$rebuy
-			write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling CalcSecondaryFormulas.\n");
-			p_autoplayer_functions->CalcSecondaryFormulas();
-		}
-
 		
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Hand history generator
