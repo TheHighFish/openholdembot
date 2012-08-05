@@ -1,9 +1,4 @@
 /* TODO: 
-* get mutex
-* get focus
-* get mouse
-* act
-* restore mouse
 * prevaction
 * p_stableframescounter->ResetOnAutoplayerAction();
 * p_symbols->reset_elapsedautohold();
@@ -44,6 +39,7 @@ CAutoplayer::CAutoplayer(BOOL bInitiallyOwn, LPCTSTR lpszName) : _mutex(bInitial
 	ASSERT(_mutex.m_hObject != NULL); 
 
 	set_autoplayer_engaged(false);
+	action_sequence_needs_to_be_finished = false;
 	// Set correct button state
 	// We have to be careful, as during initialization the GUI does not yet exist.
 	bool to_be_enabled_or_not = _autoplayer_engaged; 
@@ -56,14 +52,17 @@ CAutoplayer::CAutoplayer(BOOL bInitiallyOwn, LPCTSTR lpszName) : _mutex(bInitial
 
 
 CAutoplayer::~CAutoplayer(void) 
-{}
+{
+	FinishActionSequenceIfNecessary();
+}
 
 
 bool CAutoplayer::PrepareActionSequence()
 {
-	// * Waits for the mutex
-	// * Stores the mouse position
-	// * Window focus !!!???
+	// This function should be called at the beginning of 
+	// ExecutePrimaryFunctions and ExecuteSecondaryFunctions
+	// which bot will start exactly one action-sequence.
+	//
 	// At the end of an action sequence FinishAction() has to be called
 	// to restore the mouse-position and release the mutex again.
 	if (!_mutex.Lock(500))
@@ -76,16 +75,25 @@ bool CAutoplayer::PrepareActionSequence()
 	// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=15324
 	GetCursorPos(&cursor_position);
 	window_with_focus = GetFocus();
+	// We got the mutex and everything is prepared.
+	// We now assume an action-sequence will be executed.
+	// This makes cleanup simpler, as we now can handle it once,
+	// instead of everywhere where an action can happen.
+	action_sequence_needs_to_be_finished = true;
 	return true;
 }
 
 
-void CAutoplayer::FinishActionSequence()
+void CAutoplayer::FinishActionSequenceIfNecessary()
 {
-	// Restoring the original state has to be done in reversed order
-	SetFocus(window_with_focus);
-	SetCursorPos(cursor_position.x, cursor_position.y);
-	_mutex.Unlock();
+	if (action_sequence_needs_to_be_finished)
+	{
+		// Restoring the original state has to be done in reversed order
+		SetFocus(window_with_focus);
+		SetCursorPos(cursor_position.x, cursor_position.y);
+		_mutex.Unlock();
+		action_sequence_needs_to_be_finished = false;
+	}
 }
 
 
@@ -113,11 +121,14 @@ bool CAutoplayer::DoBetPot(void)
 	// Start with 2 * potsize, continue with lower betsizes, finally 1/4 pot
 	for (int i=k_autoplayer_function_betpot_2_1; i<=k_autoplayer_function_betpot_1_4; i++)
 	{
-		if (p_autoplayer_functions->GetAautoplayerFunctionValue(i))
+		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))
 		{
-			write_log(prefs.debug_autoplayer(), "[AutoPlayer] %s true.\n", 
+			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Function %s true.\n", 
 				k_autoplayer_functionname[i]);
-			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Trying to click button.\n");
+			if (!PrepareActionSequence())
+			{
+				return false;
+			}
 			if (p_tablemap->betpotmethod() == BETPOT_RAISE)
 			{
 				return p_casino_interface->ClickButtonSequence(i, k_autoplayer_function_raise, /*betpot_delay* !!! */ 1);
@@ -137,7 +148,7 @@ bool CAutoplayer::AnyPrimaryFormulaTrue()
 {
 	for (int i=k_autoplayer_function_allin; i<=k_autoplayer_function_call; i++)
 	{
-		if (p_autoplayer_functions->GetAautoplayerFunctionValue(i))
+		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))
 		{
 			return true;
 		}
@@ -149,7 +160,7 @@ bool CAutoplayer::AnySecondaryFormulaTrue()
 {
 	for (int i=k_autoplayer_function_prefold; i<=k_autoplayer_function_chat; i++)
 	{
-		if (p_autoplayer_functions->GetAautoplayerFunctionValue(i))
+		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))
 		{
 			return true;
 		}
@@ -162,6 +173,12 @@ bool CAutoplayer::ExecutePrimaryFormulas()
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ExecutePrimaryFormulas()\n");
 	// Precondition: my turn and isfinalanswer
 	// So we have to take an action and are able to do so.
+	// This function will ALWAYS try to click a button,
+	// so we can handle the preparation once at the very beginning.
+	if (!PrepareActionSequence())
+	{
+		return false;
+	}
 	if (p_autoplayer_functions->f$alli())
 	{
 		return DoAllin();
@@ -176,31 +193,31 @@ bool CAutoplayer::ExecutePrimaryFormulas()
 bool CAutoplayer::ExecuteRaiseCallCheckFold()
 {
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ExecuteRaiseCallCheckFold()\n");
-	if (p_autoplayer_functions->f$rais()
-		&& p_casino_interface->ClickButton(k_button_raise))
+	if (p_autoplayer_functions->f$rais())
 	{
-		return true;
+		return p_casino_interface->ClickButton(k_button_raise);
 	}
-	else if (p_autoplayer_functions->f$call()
-		&& p_casino_interface->ClickButton(k_autoplayer_function_call))
+	else if (p_autoplayer_functions->f$call())
 	{
-		return true;
+		return p_casino_interface->ClickButton(k_autoplayer_function_call);
 	}
 	// Try to check
-	else if (p_casino_interface->ClickButton(k_autoplayer_function_check))
+	else 
 	{
-		return true;
-	}
-	else
-	{
-		// Otherwise: fold
-		return p_casino_interface->ClickButton(k_autoplayer_function_fold);
+		if (p_casino_interface->ClickButton(k_autoplayer_function_check))
+		{
+			return true;
+		}
+		else
+		{
+			// Otherwise: fold
+			return p_casino_interface->ClickButton(k_autoplayer_function_fold);
+		}
 	}
 }
 
 
-
-bool CAutoplayer::ExecuteSecondaryFormulas()
+bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary()
 {
 	if (!AnySecondaryFormulaTrue())
 	{
@@ -210,26 +227,27 @@ bool CAutoplayer::ExecuteSecondaryFormulas()
 	}
 	for (int i=k_autoplayer_function_prefold; i<=k_autoplayer_function_leave; i++)
 	{
-		if (p_autoplayer_functions->GetAautoplayerFunctionValue(i))
+		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))
 		{
 			return p_casino_interface->ClickButton(i);
 		}
 		// Close rebuy and chat work require different treatment,
 		// more than just clicking a simple region...
-		if (p_autoplayer_functions->GetAautoplayerFunctionValue(k_autoplayer_function_close))
+		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_autoplayer_function_close))
 		{
-			p_casino_interface->CloseWindow();
+			return p_casino_interface->CloseWindow();
 		}
-		if (p_autoplayer_functions->GetAautoplayerFunctionValue(k_autoplayer_function_rebuy))
+		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_autoplayer_function_rebuy))
 		{
-			// ??? mutex twice!
-			p_rebuymanagement->TryToRebuy();			
+			p_rebuymanagement->TryToRebuy();
+			return true;
 		}
-		if (p_autoplayer_functions->GetAautoplayerFunctionValue(k_autoplayer_function_chat))
+		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_autoplayer_function_chat))
 		{
-			DoChat();
+			return DoChat();
 		}
 	}
+	return false;
 }
 
 #define ENT CSLock lock(m_critsec);
@@ -274,14 +292,11 @@ bool CAutoplayer::DoAllin(void)
 		number_of_clicks = 2;
 	}
 
-	/*
-		TM symbol allinmethod.
-		0: swag the balance (default)
-		1: click max (or allin), then raise
-		2: click only max (or allin) [Spew and THF]
-		3: use the slider
-	*/
-
+	// TM symbol allinmethod.
+	//	0: swag the balance (default)
+	//	1: click max (or allin), then raise
+	//	2: click only max (or allin) [Spew and THF]
+	//	3: use the slider
 	if (p_tablemap->allinmethod() == 1)
 	{
 		// Clicking max (or allin) and then raise
@@ -312,8 +327,62 @@ bool CAutoplayer::DoAllin(void)
 		// Fourth case (default = 0): swagging the balance
 		double betsize_for_allin = p_symbols->sym()->currentbet[10 /*!!!*/]
 			+ p_symbols->sym()->balance[10]; //!!!
-		p_casino_interface->EnterBetsize(betsize_for_allin);
+		return p_casino_interface->EnterBetsize(betsize_for_allin);
 	}
+}
+
+
+bool CAutoplayer::IsFinalAnswer()
+{
+	// [IMPERFECT CODE] Updates stable-frames-counter as a side-effect
+	// and should therefore only get called once per heartbeat.
+
+	bool is_final_answer = true;
+	// check factors that affect isFinalAnswer status
+	if (iter_vars.iterator_thread_running())
+	{
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because iterator_thread_running\n");
+		is_final_answer = false;
+	}
+
+	// Change from only requiring one visible button (OpenHoldem 2008-04-03)
+	if (p_casino_interface->NumberOfVisibleAutoplayerButtons() < 2)
+	{
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because num_buttons_visible < 2\n");
+		is_final_answer = false;
+	}
+
+	// if we are not playing (occluded?) 2008-03-25 Matrix
+	if (!p_symbols->sym()->playing)
+	{
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because !p_symbols->sym()->playing\n");
+		is_final_answer = false;
+	}
+
+	//  Avoiding unnecessary calls to p_stableframescounter->UpdateNumberOfStableFrames(),
+	if (is_final_answer)
+	{
+		p_stableframescounter->UpdateNumberOfStableFrames();
+	}
+
+	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Number of stable frames: % d\n", p_stableframescounter->NumberOfStableFrames());
+	// Scale f$delay to a number of scrapes and avoid division by 0 and negative values
+	unsigned int additional_frames_to_wait = (prefs.scrape_delay() > 0 && p_autoplayer_functions->f$delay() > 0 ? (p_autoplayer_functions->f$delay()/prefs.scrape_delay()) : 0);
+
+	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return.
+	if (p_stableframescounter->NumberOfStableFrames() < prefs.frame_delay() + additional_frames_to_wait)
+	{
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because we don't have enough stable frames, or have not waited f$delay (=%d ms)\n", (int)p_autoplayer_functions->f$delay());
+		is_final_answer = false;
+	}
+
+	// If the game state processor didn't process this frame, then we should not act.
+	if (!p_game_state->ProcessThisFrame ())
+	{
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because game state processor didn't process this frame\n");
+		is_final_answer = false;
+	}
+	return is_final_answer;
 }
 
 void CAutoplayer::DoAutoplayer(void) 
@@ -323,8 +392,7 @@ void CAutoplayer::DoAutoplayer(void)
 	CheckBringKeyboard();
 
 	p_scraper_access->GetNeccessaryTablemapObjects();
-	int	num_buttons_visible = p_casino_interface->NumberOfVisibleAutoplayerButtons();
-	/* TODO: better log-file format !!! 	
+	/* [TODO] better log-file format !!! 	
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d (%c%c%c%c%c)\n", 
 		num_buttons_visible, 
 		allin_option_available ? 'A' : '.',
@@ -333,126 +401,51 @@ void CAutoplayer::DoAutoplayer(void)
 		check_button_available ? 'K' : '.',
 		fold_button_available  ? 'F' : '.');*/
 
-	// Calculate f$play, f$prefold, f$rebuy, f$delay and f$chat for use below
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling CalcSecondaryFormulas.\n");
+	// Care about sitin, sitout, leave, etc.
 	p_autoplayer_functions->CalcSecondaryFormulas();
-
-	// Handle f$sitin, f$sitout, f$leave (formerly f$play)
-	// Also handling f$cloase here
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling DoF$Sitin_Sitout_Leave.\n");
-	//!!!DoF$Sitin_Sitout_Leave();
-
+	ExecuteSecondaryFormulasIfNecessary();
   
-	bool isFinalAnswer = true;
-
-	// check factors that affect isFinalAnswer status
-	if (iter_vars.iterator_thread_running())
+	bool is_final_answer = IsFinalAnswer();
+	p_symbols->set_sym_isfinalanswer(is_final_answer);
+	if(is_final_answer)
 	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because iterator_thread_running\n");
-		isFinalAnswer = false;
+		p_autoplayer_functions->CalcPrimaryFormulas();
+		ExecutePrimaryFormulas();
 	}
-
-	// Change from only requiring one visible button (OpenHoldem 2008-04-03)
-	if (num_buttons_visible < 2)
-	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because num_buttons_visible < 2\n");
-		isFinalAnswer = false;
-	}
-
-	// if we are not playing (occluded?) 2008-03-25 Matrix
-	if (!p_symbols->sym()->playing)
-	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because !p_symbols->sym()->playing\n");
-		isFinalAnswer = false;
-	}
-
-	//  Avoiding unnecessary calls to p_stableframescounter->UpdateNumberOfStableFrames(),
-	if (isFinalAnswer)
-		p_stableframescounter->UpdateNumberOfStableFrames();
-
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Number of stable frames: % d\n", p_stableframescounter->NumberOfStableFrames());
-
-	// Scale f$delay to a number of scrapes and avoid division by 0 and negative values
-	unsigned int additional_frames_to_wait = (prefs.scrape_delay() > 0 && p_autoplayer_functions->f$delay() > 0 ? (p_autoplayer_functions->f$delay()/prefs.scrape_delay()) : 0);
-
-	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return.
-	if (p_stableframescounter->NumberOfStableFrames() < prefs.frame_delay() + additional_frames_to_wait)
-	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because we don't have enough stable frames, or have not waited f$delay (=%d ms)\n", (int)p_autoplayer_functions->f$delay());
-		isFinalAnswer = false;
-	}
-
-	// If the game state processor didn't process this frame, then we should not act.
-	if (!p_game_state->ProcessThisFrame ())
-	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because game state processor didn't process this frame\n");
-		isFinalAnswer = false;
-	}
-
-	// Now that we got through all of the above, we are ready to evaluate the primary formulas
-	// and take the appropriate action
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling CalcPrimaryFormulas with final answer.\n");
-	p_symbols->set_sym_isfinalanswer(isFinalAnswer);
-	p_autoplayer_functions->CalcPrimaryFormulas(isFinalAnswer);
-
-	if(!isFinalAnswer)
-	{
-		return;
-	}
-	ExecutePrimaryFormulas();
-
-
-/* !!!!
-	// do swag first since it is the odd one
-	bool bDoSwag = false; // I'm just breaking this out to be a little clearer (spew)
-
-	if ((p_tablemap->allinmethod() == 0) && p_autoplayer_functions->f$alli() && p_scraper->GetButtonState(k_button_i3)) //!!! //!!!
-		bDoSwag = true;
-
-	if (p_autoplayer_functions->f$betsize() && !p_autoplayer_functions->f$alli() && p_scraper->GetButtonState(k_button_i3)) //!!!
-		bDoSwag = true;
-
-	if (bDoSwag) 
-	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Calling DoSwag.\n");
-		DoSwag();
-	}
-*/
-
+	FinishActionSequenceIfNecessary();
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending Autoplayer cadence.\n");
 }
 
-void CAutoplayer::DoSwag(void) 
+
+bool CAutoplayer::DoSwag(void) 
 {
 	if (p_autoplayer_functions->f$betsize() > 0)
 	{
-		p_casino_interface->EnterBetsize(p_autoplayer_functions->f$betsize());
+		return p_casino_interface->EnterBetsize(p_autoplayer_functions->f$betsize());
 	}
+	return false;
 }
-
 
 
 void CAutoplayer::DoSlider(void) 
 {
-	
+	// !!!	
 }
 
 void CAutoplayer::DoPrefold(void) 
 {
-	HWND			hwnd_focus = GetFocus();
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting DoPrefold...\n");
 
-
-
 	if (p_autoplayer_functions->f$prefold() == 0)  
+	{
 		return;
+	}
+	p_casino_interface->ClickButton(k_autoplayer_function_prefold);
 
-		p_casino_interface->ClickButton(k_autoplayer_function_prefold);
-
-		p_symbols->RecordPrevAction(k_action_fold);
-		write_logautoplay(ActionConstantNames(k_action_fold));
+	p_symbols->RecordPrevAction(k_action_fold);
+	write_logautoplay(ActionConstantNames(k_action_fold));
 	p_autoplayer_functions->CalcAutoTrace();
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending DoPrefold.\n");
 }

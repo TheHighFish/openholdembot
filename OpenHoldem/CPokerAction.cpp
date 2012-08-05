@@ -313,13 +313,14 @@ const int CPokerAction::DealPosition (const int chairnum)
 			dealposchair++;
 
 		if (i%10==chairnum)
-			i=99;
+			break;
 	}
 	return ((sym_playersdealtbits>>chairnum)&1) ? dealposchair : 0 ;
 }
 
 const int CPokerAction::AggressorChair (void)
 {
+	// !!! Plain superfluos code!
 	int		betround = (int) p_symbols->sym()->betround;
 	int		sym_raischair = (int) p_symbols->sym()->raischair;
 

@@ -17,44 +17,39 @@ void CAutoplayerFunctions::Reset()
 {
 	for (int i=0; i<k_number_of_autoplayer_functions; i++)
 	{
-		SetAautoplayerFunction(i, 0);
+		SetAutoplayerFunction(i, 0);
 	}
 }
 
-void CAutoplayerFunctions::SetAautoplayerFunction(const int function_to_bn_set, const double new_value)
+void CAutoplayerFunctions::SetAutoplayerFunction(const int function_to_bn_set, const double new_value)
 {
 	assert(function_to_bn_set >= 0);
 	assert(function_to_bn_set < k_number_of_autoplayer_functions);
 	_autoplayer_functionvalues[function_to_bn_set] = new_value;
 };
 
-double CAutoplayerFunctions::GetAautoplayerFunctionValue(const int function_to_bn_queried)
+double CAutoplayerFunctions::GetAutoplayerFunctionValue(const int function_to_bn_queried)
 {
 	assert(function_to_bn_queried >= 0);
 	assert(function_to_bn_queried < k_number_of_autoplayer_functions);
 	return _autoplayer_functionvalues[function_to_bn_queried];
 }
 
-void CAutoplayerFunctions::CalcPrimaryFormulas(const bool final_answer)
+void CAutoplayerFunctions::CalcPrimaryFormulas()
 {
-	if (!final_answer)
-		return;
-
 	int			e = SUCCESS;
 	CGrammar	gram;
 
-	write_log(prefs.debug_symbolengine(), "IsFinalAnswer: %i\n", final_answer);
 	write_log(prefs.debug_symbolengine(), "Trace enabled: %i\n", prefs.trace_enabled());
-
-	bool trace_needed = final_answer && prefs.trace_enabled();
+	bool trace_needed = prefs.trace_enabled();
 
 	for (int i=first_primary_autoplayer_function; i<=last_primary_autoplayer_function ; i++)
 	{
 		e = SUCCESS;
-		p_autoplayer_functions->SetAautoplayerFunction(i, // function to be set
+		p_autoplayer_functions->SetAutoplayerFunction(i, // function to be set
 			gram.CalcF$symbol(p_formula, k_autoplayer_functionname[i], trace_needed, &e));
 		write_log(prefs.debug_symbolengine(), "Primary formulas; %s: %f\n", 
-			k_autoplayer_functionname[i], p_autoplayer_functions->GetAautoplayerFunctionValue(i));
+			k_autoplayer_functionname[i], p_autoplayer_functions->GetAutoplayerFunctionValue(i));
 	}
 	CalcAutoTrace();
 }
@@ -69,10 +64,10 @@ void CAutoplayerFunctions::CalcSecondaryFormulas(void)
 	for (int i=first_secondary_autoplayer_function; i<=last_secondary_autoplayer_function ; i++)
 	{
 		e = SUCCESS;
-		p_autoplayer_functions->SetAautoplayerFunction(i, // function to be set
+		p_autoplayer_functions->SetAutoplayerFunction(i, // function to be set
 			gram.CalcF$symbol(p_formula, k_autoplayer_functionname[i], trace_needed, &e));
 		write_log(prefs.debug_symbolengine(), "Primary formulas; %s: %f\n", 
-			k_autoplayer_functionname[i], p_autoplayer_functions->GetAautoplayerFunctionValue(i));
+			k_autoplayer_functionname[i], p_autoplayer_functions->GetAutoplayerFunctionValue(i));
 	}
 	CalcAutoTrace();
 }

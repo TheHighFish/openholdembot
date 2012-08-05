@@ -7,12 +7,12 @@ public:
 	CAutoplayerFunctions();
 public:
 	void Reset();
-	void CalcPrimaryFormulas(const bool final_answer);
+	void CalcPrimaryFormulas();
 	void CalcSecondaryFormulas(void);
 	void CalcAutoTrace();
-	double GetAautoplayerFunctionValue(const int function_to_bn_set);
+	double GetAutoplayerFunctionValue(const int function_to_bn_set);
 #define ENT CSLock lock(m_critsec);
-	void SetAautoplayerFunction(const int function_to_bn_set, const double new_value);
+	void SetAutoplayerFunction(const int function_to_bn_set, const double new_value);
 #undef ENT
 public:
 	double	f$alli()	{ return _autoplayer_functionvalues[k_autoplayer_function_allin]; }

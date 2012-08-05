@@ -58,7 +58,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 	{
 		OH_MessageBox_Interactive(
 			"BAD NEWS:\n"
-			"  * No tablemaps in scraper folder\n"
+			"  * No tablemaps in scraper folder.\n"
 			"    Without tablemaps you can't connect to a table.",
 			k_title_string, 0);
 
@@ -67,14 +67,14 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 	{
 		OH_MessageBox_Interactive(
 			"GOOD NEWS:\n"
-			"  * At least one tablemap in scraper folder\n"
+			"  * At least one tablemap in scraper folder.\n"
 			"\n"
 			"BAD NEWS:\n"
-			"  * You are not connected to a table\n"
-			"    To connect to a table three conditions must be met\n"
-			"      * You need a tablemap for that casino and game-type\n"
-			"      * The tablesize must be right\n"
-			"      * The titlestring must match\n"
+			"  * You are not connected to a table.\n"
+			"    To connect to a table three conditions must be met:\n"
+			"      * You need a tablemap for that casino and game-type.\n"
+			"      * The tablesize must be right.\n"
+			"      * The titlestring must match.\n"
 			"    You also have to auto-connect or press the green button.\n"
 			"    If this does not work, then you have to fix your tablemap.",
 			k_title_string, 0);
@@ -83,14 +83,14 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 	{
 		OH_MessageBox_Interactive(
 			"GOOD NEWS:\n"
-			"  * At least one tablemap in scraper folder\n"
-			"  * You are connected to a table\n"
+			"  * At least one tablemap in scraper folder.\n"
+			"  * You are connected to a table.\n"
 			"\n"
 			"BAD NEWS:\n"
-			"  * you are not seated or userchair not recognized\n"
+			"  * you are not seated or userchair not recognized.\n"
 			"    To detect the userchair two conditions must be met:\n"
-			"      * Cards visible\n"
-			"      * Buttons visible at the same time\n"
+			"      * Cards visible.\n"
+			"      * Buttons visible at the same time.\n"
 			"    Please revisit your tablemap.",
 			k_title_string, 0);
 	}
@@ -98,13 +98,13 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 	{
 		OH_MessageBox_Interactive(
 			"GOOD NEWS:\n"
-			"  * At least one tablemap in scraper folder\n."
-			"  * You are connected to a table\n"
-			"  * Your chair got recognized\n"
+			"  * At least one tablemap in scraper folder.\n."
+			"  * You are connected to a table.\n"
+			"  * Your chair got recognized.\n"
 			"\n"
 			"BAD NEWS:\n"
-			"  * There seem to be no opponents\n"
-			"    Please revisit your tablemap, especially\n"
+			"  * There seem to be no opponents.\n"
+			"    Please revisit your tablemap, especially:\n"
 			"      * seated regions\n"
 			"      * active regions\n"
 			"      * cardbacks\n",
@@ -115,9 +115,9 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 		// This is the GOOD case!
 		OH_MessageBox_Interactive(
 			"GOOD NEWS:\n"
-			"  * At least one tablemap in scraper folder\n."
-			"  * You are connected to a table\n"
-			"  * Your chair got recognized\n"
+			"  * At least one tablemap in scraper folder.\n"
+			"  * You are connected to a table.\n"
+			"  * Your chair got recognized.\n"
 			"  * The autoplayer did act at least once.\n"
 			"    This means that your map and your settings\n"
 			"    are at least not completely wrong.\n" 
@@ -132,9 +132,9 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 		OH_MessageBox_Interactive(
 			"GOOD NEWS:\n"
 			"  * At least one tablemap in scraper folder\n."
-			"  * You are connected to a table\n"
-			"  * Your chair got recognized\n"
-			"  * You seem to have at least 1 opponent\n"
+			"  * You are connected to a table.\n"
+			"  * Your chair got recognized.\n"
+			"  * You seem to have at least 1 opponent.\n"
 			"\n"
 			"BAD NEWS:\n"
 			"  * You don't have any cards\n"
@@ -147,10 +147,10 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 		OH_MessageBox_Interactive(
 			"GOOD NEWS:\n"
 			"  * At least one tablemap in scraper folder\n."
-			"  * You are connected to a table\n"
-			"  * Your chair got recognized\n"
-			"  * You seem to have at least 1 opponent\n"
-			"  * Your cards got recognized\n"
+			"  * You are connected to a table.\n"
+			"  * Your chair got recognized.\n"
+			"  * You seem to have at least 1 opponent.\n"
+			"  * Your cards got recognized.\n"
 			"\n"
 			"BAD NEWS:\n"
 			"  * Not enough buttons detected.\n"
