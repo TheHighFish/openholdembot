@@ -1701,7 +1701,13 @@ void CDlgFormulaScintilla::LastChangeToFormula(CFormula *f)
 	}
 	else if (!pCurScin) 
 	{
-		ASSERT(false);
+		// Empty entry, nothing to do.
+		//
+		// There once was an assertion at this place
+		//   ASSERT(false);
+		// but it caused incorrect error-messages on empty list-entries. 
+		// http://www.maxinmontreal.com/forums/viewtopic.php?f=261&t=15395
+		// (post 11 by BotFoirSale).
 	}
 	
 	// A child item was selected, copy text from rich edit control to working set CArray
