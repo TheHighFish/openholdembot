@@ -7,7 +7,9 @@ BUG FIXES:
   when the same instance of OpenHoldem connected to a new table
   to play a second session.
   Thanks to Postenjak for reporting and for suggesting a fix.
-  [THF]  
+  [THF]
+- MaxOpponentStacksize and MinOpponentStacksize were not accurate in the blinds.
+  Thanks to Postenjak for reporting.  
   
 
 v1.1.1 2012-07-01
