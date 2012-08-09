@@ -2088,29 +2088,29 @@ f$OpenPPL_HINT_Nothing_To_Do_But_All_OK
 
 ##f$OpenPPL_MaxOpponentStackSizeCalculation##
 (bblind <= 0) ? f$OpenPPL_ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap :
-(balance_rank0 == balance) ? (balance_rank1 / bblind) : (balance_rank0 / bblind)
+(balance_rank0 == (balance + currentbet)) ? (balance_rank1 / bblind) : (balance_rank0 / bblind)
 
 ##f$OpenPPL_MinOpponentStackSizeCalculation##
 (bblind <= 0) ? f$OpenPPL_ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap :
 [ 1 / bblind *
 [ nplayersdealt == 10 ?
-    (balance_rank9 == balance ? balance_rank8 : balance_rank9) :
+    (balance_rank9 == (balance + currentbet) ? balance_rank8 : balance_rank9) :
   nplayersdealt == 9 ?
-    (balance_rank8 == balance ? balance_rank7 : balance_rank8) :
+    (balance_rank8 == (balance + currentbet) ? balance_rank7 : balance_rank8) :
   nplayersdealt == 8 ?
-    (balance_rank7 == balance ? balance_rank6 : balance_rank7) :
+    (balance_rank7 == (balance + currentbet) ? balance_rank6 : balance_rank7) :
   nplayersdealt == 7 ?
-    (balance_rank6 == balance ? balance_rank5 : balance_rank6) :
+    (balance_rank6 == (balance + currentbet) ? balance_rank5 : balance_rank6) :
   nplayersdealt == 6 ?
-    (balance_rank5 == balance ? balance_rank4 : balance_rank5) :
+    (balance_rank5 == (balance + currentbet) ? balance_rank4 : balance_rank5) :
   nplayersdealt == 5 ?
-    (balance_rank4 == balance ? balance_rank3 : balance_rank4) :
+    (balance_rank4 == (balance + currentbet) ? balance_rank3 : balance_rank4) :
   nplayersdealt == 4 ?
-    (balance_rank3 == balance ? balance_rank2 : balance_rank3) :
+    (balance_rank3 == (balance + currentbet) ? balance_rank2 : balance_rank3) :
   nplayersdealt == 3 ?
-    (balance_rank2 == balance ? balance_rank1 : balance_rank2) :
+    (balance_rank2 == (balance + currentbet) ? balance_rank1 : balance_rank2) :
   nplayersdealt == 2 ?
-    (balance_rank1 == balance ? balance_rank0 : balance_rank1) :
+    (balance_rank1 == (balance + currentbet) ? balance_rank0 : balance_rank1) :
 f$OpenPPL_ERROR_No_Opponents_Detected__Check_Your_TableMap]]
 
 ##f$OpenPPL_OpponentsWithHigherStack##
