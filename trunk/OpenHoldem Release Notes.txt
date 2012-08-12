@@ -73,11 +73,6 @@ MAINTENANCE:
 - Removed friend-symbols completely, as OpenHoldem does not support any kind of collusion.
   We don't want that shit, not even for backward-compatibility to WinHoldem.
   [THF]
-- Removed the symbol nouts, as Ray E. Bornerts definition
-  of "outs" is plain nonsense and completely useless.
-  mh_nouts is a way better built-in outs-counter 
-  and there are also some good counters in the forum. 
-  [THF]
 - Removed some list-symbols, which look like mis-conceptions
   and which are to our best knowledge unused:
   islistcall, islistrais, islistalli, isemptylistcall, isemptylistrais,
