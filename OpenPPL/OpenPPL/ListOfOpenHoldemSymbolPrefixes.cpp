@@ -7,7 +7,7 @@
 ListOfOpenHoldemSymbolPrefixes *p_list_of_openholdem_symbol_prefixes = NULL;
 
 const int k_max_length_of_symbol_prefix = 17;
-const int k_number_of_symbol_prefixes = 167;
+const int k_number_of_symbol_prefixes = 168;
 
 extern const char openholdem_symbol_prefixes[k_number_of_symbol_prefixes][k_max_length_of_symbol_prefix];
 
@@ -102,7 +102,7 @@ const char openholdem_symbol_prefixes[k_number_of_symbol_prefixes][k_max_length_
 	// (Un)known Cards
 	"nouts",		"ncards",
 	// nhands
-	"nhands"
+	"nhands",
 	// Flushes / Straights / Sets
 	"nsuited",		"tsuit",		"nranked",		"trank",
 	"nstraight",
