@@ -1,5 +1,13 @@
-v1.1.2 2012-xx-yy
+v1.1.2 2012-08-13
 =================
+NEW STUFF:
+- An OHF profile-optimizer, that replaces the code for open-ended when-conditions
+  by functions. This way old Shanky-style profiles with long code-sequences 
+  can get about 20..50% smaller and estimated 2..10 times faster.
+  Please see the updated manual for detailed info.
+  A big thanks to rehlby for providing this tool.
+  [THF]	
+
 BUG FIXES: 
 - "Check Force" didn't work - this has now been fixed.
   Thanks to Studyx for reporting.
@@ -13,6 +21,10 @@ BUG FIXES:
 - The symbols "nhands..." and "nsuited..." did not get accepted by the converter.
   This has now been fixed.
   Thanks to LadyBerril for reporting.
+  [THF]
+- Suited board expressions like "WHEN Hand = AT SUITED"
+  did not work correctly due to missing brackets.
+  Thanks to Chucksta for reporting the problem.
   [THF]
   
 
