@@ -9,7 +9,11 @@ BUG FIXES:
   Thanks to Postenjak for reporting and for suggesting a fix.
   [THF]
 - MaxOpponentStacksize and MinOpponentStacksize were not accurate in the blinds.
-  Thanks to Postenjak for reporting.  
+  Thanks to Postenjak for reporting. 
+- The symbols "nhands..." and "nsuited..." did not get accepted by the converter.
+  This has now been fixed.
+  Thanks to LadyBerril for reporting.
+  [THF]
   
 
 v1.1.1 2012-07-01
