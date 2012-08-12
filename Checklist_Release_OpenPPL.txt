@@ -8,6 +8,8 @@
 * Build the docu if necessary
   - Export -> HTML for all changed LyX-files
   - use MS HTML-workshop to create a "compiled HTML" help-file (*.CHM)
+* Compile Relhbys OHF-profile-optimizer in trunk\OpenPPL\OHF-Optimizer\OHF-Optimizer
+  and add the executable to the distribution.
 * Commit everything once it works
 * Update the release-notes.
 * Update the release-date in the release-notes.
