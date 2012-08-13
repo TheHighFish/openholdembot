@@ -136,26 +136,29 @@ while (<>)
 	# As the end is hard to detect with stupid regular expressions we...
 	# * add brackets to the left of any action
 	# * add brackets to the end of a line, if there is no action
-	# * add brackets to user-defined variable to be set
+	# * add brackets before user-defined variable to be set
+	# * add brackets before any memory-store-command (me_st_)
 	# Fist case: brackets before an action
 	# We have to use more than the action keyword here,
 	# otherwise code like "BotsLastAction = Raise" would be bracketed, too.	
-	s/[ ]+betmax[ ]+force/\) BETMAX FORCE/i;
-	s/[ ]+raisemax[ ]+force/\) RAISEMAX FORCE/i;
-	s/[ ]+allin[ ]+force/\) ALLIN FORCE/i;
-	s/[ ]+betpot[ ]+force/\) BETPOT FORCE/i;
-	s/[ ]+raisepot[ ]+force/\) RAISEPOT FORCE/i;
-	s/[ ]+bethalfpot[ ]+force/\) BETHALFPOT FORCE/i;
-	s/[ ]+raisehalfpot[ ]+force/\) RAISEHALFPOT FORCE/i;
-	s/[ ]+betmin[ ]+force/\) BETMIN FORCE/i;
-	s/[ ]+raisemin[ ]+force/\) RAISEMIN FORCE/i;
-	s/[ ]+bet[ ]+force/\) BET FORCE/i;
-	s/[ ]+raise[ ]+force/\) RAISE FORCE/i;
-	s/[ ]+call[ ]+force/\) CALL FORCE/i;
-	s/[ ]+check[ ]+force/\) CHECK FORCE/i;
-	s/[ ]+fold[ ]+force/\) FOLD FORCE/i;
-	s/[ ]+sitout[ ]+force/\) SITOUT FORCE/i;
-	s/[ ]+return[ ]/\) RETURN /i;
+	# Additionally we also prepare the line-info here (more details later)
+	s/[ ]+betmax[ ]+force/\) LineInfo_Act BETMAX FORCE/i;
+	s/[ ]+raisemax[ ]+force/\) LineInfo_Act RAISEMAX FORCE/i;
+	s/[ ]+allin[ ]+force/\) LineInfo_Act ALLIN FORCE/i;
+	s/[ ]+betpot[ ]+force/\) LineInfo_Act BETPOT FORCE/i;
+	s/[ ]+raisepot[ ]+force/\) LineInfo_Act RAISEPOT FORCE/i;
+	s/[ ]+bethalfpot[ ]+force/\) LineInfo_Act BETHALFPOT FORCE/i;
+	s/[ ]+raisehalfpot[ ]+force/\) LineInfo_Act RAISEHALFPOT FORCE/i;
+	s/[ ]+betmin[ ]+force/\) LineInfo_Act BETMIN FORCE/i;
+	s/[ ]+raisemin[ ]+force/\) LineInfo_Act RAISEMIN FORCE/i;
+	s/[ ]+bet[ ]+force/\) LineInfo_Act BET FORCE/i;
+	s/[ ]+raise[ ]+force/\) LineInfo_Act RAISE FORCE/i;
+	s/[ ]+call[ ]+force/\) LineInfo_Act CALL FORCE/i;
+	s/[ ]+check[ ]+force/\) LineInfo_Act CHECK FORCE/i;
+	s/[ ]+fold[ ]+force/\) LineInfo_Act FOLD FORCE/i;
+	s/[ ]+sitout[ ]+force/\) LineInfo_Act SITOUT FORCE/i;
+	# Slightly different line-info for return-statements, ending on "_Ret"
+	s/[ ]+return[ ]/\) LineInfo_Ret RETURN /i;
 	# Still first case: brackets before an action
 	# Now for Bet/Raise X% FORCE or Bet/Raise X Force,
 	# where Bet/Raise will be followed by a number.
@@ -167,30 +170,30 @@ while (<>)
 	s/[ ]+bet[ ]+/ BET /i;
 	s/[ ]+raise[ ]+/ RAISE /i;
 	# ...and then add brackets
-	s/[ ]+bet[ ]0/\) BET 0/i;	
-	s/[ ]+bet[ ]1/\) BET 1/i;
-	s/[ ]+bet[ ]2/\) BET 2/i;
-	s/[ ]+bet[ ]3/\) BET 3/i;
-	s/[ ]+bet[ ]4/\) BET 4/i;
-	s/[ ]+bet[ ]5/\) BET 5/i;
-	s/[ ]+bet[ ]6/\) BET 6/i;
-	s/[ ]+bet[ ]7/\) BET 7/i;
-	s/[ ]+bet[ ]8/\) BET 8/i;
-	s/[ ]+bet[ ]9/\) BET 9/i;
-	s/[ ]+raise[ ]0/\) RAISE 0/i;
-	s/[ ]+raise[ ]1/\) RAISE 1/i;
-	s/[ ]+raise[ ]2/\) RAISE 2/i;
-	s/[ ]+raise[ ]3/\) RAISE 3/i;
-	s/[ ]+raise[ ]4/\) RAISE 4/i;
-	s/[ ]+raise[ ]5/\) RAISE 5/i;
-	s/[ ]+raise[ ]6/\) RAISE 6/i;
-	s/[ ]+raise[ ]7/\) RAISE 7/i;
-	s/[ ]+raise[ ]8/\) RAISE 8/i;
-	s/[ ]+raise[ ]9/\) RAISE 9/i;
+	s/[ ]+bet[ ]0/\) LineInfo_Act BET 0/i;	
+	s/[ ]+bet[ ]1/\) LineInfo_Act BET 1/i;
+	s/[ ]+bet[ ]2/\) LineInfo_Act BET 2/i;
+	s/[ ]+bet[ ]3/\) LineInfo_Act BET 3/i;
+	s/[ ]+bet[ ]4/\) LineInfo_Act BET 4/i;
+	s/[ ]+bet[ ]5/\) LineInfo_Act BET 5/i;
+	s/[ ]+bet[ ]6/\) LineInfo_Act BET 6/i;
+	s/[ ]+bet[ ]7/\) LineInfo_Act BET 7/i;
+	s/[ ]+bet[ ]8/\) LineInfo_Act BET 8/i;
+	s/[ ]+bet[ ]9/\) LineInfo_Act BET 9/i;
+	s/[ ]+raise[ ]0/\) LineInfo_Act RAISE 0/i;
+	s/[ ]+raise[ ]1/\) LineInfo_Act RAISE 1/i;
+	s/[ ]+raise[ ]2/\) LineInfo_Act RAISE 2/i;
+	s/[ ]+raise[ ]3/\) LineInfo_Act RAISE 3/i;
+	s/[ ]+raise[ ]4/\) LineInfo_Act RAISE 4/i;
+	s/[ ]+raise[ ]5/\) LineInfo_Act RAISE 5/i;
+	s/[ ]+raise[ ]6/\) LineInfo_Act RAISE 6/i;
+	s/[ ]+raise[ ]7/\) LineInfo_Act RAISE 7/i;
+	s/[ ]+raise[ ]8/\) LineInfo_Act RAISE 8/i;
+	s/[ ]+raise[ ]9/\) LineInfo_Act RAISE 9/i;
 	# Now caring about expressions,
 	# which need to be enclodes in brackets
-	s/[ ]+bet[ ]\(/\) BET \(/i;	
-	s/[ ]+raise[ ]\(/\) RAISE \(/i;
+	s/[ ]+bet[ ]\(/\) LineInfo_Act BET \(/i;	
+	s/[ ]+raise[ ]\(/\) LineInfo_Act RAISE \(/i;
 	# Second case case: there is no action at the end,
 	# i.e. a keyword "WHEN", but no "FORCE" and no user-variable.
 	# Then we add a bracket to the right end of the line
@@ -223,9 +226,15 @@ while (<>)
 	else
 	{
 		# Sub-case 3) user-variable to be set (without operator)
-		# In this case we have to sdd a closing bracket before the variable
-		s/((user[A-Za-z0-9_]*)$)/\) $1/i;
+		# In this case we have to add a closing bracket before the variable
+		# The line-info for this case contains the postfix "_Var".
+		s/((user[A-Za-z0-9_]*)$)/\) LineInfo_Var $1/i;
 	}
+	# 4th main case: OpenHoldems memory-story-command "me_st_"
+	# As it should only be used at the very end after a condition
+	# we can set very easily a closing bracket before it.
+	# Postfix for the line-info is here "Mem".
+	s/me_st_/) LineInfo_Mem me_st_/i;
 	# Add opening and closing brackets to hand expressions
 	# This requires a bit more complex regular expressions, 
 	# because hand expressions can be spelled in different ways:
@@ -326,6 +335,7 @@ while (<>)
 	s/[ ]+\<\=[ ]+/ \<\= /g;
 	# Proper indentation
 	if ((m/^WHEN /i || m/ WHEN /i) && !(m/ FORCE$/i) && !(m/(user[A-Za-z0-9_]*)$/i))
+	# !!! me_st
 	{
 		# Open-ended when-condition
 		# No indentation
@@ -546,9 +556,7 @@ while (<>)
 	# Technical symbols
 	# Not needed for standard PPL, and most probably not for openPPL either
 	
-	# !!!
-	# !!! Check for unsafe code	and warn the user
-	# !!!
+	# Check for unsafe code	and warn the user
 	if (m/StackSize =/i)
 	{
 		print "\nUnsafe Stacksize operation!\n\"StackSize = X\" will cause troubles,\nbecause OpenHoldem uses real numbers.\nUse <= or >= instead.\n\n";
@@ -557,11 +565,27 @@ while (<>)
 	{
 		print "\n\"NutFullHouseOrFourOfAKind = 0\" is unsafe!\nOpenPPL uses consistently higher numbers for worse hands\nand 999 if you don't have a full house at all.\nPlease revisit the manual and your code\n\n";
 	}
-	# Generate a comment with the current line of code,
-	# as we didn't get boosts position-operator to work.
-	# This work-around should be good enough to identify the location of an error.
-	$current_line_of_code++;
-	print "/*** Line $current_line_of_code ***/\n";
+	# Finally care about line-numbers
+	if (m/LineInfo/i)
+	{
+		# We need another set of brackets, so one opening bracket after "When "
+		s/^WHEN /WHEN [/i;
+		s/ WHEN / WHEN [/i;
+		# Then we have 4 place-holders:
+		# * LineInfo_Act for actions
+		# * LineInfo_Ret for return statements
+		# * LineInfo_Var for user-defined variables to be set
+		# * LineInfo_Mem for OpenHoldems memory-store-command.
+		# Each of them needs a closing bracket
+		s/LineInfo_Act/LineInfo_Act\]/i;
+		s/LineInfo_Ret/LineInfo_Ret\]/i;
+		s/LineInfo_Var/LineInfo_Var\]/i;
+		s/LineInfo_Mem/LineInfo_Mem\]/i;
+		# We keep the postfix, but replace "LineInfo" by something like "log$line_xyz"
+		# so a message like "line_3147_Act" will appear in the log-file
+		$current_line_of_code++;
+		s/LineInfo/  &&  log\$line_$current_line_of_code/i;
+	}
 	# And finally write the processed line to standard output
 	print;
 }
