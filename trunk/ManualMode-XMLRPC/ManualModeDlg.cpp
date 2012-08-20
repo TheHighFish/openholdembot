@@ -116,6 +116,12 @@ END_MESSAGE_MAP()
 
 // CManualModeDlg dialog
 
+void CManualModeDlg::ResetSwag()
+{
+	swag.SetWindowTextA("");
+	raise_amount.Truncate(0);
+}
+
 void CManualModeDlg::SetSeated(int chair, bool s)
 {
 	seated[chair] = s;

@@ -50,6 +50,7 @@ public:
 	enum { IDD = IDD_MANUALMODE_DIALOG };
 	virtual BOOL DestroyWindow();
 
+	void ResetSwag();
 	void SetSeated(int chair, bool s);
 	void SetActive(int chair, bool a);
 	void SetDealer(int chair);

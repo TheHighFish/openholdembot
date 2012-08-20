@@ -457,6 +457,8 @@ class GetAction: public MMDlgMethod
 			structData.insert(rbutton);
 			structData.insert(rswag);
 
+			dlg->ResetSwag();
+
 			waiting_for_action = false;
 			*retvalP = xmlrpc_c::value_struct(structData);
 		}
