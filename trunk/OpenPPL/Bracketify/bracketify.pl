@@ -395,6 +395,7 @@ while (<>)
 	s/StackSize/StackSize/ig;
 	s/StartingStackSize/StartingStackSize/ig;
 	s/TotalInvested/TotalInvested/ig;
+	s/TotalInvestedThisRound/TotalInvestedThisRound/ig;
 	# 3) Board symbols
 	s/2ndTopFlopCardPairedOnRiver/2ndTopFlopCardPairedOnRiver/ig;
 	s/2ndTopFlopCardPairedOnTurn/2ndTopFlopCardPairedOnTurn/ig;
@@ -425,6 +426,7 @@ while (<>)
 	s/RankOfPairOnBoard/RankOfPairOnBoard/ig;
 	s/RankOfSpareCardWhenTwoPairOnBoard/RankOfSpareCardWhenTwoPairOnBoard/ig;	
 	s/RiverCardisOvercardToBoard/RiverCardisOvercardToBoard/ig;
+	s/RunnerRunnerFlushPossibleAtRiver/RunnerRunnerFlushPossibleAtRiver/ig;
 	s/SecondTopflopCardPairedOnRiver/SecondTopflopCardPairedOnRiver/ig;
 	s/SecondTopflopCardPairedOnTurn/SecondTopflopCardPairedOnTurn/ig;
 	s/StraightFlushOnBoard/StraightFlushOnBoard/ig;
@@ -509,6 +511,7 @@ while (<>)
 	s/HaveOverPair/HaveOverPair/ig;
 	s/HavePair/HavePair/ig;
 	s/HaveQuads/HaveQuads/ig;
+	s/HaveRunnerRunnerFlushAtRiver/HaveRunnerRunnerFlushAtRiver/ig;
 	s/HaveSet/HaveSet/ig;
 	s/HaveStraight/HaveStraight/ig;
 	s/HaveStraightDraw/HaveStraightDraw/ig;
@@ -516,6 +519,7 @@ while (<>)
 	s/HaveTopNonBoardPairedPair/HaveTopNonBoardPairedPair/ig;
 	s/HaveTopPair/HaveTopPair/ig;
 	s/HaveTopSet/HaveTopSet/ig;
+	s/HaveTopTrips/HaveTopTrips/ig;
 	s/HaveTopTwoPair/HaveTopTwoPair/ig;
 	s/HaveTrips/HaveTrips/ig;
 	s/HaveTwoPair/HaveTwoPair/ig;
@@ -535,6 +539,8 @@ while (<>)
 	s/OpponentsAtTable/OpponentsAtTable/ig;
 	s/OpponentsLeft/OpponentsLeft/ig;
 	s/OpponentsOnFlop/OpponentsOnFlop/ig;
+	s/OpponentsOnRiver/OpponentsOnRiver/ig;
+	s/OpponentsOnTurn/OpponentsOnTurn/ig;
 	s/OpponentsWithHigherStack/OpponentsWithHigherStack/ig;
 	s/OpponentsWithLowerStack/OpponentsWithLowerStack/ig;
 	s/StillToAct/StillToAct/ig;
@@ -542,7 +548,9 @@ while (<>)
 	s/PT_LastRaiserPFR/PT_LastRaiserPFR/ig;
 	s/PT_LastRaiserVPIP/PT_LastRaiserVPIP/ig;
 	s/PT_LastRaiser_AttemptToStealBlinds/PT_LastRaiser_AttemptToStealBlinds/ig;
+	s/PT_LastRaiser_Hands/PT_LastRaiser_Hands/ig;
 	s/PT_BigBlind_FoldBBToSteal/PT_BigBlind_FoldBBToSteal/ig;
+	s/PT_SmallBlind_FoldSBToSteal/PT_SmallBlind_FoldSBToSteal/ig;
 	s/PT_SmallBlind_VPIP/PT_SmallBlind_VPIP/ig;
 	# 8) Position symbols
 	s/FirstCallerPosition/FirstCallerPosition/ig;
@@ -561,10 +569,10 @@ while (<>)
 	{
 		print "\nUnsafe Stacksize operation!\n\"StackSize = X\" will cause troubles,\nbecause OpenHoldem uses real numbers.\nUse <= or >= instead.\n\n";
 	}
-	if (m/NutFullHouseOrFourOfAKind = 0/i)
-	{
-		print "\n\"NutFullHouseOrFourOfAKind = 0\" is unsafe!\nOpenPPL uses consistently higher numbers for worse hands\nand 999 if you don't have a full house at all.\nPlease revisit the manual and your code\n\n";
-	}
+	# "NutFullHouseOrFourOfAKind = 0" is unsafe.
+	# OpenPPL uses consistently higher numbers for worse hands
+	# and 999 if we don't have a full house at all.
+	s/NutFullHouseOrFourOfAKind = 0/NutFullHouseOrFourOfAKind = f$OpenPPL_HINT_We_Dont_Have_A_FullHouse_At_All/ig;
 	# Finally care about line-numbers
 	if (m/LineInfo/i)
 	{
