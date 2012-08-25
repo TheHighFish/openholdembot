@@ -36,6 +36,7 @@
 //   Poker_Dog
 //   Postenjak
 //   Rambam
+//   Relhby
 //   Satanikut
 //   Stangelnator
 //   SteveG1963
@@ -297,7 +298,7 @@ f$OpenPPL_Fold
 
 ##f$OpenPPL_HINT_We_Dont_Have_A_FullHouse_At_All##
 // Docu says: this case is 0; and this special case needs extra care.
-// However returning a high number instead of 0 seems better to uz,
+// However returning a high number instead of 0 seems better to us,
 // as it indicates the weakness and avoids any pitfalls.
 999
 
