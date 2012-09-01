@@ -1,4 +1,4 @@
-v1.1.2 2012-08-13
+v1.2.0 2012-08-15
 =================
 NEW STUFF:
 - An OHF profile-optimizer, that replaces the code for open-ended when-conditions
@@ -7,6 +7,15 @@ NEW STUFF:
   Please see the updated manual for detailed info.
   A big thanks to rehlby for providing this tool.
   [THF]	
+- Bracketify is now able to modify a profile in a way
+  that it logs line-numbers to the debug-log,
+  but only for statements that get executed,
+  i.e. actions, return statements, user-defined variables to be set
+  and OpenHoldems memory-store-command (me_st_xyz_123).
+  The generated code could e.g. look like
+  "[condition  &&  log$line_123_Act] RAISEMAX FORCE"
+  and "line_123_Act" would appear in the log if that line got executed.
+  [THF]
 
 BUG FIXES: 
 - "Check Force" didn't work - this has now been fixed.
@@ -25,6 +34,10 @@ BUG FIXES:
 - Suited board expressions like "WHEN Hand = AT SUITED"
   did not work correctly due to missing brackets.
   Thanks to Chucksta for reporting the problem.
+  [THF]
+- Suited hand expressions didn't work either because we somehow 
+  used the wrong operator. 
+  Thanks to Postenjak for finding this funny bug.
   [THF]
   
 
