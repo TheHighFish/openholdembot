@@ -199,5 +199,5 @@ void generate_code_for_hand_expression_with_specific_suits(CString hand_expressi
 	// Now code for cards with specific suits
 	current_output << CString("[f$prime_coded_hole_cards % [1 * ") 
 		<< code_for_card_0 << CString(" * ") << code_for_card_1
-		<< CString("] != 0]]");
+		<< CString("] == 0]]");
 }
