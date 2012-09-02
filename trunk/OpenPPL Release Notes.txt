@@ -16,6 +16,21 @@ NEW STUFF:
   "[condition  &&  log$line_123_Act] RAISEMAX FORCE"
   and "line_123_Act" would appear in the log if that line got executed.
   [THF]
+- Bracketify does now warn about multi-line-expressions that can't be handled
+  (as long as the word wrap happens in a reasonable way with keywords like AND or OR
+  at the beginning or at the end).
+  [THF]
+- Bracketify does now detect unsafe comparisions such as Stacksize = 17,
+  which don't work on OH-side because OH uses real numbers like 17.28.
+  It does now generate a warning and replaces the code by "RoundedStacksize = 17".  
+  This does now work for Betsize, TotalInvested, AmountToCall, StartingStacksize,
+  MinOpponentStacksize, MaxOpponentStacksize and Stacksize.
+  However you HAVE TO revisit your code, because expressions like
+  "Stacksize = 70% Potsize" still won't work automatically,
+  because there is no way to convert the result of expressions "70% Potsize" to integer.
+  It is highly recommended to use <, <=, > and >= instead.
+  [THF]
+  
 
 BUG FIXES: 
 - "Check Force" didn't work - this has now been fixed.
@@ -31,7 +46,7 @@ BUG FIXES:
   This has now been fixed.
   Thanks to LadyBerril for reporting.
   [THF]
-- Suited board expressions like "WHEN Hand = AT SUITED"
+- Suited board expressions like "WHEN BOARD = AT SUITED"
   did not work correctly due to missing brackets.
   Thanks to Chucksta for reporting the problem.
   [THF]
