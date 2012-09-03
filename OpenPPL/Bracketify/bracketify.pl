@@ -45,6 +45,10 @@
 #
 ################################################################################
 
+use strict;
+use warnings;
+use diagnostics;
+
 my $current_line_of_code = 0;
 
 print "//\n";
@@ -54,6 +58,7 @@ print "//\n";
 # While there is input: process it line by line
 while (<>)
 {
+	$current_line_of_code++;
 	# Ignore Option-settings
 	if (m/MaxSessionHands =/ 
 		|| m/MaxSessionTime = / 
@@ -127,6 +132,27 @@ while (<>)
 	# Substitution is case-insensitive ("i" at the end), 
 	# but we care about beautyful, readable output and "fix" the cases.
 	s/\t/    /g;
+	# Also remove spaces at the beginning and at the end.
+	s/^[ ]*//;
+	s/$[ ]*//;
+	# Then try to detect multi-line-conditions,
+	# i.e. lines with AND or OR at the beginning or at the end,
+	# also lines with any bracket at the beginning or an opening bracket at the end.
+	# We can't handle them, so terminate with error in that case.
+	if ((m/^AND /i) or (m/^AND\(/i) or (m/^OR /i) or (m/^OR\(/i)
+		or (m/ AND$/i) or (m/\)AND$/i) or (m/ OR$/i) or (m/\)OR$/i)
+		or (m/^\)/i) or (m/^\(/i) or (m/\($/i))
+	{
+		# On error print to STDERR because STDOUT gets redirected to a file
+		print STDERR "\n";
+		print STDERR "ERROR: multi-line-condition detected.\n";
+		print STDERR "OpenPPL could handle that, but bracketify.pl works line by line.\n";
+		print STDERR "Please make it a one-liner-expression.\n";
+		print STDERR "Line: $current_line_of_code\n";
+		# Print current line of code
+		print STDERR "Code: $_\n";
+		exit
+	}
 	# Then add a bracket after when-conditions.
 	# Be careful: we alwaxs need an extra-bracket, even if one exists,
 	# because we always add a closing bracket later.
@@ -565,14 +591,30 @@ while (<>)
 	# Not needed for standard PPL, and most probably not for openPPL either
 	
 	# Check for unsafe code	and warn the user
-	if (m/StackSize =/i)
+	if ((m/Betsize =/i) or (m/TotalInvested =/i) or (m/AmountToCall =/i)
+		or (m/StartingStacksize =/i) or (m/MinOpponentStacksize =/i)
+		or (m/MaxOpponentStacksize =/i) or (m/Stacksize =/i))
 	{
-		print "\nUnsafe Stacksize operation!\n\"StackSize = X\" will cause troubles,\nbecause OpenHoldem uses real numbers.\nUse <= or >= instead.\n\n";
+		print STDERR "\n";
+		print STDERR "WARNING: Unsafe Stacksize operation!\n";
+		print STDERR "\"StackSize = X\" will cause troubles, because OpenHoldem uses real numbers.\n";
+		print STDERR "Automatically tried to fix, but better use <= or >= instead.\n\n";
+		print STDERR "Line: $current_line_of_code\n";
+		# Print current line of code
+		print STDERR "Code: $_\n";
+		# Now fix it...
+		s/Betsize/RoundedBetsize/ig;
+		s/TotalInvested/RoundedTotalInvested/ig;
+		s/AmountToCall/RoundedAmountToCall/ig;
+		s/StartingStacksize/RoundedStartingStacksize/ig;
+		s/MinOpponentStacksize/RoundedMinOpponentStacksize/ig;
+		s/MaxOpponentStacksize/RoundedMaxOpponentStacksize/ig;
+		s/Stacksize/RoundedStacksize/ig;
 	}
 	# "NutFullHouseOrFourOfAKind = 0" is unsafe.
 	# OpenPPL uses consistently higher numbers for worse hands
 	# and 999 if we don't have a full house at all.
-	s/NutFullHouseOrFourOfAKind = 0/NutFullHouseOrFourOfAKind = f$OpenPPL_HINT_We_Dont_Have_A_FullHouse_At_All/ig;
+	s/NutFullHouseOrFourOfAKind = 0/NutFullHouseOrFourOfAKind = f\$OpenPPL_HINT_We_Dont_Have_A_FullHouse_At_All/ig;
 	# Finally care about line-numbers
 	if (m/LineInfo/i)
 	{
@@ -591,7 +633,6 @@ while (<>)
 		s/LineInfo_Mem/LineInfo_Mem\]/i;
 		# We keep the postfix, but replace "LineInfo" by something like "log$line_xyz"
 		# so a message like "line_3147_Act" will appear in the log-file
-		$current_line_of_code++;
 		s/LineInfo/  &&  log\$line_$current_line_of_code/i;
 	}
 	# And finally write the processed line to standard output
