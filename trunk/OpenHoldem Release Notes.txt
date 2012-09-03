@@ -1648,7 +1648,7 @@ NEW STUFF:
 BUG FIXES:  
 - As OH becomes more widely deployed, in multi-table situations, there have been some reports of accidental 
   movement of other windows on the screen when the OH autoplayer acts.  OH internally uses a system-wide mutex
-  to prevent this from happening - no OH instance can interfere with anout OH instance.  However, when you add
+  to prevent this from happening - no OH instance can interfere with another OH instance.  However, when you add
   hoppers and other programs/scripts to the mix, there very well can be collisions.  In this build, I have added 
   a mouse movement back to the original position at the end of every input queue.  A SetCursorPos was always 
   executed after the execution of an input queue, this last mouse movement is just for safety purposes. Hopefully 
