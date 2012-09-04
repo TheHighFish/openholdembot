@@ -2220,31 +2220,31 @@ ncurrentbets
 //
 //*****************************************************************************
 
-##f$OpenPPL_RoundedAmountToCall
+##f$OpenPPL_RoundedAmountToCall##
 f$OpenPPL_AmountToCall
 + 0 * f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 
-##f$OpenPPL_RoundedBetsize
-f$OpenPPL_Betsize
+##f$OpenPPL_RoundedBetSize##
+f$OpenPPL_BetSize
 + 0 * f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 
-##f$OpenPPL_RoundedMaxOpponentStacksize
-f$OpenPPL_MaxOpponentStacksize
+##f$OpenPPL_RoundedMaxOpponentStackSize##
+f$OpenPPL_MaxOpponentStackSize
 + 0 * f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 
-##f$OpenPPL_RoundedMinOpponentStacksize
-f$OpenPPL_MinOpponentStacksize
+##f$OpenPPL_RoundedMinOpponentStackSize##
+f$OpenPPL_MinOpponentStackSize
 + 0 * f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 
-##f$OpenPPL_Rounded
-f$OpenPPL_Stacksize
+##f$OpenPPL_RoundedStackSize##
+f$OpenPPL_StackSize
 + 0 * f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 
-##f$OpenPPL_RoundedStartingStacksize
-f$OpenPPL_StartingStacksize
+##f$OpenPPL_RoundedStartingStackSize##
+f$OpenPPL_StartingStackSize
 + 0 * f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 
-##f$OpenPPL_RoundedTotalInvested
+##f$OpenPPL_RoundedTotalInvested##
 f$OpenPPL_TotalInvested
 + 0 * f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 
