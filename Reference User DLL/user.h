@@ -48,4 +48,18 @@ double getsym( const char* name );
 double process_state(holdem_state* pstate);
 double process_query(const char* pquery);
 
+
+// ToDo by THF: move all this (and more) to an extra header,
+// care about initialization
+
+// Functions exported by OpenHoldem
+typedef void(*write_log)(bool debug_settings_for_this_message, char* fmt, ...);
+#define EXPORT __declspec(dllexport)
+// To make use of it write:
+//FnPtrT FnPtr = (FnPtrT)::GetProcAddress(GetModuleHandle(NULL),"write_log_export");
+//if(FnPtr)
+//{
+//  (*FnPtr)("Message From The DLL");
+//}
+
 #endif
