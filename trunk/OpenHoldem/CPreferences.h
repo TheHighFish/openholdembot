@@ -319,8 +319,6 @@ public:
 	void set_path_perl(const CString s)		{ ENT _path_perl = s; WriteReg("last_path_perl", s); }
 	void set_path_dll(const CString s)		{ ENT _path_dll = s; WriteReg("last_path_dll", s); }
 
-#undef ENT
-
 private:
 	// private variables - use public accessors and public mutators to address these
 

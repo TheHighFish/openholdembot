@@ -19,11 +19,9 @@ CTablePositioner::~CTablePositioner()
 void CTablePositioner::PositionMyWindow()
 {		
 	// Build list of poker tables (child windows)
-	// Use the shared memory (auto-connector) for that.
-	// There will be some NULL-windows in the list, but this does not harm,
-	// NULL means: desktop.
-	int number_of_child_windows = MAX_SESSION_IDS;
-	HWND *HWNDs_of_child_windows = p_sharedmem->GetListOfConnectedPokerWindows();
+	// Use the shared memory (auto-connector) for that. 
+	HWND *HWNDs_of_child_windows = p_sharedmem->GetDenseListOfConnectedPokerWindows();
+	int number_of_child_windows  = p_sharedmem->SizeOfDenseListOfAttachedPokerWindows();
 
 	if (prefs.table_positioner_options() == k_position_tables_tiled)
 	{
@@ -31,7 +29,7 @@ void CTablePositioner::PositionMyWindow()
 		// Tiling windows: http://msdn.microsoft.com/en-us/library/windows/desktop/ms633554(v=vs.85).aspx
 		TileWindows(
 			NULL,				// Parent; NULL = whole desktop
-			MDITILE_HORIZONTAL,	// How; either MDITILE_HORIZONTA or MDITILE_VERTICAL
+			MDITILE_HORIZONTAL,	// How; either MDITILE_HORIZONTAL or MDITILE_VERTICAL
 			NULL,				// Target area; NULL = parent window, here desktop
 			number_of_child_windows,
 			HWNDs_of_child_windows);

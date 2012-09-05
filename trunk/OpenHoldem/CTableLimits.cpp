@@ -618,6 +618,7 @@ double CTableLimits::ante()
 
 double CTableLimits::bet(int betround)
 {
+	// !!! make sure, that betround gets calculated before the table-limit.
 	assert(betround >= k_betround_preflop);
 	assert(betround <= k_betround_river);
 	return (_betsizes_for_all_bettingrounds[betround]);

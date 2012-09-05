@@ -329,6 +329,8 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		}
 
 		// Stop Poker Tracker Thread if not needed any longer
+		// !!! todo: also check for CARD_NOCARD
+		// !!! http://www.maxinmontreal.com/forums/viewtopic.php?f=114&p=103814
 		if (!p_symbols->sym()->issittingin && p_pokertracker_thread)
 		{
 			write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Stopping PokerTracker thread.\n");

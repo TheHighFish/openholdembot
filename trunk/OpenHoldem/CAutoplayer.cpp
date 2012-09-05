@@ -118,6 +118,7 @@ bool CAutoplayer::TimeToHandleSecondaryFormulas()
 
 bool CAutoplayer::DoBetPot(void)
 {
+	bool success = false;
 	// Start with 2 * potsize, continue with lower betsizes, finally 1/4 pot
 	for (int i=k_autoplayer_function_betpot_2_1; i<=k_autoplayer_function_betpot_1_4; i++)
 	{
@@ -131,14 +132,19 @@ bool CAutoplayer::DoBetPot(void)
 			}
 			if (p_tablemap->betpotmethod() == BETPOT_RAISE)
 			{
-				return p_casino_interface->ClickButtonSequence(i, k_autoplayer_function_raise, /*betpot_delay* !!! */ 1);
+				success = p_casino_interface->ClickButtonSequence(i, k_autoplayer_function_raise, /*betpot_delay* !!! */ 1);
 			}
 			else 
 			{
 				// Default: click only betpot
-				return p_casino_interface->ClickButton(i);				
+				success = p_casino_interface->ClickButton(i);				
 			}
 		}
+		if (success)
+		{
+			return true;
+		}
+		// Else continue trying with the next betpot function
 	}
 	// We didn't click any betpot-button
 	return false;
@@ -181,8 +187,13 @@ bool CAutoplayer::ExecutePrimaryFormulas()
 	}
 	if (p_autoplayer_functions->f$alli())
 	{
-		return DoAllin();
+		if (DoAllin())
+		{
+			return true;
+		}
+		// Else continue with swag and betpot
 	}
+	// !!! Swag
 	if (DoBetPot())
 	{
 		return true;
@@ -195,24 +206,27 @@ bool CAutoplayer::ExecuteRaiseCallCheckFold()
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ExecuteRaiseCallCheckFold()\n");
 	if (p_autoplayer_functions->f$rais())
 	{
-		return p_casino_interface->ClickButton(k_button_raise);
-	}
-	else if (p_autoplayer_functions->f$call())
-	{
-		return p_casino_interface->ClickButton(k_autoplayer_function_call);
-	}
-	// Try to check
-	else 
-	{
-		if (p_casino_interface->ClickButton(k_autoplayer_function_check))
+		if (p_casino_interface->ClickButton(k_button_raise))
 		{
 			return true;
 		}
-		else
-		{
-			// Otherwise: fold
-			return p_casino_interface->ClickButton(k_autoplayer_function_fold);
+	}
+	if (p_autoplayer_functions->f$call())
+	{
+		if (p_casino_interface->ClickButton(k_autoplayer_function_call))
+			{
+			return true;
 		}
+	}
+	// Try to check
+	if (p_casino_interface->ClickButton(k_autoplayer_function_check))
+	{
+		return true;
+	}
+	else
+	{
+		// Otherwise: fold
+		return p_casino_interface->ClickButton(k_autoplayer_function_fold);
 	}
 }
 
@@ -229,16 +243,24 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary()
 	{
 		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))
 		{
-			return p_casino_interface->ClickButton(i);
+			if (p_casino_interface->ClickButton(i))
+			{
+				return true;
+			}
 		}
-		// Close rebuy and chat work require different treatment,
+		// Close, rebuy and chat work require different treatment,
 		// more than just clicking a simple region...
 		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_autoplayer_function_close))
 		{
+			// CloseWindow is "final".
+			// We don't expect any further action after that
+			// and can return immediatelly.
 			return p_casino_interface->CloseWindow();
 		}
 		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_autoplayer_function_rebuy))
 		{
+			// This requires an external script and some time.
+			// No further actions here eihter, but immediate return.
 			p_rebuymanagement->TryToRebuy();
 			return true;
 		}
