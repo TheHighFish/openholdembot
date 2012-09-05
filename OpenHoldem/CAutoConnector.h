@@ -13,7 +13,7 @@ public:
 	bool Connect(HWND targetHWnd);
 	void Disconnect();
 	bool IsConnected();
-	double TimeSinceLastFailedAttemptToConnect(); // seconds
+	double TimeSincelast_failed_attempt_to_connect(); // seconds
 public:
 	// public accessors
 	const HWND attached_hwnd()    { return _attached_hwnd; }

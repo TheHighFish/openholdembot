@@ -561,12 +561,12 @@ int CAutoConnector::SelectTableMapAndWindowAutomatically(int Choices)
 	return -1;
 }
 
-double CAutoConnector::TimeSinceLastFailedAttemptToConnect()
+double CAutoConnector::TimeSincelast_failed_attempt_to_connect()
 {
-	time_t LastFailedAttemptToConnect = p_sharedmem->GetTimeOfLastFailedAttemptToConnect(); //???
+	time_t last_failed_attempt_to_connect = p_sharedmem->GetTimeOfLastFailedAttemptToConnect(); //???
 	time_t CurrentTime;
 	time(&CurrentTime);
-	double _TimeSinceLastFailedAttemptToConnect = difftime(CurrentTime, LastFailedAttemptToConnect);
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] TimeSinceLastFailedAttemptToConnect %f\n", _TimeSinceLastFailedAttemptToConnect);
-	return _TimeSinceLastFailedAttemptToConnect;
+	double _TimeSincelast_failed_attempt_to_connect = difftime(CurrentTime, last_failed_attempt_to_connect);
+	write_log(prefs.debug_autoconnector(), "[CAutoConnector] TimeSincelast_failed_attempt_to_connect %f\n", _TimeSincelast_failed_attempt_to_connect);
+	return _TimeSincelast_failed_attempt_to_connect;
 }

@@ -26,8 +26,10 @@ public:
 	void RememberTimeOfLastFailedAttemptToConnect();
 	time_t GetTimeOfLastFailedAttemptToConnect();
 	// Used for the table positioner
-	HWND *GetListOfConnectedPokerWindows();
+	HWND *GetDenseListOfConnectedPokerWindows();
+	int  SizeOfDenseListOfAttachedPokerWindows();
 private:
+	void CreateDenseListOfConnectedPokerWindows();
 	#define ENT CSLock lock(m_critsec);
 private:
 	CCritSec	m_critsec;
