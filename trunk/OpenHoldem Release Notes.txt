@@ -63,6 +63,9 @@ NEW STUFF:
   because there no longer is any need to do so.
   Just put them into the scraper-folder and OH will load them automagically.
   [THF]
+- Exporting the write_log-function to the user-DLL,
+  So it becomes possible to write the DLL-log directly into the main-log-file
+  [Nik0]
 
 
 MAINTENANCE:
