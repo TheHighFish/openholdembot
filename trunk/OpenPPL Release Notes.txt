@@ -54,7 +54,10 @@ BUG FIXES:
   used the wrong operator. 
   Thanks to Postenjak for finding this funny bug.
   [THF]
-  
+- When the user decided to "fold" where a check was possible
+  BotsLastAction was wrong. This has now been fixed.
+  Thanks to Postenjak for finding the problem and suggesting a fix.
+  [THF]
 
 v1.1.1 2012-07-01
 =================
