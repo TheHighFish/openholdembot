@@ -209,11 +209,10 @@ MAINTENANCE:
   * linking happens automatically at load-time, 
     so no confusing work has to be done and the functions are available immediatelly.
 	(Previously it could happen that people used these functions very early
-	before the pointer got initialized (e.g. initialization of a global variable
+	before the pointers got initialized (e.g. initialization of a global variable
 	with the get_sym()-function) leading to crashes at startup that were hard to debug
 	(0-byte crash-file))
   A big thank you to Nik0 who did all the work.
-  [THF]  
   [THF]  
   
   

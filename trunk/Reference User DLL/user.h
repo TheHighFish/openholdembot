@@ -54,10 +54,10 @@ double process_query(const char* pquery);
 
 // Functions exported by OpenHoldem
 extern "C" __declspec(dllimport) double __stdcall GetSymbolFromDll(const int chair, const char* name, bool& iserr);
-extern "C" __declspec(dllexport) void __stdcall   SendChatMessageFomDll(const char *msg);
-extern "C" __declspec(dllexport) void* __stdcall  GetPhl1kFromDll();
-extern "C" __declspec(dllexport) void* __stdcall  GetPrw1326FromDll();
-extern "C" __declspec(dllexport) void __stdcall   WriteLogFromDll(char* fmt, ...);
+extern "C" __declspec(dllimport) void __stdcall   SendChatMessageFomDll(const char *msg);
+extern "C" __declspec(dllimport) void* __stdcall  GetPhl1kFromDll();
+extern "C" __declspec(dllimport) void* __stdcall  GetPrw1326FromDll();
+extern "C" __declspec(dllimport) void __stdcall   WriteLogFromDll(char* fmt, ...);
 
 // To make use of it write:
 //FnPtrT FnPtr = (FnPtrT)::GetProcAddress(GetModuleHandle(NULL),"write_log_export");
