@@ -77,10 +77,6 @@ bool IsChatAllowed(void);
 
 void ComputeFirstPossibleNextChatTime(void);
 
-//  Getting a pointer to "send_ChatMessage" to send to the DLL
-//	at startup (similar to "pfgws")
-PointerTypeSendChatMessage GetPointerToSendChatMessage();
-
 //  Simple messages for the formula guys.
 //	Use f$chat as "the_MessageIndex".
 void RegisterChatMessage(double message_index);
