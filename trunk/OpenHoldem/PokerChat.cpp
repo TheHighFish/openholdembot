@@ -115,13 +115,6 @@ void ComputeFirstPossibleNextChatTime(void)
 								   (double(rand()) / RAND_MAX) * prefs.chat_random_delay();
 }
 
-//  Getting a pointer to "send_ChatMessage" to send to the DLL
-//	at startup (similar to "pfgws")
-PointerTypeSendChatMessage GetPointerToSendChatMessage()
-{
-	return &SendChatMessage;
-}
-
 //  Simple messages for the formula guys.
 //	Use f$chat as "the_MessageIndex".
 void RegisterChatMessage(double message_index)

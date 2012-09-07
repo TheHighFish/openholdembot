@@ -53,8 +53,12 @@ double process_query(const char* pquery);
 // care about initialization
 
 // Functions exported by OpenHoldem
-typedef void(*write_log)(bool debug_settings_for_this_message, char* fmt, ...);
-#define EXPORT __declspec(dllexport)
+extern "C" __declspec(dllimport) double __stdcall GetSymbolFromDll(const int chair, const char* name, bool& iserr);
+extern "C" __declspec(dllexport) void __stdcall   SendChatMessageFomDll(const char *msg);
+extern "C" __declspec(dllexport) void* __stdcall  GetPhl1kFromDll();
+extern "C" __declspec(dllexport) void* __stdcall  GetPrw1326FromDll();
+extern "C" __declspec(dllexport) void __stdcall   WriteLogFromDll(char* fmt, ...);
+
 // To make use of it write:
 //FnPtrT FnPtr = (FnPtrT)::GetProcAddress(GetModuleHandle(NULL),"write_log_export");
 //if(FnPtr)

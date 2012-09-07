@@ -1,19 +1,17 @@
 #include "stdafx.h"
-
 #include "CDllExtension.h"
-
-#include "OpenHoldem.h"
 
 #include "CSymbols.h"
 #include "CPreferences.h"
 #include "CFormula.h"
 #include "CGrammar.h"
 #include "CHandHistory.h"
-
-#include "PokerChat.hpp"
 #include "Cversus.h"
 #include "CIteratorThread.h"
+#include "debug.h"
 #include "OH_MessageBox.h"
+#include "OpenHoldem.h"
+#include "PokerChat.hpp"
 
 CDllExtension		*p_dll_extension = NULL;
 
@@ -110,34 +108,15 @@ void CDllExtension::LoadDll(const char * path)
 		_hmod_dll = NULL;
 		return;
 	}
+	// No longer passing any pointers to the DLL.
+	// We do no export functions an link them implicitly:
+	// http://www.maxinmontreal.com/forums/viewtopic.php?f=112&t=15470
 	// pass "load" message
-	(_process_message) ("event", "load");
 
-	// pass "pfgws" message
-	(_process_message) ("pfgws", GetSymbolFromDll);
-
-	//pass "phl1k" message (address of handlist arrays)
-	//  2008-03-22 Matrix
-	(_process_message) ("phl1k", p_formula->formula()->inlist);
-
-	//pass "prw1326" message (address of prw1326 structure)
-	//  2008-05-08 Matrix
-	(_process_message) ("prw1326", p_symbols->prw1326());
-	
+	// To do !!!
 	//pass "history" message (address of history structure)
 	//  2010-01-23 Demonthus
 	(_process_message) ("history", p_handhistory->history());
-
-	//  2008.02.27 by THF
-	//
-	//  pass "p_send_chat_message" message
-	//
-	//  Providing a pointer to the chat function,
-	//	which can be used inside the dll,
-	//	similar to "pfgws".
-	//
-	(_process_message)(pointer_for_send_chat_message,
-					  GetPointerToSendChatMessage());
 }
 
 void CDllExtension::UnloadDll(void)
@@ -158,7 +137,7 @@ const bool CDllExtension::IsDllLoaded()
 	return _hmod_dll != NULL;
 }
 
-double GetSymbolFromDll(const int chair, const char* name, bool& iserr)
+extern "C" __declspec(dllexport) double __stdcall GetSymbolFromDll(const int chair, const char* name, bool& iserr)
 {
 	int			e = SUCCESS, stopchar = 0;
 	double		res = 0.;
@@ -211,3 +190,31 @@ double GetSymbolFromDll(const int chair, const char* name, bool& iserr)
 
 	return res;
 }
+
+
+
+extern "C" __declspec(dllexport) void __stdcall SendChatMessageFomDll(const char *msg)
+{
+	SendChatMessage((char *)msg);
+}
+
+extern "C" __declspec(dllexport) void* __stdcall GetPhl1kFromDll()
+{
+	return (void *)(p_formula->formula()->inlist);
+}
+
+extern "C" __declspec(dllexport) void* __stdcall GetPrw1326FromDll()
+{
+	return (void *)(p_symbols->prw1326());
+}
+
+extern "C" __declspec(dllexport) void __stdcall WriteLogFromDll(char* fmt, ...)
+{
+	// Docu about ellipsis and variadic macro:
+	// http://msdn.microsoft.com/en-us/library/ms177415(v=vs.80).aspx
+	// http://stackoverflow.com/questions/1327854/how-to-convert-a-variable-argument-function-into-a-macro
+	va_list args;
+	write_log(true, fmt, args);
+	// !!! should true be replaced by an option?
+}
+

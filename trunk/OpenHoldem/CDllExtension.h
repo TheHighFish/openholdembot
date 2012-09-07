@@ -62,7 +62,12 @@ private:
 } *p_dll_extension;
 
 
-double GetSymbolFromDll(const int chair, const char* name, bool& iserr);
+extern "C" __declspec(dllexport) double __stdcall GetSymbolFromDll(const int chair, const char* name, bool& iserr);
+extern "C" __declspec(dllexport) void __stdcall   SendChatMessageFomDll(const char *msg);
+extern "C" __declspec(dllexport) void* __stdcall  GetPhl1kFromDll();
+extern "C" __declspec(dllexport) void* __stdcall  GetPrw1326FromDll();
+extern "C" __declspec(dllexport) void __stdcall   WriteLogFromDll(char* fmt, ...);
+
 
 
 #endif /* INC_CDLLEXTENSION_H */
