@@ -201,6 +201,20 @@ MAINTENANCE:
   As these functions get used by several people and by OpenPPL
   a library "mh_str_Handstrength_Library.ohf" has been created in the repository.
   [THF]
+- OpenHoldem does now export the functions GetSymbolFromDll, SendChatMessageFomDll,
+  GetPhl1kFromDll, GetPrw1326FromDll, WriteLogFromDll instead of sending 
+  function-pointers like before (inherited from WinHoldem).
+  This has several advantages:
+  * we do it in a clean and standard way
+  * linking happens automatically at load-time, 
+    so no confusing work has to be done and the functions are available immediatelly.
+	(Previously it could happen that people used these functions very early
+	before the pointer got initialized (e.g. initialization of a global variable
+	with the get_sym()-function) leading to crashes at startup that were hard to debug
+	(0-byte crash-file))
+  A big thank you to Nik0 who did all the work.
+  [THF]  
+  [THF]  
   
   
 v2.1.9.4 2012-06-14
