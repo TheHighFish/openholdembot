@@ -58,6 +58,13 @@ BUG FIXES:
   BotsLastAction was wrong. This has now been fixed.
   Thanks to Postenjak for finding the problem and suggesting a fix.
   [THF]
+- Detecting players who are allin did not work at some casinos,
+  because the bet of that player got immediatelly moved to the main-pot,
+  whereas we checked not only for a zero-balance, but also for a positive bet.
+  This has now been fixed (for Ongame; please notify us, if other casinos behave in the same way).
+  Thanks to Postenjak for finding the problem.
+  [THF]
+
 
 v1.1.1 2012-07-01
 =================
