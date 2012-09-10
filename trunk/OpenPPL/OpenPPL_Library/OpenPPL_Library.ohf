@@ -1457,6 +1457,18 @@ didcallround2
 ##f$OpenPPL_CalledOnTurn##
 didcallround3
 
+##f$OpenPPL_CheckedPreflop##
+didchecround1
+
+##f$OpenPPL_CheckedOnFlop##
+didchecround2
+
+##f$OpenPPL_CheckedOnTurn##
+didchecround3
+
+##f$OpenPPL_CheckedOnRiver##
+didchecround4
+
 ##f$OpenPPL_AddNopponentscalling##
 f$OpenPPL_Calls + nopponentscalling
 
