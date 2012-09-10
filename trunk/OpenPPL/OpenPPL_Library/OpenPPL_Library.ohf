@@ -4037,11 +4037,19 @@ nopponentsdealt
 ##f$OpenPPL_NumberOfOpponentsAllin##
 `f$OpenPPL_Opponents_AllinBits
 
+##f$OpenPPL_Casino_Moves_Allinbets_Immediatelly_To_The_Mainpot##
+// Some casinos don't display the bets of players who are allin,
+// but move them immediatelly to the main-pot (and/or sitepots)
+// so we can no longer assume that they have a positive bet.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=15493
+sitename$ongame
+
 ##f$OpenPPL_OpponentIsAllin##
 f$OpenPPL_NumberOfOpponentsAllin > 0
 
 ##f$OpenPPL_Opponents_AllinBits##
-(betround == f$OpenPPL_ConstBetRoundPreflop) ?
+[(betround == f$OpenPPL_ConstBetRoundPreflop) && !f$OpenPPL_Casino_Moves_Allinbets_Immediatelly_To_The_Mainpot] ?
+// Player must be playing, his balance must be 0 and he must have a positive bet.
 [0
 |(((opponentsplayingbits & (1 << 0)) && (currentbet0 > 0) && (balance0 == 0)) ? 1 << 0 : 0)
 |(((opponentsplayingbits & (1 << 1)) && (currentbet1 > 0) && (balance1 == 0)) ? 1 << 1 : 0)
@@ -4055,6 +4063,10 @@ f$OpenPPL_NumberOfOpponentsAllin > 0
 |(((opponentsplayingbits & (1 << 9)) && (currentbet9 > 0) && (balance9 == 0)) ? 1 << 9 : 0)
 ]
 :
+// Player must be playing, his balance must be 0
+// His bet might or might not be > 0 (so it does not get checked),
+// because the player could be gone allin in a previous betting round
+// or he plays at a casino where his chips get immediatelly moved to the main pot. 
 [0
 |(((opponentsplayingbits & (1 << 0)) && balance0 == 0) ? 1 << 0 : 0)
 |(((opponentsplayingbits & (1 << 1)) && balance1 == 0) ? 1 << 1 : 0)
