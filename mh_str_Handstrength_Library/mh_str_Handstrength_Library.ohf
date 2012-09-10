@@ -106,6 +106,89 @@ isonepair ?
 ##f$mh_kickerbetter##
 
 ##f$mh_nouts##
+(betround==2) ?
+(
+ 0
+// FLUSH OUTS
+ + [ (nsuited==4 && nsuitedcommon==2 && `(((~srankbits)&0x7ffe)>>srankhiplayer)<=4) ? 9 : 
+     (nsuited==4 && nsuitedcommon==2 && `(((~srankbits)&0x7ffe)>>srankhiplayer)>4) ? 8 :
+     (nsuited==4 && nsuitedcommon==3 && `(((~srankbits)&0x7ffe)>>srankhiplayer)<=1) ? 9 :
+     (nsuited==4 && nsuitedcommon==3 && `(((~srankbits)&0x7ffe)>>srankhiplayer)>1 && `(((~srankbits)&0x7ffe)>>srankhiplayer)<4) ? 4 :
+     0 ]
+// STRAIGHT OUTS
+ + [ (nstraight==4 && nstraightfillcommon>1 && (rankbits&0x400e)!=0x400e && (rankbits&0x7002)!=0x7002) ? 8 :
+     ((rankbits>>ranklo)==0x5d) ? 9 :
+     (nstraight==4 && nstraightcommon==3 && rankloplayer>rankhicommon && rankhiplayer-rankloplayer<=2 && (rankbits&0x400e)!=0x400e && (rankbits&0x7002)!=0x7002) ? 8 :
+     (nstraightfill==1 && nstraightfillcommon>=2) ? 4 :
+     0 ]
+// OVERCARD OUTS
+ + [ (rankloplayer>rankhicommon && rankloplayer>=11 && nopponentsplaying==1 && nsuitedcommon<=2 && nsuited>nsuitedcommon && nstraightfillcommon>1 && !ispair) ? 4 : 0 ]
+ + [ (rankloplayer>rankhicommon && rankloplayer>=12 && !(nsuitedcommon<=2 && nsuited==nsuitedcommon) && nstraightfillcommon>2) ? 4.5 : 0 ]
+ + [ (nsuitedcommon<=2 && rankhiplayer>rankhicommon && rankhiplayer>11 && rankloplayer>9 && nstraightfillcommon>=2) ? 2 :
+     (nsuited==3 && nsuitedcommon==2 && rankloplayer>rankhicommon && nstraightfillcommon>=2) ? 1.5 :
+     (nsuited==3 && nsuitedcommon==2 && rankhiplayer>rankhicommon && rankloplayer>rankhicommon && nstraightfillcommon>=2) ? 1.5 :
+     (nsuited==3 && nsuited>nsuitedcommon && nstraightfillcommon>2 && rankloplayer>rankhicommon && rankloplayer>=12) ? 2 :
+     0 ]
+// BACKDOOR OUTS
+// was wrong in original src code : ie Ts9s on board Ac2c6c, so added check on nsuitedcommon
+ + [ (issuited && nsuited==3 && nsuitedcommon!=3) ? 1.5 : 0 ]
+ + [ (nstraight==3 && nstraightcommon==1) ? 1.5 : 0 ]
+ + [ (nstraight==2 && nstraightfill==2 && nstraightcommon==1) ? 1 : 0 ]
+ + [ (nstraight==1 && nstraightfill==2 && nstraightcommon==1) ? 0.5 : 0 ]
+ + [ (nstraightfillcommon>=2 && nsuitedcommon==1 && nranked==2 && nrankedcommon==1 && rankhiplayer==14) ? 5 : 0 ]
+// DISCOUNT OUTS IF DANGEROUS BOARD
+ - [ (nrankedcommon==2) ? 3.5 :
+     (nrankedcommon==3) ? 10 :
+     0 ]
+ - [ (rankloplayer>rankhicommon && rankloplayer>=12 && ( (nsuitedcommon>1 && nsuited<4) || (nstraightcommon>1 && nstraight<4) ) ) ? nsuitedcommon+nstraightcommon : 0 ]
+ - [ ( (nstraight==4 && nstraightfillcommon>2 && (rankbits&0x400e)!=0x400e && (rankbits&0x7002)!=0x7002) || (nstraightfill==1 && nstraightfillcommon>=2) || (rankbits>>ranklo)==0x5d ) ?
+     (
+       (nsuitedcommon==2) ? 2 :
+       (nsuitedcommon==3 && nsuited>nsuitedcommon && `(((~srankbits)&0x7ffe)>>srankhiplayer)<=2) ? 2 :
+       (nsuitedcommon==3) ? 8 :
+       0
+     ) : 0 ]
+) :
+(betround==3) ?
+(
+ 0
+// FLUSH OUTS
+ + [ (nsuited==4 && nsuitedcommon==2 && `(((~srankbits)&0x7ffe)>>srankhiplayer)<=4) ? 9 :
+     (nsuited==4 && nsuitedcommon==2 && `(((~srankbits)&0x7ffe)>>srankhiplayer)>4) ? 8 :
+     (nsuited==4 && nsuitedcommon==3 && `(((~srankbits)&0x7ffe)>>srankhiplayer)<=1) ? 9 :
+     (nsuited==4 && nsuitedcommon==3 && `(((~srankbits)&0x7ffe)>>srankhiplayer)>1 && `(((~srankbits)&0x7ffe)>>srankhiplayer)<4) ? 3 :
+     0 ]
+ + [ (nsuited==4 && nsuitedcommon==2 && (pokerval&onepair) && nrankedcommon==1) ? 4 : 0 ]
+ + [ (nsuited==4 && nsuitedcommon==3 && (pokerval&onepair) && nrankedcommon==1 && `(((~srankbits)&0x7ffe)>>srankhiplayer)<=1) ? 4 : 0 ]
+// STRAIGHT OUTS
+ + [ (nstraight==4 && nstraightfillcommon>1 && (rankbits&0x400e)!=0x400e && (rankbits&0x7002)!=0x7002) ? 8 :
+     ((rankbits>>ranklo)==0x5d) ? 9 :
+     (nstraight==4 && nstraightcommon==3 && rankloplayer>rankhicommon && rankhiplayer-rankloplayer<=2 && (rankbits&0x400e)!=0x400e && (rankbits&0x7002)!=0x7002) ? 8 :
+     (nstraightfill==1 && nstraightfillcommon>=2) ? 4 :
+     0 ]
+// OVERCARD OUTS
+ + [ (rankloplayer>rankhicommon && rankloplayer>=12 && nsuitedcommon<=2 && nsuited>nsuitedcommon && nstraightfillcommon>2) ? 3 : 0 ]
+ + [ (nsuitedcommon<=2 && rankhiplayer>rankhicommon && rankhiplayer>11 && rankloplayer>9 && nstraightfillcommon>=2) ? 2 : 0 ]
+ + [ (nsuited==4 && nsuitedcommon==2 && rankloplayer>rankhicommon && nstraightfillcommon>=2) ? 2 : 
+     (nsuited==4 && nsuitedcommon==2 && rankhiplayer>rankhicommon && rankloplayer<rankhicommon && nstraightfillcommon>=2) ? 1 :
+     0 ]
+// DISCOUNT OUTS FOR DANGEROUS BOARDS
+ - [ (pokervalcommon&twopair) ? 12 :
+     (nrankedcommon==2 && ($$cr0==$$cr3 || $$cr1==$$cr3 || $$cr2==$$cr3)) ? 1 :
+     (nrankedcommon==2) ? 3 :
+     (nrankedcommon==3) ? 12 :
+     0 ]
+ - [ (rankloplayer>rankhicommon && rankloplayer>=12 && ( (nsuitedcommon>1 && nsuited<4) || (nstraightcommon>1 && nstraight<4) ) ) ? nsuitedcommon+nstraightcommon : 0 ]
+ - [ ((nstraight==4 && nstraightfillcommon>2 && (rankbits&0x400e)!=0x400e && (rankbits&0x7002)!=0x7002) || (nstraightfill==1 && nstraightfillcommon>=2) || ((rankbits>>ranklo)==0x5d) ) ?
+     (
+       (nsuitedcommon==2 && ($$cs0==$$cs3 || $$cs1==$$cs3 || $$cs2==$$cs3)) ? 0 :
+       (nsuitedcommon==2) ? 2 :
+       (nsuitedcommon==3 && nsuited>nsuitedcommon && `(((~srankbits)&0x7ffe)>>srankhiplayer)<=2) ? 2 :
+       (nsuitedcommon==3) ? 8 :
+       0
+     ) : 0 ]
+) :
+0
 
 /////////////////////////////////////////////////////////////////////////////////
 //
@@ -118,15 +201,14 @@ isonepair ?
 // Hand strength evaluator - returns a value from 1-5, 5 representing the strongest hand
 isroyalflush && !(pokervalcommon&royalflush)                         ? 5 : // Nuts
 isstraightflush && nhandshi==0 && !(pokervalcommon&straightflush)    ? 5 : // Nuts 
+isroyalflush && (pokervalcommon&royalflush)                          ? 4 : // Chop pot
 isstraightflush && !(pokervalcommon&straightflush)                   ? 3 : // I may not have the highest, board does not have a str8flush
 isstraightflush && (pokervalcommon&straightflush)                    ? 2 : // I may not have the highest, board does have a str8flush
-isroyalflush && (pokervalcommon&royalflush)                          ? 1 : // Chop pot
 0
 
 
 ##f$strength_quads##
-isfourofakind && nhandshi==0 && !(pokervalcommon&fourofakind)        ? 5 : // Nuts
-isfourofakind && nhandshi==0 && (pokervalcommon&fourofakind)         ? 5 : // Nuts
+isfourofakind && nhandshi==0                                         ? 5 : // Nuts
 isfourofakind && !(pokervalcommon&fourofakind)                       ? 3 : // I may not have the highest, board does not have quads
 isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Board has quads, I don't have best kicker
 0
