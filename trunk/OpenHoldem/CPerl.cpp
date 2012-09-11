@@ -35,7 +35,7 @@ CPerl	*p_perl = NULL;
 extern "C"
 {
 	typedef int (APIENTRY *T_PerlEzCall)(PERLEZHANDLE hHandle, LPCSTR lpFunction, LPSTR lpBuffer, DWORD dwBufSize, LPCSTR lpFormat, ...);
-	typedef PERLEZHANDLE (APIENTRY *APIENTRY T_PerlEzCreate)(LPCSTR lpFileName, LPCSTR lpOptions);
+	typedef PERLEZHANDLE (APIENTRY *T_PerlEzCreate)(LPCSTR lpFileName, LPCSTR lpOptions);
 	typedef BOOL (APIENTRY *T_PerlEzDelete)(PERLEZHANDLE);
 }
 

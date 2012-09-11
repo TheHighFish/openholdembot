@@ -216,12 +216,12 @@ void ScintillaBase::AutoCompleteStart(int lenEntered, const char *list) {
 				SetEmptySelection(currentPos - lenEntered);
 				pdoc->DeleteChars(currentPos, lenEntered);
 				SetEmptySelection(currentPos);
-				pdoc->InsertString(currentPos, list, lenInsert);
-				SetEmptySelection(currentPos + lenInsert);
+				pdoc->InsertString(currentPos, list, (int)lenInsert);
+				SetEmptySelection(currentPos + (int)lenInsert);
 			} else {
 				SetEmptySelection(currentPos);
-				pdoc->InsertString(currentPos, list + lenEntered, lenInsert - lenEntered);
-				SetEmptySelection(currentPos + lenInsert - lenEntered);
+				pdoc->InsertString(currentPos, list + lenEntered, (int)lenInsert - lenEntered);
+				SetEmptySelection(currentPos + (int)lenInsert - lenEntered);
 			}
 			return;
 		}
@@ -691,7 +691,7 @@ sptr_t ScintillaBase::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lPara
 
 	case SCI_GETPROPERTY: {
 			SString val = props.Get(reinterpret_cast<const char *>(wParam));
-			const int n = val.length();
+			const int n = (int)val.length();
 			if (lParam != 0) {
 				char *ptr = reinterpret_cast<char *>(lParam);
 				memcpy(ptr, val.c_str(), n);
@@ -702,7 +702,7 @@ sptr_t ScintillaBase::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lPara
 
 	case SCI_GETPROPERTYEXPANDED: {
 			SString val = props.GetExpanded(reinterpret_cast<const char *>(wParam));
-			const int n = val.length();
+			const int n = (int)val.length();
 			if (lParam != 0) {
 				char *ptr = reinterpret_cast<char *>(lParam);
 				memcpy(ptr, val.c_str(), n);

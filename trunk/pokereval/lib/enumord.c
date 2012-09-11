@@ -51,7 +51,7 @@ enum_ordering_rank(HandVal *hands, int noqual, int nplayers, int *ranks,
     noqual = -noqual;
   for (i=0; i<nplayers; i++) {
     elems[i].index = i;
-    elems[i].handval = reverse ? -hands[i] : hands[i];
+    elems[i].handval = reverse ? -(int)(hands[i]) : hands[i];
   }
   /* TODO: we may find that the large number of function calls that qsort()
      makes to enum_rankelem_compare(), even for small arrays, is too slow
