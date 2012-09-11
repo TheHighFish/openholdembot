@@ -214,7 +214,10 @@ extern "C" __declspec(dllexport) void __stdcall WriteLogFromDll(char* fmt, ...)
 	// http://msdn.microsoft.com/en-us/library/ms177415(v=vs.80).aspx
 	// http://stackoverflow.com/questions/1327854/how-to-convert-a-variable-argument-function-into-a-macro
 	va_list args;
-	write_log(true, fmt, args);
+
+	va_start(args, fmt);
 	// !!! should true be replaced by an option?
+	write_log_vl(true, fmt, args);
+	va_end(args);
 }
 
