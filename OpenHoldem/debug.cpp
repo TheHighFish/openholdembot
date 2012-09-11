@@ -267,6 +267,26 @@ void start_log(void)
 
 }
 
+void write_log_vl(bool debug_settings_for_this_message, char* fmt, va_list vl) 
+{
+    char		buff[10000] ;
+    char		nowtime[26];
+
+	if (debug_settings_for_this_message == false)
+		return;
+
+    if (log_fp != NULL) 
+	{
+		CSLock lock(log_critsec);
+
+        vsprintf_s(buff, 10000, fmt, vl);
+		get_time(nowtime);
+        fprintf(log_fp, "%s - %s", nowtime, buff);
+
+        fflush(log_fp);
+    }
+}
+
 void write_log(bool debug_settings_for_this_message, char* fmt, ...) 
 {
     char		buff[10000] ;
