@@ -45,7 +45,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;..\spirit-1.8.5-miniboost&quot;;..\pokereval\include;..\pokereval\include\inlines;..\postgres;..\winmgr;&quot;..\hscroll-list-box&quot;"
-				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;OEMRESOURCE"
+				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;OEMRESOURCE;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="false"
 				ExceptionHandling="1"
 				BasicRuntimeChecks="3"
@@ -141,7 +141,7 @@
 				EnableFiberSafeOptimizations="true"
 				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="&quot;..\spirit-1.8.5-miniboost&quot;;..\pokereval\include;..\postgres;..\winmgr;&quot;..\hscroll-list-box&quot;"
-				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;OEMRESOURCE"
+				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;OEMRESOURCE;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="false"
 				ExceptionHandling="1"
 				RuntimeLibrary="0"
@@ -232,7 +232,7 @@
 				Optimization="3"
 				InlineFunctionExpansion="0"
 				AdditionalIncludeDirectories="&quot;..\spirit-1.8.5-miniboost&quot;;..\pokereval\include;..\postgres;..\winmgr;&quot;..\hscroll-list-box&quot;"
-				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;OEMRESOURCE"
+				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;OEMRESOURCE;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="false"
 				ExceptionHandling="1"
 				RuntimeLibrary="0"
@@ -540,10 +540,6 @@
 				</File>
 				<File
 					RelativePath="..\CTablemap\CTablemapAccess.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\CTablemapVersionChecker.cpp"
 					>
 				</File>
 			</Filter>

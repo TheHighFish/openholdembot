@@ -2666,7 +2666,7 @@ void CDlgFormulaScintilla::OnHelp()
 	}
 	else 
 	{
-		int RetValue = int(ShellExecute(NULL, "open", "OpenHoldem_Manual.chm", NULL, NULL, SW_SHOW));
+		int RetValue = (INT_PTR)(ShellExecute(NULL, "open", "OpenHoldem_Manual.chm", NULL, NULL, SW_SHOW));
 		if (RetValue <= 32)
 		{
 			OH_MessageBox("Error opening help-file", "Error", 0);

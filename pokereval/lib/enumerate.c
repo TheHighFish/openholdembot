@@ -489,7 +489,7 @@ enumGameParams(enum_game_t game) {
 
 static void
 enumResultPrintOrdering(enum_result_t *result, int terse) {
-  int i, k;
+  unsigned int i, k;
 
   if (!terse)
     printf("Histogram of relative hand ranks:\n");
@@ -588,7 +588,7 @@ enumResultPrint(enum_result_t *result, StdDeck_CardMask pockets[],
            "HIwin", "HIlos", "HItie",
            "LOwin", "LOlos", "LOtie",
            "EV");
-    for (i=0; i<result->nplayers; i++) {
+    for (i=0; i<(int)(result->nplayers); i++) {
       printf("%*s %7d   %7d %7d %7d   %7d %7d %7d   %5.3f\n",
              -width, DmaskString(StdDeck, pockets[i]), result->nscoop[i],
              result->nwinhi[i], result->nlosehi[i], result->ntiehi[i],
@@ -620,7 +620,7 @@ enumResultPrint(enum_result_t *result, StdDeck_CardMask pockets[],
     printf("%*s %7s %6s   %7s %6s   %7s %6s     %5s\n",
            -width, "cards", "win", "%win", "lose", "%lose", "tie", "%tie", "EV");
     if (gp->haslopot) {
-      for (i=0; i<result->nplayers; i++) {
+      for (i=0; i<(int)(result->nplayers); i++) {
         printf("%*s %7d %6.2f   %7d %6.2f   %7d %6.2f     %5.3f\n",
                -width, DmaskString(StdDeck, pockets[i]),
                result->nwinlo[i], 100.0 * result->nwinlo[i] / result->nsamples,
@@ -629,7 +629,7 @@ enumResultPrint(enum_result_t *result, StdDeck_CardMask pockets[],
                result->ev[i] / result->nsamples);
       }
     } else if (gp->hashipot) {
-      for (i=0; i<result->nplayers; i++) {
+      for (i=0; i<(int)(result->nplayers); i++) {
         printf("%*s %7d %6.2f   %7d %6.2f   %7d %6.2f     %5.3f\n",
                -width, DmaskString(StdDeck, pockets[i]),
                result->nwinhi[i], 100.0 * result->nwinhi[i] / result->nsamples,
@@ -650,7 +650,7 @@ enumResultPrintTerse(enum_result_t *result, StdDeck_CardMask pockets[],
   int i;
 
   printf("EV %d:", result->nplayers);
-  for (i=0; i<result->nplayers; i++)
+  for (i=0; i<(int)(result->nplayers); i++)
     printf(" %8.6f", result->ev[i] / result->nsamples);
   printf("\n");
   if (result->ordering != NULL)
