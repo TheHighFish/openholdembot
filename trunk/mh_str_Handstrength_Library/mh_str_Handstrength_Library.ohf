@@ -99,8 +99,6 @@ isonepair ?
 
 ##f$mh_3straight11##
 
-##f$mh_nsuitedbetter##
-
 ##f$mh_kickerbetter##
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -730,6 +728,10 @@ rankloplayer==$$cr2 ||
 rankloplayer==$$cr3 ||
 rankloplayer==$$cr4)
 )
+
+
+##f$mh_nsuitedbetter##
+`((~(srankbits)&0x7ffe)>>(srankhiplayer))
 
 /////////////////////////////////////////////////////////////////////////////////
 //
