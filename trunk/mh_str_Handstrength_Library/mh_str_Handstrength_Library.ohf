@@ -105,91 +105,6 @@ isonepair ?
 
 ##f$mh_kickerbetter##
 
-##f$mh_nouts##
-(betround==2) ?
-(
- 0
-// FLUSH OUTS
- + [ (nsuited==4 && nsuitedcommon==2 && `(((~srankbits)&0x7ffe)>>srankhiplayer)<=4) ? 9 : 
-     (nsuited==4 && nsuitedcommon==2 && `(((~srankbits)&0x7ffe)>>srankhiplayer)>4) ? 8 :
-     (nsuited==4 && nsuitedcommon==3 && `(((~srankbits)&0x7ffe)>>srankhiplayer)<=1) ? 9 :
-     (nsuited==4 && nsuitedcommon==3 && `(((~srankbits)&0x7ffe)>>srankhiplayer)>1 && `(((~srankbits)&0x7ffe)>>srankhiplayer)<4) ? 4 :
-     0 ]
-// STRAIGHT OUTS
- + [ (nstraight==4 && nstraightfillcommon>1 && (rankbits&0x400e)!=0x400e && (rankbits&0x7002)!=0x7002) ? 8 :
-     ((rankbits>>ranklo)==0x5d) ? 9 :
-     (nstraight==4 && nstraightcommon==3 && rankloplayer>rankhicommon && rankhiplayer-rankloplayer<=2 && (rankbits&0x400e)!=0x400e && (rankbits&0x7002)!=0x7002) ? 8 :
-     (nstraightfill==1 && nstraightfillcommon>=2) ? 4 :
-     0 ]
-// OVERCARD OUTS
- + [ (rankloplayer>rankhicommon && rankloplayer>=11 && nopponentsplaying==1 && nsuitedcommon<=2 && nsuited>nsuitedcommon && nstraightfillcommon>1 && !ispair) ? 4 : 0 ]
- + [ (rankloplayer>rankhicommon && rankloplayer>=12 && !(nsuitedcommon<=2 && nsuited==nsuitedcommon) && nstraightfillcommon>2) ? 4.5 : 0 ]
- + [ (nsuitedcommon<=2 && rankhiplayer>rankhicommon && rankhiplayer>11 && rankloplayer>9 && nstraightfillcommon>=2) ? 2 :
-     (nsuited==3 && nsuitedcommon==2 && rankloplayer>rankhicommon && nstraightfillcommon>=2) ? 1.5 :
-     (nsuited==3 && nsuitedcommon==2 && rankhiplayer>rankhicommon && rankloplayer>rankhicommon && nstraightfillcommon>=2) ? 1.5 :
-     (nsuited==3 && nsuited>nsuitedcommon && nstraightfillcommon>2 && rankloplayer>rankhicommon && rankloplayer>=12) ? 2 :
-     0 ]
-// BACKDOOR OUTS
-// was wrong in original src code : ie Ts9s on board Ac2c6c, so added check on nsuitedcommon
- + [ (issuited && nsuited==3 && nsuitedcommon!=3) ? 1.5 : 0 ]
- + [ (nstraight==3 && nstraightcommon==1) ? 1.5 : 0 ]
- + [ (nstraight==2 && nstraightfill==2 && nstraightcommon==1) ? 1 : 0 ]
- + [ (nstraight==1 && nstraightfill==2 && nstraightcommon==1) ? 0.5 : 0 ]
- + [ (nstraightfillcommon>=2 && nsuitedcommon==1 && nranked==2 && nrankedcommon==1 && rankhiplayer==14) ? 5 : 0 ]
-// DISCOUNT OUTS IF DANGEROUS BOARD
- - [ (nrankedcommon==2) ? 3.5 :
-     (nrankedcommon==3) ? 10 :
-     0 ]
- - [ (rankloplayer>rankhicommon && rankloplayer>=12 && ( (nsuitedcommon>1 && nsuited<4) || (nstraightcommon>1 && nstraight<4) ) ) ? nsuitedcommon+nstraightcommon : 0 ]
- - [ ( (nstraight==4 && nstraightfillcommon>2 && (rankbits&0x400e)!=0x400e && (rankbits&0x7002)!=0x7002) || (nstraightfill==1 && nstraightfillcommon>=2) || (rankbits>>ranklo)==0x5d ) ?
-     (
-       (nsuitedcommon==2) ? 2 :
-       (nsuitedcommon==3 && nsuited>nsuitedcommon && `(((~srankbits)&0x7ffe)>>srankhiplayer)<=2) ? 2 :
-       (nsuitedcommon==3) ? 8 :
-       0
-     ) : 0 ]
-) :
-(betround==3) ?
-(
- 0
-// FLUSH OUTS
- + [ (nsuited==4 && nsuitedcommon==2 && `(((~srankbits)&0x7ffe)>>srankhiplayer)<=4) ? 9 :
-     (nsuited==4 && nsuitedcommon==2 && `(((~srankbits)&0x7ffe)>>srankhiplayer)>4) ? 8 :
-     (nsuited==4 && nsuitedcommon==3 && `(((~srankbits)&0x7ffe)>>srankhiplayer)<=1) ? 9 :
-     (nsuited==4 && nsuitedcommon==3 && `(((~srankbits)&0x7ffe)>>srankhiplayer)>1 && `(((~srankbits)&0x7ffe)>>srankhiplayer)<4) ? 3 :
-     0 ]
- + [ (nsuited==4 && nsuitedcommon==2 && (pokerval&onepair) && nrankedcommon==1) ? 4 : 0 ]
- + [ (nsuited==4 && nsuitedcommon==3 && (pokerval&onepair) && nrankedcommon==1 && `(((~srankbits)&0x7ffe)>>srankhiplayer)<=1) ? 4 : 0 ]
-// STRAIGHT OUTS
- + [ (nstraight==4 && nstraightfillcommon>1 && (rankbits&0x400e)!=0x400e && (rankbits&0x7002)!=0x7002) ? 8 :
-     ((rankbits>>ranklo)==0x5d) ? 9 :
-     (nstraight==4 && nstraightcommon==3 && rankloplayer>rankhicommon && rankhiplayer-rankloplayer<=2 && (rankbits&0x400e)!=0x400e && (rankbits&0x7002)!=0x7002) ? 8 :
-     (nstraightfill==1 && nstraightfillcommon>=2) ? 4 :
-     0 ]
-// OVERCARD OUTS
- + [ (rankloplayer>rankhicommon && rankloplayer>=12 && nsuitedcommon<=2 && nsuited>nsuitedcommon && nstraightfillcommon>2) ? 3 : 0 ]
- + [ (nsuitedcommon<=2 && rankhiplayer>rankhicommon && rankhiplayer>11 && rankloplayer>9 && nstraightfillcommon>=2) ? 2 : 0 ]
- + [ (nsuited==4 && nsuitedcommon==2 && rankloplayer>rankhicommon && nstraightfillcommon>=2) ? 2 : 
-     (nsuited==4 && nsuitedcommon==2 && rankhiplayer>rankhicommon && rankloplayer<rankhicommon && nstraightfillcommon>=2) ? 1 :
-     0 ]
-// DISCOUNT OUTS FOR DANGEROUS BOARDS
- - [ (pokervalcommon&twopair) ? 12 :
-     (nrankedcommon==2 && ($$cr0==$$cr3 || $$cr1==$$cr3 || $$cr2==$$cr3)) ? 1 :
-     (nrankedcommon==2) ? 3 :
-     (nrankedcommon==3) ? 12 :
-     0 ]
- - [ (rankloplayer>rankhicommon && rankloplayer>=12 && ( (nsuitedcommon>1 && nsuited<4) || (nstraightcommon>1 && nstraight<4) ) ) ? nsuitedcommon+nstraightcommon : 0 ]
- - [ ((nstraight==4 && nstraightfillcommon>2 && (rankbits&0x400e)!=0x400e && (rankbits&0x7002)!=0x7002) || (nstraightfill==1 && nstraightfillcommon>=2) || ((rankbits>>ranklo)==0x5d) ) ?
-     (
-       (nsuitedcommon==2 && ($$cs0==$$cs3 || $$cs1==$$cs3 || $$cs2==$$cs3)) ? 0 :
-       (nsuitedcommon==2) ? 2 :
-       (nsuitedcommon==3 && nsuited>nsuitedcommon && `(((~srankbits)&0x7ffe)>>srankhiplayer)<=2) ? 2 :
-       (nsuitedcommon==3) ? 8 :
-       0
-     ) : 0 ]
-) :
-0
-
 /////////////////////////////////////////////////////////////////////////////////
 //
 // Main implementation
@@ -572,6 +487,228 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 )
 
 
+##f$mh_nouts##
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=112&t=3329
+//2P with paired board all cider
+//From HTC
+
+br==2 ? (
+(!(ispair) && pokerval&threeofakind && nrankedcommon==2                     ? 4 : 0)+
+
+//Set outs cider
+(ispair && pokerval&threeofakind                                            ? 8 : 0)+
+
+//2P OUTS cider
+(pokerval&twopair && nrankedcommon==1                                       ? 4 :
+ pokerval&twopair && pokervalcommon<twopair && !(ispair) && nouts==4   
+                                                                            ? 4 : 0)+
+
+//FLUSH OUTS
+(nsuited==4 && nsuitedcommon==2 && `((~srankbits&0x7ffe)>>srankhiplayer)<=4 ? 9 :
+ nsuited==4 && nsuitedcommon==2 && `((~srankbits&0x7ffe)>>srankhiplayer) >4 ? 8 :
+ nsuited==4 && nsuitedcommon==3 && `((~srankbits&0x7ffe)>>srankhiplayer)<=1 ? 9 :
+ nsuited==4 && nsuitedcommon==3 && `((~srankbits&0x7ffe)>>srankhiplayer) >1 
+                                && `((~srankbits&0x7ffe)>>srankhiplayer) <4 ? 4 : 0)+
+
+
+//STRAIGHT OUTS
+(nstraight==4 && nstraightfillcommon>1 &&
+ ((rankbits&16398) != 16398 && (rankbits&28674) != 28674)                   ? 8 :
+ (rankbits>>ranklo)==0b1011101                                              ? 9 :
+ (nstraight==4 && nstraightcommon<=3 && rankloplayer>rankhicommon &&
+  rankhiplayer-rankloplayer<=2 &&
+  ((rankbits&16398) != 16398 && (rankbits&28674) != 28674)   )              ? 8 :
+ nstraightfill==1 && nstraightfillcommon>=2 && !((ranklocommon>8 &&
+ f$bothcards==1) && (islopair || ismidpair))                                ? 4 : 0)+
+ 
+//OVERCARD OUTS
+(rankloplayer>rankhicommon && rankloplayer>=11 && nopponentsplaying==1 &&
+ (nsuitedcommon<=2 && nsuited==nsuitedcommon ? 0 : 1) &&
+ nstraightfillcommon>1 && !ispair                                           ? 4 : 0)+
+
+//cider  overs w/bd flush
+(rankloplayer>rankhicommon &&  nopponentsplaying>1 && nsuited==3
+ && nsuitedcommon==1 && nstraightfillcommon>2                               ? 3 :
+
+//cider overs w/OESD
+ rankloplayer>rankhicommon &&  nopponentsplaying>1 && nsuitedcommon==1
+ && nstraight==4 && !(nstraightcommon>3) && !(rankbits&16386 &&
+  rankbits&8196) && !(nrankedcommon==1 && pokerval&threeofakind)            ? 3 :  0)+
+
+
+//cider
+(rankloplayer>rankhicommon  && nsuitedcommon==2 && nsuited==4
+                                                                            ? 4  : 0)+
+
+
+((nsuited==3 && nsuitedcommon==2 && rankloplayer>rankhicommon &&
+  nstraightfillcommon>=2)                                                   ?1.5:
+ (nsuited==3 && nsuitedcommon==2 && rankhiplayer>rankhicommon &&
+  rankloplayer<rankhicommon && nstraightfillcommon>=2)                      ?1.5:
+ (nsuited==3 && nsuited>nsuitedcommon && nstraightfillcommon>2 &&
+  rankloplayer>rankhicommon && rankloplayer>=12)                            ? 2 : 0 )+
+   
+  //Pair to 2P out ALL cider or Ispair to set
+(nrankedcommon==1 && !(ispair) && pokerval&onepair && rankhiplayer>
+ rankhicommon                                                               ? 4 :
+ nrankedcommon==1 && !(ispair) && pokerval&onepair && rankloplayer>
+ f$rankmidflop && rankhiplayer==rankhicommon                                ? 4 :
+ nopponentsplaying==1 && pokerval&onepair && !(ispair) && nrankedcommon==1
+ && (islopair || ismidpair)                                                 ? 3 :
+ ispair                                                                     ? 2 : 
+ pokerval&onepair && nrankedcommon==1 && (nsuitedcommon==1 || nsuited==3)
+   && !(f$rankmidflop>=9)                                                   ? 2 : 0) +       
+
+//BACKDOOR OUTS
+(issuited && rankhiplayer==14 && nsuited==3 && nsuitedcommon==1             ?1.5:
+ issuited && nsuited==3 && nsuitedcommon==1                                 ? 1 :
+ nsuitedcommon==2 && nsuited==3 && `(((~srankbits)&0x7ffe)>>srankhiplayer)<3                       ? 1 :     //cider
+                                           0)+
+(nstraight==3 && rankloplayer>rankhicommon && nstraightcommon==1            ?1.5: 0)+
+
+
+//cider Runner top card
+(rankhiplayer>rankhicommon && nsuited==3 && nsuitedcommon==1                ? 1.5 : 0 )+
+
+//DISCOUNT OUTS FOR DANGEROUS BOARDS
+(nrankedcommon==2                                                           ?-3.5:
+ nrankedcommon==3                                                           ?-10 : 0)+
+
+
+//All cider  flush board
+((nsuitedcommon==3 && nsuited==3 && pokerval<twopair) ||                       
+ (nsuitedcommon==2 && nsuited<3 && pokerval<twopair) && !(nstraightfill==1) ? -2 : 0) +
+
+//ALL cider  my high end for OESD will fill hi straight or big chance of tie
+( nstraight==4 && !(nstraightcommon>3) && !(rankbits&16386 &&
+  rankbits&8196)  && rankloplayer>=8 && !(rankloplayer>rankhicommon)        ? -2 : 0) +
+
+//discount gut for possible FD cider
+ 
+( nsuitedcommon==2 && nstraightfill==1                                      ? -1 : 0) +
+
+//discount OES that is ass end and lots of overs
+(nstraight==4 && nstraightcommon==2 && rankhiplayer<ranklocommon
+  && rankloplayer>6                                                       ? -4 : 0 ) +
+
+//discount draw to 2P that might fill a st8 draw  cider
+(rankloplayer>8 && nrankedcommon==1 && f$rankmidflop>8 && pokerval&onepair
+ && nopponents>1   && !(nsuited>nsuitedcommon)                              ? -1 :0) +
+ 
+(rankloplayer>rankhicommon && rankloplayer>=12 &&
+ ( (nsuitedcommon==nsuited)||(nstraightcommon==nstraight) )                   ?
+            -(nsuitedcommon>1||nstraightcommon>1?nsuitedcommon+nstraightcommon:0): 0)+
+{( (nstraight==4&&nstraightfillcommon>2&&((rankbits&16398)!=16398&&(rankbits&28674)!=28674))
+ || (nstraightfill==1 && nstraightfillcommon>=2)
+ || ((rankbits>>ranklo)==0b1011101) )
+
+ ? -( (nsuitedcommon==2 && !(nstraightfill==1))                             ? 2 :
+
+
+
+ nsuitedcommon==3 && nsuited>nsuitedcommon &&
+ `((~srankbits&0x7ffe)>>srankhiplayer)<=2                                   ? 2 :
+ nsuitedcommon==3                                                           ? 8 : 0):0}
+) :
+
+
+br==3 ? ( //************TURN BELOW********************
+
+//2P OUTS cider
+(pokerval&twopair && nrankedcommon==1                                       ? 4 :
+ pokerval&twopair && pokervalcommon<twopair && nrankedcommon>=2
+ && !(ispair) && nouts==4                                                   ? 4 : 0)+
+
+//FLUSH OUTS
+(nsuited==4 && nsuitedcommon==2 && `((~srankbits&0x7ffe)>>srankhiplayer)<=4 ? 9 :
+ nsuited==4 && nsuitedcommon==2 && `((~srankbits&0x7ffe)>>srankhiplayer) >4 ? 8 :
+ nsuited==4 && nsuitedcommon==3 && `((~srankbits&0x7ffe)>>srankhiplayer)<=1 ? 9 :
+ nsuited==4 && nsuitedcommon==3 && `((~srankbits&0x7ffe)>>srankhiplayer) >1 
+                                && `((~srankbits&0x7ffe)>>srankhiplayer) <4 ? 3 : 0)+
+
+//STRAIGHT OUTS
+(nstraight==4 && nstraightfillcommon>1 &&
+ ((rankbits&16398) != 16398 && (rankbits&28674) != 28674)                   ? 8 :
+ (rankbits>>ranklo)==0b1011101                                              ? 9 :
+ (nstraight==4 && nstraightcommon==3 && rankloplayer>rankhicommon &&
+  rankhiplayer-rankloplayer<=2 &&
+  ((rankbits&16398) != 16398 && (rankbits&28674) != 28674)   )              ? 8 :
+ nstraightfill==1 && nstraightfillcommon>2                                 ? 4 : 0)+
+
+//OVERCARD OUTS
+
+//cider
+(rankloplayer>rankhicommon &&  ((nopponentsplaying>1 && nsuited==3
+ && nsuitedcommon==1) || (nopponentsplaying<3)) && (nstraightfillcommon>2
+ || nopponentsplaying<3) && !nbetsround2>2                                  ? 3 : 0)+
+
+//Overs for OESD cider
+(nstraight==4 && nstraightcommon<=3 && rankloplayer>rankhicommon &&
+  rankhiplayer-rankloplayer<=2 &&
+  ((rankbits&16398) != 16398 && (rankbits&28674) != 28674)                  ? 3 : 0)+
+
+(rankloplayer>rankhicommon && rankloplayer>=12 &&
+ (nsuitedcommon>=2 && nsuited==nsuitedcommon ? 0 : 1) &&
+ nstraightfillcommon>2         ? 3 : 0)+
+((nsuited==4 && nsuitedcommon==2 && rankloplayer>rankhicommon &&
+  nstraightfillcommon>=2)                                                   ? 2 :
+ (nsuited==4 && nsuitedcommon==2 && rankhiplayer>rankhicommon &&
+  rankloplayer<rankhicommon && nstraightfillcommon>=2)                      ? 1 : 0)+
+
+
+
+                             //Turn
+
+(!(ispair) && pokerval&threeofakind && nrankedcommon==2                     ? 4 : 0)+
+ 
+(ispair && pokerval&threeofakind                                            ? 8 : 0)+
+ 
+           //Pair to 2P out ALL cider or Ispair to trips
+(nrankedcommon==1 && !(ispair) && pokerval&onepair && rankhiplayer>
+ rankhicommon                                                               ? 4 :
+ nrankedcommon==1 && !(ispair) && pokerval&onepair && rankloplayer>
+ f$rankmidflop && rankhiplayer==rankhicommon                                ? 4 :
+ ispair && rankhiplayer>rankhicommon                                        ? 5 :
+ ispair                                                                     ? 2 : 0) +
+
+                    //DISCOUNT OUTS FOR DANGEROUS BOARDS
+(pokervalcommon&twopair                                                     ?-12 :
+ nrankedcommon==2 && ($$cr0==$$cr3 || $$cr1==$$cr3 || $$cr2==$$cr3)         ?-1  :
+ nrankedcommon==2                                                           ?-3  :
+ nrankedcommon==3                                                           ?-12 : 0)+
+
+//All cider
+((nsuitedcommon==3 && nsuited==3 && pokerval<twopair) ||                       
+ (nsuitedcommon==2 && nsuited<3 && pokerval<twopair) && !(nstraightfill==1) ? -2 : 0) +
+
+//ALL cider my high end for OESD will fill hi straight or big chance of tie
+(nstraightfillcommon>1 && nstraight==4 && rankloplayer>=8
+ && !(rankloplayer>rankhicommon)                                            ? -2 : 0) +
+
+//discount gut for possible FD cider
+( nsuitedcommon==2 && nstraightfill==1 && nsuited<4
+  && !(pokerval&twopair && nrankedcommon==1)                                ? -1 : 0) +
+
+//discount draw to 2P that might fill a st8 draw  cider
+(rankloplayer>8 && nrankedcommon==1 && f$rankmidflop>8 && pokerval&onepair
+ && nopponents>1   && !(nsuited>nsuitedcommon)                              ? -1 :0) +
+
+(rankloplayer>rankhicommon && rankloplayer>=12 &&
+ ( (nsuitedcommon==nsuited)||(nstraightcommon==nstraight) )                   ?
+            -(nsuitedcommon>1||nstraightcommon>1?nsuitedcommon+nstraightcommon:0): 0)+
+{( (nstraight==4&&nstraightfillcommon>2&&((rankbits&16398)!=16398&&(rankbits&28674)!=28674))
+ || (nstraightfill==1 && nstraightfillcommon>=2)
+ || ((rankbits>>ranklo)==0b1011101) )
+ ? -( (nsuitedcommon==2&&($$cs0==$$cs3 || $$cs1==$$cs3 || $$cs2==$$cs3))    ? 0 :
+
+  (nsuitedcommon==2 &&  !(nstraightfill==1) && nsuited<3)                     ? 2 :
+
+ nsuitedcommon==3 && nsuited>nsuitedcommon &&
+ `((~srankbits&0x7ffe)>>srankhiplayer)<=2                                   ? 2 :
+ nsuitedcommon==3                                                           ? 8 : 0):0}
+) : 0
+
+
 /////////////////////////////////////////////////////////////////////////////////
 //
 // Supporting functions
@@ -594,6 +731,72 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 && nstraightcommon<3 
 && nstraightfillcommon>1 ]
 && !(betround>2 && rankhicommon==14 && rankhicommon>rankhiplayer)   
+
+
+##f$bothcards##
+// 2 means both my cards are used in my hand
+
+!(ispair) &&
+
+      (
+       ($$pr0==f$rankhiflop) || ($$pr0==f$rankmidflop) ||
+       ($$pr0==f$rankloflop) || ($$pr0==$$cr3)         ||
+       ($$pr0==$$cr4)                                    )
+
+       &&
+
+      (
+       ($$pr1==f$rankhiflop) || ($$pr1==f$rankmidflop) ||
+       ($$pr1==f$rankloflop) || ($$pr1==$$cr3)         ||
+       ($$pr1==$$cr4)                                    ) 
+
+
+       ? 2 :
+
+
+!(ispair) &&
+
+      (
+       ($$pr0==f$rankhiflop) || ($$pr0==f$rankmidflop) ||
+       ($$pr0==f$rankloflop) || ($$pr0==$$cr3)         ||
+       ($$pr0==$$cr4)                                    )
+
+       ||
+
+      (
+       ($$pr1==f$rankhiflop) || ($$pr1==f$rankmidflop) ||
+       ($$pr1==f$rankloflop) || ($$pr1==$$cr3)         ||
+       ($$pr1==$$cr4)                                    ) 
+
+       ? 1 :  0
+	   
+	   
+##f$rankmidflop##
+$$cr0>$$cr1 && $$cr0<$$cr2 ?
+$$cr0 :
+$$cr0>$$cr2 && $$cr0<$$cr1 ?
+$$cr0 :
+$$cr1>$$cr0 && $$cr1<$$cr2 ?
+$$cr1 :
+$$cr1<$$cr0 && $$cr1>$$cr2 ?
+$$cr1 :
+$$cr2
+
+
+##f$rankhiflop##
+$$cr0>$$cr1 && $$cr0>$$cr2 ?
+$$cr0 :
+$$cr1>$$cr2 ?
+$$cr1 :
+$$cr2
+
+
+##f$rankloflop##
+$$cr0<$$cr1 && $$cr0<$$cr2 ?
+$$cr0 :
+$$cr1<$$cr0 && $$cr1<$$cr2 ?
+$$cr1 :
+$$cr2
    
 /////////////////////////////////////////////////////////////////////////////////
 //
