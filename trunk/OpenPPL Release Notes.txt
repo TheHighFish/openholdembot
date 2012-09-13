@@ -66,13 +66,13 @@ BUG FIXES:
   [THF]
 
   NEW STUFF:
-- New symbol CheckedPreflop (reminder: add to docu)
+- New symbol BotCheckedPreflop (reminder: add to docu)
   [Lavezzi]
-- New symbol CheckedOnFlop (reminder: add to docu)
+- New symbol BotCheckedOnFlop (reminder: add to docu)
   [Lavezzi]
-- New symbol CheckedOnTurn (reminder: add to docu)
+- New symbol BotCheckedOnTurn (reminder: add to docu)
   [Lavezzi]
-- New symbol CheckedOnRiver (reminder: add to docu)
+- New symbol BotCheckedOnRiver (reminder: add to docu)
   [Lavezzi]
  - New symbol TopPairRank (reminder: add to docu)
   [Lavezzi]
