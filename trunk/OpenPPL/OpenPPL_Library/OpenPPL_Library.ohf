@@ -1431,9 +1431,9 @@ me_st_MemBotsLastAction_f$OpenPPL_None
 
 ##f$OpenPPL_BotsLastAction##
 // Just to be extra safe...
-f$OpenPPL_BotsActionsOnThisRoundIncludingChecks == 0 ? f$OpenPPL_None:
+[f$OpenPPL_BotsActionsOnThisRoundIncludingChecks == 0] ? f$OpenPPL_None :
 // Caring about a possible check, when a fold could not have happened
-[me_re_MemBotsLastAction = f$OpenPPL_Fold] ? f$OpenPPL_Check :
+[me_re_MemBotsLastAction == f$OpenPPL_Fold] ? f$OpenPPL_Check :
 // The last action we executed (tried to execute, to be precise)
 me_re_MemBotsLastAction
 
