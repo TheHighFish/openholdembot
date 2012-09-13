@@ -397,6 +397,7 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_sym_opponentsblindbits(0);
 
 	// common cards
+	set_sym_nouts(0);
 	set_sym_ncommoncardspresent(0);
 	set_sym_ncommoncardsknown(0);
 	set_sym_ncommoncardsknown(0);
@@ -2218,9 +2219,9 @@ void CSymbols::CalcUnknownCards(void)
 	}
 
 	set_sym_ncardsknown(nstdCards);														// ncardsknown
-	set_sym_ncardsunknown(52 - _sym.ncardsknown);										// ncardsunknown
+	set_sym_ncardsunknown(k_number_of_cards_per_deck - _sym.ncardsknown);										// ncardsunknown
 
-		handval_std = Hand_EVAL_N(stdCards, nstdCards);
+	handval_std = Hand_EVAL_N(stdCards, nstdCards);
 
 	if (_user_chair_confirmed)
 		{
@@ -2243,6 +2244,14 @@ void CSymbols::CalcUnknownCards(void)
 					CardMask_SET(commonCards, i);
 					handval_common_plus1 = Hand_EVAL_N(commonCards, ncommonCards+1);
 					CardMask_UNSET(commonCards, i);
+
+					if (_sym.br<k_betround_river 
+						&& HandVal_HANDTYPE(handval_std_plus1) > HandVal_HANDTYPE(handval_std) 
+						&& CalcPokerval(handval_std_plus1, nstdCards+1, &dummy, CARD_NOCARD, CARD_NOCARD) > _sym.pokerval 
+						&& HandVal_HANDTYPE(handval_std_plus1) > HandVal_HANDTYPE(handval_common_plus1))
+					{
+						set_sym_nouts(_sym.nouts+1);										// nouts
+					}
 
 					if (CalcPokerval(handval_common_plus1, ncommonCards+1, &dummy, CARD_NOCARD, CARD_NOCARD) > _sym.pokerval)
 					{
@@ -4202,6 +4211,9 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	//COMMON CARDS
 	if (memcmp(a, "ncommoncardspresent", 19)==0 && strlen(a)==19)		return _sym.ncommoncardspresent;
 	if (memcmp(a, "ncommoncardsknown", 17)==0 && strlen(a)==17)			return _sym.ncommoncardsknown;
+
+	//(UN)KNOWN CARDS 3(3)
+	if (memcmp(a, "nouts", 5)==0 && strlen(a)==5)						return _sym.nouts;
 
 	// HISTORY S
 	// Part 3(3)

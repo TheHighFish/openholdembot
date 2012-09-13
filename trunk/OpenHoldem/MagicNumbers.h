@@ -34,10 +34,10 @@ const int k_min_chair_number = 0;
 const int k_max_chair_number = k_max_number_of_players - 1;
 
 // Number of cards
-const int k_number_of_community_cards  = 5;
-const int k_number_of_flop_cards       = 3;  
-const int k_number_of_cards_per_player = 2;
-const int k_number_of_cards_per_deck = 52;
+const int k_number_of_community_cards  =  5;
+const int k_number_of_flop_cards       =  3;  
+const int k_number_of_cards_per_player =  2;
+const int k_number_of_cards_per_deck   = 52;
 
 // Game type
 const int k_gametype_unknown = -1;
