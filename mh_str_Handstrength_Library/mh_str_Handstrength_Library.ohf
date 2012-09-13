@@ -99,8 +99,6 @@ isonepair ?
 
 ##f$mh_3straight11##
 
-##f$mh_bottomsd##
-
 ##f$mh_nsuitedbetter##
 
 ##f$mh_kickerbetter##
@@ -116,14 +114,15 @@ isonepair ?
 // Hand strength evaluator - returns a value from 1-5, 5 representing the strongest hand
 isroyalflush && !(pokervalcommon&royalflush)                         ? 5 : // Nuts
 isstraightflush && nhandshi==0 && !(pokervalcommon&straightflush)    ? 5 : // Nuts 
-isroyalflush && (pokervalcommon&royalflush)                          ? 4 : // Chop pot
 isstraightflush && !(pokervalcommon&straightflush)                   ? 3 : // I may not have the highest, board does not have a str8flush
 isstraightflush && (pokervalcommon&straightflush)                    ? 2 : // I may not have the highest, board does have a str8flush
+isroyalflush && (pokervalcommon&royalflush)                          ? 1 : // Chop pot
 0
 
 
 ##f$strength_quads##
-isfourofakind && nhandshi==0                                         ? 5 : // Nuts
+isfourofakind && nhandshi==0 && !(pokervalcommon&fourofakind)        ? 5 : // Nuts
+isfourofakind && nhandshi==0 && (pokervalcommon&fourofakind)         ? 5 : // Nuts
 isfourofakind && !(pokervalcommon&fourofakind)                       ? 3 : // I may not have the highest, board does not have quads
 isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Board has quads, I don't have best kicker
 0
@@ -133,7 +132,7 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 ((0
 // TwoPair on Board, I have Top Set with the spare card    
 // e.g. 66/22336
-|| [ isfullhouse && (pokervalcommon&twopair) && ispair && rankhicommon==$$pr0 ]
+// NOT_YET_IMPLEMENTED 
 // Board paired, I have pocket pair and top side full house, pocket pair is higher than non-participating board cards  
 // e.g. QQ/QTT53
 || [ isfullhouse && ispair && nrankedcommon==2 && !(pokervalcommon&twopair)
@@ -708,6 +707,29 @@ br==3 ? ( //************TURN BELOW********************
  nsuitedcommon==3                                                           ? 8 : 0):0}
 ) : 0
 
+
+##f$mh_bottomsd##
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=6578&start=60&hilit=%2Abottomsd%2A
+// f$bottomsd
+(br==2 && nstraight==4 && nstraightfillcommon - nstraightfill==1 && (rankhiplayer-rankloplayer)==1 && (rankhiplayer-rankloplayer)==1 && pcbits<4)
+|| (br==2 && nstraight==4 && nstraightfillcommon - nstraightfill==1 && (rankhiplayer-rankloplayer)==1 && (rankhiplayer-rankloplayer)== 2 && pcbits<10)
+|| (br==2 && nstraight==4 && nstraightfillcommon - nstraightfill==1 && (rankhiplayer-rankloplayer)==1 && (rankhiplayer-rankloplayer)== 3 && pcbits<=5)
+&&
+( (rankbits >> rankloplayer&0x1f)==0xf &&
+!(rankhiplayer==$$cr0 ||
+rankhiplayer==$$cr1 ||
+rankhiplayer==$$cr2 ||
+rankhiplayer==$$cr3 ||
+rankhiplayer==$$cr4)
+)
+||
+( (rankbits >> rankhiplayer&0x1f)==0xf &&
+!(rankloplayer==$$cr0 ||
+rankloplayer==$$cr1 ||
+rankloplayer==$$cr2 ||
+rankloplayer==$$cr3 ||
+rankloplayer==$$cr4)
+)
 
 /////////////////////////////////////////////////////////////////////////////////
 //
