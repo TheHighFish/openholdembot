@@ -3634,6 +3634,20 @@ rankbitscommon
 ##f$OpenPPL_HaveTopPair##
 [ f$OpenPPL_RankOfFirstHoleCard==rankhicommon || f$OpenPPL_RankOfSecondHoleCard==rankhicommon ]
 
+##f$OpenPPL_TopPairRank##
+f$OpenPPL_HaveTopPair && $$pr0==rankhicommon ? $$pr0:
+f$OpenPPL_HaveTopPair && $$pr1==rankhicommon ? $$pr1:
+0
+
+##f$OpenPPL_TopPairKickerRank##
+f$OpenPPL_HaveTopPair && $$pr0==rankhicommon ? $$pr1:
+f$OpenPPL_HaveTopPair && $$pr1==rankhicommon ? $$pr0:
+0
+
+##f$OpenPPL_TopPairKickerIsOvercard##
+f$OpenPPL_HaveTopPair && f$OpenPPL_Overcards==1  ? 1:
+0
+
 ##f$OpenPPL_HaveTopSet##
 (ispair && (rankhiplayer == rankhicommon))
 
