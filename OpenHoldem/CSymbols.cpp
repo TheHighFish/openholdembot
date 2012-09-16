@@ -1063,18 +1063,18 @@ void CSymbols::CalcSymbols(void)
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Things to do when we have a new round
-	if (_sym.br == 0) 
+	if (_sym.betround == 0) 
 		return;
 
-	if (_sym.br != _br_last)
+	if (_sym.betround  != _br_last)
 	{
-		_br_last = _sym.br;
+		_br_last = _sym.betround ;
 
 		// Reset symbols
 		ResetSymbolsNewRound();
 
 		// log betting round change
-		write_log(k_always_log_basic_information, "ROUND %.0f\n", _sym.br);
+		write_log(k_always_log_basic_information, "ROUND %.0f\n", _sym.betround );
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1493,7 +1493,7 @@ void CSymbols::CalcProbabilities(void)
 	int					i = 0;
 
 	set_sym_randomheartbeat((double) rand() / (double) RAND_MAX);								// random
-	set_sym_randomround(4, _sym.randomround[(int) (_sym.br-1)]);						// randomround
+	set_sym_randomround(4, _sym.randomround[(int) (_sym.betround -1)]);						// randomround
 
 	set_sym_prwin(iter_vars.prwin());													// prwin
 	set_sym_prtie(iter_vars.prtie());													// prtie
@@ -1506,21 +1506,25 @@ void CSymbols::CalcProbabilities(void)
 	// - changed player cards
 	// - changed common cards
 	need_recalc = false;
-	if ((int) _sym.nopponents != iter_vars.f$p() ||
-		(int) _sym.nit != iter_vars.nit() ||
-		(int) _sym.br != iter_vars.br() )
+	if ((int) _sym.nopponents != iter_vars.f$p() 
+		|| (int) _sym.nit != iter_vars.nit() 
+		|| (int) _sym.betround != iter_vars.br())
 	{
 		need_recalc = true;
 	}
 
-	if (p_scraper->card_player(_sym.userchair, 0) != iter_vars.pcard(0) || 
-		p_scraper->card_player(_sym.userchair, 1) != iter_vars.pcard(1))
+	if (p_scraper->card_player(_sym.userchair, 0) != iter_vars.pcard(0) 
+		|| p_scraper->card_player(_sym.userchair, 1) != iter_vars.pcard(1))
+	{
 		need_recalc = true;
+	}
 
 	for (i=0; i<k_number_of_community_cards; i++)
 	{
 		if (p_scraper->card_common(i) != iter_vars.ccard(i))
+		{
 			need_recalc = true;
+		}
 	}
 
 	// restart iterator thread
@@ -1774,7 +1778,10 @@ void CSymbols::CalcPlayersOpponents(void)
 // Blind Bits
 	// Will only set these if we are playing
 	// otherwise results make no sense ...
-	if (_sym.br == 1 && !DidAct() && _user_chair_confirmed && ((int)_sym.playersplayingbits & k_exponents[(int)_sym.userchair]))
+	if (_sym.betround  == k_betround_preflop 
+		&& !DidAct() 
+		&& _user_chair_confirmed 
+		&& ((int)_sym.playersplayingbits & k_exponents[(int)_sym.userchair]))
 	{
 		// Heads-Up
 		if (_sym.nplayersdealt == 2 && ((int)_sym.playersplayingbits & (1<<(int)_sym.dealerchair)))
@@ -2036,9 +2043,12 @@ void CSymbols::CalcPokerValues(void)
 								  p_scraper->card_player(_sym.userchair, 1)));		// pokerval
 
 	set_sym_npcbits(bitcount(_sym.pcbits));											// npcbits
-	_phandval[(int)_sym.br-1] = (int)_sym.pokerval&0xff000000; //change from previous handval assignment 2008-03-02
-	if (_sym.br>1 &&	_phandval[(int)_sym.br-1] > _phandval[(int)_sym.br-2])
+	_phandval[(int)_sym.betround-1] = (int)_sym.pokerval&0xff000000; //change from previous handval assignment 2008-03-02
+	if (_sym.betround > k_betround_preflop
+		&& _phandval[(int)_sym.betround-1] > _phandval[(int)_sym.betround-2])
+	{
 		set_sym_ishandup(1);														// ishandup
+	}
 
 	if (HandVal_HANDTYPE(handval) == HandType_STFLUSH &&
 			StdDeck_RANK(HandVal_TOP_CARD(handval)) == Rank_ACE)
@@ -2177,8 +2187,9 @@ void CSymbols::CalcPokerValues(void)
 
 	set_sym_pokervalcommon(CalcPokerval(handval, nCards, &dummy, CARD_NOCARD, CARD_NOCARD)); // pokervalcommon
 
-		_chandval[(int)_sym.br-1] = (int)_sym.pokervalcommon&0xff000000; //change from previous handval assignment 2008-03-02
-		if (_sym.br>1 &&	_chandval[(int)_sym.br-1] > _chandval[(int)_sym.br-2])
+		_chandval[(int)_sym.betround-1] = (int)_sym.pokervalcommon&0xff000000; //change from previous handval assignment 2008-03-02
+		if (_sym.betround > k_betround_preflop 
+			&& _chandval[(int)_sym.betround-1] > _chandval[(int)_sym.betround-2])
 		{
 			set_sym_ishandupcommon(1);														// ishandupcommon
 		}
@@ -2245,7 +2256,7 @@ void CSymbols::CalcUnknownCards(void)
 					handval_common_plus1 = Hand_EVAL_N(commonCards, ncommonCards+1);
 					CardMask_UNSET(commonCards, i);
 
-					if (_sym.br<k_betround_river 
+					if (_sym.betround < k_betround_river 
 						&& HandVal_HANDTYPE(handval_std_plus1) > HandVal_HANDTYPE(handval_std) 
 						&& CalcPokerval(handval_std_plus1, nstdCards+1, &dummy, CARD_NOCARD, CARD_NOCARD) > _sym.pokerval 
 						&& HandVal_HANDTYPE(handval_std_plus1) > HandVal_HANDTYPE(handval_common_plus1))
@@ -3110,11 +3121,11 @@ void CSymbols::CalcHistory(void)
 {
 	double		maxbet = 0.;
 
-	if (_sym.nplayersround[(int) _sym.br-1]==0)
+	if (_sym.nplayersround[(int) _sym.betround-1]==0)
 	{
-		set_sym_nplayersround((int) _sym.br-1, _sym.nplayersplaying);					// nplayersroundx
+		set_sym_nplayersround((int) _sym.betround-1, _sym.nplayersplaying);					// nplayersroundx
 	}
-	set_sym_nplayersround(4, _sym.nplayersround[(int) _sym.br-1]);						// nplayersround
+	set_sym_nplayersround(4, _sym.nplayersround[(int) _sym.betround-1]);						// nplayersround
 
 	maxbet = 0;
 	for (int i=0; i<p_tablemap->nchairs(); i++)
@@ -3132,9 +3143,9 @@ void CSymbols::CalcHistory(void)
 	}
 
 	maxbet /= (p_tablelimits->bet()==0 ? 1 : p_tablelimits->bet());
-	if (maxbet > _sym.nbetsround[(int) _sym.br-1])
+	if (maxbet > _sym.nbetsround[(int) _sym.betround-1])
 	{
-		set_sym_nbetsround((int) _sym.br-1, maxbet);									// nbetsroundx
+		set_sym_nbetsround((int) _sym.betround-1, maxbet);									// nbetsroundx
 	}
 	set_sym_nbetsround(4, maxbet);	// nbetsround
 }
@@ -4148,7 +4159,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "raischair", 9)==0 && strlen(a)==9)					return _sym.raischair;
 
 	//ROUND&POSITIONS
-	if (memcmp(a, "betround", 8)==0 && strlen(a)==8)					return _sym.betround;							return _sym.br;
+	if (memcmp(a, "betround", 8)==0 && strlen(a)==8)					return _sym.betround;
 	if (memcmp(a, "betposition", 11)==0 && strlen(a)==11)				return _sym.betposition;
 	if (memcmp(a, "dealposition", 12)==0 && strlen(a)==12)				return _sym.dealposition;
 	if (memcmp(a, "callposition", 12)==0 && strlen(a)==12)				return _sym.callposition;
