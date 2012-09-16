@@ -18,21 +18,18 @@ COpenHoldemStatusbar::~COpenHoldemStatusbar()
 
 void COpenHoldemStatusbar::InitBasicStatusbar()
 {
-	_status_bar.Create(_main_window);
-	_status_bar.SetIndicators(basic_statusba_indicators, sizeof(basic_statusba_indicators)/sizeof(UINT));
-	is_basic_statusbar = true;
-
-	_status_bar.SetPaneInfo(0, ID_INDICATOR_GENERAL_HINT, NULL, 200);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_GENERAL_HINT), "Do you need Help -> Problem Solver?");
+	//is_basic_statusbar = true;
+	//_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_GENERAL_HINT), "Do you need Help -> Problem Solver?");
+	
+	InitAdvancedStatusbar();
 }
 
 void COpenHoldemStatusbar::InitAdvancedStatusbar()
 {
-	_status_bar.DestroyWindow();
-	_status_bar.Create(_main_window); 
+	_status_bar.Create(_main_window);
 	_status_bar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
-	
-	_status_bar.SetPaneInfo(0, ID_SEPARATOR, SBPS_STRETCH | SBPS_NOBORDERS, 0);
+
+	_status_bar.SetPaneInfo(0, ID_SEPARATOR, SBPS_STRETCH | SBPS_NOBORDERS, 100);
 	_status_bar.SetPaneInfo(1, ID_INDICATOR_STATUS_PLCARDS, NULL, 30);
 	_status_bar.SetPaneInfo(2, ID_INDICATOR_STATUS_COMCARDS, NULL, 75);
 	_status_bar.SetPaneInfo(3, ID_INDICATOR_STATUS_POKERHAND, NULL, 65);
@@ -41,17 +38,22 @@ void COpenHoldemStatusbar::InitAdvancedStatusbar()
 	_status_bar.SetPaneInfo(6, ID_INDICATOR_STATUS_NOPP, NULL, 15);
 	_status_bar.SetPaneInfo(7, ID_INDICATOR_STATUS_nit, NULL, 90);
 	_status_bar.SetPaneInfo(8, ID_INDICATOR_STATUS_ACTION, NULL, 70);
+
 	is_basic_statusbar = false;
 }
 
 void COpenHoldemStatusbar::SwitchToAdvancedStatusbarAfterFirstHand()
 {
-	if (is_basic_statusbar)
+	if (!is_basic_statusbar)
 	{
+		// Already advanced statusbar
 		return;
 	}
+	// Still basic statusbar for beginners
 	if (p_game_state->hands_played() >= 1)
 	{
+		// Bot seems to play -> no beginners advice needed
+		// -> switch to normal "advanced" status-bar.
 		InitAdvancedStatusbar();
 	}
 }
@@ -65,17 +67,19 @@ void COpenHoldemStatusbar::OnUpdateStatusbar()
 {
 	if (is_basic_statusbar)
 	{
+		// Basic statusbar for beginners with basic hints
+		// We can't display detailed info.
 		return;
 	}
 	// Update this info only for advanced statusbar
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PLCARDS), _status_plcards);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_COMCARDS), _status_comcards);
+//	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PLCARDS), _status_plcards);
+/*	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_COMCARDS), _status_comcards);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_POKERHAND), _status_pokerhand);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_HANDRANK), _status_handrank);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PRWIN), _status_prwin);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_NOPP), _status_nopp);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_nit), _status_nit);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_ACTION), _status_action);
+	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_ACTION), _status_action);!!!*/
 }
 
 

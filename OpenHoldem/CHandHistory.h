@@ -2,6 +2,7 @@
 #define _INC_CHANDHISTORY_H
  
 #include <fstream>
+#include "MagicNumbers.h"
 
 using namespace std;
 
@@ -40,11 +41,13 @@ private:
 
 private:
 	fstream outfile;
-	string playerName[10];
-	string handText[10];
-	bool allin[10];				//True if player is allin
+	string playerName[k_max_number_of_players];
+	string handText[k_max_number_of_players];
+	bool allin[k_max_number_of_players];				//True if player is allin
 	bool SBfound;
-	bool allChecks[4];
+	// Betrounds are numbered 1..4. 
+	// That's why we use 1 additional element and leave 0 unused
+	bool allChecks[k_number_of_betrounds + 1];
 	bool flopSeen;
 	bool turnSeen;
 	bool riverSeen;
@@ -53,10 +56,12 @@ private:
 	bool showdownReady;
 	bool newRoundFlag;
 	bool passChecks;			//Whether checks have been passed over or not
-	double middleBet[10];
+	double middleBet[k_max_number_of_players];
 	double pot;
 	double prevpot;
-	double bet[4];
+	// Betrounds are numbered 1..4. 
+	// That's why we use 1 additional element and leave 0 unused
+	double bet[k_number_of_betrounds + 1];
 	double maxBet;				//Maximum bet on table
 	int pCardsSeen;
 	int postflopstart;			//Starting seat after flop
