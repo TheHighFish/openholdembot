@@ -927,3 +927,7 @@ const char *CGameState::_hist_sym_strings[_hist_sym_count] =
 	"run$royfl", "run$strfl", "run$4kind", "run$fullh", "run$strai", "run$3kind", "run$2pair", 
 	"run$1pair", "run$hcard", "run$total", "run$pokervalmax", "run$prnuts", "run$prbest"
 };
+
+
+const int CGameState::hands_played() 
+{ return _hands_played; }

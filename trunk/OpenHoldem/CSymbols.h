@@ -54,7 +54,6 @@ struct SSymbols
 
 	//ROUND&POSITIONS
 	double betround;
-	double br;
 	double betposition;
 	double dealposition;
 	double callposition;
@@ -195,7 +194,7 @@ struct SSymbols
 
 	//FLAGS
 	double fmax;
-	double f[20];
+	double f[k_number_of_flags];
 	double fbits;
 
 	//COMMON CARDS
