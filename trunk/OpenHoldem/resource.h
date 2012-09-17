@@ -3,13 +3,13 @@
 // Used by OpenHoldem.rc
 //
 #define IDD_ABOUTBOX                    100
-#define IDR_MAINFRAME                   128
+#define IDR_MAINFRAME                   128		
 #define ID_INDICATOR_STATUS_COMCARDS    129
 #define IDI_ICON1                       130
 #define ID_INDICATOR_STATUS_PRWIN       130
 #define ID_INDICATOR_STATUS_NOPP        131
 #define ID_INDICATOR_STATUS_ACTION      132
-#define ID_INDICATOR_STATUS_nit         133
+#define ID_INDICATOR_STATUS_NIT         133
 #define ID_INDICATOR_STATUS_POKERHAND   134
 #define ID_INDICATOR_STATUS_HANDRANK    135
 #define IDD_DIALOG1                     136
@@ -338,7 +338,6 @@
 #define IDC_ENABLE_TRACE                1299
 #define IDC_TRACE_LIST                  1300
 #define IDC_COMMENT                     1301
-#define IDC_ENABLE_TRACE2               1301
 #define IDC_DISABLE_MSGBOX              1301
 #define IDC_RECORD_EVERY_CHANGE_PLAYING 1302
 #define IDC_MAXIMUM_LOGSIZE             1302
@@ -399,13 +398,10 @@
 #define IDC_DEBUG_AUTOPLAYER            1353
 #define IDC_DEBUG_HEARTBEAT             1354
 #define IDC_DEBUG_SYMBOLENGINE          1355
-#define IDC_ENABLE_ERROR_LOGGiNG        1355
 #define IDC_DEBUG_BLINDLOCKING          1356
-#define IDC_LOG_BASIC_INFO              1356
 #define IDC_DEBUG_ALLTHEREST            1357
 #define IDC_DEBUG_MEMORY_SYMBOLS        1358
 #define IDC_RADIO_SCRAPE_ON_MYTURN      1359
-#define IDC_DEBUG_TABLEMAP_LOADER       1359
 #define IDC_DEBUG_SCRAPER2              1360
 #define IDC_RADIO_SCRAPE_ON_MYTURN_OR_SITOUT 1361
 #define IDC_HANDHISTORY_GENERATOR_ENABLE 1362
@@ -418,6 +414,10 @@
 #define IDC_RADIO5                      1369
 #define IDC_DEBUG_FILESYSTEM_MONITOR    1370
 #define IDC_DEBUG_TABLE_POSITIONER      1371
+#define IDC_ENABLE_ERROR_LOGGiNG        1372
+#define IDC_ENABLE_DLL_LOGGiNG          1373
+#define IDC_LOG_BASIC_INFO              1374
+#define IDC_DEBUG_TABLEMAP_LOADER       1375
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -529,6 +529,7 @@
 #define ID_MAIN_TOOLBAR_HELP            32992
 #define ID_Menu32993                    32993
 #define ID_FILE_LOAD_OPENPPL            32994
+#define ID_INDICATOR_STATUS_READY		61190
 #define ID_INDICATOR_STATUS_PLCARDS     61191
 
 // Next default values for new objects
@@ -537,7 +538,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        189
 #define _APS_NEXT_COMMAND_VALUE         32997
-#define _APS_NEXT_CONTROL_VALUE         1372
+#define _APS_NEXT_CONTROL_VALUE         1376
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

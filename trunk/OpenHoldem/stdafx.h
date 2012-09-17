@@ -33,9 +33,13 @@
 
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
 
-// Turn warnings off
-#define _CRT_SECURE_NO_DEPRECATE 1 // 
-#pragma warning(disable:4805)      // unsafe mix of type X and type 'bool' in operation
+// Turn some warnings off, because we consider them harmless
+// and don't see an easy way to fix or avoid them.
+#define _CRT_SECURE_NO_DEPRECATE 1  // secure functions with checks for buffer size 
+#pragma warning(disable:4229)		// anachronism used : modifiers on data are ignored
+#pragma warning(disable:4312)		// conversion from 'type1' to 'type2' of greater size
+#pragma warning(disable:4319)		// zero extending 'unsigned long' to 'double' of greater size
+#pragma warning(disable:4805)		// unsafe mix of type X and type 'bool' in operation
 
 // turns off MFC's hiding of some common and often safely ignored warning messages
 #define _AFX_ALL_WARNINGS

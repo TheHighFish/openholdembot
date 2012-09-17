@@ -33,7 +33,12 @@ void CDlgSAPrefs11::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_ENABLE_LOG, m_EnableLog);
 	DDX_Control(pDX, IDC_MAXIMUM_LOG, m_MaximumLog);
 	DDX_Control(pDX, IDC_MAXIMUM_LOG_SPIN, m_MaximumLog_Spin);
+
+	DDX_Control(pDX, IDC_LOG_BASIC_INFO, m_EnableBasicInfo);
 	DDX_Control(pDX, IDC_ENABLE_TRACE, m_EnableTrace);
+	DDX_Control(pDX, IDC_ENABLE_ERROR_LOGGiNG, m_EnableErrorLogging);
+	DDX_Control(pDX, IDC_ENABLE_DLL_LOGGiNG, m_EnableDLLLogging);
+
 	DDX_Control(pDX, IDC_DISABLE_MSGBOX, m_disable_msgbox);
 	DDX_Control(pDX, IDC_MAXIMUM_LOGSIZE, m_MaximumLogSize);
 	DDX_Control(pDX, IDC_MAXIMUM_LOGSIZE_SPIN, m_MaximumLogSize_Spin);
@@ -46,6 +51,9 @@ BOOL CDlgSAPrefs11::OnInitDialog()
 
 	m_EnableLog.SetCheck(prefs.log_symbol_enabled() ? BST_CHECKED : BST_UNCHECKED);
 	m_EnableTrace.SetCheck(prefs.trace_enabled() ? BST_CHECKED : BST_UNCHECKED);
+	m_EnableBasicInfo.SetCheck(prefs.basic_logging_enabled() ? BST_CHECKED : BST_UNCHECKED);
+	m_EnableErrorLogging.SetCheck(prefs.error_logging_enabled() ? BST_CHECKED : BST_UNCHECKED);
+	m_EnableDLLLogging.SetCheck(prefs.dll_logging_enabled() ? BST_CHECKED : BST_UNCHECKED);
 
 	text.Format("%d", prefs.log_symbol_max_log());
 	m_MaximumLog.SetWindowText(text);
@@ -53,7 +61,6 @@ BOOL CDlgSAPrefs11::OnInitDialog()
 	m_MaximumLog_Spin.SetPos(prefs.log_symbol_max_log());
 	m_MaximumLog_Spin.SetBuddy(&m_MaximumLog);
 
-	m_EnableTrace.SetCheck(prefs.trace_enabled() ? BST_CHECKED : BST_UNCHECKED);
 	m_disable_msgbox.SetCheck(prefs.disable_msgbox() ? BST_CHECKED : BST_UNCHECKED);
 
 	text.Format("%d", prefs.log_max_logsize());
@@ -78,6 +85,10 @@ void CDlgSAPrefs11::OnOK()
 
 	prefs.set_log_symbol_enabled(m_EnableLog.GetCheck()==BST_CHECKED ? true : false);
 	prefs.set_trace_enabled(m_EnableTrace.GetCheck()==BST_CHECKED ? true : false);
+	prefs.set_basic_logging_enabled(m_EnableBasicInfo.GetCheck()==BST_CHECKED ? true : false);
+	prefs.set_error_logging_enabled(m_EnableErrorLogging.GetCheck()==BST_CHECKED ? true : false);
+	prefs.set_dll_logging_enabled(m_EnableDLLLogging.GetCheck()==BST_CHECKED ? true : false);
+
 
 	m_MaximumLog.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)<0 || strtoul(text.GetString(), 0, 10)>MAX_MAX_LOG) {
