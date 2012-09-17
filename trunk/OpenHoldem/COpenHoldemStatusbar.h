@@ -14,6 +14,7 @@ public:
 private:
 	void InitBasicStatusbar();
 	void InitAdvancedStatusbar();
+	void ComputeCurrentStatus();
 private:
 	CStatusBar	_status_bar;
 	CWnd		*_main_window;

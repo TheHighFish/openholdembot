@@ -679,14 +679,6 @@ void CMainFrame::OnBnClickedRedCircle()
 
 void CMainFrame::OnTimer(UINT nIDEvent) 
 {
-	
-	int				nCards = 0;
-	HandVal			hv = 0;
-	char			hvstring[100] = {0};
-	int				i = 0;
-	char			*card = NULL;
-	CString			temp = "";
-	bool			playing = false;
 	RECT			att_rect = {0}, wrect = {0};
 
 	if (nIDEvent == HWND_CHECK_TIMER)
