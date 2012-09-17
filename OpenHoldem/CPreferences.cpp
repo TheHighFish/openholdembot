@@ -117,6 +117,9 @@ void CPreferences::InitDefaults(void)
 	_log_symbol_max_log = 5;
 
 	_trace_enabled = true;
+	_basic_logging_enabled = true;
+	_error_logging_enabled = true;
+	_dll_logging_enabled = true;
 
 	// Logging and debugging
 	_disable_msgbox = false;
@@ -282,6 +285,9 @@ void CPreferences::ReadPreferences()
 		ReadReg("log_symbol_max_log", &_log_symbol_max_log);
 
 		ReadReg("trace_enabled", &_trace_enabled);
+		ReadReg("basic_logging_enabled", &_basic_logging_enabled);
+		ReadReg("error_logging_enabled", &_error_logging_enabled);
+		ReadReg("dll_logging_enabled", &_dll_logging_enabled);
 
 		// Logging and debugging
 		ReadReg("disable_msgbox", &_disable_msgbox);

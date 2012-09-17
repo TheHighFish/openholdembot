@@ -75,7 +75,10 @@ public:
 
 	const bool log_basic_info();
 	const bool log_errors_and_warnings();
-	const bool trace_enabled() { return _trace_enabled; }
+	const bool trace_enabled()         { return _trace_enabled; }
+	const bool basic_logging_enabled() { return _basic_logging_enabled; }
+	const bool error_logging_enabled() { return _error_logging_enabled; }
+	const bool dll_logging_enabled()   { return _dll_logging_enabled; }
 
 	// Debugging
 	const bool	debug_autoconnector() { return _debug_autoconnector; }
@@ -215,6 +218,9 @@ public:
 
 	// Tracing
 	void set_trace_enabled(const bool b) { ENT _trace_enabled = b; WriteReg("trace_enabled", b); }
+	void set_basic_logging_enabled(const bool b) { ENT _basic_logging_enabled = b; WriteReg("basic_logging_enabled", b); }
+	void set_error_logging_enabled(const bool b) { ENT _error_logging_enabled = b; WriteReg("error_logging_enabled", b); }
+	void set_dll_logging_enabled(const bool b) { ENT _dll_logging_enabled = b; WriteReg("dll_logging_enabled", b); }
 
 	// Logging and debugging
 	void set_disable_msgbox(const bool b) { ENT _disable_msgbox = b; WriteReg("disable_msgbox", b); }
@@ -371,6 +377,9 @@ private:
 
 	// Tracing
 	bool			_trace_enabled;
+	bool			_basic_logging_enabled;
+	bool			_error_logging_enabled;
+	bool			_dll_logging_enabled;
 
 	// Logging & MessageBox
 	bool			_disable_msgbox;

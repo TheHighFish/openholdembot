@@ -491,7 +491,7 @@ bool CGameState::ProcessThisFrame (void)
 	bool			sym_ismanual = (bool) p_symbols->sym()->ismanual;
 
 	// check if all balances are known (indicates stability of info passed to DLL)
-	int balance_stability = true;
+	bool balance_stability = true;
 	for (int i=0; i<k_max_number_of_players; i++)
 	{
 		if (_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[0] != 0 && 
@@ -503,10 +503,39 @@ bool CGameState::ProcessThisFrame (void)
 		}
 	}
 
+	bool card_stability = true;
+	if (_m_holdem_state[(_m_ndx)&0xff].m_cards[0] != CARD_NOCARD
+		|| _m_holdem_state[(_m_ndx)&0xff].m_cards[1] != CARD_NOCARD
+		|| _m_holdem_state[(_m_ndx)&0xff].m_cards[2] != CARD_NOCARD
+		|| _m_holdem_state[(_m_ndx)&0xff].m_cards[3] != CARD_NOCARD)
+	{
+		if (_m_holdem_state[(_m_ndx)&0xff].m_cards[0] == CARD_NOCARD 
+			|| _m_holdem_state[(_m_ndx)&0xff].m_cards[1] == CARD_NOCARD 
+			|| _m_holdem_state[(_m_ndx)&0xff].m_cards[2] == CARD_NOCARD)
+		{
+			card_stability = false;
+		}
+	}
+	if (_m_holdem_state[(_m_ndx)&0xff].m_cards[4] != CARD_NOCARD)
+	{
+		if (_m_holdem_state[(_m_ndx)&0xff].m_cards[0] == CARD_NOCARD 
+			|| _m_holdem_state[(_m_ndx)&0xff].m_cards[1] == CARD_NOCARD 
+			|| _m_holdem_state[(_m_ndx)&0xff].m_cards[2] == CARD_NOCARD
+			|| _m_holdem_state[(_m_ndx)&0xff].m_cards[3] == CARD_NOCARD)
+		{
+			card_stability = false;
+		}
+	}
+
 	// only process further if _safe_to_process_state==true, userchair is identified (br!=0),
-	// and m_balance_known is true for all players with cards, and I am actually in the hand
-	return ((betround >= k_betround_preflop && _safe_to_process_state && (balance_stability || sym_ismanual))
-			|| _m_holdem_state[(_m_ndx)&0xff].m_dealer_chair != _m_holdem_state[(_m_ndx-1)&0xff].m_dealer_chair);
+	// and m_balance_known is true for all players with cards, card_stability is true
+	// and I am actually in the hand.
+	return ((betround >= k_betround_preflop 
+		&& _safe_to_process_state 
+		&& balance_stability 
+		&& card_stability) 
+		// !!! hand-reset: better use the hand-reset-detector?
+		|| _m_holdem_state[(_m_ndx)&0xff].m_dealer_chair != _m_holdem_state[(_m_ndx-1)&0xff].m_dealer_chair); 
 }
 
 void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstate_changed)

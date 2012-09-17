@@ -29,15 +29,15 @@ void COpenHoldemStatusbar::InitAdvancedStatusbar()
 	_status_bar.Create(_main_window);
 	_status_bar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
 
-	_status_bar.SetPaneInfo(0, ID_SEPARATOR, SBPS_STRETCH | SBPS_NOBORDERS, 100);
+	_status_bar.SetPaneInfo(0, ID_INDICATOR_STATUS_READY, NULL, 100);
 	_status_bar.SetPaneInfo(1, ID_INDICATOR_STATUS_PLCARDS, NULL, 30);
 	_status_bar.SetPaneInfo(2, ID_INDICATOR_STATUS_COMCARDS, NULL, 75);
-	_status_bar.SetPaneInfo(3, ID_INDICATOR_STATUS_POKERHAND, NULL, 65);
+	_status_bar.SetPaneInfo(3, ID_INDICATOR_STATUS_POKERHAND, NULL, 65);	
 	_status_bar.SetPaneInfo(4, ID_INDICATOR_STATUS_HANDRANK, NULL, 55);
 	_status_bar.SetPaneInfo(5, ID_INDICATOR_STATUS_PRWIN, NULL, 62);
 	_status_bar.SetPaneInfo(6, ID_INDICATOR_STATUS_NOPP, NULL, 15);
-	_status_bar.SetPaneInfo(7, ID_INDICATOR_STATUS_nit, NULL, 90);
-	_status_bar.SetPaneInfo(8, ID_INDICATOR_STATUS_ACTION, NULL, 70);
+	_status_bar.SetPaneInfo(7, ID_INDICATOR_STATUS_NIT, NULL, 90);
+	_status_bar.SetPaneInfo(8, ID_INDICATOR_STATUS_ACTION, SBPS_STRETCH, 70);
 
 	is_basic_statusbar = false;
 }
@@ -78,7 +78,7 @@ void COpenHoldemStatusbar::OnUpdateStatusbar()
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_HANDRANK), _status_handrank);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PRWIN), _status_prwin);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_NOPP), _status_nopp);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_nit), _status_nit);
+	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_NIT), _status_nit);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_ACTION), _status_action);!!!*/
 }
 
