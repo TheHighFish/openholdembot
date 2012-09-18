@@ -11,7 +11,9 @@
 #include "MagicNumbers.h"
 #include "..\CTablemap\CTablemap.h"
 #include "MagicNumbers.h"
+#include "OH_MessageBox.h"
 #include "PokerTracker_Queries_Version_3.h"
+#include "StringFunctions.h"
 
 CPokerTrackerThread	*p_pokertracker_thread = NULL;
 CPokerTrackerLookup pt_lookup;
@@ -123,23 +125,105 @@ CPokerTrackerThread::CPokerTrackerThread()
 	_conn_str.Format("host=%s port=%s user=%s password=%s dbname='%s'",  
 		prefs.pt_ip_addr(), prefs.pt_port(), prefs.pt_user(), prefs.pt_pass(), prefs.pt_dbname());
 
-	for (int i=0; i<k_max_number_of_players; i++)
-	{
-		for (int j=pt_min; j<=pt_max; j++)
-		{
-			_player_stats[i].stat[j] = -1.0 ;
-			_player_stats[i].t_elapsed[j] = -1 ;
-		}
-		_player_stats[i].found = false ;
-		strcpy_s(_player_stats[i].pt_name, k_max_length_of_playername, "") ;
-		strcpy_s(_player_stats[i].scraped_name, k_max_length_of_playername, "") ;
-	}
+	ClearAllStats();
 
 	_connected = false;
 	_m_stop_thread = NULL;
 	_m_wait_thread = NULL;
+	SetStatGroups();
+	SetStatTypes();
+
+	// !!! Not present if PT-development?
 	_pgconn = NULL; 
 }
+
+void CPokerTrackerThread::SetStatGroups()
+{
+	/* Ring symbols */
+	_m_statGroup[pt_icon] = pt_group_advanced;
+	_m_statGroup[pt_hands] = pt_group_basic;
+	_m_statGroup[pt_pfr] = pt_group_basic;
+	_m_statGroup[pt_aggp] = pt_group_basic;
+	_m_statGroup[pt_aggf] = pt_group_basic;
+	_m_statGroup[pt_aggt] = pt_group_advanced;
+	_m_statGroup[pt_aggr] = pt_group_basic;
+	_m_statGroup[pt_aggtot] = pt_group_basic;
+	_m_statGroup[pt_aggtotnopf] = pt_group_basic;
+	_m_statGroup[pt_floppct] = pt_group_basic;
+	_m_statGroup[pt_turnpct] = pt_group_advanced;
+	_m_statGroup[pt_riverpct] = pt_group_advanced;
+	_m_statGroup[pt_vpip] = pt_group_basic;
+	_m_statGroup[pt_pf_rfi] = pt_group_basic;
+	_m_statGroup[pt_pf_cr] = pt_group_basic;
+	_m_statGroup[pt_pfats] = pt_group_basic;
+	_m_statGroup[pt_wsdp] = pt_group_advanced;
+	_m_statGroup[pt_wssd] = pt_group_advanced;
+	_m_statGroup[pt_fbbts] = pt_group_basic;
+	_m_statGroup[pt_fsbts] = pt_group_basic;
+	_m_statGroup[pt_cbetflop] = pt_group_advanced;
+	_m_statGroup[pt_f3bettot] = pt_group_advanced;
+	_m_statGroup[pt_f3betpflop] = pt_group_basic;
+	_m_statGroup[pt_f3betflop] = pt_group_advanced;
+	_m_statGroup[pt_f3betturn] = pt_group_advanced;
+	_m_statGroup[pt_f3betriver] = pt_group_advanced;
+	_m_statGroup[pt_fcbetflop] = pt_group_advanced;
+	_m_statGroup[pt_fcbetturn] = pt_group_advanced;
+	_m_statGroup[pt_fcbetriver] = pt_group_advanced;
+
+	/* Tournament symbols */
+	_m_statGroup[ptt_icon] = pt_group_advanced;
+	_m_statGroup[ptt_hands] = pt_group_basic;
+	_m_statGroup[ptt_pfr] = pt_group_basic;
+	_m_statGroup[ptt_aggp] = pt_group_basic;
+	_m_statGroup[ptt_aggf] = pt_group_basic;
+	_m_statGroup[ptt_aggt] = pt_group_advanced;
+	_m_statGroup[ptt_aggr] = pt_group_basic;
+	_m_statGroup[ptt_aggtot] = pt_group_basic;
+	_m_statGroup[ptt_aggtotnopf] = pt_group_basic;
+	_m_statGroup[ptt_floppct] = pt_group_basic;
+	_m_statGroup[ptt_turnpct] = pt_group_advanced;
+	_m_statGroup[ptt_riverpct] = pt_group_advanced;
+	_m_statGroup[ptt_vpip] = pt_group_basic;
+	_m_statGroup[ptt_pf_rfi] = pt_group_basic;
+	_m_statGroup[ptt_pf_cr] = pt_group_basic;
+	_m_statGroup[ptt_pfats] = pt_group_basic;
+	_m_statGroup[ptt_wsdp] = pt_group_advanced;
+	_m_statGroup[ptt_wssd] = pt_group_advanced;
+	_m_statGroup[ptt_fbbts] = pt_group_basic;
+	_m_statGroup[ptt_fsbts] = pt_group_basic;
+}
+
+void CPokerTrackerThread::SetRingStatsState(bool enabled)
+{
+	for (int i = pt_ring_min; i <= pt_ring_max; ++i)
+	{	
+		_m_enabled_stats[i] = enabled;
+	}
+}
+void CPokerTrackerThread::SetTourneyStatsState(bool enabled)
+{
+	for (int i = pt_tourney_min; i <= pt_tourney_max; ++i)
+	{	
+		_m_enabled_stats[i] = enabled;
+	}
+}
+
+void CPokerTrackerThread::SetStatTypes()
+{
+	int i;
+	/* Ring symbols */
+	for (i = pt_ring_min; i <= pt_ring_max; ++i)
+	{	
+		_m_stat_type[i] = pt_statType_Ring;
+	}
+	
+	/* Tournament symbols */
+	for (i = pt_tourney_min; i <= pt_tourney_max; ++i)
+	{	
+		_m_stat_type[i] = pt_statType_Tourney;
+	}
+}
+
 
 CPokerTrackerThread::~CPokerTrackerThread()
 {
@@ -190,100 +274,179 @@ void CPokerTrackerThread::StopThread()
 	}
 }
 
+void CPokerTrackerThread::WarnAboutInvalidPTSymbol(CString s)
+{
+	CString error_message = "Error: Invalid PT-symbol: " + s;
+	OH_MessageBox(error_message, "Error", 0);
+}
+
 const double CPokerTrackerThread::ProcessQuery (const char * s)
 {
 	int		sym_raischair = (int) p_symbols->sym()->raischair;
 
-	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)  
-		return 0.0;
+	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)
+	{
+		OH_MessageBox("Not connected to PokerTracker database.\n"
+			"Can't use PokerTracker symbols.", "Error", 0);
+		return -1.0;
+	}
 
-	if	    (memcmp(s,"pt_iconlastr",12)==0)		return GetStat(p_game_state->LastRaised(s[12]-'0'), pt_icon);
-	else if (memcmp(s,"pt_icon",7)==0)				return GetStat(s[7]-'0', pt_icon);
-	else if (memcmp(s,"pt_pfr",6)==0)				return GetStat(s[6]-'0', pt_pfr);
-	else if (memcmp(s,"pt_aggtotnopf",13)==0)		return GetStat(s[13]-'0', pt_aggtotnopf);
-	else if (memcmp(s,"pt_aggtot",9)==0)			return GetStat(s[9]-'0', pt_aggtot);
-	else if (memcmp(s,"pt_aggp",7)==0)				return GetStat(s[7]-'0', pt_aggp);
-	else if (memcmp(s,"pt_aggf",7)==0)				return GetStat(s[7]-'0', pt_aggf);
-	else if (memcmp(s,"pt_aggt",7)==0)				return GetStat(s[7]-'0', pt_aggt);
-	else if (memcmp(s,"pt_aggr",7)==0)				return GetStat(s[7]-'0', pt_aggr);
-	else if (memcmp(s,"pt_floppct",10)==0)			return GetStat(s[10]-'0', pt_floppct);
-	else if (memcmp(s,"pt_turnpct",10)==0)			return GetStat(s[10]-'0', pt_turnpct);
-	else if (memcmp(s,"pt_riverpct",11)==0)			return GetStat(s[11]-'0', pt_riverpct);
-	else if (memcmp(s,"pt_vpip",7)==0)				return GetStat(s[7]-'0', pt_vpip);
-	else if (memcmp(s,"pt_hands",8)==0)				return GetStat(s[8]-'0', pt_hands);
-	else if (memcmp(s,"pt_pf_rfi",9)==0)			return GetStat(s[9]-'0', pt_pf_rfi);
-	else if (memcmp(s,"pt_pf_cr",8)==0)				return GetStat(s[8]-'0', pt_pf_cr);
-	else if (memcmp(s,"pt_pfats",8)==0)				return GetStat(s[8]-'0', pt_pfats);
-	else if (memcmp(s,"pt_wsdp",7)==0)				return GetStat(s[7]-'0', pt_wsdp);
-	else if (memcmp(s,"pt_wssd",7)==0)				return GetStat(s[7]-'0', pt_wssd);
-	else if (memcmp(s,"pt_fbbts",8)==0)				return GetStat(s[8]-'0', pt_fbbts);
-	else if (memcmp(s,"pt_fsbts",8)==0)				return GetStat(s[8]-'0', pt_fsbts);
+	// ATTENTION!
+	//  
+	// Be very careful, if a string is a prefix of multiple symbols,
+	// e.g. "pt_vpip" is a prefix of both "pt_vpipX" and "pt_vpipsbX".
+	// Take care to handle those cases correctly!
 
-	else if (memcmp(s,"pt_ricon",8)==0)				return GetStat(sym_raischair, pt_icon);
-	else if (memcmp(s,"pt_rpfr",7)==0)				return GetStat(sym_raischair, pt_pfr);
-	else if (memcmp(s,"pt_raggtotnopf",14)==0)		return GetStat(sym_raischair, pt_aggtotnopf);
-	else if (memcmp(s,"pt_raggtot",10)==0)			return GetStat(sym_raischair, pt_aggtot);
-	else if (memcmp(s,"pt_raggp",8)==0)				return GetStat(sym_raischair, pt_aggp);
-	else if (memcmp(s,"pt_raggf",8)==0)				return GetStat(sym_raischair, pt_aggf);
-	else if (memcmp(s,"pt_raggt",8)==0)				return GetStat(sym_raischair, pt_aggt);
-	else if (memcmp(s,"pt_raggr",8)==0)				return GetStat(sym_raischair, pt_aggr);
-	else if (memcmp(s,"pt_rfloppct",11)==0)			return GetStat(sym_raischair, pt_floppct);
-	else if (memcmp(s,"pt_rturnpct",11)==0)			return GetStat(sym_raischair, pt_turnpct);
-	else if (memcmp(s,"pt_rriverpct",12)==0)		return GetStat(sym_raischair, pt_riverpct);
-	else if (memcmp(s,"pt_rvpip",8)==0)				return GetStat(sym_raischair, pt_vpip);
-	else if (memcmp(s,"pt_rhands",9)==0)			return GetStat(sym_raischair, pt_hands);
-	else if (memcmp(s,"pt_rpf_rfi",10)==0)			return GetStat(sym_raischair, pt_pf_rfi);
-	else if (memcmp(s,"pt_rpf_cr",9)==0)			return GetStat(sym_raischair, pt_pf_cr);
-	else if (memcmp(s,"pt_rpfats",9)==0)			return GetStat(sym_raischair, pt_pfats);
-	else if (memcmp(s,"pt_rwsdp",8)==0)				return GetStat(sym_raischair, pt_wsdp);
-	else if (memcmp(s,"pt_rwssd",8)==0)				return GetStat(sym_raischair, pt_wssd);
-	else if (memcmp(s,"pt_rfbbts",9)==0)			return GetStat(sym_raischair, pt_fbbts);
-	else if (memcmp(s,"pt_rfsbts",9)==0)			return GetStat(sym_raischair, pt_fsbts);
+	// PokerTracker ring game symbols for the raise-chair
+	if (StringAIsPrefixOfStringB("pt_r", s)
+		&& !StringAIsPrefixOfStringB("pt_riverpct", s))
+	{
+		if		(StringIsExactMatch("pt_ricon", s))			return GetStat(sym_raischair, pt_icon);
+		else if (StringIsExactMatch("pt_rpfr", s))			return GetStat(sym_raischair, pt_pfr);
+		else if (StringIsExactMatch("pt_raggtotnopf", s))	return GetStat(sym_raischair, pt_aggtotnopf);
+		else if (StringIsExactMatch("pt_raggtot", s))		return GetStat(sym_raischair, pt_aggtot);
+		else if (StringIsExactMatch("pt_raggp", s))			return GetStat(sym_raischair, pt_aggp);
+		else if (StringIsExactMatch("pt_raggf", s))			return GetStat(sym_raischair, pt_aggf);
+		else if (StringIsExactMatch("pt_raggt", s))			return GetStat(sym_raischair, pt_aggt);
+		else if (StringIsExactMatch("pt_raggr", s))			return GetStat(sym_raischair, pt_aggr);
+		else if (StringIsExactMatch("pt_rfloppct", s))		return GetStat(sym_raischair, pt_floppct);
+		else if (StringIsExactMatch("pt_rturnpct", s))		return GetStat(sym_raischair, pt_turnpct);
+		else if (StringIsExactMatch("pt_rriverpct", s))		return GetStat(sym_raischair, pt_riverpct);
+		else if (StringIsExactMatch("pt_rvpip", s))			return GetStat(sym_raischair, pt_vpip);
+		else if (StringIsExactMatch("pt_rhands", s))		return GetStat(sym_raischair, pt_hands);
+		else if (StringIsExactMatch("pt_rpf_rfi", s))		return GetStat(sym_raischair, pt_pf_rfi);
+		else if (StringIsExactMatch("pt_rpf_cr", s))		return GetStat(sym_raischair, pt_pf_cr);
+		else if (StringIsExactMatch("pt_rpfats", s))		return GetStat(sym_raischair, pt_pfats);
+		else if (StringIsExactMatch("pt_rwsdp", s))			return GetStat(sym_raischair, pt_wsdp);
+		else if (StringIsExactMatch("pt_rwssd", s))			return GetStat(sym_raischair, pt_wssd);
+		else if (StringIsExactMatch("pt_rfbbts", s))		return GetStat(sym_raischair, pt_fbbts);
+		else if (StringIsExactMatch("pt_rfsbts", s))		return GetStat(sym_raischair, pt_fsbts);
 
-	else if (memcmp(s,"ptt_iconlastr",13)==0)		return GetStat(p_game_state->LastRaised(s[13]-'0'), ptt_icon);
-	else if (memcmp(s,"ptt_icon",8)==0)				return GetStat(s[8]-'0', ptt_icon);
-	else if (memcmp(s,"ptt_pfr",7)==0)				return GetStat(s[7]-'0', ptt_pfr);
-	else if (memcmp(s,"ptt_aggtotnopf",14)==0)		return GetStat(s[14]-'0', ptt_aggtotnopf);
-	else if (memcmp(s,"ptt_aggtot",10)==0)			return GetStat(s[10]-'0', ptt_aggtot);
-	else if (memcmp(s,"ptt_aggp",8)==0)				return GetStat(s[8]-'0', ptt_aggp);
-	else if (memcmp(s,"ptt_aggf",8)==0)				return GetStat(s[8]-'0', ptt_aggf);
-	else if (memcmp(s,"ptt_aggt",8)==0)				return GetStat(s[8]-'0', ptt_aggt);
-	else if (memcmp(s,"ptt_aggr",8)==0)				return GetStat(s[8]-'0', ptt_aggr);
-	else if (memcmp(s,"ptt_floppct",11)==0)			return GetStat(s[11]-'0', ptt_floppct);
-	else if (memcmp(s,"ptt_turnpct",11)==0)			return GetStat(s[11]-'0', ptt_turnpct);
-	else if (memcmp(s,"ptt_riverpct",12)==0)		return GetStat(s[12]-'0', ptt_riverpct);
-	else if (memcmp(s,"ptt_vpip",8)==0)				return GetStat(s[8]-'0', ptt_vpip);
-	else if (memcmp(s,"ptt_hands",9)==0)			return GetStat(s[9]-'0', ptt_hands);
-	else if (memcmp(s,"ptt_pf_rfi",10)==0)			return GetStat(s[10]-'0', ptt_pf_rfi);
-	else if (memcmp(s,"ptt_pf_cr",9)==0)			return GetStat(s[9]-'0', ptt_pf_cr);
-	else if (memcmp(s,"ptt_pfats",9)==0)			return GetStat(s[9]-'0', ptt_pfats);
-	else if (memcmp(s,"ptt_wsdp",8)==0)				return GetStat(s[8]-'0', ptt_wsdp);
-	else if (memcmp(s,"ptt_wssd",8)==0)				return GetStat(s[8]-'0', ptt_wssd);
-	else if (memcmp(s,"ptt_fbbts",9)==0)			return GetStat(s[9]-'0', ptt_fbbts);
-	else if (memcmp(s,"ptt_fsbts",9)==0)			return GetStat(s[9]-'0', ptt_fsbts);
+		else if (StringIsExactMatch("pt_rcbetflop", s))		return GetStat(sym_raischair, pt_cbetflop);
+		else if (StringIsExactMatch("pt_rf3bettot", s))		return GetStat(sym_raischair, pt_f3bettot);
+		else if (StringIsExactMatch("pt_rf3betpflop", s))	return GetStat(sym_raischair, pt_f3betpflop);
+		else if (StringIsExactMatch("pt_rf3betflop", s))	return GetStat(sym_raischair, pt_f3betflop);
+		else if (StringIsExactMatch("pt_rf3betturn", s))	return GetStat(sym_raischair, pt_f3betturn);
+		else if (StringIsExactMatch("pt_rf3betriver", s))	return GetStat(sym_raischair, pt_f3betriver);
+		else if (StringIsExactMatch("pt_rfcbetflop", s))	return GetStat(sym_raischair, pt_fcbetflop);
+		else if (StringIsExactMatch("pt_rfcbetturn", s))	return GetStat(sym_raischair, pt_fcbetturn);
+		else if (StringIsExactMatch("pt_rfcbetriver",s))	return GetStat(sym_raischair, pt_fcbetriver);
+		else
+		{
+			// Invalid ring game symbol
+			WarnAboutInvalidPTSymbol(s);
+			return -1.0;
+		}
+	}
+	// PokerTracker ring game symbols for chair X
+	else if (StringAIsPrefixOfStringB("pt_", s))
+	{
+		if	    (StringAIsPrefixOfStringB("pt_iconlastr", s))		return GetStat(p_game_state->LastRaised(s[12]-'0'), pt_icon);
+		else if (StringAIsPrefixOfStringB("pt_icon", s))			return GetStat(s[7]-'0', pt_icon);
+		else if (StringAIsPrefixOfStringB("pt_pfr",s ))				return GetStat(s[6]-'0', pt_pfr);
+		else if (StringAIsPrefixOfStringB("pt_aggtotnopf", s))		return GetStat(s[13]-'0', pt_aggtotnopf);
+		else if (StringAIsPrefixOfStringB("pt_aggtot", s))			return GetStat(s[9]-'0', pt_aggtot);
+		else if (StringAIsPrefixOfStringB("pt_aggp", s))			return GetStat(s[7]-'0', pt_aggp);
+		else if (StringAIsPrefixOfStringB("pt_aggf", s))			return GetStat(s[7]-'0', pt_aggf);
+		else if (StringAIsPrefixOfStringB("pt_aggt", s))			return GetStat(s[7]-'0', pt_aggt);
+		else if (StringAIsPrefixOfStringB("pt_aggr", s))			return GetStat(s[7]-'0', pt_aggr);
+		else if (StringAIsPrefixOfStringB("pt_floppct", s))			return GetStat(s[10]-'0', pt_floppct);
+		else if (StringAIsPrefixOfStringB("pt_turnpct", s))			return GetStat(s[10]-'0', pt_turnpct);
+		else if (StringAIsPrefixOfStringB("pt_riverpct", s))		return GetStat(s[11]-'0', pt_riverpct);
+		else if (StringAIsPrefixOfStringB("pt_vpip", s))			return GetStat(s[7]-'0', pt_vpip);
+		else if (StringAIsPrefixOfStringB("pt_hands", s))			return GetStat(s[8]-'0', pt_hands);
+		else if (StringAIsPrefixOfStringB("pt_pf_rfi", s))			return GetStat(s[9]-'0', pt_pf_rfi);
+		else if (StringAIsPrefixOfStringB("pt_pf_cr", s))			return GetStat(s[8]-'0', pt_pf_cr);
+		else if (StringAIsPrefixOfStringB("pt_pfats", s))			return GetStat(s[8]-'0', pt_pfats);
+		else if (StringAIsPrefixOfStringB("pt_wsdp", s))			return GetStat(s[7]-'0', pt_wsdp);
+		else if (StringAIsPrefixOfStringB("pt_wssd",s))				return GetStat(s[7]-'0', pt_wssd);
+		else if (StringAIsPrefixOfStringB("pt_fbbts", s))			return GetStat(s[8]-'0', pt_fbbts);
+		else if (StringAIsPrefixOfStringB("pt_fsbts", s))			return GetStat(s[8]-'0', pt_fsbts);
 
-	else if (memcmp(s,"ptt_ricon",9)==0)			return GetStat(sym_raischair, ptt_icon);
-	else if (memcmp(s,"ptt_rpfr",8)==0)				return GetStat(sym_raischair, ptt_pfr);
-	else if (memcmp(s,"ptt_raggtotnopf",15)==0)		return GetStat(sym_raischair, ptt_aggtotnopf);
-	else if (memcmp(s,"ptt_raggtot",11)==0)			return GetStat(sym_raischair, ptt_aggtot);
-	else if (memcmp(s,"ptt_raggp",9)==0)			return GetStat(sym_raischair, ptt_aggp);
-	else if (memcmp(s,"ptt_raggf",9)==0)			return GetStat(sym_raischair, ptt_aggf);
-	else if (memcmp(s,"ptt_raggt",9)==0)			return GetStat(sym_raischair, ptt_aggt);
-	else if (memcmp(s,"ptt_raggr",9)==0)			return GetStat(sym_raischair, ptt_aggr);
-	else if (memcmp(s,"ptt_rfloppct",12)==0)		return GetStat(sym_raischair, ptt_floppct);
-	else if (memcmp(s,"ptt_rturnpct",12)==0)		return GetStat(sym_raischair, ptt_turnpct);
-	else if (memcmp(s,"ptt_rriverpct",13)==0)		return GetStat(sym_raischair, ptt_riverpct);
-	else if (memcmp(s,"ptt_rvpip",9)==0)			return GetStat(sym_raischair, ptt_vpip);
-	else if (memcmp(s,"ptt_rhands",10)==0)			return GetStat(sym_raischair, ptt_hands);
-	else if (memcmp(s,"ptt_rpf_rfi",11)==0)			return GetStat(sym_raischair, ptt_pf_rfi);
-	else if (memcmp(s,"ptt_rpf_cr",10)==0)			return GetStat(sym_raischair, ptt_pf_cr);
-	else if (memcmp(s,"ptt_rpfats",10)==0)			return GetStat(sym_raischair, ptt_pfats);
-	else if (memcmp(s,"ptt_rwsdp",8)==0)			return GetStat(sym_raischair, ptt_wsdp);
-	else if (memcmp(s,"ptt_rwssd",8)==0)			return GetStat(sym_raischair, ptt_wssd);
-	else if (memcmp(s,"ptt_rfbbts",9)==0)			return GetStat(sym_raischair, ptt_fbbts);
-	else if (memcmp(s,"ptt_rfsbts",9)==0)			return GetStat(sym_raischair, ptt_fsbts);
-
-	else return 0.0;
+		else if (StringAIsPrefixOfStringB("pt_cbetflop", s))		return GetStat(s[11]-'0', pt_cbetflop);
+		else if (StringAIsPrefixOfStringB("pt_f3bettot", s))		return GetStat(s[11]-'0', pt_f3bettot);
+		else if (StringAIsPrefixOfStringB("pt_f3betpflop", s))		return GetStat(s[15]-'0', pt_f3betpflop);
+		else if (StringAIsPrefixOfStringB("pt_f3betflop", s))		return GetStat(s[12]-'0', pt_f3betflop);
+		else if (StringAIsPrefixOfStringB("pt_f3betturn", s))		return GetStat(s[12]-'0', pt_f3betturn);
+		else if (StringAIsPrefixOfStringB("pt_f3betriver", s))		return GetStat(s[13]-'0', pt_f3betriver);
+		else if (StringAIsPrefixOfStringB("pt_fcbetflop", s))		return GetStat(s[12]-'0', pt_fcbetflop);
+		else if (StringAIsPrefixOfStringB("pt_fcbetturn", s))		return GetStat(s[12]-'0', pt_fcbetturn);
+		else if (StringAIsPrefixOfStringB("pt_fcbetriver", s))		return GetStat(s[12]-'0', pt_fcbetriver);
+		else
+		{
+			// Invalid ring game symbol
+			WarnAboutInvalidPTSymbol(s);
+			return -1.0;
+		}
+	}
+	// Poker Tracker tournament symbols for raise-chair
+	else if (StringAIsPrefixOfStringB("ptt_r", s)
+		&& !StringAIsPrefixOfStringB("ptt_riverpct", s))
+	{
+		if		(StringIsExactMatch("ptt_ricon", s))		return GetStat(sym_raischair, ptt_icon);
+		else if (StringIsExactMatch("ptt_rpfr", s))			return GetStat(sym_raischair, ptt_pfr);
+		else if (StringIsExactMatch("ptt_raggtotnopf", s))	return GetStat(sym_raischair, ptt_aggtotnopf);
+		else if (StringIsExactMatch("ptt_raggtot", s))		return GetStat(sym_raischair, ptt_aggtot);
+		else if (StringIsExactMatch("ptt_raggp", s))		return GetStat(sym_raischair, ptt_aggp);
+		else if (StringIsExactMatch("ptt_raggf", s))		return GetStat(sym_raischair, ptt_aggf);
+		else if (StringIsExactMatch("ptt_raggt", s))		return GetStat(sym_raischair, ptt_aggt);
+		else if (StringIsExactMatch("ptt_raggr", s))		return GetStat(sym_raischair, ptt_aggr);
+		else if (StringIsExactMatch("ptt_rfloppct", s))		return GetStat(sym_raischair, ptt_floppct);
+		else if (StringIsExactMatch("ptt_rturnpct", s))		return GetStat(sym_raischair, ptt_turnpct);
+		else if (StringIsExactMatch("ptt_rriverpct", s))	return GetStat(sym_raischair, ptt_riverpct);
+		else if (StringIsExactMatch("ptt_rvpip", s))		return GetStat(sym_raischair, ptt_vpip);
+		else if (StringIsExactMatch("ptt_rhands", s))		return GetStat(sym_raischair, ptt_hands);
+		else if (StringIsExactMatch("ptt_rpf_rfi", s))		return GetStat(sym_raischair, ptt_pf_rfi);
+		else if (StringIsExactMatch("ptt_rpf_cr", s))		return GetStat(sym_raischair, ptt_pf_cr);
+		else if (StringIsExactMatch("ptt_rpfats", s))		return GetStat(sym_raischair, ptt_pfats);
+		else if (StringIsExactMatch("ptt_rwsdp", s))		return GetStat(sym_raischair, ptt_wsdp);
+		else if (StringIsExactMatch("ptt_rwssd", s))		return GetStat(sym_raischair, ptt_wssd);
+		else if (StringIsExactMatch("ptt_rfbbts", s))		return GetStat(sym_raischair, ptt_fbbts);
+		else if (StringIsExactMatch("ptt_rfsbts", s))		return GetStat(sym_raischair, ptt_fsbts);
+		else
+		{
+			// Invalid tournament symbol
+			WarnAboutInvalidPTSymbol(s);
+			return -1.0;
+		}
+	}
+	// Poker Tracker tournament symbols for chair x
+	else if (StringIsExactMatch("ptt_", s))
+	{
+		if		(StringAIsPrefixOfStringB("ptt_iconlastr", s))		return GetStat(p_game_state->LastRaised(s[13]-'0'), ptt_icon);
+		else if (StringAIsPrefixOfStringB("ptt_icon", s))			return GetStat(s[8]-'0', ptt_icon);
+		else if (StringAIsPrefixOfStringB("ptt_pfr", s))			return GetStat(s[7]-'0', ptt_pfr);
+		else if (StringAIsPrefixOfStringB("ptt_aggtotnopf", s))		return GetStat(s[14]-'0', ptt_aggtotnopf);
+		else if (StringAIsPrefixOfStringB("ptt_aggtot", s))			return GetStat(s[10]-'0', ptt_aggtot);
+		else if (StringAIsPrefixOfStringB("ptt_aggp", s))			return GetStat(s[8]-'0', ptt_aggp);
+		else if (StringAIsPrefixOfStringB("ptt_aggf", s))			return GetStat(s[8]-'0', ptt_aggf);
+		else if (StringAIsPrefixOfStringB("ptt_aggt", s))			return GetStat(s[8]-'0', ptt_aggt);
+		else if (StringAIsPrefixOfStringB("ptt_aggr", s))			return GetStat(s[8]-'0', ptt_aggr);
+		else if (StringAIsPrefixOfStringB("ptt_floppct", s))		return GetStat(s[11]-'0', ptt_floppct);
+		else if (StringAIsPrefixOfStringB("ptt_turnpct", s))		return GetStat(s[11]-'0', ptt_turnpct);
+		else if (StringAIsPrefixOfStringB("ptt_riverpct", s))		return GetStat(s[12]-'0', ptt_riverpct);
+		else if (StringAIsPrefixOfStringB("ptt_vpip", s))			return GetStat(s[8]-'0', ptt_vpip);
+		else if (StringAIsPrefixOfStringB("ptt_hands", s))			return GetStat(s[9]-'0', ptt_hands);
+		else if (StringAIsPrefixOfStringB("ptt_pf_rfi", s))			return GetStat(s[10]-'0', ptt_pf_rfi);
+		else if (StringAIsPrefixOfStringB("ptt_pf_cr", s))			return GetStat(s[9]-'0', ptt_pf_cr);
+		else if (StringAIsPrefixOfStringB("ptt_pfats", s))			return GetStat(s[9]-'0', ptt_pfats);
+		else if (StringAIsPrefixOfStringB("ptt_wsdp", s))			return GetStat(s[8]-'0', ptt_wsdp);
+		else if (StringAIsPrefixOfStringB("ptt_wssd", s))			return GetStat(s[8]-'0', ptt_wssd);
+		else if (StringAIsPrefixOfStringB("ptt_fbbts", s))			return GetStat(s[9]-'0', ptt_fbbts);
+		else if (StringAIsPrefixOfStringB("ptt_fsbts", s))			return GetStat(s[9]-'0', ptt_fsbts);
+		else
+		{
+			// Invalid tournament symbol
+			WarnAboutInvalidPTSymbol(s);
+			return -1.0;
+		}
+	}
+	else
+	{
+		// Completely invalid symbol
+		WarnAboutInvalidPTSymbol(s);
+		return -1.0;
+	}
 }
 
 void CPokerTrackerThread::Connect(void)
@@ -321,62 +484,130 @@ void CPokerTrackerThread::Disconnect(void)
 	_connected = false;
 }
 
-bool CPokerTrackerThread::CheckName (int m_chr)
+
+
+/* When running this function, chair is the chair to IGNORE 
+   That's because this function is running while GetStatsForChair is running,
+   And we wouldn't like to interrupt its order and ability to detect name changes
+   In the seat it's getting stats for*/ 
+void CPokerTrackerThread::ReportSeatChanges(int chair)
 {
-	char		oh_scraped_name[k_max_length_of_playername] = {0}; 
-	char		best_name[k_max_length_of_playername] = {0};
-	char		likename[k_max_length_of_playername] = {0};
+	int i;
+	bool nameChanged;
+	char currentScrapeName[k_max_length_of_playername];
+	write_log_pokertracker(3, "ReportSeatChanges: started\n");
+	for (i = k_min_chair_number; i < k_max_chair_number; ++i)
+	{
+		if (i != chair)
+		{
+			memcpy(currentScrapeName, _player_stats[i].scraped_name, k_max_length_of_playername);
+			CheckName(i, nameChanged);
+			if (nameChanged)
+			{
+				/* Scrapped name got changed. Clear stats for that chair */
+				write_log_pokertracker(2, "ReportSeatChanges: chair [%d]: new player sat down in chair! oldscrape[%s] newscrape[%s].\n", i, currentScrapeName, _player_stats[i].scraped_name);
+				/* Clear stats but leave the new name intact */
+				ClearSeatStats(i, false);
+			}
+		}
+	}
+}
+
+/*Returns true if found an appropriate name in the DB for chr, or false if 
+  it did not found such name. Also changes nameChanged if the name was found but 
+  changed since the last time we've called CheckName function */
+bool CPokerTrackerThread::CheckName(int chr, bool &nameChanged)
+{
+	char		oh_scraped_name[k_max_length_of_playername]; 
+	char		best_name[k_max_length_of_playername];
 	bool		result = false, ok_scrape = false;
+	int			i;
 
-	assert(m_chr >= k_min_chair_number); 
-	assert(m_chr <= k_max_chair_number);
 
-	if (p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[m_chr].m_name_known == 0)
+	assert(chr >= k_min_chair_number); 
+	assert(chr <= k_max_chair_number);
+	
+	memset(oh_scraped_name, 0, k_max_length_of_playername);
+	memset(best_name, 0, k_max_length_of_playername);
+	
+	nameChanged = false;
+	if (p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chr].m_name_known == 0)
 		return false;
 
-	strcpy_s(oh_scraped_name, k_max_length_of_playername, p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[m_chr].m_name);
+	strcpy_s(oh_scraped_name, k_max_length_of_playername, p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chr].m_name);
 
 	// Check for bad name scrape
-	for (int i=0; i<(int) strlen(oh_scraped_name); i++)
+	int len = (int) strlen(oh_scraped_name);
+	for (i = 0; i < len; ++i)
 	{
 		if (oh_scraped_name[i]!='l' && oh_scraped_name[i]!='i' && oh_scraped_name[i]!='.' && oh_scraped_name[i]!=',')
 		{
 			ok_scrape = true;
-			i = strlen(oh_scraped_name);
+			break;
 		}
 	}
 	if (!ok_scrape)
 		return false;
 
 	// We already have the name, and it has not changed since we last checked, so do nothing
-	//if (_player_stats[m_chr].found && strcmp(_player_stats[m_chr].scraped_name, oh_scraped_name)==0)
-	//	return true;
+	if (_player_stats[chr].found && 0 == strcmp(_player_stats[chr].scraped_name, oh_scraped_name))
+		return true;
+	
+	nameChanged = true;
 
-	// We think we have the name, but it has changed since we last checked...reset stats for this
-	// chair and search again
-	if (_player_stats[m_chr].found && strcmp(_player_stats[m_chr].scraped_name, oh_scraped_name)!=0)
-	{
-		for (int i=pt_min; i<=pt_max; i++)
-		{
-			_player_stats[m_chr].stat[i] = -1.0 ;
-			_player_stats[m_chr].t_elapsed[i] = -1 ;
-		}
-
-		_player_stats[m_chr].found = false ;
-		strcpy_s(_player_stats[m_chr].pt_name, k_max_length_of_playername, "") ;
-		strcpy_s(_player_stats[m_chr].scraped_name, k_max_length_of_playername, "") ;
-	}
 
 	// We have not found the name in PT, go find it
 	// First see if we can find the exact scraped name
-	result = QueryName(oh_scraped_name, oh_scraped_name, best_name);
+	result = FindName(oh_scraped_name, best_name);
 
-	// Query with "%n%a%m%e%"
+	if (result)
+	{
+		SetPlayerName(chr, true, best_name, oh_scraped_name);
+	}
+	else
+	{
+		SetPlayerName(chr, false, "", "");
+	}
+
+	return result;
+}
+
+void CPokerTrackerThread::SetPlayerName(int chr, bool found, const char* pt_name, const char* scraped_name)
+{
+	_player_stats[chr].found = found;
+	bool logResult = false;
+	if (0 != memcmp(_player_stats[chr].pt_name, pt_name, k_max_length_of_playername) )
+	{
+		memcpy(_player_stats[chr].pt_name, pt_name, k_max_length_of_playername);
+		logResult = true;
+	}
+	if (0 != memcmp(_player_stats[chr].scraped_name, scraped_name, k_max_length_of_playername) )
+	{
+		memcpy(_player_stats[chr].scraped_name, scraped_name, k_max_length_of_playername);
+		logResult = true;
+	}
+	if (logResult)
+	{
+		write_log_pokertracker(2, "SetPlayerName[%d]: Done. ptname[%s] scrapedName[%s]\n", chr, _player_stats[chr].pt_name, _player_stats[chr].scraped_name);
+	}
+}
+
+
+//Short Algorithm to query the DB for the best name. returns true if best name is populated.
+bool CPokerTrackerThread::FindName(const char *oh_scraped_name, char *best_name)
+{
+	char		likename[k_max_length_of_playername];
+	memset(likename, 0, k_max_length_of_playername);
+	
+	bool result = QueryName(oh_scraped_name, oh_scraped_name, best_name);
+
 	if (!result)
 	{
 		likename[0]='%';
 		int character_position = 0;
 		for (int character_position=0; character_position<(int) strlen(oh_scraped_name); character_position++)
+		int len = (int)strlen(oh_scraped_name);
+
 		{
 			likename[character_position*2+1]=oh_scraped_name[character_position];
 			likename[character_position*2+2]='%';
@@ -386,37 +617,26 @@ bool CPokerTrackerThread::CheckName (int m_chr)
 		result = QueryName(likename, oh_scraped_name, best_name);
 	}
 
-	// Query with "%"
 	if (!result)
 	{
+		/*  Escalation #2: "%n%a%m%e%" not found in DB*/
+		/*  Try query with "%" to get all names */
 		result = QueryName("%", oh_scraped_name, best_name);
 	}
-
-	if (result)
-	{
-		_player_stats[m_chr].found = true;
-		strcpy_s(_player_stats[m_chr].pt_name, k_max_length_of_playername, best_name);
-		strcpy_s(_player_stats[m_chr].scraped_name, k_max_length_of_playername, oh_scraped_name);
-	}
-	else
-	{
-		_player_stats[m_chr].found = false ;
-		strcpy_s(_player_stats[m_chr].pt_name, k_max_length_of_playername, "");
-		strcpy_s(_player_stats[m_chr].scraped_name, k_max_length_of_playername, "");
-	}
-
 	return result;
 }
 
-double CPokerTrackerThread::GetStat (int m_chr, PT_Stats stat)
+double CPokerTrackerThread::GetStat(int chr, PT_Stats stat)
 {
-	assert(m_chr >= k_min_chair_number); 
-	assert(m_chr <= k_max_chair_number);
+	assert(chr >= k_min_chair_number); 
+	assert(chr <= k_max_chair_number);
 
-	return _player_stats[m_chr].stat[stat];
+	return _player_stats[chr].stat[stat];
+
+		
 }
 
-double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
+double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 {
 	PGresult	*res = NULL;
 	char		strQry[k_max_length_of_query] = {0};
@@ -426,6 +646,8 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 	double		result = -1.0;
 	char		siteidstr[k_max_length_of_site_id] = {0};
 	int			siteid = 0;
+	clock_t		updStart, updEnd;
+	int			duration;
 
 	int sym_elapsed = (int) p_symbols->sym()->elapsed;
 
@@ -442,17 +664,19 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 	assert(stat >= pt_min);
 	assert(stat <= pt_max);
 
+	/* TS 01/25/2011.  Update means update... we will not back off now :-) */
+	
 	// If we already have stats cached for the player, the timeout has not expired,
 	// return the value from the cache...
-	if (sym_elapsed - _player_stats[m_chr].t_elapsed[stat] < 120 /* prefs.pt_cache_refresh() */
-		&& _player_stats[m_chr].t_elapsed[stat] != -1 
-		&& _player_stats[m_chr].stat[stat] != -1)
-	{
-		result = _player_stats[m_chr].stat[stat];
-	}
+	//if (sym_elapsed - _player_stats[m_chr].t_elapsed[stat] < prefs.pt_cache_refresh() &&
+		//_player_stats[m_chr].t_elapsed[stat] != -1 &&
+		//_player_stats[m_chr].stat[stat] != -1)
+	//{
+		//result = _player_stats[m_chr].stat[stat];
+	//}
 
 	// ...otherwise query the database
-	else
+	//else
 	{
 		// get query string for the requested statistic
 		strcpy_s(strQry, k_max_length_of_query, query_str3[stat]);
@@ -483,6 +707,7 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 		}
 
 		// Do the query against the PT database
+		updStart = clock();
 		try
 		{
 			// See if we can find the player name in the database
@@ -500,6 +725,11 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 			write_log_pokertracker(prefs.debug_pokertracker(), _T("\tDescription = %s\n"), (LPCTSTR) bstrDescription);
 			write_log_pokertracker(prefs.debug_pokertracker(), _T("\tQuery = [%s]\n"), strQry);
 		}
+		
+		updEnd = clock();
+		duration = (int) ((double)(updEnd - updStart) / 1000);
+		if (duration >= 3)
+			write_log_pokertracker(2, "Query time in seconds: [%d]\n", duration);
 
 		// Check query return code
 		if (PQresultStatus(res) != PGRES_TUPLES_OK)
@@ -551,7 +781,7 @@ double CPokerTrackerThread::UpdateStat (int m_chr, int stat)
 	return result;
 }
 
-bool CPokerTrackerThread::QueryName (const char * query_name, const char * scraped_name, char * best_name)
+bool CPokerTrackerThread::QueryName(const char * query_name, const char * scraped_name, char * best_name)
 {
 	char			strQry[k_max_length_of_query] = {0};
 	int				lev_dist = 0, bestLD = 0, bestLDindex = 0;
@@ -569,14 +799,14 @@ bool CPokerTrackerThread::QueryName (const char * query_name, const char * scrap
 	// siteid has changed -- we're using ManualMode
 	if (siteid != _last_siteid)
 	{
-		ClearStats();
+		ClearAllStats();
 		_last_siteid = siteid;
 	}
 
 	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)
 		return false;
 
-	if (strlen(query_name)==0)
+	if (0 == strlen(query_name))
 		return false;
 
 	sprintf_s(siteidstr, k_max_length_of_site_id, "%d", siteid);
@@ -646,59 +876,351 @@ bool CPokerTrackerThread::QueryName (const char * query_name, const char * scrap
 	return result;
 }
 
-void CPokerTrackerThread::ClearStats (void)
-{
-	for (int i=0; i<=9; i++)
-	{
-		for (int j=pt_min; j<=pt_max; j++)
-		{
-			_player_stats[i].stat[j] = -1.0;
-			_player_stats[i].t_elapsed[j] = -1;
-		}
 
-		_player_stats[i].found = false ;
-		strcpy_s(_player_stats[i].pt_name, k_max_length_of_playername, "");
-		strcpy_s(_player_stats[i].scraped_name, k_max_length_of_playername, "");
+void CPokerTrackerThread::ClearSeatStats(int chr, bool clearNameAndFound)
+{
+	assert(chr >= k_min_chair_number); 
+	assert(chr <= k_max_chair_number);
+	int j;
+	for (j = pt_min; j <= pt_max; ++j)
+	{
+		_player_stats[chr].stat[j] = -1.0;
+		_player_stats[chr].t_elapsed[j] = -1;
+	}
+	if (clearNameAndFound)
+	{
+		_player_stats[chr].found = false;
+		memset(_player_stats[chr].pt_name, 0, k_max_length_of_playername);
+		memset(_player_stats[chr].scraped_name, 0, k_max_length_of_playername);
+	}
+	_player_stats[chr].skipped_updates = k_advanced_stat_update_every;
+}
+
+void CPokerTrackerThread::ClearAllStats()
+{
+	int i;
+	for (i = 0; i <= 9; ++i)
+	{
+		ClearSeatStats(i);
 	}
 }
+
+// Returns 1 for basic stats only, and 2 for all
+int CPokerTrackerThread::GetUpdateType(int chr)
+{
+	if (_player_stats[chr].skipped_updates == k_advanced_stat_update_every)
+	{
+		write_log_pokertracker(3, "GetUpdateType: update type for chair [%d] is update ALL\n", chr);
+		return pt_updateType_updateAll;
+	}
+	write_log_pokertracker(3, "GetUpdateType: update type for chair [%d] is update Basic only\n", chr);
+	return pt_updateType_updateBasic;
+}
+
+
+void CPokerTrackerThread::RecalcSkippedUpdates(int chr)
+{
+	if (_player_stats[chr].skipped_updates == k_advanced_stat_update_every)
+		_player_stats[chr].skipped_updates = 1;
+	else
+		++_player_stats[chr].skipped_updates;
+}
+
+
+int CPokerTrackerThread::SkipUpdateCondition(int stat, int chair)
+{
+	int statGroup = _m_statGroup[stat]; // puts in statgroup the group of this stat, that is basic/advanced/positional
+	int result;
+	int updateType = GetUpdateType(chair); // get the current update type, that is either basic or all
+
+	if (updateType == pt_updateType_updateBasic && (statGroup == pt_group_advanced || statGroup == pt_group_positional))
+		result = 1;
+	else
+		result = 0;
+	return result;
+}
+
+void CPokerTrackerThread::SetHandsStat()
+{
+	int tourney = p_symbols->sym()->istournament;
+	if (tourney)
+	{
+		_m_handsStats = ptt_hands;
+		_m_min_hands_for_slower_update = k_min_hands_slower_updates_tourney;
+		SetRingStatsState(false);
+		SetTourneyStatsState(true);
+	}
+	else
+	{
+		_m_handsStats = pt_hands;
+		_m_min_hands_for_slower_update = k_min_hands_slower_updates_ring;
+		SetRingStatsState(true);
+		SetTourneyStatsState(false);
+	}
+}
+
+int CPokerTrackerThread::SkipUpdateForChair(int chair, char* reason)
+{
+	memset(reason,0,100);
+	int userchair = p_symbols->sym()->userchair;
+	bool confirmed = p_symbols->user_chair_confirmed();
+	if (userchair == chair && confirmed)
+	{
+		memcpy(reason, "User sits in this chair", 100);
+		return pt_updateType_noUpdate;
+	}
+	
+	int hands = (int)GetStat(chair, _m_handsStats);
+	if (hands > _m_min_hands_for_slower_update)
+	{
+		if (GetUpdateType(chair) == pt_updateType_updateAll)
+			return pt_updateType_updateAll;
+		else
+		{
+			memcpy(reason, "User has lots of hands", 100);
+			return pt_updateType_noUpdate;
+		}
+	}
+	return pt_updateType_updateAll;
+}
+
+
+void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTime)
+{
+	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
+	bool		nameChanged = false;
+	bool		sym_issittingin = (bool) p_symbols->sym()->issittingin;
+	bool		sym_ismanual = (bool) p_symbols->sym()->ismanual;
+	int			i;
+	int			updateType;
+	char        reason[100];
+	int         updatedCount = 0;
+	
+	if (pParent->CheckName(chair, nameChanged) == false)
+	{
+		/* Note that checkname fail just when starting, doesn't necessarily mean that there's no user
+		   in that chair, but only that the scraper failed to find one. This could be due to lobby window
+		   that hides poker window behind it. We make this check once, and if we are good, the update iteration
+		   is good to go. if we are not, we assume that this seat is not taken. */ 
+		write_log_pokertracker(2, "GetStatsForChair[%d] had been started.\n", chair);
+		write_log_pokertracker(2, "GetStatsForChair[%d] had been skipped. Reason: [CheckName failed]\n", chair);
+		return;
+	}
+	const char* playerscrapedName = pParent->GetPlayerScrapedName(chair);
+	write_log_pokertracker(2, "GetStatsForChair[%d][%s] had been started.\n", chair, playerscrapedName);
+	
+	/* Check if there's a complete update cycle skipping for that chair */
+	updateType = pParent->SkipUpdateForChair(chair, reason);
+	if (updateType == pt_updateType_noUpdate)
+	{
+		write_log_pokertracker(2, "GetStatsForChair for chair [%d] had been skipped. Reason: [%s]\n", chair, reason);
+		pParent->RecalcSkippedUpdates(chair);
+		return;
+	}
+
+	/* Make sure all other seats contain the appropriate players */ 
+	pParent->ReportSeatChanges(chair);  
+
+	if (!pParent->_connected)
+		pParent->Connect();
+	
+	
+	if (pParent->_connected && PQstatus(pParent->_pgconn) == CONNECTION_OK)
+	{
+		if (sym_issittingin || sym_ismanual)
+		{
+			for (i = pt_min; i <= pt_max; ++i)
+			{
+				/* Every few iterations, we need to verify that the seats we already have stats on, 
+			       did not change. This task is totally irrelevant for the current function
+				   we're on, that is GetStatsForChair. But if we won't do this every now and then,
+				   we might find ourselves updating stats for chair 1, for 1 minute, while the player
+				   in chair 3 stood up and someone else replaced him. we cannot let this go unnoticed */
+				if (i % 10 == 4) pParent->ReportSeatChanges(chair);
+			
+				/* CheckName is necessary before each update.
+				   There's a short interval between any two updates, and it's possible that the player
+				   had stood up during the update process. But it also possible that the poker lobby was 
+				   hiding our poker window, or some popup temporarily was over it, and that's why CheckName fails.
+				   Since we cannot know which one caused checkname to fail, we would continue to update, as 
+				   long as we have a found name, and as long as the name did't get changed. 
+				   So what we do care about, is the situation were the name got replaced by another name,
+				   in that case, we stop the update for the current chair  			   */ 
+
+
+				pParent->CheckName(chair, nameChanged);
+				/* Note that Checkname might return false, with IsFound(chair) returning true.
+				   When IsFound returns false the situation must be that we no longer have anyone
+				   Sitting in that chair*/
+				if (pParent->IsFound(chair))
+				{
+					/* Verify therad_stop is false */ 
+					if (LightSleep(0, pParent)) 
+						return; 
+					/* verify that name did not get changed */
+					if (i > pt_min && nameChanged)
+					{
+						/* Name got changed while we search for stats for current chair
+						   Clear stats for this seat and return                   */
+						write_log_pokertracker(2, "GetStatsForChair chair [%d] had changed name getting stat for chair. Clearing stats for chair.\n", chair);
+						/* Clear stats, but leave the new name intact */
+						pParent->ClearSeatStats(chair, false); 
+						return;
+					}
+					if (!pParent->StatEnabled(i))
+					{
+						/* Skip disabled stats */
+						write_log_pokertracker(3, "GetStatsForChair: Updating stats [%d] for chair [%d] had been skipped. Reason: [stat is disabled]\n", i, chair);
+					}
+					else if (pParent->SkipUpdateCondition(i, chair))
+					{
+						/* Updating stat i should be skipped this time */
+						/* advanced/positional stats are updated every k_advanced_stat_update_every cycles */
+						write_log_pokertracker(3, "GetStatsForChair: Updating stats [%d] for chair [%d] had been skipped. Reason: [advanced/positional stats cycle [%d of %d]]\n", i, chair, pParent->GetSkippedUpdates(chair) , k_advanced_stat_update_every);
+					}
+					else
+					{
+						/* Update... */
+						write_log_pokertracker(3, "GetStatsForChair updating stats [%d] for chair [%d]...\n", i, chair);
+						pParent->UpdateStat(chair, i);
+						++updatedCount;
+					}
+					/* Sleep between two updates (even if skipped) */
+					if (LightSleep(sleepTime, pParent)) 
+						return;
+				}
+				else
+				{
+					/* We couldn't find any user sitting on that chair. Give message*/
+					write_log_pokertracker(2, "GetStatsForChair for chair [%d] had been skipped. Reason: [user not found (user stood up?)]\n", chair);
+					return;
+				}
+			}
+		}
+	}
+	pParent->ReportUpdateComplete(updatedCount, chair);
+	pParent->RecalcSkippedUpdates(chair);
+}
+
+void CPokerTrackerThread::ReportUpdateComplete(int updatedCount, int chair)
+{
+	write_log_pokertracker(2, "Updates for chair [%d][%s] had been completed. Total [%d] updated stats\n", chair, _player_stats[chair].scraped_name, updatedCount);
+}
+
+bool CPokerTrackerThread::IsFound(int chair)
+{
+	return _player_stats[chair].found;
+}
+
 
 UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 {
 	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
+	bool			sym_issittingin = (bool) p_symbols->sym()->issittingin;
+	bool			sym_ismanual = (bool) p_symbols->sym()->ismanual;
+	int				chr = 0;
+	int				iteration = 0;
+	int				players;
+	int				sleepTime;
+	bool			dummy;
+	clock_t			iterStart, iterEnd;
+	int				iterDurationMS;
 
-	bool sym_issittingin = (bool) p_symbols->sym()->issittingin;
-	bool sym_ismanual = (bool) p_symbols->sym()->ismanual;
+	// !!! removed in PT-dev
+	//bool sym_issittingin = (bool) p_symbols->sym()->issittingin;
+	//bool sym_ismanual = (bool) p_symbols->sym()->ismanual;
 
 	while (::WaitForSingleObject(pParent->_m_stop_thread, 0) != WAIT_OBJECT_0)
 	{
-
+		iterStart = clock();
+		write_log_pokertracker(2, "PTthread iteration [%d] had started\n", ++iteration);
+		pParent->SetHandsStat();
 		if (!pParent->_connected)
 			pParent->Connect();
-
+	
+		/* Count the number of players */ 
+		players = 0;
 		if (pParent->_connected && PQstatus(pParent->_pgconn) == CONNECTION_OK)
 		{
-			for (int i=0; i<=9; i++)
+			if (sym_issittingin || sym_ismanual)
 			{
-				if (sym_issittingin || sym_ismanual)
+				for (chr = 0; chr < k_max_number_of_players; ++chr)
 				{
-					if (pParent->CheckName(i))
+					if (pParent->CheckName(chr, dummy))
 					{
-
-						for (int j=pt_min; j<=pt_max; j++)
-						{
-							pParent->UpdateStat(i, j);
-						}
+						++players;
 					}
 				}
 			}
 		}
-
-		for (int i=0; i < /* !!! prefs.pt_update_delay() */ 30 
-				&& ::WaitForSingleObject(pParent->_m_stop_thread, 0)!=WAIT_OBJECT_0; i++)
-			Sleep(1000);
+		write_log_pokertracker(2, "Players count is [%d]\n", players);
+		
+		//Define sleeptime for current ptrhead iteration
+		if (players > 1)
+		{
+			sleepTime = (int) ((double)(/*prefs.pt_cache_refresh() !!!*/ 30 * 1000) / (double)(pt_max * players));
+			write_log_pokertracker(2, "sleepTime set to %d\n", sleepTime);
+		}
+		else
+		{
+			write_log_pokertracker(2, "Not enough players to justify iteration, sleeping 10 seconds...\n");
+			LightSleep(10000, pParent);
+			continue;
+		}
+		
+		if (pParent->_connected && PQstatus(pParent->_pgconn) == CONNECTION_OK)
+		{
+			for (chr = 0; chr < k_max_number_of_players; ++chr)
+			{
+				GetStatsForChair(pParam, chr, sleepTime);
+				/* Verify therad_stop is false */ 
+				if (LightSleep(0, pParent)) 
+					break; 
+			}
+		}
+		iterEnd = clock();
+		iterDurationMS = (int) ((double)(iterEnd - iterStart));
+		write_log_pokertracker(2, "PTthread iteration [%d] had ended, duration time in ms: [%d]\n", ++iteration, iterDurationMS);
+		if (iterDurationMS <= 10000)
+		{
+			write_log_pokertracker(3, "sleeping [%d] ms because iteration was too quick.\n", 10000 - iterDurationMS);
+			if (LightSleep(10000 - iterDurationMS, pParent)) 
+				break; 
+		}
 	}
-
 	// Set event
+	write_log_pokertracker(3, "PokertrackerThreadFunction: outside while loop...\n");
 	::SetEvent(pParent->_m_wait_thread);
+	return 0;
+}
+
+/*Sleeps but wakes up on stop thread event
+We use this function since we never want the thread to ignore the stop_thread event while it's sleeping*/
+int	CPokerTrackerThread::LightSleep(int sleepTime, CPokerTrackerThread *pParent)
+{
+	write_log_pokertracker(3, "LightSleep: called with sleepTime[%d]\n", sleepTime);
+	if ( sleepTime > 0)
+	{
+		int i = 0;
+		int iterations = 20;
+		int sleepSlice = (int) ((double)sleepTime / (double)iterations);
+		for (i = 0; i < iterations; ++i)
+		{
+			Sleep(sleepSlice);
+			if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
+			{
+				write_log_pokertracker(3, "LightSleep: _m_stop_thread signal received\n");
+				return 1;
+			}
+		}
+	}
+	else
+	{
+		if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
+		{
+			write_log_pokertracker(3, "LightSleep: _m_stop_thread signal received\n");
+			return 1;
+		}
+	}
 	return 0;
 }
