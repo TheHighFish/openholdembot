@@ -49,7 +49,6 @@
 //*****************************************************************************
 
 ##f$OpenPPL_PT_LastCaller_Chair##
-// Can't be big blind (0), as it is for the first orbit preflop only
 f$OpenPPL_SmallBlindCalling      ? f$OpenPPL_SmallBlind :
 f$OpenPPL_ButtonCalling          ? f$OpenPPL_ButtonChair :
 f$OpenPPL_CutOffCalling          ? f$OpenPPL_CutOffChair :
