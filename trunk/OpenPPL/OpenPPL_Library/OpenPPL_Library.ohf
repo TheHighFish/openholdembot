@@ -3648,6 +3648,11 @@ f$OpenPPL_HaveTopPair && $$pr1==rankhicommon ? $$pr0:
 f$OpenPPL_HaveTopPair && f$OpenPPL_Overcards==1  ? 1:
 0
 
+##f$OpenPPL_SecondTopPairRank##
+f$OpenPPL_Have2ndTopPair && f$OpenPPL_RankOfFirstHoleCard  == f$OpenPPL_2ndBestBoardCard ? f$OpenPPL_RankOfFirstHoleCard :
+f$OpenPPL_Have2ndTopPair && f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_2ndBestBoardCard ? f$OpenPPL_RankOfSecondHoleCard :
+0
+
 ##f$OpenPPL_HaveTopSet##
 (ispair && (rankhiplayer == rankhicommon))
 
@@ -4636,6 +4641,18 @@ f$OpenPPL_SmallBlindChair == 8 ? pt_vpip8 :
 f$OpenPPL_SmallBlindChair == 9 ? pt_vpip9 :
 -1
 
+##f$OpenPPL_PT_LastCaller_VPIP##
+f$OpenPPL_PT_LastCaller_Chair==0 ? pt_vpip0 :
+f$OpenPPL_PT_LastCaller_Chair==1 ? pt_vpip1 :
+f$OpenPPL_PT_LastCaller_Chair==2 ? pt_vpip2 :
+f$OpenPPL_PT_LastCaller_Chair==3 ? pt_vpip3 :
+f$OpenPPL_PT_LastCaller_Chair==4 ? pt_vpip4 :
+f$OpenPPL_PT_LastCaller_Chair==5 ? pt_vpip5 :
+f$OpenPPL_PT_LastCaller_Chair==6 ? pt_vpip6 :
+f$OpenPPL_PT_LastCaller_Chair==7 ? pt_vpip7 :
+f$OpenPPL_PT_LastCaller_Chair==8 ? pt_vpip8 :
+f$OpenPPL_PT_LastCaller_Chair==9 ? pt_vpip9 :
+-1
 
 //*****************************************************************************
 //
