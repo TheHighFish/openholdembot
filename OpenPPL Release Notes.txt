@@ -66,21 +66,24 @@ BUG FIXES:
   [THF]
 
   NEW STUFF:
-- New symbol BotCheckedPreflop (reminder: add to docu)
+- New symbol BotCheckedPreflop
   [Lavezzi]
-- New symbol BotCheckedOnFlop (reminder: add to docu)
+- New symbol BotCheckedOnFlop
   [Lavezzi]
-- New symbol BotCheckedOnTurn (reminder: add to docu)
+- New symbol BotCheckedOnTurn
   [Lavezzi]
-- New symbol BotCheckedOnRiver (reminder: add to docu)
+- New symbol BotCheckedOnRiver
   [Lavezzi]
- - New symbol TopPairRank (reminder: add to docu)
+ - New symbol TopPairRank
   [Lavezzi]
- - New symbol TopPairKickerRank (reminder: add to docu)
+ - New symbol TopPairKickerRank 
   [Lavezzi]
- - New symbol TopPairKickerIsOvercard (reminder: add to docu)
+ - New symbol TopPairKickerIsOvercard 
   [Lavezzi]
-
+- New symbol SecondTopPairRank
+  [Lavezzi]
+- New symbol PT_LastCaller_VPIP
+  [Lavezzi]
 
 v1.1.1 2012-07-01
 =================
