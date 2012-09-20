@@ -6,6 +6,7 @@
 #include "CFormula.h"
 #include "CGrammar.h"
 #include "CHandHistory.h"
+#include "CHandresetDetector.h"
 #include "Cversus.h"
 #include "CIteratorThread.h"
 #include "debug.h"
@@ -206,6 +207,11 @@ extern "C" __declspec(dllexport) void* __stdcall GetPhl1kFromDll()
 extern "C" __declspec(dllexport) void* __stdcall GetPrw1326FromDll()
 {
 	return (void *)(p_symbols->prw1326());
+}
+
+extern "C" __declspec(dllexport) CString __stdcall GetHandnumberFromDll()
+{
+	return (p_handreset_detector->GetHandNumber());
 }
 
 extern "C" __declspec(dllexport) void __stdcall WriteLogFromDll(char* fmt, ...)
