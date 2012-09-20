@@ -12,6 +12,7 @@
 #include "inlines/eval.h"
 #include "OH_MessageBox.h"
 #include "OpenHoldem.h"
+#include <sys/stat.h>
 
 
 //#include <vld.h>			// visual leak detector
@@ -238,21 +239,14 @@ void start_log(void)
 		return;
 	
 	// Check, if file exists and size is too large
-	if ((log_fp = _fsopen(fn.GetString(), "r", _SH_DENYWR)) != 0)
+	struct stat file_stats = { 0 };
+	if (stat(fn.GetString(), &file_stats) == 0)
 	{
-		LARGE_INTEGER file_size;
 		unsigned long int max_file_size = 1E06 * prefs.log_max_logsize();
-		if (GetFileSizeEx(log_fp, &file_size))
+		size_t file_size = file_stats.st_size;
+		if (file_size > max_file_size)
 		{
-			if ((file_size.HighPart > 0) || (file_size.LowPart > max_file_size ))
-			{
-				fclose(log_fp);
-				remove(fn.GetString());
-			}
-		}
-		else
-		{
-			fclose(log_fp);
+			remove(fn.GetString());
 		}
 	}
 
