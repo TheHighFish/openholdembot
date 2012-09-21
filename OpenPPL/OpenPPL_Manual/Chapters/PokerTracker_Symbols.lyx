@@ -90,13 +90,18 @@ Building Symbols On Your Own
 \end_layout
 
 \begin_layout Standard
-Note: The following symbols need a working connection to Poker Tracker Database.
- Number of hands symbols are needed to weight reliability of the symbol
- you are interested in.
- Infact for some symbol 50 hand could perfectly represent an Opponent playing
+Note: The following symbols need a working connection to Poker Tracker Database
+ (PT2/PT3 depinding on OH version) and correct name scraping in the TableMap.
+ 
+\end_layout
+
+\begin_layout Standard
+Number of hands symbols are needed to weight reliability of the symbol you
+ are interested in.
+ Infact for some symbol 80 hand could perfectly represent an Opponent playing
  style while for other symbols you could be in the need of hundred or thousand
  hands.
- 
+ Minumum hands symbols can be changed editing the Library to fit own needs.
 \end_layout
 
 \begin_layout Standard
