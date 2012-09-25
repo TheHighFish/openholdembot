@@ -1643,6 +1643,20 @@ me_re_MemMissingSmallBlind
 && !didcallround3
 && f$OpenPPL_NoVillainBetOrRaisedOnTurn
 
+##f$OpenPPL_OpponentStacksizeHeadsUp##
+bblind==0 ? f$OpenPPL_ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap:
+[(playersplayingbits & 0b0000000001) && (nopponentsplaying==1) && chair!=0] ? balance0/bblind:
+[(playersplayingbits & 0b0000000010) && (nopponentsplaying==1) && chair!=1] ? balance1/bblind:
+[(playersplayingbits & 0b0000000100) && (nopponentsplaying==1) && chair!=2] ? balance2/bblind:
+[(playersplayingbits & 0b0000001000) && (nopponentsplaying==1) && chair!=3] ? balance3/bblind:
+[(playersplayingbits & 0b0000010000) && (nopponentsplaying==1) && chair!=4] ? balance4/bblind:
+[(playersplayingbits & 0b0000100000) && (nopponentsplaying==1) && chair!=5] ? balance5/bblind:
+[(playersplayingbits & 0b0001000000) && (nopponentsplaying==1) && chair!=6] ? balance6/bblind:
+[(playersplayingbits & 0b0010000000) && (nopponentsplaying==1) && chair!=7] ? balance7/bblind:
+[(playersplayingbits & 0b0100000000) && (nopponentsplaying==1) && chair!=8] ? balance8/bblind:
+[(playersplayingbits & 0b1000000000) && (nopponentsplaying==1) && chair!=9] ? balance9/bblind:
+-1
+
 ##f$OpenPPL_InitRaisesBeforeFlop##
 (betround == f$OpenPPL_ConstBetRoundPreflop) ? me_st_MemRaisesBeforeFlop_f$OpenPPL_Raises : 
 f$OpenPPL_HINT_Nothing_To_Do_But_All_OK
@@ -3642,10 +3656,6 @@ f$OpenPPL_HaveTopPair && $$pr1==rankhicommon ? $$pr1:
 ##f$OpenPPL_TopPairKickerRank##
 f$OpenPPL_HaveTopPair && $$pr0==rankhicommon ? $$pr1:
 f$OpenPPL_HaveTopPair && $$pr1==rankhicommon ? $$pr0:
-0
-
-##f$OpenPPL_TopPairKickerIsOvercard##
-f$OpenPPL_HaveTopPair && f$OpenPPL_Overcards==1  ? 1:
 0
 
 ##f$OpenPPL_SecondTopPairRank##
