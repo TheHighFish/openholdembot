@@ -1,4 +1,4 @@
-v1.2.0 2012-08-15
+v1.2.0 2012-09-25
 =================
 NEW STUFF:
 - An OHF profile-optimizer, that replaces the code for open-ended when-conditions
@@ -78,11 +78,11 @@ BUG FIXES:
   [Lavezzi]
  - New symbol TopPairKickerRank 
   [Lavezzi]
- - New symbol TopPairKickerIsOvercard 
-  [Lavezzi]
 - New symbol SecondTopPairRank
   [Lavezzi]
 - New symbol PT_LastCaller_VPIP
+  [Lavezzi]
+- New symbol OpponentStacksizeHeadsUp
   [Lavezzi]
 
 v1.1.1 2012-07-01
