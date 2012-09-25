@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- html --> 
 <meta name="src" content="Betsizes_and_Stacksizes.tex"> 
-<meta name="date" content="2012-06-27 19:47:00"> 
+<meta name="date" content="2012-09-25 11:46:00"> 
 <link rel="stylesheet" type="text/css" href="Betsizes_and_Stacksizes.css"> 
 </head><body 
 >
@@ -221,8 +221,45 @@ class="td11"> <!--l. 91--><p class="noindent" >First
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-9-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-9-1"  
-class="td11"> <!--l. 93--><p class="noindent" >PotSize                         </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-9-2"  
-class="td11"> <!--l. 94--><p class="noindent" >The
+class="td11"> <!--l. 93--><p class="noindent" >OpponentStacksizeHeadsUp </td> <td  style="white-space:wrap; text-align:left;" id="TBL-1-9-2"  
+class="td11"> <!--l. 94--><p class="noindent" >Stack
+  size
+  of
+  opponent
+  when
+  headsup.
+  Please
+  read
+  Limitations                              </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-9-3"  
+class="td11"> <!--l. 95--><p class="noindent" >OpponentStacksizeHeadsUp
+  return
+  -1
+  when
+  not
+  valid.
+  When
+  using
+  this
+  symbol
+  you
+  have
+  to
+  check
+  if
+  the
+  result
+  is
+  &#x003E;-1
+  and
+  then
+  make
+  your
+  comparison.                  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-10-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-10-1"  
+class="td11"> <!--l. 98--><p class="noindent" >PotSize                         </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-10-2"  
+class="td11"> <!--l. 99--><p class="noindent" >The
   current
   pot,
   including
@@ -241,25 +278,25 @@ class="td11"> <!--l. 94--><p class="noindent" >The
   you
   are
   participating
-  in.                                         </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-9-3"  
-class="td11"> <!--l. 96--><p class="noindent" >None                           </td>
+  in.                                         </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-10-3"  
+class="td11"> <!--l. 101--><p class="noindent" >None                           </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
- style="vertical-align:baseline;" id="TBL-1-10-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-10-1"  
-class="td11"> <!--l. 98--><p class="noindent" >StackSize                       </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-10-2"  
-class="td11"> <!--l. 99--><p class="noindent" >Our
+ style="vertical-align:baseline;" id="TBL-1-11-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-11-1"  
+class="td11"> <!--l. 103--><p class="noindent" >StackSize                       </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-11-2"  
+class="td11"> <!--l. 104--><p class="noindent" >Our
   current
   balance,
   counted
   in
   big
-  blinds                                     </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-10-3"  
-class="td11"> <!--l. 100--><p class="noindent" >None                           </td>
+  blinds                                     </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-11-3"  
+class="td11"> <!--l. 105--><p class="noindent" >None                           </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
- style="vertical-align:baseline;" id="TBL-1-11-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-11-1"  
-class="td11"> <!--l. 102--><p class="noindent" >StartingStackSize            </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-11-2"  
-class="td11"> <!--l. 103--><p class="noindent" >Our
+ style="vertical-align:baseline;" id="TBL-1-12-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-12-1"  
+class="td11"> <!--l. 107--><p class="noindent" >StartingStackSize            </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-12-2"  
+class="td11"> <!--l. 108--><p class="noindent" >Our
   balance
   at
   the
@@ -270,10 +307,10 @@ class="td11"> <!--l. 103--><p class="noindent" >Our
   counted
   in
   big
-  blinds                                     </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-11-3"  
-class="td11"> <!--l. 104--><p class="noindent" >None
+  blinds                                     </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-12-3"  
+class="td11"> <!--l. 109--><p class="noindent" >None
   <div class="newtheorem">
-  <!--l. 105--><p class="noindent" ><span class="head">
+  <!--l. 110--><p class="noindent" ><span class="head">
 <span 
 class="eccc-1000">R<span 
 class="small-caps">E</span><span 
@@ -290,12 +327,12 @@ class="small-caps">K</span>.</span>
   first
   action)
   </div>
-  <!--l. 108--><p class="noindent" >                                  </td>
+  <!--l. 113--><p class="noindent" >                                  </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
- style="vertical-align:baseline;" id="TBL-1-12-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-12-1"  
-class="td11"> <!--l. 109--><p class="noindent" >TotalInvested                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-12-2"  
-class="td11"> <!--l. 110--><p class="noindent" >The
+ style="vertical-align:baseline;" id="TBL-1-13-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-13-1"  
+class="td11"> <!--l. 114--><p class="noindent" >TotalInvested                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-13-2"  
+class="td11"> <!--l. 115--><p class="noindent" >The
   money
   put
   into
@@ -307,22 +344,22 @@ class="td11"> <!--l. 110--><p class="noindent" >The
   counted
   in
   big
-  blinds                                     </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-12-3"  
-class="td11"> <!--l. 111--><p class="noindent" >None                           </td>
+  blinds                                     </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-13-3"  
+class="td11"> <!--l. 116--><p class="noindent" >None                           </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
- style="vertical-align:baseline;" id="TBL-1-13-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-13-1"  
-class="td11"> <!--l. 113--><p class="noindent" >TotalInvestedThisRound   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-13-2"  
-class="td11"> <!--l. 114--><p class="noindent" >Amount
+ style="vertical-align:baseline;" id="TBL-1-14-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-14-1"  
+class="td11"> <!--l. 118--><p class="noindent" >TotalInvestedThisRound   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-14-2"  
+class="td11"> <!--l. 119--><p class="noindent" >Amount
   Invested
   in
   current
   betting
-  round                                     </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-13-3"  
-class="td11"> <!--l. 115--><p class="noindent" >None                           </td>
+  round                                     </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-14-3"  
+class="td11"> <!--l. 120--><p class="noindent" >None                           </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
- style="vertical-align:baseline;" id="TBL-1-14-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-14-1"  
+ style="vertical-align:baseline;" id="TBL-1-15-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-15-1"  
 class="td11">                       </td> </tr></table>
 
 </div>  

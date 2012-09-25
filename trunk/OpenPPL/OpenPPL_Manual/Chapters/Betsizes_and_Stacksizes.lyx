@@ -97,7 +97,7 @@ It's up to you, what and how you code.
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="13" columns="3">
+<lyxtabular version="3" rows="14" columns="3">
 <features tabularvalignment="middle">
 <column alignment="left" valignment="top" width="30text%">
 <column alignment="left" valignment="top" width="40text%">
@@ -341,6 +341,39 @@ The biggest stack of the opponents behind you (including SB and BB), measured
 
 \begin_layout Plain Layout
 First action preflop only
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+OpponentStacksizeHeadsUp
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Stack size of opponent when headsup.
+ Please read Limitations
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+OpponentStacksizeHeadsUp return -1 when not valid.
+ When using this symbol you have to check if the result is >-1 and then
+ make your comparison.
+ 
 \end_layout
 
 \end_inset
