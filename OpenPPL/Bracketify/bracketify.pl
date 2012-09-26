@@ -59,68 +59,6 @@ print "//\n";
 while (<>)
 {
 	$current_line_of_code++;
-	# Ignore Option-settings
-	if (m/MaxSessionHands =/ 
-		|| m/MaxSessionTime = / 
-		|| m/MaxStackSize =/
-		|| m/BathroomBreakAfter =/ 
-		|| m/BathroomBreakTime =/ 
-		|| m/SitOutWhenOpponentsAreLessThan =/
-		|| m/MakePotSizedPreFlopRaisesWhen =/ 
-		|| m/FoldToPre-FlopRaisesForAQAJsKQ =/
-		|| m/FoldPost-FlopBelowTopPairToAnyBetOrRaise =/ 
-		|| m/FoldToPost-FlopRaisesWithUnpairedBoardsFor =/
-		|| m/FoldToPost-FlopRaisesWithPairedBoardsFor =/ 
-		|| m/NeverBetTurnOrRiverWithHandBelow =/
-		|| m/NeverBetFlopWithHandBelowMiddlePairWhen =/ 
-		|| m/NeverBetFlopWithHandBelowMiddlePairStackSize =/
-		|| m/NeverCallPairedBoardsWithHandBelow =/ 
-		|| m/NeverCallFlushPossibleBoardsWithHandBelow =/
-		|| m/FoldToPre-FlopRaiseWith55Or66When =/ 
-		|| m/FoldToPre-FlopRaiseWith77Or88When =/
-		|| m/FoldToPre-FlopRaiseWith99OrTTWhen =/ 
-		|| m/FoldToPre-FlopRaiseWithJJOrQQWhen =/
-		|| m/FoldToPre-FlopRaiseWithAKWhen =/ 
-		|| m/FoldToPre-FlopRaiseWithAQsWhen =/
-		|| m/FoldToPre-FlopRaiseWithAKsWhen =/ 
-		|| m/FoldToPre-FlopRaiseWithKQsWhen =/
-		|| m/SuperTightPlay =/ 
-		|| m/SemiSuperTightPlay =/
-		|| m/NoLimp =/ 
-		|| m/AggressivePreFlop =/
-		|| m/AggressivePostFlop =/ 
-		|| m/AggressivePreFlopStackSize =/
-		|| m/AggressivePostFlopStackSize =/ 
-		|| m/MiningForSets =/
-		|| m/PostFlopinBlindsOverride =/ 
-		|| m/PreFlopReRaiseOverride =/
-		|| m/MinBetOverride =/ 
-		|| m/FoldOrGoAllInWhenOpponentsAfterFoldsLessThan =/
-		|| m/FoldOrGoAllInWhenOpponentsAfterFoldsLessThanStackSize =/ 
-		|| m/ApplyFoldOrAllInAfter =/
-		|| m/FoldOrGoAllInWhenOpponentsAtTableLessThan =/ 
-		|| m/FoldOrGoAllInWhenOpponentsAtTableLessThanStackSize =/
-		|| m/AlwaysCallWhenOpponentsRaiseIsLessThan =/ 
-		|| m/AlwaysCallWhenStackSizeIsLessThanTotalInvested =/
-		|| m/Verbose =/ 
-		|| m/AutoPlay =/
-		|| m/UserDefinedGameType =/ 
-		|| m/UseOcrAtFullTilt =/
-		|| m/AutoRebuyAtUB =/ 
-		|| m/AlwaysAskForTableName =/
-		|| m/EnableFoldInTurn =/ 
-		|| m/DefaultBetSizeFlop =/
-		|| m/DefaultBetSizeTurn =/ 
-		|| m/DefaultBetSizeRiver =/
-		|| m/MoveMouseBeforeClickingAtFT =/
-		|| m/WindowLeft =/
-		|| m/WindowRight =/
-		|| m/WindowBottom =/
-		|| m/WindowTop =/)
-	{
-		# No processing, no printing, just skip it.
-		next;
-	}
 	# Print comments (full line only) as is, without any processing
 	if (m/^\/\//)
 	{
@@ -135,6 +73,73 @@ while (<>)
 	# Also remove spaces at the beginning and at the end.
 	s/^[ ]*//;
 	s/$[ ]*//;
+	# Ignore Option-settings
+	if (m/MaxSessionHands =/ig
+		|| m/MaxSessionTime = /ig
+		|| m/MaxStackSize =/ig
+		|| m/BathroomBreakAfter =/ig
+		|| m/BathroomBreakTime =/ig
+		|| m/SitOutWhenOpponentsAreLessThan =/ig
+		|| m/MakePotSizedPreFlopRaisesWhen =/ig
+		|| m/FoldToPre-FlopRaisesForAQAJsKQ =/ig
+		|| m/FoldPost-FlopBelowTopPairToAnyBetOrRaise =/ig
+		|| m/FoldToPost-FlopRaisesWithUnpairedBoardsFor =/ig
+		|| m/FoldToPost-FlopRaisesWithPairedBoardsFor =/ig
+		|| m/NeverBetTurnOrRiverWithHandBelow =/ig
+		|| m/NeverBetFlopWithHandBelowMiddlePairWhen =/ig
+		|| m/NeverBetFlopWithHandBelowMiddlePairStackSize =/ig
+		|| m/NeverCallPairedBoardsWithHandBelow =/ig
+		|| m/NeverCallFlushPossibleBoardsWithHandBelow =/ig
+		|| m/FoldToPre-FlopRaiseWith55Or66When =/ig
+		|| m/FoldToPre-FlopRaiseWith77Or88When =/ig
+		|| m/FoldToPre-FlopRaiseWith99OrTTWhen =/ig
+		|| m/FoldToPre-FlopRaiseWithJJOrQQWhen =/ig
+		|| m/FoldToPre-FlopRaiseWithAKWhen =/ig
+		|| m/FoldToPre-FlopRaiseWithAQsWhen =/ig
+		|| m/FoldToPre-FlopRaiseWithAKsWhen =/ig
+		|| m/FoldToPre-FlopRaiseWithKQsWhen =/ig
+		|| m/SuperTightPlay =/ig
+		|| m/SemiSuperTightPlay =/ig
+		|| m/NoLimp =/ig
+		|| m/AggressivePreFlop =/ig
+		|| m/AggressivePostFlop =/ig
+		|| m/AggressivePreFlopStackSize =/ig
+		|| m/AggressivePostFlopStackSize =/ig
+		|| m/MiningForSets =/ig
+		|| m/PostFlopinBlindsOverride =/ig 
+		|| m/PreFlopReRaiseOverride =/ig
+		|| m/MinBetOverride =/ig
+		|| m/FoldOrGoAllInWhenOpponentsAfterFoldsLessThan =/ig
+		|| m/FoldOrGoAllInWhenOpponentsAfterFoldsLessThanStackSize =/ig
+		|| m/ApplyFoldOrAllInAfter =/ig
+		|| m/FoldOrGoAllInWhenOpponentsAtTableLessThan =/ig
+		|| m/FoldOrGoAllInWhenOpponentsAtTableLessThanStackSize =/ig
+		|| m/AlwaysCallWhenOpponentsRaiseIsLessThan =/ig
+		|| m/AlwaysCallWhenStackSizeIsLessThanTotalInvested =/ig
+		|| m/Verbose =/ig
+		|| m/AutoPlay =/ig
+		|| m/UserDefinedGameType =/ig
+		|| m/UseOcrAtFullTilt =/ig
+		|| m/AutoRebuyAtUB =/ig
+		|| m/AlwaysAskForTableName =/ig
+		|| m/EnableFoldInTurn =/ig 
+		|| m/DefaultBetSizeFlop =/ig
+		|| m/DefaultBetSizeTurn =/ig
+		|| m/DefaultBetSizeRiver =/ig
+		|| m/MoveMouseBeforeClickingAtFT =/ig
+		|| m/WindowLeft =/ig
+		|| m/WindowRight =/ig
+		|| m/WindowBottom =/ig
+		|| m/WindowTop =/ig)
+	{
+		# No processing, only print a warning, then skip it.
+		print STDERR "\n";
+		print STDERR "WARNING: option settings not supported -- ignored!\n";
+		# Print current line of code
+		print STDERR "Line: $current_line_of_code\n";
+		print STDERR "Code: $_\n";
+		next;
+	}
 	# Then try to detect multi-line-conditions,
 	# i.e. lines with AND or OR at the beginning or at the end,
 	# also lines with any bracket at the beginning or an opening bracket at the end.
@@ -589,7 +594,7 @@ while (<>)
 	s/Last/Last/ig;
 	# Technical symbols
 	# Not needed for standard PPL, and most probably not for openPPL either
-	
+	#
 	# Check for unsafe code	and warn the user
 	if ((m/Betsize =/i) or (m/TotalInvested =/i) or (m/AmountToCall =/i)
 		or (m/StartingStacksize =/i) or (m/MinOpponentStacksize =/i)
@@ -598,23 +603,27 @@ while (<>)
 		print STDERR "\n";
 		print STDERR "WARNING: Unsafe Stacksize operation!\n";
 		print STDERR "\"StackSize = X\" will cause troubles, because OpenHoldem uses real numbers.\n";
-		print STDERR "Automatically tried to fix, but better use <= or >= instead.\n\n";
-		print STDERR "Line: $current_line_of_code\n";
+		print STDERR "You really should fix it; better use <= or >= instead.\n\n";
 		# Print current line of code
+		print STDERR "Line: $current_line_of_code\n";
 		print STDERR "Code: $_\n";
-		# Now fix it...
-		s/Betsize/RoundedBetsize/ig;
-		s/TotalInvested/RoundedTotalInvested/ig;
-		s/AmountToCall/RoundedAmountToCall/ig;
-		s/StartingStacksize/RoundedStartingStacksize/ig;
-		s/MinOpponentStacksize/RoundedMinOpponentStacksize/ig;
-		s/MaxOpponentStacksize/RoundedMaxOpponentStacksize/ig;
-		s/Stacksize/RoundedStacksize/ig;
+		# No way to automatically fix it...
+		exit
 	}
-	# "NutFullHouseOrFourOfAKind = 0" is unsafe.
-	# OpenPPL uses consistently higher numbers for worse hands
-	# and 999 if we don't have a full house at all.
-	s/NutFullHouseOrFourOfAKind = 0/NutFullHouseOrFourOfAKind = f\$OpenPPL_HINT_We_Dont_Have_A_FullHouse_At_All/ig;
+	if (m/NutFullHouseOrFourOfAKind = 0/i)
+	{
+		s/NutFullHouseOrFourOfAKind = 0/NutFullHouseOrFourOfAKind = f\$OpenPPL_HINT_We_Dont_Have_A_FullHouse_At_All/ig;
+		# "NutFullHouseOrFourOfAKind = 0" is unsafe.
+		# OpenPPL uses consistently higher numbers for worse hands
+		# and 999 if we don't have a full house at all.
+		print STDERR "\n";
+		print STDERR "WARNING: Unsafe NutFullHouseOrFourOfAKind-code auto-corrected!\n";
+		print STDERR "\"NutFullHouseOrFourOfAKind = 0\" is unsafe.\n";
+		print STDERR "OpenPPL uses consistently higher numbers for worse hands\n";
+		print STDERR "and 999 if we don't have a full house at all.\n";
+		print STDERR "Line: $current_line_of_code\n";
+		print STDERR "Code: $_\n";
+	}
 	# Finally care about line-numbers
 	if (m/LineInfo/i)
 	{
@@ -632,7 +641,9 @@ while (<>)
 		s/LineInfo_Var/LineInfo_Var\]/i;
 		s/LineInfo_Mem/LineInfo_Mem\]/i;
 		# We keep the postfix, but replace "LineInfo" by something like "log$line_xyz"
-		# so a message like "line_3147_Act" will appear in the log-file
+		# so a message like "line_3147_Act" will appear in the log-file.
+		# The log$-expression always evaluates to 1 (true),
+		# so the result of new combined condition will be the same as the old one.
 		s/LineInfo/  &&  log\$line_$current_line_of_code/i;
 	}
 	# And finally write the processed line to standard output
