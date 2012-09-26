@@ -229,7 +229,10 @@ while (<>)
 	# i.e. a keyword "WHEN", but no "FORCE" and no user-variable.
 	# Then we add a bracket to the right end of the line
 	# and hope, that it is no multi-line condition
-	if ((m/^WHEN /i || m/ WHEN /i) && !(m/ FORCE$/i) && !(m/(user[A-Za-z0-9_]*)$/i))
+	if ((m/^WHEN /i || m/ WHEN /i) 
+		&& !(m/ FORCE$/i)                 # Action
+		&& !(m/(user[A-Za-z0-9_]*)$/i)    # User-variable
+		&& !(m/me_st[A-Za-z0-9_\$]$/i))   # Memory-store-command
 	{
 		s/$/\)/i;	
 	}
@@ -365,8 +368,10 @@ while (<>)
 	s/[ ]+\>\=[ ]+/ \>\= /g;
 	s/[ ]+\<\=[ ]+/ \<\= /g;
 	# Proper indentation
-	if ((m/^WHEN /i || m/ WHEN /i) && !(m/ FORCE$/i) && !(m/(user[A-Za-z0-9_]*)$/i))
-	# !!! me_st
+	if ((m/^WHEN /i || m/ WHEN /i) 
+		&& !(m/ FORCE$/i)                 # Action
+		&& !(m/(user[A-Za-z0-9_]*)$/i)    # User-variable
+		&& !(m/me_st[A-Za-z0-9_\$]$/i))   # Memory-store-command
 	{
 		# Open-ended when-condition
 		# No indentation
@@ -374,7 +379,7 @@ while (<>)
 	}
 	else
 	{
-		# When-condition with action or with user-variable
+		# When-condition with action or with user-variable or memory-store-command
 		# Indentation of 4 spaces
 		s/^([ ]*when)/    WHEN/ig;	
 	}
