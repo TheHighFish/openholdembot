@@ -2238,49 +2238,6 @@ ncurrentbets
 
 //*****************************************************************************
 //
-// OpenPPL - Rounded Betsizes and StackSizes
-//
-// Used by bracketify.pl to handle unsafe stack-size-code, like
-//   "WHEN Stacksize = 3" (Shanky-PPL with plain integers).
-// This does not work on OH-side, because OH uses real numbers.
-// So we generate code like
-//   "WHEN RoundedStacksize = 3"
-// This is still not really safe, because the right-hand-side
-// might be not an integer, e.g. "70%Stacksize", 
-// but we throw an additional warning.
-//
-//*****************************************************************************
-
-##f$OpenPPL_RoundedAmountToCall##
-f$OpenPPL_AmountToCall
-+ 0 * f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
-
-##f$OpenPPL_RoundedBetSize##
-f$OpenPPL_BetSize
-+ 0 * f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
-
-##f$OpenPPL_RoundedMaxOpponentStackSize##
-f$OpenPPL_MaxOpponentStackSize
-+ 0 * f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
-
-##f$OpenPPL_RoundedMinOpponentStackSize##
-f$OpenPPL_MinOpponentStackSize
-+ 0 * f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
-
-##f$OpenPPL_RoundedStackSize##
-f$OpenPPL_StackSize
-+ 0 * f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
-
-##f$OpenPPL_RoundedStartingStackSize##
-f$OpenPPL_StartingStackSize
-+ 0 * f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
-
-##f$OpenPPL_RoundedTotalInvested##
-f$OpenPPL_TotalInvested
-+ 0 * f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
-
-//*****************************************************************************
-//
 // OpenPPL - Board Symbols
 //
 //*****************************************************************************
