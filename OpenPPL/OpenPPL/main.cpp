@@ -71,7 +71,7 @@ boost::spirit::parse_info<> pi;
 CString ErroneousCodeSnippet(const char *begin_of_erroneous_code_snippet)
 {
 	CString rest_of_input = begin_of_erroneous_code_snippet;
-	CString erroneous_code_snippet = rest_of_input.Left(300);
+	CString erroneous_code_snippet = rest_of_input.Left(500);
 	return erroneous_code_snippet;
 }
 
