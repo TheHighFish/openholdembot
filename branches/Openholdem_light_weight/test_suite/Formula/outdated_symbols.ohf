@@ -1,0 +1,36 @@
+##f$alli##
+// Below is an incomplete list of symbols that got removed from the code-base.
+// Please the release-notes for explanations.
+  nfriendsseated
++ friendsdealtbits
++ handnumber
++ islistcall
++ isemptylistrais
++ nlistmax 
++ nlistmin
++ swagdelay
++ allidelay
++ swagtextmethod
++ potmethod
++ activemethod
++ isfiveofakind
++ isppro
++ bankroll
++ NIT
++ rake
++ defcon
++ clocks 
++ ron$clocks 
++ run$clocks 
++ clockspersecond
++ ncps
++ nflopc
++ br 
++ ncps
++ isbring
++ ismanual
++ handrank
++ mh_bottomsd
++ mh_str_flush
++ ptt_icon
++ ptt_rpfr
