@@ -1,4 +1,4 @@
-v1.2.0 2012-09-25
+v1.2.0 2012-09-xx
 =================
 NEW STUFF:
 - An OHF profile-optimizer, that replaces the code for open-ended when-conditions
@@ -84,6 +84,8 @@ BUG FIXES:
   [Lavezzi]
 - New symbol OpponentStacksizeHeadsUp
   [Lavezzi]
+- New symbol Had2ndOverPairOnFlop
+  [THF]
 
 v1.1.1 2012-07-01
 =================
