@@ -20,12 +20,6 @@ private:
 	void CheckForSwapMouseBtns();
 	void CheckForClassicalTheme();
 	void CheckForFontSmoothing();
-
-private:
-	bool CheckOfPerlInstallationNecessary();
-	void CheckForMissingMSVCRT();
-	void CheckForMissingActivePerl();
-	void CheckForPerlPath();
 } *p_configurationcheck;
 
 #endif // INC_CCONFIGURATIONCHECK_H

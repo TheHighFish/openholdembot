@@ -19,8 +19,6 @@ public:
 private:
 // Dialog Data
 	enum { IDD = IDD_SAPREFS14 };
-	CButton _autoconnector_connection_manually;
-	CButton _autoconnector_connection_automatically;
 	CButton _autoconnector_connect_never;
 	CButton _autoconnector_connect_once;
 	CButton _autoconnector_connect_permanent;

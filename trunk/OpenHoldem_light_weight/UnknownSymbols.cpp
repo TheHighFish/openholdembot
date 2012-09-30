@@ -147,7 +147,7 @@ void WarnAboutUnknownOrOutdatedSymbol(CString symbol)
 		// Unknown symbol -- general warning
 		CString error_message = CString("Unknown symbol in CGrammar::EvaluateSymbol(): \"")
 			+ symbol + CString("\"\nThat is most probably a typo in the symbols name.\n")
-			+ CString("Please check your formula and your DLL or Perl-script.");
+			+ CString("Please check your formula and your DLL.");
 		OH_MessageBox(error_message, title_unknown_symbol, 0);
 	}
 

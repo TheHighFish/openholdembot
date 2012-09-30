@@ -41,21 +41,6 @@ void CConfigurationCheck::CheckEverything()
 	{
 		CheckForFontSmoothing();
 	}
-
-	if (CheckOfPerlInstallationNecessary())
-	{
-		CheckForMissingMSVCRT();
-		CheckForMissingActivePerl();
-		CheckForPerlPath();
-	}
-}
-
-bool CConfigurationCheck::CheckOfPerlInstallationNecessary()
-{
-	// We better make that check dependend of the perl-preferences,
-	// instead of a separate option that might be turned off
-	// or might confuse other users.
-	return (prefs.perl_default_formula() != "");
 }
 
 HKEY CConfigurationCheck::GetHive(CString mhive)
@@ -273,60 +258,5 @@ void CConfigurationCheck::CheckForFontSmoothing()
 	}
 }
 
-void CConfigurationCheck::CheckForMissingMSVCRT()
-{
-	CString p_szKeyCRT = "SOFTWARE\\Microsoft\\DevDiv\\VC\\Servicing\\8.0\\RED\\1033\\";
-	CString p_szNameCRT = "Install";
 
-	bool installed = false;
 
-	if (atoi(GetValue("HKLM", 0, p_szKeyCRT, p_szNameCRT)) == 1)
-	{
-		installed = true;
-	}
-
-	if (installed == false)
-	{
-		OH_MessageBox("Unable to detect\n"
-			"Microsoft Visual C++ 2005 redistributable runtime library.\n"
-			"\n"
-			"This library is necessary for Perl users.\n"
-			"if you don't use Perl you may turn this warning off\n"
-			"by not loading the perl interpreter by default.",
-			"Caution: MSVCRT 8.0 missing", MB_OK|MB_ICONWARNING);
-	}
-}
-
-void CConfigurationCheck::CheckForMissingActivePerl()
-{
-	CString p_szKeyAP = "SOFTWARE\\Activestate\\ActivePerl\\";
-
-	if (!OpenKey("HKLM", p_szKeyAP))
-	{
-		OH_MessageBox("Unable to detect\n"
-			"ActiveState ActivePerl.\n"
-			"\n"
-			"This version is required for Perl users.\n"
-			"if you don't use Perl you may turn this warning off\n"
-			"by not loading the perl interpreter by default.",
-			"Caution: ActivePerl missing", MB_OK|MB_ICONWARNING);
-	}
-}
-
-void CConfigurationCheck::CheckForPerlPath()
-{
-	CString p_szKeyP = "SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment\\";
-	CString p_szNameP = "Path";
-
-	CString path = GetValue("HKLM", 1, p_szKeyP, p_szNameP);
-
-	if (path.Find("Perl") == -1)
-	{
-		OH_MessageBox("Path\n"
-			"Perl was not correctly detected in your Path.\n"
-			"\n"
-			"If you don't use Perl you may turn this warning off\n"
-			"by not loading the perl interpreter by default.",
-			"Caution: Perl not found in %PATH%", MB_OK|MB_ICONWARNING);
-	}
-}

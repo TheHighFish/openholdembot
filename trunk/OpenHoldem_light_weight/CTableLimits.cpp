@@ -113,7 +113,7 @@ bool CTableLimits::ReasonableBlindsForCurrentHand()
 	// at least it takes dll$iswait into consideration, which is calculated afterwards.)
 	// (ismyturn doesn't work either)
 	// Pros/cons: more reliability, but no auto-locking before it is our turn.
-	// Affects maybe DLL- and Perl-people negative at the beginning of the first hands.
+	// Affects maybe DLL-people negative at the beginning of the first hands.
 	write_log(3, "CTableLimits: ismyturn: %d\n", p_symbols->sym()->ismyturn);
 	write_log(3, "CTableLimits: sblind: %f\n", tablelimit_unreliable_input.sblind);
 	write_log(3, "CTableLimits: bblind: %f\n", tablelimit_unreliable_input.bblind);

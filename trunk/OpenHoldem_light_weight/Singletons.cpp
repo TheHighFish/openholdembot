@@ -16,7 +16,6 @@
 #include "CLazyScraper.h"
 #include "CMemory.h"
 #include "COcclusioncheck.h"
-#include "CPerl.hpp"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CRebuyManagement.h"
@@ -75,8 +74,6 @@ void InstantiateAllSingletons()
 		p_dll_extension = new CDllExtension;
 	if (!p_game_state) 
 		p_game_state = new CGameState;
-	if (!p_perl) 
-		p_perl = new CPerl;
 	if (!p_memory) 
 		p_memory = new CMemory;	
 	if (!p_versus)
@@ -134,8 +131,6 @@ void DeleteAllSingletons()
 		{ delete p_versus; p_versus = NULL; }
 	if (p_memory)  
 		{ delete p_memory; p_memory = NULL; }
-	if (p_perl)  
-		{ delete p_perl; p_perl = NULL; }
 	if (p_game_state)  
 		{ delete p_game_state; p_game_state = NULL; }
 	if (p_dll_extension)  

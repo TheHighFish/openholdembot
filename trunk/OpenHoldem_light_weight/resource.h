@@ -3,7 +3,7 @@
 // Used by OpenHoldem.rc
 //
 #define IDD_ABOUTBOX                    100
-#define IDR_MAINFRAME                   128		
+#define IDR_MAINFRAME                   128
 #define ID_INDICATOR_STATUS_COMCARDS    129
 #define IDI_ICON1                       130
 #define ID_INDICATOR_STATUS_PRWIN       130
@@ -39,7 +39,6 @@
 #define IDD_HANDLIST                    170
 #define IDD_SAPREFS8                    171
 #define IDR_FORMULA_DIALOG_ACC          172
-#define IDD_SAPREFS9                    172
 #define IDD_SAPREFS10                   173
 #define IDR_FORMULA_SYMBOL_MENU         175
 #define IDD_SAPREFS11                   176
@@ -53,7 +52,7 @@
 #define IDD_SAPREFS19                   185
 #define IDD_SAPREFS20                   186
 #define IDD_SAPREFS21                   187
-#define ID_INDICATOR_GENERAL_HINT		188
+#define ID_INDICATOR_GENERAL_HINT       188
 #define IDC_NEW                         1006
 #define IDC_DELETE                      1007
 #define IDC_RENAME                      1013
@@ -137,7 +136,6 @@
 #define IDC_PT_PASS                     1103
 #define IDC_PT_DBNAME                   1104
 #define IDC_PT_DBNAME2                  1105
-#define IDC_DEFAULT_PERL_FORMULA        1105
 #define IDC_ICM_1                       1110
 #define IDC_ICM_2                       1111
 #define IDC_ICM_3                       1112
@@ -328,7 +326,6 @@
 #define IDC_MAXFRAMES_SPIN2             1289
 #define IDC_RANDOM_DELAY_SPIN           1289
 #define IDC_FUNCTIONS_TAB               1289
-#define IDC_PERL_EDITOR                 1292
 #define IDC_MINIMUM_DELAY               1294
 #define IDC_MINIMUM_DELAY_SPIN          1295
 #define IDC_ENABLE_LOG                  1296
@@ -353,9 +350,7 @@
 #define IDC_CHECK_VALIDATOR_HEURISTIC_RULES 1313
 #define IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES 1313
 #define IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR 1317
-#define IDC_RADIO_AUTOCONNECTOR_1       1318
 #define IDC_SEARCH_ED                   1318
-#define IDC_RADIO_AUTOCONNECTOR_2       1319
 #define IDC_AUTOCONNECTOR_CONNECT_ON_START 1320
 #define IDC_AUTOCONNECTOR_CLOSE_WHEN_TABLE_DISAPPEARS 1321
 #define IDC_GUI_START_MINIMIZED         1322
@@ -379,9 +374,8 @@
 #define IDC_RADIO_SCRAPE_ALWAYS         1335
 #define IDC_SCROLLBAR1                  1336
 #define IDC_SPIN1                       1337
-#define IDC_RECONNECT_TIME_SPIN         1337
+#define IDC_RECONNECT_TIME_SPIN         1339
 #define IDC_CONFIGURATION_DISABLE_LESS_CRITICAL_CHECKS 1338
-#define IDC_CONFIGURATION_PERL_DEPENDENCIES 1339
 #define IDC_CONFIGURATION_INPUT_SETTINGS 1340
 #define IDC_CONFIGURATION_THEME_SETTINGS 1341
 #define IDC_CONFIGURATION_FONT_SETTINGS 1342
@@ -426,9 +420,6 @@
 #define ID_BUTTON32790                  32790
 #define ID_BUTTON32791                  32791
 #define ID_BUTTON32792                  32792
-#define ID_FILE_LOADTABLEMAP            32805
-#define ID_MAIN_TOOLBAR_GREENCIRCLE     32810
-#define ID_MAIN_TOOLBAR_REDCIRCLE       32819
 #define ID_NUMBER0                      32824
 #define ID_NUMBER1                      32826
 #define ID_NUMBER2                      32828
@@ -498,14 +489,8 @@
 #define ID_EDIT_FINDNEXT                32941
 #define ID_EDIT_FINDPREVIOUS            32942
 #define ID_FORMULA_EDIT_FINDNEXT        32943
-#define ID_PERL_LOADFORMULA             32946
-#define ID_PERL_LOADSPECIFICFORMULA     32947
-#define ID_PERL_EDITMAINFORMULA         32948
 #define ID_FORMULA_SYMBOL_COPY          32949
-#define ID_PERL_RELOADFORMULA           32950
-#define ID_PERL_COMPILEFORMULA          32951
 #define ID_Menu                         32952
-#define ID_PERL_CHECKSYNTAX             32953
 #define ID_HELP_FORCECRASH              32970
 #define ID_NUMBER11                     32972
 #define ID_NUMBER12                     32973
@@ -528,8 +513,9 @@
 #define ID_HELP_FORUMS                  32990
 #define ID_MAIN_TOOLBAR_HELP            32992
 #define ID_Menu32993                    32993
-#define ID_FILE_LOAD_OPENPPL            32994
-#define ID_INDICATOR_STATUS_READY		61190
+#define ID_BUTTON32997                  32997
+#define ID_BUTTON32998                  32998
+#define ID_INDICATOR_STATUS_READY       61190
 #define ID_INDICATOR_STATUS_PLCARDS     61191
 
 // Next default values for new objects
@@ -537,7 +523,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        189
-#define _APS_NEXT_COMMAND_VALUE         32997
+#define _APS_NEXT_COMMAND_VALUE         32999
 #define _APS_NEXT_CONTROL_VALUE         1376
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
