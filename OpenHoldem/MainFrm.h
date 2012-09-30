@@ -38,7 +38,6 @@ protected: // create from serialization only
 	afx_msg void OnAttachTop();
 	afx_msg void OnAttachBottom();
 	afx_msg void OnLockBlinds();
-	afx_msg void OnPokerproConnect();
 
 	afx_msg void OnUpdateMenuFileNew(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateMenuFileOpen(CCmdUI* pCmdUI);
@@ -50,7 +49,6 @@ protected: // create from serialization only
 	afx_msg void OnUpdateViewMainToolbar(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateViewFlagsToolbar(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateViewStatusbar(CCmdUI *pCmdUI);
-	afx_msg void OnUpdatePokerproConnect(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateViewShootreplayframe(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateEditForceuserchair(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateMenuPerlReloadFormula(CCmdUI* pCmdUI);
@@ -64,10 +62,6 @@ protected: // create from serialization only
 	afx_msg void OnFormulaViewStatusbar();
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg void OnDllLoadspecificfile();
-	afx_msg LRESULT OnConnectMessage(WPARAM, LPARAM hwnd);
-	afx_msg LRESULT OnDisconnectMessage(WPARAM, LPARAM);
-	afx_msg LRESULT OnConnectedHwndMessage(WPARAM, LPARAM);
-	afx_msg LRESULT OnSetWindowText(WPARAM, LPARAM title);
 	afx_msg void OnPerlLoadFormula();
 	afx_msg void OnPerlLoadSpecificFormula();
 	afx_msg void OnPerlEditMainFormula();

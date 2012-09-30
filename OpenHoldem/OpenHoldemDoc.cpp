@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "CAutoplayer.h"
 #include "CDllExtension.h"
+#include "COpenHoldemHopperCommunication.h"
 #include "CPreferences.h"
 #include "DialogFormulaScintilla.h"
 #include "MainFrm.h"
