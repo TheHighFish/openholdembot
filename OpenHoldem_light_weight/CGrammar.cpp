@@ -11,7 +11,6 @@
 #include "CFormula.h"
 #include "CICMCalculator.h"
 #include "CMemory.h"
-#include "CPerl.hpp"
 #include "CPokerAction.h"
 #include "CPreferences.h"
 #include "CSymbols.h"
@@ -445,15 +444,6 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 		}
 	}
 
-	//  2008.02.27 by THF
-	//  Perl symbols (starting with "pl_")
-	else if (p_perl->IsPerlSymbol(sym.c_str()))
-	{
-		//  Error checking is done inside the Perl class
-		//  At the moment, creating a messagebox on serious errors.
-		return p_perl->GetPerlSymbol(sym.c_str());
-	}
-
 	// vs$ symbols
 	else if (memcmp(sym.c_str(), "vs$", 3)==0)
 	{
@@ -511,7 +501,7 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 			{
 				// Unknown symbol.
 				// Though we check the syntax, this can still happen
-				// by gws-calls from Perl or a DLL, etc.
+				// by gws-calls from a DLL, etc.
 				WarnAboutUnknownOrOutdatedSymbol(sym.c_str());
 				return 0.0;
 			}
@@ -740,15 +730,6 @@ void CGrammar::ValidateSymbol(const char *begin, const char *end)
 	else if (memcmp(sym.c_str(), "dll$", 4)==0)
 	{
 		// MECHANISM FOR DETECTING INVALID DLL SYMBOLS DOES NOT YET EXIST
-		return;
-	}
-
-	//  Perl symbols (starting with "pl_")
-	else if (memcmp(sym.c_str(), "pl_", 3)==0)
-	{
-		if (!p_perl->IsPerlSymbol(sym.c_str()))
-			g_parse_symbol_stop_strs.Add(sym);
-
 		return;
 	}
 

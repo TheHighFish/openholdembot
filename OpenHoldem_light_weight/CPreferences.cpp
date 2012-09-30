@@ -1,7 +1,7 @@
 #include "stdafx.h"
+#include "CPreferences.h"
 
 #include "debug.h"
-#include "CPreferences.h"
 #include "MagicNumbers.h"
 
 // CPreferences needs to be globally created, in order to provide saved settings to CMainFrame::PreCreateWindow method
@@ -97,21 +97,7 @@ void CPreferences::InitDefaults(void)
 	//  Just a security measure against crazy bot formulas...
 	_chat_min_delay = 600;	  //  seconds
 	_chat_random_delay = 3000;  //  seconds;
-
-	//  Perl
-	_perl_default_formula = "";
-	_perl_editor = "C:\\Windows\\notepad.exe";
-	TCHAR windows_path[MAX_PATH];
-	if (S_OK == SHGetFolderPath(NULL, CSIDL_WINDOWS, NULL, 0, windows_path)) 
-	{
-		_perl_editor = windows_path;
-		_perl_editor += _T("\\notepad.exe");
-	}
-	else
-	{
-		_perl_editor = _T("C:\\Windows\\notepad.exe");
-	}
-
+	
 	// log$ loggin
 	_log_symbol_enabled = false;
 	_log_symbol_max_log = 5;
@@ -156,7 +142,6 @@ void CPreferences::InitDefaults(void)
 	_validator_shoot_replayframe_on_error = false;
 
 	// Auto-connector
-	_autoconnector_connection_method = k_AutoConnector_Connect_Automatically;
 	_autoconnector_when_to_connect = k_AutoConnector_Connect_Permanent;
 	_autoconnector_close_when_table_disappears = false;
 
@@ -193,7 +178,6 @@ void CPreferences::InitDefaults(void)
 	// CFileDialog saved paths
 	_path_ohf = "";
 	_path_tm = "";
-	_path_perl = "";
 	_path_dll = "";
 }
 
@@ -272,10 +256,6 @@ void CPreferences::ReadPreferences()
 		// scraper zoom level
 		ReadReg("scraper_zoom", &_scraper_zoom);
 
-		// Perl
-		ReadReg("perl_editor", &_perl_editor);
-		ReadReg("perl_default_formula", &_perl_default_formula);
-
 		// PokerChat
 		ReadReg("chat_min_delay", &_chat_min_delay);
 		ReadReg("chat_random_delay", &_chat_random_delay);
@@ -321,7 +301,6 @@ void CPreferences::ReadPreferences()
 		ReadReg("validator_shoot_replayframe_on_error", &_validator_shoot_replayframe_on_error);
 
 		// Auto-connector
-		ReadReg("autoconnector_connection_method", &_autoconnector_connection_method);
 		ReadReg("autoconnector_when_to_connect", & _autoconnector_when_to_connect);
 		ReadReg("autoconnector_close_when_table_disappears", &_autoconnector_close_when_table_disappears);
 
@@ -358,7 +337,6 @@ void CPreferences::ReadPreferences()
 		// CFileDialog saved paths
 		ReadReg("last_path_ohf", &_path_ohf);
 		ReadReg("last_path_tm", &_path_tm);
-		ReadReg("last_path_perl", &_path_perl);
 		ReadReg("last_path_dll", &_path_dll);
 	}
 }

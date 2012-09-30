@@ -15,7 +15,6 @@
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
 #include "COpenHoldemStatusbar.h"
-#include "CPerl.hpp"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CProblemSolver.h"
@@ -32,7 +31,6 @@
 #include "DialogSAPrefs6.h"
 #include "DialogSAPrefs7.h"
 #include "DialogSAPrefs8.h"
-#include "DialogSAPrefs9.h"
 #include "DialogSAPrefs10.h"
 #include "DialogSAPrefs11.h"
 #include "DialogSAPrefs12.h"
@@ -65,43 +63,26 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	// Menu updates
 	ON_UPDATE_COMMAND_UI(ID_FILE_NEW, &CMainFrame::OnUpdateMenuFileNew)
 	ON_UPDATE_COMMAND_UI(ID_FILE_OPEN, &CMainFrame::OnUpdateMenuFileOpen)
-	ON_UPDATE_COMMAND_UI(ID_FILE_LOADTABLEMAP, &CMainFrame::OnUpdateMenuFileLoadProfile)
 	ON_UPDATE_COMMAND_UI(ID_FILE_CONNECT, &CMainFrame::OnUpdateFileConnect)
 	ON_UPDATE_COMMAND_UI(ID_FILE_DISCONNECT, &CMainFrame::OnUpdateFileDisconnect)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOOTREPLAYFRAME, &CMainFrame::OnUpdateViewShootreplayframe)
 	ON_UPDATE_COMMAND_UI(ID_DLL_LOAD, &CMainFrame::OnUpdateMenuDllLoad)
 	ON_UPDATE_COMMAND_UI(ID_DLL_LOADSPECIFICFILE, &CMainFrame::OnUpdateDllLoadspecificfile)
-	ON_UPDATE_COMMAND_UI(ID_PERL_LOADFORMULA, &CMainFrame::OnUpdateMenuPerlLoad)
-	ON_UPDATE_COMMAND_UI(ID_PERL_LOADSPECIFICFORMULA, &CMainFrame::OnUpdateMenuPerlLoadSpecificFormula)
-	ON_UPDATE_COMMAND_UI(ID_PERL_RELOADFORMULA, &CMainFrame::OnUpdateMenuPerlReloadFormula)
-	ON_UPDATE_COMMAND_UI(ID_PERL_CHECKSYNTAX, &CMainFrame::OnUpdateMenuPerlCheckSyntax)
-	ON_UPDATE_COMMAND_UI(ID_PERL_EDITMAINFORMULA, &CMainFrame::OnUpdateMenuPerlEditMainFormula)
 
 	//  Menu commands
 	ON_COMMAND(ID_FILE_OPEN, &CMainFrame::OnFileOpen)
-	ON_COMMAND(ID_FILE_LOAD_OPENPPL, &CMainFrame::OnFileLoadOpenPPL)
-	ON_COMMAND(ID_FILE_LOADTABLEMAP, &CMainFrame::OnFileLoadTableMap)
-	ON_COMMAND(ID_FILE_CONNECT, &CMainFrame::OnBnClickedGreenCircle)
-	ON_COMMAND(ID_FILE_DISCONNECT, &CMainFrame::OnBnClickedRedCircle)
 	ON_COMMAND(ID_EDIT_FORMULA, &CMainFrame::OnEditFormula)
 	ON_COMMAND(ID_EDIT_PREFERENCES, &CMainFrame::OnEditPreferences)
 	ON_COMMAND(ID_VIEW_SCRAPEROUTPUT, &CMainFrame::OnScraperOutput)
 	ON_COMMAND(ID_VIEW_SHOOTREPLAYFRAME, &CMainFrame::OnViewShootreplayframe)
 	ON_COMMAND(ID_DLL_LOAD, &CMainFrame::OnDllLoad)
 	ON_COMMAND(ID_DLL_LOADSPECIFICFILE, &CMainFrame::OnDllLoadspecificfile)
-	ON_COMMAND(ID_PERL_LOADFORMULA, &CMainFrame::OnPerlLoadFormula)
-	ON_COMMAND(ID_PERL_LOADSPECIFICFORMULA, &CMainFrame::OnPerlLoadSpecificFormula)
-	ON_COMMAND(ID_PERL_RELOADFORMULA, &CMainFrame::OnPerlReloadFormula)
-	ON_COMMAND(ID_PERL_CHECKSYNTAX, &CMainFrame::OnPerlCheckSyntax)
-	ON_COMMAND(ID_PERL_EDITMAINFORMULA, &CMainFrame::OnPerlEditMainFormula)
 	ON_COMMAND(ID_HELP_HELP, &CMainFrame::OnHelp)
 	ON_COMMAND(ID_HELP_DOCUMENTATIONWIKI, &CMainFrame::OnHelpWiki)
 	ON_COMMAND(ID_HELP_FORUMS, &CMainFrame::OnHelpForums)
 	ON_COMMAND(ID_HELP_PROBLEMSOLVER, &CMainFrame::OnHelpProblemSolver)
 
 	// Main toolbar
-	ON_BN_CLICKED(ID_MAIN_TOOLBAR_GREENCIRCLE, &CMainFrame::OnBnClickedGreenCircle)
-	ON_BN_CLICKED(ID_MAIN_TOOLBAR_REDCIRCLE, &CMainFrame::OnBnClickedRedCircle)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_AUTOPLAYER, &CMainFrame::OnAutoplayer)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_FORMULA, &CMainFrame::OnEditFormula)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_VALIDATOR, &CMainFrame::OnValidator)
@@ -158,7 +139,6 @@ END_MESSAGE_MAP()
 // CMainFrame construction/destruction
 CMainFrame::CMainFrame() 
 {
-	_autoplay_pressed = false;
 	_wait_cursor = false;
 
 	for (int i=0; i<k_number_of_flags; i++)
@@ -183,16 +163,12 @@ void CMainFrame::DisableButtonsOnConnect()
 	// Disable buttons, menu items
 	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_NEW, false);
 	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_OPEN, false);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, false);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_REDCIRCLE, true);
 	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, true);
 }
 
 void CMainFrame::EnableButtonsOnDisconnect()
 {
 	// Reset toolbar/menu button state
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_REDCIRCLE, false);
 	m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
 	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
 	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_NEW, true);
@@ -224,10 +200,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	// Status bar
 	p_openholdem_statusbar = new COpenHoldemStatusbar(this);
-
-	// Set toolbar button status
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_REDCIRCLE, false);
 
 	// Start timer that checks if we should enable buttons
 	SetTimer(ENABLE_BUTTONS_TIMER, 50, 0);
@@ -463,7 +435,6 @@ void CMainFrame::OnEditPreferences()
 	CDlgSAPrefs6 page6;
 	CDlgSAPrefs7 page7;
 	CDlgSAPrefs8 page8;
-	CDlgSAPrefs9 page9;
 	CDlgSAPrefs10 page10;
 	CDlgSAPrefs11 page11;
 	CDlgSAPrefs12 page12;
@@ -489,7 +460,6 @@ void CMainFrame::OnEditPreferences()
 	dlg.AddPage(page7,  "ICM");
 	dlg.AddPage(page18, "Lazy Scraping");
 	dlg.AddPage(page11, "Logging");
-	dlg.AddPage(page9,  "Perl");
 	dlg.AddPage(page6,  "Poker Tracker");
 	dlg.AddPage(page16, "Rebuy");
 	dlg.AddPage(page8,  "Replay Frames");
@@ -606,77 +576,6 @@ void CMainFrame::OnFileOpen()
 	}
 }
 
-void CMainFrame::OnFileLoadTableMap() 
-{
-	CFileDialog			cfd(true);
-	int					line = 0, ret = 0;
-	CString				e = "";
-
-	cfd.m_ofn.lpstrInitialDir = prefs.path_tm();
-	cfd.m_ofn.lpstrFilter = "OpenScrape Table Maps (.tm)\0*.tm\0All files (*.*)\0*.*\0\0";
-	cfd.m_ofn.lpstrTitle = "Select OpenScrape table map to OPEN";
-
-	if (cfd.DoModal() == IDOK)
-	{
-		CString loaded_version;
-		ret = p_tablemap->LoadTablemap(cfd.m_ofn.lpstrFile, VER_OPENSCRAPE_2, &line, &loaded_version);
-		
-		if (loaded_version == VER_OPENHOLDEM_1 && ret == ERR_VERSION && !prefs.disable_msgbox())
-		{
-			e.Format("This is an OpenHoldem v1 profile (.ohdb1).\n"
-					 "OpenHoldem versions 1.2.0 and higher require v2 Profiles (.ohdb2),\n"
-					 "or OpenScrape Table Maps.\n");
-			OH_MessageBox(e, "Table map load error", MB_OK);
-		}
-
-		else if ( (loaded_version == VER_OPENSCRAPE_1 || loaded_version == VER_OPENHOLDEM_2) )
-		{
-			OH_MessageBox("This is a version 1 table map.\n\n"\
-					   "Version 2.0.0 and higher of OpenHoldem use a new format (version 2).  This\n"\
-					   "table map has been loaded, but it is highly unlikely to work correctly until\n"\
-					   "it has been opened in OpenScrape version 2.0.0 or higher, and adjustments\n"\
-					   "have been made to autoplayer settings and region sizes.\n\n"\
-					   "Please do not use this table map prior to updating it to version 2 in\n"\
-					   "OpenScrape or you run the very serious risk of costly mis-scrapes.",
-					   "Table map load warning", MB_OK | MB_ICONEXCLAMATION);		
-		}
-
-		else if (ret != SUCCESS)
-		{
-			e.Format("Error code: %d  line: %d", ret, line);
-			OH_MessageBox(e, "Table map load error", MB_OK);
-		}
-		
-		if (ret == SUCCESS)
-		{
-			// Reset "ScraperOutput" dialog, if it is live
-			if (m_ScraperOutputDlg) 
-			{
-				m_ScraperOutputDlg->AddListboxItems();
-				m_ScraperOutputDlg->UpdateDisplay();
-			}
-
-			prefs.set_path_tm(cfd.GetPathName());
-		}
-	}
-}
-
-void CMainFrame::OnFileLoadOpenPPL()
-{
-	Beep(440, 200);
-}
-
-void CMainFrame::OnBnClickedGreenCircle() 
-{
-	p_autoconnector->Connect(NULL);
-}
-
-void CMainFrame::OnBnClickedRedCircle() 
-{
-	p_autoconnector->Disconnect();
-	_autoplay_pressed = false;
-}
-
 void CMainFrame::OnTimer(UINT nIDEvent) 
 {
 	RECT			att_rect = {0}, wrect = {0};
@@ -686,7 +585,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 		if (!IsWindow(p_autoconnector->attached_hwnd()))
 		{
 			// Table disappeared
-			OnBnClickedRedCircle();
+			p_autoconnector->Disconnect();
 		}
 	}
 
@@ -694,7 +593,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 	{
 
 		// Autoplayer
-		if ((p_symbols->user_chair_confirmed() && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)))
+		if (p_autoconnector->IsConnected() && p_symbols->user_chair_confirmed())
 		{
 			m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
 		}
@@ -705,13 +604,12 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 
 		// Automatically start autoplayer, if set in preferences
 		if (prefs.engage_autoplayer() && !m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER) &&
-				((p_symbols->user_chair_confirmed() && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE))))
+				p_autoconnector->IsConnected() && p_symbols->user_chair_confirmed())
 		{
-			if (!_autoplay_pressed)
+			if (p_autoplayer->autoplayer_engaged())
 			{
 				m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
 				OnAutoplayer();
-				_autoplay_pressed = true;
 			}
 		}
 
@@ -1044,73 +942,23 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
 	CFrameWnd::OnSysCommand(nID, lParam);
 }
 */
-void CMainFrame::OnPerlLoadFormula() 
-{
-	if (p_perl->IsAFormulaLoaded())
-	{
-		p_perl->UnloadFormulaFile();
-	}
-	else
-	{
-		//  Reload the most recent formula
-		p_perl->ReloadFormulaFile();
-	}
-	//  Make some noise, as there's no visible reaction
-	Beep(880, 125);	
-}
-
-void CMainFrame::OnPerlLoadSpecificFormula() 
-{
-	CFileDialog			cfd(true);
-
-	cfd.m_ofn.lpstrInitialDir = prefs.path_perl();
-	cfd.m_ofn.lpstrFilter = "Perl Scripts (*.pl)\0*.pl\0Perl Modules (*.pm)\0*.pm\0All Files (*.*)\0*.*\0\0";
-	cfd.m_ofn.lpstrTitle = "Select Perl formula file to OPEN";
-	if (cfd.DoModal() == IDOK)
-	{
-		p_perl->LoadFormulaFile(cfd.m_ofn.lpstrFile);
-		prefs.set_path_perl(cfd.GetPathName());
-	}
-}
-
-void CMainFrame::OnPerlEditMainFormula() 
-{
-	p_perl->EditMainFormulaFile();
-}
-
-void CMainFrame::OnPerlReloadFormula() 
-{
-	//  Reload the most recent formula
-	//	(This is a shortcut for unload + load.)
-	p_perl->ReloadFormulaFile();
-	//  Make some noise, as there's no visible reaction
-	Beep(880, 125);
-}
-
-void CMainFrame::OnPerlCheckSyntax() 
-{
-	p_perl->CheckSyntax();
-}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // Menu updaters
 
 void CMainFrame::OnUpdateMenuFileNew(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+	pCmdUI->Enable(!p_autoconnector->IsConnected());
 }
 
 void CMainFrame::OnUpdateMenuFileOpen(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+	pCmdUI->Enable(!p_autoconnector->IsConnected());
 }
 
 void CMainFrame::OnUpdateMenuFileLoadProfile(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+	pCmdUI->Enable(!p_autoconnector->IsConnected());
 }
 
 void CMainFrame::OnUpdateFileConnect(CCmdUI *pCmdUI)
@@ -1131,8 +979,7 @@ void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI)
 	else
 		pCmdUI->SetText("&Load\tF4");
 
-	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-		!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+	pCmdUI->Enable(!p_autoconnector->IsConnected());
 }
 
 void CMainFrame::OnUpdateDllLoadspecificfile(CCmdUI *pCmdUI)
@@ -1145,42 +992,6 @@ void CMainFrame::OnUpdateViewShootreplayframe(CCmdUI *pCmdUI)
 {
 	pCmdUI->Enable(p_autoconnector->attached_hwnd() != NULL);
 }
-
-void CMainFrame::OnUpdateMenuPerlLoad(CCmdUI* pCmdUI)
-{
-	if (p_perl->IsAFormulaLoaded()) 
-		pCmdUI->SetText("&Unload Formula\tF7");
-
-	else 
-		pCmdUI->SetText("&Load Formula\tF7");
-
-	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
-}
-
-void CMainFrame::OnUpdateMenuPerlLoadSpecificFormula(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
-}
-
-void CMainFrame::OnUpdateMenuPerlReloadFormula(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable((p_perl->IsAFormulaLoaded() &&
-					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) &&
-					m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)));
-}
-
-void CMainFrame::OnUpdateMenuPerlCheckSyntax(CCmdUI* pCmdUI) 
-{
-	pCmdUI->Enable(p_perl->IsAFormulaLoaded());
-}
-
-void CMainFrame::OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI) 
-{
-	pCmdUI->Enable(p_perl->IsAFormulaLoaded());
-}
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // Other functions

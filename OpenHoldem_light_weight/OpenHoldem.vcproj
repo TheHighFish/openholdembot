@@ -866,10 +866,6 @@
 						>
 					</File>
 					<File
-						RelativePath=".\DialogSAPrefs9.cpp"
-						>
-					</File>
-					<File
 						RelativePath=".\SAPrefsDialog.cpp"
 						>
 					</File>
@@ -1008,10 +1004,6 @@
 				</File>
 				<File
 					RelativePath=".\CFormula.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\CPerl.cpp"
 					>
 				</File>
 			</Filter>
@@ -1512,10 +1504,6 @@
 						>
 					</File>
 					<File
-						RelativePath=".\DialogSAPrefs9.h"
-						>
-					</File>
-					<File
 						RelativePath=".\SAPrefsDialog.h"
 						>
 					</File>
@@ -1558,14 +1546,6 @@
 				</File>
 				<File
 					RelativePath=".\CFormula.h"
-					>
-				</File>
-				<File
-					RelativePath=".\CPerl.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\PerlEz.h"
 					>
 				</File>
 			</Filter>

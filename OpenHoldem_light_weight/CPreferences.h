@@ -4,9 +4,6 @@
 #include "..\CCritSec\CCritSec.h"
 
 // global preferences constants
-const int k_AutoConnector_Connect_Manually		= 0;
-const int k_AutoConnector_Connect_Automatically	= 1;
-
 const int k_AutoConnector_Connect_Never		= 0;
 const int k_AutoConnector_Connect_Once		= 1;
 const int k_AutoConnector_Connect_Permanent	= 2;
@@ -58,9 +55,6 @@ public:
 	const CString pt_dbname() { return _pt_dbname; }
 	const CString pt_user() { return _pt_user; }
 	const CString pt_pass() { return _pt_pass; }
-	// Perl
-	const CString perl_default_formula() { return _perl_default_formula; }
-	const CString perl_editor() { return _perl_editor; }
 
 	//  PokerChat
 	const int chat_min_delay() { return _chat_min_delay; }
@@ -128,7 +122,6 @@ public:
 	const bool validator_use_heuristic_rules() { return _validator_use_heuristic_rules; }
 	const bool validator_shoot_replayframe_on_error() { return _validator_shoot_replayframe_on_error; }
 	// Auto-connector
-	const int autoconnector_connection_method() { return _autoconnector_connection_method; }
 	const int autoconnector_when_to_connect() { return _autoconnector_when_to_connect; }
 	const bool autoconnector_close_when_table_disappears() { return _autoconnector_close_when_table_disappears; }
 	// GUI
@@ -162,7 +155,6 @@ public:
 	// CFileDialog saved paths
 	const CString path_ohf()	{ return _path_ohf; }
 	const CString path_tm()		{ return _path_tm; }
-	const CString path_perl()	{ return _path_perl; }
 	const CString path_dll()	{ return _path_dll; }
 
 public:
@@ -203,10 +195,6 @@ public:
 	void set_pt_dbname(const CString s) { ENT _pt_dbname = s; WriteReg("pt_dbname", s); }
 	void set_pt_user(const CString s) { ENT _pt_user = s; WriteReg("pt_user", s); }
 	void set_pt_pass(const CString s) { ENT _pt_pass = s; WriteReg("pt_pass", s); }
-
-	// Perl
-	void set_perl_default_formula(const CString s) { ENT _perl_default_formula = s; WriteReg("perl_default_formula", s); }
-	void set_perl_editor(const CString s) { ENT _perl_editor = s; WriteReg("perl_editor", s); }
 
 	//  PokerChat
 	void set_chat_min_delay(const int i) { ENT _chat_min_delay = i; WriteReg("chat_min_delay", i); }
@@ -280,7 +268,6 @@ public:
 	void set_validator_shoot_replayframe_on_error(const bool b) { ENT _validator_shoot_replayframe_on_error = b; WriteReg("validator_shoot_replayframe_on_error", b); }
 
 	// Auto-connector
-	void set_autoconnector_connection_method(const int i) { ENT _autoconnector_connection_method = i; WriteReg("autoconnector_connection_method", i); }
 	void set_autoconnector_when_to_connect(const int i) { ENT _autoconnector_when_to_connect = i; WriteReg("autoconnector_when_to_connect", i); }
 	void set_autoconnector_close_when_table_disappears(const bool b) { ENT _autoconnector_close_when_table_disappears = b; WriteReg("autoconnector_close_when_table_disappears", b); }
 
@@ -322,9 +309,8 @@ public:
 	// CFileDialog saved paths
 	void set_path_ohf(const CString s)		{ ENT _path_ohf = s; WriteReg("last_path_ohf", s); }
 	void set_path_tm(const CString s)		{ ENT _path_tm = s; WriteReg("last_path_tm", s); }
-	void set_path_perl(const CString s)		{ ENT _path_perl = s; WriteReg("last_path_perl", s); }
 	void set_path_dll(const CString s)		{ ENT _path_dll = s; WriteReg("last_path_dll", s); }
-
+	
 private:
 	// private variables - use public accessors and public mutators to address these
 
@@ -362,10 +348,6 @@ private:
 	CString			_pt_dbname;
 	CString			_pt_user;
 	CString			_pt_pass;
-
-	// Perl
-	CString			_perl_default_formula;
-	CString			_perl_editor;
 
 	//  PokerChat
 	int				_chat_min_delay;
@@ -438,7 +420,6 @@ private:
 	bool			_validator_shoot_replayframe_on_error;
 
 	// Auto-connector
-	int				_autoconnector_connection_method;
 	int				_autoconnector_when_to_connect;
 	bool			_autoconnector_close_when_table_disappears;
 
@@ -478,7 +459,6 @@ private:
 	// CFileDialog saved paths
 	CString			_path_ohf;
 	CString			_path_tm;
-	CString			_path_perl;
 	CString			_path_dll;
 
 private:
