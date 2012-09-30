@@ -6,7 +6,6 @@
 
 #include <io.h>
 #include <process.h>
-
 #include "CAutoConnector.h"
 #include "CAutoplayer.h"
 #include "CAutoplayerFunctions.h"
@@ -14,6 +13,7 @@
 #include "CFormula.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
+#include "COpenHoldemHopperCommunication.h"
 #include "COpenHoldemStatusbar.h"
 #include "CPerl.hpp"
 #include "CPokerTrackerThread.h"
@@ -146,10 +146,12 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_STATUS_NIT,OnUpdateStatus)
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_STATUS_ACTION,OnUpdateStatus)
 
-	ON_MESSAGE(WMA_SETWINDOWTEXT, OnSetWindowText)
-	ON_MESSAGE(WMA_DOCONNECT, &CMainFrame::OnConnectMessage)
-	ON_MESSAGE(WMA_DODISCONNECT, &CMainFrame::OnDisconnectMessage)
-	ON_MESSAGE(WMA_CONNECTEDHWND, &CMainFrame::OnConnectedHwndMessage)
+	ON_MESSAGE(WMA_SETWINDOWTEXT, &COpenHoldemHopperCommunication::OnSetWindowText)
+	ON_MESSAGE(WMA_DOCONNECT,     &COpenHoldemHopperCommunication::OnConnectMessage)
+	ON_MESSAGE(WMA_DODISCONNECT,  &COpenHoldemHopperCommunication::OnDisconnectMessage)
+	ON_MESSAGE(WMA_CONNECTEDHWND, &COpenHoldemHopperCommunication::OnConnectedHwndMessage)
+	ON_MESSAGE(WMA_SETFLAG,       &COpenHoldemHopperCommunication::OnSetFlagMessage)
+	ON_MESSAGE(WMA_RESETFLAG,     &COpenHoldemHopperCommunication::OnResetFlagMessage)
 
 	ON_WM_SETCURSOR()
 	ON_WM_SYSCOMMAND()
@@ -858,35 +860,6 @@ void CMainFrame::OnDllLoadspecificfile()
 		p_dll_extension->LoadDll(cfd.m_ofn.lpstrFile);
 		prefs.set_path_dll(cfd.GetPathName());
 	}
-}
-
-LRESULT CMainFrame::OnConnectMessage(WPARAM, LPARAM hwnd)
-{
-	return p_autoconnector->Connect((HWND)hwnd);
-}
-
-LRESULT CMainFrame::OnDisconnectMessage(WPARAM, LPARAM)
-{
-	p_autoconnector->Disconnect();
-	return true;
-}
-
-LRESULT CMainFrame::OnConnectedHwndMessage(WPARAM, LPARAM)
-{
-	return (LRESULT) p_autoconnector->attached_hwnd();
-}
-
-LRESULT CMainFrame::OnSetWindowText(WPARAM, LPARAM title)
-{
-	if (title) {
-		CString *sTitle = (CString *)title;
-
-		SetMainWindowTitle(sTitle->GetString());
-		delete sTitle;
-	} else {
-		SetMainWindowTitle("");
-	}
-	return 0l;
 }
 
 void CMainFrame::OnMinMax(void) 

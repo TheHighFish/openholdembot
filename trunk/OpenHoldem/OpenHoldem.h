@@ -61,9 +61,4 @@ private:
 
 extern COpenHoldemApp theApp;
 
-#define		WMA_SETWINDOWTEXT				WM_APP+1
-#define		WMA_DOCONNECT					WM_APP+2
-#define		WMA_DODISCONNECT				WM_APP+3
-#define		WMA_CONNECTEDHWND				WM_APP+4
-
 #endif //INC_OPENHOLDEM_H
