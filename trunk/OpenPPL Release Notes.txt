@@ -86,7 +86,8 @@ BUG FIXES:
   [Lavezzi]
 - New symbol Had2ndOverPairOnFlop
   [THF]
-
+- New symbol PT_OpponentVPIPHeadsUp
+  [Lavezzi]
 v1.1.1 2012-07-01
 =================
 NEW STUFF:
