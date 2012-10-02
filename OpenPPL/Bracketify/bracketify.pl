@@ -65,18 +65,14 @@ while (<>)
 		print;
 		next;
 	}
-print;
 	# First replace tabs by 4 spaces to make life more easy
 	#
 	# Substitution is case-insensitive ("i" at the end), 
 	# but we care about beautyful, readable output and "fix" the cases.
 	s/\t/    /g;
-print;
 	# Also remove spaces at the beginning and at the end.
 	s/^[ ]*//;
-print;
 	s/[ ]*$//;
-print;
 	# Ignore Option-settings
 	if (m/MaxSessionHands =/ig
 		|| m/MaxSessionTime = /ig
