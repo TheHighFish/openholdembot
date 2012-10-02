@@ -65,14 +65,18 @@ while (<>)
 		print;
 		next;
 	}
+print;
 	# First replace tabs by 4 spaces to make life more easy
 	#
 	# Substitution is case-insensitive ("i" at the end), 
 	# but we care about beautyful, readable output and "fix" the cases.
 	s/\t/    /g;
+print;
 	# Also remove spaces at the beginning and at the end.
 	s/^[ ]*//;
-	s/$[ ]*//;
+print;
+	s/[ ]*$//;
+print;
 	# Ignore Option-settings
 	if (m/MaxSessionHands =/ig
 		|| m/MaxSessionTime = /ig
@@ -649,7 +653,7 @@ while (<>)
 		# so a message like "line_3147_Act" will appear in the log-file.
 		# The log$-expression always evaluates to 1 (true),
 		# so the result of new combined condition will be the same as the old one.
-		s/LineInfo/  &&  log\$line_$current_line_of_code/i;
+		s/LineInfo/  AND  log\$line_$current_line_of_code/i;
 	}
 	# And finally write the processed line to standard output
 	print;
