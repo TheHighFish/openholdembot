@@ -1,11 +1,11 @@
-v1.2.0 2012-09-xx
+v1.2.0 2012-09-29
 =================
 NEW STUFF:
 - An OHF profile-optimizer, that replaces the code for open-ended when-conditions
   by functions. This way old Shanky-style profiles with long code-sequences 
   can get about 20..50% smaller and estimated 2..10 times faster.
   Please see the updated manual for detailed info.
-  A big thanks to rehlby for providing this tool.
+  A big thanks to Rehlby for providing this tool.
   [THF]	
 - Bracketify is now able to modify a profile in a way
   that it logs line-numbers to the debug-log,
@@ -22,13 +22,27 @@ NEW STUFF:
   [THF]
 - Bracketify does now detect unsafe comparisions such as Stacksize = 17,
   which don't work on OH-side because OH uses real numbers like 17.28.
-  It does now generate a warning and replaces the code by "RoundedStacksize = 17".  
-  This does now work for Betsize, TotalInvested, AmountToCall, StartingStacksize,
-  MinOpponentStacksize, MaxOpponentStacksize and Stacksize.
-  However you HAVE TO revisit your code, because expressions like
-  "Stacksize = 70% Potsize" still won't work automatically,
-  because there is no way to convert the result of expressions "70% Potsize" to integer.
-  It is highly recommended to use <, <=, > and >= instead.
+  It does now generate a warning and terminate.  
+  It is highly recommended to use <, <=, > and >= at such spots instead.
+  [THF]
+- New symbols BotCheckedPreflop, BotCheckedOnFlop, BotCheckedOnTurn and BotCheckedOnRiver
+  (reminder: add to docu)
+  [Lavezzi]
+- New technical symbols TopPairRank and TopPairKickerRank
+  (reminder: add to docu)
+  [Lavezzi]
+- New symbol TopPairKickerIsOvercard (reminder: add to docu)
+  [Lavezzi]
+- Bracketify does now auto-correct "NutFullHouseOrFourOfAKind = 0"
+  to "NutFullHouseOrFourOfAKind = f$OpenPPL_HINT_We_Dont_Have_A_FullHouse_At_All",
+  because OpenPPL uses consistently higher numbers for worse hands
+  and 999 if we don't have a full house at all.
+  [THF]
+- New symbol PokerTracker symbols PT_LastCaller_VPIP and PT_OpponentVPIPHeadsUp
+  [Lavezzi]
+- New symbol OpponentStacksizeHeadsUp
+  [Lavezzi]
+- New symbol Had2ndOverPairOnFlop
   [THF]
   
 
@@ -65,29 +79,7 @@ BUG FIXES:
   Thanks to Postenjak for finding the problem.
   [THF]
 
-  NEW STUFF:
-- New symbol BotCheckedPreflop
-  [Lavezzi]
-- New symbol BotCheckedOnFlop
-  [Lavezzi]
-- New symbol BotCheckedOnTurn
-  [Lavezzi]
-- New symbol BotCheckedOnRiver
-  [Lavezzi]
- - New symbol TopPairRank
-  [Lavezzi]
- - New symbol TopPairKickerRank 
-  [Lavezzi]
-- New symbol SecondTopPairRank
-  [Lavezzi]
-- New symbol PT_LastCaller_VPIP
-  [Lavezzi]
-- New symbol OpponentStacksizeHeadsUp
-  [Lavezzi]
-- New symbol Had2ndOverPairOnFlop
-  [THF]
-- New symbol PT_OpponentVPIPHeadsUp
-  [Lavezzi]
+
 v1.1.1 2012-07-01
 =================
 NEW STUFF:
