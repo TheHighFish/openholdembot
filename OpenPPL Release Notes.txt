@@ -25,13 +25,7 @@ NEW STUFF:
   It does now generate a warning and terminate.  
   It is highly recommended to use <, <=, > and >= at such spots instead.
   [THF]
-- New symbols BotCheckedPreflop, BotCheckedOnFlop, BotCheckedOnTurn and BotCheckedOnRiver
-  (reminder: add to docu)
-  [Lavezzi]
-- New technical symbols TopPairRank and TopPairKickerRank
-  (reminder: add to docu)
-  [Lavezzi]
-- New symbol TopPairKickerIsOvercard (reminder: add to docu)
+- New symbols BotCheckedPreflop, BotCheckedOnFlop, BotCheckedOnTurn, BotCheckedOnRiver, TopPairRank and TopPairKickerRank
   [Lavezzi]
 - Bracketify does now auto-correct "NutFullHouseOrFourOfAKind = 0"
   to "NutFullHouseOrFourOfAKind = f$OpenPPL_HINT_We_Dont_Have_A_FullHouse_At_All",
