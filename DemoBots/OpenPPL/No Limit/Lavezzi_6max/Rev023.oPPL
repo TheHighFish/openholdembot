@@ -1102,7 +1102,7 @@ When (FHandStrenght=5)
  	When Others RAISEMAX FORCE
 	
 //BET CALL (^Pot) (Call Reraise ^Pot|65) late Bet Raise Mini
-// When (FHandStrenght=20) 
+ When (FHandStrenght=20) 
 	When TotalInvested>75% StackSize RaiseMax FORCE
 	When StackSize<15 RaiseMax FORCE
 	When OpponentIsAllin AND OpponentsLeft=1 AND AmountToCall<=65 CALL FORCE	
