@@ -10,6 +10,7 @@
 #include "CAutoplayer.h"
 #include "CAutoplayerFunctions.h"
 #include "CDllExtension.h"
+#include "CFlagsToolbar.h"
 #include "CFormula.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
@@ -112,28 +113,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_SHOOTFRAME, &CMainFrame::OnViewShootreplayframe)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_HELP, &CMainFrame::OnHelp)
 
-	// Flags toolbar
-	ON_BN_CLICKED(ID_NUMBER0, &CMainFrame::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER1, &CMainFrame::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER2, &CMainFrame::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER3, &CMainFrame::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER4, &CMainFrame::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER5, &CMainFrame::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER6, &CMainFrame::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER7, &CMainFrame::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER8, &CMainFrame::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER9, &CMainFrame::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER10, &CMainFrame::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER11, &CMainFrame::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER12, &CMainFrame::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER13, &CMainFrame::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER14, &CMainFrame::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER15, &CMainFrame::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER16, &CMainFrame::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER17, &CMainFrame::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER18, &CMainFrame::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER19, &CMainFrame::OnClickedFlags)
-
 	ON_WM_TIMER()
 
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_STATUS_READY,OnUpdateStatus)
@@ -163,9 +142,6 @@ CMainFrame::CMainFrame()
 	_autoplay_pressed = false;
 	_wait_cursor = false;
 
-	for (int i=0; i<k_number_of_flags; i++)
-		_flags[i] = false;
-
 	_prev_att_rect.bottom = 0;
 	_prev_att_rect.left = 0;
 	_prev_att_rect.right = 0;
@@ -178,6 +154,11 @@ CMainFrame::CMainFrame()
 
 CMainFrame::~CMainFrame() 
 {
+	if (p_flags_toolbar != NULL)
+	{
+		p_flags_toolbar->~CFlagsToolbar();
+		delete(p_flags_toolbar);
+	}
 }
 
 void CMainFrame::DisableButtonsOnConnect()
@@ -221,7 +202,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// Create toolbars
 	EnableDocking(CBRS_ALIGN_ANY);
 	CreateMainToolbar();
-	CreateFlagsToolbar();
+	p_flags_toolbar = new CFlagsToolbar;
 	AlignToolbars();
 
 	// Status bar
@@ -290,50 +271,6 @@ int CMainFrame::CreateMainToolbar(void)
 	return 0;
 }
 
-int CMainFrame::CreateFlagsToolbar(void) 
-{
-	TBBUTTONINFO	tbi;
-
-	tbi.cbSize = sizeof(TBBUTTONINFO);
-	tbi.dwMask = TBIF_STYLE;
-	tbi.fsStyle = TBSTYLE_CHECK;
-
-	// Flags toolbar
-	_tool_bar.CreateEx(this, NULL, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER |
-							CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC);
-	_tool_bar.LoadToolBar(IDR_FLAGS);
-
-	// Make flags toolbar buttons sticky
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER0, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER1, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER2, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER3, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER4, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER5, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER6, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER7, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER8, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER9, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER10, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER11, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER12, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER13, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER14, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER15, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER16, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER17, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER18, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER19, &tbi);
-	_tool_bar.EnableDocking(CBRS_ALIGN_ANY);
-	_tool_bar.EnableDocking(CBRS_ALIGN_TOP);
-	DockControlBar(&_tool_bar);
-
-	// Title of floating flags toolbar
-	_tool_bar.SetWindowText("Flags");
-
-	return 0;
-}
-
 
 void CMainFrame::AlignToolbars(void) 
 {
@@ -353,6 +290,7 @@ void CMainFrame::AlignToolbars(void)
 	rectBar2.right = rectBar1.right + uiBarWidth;
 
 	DockControlBar(&_tool_bar, AFX_IDW_DOCKBAR_TOP, rectBar2); //will be second
+	DockControlBar(&p_flags_toolbar->_tool_bar);
 
 	RecalcLayout();
 }
@@ -766,33 +704,6 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 	}
 }
 
-void CMainFrame::OnClickedFlags() 
-{
-	set_flags(0, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER0));
-	set_flags(1, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER1));
-	set_flags(2, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER2));
-	set_flags(3, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER3));
-	set_flags(4, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER4));
-	set_flags(5, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER5));
-	set_flags(6, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER6));
-	set_flags(7, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER7));
-	set_flags(8, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER8));
-	set_flags(9, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER9));
-	set_flags(10, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER10));
-	set_flags(11, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER11));
-	set_flags(12, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER12));
-	set_flags(13, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER13));
-	set_flags(14, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER14));
-	set_flags(15, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER15));
-	set_flags(16, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER16));
-	set_flags(17, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER17));
-	set_flags(18, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER18));
-	set_flags(19, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER19));
-
-	p_symbols->CalcSymbols();
-}
-
-
 void CMainFrame::OnAutoplayer() 
 {
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
@@ -959,29 +870,6 @@ void CMainFrame::OnAttachBottom(void)
 
 		MoveWindow(att_rect.left, att_rect.bottom, att_rect.right-att_rect.left, wrect.bottom-wrect.top);
 	}
-}
-
-
-void CMainFrame::OnFormulaViewMainToolbar() 
-{
-	if (!m_MainToolBar.IsVisible())
-		ShowControlBar(&m_MainToolBar, TRUE, FALSE);
-
-	else
-		ShowControlBar(&m_MainToolBar, FALSE, FALSE);
-
-	RecalcLayout();
-}
-
-void CMainFrame::OnFormulaViewFlagsToolbar() 
-{
-	if (!_tool_bar.IsVisible())
-		ShowControlBar(&_tool_bar, TRUE, FALSE);
-
-	else
-		ShowControlBar(&_tool_bar, FALSE, FALSE);
-
-	RecalcLayout();
 }
 
 
@@ -1205,7 +1093,6 @@ void CMainFrame::OnHelpForums()
 {
 	ShellExecute(NULL, "open", "http://www.maxinmontreal.com/forums/index.php", "", "", SW_SHOWDEFAULT);
 }
-
 
 void CMainFrame::OnHelpProblemSolver() 
 {

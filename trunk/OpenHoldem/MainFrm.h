@@ -29,7 +29,6 @@ protected: // create from serialization only
 	afx_msg void OnDllLoad();
 	afx_msg void OnBnClickedRedCircle();
 	afx_msg void OnBnClickedGreenCircle();
-	afx_msg void OnClickedFlags();
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnUpdateStatus(CCmdUI *pCmdUI);
 	afx_msg void OnAutoplayer();
@@ -47,7 +46,6 @@ protected: // create from serialization only
 	afx_msg void OnUpdateMenuDllLoad(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateDllLoadspecificfile(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateViewMainToolbar(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateViewFlagsToolbar(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateViewStatusbar(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateViewShootreplayframe(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateEditForceuserchair(CCmdUI *pCmdUI);
@@ -57,9 +55,6 @@ protected: // create from serialization only
 	afx_msg void OnUpdateMenuPerlLoad(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateMenuPerlLoadSpecificFormula(CCmdUI* pCmdUI);
 
-	afx_msg void OnFormulaViewMainToolbar();
-	afx_msg void OnFormulaViewFlagsToolbar();
-	afx_msg void OnFormulaViewStatusbar();
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg void OnDllLoadspecificfile();
 	afx_msg void OnPerlLoadFormula();
@@ -83,7 +78,6 @@ public:
 
 public:
 	// public accessors
-	const bool flags(const int i) { if (i>=0 && i<=19) return _flags[i]; else return false; }
 	const bool wait_cursor() { return _wait_cursor; }
 
 public:
@@ -99,19 +93,16 @@ public:
 public:
 #define ENT CSLock lock(m_critsec);
 	// public mutators
-	void set_flags(const int i, const bool b) { ENT if (i>=0 && i<=19) _flags[i] = b; }
 	void set_wait_cursor(const bool b) { ENT _wait_cursor = b; }
 #undef ENT
 
 private:
 	// private variables - use public accessors and public mutators to address these
-	bool			_flags[20];		 // Flags button status
 	bool			_wait_cursor;	 // Used if we need to display a wait cursor anywhere
 
 private:
 	// private functions and variables - not available via accessors or mutators
 	int CreateMainToolbar(void);
-	int CreateFlagsToolbar(void);
 	void AlignToolbars(void);
 	int CreateStatusBar(void);
 

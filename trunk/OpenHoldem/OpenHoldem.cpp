@@ -13,6 +13,7 @@
 #include "CGrammar.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
+#include "COpenHoldemHopperCommunication.h"
 #include "CPreferences.h"
 #include "CSessionCounter.h"
 #include "DialogFormulaScintilla.h"
