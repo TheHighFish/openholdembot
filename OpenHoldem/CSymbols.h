@@ -192,11 +192,6 @@ struct SSymbols
 	int callbits[k_number_of_betrounds+1];
 	int foldbits[k_number_of_betrounds+1];
 
-	//FLAGS
-	double fmax;
-	double f[k_number_of_flags];
-	double fbits;
-
 	//COMMON CARDS
 	double ncommoncardspresent;
 	double ncommoncardsknown;
@@ -572,11 +567,6 @@ public:
 	void	set_sym_callbits(const int i, const int betround) { ENT assert(betround >= k_betround_current); assert(betround <= k_betround_river); _sym.callbits[betround] = i; }
 	void	set_sym_foldbits(const int i, const int betround) { ENT assert(betround >= k_betround_current); assert(betround <= k_betround_river); _sym.foldbits[betround] = i; }
 
-	//flags
-	void	set_sym_fmax(const double d) { ENT _sym.fmax = d;}
-	void	set_sym_f(const int i, const double d) { ENT assert(i>=0); assert(i<k_number_of_flags); _sym.f[i] = d;}
-	void	set_sym_fbits(const double d) { ENT _sym.fbits = d;}
-
 	// common cards
 	void	set_sym_ncommoncardspresent(const double d) { ENT _sym.ncommoncardspresent = d;}
 	void	set_sym_ncommoncardsknown(const double d) { ENT _sym.ncommoncardsknown = d;}
@@ -781,7 +771,6 @@ private:
 	void CalcPlayersOpponents(void);
 	void CalcChipamtsLimits(void);
 	void CalcNumbets(void);
-	void CalcFlags(void);
 	void CalcAutoplayer(void);
 	void CalcPositionsUserchair(void);
 	void CalcPositionsNonUserchair(void);

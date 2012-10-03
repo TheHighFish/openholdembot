@@ -11,6 +11,7 @@
 #include "CHandresetDetector.h"
 #include "CIteratorThread.h"
 #include "CLazyScraper.h"
+#include "CopenHoldemHopperCommunication.h"
 #include "CopenHoldemStatusbar.h"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"

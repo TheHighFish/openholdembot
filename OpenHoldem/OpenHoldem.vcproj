@@ -309,6 +309,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CFlagsToolbar.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CGrammar.cpp"
 				>
 			</File>
@@ -1031,6 +1035,10 @@
 			</File>
 			<File
 				RelativePath=".\CFileSystemMonitor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CFlagsToolbar.h"
 				>
 			</File>
 			<File

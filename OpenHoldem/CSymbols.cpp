@@ -8,6 +8,7 @@
 #include "CAutoconnector.h"
 #include "CAutoplayer.h"
 #include "CAutoplayerFunctions.h"
+#include "CFlagsToolbar.h"
 #include "inlines/eval.h"
 #include "CGameState.h"
 #include "CGrammar.h"
@@ -782,12 +783,6 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 	set_sym_nopponentsplaying(0);
 	set_sym_opponentsplayingbits(0);
 
-	// flags
-	set_sym_fmax(0);
-	set_sym_fbits(0);
-	for (int i=0; i<k_number_of_flags; i++)
-		set_sym_f(i, 0);
-
 	// (un)known cards
 	set_sym_ncardsknown(0);
 	set_sym_ncardsunknown(0);
@@ -1093,7 +1088,6 @@ void CSymbols::CalcSymbols(void)
 	CalcPlayersOpponents();				// players/opponents, raischair
 	CalcChipamtsLimits();				// chip amounts, limits
 	CalcNumbets();						// number of bets
-	CalcFlags();						// flags
 	CalcTime();							// time
 	CalcAutoplayer();					// autoplayer
 	CalcPositionsNonUserchair();		// positions, not depening on userchair
@@ -1356,25 +1350,6 @@ void CSymbols::CalcNumbets(void)
 		p_tablelimits->bet()==0 ? 0 : 
 		_sym.currentbet[(int) _sym.raischair] / p_tablelimits->bet());					// ncallbets
 	set_sym_nraisbets(_sym.ncallbets + 1);												// nraisbets
-}
-
-void CSymbols::CalcFlags(void)
-{
-	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-
-	for (int i=0; i<k_number_of_flags; i++)
-		{
-			set_sym_f(i, pMyMainWnd->flags(i));												// fn
-			if (_sym.f[i] != 0)
-			{
-				if (i > _sym.fmax)
-				{
-					set_sym_fmax(i);													// fmax
-				}
-
-				set_sym_fbits((int) _sym.fbits | (1<<i));								// fbits
-			}
-		}
 }
 
 void CSymbols::CalcTime(void)
@@ -4214,10 +4189,10 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "foldbits", 8)==0 && strlen(a)==9)  					return _sym.foldbits[a[8]-'0'];
 
 	//FLAGS
-	if (memcmp(a, "fmax", 4)==0 && strlen(a)==4)						return _sym.fmax;
-	if (memcmp(a, "f", 1)==0 && strlen(a)==2)							return _sym.f[a[1]-'0'];
-	if (memcmp(a, "f", 1)==0 && strlen(a)==3)							return _sym.f[10 * (a[1]-'0') + a[2] - '0'];
-	if (memcmp(a, "fbits", 5)==0 && strlen(a)==5)						return _sym.fbits;
+	if (memcmp(a, "fmax", 4)==0 && strlen(a)==4)						return p_flags_toolbar->GetFlagMax();
+	if (memcmp(a, "f", 1)==0 && strlen(a)==2)							return p_flags_toolbar->GetFlag(a[1]-'0');
+	if (memcmp(a, "f", 1)==0 && strlen(a)==3)							return p_flags_toolbar->GetFlag(10 * (a[1]-'0') + a[2] - '0');
+	if (memcmp(a, "fbits", 5)==0 && strlen(a)==5)						return p_flags_toolbar->GetFlagBits();
 
 	//COMMON CARDS
 	if (memcmp(a, "ncommoncardspresent", 19)==0 && strlen(a)==19)		return _sym.ncommoncardspresent;

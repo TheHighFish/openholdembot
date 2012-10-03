@@ -2,7 +2,7 @@
 #include "COpenHoldemHopperCommunication.h"
 
 #include "CAutoConnector.h"
-#include "CSymbols.h"
+#include "CFlagsToolbar.h"
 #include "MainFrm.h"
 
 
@@ -58,7 +58,7 @@ LRESULT COpenHoldemHopperCommunication::OnSetFlagMessage(WPARAM, LPARAM flag_to_
 	{
 		return false;
 	}
-	p_symbols->set_sym_f(_flag_to_set, true);
+	p_flags_toolbar->SetFlag(_flag_to_set, true);
 	return true;
 }
 
@@ -70,7 +70,7 @@ LRESULT COpenHoldemHopperCommunication::OnResetFlagMessage(WPARAM, LPARAM flag_t
 	{
 		return false;
 	}
-	p_symbols->set_sym_f(_flag_to_reset, false);
+	p_flags_toolbar->SetFlag(_flag_to_reset, true);
 	return true;
 }
 
