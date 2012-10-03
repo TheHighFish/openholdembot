@@ -1,36 +1,31 @@
 v 2.2.0 2012-xx-yy 
 ==================
-BUG FIXES: 
-- Fine-tuning some validator-rules (1201, 1205, 0261). 
-  Thanks to CakeWalk, BotForSale and Postenjak for reporting the inaccuracies.
-  [THF]
-- mh_str_quads symbol was not returning value 5 when nut quads on board or when holding best kicker
-  [Lavezzi] 
-- If a user folds some casinos display "FOLD" where formerly his bet got displayed,
-  some casinos move the cards to that region.
-  This could lead to ugly misscrapes and bogus data.
-  Therefore we do now check if the user is still playing 
-  before updating nbetsround and nbetsroundX.
-  Thanks to Relhby for reporting.
-  [THF]
-- The autoplayer-code did first store the mouse-poition,
-  then wait for the mutex and finally act and then restore the position again.
-  This could lead to funny mouse-jumps if another application moved the mouse inbetween.
-  Thanks to Pingvvino for finding the problem and providing a fix.
-  [THF]
-
-  
 NEW STUFF:
+- Implementing a table-positioner that optionally moves the poker-tables 
+  to reasonable positions.
+  [THF]
+- Implemented a "Problem Solver", a tool to help newbies.
+  It detects common PEBKACs, like not being connected, an unknown user-chair or no opponents.
+  This tool is available at Menu -> Help -> Problem solver.
+  [THF]
+- Providing a tablemap-reloader, that automatically looks for changes
+  in the scraper-directory when OpenHoldem is not connected
+  and reloads the tablemaps on changes.
+  Furthermore we removed the option to load tablemaps manually,
+  because there no longer is any need to do so.
+  Just put them into the scraper-folder and OH will load them automagically.
+  [THF]
 - f$play has been quite a messy concept for a long time.
   It finally got replaced by 3 individual functions: f$sitin, f$sitout and f$leave.
   There will be a warning on old formulae and the user will need to make
   some small changes to his formula set. 
   [THF]
 - f$swag has been quite a messy concept for a long time.
-  f$swag and its supporting functions 
-  (f$srai, sraimin, sraimax, swagtextmethod and f$swag_adjust)
-  got replaced by a single function f$betsize 
-  and OH does automatically care about the rest. 
+  f$swag and its supporting functions  (f$srai, sraimin, sraimax, swagtextmethod and f$swag_adjust)
+  got replaced by a single function f$betsize  and OH does automatically care about the rest. 
+  Therefore the next version of OpenPPL will be delivered without the file
+  "OpenPPL_SwagFunctions_For_OpenHoldem_2.1.x_Only_Please_Delete_This_File_Once_You_Use_OpenHoldem_2.2.0_And_Later.ohf"
+  because it is now superfluous.
   [THF]
 - new symbol: originalbalance, which remebers the balance at the start of a session. 
   [THF]
@@ -49,23 +44,32 @@ NEW STUFF:
   f$betpot_2_1, f$betpot_1_1, f$betpot_3_4, f$betpot_2_3,
   f$betpot_1_2, f$betpot_1_3, f$betpot_1_4.
   [Strikles + THF]
-- Implementing a table-positioner that optionally moves the poker-tables 
-  to reasonable positions.
-  [THF]
-- Implemented a "Problem Solver", a tool to help newbies.
-  It detects common PEBKACs, like not being connected, an unknown user-chair or no opponents.
-  This tool is available at Menu -> Help -> Problem solver.
-  [THF]
-- Providing a tablemap-reloader, that automatically looks for changes
-  in the scraper-directory when OpenHoldem is not connected
-  and reloads the tablemaps on changes.
-  Furthermore we removed the option to load tablemaps manually,
-  because there no longer is any need to do so.
-  Just put them into the scraper-folder and OH will load them automagically.
-  [THF]
 - Exporting the write_log-function to the user-DLL,
   So it becomes possible to write the DLL-log directly into the main-log-file
   [Nik0]
+- Introducing a sanity-check "card-stability" similar to balance stability.
+  The autoplayer won't act if one mandatory board-card is missing (e.g. occluded).
+  [Nik0]
+
+  
+BUG FIXES: 
+- Fine-tuning some validator-rules (1201, 1205, 0261). 
+  Thanks to CakeWalk, BotForSale and Postenjak for reporting the inaccuracies.
+  [THF]
+- mh_str_quads symbol was not returning value 5 when nut quads on board or when holding best kicker
+  [Lavezzi] 
+- If a user folds some casinos display "FOLD" where formerly his bet got displayed,
+  some casinos move the cards to that region.
+  This could lead to ugly misscrapes and bogus data.
+  Therefore we do now check if the user is still playing 
+  before updating nbetsround and nbetsroundX.
+  Thanks to Relhby for reporting.
+  [THF]
+- The autoplayer-code did first store the mouse-poition,
+  then wait for the mutex and finally act and then restore the position again.
+  This could lead to funny mouse-jumps if another application moved the mouse inbetween.
+  Thanks to Pingvvino for finding the problem and providing a fix.
+  [THF]
 
 
 MAINTENANCE:
@@ -200,6 +204,8 @@ MAINTENANCE:
   (technical symbols in OH, poker-logicals in libraries).
   As these functions get used by several people and by OpenPPL
   a library "mh_str_Handstrength_Library.ohf" has been created in the repository.
+  It has to be included in your OH-script-code if you want to use it
+  and OpenPPL will automatically append that file.
   [THF]
 - OpenHoldem does now export the functions GetSymbolFromDll, SendChatMessageFomDll,
   GetPhl1kFromDll, GetPrw1326FromDll, WriteLogFromDll instead of sending 
