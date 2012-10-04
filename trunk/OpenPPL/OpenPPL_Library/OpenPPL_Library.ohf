@@ -2666,10 +2666,16 @@ f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRA
 && f$OpenPPL_RankOfFirstHoleCard > f$OpenPPL_SecondFlopCard
 && f$OpenPPL_RankOfFirstHoleCard > f$OpenPPL_ThirdFlopCard ]
 
+
 ##f$OpenPPL_Had2ndOverPairOnFlop##
    ispair
 && rankhiplayer < f$OpenPPL_TopFlopCard
 && rankhiplayer > f$OpenPPL_2ndTopFlopCard
+
+##f$OpenPPL_Had2ndOverPairOnTurn##
+f$OpenPPL_Had2ndOverPairOnFlop &&
+  ($$cr3==f$OpenPPL_TopFlopCard)
+||($$cr3<f$OpenPPL_TopFlopCard)
 
 ##f$OpenPPL_HadPairOnFlop##
    ispair 
