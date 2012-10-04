@@ -36,7 +36,7 @@ NEW STUFF:
   [Lavezzi]
 - New symbol OpponentStacksizeHeadsUp
   [Lavezzi]
-- New symbol Had2ndOverPairOnFlop
+- New symbol Had2ndOverPairOnFlop, Had2ndOverPairOnTurn
   [THF]
   
 
