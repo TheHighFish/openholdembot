@@ -32,7 +32,7 @@ NEW STUFF:
   because OpenPPL uses consistently higher numbers for worse hands
   and 999 if we don't have a full house at all.
   [THF]
-- New symbol PokerTracker symbols PT_LastCaller_VPIP and PT_OpponentVPIPHeadsUp
+- New symbol PokerTracker symbols PT_LastCaller_VPIP, PT_LastCaller_PFR and PT_OpponentVPIPHeadsUp
   [Lavezzi]
 - New symbol OpponentStacksizeHeadsUp
   [Lavezzi]
