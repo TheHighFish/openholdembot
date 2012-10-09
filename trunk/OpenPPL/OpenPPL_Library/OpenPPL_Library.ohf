@@ -1326,7 +1326,11 @@ f$OpenPPL_DecisionIsPercentagedPotsizedBet ? f$OpenPPL_BetSizeForPercentagedPots
 || f$rais
 
 ##f$sitout##
+// Sitout if GoBuddyTakeABreakAndABeer is true
+// then reset this variable to allow f$sitin later.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=259&t=15515
 me_re_GoBuddyTakeABreakAndABeer
++ [0 * me_st_GoBuddyTakeABreakAndABeer_0]
 
 //*****************************************************************************
 //
