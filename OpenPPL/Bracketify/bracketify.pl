@@ -649,7 +649,7 @@ while (<>)
 		# so a message like "line_3147_Act" will appear in the log-file.
 		# The log$-expression always evaluates to 1 (true),
 		# so the result of new combined condition will be the same as the old one.
-		s/LineInfo/  AND  logline_$current_line_of_code/i; #!!! log$
+		s/LineInfo/  AND  log\$line_$current_line_of_code/i; 
 	}
 	# And finally write the processed line to standard output
 	print;
