@@ -4,7 +4,7 @@
 static const char *k_code_snippet_license =
 	"//************************************************************************\n"
 	"//                                                                        \n"
-	"// Converted with OpenPPL 1.1.1                                             \n"
+	"// Converted with OpenPPL 1.2.0                                           \n"
 	"//                                                                        \n"
 	"// OpenPPL is part of the OpenHoldem project                              \n"
 	"//   Download page:         http://code.google.com/p/openholdembot/       \n"
@@ -39,6 +39,7 @@ static const char *k_code_snippet_license =
 	"//   Poker_Dog                                                            \n"
 	"//   Postenjak                                                            \n"
 	"//   Rambam                                                               \n"
+	"//   Relhby                                                               \n"
 	"//   Satanikut                                                            \n"
 	"//   Stangelnator                                                         \n"
 	"//   SteveG1963                                                           \n"
