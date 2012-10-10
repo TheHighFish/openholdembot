@@ -90,29 +90,26 @@ Building Symbols On Your Own
 \end_layout
 
 \begin_layout Standard
-Note: The following symbols need a working connection to Poker Tracker Database
- (PT2/PT3 depinding on OH version), correct opponents name scraping and
- sitename/network vars in the TableMap.
- 
+Note: The PokerTracker symbols need a working connection to Poker Tracker
+ Database (PT2/PT3 depending on OH version), correct opponents name scraping
+ and sitename/network symbols in the TableMap as described in the OpenHoldem
+ manual.
 \end_layout
 
 \begin_layout Standard
-Number of hands symbols are needed to weight reliability of the symbol you
- are interested in.
- Infact for some symbol 80 hand could perfectly represent an Opponent playing
- style while for other symbols you could be in the need of hundred or thousand
- hands.
- Minumum hands symbols can be changed editing the Library to fit own needs.
+All PokerTracker symbols require a certain samplesize to become meaningful.
+ Our library defines reasonable requirements for the stats and returns -1
+ if there are not enough hands.
 \end_layout
 
 \begin_layout Standard
-Please note that OH returns percentage values divided by 100; So for example
- 50% is returned as 0.50.
+Please note that OH returns percentages in the range [0..1], so 0.31 means
+ 31%.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="20" columns="2">
+<lyxtabular version="3" rows="13" columns="2">
 <features tabularvalignment="middle">
 <column alignment="left" valignment="top" width="40text%">
 <column alignment="left" valignment="top" width="55text%">
@@ -131,26 +128,6 @@ Symbol
 
 \begin_layout Plain Layout
 Meaning
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
 \end_layout
 
 \end_inset
@@ -379,7 +356,7 @@ Player in Small Blind number of hands stored in PT database
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -388,131 +365,11 @@ PT_SmallBlind_VPIP
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Percentage of voluntary played hands by the small blind
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Poker Tracker Technical Symbols
-\end_layout
-
-\end_inset
-</cell>
-<cell multicolumn="2" alignment="center" valignment="top" topline="true" bottomline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-ConstMinHandsFor_PT_AttemptToStealBlinds 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Minimun hands needed for PT_LastRaiser_AttemptToStealBlinds
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-ConstMinHandsFor_PT_BigBlind_FoldBBToSteal
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Minimun hands needed for PT_BigBlind_FoldBBToSteal
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-ConstMinHandsFor_PT_SmallBlind_FoldSBToSteal
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Minimun hands needed for PT_SmallBlind_FoldSBToSteal
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-ConstMinHandsFor_PT_VPIP_AND_PFR 
-\end_layout
-
-\end_inset
-</cell>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-Minimun hands needed for symbols that check VPIP or PFR
+Percentage of voluntary played hands by the small blind
 \end_layout
 
 \end_inset
