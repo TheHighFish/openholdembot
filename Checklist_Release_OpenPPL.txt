@@ -2,7 +2,6 @@
 * Resolve conflicts if necessary
 * Change the version in "CodeSnippets.h"
 * Rebuild the project
-* Join the library using "create_OpenPPL_library.Bat" in trunk\OpenPPL\OpenPPL_Library.
 * Run the test-suite, using "Run_Testsuite.bat" in trunk/OpenPPL.
   It will run only the ok*.txt-files, so you shouldn't get any error-messages.
 * Build the docu if necessary
@@ -20,6 +19,7 @@
 * Create a new temporary directory "OpenPPL_1.x.y" (on your desktop, not in the sources).
 * Add the executable OpenPPL.exe to the new directory (check time of creation)
 * Add "Bracketify.pl"
+* Add Relhbys OHF-optimizer
 * Add "OpenPPL Release Notes.txt"
 * Add "OpenPPL_Library.ohf"
 * Add "OpenPPL_SwagFunctions_For_OpenHoldem_2.1.x_Only_Please_Delete_This_File_Once_You_Use_OpenHoldem_2.2.0_And_Later.ohf"
