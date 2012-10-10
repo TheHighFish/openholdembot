@@ -633,18 +633,18 @@ while (<>)
 	if (m/LineInfo/i)
 	{
 		# We need another set of brackets, so one opening bracket after "When "
-		s/^WHEN /WHEN [/i;
-		s/ WHEN / WHEN [/i;
+		s/^WHEN /WHEN \(/i;
+		s/ WHEN / WHEN \(/i;
 		# Then we have 4 place-holders:
 		# * LineInfo_Act for actions
 		# * LineInfo_Ret for return statements
 		# * LineInfo_Var for user-defined variables to be set
 		# * LineInfo_Mem for OpenHoldems memory-store-command.
 		# Each of them needs a closing bracket
-		s/LineInfo_Act/LineInfo_Act\]/i;
-		s/LineInfo_Ret/LineInfo_Ret\]/i;
-		s/LineInfo_Var/LineInfo_Var\]/i;
-		s/LineInfo_Mem/LineInfo_Mem\]/i;
+		s/LineInfo_Act/LineInfo_Act\)/i;
+		s/LineInfo_Ret/LineInfo_Ret\)/i;
+		s/LineInfo_Var/LineInfo_Var\)/i;
+		s/LineInfo_Mem/LineInfo_Mem\)/i;
 		# We keep the postfix, but replace "LineInfo" by something like "log$line_xyz"
 		# so a message like "line_3147_Act" will appear in the log-file.
 		# The log$-expression always evaluates to 1 (true),
