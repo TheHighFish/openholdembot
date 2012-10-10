@@ -4469,7 +4469,7 @@ f$OpenPPL_HINT_There_Are_No_True_Raisers
 
 ##f$OpenPPL_SmallBlindRaising##
    [(raisbits1 >> f$OpenPPL_SmallBlindChair) & 1 == 1]
-&& [f$OpenPPL_SmallBlindCurrentBet >= 0.51]
+&& [f$OpenPPL_SmallBlindCurrentBet >= 1.01]
 
 ##f$OpenPPL_BigBlindRaising##
    [(raisbits1 >> f$OpenPPL_BigBlindChair) & 1 == 1]
