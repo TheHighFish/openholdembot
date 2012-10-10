@@ -82,38 +82,6 @@ Why debugging? If you code your bot or if you watch it play you will for
 \end_layout
 
 \begin_layout Section*
-Using Flags
-\end_layout
-
-\begin_layout Standard
-OpenHoldem provides a usefull set of buttons with a number on it, from 0
- to 19 called flags.
- When an OH flag button is pressed then corresponding symbol (f1..f19) will
- be true.
- For example our oPPL code could look like the following:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-WHEN betround=2 AND (BotRaisedBeforeFlop OR f1) Raise 50% FORCE 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The above line is true if bot raised before flop or flag 1 button has been
- pressed; This way you could simulate in Manual Mode custom conditions.
-\end_layout
-
-\begin_layout Section*
 Working with the debug-tab
 \end_layout
 
@@ -187,6 +155,7 @@ Auto
 	filename images/debug_tab.JPG
 	width 577pt
 	height 635pt
+	noUnzip
 
 \end_inset
 
@@ -526,6 +495,38 @@ have to
 \emph on
 screenscraping is an easy and very flexible approach, that works great.
  But it requires some care from your side!
+\end_layout
+
+\begin_layout Section*
+Using Flags
+\end_layout
+
+\begin_layout Standard
+OpenHoldem provides a useful set of buttons with a number on it, from 0
+ to 19 called flags.
+ When an OH flag button is pressed then corresponding symbol (f0..f19) will
+ be true.
+ For example our code could look like the following:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN betround=2 AND (BotRaisedBeforeFlop OR f0) Raise 50% FORCE 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The above line is true if bot raised before flop or flag 0 button has been
+ pressed; This way you could simulate in Manual Mode custom conditions.
 \end_layout
 
 \end_body

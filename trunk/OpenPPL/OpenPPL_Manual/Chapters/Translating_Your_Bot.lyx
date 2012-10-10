@@ -222,6 +222,9 @@ After that you have an OH-script file that you can with load with OpenHoldem.
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/command_prompt.JPG
+	width 666pt
+	noUnzip
+	clip
 
 \end_inset
 
