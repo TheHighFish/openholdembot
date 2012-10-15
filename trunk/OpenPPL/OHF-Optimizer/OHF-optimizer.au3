@@ -36,6 +36,7 @@ If $filein = -1 Then
     Exit
 EndIf
 
+Local $function_prefix = "f$OEWC_"
 ; Read in lines of text until the EOF is reached
 While 1
 	Local $line = FileReadLine($filein)
@@ -53,20 +54,18 @@ While 1
 			; Generate a function for it
 			$prevfunc = $func
 			$counter  = $counter+1
-			_ArrayAdd($open_ended_when_conditions, "##f$OEWC_" & $counter & "##")
+			_ArrayAdd($open_ended_when_conditions, "##" & $function_prefix & $counter & "##")
 			_ArrayAdd($open_ended_when_conditions, $func)
 			_ArrayAdd($open_ended_when_conditions, "")
-			_ArrayDisplay($open_ended_when_conditions)
 		EndIf
 
 		; Code-line consisting of an OEWC, a normal condition and an action
 		; replace the OEWC by its corresponding function and write to file
-		FileWriteLine($fileout, "f$OEWC" & $counter & StringMid($line, $result+1, stringlen($line)-$result ))
+		FileWriteLine($fileout, $function_prefix & $counter & StringMid($line, $result+1, stringlen($line)-$result ))
     EndIf
 
 	;  MsgBox(0, "Line read:", $line)
 WEnd
-_ArrayDisplay($open_ended_when_conditions)
 
 ; Add functions for open-ended when-conditions to the code
 FileWriteLine($fileout, "")
