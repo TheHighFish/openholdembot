@@ -684,46 +684,7 @@ void CMainFrame::OnMinMax(void)
 	if (p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_MINMAX)) 
 	{
 		GetWindowRect(&_table_view_size);
-//!!!		m_MainToolBar.GetWindowRect(&rectBar1);
-//!!!		_tool_bar.GetWindowRect(&rectBar2);
 		p_openholdem_statusbar->GetWindowRect(&statusBar);
-
-		// figure out size of toolbars //!!!
-		/*
-		if (m_MainToolBar.IsFloating() && _tool_bar.IsFloating()) {
-
-			tb_top = 0;
-			tb_bottom = 0;
-		}
-		else if (!m_MainToolBar.IsFloating() && _tool_bar.IsFloating()) 
-		{
-			tb_top = rectBar1.top;
-			tb_bottom = rectBar1.bottom;
-		}
-		else if (m_MainToolBar.IsFloating() && !_tool_bar.IsFloating()) 
-		{
-			tb_top = rectBar2.top;
-			tb_bottom = rectBar2.bottom;
-		}
-		else 
-		{
-			if (rectBar1.top <= rectBar2.top) 
-			{
-				tb_top = rectBar1.top;
-			}
-			else 
-			{
-				tb_top = rectBar2.top;
-			}
-			if (rectBar1.bottom >= rectBar2.bottom) 
-			{
-				tb_bottom = rectBar1.bottom;
-			}
-			else 
-			{
-				tb_bottom = rectBar2.bottom;
-			}
-		}*/
 
 		pt.x = (wrect.right - wrect.left) - crect.right;
 		pt.y = (wrect.bottom - wrect.top) - crect.bottom;
