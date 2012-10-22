@@ -6,6 +6,7 @@
 #include "..\CTablemap\CTablemapAccess.h"
 #include "..\CTransform\CTransform.h"
 #include "CAutoplayer.h"
+#include "CFlagsToolbar.h"
 #include "CFormula.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
@@ -252,7 +253,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			LoadScraperPreprocessorDLL();
 			
 			CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-			pMyMainWnd->DisableButtonsOnConnect();
+			p_flags_toolbar->DisableButtonsOnConnect();
 
 			// Make sure autoplayer is off
 			p_autoplayer->set_autoplayer_engaged(false);
@@ -427,8 +428,8 @@ void CAutoConnector::Disconnect()
 	// Stop timer that checks for valid hwnd, then unattach OH.
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 	pMyMainWnd->KillTimer();
-	pMyMainWnd->UnattachOHFromPokerWindow();
-	pMyMainWnd->EnableButtonsOnDisconnect();
+	p_flags_toolbar->UnattachOHFromPokerWindow();
+	p_flags_toolbar->EnableButtonsOnDisconnect();
 
 	// Mark table as not attached
 	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Marking table as not attached\n");

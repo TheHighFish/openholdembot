@@ -1,7 +1,6 @@
 #ifndef INC_MAINFRM_H
 #define INC_MAINFRM_H
 
-#include "MyCToolBar.h"
 #include "..\CTablemap\CTablemap.h"
 #include "..\CCritSec\CCritSec.h"
 
@@ -71,7 +70,6 @@ public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual ~CMainFrame();
 	virtual BOOL DestroyWindow();
-	CMyToolBar		m_MainToolBar;
 
 	void	SetMainWindowTitle(LPCSTR title);
 	CString	_exec_filename;
@@ -102,11 +100,8 @@ private:
 
 private:
 	// private functions and variables - not available via accessors or mutators
-	int CreateMainToolbar(void);
-	void AlignToolbars(void);
 	int CreateStatusBar(void);
 
-	CMyToolBar		_tool_bar;
 	RECT			_table_view_size;
 	bool			_autoplay_pressed;
 	RECT			_prev_att_rect, _prev_wrect;
