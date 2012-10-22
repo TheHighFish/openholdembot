@@ -6,59 +6,6 @@
 #include "MyCtoolbar.h"
 
 
-
-#include "stdafx.h"
-#include "MainFrm.h"
-
-#include <io.h>
-#include <process.h>
-#include "CAutoConnector.h"
-#include "CAutoplayer.h"
-#include "CAutoplayerFunctions.h"
-#include "CDllExtension.h"
-#include "CFormula.h"
-#include "CHeartbeatThread.h"
-#include "CIteratorThread.h"
-#include "COpenHoldemHopperCommunication.h"
-#include "COpenHoldemStatusbar.h"
-#include "CPerl.hpp"
-#include "CPokerTrackerThread.h"
-#include "CPreferences.h"
-#include "CProblemSolver.h"
-#include "CReplayFrame.h"
-#include "CScraper.h"
-#include "CTableLimits.h"
-#include "..\CTransform\CTransform.h"
-#include "CValidator.h"
-#include "DialogFormulaScintilla.h"
-#include "DialogSAPrefs2.h"
-#include "DialogSAPrefs3.h"
-#include "DialogSAPrefs4.h"
-#include "DialogSAPrefs6.h"
-#include "DialogSAPrefs7.h"
-#include "DialogSAPrefs8.h"
-#include "DialogSAPrefs9.h"
-#include "DialogSAPrefs10.h"
-#include "DialogSAPrefs11.h"
-#include "DialogSAPrefs12.h"
-#include "DialogSAPrefs13.h"
-#include "DialogSAPrefs14.h"
-#include "DialogSAPrefs15.h"
-#include "DialogSAPrefs16.h"
-#include "DialogSAPrefs17.h"
-#include "DialogSAPrefs18.h"
-#include "DialogSAPrefs19.h"
-#include "DialogSAPrefs20.h"
-#include "DialogSAPrefs21.h"
-#include "DialogScraperOutput.h"
-#include "inlines/eval.h"
-#include "MagicNumbers.h"
-#include "OH_MessageBox.h"
-#include "OpenHoldem.h"
-#include "OpenHoldemDoc.h"
-#include "SAPrefsDialog.h"
-
-
 CFlagsToolbar *p_flags_toolbar = NULL;
 
 #define ENT CSLock lock(m_critsec);
@@ -91,7 +38,6 @@ CFlagsToolbar::CFlagsToolbar(CFrameWnd *parent_window)
 	_parent_window = parent_window;
 	CreateMainToolbar();
 	CreateFlagsToolbar();
-//!!!	m_MainToolBar.EnableDocking(CBRS_ALIGN_ANY);
 	AlignToolbars();
 
 	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
@@ -280,8 +226,7 @@ void CFlagsToolbar::CreateMainToolbar(void)
 						   CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC);
 	m_MainToolBar.LoadToolBar(IDR_MAINFRAME);
 	m_MainToolBar.EnableDocking(CBRS_ALIGN_TOP);
-	//!!!_parent_window->DockControlBar(&m_MainToolBar);
-
+	
 	// Make formula button sticky
 	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_FORMULA, &tbi);
 
@@ -348,7 +293,6 @@ void CFlagsToolbar::CreateFlagsToolbar(void)
 	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER19, &tbi);
 	_tool_bar.EnableDocking(CBRS_ALIGN_ANY);
 	_tool_bar.EnableDocking(CBRS_ALIGN_TOP);
-	//!!!_parent_window->DockControlBar(&_tool_bar);
 
 	// Title of floating flags toolbar
 	_tool_bar.SetWindowText("Flags");
@@ -364,14 +308,11 @@ void CFlagsToolbar::AlignToolbars(void)
 	m_MainToolBar.GetWindowRect(rectBar1);
 	_tool_bar.GetWindowRect(rectBar2);
 
-//!!!	_parent_window->DockControlBar(&_tool_bar, AFX_IDW_DOCKBAR_TOP, rectBar1); //will be first
 	UINT uiBarWidth = rectBar2.Width();
 	rectBar2.left = rectBar1.right;
 	rectBar2.top = rectBar1.top;
 	rectBar2.bottom = rectBar1.bottom;
 	rectBar2.right = rectBar1.right + uiBarWidth;
-
-	//!!!_parent_window->DockControlBar(&_tool_bar, AFX_IDW_DOCKBAR_TOP, rectBar2); //will be second
 
 	_parent_window->RecalcLayout();
 }
