@@ -9,6 +9,7 @@
 #include <io.h>
 #include "CAutoplayer.h"
 #include "CFormula.h"
+#include "CFlagsToolbar.h"
 #include "CGrammar.h"
 #include "CHeartbeatThread.h"
 #include "CPreferences.h"
@@ -1756,7 +1757,7 @@ BOOL CDlgFormulaScintilla::DestroyWindow()
 	m_wrk_formula.ClearFormula();
 
 	// Uncheck formula button on main toolbar
-	pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
+	p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
 
 	return CDialog::DestroyWindow();
 }

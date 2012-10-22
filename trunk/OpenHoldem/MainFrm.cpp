@@ -100,7 +100,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND(ID_HELP_FORUMS, &CMainFrame::OnHelpForums)
 	ON_COMMAND(ID_HELP_PROBLEMSOLVER, &CMainFrame::OnHelpProblemSolver)
 
-	// Main toolbar
+	// Main toolbar //!!!
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_GREENCIRCLE, &CMainFrame::OnBnClickedGreenCircle)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_REDCIRCLE, &CMainFrame::OnBnClickedRedCircle)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_AUTOPLAYER, &CMainFrame::OnAutoplayer)
@@ -161,37 +161,6 @@ CMainFrame::~CMainFrame()
 	}
 }
 
-void CMainFrame::DisableButtonsOnConnect()
-{
-	// Disable buttons, menu items
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_NEW, false);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_OPEN, false);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, false);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_REDCIRCLE, true);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, true);
-}
-
-void CMainFrame::EnableButtonsOnDisconnect()
-{
-	// Reset toolbar/menu button state
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_REDCIRCLE, false);
-	m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_NEW, true);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_OPEN, true);
-}
-
-void CMainFrame::UnattachOHFromPokerWindow()
-{
-	// Unattach OH from any poker window
-	if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_TOP))
-		m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_ATTACH_TOP, false);
-	
-	if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_BOTTOM))
-		m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, false);
-}
-
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) 
 {
 	CString			t = "";
@@ -199,18 +168,16 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	// Create toolbars
-	EnableDocking(CBRS_ALIGN_ANY);
-	CreateMainToolbar();
-	p_flags_toolbar = new CFlagsToolbar;
-	AlignToolbars();
+	// Tool bar
+	p_flags_toolbar = new CFlagsToolbar(this);
 
 	// Status bar
 	p_openholdem_statusbar = new COpenHoldemStatusbar(this);
 
 	// Set toolbar button status
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_REDCIRCLE, false);
+	// !!! To be removed in OH 5.0
+	p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
+	p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_REDCIRCLE, false);
 
 	// Start timer that checks if we should enable buttons
 	SetTimer(ENABLE_BUTTONS_TIMER, 50, 0);
@@ -225,74 +192,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		SetMainWindowTitle("");
 
 	return 0;
-}
-
-int CMainFrame::CreateMainToolbar(void) 
-{
-	TBBUTTONINFO	tbi;
-
-	tbi.cbSize = sizeof(TBBUTTONINFO);
-	tbi.dwMask = TBIF_STYLE;
-	tbi.fsStyle = TBSTYLE_CHECK;
-
-	// Main toolbar
-	m_MainToolBar.CreateEx(this, NULL, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER |
-						   CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC);
-	m_MainToolBar.LoadToolBar(IDR_MAINFRAME);
-	m_MainToolBar.EnableDocking(CBRS_ALIGN_TOP);
-	DockControlBar(&m_MainToolBar);
-
-	// Make formula button sticky
-	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_FORMULA, &tbi);
-
-	// Make validator button sticky
-	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_VALIDATOR, &tbi);
-
-	// Make scraper output button sticky
-	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, &tbi);
-
-	// Make autoplayer button sticky, and start it out disabled
-	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_AUTOPLAYER, &tbi);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
-
-	// Make minmax and attach buttons sticky and start disabled
-	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_MINMAX, &tbi);
-	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_ATTACH_TOP, &tbi);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_ATTACH_TOP, false);
-	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, &tbi);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, false);
-
-	// Start shoot replay frame button disabled
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, false);
-
-	// Title of floating main toolbar
-	m_MainToolBar.SetWindowText("Main");
-
-	return 0;
-}
-
-
-void CMainFrame::AlignToolbars(void) 
-{
-	// Put the main toolbar and flags toolbar on the same line
-	CRect rectBar1, rectBar2;
-
-	RecalcLayout();
-
-	m_MainToolBar.GetWindowRect(rectBar1);
-	_tool_bar.GetWindowRect(rectBar2);
-
-	DockControlBar(&_tool_bar, AFX_IDW_DOCKBAR_TOP, rectBar1); //will be first
-	UINT uiBarWidth = rectBar2.Width();
-	rectBar2.left = rectBar1.right;
-	rectBar2.top = rectBar1.top;
-	rectBar2.bottom = rectBar1.bottom;
-	rectBar2.right = rectBar1.right + uiBarWidth;
-
-	DockControlBar(&_tool_bar, AFX_IDW_DOCKBAR_TOP, rectBar2); //will be second
-	DockControlBar(&p_flags_toolbar->_tool_bar);
-
-	RecalcLayout();
 }
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) 
@@ -346,7 +245,7 @@ void CMainFrame::OnEditFormula()
 				"Really exit?", 
 				"Formula Editor", MB_ICONWARNING|MB_YESNO) == IDNO)
 			{
-				m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, true);
+				p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_FORMULA, true);
 				return;
 			}
 		}
@@ -362,7 +261,7 @@ void CMainFrame::OnEditFormula()
 	m_formulaScintillaDlg = new CDlgFormulaScintilla(this);
 	m_formulaScintillaDlg->Create(CDlgFormulaScintilla::IDD,this);
 	m_formulaScintillaDlg->ShowWindow(SW_SHOW);
-	m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_FORMULA, true);
+	p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_FORMULA, true);
 }
 
 void CMainFrame::OnScraperOutput() 
@@ -382,7 +281,7 @@ void CMainFrame::OnScraperOutput()
 	m_ScraperOutputDlg = new CDlgScraperOutput(this);
 	m_ScraperOutputDlg->Create(CDlgScraperOutput::IDD,this);
 	m_ScraperOutputDlg->ShowWindow(SW_SHOW);
-	m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, true);
+	p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, true);
 }
 
 void CMainFrame::OnViewShootreplayframe()
@@ -484,7 +383,7 @@ BOOL CMainFrame::DestroyWindow()
 	}
 
 	// Save window position
-	if (!m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_MINMAX)) 
+	if (!p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_MINMAX)) 
 	{
 		GetWindowPlacement(&wp);
 
@@ -633,23 +532,23 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 	else if (nIDEvent == ENABLE_BUTTONS_TIMER)
 	{
 
-		// Autoplayer
-		if ((p_symbols->user_chair_confirmed() && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)))
+		// Autoplayer //!!!
+		if ((p_symbols->user_chair_confirmed() && p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)))
 		{
-			m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
+			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
 		}
 		else
 		{
-			m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
+			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
 		}
 
 		// Automatically start autoplayer, if set in preferences
-		if (prefs.engage_autoplayer() && !m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER) &&
-				((p_symbols->user_chair_confirmed() && m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE))))
+		if (prefs.engage_autoplayer() && !p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER) &&
+				((p_symbols->user_chair_confirmed() && p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE))))
 		{
 			if (!_autoplay_pressed)
 			{
-				m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
+				p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
 				OnAutoplayer();
 				_autoplay_pressed = true;
 			}
@@ -658,20 +557,20 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 		// attach
 		if (p_autoconnector->attached_hwnd() != NULL) 
 		{
-			m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_ATTACH_TOP, true);
-			m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, true);
+			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_ATTACH_TOP, true);
+			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, true);
 		}
 		else 
 		{
-			m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_ATTACH_TOP, false);
-			m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, false);
+			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_ATTACH_TOP, false);
+			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, false);
 		}
 
 		// Shoot replay frame
 		if (p_autoconnector->attached_hwnd() != NULL)
-			m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, true);
+			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, true);
 		else
-			m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, false);
+			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, false);
 
 	}
 	else if (nIDEvent == UPDATE_STATUS_BAR_TIMER) 
@@ -689,13 +588,13 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 			::GetWindowRect(p_autoconnector->attached_hwnd(), &_prev_att_rect);
 			GetWindowRect(&_prev_wrect);
 
-			if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_TOP))
+			if (p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_TOP))
 			{
 				if (IsWindow(p_autoconnector->attached_hwnd()))
 					MoveWindow(att_rect.left, att_rect.top-(wrect.bottom-wrect.top), att_rect.right-att_rect.left, wrect.bottom-wrect.top);
 			}
 
-			if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_BOTTOM))
+			if (p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_BOTTOM))
 			{
 				if (IsWindow(p_autoconnector->attached_hwnd()))
 					MoveWindow(att_rect.left, att_rect.bottom, att_rect.right-att_rect.left, wrect.bottom-wrect.top);
@@ -708,7 +607,7 @@ void CMainFrame::OnAutoplayer()
 {
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
-	if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER)) 
+	if (p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER)) 
 	{
 		// calc hand lists
 		p_formula->CreateHandListMatrices();
@@ -721,7 +620,7 @@ void CMainFrame::OnAutoplayer()
 		else 
 		{
 			p_autoplayer->set_autoplayer_engaged(false);
-			m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
+			p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
 		}
 	}
 	else 
@@ -732,14 +631,14 @@ void CMainFrame::OnAutoplayer()
 
 void CMainFrame::OnValidator() 
 {
-	if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_VALIDATOR)) 
+	if (p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_VALIDATOR)) 
 	{
-		m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_VALIDATOR, true);
+		p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_VALIDATOR, true);
 		p_validator->SetEnabledManually(true);
 	}
 	else
 	{
-		m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_VALIDATOR, false);
+		p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_VALIDATOR, false);
 		p_validator->SetEnabledManually(false);
 	}
 }
@@ -782,14 +681,15 @@ void CMainFrame::OnMinMax(void)
 	GetClientRect(&crect);
 	GetWindowRect(&wrect);
 
-	if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_MINMAX)) 
+	if (p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_MINMAX)) 
 	{
 		GetWindowRect(&_table_view_size);
-		m_MainToolBar.GetWindowRect(&rectBar1);
-		_tool_bar.GetWindowRect(&rectBar2);
+//!!!		m_MainToolBar.GetWindowRect(&rectBar1);
+//!!!		_tool_bar.GetWindowRect(&rectBar2);
 		p_openholdem_statusbar->GetWindowRect(&statusBar);
 
-		// figure out size of toolbars
+		// figure out size of toolbars //!!!
+		/*
 		if (m_MainToolBar.IsFloating() && _tool_bar.IsFloating()) {
 
 			tb_top = 0;
@@ -823,7 +723,7 @@ void CMainFrame::OnMinMax(void)
 			{
 				tb_bottom = rectBar2.bottom;
 			}
-		}
+		}*/
 
 		pt.x = (wrect.right - wrect.left) - crect.right;
 		pt.y = (wrect.bottom - wrect.top) - crect.bottom;
@@ -847,10 +747,10 @@ void CMainFrame::OnAttachTop(void)
 	::GetWindowRect(p_autoconnector->attached_hwnd(), &att_rect);
 	GetWindowRect(&wrect);
 
-	if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_TOP)) 
+	if (p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_TOP)) 
 	{
 		// uncheck attach_bottom, if necessary
-		m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, false);
+		p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, false);
 
 		MoveWindow(att_rect.left, att_rect.top-(wrect.bottom-wrect.top), att_rect.right-att_rect.left, wrect.bottom-wrect.top);
 	}
@@ -863,10 +763,10 @@ void CMainFrame::OnAttachBottom(void)
 	::GetWindowRect(p_autoconnector->attached_hwnd(), &att_rect);
 	GetWindowRect(&wrect);
 
-	if (m_MainToolBar.GetToolBarCtrl().IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_BOTTOM)) 
+	if (p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_BOTTOM)) 
 	{
 		// uncheck attach_top, if necessary
-		m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_ATTACH_TOP, false);
+		p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_ATTACH_TOP, false);
 
 		MoveWindow(att_rect.left, att_rect.bottom, att_rect.right-att_rect.left, wrect.bottom-wrect.top);
 	}
@@ -958,20 +858,20 @@ void CMainFrame::OnPerlCheckSyntax()
 
 void CMainFrame::OnUpdateMenuFileNew(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+	pCmdUI->Enable((p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
+					!p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
 }
 
 void CMainFrame::OnUpdateMenuFileOpen(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+	pCmdUI->Enable((p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
+					!p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
 }
 
 void CMainFrame::OnUpdateMenuFileLoadProfile(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+	pCmdUI->Enable((p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
+					!p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
 }
 
 void CMainFrame::OnUpdateFileConnect(CCmdUI *pCmdUI)
@@ -992,8 +892,8 @@ void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI)
 	else
 		pCmdUI->SetText("&Load\tF4");
 
-	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-		!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+	pCmdUI->Enable((p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
+		!p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
 }
 
 void CMainFrame::OnUpdateDllLoadspecificfile(CCmdUI *pCmdUI)
@@ -1015,21 +915,21 @@ void CMainFrame::OnUpdateMenuPerlLoad(CCmdUI* pCmdUI)
 	else 
 		pCmdUI->SetText("&Load Formula\tF7");
 
-	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+	pCmdUI->Enable((p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
+					!p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
 }
 
 void CMainFrame::OnUpdateMenuPerlLoadSpecificFormula(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable((m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+	pCmdUI->Enable((p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
+					!p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
 }
 
 void CMainFrame::OnUpdateMenuPerlReloadFormula(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable((p_perl->IsAFormulaLoaded() &&
-					!m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) &&
-					m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)));
+					!p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) &&
+					p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)));
 }
 
 void CMainFrame::OnUpdateMenuPerlCheckSyntax(CCmdUI* pCmdUI) 

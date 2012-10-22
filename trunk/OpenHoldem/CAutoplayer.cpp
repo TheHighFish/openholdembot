@@ -15,6 +15,7 @@
 #include "CAutoconnector.h"
 #include "CAutoplayerFunctions.h"
 #include "CCasinoInterface.h"
+#include "CFlagsToolbar.h"
 #include "CGameState.h"
 #include "CGrammar.h"
 #include "CHeartbeatThread.h"
@@ -46,7 +47,7 @@ CAutoplayer::CAutoplayer(BOOL bInitiallyOwn, LPCTSTR lpszName) : _mutex(bInitial
 	CMainFrame *pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 	if (pMyMainWnd != NULL)
 	{
-		pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, to_be_enabled_or_not);
+		p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, to_be_enabled_or_not);
 	}
 }
 
@@ -283,7 +284,7 @@ void CAutoplayer::set_autoplayer_engaged(const bool to_be_enabled_or_not)
 	CMainFrame *pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 	if (pMyMainWnd != NULL)
 	{
-		pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, to_be_enabled_or_not);
+		p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, to_be_enabled_or_not);
 	}
 }
 

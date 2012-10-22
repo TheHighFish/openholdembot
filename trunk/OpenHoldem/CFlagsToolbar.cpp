@@ -3,6 +3,61 @@
 
 #include <afxwin.h>
 #include "CSymbols.h"
+#include "MyCtoolbar.h"
+
+
+
+#include "stdafx.h"
+#include "MainFrm.h"
+
+#include <io.h>
+#include <process.h>
+#include "CAutoConnector.h"
+#include "CAutoplayer.h"
+#include "CAutoplayerFunctions.h"
+#include "CDllExtension.h"
+#include "CFormula.h"
+#include "CHeartbeatThread.h"
+#include "CIteratorThread.h"
+#include "COpenHoldemHopperCommunication.h"
+#include "COpenHoldemStatusbar.h"
+#include "CPerl.hpp"
+#include "CPokerTrackerThread.h"
+#include "CPreferences.h"
+#include "CProblemSolver.h"
+#include "CReplayFrame.h"
+#include "CScraper.h"
+#include "CTableLimits.h"
+#include "..\CTransform\CTransform.h"
+#include "CValidator.h"
+#include "DialogFormulaScintilla.h"
+#include "DialogSAPrefs2.h"
+#include "DialogSAPrefs3.h"
+#include "DialogSAPrefs4.h"
+#include "DialogSAPrefs6.h"
+#include "DialogSAPrefs7.h"
+#include "DialogSAPrefs8.h"
+#include "DialogSAPrefs9.h"
+#include "DialogSAPrefs10.h"
+#include "DialogSAPrefs11.h"
+#include "DialogSAPrefs12.h"
+#include "DialogSAPrefs13.h"
+#include "DialogSAPrefs14.h"
+#include "DialogSAPrefs15.h"
+#include "DialogSAPrefs16.h"
+#include "DialogSAPrefs17.h"
+#include "DialogSAPrefs18.h"
+#include "DialogSAPrefs19.h"
+#include "DialogSAPrefs20.h"
+#include "DialogSAPrefs21.h"
+#include "DialogScraperOutput.h"
+#include "inlines/eval.h"
+#include "MagicNumbers.h"
+#include "OH_MessageBox.h"
+#include "OpenHoldem.h"
+#include "OpenHoldemDoc.h"
+#include "SAPrefsDialog.h"
+
 
 CFlagsToolbar *p_flags_toolbar = NULL;
 
@@ -31,9 +86,16 @@ BEGIN_MESSAGE_MAP(CFlagsToolbar, CWnd)
 	ON_BN_CLICKED(ID_NUMBER19, &OnClickedFlags)
 END_MESSAGE_MAP()
 
-CFlagsToolbar::CFlagsToolbar()
+CFlagsToolbar::CFlagsToolbar(CFrameWnd *parent_window)
 {
-	InitCFlagsToolbar();
+	_parent_window = parent_window;
+	CreateMainToolbar();
+	CreateFlagsToolbar();
+//!!!	m_MainToolBar.EnableDocking(CBRS_ALIGN_ANY);
+	AlignToolbars();
+
+	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
+	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_REDCIRCLE, false);
 	for (int i=0; i<k_number_of_flags; i++)
 	{
 		SetFlag(i, false);
@@ -43,18 +105,17 @@ CFlagsToolbar::CFlagsToolbar()
 CFlagsToolbar::~CFlagsToolbar()
 {}
 
-void CFlagsToolbar::InitCFlagsToolbar()
+void CFlagsToolbar::InitCFlagsToolbar(CWnd *parent_window)
 {
-	TBBUTTONINFO	tbi;
+	_tool_bar.CreateEx(parent_window, NULL, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER 
+		| CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC);
+	_tool_bar.LoadToolBar(IDR_MAINFRAME);
+	_tool_bar.EnableDocking(CBRS_ALIGN_TOP);
 
+	TBBUTTONINFO	tbi;
 	tbi.cbSize = sizeof(TBBUTTONINFO);
 	tbi.dwMask = TBIF_STYLE;
 	tbi.fsStyle = TBSTYLE_CHECK;
-
-	// Flags toolbar
-	_tool_bar.CreateEx(this, NULL, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER |
-							CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC);
-	_tool_bar.LoadToolBar(IDR_FLAGS);
 
 	// Make flags toolbar buttons sticky
 	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER0,  &tbi);
@@ -82,6 +143,27 @@ void CFlagsToolbar::InitCFlagsToolbar()
 
 	// Title of floating flags toolbar
 	_tool_bar.SetWindowText("Flags");
+}
+
+void CFlagsToolbar::DisableButtonsOnConnect()
+{
+	// Disable buttons, menu items
+	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_NEW, false);
+	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_OPEN, false);
+	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, false);
+	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_REDCIRCLE, true);
+	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, true);
+}
+
+void CFlagsToolbar::EnableButtonsOnDisconnect()
+{
+	// Reset toolbar/menu button state
+	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
+	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_REDCIRCLE, false);
+	m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
+	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
+	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_NEW, true);
+	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_OPEN, true);
 }
 
 bool CFlagsToolbar::GetFlag(int flag_number)
@@ -185,3 +267,138 @@ void CFlagsToolbar::OnClickedFlags()
 	p_symbols->CalcSymbols();
 }
 
+void CFlagsToolbar::CreateMainToolbar(void)
+{
+	TBBUTTONINFO	tbi;
+
+	tbi.cbSize = sizeof(TBBUTTONINFO);
+	tbi.dwMask = TBIF_STYLE;
+	tbi.fsStyle = TBSTYLE_CHECK;
+
+	// Main toolbar
+	m_MainToolBar.CreateEx(_parent_window, NULL, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER |
+						   CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC);
+	m_MainToolBar.LoadToolBar(IDR_MAINFRAME);
+	m_MainToolBar.EnableDocking(CBRS_ALIGN_TOP);
+	//!!!_parent_window->DockControlBar(&m_MainToolBar);
+
+	// Make formula button sticky
+	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_FORMULA, &tbi);
+
+	// Make validator button sticky
+	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_VALIDATOR, &tbi);
+
+	// Make scraper output button sticky
+	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, &tbi);
+
+	// Make autoplayer button sticky, and start it out disabled
+	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_AUTOPLAYER, &tbi);
+	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
+
+	// Make minmax and attach buttons sticky and start disabled
+	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_MINMAX, &tbi);
+	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_ATTACH_TOP, &tbi);
+	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_ATTACH_TOP, false);
+	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, &tbi);
+	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, false);
+
+	// Start shoot replay frame button disabled
+	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, false);
+
+	// Make help button sticky
+	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_HELP, &tbi);
+
+	// Title of floating main toolbar
+	m_MainToolBar.SetWindowText("Main");
+}
+
+void CFlagsToolbar::CreateFlagsToolbar(void)
+{
+	TBBUTTONINFO	tbi;
+
+	tbi.cbSize = sizeof(TBBUTTONINFO);
+	tbi.dwMask = TBIF_STYLE;
+	tbi.fsStyle = TBSTYLE_CHECK;
+
+	// Flags toolbar
+	_tool_bar.CreateEx(_parent_window, NULL, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER |
+							CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC);
+	_tool_bar.LoadToolBar(IDR_FLAGS);
+
+	// Make flags toolbar buttons sticky
+	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER0, &tbi);
+	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER1, &tbi);
+	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER2, &tbi);
+	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER3, &tbi);
+	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER4, &tbi);
+	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER5, &tbi);
+	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER6, &tbi);
+	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER7, &tbi);
+	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER8, &tbi);
+	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER9, &tbi);
+	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER10, &tbi);
+	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER11, &tbi);
+	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER12, &tbi);
+	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER13, &tbi);
+	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER14, &tbi);
+	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER15, &tbi);
+	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER16, &tbi);
+	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER17, &tbi);
+	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER18, &tbi);
+	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER19, &tbi);
+	_tool_bar.EnableDocking(CBRS_ALIGN_ANY);
+	_tool_bar.EnableDocking(CBRS_ALIGN_TOP);
+	//!!!_parent_window->DockControlBar(&_tool_bar);
+
+	// Title of floating flags toolbar
+	_tool_bar.SetWindowText("Flags");
+}
+
+void CFlagsToolbar::AlignToolbars(void)
+{
+	// Put the main toolbar and flags toolbar on the same line
+	CRect rectBar1, rectBar2;
+
+	_parent_window->RecalcLayout(true);
+
+	m_MainToolBar.GetWindowRect(rectBar1);
+	_tool_bar.GetWindowRect(rectBar2);
+
+//!!!	_parent_window->DockControlBar(&_tool_bar, AFX_IDW_DOCKBAR_TOP, rectBar1); //will be first
+	UINT uiBarWidth = rectBar2.Width();
+	rectBar2.left = rectBar1.right;
+	rectBar2.top = rectBar1.top;
+	rectBar2.bottom = rectBar1.bottom;
+	rectBar2.right = rectBar1.right + uiBarWidth;
+
+	//!!!_parent_window->DockControlBar(&_tool_bar, AFX_IDW_DOCKBAR_TOP, rectBar2); //will be second
+
+	_parent_window->RecalcLayout();
+}
+
+void CFlagsToolbar::UnattachOHFromPokerWindow()
+{
+	// Unattach OH from any poker window
+	m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_ATTACH_TOP, false);
+	m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, false);
+}
+
+void CFlagsToolbar::EnableButton(int button_ID, bool new_status)
+{
+	m_MainToolBar.GetToolBarCtrl().EnableButton(button_ID, new_status);
+}
+
+void CFlagsToolbar::CheckButton(int button_ID, bool new_status)
+{
+	m_MainToolBar.GetToolBarCtrl().EnableButton(button_ID, new_status);
+}
+
+bool CFlagsToolbar::IsButtonChecked(int button_ID)
+{
+	return m_MainToolBar.GetToolBarCtrl().IsButtonChecked(button_ID);
+}
+
+bool CFlagsToolbar::IsButtonEnabled(int button_ID)
+{
+	return m_MainToolBar.GetToolBarCtrl().IsButtonEnabled(button_ID);
+}

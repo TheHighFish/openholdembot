@@ -1,6 +1,7 @@
 #ifndef INC_DIALOGSCRAPEROUTPUT_H
 #define INC_DIALOGSCRAPEROUTPUT_H
 
+#include "..\CTablemap\CTablemap.h"
 #include "WinMgr.h"
 #include "SizerBar.h"
 #include "Resource.h"

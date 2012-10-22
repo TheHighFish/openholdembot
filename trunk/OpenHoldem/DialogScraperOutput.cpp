@@ -2,16 +2,16 @@
 //
 
 #include "stdafx.h"
+#include "DialogScraperOutput.h"
 
-#include "OpenHoldem.h"
-#include "MainFrm.h"
-
-#include "CScraper.h"
+#include "CFlagsToolbar.h"
 #include "CHeartbeatThread.h"
 #include "CPreferences.h"
+#include "CScraper.h"
 #include "..\CTransform\CTransform.h"
+#include "MainFrm.h"
+#include "OpenHoldem.h"
 
-#include "DialogScraperOutput.h"
 
 // CDlgScraperOutput dialog
 CDlgScraperOutput	*m_ScraperOutputDlg = NULL;
@@ -143,7 +143,7 @@ BOOL CDlgScraperOutput::DestroyWindow()
 	prefs.set_scraper_zoom(m_Zoom.GetCurSel());
 
 	// Uncheck scraper output button on main toolbar
-	pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, false);
+	p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, false);
 
 	return CDialog::DestroyWindow();
 }
@@ -352,7 +352,7 @@ void CDlgScraperOutput::OnCancel()
 	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	// Uncheck scraper output button on main toolbar
-	pMyMainWnd->m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, false);
+	p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, false);
 
 	CDialog::OnCancel();
 }
