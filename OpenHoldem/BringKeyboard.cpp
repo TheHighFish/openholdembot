@@ -20,7 +20,6 @@ void CheckBringKeyboard(void)
 	int				keybd_item_pos = 0;
 	int				e = SUCCESS;
 	bool			sym_isbring = (bool) p_symbols->sym()->isbring;
-	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	write_log(prefs.debug_autoplayer(), "[BringKeyBoard] Enabling bring-keyboard if necessary.\n");
 

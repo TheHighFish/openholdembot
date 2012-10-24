@@ -1749,7 +1749,6 @@ void CDlgFormulaScintilla::LastChangeToFormula(CFormula *f)
 BOOL CDlgFormulaScintilla::DestroyWindow()
 {
 	COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
-	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	StopAutoButton();
 	SaveSettingsToRegistry();
@@ -2360,8 +2359,7 @@ void CDlgFormulaScintilla::InitDebugArray(void)
 void CDlgFormulaScintilla::OnBnClickedApplySave()
 {
 	OnBnClickedApply();
-	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-	pMyMainWnd->SendMessage(WM_COMMAND, ID_FILE_SAVE, 0);
+	PMainframe()->SendMessage(WM_COMMAND, ID_FILE_SAVE, 0);
 }
 
 void CDlgFormulaScintilla::WarnAboutAutoplayerWhenApplyingFormulaAndTurnAutoplayerOff()
@@ -2440,7 +2438,6 @@ void CDlgFormulaScintilla::OnBnClickedApply()
 void CDlgFormulaScintilla::OnBnClickedOk() 
 {
 	COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
-	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	// If autoplayer is engaged, dis-engage it
 	if (p_autoplayer->autoplayer_engaged())
@@ -2491,7 +2488,6 @@ void CDlgFormulaScintilla::OnBnClickedOk()
 bool CDlgFormulaScintilla::PromptToSave()
 {
 	COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
-	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	int response = OH_MessageBox_Interactive("You have made changes to this formula.\n\nDo you want to apply changes?", 
 				   "Save changes?", 
@@ -2687,9 +2683,7 @@ void CDlgFormulaScintilla::OnHelpForums()
 
 BOOL CDlgFormulaScintilla::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
-	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-
-	if (pMyMainWnd->wait_cursor())
+	if (PMainframe()->wait_cursor())
 	{
 		RestoreWaitCursor();
 		return TRUE;

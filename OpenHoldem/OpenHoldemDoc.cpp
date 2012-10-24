@@ -54,8 +54,6 @@ BOOL COpenHoldemDoc::SaveModified()
 
 BOOL COpenHoldemDoc::OnNewDocument() 
 {
-	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 
@@ -69,7 +67,7 @@ BOOL COpenHoldemDoc::OnNewDocument()
 	p_formula->CreateHandListMatrices();
 
 	// Create parse trees for default formula
-	p_formula->ParseAllFormula(pMyMainWnd->GetSafeHwnd());
+	p_formula->ParseAllFormula(PMainframe()->GetSafeHwnd());
 
 	SetTitle("Default");
 	//SetModifiedFlag(true);
@@ -112,8 +110,6 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 		OH_MessageBox_Interactive("Can't load a formula while autoplayer engaged.", "ERROR", 0);
 		return;
 	}
-	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-
 	// Writing a file
 	if (ar.IsStoring()) 
 	{
@@ -140,7 +136,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 		p_formula->CreateHandListMatrices();
 
 		// Create parse trees for newly loaded formula
-		p_formula->ParseAllFormula(pMyMainWnd->GetSafeHwnd());
+		p_formula->ParseAllFormula(PMainframe()->GetSafeHwnd());
 
 		p_dll_extension->LoadDll("");
 		if (prefs.simple_window_title() && theApp.m_pMainWnd)

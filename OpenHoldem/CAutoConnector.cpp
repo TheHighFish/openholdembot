@@ -252,7 +252,6 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			LoadScraperDLL();
 			LoadScraperPreprocessorDLL();
 			
-			CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 			p_flags_toolbar->DisableButtonsOnConnect();
 
 			// Make sure autoplayer is off
@@ -280,10 +279,10 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			p_scraper_access->InitOnConnect();
 
 			// Start timer that checks for continued existence of attached HWND
-			pMyMainWnd->StartTimer();
+			PMainframe()->StartTimer();
 
 			// Reset display
-			pMyMainWnd->ResetDisplay();
+			PMainframe()->ResetDisplay();
 
 			// Start logging, in case the log-level got changed.
 			start_log();
@@ -426,8 +425,7 @@ void CAutoConnector::Disconnect()
 	set_attached_hwnd(NULL);
 
 	// Stop timer that checks for valid hwnd, then unattach OH.
-	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-	pMyMainWnd->KillTimer();
+	PMainframe()->KillTimer();
 	p_flags_toolbar->UnattachOHFromPokerWindow();
 	p_flags_toolbar->EnableButtonsOnDisconnect();
 
@@ -450,10 +448,10 @@ void CAutoConnector::Disconnect()
 	p_symbols->set_sym_betround(k_betround_preflop);
 
 	// Change window title
-	pMyMainWnd->UpdateWindowTitle();
+	PMainframe()->UpdateWindowTitle();
 
 	// Reset Display 
-	pMyMainWnd->ResetDisplay();
+	PMainframe()->ResetDisplay();
 
 	// Reset "ScraperOutput" dialog, if it is live
 	if (m_ScraperOutputDlg)

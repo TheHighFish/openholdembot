@@ -928,7 +928,6 @@ void CSymbols::CalcSymbols(void)
 	char				card0[k_max_number_of_players] = {0}; 
 	char				card1[k_max_number_of_players] = {0};
 	CGrammar			gram;
-	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	// Clear em, before we start
 	ResetSymbolsEveryCalc();

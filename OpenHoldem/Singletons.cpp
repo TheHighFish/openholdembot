@@ -66,7 +66,6 @@ void InstantiateAllSingletons()
 		p_tablemap_access = new CTablemapAccess;
 	if (!p_formula) 
 		p_formula = new CFormula;
-	//if (!p_mainframe)			p_mainframe = new CMainFrame;
 	if (!p_autoplayer) 
 		p_autoplayer = new CAutoplayer(false, prefs.mutex_name());
 	if (!p_pokertracker_thread)  
