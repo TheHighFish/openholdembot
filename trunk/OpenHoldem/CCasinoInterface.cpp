@@ -94,7 +94,6 @@ bool CCasinoInterface::UseSliderForAllin()
 {
 
 	POINT			cur_pos = {0};
-	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 	POINT			point_null = {-1, -1};
 
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting DoSlider...\n");
@@ -202,7 +201,6 @@ bool CCasinoInterface::CloseWindow()
 
 bool CCasinoInterface::EnterChatMessage(CString &message)
 {
-	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 	RECT			rect_chatbox;
 	POINT			cur_pos = {0};
 
@@ -290,7 +288,6 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 {
 	POINT			cur_pos = {0};
 	bool			lost_focus = false;
-	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 	POINT			point_null = {-1, -1};
 	CString			swag_amt;
 

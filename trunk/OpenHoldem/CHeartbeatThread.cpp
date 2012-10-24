@@ -67,7 +67,6 @@ CHeartbeatThread::~CHeartbeatThread()
 UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 {
 	CHeartbeatThread	*pParent = static_cast<CHeartbeatThread*>(pParam);
-	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	LARGE_INTEGER		cycle_start = {0}, cycle_end = {0}, lFrequency = {0};
 	unsigned int		new_scrape = NOTHING_CHANGED;

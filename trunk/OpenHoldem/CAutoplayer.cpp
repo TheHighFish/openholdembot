@@ -44,8 +44,7 @@ CAutoplayer::CAutoplayer(BOOL bInitiallyOwn, LPCTSTR lpszName) : _mutex(bInitial
 	// Set correct button state
 	// We have to be careful, as during initialization the GUI does not yet exist.
 	bool to_be_enabled_or_not = _autoplayer_engaged; 
-	CMainFrame *pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-	if (pMyMainWnd != NULL)
+	if (PMainframe() != NULL)
 	{
 		p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, to_be_enabled_or_not);
 	}
@@ -281,8 +280,7 @@ void CAutoplayer::set_autoplayer_engaged(const bool to_be_enabled_or_not)
 	_autoplayer_engaged = to_be_enabled_or_not; 
 	// Set correct button state
 	// We have to be careful, as during initialization the GUI does not yet exist.
-	CMainFrame *pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-	if (pMyMainWnd != NULL)
+	if (PMainframe() != NULL)
 	{
 		p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, to_be_enabled_or_not);
 	}
@@ -457,8 +455,6 @@ void CAutoplayer::DoSlider(void)
 
 void CAutoplayer::DoPrefold(void) 
 {
-	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting DoPrefold...\n");
 
 	if (p_autoplayer_functions->f$prefold() == 0)  

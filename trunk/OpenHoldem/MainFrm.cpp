@@ -54,7 +54,6 @@
 #include "OpenHoldemDoc.h"
 #include "SAPrefsDialog.h"
 
-CMainFrame *p_mainframe = 0;
 
 // CMainFrame
 
@@ -605,15 +604,13 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 
 void CMainFrame::OnAutoplayer() 
 {
-	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-
 	if (p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER)) 
 	{
 		// calc hand lists
 		p_formula->CreateHandListMatrices();
 
 		// one last parse - do not engage if parse fails
-		if (p_formula->ParseAllFormula(pMyMainWnd->GetSafeHwnd()))
+		if (p_formula->ParseAllFormula(PMainframe()->GetSafeHwnd()))
 		{
 			p_autoplayer->set_autoplayer_engaged(true);
 		}
@@ -959,4 +956,12 @@ void CMainFrame::OnHelpProblemSolver()
 {
 	CProblemSolver my_problem_solver;
 	my_problem_solver.TryToDetectBeginnersProblems();
+}
+
+
+CMainFrame* PMainframe()
+{
+	CMainFrame *p_mainframe = (CMainFrame *) (theApp.m_pMainWnd);
+	assert(p_mainframe != 0);
+	return p_mainframe;
 }

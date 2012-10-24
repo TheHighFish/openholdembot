@@ -14,7 +14,6 @@
 
 
 #define __HDC_HEADER 		HBITMAP		old_bitmap = NULL; \
-	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd); \
 	HDC				hdc = GetDC(p_autoconnector->attached_hwnd()); \
 	HDC				hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL); \
 	HDC				hdcCompatible = CreateCompatibleDC(hdcScreen);
@@ -2162,7 +2161,6 @@ const bool CScraper::BitmapsSame(HBITMAP HBitmapLeft, HBITMAP HBitmapRight)
 void CScraper::CreateBitmaps(void)
 {
 	HDC				hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
-	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	// Whole window
 	RECT			cr = {0};
@@ -2215,7 +2213,6 @@ void CScraper::SetLimitInfo(const SLimitInfo LI)
 // This is the chip scrape routine
 const double CScraper::DoChipScrape(RMapCI r_iter)
 {
-	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 	HDC				hdc = GetDC(p_autoconnector->attached_hwnd());
 
 	int				j = 0, stackindex = 0, chipindex = 0;

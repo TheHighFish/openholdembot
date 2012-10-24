@@ -132,7 +132,6 @@ BOOL CDlgScraperOutput::OnInitDialog()
 BOOL CDlgScraperOutput::DestroyWindow()
 {
 	WINDOWPLACEMENT		wp;
-	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	// Save settings to registry
 	GetWindowPlacement(&wp);
@@ -349,8 +348,6 @@ void CDlgScraperOutput::DoBitblt(HBITMAP bitmap, RMapCI r_iter)
 
 void CDlgScraperOutput::OnCancel()
 {
-	CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-
 	// Uncheck scraper output button on main toolbar
 	p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, false);
 

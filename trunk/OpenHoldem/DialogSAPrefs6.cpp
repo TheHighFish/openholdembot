@@ -81,7 +81,6 @@ void CDlgSAPrefs6::OnOK()
 void CDlgSAPrefs6::OnBnClickedPtTest()
 {
 	CString			conn_str = "", ip_addr = "", port = "", user = "", pass = "", dbname = "", e = "";
-	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
 
 	m_pt_ip.GetWindowText(ip_addr);
 	m_pt_port.GetWindowText(port);
@@ -97,15 +96,15 @@ void CDlgSAPrefs6::OnBnClickedPtTest()
 	conn_str += "'";
 
 	// Set busy cursor
-	pMyMainWnd->set_wait_cursor(true);
-	pMyMainWnd->BeginWaitCursor();
+	PMainframe()->set_wait_cursor(true);
+	PMainframe()->BeginWaitCursor();
 
 	// Test the connection parameters
 	PGconn	*pgconn = PQconnectdb(conn_str.GetString());
 
 	// Unset busy cursor
-	pMyMainWnd->EndWaitCursor();
-	pMyMainWnd->set_wait_cursor(false);
+	PMainframe()->EndWaitCursor();
+	PMainframe()->set_wait_cursor(false);
 
 	if (PQstatus(pgconn) == CONNECTION_OK) 
 	{
