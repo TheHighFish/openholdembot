@@ -3,6 +3,7 @@
 
 #include "CPreferences.h"
 #include "CSessionCounter.h"
+#include "OH_MessageBox.h"
 
 // For an introduction about shared memory see:
 //   * http://www.programmersheaven.com/mb/Win32API/156366/156366/shared-memory-and-dll/
@@ -26,6 +27,7 @@ __declspec(allocate(".ohshmem"))	static	time_t	last_failed_attempt_to_connect;	/
 __declspec(allocate(".ohshmem"))	static	int		session_ID_of_last_instance_that_failed_to_connect; 
 __declspec(allocate(".ohshmem"))	static	HWND	dense_list_of_attached_poker_windows[MAX_SESSION_IDS] = { NULL }; // for the table positioner
 __declspec(allocate(".ohshmem"))	static	int		size_of_dense_list_of_attached_poker_windows;
+__declspec(allocate(".ohshmem"))	static	int		CRC_of_main_mutexname;
 
 
 #pragma data_seg()
@@ -40,7 +42,11 @@ __declspec(allocate(".ohshmem"))	static	int		size_of_dense_list_of_attached_poke
 CSharedMem	*p_sharedmem = NULL;
 
 CSharedMem::CSharedMem()
-{}
+{
+	// We can verify the mutex here,
+	// because preferences have already been loaded.
+	VerifyMainMutexName();
+}
 
 
 CSharedMem::~CSharedMem()
@@ -139,4 +145,47 @@ void CSharedMem::CreateDenseListOfConnectedPokerWindows()
 int CSharedMem::SizeOfDenseListOfAttachedPokerWindows()
 {
 	return size_of_dense_list_of_attached_poker_windows;
+}
+
+
+void CSharedMem::VerifyMainMutexName()
+{
+	// Some people were "smart" enough to use multiple ini-files
+	// with differing mutex names:
+	//
+	// This leads to lots of problems:
+	// * autoplayer actions no longer synchronized
+	// * no longer unique session ID
+	// * all bots try to write to the same log-file
+	int CRC = rand(); //!!!
+	if (CRC_of_main_mutexname == 0)
+	{
+		// Set the mutex
+		// We have a potential race-condition here, but can't do anything.
+		// But changes are very low that all instances interrupt
+		// each other at the same time and same point.
+		CRC_of_main_mutexname = CRC;
+	}
+	else if (CRC_of_main_mutexname != CRC)
+	{
+		// Another instance set another CRC,
+		// i.e. has another name for the main mutex
+		// ==> failure.
+		// We assume that the user is present at the very first
+		// test-run, so we throw an interactive message, no matter what.
+		OH_MessageBox_Interactive("Incorrect mutex name.\n"
+			"It is strictly necessary that all instances\n"
+			"of OpenHoldem get the same main mutex name,\n"
+			"otherwise very important functionality will fail:\n"
+			"  * autoplayer synchronization\n"
+			"  * session ID\n"
+			"  * unique log-files\n"
+			"Going to terminate...",
+			"Mutex Error", 0);
+		exit(-1); //!!!
+	}
+	else
+	{
+		OH_MessageBox_Interactive("All ok", "mutex", 0);
+	}
 }

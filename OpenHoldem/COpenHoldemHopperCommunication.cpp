@@ -4,6 +4,7 @@
 #include "CAutoConnector.h"
 #include "CFlagsToolbar.h"
 #include "MainFrm.h"
+#include "OpenHoldem.h"
 
 
 COpenHoldemHopperCommunication *p_openholdem_hopper_communication = NULL;
@@ -21,7 +22,9 @@ LRESULT COpenHoldemHopperCommunication::OnSetWindowText(WPARAM, LPARAM title)
 	if (title) 
 	{
 		CString *sTitle = (CString *)title;
-		p_mainframe->SetMainWindowTitle(sTitle->GetString());
+		//!!!
+		CMainFrame			*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
+		/*p_mainframe*/pMyMainWnd->SetMainWindowTitle(sTitle->GetString());
 		delete sTitle;
 	} 
 	else 
