@@ -162,7 +162,7 @@ void CSharedMem::VerifyMainMutexName()
 	{
 		// Set the mutex
 		// We have a potential race-condition here, but can't do anything.
-		// But changes are very low that all instances interrupt
+		// But chances are very low that all instances interrupt
 		// each other at the same time and same point.
 		CRC_of_main_mutexname = CRC;
 	}
