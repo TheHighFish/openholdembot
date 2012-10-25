@@ -365,6 +365,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\crc32hash.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CReplayFrame.cpp"
 				>
 			</File>
@@ -1095,6 +1099,10 @@
 			</File>
 			<File
 				RelativePath=".\CPreferences.h"
+				>
+			</File>
+			<File
+				RelativePath=".\crc32hash.h"
 				>
 			</File>
 			<File

@@ -531,7 +531,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 	else if (nIDEvent == ENABLE_BUTTONS_TIMER)
 	{
 
-		// Autoplayer //!!!
+		// Autoplayer
 		if ((p_symbols->user_chair_confirmed() && p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)))
 		{
 			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);

@@ -470,7 +470,7 @@ void CAutoConnector::Disconnect()
 	// Stop logging
 	stop_log();
 	
-		// Close OH, when table disappears and leaving enabled in preferences.
+	// Close OH, when table disappears and leaving enabled in preferences.
 	if (prefs.autoconnector_close_when_table_disappears())
 	{
 		PostQuitMessage(0);

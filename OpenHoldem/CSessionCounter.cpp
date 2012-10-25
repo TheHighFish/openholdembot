@@ -32,7 +32,7 @@ CSessionCounter::CSessionCounter()
 		"Too many instances of OpenHoldem\n",
 		"SessionCounter Error", MB_OK);
 
-	PostQuitMessage(0);
+	PostQuitMessage(-1);
 }
 
 CSessionCounter::~CSessionCounter()
