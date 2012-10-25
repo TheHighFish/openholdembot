@@ -2,6 +2,7 @@
 #include "CSharedMem.h"
 
 #include "CPreferences.h"
+#include "crc32hash.h"
 #include "CSessionCounter.h"
 #include "OH_MessageBox.h"
 
@@ -157,7 +158,7 @@ void CSharedMem::VerifyMainMutexName()
 	// * autoplayer actions no longer synchronized
 	// * no longer unique session ID
 	// * all bots try to write to the same log-file
-	int CRC = rand(); //!!!
+	int CRC = crc32((const unsigned char *) prefs.mutex_name().GetString());
 	if (CRC_of_main_mutexname == 0)
 	{
 		// Set the mutex
@@ -182,10 +183,6 @@ void CSharedMem::VerifyMainMutexName()
 			"  * unique log-files\n"
 			"Going to terminate...",
 			"Mutex Error", 0);
-		exit(-1); //!!!
-	}
-	else
-	{
-		OH_MessageBox_Interactive("All ok", "mutex", 0);
+		PostQuitMessage(-1);
 	}
 }

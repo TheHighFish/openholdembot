@@ -2,6 +2,7 @@
 #include "CFlagsToolbar.h"
 
 #include <afxwin.h>
+#include "Cautoplayer.h"
 #include "CSymbols.h"
 #include "MyCtoolbar.h"
 
@@ -42,6 +43,9 @@ CFlagsToolbar::CFlagsToolbar(CFrameWnd *parent_window)
 
 	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
 	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_REDCIRCLE, false);
+	bool to_be_enabled_or_not = p_autoplayer->autoplayer_engaged();
+	//p_flags_toolbar->
+	m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, to_be_enabled_or_not);
 	for (int i=0; i<k_number_of_flags; i++)
 	{
 		SetFlag(i, false);

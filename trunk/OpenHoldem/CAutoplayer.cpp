@@ -39,15 +39,13 @@ CAutoplayer::CAutoplayer(BOOL bInitiallyOwn, LPCTSTR lpszName) : _mutex(bInitial
 {
 	ASSERT(_mutex.m_hObject != NULL); 
 
-	set_autoplayer_engaged(false);
+	// Autoplayer is not enabled at startup.
+	// We can't call set_autoplayer_engaged() here,
+	// because the toolbar does not yet exist,
+	// so we can't set the autoplayer-button.
+	// However the toolbar is guaranteed to initialize correctly later.
+	_autoplayer_engaged = false;
 	action_sequence_needs_to_be_finished = false;
-	// Set correct button state
-	// We have to be careful, as during initialization the GUI does not yet exist.
-	bool to_be_enabled_or_not = _autoplayer_engaged; 
-	if (PMainframe() != NULL)
-	{
-		p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, to_be_enabled_or_not);
-	}
 }
 
 
@@ -280,10 +278,8 @@ void CAutoplayer::set_autoplayer_engaged(const bool to_be_enabled_or_not)
 	_autoplayer_engaged = to_be_enabled_or_not; 
 	// Set correct button state
 	// We have to be careful, as during initialization the GUI does not yet exist.
-	if (PMainframe() != NULL)
-	{
-		p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, to_be_enabled_or_not);
-	}
+	//!!!
+	p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, to_be_enabled_or_not);
 }
 
 #undef ENT
