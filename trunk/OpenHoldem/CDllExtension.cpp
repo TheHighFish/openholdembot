@@ -1,14 +1,15 @@
 #include "stdafx.h"
 #include "CDllExtension.h"
 
-#include "CSymbols.h"
-#include "CPreferences.h"
+#include "CFilenames.h"
 #include "CFormula.h"
 #include "CGrammar.h"
-#include "CHandHistory.h"
 #include "CHandresetDetector.h"
-#include "Cversus.h"
+#include "CHandHistory.h"
 #include "CIteratorThread.h"
+#include "CPreferences.h"
+#include "CSymbols.h"
+#include "Cversus.h"
 #include "debug.h"
 #include "OH_MessageBox.h"
 #include "OpenHoldem.h"
@@ -80,7 +81,7 @@ void CDllExtension::LoadDll(const char * path)
 		// Nothing to do
 		return;
 	}
-	SetCurrentDirectory(_startup_path);
+	p_filenames->SwitchToOpenHoldemDirectory();
 	_hmod_dll = LoadLibrary(dll_path);
 	DWORD dll_error = GetLastError();
 

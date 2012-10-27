@@ -3,6 +3,7 @@
 
 #include "..\CTablemap\CTablemapAccess.h"
 #include "..\CTransform\CTransform.h"
+#include "CFilenames.h"
 #include "CFileSystemMonitor.h"
 #include "CPreferences.h"
 #include "MagicNumbers.h"
@@ -110,8 +111,7 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData()
 	
 	write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] ParseAllTableMapsToLoadConnectionData\n");
 	_number_of_tablemaps_loaded = 0;
-	TableMapWildcard.Format("%s\\scraper\\*.tm", _startup_path);
-	ParseAllTableMapsToLoadConnectionData(TableMapWildcard);	
+	ParseAllTableMapsToLoadConnectionData(p_filenames->TableMapWildcard());	
 	tablemaps_in_scraper_folder_already_parsed = true;
 }
 

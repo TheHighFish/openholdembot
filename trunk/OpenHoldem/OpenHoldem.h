@@ -19,8 +19,6 @@
 // See OpenHoldem.cpp for the implementation of this class
 //
 
-extern	char	_startup_path[MAX_PATH];
-
 class COpenHoldemApp : public CWinApp 
 {
 public:
