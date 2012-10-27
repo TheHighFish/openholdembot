@@ -50,7 +50,20 @@ NEW STUFF:
 - Introducing a sanity-check "card-stability" similar to balance stability.
   The autoplayer won't act if one mandatory board-card is missing (e.g. occluded).
   [Nik0]
-
+- Verifying that all instances of OpenHoldem use the same mutex-name,
+  because without it very important functionality will fail:
+    * autoplayer-synchronization
+	* unique session-IDs
+	* unique log-file
+  Thanks to Morello for inventing this ingenious PEBKAC:
+  http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=15629 ;-)
+  [THF]
+- Loading the preferences now always from an ini-file for stealth-reasons,
+  and no longer from the registry.
+  The ini-file has to be placed in the OpenHoldem-directory.
+  The filename does not matter, but there may be only one such file.
+  [THF]
+  
   
 BUG FIXES: 
 - Fine-tuning some validator-rules (1201, 1205, 0261). 
@@ -70,6 +83,9 @@ BUG FIXES:
   This could lead to funny mouse-jumps if another application moved the mouse inbetween.
   Thanks to Pingvvino for finding the problem and providing a fix.
   [THF]
+- PokerTracker stats did not reset when we connected to a new table.
+  This has now been fixed.
+  [Pingvvino]
 
 
 MAINTENANCE:
