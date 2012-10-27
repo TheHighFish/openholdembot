@@ -10,6 +10,7 @@
 #include "..\CTablemap\CTableMapAccess.h"
 #include "CAutoConnector.h"
 #include "CAutoConnectorThread.h"
+#include "CFilenames.h"
 #include "CGrammar.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
@@ -26,8 +27,6 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
-char	_startup_path[MAX_PATH];
 
 // Supports MRU
 AFX_STATIC_DATA const TCHAR _afxFileSection[] = _T("Recent File List");
@@ -50,9 +49,6 @@ END_MESSAGE_MAP()
 // COpenHoldemApp construction
 COpenHoldemApp::COpenHoldemApp()
 {
-	// Save startup directory
-	::GetCurrentDirectory(MAX_PATH - 1, _startup_path);
-	
 	_dll_scraper_process_message = NULL;
 	_dll_scraper_override = NULL;
 }
@@ -94,33 +90,14 @@ BOOL COpenHoldemApp::InitInstance()
 
 	CWinApp::InitInstance();
 
-	// Standard initialization
-	// If you are not using these features and wish to reduce the size
-	// of your final executable, you should remove from the following
-	// the specific initialization routines you do not need
-	// Change the registry key under which our settings are stored
-	bool load_from_registry = true;
-	for (int i = 1; i < __argc; i++)
-	{
-		LPCTSTR pszParam = __targv[i];
-		if (_tcsncmp(pszParam, "/ini:", 5) == 0) {
-			CString path(pszParam+5);
-			path.Replace("~", _startup_path);
-			free((void*)m_pszProfileName);
-			m_pszProfileName = _strdup(path);
-			load_from_registry = false;
-		}
-		if (_tcscmp(pszParam, "/ini") == 0) {
-			CString path;
-			path.Format("%s\\openholdem.ini", _startup_path);
-			free((void*)m_pszProfileName);
-			m_pszProfileName = _strdup(path);
-			load_from_registry = false;
-		}
-	}
-	if (load_from_registry)
-		SetRegistryKey(_T("OpenHoldem"));
-	prefs.LoadPreferences(load_from_registry);
+	// Since OZH 2.2.0 we always use an ini-files,
+	// the one and only in our OH-directory,
+	// now matter how it is named.
+	// For the technical details please see:
+	// http://msdn.microsoft.com/de-de/library/xykfyy20(v=vs.80).aspx
+	free((void*)m_pszProfileName);
+	m_pszProfileName = _strdup(p_filenames->IniFilename().GetString());
+	prefs.LoadPreferences();
 	
 	// Classes
 	if (!p_sessioncounter) p_sessioncounter = new CSessionCounter;
@@ -197,12 +174,8 @@ BOOL COpenHoldemApp::InitInstance()
 		return FALSE;
 	AddDocTemplate(pDocTemplate);
 
-	// Enable DDE Execute open
-	if (load_from_registry)
-	{
-		EnableShellOpen();
-		RegisterShellFileTypes(false);
-	}
+	EnableShellOpen();
+	RegisterShellFileTypes(false);
 
 	// Parse command line for standard shell commands, DDE, file open
 	CCommandLineInfo cmdInfo;

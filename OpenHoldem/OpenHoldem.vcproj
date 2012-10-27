@@ -305,6 +305,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CFilenames.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CFileSystemMonitor.cpp"
 				>
 			</File>
@@ -1035,6 +1039,10 @@
 			>
 			<File
 				RelativePath=".\CEvalInfo.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CFilenames.h"
 				>
 			</File>
 			<File

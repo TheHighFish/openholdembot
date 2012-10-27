@@ -8,13 +8,13 @@
 
 #include <io.h>
 #include "CAutoplayer.h"
-#include "CFormula.h"
+#include "CFilenames.h"
 #include "CFlagsToolbar.h"
+#include "CFormula.h"
 #include "CGrammar.h"
 #include "CHeartbeatThread.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CSessionCounter.h"
 #include "CSymbols.h"
 #include "DialogHandList.h"
 #include "DialogNew.h"
@@ -2276,8 +2276,7 @@ void CDlgFormulaScintilla::WriteFDebugLog(bool write_header)
 	}
 
 	// write the line to the log
-	CString fn;
-	fn.Format("%s\\f$debug_%lu.log", _startup_path, p_sessioncounter->session_id());
+	CString fn = p_filenames->DebugTabLogFilename();
 	FILE *fp;
 	if (fopen_s(&fp, fn.GetString(), "a")==0)
 	{

@@ -13,6 +13,7 @@ public:
 
 private:
 	// private functions and variables - not available via accessors or mutators
+	void CreateReplaySessionDirectoryIfNecessary();
 	CString GetCardHtml(unsigned int card);
 	CString GetPlayerInfoAsHTML();
 	CString GetButtonStatesAsHTML();

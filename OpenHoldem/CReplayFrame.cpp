@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "CReplayFrame.h"
 
+#include "CFilenames.h"
 #include "CHeartbeatThread.h"
 #include "CPreferences.h"
 #include "CScraper.h"
@@ -32,7 +33,7 @@ CReplayFrame::CReplayFrame(void)
 	// Find next replay frame number
     _next_replay_frame = -1;
 
-    path.Format("%s\\replay\\session_%lu\\*.bmp", _startup_path, p_sessioncounter->session_id());
+    path = p_filenames->ReplayBitmapFilename(_next_replay_frame);
     bFound = hFile.FindFile(path.GetString());
     while (bFound)
     {
@@ -64,7 +65,6 @@ CReplayFrame::~CReplayFrame(void)
 
 void CReplayFrame::CreateReplayFrame(void)
 {
-	CString			path;
 	FILE			*fp = NULL;
 	int				i = 0;
 	time_t			ltime = 0;
@@ -77,7 +77,7 @@ void CReplayFrame::CreateReplayFrame(void)
 
 	//  Sanity check: Enough disk-space for replay frame?	
 	GetDiskFreeSpaceEx(
-		_startup_path,				  //  Directory on disk of interest
+		p_filenames->OpenHoldemDirectory(),  //  Directory on disk of interest
 		&free_bytes_for_user_on_disk,  
 		&total_bytes_on_disk,	
 		&free_bytes_total_on_disk);
@@ -100,7 +100,7 @@ void CReplayFrame::CreateReplayFrame(void)
 	CreateBitMapFile();
 
 	// Create HTML file
-	path.Format("%s\\replay\\session_%lu\\frame%06d.htm", _startup_path, p_sessioncounter->session_id(), _next_replay_frame);
+	CString path = p_filenames->ReplayHTMLFilename(_next_replay_frame);
 	if (fopen_s(&fp, path.GetString(), "w")==0)
 	{
 		write_log(prefs.debug_replayframes(), "[CReplayFrame] Creating HTML file: $s\n", path);
@@ -371,19 +371,23 @@ CString CReplayFrame::GetPotsAsHTML()
 	return pots;
 }
 
+void CReplayFrame::CreateReplaySessionDirectoryIfNecessary()
+{
+	CString path = p_filenames->ReplaySessionDirectory();
+	write_log(prefs.debug_replayframes(), "[CReplayFrame] Creating bitmap file %s\n", path);
+	if (GetFileAttributes(path.GetString()) == INVALID_FILE_ATTRIBUTES)
+	{
+		SHCreateDirectoryEx(NULL, path.GetString(), NULL);
+	}
+}
+
 void CReplayFrame::CreateBitMapFile()
 {
 	CString path;
 
-	// Create replay/session dir if it does not exist
-	path.Format("%s\\replay\\session_%lu\\", _startup_path, p_sessioncounter->session_id());
-	write_log(prefs.debug_replayframes(), "[CReplayFrame] Creating bitmap file %s\n", path);
-	if (GetFileAttributes(path.GetString()) == INVALID_FILE_ATTRIBUTES)
-		SHCreateDirectoryEx(NULL, path.GetString(), NULL);
-
-	// Create bitmap file
-	path.Format("%s\\replay\\session_%lu\\frame%06d.bmp", _startup_path, p_sessioncounter->session_id(), _next_replay_frame);
-	CreateBMPFile(path.GetString(), p_scraper->entire_window_cur());
+	CreateReplaySessionDirectoryIfNecessary();
+	CreateBMPFile(p_filenames->ReplayBitmapFilename(_next_replay_frame), 
+		p_scraper->entire_window_cur());
 }
 
 CString CReplayFrame::GetLinksToPrevAndNextFile()

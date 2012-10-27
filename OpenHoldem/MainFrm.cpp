@@ -962,6 +962,5 @@ void CMainFrame::OnHelpProblemSolver()
 CMainFrame* PMainframe()
 {
 	CMainFrame *p_mainframe = (CMainFrame *) (theApp.m_pMainWnd);
-	assert(p_mainframe != 0);
 	return p_mainframe;
 }

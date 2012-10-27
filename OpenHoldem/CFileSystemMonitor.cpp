@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "CFileSystemMonitor.h"
 
+#include "CFilenames.h"
 #include "CPreferences.h"
 #include "OpenHoldem.h"
 
@@ -24,8 +25,7 @@ CFileSystemMonitor *p_filesystem_monitor = NULL;
 CFileSystemMonitor::CFileSystemMonitor()
 {
 	write_log(prefs.debug_filesystem_monitor(), "[CFileSystemMonitor] executing constructor.)\n");
-	absolute_path_to_scraper_directory =
-		CString(_startup_path) + "\\scraper\\";
+	absolute_path_to_scraper_directory = p_filenames->ScraperDirectory();
 	write_log(prefs.debug_filesystem_monitor(), "[CFileSystemMonitor] Scraper folder: %s\n", 
 		absolute_path_to_scraper_directory);
 	// Create directory in case it does not exist (mainly debug sessions).

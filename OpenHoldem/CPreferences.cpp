@@ -1,7 +1,7 @@
 #include "stdafx.h"
+#include "CPreferences.h"
 
 #include "debug.h"
-#include "CPreferences.h"
 #include "MagicNumbers.h"
 
 // CPreferences needs to be globally created, in order to provide saved settings to CMainFrame::PreCreateWindow method
@@ -18,13 +18,9 @@ CPreferences::~CPreferences()
 {
 }
 
-void CPreferences::LoadPreferences(bool registry)
+void CPreferences::LoadPreferences()
 {
-	if (registry)
-		_preferences_heading.Empty();
-	else
-		_preferences_heading = "Preferences";
-
+	_preferences_heading = "Preferences";
 	ReadPreferences();
 }
 

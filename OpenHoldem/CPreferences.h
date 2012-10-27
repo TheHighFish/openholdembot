@@ -23,7 +23,7 @@ public:
 	CPreferences();
 	~CPreferences();
 
-	void LoadPreferences(bool registry);
+	void LoadPreferences();
 
 public:
 	// public accessors

@@ -6,6 +6,7 @@
 #include "..\CTablemap\CTablemapAccess.h"
 #include "..\CTransform\CTransform.h"
 #include "CAutoplayer.h"
+#include "CFilenames.h"
 #include "CFlagsToolbar.h"
 #include "CFormula.h"
 #include "CHeartbeatThread.h"
@@ -321,7 +322,7 @@ void CAutoConnector::LoadScraperDLL()
 		return;
 	}
 	// Otherwise: try to load DLL
-	SetCurrentDirectory(_startup_path);
+	p_filenames->SwitchToOpenHoldemDirectory();
 	theApp._scraper_dll = LoadLibrary(filename);
 
 	if (theApp._scraper_dll == NULL)
@@ -358,7 +359,7 @@ void CAutoConnector::LoadScraperPreprocessorDLL()
 		return;
 	}
 	// Otherwise: try to load DLL
-	SetCurrentDirectory(_startup_path);
+	p_filenames->SwitchToOpenHoldemDirectory();
 	theApp._scraperpreprocessor_dll = LoadLibrary(filename);
 
 	if (theApp._scraperpreprocessor_dll==NULL)

@@ -4,10 +4,10 @@
 #include "..\CTablemap\CTablemap.h"
 #include "..\..\dbghelp\dbghelp.h"
 #include "CAutoplayerFunctions.h"
+#include "CFilenames.h"
 #include "CIteratorThread.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CSessionCounter.h"
 #include "CSymbols.h"
 #include "inlines/eval.h"
 #include "OH_MessageBox.h"
@@ -108,19 +108,16 @@ char * get_now_time(char * timebuf)
 
 LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers) 
 {
-	char flpath[MAX_PATH];
-    char msg[1000];
-
 	// Create a minidump
 	GenerateDump(pExceptionPointers);
 
-    sprintf_s(flpath, MAX_PATH, "%s\\fatal error.log", _startup_path);
-    strcpy_s(msg, 1000, "OpenHoldem is about to crash.\n");
-    strcat_s(msg, 1000, "A minidump has been created in your\n");
-	strcat_s(msg, 1000, "OpenHoldem startup directory.\n");
-    strcat_s(msg, 1000, "\n\nOpenHoldem will shut down when you click OK.");
-    OH_MessageBox(msg, "FATAL ERROR", MB_OK | MB_ICONEXCLAMATION | MB_TOPMOST);
-
+	OH_MessageBox(
+		"OpenHoldem is about to crash.\n"
+		"A minidump has been created in your\n"
+		"OpenHoldem startup directory.\n"
+		"\n"
+		"OpenHoldem will shut down when you click OK.",
+		"FATAL ERROR", MB_OK | MB_ICONEXCLAMATION | MB_TOPMOST);
     return EXCEPTION_EXECUTE_HANDLER;
 }
 
@@ -230,14 +227,9 @@ void start_log(void)
 	if (log_fp!=NULL)
 		return;
 
-    CString fn;
 	CSLock lock(log_critsec);
 
-    fn.Format("%s\\oh_%lu.log", _startup_path, p_sessioncounter->session_id());
-	
-	if (log_fp!=NULL)
-		return;
-	
+	CString fn = p_filenames->LogFilename();
 	// Check, if file exists and size is too large
 	struct stat file_stats = { 0 };
 	if (stat(fn.GetString(), &file_stats) == 0)
@@ -570,9 +562,7 @@ void write_log_pokertracker(bool debug_settings_for_this_message, char* fmt, ...
 	if (debug_settings_for_this_message == false)
 		return;
 
-    CString fn;
-    fn.Format("%s\\oh_pt_%lu.log", _startup_path, p_sessioncounter->session_id());
-
+	CString fn = p_filenames->PokerTrackerLogFilename();
 	if ((fp = _fsopen(fn.GetString(), "a", _SH_DENYWR)) != 0)
 	{
         va_start(ap, fmt);
@@ -590,21 +580,14 @@ void write_log_pokertracker(bool debug_settings_for_this_message, char* fmt, ...
 int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers)
 {
     bool		bMiniDumpSuccessful;
-    char		szFileName[MAX_PATH]; 
     DWORD		dwBufferSize = MAX_PATH;
     HANDLE		hDumpFile;
-    SYSTEMTIME	stLocalTime;
+    
     MINIDUMP_EXCEPTION_INFORMATION	ExpParam;
 
-    GetLocalTime(&stLocalTime);
-
-    sprintf_s(szFileName, MAX_PATH, "%s\\%s-%s-%04d%02d%02d-%02d%02d%02d-%ld-%ld.dmp", _startup_path, 
-			"OpenHoldem", VERSION_TEXT, stLocalTime.wYear, stLocalTime.wMonth, stLocalTime.wDay, 
-			stLocalTime.wHour, stLocalTime.wMinute, stLocalTime.wSecond, GetCurrentProcessId(), 
-			GetCurrentThreadId());
-
-    hDumpFile = CreateFile(szFileName, GENERIC_READ|GENERIC_WRITE, FILE_SHARE_WRITE|FILE_SHARE_READ, 
-						   0, CREATE_ALWAYS, 0, 0);
+	hDumpFile = CreateFile(p_filenames->MiniDumpFilename(), 
+		GENERIC_READ|GENERIC_WRITE, FILE_SHARE_WRITE|FILE_SHARE_READ, 
+		0, CREATE_ALWAYS, 0, 0);
    
     ExpParam.ThreadId = GetCurrentThreadId();
     ExpParam.ExceptionPointers = pExceptionPointers;
