@@ -36,6 +36,7 @@ public:
 						~CPokerTrackerThread();
 	void				StartThread();
 	void				StopThread();
+	void				ClearAllStats(void);
 	const double		ProcessQuery(const char *s);
 
 private:
@@ -52,7 +53,6 @@ private:
 	bool				CheckName(const int m_chair, bool &nameChange);
 	double				GetStat(const int m_chair, const PT_Stats stat);	
 	double				UpdateStat(const int m_chair, const int stat);
-	void				ClearAllStats(void);
 	void				ClearSeatStats(int m_chair, bool clearNameAndFound = true);
 	bool				QueryName(const char * query_name, const char * scraped_name, char * best_name);
 	bool				FindName(const char *scraped_name, char *best_name);

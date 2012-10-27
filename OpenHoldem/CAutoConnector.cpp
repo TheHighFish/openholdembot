@@ -278,6 +278,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 
 			p_heartbeat_thread = new CHeartbeatThread;
 			p_scraper_access->InitOnConnect();
+			p_pokertracker_thread->ClearAllStats();
 
 			// Start timer that checks for continued existence of attached HWND
 			PMainframe()->StartTimer();
