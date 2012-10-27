@@ -90,9 +90,9 @@ BOOL COpenHoldemApp::InitInstance()
 
 	CWinApp::InitInstance();
 
-	// Since OZH 2.2.0 we always use an ini-files,
+	// Since OH 2.2.0 we always use an ini-files,
 	// the one and only in our OH-directory,
-	// now matter how it is named.
+	// no matter how it is named.
 	// For the technical details please see:
 	// http://msdn.microsoft.com/de-de/library/xykfyy20(v=vs.80).aspx
 	free((void*)m_pszProfileName);
