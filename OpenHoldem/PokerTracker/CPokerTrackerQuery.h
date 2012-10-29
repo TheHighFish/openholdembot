@@ -6,7 +6,8 @@ public:
 		CString description,
 		bool is_basic_stat,
 		bool is_positional_preflop_stat,
-		bool is_advanced_stat);
+		bool is_advanced_stat
+		bool is_deactivated);
 	~CPokerTrackerQuery();
 public:
 	CString GetName();
@@ -16,6 +17,7 @@ public:
 	bool IsBasicStat();
 	bool IsPositionalPreflopStat();
 	bool IsAdvancedStat();
+	bool IsDeactivated();
 private:
 	CString _name;
 	CString _query; 
@@ -23,4 +25,5 @@ private:
 	bool _is_basic_stat;
 	bool _is_positional_preflop_stat;
 	bool _is_advanced_stat;
+	bool _is_deactivated;
 };
