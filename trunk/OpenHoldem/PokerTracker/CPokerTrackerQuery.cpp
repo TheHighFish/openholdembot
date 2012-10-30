@@ -7,8 +7,8 @@ CPokerTrackerQuery::CPokerTrackerQuery(
 	CString description,
 	bool is_basic_stat,
 	bool is_positional_preflop_stat,
-	bool is_advanced_stat
-	bool is_deactivated)
+	bool is_advanced_stat,
+	bool is_activated)
 {
 	_name = name;
 	_query = query;
@@ -16,7 +16,7 @@ CPokerTrackerQuery::CPokerTrackerQuery(
 	_is_basic_stat = is_basic_stat;
 	_is_positional_preflop_stat = is_positional_preflop_stat;
 	_is_advanced_stat = is_advanced_stat;
-	_is_deactivated = is_deactivated;
+	_is_activated = is_activated;
 }
 
 CPokerTrackerQuery::~CPokerTrackerQuery()
@@ -54,8 +54,8 @@ bool CPokerTrackerQuery::IsAdvancedStat()
 	return _is_advanced_stat;
 }
 	
-bool CPokerTrackerQuery::IsDeactivated()
+bool CPokerTrackerQuery::IsActivated()
 {
-	return _is_deactivated;
+	return _is_activated;
 }
 	
