@@ -210,15 +210,19 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 
 bool CFormula::IsStandardFormula(CString formula_name)
 {
-	return ((formula_name == "notes")	|| (formula_name == "dll")
-		|| (formula_name == "f$alli")	|| (formula_name == "f$betsize")
-		|| (formula_name == "f$rais")	|| (formula_name == "f$call")  
-		|| (formula_name == "f$prefold")|| (formula_name == "f$rebuy") 
-		|| (formula_name == "f$delay")	|| (formula_name == "f$chat")	
-		|| (formula_name == "f$P")		|| (formula_name == "f$sitin")	
-		|| (formula_name == "f$sitout")	|| (formula_name == "f$leave")	
-		|| (formula_name == "f$close")	|| (formula_name == "f$test")	
-		|| (formula_name == "f$debug"));
+	return ((formula_name == "notes")	    || (formula_name == "dll")
+		|| (formula_name == "f$alli")	    || (formula_name == "f$betsize")
+		|| (formula_name == "f$betpot_2_1") || (formula_name == "f$betpot_1_1")
+		|| (formula_name == "f$betpot_3_4") || (formula_name == "f$betpot_2_3")
+		|| (formula_name == "f$betpot_1_2") || (formula_name == "f$betpot_1_3")
+		|| (formula_name == "f$betpot_1_4")
+		|| (formula_name == "f$rais")	    || (formula_name == "f$call")  
+		|| (formula_name == "f$prefold")    || (formula_name == "f$rebuy") 
+		|| (formula_name == "f$delay")	    || (formula_name == "f$chat")	
+		|| (formula_name == "f$prwin_number_of_opponents")		
+		|| (formula_name == "f$sitin")	    || (formula_name == "f$sitout")	
+		|| (formula_name == "f$leave")	    || (formula_name == "f$close")	
+		|| (formula_name == "f$test")	    || (formula_name == "f$debug"));
 }
 
 void CFormula::WriteStandardFunction(CArchive& ar, CString name)
@@ -249,13 +253,20 @@ void CFormula::WriteFormula(CArchive& ar)
 	WriteStandardFunction(ar, "f$prwin_number_of_iterations");
 	WriteStandardFunction(ar, "f$alli");
 	WriteStandardFunction(ar, "f$betsize");
+	WriteStandardFunction(ar, "f$betpot_2_1");
+	WriteStandardFunction(ar, "f$betpot_1_1");
+	WriteStandardFunction(ar, "f$betpot_3_4");
+	WriteStandardFunction(ar, "f$betpot_2_3");
+	WriteStandardFunction(ar, "f$betpot_1_1");
+	WriteStandardFunction(ar, "f$betpot_1_3");
+	WriteStandardFunction(ar, "f$betpot_1_4");
 	WriteStandardFunction(ar, "f$rais");
 	WriteStandardFunction(ar, "f$call");
 	WriteStandardFunction(ar, "f$prefold");
 	WriteStandardFunction(ar, "f$rebuy");
 	WriteStandardFunction(ar, "f$delay");
 	WriteStandardFunction(ar, "f$chat");
-	WriteStandardFunction(ar, "f$P");
+	WriteStandardFunction(ar, "f$prwin_number_of_opponents"); 
 	WriteStandardFunction(ar, "f$sitin");
 	WriteStandardFunction(ar, "f$sitout");
 	WriteStandardFunction(ar, "f$leave");
@@ -349,14 +360,20 @@ void CFormula::CheckForDefaultFormulaEntries()
 	AddEmptyFunctionIfFunctionDoesNotExist("dll");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$alli");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$betsize");
-	// !!! Betpot 
+	AddEmptyFunctionIfFunctionDoesNotExist("f$betpot_2_1");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$betpot_1_1");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$betpot_3_4");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$betpot_2_3");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$betpot_1_2");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$betpot_1_3");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$betpot_1_4");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$rais");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$call");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$prefold");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$rebuy");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$delay");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$chat");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$P"); /// !!! Rename
+	AddEmptyFunctionIfFunctionDoesNotExist("f$prwin_number_of_opponents");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$sitin");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$sitout");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$leave");
@@ -707,4 +724,11 @@ void CFormula::WarnAboutOutdatedConcepts()
 			"your formula set.",
 			"Error", 0);
 	}
+	if (DoesFormulaAlreadyExist("f$P"))
+	{
+		OH_MessageBox("Your formula set contains old \"prwin\"-functions.\n"
+			"\"f$P\" got replaced by \"f$number_of_opponents_for_prwin\".",
+			"Error", 0);
+	}
+
 }

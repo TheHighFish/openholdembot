@@ -357,14 +357,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\PokerTracker\CPokerTrackerQuery.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CPokerTrackerThread.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CPreferences.cpp"
 				>
 			</File>
@@ -1031,6 +1023,26 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="PokerTracker"
+				>
+				<File
+					RelativePath=".\PokerTracker\CPokerTrackerQuery.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\PokerTracker\CPokerTrackerQueryCollection.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\PokerTracker\CPokerTrackerQueryLoader.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\PokerTracker\CPokerTrackerThread.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -1095,14 +1107,6 @@
 			</File>
 			<File
 				RelativePath=".\COpenPPLGrammar.h"
-				>
-			</File>
-			<File
-				RelativePath=".\PokerTracker\CPokerTrackerQuery.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CPokerTrackerThread.h"
 				>
 			</File>
 			<File
@@ -1613,6 +1617,18 @@
 					>
 				</File>
 				<File
+					RelativePath=".\PokerTracker\CPokerTrackerQueryCollection.h"
+					>
+				</File>
+				<File
+					RelativePath=".\PokerTracker\CPokerTrackerQueryLoader.h"
+					>
+				</File>
+				<File
+					RelativePath=".\PokerTracker\CPokerTrackerThread.h"
+					>
+				</File>
+				<File
 					RelativePath=".\PokerTracker_Queries\PositionalPreflopStats.h.h"
 					>
 				</File>
@@ -1658,6 +1674,10 @@
 				</File>
 				<File
 					RelativePath=".\CAutoConnectorThread.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CPokerTrackerQueryCollection.h"
 					>
 				</File>
 				<File

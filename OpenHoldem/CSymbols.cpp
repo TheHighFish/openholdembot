@@ -1112,9 +1112,9 @@ void CSymbols::CalcSymbols(void)
 	CalcHistory();						// history symbols
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// number of opponents (from f$P)
+	// number of opponents for prwin
 	int e = SUCCESS;
-	set_sym_nopponents(gram.CalcF$symbol(p_formula, "f$P", &e));
+	set_sym_nopponents(gram.CalcF$symbol(p_formula, "f$prwin_number_of_opponents", &e));
 
 	// !!! Not here. Better in the setter
 	if (_sym.nopponents > MAX_OPPONENTS)
@@ -1474,9 +1474,9 @@ void CSymbols::CalcProbabilities(void)
 	set_sym_prlos(iter_vars.prlos());													// prlos
 
 	// Start/restart prwin thread on these conditions:
-	// - changed f$P (nopponents)
+	// - changed f$number_of_opponents_for_prwin
 	// - changed nit
-	// - changed br
+	// - changed betround
 	// - changed player cards
 	// - changed common cards
 	need_recalc = false;
@@ -4223,7 +4223,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "network$", 8)==0)									return p_tablemap->network().Find(&a[8])!=-1;
 
 	//FORMULA FILE
-	if (memcmp(a, "f$prwin_number_of_iterations", 3)==0 && strlen(a)==3)							return _sym.nit;
+	if (memcmp(a, "f$prwin_number_of_iterations", 28)==0 && strlen(a)==28)							return _sym.nit;
 
 	// AUTOPLAYER 1(2)
 	if (memcmp(a, "myturnbits", 10)==0 && strlen(a)==10)				return _sym.myturnbits;

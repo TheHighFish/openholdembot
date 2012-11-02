@@ -254,10 +254,10 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 			// normal prwin opponent card selection
 			write_log(prefs.debug_prwin(), "[PrWinThread] Using standard prwin.\n");
 
-			// if f$P<=13 then deal with random replacement algorithm, otherwise deal with swap algorithm
+			// if f$prwin_number_of_opponents<=13 then deal with random replacement algorithm, otherwise deal with swap algorithm
 			if (nopp <= 13)
 			{
-				write_log(prefs.debug_prwin(), "[PrWinThread] Using random algorithm, as f$P <= 13\n");
+				write_log(prefs.debug_prwin(), "[PrWinThread] Using random algorithm, as f$prwin_number_of_opponents <= 13\n");
 				// random replacement algorithm
 				// opponent cards
 				if (nopp < 1)
@@ -322,7 +322,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 			else
 			{
-				write_log(prefs.debug_prwin(), "[PrWinThread] Useing swap-algorithm, as f$P > 13\n");
+				write_log(prefs.debug_prwin(), "[PrWinThread] Useing swap-algorithm, as f$prwin_number_of_opponents > 13\n");
 				// swap alogorithm
 				//weighted prwin not implemented for this case
 				numberOfCards=52;
