@@ -1,3 +1,6 @@
+#ifndef INC_CPOKERTRACKERQUERY_H
+#define INC_CPOKERTRACKERQUERY_H
+
 #include "atlstr.h"
 
 class CPokerTrackerQuery
@@ -29,3 +32,5 @@ private:
 	bool _is_advanced_stat;
 	bool _is_activated;
 };
+
+#endif INC_CPOKERTRACKERQUERY_H

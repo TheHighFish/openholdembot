@@ -219,7 +219,7 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 	}
 
 	else if (p_symbols->sym()->nopponents==0)
-		_status_action = "Idle (f$P==0)";
+		_status_action = "Idle (f$prwin_number_of_opponents==0)";
 
 	else
 		_status_action = "Thinking";

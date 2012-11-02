@@ -33,8 +33,10 @@
 CDlgFormulaScintilla	*m_formulaScintillaDlg = NULL;
 
 char * keywords = // Standard functions
-				  "f$alli f$swag f$srai f$rais f$call f$prefold f$rebuy f$delay f$chat "
-				  "f$P f$test f$sitin f$sitout f$leave f$close "
+				  "f$alli f$betsize f$betpot_2_1  f$betpot_1_1 f $betpot_3_4 "
+				  "f$betpot_2_3 f$betpot_1_2 f$betpot_1_3 f$betpot_1_4 "
+				  "f$rais f$call f$prefold f$rebuy f$delay f$chat "
+				  "f$prwin_number_of_opponents f$test f$sitin f$sitout f$leave f$close "
 				  // General
 				  "site nchairs session version "
 				  // Tablemap
@@ -256,6 +258,13 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 
 	m_standard_functions[0].Add("f$alli");
 	m_standard_functions[0].Add("f$betsize");
+	m_standard_functions[0].Add("f$betpot_2_1");
+	m_standard_functions[0].Add("f$betpot_1_1");
+	m_standard_functions[0].Add("f$betpot_3_4");
+	m_standard_functions[0].Add("f$betpot_2_3");
+	m_standard_functions[0].Add("f$betpot_1_2");
+	m_standard_functions[0].Add("f$betpot_1_3");
+	m_standard_functions[0].Add("f$betpot_1_4");
 	m_standard_functions[0].Add("f$rais");
 	m_standard_functions[0].Add("f$call");
 	m_standard_functions[0].Add("f$prefold");
@@ -265,7 +274,7 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 	m_standard_functions[1].Add("dll");
 	m_standard_functions[1].Add("f$chat");
 	m_standard_functions[1].Add("f$rebuy");
-	m_standard_functions[1].Add("f$P");
+	m_standard_functions[1].Add("f$prwin_number_of_opponents");
 	m_standard_functions[1].Add("f$sitin");
 	m_standard_functions[1].Add("f$sitout");
 	m_standard_functions[1].Add("f$leave");

@@ -246,7 +246,7 @@ void start_log(void)
 	if ((log_fp = _fsopen(fn.GetString(), "a", _SH_DENYWR)) != 0)
 	{
 		write_log(k_always_log_basic_information, "! log file open\n");
-		fprintf(log_fp, "yyyy.mm.dd hh:mm:ss -  # hand commoncard rank poker  win  los  tie  P      nit bestaction - play*      call       bet       pot   balance - FCKRA FCKRA swag\n");
+		fprintf(log_fp, "yyyy.mm.dd hh:mm:ss -  # hand commoncard rank poker  win  los  tie  P      nit bestaction - play*      call       bet       pot   balance - FCKRA FCKRA swag\n"); //!!! nit
 		fprintf(log_fp, "----------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 		fflush(log_fp);
 	}

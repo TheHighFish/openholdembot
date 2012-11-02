@@ -2,7 +2,10 @@
 #include "CPokerTrackerQueryCollection.h"
 
 #include "assert.h"
+#include "CPokerTrackerQuery.h"
 #include "..\OH_MessageBox.h"
+
+CPokerTrackerQueryCollection *p_pokertracker_query_collection = NULL;
 
 CPokerTrackerQueryCollection::CPokerTrackerQueryCollection()
 {
@@ -33,15 +36,16 @@ int CPokerTrackerQueryCollection::GetNumberOfPokerTrackerQueries()
 	return number_of_queries;
 }
 
-CPokerTrackerQuery* CPokerTrackerQueryCollection::GetPokerTrackerQuery(unsigned int index)
+CPokerTrackerQuery* CPokerTrackerQueryCollection::GetPokerTrackerQuery(int index)
 {
+	assert(index >= 0);
 	assert(index < GetNumberOfPokerTrackerQueries());
 	return pt_queries[index];
 }
 
 void CPokerTrackerQueryCollection::DeleteAllQueries()
 {
-	for (unsigned int i=0; i<GetNumberOfPokerTrackerQueries(); i++)
+	for (int i=0; i<GetNumberOfPokerTrackerQueries(); i++)
 	{
 		CPokerTrackerQuery* next_query = GetPokerTrackerQuery(i);
 		next_query->~CPokerTrackerQuery();
