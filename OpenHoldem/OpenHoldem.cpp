@@ -12,8 +12,6 @@
 #include "CAutoConnectorThread.h"
 #include "CFilenames.h"
 #include "CGrammar.h"
-#include "CHeartbeatThread.h"
-#include "CIteratorThread.h"
 #include "COpenHoldemHopperCommunication.h"
 #include "CPreferences.h"
 #include "CSessionCounter.h"
@@ -242,23 +240,8 @@ BOOL COpenHoldemApp::InitInstance()
 	return TRUE;
 }
 
-void COpenHoldemApp::StopThreads()
-{
-	if (p_iterator_thread) 
-	{
-		delete p_iterator_thread;
-		p_iterator_thread = NULL;
-	}
-	if (p_heartbeat_thread)
-	{
-		delete p_heartbeat_thread;
-		p_heartbeat_thread = NULL;
-	}
-}
-
 int COpenHoldemApp::ExitInstance()
 {
-	StopThreads();
 	DeleteAllSingletons();
 	stop_log();
 	Scintilla_ReleaseResources();

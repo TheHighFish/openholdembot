@@ -17,7 +17,7 @@
 #include "MainFrm.h"
 #include "MagicNumbers.h"
 #include "OpenHoldem.h"
-#include "CPokerTrackerThread.h"
+#include "PokerTracker\CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CRunRon.h"
 #include "CScraper.h"

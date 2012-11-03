@@ -13,11 +13,13 @@
 #include "CGameState.h"
 #include "CHandHistory.h"
 #include "CHandresetDetector.h"
+#include "CHeartbeatThread.h"
+#include "CIteratorThread.h"
 #include "CLazyScraper.h"
 #include "CMemory.h"
 #include "COcclusioncheck.h"
 #include "CPerl.hpp"
-#include "CPokerTrackerThread.h"
+#include "PokerTracker\CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CRebuyManagement.h"
 #include "CScraper.h"
@@ -102,6 +104,32 @@ void InstantiateAllSingletons()
 		p_casino_interface = new CCasinoInterface;
 }
 
+// To be executed first,
+// as these threads might access some variables.
+void StopThreads()
+{
+	if (p_autoconnectorthread) 
+	{ 
+		delete p_autoconnectorthread; 
+		p_autoconnectorthread = NULL; 
+	} 
+	if (p_iterator_thread) 
+	{
+		delete p_iterator_thread;
+		p_iterator_thread = NULL;
+	}
+	if (p_heartbeat_thread)
+	{
+		delete p_heartbeat_thread;
+		p_heartbeat_thread = NULL;
+	}
+	if (p_pokertracker_thread)	
+	{ 
+		delete p_pokertracker_thread; 
+		p_pokertracker_thread = NULL; 
+	}
+}
+
 void DeleteAllSingletons()
 {
 	// Global instances.
@@ -109,12 +137,11 @@ void DeleteAllSingletons()
 	// but we have to be careful, as sometimes we do some work in the destructors,
 	// that depends on other classes, e.g. the destructor of the autoconnector
 	// needs its session_id (CSessionCounter).
+	StopThreads();
 	if (p_casino_interface)
 		{ delete p_casino_interface; p_casino_interface = NULL; }
 	if (p_handhistory) 
 		{ delete p_handhistory; p_handhistory = NULL; }
-	if (p_autoconnectorthread) 
-		{ delete p_autoconnectorthread; p_autoconnectorthread = NULL; } 
 	if (p_occlusioncheck) 
 		{ delete p_occlusioncheck; p_occlusioncheck = NULL; }
 	if (p_rebuymanagement) 
@@ -139,8 +166,6 @@ void DeleteAllSingletons()
 		{ delete p_game_state; p_game_state = NULL; }
 	if (p_dll_extension)  
 		{ delete p_dll_extension; p_dll_extension = NULL; }
-	if (p_pokertracker_thread)	
-		{ delete p_pokertracker_thread; p_pokertracker_thread = NULL; }
 	if (p_autoplayer)  
 		{ delete p_autoplayer; p_autoplayer = NULL; }
 	if (p_formula)  

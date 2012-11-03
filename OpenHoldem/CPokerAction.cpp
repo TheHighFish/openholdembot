@@ -1,9 +1,8 @@
 #include "stdafx.h"
-
 #include "CPokerAction.h"
 
 #include "CGameState.h"
-#include "CPokerTrackerThread.h"
+#include "PokerTracker\CPokerTrackerThread.h"
 #include "CSymbols.h"
 #include "CTableLimits.h"
 

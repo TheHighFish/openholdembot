@@ -4,16 +4,15 @@
 #include <assert.h>
 #include <process.h>
 #include <comdef.h>
-#include "CSymbols.h"
-#include "CPreferences.h"
-#include "CGameState.h"
-#include "CLevDistance.h"
-#include "MagicNumbers.h"
+#include "..\CSymbols.h"
+#include "..\CPreferences.h"
+#include "..\CGameState.h"
+#include "..\CLevDistance.h"
 #include "..\CTablemap\CTablemap.h"
-#include "MagicNumbers.h"
-#include "OH_MessageBox.h"
-#include "PokerTracker_Queries_Version_3.h"
-#include "StringFunctions.h"
+#include "..\MagicNumbers.h"
+#include "..\OH_MessageBox.h"
+#include "..\PokerTracker_Queries_Version_3.h"
+#include "..\StringFunctions.h"
 
 CPokerTrackerThread	*p_pokertracker_thread = NULL;
 CPokerTrackerLookup pt_lookup;
