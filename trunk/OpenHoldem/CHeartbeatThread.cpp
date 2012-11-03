@@ -13,7 +13,6 @@
 #include "CLazyScraper.h"
 #include "CopenHoldemHopperCommunication.h"
 #include "CopenHoldemStatusbar.h"
-#include "CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CReplayFrame.h"
 #include "CScraper.h"
@@ -315,26 +314,6 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			CReplayFrame   crf;
 			crf.CreateReplayFrame();
 			p_heartbeat_thread->set_replay_recorded_this_turn(p_autoplayer->autoplayer_engaged());
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////
-		// Start/stop PokerTracker thread as needed
-
-		// Start Poker Tracker Thread if needed and not already running
-
-		if (p_pokertracker_thread)
-		{
-			write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Starting PokerTracker thread.\n");
-			p_pokertracker_thread->StartThread();
-		}
-
-		// Stop Poker Tracker Thread if not needed any longer
-		// !!! todo: also check for CARD_NOCARD
-		// !!! http://www.maxinmontreal.com/forums/viewtopic.php?f=114&p=103814
-		if (!p_symbols->sym()->issittingin && p_pokertracker_thread)
-		{
-			write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Stopping PokerTracker thread.\n");
-			p_pokertracker_thread->StopThread();
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////

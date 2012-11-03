@@ -11,7 +11,7 @@
 #include "CFormula.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
-#include "CPokerTrackerThread.h"
+#include "PokerTracker\CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
@@ -385,7 +385,6 @@ void CAutoConnector::LoadScraperPreprocessorDLL()
 	}
 }
 
-
 void CAutoConnector::Disconnect()
 {
 	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Disconnect()\n");
@@ -402,10 +401,6 @@ void CAutoConnector::Disconnect()
 		delete p_heartbeat_thread;
 		p_heartbeat_thread = NULL;
 	}
-
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Stopping PokerTracker thread\n");
-	if (p_pokertracker_thread)
-		p_pokertracker_thread->StopThread();
 
 	// Make sure autoplayer is off
 	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Stopping autoplayer\n");

@@ -7,6 +7,7 @@
 // an undefined order will lead to very hard to trace crashes
 // during startup and to 0-byte crash-dumps.
 
+void StopThreads();
 void InstantiateAllSingletons();
 void DeleteAllSingletons();
 

@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 
-#include "CPokerTrackerThread.h"
+#include "PokerTracker\CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "DialogSAPrefs6.h"
 #include "OpenHoldem.h"

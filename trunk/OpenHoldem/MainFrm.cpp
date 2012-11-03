@@ -17,7 +17,6 @@
 #include "COpenHoldemHopperCommunication.h"
 #include "COpenHoldemStatusbar.h"
 #include "CPerl.hpp"
-#include "CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CProblemSolver.h"
 #include "CReplayFrame.h"
@@ -53,6 +52,7 @@
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
 #include "SAPrefsDialog.h"
+#include "Singletons.h"
 
 
 // CMainFrame
@@ -363,23 +363,7 @@ BOOL CMainFrame::DestroyWindow()
 	//unload dll
 	p_dll_extension->UnloadDll();
 
-	// stop threads
-	if (p_iterator_thread) 
-	{
-		delete p_iterator_thread;
-		p_iterator_thread = NULL;
-	}
-	if (p_heartbeat_thread)
-	{
-		delete p_heartbeat_thread;
-		p_heartbeat_thread = NULL;
-	}
-
-	if (p_pokertracker_thread)
-	{
-		delete p_pokertracker_thread;
-		p_pokertracker_thread = NULL;
-	}
+	StopThreads();
 
 	// Save window position
 	if (!p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_MINMAX)) 

@@ -3,8 +3,8 @@
 
 #include "libpq-fe.h"
 #include <map>
-#include "MagicNumbers.h"
-#include "PokerTracker_Queries_Version_3.h"
+#include "..\MagicNumbers.h"
+#include "..\PokerTracker_Queries_Version_3.h"
 
 #define k_max_length_of_playername 30
 #define k_min_chair_number 0
@@ -35,12 +35,12 @@ public:
 						CPokerTrackerThread();
 						~CPokerTrackerThread();
 	void				StartThread();
-	void				StopThread();
 	void				ClearAllStats(void);
 	const double		ProcessQuery(const char *s);
 
 private:
 	// private functions and variables - not available via accessors or mutators
+	void				StopThread();
 	static void			GetStatsForChair(LPVOID pParam, int chair, int sleepTime);
 	static UINT			PokertrackerThreadFunction(LPVOID pParam);
 	static int			LightSleep(int sleepTime, CPokerTrackerThread * pParent);
