@@ -1039,6 +1039,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\PokerTracker\CPokerTrackerStatsContainer.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\PokerTracker\CPokerTrackerThread.cpp"
 					>
 				</File>
@@ -1622,6 +1626,10 @@
 				</File>
 				<File
 					RelativePath=".\PokerTracker\CPokerTrackerQueryLoader.h"
+					>
+				</File>
+				<File
+					RelativePath=".\PokerTracker\CPokerTrackerStatsContainer.h"
 					>
 				</File>
 				<File

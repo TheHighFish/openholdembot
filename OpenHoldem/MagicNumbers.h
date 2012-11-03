@@ -218,6 +218,9 @@ enum table_positioner_options
 	k_position_tables_cascaded
 };
 
+// poker tracker
+const double k_pokertracker_stat_undefined = -1.0;
+
 // numeric constants
 #define M_E			2.7182818284590452354
 #define M_LOG2E		1.4426950408889634074
