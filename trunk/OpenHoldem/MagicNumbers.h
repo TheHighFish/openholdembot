@@ -198,14 +198,17 @@ const char k_autoplayer_functionname[k_number_of_autoplayer_functions][k_max_len
 	"f$betsite",
 	"f$rais",
 	"f$call",
+	"--check",
+	"--fold",
 	"f$prefold",
 	"f$sitin",
 	"f$sitout",
 	"f$leave",
+	"--autopost",
 	"f$close",
 	"f$rebuy",
-	"f$delay",
-	"f$chat"
+	"f$chat",
+	"f$delay"
 };
 
 enum table_positioner_options

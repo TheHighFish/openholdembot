@@ -88,6 +88,10 @@ int CScraperAccess::SearchForButtonNumber(int button_code)
 		case k_button_leave:
 			StringMatch = &CStringMatch::IsStringLeave;
 			break;
+		// PRE-FOLD
+		case k_button_prefold:
+			StringMatch = &CStringMatch::IsStringPrefold;
+			break;
 		default:
 			break;
 	}
