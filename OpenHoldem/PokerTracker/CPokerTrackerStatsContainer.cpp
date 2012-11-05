@@ -77,10 +77,17 @@ double CPokerTrackerStatsContainer::GetStat(CString stats_name, int chair)
 	// "Not found" can happen (bad formula by user).
 	if (stats_iterator == StatsMap.end())
 	{
+		WarnAboutInvalidPTSymbol(stats_name);
 		return k_pokertracker_stat_undefined;
 	}
 	else 
 	{
 		return stats_iterator->second.p_stats_array[chair];
 	}
+}
+
+void CPokerTrackerStatsContainer::WarnAboutInvalidPTSymbol(CString s)
+{
+	CString error_message = "Invalid PokerTracker-symbol: " + s;
+	OH_MessageBox(error_message, "ERROR", 0);
 }

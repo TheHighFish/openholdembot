@@ -14,20 +14,6 @@
 #define k_min_hands_slower_updates_tourney 1000
 
 
-extern class CPokerTrackerLookup
-{
-public:
-	// public functions
-	CPokerTrackerLookup();
-	~CPokerTrackerLookup();
-	const int GetSiteId();
-
-private:
-	// private functions and variables - not available via accessors or mutators
-	std::map<CString, int>	_pt3_siteid;
-} pt_lookup;
-
-
 extern class CPokerTrackerThread 
 {
 public:
@@ -35,7 +21,6 @@ public:
 						CPokerTrackerThread();
 						~CPokerTrackerThread();
 	void				StartThread();
-	void				ClearAllStats(void);
 	const double		ProcessQuery(const char *s);
 
 private:
@@ -44,8 +29,6 @@ private:
 	static void			GetStatsForChair(LPVOID pParam, int chair, int sleepTime);
 	static UINT			PokertrackerThreadFunction(LPVOID pParam);
 	static int			LightSleep(int sleepTime, CPokerTrackerThread * pParent);
-	void				SetStatTypes();
-	void				SetStatGroups();
 	void				SetRingStatsState(bool enabled);
 	void				SetTourneyStatsState(bool enabled);
 	void				Connect(void);
@@ -53,11 +36,10 @@ private:
 	bool				CheckName(const int m_chair, bool &nameChange);
 	double				GetStat(const int m_chair, const PT_Stats stat);	
 	double				UpdateStat(const int m_chair, const int stat);
-	void				ClearSeatStats(int m_chair, bool clearNameAndFound = true);
+	void				ClearNameAndFound(int m_chair);
 	bool				QueryName(const char * query_name, const char * scraped_name, char * best_name);
 	bool				FindName(const char *scraped_name, char *best_name);
 	int					GetUpdateType(int chair);
-	void				WarnAboutInvalidPTSymbol(CString s);
 	int					GetStatGroup(int stat);
 	int					SkipUpdateCondition(int stat, int chair);
 	int					SkipUpdateForChair(int chair, char* reason);

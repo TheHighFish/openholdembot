@@ -12,6 +12,7 @@ public:
 	void ResetStatsForPlayer(int chair);
 	void SetStat(CString name, int chair, double new_value);
 	double GetStat(CString name, int Chair);
+	void WarnAboutInvalidPTSymbol(CString s);
 } *p_pokertracker_stats_container;
 
 #endif

@@ -19,6 +19,8 @@
 #include "CMemory.h"
 #include "COcclusioncheck.h"
 #include "CPerl.hpp"
+#include "PokerTracker\CPokerTrackerSiteID.h"
+#include "PokerTracker\CPokerTrackerStatsContainer.h"
 #include "PokerTracker\CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CRebuyManagement.h"
@@ -70,6 +72,10 @@ void InstantiateAllSingletons()
 		p_formula = new CFormula;
 	if (!p_autoplayer) 
 		p_autoplayer = new CAutoplayer(false, prefs.mutex_name());
+	if (!p_pokertracker_site_id)
+		p_pokertracker_site_id = new CPokerTrackerSiteID;
+	if (!p_pokertracker_stats_container)
+		p_pokertracker_stats_container = new CPokerTrackerStatsContainer;
 	if (!p_pokertracker_thread)  
 		p_pokertracker_thread = new CPokerTrackerThread;
 	if (!p_dll_extension) 
@@ -166,6 +172,10 @@ void DeleteAllSingletons()
 		{ delete p_game_state; p_game_state = NULL; }
 	if (p_dll_extension)  
 		{ delete p_dll_extension; p_dll_extension = NULL; }
+	if (p_pokertracker_stats_container)
+		{ delete p_pokertracker_stats_container; p_pokertracker_stats_container = NULL; }
+	if (p_pokertracker_site_id)
+		{ delete p_pokertracker_site_id; p_pokertracker_site_id = NULL; }
 	if (p_autoplayer)  
 		{ delete p_autoplayer; p_autoplayer = NULL; }
 	if (p_formula)  
