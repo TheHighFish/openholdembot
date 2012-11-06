@@ -79,7 +79,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 
 	//  Menu commands
 	ON_COMMAND(ID_FILE_OPEN, &CMainFrame::OnFileOpen)
-	ON_COMMAND(ID_FILE_LOAD_OPENPPL, &CMainFrame::OnFileLoadOpenPPL)
 	ON_COMMAND(ID_FILE_LOADTABLEMAP, &CMainFrame::OnFileLoadTableMap)
 	ON_COMMAND(ID_FILE_CONNECT, &CMainFrame::OnBnClickedGreenCircle)
 	ON_COMMAND(ID_FILE_DISCONNECT, &CMainFrame::OnBnClickedRedCircle)
@@ -483,11 +482,6 @@ void CMainFrame::OnFileLoadTableMap()
 	}
 }
 
-void CMainFrame::OnFileLoadOpenPPL()
-{
-	Beep(440, 200);
-}
-
 void CMainFrame::OnBnClickedGreenCircle() 
 {
 	p_autoconnector->Connect(NULL);
@@ -657,7 +651,6 @@ void CMainFrame::OnMinMax(void)
 {
 	RECT		crect = {0}, wrect = {0}, rectBar1 = {0}, rectBar2 = {0}, statusBar = {0};
 	POINT		pt = {0};
-	int			tb_top = 0, tb_bottom = 0;
 
 	GetClientRect(&crect);
 	GetWindowRect(&wrect);
@@ -670,8 +663,11 @@ void CMainFrame::OnMinMax(void)
 		pt.x = (wrect.right - wrect.left) - crect.right;
 		pt.y = (wrect.bottom - wrect.top) - crect.bottom;
 
+		// After refactoring the toolbar(s) it is no longer that easy to get its size,
+		// but as it is no longer moveable and dockable we can take a constant here.
+		const int k_height_of_toolbar = 48;
 		MoveWindow(wrect.left, wrect.top, wrect.right - wrect.left,
-				   pt.y + (tb_bottom-tb_top) + (statusBar.bottom-statusBar.top) - 2,
+				   pt.y + k_height_of_toolbar + (statusBar.bottom-statusBar.top) - 2,
 				   true);
 	}
 	else 
