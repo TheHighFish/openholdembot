@@ -11,7 +11,7 @@
 #include "CFormula.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
-#include "PokerTracker\CPokerTrackerStatsContainer.h"
+#include "CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
@@ -278,7 +278,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 
 			p_heartbeat_thread = new CHeartbeatThread;
 			p_scraper_access->InitOnConnect();
-			p_pokertracker_stats_container->ResetAllStats();
+			p_pokertracker_thread->ClearAllStats();
 
 			// Start timer that checks for continued existence of attached HWND
 			PMainframe()->StartTimer();
