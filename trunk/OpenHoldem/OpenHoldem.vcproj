@@ -1027,27 +1027,7 @@
 				Name="PokerTracker"
 				>
 				<File
-					RelativePath=".\PokerTracker\CPokerTrackerQuery.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\PokerTracker\CPokerTrackerQueryCollection.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\PokerTracker\CPokerTrackerQueryLoader.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\PokerTracker\CPokerTrackerSiteID.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\PokerTracker\CPokerTrackerStatsContainer.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\PokerTracker\CPokerTrackerThread.cpp"
+					RelativePath=".\CPokerTrackerThread.cpp"
 					>
 				</File>
 			</Filter>
@@ -1625,27 +1605,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\PokerTracker\CPokerTrackerQueryCollection.h"
-					>
-				</File>
-				<File
-					RelativePath=".\PokerTracker\CPokerTrackerQueryLoader.h"
-					>
-				</File>
-				<File
-					RelativePath=".\PokerTracker\CPokerTrackerSiteID.h"
-					>
-				</File>
-				<File
-					RelativePath=".\PokerTracker\CPokerTrackerStatsContainer.h"
-					>
-				</File>
-				<File
-					RelativePath=".\PokerTracker\CPokerTrackerThread.h"
-					>
-				</File>
-				<File
-					RelativePath=".\PokerTracker_Queries\PositionalPreflopStats.h.h"
+					RelativePath=".\CPokerTrackerThread.h"
 					>
 				</File>
 			</Filter>

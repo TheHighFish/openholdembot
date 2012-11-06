@@ -2,7 +2,7 @@
 #include "CPokerAction.h"
 
 #include "CGameState.h"
-#include "PokerTracker\CPokerTrackerThread.h"
+#include "CPokerTrackerThread.h"
 #include "CSymbols.h"
 #include "CTableLimits.h"
 
