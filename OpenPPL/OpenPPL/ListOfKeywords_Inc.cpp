@@ -25,6 +25,7 @@ keyword_symbol = str_p("symbol") | "Symbol" | "SYMBOL" | invalid_symbol;
 keyword_end = str_p("end") | "End" | "END" | invalid_symbol;
 
 // Code sections
+keyword_prefold = str_p("prefold") | "Prefold" | "PREFOLD" | invalid_symbol;
 keyword_preflop = str_p("preflop") | "Preflop" | "PREFLOP" | invalid_symbol;
 keyword_flop = str_p("flop") | "Flop" | "FLOP" | invalid_symbol;
 keyword_turn = str_p("turn") | "Turn" | "TURN" | invalid_symbol;
