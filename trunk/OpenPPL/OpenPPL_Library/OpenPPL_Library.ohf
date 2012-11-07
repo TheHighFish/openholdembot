@@ -116,6 +116,11 @@ f$OpenPPL_RaiseMax
 ##f$OpenPPL_Raise##
 -1000009
 
+##f$OpenPPL_Do_Not_PreFold##
+// Automatically added to the end of the prefold-section
+// for syntactical completeness.
+-1000010
+
 ##f$OpenPPL_UndefinedReturnValue##
 // Every user-defined function ends with this return-value
 // mainly to ensure syntactical correctness
