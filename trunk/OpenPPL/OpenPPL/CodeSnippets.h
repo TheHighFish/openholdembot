@@ -143,4 +143,21 @@ static const char *k_code_snippet_reset_user_variables =
 	"\n"
 	"\n";
 
+static const char *k_code_snippet_prefold_function =
+	"//************************************************************************\n"
+	"//\n"
+	"// Prefold-function.\n"
+	"//\n"
+	"// Only generated when a prefold-section is defined.\n"
+	"// Translates a Fold/NoPreFold-decision to a true/false-value\n"
+	"//\n"
+	"//************************************************************************\n"
+	"\n"
+	"\n"
+	"##f$prefold##\n"
+	"(f$OpenPPL_prefold == f$OpenPPL_Fold)\n"
+	"\n"
+	"\n";
+
+
 #endif INC_CODESNIPPETS_H

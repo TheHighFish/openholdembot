@@ -20,6 +20,7 @@ struct init_variables
 	// only static const integral data members can be initialized within a class
 	void operator()(const char *begin, const char *end) const 
 	{ 
+		bool prefold_section_found = false;
 		bool preflop_section_found = false;
 		bool flop_section_found = false;
 		bool turn_section_found = false;
@@ -150,7 +151,14 @@ struct print_function_header_for_betting_round
 		std::string text_as_std_string = std::string(begin, end);
 		CString text = text_as_std_string.c_str();
 		text = text.MakeLower();
-		if (text == "preflop")
+		if (text == "prefold")
+		{ 
+			// Prefold needs 2 functions:
+			// * one f$prefold that returns true / false
+			// * one f$OpenPPL_prefold, that returns Fold / NoFold
+			cout << "##f$OpenPPL_prefold##" << endl;
+		}
+		else if (text == "preflop")
 		{ 
 			cout << "##f$preflop##" << endl;
 		}
@@ -410,6 +418,18 @@ struct print_when_others_fold_force
 	} 
 };
 
+struct print_when_others_no_prefold_force
+{
+	void operator()(const char *begin, const char *end) const 
+	{ 
+		cout << "//" << endl;
+		cout << "// When Others Do_Not_Prefold Force" << endl;
+		cout << "// Automatically added for syntactical completeness." << endl;
+		cout << "//" << endl;
+		cout << "f$OpenPPL_Do_Not_PreFold" << endl << endl << endl; 
+	} 
+};
+
 struct print_default_return_value_for_user_defined_symbol
 { 
 	void operator()(const char *begin, const char *end) const 
@@ -592,8 +612,21 @@ struct print_recalling_UDV
 	}
 };
 
+struct print_prefold_function_if_necessary
+{
+ 	void operator()(const char *begin, const char *end) const
+ 	{
+		if (prefold_section_found)
+		{
+			cout << k_code_snippet_prefold_function;
+		}
+	}
+
+};
+
+
 struct print_user_reset_function
- {
+{
  	void operator()(const char *begin, const char *end) const
  	{
 		map<CString, CString>::iterator p;
@@ -695,7 +728,11 @@ struct register_code_section
 	{
 		CString text = std::string(begin, end).c_str();
 		CString text_lowercase = text.MakeLower();
-		if (text == "preflop")
+		if (text == "prefold")
+		{
+			prefold_section_found = true;
+		}
+		else if (text == "preflop")
 		{
 			preflop_section_found = true;
 		}

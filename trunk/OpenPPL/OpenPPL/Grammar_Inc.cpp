@@ -52,6 +52,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				>> (code_sections)
 				>> end_p
 				    [check_for_missing_code_section()]
+					[print_prefold_function_if_necessary()]
 					[print_user_reset_function()]
 					[print_OpenPPL_Library()];
 
@@ -96,10 +97,15 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// All code sections are "optional" to simplify parsing.
 			// We only register their existence and then check for correctness
 			// at the very end.
-			code_sections = !preflop_section
+			code_sections = !prefold_section
+				>> !preflop_section
 				>> !flop_section 
 				>> !turn_section 
 				>> !river_section;
+			prefold_section = (keyword_prefold[register_code_section()]
+					[print_function_header_for_betting_round()]
+				>> code_block)
+					[print_when_others_no_prefold_force()][reset_variables()];
 			preflop_section = (keyword_preflop[register_code_section()]
 					[print_function_header_for_betting_round()]
 				>> code_block)
