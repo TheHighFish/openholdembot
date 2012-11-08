@@ -1,5 +1,5 @@
-#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
 \begin_document
 \begin_header
 \textclass amsbook
@@ -9,18 +9,26 @@ theorems-ams
 eqs-within-sections
 figs-within-sections
 \end_modules
+\maintain_unincluded_children false
 \language english
+\language_package default
 \inputencoding auto
+\fontencoding global
 \font_roman default
 \font_sans default
 \font_typewriter default
 \font_default_family default
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
 
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \paperfontsize default
 \spacing single
 \use_hyperref false
@@ -28,21 +36,31 @@ figs-within-sections
 \use_geometry false
 \use_amsmath 1
 \use_esint 1
+\use_mhchem 1
+\use_mathdots 1
 \cite_engine basic
 \use_bibtopic false
+\use_indices false
 \paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
 \secnumdepth -2
 \tocdepth -2
 \paragraph_separation indent
-\defskip medskip
+\paragraph_indentation default
 \quotes_language english
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
-\author "" 
-\author "" 
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
 \end_header
 
 \begin_body
@@ -296,7 +314,7 @@ If you want you could take this to extremes and write good code like the
  following:
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
@@ -371,6 +389,165 @@ in our opinion it does not make any sense to specify actions that have no
 OpenPPL does not provide a default bot.
 \end_layout
 
+\begin_layout Section*
+Quickfolding bad hands
+\end_layout
+
+\begin_layout Standard
+Most poker-sites provide pre-action-buttons to act before it is your turn.
+ Especially useful is the prefold-button that makes it possible to click
+ bad hands away and forget about them.
+ Being able to click this button with your bot has at least two positive
+ effect: more human-like behaviour and playing more hands per hour due to
+ faster actions .
+ Nothing could be more easy:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+CUSTOM
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+PREFOLD
+\end_layout
+
+\begin_layout Plain Layout
+
+	WHEN ((AmountToCall > 0) AND ((Hand = 32) OR (Hand = 42) OR ...)) FOLD FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+PREFLOP
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Be aware of potentially unstable game-states!
+\end_layout
+
+\begin_layout Standard
+Please note:
+\end_layout
+
+\begin_layout Itemize
+prefold gets evaluated when it is 
+\emph on
+not your turn
+\emph default
+.
+ Therefore it might happen that OpenHoldem takes a screenshot, evaluates
+ and acts while the casino updates its table-display and the game-state
+ is unstable.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+Garbage in -- garbage out
+\begin_inset Quotes erd
+\end_inset
+
+ will happen.
+ Now lets assume you have some super-nitty bot:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+CUSTOM
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+PREFOLD
+\end_layout
+
+\begin_layout Plain Layout
+
+    WHEN (NOT ((Hand = AA) OR (Hand = KK))) FOLD FORCE
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename images/PokerStars_Unstable_Gamestate.PNG
+	width 526pt
+	height 126pt
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+Fold when I don't have a good hand
+\begin_inset Quotes erd
+\end_inset
+
+.
+ But here your good hand can not get recognized because your aces get only
+ displayed incompletely.
+ Your bot would fold pocket aces! To avoid problems like that it is recommend
+ to code more fail-safe like in the first example: 
+\begin_inset Quotes eld
+\end_inset
+
+Fold when I have a bad hand
+\begin_inset Quotes erd
+\end_inset
+
+.
+ It won't hurt that much if that command failed and worked only on the next
+ heart-beat-cycle.
+\end_layout
+
+\begin_layout Itemize
+There are even more consequences of potentially unstable frames: OpenPPL
+ does its main calculations when it is your turn.
+ Especially some more complex symbols which depend on the history of the
+ game get updated only when we have stable frames to guarantee their correctness
+ -- RaisesSinceLastPlay or LastCallerPosition are examples.
+ As a consequence these symbols will simply be undefined before your first
+ action preflop.
+ Therefore it is recommended to be extra careful about the GIGO-principle
+ and stick to the most basic symbols only.
+ But this is not too hard for prefold, isn't it?
+\end_layout
+
 \begin_layout Section
 Backup actions
 \end_layout
@@ -441,7 +618,7 @@ we believe, it is better to behave in a more conservative way if an error
  occurs.
  Most probably you don't want to push allin if you specify RaiseHalfPot
  as your desired action.
- With a min-raise you are probably more happy (less unhappy).
+ With a min-raise you are probably more happy (or less unhappy).
 \end_layout
 
 \end_deeper
