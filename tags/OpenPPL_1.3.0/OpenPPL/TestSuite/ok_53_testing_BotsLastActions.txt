@@ -1,0 +1,16 @@
+custom
+
+preflop
+WHEN (BotsLastAction = None) Raise force
+when others fold force
+
+flop
+when (BotsLastAction = Raise) Call force
+when Others Fold force
+
+turn
+when (BotsLastAction = Call) RaiseMax force
+when others Fold force
+
+river
+when others Fold force

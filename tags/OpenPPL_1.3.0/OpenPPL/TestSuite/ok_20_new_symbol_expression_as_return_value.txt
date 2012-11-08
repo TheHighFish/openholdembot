@@ -1,0 +1,30 @@
+// User defined functions and UDFs as return value of other funcrions
+
+custom
+
+symbols
+
+New Symbol ThisIsATest
+  When (1) Return (3 * 5) Force
+End Symbol
+
+New Symbol ThisIsAnotherTest
+  //
+  // Should be translated to
+  // "OpenPPL_Others ? OpenPPL_ThisIsATest : "
+  // cases should be adapted automatically	
+  //
+  When Others Return thisisatest Force
+End Symbol
+
+preflop
+when others fold force
+
+flop
+when others fold force
+
+turn
+when others fold force
+
+river
+when others fold force
