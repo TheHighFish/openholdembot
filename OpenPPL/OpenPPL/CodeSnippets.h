@@ -149,13 +149,15 @@ static const char *k_code_snippet_prefold_function =
 	"// Prefold-function.\n"
 	"//\n"
 	"// Only generated when a prefold-section is defined.\n"
-	"// Translates a Fold/NoPreFold-decision to a true/false-value\n"
+	"// Translates a Fold/Do_Not_PreFold-decision to a true/false-value\n"
 	"//\n"
 	"//************************************************************************\n"
 	"\n"
 	"\n"
 	"##f$prefold##\n"
-	"(f$OpenPPL_prefold == f$OpenPPL_Fold)\n"
+	"[   (betround == f$OpenPPL_ConstBetRoundPreflop)\n"
+	" && (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks == 0)\n"
+	" && (f$OpenPPL_prefold == f$OpenPPL_Fold)]\n"
 	"\n"
 	"\n";
 
