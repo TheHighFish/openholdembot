@@ -520,7 +520,7 @@ Fold when I don't have a good hand
 
 .
  But here your good hand can not get recognized because your aces get only
- displayed incompletely.
+ displayed partially.
  Your bot would fold pocket aces! To avoid problems like that it is recommend
  to code more fail-safe like in the first example: 
 \begin_inset Quotes eld
