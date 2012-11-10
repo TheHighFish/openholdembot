@@ -1,3 +1,10 @@
+v1.3.0 2012-11-10
+=================
+BUG FIXES: 
+- The uploaded version of bracketify did print some debug-output that made the generated code unusable.
+  Thanks to cash for reporting.
+  [THF]
+
 v1.3.0 2012-11-08
 =================
 NEW STUFF:
