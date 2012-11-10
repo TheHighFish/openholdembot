@@ -190,7 +190,6 @@ while (<>)
 	s/[ ]+sitout[ ]+force/\) LineInfo_Act SITOUT FORCE/i;
 	# Slightly different line-info for return-statements, ending on "_Ret"
 	s/[ ]+return[ ]/\) LineInfo_Ret RETURN /i;
-	print;
 	# Still first case: brackets before an action
 	# Now for Bet/Raise X% FORCE or Bet/Raise X Force,
 	# where Bet/Raise will be followed by a number.
@@ -243,7 +242,6 @@ while (<>)
 	s/[ ]*$//;
 	#... and then take care about user-variables.
 	# There  are 3 sub-cases...
-	print;
 	if ((m/and[ ]+user[A-Za-z0-9_]*$/i) || (m/or[ ]+user[A-Za-z0-9_]*$/i)
 		|| (m/not[ ]+user[A-Za-z0-9_]*$/i))
 	{
