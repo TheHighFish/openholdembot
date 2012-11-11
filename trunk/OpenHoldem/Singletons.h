@@ -9,6 +9,7 @@
 
 void StopThreads();
 void InstantiateAllSingletons();
+void InstantiateSomeSingletonsForVeryEarlyUseInInitInstance();
 void DeleteAllSingletons();
 
 #endif // C_SINGLETONS_H
