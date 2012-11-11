@@ -8,6 +8,7 @@
 #include "CAutoplayerFunctions.h"
 #include "CConfigurationCheck.h"
 #include "CDllExtension.h"
+#include "CFilenames.h"
 #include "CFileSystemMonitor.h"
 #include "CFormula.h"
 #include "CGameState.h"
@@ -38,7 +39,7 @@
 void InstantiateAllSingletons()
 {
 	// Instantiation of all singletons, except session-counter.
-	// session-counter has to do earlier, as it is needed 
+	// session-counter has to be done do earlier, as it is needed 
 	// to create the log-file, which might be needed before this point.
 	if (!p_string_match) 
 		p_string_match = new CStringMatch;
@@ -102,6 +103,14 @@ void InstantiateAllSingletons()
 		p_handhistory = new CHandHistory;
 	if (!p_casino_interface)
 		p_casino_interface = new CCasinoInterface;
+}
+
+void InstantiateSomeSingletonsForVeryEarlyUseInInitInstance()
+{
+	// Filenames have to be available very early,
+	// even before we read the ini-file.
+	if (!p_filenames)
+		p_filenames = new CFilenames;
 }
 
 // To be executed first,
@@ -198,5 +207,7 @@ void DeleteAllSingletons()
 		{ delete p_handreset_detector; p_handreset_detector = NULL; }
 	if (p_string_match)         
 		{delete p_string_match; p_string_match = NULL; }
+	if (p_filenames)
+		{ delete p_filenames; p_filenames = NULL; }
 }
 

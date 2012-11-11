@@ -93,8 +93,9 @@ BOOL COpenHoldemApp::InitInstance()
 	// no matter how it is named.
 	// For the technical details please see:
 	// http://msdn.microsoft.com/de-de/library/xykfyy20(v=vs.80).aspx
+	InstantiateSomeSingletonsForVeryEarlyUseInInitInstance();
 	free((void*)m_pszProfileName);
-	m_pszProfileName = _strdup(p_filenames->IniFilename().GetString());
+	m_pszProfileName = _strdup(p_filenames->IniFilePath().GetString());
 	prefs.LoadPreferences();
 	
 	// Classes

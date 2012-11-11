@@ -5,7 +5,7 @@ public:
 	~CFilenames();
 public:
 	CString OpenHoldemDirectory();
-	CString IniFilename();
+	CString IniFilePath();
 	CString TableMapWildcard();
 	CString LogFilename();
 	CString DebugTabLogFilename();
@@ -16,6 +16,8 @@ public:
 	CString ReplayBitmapFilename(int frame_number);
 	CString ReplayHTMLFilename(int frame_number);
 	void SwitchToOpenHoldemDirectory();
+private:
+	CString IniFilename();
 private:
 	char _startup_path[MAX_PATH];
 } *p_filenames;
