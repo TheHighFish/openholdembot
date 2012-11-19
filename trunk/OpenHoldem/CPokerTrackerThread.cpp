@@ -791,6 +791,7 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 	CLevDistance	myLD;
 	int				siteid = 0;
 	static int		_last_siteid = -1;
+	double			Levenshtein_distance_matching_factor = 0.2;
 
 	//No more unnecessary queries when we don't even have a siteid to check
 	siteid = pt_lookup.GetSiteId();
@@ -842,8 +843,16 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 	// If we get one tuple, all is good - return the one name
 	if (PQntuples(res) == 1)
 	{
-		strcpy_s(best_name, k_max_length_of_playername, PQgetvalue(res, 0, 0));
-		result = true;
+		lev_dist = myLD.LD(scraped_name, PQgetvalue(res, 0, 0));
+
+		if (lev_dist<=(int)strlen(PQgetvalue(res, 0, 0))*Levenshtein_distance_matching_factor )
+		{
+	     	strcpy_s(best_name, k_max_length_of_playername, PQgetvalue(res, 0, 0));
+			result = true;
+		}
+		else {
+			result = false;
+		}
 	}
 
 	// We got more than one tuple, figure the Levenshtein distance for all of them
@@ -855,7 +864,7 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 		{
 			lev_dist = myLD.LD(scraped_name, PQgetvalue(res, i, 0));
 
-			if (lev_dist<bestLD && lev_dist<(int)strlen(PQgetvalue(res, i, 0))/2 )
+			if (lev_dist<bestLD && lev_dist<(int)strlen(PQgetvalue(res, i, 0))*Levenshtein_distance_matching_factor ) 
 			{
 				bestLD = lev_dist;
 				bestLDindex = i;
