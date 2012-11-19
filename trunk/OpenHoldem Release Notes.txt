@@ -22,12 +22,15 @@ NEW STUFF:
   [THF]
 - f$swag has been quite a messy concept for a long time.
   f$swag and its supporting functions  (f$srai, sraimin, sraimax, swagtextmethod and f$swag_adjust)
-  got replaced by a single function f$betsize  and OH does automatically care about the rest. 
-  Therefore the next version of OpenPPL will be delivered without the file
-  "OpenPPL_SwagFunctions_For_OpenHoldem_2.1.x_Only_Please_Delete_This_File_Once_You_Use_OpenHoldem_2.2.0_And_Later.ohf"
-  because it is now superfluous.
+  got replaced by a single function f$betsize  and OH does automatically care about all the rest. 
+  OpenHoldem will automatically adapt the betsize according to
+    * casinos input requirements (swagtextmethod)
+    * game-type (e.g. pot-limit)
+    * minimum allowed raise
+    * maximum possible raise (users balance)
+  All you have to do: specify your desired betsize and provide the correct swagtextmethod in your tablemap.
   [THF]
-- new symbol: originalbalance, which remebers the balance at the start of a session. 
+- new symbol: balanceatstartofsession, which remebers the balance at the start of a session. 
   [THF]
 - display state of the buttons sitin, sitout, leave, autopost and prefold in the GUI. 
   [THF]
@@ -61,7 +64,12 @@ NEW STUFF:
 - Loading the preferences now always from an ini-file for stealth-reasons,
   and no longer from the registry.
   The ini-file has to be placed in the OpenHoldem-directory.
-  The filename does not matter, but there may be only one such file.
+  The filename does not matter, but there must be only one such file.
+  [THF]
+- We do no longer stop the PT-thread if we are not playing, etc.
+  Stopping the thread won't happen that often in production mode
+  and this optimization is not needed for development-mode,
+  but only confused beginners in the past.
   [THF]
   
   
@@ -138,6 +146,7 @@ MAINTENANCE:
   and don't deserve an extra settings dialog.
   [THF]
 - Replaced nit by f$prwin_number_of_iterations for consistency.
+  Also replaced f$P by f$prwin_number_of_opponents
   [THF]
 - Simplified the GUI and removed lots of superfluous options:
   show/hide main toolbar / flags toolbar / status bar.
@@ -200,7 +209,7 @@ MAINTENANCE:
 - Get rid of option to load DLL. Always load it, if name is specified.
   [THF]
 - The analyzer-setting "Max opponents" was superfluous. 
-  The user controls the value with f$P,
+  The user controls the value with f$prwin_number_of_opponents (formerly f$P),
   so we removed that option and added a hard-coded check for the maximun of 22.
   [THF]
 - Table stats now always use a time-frame of 15 minutes.
@@ -236,6 +245,15 @@ MAINTENANCE:
 	(0-byte crash-file))
   A big thank you to Nik0 who did all the work.
   [THF]  
+- Removed the run$/ron$-symbols, because they looked like a mis-conception,
+  nobody used them, some numbers were wrong and the code was unfixable
+  (1000s of undocumented number).
+  [THF]
+- Removed the symbols randomround1..randomround4 from the codebase,
+  because we have randomround for the current betting round and additionally
+  randomhand, randomheartbeat and random, which gets calculated each time new.
+  This simplified the code and looks more clean.
+  [THF]
   
   
 v2.1.9.4 2012-06-14
