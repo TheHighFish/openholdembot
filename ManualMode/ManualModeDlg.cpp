@@ -371,7 +371,7 @@ BOOL CManualModeDlg::OnInitDialog()
 	bblind = "10";
 	bbet = "20";
 	ante = "0";
-	limit = LIMIT_FL;
+	limit = LIMIT_NL;
 	network = "Stars";
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
@@ -2063,7 +2063,7 @@ void CManualModeDlg::OnBnClickedReset()
 	bblind = "10";
 	bbet = "20";
 	ante = "0";
-	limit = LIMIT_FL;
+	limit = LIMIT_NL;
 
 	InvalidateRect(NULL, true);
 }
