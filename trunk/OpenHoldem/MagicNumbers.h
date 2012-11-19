@@ -195,7 +195,7 @@ const char k_autoplayer_functionname[k_number_of_autoplayer_functions][k_max_len
 	"f$betpot_1_2",
 	"f$betpot_1_3",
 	"f$betpot_1_4",
-	"f$betsite",
+	"f$betsize",
 	"f$rais",
 	"f$call",
 	"--check",
