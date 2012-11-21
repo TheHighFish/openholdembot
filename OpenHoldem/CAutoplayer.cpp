@@ -422,6 +422,9 @@ void CAutoplayer::DoAutoplayer(void)
 	p_autoplayer_functions->CalcSecondaryFormulas();
 	ExecuteSecondaryFormulasIfNecessary();
   
+	// Care about I86 regions as well
+	HandleInterfacebuttonsI86();
+
 	bool is_final_answer = IsFinalAnswer();
 	p_symbols->set_sym_isfinalanswer(is_final_answer);
 	if(is_final_answer)
