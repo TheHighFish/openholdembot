@@ -109,7 +109,10 @@ CString CFilenames::ReplaySessionDirectory()
 CString CFilenames::ReplayBitmapFilename(int frame_number)
 {
 	CString path;
-	path.Format("%s\\frame%06d.bmp", ReplaySessionDirectory(), frame_number);
+	if (frame_number == -1)
+		path.Format("%s\\*.bmp", ReplaySessionDirectory());
+	else
+		path.Format("%s\\frame%06d.bmp", ReplaySessionDirectory(), frame_number);
 	return path;
 }
 
