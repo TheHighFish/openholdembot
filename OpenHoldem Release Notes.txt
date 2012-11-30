@@ -139,6 +139,8 @@ MAINTENANCE:
   for SNGs due to changes in the protocol.
   So we got rid of it.
   [THF]
+- Removing symbol site which was needed (if ever) for PokerPro-support only.
+  [THF]
 - Removed the old symbols bankroll, rake, defcon (and also isaggmode, isdefmode)
   which have been very rarely (if ever) used.
   People who need them can create a UDF for them,
@@ -192,7 +194,7 @@ MAINTENANCE:
 - Removing symbols clocks, ron$clocks, run$clocks, clockspersecond, ncps,
   because nobody used them and we can't even imagine a reasonable use of them.
   [THF]
-- Removing abbreviated symbol names nflopc, br, ncps.
+- Removing abbreviated symbol names nflopc, br, ncps, oppdealt.
   [THF]
 - Removing precision settings from formula editor (debug-tab),
   because it is better to choose reasonable defaults and make the GUI simpler.
@@ -211,6 +213,7 @@ MAINTENANCE:
 - The analyzer-setting "Max opponents" was superfluous. 
   The user controls the value with f$prwin_number_of_opponents (formerly f$P),
   so we removed that option and added a hard-coded check for the maximun of 22.
+  As a consequence the symbol nopponentsmax became superfluous too and we removed it.
   [THF]
 - Table stats now always use a time-frame of 15 minutes.
   This is a reasonable default, so the option is not needed.
@@ -253,6 +256,15 @@ MAINTENANCE:
   because we have randomround for the current betting round and additionally
   randomhand, randomheartbeat and random, which gets calculated each time new.
   This simplified the code and looks more clean.
+  [THF]
+- The symbols "callshort" and "raisshort" got removed from the code-base
+  because they got designed for Fixed-Limit	no-foldem Hold'em only.
+  Better use a function to estimate future pot-sizes.
+  [THF]
+- Removing the symbol seatposition which ocunted both active and inactive players
+  and was of no real use for practical play.
+  [THF]
+- Removing the symbol elapsed1970 because there was no real use for it.
   [THF]
   
   
