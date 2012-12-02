@@ -70,7 +70,7 @@ public:
 		{
 			return 0;
 		}
-		return (currentbet(userchair) / p_tablelimits->bet());
+		return (currentbet(p_symbol_engine_userchair->userchair()) / p_tablelimits->bet());
 	}
 public:
 	double pot()			{ return _pot; }
@@ -91,11 +91,13 @@ private:
 	void SetBalance(const int player, const double d);
 	void SetMaxBalanceConditionally(const double d);
 	void SetBalanceAtStartOfSessionConditionally(const double d);
+	void CalculateAmountsToCallToRaise();
 private:
 	void CalculateBalances();
 	void CalculateStacks();
 	void CalculateCurrentbets();
 	void CalculatePots();
+	void CalculateBetsToCallToRaise();
 private:
 	double _balance[k_max_number_of_players];				
 	double _maxbalance;
@@ -119,9 +121,9 @@ private:
 	double _sraimin;
 	double _sraimax;
 private:
-	int nchairs;
-
-	int raischair; //!!!
+	int _nchairs;
+	int _raischair; //!!!
+	int _userchair;
 };
 
 #endif INC_CSYMBOLENGINECHIPAMOUNTS_H
