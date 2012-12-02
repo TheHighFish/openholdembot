@@ -2,7 +2,9 @@
 #include "CSymbolEngineCards.h"
 
 #include "CScraper.h"
+#include "CSymbolEngineUserchair.h"
 #include "..\CTransform\CTransform.h"
+#include "MagicNumbers.h"
 
 CSymbolEngineCards::CSymbolEngineCards()
 {}
@@ -12,37 +14,8 @@ CSymbolEngineCards::~CSymbolEngineCards()
 
 void CSymbolEngineCards::InitOnStartup()
 {
-	// list tests
-	for (int i=0; i<MAX_HAND_LISTS; i++) 
-		set_sym_islist(i, 0);
+	ResetOnHandreset();
 
-	// poker values
-	_pokerval = 0;
-	_pokervalplayer = 0;
-	_pokervalcommon = 0;
-	_pcbits = 0;
-	_npcbits = 0;
-
-	// hand tests
-	for (int i=0; i<k_number_of_cards_per_player; i++)
-	{
-		set_sym_$$pc(i, WH_NOCARD);
-		set_sym_$$pr(i, 0);
-		set_sym_$$ps(i, 0);
-	}
-
-	for (int i=0; i<k_number_of_community_cards; i++)
-	{
-		set_sym_$$cc(i, WH_NOCARD);
-		set_sym_$$cs(i, 0);
-		set_sym_$$cr(i, 0);
-	}
-
-	for (int i=0; i<=3; i++) // ??? WTF is 3?
-	{
-		_phandval[i] = 0;
-		_chandval[i] = 0;
-	}
 	_ishandup = 0;
 	_ishandupcommon = 0;
 	_ishicard = 0;
@@ -61,14 +34,7 @@ void CSymbolEngineCards::InitOnStartup()
 	_issuited = 0;
 	_isconnector = 0;
 
-	// pocket/common tests
-	_ishipair = 0;
-	_islopair = 0;
-	_ismidpair = 0;
-	_ishistraight = 0;
-	_ishiflush = 0;
-
-		// common cards
+	// common cards
 	_nouts = 0;
 	_ncommoncardspresent = 0;
 	_ncommoncardsknown = 0;
@@ -99,31 +65,11 @@ void CSymbolEngineCards::InitOnStartup()
 	_nstraight = 0;
 	_nstraightcommon = 0;
 	_nstraightflush = 0;
-	_nstraightflushcommon = 0;
-	_nstraightfill(k_cards_needed_for_straight);
-	_nstraightfillcommon(k_cards_needed_for_straight);
-	_nstraightflushfill(k_cards_needed_for_flush);
-	_nstraightflushfillcommon(k_cards_needed_for_flush);
-
-	// rank hi
-	_rankhi = 0;
-	_rankhicommon = 0;
-	_rankhiplayer = 0;
-	_rankhipoker = 0;
-	_srankhi = 0;
-	_srankhicommon = 0;
-	_srankhiplayer = 0;
-	_srankhipoker = 0;
-
-	// rank lo
-	_ranklo = 0;
-	_ranklocommon = 0;
-	_rankloplayer = 0;
-	_ranklopoker = 0;
-	_sranklo = 0;
-	_sranklocommon = 0;
-	_srankloplayer = 0;
-	_sranklopoker = 0;
+	_nstraightflushcommon     = 0;
+	_nstraightfill            = k_cards_needed_for_straight;
+	_nstraightfillcommon      = k_cards_needed_for_straight;
+	_nstraightflushfill       = k_cards_needed_for_flush;
+	_nstraightflushfillcommon = k_cards_needed_for_flush;
 }
 
 void CSymbolEngineCards::ResetOnConnection()
@@ -131,31 +77,21 @@ void CSymbolEngineCards::ResetOnConnection()
 
 void CSymbolEngineCards::ResetOnHandreset()
 {
-	// list tests
-	for (int i=0; i<MAX_HAND_LISTS; i++)
-	{
-		set_sym_islist(i, 0);
-	}
+	_userchair = p_symbol_engine_userchair->userchair();
 
 	// hand tests
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
-		set_sym_$$pc(i, WH_NOCARD);
-		set_sym_$$pr(i, 0);
-		set_sym_$$ps(i, 0);
+		_$$pc[i] = WH_NOCARD;
+		_$$pr[i] = 0;
+		_$$ps[i] = 0;
 	}
 
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
-		set_sym_$$cc(i, WH_NOCARD);
-		set_sym_$$cs(i, 0);
-		set_sym_$$cr(i, 0);
-	}
-
-	for (int i=0; i<=3; i++) // WTF is 3???
-	{
-		_phandval[i]=0;
-		_chandval[i]=0;
+		_$$cc[i] = WH_NOCARD;
+		_$$cs[i] = 0;
+		_$$cr[i] = 0;
 	}
 }
 
@@ -170,10 +106,10 @@ void CSymbolEngineCards::ResetOnHeartbeat()
 
 bool CSymbolEngineCards::BothPocketCardsKnown()
 {
-	return (p_scraper->card_player(_sym.userchair, 0) != CARD_NOCARD 
-		&& p_scraper->card_player(_sym.userchair, 0) != CARD_BACK
-		&& p_scraper->card_player(_sym.userchair, 1) != CARD_NOCARD
-		&& p_scraper->card_player(_sym.userchair, 1) != CARD_BACK);
+	return (p_scraper->card_player(_userchair, 0) != CARD_NOCARD 
+		&& p_scraper->card_player(_userchair, 0) != CARD_BACK
+		&& p_scraper->card_player(_userchair, 1) != CARD_NOCARD
+		&& p_scraper->card_player(_userchair, 1) != CARD_BACK);
 }
 
 void CSymbolEngineCards::CalcPocketTests()
@@ -183,18 +119,18 @@ void CSymbolEngineCards::CalcPocketTests()
 		return;
 	}
 
-	if (StdDeck_RANK(p_scraper->card_player(_sym.userchair, 0)) 
-			== StdDeck_RANK(p_scraper->card_player(_sym.userchair, 1)))
+	if (StdDeck_RANK(p_scraper->card_player(_userchair, 0)) 
+			== StdDeck_RANK(p_scraper->card_player(_userchair, 1)))
 	{
 		_ispair = true;															
 	}
-	if (StdDeck_SUIT(p_scraper->card_player(_sym.userchair, 0)) 
-		== StdDeck_SUIT(p_scraper->card_player(_sym.userchair, 1)))
+	if (StdDeck_SUIT(p_scraper->card_player(_userchair, 0)) 
+		== StdDeck_SUIT(p_scraper->card_player(_userchair, 1)))
 	{
 		_issuited = true;														
 	}
-	if (abs(StdDeck_RANK(p_scraper->card_player(_sym.userchair, 0))  
-		- StdDeck_RANK(p_scraper->card_player(_sym.userchair, 1))) == 1)
+	if (abs(int(StdDeck_RANK(p_scraper->card_player(_userchair, 0))  
+		- StdDeck_RANK(p_scraper->card_player(_userchair, 1)))) == 1)
 	{
 		_isconnector = true;														
 	}
@@ -273,10 +209,10 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	CardMask_RESET(plCards);
 	for (i=0; i<k_number_of_cards_per_player; i++)
 	{
-		if (p_scraper->card_player(_sym.userchair, i) != CARD_BACK && 
-			p_scraper->card_player(_sym.userchair, i) != CARD_NOCARD)
+		if (p_scraper->card_player(_userchair, i) != CARD_BACK && 
+			p_scraper->card_player(_userchair, i) != CARD_NOCARD)
 		{
-			CardMask_SET(plCards, p_scraper->card_player(_sym.userchair, i));
+			CardMask_SET(plCards, p_scraper->card_player(_userchair, i));
 		}
 	}
 
@@ -565,7 +501,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 		// nstraightflushcommon, nstraightflushfillcommon
 		if (_ncommoncardsknown < 1)
 		{
-			nstraightflushfillcommon(k_cards_needed_for_straight);
+			_nstraightflushfillcommon = k_cards_needed_for_straight;
 		}
 		else
 		{
@@ -630,11 +566,11 @@ void CSymbolEngineCards::CalculateHandTests()
 	// Player cards
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
-		if (p_scraper->card_player(_sym.userchair, i) != CARD_NOCARD && 
-			p_scraper->card_player(_sym.userchair, i) != CARD_BACK)
+		if (p_scraper->card_player(_userchair, i) != CARD_NOCARD && 
+			p_scraper->card_player(_userchair, i) != CARD_BACK)
 		{
-			int rank = GetRankFromCard(p_scraper->card_player(_sym.userchair, i));
-			int suit = GetSuitFromCard(p_scraper->card_player(_sym.userchair, i));
+			int rank = GetRankFromCard(p_scraper->card_player(_userchair, i));
+			int suit = GetSuitFromCard(p_scraper->card_player(_userchair, i));
 
 			_$$pc[i] = (rank<<4) | suit;								  
 			_$$pr[i] = rank;						
@@ -646,8 +582,8 @@ void CSymbolEngineCards::CalculateHandTests()
 	{
 		if (p_scraper->card_common(i) != CARD_NOCARD && p_scraper->card_common(i) != CARD_BACK)
 		{
-			int rank = GetRankFromCard(p_scraper->card_player(_sym.userchair, i));
-			int suit = GetSuitFromCard(p_scraper->card_player(_sym.userchair, i));
+			int rank = GetRankFromCard(p_scraper->card_player(_userchair, i));
+			int suit = GetSuitFromCard(p_scraper->card_player(_userchair, i));
 
 			_$$cc[i] = (rank<<4) | suit;								  
 			_$$cr[i] = rank;						

@@ -5,6 +5,52 @@
 #include "..\CTransform\CTransform.h"
 #include "inlines/eval.h"
 
+/*!!!
+	// pocket/common tests
+	_ishipair = 0;
+	_islopair = 0;
+	_ismidpair = 0;
+	_ishistraight = 0;
+	_ishiflush = 0;
+
+		// list tests
+	for (int i=0; i<MAX_HAND_LISTS; i++) 
+		set_sym_islist(i, 0);
+
+	// poker values
+	_pokerval = 0;
+	_pokervalplayer = 0;
+	_pokervalcommon = 0;
+	_pcbits = 0;
+	_npcbits = 0;
+
+	for (int i=0; i<=3; i++) // ??? WTF is 3?
+	{
+		_phandval[i] = 0;
+		_chandval[i] = 0;
+	}
+
+		// rank hi
+	_rankhi = 0;
+	_rankhicommon = 0;
+	_rankhiplayer = 0;
+	_rankhipoker = 0;
+	_srankhi = 0;
+	_srankhicommon = 0;
+	_srankhiplayer = 0;
+	_srankhipoker = 0;
+
+	// rank lo
+	_ranklo = 0;
+	_ranklocommon = 0;
+	_rankloplayer = 0;
+	_ranklopoker = 0;
+	_sranklo = 0;
+	_sranklocommon = 0;
+	_srankloplayer = 0;
+	_sranklopoker = 0;
+	*/
+
 void CSymbolEnginePokerval::CalcPokerValues()
 {
 	CardMask		Cards = {0};
