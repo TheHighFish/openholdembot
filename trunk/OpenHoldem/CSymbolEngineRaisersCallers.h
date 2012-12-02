@@ -4,7 +4,7 @@
 #include "CVirtualSymbolEngine.h"
 #include "..\CTransform\CTransform.h"
 
-class CSymbolEngineRaisersCallers: public CVirtualSymbolEngine
+extern class CSymbolEngineRaisersCallers: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineRaisersCallers();
@@ -62,6 +62,6 @@ private:
 	int _raisbits[k_number_of_betrounds + 1];
 	int _foldbits[k_number_of_betrounds + 1];
 
-};
+} *p_symbol_engine_raisers_callers;
 
 #endif INC_CSYMBOLENGINERAISERSCALLERS_H
