@@ -271,7 +271,7 @@ private:
 	CSymbolEngineRaisersCallers symbol_engine_raisers_callers;	// depends on user-chair and dealerchair
 	CSymbolEngineChipAmounts	symbol_engine_chip_amounts;	// depends on user-chair and nopponents and playersplayingbits and raischair
 	CSymbolEnginePositions		symbol_engine_positions;	// depends on user-chair and dealer and playersdealtbits
-	CSymbolEngineBlinds			symbol_engine_blinds;
+	CSymbolEngineBlinds			symbol_engine_blinds;		// depends on dealerchair and playersplayingbits and positions
 	// prwin at the very end, as the prwin-functions may use all other symbols
 } *p_symbols;
 
