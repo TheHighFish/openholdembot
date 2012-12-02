@@ -38,7 +38,7 @@ void CSymbolEngineUserchair::ResetOnHeartbeat()
 {
 	if (!_userchair_locked)
 	{
-		CalculateUserchair();
+		CalculateUserChair();
 	}
 }
 
