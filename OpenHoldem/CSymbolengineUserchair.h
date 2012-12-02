@@ -3,7 +3,7 @@
 
 #include "CVirtualSymbolEngine.h"
 
-class CSymbolEngineUserchair: public CVirtualSymbolEngine
+extern class CSymbolEngineUserchair: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineUserchair();
@@ -26,6 +26,6 @@ private:
 private:
 	int _userchair;
 	bool _userchair_locked;
-};
+} *p_symbol_engine_userchair;
 
 #endif INC_CSYMBOLENGINEUSERCHAIR_H
