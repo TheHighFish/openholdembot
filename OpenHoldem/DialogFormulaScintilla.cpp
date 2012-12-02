@@ -50,9 +50,9 @@ char * keywords = // Standard functions
 				  // Chairs
 				  "chair userchair dealerchair raischair chair$ chairbit$ "
 				  // Rounds / Positions
-				  "betround br betposition dealposition callposition seatposition dealpositionrais betpositionrais "
+				  "betround br betposition dealposition callposition dealpositionrais betpositionrais "
 				  // Probabilities
-				  "prwin prtie prlos prwinnow prlosnow random randomhand randomround randomround1 randomround2 randomround3 randomround4 "
+				  "prwin prtie prlos prwinnow prlosnow random randomhand randomround "
 				  // Chip Amounts
 				  "balance balance0 balance1 balance2 balance3 balance4 balance5 balance6 balance7 balance8 balance9 "
 				  "stack0 stack1 stack2 stack3 stack4 stack5 stack6 stack7 stack8 stack9 "
@@ -74,7 +74,7 @@ char * keywords = // Standard functions
 				  // Pocket / Common Tests
 				  "ishipair islopair ismidpair ishistraight ishiflush "
 				  // Players, Opponents
-				  "nopponents nopponentsmax nplayersseated nplayersactive nplayersdealt nplayersplaying nplayersblind "
+				  "nopponents nplayersseated nplayersactive nplayersdealt nplayersplaying nplayersblind "
 				  "nopponentsseated nopponentsactive nopponentsdealt nopponentsplaying nopponentsblind "
 				  "nopponentschecking nopponentscalling nopponentsraising nopponentsbetting nopponentsfolded "
 				  "nplayerscallshort nchairsdealtright nchairsdealtleft playersseatedbits playersactivebits "
@@ -100,7 +100,6 @@ char * keywords = // Standard functions
 				  "ranklo ranklocommon rankloplayer ranklopoker sranklo sranklocommon srankloplayer sranklopoker "
 				  // Time
 				  "elapsed elapsedhand elapsedauto elapsedtoday "
-				  "elapsed1970 "
 				  // Autoplayer
 				  "myturnbits ismyturn issittingin issittingout "
 				  "isautopost isfinalanswer "
@@ -110,11 +109,6 @@ char * keywords = // Standard functions
 				  "nbetsround4 nbetsround didchecround1 didchecround2 didchecround3 didchecround4 "
 				  "didcallround1 didcallround2 didcallround3 didcallround4 didraisround1 didraisround2 "
 				  "didraisround3 didraisround4 didswaground1 didswaground2 didswaground3 didswaground4 "
-				  // RON / RUN	
-				  "ron$royfl ron$strfl ron$4kind ron$fullh ron$flush ron$strai ron$3kind ron$2pair ron$1pair "
-				  "ron$hcard ron$total ron$pokervalmax ron$prnuts ron$prbest run$royfl run$strfl "
-				  "run$4kind run$fullh run$flush run$strai run$3kind run$2pair run$1pair run$hcard run$total "
-				  "run$pokervalmax run$prnuts run$prbest "
 				  // Versus
 				  "vs$nhands vs$nhandshi vs$nhandsti vs$nhandslo "
 				  "vs$prwin vs$prtie vs$prlos vs$prwinhi vs$prtiehi vs$prloshi vs$prwinti vs$prtieti vs$prlosti "
@@ -2954,7 +2948,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "handrankp", "2652 / (1+nopponents)");
 
 	mainParent = parent = AddSymbolTitle("Chairs", NULL, hCatItem);
-	AddSymbol(parent, "chair", "your chair number 0-9 ... 0 is usually top right");
 	AddSymbol(parent, "userchair", "user chair number (0-9)");
 	AddSymbol(parent, "dealerchair", "dealer chair number (0-9)");
 	AddSymbol(parent, "raischair", "raising chair number (0-9)");
@@ -2967,7 +2960,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "betposition", "your bet position (1=sblind,2=bblind,...,nplayersdealt=dealer).  Betposition will change as players fold in front of you.");
 	AddSymbol(parent, "dealposition", "your deal position (1=sblind,2=bblind ... nplayersdealt=dealer).  Dealposition will not change as players fold.");
 	AddSymbol(parent, "callposition", "your numbered offset from the raising player (who is 0)");
-	AddSymbol(parent, "seatposition", "your seat position relative to the dealer");
 	AddSymbol(parent, "dealpositionrais", "the deal position of the raising player (1-10)");
 	AddSymbol(parent, "betpositionrais", "the bet position of the raising player (1-10)");
 
@@ -2980,7 +2972,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "random", "random number between (0.000-1.000) - gets evaluated once per heartbeat.");
 	AddSymbol(parent, "randomhand", "random number between (0.000-1.000) for the hand");
 	AddSymbol(parent, "randomround", "random number between (0.000-1.000) for the current round");
-	AddSymbol(parent, "randomround1 - randomround4", "random number between (0.000-1.000) for round 1 - 4");
 
 	mainParent = parent = AddSymbolTitle("Formulas", NULL, hCatItem);
 	AddSymbol(parent, "f$name", "reference the specified formula");
@@ -2997,8 +2988,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "pot", "the total amount of chips in play including player bets");
 	AddSymbol(parent, "potcommon", "the total amount of chips in the middle");
 	AddSymbol(parent, "potplayer", "the total amount of chips in front of all players");
-	AddSymbol(parent, "callshort", "total amount that will be added to the pot if all players call");
-	AddSymbol(parent, "raisshort", "callshort + bet * nplayersplaying");
 
 	mainParent = parent = AddSymbolTitle("Number of Bets", NULL, hCatItem);
 	AddSymbol(parent, "nbetstocall", "total number of additional bets required to call.");
@@ -3059,7 +3048,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 
 	mainParent = parent = AddSymbolTitle("Players, Opponents", NULL, hCatItem);
 	AddSymbol(parent, "nopponents", "P formula value for the userchair iterator");
-	AddSymbol(parent, "nopponentsmax", "maximum allowable value for nopponents (1-22 default=9)");
 	AddSymbol(parent, "nplayersseated", "number of players seated (including you) (0-10)");
 	AddSymbol(parent, "nplayersactive", "number of players active (including you) (0-10)");
 	AddSymbol(parent, "nplayersdealt", "number of players dealt (including you) (0-10)");
@@ -3162,7 +3150,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "elapsedhand", "time in seconds since end of previous hand");
 	AddSymbol(parent, "elapsedauto", "time in seconds since autoplayer took action");
 	AddSymbol(parent, "elapsedtoday", "time in seconds since midnight GMT");
-	AddSymbol(parent, "elapsed1970", "time in seconds since 1970-01-01 00:00:00 GMT (THURSDAY)");
 
 	mainParent = parent = AddSymbolTitle("Autoplayer", NULL, hCatItem);
 	AddSymbol(parent, "myturnbits", "bits 3210 correspond to buttons ARCF (alli rais call fold)");
@@ -3186,37 +3173,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "didcallround1 - didcallround4", "true if userchair called during round 1 - round 4");
 	AddSymbol(parent, "didraisround1 - didraisround4", "true if userchair raised during round 1 - round 4");
 	AddSymbol(parent, "didswaground1 - didswaground4", "true if userchair swag'd during round 1 - round 4");
-
-	mainParent = parent = AddSymbolTitle("RON / RUN", "These symbols report the total number of possible river endings for the opponent (ron$) and the user (run$). A value of zero means that type of poker hand is not possible. Any non-zero value means that type of poker hand will be seen that many times.", hCatItem);
-	AddSymbol(parent, "ron$royfl", "river opponent number : possible royal flush");
-	AddSymbol(parent, "ron$strfl", "river opponent number : possible straight flush");
-	AddSymbol(parent, "ron$4kind", "river opponent number : possible four of a kind");
-	AddSymbol(parent, "ron$fullh", "river opponent number : possible full house");
-	AddSymbol(parent, "ron$flush", "river opponent number : possible flush");
-	AddSymbol(parent, "ron$strai", "river opponent number : possible straight");
-	AddSymbol(parent, "ron$3kind", "river opponent number : possible three of a kind");
-	AddSymbol(parent, "ron$2pair", "river opponent number : possible two pair");
-	AddSymbol(parent, "ron$1pair", "river opponent number : possible one pair");
-	AddSymbol(parent, "ron$hcard", "river opponent number : possible high card");
-	AddSymbol(parent, "ron$total", "river opponent number : sum of all possible river endings");
-	AddSymbol(parent, "ron$pokervalmax", "the maximum possible pokerval for the opponent");
-	AddSymbol(parent, "ron$prnuts", "opponent chances of hitting the nuts on or before the river");
-	AddSymbol(parent, "ron$prbest", "opponent chances of hitting pokervalmax on or before the river");
-	AddSymbol(parent, "run$royfl", "river user number : possible royal flush");
-	AddSymbol(parent, "run$strfl", "river user number : possible straight flush");
-	AddSymbol(parent, "run$4kind", "river user number : possible four of a kind");
-	AddSymbol(parent, "run$fullh", "river user number : possible full house");
-	AddSymbol(parent, "run$flush", "river user number : possible flush");
-	AddSymbol(parent, "run$strai", "river user number : possible straight");
-	AddSymbol(parent, "run$3kind", "river user number : possible three of a kind");
-	AddSymbol(parent, "run$2pair", "river user number : possible two pair");
-	AddSymbol(parent, "run$1pair", "river user number : possible one pair");
-	AddSymbol(parent, "run$hcard", "river user number : possible high card");
-	AddSymbol(parent, "run$total", "river user number : sum of all possible river endings");
-	AddSymbol(parent, "run$pokervalmax", "the maximum possible pokerval for the user");
-	AddSymbol(parent, "run$prnuts", "user chances of hitting the nuts on or before the river");
-	AddSymbol(parent, "run$prbest", "user chances of hitting pokervalmax on or before the river");
-
+	
 	mainParent = parent = AddSymbolTitle("Versus symbols", NULL, hCatItem);
 	AddSymbol(parent, "vs$nhands", "Total possible number of opponent hands");
 	AddSymbol(parent, "vs$nhandshi", "Number of opponent hands that have higher river chances ");

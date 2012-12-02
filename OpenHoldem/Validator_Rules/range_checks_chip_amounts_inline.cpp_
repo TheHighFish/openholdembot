@@ -112,21 +112,3 @@ BEGIN_TESTCASE
 END_TESTCASE
 
 
-BEGIN_TESTCASE
-    TESTCASE_ID ("0071")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol callshort")
-    PRECONDITION (true)
-    POSTCONDITION (gws("callshort") >= 0)
-    SYMBOLS_POSSIBLY_AFFECTED ("callshort")
-END_TESTCASE
-
-
-BEGIN_TESTCASE
-    TESTCASE_ID ("0072")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol raisshort")
-    PRECONDITION (true)
-    POSTCONDITION (gws("raisshort") >= 0)
-    SYMBOLS_POSSIBLY_AFFECTED ("raisshort")
-END_TESTCASE

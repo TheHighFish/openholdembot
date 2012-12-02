@@ -4,16 +4,6 @@
 
 
 BEGIN_TESTCASE
-    TESTCASE_ID ("0032")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol chair")
-    PRECONDITION (true)
-    POSTCONDITION ((gws("chair") >= 0) && (gws("chair") <= 9))
-    SYMBOLS_POSSIBLY_AFFECTED ("chair")
-END_TESTCASE
-
-
-BEGIN_TESTCASE
     TESTCASE_ID ("0033")
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol userchair")

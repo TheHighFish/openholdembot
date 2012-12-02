@@ -14,7 +14,6 @@
 #include "OH_MessageBox.h"
 
 
-
 CVersus		*p_versus = NULL;
 
 CVersus::CVersus() 

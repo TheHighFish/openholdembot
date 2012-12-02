@@ -8,11 +8,13 @@ char *title_outdated_symbol = "ERROR: outdated symbol";
 char *title_unknown_symbol = "ERROR: unknown symbol";
 
 
-char *outdated_symbols_br_ncps_nflopc =
+char *outdated_symbols_br_ncps_nflopc_chair =
 	"The following symbols got removed from the code-base:\n"
-	"  * br (betround)\n"
-	"  * ncps (nclockspersecond)\n"
-	"  * nflopc (ncommoncardsknown)\n"
+	"  * br       (betround)\n"
+	"  * ncps     (nclockspersecond)\n"
+	"  * nflopc   (ncommoncardsknown)\n"
+	"  * chair    (userchair)\n"
+	"  * oppdealt (nopponentsdealt)\n"
 	"because duplicate functionality is bad software-engineering.\n"
 	"Please use their verbose equivalents.\n";
 
@@ -52,7 +54,7 @@ char *outdated_symbol_handrank =
 	"\n"
 	"The user can clearly specify what he wants,\n" 
 	"but a symbol \"handrank\" that takes one of the values above\n"
-	"(depending on option settings) just calls for troubles.";
+	"(depending on option settings) just calls for troubles.\n";
 
 char *outdated_symbol_clocks =
 	"The following symbols got removed from the code-base:\n"
@@ -68,14 +70,14 @@ char *outdated_symbols_ptt =
 	"\n"
 	"OpenHoldem does now only support \"pt\" symbols\n"
 	"and fetches cash-game or tournament-stats automatically,\n"
-	"provided your c0istournament-symbol returns the correct value.";
+	"provided your c0istournament-symbol returns the correct value.\n";
 
 char *outdated_symbols_lists =
 	"The \"list\" symbols got removed from the code-base, e.g.\n"
 	"  * islistalli, ...\n"
 	"  * isemptylistcall, ...\n"
 	"  * nlistmin, nlistmax, ...\n"
-	"Please refer to the release-notes for more info.";
+	"Please refer to the release-notes for more info.\n";
 
 char *outdated_symbols_tablemap =
 	"The following tablemap-symbols got removed from the code-base:\n"
@@ -84,19 +86,44 @@ char *outdated_symbols_tablemap =
 	"  * swagtextmethod\n"
 	"  * potmethod\n"
 	"  * activemethod\n"
-	"because there is no need to use them at the formula-level.";
+	"because there is no need to use them at the formula-level.\n"
+	"OpenHoldem 2.2.0 cares about betsize-adaption automatically.\n";
 
 char*outdated_symbols_handstrength =
    "The handstrength-symbols (\"mh_...\") got removed from the code-base\n"
    "and moved to an external library (\"mh_str_Handstrength_Library.ohf\")\n"
    "because technical symbols should be provided by OpenHoldem\n"
    "and poker-logical symbols should be provided by external libraries.\n";
+
+char *outdated_symbols_runron = 
+	"The run$/ron$-symbols got removed from the code-base,\n"
+	"  * because they looked like a WinHoldem mis-conception\n"
+	"  * because nobody used them\n"
+	"  * because some of the results were wrong\n"
+	"  * because they were unfixable (1000s of undocumented numbers)\n"
+	"In case you really need them and can solve the problems above\n"
+	"please get in contact with the development-team.\n";
+
+char *outdated_symbols_randomround =
+	"The symbols randomround1..randomround4\n"
+	"got removed from the code-base.\n"
+	"Please use randomround, randomhand,\n"
+	"randomheartbeat or random instead.\n";
+
+char* outdated_symbols_callshort_raisshort =
+	"The symbols \"callshort\" and \"raisshort\"\n"
+	"got removed from the code-base\n"
+	"because they got designed for Fixed-Limit\n"
+	"no-foldem Hold'em only.\n"
+	"Better use a function to estimate future pot-sizes.\n";
+
 	
 void WarnAboutUnknownOrOutdatedSymbol(CString symbol)
 {
-	if ((symbol == "br") || (symbol == "ncps") || (symbol == "nflopc"))
+	if ((symbol == "br") || (symbol == "ncps") || (symbol == "nflopc")
+		|| (symbol == "chair") || (symbol == "oppdealt"))
 	{
-		OH_MessageBox(outdated_symbols_br_ncps_nflopc, title_outdated_symbol, 0);
+		OH_MessageBox(outdated_symbols_br_ncps_nflopc_chair, title_outdated_symbol, 0);
 	}
 	else if ((symbol == "isbring") || (symbol == "ismanual"))
 	{
@@ -141,6 +168,21 @@ void WarnAboutUnknownOrOutdatedSymbol(CString symbol)
 	else if (symbol.Left(3) == "mh_")
 	{
 		OH_MessageBox(outdated_symbols_handstrength, title_outdated_symbol, 0);
+	}
+	else if ((symbol.Left(4) == "run$") || (symbol.Left(4) == "ron$")) 
+	{
+		OH_MessageBox(outdated_symbols_runron, title_outdated_symbol, 0);
+	}
+	else if ((symbol.Left(12) == "randomround1") 
+		|| (symbol.Left(12) == "randomround2")
+		|| (symbol.Left(12) == "randomround3")
+		|| (symbol.Left(12) == "randomround4"))
+	{
+		OH_MessageBox(outdated_symbols_randomround, title_outdated_symbol, 0);
+	}
+	else if ((symbol.Left(9) == "callshort") || (symbol.Left(9) == "raisshort"))
+	{
+		OH_MessageBox(outdated_symbols_callshort_raisshort, title_outdated_symbol, 0);
 	}
 	else
 	{

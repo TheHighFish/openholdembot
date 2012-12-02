@@ -54,16 +54,6 @@ END_TESTCASE
 
 
 BEGIN_TESTCASE
-    TESTCASE_ID ("0042")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol seatposition")
-    PRECONDITION (true)
-    POSTCONDITION ((gws("seatposition") >= 0) && (gws("seatposition") <= 10))
-    SYMBOLS_POSSIBLY_AFFECTED ("seatposition")
-END_TESTCASE
-
-
-BEGIN_TESTCASE
     TESTCASE_ID ("0043")
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol dealpositionrais")
