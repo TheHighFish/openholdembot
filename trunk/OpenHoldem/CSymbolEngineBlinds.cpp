@@ -2,6 +2,8 @@
 #include "CSymbolEngineBlinds.h"
 
 #include "CScraper.h"
+#include "CSymbolEnginePositions.h"
+#include "CTableLimits.h"
 #include "MagicNumbers.h"
 
 CSymbolEngineBlinds::CSymbolEngineBlinds()
@@ -23,7 +25,6 @@ void CSymbolEngineBlinds::ResetOnConnection()
 void CSymbolEngineBlinds::ResetOnHandreset()
 {
 	_playersblindbits = 0;
-	_opponentsblindbits = 0;
 	_bblindbits = 0;
 }
 
@@ -33,7 +34,6 @@ void CSymbolEngineBlinds::ResetOnNewRound()
 bool CSymbolEngineBlinds::BlindsAreUnknown()
 {
 	return (_playersblindbits == 0
-		|| _opponentsblindbits == 0
 		||_bblindbits == 0);
 
 }
@@ -42,7 +42,7 @@ void CSymbolEngineBlinds::ResetOnMyTurn()
 {
 	// Only updating when it is my turn (stable frames)
 	// and blinds are unknown
-	if (ismyturn && BlindsAreUnknown())
+	if (BlindsAreUnknown())
 	{
 		CalculateBlinds();
 	}
@@ -53,70 +53,69 @@ void CSymbolEngineBlinds::ResetOnHeartbeat()
 
 void CSymbolEngineBlinds::CalculateBlinds()
 {
+	int sbchair;
+	int bbchair;
+
 	// Heads-Up
-	if (_sym.nplayersdealt == 2 && ((int)_sym.playersplayingbits & (1<<(int)_sym.dealerchair)))
+	if (_nplayersdealt == 2 && (_playersplayingbits & (1<<_dealerchair)))
 	{	
-		sbchair = _sym.dealerchair;
-		set_sym_bblindbits((int)_sym.playersplayingbits ^ k_exponents[sbchair]);						// bblindbits
-		set_sym_playersblindbits((int)_sym.playersplayingbits);											// playersblindbits
-		set_sym_opponentsblindbits((int)_sym.playersplayingbits ^ k_exponents[(int)_sym.userchair]);	// playersblindbits
+		int sbchair = _dealerchair;
+		_bblindbits = _playersplayingbits ^ k_exponents[sbchair];
+		_playersblindbits = _playersplayingbits;
 	}
 
 	else
 	{
 		// Is Hero SB or BB ?
-		my_bet = p_scraper->player_bet(_sym.userchair);
+		double my_bet = p_scraper->player_bet(_userchair);
 
 		if (my_bet <= p_tablelimits->sblind() && my_bet > 0)
 		{
-			sbchair = _sym.userchair;
-			set_sym_playersblindbits(k_exponents[(int)_sym.userchair]);
+			sbchair = _userchair;
+			_playersblindbits = k_exponents[_userchair];
 		}
 
 		if (my_bet <= p_tablelimits->bblind() && my_bet > p_tablelimits->sblind())
 		{
-			bbchair = _sym.userchair;
-			set_sym_bblindbits(k_exponents[bbchair]);
-			set_sym_playersblindbits(k_exponents[(int)_sym.userchair]);
+			bbchair = _userchair;
+			_bblindbits = k_exponents[bbchair];
+			_playersblindbits = k_exponents[_userchair];
 		}
 
-		for (int i=_sym.dealerchair+1; i<_sym.dealerchair+p_tablemap->nchairs(); i++)
+		for (int i=_dealerchair+1; i<_dealerchair+p_tablemap->nchairs(); i++)
 		{
-			p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
+			double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
 
 			// search SB
 			if (sbchair == -1 && p_bet <= p_tablelimits->sblind() && p_bet > 0) 
 			{
 				sbchair = i%p_tablemap->nchairs();
-				set_sym_playersblindbits((int)_sym.playersblindbits | k_exponents[sbchair]);			// playersblindbits
-				set_sym_opponentsblindbits((int)_sym.opponentsblindbits | k_exponents[sbchair]);		// opponentsblindbits
+				_playersblindbits |= k_exponents[sbchair];		
 			}
 			// search BB
 			if (bbchair == -1 && p_bet <= p_tablelimits->bblind() && p_bet > p_tablelimits->sblind() && i%p_tablemap->nchairs() != sbchair)
 			{
 				bbchair = i%p_tablemap->nchairs();	
-				set_sym_bblindbits(k_exponents[bbchair]);												// big blind bit
-				set_sym_playersblindbits((int)_sym.playersblindbits | k_exponents[bbchair]);			// playersblindbits
-				set_sym_opponentsblindbits((int)_sym.opponentsblindbits | k_exponents[bbchair]);		// opponentsblindbits
+				_bblindbits = k_exponents[bbchair];
+				_playersblindbits |= k_exponents[bbchair];		
+				
 			}
 		}
 		
-
 		// SB not found correction.
 		// Will only apply if we are the bb + missed action(s). most common case. 
 		// Restrictions : 3 or less players were dealt or last bb is active
-		if (sbchair == -1 && (_sym.nplayersdealt < 3 || (bbchair == _sym.userchair && _sym.nchairsdealtright == 1)))
+		if (sbchair == -1 && (_nplayersdealt < 3 || (bbchair == _userchair && p_symbol_engine_positions->nchairsdealtright() == 1)))
 		{
-			for (int i=_sym.dealerchair+1; i<_sym.dealerchair+p_tablemap->nchairs(); i++)
+			for (int i=_dealerchair+1; i<_dealerchair+p_tablemap->nchairs(); i++)
 			{
-				p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
+				double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
 
 				// 1st caller/raiser after dealer is sb
 				if (p_bet >= p_tablelimits->bblind() && sbchair == -1 && i%p_tablemap->nchairs() != bbchair)
 				{
 					sbchair = i%p_tablemap->nchairs();
-					set_sym_playersblindbits((int)_sym.playersblindbits | k_exponents[sbchair]);
-					set_sym_opponentsblindbits((int)_sym.opponentsblindbits | k_exponents[sbchair]);	// opponentsblindbits
+					_playersblindbits |= k_exponents[sbchair];
 				}
 			}
 		}
