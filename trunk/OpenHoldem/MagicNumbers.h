@@ -14,6 +14,10 @@
 // Used for bit-calculations: 2^N
 const int k_exponents[11] = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024};
 
+// Undefined (-1)
+const int k_undefined = -1;
+const int k_not_found = -1;
+
 // Betting rounds
 // Some data-structures use an additional value for the current round.
 // This is IMO (THF) superfluous and  dangerous, but lots of work
@@ -26,18 +30,34 @@ const int k_betround_turn		= 3;
 const int k_betround_river		= 4;
 
 // Players
-const int k_max_number_of_players    = 10;
-const int k_max_length_of_playername = 30;
+const int k_max_number_of_players         = 10;
+const int k_max_length_of_playername      = 30;
+const int k_usual_number_of_blind_posters =  2;
+const int k_max_number_of_opponents_at_full_ring_table = k_max_number_of_players - 1;
+
 
 // Chairs
 const int k_min_chair_number = 0;
 const int k_max_chair_number = k_max_number_of_players - 1;
 
 // Number of cards
-const int k_number_of_community_cards  =  5;
-const int k_number_of_flop_cards       =  3;  
-const int k_number_of_cards_per_player =  2;
-const int k_number_of_cards_per_deck   = 52;
+const int k_number_of_community_cards  =   5;
+const int k_number_of_flop_cards       =   3;  
+const int k_number_of_cards_per_player =   2;
+const int k_number_of_cards_per_deck   =  52;
+const int k_number_of_starting_hands   = 169;
+
+// poker constants
+const int k_pokerval_hicard        = 0x00000001;
+const int k_pokerval_onepair       = 0x01000000;
+const int k_pokerval_twopair       = 0x02000000;
+const int k_pokerval_threeofakind  = 0x04000000;
+const int k_pokerval_straight      = 0x08000000;
+const int k_pokerval_flush         = 0x10000000;
+const int k_pokerval_fullhouse     = 0x20000000;
+const int k_pokerval_fourofakind   = 0x40000000;
+const int k_pokerval_straightflush = 0x80000000;
+const int k_pokerval_royalflush    = 0x800EDCBA;
 
 // Game type
 const int k_gametype_unknown = -1;
@@ -51,7 +71,9 @@ static const int MAX_SESSION_IDS = 25;
 // buttons and other scraper constants
 const int k_max_number_of_buttons = 10;
 const int k_max_number_of_i86X_buttons = 10;
-const int k_max_betpot_buttons = 7;  // 2/1, 1/1, 3/4, 2/3, 1/2, 1/3, 1/4
+const int k_max_betpot_buttons = 7;				// 2/1, 1/1, 3/4, 2/3, 1/2, 1/3, 1/4
+const int k_min_buttons_needed_for_my_= 2;
+const int k_my_turn_bits_fold_call_raise = 0x07;
 
 // button codes
 const int k_button_i3		= 3;
@@ -94,8 +116,10 @@ const int k_number_of_holdem_states_for_DLL = 256;
 const int k_number_of_flags = 20;
 
 // Suits and ranks
-const int k_number_of_suits_per_deck = 4;
-const int k_number_of_ranks_per_deck = 13;
+const int k_number_of_suits_per_deck  =  4;
+const int k_number_of_ranks_per_deck  = 13;
+const int k_cards_needed_for_flush    =  5;
+const int k_cards_needed_for_straight =  5;
 
 // Regions for the region cloner of OpenScrape
 // may be used for players, pots, community-cards, etc.

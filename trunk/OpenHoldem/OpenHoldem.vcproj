@@ -381,10 +381,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CSymbols.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CTableLimits.cpp"
 				>
 			</File>
@@ -723,10 +719,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Validator_Rules\range_checks_run_ron_inline.cpp_"
-					>
-				</File>
-				<File
 					RelativePath=".\Validator_Rules\range_checks_table_stats_inline.cpp_"
 					>
 				</File>
@@ -911,6 +903,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Chair$Symbols.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\CICMCalculator.cpp"
 					>
 				</File>
@@ -927,7 +923,75 @@
 					>
 				</File>
 				<File
-					RelativePath=".\CRunRon.cpp"
+					RelativePath=".\CSymbolEngineActiveDealtPlaying.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineAutoplayer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineBlinds.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineBlinds.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineCards.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineChipAmounts.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolengineDealerchair.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineHandrank.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineHistory.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineLists.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEnginePokerval.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEnginePositions.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEnginePrwin.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineRaisersCallers.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineRandom.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineTime.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineUserchair.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbols.cpp"
 					>
 				</File>
 				<File
@@ -1119,10 +1183,6 @@
 			</File>
 			<File
 				RelativePath=".\CStringMatch.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CSymbols.h"
 				>
 			</File>
 			<File
@@ -1385,6 +1445,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Chair$Symbols.h"
+					>
+				</File>
+				<File
 					RelativePath=".\CICMCalculator.h"
 					>
 				</File>
@@ -1401,7 +1465,67 @@
 					>
 				</File>
 				<File
-					RelativePath=".\CRunRon.h"
+					RelativePath=".\CSymbolEngineActiveDealtPlaying.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineAutoplayer.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineCards.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineChipAmounts.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineDealerchair.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineHandrank.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineHistory.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineLists.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEnginePokerval.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEnginePositions.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEnginePrwin.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineRaisersCallers.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineRandom.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineTime.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolengineUserchair.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbols.h"
 					>
 				</File>
 				<File
@@ -1414,6 +1538,10 @@
 				</File>
 				<File
 					RelativePath=".\CVersus.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CVirtualSymbolEngine.h"
 					>
 				</File>
 				<File

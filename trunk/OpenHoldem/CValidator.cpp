@@ -236,7 +236,6 @@ void CValidator::ValidateGameState()
 #include "Validator_Rules\range_checks_rank_lo_inline.cpp_"
 #include "Validator_Rules\range_checks_time_inline.cpp_"
 #include "Validator_Rules\range_checks_autoplayer_inline.cpp_"
-#include "Validator_Rules\range_checks_run_ron_inline.cpp_"
 #include "Validator_Rules\range_checks_versus_inline.cpp_"
 #include "Validator_Rules\range_checks_action_symbols_inline.cpp_"
 #include "Validator_Rules\range_checks_table_stats_inline.cpp_"

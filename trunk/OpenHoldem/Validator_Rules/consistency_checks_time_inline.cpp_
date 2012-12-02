@@ -19,16 +19,6 @@ END_TESTCASE
 
 
 BEGIN_TESTCASE
-    TESTCASE_ID ("0802")
-    HEURISTIC_RULE (false)
-    REASONING ("elapsed1970 has to be greater than elapsedtoday.")
-    PRECONDITION (true)
-    POSTCONDITION (gws("elapsed1970") > gws("elapsedtoday"))
-    SYMBOLS_POSSIBLY_AFFECTED ("elapsed1970, elapsedtoday")
-END_TESTCASE
-
-
-BEGIN_TESTCASE
     TESTCASE_ID ("0803")
     HEURISTIC_RULE (false)
     REASONING ("Once the first hand is finished, the session duration has to be greater than the duration of a hand.")

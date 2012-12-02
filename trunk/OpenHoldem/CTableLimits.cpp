@@ -499,7 +499,6 @@ void CTableLimits::CalcTableLimits()
 	{
 		return;
 	}
-
 	SetSmallBlind(0);
 	SetBigBlind(0);
 	SetBigBet(0);
@@ -516,6 +515,7 @@ void CTableLimits::CalcTableLimits()
 		SetGametype(p_scraper->s_limit_info()->limit);									// lim
 	if (p_scraper->s_limit_info()->found_bbet)
 		SetBigBet(p_scraper->s_limit_info()->bbet);
+	_istournament = p_scraper->s_limit_info()->istournament;	
 
 	write_log(3, "CTableLimits: input from scraper: small blind: %f\n", tablelimit_unreliable_input.sblind);
 	write_log(3, "CTableLimits: input from scraper: big blind:   %f\n", tablelimit_unreliable_input.bblind);

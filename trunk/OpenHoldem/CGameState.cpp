@@ -949,12 +949,6 @@ const char *CGameState::_hist_sym_strings[_hist_sym_count] =
 	//RANK LO (8)
 	"ranklo", "ranklocommon", "rankloplayer", "ranklopoker", "sranklo", "sranklocommon", 
 	"srankloplayer", "sranklopoker", 
-
-	//run$ ron$ (26)
-	"ron$royfl", "ron$strfl", "ron$4kind", "ron$fullh", "ron$strai", "ron$3kind", "ron$2pair", 
-	"ron$1pair", "ron$hcard", "ron$total", "ron$pokervalmax", "ron$prnuts", "ron$prbest", 
-	"run$royfl", "run$strfl", "run$4kind", "run$fullh", "run$strai", "run$3kind", "run$2pair", 
-	"run$1pair", "run$hcard", "run$total", "run$pokervalmax", "run$prnuts", "run$prbest"
 };
 
 

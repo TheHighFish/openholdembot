@@ -34,9 +34,10 @@ public:
 	double bet(); // for current betting round
 public:
 	int gametype()		{ return _gametype; }	// former p_symbols->sym()->lim
-	double isnl()		{ return (gametype() == k_gametype_NL); }
-	double ispl()		{ return (gametype() == k_gametype_PL); }
-	double isfl()		{ return (gametype() == k_gametype_FL); }
+	bool isnl()			{ return (gametype() == k_gametype_NL); }
+	bool ispl()			{ return (gametype() == k_gametype_PL); }
+	bool isfl()			{ return (gametype() == k_gametype_FL); }
+	bool istournament()	[ return _istournament;	}
 private:
 	void SetSmallBlind(double small_blind);
 	void SetBigBlind(double big_blind);
@@ -86,6 +87,7 @@ private:
 private:
 	int		_gametype;
 	double	_ante;
+	bool	_istournament;
 	// Index 1..4 is for current bettinground, 0 is unused
 	double _betsizes_for_all_bettingrounds[k_number_of_betrounds+1]; 
 } *p_tablelimits;
