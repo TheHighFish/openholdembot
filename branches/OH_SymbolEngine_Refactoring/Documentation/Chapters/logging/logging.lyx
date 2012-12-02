@@ -1,0 +1,389 @@
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Log files
+\end_layout
+
+\end_inset
+
+Log Files 
+\end_layout
+
+\begin_layout Standard
+Sometimes the bot will take an unexpected decision, more rarely for bots
+ in production, but for sure regulary for bots in development.
+ The reason can be mis-scrapes (Table Map or improper system settings);
+ it can be bad bot-logic; it can even be a bug in OpenHoldem.
+\end_layout
+
+\begin_layout Standard
+Many newbies will automatically assume the latter case.
+ Whenever you encounter a strange behaviour it is a good decision to make
+ use of OpenHoldems logging capabilities.
+ OpenHoldem will generate a number of log files as it operates, less detailed
+ logs for production, more detailed logs for debugging.
+ The verbosity of the standard log and the Poker Tracker log can be set
+ in {Preferences}.
+\end_layout
+
+\begin_layout Section
+Standard Log 
+\end_layout
+
+\begin_layout Standard
+This contains key actions that OpenHoldem sees, such as connection to a
+ new table, table reset, and hand resets, player actions, as well as detailed
+ before and after Autoplayer action information.
+ The before-after Autoplayer action information is saved as a single line
+ with the following format:
+\end_layout
+
+\begin_layout Standard
+# hand commoncard rank poker win los tie P nit bestaction - play* call bet
+ pot balance - FCRA FCRA swag
+\end_layout
+
+\begin_layout Standard
+From left to right, the fields in this line are: 
+\end_layout
+
+\begin_layout Itemize
+# - Number of chairs at the table (as defined in the Table Map) 
+\end_layout
+
+\begin_layout Itemize
+hand - your hole cards 
+\end_layout
+
+\begin_layout Itemize
+commoncard – the board cards rank - your hand 
+\end_layout
+
+\begin_layout Itemize
+rank (as specified in {Preferences}) 
+\end_layout
+
+\begin_layout Itemize
+poker - your poker hand 
+\end_layout
+
+\begin_layout Itemize
+win / los / tie - the prwin/prlos/prtie Iterator results 
+\end_layout
+
+\begin_layout Itemize
+P - the results from your f$P formula 
+\end_layout
+
+\begin_layout Itemize
+nit - your NIT setting from the Table Map 
+\end_layout
+
+\begin_layout Itemize
+bestaction - the action that the Autoplayer should take, based on the primary
+ function results 
+\end_layout
+
+\begin_layout Itemize
+play - the actual action taken by the Autoplayer (may not be the same as
+ best action, if the best action button is not present, for example) 
+\end_layout
+
+\begin_layout Itemize
+call / bet / pot / balance - the value of call, bet, pot and balance symbols
+ 
+\end_layout
+
+\begin_layout Itemize
+first FCRA - the status of the fold, call, check, raise and allin buttons
+ as seen by the scraper engine 
+\end_layout
+
+\begin_layout Itemize
+second FCRA - the status of the f$call, f$rais and f$alli functions 
+\end_layout
+
+\begin_layout Itemize
+swag - the value of the f$swag function 
+\end_layout
+
+\begin_layout Section
+PokerTracker Log 
+\end_layout
+
+\begin_layout Standard
+The Poker Tracker log is created if you are connected to a Poker Tracker
+ database, and depending on the level of verbosity, will provide exact query
+ SQL that is sent to the database when statistics are needed.
+\end_layout
+
+\begin_layout Section
+f$debug log 
+\end_layout
+
+\begin_layout Standard
+This log is created when set from the menu options in the Formula Editor
+ window.
+\end_layout
+
+\begin_layout Section
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Autoplayer trace
+\end_layout
+
+\end_inset
+
+Autoplayer Trace 
+\end_layout
+
+\begin_layout Standard
+This is an example of the log entries that are added to the standard log
+ if the Autoplayer Trace option is enabled in {Preferences}.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+*************************************************************
+\end_layout
+
+\begin_layout Plain Layout
+HAND RESET (num:0 dealer:2 cards:KsKc): Poker Academy Pro **********************
+*************************************** ROUND 1 >>> New hand 0 
+\end_layout
+
+\begin_layout Plain Layout
+>>> My turn, br=1 
+\end_layout
+
+\begin_layout Plain Layout
+>>> Chair 2 (6lleilli) posted the sb: $0.00 
+\end_layout
+
+\begin_layout Plain Layout
+>>> Chair 3 (GusXensen) posted the sb: $0.00 
+\end_layout
+
+\begin_layout Plain Layout
+>>> Chair 4 (JackPott) posted the sb: $0.00 
+\end_layout
+
+\begin_layout Plain Layout
+>>> Chair 5 (Kale) posted the sb: $0.00 
+\end_layout
+
+\begin_layout Plain Layout
+>>> Chair 1 (DanielXn) posted the sb: $0.00 log$ (Total: 19 | Showing: 19)
+     
+\end_layout
+
+\begin_layout Plain Layout
+f$swag=40.00 [Line: 1, Col: 49]           
+\end_layout
+
+\begin_layout Plain Layout
+f$srai=40.00 [Line: 4, Col: 9]                 f$preflop_srai=40.00 [Line:
+ 12, Col: 87]                       f$preflop_position=4.00 [Line: 5, Col:
+ 50]                        nplayersdealt=6.00                          
+   	dealposition=6.00                       
+\end_layout
+
+\begin_layout Plain Layout
+	ncallbets=1.00                       
+\end_layout
+
+\begin_layout Plain Layout
+	nopponentsbetting=3.00                       
+\end_layout
+
+\begin_layout Plain Layout
+	islist16=1.00                       
+\end_layout
+
+\begin_layout Plain Layout
+	bblind=10.00                 
+\end_layout
+
+\begin_layout Plain Layout
+	br=1.00           
+\end_layout
+
+\begin_layout Plain Layout
+f$raise_min_amount=10.00 [Line: 1, Col: 12]                 	currentbet=0.00
+                 
+\end_layout
+
+\begin_layout Plain Layout
+	call=10.00           
+\end_layout
+
+\begin_layout Plain Layout
+f$swag_adjust=0.00 [Line: 3, Col: 1]                 	swagtextmethod=1.00
+     
+\end_layout
+
+\begin_layout Plain Layout
+	f$call=1.00 [Line: 7, Col: 4]           
+\end_layout
+
+\begin_layout Plain Layout
+f$srai=40.00 [Cached]           
+\end_layout
+
+\begin_layout Plain Layout
+call=10.00 
+\end_layout
+
+\begin_layout Plain Layout
+6 KsKc ..........    2 1pair  578  417    5  3     1000 $40.00     - SWAG      10.00 
+    10.00     25.00      0.00 - FCRA .C..
+ 40.00
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+How to read the log 
+\end_layout
+
+\begin_layout Standard
+f$swag returned 40 processing line 1, character 49.
+ It called the following functions: f$srai, f$raise_min_amount, f$swag_adjust,
+ and used no other symbols.
+\end_layout
+
+\begin_layout Standard
+f$preflop_position (returning on line 5 processing character 50) was called
+ from f$preflop_srai which was called from f$srai.
+ It called no other functions and used 2 symbols; nplayersdealt, dealposition
+ whose values were 6 and 6.
+\end_layout
+
+\begin_layout Plain Layout
+ROUND 2 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+log$ (Total: 34 | Showing: 34)     Monster_Hand     checkLast_Monster_Raise
+     f$swag=115.33 [Line: 1, Col: 49]           f$srai=115.33 [Line: 10, Col:
+ 9]                 f$postflop_srai=115.33 [Line: 6, Col: 31]            
+           f$postflop_scenario=2.00 [Line: 7, Col: 77]                  
+           f$round_first_action=1.00 [Line: 2, Col: 38]                  
+                 didswag=0.00                                   didrais=0.00
+                                   didcall=0.00                          
+         didchec=0.00                             betposition=3.00        
+                     ncallbets=0.00                             nplayersround=3.00
+                       f$flop_checklast_srai=115.33 [Line: 2, Col: 67]  
+                           f$handstrength=1.00 [Line: 8, Col: 105]      
+                             f$c_hs_MONSTER=1.00 [Line: 1, Col: 1]      
+                             br=2.00                                   vs$80$prlo
+s=0.06                                   log$Monster_Hand=1.00            
+                 f$c_hs_MONSTER=1.00 [Cached]                            
+ f$cbet_amount=115.33 [Line: 1, Col: 23]                                
+   random=0.60                                   pot=160.00              
+               log$checkLast_Monster_Raise=1.00                       br=2.00
+                 br=2.00           f$raise_min_amount=0.00 [Line: 1, Col:
+ 12]                 currentbet=0.00                 call=0.00           f$swag_ad
+just=0.00 [Line: 3, Col: 1]                 swagtextmethod=1.00     f$call=1.00
+ [Line: 5, Col: 7]           call=0.00 6 KsKc JsKd4c....    2 3kind  915   85 
+   0  2     1000 $115.33    - SWAG       0.00     10.00    160.00      0.00 -
+ FCRA .C..
+ 115.33
+\end_layout
+
+\begin_layout Plain Layout
+log$ (Total: 30 | Showing: 30)     Monster_Hand     reraise_Monster_BIGRaise
+     f$swag=2340.00 [Line: 1, Col: 49]           f$srai=2340.00 [Line: 10,
+ Col: 9]                 f$postflop_srai=2340.00 [Line: 12, Col: 31]    
+                   f$postflop_scenario=5.00 [Line: 9, Col: 30]          
+                   f$round_first_action=0.00 [Line: 2, Col: 2]          
+                         didswag=1.00                             didswag=1.00
+                             nbetstocall=78.00                       f$flop_rerai
+sed_srai=2340.00 [Line: 2, Col: 68]                             f$handstrength=1.0
+0 [Line: 8, Col: 105]                                   f$c_hs_MONSTER=1.00
+ [Line: 1, Col: 1]                                   br=2.00            
+                       vs$80$prlos=0.06                                  
+ log$Monster_Hand=1.00                             f$c_hs_MONSTER=1.00 [Cached]
+                             f$raise_big_amount=2340.00 [Line: 1, Col: 5]
+                                   pot=1170.00                          
+   log$reraise_Monster_BIGRaise=1.00                       br=2.00        
+         br=2.00           f$raise_min_amount=895.00 [Line: 1, Col: 12]  
+               currentbet=115.00                 call=780.00           f$swag_adju
+st=0.00 [Line: 3, Col: 1]                 swagtextmethod=1.00     f$call=1.00
+ [Line: 7, Col: 4]           f$srai=2340.00 [Cached]           call=780.00
+ 6 KsKc JsKd4c....    2 3kind  969   31    0  1     1000 $2340.00   - SWAG   
+  780.00     10.00   1170.00      0.00 - FCRA .C..
+ 2340.00
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+!!! logging for Perl and dll!!!
+\end_layout
+
+\end_body
+\end_document

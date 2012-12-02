@@ -1,0 +1,189 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Section
+OpenHoldem Preferences – Logging 
+\end_layout
+
+\begin_layout Standard
+Logging preferences control what information OpenHoldem will periodically
+ write to various log files.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Enable Log Symbols
+\emph default
+: If this setting is checked, any log$ symbols that are encountered in your
+ OH-Script will be added to OpenHoldem’s log file.
+ Everytime a log$ symbol is accessed it will be flagged for logging.
+ You can use this to track which part of your formula is responsible for
+ the action taken by OpenHoldem.
+ You want to use the log$ symbol at the end of a logic block, to make sure
+ it only gets flagged when all the previous statements are true.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Maximum symbols
+\emph default
+: This is used in conjunction with the “Enable Log Symbols” preference,
+ and specifies the maximum number of log$ symbols that will be logged per
+ action.
+ When “Enable Log Symbols” enabled, up to four log$ symbols will be displayed
+ in OpenHoldem’s main window in the center information box.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Enable Autoplayer Trace
+\emph default
+: This setting will enable tracing to the log file of the Autoplayer’s evaluatio
+n process.
+ The primary functions that are traced are selected in the listbox control
+ directly below.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Disable all runtime MessageBoxes
+\emph default
+: This preference will prevent OpenHoldem from displaying warning and error
+ message boxes during runtime (when OpenHoldem is connected to a table).
+ This is extraordinarily dangerous and should only be used when you have
+ a 100% stable bot that you want to move to a fully automated execution
+ model.
+ It is strongly advised that you do not check this option until you have
+ a very stable and thoroughly tested botting environment.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Debug output level
+\emph default
+: This will control the verbosity of the output written to the log files.
+ Zero will disable all logging, and 3 is the highest level of logging.
+ At the time of this writing, detailed level-3 logging is available for
+ critical parts of OpenHoldem, including the heartbeat thread, the Screen
+ Scraper engine, the Autoplayer engine and the Rebuy management.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Poker Tracker debug output level
+\emph default
+: This will control the verbosity of the output written to the Poker Tracker
+ log files.
+ Zero will disable all logging, and 3 is the highest level of logging.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Erase old logs larger than (MB): 
+\emph default
+This option does specify a maximum size of existing log-files (in mega-bytes).
+ OpenHoldem does usually append new log messages to existing files.
+ Unfortunatelly these log-files can grow really large, especially if you
+ did enable detailed logging.
+ With this option old files which are too large will be automatically deleted,
+ if OpenHoldem opens them on startup.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/Logging.PNG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Preferences: Logging
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="PokerTracker_Symbols.tex"> 
+<meta name="date" content="2012-10-11 00:32:00"> 
+<link rel="stylesheet" type="text/css" href="PokerTracker_Symbols.css"> 
+</head><body 
+>
+
+
+   <h2 class="likechapterHead"><a 
+ id="x1-1000"></a>PokerTracker Symbols</h2>
+<!--l. 31--><p class="noindent" >OpenHoldem supports PokerTracker symbols, and so does OpenPPL. The development
+team did already create some symbols of general use that get shipped with the library.
+However: the possibilities are endless and you can for sure imagine other symbols that
+are useful. If you want to increase the power of OpenPPL please have a look at the
+chapter &#8220;Building Symbols On Your Own&#8221; and at Openholdems manual. It is not that
+difficult and if you want to contribute to the project your symbols could even become
+part of the next version.
+<!--l. 40--><p class="indent" >   Note: The PokerTracker symbols need a working connection to Poker Tracker
+Database (PT2/PT3 depending on OH version), correct opponents name scraping and
+sitename/network symbols in the TableMap as described in the OpenHoldem
+manual.
+<!--l. 45--><p class="indent" >   All PokerTracker symbols require a certain samplesize to become meaningful. Our
+library defines reasonable requirements for the stats and returns -1 if there are not
+enough hands.
+<!--l. 49--><p class="indent" >   Please note that OH returns percentages in the range [0..1], so 0.31 means
+31%.
+
+   <div class="tabular"> <table id="TBL-1" class="tabular" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-1-1g"><col 
+id="TBL-1-1"></colgroup><colgroup id="TBL-1-2g"><col 
+id="TBL-1-2"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-1-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-1-1"  
+class="td11"> <!--l. 54--><p class="noindent" >Symbol                                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-1-2"  
+class="td11"> <!--l. 55--><p class="noindent" >Meaning                                                  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-2-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-2-1"  
+class="td11"> <!--l. 57--><p class="noindent" >PT_BigBlind_FoldBBToSteal     </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-2-2"  
+class="td11"> <!--l. 58--><p class="noindent" >Big
+  Blind
+  fold
+  percentage
+  to
+  steal-raises
+  from
+  late
+  position
+  or
+  from
+  the
+  small
+  blind                                                      </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-3-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-3-1"  
+class="td11"> <!--l. 61--><p class="noindent" >PT_BigBlind_Hands                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-3-2"  
+class="td11"> <!--l. 62--><p class="noindent" >Big
+  Blind
+  fold
+  percentage
+  to
+  steal-raises
+  from
+  late
+  positions                                                 </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-4-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-4-1"  
+class="td11"> <!--l. 64--><p class="noindent" >PT_LastCaller_VPIP                </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-4-2"  
+class="td11"> <!--l. 65--><p class="noindent" >Last
+  caller
+  percentange
+  of
+  voluntary
+  played
+  hands                                                     </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-5-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-5-1"  
+class="td11"> <!--l. 67--><p class="noindent" >LastCaller_PFR                        </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-5-2"  
+class="td11"> <!--l. 68--><p class="noindent" >Last
+  caller
+  percentange
+  of
+  preflop
+  raise                                                       </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-6-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-6-1"  
+class="td11"> <!--l. 70--><p class="noindent" >PT_LastRaiser_AttemptToStealBlinds </td> <td  style="white-space:wrap; text-align:left;" id="TBL-1-6-2"  
+class="td11"> <!--l. 71--><p class="noindent" >Percentage
+  of
+  steal-raises
+  when
+  first-in
+  and
+  in
+  late
+  position
+  or
+  in
+  the
+  small-blind                                              </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-7-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-7-1"  
+class="td11"> <!--l. 74--><p class="noindent" >PT_LastRaiser_Hands               </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-7-2"  
+class="td11"> <!--l. 75--><p class="noindent" >Last
+  Raiser
+  player
+  number
+  of
+  hands
+  stored
+  in
+  PT
+  database                                                 </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-8-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-8-1"  
+class="td11"> <!--l. 77--><p class="noindent" >PT_LastRaiser_PFR                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-8-2"  
+class="td11"> <!--l. 78--><p class="noindent" >Preflop
+  raising
+  percentage
+  of
+  the
+  last
+  raiser                                                      </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-9-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-9-1"  
+class="td11"> <!--l. 80--><p class="noindent" >PT_LastRaiser_VPIP               </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-9-2"  
+class="td11"> <!--l. 81--><p class="noindent" >Percentage
+  of
+  volutary
+  played
+  hands
+  by
+  the
+  last
+  raiser                                                      </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-10-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-10-1"  
+class="td11"> <!--l. 83--><p class="noindent" >PT_OpponentVPIPHeadsUp       </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-10-2"  
+class="td11"> <!--l. 84--><p class="noindent" >VPIP
+  of
+  opponent
+  when
+  playing
+  heads
+  up                                                          </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-11-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-11-1"  
+class="td11"> <!--l. 86--><p class="noindent" >PT_SmallBlind_FoldSBToSteal   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-11-2"  
+class="td11"> <!--l. 87--><p class="noindent" >Small
+  Blind
+  fold
+  percentage
+  to
+  steal-raises
+  from
+  late
+  positions                                                 </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-12-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-12-1"  
+class="td11"> <!--l. 89--><p class="noindent" >PT_SmallBlind_Hands              </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-12-2"  
+class="td11"> <!--l. 90--><p class="noindent" >Player
+  in
+  Small
+  Blind
+  number
+  of
+  hands
+  stored
+  in
+  PT
+  database                                                 </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-13-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-13-1"  
+class="td11"> <!--l. 92--><p class="noindent" >PT_SmallBlind_VPIP               </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-13-2"  
+class="td11"> <!--l. 93--><p class="noindent" >Percentage
+  of
+  voluntary
+  played
+  hands
+  by
+  the
+  small
+  blind                                                      </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-14-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-14-1"  
+class="td11">                              </td> </tr></table>
+
+</div>  
+</body></html> 
+
+
+

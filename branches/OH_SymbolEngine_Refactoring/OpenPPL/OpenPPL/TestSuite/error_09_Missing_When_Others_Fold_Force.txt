@@ -1,0 +1,16 @@
+// No longer check by the latest version.
+// We simply add "Fold Force"
+custom
+
+
+preflop
+when (1 = 2) Call Force
+
+flop
+when others fold force
+
+turn
+when others fold force
+
+river
+when others fold force
