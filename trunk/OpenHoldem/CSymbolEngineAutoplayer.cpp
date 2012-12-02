@@ -43,7 +43,7 @@ void CSymbolEngineAutoplayer::ResetOnHeartbeat()
 
 void CSymbolEngineAutoplayer::CalculateMyTurnBits()
 {
-	for (int i=0; i<k_max_number_of_buttontons; i++)
+	for (int i=0; i<k_max_number_of_buttons; i++)
 	{
 		if (p_scraper->GetButtonState(i))
 		{
@@ -79,7 +79,7 @@ void CSymbolEngineAutoplayer::CalculateMyTurnBits()
 
 void CSymbolEngineAutoplayer::CalculateSitInState()
 {
-	for (int i=0; i<k_max_number_of_buttontons; i++)
+	for (int i=0; i<k_max_number_of_buttons; i++)
 	{
 		if (p_string_match->IsStringSitin(p_scraper->button_label(i)))
 		{
