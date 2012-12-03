@@ -52,16 +52,27 @@ public:
 	int nopponentschecking()	{ return _nopponentschecking; }
 private:
 	void CalculateNOpponentsCheckingBettingFolded();
+	void CalculateRaisers();
+	void CalculateCallers();
+	void CalculateFoldBits();
 private:
 	int _raischair;
 	int _nplayerscallshort;
 	int _nopponentsbetting;
 	int _nopponentsfolded;
+	INT _nopponentscalling;
 	int _nopponentschecking;
 private:
 	int _raisbits[k_number_of_betrounds + 1];
 	int _foldbits[k_number_of_betrounds + 1];
-
+	int _callbits[k_number_of_betrounds + 1]; //!!!
+private:
+	int _dealerchair; //!!!
+	int _userchair;
+	int _nchairs;
+	int _raischair_previous_frame;
+	int _betround;
+	int _playersdealtbits;
 } *p_symbol_engine_raisers_callers;
 
 #endif INC_CSYMBOLENGINERAISERSCALLERS_H

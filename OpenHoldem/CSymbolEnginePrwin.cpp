@@ -3,6 +3,7 @@
 
 #include "CIteratorThread.h"
 #include "CScraper.h"
+#include "CSymbolenginePokerval.h"
 
 CSymbolEnginePrwin::CSymbolEnginePrwin()
 {}
@@ -89,7 +90,8 @@ void CSymbolEnginePrwin::CalculateNhands()
 	// player/common cards and pokerval
 	CardMask_OR(playerEvalCards, plCards, comCards);
 	hv_player = Hand_EVAL_N(playerEvalCards, nplCards+ncomCards);
-	pl_pokval = CalcPokerval(hv_player, nplCards+ncomCards, &dummy, CARD_NOCARD, CARD_NOCARD);
+	pl_pokval = p_symbol_engine_pokerval->CalculatePokerval(hv_player, 
+		nplCards+ncomCards, &dummy, CARD_NOCARD, CARD_NOCARD);
 
 	for (int i=0; i<(k_number_of_cards_per_deck-1); i++)
 	{
@@ -107,7 +109,9 @@ void CSymbolEnginePrwin::CalculateNhands()
 
 				CardMask_OR(opponentEvalCards, oppCards, comCards);
 				hv_opponent = Hand_EVAL_N(opponentEvalCards, 2+ncomCards);
-				opp_pokval = CalcPokerval(hv_opponent, 2+ncomCards, &dummy, CARD_NOCARD, CARD_NOCARD);
+				opp_pokval = p_symbol_engine_pokerval->CalculatePokerval(hv_opponent,
+					(k_number_of_cards_per_player + ncomCards), 
+					&dummy, CARD_NOCARD, CARD_NOCARD);
 
 				if (pl_pokval > opp_pokval)
 				{
@@ -124,6 +128,6 @@ void CSymbolEnginePrwin::CalculateNhands()
 			}
 		}
 	}
-	_prwinnow = pow(((double)_nhandslo/nhands()), nopponents);
-	_prlosnow = 1 - pow((((double)_nhandslo + _nhandsti)/nhands()), nopponents);
+	_prwinnow = pow(((double)_nhandslo/nhands()), _nopponents_for_prwin);
+	_prlosnow = 1 - pow((((double)_nhandslo + _nhandsti)/nhands()), _nopponents_for_prwin);
 }

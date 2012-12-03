@@ -2,6 +2,7 @@
 #include "CSymbolEnginePokerval.h"
 
 #include "CScraper.h"
+#include "CSymbolEngineCards.h"
 #include "..\CTransform\CTransform.h"
 #include "inlines/eval.h"
 
@@ -54,9 +55,7 @@
 void CSymbolEnginePokerval::CalcPokerValues()
 {
 	CardMask		Cards = {0};
-	int				nCards = 0;
-	HandVal			handval = 0;
-	double			dummy = 0.;
+	int				dummy = 0;
 
 	///////////////////////////////////////////////////////////////////
 	// pokerval
@@ -87,14 +86,14 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	handval = Hand_EVAL_N(Cards, nCards);
 
 	_pcbits = 0;
-	_pokerval = CalcPokerval(handval, nCards, &_pcbits,				
+	_pokerval = CalculatePokerval(handval, nCards, &_pcbits,				
 	  	p_scraper->card_player(userchair, 0), 
 		p_scraper->card_player(userchair, 1));	
 
-	_phandval[(int)betround-1] = (int)_pokerval & 0xff000000; 
+	_phandval[betround-1] = _pokerval & 0xff000000; 
 
 	if (betround > k_betround_preflop
-		&& _phandval[(int)betround-1] > _phandval[(int)betround-2])
+		&& _phandval[betround-1] > _phandval[betround-2])
 	{
 		_ishandup = true;														
 	}
@@ -119,7 +118,7 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	}
 	handval = Hand_EVAL_N(Cards, nCards);
 
-	_pokervalplayer = CalcPokerval(handval, nCards, &dummy, CARD_NOCARD, CARD_NOCARD);
+	_pokervalplayer = CalculatePokerval(handval, nCards, &dummy, CARD_NOCARD, CARD_NOCARD);
 
 
 	///////////////////////////////////////////////////////////////////
@@ -139,11 +138,11 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	}
 	handval = Hand_EVAL_N(Cards, nCards);
 
-	_pokervalcommon = CalcPokerval(handval, nCards, &dummy, CARD_NOCARD, CARD_NOCARD); 
+	_pokervalcommon = CalculatePokerval(handval, nCards, &dummy, CARD_NOCARD, CARD_NOCARD); 
 
-		_chandval[(int)betround-1] = (int)_pokervalcommon & 0xff000000; 
+		_chandval[betround-1] = _pokervalcommon & 0xff000000; 
 		if (betround > k_betround_preflop 
-			&& _chandval[(int)betround-1] > _chandval[(int)betround-2])
+			&& _chandval[betround-1] > _chandval[betround-2])
 		{
 			_ishandupcommon = true;
 		}
@@ -160,22 +159,22 @@ void CSymbolEnginePokerval::CalculateHandType()
 	}
 	else if (isflush())
 	{
-		if (StdDeck_RANK(HandVal_TOP_CARD(handval)) == 12 && ((int)_pcbits & 0x10))
+		if (StdDeck_RANK(HandVal_TOP_CARD(handval)) == 12 && (_pcbits & 0x10))
 		{
 			_ishiflush = true;
 		}
 		// If we have a pocket King, and it's the second best card in our flush
-		else if (StdDeck_RANK(HandVal_SECOND_CARD(handval)) == 11 && ((int)_pcbits & 0x8))
+		else if (StdDeck_RANK(HandVal_SECOND_CARD(handval)) == 11 && (_pcbits & 0x8))
 		{
 			_ishiflush = true;
 		}
 		// If we have a pocket Queen, and it's the third best card in our flush
-		else if (StdDeck_RANK(HandVal_THIRD_CARD(handval)) == 10 && ((int)_pcbits & 0x4))
+		else if (StdDeck_RANK(HandVal_THIRD_CARD(handval)) == 10 && (_pcbits & 0x4))
 		{
 			_ishiflush = true;
 		}
 		// If we have a pocket Jack, and it's the fourth best card in our flush
-		else if (StdDeck_RANK(HandVal_FOURTH_CARD(handval)) == 9 && ((int)_pcbits & 0x2))
+		else if (StdDeck_RANK(HandVal_FOURTH_CARD(handval)) == 9 && (_pcbits & 0x2))
 		{
 			_ishiflush = true;
 		}																	
@@ -196,12 +195,12 @@ void CSymbolEnginePokerval::CalculateHandType()
 		}
 		else if (nCards >= 5)
 		{
-			if ((int) StdDeck_RANK(HandVal_TOP_CARD(handval)) >= rankhicommon())
+			if (StdDeck_RANK(HandVal_TOP_CARD(handval)) >= rankhicommon())
 			{
 				_ishipair = true;										
 			}
-			else if ((int) StdDeck_RANK(HandVal_TOP_CARD(handval)) < rankhicommon()
-				&& (int) StdDeck_RANK(HandVal_TOP_CARD(handval)) > ranklocommon())
+			else if (StdDeck_RANK(HandVal_TOP_CARD(handval)) < rankhicommon()
+				&& StdDeck_RANK(HandVal_TOP_CARD(handval)) > ranklocommon())
 			{
 				_ismidpair = true;
 			}
@@ -258,22 +257,13 @@ void CSymbolEnginePokerval::CalculateRankBits()
 			}
 		}
 	}
-	_rankbitspoker = (1<<(((int)_pokerval>>16)&0xf))
-		| (1<<(((int)_pokerval>>12)&0xf)) 
-		| (1<<(((int)-pokerval>>8)&0xf)) 
-		| (1<<(((int)-pokerval>>4)&0xf)) 
-		| (1<<(((int)-pokerval>>0)&0xf));
+	_rankbitspoker = (1<<((_pokerval>>16)&0xf))
+		| (1<<((_pokerval>>12)&0xf)) 
+		| (1<<((_pokerval>>8)&0xf)) 
+		| (1<<((_pokerval>>4)&0xf)) 
+		| (1<<((_pokerval>>0)&0xf)); 
 	// Take care about ace (low bit)
-	_rankbitspoker = _rankbitspoker + (((int)_rankbitspoker&0x4000) ? (1<<1) : 0); 
-
-	comsuit = (tsuitcommon==WH_SUIT_CLUBS ? Suit_CLUBS :
-			   tsuitcommon==WH_SUIT_DIAMONDS ? Suit_DIAMONDS :
-			   tsuitcommon==WH_SUIT_HEARTS ? Suit_HEARTS :
-			   tsuitcommon==WH_SUIT_SPADES ? Suit_SPADES : 0);
-	plcomsuit = (tsuit==WH_SUIT_CLUBS ? Suit_CLUBS :
-				 tsuit==WH_SUIT_DIAMONDS ? Suit_DIAMONDS :
-				 tsuit==WH_SUIT_HEARTS ? Suit_HEARTS :
-				 tsuit==WH_SUIT_SPADES ? Suit_SPADES : 0);
+	_rankbitspoker = _rankbitspoker + ((_rankbitspoker&0x4000) ? (1<<1) : 0); 
 
 	for (_rank=StdDeck_Rank_LAST; _rank>=StdDeck_Rank_FIRST; _rank--)
 	{
@@ -287,18 +277,30 @@ void CSymbolEnginePokerval::CalculateRankBits()
 		}
 	}
 
+	int tsuitcommon = p_symbol_engine_cards->tsuitcommon();
+	comsuit = (tsuitcommon==WH_SUIT_CLUBS ? Suit_CLUBS :
+		tsuitcommon==WH_SUIT_DIAMONDS ? Suit_DIAMONDS :
+		tsuitcommon==WH_SUIT_HEARTS ? Suit_HEARTS :
+		tsuitcommon==WH_SUIT_SPADES ? Suit_SPADES : 0);
+
+	int tsuit = p_symbol_engine_cards->tsuit();
+	plcomsuit = (tsuit==WH_SUIT_CLUBS ? Suit_CLUBS :
+		tsuit==WH_SUIT_DIAMONDS ? Suit_DIAMONDS :
+		tsuit==WH_SUIT_HEARTS ? Suit_HEARTS :
+		tsuit==WH_SUIT_SPADES ? Suit_SPADES : 0);
+
 	_srankbitspoker =														
-			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD((((int)_pokerval>>16)&0xf)-2, plcomsuit)) ?
-			 (1<<(((int)_pokerval>>16)&0xf)) : 0) |
-			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD((((int)_pokerval>>12)&0xf)-2, plcomsuit)) ?
-			 (1<<(((int)_pokerval>>12)&0xf)) : 0) |
-			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD((((int)_pokerval>>8)&0xf)-2, plcomsuit)) ?
-			 (1<<(((int)_pokerval>>8)&0xf)) : 0) |
-			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD((((int)_pokerval>>4)&0xf)-2, plcomsuit)) ?
-			 (1<<(((int)_pokerval>>4)&0xf)) : 0) |
-			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD((((int)_pokerval>>0)&0xf)-2, plcomsuit)) ?
-		 (1<<(((int)_pokerval>>0)&0xf)) : 0);
-	_srankbitspoker = _srankbitspoker + (((int)_srankbitspoker&0x4000) ? (1<<1) : 0); //ace	
+			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>16)&0xf)-2, plcomsuit)) ?
+			 (1<<((_pokerval>>16)&0xf)) : 0) |
+			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>12)&0xf)-2, plcomsuit)) ?
+			 (1<<((_pokerval>>12)&0xf)) : 0) |
+			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>8)&0xf)-2, plcomsuit)) ?
+			 (1<<((_pokerval>>8)&0xf)) : 0) |
+			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>4)&0xf)-2, plcomsuit)) ?
+			 (1<<((_pokerval>>4)&0xf)) : 0) |
+			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>0)&0xf)-2, plcomsuit)) ?
+		 (1<<((_pokerval>>0)&0xf)) : 0);
+	_srankbitspoker += ((_srankbitspoker&0x4000) ? (1<<1) : 0); //ace	
 }
 
 
@@ -306,22 +308,24 @@ int CSymbolEnginePokerval::GetRankHi(int rankbits)
 {
 	for (int i=Rank_ACE; i>=2; i--)
 	{
-		if ((((int) rankbits)>>i) & 0x1)
+		if (((rankbits)>>i) & 0x1)
 		{
 			return i;
 		}
 	}
+	return k_undefined;
 }
 
 int CSymbolEnginePokerval::GetRankLo(int rankbits)
 {
 	for (int i=2; i<=Rank_ACE; i++)
 	{
-		if ( (((int) rankbits)>>i) & 0x1)
+		if ( ((rankbits)>>i) & 0x1)
 		{
 			return i;
 		}
 	}
+	return k_undefined;
 }
 
 void CSymbolEnginePokerval::SetRankBit(int* rankbits, int rank)
@@ -385,11 +389,11 @@ bool CSymbolEnginePokerval::IsHigherStraightPossible(HandVal handval)
 	return false;
 }
 
-double CSymbolEnginePokerval::CalcPokerval(HandVal hv, int n, double *pcb, int card0, int card1)
+double CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int card0, int card1)
 {
 	double			pv = 0.;
 	int				i = 0, j = 0, k = 0, max = 0, c = 0, flush_suit = 0; //Matrix 2008-06-28
-	double			bits = 0.;
+	int				bits = 0;
 	CardMask		Cards = {0}, heartsCards = {0}, diamondsCards = {0}, clubsCards = {0}, spadesCards = {0}, suittestCards = {0};
 
 	// If we have a straight flush or flush, figure out the suit
@@ -529,7 +533,7 @@ double CSymbolEnginePokerval::CalcPokerval(HandVal hv, int n, double *pcb, int c
 					k == HandVal_TOP_CARD(hv)-i &&
 					StdDeck_SUIT(card1) == flush_suit)
 			{
-				bits = (int) bits | (1<<(4-i));
+				bits |= (1<<(4-i));
 			}
 			// In straight evaluation an Ace can appear in hv as either 0x0c or 0xff. 
 			// We need to do an ugly test for both cases.
@@ -547,7 +551,7 @@ double CSymbolEnginePokerval::CalcPokerval(HandVal hv, int n, double *pcb, int c
 				if ((j == HandVal_TOP_CARD(hv)-i && StdDeck_SUIT(card0) == flush_suit)
 					||	k == HandVal_TOP_CARD(hv)-i && StdDeck_SUIT(card1) == flush_suit)
 				{
-					bits = (int) bits | (1<<(4-i));
+					bits |= (1<<(4-i));
 				}
 			}
 		}
@@ -565,21 +569,21 @@ double CSymbolEnginePokerval::CalcPokerval(HandVal hv, int n, double *pcb, int c
 		if ( (StdDeck_RANK(card0) == HandVal_TOP_CARD(hv)) !=
 				(StdDeck_RANK(card1) == HandVal_TOP_CARD(hv)) )
 		{
-			bits = (int) bits | (1<<4);
+			bits |= (1<<4);
 		}
 		// Both hole cards are used in quads
 		else if (StdDeck_RANK(card0) == HandVal_TOP_CARD(hv) &&
 				 StdDeck_RANK(card1) == HandVal_TOP_CARD(hv))
 		{
-			bits = (int) bits | (1<<4);
-			bits = (int) bits | (1<<3);
+			bits |= (1<<4);
+			bits |= (1<<3);
 		}
 		// Either hole card is used as kicker
 		if (n>=5 &&
 				(StdDeck_RANK(card0) == HandVal_SECOND_CARD(hv) ||
 				 StdDeck_RANK(card1) == HandVal_SECOND_CARD(hv)))
 		{
-			bits = (int) bits | (1<<0);
+			bits |= (1<<0);
 		}
 		break;
 
@@ -595,27 +599,27 @@ double CSymbolEnginePokerval::CalcPokerval(HandVal hv, int n, double *pcb, int c
 		if ( (StdDeck_RANK(card0) == HandVal_TOP_CARD(hv)) !=
 				(StdDeck_RANK(card1) == HandVal_TOP_CARD(hv)) )
 		{
-			bits = (int) bits | (1<<4);
+			bits |= (1<<4);
 		}
 		// Both hole cards are used in top of boat
 		else if (StdDeck_RANK(card0) == HandVal_TOP_CARD(hv) &&
 				 StdDeck_RANK(card1) == HandVal_TOP_CARD(hv))
 		{
-			bits = (int) bits | (1<<4);
-			bits = (int) bits | (1<<3);
+			bits |= (1<<4);
+			bits |= (1<<3);
 		}
 		// Either hole card is used in bottom of boat
 		if ( (StdDeck_RANK(card0) == HandVal_SECOND_CARD(hv))  !=
 				(StdDeck_RANK(card1) == HandVal_SECOND_CARD(hv)) )
 		{
-			bits = (int) bits | (1<<1);
+			bits |= (1<<1);
 		}
 		// Both hole cards are used in bottom of boat
 		else if (StdDeck_RANK(card0) == HandVal_SECOND_CARD(hv) &&
 				 StdDeck_RANK(card1) == HandVal_SECOND_CARD(hv))
 		{
-			bits = (int) bits | (1<<1);
-			bits = (int) bits | (1<<0);
+			bits |= (1<<1);
+			bits |= (1<<0);
 		}
 		break;
 
@@ -633,7 +637,7 @@ double CSymbolEnginePokerval::CalcPokerval(HandVal hv, int n, double *pcb, int c
 				(StdDeck_RANK(card1) == HandVal_TOP_CARD(hv) &&
 				 StdDeck_SUIT(card1) == flush_suit) )
 		{
-			bits = (int) bits | (1<<4);
+			bits |= (1<<4);
 		}
 		if ( (StdDeck_RANK(card0) == HandVal_SECOND_CARD(hv) &&
 				StdDeck_SUIT(card0) == flush_suit)
@@ -641,7 +645,7 @@ double CSymbolEnginePokerval::CalcPokerval(HandVal hv, int n, double *pcb, int c
 				(StdDeck_RANK(card1) == HandVal_SECOND_CARD(hv) &&
 				 StdDeck_SUIT(card1) == flush_suit) )
 		{
-			bits = (int) bits | (1<<3);
+			bits |= (1<<3);
 		}
 		if ( (StdDeck_RANK(card0) == HandVal_THIRD_CARD(hv) &&
 				StdDeck_SUIT(card0) == flush_suit)
@@ -649,7 +653,7 @@ double CSymbolEnginePokerval::CalcPokerval(HandVal hv, int n, double *pcb, int c
 				(StdDeck_RANK(card1) == HandVal_THIRD_CARD(hv) &&
 				 StdDeck_SUIT(card1) == flush_suit) )
 		{
-			bits = (int) bits | (1<<2);
+			bits |= (1<<2);
 		}
 		if ( (StdDeck_RANK(card0) == HandVal_FOURTH_CARD(hv) &&
 				StdDeck_SUIT(card0) == flush_suit)
@@ -657,7 +661,7 @@ double CSymbolEnginePokerval::CalcPokerval(HandVal hv, int n, double *pcb, int c
 				(StdDeck_RANK(card1) == HandVal_FOURTH_CARD(hv) &&
 				 StdDeck_SUIT(card1) == flush_suit) )
 		{
-			bits = (int) bits | (1<<1);
+			bits |= (1<<1);
 		}
 		if ( (StdDeck_RANK(card0) == HandVal_FIFTH_CARD(hv) &&
 				StdDeck_SUIT(card0) == flush_suit)
@@ -665,7 +669,7 @@ double CSymbolEnginePokerval::CalcPokerval(HandVal hv, int n, double *pcb, int c
 				(StdDeck_RANK(card1) == HandVal_FIFTH_CARD(hv) &&
 				 StdDeck_SUIT(card1) == flush_suit) )
 		{
-			bits = (int) bits | (1<<0);
+			bits |= (1<<0);
 		}
 		break;
 
@@ -683,7 +687,7 @@ double CSymbolEnginePokerval::CalcPokerval(HandVal hv, int n, double *pcb, int c
 			if (j == HandVal_TOP_CARD(hv)-i ||
 					k == HandVal_TOP_CARD(hv)-i)
 			{
-				bits = (int) bits | (1<<(4-i));
+				bits |= (1<<(4-i));
 			}
 			if((j==12)||(k==12))  //Matrix 2008-10-14 !!KLUDGE ALERT!!
 			{
@@ -692,7 +696,7 @@ double CSymbolEnginePokerval::CalcPokerval(HandVal hv, int n, double *pcb, int c
 				if (j == HandVal_TOP_CARD(hv)-i ||
 					k == HandVal_TOP_CARD(hv)-i)
 					{
-						bits = (int) bits | (1<<(4-i));
+						bits |= (1<<(4-i));
 					}
 			}
 
@@ -711,28 +715,28 @@ double CSymbolEnginePokerval::CalcPokerval(HandVal hv, int n, double *pcb, int c
 		if ( (StdDeck_RANK(card0) == HandVal_TOP_CARD(hv)) !=
 				(StdDeck_RANK(card1) == HandVal_TOP_CARD(hv)) )
 		{
-			bits = (int) bits | (1<<4);
+			bits |= (1<<4);
 		}
 		// both hole cards used in trips
 		else if (StdDeck_RANK(card0) == HandVal_TOP_CARD(hv) &&
 				 StdDeck_RANK(card1) == HandVal_TOP_CARD(hv))
 		{
-			bits = (int) bits | (1<<4);
-			bits = (int) bits | (1<<3);
+			bits |= (1<<4);
+			bits |= (1<<3);
 		}
 		// either hole card is first kicker
 		if (n>=4 &&
 				(StdDeck_RANK(card0) == HandVal_SECOND_CARD(hv) ||
 				 StdDeck_RANK(card1) == HandVal_SECOND_CARD(hv)))
 		{
-			bits = (int) bits | (1<<1);
+			bits |= (1<<1);
 		}
 		// either hole card is second kicker
 		if (n>=5 &&
 				(StdDeck_RANK(card0) == HandVal_THIRD_CARD(hv) ||
 				 StdDeck_RANK(card1) == HandVal_THIRD_CARD(hv)))
 		{
-			bits = (int) bits | (1<<1);
+			bits |= (1<<1);
 		}
 		break;
 
@@ -748,34 +752,34 @@ double CSymbolEnginePokerval::CalcPokerval(HandVal hv, int n, double *pcb, int c
 		if ( (StdDeck_RANK(card0) == HandVal_TOP_CARD(hv)) !=
 				(StdDeck_RANK(card1) == HandVal_TOP_CARD(hv)) )
 		{
-			bits = (int) bits | (1<<4);
+			bits |= (1<<4);
 		}
 		// both hole cards used in top pair
 		else if (StdDeck_RANK(card0) == HandVal_TOP_CARD(hv) &&
 				 StdDeck_RANK(card1) == HandVal_TOP_CARD(hv))
 		{
-			bits = (int) bits | (1<<4);
-			bits = (int) bits | (1<<3);
+			bits |= (1<<4);
+			bits |= (1<<3);
 		}
 		// either hole card used in bottom pair
 		if ( (StdDeck_RANK(card0) == HandVal_SECOND_CARD(hv)) !=
 				(StdDeck_RANK(card1) == HandVal_SECOND_CARD(hv)) )
 		{
-			bits = (int) bits | (1<<2);
+			bits |= (1<<2);
 		}
 		// both hole cards used in bottom pair
 		else if (StdDeck_RANK(card0) == HandVal_SECOND_CARD(hv) &&
 				 StdDeck_RANK(card1) == HandVal_SECOND_CARD(hv))
 		{
-			bits = (int) bits | (1<<2);
-			bits = (int) bits | (1<<1);
+			bits |= (1<<2);
+			bits |= (1<<1);
 		}
 		// either hole card kicker
 		if (n>=5 &&
 				(StdDeck_RANK(card0) == HandVal_THIRD_CARD(hv) ||
 				 StdDeck_RANK(card1) == HandVal_THIRD_CARD(hv)))
 		{
-			bits = (int) bits | (1<<0);
+			bits |= (1<<0);
 		}
 		break;
 
@@ -791,35 +795,35 @@ double CSymbolEnginePokerval::CalcPokerval(HandVal hv, int n, double *pcb, int c
 		if ( (StdDeck_RANK(card0) == StdDeck_RANK(HandVal_TOP_CARD(hv))) !=
 				(StdDeck_RANK(card1) == StdDeck_RANK(HandVal_TOP_CARD(hv))) )
 		{
-			bits = (int) bits | (1<<4);
+			bits |= (1<<4);
 		}
 		// both hole cards used in pair
 		else if (StdDeck_RANK(card0) == StdDeck_RANK(HandVal_TOP_CARD(hv)) &&
 				 StdDeck_RANK(card1) == StdDeck_RANK(HandVal_TOP_CARD(hv)))
 		{
-			bits = (int) bits | (1<<4);
-			bits = (int) bits | (1<<3);
+			bits |= (1<<4);
+			bits |= (1<<3);
 		}
 		// either hole card used as first kicker
 		if (n>=3 &&
 				(StdDeck_RANK(card0) == HandVal_SECOND_CARD(hv) ||
 				 StdDeck_RANK(card1) == HandVal_SECOND_CARD(hv)))
 		{
-			bits = (int) bits | (1<<2);
+			bits |= (1<<2);
 		}
 		// either hole card used as second kicker
 		if (n>=4 &&
 				(StdDeck_RANK(card0) == HandVal_THIRD_CARD(hv) ||
 				 StdDeck_RANK(card1) == HandVal_THIRD_CARD(hv)))
 		{
-			bits = (int) bits | (1<<1);
+			bits |= (1<<1);
 		}
 		// either hole card used as third kicker
 		if (n>=5 &&
 				(StdDeck_RANK(card0) == HandVal_FOURTH_CARD(hv) ||
 				 StdDeck_RANK(card1) == HandVal_FOURTH_CARD(hv)))
 		{
-			bits = (int) bits | (1<<0);
+			bits |= (1<<0);
 		}
 		break;
 
@@ -835,35 +839,35 @@ double CSymbolEnginePokerval::CalcPokerval(HandVal hv, int n, double *pcb, int c
 				(StdDeck_RANK(card0) == HandVal_TOP_CARD(hv) ||
 				 StdDeck_RANK(card1) == HandVal_TOP_CARD(hv) ))
 		{
-			bits = (int) bits | (1<<4);
+			bits |= (1<<4);
 		}
 		// either hole card used as first kicker
 		if (n>=2 &&
 				(StdDeck_RANK(card0) == HandVal_SECOND_CARD(hv) ||
 				 StdDeck_RANK(card1) == HandVal_SECOND_CARD(hv) ))
 		{
-			bits = (int) bits | (1<<3);
+			bits |= (1<<3);
 		}
 		// either hole card used as second kicker
 		if (n>=3 &&
 				(StdDeck_RANK(card0) == HandVal_THIRD_CARD(hv) ||
 				 StdDeck_RANK(card1) == HandVal_THIRD_CARD(hv) ))
 		{
-			bits = (int) bits | (1<<2);
+			bits |= (1<<2);
 		}
 		// either hole card used as third kicker
 		if (n>=3 &&
 				(StdDeck_RANK(card0) == HandVal_FOURTH_CARD(hv) ||
 				 StdDeck_RANK(card1) == HandVal_FOURTH_CARD(hv) ))
 		{
-			bits = (int) bits | (1<<1);
+			bits |= (1<<1);
 		}
 		// either hole card used as fourth kicker
 		if (n>=3 &&
 				(StdDeck_RANK(card0) == HandVal_FIFTH_CARD(hv) ||
 				 StdDeck_RANK(card1) == HandVal_FIFTH_CARD(hv) ))
 		{
-			bits = (int) bits | (1<<0);
+			bits |= (1<<0);
 		}
 		break;
 	}

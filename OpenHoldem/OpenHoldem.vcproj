@@ -899,6 +899,10 @@
 				Name="Symbols"
 				>
 				<File
+					RelativePath=".\CEngineContainer.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\CGameState.cpp"
 					>
 				</File>
@@ -1436,6 +1440,10 @@
 			<Filter
 				Name="Symbols"
 				>
+				<File
+					RelativePath=".\CEngineContainer.h"
+					>
+				</File>
 				<File
 					RelativePath=".\CGameState.h"
 					>

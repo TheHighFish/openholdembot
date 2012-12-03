@@ -2,6 +2,7 @@
 #define INC_CSYMBOLENGINEHISTORY_H
 
 #include "CVirtualSymbolEngine.h"
+#include "CSymbolEngineUserChair.h"
 
 class CSymbolEngineHistory: public CVirtualSymbolEngine
 {
@@ -20,8 +21,13 @@ public:
 	// Public accessors
 	bool DidAct()	
 	{
+		if (!p_symbol_engine_userchair->userchair_confirmed())
+		{
+			return false;
+		}
 		// Not considering fold or allin, because the game would be over.
-		return (didchec() || didcall() || didswag() || didrais());
+		return (didchec(_betround) || didcall(_betround) 
+			|| didswag(_betround) || didrais(_betround));
 	}
 public:
 	// !!! range-check
@@ -29,9 +35,11 @@ public:
 	int botslastaction(int betround)	{ return _botslastaction[betround]; }
 	double nbetsround(int betround)		{ return _nbetsround[betround]; }
 	bool didchec(int betround)			{ return _didchec[betround]; }
-	bool didchec(int betround)			{ return _didchec[betround]; }
+	bool didcall(int betround)			{ return _didcall[betround]; }
 	bool didrais(int betround)			{ return _didrais[betround]; }
 	bool didswag(int betround)			{ return _didswag[betround]; }
+private:
+	void CalculateHistory();
 private:
 	double _prevaction;
 private:
@@ -44,6 +52,8 @@ private:
 	bool _didcall[k_number_of_betrounds + 1];
 	bool _didrais[k_number_of_betrounds + 1];
 	bool _didswag[k_number_of_betrounds + 1];
+private:
+	int _betround;
 };
 
 #endif INC_CSYMBOLENGINEHISTORY_H

@@ -8,7 +8,7 @@
 #include "..\CTransform\CTransform.h"
 #include "MagicNumbers.h"
 
-class CSymbolEnginePokerval: public CVirtualSymbolEngine
+extern class CSymbolEnginePokerval: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEnginePokerval();
@@ -21,6 +21,8 @@ public:
 	void ResetOnNewRound();
 	void ResetOnMyTurn();
 	void ResetOnHeartbeat();
+public:
+	double CalculatePokerval(HandVal hv, int n, int *pcb, int card0, int card1);
 public:
 	// Public accessors
 	// Pokerval
@@ -71,17 +73,16 @@ private:
 	void CalcPokerValues();
 	void CalculateHandType();
 	bool IsHigherStraightPossible(HandVal handval);
-	double CalcPokerval(HandVal hv, int n, double *pcb, int card0, int card1);
 private:
 	int GetRankHi(int rankbits);
 	int GetRankLo(int rankbits);
 	void SetRankBit(int* rankbits, int rank);
 private:
-	double _pokerval;
-	double _pokervalplayer;
-	double _pokervalcommon;
-	double _pcbits;
-	double _npcbits;
+	int _pokerval;
+	int _pokervalplayer;
+	int _pokervalcommon;
+	int _pcbits;
+	int _npcbits;
 private:
 	int _hand_type;
 	bool _isroyalflush;
@@ -103,10 +104,13 @@ private:
 	int _srankbitspoker;
 private:
 	// for ishandup and ishandupcommon symbol calcs
-	HandVal		_phandval[4], _chandval[4];	
+	HandVal	_phandval[4];
+	HandVal	_chandval[4];	
+	int		nCards; //!!! = 0;
+	HandVal	handval; //!!! = 0;
 private:
 	int userchair;
 	int betround;
-};
+} *p_symbol_engine_pokerval;
 
 #endif INC_CSYMBOLENGINEPOKERVAL_H

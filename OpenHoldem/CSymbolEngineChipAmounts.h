@@ -7,7 +7,7 @@
 #include "CTableLimits.h"
 #include "MagicNumbers.h"
 
-class CSymbolEngineChipAmounts: public CVirtualSymbolEngine
+extern class CSymbolEngineChipAmounts: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineChipAmounts();
@@ -124,6 +124,6 @@ private:
 	int _nchairs;
 	int _raischair; //!!!
 	int _userchair;
-};
+} *p_symbol_engine_chip_amounts;
 
 #endif INC_CSYMBOLENGINECHIPAMOUNTS_H

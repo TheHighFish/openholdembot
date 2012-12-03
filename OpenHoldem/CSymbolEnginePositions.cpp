@@ -3,6 +3,7 @@
 
 #include "CScraper.h"
 #include "CStringMatch.h"
+#include "CSymbolEngineUserchair.h"
 
 CSymbolEnginePositions::CSymbolEnginePositions()
 {}
@@ -35,16 +36,19 @@ void CSymbolEnginePositions::ResetOnHeartbeat()
 
 void CSymbolEnginePositions::CalculateNChairsDealtLeftRight()
 {
-	found_userchair = false;
-	for (int i=dealerchair+1; i<=dealerchair+p_tablemap->nchairs() && _user_chair_confirmed; i++)
+	bool found_userchair = false;
+	for (int i=_dealerchair+1; 
+		i<=_dealerchair+p_tablemap->nchairs() 
+			&& p_symbol_engine_userchair->userchair_confirmed();
+		i++)
 	{
 		double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
 
-		if ((i%p_tablemap->nchairs()) == _sym.userchair)
+		if ((i%p_tablemap->nchairs()) == _userchair)
 		{
 			found_userchair = true;
 		}
-		else if ((int) _sym.playersdealtbits & (1<<(i%p_tablemap->nchairs())))
+		else if (_playersdealtbits & (1<<(i%p_tablemap->nchairs())))
 		{
 			if (!found_userchair)
 			{
@@ -60,13 +64,16 @@ void CSymbolEnginePositions::CalculateNChairsDealtLeftRight()
 
 void CSymbolEnginePositions::CalculatePositionForTheRaiser()
 {
-	for (int i=_sym.dealerchair+1; i<=_sym.dealerchair+p_tablemap->nchairs() && (i%p_tablemap->nchairs())!=_sym.raischair; i++)
+	for (int i=_dealerchair+1; 
+		i<=(_dealerchair+p_tablemap->nchairs()) 
+			&& (i%p_tablemap->nchairs())!=_raischair; 
+		i++)
 	{
-		if ((int)_sym.playersplayingbits & (1<<(i%p_tablemap->nchairs())))
+		if (_playersplayingbits & (1<<(i%p_tablemap->nchairs())))
 		{
 			_betpositionrais++;
 		}
-		if ((int)_sym.playersdealtbits & (1<<(i%p_tablemap->nchairs())))
+		if (_playersdealtbits & (1<<(i%p_tablemap->nchairs())))
 		{
 			_dealpositionrais++;
 		}
@@ -75,21 +82,24 @@ void CSymbolEnginePositions::CalculatePositionForTheRaiser()
 
 void CSymbolEnginePositions::CalculatePositionsForTheUserchair()
 {
-	for (int i=_sym.dealerchair+1; i<=_sym.dealerchair+p_tablemap->nchairs() && (i%p_tablemap->nchairs())!=_sym.userchair; i++)
+	for (int i=_dealerchair+1; 
+		i<=_dealerchair+p_tablemap->nchairs() 
+			&& (i%p_tablemap->nchairs())!=_userchair; 
+		i++)
 	{
-		if ((int)_sym.playersplayingbits & (1<<(i%p_tablemap->nchairs())))
+		if (_playersplayingbits & (1<<(i%p_tablemap->nchairs())))
 		{
 			_betposition++;
 		}
-		if ((int)_sym.playersdealtbits & (1<<(i%p_tablemap->nchairs())))
+		if (_playersdealtbits & (1<<(i%p_tablemap->nchairs())))
 		{
 			_dealposition++;
 		}
 	}
 
-	for (int i=_sym.raischair+1; i<=_sym.raischair+p_tablemap->nchairs() && (i%p_tablemap->nchairs())!=_sym.userchair; i++)
+	for (int i=_raischair+1; i<=_raischair+p_tablemap->nchairs() && (i%p_tablemap->nchairs())!=_userchair; i++)
 	{
-		if ((int)_sym.playersplayingbits & (1<<(i%p_tablemap->nchairs())))
+		if (_playersplayingbits & (1<<(i%p_tablemap->nchairs())))
 		{
 			_callposition++;
 		}
