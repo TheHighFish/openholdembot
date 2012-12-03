@@ -25,6 +25,7 @@ public:
 	int dealpositionrais()		{ return _dealpositionrais;		}
 	int betposition()			{ return _betposition;			}
 	int dealposition()			{ return _dealposition;			}
+	int callposition()			{ return _callposition;			}
 private:
 	void CalculateNChairsDealtLeftRight();
 	void CalculateNOpponentsCheckingBettingFolded();
@@ -37,6 +38,13 @@ private:
 	int _dealpositionrais;
 	int _betposition;
 	int _dealposition;
+	int _callposition;
+private:
+	int _dealerchair; //!!!
+	int _userchair;
+	int _raischair;
+	int _playersdealtbits;
+	int _playersplayingbits;
 } *p_symbol_engine_positions;
 
 #endif INC_CSYMBOLENGINEPOSITIONS_H

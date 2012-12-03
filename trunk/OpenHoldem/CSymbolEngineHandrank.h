@@ -24,11 +24,15 @@ public:
 	double handrank1000()     { return _handrank1000; }
 	double handrankp()        { return _handrankp; }
 private:
+	void GetCardstring(char *c, unsigned int c0, unsigned int c1);
+private:
 	double _handrank169;
 	double _handrank2652;
 	double _handrank1326;
 	double _handrank1000;
 	double _handrankp;
+private:
+	int _userchair;
 };
 
 #endif INC_CSYMBOLENGINEHANDRANK_H

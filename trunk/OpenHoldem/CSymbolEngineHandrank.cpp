@@ -2,9 +2,11 @@
 #include "CSymbolEngineHandrank.h"
 
 #include "CScraper.h"
+#include "CSymbolEnginePrwin.h"
+#include "CSymbolEngineUserchair.h"
 #include "MagicNumbers.h"
 
-int handrank2652[k_max_number_of_players][k_number_of_starting_hands] =
+int handrank_table_2652[k_max_number_of_players][k_number_of_starting_hands] =
 {
 	{12, 24, 36, 48, 60, 72, 84, 92, 104, 112, 136, 144, 168, 176, 188, 212, 220, 244, 252, 260, 268, 276, 300, 312, 320, 344, 368, 376, 384, 408, 432, 440, 448, 456, 464, 488, 512, 520, 528, 552, 564, 572, 580, 604, 628, 636, 660, 668, 676, 700, 724, 732, 740, 764, 772, 796, 820, 844, 868, 876, 888, 896, 920, 928, 936, 944, 968, 976, 1000, 1024, 1032, 1040, 1048, 1056, 1080, 1104, 1128, 1136, 1160, 1184, 1196, 1220, 1228, 1236, 1244, 1252, 1276, 1284, 1308, 1316, 1340, 1364, 1388, 1396, 1404, 1412, 1420, 1444, 1468, 1492, 1516, 1524, 1532, 1540, 1564, 1588, 1596, 1604, 1628, 1652, 1676, 1684, 1692, 1700, 1724, 1732, 1756, 1764, 1788, 1812, 1820, 1844, 1852, 1876, 1884, 1892, 1916, 1924, 1948, 1972, 1980, 1988, 2012, 2036, 2044, 2068, 2076, 2084, 2092, 2116, 2140, 2148, 2172, 2180, 2204, 2212, 2220, 2244, 2268, 2276, 2300, 2308, 2332, 2356, 2364, 2372, 2396, 2420, 2428, 2452, 2476, 2500, 2508, 2532, 2556, 2580, 2604, 2628, 2652},
 	{12, 24, 36, 48, 60, 72, 80, 92, 100, 124, 132, 144, 152, 160, 184, 192, 216, 224, 248, 256, 264, 288, 300, 308, 332, 340, 348, 356, 364, 388, 412, 436, 448, 456, 464, 472, 496, 520, 528, 536, 544, 568, 576, 600, 608, 632, 640, 648, 656, 664, 676, 700, 724, 748, 756, 764, 788, 796, 820, 844, 852, 860, 868, 892, 916, 940, 948, 956, 964, 988, 1012, 1024, 1048, 1056, 1064, 1072, 1096, 1104, 1112, 1120, 1144, 1168, 1176, 1184, 1208, 1232, 1256, 1264, 1272, 1280, 1288, 1312, 1320, 1328, 1352, 1364, 1388, 1396, 1420, 1444, 1452, 1476, 1484, 1508, 1532, 1540, 1548, 1556, 1564, 1588, 1596, 1604, 1628, 1636, 1660, 1668, 1692, 1716, 1724, 1748, 1756, 1780, 1804, 1828, 1836, 1844, 1852, 1876, 1884, 1892, 1916, 1924, 1948, 1956, 1980, 1988, 1996, 2020, 2044, 2052, 2076, 2100, 2124, 2132, 2140, 2164, 2188, 2196, 2204, 2228, 2236, 2260, 2284, 2308, 2332, 2340, 2364, 2388, 2412, 2436, 2460, 2484, 2508, 2532, 2556, 2580, 2604, 2628, 2652},
@@ -18,7 +20,7 @@ int handrank2652[k_max_number_of_players][k_number_of_starting_hands] =
 };
 
 // !!! WTF is 4?
-char handrank169[k_max_number_of_players][k_number_of_starting_hands][4] =
+char handrank_table_169[k_max_number_of_players][k_number_of_starting_hands][4] =
 {
 	{"AAo", "KKo", "QQo", "JJo", "TTo", "99o", "88o", "AKs", "77o", "AQs", "AKo", "AJs", "AQo", "ATs", "66o", "AJo", "KQs", "ATo", "A9s", "KJs", "A8s", "KTs", "KQo", "55o", "A7s", "A9o", "KJo", "QJs", "K9s", "KTo", "A8o", "A6s", "QTs", "A5s", "A4s", "A7o", "QJo", "K8s", "A3s", "K9o", "44o", "Q9s", "JTs", "QTo", "A6o", "K7s", "A5o", "A2s", "K6s", "A4o", "K8o", "Q8s", "J9s", "A3o", "K5s", "Q9o", "JTo", "K7o", "A2o", "K4s", "33o", "Q7s", "K6o", "T9s", "J8s", "K3s", "Q8o", "Q6s", "J9o", "K5o", "K2s", "Q5s", "T8s", "J7s", "K4o", "Q7o", "T9o", "Q4s", "J8o", "K3o", "22o", "Q6o", "Q3s", "98s", "T7s", "J6s", "K2o", "Q2s", "Q5o", "J5s", "T8o", "J7o", "Q4o", "97s", "J4s", "T6s", "J3s", "Q3o", "98o", "T7o", "J6o", "87s", "J2s", "96s", "Q2o", "J5o", "T5s", "T4s", "97o", "J4o", "T6o", "86s", "95s", "T3s", "J3o", "76s", "87o", "T2s", "96o", "J2o", "85s", "T5o", "94s", "T4o", "75s", "93s", "86o", "65s", "95o", "T3o", "84s", "92s", "76o", "T2o", "74s", "85o", "54s", "64s", "83s", "94o", "75o", "82s", "93o", "73s", "65o", "53s", "63s", "84o", "92o", "43s", "74o", "72s", "54o", "64o", "52s", "62s", "83o", "82o", "42s", "73o", "53o", "63o", "32s", "43o", "72o", "52o", "62o", "42o", "32o"},
 	{"AAo", "KKo", "QQo", "JJo", "TTo", "99o", "AKs", "88o", "AQs", "AKo", "AJs", "77o", "KQs", "ATs", "AQo", "KJs", "AJo", "KTs", "KQo", "A9s", "QJs", "ATo", "66o", "A8s", "KJo", "QTs", "K9s", "JTs", "A7s", "KTo", "QJo", "A9o", "55o", "A5s", "A6s", "Q9s", "QTo", "A8o", "K8s", "A4s", "J9s", "K9o", "A3s", "JTo", "K7s", "A7o", "T9s", "Q8s", "A2s", "K6s", "44o", "Q9o", "A5o", "A6o", "J8s", "K5s", "K8o", "T8s", "A4o", "J9o", "Q7s", "K4s", "98s", "A3o", "K7o", "T9o", "Q6s", "K3s", "J7s", "Q8o", "A2o", "33o", "K6o", "Q5s", "K2s", "T7s", "J8o", "97s", "87s", "Q4s", "K5o", "T8o", "J6s", "Q3s", "Q7o", "98o", "K4o", "T6s", "J5s", "Q2s", "96s", "Q6o", "76s", "86s", "J7o", "22o", "K3o", "J4s", "T7o", "Q5o", "J3s", "K2o", "T5s", "97o", "87o", "65s", "J2s", "95s", "75s", "Q4o", "T4s", "85s", "J6o", "T3s", "Q3o", "54s", "T6o", "J5o", "T2s", "96o", "64s", "86o", "76o", "Q2o", "94s", "74s", "84s", "J4o", "93s", "53s", "J3o", "92s", "T5o", "63s", "65o", "73s", "43s", "95o", "75o", "83s", "J2o", "85o", "T4o", "82s", "52s", "T3o", "54o", "62s", "42s", "64o", "72s", "T2o", "74o", "94o", "84o", "32s", "93o", "53o", "92o", "63o", "43o", "73o", "83o", "82o", "52o", "62o", "42o", "72o", "32o"},
@@ -35,7 +37,7 @@ char handrank169[k_max_number_of_players][k_number_of_starting_hands][4] =
 //reflects incidence of cards people actually play to flop.
 //left in this form for ease of developer modification.
 //converted at startup to the tables actually used by prwin calculation
-char *prwhandrank169[k_number_of_starting_hands] =
+char *prwin_handrank_table_169[k_number_of_starting_hands] =
 {
 	"AA ","KK ","QQ ","AKs","JJ ","AQs","KQs","TT ","AJs","KJs",
 	"JTs","QJs","QTs","99 ","ATs","KTs","88 ","T9s","AK ","J9s",
@@ -66,6 +68,8 @@ void CSymbolEngineHandrank::ResetOnConnection()
 
 void CSymbolEngineHandrank::ResetOnHandreset()
 {
+	_userchair = p_symbol_engine_userchair->userchair();
+
 	_handrank169  = 0;
 	_handrank2652 = 0;
 	_handrank1326 = 0;
@@ -82,35 +86,55 @@ void CSymbolEngineHandrank::ResetOnMyTurn()
 
 	// Get a string containing the players' current cards
 	GetCardstring(cardstr, 
-		p_scraper->card_player(_sym.userchair, 0), 
-		p_scraper->card_player(_sym.userchair, 1));
+		p_scraper->card_player(_userchair, 0), 
+		p_scraper->card_player(_userchair, 1));
 
 	// if nopponents<1 or >9 then default to a sane value
-	int nopponents = (int) _sym.nopponents;
-	if (_sym.nopponents < 1)
-	{
-		nopponents = 1;
-	}
-	else if (_sym.nopponents > k_max_number_of_opponents_at_full_ring_table)
-	{
-		nopponents = k_max_number_of_opponents_at_full_ring_table;
-	}
+	int _nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
 		
 	for (int i=0; i<k_number_of_starting_hands; i++)
 	{
-		if (strcmp(cardstr, handrank169[nopponents-1][i])==0)
+		if (strcmp(cardstr, handrank_table_169[_nopponents-1][i])==0)
 		{
 			_handrank169  = i + 1;													
-			_handrank2652 = handrank2652[nopponents-1][i];								
+			_handrank2652 = handrank_table_2652[_nopponents-1][i];								
 			break;
 		}
 	}
 
 	_handrank1326 = _handrank2652 / 2;											
 	_handrank1000 = 1000 * _handrank2652 / 2652;									
-	_handrankp    = 2652.0 / (1.0 + (double)nopponents);	
+	_handrankp    = 2652.0 / (1.0 + (double)_nopponents);	
 }
 
 void CSymbolEngineHandrank::ResetOnHeartbeat()
 {}
 
+void CSymbolEngineHandrank::GetCardstring(char *c, unsigned int c0, unsigned int c1)
+{
+	char		card0[10] = {0}, card1[10] = {0};
+
+	// figure out the card string to search for
+	if (StdDeck_RANK(c0) >= StdDeck_RANK(c1))
+	{
+		StdDeck_cardToString(c0, card0);
+		StdDeck_cardToString(c1, card1);
+	}
+	else
+	{
+		StdDeck_cardToString(c1, card0);
+		StdDeck_cardToString(c0, card1);
+	}
+	c[0] = card0[0];
+	c[1] = card1[0];
+
+	if (c[0] == c[1] || card0[1] != card1[1])
+	{
+		c[2] = 'o';
+	}
+	else 
+	{
+		c[2] = 's';
+	}
+	c[3]='\0';
+}

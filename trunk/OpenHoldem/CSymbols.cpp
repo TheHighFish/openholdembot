@@ -694,35 +694,6 @@ void CSymbols::CalcUnknownCards(void)
 		}
 }
 
-const void CSymbols::GetCardstring(char *c, unsigned int c0, unsigned int c1)
-{
-	char		card0[10] = {0}, card1[10] = {0};
-
-	// figure out the card string to search for
-	if (StdDeck_RANK(c0) >= StdDeck_RANK(c1))
-	{
-		StdDeck_cardToString(c0, card0);
-		StdDeck_cardToString(c1, card1);
-	}
-	else
-	{
-		StdDeck_cardToString(c1, card0);
-		StdDeck_cardToString(c0, card1);
-	}
-	c[0] = card0[0];
-	c[1] = card1[0];
-
-	if (c[0] == c[1] || card0[1] != card1[1])
-	{
-		c[2] = 'o';
-	}
-	else 
-	{
-		c[2] = 's';
-	}
-	c[3]='\0';
-}
-
 const double CSymbols::GetSymbolVal(const char *a, int *e)
 {
 	// Look up a symbol value.

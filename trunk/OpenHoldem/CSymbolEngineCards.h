@@ -3,7 +3,7 @@
 
 #include "CVirtualSymbolEngine.h"
 
-class CSymbolEngineCards: public CVirtualSymbolEngine
+extern class CSymbolEngineCards: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineCards();
@@ -129,6 +129,6 @@ private:
 	int _$$cs[k_number_of_community_cards];
 private:
 	int _userchair;
-};
+} *p_symbol_engine_cards;
 
 #endif INC_CSYMBOLENGINECARDS_H
