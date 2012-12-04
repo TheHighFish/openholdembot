@@ -585,7 +585,11 @@ void xServerThread(void* dlg)
 
 	xServer = new xmlrpc_c::serverAbyss(
 			*myRegistry,
-			9092              // TCP port on which to listen
+			9092,		// TCP port on which to listen
+			"",
+			15,		// Connection reuse window
+			-1,		// No limin on number of requested reuse the same connection
+			15
 			);
 
 	xServer->run();
