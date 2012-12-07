@@ -291,7 +291,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 		 // If it's my turn, and we have enough stable frames
 		if ((prefs.replay_record() 			
-			&& p_symbols->sym()->ismyturn 
+			&& p_symbol_engine_autoplayer->ismyturn() 
 			&& p_stableframescounter->NumberOfStableFrames() >= prefs.frame_delay()) 
 			&& !p_heartbeat_thread->replay_recorded_this_turn()
 			 
@@ -349,7 +349,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Autoplayer
-		if (p_dll_extension->IsDllLoaded() && p_symbols->sym()->ismyturn)
+		if (p_dll_extension->IsDllLoaded() && p_symbol_engine_autoplayer->ismyturn())
 		{
 			iswait = (p_dll_extension->process_message()) ("query", "dll$iswait");
 		}

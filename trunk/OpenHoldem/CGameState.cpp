@@ -47,7 +47,7 @@ void CGameState::ProcessGameState(const SHoldemState *pstate)
 	int			betround = (int) p_symbols->sym()->betround;
 	int			sym_nopponentsdealt = (int) p_symbol_engine_prwin->nopponents_for_prwin()dealt;
 	int			sym_nopponentsplaying = (int) p_symbol_engine_active_dealt_playing->nopponentsplaying();
-	bool		sym_ismyturn = (bool) p_symbols->sym()->ismyturn;
+	bool		sym_ismyturn = (bool) p_symbol_engine_autoplayer->ismyturn();
 	bool		sym_ismanual = (bool) p_symbols->sym()->ismanual;
 
 	// tracking of nopponentsdealt
@@ -546,7 +546,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 	int				i = 0, j = 0, k = 0;
 	int				betround = (int) p_symbols->sym()->betround;
 	int				sym_userchair = (int) p_symbol_engine_userchair->userchair();
-	bool			sym_ismyturn = (bool) p_symbols->sym()->ismyturn;
+	bool			sym_ismyturn = (bool) p_symbol_engine_autoplayer->ismyturn();
 	double			sym_balance = p_symbol_engine_chip_amounts->balance(userchair);
 	CString			sym_handnumber = p_handreset_detector->GetHandNumber();
 

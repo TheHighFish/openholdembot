@@ -2131,7 +2131,7 @@ void CDlgFormulaScintilla::UpdateDebugAuto(void)
 	int				i = 0;
 	CString			Cstr = "";
 
-	bool			sym_ismyturn = (bool) p_symbols->sym()->ismyturn;
+	bool			sym_ismyturn = (bool) p_symbol_engine_autoplayer->ismyturn();
 
 	// mark symbol result cache as stale
 	m_wrk_formula.MarkCacheStale();

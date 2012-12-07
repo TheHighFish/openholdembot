@@ -114,11 +114,11 @@ bool CTableLimits::ReasonableBlindsForCurrentHand()
 	// (ismyturn doesn't work either)
 	// Pros/cons: more reliability, but no auto-locking before it is our turn.
 	// Affects maybe DLL- and Perl-people negative at the beginning of the first hands.
-	write_log(3, "CTableLimits: ismyturn: %d\n", p_symbols->sym()->ismyturn);
+	write_log(3, "CTableLimits: ismyturn: %d\n", p_symbol_engine_autoplayer->ismyturn());
 	write_log(3, "CTableLimits: sblind: %f\n", tablelimit_unreliable_input.sblind);
 	write_log(3, "CTableLimits: bblind: %f\n", tablelimit_unreliable_input.bblind);
 	write_log(3, "CTableLimits: bbet: %f\n", tablelimit_unreliable_input.bbet); 
-	if (/*p_symbols->sym()->ismyturn && */ (tablelimit_unreliable_input.sblind >= 0.01) 
+	if (/*p_symbol_engine_autoplayer->ismyturn() && */ (tablelimit_unreliable_input.sblind >= 0.01) 
 		&& (tablelimit_unreliable_input.bblind >= tablelimit_unreliable_input.sblind) 
 		&& (tablelimit_unreliable_input.bbet   >= tablelimit_unreliable_input.bblind))
 	{
