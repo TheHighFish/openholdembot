@@ -2,6 +2,7 @@
 #include "CSymbolEngineRaisersCallers.h"
 
 #include "CScraper.h"
+#include "CScraperAccess.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineChipAmounts.h"
 
@@ -164,8 +165,7 @@ void CSymbolEngineRaisersCallers::CalculateNOpponentsCheckingBettingFolded()
 	{
 		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(i);
 		if (current_players_bet < p_symbol_engine_chip_amounts->currentbet(_raischair)
-			&& p_scraper->card_player(i, 0) != CARD_NOCARD //!!! PlayerHasCards()
-			&& p_scraper->card_player(i, 1) != CARD_NOCARD)
+			&& p_scraper_access->PlayerHasCards(i))
 		{
 			_nplayerscallshort++;
 		}

@@ -19,6 +19,7 @@ public:
 	bool	IsValidCard(int Card);
 	int		NumberOfVisibleButtons();
 	bool	PlayerHasCards(int player);
+	bool	PlayerHasKnownCards(int player);
 	bool	UserHasCards();
 
 public:

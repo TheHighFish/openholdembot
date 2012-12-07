@@ -2,6 +2,7 @@
 #include "CSymbolEngineActiveDealtPlaying.h"
 
 #include "CScraper.h"
+#include "CScraperAccess.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineUserchair.h"
@@ -124,8 +125,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits()
 			if (p_string_match->IsStringActive(p_scraper->active(chair_to_consider)))
 			{
 				this_player_got_dealt = true;
-				if (p_scraper->card_player(chair_to_consider, 0) != CARD_NOCARD //!!! PlayerHasCards()
-					|| p_scraper->card_player(chair_to_consider, 1) != CARD_NOCARD)
+				if (p_scraper_access->PlayerHasCards(chair_to_consider))
 				{
 					first_non_blind_with_cards_found = true;
 				}
@@ -134,8 +134,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits()
 		else
 		{
 			assert(first_non_blind_with_cards_found);
-			if ((p_scraper->card_player(chair_to_consider, 0) != CARD_NOCARD) //!!! PlayerHasCards()
-				|| (p_scraper->card_player(chair_to_consider, 1) != CARD_NOCARD))
+			if (p_scraper_access->PlayerHasCards(chair_to_consider))
 			{
 				this_player_got_dealt = true;
 			}
