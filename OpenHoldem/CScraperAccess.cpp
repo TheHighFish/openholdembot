@@ -326,11 +326,21 @@ int CScraperAccess::NumberOfVisibleButtons()
 	return number_of_visible_buttons;
 }
 
-bool CScraperAccess::PlayerHasCards(int player)
+bool CScraperAccess::PlayerHasKnownCards(int player)
 {
 	if (p_scraper->card_player(player, 0) == CARD_BACK 
 		|| p_scraper->card_player(player, 0) == CARD_NOCARD 
 		|| p_scraper->card_player(player, 1) == CARD_BACK 
+		|| p_scraper->card_player(player, 1) == CARD_NOCARD)
+	{
+		return false;
+	}
+	return true;
+}
+
+bool CScraperAccess::PlayerHasCards(int player)
+{
+	if (p_scraper->card_player(player, 0) == CARD_NOCARD 
 		|| p_scraper->card_player(player, 1) == CARD_NOCARD)
 	{
 		return false;
