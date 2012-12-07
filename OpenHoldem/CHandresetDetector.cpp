@@ -3,7 +3,8 @@
 
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CSymbols.h"
+#include "CSymbolEngineDealerchair.h"
+#include "CSymbolEngineUserchair.h"
 #include "..\CTablemap\CTablemap.h"
 
 
@@ -112,9 +113,9 @@ void CHandresetDetector::OnNewHeartbeat()
 	}
 	last_handnumber = handnumber;
 	// ...and set new ones (if good).
-	if (IsValidDealerChair(p_symbols->sym()->dealerchair))
+	if (IsValidDealerChair(p_symbol_engine_dealerchair->dealerchair()))
 	{
-		dealerchair = p_symbols->sym()->dealerchair;	
+		dealerchair = p_symbol_engine_dealerchair->dealerchair();	
 	}
 	if (IsValidHandNumber(p_scraper->s_limit_info()->handnumber))
 	{
