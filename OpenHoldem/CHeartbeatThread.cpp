@@ -107,6 +107,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			////////////////////////////////////////////////////////////////////////////////////////////
 			// Give scraper.dll a chance to override scraper results
 
+			// !!! Bad code! Does not belong here!
 			if (theApp._scraper_dll)
 			{
 				SScraperState  ss;
@@ -172,6 +173,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 				// Replace values in p_scraper with those provided by scraper dll
 				p_scraper->set_title(ss.title);
 
+				// !!! Bad code! Does not belong here!
 				for (int i=0; i<k_number_of_community_cards; i++)
 				{
 					p_scraper->set_card_common(i, ss.card_common[i]);
@@ -179,6 +181,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 				for (int i=0; i<k_max_number_of_players; i++)
 				{
+					// !!! Bad code! Does not belong here!
 					p_scraper->set_card_player(i, 0, ss.card_player[i][0]);
 					p_scraper->set_card_player(i, 1, ss.card_player[i][1]);
 					p_scraper->set_dealer(i, ss.dealer[i]);
@@ -236,15 +239,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 			if (new_scrape!=NOTHING_CHANGED)
 			{
-				write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling CalcSymbols.\n");
-				p_symbols->CalcSymbols();
-			}
-			else
-			{
-				write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling CalcTime.\n");
-				p_symbols->CalcTime();
-				write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling CalcProbabilities.\n");
-				p_symbols->CalcProbabilities();
+				//!!! Calc symbol
 			}
 
 		LeaveCriticalSection(&pParent->cs_update_in_progress);
