@@ -61,7 +61,7 @@ const int CPokerTrackerLookup::GetSiteId()
 
 	// !!! http://www.maxinmontreal.com/forums/viewtopic.php?f=114&t=12158&p=108712#p108712
 	// If we are using manual mode, we expect an exact match on the lookup
-	if (p_symbols->sym()->ismanual)
+	if (p_symbol_engine_autoplayer->ismanual())
 	{
 		std::map<CString, int>::const_iterator lookup, end;
 
@@ -1000,7 +1000,7 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
 	bool		nameChanged = false;
 	bool		sym_issittingin = (bool) p_symbols->sym()->issittingin;
-	bool		sym_ismanual = (bool) p_symbols->sym()->ismanual;
+	bool		sym_ismanual = (bool) p_symbol_engine_autoplayer->ismanual();
 	int			i;
 	int			updateType;
 	char        reason[100];
@@ -1127,7 +1127,7 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 {
 	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
 	bool			sym_issittingin = (bool) p_symbols->sym()->issittingin;
-	bool			sym_ismanual = (bool) p_symbols->sym()->ismanual;
+	bool			sym_ismanual = (bool) p_symbol_engine_autoplayer->ismanual();
 	int				chr = 0;
 	int				iteration = 0;
 	int				players;
@@ -1138,7 +1138,7 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 
 	// !!! removed in PT-dev
 	//bool sym_issittingin = (bool) p_symbols->sym()->issittingin;
-	//bool sym_ismanual = (bool) p_symbols->sym()->ismanual;
+	//bool sym_ismanual = (bool) p_symbol_engine_autoplayer->ismanual();
 
 	while (::WaitForSingleObject(pParent->_m_stop_thread, 0) != WAIT_OBJECT_0)
 	{

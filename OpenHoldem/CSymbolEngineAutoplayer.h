@@ -30,6 +30,7 @@ public:
 	bool isfinalanswer()	{ return _isfinalanswer; }
 	bool isfinaltable()		{ return _isfinaltable; }
 	bool isbring()			{ return _isbring; }
+	bool ismanual()			{ return _ismanual; }
 private:
 	void CalculateMyTurnBits();
 	void CalculateSitInState();

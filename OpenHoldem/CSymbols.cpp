@@ -1280,7 +1280,7 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 	// Only needed for Gecko
 
 	int user_chair = p_symbol_engine_userchair->userchair();
-	int betround = int(p_symbols->sym()->betround);
+	int betround = int(p_betround_calculator->betround());
 
 	double bet = p_tablelimits->bet(_sym.betround);
 	assert(bet > 0);	

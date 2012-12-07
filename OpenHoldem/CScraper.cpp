@@ -1402,7 +1402,7 @@ void CScraper::DoBasicScrapeButtons()
 	}
 
 	// When using MM, grab i5state for PT network
-	if ((bool) p_symbols->sym()->ismanual)
+	if ((bool) p_symbol_engine_autoplayer->ismanual())
 	{
 		p_tablemap->set_network(p_scraper->button_state(5));
 	}
@@ -2420,7 +2420,7 @@ const bool CScraper::GetButtonState(int button_index)
 {
 	CString l_button_state = "";
 	
-	bool sym_ismanual = (bool) p_symbols->sym()->ismanual;
+	bool sym_ismanual = (bool) p_symbol_engine_autoplayer->ismanual();
 
 	if (button_index<=9)
 	{

@@ -1,7 +1,15 @@
 #include "stdafx.h"
-
 #include "CGameState.h"
+
+#include "CBetroundCalculator.h"
 #include "CHandresetDetector.h"
+#include "CSymbolEngineAutoplayer.h"
+#include "CSymbolEngineCards.h"
+#include "CSymbolEngineChipAmounts.h"
+#include "CSymbolEngineDealerchair.h"
+#include "CSymbolEngineHistory.h"
+#include "CSymbolEngineTime.h"
+#include "CSymbolEngineUserchair.h"
 #include "CSymbols.h"
 #include "CScraper.h"
 #include "CPreferences.h"
@@ -44,11 +52,11 @@ CGameState::~CGameState()
 void CGameState::ProcessGameState(const SHoldemState *pstate)
 {
 	bool		pstate_changed = false;
-	int			betround = (int) p_symbols->sym()->betround;
-	int			sym_nopponentsdealt = (int) p_symbol_engine_prwin->nopponents_for_prwin()dealt;
-	int			sym_nopponentsplaying = (int) p_symbol_engine_active_dealt_playing->nopponentsplaying();
-	bool		sym_ismyturn = (bool) p_symbol_engine_autoplayer->ismyturn();
-	bool		sym_ismanual = (bool) p_symbols->sym()->ismanual;
+	int			betround = p_betround_calculator->betround();
+	int			sym_nopponentsdealt = p_symbol_engine_prwin->nopponents_for_prwin();
+	int			sym_nopponentsplaying = p_symbol_engine_active_dealt_playing->nopponentsplaying();
+	bool		sym_ismyturn = p_symbol_engine_autoplayer->ismyturn();
+	bool		sym_ismanual = p_symbol_engine_autoplayer->ismanual();
 
 	// tracking of nopponentsdealt
 	if (betround==k_betround_flop || sym_nopponentsdealt>_oppdealt)
@@ -128,7 +136,7 @@ void CGameState::CaptureState(const char *title)
 	unsigned char		card = CARD_NOCARD;
 
 	// figure out if I am playing
-	int sym_chair = (int) p_symbols->sym()->chair;
+	int sym_chair = p_symbol_engine_userchair->userchair();
 	if (!p_symbol_engine_userchair->userchair_confirmed())
 	{
 		playing = false;
@@ -173,8 +181,8 @@ void CGameState::CaptureState(const char *title)
 	}
 
 	// playing, posting, dealerchair
-	int sym_dealerchair = (int) p_symbols->sym()->dealerchair;
-	bool sym_isautopost = (bool) p_symbols->sym()->isautopost;
+	int sym_dealerchair = p_symbol_engine_dealerchair->dealerchair();
+	bool sym_isautopost = p_symbol_engine_autoplayer->isautopost();
 	_state[_state_index&0xff].m_is_playing = playing;
 	_state[_state_index&0xff].m_is_posting = sym_isautopost;
 	_state[_state_index&0xff].m_fillerbits = 0;
@@ -187,8 +195,8 @@ void CGameState::CaptureState(const char *title)
 
 		// player name, balance, currentbet
 		strncpy_s(_state[_state_index&0xff].m_player[i].m_name, 16, p_scraper->player_name(i).GetString(), _TRUNCATE);
-		_state[_state_index&0xff].m_player[i].m_balance = p_symbols->sym()->balance[i];
-		_state[_state_index&0xff].m_player[i].m_currentbet = p_symbols->sym()->currentbet[i];
+		_state[_state_index&0xff].m_player[i].m_balance = p_symbol_engine_chip_amounts->balance(i);
+		_state[_state_index&0xff].m_player[i].m_currentbet = p_symbol_engine_chip_amounts->currentbet(i);
 
 		// player cards
 		for (int j=0; j<k_number_of_cards_per_player; j++)
@@ -487,8 +495,7 @@ const double CGameState::SortedBalance(const int rank)
 // processed the current frame.
 bool CGameState::ProcessThisFrame (void)
 {
-	int				betround = (int) p_symbols->sym()->betround;
-	bool			sym_ismanual = (bool) p_symbols->sym()->ismanual;
+	int				betround = (int) p_betround_calculator->betround();
 
 	// check if all balances are known (indicates stability of info passed to DLL)
 	bool balance_stability = true;
@@ -543,11 +550,10 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 	double			sym_sblind = p_tablelimits->sblind();
 	double			sym_bblind = p_tablelimits->bblind();
 	int				from_chair = 0, to_chair = 0;
-	int				i = 0, j = 0, k = 0;
-	int				betround = (int) p_symbols->sym()->betround;
-	int				sym_userchair = (int) p_symbol_engine_userchair->userchair();
-	bool			sym_ismyturn = (bool) p_symbol_engine_autoplayer->ismyturn();
-	double			sym_balance = p_symbol_engine_chip_amounts->balance(userchair);
+	int				betround = p_betround_calculator->betround();
+	int				sym_userchair = p_symbol_engine_userchair->userchair();
+	bool			sym_ismyturn = p_symbol_engine_autoplayer->ismyturn();
+	double			sym_balance = p_symbol_engine_chip_amounts->balance(sym_userchair);
 	CString			sym_handnumber = p_handreset_detector->GetHandNumber();
 
 	_m_holdem_state[ (++_m_ndx)&0xff ] = *pstate;
@@ -560,7 +566,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 	{
 
 		// Check for end of hand situation
-		for (i=0; i<k_max_number_of_players; i++)
+		for (int i=0; i<k_max_number_of_players; i++)
 		{
 			int index_normalized = i%k_max_number_of_players;
 			// if new card fronts have appeared, then players are showing down, and its the end of the hand
@@ -602,11 +608,11 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 			_big_blind_posted = false;
 			_bets_last = 0.0;
 			_end_of_hand = false;
-			for (i=0; i<k_max_number_of_players; i++)
+			for (int i=0; i<k_max_number_of_players; i++)
 			{
-				for (j=0; j<k_number_of_betrounds; j++)
+				for (int j=0; j<k_number_of_betrounds; j++)
 				{
-					for (k=0; k<w_num_action_types; k++)
+					for (int k=0; k<w_num_action_types; k++)
 						_chair_actions[i][j][k] = w_noaction;
 				}
 			}
@@ -711,7 +717,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 			}
 
 			// now iterate through the chairs and see what everybody did
-			for (i = from_chair; i <= to_chair; i++)
+			for (int i = from_chair; i <= to_chair; i++)
 			{
 				int index_normalized = i%k_max_number_of_players;
 				// if the currentbet for the chair is the sb and the last bet was zero and br==1
@@ -829,12 +835,12 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 
 void CGameState::ProcessFtrEngine(const SHoldemState *pstate)
 {
-	double			sym_elapsed = p_symbols->sym()->elapsed;
-	double			sym_nbetsround1 = p_symbols->sym()->nbetsround[0];
-	int				sym_nplayersdealt = (int) p_symbols->sym()->nplayersdealt;
-	int				betround = (int) p_symbols->sym()->betround;
-	int				ncommoncardsknown = (int) p_symbols->sym()->ncommoncardsknown;
-	int				sym_nplayersplaying = (int) p_symbols->sym()->nplayersplaying;
+	double			sym_elapsed         = p_symbol_engine_time->elapsed();
+	double			sym_nbetsround1     = p_symbol_engine_history->nbetsround(k_betround_preflop);
+	int				sym_nplayersdealt   = p_symbols->sym()->nplayersdealt;
+	int				betround            = p_betround_calculator->betround();
+	int				ncommoncardsknown   = p_symbol_engine_cards->ncommoncardsknown();
+	int				sym_nplayersplaying = p_symbols->sym()->nplayersplaying;
 
 	// if a new hand has started setup the next element in the ftr tracker array
 	if (pstate->m_dealer_chair != _ftr_dealer_chair_last)

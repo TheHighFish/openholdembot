@@ -332,7 +332,7 @@ void write_logautoplay(const char * action)
     CString		fcra_formula_status;
 
 	int			sym_userchair = (int) p_symbol_engine_userchair->userchair();
-	int			betround = (int) p_symbols->sym()->betround;
+	int			betround = (int) p_betround_calculator->betround();
 
 
 	if (!prefs.trace_enabled())

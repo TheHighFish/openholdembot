@@ -279,11 +279,11 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		static double last_br = 0; 
 		static double last_ncallbets = -1; 
 
-		last_br = p_symbols->sym()->betround;
+		last_br = p_betround_calculator->betround();
 		last_ncallbets = p_symbols->sym()->ncallbets;
 
 		if (p_handreset_detector->IsHandreset() ||
-			p_symbols->sym()->betround != last_br ||
+			p_betround_calculator->betround() != last_br ||
 			p_symbols->sym()->ncallbets != last_ncallbets)
 		{
 			p_heartbeat_thread->set_replay_recorded_this_turn(false);

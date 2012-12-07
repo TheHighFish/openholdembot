@@ -242,7 +242,7 @@ const int CPokerAction::PreflopBets (void)
 	int		result = 0;
 	int		e = SUCCESS;
 
-	if (p_symbols->sym()->betround!=1)
+	if (p_betround_calculator->betround()!=1)
 		result = 0;
 
 	else result = 
@@ -262,7 +262,7 @@ const bool CPokerAction::FirstIntoPot (void)
 	bool	result = false;
 	int		e = SUCCESS;
 
-	result = p_symbols->sym()->betround==1 ? 
+	result = p_betround_calculator->betround()==1 ? 
 		p_symbol_engine_chip_amounts->pot()player <= p_tablelimits->sblind() + p_tablelimits->bblind() : 
 		p_symbol_engine_chip_amounts->pot()player <= 0.1 ;
 
@@ -320,7 +320,7 @@ const int CPokerAction::DealPosition (const int chairnum)
 const int CPokerAction::AggressorChair (void)
 {
 	// !!! Plain superfluos code!
-	int		betround = (int) p_symbols->sym()->betround;
+	int		betround = (int) p_betround_calculator->betround();
 	int		sym_raischair = (int) p_symbols->sym()->raischair;
 
 	// br1, no raises
