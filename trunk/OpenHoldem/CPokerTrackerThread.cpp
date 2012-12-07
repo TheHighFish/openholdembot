@@ -59,60 +59,41 @@ const int CPokerTrackerLookup::GetSiteId()
 {
 	CString network = p_tablemap->network();
 
-	// !!! http://www.maxinmontreal.com/forums/viewtopic.php?f=114&t=12158&p=108712#p108712
-	// If we are using manual mode, we expect an exact match on the lookup
-	if (p_symbol_engine_autoplayer->ismanual())
+	// No longer requiring an exact match for manualmode,
+	// but treating it like a normal casino.
+	// http://www.maxinmontreal.com/forums/viewtopic.php?f=114&t=12158&p=108712#p108712
+	std::map<CString, int>::const_iterator lookup, end;
+
+	// Is s$sitename one of the supported PT sites?  Return the proper site_id for db queries.
+	// PT version 3 only
+	lookup = _pt3_siteid.begin();
+	end = _pt3_siteid.end();
+
+	while (lookup!=end)
 	{
-		std::map<CString, int>::const_iterator lookup, end;
+		CString	sym = "sitename$" + lookup->first;
+		int e = SUCCESS;
 
-		// Lookup site-id for version 3
-		{
-			lookup = _pt3_siteid.find(network.GetString());
-			end    = _pt3_siteid.end();
-		}
-
-		if (lookup==end)
-			return -1;
-		else
+		if (p_symbols->GetSymbolVal(sym.MakeLower().GetString(), &e))
 			return lookup->second;
+
+		lookup++;
 	}
 
-	// If this is a regular scraped table, a match is valid for a substring match if sitename or network
-	else
+	// Is s$network one of the supported PT sites?  Return the proper site_id for db queries.
+	// PT version 3 only
+	lookup = _pt3_siteid.begin();
+	end = _pt3_siteid.end();
+
+	while (lookup!=end)
 	{
-		std::map<CString, int>::const_iterator lookup, end;
+		CString	sym = "network$" + lookup->first;
+		int e = SUCCESS;
 
-		// Is s$sitename one of the supported PT sites?  Return the proper site_id for db queries.
-		// PT version 3 only
-		lookup = _pt3_siteid.begin();
-		end = _pt3_siteid.end();
+		if (p_symbols->GetSymbolVal(sym.MakeLower().GetString(), &e))
+			return lookup->second;
 
-		while (lookup!=end)
-		{
-			CString	sym = "sitename$" + lookup->first;
-			int e = SUCCESS;
-
-			if (p_symbols->GetSymbolVal(sym.MakeLower().GetString(), &e))
-				return lookup->second;
-
-			lookup++;
-		}
-
-		// Is s$network one of the supported PT sites?  Return the proper site_id for db queries.
-		// PT version 3 only
-		lookup = _pt3_siteid.begin();
-		end = _pt3_siteid.end();
-
-		while (lookup!=end)
-		{
-			CString	sym = "network$" + lookup->first;
-			int e = SUCCESS;
-
-			if (p_symbols->GetSymbolVal(sym.MakeLower().GetString(), &e))
-				return lookup->second;
-
-			lookup++;
-		}
+		lookup++;
 	}
 	return -1 ;
 }
