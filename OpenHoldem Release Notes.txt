@@ -266,6 +266,12 @@ MAINTENANCE:
   [THF]
 - Removing the symbol elapsed1970 because there was no real use for it.
   [THF]
+- Removing the symbol 2ncommoncardspresent", because it was never implemented correctly,
+  but always had the same value as "ncommoncardsknown". 
+  Furthermore its value would only differ at some casinos and at showdown,
+  but this point of time is pretty meaningless for both OH-script and OpenPPL,
+  whereas DLLers still have all info. 
+  [THF]
   
   
 v2.1.9.4 2012-06-14
