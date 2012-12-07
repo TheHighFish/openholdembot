@@ -255,10 +255,10 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// If we've folded, stop iterator thread and set prwin/tie/los to zero
 		if (p_symbol_engine_userchair->userchair_confirmed() &&
-			(p_scraper->card_player(p_symbols->sym()->chair, 0)==CARD_NOCARD || 
-			 p_scraper->card_player(p_symbols->sym()->chair, 0)==CARD_BACK ||
-			 p_scraper->card_player(p_symbols->sym()->chair, 1)==CARD_NOCARD || 
-			 p_scraper->card_player(p_symbols->sym()->chair, 1)==CARD_BACK))
+			(p_scraper->card_player(p_symbol_engine_userchair->userchair(), 0)==CARD_NOCARD || 
+			 p_scraper->card_player(p_symbol_engine_userchair->userchair(), 0)==CARD_BACK ||
+			 p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1)==CARD_NOCARD || 
+			 p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1)==CARD_BACK))
 		{
 			if (p_iterator_thread)
 			{
@@ -299,10 +299,10 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 			 // Every change and I'm playing
 			 (prefs.replay_record_every_change_playing() && (p_symbol_engine_userchair->userchair_confirmed() &&
-			   !(p_scraper->card_player(p_symbols->sym()->chair, 0)==CARD_NOCARD ||
-			     p_scraper->card_player(p_symbols->sym()->chair, 0)==CARD_BACK ||
-			     p_scraper->card_player(p_symbols->sym()->chair, 1)==CARD_NOCARD ||
-			     p_scraper->card_player(p_symbols->sym()->chair, 1)==CARD_BACK))&& new_scrape != NOTHING_CHANGED)
+			   !(p_scraper->card_player(p_symbol_engine_userchair->userchair(), 0)==CARD_NOCARD ||
+			     p_scraper->card_player(p_symbol_engine_userchair->userchair(), 0)==CARD_BACK ||
+			     p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1)==CARD_NOCARD ||
+			     p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1)==CARD_BACK))&& new_scrape != NOTHING_CHANGED)
 		   )
 		{
 			write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling CreateReplayFrame.\n");

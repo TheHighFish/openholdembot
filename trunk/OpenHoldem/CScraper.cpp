@@ -7,6 +7,7 @@
 #include "CAutoconnector.h"
 #include "CPreferences.h"
 #include "CStringMatch.h"
+#include "CSymbolEngineUserchair.h"
 #include "CSymbols.h"
 #include "CTableLimits.h"
 #include "MainFrm.h"
@@ -819,7 +820,7 @@ void CScraper::ScrapeName(int chair)
 
 	__HDC_HEADER
 
-	int	sym_chair = (int) p_symbols->sym()->chair;
+	int	sym_chair = p_symbol_engine_userchair->userchair();
 
 	got_new_scrape = false;
 
@@ -924,7 +925,7 @@ void CScraper::ScrapeBalance(int chair)
 
 	__HDC_HEADER
 
-	int	sym_chair = (int) p_symbols->sym()->chair;
+	int	sym_chair = p_symbol_engine_userchair->userchair();
 
 	got_new_scrape = false;
 
