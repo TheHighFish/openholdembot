@@ -250,7 +250,7 @@ private:
 	void set_sym_raischair_previous_frame(const double d) { _sym.raischair_previous_frame = d;}
 
 	CCritSec			m_critsec;
-private:
+private:/*
 	CSymbolEngineRandom			symbol_engine_random;
 	CSymbolEngineTime			symbol_engine_time;
 	CSymbolEngineAutoplayer		symbol_engine_autoplayer;
@@ -268,6 +268,7 @@ private:
 	CSymbolEnginePositions		symbol_engine_positions;	// depends on user-chair and dealer and playersdealtbits
 	CSymbolEngineBlinds			symbol_engine_blinds;		// depends on dealerchair and playersplayingbits and positions
 	// prwin at the very end, as the prwin-functions may use all other symbols
+	*/
 } *p_symbols;
 
 #endif /* INC_CSYMBOLS_H */

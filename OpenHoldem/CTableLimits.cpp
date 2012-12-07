@@ -77,8 +77,8 @@ void CTableLimits::AutoLockBlindsForCashgamesAfterNHands()
 {
 	write_log(3, "CTableLimits::AutoLockBlindsForCashgamesAfterNHands()\n");
 	write_log(3, "CTableLimits: blinds_locked_for_complete_session: %d\n", blinds_locked_for_complete_session);
-	write_log(3, "CTableLimits: istournament: %d\n", IsTrue(p_symbols->sym()->istournament));
-	if (blinds_locked_for_complete_session || IsTrue(p_symbols->sym()->istournament))
+	write_log(3, "CTableLimits: istournament: %d\n", IsTrue(p_tablelimits->istournament()));
+	if (blinds_locked_for_complete_session || p_tablelimits->istournament())
 	{
 		write_log(3, "CTableLimits: blinds_locked_for_complete_session or istournament\n");
 		write_log(3, "CTableLimits: Leaving CTableLimits::AutoLockBlindsForCashgamesAfterNHands() early\n");

@@ -951,7 +951,7 @@ int CPokerTrackerThread::SkipUpdateCondition(int stat, int chair)
 
 void CPokerTrackerThread::SetHandsStat()
 {
-	int tourney = p_symbols->sym()->istournament;
+	int tourney = p_tablelimits->istournament();
 	if (tourney)
 	{
 		_m_handsStats = ptt_hands;

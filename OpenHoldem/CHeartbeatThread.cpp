@@ -221,7 +221,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 				p_scraper->set_found_limit(ss.found_limit);
 				p_scraper->set_handnumber(ss.handnumber);
 				p_scraper->set_found_handnumber(ss.found_handnumber);
-				p_scraper->set_istournament(ss.istournament);
+				p_scraper->set_istournament(ss.istournament); // !!! bad code
 
 			}
 
