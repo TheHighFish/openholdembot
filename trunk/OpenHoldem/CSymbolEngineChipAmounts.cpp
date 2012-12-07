@@ -259,5 +259,5 @@ void CSymbolEngineChipAmounts::CalculateBetsToCallToRaise()
 		// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=13384
 		if (p_scraper->card_player(i, 0) != CARD_NOCARD 
 			&& p_scraper->card_player(i, 1) != CARD_NOCARD 
-			&& i != _sym.userchair)
+			&& i != p_symbol_engine_userchair->userchair())
 			*/

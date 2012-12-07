@@ -31,6 +31,7 @@ public:
 public:
 	int nopponents_for_prwin()	{ return _nopponents_for_prwin; }
 private:
+	void CalculateNOpponents();
 	void CalculateProbabilities();
 	void RestartIteratorThread();
 	void CalculateNhands();
