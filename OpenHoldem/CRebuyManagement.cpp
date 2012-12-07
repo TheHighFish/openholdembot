@@ -8,7 +8,8 @@
 #include "CPreferences.h"
 #include "CRebuyManagement.h"
 #include "CScraper.h"
-#include "CSymbols.h"
+#include "CSymbolEngineChipAmounts.h"
+#include "CSymbolEngineUserchair.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CTableLimits.h"
 #include "debug.h"
@@ -63,7 +64,7 @@ bool CRebuyManagement::NoCards()
 	{
 		return true;
 	}
-	double UserChair = p_symbols->sym()->userchair;
+	double UserChair = p_symbol_engine_userchair->userchair();
 	if ((UserChair < 0) || (UserChair > 9)) 
 	{
 		// "No cards", but not even seated.
@@ -152,8 +153,8 @@ void CRebuyManagement::ExecuteRebuyScript()
 	double SmallBlind = p_tablelimits->sblind();
 	double BigBlind = p_tablelimits->bblind();
 	double BigBet = p_tablelimits->bbet();
-	double UserChair = p_symbols->sym()->userchair;
-	double Balance = p_symbols->sym()->balance[10];
+	int UserChair = p_symbol_engine_userchair->userchair();
+	double Balance = p_symbol_engine_chip_amounts->balance(UserChair);
 	double TargetAmount = p_autoplayer_functions->f$rebuy();
 	CString RebuyScript = prefs.rebuy_script();
 	CString CommandLine;

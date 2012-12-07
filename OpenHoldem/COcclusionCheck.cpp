@@ -34,7 +34,7 @@ bool COcclusionCheck::UserChairKnown()
 
 bool COcclusionCheck::UserBalanceNonZero()
 {
-	int userchair = p_symbols->sym()->userchair;
+	int userchair = p_symbol_engine_userchair->userchair();
 	if (UserChairKnown() && (p_symbols->sym()->balance > 0))
 	{
 		return true;
@@ -48,7 +48,7 @@ bool COcclusionCheck::UserBalanceNonZero()
 
 bool COcclusionCheck::UserNameKnown()
 {	
-	int Userchair = p_symbols->sym()->userchair;
+	int Userchair = p_symbol_engine_userchair->userchair();
 	if ((Userchair < 0) || (Userchair > 9))
 	{
 		write_log(prefs.debug_occlusionchecker(), "[COcclusionCheck] UserNameKnown: false; chair out of range\n");
@@ -67,7 +67,7 @@ bool COcclusionCheck::UserNameKnown()
 
 bool COcclusionCheck::AnyOpponentNameKnown()
 {
-	int Userchair = p_symbols->sym()->userchair;
+	int Userchair = p_symbol_engine_userchair->userchair();
 	for (int i=0; i<=9; i++)
 	{
 		if ((i != Userchair) && (p_scraper->player_name(i) != ""))
@@ -81,7 +81,7 @@ bool COcclusionCheck::AnyOpponentNameKnown()
 
 bool COcclusionCheck::AnyApponentBalanceNonZero()
 {
-	int Userchair = p_symbols->sym()->userchair;
+	int Userchair = p_symbol_engine_userchair->userchair();
 	for (int i=0; i<=9; i++)
 	{
 		if ((i != Userchair) && (p_symbols->sym()->balance[i] > 0))

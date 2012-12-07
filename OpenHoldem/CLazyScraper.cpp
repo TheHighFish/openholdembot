@@ -54,7 +54,7 @@ bool CLazyScraper::HaveCards()
 		write_log(3, "CLazyScraper::HaveCards(): false, as userchair not confirmed\n");
 		return false;
 	}
-	int userchair = p_symbols->sym()->userchair;
+	int userchair = p_symbol_engine_userchair->userchair();
 	int my_first_card  = p_scraper_access->GetPlayerCards(userchair, 0);
 	int my_second_card = p_scraper_access->GetPlayerCards(userchair, 1);
 	if (p_scraper_access->IsValidCard(my_first_card)

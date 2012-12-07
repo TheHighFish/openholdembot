@@ -545,9 +545,9 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 	int				from_chair = 0, to_chair = 0;
 	int				i = 0, j = 0, k = 0;
 	int				betround = (int) p_symbols->sym()->betround;
-	int				sym_userchair = (int) p_symbols->sym()->userchair;
+	int				sym_userchair = (int) p_symbol_engine_userchair->userchair();
 	bool			sym_ismyturn = (bool) p_symbols->sym()->ismyturn;
-	double			sym_balance = p_symbols->sym()->balance[10];
+	double			sym_balance = p_symbol_engine_chip_amounts->balance(userchair);
 	CString			sym_handnumber = p_handreset_detector->GetHandNumber();
 
 	_m_holdem_state[ (++_m_ndx)&0xff ] = *pstate;

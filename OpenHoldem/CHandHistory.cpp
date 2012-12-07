@@ -79,7 +79,7 @@ void CHandHistory::UpdateSymbols()
 {
 	int	nchairs   = (int) p_symbols->sym()->nchairs;
 	int	betround  = (int) p_symbols->sym()->betround;
-	int	userchair = (int) p_symbols->sym()->userchair;
+	int	userchair = (int) p_symbol_engine_userchair->userchair();
 	int	players_playing_bits = (int) p_symbols->sym()->playersplayingbits; 
 	
 
@@ -118,7 +118,7 @@ void CHandHistory::UpdateSymbols()
 void CHandHistory::roundStart()
 {
 	double			bblind = p_tablelimits->bblind();
-	int				userchair = (int) p_symbols->sym()->userchair;
+	int				userchair = (int) p_symbol_engine_userchair->userchair();
 	int				nchairs = (int)p_symbols->sym()->nchairs;
 	int				dealerchair = (int) p_symbols->sym()->dealerchair;
 
@@ -159,7 +159,7 @@ void CHandHistory::roundStart()
 }
 void CHandHistory::checkBetround()
 {
-	int				userchair = (int) p_symbols->sym()->userchair;
+	int				userchair = (int) p_symbol_engine_userchair->userchair();
 	int				nchairs = (int) p_symbols->sym()->nchairs;
 	int				dealerchair = (int) p_symbols->sym()->dealerchair;
 	char			card_common[5][5];
@@ -424,7 +424,7 @@ const string CHandHistory::setDate()
 }
 const bool CHandHistory::isShowdown()
 {
-	int				userchair = (int) p_symbols->sym()->userchair;
+	int				userchair = (int) p_symbol_engine_userchair->userchair();
 	int				nchairs = (int) p_symbols->sym()->nchairs;
 	int				betround = (int) p_symbols->sym()->betround;
 
@@ -709,7 +709,7 @@ void CHandHistory::ReconstructHand(bool contested)
 	bool			hasFolded[10];
 	double			bblind = p_tablelimits->bblind();
 	double			calculatedPot = 0;
-	int				userchair = (int) p_symbols->sym()->userchair;
+	int				userchair = (int) p_symbol_engine_userchair->userchair();
 	int				nchairs = (int) p_symbols->sym()->nchairs;
 	int				dealerchair = (int) p_symbols->sym()->dealerchair;
 	int				betround = 0;

@@ -417,7 +417,7 @@ void CScraper::ScrapePlayerCards(int chair)
 
 	__HDC_HEADER
 
-	int sym_userchair = (int) p_symbols->sym()->userchair;
+	int sym_userchair = (int) p_symbol_engine_userchair->userchair();
 
 	// Player cards
 	got_new_scrape = false;
