@@ -263,8 +263,8 @@ const bool CPokerAction::FirstIntoPot (void)
 	int		e = SUCCESS;
 
 	result = p_symbols->sym()->betround==1 ? 
-		p_symbols->sym()->potplayer <= p_tablelimits->sblind() + p_tablelimits->bblind() : 
-		p_symbols->sym()->potplayer <= 0.1 ;
+		p_symbol_engine_chip_amounts->pot()player <= p_tablelimits->sblind() + p_tablelimits->bblind() : 
+		p_symbol_engine_chip_amounts->pot()player <= 0.1 ;
 
 	return result;
 }

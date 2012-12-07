@@ -6,7 +6,7 @@
 
 #include "CSymbolengineUserChair.h"
 
-class CSymbolEngineBlinds: public CVirtualSymbolEngine
+extern class CSymbolEngineBlinds: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineBlinds();
@@ -37,6 +37,6 @@ private:
 	int _playersplayingbits;
 	int _dealerchair;
 	int _userchair;
-};
+} *p_symbol_engine_blinds;
 
 #endif INC_CSYMBOLENGINEBLINDS_H

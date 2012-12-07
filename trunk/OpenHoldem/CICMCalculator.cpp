@@ -18,6 +18,9 @@
 #include "CScraper.h"
 #include "CTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
+#include "CSymbolEngineActiveDealtPlaying.h"
+#include "CSymbolEngineBlinds.h"
+#include "CSymbolEngineDealerchair.h"
 #include "CSymbols.h"
 #include "CPreferences.h"
 
@@ -76,12 +79,12 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 	prizes[3] = prefs.icm_prize4();
 	prizes[4] = prefs.icm_prize5();
 
-	int			sym_userchair = (int) p_symbol_engine_userchair->userchair();
-	int			sym_opponentsplayingbits = (int) p_symbols->sym()->opponentsplayingbits;
-	int			sym_nopponentsplaying = (int) p_symbol_engine_active_dealt_playing->nopponentsplaying();
-	int			sym_nplayersseated =  (int) p_symbols->sym()->nplayersseated;
-	int			sym_playersseatedbits =  (int) p_symbols->sym()->playersseatedbits;
-	double		sym_pot = p_symbols->sym()->pot;
+	int			sym_userchair = p_symbol_engine_userchair->userchair();
+	int			sym_opponentsplayingbits = p_symbols->sym()->opponentsplayingbits;
+	int			sym_nopponentsplaying = p_symbol_engine_active_dealt_playing->nopponentsplaying();
+	int			sym_nplayersseated = p_symbols->sym()->nplayersseated;
+	int			sym_playersseatedbits = p_symbols->sym()->playersseatedbits;
+	double		sym_pot = p_symbol_engine_chip_amounts->pot();
 	double		sym_call = p_symbols->sym()->call;
 	double		sym_currentbet[MAX_PLAYERS]={0};
 
@@ -89,14 +92,14 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 	{
 		if ((sym_playersseatedbits>>i)&1)
 		{
-			stacks[i] = p_symbols->sym()->balance[i];
-			sym_currentbet[i] = p_symbols->sym()->currentbet[i];
+			stacks[i] = p_symbol_engine_chip_amounts->balance(i);
+			sym_currentbet[i] = p_symbol_engine_chip_amounts->currentbet(i);
 		}
 	}
 
 	if (strncmp(pquery,"_fold",5)==0)
 	{
-		double to_split = p_symbols->sym()->potcommon;
+		double to_split = p_symbol_engine_chip_amounts->potcommon();
 
 		for (i = 0; i < MAX_PLAYERS; i++)
 		{
@@ -336,7 +339,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 		{
 			if ((sym_playersseatedbits>>i)&1)
 			{
-				stacks[i] = p_symbols->stacks_at_hand_start(i);
+				stacks[i] = p_symbol_engine_chip_amounts->stacks_at_hand_start(i);
 			}
 	   }
 	}
@@ -394,15 +397,15 @@ double CICMCalculator::EquityICM(double *stacks, double *prizes, int playerNB, i
 
 double CICMCalculator::GetPlayerCurrentBet(int pos)
 {
-	return p_symbols->sym()->currentbet[pos];
+	return p_symbol_engine_chip_amounts->currentbet(pos);
 }
 
 int CICMCalculator::GetChairFromDealPos(const char* pquery)
 {
-	int	sym_playersseatedbits =	(int) p_symbols->sym()->playersseatedbits;
-	int	sym_nplayersseated =	(int) p_symbols->sym()->nplayersseated;
-	int	sym_dealerchair =		(int) p_symbols->sym()->dealerchair;
-	int	sym_nplayersblind =		(int) p_symbols->sym()->nplayersblind;
+	int	sym_playersseatedbits =	p_symbols->sym()->playersseatedbits;
+	int	sym_nplayersseated =	p_symbols->sym()->nplayersseated;
+	int	sym_dealerchair =		p_symbol_engine_dealerchair->dealerchair();
+	int	sym_nplayersblind =		p_symbol_engine_blinds->nplayersblind();
 	int	chair = -1, sb_offset = 1, hu_offset = 0, eb_offset = 1;
 
 	if (sym_playersseatedbits&k_exponents[sym_dealerchair])
