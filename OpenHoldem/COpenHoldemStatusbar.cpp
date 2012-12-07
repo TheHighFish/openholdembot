@@ -116,7 +116,7 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 	CardMask_RESET(Cards);
 	int nCards = 0;
 	_status_plcards = "";
-	if (p_symbols->user_chair_confirmed() && playing) 
+	if (p_symbol_engine_userchair->user_chair_confirmed() && playing) 
 	{
 		for (int i=0; i<k_number_of_cards_per_player; i++) 
 		{
@@ -181,7 +181,7 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 		_status_nopp = "";
 
 	// Always update prwin/nit
-	if (p_symbols->user_chair_confirmed() && playing)
+	if (p_symbol_engine_userchair->user_chair_confirmed() && playing)
 	{
 		_status_prwin.Format("%d/%d/%d", 
 			(int) (iter_vars.prwin()*1000), 
@@ -200,7 +200,7 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 	}
 
 	// action
-	if (!p_symbols->user_chair_confirmed() || !playing)
+	if (!p_symbol_engine_userchair->user_chair_confirmed() || !playing)
 		_status_action = "Notplaying";
 
 	else if (p_autoplayer_functions->f$prefold())
@@ -208,7 +208,7 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 		_status_action = "Pre-fold";
 	}
 
-	else if (p_symbols->user_chair_confirmed() && iter_vars.iterator_thread_complete())
+	else if (p_symbol_engine_userchair->user_chair_confirmed() && iter_vars.iterator_thread_complete())
 	{
 		if (!p_symbols->sym()->isfinalanswer) _status_action = "N/A";
 		else if (p_autoplayer_functions->f$alli())    _status_action = "Allin";

@@ -259,7 +259,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// If we've folded, stop iterator thread and set prwin/tie/los to zero
-		if (p_symbols->user_chair_confirmed() &&
+		if (p_symbol_engine_userchair->user_chair_confirmed() &&
 			(p_scraper->card_player(p_symbols->sym()->chair, 0)==CARD_NOCARD || 
 			 p_scraper->card_player(p_symbols->sym()->chair, 0)==CARD_BACK ||
 			 p_scraper->card_player(p_symbols->sym()->chair, 1)==CARD_NOCARD || 
@@ -303,7 +303,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			 ||
 
 			 // Every change and I'm playing
-			 (prefs.replay_record_every_change_playing() && (p_symbols->user_chair_confirmed() &&
+			 (prefs.replay_record_every_change_playing() && (p_symbol_engine_userchair->user_chair_confirmed() &&
 			   !(p_scraper->card_player(p_symbols->sym()->chair, 0)==CARD_NOCARD ||
 			     p_scraper->card_player(p_symbols->sym()->chair, 0)==CARD_BACK ||
 			     p_scraper->card_player(p_symbols->sym()->chair, 1)==CARD_NOCARD ||
@@ -359,10 +359,10 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		}
 
 		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] autoplayer_engaged(): %i\n", p_autoplayer->autoplayer_engaged());
-		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] user_chair_confirmed(): %i\n", p_symbols->user_chair_confirmed());
+		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] user_chair_confirmed(): %i\n", p_symbol_engine_userchair->user_chair_confirmed());
 		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] iswait: %i\n", iswait);
 		// If autoplayer is engaged, we know our chair, and the DLL hasn't told us to wait, then go do it!
-		if (p_autoplayer->autoplayer_engaged() && p_symbols->user_chair_confirmed() && !iswait)
+		if (p_autoplayer->autoplayer_engaged() && p_symbol_engine_userchair->user_chair_confirmed() && !iswait)
 		{
 			write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling DoAutoplayer.\n");
 			p_autoplayer->DoAutoplayer();

@@ -510,7 +510,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 	{
 
 		// Autoplayer
-		if ((p_symbols->user_chair_confirmed() && p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)))
+		if ((p_symbol_engine_userchair->user_chair_confirmed() && p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)))
 		{
 			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
 		}
@@ -521,7 +521,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 
 		// Automatically start autoplayer, if set in preferences
 		if (prefs.engage_autoplayer() && !p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER) &&
-				((p_symbols->user_chair_confirmed() && p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE))))
+				((p_symbol_engine_userchair->user_chair_confirmed() && p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE))))
 		{
 			if (!_autoplay_pressed)
 			{

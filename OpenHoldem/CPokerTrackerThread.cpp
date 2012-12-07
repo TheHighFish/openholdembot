@@ -972,7 +972,7 @@ int CPokerTrackerThread::SkipUpdateForChair(int chair, char* reason)
 {
 	memset(reason,0,100);
 	int userchair = p_symbols->sym()->userchair;
-	bool confirmed = p_symbols->user_chair_confirmed();
+	bool confirmed = p_symbol_engine_userchair->user_chair_confirmed();
 	if (userchair == chair && confirmed)
 	{
 		memcpy(reason, "User sits in this chair", 100);
