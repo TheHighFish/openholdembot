@@ -143,10 +143,10 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0414")
     HEURISTIC_RULE (false)
-    REASONING ("If it's preflop, there have to be 0 common cards present and known.")
+    REASONING ("If it's preflop, there have to be 0 common cards known.")
     PRECONDITION (gws("betround") == 1)
-    POSTCONDITION ((gws("ncommoncardspresent") == 0) && (gws("ncommoncardsknown") == 0))
-    SYMBOLS_POSSIBLY_AFFECTED ("betround, ncommoncardspresent, ncommoncardsknown")
+    POSTCONDITION ((gws("ncommoncardsknown") == 0))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, ncommoncardsknown")
 END_TESTCASE
 
 
@@ -154,10 +154,10 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0415")
     HEURISTIC_RULE (false)
-    REASONING ("If it's the flop, there have to be 3 common cards present and known.")
+    REASONING ("If it's the flop, there have to be 3 common cards known.")
     PRECONDITION (gws("betround") == 2)
-    POSTCONDITION ((gws("ncommoncardspresent") == 3) && (gws("ncommoncardsknown") == 3))
-    SYMBOLS_POSSIBLY_AFFECTED ("betround, ncommoncardspresent, ncommoncardsknown")
+    POSTCONDITION ((gws("ncommoncardsknown") == 3))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, ncommoncardsknown")
 END_TESTCASE
 
 
@@ -165,10 +165,10 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0416")
     HEURISTIC_RULE (false)
-    REASONING ("If it's the turn, there have to be 4 common cards present and known.")
+    REASONING ("If it's the turn, there have to be 4 common cards known.")
     PRECONDITION (gws("betround") == 3)
-    POSTCONDITION ((gws("ncommoncardspresent") == 4) && (gws("ncommoncardsknown") == 4))
-    SYMBOLS_POSSIBLY_AFFECTED ("betround, ncommoncardspresent, ncommoncardsknown")
+    POSTCONDITION ((gws("ncommoncardsknown") == 4))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, ncommoncardsknown")
 END_TESTCASE
 
 
@@ -176,10 +176,10 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0417")
     HEURISTIC_RULE (false)
-    REASONING ("If it's the river, there have to be 5 common cards present and known.")
+    REASONING ("If it's the river, there have to be 5 common cards known.")
     PRECONDITION (gws("betround") == 4)
-    POSTCONDITION ((gws("ncommoncardspresent") == 5) && (gws("ncommoncardsknown") == 5))
-    SYMBOLS_POSSIBLY_AFFECTED ("betround, ncommoncardspresent, ncommoncardsknown")
+    POSTCONDITION ((gws("ncommoncardsknown") == 5))
+    SYMBOLS_POSSIBLY_AFFECTED ("betround, ncommoncardsknown")
 END_TESTCASE
 
 
