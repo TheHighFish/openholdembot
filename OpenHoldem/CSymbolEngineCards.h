@@ -20,37 +20,37 @@ public:
 	// Public accessors
 
 	//POCKET TESTS
-	double ispair()			{ return _ispair; }
-	double issuited()		{ return _issuited; }		
-	double isconnector()	{ return _isconnector; }
+	bool ispair()			{ return _ispair; }
+	bool issuited()			{ return _issuited; }		
+	bool isconnector()		{ return _isconnector; }
 
 	//COMMON CARDS
-	double ncommoncardspresent()	{ return _ncommoncardspresent; }
-	double ncommoncardsknown()		{ return _ncommoncardsknown; }
+	int ncommoncardspresent()	{ return _ncommoncardspresent; }
+	int ncommoncardsknown()		{ return _ncommoncardsknown; }
 
 	//(UN)KNOWN CARDS
-	double nouts()					{ return _nouts; }
-	double ncardsknown()			{ return _ncardsknown; }
-	double ncardsunknown()			{ return _ncardsunknown; }
-	double ncardsbetter()			{ return _ncardsbetter; }
+	int nouts()					{ return _nouts; }
+	int ncardsknown()			{ return _ncardsknown; }
+	int ncardsunknown()			{ return _ncardsunknown; }
+	int ncardsbetter()			{ return _ncardsbetter; }
 
 	//FLUSHES SETS STRAIGHTS
-	double nsuited()					{ return _nsuited; }
-	double nsuitedcommon()				{ return _nsuitedcommon; }
-	double tsuit()						{ return _tsuit; }
-	double tsuitcommon()				{ return _tsuitcommon; }
-	double nranked()					{ return _nranked; }
-	double nrankedcommon()				{ return _nrankedcommon; }
-	double trank()						{ return _trank; }
-	double trankcommon()				{ return _trankcommon; }
-	double nstraight()					{ return _nstraight; }
-	double nstraightcommon()			{ return _nstraightcommon; }
-	double nstraightfill()				{ return _nstraightfill; }
-	double nstraightfillcommon()		{ return _nstraightfillcommon; }
-	double nstraightflush()				{ return _nstraightflush; }
-	double nstraightflushcommon()		{ return _nstraightflushcommon; }
-	double nstraightflushfill()			{ return _nstraightflushfill; }
-	double nstraightflushfillcommon()	{ return _nstraightflushfillcommon; }
+	int nsuited()					{ return _nsuited; }
+	int nsuitedcommon()				{ return _nsuitedcommon; }
+	int tsuit()						{ return _tsuit; }
+	int tsuitcommon()				{ return _tsuitcommon; }
+	int nranked()					{ return _nranked; }
+	int nrankedcommon()				{ return _nrankedcommon; }
+	int trank()						{ return _trank; }
+	int trankcommon()				{ return _trankcommon; }
+	int nstraight()					{ return _nstraight; }
+	int nstraightcommon()			{ return _nstraightcommon; }
+	int nstraightfill()				{ return _nstraightfill; }
+	int nstraightfillcommon()		{ return _nstraightfillcommon; }
+	int nstraightflush()				{ return _nstraightflush; }
+	int nstraightflushcommon()		{ return _nstraightflushcommon; }
+	int nstraightflushfill()			{ return _nstraightflushfill; }
+	int nstraightflushfillcommon()	{ return _nstraightflushfillcommon; }
 
 	//HAND TESTS
 	int $$pc(int index)		{ return _$$pc[index]; }
@@ -65,60 +65,61 @@ private:
 	void CalcPocketTests();
 	void CalcFlushesStraightsSets();
 	void CalculateHandTests();
+	void CalculateCommonCards();
 
 private:
 	//POCKET TESTS
-	double _ispair;
-	double _issuited;
-	double _isconnector;
+	bool _ispair;
+	bool _issuited;
+	bool _isconnector;
 
 	//HAND TESTS
-	double _ishandup;
-	double _ishandupcommon;
-	double _ishicard;
-	double _isonepair;
-	double _istwopair;
-	double _isthreeofakind;
-	double _isstraight;
-	double _isflush;
-	double _isfullhouse;
-	double _isfourofakind;
-	double _isstraightflush;
-	double _isroyalflush;
+	int _ishandup;
+	int _ishandupcommon;
+	int _ishicard;
+	int _isonepair;
+	int _istwopair;
+	int _isthreeofakind;
+	int _isstraight;
+	int _isflush;
+	int _isfullhouse;
+	int _isfourofakind;
+	int _isstraightflush;
+	int _isroyalflush;
 
 	//COMMON CARDS
-	double _ncommoncardspresent;
-	double _ncommoncardsknown;
+	int _ncommoncardspresent;
+	int _ncommoncardsknown;
 
 	//(UN)KNOWN CARDS
-	double _nouts;
-	double _ncardsknown;
-	double _ncardsunknown;
-	double _ncardsbetter;
+	int _nouts;
+	int _ncardsknown;
+	int _ncardsunknown;
+	int _ncardsbetter;
 
 	//NHANDS
-	double _nhands;
-	double _nhandshi;
-	double _nhandslo;
-	double _nhandsti;
+	int _nhands;
+	int _nhandshi;
+	int _nhandslo;
+	int _nhandsti;
 
 	//FLUSHES SETS STRAIGHTS
-	double _nsuited;
-	double _nsuitedcommon;
-	double _tsuit;
-	double _tsuitcommon;
-	double _nranked;
-	double _nrankedcommon;
-	double _trank;
-	double _trankcommon;
-	double _nstraight;
-	double _nstraightcommon;
-	double _nstraightfill;
-	double _nstraightfillcommon;
-	double _nstraightflush;
-	double _nstraightflushcommon;
-	double _nstraightflushfill;
-	double _nstraightflushfillcommon;
+	int _nsuited;
+	int _nsuitedcommon;
+	int _tsuit;
+	int _tsuitcommon;
+	int _nranked;
+	int _nrankedcommon;
+	int _trank;
+	int _trankcommon;
+	int _nstraight;
+	int _nstraightcommon;
+	int _nstraightfill;
+	int _nstraightfillcommon;
+	int _nstraightflush;
+	int _nstraightflushcommon;
+	int _nstraightflushfill;
+	int _nstraightflushfillcommon;
 
 	//HAND TESTS
 	int _$$pc[k_number_of_cards_per_player];

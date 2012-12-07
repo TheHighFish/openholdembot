@@ -102,7 +102,12 @@ void CSymbolEngineCards::ResetOnMyTurn()
 {}
 
 void CSymbolEngineCards::ResetOnHeartbeat()
-{}
+{
+	CalcPocketTests();
+	CalculateCommonCards();
+	CalculateHandTests();
+	CalcFlushesStraightsSets();
+}
 
 bool CSymbolEngineCards::BothPocketCardsKnown()
 {
@@ -591,6 +596,20 @@ void CSymbolEngineCards::CalculateHandTests()
 		}
 	}
 }
+
+void CSymbolEngineCards::CalculateCommonCards()
+{
+	_ncommoncardsknown = 0;
+	for (int i=0; i<k_number_of_community_cards; i++)
+	{
+		if (p_scraper->card_common(i) != CARD_NOCARD)
+		{
+			_ncommoncardsknown++;							
+		}
+	}
+	//_ncommoncardspresent(); //!!!
+}
+
 
 int GetRankFromCard(int scraper_card)
 {

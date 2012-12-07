@@ -501,18 +501,7 @@ void CSymbols::CalcSymbols(void)
 					 "*************************************************************\n",
 				  p_handreset_detector->GetHandNumber(), 
 				  _sym.dealerchair, card0, card1, title);
-	}
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// common cards
-	set_sym_ncommoncardsknown(0);
-
-	for (i=0; i<k_number_of_community_cards; i++)
-	{
-		if (p_scraper->card_common(i) != CARD_NOCARD)
-			set_sym_ncommoncardsknown(_sym.ncommoncardsknown + 1);							
-	}
-	set_sym_ncommoncardspresent(_sym.ncommoncardsknown);											
+	}							
 
 	CalculateBetround();													
 
