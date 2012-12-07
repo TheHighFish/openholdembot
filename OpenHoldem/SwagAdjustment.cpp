@@ -2,14 +2,16 @@
 
 #include "SwagAdjustment.h"
 #include <assert.h>
-#include "CSymbols.h"
+#include "CSymbolEngineChipAmounts.h"
+#include "CSymbolEngineUserchair.h"
 #include "CTableLimits.h"
 #include "..\..\CTablemap\CTablemap.h"
 #include "debug.h"
 
 double MinimumSwagAmount()
 {
-	double minimums_swag_amount = (p_symbols->sym()->call + p_symbols->sym()->sraiprev);
+	double minimums_swag_amount = (p_symbol_engine_chip_amounts->call() 
+		+ p_symbol_engine_chip_amounts->sraiprev());
 	write_log(3, "SwagAdjustment: MinimumSwagAmount: %f\n", minimums_swag_amount);
 	assert(minimums_swag_amount > 0);
 	return minimums_swag_amount;
@@ -18,8 +20,8 @@ double MinimumSwagAmount()
 double MaximumSwagAmountForPotLimit()
 {
 	// ToDo: Preflop
-	double maximum_swag_amount_for_pot_limit = 2 * (p_symbols->sym()->pot
-		+ p_symbols->sym()->pot);
+	double maximum_swag_amount_for_pot_limit = 2 * (p_symbol_engine_chip_amounts->pot()
+		+ p_symbol_engine_chip_amounts->pot()); // !!!???
 	write_log(3, "SwagAdjustment: MaximumSwagAmountForPotLimit: %f\n", maximum_swag_amount_for_pot_limit);
 	assert(maximum_swag_amount_for_pot_limit >= 0);
 	return maximum_swag_amount_for_pot_limit;
@@ -34,7 +36,8 @@ double MaximumSwagAmount()
 	}
 	else
 	{
-		maximum_swag_amount = (p_symbols->sym()->currentbet[10]
+		int userchair = p_symbol_engine_userchair->userchair();
+		maximum_swag_amount = (p_symbol_engine_chip_amounts->currentbet(userchair)
 			+ p_symbol_engine_chip_amounts->balance(userchair));
 	}
 	write_log(3, "SwagAdjustment: MaximumSwagAmount: %f\n", maximum_swag_amount);
@@ -61,6 +64,7 @@ double SwagAmountAjustedToMinimumAndMaximum(double amount_to_raise_to)
 
 double SwagAmountAjustedToCasino(double amount_to_raise_to)
 {
+	int userchair = p_symbol_engine_userchair->userchair();
 	assert(amount_to_raise_to >= 0);
 	double swag_amount_ajusted_to_casino = amount_to_raise_to;
 	// WinHoldems f$srai should return, what we want to add to (call + currentbet)
@@ -70,7 +74,7 @@ double SwagAmountAjustedToCasino(double amount_to_raise_to)
 	if (p_tablemap->swagtextmethod() == 2)
 	{
 		// Old adjustment: call, so currentbet is too much
-		swag_amount_ajusted_to_casino = amount_to_raise_to - p_symbols->sym()->currentbet[10];
+		swag_amount_ajusted_to_casino = amount_to_raise_to - p_symbol_engine_chip_amounts->currentbet(userchair);
 	}
 	else if (p_tablemap->swagtextmethod() == 3)
 	{
@@ -82,8 +86,8 @@ double SwagAmountAjustedToCasino(double amount_to_raise_to)
 		// Default: swagtextmethod == 1
 		// Old adjustment: 0, currentbet and call are too much.
 		swag_amount_ajusted_to_casino = amount_to_raise_to 
-			- p_symbols->sym()->currentbet[10]
-			- p_symbols->sym()->call;
+			- p_symbol_engine_chip_amounts->currentbet(userchair)
+			- p_symbol_engine_chip_amounts->call();
 	}
 	write_log(3, "SwagAdjustment: SwagAmountAjustedToCasino %f\n",
 		swag_amount_ajusted_to_casino);
