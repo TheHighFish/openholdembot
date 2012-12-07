@@ -57,4 +57,9 @@ void CSymbolEngineTime::ResetOnHeartbeat()
 	_elapsedauto = t_now_time - _elapsedautohold;	
 }
 
+void CSymbolEngineTime::ResetOnAutoPlayerAction()
+{
+	time(&_elapsedautohold);
+}
+
 

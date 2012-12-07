@@ -4,7 +4,7 @@
 #include "CVirtualSymbolEngine.h"
 #include "CSymbolEngineUserChair.h"
 
-class CSymbolEngineHistory: public CVirtualSymbolEngine
+extern class CSymbolEngineHistory: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineHistory();
@@ -54,7 +54,7 @@ private:
 	bool _didswag[k_number_of_betrounds + 1];
 private:
 	int _betround;
-};
+} *p_symbol_engine_history;
 
 #endif INC_CSYMBOLENGINEHISTORY_H
 
