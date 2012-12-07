@@ -521,7 +521,7 @@ void write_logautoplay(const char * action)
 			action, 
 			p_symbols->sym()->call, 
 			p_tablelimits->bet(), 
-			p_symbols->sym()->pot);
+			p_symbol_engine_chip_amounts->pot());
 		fprintf(log_fp, "%9.2f - %s %s %.2f\n", 
 			p_symbol_engine_chip_amounts->balance(userchair), 
 			fcra_seen.GetString(), 

@@ -84,9 +84,9 @@ void CHandHistory::UpdateSymbols()
 	
 
 	// Reset pot
-	if ((p_symbols->sym()->pot >= pot) || (betround <= k_betround_preflop))
+	if ((p_symbol_engine_chip_amounts->pot() >= pot) || (betround <= k_betround_preflop))
 	{
-		pot = p_symbols->sym()->pot;
+		pot = p_symbol_engine_chip_amounts->pot();
 	}
 	//Set individual player variables
 	for (int i=0; i<nchairs; i++)	
@@ -246,7 +246,7 @@ void CHandHistory::checkBetround()
 void CHandHistory::scanPlayerChanges()
 {
 	double			bblind = p_tablelimits->bblind();
-	double			potplayer = p_symbols->sym()->potplayer;
+	double			potplayer = p_symbol_engine_chip_amounts->pot()player;
 	int				betround = (int) p_symbols->sym()->betround;
 	int				nchairs = (int) p_symbols->sym()->nchairs;
 	int				raischair = (int) p_symbols->sym()->raischair;
