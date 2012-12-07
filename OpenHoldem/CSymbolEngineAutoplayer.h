@@ -33,13 +33,14 @@ public:
 private:
 	void CalculateMyTurnBits();
 	void CalculateSitInState();
+	void CalculateFinalAnswer();
 	void DetectSpecialConnectionLikeBringAndManualMode();
 private:
 	int  _myturnbits;
 	bool _issittingin;
 	bool _isautopost;
-	bool _isfinalanswer; //!!!
-	bool _isfinaltable;  //!!! 
+	bool _isfinalanswer; 
+	bool _isfinaltable;  
 	bool _isbring;
 	bool _ismanual;
 } *p_symbol_engine_autoplayer;
