@@ -5,6 +5,7 @@
 #include "CAutoconnector.h"
 #include "CAutoplayer.h"
 #include "CAutoplayerFunctions.h"
+#include "CBetroundCalculator.h"
 #include "CFormula.h"
 #include "CGameState.h"
 #include "CHandhistory.h"
