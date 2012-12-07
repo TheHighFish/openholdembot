@@ -371,7 +371,7 @@ bool CAutoplayer::IsFinalAnswer()
 	}
 
 	// if we are not playing (occluded?) 2008-03-25 Matrix
-	if (!p_symbols->sym()->playing)
+	if (!p_scraper_access->UserHasCards())
 	{
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because !p_symbols->sym()->playing\n");
 		is_final_answer = false;
