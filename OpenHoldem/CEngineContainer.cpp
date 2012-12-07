@@ -53,7 +53,7 @@ void CEngineContainer::CallSymbolEnginesToUpdateSymbolsIfNecessary()
 	{
 		ResetOnNewRound();
 	}
-	if ()
+	if (1) //!!!
 	{
 		ResetOnMyTurn();
 	}
