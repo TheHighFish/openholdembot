@@ -96,7 +96,7 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 	{
 		//if (p_symbols->sym()->currentbet[10] )
 		//{
-		first_possible_raiser = p_symbols->sym()->dealerchair + 1;
+		first_possible_raiser = p_symbol_engine_dealerchair->dealerchair() + 1;
 		last_possible_raiser  = 0; //!!! ???
 		}
 		else

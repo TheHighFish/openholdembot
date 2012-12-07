@@ -48,7 +48,7 @@ void CHandHistory::MakeHistory()
 void CHandHistory::WriteHistory()
 {
 	int	betround    = (int) p_betround_calculator->betround();
-	int	dealerchair = (int) p_symbols->sym()->dealerchair;
+	int	dealerchair = (int) p_symbol_engine_dealerchair->dealerchair();
 
 	// !!! this should depend on OHs handresetmethod
 	// !!! A change in handsplayed should be required,
@@ -120,7 +120,7 @@ void CHandHistory::roundStart()
 	double			bblind = p_tablelimits->bblind();
 	int				userchair = (int) p_symbol_engine_userchair->userchair();
 	int				nchairs = (int)p_symbols->sym()->nchairs;
-	int				dealerchair = (int) p_symbols->sym()->dealerchair;
+	int				dealerchair = (int) p_symbol_engine_dealerchair->dealerchair();
 
 	resetVars();
 
@@ -161,7 +161,7 @@ void CHandHistory::checkBetround()
 {
 	int				userchair = (int) p_symbol_engine_userchair->userchair();
 	int				nchairs = (int) p_symbols->sym()->nchairs;
-	int				dealerchair = (int) p_symbols->sym()->dealerchair;
+	int				dealerchair = (int) p_symbol_engine_dealerchair->dealerchair();
 	char			card_common[5][5];
 
 	for(int i=0;i<5;i++)	//Set board card letters
@@ -389,7 +389,7 @@ void CHandHistory::SetPreviousActions()
 {
 	int				betround = (int) p_betround_calculator->betround();
 	int				nchairs = (int) p_symbols->sym()->nchairs;
-	int				dealerchair = (int) p_symbols->sym()->dealerchair;
+	int				dealerchair = (int) p_symbol_engine_dealerchair->dealerchair();
 
 	prevdealerchair = dealerchair;
 	prevround = betround;
@@ -477,7 +477,7 @@ const int CHandHistory::DealPosition (const int chairnum)
 	int		i = 0;
 	int		dealposchair = 0 ;
 	int		e = SUCCESS;
-	int		sym_dealerchair = (int) p_symbols->sym()->dealerchair;
+	int		sym_dealerchair = (int) p_symbol_engine_dealerchair->dealerchair();
 	int		sym_playersdealtbits = (int) p_symbols->sym()->playersdealtbits;
 
 	if (chairnum<0 || chairnum>9)
@@ -711,7 +711,7 @@ void CHandHistory::ReconstructHand(bool contested)
 	double			calculatedPot = 0;
 	int				userchair = (int) p_symbol_engine_userchair->userchair();
 	int				nchairs = (int) p_symbols->sym()->nchairs;
-	int				dealerchair = (int) p_symbols->sym()->dealerchair;
+	int				dealerchair = (int) p_symbol_engine_dealerchair->dealerchair();
 	int				betround = 0;
 	int				prevround = 0;
 	int				nplayersin = 0;

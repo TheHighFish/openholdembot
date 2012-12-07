@@ -247,7 +247,7 @@ CString CReplayFrame::GetPlayerInfoAsHTML()
 			(int) (p_symbols->sym()->playersseatedbits) & (1<<i) ? "s" : "-",
 			p_symbol_engine_userchair->userchair() == i ? "f" : "-",
 			(int) (p_symbols->sym()->playersactivebits) & (1<<i) ? "a" : "-",
-			p_symbols->sym()->dealerchair== i ? "b" : "-",
+			p_symbol_engine_dealerchair->dealerchair()== i ? "b" : "-",
 			(int) (p_symbols->sym()->playersdealtbits) & (1<<i) ? "d" : "-",
 			(int) (p_symbols->sym()->playersplayingbits) & (1<<i) ? "p" : "-");
 		player_info += text;  

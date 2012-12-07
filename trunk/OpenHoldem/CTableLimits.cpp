@@ -2,9 +2,11 @@
 #include "CTableLimits.h"
 
 #include <assert.h>
+#include "CBetroundCalculator.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CSymbols.h"
+#include "CSymbolEngineAutoplayer.h"
+#include "CSymbolEngineDealerchair.h"
 #include "debug.h"
 #include "FloatingPoint_Comparisions.h"
 #include "MagicNumbers.h"
@@ -307,7 +309,7 @@ void CTableLimits::SearchTableForSbAndBbValue()
 	write_log(3, "CTableLimits::SearchTableForSbAndBbValue()\n");
 	for (int i=1; i<=p_tablemap->nchairs(); i++)
 	{
-		int next_chair = (int(p_symbols->sym()->dealerchair + i)) % p_tablemap->nchairs();
+		int next_chair = (p_symbol_engine_dealerchair->dealerchair() + i) % p_tablemap->nchairs();
 		// We do no longer require cards for the players,
 		// as this mixed things up, when e.g. SB folds.
 		// We try to look directly at the bets.
@@ -337,7 +339,7 @@ void CTableLimits::SearchTableForSbAndBbValue()
 				if (tablelimit_unreliable_input.bblind==0)
 				{
 					// Not heads up - normal blinds
-					if (next_chair != p_symbols->sym()->dealerchair)
+					if (next_chair != p_symbol_engine_dealerchair->dealerchair())
 					{
 						SetBigBlind(p_scraper->player_bet(i%p_tablemap->nchairs()));
 						write_log(3, "CTableLimits: found inferred BB at chair %d: %f\n", next_chair, p_scraper->player_bet(i%p_tablemap->nchairs()));
