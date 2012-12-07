@@ -365,7 +365,7 @@ void write_logautoplay(const char * action)
 		nCards=0;
 
 		// player cards
-		if (p_symbols->user_chair_confirmed()) 
+		if (p_symbol_engine_userchair->user_chair_confirmed()) 
 		{
 			for (i=0; i<=1; i++) 
 			{

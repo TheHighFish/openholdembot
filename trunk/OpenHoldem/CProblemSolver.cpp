@@ -2,7 +2,10 @@
 #include "CProblemSolver.h"
 
 #include "CAutoConnector.h"
-#include "CSymbols.h"
+#include "CSymbolEngineActiveDealtPlaying.h"
+#include "CSymbolEnginePokerval.h"
+#include "CSymbolEngineTime.h"
+#include "CSymbolEngineUserchair.h"
 #include "CTableMapLoader.h"
 #include "OH_MessageBox.h"
 
@@ -26,29 +29,29 @@ bool CProblemSolver::NotConnected()
 
 bool CProblemSolver::UserChairUnknown()
 {
-	return (p_symbols->user_chair_confirmed() == false);
+	return (p_symbol_engine_userchair->userchair_confirmed() == false);
 }
 
 bool CProblemSolver::NoOpponents()
 {
-	return (p_symbols->sym()->nopponentsplaying == 0);
+	return (p_symbol_engine_active_dealt_playing->nopponentsplaying() == 0);
 }
 
 bool CProblemSolver::AutoPlayerDidActAtLeastOnce()
 {
 	// We compare the time since connection to the time since last action.
-	return (p_symbols->sym()->elapsed != p_symbols->sym()->elapsedauto);
+	return (p_symbol_engine_time->elapsed() != p_symbol_engine_time->elapsedauto());
 }
 
 bool CProblemSolver::NoCardsVisible()
 {
-	return (p_symbols->sym()->rankhiplayer < 2);
+	return (p_symbol_engine_pokerval->rankhiplayer() < 2);
 }
 
 bool CProblemSolver::NotEnoughButtonsVisible()
 {
 	// We need at least 2 visible buttons to play
-	return (p_symbols->sym()->npcbits < 2);
+	return (p_symbol_engine_pokerval->npcbits() < 2);
 }
 
 

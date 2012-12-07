@@ -175,7 +175,7 @@ int CScraper::CompleteBasicScrapeToFullScrape()
 
 	// If the bitmaps are the same, then return now
 	if (BitmapsSame(_entire_window_last, _entire_window_cur) &&
-		_ucf_last==p_symbols->user_chair_confirmed() &&
+		_ucf_last==p_symbol_engine_userchair->user_chair_confirmed() &&
 		strcmp(_title, _title_last)==0)
 	{
 		DeleteDC(hdcCompatible);
@@ -206,8 +206,8 @@ int CScraper::CompleteBasicScrapeToFullScrape()
 	BitBlt(hdcCompatible, 0, 0, cr.right-cr.left+1, cr.bottom-cr.top+1, hdc, cr.left, cr.top, SRCCOPY);
 	SelectObject(hdc, old_bitmap);
 
-	if (_ucf_last != p_symbols->user_chair_confirmed())
-		_ucf_last = p_symbols->user_chair_confirmed();
+	if (_ucf_last != p_symbol_engine_userchair->user_chair_confirmed())
+		_ucf_last = p_symbol_engine_userchair->user_chair_confirmed();
 
 	__HDC_FOOTER
 
@@ -826,7 +826,7 @@ void CScraper::ScrapeName(int chair)
 	// Player name uname
 	s.Format("uname");
 	r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end() && p_symbols->user_chair_confirmed() && chair==sym_chair && is_seated)
+	if (r_iter != p_tablemap->r$()->end() && p_symbol_engine_userchair->user_chair_confirmed() && chair==sym_chair && is_seated)
 	{
 		ProcessRegion(r_iter);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
@@ -933,7 +933,7 @@ void CScraper::ScrapeBalance(int chair)
 	// Player balance ubalance
 	s.Format("ubalance");
 	r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end() && p_symbols->user_chair_confirmed() && chair==sym_chair && is_seated)
+	if (r_iter != p_tablemap->r$()->end() && p_symbol_engine_userchair->user_chair_confirmed() && chair==sym_chair && is_seated)
 	{
 		ProcessRegion(r_iter);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);

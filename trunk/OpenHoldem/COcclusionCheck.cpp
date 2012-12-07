@@ -21,7 +21,7 @@ COcclusionCheck::~COcclusionCheck()
 
 bool COcclusionCheck::UserChairKnown()
 {
-	if (p_symbols->user_chair_confirmed())
+	if (p_symbol_engine_userchair->user_chair_confirmed())
 	{
 		return true;
 	}

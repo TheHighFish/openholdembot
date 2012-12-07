@@ -78,7 +78,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 
 	int			sym_userchair = (int) p_symbols->sym()->userchair;
 	int			sym_opponentsplayingbits = (int) p_symbols->sym()->opponentsplayingbits;
-	int			sym_nopponentsplaying = (int) p_symbols->sym()->nopponentsplaying;
+	int			sym_nopponentsplaying = (int) p_symbol_engine_active_dealt_playing->nopponentsplaying();
 	int			sym_nplayersseated =  (int) p_symbols->sym()->nplayersseated;
 	int			sym_playersseatedbits =  (int) p_symbols->sym()->playersseatedbits;
 	double		sym_pot = p_symbols->sym()->pot;

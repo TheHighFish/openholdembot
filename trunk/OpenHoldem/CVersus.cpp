@@ -157,7 +157,7 @@ bool CVersus::GetCounts(void)
 	// Get the lock
 	CSLock lock(m_critsec);
 
-	if (!p_symbols->user_chair_confirmed())
+	if (!p_symbol_engine_userchair->user_chair_confirmed())
 		return false;
 
 

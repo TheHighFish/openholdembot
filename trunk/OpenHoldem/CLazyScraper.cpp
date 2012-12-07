@@ -49,7 +49,7 @@ bool CLazyScraper::IsMyTurn()
 
 bool CLazyScraper::HaveCards()
 {
-	if (!p_symbols->user_chair_confirmed())
+	if (!p_symbol_engine_userchair->user_chair_confirmed())
 	{
 		write_log(3, "CLazyScraper::HaveCards(): false, as userchair not confirmed\n");
 		return false;
