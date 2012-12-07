@@ -899,6 +899,10 @@
 				Name="Symbols"
 				>
 				<File
+					RelativePath=".\CBetroundCalculator.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\CEngineContainer.cpp"
 					>
 				</File>
@@ -1440,6 +1444,10 @@
 			<Filter
 				Name="Symbols"
 				>
+				<File
+					RelativePath=".\CBetroundCalculator.h"
+					>
+				</File>
 				<File
 					RelativePath=".\CEngineContainer.h"
 					>
