@@ -83,7 +83,7 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 
 /*
     // nopponentsraising
-    int userchair = _sym.userchair;
+    int userchair = p_symbol_engine_userchair->userchair();
     int first_possible_raiser;
 	int last_possible_raiser;
 	//if (DidAct())

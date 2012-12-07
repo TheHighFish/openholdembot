@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "CSymbolEnginePrwin.h"
 
+#include "CFormula.h"
+#include "CGrammar.h"
 #include "CIteratorThread.h"
 #include "CScraper.h"
 #include "CSymbolenginePokerval.h"
@@ -31,6 +33,7 @@ void CSymbolEnginePrwin::ResetOnNewRound()
 
 void CSymbolEnginePrwin::ResetOnMyTurn()
 {
+	CalculateNOpponents();
 	CalculateProbabilities();
 }
 
@@ -57,7 +60,7 @@ void CSymbolEnginePrwin::CalculateNhands()
 	CardMask		plCards = {0}, comCards = {0}, oppCards = {0}, playerEvalCards = {0}, opponentEvalCards = {0};
 	HandVal			hv_player = 0, hv_opponent = 0;
 	unsigned int	pl_pokval = 0, opp_pokval = 0;
-	double			dummy = 0;
+	int				dummy = 0;
 	int				nplCards = 0, ncomCards = 0;
 
 	// player cards
@@ -130,4 +133,21 @@ void CSymbolEnginePrwin::CalculateNhands()
 	}
 	_prwinnow = pow(((double)_nhandslo/nhands()), _nopponents_for_prwin);
 	_prlosnow = 1 - pow((((double)_nhandslo + _nhandsti)/nhands()), _nopponents_for_prwin);
+}
+
+void CSymbolEnginePrwin::CalculateNOpponents()
+{
+	CGrammar gram;
+	int e = SUCCESS;
+	_nopponents_for_prwin = gram.CalcF$symbol(p_formula, 
+		"f$prwin_number_of_opponents", &e);
+
+	if (_nopponents_for_prwin > MAX_OPPONENTS)
+	{
+		_nopponents_for_prwin = MAX_OPPONENTS;
+	}
+	if (_nopponents_for_prwin < 1)
+	{
+		_nopponents_for_prwin = 1;
+	}
 }
