@@ -2,6 +2,7 @@
 #include "CIteratorThread.h"
 
 #include <process.h>
+#include "CBetroundCalculator.h"
 #include "CGrammar.h"
 #include "CPreferences.h"
 #include "CScraper.h"
