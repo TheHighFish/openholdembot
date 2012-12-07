@@ -36,7 +36,6 @@ void CSymbolEngineCards::InitOnStartup()
 
 	// common cards
 	_nouts = 0;
-	_ncommoncardspresent = 0;
 	_ncommoncardsknown = 0;
 	_ncommoncardsknown = 0;
 
@@ -607,7 +606,6 @@ void CSymbolEngineCards::CalculateCommonCards()
 			_ncommoncardsknown++;							
 		}
 	}
-	//_ncommoncardspresent(); //!!!
 }
 
 

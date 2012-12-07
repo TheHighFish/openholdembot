@@ -1107,7 +1107,6 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "fbits", 5)==0 && strlen(a)==5)						return p_flags_toolbar->GetFlagBits();
 
 	//COMMON CARDS
-	if (memcmp(a, "ncommoncardspresent", 19)==0 && strlen(a)==19)		return symbol_engine_cards.ncommoncardspresent();
 	if (memcmp(a, "ncommoncardsknown", 17)==0 && strlen(a)==17)			return symbol_engine_cards.ncommoncardsknown();
 
 	//(UN)KNOWN CARDS 3(3)
