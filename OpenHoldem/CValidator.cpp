@@ -4,6 +4,7 @@
 #include "CDllExtension.h"
 #include "CPreferences.h"
 #include "CReplayFrame.h"
+#include "CSymbolEngineAutoplayer.h"
 #include "CSymbols.h"
 #include "CValidator.h"
 #include "FloatingPoint_Comparisions.h"
@@ -197,7 +198,7 @@ void CValidator::ValidateGameState()
 	if (// Always enabled?
 		(prefs.validator_enabled() == 2)
 		// Enabled, when it's my turn?
-		|| ((prefs.validator_enabled() == 1) && (p_symbols->sym()->ismyturn)) 
+		|| ((prefs.validator_enabled() == 1) && (p_symbol_engine_autoplayer->ismyturn())) 
 		// Manually enabled via toolbar?
 		|| (_enabled_manually))
 	{
