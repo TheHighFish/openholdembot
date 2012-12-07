@@ -40,7 +40,7 @@ private:
 	double			_sblind_last, _bblind_last, _lim_last, _ante_last, _pot_last;
 	unsigned int	_iterator_thread_progress_last, _card_common_last[5], _card_player_last[10][2];
 	CString			_seated_last[10], _active_last[10], _playername_last[10];
-	bool			_dealer_last[10], _istournament_last;
+	bool			_dealer_last[10], _istournament_last; //!!!
 	double			_playerbalance_last[10], _playerbet_last[10];
 	LOGFONT			_logfont;
 	CPen			_black_pen, _green_pen, _red_pen, _blue_pen, _white_dot_pen, _null_pen;

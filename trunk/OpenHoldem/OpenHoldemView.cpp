@@ -9,7 +9,8 @@
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CStringMatch.h"
-#include "CSymbols.h"
+#include "CSymbolengineChipAmounts.h"
+#include "CSymbols.h" //!!!
 #include "CTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CTableLimits.h"
@@ -177,8 +178,8 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 	double		sym_sblind = p_tablelimits->sblind();
 	double		sym_ante = p_tablelimits->ante();
 	int			sym_lim = p_tablelimits->gametype();
-	bool		sym_istournament = (bool) p_symbols->sym()->istournament;
-	double		sym_pot = p_symbols->sym()->pot;
+	bool		sym_istournament = p_tablelimits->istournament();
+	double		sym_pot = p_symbol_engine_chip_amounts->pot();
 
 	// Get size of current client window
 	GetClientRect(&cr);
@@ -346,8 +347,8 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	double sym_ante			= p_tablelimits->ante();
 	int sym_lim				= p_tablelimits->gametype();
 	CString sym_handnumber	= p_handreset_detector->GetHandNumber();
-	bool sym_istournament	= (bool) p_symbols->sym()->istournament;
-	double sym_pot			= p_symbols->sym()->pot;
+	bool sym_istournament	= p_tablelimits->istournament();
+	double sym_pot			= p_symbol_engine_chip_amounts->pot();
 	bool sym_playing		= (bool) p_symbols->sym()->playing;
 
 	if (prefs.log_symbol_enabled())
