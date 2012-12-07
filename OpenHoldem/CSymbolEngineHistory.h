@@ -38,10 +38,11 @@ public:
 	bool didcall(int betround)			{ return _didcall[betround]; }
 	bool didrais(int betround)			{ return _didrais[betround]; }
 	bool didswag(int betround)			{ return _didswag[betround]; }
+	int prevaction()					{ return _prevaction; }
 private:
 	void CalculateHistory();
 private:
-	double _prevaction;
+	int _prevaction;
 private:
 	// Element 0 is unused
 	// Elements 1..4 are for the 4 betrounds

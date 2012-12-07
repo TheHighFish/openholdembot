@@ -46,9 +46,24 @@ public:
 		}
 	}
 public:
+	int callbits(int betround)
+	{
+		if ((betround >= k_betround_preflop)
+			&& (betround <= k_betround_river))
+		{
+			return _callbits[betround];
+		}
+		else
+		{
+			return k_undefined;
+		}
+	}
+public:
 	int nplayerscallshort()		{ return _nplayerscallshort; }
+	int nopponentsraising()		{ return _nopponentsraising; }
 	int nopponentsbetting()		{ return _nopponentsbetting; }
 	int nopponentsfolded()		{ return _nopponentsfolded; }
+	int nopponentscalling()		{ return _nopponentscalling; }
 	int nopponentschecking()	{ return _nopponentschecking; }
 private:
 	void CalculateNOpponentsCheckingBettingFolded();
@@ -59,8 +74,9 @@ private:
 	int _raischair;
 	int _nplayerscallshort;
 	int _nopponentsbetting;
+	int _nopponentsraising; //!!!
 	int _nopponentsfolded;
-	INT _nopponentscalling;
+	int _nopponentscalling;
 	int _nopponentschecking;
 private:
 	int _raisbits[k_number_of_betrounds + 1];

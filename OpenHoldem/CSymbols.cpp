@@ -14,6 +14,8 @@
 #include "CGrammar.h"
 #include "Chair$Symbols.h"
 #include "CHandresetDetector.h"
+#include "CHeartbeatThread.h"
+#include "CIteratorThread.h"
 #include "MainFrm.h"
 #include "MagicNumbers.h"
 #include "OpenHoldem.h"
@@ -23,6 +25,7 @@
 #include "CScraperAccess.h"
 #include "CSessionCounter.h"
 #include "CStringMatch.h"
+#include "CSymbolEngineLists.h"
 #include "CSymbolEngineRandom.h"
 #include "CTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
@@ -594,7 +597,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "nplayerscallshort", 17)==0 && strlen(a)==17)			return p_symbol_engine_raisers_callers->nplayerscallshort();
 
 		// HISTORY 2(3)
-		if (memcmp(a, "nplayersround", 13)==0 && strlen(a)==13)				return p_symbol_engine_history->nplayersround(_betround)
+		if (memcmp(a, "nplayersround", 13)==0 && strlen(a)==13)				return p_symbol_engine_history->nplayersround(_betround);
 		if (memcmp(a, "nplayersround", 13)==0 && strlen(a)==14)				return p_symbol_engine_history->nplayersround(a[13]-'0');
 	}
 
@@ -816,7 +819,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "isroyalflush", 12)==0 && strlen(a)==12)				return p_symbol_engine_pokerval->isroyalflush();
 
 		// POCKET TESTS
-		if (memcmp(a, "ispair", 6)==0 && strlen(a)==6)						return p_symbol_engine_cards->ispair()
+		if (memcmp(a, "ispair", 6)==0 && strlen(a)==6)						return p_symbol_engine_cards->ispair();
 		if (memcmp(a, "issuited", 8)==0 && strlen(a)==8)					return p_symbol_engine_cards->issuited();
 		if (memcmp(a, "isconnector", 11)==0 && strlen(a)==11)				return p_symbol_engine_cards->isconnector();
 
@@ -868,9 +871,9 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	{
 		// PROBABILITIES
 		// Part 2(2)
-		if (memcmp(a, "prwin", 5)==0 && strlen(a)==5)						return p_symbol_engine_prwin->prwin();
-		if (memcmp(a, "prlos", 5)==0 && strlen(a)==5)						return p_symbol_engine_prwin->prlos();
-		if (memcmp(a, "prtie", 5)==0 && strlen(a)==5)						return p_symbol_engine_prwin->prtie();
+		if (memcmp(a, "prwin", 5)==0 && strlen(a)==5)						return iter_vars.prwin();
+		if (memcmp(a, "prlos", 5)==0 && strlen(a)==5)						return iter_vars.prlos();
+		if (memcmp(a, "prtie", 5)==0 && strlen(a)==5)						return iter_vars.prtie();
 
 		//NHANDS 2(2)
 		if (memcmp(a, "prwinnow", 8)==0 && strlen(a)==8)					return p_symbol_engine_prwin->prwinnow();
@@ -894,15 +897,15 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	// FLUSHES SETS STRAIGHTS 3(5)
 	if (memcmp(a, "nranked", 7)==0)
 	{
-		if (memcmp(a, "nranked", 7)==0 && strlen(a)==7)						return p_symbol_engine_pokerval->nranked();
-		if (memcmp(a, "nrankedcommon", 13)==0 && strlen(a)==13)				return p_symbol_engine_pokerval->nrankedcommon();
+		if (memcmp(a, "nranked", 7)==0 && strlen(a)==7)						return p_symbol_engine_cards->nranked();
+		if (memcmp(a, "nrankedcommon", 13)==0 && strlen(a)==13)				return p_symbol_engine_cards->nrankedcommon();
 	}
 
 	// FLUSHES SETS STRAIGHTS 4(5)
 	if (memcmp(a, "trank", 5)==0)
 	{
-		if (memcmp(a, "trank", 5)==0 && strlen(a)==5)						return p_symbol_engine_pokerval->trank();
-		if (memcmp(a, "trankcommon", 11)==0 && strlen(a)==11)				return p_symbol_engine_pokerval->trankcommon();
+		if (memcmp(a, "trank", 5)==0 && strlen(a)==5)						return p_symbol_engine_cards->trank();
+		if (memcmp(a, "trankcommon", 11)==0 && strlen(a)==11)				return p_symbol_engine_cards->trankcommon();
 	}
 
 	// FLUSHES SETS STRAIGHTS 5(5)
@@ -937,8 +940,8 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	// CHAIRS 1(2)
 	if (memcmp(a, "chair", 5)==0)
 	{
-		if (memcmp(a, "chair$", 6)==0)									return Chair$(*a[6]);
-		if (memcmp(a, "chairbit$", 9)==0)								return Chairbit$(*a[9]);
+		if (memcmp(a, "chair$", 6)==0)									return Chair$(&a[6]);
+		if (memcmp(a, "chairbit$", 9)==0)								return Chairbit$(&a[9]);
 	}
 
 	// Various pot..symbols
@@ -968,19 +971,19 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "originaldealposition", 20)==0 && strlen(a)==20)		return _sym.originaldealposition; //Matrix 2008-05-09
 
 	//CHIP AMOUNTS 2(2)
-	if (memcmp(a, "balance", 7)==0 && strlen(a)==7)						return p_symbol_engine_chip_amounts->balance(userchair);
+	if (memcmp(a, "balance", 7)==0 && strlen(a)==7)						return p_symbol_engine_chip_amounts->balance(_userchair);
 	if (memcmp(a, "balance", 7)==0 && strlen(a)==8)						return p_symbol_engine_chip_amounts->balance(a[7]-'0');
 	if (memcmp(a, "maxbalance", 10)==0 && strlen(a)==10)  				return p_symbol_engine_chip_amounts->maxbalance();
 	if (memcmp(a, "balanceatstartofsession", 23)==0 && strlen(a)==24)	return p_symbol_engine_chip_amounts->balanceatstartofsession();
 	if (memcmp(a, "stack", 5)==0 && strlen(a)==6)						return p_symbol_engine_chip_amounts->stack(a[5]-'0');
-	if (memcmp(a, "currentbet", 10)==0 && strlen(a)==10)				return p_symbol_engine_chip_amounts->currentbet(userchair)
+	if (memcmp(a, "currentbet", 10)==0 && strlen(a)==10)				return p_symbol_engine_chip_amounts->currentbet(_userchair);
 	if (memcmp(a, "currentbet", 10)==0 && strlen(a)==11)				return p_symbol_engine_chip_amounts->currentbet(a[10]-'0');
 	if (memcmp(a, "call", 4)==0 && strlen(a)==4)						return p_symbol_engine_chip_amounts->call();
 	if (memcmp(a, "bet", 3)==0 && strlen(a)==3)							return p_tablelimits->bet();
 	if (memcmp(a, "bet", 3)==0 && strlen(a)==4)							return p_tablelimits->bet(a[3]-'0');
 	
 	//NUMBER OF BETS
-	if (memcmp(a, "nbetstocall", 11)==0 && strlen(a)==11)				return p_symbol_engine_chip_amounts->nbetstocall()
+	if (memcmp(a, "nbetstocall", 11)==0 && strlen(a)==11)				return p_symbol_engine_chip_amounts->nbetstocall();
 	if (memcmp(a, "nbetstorais", 11)==0 && strlen(a)==11)				return p_symbol_engine_chip_amounts->nbetstorais();
 	if (memcmp(a, "ncurrentbets", 12)==0 && strlen(a)==12)				return p_symbol_engine_chip_amounts->ncurrentbets();
 	if (memcmp(a, "ncallbets", 9)==0 && strlen(a)==9)					return p_symbol_engine_chip_amounts->ncallbets();
@@ -991,16 +994,16 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "npcbits", 7)==0 && strlen(a)==7)						return p_symbol_engine_pokerval->npcbits();
 
 	//POKER VALUE CONSTANTS
-	if (memcmp(a, "hicard", 6)==0 && strlen(a)==6)						return k_pokerval_hicard();
-	if (memcmp(a, "onepair", 7)==0 && strlen(a)==7)						return k_pokerval_onepair();
-	if (memcmp(a, "twopair", 7)==0 && strlen(a)==7)						return k_pokerval_twopair();
-	if (memcmp(a, "threeofakind", 12)==0 && strlen(a)==12)				return k_pokerval_threeofakind();
-	if (memcmp(a, "straight", 8)==0 && strlen(a)==8)					return k_pokerval_straight();
-	if (memcmp(a, "flush", 5)==0 && strlen(a)==5)						return k_pokerval_flush();
-	if (memcmp(a, "fullhouse", 9)==0 && strlen(a)==9)					return k_pokerval_fullhouse();
-	if (memcmp(a, "fourofakind", 11)==0 && strlen(a)==11)				return k_pokerval_fourofakind();
-	if (memcmp(a, "straightflush", 13)==0 && strlen(a)==13)				return k_pokerval_straightflush();
-	if (memcmp(a, "royalflush", 10)==0 && strlen(a)==10)				return k_pokerval_royalflush();
+	if (memcmp(a, "hicard", 6)==0 && strlen(a)==6)						return k_pokerval_hicard;
+	if (memcmp(a, "onepair", 7)==0 && strlen(a)==7)						return k_pokerval_onepair;
+	if (memcmp(a, "twopair", 7)==0 && strlen(a)==7)						return k_pokerval_twopair;
+	if (memcmp(a, "threeofakind", 12)==0 && strlen(a)==12)				return k_pokerval_threeofakind;
+	if (memcmp(a, "straight", 8)==0 && strlen(a)==8)					return k_pokerval_straight;
+	if (memcmp(a, "flush", 5)==0 && strlen(a)==5)						return k_pokerval_flush;
+	if (memcmp(a, "fullhouse", 9)==0 && strlen(a)==9)					return k_pokerval_fullhouse;
+	if (memcmp(a, "fourofakind", 11)==0 && strlen(a)==11)				return k_pokerval_fourofakind;
+	if (memcmp(a, "straightflush", 13)==0 && strlen(a)==13)				return k_pokerval_straightflush;
+	if (memcmp(a, "royalflush", 10)==0 && strlen(a)==10)				return k_pokerval_royalflush;
 
 	// callbits, raisbits, etc. 
 	if (memcmp(a, "bblindbits", 10)==0 && strlen(a)==10)  				return p_symbol_engine_blinds->bblindbits();
@@ -1023,7 +1026,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	// HISTORY S
 	// Part 3(3)
 	if (memcmp(a, "prevaction", 10)==0 && strlen(a)==10)				return p_symbol_engine_history->prevaction();
-	if (memcmp(a, "nbetsround", 10)==0 && strlen(a)==10)				return p_symbol_engine_history->nbetsround(_betround)
+	if (memcmp(a, "nbetsround", 10)==0 && strlen(a)==10)				return p_symbol_engine_history->nbetsround(_betround);
 	if (memcmp(a, "nbetsround", 10)==0 && strlen(a)==11)				return p_symbol_engine_history->nbetsround(a[10]-'0');
 
 	// GENERAL
@@ -1038,11 +1041,11 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "lim", 3)==0 && strlen(a)==3)							return p_tablelimits->gametype();
 
 	//PROFILE
-	if (memcmp(a, "sitename$", 9)==0)									return p_tablemap->sitename()->Find(&a[9])!=-1;
-	if (memcmp(a, "network$", 8)==0)									return p_tablemap->network()->Find(&a[8])!=-1;
+	if (memcmp(a, "sitename$", 9)==0)									return p_tablemap->sitename().Find(&a[9])!=-1;
+	if (memcmp(a, "network$", 8)==0)									return p_tablemap->network().Find(&a[8])!=-1;
 
 	//FORMULA FILE
-	if (memcmp(a, "f$prwin_number_of_iterations", 28)==0 && strlen(a)==28)							return _sym->nit;
+	if (memcmp(a, "f$prwin_number_of_iterations", 28)==0 && strlen(a)==28)	return iter_vars.nit(); //!!!
 
 	// AUTOPLAYER 1(2)
 	if (memcmp(a, "myturnbits", 10)==0 && strlen(a)==10)				return p_symbol_engine_autoplayer->myturnbits();
@@ -1059,124 +1062,6 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 
 	*e = ERR_INVALID_SYM;
 	return 0.0;
-}
-
-const double CSymbols::IsHand(const char *a, int *e)
-{
-	int				cardrank[2] = {0}, temp;
-	int				suited = 0;  //0=not specified, 1=suited, 2=offsuit
-	int				cardcnt = 0;
-	int				plcardrank[2] = {0}, plsuited = 0;
-
-	if (strlen(a)<=1)
-	{
-		if (e)
-			*e = ERR_INVALID_SYM;
-		return 0;
-	}
-	assert(a[0] == '$');
-
-	// passed in symbol query
-	for (int i=1; i<(int) strlen(a); i++)
-	{
-		if (a[i]>='2' && a[i]<='9')
-			cardrank[cardcnt++] =  a[i] - '0';
-
-		else if (a[i]=='T' || a[i]=='t')
-			cardrank[cardcnt++] = 10;
-
-		else if (a[i]=='J' || a[i]=='j')
-			cardrank[cardcnt++] = 11;
-
-		else if (a[i]=='Q' || a[i]=='q')
-			cardrank[cardcnt++] = 12;
-
-		else if (a[i]=='K' || a[i]=='k')
-			cardrank[cardcnt++] = 13;
-
-		else if (a[i]=='A' || a[i]=='a')
-			cardrank[cardcnt++] = 14;
-
-		else if (a[i]=='X' || a[i]=='x')
-			cardrank[cardcnt++] = -1;
-
-		else if (a[i]=='S' || a[i]=='s')
-			suited=1;
-
-		else if (a[i]=='O' || a[i]=='o')
-			suited=2;
-
-		else
-		{
-			if (e)
-				*e = ERR_INVALID_SYM;
-			return 0;
-		}
-	}
-
-	if (!_user_chair_confirmed)
-		return 0;
-
-	// sort
-	if (cardrank[1] > cardrank[0])
-	{
-		temp = cardrank[0];
-		cardrank[0] = cardrank[1];
-		cardrank[1] = temp;
-	}
-
-	// playercards
-	plcardrank[0] = Deck_RANK(p_scraper->card_player(p_symbol_engine_userchair->userchair(), 0))+2;
-	plcardrank[1] = Deck_RANK(p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1))+2;
-	if (plcardrank[1] > plcardrank[0])
-	{
-		temp = plcardrank[0];
-		plcardrank[0] = plcardrank[1];
-		plcardrank[1] = temp;
-	}
-	if (Deck_SUIT(p_scraper->card_player(p_symbol_engine_userchair->userchair(), 0)) == 
-		Deck_SUIT(p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1)))
-	{
-		plsuited = 1;
-	}
-	else
-	{
-		plsuited = 0;
-	}
-
-	// check for non suited/offsuit match
-	if (suited==1 && plsuited==0)
-		return 0;
-
-	if (suited==2 && plsuited==1)
-		return 0;
-
-	// check for non rank match
-	// two wildcards
-	if (cardrank[0]==-1 && cardrank[1]==-1)
-		return 1;
-
-	// one card passed in, or one with a wildcard
-	if (cardrank[1]==0 || cardrank[1]==-1)
-	{
-		if (cardrank[0] != plcardrank[0] &&
-				cardrank[0] != plcardrank[1])
-		{
-			return 0;
-		}
-	}
-
-	// two cards passed in
-	else
-	{
-		if (cardrank[0]!=-1 && cardrank[0]!=plcardrank[0])
-			return 0;
-
-		if (cardrank[1]!=-1 && cardrank[1]!=plcardrank[1])
-			return 0;
-	}
-
-	return 1;
 }
 
 void CSymbols::RecordPrevAction(const ActionConstant action)
@@ -1258,10 +1143,5 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 			break;
 	}
 	*/
-}
-
-void CSymbols::CalculateBetround()
-{
-		
 }
 

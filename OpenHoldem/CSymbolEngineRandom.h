@@ -4,7 +4,7 @@
 #include "CVirtualSymbolEngine.h"
 #include "..\CTransform\CTransform.h"
 
-class CSymbolEngineRandom: public CVirtualSymbolEngine
+extern class CSymbolEngineRandom: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineRandom();
@@ -30,6 +30,6 @@ private:
 	double _randomhand;
 	double _randomheartbeat;
 	double _randomround;
-};
+} *p_symbol_engine_random;
 
 #endif INC_CSYMBOLENGINERANDOM_H

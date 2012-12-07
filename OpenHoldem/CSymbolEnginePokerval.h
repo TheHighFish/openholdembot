@@ -22,15 +22,15 @@ public:
 	void ResetOnMyTurn();
 	void ResetOnHeartbeat();
 public:
-	double CalculatePokerval(HandVal hv, int n, int *pcb, int card0, int card1);
+	int CalculatePokerval(HandVal hv, int n, int *pcb, int card0, int card1);
 public:
 	// Public accessors
 	// Pokerval
-	double pokerval()			{ return _pokerval; }
-	double pokervalplayer()		{ return _pokervalplayer; }
-	double pokervalcommon()		{ return _pokervalcommon; }
-	double pcbits()				{ return _pcbits; }
-	double npcbits()			{ return bitcount(_pcbits); }
+	int pokerval()			{ return _pokerval; }
+	int pokervalplayer()		{ return _pokervalplayer; }
+	int pokervalcommon()		{ return _pokervalcommon; }
+	int pcbits()				{ return _pcbits; }
+	int npcbits()			{ return bitcount(_pcbits); }
 	// Hand tests
 	bool ishandup()			{ return _ishandup; }
 	bool ishandupcommon()	{ return _ishandupcommon; }
@@ -45,29 +45,38 @@ public:
 	bool isstraightflush()	{ return _hand_type == HandType_STFLUSH; }
 	bool isroyalflush()		{ return _isroyalflush; }
 	// Pocket/common tests
-	double ishipair()		{ return _ishipair; }
-	double islopair()		{ return _islopair; }
-	double ismidpair()		{ return _ismidpair; }
-	double ishistraight()	{ return _ishistraight; }
-	double ishiflush()		{ return _ishiflush; }
+	int ishipair()		{ return _ishipair; }
+	int islopair()		{ return _islopair; }
+	int ismidpair()		{ return _ismidpair; }
+	int ishistraight()	{ return _ishistraight; }
+	int ishiflush()		{ return _ishiflush; }
+	// Bits
+	int rankbits()			{ return _rankbitsplayer & _rankbitscommon; }
+	int rankbitsplayer()	{ return _rankbitsplayer; }
+	int rankbitscommon()	{ return _rankbitscommon; }
+	int rankbitspoker()		{ return _srankbitspoker; }
+	int srankbits()			{ return _srankbitsplayer & _srankbitscommon; }
+	int srankbitsplayer()	{ return _srankbitsplayer; }
+	int srankbitscommon()	{ return _srankbitscommon; }
+	int srankbitspoker()	{ return _rankbitspoker; }
 	//RANK HI
-	double rankhi()				{ return GetRankHi(_rankbitsplayer & _rankbitscommon); }
-	double rankhicommon()		{ return GetRankHi(_rankbitscommon); }
-	double rankhiplayer()		{ return GetRankHi(_rankbitsplayer); }
-	double rankhipoker()		{ return GetRankHi(_rankbitspoker);  }
-	double srankhi()			{ return GetRankHi(_srankbitsplayer & _srankbitscommon); }
-	double srankhicommon()		{ return GetRankHi(_srankbitscommon); }
-	double srankhiplayer()		{ return GetRankHi(_srankbitsplayer); }
-	double srankhipoker()		{ return GetRankHi(_srankbitspoker);  }
+	int rankhi()			{ return GetRankHi(_rankbitsplayer & _rankbitscommon); }
+	int rankhicommon()		{ return GetRankHi(_rankbitscommon); }
+	int rankhiplayer()		{ return GetRankHi(_rankbitsplayer); }
+	int rankhipoker()		{ return GetRankHi(_rankbitspoker);  }
+	int srankhi()			{ return GetRankHi(_srankbitsplayer & _srankbitscommon); }
+	int srankhicommon()		{ return GetRankHi(_srankbitscommon); }
+	int srankhiplayer()		{ return GetRankHi(_srankbitsplayer); }
+	int srankhipoker()		{ return GetRankHi(_srankbitspoker);  }
 	//RANK LO
-	double ranklo()				{ return GetRankLo(_rankbitsplayer & _rankbitscommon); }
-	double ranklocommon()		{ return GetRankLo(_rankbitscommon); }
-	double rankloplayer()		{ return GetRankLo(_rankbitsplayer); }
-	double ranklopoker()		{ return GetRankLo(_rankbitspoker); }
-	double sranklo()			{ return GetRankLo(_srankbitsplayer & _srankbitscommon); }
-	double sranklocommon()		{ return GetRankLo(_srankbitscommon); }
-	double srankloplayer()		{ return GetRankLo(_srankbitsplayer); }
-	double sranklopoker()		{ return GetRankLo(_srankbitspoker); }
+	int ranklo()				{ return GetRankLo(_rankbitsplayer & _rankbitscommon); }
+	int ranklocommon()		{ return GetRankLo(_rankbitscommon); }
+	int rankloplayer()		{ return GetRankLo(_rankbitsplayer); }
+	int ranklopoker()		{ return GetRankLo(_rankbitspoker); }
+	int sranklo()			{ return GetRankLo(_srankbitsplayer & _srankbitscommon); }
+	int sranklocommon()		{ return GetRankLo(_srankbitscommon); }
+	int srankloplayer()		{ return GetRankLo(_srankbitsplayer); }
+	int sranklopoker()		{ return GetRankLo(_srankbitspoker); }
 private:
 	void CalculateRankBits();
 	void CalcPokerValues();
@@ -89,11 +98,11 @@ private:
 	bool _ishandup;
 	bool _ishandupcommon;
 private:
-	double _ishipair;
-	double _islopair;
-	double _ismidpair;
-	double _ishistraight;
-	double _ishiflush;
+	int _ishipair;
+	int _islopair;
+	int _ismidpair;
+	int _ishistraight;
+	int _ishiflush;
 private:
 	int _rankbitsplayer;
 	int _rankbitscommon;
