@@ -4,6 +4,7 @@
 #include "..\CTablemap\CTablemap.h"
 #include "..\..\dbghelp\dbghelp.h"
 #include "CAutoplayerFunctions.h"
+#include "CBetroundCalculator.h"
 #include "CFilenames.h"
 #include "CIteratorThread.h"
 #include "CPreferences.h"
