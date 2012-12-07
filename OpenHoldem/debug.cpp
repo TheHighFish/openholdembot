@@ -9,6 +9,8 @@
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbols.h"
+#include "CSymbolEngineHandrank.h"
+#include "CSymbolEngineUserchair.h"
 #include "inlines/eval.h"
 #include "OH_MessageBox.h"
 #include "OpenHoldem.h"
@@ -421,9 +423,10 @@ void write_logautoplay(const char * action)
         comcards = comcards.Left(10);
 
         // Always use handrank169 here
-		rank.Format("%.0f", p_symbols->sym()->handrank169);
+		rank.Format("%.0f", p_symbol_engine_handrank->handrank169());
 
         // poker hand
+		// !!! extra function
         hv = Hand_EVAL_N(Cards, nCards);
         if (HandVal_HANDTYPE(hv)==HandType_STFLUSH && StdDeck_RANK(HandVal_TOP_CARD(hv))==Rank_ACE)
             pokerhand="royfl";
@@ -522,6 +525,7 @@ void write_logautoplay(const char * action)
 			p_symbols->sym()->call, 
 			p_tablelimits->bet(), 
 			p_symbol_engine_chip_amounts->pot());
+		int userchair = p_symbol_engine_userchair->userchair();
 		fprintf(log_fp, "%9.2f - %s %s %.2f\n", 
 			p_symbol_engine_chip_amounts->balance(userchair), 
 			fcra_seen.GetString(), 

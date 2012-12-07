@@ -83,7 +83,7 @@ char * keywords = // Standard functions
 				  // Flags
 				  "fmax f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14 f15 f16 f17 f18 f19 "
 				  // Common Cards
-				  "ncommoncardspresent ncommoncardsknown "
+				  "ncommoncardsknown "
 				  // (Un)known Cards
 				  "nouts ncardsknown ncardsunknown ncardsbetter "
 				  // nhands
@@ -3083,7 +3083,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "fbits", "flag button bits 19-0 - 1=pressed 0=notpressed");
 
 	mainParent = parent = AddSymbolTitle("Common Cards", NULL, hCatItem);
-	AddSymbol(parent, "ncommoncardspresent", "number of common cards present (normal or highlighted)");
 	AddSymbol(parent, "ncommoncardsknown", "number of common cards known (normal not highlighted)");
 
 	mainParent = parent = AddSymbolTitle("(Un)known Cards", NULL, hCatItem);
