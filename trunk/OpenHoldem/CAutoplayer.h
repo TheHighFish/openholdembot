@@ -43,7 +43,6 @@ private:
 	bool TimeToHandleSecondaryFormulas();
 	void DoSitinSitoutLeave(void);
 	bool DoChat(void);
-	bool IsFinalAnswer();
 
 private:
 	// private variables - use public accessors and public mutators to address these

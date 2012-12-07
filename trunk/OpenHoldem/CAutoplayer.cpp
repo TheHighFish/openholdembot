@@ -24,7 +24,8 @@
 #include "CReplayFrame.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
-#include "CStableFramesCounter.h"
+#include "CSymbols.h"
+#include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineUserchair.h"
 #include "MainFrm.h"
@@ -350,59 +351,6 @@ bool CAutoplayer::DoAllin(void)
 }
 
 
-bool CAutoplayer::IsFinalAnswer()
-{
-	// [IMPERFECT CODE] Updates stable-frames-counter as a side-effect
-	// and should therefore only get called once per heartbeat.
-
-	bool is_final_answer = true;
-	// check factors that affect isFinalAnswer status
-	if (iter_vars.iterator_thread_running())
-	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because iterator_thread_running\n");
-		is_final_answer = false;
-	}
-
-	// Change from only requiring one visible button (OpenHoldem 2008-04-03)
-	if (p_casino_interface->NumberOfVisibleAutoplayerButtons() < 2)
-	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because num_buttons_visible < 2\n");
-		is_final_answer = false;
-	}
-
-	// if we are not playing (occluded?) 2008-03-25 Matrix
-	if (!p_scraper_access->UserHasCards())
-	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because !p_symbols->sym()->playing\n");
-		is_final_answer = false;
-	}
-
-	//  Avoiding unnecessary calls to p_stableframescounter->UpdateNumberOfStableFrames(),
-	if (is_final_answer)
-	{
-		p_stableframescounter->UpdateNumberOfStableFrames();
-	}
-
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Number of stable frames: % d\n", p_stableframescounter->NumberOfStableFrames());
-	// Scale f$delay to a number of scrapes and avoid division by 0 and negative values
-	unsigned int additional_frames_to_wait = (prefs.scrape_delay() > 0 && p_autoplayer_functions->f$delay() > 0 ? (p_autoplayer_functions->f$delay()/prefs.scrape_delay()) : 0);
-
-	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return.
-	if (p_stableframescounter->NumberOfStableFrames() < prefs.frame_delay() + additional_frames_to_wait)
-	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because we don't have enough stable frames, or have not waited f$delay (=%d ms)\n", (int)p_autoplayer_functions->f$delay());
-		is_final_answer = false;
-	}
-
-	// If the game state processor didn't process this frame, then we should not act.
-	if (!p_game_state->ProcessThisFrame ())
-	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because game state processor didn't process this frame\n");
-		is_final_answer = false;
-	}
-	return is_final_answer;
-}
-
 void CAutoplayer::DoAutoplayer(void) 
 {
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting Autoplayer cadence...\n");
@@ -426,9 +374,7 @@ void CAutoplayer::DoAutoplayer(void)
 	// Care about I86 regions as well
 	HandleInterfacebuttonsI86();
 
-	bool is_final_answer = IsFinalAnswer();
-	p_symbols->set_sym_isfinalanswer(is_final_answer);
-	if(is_final_answer)
+	if(p_symbol_engine_autoplayer->isfinalanswer())
 	{
 		p_autoplayer_functions->CalcPrimaryFormulas();
 		ExecutePrimaryFormulas();
