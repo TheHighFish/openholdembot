@@ -3,7 +3,7 @@
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CStableFramesCounter.h"
-#include "CSymbols.h"
+#include "CSymbolEngineAutoplayer.h"
 #include "MagicNumbers.h"
 
 CStableFramesCounter *p_stableframescounter = NULL;
@@ -44,7 +44,7 @@ void CStableFramesCounter::SaveCurrentState()
 		Saves the current state for future reference
 	*/
 
-	_myturnbitslast = (unsigned int)p_symbols->sym()->myturnbits;
+	_myturnbitslast = p_symbol_engine_autoplayer->myturnbits();
 
 	for (int i=0; i<k_number_of_community_cards; i++)
 		_card_common_last[i] = p_scraper->card_common(i);
@@ -87,7 +87,7 @@ unsigned int CStableFramesCounter::UpdateNumberOfStableFrames()
 
 	bool same_scrape = true;
 
-	if (_myturnbitslast != (unsigned int)p_symbols->sym()->myturnbits)
+	if (_myturnbitslast != p_symbol_engine_autoplayer->myturnbits())
 		same_scrape = false;
 
 	for (int i=0; i<k_number_of_community_cards; i++)

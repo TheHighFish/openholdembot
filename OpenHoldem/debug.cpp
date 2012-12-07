@@ -484,7 +484,7 @@ void write_logautoplay(const char * action)
         }
 
         // fcra_seen
-		int sym_myturnbits = (int) p_symbols->sym()->myturnbits;
+		int sym_myturnbits = p_symbol_engine_autoplayer->myturnbits();
         fcra_seen.Format("%s%s%s%s%s",
                          sym_myturnbits&0x01 ? "F" : ".",
                          sym_myturnbits&0x02 ? "C" : ".",
