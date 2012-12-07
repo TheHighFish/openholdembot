@@ -314,7 +314,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 				_trank = i + 2;															// trank
 			}
 		}
-	_nranked = max;																// nranked
+		_nranked = max;																// nranked
 
 		// nrankedcommon, trankcommon
 		max = 0;
@@ -687,6 +687,124 @@ void CSymbolEngineCards::CalcUnknownCards()
 			}
 		}
 	}
+}
+
+bool CSymbolEngineCards::IsHand(const char *a, int *e)
+{
+	int				cardrank[2] = {0}, temp;
+	int				suited = 0;  //0=not specified, 1=suited, 2=offsuit
+	int				cardcnt = 0;
+	int				plcardrank[2] = {0}, plsuited = 0;
+
+	if (strlen(a)<=1)
+	{
+		if (e)
+			*e = ERR_INVALID_SYM;
+		return false;
+	}
+	assert(a[0] == '$');
+
+	// passed in symbol query
+	for (int i=1; i<(int) strlen(a); i++)
+	{
+		if (a[i]>='2' && a[i]<='9')
+			cardrank[cardcnt++] =  a[i] - '0';
+
+		else if (a[i]=='T' || a[i]=='t')
+			cardrank[cardcnt++] = 10;
+
+		else if (a[i]=='J' || a[i]=='j')
+			cardrank[cardcnt++] = 11;
+
+		else if (a[i]=='Q' || a[i]=='q')
+			cardrank[cardcnt++] = 12;
+
+		else if (a[i]=='K' || a[i]=='k')
+			cardrank[cardcnt++] = 13;
+
+		else if (a[i]=='A' || a[i]=='a')
+			cardrank[cardcnt++] = 14;
+
+		else if (a[i]=='X' || a[i]=='x')
+			cardrank[cardcnt++] = -1;
+
+		else if (a[i]=='S' || a[i]=='s')
+			suited=1;
+
+		else if (a[i]=='O' || a[i]=='o')
+			suited=2;
+
+		else
+		{
+			if (e)
+				*e = ERR_INVALID_SYM;
+			return false;
+		}
+	}
+
+	if (!p_symbol_engine_userchair->userchair_confirmed())
+		return false;
+
+	// sort
+	if (cardrank[1] > cardrank[0])
+	{
+		temp = cardrank[0];
+		cardrank[0] = cardrank[1];
+		cardrank[1] = temp;
+	}
+
+	// playercards
+	plcardrank[0] = Deck_RANK(p_scraper->card_player(p_symbol_engine_userchair->userchair(), 0))+2;
+	plcardrank[1] = Deck_RANK(p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1))+2;
+	if (plcardrank[1] > plcardrank[0])
+	{
+		temp = plcardrank[0];
+		plcardrank[0] = plcardrank[1];
+		plcardrank[1] = temp;
+	}
+	if (Deck_SUIT(p_scraper->card_player(p_symbol_engine_userchair->userchair(), 0)) == 
+		Deck_SUIT(p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1)))
+	{
+		plsuited = 1;
+	}
+	else
+	{
+		plsuited = 0;
+	}
+
+	// check for non suited/offsuit match
+	if (suited==1 && plsuited==0)
+		return false;
+
+	if (suited==2 && plsuited==1)
+		return 0;
+
+	// check for non rank match
+	// two wildcards
+	if (cardrank[0]==-1 && cardrank[1]==-1)
+		return true;
+
+	// one card passed in, or one with a wildcard
+	if (cardrank[1]==0 || cardrank[1]==-1)
+	{
+		if (cardrank[0] != plcardrank[0] &&
+				cardrank[0] != plcardrank[1])
+		{
+			return false;
+		}
+	}
+
+	// two cards passed in
+	else
+	{
+		if (cardrank[0]!=-1 && cardrank[0]!=plcardrank[0])
+			return false;
+
+		if (cardrank[1]!=-1 && cardrank[1]!=plcardrank[1])
+			return false;
+	}
+
+	return true;
 }
 
 int GetRankFromCard(int scraper_card)

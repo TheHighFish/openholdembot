@@ -243,10 +243,14 @@ private:
 	void CalcRankbits(void);
 	void CalcHistory(void);
 
+private:
 	// For internal use only: raischair_previous_frame
 	void set_sym_raischair_previous_frame(const double d) { _sym.raischair_previous_frame = d;}
 
 	CCritSec			m_critsec;
+private:
+	int _betround; //!!!
+	int _userchair;
 private:/*
 	CSymbolEngineRandom			symbol_engine_random;
 	CSymbolEngineTime			symbol_engine_time;
@@ -272,5 +276,5 @@ private:/*
 
 
 //!!!
-double ncardsknown;
-	double ncommoncardsknown;
+//double ncardsknown;
+	//double ncommoncardsknown;

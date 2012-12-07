@@ -23,7 +23,10 @@ public:
 	bool ispair()			{ return _ispair; }
 	bool issuited()			{ return _issuited; }		
 	bool isconnector()		{ return _isconnector; }
+public:
+	bool IsHand(const char *a, int *e);
 
+public:
 	//COMMON CARDS
 	int ncommoncardsknown()		{ return _ncommoncardsknown; }
 

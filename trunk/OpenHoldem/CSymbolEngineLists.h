@@ -3,7 +3,7 @@
 
 #include "CVirtualSymbolEngine.h"
 
-class CSymbolEngineLists: public CVirtualSymbolEngine
+extern class CSymbolEngineLists: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineLists();
@@ -43,6 +43,6 @@ private:
 	bool _is_list[MAX_HAND_LISTS];
 private:
 	int userchair; //!!!
-};
+} *p_symbol_engine_lists;
 
 #endif INC_CSYMBOLENGINELISTS_H
