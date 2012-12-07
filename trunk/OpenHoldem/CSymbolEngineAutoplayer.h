@@ -29,6 +29,7 @@ public:
 	bool isautopost()		{ return _isautopost; }
 	bool isfinalanswer()	{ return _isfinalanswer; }
 	bool isfinaltable()		{ return _isfinaltable; }
+	bool isbring()			{ return _isbring; }
 private:
 	void CalculateMyTurnBits();
 	void CalculateSitInState();
