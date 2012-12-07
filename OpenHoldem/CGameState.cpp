@@ -45,7 +45,7 @@ void CGameState::ProcessGameState(const SHoldemState *pstate)
 {
 	bool		pstate_changed = false;
 	int			betround = (int) p_symbols->sym()->betround;
-	int			sym_nopponentsdealt = (int) p_symbols->sym()->nopponentsdealt;
+	int			sym_nopponentsdealt = (int) p_symbol_engine_prwin->nopponents_for_prwin()dealt;
 	int			sym_nopponentsplaying = (int) p_symbol_engine_active_dealt_playing->nopponentsplaying();
 	bool		sym_ismyturn = (bool) p_symbols->sym()->ismyturn;
 	bool		sym_ismanual = (bool) p_symbols->sym()->ismanual;
@@ -129,7 +129,7 @@ void CGameState::CaptureState(const char *title)
 
 	// figure out if I am playing
 	int sym_chair = (int) p_symbols->sym()->chair;
-	if (!p_symbol_engine_userchair->user_chair_confirmed())
+	if (!p_symbol_engine_userchair->userchair_confirmed())
 	{
 		playing = false;
 	}

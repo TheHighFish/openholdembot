@@ -26,7 +26,8 @@
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CStableFramesCounter.h"
-#include "CSymbols.h"
+#include "CSymbolEngineChipAmounts.h"
+#include "CSymbolEngineUserchair.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
 #include "PokerChat.hpp"
@@ -342,8 +343,9 @@ bool CAutoplayer::DoAllin(void)
 	else
 	{
 		// Fourth case (default = 0): swagging the balance
-		double betsize_for_allin = p_symbols->sym()->currentbet[10 /*!!!*/]
-			+ p_symbol_engine_chip_amounts->balance(userchair); //!!!
+		int userchair = p_symbol_engine_userchair->userchair();
+		double betsize_for_allin = p_symbol_engine_chip_amounts->currentbet(userchair)
+			+ p_symbol_engine_chip_amounts->balance(userchair); 
 		return p_casino_interface->EnterBetsize(betsize_for_allin);
 	}
 }

@@ -5,6 +5,11 @@
 #include "CGameState.h"
 #include "CIteratorThread.h"
 #include "CScraper.h"
+#include "CScraperAccess.h"
+#include "CSymbolEngineAutoplayer.h"
+#include "CSymbolEngineHandrank.h"
+#include "CSymbolEnginePrwin.h"
+#include "CSymbolEngineUserchair.h"
 #include "CSymbols.h"
 #include "MagicNumbers.h"
 
@@ -95,28 +100,14 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 	CString		temp;
 	
 	// Figure out if I am "notplaying"
-	bool playing = false;
-	int sym_userchair = (int) p_symbol_engine_userchair->userchair();
-
-	if (p_scraper->card_player(sym_userchair, 0) == CARD_BACK || 
-		p_scraper->card_player(sym_userchair, 0) == CARD_NOCARD || 
-		p_scraper->card_player(sym_userchair, 1) == CARD_BACK || 
-		p_scraper->card_player(sym_userchair, 1) == CARD_NOCARD)
-	{
-		p_symbols->set_sym_playing(false); 
-		playing = false; 
-	}
-	else
-	{
-		p_symbols->set_sym_playing(true); 
-		playing = true;
-	}
+	bool playing = p_scraper_access->UserHasCards();
+	int sym_userchair = p_symbol_engine_userchair->userchair();
 
 	// Player cards
 	CardMask_RESET(Cards);
 	int nCards = 0;
 	_status_plcards = "";
-	if (p_symbol_engine_userchair->user_chair_confirmed() && playing) 
+	if (p_symbol_engine_userchair->userchair_confirmed() && playing) 
 	{
 		for (int i=0; i<k_number_of_cards_per_player; i++) 
 		{
@@ -171,17 +162,17 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 	_status_pokerhand = _status_pokerhand.Mid(0, _status_pokerhand.Find(" "));
 
 	// Always use handrank169 here
-	_status_handrank.Format("%.0f/169", p_symbols->sym()->handrank169);
+	_status_handrank.Format("%.0f/169", p_symbol_engine_handrank->handrank169());
 
 	// nopponents
 	if (playing)
-		_status_nopp.Format("%d", (int) p_symbols->sym()->nopponents);
+		_status_nopp.Format("%d", p_symbol_engine_prwin->nopponents_for_prwin());
 
 	else
 		_status_nopp = "";
 
 	// Always update prwin/nit
-	if (p_symbol_engine_userchair->user_chair_confirmed() && playing)
+	if (p_symbol_engine_userchair->userchair_confirmed() && playing)
 	{
 		_status_prwin.Format("%d/%d/%d", 
 			(int) (iter_vars.prwin()*1000), 
@@ -196,11 +187,11 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 	{
 		_status_prwin = "0/0/0";
 		int	e = SUCCESS;
-		_status_nit.Format("0/%d", (int) p_symbols->GetSymbolVal("f$prwin_number_of_iterations", &e));
+		_status_nit.Format("0/%d", p_symbols->GetSymbolVal("f$prwin_number_of_iterations", &e));
 	}
 
 	// action
-	if (!p_symbol_engine_userchair->user_chair_confirmed() || !playing)
+	if (!p_symbol_engine_userchair->userchair_confirmed() || !playing)
 		_status_action = "Notplaying";
 
 	else if (p_autoplayer_functions->f$prefold())
@@ -208,17 +199,17 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 		_status_action = "Pre-fold";
 	}
 
-	else if (p_symbol_engine_userchair->user_chair_confirmed() && iter_vars.iterator_thread_complete())
+	else if (p_symbol_engine_userchair->userchair_confirmed() && iter_vars.iterator_thread_complete())
 	{
-		if (!p_symbols->sym()->isfinalanswer) _status_action = "N/A";
-		else if (p_autoplayer_functions->f$alli())    _status_action = "Allin";
-		else if (p_autoplayer_functions->f$betsize()) _status_action.Format("Betsize: %.2f", p_autoplayer_functions->f$betsize());
-		else if (p_autoplayer_functions->f$rais())    _status_action = "Bet/Raise";
-		else if (p_autoplayer_functions->f$call())    _status_action = "Call/Check";
+		if (!p_symbol_engine_autoplayer->isfinalanswer())	_status_action = "N/A";
+		else if (p_autoplayer_functions->f$alli())			_status_action = "Allin";
+		else if (p_autoplayer_functions->f$betsize())		_status_action.Format("Betsize: %.2f", p_autoplayer_functions->f$betsize());
+		else if (p_autoplayer_functions->f$rais())			_status_action = "Bet/Raise";
+		else if (p_autoplayer_functions->f$call())			_status_action = "Call/Check";
 		else  _status_action = "Fold/Check";
 	}
 
-	else if (p_symbols->sym()->nopponents==0)
+	else if (p_symbol_engine_prwin->nopponents_for_prwin()==0)
 		_status_action = "Idle (f$prwin_number_of_opponents==0)";
 
 	else

@@ -349,7 +349,7 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	CString sym_handnumber	= p_handreset_detector->GetHandNumber();
 	bool sym_istournament	= p_tablelimits->istournament();
 	double sym_pot			= p_symbol_engine_chip_amounts->pot();
-	bool sym_playing		= (bool) p_symbols->sym()->playing;
+	bool sym_playing		= p_scaper_access->UserHasCards();
 
 	if (prefs.log_symbol_enabled())
 		height += 16*prefs.log_symbol_max_log();
@@ -438,7 +438,9 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 
 	t.Append(s);
 
-	if (prefs.log_symbol_enabled() && p_symbol_engine_userchair->user_chair_confirmed() && sym_playing) 
+	if (prefs.log_symbol_enabled() 
+		&& p_symbol_engine_userchair->userchair_confirmed() 
+		&& p_scaper_access->UserHasCards()) 
 	{
 		for (int i=0; i<min(5, p_symbols->logsymbols_collection()->GetCount()); i++)
 		{

@@ -7,7 +7,7 @@
 #include "inlines/eval.h"
 
 #include "CScraper.h"
-#include "CSymbols.h"
+#include "CSymbolEngineUserchair.h"
 #include "CPreferences.h"
 #include "CFormula.h"
 #include "CDllExtension.h"
@@ -141,7 +141,7 @@ bool CVersus::GetCounts(void)
 								1528800, 1543500, 1556975, 1569225, 1580250, 1590050, 1598625, 1605975, 1612100,
 								1617000, 1620675, 1623125, 1624350
 							  };
-	int betround = (int) p_symbols->sym()->betround;
+	int betround = p_betround_calculator->betround();
 	int sym_userchair = (int) p_symbol_engine_userchair->userchair();
 
 	unsigned int	pcard[2] = {0};
@@ -157,7 +157,7 @@ bool CVersus::GetCounts(void)
 	// Get the lock
 	CSLock lock(m_critsec);
 
-	if (!p_symbol_engine_userchair->user_chair_confirmed())
+	if (!p_symbol_engine_userchair->userchair_confirmed())
 		return false;
 
 
