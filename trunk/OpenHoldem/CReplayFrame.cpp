@@ -245,7 +245,7 @@ CString CReplayFrame::GetPlayerInfoAsHTML()
 		// seated, friend, active, button, dealt, playing
 		text.Format("      <td>%s%s%s%s%s%s</td>\n",
 			(int) (p_symbols->sym()->playersseatedbits) & (1<<i) ? "s" : "-",
-			p_symbols->sym()->userchair == i ? "f" : "-",
+			p_symbol_engine_userchair->userchair() == i ? "f" : "-",
 			(int) (p_symbols->sym()->playersactivebits) & (1<<i) ? "a" : "-",
 			p_symbols->sym()->dealerchair== i ? "b" : "-",
 			(int) (p_symbols->sym()->playersdealtbits) & (1<<i) ? "d" : "-",

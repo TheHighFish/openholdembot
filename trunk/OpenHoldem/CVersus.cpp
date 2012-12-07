@@ -142,7 +142,7 @@ bool CVersus::GetCounts(void)
 								1617000, 1620675, 1623125, 1624350
 							  };
 	int betround = (int) p_symbols->sym()->betround;
-	int sym_userchair = (int) p_symbols->sym()->userchair;
+	int sym_userchair = (int) p_symbol_engine_userchair->userchair();
 
 	unsigned int	pcard[2] = {0};
 	for (i=0; i<=1; i++)

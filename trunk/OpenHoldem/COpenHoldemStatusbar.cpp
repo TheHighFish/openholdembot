@@ -96,7 +96,7 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 	
 	// Figure out if I am "notplaying"
 	bool playing = false;
-	int sym_userchair = (int) p_symbols->sym()->userchair;
+	int sym_userchair = (int) p_symbol_engine_userchair->userchair();
 
 	if (p_scraper->card_player(sym_userchair, 0) == CARD_BACK || 
 		p_scraper->card_player(sym_userchair, 0) == CARD_NOCARD || 

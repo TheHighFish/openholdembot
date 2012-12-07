@@ -343,7 +343,7 @@ bool CAutoplayer::DoAllin(void)
 	{
 		// Fourth case (default = 0): swagging the balance
 		double betsize_for_allin = p_symbols->sym()->currentbet[10 /*!!!*/]
-			+ p_symbols->sym()->balance[10]; //!!!
+			+ p_symbol_engine_chip_amounts->balance(userchair); //!!!
 		return p_casino_interface->EnterBetsize(betsize_for_allin);
 	}
 }

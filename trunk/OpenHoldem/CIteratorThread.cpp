@@ -156,7 +156,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 			// loop through active opponents
 			for(int i=0; i<k_max_number_of_players; i++) 
 			{
-				if (i==(int) p_symbols->sym()->userchair)
+				if (i==(int) p_symbol_engine_userchair->userchair())
 					continue; //skip our own chair!
 
 				if (!((sym_playersplayingbits) & (1<<i)))
@@ -466,7 +466,7 @@ void CIteratorThread::InitIteratorLoop()
 	iter_vars.set_br((int) p_symbols->sym()->betround);
 
 	for (int i=0; i<k_number_of_cards_per_player; i++)
-		iter_vars.set_pcard(i, p_scraper->card_player((int) p_symbols->sym()->userchair, i));
+		iter_vars.set_pcard(i, p_scraper->card_player((int) p_symbol_engine_userchair->userchair(), i));
 
 	for (int i=0; i<k_number_of_community_cards; i++)
 		iter_vars.set_ccard(i, p_scraper->card_common(i));

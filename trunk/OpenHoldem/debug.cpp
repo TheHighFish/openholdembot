@@ -329,7 +329,7 @@ void write_logautoplay(const char * action)
     HandVal		hv;
     CString		fcra_formula_status;
 
-	int			sym_userchair = (int) p_symbols->sym()->userchair;
+	int			sym_userchair = (int) p_symbol_engine_userchair->userchair();
 	int			betround = (int) p_symbols->sym()->betround;
 
 
@@ -523,7 +523,7 @@ void write_logautoplay(const char * action)
 			p_tablelimits->bet(), 
 			p_symbols->sym()->pot);
 		fprintf(log_fp, "%9.2f - %s %s %.2f\n", 
-			p_symbols->sym()->balance[10], 
+			p_symbol_engine_chip_amounts->balance(userchair), 
 			fcra_seen.GetString(), 
 			fcra_formula_status.GetString(), 
 			p_autoplayer_functions->f$betsize() );

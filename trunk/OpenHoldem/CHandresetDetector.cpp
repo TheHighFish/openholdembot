@@ -125,7 +125,7 @@ void CHandresetDetector::OnNewHeartbeat()
 	{
 		write_log(prefs.debug_alltherest(), "Setting handnumber to [%s] was skipped. Reason: [digits number not in range]\n", handnumber);
 	}
-	int userchair = (int) p_symbols->sym()->userchair;
+	int userchair = (int) p_symbol_engine_userchair->userchair();
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
 		if ((userchair >= 0) && (userchair < p_tablemap->nchairs()))

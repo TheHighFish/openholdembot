@@ -1283,7 +1283,7 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 	// !!! Most things temporary disabled, as this causes only problems
 	// Only needed for Gecko
 
-	int user_chair = p_symbols->sym()->userchair;
+	int user_chair = p_symbol_engine_userchair->userchair();
 	int betround = int(p_symbols->sym()->betround);
 
 	double bet = p_tablelimits->bet(_sym.betround);

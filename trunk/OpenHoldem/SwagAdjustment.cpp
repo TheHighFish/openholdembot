@@ -35,7 +35,7 @@ double MaximumSwagAmount()
 	else
 	{
 		maximum_swag_amount = (p_symbols->sym()->currentbet[10]
-			+ p_symbols->sym()->balance[10]);
+			+ p_symbol_engine_chip_amounts->balance(userchair));
 	}
 	write_log(3, "SwagAdjustment: MaximumSwagAmount: %f\n", maximum_swag_amount);
 	assert(maximum_swag_amount >= 0);
