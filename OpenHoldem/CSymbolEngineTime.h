@@ -17,6 +17,8 @@ public:
 	void ResetOnMyTurn();
 	void ResetOnHeartbeat();
 public:
+	void ResetOnAutoPlayerAction();
+public:
 	// Public accessors
 	double elapsed()		{ return _elapsed; }
 	double elapsedhand()	{ return _elapsedhand; }

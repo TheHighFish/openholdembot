@@ -4,10 +4,13 @@
 #include "..\CTableMap\CTableMapAccess.h"
 #include "CAutoConnector.h"
 #include "CAutoplayerFunctions.h"
+#include "CBetroundCalculator.h"
 #include "CHeartbeatThread.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
+#include "CSymbolEngineHistory.h"
+#include "CSymbolEngineTime.h"
 #include "CSymbols.h"
 #include "MagicNumbers.h"
 #include "MainFrm.h"
@@ -49,7 +52,7 @@ void CCasinoInterface::ClickRect(RECT rect)
 
 	(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect, MouseLeft, 1, GetFocus(), p_null);
 
-	p_symbols->reset_elapsedautohold(); // ???
+	p_symbol_engine_time->ResetOnAutoPlayerAction();
 }
 
 bool CCasinoInterface::ButtonAvailable(int autoplayer_code)
@@ -393,8 +396,9 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 
 		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 	}
-
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending DoSwag, 'didswag' now: %d\n", p_symbols->sym()->didswag[4]);
+	int betround = p_betround_calculator->betround();
+	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending DoSwag, 'didswag' now: %d\n", 
+		p_symbol_engine_history->didswag(betround));
 	return (!lost_focus);
 }
 

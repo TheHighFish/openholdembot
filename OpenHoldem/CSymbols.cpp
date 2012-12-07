@@ -1361,7 +1361,6 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 			assert(k_this_must_not_happen);
 			break;
 	}
-	p_symbols->reset_elapsedautohold();
 }
 
 void CSymbols::CalculateBetround()
