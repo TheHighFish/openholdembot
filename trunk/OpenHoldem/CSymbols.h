@@ -112,10 +112,7 @@ struct SSymbols
 	int callbits[k_number_of_betrounds+1];
 	int foldbits[k_number_of_betrounds+1];
 
-	//COMMON CARDS
-	double ncommoncardspresent;
-
-	//(UN)KNOWN CARDS
+		//(UN)KNOWN CARDS
 	double nouts;
 	
 	double ncardsbetter;

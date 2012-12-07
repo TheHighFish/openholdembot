@@ -25,7 +25,6 @@ public:
 	bool isconnector()		{ return _isconnector; }
 
 	//COMMON CARDS
-	int ncommoncardspresent()	{ return _ncommoncardspresent; }
 	int ncommoncardsknown()		{ return _ncommoncardsknown; }
 
 	//(UN)KNOWN CARDS
