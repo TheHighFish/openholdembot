@@ -3,7 +3,7 @@
 
 #include "CAutoConnector.h"
 #include "CPreferences.h"
-#include "CSymbols.h"
+#include "CSymbolEngineAutoplayer.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
 
@@ -19,7 +19,6 @@ void CheckBringKeyboard(void)
 	CString			c_text = "";
 	int				keybd_item_pos = 0;
 	int				e = SUCCESS;
-	bool			sym_isbring = (bool) p_symbols->sym()->isbring;
 
 	write_log(prefs.debug_autoplayer(), "[BringKeyBoard] Enabling bring-keyboard if necessary.\n");
 
@@ -64,7 +63,7 @@ void CheckBringKeyboard(void)
 		GetMenuItemInfo(bringsysmenu, keybd_item_pos, true, &mii);
 	}
 
-	if (!(mii.fState&MFS_CHECKED) && sym_isbring) 
+	if (!(mii.fState&MFS_CHECKED) && p_symbol_engine_autoplayer->isbring()) 
 	{
 
 		input_count = 0;
