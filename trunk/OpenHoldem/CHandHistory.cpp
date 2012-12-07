@@ -47,7 +47,7 @@ void CHandHistory::MakeHistory()
 
 void CHandHistory::WriteHistory()
 {
-	int	betround    = (int) p_symbols->sym()->betround;
+	int	betround    = (int) p_betround_calculator->betround();
 	int	dealerchair = (int) p_symbols->sym()->dealerchair;
 
 	// !!! this should depend on OHs handresetmethod
@@ -78,7 +78,7 @@ void CHandHistory::WriteHistory()
 void CHandHistory::UpdateSymbols()
 {
 	int	nchairs   = (int) p_symbols->sym()->nchairs;
-	int	betround  = (int) p_symbols->sym()->betround;
+	int	betround  = (int) p_betround_calculator->betround();
 	int	userchair = (int) p_symbol_engine_userchair->userchair();
 	int	players_playing_bits = (int) p_symbols->sym()->playersplayingbits; 
 	
@@ -247,7 +247,7 @@ void CHandHistory::scanPlayerChanges()
 {
 	double			bblind = p_tablelimits->bblind();
 	double			potplayer = p_symbol_engine_chip_amounts->pot()player;
-	int				betround = (int) p_symbols->sym()->betround;
+	int				betround = (int) p_betround_calculator->betround();
 	int				nchairs = (int) p_symbols->sym()->nchairs;
 	int				raischair = (int) p_symbols->sym()->raischair;
 
@@ -387,7 +387,7 @@ const int k_betround_turn		= 3;
 }
 void CHandHistory::SetPreviousActions()
 {
-	int				betround = (int) p_symbols->sym()->betround;
+	int				betround = (int) p_betround_calculator->betround();
 	int				nchairs = (int) p_symbols->sym()->nchairs;
 	int				dealerchair = (int) p_symbols->sym()->dealerchair;
 
@@ -426,7 +426,7 @@ const bool CHandHistory::isShowdown()
 {
 	int				userchair = (int) p_symbol_engine_userchair->userchair();
 	int				nchairs = (int) p_symbols->sym()->nchairs;
-	int				betround = (int) p_symbols->sym()->betround;
+	int				betround = (int) p_betround_calculator->betround();
 
 	//If a player other than the user has cards showing, it is showdown
 	for(int i=0;i<nchairs;i++)
@@ -537,7 +537,7 @@ void CHandHistory::processShowdown()
 }
 const bool CHandHistory::isBigBlind(const int i)
 {
-	int			betround = (int) p_symbols->sym()->betround;
+	int			betround = (int) p_betround_calculator->betround();
 
 	//Determines if chair passed is the big blind
 	return(_history.chair[i].currentBet==bet[betround-1]&&_history.chair[i].ac_dealpos==2&&betround==1);
@@ -580,7 +580,7 @@ const bool CHandHistory::isPlaying(const int i)
 }
 const bool CHandHistory::hasMucked(const int i)
 {
-	int				betround = (int) p_symbols->sym()->betround;
+	int				betround = (int) p_betround_calculator->betround();
 
 	//Precondition: Betround is 4, player has called and has not folded
 	if(betround==4&&(_history.chair[i].currentBet==maxBet||_history.chair[i].currentBalance==(_history.chair[i].prevBalance-maxBet))&&_history.chair[i].seatIsPlaying==true)
@@ -610,7 +610,7 @@ const double CHandHistory::getSB(const double i)
 }
 void CHandHistory::checkAllin(const int i)
 {
-	int			betround = (int) p_symbols->sym()->betround;
+	int			betround = (int) p_betround_calculator->betround();
 
 	//Precondition: Player has gone allin, and this hasn't been caught yet
 	if((_history.chair[i].currentBalance<=maxBet||_history.chair[i].currentBalance==0)&&allin[i]==false) 
