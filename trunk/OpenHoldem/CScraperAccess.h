@@ -18,6 +18,8 @@ public:
 	int		GetCommonCard(int index_zero_to_four);
 	bool	IsValidCard(int Card);
 	int		NumberOfVisibleButtons();
+	bool	PlayerHasCards(int player);
+	bool	UserHasCards();
 
 public:
 	bool get_betpot_button_visible(int numerator, int denominator);

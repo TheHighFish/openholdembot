@@ -5,6 +5,7 @@
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CStringMatch.h"
+#include "CSymbolEngineUserchair.h"
 #include "..\CTablemap\CTableMapAccess.h"
 
 #include "MagicNumbers.h"
@@ -323,4 +324,23 @@ int CScraperAccess::NumberOfVisibleButtons()
 		+ (available_buttons[k_autoplayer_function_fold]  ? 1 : 0);
 
 	return number_of_visible_buttons;
+}
+
+bool CScraperAccess::PlayerHasCards(int player)
+{
+	if (p_scraper->card_player(player, 0) == CARD_BACK 
+		|| p_scraper->card_player(player, 0) == CARD_NOCARD 
+		|| p_scraper->card_player(player, 1) == CARD_BACK 
+		|| p_scraper->card_player(player, 1) == CARD_NOCARD)
+	{
+		return false;
+	}
+	return true;
+}
+
+
+bool CScraperAccess::UserHasCards()
+{
+	int userchair = p_symbol_engine_userchair->userchair();
+	return PlayerHasCards(userchair);
 }
