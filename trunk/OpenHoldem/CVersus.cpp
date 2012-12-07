@@ -3,9 +3,9 @@
 
 #include <io.h>
 #include <fcntl.h>
-
 #include "inlines/eval.h"
 
+#include "CBetroundCalculator.h"
 #include "CScraper.h"
 #include "CSymbolEngineUserchair.h"
 #include "CPreferences.h"
