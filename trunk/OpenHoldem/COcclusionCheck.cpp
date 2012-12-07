@@ -6,7 +6,7 @@
 #include "CGameState.h"
 #include "CPreferences.h"
 #include "CSCraper.h"
-#include "CSymbols.h"
+#include "CSymbolEngineChipAmounts.h"
 #include "debug.h"
 
 
@@ -35,7 +35,8 @@ bool COcclusionCheck::UserChairKnown()
 bool COcclusionCheck::UserBalanceNonZero()
 {
 	int userchair = p_symbol_engine_userchair->userchair();
-	if (UserChairKnown() && (p_symbols->sym()->balance > 0))
+	if (UserChairKnown() 
+		&& (p_symbol_engine_chip_amounts->balance(userchair) > 0))
 	{
 		return true;
 	}
@@ -84,7 +85,7 @@ bool COcclusionCheck::AnyApponentBalanceNonZero()
 	int Userchair = p_symbol_engine_userchair->userchair();
 	for (int i=0; i<=9; i++)
 	{
-		if ((i != Userchair) && (p_symbols->sym()->balance[i] > 0))
+		if ((i != Userchair) && (p_symbol_engine_chip_amounts->balance(i) > 0))
 		{
 			return true;
 		}
