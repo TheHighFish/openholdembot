@@ -103,10 +103,10 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 	int				betround = (int) p_symbols->sym()->betround;
 	int				sym_playersplayingbits = (int) p_symbols->sym()->playersplayingbits;
-	double			sym_nbetsround = p_symbols->sym()->nbetsround[0];
+	double			sym_nbetsround = p_symbols->sym()->nbetsround[0]; //!!! 0?
 	int				sym_bblindbits = (int) p_symbols->sym()->bblindbits;
-	bool			sym_didcall = (bool) p_symbols->sym()->didcall[0];
-	int				sym_nopponents = (int) p_symbols->sym()->nopponents;
+	bool			sym_didcall = (bool) p_symbols->sym()->didcall[0];//!!! 0?
+	int				sym_nopponents = (int) p_symbol_engine_prwin->nopponents_for_prwin();
 
 	int				nopp = sym_nopponents <= MAX_OPPONENTS ? sym_nopponents : MAX_OPPONENTS;
 	bool			hand_lost;
@@ -462,7 +462,7 @@ void CIteratorThread::InitIteratorLoop()
 	iter_vars.set_iterator_thread_complete(false);
 	iter_vars.set_iterator_thread_progress(0);
 	iter_vars.set_nit((int) p_symbols->sym()->nit);
-	iter_vars.set_f$p((int) p_symbols->sym()->nopponents);
+	iter_vars.set_f$p((int) p_symbol_engine_prwin->nopponents_for_prwin());
 	iter_vars.set_br((int) p_symbols->sym()->betround);
 
 	for (int i=0; i<k_number_of_cards_per_player; i++)

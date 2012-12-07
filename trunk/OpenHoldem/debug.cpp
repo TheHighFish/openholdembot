@@ -365,7 +365,7 @@ void write_logautoplay(const char * action)
 		nCards=0;
 
 		// player cards
-		if (p_symbol_engine_userchair->user_chair_confirmed()) 
+		if (p_symbol_engine_userchair->userchair_confirmed()) 
 		{
 			for (i=0; i<=1; i++) 
 			{
@@ -514,7 +514,7 @@ void write_logautoplay(const char * action)
 			(int) (p_symbols->sym()->prlos*1000), 
 			(int) (p_symbols->sym()->prtie*1000));
         fprintf(log_fp, "%2d %8d %-10s - ", 
-			(int) p_symbols->sym()->nopponents,
+			(int) p_symbol_engine_prwin->nopponents_for_prwin(),
 			(int) p_symbols->sym()->nit,
 			bestaction.GetString());
         fprintf(log_fp, "%-5s %9.2f %9.2f %9.2f ", 

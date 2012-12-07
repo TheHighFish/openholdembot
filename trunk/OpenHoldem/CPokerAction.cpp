@@ -363,7 +363,7 @@ const bool CPokerAction::AgchairAfter (void)
 	bool	result = false;
 	int		e = SUCCESS;
 
-	if (!p_symbol_engine_userchair->user_chair_confirmed())
+	if (!p_symbol_engine_userchair->userchair_confirmed())
 		result = false;
 
 	if (AggressorChair()>=0)

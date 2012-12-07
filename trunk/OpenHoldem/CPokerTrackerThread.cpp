@@ -59,6 +59,7 @@ const int CPokerTrackerLookup::GetSiteId()
 {
 	CString network = p_tablemap->network();
 
+	// !!! http://www.maxinmontreal.com/forums/viewtopic.php?f=114&t=12158&p=108712#p108712
 	// If we are using manual mode, we expect an exact match on the lookup
 	if (p_symbols->sym()->ismanual)
 	{
@@ -972,7 +973,7 @@ int CPokerTrackerThread::SkipUpdateForChair(int chair, char* reason)
 {
 	memset(reason,0,100);
 	int userchair = p_symbol_engine_userchair->userchair();
-	bool confirmed = p_symbol_engine_userchair->user_chair_confirmed();
+	bool confirmed = p_symbol_engine_userchair->userchair_confirmed();
 	if (userchair == chair && confirmed)
 	{
 		memcpy(reason, "User sits in this chair", 100);

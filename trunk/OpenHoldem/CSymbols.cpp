@@ -155,6 +155,7 @@ void CSymbols::InitHandranktTableForPrwin()
 void CSymbols::ResetSymbolsFirstTime(void)
 {
 	// Table-limits
+	/*
 	p_tablelimits->ResetOnConnection();
 
 	// formula
@@ -247,10 +248,12 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	// log$ symbols
 	logsymbols_collection_removeall();
 	symboltrace_collection_removeall();
+	*/
 }
 
 void CSymbols::ResetSymbolsNewHand(void)
 {
+	/*
 	p_tablelimits->ResetOnHandreset();
 
 	// action symbols
@@ -261,16 +264,20 @@ void CSymbols::ResetSymbolsNewHand(void)
 
 	set_sym_raischair_previous_frame(-1);
 	set_sym_raischair(-1);
+	*/
 }
 
 void CSymbols::ResetSymbolsNewRound(void)
 {
+	/*
 	set_sym_raischair_previous_frame(-1);
 	set_sym_raischair(-1);
+	*/
 }
 
 void CSymbols::ResetSymbolsEveryCalc(void)
 {
+	/*
 	p_tablelimits->ResetEachHeartBeatCycle();
 
 	// general
@@ -434,6 +441,7 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 	// log$ symbols
 	logsymbols_collection_removeall();
 	symboltrace_collection_removeall();
+	*/
 }
 
 

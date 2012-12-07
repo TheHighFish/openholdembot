@@ -3,7 +3,7 @@
 
 #include "CVirtualSymbolEngine.h"
 
-class CSymbolEngineHandrank: public CVirtualSymbolEngine
+extern class CSymbolEngineHandrank: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineHandrank();
@@ -33,6 +33,6 @@ private:
 	double _handrankp;
 private:
 	int _userchair;
-};
+} *p_symbol_engine_handrank;
 
 #endif INC_CSYMBOLENGINEHANDRANK_H
