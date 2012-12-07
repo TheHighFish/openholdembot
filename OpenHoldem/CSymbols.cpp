@@ -31,10 +31,6 @@
 
 CSymbols			*p_symbols = NULL;
 
-// These can not be function scoped statics because we need to be able to
-// reset them when we connect to a table.
-int CSymbols::_br_last = -1;
-
 //weighted prwin lookup tables for non-suited and suited cards
 int pair2ranko[170] = {0}, pair2ranks[170] = {0};
 //used to resolve ascii cards to numbers for init of above
@@ -46,13 +42,6 @@ CSymbols::CSymbols()
 {
 	ResetSymbolsFirstTime();
 	//!!!InitHandranktTableForPrwin();
-
-	// Betround will be indirectly used 
-	// when a formula gets loaded and verified.
-	// (it gets used for symbol lookups).
-	// So it should have a meaningful value,
-	// even before we connect to a table.
-	set_sym_betround(k_betround_preflop);
 }
 
 CSymbols::~CSymbols()
@@ -161,13 +150,6 @@ void CSymbols::InitHandranktTableForPrwin()
 		_prw1326.chair[i]=_prw1326.vanilla_chair ;
 
 	//end of handrank initialisation
-
-	// Betround will be indirectly used 
-	// when a formula gets loaded and verified.
-	// (it gets used for symbol lookups).
-	// So it should have a meaningful value,
-	// even before we connect to a table.
-	set_sym_betround(k_betround_preflop);
 }*/
 
 void CSymbols::ResetSymbolsFirstTime(void)
@@ -189,7 +171,6 @@ void CSymbols::ResetSymbolsFirstTime(void)
 	set_user_chair_confirmed(false);
 
 	// rounds positions
-	set_sym_betround(k_betround_preflop);
 	set_sym_betposition(0);
 	set_sym_dealposition(0);
 	set_sym_callposition(0);
@@ -262,9 +243,6 @@ void CSymbols::ResetSymbolsFirstTime(void)
 
 	// action symbols
 	p_autoplayer_functions->Reset();
-
-	// Reset semi-persistent hand state when we instantiate CSymbols.
-	CSymbols::_br_last = -1;
 
 	// log$ symbols
 	logsymbols_collection_removeall();
@@ -486,9 +464,6 @@ void CSymbols::CalcSymbols(void)
 
 	if (p_handreset_detector->IsHandreset())
 	{
-		// Save for next pass
-		_br_last = -1;	// ensure betround reset
-
 		// Update game_state so it knows that a new hand has happened
 		p_game_state->set_new_hand(true);
 
@@ -540,8 +515,6 @@ void CSymbols::CalcSymbols(void)
 
 	if (_sym.betround  != _br_last)
 	{
-		_br_last = _sym.betround ;
-
 		// Reset symbols
 		ResetSymbolsNewRound();
 
@@ -599,21 +572,6 @@ void CSymbols::CalcSymbols(void)
 		}
 	}
 }
-/*
-void CSymbols::CalcPlayersOpponents(void)
-{
-	double	last_bet, p_bet, my_bet;
-	bool	found_userchair = false;
-	int		sbchair = -1, bbchair = -1;
-	int		FirstPossibleRaiser = 0, LastPossibleRaiser = 0;
-	int		betround = _sym.betround;
-	
-	}*/
-
-
-
-	
-
 
 
 void CSymbols::CalcUnknownCards(void)
@@ -1400,40 +1358,7 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 
 void CSymbols::CalculateBetround()
 {
-	// Betround is a very important prerequisite
-	// to determine what symbols shall be calculated.
-	// So we can hardly do it with a symbol-engine and do it here
-	if (!p_scraper->IsCommonAnimation())
-	{
-		if (p_scraper->card_common(4) != CARD_NOCARD)
-		{
-			_betround = k_betround_river;
-		}
-		else if (p_scraper->card_common(3) != CARD_NOCARD)
-		{
-			_betround = k_betround_turn;
-		}
-		else if (p_scraper->card_common(2) != CARD_NOCARD 
-			&& p_scraper->card_common(1) != CARD_NOCARD 
-			&& p_scraper->card_common(0) != CARD_NOCARD)
-		{
-			_betround = k_betround_flop;
-		}
-		else
-		{
-			_betround = k_betround_preflop;
-		}
-	}
-	else
-	{
-		// There is a common card animation going on currently
-		// so lets not try to determine the betround,
-		// but if it's a new hand then lets default to pre-flop
-		if (_br_last == -1)
-		{
-			set_sym_betround(k_betround_preflop);
-		}
-	}	
+		
 }
 
 void CSymbols::CalculateNOpponents()

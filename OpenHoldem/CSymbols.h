@@ -228,7 +228,6 @@ private:
 	const double Chair$(const char *a);
 	const double Chairbit$(const char *a);
 	void ResetSymbolsNewHand(void);
-	void ResetSymbolsNewRound(void);
 	void ResetSymbolsEveryCalc(void);
 	bool CalcUserChair(void);
 	void CalcPlayersOpponents(void);
@@ -249,9 +248,6 @@ private:
 
 	// For internal use only: raischair_previous_frame
 	void set_sym_raischair_previous_frame(const double d) { _sym.raischair_previous_frame = d;}
-
-	
-	static int _br_last;
 
 	CCritSec			m_critsec;
 private:

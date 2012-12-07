@@ -2,6 +2,8 @@
 #include "CEngineContainer.h"
 
 #include <assert.h>
+#include "CBetroundCalculator.h"
+#include "CHandresetDetector.h"
 
 
 CEngineContainer::CEngineContainer()
@@ -37,7 +39,26 @@ void CEngineContainer::DestroyAllSymbolEngines()
 
 void CEngineContainer::CallSymbolEnginesToUpdateSymbolsIfNecessary()
 {
-
+	// ResetOnConnection() gets directly called by the auto-connector,
+	// so we don't have to care about that.
+	// We only need to care about:
+	// * ResetOnHandreset()
+	// * ResetOnNewRound()
+	// * ResetOnMyTurn()
+	if (p_handreset_detector->IsHandreset())
+	{
+		ResetOnHandreset();
+	}
+	if (p_betround_calculator->IsNewBetround())
+	{
+		ResetOnNewRound();
+	}
+	if ()
+	{
+		ResetOnMyTurn();
+	}
+	// And finally ResetOnHeartbeat() gets always called.
+	ResetOnHeartbeat();
 }
 
 void CEngineContainer::ResetOnConnection()
