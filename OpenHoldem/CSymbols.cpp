@@ -20,6 +20,7 @@
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CScraper.h"
+#include "CScraperAccess.h"
 #include "CSessionCounter.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineRandom.h"
@@ -501,24 +502,10 @@ void CSymbols::CalcSymbols(void)
 					 "HAND RESET (num: %s dealer: %.0f cards: %s%s): %s\n"
 					 "*************************************************************\n",
 				  p_handreset_detector->GetHandNumber(), 
-				  _sym.dealerchair, card0, card1, title);
+				  p_symbol_engine_dealerchair->dealerchair(), card0, card1, title);
 	}							
 
-	CalculateBetround();													
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Things to do when we have a new round
-	if (_sym.betround == 0) 
-		return;
-
-	if (_sym.betround  != _br_last)
-	{
-		// Reset symbols
-		ResetSymbolsNewRound();
-
-		// log betting round change
-		write_log(k_always_log_basic_information, "ROUND %.0f\n", _sym.betround );
-	}
+	//!!!CalculateBetround();													
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Table limits 
@@ -564,89 +551,10 @@ void CSymbols::CalcSymbols(void)
 		CalcHandrank();			
 		if (_sym.ismyturn) {
 			CalcNhands();				// nhands
-			CalcProbabilities();		// prwin, random
-			*/
+			CalcProbabilities();		// prwin, random	
 		}
+		*/
 	}
-}
-
-
-void CSymbols::CalcUnknownCards(void)
-{
-	int				i = 0;
-	CardMask		stdCards = {0}, commonCards = {0};
-	int				nstdCards = 0, ncommonCards = 0;
-	HandVal			handval_std = 0, handval_std_plus1 = 0, handval_common_plus1 = 0;
-	double			dummy = 0.;
-
-	CardMask_RESET(stdCards);
-	CardMask_RESET(commonCards);
-
-	for (i=0; i<k_number_of_cards_per_player; i++)
-	{
-		// player cards
-		if (p_scraper->card_player(p_symbol_engine_userchair->userchair(), i) != CARD_BACK && 
-			p_scraper->card_player(p_symbol_engine_userchair->userchair(), i) != CARD_NOCARD)
-		{
-			CardMask_SET(stdCards, p_scraper->card_player(p_symbol_engine_userchair->userchair(), i));
-			nstdCards++;
-		}
-	}
-	for (i=0; i<k_number_of_community_cards; i++)
-	{
-		// common cards
-		if (p_scraper->card_common(i) != CARD_BACK &&
-			p_scraper->card_common(i) != CARD_NOCARD)
-		{
-			CardMask_SET(stdCards, p_scraper->card_common(i));
-			nstdCards++;
-			CardMask_SET(commonCards, p_scraper->card_common(i));
-			ncommonCards++;
-		}
-	}
-
-//!!!	set_sym_ncardsknown(nstdCards);														// ncardsknown
-//!!!	set_sym_ncardsunknown(k_number_of_cards_per_deck - _sym.ncardsknown);										// ncardsunknown
-
-	handval_std = Hand_EVAL_N(stdCards, nstdCards);
-
-	if (_user_chair_confirmed)
-		{
-			// iterate through every unseen card and see what happens to our handvals
-			for (i=0; i<k_number_of_cards_per_deck; i++)
-			{
-				if (i!=p_scraper->card_player(p_symbol_engine_userchair->userchair(), 0) && 
-					i!=p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1) &&
-					i!=p_scraper->card_common(0) &&
-					i!=p_scraper->card_common(1) &&
-					i!=p_scraper->card_common(2) &&
-					i!=p_scraper->card_common(3) &&
-					i!=p_scraper->card_common(4))
-				{
-
-					CardMask_SET(stdCards, i);
-					handval_std_plus1 = Hand_EVAL_N(stdCards, nstdCards+1);
-					CardMask_UNSET(stdCards, i);
-
-					CardMask_SET(commonCards, i);
-					handval_common_plus1 = Hand_EVAL_N(commonCards, ncommonCards+1);
-					CardMask_UNSET(commonCards, i);
-
-					if (_sym.betround < k_betround_river 
-						&& HandVal_HANDTYPE(handval_std_plus1) > HandVal_HANDTYPE(handval_std) 
-						&& CalcPokerval(handval_std_plus1, nstdCards+1, &dummy, CARD_NOCARD, CARD_NOCARD) > _sym.pokerval 
-						&& HandVal_HANDTYPE(handval_std_plus1) > HandVal_HANDTYPE(handval_common_plus1))
-					{
-						set_sym_nouts(_sym.nouts+1);										// nouts
-					}
-
-					if (CalcPokerval(handval_common_plus1, ncommonCards+1, &dummy, CARD_NOCARD, CARD_NOCARD) > _sym.pokerval)
-					{
-						set_sym_ncardsbetter(_sym.ncardsbetter+1);							// ncardsbetter
-					}
-				}
-			}
-		}
 }
 
 const double CSymbols::GetSymbolVal(const char *a, int *e)
@@ -894,18 +802,18 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "istournament", 12)==0 && strlen(a)==12)				return p_tablelimits->istournament();
 
 		// HAND TESTS 2(2)
-		if (memcmp(a, "ishandup", 8)==0 && strlen(a)==8)					return p_symbol_engine_cards->ishandup(); 
-		if (memcmp(a, "ishandupcommon", 14)==0 && strlen(a)==14)			return p_symbol_engine_cards->ishandupcommon();
-		if (memcmp(a, "ishicard", 8)==0 && strlen(a)==8)					return p_symbol_engine_cards->ishicard();
-		if (memcmp(a, "isonepair", 9)==0 && strlen(a)==9)					return p_symbol_engine_cards->isonepair();
-		if (memcmp(a, "istwopair", 9)==0 && strlen(a)==9)					return p_symbol_engine_cards->istwopair();
-		if (memcmp(a, "isthreeofakind", 14)==0 && strlen(a)==14)			return p_symbol_engine_cards->isthreeofakind();
-		if (memcmp(a, "isstraight", 10)==0 && strlen(a)==10)				return p_symbol_engine_cards->isstraight();
-		if (memcmp(a, "isflush", 7)==0 && strlen(a)==7)						return p_symbol_engine_cards->isflush();
-		if (memcmp(a, "isfullhouse", 11)==0 && strlen(a)==11)				return p_symbol_engine_cards->isfullhouse();
-		if (memcmp(a, "isfourofakind", 13)==0 && strlen(a)==13)				return p_symbol_engine_cards->isfourofakind();
-		if (memcmp(a, "isstraightflush", 15)==0 && strlen(a)==15)			return p_symbol_engine_cards->isstraightflush();
-		if (memcmp(a, "isroyalflush", 12)==0 && strlen(a)==12)				return p_symbol_engine_cards->isroyalflush();
+		if (memcmp(a, "ishandup", 8)==0 && strlen(a)==8)					return p_symbol_engine_pokerval->ishandup(); 
+		if (memcmp(a, "ishandupcommon", 14)==0 && strlen(a)==14)			return p_symbol_engine_pokerval->ishandupcommon();
+		if (memcmp(a, "ishicard", 8)==0 && strlen(a)==8)					return p_symbol_engine_pokerval->ishicard();
+		if (memcmp(a, "isonepair", 9)==0 && strlen(a)==9)					return p_symbol_engine_pokerval->isonepair();
+		if (memcmp(a, "istwopair", 9)==0 && strlen(a)==9)					return p_symbol_engine_pokerval->istwopair();
+		if (memcmp(a, "isthreeofakind", 14)==0 && strlen(a)==14)			return p_symbol_engine_pokerval->isthreeofakind();
+		if (memcmp(a, "isstraight", 10)==0 && strlen(a)==10)				return p_symbol_engine_pokerval->isstraight();
+		if (memcmp(a, "isflush", 7)==0 && strlen(a)==7)						return p_symbol_engine_pokerval->isflush();
+		if (memcmp(a, "isfullhouse", 11)==0 && strlen(a)==11)				return p_symbol_engine_pokerval->isfullhouse();
+		if (memcmp(a, "isfourofakind", 13)==0 && strlen(a)==13)				return p_symbol_engine_pokerval->isfourofakind();
+		if (memcmp(a, "isstraightflush", 15)==0 && strlen(a)==15)			return p_symbol_engine_pokerval->isstraightflush();
+		if (memcmp(a, "isroyalflush", 12)==0 && strlen(a)==12)				return p_symbol_engine_pokerval->isroyalflush();
 
 		// POCKET TESTS
 		if (memcmp(a, "ispair", 6)==0 && strlen(a)==6)						return p_symbol_engine_cards->ispair()

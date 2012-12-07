@@ -2,7 +2,9 @@
 #include "CSymbolEngineCards.h"
 
 #include "CScraper.h"
+#include "CSymbolEnginePokerval.h"
 #include "CSymbolEngineUserchair.h"
+#include "inlines/eval.h"
 #include "..\CTransform\CTransform.h"
 #include "MagicNumbers.h"
 
@@ -95,7 +97,9 @@ void CSymbolEngineCards::ResetOnHandreset()
 }
 
 void CSymbolEngineCards::ResetOnNewRound()
-{}
+{
+	CalcUnknownCards();
+}
 
 void CSymbolEngineCards::ResetOnMyTurn()
 {}
@@ -608,6 +612,82 @@ void CSymbolEngineCards::CalculateCommonCards()
 	}
 }
 
+
+void CSymbolEngineCards::CalcUnknownCards()
+{
+	CardMask		stdCards = {0}, commonCards = {0};
+	int				nstdCards = 0, ncommonCards = 0;
+	HandVal			handval_std = 0, handval_std_plus1 = 0, handval_common_plus1 = 0;
+	int				dummy = 0;
+
+	CardMask_RESET(stdCards);
+	CardMask_RESET(commonCards);
+
+	for (int i=0; i<k_number_of_cards_per_player; i++)
+	{
+		// player cards
+		if (p_scraper->card_player(p_symbol_engine_userchair->userchair(), i) != CARD_BACK && 
+			p_scraper->card_player(p_symbol_engine_userchair->userchair(), i) != CARD_NOCARD)
+		{
+			CardMask_SET(stdCards, p_scraper->card_player(p_symbol_engine_userchair->userchair(), i));
+			nstdCards++;
+		}
+	}
+	for (int i=0; i<k_number_of_community_cards; i++)
+	{
+		// common cards
+		if (p_scraper->card_common(i) != CARD_BACK &&
+			p_scraper->card_common(i) != CARD_NOCARD)
+		{
+			CardMask_SET(stdCards, p_scraper->card_common(i));
+			nstdCards++;
+			CardMask_SET(commonCards, p_scraper->card_common(i));
+		}
+	}
+
+	_ncardsknown = nstdCards;	
+	_ncardsunknown = k_number_of_cards_per_deck - _ncardsknown;
+
+	handval_std = Hand_EVAL_N(stdCards, nstdCards);
+
+	if (p_symbol_engine_userchair->userchair_confirmed())
+	{
+		// iterate through every unseen card and see what happens to our handvals
+		for (int i=0; i<k_number_of_cards_per_deck; i++)
+		{
+			if (i!=p_scraper->card_player(p_symbol_engine_userchair->userchair(), 0) && 
+				i!=p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1) &&
+				i!=p_scraper->card_common(0) &&
+				i!=p_scraper->card_common(1) &&
+				i!=p_scraper->card_common(2) &&
+				i!=p_scraper->card_common(3) &&
+				i!=p_scraper->card_common(4))
+			{
+
+				CardMask_SET(stdCards, i);
+				handval_std_plus1 = Hand_EVAL_N(stdCards, nstdCards+1);
+				CardMask_UNSET(stdCards, i);
+
+				CardMask_SET(commonCards, i);
+				handval_common_plus1 = Hand_EVAL_N(commonCards, ncommonCards+1);
+				CardMask_UNSET(commonCards, i);
+
+				if (betround < k_betround_river 
+					&& HandVal_HANDTYPE(handval_std_plus1) > HandVal_HANDTYPE(handval_std) 
+					&& p_symbol_engine_pokerval->CalculatePokerval(handval_std_plus1, nstdCards+1, &dummy, CARD_NOCARD, CARD_NOCARD) > p_symbol_engine_pokerval->pokerval()
+					&& HandVal_HANDTYPE(handval_std_plus1) > HandVal_HANDTYPE(handval_common_plus1))
+				{
+					_nouts++;										
+				}
+
+				if (p_symbol_engine_pokerval->CalculatePokerval(handval_common_plus1, ncommonCards+1, &dummy, CARD_NOCARD, CARD_NOCARD) > p_symbol_engine_pokerval->pokerval())
+				{
+					_ncardsbetter++;							
+				}
+			}
+		}
+	}
+}
 
 int GetRankFromCard(int scraper_card)
 {
