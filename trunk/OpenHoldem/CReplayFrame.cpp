@@ -6,6 +6,7 @@
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSessionCounter.h"
+#include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbols.h"
 #include "CTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
@@ -244,12 +245,12 @@ CString CReplayFrame::GetPlayerInfoAsHTML()
 		player_info += text;
 		// seated, friend, active, button, dealt, playing
 		text.Format("      <td>%s%s%s%s%s%s</td>\n",
-			(int) (p_symbols->sym()->playersseatedbits) & (1<<i) ? "s" : "-",
+			(p_symbol_engine_active_dealt_playing->playersseatedbits() & (1<<i) ? "s" : "-",
 			p_symbol_engine_userchair->userchair() == i ? "f" : "-",
-			(int) (p_symbols->sym()->playersactivebits) & (1<<i) ? "a" : "-",
+			(p_symbol_engine_active_dealt_playing->playersactivebits()) & (1<<i) ? "a" : "-",
 			p_symbol_engine_dealerchair->dealerchair()== i ? "b" : "-",
-			(int) (p_symbols->sym()->playersdealtbits) & (1<<i) ? "d" : "-",
-			(int) (p_symbols->sym()->playersplayingbits) & (1<<i) ? "p" : "-");
+			(p_symbol_engine_active_dealt_playing->playersdealtbits()) & (1<<i) ? "d" : "-",
+			(p_symbol_engine_active_dealt_playing->playersplayingbits()) & (1<<i) ? "p" : "-"));
 		player_info += text;  
 		// Cards
 		text.Format("      <td>%s%s</td>\n",
