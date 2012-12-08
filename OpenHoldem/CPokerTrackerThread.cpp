@@ -8,6 +8,7 @@
 #include "CPreferences.h"
 #include "CGameState.h"
 #include "CLevDistance.h"
+#include "CSymbolEngineAutoplayer.h"
 #include "MagicNumbers.h"
 #include "..\CTablemap\CTablemap.h"
 #include "MagicNumbers.h"
@@ -980,7 +981,7 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 {
 	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
 	bool		nameChanged = false;
-	bool		sym_issittingin = (bool) p_symbols->sym()->issittingin;
+	bool		sym_issittingin = p_symbol_engine_autoplayer->issittingin();
 	bool		sym_ismanual = (bool) p_symbol_engine_autoplayer->ismanual();
 	int			i;
 	int			updateType;
@@ -1107,7 +1108,7 @@ bool CPokerTrackerThread::IsFound(int chair)
 UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 {
 	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
-	bool			sym_issittingin = (bool) p_symbols->sym()->issittingin;
+	bool			sym_issittingin = (bool) p_symbo->issittingin;
 	bool			sym_ismanual = (bool) p_symbol_engine_autoplayer->ismanual();
 	int				chr = 0;
 	int				iteration = 0;

@@ -5,17 +5,18 @@
 #include <Windows.h>
 #include <sstream>
 #include <iomanip>
-#include "CSymbols.h"
-#include "CScraper.h"
+#include "CBetroundCalculator.h"
 #include "CGameState.h"
+#include "CScraper.h"
 #include "CSessionCounter.h"
-#include "MagicNumbers.h"
-#include "OpenHoldem.h"
-#include "poker_defs.h"
-
+#include "CSymbolEngineChipAmounts.h"
+#include "CSymbols.h"
 #include "enumerate.h"
 #include "inlines/eval.h"
 #include "inlines/eval_type.h"
+#include "MagicNumbers.h"
+#include "OpenHoldem.h"
+#include "poker_defs.h"
 
 using namespace std;
 
@@ -47,8 +48,8 @@ void CHandHistory::MakeHistory()
 
 void CHandHistory::WriteHistory()
 {
-	int	betround    = (int) p_betround_calculator->betround();
-	int	dealerchair = (int) p_symbol_engine_dealerchair->dealerchair();
+	int	betround    = p_betround_calculator->betround();
+	int	dealerchair = p_symbol_engine_dealerchair->dealerchair();
 
 	// !!! this should depend on OHs handresetmethod
 	// !!! A change in handsplayed should be required,
@@ -103,9 +104,9 @@ void CHandHistory::UpdateSymbols()
 		// This condition gets used for muck detection.
 		if(_history.chair[i].playersPlayingBits != 0)
 		{
-			_history.chair[i].currentBet = p_symbols->sym()->currentbet[i];
+			_history.chair[i].currentBet = p_symbol_engine_chip_amounts->currentbet(i);
 		}
-		_history.chair[i].currentBalance = p_symbols->sym()->balance[i];
+		_history.chair[i].currentBalance = p_symbol_engine_chip_amounts->balance(i);
 
 		char	playername [16]; // !!! Get rid of hard-coded constant
 		strncpy_s(playername, 16, p_scraper->player_name(i).GetString(), 
@@ -125,7 +126,7 @@ void CHandHistory::roundStart()
 	resetVars();
 
 	//Records if there is no small blind
-	if(p_symbols->sym()->currentbet[_history.sblindpos]==0)
+	if(p_symbol_engine_chip_amounts->currentbet(_history.sblindpos)==0)
 		SBfound=false;
 	else
 	{
@@ -246,7 +247,7 @@ void CHandHistory::checkBetround()
 void CHandHistory::scanPlayerChanges()
 {
 	double			bblind = p_tablelimits->bblind();
-	double			potplayer = p_symbol_engine_chip_amounts->pot()player;
+	double			potplayer = p_symbol_engine_chip_amounts->potplayer();
 	int				betround = (int) p_betround_calculator->betround();
 	int				nchairs = (int) p_symbols->sym()->nchairs;
 	int				raischair = (int) p_symbols->sym()->raischair;
