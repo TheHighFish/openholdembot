@@ -9,6 +9,7 @@
 #include "CGameState.h"
 #include "CLevDistance.h"
 #include "CSymbolEngineAutoplayer.h"
+#include "CSymbolEngineTime.h"
 #include "MagicNumbers.h"
 #include "..\CTablemap\CTablemap.h"
 #include "MagicNumbers.h"
@@ -632,7 +633,7 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 	clock_t		updStart, updEnd;
 	int			duration;
 
-	int sym_elapsed = (int) p_symbols->sym()->elapsed;
+	int sym_elapsed = p_symbol_engine_time->elapsed();
 
 	//No more unnecessary queries when we don't even have a siteid to check
 	siteid = pt_lookup.GetSiteId();
@@ -1108,8 +1109,8 @@ bool CPokerTrackerThread::IsFound(int chair)
 UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 {
 	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
-	bool			sym_issittingin = (bool) p_symbo->issittingin;
-	bool			sym_ismanual = (bool) p_symbol_engine_autoplayer->ismanual();
+	bool			sym_issittingin = p_symbol_engine_autoplayer->issittingin();
+	bool			sym_ismanual = p_symbol_engine_autoplayer->ismanual();
 	int				chr = 0;
 	int				iteration = 0;
 	int				players;
