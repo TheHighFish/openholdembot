@@ -389,7 +389,7 @@ bool CSymbolEnginePokerval::IsHigherStraightPossible(HandVal handval)
 	return false;
 }
 
-double CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int card0, int card1)
+int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int card0, int card1)
 {
 	double			pv = 0.;
 	int				i = 0, j = 0, k = 0, max = 0, c = 0, flush_suit = 0; //Matrix 2008-06-28
