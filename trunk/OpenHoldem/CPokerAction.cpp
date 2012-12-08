@@ -237,15 +237,17 @@ const int CPokerAction::PostflopPos (void)
 									sym_betposition==2 ? 5 : 0): 0;
 }
 
+// !!! REMOVE?
 const int CPokerAction::PreflopBets (void)
 {
-	int		result = 0;
-	int		e = SUCCESS;
 
-	if (p_betround_calculator->betround()!=1)
-		result = 0;
-
-	else result = 
+	if (p_betround_calculator->betround() != k_betround_preflop)
+	{
+		return 0;
+	}
+	else
+	{
+		double result = 
 			(FirstIntoPot())				? 1 :   //No Callers - no callers or blinds only (on preflop).
 			(p_symbols->sym()->ncallbets==1)		? 2 :   //Called Pot - 1 bet to call.
 			(p_symbols->sym()->nbetstocall==1 && 
@@ -253,20 +255,21 @@ const int CPokerAction::PreflopBets (void)
 			? 3 :   //Raised Back - 1 more bet to call because someone behind you raised after you've already bet/called/raised.
 			(p_symbols->sym()->ncallbets==2)		? 4 :   //Raised Pot - 2 bets to call.
 			(p_symbols->sym()->ncallbets>=3)		? 5 :0; //Reraised Pot - 3+ bets to call.
-
-	return result;
+		return result;
+	}
 }
 
 const bool CPokerAction::FirstIntoPot (void)
 {
-	bool	result = false;
-	int		e = SUCCESS;
 
-	result = p_betround_calculator->betround()==1 ? 
-		p_symbol_engine_chip_amounts->pot()player <= p_tablelimits->sblind() + p_tablelimits->bblind() : 
-		p_symbol_engine_chip_amounts->pot()player <= 0.1 ;
-
-	return result;
+	if (p_betround_calculator->betround() == k_betround_preflop)
+	{
+		return (p_symbol_engine_chip_amounts->potplayer() <= p_tablelimits->sblind() + p_tablelimits->bblind()); 
+	}
+	else
+	{
+		return (p_symbol_engine_chip_amounts->potplayer() == 0);
+	}
 }
 
 const int CPokerAction::BetPosition (const int chairnum)

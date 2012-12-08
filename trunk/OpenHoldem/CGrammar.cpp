@@ -14,6 +14,7 @@
 #include "CPerl.hpp"
 #include "CPokerAction.h"
 #include "CPreferences.h"
+#include "CSymbolEngineCards.h"
 #include "CSymbols.h"
 #include "CVersus.h"
 #include "FloatingPoint_Comparisions.h"
@@ -342,15 +343,15 @@ double CGrammar::TryToEvaluateSymbolAsOpenPPLSymbol(CFormula * const f, string s
 double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunction **logCallingFunction, int *e)
 {
 	double			result = 0.0;
-	char			f$func[10] = {0};
+	char			f$func[10] = {0}; //!!!
 	const char		*ranks = "  23456789TJQKA";
 	int				rank_temp = 0;
 	
-	int				$$pc0 = (int) p_symbols->sym()->$$pc[0];
-	int				$$pc1 = (int) p_symbols->sym()->$$pc[1];
-	int				rank0 = ($$pc0>>4)&0x0f;
+	int				$$pc0 = p_symbol_engine_cards->$$pc(0);
+	int				$$pc1 = p_symbol_engine_cards->$$pc(1);
+	int				rank0 = ($$pc0>>4)&0x0f; //!!!
 	int				rank1 = ($$pc1>>4)&0x0f;
-	bool			sym_issuited = (bool) p_symbols->sym()->issuited;
+	bool			sym_issuited = p_symbol_engine_cards->issuited();
 
 	// "e" literal
 	if (strcmp(sym.c_str(), "e")==0)
