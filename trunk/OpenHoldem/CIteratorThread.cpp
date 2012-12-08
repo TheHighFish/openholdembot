@@ -6,6 +6,9 @@
 #include "CGrammar.h"
 #include "CPreferences.h"
 #include "CScraper.h"
+#include "CSymbolEngineBlinds.h"
+#include "CSymbolEngineChipAmounts.h"
+#include "CSymbolEngineHistory.h"
 #include "CSymbols.h"
 #include "inlines/eval.h"
 #include "MagicNumbers.h"
@@ -102,12 +105,12 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 	unsigned int	deck[52] = {0}, x = 0, swap = 0;
 	int				numberOfCards = 0;
 
-	int				betround = (int) p_betround_calculator->betround();
-	int				sym_playersplayingbits = (int) p_symbols->sym()->playersplayingbits;
-	double			sym_nbetsround = p_symbols->sym()->nbetsround[0]; //!!! 0?
-	int				sym_bblindbits = (int) p_symbols->sym()->bblindbits;
-	bool			sym_didcall = (bool) p_symbols->sym()->didcall[0];//!!! 0?
-	int				sym_nopponents = (int) p_symbol_engine_prwin->nopponents_for_prwin();
+	int				betround = p_betround_calculator->betround();
+	int				sym_playersplayingbits = p_symbols->sym()->playersplayingbits;
+	double			sym_nbetsround = p_symbol_engine_history->nbetsround(betround);
+	int				sym_bblindbits = p_symbol_engine_blinds->bblindbits();
+	bool			sym_didcall = p_symbol_engine_history->didcall(betround);
+	int				sym_nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
 
 	int				nopp = sym_nopponents <= MAX_OPPONENTS ? sym_nopponents : MAX_OPPONENTS;
 	bool			hand_lost;
