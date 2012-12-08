@@ -1,8 +1,10 @@
 #include "stdafx.h"
 #include "CPokerAction.h"
 
+#include "CBetroundCalculator.h"
 #include "CGameState.h"
 #include "CPokerTrackerThread.h"
+#include "CSymbolEngineRaisersCallers.h"
 #include "CSymbols.h"
 #include "CTableLimits.h"
 
@@ -240,7 +242,7 @@ const int CPokerAction::PostflopPos (void)
 // !!! REMOVE?
 const int CPokerAction::PreflopBets (void)
 {
-
+/*
 	if (p_betround_calculator->betround() != k_betround_preflop)
 	{
 		return 0;
@@ -257,6 +259,8 @@ const int CPokerAction::PreflopBets (void)
 			(p_symbols->sym()->ncallbets>=3)		? 5 :0; //Reraised Pot - 3+ bets to call.
 		return result;
 	}
+	*/
+	return 0;
 }
 
 const bool CPokerAction::FirstIntoPot (void)
@@ -323,39 +327,39 @@ const int CPokerAction::DealPosition (const int chairnum)
 const int CPokerAction::AggressorChair (void)
 {
 	// !!! Plain superfluos code!
-	int		betround = (int) p_betround_calculator->betround();
-	int		sym_raischair = (int) p_symbols->sym()->raischair;
+	int		betround = p_betround_calculator->betround();
+	int		sym_raischair = p_symbol_engine_raisers_callers->raischair();
 
 	// br1, no raises
-	if (betround==1 && p_symbols->sym()->nbetsround[0]==k_betround_preflop)
+	if (betround == k_betround_preflop && p_symbol_engine_history->nbetsround(betround) <= 1)
 		return sym_raischair;
 
 	// br1, someone raised
-	if (betround==k_betround_preflop && p_symbols->sym()->nbetsround[0]>1)
+	if (betround==k_betround_preflop && p_symbol_engine_history->nbetsround(betround)>1)
 		return p_game_state->LastRaised(1)!=-1 ? p_game_state->LastRaised(1) : sym_raischair;
 
 	// br2, no raises
-	if (betround==k_betround_flop && p_symbols->sym()->nbetsround[1]==0)
+	if (betround==k_betround_flop && p_symbol_engine_history->nbetsround(1)==0)
 		return p_game_state->LastRaised(1)!=-1 ? p_game_state->LastRaised(1) : sym_raischair;
 
 	// br2, someone raised
-	if (betround==k_betround_flop && p_symbols->sym()->nbetsround[1]>0)
+	if (betround==k_betround_flop && p_symbol_engine_history->nbetsround(1)>0)
 		return p_game_state->LastRaised(2)!=-1 ? p_game_state->LastRaised(2) : sym_raischair;
 
 	// br3, no raises
-	if (betround==k_betround_turn && p_symbols->sym()->nbetsround[2]==0)
+	if (betround==k_betround_turn && p_symbol_engine_history->nbetsround(2)==0)
 		return p_game_state->LastRaised(2)!=-1 ? p_game_state->LastRaised(2) : sym_raischair;
 
 	// br3, someone raised
-	if (betround==k_betround_turn && p_symbols->sym()->nbetsround[2]>0)
+	if (betround==k_betround_turn && p_symbol_engine_history->nbetsround(2)>0)
 		return p_game_state->LastRaised(3)!=-1 ? p_game_state->LastRaised(3) : sym_raischair;
 
 	// br4, no raises
-	if (betround==k_betround_river && p_symbols->sym()->nbetsround[3]==0)
+	if (betround==k_betround_river && p_symbol_engine_history->nbetsround(3)==0)
 		return p_game_state->LastRaised(3)!=-1 ? p_game_state->LastRaised(3) : sym_raischair;
 
 	// br4, someone raised
-	if (betround==k_betround_river && p_symbols->sym()->nbetsround[3]>0)
+	if (betround==k_betround_river && p_symbol_engine_history->nbetsround(3)>0)
 		return p_game_state->LastRaised(4)!=-1 ? p_game_state->LastRaised(4) : sym_raischair;
 
 	return sym_raischair;

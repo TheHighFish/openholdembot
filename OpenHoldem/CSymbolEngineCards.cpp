@@ -501,7 +501,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 				n = bitcount(((strbits>>i)&0x1f));
 				if (k_cards_needed_for_flush-n < _nstraightflushfill)
 				{
-					_nstraightflushfill = k_cards_needed_for_flusht-n;
+					_nstraightflushfill = k_cards_needed_for_flush - n;
 				}
 			}
 		}
