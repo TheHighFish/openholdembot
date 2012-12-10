@@ -22,7 +22,7 @@ private:
 	void ResetOnMyTurn();
 	void ResetOnHeartbeat();
 private:
-	CVirtualSymbolEngine _symbol_engines[k_max_number_of_symbol_engines]; 
+	CVirtualSymbolEngine *_symbol_engines[k_max_number_of_symbol_engines]; 
 	int _number_of_symbol_engines_loaded;
 } *p_engine_container;
 

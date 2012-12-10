@@ -1,10 +1,13 @@
 #include "stdafx.h"
 #include "CSymbolEngineHandrank.h"
 
+#include <assert.h>
 #include "CScraper.h"
 #include "CSymbolEnginePrwin.h"
 #include "CSymbolEngineUserchair.h"
 #include "MagicNumbers.h"
+
+CSymbolEngineHandrank *p_symbol_engine_handrank = NULL;
 
 int handrank_table_2652[k_max_number_of_players][k_number_of_starting_hands] =
 {
@@ -57,6 +60,18 @@ char *prwin_handrank_table_169[k_number_of_starting_hands] =
 	"J5 ","32 ","Q2 ","J4 ","T5 ","84 ","J3 ","J2 ","T4 ","73 ",
 	"T3 ","T2 ","94 ","62 ","93 ","92 ","83 ","82 ","72 "
 };
+
+CSymbolEngineHandrank::CSymbolEngineHandrank()
+{
+	// The values of some symbol-engines depend on other engines.
+	// As the engines get later called in the order of initialization
+	// we assure correct ordering by checking if they are initialized.
+	assert(p_symbol_engine_prwin != NULL);
+	assert(p_symbol_engine_userchair != NULL);
+}
+
+CSymbolEngineHandrank::~CSymbolEngineHandrank()
+{}
 
 void CSymbolEngineHandrank::InitOnStartup()
 {

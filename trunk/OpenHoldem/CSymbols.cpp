@@ -515,11 +515,11 @@ void CSymbols::CalcSymbols(void)
 	p_tablelimits->CalcTableLimits();
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	CalcPlayersOpponents();				// players/opponents, raischair
-	CalcChipamtsLimits();				// chip amounts, limits
-	CalcNumbets();						// number of bets
-	CalcAutoplayer();					// autoplayer
-	CalcPositionsNonUserchair();		// positions, not depening on userchair
+	//CalcPlayersOpponents();				// players/opponents, raischair
+	//CalcChipamtsLimits();				// chip amounts, limits
+	//CalcNumbets();						// number of bets
+	//CalcAutoplayer();					// autoplayer
+	//CalcPositionsNonUserchair();		// positions, not depening on userchair
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	if (_user_chair_confirmed && p_scraper_access->UserHasCards())
@@ -538,7 +538,7 @@ void CSymbols::CalcSymbols(void)
 		//!!!set_sym_originaldealposition(_sym.dealposition); //remember dealposition
 	}
 
-	CalcHistory();						// history symbols
+	//CalcHistory();						// history symbols
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// number of opponents for prwin

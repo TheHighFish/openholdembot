@@ -7,7 +7,7 @@
 #include "CTableLimits.h"
 #include "MagicNumbers.h"
 
-class CSymbolEnginePrwin: public CVirtualSymbolEngine
+extern class CSymbolEnginePrwin: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEnginePrwin();

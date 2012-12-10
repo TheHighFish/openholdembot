@@ -3,7 +3,6 @@
 
 #include "CVirtualSymbolEngine.h"
 #include "assert.h"
-#include "CSymbolEngineUserChair.h"
 #include "CTableLimits.h"
 #include "MagicNumbers.h"
 

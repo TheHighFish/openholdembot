@@ -126,7 +126,8 @@ private:
 	// common cards
 	unsigned int		_card_common[k_number_of_community_cards];
 	// player cards
-	unsigned int		_card_player[k_max_number_of_players][k_number_of_cards_per_player], _card_player_for_display[k_number_of_cards_per_player];
+	unsigned int		_card_player[k_max_number_of_players][k_number_of_cards_per_player];
+	unsigned int		_card_player_for_display[k_number_of_cards_per_player];
 	// dealer
 	bool				_dealer[k_max_number_of_players];
 

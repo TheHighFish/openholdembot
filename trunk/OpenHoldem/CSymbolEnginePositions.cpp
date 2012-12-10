@@ -1,12 +1,20 @@
 #include "stdafx.h"
 #include "CSymbolEnginePositions.h"
 
+#include <assert.h>
 #include "CScraper.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineUserchair.h"
 
+CSymbolEnginePositions *p_symbol_engine_positions = NULL;
+
 CSymbolEnginePositions::CSymbolEnginePositions()
-{}
+{
+	// The values of some symbol-engines depend on other engines.
+	// As the engines get later called in the order of initialization
+	// we assure correct ordering by checking if they are initialized.
+	assert(p_symbol_engine_userchair != NULL);
+}
 
 CSymbolEnginePositions::~CSymbolEnginePositions()
 {}

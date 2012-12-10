@@ -3,7 +3,7 @@
 
 #include "CVirtualSymbolEngine.h"
 
-class CSymbolEngineDealerchair: public CVirtualSymbolEngine
+extern class CSymbolEngineDealerchair: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineDealerchair();

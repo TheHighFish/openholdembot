@@ -9,6 +9,7 @@
 #include "CSymbolEngineBlinds.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineHistory.h"
+#include "CSymbolEnginePokerval.h"
 #include "CSymbols.h"
 #include "inlines/eval.h"
 #include "MagicNumbers.h"
@@ -101,7 +102,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 	CardMask		addlcomCards = {0}, evalCards = {0}, opp_evalCards = {0}, usedCards = {0}, temp_usedCards = {0};
 	unsigned int	ocard[MAX_OPPONENTS*2] = {0}, card = 0, pl_pokval = 0, opp_pokval = 0, opp_pokvalmax = 0;
 	HandVal			pl_hv = 0, opp_hv = 0;
-	double			dummy = 0;
+	int				dummy = 0;
 	unsigned int	deck[52] = {0}, x = 0, swap = 0;
 	int				numberOfCards = 0;
 
@@ -371,7 +372,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 		CardMask_OR(evalCards, pParent->_plCards, pParent->_comCards);
 		CardMask_OR(evalCards, evalCards, addlcomCards);
 		pl_hv = Hand_EVAL_N(evalCards, 7);
-		pl_pokval = p_symbols->CalcPokerval(pl_hv, 7, &dummy, CARD_NOCARD, CARD_NOCARD);
+		pl_pokval = p_symbol_engine_pokerval->CalculatePokerval(pl_hv, 7, &dummy, CARD_NOCARD, CARD_NOCARD);
 
 		// Scan through opponents' handvals/pokervals
 		// - if we find one better than ours, then we are done, increment los
@@ -385,7 +386,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 			CardMask_SET(opp_evalCards, ocard[i*2]);
 			CardMask_SET(opp_evalCards, ocard[(i*2)+1]);
 			opp_hv = Hand_EVAL_N(opp_evalCards, 7);
-			opp_pokval = p_symbols->CalcPokerval(opp_hv, 7, &dummy, CARD_NOCARD, CARD_NOCARD);
+			opp_pokval = p_symbol_engine_pokerval->CalculatePokerval(opp_hv, 7, &dummy, CARD_NOCARD, CARD_NOCARD);
 
 			if (opp_pokval>pl_pokval)
 			{
