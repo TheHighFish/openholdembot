@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 
+#include <assert.h>
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CStringMatch.h"
@@ -9,8 +10,16 @@
 #include "CTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 
+CSymbolEngineActiveDealtPlaying *p_symbol_engine_active_dealt_playing = NULL;
+
 CSymbolEngineActiveDealtPlaying::CSymbolEngineActiveDealtPlaying()
-{}
+{
+	// The values of some symbol-engines depend on other engines.
+	// As the engines get later called in the order of initialization
+	// we assure correct ordering by checking if they are initialized.
+	assert(p_symbol_engine_dealerchair != NULL);
+	assert(p_symbol_engine_userchair != NULL);
+}
 
 CSymbolEngineActiveDealtPlaying::~CSymbolEngineActiveDealtPlaying()
 {}

@@ -4,6 +4,8 @@
 #include "CScraper.h"
 #include "MagicNumbers.h"
 
+CBetroundCalculator *p_betround_calculator = NULL;
+
 CBetroundCalculator::CBetroundCalculator()
 {
 	// Betround will be indirectly used 

@@ -77,27 +77,29 @@ public:
 	double potcommon()		{ return _potcommon; }
 	double potplayer()		{ return _potplayer; }
 public:
+	double sraiprev()		{ return _sraiprev; }
+	double sraimin()		{ return _sraimin; }
+	double sraimax()		{ return _sraimax; }
+public:
 	double call()			{ return _call;			}
 	double nbetstocall()	{ return _nbetstocall;	}
 	double nbetstorais()	{ return _nbetstorais; 	}
 	double ncallbets()		{ return _ncallbets;	}
 	double nraisbets()		{ return _nraisbets;	}
-public:
-	double sraiprev()		{ return _sraiprev; }
-	double sraimin()		{ return _sraimin; }
-	double sraimax()		{ return _sraimax; }
 private:
 	// private setters
 	void SetBalance(const int player, const double d);
 	void SetMaxBalanceConditionally(const double d);
 	void SetBalanceAtStartOfSessionConditionally(const double d);
-	void CalculateAmountsToCallToRaise();
 private:
 	void CalculateBalances();
 	void CalculateStacks();
 	void CalculateCurrentbets();
 	void CalculatePots();
+	void CalculateAmountsToCallToRaise();
 	void CalculateBetsToCallToRaise();
+private:
+	double Largestbet();
 private:
 	double _balance[k_max_number_of_players];				
 	double _maxbalance;
@@ -111,18 +113,17 @@ private:
 	double _potcommon;
 	double _potplayer;
 private:
+	double _sraiprev;
+	double _sraimin;
+	double _sraimax;
+private:
 	double _call;
 	double _nbetstocall;
 	double _nbetstorais;
 	double _ncallbets;
 	double _nraisbets;
 private:
-	double _sraiprev;
-	double _sraimin;
-	double _sraimax;
-private:
 	int _nchairs;
-	int _raischair; //!!!
 	int _userchair;
 } *p_symbol_engine_chip_amounts;
 

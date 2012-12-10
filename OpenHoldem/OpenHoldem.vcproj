@@ -1010,6 +1010,10 @@
 					RelativePath=".\CVersus.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\CVirtualSymbolEngine.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Usability"

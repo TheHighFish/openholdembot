@@ -3,8 +3,16 @@
 
 #include "MagicNumbers.h"
 
+CSymbolEngineRandom *p_symbol_engine_random = NULL;
+
 CSymbolEngineRandom::CSymbolEngineRandom()
-{}
+{
+	// The values of some symbol-engines depend on other engines.
+	// As the engines get later called in the order of initialization
+	// we assure correct ordering by checking if they are initialized.
+	//
+	// This engine does not use any other engines.
+}
 
 CSymbolEngineRandom::~CSymbolEngineRandom()
 {}

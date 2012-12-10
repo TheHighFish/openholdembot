@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CSymbolEnginePokerval.h"
 
+#include <assert.h>
 #include "CScraper.h"
 #include "CSymbolEngineCards.h"
 #include "..\CTransform\CTransform.h"
@@ -51,6 +52,20 @@
 	_srankloplayer = 0;
 	_sranklopoker = 0;
 	*/
+
+CSymbolEnginePokerval *p_symbol_engine_pokerval = NULL;
+
+CSymbolEnginePokerval::CSymbolEnginePokerval()
+{
+	// The values of some symbol-engines depend on other engines.
+	// As the engines get later called in the order of initialization
+	// we assure correct ordering by checking if they are initialized.
+	assert(p_symbol_engine_cards != NULL);
+	assert(p_symbol_engine_userchair != NULL);
+}
+
+CSymbolEnginePokerval::~CSymbolEnginePokerval()
+{}
 
 void CSymbolEnginePokerval::CalcPokerValues()
 {
@@ -189,10 +204,12 @@ void CSymbolEnginePokerval::CalculateHandType()
 	else if (HandVal_HANDTYPE(handval) == HandType_ONEPAIR)
 	{
 		// hi lo med pair
+		// Only user cards...
 		if (nCards == 2)
 		{
 			_ishipair = true;
 		}
+		// at least flop seen...
 		else if (nCards >= 5)
 		{
 			if (StdDeck_RANK(HandVal_TOP_CARD(handval)) >= rankhicommon())

@@ -4,6 +4,7 @@
 class CVirtualSymbolEngine
 {
 public:
+	CVirtualSymbolEngine();
 	virtual ~CVirtualSymbolEngine();
 public:
 	virtual void ResetOnConnection();

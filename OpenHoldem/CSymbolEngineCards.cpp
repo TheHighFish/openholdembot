@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CSymbolEngineCards.h"
 
+#include <assert.h>
 #include "CScraper.h"
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEngineUserchair.h"
@@ -8,8 +9,19 @@
 #include "..\CTransform\CTransform.h"
 #include "MagicNumbers.h"
 
+CSymbolEngineCards *p_symbol_engine_cards = NULL;
+
 CSymbolEngineCards::CSymbolEngineCards()
-{}
+{
+	// The values of some symbol-engines depend on other engines.
+	// As the engines get later called in the order of initialization
+	// we assure correct ordering by checking if they are initialized.
+	//
+	// We use 2 times the function p_symbol_engine_pokerval->CalculatePokerval,
+	// but luckily this does not create a symbol-dependency.
+	// We leave the file ""CSymbolEnginePokerval.h" here out to avoid a circular dependency.
+	assert(p_symbol_engine_userchair != NULL);
+}
 
 CSymbolEngineCards::~CSymbolEngineCards()
 {}

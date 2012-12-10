@@ -178,7 +178,6 @@ public:
 	void CalcProbabilities(void);
 	void RecordPrevAction(const ActionConstant action);
 	const double GetSymbolVal(const char *a, int *e);
-	const double CalcPokerval(const HandVal handval, const int ncards, double *pcbits, const int pcard0, const int pcard1);
 	const double IsHand(const char *a, int *e=NULL);
 	bool	DidAct(void);
 
@@ -222,17 +221,10 @@ private:
 
 private:
 	// private functions and variables - not available via accessors or mutators
-	const double Chair$(const char *a);
-	const double Chairbit$(const char *a);
 	void ResetSymbolsNewHand(void);
 	void ResetSymbolsEveryCalc(void);
 	bool CalcUserChair(void);
-	void CalcPlayersOpponents(void);
-	void CalcChipamtsLimits(void);
-	void CalcNumbets(void);
-	void CalcAutoplayer(void);
 	void CalcPositionsUserchair(void);
-	void CalcPositionsNonUserchair(void);
 	void CalcPokerValues(void);
 	void CalcUnknownCards(void);
 	void CalcHandTests(void);
@@ -241,7 +233,6 @@ private:
 	void CalcNhands(void);
 	void CalcFlushesStraightsSets(void);
 	void CalcRankbits(void);
-	void CalcHistory(void);
 
 private:
 	// For internal use only: raischair_previous_frame

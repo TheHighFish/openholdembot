@@ -1,13 +1,21 @@
 #include "stdafx.h"
 #include "CSymbolEngineRaisersCallers.h"
 
+#include <assert.h>
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineChipAmounts.h"
 
+CSymbolEngineRaisersCallers *p_symbol_engine_raisers_callers = NULL;
+
 CSymbolEngineRaisersCallers::CSymbolEngineRaisersCallers()
-{}
+{
+	// The values of some symbol-engines depend on other engines.
+	// As the engines get later called in the order of initialization
+	// we assure correct ordering by checking if they are initialized.
+	assert(p_symbol_engine_chip_amounts != NULL);
+}
 
 CSymbolEngineRaisersCallers::~CSymbolEngineRaisersCallers()
 {}

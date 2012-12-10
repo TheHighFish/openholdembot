@@ -2,8 +2,9 @@
 #include "CSymbolEngineChipAmounts.h"
 
 #include "CScraper.h"
-#include "CSymbolEngineRaisersCallers.h"
 #include "CSymbolEngineUserchair.h"
+
+CSymbolEngineChipAmounts *p_symbol_engine_chip_amounts = NULL;
 
 CSymbolEngineChipAmounts::CSymbolEngineChipAmounts()
 {}
@@ -192,17 +193,15 @@ void CSymbolEngineChipAmounts::CalculatePots()
 	}
 }
 
-
-// !!! formerly CalcChipamtsLimits
 void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise() 
 {
 	int	next_largest_bet = 0;
+	double largest_bet = Largestbet();
 
-	if (p_symbol_engine_userchair->userchair_confirmed()
-		&& (_raischair != -1))
+	if (p_symbol_engine_userchair->userchair_confirmed())
+		
 	{
-		_call =  _currentbet[p_symbol_engine_raisers_callers->raischair()] 
-			- _currentbet[_userchair];
+		_call = largest_bet - _currentbet[_userchair];
 	}
 	else
 	{
@@ -212,17 +211,17 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise()
 	next_largest_bet = 0;
 	for (int i=0; i<_nchairs; i++)
 	{
-		if (_currentbet[i] != _currentbet[_raischair] 
+		if (_currentbet[i] != largest_bet 
 			&& _currentbet[i] > next_largest_bet)
 		{
 			next_largest_bet = _currentbet[i];
 		}
 	}
-	_sraiprev = _currentbet[_raischair] - next_largest_bet;			
+	_sraiprev = largest_bet - next_largest_bet;			
 
 	if (p_symbol_engine_userchair->userchair_confirmed())
 	{
-		_sraimin = _currentbet[_userchair] + _call;
+		_sraimin = largest_bet + _call;
 		_sraimax = _balance[_userchair] - _call;
 		if (_sraimax < 0)
 		{
@@ -232,8 +231,6 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise()
 	
 }
 
-
-//!!! formerly void CSymbols::CalcNumbets(void)
 void CSymbolEngineChipAmounts::CalculateBetsToCallToRaise() 
 {
 	double bet = p_tablelimits->bet();
@@ -246,10 +243,22 @@ void CSymbolEngineChipAmounts::CalculateBetsToCallToRaise()
 		_nbetstocall = _call / bet;
 		_nbetstorais = _nbetstocall + 1;	
 	}
-	_ncallbets = _currentbet[_raischair] / bet;					
+	_ncallbets = Largestbet() / bet;				
 	_nraisbets = _ncallbets + 1;												
 }
 
+double CSymbolEngineChipAmounts::Largestbet()
+{
+	double largest_bet = 0.0;
+	for (int i=0; i<_nchairs; i++)
+	{
+		if (_currentbet[i] > largest_bet) 
+		{
+			largest_bet = _currentbet[i];
+		}
+	}
+	return largest_bet;
+}
 
 /*!!!
 

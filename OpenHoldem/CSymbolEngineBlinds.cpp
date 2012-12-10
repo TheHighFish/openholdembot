@@ -1,13 +1,21 @@
 #include "stdafx.h"
 #include "CSymbolEngineBlinds.h"
 
+#include <assert.h>
 #include "CScraper.h"
 #include "CSymbolEnginePositions.h"
 #include "CTableLimits.h"
 #include "MagicNumbers.h"
 
+CSymbolEngineBlinds *p_symbol_engine_blinds = NULL;
+
 CSymbolEngineBlinds::CSymbolEngineBlinds()
-{}
+{
+	// The values of some symbol-engines depend on other engines.
+	// As the engines get later called in the order of initialization
+	// we assure correct ordering by checking if they are initialized.
+	assert(p_symbol_engine_positions != NULL);
+}
 
 CSymbolEngineBlinds::~CSymbolEngineBlinds()
 {}
