@@ -510,7 +510,9 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 	{
 
 		// Autoplayer
-		if ((p_symbol_engine_userchair->userchair_confirmed() && p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)))
+		if ((p_symbol_engine_userchair != NULL
+			&& p_symbol_engine_userchair->userchair_confirmed() 
+			&& p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)))
 		{
 			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
 		}

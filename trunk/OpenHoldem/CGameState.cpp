@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CGameState.h"
 
+#include "assert.h"
 #include "CBetroundCalculator.h"
 #include "CHandresetDetector.h"
 #include "CSymbolEngineAutoplayer.h"
@@ -20,6 +21,12 @@ CGameState			*p_game_state = NULL;
 
 CGameState::CGameState()
 {
+	// Making sure that _hist_sym_count is correct,
+	// to avoid array overflows later if we remove symbols
+	// without adapting the counter.
+	// Last index is (_hist_sym_count - 1).
+	assert(_hist_sym_strings[_hist_sym_count - 1] != NULL);
+
 	_m_ndx = 0;
 	_hands_played = 0;
 	_oppdealt = 0;

@@ -35,8 +35,18 @@ CEngineContainer::~CEngineContainer()
 	DestroyAllSymbolEngines();
 }
 
+void CEngineContainer::CreateSpecialSymbolEngines()
+{
+	// Some engines are "special", because we need to call them up-front,
+	// e.g. to detect a hand-reset.
+	// So they work slightly different and also get their own initialization.
+	p_betround_calculator = new CBetroundCalculator();	
+}
+
 void CEngineContainer::CreateSymbolEngines()
 {
+	CreateSpecialSymbolEngines();
+
 	_number_of_symbol_engines_loaded = 0;
 	// Some symbols to be calculated depend on symbols of other engines.
 	// The engines inserted first will be called first later.
@@ -124,6 +134,11 @@ void CEngineContainer::DestroyAllSymbolEngines()
 		_symbol_engines[i] = NULL;
 	}
 	_number_of_symbol_engines_loaded = 0;
+}
+
+void CEngineContainer::DestroyAllSpecialSymbolEngines()
+{
+	//!!!
 }
 
 void CEngineContainer::CallSymbolEnginesToUpdateSymbolsIfNecessary()
