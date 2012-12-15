@@ -14,8 +14,10 @@ public:
 	void ResetOnConnection();
 	void CallSymbolEnginesToUpdateSymbolsIfNecessary();
 private:
+	void CreateSpecialSymbolEngines();
 	void CreateSymbolEngines();
 	void DestroyAllSymbolEngines();
+	void DestroyAllSpecialSymbolEngines();
 private:
 	void ResetOnHandreset();
 	void ResetOnNewRound();

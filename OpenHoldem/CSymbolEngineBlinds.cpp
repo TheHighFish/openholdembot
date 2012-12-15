@@ -3,7 +3,9 @@
 
 #include <assert.h>
 #include "CScraper.h"
+#include "CSymbolEngineDealerchair.h"
 #include "CSymbolEnginePositions.h"
+#include "CSymbolEngineUserchair.h"
 #include "CTableLimits.h"
 #include "MagicNumbers.h"
 
@@ -14,7 +16,9 @@ CSymbolEngineBlinds::CSymbolEngineBlinds()
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
+	assert(p_symbol_engine_dealerchair != NULL);
 	assert(p_symbol_engine_positions != NULL);
+	assert(p_symbol_engine_userchair != NULL);
 }
 
 CSymbolEngineBlinds::~CSymbolEngineBlinds()
@@ -32,6 +36,8 @@ void CSymbolEngineBlinds::ResetOnConnection()
 
 void CSymbolEngineBlinds::ResetOnHandreset()
 {
+	_userchair   = p_symbol_engine_userchair->userchair();
+	_dealerchair = p_symbol_engine_dealerchair->dealerchair();
 	_playersblindbits = 0;
 	_bblindbits = 0;
 }

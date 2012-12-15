@@ -76,7 +76,7 @@ private:
 	int					_ftr_ncommoncardsknown_last;
 	int					_ftr_nplayersdealt_last;
 
-	static const int	_hist_sym_count = 97;
+	static const int	_hist_sym_count = 93;
 	double				_hist_sym[_hist_sym_count][k_number_of_betrounds];
 	static const char	*_hist_sym_strings[_hist_sym_count];
 

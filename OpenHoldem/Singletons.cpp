@@ -8,6 +8,7 @@
 #include "CAutoplayerFunctions.h"
 #include "CConfigurationCheck.h"
 #include "CDllExtension.h"
+#include "CEngineContainer.h"
 #include "CFilenames.h"
 #include "CFileSystemMonitor.h"
 #include "CFormula.h"
@@ -93,6 +94,8 @@ void InstantiateAllSingletons()
 		p_tablemap_loader = new CTableMapLoader;
 	if (!p_autoconnector) 
 		p_autoconnector = new CAutoConnector;
+	if (!p_engine_container)
+		p_engine_container = new CEngineContainer;
 	if (!p_rebuymanagement) 
 		p_rebuymanagement = new CRebuyManagement;
 	if (!p_occlusioncheck) 
@@ -155,6 +158,8 @@ void DeleteAllSingletons()
 		{ delete p_occlusioncheck; p_occlusioncheck = NULL; }
 	if (p_rebuymanagement) 
 		{ delete p_rebuymanagement; p_rebuymanagement = NULL; }
+	if (p_engine_container)
+		{ delete p_engine_container; p_engine_container = NULL; }
 	if (p_autoconnector) 
 		{ delete p_autoconnector; p_autoconnector = NULL; }
 	if (p_tablemap_loader)

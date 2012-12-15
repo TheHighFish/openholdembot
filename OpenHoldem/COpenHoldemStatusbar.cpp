@@ -98,17 +98,25 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 {
 	CardMask	Cards;
 	CString		temp;
+
+	if (p_symbol_engine_userchair == NULL)
+	{
+		// Very early phase of initialization
+		// Can't continue here.
+		return;
+	}
 	
 	// Figure out if I am "notplaying"
 	bool playing = p_scraper_access->UserHasCards();
-	int sym_userchair = p_symbol_engine_userchair->userchair();
 
 	// Player cards
 	CardMask_RESET(Cards);
 	int nCards = 0;
 	_status_plcards = "";
-	if (p_symbol_engine_userchair->userchair_confirmed() && playing) 
+	if (p_symbol_engine_userchair->userchair_confirmed() 
+		&& playing) 
 	{
+		int sym_userchair = p_symbol_engine_userchair->userchair();
 		for (int i=0; i<k_number_of_cards_per_player; i++) 
 		{
 			// player cards

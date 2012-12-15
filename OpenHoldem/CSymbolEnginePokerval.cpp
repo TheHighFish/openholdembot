@@ -67,6 +67,25 @@ CSymbolEnginePokerval::CSymbolEnginePokerval()
 CSymbolEnginePokerval::~CSymbolEnginePokerval()
 {}
 
+void CSymbolEnginePokerval::InitOnStartup()
+{}
+
+void CSymbolEnginePokerval::ResetOnConnection()
+{}
+
+void CSymbolEnginePokerval::ResetOnHandreset()
+{}
+
+void CSymbolEnginePokerval::ResetOnNewRound()
+{}
+
+void CSymbolEnginePokerval::ResetOnMyTurn()
+{}
+
+void CSymbolEnginePokerval::ResetOnHeartbeat()
+{}
+
+
 void CSymbolEnginePokerval::CalcPokerValues()
 {
 	CardMask		Cards = {0};
