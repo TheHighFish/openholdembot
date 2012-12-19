@@ -3,6 +3,7 @@
 
 #include <assert.h>
 #include "CScraper.h"
+#include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEnginePositions.h"
 #include "CSymbolEngineUserchair.h"
@@ -54,6 +55,10 @@ bool CSymbolEngineBlinds::BlindsAreUnknown()
 
 void CSymbolEngineBlinds::ResetOnMyTurn()
 {
+	_nplayersdealt      = p_symbol_engine_active_dealt_playing->nplayersdealt();
+	_playersplayingbits = p_symbol_engine_active_dealt_playing->playersplayingbits();
+	_dealerchair        = p_symbol_engine_dealerchair->dealerchair();
+
 	// Only updating when it is my turn (stable frames)
 	// and blinds are unknown
 	if (BlindsAreUnknown())

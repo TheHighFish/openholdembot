@@ -50,6 +50,8 @@ void CSymbolEngineChipAmounts::ResetOnMyTurn()
 
 void CSymbolEngineChipAmounts::ResetOnHeartbeat()
 {
+	_userchair = p_symbol_engine_userchair->userchair();
+
 	CalculateBalances();
 	CalculateStacks();
 	CalculateCurrentbets();
