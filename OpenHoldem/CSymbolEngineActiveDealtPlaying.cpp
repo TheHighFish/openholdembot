@@ -28,16 +28,18 @@ void CSymbolEngineActiveDealtPlaying::InitOnStartup()
 {}
 
 void CSymbolEngineActiveDealtPlaying::ResetOnConnection()
-{}
+{
+	_nchairs = p_tablemap->nchairs();
+}
 
 void CSymbolEngineActiveDealtPlaying::ResetOnHandreset()
 {
 	_userchair   = p_symbol_engine_userchair->userchair();
-	_dealerchair = p_symbol_engine_dealerchair->dealerchair();
-	_nchairs     = p_tablemap->nchairs();
-	_bblind      = p_tablelimits->bblind();
-
-	_playersdealtbits = 0;
+	
+	_playersdealtbits   = 0;
+	_playersactivebits  = 0;
+	_playersplayingbits = 0;
+	_playersseatedbits  = 0;
 }
 
 void CSymbolEngineActiveDealtPlaying::ResetOnNewRound()
@@ -48,6 +50,9 @@ void CSymbolEngineActiveDealtPlaying::ResetOnMyTurn()
 
 void CSymbolEngineActiveDealtPlaying::ResetOnHeartbeat()
 {
+	_dealerchair = p_symbol_engine_dealerchair->dealerchair();
+	_bblind      = p_tablelimits->bblind();
+
 	CalculateActiveBits();
 	CalculatePlayingBits();
 	CalculateDealtBits();
