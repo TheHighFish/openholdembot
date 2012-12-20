@@ -27,9 +27,9 @@ public:
 	// Public accessors
 	// Pokerval
 	int pokerval()			{ return _pokerval; }
-	int pokervalplayer()		{ return _pokervalplayer; }
-	int pokervalcommon()		{ return _pokervalcommon; }
-	int pcbits()				{ return _pcbits; }
+	int pokervalplayer()	{ return _pokervalplayer; }
+	int pokervalcommon()	{ return _pokervalcommon; }
+	int pcbits()			{ return _pcbits; }
 	int npcbits()			{ return bitcount(_pcbits); }
 	// Hand tests
 	bool ishandup()			{ return _ishandup; }
@@ -113,10 +113,11 @@ private:
 	int _srankbitspoker;
 private:
 	// for ishandup and ishandupcommon symbol calcs
-	HandVal	_phandval[4];
-	HandVal	_chandval[4];	
-	int		nCards; //!!! = 0;
-	HandVal	handval; //!!! = 0;
+	HandVal	_phandval[k_number_of_betrounds];
+	HandVal	_chandval[k_number_of_betrounds];	 
+private:
+	int nCards;
+	HandVal	handval; 
 private:
 	int userchair;
 	int betround;

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CSymbolEngineHistory.h"
 
+#include "CBetroundCalculator.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "..\CTablemap\CTablemap.h"
@@ -50,6 +51,7 @@ void CSymbolEngineHistory::ResetOnMyTurn()
 
 void CSymbolEngineHistory::ResetOnHeartbeat()
 {
+	_betround = p_betround_calculator->betround();
 	CalculateHistory();
 }
 

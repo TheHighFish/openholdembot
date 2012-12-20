@@ -83,7 +83,7 @@ private:
 	int _foldbits[k_number_of_betrounds + 1];
 	int _callbits[k_number_of_betrounds + 1]; //!!!
 private:
-	int _dealerchair; //!!!
+	int _dealerchair; 
 	int _userchair;
 	int _nchairs;
 	int _raischair_previous_frame;
