@@ -2,10 +2,13 @@
 #include "CSymbolEngineRaisersCallers.h"
 
 #include <assert.h>
+#include "CBetroundCalculator.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CStringMatch.h"
+#include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
+#include "CSymbolEngineDealerchair.h"
 
 CSymbolEngineRaisersCallers *p_symbol_engine_raisers_callers = NULL;
 
@@ -14,7 +17,9 @@ CSymbolEngineRaisersCallers::CSymbolEngineRaisersCallers()
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
+	assert(p_symbol_engine_active_dealt_playing != NULL);
 	assert(p_symbol_engine_chip_amounts != NULL);
+	assert(p_symbol_engine_dealerchair != NULL);
 }
 
 CSymbolEngineRaisersCallers::~CSymbolEngineRaisersCallers()
@@ -24,10 +29,14 @@ void CSymbolEngineRaisersCallers::InitOnStartup()
 {}
 
 void CSymbolEngineRaisersCallers::ResetOnConnection()
-{}
+{
+	_nchairs = p_tablemap->nchairs();
+}
 
 void CSymbolEngineRaisersCallers::ResetOnHandreset()
 {
+	_userchair = p_symbol_engine_userchair->userchair();
+
 	// callbits, raisbits, etc.
 	for (int i=k_betround_preflop; i<=k_betround_river; i++)
 	{
@@ -42,6 +51,10 @@ void CSymbolEngineRaisersCallers::ResetOnNewRound()
 
 void CSymbolEngineRaisersCallers::ResetOnMyTurn()
 {
+	_dealerchair      = p_symbol_engine_dealerchair->dealerchair();
+	_betround         = p_betround_calculator->betround();
+	_playersdealtbits = p_symbol_engine_active_dealt_playing->playersdealtbits();
+
 	CalculateRaisers();
 	CalculateCallers();
 }

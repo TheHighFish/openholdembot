@@ -2,6 +2,7 @@
 #include "CSymbolEnginePokerval.h"
 
 #include <assert.h>
+#include "CBetroundCalculator.h"
 #include "CScraper.h"
 #include "CSymbolEngineCards.h"
 #include "..\CTransform\CTransform.h"
@@ -25,12 +26,6 @@
 	_pokervalcommon = 0;
 	_pcbits = 0;
 	_npcbits = 0;
-
-	for (int i=0; i<=3; i++) // ??? WTF is 3?
-	{
-		_phandval[i] = 0;
-		_chandval[i] = 0;
-	}
 
 		// rank hi
 	_rankhi = 0;
@@ -74,7 +69,17 @@ void CSymbolEnginePokerval::ResetOnConnection()
 {}
 
 void CSymbolEnginePokerval::ResetOnHandreset()
-{}
+{
+	userchair = p_symbol_engine_userchair->userchair();
+
+	for (int i=0; i<k_number_of_betrounds; i++)
+	{
+		_phandval[i] = 0;
+		_chandval[i] = 0;
+	}
+	nCards  = 0;
+	handval = 0;
+}
 
 void CSymbolEnginePokerval::ResetOnNewRound()
 {}
@@ -83,7 +88,9 @@ void CSymbolEnginePokerval::ResetOnMyTurn()
 {}
 
 void CSymbolEnginePokerval::ResetOnHeartbeat()
-{}
+{
+	betround = p_betround_calculator->betround();
+}
 
 
 void CSymbolEnginePokerval::CalcPokerValues()

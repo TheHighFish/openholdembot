@@ -4,6 +4,9 @@
 #include <assert.h>
 #include "CScraper.h"
 #include "CStringMatch.h"
+#include "CSymbolEngineActiveDealtPlaying.h"
+#include "CSymbolEngineDealerchair.h"
+#include "CSymbolEngineRaisersCallers.h"
 #include "CSymbolEngineUserchair.h"
 
 CSymbolEnginePositions *p_symbol_engine_positions = NULL;
@@ -13,6 +16,8 @@ CSymbolEnginePositions::CSymbolEnginePositions()
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
+	assert(p_symbol_engine_active_dealt_playing != NULL);
+	assert(p_symbol_engine_dealerchair != NULL);
 	assert(p_symbol_engine_userchair != NULL);
 }
 
@@ -26,7 +31,9 @@ void CSymbolEnginePositions::ResetOnConnection()
 {}
 
 void CSymbolEnginePositions::ResetOnHandreset()
-{}
+{
+	_userchair = p_symbol_engine_userchair->userchair();
+}
 
 void CSymbolEnginePositions::ResetOnNewRound()
 {}
@@ -39,6 +46,11 @@ void CSymbolEnginePositions::ResetOnMyTurn()
 
 void CSymbolEnginePositions::ResetOnHeartbeat()
 {
+	_dealerchair        = p_symbol_engine_dealerchair->dealerchair();
+	_raischair          = p_symbol_engine_raisers_callers->raischair();
+	_playersdealtbits   = p_symbol_engine_active_dealt_playing->playersdealtbits();
+	_playersplayingbits = p_symbol_engine_active_dealt_playing->playersplayingbits();
+
 	CalculateNChairsDealtLeftRight();
 }
 

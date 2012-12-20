@@ -40,7 +40,7 @@ private:
 	int _dealposition;
 	int _callposition;
 private:
-	int _dealerchair; //!!!
+	int _dealerchair; 
 	int _userchair;
 	int _raischair;
 	int _playersdealtbits;
