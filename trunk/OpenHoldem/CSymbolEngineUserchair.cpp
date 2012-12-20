@@ -58,13 +58,13 @@ void CSymbolEngineUserchair::CalculateUserChair()
 	{
 		CString button_label = p_scraper->button_label(i);
 
-		if (p_scraper->GetButtonState(i) &&
-			(p_string_match->IsStringFold(button_label) ||
-			 p_string_match->IsStringCheck(button_label) ||
-			 p_string_match->IsStringCall(button_label) ||
-			 p_string_match->IsStringRaise(button_label) ||
-			 p_string_match->IsStringAllin(button_label) ||
-			 button_label.MakeLower() == "swag"))
+		if (p_scraper->GetButtonState(i) 
+			&& (p_string_match->IsStringFold(button_label) 
+				|| p_string_match->IsStringCheck(button_label) 
+				|| p_string_match->IsStringCall(button_label) 
+				|| p_string_match->IsStringRaise(button_label) 
+				|| p_string_match->IsStringAllin(button_label) 
+				|| button_label.MakeLower() == "swag"))
 		{
 			num_buttons_enabled++;
 		}
