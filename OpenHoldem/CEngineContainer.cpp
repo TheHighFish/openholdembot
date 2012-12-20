@@ -76,6 +76,10 @@ void CEngineContainer::CreateSymbolEngines()
 	p_symbol_engine_random = new CSymbolEngineRandom();
 	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_random;
 	_number_of_symbol_engines_loaded++;
+	// CSymbolEngineActiveDealtPlaying
+	p_symbol_engine_active_dealt_playing = new CSymbolEngineActiveDealtPlaying();
+	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_active_dealt_playing;
+	_number_of_symbol_engines_loaded++;
 	// CSymbolEnginePositions
 	p_symbol_engine_positions= new CSymbolEnginePositions();
 	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_positions;
@@ -83,10 +87,6 @@ void CEngineContainer::CreateSymbolEngines()
 	// CSymbolEngineBlinds
 	p_symbol_engine_blinds = new CSymbolEngineBlinds();
 	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_blinds;
-	_number_of_symbol_engines_loaded++;
-	// CSymbolEngineActiveDealtPlaying
-	p_symbol_engine_active_dealt_playing = new CSymbolEngineActiveDealtPlaying();
-	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_active_dealt_playing;
 	_number_of_symbol_engines_loaded++;
 	// CSymbolEngineChipAmounts
 	p_symbol_engine_chip_amounts = new CSymbolEngineChipAmounts();

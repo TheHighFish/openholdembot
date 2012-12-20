@@ -335,7 +335,7 @@ void CFlagsToolbar::EnableButton(int button_ID, bool new_status)
 
 void CFlagsToolbar::CheckButton(int button_ID, bool new_status)
 {
-	m_MainToolBar.GetToolBarCtrl().EnableButton(button_ID, new_status);
+	m_MainToolBar.GetToolBarCtrl().CheckButton(button_ID, new_status);
 }
 
 bool CFlagsToolbar::IsButtonChecked(int button_ID)
