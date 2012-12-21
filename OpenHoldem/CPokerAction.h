@@ -14,7 +14,6 @@ private:
 	const int		PreflopPos(void);
 	const int		PreflopRaisPos(void);
 	const int		PostflopPos(void);
-	const int		PreflopBets(void);
 	const bool		FirstIntoPot(void);	
 	const int		BetPosition(const int chairnum);
 	const int		DealPosition(const int chairnum);

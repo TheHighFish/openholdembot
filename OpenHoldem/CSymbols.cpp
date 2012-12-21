@@ -44,15 +44,12 @@ int willplay = 0, wontplay = 0, topclip = 0, mustplay = 0;
 
 
 CSymbols::CSymbols()
-{
-	ResetSymbolsFirstTime();
-	//!!!InitHandranktTableForPrwin();
-}
+{}
 
 CSymbols::~CSymbols()
 {
 }
-/*
+/* !!!
 void CSymbols::InitHandranktTableForPrwin()
 {
 	int		i = 0, j = 0, k = 0; 
@@ -506,58 +503,19 @@ void CSymbols::CalcSymbols(void)
 					 "*************************************************************\n",
 				  p_handreset_detector->GetHandNumber(), 
 				  p_symbol_engine_dealerchair->dealerchair(), card0, card1, title);
-	}							
-
-	//!!!CalculateBetround();													
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Table limits 
-	p_tablelimits->CalcTableLimits();
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//CalcPlayersOpponents();				// players/opponents, raischair
-	//CalcChipamtsLimits();				// chip amounts, limits
-	//CalcNumbets();						// number of bets
-	//CalcAutoplayer();					// autoplayer
-	//CalcPositionsNonUserchair();		// positions, not depening on userchair
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	if (_user_chair_confirmed && p_scraper_access->UserHasCards())
 	{
-		/*
-		CalcPositionsUserchair();	    // positions, depening on userchair
-		CalcPokerValues();				// pokerval, pocket-common tests
-		CalcUnknownCards();				// (un)known cards
-		CalcHandTests();				// hand tests
-		CalcPocketTests();				// pocket tests
-		CalcLists();				// list tests, list numbers
-		CalcFlushesStraightsSets();		// flushes, straights, sets
-		CalcRankbits();					// rankbits, rankhi, ranklo
-		p_versus->GetCounts();			// calculate versus values
-*/
+		
+		//!!!p_versus->GetCounts();			// calculate versus values
 		//!!!set_sym_originaldealposition(_sym.dealposition); //remember dealposition
 	}
 
 	//CalcHistory();						// history symbols
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// number of opponents for prwin
-	
-	//!!! CalculateNOpponents();
-	
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// dependent on nopponents calulation - must come after
-	if (_user_chair_confirmed && p_scraper_access->UserHasCards())
-	{
-		/*!!!
-		CalcHandrank();			
-		if (_sym.ismyturn) {
-			CalcNhands();				// nhands
-			CalcProbabilities();		// prwin, random	
-		}
-		*/
 	}
+
 }
 
 const double CSymbols::GetSymbolVal(const char *a, int *e)
