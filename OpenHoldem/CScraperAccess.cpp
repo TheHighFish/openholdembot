@@ -354,3 +354,18 @@ bool CScraperAccess::UserHasCards()
 	int userchair = p_symbol_engine_userchair->userchair();
 	return PlayerHasCards(userchair);
 }
+
+bool CScraperAccess::IsKnownCard(int card)
+{
+	if (card == CARD_NOCARD 
+		|| card == CARD_BACK)
+	{
+		return false;
+	}
+	return true;
+}
+
+bool IsCardOrCardBack(int card)
+{
+	return (card != CARD_NOCARD);
+}

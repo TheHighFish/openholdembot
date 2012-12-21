@@ -4,6 +4,7 @@
 #include <assert.h>
 #include "CBetroundCalculator.h"
 #include "CScraper.h"
+#include "CScraperAccess.h"
 #include "CSymbolEngineCards.h"
 #include "..\CTransform\CTransform.h"
 #include "inlines/eval.h"
@@ -139,8 +140,7 @@ void CSymbolEnginePokerval::CalcPokerValues()
 		_ishandup = true;														
 	}
 
-	_hand_type = HandVal_HANDTYPE(handval);
-	CalculateHandType(); //!!!
+	CalculateHandType(); 
 
 	///////////////////////////////////////////////////////////////////
 	// pokervalplayer
@@ -192,7 +192,8 @@ void CSymbolEnginePokerval::CalcPokerValues()
 
 void CSymbolEnginePokerval::CalculateHandType()
 {
-	// Precondition: _hand_type already calculated
+	_hand_type = HandVal_HANDTYPE(handval);
+
 	if  (isstraightflush() 
 		&& StdDeck_RANK(HandVal_TOP_CARD(handval)) == Rank_ACE)
 	{
@@ -400,8 +401,7 @@ bool CSymbolEnginePokerval::IsHigherStraightPossible(HandVal handval)
 	// common cards
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
-		if (p_scraper->card_common(i) != CARD_BACK && //!!!
-			 p_scraper->card_common(i) != CARD_NOCARD)
+		if (p_scraper_access->IsKnownCard(p_scraper->card_common(i)))
 		{
 			CardMask_SET(comCards, p_scraper->card_common(i));
 		}

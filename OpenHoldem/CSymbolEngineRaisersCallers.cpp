@@ -87,7 +87,6 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 	}
 	// For technical reasons (for-loop) we handle the modulo-operation inside the loop
 	LastPossibleRaiser = FirstPossibleRaiser + p_tablemap->nchairs() - 1;
-	int betround = 0; //!!!
 
 	for (int i=FirstPossibleRaiser; i<=LastPossibleRaiser; i++)
 	{
@@ -97,7 +96,7 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 		{
 			last_bet = current_players_bet;
 			_raischair = i % p_tablemap->nchairs();
-			int new_raisbits = _raisbits[betround] | k_exponents[i%p_tablemap->nchairs()];
+			int new_raisbits = _raisbits[_betround] | k_exponents[i%p_tablemap->nchairs()];
 			_raisbits[betround] = new_raisbits;
 		}
 	}
