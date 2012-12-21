@@ -143,6 +143,10 @@ void CEngineContainer::DestroyAllSpecialSymbolEngines()
 
 void CEngineContainer::CallSymbolEnginesToUpdateSymbolsIfNecessary()
 {
+	p_tablelimits->CalcTableLimits();
+	p_betround_calculator->OnNewHeartbeat();
+	p_handreset_detector->OnNewHeartbeat();
+
 	// ResetOnConnection() gets directly called by the auto-connector,
 	// so we don't have to care about that.
 	// We only need to care about:
