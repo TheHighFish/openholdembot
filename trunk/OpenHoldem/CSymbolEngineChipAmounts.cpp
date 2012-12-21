@@ -4,6 +4,8 @@
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CSymbolEngineUserchair.h"
+#include "NumericalFunctions.h"
+
 
 CSymbolEngineChipAmounts *p_symbol_engine_chip_amounts = NULL;
 
@@ -104,7 +106,6 @@ void CSymbolEngineChipAmounts::CalculateBalances()
 
 void CSymbolEngineChipAmounts::CalculateStacks()
 {
-	double	temp = 0;
 	// simple bubble sort for 10 stack values
 	for (int i=0; i<_nchairs; i++)
 	{
@@ -123,10 +124,7 @@ void CSymbolEngineChipAmounts::CalculateStacks()
 		{
 			if (_stack[i] < _stack[j])
 			{
-				// !!! swap
-				temp      = _stack[i];
-				_stack[i] = _stack[j];
-				_stack[j] = temp;
+				SwapDoubles(&_stack[i], &_stack[j]);
 			}
 		}
 	}
