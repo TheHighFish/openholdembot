@@ -29,7 +29,7 @@ void CSymbolEngineHistory::ResetOnConnection()
 
 void CSymbolEngineHistory::ResetOnHandreset()
 {
-	_betround = 1; ///!!!
+	_betround = k_betround_preflop; 
 
 	// Element 0 is unused
 	for (int i=0; i<(k_number_of_betrounds+1); i++)

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CSymbolEngineLists.h"
 
+#include "CBetroundCalculator.h"
 #include "CFormula.h"
 #include "CScraper.h"
 #include "CSymbolEngineUserchair.h"
@@ -35,8 +36,11 @@ void CSymbolEngineLists::ResetOnNewRound()
 
 void CSymbolEngineLists::ResetOnMyTurn()
 {
-	// !!! Calculate only once preflop
-	CalculateLists();
+	// Calculate only preflop
+	if (p_betround_calculator->betround() == k_betround_preflop)
+	{
+		CalculateLists();
+	}
 }
 
 void CSymbolEngineLists::ResetOnHeartbeat()

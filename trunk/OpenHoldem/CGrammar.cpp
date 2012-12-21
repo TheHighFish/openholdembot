@@ -343,7 +343,7 @@ double CGrammar::TryToEvaluateSymbolAsOpenPPLSymbol(CFormula * const f, string s
 double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunction **logCallingFunction, int *e)
 {
 	double			result = 0.0;
-	char			f$func[10] = {0}; //!!!
+	char			f$func[k_max_number_of_players] = {0}; 
 	const char		*ranks = "  23456789TJQKA";
 	int				rank_temp = 0;
 	
@@ -446,7 +446,6 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 		}
 	}
 
-	//  2008.02.27 by THF
 	//  Perl symbols (starting with "pl_")
 	else if (p_perl->IsPerlSymbol(sym.c_str()))
 	{

@@ -20,6 +20,8 @@ public:
 	int		NumberOfVisibleButtons();
 	bool	PlayerHasCards(int player);
 	bool	PlayerHasKnownCards(int player);
+	bool	IsKnownCard(int card);
+	bool	IsCardOrCardBack(int card);
 	bool	UserHasCards();
 
 public:
