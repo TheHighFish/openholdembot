@@ -7,6 +7,7 @@
 #include <iomanip>
 #include "CBetroundCalculator.h"
 #include "CGameState.h"
+#include "CHandresetDetector.h"
 #include "CScraper.h"
 #include "CSessionCounter.h"
 #include "CSymbolEngineChipAmounts.h"
@@ -51,11 +52,8 @@ void CHandHistory::WriteHistory()
 	int	betround    = p_betround_calculator->betround();
 	int	dealerchair = p_symbol_engine_dealerchair->dealerchair();
 
-	// !!! this should depend on OHs handresetmethod
-	// !!! A change in handsplayed should be required,
-	// !!! as dealerchair might stay the same.
 	// Precondition: New round
-	if (prevdealerchair != dealerchair && betround==1)
+	if (p_handreset_detector->IsHandreset() && betround == k_betround_preflop)
 	{
 		newRoundFlag = true;
 	}
@@ -108,10 +106,7 @@ void CHandHistory::UpdateSymbols()
 		}
 		_history.chair[i].currentBalance = p_symbol_engine_chip_amounts->balance(i);
 
-		char	playername [16]; // !!! Get rid of hard-coded constant
-		strncpy_s(playername, 16, p_scraper->player_name(i).GetString(), 
-			_TRUNCATE);
-		playerName[i] = playername;
+		playerName[i] = p_scraper->player_name(i).GetString();
 	}
 }
 

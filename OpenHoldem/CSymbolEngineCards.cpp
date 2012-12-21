@@ -64,8 +64,6 @@ void CSymbolEngineCards::InitOnStartup()
 	_nhandshi = 0;
 	_nhandslo = 0;
 	_nhandsti = 0;
-	//_prwinnow = 0; Not here!!!
-	//_prlosnow = 0;
 
 	// flushes straights sets
 	_nsuited = 0;
