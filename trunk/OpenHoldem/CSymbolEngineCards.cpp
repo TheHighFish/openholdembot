@@ -2,6 +2,7 @@
 #include "CSymbolEngineCards.h"
 
 #include <assert.h>
+#include "CBetroundCalculator.h"
 #include "CScraper.h"
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEngineUserchair.h"
@@ -110,6 +111,7 @@ void CSymbolEngineCards::ResetOnHandreset()
 
 void CSymbolEngineCards::ResetOnNewRound()
 {
+	betround = p_betround_calculator->betround();
 	CalcUnknownCards();
 }
 

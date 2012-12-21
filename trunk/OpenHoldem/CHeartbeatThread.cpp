@@ -103,7 +103,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			// Scrape window
 
 			write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling DoScrape.\n");
-			new_scrape = true; //!!!
+			new_scrape = !NOTHING_CHANGED;
 			p_lazyscraper->DoScrape();
 
 			////////////////////////////////////////////////////////////////////////////////////////////

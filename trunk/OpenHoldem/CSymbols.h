@@ -264,8 +264,3 @@ private:/*
 } *p_symbols;
 
 #endif /* INC_CSYMBOLS_H */
-
-
-//!!!
-//double ncardsknown;
-	//double ncommoncardsknown;
