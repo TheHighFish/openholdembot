@@ -6,6 +6,7 @@
 #include "CAutoplayer.h"
 #include "CAutoplayerFunctions.h"
 #include "CBetroundCalculator.h"
+#include "CEngineContainer.h"
 #include "CFormula.h"
 #include "CGameState.h"
 #include "CHandhistory.h"
@@ -240,7 +241,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 			if (new_scrape!=NOTHING_CHANGED)
 			{
-				//!!! Calc symbol
+				p_engine_container->CallSymbolEnginesToUpdateSymbolsIfNecessary();
 			}
 
 		LeaveCriticalSection(&pParent->cs_update_in_progress);

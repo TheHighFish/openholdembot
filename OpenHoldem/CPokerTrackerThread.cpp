@@ -637,7 +637,7 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 
 	//No more unnecessary queries when we don't even have a siteid to check
 	siteid = pt_lookup.GetSiteId();
-	if (siteid == -1)
+	if (siteid == k_undefined)
 		return result;
 
 	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)
@@ -779,7 +779,7 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 
 	//No more unnecessary queries when we don't even have a siteid to check
 	siteid = pt_lookup.GetSiteId();
-	if (siteid == -1)  return false;
+	if (siteid == k_undefined)  return false;
 
 	// siteid has changed -- we're using ManualMode
 	if (siteid != _last_siteid)

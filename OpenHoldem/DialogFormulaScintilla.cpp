@@ -1182,7 +1182,7 @@ void CDlgFormulaScintilla::OnNew()
 
 	s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
 
-	if (s == "Hand Lists" || (s.Find("list") != -1 && s.Find("f$") == -1))
+	if (s == "Hand Lists" || (s.Find("list") != -1 && s.Find("f$") == k_undefined))
 		newdlg.type = 0;
 	else
 		newdlg.type = 1;
@@ -1650,7 +1650,7 @@ void CDlgFormulaScintilla::OnHandList()
 	
 	// Find appropriate list in the internal structure
 	list_index = -1;
-	for (i=0; i<m_wrk_formula.formula()->mHandList.GetSize() && list_index == -1; i++) 
+	for (i=0; i<m_wrk_formula.formula()->mHandList.GetSize() && list_index == k_undefined; i++) 
 	{
 		if (m_wrk_formula.formula()->mHandList[i].list == s)
 		{
@@ -1658,7 +1658,7 @@ void CDlgFormulaScintilla::OnHandList()
 			break;
 		}
 	}
-	if (list_index == -1)  return;
+	if (list_index == k_undefined)  return;
 
 	m_wrk_formula.ParseHandList(m_wrk_formula.formula()->mHandList[list_index].list_text, myDialog.checked);
 

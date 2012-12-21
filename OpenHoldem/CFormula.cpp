@@ -117,7 +117,7 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 
 			// Checking for malformed function header
 			// without trailing "##"
-			if (end == -1) 
+			if (end == k_undefined) 
 			{
 				// Trying to continue gracefully.				
 				// Skipping is not possible,
@@ -410,18 +410,18 @@ void CFormula::ParseHandList(const CString &list_text, bool inlist[13][13])
 		if (pStr[0] == '/' && pStr[1] == '/')
 		{
 			int index = CString(pStr).FindOneOf("\r\n");
-			if (index == -1) break;
+			if (index == k_undefined) break;
 			pStr += index;
 		}
 
 		token_card0_rank = CardIdentHelper(*pStr++);
 
-		if (token_card0_rank == -1)
+		if (token_card0_rank == k_undefined)
 			continue;
 
 		token_card1_rank = CardIdentHelper(*pStr++);
 
-		if (token_card1_rank == -1)
+		if (token_card1_rank == k_undefined)
 			continue;
 
 		// make card0 have the higher rank

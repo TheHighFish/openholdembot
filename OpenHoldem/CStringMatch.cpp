@@ -23,7 +23,7 @@ const bool CStringMatch::IsNumeric(CString t)
 
 	for (int i=0; i<t.GetLength(); i++)
 	{
-		if (t.Mid(i,1).FindOneOf("$0123456789,.¢ckm") == -1)
+		if (t.Mid(i,1).FindOneOf("$0123456789,.¢ckm") == k_undefined)
 			return false;
 
 		if (t.Mid(i,1)==".")

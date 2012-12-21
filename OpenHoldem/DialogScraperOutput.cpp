@@ -241,7 +241,7 @@ void CDlgScraperOutput::UpdateDisplay()
 	// Only do this if we are not in the middle of a scraper/symbol update
 	if (TryEnterCriticalSection(&p_heartbeat_thread->cs_update_in_progress))
 	{
-		if (m_RegionList.GetCurSel() == -1)
+		if (m_RegionList.GetCurSel() == k_undefined)
 		{
 			DoBitblt(NULL, p_tablemap->r$()->end());  // Clear display
 			LeaveCriticalSection(&p_heartbeat_thread->cs_update_in_progress);

@@ -207,7 +207,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 	{
 		SelectedItem = SelectTableMapAndWindow(N);
 
-		if (SelectedItem == -1)
+		if (SelectedItem == k_undefined)
 		{
 			write_log(prefs.debug_autoconnector(), "[CAutoConnector] Attempt to connect did fail\n");
 			p_sharedmem->RememberTimeOfLastFailedAttemptToConnect();

@@ -227,7 +227,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 		{
 			//assume only one particular caller
 			int oppChair = GetChairFromDealPos(pquery + 8);
-			if (oppChair == -1 || oppChair == sym_userchair) return -1;
+			if (oppChair == k_undefined || oppChair == sym_userchair) return -1;
 			if (oppChair >= 0)
 			{
 				double oppCurrentBet = sym_currentbet[oppChair];
@@ -308,7 +308,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 		{
 			//assume only one particular caller
 			int oppChair = GetChairFromDealPos(pquery + 9);
-			if (oppChair == -1 || oppChair == sym_userchair) return -1;
+			if (oppChair == k_undefined || oppChair == sym_userchair) return -1;
 			if (oppChair >= 0)
 			{
 				double oppTotalBet = sym_currentbet[oppChair] + stacks[oppChair];
@@ -325,7 +325,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 	{
 		//assume only one particular caller
 		int oppChair = GetChairFromDealPos(pquery + 8);
-		if (oppChair == -1 || oppChair == sym_userchair) return -1;
+		if (oppChair == k_undefined || oppChair == sym_userchair) return -1;
 		if (oppChair >= 0)
 		{
 			stacks[oppChair]+= sym_pot / 2;
