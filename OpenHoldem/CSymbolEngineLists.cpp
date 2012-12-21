@@ -3,6 +3,7 @@
 
 #include "CFormula.h"
 #include "CScraper.h"
+#include "CSymbolEngineUserchair.h"
 #include "OH_MessageBox.h"
 
 CSymbolEngineLists *p_symbol_engine_lists = NULL;
@@ -12,8 +13,7 @@ CSymbolEngineLists::CSymbolEngineLists()
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-	//
-	// This engine does not use any other engines.
+	assert(p_symbol_engine_userchair != NULL);
 }
 
 CSymbolEngineLists::~CSymbolEngineLists()
@@ -26,7 +26,9 @@ void CSymbolEngineLists::ResetOnConnection()
 {}
 
 void CSymbolEngineLists::ResetOnHandreset()
-{}
+{
+	userchair = p_symbol_engine_userchair->userchair();
+}
 
 void CSymbolEngineLists::ResetOnNewRound()
 {}

@@ -44,19 +44,7 @@ private:
 private:
 	int _nopponents_for_prwin;
 private:
-	int userchair; //!!!
+	int userchair;
 } *p_symbol_engine_prwin;
 
 #endif INC_CSYMBOLENGINEPRWIN_H
-
-/*
-//!!!
-	if (_nopponents < 1)
-	{
-		_nopponents = 1;
-	}
-	else if (_nopponents > k_max_number_of_opponents_at_full_ring_table)
-	{
-		_nopponents = k_max_number_of_opponents_at_full_ring_table;
-	}
-	*/

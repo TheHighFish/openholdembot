@@ -2,6 +2,7 @@
 #include "CSymbolEngineChipAmounts.h"
 
 #include "CScraper.h"
+#include "CScraperAccess.h"
 #include "CSymbolEngineUserchair.h"
 
 CSymbolEngineChipAmounts *p_symbol_engine_chip_amounts = NULL;
@@ -101,23 +102,13 @@ void CSymbolEngineChipAmounts::CalculateBalances()
 	}
 }
 
-//!!!
-bool PlayerHasCards(int player)
-{
-	assert(player >= 0);
-	assert(player < k_max_number_of_players);
-
-	return ((p_scraper->card_player(player, 0) != CARD_NOCARD) 
-		&&  (p_scraper->card_player(player, 1) != CARD_NOCARD));
-}
-
 void CSymbolEngineChipAmounts::CalculateStacks()
 {
 	double	temp = 0;
 	// simple bubble sort for 10 stack values
 	for (int i=0; i<_nchairs; i++)
 	{
-		if (PlayerHasCards(i))
+		if (p_scraper_access->PlayerHasCards(i))
 		{
 			_stack[i] = _balance[i];
 		}

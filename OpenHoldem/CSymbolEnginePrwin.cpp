@@ -34,6 +34,7 @@ void CSymbolEnginePrwin::ResetOnConnection()
 
 void CSymbolEnginePrwin::ResetOnHandreset()
 {
+	userchair = p_symbol_engine_userchair->userchair();
 	ResetOnNewRound();
 }
 

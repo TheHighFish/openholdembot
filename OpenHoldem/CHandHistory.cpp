@@ -665,7 +665,7 @@ void CHandHistory::resetVars()
 		for(int j=0;j<4;j++) // should be 1..4 !!!
 		{
 			_history.chair[i].totalIn[j]=0;
-			for(int k=0;k<8;k++) 
+			for(int k=0;k<8;k++) // !!! WTF is 8?
 			{
 				_history.chair[i].bet[j][k]=0;
 				_history.chair[i].action[j][k]=0;
