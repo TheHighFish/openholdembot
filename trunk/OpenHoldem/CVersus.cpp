@@ -214,7 +214,7 @@ bool CVersus::GetCounts(void)
 
 		wintemp = lostemp = 0;
 
-		for (i=0; i<=50; i++)
+		for (i=0; i<50; i++) //!!!
 		{
 			for (j=i+1; j<=51; j++)
 			{

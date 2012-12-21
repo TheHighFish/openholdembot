@@ -31,6 +31,7 @@ void CSymbolEngineRaisersCallers::InitOnStartup()
 void CSymbolEngineRaisersCallers::ResetOnConnection()
 {
 	_nchairs = p_tablemap->nchairs();
+	_raischair_previous_frame = k_undefined;
 }
 
 void CSymbolEngineRaisersCallers::ResetOnHandreset()
