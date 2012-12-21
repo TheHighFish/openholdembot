@@ -427,38 +427,7 @@ void write_logautoplay(const char * action)
 		rank.Format("%.0f", p_symbol_engine_handrank->handrank169());
 
         // poker hand
-		// !!! extra function
-        hv = Hand_EVAL_N(Cards, nCards);
-        if (HandVal_HANDTYPE(hv)==HandType_STFLUSH && StdDeck_RANK(HandVal_TOP_CARD(hv))==Rank_ACE)
-            pokerhand="royfl";
-
-        else if (HandVal_HANDTYPE(hv)==HandType_STFLUSH)
-            pokerhand="strfl";
-
-        else if (HandVal_HANDTYPE(hv)==HandType_QUADS)
-            pokerhand="4kind";
-
-        else if (HandVal_HANDTYPE(hv)==HandType_FULLHOUSE)
-            pokerhand="fullh";
-
-        else if (HandVal_HANDTYPE(hv)==HandType_FLUSH)
-            pokerhand="flush";
-
-        else if (HandVal_HANDTYPE(hv)==HandType_STRAIGHT)
-            pokerhand="strai";
-
-        else if (HandVal_HANDTYPE(hv)==HandType_TRIPS)
-            pokerhand="3kind";
-
-        else if (HandVal_HANDTYPE(hv)==HandType_TWOPAIR)
-            pokerhand="2pair";
-
-        else if (HandVal_HANDTYPE(hv)==HandType_ONEPAIR)
-            pokerhand="1pair";
-
-        else if (HandVal_HANDTYPE(hv)==HandType_NOPAIR)
-            pokerhand="hcard";
-
+		pokerhand = p_symbol_engine_pokerval->HandType();
 
         // best action
         if (strcmp(action, "SWAG")==0) 

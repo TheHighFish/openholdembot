@@ -6,6 +6,7 @@
 #include "CGrammar.h"
 #include "CIteratorThread.h"
 #include "CScraper.h"
+#include "CScraperAccess.h"
 #include "CSymbolenginePokerval.h"
 
 CSymbolEnginePrwin *p_symbol_engine_prwin = NULL;
@@ -74,13 +75,11 @@ void CSymbolEnginePrwin::CalculateNhands()
 	int				nplCards = 0, ncomCards = 0;
 
 	// player cards
-	// !!! bad code
 	CardMask_RESET(plCards);
 	nplCards = 0;
-	for (int i=0; i<=1; i++)
+	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
-		if (p_scraper->card_player(userchair, i) != CARD_BACK && 
-			p_scraper->card_player(userchair, i) != CARD_NOCARD)
+		if (p_scraper_access->IsKnownCard(p_scraper->card_player(userchair, i)))
 		{
 			CardMask_SET(plCards, p_scraper->card_player(userchair, i));
 			nplCards++;
@@ -92,8 +91,7 @@ void CSymbolEnginePrwin::CalculateNhands()
 	ncomCards = 0;
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
-		if (p_scraper->card_common(i) != CARD_BACK && 
-			p_scraper->card_common(i) != CARD_NOCARD)
+		if (p_scraper_access->IsKnownCard(p_scraper->card_common(i)))
 		{
 			CardMask_SET(comCards, p_scraper->card_common(i));
 			ncomCards++;
