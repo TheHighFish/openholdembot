@@ -256,6 +256,54 @@ void CSymbolEnginePokerval::CalculateHandType()
 	}
 }
 
+CString CSymbolEnginePokerval::HandType()
+{
+	if (ishicard())
+	{ 
+		return "hcard"; 
+	}
+	else if (isonepair())
+	{ 
+		return "1pair"; 
+	}
+	else if (istwopair())
+	{ 
+		return "2pair"; 
+	}
+	else if (isthreeofakind())
+	{ 
+		return "3kind"; 
+	}
+	else if (isstraight())
+	{ 
+		return "strai"; 
+	}
+	else if (isflush())
+	{ 
+		return "flush"; 
+	}
+	else if (isfullhouse())
+	{ 
+		return "fullh"; 
+	}
+	else if (isfourofakind())
+	{ 
+		return "4kind"; 
+	}
+	else if (isstraightflush())
+	{ 
+		return "strfl"; 
+	}
+	else if (isroyalflush())
+	{ 
+		return "royfl"; 
+	}
+	else
+	{
+		assert(false);
+	}
+}
+
 void CSymbolEnginePokerval::CalculateRankBits()
 {
 	int				_rank = 0, suit = 0, plcomsuit = 0, comsuit = 0;

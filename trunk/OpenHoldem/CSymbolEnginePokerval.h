@@ -77,6 +77,8 @@ public:
 	int sranklocommon()		{ return GetRankLo(_srankbitscommon); }
 	int srankloplayer()		{ return GetRankLo(_srankbitsplayer); }
 	int sranklopoker()		{ return GetRankLo(_srankbitspoker); }
+public:
+	CString HandType();
 private:
 	void CalculateRankBits();
 	void CalcPokerValues();
