@@ -163,7 +163,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	CString			t = "";
 	lpCreateStruct->dwExStyle |= WS_MINIMIZE;
-	if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
+	if (CFrameWnd::OnCreate(lpCreateStruct) == k_undefined)
 		return -1;
 
 	// Tool bar

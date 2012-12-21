@@ -142,7 +142,7 @@ BOOL CSAPrefsDialog::PreTranslateMessage(MSG* pMsg)
 
 int CSAPrefsDialog::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-	if (CDialog::OnCreate(lpCreateStruct) == -1)
+	if (CDialog::OnCreate(lpCreateStruct) == k_undefined)
 		return -1;
 
 	return 0;

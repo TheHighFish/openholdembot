@@ -72,7 +72,7 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 	// Don't start searching for the highest bet at the button.
 	// This method will fail, if a player in late raises and a player in early coldcalls.
 	// Start searching at the last known raiser; and only at the button when we have a new betting-round.
-	if (_raischair_previous_frame == -1)
+	if (_raischair_previous_frame == k_undefined)
 	{
 		// Start with the first player after the dealer
 		FirstPossibleRaiser = _dealerchair + 1;

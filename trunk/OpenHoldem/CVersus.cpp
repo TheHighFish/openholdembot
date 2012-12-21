@@ -22,12 +22,12 @@ CVersus::CVersus()
 	// then in the path provided by the registry.  If both fail,
 	// disable versus.
 	_sopen_s(&_versus_fh, "versus.bin", _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
-	if (_versus_fh == -1)
+	if (_versus_fh == k_undefined)
 	{
 		_sopen_s(&_versus_fh, prefs.versus_path(), _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
 	}
 
-	if (_versus_fh == -1) 
+	if (_versus_fh == k_undefined) 
 	{
 		// We do no longer warn directly, 
 		// but only when versus symbols get used without the file.
@@ -122,7 +122,7 @@ double CVersus::GetSymbol(const char *a, int *e)
 
 bool CVersus::GetCounts(void) 
 {
-	if (_versus_fh == -1)
+	if (_versus_fh == k_undefined)
 		return false;
 
 	int				i = 0, j = 0;
@@ -207,7 +207,7 @@ bool CVersus::GetCounts(void)
 		offset *= sizeof(byte);
 
 		// seek to right position in file
-		if ((pos = _lseek(_versus_fh, offset, SEEK_SET)) == -1L)
+		if ((pos = _lseek(_versus_fh, offset, SEEK_SET)) == long(k_undefined))
 		{
 			return false;
 		}

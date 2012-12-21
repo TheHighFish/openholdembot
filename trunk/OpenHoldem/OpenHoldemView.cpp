@@ -585,7 +585,7 @@ void COpenHoldemView::DrawSpecificButtonIndicator(const int button_num, const ch
 	// Background color
 	pDC->SetBkColor(COLOR_GRAY);
 
-	if (button_num == -1) 
+	if (button_num == k_undefined) 
 	{
 		pTempPen = (CPen*)pDC->SelectObject(&_white_dot_pen);
 		pTempBrush = (CBrush*)pDC->SelectObject(&_gray_brush);
@@ -962,8 +962,8 @@ void COpenHoldemView::DrawNameBox(const int chair)
 
 	if (p_string_match->IsStringSeated(p_scraper->seated(chair)) || 
 		p_string_match->IsStringActive(p_scraper->active(chair)) /*||
-		(p_tablemap->r$pXseated_index[chair] == -1 && p_tablemap->r$uXseated_index[chair] == -1 &&
-		 p_tablemap->r$pXactive_index[chair] == -1 && p_tablemap->r$uXactive_index[chair] == -1)*/ ) 
+		(p_tablemap->r$pXseated_index[chair] == k_undefined && p_tablemap->r$uXseated_index[chair] == k_undefined &&
+		 p_tablemap->r$pXactive_index[chair] == k_undefined && p_tablemap->r$uXactive_index[chair] == k_undefined)*/ ) 
 	{
 
 		pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
@@ -1053,8 +1053,8 @@ void COpenHoldemView::DrawBalanceBox(const int chair)
 
 	if (p_string_match->IsStringSeated(p_scraper->seated(chair)) || 
 		p_string_match->IsStringActive(p_scraper->active(chair)) /*||
-		(p_tablemap->r$pXseated_index[chair] == -1 && p_tablemap->r$uXseated_index[chair] == -1 &&
-		 p_tablemap->r$pXactive_index[chair] == -1 && p_tablemap->r$uXactive_index[chair] == -1)*/ ) 
+		(p_tablemap->r$pXseated_index[chair] == k_undefined && p_tablemap->r$uXseated_index[chair] == k_undefined &&
+		 p_tablemap->r$pXactive_index[chair] == k_undefined && p_tablemap->r$uXactive_index[chair] == k_undefined)*/ ) 
 	{
 
 		pTempPen = (CPen*)pDC->SelectObject(&_black_pen);

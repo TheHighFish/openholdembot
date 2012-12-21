@@ -119,20 +119,20 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 		int sym_userchair = p_symbol_engine_userchair->userchair();
 		for (int i=0; i<k_number_of_cards_per_player; i++) 
 		{
-			// player cards
-			if (p_scraper->card_player(sym_userchair, i) != CARD_BACK && 
-				p_scraper->card_player(sym_userchair, i) != CARD_NOCARD) 
-			{
-				char *card = StdDeck_cardString(p_scraper->card_player(sym_userchair, i));
-				temp.Format("%s ", card);
-				_status_plcards.Append(temp);
-				CardMask_SET(Cards, p_scraper->card_player(sym_userchair, i));
-				nCards++;
-			}
+			// This condition got already checked: "playing"
+			assert(p_scraper->card_player(sym_userchair, i) != CARD_BACK);
+			assert(p_scraper->card_player(sym_userchair, i) != CARD_NOCARD); 
+
+			char *card = StdDeck_cardString(p_scraper->card_player(sym_userchair, i));
+			temp.Format("%s ", card);
+			_status_plcards.Append(temp);
+			CardMask_SET(Cards, p_scraper->card_player(sym_userchair, i));
+			nCards++;
 		}
 	}
 	else 
 	{
+		// !!! redundant code! card_player_for_display is for userchair
 		for (int i=0; i<k_number_of_cards_per_player; i++) 
 		{
 			if (p_scraper->card_player_for_display(i) != CARD_BACK && 

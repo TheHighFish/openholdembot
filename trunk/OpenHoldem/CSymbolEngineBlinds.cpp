@@ -72,8 +72,8 @@ void CSymbolEngineBlinds::ResetOnHeartbeat()
 
 void CSymbolEngineBlinds::CalculateBlinds()
 {
-	int sbchair;
-	int bbchair;
+	int sbchair = k_undefined;
+	int bbchair = k_undefined;
 
 	// Heads-Up
 	if (_nplayersdealt == 2 && (_playersplayingbits & (1<<_dealerchair)))
@@ -106,13 +106,13 @@ void CSymbolEngineBlinds::CalculateBlinds()
 			double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
 
 			// search SB
-			if (sbchair == -1 && p_bet <= p_tablelimits->sblind() && p_bet > 0) 
+			if (sbchair == k_undefined && p_bet <= p_tablelimits->sblind() && p_bet > 0) 
 			{
 				sbchair = i%p_tablemap->nchairs();
 				_playersblindbits |= k_exponents[sbchair];		
 			}
 			// search BB
-			if (bbchair == -1 && p_bet <= p_tablelimits->bblind() && p_bet > p_tablelimits->sblind() && i%p_tablemap->nchairs() != sbchair)
+			if (bbchair == k_undefined && p_bet <= p_tablelimits->bblind() && p_bet > p_tablelimits->sblind() && i%p_tablemap->nchairs() != sbchair)
 			{
 				bbchair = i%p_tablemap->nchairs();	
 				_bblindbits = k_exponents[bbchair];
@@ -124,14 +124,14 @@ void CSymbolEngineBlinds::CalculateBlinds()
 		// SB not found correction.
 		// Will only apply if we are the bb + missed action(s). most common case. 
 		// Restrictions : 3 or less players were dealt or last bb is active
-		if (sbchair == -1 && (_nplayersdealt < 3 || (bbchair == _userchair && p_symbol_engine_positions->nchairsdealtright() == 1)))
+		if (sbchair == k_undefined && (_nplayersdealt < 3 || (bbchair == _userchair && p_symbol_engine_positions->nchairsdealtright() == 1)))
 		{
 			for (int i=_dealerchair+1; i<_dealerchair+p_tablemap->nchairs(); i++)
 			{
 				double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
 
 				// 1st caller/raiser after dealer is sb
-				if (p_bet >= p_tablelimits->bblind() && sbchair == -1 && i%p_tablemap->nchairs() != bbchair)
+				if (p_bet >= p_tablelimits->bblind() && sbchair == k_undefined && i%p_tablemap->nchairs() != bbchair)
 				{
 					sbchair = i%p_tablemap->nchairs();
 					_playersblindbits |= k_exponents[sbchair];

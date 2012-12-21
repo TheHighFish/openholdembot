@@ -320,7 +320,7 @@ void CConfigurationCheck::CheckForPerlPath()
 
 	CString path = GetValue("HKLM", 1, p_szKeyP, p_szNameP);
 
-	if (path.Find("Perl") == -1)
+	if (path.Find("Perl") == k_undefined)
 	{
 		OH_MessageBox("Path\n"
 			"Perl was not correctly detected in your Path.\n"

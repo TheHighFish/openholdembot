@@ -52,7 +52,7 @@ void CheckBringKeyboard(void)
 	}
 
 	// Get state of keyboard menu item
-	if (keybd_item_pos == -1) 
+	if (keybd_item_pos == k_undefined) 
 	{
 		return;
 	}
