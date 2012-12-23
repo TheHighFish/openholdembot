@@ -69,7 +69,5 @@ private:
 
 };
 
-int	bitcount(unsigned int u);
-
 
 #endif //INC_CTRANSFORM_H
